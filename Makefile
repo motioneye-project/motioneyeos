@@ -52,7 +52,6 @@ ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 TARGETS:=host-sed kernel-headers uclibc-configured binutils gcc uclibc-target-utils
 include toolchain/Makefile.in
 include package/Makefile.in
-include target/Makefile.in
 
 #############################################################
 #
@@ -74,6 +73,9 @@ include .config.cmd
 include toolchain/*/*.mk
 include package/*/*.mk
 include target/*/*.mk
+
+# target stuff is last so it can override anything else
+include target/Makefile.in
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
