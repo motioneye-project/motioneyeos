@@ -14,8 +14,6 @@ BOA_SITE=http://www.boa.org/
 BOA_DIR=$(BUILD_DIR)/${shell basename $(BOA_SOURCE) .tar.gz}
 BOA_WORKDIR=$(BUILD_DIR)/boa_workdir
 
-IMAGE_SIZE += +100
-
 $(DL_DIR)/$(BOA_SOURCE):
 	wget -P $(DL_DIR) $(BOA_SITE)/$(BOA_SOURCE)
 
