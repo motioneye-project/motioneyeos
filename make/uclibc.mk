@@ -29,9 +29,9 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.17
-UCLIBC_SOURCE:=uClibc-0.9.17.tar.bz2
-UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.18
+UCLIBC_SOURCE:=uClibc-0.9.18.tar.bz2
+UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 #UCLIBC_PATCH=$(SOURCE_DIR)/uClibc.patch
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
