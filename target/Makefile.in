@@ -1,5 +1,2 @@
-# Default target skeleton stuff, may be overridden
-TARGET_SKELETON:=target/default/skel.tar.gz
-TARGET_SKEL_DIR:=target/default/target_skeleton
-
+include target/generic/Makefile.in
 include target/device/Makefile.in

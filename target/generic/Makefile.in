@@ -1,0 +1,4 @@
+# Default target skeleton stuff, may be overridden
+TARGET_SKELETON:=target/generic/skel.tar.gz
+TARGET_SKEL_DIR:=target/generic/target_skeleton
+
