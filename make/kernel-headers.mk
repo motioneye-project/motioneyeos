@@ -10,7 +10,7 @@ ifneq ($(filter $(TARGETS),kernel-headers),)
 
 LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
 LINUX_SOURCE:=kernel-headers-2.4.21.tar.bz2
-LINUX_DIR:=$(BUILD_DIR)/linux
+LINUX_DIR:=$(TOOL_BUILD_DIR)/linux
 
 # Used by pcmcia-cs and others
 LINUX_SOURCE_DIR=$(LINUX_DIR)
@@ -19,7 +19,7 @@ $(DL_DIR)/$(LINUX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
-	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
