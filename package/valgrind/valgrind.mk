@@ -5,8 +5,8 @@
 #############################################################
 
 VALGRIND_SITE:=http://developer.kde.org/~sewardj/
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-2.1.1
-VALGRIND_SOURCE:=valgrind-2.1.1.tar.bz2
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-2.2.0
+VALGRIND_SOURCE:=valgrind-2.2.0.tar.bz2
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)

@@ -1,18 +1,78 @@
---- valgrind-2.1.1.orig/coregrind/vg_syscalls.c	2004-02-24 17:07:10.000000000 -0700
-+++ valgrind-2.1.1/coregrind/vg_syscalls.c	2004-04-16 18:13:11.000000000 -0600
-@@ -3231,6 +3245,93 @@
+diff -urN y/valgrind-2.2.0/coregrind/vg_libpthread.c x/valgrind-2.2.0/coregrind/vg_libpthread.c
+--- valgrind-2.2.0/coregrind/vg_libpthread.c	2004-08-29 15:02:27.000000000 -0600
++++ valgrind-2.2.0/coregrind/vg_libpthread.c	2005-01-21 03:42:19.000000000 -0700
+@@ -3389,6 +3389,8 @@
+    pthread_mutex).  So basically, this is completely broken on recent
+    glibcs. */
+ 
++#ifndef __UCLIBC__
++
+ #undef _IO_flockfile
+ void _IO_flockfile ( _IO_FILE * file )
+ {
+@@ -3406,6 +3408,7 @@
+ weak_alias(_IO_funlockfile, funlockfile);
+ #endif
+ 
++#endif
+ 
+ /* This doesn't seem to be needed to simulate libpthread.so's external
+    interface, but many people complain about its absence. */
+diff -urN y/valgrind-2.2.0/coregrind/vg_syscalls.c x/valgrind-2.2.0/coregrind/vg_syscalls.c
+--- valgrind-2.2.0/coregrind/vg_syscalls.c	2004-08-30 18:08:37.000000000 -0600
++++ valgrind-2.2.0/coregrind/vg_syscalls.c	2005-01-21 03:49:05.000000000 -0700
+@@ -3323,6 +3323,16 @@
+       break;
+ #           endif /* BLKGETSIZE */
+ 
++   case BLKBSZSET:
++      SYSCALL_TRACK( pre_mem_write,tid, "ioctl(BLKBSZSET)", arg3,
++		     sizeof(unsigned long));
++      break;
++   case BLKRAGET:
++      SYSCALL_TRACK( pre_mem_write,tid, "ioctl(BLKRAGET)", arg3,
++		     sizeof(unsigned long));
++      break;
++   case BLKRASET:
++      break;
+       /* Hard disks */
+    case HDIO_GET_IDENTITY: /* 0x030d */
+       SYSCALL_TRACK( pre_mem_write,tid, "ioctl(HDIO_GET_IDENTITY)", arg3,
+@@ -3375,6 +3385,7 @@
+       break;
+       /* The following two are probably bogus (should check args
+ 	 for readability).  JRS 20021117 */
++   case CDROMEJECT:
+    case CDROM_DRIVE_STATUS: /* 0x5326 */
     case CDROM_CLEAR_OPTIONS: /* 0x5321 */
        break;
+@@ -3383,10 +3394,12 @@
+       SYSCALL_TRACK( pre_mem_write,tid, "ioctl(FIGETBSZ)", arg3,
+                      sizeof(unsigned long));
+       break;
++#if 0
+    case FIBMAP:
+       SYSCALL_TRACK( pre_mem_read,tid, "ioctl(FIBMAP)", arg3,
+                      sizeof(unsigned long));
+       break;
++#endif
  
-+      /* Stuff added by Erik Andersen for general device probing/handling */
+ #ifdef HAVE_LINUX_FB_H
+    case FBIOGET_VSCREENINFO: /* 0x4600 */
+@@ -3483,6 +3496,88 @@
+                      sizeof(struct timeval) );
+       break;
+ 
 +#define BLKSSZGET  _IO(0x12,104)
 +   case BLKSSZGET:
 +      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(BLKSSZGET)", arg3,
 +	      sizeof(int));
 +      break;
++#ifndef BLKGETSIZE64
 +#undef _IOR
 +#define _IOR(type,nr,size)      _IOC(_IOC_READ,(type),(nr),sizeof(size))
-+#define BLKGETSIZE64 _IOR(0x12,114,sizeof(uint64_t))
++#define BLKGETSIZE64 _IOR(0x12,114,size_t)
++#endif
 +   case BLKGETSIZE64:
 +      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(BLKGETSIZE64)", arg3,
 +	      sizeof(uint64_t));
@@ -30,12 +90,6 @@
 +	  SYSCALL_TRACK( pre_mem_write, tid, "ioctl(HDIO_GETGEO)", arg3,
 +		  sizeof(struct hd_geometry));
 +      }
-+      break;
-+#define HDIO_GET_IDENTITY	0x030d	/* get IDE identification info */
-+#define struct_hd_driveid_size	256	/* ATA6 specifies words 0-255 */
-+   case HDIO_GET_IDENTITY:
-+      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(HDIO_GET_IDENTITY)", arg3,
-+	      struct_hd_driveid_size);
 +      break;
 +#define SCSI_IOCTL_GET_IDLUN 0x5382
 +   case SCSI_IOCTL_GET_IDLUN:
@@ -59,16 +113,16 @@
 +#define SCSI_IOCTL_GET_BUS_NUMBER 0x5386
 +   case SCSI_IOCTL_GET_BUS_NUMBER:
 +      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(SCSI_IOCTL_GET_BUS_NUMBER)", arg3,
-+	      sizeof(int));
++	      sizeof(long));
 +      break;
 +#define SCSI_IOCTL_PROBE_HOST 0x5385
 +   case SCSI_IOCTL_PROBE_HOST:
 +      {
-+	  int xxxx;
++	  unsigned long xxxx;
 +	  char *array = (char*)arg3;
 +	  xxxx = array[0] + (array[1]<<8) + (array[2]<<16) + (array[3]<<24);
 +	  SYSCALL_TRACK( pre_mem_write, tid, "ioctl(SCSI_IOCTL_PROBE_HOST)", arg3,
-+		  sizeof(int));
++		  sizeof(unsigned long));
 +      }
 +      break;
 +#define BLKFLSBUF  _IO(0x12,97)
@@ -94,22 +148,93 @@
        /* We don't have any specific information on it, so
  	 try to do something reasonable based on direction and
  	 size bits.  The encoding scheme is described in
---- valgrind-2.1.1.orig/coregrind/vg_libpthread.c	2004-03-08 08:57:17.000000000 -0700
-+++ valgrind-2.1.1/coregrind/vg_libpthread.c	2004-04-16 17:58:31.000000000 -0600
-@@ -3175,6 +3175,8 @@
-    pthread_mutex).  So basically, this is completely broken on recent
-    glibcs. */
+@@ -3519,12 +3614,16 @@
+ 			 "guidance on writing a proper wrapper." );
+ 	 }
+       } else {
+-	 if ((dir & _IOC_WRITE) && size > 0)
++	 if ((dir & _IOC_WRITE) && size > 0) {
++	    VG_(message)(Vg_UserMsg, "genric ioctl 0x%x", arg2);
+ 	    SYSCALL_TRACK( pre_mem_read,tid, "ioctl(generic)", 
+ 			   arg3, size);
+-	 if ((dir & _IOC_READ) && size > 0)
++	 }
++	 if ((dir & _IOC_READ) && size > 0) {
++	    VG_(message)(Vg_UserMsg, "genric ioctl 0x%x", arg2);
+ 	    SYSCALL_TRACK( pre_mem_write,tid, "ioctl(generic)", 
+ 			   arg3, size);
++	 }
+       }
+       break;
+    }
+@@ -3874,6 +3973,18 @@
+ 	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
+       break;
+ #           endif /* BLKGETSIZE */
++   case BLKRAGET:
++      if (res == 0)
++	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
++      break;
++   case BLKBSZSET:
++      if (res == 0)
++	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
++      break;
++   case BLKBSZGET:
++      if (res == 0)
++	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
++      break;
  
-+#ifndef __UCLIBC__
-+
- #undef _IO_flockfile
- void _IO_flockfile ( _IO_FILE * file )
- {
-@@ -3192,6 +3194,7 @@
- weak_alias(_IO_funlockfile, funlockfile);
- #endif
- 
+       /* Hard disks */
+    case HDIO_GET_IDENTITY: /* 0x030d */
+@@ -3897,7 +4008,8 @@
+    case CDROMPLAYMSF:
+       break;
+       /* The following two are probably bogus (should check args
+-	 for readability).  JRS 20021117 */
++        for readability).  JRS 20021117 */
++   case CDROMEJECT:
+    case CDROM_DRIVE_STATUS: /* 0x5326 */
+    case CDROM_CLEAR_OPTIONS: /* 0x5321 */
+       break;
+@@ -3906,10 +4018,12 @@
+       if (res == 0)
+          VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
+       break;
++#if 0
+    case FIBMAP:
+       if (res == 0)
+          VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
+       break;
 +#endif
  
- /* This doesn't seem to be needed to simulate libpthread.so's external
-    interface, but many people complain about its absence. */
+ #ifdef HAVE_LINUX_FB_H
+    case FBIOGET_VSCREENINFO: //0x4600
+@@ -3965,6 +4079,28 @@
+       VG_TRACK( post_mem_write, arg3, sizeof(struct timeval) );
+       break;
+ 
++   case SCSI_IOCTL_GET_IDLUN:
++      {
++	  struct scsi_idlun
++	  {
++	      int mux4;
++	      int host_unique_id;
++
++	  };
++
++	  VG_TRACK( post_mem_write, arg3, sizeof(struct scsi_idlun) );
++      }
++      break;
++   case SCSI_IOCTL_SEND_COMMAND:
++      VG_TRACK( post_mem_write, arg3, ((2 * sizeof(unsigned int)) + 6 + 512));
++      break;
++   case SCSI_IOCTL_GET_BUS_NUMBER:
++      VG_TRACK( post_mem_write, arg3, sizeof(long) );
++      break;
++   case SCSI_IOCTL_PROBE_HOST:
++      VG_TRACK( post_mem_write, arg3, sizeof(unsigned long) );
++      break;
++
+       /* We don't have any specific information on it, so
+ 	 try to do something reasonable based on direction and
+ 	 size bits.  The encoding scheme is described in
