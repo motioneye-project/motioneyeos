@@ -33,10 +33,6 @@ HOSTCC:=gcc
 HAS_MMU:=true
 
 
-# Enable this to use the uClibc daily snapshot instead of a released
-# version.  Daily snapshots may contain new features and bugfixes. Or
-# they may not even compile at all, depending on what Erik is doing...
-USE_UCLIBC_SNAPSHOT:=true
 #############################################################
 #
 # You should probably leave this stuff alone unless you are
@@ -56,11 +52,11 @@ NATIVE_ARCH:= ${shell uname -m | sed \
 		-e 's/sh[234].*/sh/' \
 		-e 's/mips.*/mips/' \
 		}
-ifeq ($(strip $(ARCH)),$(strip $(NATIVE_ARCH)))
-CROSSARG=
-else
+#ifeq ($(strip $(ARCH)),$(strip $(NATIVE_ARCH)))
+#CROSSARG=
+#else
 CROSSARG=--cross=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
-endif
+#endif
 ifneq ($(HAS_MMU),true)
 NOMMU:=nommu
 endif
@@ -84,14 +80,14 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=ftp://www.uclibc.org/uClibc
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.14
-UCLIBC_SOURCE:=uClibc-0.9.14.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.15
+UCLIBC_SOURCE:=uClibc-0.9.15.tar.bz2
 UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.1.1.tar.gz
-GCC_DIR:=$(BUILD_DIR)/gcc-3.1.1
+GCC_SOURCE:=gcc-3.2.tar.gz
+GCC_DIR:=$(BUILD_DIR)/gcc-3.2
 GCC_BUILD_DIR1:=$(BUILD_DIR)/gcc-initial
 GCC_BUILD_DIR2:=$(BUILD_DIR)/gcc-final
 
@@ -122,33 +118,12 @@ $(BUILD_DIR)/.setup:
 # Setup some initial stuff
 #
 #############################################################
-uclibc_toolchain: gcc_final
+uclibc_toolchain: uclibc gcc_final
 
 uclibc_toolchain-clean: gcc_final-clean uclibc-clean gcc_initial-clean binutils-clean
 
 uclibc_toolchain-dirclean: gcc_final-dirclean uclibc-dirclean gcc_initial-dirclean binutils-dirclean
 
-
-
-#############################################################
-#
-# Setup the kernel headers, but don't compile anything for the target yet,
-# since we still need to build a cross-compiler to do that little task for
-# us...  Try to work around this little chicken-and-egg problem..
-#
-#############################################################
-ifeq ($(LINUX_DIR),)
-LINUX_DIR:=$(BUILD_DIR)/linux
-endif
-$(LINUX_DIR)/.cross_compiler_set: $(BUILD_DIR)/.setup $(LINUX_DIR)/.configured
-	#If we were cross compiling the kernel, we would need to do this,
-	# but for UserMode Linux, we can skip this step....
-	#perl -i -p -e "s,^CROSS_COMPILE.*,\
-	#	CROSS_COMPILE=$(STAGING_DIR)/bin/$(ARCH)-uclibc-,g;" \
-	#	$(LINUX_DIR)/Makefile
-	touch $(LINUX_DIR)/.cross_compiler_set
-
-linux_headers: $(LINUX_DIR)/.cross_compiler_set
 
 
 #############################################################
@@ -293,7 +268,6 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 		--kernel_dir=$(LINUX_DIR) \
 		--float=true \
 		--c99_math=true \
-		--long_long=true \
 		--float=true \
 		--shadow=true \
 		--threads=true \
@@ -453,8 +427,8 @@ $(BUILD_DIR)/.stripped: $(BUILD_DIR)/.shuffled
 		-R .note -R .comment $(STAGING_DIR)/lib/*.so*;
 	touch $(BUILD_DIR)/.stripped
 
-#gcc_final: uclibc $(BUILD_DIR)/.stripped
-gcc_final: uclibc $(BUILD_DIR)/.shuffled
+#gcc_final: $(BUILD_DIR)/.stripped
+gcc_final: $(BUILD_DIR)/.shuffled
 
 gcc_final-clean:
 	rm -rf $(GCC_BUILD_DIR2)

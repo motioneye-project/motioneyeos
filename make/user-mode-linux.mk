@@ -55,3 +55,12 @@ user-mode-linux_clean: clean
 user-mode-linux-dirclean:
 	rm -rf $(UMLINUX_DIR)
 
+#############################################################
+#
+# Setup the kernel headers, but don't compile anything for the target yet,
+# since we still need to build a cross-compiler to do that little task for
+# us...  Try to work around this little chicken-and-egg problem..
+#
+#############################################################
+linux_headers: $(UMLINUX_DIR)/.configured
+

@@ -29,8 +29,8 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=ftp://www.uclibc.org/uClibc
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.14
-UCLIBC_SOURCE:=uClibc-0.9.14.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.15
+UCLIBC_SOURCE:=uClibc-0.9.15.tar.bz2
 UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 #UCLIBC_PATCH=$(SOURCE_DIR)/uClibc.patch
@@ -66,7 +66,6 @@ $(UCLIBC_DIR)/Config: $(UCLIBC_DIR)/.unpacked
 		--kernel_dir=$(LINUX_DIR) \
 		--float=true \
 		--c99_math=true \
-		--long_long=true \
 		--float=true \
 		--shadow=true \
 		--threads=true \
