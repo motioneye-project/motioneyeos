@@ -29,6 +29,7 @@ LZO_CONFIG_SHARED:=--disable-shared
 $(LZO_DIR)/.configured: $(LZO_DIR)/.unpacked
 	(cd $(LZO_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -50,10 +51,10 @@ $(LZO_DIR)/.configured: $(LZO_DIR)/.unpacked
 $(LZO_DIR)/src/liblzo.la: $(LZO_DIR)/.configured
 	$(MAKE) -C $(LZO_DIR)
 
-$(STAGING_DIR)/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
+$(STAGING_DIR)/usr/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
 	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) install
 
-lzo: uclibc $(STAGING_DIR)/lib/liblzo.a
+lzo: uclibc $(STAGING_DIR)/usr/lib/liblzo.a
 
 lzo-clean:
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) uninstall
