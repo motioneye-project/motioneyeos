@@ -3,7 +3,7 @@
 # portage
 #
 #############################################################
-PORTAGE_VERSION:=2.0.51_rc9
+PORTAGE_VERSION:=2.0.51
 PORTAGE_SOURCE:=portage-$(PORTAGE_VERSION).tar.bz2
 PORTAGE_SITE:=http://gentoo.twobit.net/portage/
 PORTAGE_CAT:=bzcat
