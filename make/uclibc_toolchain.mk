@@ -26,13 +26,6 @@ ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 # C compiler for the build system
 HOSTCC:=gcc
 
-# Set this to `false' if you are building for a CPU does not have
-# a memory management unit (MMU) -- i.e. an uClinux system..  If
-# you are targeting a regular Linux system, leave this "true".
-# Set Most people will leave this set to "true".
-HAS_MMU:=true
-
-
 #############################################################
 #
 # You should probably leave this stuff alone unless you are
@@ -41,26 +34,6 @@ HAS_MMU:=true
 #############################################################
 GNU_TARGET_NAME:=$(ARCH)-linux
 MAKE:=make
-
-NATIVE_ARCH:= ${shell uname -m | sed \
-		-e 's/i.86/i386/' \
-		-e 's/sparc.*/sparc/' \
-		-e 's/arm.*/arm/g' \
-		-e 's/m68k.*/m68k/' \
-		-e 's/ppc/powerpc/g' \
-		-e 's/v850.*/v850/g' \
-		-e 's/sh[234].*/sh/' \
-		-e 's/mips.*/mips/' \
-		}
-#ifeq ($(strip $(ARCH)),$(strip $(NATIVE_ARCH)))
-#CROSSARG=
-#else
-CROSSARG=--cross=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
-#endif
-ifneq ($(HAS_MMU),true)
-NOMMU:=nommu
-endif
-
 
 #############################################################
 #
@@ -73,6 +46,7 @@ endif
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
 BINUTILS_SOURCE:=binutils-2.12.1.tar.bz2
 BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.12.1
+BINUTILS_DIR1:=$(BUILD_DIR)/binutils-build
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
@@ -80,8 +54,8 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=ftp://www.uclibc.org/uClibc
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.15
-UCLIBC_SOURCE:=uClibc-0.9.15.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.16
+UCLIBC_SOURCE:=uClibc-0.9.16.tar.bz2
 UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 
@@ -147,9 +121,6 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	    echo "Aborting.  Reject files found."; \
 	    exit 1; \
 	fi
-	touch $(BINUTILS_DIR)/.patched
-
-$(BINUTILS_DIR)/.configured: $(BINUTILS_DIR)/.patched
 	@if `echo "true" | grep -r true`; then true; else \
 		echo "ERROR! Your grep doesn't support the -r argument."; \
 		exit 1; \
@@ -157,17 +128,21 @@ $(BINUTILS_DIR)/.configured: $(BINUTILS_DIR)/.patched
 	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"\
 		,#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
 		`grep -lr "#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"" $(BINUTILS_DIR)`);
-	(cd $(BINUTILS_DIR); CC=$(HOSTCC) ./configure --disable-shared \
+	touch $(BINUTILS_DIR)/.patched
+
+$(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
+	mkdir -p $(BINUTILS_DIR1)
+	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) $(BINUTILS_DIR)/configure --disable-shared \
 		--target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
 		--enable-targets=$(GNU_TARGET_NAME) \
 		--program-transform-name=s,^,$(ARCH)-uclibc-,);
-	touch $(BINUTILS_DIR)/.configured
+	touch $(BINUTILS_DIR1)/.configured
 
-$(BINUTILS_DIR)/binutils/objdump: $(BINUTILS_DIR)/.configured
-	$(MAKE) -C $(BINUTILS_DIR);
+$(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
+	$(MAKE) -C $(BINUTILS_DIR1);
 
-$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR)/binutils/objdump 
-	$(MAKE) -C $(BINUTILS_DIR) install
+$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
+	$(MAKE) -C $(BINUTILS_DIR1) install
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share
 
 $(STAGING_DIR)/lib/libg.a:
@@ -177,10 +152,10 @@ binutils: linux_headers $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/
 
 binutils-clean:
 	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)*
-	-$(MAKE) -C $(BINUTILS_DIR) clean
+	-$(MAKE) -C $(BINUTILS_DIR1) clean
 
 binutils-dirclean:
-	rm -rf $(BINUTILS_DIR)
+	rm -rf $(BINUTILS_DIR1)
 
 
 
@@ -259,42 +234,25 @@ $(UCLIBC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(UCLIBC_SOURCE)
 	touch $(UCLIBC_DIR)/.unpacked
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
-	cp $(UCLIBC_DIR)/extra/Configs/Config.$(ARCH) $(UCLIBC_DIR)/Config~;
-	echo "TARGET_ARCH=$(ARCH)" >> $(UCLIBC_DIR)/Config~
-	$(UCLIBC_DIR)/extra/Configs/uClibc_config_fix.pl \
-		--arch=$(ARCH) \
-		$(CROSSARG) --c99_math=true \
-		--devel_prefix=$(STAGING_DIR) \
-		--kernel_dir=$(LINUX_DIR) \
-		--float=true \
-		--c99_math=true \
-		--float=true \
-		--shadow=true \
-		--threads=true \
-		--rpc_support=true \
-		--large_file=true \
-		--mmu=$(HAS_MMU) \
-		--debug=false \
-		--ldso_path="/lib" \
-		--shared_support=$(HAS_MMU) \
-		--file=$(UCLIBC_DIR)/Config~ \
-		> $(UCLIBC_DIR)/Config; 
-	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX.*,SYSTEM_DEVEL_PREFIX=$(STAGING_DIR),g' \
-		$(UCLIBC_DIR)/Config
-	perl -i -p -e 's,^DEVEL_TOOL_PREFIX.*,DEVEL_TOOL_PREFIX=$(STAGING_DIR)/usr,g' \
-		$(UCLIBC_DIR)/Config
-	perl -i -p -e 's,^HAS_WCHAR.*,HAS_WCHAR=false,g' $(UCLIBC_DIR)/Config
+	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
+	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' $(UCLIBC_DIR)/.config
+	$(MAKE) -C $(UCLIBC_DIR) oldconfig
 	# Note that since the target compiler does not yet exist, we will not
 	# be able to properly generate include/bits/syscall.h so we will need
 	# to run part again later...
-	$(MAKE) -C $(UCLIBC_DIR) headers uClibc_config install_dev;
+	$(MAKE) -C $(UCLIBC_DIR) headers install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
 # Now that we have a working target compiler, rebuild the header files for the
 # target so things like include/bits/syscall.h can actually be built this time
 # around...
 $(UCLIBC_DIR)/.config_final: $(UCLIBC_DIR)/.configured
-	$(MAKE) -C $(UCLIBC_DIR) headers uClibc_config install_dev;
+	$(MAKE) -C $(UCLIBC_DIR) headers install_dev;
 	touch $(UCLIBC_DIR)/.config_final
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.config_final
@@ -316,7 +274,7 @@ uclibc: gcc_initial $(STAGING_DIR)/lib/libc.a $(TARGET_DIR)/lib/libc.so.0 $(TARG
 
 uclibc-clean:
 	-$(MAKE) -C $(UCLIBC_DIR) clean
-	rm -f $(UCLIBC_DIR)/Config
+	rm -f $(UCLIBC_DIR)/.config
 
 uclibc-dirclean:
 	rm -rf $(UCLIBC_DIR)
@@ -391,11 +349,9 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 
 #Cleanup then mess when --program-transform-name mysteriously fails 
 $(GCC_BUILD_DIR2)/.fixedup: $(GCC_BUILD_DIR2)/.installed
-ifeq ($(strip $(ARCH)),$(strip $(NATIVE_ARCH)))
 	-mv $(STAGING_DIR)/bin/gcc $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin;
 	-mv $(STAGING_DIR)/bin/protoize $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin;
 	-mv $(STAGING_DIR)/bin/unprotoize $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin;
-endif
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-cpp $(STAGING_DIR)/bin/$(ARCH)-uclibc-cpp
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gcc $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-c++ $(STAGING_DIR)/bin/$(ARCH)-uclibc-c++

@@ -29,8 +29,8 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=ftp://www.uclibc.org/uClibc
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.15
-UCLIBC_SOURCE:=uClibc-0.9.15.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.16
+UCLIBC_SOURCE:=uClibc-0.9.16.tar.bz2
 UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 #UCLIBC_PATCH=$(SOURCE_DIR)/uClibc.patch
@@ -38,9 +38,6 @@ ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 LARGEFILE=true
 else
 LARGEFILE=false
-endif
-ifneq ($(CROSS),)
-CROSSARG:=--cross="$(CROSS)"
 endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
@@ -56,34 +53,18 @@ ifeq ($(LINUX_DIR),)
 LINUX_DIR:=$(BUILD_DIR)/linux
 endif
 
-$(UCLIBC_DIR)/Config: $(UCLIBC_DIR)/.unpacked
-	cp $(UCLIBC_DIR)/extra/Configs/Config.$(ARCH) $(UCLIBC_DIR)/Config~;
-	echo "TARGET_ARCH=$(ARCH)" >> $(UCLIBC_DIR)/Config~
-	$(UCLIBC_DIR)/extra/Configs/uClibc_config_fix.pl \
-		--arch=$(ARCH) \
-		$(CROSSARG) --c99_math=true \
-		--devel_prefix=$(STAGING_DIR) \
-		--kernel_dir=$(LINUX_DIR) \
-		--float=true \
-		--c99_math=true \
-		--float=true \
-		--shadow=true \
-		--threads=true \
-		--rpc_support=true \
-		--large_file=true \
-		--mmu=true \
-		--debug=false \
-		--ldso_path="/lib" \
-		--shared_support=true \
-		--file=$(UCLIBC_DIR)/Config~ \
-		> $(UCLIBC_DIR)/Config; 
-	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX.*,SYSTEM_DEVEL_PREFIX=$(STAGING_DIR),g' \
-		$(UCLIBC_DIR)/Config
-	perl -i -p -e 's,^DEVEL_TOOL_PREFIX.*,DEVEL_TOOL_PREFIX=$(STAGING_DIR)/usr,g' \
-		$(UCLIBC_DIR)/Config
-	perl -i -p -e 's,^HAS_WCHAR.*,HAS_WCHAR=true,g' $(UCLIBC_DIR)/Config
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
+	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
+	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' $(UCLIBC_DIR)/.config
+	$(MAKE) -C $(UCLIBC_DIR) oldconfig
+	touch $(UCLIBC_DIR)/.configured
 
-$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/Config
+$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured
 	$(MAKE) -C $(UCLIBC_DIR)
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
@@ -105,8 +86,8 @@ uclibc: $(LINUX_KERNEL) $(STAGING_DIR)/lib/libc.a $(TARGET_DIR)/lib/libc.so.0 $(
 
 uclibc-clean:
 	rm -f $(TARGET_DIR)/lib/libc.so.0
-	-make -C $(UCLIBC_DIR) clean
-	rm -f $(UCLIBC_DIR)/Config
+	-$(MAKE) -C $(UCLIBC_DIR) clean
+	rm -f $(UCLIBC_DIR)/.config
 
 uclibc-dirclean:
 	rm -rf $(UCLIBC_DIR)

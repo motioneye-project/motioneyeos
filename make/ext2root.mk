@@ -42,10 +42,10 @@ GENEXT2_ADDTOROOTSIZE := 256
 # by genext2fs
 GENEXT2_MAXROOTSIZE := 8192
 
-GENEXT2_REALSIZE:=$(subst total,, $(shell du $(TARGET_DIR) -s -c -k | grep total )) 
-GENEXT2_SIZE:=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE))
+GENEXT2_REALSIZE=$(subst total,, $(shell du $(TARGET_DIR) -s -c -k | grep total )) 
+GENEXT2_SIZE=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE))
 # We currently add about 400 device nodes, so add that into the total
-GENEXT2_INODES:=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
+GENEXT2_INODES=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
 
 #ifeq (1,$(shell expr $(GENEXT2_SIZE) \> $(GENEXT2_MAXROOTSIZE)))
 #	$(error "Filesystem size, $(GENEXT2_SIZE) KB is greater than the maximum $(GENEXT2_MAXROOTSIZE) KB")
