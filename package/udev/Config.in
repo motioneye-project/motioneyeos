@@ -1,0 +1,7 @@
+config BR2_PACKAGE_UDEV
+	bool "udev"
+	default n
+	help
+	  Userspace device daemon.
+
+	  ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
