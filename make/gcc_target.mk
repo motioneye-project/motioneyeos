@@ -170,16 +170,13 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	rm -rf $(TARGET_DIR)/info $(TARGET_DIR)/man $(TARGET_DIR)/share/doc \
 		$(TARGET_DIR)/share/locale
 
-$(STAGING_DIR)/lib/libg.a:
-	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(STAGING_DIR)/lib/libg.a;
-
-binutils: $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/lib/libg.a
+binutils: $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld
 
 
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	-$(STRIP) $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/bin/*
-	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
+	-$(STRIP) $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/bin/* > /dev/null 2>&1
+	-$(STRIP) $(TARGET_DIR)/usr/bin/* > /dev/null 2>&1 
 
 $(TARGET_DIR)/usr/lib/libg.a:
 	$(TARGET_CROSS)ar rv $(TARGET_DIR)/usr/lib/libg.a;
@@ -307,7 +304,8 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks: $(GCC_DIR3_DEPENDS)
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR3)
 	(cd $(GCC_BUILD_DIR3); ln -fs $(ARCH)-linux build-$(GNU_TARGET_NAME))
-	(cd $(GCC_BUILD_DIR3); $(TARGET_CONFIGURE_OPTS) \
+	(cd $(GCC_BUILD_DIR3); \
+		$(TARGET_CONFIGURE_OPTS) \
 		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
 		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
@@ -342,11 +340,12 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	);
 	touch $(GCC_BUILD_DIR3)/.configured
 
+#$(TARGET_CONFIGURE_OPTS) \
+
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	$(MAKE) -C $(GCC_BUILD_DIR3) \
-		$(TARGET_CONFIGURE_OPTS) \
-		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
-		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
+		CC_FOR_BUILD=$(HOSTCC) \
+		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -359,9 +358,8 @@ $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	$(MAKE) -C $(GCC_BUILD_DIR3) \
-		$(TARGET_CONFIGURE_OPTS) \
-		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
-		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
+		CC_FOR_BUILD=$(HOSTCC) \
+		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -398,8 +396,8 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	-(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.so.5.0.5 libstdc++.so)
 	# A nasty hack to work around g++ adding -lgcc_eh to the link
 	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/3.3.1/ ; ln -s libgcc.a libgcc_eh.a)
-	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) 2>&1 > /dev/null)
-	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) 2>&1 > /dev/null)
+	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
+	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	rm -f $(TARGET_DIR)/usr/lib/*.la*
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
