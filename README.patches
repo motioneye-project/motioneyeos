@@ -1,6 +1,6 @@
 binutils-uclibc-001-debian.patch -- stuff ripped out of the debian/patches directory
-				    from debian testing.  Debian is tested on many
-				    architectures, and I trust the maintainers.
+				    from debian testing,  binutils_2.14.90.0.7-6.  Debian
+				    is tested on many architectures, and I trust the maintainers.
 binutils-uclibc-100-conf.patch -- Adds support for the $(ARCH)-linux-uclibc platform,
 				    which is what uClibc wants to use to make sure
 				    the correct shared lib loader, etc is used.
@@ -9,9 +9,6 @@ binutils-uclibc-210-cflags.patch  -- Fix an upstream bug that breaks Canadian cr
 				    binutils builds.
 
 
-gcc3.3-mega.patch.bz2 -- stuff ripped out of the debian/patches directory
-				from debian testing.  Debian is tested on many
-				architectures, and I trust the maintainers.
 gcc-uclibc-3.3-100-conf.patch -- Adds support for the $(ARCH)-linux-uclibc platform,
 				    which is what uClibc wants to use to make sure
 				    the correct shared lib loader, etc is used.
