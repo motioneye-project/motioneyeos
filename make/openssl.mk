@@ -69,5 +69,5 @@ openssl-clean:
 openssl-dirclean: 
 	rm -rf $(OPENSSL_DIR) 
 
-openssl: uclibc $(TARGET_DIR)/lib/libcrypto.so.0
+openssl: uclibc $(TARGET_DIR)/lib/libcrypto.so.0.9.7
 
