@@ -498,3 +498,17 @@ Fix build on Sparc.
  #include <asm/reg.h>
  #else
  #include <machine/reg.h>
+--- gdb-5.3/gdb/gdbserver/utils.c.orig	2003-08-20 08:34:18.000000000 -0600
++++ gdb-5.3/gdb/gdbserver/utils.c	2003-08-20 08:35:00.000000000 -0600
+@@ -40,9 +40,8 @@
+   const char *err;
+   char *combined;
+ 
+-  if (errno < sys_nerr)
+-    err = sys_errlist[errno];
+-  else
++  err = strerror (errno);
++  if (err == NULL)
+     err = "unknown error";
+ 
+   combined = (char *) alloca (strlen (err) + strlen (string) + 3);
