@@ -23,6 +23,7 @@ $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 		CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
