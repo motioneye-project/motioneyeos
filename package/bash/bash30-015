@@ -24,7 +24,7 @@ Bug-Description:
 Patch:
 
 *** ../bash-3.0-patched/general.c	Wed Apr 14 23:20:13 2004
---- general.c	Wed Oct 20 16:59:59 2004
+--- bash/general.c	Wed Oct 20 16:59:59 2004
 ***************
 *** 268,272 ****
   
@@ -40,7 +40,7 @@ Patch:
     if (legal_variable_starter (c) == 0)
 
 *** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

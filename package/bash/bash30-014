@@ -20,7 +20,7 @@ Bug-Description:
 Patch:
 
 *** ../bash-3.0-patched/braces.c	Wed Sep  8 11:07:53 2004
---- braces.c	Fri Sep 17 18:42:36 2004
+--- bash/braces.c	Fri Sep 17 18:42:36 2004
 ***************
 *** 403,407 ****
   	  pass_next = 1;
@@ -36,7 +36,7 @@ Patch:
   	  continue;
   	}
 *** ../bash-3.0-patched/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

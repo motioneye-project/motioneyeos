@@ -17,7 +17,7 @@ Bug-Description:
 Patch:
 
 *** ../bash-3.0-patched/subst.c	Wed Sep  8 11:07:55 2004
---- subst.c	Tue Nov  9 16:26:59 2004
+--- bash/subst.c	Tue Nov  9 16:26:59 2004
 ***************
 *** 4900,4905 ****
       case VT_ARRAYVAR:
@@ -35,7 +35,7 @@ Patch:
         break;
   #endif
 *** ../bash-3.0-patched/tests/array.tests	Sat Oct  4 23:25:00 2003
---- tests/array.tests	Tue Nov  9 16:36:29 2004
+--- bash/tests/array.tests	Tue Nov  9 16:36:29 2004
 ***************
 *** 323,327 ****
   echo positive offset - expect five seven
@@ -50,7 +50,7 @@ Patch:
   echo ${av[@]: -2:2}
   
 *** ../bash-3.0-patched/tests/array.right	Sat Oct  4 23:25:10 2003
---- tests/array.right	Tue Nov  9 16:37:25 2004
+--- bash/tests/array.right	Tue Nov  9 16:37:25 2004
 ***************
 *** 171,176 ****
   positive offset - expect five seven
@@ -67,7 +67,7 @@ Patch:
   positive offset 2 - expect seven
   seven
 *** ../bash-3.0-patched/patchlevel.h	Tue Oct 26 17:13:29 2004
---- patchlevel.h	Tue Nov  9 16:31:24 2004
+--- bash/patchlevel.h	Tue Nov  9 16:31:24 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */
