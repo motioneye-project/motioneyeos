@@ -32,10 +32,12 @@ jpeg-source: $(DL_DIR)/$(JPEG_SOURCE)
 
 $(JPEG_DIR)/.unpacked: $(DL_DIR)/$(JPEG_SOURCE)
 	$(JPEG_CAT) $(DL_DIR)/$(JPEG_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	# The config.guess distributed with the package is not able
+	# to handle cross compilation.  Use the one from binutils.
+	cp $(BINUTILS_DIR)/config.guess $(JPEG_DIR)/
 	touch $(JPEG_DIR)/.unpacked
 
 $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
-	zcat $(DL_DIR)/$(JPEG_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	(cd $(JPEG_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
@@ -57,13 +59,13 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 	touch  $(JPEG_DIR)/.configured
 
 $(STAGING_DIR)/lib/libjpeg.so.62.0.0: $(JPEG_DIR)/.configured
-	$(MAKE) -C $(JPEG_DIR) CC=$(TARGET_CROSS)gcc all
-	$(MAKE) -C $(JPEG_DIR) install-lib
-	$(MAKE) -C $(JPEG_DIR) install-headers
+	$(MAKE) -C $(JPEG_DIR) all
+	# Note: This does not install the utilities.
+	$(MAKE) -C $(JPEG_DIR) prefix=$(STAGING_DIR) exec_prefix=$(STAGING_DIR) install-headers install-lib
 
 $(TARGET_DIR)/lib/libjpeg.so.62.0.0: $(STAGING_DIR)/lib/libjpeg.so.62.0.0
-	cp -dpf $(STAGING_DIR)/lib/libjpeg.so* $(TARGET_DIR)/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libjpeg.so.62.0.0
+	cp -dpf $(STAGING_DIR)/lib/libjpeg.so* $(TARGET_DIR)/usr/lib/
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libjpeg.so.62.0.0
 
 jpeg: uclibc $(TARGET_DIR)/lib/libjpeg.so.62.0.0
 
