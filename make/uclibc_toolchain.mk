@@ -72,7 +72,7 @@ GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.2.2
 # Setup some initial paths
 #
 #############################################################
-$(TOOL_BUILD_DIR)/.setup:
+$(STAGING_DIR)/.setup:
 	mkdir -p $(TOOL_BUILD_DIR)
 	mkdir -p $(DL_DIR)
 	mkdir -p $(STAGING_DIR)
@@ -85,7 +85,7 @@ $(TOOL_BUILD_DIR)/.setup:
 	(cd $(STAGING_DIR)/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(STAGING_DIR)/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
 	(cd $(STAGING_DIR)/usr/lib; ln -fs ../../lib/gcc-lib)
-	touch $(TOOL_BUILD_DIR)/.setup
+	touch $(STAGING_DIR)/.setup
 
 
 #############################################################
@@ -110,7 +110,7 @@ BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-build
 $(DL_DIR)/$(BINUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
-$(BINUTILS_DIR)/.unpacked: $(TOOL_BUILD_DIR)/.setup $(DL_DIR)/$(BINUTILS_SOURCE)
+$(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	bzcat $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(BINUTILS_DIR)/.unpacked
 
@@ -197,7 +197,7 @@ GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc-initial
 $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
-$(GCC_DIR)/.unpacked: $(TOOL_BUILD_DIR)/.setup $(DL_DIR)/$(GCC_SOURCE)
+$(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	zcat $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(GCC_DIR)/.unpacked
 
@@ -301,7 +301,7 @@ gcc_initial-dirclean:
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
-$(UCLIBC_DIR)/.unpacked: $(TOOL_BUILD_DIR)/.setup $(DL_DIR)/$(UCLIBC_SOURCE)
+$(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
@@ -458,7 +458,7 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 		fi; \
 	done;
 
-gcc_final: binutils gcc_initial uclibc $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++
+gcc_final: $(STAGING_DIR)/.setup binutils gcc_initial uclibc $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++
 
 gcc_final-clean:
 	rm -rf $(GCC_BUILD_DIR2)
