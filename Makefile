@@ -199,15 +199,13 @@ TARGETS+=ext2root
 # what you are doing.
 #
 #############################################################
-ifeq ("$(strip $(TARGET_SOFT_FLOAT))","")
-ARCH_FPU_SUFFIX:=
-else
-ARCH_FPU_SUFFIX:=_nofpu
-endif
 
 ifeq ($(SOFT_FLOAT),true)
 SOFT_FLOAT_CONFIG_OPTION=--without-float
 TARGET_SOFT_FLOAT=-msoft-float
+ARCH_FPU_SUFFIX:=_nofpu
+else
+ARCH_FPU_SUFFIX:=
 endif
 
 ifeq ($(ENABLE_LOCALE),true)
