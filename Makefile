@@ -92,19 +92,19 @@ include target/*/*.mk
 #
 #############################################################
 $(DL_DIR):
-	mkdir $(DL_DIR)
+	@mkdir -p $(DL_DIR)
 
 $(BUILD_DIR):
-	mkdir $(BUILD_DIR)
+	@mkdir -p $(BUILD_DIR)
 
 $(TOOL_BUILD_DIR):
-	mkdir $(TOOL_BUILD_DIR)
+	@mkdir -p $(TOOL_BUILD_DIR)
 
 $(STAGING_DIR):
-	mkdir -p $(STAGING_DIR)/lib
-	mkdir -p $(STAGING_DIR)/include
-	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)
-	ln -sf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
+	@mkdir -p $(STAGING_DIR)/lib
+	@mkdir -p $(STAGING_DIR)/include
+	@mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)
+	@ln -sf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
 	zcat target/default/skel.tar.gz | tar -C $(BUILD_DIR) -xf -
