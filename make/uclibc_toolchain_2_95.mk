@@ -65,10 +65,6 @@ GCC_SITE:=http://www.uclibc.org/downloads/toolchain
 GCC_SOURCE:=gcc-20011006.tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-20011006
 
-ELF2FLT_SITE:=http://www.uclibc.org/downloads/toolchain
-ELF2FLT_SOURCE:=elf2flt-20020731.tar.bz2
-ELF2FLT_DIR:=$(TOOL_BUILD_DIR)/elf2flt
-
 STLPORT_SITE=http://www.stlport.org/archive
 STLPORT_SOURCE=STLport-4.5.3.tar.gz
 STLPORT_DIR=$(TOOL_BUILD_DIR)/STLport-4.5.3
