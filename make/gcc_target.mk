@@ -63,6 +63,8 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	$(MAKE) DESTDIR=$(TARGET_DIR) prefix=$(TARGET_DIR)/usr \
 		bindir=$(TARGET_DIR)/usr/bin -C $(BINUTILS_DIR2) install
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	-$(STRIP) $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/bin/*
+	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 
 $(TARGET_DIR)/usr/lib/libg.a:
 	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(TARGET_DIR)/usr/lib/libg.a;
@@ -89,6 +91,15 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) DEVEL_PREFIX=$(TARGET_DIR)/usr SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
 		DEVEL_TOOL_PREFIX=$(TARGET_DIR) -C $(UCLIBC_DIR) \
 		install_dev
+	(cd $(TARGET_DIR)/usr/lib; \
+		ln -fs /lib/libc.so.0 libc.so; \
+		ln -fs /lib/libdl.so.0 libdl.so; \
+		ln -fs /lib/libcrypt.so.0 libcrypt.so; \
+		ln -fs /lib/libresolv.so.0 libresolv.so; \
+		ln -fs /lib/libutil.so.0 libutil.so; \
+		ln -fs /lib/libm.so.0 libm.so; \
+		ln -fs /lib/libpthread.so.0 libpthread.so; \
+	)
 	rm -rf $(TARGET_DIR)/include
 
 uclibc_target: gcc_final $(TARGET_DIR)/usr/lib/libc.a
@@ -121,30 +132,14 @@ $(GCC_BUILD_DIR3)/.configured:
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) -C $(GCC_BUILD_DIR3)
-	# For some strange reason, gcc installs unwanted crap into
-	# the /usr/lib/gcc-lib/i386-linux/3.2/include/ directory along
-	# with the good stuff.  Kill the unwanted crap... 
-	#mkdir -p $(GCC_BUILD_DIR3)/gcc/__tmp;
-	#for i in README float.h iso646.h limits.h linux mmintrin.h \
-	#	stdarg.h stdbool.h stddef.h stdio.h syslimits.h \
-	#	varargs.h xmmintrin.h ; do \
-	#    if [ -f $(GCC_BUILD_DIR3)/gcc/include/$$i ] || \
-	#       [ -d $(GCC_BUILD_DIR3)/gcc/include/$$i] ; then \
-	#	mv $(GCC_BUILD_DIR3)/gcc/include/$$i \
-	#	    $(GCC_BUILD_DIR3)/gcc/__tmp/; \
-	#	fi; \
-	#done;
-	#rm -rf $(GCC_BUILD_DIR3)/gcc/include/*
-	#mv $(GCC_BUILD_DIR3)/gcc/__tmp/* \
-	#	$(GCC_BUILD_DIR3)/gcc/include/
-	#rm -rf $(GCC_BUILD_DIR3)/gcc/__tmp
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) DESTDIR=$(TARGET_DIR) prefix=$(TARGET_DIR)/usr \
 		-C $(GCC_BUILD_DIR3) install;
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	-strip --strip-all -R .note -R .comment $(TARGET_DIR)/bin/* 
+	-$(STRIP) $(TARGET_DIR)/bin/* 
+	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 
 gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
 

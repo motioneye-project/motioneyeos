@@ -378,8 +378,8 @@ $(BUILD_DIR)/.shuffled: $(GCC_BUILD_DIR2)/.fixedup
 	touch $(BUILD_DIR)/.shuffled
 
 $(BUILD_DIR)/.stripped: $(BUILD_DIR)/.shuffled
-	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
-	-$(STAGING_DIR)/bin/$(ARCH)-uclibc-strip --strip-unneeded \
+	-$(STRIP) $(STAGING_DIR)/bin/*
+	-$(TARGET_CROSS)strip --strip-unneeded \
 		-R .note -R .comment $(STAGING_DIR)/lib/*.so*;
 	touch $(BUILD_DIR)/.stripped
 
