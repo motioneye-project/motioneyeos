@@ -99,12 +99,11 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 		DEVEL_PREFIX=/ \
 		RUNTIME_PREFIX=/ \
 		install_dev
-	$(MAKE) -C $(UCLIBC_DIR) \
+	# Build the host utils.  Need to add an install target...
+	$(MAKE) -C $(UCLIBC_DIR)/utils \
 		PREFIX=$(STAGING_DIR) \
 		HOSTCC="$(HOSTCC)" \
-		utils install_utils
-	# Clean up the host compiled utils...
-	$(MAKE) -C $(UCLIBC_DIR)/utils clean
+		hostutils
 
 ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
@@ -114,11 +113,11 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 		RUNTIME_PREFIX=/ \
 		install_runtime
 
-$(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
+$(TARGET_DIR)/usr/bin/ldd: gcc
 	$(MAKE) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
 		PREFIX=$(TARGET_DIR) utils install_utils
 
-UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
+UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
 endif
 
 uclibc-configured: $(UCLIBC_DIR)/.configured
@@ -137,8 +136,7 @@ uclibc-clean:
 uclibc-dirclean:
 	rm -rf $(UCLIBC_DIR)
 
-
-
+uclibc-target-utils: $(TARGET_DIR)/usr/bin/ldd
 
 #############################################################
 #
@@ -154,8 +152,7 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
 		RUNTIME_PREFIX=/ \
 		install_dev
 
-uclibc_target: gcc uclibc $(TARGET_DIR)/usr/lib/libc.a
-
+uclibc_target: gcc uclibc $(TARGET_DIR)/usr/lib/libc.a $(TARGET_DIR)/usr/bin/ldd
 uclibc_target-clean:
 	rm -f $(TARGET_DIR)/include
 
