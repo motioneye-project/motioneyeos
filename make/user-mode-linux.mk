@@ -4,9 +4,9 @@
 #
 #############################################################
 UMLINUX_DIR=$(BUILD_DIR)/linux
-UMLINUX_SOURCE=linux-2.4.18.tar.bz2
+UMLINUX_SOURCE=linux-2.4.19.tar.bz2
 UMLINUX_SITE=http://ftp.us.kernel.org/pub/linux/kernel/v2.4
-UMLINUX_PATCH_1:=uml-patch-2.4.18-19.bz2
+UMLINUX_PATCH_1:=uml-patch-2.4.19-5.bz2
 UMLINUX_PATCH_1_SITE:=http://telia.dl.sourceforge.net/sourceforge/user-mode-linux
 UMLINUX_KCONFIG=$(SOURCE_DIR)/linux-uml.config
 
