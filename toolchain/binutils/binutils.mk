@@ -58,15 +58,15 @@ $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 	$(MAKE) -C $(BINUTILS_DIR1) install
 
 binutils-dependancies:
-	@if [ ! -x /usr/bin/bison ] ; then \
+	@if ! which bison ; then \
 		echo -e "\n\nYou must install 'bison' on your build machine\n"; \
 		exit 1; \
 	fi;
-	@if [ ! -x /usr/bin/flex ] ; then \
+	@if ! which flex ; then \
 		echo -e "\n\nYou must install 'flex' on your build machine\n"; \
 		exit 1; \
 	fi;
-	@if [ ! -x /usr/bin/msgfmt ] ; then \
+	@if ! which msgfmt ; then \
 		echo -e "\n\nYou must install 'gettext' on your build machine\n"; \
 		exit 1; \
 	fi;
