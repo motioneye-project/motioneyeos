@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.13 2003/01/08 18:17:28 andersen Exp $
+# $Id: ncurses.mk,v 1.14 2003/01/09 20:28:10 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -103,6 +103,7 @@ $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
 $(TARGET_DIR)/usr/include/ncurses.h: $(TARGET_DIR)/lib/libncurses.so
 	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/ncurses.h
 	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.a $(TARGET_DIR)/usr/lib/
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libcurses.a)
