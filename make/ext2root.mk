@@ -34,14 +34,28 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 #    size is limited to a maximum of 8 Mb.
 #
 #############################################################
-# FIXME -- calculate these numbers...
-SIZE=8000
-INODES=1000
 
-ext2root: genext2fs #$(shell find $(TARGET_DIR) -type f)
+# how much KB we want to add to the calculated size for the root directory,
+# to have additional space
+GENEXT2_ADDTOROOTSIZE := 256
+# maximal rootfilesystem size that can be handled
+# by genext2fs
+GENEXT2_MAXROOTSIZE := 8192
+
+GENEXT2_REALSIZE:=$(subst total,, $(shell du $(TARGET_DIR) -s -c -k | grep total )) 
+GENEXT2_SIZE:=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE))
+# We currently add about 400 device nodes, so add that into the total
+GENEXT2_INODES:=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
+
+ifeq (1,$(shell expr $(GENEXT2_SIZE) \> $(GENEXT2_MAXROOTSIZE)))
+	$(error "Filesystem size, $(GENEXT2_SIZE) KB, is greater than the maximum, $(GENEXT2_MAXROOTSIZE) KB.")
+endif
+
+ext2root: genext2fs
 	-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
-	$(GENEXT2_DIR)/genext2fs -i $(INODES) -b $(SIZE) -d $(TARGET_DIR) -D $(SOURCE_DIR)/device_table.txt $(IMAGE)
+	$(GENEXT2_DIR)/genext2fs -i $(GENEXT2_INODES) -b $(GENEXT2_SIZE) \
+		-d $(TARGET_DIR) -D $(SOURCE_DIR)/device_table.txt $(IMAGE)
 
 ext2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)
 
