@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SOCAT_VERSION=1.4.0.2
+SOCAT_VERSION=1.4.0.3
 
 # Don't alter below this line unless you (think) you know
 # what you are doing! Danger, Danger!
@@ -42,7 +42,9 @@ $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		$(DISABLE_NLS) \
+		--disable-termios \
+		$(DISABLE_NLS); \
+	$(SED) 's/#define HAVE_TERMIOS_ISPEED 1/#undef HAVE_TERMIOS_ISPEED/g' config.h; \
 	);
         
 $(SOCAT_WORKDIR)/socat:	$(SOCAT_WORKDIR)/Makefile
