@@ -28,7 +28,7 @@ $(WGET_DIR)/.configured: $(WGET_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
 		--disable-ipv6 \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--without-ssl \
 	);
 	touch $(WGET_DIR)/.configured
