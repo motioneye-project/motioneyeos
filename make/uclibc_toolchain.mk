@@ -41,11 +41,12 @@ MULTILIB:=--enable-multilib
 # here at the top...  Easier to find things here anyways...
 #
 #############################################################
-BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
 #BINUTILS_SOURCE:=binutils-2.14.tar.bz2
 #BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14
+BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
 BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
 BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.13.2.1
+BINUTILS_CAT:=bzcat
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
@@ -58,9 +59,13 @@ UCLIBC_SOURCE:=uClibc-0.9.20.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
-GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.3.tar.gz
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
+#GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
+#GCC_SOURCE:=gcc-3.3.tar.gz
+#GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
+GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/snapshots
+GCC_SOURCE:=gcc-3.3.1-20030720.tar.bz2
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1-20030720
+GCC_CAT:=bzcat
 
 
 
@@ -110,7 +115,7 @@ $(DL_DIR)/$(BINUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
 $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
-	bzcat $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
@@ -206,7 +211,7 @@ $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
-	zcat $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(GCC_DIR)/.unpacked
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
@@ -476,7 +481,18 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 		fi; \
 	done;
 
-gcc_final: $(STAGING_DIR)/.setup binutils gcc_initial uclibc $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++
+ifneq ($(TARGET_DIR),)
+$(TARGET_DIR)/lib/libstdc++.so.5.0.5: $(STAGING_DIR)/lib/libstdc++.so.5.0.5
+	cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
+
+$(TARGET_DIR)/lib/libgcc_s.so.0.9.9: $(STAGING_DIR)/lib/libgcc_s.so.0.9.9
+	cp -a $(STAGING_DIR)/lib/libgcc_s.so* $(TARGET_DIR)/lib/
+
+GCC_TARGETS=$(TARGET_DIR)/lib/libstdc++.so.5.0.5 $(TARGET_DIR)/lib/libgcc_s.so.0.9.9
+endif
+
+gcc_final: $(STAGING_DIR)/.setup binutils gcc_initial uclibc \
+	$(STAGING_DIR)/bin/$(ARCH)-uclibc-g++ $(GCC_TARGETS)
 
 gcc_final-clean:
 	rm -rf $(GCC_BUILD_DIR2)
