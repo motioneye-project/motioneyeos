@@ -3,6 +3,9 @@
 # Linux kernel targets
 #
 #############################################################
+ifneq ($(filter $(TARGETS),user-mode-linux),)
+
+LINUX_KERNEL=$(BASE_DIR)/UMlinux
 UMLINUX_DIR=$(BUILD_DIR)/linux-2.4.19
 LINUX_DIR=$(UMLINUX_DIR)
 UMLINUX_SOURCE=linux-2.4.19.tar.bz2
@@ -65,3 +68,4 @@ user-mode-linux-dirclean:
 #############################################################
 linux_headers: $(UMLINUX_DIR)/.configured
 
+endif

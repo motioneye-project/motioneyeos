@@ -61,6 +61,11 @@ ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 TARGETS=uclibc_toolchain
 endif
 
+# Do you want user mode Linux, or are you building a 
+# real kernel that will run on its own?
+TARGETS+=linux
+#TARGETS+=user-mode-linux
+
 # The default minimal set
 TARGETS+=user-mode-linux busybox tinylogin
 
@@ -87,7 +92,6 @@ TARGETS+=ext2root
 #############################################################
 BASE_DIR:=${shell pwd}
 HOSTCC:=gcc
-LINUX_KERNEL=$(BASE_DIR)/UMlinux
 SOURCE_DIR:=$(BASE_DIR)/sources
 DL_DIR:=$(SOURCE_DIR)/dl
 PATCH_DIR=$(SOURCE_DIR)/patches
