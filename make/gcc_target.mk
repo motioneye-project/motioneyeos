@@ -131,7 +131,7 @@ $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
-		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
+		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib
 	touch -c $(BINUTILS_DIR2)/binutils/objdump
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
