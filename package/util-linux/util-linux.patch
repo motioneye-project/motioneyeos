@@ -26,3 +26,34 @@
  # Prepare test
  CC=${CC-cc}
  compile="$CC -o conftest conftest.c >/dev/null 2>&1"
+--- util-linux-2.12/fdisk/sfdisk.c.orig	2005-01-11 16:46:36.000000000 -0700
++++ util-linux-2.12/fdisk/sfdisk.c	2005-01-11 16:47:14.000000000 -0700
+@@ -47,7 +47,7 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #ifdef __linux__
+-#include <linux/unistd.h>	/* _syscall */
++#include <sys/syscall.h>	/* _syscall */
+ #endif
+ #include "nls.h"
+ #include "common.h"
+--- util-linux-2.12/fdisk/llseek.c.orig	2005-01-11 17:05:55.000000000 -0700
++++ util-linux-2.12/fdisk/llseek.c	2005-01-11 17:07:11.000000000 -0700
+@@ -24,7 +24,7 @@
+ #define my_llseek lseek
+ 
+ #else
+-#include <linux/unistd.h>	/* for __NR__llseek */
++#include <sys/syscall.h>	/* for __NR__llseek */
+ 
+ static int _llseek (unsigned int, unsigned long,
+ 		   unsigned long, long long *, unsigned int);
+@@ -33,7 +33,7 @@
+ 
+ static _syscall5(int,_llseek,unsigned int,fd,unsigned long,offset_high,
+ 		 unsigned long, offset_low,long long *,result,
+-		 unsigned int, origin)
++		 unsigned int, origin);
+ 
+ #else
+ 
