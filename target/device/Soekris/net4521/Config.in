@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LINUX
-	bool "linux"
-	default n
-	help
-	  The Linux kernel.
-
-	  http://www.kernel.org/
