@@ -50,11 +50,11 @@ endif
 	perl -i -p -e 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"$(STAGING_DIR)\",g' \
+	perl -i -p -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
 		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
+	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
 		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' \
+	perl -i -p -e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
 		$(UCLIBC_DIR)/.config
@@ -62,7 +62,9 @@ endif
 		perl -i -p -e 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
 			$(UCLIBC_DIR)/.config; \
 	fi
-	$(MAKE) -C $(UCLIBC_DIR) headers install_dev;
+	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(STAGING_DIR) headers install_dev;
+	rm -rf $(STAGING_DIR)/include
+	ln -s usr/include $(STAGING_DIR)/include
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
@@ -74,20 +76,18 @@ endif
 	$(MAKE) -C $(UCLIBC_DIR)
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) install_dev install_runtime
+	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(STAGING_DIR) install_dev install_runtime
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(STAGING_DIR) utils install_utils
 	# Clean up the host compiled utils...
 	$(MAKE) -C $(UCLIBC_DIR)/utils clean
 
 ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) \
-		RUNTIME_PREFIX=$(TARGET_DIR) \
-		DEVEL_PREFIX=$(TARGET_DIR) install_runtime
+	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) install_runtime
 
 $(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
-	$(MAKE) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) PREFIX=$(TARGET_DIR) \
-		utils install_utils
+	$(MAKE) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
+		PREFIX=$(TARGET_DIR) utils install_utils
 
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
 endif
@@ -115,10 +115,8 @@ uclibc-dirclean:
 #############################################################
 
 $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) RUNTIME_PREFIX=$(TARGET_DIR) \
-		DEVEL_PREFIX=$(TARGET_DIR)/usr \
-		-C $(UCLIBC_DIR) \
-		install_dev
+	$(MAKE) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
+		PREFIX=$(TARGET_DIR) install_dev
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -fs /lib/libc.so.0 libc.so; \
 		ln -fs /lib/libdl.so.0 libdl.so; \
