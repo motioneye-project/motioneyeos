@@ -3,11 +3,12 @@
 # less
 #
 #############################################################
-LESS_SOURCE=less-381.tar.gz
-LESS_SITE=http://www.greenwoodsoftware.com/less
-LESS_DIR=$(BUILD_DIR)/less-381
-LESS_BINARY=less
-LESS_TARGET_BINARY=usr/bin/less
+LESS_VERSION:=382
+LESS_SOURCE:=less-$(LESS_VERSION).tar.gz
+LESS_SITE:=http://www.greenwoodsoftware.com/less
+LESS_DIR:=$(BUILD_DIR)/less-$(LESS_VERSION)
+LESS_BINARY:=less
+LESS_TARGET_BINARY:=usr/bin/less
 
 $(DL_DIR)/$(LESS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LESS_SITE)/$(LESS_SOURCE)
@@ -19,6 +20,7 @@ $(LESS_DIR)/.source: $(DL_DIR)/$(LESS_SOURCE)
 $(LESS_DIR)/.configured: $(LESS_DIR)/.source
 	(cd $(LESS_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
