@@ -1,0 +1,39 @@
+<!--#include file="header.html" -->
+
+
+<h3>Anonymous Subversion Access</h3>
+
+We allow anonymous (read-only) Subversion (svn) access to everyone.  To
+grab a copy of the latest version of buildroot using anonymous svn access:
+
+<pre>
+svn co svn://uclibc.org/trunk/buildroot</pre>
+
+
+<p>
+
+If you are not already familiar with using Subversion, I recommend you visit <a
+href="http://subversion.tigris.org/">the Subversion website</a>.  You might
+also want to read online or buy a copy of <a
+href="http://svnbook.red-bean.com/">the Subversion Book</a>.  If you are
+already comfortable with using CVS, you may want to skip ahead to the <a
+href="http://svnbook.red-bean.com/en/1.1/apa.html">Subversion for CVS Users</a>
+part of the Subversion Book.
+
+<p>
+
+Once you've checked out a copy of the source tree, you can update your source
+tree at any time so it is in sync with the latest and greatest by entering your
+buildroot directory and running the command:
+
+<pre>
+svn update</pre>
+
+Because you've only been granted anonymous access to the tree, you won't be
+able to commit any changes. Changes can be submitted for inclusion by posting
+them to the uClibc mailing list or to the <a href="http://bugs.uclibc.org/">Bug
+and Patch Tracking System</a>.  For those that are actively contributing <a
+href="developer.html">Subversion commit access</a> can be made available.
+
+<!--#include file="footer.html" -->
+
