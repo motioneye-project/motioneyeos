@@ -42,7 +42,7 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 EXT2_OPTS :=
 
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_SQUASH)),y)
-EXT2_OPTS += -q
+EXT2_OPTS += -U
 endif
 
 ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
