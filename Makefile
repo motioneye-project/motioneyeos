@@ -58,15 +58,15 @@ WGET:=wget --passive-ftp
 # The list of stuff to build for the target filesystem
 #
 #############################################################
-# Do you want user mode Linux (x86 only), or are you building a 
-# real kernel that will run on its own?
-#TARGETS+=linux
-TARGETS+=user-mode-linux
-
 # The toolchain comes next if we are building one
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 TARGETS+=uclibc_toolchain
 endif
+
+# Do you want user mode Linux (x86 only), or are you building a 
+# real kernel that will run on its own?
+#TARGETS+=linux
+TARGETS+=user-mode-linux
 
 # The default minimal set
 TARGETS+=busybox tinylogin
