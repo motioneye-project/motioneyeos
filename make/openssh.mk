@@ -5,8 +5,8 @@
 #############################################################
 
 OPENSSH_SITE:=ftp://ftp.tux.org/bsd/openbsd/OpenSSH/portable/
-OPENSSH_DIR:=$(BUILD_DIR)/openssh-3.6.1p1
-OPENSSH_SOURCE:=openssh-3.6.1p1.tar.gz
+OPENSSH_DIR:=$(BUILD_DIR)/openssh-3.8p1
+OPENSSH_SOURCE:=openssh-3.8p1.tar.gz
 OPENSSH_PATCH:=$(SOURCE_DIR)/openssh.patch
 
 $(DL_DIR)/$(OPENSSH_SOURCE):
