@@ -73,6 +73,10 @@
 /dev/mtd	c	640	0	0	90	0	0	2	4
 /dev/mtdblock	b	640	0	0	31	0	0	1	4
 
+#Tun/tap driver
+/dev/net	d	755	0	0	-	-	-	-	-
+/dev/net/tun	c	660	0	0	10	200	-	-	-
+
 # Audio stuff
 #/dev/audio	c	666	0	29	14	4	-	-	-
 #/dev/audio1	c	666	0	29	14	20	-	-	-

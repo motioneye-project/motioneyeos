@@ -1,6 +1,6 @@
-diff -urN vtun.orig/Makefile.in vtun-2.6/Makefile.in
---- vtun.orig/Makefile.in	2002-12-20 09:55:47.000000000 -0700
-+++ vtun-2.6/Makefile.in	2003-06-05 01:51:50.000000000 -0600
+diff -urN vtun/Makefile.in vtun-2.6/Makefile.in
+--- vtun/Makefile.in	2002-12-20 09:55:47.000000000 -0700
++++ vtun-2.6/Makefile.in	2003-06-05 12:38:31.000000000 -0600
 @@ -28,7 +28,7 @@
  LEXFLAGS = -t 
  
@@ -10,7 +10,7 @@ diff -urN vtun.orig/Makefile.in vtun-2.6/Makefile.in
  
  prefix = @prefix@
  exec_prefix = @exec_prefix@
-@@ -86,12 +86,10 @@
+@@ -86,15 +86,15 @@
  
  install_config: 
  	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(ETC_DIR)
@@ -25,10 +25,15 @@ diff -urN vtun.orig/Makefile.in vtun-2.6/Makefile.in
  	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(STAT_DIR)
  	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(LOCK_DIR)
  	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(SBIN_DIR)
-diff -urN vtun.orig/scripts/vtund.rc.debian vtun-2.6/scripts/vtund.rc.debian
---- vtun.orig/scripts/vtund.rc.debian	2000-03-26 10:06:37.000000000 -0700
-+++ vtun-2.6/scripts/vtund.rc.debian	2003-06-05 01:52:54.000000000 -0600
-@@ -1,92 +1,59 @@
+ 	$(INSTALL) -m 755 $(INSTALL_OWNER) vtund $(DESTDIR)$(SBIN_DIR)
++	$(INSTALL) -m 755 $(INSTALL_OWNER) scripts/vtund.rc.debian \
++		$(DESTDIR)$(ETC_DIR)/init.d/S40vtun
+ 
+ # DO NOT DELETE THIS LINE -- make depend depends on it.
+diff -urN vtun/scripts/vtund.rc.debian vtun-2.6/scripts/vtund.rc.debian
+--- vtun/scripts/vtund.rc.debian	2000-03-26 10:06:37.000000000 -0700
++++ vtun-2.6/scripts/vtund.rc.debian	2003-06-05 12:38:46.000000000 -0600
+@@ -1,92 +1,48 @@
 -#! /usr/bin/perl -w
 +#! /bin/sh
 +#
@@ -142,37 +147,26 @@ diff -urN vtun.orig/scripts/vtund.rc.debian vtun-2.6/scripts/vtund.rc.debian
 +              if [ -n "$SARGS" ];
 +              then
 +                 echo "Starting vtund server."
-+                  start-stop-daemon --start --exec $DAEMON --pidfile $PIDPREFIX.pid -- $SARGS;
++                  start-stop-daemon -S -x $DAEMON -- $SARGS;
 +              else
 +                  # split args into host and rest
 +                  HOST=`echo $i|cut -f 1 -d " "`;
 +                  TARGET=`echo $i|cut -f 2 -d " "`;
 +                  echo  "Starting vtund client $HOST to $TARGET.";
-+                  start-stop-daemon --start --exec $DAEMON --pidfile $PIDPREFIX.$HOST.pid -- $i;
-+ 
++                  start-stop-daemon -S -x $DAEMON -- $i;
 +              fi
 +          done
 +              ;;
 +       stop) 
-+          echo "Stopping vtund.";
-+          for i in $PIDPREFIX*;
-+          do
-+              start-stop-daemon --stop --pidfile $i; 
-+              rm -f $i;
-+          done
-+               ;;
-+       reload|force-reload)
-+          echo "Reloading vtund.";
-+          for i in $PIDPREFIX*;
-+          do
-+              start-stop-daemon --stop --signal 1 --pidfile $i; 
-+          done
-+              ;;
-+       restart) 
-+          $0 stop
-+          sleep 1;
-+          $0 start
-+          ;;
++	   echo "Stopping vtund.";
++	   start-stop-daemon -K -x vtund;
++	   ;;
++
++       restart|reload|force-reload) 
++	   $0 stop
++	   sleep 1;
++	   $0 start
++	   ;;
 +   *)
 +      echo "Usage: $0 {start|stop|restart|reload|force-reload}" >&2
 +       exit 1
