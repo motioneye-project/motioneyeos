@@ -68,7 +68,7 @@ TARGETS+=user-mode-linux busybox tinylogin #gdb strace valgrind db openssl zlib 
 #TARGETS+=zlib openssl openssh
 
 # Everything needed to build a full uClibc development system!
-#TARGETS+=coreutils findutils bash make sed gawk gcc_target
+#TARGETS+=coreutils bash make sed gawk gcc_target
 
 # Some nice debugging tools
 #TARGETS+=gdb strace
