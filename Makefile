@@ -33,6 +33,7 @@
 #
 ARCH:=i386
 #ARCH:=arm
+#ARCH:=armeb
 #ARCH:=mips
 #ARCH:=mipsel
 #ARCH:=powerpc
