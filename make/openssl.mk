@@ -30,9 +30,9 @@ $(STAGING_DIR)/bin/openssl: $(OPENSSL_DIR)/apps/openssl
 	make CC=$(TARGET_CC1) -C $(OPENSSL_DIR) install
 
 $(TARGET_DIR)/bin/openssl: $(STAGING_DIR)/bin/openssl
-	cp -fa $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/
 	cp -fa $(STAGING_DIR)/lib/libcrypto.so* $(TARGET_DIR)/lib/
 	cp -fa $(STAGING_DIR)/lib/libssl.so* $(TARGET_DIR)/lib/
+	#cp -fa $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/
 
 openssl-clean: 
 	rm -f $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/openssl

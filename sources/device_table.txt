@@ -3,6 +3,7 @@
 /etc		d	755	0	0	-	-	-	-	-
 /dev		d	755	0	0	-	-	-	-	-
 /dev/pts	d	755	0	0	-	-	-	-	-
+/tmp		d	1777	0	0	-	-	-	-	-
 
 # Fixme -- add support for type 'f'
 #/bin/tinylogin	f	4755	0	0	-	-	-	-	-
