@@ -55,7 +55,6 @@ $(BINUTILS_DIR2)/.configured:
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
 		CC=$(TARGET_CROSS)gcc \
 		$(BINUTILS_DIR)/configure \
-		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -180,7 +179,6 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
 		CC=$(TARGET_CROSS)gcc $(GCC_DIR)/configure \
-		--target=$(GNU_TARGET_NAME) \
 		--prefix=$(TARGET_DIR)/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -203,9 +201,6 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
 		--program-prefix="" \
 	);
-		#$(GNU_TARGET_NAME) \
-		#--target=$(GNU_TARGET_NAME) \
-		#
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
