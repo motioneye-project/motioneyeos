@@ -143,18 +143,9 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(ARCH)-linux \
 		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--libdir=/usr/lib \
-		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(MULTILIB) \
-		--program-prefix="" \
 	);
 	touch $(BINUTILS_DIR2)/.configured
 
