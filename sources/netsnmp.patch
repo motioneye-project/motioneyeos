@@ -1,0 +1,12 @@
+--- net-snmp-5.0.8/configure.in.orig	2003-06-04 13:10:32.000000000 -0600
++++ net-snmp-5.0.8/configure.in	2003-06-04 13:11:46.000000000 -0600
+@@ -1718,9 +1718,6 @@
+     AC_MSG_ERROR([You are cross-compiling, but you have not specified the target's endianness])
+   fi
+ else
+-  if test $with_endianness; then
+-    AC_MSG_ERROR([Endianness has been specified, but you are not cross-compiling.])
+-  fi
+   AC_C_BIGENDIAN
+ fi
+ 
