@@ -61,11 +61,13 @@ $(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
 	$(MAKE) CC=$(TARGET_CC) -C $(PYTHON_DIR) install \
 		DESTDIR=$(TARGET_DIR) CROSS_COMPILE=yes \
 		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
+	rm $(TARGET_DIR)/usr/bin/python?.?
 	rm $(TARGET_DIR)/usr/bin/idle
 	rm $(TARGET_DIR)/usr/bin/pydoc
 	find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -o -name '*.pyo' | xargs rm
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
+		$(TARGET_DIR)/usr/lib/python*/test
 
 python: uclibc $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 
