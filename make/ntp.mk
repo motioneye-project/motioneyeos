@@ -3,12 +3,12 @@
 # ntp
 #
 #############################################################
-NTP_SOURCE:=ntp-4.1.1.tar.gz
+NTP_SOURCE:=ntp-4.1.2.tar.gz
 NTP_SITE:=http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4
-NTP_DIR:=$(BUILD_DIR)/ntp-4.1.1
+NTP_DIR:=$(BUILD_DIR)/ntp-4.1.2
 NTP_CAT:=zcat
 NTP_BINARY:=ntpdate/ntpdate
-NTP_TARGET_BINARY:=bin/ntpdate
+NTP_TARGET_BINARY:=usr/bin/ntpdate
 
 
 $(DL_DIR)/$(NTP_SOURCE):
@@ -41,6 +41,7 @@ $(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		--with-shared \
+		--program-transform-name=s,,, \
 	);
 	touch  $(NTP_DIR)/.configured
 
@@ -48,9 +49,7 @@ $(NTP_DIR)/$(NTP_BINARY): $(NTP_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(NTP_DIR)
 
 $(TARGET_DIR)/$(NTP_TARGET_BINARY): $(NTP_DIR)/$(NTP_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NTP_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	install -m 755 $(NTP_DIR)/$(NTP_BINARY) $(TARGET_DIR)/$(NTP_TARGET_BINARY)
 
 ntp: uclibc $(TARGET_DIR)/$(NTP_TARGET_BINARY)
 
