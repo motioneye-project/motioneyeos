@@ -3225,7 +3225,7 @@ diff -urN gcc-3.4.2-dist/libstdc++-v3/include/c_compatibility/wchar.h gcc-3.4.2/
  using std::wmemcpy;
  using std::wmemmove;
  using std::wmemset;
-+#if __GLIBCXX_HAVE_WCSFTIME
++#if _GLIBCXX_HAVE_WCSFTIME
  using std::wcsftime;
 +#endif
  
