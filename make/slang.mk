@@ -3,23 +3,21 @@
 # slang
 #
 #############################################################
-SLANG_SOURCE=minislang.tar.gz
+SLANG_SOURCE=slang-1.4.5-mini.tar.bz2
 SLANG_SITE:=ftp://busybox.net/
-SLANG_DIR=$(BUILD_DIR)/minislang
+SLANG_DIR=$(BUILD_DIR)/slang-1.4.5-mini
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-SLANG_CFLAGS="-Os -g -fPIC -D_FILE_OFFSET_BITS=64 -D__USE_FILE_OFFSET64"
-else
-SLANG_CFLAGS="-Os -g -fPIC"
+SLANG_CFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 
 $(DL_DIR)/$(SLANG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SLANG_SITE)/$(SLANG_SOURCE)
 
 $(SLANG_DIR): $(DL_DIR)/$(SLANG_SOURCE)
-	zcat $(DL_DIR)/$(SLANG_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	bzcat $(DL_DIR)/$(SLANG_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 
 $(SLANG_DIR)/libslang.so: $(SLANG_DIR)
-	$(MAKE) CFLAGS=$(SLANG_CFLAGS) CC=$(TARGET_CC1) -C $(SLANG_DIR)
+	$(MAKE) CFLAGS="-Os -g -fPIC $(SLANG_CFLAGS)" CC=$(TARGET_CC1) -C $(SLANG_DIR)
 	touch -c $(SLANG_DIR)/libslang.so;
 
 $(STAGING_DIR)/lib/libslang.so.1: $(SLANG_DIR)/libslang.so
