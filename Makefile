@@ -144,7 +144,7 @@ TARGETS+=kernel-headers
 #TARGETS+=system-linux
 
 # The default minimal set
-TARGETS+=busybox tinylogin
+TARGETS+=busybox #tinylogin
 
 # Openssh...
 #TARGETS+=zlib openssl openssh
