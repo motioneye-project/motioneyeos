@@ -3,9 +3,9 @@
 # dropbear_sshd
 #
 #############################################################
-DROPBEAR_SSHD_SOURCE:=dropbear-0.44.tar.bz2
+DROPBEAR_SSHD_SOURCE:=dropbear-0.45.tar.bz2
 DROPBEAR_SSHD_SITE:=http://matt.ucc.asn.au/dropbear/releases/
-DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.44
+DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.45
 DROPBEAR_SSHD_CAT:=bzcat
 DROPBEAR_SSHD_BINARY:=dropbearmulti
 DROPBEAR_SSHD_TARGET_BINARY:=usr/sbin/dropbear
@@ -44,6 +44,10 @@ $(DROPBEAR_SSHD_DIR)/.configured: $(DROPBEAR_SSHD_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		--with-shared \
 	);
+ifeq ($(strip $(BR2_PACKAGE_DROPBEAR_SSHD_URANDOM)),y)
+	$(SED) 's,^#define DROPBEAR_RANDOM_DEV.*,#define DROPBEAR_RANDOM_DEV \"/dev/urandom\",' \
+		$(DROPBEAR_SSHD_DIR)/options.h
+endif
 	touch  $(DROPBEAR_SSHD_DIR)/.configured
 
 $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY): $(DROPBEAR_SSHD_DIR)/.configured
