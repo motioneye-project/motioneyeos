@@ -169,9 +169,6 @@ TARGETS+=busybox tinylogin
 # More development system stuff for those that want it
 #TARGETS+=m4 autoconf automake libtool
 
-# Perl
-#TARGETS+=perl
-
 # Some nice debugging tools
 #TARGETS+=gdb strace ltrace
 
