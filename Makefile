@@ -51,7 +51,7 @@ BUILD_WITH_LARGEFILE:=false
 # The list of stuff to build for the target filesystem
 #
 #############################################################
-TARGETS:=user-mode-linux uclibc busybox tinylogin
+TARGETS:=user-mode-linux uclibc busybox #tinylogin
 
 # Pick your root filesystem type.
 TARGETS+=ext2root
