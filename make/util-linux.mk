@@ -15,6 +15,7 @@ $(DL_DIR)/$(UTIL-LINUX_SOURCE):
 
 $(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	cat $(SOURCE_DIR)/util-linux.patch | patch -p1 -d $(UTIL-LINUX_DIR)
 	touch $(UTIL-LINUX_DIR)/.unpacked
 
 $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
