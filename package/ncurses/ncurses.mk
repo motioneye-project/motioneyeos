@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.35 2004/09/09 10:50:57 mjn3 Exp $
+# $Id: ncurses.mk,v 1.1 2004/10/09 01:24:04 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
