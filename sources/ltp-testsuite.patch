@@ -71,3 +71,78 @@
  	@echo 'NPtcp has been built.'
  
  NPtcp-ipv6:	NPtcp.o TCP.o
+--- ltp-full-20031204/testcases/kernel/syscalls/setresuid/setresuid03.orig.c	2004-01-01 20:27:14.000000000 -0700
++++ ltp-full-20031204/testcases/kernel/syscalls/setresuid/setresuid03.c	2004-01-01 20:27:21.000000000 -0700
+@@ -76,7 +76,7 @@
+ extern int setresuid(uid_t, uid_t, uid_t);
+ 
+ int neg_one = -1;
+-int inval_user = 999999;
++int inval_user = (USHRT_MAX-2);
+ 
+ /* flag to tell parent if child passed or failed. */
+ int flag = 0;
+--- ltp-full-20031204/testcases/kernel/syscalls/setreuid/setreuid06.orig.c	2004-01-01 20:30:36.000000000 -0700
++++ ltp-full-20031204/testcases/kernel/syscalls/setreuid/setreuid06.c	2004-01-01 20:41:00.000000000 -0700
+@@ -53,7 +53,7 @@
+ #include "test.h"
+ #include "usctest.h"
+ 
+-#define INVAL_USER	999999	
++#define INVAL_USER	(USHRT_MAX-2)
+ 
+ char *TCID = "setreuid06";
+ int TST_TOTAL = 1;
+--- ltp-full-20031204/testcases/kernel/syscalls/setregid/setregid02.orig.c	2004-01-01 20:44:47.000000000 -0700
++++ ltp-full-20031204/testcases/kernel/syscalls/setregid/setregid02.c	2004-01-01 20:44:18.000000000 -0700
+@@ -79,7 +79,7 @@
+ gid_t users_gr_gid, root_gr_gid, bin_gr_gid;
+ int neg_one = -1;
+ int exp_enos[]={EPERM, 0};
+-int inval_user = 999999;
++int inval_user = (USHRT_MAX-2);
+ char nobody_uid[] = "nobody";
+ struct passwd *ltpuser;
+ 
+--- ltp-full-20031204/testcases/kernel/syscalls/string/string01.orig.c	2004-01-01 20:47:26.000000000 -0700
++++ ltp-full-20031204/testcases/kernel/syscalls/string/string01.c	2004-01-01 23:24:26.000000000 -0700
+@@ -413,13 +413,33 @@
+ 	//fprintf(temp, "\tStrncmp\n" );
+ 	i = 0;
+ 	while ( t_ncmp[i].s1 ) {
+-	    if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
+-							!= t_ncmp[i].e_res) {
+-		  fprintf(temp, "(Strncmp) test %d: expected %d, got %d",
+-			i, t_ncmp[i].e_res, n );
+-		  local_flag = FAILED;
++	    if (t_ncmp[i].e_res==0) {
++		if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
++			!= 0) {
++		    fprintf(temp, "(Strncmp) test %d: expected %d, got %d",
++			    i, t_ncmp[i].e_res, n );
++		    local_flag = FAILED;
+ 		}
+-	    i++;
++		i++;
++	    }
++	    if (t_ncmp[i].e_res>0) {
++		if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
++			< 1) {
++		    fprintf(temp, "(Strncmp) test %d: expected %d, got %d",
++			    i, t_ncmp[i].e_res, n );
++		    local_flag = FAILED;
++		}
++		i++;
++	    }
++	    if (t_ncmp[i].e_res<0) {
++		if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
++			> 1) {
++		    fprintf(temp, "(Strncmp) test %d: expected %d, got %d",
++			    i, t_ncmp[i].e_res, n );
++		    local_flag = FAILED;
++		}
++		i++;
++	    }
+ 	}
+ 
+ 	/*
