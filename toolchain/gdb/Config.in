@@ -2,6 +2,8 @@
 # WARNING -- 2.95 currently only builds for i386, arm, mips*, and powerpc.
 # WARNING -- 2.95 does not currently build natively for the target.
 
+comment "Gdb Options"
+
 config BR2_PACKAGE_GDB
 	bool "Build gdb debugger for the Target"
 	default n

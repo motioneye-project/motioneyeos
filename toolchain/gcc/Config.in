@@ -2,6 +2,8 @@
 # WARNING -- 2.95 currently only builds for i386, arm, mips*, and powerpc.
 # WARNING -- 2.95 does not currently build natively for the target.
 
+comment "Gcc Options"
+
 choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_3_4_2

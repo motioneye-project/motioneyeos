@@ -1,5 +1,7 @@
 #
 
+comment "Ccache Options"
+
 config BR2_HOST_CCACHE
 	bool "Enable ccache support?"
 	default y

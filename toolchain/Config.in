@@ -11,6 +11,8 @@ source "toolchain/ccache/Config.in"
 source "toolchain/gdb/Config.in"
 
 
+comment "Common Toolchain Options"
+
 config BR2_ENABLE_MULTILIB
 	bool "Enable multilib support?"
 	default y

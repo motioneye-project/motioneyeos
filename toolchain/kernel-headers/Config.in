@@ -2,6 +2,8 @@
 # ignored if you are building your own kernel or using the system kernel.
 #
 
+comment "Kernel Header Options"
+
 choice
 	prompt "Kernel Headers"
 	default BR2_KERNEL_HEADERS_2_4

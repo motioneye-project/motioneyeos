@@ -1,6 +1,8 @@
 # Choose binutils version.
 #
 
+comment "Binutils Options"
+
 choice
 	prompt "Binutils Version"
 	default BR2_BINUTILS_VERSION_2_15_91_0_2

@@ -1,6 +1,7 @@
 # Choose uClibc options
 #
 
+comment "uClibc Options"
 
 config BR2_UCLIBC_VERSION_SNAPSHOT
 	bool "Use the daily snapshot of uClibc?"
