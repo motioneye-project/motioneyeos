@@ -93,7 +93,8 @@ TARGETS+=busybox tinylogin
 #TARGETS+=zlib openssl openssh
 
 # Everything needed to build a full uClibc development system!
-#TARGETS+=coreutils findutils bash make sed gawk gcc_target
+#TARGETS+=coreutils findutils bash make diffutils patch sed
+#TARGETS+=ed flex bison file gawk gcc_target
 
 # Of course, if you are installing a development system, you
 # may want some header files so you can compile stuff....
@@ -109,7 +110,7 @@ TARGETS+=busybox tinylogin
 #TARGETS+=valgrind
 
 # Some stuff for access points and firewalls
-#TARGETS+=iptables hostap wtools
+#TARGETS+=iptables hostap wtools dhcp_relay
 
 # Run customize.mk at the very end to add your own special config.
 # This is useful for making your own distro within the buildroot
