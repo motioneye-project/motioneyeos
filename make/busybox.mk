@@ -33,7 +33,8 @@ ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 	perl -i -p -e "s/^.*DOLFS.*/DOLFS=y/;" $(BUSYBOX_DIR)/.config
 endif
-else  # Not usine snapshot
+	$(MAKE) CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
+else  # Not using snapshot
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/Config.h
 	perl -i -p -e "s,^CROSS.*,CROSS=$(TARGET_CROSS),;" $(BUSYBOX_DIR)/Makefile
 	perl -i -p -e "s,^PREFIX.*,PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Makefile
