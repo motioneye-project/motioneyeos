@@ -60,7 +60,7 @@ config BR2_ARCH
 
 config BR2_WGET
 	string
-	default "wget --passive-ftp"
+	default "wget --passive-ftp -nd"
 
 config BR2_TAR_VERBOSITY
 	bool
