@@ -16,7 +16,6 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	mkdir -p $(DL_DIR)
 	mkdir -p $(STAGING_DIR)
-	mkdir -p $(STAGING_DIR)/include
 	mkdir -p $(STAGING_DIR)/lib/gcc-lib
 	mkdir -p $(STAGING_DIR)/usr/lib
 	mkdir -p $(STAGING_DIR)/usr/bin;
