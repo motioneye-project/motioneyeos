@@ -4,7 +4,7 @@
 #
 #############################################################
 #
-BRIDGE_SOURCE_URL=http://aleron.dl.sourceforge.net/sourceforge/bridge-utils
+BRIDGE_SOURCE_URL=http://bridge.sourceforge.net/bridge-utils
 BRIDGE_SOURCE=bridge-utils-0.9.6.tar.gz
 BRIDGE_BUILD_DIR=$(BUILD_DIR)/bridge-utils-0.9.6
 
