@@ -42,6 +42,7 @@ $(TARGET_DIR)/lib/libz.so.1.1.4: $(STAGING_DIR)/lib/libz.so.1.1.4
 	touch -c $(TARGET_DIR)/lib/libz.so.1.1.4
 
 $(TARGET_DIR)/usr/include/zlib.h: $(TARGET_DIR)/lib/libz.so.1.1.4
+	mkdir -p $(TARGET_DIR)/usr/include
 	cp -a $(STAGING_DIR)/include/zlib.h $(TARGET_DIR)/usr/include/
 	cp -a $(STAGING_DIR)/include/zconf.h $(TARGET_DIR)/usr/include/
 	cp -a $(STAGING_DIR)/lib/libz.a $(TARGET_DIR)/usr/lib/
