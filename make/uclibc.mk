@@ -61,7 +61,7 @@ endif
 	perl -i -p -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
 		$(UCLIBC_DIR)/.config
 	if [ -n "$(strip $(TARGET_SOFT_FLOAT))" ] ; then \
-		perl -i -p -e 's,.*HAS_FPU.*,# HAS_FPU is not set\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
+		perl -i -p -e 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
 			$(UCLIBC_DIR)/.config; \
 	fi
 	perl -i -p -e 's,^GCC_BIN.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-linux-gcc,g' \
