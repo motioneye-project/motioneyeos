@@ -6,14 +6,14 @@
 
 DNSMASQ_SITE=http://thekelleys.org.uk/dnsmasq
 ifeq ($(filter $(TARGETS),dnsmasq1),)
-DNSMASQ_SOURCE=dnsmasq-2.15.tar.gz
-DNSMASQ_DIR=$(BUILD_DIR)/dnsmasq-2.15
+DNSMASQ_UPVER=2.22
 DNSMASQ_VER=dnsmasq2
 else
-DNSMASQ_SOURCE=dnsmasq-1.18.tar.gz
-DNSMASQ_DIR=$(BUILD_DIR)/dnsmasq-1.18
+DNSMASQ_UPVER=1.18
 DNSMASQ_VER=dnsmasq1
 endif
+DNSMASQ_SOURCE=dnsmasq-$(DNSMASQ_UPVER).tar.gz
+DNSMASQ_DIR=$(BUILD_DIR)/dnsmasq-$(DNSMASQ_UPVER)
 DNSMASQ_BINARY=dnsmasq
 DNSMASQ_TARGET_BINARY=usr/sbin/dnsmasq
 
