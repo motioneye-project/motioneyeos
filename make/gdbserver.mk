@@ -1,22 +1,20 @@
 #############################################################
 #
-# gdb
+# gdbserver
 #
 #############################################################
 
-GDB_SITE:=ftp://ftp.gnu.org/gnu/gdb/
-GDB_DIR:=$(BUILD_DIR)/gdb-5.3
-GDB_SOURCE:=gdb-5.3.tar.gz
-GDB_WDIR:=$(BUILD_DIR)/gdbserver
-
+#Use GDB_DIR/etc values from gdb.mk
+#Build gdbserver in a dir outside of the main gdb tree
 
 $(GDB_WDIR)/.configured: $(GDB_DIR)/.unpacked
+	mkdir -p $(GDB_WDIR)
 	(cd $(GDB_WDIR); rm -rf config.cache; \
 		PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
 		AS=$(TARGET_CROSS)as LD=$(TARGET_CROSS)ld \
 		RANLIB=$(TARGET_CROSS)ranlib NM=$(TARGET_CROSS)nm \
 		CC=$(TARGET_CC) \
-		./configure \
+		$(GDB_DIR)/gdb/gdbserver/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
@@ -36,11 +34,11 @@ $(GDB_WDIR)/.configured: $(GDB_DIR)/.unpacked
 	);
 	touch  $(GDB_WDIR)/.configured
 
-$(GDB_DIR)/gdb/gdbserver/gdbserver: $(GDB_WDIR)/.configured
+$(GDB_WDIR)/gdbserver: $(GDB_WDIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GDB_WDIR)
 	$(STRIP) $(GDB_WDIR)/gdbserver
 
-$(TARGET_DIR)/usr/bin/gdbserver: $(GDB_DIR)/gdb/gdbserver/gdbserver
+$(TARGET_DIR)/usr/bin/gdbserver: $(GDB_WDIR)/gdbserver
 	install -c $(GDB_WDIR)/gdbserver $(TARGET_DIR)/usr/bin/gdbserver
 
 gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
