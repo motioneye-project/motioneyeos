@@ -21,7 +21,7 @@ $(CRAMFS_DIR)/mkcramfs: $(CRAMFS_DIR)
 
 cramfs: $(CRAMFS_DIR)/mkcramfs
 
-cramfs-source: $(DL_DIR)/$(CRAMFS_DIR)
+cramfs-source: $(DL_DIR)/$(CRAMFS_SOURCE)
 
 cramfs-clean:
 	-$(MAKE) -C $(CRAMFS_DIR) clean
