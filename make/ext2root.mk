@@ -32,9 +32,8 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 #############################################################
 
 # How much KB we want to add to the calculated size for slack space
-#GENEXT2_ADDTOROOTSIZE=4096
-GENEXT2_ADDTOROOTSIZE=16384
-GENEXT2_REALSIZE=$(subst total,, $(shell LANG=C du $(TARGET_DIR) -s -c -k | grep total )) 
+GENEXT2_REALSIZE=$(subst total,, $(shell LANG=C du $(TARGET_DIR) -s -c -k | grep total ))
+GENEXT2_ADDTOROOTSIZE=$(shell if [ $(GENEXT2_REALSIZE) -ge 20000 ] ; then echo 16384; else echo 16; fi)
 GENEXT2_SIZE=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE))
 # We currently add about 400 device nodes, so add that into the total
 GENEXT2_INODES=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
