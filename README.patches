@@ -4,8 +4,7 @@ binutils-uclibc-001-debian.patch -- stuff ripped out of the debian/patches direc
 binutils-uclibc-100-conf.patch -- Adds support for the $(ARCH)-linux-uclibc platform,
 				    which is what uClibc wants to use to make sure
 				    the correct shared lib loader, etc is used.
-binutils-uclibc-200-build_modules.patch  -- More of the same.  Could really be merged
-				    with binutils-uclibc-100-conf.patch I suppose.
+binutils-uclibc-200-build_modules.patch  -- Hack around a version-specific build problem.
 binutils-uclibc-210-cflags.patch  -- Fix an upstream bug that breaks Canadian cross
 				    binutils builds.
 
@@ -18,6 +17,7 @@ gcc-uclibc-3.3-100-conf.patch -- Adds support for the $(ARCH)-linux-uclibc platf
 				    the correct shared lib loader, etc is used.
 gcc-uclibc-3.3-110-conf.patch -- More of the same.  Could really be merged
 				    with gcc-uclibc-3.3-100-conf.patch I suppose.
+				    Seperate because it was independently contributed.
 gcc-uclibc-3.3-120-softfloat.patch -- When doing a Canadian cross gcc build when using
 				    soft float, make certain target stuff is in fact
 				    built with soft float.  Annoyingly that is not the
