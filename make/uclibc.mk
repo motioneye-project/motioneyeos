@@ -80,6 +80,7 @@ endif
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
+		HOSTCC="$(HOSTCC)" \
 		pregen install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
@@ -88,6 +89,7 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 		PREFIX= \
 		DEVEL_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
 		RUNTIME_PREFIX=/ \
+		HOSTCC="$(HOSTCC)" \
 		all
 
 $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
@@ -103,6 +105,7 @@ $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 		install_dev
 	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX=$(STAGING_DIR) \
+		HOSTCC="$(HOSTCC)" \
 		utils install_utils
 	# Clean up the host compiled utils...
 	$(MAKE) -C $(UCLIBC_DIR)/utils clean
