@@ -3,10 +3,10 @@
 # patch
 #
 #############################################################
-GNUPATCH_SOURCE:=patch-2.5.4.tar.gz
-GNUPATCH_SITE:=ftp://ftp.gnu.org/pub/gnu/patch
+GNUPATCH_SOURCE:=patch_2.5.9.orig.tar.gz
+GNUPATCH_SITE:=http://ftp.debian.org/debian/pool/main/p/patch
 GNUPATCH_CAT:=zcat
-GNUPATCH_DIR:=$(BUILD_DIR)/patch-2.5.4
+GNUPATCH_DIR:=$(BUILD_DIR)/patch-2.5.9
 GNUPATCH_BINARY:=patch
 GNUPATCH_TARGET_BINARY:=usr/bin/patch
 
