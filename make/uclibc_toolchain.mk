@@ -17,7 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
-ifeq ($(GCC_2_95__TOOLCHAIN),false)
+ifeq ($(GCC_2_95_TOOLCHAIN),false)
 
 #############################################################
 #
