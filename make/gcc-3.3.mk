@@ -445,8 +445,6 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	-mv $(TARGET_DIR)/lib/*.a $(TARGET_DIR)/usr/lib/
 	-mv $(TARGET_DIR)/lib/*.la $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libstdc++.so*
-	# A nasty hack to work around g++ adding -lgcc_eh to the link
-	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/ ; ln -s libgcc.a libgcc_eh.a)
 	# Make sure gcc does not think we are cross compiling
 	$(SED) "s/^1/0/;" $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/specs
 	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
