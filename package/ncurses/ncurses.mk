@@ -63,6 +63,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		--without-ada --without-progs $(DISABLE_NLS) \
 		--without-profile --without-debug --disable-rpath \
 		--enable-echo --enable-const --enable-overwrite \
+		--enable-broken_linker \
 	);
 	touch  $(NCURSES_DIR)/.configured
 
