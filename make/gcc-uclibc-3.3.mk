@@ -20,10 +20,9 @@
 ifneq ($(GCC_2_95_TOOLCHAIN),true)
 
 # Shiny new stuff...
-GCC_VERSION:=3.3.3
+GCC_VERSION:=3.3.4
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(GCC_VERSION)
-#GCC_SITE:=http://www.binarycode.org/gcc/releases/gcc-$(GCC_VERSION)
-#GCC_SITE:=http://gcc.get-software.com/releases/gcc-$(GCC_VERSION)
+GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/releases/gcc-$(GCC_VERSION)
 
 #
 # snapshots....
@@ -67,7 +66,6 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc3.3-mega.patch.bz2
 	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-uclibc-3.3*.patch
 ifeq ($(SOFT_FLOAT),true)
 ifeq ("$(strip $(ARCH))","i386")
