@@ -44,7 +44,8 @@ ifeq ($(ENABLE_LOCALE),true)
 else
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
 endif
-	perl -i -p -e 's,^TARGET_[a-z].*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
+		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
