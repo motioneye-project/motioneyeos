@@ -259,7 +259,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	    gxx_include_dir=$(TARGET_DIR)/usr/include/c++ \
 	    tooldir=$(TARGET_DIR)/usr/$(GNU_TARGET_NAME) \
 	    build_tooldir=$(TARGET_DIR)/usr/$(GNU_TARGET_NAME) \
-	    -C $(GCC_BUILD_DIR3)/gcc install;
+	    -C $(GCC_BUILD_DIR3) install;
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
