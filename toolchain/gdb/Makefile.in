@@ -6,5 +6,9 @@ TARGETS+=gdb_target
 endif
 
 ifeq ($(strip $(BR2_PACKAGE_GDB_SERVER)),y)
-TARGETS+=gdbserver gdbclient
+TARGETS+=gdbserver
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_GDB_CLIENT)),y)
+TARGETS+=gdbclient
 endif

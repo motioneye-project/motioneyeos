@@ -135,7 +135,7 @@ $(GDB_SERVER_DIR)/gdbserver: $(GDB_SERVER_DIR)/.configured
 $(TARGET_DIR)/usr/bin/gdbserver: $(GDB_SERVER_DIR)/gdbserver
 	install -c $(GDB_SERVER_DIR)/gdbserver $(TARGET_DIR)/usr/bin/gdbserver
 
-gdbserver: ncurses-headers $(TARGET_DIR)/usr/bin/gdbserver
+gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
 
 gdbserver-clean:
 	$(MAKE) -C $(GDB_SERVER_DIR) clean

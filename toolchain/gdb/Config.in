@@ -1,7 +1,3 @@
-# Choose gcc version.
-# WARNING -- 2.95 currently only builds for i386, arm, mips*, and powerpc.
-# WARNING -- 2.95 does not currently build natively for the target.
-
 comment "Gdb Options"
 
 config BR2_PACKAGE_GDB
@@ -9,14 +5,20 @@ config BR2_PACKAGE_GDB
 	default n
 	select BR2_PACKAGE_NCURSES
 	help
-	    Enable the gdb debugger.
+	    Build the full gdb debugger to run on the target.
 
 config BR2_PACKAGE_GDB_SERVER
 	bool "Build gdb server for the Target"
 	default n
-	select BR2_PACKAGE_NCURSES
 	help
-	    Enable the gdb debugger.
+	    Build the gdbserver stub to run on the target.
+	    A full gdb is needed to debug the progam.
+
+config BR2_PACKAGE_GDB_CLIENT
+	bool "Build gdb client for the Host"
+	default n
+	help
+	    Build gdb to run on the host to debug programs running on the target.
 
 choice
 	prompt "GDB debuger Version"
