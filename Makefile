@@ -146,7 +146,6 @@ TARGET_PATH:=$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:/bin:/sbin:/usr/bin:/usr/
 STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
 IMAGE:=$(BASE_DIR)/root_fs
-MAKE:=make
 GNU_TARGET_NAME:=$(OPTIMIZE_FOR_CPU)-linux
 #KERNEL_CROSS:=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 KERNEL_CROSS:=
