@@ -37,7 +37,7 @@ $(TARGET_DIR)/$(LESS_TARGET_BINARY): $(LESS_DIR)/$(LESS_BINARY)
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LESS_DIR) install
 	rm -Rf $(TARGET_DIR)/usr/man
 
-less: uclibc $(TARGET_DIR)/$(LESS_TARGET_BINARY)
+less: uclibc ncurses $(TARGET_DIR)/$(LESS_TARGET_BINARY)
 
 less-source: $(DL_DIR)/$(LESS_SOURCE)
 
