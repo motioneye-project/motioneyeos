@@ -19,7 +19,7 @@ $(HOSTAP_BUILD_DIR)/.unpacked: $(DL_DIR)/$(HOSTAP_SOURCE)
 	touch $(HOSTAP_BUILD_DIR)/.unpacked
 
 $(HOSTAP_BUILD_DIR)/.configured: $(HOSTAP_BUILD_DIR)/.unpacked
-	perl -pi -e "s,/*.#define PRISM2_DOWNLOAD_SUPPORT.*/,#define PRISM2_DOWNLOAD_SUPPORT,g" \
+	perl -pi -e "s,/.*#define PRISM2_DOWNLOAD_SUPPORT.*/,#define PRISM2_DOWNLOAD_SUPPORT,g" \
 		$(HOSTAP_BUILD_DIR)/driver/modules/hostap_config.h
 	touch  $(HOSTAP_BUILD_DIR)/.configured
 
