@@ -130,10 +130,10 @@ $(TARGET_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR2)/$(CCACHE_BINARY)
 	# in the default PATH than /usr/bin where gcc lives
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	(cd $(TARGET_DIR)/bin; \
-		ln -fs /usr/bin/ccache cc; \
-		ln -fs /usr/bin/ccache gcc; \
-		ln -fs /usr/bin/ccache c++; \
-		ln -fs /usr/bin/ccache g++;)
+		ln -fs ../usr/bin/ccache cc; \
+		ln -fs ../usr/bin/ccache gcc; \
+		ln -fs ../usr/bin/ccache c++; \
+		ln -fs ../usr/bin/ccache g++;)
 
 ccache_target: uclibc $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
 
