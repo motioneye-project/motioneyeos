@@ -34,10 +34,10 @@ ARCH = i386
 IMAGE_SIZE=550 # library is 550K
 IMAGE_INODES=300
 
-LINUX_SOURCE=linux-2.4.14.tar.bz2
+LINUX_SOURCE=linux-2.4.17.tar.bz2
 LINUX_URI=http://www.kernel.org/pub/linux/kernel/v2.4
 
-USERMODELINUX_PATCH=uml-patch-2.4.14-6.bz2
+USERMODELINUX_PATCH=uml-patch-2.4.17-3.bz2
 USERMODELINUX_URI=http://prdownloads.sourceforge.net/user-mode-linux
 
 UCLIBC_SOURCE=uClibc-snapshot.tar.gz
@@ -114,11 +114,13 @@ $(LINUX_DIR)/.patched:	$(LINUX_DIR)/.unpacked $(SOURCE_DIR)/$(USERMODELINUX_PATC
 	touch $(LINUX_DIR)/.patched
 
 $(LINUX_DIR)/.um:	$(LINUX_DIR)/.patched
-	sed -e 's/^ARCH :=.*/ARCH=um/g' < $(LINUX_DIR)/Makefile > $(LINUX_DIR)/Makefile.new && mv -f $(LINUX_DIR)/Makefile.new $(LINUX_DIR)/Makefile
+	sed -e 's/^ARCH :=.*/ARCH=um/g' < $(LINUX_DIR)/Makefile > \
+		$(LINUX_DIR)/Makefile.new && mv -f \
+		$(LINUX_DIR)/Makefile.new $(LINUX_DIR)/Makefile
 	touch $(LINUX_DIR)/.um
 
 $(LINUX_DIR)/.configdone:	$(LINUX_DIR)/.um
-	make -C $(LINUX_DIR) oldconfig menuconfig
+	make -C $(LINUX_DIR) oldconfig
 	touch $(LINUX_DIR)/.configdone
 
 $(LINUX_DIR)/.dep:	$(LINUX_DIR)/.configdone
