@@ -24,7 +24,7 @@ $(VTUN_DIR)/.unpacked: $(DL_DIR)/$(VTUN_SOURCE)
 	toolchain/patch-kernel.sh $(VTUN_DIR) package/vtun/ vtun*.patch
 	touch $(VTUN_DIR)/.unpacked
 
-$(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked zlib lzo openssl
+$(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked
 	(cd $(VTUN_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
@@ -41,10 +41,11 @@ $(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked zlib lzo openssl
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--with-ssl-headers=$(STAGING_DIR)/include/openssl \
-		--with-lzo-headers=$(STAGING_DIR)/include \
+		--with-ssl-headers=$(STAGING_DIR)/usr/include/openssl \
+		--with-lzo-headers=$(STAGING_DIR)/usr/include \
+		--with-lzo-lib=$(STAGING_DIR)/usr/lib \
 	);
-	touch  $(VTUN_DIR)/.configured
+	touch $(VTUN_DIR)/.configured
 
 $(VTUN_DIR)/$(VTUN_BINARY): $(VTUN_DIR)/.configured
 	$(MAKE) -C $(VTUN_DIR)
@@ -54,7 +55,7 @@ $(TARGET_DIR)/$(VTUN_TARGET_BINARY): $(VTUN_DIR)/$(VTUN_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-vtun: uclibc $(TARGET_DIR)/$(VTUN_TARGET_BINARY)
+vtun: uclibc zlib lzo openssl $(TARGET_DIR)/$(VTUN_TARGET_BINARY)
 
 vtun-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(VTUN_DIR) uninstall
