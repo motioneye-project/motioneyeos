@@ -1,0 +1,60 @@
+#############################################################
+#
+# autoconf
+#
+#############################################################
+AUTOCONF_SOURCE:=autoconf-2.57.tar.bz2
+AUTOCONF_SITE:=ftp://ftp.gnu.org/gnu/autoconf
+AUTOCONF_CAT:=bzcat
+AUTOCONF_DIR:=$(BUILD_DIR)/autoconf-2.57
+AUTOCONF_BINARY:=autoconf
+AUTOCONF_TARGET_BINARY:=usr/bin/autoconf
+
+$(DL_DIR)/$(AUTOCONF_SOURCE):
+	 $(WGET) -P $(DL_DIR) $(AUTOCONF_SITE)/$(AUTOCONF_SOURCE)
+
+autoconf-source: $(DL_DIR)/$(AUTOCONF_SOURCE)
+
+$(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
+	$(AUTOCONF_CAT) $(DL_DIR)/$(AUTOCONF_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	touch $(AUTOCONF_DIR)/.unpacked
+
+$(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
+	(cd $(AUTOCONF_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
+	    CFLAGS=-D_POSIX_SOURCE EMACS="no" ./configure \
+		--target=i386-uclibc \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+	);
+	touch  $(AUTOCONF_DIR)/.configured
+
+$(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_DIR)/.configured
+	$(MAKE) CC=$(TARGET_CC1) -C $(AUTOCONF_DIR)
+
+$(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+	$(MAKE) \
+	    prefix=$(TARGET_DIR)/usr \
+	    exec_prefix=$(TARGET_DIR)/usr \
+	    bindir=$(TARGET_DIR)/usr/bin \
+	    sbindir=$(TARGET_DIR)/usr/sbin \
+	    libexecdir=$(TARGET_DIR)/usr/lib \
+	    datadir=$(TARGET_DIR)/usr/share \
+	    sysconfdir=$(TARGET_DIR)/etc \
+	    localstatedir=$(TARGET_DIR)/var \
+	    libdir=$(TARGET_DIR)/usr/lib \
+	    infodir=$(TARGET_DIR)/usr/info \
+	    mandir=$(TARGET_DIR)/usr/man \
+	    includedir=$(TARGET_DIR)/usr/include \
+	    -C $(AUTOCONF_DIR) install;
+	rm -rf $(TARGET_DIR)/share/locale
+
+autoconf: uclibc $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY)
+
+autoconf-clean:
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(AUTOCONF_DIR) uninstall
+	-make -C $(AUTOCONF_DIR) clean
+
+autoconf-dirclean:
+	rm -rf $(AUTOCONF_DIR)
+

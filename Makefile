@@ -81,6 +81,9 @@ TARGETS+=busybox tinylogin
 # may want some header files so you can compile stuff....
 #TARGETS+=ncurses-headers zlib-headers openssl-headers
 
+# More development system stuff for those that want it
+#TARGETS+=m4 autoconf automake libtool
+
 # Some nice debugging tools
 #TARGETS+=gdb strace
 
