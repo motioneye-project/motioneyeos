@@ -1,0 +1,18 @@
+--- linux/include/linux/netfilter_ipv4/ip_nat.h.orig	2005-03-21 16:18:40.000000000 -0700
++++ linux/include/linux/netfilter_ipv4/ip_nat.h	2005-03-21 16:23:54.000000000 -0700
+@@ -66,6 +66,15 @@
+ 	struct ip_conntrack_manip manip;
+ };
+ 
++/* For backwards compat: don't use in modern code. */
++struct ip_nat_multi_range_compat
++{
++	unsigned int rangesize; /* Must be 1. */
++
++	/* hangs off end. */
++	struct ip_nat_range range[1];
++};
++
+ #define ip_nat_multi_range ip_nat_multi_range_compat
+ 
+ #endif
