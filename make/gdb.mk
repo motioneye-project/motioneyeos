@@ -17,7 +17,10 @@ $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
+		AS=$(TARGET_CROSS)as LD=$(TARGET_CROSS)ld \
+		RANLIB=$(TARGET_CROSS)ranlib NM=$(TARGET_CROSS)nm \
+		CC=$(TARGET_CC1) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -30,6 +33,7 @@ $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		--includedir=$(STAGING_DIR)/include \
 		--disable-nls \
 		--without-uiout --disable-gdbmi \
 		--disable-tui --disable-gdbtk --without-x \
