@@ -35,6 +35,7 @@ $(GNUGREP_DIR)/.configured: $(GNUGREP_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--disable-nls \
+		--disable-perl-regexp \
 	);
 	touch  $(GNUGREP_DIR)/.configured
 
