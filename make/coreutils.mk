@@ -22,9 +22,10 @@ $(COREUTILS_DIR)/.unpacked: $(DL_DIR)/$(COREUTILS_SOURCE)
 	touch $(COREUTILS_DIR)/.unpacked
 
 $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
-	(cd $(COREUTILS_DIR); autoconf; rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr --disable-nls \
-	    --mandir=/junk --infodir=/junk \
+	(cd $(COREUTILS_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
+	     CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr \
+	     --target=$(ARCH)-linux --host=$(ARCH)-linux \
+	     --disable-nls --mandir=/junk --infodir=/junk \
 	);
 	touch  $(COREUTILS_DIR)/.configured
 
