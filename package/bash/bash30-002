@@ -1,27 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-002
-
-Bug-Reported-by:  "Ralf S. Engelschall" <rse@engelschall.com>
-Bug-Reference-ID: <20040728082038.GA31398@engelschall.com>
-Bug-Reference-URL:  http://lists.gnu.org/archive/html/bug-bash/2004-07/msg00262.html
-
-Bug-Description:
-
-After upgrading the OpenPKG "bash" package to 3.0, we had to discover
-that the prompt handling on Bash 3.0 / Readline 5.0 is broken if a
-multiline prompt (a string containing newlines) is used. The effect is
-that on the first input line (where the last line of the prompt is the
-prefix) the input line is wrapped N characters before the last column
-where N seems to be exactly the length (including newlines) of the
-prompt ($PS1) minus the characters on the last line of the prompt.
-
-Patch:
-
-*** ../bash-3.0/lib/readline/display.c	Thu May 27 22:57:51 2004
---- lib/readline/display.c	Wed Jul 28 13:48:04 2004
+*** bash-3.0/lib/readline/display.c	Thu May 27 22:57:51 2004
+--- bash/lib/readline/display.c	Wed Jul 28 13:48:04 2004
 ***************
 *** 352,356 ****
   				       &prompt_last_invisible,
@@ -49,8 +27,8 @@ Patch:
         *t = c;
         return (prompt_prefix_length);
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

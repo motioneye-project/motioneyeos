@@ -1,22 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-005
-
-Bug-Reported-by: schwab@suse.de
-Bug-Reference-ID: <20040801085535.E83D41DB3FFE9@sykes.suse.de>
-Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00004.html
-
-Bug-Description:
-
-Moving upwards in the history (with previous-history) and back again
-clobbers the last history line.
-
-Patch:
-
-*** ../bash-3.0/lib/readline/misc.c	Wed Jul  7 08:56:32 2004
---- lib/readline/misc.c	Sat Aug  7 22:38:53 2004
+*** bash-3.0/lib/readline/misc.c	Wed Jul  7 08:56:32 2004
+--- bash/lib/readline/misc.c	Sat Aug  7 22:38:53 2004
 ***************
 *** 277,286 ****
         _rl_saved_line_for_history->data = (char *)rl_undo_list;
@@ -30,8 +13,8 @@ Patch:
   
     return 0;
 --- 277,280 ----
-*** ../bash-3.0/lib/readline/vi_mode.c	Tue Jul 13 14:08:27 2004
---- lib/readline/vi_mode.c	Tue Aug 17 00:12:09 2004
+*** bash-3.0/lib/readline/vi_mode.c	Tue Jul 13 14:08:27 2004
+--- bash/lib/readline/vi_mode.c	Tue Aug 17 00:12:09 2004
 ***************
 *** 273,280 ****
 --- 273,282 ----
@@ -46,8 +29,8 @@ Patch:
         rl_noninc_reverse_search (count, key);
         break;
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

@@ -1,30 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-001
-
-Bug-Reported-by: Karlheinz Nolte <kn@k-nolte.de>
-Bug-Reference-ID: <20040801200058.GA3311@mars.home.k-nolte.de>
-Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00009.html
-
-Bug-Description:
-
-    The following script triggers the segfault.
-      This was found by Costa Tsaousis the author of FireHOL.
-          He wrotes:
-
-          "I think I have found the bug. The script bellow crashes at the
-       third echo (UNSET). It seems to be a problem of the "unset" BASH
-       function when erasing arrays. It leaves something behind so that if
-       the array just unset is referenced, it produces a segmentation fault.
-       According to the documentation the first and the third expansions
-       should be exactly the same."
-
-Patch:
-
-*** ../bash-3.0/arrayfunc.c	Fri Dec 19 00:03:09 2003
---- arrayfunc.c	Sun Aug  1 20:43:00 2004
+*** bash-3.0/arrayfunc.c	Fri Dec 19 00:03:09 2003
+--- bash/arrayfunc.c	Sun Aug  1 20:43:00 2004
 ***************
 *** 612,616 ****
   
@@ -39,8 +14,8 @@ Patch:
   }
   
 
-*** ../bash-3.0/subst.c	Sun Jul  4 13:56:13 2004
---- subst.c	Thu Aug 12 13:36:17 2004
+*** bash-3.0/subst.c	Sun Jul  4 13:56:13 2004
+--- bash/subst.c	Thu Aug 12 13:36:17 2004
 ***************
 *** 4983,4987 ****
   	return -1;
@@ -55,8 +30,8 @@ Patch:
       {
         vtype = VT_ARRAYMEMBER;
 
-*** ../bash-3.0/variables.c	Sun Jul  4 13:57:26 2004
---- variables.c	Wed Aug  4 15:28:04 2004
+*** bash-3.0/variables.c	Sun Jul  4 13:57:26 2004
+--- bash/variables.c	Wed Aug  4 15:28:04 2004
 ***************
 *** 1420,1428 ****
   
@@ -94,8 +69,8 @@ Patch:
 !     }
   
     was_tmpvar = old_var && tempvar_p (old_var);
-*** ../bash-3.0/pcomplete.c	Thu Jan  8 10:36:17 2004
---- pcomplete.c	Tue Aug  3 23:15:41 2004
+*** bash-3.0/pcomplete.c	Thu Jan  8 10:36:17 2004
+--- bash/pcomplete.c	Tue Aug  3 23:15:41 2004
 ***************
 *** 864,867 ****
 --- 864,869 ----
@@ -114,8 +89,8 @@ Patch:
 +   VUNSETATTR (v, att_invisible);
   
     a = array_cell (v);
-*** ../bash-3.0/array.c	Thu May  6 08:24:13 2004
---- array.c	Wed Aug 25 15:50:42 2004
+*** bash-3.0/array.c	Thu May  6 08:24:13 2004
+--- bash/array.c	Wed Aug 25 15:50:42 2004
 ***************
 *** 452,456 ****
   			array_dispose_element(new);
@@ -130,8 +105,8 @@ Patch:
   			return(0);
   		} else if (element_index(ae) > i) {
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */
@@ -145,8 +120,8 @@ Patch:
 ! #define PATCHLEVEL 1
   
   #endif /* _PATCHLEVEL_H_ */
-*** ../bash-3.0/tests/dbg-support.tests	Tue Mar 25 15:33:03 2003
---- tests/dbg-support.tests	Tue Aug  3 23:09:29 2004
+*** bash-3.0/tests/dbg-support.tests	Tue Mar 25 15:33:03 2003
+--- bash/tests/dbg-support.tests	Tue Aug  3 23:09:29 2004
 ***************
 *** 63,68 ****
   trap 'print_return_trap $LINENO' RETURN

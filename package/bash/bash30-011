@@ -1,37 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-011
-
-Bug-Reported-by: Egmont Koblinger <egmont@uhulinux.hu>
-Bug-Reference-ID: <Pine.LNX.4.58L0.0407282151140.8088@sziami.cs.bme.hu>
-Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-07/msg00277.html
-
-Bug-Description:
-
-I've just upgraded to readline 5.0 and bash 3.0 and tried them with UTF-8
-encoding. I found line editing to be quite buggy:
-
-I type an accented letter, let's say <E1>. Then <E1> appears. I press the left
-arrow, the cursor goes back, it is now over <E1>. I press <E9>. Now <E9><E1> is
-visible, which is correct, but the cursor is past the two letters, though
-it should be over <E1>. Here only the first Left arrow takes affect, moves
-the cursor over <E1>, but the 2nd time I press Left, it just beeps, doesn't
-move to the first char (<E9>). Now a Right arrow doesn't move the cursor, but
-causes further Left and Right arrows to work as expected. To go on,
-similar bug occurs nearly every time that I insert an accented letter
-before or amongs other ones (but not at the end of the line). When the
-command line has about ten or twenty accented letters (and no or hardly
-any non-accented ones), line editing becomes a total chaos, where
-sometimes inserting another accented letter causes the cursor to jump many
-characters to the right, and pressing the Left arrow sometimes causes the
-cursor to jump back lots of characters at once.
-
-Patch:
-
-*** ../bash-3.0/lib/readline/mbutil.c	Wed Jan 14 09:44:52 2004
---- lib/readline/mbutil.c	Wed Aug 18 22:25:57 2004
+*** bash-3.0/lib/readline/mbutil.c	Wed Jan 14 09:44:52 2004
+--- bash/lib/readline/mbutil.c	Wed Aug 18 22:25:57 2004
 ***************
 *** 127,135 ****
       {
@@ -54,8 +22,8 @@ Patch:
   	    break;
   	}
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

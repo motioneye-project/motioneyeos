@@ -1,23 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-012
-
-Bug-Reported-by: ben@ncipher.com
-Bug-Reference-ID: <E1BxQYe-0002p1-00@berdoo.ncipher.com>
-Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00215.html
-
-Bug-Description:
-
-When using the pipefail option, the following command:
-  echo foo | false
-produces an exit status of 0, ignoring the exit status of false.
-
-Patch:
-
-*** ../bash-3.0/jobs.c	Fri Apr 23 16:28:25 2004
---- jobs.c	Wed Aug 18 11:15:07 2004
+*** bash-3.0/jobs.c	Fri Apr 23 16:28:25 2004
+--- bash/jobs.c	Wed Aug 18 11:15:07 2004
 ***************
 *** 1779,1784 ****
       {
@@ -39,8 +21,8 @@ Patch:
         return fail;
       }
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

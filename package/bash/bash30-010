@@ -1,26 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-010
-
-Bug-Reported-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
-Bug-Reference-ID: <E1Bo8Sq-0004u5-00@bouh>
-Bug-Reference-URL: http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=261142
-
-Bug-Description:
-
-When trying to auto-complete ~/../``/, I just get:
-malloc: bashline.c:1340: assertion botched
-free: start and end chunk sizes differ
-last command: kill -9 %2
-Stopping myself...
-
-
-Patch:
-
-*** ../bash-3.0/bashline.c	Mon Jul  5 23:22:12 2004
---- bashline.c	Thu Sep  2 16:00:12 2004
+*** bash-3.0/bashline.c	Mon Jul  5 23:22:12 2004
+--- bash/bashline.c	Thu Sep  2 16:00:12 2004
 ***************
 *** 101,104 ****
 --- 101,105 ----
@@ -99,8 +78,8 @@ Patch:
   /* Handle symbolic link references and other directory name
      expansions while hacking completion. */
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

@@ -1,25 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-006
-
-Bug-Reported-by: alexander@skwar.name
-		 Tomohiro KUBOTA <debian@tmail.plala.or.jp>
-Bug-Reference-ID: <20040801124721.C69B8A2547A@server.bei.digitalprojects.com>
-		  <16688.41450.433668.480445@gargle.gargle.HOWL>
-Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00006.html
-		   http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=257540
-
-Bug-Description:
-
-Prompts with multibyte characters or invisible characters following a line
-wrap are displayed incorrectly.
-
-Patch:
-
-*** ../bash-3.0/lib/readline/display.c	Thu May 27 22:57:51 2004
---- lib/readline/display.c	Mon Aug 30 11:55:02 2004
+*** bash-3.0/lib/readline/display.c	Thu May 27 22:57:51 2004
+--- bash/lib/readline/display.c	Mon Aug 30 11:55:02 2004
 ***************
 *** 202,206 ****
   {
@@ -148,8 +128,8 @@ Patch:
       }
   
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

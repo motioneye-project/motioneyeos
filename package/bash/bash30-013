@@ -1,22 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-013
-
-Bug-Reported-by: Len Lattanzi <llattanzi@apple.com>
-Bug-Reference-ID: <556CE1CE-E1AC-11D8-A2D9-00039383EC60@apple.com>
-Bug-Reference-URL:
-
-Bug-Description:
-
-vi-mode filename completion/glob expansion should understand and perform
-tilde expansion.
-
-Patch:
-
-*** ../bash-3.0/bashline.c	Mon Jul  5 23:22:12 2004
---- bashline.c	Thu Sep  2 16:00:12 2004
+*** bash-3.0/bashline.c	Mon Jul  5 23:22:12 2004
+--- bash/bashline.c	Thu Sep  2 16:00:12 2004
 ***************
 *** 2514,2518 ****
     static int ind;
@@ -69,8 +52,8 @@ Patch:
   
         matches = shell_glob_filename (globtext);
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

@@ -1,29 +1,5 @@
-			     BASH PATCH REPORT
-			     =================
-
-Bash-Release: 3.0
-Patch-ID: bash30-008
-
-Bug-Reported-by: uberlord@rsm.demon.co.uk
-Bug-Reference-ID: <1092327965.4233.1.camel@uberlaptop.ubernet>
-Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00144.html
-
-Bug-Description:
-
-> Description:
->         Bash 3 breaks array expansion
-> 
-> Repeat-By:
->         #!/bin/bash
->         x=(one two)
->         echo ${x[@]:1}
->         # prints nothing in bash 3
->         # prints two in bash 2
-
-Patch:
-
-*** ../bash-3.0/subst.c	Sun Jul  4 13:56:13 2004
---- subst.c	Thu Aug 12 13:36:17 2004
+*** bash-3.0/subst.c	Sun Jul  4 13:56:13 2004
+--- bash/subst.c	Thu Aug 12 13:36:17 2004
 ***************
 *** 4892,4896 ****
       *e1p += len;
@@ -38,8 +14,8 @@ Patch:
       return (-1);
   
 
-*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
---- patchlevel.h	Thu Sep  2 15:04:32 2004
+*** bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- bash/patchlevel.h	Thu Sep  2 15:04:32 2004
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */
