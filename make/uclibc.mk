@@ -3,26 +3,6 @@
 # uClibc (the C library)
 #
 #############################################################
-# Copyright (C) 2001, 2002 by Erik Andersen <andersen@codepoet.org>
-# Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU Library General Public License as
-# published by the Free Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# Library General Public License for more details.
-#
-# You should have received a copy of the GNU Library General Public
-# License along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-# USA
-
-ifeq ($(USE_UCLIBC_TOOLCHAIN),false)
-
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
 UCLIBC_DIR=$(BUILD_DIR)/uClibc
@@ -33,64 +13,109 @@ UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.21
 UCLIBC_SOURCE:=uClibc-0.9.21.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
-#UCLIBC_PATCH=$(SOURCE_DIR)/uClibc.patch
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-LARGEFILE=true
-else
-LARGEFILE=false
-endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE) #$(UCLIBC_PATCH)
 
-$(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) #$(UCLIBC_PATCH)
+$(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
-	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCC=$(HOSTCC),g' $(UCLIBC_DIR)/Rules.mak
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(BUILD_DIR)/linux/.configured
+	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=$(TARGET_CROSS),g' \
+		$(UCLIBC_DIR)/Rules.mak
+ifeq ($(ENABLE_LOCALE),true)
+	cp $(SOURCE_DIR)/uClibc.config-locale $(UCLIBC_DIR)/.config
+else
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^GCC_BIN=.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc,g'  $(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
-	perl -i -p -e 's,^LD_BIN=.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ld,g'  $(UCLIBC_DIR)/extra/gcc-uClibc/Makefile     
+endif
+	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^GCC_BIN.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc,g' \
+		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
+	perl -i -p -e 's,^LD_BIN.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ld,g' \
+		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
 	$(MAKE) -C $(UCLIBC_DIR) oldconfig
+	$(MAKE) -C $(UCLIBC_DIR) pregen
+	$(MAKE) -C $(UCLIBC_DIR) headers
+	$(MAKE) -C $(UCLIBC_DIR) install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured
 	$(MAKE) -C $(UCLIBC_DIR)
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) install_dev install_runtime install_toolchain
+	$(MAKE) -C $(UCLIBC_DIR) install_dev install_runtime install_utils
 
-$(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) install_toolchain
-
-$(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
+ifneq ($(TARGET_DIR),)
+$(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) DEVEL_PREFIX=$(TARGET_DIR) \
 		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
-		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr \
-		install_runtime
+		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr install_runtime
 
 $(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) install_target_utils
+	(cd $(TARGET_DIR)/sbin; ln -sf /bin/true ldconfig) 
 
-uclibc: $(BUILD_DIR)/linux/.configured $(STAGING_DIR)/lib/libc.a \
-	    $(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
+UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
+endif
 
-uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
+uclibc-configured: $(UCLIBC_DIR)/.configured
+
+uclibc: $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc $(STAGING_DIR)/lib/libc.a \
+	$(UCLIBC_TARGETS)
 
 uclibc-clean:
-	rm -f $(TARGET_DIR)/lib/libc.so.0
 	-$(MAKE) -C $(UCLIBC_DIR) clean
 	rm -f $(UCLIBC_DIR)/.config
 
 uclibc-dirclean:
 	rm -rf $(UCLIBC_DIR)
 
-endif
+
+
+
+#############################################################
+#
+# uClibc for the target just needs its header files
+# and whatnot installed.
+#
+#############################################################
+
+$(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
+	$(MAKE) DEVEL_PREFIX=$(TARGET_DIR)/usr SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
+		DEVEL_TOOL_PREFIX=$(TARGET_DIR) -C $(UCLIBC_DIR) \
+		install_dev
+	#remove the extra copy of the shared libs
+	rm -f $(TARGET_DIR)/usr/lib/*-*.so
+	(cd $(TARGET_DIR)/usr/lib; \
+		ln -fs /lib/libc.so.0 libc.so; \
+		ln -fs /lib/libdl.so.0 libdl.so; \
+		ln -fs /lib/libcrypt.so.0 libcrypt.so; \
+		ln -fs /lib/libresolv.so.0 libresolv.so; \
+		ln -fs /lib/libutil.so.0 libutil.so; \
+		ln -fs /lib/libm.so.0 libm.so; \
+		ln -fs /lib/libpthread.so.0 libpthread.so; \
+		ln -fs /lib/libnsl.so.0 libnsl.so; \
+	)
+
+uclibc_target: gcc_final uclibc $(TARGET_DIR)/usr/lib/libc.a
+
+uclibc_target-clean:
+	rm -f $(TARGET_DIR)/include
+
+uclibc_target-dirclean:
+	rm -f $(TARGET_DIR)/include
+

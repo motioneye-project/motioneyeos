@@ -19,8 +19,6 @@
 # USA
 
 
-TARGETS=
-DISABLE_NLS=
 #############################################################
 #
 # EDIT this stuff to suit your system and preferences
@@ -70,26 +68,40 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 EXTRA_GCC_CONFIG_OPTIONS=
 #EXTRA_GCC_CONFIG_OPTIONS=--without-float
 
-# Uncomment the following if you don't want gettext support.
-DISABLE_NLS:=--disable-nls
+# Enable the following if you want locale/gettext/i18n support.
+#ENABLE_LOCALE:=true
+ENABLE_LOCALE:=false
+
+# If you want multilib enabled, enable this...
+MULTILIB:=--enable-multilib
+
+#Install libstdc++?
+INSTALL_LIBSTDCPP=true
 
 #############################################################
 #
 # The list of stuff to build for the target filesystem
 #
 #############################################################
+TARGETS:=
 # The toolchain comes next if we are building one
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
-TARGETS+=uclibc_toolchain
+TARGETS+=binutils uclibc-configured gcc3_3
+#TARGETS+=binutils uclibc gcc_2_95
+else
+TARGETS+=uclibc
 endif
 
-# Do you want user mode Linux (x86 only), or are you building a 
-# real kernel # that will run on its own?  Perhaps you have a 
+# Do you want user mode Linux (x86 only), or are you building a
+# your own kernel that will run on its own?  Perhaps you have a
 # kernel you have already configured and you want to use that?
+# The default is to just use a set of known working kernel
+# headers.  Unless you want to build a kernel, I recommend just
+# using that...
+TARGETS+=kernel-headers
 #TARGETS+=linux
 #TARGETS+=user-mode-linux
 #TARGETS+=system-linux
-TARGETS+=kernel-headers
 
 # The default minimal set
 TARGETS+=busybox tinylogin
@@ -187,6 +199,14 @@ TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		GCC=$(TARGET_CROSS)gcc \
 		CXX=$(TARGET_CROSS)g++ \
 		RANLIB=$(TARGET_CROSS)ranlib
+#Directory in which to build the toolchain
+TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)
+ifeq ($(ENABLE_LOCALE),true)
+DISABLE_NLS:=
+else
+DISABLE_NLS:=--disable-nls
+endif
+
 
 all:   world
 

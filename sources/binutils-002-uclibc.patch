@@ -1,0 +1,12 @@
+diff -urN binutils-2.13.90.0.14/bfd/configure binutils-2.13.90.0.14.new/bfd/configure
+--- binutils-2.13.90.0.14/bfd/configure	2002-11-14 12:37:55.000000000 -0500
++++ binutils-2.13.90.0.14.new/bfd/configure	2002-11-19 16:15:42.000000000 -0500
+@@ -1208,7 +1208,7 @@
+ bfd_version_string="\"${VERSION}\""
+ if test x${is_release} = x; then
+   bfd_version_date=`sed -n -e 's/.*DATE //p' < ${srcdir}/version.h`
+-  bfd_version_string="\"${VERSION} ${bfd_version_date}\""
++  bfd_version_string="\"${VERSION} ${bfd_version_date} uClibc\""
+ fi
+ 
+ 
