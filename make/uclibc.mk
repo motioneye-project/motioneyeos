@@ -9,8 +9,8 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.22
-UCLIBC_SOURCE:=uClibc-0.9.22.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.23
+UCLIBC_SOURCE:=uClibc-0.9.23.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
@@ -78,6 +78,17 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(STAGING_DIR) utils install_utils
 	# Clean up the host compiled utils...
 	$(MAKE) -C $(UCLIBC_DIR)/utils clean
+	(cd $(STAGING_DIR)/lib; \
+		ln -fs libc.so.0 libc.so; \
+		ln -fs libdl.so.0 libdl.so; \
+		ln -fs libcrypt.so.0 libcrypt.so; \
+		ln -fs libresolv.so.0 libresolv.so; \
+		ln -fs libutil.so.0 libutil.so; \
+		ln -fs libm.so.0 libm.so; \
+		ln -fs libpthread.so.0 libpthread.so; \
+		ln -fs libnsl.so.0 libnsl.so; \
+		ln -fs libthread_db.so.1 libthread_db.so; \
+	)
 
 ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
@@ -128,18 +139,7 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 		ln -fs /lib/libm.so.0 libm.so; \
 		ln -fs /lib/libpthread.so.0 libpthread.so; \
 		ln -fs /lib/libnsl.so.0 libnsl.so; \
-		\
 		ln -fs /lib/libthread_db.so.1 libthread_db.so; \
-		rm -f ld-uClibc-0.9.22.so; \
-		rm -f libcrypt-0.9.22.so; \
-		rm -f libdl-0.9.22.so; \
-		rm -f libm-0.9.22.so; \
-		rm -f libnsl-0.9.22.so; \
-		rm -f libpthread-0.9.22.so; \
-		rm -f libresolv-0.9.22.so; \
-		rm -f libuClibc-0.9.22.so; \
-		rm -f libutil-0.9.22.so; \
-		rm -f libthread_db-0.9.22.so; \
 	)
 
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
