@@ -57,8 +57,8 @@ $(UTIL-LINUX_BINARY): $(UTIL-LINUX_DIR)/.configured
 
 $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
 	$(MAKE) ARCH=$(ARCH) DESTDIR=$(TARGET_DIR) USE_TTY_GROUP=no -C $(UTIL-LINUX_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/share/info \
+		$(TARGET_DIR)/usr/share/man $(TARGET_DIR)/usr/share/doc
 
 util-linux: uclibc $(UTIL-LINUX_TARGET_BINARY)
 
