@@ -4,14 +4,14 @@
 #
 #############################################################
 DB_SITE:=http://www.sleepycat.com/update/snapshot
-DB_SOURCE:=db-4.0.14.tar.gz
-DB_DIR:=$(BUILD_DIR)/db-4.0.14
+DB_SOURCE:=db-4.1.25.NC.tar.gz
+DB_DIR:=$(BUILD_DIR)/db-4.1.25.NC
 
 
 $(DL_DIR)/$(DB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DB_SITE)/$(DB_SOURCE)
 
-db-source: $(DL_DIR)/$(DB_SOURCE)
+berkeleydb-source: $(DL_DIR)/$(DB_SOURCE)
 
 $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
 	zcat $(DL_DIR)/$(DB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -32,29 +32,61 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		--with-gnu-ld \
 		--enable-shared \
+		--disable-cxx \
+		--disable-java \
+		--disable-rpc \
+		--disable-tcl \
+		--disable-compat185 \
+		--with-pic \
 	);
+	perl -i -p -e 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
 	touch  $(DB_DIR)/.configured
 
-$(DB_DIR)/build_unix/.libs/libdb-4.0.so: $(DB_DIR)/.configured
+$(DB_DIR)/build_unix/.libs/libdb-4.1.so: $(DB_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(DB_DIR)/build_unix
 
-$(STAGING_DIR)/lib/libdb-4.0.so: $(DB_DIR)/build_unix/.libs/libdb-4.0.so
-	-mkdir -p $(STAGING_DIR)/man/man1
-	$(MAKE) DESTDIR=$(STAGING_DIR) CC=$(TARGET_CC) -C $(DB_DIR)/build_unix install 
-	rm -rf $(STAGING_DIR)/man/man1
+$(STAGING_DIR)/lib/libdb-4.1.so: $(DB_DIR)/build_unix/.libs/libdb-4.1.so
+	$(MAKE) \
+	    prefix=$(STAGING_DIR) \
+	    exec_prefix=$(STAGING_DIR) \
+	    bindir=$(STAGING_DIR)/bin \
+	    sbindir=$(STAGING_DIR)/sbin \
+	    libexecdir=$(STAGING_DIR)/lib \
+	    datadir=$(STAGING_DIR)/share \
+	    sysconfdir=$(STAGING_DIR)/etc \
+	    localstatedir=$(STAGING_DIR)/var \
+	    libdir=$(STAGING_DIR)/lib \
+	    infodir=$(STAGING_DIR)/info \
+	    mandir=$(STAGING_DIR)/man \
+	    includedir=$(STAGING_DIR)/include \
+	    -C $(DB_DIR)/build_unix install;
+	chmod a-x $(STAGING_DIR)/lib/libdb*so*
+	rm -f $(STAGING_DIR)/bin/db_*
+	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/info \
+		$(STAGING_DIR)/man $(STAGING_DIR)/share/doc
 
-$(TARGET_DIR)/lib/libdb-4.0.so: $(STAGING_DIR)/lib/libdb-4.0.so
+$(TARGET_DIR)/lib/libdb-4.1.so: $(STAGING_DIR)/lib/libdb-4.1.so
 	rm -rf $(TARGET_DIR)/lib/libdb*
-	-mv $(STAGING_DIR)/bin/db_* $(TARGET_DIR)/usr/bin/
 	cp -a $(STAGING_DIR)/lib/libdb*so*  $(TARGET_DIR)/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib//libdb*so*
+	rm -f $(TARGET_DIR)/lib/libdb.so $(TARGET_DIR)/lib/libdb.la $(TARGET_DIR)/lib/libdb.a
+	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libdb-4.1.so libdb.so)
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libdb*so*
 
-db-clean: 
+$(TARGET_DIR)/usr/lib/libdb.a: $(STAGING_DIR)/lib/libdb-4.1.a
+	cp -dpf $(STAGING_DIR)/include/db.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(STAGING_DIR)/lib/libdb*.a $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/lib/libdb*.la $(TARGET_DIR)/usr/lib/
+	touch -c $(TARGET_DIR)/usr/lib/libdb.a
+
+berkeleydb-headers: $(TARGET_DIR)/usr/lib/libdb.a
+
+berkeleydb-clean: 
 	$(MAKE) -C $(DB_DIR)/build_unix clean
 
-db-dirclean: 
+berkeleydb-dirclean: 
 	rm -rf $(DB_DIR) 
 
-db: uclibc $(TARGET_DIR)/lib/libdb-4.0.so
+berkeleydb: uclibc $(TARGET_DIR)/lib/libdb-4.1.so
 
