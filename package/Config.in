@@ -99,7 +99,7 @@ source "package/valgrind/Config.in"
 source "package/vtun/Config.in"
 source "package/wget/Config.in"
 source "package/which/Config.in"
-source "package/wtools/Config.in"
+source "package/wireless-tools/Config.in"
 source "package/zlib/Config.in"
 
 
