@@ -117,22 +117,14 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR2)
 	mkdir -p $(TARGET_DIR)/usr/include
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
-	(cd $(BINUTILS_DIR2); ln -fs $(ARCH)-linux build-$(GNU_TARGET_NAME))
 	(cd $(BINUTILS_DIR2); \
-		AR=ar \
-		AS=as \
-		LD=ld \
-		NM=nm \
-		RANLIB=ranlib \
-		CC=$(HOSTCC) \
-		GCC=$(HOSTCC) \
-		CXX=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD=$(HOSTCC) \
+		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
 		NM_FOR_TARGET=$(TARGET_CROSS)nm \
-		OBJDUMP_FOR_TARGET=$(TARGET_CROSS)objdump \
-		OBJCOPY_FOR_TARGET=$(TARGET_CROSS)objcopy \
 		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
@@ -140,7 +132,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
+		--build=$(ARCH)-linux \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -159,20 +151,12 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	$(MAKE) -C $(BINUTILS_DIR2) \
-		AR=ar \
-		AS=as \
-		LD=ld \
-		NM=nm \
-		RANLIB=ranlib \
-		CC=$(HOSTCC) \
-		GCC=$(HOSTCC) \
-		CXX=$(HOSTCC) \
+		CC_FOR_BUILD=$(HOSTCC) \
+		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
 		NM_FOR_TARGET=$(TARGET_CROSS)nm \
-		OBJDUMP_FOR_TARGET=$(TARGET_CROSS)objdump \
-		OBJCOPY_FOR_TARGET=$(TARGET_CROSS)objcopy \
 		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
@@ -181,20 +165,12 @@ $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
 	$(MAKE) -C $(BINUTILS_DIR2) \
-		AR=ar \
-		AS=as \
-		LD=ld \
-		NM=nm \
-		RANLIB=ranlib \
-		CC=$(HOSTCC) \
-		GCC=$(HOSTCC) \
-		CXX=$(HOSTCC) \
+		CC_FOR_BUILD=$(HOSTCC) \
+		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
 		NM_FOR_TARGET=$(TARGET_CROSS)nm \
-		OBJDUMP_FOR_TARGET=$(TARGET_CROSS)objdump \
-		OBJCOPY_FOR_TARGET=$(TARGET_CROSS)objcopy \
 		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
