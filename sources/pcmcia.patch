@@ -1,15 +1,3 @@
-diff -urN pcmcia-cs-3.1.33.orig/etc/shared pcmcia-cs-3.1.33/etc/shared
---- pcmcia-cs-3.1.33.orig/etc/shared	Thu Nov 22 11:25:24 2001
-+++ pcmcia-cs-3.1.33/etc/shared	Mon Apr 15 00:39:47 2002
-@@ -2,6 +2,8 @@
- # shared 1.28 2001/08/23 00:43:17 (David Hinds)
- #
- 
-+umask 022
-+
- usage ()
- {
-     echo "usage: $0 [action] [device name]"
 --- pcmcia-cs-3.1.34/etc/config.opts.orig	Tue Jul  9 09:36:23 2002
 +++ pcmcia-cs-3.1.34/etc/config.opts	Tue Jul  9 09:37:47 2002
 @@ -5,7 +5,7 @@
@@ -21,21 +9,47 @@ diff -urN pcmcia-cs-3.1.33.orig/etc/shared pcmcia-cs-3.1.33/etc/shared
  include memory 0xc0000-0xfffff
  include memory 0xa0000000-0xa0ffffff, memory 0x60000000-0x60ffffff
  
-@@ -22,7 +22,7 @@
- # Second built-in serial port
- #exclude irq 3
- # First built-in parallel port
--exclude irq 7
-+#exclude irq 7
+diff -urN pcmcia-cs-3.2.3.orig/etc/pcmcia.conf pcmcia-cs-3.2.3/etc/pcmcia.conf
+--- pcmcia-cs-3.2.3.orig/etc/pcmcia.conf	1969-12-31 17:00:00.000000000 -0700
++++ pcmcia-cs-3.2.3/etc/pcmcia.conf	2003-02-14 05:05:07.000000000 -0700
+@@ -0,0 +1,13 @@
++# Defaults for pcmcia
++PCMCIA=yes
++# Should be either yenta_socket, i82365, i82092, or tcic
++PCIC=yenta_socket
++# Put socket driver timing parameters here
++PCIC_OPTS=
++# Put pcmcia_core options here
++CORE_OPTS=
++# Put cardmgr options here
++CARDMGR_OPTS=
++# To set the PCMCIA scheme at startup...
++SCHEME=
++
+diff -urN pcmcia-cs-3.2.3.orig/etc/rc.pcmcia pcmcia-cs-3.2.3/etc/rc.pcmcia
+--- pcmcia-cs-3.2.3.orig/etc/rc.pcmcia	2002-08-08 00:43:43.000000000 -0600
++++ pcmcia-cs-3.2.3/etc/rc.pcmcia	2003-02-14 05:05:13.000000000 -0700
+@@ -26,9 +26,9 @@
+ done
  
- #----------------------------------------------------------------------
+ # Source PCMCIA configuration, if available
+-if [ -f /etc/pcmcia.conf ] ; then
++if [ -f /etc/pcmcia/pcmcia.conf ] ; then
+     # Debian startup option file
+-    . /etc/pcmcia.conf
++    . /etc/pcmcia/pcmcia.conf
+ elif [ -f /etc/sysconfig/pcmcia ] ; then
+     # Red Hat startup option file
+     . /etc/sysconfig/pcmcia
+diff -urN pcmcia-cs-3.2.3.orig/etc/shared pcmcia-cs-3.2.3/etc/shared
+--- pcmcia-cs-3.2.3.orig/etc/shared	2002-08-18 21:21:11.000000000 -0600
++++ pcmcia-cs-3.2.3/etc/shared	2003-02-14 05:05:07.000000000 -0700
+@@ -2,6 +2,8 @@
+ # shared 1.31 2002/08/19 03:21:11 (David Hinds)
+ #
  
-@@ -36,7 +36,7 @@
- 
- # Options for Raylink/WebGear driver: uncomment only one line...
- # Generic ad-hoc network
--module "ray_cs" opts "essid=ADHOC_ESSID hop_dwell=128 beacon_period=256 translate=1"
-+#module "ray_cs" opts "essid=ADHOC_ESSID hop_dwell=128 beacon_period=256 translate=1"
- # Infrastructure network for older cards
- #module "ray_cs" opts "net_type=1 essid=ESSID1"
- # Infrastructure network for WebGear
++umask 022
++
+ usage ()
+ {
+     echo "usage: $0 [action] [device name]"

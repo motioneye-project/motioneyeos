@@ -45,6 +45,10 @@ $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
 		--sysv --kcc=$(HOSTCC) --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
+	perl -i -p -e "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
+	perl -i -p -e "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config
+	perl -i -p -e "s/bind \"wvlan_cs\"/bind \"orinoco_cs\"/g" $(PCMCIA_DIR)/etc/config
+	perl -i -p -e "s,/etc/pcmcia.conf,/etc/pcmcia/pcmcia.conf," $(PCMCIA_DIR)/etc/rc.pcmcia
 	touch $(PCMCIA_DIR)/.configured
 
 $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
@@ -61,13 +65,6 @@ $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
 $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -rf $(TARGET_DIR)/etc/pcmcia;
 	$(MAKE) -i -C $(PCMCIA_DIR) install
-	perl -i -p -e "s/pump/udhcpc/" $(TARGET_DIR)/etc/pcmcia/network
-	perl -i -p -e "s/ide_cs/ide-cs/" $(TARGET_DIR)/etc/pcmcia/config
-	perl -i -p -e "s/bind \"wvlan_cs\"/bind \"orinoco_cs\"/g" $(TARGET_DIR)/etc/pcmcia/config
-	perl -i -p -e "s,/var/lib/pcmcia/scheme,/etc/pcmcia/scheme," $(TARGET_DIR)/etc/pcmcia/shared
-	perl -i -p -e "s,/var/run/pcmcia-scheme,/etc/pcmcia/pcmcia-scheme," $(TARGET_DIR)/etc/pcmcia/shared
-	#perl -i -p -e "s/port 0x800-0x8ff, //" $(TARGET_DIR)/etc/pcmcia/config.opts ;
-	echo "default" > $(TARGET_DIR)/etc/pcmcia/scheme;
 	rm -rf $(TARGET_DIR)/usr/man;
 	rm -rf $(TARGET_DIR)/usr/share/man;
 	rm -rf $(TARGET_DIR)/usr/X11R6/man;
@@ -78,6 +75,7 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -f $(TARGET_DIR)/usr/share/pnp.ids $(TARGET_DIR)/sbin/lspnp $(TARGET_DIR)/sbin/setpnp;
 	rm -f $(TARGET_DIR)/sbin/pcinitrd
 	rm -f $(TARGET_DIR)/sbin/probe
+	perl -i -p -e "s,/etc/pcmcia.conf,/etc/pcmcia/pcmcia.conf," $(PCMCIA_DIR)/etc/rc.pcmcia
 	cp $(PCMCIA_DIR)/etc/rc.pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
 	chmod a+x $(TARGET_DIR)/etc/init.d/S30pcmcia
 	chmod -R u+w $(TARGET_DIR)/etc/pcmcia/*
