@@ -1,0 +1,7 @@
+#
+config BR2_READLINE
+	bool "readline"
+	default y
+	help
+	    Enable GNU readline support?
+
