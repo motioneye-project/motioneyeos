@@ -3,9 +3,10 @@
 # mke2fs
 #
 #############################################################
-MKE2FS_SOURCE=e2fsprogs-1.27.tar.gz
-MKE2FS_SITE=http://aleron.dl.sourceforge.net/sourceforge/e2fsprogs
-MKE2FS_DIR=$(BUILD_DIR)/e2fsprogs-1.27
+MKE2FS_VER:=1.35
+MKE2FS_SOURCE:=e2fsprogs-$(MKE2FS_VER).tar.gz
+MKE2FS_SITE:=http://aleron.dl.sourceforge.net/sourceforge/e2fsprogs
+MKE2FS_DIR:=$(BUILD_DIR)/e2fsprogs-$(MKE2FS_VER)
 MKE2FS_CAT:=zcat
 MKE2FS_BINARY:=misc/mke2fs
 MKE2FS_TARGET_BINARY:=sbin/mke2fs
@@ -22,6 +23,7 @@ $(MKE2FS_DIR)/.unpacked: $(DL_DIR)/$(MKE2FS_SOURCE)
 $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked
 	(cd $(MKE2FS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -46,7 +48,8 @@ $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked
 	touch  $(MKE2FS_DIR)/.configured
 
 $(MKE2FS_DIR)/$(MKE2FS_BINARY): $(MKE2FS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(MKE2FS_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(MKE2FS_DIR) \
+		PROG_SUBDIRS=misc
 	$(STRIP) $(MKE2FS_DIR)/misc/mke2fs $(MKE2FS_DIR)/misc/badblocks;
 	touch -c $(MKE2FS_DIR)/misc/mke2fs
 
