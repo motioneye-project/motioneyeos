@@ -47,19 +47,7 @@ $(LINUX_DIR)/.configured:
 
 $(LINUX_KERNEL): $(LINUX_DIR)/.configured
 
-$(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
-	mkdir -p $(STAGING_DIR)/include
-	rm -rf $(STAGING_DIR)/include/linux
-	cp -dpa $(LINUX_DIR)/include/linux $(STAGING_DIR)/include/
-	rm -rf $(STAGING_DIR)/include/asm
-	mkdir -p $(STAGING_DIR)/include/asm
-	cp -dpa $(LINUX_DIR)/include/asm/* $(STAGING_DIR)/include/asm/
-	rm -rf $(STAGING_DIR)/include/scsi
-	mkdir -p $(STAGING_DIR)/include/scsi
-	cp -dpa $(LINUX_DIR)/include/scsi/* $(STAGING_DIR)/include/scsi
-	touch -c $(STAGING_DIR)/include/linux/version.h
-
-system-linux: $(STAGING_DIR)/include/linux/version.h
+system-linux: $(LINUX_DIR)/.configured
 
 system-linux-clean: clean
 	rm -f $(LINUX_KERNEL)
