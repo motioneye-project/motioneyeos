@@ -44,6 +44,7 @@ GCC_CAT:=bzcat
 # Setup some initial stuff
 #
 #############################################################
+
 ifeq ($(INSTALL_LIBSTDCPP),true)
 TARGET_LANGUAGES:=c,c++
 else
@@ -303,21 +304,18 @@ $(TARGET_DIR)/lib/libstdc++.so.5.0.5: $(GCC_BUILD_DIR2)/.installed
 	cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
 
 $(GCC_BUILD_DIR2)/.shared_libgcc: $(GCC_BUILD_DIR2)/.installed
-	# Let applications link with the shared libgcc.
+	# Make sure a copy of libgcc_s is in the target's /lib.
 	if [ -f $(STAGING_DIR)/lib/libgcc_s.so.0.9.9 ] ; then \
 		cp -a $(STAGING_DIR)/lib/libgcc_s.so* $(TARGET_DIR)/lib/ ; \
-		mkdir -p $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/ ; \
-		ln -sf $(STAGING_DIR)/lib/libgcc_s.so $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so ; \
 	fi
 	touch $(GCC_BUILD_DIR2)/.shared_libgcc
 
+GCC_TARGETS:=$(GCC_BUILD_DIR2)/.shared_libgcc
 ifeq ($(INSTALL_LIBSTDCPP),true)
-GCC_TARGETS= $(GCC_BUILD_DIR2)/.shared_libgcc $(TARGET_DIR)/lib/libstdc++.so.5.0.5 
-else
-GCC_TARGETS= $(GCC_BUILD_DIR2)/.shared_libgcc
-endif
+GCC_TARGETS+=$(TARGET_DIR)/lib/libstdc++.so.5.0.5
 endif
 
+endif
 
 gcc3_3: binutils uclibc-configured gcc3_3_initial $(LIBFLOAT_TARGET) uclibc \
 	$(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
@@ -438,10 +436,6 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
 	rm -rf $(TARGET_DIR)/usr/include/include $(TARGET_DIR)/usr/usr
-	#-cp -dpf $(STAGING_DIR)/lib/libgcc* $(TARGET_DIR)/lib/
-	#-chmod a-x $(STAGING_DIR)/lib/*++*
-	#-cp -a $(STAGING_DIR)/lib/*++* $(TARGET_DIR)/lib/
-	#-cp -a $(STAGING_DIR)/include/c++ $(TARGET_DIR)/usr/include/
 	-mv $(TARGET_DIR)/lib/*.a $(TARGET_DIR)/usr/lib/
 	-mv $(TARGET_DIR)/lib/*.la $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libstdc++.so*
@@ -458,11 +452,6 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Work around problem of missing syslimits.h
 	cp -f $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/include/syslimits.h  $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/include/
-	# Enable applications to find the shared libgcc when linking on target.
-	if [ -f $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so ] ; then \
-		ln -sf $(TARGET_DIR)/lib/libgcc_s.so $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so ; \
-		(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION) ;  ln -sf /lib/libgcc_s.so libgcc.so); \
-	fi
 	# These are in /lib, so...
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
 	touch -c $(TARGET_DIR)/usr/bin/gcc
