@@ -137,7 +137,14 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	#
 	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"\
 		,#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
-		`grep -lr "#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"" $(BINUTILS_DIR)`);
+		`grep -lr "ELF_DYNAMIC_INTERPRETER" $(BINUTILS_DIR)`);
+	#
+	# Hack binutils to prevent it from searching the host system
+	# for libraries.  We only want libraries for the target system.
+	#
+	(cd $(BINUTILS_DIR); perl -i -p -e "s,^NATIVE_LIB_DIRS.*,\
+		NATIVE_LIB_DIRS='$(STAGING_DIR)/usr/lib $(STAGING_DIR)/lib',;" \
+		$(BINUTILS_DIR)/ld/configure.host);
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
@@ -247,7 +254,7 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 	# when it calls locatelib() and rummages about the system looking 
 	# for libraries with the correct name...
 	#
-	perl -i -p -e "s,\"/lib/,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
+	perl -i -p -e "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
 	perl -i -p -e "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
@@ -513,6 +520,7 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-g++ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-c++filt $(STAGING_DIR)/bin/$(ARCH)-uclibc-c++filt
 	rm -f $(STAGING_DIR)/bin/cpp $(STAGING_DIR)/bin/gcov $(STAGING_DIR)/bin/*gccbug
+	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-$(ARCH)-uclibc-*
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
 	# Strip the host binaries
