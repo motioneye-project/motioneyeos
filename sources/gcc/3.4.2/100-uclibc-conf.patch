@@ -288,7 +288,7 @@ diff -urN gcc-3.4.1-dist/gcc/config/t-linux-uclibc gcc-3.4.1/gcc/config/t-linux-
 +
 +# Override t-slibgcc-elf-ver to export some libgcc symbols with
 +# the symbol versions that glibc used.
-+SHLIB_MAPFILES += $(srcdir)/config/libgcc-glibc.ver
++#SHLIB_MAPFILES += $(srcdir)/config/libgcc-glibc.ver
 +
 +# Use unwind-dw2-fde
 +LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde.c \
