@@ -25,7 +25,7 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 	AR=$(TARGET_CROSS)ar NM=$(TARGET_CROSS)nm \
 	LD=$(TARGET_CROSS)ld AS=$(TARGET_CROSS)as \
 	./configure --prefix=/usr \
-	    --includedir=$(STAGING_DIR)/include \
+	    --includedir=/usr/include \
 	    --disable-nls --without-uiout --disable-valgrindmi \
 	    --disable-tui --disable-valgrindtk --without-x \
 	    --without-included-gettext);
@@ -37,7 +37,22 @@ $(VALGRIND_DIR)/valgrind.so: $(VALGRIND_DIR)/.configured
 	touch -c $(VALGRIND_DIR)/valgrind.so
 
 $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind.so
-	make CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(VALGRIND_DIR) install
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+	$(MAKE) \
+	    prefix=$(TARGET_DIR)/usr \
+	    exec_prefix=$(TARGET_DIR)/usr \
+	    bindir=$(TARGET_DIR)/usr/bin \
+	    sbindir=$(TARGET_DIR)/usr/sbin \
+	    libexecdir=$(TARGET_DIR)/usr/lib \
+	    datadir=$(TARGET_DIR)/usr/share \
+	    sysconfdir=$(TARGET_DIR)/etc \
+	    sharedstatedir=$(TARGET_DIR)/usr/com \
+	    localstatedir=$(TARGET_DIR)/var \
+	    libdir=$(TARGET_DIR)/usr/lib \
+	    infodir=$(TARGET_DIR)/usr/info \
+	    mandir=$(TARGET_DIR)/usr/man \
+	    includedir=$(TARGET_DIR)/usr/include \
+	    -C $(VALGRIND_DIR) install;
 	rm -rf $(TARGET_DIR)/usr/share/doc/valgrind
 	touch -c $(TARGET_DIR)/usr/bin/valgrind
 
