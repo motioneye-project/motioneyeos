@@ -1,0 +1,73 @@
+http://sources.redhat.com/ml/binutils/2003-05/msg00739.html
+
+2003-05-23  H.J. Lu <hongjiu.lu@intel.com>
+
+	* ltmain.sh: Make symlink for shared library if needed.
+
+opcodes/
+
+2003-05-23  H.J. Lu <hongjiu.lu@intel.com>
+
+	* Makefile.am (libopcodes_la_LIBADD): Use "-L../bfd -lbfd"
+	instead of "../bfd/libbfd.la".
+	* Makefile.in: Regenerated.
+
+--- binutils/ltmain.sh.dso	2002-03-22 00:16:20.000000000 -0800
++++ binutils/ltmain.sh	2003-05-23 22:51:20.000000000 -0700
+@@ -4413,6 +4413,10 @@ relink_command=\"$relink_command\""
+       # LD_LIBRARY_PATH before the program is installed.
+       $show "(cd $output_objdir && $rm $outputname && $LN_S ../$outputname $outputname)"
+       $run eval '(cd $output_objdir && $rm $outputname && $LN_S ../$outputname $outputname)' || exit $?
++      if test -n "$linkname"; then
++        $show "(cd $output_objdir && $rm ../$linkname && $LN_S $output_objdir/$linkname ../$linkname)"
++        $run eval '(cd $output_objdir && $rm ../$linkname && $LN_S $output_objdir/$linkname ../$linkname)' || exit $?
++      fi
+       ;;
+     esac
+     exit 0
+--- binutils/opcodes/Makefile.am.dso	2003-05-19 08:23:00.000000000 -0700
++++ binutils/opcodes/Makefile.am	2003-05-23 22:46:29.000000000 -0700
+@@ -283,7 +283,7 @@ disassemble.lo: disassemble.c $(INCDIR)/
+ 
+ libopcodes_la_SOURCES =  dis-buf.c disassemble.c
+ libopcodes_la_DEPENDENCIES = $(OFILES) ../bfd/libbfd.la
+-libopcodes_la_LIBADD = $(OFILES) @WIN32LIBADD@ ../bfd/libbfd.la
++libopcodes_la_LIBADD = $(OFILES) @WIN32LIBADD@ -L../bfd -lbfd
+ libopcodes_la_LDFLAGS = -release $(VERSION) @WIN32LDFLAGS@
+ 
+ # libtool will build .libs/libopcodes.a.  We create libopcodes.a in
+--- binutils/opcodes/Makefile.in.dso	2003-05-20 08:37:53.000000000 -0700
++++ binutils/opcodes/Makefile.in	2003-05-23 22:46:31.000000000 -0700
+@@ -1,4 +1,4 @@
+-# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
++# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
+ 
+ # Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+@@ -393,7 +393,7 @@ INCLUDES = -D_GNU_SOURCE -I. -I$(srcdir)
+ 
+ libopcodes_la_SOURCES = dis-buf.c disassemble.c
+ libopcodes_la_DEPENDENCIES = $(OFILES) ../bfd/libbfd.la
+-libopcodes_la_LIBADD = $(OFILES) @WIN32LIBADD@ ../bfd/libbfd.la
++libopcodes_la_LIBADD = $(OFILES) @WIN32LIBADD@ -L../bfd -lbfd
+ libopcodes_la_LDFLAGS = -release $(VERSION) @WIN32LDFLAGS@
+ 
+ # libtool will build .libs/libopcodes.a.  We create libopcodes.a in
+@@ -592,7 +592,7 @@ libopcodes.la: $(libopcodes_la_OBJECTS) 
+ all-recursive install-data-recursive install-exec-recursive \
+ installdirs-recursive install-recursive uninstall-recursive install-info-recursive \
+ check-recursive installcheck-recursive info-recursive dvi-recursive:
+-	@set fnord $(MAKEFLAGS); amf=$$2; \
++	@set fnord $$MAKEFLAGS; amf=$$2; \
+ 	dot_seen=no; \
+ 	target=`echo $@ | sed s/-recursive//`; \
+ 	list='$(SUBDIRS)'; for subdir in $$list; do \
+@@ -612,7 +612,7 @@ check-recursive installcheck-recursive i
+ 
+ mostlyclean-recursive clean-recursive distclean-recursive \
+ maintainer-clean-recursive:
+-	@set fnord $(MAKEFLAGS); amf=$$2; \
++	@set fnord $$MAKEFLAGS; amf=$$2; \
+ 	dot_seen=no; \
+ 	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
+ 	  rev="$$subdir $$rev"; \

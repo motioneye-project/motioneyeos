@@ -1,0 +1,22 @@
+--- binutils-2.11.90.0.19.orig/ld/Makefile.am
++++ binutils-2.11.90.0.19/ld/Makefile.am
+@@ -19,7 +19,7 @@
+ # We put the scripts in the directory $(scriptdir)/ldscripts.
+ # We can't put the scripts in $(datadir) because the SEARCH_DIR
+ # directives need to be different for native and cross linkers.
+-scriptdir = $(tooldir)/lib
++scriptdir = $(libdir)
+ 
+ EMUL = @EMUL@
+ EMULATION_OFILES = @EMULATION_OFILES@
+--- binutils-2.11.90.0.19.orig/ld/Makefile.in
++++ binutils-2.11.90.0.19/ld/Makefile.in
+@@ -123,7 +123,7 @@
+ # We put the scripts in the directory $(scriptdir)/ldscripts.
+ # We can't put the scripts in $(datadir) because the SEARCH_DIR
+ # directives need to be different for native and cross linkers.
+-scriptdir = $(tooldir)/lib
++scriptdir = $(libdir)
+ 
+ EMUL = @EMUL@
+ EMULATION_OFILES = @EMULATION_OFILES@

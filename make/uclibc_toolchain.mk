@@ -41,9 +41,6 @@ MULTILIB:=--enable-multilib
 # here at the top...  Easier to find things here anyways...
 #
 #############################################################
-#BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils
-#BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
-#BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.13.2.1
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
 BINUTILS_SOURCE:=binutils-2.14.90.0.5.tar.bz2
 BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.5
@@ -125,23 +122,11 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply any files named binutils-*.patch from the source directory to binutils
 	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR) binutils-*.patch
 	#
-	# Enable combreloc, since it is such a nice thing to have...
+	# Hack binutils to use the correct default shared lib loader
 	#
-	-perl -i -p -e "s,link_info.combreloc = false,link_info.combreloc = true,g;" \
-		$(BINUTILS_DIR)/ld/ldmain.c
-	#
-	# Hack binutils to use the correct shared lib loader
-	#
-	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"\
-		,#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
-		`grep -lr "ELF_DYNAMIC_INTERPRETER" $(BINUTILS_DIR)`);
-	#
-	# Hack binutils to prevent it from searching the host system
-	# for libraries.  We only want libraries for the target system.
-	#
-	(cd $(BINUTILS_DIR); perl -i -p -e "s,^NATIVE_LIB_DIRS.*,\
-		NATIVE_LIB_DIRS='$(STAGING_DIR)/usr/lib $(STAGING_DIR)/lib',;" \
-		$(BINUTILS_DIR)/ld/configure.host);
+	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\",\
+		#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
+		`grep -lr ELF_DYNAMIC_INTERPRETER *`);
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
@@ -163,6 +148,8 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--mandir=$(STAGING_DIR)/man \
 		--infodir=$(STAGING_DIR)/info \
 		--enable-targets=$(GNU_TARGET_NAME) \
+		--with-lib-path="/usr/lib:/lib" \
+		--with-sysroot=$(STAGING_DIR) \
 		$(MULTILIB) \
 		--program-prefix=$(ARCH)-uclibc-);
 	touch $(BINUTILS_DIR1)/.configured

@@ -1,0 +1,21 @@
+diff -urN binutils-2.12.90.0.12/ld/emultempl/elf32.em binutils-2.12.90.0.12.new/ld/emultempl/elf32.em
+--- binutils-2.12.90.0.12/ld/emultempl/elf32.em	Wed Jun 19 00:41:59 2002
++++ binutils-2.12.90.0.12.new/ld/emultempl/elf32.em	Wed Jun 26 10:00:26 2002
+@@ -672,6 +672,8 @@
+ 	      && command_line.rpath == NULL)
+ 	    {
+ 	      lib_path = (const char *) getenv ("LD_RUN_PATH");
++	      if ((lib_path) && (strlen (lib_path) == 0))
++		  lib_path = NULL;
+ 	      if (gld${EMULATION_NAME}_search_needed (lib_path, l->name,
+ 						      force))
+ 		break;
+@@ -867,6 +869,8 @@
+   rpath = command_line.rpath;
+   if (rpath == NULL)
+     rpath = (const char *) getenv ("LD_RUN_PATH");
++  if ((rpath) && (strlen (rpath) == 0))
++      rpath = NULL;
+   if (! (bfd_elf${ELFSIZE}_size_dynamic_sections
+          (output_bfd, command_line.soname, rpath,
+ 	  command_line.filter_shlib,
