@@ -1,7 +1,7 @@
-diff -urN dnsmasq-2.6/src/config.h dnsmasq-2.6-new/src/config.h
---- dnsmasq-2.6/src/config.h	2004-04-03 14:03:39.000000000 -0600
-+++ dnsmasq-2.6-new/src/config.h	2004-04-03 19:56:01.000000000 -0600
-@@ -74,6 +74,11 @@
+diff -ur dnsmasq-2.15.orig/src/config.h dnsmasq-2.15/src/config.h
+--- dnsmasq-2.15.orig/src/config.h	2004-10-08 11:41:34.757371880 -0400
++++ dnsmasq-2.15/src/config.h	2004-10-08 11:43:49.074952504 -0400
+@@ -78,6 +78,11 @@
  /* We assume that systems which don't have IPv6
     headers don't have ntop and pton either */
  
@@ -10,10 +10,10 @@ diff -urN dnsmasq-2.6/src/config.h dnsmasq-2.6-new/src/config.h
 +#  define NO_IPV6
 +#endif
 +
- #if defined(INET6_ADDRSTRLEN) && !defined(NO_IPV6)
+ #if defined(INET6_ADDRSTRLEN) && defined(IPV6_V6ONLY) && !defined(NO_IPV6)
  #  define HAVE_IPV6
  #  define ADDRSTRLEN INET6_ADDRSTRLEN
-@@ -191,7 +196,7 @@
+@@ -194,7 +199,7 @@
  /* platform dependent options. */
  
  /* Must preceed __linux__ since uClinux defines __linux__ too. */
@@ -22,7 +22,7 @@ diff -urN dnsmasq-2.6/src/config.h dnsmasq-2.6-new/src/config.h
  #undef HAVE_LINUX_IPV6_PROC
  #define HAVE_GETOPT_LONG
  #undef HAVE_ARC4RANDOM
-@@ -205,6 +210,24 @@
+@@ -208,6 +213,24 @@
  #  define NO_FORK
  #endif
  
