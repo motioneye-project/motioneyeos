@@ -24,6 +24,8 @@ ifeq ($(BR2_LARGEFILE),y)
 	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile
 	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile-libbz2_so
 endif
+	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(BZIP2_DIR)/Makefile
+	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(BZIP2_DIR)/Makefile-libbz2_so
 	touch $(BZIP2_DIR)/.unpacked
 
 $(STAGING_DIR)/lib/libbz2.so.1.0.2: $(BZIP2_DIR)/.unpacked
