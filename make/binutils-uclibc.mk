@@ -4,8 +4,8 @@
 #
 #############################################################
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
-BINUTILS_SOURCE:=binutils-2.14.90.0.7.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.7
+BINUTILS_SOURCE:=binutils-2.14.90.0.6.tar.bz2
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.6
 BINUTILS_CAT:=bzcat
 
 BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-build
