@@ -76,22 +76,26 @@ TARGETS=
 -include busybox.mk
 -include boa.mk
 
-world:	$(TARGETS) $(GENEXT2FS_DIR)/genext2fs $(TARGET_DIR)
+world:	$(TARGETS) root_fs
+
+root_fs:	$(GENEXT2FS_DIR)/genext2fs $(TARGET_DIR)
 	$(GENEXT2FS_DIR)/genext2fs \
 	 -b `echo $(IMAGE_SIZE) | bc` \
 	 -i `echo $(IMAGE_INODES) | bc` \
 	 -d $(TARGET_DIR) \
 	 -D $(SOURCE_DIR)/device_table.txt root_fs
 
-$(STAGING_DIR):
+$(STAGING_DIR)/.i_exist:
 	rm -rf $(STAGING_DIR)
 	mkdir $(STAGING_DIR)
+	touch $(STAGING_DIR)/.i_exist
 
-$(TARGET_DIR):
+$(STAGING_DIR)/.target_dir_exists:
 	rm -rf $(TARGET_DIR)
 	tar -xf $(SOURCE_DIR)/skel.tar
 	cp -a target_skeleton/* $(TARGET_DIR)/
 	-find $(TARGET_DIR) -type d -name CVS -exec rm -rf {} \; > /dev/null 2>&1
+	touch $(STAGING_DIR)/.target_dir_exists
 
 # The kernel
 $(SOURCE_DIR)/$(LINUX_SOURCE):
@@ -128,7 +132,7 @@ $(LINUX_DIR)/.dep:	$(LINUX_DIR)/.configdone
 	touch $(LINUX_DIR)/.dep
 
 $(LINUX_DIR)/linux:	$(LINUX_DIR)/.dep
-	(cd $(LINUX_DIR); make linux)
+	make -C $(LINUX_DIR) linux
         
 $(LINUX): $(LINUX_DIR)/linux
 	ln -sf $(LINUX_DIR)/linux $(LINUX)
@@ -144,11 +148,10 @@ $(UCLIBC_DIR)/Config:	$(SOURCE_DIR)/$(UCLIBC_SOURCE)
 	for p in `find $(SOURCE_DIR) -name uClibc-*.patch | sort -g`;do \
 		patch -p0 < $$p ; \
 	done
-	awk 'BEGIN { FS=" ="; REG="DODEBUG|DOLFS|INCLUDE_RPC|DOPIC";} \
-	{  if ($$0 ~ "^" REG) { print $$1 " = false" } else { print $$0 } }' < \
+	-f $(SOURCE_DIR)/uClibc-Config.awk < \
 	$(UCLIBC_DIR)/extra/Configs/Config.$(ARCH) > $(UCLIBC_DIR)/Config;
 
-$(UCLIBC_DIR)/lib/libc.a:	$(LINUX) $(UCLIBC_DIR)/Config
+$(UCLIBC_DIR)/lib/libc.a:	$(STAGING_DIR)/.i_exist $(LINUX_DIR)/.dep $(UCLIBC_DIR)/Config
 	$(MAKE) CROSS=$(CROSS) \
 		DEVEL_PREFIX=$(STAGING_DIR) \
 		SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr \
@@ -156,28 +159,24 @@ $(UCLIBC_DIR)/lib/libc.a:	$(LINUX) $(UCLIBC_DIR)/Config
 		KERNEL_SOURCE=$(LINUX_DIR) \
 		-C $(UCLIBC_DIR)
 
-uclibc:	$(UCLIBC_DIR)/lib/libc.a $(STAGING_DIR) $(TARGET_DIR)
-	@if [ $(UCLIBC_DIR)/lib/libc.a -nt $(UCLIBC_DIR)/.installed ]; then \
-		rm -f $(UCLIBC_DIR)/.installed; \
-		set -x; \
-		$(MAKE) CROSS=$(CROSS) \
-		DEVEL_PREFIX=$(STAGING_DIR) \
-		SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr \
-		SHARED_LIB_LOADER_PATH=$(STAGING_DIR)/lib \
-		-C $(UCLIBC_DIR) install; \
-		touch $(UCLIBC_DIR)/.installed ; \
-	fi
-	@if [ $(UCLIBC_DIR)/lib/libc.a -nt $(UCLIBC_DIR)/.installed_runtime ]; then \
-		rm -f $(UCLIBC_DIR)/.installed_runtime; \
-		$(MAKE) CROSS=$(CROSS) \
-		PREFIX=$(TARGET_DIR) \
-		DEVEL_PREFIX=/ \
-		SYSTEM_DEVEL_PREFIX=/usr \
-		SHARED_LIB_LOADER_PATH=/lib \
-		-C $(UCLIBC_DIR) install_runtime; \
-		touch $(UCLIBC_DIR)/.installed_runtime ; \
-	fi
-        
+$(TARGET_CC):	$(UCLIBC_DIR)/lib/libc.a
+	$(MAKE) CROSS=$(CROSS) \
+	DEVEL_PREFIX=$(STAGING_DIR) \
+	SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr \
+	SHARED_LIB_LOADER_PATH=$(STAGING_DIR)/lib \
+	-C $(UCLIBC_DIR) install
+
+$(UCLIBC_DIR)/.installed_runtime:	$(TARGET_CC)
+	$(MAKE) CROSS=$(CROSS) \
+	PREFIX=$(TARGET_DIR) \
+	DEVEL_PREFIX=/ \
+	SYSTEM_DEVEL_PREFIX=/usr \
+	SHARED_LIB_LOADER_PATH=/lib \
+	-C $(UCLIBC_DIR) install_runtime
+	touch $(UCLIBC_DIR)/.installed_runtime
+
+uclibc:	$(TARGET_CC) $(UCLIBC_DIR)/.installed_runtime
+
 # genext2fs
 $(GENEXT2FS_DIR)/genext2fs:
 	$(MAKE) -C $(GENEXT2FS_DIR)
@@ -189,14 +188,14 @@ clean:	$(TARGETS_CLEAN)
 		make -C $(UCLIBC_DIR) clean; \
 	fi;
 	@if [ -d $(LINUX_DIR) ] ; then \
-		make -C $(UCLIBC_DIR) clean; \
+		make -C $(LINUX_DIR) clean; \
 	fi;
 	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE)
 	rm -f *~
 
 mrproper: $(TARGETS_MRPROPER)
-	rm -rf $(UCLIBC_DIR);
-	rm -rf $(LINUX_DIR);
+	rm -rf $(UCLIBC_DIR)
+	rm -rf $(LINUX_DIR)
 	rm -f root_fs $(LINUX)
 	make -C $(GENEXT2FS_DIR) clean
 	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE)
@@ -207,4 +206,4 @@ distclean: mrproper $(TARGETS_DISTCLEAN)
 	rm -f $(SOURCE_DIR)/$(USERMODELINUX_PATCH)
 	rm -f $(SOURCE_DIR)/$(LINUX_SOURCE)
 
-.PHONY: uclibc $(TARGETS) world test clean mrproper distclean
+.PHONY: uclibc uclibc-build uclibc-runtime $(TARGETS) world test clean mrproper distclean

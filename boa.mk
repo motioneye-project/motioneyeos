@@ -26,6 +26,7 @@ $(BOA_DIR)/.unpacked:	$(SOURCE_DIR)/$(BOA_SOURCE)
 	touch $(BOA_DIR)/.unpacked
 
 $(BOA_WORKDIR)/Makefile: $(TARGET_CC) $(BOA_DIR)/.unpacked
+	rm -f $(BOA_WORKDIR)/Makefile
 	mkdir -p $(BOA_WORKDIR)
 	if [ -f $(SOURCE_DIR)/boa-config.site-$(ARCH) ]; then \
 		(cd $(BOA_WORKDIR) && CONFIG_SITE=$(SOURCE_DIR)/boa-config.site-$(ARCH) CC=$(TARGET_CC) $(BOA_DIR)/src/configure); \
@@ -35,7 +36,10 @@ $(BOA_WORKDIR)/Makefile: $(TARGET_CC) $(BOA_DIR)/.unpacked
 	touch $(BOA_WORKDIR)/.depend
 	touch $(BOA_WORKDIR)/.unpacked
         
-$(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer:	$(BOA_WORKDIR)/Makefile
+$(BOA_WORKDIR)/boa:	$(BOA_WORKDIR)/Makefile
+	make VPATH=$(BOA_DIR)/src/ -C $(BOA_WORKDIR)
+
+$(BOA_WORKDIR)/boa_indexer:	$(BOA_WORKDIR)/Makefile
 	make VPATH=$(BOA_DIR)/src/ -C $(BOA_WORKDIR)
 
 $(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer

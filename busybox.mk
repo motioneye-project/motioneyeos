@@ -41,6 +41,7 @@ $(BUSYBOX_WORKDIR)/.config:	$(BUSYBOX_DIR)/.unpacked
 	touch $(BUSYBOX_WORKDIR)/.config
 
 $(BUSYBOX_WORKDIR)/busybox:	$(TARGET_CC) $(BUSYBOX_WORKDIR)/.config
+	rm -f $(BUSYBOX_WORKDIR)/busybox
 	make CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_WORKDIR)
 
 $(TARGET_DIR)/bin/busybox:	$(BUSYBOX_WORKDIR)/busybox
