@@ -37,8 +37,8 @@ $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY): $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
 	 bindir=$(TARGET_DIR)/usr/bin sbindir=$(TARGET_DIR)/usr/sbin \
 	 sysconfdir=$(TARGET_DIR)/usr/etc datadir=$(TARGET_DIR)/usr/share \
 	 includedir=$(TARGET_DIR)/usr/include libdir=$(TARGET_DIR)/usr/lib \
-	 localstatedir=$(TARGET_DIR)/var mandir=$(TARGET_DIR)/man \
-	 infodir=$(TARGET_DIR)/info CC=$(TARGET_CC1) -C $(FINDUTILS_DIR) install
+	 localstatedir=$(TARGET_DIR)/var mandir=$(TARGET_DIR)/junk \
+	 infodir=$(TARGET_DIR)/junk CC=$(TARGET_CC1) -C $(FINDUTILS_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/junk
 
 findutils: uclibc $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY)
