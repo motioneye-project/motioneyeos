@@ -137,6 +137,8 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) \
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_HOST_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=$(STAGING_DIR) \
 		--exec-prefix=$(STAGING_DIR) \
 		--bindir=$(STAGING_DIR)/bin \
@@ -248,6 +250,8 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		RANLIB=$(TARGET_CROSS)ranlib CC=$(HOSTCC) \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_HOST_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=$(STAGING_DIR) \
 		--exec-prefix=$(STAGING_DIR) \
 		--bindir=$(STAGING_DIR)/bin \
@@ -401,6 +405,8 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 		NM=$(TARGET_CROSS)nm CC=$(HOSTCC) \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_HOST_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=$(STAGING_DIR) \
 		--exec-prefix=$(STAGING_DIR) \
 		--bindir=$(STAGING_DIR)/bin \

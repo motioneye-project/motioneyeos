@@ -6,8 +6,8 @@
 
 # TARGETS
 OPENSSL_SITE:=http://www.openssl.org/source
-OPENSSL_SOURCE:=openssl-0.9.7.tar.gz
-OPENSSL_DIR:=$(BUILD_DIR)/openssl-0.9.7
+OPENSSL_SOURCE:=openssl-0.9.7a.tar.gz
+OPENSSL_DIR:=$(BUILD_DIR)/openssl-0.9.7a
 OPENSSL_PATCH=$(SOURCE_DIR)/openssl.patch
 
 $(DL_DIR)/$(OPENSSL_SOURCE):

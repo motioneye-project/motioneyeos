@@ -21,9 +21,11 @@ $(BISON_DIR)/.unpacked: $(DL_DIR)/$(BISON_SOURCE)
 
 $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 	(cd $(BISON_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

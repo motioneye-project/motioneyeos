@@ -28,9 +28,11 @@ $(PCIUTILS_DIR)/.unpacked: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURC
 
 $(PCIUTILS_DIR)/.configured: $(PCIUTILS_DIR)/.unpacked
 	(cd $(PCIUTILS_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

@@ -23,9 +23,11 @@ $(COREUTILS_DIR)/.unpacked: $(DL_DIR)/$(COREUTILS_SOURCE)
 
 $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 	(cd $(COREUTILS_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -38,6 +40,10 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		--infodir=/usr/info \
 		--disable-nls \
 	);
+	#Fix up the max number of open files per process, which apparently 
+	# is not set when cross compiling
+	perl -i -p -e 's,.*UTILS_OPEN_MAX.*,#define UTILS_OPEN_MAX 1019,g' \
+		$(COREUTILS_DIR)/config.h
 	touch  $(COREUTILS_DIR)/.configured
 
 $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured

@@ -21,9 +21,11 @@ $(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 
 $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
 	(cd $(AUTOCONF_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) EMACS="no" \
+		$(TARGET_CONFIGURE_OPTS) EMACS="no" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

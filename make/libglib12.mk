@@ -20,9 +20,11 @@ $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 
 $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 	(cd $(LIBGLIB12_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

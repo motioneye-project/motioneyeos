@@ -66,17 +66,6 @@
  #else
  # define	LOAD			ld
  # define	X(i)			[%i1+i*4]
---- openssl-0.9.7.orig/crypto/md5/md5.h
-+++ openssl-0.9.7/crypto/md5/md5.h
-@@ -78,7 +78,7 @@
- 
- #if defined(OPENSSL_SYS_WIN16) || defined(__LP32__)
- #define MD5_LONG unsigned long
--#elif defined(OENSSL_SYS_CRAY) || defined(__ILP64__)
-+#elif defined(OPENSSL_SYS_CRAY) || defined(__ILP64__)
- #define MD5_LONG unsigned long
- #define MD5_LONG_LOG2 3
- /*
 --- openssl-0.9.7.orig/crypto/opensslconf.h
 +++ openssl-0.9.7/crypto/opensslconf.h
 @@ -4,17 +4,38 @@
@@ -171,25 +160,6 @@
  #endif
  
  /* These default values were supplied by
---- openssl-0.9.7.orig/crypto/ui/ui_util.c
-+++ openssl-0.9.7/crypto/ui/ui_util.c
-@@ -78,12 +78,14 @@
- 	if (ui)
- 		{
- 		ok = UI_add_input_string(ui,prompt,0,buf,0,size-1);
--		if (ok == 0 && verify)
-+		if (ok >= 0 && verify)
- 			ok = UI_add_verify_string(ui,prompt,0,buff,0,size-1,
- 				buf);
--		if (ok == 0)
-+		if (ok >= 0)
- 			ok=UI_process(ui);
- 		UI_free(ui);
- 		}
-+	if (ok > 0)
-+		ok = 0;
- 	return(ok);
- 	}
 --- openssl-0.9.7.orig/ssl/ssl_algs.c
 +++ openssl-0.9.7/ssl/ssl_algs.c
 @@ -109,3 +109,8 @@

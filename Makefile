@@ -167,6 +167,15 @@ HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/cris.*/cris/' \
 	)
 GNU_HOST_NAME:=$(HOST_ARCH)-pc-linux-gnu
+TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
+		AR=$(TARGET_CROSS)ar \
+		AS=$(TARGET_CROSS)as \
+		LD=$(TARGET_CROSS)ld \
+		NM=$(TARGET_CROSS)nm \
+		CC=$(TARGET_CROSS)gcc \
+		GCC=$(TARGET_CROSS)gcc \
+		CXX=$(TARGET_CROSS)g++ \
+		RANLIB=$(TARGET_CROSS)ranlib
 
 all:   world
 

@@ -1,0 +1,135 @@
+diff -urN openssh-3.5p1.orig/configure.ac openssh-3.5p1/configure.ac
+--- openssh-3.5p1.orig/configure.ac	2002-09-25 18:38:47.000000000 -0600
++++ openssh-3.5p1/configure.ac	2003-03-04 04:54:47.000000000 -0700
+@@ -504,6 +504,9 @@
+ 	[
+ 		AC_MSG_RESULT(no)
+ 		AC_DEFINE(BROKEN_ONE_BYTE_DIRENT_D_NAME)
++	],
++	[AC_MSG_RESULT(yes)
++	AC_MSG_WARN([Cannot run test when crosscompiling, defaulted to yes.])
+ 	]
+ )
+ 
+@@ -535,6 +538,9 @@
+ 				[
+ 					AC_MSG_RESULT(no)
+ 					AC_MSG_ERROR([** Incomplete or missing s/key libraries.])
++				],
++				[AC_MSG_RESULT(yes)
++				AC_MSG_WARN([Cannot run test when crosscompiling, defaulted to yes.])
+ 				])
+ 		fi
+ 	]
+@@ -676,6 +682,9 @@
+ 			AC_MSG_RESULT(no)
+ 			AC_DEFINE(BROKEN_SNPRINTF)
+ 			AC_MSG_WARN([****** Your snprintf() function is broken, complain to your vendor])
++		],
++		[AC_MSG_RESULT(yes)
++		AC_MSG_WARN([Cannot run test when crosscompiling, defaulted to yes.])
+ 		]
+ 	)
+ fi
+@@ -810,6 +819,10 @@
+ 	[
+ 		AC_MSG_RESULT(not found)
+ 		AC_MSG_ERROR(OpenSSL version header not found.)
++	],
++	[
++		ssl_header_ver="90700f (OpenSSL 0.9.7a 19 Feb 2003)"
++		AC_MSG_WARN([Cannot run test when crosscompiling, defaulted to $ssl_header_ver])
+ 	]
+ )
+ 
+@@ -843,6 +856,10 @@
+ 	[
+ 		AC_MSG_RESULT(not found)
+ 		AC_MSG_ERROR(OpenSSL library not found.)
++	],
++	[
++		ssl_library_ver="90700f (OpenSSL 0.9.7a 19 Feb 2003)"
++		AC_MSG_WARN([Cannot run test when crosscompiling, defaulted to $ssl_library_ver])
+ 	]
+ )
+ 
+@@ -860,6 +877,10 @@
+ 	[
+ 		AC_MSG_RESULT(no)
+ 		AC_MSG_ERROR(Your OpenSSL headers do not match your library)
++	],
++	[
++		AC_MSG_RESULT(yes)
++		AC_MSG_WARN([Cannot run test when crosscompiling, defaulted to yes.])
+ 	]
+ )
+ 
+@@ -889,6 +910,11 @@
+ 		# Default to use of the rand helper if OpenSSL doesn't
+ 		# seed itself
+ 		USE_RAND_HELPER=yes
++	],
++	[
++		OPENSSL_SEEDS_ITSELF=yes
++		AC_MSG_RESULT(yes)
++		AC_MSG_WARN([Cannot run test when crosscompiling, defaulted to yes.])
+ 	]
+ )
+ 
+@@ -1475,7 +1501,8 @@
+ #else
+ main() { exit(0); }
+ #endif
+-		], [ true ], [ AC_DEFINE(BROKEN_SNPRINTF) ]
++		], [ true ], [ AC_DEFINE(BROKEN_SNPRINTF) ],
++		[ true ]
+ 	)
+ fi
+ AC_SUBST(NO_SFTP)
+@@ -1596,6 +1623,7 @@
+ }
+ 		],
+ 		[ ac_cv_have_accrights_in_msghdr="yes" ],
++		[ ac_cv_have_accrights_in_msghdr="no" ],
+ 		[ ac_cv_have_accrights_in_msghdr="no" ]
+ 	)
+ ])
+@@ -1620,7 +1648,8 @@
+ }
+ 		],
+ 		[ ac_cv_have_control_in_msghdr="yes" ],
+-		[ ac_cv_have_control_in_msghdr="no" ]
++		[ ac_cv_have_control_in_msghdr="no" ],
++		[ ac_cv_have_control_in_msghdr="yes" ]
+ 	)
+ ])
+ if test "x$ac_cv_have_control_in_msghdr" = "xyes" ; then
+@@ -1931,13 +1960,14 @@
+ 		)
+ 	fi
+ fi
++if test "$cross_compiling" != yes; then
+ AC_CHECK_FILE("/dev/ptc", 
+ 	[
+ 		AC_DEFINE_UNQUOTED(HAVE_DEV_PTS_AND_PTC)
+ 		have_dev_ptc=1
+ 	]
+ )
+-
++fi
+ # Options from here on. Some of these are preset by platform above
+ AC_ARG_WITH(mantype,
+ 	[  --with-mantype=man|cat|doc  Set man page type],
+diff -urN openssh-3.5p1.orig/sshd_config openssh-3.5p1/sshd_config
+--- openssh-3.5p1.orig/sshd_config	2002-09-26 21:21:58.000000000 -0600
++++ openssh-3.5p1/sshd_config	2003-03-04 04:42:03.000000000 -0700
+@@ -89,5 +89,8 @@
+ #Banner /some/path
+ #VerifyReverseMapping no
+ 
++ClientAliveInterval 15
++ClientAliveCountMax 4
++
+ # override default of no subsystems
+-Subsystem	sftp	/usr/libexec/sftp-server
++Subsystem	sftp	/usr/sbin/sftp-server

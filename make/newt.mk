@@ -23,9 +23,11 @@ $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE)
 
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	(cd $(NEWT_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

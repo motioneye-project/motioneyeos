@@ -18,7 +18,7 @@ $(BRIDGE_BUILD_DIR)/.unpacked: $(DL_DIR)/$(BRIDGE_SOURCE)
 
 $(BRIDGE_BUILD_DIR)/.configured: $(BRIDGE_BUILD_DIR)/.unpacked
 	(cd $(BRIDGE_BUILD_DIR); rm -rf config.cache; \
-                PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
                 ./configure \
 		--with-linux-headers=$(BUILD_DIR)/linux \
 	);

@@ -19,10 +19,7 @@ $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE) $(GDB_PATCH)
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_DIR); rm -rf config.cache; \
-		AR=$(TARGET_CROSS)ar \
-		AS=$(TARGET_CROSS)as LD=$(TARGET_CROSS)ld \
-		RANLIB=$(TARGET_CROSS)ranlib NM=$(TARGET_CROSS)nm \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

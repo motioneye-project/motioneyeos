@@ -12,12 +12,10 @@ GDB_WDIR:=$(BUILD_DIR)/gdbserver
 $(GDB_WDIR)/.configured: $(GDB_DIR)/.unpacked
 	mkdir -p $(GDB_WDIR)
 	(cd $(GDB_WDIR); rm -rf config.cache; \
-		AR=$(TARGET_CROSS)ar \
-		AS=$(TARGET_CROSS)as LD=$(TARGET_CROSS)ld \
-		RANLIB=$(TARGET_CROSS)ranlib NM=$(TARGET_CROSS)nm \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		$(GDB_DIR)/gdb/gdbserver/configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

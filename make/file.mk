@@ -17,13 +17,17 @@ file-source: $(DL_DIR)/$(FILE_SOURCE)
 
 $(FILE_DIR)/.unpacked: $(DL_DIR)/$(FILE_SOURCE)
 	$(FILE_CAT) $(DL_DIR)/$(FILE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	# Use the system file utility, not the one we just built
+	perl -pi -e "s,\./file,file,g" $(FILE_DIR)/Makefile.in $(FILE_DIR)/Makefile.am
 	touch $(FILE_DIR)/.unpacked
 
 $(FILE_DIR)/.configured: $(FILE_DIR)/.unpacked
 	(cd $(FILE_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

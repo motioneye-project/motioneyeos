@@ -21,9 +21,12 @@ $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 	(cd $(GAWK_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
+		ac_cv_func_getpgrp_void=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

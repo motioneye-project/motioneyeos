@@ -21,9 +21,11 @@ $(GNUGREP_DIR)/.unpacked: $(DL_DIR)/$(GNUGREP_SOURCE)
 
 $(GNUGREP_DIR)/.configured: $(GNUGREP_DIR)/.unpacked
 	(cd $(GNUGREP_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -36,6 +38,7 @@ $(GNUGREP_DIR)/.configured: $(GNUGREP_DIR)/.unpacked
 		--infodir=/usr/info \
 		--disable-nls \
 		--disable-perl-regexp \
+		--without-included-regex \
 	);
 	touch  $(GNUGREP_DIR)/.configured
 

@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.22 2003/02/12 12:43:15 andersen Exp $
+# $Id: ncurses.mk,v 1.23 2003/03/04 19:16:18 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -39,10 +39,12 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	(cd $(NCURSES_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) BUILD_CC=$(HOSTCC) \
-		HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+		BUILD_CC=$(HOSTCC) HOSTCC=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

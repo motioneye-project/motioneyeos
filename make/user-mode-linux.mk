@@ -13,6 +13,8 @@ LINUX_PATCH_1:=uml-patch-$(LINUX_VERSION)-45.bz2
 LINUX_PATCH_1_SITE:=http://telia.dl.sourceforge.net/sourceforge/user-mode-linux
 LINUX_KCONFIG=$(SOURCE_DIR)/linux-uml.config
 LINUX_KERNEL=$(BASE_DIR)/UMlinux
+# Used by pcmcia-cs and others
+LINUX_SOURCE_DIR=$(LINUX_DIR)
 
 $(DL_DIR)/$(LINUX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)

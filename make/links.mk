@@ -18,9 +18,11 @@ $(LINKS_DIR)/.unpacked: $(DL_DIR)/$(LINKS_SOURCE)
 
 $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 	(cd $(LINKS_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

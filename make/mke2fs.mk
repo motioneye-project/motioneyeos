@@ -21,9 +21,11 @@ $(MKE2FS_DIR)/.unpacked: $(DL_DIR)/$(MKE2FS_SOURCE)
 
 $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked
 	(cd $(MKE2FS_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--with-cc=$(TARGET_CC) \
 		--with-linker=$(TARGET_CROSS)ld \
 		--prefix=/usr \

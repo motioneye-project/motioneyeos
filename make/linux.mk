@@ -36,6 +36,9 @@ LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
 LINUX_SITE=ftp://ftp.kernel.org/pub/linux/kernel/v2.4
 LINUX_KCONFIG=$(SOURCE_DIR)/linux.config
 LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
+# Used by pcmcia-cs and others
+LINUX_SOURCE_DIR=$(LINUX_DIR)
+
 
 $(DL_DIR)/$(LINUX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)

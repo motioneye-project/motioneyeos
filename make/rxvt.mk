@@ -38,9 +38,11 @@ $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
 
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 	(cd $(RXVT_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr/X11R6 \
 		--mandir=/usr/man \
 		--infodir=/usr/info \

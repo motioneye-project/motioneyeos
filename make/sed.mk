@@ -21,9 +21,11 @@ $(SED_DIR)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 
 $(SED_DIR)/.configured: $(SED_DIR)/.unpacked
 	(cd $(SED_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \

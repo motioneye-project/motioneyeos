@@ -89,12 +89,19 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 	mkdir -p $(TARGET_DIR)/usr/include
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(BINUTILS_DIR2); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
-		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
-		CC=$(TARGET_CROSS)gcc \
+	(cd $(BINUTILS_DIR2); $(TARGET_CONFIGURE_OPTS) \
+		AR_FOR_TARGET=$(TARGET_CROSS)ar \
+		AS_FOR_TARGET=$(TARGET_CROSS)as \
+		LD_FOR_TARGET=$(TARGET_CROSS)ld \
+		NM_FOR_TARGET=$(TARGET_CROSS)nm \
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
+		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
+		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
+		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -114,18 +121,10 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	$(MAKE) AR=$(TARGET_CROSS)ar \
-		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
-		CC=$(TARGET_CROSS)gcc GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		CC_FOR_TARGET=$(TARGET_CROSS)gcc tooldir=/usr -C $(BINUTILS_DIR2)
+	$(MAKE) tooldir=/usr -C $(BINUTILS_DIR2)
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
-	CC=$(HOSTCC) GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
-	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
-	    CC_FOR_TARGET=$(TARGET_CROSS)gcc \
-	    $(MAKE) \
-	    tooldor=/usr \
+	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
@@ -141,7 +140,7 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	    includedir=$(TARGET_DIR)/usr/include \
 	    gxx_include_dir=$(TARGET_DIR)/usr/include/c++ \
 	    toolexecdir=$(TARGET_DIR)/lib/gcc-lib/$(GNU_TARGET_NAME) \
-	    -C $(BINUTILS_DIR2) install;
+	-C $(BINUTILS_DIR2) install;
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	-$(STRIP) $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/bin/*
@@ -287,18 +286,19 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(GCC_BUILD_DIR3); PATH=$(TARGET_PATH) \
-		AS=$(TARGET_CROSS)as \
-		LD=$(TARGET_CROSS)ld \
-		AR=$(TARGET_CROSS)ar \
-		NM=$(TARGET_CROSS)nm \
-		CC=$(TARGET_CROSS)gcc \
-		GCC=$(TARGET_CROSS)gcc \
-		CXX=$(TARGET_CROSS)c++ \
-		RANLIB=$(TARGET_CROSS)ranlib \
+	(cd $(GCC_BUILD_DIR3); $(TARGET_CONFIGURE_OPTS) \
+		AR_FOR_TARGET=$(TARGET_CROSS)ar \
+		AS_FOR_TARGET=$(TARGET_CROSS)as \
+		LD_FOR_TARGET=$(TARGET_CROSS)ld \
+		NM_FOR_TARGET=$(TARGET_CROSS)nm \
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
+		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
+		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
+		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -322,28 +322,11 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	    AS=$(TARGET_CROSS)as \
-	    LD=$(TARGET_CROSS)ld \
-	    AR=$(TARGET_CROSS)ar \
-	    NM=$(TARGET_CROSS)nm \
-	    CC=$(TARGET_CROSS)gcc \
-	    GCC=$(TARGET_CROSS)gcc \
-	    CXX=$(TARGET_CROSS)g++ \
-	    RANLIB=$(TARGET_CROSS)ranlib \
-	    $(MAKE) -C $(GCC_BUILD_DIR3)
+	$(MAKE) -C $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
-	    $(MAKE) \
-	    CC=$(TARGET_CROSS)gcc \
-	    AS=$(TARGET_CROSS)as \
-	    LD=$(TARGET_CROSS)ld \
-	    AR=$(TARGET_CROSS)ar \
-	    NM=$(TARGET_CROSS)nm \
-	    CC=$(TARGET_CROSS)gcc \
-	    GCC=$(TARGET_CROSS)gcc \
-	    CXX=$(TARGET_CROSS)g++ \
-	    RANLIB=$(TARGET_CROSS)ranlib \
+	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \

@@ -20,10 +20,11 @@ $(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
 
 $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 	(cd $(STRACE_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
