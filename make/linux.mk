@@ -20,12 +20,12 @@
 #############################################################
 ifneq ($(filter $(TARGETS),linux),)
 
-LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 LINUX_DIR=$(BUILD_DIR)/linux-2.4.20
-#LINUX_FORMAT=bzImage
-#LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
-LINUX_FORMAT=zImage.prep
-LINUX_BINLOC=arch/ppc/boot/images/$(LINUX_FORMAT)
+LINUX_FORMAT=bzImage
+#LINUX_FORMAT=zImage.prep
+LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
+#LINUX_BINLOC=arch/ppc/boot/images/$(LINUX_FORMAT)
+LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 LINUX_SOURCE=linux-2.4.20.tar.bz2
 LINUX_SITE=http://ftp.us.kernel.org/pub/linux/kernel/v2.4
 LINUX_KCONFIG=$(SOURCE_DIR)/linux.config
