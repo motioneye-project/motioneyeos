@@ -41,7 +41,7 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	touch $(NEWT_DIR)/.configured;
 
 $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION): $(NEWT_DIR)/.configured
-	$(MAKE) CFLAGS=$(NEWT_CFLAGS) CC=$(TARGET_CC) -C  $(NEWT_DIR)
+	$(MAKE) CFLAGS="$(NEWT_CFLAGS)" CC=$(TARGET_CC) -C  $(NEWT_DIR)
 	touch -c $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
 
 $(STAGING_DIR)/lib/libnewt.a: $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
