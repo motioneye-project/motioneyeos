@@ -6,7 +6,7 @@
 FINDUTILS_SOURCE:=findutils_4.1.7.orig.tar.gz
 FINDUTILS_SITE:=http://ftp.debian.org/debian/pool/main/f/findutils
 FINDUTILS_CAT:=zcat
-FINDUTILS_DIR:=$(BUILD_DIR)/findutils-4.1.7.orig
+FINDUTILS_DIR:=$(BUILD_DIR)/findutils-4.1.7
 FINDUTILS_BINARY:=find/find
 FINDUTILS_TARGET_BINARY:=usr/bin/find
 
@@ -17,6 +17,7 @@ findutils-source: $(DL_DIR)/$(FINDUTILS_SOURCE)
 
 $(FINDUTILS_DIR)/.unpacked: $(DL_DIR)/$(FINDUTILS_SOURCE)
 	$(FINDUTILS_CAT) $(DL_DIR)/$(FINDUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	mv $(FINDUTILS_DIR).orig $(FINDUTILS_DIR)
 	(cd $(FINDUTILS_DIR); perl -i -p -e "s,# define mbstate_t int,# define mbstate_t int\n\
 		# define wchar_t char,;" $(FINDUTILS_DIR)/lib/quotearg.c)
 	touch $(FINDUTILS_DIR)/.unpacked
