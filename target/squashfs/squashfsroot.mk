@@ -12,7 +12,7 @@ $(DL_DIR)/$(SQUASHFS_SOURCE):
 
 $(SQUASHFS_DIR): $(DL_DIR)/$(SQUASHFS_SOURCE) #$(SQUASHFS_PATCH)
 	zcat $(DL_DIR)/$(SQUASHFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	$(SOURCE_DIR)/patch-kernel.sh $(SQUASHFS_DIR) $(SOURCE_DIR) squashfs.patch
+	toolchain/patch-kernel.sh $(SQUASHFS_DIR) target/squashfs/ squashfs.patch
 
 $(SQUASHFS_DIR)/squashfs-tools/mksquashfs: $(SQUASHFS_DIR)
 	$(MAKE) -C $(SQUASHFS_DIR)/squashfs-tools;
@@ -38,7 +38,7 @@ squashfsroot: squashfs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	#$(SQUASHFS_DIR)/squashfs-tools/mksquashfs -q -D $(SOURCE_DIR)/device_table.txt $(TARGET_DIR) $(IMAGE)
+	#$(SQUASHFS_DIR)/squashfs-tools/mksquashfs -q -D target/default/device_table.txt $(TARGET_DIR) $(IMAGE)
 	$(SQUASHFS_DIR)/squashfs-tools/mksquashfs $(TARGET_DIR) $(IMAGE) -noappend -root-owned
 
 squashfsroot-source: squashfs-source
