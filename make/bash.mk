@@ -21,9 +21,11 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	(cd $(BASH_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+		PATH=$(STAGING_DIR)/bin:$$PATH \
+		CC=$(TARGET_CC) CC_FOR_BUILD=$(HOSTCC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -41,7 +43,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	touch  $(BASH_DIR)/.configured
 
 $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(BASH_DIR)
+	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD=$(HOSTCC) -C $(BASH_DIR)
 
 $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) install
