@@ -3,11 +3,10 @@
 # strace
 #
 #############################################################
-STRACE_SOURCE:=strace_4.4-1.tar.gz
+STRACE_SOURCE:=strace-4.5.tar.bz2
 STRACE_SITE:=http://aleron.dl.sourceforge.net/sourceforge/strace
-STRACE_CAT:=zcat
-STRACE_DIR:=$(BUILD_DIR)/strace-4.4
-STRACE_PATCH:=$(SOURCE_DIR)/strace.patch
+STRACE_CAT:=bzcat
+STRACE_DIR:=$(BUILD_DIR)/strace-4.5
 
 
 $(DL_DIR)/$(STRACE_SOURCE):
@@ -17,7 +16,6 @@ strace-source: $(DL_DIR)/$(STRACE_SOURCE)
 
 $(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
 	$(STRACE_CAT) $(DL_DIR)/$(STRACE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(STRACE_PATCH) | patch -p1 -d $(STRACE_DIR)
 	touch $(STRACE_DIR)/.unpacked
 
 $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
