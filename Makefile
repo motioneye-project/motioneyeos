@@ -51,7 +51,7 @@ USE_UCLIBC_SNAPSHOT:=true
 # Enable this to use the busybox daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all....
-USE_BUSYBOX_SNAPSHOT:=false
+USE_BUSYBOX_SNAPSHOT:=true
 
 # Enable large file (files > 2 GB) support
 BUILD_WITH_LARGEFILE:=true
@@ -111,6 +111,7 @@ TARGETS+=busybox tinylogin
 
 # Some stuff for access points and firewalls
 #TARGETS+=iptables hostap wtools dhcp_relay bridge
+#TARGETS+=iproute2 netsnmp
 
 # Run customize.mk at the very end to add your own special config.
 # This is useful for making your own distro within the buildroot
