@@ -54,7 +54,7 @@ $(TARGET_DIR)/usr/lib/libz.a: $(STAGING_DIR)/lib/libz.so.1.1.4
 	cp -dpf $(STAGING_DIR)/include/zconf.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libz.a $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libz.so
-	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libz.so.1.1.4 libz.so)
+	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libz.so.1.1.4 libz.so)
 	touch -c $(TARGET_DIR)/usr/lib/libz.a
 
 zlib-headers: $(TARGET_DIR)/usr/lib/libz.a
