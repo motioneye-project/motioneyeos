@@ -30,13 +30,16 @@ $(UMLINUX_DIR)/.set_arch: $(UMLINUX_DIR)/.patched
 	perl -i -p -e "s/^ARCH :=.*/ARCH:=um/g;" $(UMLINUX_DIR)/Makefile
 	touch $(UMLINUX_DIR)/.set_arch
 
-$(UMLINUX_DIR)/.config: $(UMLINUX_DIR)/.set_arch
+$(UMLINUX_DIR)/.configured:  $(UMLINUX_DIR)/.set_arch  $(UMLINUX_KCONFIG)
 	cp $(UMLINUX_KCONFIG) $(UMLINUX_DIR)/.config
 	make -C $(UMLINUX_DIR) oldconfig
-	touch -c $(UMLINUX_DIR)/.config
+	touch $(UMLINUX_DIR)/.configured
 
-$(UMLINUX_DIR)/linux: $(UMLINUX_DIR)/.config
+$(UMLINUX_DIR)/.depend_done:  $(UMLINUX_DIR)/.configured
 	make -C $(UMLINUX_DIR) dep
+	touch $(UMLINUX_DIR)/.depend_done
+
+$(UMLINUX_DIR)/linux: $(UMLINUX_DIR)/.depend_done
 	make -C $(UMLINUX_DIR) linux
 
 $(LINUX_KERNEL): $(UMLINUX_DIR)/linux
