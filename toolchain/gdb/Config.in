@@ -27,12 +27,6 @@ choice
 	help
 	  Select the version of gdb you wish to use.
 
-	config BR2_GDB_VERSION_6_1_1
-		bool "gdb 6.1.1"
-
-	config BR2_GDB_VERSION_6_2
-		bool "gdb 6.2"
-
 	config BR2_GDB_VERSION_6_2_1
 		bool "gdb 6.2.1"
 
@@ -43,8 +37,6 @@ endchoice
 
 config BR2_GDB_VERSION
 	string
-	default "6.1.1"    if BR2_GDB_VERSION_6_1_1
-	default "6.2"      if BR2_GDB_VERSION_6_2
 	default "6.2.1"    if BR2_GDB_VERSION_6_2_1
 	default "6.3"      if BR2_GDB_VERSION_6_3
 
