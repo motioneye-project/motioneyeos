@@ -78,7 +78,8 @@ TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 world: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) $(TARGETS)
 
 .PHONY: all world clean dirclean distclean source $(TARGETS) \
-	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE)
+	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
+	$(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR) $(STAGING_DIR)
 
 include toolchain/*/*.mk
 include package/*/*.mk
