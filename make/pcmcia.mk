@@ -80,6 +80,7 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -f $(TARGET_DIR)/sbin/ftl_format
 	rm -f $(TARGET_DIR)/usr/X11R6/bin/xcardinfo
 	rm -rf $(TARGET_DIR)/etc/sysconfig
+	mkdir -p $(TARGET_DIR)/etc/default
 	cp -f $(PCMCIA_DIR)/etc/pcmcia $(TARGET_DIR)/etc/default/
 	cp -f $(PCMCIA_DIR)/etc/rc.pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
 	rm -rf $(TARGET_DIR)/etc/pcmcia/cis
