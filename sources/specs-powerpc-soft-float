@@ -66,7 +66,7 @@ cc1 -E %{traditional|ftraditional|traditional-cpp:-traditional-cpp}
 1
 
 *version:
-3.3.2
+3.3.3
 
 *multilib:
 . mhard-float;nof !mhard-float;
