@@ -98,6 +98,10 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	     ln -fs arch-ebsa285 arch; fi); \
 	elif [ "$(ARCH)" = "cris" ];then \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-cris asm;) \
+	elif [ "$(ARCH)" = "sh4" ];then \
+	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-sh asm; \
+	     cd asm; \
+	     ln -s cpu-sh4 cpu) \
 	else \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-$(ARCH)$(NOMMU) asm;) \
 	fi
