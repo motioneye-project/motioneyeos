@@ -17,13 +17,11 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(DL_DIR)
 	mkdir -p $(STAGING_DIR)
 	mkdir -p $(STAGING_DIR)/lib/gcc-lib
-	mkdir -p $(STAGING_DIR)/usr/lib
 	mkdir -p $(STAGING_DIR)/usr/bin;
 	mkdir -p $(STAGING_DIR)/$(GNU_TARGET_NAME)/
 	(cd $(STAGING_DIR)/$(GNU_TARGET_NAME); ln -fs ../lib)
 	(cd $(STAGING_DIR)/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(STAGING_DIR)/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(STAGING_DIR)/usr/lib; ln -fs ../../lib/gcc-lib)
 	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(BINUTILS_DIR)/.unpacked
 

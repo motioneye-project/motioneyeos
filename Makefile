@@ -31,9 +31,14 @@
 # What sortof target system shall we compile this for?
 ARCH:=i386
 #ARCH:=arm
-#ARCH:=mipsel
 #ARCH:=mips
 #ARCH:=powerpc
+#ARCH:=sh4
+#ARCH:=cris
+#ARCH:=m68k
+#ARCH:=v850
+#ARCH:=sparc
+#ARCH:=sh64
 #ARCH:=whatever
 
 # enable to build a native gcc toolchain with uclibc support
@@ -275,8 +280,9 @@ $(BUILD_DIR):
 $(STAGING_DIR):
 	rm -rf $(STAGING_DIR)
 	mkdir -p $(STAGING_DIR)/lib
-	mkdir -p $(STAGING_DIR)/usr/lib
+	mkdir -p $(STAGING_DIR)/usr
 	mkdir -p $(STAGING_DIR)/include
+	ln -fs ../lib $(STAGING_DIR)/usr/lib
 
 $(TARGET_DIR):
 	rm -rf $(TARGET_DIR)
