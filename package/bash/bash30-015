@@ -1,0 +1,56 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-015
+
+Bug-Reported-by: opengeometry@yahoo.ca
+Bug-Reference-ID: <200410202012.i9KKCTEB001860@node1.opengeometry.net>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-10/msg00297.html
+
+Bug-Description:
+
+   Shell variable can start with number and can even be printed with
+    'declare', as in
+        1=aaa
+        1a=bbb
+        declare -p 1 1a
+
+    But, they can't be removed, as in
+        unset 1 1a              --> ...: not a valid identifier
+
+    Bash-2.05b correctly gives me error, however.
+
+Patch:
+
+*** ../bash-3.0-patched/general.c	Wed Apr 14 23:20:13 2004
+--- general.c	Wed Oct 20 16:59:59 2004
+***************
+*** 268,272 ****
+  
+  #if defined (ARRAY_VARS)
+!   if ((legal_variable_starter (c) == 0) && (flags && c != '[')) /* ] */
+  #else
+    if (legal_variable_starter (c) == 0)
+--- 268,272 ----
+  
+  #if defined (ARRAY_VARS)
+!   if ((legal_variable_starter (c) == 0) && (flags == 0 || c != '[')) /* ] */
+  #else
+    if (legal_variable_starter (c) == 0)
+
+*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 14
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */

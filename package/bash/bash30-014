@@ -1,0 +1,52 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-014
+
+Bug-Reported-by: agriffis@gentoo.org
+Bug-Reference-ID: <20040929024759.A437FEB1E0@piment.flatmonk.org>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-09/msg00250.html
+
+Bug-Description:
+
+        #
+        # BROKEN case: variable with braces inside quotes
+        #
+
+        $ D=W
+        $ echo "${D}"{illy,onka}  => W{illy,onka}
+
+Patch:
+
+*** ../bash-3.0-patched/braces.c	Wed Sep  8 11:07:53 2004
+--- braces.c	Fri Sep 17 18:42:36 2004
+***************
+*** 403,407 ****
+  	  pass_next = 1;
+  	  i++;
+! 	  level++;
+  	  continue;
+  	}
+--- 403,408 ----
+  	  pass_next = 1;
+  	  i++;
+! 	  if (quoted == 0)
+! 	    level++;
+  	  continue;
+  	}
+*** ../bash-3.0-patched/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 13
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 14
+  
+  #endif /* _PATCHLEVEL_H_ */
