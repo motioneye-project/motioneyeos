@@ -16,6 +16,7 @@ $(DL_DIR)/$(RSYNC_SOURCE):
 
 $(RSYNC_DIR)/.unpacked: $(DL_DIR)/$(RSYNC_SOURCE)
 	$(RSYNC_CAT) $(DL_DIR)/$(RSYNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(RSYNC_DIR) package/rsync/ rsync*.patch
 	touch $(RSYNC_DIR)/.unpacked
 
 $(RSYNC_DIR)/.configured: $(RSYNC_DIR)/.unpacked
