@@ -29,7 +29,7 @@ $(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
 	    (cd $(LINUX_DIR)/include; ln -fs asm-ppc$(NOMMU) asm;) \
 	elif [ "$(ARCH)" = "mips" ];then \
 	    (cd $(LINUX_DIR)/include; ln -fs asm-mips$(NOMMU) asm;) \
-	elif [ "$(TARGET_ARCH)" = "mipsel" ];then \
+	elif [ "$(ARCH)" = "mipsel" ];then \
 	    (cd $(LINUX_DIR)/include; ln -fs asm-mips$(NOMMU) asm;) \
 	elif [ "$(ARCH)" = "arm" ];then \
 	    (cd $(LINUX_DIR)/include; ln -fs asm-arm$(NOMMU) asm; \
