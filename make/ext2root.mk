@@ -28,21 +28,10 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 #
 # Build the ext2 root filesystem image
 #
-# Known problems :
-#  - genext2fs: couldn't allocate a block (no free space)
-#  
-#    Since genext2fs allocates only one group of blocks, the FS 
-#    size is limited to a maximum of 8 Mb.
-#
 #############################################################
 
-# how much KB we want to add to the calculated size for the root directory,
-# to have additional space
-GENEXT2_ADDTOROOTSIZE := 512
-# maximal rootfilesystem size that can be handled
-# by genext2fs
-GENEXT2_MAXROOTSIZE := 8192
-
+# How much KB we want to add to the calculated size for slack space
+GENEXT2_ADDTOROOTSIZE=4096
 GENEXT2_REALSIZE=$(subst total,, $(shell du $(TARGET_DIR) -s -c -k | grep total )) 
 GENEXT2_SIZE=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE))
 # We currently add about 400 device nodes, so add that into the total
