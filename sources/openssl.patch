@@ -6,7 +6,7 @@
  eval 'exec perl -S $0 ${1+"$@"}'
      if $running_under_some_shell;
  ##
-@@ -373,6 +373,39 @@
+@@ -373,6 +373,40 @@
  # assembler versions -- currently defunct:
  ##"OpenBSD-alpha","gcc:-DTERMIOS -O3 -fomit-frame-pointer:::(unknown):SIXTY_FOUR_BIT_LONG DES_INT DES_PTR DES_RISC2:${alpha_asm}",
  
@@ -43,6 +43,7 @@
 +"linux-sparc","gcc:-DB_ENDIAN -DTERMIO -O3 -fomit-frame-pointer -Wall::-D_REENTRANT::-ldl:BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR::::::::::dlfcn:linux-shared:-fPIC::.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
 +"linux-sparc-v8","gcc:-DB_ENDIAN -DTERMIO -O3 -mcpu=v8 -fomit-frame-pointer -Wall -DBN_DIV2W::-D_REENTRANT::-ldl:BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:asm/sparcv8.o:::::::::dlfcn:linux-shared:-fPIC::.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
 +"linux-sparc-v9","gcc:-DB_ENDIAN -DTERMIO -O3 -mcpu=v9 -Wa,-Av8plus -fomit-frame-pointer -Wall -DULTRASPARC -DBN_DIV2W::-D_REENTRANT::-ldl:BN_LLONG RC4_CHAR RC4_CHUNK DES_UNROLL BF_PTR:asm/sparcv8plus.o:::asm/md5-sparcv8plus.o::::::dlfcn:linux-shared:-fPIC::.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
++"linux-cris",	"gcc:-DL_ENDIAN -DTERMIO -O3 -fomit-frame-pointer -Wall::-D_REENTRANT::-ldl:BN_LLONG::::::::::dlfcn:linux-shared:-fpic::.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
  # The intel boxes :-), It would be worth seeing if bsdi-gcc can use the
  # bn86-elf.o file file since it is hand tweaked assembler.
  "linux-elf",	"gcc:-DL_ENDIAN -DTERMIO -O3 -fomit-frame-pointer -m486 -Wall::-D_REENTRANT::-ldl:BN_LLONG ${x86_gcc_des} ${x86_gcc_opts}:${x86_elf_asm}:dlfcn:linux-shared:-fPIC::.so.\$(SHLIB_MAJOR).\$(SHLIB_MINOR)",
