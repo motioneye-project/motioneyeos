@@ -124,7 +124,7 @@ TARGETS+=busybox tinylogin
 #If you want a development system, you probably want gcc built
 # with uClibc so it can run within your dev system...
 #TARGETS+=gcc2_95_target
-TARGETS+=gcc3_3_target
+#TARGETS+=gcc3_3_target
 
 # Of course, if you are installing a development system, you
 # may want some header files so you can compile stuff....
