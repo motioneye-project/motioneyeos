@@ -270,6 +270,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	    build_tooldir=$(TARGET_DIR)/usr/$(GNU_TARGET_NAME) \
 	    -C $(GCC_BUILD_DIR3) install-gcc;
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
+	(cd $(TARGET_DIR)/lib; ln -fs /usr/bin/cpp)
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
 	rm -rf $(TARGET_DIR)/usr/include/include $(TARGET_DIR)/usr/usr
