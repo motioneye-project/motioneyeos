@@ -386,6 +386,9 @@ $(GCC_DIR)/.ldso_hacks: $(GCC_DIR)/.patched
 		$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
 	perl -i -p -e "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
 		$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
+	# Disable logf() -- we just use log() in uClibc
+	-perl -i -p -e "s,_GLIBCPP_HAVE_LOGF,0,g;" $(GCC_DIR)/libstdc++-v3/include/c_std/std_cmath.h \
+		$(GCC_DIR)/libstdc++-v3/include/c_shadow/bits/std_cmath.h
 	# For now, we don't support locale-ified ctype, so bypass that problem here
 	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_base.h \
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
