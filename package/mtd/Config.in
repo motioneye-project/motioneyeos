@@ -1,5 +1,4 @@
-
-menuconfig BR2_PACKAGE_MTD
+config BR2_PACKAGE_MTD
 	bool "mtd/jffs2 utilities"
 	default n
 	help
@@ -94,6 +93,3 @@ config BR2_PACKAGE_MTD_DOC_LOADBIOS
 	bool "doc_loadbios"
 	default y
 	depends on BR2_PACKAGE_MTD
-	
-
-	
