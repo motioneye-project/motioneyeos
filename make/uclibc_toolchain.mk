@@ -59,7 +59,7 @@ NATIVE_ARCH:= ${shell uname -m | sed \
 ifeq ($(strip $(ARCH)),$(strip $(NATIVE_ARCH)))
 CROSSARG=
 else
-CROSSARG=--cross=$(ARCH)-uclibc-
+CROSSARG=--cross=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 endif
 ifneq ($(HAS_MMU),true)
 NOMMU:=nommu
@@ -140,9 +140,11 @@ ifeq ($(LINUX_DIR),)
 LINUX_DIR:=$(BUILD_DIR)/linux
 endif
 $(LINUX_DIR)/.cross_compiler_set: $(BUILD_DIR)/.setup $(LINUX_DIR)/.configured
-	perl -i -p -e "s,^CROSS_COMPILE.*,\
-		CROSS_COMPILE=$(STAGING_DIR)/bin/$(ARCH)-uclibc-,g;" \
-		$(LINUX_DIR)/Makefile
+	#If we were cross compiling the kernel, we would need to do this,
+	# but for UserMode Linux, we can skip this step....
+	#perl -i -p -e "s,^CROSS_COMPILE.*,\
+	#	CROSS_COMPILE=$(STAGING_DIR)/bin/$(ARCH)-uclibc-,g;" \
+	#	$(LINUX_DIR)/Makefile
 	touch $(LINUX_DIR)/.cross_compiler_set
 
 linux_headers: $(LINUX_DIR)/.cross_compiler_set
@@ -172,6 +174,10 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR)/.configured: $(BINUTILS_DIR)/.patched
+	@if `echo "true" | grep -r true`; then true; else \
+		echo "ERROR! Your grep doesn't support the -r argument."; \
+		exit 1; \
+	fi
 	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"\
 		,#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
 		`grep -lr "#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"" $(BINUTILS_DIR)`);
