@@ -1,115 +1,37 @@
-diff -urN strace-4.4.98.orig/file.c strace-4.4.98/file.c
---- strace-4.4.98.orig/file.c	2003-04-01 18:10:44.000000000 -0700
-+++ strace-4.4.98/file.c	2003-06-26 19:30:31.000000000 -0600
-@@ -920,7 +920,7 @@
- #endif /* HAVE_STAT64 */
+--- strace-4.4/syscall.c.orig	2003-09-03 01:15:32.000000000 -0600
++++ strace-4.4/syscall.c	2003-09-03 01:20:35.000000000 -0600
+@@ -71,10 +71,12 @@
+ # include <asm/rse.h>
+ #endif
  
- #if defined(LINUX) && !defined(IA64) && !defined(HPPA) && !defined(X86_64) \
--    && !defined(S390) && !defined(S390X)
-+    && !defined(S390) && !defined(S390X) && !defined(MIPS)
- static void
- convertoldstat(oldbuf, newbuf)
- const struct __old_kernel_stat *oldbuf;
-@@ -973,7 +973,7 @@
- 	convertoldstat(&statbuf, &newstatbuf);
- 	realprintstat(tcp, &newstatbuf);
- }
--#endif /* LINUX && !IA64 && !HPPA && !X86_64 && !S390 && !S390X */
-+#endif /* LINUX && !IA64 && !HPPA && !X86_64 && !S390 && !S390X && !MIPS */
++#ifndef HAVE_STRERROR
+ #ifndef SYS_ERRLIST_DECLARED
+ extern int sys_nerr;
+ extern char *sys_errlist[];
+ #endif /* SYS_ERRLIST_DECLARED */
++#endif /* HAVE_STERRROR */
  
- #ifndef HAVE_LONG_LONG_OFF_T
- int
-@@ -1009,7 +1009,7 @@
- 
+ #define NR_SYSCALL_BASE 0
  #ifdef LINUX
- # if !defined(IA64) && !defined(HPPA) && !defined(X86_64) \
--     && !defined(S390) && !defined(S390X)
-+     && !defined(S390) && !defined(S390X) && !defined(MIPS)
- int
- sys_oldstat(tcp)
- struct tcb *tcp;
-@@ -1022,7 +1022,7 @@
- 	}
- 	return 0;
- }
--# endif /* !IA64 && !HPPA*/
-+# endif /* !IA64 && !HPPA && && !X86_64 && !S390 && !S390X && !MIPS */
+@@ -1529,6 +1531,7 @@
  #endif /* LINUX */
- 
- #ifndef HAVE_LONG_LONG_OFF_T
-@@ -1057,7 +1057,7 @@
- 
- #ifdef LINUX
- # if !defined(IA64) && !defined(HPPA) && !defined(X86_64) \
--     && !defined(S390) && !defined(S390X)
-+     && !defined(S390) && !defined(S390X) && !defined(MIPS)
- int
- sys_oldfstat(tcp)
- struct tcb *tcp;
-@@ -1069,7 +1069,7 @@
- 	}
- 	return 0;
- }
--# endif /* !IA64 && !HPPA && !X86_64 && !S390 && !S390X */
-+# endif /* !IA64 && !HPPA && !X86_64 && !S390 && !S390X && !MIPS */
- #endif
- 
- #ifndef HAVE_LONG_LONG_OFF_T
-@@ -1106,7 +1106,7 @@
- 
- #ifdef LINUX
- # if !defined(IA64) && !defined(HPPA) && !defined(X86_64) \
--     && !defined(S390) && !defined(S390X)
-+     && !defined(S390) && !defined(S390X) && !defined(MIPS)
- int
- sys_oldlstat(tcp)
- struct tcb *tcp;
-@@ -1119,7 +1119,7 @@
- 	}
- 	return 0;
- }
--# endif /* !IA64 && !HPPA && !X86_64 && !S390 && !S390X */
-+# endif /* !IA64 && !HPPA && !X86_64 && !S390 && !S390X && !MIPS */
- #endif
- 
- 
-diff -urN strace-4.4.98.orig/linux/mips/syscallent.h strace-4.4.98/linux/mips/syscallent.h
---- strace-4.4.98.orig/linux/mips/syscallent.h	2003-05-22 18:27:02.000000000 -0600
-+++ strace-4.4.98/linux/mips/syscallent.h	2003-06-26 19:35:36.000000000 -0600
-@@ -4016,7 +4016,7 @@
- 	{ 2,	TF,	sys_chmod,		"chmod"		}, /* 4015 */
- 	{ 3,	TF,	sys_chown,		"lchown"	}, /* 4016 */
- 	{ 0,	0,	sys_break,		"break"		}, /* 4017 */
--	{ 2,	TF,	sys_oldstat,		"oldstat"	}, /* 4018 */
-+	{ 0,	0,	printargs,		"SYS_4018"	}, /* 4018 */
- 	{ 3,	0,	sys_lseek,		"lseek"		}, /* 4019 */
- 	{ 0,	0,	sys_getpid,		"getpid"	}, /* 4020 */
- 	{ 5,	TF,	sys_mount,		"mount"		}, /* 4021 */
-@@ -4026,7 +4026,7 @@
- 	{ 1,	0,	sys_stime,		"stime"		}, /* 4025 */
- 	{ 4,	0,	sys_ptrace,		"ptrace"	}, /* 4026 */
- 	{ 1,	0,	sys_alarm,		"alarm"		}, /* 4027 */
--	{ 2,	0,	sys_oldfstat,		"oldfstat"	}, /* 4028 */
-+	{ 0,	0,	printargs,		"SYS_4028"	}, /* 4028 */
- 	{ 0,	TS,	sys_pause,		"pause"		}, /* 4029 */
- 	{ 2,	TF,	sys_utime,		"utime"		}, /* 4030 */
- 	{ 0,	0,	sys_stty,		"stty"		}, /* 4031 */
-@@ -4082,7 +4082,7 @@
- 	{ 2,	0,	sys_setgroups,		"setgroups"	}, /* 4081 */
- 	{ 0,	0,	printargs,		"reserved82"	}, /* 4082 */
- 	{ 2,	TF,	sys_symlink,		"symlink"	}, /* 4083 */
--	{ 2,	TF,	sys_oldlstat,		"oldlstat"	}, /* 4084 */
-+	{ 0,	0,	printargs,		"SYS_4084"	}, /* 4084 */
- 	{ 3,	TF,	sys_readlink,		"readlink"	}, /* 4085 */
- 	{ 1,	TF,	sys_uselib,		"uselib"	}, /* 4086 */
- 	{ 1,	TF,	sys_swapon,		"swapon"	}, /* 4087 */
---- strace-4.4.98/syscall.orig.c	2003-06-26 19:43:59.000000000 -0600
-+++ strace-4.4.98/syscall.c	2003-06-26 19:44:16.000000000 -0600
-@@ -695,6 +695,7 @@
- #elif defined (M68K)
- 	static int d0;
- #elif defined (ARM)
-+	static long r0;
- 	static struct pt_regs regs;
- #elif defined (ALPHA)
- 	static long r0;
+ 			default:
+ 				tprintf("= -1 ");
++#ifndef HAVE_STRERROR
+ 				if (u_error < nerrnos && u_error < sys_nerr)
+ 					tprintf("%s (%s)", errnoent[u_error],
+ 						sys_errlist[u_error]);
+@@ -1540,6 +1543,13 @@
+ 						sys_errlist[u_error]);
+ 				else
+ 					tprintf("E??? (errno %ld)", u_error);
++#else
++				if (u_error < nerrnos)
++					tprintf("%s (%s)", errnoent[u_error],
++						strerror(u_error));
++				else
++					tprintf("E??? (errno %ld)", u_error);
++#endif
+ 				break;
+ 			}
+ 		}
