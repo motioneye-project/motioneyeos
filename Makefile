@@ -32,6 +32,7 @@
 ARCH:=i386
 #ARCH:=arm
 #ARCH:=mips
+#ARCH:=mipsel
 #ARCH:=powerpc
 #ARCH:=sh4
 #ARCH:=cris
@@ -85,12 +86,10 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 #      -msoft-float flag.  To avoid CFLAGS problems, you may want to use
 #      scripts similar to those in the build*/staging_dir/bin directory.
 # Uncomment the next 2 lines to build a soft-float toolchain and rootfs.
-#SOFT_FLOAT_CONFIG_OPTION=--without-float
-#TARGET_SOFT_FLOAT=-msoft-float
+SOFT_FLOAT:=false
 
 TARGET_OPTIMIZATION=-Os
 TARGET_DEBUGGING= #-g
-TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_SOFT_FLOAT)
 
 # Any additional gcc options you may want to include....
 EXTRA_GCC_CONFIG_OPTIONS=
@@ -206,6 +205,11 @@ else
 ARCH_FPU_SUFFIX:=_nofpu
 endif
 
+ifeq ($(SOFT_FLOAT),true)
+SOFT_FLOAT_CONFIG_OPTION=--without-float
+TARGET_SOFT_FLOAT=-msoft-float
+endif
+
 ifeq ($(ENABLE_LOCALE),true)
 EXTRA_GCC_CONFIG_OPTIONS += --enable-clocale=gnu
 endif
@@ -213,6 +217,7 @@ endif
 ifneq ($(BUILD_WITH_LARGEFILE),true)
 DISABLE_LARGEFILE= --disable-largefile 
 endif
+TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_SOFT_FLOAT)
 
 HOSTCC:=gcc
 BASE_DIR:=${shell pwd}
