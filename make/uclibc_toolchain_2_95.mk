@@ -52,8 +52,8 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.20
-UCLIBC_SOURCE:=uClibc-0.9.20.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.21
+UCLIBC_SOURCE:=uClibc-0.9.21.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
