@@ -63,6 +63,7 @@ $(STAGING_DIR)/lib/libjpeg.so.62.0.0: $(JPEG_DIR)/.configured
 
 $(TARGET_DIR)/lib/libjpeg.so.62.0.0: $(STAGING_DIR)/lib/libjpeg.so.62.0.0
 	cp -dpf $(STAGING_DIR)/lib/libjpeg.so* $(TARGET_DIR)/lib/
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libjpeg.so.62.0.0
 
 jpeg: uclibc $(TARGET_DIR)/lib/libjpeg.so.62.0.0
 

@@ -56,6 +56,8 @@ $(TARGET_DIR)/usr/lib/libssl.a: $(STAGING_DIR)/lib/libcrypto.so.0.9.7
 		ln -fs /lib/libssl.so.0.9.7 libssl.so; \
 		ln -fs /lib/libcrypto.so.0.9.7 libcrypto.so; \
 	)
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libssl.so.0.9.7
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libcrypto.so.0.9.7
 	touch -c $(TARGET_DIR)/usr/lib/libssl.a
 
 openssl-headers: $(TARGET_DIR)/usr/lib/libssl.a

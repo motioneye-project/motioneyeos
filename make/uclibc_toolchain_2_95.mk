@@ -510,9 +510,7 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 		$(STAGING_DIR)/share/locale
 	# Strip the host binaries
 	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
-	# Strip the target shared libs
-	-$(STRIP) --strip-unneeded -R .note -R .comment $(STAGING_DIR)/lib/*.so*;
-	set -e; 
+	set -e; \
 	for app in cc gcc c89 cpp c++ g++ ; do \
 		if [ -x $(STAGING_DIR)/bin/$(ARCH)-uclibc-$${app} ] ; then \
 		    (cd $(STAGING_DIR)/usr/bin; \
