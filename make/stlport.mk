@@ -20,13 +20,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-
-# FYI -- to make things compile with this, you will need to
-# compile client applications by adding the following flags:
-#   CFLAGS+=-I$(STAGING_DIR)/include/g++-3 -D_STLP_USE_UCLIBC -D_STLP_NO_WCHAR_T
-#   LDFLAGS+=-lstdc++
-
-
 STLPORT_DIR=$(BUILD_DIR)/STLport-4.5.3
 STLPORT_SITE=http://www.stlport.org/archive
 STLPORT_SOURCE=STLport-4.5.3.tar.gz
@@ -42,19 +35,19 @@ $(STLPORT_DIR)/Makefile: $(DL_DIR)/$(STLPORT_SOURCE) $(STLPORT_PATCH)
 	cat $(STLPORT_PATCH) | patch -d $(STLPORT_DIR) -p1
 
 $(STLPORT_DIR)/lib/libstdc++.so.4.5: $(STLPORT_DIR)/Makefile
-	$(MAKE) ARCH=$(ARCH) CROSS=$(TARGET_CROSS) -C $(STLPORT_DIR)
+	$(MAKE) ARCH=$(ARCH) PREFIX=$(STAGING_DIR) -C $(STLPORT_DIR)
 
 $(STAGING_DIR)/lib/libstdc++.so.4.5: $(STLPORT_DIR)/lib/libstdc++.so.4.5
-	$(MAKE) ARCH=$(ARCH) CROSS=$(TARGET_CROSS) PREFIX=$(STAGING_DIR) -C $(STLPORT_DIR) install
+	$(MAKE) ARCH=$(ARCH) PREFIX=$(STAGING_DIR) -C $(STLPORT_DIR) install
 
 $(TARGET_DIR)/lib/libstdc++.so.4.5: $(STAGING_DIR)/lib/libstdc++.so.4.5
-	cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
+	cp -pf $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
 
-stlport: linux $(TARGET_DIR)/lib/libstdc++.so.4.5
+stlport: $(TARGET_DIR)/lib/libstdc++.so.4.5
 
 stlport-clean:
 	rm -f $(TARGET_DIR)/lib/libstdc++*
-	-make -C $(STLPORT_DIR) clean
+	-$(MAKE) -C $(STLPORT_DIR) clean
 
 stlport-dirclean:
 	rm -rf $(STLPORT_DIR)
