@@ -3,9 +3,10 @@
 # gzip
 #
 #############################################################
-GZIP_SOURCE:=gzip-1.3.5.tar.gz
+GZIP_VER:=1.3.5
+GZIP_SOURCE:=gzip-$(GZIP_VER).tar.gz
 GZIP_SITE:=ftp://alpha.gnu.org/gnu/gzip
-GZIP_DIR:=$(BUILD_DIR)/gzip-1.3.5
+GZIP_DIR:=$(BUILD_DIR)/gzip-$(GZIP_VER)
 GZIP_CAT:=zcat
 GZIP_BINARY:=$(GZIP_DIR)/gzip
 GZIP_TARGET_BINARY:=$(TARGET_DIR)/bin/zmore
@@ -26,6 +27,7 @@ $(GZIP_DIR)/.unpacked: $(DL_DIR)/$(GZIP_SOURCE)
 $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
 	(cd $(GZIP_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
