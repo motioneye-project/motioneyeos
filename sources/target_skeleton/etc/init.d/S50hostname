@@ -1,0 +1,3 @@
+#!/bin/sh
+
+hostname tester.dev.null

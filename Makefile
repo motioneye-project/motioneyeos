@@ -89,6 +89,8 @@ $(STAGING_DIR):
 $(TARGET_DIR):
 	rm -rf $(TARGET_DIR)
 	tar -xf $(SOURCE_DIR)/skel.tar
+	cp -a target_skeleton/* $(TARGET_DIR)/
+	-find $(TARGET_DIR) -type d -name CVS -exec rm -rf {} \; > /dev/null 2>&1
 
 # The kernel
 $(SOURCE_DIR)/$(LINUX_SOURCE):

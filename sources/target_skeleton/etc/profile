@@ -1,0 +1,8 @@
+alias ll='ls -l'
+
+echo " "
+echo " "
+echo "Welcome to the busybox/uClibc usermode-linux test environment"
+echo " "
+echo " "
+

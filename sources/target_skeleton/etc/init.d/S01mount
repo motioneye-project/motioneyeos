@@ -1,0 +1,15 @@
+#!/bin/sh
+
+# Mount all filesystems.  We don't mess with
+# fsck, since we don't need it here...
+
+echo -n "Mounting local file systems: "
+/bin/mount -a > /dev/null 2>&1
+if [ $? = 0 ] ; then
+	echo "ok"
+else
+	echo "failed"
+fi
+
+exit 0
+

@@ -1,0 +1,21 @@
+# protocols     This file describes the various protocols that are
+#               available from the TCP/IP subsystem.  It should be
+#               consulted instead of using the numbers in the ARPA
+#               include files, or, worse, just guessing them.
+#
+# Version:      @(#)/etc/protocols      2.00    04/30/93
+#
+# Author:       Fred N. van Kempen, <waltje@uwalt.nl.mugnet.org>
+#
+
+ip      0       IP      # internet protocol, pseudo protocol number
+icmp    1       ICMP    # internet control message protocol
+igmp    2       IGMP    # internet group multicast protocol
+ggp     3       GGP     # gateway-gateway protocol
+tcp     6       TCP     # transmission control protocol
+pup     12      PUP     # PARC universal packet protocol
+udp     17      UDP     # user datagram protocol
+idp     22      IDP     # WhatsThis?
+raw     255     RAW     # RAW IP interface
+
+# End of protocols.

@@ -1,0 +1,5 @@
+#!/bin/sh
+if [ -f /proc/sys/kernel/modprobe ] ; then
+    echo "/bin/true" >/proc/sys/kernel/modprobe
+fi
+#/sbin/insmod foo
