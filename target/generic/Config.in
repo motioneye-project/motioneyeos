@@ -1,5 +1,61 @@
 comment "Generic Device Support"
 
-source "target/device/generic/access_point/Config.in"
-source "target/device/generic/firewall/Config.in"
+config BR2_TARGET_GENERIC_ACCESS_POINT
+	bool "Generic wireless access point"
+	default n
+	select BR2_PACKAGE_WIRELESS_TOOLS
+	select BR2_PACKAGE_DHCP_RELAY
+	select BR2_PACKAGE_BRIDGE
+	help
+	  Board support for a generic wireless access point.
+
+
+config BR2_TARGET_GENERIC_FIREWALL
+	bool "Generic firewall"
+	default n
+	select BR2_PACKAGE_IPTABLES
+	help
+	  Board support for a generic firewalling router.
+
+
+config BR2_TARGET_GENERIC_DEV_SYSTEM
+	bool "Generic firewall"
+	default n
+	select BR2_CCACHE
+	select BR2_PACKAGE_GDB
+	select BR2_PACKAGE_GDB_SERVER
+	select BR2_PACKAGE_BASH
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_COREUTILS
+	select BR2_PACKAGE_DIFFUTILS
+	select BR2_PACKAGE_ED
+	select BR2_PACKAGE_FINDUTILS
+	select BR2_PACKAGE_FLEX
+	select BR2_PACKAGE_GAWK
+	select BR2_PACKAGE_GCC_TARGET
+	select BR2_PACKAGE_CCACHE_TARGET
+	select BR2_PACKAGE_GREP
+	select BR2_PACKAGE_MAKE
+	select BR2_PACKAGE_PATCH
+	select BR2_PACKAGE_SED
+	select BR2_PACKAGE_TAR
+	select BR2_PACKAGE_AUTOCONF
+	select BR2_PACKAGE_AUTOMAKE
+	select BR2_PACKAGE_DROPBEAR_SSHD
+	select BR2_PACKAGE_FILE
+	select BR2_PACKAGE_GZIP
+	select BR2_PACKAGE_LESS
+	select BR2_PACKAGE_LIBTOOL
+	select BR2_PACKAGE_M4
+	select BR2_PACKAGE_MKE2FS
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NETKITBASE
+	select BR2_PACKAGE_PCIUTILS
+	select BR2_PACKAGE_PROCPS
+	select BR2_PACKAGE_RSYNC
+	select BR2_PACKAGE_STRACE
+	select BR2_PACKAGE_UTIL-LINUX
+	select BR2_PACKAGE_ZLIB
+	help
+	  Board support for a generic firewalling router.
 

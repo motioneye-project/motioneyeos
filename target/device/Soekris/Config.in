@@ -1,5 +1,6 @@
 config BR2_TARGET_SOEKRIS_NET4521
 	bool "Soekris net4521"
+	depends BR2_i386
 	default n
 	help
 	  The Soekris net4521
