@@ -6,8 +6,8 @@
 
 # TARGETS
 OPENSSL_SITE:=http://www.openssl.org/source
-OPENSSL_SOURCE:=openssl-0.9.6g.tar.gz
-OPENSSL_DIR:=$(BUILD_DIR)/openssl-0.9.6g
+OPENSSL_SOURCE:=openssl-0.9.7.tar.gz
+OPENSSL_DIR:=$(BUILD_DIR)/openssl-0.9.7
 OPENSSL_PATCH=$(SOURCE_DIR)/openssl.patch
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
@@ -20,8 +20,9 @@ $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCH)
 
 $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 	(cd $(OPENSSL_DIR); \
-	PATH=$(TARGET_PATH) ./Configure linux-$(ARCH) --prefix=$(STAGING_DIR) \
-		--openssldir=$(STAGING_DIR)/usr/lib/ssl -L$(STAGING_DIR)/lib -ldl \
+	CFLAGS="-DOPENSSL_NO_KRB5 -DOPENSSL_NO_IDEA -DOPENSSL_NO_MDC2 -DOPENSSL_NO_RC5" \
+	PATH=$(TARGET_PATH) ./Configure linux-$(ARCH) --prefix=/ \
+		--openssldir=/usr/lib/ssl -L$(STAGING_DIR)/lib -ldl \
 		-I$(STAGING_DIR)/include $(OPENSSL_OPTS) no-threads \
 		shared no-idea no-mdc2 no-rc5)
 
@@ -29,13 +30,13 @@ $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
 	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) all build-shared
 
 $(STAGING_DIR)/lib/libcrypto.so.0: $(OPENSSL_DIR)/apps/openssl
-	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) install
+	$(MAKE) CC=$(TARGET_CC) INSTALL_PREFIX=$(STAGING_DIR) -C $(OPENSSL_DIR) install
 	cp -fa $(OPENSSL_DIR)/libcrypto.so* $(STAGING_DIR)/lib/
-	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.6 libcrypto.so)
-	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.6 libcrypto.so.0)
+	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.7 libcrypto.so)
+	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.7 libcrypto.so.0)
 	cp -fa $(OPENSSL_DIR)/libssl.so* $(STAGING_DIR)/lib/
-	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.6 libssl.so)
-	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.6 libssl.so.0)
+	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.7 libssl.so)
+	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.7 libssl.so.0)
 
 $(TARGET_DIR)/lib/libcrypto.so.0: $(STAGING_DIR)/lib/libcrypto.so.0
 	cp -fa $(STAGING_DIR)/lib/libcrypto.so* $(TARGET_DIR)/lib/
