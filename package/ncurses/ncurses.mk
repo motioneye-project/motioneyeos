@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.3 2004/10/09 19:05:19 vapier Exp $
+# $Id: ncurses.mk,v 1.4 2004/10/09 19:26:10 vapier Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -100,6 +100,7 @@ $(TARGET_DIR)/lib/libncurses.so.5.2: $(STAGING_DIR)/lib/libncurses.a
 	for i in x/xterm x/xterm-color x/xterm-xfree86 v/vt100 v/vt200 a/ansi l/linux; do \
 		cp -dpf $(STAGING_DIR)/usr/share/terminfo/$${i} $(TARGET_DIR)/usr/share/terminfo/; \
 	done
+	touch -c $(TARGET_DIR)/lib/libncurses.so.5.2
 
 $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/ncurses.h
@@ -117,6 +118,8 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.5.2
 	touch -c $(TARGET_DIR)/usr/lib/libncurses.a
 
+ncurses: $(TARGET_DIR)/lib/libncurses.so.5.2
+
 ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
 
 ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
@@ -129,6 +132,3 @@ ncurses-clean:
 
 ncurses-dirclean: 
 	rm -rf $(NCURSES_DIR)
-
-ncurses: $(TARGET_DIR)/lib/libncurses.so.5.2
-
