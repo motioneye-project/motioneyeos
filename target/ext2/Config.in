@@ -5,7 +5,7 @@ menuconfig BR2_TARGET_ROOTFS_EXT2
 	  Build an ext2 root filesystem
 
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
-	int "size in blocks (leave at 0 for auto calculation"
+	int "size in blocks (leave at 0 for auto calculation)"
 	depends on BR2_TARGET_ROOTFS_EXT2
 	default	0
 	
@@ -44,8 +44,5 @@ config BR2_TARGET_ROOTFS_EXT2_COPYTO
 	depends on 	BR2_TARGET_ROOTFS_EXT2
 	default ""
 	help
-		Copies the resulting image to a secondary location
-		like a tftp server's root directory.
-
-	
-	
+	  Copies the resulting image to a secondary location
+	  like a tftp server's root directory.
