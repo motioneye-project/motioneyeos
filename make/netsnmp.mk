@@ -5,9 +5,9 @@
 #############################################################
 
 NETSNMP_URL:=http://aleron.dl.sourceforge.net/sourceforge/net-snmp/
-NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-5.0.7
-NETSNMP_SOURCE:=net-snmp-5.0.7.tar.gz
-NETSNMP_PATCH1:=net-snmp_5.0.7-1.1.diff.gz
+NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-5.1
+NETSNMP_SOURCE:=net-snmp-5.1.tar.gz
+NETSNMP_PATCH1:=net-snmp_5.1-5.diff.gz
 NETSNMP_PATCH1_URL:=http://ftp.debian.org/debian/pool/main/n/net-snmp/
 NETSNMP_PATCH2:=$(SOURCE_DIR)/netsnmp.patch
 
