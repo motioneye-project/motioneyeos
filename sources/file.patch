@@ -1,5 +1,20 @@
---- file-4.04/magic/Makefile.am.orig	2003-10-02 13:46:41.000000000 -0600
-+++ file-4.04/magic/Makefile.am	2003-10-02 13:47:38.000000000 -0600
+--- file-4.10/magic/Makefile.in.orig	2004-07-24 14:38:55.000000000 -0600
++++ file-4.10/magic/Makefile.in	2004-07-28 12:16:23.000000000 -0600
+@@ -490,10 +490,10 @@
+ 	done >> $@
+ 
+ magic.mgc: magic
+-	$(top_builddir)/src/file -C -m magic
++	/usr/bin/file -C -m magic
+ 
+ magic.mime.mgc: magic.mime
+-	$(top_builddir)/src/file -C -m $(srcdir)/magic.mime
++	/usr/bin/file -C -m $(srcdir)/magic.mime
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
+ .NOEXPORT:
+--- file-4.10/magic/Makefile.am.orig	2004-07-24 14:38:55.000000000 -0600
++++ file-4.10/magic/Makefile.am	2004-07-28 12:18:15.000000000 -0600
 @@ -16,10 +16,10 @@
  	done >> $@
  
@@ -8,23 +23,8 @@
 +	/usr/bin/file -C -m magic
  
  magic.mime.mgc: magic.mime
--	$(top_builddir)/src/file -C -m magic.mime
-+	/usr/bin/file -C -m magic.mime
+-	$(top_builddir)/src/file -C -m $(srcdir)/magic.mime
++	/usr/bin/file -C -m $(srcdir)/magic.mime
  
  magic_FRAGMENTS = \
  Magdir/acorn \
---- file-4.04/magic/Makefile.in.orig	2003-10-02 13:52:23.000000000 -0600
-+++ file-4.04/magic/Makefile.in	2003-10-02 13:52:53.000000000 -0600
-@@ -477,10 +477,10 @@
- 	done >> $@
- 
- magic.mgc: magic
--	$(top_builddir)/src/file -C -m magic
-+	/usr/bin/file -C -m magic
- 
- magic.mime.mgc: magic.mime
--	$(top_builddir)/src/file -C -m magic.mime
-+	/usr/bin/file -C -m magic.mime
- # Tell versions [3.59,3.63) of GNU make to not export all variables.
- # Otherwise a system limit (for SysV at least) may be exceeded.
- .NOEXPORT:
