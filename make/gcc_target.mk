@@ -44,6 +44,11 @@ GCC_BUILD_DIR3:=$(BUILD_DIR)/gcc-target
 #############################################################
 $(BINUTILS_DIR2)/.configured:
 	mkdir -p $(BINUTILS_DIR2)
+	mkdir -p $(TARGET_DIR)/usr/include
+	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
+	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../lib)
+	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
+	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
 	(cd $(BINUTILS_DIR2); PATH=$$PATH:$(STAGING_DIR)/bin CC=$(TARGET_CROSS)gcc \
 		$(BINUTILS_DIR)/configure --enable-shared \
 		--target=$(GNU_TARGET_NAME) --prefix=/usr \
@@ -106,9 +111,12 @@ $(GCC_BUILD_DIR3)/.configured:
 	(cd $(GCC_BUILD_DIR3); PATH=$$PATH:$(STAGING_DIR)/bin AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld CC=$(TARGET_CROSS)gcc \
 		$(GCC_DIR)/configure \
-		--target=$(GNU_TARGET_NAME) --prefix=/usr --includedir=$(STAGING_DIR) \
+		--host=$(GNU_TARGET_NAME) --target=$(GNU_TARGET_NAME) --prefix=/usr \
+		--with-local-prefix=$(STAGING_DIR)/usr \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--enable-shared --enable-languages=c,c++ );
+	perl -i -p -e "s,ac_cv_prog_cc_cross=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR3)/config.cache
+	perl -i -p -e "s,^build_tooldir=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR3)/config.cache
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
