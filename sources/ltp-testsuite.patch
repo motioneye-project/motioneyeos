@@ -9,20 +9,6 @@
  
  all: $(TARGETS)
  
---- ltp-full-20031204/testcases/kernel/syscalls/mallopt/mallopt01.orig.c
-+++ ltp-full-20031204/testcases/kernel/syscalls/mallopt/mallopt01.c
-@@ -85,11 +85,6 @@
- 		flag = 1;
- 		local_flag = FAILED;
- 	};
--	if (info.usmblks != 0) {
--		fprintf(temp, "mallinfo failed: usmblks != 0\n");
--		flag = 1;
--		local_flag = FAILED;
--	}
- 	if (info.smblks != 0) {
- 		fprintf(temp, "mallinfo failed: smblks != 0\n");
- 		flag = 1;
 --- ltp-full-20031002/testcases/kernel/syscalls/profil/Makefile.orig	2003-10-02 19:27:53.000000000 -0600
 +++ ltp-full-20031002/testcases/kernel/syscalls/profil/Makefile	2003-10-02 19:28:02.000000000 -0600
 @@ -23,7 +23,7 @@
@@ -71,39 +57,6 @@
  	@echo 'NPtcp has been built.'
  
  NPtcp-ipv6:	NPtcp.o TCP.o
---- ltp-full-20031204/testcases/kernel/syscalls/setresuid/setresuid03.orig.c	2004-01-01 20:27:14.000000000 -0700
-+++ ltp-full-20031204/testcases/kernel/syscalls/setresuid/setresuid03.c	2004-01-01 20:27:21.000000000 -0700
-@@ -76,7 +76,7 @@
- extern int setresuid(uid_t, uid_t, uid_t);
- 
- int neg_one = -1;
--int inval_user = 999999;
-+int inval_user = (USHRT_MAX-2);
- 
- /* flag to tell parent if child passed or failed. */
- int flag = 0;
---- ltp-full-20031204/testcases/kernel/syscalls/setreuid/setreuid06.orig.c	2004-01-01 20:30:36.000000000 -0700
-+++ ltp-full-20031204/testcases/kernel/syscalls/setreuid/setreuid06.c	2004-01-01 20:41:00.000000000 -0700
-@@ -53,7 +53,7 @@
- #include "test.h"
- #include "usctest.h"
- 
--#define INVAL_USER	999999	
-+#define INVAL_USER	(USHRT_MAX-2)
- 
- char *TCID = "setreuid06";
- int TST_TOTAL = 1;
---- ltp-full-20031204/testcases/kernel/syscalls/setregid/setregid02.orig.c	2004-01-01 20:44:47.000000000 -0700
-+++ ltp-full-20031204/testcases/kernel/syscalls/setregid/setregid02.c	2004-01-01 20:44:18.000000000 -0700
-@@ -79,7 +79,7 @@
- gid_t users_gr_gid, root_gr_gid, bin_gr_gid;
- int neg_one = -1;
- int exp_enos[]={EPERM, 0};
--int inval_user = 999999;
-+int inval_user = (USHRT_MAX-2);
- char nobody_uid[] = "nobody";
- struct passwd *ltpuser;
- 
 --- ltp-full-20031106/testcases/kernel/syscalls/string/string01.orig.c	2004-01-01 23:54:37.000000000 -0700
 +++ ltp-full-20031106/testcases/kernel/syscalls/string/string01.c	2004-01-01 23:55:48.000000000 -0700
 @@ -413,10 +413,10 @@
@@ -120,36 +73,17 @@
  		  local_flag = FAILED;
  		}
  	    i++;
---- ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl08.c.orig	2004-01-03 02:26:31.000000000 -0700
-+++ ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl08.c	2004-01-03 02:26:48.000000000 -0700
-@@ -399,7 +399,7 @@
-         /* FIXME: Start at -4 because ipcs prints four lines of header */
-         for (used_queues = -4; fgets(buff, BUFSIZE, f); used_queues++)
-                 ;
--        fclose(f);
-+        pclose(f);
-         if (used_queues < 0) {
-                 tst_resm(TBROK,"Could not read output of 'ipcs' to calculate used message queues");
-                 tst_exit();
---- ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl09.c.orig	2004-01-03 02:26:36.000000000 -0700
-+++ ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl09.c	2004-01-03 02:26:53.000000000 -0700
-@@ -563,7 +563,7 @@
-         /* FIXME: Start at -4 because ipcs prints four lines of header */
-         for (used_queues = -4; fgets(buff, BUFSIZE, f); used_queues++)
-                 ;
--        fclose(f);
-+        pclose(f);
-         if (used_queues < 0) {
-                 tst_resm(TBROK,"Could not read output of 'ipcs' to calculate used message queues");
-                 tst_exit();
---- ltp-full-20031106/testcases/kernel/syscalls/getcwd/getcwd03.orig.c	2004-01-03 02:43:05.000000000 -0700
-+++ ltp-full-20031106/testcases/kernel/syscalls/getcwd/getcwd03.c	2004-01-03 02:43:19.000000000 -0700
-@@ -242,7 +242,7 @@
- char *
- getpwd()
- {
--	FILE *fin, *popen();
-+	FILE *fin;
- 	char *pwd = "/bin/pwd";
- 	char *cp, *cp_cur;
- 	char *buf;
+--- ltp-full-20040108/testcases/kernel/syscalls/pipe/pipe07.c.orig	2003-12-15 10:08:10.000000000 -0700
++++ ltp-full-20040108/testcases/kernel/syscalls/pipe/pipe07.c	2004-01-11 00:55:55.000000000 -0700
+@@ -84,8 +84,9 @@
+ 	setup();
+         /* Get the currently used number of file descriptors */
+ 	mypid=getpid();
+-	cmdstring=malloc(sizeof(cmdstring));
+-	sprintf(cmdstring,"ls -A -1 /proc/%d/fd | wc -l | awk {'print $1'}> pipe07.tmp",mypid);
++	cmdstring=malloc(BUFSIZ);
++	snprintf(cmdstring, BUFSIZ, "ls -A -1 /proc/%d/fd | "
++		"wc -l | awk {'print $1'}> pipe07.tmp", mypid);
+ 	if (system(cmdstring) == 0)
+ 	{
+ 		f = fopen("pipe07.tmp", "r");	
