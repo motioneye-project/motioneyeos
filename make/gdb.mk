@@ -8,6 +8,7 @@ GDB_SITE:=ftp://ftp.gnu.org/gnu/gdb/
 GDB_DIR:=$(BUILD_DIR)/gdb-5.3
 GDB_SOURCE:=gdb-5.3.tar.gz
 GDB_PATCH:=$(SOURCE_DIR)/gdb.patch
+GDB_UCLIBC_PATCH:=$(SOURCE_DIR)/gdb-5.3-uclibc.patch
 
 $(DL_DIR)/$(GDB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GDB_SITE)/$(GDB_SOURCE)
@@ -15,18 +16,27 @@ $(DL_DIR)/$(GDB_SOURCE):
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE) $(GDB_PATCH)
 	gunzip -c $(DL_DIR)/$(GDB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(GDB_PATCH) | patch -p1 -d $(GDB_DIR)
+	cat $(GDB_UCLIBC_PATCH) | patch -p1 -d $(GDB_DIR)
 	touch  $(GDB_DIR)/.unpacked
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
+	# Copy a config.sub from gcc.  This is only necessary until
+	# gdb's config.sub supports <arch>-linux-uclibc tuples.
+	cp $(GCC_DIR)/config.sub $(GDB_DIR)
+	cp $(GCC_DIR)/config.sub $(GDB_DIR)/readline/support/
 	(cd $(GDB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_type_uintptr_t=yes \
 		gt_cv_func_gettext_libintl=yes \
 		ac_cv_func_dcgettext=yes \
+		gdb_cv_func_sigsetjmp=yes \
+		bash_cv_func_strcoll_broken=no \
+		bash_cv_must_reinstall_sighandlers=no \
+		bash_cv_func_sigsetjmp=present \
 		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
+		--target=$(REAL_GNU_TARGET_NAME) \
+		--host=$(REAL_GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
