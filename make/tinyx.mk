@@ -49,7 +49,6 @@ TINYX_SITE:= http://intimate.handhelds.org/jacques/
 TINYX_CF:=$(TINYX_DIR)/config/cf
 #
 # Some things that you may want to change.
-# 
 TINYX_XFBDEV:=$(TINYX_DIR)/programs/Xserver/Xfbdev
 TINYX_CAT:=bzcat
 TINYX_BINX:=$(TARGET_DIR)/usr/X11R6/bin/
@@ -62,10 +61,11 @@ $(DL_DIR)/$(TINYX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/$(TINYX_SOURCE)
 
 $(DL_DIR)/cross.def:
-	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/cross.def 
+	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/cross.def
+	$(SED) 's:arm-uclibc-:arm-linux-uclibc-:g' $(DL_DIR)/cross.def
 
 $(DL_DIR)/host.def:
-	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/host.def 
+	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/host.def
 
 #
 # rule to make sure that we have the source, and it is configured.
@@ -75,6 +75,7 @@ $(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE) $(DL_DIR)/cross.def $(DL_DIR)
 	cat $(TINYX_PATCH) | patch -d $(TINYX_DIR) -p1
 	cp $(DL_DIR)/host.def $(TINYX_CF)/host.def
 	cp $(DL_DIR)/cross.def $(TINYX_CF)/cross.def
+	$(SED) 's,arm-uclibc-,$(ARCH)-linux-uclibc-,g' $(TINYX_CF)/cross.def
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' \
 			$(TINYX_CF)/cross.def \
 			$(TINYX_LDIR)/X11/Xlib.h
