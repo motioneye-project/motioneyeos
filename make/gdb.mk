@@ -5,8 +5,8 @@
 #############################################################
 
 GDB_SITE:=ftp://ftp.gnu.org/gnu/gdb/
-GDB_DIR:=$(BUILD_DIR)/gdb-5.2
-GDB_SOURCE:=gdb-5.2.tar.gz
+GDB_DIR:=$(BUILD_DIR)/gdb-5.3
+GDB_SOURCE:=gdb-5.3.tar.gz
 
 $(DL_DIR)/$(GDB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GDB_SITE)/$(GDB_SOURCE)
