@@ -1,0 +1,18 @@
+--- gcc-3.3.1/gcc/cppinit.c.old	2003-08-29 17:08:57.000000000 -0500
++++ gcc-3.3.1/gcc/cppinit.c	2003-08-29 16:53:36.000000000 -0500
+@@ -787,6 +787,7 @@
+   if (path != 0 && *path != 0)
+     path_include (pfile, path, SYSTEM);
+ 
++#if 0
+   /* Search "translated" versions of GNU directories.
+      These have /usr/local/lib/gcc... replaced by specd_prefix.  */
+   if (specd_prefix != 0 && cpp_GCC_INCLUDE_DIR_len)
+@@ -824,6 +825,7 @@
+ 	    }
+ 	}
+     }
++#endif
+ 
+   /* Search ordinary names for GNU include directories.  */
+   for (p = cpp_include_defaults; p->fname; p++)
