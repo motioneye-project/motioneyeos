@@ -8,13 +8,13 @@ ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
 BUSYBOX_SOURCE=busybox-unstable.tar.bz2
-BUSYBOX_SITE:=ftp://ftp.busybox.net/busybox/snapshots
+BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 BUSYBOX_UNZIP=bzcat
 BUSYBOX_CONFIG:=$(SOURCE_DIR)/busybox.config
 else
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox-0.60.5
 BUSYBOX_SOURCE:=busybox-0.60.5.tar.bz2
-BUSYBOX_SITE:=ftp://ftp.busybox.net/busybox
+BUSYBOX_SITE:=http://www.busybox.net/downloads
 BUSYBOX_UNZIP=bzcat
 BUSYBOX_CONFIG:=$(SOURCE_DIR)/busybox.Config.h
 endif
