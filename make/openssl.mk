@@ -49,7 +49,7 @@ $(TARGET_DIR)/usr/lib/libssl.a: $(TARGET_DIR)/lib/libcrypto.so.0
 	cp -dpf $(STAGING_DIR)/lib/libcrypto.a $(TARGET_DIR)/usr/lib/
 	touch -c $(TARGET_DIR)/usr/lib/libssl.a
 
-openssl-headers: $(TARGET_DIR)/usr/include/openssl/crypto.h
+openssl-headers: $(TARGET_DIR)/usr/lib/libssl.a
 
 openssl-clean: 
 	rm -f $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/openssl

@@ -56,7 +56,7 @@ $(TARGET_DIR)/usr/lib/libz.a: $(TARGET_DIR)/lib/libz.so.1.1.4
 	cp -dpf $(STAGING_DIR)/lib/libz.a $(TARGET_DIR)/usr/lib/
 	touch -c $(TARGET_DIR)/usr/lib/libz.a
 
-zlib-headers: $(TARGET_DIR)/usr/include/zlib.h
+zlib-headers: $(TARGET_DIR)/usr/lib/libz.a
 
 zlib: uclibc $(TARGET_DIR)/lib/libz.so.1.1.4
 
