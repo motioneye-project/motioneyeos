@@ -17,7 +17,7 @@ strace-source: $(DL_DIR)/$(STRACE_SOURCE)
 
 $(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
 	$(STRACE_CAT) $(DL_DIR)/$(STRACE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(SOURCE_DIR)/strace.patch | patch -p1 -d $(STRACE_DIR)
+	cat $(STRACE_PATCH) | patch -p1 -d $(STRACE_DIR)
 	touch $(STRACE_DIR)/.unpacked
 
 $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
