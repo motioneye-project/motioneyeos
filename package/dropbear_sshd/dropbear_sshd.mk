@@ -60,6 +60,7 @@ $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY): $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SS
 	install -d -m 755 $(TARGET_DIR)/usr/bin
 	install -m 755 $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY) \
 		$(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
+	$(STRIP) $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
 	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/scp
 	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/ssh
 	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearkey
