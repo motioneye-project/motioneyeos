@@ -65,15 +65,30 @@ $(TARGET_DIR)/$(FLEX_TARGET_BINARY): $(FLEX_DIR)/$(FLEX_BINARY)
 	    infodir=$(TARGET_DIR)/usr/info \
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
-	    -C $(FLEX_DIR) install;
+	    -C $(FLEX_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	(cd $(TARGET_DIR)/usr/bin; ln -s flex lex)
+	(cd $(TARGET_DIR)/usr/bin; ln -sf flex lex)
 
 flex: uclibc $(TARGET_DIR)/$(FLEX_TARGET_BINARY)
 
 flex-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(FLEX_DIR) uninstall
+	$(MAKE) \
+	    prefix=$(TARGET_DIR)/usr \
+	    exec_prefix=$(TARGET_DIR)/usr \
+	    bindir=$(TARGET_DIR)/usr/bin \
+	    sbindir=$(TARGET_DIR)/usr/sbin \
+	    libexecdir=$(TARGET_DIR)/usr/lib \
+	    datadir=$(TARGET_DIR)/usr/share \
+	    sysconfdir=$(TARGET_DIR)/etc \
+	    sharedstatedir=$(TARGET_DIR)/usr/com \
+	    localstatedir=$(TARGET_DIR)/var \
+	    libdir=$(TARGET_DIR)/usr/lib \
+	    infodir=$(TARGET_DIR)/usr/info \
+	    mandir=$(TARGET_DIR)/usr/man \
+	    includedir=$(TARGET_DIR)/usr/include \
+		-C $(FLEX_DIR) uninstall
+	rm -f $(TARGET_DIR)/usr/bin/lex
 	-$(MAKE) -C $(FLEX_DIR) clean
 
 flex-dirclean:
