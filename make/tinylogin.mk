@@ -3,9 +3,19 @@
 # tinylogin
 #
 #############################################################
+# Enable this to use the tinylogin daily snapshot
+USE_TINYLOGIN_SNAPSHOT=true
+
+ifeq ($(USE_TINYLOGIN_SNAPSHOT),true)
+# Be aware that this changes daily....
+TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin
+TINYLOGIN_SOURCE:=tinylogin-snapshot.tar.bz2
+TINYLOGIN_SITE:=http://tinylogin.busybox.net/downloads/snapshots
+else
 TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin-1.4
 TINYLOGIN_SOURCE:=tinylogin-1.4.tar.bz2
 TINYLOGIN_SITE:=http://tinylogin.busybox.net/downloads
+endif
 
 $(DL_DIR)/$(TINYLOGIN_SOURCE):
 	$(WGET) -P $(DL_DIR) $(TINYLOGIN_SITE)/$(TINYLOGIN_SOURCE)
