@@ -22,9 +22,9 @@
 ifneq ($(filter $(TARGETS),linux),)
 
 # Version of Linux to download and then apply patches to
-DOWNLOAD_LINUX_VERSION=2.4.23
+DOWNLOAD_LINUX_VERSION=2.4.25
 # Version of Linux AFTER patches
-LINUX_VERSION=2.4.23-erik
+LINUX_VERSION=2.4.25-pre5-erik
 
 LINUX_FORMAT=bzImage
 #LINUX_FORMAT=images/zImage.prep
@@ -48,6 +48,7 @@ $(DL_DIR)/$(LINUX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
+	mkdir -p $(LINUX_DIR) $(TOOL_BUILD_DIR)
 	rm -rf $(LINUX_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
@@ -56,7 +57,7 @@ ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 endif
 	mkdir -p $(SOURCE_DIR)/kernel-patches
 	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR)/kernel-patches
-	-(cd $(BUILD_DIR); ln -sf $(LINUX_DIR) linux)
+	-(cd $(TOOL_BUILD_DIR); ln -sf $(LINUX_DIR) linux)
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_KCONFIG):
