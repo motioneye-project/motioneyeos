@@ -145,7 +145,8 @@ $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 
 $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
 	$(MAKE) -C $(BINUTILS_DIR1) install
-	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share
+	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
+		$(STAGING_DIR)/share/locale
 
 $(STAGING_DIR)/lib/libg.a:
 	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(STAGING_DIR)/lib/libg.a;
@@ -199,11 +200,11 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 	# Prevent system glibc include files from leaking in uninvited...
 	#
 	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
-		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
-		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
-		\"$(STAGING_DIR)/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
+		\"$(STAGING_DIR)/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
@@ -225,7 +226,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--oldincludedir=$(STAGING_DIR)/usr/include $(MULTILIB) \
+		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=c --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
@@ -243,7 +244,8 @@ $(GCC_BUILD_DIR1)/.installed: $(GCC_BUILD_DIR1)/.compiled
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-cpp $(STAGING_DIR)/bin/$(ARCH)-uclibc-cpp
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gcc $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
 	rm -f $(STAGING_DIR)/bin/gccbug $(STAGING_DIR)/bin/gcov
-	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share
+	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
+		$(STAGING_DIR)/share/locale
 	touch $(GCC_BUILD_DIR1)/.installed
 
 gcc_initial: binutils $(UCLIBC_DIR)/.configured $(GCC_BUILD_DIR1)/.installed
@@ -368,7 +370,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--oldincludedir=$(STAGING_DIR)/usr/include $(MULTILIB) \
+		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--enable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
@@ -395,7 +397,8 @@ $(GCC_BUILD_DIR2)/.fixedup: $(GCC_BUILD_DIR2)/.installed
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-g++ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-c++filt $(STAGING_DIR)/bin/$(ARCH)-uclibc-c++filt
 	rm -f $(STAGING_DIR)/bin/cpp $(STAGING_DIR)/bin/gcov $(STAGING_DIR)/bin/*gccbug
-	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share
+	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
+		$(STAGING_DIR)/share/locale
 	touch $(GCC_BUILD_DIR2)/.fixedup
 
 $(BUILD_DIR)/.shuffled: $(GCC_BUILD_DIR2)/.fixedup
