@@ -260,8 +260,8 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 # # the step or libgcc will not build...
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR1)
-	(cd $(GCC_BUILD_DIR1); AR=$(ARCH)-uclibc-ar \
-		RANLIB=$(ARCH)-uclibc-ranlib CC=$(HOSTCC) \
+	(cd $(GCC_BUILD_DIR1); AR=$(TARGET_CROSS)ar \
+		RANLIB=$(TARGET_CROSS)ranlib CC=$(HOSTCC) \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=$(STAGING_DIR) \
