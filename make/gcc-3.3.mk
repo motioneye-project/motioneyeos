@@ -302,16 +302,19 @@ ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libstdc++.so.5.0.5: $(GCC_BUILD_DIR2)/.installed
 	cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
 
-$(TARGET_DIR)/lib/libgcc_s.so.0.9.9: $(GCC_BUILD_DIR2)/.installed
-	cp -a $(STAGING_DIR)/lib/libgcc_s.so* $(TARGET_DIR)/lib/
+$(GCC_BUILD_DIR2)/.shared_libgcc: $(GCC_BUILD_DIR2)/.installed
 	# Let applications link with the shared libgcc.
-	mkdir -p $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/
-	ln -sf $(STAGING_DIR)/lib/libgcc_s.so $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so
+	if [ -f $(STAGING_DIR)/lib/libgcc_s.so.0.9.9 ] ; then \
+		cp -a $(STAGING_DIR)/lib/libgcc_s.so* $(TARGET_DIR)/lib/ ; \
+		mkdir -p $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/ ; \
+		ln -sf $(STAGING_DIR)/lib/libgcc_s.so $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so ; \
+	fi
+	touch $(GCC_BUILD_DIR2)/.shared_libgcc
 
 ifeq ($(INSTALL_LIBSTDCPP),true)
-GCC_TARGETS= $(TARGET_DIR)/lib/libgcc_s.so.0.9.9 $(TARGET_DIR)/lib/libstdc++.so.5.0.5 
+GCC_TARGETS= $(GCC_BUILD_DIR2)/.shared_libgcc $(TARGET_DIR)/lib/libstdc++.so.5.0.5 
 else
-GCC_TARGETS= $(TARGET_DIR)/lib/libgcc_s.so.0.9.9
+GCC_TARGETS= $(GCC_BUILD_DIR2)/.shared_libgcc
 endif
 endif
 
@@ -457,9 +460,11 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Work around problem of missing syslimits.h
 	cp -f $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/include/syslimits.h  $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/include/
-	# Enable applications to find the shared libgcc when linking (on target).
-	ln -sf $(TARGET_DIR)/lib/libgcc_s.so $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so
-	(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION) ;  ln -sf /lib/libgcc_s.so libgcc.so)
+	# Enable applications to find the shared libgcc when linking on target.
+	if [ -f $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so ] ; then \
+		ln -sf $(TARGET_DIR)/lib/libgcc_s.so $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so ; \
+		(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION) ;  ln -sf /lib/libgcc_s.so libgcc.so); \
+	fi
 	# These are in /lib, so...
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
 	touch -c $(TARGET_DIR)/usr/bin/gcc
