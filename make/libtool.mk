@@ -20,11 +20,21 @@ $(LIBTOOL_DIR)/.unpacked: $(DL_DIR)/$(LIBTOOL_SOURCE)
 	touch $(LIBTOOL_DIR)/.unpacked
 
 $(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked
-	(cd $(LIBTOOL_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure \
-		--target=i386-uclibc \
+	(cd $(LIBTOOL_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
 	);
 	touch  $(LIBTOOL_DIR)/.configured
 
@@ -54,7 +64,7 @@ libtool: uclibc $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY)
 
 libtool-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(LIBTOOL_DIR) uninstall
-	-make -C $(LIBTOOL_DIR) clean
+	-$(MAKE) -C $(LIBTOOL_DIR) clean
 
 libtool-dirclean:
 	rm -rf $(LIBTOOL_DIR)

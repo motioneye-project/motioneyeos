@@ -21,18 +21,29 @@ $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked
 	touch $(VALGRIND_DIR)/.patched
 
 $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
-	(cd $(VALGRIND_DIR); rm -rf config.cache; CC=$(TARGET_CC1) \
-	AR=$(TARGET_CROSS)ar NM=$(TARGET_CROSS)nm \
-	LD=$(TARGET_CROSS)ld AS=$(TARGET_CROSS)as \
-	./configure --prefix=/usr \
-	    --includedir=/usr/include \
-	    --disable-nls --without-uiout --disable-valgrindmi \
-	    --disable-tui --disable-valgrindtk --without-x \
-	    --without-included-gettext);
+	(cd $(VALGRIND_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+		--without-uiout --disable-valgrindmi \
+		--disable-tui --disable-valgrindtk \
+		--without-x --without-included-gettext \
+	);
 	touch  $(VALGRIND_DIR)/.configured
 
 $(VALGRIND_DIR)/valgrind.so: $(VALGRIND_DIR)/.configured
-	make CC=$(TARGET_CC1) -C $(VALGRIND_DIR)
+	$(MAKE) CC=$(TARGET_CC1) -C $(VALGRIND_DIR)
 	-$(STRIP) --strip-unneeded $(VALGRIND_DIR)/*.so*
 	touch -c $(VALGRIND_DIR)/valgrind.so
 
@@ -63,7 +74,7 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind.so
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
 
 valgrind-clean: 
-	make -C $(VALGRIND_DIR) clean
+	$(MAKE) -C $(VALGRIND_DIR) clean
 
 valgrind-dirclean: 
 	rm -rf $(VALGRIND_DIR)

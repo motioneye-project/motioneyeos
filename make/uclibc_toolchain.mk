@@ -24,9 +24,7 @@ ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 # hacking on the toolchain...
 #
 #############################################################
-GNU_TARGET_NAME:=$(ARCH)-linux
 TARGET_LANGUAGES:=c,c++
-MAKE=make
 
 # If you want multilib enabled, enable this...
 #MULTILIB:=--enable-multilib
@@ -229,7 +227,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=c --disable-__cxa_atexit \
-		--program-prefix=$(ARCH)-uclibc-);
+		$(EXTRA_GCC_CONFIG_OPTIONS) --program-prefix=$(ARCH)-uclibc-);
 	touch $(GCC_BUILD_DIR1)/.configured
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
@@ -361,25 +359,38 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	mkdir -p $(GCC_BUILD_DIR2)
-	(cd $(GCC_BUILD_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(ARCH)-uclibc-ar \
-		RANLIB=$(ARCH)-uclibc-ranlib CC=$(HOSTCC) $(GCC_DIR)/configure \
-		--target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
-		--exec-prefix=$(STAGING_DIR) --bindir=$(STAGING_DIR)/bin \
-		--sbindir=$(STAGING_DIR)/sbin --sysconfdir=$(STAGING_DIR)/etc \
-		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
-		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
-		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
+	(cd $(GCC_BUILD_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
+		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
+		CC=$(HOSTCC) $(GCC_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=$(STAGING_DIR) \
+		--exec-prefix=$(STAGING_DIR) \
+		--bindir=$(STAGING_DIR)/bin \
+		--sbindir=$(STAGING_DIR)/sbin \
+		--sysconfdir=$(STAGING_DIR)/etc \
+		--datadir=$(STAGING_DIR)/share \
+		--localstatedir=$(STAGING_DIR)/var \
+		--mandir=$(STAGING_DIR)/man \
+		--infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
-		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--enable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
-		--program-prefix=$(ARCH)-uclibc-);
+		--libdir=$(STAGING_DIR)/lib \
+		--includedir=$(STAGING_DIR)/include \
+		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
+		--oldincludedir=$(STAGING_DIR)/include \
+		--enable-shared $(MULTILIB) \
+		--enable-target-optspace --disable-nls \
+		--with-gnu-ld --disable-__cxa_atexit \
+		--enable-languages=$(TARGET_LANGUAGES) \
+		$(EXTRA_GCC_CONFIG_OPTIONS) \
+		--program-prefix=$(ARCH)-uclibc- \
+	);
 	touch $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
-	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) -C $(GCC_BUILD_DIR2) \
-	    AR_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ar \
-	    RANLIB_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ranlib
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(HOSTCC) \
+	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
+	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
+	    CC_FOR_TARGET=$(TARGET_CROSS)gcc $(MAKE) -C $(GCC_BUILD_DIR2)
 	touch $(GCC_BUILD_DIR2)/.compiled
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
@@ -397,6 +408,7 @@ $(GCC_BUILD_DIR2)/.fixedup: $(GCC_BUILD_DIR2)/.installed
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-g++ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-c++filt $(STAGING_DIR)/bin/$(ARCH)-uclibc-c++filt
 	rm -f $(STAGING_DIR)/bin/cpp $(STAGING_DIR)/bin/gcov $(STAGING_DIR)/bin/*gccbug
+	rm -f $(STAGING_DIR)/lib/libgcc_s.so*
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
 	touch $(GCC_BUILD_DIR2)/.fixedup

@@ -17,22 +17,33 @@ $(LINKS_DIR)/.unpacked: $(DL_DIR)/$(LINKS_SOURCE)
 	touch  $(LINKS_DIR)/.unpacked
 
 $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
-	(cd $(LINKS_DIR); rm -rf config.cache; CC=$(TARGET_CC1) \
-	./configure --prefix=/usr \
-	    --libexecdir=/usr/lib --sysconfdir=/etc \
-	    --localstatedir=/tmp --libdir=/etc \
-	    --disable-nls);
+	(cd $(LINKS_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+	);
 	touch  $(LINKS_DIR)/.configured
 
 $(LINKS_DIR)/links: $(LINKS_DIR)/.configured
-	make CC=$(TARGET_CC1) -C $(LINKS_DIR)
+	$(MAKE) CC=$(TARGET_CC1) -C $(LINKS_DIR)
 	$(STRIP) $(LINKS_DIR)/links
 
 $(TARGET_DIR)/usr/bin/links: $(LINKS_DIR)/links
 	install -c $(LINKS_DIR)/links $(TARGET_DIR)/usr/bin/links
 
 links-clean: 
-	make -C $(LINKS_DIR) clean
+	$(MAKE) -C $(LINKS_DIR) clean
 
 links-dirclean: 
 	rm -rf $(LINKS_DIR) 

@@ -20,22 +20,20 @@ $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 	touch $(GAWK_DIR)/.unpacked
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
-	(cd $(GAWK_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure \
+	(cd $(GAWK_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--sysconfdir=/etc \
 		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
 		--datadir=/usr/share \
-		--libdir=/usr/lib \
 		--localstatedir=/var \
-		--mandir=/junk \
-		--infodir=/junk \
-		--includedir=$(STAGING_DIR)/include \
-		--oldincludedir=$(STAGING_DIR)/usr/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--disable-nls \
 	);
 	touch  $(GAWK_DIR)/.configured
@@ -51,7 +49,7 @@ gawk: uclibc $(TARGET_DIR)/$(GAWK_TARGET_BINARY)
 
 gawk-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(GAWK_DIR) uninstall
-	-make -C $(GAWK_DIR) clean
+	-$(MAKE) -C $(GAWK_DIR) clean
 
 gawk-dirclean:
 	rm -rf $(GAWK_DIR)

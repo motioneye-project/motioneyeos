@@ -21,37 +21,40 @@ $(OPENSSH_DIR)/.patched: $(OPENSSH_DIR)/.unpacked
 	touch $(OPENSSH_DIR)/.patched
 
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.patched
-	(cd $(OPENSSH_DIR); rm -rf config.cache; CC=$(TARGET_CC1) \
-	    ./configure \
-	    --prefix=/usr \
-	    --exec-prefix=/usr \
-	    --bindir=/usr/bin \
-	    --sbindir=/usr/sbin \
-	    --sysconfdir=/etc \
-	    --libexecdir=/usr/lib \
-	    --datadir=/usr/share \
-	    --includedir=/usr/include \
-	    --libdir=/usr/lib \
-	    --localstatedir=/var \
-	    --mandir=/usr/man \
-	    --infodir=/usr/info \
-	    --includedir=$(STAGING_DIR)/include \
-	    --disable-lastlog --disable-utmp --disable-utmpx --disable-wtmp --disable-wtmpx \
-	    --disable-nls --without-x);
+	(cd $(OPENSSH_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+		--includedir=$(STAGING_DIR)/include \
+		--disable-lastlog --disable-utmp \
+		--disable-utmpx --disable-wtmp --disable-wtmpx \
+		--disable-nls --without-x \
+	);
 	touch  $(OPENSSH_DIR)/.configured
 
 $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
-	make CC=$(TARGET_CC1) -C $(OPENSSH_DIR)
+	$(MAKE) CC=$(TARGET_CC1) -C $(OPENSSH_DIR)
 	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/*.so*
 
 $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
-	make CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
+	$(MAKE) CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 openssh: $(TARGET_DIR)/usr/bin/ssh
 
 openssh-clean: 
-	make -C $(OPENSSH_DIR) clean
+	$(MAKE) -C $(OPENSSH_DIR) clean
 
 openssh-dirclean: 
 	rm -rf $(OPENSSH_DIR)

@@ -20,12 +20,20 @@ $(ZLIB_DIR)/.source: $(DL_DIR)/$(ZLIB_SOURCE)
 	touch $(ZLIB_DIR)/.source
 
 $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source
-	(cd $(ZLIB_DIR); ./configure --shared --prefix=/usr --exec_prefix=$(STAGING_DIR)/usr/bin \
-		--libdir=$(STAGING_DIR)/lib --includedir=$(STAGING_DIR)/include);
+	(cd $(ZLIB_DIR); \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--shared \
+		--prefix=/usr \
+		--exec-prefix=$(STAGING_DIR)/usr/bin \
+		--libdir=$(STAGING_DIR)/lib \
+		--includedir=$(STAGING_DIR)/include \
+	);
 	touch $(ZLIB_DIR)/.configured;
 
 $(ZLIB_DIR)/libz.so.1.1.4: $(ZLIB_DIR)/.configured
-	$(MAKE) LDSHARED="$(TARGET_CROSS)gcc --shared" CFLAGS=$(ZLIB_CFLAGS) CC=$(TARGET_CC1) -C $(ZLIB_DIR) all libz.a;
+	$(MAKE) LDSHARED="$(TARGET_CROSS)gcc --shared" CFLAGS=$(ZLIB_CFLAGS) \
+		CC=$(TARGET_CC1) -C $(ZLIB_DIR) all libz.a;
 	touch -c $(ZLIB_DIR)/libz.so.1.1.4
 
 $(STAGING_DIR)/lib/libz.so.1.1.4: $(ZLIB_DIR)/libz.so.1.1.4
@@ -54,7 +62,7 @@ zlib: uclibc $(TARGET_DIR)/lib/libz.so.1.1.4
 
 zlib-clean:
 	rm -f $(TARGET_DIR)/lib/libz.so*
-	-make -C $(ZLIB_DIR) clean
+	-$(MAKE) -C $(ZLIB_DIR) clean
 
 zlib-dirclean:
 	rm -rf $(ZLIB_DIR)

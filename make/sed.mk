@@ -20,9 +20,21 @@ $(SED_DIR)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	touch $(SED_DIR)/.unpacked
 
 $(SED_DIR)/.configured: $(SED_DIR)/.unpacked
-	(cd $(SED_DIR); autoconf; rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr --disable-nls \
-	    --mandir=/junk --infodir=/junk \
+	(cd $(SED_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
 	);
 	touch  $(SED_DIR)/.configured
 

@@ -22,10 +22,21 @@ $(COREUTILS_DIR)/.unpacked: $(DL_DIR)/$(COREUTILS_SOURCE)
 	touch $(COREUTILS_DIR)/.unpacked
 
 $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
-	(cd $(COREUTILS_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	     CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr \
-	     --target=$(ARCH)-linux --host=$(ARCH)-linux \
-	     --disable-nls --mandir=/junk --infodir=/junk \
+	(cd $(COREUTILS_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
 	);
 	touch  $(COREUTILS_DIR)/.configured
 
@@ -48,7 +59,7 @@ coreutils: uclibc $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 
 coreutils-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(COREUTILS_DIR) uninstall
-	-make -C $(COREUTILS_DIR) clean
+	-$(MAKE) -C $(COREUTILS_DIR) clean
 
 coreutils-dirclean:
 	rm -rf $(COREUTILS_DIR)

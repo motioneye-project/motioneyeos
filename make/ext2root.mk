@@ -36,6 +36,7 @@ GENEXT2_REALSIZE=$(subst total,, $(shell du $(TARGET_DIR) -s -c -k | grep total 
 GENEXT2_SIZE=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE))
 # We currently add about 400 device nodes, so add that into the total
 GENEXT2_INODES=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
+GENEXT2_SIZE=100000
 
 ext2root: genext2fs
 	-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
@@ -46,7 +47,7 @@ ext2root: genext2fs
 ext2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)
 
 ext2root-clean:
-	-make -C $(GENEXT2_DIR) clean
+	-$(MAKE) -C $(GENEXT2_DIR) clean
 
 ext2root-dirclean:
 	rm -rf $(GENEXT2_DIR)

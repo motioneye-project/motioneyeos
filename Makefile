@@ -55,14 +55,14 @@ BUILD_WITH_LARGEFILE:=true
 WGET:=wget --passive-ftp
 
 # Optimize toolchain for which type of CPU?
-#OPTIMIZE_FOR_CPU:=i486
-#OPTIMIZE_FOR_CPU:=strongarm
-#OPTIMIZE_FOR_CPU:=whatever
-OPTIMIZE_FOR_CPU:=$(ARCH)
+OPTIMIZE_FOR_CPU=$(ARCH)
+#OPTIMIZE_FOR_CPU=i486
+#OPTIMIZE_FOR_CPU=strongarm
+#OPTIMIZE_FOR_CPU=whatever
 
 # Any additional gcc options you may want to include....
-#EXTRA_GCC_CONFIG_OPTIONS:=--without-float
-EXTRA_GCC_CONFIG_OPTIONS:=
+EXTRA_GCC_CONFIG_OPTIONS=
+#EXTRA_GCC_CONFIG_OPTIONS=--without-float
 
 #############################################################
 #
@@ -135,7 +135,8 @@ TARGET_PATH:=$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:/bin:/sbin:/usr/bin:/usr/
 STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
 IMAGE:=$(BASE_DIR)/root_fs
-GNU_TARGET_NAME:=$(OPTIMIZE_FOR_CPU)-pc-linux-gnu
+MAKE:=make
+GNU_TARGET_NAME:=$(OPTIMIZE_FOR_CPU)-unknown-linux-gnu
 ifneq ($(strip $(ARCH)),i386)
 CROSS:=$(ARCH)-linux-
 endif

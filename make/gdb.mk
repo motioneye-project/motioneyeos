@@ -16,19 +16,30 @@ $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 	touch  $(GDB_DIR)/.unpacked
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
-	(cd $(GDB_DIR); rm -rf config.cache; CC=$(TARGET_CC1) \
-	AR=$(TARGET_CROSS)ar NM=$(TARGET_CROSS)nm \
-	LD=$(TARGET_CROSS)ld AS=$(TARGET_CROSS)as \
-	./configure --prefix=/usr \
-	    --includedir=$(STAGING_DIR)/include \
-	    --disable-nls --without-uiout --disable-gdbmi \
-	    --disable-tui --disable-gdbtk --without-x \
-	    --disable-sim --enable-gdbserver \
-	    --without-included-gettext);
+	(cd $(GDB_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+		--without-uiout --disable-gdbmi \
+		--disable-tui --disable-gdbtk --without-x \
+		--disable-sim --enable-gdbserver \
+		--without-included-gettext \
+	);
 	touch  $(GDB_DIR)/.configured
 
 $(GDB_DIR)/gdb/gdb: $(GDB_DIR)/.configured
-	make CC=$(TARGET_CC1) -C $(GDB_DIR)
+	$(MAKE) CC=$(TARGET_CC1) -C $(GDB_DIR)
 	$(STRIP) $(GDB_DIR)/gdb/gdb
 
 $(TARGET_DIR)/usr/bin/gdb: $(GDB_DIR)/gdb/gdb
@@ -37,7 +48,7 @@ $(TARGET_DIR)/usr/bin/gdb: $(GDB_DIR)/gdb/gdb
 gdb: $(TARGET_DIR)/usr/bin/gdb
 
 gdb-clean: 
-	make -C $(GDB_DIR) clean
+	$(MAKE) -C $(GDB_DIR) clean
 
 gdb-dirclean: 
 	rm -rf $(GDB_DIR)

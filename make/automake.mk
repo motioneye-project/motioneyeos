@@ -20,11 +20,20 @@ $(AUTOMAKE_DIR)/.unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 	touch $(AUTOMAKE_DIR)/.unpacked
 
 $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
-	(cd $(AUTOMAKE_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure \
-		--target=i386-uclibc \
+	(cd $(AUTOMAKE_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 	);
 	touch  $(AUTOMAKE_DIR)/.configured
 
@@ -55,7 +64,7 @@ automake: uclibc $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY)
 
 automake-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(AUTOMAKE_DIR) uninstall
-	-make -C $(AUTOMAKE_DIR) clean
+	-$(MAKE) -C $(AUTOMAKE_DIR) clean
 
 automake-dirclean:
 	rm -rf $(AUTOMAKE_DIR)

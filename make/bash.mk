@@ -20,10 +20,23 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	touch $(BASH_DIR)/.unpacked
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
-	(cd $(BASH_DIR); autoconf; rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr --disable-nls \
-	    --mandir=/junk --infodir=/junk \
-	    --with-curses --enable-alias \
+	(cd $(BASH_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+		--with-curses \
+		--enable-alias \
 	);
 	touch  $(BASH_DIR)/.configured
 
@@ -40,7 +53,7 @@ bash: ncurses uclibc $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 
 bash-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(BASH_DIR) uninstall
-	-make -C $(BASH_DIR) clean
+	-$(MAKE) -C $(BASH_DIR) clean
 
 bash-dirclean:
 	rm -rf $(BASH_DIR)

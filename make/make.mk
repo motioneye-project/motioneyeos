@@ -20,9 +20,21 @@ $(GNUMAKE_DIR)/.unpacked: $(DL_DIR)/$(GNUMAKE_SOURCE)
 	touch $(GNUMAKE_DIR)/.unpacked
 
 $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
-	(cd $(GNUMAKE_DIR); autoconf; rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr --disable-nls \
-	    --mandir=/junk --infodir=/junk \
+	(cd $(GNUMAKE_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
 	);
 	touch  $(GNUMAKE_DIR)/.configured
 
@@ -37,7 +49,7 @@ make: uclibc $(TARGET_DIR)/$(GNUMAKE_TARGET_BINARY)
 
 make-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(GNUMAKE_DIR) uninstall
-	-make -C $(GNUMAKE_DIR) clean
+	-$(MAKE) -C $(GNUMAKE_DIR) clean
 
 make-dirclean:
 	rm -rf $(GNUMAKE_DIR)

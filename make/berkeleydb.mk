@@ -17,23 +17,31 @@ $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
 	zcat $(DL_DIR)/$(DB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch  $(DB_DIR)/.dist
 
-$(DB_DIR)/build_unix/Makefile: $(DB_DIR)/.dist
-	(cd $(DB_DIR)/build_unix; PATH="$(TARGET_PATH)" \
-	CC=$(TARGET_CC1) ../dist/configure \
-			--prefix=/usr \
-			--localstatedir=/var \
-			--sysconfdir=/etc \
-			--libexecdir=/usr/sbin \
-			--mandir=/usr/share/man \
-			--enable-shared=yes \
-	)
+$(DB_DIR)/.configured: $(DB_DIR)/.dist
+	(cd $(DB_DIR)/build_unix; rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		../dist/configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--enable-shared \
+	);
+	touch  $(DB_DIR)/.configured
 
-$(DB_DIR)/build_unix/.libs/libdb-4.0.so: $(DB_DIR)/build_unix/Makefile
-	PATH="$(TARGET_PATH)" make -C $(DB_DIR)/build_unix  
+$(DB_DIR)/build_unix/.libs/libdb-4.0.so: $(DB_DIR)/.configured
+	$(MAKE) CC=$(TARGET_CC1) -C $(DB_DIR)/build_unix
 
 $(STAGING_DIR)/lib/libdb-4.0.so: $(DB_DIR)/build_unix/.libs/libdb-4.0.so
 	-mkdir -p $(STAGING_DIR)/man/man1
-	PATH="$(TARGET_PATH)" make -C $(DB_DIR)/build_unix prefix=$(STAGING_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR) CC=$(TARGET_CC1) -C $(DB_DIR)/build_unix install 
 	rm -rf $(STAGING_DIR)/man/man1
 
 $(TARGET_DIR)/lib/libdb-4.0.so: $(STAGING_DIR)/lib/libdb-4.0.so
@@ -43,7 +51,7 @@ $(TARGET_DIR)/lib/libdb-4.0.so: $(STAGING_DIR)/lib/libdb-4.0.so
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib//libdb*so*
 
 db-clean: 
-	make -C $(DB_DIR)/build_unix clean
+	$(MAKE) -C $(DB_DIR)/build_unix clean
 
 db-dirclean: 
 	rm -rf $(DB_DIR) 

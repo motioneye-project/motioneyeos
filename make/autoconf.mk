@@ -20,11 +20,20 @@ $(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 	touch $(AUTOCONF_DIR)/.unpacked
 
 $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
-	(cd $(AUTOCONF_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE EMACS="no" ./configure \
-		--target=i386-uclibc \
+	(cd $(AUTOCONF_DIR); rm -rf config.cache; PATH=$(STAGING_DIR)/bin:$$PATH \
+		CC=$(TARGET_CC1) EMACS="no" \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 	);
 	touch  $(AUTOCONF_DIR)/.configured
 
@@ -53,7 +62,7 @@ autoconf: uclibc $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY)
 
 autoconf-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(AUTOCONF_DIR) uninstall
-	-make -C $(AUTOCONF_DIR) clean
+	-$(MAKE) -C $(AUTOCONF_DIR) clean
 
 autoconf-dirclean:
 	rm -rf $(AUTOCONF_DIR)

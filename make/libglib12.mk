@@ -19,9 +19,22 @@ $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 	touch $(LIBGLIB12_DIR)/.unpacked
 
 $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
-	(cd $(LIBGLIB12_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	    ./configure --prefix=$(STAGING_DIR) --enable-shared \
-	    --host=$(ARCH)-pc-linux-gnu \
+	(cd $(LIBGLIB12_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+		--enable-shared \
 	);
 	touch  $(LIBGLIB12_DIR)/.configured
 
@@ -29,7 +42,7 @@ $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC1) -C $(LIBGLIB12_DIR)
 
 $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINARY)
-	$(MAKE) CC=$(TARGET_CC1) -C $(LIBGLIB12_DIR) install
+	$(MAKE) CC=$(TARGET_CC1) prefix=$(STAGING_DIR) -C $(LIBGLIB12_DIR) install
 
 $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY): $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY)
 	cp -a $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY) $(TARGET_DIR)/lib/
@@ -41,7 +54,7 @@ libglib12: uclibc $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY)
 
 libglib12-clean:
 	rm -f $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY)
-	-make -C $(LIBGLIB12_DIR) clean
+	-$(MAKE) -C $(LIBGLIB12_DIR) clean
 
 libglib12-dirclean:
 	rm -rf $(LIBGLIB12_DIR)

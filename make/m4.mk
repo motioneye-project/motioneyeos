@@ -20,11 +20,21 @@ $(M4_DIR)/.unpacked: $(DL_DIR)/$(M4_SOURCE)
 	touch $(M4_DIR)/.unpacked
 
 $(M4_DIR)/.configured: $(M4_DIR)/.unpacked
-	(cd $(M4_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure \
+	(cd $(M4_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
 	);
 	touch  $(M4_DIR)/.configured
 
@@ -53,7 +63,7 @@ m4: uclibc $(TARGET_DIR)/$(M4_TARGET_BINARY)
 
 m4-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(M4_DIR) uninstall
-	-make -C $(M4_DIR) clean
+	-$(MAKE) -C $(M4_DIR) clean
 
 m4-dirclean:
 	rm -rf $(M4_DIR)

@@ -2,48 +2,53 @@
 #
 # strace
 #
-# Maintainer: Ken Restivo <ken@246gt.com>
-#
 #############################################################
-#$Id: strace.mk,v 1.3 2002/11/20 23:16:09 andersen Exp $
-
-# TARGETS
+STRACE_SOURCE:=strace_4.4-1.tar.gz
 STRACE_SITE:=http://telia.dl.sourceforge.net/sourceforge/strace
-STRACE_SOURCE:=strace_4.4-1.tar.gz 
+STRACE_CAT:=zcat
 STRACE_DIR:=$(BUILD_DIR)/strace-4.4
 
+
 $(DL_DIR)/$(STRACE_SOURCE):
-	$(WGET) -P $(DL_DIR) $(STRACE_SITE)/$(STRACE_SOURCE)
+	 $(WGET) -P $(DL_DIR) $(STRACE_SITE)/$(STRACE_SOURCE)
 
 strace-source: $(DL_DIR)/$(STRACE_SOURCE)
 
-$(STRACE_DIR)/.dist: $(DL_DIR)/$(STRACE_SOURCE)
-	zcat $(DL_DIR)/$(STRACE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	touch  $(STRACE_DIR)/.dist
+$(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
+	$(STRACE_CAT) $(DL_DIR)/$(STRACE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	touch $(STRACE_DIR)/.unpacked
 
-$(STRACE_DIR)/Makefile: $(STRACE_DIR)/.dist
-	(cd ${STRACE_DIR}; \
-	export PATH="${TARGET_PATH}"; \
-	./configure --with-shared --prefix=$(STAGING_DIR)/usr \
-		--target=$(ARCH)-linux --host=$(ARCH)-linux )
+$(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
+	(cd $(STRACE_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+	);
+	touch  $(STRACE_DIR)/.configured
 
-$(STRACE_DIR)/strace: $(STRACE_DIR)/Makefile
-	make CC="${TARGET_CC}" LD="${TARGET_LD}" \
-		AS="${TARGET_AS}" -C $(STRACE_DIR)
+$(STRACE_DIR)/strace: $(STRACE_DIR)/.configured
+	$(MAKE) CC=$(TARGET_CC1) -C $(STRACE_DIR)
 
-$(STAGING_DIR)/usr/bin/strace: $(STRACE_DIR)/strace
-	-mkdir -p $(STAGING_DIR)/usr/man/man1
-	make -C $(STRACE_DIR) install
-	rm -rf $(STAGING_DIR)/usr/man/man1
+$(TARGET_DIR)/usr/bin/strace: $(STRACE_DIR)/strace
+	install -c $(STRACE_DIR)/strace $(TARGET_DIR)/usr/bin/strace
 
-$(TARGET_DIR)/usr/bin/strace: $(STAGING_DIR)/usr/bin/strace
-	install -c $(STAGING_DIR)/usr/bin/strace $(TARGET_DIR)/usr/bin/strace
+strace: uclibc $(TARGET_DIR)/usr/bin/strace 
 
 strace-clean: 
-	make -C $(STRACE_DIR) clean
+	$(MAKE) -C $(STRACE_DIR) clean
 
 strace-dirclean: 
 	rm -rf $(STRACE_DIR) 
 
-strace: uclibc $(TARGET_DIR)/usr/bin/strace 
 

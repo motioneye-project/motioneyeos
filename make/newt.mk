@@ -23,10 +23,22 @@ $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE) $(NEWT_PATCH)
 	touch $(NEWT_DIR)/.source;
 
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
-	(cd $(NEWT_DIR); rm -rf config.cache; CC=$(TARGET_CC1) \
-	./configure --shared --prefix=/usr --exec_prefix=$(STAGING_DIR)/usr/bin \
-		--libdir=$(STAGING_DIR)/lib --includedir=$(STAGING_DIR)/include \
-		--host=$(ARCH)-pc-linux-gnu);
+	(cd $(NEWT_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+	);
 	touch $(NEWT_DIR)/.configured;
 
 $(NEWT_DIR)/libnewt.so.0.50.17: $(NEWT_DIR)/.configured
@@ -50,7 +62,7 @@ newt: uclibc slang $(TARGET_DIR)/lib/libnewt.so.0.50.17
 
 newt-clean:
 	rm -f $(TARGET_DIR)/lib/libnewt.so*
-	-make -C $(NEWT_DIR) clean
+	-$(MAKE) -C $(NEWT_DIR) clean
 
 newt-dirclean: slang-dirclean
 	rm -rf $(NEWT_DIR)

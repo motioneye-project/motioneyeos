@@ -26,8 +26,22 @@ $(SOCAT_DIR)/.unpacked:	$(DL_DIR)/$(SOCAT_SOURCE)
 $(SOCAT_WORKDIR)/Makefile: $(TARGET_CC) $(SOCAT_DIR)/.unpacked
 	rm -f $(SOCAT_WORKDIR)/Makefile
 	mkdir -p $(SOCAT_WORKDIR)
-	(cd $(SOCAT_WORKDIR) && CONFIG_SITE=$(SOURCE_DIR)/socat-config.site-$(ARCH) \
-		CC=$(TARGET_CC) $(SOCAT_DIR)/configure --prefix=/usr)
+	(cd $(SOCAT_WORKDIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		$(SOCAT_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+	);
         
 $(SOCAT_WORKDIR)/socat:	$(SOCAT_WORKDIR)/Makefile
 	rm -f $@

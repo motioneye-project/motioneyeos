@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.15 2003/01/16 22:04:22 andersen Exp $
+# $Id: ncurses.mk,v 1.16 2003/01/17 08:03:59 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -55,8 +55,9 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		--with-default-terminfo-dir=/usr/share/terminfo \
 		--libdir=$(STAGING_DIR)/lib \
 		--includedir=$(STAGING_DIR)/include \
-		--with-shared --without-cxx --without-cxx-binding --without-ada \
-		--without-progs --disable-nls);
+		--with-shared --without-cxx --without-cxx-binding \
+		--without-ada --without-progs --disable-nls \
+	);
 	touch  $(NCURSES_DIR)/.configured
 
 $(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
