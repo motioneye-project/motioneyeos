@@ -41,11 +41,10 @@ MULTILIB:=--enable-multilib
 # here at the top...  Easier to find things here anyways...
 #
 #############################################################
-BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
-#BINUTILS_SOURCE:=binutils-2.14.tar.bz2
-#BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14
-BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.13.2.1
+BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
+BINUTILS_SOURCE:=binutils-2.14.90.0.5.tar.bz2
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.5
+BINUTILS_CAT:=bzcat
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
@@ -73,7 +72,7 @@ STLPORT_DIR=$(TOOL_BUILD_DIR)/STLport-4.5.3
 # Setup some initial paths
 #
 #############################################################
-$(TOOL_BUILD_DIR)/.setup:
+$(STAGING_DIR)/.setup:
 	mkdir -p $(TOOL_BUILD_DIR)
 	mkdir -p $(DL_DIR)
 	mkdir -p $(STAGING_DIR)
@@ -86,7 +85,7 @@ $(TOOL_BUILD_DIR)/.setup:
 	(cd $(STAGING_DIR)/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(STAGING_DIR)/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
 	(cd $(STAGING_DIR)/usr/lib; ln -fs ../../lib/gcc-lib)
-	touch $(TOOL_BUILD_DIR)/.setup
+	touch $(STAGING_DIR)/.setup
 
 
 #############################################################
@@ -117,36 +116,26 @@ BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-build
 $(DL_DIR)/$(BINUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
-$(BINUTILS_DIR)/.unpacked: $(TOOL_BUILD_DIR)/.setup $(DL_DIR)/$(BINUTILS_SOURCE)
-	bzcat $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+$(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
+	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply any files named binutils-*.patch from the source directory to binutils
 	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR) binutils-*.patch
 	#
-	# Enable combreloc, since it is such a nice thing to have...
+	# Hack binutils to use the correct default shared lib loader
 	#
-	-perl -i -p -e "s,link_info.combreloc = false,link_info.combreloc = true,g;" \
-		$(BINUTILS_DIR)/ld/ldmain.c
-	#
-	# Hack binutils to use the correct shared lib loader
-	#
-	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"\
-		,#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
-		`grep -lr "ELF_DYNAMIC_INTERPRETER" $(BINUTILS_DIR)`);
-	#
-	# Hack binutils to prevent it from searching the host system
-	# for libraries.  We only want libraries for the target system.
-	#
-	(cd $(BINUTILS_DIR); perl -i -p -e "s,^NATIVE_LIB_DIRS.*,\
-		NATIVE_LIB_DIRS='$(STAGING_DIR)/usr/lib $(STAGING_DIR)/lib',;" \
-		$(BINUTILS_DIR)/ld/configure.host);
+	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\",\
+		#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
+		`grep -lr ELF_DYNAMIC_INTERPRETER *`);
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
 	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) \
+		CC_FOR_HOST=$(HOSTCC) \
+		CXX_FOR_HOST=$(HOSTCC) \
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_HOST_NAME) \
@@ -163,15 +152,21 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--mandir=$(STAGING_DIR)/man \
 		--infodir=$(STAGING_DIR)/info \
 		--enable-targets=$(GNU_TARGET_NAME) \
+		--with-sysroot=$(STAGING_DIR) \
+		--with-lib-path="$(STAGING_DIR)/usr/lib:$(STAGING_DIR)/lib" \
 		$(MULTILIB) \
 		--program-prefix=$(ARCH)-uclibc-);
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
-	$(MAKE) -C $(BINUTILS_DIR1);
+	$(MAKE) CC_FOR_HOST=$(HOSTCC) \
+		CXX_FOR_HOST=$(HOSTCC) \
+		-C $(BINUTILS_DIR1);
 
 $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
-	$(MAKE) -C $(BINUTILS_DIR1) install
+	$(MAKE) CC_FOR_HOST=$(HOSTCC) \
+		CXX_FOR_HOST=$(HOSTCC) \
+		-C $(BINUTILS_DIR1) install;
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
 	mkdir -p $(STAGING_DIR)/usr/bin;
@@ -190,6 +185,7 @@ $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 	done;
 
 $(STAGING_DIR)/lib/libg.a:
+	mkdir -p $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin
 	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(STAGING_DIR)/lib/libg.a;
 
 binutils: $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/lib/libg.a
@@ -213,7 +209,7 @@ GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc-initial
 $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
-$(GCC_DIR)/.unpacked: $(TOOL_BUILD_DIR)/.setup $(DL_DIR)/$(GCC_SOURCE)
+$(GCC_DIR)/.unpacked: $(STAGING_DIR)/.setup $(DL_DIR)/$(GCC_SOURCE)
 	bzcat $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(GCC_DIR)/.unpacked
 
@@ -276,7 +272,7 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 # # the step or libgcc will not build...
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR1)
-	(cd $(GCC_BUILD_DIR1); AR=$(TARGET_CROSS)ar \
+	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib CC=$(HOSTCC) \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -301,13 +297,13 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR1)/.configured
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
-	$(MAKE) -C $(GCC_BUILD_DIR1) \
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) \
 	    AR_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ar \
 	    RANLIB_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ranlib
 	touch $(GCC_BUILD_DIR1)/.compiled
 
 $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc: $(GCC_BUILD_DIR1)/.compiled
-	$(MAKE) -C $(GCC_BUILD_DIR1) install;
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) install;
 	#Cleanup then mess when --program-prefix mysteriously fails 
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-cpp $(STAGING_DIR)/bin/$(ARCH)-uclibc-cpp
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gcc $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
@@ -337,7 +333,7 @@ gcc_initial-dirclean:
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
-$(UCLIBC_DIR)/.unpacked: $(TOOL_BUILD_DIR)/.setup $(DL_DIR)/$(UCLIBC_SOURCE)
+$(UCLIBC_DIR)/.unpacked: $(STAGING_DIR)/.setup $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
@@ -466,7 +462,7 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	mkdir -p $(GCC_BUILD_DIR2)
-	(cd $(GCC_BUILD_DIR2); AR=$(TARGET_CROSS)ar \
+	(cd $(GCC_BUILD_DIR2); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
 		NM=$(TARGET_CROSS)nm CC=$(HOSTCC) \
 		$(GCC_DIR)/configure \
@@ -497,7 +493,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	touch $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
-	CC=$(HOSTCC) \
+	PATH=$(TARGET_PATH) CC=$(HOSTCC) \
 	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
 	    CC_FOR_TARGET=$(TARGET_CROSS)gcc $(MAKE) -C $(GCC_BUILD_DIR2)
@@ -507,7 +503,7 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	touch $(GCC_BUILD_DIR2)/.installed
 
 $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
-	$(MAKE) -C $(GCC_BUILD_DIR2) install;
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) install;
 	-mv $(STAGING_DIR)/bin/gcc $(STAGING_DIR)/usr/bin;
 	-mv $(STAGING_DIR)/bin/protoize $(STAGING_DIR)/usr/bin;
 	-mv $(STAGING_DIR)/bin/unprotoize $(STAGING_DIR)/usr/bin;
@@ -531,7 +527,8 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 		fi; \
 	done;
 
-gcc_final: binutils gcc_initial uclibc $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++ $(STLPORT_TARGET)
+gcc_final: $(STAGING_DIR)/.setup binutils gcc_initial uclibc \
+	$(STAGING_DIR)/bin/$(ARCH)-uclibc-g++ $(STLPORT_TARGET)
 
 gcc_final-clean:
 	rm -rf $(GCC_BUILD_DIR2)
