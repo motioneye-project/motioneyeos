@@ -83,7 +83,7 @@ $(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
 
 linux: $(STAGING_DIR)/include/linux/version.h $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
 
-# Rename this so it is cleaned by default on a make clean
+# This has been renamed so we do _NOT_ by default run this on 'make clean'
 linuxclean: clean
 	rm -f $(LINUX_KERNEL)
 	-make -C $(LINUX_DIR) clean
