@@ -242,7 +242,7 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 # # the step or libgcc will not build...
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR1)
-	(cd $(GCC_BUILD_DIR1); AR=$(TARGET_CROSS)ar \
+	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib CC=$(HOSTCC) \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -265,13 +265,13 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR1)/.configured
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
-	$(MAKE) -C $(GCC_BUILD_DIR1) \
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) \
 	    AR_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ar \
 	    RANLIB_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ranlib
 	touch $(GCC_BUILD_DIR1)/.compiled
 
 $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc: $(GCC_BUILD_DIR1)/.compiled
-	$(MAKE) -C $(GCC_BUILD_DIR1) install;
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) install;
 	#Cleanup then mess when --program-prefix mysteriously fails 
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-cpp $(STAGING_DIR)/bin/$(ARCH)-uclibc-cpp
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gcc $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
@@ -394,7 +394,7 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	mkdir -p $(GCC_BUILD_DIR2)
-	(cd $(GCC_BUILD_DIR2); AR=$(TARGET_CROSS)ar \
+	(cd $(GCC_BUILD_DIR2); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
 		NM=$(TARGET_CROSS)nm CC=$(HOSTCC) \
 		$(GCC_DIR)/configure \
@@ -423,7 +423,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	touch $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
-	CC=$(HOSTCC) \
+	PATH=$(TARGET_PATH) CC=$(HOSTCC) \
 	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
 	    CC_FOR_TARGET=$(TARGET_CROSS)gcc $(MAKE) -C $(GCC_BUILD_DIR2)
@@ -433,7 +433,7 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	touch $(GCC_BUILD_DIR2)/.installed
 
 $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
-	$(MAKE) -C $(GCC_BUILD_DIR2) install;
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) install;
 	-mv $(STAGING_DIR)/bin/gcc $(STAGING_DIR)/usr/bin;
 	-mv $(STAGING_DIR)/bin/protoize $(STAGING_DIR)/usr/bin;
 	-mv $(STAGING_DIR)/bin/unprotoize $(STAGING_DIR)/usr/bin;
