@@ -12,7 +12,6 @@ LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
 LINUX_SOURCE:=kernel-headers-2.4.21.tar.bz2
 LINUX_DIR:=$(BUILD_DIR)/linux
 
-LINUX_DIR=$(BUILD_DIR)/linux
 # Used by pcmcia-cs and others
 LINUX_SOURCE_DIR=$(LINUX_DIR)
 
