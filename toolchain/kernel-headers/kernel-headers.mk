@@ -6,6 +6,9 @@
 # by a 'make clean' so don't put anything sacred in here...
 #
 #############################################################
+DEFAULT_KERNEL_HEADERS:=$(strip $(subst ",, $(BR2_DEFAULT_KERNEL_HEADERS)))
+#"
+
 ifneq ($(filter $(TARGETS),kernel-headers),)
 DEFAULT_KERNEL_HEADERS:=$(strip $(DEFAULT_KERNEL_HEADERS))
 
@@ -24,10 +27,19 @@ endif
 ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.4.27")
 VERSION:=2
 PATCHLEVEL:=4
-SUBLEVEL:=25
+SUBLEVEL:=27
 LINUX_HEADERS_SITE:=http://www.uclibc.org/downloads/toolchain
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.27.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.27
+endif
+
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.4.29")
+VERSION:=2
+PATCHLEVEL:=4
+SUBLEVEL:=29
+LINUX_HEADERS_SITE:=http://www.uclibc.org/downloads/toolchain
+LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.29.tar.bz2
+LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.29
 endif
 
 ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.7")
@@ -143,11 +155,3 @@ kernel-headers-dirclean:
 	rm -rf $(LINUX_HEADERS_DIR)
 
 endif
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-DEFAULT_KERNEL_HEADERS:=$(strip $(subst ",, $(BR2_DEFAULT_KERNEL_HEADERS)))
-#"
-
