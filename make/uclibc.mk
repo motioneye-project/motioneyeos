@@ -43,15 +43,15 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 		--large_file=$(LARGEFILE) \
 		--ldso_path="/lib" \
 		--long_long=true \
-		--rpc_support=false \
+		--rpc_support=true \
 		--shadow=true \
 		--shared_support=true \
-		--threads=false \
-		--debug=false \
+		--threads=true \
+		--debug=true \
 		--file=$(UCLIBC_DIR)/extra/Configs/Config.$(ARCH) \
 		> $(UCLIBC_DIR)/Config; 
-	perl -i -p -e 's,SYSTEM_DEVEL_PREFIX.*,SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr,g' $(UCLIBC_DIR)/Config
-
+	perl -i -p -e 's,SYSTEM_DEVEL_PREFIX.*,SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr,g' \
+		$(UCLIBC_DIR)/Config
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured
@@ -63,6 +63,7 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=/ install_runtime install_target_utils
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/*.so*
 
 uclibc: $(LINUX_KERNEL) $(TARGET_DIR)/lib/libc.so.0
 
