@@ -102,8 +102,8 @@ $(STAGING_DIR):
 
 $(TARGET_DIR):
 	rm -rf $(TARGET_DIR)
-	zcat $(SOURCE_DIR)/skel.tar.gz | tar -C $(BUILD_DIR) -xf -
-	cp -a $(SOURCE_DIR)/target_skeleton/* $(TARGET_DIR)/
+	zcat target/default/skel.tar.gz | tar -C $(BUILD_DIR) -xf -
+	cp -a target/default/target_skeleton/* $(TARGET_DIR)/
 	-find $(TARGET_DIR) -type d -name CVS -exec rm -rf {} \; > /dev/null 2>&1
 
 source: $(TARGETS_SOURCE)
