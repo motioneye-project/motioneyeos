@@ -49,7 +49,7 @@ $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(PPPD_DIR)
 
 $(TARGET_DIR)/$(PPPD_TARGET_BINARY): $(PPPD_DIR)/$(PPPD_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(PPPD_DIR) install
+	$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(PPPD_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
