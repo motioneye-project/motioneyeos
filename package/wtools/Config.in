@@ -1,5 +1,5 @@
-config BR2_PACKAGE_WTOOLS
-	bool "wtools"
+config BR2_PACKAGE_WIRELESS_TOOLS
+	bool "wireless tools"
 	default n
 	help
 	  A collection of tools to configure wireless lan cards.
