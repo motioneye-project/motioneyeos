@@ -1,7 +1,7 @@
 To build and use the buildroot stuff, do the following:
 
 1) run 'make'
-2) wait while it compiles 
+2) wait while it compiles
 3) run './UMlinux' to test out your root filesystem using User Mode Linux.
 
 You do not need to be root to build or run this system.  Each Virtual Terminal
