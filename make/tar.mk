@@ -3,10 +3,11 @@
 # tar
 #
 #############################################################
-GNUTAR_SOURCE:=tar-1.13.25.tar.gz
+GNUTAR_VER:=1.14
+GNUTAR_SOURCE:=tar-$(GNUTAR_VER).tar.bz2
 GNUTAR_SITE:=ftp://alpha.gnu.org/gnu/tar
-GNUTAR_DIR:=$(BUILD_DIR)/tar-1.13.25
-GNUTAR_CAT:=zcat
+GNUTAR_DIR:=$(BUILD_DIR)/tar-$(GNUTAR_VER)
+GNUTAR_CAT:=bzcat
 GNUTAR_BINARY:=src/tar
 GNUTAR_TARGET_BINARY:=bin/tar
 
