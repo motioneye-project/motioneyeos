@@ -1,0 +1,142 @@
+--- gcc-3.1/libstdc++-v3/configure	Tue May  7 23:27:59 2002
++++ gcc-3.1-patched/libstdc++-v3/configure	Thu Aug  8 11:01:35 2002
+@@ -5034,10 +5034,6 @@
+ EOF
+ 
+       cat >> confdefs.h <<\EOF
+-#define HAVE_FREXPF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+ #define HAVE_HYPOTF 1
+ EOF
+ 
+@@ -7873,128 +7869,6 @@
+       cat >> confdefs.h <<\EOF
+ #define HAVE_MMAP 1
+ EOF
+-
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ACOSF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ASINF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ATAN2F 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ATANF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_CEILF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_COPYSIGN 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_COPYSIGNF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_COSF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_COSHF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_EXPF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_FABSF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_FINITE 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_FINITEF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_FLOORF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_FMODF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_FREXPF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ISINF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ISINFF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ISNAN 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_ISNANF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_LDEXPF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_LOG10F 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_LOGF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_MODFF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_POWF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_SINF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_SINHF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_SQRTF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_TANF 1
+-EOF
+-
+-      cat >> confdefs.h <<\EOF
+-#define HAVE_TANHF 1
+-EOF
+-
+       ;;
+   esac
+ 
