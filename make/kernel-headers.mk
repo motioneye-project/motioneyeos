@@ -8,8 +8,9 @@
 #############################################################
 ifneq ($(filter $(TARGETS),kernel-headers),)
 
-LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
-LINUX_SOURCE:=kernel-headers-2.4.25.tar.bz2
+LINUX_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
+LINUX_SOURCE:=linux-libc-headers-2.6.5.0.tar.bz2
+LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.5.0
 LINUX_DIR:=$(TOOL_BUILD_DIR)/linux
 
 # Used by pcmcia-cs and others
@@ -21,10 +22,17 @@ $(DL_DIR)/$(LINUX_SOURCE):
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	mv $(LINUX_UNPACK_DIR) $(LINUX_DIR)
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
 	rm -f $(LINUX_DIR)/include/asm
+	@if [ ! -f $(LINUX_DIR)/Makefile ] ; then \
+	    echo -e "VERSION = 2\nPATCHLEVEL = 6\nSUBLEVEL = 5\nEXTRAVERSION =\n" > \
+		    $(LINUX_DIR)/Makefile; \
+	    echo -e "KERNELRELEASE=\$$(VERSION).\$$(PATCHLEVEL).\$$(SUBLEVEL)\$$(EXTRAVERSION)" >> \
+		    $(LINUX_DIR)/Makefile; \
+	fi;
 	@if [ "$(ARCH)" = "powerpc" ];then \
 	    (cd $(LINUX_DIR)/include; ln -fs asm-ppc$(NOMMU) asm;) \
 	elif [ "$(ARCH)" = "mips" ];then \
@@ -43,10 +51,12 @@ $(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
 	    (cd $(LINUX_DIR)/include; ln -fs asm-$(ARCH)$(NOMMU) asm;) \
 	fi
 	touch $(LINUX_DIR)/include/linux/autoconf.h;
-	echo "#define UTS_RELEASE \"2.4.25\"" > $(LINUX_DIR)/include/linux/version.h;
-	echo "#define LINUX_VERSION_CODE 132121" >> $(LINUX_DIR)/include/linux/version.h;
-	echo "#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))" >> \
-		$(LINUX_DIR)/include/linux/version.h;
+	if [ ! -f $(LINUX_DIR)/include/linux/version.h ] ; then \
+	    echo "#define UTS_RELEASE \"2.6.5\"" > $(LINUX_DIR)/include/linux/version.h; \
+	    echo "#define LINUX_VERSION_CODE 132613" >> $(LINUX_DIR)/include/linux/version.h; \
+	    echo "#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))" >> \
+		    $(LINUX_DIR)/include/linux/version.h; \
+	fi;
 	touch $(LINUX_DIR)/.configured
 
 $(LINUX_KERNEL): $(LINUX_DIR)/.configured
