@@ -107,7 +107,19 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	     ln -fs arch-ebsa285 arch; fi); \
 	elif [ "$(ARCH)" = "cris" ];then \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-cris asm;) \
+	elif [ "$(ARCH)" = "sh3" ];then \
+	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-sh asm; \
+	     cd asm; \
+	     ln -s cpu-sh3 cpu) \
+	elif [ "$(ARCH)" = "sh3eb" ];then \
+	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-sh asm; \
+	     cd asm; \
+	     ln -s cpu-sh3 cpu) \
 	elif [ "$(ARCH)" = "sh4" ];then \
+	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-sh asm; \
+	     cd asm; \
+	     ln -s cpu-sh4 cpu) \
+	elif [ "$(ARCH)" = "sh4eb" ];then \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-sh asm; \
 	     cd asm; \
 	     ln -s cpu-sh4 cpu) \
