@@ -196,6 +196,7 @@ HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/mips-.*/mips/' \
 	-e 's/mipsel-.*/mipsel/' \
 	-e 's/cris.*/cris/' \
+	-e 's/i[3-9]86/i386/' \
 	)
 GNU_HOST_NAME:=$(HOST_ARCH)-pc-linux-gnu
 TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
