@@ -42,8 +42,8 @@
  
  all: $(TARGETS)
  
---- tools/netpipe-2.4-ipv6/Makefile.orig	2003-11-07 16:41:39.000000000 -0700
-+++ tools/netpipe-2.4-ipv6/Makefile	2003-11-07 16:42:41.000000000 -0700
+--- ltp-full-20031002/tools/netpipe-2.4-ipv6/Makefile.orig	2003-11-07 16:41:39.000000000 -0700
++++ ltp-full-20031002/tools/netpipe-2.4-ipv6/Makefile	2003-11-07 16:42:41.000000000 -0700
 @@ -10,7 +10,7 @@
  DRIV_OBJ   = netpipe.o
  INCLUDES   = netpipe.h
