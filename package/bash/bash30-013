@@ -1,0 +1,86 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-013
+
+Bug-Reported-by: Len Lattanzi <llattanzi@apple.com>
+Bug-Reference-ID: <556CE1CE-E1AC-11D8-A2D9-00039383EC60@apple.com>
+Bug-Reference-URL:
+
+Bug-Description:
+
+vi-mode filename completion/glob expansion should understand and perform
+tilde expansion.
+
+Patch:
+
+*** ../bash-3.0/bashline.c	Mon Jul  5 23:22:12 2004
+--- bashline.c	Thu Sep  2 16:00:12 2004
+***************
+*** 2514,2518 ****
+    static int ind;
+    int glen;
+!   char *ret;
+  
+    if (state == 0)
+--- 2545,2549 ----
+    static int ind;
+    int glen;
+!   char *ret, *ttext;
+  
+    if (state == 0)
+***************
+*** 2524,2538 ****
+        FREE (globtext);
+  
+        if (rl_explicit_arg)
+  	{
+! 	  globorig = savestring (text);
+! 	  glen = strlen (text);
+  	  globtext = (char *)xmalloc (glen + 2);
+! 	  strcpy (globtext, text);
+  	  globtext[glen] = '*';
+  	  globtext[glen+1] = '\0';
+  	}
+        else
+!         globtext = globorig = savestring (text);
+  
+        matches = shell_glob_filename (globtext);
+--- 2555,2574 ----
+        FREE (globtext);
+  
++       ttext = bash_tilde_expand (text, 0);
++ 
+        if (rl_explicit_arg)
+  	{
+! 	  globorig = savestring (ttext);
+! 	  glen = strlen (ttext);
+  	  globtext = (char *)xmalloc (glen + 2);
+! 	  strcpy (globtext, ttext);
+  	  globtext[glen] = '*';
+  	  globtext[glen+1] = '\0';
+  	}
+        else
+!         globtext = globorig = savestring (ttext);
+! 
+!       if (ttext != text)
+! 	free (ttext);
+  
+        matches = shell_glob_filename (globtext);
+
+*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 13
+  
+  #endif /* _PATCHLEVEL_H_ */

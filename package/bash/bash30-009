@@ -1,0 +1,111 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-009
+
+Bug-Reported-by: Tim Waugh <twaugh@redhat.com>
+Bug-Reference-ID: <20040810083805.GT2177@redhat.com>
+Bug-Reference-URL: https://bugzilla.redhat.com/bugzilla/show_bug.cgi?id=129526b
+		   http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00116.html
+
+Bug-Description:
+
+-->
+Steps to Reproduce:
+1. Launch a bash shell
+2. Set editing mode to 'vi' with 'set -o vi'
+3. Type any command, but don't hit return
+4. Enter vi-command mode by hitting the escape key
+5. Go to the end of line with the '$' command
+6. Type 'r' to change the last character
+7. Type any character (other than what the character already is)
+
+The last two characters are inexplicably swapped
+after the last character is changed.
+<--
+
+Patch:
+
+*** ../bash-3.0/lib/readline/vi_mode.c	Tue Jul 13 14:08:27 2004
+--- lib/readline/vi_mode.c	Tue Aug 17 00:12:09 2004
+***************
+*** 691,695 ****
+    wchar_t wc;
+    char mb[MB_LEN_MAX+1];
+!   int mblen;
+    mbstate_t ps;
+  
+--- 693,697 ----
+    wchar_t wc;
+    char mb[MB_LEN_MAX+1];
+!   int mblen, p;
+    mbstate_t ps;
+  
+***************
+*** 714,722 ****
+        if (wc)
+  	{
+  	  mblen = wcrtomb (mb, wc, &ps);
+  	  if (mblen >= 0)
+  	    mb[mblen] = '\0';
+  	  rl_begin_undo_group ();
+! 	  rl_delete (1, 0);
+  	  rl_insert_text (mb);
+  	  rl_end_undo_group ();
+--- 716,727 ----
+        if (wc)
+  	{
++ 	  p = rl_point;
+  	  mblen = wcrtomb (mb, wc, &ps);
+  	  if (mblen >= 0)
+  	    mb[mblen] = '\0';
+  	  rl_begin_undo_group ();
+! 	  rl_vi_delete (1, 0);
+! 	  if (rl_point < p)	/* Did we retreat at EOL? */
+! 	    rl_point++;	/* XXX - should we advance more than 1 for mbchar? */
+  	  rl_insert_text (mb);
+  	  rl_end_undo_group ();
+***************
+*** 1311,1320 ****
+  #if defined (HANDLE_MULTIBYTE)
+        if (MB_CUR_MAX > 1 && rl_byte_oriented == 0)
+! 	while (_rl_insert_char (1, c))
+! 	  {
+! 	    RL_SETSTATE (RL_STATE_MOREINPUT);
+! 	    c = rl_read_key ();
+! 	    RL_UNSETSTATE (RL_STATE_MOREINPUT);
+! 	  }
+        else
+  #endif
+--- 1316,1329 ----
+  #if defined (HANDLE_MULTIBYTE)
+        if (MB_CUR_MAX > 1 && rl_byte_oriented == 0)
+! 	{
+! 	  if (rl_point < p)		/* Did we retreat at EOL? */
+! 	    rl_point++;
+! 	  while (_rl_insert_char (1, c))
+! 	    {
+! 	      RL_SETSTATE (RL_STATE_MOREINPUT);
+! 	      c = rl_read_key ();
+! 	      RL_UNSETSTATE (RL_STATE_MOREINPUT);
+! 	    }
+! 	}
+        else
+  #endif
+
+*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 9
+  
+  #endif /* _PATCHLEVEL_H_ */

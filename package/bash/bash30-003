@@ -1,0 +1,124 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-003
+
+Bug-Reported-by: Egmont Koblinger <egmont@uhulinux.hu>
+Bug-Reference-ID: <Pine.LNX.4.58L0.0407290044500.12603@sziami.cs.bme.hu>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-07/msg00279.html
+
+Bug-Description:
+
+Bash no longer accepts the `trap signum' syntax when in POSIX mode.  This
+patch restores a measure of backwards compatibility.
+
+Patch:
+
+*** ../bash-3.0/builtins/trap.def	Thu May 27 22:26:19 2004
+--- builtins/trap.def	Thu Aug  5 08:55:43 2004
+***************
+*** 24,28 ****
+  $BUILTIN trap
+  $FUNCTION trap_builtin
+! $SHORT_DOC trap [-lp] [[arg] signal_spec ...]
+  The command ARG is to be read and executed when the shell receives
+  signal(s) SIGNAL_SPEC.  If ARG is absent (and a single SIGNAL_SPEC
+--- 24,28 ----
+  $BUILTIN trap
+  $FUNCTION trap_builtin
+! $SHORT_DOC trap [-lp] [arg signal_spec ...]
+  The command ARG is to be read and executed when the shell receives
+  signal(s) SIGNAL_SPEC.  If ARG is absent (and a single SIGNAL_SPEC
+***************
+*** 88,92 ****
+       WORD_LIST *list;
+  {
+!   int list_signal_names, display, result, opt;
+  
+    list_signal_names = display = 0;
+--- 88,92 ----
+       WORD_LIST *list;
+  {
+!   int list_signal_names, display, result, opt, first_signal;
+  
+    list_signal_names = display = 0;
+***************
+*** 119,130 ****
+      {
+        char *first_arg;
+!       int operation, sig;
+  
+        operation = SET;
+        first_arg = list->word->word;
+        /* When in posix mode, the historical behavior of looking for a
+  	 missing first argument is disabled.  To revert to the original
+  	 signal handling disposition, use `-' as the first argument. */
+!       if (posixly_correct == 0 && first_arg && *first_arg &&
+  		(*first_arg != '-' || first_arg[1]) &&
+  		signal_object_p (first_arg, opt) && list->next == 0)
+--- 119,135 ----
+      {
+        char *first_arg;
+!       int operation, sig, first_signal;
+  
+        operation = SET;
+        first_arg = list->word->word;
++       first_signal = first_arg && *first_arg && all_digits (first_arg) && signal_object_p (first_arg, opt);
++ 
++       /* Backwards compatibility */
++       if (first_signal)
++ 	operation = REVERT;
+        /* When in posix mode, the historical behavior of looking for a
+  	 missing first argument is disabled.  To revert to the original
+  	 signal handling disposition, use `-' as the first argument. */
+!       else if (posixly_correct == 0 && first_arg && *first_arg &&
+  		(*first_arg != '-' || first_arg[1]) &&
+  		signal_object_p (first_arg, opt) && list->next == 0)
+*** ../bash-3.0/doc/bashref.texi	Sat Jun 26 14:26:07 2004
+--- doc/bashref.texi	Fri Aug 27 12:33:46 2004
+***************
+*** 5954,5958 ****
+  The @code{trap} builtin doesn't check the first argument for a possible
+  signal specification and revert the signal handling to the original
+! disposition if it is.  If users want to reset the handler for a given
+  signal to the original disposition, they should use @samp{-} as the
+  first argument.
+--- 5967,5972 ----
+  The @code{trap} builtin doesn't check the first argument for a possible
+  signal specification and revert the signal handling to the original
+! disposition if it is, unless that argument consists solely of digits and
+! is a valid signal number.  If users want to reset the handler for a given
+  signal to the original disposition, they should use @samp{-} as the
+  first argument.
+
+*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 2
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 3
+  
+  #endif /* _PATCHLEVEL_H_ */
+*** ../bash-3.0/tests/errors.right	Thu May 27 22:26:03 2004
+--- tests/errors.right	Sat Aug  7 22:35:10 2004
+***************
+*** 86,90 ****
+  ./errors.tests: line 216: trap: NOSIG: invalid signal specification
+  ./errors.tests: line 219: trap: -s: invalid option
+! trap: usage: trap [-lp] [[arg] signal_spec ...]
+  ./errors.tests: line 225: return: can only `return' from a function or sourced script
+  ./errors.tests: line 229: break: 0: loop count out of range
+--- 86,90 ----
+  ./errors.tests: line 216: trap: NOSIG: invalid signal specification
+  ./errors.tests: line 219: trap: -s: invalid option
+! trap: usage: trap [-lp] [arg signal_spec ...]
+  ./errors.tests: line 225: return: can only `return' from a function or sourced script
+  ./errors.tests: line 229: break: 0: loop count out of range

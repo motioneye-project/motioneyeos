@@ -3,10 +3,11 @@
 # bash
 #
 #############################################################
-BASH_SOURCE:=bash-2.05b.tar.gz
+BASH_VER:=3.0
+BASH_SOURCE:=bash-$(BASH_VER).tar.gz
 BASH_SITE:=ftp://ftp.gnu.org/gnu/bash
 BASH_CAT:=zcat
-BASH_DIR:=$(BUILD_DIR)/bash-2.05b
+BASH_DIR:=$(BUILD_DIR)/bash-$(BASH_VER)
 BASH_BINARY:=bash
 BASH_TARGET_BINARY:=bin/bash
 
@@ -17,17 +18,18 @@ bash-source: $(DL_DIR)/$(BASH_SOURCE)
 
 $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	$(BASH_CAT) $(DL_DIR)/$(BASH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	patch_level=-p0 toolchain/patch-kernel.sh $(BASH_DIR) package/bash/ bash??-???
 	# This is broken when -lintl is added to LIBS
 	$(SED) 's,LIBS_FOR_BUILD =.*,LIBS_FOR_BUILD =,g' \
 		$(BASH_DIR)/builtins/Makefile.in
 	touch $(BASH_DIR)/.unpacked
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
+	#		ac_cv_func_setvbuf_reversed=no
+	#		bash_cv_have_mbstate_t=yes
 	(cd $(BASH_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
 		CFLAGS="$(TARGET_CFLAGS)" \
-		ac_cv_func_setvbuf_reversed=no \
-		bash_cv_have_mbstate_t=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

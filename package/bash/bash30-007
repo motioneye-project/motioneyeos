@@ -1,0 +1,78 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-007
+
+Bug-Reported-by: Oliver Kiddle <okiddle@yahoo.co.uk>
+		 Tim Waugh <twaugh@redhat.com>
+Bug-Reference-ID: <10454.1091313247@athlon>
+		  <20040804100140.GX8175@redhat.com>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-07/msg00313.html
+		   http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00056.html
+
+Bug-Description:
+
+Two bugs:
+
+How does it decide what characters are allowed. The following really
+looks like a bug to me:
+$ echo {<C4>..D}
+That's accepted and produces output that seems to wrap round to ^A and
+then goes up to D. Note that I'm using an ISO-8859-1 locale. If that
+works at all, it should surely descend.
+
+This short script:
+
+var=baz
+echo foo{bar,${var}.}
+echo foo{bar,${var}}
+
+gives the following output with bash-3.0:
+
+./test: line 2: foo${var.}: bad substitution
+foobar} foobaz
+
+Patch:
+
+*** ../bash-3.0/braces.c	Thu Dec  4 11:09:52 2003
+--- braces.c	Wed Aug  4 14:34:33 2004
+***************
+*** 341,346 ****
+    if (lhs_t == ST_CHAR)
+      {
+!       lhs_v = lhs[0];
+!       rhs_v = rhs[0];
+      }
+    else
+--- 341,346 ----
+    if (lhs_t == ST_CHAR)
+      {
+!       lhs_v = (unsigned char)lhs[0];
+!       rhs_v = (unsigned char)rhs[0];
+      }
+    else
+***************
+*** 403,406 ****
+--- 403,407 ----
+  	  pass_next = 1;
+  	  i++;
++ 	  level++;
+  	  continue;
+  	}
+
+*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 6
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -1,0 +1,145 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-004
+
+Bug-Reported-by: Stephane Chazelas <stephane_chazelas@yahoo.fr>
+Bug-Reference-ID: <20040902131957.GC1860@frhdtmp102861.morse.corp.wan>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-07/msg00291.html
+
+Bug-Description:
+
+Calculation of lengths and offsets for parameter string length and substring
+expansion does not correctly account for multibyte characters.
+
+Patch:
+
+ *** ../bash-3.0/subst.c	Sun Jul  4 13:56:13 2004
+--- subst.c	Thu Aug 12 13:36:17 2004
+***************
+*** 4692,4695 ****
+--- 4692,4715 ----
+  }
+  
++ #if defined (HANDLE_MULTIBYTE)
++ size_t
++ mbstrlen (s)
++      const char *s;
++ {
++   size_t clen, nc;
++   mbstate_t mbs;
++ 
++   nc = 0;
++   memset (&mbs, 0, sizeof (mbs));
++   while ((clen = mbrlen(s, MB_CUR_MAX, &mbs)) != 0 && (MB_INVALIDCH(clen) == 0))
++     {
++       s += clen;
++       nc++;
++     }
++   return nc;
++ }
++ #endif
++       
++ 
+  /* Handle the parameter brace expansion that requires us to return the
+     length of a parameter. */
+***************
+*** 4747,4758 ****
+  	{
+  	  t = get_dollar_var_value (arg_index);
+! 	  number = STRLEN (t);
+  	  FREE (t);
+  	}
+  #if defined (ARRAY_VARS)
+!       else if ((var = find_variable (name + 1)) && array_p (var))
+  	{
+  	  t = array_reference (array_cell (var), 0);
+! 	  number = STRLEN (t);
+  	}
+  #endif
+--- 4767,4778 ----
+  	{
+  	  t = get_dollar_var_value (arg_index);
+! 	  number = MB_STRLEN (t);
+  	  FREE (t);
+  	}
+  #if defined (ARRAY_VARS)
+!       else if ((var = find_variable (name + 1)) && (invisible_p (var) == 0) && array_p (var))
+  	{
+  	  t = array_reference (array_cell (var), 0);
+! 	  number = MB_STRLEN (t);
+  	}
+  #endif
+***************
+*** 4767,4771 ****
+  	    dispose_words (list);
+  
+! 	  number = STRLEN (t);
+  	  FREE (t);
+  	}
+--- 4787,4791 ----
+  	    dispose_words (list);
+  
+! 	  number = MB_STRLEN (t);
+  	  FREE (t);
+  	}
+***************
+*** 4872,4876 ****
+      case VT_VARIABLE:
+      case VT_ARRAYMEMBER:
+!       len = strlen (value);
+        break;
+      case VT_POSPARMS:
+--- 4892,4896 ----
+      case VT_VARIABLE:
+      case VT_ARRAYMEMBER:
+!       len = MB_STRLEN (value);
+        break;
+      case VT_POSPARMS:
+*** ../bash-3.0/include/shmbutil.h	Mon Apr 19 09:59:42 2004
+--- include/shmbutil.h	Thu Sep  2 15:20:47 2004
+***************
+*** 32,35 ****
+--- 32,37 ----
+  extern size_t xdupmbstowcs __P((wchar_t **, char ***, const char *));
+  
++ extern size_t mbstrlen __P((const char *));
++ 
+  extern char *xstrchr __P((const char *, int));
+  
+***************
+*** 39,42 ****
+--- 41,47 ----
+  #endif
+  
++ #define MBSLEN(s)	(((s) && (s)[0]) ? ((s)[1] ? mbstrlen (s) : 1) : 0)
++ #define MB_STRLEN(s)	((MB_CUR_MAX > 1) ? MBSLEN (s) : STRLEN (s))
++ 
+  #else /* !HANDLE_MULTIBYTE */
+  
+***************
+*** 54,57 ****
+--- 59,64 ----
+  #define MB_NULLWCH(x)		(0)
+  #endif
++ 
++ #define MB_STRLEN(s)		(STRLEN(s))
+  
+  #endif /* !HANDLE_MULTIBYTE */
+
+*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 3
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 4
+  
+  #endif /* _PATCHLEVEL_H_ */

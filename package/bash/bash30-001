@@ -1,0 +1,164 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.0
+Patch-ID: bash30-001
+
+Bug-Reported-by: Karlheinz Nolte <kn@k-nolte.de>
+Bug-Reference-ID: <20040801200058.GA3311@mars.home.k-nolte.de>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2004-08/msg00009.html
+
+Bug-Description:
+
+    The following script triggers the segfault.
+      This was found by Costa Tsaousis the author of FireHOL.
+          He wrotes:
+
+          "I think I have found the bug. The script bellow crashes at the
+       third echo (UNSET). It seems to be a problem of the "unset" BASH
+       function when erasing arrays. It leaves something behind so that if
+       the array just unset is referenced, it produces a segmentation fault.
+       According to the documentation the first and the third expansions
+       should be exactly the same."
+
+Patch:
+
+*** ../bash-3.0/arrayfunc.c	Fri Dec 19 00:03:09 2003
+--- arrayfunc.c	Sun Aug  1 20:43:00 2004
+***************
+*** 612,616 ****
+  
+    free (t);
+!   return var;
+  }
+  
+--- 612,616 ----
+  
+    free (t);
+!   return (var == 0 || invisible_p (var)) ? (SHELL_VAR *)0 : var;
+  }
+  
+
+*** ../bash-3.0/subst.c	Sun Jul  4 13:56:13 2004
+--- subst.c	Thu Aug 12 13:36:17 2004
+***************
+*** 4983,4987 ****
+  	return -1;
+      }
+!   else if ((v = find_variable (varname)) && array_p (v))
+      {
+        vtype = VT_ARRAYMEMBER;
+--- 5003,5007 ----
+  	return -1;
+      }
+!   else if ((v = find_variable (varname)) && (invisible_p (v) == 0) && array_p (v))
+      {
+        vtype = VT_ARRAYMEMBER;
+
+*** ../bash-3.0/variables.c	Sun Jul  4 13:57:26 2004
+--- variables.c	Wed Aug  4 15:28:04 2004
+***************
+*** 1420,1428 ****
+  
+  #  if defined (DEBUGGER)
+!   v = init_dynamic_array_var ("BASH_ARGC", get_self, null_array_assign, (att_invisible|att_noassign));
+!   v = init_dynamic_array_var ("BASH_ARGV", get_self, null_array_assign, (att_invisible|att_noassign));
+  #  endif /* DEBUGGER */
+!   v = init_dynamic_array_var ("BASH_SOURCE", get_self, null_array_assign, (att_invisible|att_noassign));
+!   v = init_dynamic_array_var ("BASH_LINENO", get_self, null_array_assign, (att_invisible|att_noassign));
+  #endif
+  
+--- 1420,1428 ----
+  
+  #  if defined (DEBUGGER)
+!   v = init_dynamic_array_var ("BASH_ARGC", get_self, null_array_assign, att_noassign);
+!   v = init_dynamic_array_var ("BASH_ARGV", get_self, null_array_assign, att_noassign);
+  #  endif /* DEBUGGER */
+!   v = init_dynamic_array_var ("BASH_SOURCE", get_self, null_array_assign, att_noassign);
+!   v = init_dynamic_array_var ("BASH_LINENO", get_self, null_array_assign, att_noassign);
+  #endif
+  
+***************
+*** 1600,1604 ****
+    old_var = find_variable (name);
+    if (old_var && local_p (old_var) && old_var->context == variable_context)
+!     return (old_var);
+  
+    was_tmpvar = old_var && tempvar_p (old_var);
+--- 1600,1607 ----
+    old_var = find_variable (name);
+    if (old_var && local_p (old_var) && old_var->context == variable_context)
+!     {
+!       VUNSETATTR (old_var, att_invisible);
+!       return (old_var);
+!     }
+  
+    was_tmpvar = old_var && tempvar_p (old_var);
+*** ../bash-3.0/pcomplete.c	Thu Jan  8 10:36:17 2004
+--- pcomplete.c	Tue Aug  3 23:15:41 2004
+***************
+*** 864,867 ****
+--- 864,869 ----
+      v = convert_var_to_array (v);
+    v = assign_array_var_from_word_list (v, lwords);
++ 
++   VUNSETATTR (v, att_invisible);
+    return v;
+  }
+***************
+*** 1022,1025 ****
+--- 1024,1029 ----
+    if (array_p (v) == 0)
+      v = convert_var_to_array (v);
++ 
++   VUNSETATTR (v, att_invisible);
+  
+    a = array_cell (v);
+*** ../bash-3.0/array.c	Thu May  6 08:24:13 2004
+--- array.c	Wed Aug 25 15:50:42 2004
+***************
+*** 452,456 ****
+  			array_dispose_element(new);
+  			free(element_value(ae));
+! 			ae->value = savestring(v);
+  			return(0);
+  		} else if (element_index(ae) > i) {
+--- 454,458 ----
+  			array_dispose_element(new);
+  			free(element_value(ae));
+! 			ae->value = v ? savestring(v) : (char *)NULL;
+  			return(0);
+  		} else if (element_index(ae) > i) {
+
+*** ../bash-3.0/patchlevel.h	Wed Aug 22 08:05:39 2001
+--- patchlevel.h	Thu Sep  2 15:04:32 2004
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 0
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 1
+  
+  #endif /* _PATCHLEVEL_H_ */
+*** ../bash-3.0/tests/dbg-support.tests	Tue Mar 25 15:33:03 2003
+--- tests/dbg-support.tests	Tue Aug  3 23:09:29 2004
+***************
+*** 63,68 ****
+  trap 'print_return_trap $LINENO' RETURN
+  
+! # Funcname is now an array. Vanilla Bash 2.05 doesn't have FUNCNAME array.
+! echo "FUNCNAME" ${FUNCNAME[0]}
+  
+  # We should trace into the below. 
+--- 63,68 ----
+  trap 'print_return_trap $LINENO' RETURN
+  
+! # Funcname is now an array, but you still can't see it outside a function
+! echo "FUNCNAME" ${FUNCNAME[0]:-main}
+  
+  # We should trace into the below. 
