@@ -41,11 +41,12 @@ MULTILIB:=--enable-multilib
 # here at the top...  Easier to find things here anyways...
 #
 #############################################################
-#BINUTILS_SOURCE:=binutils-2.14.tar.bz2
-#BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14
-BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
-BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.13.2.1
+#BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils
+#BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
+#BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.13.2.1
+BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
+BINUTILS_SOURCE:=binutils-2.14.90.0.5.tar.bz2
+BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.14.90.0.5
 BINUTILS_CAT:=bzcat
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
@@ -59,14 +60,15 @@ UCLIBC_SOURCE:=uClibc-0.9.20.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
-#GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/snapshots
-#GCC_SOURCE:=gcc-3.3.1-20030720.tar.bz2
-#GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1-20030720
-#GCC_CAT:=bzcat
-GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.3.tar.gz
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
-GCC_CAT:=zcat
+#GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
+#GCC_SOURCE:=gcc-3.3.tar.gz
+#GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
+#GCC_CAT:=zcat
+GCC_SITE:=http://gcc.get-software.com/releases/gcc-3.3.1
+GCC_SOURCE:=gcc-3.3.1.tar.bz2
+GCC_DIR:=$(BUILD_DIR)/gcc-3.3.1
+GCC_CAT:=bzcat
+
 
 
 
