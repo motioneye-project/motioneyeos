@@ -58,6 +58,8 @@ $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(LIBTOOL_DIR) install;
+	perl -pi -e "s,^CC.*,CC=\"/usr/bin/gcc\"," $(TARGET_DIR)/usr/bin/libtool
+	perl -pi -e "s,^LD.*,CC=\"/usr/bin/ld\"," $(TARGET_DIR)/usr/bin/libtool
 	rm -rf $(TARGET_DIR)/share/locale
 
 libtool: uclibc $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY)
