@@ -5,8 +5,8 @@
 #############################################################
 
 VALGRIND_SITE:=http://developer.kde.org/~sewardj
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-1.0.4
-VALGRIND_SOURCE:=valgrind-1.0.4.tar.bz2
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-1.9.6
+VALGRIND_SOURCE:=valgrind-1.9.6.tar.bz2
 VALGRIND_PATCH:=$(SOURCE_DIR)/valgrind.patch.bz2
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
