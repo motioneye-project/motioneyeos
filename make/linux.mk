@@ -22,9 +22,9 @@
 ifneq ($(filter $(TARGETS),linux),)
 
 # Version of Linux to download and then apply patches to
-DOWNLOAD_LINUX_VERSION=2.4.22
+DOWNLOAD_LINUX_VERSION=2.4.23
 # Version of Linux AFTER patches
-LINUX_VERSION=2.4.23-pre6-erik
+LINUX_VERSION=2.4.23-erik
 
 LINUX_FORMAT=bzImage
 LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
