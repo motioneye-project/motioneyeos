@@ -9,6 +9,11 @@ LTRACE_DIR=$(BUILD_DIR)/ltrace-0.3.35
 LTRACE_BINARY=ltrace
 LTRACE_TARGET_BINARY=usr/bin/ltrace
 
+LTRACE_ARCH:=$(ARCH)
+ifeq ("$(strip $(ARCH))","armeb")
+LTRACE_ARCH:=arm
+endif
+
 $(DL_DIR)/$(LTRACE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LTRACE_SITE)/$(LTRACE_SOURCE)
 
@@ -29,10 +34,12 @@ $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.source
 	touch $(LTRACE_DIR)/.configured;
 
 $(LTRACE_DIR)/$(LTRACE_BINARY): $(LTRACE_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) LD=$(TARGET_CROSS)ld -C $(LTRACE_DIR)
+	$(MAKE) CC=$(TARGET_CC) LD=$(TARGET_CROSS)ld ARCH=$(LTRACE_ARCH) \
+		-C $(LTRACE_DIR)
 
 $(TARGET_DIR)/$(LTRACE_TARGET_BINARY): $(LTRACE_DIR)/$(LTRACE_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LTRACE_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) ARCH=$(LTRACE_ARCH) \
+		-C $(LTRACE_DIR) install
 	rm -Rf $(TARGET_DIR)/usr/man
 
 ltrace: uclibc $(TARGET_DIR)/$(LTRACE_TARGET_BINARY)
