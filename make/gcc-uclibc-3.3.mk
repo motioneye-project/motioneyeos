@@ -33,6 +33,7 @@ GCC_SITE:=http://gcc.get-software.com/releases/gcc-$(GCC_VERSION)
 GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)
 GCC_CAT:=bzcat
+GCC_STRIP_HOST_BINARIES:=true
 
 #############################################################
 #
@@ -154,7 +155,9 @@ $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR2) install
 	# Strip the host binaries
+ifeq ($(GCC_STRIP_HOST_BINARIES),true)
 	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
+endif
 	# Set up the symlinks to enable lying about target name.
 	set -e; \
 	(cd $(STAGING_DIR); \
