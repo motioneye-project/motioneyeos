@@ -28,15 +28,15 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.patched
 	    --disable-nls --without-x);
 	touch  $(OPENSSH_DIR)/.configured
 
-$(OPENSSH_DIR)/openssh: $(OPENSSH_DIR)/.configured
+$(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
 	make CC=$(TARGET_CC1) -C $(OPENSSH_DIR)
 	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/*.so*
 
-$(TARGET_DIR)/usr/bin/openssh: $(OPENSSH_DIR)/openssh
+$(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
 	make CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
 	rm -rf $(TARGET_DIR)/usr/share/doc/openssh
 
-openssh: $(TARGET_DIR)/usr/bin/openssh
+openssh: $(TARGET_DIR)/usr/bin/ssh
 
 openssh-clean: 
 	make -C $(OPENSSH_DIR) clean
