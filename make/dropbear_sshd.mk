@@ -3,13 +3,12 @@
 # dropbear_sshd
 #
 #############################################################
-DROPBEAR_SSHD_SOURCE:=dropbear-0.33.tar.bz2
+DROPBEAR_SSHD_SOURCE:=dropbear-0.35.tar.bz2
 DROPBEAR_SSHD_SITE:=http://matt.ucc.asn.au/dropbear/
-DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.33
+DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.35
 DROPBEAR_SSHD_CAT:=bzcat
 DROPBEAR_SSHD_BINARY:=dropbear
 DROPBEAR_SSHD_TARGET_BINARY:=usr/sbin/dropbear
-DROPBEAR_SSHD_PATCH:=$(SOURCE_DIR)/dropbear.patch
 
 
 $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE):
@@ -19,7 +18,6 @@ dropbear_sshd-source: $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE)
 
 $(DROPBEAR_SSHD_DIR)/.unpacked: $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE)
 	$(DROPBEAR_SSHD_CAT) $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(DROPBEAR_SSHD_PATCH) | patch -p1 -d $(DROPBEAR_SSHD_DIR)
 	touch $(DROPBEAR_SSHD_DIR)/.unpacked
 
 $(DROPBEAR_SSHD_DIR)/.configured: $(DROPBEAR_SSHD_DIR)/.unpacked
