@@ -4,7 +4,7 @@
 #
 #############################################################
 ZLIB_SOURCE=zlib-1.1.4.tar.bz2
-ZLIB_SITE=http://prdownloads.sourceforge.net/libpng
+ZLIB_SITE=http://telia.dl.sourceforge.net/sourceforge/libpng
 ZLIB_DIR=$(BUILD_DIR)/zlib-1.1.4
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 ZLIB_CFLAGS="-Os -g -fPIC -D_FILE_OFFSET_BITS=64 -D__USE_FILE_OFFSET64"
