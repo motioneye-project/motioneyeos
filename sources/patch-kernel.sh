@@ -1,8 +1,14 @@
 #! /bin/sh
+# A little script I whipped up to make it easy to
+# patch source trees and have sane error handling
+# -Erik
+#
+# (c) 2002 Erik Andersen <andersen@codepoet.org>
 
 # Set directories from arguments, or use defaults.
 targetdir=${1-.}
 patchdir=${2-../kernel-patches}
+patchpattern=${3-*}
 
 if [ ! -d "${targetdir}" ] ; then
     echo "Aborting.  '${targetdir}' is not a directory."
@@ -13,7 +19,7 @@ if [ ! -d "${patchdir}" ] ; then
     exit 1
 fi
     
-for i in ${patchdir}/* ; do 
+for i in ${patchdir}/${patchpattern} ; do 
     case "$i" in
 	*.gz)
 	type="gzip"; uncomp="gunzip -dc"; ;; 

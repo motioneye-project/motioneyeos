@@ -1,6 +1,6 @@
 # Makefile for to build a gcc/uClibc toolchain
 #
-# Copyright (C) 2002 Erik Andersen <andersen@uclibc.org>
+# Copyright (C) 2002-2003 Erik Andersen <andersen@uclibc.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -17,14 +17,6 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
-#############################################################
-#
-# EDIT this stuff to suit your system and source locations
-#
-#############################################################
-
-# C compiler for the build system
-HOSTCC:=gcc
 
 #############################################################
 #
@@ -33,7 +25,8 @@ HOSTCC:=gcc
 #
 #############################################################
 GNU_TARGET_NAME:=$(ARCH)-linux
-MAKE:=make
+TARGET_LANGUAGES:=c,c++
+MAKE=make
 
 #############################################################
 #
@@ -44,9 +37,13 @@ MAKE:=make
 #
 #############################################################
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
-BINUTILS_SOURCE:=binutils-2.12.1.tar.bz2
-BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.12.1
-BINUTILS_DIR1:=$(BUILD_DIR)/binutils-build
+BINUTILS_SOURCE:=binutils-2.13.2.tar.bz2
+BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.13.2
+#
+# Perhaps you would perfer to use the older 2.12.1 version?
+#BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
+#BINUTILS_SOURCE:=binutils-2.12.1.tar.bz2
+#BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.12.1
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
@@ -60,10 +57,8 @@ UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.2.tar.gz
-GCC_DIR:=$(BUILD_DIR)/gcc-3.2
-GCC_BUILD_DIR1:=$(BUILD_DIR)/gcc-initial
-GCC_BUILD_DIR2:=$(BUILD_DIR)/gcc-final
+GCC_SOURCE:=gcc-3.2.1.tar.gz
+GCC_DIR:=$(BUILD_DIR)/gcc-3.2.1
 
 
 
@@ -92,7 +87,7 @@ $(BUILD_DIR)/.setup:
 # Setup some initial stuff
 #
 #############################################################
-uclibc_toolchain: uclibc gcc_final
+uclibc_toolchain: gcc_final
 
 uclibc_toolchain-clean: gcc_final-clean uclibc-clean gcc_initial-clean binutils-clean
 
@@ -105,6 +100,7 @@ uclibc_toolchain-dirclean: gcc_final-dirclean uclibc-dirclean gcc_initial-dircle
 # build binutils
 #
 #############################################################
+BINUTILS_DIR1:=$(BUILD_DIR)/binutils-build
 $(DL_DIR)/$(BINUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
@@ -113,18 +109,16 @@ $(BINUTILS_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(BINUTILS_SOURCE)
 	touch $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
-	# Apply all binutils patches in the source directory, named binutils-*.patch
-	for p in $(SOURCE_DIR)/binutils-*.patch ; do \
-		cat $$p | patch -p1 -d $(BINUTILS_DIR) ; \
-	done
-	@if [ "`find $(BINUTILS_DIR) '(' -name '*.rej' -o -name '.*.rej' ')' -print`" ] ; then \
-	    echo "Aborting.  Reject files found."; \
-	    exit 1; \
-	fi
-	@if `echo "true" | grep -r true`; then true; else \
-		echo "ERROR! Your grep doesn't support the -r argument."; \
-		exit 1; \
-	fi
+	# Apply any files named binutils-*.patch from the source directory to binutils
+	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR) binutils-*.patch
+	#
+	# Enable combreloc, since it is such a nice thing to have...
+	#
+	-perl -i -p -e "s,link_info.combreloc = false,link_info.combreloc = true,g;" \
+		$(BINUTILS_DIR)/ld/ldmain.c
+	#
+	# Hack binutils to use the correct shared lib loader
+	#
 	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"\
 		,#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
 		`grep -lr "#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\"" $(BINUTILS_DIR)`);
@@ -132,10 +126,15 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
-	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) $(BINUTILS_DIR)/configure --disable-shared \
+	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) $(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
+		--exec-prefix=$(STAGING_DIR) --bindir=$(STAGING_DIR)/bin \
+		--sbindir=$(STAGING_DIR)/sbin --sysconfdir=$(STAGING_DIR)/etc \
+		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
+		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
+		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--enable-targets=$(GNU_TARGET_NAME) \
-		--program-transform-name=s,^,$(ARCH)-uclibc-,);
+		--program-prefix=$(ARCH)-uclibc-);
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
@@ -148,7 +147,7 @@ $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 $(STAGING_DIR)/lib/libg.a:
 	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(STAGING_DIR)/lib/libg.a;
 
-binutils: linux_headers $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/lib/libg.a
+binutils: $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/lib/libg.a
 
 binutils-clean:
 	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)*
@@ -165,6 +164,7 @@ binutils-dirclean:
 # Next build first pass gcc compiler
 #
 #############################################################
+GCC_BUILD_DIR1:=$(BUILD_DIR)/gcc-initial
 $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
@@ -173,34 +173,38 @@ $(GCC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(GCC_SOURCE)
 	touch $(GCC_DIR)/.unpacked
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
-	# Apply all gcc patches in the source directory, named gcc-*.patch
-	for p in $(SOURCE_DIR)/gcc-*.patch ; do \
-		cat $$p | patch -p1 -d $(GCC_DIR) ; \
-	done
-	@if [ "`find $(GCC_DIR) '(' -name '*.rej' -o -name '.*.rej' ')' -print`" ] ; then \
-	    echo "Aborting.  Reject files found."; \
-	    exit 1; \
-	fi
+	# Apply any files named gcc-*.patch from the source directory to gcc
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-*.patch
 	touch $(GCC_DIR)/.patched
 
+# The --without-headers option stopped working with gcc 3.0 and has never been
+# # fixed, so we need to actually have working C library header files prior to
+# # the step or libgcc will not build...
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	mkdir -p $(GCC_BUILD_DIR1)
-	(cd $(GCC_BUILD_DIR1); PATH=$$PATH:$(STAGING_DIR)/bin AR=$(ARCH)-uclibc-ar \
+	(cd $(GCC_BUILD_DIR1); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(ARCH)-uclibc-ar \
 		RANLIB=$(ARCH)-uclibc-ranlib CC=$(HOSTCC) $(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
+		--exec-prefix=$(STAGING_DIR) --bindir=$(STAGING_DIR)/bin \
+		--sbindir=$(STAGING_DIR)/sbin --sysconfdir=$(STAGING_DIR)/etc \
+		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
+		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
+		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--disable-shared --enable-languages=c \
-		--program-transform-name='s/^$(GNU_TARGET_NAME)-/$(ARCH)-uclibc-/');
+		--disable-shared --enable-languages=c --disable-__cxa_atexit \
+		--program-prefix=$(ARCH)-uclibc-);
 	-perl -i -p -e "s,ac_cv_prog_cc_cross=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR1)/config.cache
 	touch $(GCC_BUILD_DIR1)/.configured
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
-	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) -C $(GCC_BUILD_DIR1);
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) -C $(GCC_BUILD_DIR1) \
+	    AR_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ar \
+	    RANLIB_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ranlib
 	touch $(GCC_BUILD_DIR1)/.compiled
 
 $(GCC_BUILD_DIR1)/.installed: $(GCC_BUILD_DIR1)/.compiled
-	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) -C $(GCC_BUILD_DIR1) install;
-	#Cleanup then mess when --program-transform-name mysteriously fails 
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) -C $(GCC_BUILD_DIR1) install;
+	#Cleanup then mess when --program-prefix mysteriously fails 
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-cpp $(STAGING_DIR)/bin/$(ARCH)-uclibc-cpp
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gcc $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
 	rm -f $(STAGING_DIR)/bin/gccbug $(STAGING_DIR)/bin/gcov
@@ -220,10 +224,10 @@ gcc_initial-dirclean:
 
 #############################################################
 #
-# uClibc is built in two stages.  First, we hack the uClibc 
-# include files and such in preparation for a gcc build.  Later
-# when gcc for the target arch has been compiled, we can then
-# actually compile uClibc for the target... 
+# uClibc is built in two stages.  First, we install the uClibc 
+# include files so that gcc can be built.  Later when gcc for 
+# the target arch has been compiled, we can actually compile 
+# uClibc for the target... 
 #
 #############################################################
 $(DL_DIR)/$(UCLIBC_SOURCE):
@@ -233,46 +237,49 @@ $(UCLIBC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
-	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked linux_headers
+	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=$(TARGET_CROSS),g' \
+		$(UCLIBC_DIR)/Rules.mak
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^GCC_BIN=.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc,g'  $(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
-	perl -i -p -e 's,^LD_BIN=.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ld,g'  $(UCLIBC_DIR)/extra/gcc-uClibc/Makefile     
+	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^GCC_BIN.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc,g' \
+		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
+	perl -i -p -e 's,^LD_BIN.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ld,g' \
+		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
 	$(MAKE) -C $(UCLIBC_DIR) oldconfig
-	# Note that since the target compiler does not yet exist, we will not
-	# be able to properly generate include/bits/syscall.h so we will need
-	# to run part again later...
 	$(MAKE) -C $(UCLIBC_DIR) headers install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
-# Now that we have a working target compiler, rebuild the header files for the
-# target so things like include/bits/syscall.h can actually be built this time
-# around...
-$(UCLIBC_DIR)/.config_final: $(UCLIBC_DIR)/.configured
-	$(MAKE) -C $(UCLIBC_DIR) headers install_dev;
-	touch $(UCLIBC_DIR)/.config_final
-
-$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.config_final
+$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured
 	$(MAKE) -C $(UCLIBC_DIR)
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) install_dev install_runtime
+	$(MAKE) -C $(UCLIBC_DIR) install_dev install_runtime install_utils
 
+ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) DEVEL_PREFIX=$(TARGET_DIR) \
 		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
-		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr \
-		install_runtime
+		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr install_runtime
 
 $(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) install_target_utils
 
-uclibc: gcc_initial $(STAGING_DIR)/lib/libc.a $(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
+UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
+endif
+
+uclibc: gcc_initial $(STAGING_DIR)/lib/libc.a $(UCLIBC_TARGETS)
 
 uclibc-clean:
 	-$(MAKE) -C $(UCLIBC_DIR) clean
@@ -291,68 +298,76 @@ uclibc-dirclean:
 # the newly built shared uClibc library.
 #
 #############################################################
+GCC_BUILD_DIR2:=$(BUILD_DIR)/gcc-final
 $(GCC_DIR)/.ldso_hacks: $(GCC_DIR)/.patched
+	#
 	# Hack things to use the correct shared lib loader
-	(cd $(GCC_DIR); set -e; export LIST=`grep -lr -- "-dynamic-linker.*ld-linux.so.[0-9]" *`;\
+	#
+	(cd $(GCC_DIR); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
 		if [ -n "$$LIST" ] ; then \
-		perl -i -p -e "s,-dynamic-linker.*ld-linux.so.*[0-9]},\
+		perl -i -p -e "s,-dynamic-linker.*\.so[\.0-9]*},\
 		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
-	(cd $(GCC_DIR); set -e; export LIST=`grep -lr ":gcrt1.o%s}" *`; \
-		if [ -n "$$LIST" ] ; then \
-		perl -i -p -e "s,:gcrt1.o%s},:crt0.o%s},g;" \
-		$$LIST; fi);
-	(cd $(GCC_DIR); set -e; export LIST=`grep -lr ":crt1.o%s}" *`; \
-		if [ -n "$$LIST" ] ; then \
-		perl -i -p -e "s,:crt1.o%s},:crt0.o%s},g;" \
-		$$LIST; fi);
-	# Fixup where gcc looks for start files to prevent glibc stuff leaking in...
+	#
+	# Prevent glibc start files from ever leaking in uninvited...
+	#
 	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1=\
 		\"$(STAGING_DIR)/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
 	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2=\
 		\"$(STAGING_DIR)/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
-	# Use atexit() directly, rather than cxa_atexit
-	perl -i -p -e "s,int flag_use_cxa_atexit = 1;,int flag_use_cxa_atexit = 0;,g;"\
-		$(GCC_DIR)/gcc/cp/decl2.c;
-	# Fix up a lame quirk...
-	perl -i -p -e "s,defined.*_GLIBCPP_USE_C99.*,1,g;" $(GCC_DIR)/libstdc++-v3/config/locale/generic/c_locale.cc;
+	#
 	# Hack up the soname for libstdc++
+	# 
 	perl -i -p -e "s,\.so\.1,.so.0.9.9,g;" $(GCC_DIR)/gcc/config/t-slibgcc-elf-ver;
 	perl -i -p -e "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
 		$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
 	perl -i -p -e "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
 		$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
-	# For now, we don't support locale-ified ctype, so bypass that problem here
+	#
+	# For now, we don't support locale-ified ctype (we will soon), 
+	# so bypass that problem for now...
+	#
+	perl -i -p -e "s,defined.*_GLIBCPP_USE_C99.*,1,g;" \
+		$(GCC_DIR)/libstdc++-v3/config/locale/generic/c_locale.cc;
 	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_base.h \
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
 	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_inline.h \
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
 	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_noninline.h \
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
+	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
-	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n#ifndef inhibit_libc,g;" \
-		$(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
+	#
+	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
 	touch $(GCC_DIR)/.ldso_hacks
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.ldso_hacks
 	mkdir -p $(GCC_BUILD_DIR2)
-	(cd $(GCC_BUILD_DIR2); PATH=$$PATH:$(STAGING_DIR)/bin AR=$(ARCH)-uclibc-ar \
+	(cd $(GCC_BUILD_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(ARCH)-uclibc-ar \
 		RANLIB=$(ARCH)-uclibc-ranlib CC=$(HOSTCC) $(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
+		--exec-prefix=$(STAGING_DIR) --bindir=$(STAGING_DIR)/bin \
+		--sbindir=$(STAGING_DIR)/sbin --sysconfdir=$(STAGING_DIR)/etc \
+		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
+		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
+		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--disable-shared --enable-languages=c,c++ \
-		--program-transform-name='s/^$(GNU_TARGET_NAME)-/$(ARCH)-uclibc-/');
+		--disable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
+		--program-prefix=$(ARCH)-uclibc-);
 	perl -i -p -e "s,ac_cv_prog_cc_cross=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR2)/config.cache
 	touch $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
-	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) -C $(GCC_BUILD_DIR2)
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) -C $(GCC_BUILD_DIR2) \
+	    AR_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ar \
+	    RANLIB_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ranlib
 	touch $(GCC_BUILD_DIR2)/.compiled
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
-	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) -C $(GCC_BUILD_DIR2) install;
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) -C $(GCC_BUILD_DIR2) install;
 	touch $(GCC_BUILD_DIR2)/.installed
 
-#Cleanup then mess when --program-transform-name mysteriously fails 
+#Cleanup then mess when --program-prefix mysteriously fails 
 $(GCC_BUILD_DIR2)/.fixedup: $(GCC_BUILD_DIR2)/.installed
 	-mv $(STAGING_DIR)/bin/gcc $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin;
 	-mv $(STAGING_DIR)/bin/protoize $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin;
@@ -383,13 +398,12 @@ $(BUILD_DIR)/.shuffled: $(GCC_BUILD_DIR2)/.fixedup
 	touch $(BUILD_DIR)/.shuffled
 
 $(BUILD_DIR)/.stripped: $(BUILD_DIR)/.shuffled
-	-$(STRIP) $(STAGING_DIR)/bin/*
-	-$(TARGET_CROSS)strip --strip-unneeded \
+	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
+	-$(STAGING_DIR)/bin/$(ARCH)-uclibc-strip --strip-unneeded \
 		-R .note -R .comment $(STAGING_DIR)/lib/*.so*;
 	touch $(BUILD_DIR)/.stripped
 
-#gcc_final: $(BUILD_DIR)/.stripped
-gcc_final: $(BUILD_DIR)/.shuffled
+gcc_final: uclibc $(BUILD_DIR)/.stripped
 
 gcc_final-clean:
 	rm -rf $(GCC_BUILD_DIR2)
@@ -404,11 +418,11 @@ gcc_final-dirclean:
 # Packup the toolchain binaries
 #
 #############################################################
-$(GNU_TARGET_NAME)-toolchain.tar.bz2:
-	rm -f $(GNU_TARGET_NAME)-toolchain.tar.bz2
-	tar -cf $(GNU_TARGET_NAME)-toolchain.tar $(STAGING_DIR)
-	bzip2 -9 $(GNU_TARGET_NAME)-toolchain.tar
+$(ARCH)-uclibc-toolchain.tar.bz2: gcc_final
+	rm -f $(ARCH)-uclibc-toolchain.tar.bz2
+	tar -cf $(ARCH)-uclibc-toolchain.tar $(STAGING_DIR)
+	bzip2 -9 $(ARCH)-uclibc-toolchain.tar
 
-tarball: $(GNU_TARGET_NAME)-toolchain.tar.bz2
+tarball: $(ARCH)-uclibc-toolchain.tar.bz2
 
 endif
