@@ -128,13 +128,20 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
 	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) $(BINUTILS_DIR)/configure \
-		--target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
-		--exec-prefix=$(STAGING_DIR) --bindir=$(STAGING_DIR)/bin \
-		--sbindir=$(STAGING_DIR)/sbin --sysconfdir=$(STAGING_DIR)/etc \
-		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
-		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
-		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
-		--enable-targets=$(GNU_TARGET_NAME) $(MULTILIB) \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=$(STAGING_DIR) \
+		--exec-prefix=$(STAGING_DIR) \
+		--bindir=$(STAGING_DIR)/bin \
+		--sbindir=$(STAGING_DIR)/sbin \
+		--sysconfdir=$(STAGING_DIR)/etc \
+		--datadir=$(STAGING_DIR)/share \
+		--includedir=$(STAGING_DIR)/include \
+		--libdir=$(STAGING_DIR)/lib \
+		--localstatedir=$(STAGING_DIR)/var \
+		--mandir=$(STAGING_DIR)/man \
+		--infodir=$(STAGING_DIR)/info \
+		--enable-targets=$(GNU_TARGET_NAME) \
+		$(MULTILIB) \
 		--program-prefix=$(ARCH)-uclibc-);
 	touch $(BINUTILS_DIR1)/.configured
 
@@ -217,12 +224,18 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR1)
 	(cd $(GCC_BUILD_DIR1); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(ARCH)-uclibc-ar \
 		RANLIB=$(ARCH)-uclibc-ranlib CC=$(HOSTCC) $(GCC_DIR)/configure \
-		--target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
-		--exec-prefix=$(STAGING_DIR) --bindir=$(STAGING_DIR)/bin \
-		--sbindir=$(STAGING_DIR)/sbin --sysconfdir=$(STAGING_DIR)/etc \
-		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
-		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
-		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=$(STAGING_DIR) \
+		--exec-prefix=$(STAGING_DIR) \
+		--bindir=$(STAGING_DIR)/bin \
+		--sbindir=$(STAGING_DIR)/sbin \
+		--sysconfdir=$(STAGING_DIR)/etc \
+		--datadir=$(STAGING_DIR)/share \
+		--includedir=$(STAGING_DIR)/include \
+		--libdir=$(STAGING_DIR)/lib \
+		--localstatedir=$(STAGING_DIR)/var \
+		--mandir=$(STAGING_DIR)/man \
+		--infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
 		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \

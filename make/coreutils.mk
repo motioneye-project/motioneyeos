@@ -53,7 +53,8 @@ $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY): $(COREUTILS_DIR)/$(COREUTILS_BINARY)
 	ln -fs test $(TARGET_DIR)/usr/bin/[
 	# gnu thinks chroot is in bin, debian thinks it's in sbin
 	mv $(TARGET_DIR)/usr/bin/chroot $(TARGET_DIR)/usr/sbin/chroot
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/junk
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 coreutils: uclibc $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 

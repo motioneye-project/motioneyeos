@@ -43,7 +43,8 @@ $(GAWK_DIR)/$(GAWK_BINARY): $(GAWK_DIR)/.configured
 
 $(TARGET_DIR)/$(GAWK_TARGET_BINARY): $(GAWK_DIR)/$(GAWK_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(GAWK_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/junk
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 gawk: uclibc $(TARGET_DIR)/$(GAWK_TARGET_BINARY)
 

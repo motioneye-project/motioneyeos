@@ -44,7 +44,8 @@ $(SED_DIR)/$(SED_BINARY): $(SED_DIR)/.configured
 $(TARGET_DIR)/$(SED_TARGET_BINARY): $(SED_DIR)/$(SED_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(SED_DIR) install
 	mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/junk
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 sed: uclibc $(TARGET_DIR)/$(SED_TARGET_BINARY)
 

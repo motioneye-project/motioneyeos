@@ -92,7 +92,8 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	    gxx_include_dir=$(TARGET_DIR)/usr/include/c++ \
 	    toolexecdir=$(TARGET_DIR)/lib/gcc-lib/$(GNU_TARGET_NAME) \
 	    -C $(BINUTILS_DIR2) install;
-	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	-$(STRIP) $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/bin/*
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 
@@ -200,8 +201,8 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	    mandir=$(TARGET_DIR)/usr/man \
 	    toolexecdir=$(TARGET_DIR)/lib/gcc-lib/$(GNU_TARGET_NAME) \
 	    -C $(GCC_BUILD_DIR3) install;
-	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
-		$(TARGET_DIR)/usr/share/locale
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
