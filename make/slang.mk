@@ -38,7 +38,7 @@ slang-source: $(DL_DIR)/$(SLANG_SOURCE)
 
 slang-clean:
 	rm -f $(TARGET_DIR)/lib/libslang.so*
-	-make -C $(SLANG_DIR) clean
+	-$(MAKE) -C $(SLANG_DIR) clean
 
 slang-dirclean:
 	rm -rf $(SLANG_DIR)

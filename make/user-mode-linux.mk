@@ -37,15 +37,15 @@ $(LINUX_DIR)/.set_arch: $(LINUX_DIR)/.patched
 
 $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.set_arch  $(LINUX_KCONFIG)
 	cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
-	make -C $(LINUX_DIR) oldconfig include/linux/version.h
+	$(MAKE) -C $(LINUX_DIR) oldconfig include/linux/version.h
 	touch $(LINUX_DIR)/.configured
 
 $(LINUX_DIR)/.depend_done:  $(LINUX_DIR)/.configured
-	make -C $(LINUX_DIR) dep
+	$(MAKE) -C $(LINUX_DIR) dep
 	touch $(LINUX_DIR)/.depend_done
 
 $(LINUX_DIR)/linux: $(LINUX_DIR)/.depend_done
-	make -C $(LINUX_DIR) linux
+	$(MAKE) -C $(LINUX_DIR) linux
 
 $(LINUX_KERNEL): $(LINUX_DIR)/linux
 	cp -fa $(LINUX_DIR)/linux $(LINUX_KERNEL)
@@ -55,7 +55,7 @@ user-mode-linux: $(LINUX_KERNEL)
 # Renamed so it is not cleaned by default on a make clean
 user-mode-linux_clean: clean
 	rm -f $(LINUX_KERNEL)
-	-make -C $(LINUX_DIR) clean
+	-$(MAKE) -C $(LINUX_DIR) clean
 
 user-mode-linux-dirclean:
 	rm -rf $(LINUX_DIR)

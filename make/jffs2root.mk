@@ -40,7 +40,7 @@ jffs2root: jffs2
 jffs2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)
 
 jffs2root-clean:
-	-make -C $(GENEXT2_DIR) clean
+	-$(MAKE) -C $(GENEXT2_DIR) clean
 
 jffs2root-dirclean:
 	rm -rf $(GENEXT2_DIR)

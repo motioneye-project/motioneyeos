@@ -33,16 +33,16 @@ $(TINYLOGIN_DIR)/Config.h: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 	touch $(TINYLOGIN_DIR)/Config.h
 
 $(TINYLOGIN_DIR)/tinylogin: $(TINYLOGIN_DIR)/Config.h
-	make CROSS="$(TARGET_CROSS)" -C $(TINYLOGIN_DIR)
+	$(MAKE) CROSS="$(TARGET_CROSS)" -C $(TINYLOGIN_DIR)
 
 $(TARGET_DIR)/bin/tinylogin: $(TINYLOGIN_DIR)/tinylogin
-	make CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" -C $(TINYLOGIN_DIR) install
+	$(MAKE) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" -C $(TINYLOGIN_DIR) install
 
 tinylogin: uclibc $(TARGET_DIR)/bin/tinylogin
 
 tinylogin-clean:
 	rm -f $(TARGET_DIR)/bin/tinylogin
-	-make -C $(TINYLOGIN_DIR) clean
+	-$(MAKE) -C $(TINYLOGIN_DIR) clean
 
 tinylogin-dirclean:
 	rm -rf $(TINYLOGIN_DIR)

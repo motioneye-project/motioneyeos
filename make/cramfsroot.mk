@@ -24,7 +24,7 @@ cramfs: $(CRAMFS_DIR)/mkcramfs
 cramfs-source: $(DL_DIR)/$(CRAMFS_DIR)
 
 cramfs-clean:
-	-make -C $(CRAMFS_DIR) clean
+	-$(MAKE) -C $(CRAMFS_DIR) clean
 
 cramfs-dirclean:
 	rm -rf $(CRAMFS_DIR)
@@ -45,7 +45,7 @@ cramfsroot: cramfs
 cramfsroot-source: $(DL_DIR)/$(GENEXT2_SOURCE)
 
 cramfsroot-clean:
-	-make -C $(GENEXT2_DIR) clean
+	-$(MAKE) -C $(GENEXT2_DIR) clean
 
 cramfsroot-dirclean:
 	rm -rf $(GENEXT2_DIR)

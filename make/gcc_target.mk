@@ -24,7 +24,6 @@
 #############################################################
 GNU_TARGET_NAME:=$(ARCH)-linux
 TARGET_LANGUAGES:=c,c++
-MAKE:=make
 
 # If you want multilib enabled, enable this...
 #MULTILIB:=--enable-multilib

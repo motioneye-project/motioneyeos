@@ -56,16 +56,16 @@ $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked
 	#	CROSS_COMPILE=$(STAGING_DIR)/bin/$(ARCH)-uclibc-,g;" \
 	#	$(LINUX_DIR)/Makefile
 	-cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
-	make -C $(LINUX_DIR) oldconfig include/linux/version.h
+	$(MAKE) -C $(LINUX_DIR) oldconfig include/linux/version.h
 	touch $(LINUX_DIR)/.configured
 
 $(LINUX_DIR)/.depend_done:  $(LINUX_DIR)/.configured
-	make -C $(LINUX_DIR) dep
+	$(MAKE) -C $(LINUX_DIR) dep
 	touch $(LINUX_DIR)/.depend_done
 
 $(LINUX_DIR)/$(LINUX_BINLOC): $(LINUX_DIR)/.depend_done
-	make -C $(LINUX_DIR) $(LINUX_FORMAT)
-	make -C $(LINUX_DIR) modules
+	$(MAKE) -C $(LINUX_DIR) $(LINUX_FORMAT)
+	$(MAKE) -C $(LINUX_DIR) modules
 
 $(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
 	cp -fa $(LINUX_DIR)/$(LINUX_BINLOC) $(LINUX_KERNEL)
@@ -73,7 +73,7 @@ $(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
 $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL)
 	rm -rf $(TARGET_DIR)/lib/modules
 	rm -f $(TARGET_DIR)/sbin/cardmgr
-	make -C $(LINUX_DIR) INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
+	$(MAKE) -C $(LINUX_DIR) INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
 	(cd $(TARGET_DIR)/lib/modules; ln -s $(LINUX_VERSION)/kernel/drivers .)
 
 $(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
@@ -86,7 +86,7 @@ linux: $(STAGING_DIR)/include/linux/version.h $(TARGET_DIR)/lib/modules/$(LINUX_
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linuxclean: clean
 	rm -f $(LINUX_KERNEL)
-	-make -C $(LINUX_DIR) clean
+	-$(MAKE) -C $(LINUX_DIR) clean
 
 linux-dirclean:
 	rm -rf $(LINUX_DIR)
