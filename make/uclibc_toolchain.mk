@@ -60,8 +60,8 @@ UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.2.tar.gz
-GCC_DIR:=$(BUILD_DIR)/gcc-3.2
+GCC_SOURCE:=gcc-3.2.1.tar.gz
+GCC_DIR:=$(BUILD_DIR)/gcc-3.2.1
 GCC_BUILD_DIR1:=$(BUILD_DIR)/gcc-initial
 GCC_BUILD_DIR2:=$(BUILD_DIR)/gcc-final
 
