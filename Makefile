@@ -173,7 +173,7 @@ TARGETS+=busybox tinylogin
 #TARGETS+=perl
 
 # Some nice debugging tools
-#TARGETS+=gdb strace
+#TARGETS+=gdb strace ltrace
 
 # The Valgrind debugger (x86 only)
 #TARGETS+=valgrind
