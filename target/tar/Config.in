@@ -1,0 +1,14 @@
+menuconfig BR2_TARGET_ROOTFS_TAR
+	bool "tar the root filesystem for the target device"
+	default n
+	help
+	  Build a tar archive of the root filesystem
+
+config BR2_TARGET_ROOTFS_TAR_OPTIONS
+	string "random options to pass to tar"
+	depends on BR2_TARGET_ROOTFS_TAR
+	default ""
+	help
+	  Common options:
+	   j - compress with bzip2
+	   z - compress with gzip
