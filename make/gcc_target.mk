@@ -385,9 +385,11 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	rm -f $(TARGET_DIR)/usr/lib/*.la*
 	# gcc "fixincludes" step is totally broken and takes unwanted
 	# stuff from the host system.  Fix that here.
+ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 	rm -rf $(TARGET_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/*
 	-cp -a $(STAGING_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/* \
 		$(TARGET_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/
+endif
 	touch -c $(TARGET_DIR)/usr/bin/gcc
 
 gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
