@@ -39,7 +39,7 @@ squashfsroot: squashfs
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	#$(SQUASHFS_DIR)/squashfs-tools/mksquashfs -q -D target/default/device_table.txt $(TARGET_DIR) $(IMAGE)
-	$(SQUASHFS_DIR)/squashfs-tools/mksquashfs $(TARGET_DIR) $(IMAGE) -noappend -root-owned
+	$(SQUASHFS_DIR)/squashfs-tools/mksquashfs $(TARGET_DIR) $(IMAGE).squashfs -noappend -root-owned
 
 squashfsroot-source: squashfs-source
 

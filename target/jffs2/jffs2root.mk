@@ -35,7 +35,7 @@ jffs2root: mtd
 	@rm -rf $(TARGET_DIR)/usr/info
 	$(MKFS_JFFS2) --pad --little-endian --squash -e 0x20000 \
 		-D target/default/device_table.txt -d $(TARGET_DIR) \
-		-o $(IMAGE)
+		-o $(IMAGE).jffs2
 
 jffs2root-source: $(DL_DIR)/$(MTD_SOURCE)
 
