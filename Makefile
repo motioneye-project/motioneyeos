@@ -83,8 +83,8 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 #      -msoft-float flag.  To avoid CFLAGS problems, you may want to use
 #      scripts similar to those in the build*/staging_dir/bin directory.
 # Uncomment the next 2 lines to build a soft-float toolchain and rootfs.
-# SOFT_FLOAT_CONFIG_OPTION=--without-float
-# TARGET_SOFT_FLOAT=-msoft-float
+#SOFT_FLOAT_CONFIG_OPTION=--without-float
+#TARGET_SOFT_FLOAT=-msoft-float
 
 TARGET_OPTIMIZATION=-Os
 TARGET_DEBUGGING= #-g
@@ -117,7 +117,8 @@ ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 ifeq ($(GCC_2_95_TOOLCHAIN),true)
 TARGETS+=binutils uclibc-configured gcc2_95
 else
-TARGETS+=binutils uclibc-configured gcc3_3
+#TARGETS+=binutils uclibc-configured gcc3_3
+TARGETS+=uclibc-configured binutils gcc3_3
 endif
 else
 TARGETS+=uclibc
@@ -203,6 +204,9 @@ else
 ARCH_FPU_SUFFIX:=_nofpu
 endif
 
+ifeq ($(ENABLE_LOCALE),true)
+EXTRA_GCC_CONFIG_OPTIONS += --enable-clocale=gnu
+endif
 
 HOSTCC:=gcc
 BASE_DIR:=${shell pwd}
