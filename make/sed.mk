@@ -53,6 +53,7 @@ build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 	@if [ ! -f $(STAGING_DIR)/$(SED_TARGET_BINARY) -o $(STAGING_DIR)/$(SED_TARGET_BINARY) \
 	-ot $(SED_DIR1)/$(SED_BINARY) ] ; then \
 	    set -x; \
+	    mkdir -p $(STAGING_DIR)/bin; \
 	    $(MAKE) DESTDIR=$(STAGING_DIR) -C $(SED_DIR1) install; \
 	    mv $(STAGING_DIR)/usr/bin/sed $(STAGING_DIR)/bin/; \
 	    rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
