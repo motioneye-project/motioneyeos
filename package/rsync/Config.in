@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_RSYNC
+	bool"rsync"
+	default n
+	help
+	  Add help text here.
+
