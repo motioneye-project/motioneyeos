@@ -1,0 +1,24 @@
+--- linux-2.4.29/arch/mips/Makefile.orig	2005-03-08 23:24:05.000000000 -0700
++++ linux-2.4.29/arch/mips/Makefile	2005-03-08 23:27:37.000000000 -0700
+@@ -17,16 +17,16 @@
+ # Select the object file format to substitute into the linker script.
+ #
+ ifdef CONFIG_CPU_LITTLE_ENDIAN
+-tool-prefix	= mipsel-linux-
++#tool-prefix	= mipsel-linux-
+ ld-emul		= elf32ltsmip
+ else
+-tool-prefix	= mips-linux-
++#tool-prefix	= mips-linux-
+ ld-emul		= elf32btsmip
+ endif
+ 
+-ifdef CONFIG_CROSSCOMPILE
+-CROSS_COMPILE	= $(tool-prefix)
+-endif
++#ifdef CONFIG_CROSSCOMPILE
++#CROSS_COMPILE	= $(tool-prefix)
++#endif
+ 
+ MAKEBOOT = $(MAKE) -C arch/$(ARCH)/boot
+ 
