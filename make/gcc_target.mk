@@ -59,6 +59,7 @@ GCC_BUILD_DIR3:=$(BUILD_DIR)/gcc-target
 #
 #############################################################
 ifneq ($(USE_UCLIBC_TOOLCHAIN),true)
+BINUTILS_DIR2_DEPENDS:=$(BINUTILS_DIR)/.patched
 $(DL_DIR)/$(BINUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
@@ -83,7 +84,7 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	touch $(BINUTILS_DIR)/.patched
 endif
 
-$(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
+$(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 	mkdir -p $(BINUTILS_DIR2)
 	mkdir -p $(TARGET_DIR)/usr/include
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
@@ -209,6 +210,7 @@ uclibc_target-dirclean:
 #
 #############################################################
 ifneq ($(USE_UCLIBC_TOOLCHAIN),true)
+GCC_DIR3_DEPENDS:=$(GCC_DIR)/.g++_build_hacks
 $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
@@ -260,7 +262,7 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.gcc_build_hacks
 	touch $(GCC_DIR)/.g++_build_hacks
 endif
 
-$(GCC_BUILD_DIR3)/.gcc_build_hacks: $(GCC_DIR)/.g++_build_hacks
+$(GCC_BUILD_DIR3)/.gcc_build_hacks: $(GCC_DIR3_DEPENDS)
 	#
 	# Make certain the uClibc start files are found
 	#
