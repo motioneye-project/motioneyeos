@@ -1,6 +1,6 @@
 # Makefile for buildroot2
 #
-# Copyright (C) 1999-2004 by Erik Andersen <andersen@codepoet.org>
+# Copyright (C) 1999-2005 by Erik Andersen <andersen@codepoet.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
