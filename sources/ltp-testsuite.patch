@@ -9,17 +9,20 @@
  
  all: $(TARGETS)
  
---- ltp-full-20031002/testcases/kernel/syscalls/mallopt/Makefile.orig	2003-10-02 19:20:52.000000000 -0600
-+++ ltp-full-20031002/testcases/kernel/syscalls/mallopt/Makefile	2003-10-02 19:21:07.000000000 -0600
-@@ -23,7 +23,7 @@
- LOADLIBES+=	-L../../../../lib -lltp 
- 
- SRCS=$(wildcard *.c)
--TARGETS=$(patsubst %.c,%,$(SRCS))
-+TARGETS=#$(patsubst %.c,%,$(SRCS))
- 
- all: $(TARGETS)
- 
+--- ltp-full-20031204/testcases/kernel/syscalls/mallopt/mallopt01.orig.c
++++ ltp-full-20031204/testcases/kernel/syscalls/mallopt/mallopt01.c
+@@ -85,11 +85,6 @@
+ 		flag = 1;
+ 		local_flag = FAILED;
+ 	};
+-	if (info.usmblks != 0) {
+-		fprintf(temp, "mallinfo failed: usmblks != 0\n");
+-		flag = 1;
+-		local_flag = FAILED;
+-	}
+ 	if (info.smblks != 0) {
+ 		fprintf(temp, "mallinfo failed: smblks != 0\n");
+ 		flag = 1;
 --- ltp-full-20031002/testcases/kernel/syscalls/profil/Makefile.orig	2003-10-02 19:27:53.000000000 -0600
 +++ ltp-full-20031002/testcases/kernel/syscalls/profil/Makefile	2003-10-02 19:28:02.000000000 -0600
 @@ -23,7 +23,7 @@
