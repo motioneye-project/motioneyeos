@@ -6,7 +6,7 @@ TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
 #""
 
 
-ifeq ($(SOFT_FLOAT),true)
+ifeq ($(BR2_SOFT_FLOAT),y)
 # gcc 3.4.x soft float configuration is different than previous versions.
 ifeq ($(findstring 3.4.,$(GCC_VERSION)),3.4.)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft

@@ -38,11 +38,6 @@ config BR2_SOFT_FLOAT
 
 	  Most people will answer N.
 
-config SOFT_FLOAT
-	string
-	depends on BR2_SOFT_FLOAT
-	default "true"
-
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"
 	default "-Os -pipe"

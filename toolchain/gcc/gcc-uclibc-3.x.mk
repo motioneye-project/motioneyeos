@@ -73,7 +73,7 @@ $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# However, we still need a patch for arm.  There's a similar patch for gcc 3.3.x
 	# which needs to be integrated so we can kill of libfloat for good, except for
 	# anyone (?) who might still be using gcc 2.95.  mjn3
-ifeq ($(SOFT_FLOAT),true)
+ifeq ($(BR2_SOFT_FLOAT),y)
 ifeq ("$(strip $(ARCH))","arm")
 	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
 endif
@@ -190,7 +190,7 @@ endif
 	#
 	# Now for the ugly 3.3.x soft float hack...
 	#
-ifeq ($(SOFT_FLOAT),true)
+ifeq ($(BR2_SOFT_FLOAT),y)
 ifeq ($(findstring 3.3.,$(GCC_VERSION)),3.3.)
 	# Make sure we have a soft float specs file for this arch
 	if [ ! -f toolchain/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float ] ; then \
@@ -279,7 +279,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	#
 	# Now for the ugly 3.3.x soft float hack...
 	#
-ifeq ($(SOFT_FLOAT),true)
+ifeq ($(BR2_SOFT_FLOAT),y)
 ifeq ($(findstring 3.3.,$(GCC_VERSION)),3.3.)
 	# Add a specs file that defaults to soft float mode.
 	cp toolchain/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
