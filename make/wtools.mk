@@ -20,7 +20,8 @@ $(WTOOLS_BUILD_DIR)/.configured: $(WTOOLS_BUILD_DIR)/.unpacked
 
 $(WTOOLS_BUILD_DIR)/iwconfig: $(WTOOLS_BUILD_DIR)/.configured
 	$(MAKE) -C $(WTOOLS_BUILD_DIR) \
-		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)"
+		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
+		BUILD_SHARED=y # may want to make this an option
 
 $(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwconfig
 	# Copy The Wireless Tools
@@ -30,6 +31,11 @@ $(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwconfig
 	cp -af $(WTOOLS_BUILD_DIR)/iwlist $(TARGET_DIR)/sbin/
 	cp -af $(WTOOLS_BUILD_DIR)/iwpriv $(TARGET_DIR)/sbin/
 	cp -af $(WTOOLS_BUILD_DIR)/iwspy $(TARGET_DIR)/sbin/
+	cp -af $(WTOOLS_BUILD_DIR)/libiw.so.26 $(TARGET_DIR)/lib
+	$(STRIP) $(TARGET_DIR)/sbin/iwconfig $(TARGET_DIR)/sbin/iwevent \
+		$(TARGET_DIR)/sbin/iwgetid $(TARGET_DIR)/sbin/iwlist \
+		$(TARGET_DIR)/sbin/iwpriv $(TARGET_DIR)/sbin/iwspy \
+		$(TARGET_DIR)/lib/libiw.so.26
 
 wtools: $(TARGET_DIR)/sbin/iwconfig 
 
