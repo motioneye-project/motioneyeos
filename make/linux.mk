@@ -21,14 +21,19 @@
 #############################################################
 ifneq ($(filter $(TARGETS),linux),)
 
+# Version of Linux to download and then apply patches to
+DOWNLOAD_LINUX_VERSION=2.4.20
+# Version of Linux AFTER patches
 LINUX_VERSION=2.4.20
-LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
+
 LINUX_FORMAT=bzImage
 LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
 #LINUX_FORMAT=zImage
 #LINUX_BINLOC=arch/ppc/boot/images/zImage.prep
-LINUX_SOURCE=linux-$(LINUX_VERSION).tar.bz2
-LINUX_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.4
+
+LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
+LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
+LINUX_SITE=ftp://ftp.kernel.org/pub/linux/kernel/v2.4
 LINUX_KCONFIG=$(SOURCE_DIR)/linux.config
 LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 
@@ -38,6 +43,8 @@ $(DL_DIR)/$(LINUX_SOURCE):
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
 	rm -rf $(LINUX_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	# Rename the dir from the downloaded version to the AFTER patch version	
+	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)
 	mkdir -p $(SOURCE_DIR)/kernel-patches
 	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR)/kernel-patches
 	-(cd $(BUILD_DIR); ln -sf $(LINUX_DIR) linux)
@@ -53,9 +60,7 @@ $(LINUX_KCONFIG):
 	fi;
 
 $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
-	#perl -i -p -e "s,^CROSS_COMPILE.*,\
-	#	CROSS_COMPILE=$(STAGING_DIR)/bin/$(ARCH)-uclibc-,g;" \
-	#	$(LINUX_DIR)/Makefile
+	perl -i -p -e "s,^CROSS_COMPILE.*,CROSS_COMPILE=$(KERNEL_CROSS),g;" $(LINUX_DIR)/Makefile
 	-cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
 	$(MAKE) -C $(LINUX_DIR) oldconfig include/linux/version.h
 	touch $(LINUX_DIR)/.configured
