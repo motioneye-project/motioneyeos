@@ -26,6 +26,7 @@ $(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE) $(DL_DIR)/$(UTIL-LIN
 $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 	(cd $(UTIL-LINUX_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -47,10 +48,15 @@ $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 	touch $(UTIL-LINUX_DIR)/.configured
 
 $(UTIL-LINUX_BINARY): $(UTIL-LINUX_DIR)/.configured
-	$(MAKE) ARCH=$(ARCH) CC=$(TARGET_CC) -C $(UTIL-LINUX_DIR)
+	$(MAKE) \
+		-C $(UTIL-LINUX_DIR) \
+		ARCH=$(ARCH) \
+		CC=$(TARGET_CC) \
+		OPT="$(TARGET_CFLAGS)" \
+		HAVE_SLANG="NO"
 
 $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) USE_TTY_GROUP=no -C $(UTIL-LINUX_DIR) install
+	$(MAKE) ARCH=$(ARCH) DESTDIR=$(TARGET_DIR) USE_TTY_GROUP=no -C $(UTIL-LINUX_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
