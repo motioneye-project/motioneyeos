@@ -1,6 +1,6 @@
-diff -urN dhcp-3.0.1.orig/common/conflex.c dhcp-3.0.1/common/conflex.c
---- dhcp-3.0.1.orig/common/conflex.c	2004-06-10 11:59:14.000000000 -0600
-+++ dhcp-3.0.1/common/conflex.c	2005-02-16 12:41:43.000000000 -0700
+diff -urN dhcp-3.0.2.orig/common/conflex.c dhcp-3.0.2/common/conflex.c
+--- dhcp-3.0.2.orig/common/conflex.c	2004-11-24 10:39:15.000000000 -0700
++++ dhcp-3.0.2/common/conflex.c	2005-02-24 12:32:12.000000000 -0700
 @@ -676,6 +676,8 @@
  			return EVAL;
  		if (!strcasecmp (atom + 1, "ncapsulate"))
@@ -10,10 +10,10 @@ diff -urN dhcp-3.0.1.orig/common/conflex.c dhcp-3.0.1/common/conflex.c
  		break;
  	      case 'f':
  		if (!strcasecmp (atom + 1, "atal"))
-diff -urN dhcp-3.0.1.orig/common/dhcp-eval.5 dhcp-3.0.1/common/dhcp-eval.5
---- dhcp-3.0.1.orig/common/dhcp-eval.5	2004-06-10 11:59:15.000000000 -0600
-+++ dhcp-3.0.1/common/dhcp-eval.5	2005-02-16 12:41:43.000000000 -0700
-@@ -408,7 +408,32 @@
+diff -urN dhcp-3.0.2.orig/common/dhcp-eval.5 dhcp-3.0.2/common/dhcp-eval.5
+--- dhcp-3.0.2.orig/common/dhcp-eval.5	2005-01-19 13:00:52.000000000 -0700
++++ dhcp-3.0.2/common/dhcp-eval.5	2005-02-24 12:32:12.000000000 -0700
+@@ -409,7 +409,32 @@
  Rebind - DHCP client is in the REBINDING state - it has an IP address,
  and is trying to contact any server to renew it.   The next message to
  be sent will be a DHCPREQUEST, which will be broadcast.
@@ -47,10 +47,10 @@ diff -urN dhcp-3.0.1.orig/common/dhcp-eval.5 dhcp-3.0.1/common/dhcp-eval.5
  .SH REFERENCE: LOGGING
  Logging statements may be used to send information to the standard logging
  channels.  A logging statement includes an optional priority (\fBfatal\fR,
-diff -urN dhcp-3.0.1.orig/common/parse.c dhcp-3.0.1/common/parse.c
---- dhcp-3.0.1.orig/common/parse.c	2004-06-17 14:54:38.000000000 -0600
-+++ dhcp-3.0.1/common/parse.c	2005-02-16 12:41:43.000000000 -0700
-@@ -3636,7 +3636,56 @@
+diff -urN dhcp-3.0.2.orig/common/parse.c dhcp-3.0.2/common/parse.c
+--- dhcp-3.0.2.orig/common/parse.c	2004-09-30 14:38:31.000000000 -0600
++++ dhcp-3.0.2/common/parse.c	2005-02-24 12:32:12.000000000 -0700
+@@ -3639,7 +3639,56 @@
  			return 0;
  		}
  		break;
@@ -108,9 +108,9 @@ diff -urN dhcp-3.0.1.orig/common/parse.c dhcp-3.0.1/common/parse.c
  	      case ENCODE_INT:
  		token = next_token (&val, (unsigned *)0, cfile);	
  		token = next_token (&val, (unsigned *)0, cfile);
-diff -urN dhcp-3.0.1.orig/common/print.c dhcp-3.0.1/common/print.c
---- dhcp-3.0.1.orig/common/print.c	2004-06-17 14:54:39.000000000 -0600
-+++ dhcp-3.0.1/common/print.c	2005-02-16 12:41:43.000000000 -0700
+diff -urN dhcp-3.0.2.orig/common/print.c dhcp-3.0.2/common/print.c
+--- dhcp-3.0.2.orig/common/print.c	2004-06-17 14:54:39.000000000 -0600
++++ dhcp-3.0.2/common/print.c	2005-02-24 12:32:12.000000000 -0700
 @@ -459,6 +459,7 @@
  {
  	unsigned rv, left;
@@ -159,9 +159,9 @@ diff -urN dhcp-3.0.1.orig/common/print.c dhcp-3.0.1/common/print.c
  	}
  	return 0;
  }
-diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
---- dhcp-3.0.1.orig/common/tree.c	2004-06-17 14:54:39.000000000 -0600
-+++ dhcp-3.0.1/common/tree.c	2005-02-16 12:41:43.000000000 -0700
+diff -urN dhcp-3.0.2.orig/common/tree.c dhcp-3.0.2/common/tree.c
+--- dhcp-3.0.2.orig/common/tree.c	2004-11-24 10:39:16.000000000 -0700
++++ dhcp-3.0.2/common/tree.c	2005-02-24 12:32:12.000000000 -0700
 @@ -50,6 +50,113 @@
  int resolver_inited = 0;
  #endif
@@ -276,7 +276,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  pair cons (car, cdr)
  	caddr_t car;
  	pair cdr;
-@@ -859,6 +966,9 @@
+@@ -861,6 +968,9 @@
  	      case expr_extract_int8:
  	      case expr_extract_int16:
  	      case expr_extract_int32:
@@ -286,7 +286,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      case expr_const_int:
  	      case expr_lease_time:
  	      case expr_dns_transaction:
-@@ -1222,6 +1332,9 @@
+@@ -1224,6 +1334,9 @@
  	      case expr_extract_int8:
  	      case expr_extract_int16:
  	      case expr_extract_int32:
@@ -296,7 +296,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      case expr_const_int:
  	      case expr_lease_time:
  	      case expr_dns_transaction:
-@@ -2084,6 +2197,9 @@
+@@ -2087,6 +2200,9 @@
  	      case expr_extract_int8:
  	      case expr_extract_int16:
  	      case expr_extract_int32:
@@ -306,7 +306,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      case expr_const_int:
  	      case expr_lease_time:
  	      case expr_dns_transaction:
-@@ -2592,7 +2708,12 @@
+@@ -2595,7 +2711,12 @@
  #endif
  			return 0;
  		}
@@ -320,7 +320,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      case expr_ns_add:
  	      case expr_ns_delete:
  	      case expr_ns_exists:
-@@ -3005,6 +3126,9 @@
+@@ -3008,6 +3129,9 @@
  	return (expr -> op == expr_extract_int8 ||
  		expr -> op == expr_extract_int16 ||
  		expr -> op == expr_extract_int32 ||
@@ -330,7 +330,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  		expr -> op == expr_const_int ||
  		expr -> op == expr_lease_time ||
  		expr -> op == expr_dns_transaction ||
-@@ -3040,6 +3164,9 @@
+@@ -3043,6 +3167,9 @@
  		expr -> op == expr_extract_int8 ||
  		expr -> op == expr_extract_int16 ||
  		expr -> op == expr_extract_int32 ||
@@ -340,7 +340,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  		expr -> op == expr_dns_transaction);
  }
  
-@@ -3066,6 +3193,9 @@
+@@ -3069,6 +3196,9 @@
  	      case expr_extract_int8:
  	      case expr_extract_int16:
  	      case expr_extract_int32:
@@ -350,7 +350,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      case expr_encode_int8:
  	      case expr_encode_int16:
  	      case expr_encode_int32:
-@@ -3160,6 +3290,9 @@
+@@ -3165,6 +3295,9 @@
  	      case expr_extract_int8:
  	      case expr_extract_int16:
  	      case expr_extract_int32:
@@ -360,7 +360,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      case expr_encode_int8:
  	      case expr_encode_int16:
  	      case expr_encode_int32:
-@@ -3220,6 +3353,8 @@
+@@ -3225,6 +3358,8 @@
  	int firstp;
  {
  	struct expression *e;
@@ -369,7 +369,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	const char *s;
  	char obuf [65];
  	int scol;
-@@ -3691,7 +3826,27 @@
+@@ -3696,7 +3831,27 @@
  					  expr -> data.variable);
  		col = token_print_indent (file, col, indent, "", "", ")");
  		break;
@@ -398,7 +398,7 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      default:
  		log_fatal ("invalid expression type in print_expression: %d",
  			   expr -> op);
-@@ -3910,6 +4065,9 @@
+@@ -3915,6 +4070,9 @@
  	      case expr_extract_int8:
  	      case expr_extract_int16:
  	      case expr_extract_int32:
@@ -408,22 +408,22 @@ diff -urN dhcp-3.0.1.orig/common/tree.c dhcp-3.0.1/common/tree.c
  	      case expr_encode_int8:
  	      case expr_encode_int16:
  	      case expr_encode_int32:
-diff -urN dhcp-3.0.1.orig/includes/dhctoken.h dhcp-3.0.1/includes/dhctoken.h
---- dhcp-3.0.1.orig/includes/dhctoken.h	2004-06-10 11:59:30.000000000 -0600
-+++ dhcp-3.0.1/includes/dhctoken.h	2005-02-16 12:41:43.000000000 -0700
-@@ -307,7 +307,8 @@
- 	REMOVE = 611,
+diff -urN dhcp-3.0.2.orig/includes/dhctoken.h dhcp-3.0.2/includes/dhctoken.h
+--- dhcp-3.0.2.orig/includes/dhctoken.h	2004-09-21 13:25:38.000000000 -0600
++++ dhcp-3.0.2/includes/dhctoken.h	2005-02-24 12:33:21.000000000 -0700
+@@ -308,7 +308,8 @@
  	REFRESH = 612,
  	DOMAIN_NAME = 613,
--	DO_FORWARD_UPDATE = 614
-+ DO_FORWARD_UPDATE = 614,
-+ EXECUTE = 614
+ 	DO_FORWARD_UPDATE = 614,
+-	KNOWN_CLIENTS = 615
++	KNOWN_CLIENTS = 615,
++	EXECUTE = 616
  };
  
  #define is_identifier(x)	((x) >= FIRST_TOKEN &&	\
-diff -urN dhcp-3.0.1.orig/includes/site.h dhcp-3.0.1/includes/site.h
---- dhcp-3.0.1.orig/includes/site.h	2002-03-12 11:33:39.000000000 -0700
-+++ dhcp-3.0.1/includes/site.h	2005-02-16 12:41:43.000000000 -0700
+diff -urN dhcp-3.0.2.orig/includes/site.h dhcp-3.0.2/includes/site.h
+--- dhcp-3.0.2.orig/includes/site.h	2002-03-12 11:33:39.000000000 -0700
++++ dhcp-3.0.2/includes/site.h	2005-02-24 12:32:12.000000000 -0700
 @@ -167,6 +167,12 @@
  
  /* #define DHCPD_LOG_FACILITY LOG_DAEMON */
@@ -437,9 +437,9 @@ diff -urN dhcp-3.0.1.orig/includes/site.h dhcp-3.0.1/includes/site.h
  /* Define this if you aren't debugging and you want to save memory
     (potentially a _lot_ of memory) by allocating leases in chunks rather
     than one at a time. */
-diff -urN dhcp-3.0.1.orig/includes/tree.h dhcp-3.0.1/includes/tree.h
---- dhcp-3.0.1.orig/includes/tree.h	2004-06-10 11:59:31.000000000 -0600
-+++ dhcp-3.0.1/includes/tree.h	2005-02-16 12:41:43.000000000 -0700
+diff -urN dhcp-3.0.2.orig/includes/tree.h dhcp-3.0.2/includes/tree.h
+--- dhcp-3.0.2.orig/includes/tree.h	2004-06-10 11:59:31.000000000 -0600
++++ dhcp-3.0.2/includes/tree.h	2005-02-24 12:32:12.000000000 -0700
 @@ -150,6 +150,9 @@
  	expr_hardware,
  	expr_packet,

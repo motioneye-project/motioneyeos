@@ -3,10 +3,11 @@
 # dhcp
 #
 #############################################################
-DHCP:=dhcp-3.0.1.tar.gz
+DHCP_VER:=3.0.2
+DHCP_SOURCE:=dhcp-$(DHCP_VER).tar.gz
 DHCP_SITE:=ftp://ftp.isc.org/isc/dhcp
 DHCP_CAT:=zcat
-DHCP_DIR:=$(BUILD_DIR)/dhcp-3.0.1
+DHCP_DIR:=$(BUILD_DIR)/dhcp-$(DHCP_VER)
 DHCP_RELAY_BINARY:=work.linux-2.2/relay/dhcrelay
 DHCP_SERVER_TARGET_BINARY:=usr/sbin/dhcpd
 DHCP_RELAY_TARGET_BINARY:=usr/sbin/dhcrelay
@@ -15,13 +16,13 @@ BVARS=PREDEFINES='-D_PATH_DHCPD_DB=\"/var/lib/dhcp/dhcpd.leases\" \
 	-D_PATH_DHCLIENT_DB=\"/var/lib/dhcp/dhclient.leases\"' \
 	VARDB=/var/lib/dhcp
 
-$(DL_DIR)/$(DHCP):
-	 $(WGET) -P $(DL_DIR) $(DHCP_SITE)/$(DHCP)
+$(DL_DIR)/$(DHCP_SOURCE):
+	 $(WGET) -P $(DL_DIR) $(DHCP_SITE)/$(DHCP_SOURCE)
 
-dhcp-source: $(DL_DIR)/$(DHCP)
+dhcp-source: $(DL_DIR)/$(DHCP_SOURCE)
 
-$(DHCP_DIR)/.unpacked: $(DL_DIR)/$(DHCP)
-	$(DHCP_CAT) $(DL_DIR)/$(DHCP) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+$(DHCP_DIR)/.unpacked: $(DL_DIR)/$(DHCP_SOURCE)
+	$(DHCP_CAT) $(DL_DIR)/$(DHCP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(DHCP_DIR) package/dhcp/ dhcp*.patch
 	touch $(DHCP_DIR)/.unpacked
 
