@@ -3,10 +3,11 @@
 # automake
 #
 #############################################################
-AUTOMAKE_SOURCE:=automake-1.9.tar.bz2
+AUTOMAKE_VER:=1.9.1
+AUTOMAKE_SOURCE:=automake-$(AUTOMAKE_VER).tar.bz2
 AUTOMAKE_SITE:=ftp://ftp.gnu.org/gnu/automake
 AUTOMAKE_CAT:=bzcat
-AUTOMAKE_DIR:=$(BUILD_DIR)/automake-1.9
+AUTOMAKE_DIR:=$(BUILD_DIR)/automake-$(AUTOMAKE_VER)
 AUTOMAKE_BINARY:=automake
 AUTOMAKE_TARGET_BINARY:=usr/bin/automake
 
@@ -23,6 +24,7 @@ $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
 	(cd $(AUTOMAKE_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		WANT_AUTOCONF=2.5 \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
