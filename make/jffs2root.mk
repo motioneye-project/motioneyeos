@@ -37,13 +37,13 @@ jffs2root: jffs2
 		-D $(SOURCE_DIR)/device_table.txt -d $(TARGET_DIR) \
 		-o $(IMAGE)
 
-jffs2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)
+jffs2root-source: $(DL_DIR)/$(MTD_SOURCE)
 
 jffs2root-clean:
-	-$(MAKE) -C $(GENEXT2_DIR) clean
+	-$(MAKE) -C $(MTD_DIR) clean
 
 jffs2root-dirclean:
-	rm -rf $(GENEXT2_DIR)
+	rm -rf $(MTD_DIR)
 
 
 
