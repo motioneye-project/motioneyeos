@@ -7,12 +7,14 @@ comment "Gdb Options"
 config BR2_PACKAGE_GDB
 	bool "Build gdb debugger for the Target"
 	default n
+	select BR2_PACKAGE_NCURSES
 	help
 	    Enable the gdb debugger.
 
 config BR2_PACKAGE_GDB_SERVER
 	bool "Build gdb server for the Target"
 	default n
+	select BR2_PACKAGE_NCURSES
 	help
 	    Enable the gdb debugger.
 

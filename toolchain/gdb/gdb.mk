@@ -82,14 +82,14 @@ $(GDB_TARGET_DIR)/gdb/gdb: $(GDB_TARGET_DIR)/.configured
 $(TARGET_DIR)/usr/bin/gdb: $(GDB_TARGET_DIR)/gdb/gdb
 	install -c $(GDB_TARGET_DIR)/gdb/gdb $(TARGET_DIR)/usr/bin/gdb
 
-gdb_target: $(TARGET_DIR)/usr/bin/gdb
+gdb_target: ncurses-headers $(TARGET_DIR)/usr/bin/gdb
 
 gdb_target-source: $(DL_DIR)/$(GDB_SOURCE)
 
-gdb_target-clean: 
+gdb_target-clean:
 	$(MAKE) -C $(GDB_DIR) clean
 
-gdb_target-dirclean: 
+gdb_target-dirclean:
 	rm -rf $(GDB_DIR)
 
 ######################################################################
@@ -135,12 +135,12 @@ $(GDB_SERVER_DIR)/gdbserver: $(GDB_SERVER_DIR)/.configured
 $(TARGET_DIR)/usr/bin/gdbserver: $(GDB_SERVER_DIR)/gdbserver
 	install -c $(GDB_SERVER_DIR)/gdbserver $(TARGET_DIR)/usr/bin/gdbserver
 
-gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
+gdbserver: ncurses-headers $(TARGET_DIR)/usr/bin/gdbserver
 
-gdbserver-clean: 
+gdbserver-clean:
 	$(MAKE) -C $(GDB_SERVER_DIR) clean
 
-gdbserver-dirclean: 
+gdbserver-dirclean:
 	rm -rf $(GDB_SERVER_DIR)
 
 ######################################################################
@@ -179,10 +179,10 @@ $(TARGET_CROSS)gdb: $(GDB_CLIENT_DIR)/gdb/gdb
 
 gdbclient: $(TARGET_CROSS)gdb
 
-gdbclient-clean: 
+gdbclient-clean:
 	$(MAKE) -C $(GDB_CLIENT_DIR) clean
 
-gdbclient-dirclean: 
+gdbclient-dirclean:
 	rm -rf $(GDB_CLIENT_DIR)
 
 
