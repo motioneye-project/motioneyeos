@@ -3,13 +3,15 @@ TARGETS_CLEAN += busybox_clean
 TARGETS_MRPROPER += busybox_mrproper
 TARGETS_DISTCLEAN += busybox_distclean
 
+BUSYBOX_VERSION=0.60.2
+
 # Don't alter below this line unless you (think) you know
 # what you are doing! Danger, Danger!
 
+BUSYBOX_URI=http://www.busybox.net/downloads/
+BUSYBOX_SOURCE=busybox-$(BUSYBOX_VERSION).tar.gz
 BUSYBOX_DIR=$(BASE_DIR)/${shell basename $(BUSYBOX_SOURCE) .tar.gz}
 BUSYBOX_WORKDIR=$(BASE_DIR)/busybox_workdir
-BUSYBOX_URI=http://www.busybox.net/downloads/
-BUSYBOX_SOURCE=busybox-0.60.2.tar.gz
 
 IMAGE_SIZE += +500
 
@@ -38,18 +40,14 @@ $(BUSYBOX_WORKDIR)/.config:	$(BUSYBOX_DIR)/.unpacked
 		$(BUSYBOX_WORKDIR)/Config.h
 	touch $(BUSYBOX_WORKDIR)/.config
 
-$(BUSYBOX_WORKDIR)/busybox:	uclibc $(BUSYBOX_WORKDIR)/.config
+$(BUSYBOX_WORKDIR)/busybox:	$(TARGET_CC) $(BUSYBOX_WORKDIR)/.config
 	make CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_WORKDIR)
 
 $(TARGET_DIR)/bin/busybox:	$(BUSYBOX_WORKDIR)/busybox
-	@A=`cksum $(TARGET_DIR)/bin/busybox 2>/dev/null | awk '{ print $$1 }'`; \
-	B=`cksum $(BUSYBOX_WORKDIR)/busybox 2>/dev/null | awk '{ print $$1 }'`; \
-	if [ "$$A" != "$$B" ] ; then \
-		make CROSS="$(TARGET_CROSS)" PREFIX=$(TARGET_DIR) \
-		-C $(BUSYBOX_WORKDIR) install; \
-	fi;
+	make CROSS="$(TARGET_CROSS)" PREFIX=$(TARGET_DIR) \
+	-C $(BUSYBOX_WORKDIR) install
 
-busybox: uclibc $(TARGET_DIR)/bin/busybox
+busybox: $(TARGET_DIR)/bin/busybox
 
 busybox_clean:
 	@if [ -d $(BUSYBOX_WORKDIR)/Makefile ] ; then \
