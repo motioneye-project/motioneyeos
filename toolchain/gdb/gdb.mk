@@ -3,7 +3,8 @@
 # gdb
 #
 ######################################################################
-GDB_VERSION:=$(strip $(GDB_VERSION))
+GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
+#"
 
 GDB_SITE:=http://ftp.gnu.org/gnu/gdb
 
@@ -192,9 +193,6 @@ gdbclient-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
-#"
-
 ifeq ($(strip $(BR2_PACKAGE_GDB)),y)
 TARGETS+=gdb_target
 endif
