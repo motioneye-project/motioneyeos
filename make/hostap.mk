@@ -47,7 +47,7 @@ $(HOSTAP_TARGET_MODULE_DIR)/hostap.o: $(HOSTAP_BUILD_DIR)/driver/modules/hostap.
 	cp -af $(HOSTAP_BUILD_DIR)/hostapd/hostapd $(TARGET_DIR)/usr/sbin/
 	touch -c $(HOSTAP_TARGET_MODULE_DIR)/hostap.o
 
-hostap: $(HOSTAP_TARGET_MODULE_DIR)/hostap.o 
+hostap: pcmcia $(HOSTAP_TARGET_MODULE_DIR)/hostap.o 
 
 hostap-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(HOSTAP_BUILD_DIR) uninstall
