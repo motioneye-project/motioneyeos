@@ -15,7 +15,6 @@ $(DL_DIR)/$(GDB_SOURCE):
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE) $(GDB_PATCH)
 	gunzip -c $(DL_DIR)/$(GDB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(GDB_PATCH) | patch -p1 -d $(GDB_DIR)
-	#-perl -i -p -e "s,\@INTLLIBS\@,-lintl,g;" $(GDB_DIR)/gdb/Makefile.in
 	touch  $(GDB_DIR)/.unpacked
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
@@ -45,6 +44,9 @@ $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--disable-sim --enable-gdbserver \
 		--without-included-gettext \
 	);
+ifeq ($(ENABLE_LOCALE),true)
+	-perl -i -p -e "s,^INTL *=.*,INTL = -lintl,g;" $(GDB_DIR)/gdb/Makefile
+endif
 	touch  $(GDB_DIR)/.configured
 
 $(GDB_DIR)/gdb/gdb: $(GDB_DIR)/.configured
