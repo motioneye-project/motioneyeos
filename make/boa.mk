@@ -15,7 +15,7 @@ BOA_DIR=$(BUILD_DIR)/${shell basename $(BOA_SOURCE) .tar.gz}
 BOA_WORKDIR=$(BUILD_DIR)/boa_workdir
 
 $(DL_DIR)/$(BOA_SOURCE):
-	wget -P $(DL_DIR) $(BOA_SITE)/$(BOA_SOURCE)
+	$(WGET) -P $(DL_DIR) $(BOA_SITE)/$(BOA_SOURCE)
 
 $(BOA_DIR)/.unpacked:	$(DL_DIR)/$(BOA_SOURCE)
 	gzip -d -c $(DL_DIR)/$(BOA_SOURCE) | tar -C $(BUILD_DIR) -xvf -

@@ -11,7 +11,7 @@ SED_BINARY:=sed/sed
 SED_TARGET_BINARY:=bin/sed
 
 $(DL_DIR)/$(SED_SOURCE):
-	 wget -P $(DL_DIR) $(SED_SITE)/$(SED_SOURCE)
+	 $(WGET) -P $(DL_DIR) $(SED_SITE)/$(SED_SOURCE)
 
 sed-source: $(DL_DIR)/$(SED_SOURCE)
 

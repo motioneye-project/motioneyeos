@@ -14,7 +14,7 @@ NEWT_CFLAGS="-Os -g -fPIC"
 endif
 
 $(DL_DIR)/$(NEWT_SOURCE):
-	wget -P $(DL_DIR) $(NEWT_SITE)/$(NEWT_SOURCE)
+	$(WGET) -P $(DL_DIR) $(NEWT_SITE)/$(NEWT_SOURCE)
 
 $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE) $(NEWT_PATCH)
 	zcat $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) -xvf -

@@ -10,7 +10,7 @@ OPENSSH_SOURCE:=openssh-3.4p1.tar.gz
 OPENSSH_PATCH:=$(SOURCE_DIR)/openssh_3.4p1-4.diff.gz
 
 $(DL_DIR)/$(OPENSSH_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(OPENSSH_SITE)/$(OPENSSH_SOURCE)
+	$(WGET) -P $(DL_DIR) $(OPENSSH_SITE)/$(OPENSSH_SOURCE)
 
 $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 	zcat $(DL_DIR)/$(OPENSSH_SOURCE) | tar -C $(BUILD_DIR) -xvf -

@@ -8,7 +8,7 @@ LINKS_SOURCE:=links-0.97pre9-no-ssl.tar.gz
 LINKS_DIR:=$(BUILD_DIR)/links-0.97pre9-no-ssl
 
 $(DL_DIR)/$(LINKS_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(LINKS_SITE)/$(LINKS_SOURCE)
+	$(WGET) -P $(DL_DIR) $(LINKS_SITE)/$(LINKS_SOURCE)
 
 links-source: $(DL_DIR)/$(LINKS_SOURCE)
 

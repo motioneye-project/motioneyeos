@@ -11,7 +11,7 @@ BASH_BINARY:=bash
 BASH_TARGET_BINARY:=bin/bash
 
 $(DL_DIR)/$(BASH_SOURCE):
-	 wget -P $(DL_DIR) $(BASH_SITE)/$(BASH_SOURCE)
+	 $(WGET) -P $(DL_DIR) $(BASH_SITE)/$(BASH_SOURCE)
 
 bash-source: $(DL_DIR)/$(BASH_SOURCE)
 

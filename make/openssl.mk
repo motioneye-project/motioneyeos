@@ -11,7 +11,7 @@ OPENSSL_DIR:=$(BUILD_DIR)/openssl-0.9.6g
 
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(OPENSSL_SITE)/$(OPENSSL_SOURCE)
+	$(WGET) -P $(DL_DIR) $(OPENSSL_SITE)/$(OPENSSL_SOURCE)
 
 $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 	gunzip -c $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xvf -

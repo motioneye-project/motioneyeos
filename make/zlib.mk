@@ -13,7 +13,7 @@ ZLIB_CFLAGS="-Os -g -fPIC"
 endif
 
 $(DL_DIR)/$(ZLIB_SOURCE):
-	wget -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
+	$(WGET) -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
 
 $(ZLIB_DIR)/.source: $(DL_DIR)/$(ZLIB_SOURCE)
 	bzcat $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) -xvf -

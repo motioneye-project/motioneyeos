@@ -10,7 +10,7 @@ TINYLOGIN_SOURCE:=tinylogin-1.02.tar.bz2
 TINYLOGIN_SITE:=http://tinylogin.busybox.net/downloads
 
 $(DL_DIR)/$(TINYLOGIN_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(TINYLOGIN_SITE)/$(TINYLOGIN_SOURCE)
+	$(WGET) -P $(DL_DIR) $(TINYLOGIN_SITE)/$(TINYLOGIN_SOURCE)
 
 tinylogin-source: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 

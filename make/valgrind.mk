@@ -10,7 +10,7 @@ VALGRIND_SOURCE:=valgrind-1.0.1.tar.bz2
 VALGRIND_PATCH:=$(SOURCE_DIR)/valgrind.patch
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
+	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
 
 $(VALGRIND_DIR)/.unpacked: $(DL_DIR)/$(VALGRIND_SOURCE)
 	bzcat $(DL_DIR)/$(VALGRIND_SOURCE) | tar -C $(BUILD_DIR) -xvf -

@@ -9,7 +9,7 @@ GENEXT2_SITE=http://ftp.debian.org/debian/pool/main/g/genext2fs
 GENEXT2_PATCH=$(SOURCE_DIR)/genext2fs.patch
 
 $(DL_DIR)/$(GENEXT2_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(GENEXT2_SITE)/$(GENEXT2_SOURCE)
+	$(WGET) -P $(DL_DIR) $(GENEXT2_SITE)/$(GENEXT2_SOURCE)
 
 $(GENEXT2_DIR): $(DL_DIR)/$(GENEXT2_SOURCE) $(GENEXT2_PATCH)
 	zcat $(DL_DIR)/$(GENEXT2_SOURCE) | tar -C $(BUILD_DIR) -xvf -

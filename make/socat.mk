@@ -17,7 +17,7 @@ SOCAT_DIR=$(BUILD_DIR)/socat-1.3
 SOCAT_WORKDIR=$(SOCAT_DIR)
 
 $(DL_DIR)/$(SOCAT_SOURCE):
-	wget -P $(DL_DIR) $(SOCAT_SITE)/$(SOCAT_SOURCE)
+	$(WGET) -P $(DL_DIR) $(SOCAT_SITE)/$(SOCAT_SOURCE)
 
 $(SOCAT_DIR)/.unpacked:	$(DL_DIR)/$(SOCAT_SOURCE)
 	bzip2 -d -c $(DL_DIR)/$(SOCAT_SOURCE) | tar -C $(BUILD_DIR) -xvf -

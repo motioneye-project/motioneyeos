@@ -9,7 +9,7 @@ GDB_DIR:=$(BUILD_DIR)/gdb-5.2
 GDB_SOURCE:=gdb-5.2.tar.gz
 
 $(DL_DIR)/$(GDB_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(GDB_SITE)/$(GDB_SOURCE)
+	$(WGET) -P $(DL_DIR) $(GDB_SITE)/$(GDB_SOURCE)
 
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 	gunzip -c $(DL_DIR)/$(GDB_SOURCE) | tar -C $(BUILD_DIR) -xvf -

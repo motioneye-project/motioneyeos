@@ -13,7 +13,7 @@ BIN_PROGS:=cat chgrp chmod chown cp date dd df dir echo false ln ls mkdir \
 	mknod mv pwd rm rmdir vdir sleep stty sync touch true uname
 
 $(DL_DIR)/$(COREUTILS_SOURCE):
-	 wget -P $(DL_DIR) $(COREUTILS_SITE)/$(COREUTILS_SOURCE)
+	 $(WGET) -P $(DL_DIR) $(COREUTILS_SITE)/$(COREUTILS_SOURCE)
 
 coreutils-source: $(DL_DIR)/$(COREUTILS_SOURCE)
 

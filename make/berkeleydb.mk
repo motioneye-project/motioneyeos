@@ -9,7 +9,7 @@ DB_DIR:=$(BUILD_DIR)/db-4.0.14
 
 
 $(DL_DIR)/$(DB_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(DB_SITE)/$(DB_SOURCE)
+	$(WGET) -P $(DL_DIR) $(DB_SITE)/$(DB_SOURCE)
 
 db-source: $(DL_DIR)/$(DB_SOURCE)
 

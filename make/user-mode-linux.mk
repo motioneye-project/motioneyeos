@@ -12,10 +12,10 @@ UMLINUX_PATCH_1_SITE:=http://telia.dl.sourceforge.net/sourceforge/user-mode-linu
 UMLINUX_KCONFIG=$(SOURCE_DIR)/linux-uml.config
 
 $(DL_DIR)/$(UMLINUX_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(UMLINUX_SITE)/$(UMLINUX_SOURCE)
+	$(WGET) -P $(DL_DIR) $(UMLINUX_SITE)/$(UMLINUX_SOURCE)
 
 $(DL_DIR)/$(UMLINUX_PATCH_1):
-	wget -P $(DL_DIR) --passive-ftp $(UMLINUX_PATCH_1_SITE)/$(UMLINUX_PATCH_1)
+	$(WGET) -P $(DL_DIR) $(UMLINUX_PATCH_1_SITE)/$(UMLINUX_PATCH_1)
 
 user-mode-linux-source: $(DL_DIR)/$(UMLINUX_SOURCE) $(DL_DIR)/$(UMLINUX_PATCH_1)
 

@@ -13,7 +13,7 @@ SLANG_CFLAGS="-Os -g -fPIC"
 endif
 
 $(DL_DIR)/$(SLANG_SOURCE):
-	wget -P $(DL_DIR) $(SLANG_SITE)/$(SLANG_SOURCE)
+	$(WGET) -P $(DL_DIR) $(SLANG_SITE)/$(SLANG_SOURCE)
 
 $(SLANG_DIR): $(DL_DIR)/$(SLANG_SOURCE)
 	zcat $(DL_DIR)/$(SLANG_SOURCE) | tar -C $(BUILD_DIR) -xvf -

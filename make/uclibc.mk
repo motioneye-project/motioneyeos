@@ -41,7 +41,7 @@ LARGEFILE=false
 endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
+	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE) #$(UCLIBC_PATCH)
 

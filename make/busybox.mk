@@ -20,7 +20,7 @@ BUSYBOX_PATCH:=$(SOURCE_DIR)/busybox.patch
 endif
 
 $(DL_DIR)/$(BUSYBOX_SOURCE):
-	 wget -P $(DL_DIR) --passive-ftp $(BUSYBOX_SITE)/$(BUSYBOX_SOURCE)
+	 $(WGET) -P $(DL_DIR) $(BUSYBOX_SITE)/$(BUSYBOX_SOURCE)
 
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCH)
 

@@ -106,7 +106,7 @@ uclibc_toolchain-dirclean: gcc_final-dirclean uclibc-dirclean gcc_initial-dircle
 #
 #############################################################
 $(DL_DIR)/$(BINUTILS_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
+	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
 $(BINUTILS_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(BINUTILS_SOURCE)
 	bzcat $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -166,7 +166,7 @@ binutils-dirclean:
 #
 #############################################################
 $(DL_DIR)/$(GCC_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(GCC_SITE)/$(GCC_SOURCE)
+	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(GCC_SOURCE)
 	zcat $(DL_DIR)/$(GCC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -227,7 +227,7 @@ gcc_initial-dirclean:
 #
 #############################################################
 $(DL_DIR)/$(UCLIBC_SOURCE):
-	wget -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
+	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
 $(UCLIBC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -

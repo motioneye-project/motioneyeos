@@ -5,7 +5,7 @@
 # Maintainer: Ken Restivo <ken@246gt.com>
 #
 #############################################################
-#$Id: strace.mk,v 1.2 2002/05/31 10:43:51 andersen Exp $
+#$Id: strace.mk,v 1.3 2002/11/20 23:16:09 andersen Exp $
 
 # TARGETS
 STRACE_SITE:=http://telia.dl.sourceforge.net/sourceforge/strace
@@ -13,7 +13,7 @@ STRACE_SOURCE:=strace_4.4-1.tar.gz
 STRACE_DIR:=$(BUILD_DIR)/strace-4.4
 
 $(DL_DIR)/$(STRACE_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(STRACE_SITE)/$(STRACE_SOURCE)
+	$(WGET) -P $(DL_DIR) $(STRACE_SITE)/$(STRACE_SOURCE)
 
 strace-source: $(DL_DIR)/$(STRACE_SOURCE)
 

@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.8 2002/07/23 23:51:46 andersen Exp $
+# $Id: ncurses.mk,v 1.9 2002/11/20 23:16:08 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -28,7 +28,7 @@ NCURSES_DIR:=$(BUILD_DIR)/ncurses-5.2
 NCURSES_SOURCE:=ncurses-5.2.tar.gz
 
 $(DL_DIR)/$(NCURSES_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(NCURSES_SITE)/$(NCURSES_SOURCE)
+	$(WGET) -P $(DL_DIR) $(NCURSES_SITE)/$(NCURSES_SOURCE)
 
 $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 	gunzip -c $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) -xvf -
