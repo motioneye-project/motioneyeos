@@ -89,7 +89,8 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 	mkdir -p $(TARGET_DIR)/usr/include
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(BINUTILS_DIR2); $(TARGET_CONFIGURE_OPTS) \
+	(cd $(BINUTILS_DIR2); PATH=$(TARGET_PATH) \
+		CC=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -101,7 +102,6 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -286,7 +286,8 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(GCC_BUILD_DIR3); $(TARGET_CONFIGURE_OPTS) \
+	(cd $(GCC_BUILD_DIR3); PATH=$(TARGET_PATH) \
+		CC=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -298,7 +299,6 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
