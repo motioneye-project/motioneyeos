@@ -64,9 +64,11 @@ TARGETS+=uclibc_toolchain
 endif
 
 # Do you want user mode Linux (x86 only), or are you building a 
-# real kernel that will run on its own?
+# real kernel # that will run on its own?  Perhaps you have a 
+# kernel you have already configured and you want to use that?
 #TARGETS+=linux
 TARGETS+=user-mode-linux
+#TARGETS+=system-linux
 
 # The default minimal set
 TARGETS+=busybox tinylogin
