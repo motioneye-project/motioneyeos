@@ -35,7 +35,7 @@ endif
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"$(STAGING_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)/usr\",g' \
+	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
@@ -65,7 +65,7 @@ ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) \
 		RUNTIME_PREFIX=$(TARGET_DIR) \
-		DEVEL_PREFIX=$(TARGET_DIR)/usr \
+		DEVEL_PREFIX=$(TARGET_DIR) \
 		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
 		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr install_runtime
 
@@ -98,11 +98,11 @@ uclibc-dirclean:
 #############################################################
 
 $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) \
-		RUNTIME_PREFIX=$(TARGET_DIR) \
+	$(MAKE) RUNTIME_PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=$(TARGET_DIR)/usr \
 		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
-		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr install_dev
+		DEVEL_TOOL_PREFIX=$(TARGET_DIR) -C $(UCLIBC_DIR) \
+		install_dev
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -fs /lib/libc.so.0 libc.so; \
 		ln -fs /lib/libdl.so.0 libdl.so; \
