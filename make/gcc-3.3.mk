@@ -290,7 +290,8 @@ $(TARGET_DIR)/lib/libstdc++.so.5.0.5: $(GCC_BUILD_DIR2)/.installed
 
 $(TARGET_DIR)/lib/libgcc_s.so.0.9.9: $(GCC_BUILD_DIR2)/.installed
 	cp -a $(STAGING_DIR)/lib/libgcc_s.so* $(TARGET_DIR)/lib/
-	# Enable applications to link with the shared ligbcc.
+	# Let applications link with the shared libgcc.
+	mkdir -p $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/
 	ln -sf $(STAGING_DIR)/lib/libgcc_s.so $(STAGING_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/libgcc.so
 
 ifeq ($(INSTALL_LIBSTDCPP),true)
