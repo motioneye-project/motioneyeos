@@ -124,6 +124,9 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 binutils_target: $(GCC_DEPENDANCY) $(TARGET_DIR)/usr/bin/ld
 
 binutils_target-clean:
+	(cd $(TARGET_DIR)/usr/bin; \
+		rm -f addr2line ar as gprof ld nm objcopy \
+		      objdump ranlib readelf size strings strip)
 	rm -f $(TARGET_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
 	-$(MAKE) -C $(BINUTILS_DIR2) clean
 
