@@ -20,7 +20,7 @@ $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 	touch $(GAWK_DIR)/.unpacked
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
-	(cd $(GAWK_DIR); rm -rf config.cache; \
+	(cd $(GAWK_DIR); rm -rf config.cache; autoconf; \
 		$(TARGET_CONFIGURE_OPTS) \
 		ac_cv_func_getpgrp_void=yes \
 		./configure \
