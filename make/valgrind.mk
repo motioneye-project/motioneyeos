@@ -72,7 +72,11 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/coregrind/valgrind.so
 	#cp $(VALGRIND_DIR)/woody.supp $(TARGET_DIR)/usr/lib/valgrind/
 	touch -c $(TARGET_DIR)/usr/bin/valgrind
 
+ifeq ($(ARCH),i386)
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
+else
+valgrind:
+endif
 
 valgrind-clean: 
 	$(MAKE) -C $(VALGRIND_DIR) clean
