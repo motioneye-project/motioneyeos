@@ -41,7 +41,7 @@ $(STAGING_DIR)/lib/libstdc++.so.4.5: $(STLPORT_DIR)/lib/libstdc++.so.4.5
 	$(MAKE) ARCH=$(ARCH) PREFIX=$(STAGING_DIR) -C $(STLPORT_DIR) install
 
 $(TARGET_DIR)/lib/libstdc++.so.4.5: $(STAGING_DIR)/lib/libstdc++.so.4.5
-	cp -pf $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
+	cp -dpf $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
 
 stlport: $(TARGET_DIR)/lib/libstdc++.so.4.5
 
