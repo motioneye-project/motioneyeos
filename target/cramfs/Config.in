@@ -4,3 +4,4 @@ config BR2_TARGET_ROOTFS_CRAMFS
 	help
 	  Build a cramfs root filesystem
 
+	  http://sourceforge.net/projects/cramfs/
