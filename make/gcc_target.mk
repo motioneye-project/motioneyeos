@@ -72,7 +72,9 @@ $(BINUTILS_DIR2)/.configured:
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	$(MAKE) -C $(BINUTILS_DIR2);
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) AR=$(TARGET_CROSS)ar \
+		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
+		CC=$(TARGET_CROSS)gcc -C $(BINUTILS_DIR2)
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
 	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) \
@@ -187,7 +189,9 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) -C $(GCC_BUILD_DIR3)
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) AR=$(TARGET_CROSS)ar \
+		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
+		CC=$(TARGET_CROSS)gcc -C $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
