@@ -4,3 +4,5 @@ config BR2_PACKAGE_NANO
 	help
 	  A nice ncurses-based editor.  Started out as a clone of pico.  
 	  Great editor for new users.
+
+	  http://www.nano-editor.org/
