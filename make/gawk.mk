@@ -3,10 +3,10 @@
 # gawk
 #
 #############################################################
-GAWK_SOURCE:=gawk-3.1.1.tar.gz
+GAWK_SOURCE:=gawk-3.1.2.tar.gz
 GAWK_SITE:=ftp://ftp.gnu.org/gnu/gawk
 GAWK_CAT:=zcat
-GAWK_DIR:=$(BUILD_DIR)/gawk-3.1.1
+GAWK_DIR:=$(BUILD_DIR)/gawk-3.1.2
 GAWK_BINARY:=gawk
 GAWK_TARGET_BINARY:=usr/bin/gawk
 
