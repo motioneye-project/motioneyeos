@@ -29,7 +29,7 @@ $(PCIUTILS_DIR)/.unpacked: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURC
 	touch $(PCIUTILS_DIR)/.unpacked
 
 $(PCIUTILS_DIR)/.compiled: $(PCIUTILS_DIR)/.unpacked
-	$(MAKE) CC=$(TARGET_CC) OPT=$(TARGET_CFLAGS) -C $(PCIUTILS_DIR)
+	$(MAKE) CC=$(TARGET_CC) OPT="$(TARGET_CFLAGS)" -C $(PCIUTILS_DIR)
 	touch $(PCIUTILS_DIR)/.compiled
 
 $(TARGET_DIR)/sbin/lspci: $(PCIUTILS_DIR)/.compiled
