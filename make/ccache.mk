@@ -5,9 +5,8 @@
 #############################################################
 CCACHE_SITE:=http://ccache.samba.org/ftp/ccache
 CCACHE_SOURCE:=ccache-2.3.tar.gz
-CCACHE_DIR:=$(TOOL_BUILD_DIR)/ccache-2.3
-CCACHE_DIR1:=$(TOOL_BUILD_DIR)/ccache-host
-CCACHE_DIR2:=$(BUILD_DIR)/ccache-target
+CCACHE_DIR1:=$(TOOL_BUILD_DIR)/ccache-2.3
+CCACHE_DIR2:=$(BUILD_DIR)/ccache-2.3
 CCACHE_CAT:=zcat
 CCACHE_BINARY:=ccache
 CCACHE_TARGET_BINARY:=usr/bin/ccache
@@ -17,7 +16,6 @@ $(DL_DIR)/$(CCACHE_SOURCE):
 
 $(CCACHE_DIR1)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
 	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
-	mv $(CCACHE_DIR) $(CCACHE_DIR1)
 	touch $(CCACHE_DIR1)/.unpacked
 
 $(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
@@ -89,7 +87,6 @@ ccache-dirclean:
 
 $(CCACHE_DIR2)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
 	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	mv $(CCACHE_DIR) $(CCACHE_DIR2)
 	touch $(CCACHE_DIR2)/.unpacked
 
 $(CCACHE_DIR2)/.patched: $(CCACHE_DIR2)/.unpacked
