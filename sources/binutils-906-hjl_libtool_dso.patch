@@ -36,38 +36,3 @@ opcodes/
  libopcodes_la_LDFLAGS = -release $(VERSION) @WIN32LDFLAGS@
  
  # libtool will build .libs/libopcodes.a.  We create libopcodes.a in
---- binutils/opcodes/Makefile.in.dso	2003-05-20 08:37:53.000000000 -0700
-+++ binutils/opcodes/Makefile.in	2003-05-23 22:46:31.000000000 -0700
-@@ -1,4 +1,4 @@
--# Makefile.in generated automatically by automake 1.4-p5 from Makefile.am
-+# Makefile.in generated automatically by automake 1.4-p6 from Makefile.am
- 
- # Copyright (C) 1994, 1995-8, 1999, 2001 Free Software Foundation, Inc.
- # This Makefile.in is free software; the Free Software Foundation
-@@ -393,7 +393,7 @@ INCLUDES = -D_GNU_SOURCE -I. -I$(srcdir)
- 
- libopcodes_la_SOURCES = dis-buf.c disassemble.c
- libopcodes_la_DEPENDENCIES = $(OFILES) ../bfd/libbfd.la
--libopcodes_la_LIBADD = $(OFILES) @WIN32LIBADD@ ../bfd/libbfd.la
-+libopcodes_la_LIBADD = $(OFILES) @WIN32LIBADD@ -L../bfd -lbfd
- libopcodes_la_LDFLAGS = -release $(VERSION) @WIN32LDFLAGS@
- 
- # libtool will build .libs/libopcodes.a.  We create libopcodes.a in
-@@ -592,7 +592,7 @@ libopcodes.la: $(libopcodes_la_OBJECTS) 
- all-recursive install-data-recursive install-exec-recursive \
- installdirs-recursive install-recursive uninstall-recursive install-info-recursive \
- check-recursive installcheck-recursive info-recursive dvi-recursive:
--	@set fnord $(MAKEFLAGS); amf=$$2; \
-+	@set fnord $$MAKEFLAGS; amf=$$2; \
- 	dot_seen=no; \
- 	target=`echo $@ | sed s/-recursive//`; \
- 	list='$(SUBDIRS)'; for subdir in $$list; do \
-@@ -612,7 +612,7 @@ check-recursive installcheck-recursive i
- 
- mostlyclean-recursive clean-recursive distclean-recursive \
- maintainer-clean-recursive:
--	@set fnord $(MAKEFLAGS); amf=$$2; \
-+	@set fnord $$MAKEFLAGS; amf=$$2; \
- 	dot_seen=no; \
- 	rev=''; list='$(SUBDIRS)'; for subdir in $$list; do \
- 	  rev="$$subdir $$rev"; \
