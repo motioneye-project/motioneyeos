@@ -1,16 +1,11 @@
-#
-
 menu "Package Selection for the target"
 
-comment "The default minimal system"
 
+comment "The default minimal system"
 source "package/busybox/Config.in"
 
 
-
-
 comment "The minimum needed to build a uClibc development system"
-
 source "package/bash/Config.in"
 source "package/bzip2/Config.in"
 source "package/coreutils/Config.in"
@@ -28,11 +23,7 @@ source "package/sed/Config.in"
 source "package/tar/Config.in"
 
 
-
-
-
 comment "Other stuff"
-
 source "package/autoconf/Config.in"
 source "package/automake/Config.in"
 source "package/berkeleydb/Config.in"
@@ -111,5 +102,6 @@ source "package/wget/Config.in"
 source "package/which/Config.in"
 source "package/wtools/Config.in"
 source "package/zlib/Config.in"
+
 
 endmenu
