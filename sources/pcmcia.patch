@@ -21,3 +21,13 @@ diff -urN pcmcia-cs-3.2.3.orig/etc/shared pcmcia-cs-3.2.3/etc/shared
  usage ()
  {
      echo "usage: $0 [action] [device name]"
+--- pcmcia-cs-3.2.3/etc/rc.pcmcia~	2003-06-05 19:24:49.000000000 -0600
++++ pcmcia-cs-3.2.3/etc/rc.pcmcia	2003-06-05 19:25:04.000000000 -0600
+@@ -48,7 +48,6 @@
+ for N in PCMCIA PCIC PCIC_OPTS CORE_OPTS CARDMGR_OPTS SCHEME ; do
+     V=`eval echo '$'ENV_$N` ; if [ "$V" ] ; then eval $N=\"$V\" ; fi
+ done
+-if [ "$PCMCIA" -a "$PCMCIA" != "yes" ] ; then exit 0 ; fi
+ 
+ usage()
+ {
