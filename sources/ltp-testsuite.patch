@@ -1,5 +1,6 @@
---- ltp-full-20031002/testcases/kernel/syscalls/fmtmsg/Makefile.orig	2003-10-02 19:18:10.000000000 -0600
-+++ ltp-full-20031002/testcases/kernel/syscalls/fmtmsg/Makefile	2003-10-02 19:18:32.000000000 -0600
+diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/fmtmsg/Makefile ltp-full-20040506/testcases/kernel/syscalls/fmtmsg/Makefile
+--- ltp-full-20040506.orig/testcases/kernel/syscalls/fmtmsg/Makefile	2003-03-04 09:15:27.000000000 -0700
++++ ltp-full-20040506/testcases/kernel/syscalls/fmtmsg/Makefile	2004-05-12 14:03:56.000000000 -0600
 @@ -24,7 +24,7 @@
  LOADLIBES+=	-L../../../../lib -lltp
  
@@ -9,8 +10,9 @@
  
  all: $(TARGETS)
  
---- ltp-full-20031002/testcases/kernel/syscalls/profil/Makefile.orig	2003-10-02 19:27:53.000000000 -0600
-+++ ltp-full-20031002/testcases/kernel/syscalls/profil/Makefile	2003-10-02 19:28:02.000000000 -0600
+diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/profil/Makefile ltp-full-20040506/testcases/kernel/syscalls/profil/Makefile
+--- ltp-full-20040506.orig/testcases/kernel/syscalls/profil/Makefile	2003-03-04 09:16:26.000000000 -0700
++++ ltp-full-20040506/testcases/kernel/syscalls/profil/Makefile	2004-05-12 14:03:56.000000000 -0600
 @@ -23,7 +23,7 @@
  LOADLIBES+=	-L../../../../lib -lltp 
  
@@ -20,40 +22,28 @@
  
  all: $(TARGETS)
  
---- ltp-full-20031002/testcases/network/rpc/rpc01/Makefile.orig	2003-10-02 19:36:51.000000000 -0600
-+++ ltp-full-20031002/testcases/network/rpc/rpc01/Makefile	2003-10-02 19:37:03.000000000 -0600
-@@ -2,7 +2,7 @@
- LDLIBS += 
+diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/swapon/swapon02.c ltp-full-20040506/testcases/kernel/syscalls/swapon/swapon02.c
+--- ltp-full-20040506.orig/testcases/kernel/syscalls/swapon/swapon02.c	2004-04-23 12:13:20.000000000 -0600
++++ ltp-full-20040506/testcases/kernel/syscalls/swapon/swapon02.c	2004-05-12 23:02:50.000000000 -0600
+@@ -85,9 +85,7 @@
+ #include <sys/swap.h>
+ #include <asm/page.h>
+ #include <asm/atomic.h>
+-#ifdef OLDER_DISTRO_RELEASE
+-#include <linux/swap.h>
+-#endif
++#define MAX_SWAPFILES 32
+ #include <fcntl.h>
+ #include <pwd.h>
+ #include <string.h>
+@@ -96,10 +94,6 @@
+ #include "test.h"
+ #include "usctest.h"
  
- SRCS=$(wildcard *.c)
--TARGETS=$(patsubst %.c,%,$(SRCS))
-+TARGETS=#$(patsubst %.c,%,$(SRCS))
- 
- all: $(TARGETS)
- 
---- ltp-full-20031002/tools/netpipe-2.4-ipv6/Makefile.orig	2003-11-07 16:41:39.000000000 -0700
-+++ ltp-full-20031002/tools/netpipe-2.4-ipv6/Makefile	2003-11-07 16:42:41.000000000 -0700
-@@ -10,7 +10,7 @@
- DRIV_OBJ   = netpipe.o
- INCLUDES   = netpipe.h
- # Default target is just TCP
--TARGETS    = NPtcp-ipv6
-+TARGETS    = #NPtcp-ipv6
- # If you have TCP, MPI and PVM
- #TARGETS    = NPtcp NPmpi NPpvm
- CFLAGS		    += -O -Wall
-@@ -28,12 +28,12 @@
- targets:    $(TARGETS)
- 
- install:
--	@ln -f NPtcp-ipv6 ../../testcases/bin	
-+	#@ln -f NPtcp-ipv6 ../../testcases/bin	
- #
- # This section of the Makefile is for compiling the binaries
- #
- 
--TCP:	NPtcp-ipv6
-+TCP:	#NPtcp-ipv6
- 	@echo 'NPtcp has been built.'
- 
- NPtcp-ipv6:	NPtcp.o TCP.o
+-#ifndef OLDER_DISTRO_RELEASE
+-#define MAX_SWAPFILES 32 
+-#endif
+-
+ static void setup();
+ static void cleanup();
+ static int setup01();
