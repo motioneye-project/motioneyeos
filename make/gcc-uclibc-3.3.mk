@@ -173,12 +173,19 @@ ifeq ($(SOFT_FLOAT),true)
 		echo staging dir specs file is missing ; \
 		/bin/false ; \
 	fi;
-	cp $(SOURCE_DIR)/specs-$(ARCH)-soft-float $(STAGING_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+	cp $(SOURCE_DIR)/specs-$(ARCH)-soft-float \
+		$(STAGING_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
 endif
 	touch $(GCC_BUILD_DIR2)/.installed
 
+$(TARGET_DIR)/lib/libgcc_s.so.1: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s.so.1
+	# These are in /lib, so...
+	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
+	$(STRIP) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s.so.1
+	cp -a $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
+
 gcc3_3: uclibc-configured binutils gcc3_3_initial $(LIBFLOAT_TARGET) uclibc \
-	$(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
+	$(TARGET_DIR)/lib/libgcc_s.so.1 $(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
 
 gcc3_3-source: $(DL_DIR)/$(GCC_SOURCE)
 
