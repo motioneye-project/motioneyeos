@@ -47,7 +47,7 @@ $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 	);
 	touch  $(BOA_WORKDIR)/Makefile
 
-$(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer:	$(BOA_WORKDIR)/Makefile
+$(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer:	$(BOA_WORKDIR)/Makefile
 	rm -f $@
 	$(MAKE) -C $(BOA_WORKDIR)
 
