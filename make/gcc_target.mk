@@ -55,8 +55,9 @@ $(BINUTILS_DIR2)/.configured:
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
 		CC=$(TARGET_CROSS)gcc \
 		$(BINUTILS_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
-		--exec-prefix=/usr \
+		--exec-prefix=$(STAGING_DIR) \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
 		--libexecdir=/usr/lib \
@@ -76,7 +77,8 @@ $(BINUTILS_DIR2)/.configured:
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
-		CC=$(TARGET_CROSS)gcc -C $(BINUTILS_DIR2)
+		CC=$(TARGET_CROSS)gcc GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc -C $(BINUTILS_DIR2)
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
 	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(HOSTCC) GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
@@ -176,21 +178,28 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks:
 	touch $(GCC_BUILD_DIR3)/.gcc_build_hacks
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
-	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
-		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
-		CC=$(TARGET_CROSS)gcc $(GCC_DIR)/configure \
-		--prefix=$(TARGET_DIR)/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--with-local-prefix=/usr/local \
-		--libdir=/usr/lib \
+	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH \
+		AS=$(TARGET_CROSS)as \
+		LD=$(TARGET_CROSS)ld \
+		AR=$(TARGET_CROSS)ar \
+		NM=$(TARGET_CROSS)nm \
+		CC=$(TARGET_CROSS)gcc \
+		GCC=$(TARGET_CROSS)gcc \
+		CXX=$(TARGET_CROSS)c++ \
+		RANLIB=$(TARGET_CROSS)ranlib \
+		$(GCC_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=$(STAGING_DIR) \
+		--exec-prefix=$(STAGING_DIR) \
+		--bindir=$(STAGING_DIR)/bin \
+		--sbindir=$(STAGING_DIR)/sbin \
+		--sysconfdir=$(STAGING_DIR)/etc \
+		--datadir=$(STAGING_DIR)/share \
+		--localstatedir=$(STAGING_DIR)/var \
+		--mandir=$(STAGING_DIR)/man \
+		--infodir=$(STAGING_DIR)/info \
+		--with-local-prefix=$(STAGING_DIR)/usr/local \
+		--libdir=$(STAGING_DIR)/lib \
 		--includedir=$(STAGING_DIR)/include \
 		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
 		--oldincludedir=$(STAGING_DIR)/include \
@@ -204,22 +213,29 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
-	    AR=$(TARGET_CROSS)ar RANLIB=$(TARGET_CROSS)ranlib \
-	    LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
-	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
-	    CC_FOR_TARGET=$(TARGET_CROSS)gcc LIBGCC2_INCLUDES=$(TARGET_DIR)/usr/include \
+	PATH=$(STAGING_DIR)/bin:$$PATH \
+	    AS=$(TARGET_CROSS)as \
+	    LD=$(TARGET_CROSS)ld \
+	    AR=$(TARGET_CROSS)ar \
+	    NM=$(TARGET_CROSS)nm \
+	    CC=$(TARGET_CROSS)gcc \
+	    GCC=$(TARGET_CROSS)gcc \
+	    CXX=$(TARGET_CROSS)c++ \
+	    RANLIB=$(TARGET_CROSS)ranlib \
 	    $(MAKE) -C $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
-	    AR=$(TARGET_CROSS)ar RANLIB=$(TARGET_CROSS)ranlib \
-	    LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
-	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
-	    CC_FOR_TARGET=$(TARGET_CROSS)gcc $(MAKE) \
+	    AS=$(TARGET_CROSS)as \
+	    LD=$(TARGET_CROSS)ld \
+	    AR=$(TARGET_CROSS)ar \
+	    NM=$(TARGET_CROSS)nm \
+	    CC=$(TARGET_CROSS)gcc \
+	    GCC=$(TARGET_CROSS)gcc \
+	    CXX=$(TARGET_CROSS)c++ \
+	    RANLIB=$(TARGET_CROSS)ranlib \
+	    $(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
