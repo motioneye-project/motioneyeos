@@ -77,6 +77,10 @@ TARGETS+=busybox tinylogin
 # Everything needed to build a full uClibc development system!
 #TARGETS+=coreutils findutils bash make sed gawk gcc_target
 
+# Of course, if you are installing a development system, you
+# may want some header files so you can compile stuff....
+#TARGETS+=ncurses-headers zlib-headers openssl-headers
+
 # Some nice debugging tools
 #TARGETS+=gdb strace
 
