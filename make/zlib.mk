@@ -30,7 +30,7 @@ $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source
 	touch $(ZLIB_DIR)/.configured;
 
 $(ZLIB_DIR)/libz.so.1.1.4: $(ZLIB_DIR)/.configured
-	$(MAKE) LDSHARED="$(TARGET_CROSS)ld -shared -soname,libz.so.1" \
+	$(MAKE) LDSHARED="$(TARGET_CROSS)gcc -shared -Wl,-soname,libz.so.1 -shared-libgcc" \
 		CFLAGS="$(ZLIB_CFLAGS)" CC=$(TARGET_CC) -C $(ZLIB_DIR) all libz.a;
 	touch -c $(ZLIB_DIR)/libz.so.1.1.4
 
