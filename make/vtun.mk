@@ -10,8 +10,8 @@ VTUN_SOURCE:=vtun-2.6.tar.gz
 VTUN_SITE:=http://unc.dl.sourceforge.net/sourceforge/vtun/
 VTUN_DIR:=$(BUILD_DIR)/vtun-2.6
 VTUN_CAT:=zcat
-VTUN_BINARY:=vtun
-VTUN_TARGET_BINARY:=usr/bin/vtun
+VTUN_BINARY:=vtund
+VTUN_TARGET_BINARY:=usr/sbin/vtund
 VTUN_PATCH:=$(SOURCE_DIR)/vtun.patch
 
 $(DL_DIR)/$(VTUN_SOURCE):
