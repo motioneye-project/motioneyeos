@@ -57,8 +57,6 @@ endif
 GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-initial
 
 $(DL_DIR)/$(GCC_SOURCE):
-	echo GCC_SOURCE is $(GCC_SOURCE)
-	/bin/false
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
