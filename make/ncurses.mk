@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.17 2003/01/19 06:07:22 andersen Exp $
+# $Id: ncurses.mk,v 1.18 2003/01/20 19:24:02 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -92,7 +92,7 @@ $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.a
 		cp -dpf $(STAGING_DIR)/usr/share/terminfo/$${i} $(TARGET_DIR)/usr/share/terminfo/; \
 	done
 
-$(TARGET_DIR)/usr/include/ncurses.h: $(TARGET_DIR)/lib/libncurses.so
+$(TARGET_DIR)/usr/lib/libncurses.a: $(TARGET_DIR)/lib/libncurses.so
 	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/ncurses.h
 	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
@@ -101,7 +101,7 @@ $(TARGET_DIR)/usr/include/ncurses.h: $(TARGET_DIR)/lib/libncurses.so
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libcurses.a)
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libtermcap.a)
 	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
-	touch -c $(TARGET_DIR)/usr/include/ncurses.h
+	touch -c $(NCURSES_DIR)/usr/lib/libncurses.a
 
 ncurses-headers: $(TARGET_DIR)/usr/include/ncurses.h
 

@@ -27,7 +27,7 @@ ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 TARGET_LANGUAGES:=c,c++
 
 # If you want multilib enabled, enable this...
-#MULTILIB:=--enable-multilib
+MULTILIB:=--enable-multilib
 
 #############################################################
 #

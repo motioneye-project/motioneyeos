@@ -25,7 +25,7 @@
 TARGET_LANGUAGES:=c,c++
 
 # If you want multilib enabled, enable this...
-#MULTILIB:=--enable-multilib
+MULTILIB:=--enable-multilib
 
 #############################################################
 #
@@ -250,11 +250,17 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	    mandir=$(TARGET_DIR)/usr/man \
 	    toolexecdir=$(TARGET_DIR)/lib/gcc-lib/$(GNU_TARGET_NAME) \
 	    -C $(GCC_BUILD_DIR3) install;
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
+	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
+	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-cpp $(TARGET_DIR)/usr/bin/cpp
+	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-gcc $(TARGET_DIR)/usr/bin/gcc
+	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++ $(TARGET_DIR)/usr/bin/c++
+	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-g++ $(TARGET_DIR)/usr/bin/g++
+	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++filt $(TARGET_DIR)/usr/bin/c++filt
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	touch -c $(TARGET_DIR)/usr/bin/gcc
 
 gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
 

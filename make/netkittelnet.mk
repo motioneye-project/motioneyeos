@@ -39,6 +39,7 @@ $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY): $(NETKITTELNET_DIR)/.configured
 $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY): $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY)
 	# Only install a few selected items...
 	mkdir -p $(TARGET_DIR)/usr/sbin
+	rm -f $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
 	cp $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY) $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
 	# Enable telnet in inetd
 	perl -i -p -e "s~^#telnet.*~telnet\tstream\ttcp\tnowait\troot\t/usr/sbin/telnetd\t/usr/sbin/telnetd~;" $(TARGET_DIR)/etc/inetd.conf

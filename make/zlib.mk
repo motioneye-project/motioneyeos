@@ -49,12 +49,12 @@ $(TARGET_DIR)/lib/libz.so.1.1.4: $(STAGING_DIR)/lib/libz.so.1.1.4
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libz.so*
 	touch -c $(TARGET_DIR)/lib/libz.so.1.1.4
 
-$(TARGET_DIR)/usr/include/zlib.h: $(TARGET_DIR)/lib/libz.so.1.1.4
+$(TARGET_DIR)/usr/lib/libz.a: $(TARGET_DIR)/lib/libz.so.1.1.4
 	mkdir -p $(TARGET_DIR)/usr/include
 	cp -dpf $(STAGING_DIR)/include/zlib.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/include/zconf.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libz.a $(TARGET_DIR)/usr/lib/
-	touch -c $(TARGET_DIR)/usr/include/zlib.h
+	touch -c $(TARGET_DIR)/usr/lib/libz.a
 
 zlib-headers: $(TARGET_DIR)/usr/include/zlib.h
 
