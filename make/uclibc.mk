@@ -43,10 +43,10 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 		--large_file=$(LARGEFILE) \
 		--ldso_path="/lib" \
 		--long_long=true \
-		--rpc_support=true \
+		--rpc_support=false \
 		--shadow=true \
 		--shared_support=true \
-		--threads=true \
+		--threads=false \
 		--debug=false \
 		--file=$(UCLIBC_DIR)/extra/Configs/Config.$(ARCH) \
 		> $(UCLIBC_DIR)/Config; 
