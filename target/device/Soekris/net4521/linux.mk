@@ -19,7 +19,6 @@
 #  -Erik
 #
 #############################################################
-ifneq ($(filter $(TARGETS),linux),)
 
 # Version of Linux to download and then apply patches to
 DOWNLOAD_LINUX_VERSION=2.4.29
@@ -110,12 +109,3 @@ linuxclean: clean
 linux-dirclean:
 	rm -rf $(LINUX_DIR)
 
-endif
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
-TARGETS+=linux
-endif
