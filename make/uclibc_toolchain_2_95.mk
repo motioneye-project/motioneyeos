@@ -195,7 +195,7 @@ $(GCC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-2.95-mega.patch.bz2
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc2.95-mega.patch.bz2
 	touch $(GCC_DIR)/.patched
 
 $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
