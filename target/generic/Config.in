@@ -1,4 +1,4 @@
-comment "Generic Device Support"
+comment "Generic System Support"
 
 config BR2_TARGET_GENERIC_ACCESS_POINT
 	bool "Generic wireless access point"
@@ -19,7 +19,7 @@ config BR2_TARGET_GENERIC_FIREWALL
 
 
 config BR2_TARGET_GENERIC_DEV_SYSTEM
-	bool "Generic firewall"
+	bool "Generic development system"
 	default n
 	select BR2_CCACHE
 	select BR2_PACKAGE_GDB
