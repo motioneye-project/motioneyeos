@@ -42,6 +42,8 @@ $(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.1.0.2
 	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) bzip2 bzip2recover
 
 $(BZIP2_TARGET_BINARY): $(BZIP2_BINARY)
+	(cd $(TARGET_DIR)/usr/bin; \
+	rm -f bzip2 bunzip2 bzcat bzip2recover bzgrep bzegrep bzfgrep bzmore bzless bzdiff bzcmp);
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) PREFIX=$(TARGET_DIR)/usr -C $(BZIP2_DIR) install
 	rm -f $(TARGET_DIR)/usr/lib/libbz2.a
