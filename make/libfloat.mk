@@ -10,7 +10,7 @@ LIBFLOAT_CAT:=zcat
 LIBFLOAT_DIR:=$(BUILD_DIR)/libfloat
 
 LIBFLOAT_TARGET=
-ifneq ("$(strip $(TARGET_SOFT_FLOAT))","")
+ifeq ($(strip $(SOFT_FLOAT)),true)
 ifeq ("$(strip $(ARCH))","arm")
 LIBFLOAT_TARGET+=$(STAGING_DIR)/lib/libfloat.so
 endif
@@ -32,8 +32,7 @@ $(LIBFLOAT_DIR)/.unpacked: $(DL_DIR)/$(LIBFLOAT_SOURCE) $(DL_DIR)/$(LIBFLOAT_PAT
 	$(SOURCE_DIR)/patch-kernel.sh $(LIBFLOAT_DIR) $(SOURCE_DIR) libfloat.patch
 	touch $(LIBFLOAT_DIR)/.unpacked
 
-$(LIBFLOAT_DIR)/libfloat.so.1: $(LIBFLOAT_DIR)/.unpacked \
-		$(STAGING_DIR)/bin/$(ARCH)-linux-gcc
+$(LIBFLOAT_DIR)/libfloat.so.1: $(LIBFLOAT_DIR)/.unpacked $(TARGET_CC)
 	$(MAKE) CC=$(TARGET_CC) LD=$(TARGET_CROSS)ld -C $(LIBFLOAT_DIR)
 
 $(STAGING_DIR)/lib/libfloat.so: $(LIBFLOAT_DIR)/libfloat.so.1

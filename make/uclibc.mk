@@ -63,10 +63,9 @@ else
 	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=n,g' $(UCLIBC_DIR)/.config
 endif
 	$(SED) 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
-	if [ -n "$(strip $(TARGET_SOFT_FLOAT))" ] ; then \
-		$(SED) 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
-			$(UCLIBC_DIR)/.config; \
-	fi
+ifeq ($(strip $(SOFT_FLOAT)),true)
+	$(SED) 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
+endif
 	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX=$(STAGING_DIR)/ \
 		DEVEL_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
