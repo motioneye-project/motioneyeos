@@ -40,12 +40,13 @@ $(FILE_DIR)/.configured: $(FILE_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
+		--enable-static \
 		--disable-fsect-man5 \
 	);
 	touch  $(FILE_DIR)/.configured
 
 $(FILE_DIR)/$(FILE_BINARY): $(FILE_DIR)/.configured
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(FILE_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) LDFLAGS="-static" -C $(FILE_DIR)
 
 $(TARGET_DIR)/$(FILE_TARGET_BINARY): $(FILE_DIR)/$(FILE_BINARY)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(FILE_DIR) install
