@@ -86,8 +86,8 @@ $(GCC_DIR)/.gcc3_3_build_hacks: $(GCC_DIR)/.patched
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code used for
 	# unwinding stack frames for C++ exception handling.  The
-	# unwind-dw2-fde-glibc code depends on glibc's ldso, we ant to use
-	# the generic version instead.
+	# unwind-dw2-fde-glibc code depends on glibc's ldso, we want to
+	# use the generic version instead.
 	#
 	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
@@ -377,8 +377,8 @@ $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks: $(GCC_BUILD_DIR3)/.patched
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code used for
 	# unwinding stack frames for C++ exception handling.  The
-	# unwind-dw2-fde-glibc code depends on glibc's ldso, we ant to use
-	# the generic version instead.
+	# unwind-dw2-fde-glibc code depends on glibc's ldso, we want to
+	# use the generic version instead.
 	#
 	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_BUILD_DIR3)/gcc/unwind-dw2-fde-glibc.c;
