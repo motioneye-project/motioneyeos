@@ -49,10 +49,6 @@ TARGET_LANGUAGES:=c
 endif
 endif
 
-ifeq ($(BR2_INSTALL_OBJC),y)
-TARGET_LANGUAGES:=$(TARGET_LANGUAGES),objc
-endif
-
 #############################################################
 #
 # build the first pass gcc compiler
@@ -136,7 +132,7 @@ gcc_initial-dirclean:
 
 #############################################################
 #
-# second pass compiler build.  Build the compiler targeting 
+# second pass compiler build.  Build the compiler targeting
 # the newly built shared uClibc library.
 #
 #############################################################
@@ -219,6 +215,17 @@ $(TARGET_DIR)/lib/libgcc_s.so.1: $(GCC_BUILD_DIR2)/.installed
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
 	-$(STRIP) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s.so.1
 	-cp -a $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
+	-cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
+endif
+ifeq ($(BR2_INSTALL_LIBGCJ),y)
+	-cp -a $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/lib/
+	-cp -a $(STAGING_DIR)/lib/lib-org-w3c-dom.so* $(TARGET_DIR)/lib/
+	-cp -a $(STAGING_DIR)/lib/lib-org-xml-sax.so* $(TARGET_DIR)/lib/
+	-mkdir -p $(TARGET_DIR)/usr/lib/security
+	-cp -a $(STAGING_DIR)/usr/lib/security/libgcj.security $(TARGET_DIR)/usr/lib/security/
+	-cp -a $(STAGING_DIR)/usr/lib/security/classpath.security $(TARGET_DIR)/usr/lib/security/
+endif
 
 gcc: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) uclibc \
 	$(TARGET_DIR)/lib/libgcc_s.so.1 $(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
