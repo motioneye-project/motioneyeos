@@ -9,8 +9,8 @@ COREUTILS_CAT:=bzcat
 COREUTILS_DIR:=$(BUILD_DIR)/coreutils-4.5.6
 COREUTILS_BINARY:=src/vdir
 COREUTILS_TARGET_BINARY:=bin/vdir
-BIN_PROGS:=cat chgrp chmod chown cp date dd df dir echo false ln ls mkdir \
-	mknod mv pwd rm rmdir vdir sleep stty sync touch true uname
+BIN_PROGS:=cat chgrp chmod chown cp date dd df dir echo false hostname \
+	ln ls mkdir mknod mv pwd rm rmdir vdir sleep stty sync touch true uname
 
 $(DL_DIR)/$(COREUTILS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(COREUTILS_SITE)/$(COREUTILS_SOURCE)
