@@ -57,7 +57,7 @@ $(DL_DIR)/$(GCC_SOURCE):
 
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
-	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(GCC_DIR)/.unpacked
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
@@ -128,7 +128,7 @@ $(DL_DIR)/$(STLPORT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(STLPORT_SITE)/$(STLPORT_SOURCE)
 
 $(STLPORT_DIR)/Makefile: $(DL_DIR)/$(STLPORT_SOURCE) $(STLPORT_PATCH)
-	zcat $(DL_DIR)/$(STLPORT_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf - 
+	zcat $(DL_DIR)/$(STLPORT_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) - 
 	cat $(STLPORT_PATCH) | patch -d $(STLPORT_DIR) -p1
 
 $(STLPORT_DIR)/lib/libstdc++.a: $(STLPORT_DIR)/Makefile

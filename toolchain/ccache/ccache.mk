@@ -16,7 +16,7 @@ $(DL_DIR)/$(CCACHE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(CCACHE_SITE)/$(CCACHE_SOURCE)
 
 $(CCACHE_DIR1)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
-	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(CCACHE_DIR1)/.unpacked
 
 $(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
@@ -96,7 +96,7 @@ ccache-dirclean:
 #############################################################
 
 $(CCACHE_DIR2)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
-	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(CCACHE_DIR2)/.unpacked
 
 $(CCACHE_DIR2)/.patched: $(CCACHE_DIR2)/.unpacked

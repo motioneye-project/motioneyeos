@@ -28,7 +28,7 @@ $(DL_DIR)/$(BINUTILS_SOURCE):
 
 $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
-	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
