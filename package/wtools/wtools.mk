@@ -20,6 +20,7 @@ $(DL_DIR)/$(WTOOLS_SOURCE):
 
 $(WTOOLS_BUILD_DIR)/.unpacked: $(DL_DIR)/$(WTOOLS_SOURCE)
 	zcat $(DL_DIR)/$(WTOOLS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	sed -i -e s:'strip':'$(STRIP)':g $(WTOOLS_BUILD_DIR)/Makefile
 	touch $(WTOOLS_BUILD_DIR)/.unpacked
 
 $(WTOOLS_BUILD_DIR)/.configured: $(WTOOLS_BUILD_DIR)/.unpacked
