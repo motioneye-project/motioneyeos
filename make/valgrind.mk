@@ -44,12 +44,12 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 	);
 	touch  $(VALGRIND_DIR)/.configured
 
-$(VALGRIND_DIR)/valgrind.so: $(VALGRIND_DIR)/.configured
+$(VALGRIND_DIR)/coregrind/valgrind.so: $(VALGRIND_DIR)/.configured
 	$(MAKE) -C $(VALGRIND_DIR)
 	-$(STRIP) --strip-unneeded $(VALGRIND_DIR)/*.so*
-	touch -c $(VALGRIND_DIR)/valgrind.so
+	touch -c $(VALGRIND_DIR)/coregrind/valgrind.so
 
-$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind.so
+$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/coregrind/valgrind.so
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
@@ -66,10 +66,10 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind.so
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(VALGRIND_DIR) install;
 	rm -rf $(TARGET_DIR)/usr/share/doc/valgrind
-	mkdir -p $(TARGET_DIR)/etc/default
-	cp $(VALGRIND_DIR)/valgrind.default $(TARGET_DIR)/etc/default/valgrind
-	mkdir -p $(TARGET_DIR)/usr/lib/valgrind
-	cp $(VALGRIND_DIR)/woody.supp $(TARGET_DIR)/usr/lib/valgrind/
+	#mkdir -p $(TARGET_DIR)/etc/default
+	#cp $(VALGRIND_DIR)/valgrind.default $(TARGET_DIR)/etc/default/valgrind
+	#mkdir -p $(TARGET_DIR)/usr/lib/valgrind
+	#cp $(VALGRIND_DIR)/woody.supp $(TARGET_DIR)/usr/lib/valgrind/
 	touch -c $(TARGET_DIR)/usr/bin/valgrind
 
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
