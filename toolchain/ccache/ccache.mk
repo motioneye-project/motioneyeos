@@ -62,7 +62,7 @@ $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 		ln -fs ../usr/bin/ccache $(GNU_TARGET_NAME)-gcc; \
 		ln -fs ../usr/bin/ccache $(REAL_GNU_TARGET_NAME)-cc; \
 		ln -fs ../usr/bin/ccache $(REAL_GNU_TARGET_NAME)-gcc);
-ifeq ($(INSTALL_LIBSTDCPP),true)
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 	[ -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-c++ ] && \
 		mv $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-c++ $(STAGING_DIR)/bin-ccache/
 	[ -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-g++ ] && \

@@ -39,10 +39,10 @@ GCC_STRIP_HOST_BINARIES:=true
 #
 #############################################################
 
-ifeq ($(INSTALL_LIBGCJ),true)
+ifeq ($(BR2_INSTALL_LIBGCJ),y)
 TARGET_LANGUAGES:=c,c++,java
 else
-ifeq ($(INSTALL_LIBSTDCPP),true)
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 TARGET_LANGUAGES:=c,c++
 else
 TARGET_LANGUAGES:=c

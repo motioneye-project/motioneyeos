@@ -36,7 +36,7 @@ GCC_STRIP_HOST_BINARIES:=true
 #
 #############################################################
 
-ifeq ($(INSTALL_LIBSTDCPP),true)
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 TARGET_LANGUAGES:=c,c++
 STLPORT_TARGET=stlport
 else
