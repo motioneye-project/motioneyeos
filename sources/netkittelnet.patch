@@ -115,3 +115,57 @@
             ) >/dev/null 2>&1; then
              echo '-ldb'
              LIBS="$LIBS -ldb"
+diff -urN netkit-telnet-0.17/telnetd/state.c netkit-telnet-0.17-dm/telnetd/state.c
+--- netkit-telnet-0.17/telnetd/state.c	1999-12-12 11:41:44.000000000 -0800
++++ netkit-telnet-0.17-dm/telnetd/state.c	2003-07-23 19:20:38.000000000 -0700
+@@ -43,10 +43,10 @@
+ 
+ static int envvarok(char *varp);
+ 
+-static unsigned char doopt[] = { IAC, DO, '%', 'c', 0 };
+-static unsigned char dont[] = { IAC, DONT, '%', 'c', 0 };
+-unsigned char	will[] = { IAC, WILL, '%', 'c', 0 };
+-unsigned char	wont[] = { IAC, WONT, '%', 'c', 0 };
++//static unsigned char doopt[] = { IAC, DO, '%', 'c', 0 };
++//static unsigned char dont[] = { IAC, DONT, '%', 'c', 0 };
++//unsigned char	will[] = { IAC, WILL, '%', 'c', 0 };
++//unsigned char	wont[] = { IAC, WONT, '%', 'c', 0 };
+ 
+ /*
+  * Buffer for sub-options, and macros
+@@ -422,7 +422,7 @@
+ 	    set_his_want_state_will(option);
+ 	do_dont_resp[option]++;
+     }
+-    netoprintf((char *)doopt, option);
++    netoprintf( "%c%c%c", IAC, DO, option );
+     
+     DIAG(TD_OPTIONS, printoption("td: send do", option));
+ }
+@@ -632,7 +632,7 @@
+ 	set_his_want_state_wont(option);
+ 	do_dont_resp[option]++;
+     }
+-    netoprintf((char *) dont, option);
++    netoprintf ( "%c%c%c", IAC, DONT, option );
+ 
+     DIAG(TD_OPTIONS, printoption("td: send dont", option));
+ }
+@@ -769,7 +769,7 @@
+ 	set_my_want_state_will(option);
+ 	will_wont_resp[option]++;
+     }
+-    netoprintf((char *) will, option);
++    netoprintf( "%c%c%c", IAC, WILL, option);
+ 
+     DIAG(TD_OPTIONS, printoption("td: send will", option));
+ }
+@@ -917,7 +917,7 @@
+ 	set_my_want_state_wont(option);
+ 	will_wont_resp[option]++;
+     }
+-    netoprintf((char *)wont, option);
++    netoprintf( "%c%c%c", IAC, WONT, option);
+     
+     DIAG(TD_OPTIONS, printoption("td: send wont", option));
+ }
