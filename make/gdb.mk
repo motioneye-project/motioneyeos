@@ -7,12 +7,14 @@
 GDB_SITE:=ftp://ftp.gnu.org/gnu/gdb/
 GDB_DIR:=$(BUILD_DIR)/gdb-5.3
 GDB_SOURCE:=gdb-5.3.tar.gz
+GDB_PATCH:=$(SOURCE_DIR)/gdb.patch
 
 $(DL_DIR)/$(GDB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GDB_SITE)/$(GDB_SOURCE)
 
-$(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
+$(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE) $(GDB_PATCH)
 	gunzip -c $(DL_DIR)/$(GDB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	cat $(GDB_PATCH) | patch -p1 -d $(GDB_DIR)
 	touch  $(GDB_DIR)/.unpacked
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
