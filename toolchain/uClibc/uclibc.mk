@@ -72,7 +72,7 @@ endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
-	$(MAKE) -C $(UCLIBC_DIR) \
+	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
@@ -81,7 +81,7 @@ endif
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
-	$(MAKE) -C $(UCLIBC_DIR) \
+	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX= \
 		DEVEL_PREFIX=/ \
 		RUNTIME_PREFIX=/ \
@@ -90,18 +90,18 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 	touch -c $(UCLIBC_DIR)/lib/libc.a
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) \
+	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(STAGING_DIR)/ \
 		DEVEL_PREFIX=/ \
 		RUNTIME_PREFIX=/ \
 		install_runtime
-	$(MAKE) -C $(UCLIBC_DIR) \
+	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(STAGING_DIR)/ \
 		DEVEL_PREFIX=/ \
 		RUNTIME_PREFIX=/ \
 		install_dev
 	# Build the host utils.  Need to add an install target...
-	$(MAKE) -C $(UCLIBC_DIR)/utils \
+	$(MAKE1) -C $(UCLIBC_DIR)/utils \
 		PREFIX=$(STAGING_DIR) \
 		HOSTCC="$(HOSTCC)" \
 		hostutils
@@ -109,7 +109,7 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 
 ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) \
+	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
@@ -117,7 +117,7 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 	touch -c $(TARGET_DIR)/lib/libc.so.0
 
 $(TARGET_DIR)/usr/bin/ldd: gcc
-	$(MAKE) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
+	$(MAKE1) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
 		PREFIX=$(TARGET_DIR) utils install_utils
 	touch -c $(TARGET_DIR)/usr/bin/ldd
 
@@ -134,7 +134,7 @@ uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 uclibc-configured-source: uclibc-source
 
 uclibc-clean:
-	-$(MAKE) -C $(UCLIBC_DIR) clean
+	-$(MAKE1) -C $(UCLIBC_DIR) clean
 	rm -f $(UCLIBC_DIR)/.config
 
 uclibc-dirclean:
@@ -150,7 +150,7 @@ uclibc-target-utils: $(TARGET_DIR)/usr/bin/ldd
 #############################################################
 
 $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) \
+	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \

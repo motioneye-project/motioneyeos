@@ -70,9 +70,15 @@ config BR2_ARCH
 	default "sparc"   if BR2_sparc
 
 
+menu "Build options"
+
 config BR2_WGET
-	string
+	string "Wget command"
 	default "wget --passive-ftp -nd"
+
+config BR2_TAR_VERBOSITY
+	bool "Tar verbose"
+	default n
 
 config BR2_STAGING_DIR
 	string "Toolchain and header file location?"
@@ -87,10 +93,13 @@ config BR2_STAGING_DIR
 	    Most people will leave this set to the default value of
 	    "$(BUILD_DIR)/staging_dir".
 
+config BR2_JLEVEL
+	int "Number of jobs to run simultaneously"
+	default "1"
+	help
+	    Number of jobs to run simultanesouly
 
-config BR2_TAR_VERBOSITY
-	bool
-	default n
+endmenu
 
 source "toolchain/Config.in"
 

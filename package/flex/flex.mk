@@ -51,7 +51,7 @@ $(FLEX_DIR)/$(FLEX_BINARY): $(FLEX_DIR)/.configured
 	$(MAKE) -C $(FLEX_DIR)
 
 $(TARGET_DIR)/$(FLEX_TARGET_BINARY): $(FLEX_DIR)/$(FLEX_BINARY)
-	$(MAKE) \
+	$(MAKE1) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
