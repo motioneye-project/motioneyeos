@@ -1,6 +1,51 @@
-config BR2_TARGET_ROOTFS_EXT2
+menuconfig BR2_TARGET_ROOTFS_EXT2
 	bool "ext2 root filesystem for the target device"
 	default y
 	help
 	  Build an ext2 root filesystem
 
+config BR2_TARGET_ROOTFS_EXT2_BLOCKS
+	int "size in blocks (leave at 0 for auto calculation"
+	depends on BR2_TARGET_ROOTFS_EXT2
+	default	0
+	
+config BR2_TARGET_ROOTFS_EXT2_INODES
+	int "inodes (leave at 0 for auto calculation)"
+	depends on BR2_TARGET_ROOTFS_EXT2
+	default	0
+	
+config BR2_TARGET_ROOTFS_EXT2_RESBLKS
+	int "reserved blocks"
+	depends on BR2_TARGET_ROOTFS_EXT2
+	default 0
+	
+config BR2_TARGET_ROOTFS_EXT2_SQUASH
+	bool "Make all files be owned by root"
+	depends on 	BR2_TARGET_ROOTFS_EXT2
+	default y
+
+config BR2_TARGET_ROOTFS_EXT2_DEVFILE
+	string "Location of device table file (blank for none)"
+	depends on BR2_TARGET_ROOTFS_EXT2
+	default "target/default/device_table.txt"
+	
+config BR2_TARGET_ROOTFS_EXT2_OUTPUT
+	string "Output File"
+	depends on BR2_TARGET_ROOTFS_EXT2
+	default "$(IMAGE).ext2"
+	
+config BR2_TARGET_ROOTFS_EXT2_GZ
+	bool "gzip the output file"
+	depends on 	BR2_TARGET_ROOTFS_EXT2
+	default n
+
+config BR2_TARGET_ROOTFS_EXT2_COPYTO
+	string "also copy the image to..."
+	depends on 	BR2_TARGET_ROOTFS_EXT2
+	default ""
+	help
+		Copies the resulting image to a secondary location
+		like a tftp server's root directory.
+
+	
+	

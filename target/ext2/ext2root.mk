@@ -47,11 +47,61 @@ GENEXT2_SIZE=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE) + 200)
 GENEXT2_INODES=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
 #GENEXT2_SIZE=100000
 
-ext2root: genext2fs
-	#-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
+EXT2_OPTS := 
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
+EXT2_OPTS += -b $(GENEXT2_SIZE)
+else
+EXT2_OPTS += -b $(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS))
+endif
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_INODES)),0)
+EXT2_OPTS += -i $(GENEXT2_INODES)
+else
+EXT2_OPTS += -i $(strip $(BR2_TARGET_ROOTFS_EXT2_INODES))
+endif
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_SQUASH)),y)
+EXT2_OPTS += -q
+endif
+
+ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS)),0)
+EXT2_OPTS += -r $(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS))
+endif
+
+EXT2_DEVFILE := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_DEVFILE)))
+ifneq ($(EXT2_DEVFILE),)
+EXT2_OPTS += -D $(EXT2_DEVFILE)
+endif
+
+EXT2_BASE :=	$(subst ",,$(BR2_TARGET_ROOTFS_EXT2_OUTPUT))
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_GZ)),y)
+EXT2_TARGET := $(EXT2_BASE).gz
+else
+EXT2_TARGET := $(EXT2_BASE)
+endif
+
+$(EXT2_BASE): genext2fs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
-	$(GENEXT2_DIR)/genext2fs -i $(GENEXT2_INODES) -b $(GENEXT2_SIZE) \
-		-d $(TARGET_DIR) -q -D target/default/device_table.txt $(IMAGE).ext2
+	@rm -rf $(TARGET_DIR)/usr/man
+	@rm -rf $(TARGET_DIR)/usr/share/man
+	@rm -rf $(TARGET_DIR)/usr/info
+	$(GENEXT2_DIR)/genext2fs \
+		-d $(TARGET_DIR) \
+		$(EXT2_OPTS) \
+		$(EXT2_BASE)
+		
+$(EXT2_BASE).gz: $(EXT2_BASE)
+	@gzip --best -fv $(EXT2_BASE)
+	
+EXT2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_COPYTO)))
+	
+ext2root: $(EXT2_TARGET)
+	@ls -l $(EXT2_TARGET)
+ifneq ($(EXT2_COPYTO),)
+	@cp -f $(EXT2_TARGET) $(EXT2_COPYTO)
+endif	
 
 ext2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)
 
