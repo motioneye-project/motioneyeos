@@ -1,7 +1,0 @@
-config BR2_PACKAGE_MKE2FS
-	bool "mke2fs"
-	default n
-	help
-	  Create ext2 filesystems.
-
-	  http://e2fsprogs.sourceforge.net/
