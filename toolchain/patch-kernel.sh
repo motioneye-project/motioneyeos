@@ -36,7 +36,7 @@ for i in ${patchdir}/${patchpattern} ; do
     esac
     echo ""
     echo "Applying ${i} using ${type}: " 
-    ${uncomp} ${i} | patch -p1 -E -d ${targetdir} 
+    ${uncomp} ${i} | patch ${patch_level:--p1} -E -d ${targetdir} 
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix $i!"
 	exit 1
