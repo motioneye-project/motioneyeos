@@ -44,11 +44,10 @@ config SOFT_FLOAT
 	default "true"
 
 config BR2_TARGET_OPTIMIZATION
-	string
+	string "Target Optimizations"
 	default "-Os -pipe"
 	help
-	    Currently the unwind stuff seems to work for staticly linked apps
-	    but not dynamic.  So use setjmp/longjmp exceptions by default.
+	  Optimizations to use when building for the target host.
 
 # Might be worth experimenting with for gcc 3.4.x.
 #GCC_WITH_CPU:=
