@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_SOCAT
-	bool"socat"
+	bool "socat"
 	default n
 	help
-	  Add help text here.
+	  Multipurpose socket relay program.
 
+	  http://www.dest-unreach.org/socat/

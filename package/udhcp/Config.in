@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_UDHCP
-	bool"udhcp"
+	bool "udhcp"
 	default n
 	help
-	  Add help text here.
+	  An embedded dhcp server/client package that strives to be 
+	  fully functional, RFC compliant, and really tiny.
 
+	  http://udhcp.busybox.net/

@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_JPEG
-	bool"jpeg"
+	bool "jpeg"
 	default n
 	help
-	  Add help text here.
+	  The ubiquitous C library for manipulating JPEG images.
 
+	  http://www.ijg.org/

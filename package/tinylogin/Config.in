@@ -1,8 +1,9 @@
-#
-
 config BR2_PACKAGE_TINYLOGIN
-	bool"tinylogin"
+	bool "tinylogin"
 	default n
 	help
-	  Add help text here.
+	  Suite of tiny Unix utilities for handling logging into, 
+	  being authenticated by, changing one's password for, and 
+	  otherwise maintaining users and groups on an embedded system.
 
+	  http://tinylogin.busybox.net/

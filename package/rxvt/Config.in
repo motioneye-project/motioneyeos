@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_RXVT
-	bool"rxvt"
+	bool "rxvt"
 	default n
 	help
-	  Add help text here.
+	  A nice small colour vt102 X terminal emulator.
 
+	  http://www.rxvt.org/

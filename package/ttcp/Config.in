@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_TTCP
-	bool"ttcp"
+	bool "ttcp"
 	default n
 	help
-	  Add help text here.
+	  Benchmarking tool for determining TCP and UDP performance.
 
+	  ftp://ftp.sunet.se/pub/network/monitoring/ttcp/

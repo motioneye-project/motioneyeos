@@ -1,8 +1,10 @@
-#
-
 config BR2_PACKAGE_VTUN
-	bool"vtun"
+	bool "vtun"
 	default n
 	help
-	  Add help text here.
+	  Tool for easily creating Virtual Tunnels over TCP/IP networks 
+	  with traffic shaping, compression, and encryption.
 
+	  It supports IP, PPP, SLIP, Ethernet and other tunnel types.
+
+	  http://vtun.sourceforge.net/

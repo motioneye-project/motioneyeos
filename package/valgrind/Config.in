@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_VALGRIND
-	bool"valgrind"
+	bool "valgrind"
 	default n
 	help
-	  Add help text here.
+	  Tool for debugging and profiling Linux programs.
 
+	  http://valgrind.kde.org/
