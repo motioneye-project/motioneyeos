@@ -43,10 +43,10 @@ MULTILIB:=--enable-multilib
 #############################################################
 #BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils
 #BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
-#BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.13.2.1
+#BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.13.2.1
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
 BINUTILS_SOURCE:=binutils-2.14.90.0.5.tar.bz2
-BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.14.90.0.5
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.5
 BINUTILS_CAT:=bzcat
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
@@ -66,7 +66,7 @@ endif
 #GCC_CAT:=zcat
 GCC_SITE:=http://gcc.get-software.com/releases/gcc-3.3.1
 GCC_SOURCE:=gcc-3.3.1.tar.bz2
-GCC_DIR:=$(BUILD_DIR)/gcc-3.3.1
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1
 GCC_CAT:=bzcat
 
 
