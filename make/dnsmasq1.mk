@@ -15,7 +15,7 @@ $(DL_DIR)/$(DNSMASQ1_SOURCE):
 
 $(DNSMASQ1_DIR)/.source: $(DL_DIR)/$(DNSMASQ1_SOURCE)
 	zcat $(DL_DIR)/$(DNSMASQ1_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	patch -p1 -d $(DNSMASQ1_DIR) < $(SOURCE_DIR)/dnsmasq1.patch 
+	$(SOURCE_DIR)/patch-kernel.sh $(DNSMASQ1_DIR) $(SOURCE_DIR) dnsmasq1-*.patch
 	touch $(DNSMASQ1_DIR)/.source
 
 $(DNSMASQ1_DIR)/$(DNSMASQ1_BINARY): $(DNSMASQ1_DIR)/.source
