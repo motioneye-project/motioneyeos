@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.10 2003/01/02 08:43:57 andersen Exp $
+# $Id: ncurses.mk,v 1.11 2003/01/08 02:29:25 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -71,6 +71,19 @@ $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
 		tar -cf - terminfo/$${i} | \
 			tar -C $(TARGET_DIR)/usr/share/ -xf - ; \
 	done
+
+$(TARGET_DIR)/include/curses.h: $(TARGET_DIR)/lib/libncurses.so
+	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/include/
+	cp -dpf $(NCURSES_DIR)/include/eti.h $(TARGET_DIR)/include/
+	cp -dpf $(NCURSES_DIR)/include/form.h $(TARGET_DIR)/include/
+	cp -dpf $(NCURSES_DIR)/include/menu.h $(TARGET_DIR)/include/
+	cp -dpf $(NCURSES_DIR)/include/panel.h $(TARGET_DIR)/include/
+	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/include/
+	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/include/
+	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/include/
+	(cd $(TARGET_DIR)/include; ln -fs curses.h ncurses.h)
+
+ncurses-headers: $(TARGET_DIR)/include/curses.h
 
 ncurses-clean: 
 	rm -f $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/libncurses.so*
