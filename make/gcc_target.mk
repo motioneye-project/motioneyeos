@@ -67,8 +67,7 @@ $(BINUTILS_DIR2)/.configured:
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-gxx-include-dir=/usr/include/c++ \
-		--disable-shared $(MULTILIB) \
-		--enable-targets=$(GNU_TARGET_NAME) );
+		--disable-shared $(MULTILIB) );
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
@@ -183,7 +182,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-shared $(MULTILIB) \
+		--enable-shared $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit );
 	touch $(GCC_BUILD_DIR3)/.configured

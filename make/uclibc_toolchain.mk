@@ -370,7 +370,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
 		--oldincludedir=$(STAGING_DIR)/usr/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--disable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
+		--enable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
 	touch $(GCC_BUILD_DIR2)/.configured
 
