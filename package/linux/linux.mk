@@ -53,7 +53,7 @@ $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
 	-(cd $(TOOL_BUILD_DIR); ln -sf $(LINUX_DIR) linux)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
-	# Rename the dir from the downloaded version to the AFTER patch version	
+	# Rename the dir from the downloaded version to the AFTER patch version
 	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)
 endif
 	mkdir -p package/linux/kernel-patches
