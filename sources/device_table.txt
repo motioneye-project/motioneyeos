@@ -1,5 +1,6 @@
 # device list table
 #<name>		<type>	<mode>	<uid>	<gid>	<major>	<minor>	<start>	<inc>	<count>
+/etc		d	755	0	0	-	-	-	-	-
 /dev		d	755	0	0	-	-	-	-	-
 /dev/pts	d	755	0	0	-	-	-	-	-
 
