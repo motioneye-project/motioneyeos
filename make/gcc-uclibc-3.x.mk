@@ -187,6 +187,27 @@ endif
 		   	$(GNU_TARGET_NAME)$${app##$(REAL_GNU_TARGET_NAME)}; \
 		done; \
 	);
+	#
+	# Now for the ugly 3.3.x soft float hack...
+	#
+ifeq ($(SOFT_FLOAT),true)
+ifeq ($(findstring 3.3.,$(GCC_VERSION)),3.3.)
+	# Make sure we have a soft float specs file for this arch
+	if [ ! -f $(SOURCE_DIR)/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float ] ; then \
+		echo soft float configured but no specs file for this arch ; \
+		/bin/false ; \
+	fi;
+	# Replace specs file with one that defaults to soft float mode.
+	if [ ! -f $(STAGING_DIR)/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs ] ; then \
+		echo staging dir specs file is missing ; \
+		/bin/false ; \
+	fi;
+	cp $(SOURCE_DIR)/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float $(STAGING_DIR)/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+endif
+endif
+	#
+	# Ok... that's enough of that.
+	#
 	touch $(GCC_BUILD_DIR2)/.installed
 
 $(TARGET_DIR)/lib/libgcc_s.so.1: $(GCC_BUILD_DIR2)/.installed
@@ -255,6 +276,20 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	$(MAKE) $(JLEVEL) DESTDIR=$(TARGET_DIR) -C $(GCC_BUILD_DIR3) install
 	# Remove broken specs file (cross compile flag is set).
 	rm -f $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/specs
+	#
+	# Now for the ugly 3.3.x soft float hack...
+	#
+ifeq ($(SOFT_FLOAT),true)
+ifeq ($(findstring 3.3.,$(GCC_VERSION)),3.3.)
+	# Add a specs file that defaults to soft float mode.
+	cp $(SOURCE_DIR)/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+	# Make sure gcc does not think we are cross compiling
+	$(SED) "s/^1/0/;" $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+endif
+endif
+	#
+	# Ok... that's enough of that.
+	#
 	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR); $(STRIP) cc1 cc1plus collect2 > /dev/null 2>&1)

@@ -129,16 +129,17 @@ GCC_WITH_TUNE:=
 
 # Soft floating point options.
 # Notes:
-#   Currently builds with gcc 3.3 for arm, mips, mipsel, powerpc.
+#   Builds for gcc 3.4.x.
+#   Can build for gcc 3.3.x for mips, mipsel, powerpc, and arm (special)
+#      by using custom specs files (currently for 3.3.4 only).
+#   NOTE!!! The libfloat stuff is currently removed from uClibc.  The
+#      arm soft float for 3.3.x will require reenabling it.
 #   (i386 support will be added back in at some point.)
 #   Only tested with multilib enabled.
 #   For i386, long double is the same as double (64 bits).  While this
 #      is unusual for x86, it seemed the best approach considering the
 #      limitations in the gcc floating point emulation library.
 #   For arm, soft float uses the usual libfloat routines.
-#   Custom specs files are used to set the default gcc mode to soft float
-#      as a convenience, since you shouldn't link hard and soft float
-#      together.  In fact, arm won't even let you.
 # (Un)comment the appropriate line below.
 #SOFT_FLOAT:=true
 SOFT_FLOAT:=false

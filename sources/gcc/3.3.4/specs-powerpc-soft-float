@@ -33,7 +33,7 @@ cc1 -E %{traditional|ftraditional|traditional-cpp:-traditional-cpp}
 %{G*} %{mlittle: %(cc1_endian_little)} %{!mlittle: %{mlittle-endian: %(cc1_endian_little)}} %{mbig: %(cc1_endian_big)} %{!mbig: %{mbig-endian: %(cc1_endian_big)}} %{!mlittle: %{!mlittle-endian: %{!mbig: %{!mbig-endian:     %{mcall-aixdesc: -mbig %(cc1_endian_big) }     %{mcall-freebsd: -mbig %(cc1_endian_big) }     %{mcall-i960-old: -mlittle %(cc1_endian_little) }     %{mcall-linux: -mbig %(cc1_endian_big) }     %{mcall-gnu: -mbig %(cc1_endian_big) }     %{mcall-netbsd: -mbig %(cc1_endian_big) }     %{!mcall-aixdesc: %{!mcall-freebsd: %{!mcall-i960-old: %{!mcall-linux: %{!mcall-gnu: %{!mcall-netbsd: 	    %(cc1_endian_default)     }}}}}} }}}} %{mno-sdata: -msdata=none } %{meabi: %{!mcall-*: -mcall-sysv }} %{!meabi: %{!mno-eabi:     %{mrelocatable: -meabi }     %{mcall-freebsd: -mno-eabi }     %{mcall-i960-old: -meabi }     %{mcall-linux: -mno-eabi }     %{mcall-gnu: -mno-eabi }     %{mcall-netbsd: -mno-eabi }}} %{msdata: -msdata=default} %{mno-sdata: -msdata=none} %{profile: -p}
 
 *cc1_options:
-%{pg:%{fomit-frame-pointer:%e-pg and -fomit-frame-pointer are incompatible}} %1 %{!Q:-quiet} -dumpbase %B %{d*} %{m*} %{a*} -auxbase%{c|S:%{o*:-strip %*}%{!o*: %b}}%{!c:%{!S: %b}} %{g*} %{O*} %{W*&pedantic*} %{w} %{std*} %{ansi} %{v:-version} %{pg:-p} %{p} %{f*} %{undef} %{Qn:-fno-ident} %{--help:--help} %{--target-help:--target-help} %{!fsyntax-only:%{S:%W{o*}%{!o*:-o %b.s}}} %{fsyntax-only:-o %j} %{-param*} %{msoft-float:%{mhard-float: %e-msoft-float and -mhard_float may not be used together}} %{!mhard-float:%{!msoft-float:-msoft-float}}
+%{pg:%{fomit-frame-pointer:%e-pg and -fomit-frame-pointer are incompatible}} %1 %{!Q:-quiet} -dumpbase %B %{d*} %{m*} %{a*} %{c|S:%{o*:-auxbase-strip %*}%{!o*:-auxbase %b}}%{!c:%{!S:-auxbase %b}} %{g*} %{O*} %{W*&pedantic*} %{w} %{std*} %{ansi} %{v:-version} %{pg:-p} %{p} %{f*} %{undef} %{Qn:-fno-ident} %{--help:--help} %{--target-help:--target-help} %{!fsyntax-only:%{S:%W{o*}%{!o*:-o %b.s}}} %{fsyntax-only:-o %j} %{-param*} %{msoft-float:%{mhard-float: %e-msoft-float and -mhard_float may not be used together}} %{!mhard-float:%{!msoft-float:-msoft-float}}
 
 *cc1plus:
 
@@ -66,7 +66,7 @@ cc1 -E %{traditional|ftraditional|traditional-cpp:-traditional-cpp}
 1
 
 *version:
-3.3.3
+3.3.4
 
 *multilib:
 . mhard-float;nof !mhard-float;
@@ -138,7 +138,7 @@ crtsavres.o%s
 %{mnewlib: --start-group -lgnu -lc --end-group } %{!mnewlib: %{shared:-lc} %{!shared: %{pthread:-lpthread } %{profile:-lc_p} %{!profile:-lc}}}
 
 *lib_linux:
-%{mnewlib: --start-group -llinux -lc --end-group } %{!mnewlib: %{shared:-lc} %{!shared: %{pthread:-lpthread } %{profile:-lc_p} %{!profile:-lc}}}
+%{mnewlib: --start-group -llinux -lc --end-group } %{!mnewlib: %{pthread:-lpthread} %{shared:-lc} %{!shared: %{profile:-lc_p} %{!profile:-lc}}}
 
 *lib_netbsd:
 %{profile:-lgmon -lc_p} %{!profile:-lc}
