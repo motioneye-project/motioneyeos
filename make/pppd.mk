@@ -3,9 +3,9 @@
 # pppd
 #
 #############################################################
-PPPD_SOURCE:=ppp-2.4.1b2.tar.gz
+PPPD_SOURCE:=ppp-2.4.1.tar.gz
 PPPD_SITE:=ftp://ftp.samba.org/pub/ppp
-PPPD_DIR:=$(BUILD_DIR)/ppp-2.4.1b2
+PPPD_DIR:=$(BUILD_DIR)/ppp-2.4.1
 PPPD_CAT:=zcat
 PPPD_BINARY:=pppd/pppd
 PPPD_TARGET_BINARY:=usr/sbin/pppd
