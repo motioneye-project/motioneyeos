@@ -1,0 +1,283 @@
+diff -urN valgrind-20030725.orig/coregrind/vg_intercept.c valgrind-20030725/coregrind/vg_intercept.c
+--- valgrind-20030725.orig/coregrind/vg_intercept.c	2003-07-13 13:20:57.000000000 -0600
++++ valgrind-20030725/coregrind/vg_intercept.c	2003-08-10 03:22:01.000000000 -0600
+@@ -827,8 +827,10 @@
+ void VG_(__libc_freeres_wrapper)( void )
+ {
+    int res;
++#ifndef __UCLIBC__
+    extern void __libc_freeres(void);
+    __libc_freeres();
++#endif
+    VALGRIND_MAGIC_SEQUENCE(res, 0 /* default */,
+                            VG_USERREQ__LIBC_FREERES_DONE, 0, 0, 0, 0);
+    /*NOTREACHED*/
+diff -urN valgrind-20030725.orig/coregrind/vg_libpthread.c valgrind-20030725/coregrind/vg_libpthread.c
+--- valgrind-20030725.orig/coregrind/vg_libpthread.c	2003-07-10 18:02:07.000000000 -0600
++++ valgrind-20030725/coregrind/vg_libpthread.c	2003-08-10 03:24:31.000000000 -0600
+@@ -3124,6 +3124,8 @@
+ /* I've no idea what these are, but they get called quite a lot.
+    Anybody know? */
+ 
++#ifndef __UCLIBC__
++
+ #undef _IO_flockfile
+ void _IO_flockfile ( _IO_FILE * file )
+ {
+@@ -3139,6 +3141,7 @@
+ }
+ weak_alias(_IO_funlockfile, funlockfile);
+ 
++#endif
+ 
+ /* This doesn't seem to be needed to simulate libpthread.so's external
+    interface, but many people complain about its absence. */
+diff -urN valgrind-20030725.orig/coregrind/vg_syscalls.c valgrind-20030725/coregrind/vg_syscalls.c
+--- valgrind-20030725.orig/coregrind/vg_syscalls.c	2003-07-24 15:00:03.000000000 -0600
++++ valgrind-20030725/coregrind/vg_syscalls.c	2003-08-10 03:25:33.000000000 -0600
+@@ -2427,6 +2427,104 @@
+                KERNEL_DO_SYSCALL(tid,res);
+                break;
+ 
++	    /* Stuff added by Erik Andersen for general device probing/handling */
++#define BLKSSZGET  _IO(0x12,104)
++	    case BLKSSZGET:
++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(BLKSSZGET)", arg3, 
++                    sizeof(int));
++		 KERNEL_DO_SYSCALL(tid,res);
++		 if (!VG_(is_kerror)(res) && res == 0)
++		     VG_TRACK( post_mem_write,arg3, sizeof(int));
++		 break;
++#define BLKGETSIZE64 _IOR(0x12,114,sizeof(unsigned long long*))
++	    case BLKGETSIZE64:
++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(BLKGETSIZE64)", arg3, 
++                    sizeof(unsigned long long));
++		 KERNEL_DO_SYSCALL(tid,res);
++		 if (!VG_(is_kerror)(res) && res == 0)
++		     VG_TRACK( post_mem_write,arg3, sizeof(unsigned long long));
++		 break;
++	    case HDIO_GETGEO:
++		 {
++		     struct hd_geometry {
++			 unsigned char heads;
++			 unsigned char sectors;
++			 unsigned short cylinders;
++			 unsigned long start;
++		     };
++
++		     SYSCALL_TRACK( pre_mem_write, tst, "ioctl(HDIO_GETGEO)", arg3, 
++			     sizeof(struct hd_geometry));
++		     KERNEL_DO_SYSCALL(tid,res);
++		     if (!VG_(is_kerror)(res) && res == 0)
++			 VG_TRACK( post_mem_write,arg3, sizeof(struct hd_geometry));
++		 }
++		 break;
++	    case HDIO_GET_IDENTITY:
++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(HDIO_GET_IDENTITY)", arg3, 
++                    sizeof(struct hd_driveid));
++		 KERNEL_DO_SYSCALL(tid,res);
++		 if (!VG_(is_kerror)(res) && res == 0)
++		     VG_TRACK( post_mem_write,arg3, sizeof(struct hd_driveid));
++		 break;
++	    case SCSI_IOCTL_GET_IDLUN:
++		 {
++		     struct scsi_idlun
++		     {
++			 int mux4;
++			 int host_unique_id;
++
++		     };
++
++		     SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_GET_IDLUN)", arg3, 
++			     sizeof(struct scsi_idlun));
++		     KERNEL_DO_SYSCALL(tid,res);
++		     if (!VG_(is_kerror)(res) && res == 0)
++			 VG_TRACK( post_mem_write,arg3, sizeof(struct scsi_idlun));
++		 }
++		 break;
++	    case SCSI_IOCTL_SEND_COMMAND:
++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_SEND_COMMAND)", arg3, 
++                    ((2 * sizeof(unsigned int)) + 6 + 512));
++		 KERNEL_DO_SYSCALL(tid,res);
++		 if (!VG_(is_kerror)(res) && res == 0)
++		     VG_TRACK( post_mem_write,arg3, ((2 * sizeof(unsigned int)) + 6 + 512));
++		 break;
++	    case SCSI_IOCTL_GET_BUS_NUMBER:
++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_GET_BUS_NUMBER)", arg3, 
++                    sizeof(int));
++		 KERNEL_DO_SYSCALL(tid,res);
++		 if (!VG_(is_kerror)(res) && res == 0)
++		     VG_TRACK( post_mem_write,arg3, sizeof(int));
++		 break;
++	    case SCSI_IOCTL_PROBE_HOST:
++		 {
++		     int xxxx;
++		     char *array = (char*)arg3;
++		     xxxx = array[0] + (array[1]<<8) + (array[2]<<16) + (array[3]<<24);
++		     SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_PROBE_HOST)", arg3, 
++			     sizeof(int));
++		     KERNEL_DO_SYSCALL(tid,res);
++		     if (!VG_(is_kerror)(res) && res == 0)
++			 VG_TRACK( post_mem_write,arg3, sizeof(int));
++		 }
++		 break;
++#define BLKFLSBUF  _IO(0x12,97)
++	    case BLKFLSBUF:
++		 KERNEL_DO_SYSCALL(tid,res);
++		 break;
++#define BLKRRPART  _IO(0x12,95)
++	    case BLKRRPART:
++		 KERNEL_DO_SYSCALL(tid,res);
++		 break;
++	    case MTIOCTOP:
++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(MTIOCTOP)", arg3, 
++                    sizeof(struct mtop));
++		 KERNEL_DO_SYSCALL(tid,res);
++		 if (!VG_(is_kerror)(res) && res == 0)
++		     VG_TRACK( post_mem_write,arg3, sizeof(struct mtop));
++		 break;
++
+             /* We don't have any specific information on it, so
+                try to do something reasonable based on direction and
+                size bits.  The encoding scheme is described in
+diff -urN valgrind-20030725.orig/coregrind/vg_unsafe.h valgrind-20030725/coregrind/vg_unsafe.h
+--- valgrind-20030725.orig/coregrind/vg_unsafe.h	2003-06-14 02:50:27.000000000 -0600
++++ valgrind-20030725/coregrind/vg_unsafe.h	2003-08-10 03:25:33.000000000 -0600
+@@ -58,6 +58,11 @@
+ #include <sys/user.h>     /* for struct user_regs_struct et al */
+ #include <signal.h>       /* for siginfo_t */
+ 
++#include <scsi/scsi.h>    /* for a few SCSI ioctls */
++#include <scsi/scsi_ioctl.h>/* for even more SCSI ioctls */
++#include <linux/hdreg.h>  /* for ide ioctls */
++#include <sys/mtio.h>     /* for tape drive junk */
++
+ #define __USE_LARGEFILE64
+ #include <sys/stat.h>     /* for struct stat */
+ #undef __USE_LARGEFILE64
+diff -urN valgrind-20030725.orig/valgrind.patch valgrind-20030725/valgrind.patch
+--- valgrind-20030725.orig/valgrind.patch	1969-12-31 17:00:00.000000000 -0700
++++ valgrind-20030725/valgrind.patch	2003-08-10 03:25:25.000000000 -0600
+@@ -0,0 +1,122 @@
++diff -urN valgrind-1.9.4.orig/coregrind/vg_unsafe.h valgrind-1.9.4/coregrind/vg_unsafe.h
++--- valgrind-1.9.4.orig/coregrind/vg_unsafe.h	2002-10-05 09:18:27.000000000 -0600
+++++ valgrind-1.9.4/coregrind/vg_unsafe.h	2003-03-02 03:06:22.000000000 -0700
++@@ -56,6 +56,11 @@
++ #include <linux/cdrom.h>  /* for cd-rom ioctls */
++ #include <sys/user.h>     /* for struct user_regs_struct et al */
++ 
+++#include <scsi/scsi.h>    /* for a few SCSI ioctls */
+++#include <scsi/scsi_ioctl.h>/* for even more SCSI ioctls */
+++#include <linux/hdreg.h>  /* for ide ioctls */
+++#include <sys/mtio.h>     /* for tape drive junk */
+++
++ #define __USE_LARGEFILE64
++ #include <sys/stat.h>     /* for struct stat */
++ #undef __USE_LARGEFILE64
++--- valgrind-1.9.6/coregrind/vg_syscalls.c.orig	2003-05-04 18:15:41.000000000 -0600
+++++ valgrind-1.9.6/coregrind/vg_syscalls.c	2003-07-02 01:59:16.000000000 -0600
++@@ -2389,6 +2389,104 @@
++                KERNEL_DO_SYSCALL(tid,res);
++                break;
++ 
+++	    /* Stuff added by Erik Andersen for general device probing/handling */
+++#define BLKSSZGET  _IO(0x12,104)
+++	    case BLKSSZGET:
+++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(BLKSSZGET)", arg3, 
+++                    sizeof(int));
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 if (!VG_(is_kerror)(res) && res == 0)
+++		     VG_TRACK( post_mem_write,arg3, sizeof(int));
+++		 break;
+++#define BLKGETSIZE64 _IOR(0x12,114,sizeof(unsigned long long*))
+++	    case BLKGETSIZE64:
+++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(BLKGETSIZE64)", arg3, 
+++                    sizeof(unsigned long long));
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 if (!VG_(is_kerror)(res) && res == 0)
+++		     VG_TRACK( post_mem_write,arg3, sizeof(unsigned long long));
+++		 break;
+++	    case HDIO_GETGEO:
+++		 {
+++		     struct hd_geometry {
+++			 unsigned char heads;
+++			 unsigned char sectors;
+++			 unsigned short cylinders;
+++			 unsigned long start;
+++		     };
+++
+++		     SYSCALL_TRACK( pre_mem_write, tst, "ioctl(HDIO_GETGEO)", arg3, 
+++			     sizeof(struct hd_geometry));
+++		     KERNEL_DO_SYSCALL(tid,res);
+++		     if (!VG_(is_kerror)(res) && res == 0)
+++			 VG_TRACK( post_mem_write,arg3, sizeof(struct hd_geometry));
+++		 }
+++		 break;
+++	    case HDIO_GET_IDENTITY:
+++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(HDIO_GET_IDENTITY)", arg3, 
+++                    sizeof(struct hd_driveid));
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 if (!VG_(is_kerror)(res) && res == 0)
+++		     VG_TRACK( post_mem_write,arg3, sizeof(struct hd_driveid));
+++		 break;
+++	    case SCSI_IOCTL_GET_IDLUN:
+++		 {
+++		     struct scsi_idlun
+++		     {
+++			 int mux4;
+++			 int host_unique_id;
+++
+++		     };
+++
+++		     SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_GET_IDLUN)", arg3, 
+++			     sizeof(struct scsi_idlun));
+++		     KERNEL_DO_SYSCALL(tid,res);
+++		     if (!VG_(is_kerror)(res) && res == 0)
+++			 VG_TRACK( post_mem_write,arg3, sizeof(struct scsi_idlun));
+++		 }
+++		 break;
+++	    case SCSI_IOCTL_SEND_COMMAND:
+++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_SEND_COMMAND)", arg3, 
+++                    ((2 * sizeof(unsigned int)) + 6 + 512));
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 if (!VG_(is_kerror)(res) && res == 0)
+++		     VG_TRACK( post_mem_write,arg3, ((2 * sizeof(unsigned int)) + 6 + 512));
+++		 break;
+++	    case SCSI_IOCTL_GET_BUS_NUMBER:
+++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_GET_BUS_NUMBER)", arg3, 
+++                    sizeof(int));
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 if (!VG_(is_kerror)(res) && res == 0)
+++		     VG_TRACK( post_mem_write,arg3, sizeof(int));
+++		 break;
+++	    case SCSI_IOCTL_PROBE_HOST:
+++		 {
+++		     int xxxx;
+++		     char *array = (char*)arg3;
+++		     xxxx = array[0] + (array[1]<<8) + (array[2]<<16) + (array[3]<<24);
+++		     SYSCALL_TRACK( pre_mem_write, tst, "ioctl(SCSI_IOCTL_PROBE_HOST)", arg3, 
+++			     sizeof(int));
+++		     KERNEL_DO_SYSCALL(tid,res);
+++		     if (!VG_(is_kerror)(res) && res == 0)
+++			 VG_TRACK( post_mem_write,arg3, sizeof(int));
+++		 }
+++		 break;
+++#define BLKFLSBUF  _IO(0x12,97)
+++	    case BLKFLSBUF:
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 break;
+++#define BLKRRPART  _IO(0x12,95)
+++	    case BLKRRPART:
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 break;
+++	    case MTIOCTOP:
+++                 SYSCALL_TRACK( pre_mem_write, tst, "ioctl(MTIOCTOP)", arg3, 
+++                    sizeof(struct mtop));
+++		 KERNEL_DO_SYSCALL(tid,res);
+++		 if (!VG_(is_kerror)(res) && res == 0)
+++		     VG_TRACK( post_mem_write,arg3, sizeof(struct mtop));
+++		 break;
+++
++             /* We don't have any specific information on it, so
++                try to do something reasonable based on direction and
++                size bits.  The encoding scheme is described in

@@ -5,9 +5,9 @@
 #############################################################
 
 VALGRIND_SITE:=http://developer.kde.org/~sewardj
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-1.9.6
-VALGRIND_SOURCE:=valgrind-1.9.6.tar.bz2
-VALGRIND_PATCH:=$(SOURCE_DIR)/valgrind.patch.bz2
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-20030725
+VALGRIND_SOURCE:=valgrind-20030725.tar.bz2
+VALGRIND_PATCH:=$(SOURCE_DIR)/valgrind.patch
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
@@ -17,7 +17,7 @@ $(VALGRIND_DIR)/.unpacked: $(DL_DIR)/$(VALGRIND_SOURCE)
 	touch  $(VALGRIND_DIR)/.unpacked
 
 $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked
-	bzcat $(VALGRIND_PATCH) | patch -d $(VALGRIND_DIR) -p1
+	cat $(VALGRIND_PATCH) | patch -d $(VALGRIND_DIR) -p1
 	touch $(VALGRIND_DIR)/.patched
 
 $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
