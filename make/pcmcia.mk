@@ -21,9 +21,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-PCMCIA_SOURCE:=pcmcia-cs-3.2.4.tar.gz
+PCMCIA_SOURCE:=pcmcia-cs-3.2.5.tar.gz
 PCMCIA_SITE:=http://aleron.dl.sourceforge.net/sourceforge/pcmcia-cs
-PCMCIA_DIR:=$(BUILD_DIR)/pcmcia-cs-3.2.4
+PCMCIA_DIR:=$(BUILD_DIR)/pcmcia-cs-3.2.5
 PCMCIA_PATCH:=$(SOURCE_DIR)/pcmcia.patch
 PCMCIA_CAT:=zcat
 
