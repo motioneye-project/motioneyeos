@@ -32,12 +32,12 @@ GCC_DEPENDANCY=gcc_final
 GCC_INSTALL_TARGET=install-gcc
 else
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
-BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.13.2.1
+BINUTILS_SOURCE:=binutils-2.14.tar.bz2
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.2.2.tar.gz
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.2.2
+GCC_SOURCE:=gcc-3.2.tar.gz
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
 GCC_INSTALL_TARGET=install
 endif
 

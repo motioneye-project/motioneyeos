@@ -1,6 +1,6 @@
---- gcc-3.1/libstdc++-v3/configure	Tue May  7 23:27:59 2002
-+++ gcc-3.1-patched/libstdc++-v3/configure	Thu Aug  8 11:01:35 2002
-@@ -5034,10 +5034,6 @@
+--- gcc-3.3/libstdc++-v3/configure	2003-05-01 20:37:25.000000000 -0600
++++ gcc-3.3-patched/libstdc++-v3/configure	2003-06-21 00:22:02.000000000 -0600
+@@ -5163,10 +5163,6 @@
  EOF
  
        cat >> confdefs.h <<\EOF
@@ -11,11 +11,10 @@
  #define HAVE_HYPOTF 1
  EOF
  
-@@ -7873,128 +7869,6 @@
-       cat >> confdefs.h <<\EOF
+@@ -10293,103 +10289,6 @@
  #define HAVE_MMAP 1
  EOF
--
+ 
 -
 -      cat >> confdefs.h <<\EOF
 -#define HAVE_ACOSF 1
@@ -62,14 +61,6 @@
 -EOF
 -
 -      cat >> confdefs.h <<\EOF
--#define HAVE_FINITE 1
--EOF
--
--      cat >> confdefs.h <<\EOF
--#define HAVE_FINITEF 1
--EOF
--
--      cat >> confdefs.h <<\EOF
 -#define HAVE_FLOORF 1
 -EOF
 -
@@ -79,22 +70,6 @@
 -
 -      cat >> confdefs.h <<\EOF
 -#define HAVE_FREXPF 1
--EOF
--
--      cat >> confdefs.h <<\EOF
--#define HAVE_ISINF 1
--EOF
--
--      cat >> confdefs.h <<\EOF
--#define HAVE_ISINFF 1
--EOF
--
--      cat >> confdefs.h <<\EOF
--#define HAVE_ISNAN 1
--EOF
--
--      cat >> confdefs.h <<\EOF
--#define HAVE_ISNANF 1
 -EOF
 -
 -      cat >> confdefs.h <<\EOF

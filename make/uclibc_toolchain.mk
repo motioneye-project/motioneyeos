@@ -42,13 +42,8 @@ MULTILIB:=--enable-multilib
 #
 #############################################################
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
-BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.13.2.1
-#
-# Perhaps you would perfer to use the older 2.12.1 version?
-#BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
-#BINUTILS_SOURCE:=binutils-2.12.1.tar.bz2
-#BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.12.1
+BINUTILS_SOURCE:=binutils-2.14.tar.bz2
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
@@ -62,8 +57,8 @@ UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.2.3.tar.gz
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.2.3
+GCC_SOURCE:=gcc-3.3.tar.gz
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
 
 
 
@@ -404,12 +399,12 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 	#
 	perl -i -p -e "s,defined.*_GLIBCPP_USE_C99.*,1,g;" \
 		$(GCC_DIR)/libstdc++-v3/config/locale/generic/c_locale.cc;
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_base.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_inline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_noninline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
+	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/ctype_base.h \
+		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/
+	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/ctype_inline.h \
+		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/
+	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/ctype_noninline.h \
+		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/
 	touch $(GCC_DIR)/.g++_build_hacks
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
