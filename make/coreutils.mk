@@ -7,8 +7,8 @@ COREUTILS_SOURCE:=coreutils-4.5.6.tar.bz2
 COREUTILS_SITE:=ftp://alpha.gnu.org/gnu/coreutils/
 COREUTILS_CAT:=bzcat
 COREUTILS_DIR:=$(BUILD_DIR)/coreutils-4.5.6
-COREUTILS_BINARY:=src/cat
-COREUTILS_TARGET_BINARY:=bin/cat
+COREUTILS_BINARY:=src/vdir
+COREUTILS_TARGET_BINARY:=bin/vdir
 BIN_PROGS:=cat chgrp chmod chown cp date dd df dir echo false ln ls mkdir \
 	mknod mv pwd rm rmdir vdir sleep stty sync touch true uname
 
@@ -48,6 +48,7 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 
 $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(COREUTILS_DIR)
+	rm -f $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 
 $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY): $(COREUTILS_DIR)/$(COREUTILS_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(COREUTILS_DIR) install
