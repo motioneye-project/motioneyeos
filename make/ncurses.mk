@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.20 2003/01/23 01:18:58 andersen Exp $
+# $Id: ncurses.mk,v 1.21 2003/02/12 08:10:38 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -38,8 +38,9 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 	touch  $(NCURSES_DIR)/.dist
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
-	(cd $(NCURSES_DIR); rm -rf config.cache; PATH=$(STAGING_DIR)/bin:$$PATH \
-		BUILD_CC=$(HOSTCC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+	(cd $(NCURSES_DIR); rm -rf config.cache; \
+		PATH=$(TARGET_PATH) BUILD_CC=$(HOSTCC) \
+		HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -65,7 +66,7 @@ $(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
 		DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR)
 
 $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so
-	PATH=$(STAGING_DIR)/bin:$$PATH BUILD_CC=$(HOSTCC) \
+	BUILD_CC=$(HOSTCC) \
 	    HOSTCC=$(HOSTCC) CC=$(TARGET_CC) $(MAKE) \
 	    prefix=$(STAGING_DIR) \
 	    exec_prefix=$(STAGING_DIR) \
@@ -82,6 +83,7 @@ $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so
 	    gxx_include_dir=$(STAGING_DIR)/include/c++ \
 	    ticdir=$(STAGING_DIR)/usr/share/terminfo \
 	    -C $(NCURSES_DIR) install;
+	    chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
 	    touch -c $(STAGING_DIR)/lib/libncurses.a 
 
 $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.a
@@ -98,9 +100,13 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(TARGET_DIR)/lib/libncurses.so
 	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.a $(TARGET_DIR)/usr/lib/
+	rm -f $(TARGET_DIR)/usr/lib/terminfo
+	(cd $(TARGET_DIR)/usr/lib; ln -fs /usr/share/terminfo)
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libcurses.a)
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libtermcap.a)
 	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
+	rm -f $(TARGET_DIR)/lib/libncurses.so
+	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libncurses.so.5.2 libncurses.so)
 	touch -c $(TARGET_DIR)/usr/lib/libncurses.a
 
 ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a

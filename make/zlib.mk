@@ -42,6 +42,7 @@ $(STAGING_DIR)/lib/libz.so.1.1.4: $(ZLIB_DIR)/libz.so.1.1.4
 	cp -dpf $(ZLIB_DIR)/zconf.h $(STAGING_DIR)/include;
 	cp -dpf $(ZLIB_DIR)/libz.so* $(STAGING_DIR)/lib;
 	(cd $(STAGING_DIR)/lib; ln -fs libz.so.1.1.4 libz.so.1);
+	chmod a-x $(STAGING_DIR)/lib/libz.so.1.1.4
 	touch -c $(STAGING_DIR)/lib/libz.so.1.1.4
 
 $(TARGET_DIR)/lib/libz.so.1.1.4: $(STAGING_DIR)/lib/libz.so.1.1.4
@@ -54,6 +55,8 @@ $(TARGET_DIR)/usr/lib/libz.a: $(TARGET_DIR)/lib/libz.so.1.1.4
 	cp -dpf $(STAGING_DIR)/include/zlib.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/include/zconf.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libz.a $(TARGET_DIR)/usr/lib/
+	rm -f $(TARGET_DIR)/lib/libz.so
+	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libz.so.1.1.4 libz.so)
 	touch -c $(TARGET_DIR)/usr/lib/libz.a
 
 zlib-headers: $(TARGET_DIR)/usr/lib/libz.a

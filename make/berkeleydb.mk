@@ -19,7 +19,7 @@ $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
 
 $(DB_DIR)/.configured: $(DB_DIR)/.dist
 	(cd $(DB_DIR)/build_unix; rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		../dist/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \

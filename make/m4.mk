@@ -21,7 +21,7 @@ $(M4_DIR)/.unpacked: $(DL_DIR)/$(M4_SOURCE)
 
 $(M4_DIR)/.configured: $(M4_DIR)/.unpacked
 	(cd $(M4_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -33,7 +33,6 @@ $(M4_DIR)/src/$(M4_BINARY): $(M4_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(M4_DIR)
 
 $(TARGET_DIR)/$(M4_TARGET_BINARY): $(M4_DIR)/src/$(M4_BINARY)
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \

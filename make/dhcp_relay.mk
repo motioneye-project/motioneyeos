@@ -23,10 +23,7 @@ $(DHCP_RELAY_DIR)/.unpacked: $(DL_DIR)/$(DHCP_RELAY_SOURCE)
 	touch $(DHCP_RELAY_DIR)/.unpacked
 
 $(DHCP_RELAY_DIR)/.configured: $(DHCP_RELAY_DIR)/.unpacked
-	(cd $(DHCP_RELAY_DIR); PATH=$(STAGING_DIR)/bin:$$PATH \
-		CC=$(TARGET_CC) \
-		./configure \
-	);
+	(cd $(DHCP_RELAY_DIR); PATH=$(TARGET_PATH) CC=$(TARGET_CC) ./configure );
 	touch  $(DHCP_RELAY_DIR)/.configured
 
 $(DHCP_RELAY_DIR)/$(DHCP_RELAY_BINARY): $(DHCP_RELAY_DIR)/.configured

@@ -36,7 +36,7 @@ $(LRZSZ_DIR)/.unpacked: $(DL_DIR)/$(LRZSZ_SOURCE)
 
 $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked
 	(cd $(LRZSZ_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \

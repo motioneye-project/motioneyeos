@@ -27,7 +27,7 @@ $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked
 	rm -f $(SOCAT_WORKDIR)/Makefile
 	mkdir -p $(SOCAT_WORKDIR)
 	(cd $(SOCAT_WORKDIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		$(SOCAT_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \

@@ -17,10 +17,10 @@ $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
+		AR=$(TARGET_CROSS)ar \
 		AS=$(TARGET_CROSS)as LD=$(TARGET_CROSS)ld \
 		RANLIB=$(TARGET_CROSS)ranlib NM=$(TARGET_CROSS)nm \
-		CC=$(TARGET_CC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

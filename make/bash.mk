@@ -21,8 +21,7 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	(cd $(BASH_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH \
-		CC=$(TARGET_CC) CC_FOR_BUILD=$(HOSTCC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) CC_FOR_BUILD=$(HOSTCC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

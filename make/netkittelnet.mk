@@ -27,7 +27,7 @@ $(NETKITTELNET_DIR)/.unpacked: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 	touch $(NETKITTELNET_DIR)/.unpacked
 
 $(NETKITTELNET_DIR)/.configured: $(NETKITTELNET_DIR)/.unpacked
-	(cd $(NETKITTELNET_DIR); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+	(cd $(NETKITTELNET_DIR); PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure --installroot=$(TARGET_DIR) --with-c-compiler=$(TARGET_CC) \
 	)
 	touch  $(NETKITTELNET_DIR)/.configured

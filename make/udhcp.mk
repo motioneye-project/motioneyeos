@@ -48,6 +48,7 @@ $(TARGET_DIR)/sbin/udhcpc: $(UDHCP_DIR)/udhcpc
 	perl -i -p -e 's/PUMP/UDHCPC/' $(TARGET_DIR)/etc/pcmcia/network*
 	perl -i -p -e 's/DHCP="n"/DHCP="y"/' $(TARGET_DIR)/etc/pcmcia/network*
 	mkdir -p $(TARGET_DIR)/sbin
+	rm -f $(TARGET_DIR)/sbin/udhcpc
 	cp $(UDHCP_DIR)/udhcpc $(TARGET_DIR)/sbin/
 	mkdir -p $(TARGET_DIR)/usr/share/udhcpc
 	cp $(UDHCP_DIR)/samples/simple.script $(TARGET_DIR)/usr/share/udhcpc/default.script

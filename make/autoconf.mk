@@ -20,8 +20,8 @@ $(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 	touch $(AUTOCONF_DIR)/.unpacked
 
 $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
-	(cd $(AUTOCONF_DIR); rm -rf config.cache; PATH=$(STAGING_DIR)/bin:$$PATH \
-		CC=$(TARGET_CC) EMACS="no" \
+	(cd $(AUTOCONF_DIR); rm -rf config.cache; \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) EMACS="no" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -41,7 +41,6 @@ $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(AUTOCONF_DIR)
 
 $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \

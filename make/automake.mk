@@ -21,7 +21,7 @@ $(AUTOMAKE_DIR)/.unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 
 $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
 	(cd $(AUTOMAKE_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -38,11 +38,10 @@ $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
 	touch  $(AUTOMAKE_DIR)/.configured
 
 $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY): $(AUTOMAKE_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(AUTOMAKE_DIR)
+	$(MAKE) -C $(AUTOMAKE_DIR)
 	touch -c $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY)
 
 $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY): $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY)
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
@@ -63,7 +62,7 @@ $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY): $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY)
 automake: uclibc $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY)
 
 automake-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(AUTOMAKE_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(AUTOMAKE_DIR) uninstall
 	-$(MAKE) -C $(AUTOMAKE_DIR) clean
 
 automake-dirclean:

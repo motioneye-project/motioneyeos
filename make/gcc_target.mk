@@ -48,10 +48,8 @@ $(BINUTILS_DIR2)/.configured:
 	mkdir -p $(BINUTILS_DIR2)
 	mkdir -p $(TARGET_DIR)/usr/include
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
-	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../lib)
-	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(BINUTILS_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
+	(cd $(BINUTILS_DIR2); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
 		CC=$(TARGET_CROSS)gcc \
 		$(BINUTILS_DIR)/configure \
@@ -70,23 +68,24 @@ $(BINUTILS_DIR2)/.configured:
 		--infodir=/usr/info \
 		--includedir=$(STAGING_DIR)/include \
 		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
-		--disable-shared $(MULTILIB) \
+		--enable-shared $(MULTILIB) \
 		--program-prefix="" \
 	);
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) AR=$(TARGET_CROSS)ar \
+	$(MAKE) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
 		CC=$(TARGET_CROSS)gcc GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		CC_FOR_TARGET=$(TARGET_CROSS)gcc -C $(BINUTILS_DIR2)
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc tooldir=/usr -C $(BINUTILS_DIR2)
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(HOSTCC) GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
+	CC=$(HOSTCC) GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
 	    CC_FOR_TARGET=$(TARGET_CROSS)gcc \
 	    $(MAKE) \
+	    tooldor=/usr \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
@@ -109,7 +108,16 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 
 $(TARGET_DIR)/usr/lib/libg.a:
-	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(TARGET_DIR)/usr/lib/libg.a;
+	$(TARGET_CROSS)ar rv $(TARGET_DIR)/usr/lib/libg.a;
+	cp $(BINUTILS_DIR)/include/ansidecl.h $(TARGET_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/bfdlink.h $(TARGET_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/dis-asm.h $(TARGET_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/libiberty.h $(TARGET_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/symcat.h $(TARGET_DIR)/usr/include/
+	cp $(BINUTILS_DIR2)/bfd/bfd.h $(TARGET_DIR)/usr/include/
+	cp -a $(BINUTILS_DIR2)/bfd/.libs/* $(TARGET_DIR)/usr/lib/
+	cp -a $(BINUTILS_DIR2)/opcodes/.libs/* $(TARGET_DIR)/usr/lib/
+	cp -a $(BINUTILS_DIR2)/libiberty/libiberty.a $(TARGET_DIR)/usr/lib/
 
 binutils_target: gcc_final $(TARGET_DIR)/usr/bin/ld $(TARGET_DIR)/usr/lib/libg.a
 
@@ -133,6 +141,8 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) DEVEL_PREFIX=$(TARGET_DIR)/usr SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
 		DEVEL_TOOL_PREFIX=$(TARGET_DIR) -C $(UCLIBC_DIR) \
 		install_dev
+	#remove the extra copy of the shared libs
+	rm -f $(TARGET_DIR)/usr/lib/*-*.so
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -fs /lib/libc.so.0 libc.so; \
 		ln -fs /lib/libdl.so.0 libdl.so; \
@@ -141,6 +151,7 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 		ln -fs /lib/libutil.so.0 libutil.so; \
 		ln -fs /lib/libm.so.0 libm.so; \
 		ln -fs /lib/libpthread.so.0 libpthread.so; \
+		ln -fs /lib/libnsl.so.0 libnsl.so; \
 	)
 
 uclibc_target: gcc_final $(TARGET_DIR)/usr/lib/libc.a
@@ -183,7 +194,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH \
+	(cd $(GCC_BUILD_DIR3); PATH=$(TARGET_PATH) \
 		AS=$(TARGET_CROSS)as \
 		LD=$(TARGET_CROSS)ld \
 		AR=$(TARGET_CROSS)ar \
@@ -218,7 +229,6 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	PATH=$(STAGING_DIR)/bin:$$PATH \
 	    AS=$(TARGET_CROSS)as \
 	    LD=$(TARGET_CROSS)ld \
 	    AR=$(TARGET_CROSS)ar \
@@ -231,7 +241,6 @@ $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
-	PATH=$(STAGING_DIR)/bin:$$PATH \
 	    $(MAKE) \
 	    CC=$(TARGET_CROSS)gcc \
 	    AS=$(TARGET_CROSS)as \
@@ -263,14 +272,20 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
+	rm -rf $(TARGET_DIR)/usr/include/include $(TARGET_DIR)/usr/usr
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-cpp $(TARGET_DIR)/usr/bin/cpp
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-gcc $(TARGET_DIR)/usr/bin/gcc
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++ $(TARGET_DIR)/usr/bin/c++
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-g++ $(TARGET_DIR)/usr/bin/g++
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++filt $(TARGET_DIR)/usr/bin/c++filt
 	-cp -dpf $(STAGING_DIR)/lib/libgcc* $(TARGET_DIR)/lib/
+	chmod a-x $(STAGING_DIR)/lib/*++*
 	cp -a $(STAGING_DIR)/lib/*++* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/include/c++ $(TARGET_DIR)/usr/include/
+	-mv $(TARGET_DIR)/lib/*.a $(TARGET_DIR)/usr/lib/
+	-mv $(TARGET_DIR)/lib/*.la $(TARGET_DIR)/usr/lib/
+	rm -f $(TARGET_DIR)/lib/libstdc++.so
+	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.a libstdc++.so)
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \

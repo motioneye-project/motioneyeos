@@ -21,7 +21,7 @@ $(MKE2FS_DIR)/.unpacked: $(DL_DIR)/$(MKE2FS_SOURCE)
 
 $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked
 	(cd $(MKE2FS_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--with-cc=$(TARGET_CC) \

@@ -32,9 +32,11 @@ $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
 $(STAGING_DIR)/lib/libcrypto.so.0: $(OPENSSL_DIR)/apps/openssl
 	$(MAKE) CC=$(TARGET_CC) INSTALL_PREFIX=$(STAGING_DIR) -C $(OPENSSL_DIR) install
 	cp -fa $(OPENSSL_DIR)/libcrypto.so* $(STAGING_DIR)/lib/
+	chmod a-x $(STAGING_DIR)/lib/libcrypto.so.0.9.7
 	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.7 libcrypto.so)
 	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.7 libcrypto.so.0)
 	cp -fa $(OPENSSL_DIR)/libssl.so* $(STAGING_DIR)/lib/
+	chmod a-x $(STAGING_DIR)/lib/libssl.so.0.9.7
 	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.7 libssl.so)
 	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.7 libssl.so.0)
 
@@ -48,6 +50,12 @@ $(TARGET_DIR)/usr/lib/libssl.a: $(TARGET_DIR)/lib/libcrypto.so.0
 	cp -a $(STAGING_DIR)/include/openssl $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libssl.a $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/lib/libcrypto.a $(TARGET_DIR)/usr/lib/
+	rm -f $(TARGET_DIR)/lib/libcrypto.so
+	rm -f $(TARGET_DIR)/lib/libssl.so
+	(cd $(TARGET_DIR)/usr/lib; \
+		ln -fs /lib/libssl.so.0.9.7 libssl.so; \
+		ln -fs /lib/libcrypto.so.0.9.7 libcrypto.so; \
+	)
 	touch -c $(TARGET_DIR)/usr/lib/libssl.a
 
 openssl-headers: $(TARGET_DIR)/usr/lib/libssl.a
