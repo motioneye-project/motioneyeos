@@ -44,7 +44,7 @@ USE_UCLIBC_SNAPSHOT:=false
 # Enable this to use the busybox daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all....
-USE_BUSYBOX_SNAPSHOT:=true
+USE_BUSYBOX_SNAPSHOT:=false
 
 # Enable large file (files > 2 GB) support
 BUILD_WITH_LARGEFILE:=false
@@ -58,7 +58,20 @@ ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 TARGETS=uclibc_toolchain
 endif
 
-TARGETS+=user-mode-linux busybox tinylogin ncurses gdb strace valgrind db openssl zlib openssh #stlport
+# The default minimal set
+TARGETS+=user-mode-linux busybox tinylogin #gdb strace valgrind db openssl zlib openssh
+
+# Openssh...
+#TARGETS+=zlib openssl openssh
+
+# Everything needed to build a full uClibc development system!
+#TARGETS+=coreutils findutils bash make sed gawk gcc_target
+
+# Some nice debugging tools
+#TARGETS+=gdb strace
+
+# The Valgrind debugger
+#TARGETS+=valgrind
 
 # Pick your root filesystem type.
 TARGETS+=ext2root
@@ -83,6 +96,7 @@ TARGET_CROSS:=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 TARGET_CC1:=$(TARGET_CROSS)gcc
 TARGET_PATH:=$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:/bin:/sbin:/usr/bin:/usr/sbin
 STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
+#STRIP:=/bin/true
 IMAGE:=$(BASE_DIR)/root_fs
 ifneq ($(strip $(ARCH)),i386)
 CROSS:=$(ARCH)-linux-
