@@ -1,3 +1,15 @@
+Note... modified my mjn3 to not conflict with the big endian arm patch.
+Warning!!!  Only the linux target is aware of TARGET_ENDIAN_DEFAULT.
+Also changed
+  #define SUBTARGET_EXTRA_ASM_SPEC "\
+  %{!mcpu=*:-mcpu=xscale} \
+  %{mhard-float:-mfpu=fpa} \
+  %{!mhard-float: %{msoft-float:-mfpu=softfpa} %{!msoft-float:-mfpu=softvfp}}"
+to
+  #define SUBTARGET_EXTRA_ASM_SPEC "\
+  %{mhard-float:-mfpu=fpa} \
+  %{!mhard-float: %{msoft-float:-mfpu=softfpa} %{!msoft-float:-mfpu=softvfp}}"
+in gcc/config/arm/linux-elf.h.
 #
 # Submitted:
 #
@@ -95,9 +107,9 @@
 # * Removed the extra -lfloat option from LIBGCC_SPEC, since it isn't needed
 #   anymore.  (The required functions are now in libgcc.)
 
-diff -urNd gcc-3.4.0-orig/gcc/config/arm/coff.h gcc-3.4.0/gcc/config/arm/coff.h
---- gcc-3.4.0-orig/gcc/config/arm/coff.h	2004-02-24 15:25:22.000000000 +0100
-+++ gcc-3.4.0/gcc/config/arm/coff.h	2004-05-01 19:07:06.059409600 +0200
+diff -urN gcc-3.4.1-old/gcc/config/arm/coff.h gcc-3.4.1/gcc/config/arm/coff.h
+--- gcc-3.4.1-old/gcc/config/arm/coff.h	2004-02-24 08:25:22.000000000 -0600
++++ gcc-3.4.1/gcc/config/arm/coff.h	2004-09-02 21:51:15.000000000 -0500
 @@ -31,11 +31,16 @@
  #define TARGET_VERSION fputs (" (ARM/coff)", stderr)
  
@@ -117,9 +129,9 @@ diff -urNd gcc-3.4.0-orig/gcc/config/arm/coff.h gcc-3.4.0/gcc/config/arm/coff.h
  #endif
  
  /* This is COFF, but prefer stabs.  */
-diff -urNd gcc-3.4.0-orig/gcc/config/arm/elf.h gcc-3.4.0/gcc/config/arm/elf.h
---- gcc-3.4.0-orig/gcc/config/arm/elf.h	2004-02-24 15:25:22.000000000 +0100
-+++ gcc-3.4.0/gcc/config/arm/elf.h	2004-05-01 19:12:16.976486400 +0200
+diff -urN gcc-3.4.1-old/gcc/config/arm/elf.h gcc-3.4.1/gcc/config/arm/elf.h
+--- gcc-3.4.1-old/gcc/config/arm/elf.h	2004-02-24 08:25:22.000000000 -0600
++++ gcc-3.4.1/gcc/config/arm/elf.h	2004-09-02 21:51:15.000000000 -0500
 @@ -46,7 +46,9 @@
  
  #ifndef SUBTARGET_ASM_FLOAT_SPEC
@@ -151,12 +163,12 @@ diff -urNd gcc-3.4.0-orig/gcc/config/arm/elf.h gcc-3.4.0/gcc/config/arm/elf.h
  #endif
  
  #define TARGET_ASM_FILE_START_APP_OFF true
-diff -urNd gcc-3.4.0-orig/gcc/config/arm/linux-elf.h gcc-3.4.0/gcc/config/arm/linux-elf.h
---- gcc-3.4.0-orig/gcc/config/arm/linux-elf.h	2004-01-31 07:18:11.000000000 +0100
-+++ gcc-3.4.0/gcc/config/arm/linux-elf.h	2004-05-01 19:19:06.935979200 +0200
-@@ -30,9 +30,27 @@
- /* Do not assume anything about header files.  */
- #define NO_IMPLICIT_EXTERN_C
+diff -urN gcc-3.4.1-old/gcc/config/arm/linux-elf.h gcc-3.4.1/gcc/config/arm/linux-elf.h
+--- gcc-3.4.1-old/gcc/config/arm/linux-elf.h	2004-09-02 21:50:52.000000000 -0500
++++ gcc-3.4.1/gcc/config/arm/linux-elf.h	2004-09-02 22:00:49.000000000 -0500
+@@ -44,12 +44,26 @@
+ #define TARGET_LINKER_EMULATION "armelf_linux"
+ #endif
  
 -/* Default is to use APCS-32 mode.  */
 +/*
@@ -167,33 +179,35 @@ diff -urNd gcc-3.4.0-orig/gcc/config/arm/linux-elf.h gcc-3.4.0/gcc/config/arm/li
 + * support will be used just like the default but with the legacy
 + * big endian word ordering for double float representation instead.
 + */
-+
  #undef  TARGET_DEFAULT
--#define TARGET_DEFAULT (ARM_FLAG_APCS_32 | ARM_FLAG_MMU_TRAPS)
+-#define TARGET_DEFAULT \
+-		( ARM_FLAG_APCS_32 | \
+-		  ARM_FLAG_MMU_TRAPS | \
+-		  TARGET_ENDIAN_DEFAULT )
 +#define TARGET_DEFAULT		\
 +	( ARM_FLAG_APCS_32	\
 +	| ARM_FLAG_SOFT_FLOAT	\
++	| TARGET_ENDIAN_DEFAULT	\
 +	| ARM_FLAG_VFP		\
 +	| ARM_FLAG_MMU_TRAPS )
 +
 +#undef  SUBTARGET_EXTRA_ASM_SPEC
 +#define SUBTARGET_EXTRA_ASM_SPEC "\
-+%{!mcpu=*:-mcpu=xscale} \
 +%{mhard-float:-mfpu=fpa} \
 +%{!mhard-float: %{msoft-float:-mfpu=softfpa} %{!msoft-float:-mfpu=softvfp}}"
  
  #define SUBTARGET_CPU_DEFAULT TARGET_CPU_arm6
  
-@@ -40,7 +58,7 @@
+@@ -57,7 +71,7 @@
  
  #undef  MULTILIB_DEFAULTS
  #define MULTILIB_DEFAULTS \
--	{ "marm", "mlittle-endian", "mhard-float", "mapcs-32", "mno-thumb-interwork" }
-+	{ "marm", "mlittle-endian", "mapcs-32", "mno-thumb-interwork" }
+-	{ "marm", TARGET_ENDIAN_OPTION, "mhard-float", "mapcs-32", "mno-thumb-interwork" }
++	{ "marm", TARGET_ENDIAN_OPTION, "mapcs-32", "mno-thumb-interwork" }
  
  #define CPP_APCS_PC_DEFAULT_SPEC "-D__APCS_32__"
  
-@@ -55,7 +73,7 @@
+@@ -72,7 +86,7 @@
     %{shared:-lc} \
     %{!shared:%{profile:-lc_p}%{!profile:-lc}}"
  
@@ -202,9 +216,9 @@ diff -urNd gcc-3.4.0-orig/gcc/config/arm/linux-elf.h gcc-3.4.0/gcc/config/arm/li
  
  /* Provide a STARTFILE_SPEC appropriate for GNU/Linux.  Here we add
     the GNU/Linux magical crtbegin.o file (see crtstuff.c) which
-diff -urNd gcc-3.4.0-orig/gcc/config/arm/t-linux gcc-3.4.0/gcc/config/arm/t-linux
---- gcc-3.4.0-orig/gcc/config/arm/t-linux	2003-09-20 23:09:07.000000000 +0200
-+++ gcc-3.4.0/gcc/config/arm/t-linux	2004-05-01 20:31:59.102846400 +0200
+diff -urN gcc-3.4.1-old/gcc/config/arm/t-linux gcc-3.4.1/gcc/config/arm/t-linux
+--- gcc-3.4.1-old/gcc/config/arm/t-linux	2003-09-20 16:09:07.000000000 -0500
++++ gcc-3.4.1/gcc/config/arm/t-linux	2004-09-02 21:51:15.000000000 -0500
 @@ -4,7 +4,10 @@
  LIBGCC2_DEBUG_CFLAGS = -g0
  
@@ -217,9 +231,9 @@ diff -urNd gcc-3.4.0-orig/gcc/config/arm/t-linux gcc-3.4.0/gcc/config/arm/t-linu
  
  # MULTILIB_OPTIONS = mhard-float/msoft-float
  # MULTILIB_DIRNAMES = hard-float soft-float
-diff -urNd gcc-3.4.0-orig/gcc/config/arm/unknown-elf.h gcc-3.4.0/gcc/config/arm/unknown-elf.h
---- gcc-3.4.0-orig/gcc/config/arm/unknown-elf.h	2004-02-24 15:25:22.000000000 +0100
-+++ gcc-3.4.0/gcc/config/arm/unknown-elf.h	2004-05-01 19:09:09.016212800 +0200
+diff -urN gcc-3.4.1-old/gcc/config/arm/unknown-elf.h gcc-3.4.1/gcc/config/arm/unknown-elf.h
+--- gcc-3.4.1-old/gcc/config/arm/unknown-elf.h	2004-02-24 08:25:22.000000000 -0600
++++ gcc-3.4.1/gcc/config/arm/unknown-elf.h	2004-09-02 21:51:15.000000000 -0500
 @@ -30,7 +30,12 @@
  
  /* Default to using APCS-32 and software floating point.  */
@@ -234,9 +248,9 @@ diff -urNd gcc-3.4.0-orig/gcc/config/arm/unknown-elf.h gcc-3.4.0/gcc/config/arm/
  #endif
  
  /* Now we define the strings used to build the spec file.  */
-diff -urNd gcc-3.4.0-orig/gcc/config/arm/xscale-elf.h gcc-3.4.0/gcc/config/arm/xscale-elf.h
---- gcc-3.4.0-orig/gcc/config/arm/xscale-elf.h	2003-07-02 01:26:43.000000000 +0200
-+++ gcc-3.4.0/gcc/config/arm/xscale-elf.h	2004-05-01 20:15:36.620105600 +0200
+diff -urN gcc-3.4.1-old/gcc/config/arm/xscale-elf.h gcc-3.4.1/gcc/config/arm/xscale-elf.h
+--- gcc-3.4.1-old/gcc/config/arm/xscale-elf.h	2003-07-01 18:26:43.000000000 -0500
++++ gcc-3.4.1/gcc/config/arm/xscale-elf.h	2004-09-02 21:51:15.000000000 -0500
 @@ -49,11 +49,12 @@
  		     endian, regardless of the endian-ness of the memory
  		     system.  */
