@@ -1,17 +1,3 @@
-diff -ur perl-5.8.0/ext/I18N/Langinfo/Makefile.PL perl-5.8.0.uclibc/ext/I18N/Langinfo/Makefile.PL
---- perl-5.8.0/ext/I18N/Langinfo/Makefile.PL	2002-06-01 19:03:06.000000000 +0200
-+++ perl-5.8.0.uclibc/ext/I18N/Langinfo/Makefile.PL	2003-03-12 09:51:59.000000000 +0100
-@@ -30,8 +30,8 @@
-                   ABMON_5 ABMON_6 ABMON_7 ABMON_8 ABMON_9 ALT_DIGITS AM_STR
-                   DAY_1 DAY_2 DAY_3 DAY_4 DAY_5 DAY_6 DAY_7 D_FMT D_T_FMT ERA
-                   ERA_D_FMT ERA_D_T_FMT ERA_T_FMT MON_1 MON_10 MON_11 MON_12
--                  MON_2 MON_3 MON_4 MON_5 MON_6 MON_7 MON_8 MON_9 NOEXPR NOSTR
--                  PM_STR T_FMT T_FMT_AMPM YESEXPR YESSTR);
-+                  MON_2 MON_3 MON_4 MON_5 MON_6 MON_7 MON_8 MON_9 NOEXPR 
-+                  PM_STR T_FMT T_FMT_AMPM YESEXPR );
-   push @names,           # This lot are only enums for __SVR4_I386_ABI_L1__:
-     {name=>$_, type=>"IV",
-      macro=>["#if defined($_) || (defined(__GNU_LIBRARY__) && defined(_NL_ITEM) && defined(__SVR4_I386_ABI_L1__))\n",
 diff -urN cross.o/Makefile cross.x/Makefile
 --- Makefile	2003-04-15 14:35:51.000000000 -0600
 +++ perl-5.8.0.uclibc/cross/Makefile	2003-06-27 16:38:23.000000000 -0600
