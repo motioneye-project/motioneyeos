@@ -104,45 +104,19 @@
  char nobody_uid[] = "nobody";
  struct passwd *ltpuser;
  
---- ltp-full-20031204/testcases/kernel/syscalls/string/string01.orig.c	2004-01-01 20:47:26.000000000 -0700
-+++ ltp-full-20031204/testcases/kernel/syscalls/string/string01.c	2004-01-01 23:24:26.000000000 -0700
-@@ -413,13 +413,33 @@
+--- ltp-full-20031106/testcases/kernel/syscalls/string/string01.orig.c	2004-01-01 23:54:37.000000000 -0700
++++ ltp-full-20031106/testcases/kernel/syscalls/string/string01.c	2004-01-01 23:55:48.000000000 -0700
+@@ -413,10 +413,10 @@
  	//fprintf(temp, "\tStrncmp\n" );
  	i = 0;
  	while ( t_ncmp[i].s1 ) {
 -	    if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
 -							!= t_ncmp[i].e_res) {
--		  fprintf(temp, "(Strncmp) test %d: expected %d, got %d",
++	    n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n );
++	    if (sign(n) != sign(t_ncmp[i].e_res)) {
+ 		  fprintf(temp, "(Strncmp) test %d: expected %d, got %d",
 -			i, t_ncmp[i].e_res, n );
--		  local_flag = FAILED;
-+	    if (t_ncmp[i].e_res==0) {
-+		if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
-+			!= 0) {
-+		    fprintf(temp, "(Strncmp) test %d: expected 0, got %d",
-+			    i, n );
-+		    local_flag = FAILED;
++			i, sign(t_ncmp[i].e_res), sign(n) );
+ 		  local_flag = FAILED;
  		}
--	    i++;
-+		i++;
-+	    }
-+	    if (t_ncmp[i].e_res>0) {
-+		if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
-+			< 1) {
-+		    fprintf(temp, "(Strncmp) test %d: expected > 0, got %d",
-+			    i, n );
-+		    local_flag = FAILED;
-+		}
-+		i++;
-+	    }
-+	    if (t_ncmp[i].e_res<0) {
-+		if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
-+			> 1) {
-+		    fprintf(temp, "(Strncmp) test %d: expected < 0, got %d",
-+			    i, n );
-+		    local_flag = FAILED;
-+		}
-+		i++;
-+	    }
- 	}
- 
- 	/*
+ 	    i++;
