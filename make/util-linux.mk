@@ -3,18 +3,23 @@
 # util-linux
 #
 #############################################################
-UTIL-LINUX_SOURCE:=util-linux-2.11z.tar.gz
-UTIL-LINUX_SITE:=http://www.kernel.org/pub/linux/utils/util-linux
+UTIL-LINUX_SOURCE:=util-linux_2.12.orig.tar.gz
+UTIL-LINUX_SITE:=http://ftp.debian.org/debian/pool/main/u/util-linux/
+UTIL-LINUX_PATCH:=util-linux_2.12-6.diff.gz
 UTIL-LINUX_CAT:=zcat
-UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-2.11z
+UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-2.12
 UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/mcookie
 UTIL-LINUX_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/mcookie
 
 $(DL_DIR)/$(UTIL-LINUX_SOURCE):
-	  $(WGET) -P $(DL_DIR) $(UTIL-LINUX_SITE)/$(UTIL-LINUX_SOURCE)
+	$(WGET) -P $(DL_DIR) $(UTIL-LINUX_SITE)/$(UTIL-LINUX_SOURCE)
 
-$(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
+$(DL_DIR)/$(UTIL-LINUX_PATCH):
+	$(WGET) -P $(DL_DIR) $(UTIL-LINUX_SITE)/$(UTIL-LINUX_PATCH)
+
+$(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE) $(DL_DIR)/$(UTIL-LINUX_PATCH)
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_PATCH) | patch -p1 -d $(UTIL-LINUX_DIR)
 	cat $(SOURCE_DIR)/util-linux.patch | patch -p1 -d $(UTIL-LINUX_DIR)
 	touch $(UTIL-LINUX_DIR)/.unpacked
 
@@ -34,6 +39,7 @@ $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		ARCH=$(ARCH) \
 	);
 	$(SED) "s,^INSTALLSUID=.*,INSTALLSUID=\\$$\(INSTALL\) -m \\$$\(BINMODE\)," \
 		$(UTIL-LINUX_DIR)/MCONFIG
@@ -41,7 +47,7 @@ $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 	touch $(UTIL-LINUX_DIR)/.configured
 
 $(UTIL-LINUX_BINARY): $(UTIL-LINUX_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(UTIL-LINUX_DIR)
+	$(MAKE) ARCH=$(ARCH) CC=$(TARGET_CC) -C $(UTIL-LINUX_DIR)
 
 $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) USE_TTY_GROUP=no -C $(UTIL-LINUX_DIR) install
