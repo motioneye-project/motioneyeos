@@ -7,7 +7,7 @@ GETTEXT_SOURCE:=gettext-0.11.5.tar.gz
 GETTEXT_SITE:=ftp://ftp.gnu.org/gnu/gettext
 GETTEXT_DIR:=$(BUILD_DIR)/gettext-0.11.5
 GETTEXT_CAT:=zcat
-GETTEXT_BINARY:=gettext
+GETTEXT_BINARY:=src/gettext
 GETTEXT_TARGET_BINARY:=usr/bin/gettext
 
 $(DL_DIR)/$(GETTEXT_SOURCE):
