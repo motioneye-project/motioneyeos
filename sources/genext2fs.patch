@@ -1,6 +1,6 @@
-diff -urN genext2fs-1.3~/Makefile genext2fs-1.3/Makefile
---- genext2fs-1.3~/Makefile	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/Makefile	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/Makefile genext2fs-1.3/Makefile
+--- genext2fs-1.3.orig/Makefile	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/Makefile	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,46 @@
 +CC=gcc
 +CFLAGS=-Wall -O0 -g
@@ -48,9 +48,9 @@ diff -urN genext2fs-1.3~/Makefile genext2fs-1.3/Makefile
 +# test genext2fs by actually mounting the created image.
 +test-mount: all
 +	sudo sh ./test-mount.sh
-diff -urN genext2fs-1.3~/debian/changelog genext2fs-1.3/debian/changelog
---- genext2fs-1.3~/debian/changelog	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/debian/changelog	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/debian/changelog genext2fs-1.3/debian/changelog
+--- genext2fs-1.3.orig/debian/changelog	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/debian/changelog	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,17 @@
 +genext2fs (1.3-2) unstable; urgency=low
 +
@@ -69,9 +69,9 @@ diff -urN genext2fs-1.3~/debian/changelog genext2fs-1.3/debian/changelog
 +
 + -- David Kimdon <dwhedon@debian.org>  Sat, 14 Jul 2001 13:24:49 -0700
 +
-diff -urN genext2fs-1.3~/debian/control genext2fs-1.3/debian/control
---- genext2fs-1.3~/debian/control	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/debian/control	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/debian/control genext2fs-1.3/debian/control
+--- genext2fs-1.3.orig/debian/control	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/debian/control	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,19 @@
 +Source: genext2fs
 +Section: admin
@@ -92,9 +92,9 @@ diff -urN genext2fs-1.3~/debian/control genext2fs-1.3/debian/control
 + Warning ! `genext2fs' has been designed for embedded
 + systems. As such, it will generate a filesystem for single-user
 + usage: all files/directories/etc... will belong to UID/GID 0
-diff -urN genext2fs-1.3~/debian/copyright genext2fs-1.3/debian/copyright
---- genext2fs-1.3~/debian/copyright	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/debian/copyright	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/debian/copyright genext2fs-1.3/debian/copyright
+--- genext2fs-1.3.orig/debian/copyright	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/debian/copyright	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,15 @@
 +This package was debianized by David Kimdon <dwhedon@debian.org> on
 +Sat, 14 Jul 2001 13:24:49 -0700.
@@ -111,9 +111,9 @@ diff -urN genext2fs-1.3~/debian/copyright genext2fs-1.3/debian/copyright
 +
 +On Debian systems, the complete text of the GNU General Public
 +License can be found in /usr/share/common-licenses/GPL file.
-diff -urN genext2fs-1.3~/debian/rules genext2fs-1.3/debian/rules
---- genext2fs-1.3~/debian/rules	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/debian/rules	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/debian/rules genext2fs-1.3/debian/rules
+--- genext2fs-1.3.orig/debian/rules	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/debian/rules	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,70 @@
 +#!/usr/bin/make -f
 +# Sample debian/rules that uses debhelper.
@@ -185,8 +185,8 @@ diff -urN genext2fs-1.3~/debian/rules genext2fs-1.3/debian/rules
 +
 +binary: binary-indep binary-arch
 +.PHONY: build clean binary-indep binary-arch binary install configure
-diff -urN genext2fs-1.3~/dev.txt genext2fs-1.3/dev.txt
---- genext2fs-1.3~/dev.txt	2000-09-28 09:03:19.000000000 -0600
+diff -urN genext2fs-1.3.orig/dev.txt genext2fs-1.3/dev.txt
+--- genext2fs-1.3.orig/dev.txt	2000-09-28 09:03:19.000000000 -0600
 +++ genext2fs-1.3/dev.txt	1969-12-31 17:00:00.000000000 -0700
 @@ -1,94 +0,0 @@
 -drwx		/dev
@@ -283,9 +283,9 @@ diff -urN genext2fs-1.3~/dev.txt genext2fs-1.3/dev.txt
 -crw-	5,67	/dev/cua3
 -crw-	5,68	/dev/cua4
 -crw-	5,69	/dev/cua5
-diff -urN genext2fs-1.3~/device_table.txt genext2fs-1.3/device_table.txt
---- genext2fs-1.3~/device_table.txt	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/device_table.txt	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/device_table.txt genext2fs-1.3/device_table.txt
+--- genext2fs-1.3.orig/device_table.txt	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/device_table.txt	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,129 @@
 +# When building a target filesystem, it is desirable to not have to
 +# become root and then run 'mknod' a thousand times.  Using a device 
@@ -416,9 +416,9 @@ diff -urN genext2fs-1.3~/device_table.txt genext2fs-1.3/device_table.txt
 +#/dev/mcd	b	640	0	0	23	0	0	0	-
 +#/dev/optcd	b	640	0	0	17	0	0	0	-
 +
-diff -urN genext2fs-1.3~/genext2fs.8 genext2fs-1.3/genext2fs.8
---- genext2fs-1.3~/genext2fs.8	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/genext2fs.8	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/genext2fs.8 genext2fs-1.3/genext2fs.8
+--- genext2fs-1.3.orig/genext2fs.8	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/genext2fs.8	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,125 @@
 +.\"                                      Hey, EMACS: -*- nroff -*-
 +.\" First parameter, NAME, should be all caps
@@ -545,9 +545,9 @@ diff -urN genext2fs-1.3~/genext2fs.8 genext2fs-1.3/genext2fs.8
 +.SH AUTHOR
 +This manual page was written by David Kimdon <dwhedon@debian.org>,
 +for the Debian GNU/Linux system (but may be used by others).
-diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
---- genext2fs-1.3~/genext2fs.c	2001-06-18 02:11:32.000000000 -0600
-+++ genext2fs-1.3/genext2fs.c	2003-04-14 17:44:45.000000000 -0600
+diff -urN genext2fs-1.3.orig/genext2fs.c genext2fs-1.3/genext2fs.c
+--- genext2fs-1.3.orig/genext2fs.c	2001-06-18 02:11:32.000000000 -0600
++++ genext2fs-1.3/genext2fs.c	2003-04-21 01:48:35.000000000 -0600
 @@ -1,3 +1,4 @@
 +/* vi: set sw=8 ts=8: */
  // genext2fs.c
@@ -741,7 +741,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  } filesystem;
  #else
  #error UNHANDLED BLOCKSIZE
-@@ -389,25 +462,105 @@
+@@ -389,25 +462,113 @@
  #undef udecl32
  #undef utdecl32
  
@@ -794,9 +794,8 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
 +	if (*s)
 +		s = ": ";
 +	fprintf(stderr, "%s%s\n", s, strerror(err));
- }
- 
--inline void pexit(const char * fname)
++}
++
 +#if 0
 +static void perror_msg(const char *s, ...)
 +{
@@ -807,19 +806,20 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
 +}
 +#endif
 +static void perror_msg_and_die(const char *s, ...)
- {
--	fprintf(stderr, "%s: ", argv0);
--	perror(fname);
--	exit(1);
++{
 +	va_list p;
 +	va_start(p, s);
 +	vperror_msg(s, p);
 +	va_end(p);
 +	exit(EXIT_FAILURE);
-+}
-+
+ }
+ 
+-inline void pexit(const char * fname)
 +static FILE *xfopen(const char *path, const char *mode)
-+{
+ {
+-	fprintf(stderr, "%s: ", argv0);
+-	perror(fname);
+-	exit(1);
 +	FILE *fp;
 +	if ((fp = fopen(path, mode)) == NULL)
 +		perror_msg_and_die("%s", path);
@@ -838,6 +838,14 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
 +	return t;
 +}
 +
++extern void *xrealloc(void *ptr, size_t size)
++{
++	ptr = realloc(ptr, size);
++	if (ptr == NULL && size != 0)
++		error_msg_and_die(memory_exhausted);
++	return ptr;
++}
++
 +static char *xreadlink(const char *path)
 +{
 +	static const int GROWBY = 80; /* how large we will grow strings by */
@@ -849,7 +857,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
 +		buf = xrealloc(buf, bufsize += GROWBY);
 +		readsize = readlink(path, buf, bufsize); /* 1st try */
 +		if (readsize == -1) {
-+			perror_msg_and_die("%s:%s", progname, path);
++			perror_msg_and_die("%s:%s", app_name, path);
 +		}
 +	}
 +	while (bufsize < readsize + 1);
@@ -860,7 +868,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  }
  
  // printf helper macro
-@@ -423,7 +576,7 @@
+@@ -423,7 +584,7 @@
  {
  }
  
@@ -869,7 +877,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  uint32 rndup(uint32 qty, uint32 siz)
  {
  	return (qty + (siz - 1)) & ~(siz - 1);
-@@ -444,7 +597,13 @@
+@@ -444,7 +605,13 @@
  // return a given inode from a filesystem
  inline inode * get_nod(filesystem *fs, uint32 nod)
  {
@@ -884,7 +892,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  }
  
  // allocate a given block/inode in the bitmap
-@@ -479,29 +638,57 @@
+@@ -479,29 +646,57 @@
  }
  
  // allocate a block
@@ -957,7 +965,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  }
  
  // print a bitmap allocation
-@@ -546,14 +733,14 @@
+@@ -546,14 +741,14 @@
  	{
  		bkref = &get_nod(fs, nod)->i_block[bw->bpdir = 0];
  		if(extend) // allocate first block
@@ -974,7 +982,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	}
  	// first block in indirect block
  	else if(bw->bpdir == EXT2_NDIR_BLOCKS)
-@@ -562,11 +749,11 @@
+@@ -562,11 +757,11 @@
  		bw->bpdir = EXT2_IND_BLOCK;
  		bw->bpind = 0;
  		if(extend) // allocate indirect block
@@ -988,7 +996,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	}
  	// block in indirect block
  	else if((bw->bpdir == EXT2_IND_BLOCK) && (bw->bpind < BLOCKSIZE/4 - 1))
-@@ -575,7 +762,7 @@
+@@ -575,7 +770,7 @@
  		b = (uint32*)get_blk(fs, get_nod(fs, nod)->i_block[bw->bpdir]);
  		bkref = &b[bw->bpind];
  		if(extend) // allocate block
@@ -997,7 +1005,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	}
  	// first block in first indirect block in first double indirect block
  	else if(bw->bpdir == EXT2_IND_BLOCK)
-@@ -585,14 +772,14 @@
+@@ -585,14 +780,14 @@
  		bw->bpind = 0;
  		bw->bpdind = 0;
  		if(extend) // allocate double indirect block
@@ -1015,7 +1023,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	}
  	// block in indirect block in double indirect block
  	else if((bw->bpdir == EXT2_DIND_BLOCK) && (bw->bpdind < BLOCKSIZE/4 - 1))
-@@ -602,7 +789,7 @@
+@@ -602,7 +797,7 @@
  		b = (uint32*)get_blk(fs, b[bw->bpind]);
  		bkref = &b[bw->bpdind];
  		if(extend) // allocate block
@@ -1024,7 +1032,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	}
  	// first block in indirect block in double indirect block
  	else if((bw->bpdir == EXT2_DIND_BLOCK) && (bw->bpind < BLOCKSIZE/4 - 1))
-@@ -612,20 +799,100 @@
+@@ -612,20 +807,100 @@
  		bw->bpind++;
  		b = (uint32*)get_blk(fs, get_nod(fs, nod)->i_block[bw->bpdir]);
  		if(extend) // allocate indirect block
@@ -1131,7 +1139,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	}
  	if(extend)
  		get_nod(fs, nod)->i_blocks = bw->bnum * INOBLK;
-@@ -663,23 +930,40 @@
+@@ -663,23 +938,40 @@
  }
  
  // link an entry (inode #) to a directory
@@ -1178,7 +1186,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	init_bw(fs, dnod, &bw);
  	while((bk = walk_bw(fs, dnod, &bw, 0, 0)) != WALK_END) // for all blocks in dir
  	{
-@@ -691,9 +975,16 @@
+@@ -691,9 +983,16 @@
  			if((!d->d_inode) && (d->d_rec_len >= reclen))
  			{
  				d->d_inode = nod;
@@ -1197,7 +1205,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  				return;
  			}
  			// if entry with enough room (last one?), shrink it & use it
-@@ -705,9 +996,16 @@
+@@ -705,9 +1004,16 @@
  				d = (directory*) (((int8*)d) + d->d_rec_len);
  				d->d_rec_len = reclen;
  				d->d_inode = nod;
@@ -1216,7 +1224,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  				return;
  			}
  		}
-@@ -716,10 +1014,17 @@
+@@ -716,10 +1022,17 @@
  	b = get_workblk();
  	d = (directory*)b;
  	d->d_inode = nod;
@@ -1236,7 +1244,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	extend_blk(fs, dnod, b, 1);
  	get_nod(fs, dnod)->i_size += BLOCKSIZE;
  	free_workblk(b);
-@@ -747,7 +1052,7 @@
+@@ -747,7 +1060,7 @@
  // find the inode of a full path
  uint32 find_path(filesystem *fs, uint32 nod, const char * name)
  {
@@ -1245,7 +1253,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	n = n2;
  	while(*n == '/')
  	{
-@@ -770,27 +1075,32 @@
+@@ -770,27 +1083,32 @@
  }
  
  // make a full-fledged directory (i.e. with "." & "..")
@@ -1286,7 +1294,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	if(size <= 4 * (EXT2_TIND_BLOCK+1))
  	{
  		strncpy((char*)get_nod(fs, nod)->i_block, (char*)b, size);
-@@ -801,15 +1111,15 @@
+@@ -801,15 +1119,15 @@
  }
  
  // make a file from a FILE*
@@ -1306,7 +1314,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	memset(b, 0,rndup(size, BLOCKSIZE));
  	if(f)
  		fread(b, size, 1, f);
-@@ -824,6 +1134,15 @@
+@@ -824,6 +1142,15 @@
  uint32 get_mode(struct stat *st)
  {
  	uint32 mode = 0;
@@ -1322,7 +1330,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	if(st->st_mode & S_IRUSR)
  		mode |= FM_IRUSR | FM_IRGRP | FM_IROTH;
  	if(st->st_mode & S_IWUSR)
-@@ -833,30 +1152,17 @@
+@@ -833,30 +1160,17 @@
  	return mode;
  }
  
@@ -1355,7 +1363,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	if((p = strrchr(n, '/')))
  		*(p+1) = 0;
  	else
-@@ -864,66 +1170,6 @@
+@@ -864,66 +1178,6 @@
  	return n;
  }
  
@@ -1422,7 +1430,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  // adds a tree of entries to the filesystem from current dir
  void add2fs_from_dir(filesystem *fs, uint32 this_nod)
  {
-@@ -934,7 +1180,7 @@
+@@ -934,7 +1188,7 @@
  	struct stat st;
  	uint8 *b;
  	if(!(dh = opendir(".")))
@@ -1431,7 +1439,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	while((dent = readdir(dh)))
  	{
  		if((!strcmp(dent->d_name, ".")) || (!strcmp(dent->d_name, "..")))
-@@ -948,31 +1194,27 @@
+@@ -948,31 +1202,27 @@
  				get_nod(fs, nod)->i_mode = (((st.st_mode & S_IFMT) == S_IFCHR) ? FM_IFCHR : FM_IFBLK) | get_mode(&st);
  				((uint8*)get_nod(fs, nod)->i_block)[0] = (st.st_rdev & 0xff);
  				((uint8*)get_nod(fs, nod)->i_block)[1] = (st.st_rdev >> 8);
@@ -1471,7 +1479,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		}
  	}
  	closedir(dh);
-@@ -981,9 +1223,11 @@
+@@ -981,9 +1231,11 @@
  // endianness swap of x-indirect blocks
  void swap_goodblocks(filesystem *fs, inode *nod)
  {
@@ -1485,7 +1493,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		for(i = 0; i <= EXT2_TIND_BLOCK; i++)
  			nod->i_block[i] = swab32(nod->i_block[i]);
  	if(nblk <= EXT2_IND_BLOCK)
-@@ -991,20 +1235,55 @@
+@@ -991,20 +1243,55 @@
  	swap_block(get_blk(fs, nod->i_block[EXT2_IND_BLOCK]));
  	if(nblk <= EXT2_IND_BLOCK + BLOCKSIZE/4)
  		return;
@@ -1544,7 +1552,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		for(i = 0; i <= EXT2_TIND_BLOCK; i++)
  			nod->i_block[i] = swab32(nod->i_block[i]);
  	if(nblk <= EXT2_IND_BLOCK)
-@@ -1012,13 +1291,34 @@
+@@ -1012,13 +1299,34 @@
  	swap_block(get_blk(fs, nod->i_block[EXT2_IND_BLOCK]));
  	if(nblk <= EXT2_IND_BLOCK + BLOCKSIZE/4)
  		return;
@@ -1580,7 +1588,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  }
  
  // endianness swap of the whole filesystem
-@@ -1045,7 +1345,8 @@
+@@ -1045,7 +1353,8 @@
  		swap_goodblocks(fs, nod);
  		swap_nod(nod);
  	}
@@ -1590,7 +1598,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	swap_sb(&fs->sb);
  }
  
-@@ -1053,7 +1354,8 @@
+@@ -1053,7 +1362,8 @@
  {
  	int i;
  	swap_sb(&fs->sb);
@@ -1600,7 +1608,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	for(i = 1; i < fs->sb.s_inodes_count; i++)
  	{
  		inode *nod = get_nod(fs, i);
-@@ -1084,53 +1386,118 @@
+@@ -1084,53 +1394,118 @@
  	directory *d;
  	uint8 * b;
  	uint32 nod;
@@ -1752,7 +1760,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	b = get_workblk();
  	d = (directory*)b;
  	d->d_inode = EXT2_ROOT_INO;
-@@ -1147,9 +1514,14 @@
+@@ -1147,9 +1522,14 @@
  	// make lost+found directory and reserve blocks
  	if(fs->sb.s_r_blocks_count)
  	{
@@ -1768,7 +1776,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		for(i = 1; i < fs->sb.s_r_blocks_count; i++)
  			extend_blk(fs, nod, b, 1);
  		get_nod(fs, nod)->i_size = fs->sb.s_r_blocks_count * BLOCKSIZE;
-@@ -1170,24 +1542,24 @@
+@@ -1170,24 +1550,24 @@
  // loads a filesystem from disk
  filesystem * load_fs(FILE * fh, int swapit)
  {
@@ -1801,7 +1809,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	return fs;
  }
  
-@@ -1230,9 +1602,9 @@
+@@ -1230,9 +1610,9 @@
  	while((bk = walk_bw(fs, nod, &bw, 0, 0)) != WALK_END)
  	{
  		if(fsize <= 0)
@@ -1813,7 +1821,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		fsize -= BLOCKSIZE;
  	}
  }
-@@ -1250,7 +1622,7 @@
+@@ -1250,7 +1630,7 @@
  	{
  		int i, j;
  		if(fsize <= 0)
@@ -1822,7 +1830,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		b = get_blk(fs, bk);
  		for(i = 0; i < 64; i++)
  		{
-@@ -1406,7 +1778,7 @@
+@@ -1406,7 +1786,7 @@
  			s = (nod >= EXT2_FIRST_INO) ? "normal" : "unknown reserved"; 
  	}
  	printf("inode %d (%s, %d links): ", nod, s, get_nod(fs, nod)->i_links_count);
@@ -1831,7 +1839,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	{
  		printf("unallocated\n");
  		return;
-@@ -1440,24 +1812,46 @@
+@@ -1440,24 +1820,46 @@
  		default:
  			list_blocks(fs, nod);
  	}
@@ -1891,7 +1899,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  }
  
  void dump_fs(filesystem *fs, FILE * fh, int swapit)
-@@ -1467,31 +1861,234 @@
+@@ -1467,31 +1869,234 @@
  	if(swapit)
  		swap_goodfs(fs);
  	if(fwrite(fs, BLOCKSIZE, nbblocks, fh) < nbblocks)
@@ -2143,7 +2151,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  }
  
  #define MAX_DOPT 128
-@@ -1521,21 +2118,17 @@
+@@ -1521,21 +2126,17 @@
  	filesystem *fs;
  	int i;
  	int c;
@@ -2169,7 +2177,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  				dopt[didx++] = optarg;
  				break;
  			case 'b':
-@@ -1556,6 +2149,24 @@
+@@ -1556,6 +2157,24 @@
  			case 'z':
  				holes = 1;
  				break;
@@ -2194,7 +2202,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  			case 'v':
  				verbose = 1;
  				break;
-@@ -1566,16 +2177,14 @@
+@@ -1566,16 +2185,14 @@
  				exit(1);
  		}
  	if(optind < (argc - 1))
@@ -2213,7 +2221,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  			fs = load_fs(fh, bigendian);
  			fclose(fh);
  		}
-@@ -1585,7 +2194,7 @@
+@@ -1585,7 +2202,7 @@
  	else
  	{
  		if(nbblocks == -1)
@@ -2222,7 +2230,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		if(nbinodes == -1)
  			nbinodes = nbblocks * BLOCKSIZE / rndup(BYTES_PER_INODE, BLOCKSIZE);
  		if(nbresrvd == -1)
-@@ -1595,35 +2204,30 @@
+@@ -1595,35 +2212,30 @@
  	for(i = 0; i < didx; i++)
  	{
  		struct stat st;
@@ -2265,7 +2273,7 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  	if(verbose)
  		print_fs(fs);
  	for(i = 0; i < gidx; i++)
-@@ -1633,21 +2237,18 @@
+@@ -1633,21 +2245,18 @@
  		char *p;
  		FILE *fh;
  		if(!(nod = find_path(fs, EXT2_ROOT_INO, gopt[i])))
@@ -2290,9 +2298,9 @@ diff -urN genext2fs-1.3~/genext2fs.c genext2fs-1.3/genext2fs.c
  		dump_fs(fs, fh, bigendian);
  		fclose(fh);
  	}
-diff -urN genext2fs-1.3~/test-mount.sh genext2fs-1.3/test-mount.sh
---- genext2fs-1.3~/test-mount.sh	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/test-mount.sh	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/test-mount.sh genext2fs-1.3/test-mount.sh
+--- genext2fs-1.3.orig/test-mount.sh	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/test-mount.sh	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,96 @@
 +#!/bin/sh
 +set -e
@@ -2390,9 +2398,9 @@ diff -urN genext2fs-1.3~/test-mount.sh genext2fs-1.3/test-mount.sh
 +ftest dev.txt 4096 
 +
 +exit 0
-diff -urN genext2fs-1.3~/test.sh genext2fs-1.3/test.sh
---- genext2fs-1.3~/test.sh	1969-12-31 17:00:00.000000000 -0700
-+++ genext2fs-1.3/test.sh	2003-04-14 17:38:53.000000000 -0600
+diff -urN genext2fs-1.3.orig/test.sh genext2fs-1.3/test.sh
+--- genext2fs-1.3.orig/test.sh	1969-12-31 17:00:00.000000000 -0700
++++ genext2fs-1.3/test.sh	2003-04-21 01:41:42.000000000 -0600
 @@ -0,0 +1,53 @@
 +#!/bin/sh
 +set -e
