@@ -3,9 +3,9 @@
 # berkeley db
 #
 #############################################################
-DB_SITE:=http://www.sleepycat.com/update/snapshot
-DB_SOURCE:=db-4.1.25.NC.tar.gz
-DB_DIR:=$(BUILD_DIR)/db-4.1.25.NC
+DB_SITE:=ftp://sleepycat1.inetu.net/releases/
+DB_SOURCE:=db-4.2.52.NC.tar.gz
+DB_DIR:=$(BUILD_DIR)/db-4.2.52.NC
 
 
 $(DL_DIR)/$(DB_SOURCE):
