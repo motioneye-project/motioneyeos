@@ -128,6 +128,7 @@ $(TARGET_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR2)/$(CCACHE_BINARY)
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# put a bunch of symlinks into /bin, since that is earlier
 	# in the default PATH than /usr/bin where gcc lives
+	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	(cd $(TARGET_DIR)/bin; \
 		ln -fs /usr/bin/ccache cc; \
 		ln -fs /usr/bin/ccache gcc; \
