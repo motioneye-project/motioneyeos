@@ -23,5 +23,5 @@ endchoice
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
 	default "2.4.27"    if BR2_KERNEL_HEADERS_2_4
-	default "2.6.8"	    if BR2_KERNEL_HEADERS_2_6
+	default "2.6.9"	    if BR2_KERNEL_HEADERS_2_6
 
