@@ -60,7 +60,14 @@ $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/share/info \
 		$(TARGET_DIR)/usr/share/man $(TARGET_DIR)/usr/share/doc
 
+#If both util-linux and busybox are selected, make certain util-linux
+#wins the fight over who gets to have their utils actually installed
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+util-linux: uclibc busybox $(UTIL-LINUX_TARGET_BINARY)
+else
 util-linux: uclibc $(UTIL-LINUX_TARGET_BINARY)
+endif
+
 
 util-linux-source: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
 

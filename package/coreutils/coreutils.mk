@@ -73,7 +73,13 @@ $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY): $(COREUTILS_DIR)/$(COREUTILS_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
+#If both coreutils and busybox are selected, make certain coreutils
+#wins the fight over who gets to have their utils actually installed
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+coreutils: uclibc busybox $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
+else
 coreutils: uclibc $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
+endif
 
 coreutils-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(COREUTILS_DIR) uninstall
