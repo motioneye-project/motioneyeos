@@ -22,9 +22,9 @@
 ifneq ($(filter $(TARGETS),linux),)
 
 # Version of Linux to download and then apply patches to
-DOWNLOAD_LINUX_VERSION=2.4.26
+DOWNLOAD_LINUX_VERSION=2.4.27
 # Version of Linux AFTER patches
-LINUX_VERSION=2.4.26-erik
+LINUX_VERSION=2.4.28-pre4-erik
 
 LINUX_FORMAT=bzImage
 #LINUX_FORMAT=images/zImage.prep
@@ -45,13 +45,12 @@ LINUX_SOURCE_DIR=$(LINUX_DIR)
 
 
 $(DL_DIR)/$(LINUX_SOURCE):
-	-mkdir  $(DL_DIR)
+	-mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
-	-mkdir  $(TOOL_BUILD_DIR)
-	#mkdir -p $(LINUX_DIR)
-	#rm -rf $(LINUX_DIR)
+	-mkdir -p $(TOOL_BUILD_DIR)
+	-(cd $(TOOL_BUILD_DIR); ln -sf $(LINUX_DIR) linux)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version	
@@ -59,7 +58,6 @@ ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 endif
 	mkdir -p package/linux/kernel-patches
 	toolchain/patch-kernel.sh $(LINUX_DIR) package/linux/kernel-patches
-	-(cd $(TOOL_BUILD_DIR); ln -sf $(LINUX_DIR) linux)
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_KCONFIG):
