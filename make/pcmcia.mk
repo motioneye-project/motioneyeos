@@ -87,7 +87,17 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	chmod a+x $(TARGET_DIR)/etc/init.d/S30pcmcia
 	chmod -R u+w $(TARGET_DIR)/etc/pcmcia/*
 
-pcmcia: uclibc $(TARGET_DIR)/sbin/cardmgr
+# use busybox depmod.pl so we need the sources unpacked
+$(PCMCIA_DIR)/.modules.dep: $(BUSYBOX_DIR)/.configured $(TARGET_DIR)/lib/modules
+	[ -d $(TARGET_DIR)/lib/modules/$(LINUX_VERSION) ] && \
+	$(BUSYBOX_DIR)/examples/depmod.pl \
+		-b $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/ \
+		-k $(LINUX_DIR)/vmlinux \
+		-F $(LINUX_DIR)/System.map \
+		> $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
+	touch $(PCMCIA_DIR)/.modules.dep
+
+pcmcia: uclibc $(TARGET_DIR)/sbin/cardmgr $(PCMCIA_DIR)/.modules.dep
 
 pcmcia-clean:
 	rm -f $(TARGET_DIR)/sbin/cardmgr
