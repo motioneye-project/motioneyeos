@@ -3,9 +3,10 @@
 # procps
 #
 #############################################################
-PROCPS_SOURCE=procps-3.2.1.tar.gz
+PROCPS_VER=3.2.3
+PROCPS_SOURCE=procps-$(PROCPS_VER).tar.gz
 PROCPS_SITE=http://procps.sourceforge.net/
-PROCPS_DIR=$(BUILD_DIR)/procps-3.2.1
+PROCPS_DIR=$(BUILD_DIR)/procps-$(PROCPS_VER)
 PROCPS_BINARY=ps/ps
 PROCPS_TARGET_BINARY=usr/bin/vmstat
 
