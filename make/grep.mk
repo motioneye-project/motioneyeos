@@ -51,12 +51,12 @@ $(GNUGREP_DIR)/$(GNUGREP_BINARY): $(GNUGREP_DIR)/.configured
 grep-target_binary: $(GNUGREP_DIR)/$(GNUGREP_BINARY)
 	@if [ -L $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY) ] ; then \
 		rm -f $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY); fi;
-       @if [ ! -f $(GNUGREP_DIR)/$(GNUGREP_BINARY) -o $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY) \
-       -ot $(GNUGREP_DIR)/$(GNUGREP_BINARY) ] ; then \
+	@if [ ! -f $(GNUGREP_DIR)/$(GNUGREP_BINARY) -o $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY) -ot \
+	$(GNUGREP_DIR)/$(GNUGREP_BINARY) ] ; then \
 	    set -x; \
 	    rm -f $(TARGET_DIR)/bin/grep $(TARGET_DIR)/bin/egrep $(TARGET_DIR)/bin/fgrep; \
 	    cp -a $(GNUGREP_DIR)/src/grep $(GNUGREP_DIR)/src/egrep \
-	    $(GNUGREP_DIR)/src/fgrep $(TARGET_DIR)/bin/; fi
+		$(GNUGREP_DIR)/src/fgrep $(TARGET_DIR)/bin/; fi
 
 grep: uclibc grep-target_binary
 

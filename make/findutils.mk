@@ -51,8 +51,8 @@ $(FINDUTILS_DIR)/$(FINDUTILS_BINARY): $(FINDUTILS_DIR)/.configured
 findutils-target_binary: $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
 	@if [ -L $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) ] ; then \
 		rm -f $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY); fi;
-       @if [ ! -f $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) -o $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) \
-       -ot $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) ] ; then \
+	@if [ ! -f $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) -o $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) \
+	-ot $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) ] ; then \
 	    set -x; \
 	    $(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) install; \
 	    $(STRIP) $(TARGET_DIR)/usr/lib/locate/* > /dev/null 2>&1; \

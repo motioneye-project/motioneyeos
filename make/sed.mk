@@ -50,8 +50,8 @@ $(SED_DIR1)/$(SED_BINARY): $(SED_DIR1)/.configured
 build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 	@if [ -L $(STAGING_DIR)/$(SED_TARGET_BINARY) ] ; then \
 		rm -f $(STAGING_DIR)/$(SED_TARGET_BINARY); fi;
-       @if [ ! -f $(STAGING_DIR)/$(SED_TARGET_BINARY) -o $(STAGING_DIR)/$(SED_TARGET_BINARY) \
-       -ot $(SED_DIR1)/$(SED_BINARY) ] ; then \
+	@if [ ! -f $(STAGING_DIR)/$(SED_TARGET_BINARY) -o $(STAGING_DIR)/$(SED_TARGET_BINARY) \
+	-ot $(SED_DIR1)/$(SED_BINARY) ] ; then \
 	    set -x; \
 	    $(MAKE) DESTDIR=$(STAGING_DIR) -C $(SED_DIR1) install; \
 	    mv $(STAGING_DIR)/usr/bin/sed $(STAGING_DIR)/bin/; \
@@ -115,8 +115,8 @@ sed-target_binary: $(SED_DIR2)/$(SED_BINARY)
 	@if [ -L $(TARGET_DIR)/$(SED_TARGET_BINARY) ] ; then \
 		rm -f $(TARGET_DIR)/$(SED_TARGET_BINARY); fi;
 
-       @if [ ! -f $(SED_DIR2)/$(SED_BINARY) -o $(TARGET_DIR)/$(SED_TARGET_BINARY) \
-       -ot $(SED_DIR2)/$(SED_BINARY) ] ; then \
+	@if [ ! -f $(SED_DIR2)/$(SED_BINARY) -o $(TARGET_DIR)/$(SED_TARGET_BINARY) \
+	-ot $(SED_DIR2)/$(SED_BINARY) ] ; then \
 	    set -x; \
 	    $(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) install; \
 	    mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/; \
