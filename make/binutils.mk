@@ -52,7 +52,6 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--infodir=$(STAGING_DIR)/info \
 		--enable-targets=$(GNU_TARGET_NAME) \
 		--with-sysroot=$(STAGING_DIR) \
-		--with-lib-path="$(STAGING_DIR)/usr/lib:$(STAGING_DIR)/lib" \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		--program-prefix=$(ARCH)-linux-);
