@@ -54,7 +54,7 @@ diff -urN cross.o/Makefile cross.x/Makefile
 diff -urN cross.o/config.sh.uclibc cross.x/config.sh.uclibc
 --- /dev/null
 +++ perl-5.8.0.uclibc/cross/config.sh.uclibc	2003-06-27 16:53:28.000000000 -0600
-@@ -0,0 +1,979 @@
+@@ -0,0 +1,978 @@
 +#!/bin/sh
 +#
 +# This file was produced by running the Configure script. It holds all the
@@ -813,7 +813,6 @@ diff -urN cross.o/config.sh.uclibc cross.x/config.sh.uclibc
 +optimize='-O2'
 +orderlib='false'
 +osname='linux'
-+osvers='2.4.19-rmk6'
 +otherlibdirs=' '
 +package='perl5'
 +pager='/bin/more'
