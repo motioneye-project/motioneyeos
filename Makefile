@@ -210,6 +210,10 @@ ifeq ($(ENABLE_LOCALE),true)
 EXTRA_GCC_CONFIG_OPTIONS += --enable-clocale=gnu
 endif
 
+ifneq ($(BUILD_WITH_LARGEFILE),true)
+DISABLE_LARGEFILE= --disable-largefile 
+endif
+
 HOSTCC:=gcc
 BASE_DIR:=${shell pwd}
 SOURCE_DIR:=$(BASE_DIR)/sources
