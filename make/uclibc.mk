@@ -41,7 +41,7 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(LINUX_DIR)/.configured
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(LINUX_HEADERS_DIR)/.configured
 	$(SED) 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
 ifeq ($(ENABLE_LOCALE),true)
 	cp $(SOURCE_DIR)/uClibc.config-locale $(UCLIBC_DIR)/.config
@@ -51,7 +51,7 @@ endif
 	$(SED) 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		$(UCLIBC_DIR)/.config
 	$(SED) 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
-	$(SED) 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
+	$(SED) 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_HEADERS_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
 	$(SED) 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
 		$(UCLIBC_DIR)/.config

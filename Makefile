@@ -193,7 +193,6 @@ TARGETS+=uclibc-configured binutils gcc ccache
 # that...
 TARGETS+=kernel-headers
 #TARGETS+=linux
-#TARGETS+=system-linux
 
 # The default minimal set
 TARGETS+=busybox #tinylogin

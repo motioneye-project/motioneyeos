@@ -49,7 +49,7 @@ $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY): $(BRIDGE_BUILD_DIR)/brctl/brctl
 	#cp -af $(BRIDGE_BUILD_DIR)/brctl/brctld $(TARGET_DIR)/usr/sbin/
 	#$(STRIP) $(TARGET_DIR)/usr/sbin/brctld
 
-bridge: $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
+bridge: linux $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
 
 bridge-source: $(DL_DIR)/$(BRIDGE_SOURCE)
 

@@ -17,7 +17,7 @@ $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	touch $(MTD_DIR)/.unpacked
 
 $(MTD_DIR)/util/mkfs.jffs2: $(MTD_DIR)/.unpacked
-	CFLAGS=-I$(LINUX_DIR)/include $(MAKE) LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
+	CFLAGS=-I$(LINUX_HEADERS_DIR)/include $(MAKE) LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
 
 mtd: $(MKFS_JFFS2)
 

@@ -38,7 +38,7 @@ $(TARGET_DIR)/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	$(STRIP) $(TARGET_DIR)/usr/lib/iptables/*.so
 	rm -rf $(TARGET_DIR)/usr/man
 
-iptables: $(TARGET_DIR)/sbin/iptables 
+iptables: linux $(TARGET_DIR)/sbin/iptables
 
 iptables-source: $(DL_DIR)/$(IPTABLES_SOURCE)
 

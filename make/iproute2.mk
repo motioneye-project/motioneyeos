@@ -30,7 +30,7 @@ $(IPROUTE2_DIR)/.unpacked: $(DL_DIR)/$(IPROUTE2_SOURCE) #$(DL_DIR)/$(IPROUTE2_PA
 
 $(IPROUTE2_DIR)/.configured: $(IPROUTE2_DIR)/.unpacked
 	$(SED) "s,-I/usr/include/db3,," $(IPROUTE2_DIR)/Makefile
-	$(SED) "s,^KERNEL_INCLUDE.*,KERNEL_INCLUDE=$(LINUX_DIR)/include," \
+	$(SED) "s,^KERNEL_INCLUDE.*,KERNEL_INCLUDE=$(LINUX_HEADERS_DIR)/include," \
 		$(IPROUTE2_DIR)/Makefile
 	$(SED) "s,^LIBC_INCLUDE.*,LIBC_INCLUDE=$(STAGING_DIR)/include," \
 		$(IPROUTE2_DIR)/Makefile
