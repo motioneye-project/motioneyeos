@@ -145,7 +145,7 @@ STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
 IMAGE:=$(BASE_DIR)/root_fs
 MAKE:=make
-GNU_TARGET_NAME:=$(OPTIMIZE_FOR_CPU)-unknown-linux-gnu
+GNU_TARGET_NAME:=$(OPTIMIZE_FOR_CPU)-linux
 ifneq ($(strip $(ARCH)),i386)
 CROSS:=$(ARCH)-linux-
 endif
