@@ -61,8 +61,8 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) install
 
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) DEVEL_PREFIX=$(TARGET_DIR) \
-		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR)/usr install_runtime install_target_utils
+	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) \
+		DEVEL_PREFIX=/ install_runtime install_target_utils
 
 uclibc: $(LINUX_KERNEL) $(TARGET_DIR)/lib/libc.so.0
 
