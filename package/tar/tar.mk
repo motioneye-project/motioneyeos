@@ -3,7 +3,7 @@
 # tar
 #
 #############################################################
-GNUTAR_VER:=1.14
+GNUTAR_VER:=1.14.90
 GNUTAR_SOURCE:=tar-$(GNUTAR_VER).tar.bz2
 GNUTAR_SITE:=ftp://alpha.gnu.org/gnu/tar
 GNUTAR_DIR:=$(BUILD_DIR)/tar-$(GNUTAR_VER)
