@@ -18,7 +18,7 @@ bash-source: $(DL_DIR)/$(BASH_SOURCE)
 $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	$(BASH_CAT) $(DL_DIR)/$(BASH_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# This is broken when -lintl is added to LIBS
-	sed -i -e 's,LIBS_FOR_BUILD =.*,LIBS_FOR_BUILD =,g' \
+	$(SED) 's,LIBS_FOR_BUILD =.*,LIBS_FOR_BUILD =,g' \
 		$(BASH_DIR)/builtins/Makefile.in
 	touch $(BASH_DIR)/.unpacked
 

@@ -113,7 +113,7 @@ INSTALL_LIBSTDCPP=true
 # The list of stuff to build for the target filesystem
 #
 #############################################################
-TARGETS:=
+TARGETS:=host-sed
 # The toolchain comes next if we are building one
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 ifeq ($(GCC_2_95_TOOLCHAIN),true)

@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.31 2003/11/18 07:18:25 andersen Exp $
+# $Id: ncurses.mk,v 1.32 2003/11/19 17:17:54 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -33,7 +33,7 @@ $(DL_DIR)/$(NCURSES_SOURCE):
 $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 	gunzip -c $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	#use the local tic and not whatever the build system was going to find.
-	sed -i -e 's~\$$srcdir/shlib tic\$$suffix~/usr/bin/tic~' \
+	$(SED) 's~\$$srcdir/shlib tic\$$suffix~/usr/bin/tic~' \
 		$(NCURSES_DIR)/misc/run_tic.in
 	touch  $(NCURSES_DIR)/.dist
 

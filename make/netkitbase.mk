@@ -18,9 +18,9 @@ netkitbase-source: $(DL_DIR)/$(NETKITBASE_SOURCE)
 $(NETKITBASE_DIR)/.unpacked: $(DL_DIR)/$(NETKITBASE_SOURCE)
 	$(NETKITBASE_CAT) $(DL_DIR)/$(NETKITBASE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# use ANSI syntax
-	sed -i -e "s/main()/main(void)/;" $(NETKITBASE_DIR)/configure
+	$(SED) "s/main()/main(void)/;" $(NETKITBASE_DIR)/configure
 	# don't try to run cross compiled binaries while configuring things
-	sed -i -e "s~./__conftest~#./__conftest~;" $(NETKITBASE_DIR)/configure
+	$(SED) "s~./__conftest~#./__conftest~;" $(NETKITBASE_DIR)/configure
 	touch $(NETKITBASE_DIR)/.unpacked
 
 $(NETKITBASE_DIR)/.configured: $(NETKITBASE_DIR)/.unpacked
@@ -39,7 +39,7 @@ $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY): $(NETKITBASE_DIR)/$(NETKITBASE_BINARY
 	cp $(NETKITBASE_DIR)/$(NETKITBASE_BINARY) $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
 	mkdir -p $(TARGET_DIR)/etc
 	cp $(NETKITBASE_DIR)/etc.sample/inetd.conf $(TARGET_DIR)/etc/
-	sed -i -e "s/^\([a-z]\)/#\1/;" $(TARGET_DIR)/etc/inetd.conf
+	$(SED) "s/^\([a-z]\)/#\1/;" $(TARGET_DIR)/etc/inetd.conf
 	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITBASE_DIR) install
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc

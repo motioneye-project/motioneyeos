@@ -34,9 +34,9 @@ $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	sed -i -e "s,^INSTALLSUID=.*,INSTALLSUID=\\$$\(INSTALL\) -m \\$$\(BINMODE\)," \
+	$(SED) "s,^INSTALLSUID=.*,INSTALLSUID=\\$$\(INSTALL\) -m \\$$\(BINMODE\)," \
 		$(UTIL-LINUX_DIR)/MCONFIG
-	sed -i -e "s,^USE_TTY_GROUP=.*,USE_TTY_GROUP=no," $(UTIL-LINUX_DIR)/MCONFIG
+	$(SED) "s,^USE_TTY_GROUP=.*,USE_TTY_GROUP=no," $(UTIL-LINUX_DIR)/MCONFIG
 	touch $(UTIL-LINUX_DIR)/.configured
 
 $(UTIL-LINUX_BINARY): $(UTIL-LINUX_DIR)/.configured

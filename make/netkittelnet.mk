@@ -19,9 +19,9 @@ netkittelnet-source: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 $(NETKITTELNET_DIR)/.unpacked: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 	$(NETKITTELNET_CAT) $(DL_DIR)/$(NETKITTELNET_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# use ANSI syntax
-	sed -i -e "s/main()/main(void)/;" $(NETKITTELNET_DIR)/configure
+	$(SED) "s/main()/main(void)/;" $(NETKITTELNET_DIR)/configure
 	# Disable termcap support
-	sed -i -e "s~\(.*termcap\.h.*\)~/* \1 */~;" $(NETKITTELNET_DIR)/telnetd/telnetd.c
+	$(SED) "s~\(.*termcap\.h.*\)~/* \1 */~;" $(NETKITTELNET_DIR)/telnetd/telnetd.c
 	# don't try to run cross compiled binaries while configuring things
 	cat $(NETKITTELNET_PATCH) | patch -p1 -d $(NETKITTELNET_DIR)
 	touch $(NETKITTELNET_DIR)/.unpacked
@@ -42,7 +42,7 @@ $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY): $(NETKITTELNET_DIR)/$(NETKITTELNET_
 	rm -f $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
 	cp $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY) $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
 	# Enable telnet in inetd
-	sed -i -e "s~^#telnet.*~telnet\tstream\ttcp\tnowait\troot\t/usr/sbin/telnetd\t/usr/sbin/telnetd~;" $(TARGET_DIR)/etc/inetd.conf
+	$(SED) "s~^#telnet.*~telnet\tstream\ttcp\tnowait\troot\t/usr/sbin/telnetd\t/usr/sbin/telnetd~;" $(TARGET_DIR)/etc/inetd.conf
 	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITTELNET_DIR) install
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc

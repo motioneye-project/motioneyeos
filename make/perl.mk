@@ -22,11 +22,11 @@ $(PERL_DIR)/.unpacked: $(DL_DIR)/$(PERL_SOURCE)
 	$(PERL_CAT) $(DL_DIR)/$(PERL_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	$(PERL_CAT) $(PERL_SOURCE_2) | tar -C $(PERL_DIR) -xvf -
 	cat $(PERL_PATCH) | patch -p1 -d $(PERL_DIR)
-	sed -i -e "s,^ARCH.*,ARCH=$(ARCH)," $(PERL_DIR)/cross/config
-	sed -i -e "s,^CONFIG_TARGET_.*,\#," $(PERL_DIR)/cross/config
-	sed -i -e "s,^export CROSS=.*,export CROSS=$(TARGET_CROSS)," $(PERL_DIR)/cross/Makefile
-	sed -i -e "s,TARGET_ARCH,$(ARCH)," $(PERL_DIR)/cross/config.sh.uclibc
-	sed -i -e "s,TARGET_CROSS,$(TARGET_CROSS)," $(PERL_DIR)/cross/config.sh.uclibc
+	$(SED) "s,^ARCH.*,ARCH=$(ARCH)," $(PERL_DIR)/cross/config
+	$(SED) "s,^CONFIG_TARGET_.*,\#," $(PERL_DIR)/cross/config
+	$(SED) "s,^export CROSS=.*,export CROSS=$(TARGET_CROSS)," $(PERL_DIR)/cross/Makefile
+	$(SED) "s,TARGET_ARCH,$(ARCH)," $(PERL_DIR)/cross/config.sh.uclibc
+	$(SED) "s,TARGET_CROSS,$(TARGET_CROSS)," $(PERL_DIR)/cross/config.sh.uclibc
 	touch $(PERL_DIR)/.unpacked
 
 $(PERL_DIR)/.configured: $(PERL_DIR)/.unpacked

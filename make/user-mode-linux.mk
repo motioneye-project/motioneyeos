@@ -35,7 +35,7 @@ $(LINUX_DIR)/.patched: $(LINUX_DIR)/.unpacked
 	touch $(LINUX_DIR)/.patched
 
 $(LINUX_DIR)/.set_arch: $(LINUX_DIR)/.patched
-	sed -i -e "s/^ARCH :=.*/ARCH:=um/g;" $(LINUX_DIR)/Makefile
+	$(SED) "s/^ARCH :=.*/ARCH:=um/g;" $(LINUX_DIR)/Makefile
 	touch $(LINUX_DIR)/.set_arch
 
 $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.set_arch  $(LINUX_KCONFIG)

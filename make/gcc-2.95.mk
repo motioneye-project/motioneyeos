@@ -67,40 +67,40 @@ $(GCC_DIR)/.gcc2_95_build_hacks: $(GCC_DIR)/.patched
 	#
 	(cd $(GCC_DIR); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
 		if [ -n "$$LIST" ] ; then \
-		sed -i -e "s,-dynamic-linker.*\.so[\.0-9]*},\
+		$(SED) "s,-dynamic-linker.*\.so[\.0-9]*},\
 		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
 	#
 	# Prevent system glibc start files from leaking in uninvited...
 	#
-	sed -i -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
+	$(SED) "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
 		\"$(STAGING_DIR)/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
-	sed -i -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2 =\
+	$(SED) "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2 =\
 		\"$(STAGING_DIR)/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
 	#
 	# Prevent system glibc include files from leaking in uninvited...
 	#
-	sed -i -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
+	$(SED) "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
 		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	sed -i -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
+	$(SED) "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
 		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	sed -i -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
+	$(SED) "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"$(STAGING_DIR)/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	#
 	# Prevent system glibc libraries from being found by collect2 
 	# when it calls locatelib() and rummages about the system looking 
 	# for libraries with the correct name...
 	#
-	sed -i -e "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
-	sed -i -e "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
+	$(SED) "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
+	$(SED) "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
-	sed -i -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
 	#
 	# Use atexit() directly, rather than cxa_atexit
 	#
-	sed -i -e "s,int flag_use_cxa_atexit = 1;,int flag_use_cxa_atexit = 0;,g;"\
+	$(SED) "s,int flag_use_cxa_atexit = 1;,int flag_use_cxa_atexit = 0;,g;"\
 		$(GCC_DIR)/gcc/cp/decl2.c;
 	#
 	# We do not wish to build the libstdc++ library provided with gcc,

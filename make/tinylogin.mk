@@ -24,12 +24,12 @@ tinylogin-source: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 
 $(TINYLOGIN_DIR)/Config.h: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 	bzcat $(DL_DIR)/$(TINYLOGIN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	sed -i -e "s/\`id -u\` -ne 0/0 == 1/" \
+	$(SED) "s/\`id -u\` -ne 0/0 == 1/" \
 		$(TINYLOGIN_DIR)/install.sh
-	sed -i -e "s/4755 --owner=root --group=root/755/" \
+	$(SED) "s/4755 --owner=root --group=root/755/" \
 		$(TINYLOGIN_DIR)/install.sh
-	sed -i -e "s/^DOSTATIC.*/DOSTATIC=false/g;" $(TINYLOGIN_DIR)/Makefile
-	sed -i -e "s/^DODEBUG.*/DODEBUG=false/g;" $(TINYLOGIN_DIR)/Makefile
+	$(SED) "s/^DOSTATIC.*/DOSTATIC=false/g;" $(TINYLOGIN_DIR)/Makefile
+	$(SED) "s/^DODEBUG.*/DODEBUG=false/g;" $(TINYLOGIN_DIR)/Makefile
 	# date test this one
 	touch $(TINYLOGIN_DIR)/Config.h
 

@@ -80,35 +80,35 @@ $(GCC_DIR)/.gcc3_3_build_hacks: $(GCC_DIR)/.patched
 	#
 	(cd $(GCC_DIR); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
 		if [ -n "$$LIST" ] ; then \
-		sed -i -e "s,-dynamic-linker.*\.so[\.0-9]*},\
+		$(SED) "s,-dynamic-linker.*\.so[\.0-9]*},\
 		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
 	#
 	# Prevent system glibc start files from leaking in uninvited...
 	#
-	sed -i -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
+	$(SED) "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
 		\"$(STAGING_DIR)/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
-	sed -i -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2 =\
+	$(SED) "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2 =\
 		\"$(STAGING_DIR)/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
 	#
 	# Prevent system glibc include files from leaking in uninvited...
 	#
-	sed -i -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
+	$(SED) "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
 		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	sed -i -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
+	$(SED) "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
 		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	sed -i -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
+	$(SED) "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"$(STAGING_DIR)/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	#
 	# Prevent system glibc libraries from being found by collect2 
 	# when it calls locatelib() and rummages about the system looking 
 	# for libraries with the correct name...
 	#
-	sed -i -e "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
-	sed -i -e "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
+	$(SED) "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
+	$(SED) "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
-	sed -i -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
 	touch $(GCC_DIR)/.gcc3_3_build_hacks
 
@@ -193,10 +193,10 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 	#
 	# Hack up the soname for libstdc++
 	# 
-	sed -i -e "s,\.so\.1,.so.0.9.9,g;" $(GCC_DIR)/gcc/config/t-slibgcc-elf-ver;
-	sed -i -e "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
+	$(SED) "s,\.so\.1,.so.0.9.9,g;" $(GCC_DIR)/gcc/config/t-slibgcc-elf-ver;
+	$(SED) "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
 		$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
-	sed -i -e "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
+	$(SED) "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
 		$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
 	touch $(GCC_DIR)/.g++_build_hacks
 
@@ -365,21 +365,21 @@ $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks: $(GCC_BUILD_DIR3)/.patched
 	#
 	(cd $(GCC_BUILD_DIR3); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
 		if [ -n "$$LIST" ] ; then \
-		sed -i -e "s,-dynamic-linker.*\.so[\.0-9]*},\
+		$(SED) "s,-dynamic-linker.*\.so[\.0-9]*},\
 		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
-	sed -i -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_BUILD_DIR3)/gcc/unwind-dw2-fde-glibc.c;
 	#
 	# Hack up the soname for libstdc++
 	# 
-	sed -i -e "s,\.so\.1,.so.0.9.9,g;" $(GCC_BUILD_DIR3)/gcc/config/t-slibgcc-elf-ver;
-	sed -i -e "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
+	$(SED) "s,\.so\.1,.so.0.9.9,g;" $(GCC_BUILD_DIR3)/gcc/config/t-slibgcc-elf-ver;
+	$(SED) "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
 		$(GCC_BUILD_DIR3)/libstdc++-v3/src/Makefile.am \
 		$(GCC_BUILD_DIR3)/libstdc++-v3/src/Makefile.in;
-	sed -i -e "s,3\.0\.0,9.9.0,g;" $(GCC_BUILD_DIR3)/libstdc++-v3/acinclude.m4 \
+	$(SED) "s,3\.0\.0,9.9.0,g;" $(GCC_BUILD_DIR3)/libstdc++-v3/acinclude.m4 \
 		$(GCC_BUILD_DIR3)/libstdc++-v3/aclocal.m4 \
 		$(GCC_BUILD_DIR3)/libstdc++-v3/configure;
 	touch $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
@@ -431,7 +431,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	# A nasty hack to work around g++ adding -lgcc_eh to the link
 	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/ ; ln -s libgcc.a libgcc_eh.a)
 	# Make sure gcc does not think we are cross compiling
-	sed -i -e "s/^1/0/;" $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/specs
+	$(SED) "s/^1/0/;" $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/specs
 	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION); $(STRIP) cc1 cc1plus collect2 > /dev/null 2>&1)
