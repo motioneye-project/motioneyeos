@@ -10,10 +10,6 @@ BZIP2_CAT:=zcat
 BZIP2_BINARY:=$(BZIP2_DIR)/bzip2
 BZIP2_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/bzmore
 
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),false)
-BZIP2_LARGEFILE="--disable-largefile"
-endif
-
 $(DL_DIR)/$(BZIP2_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(BZIP2_SITE)/$(BZIP2_SOURCE)
 
@@ -24,6 +20,10 @@ $(BZIP2_DIR)/.unpacked: $(DL_DIR)/$(BZIP2_SOURCE)
 	$(SED) "s,ln \$$(,ln -sf \$$(,g" $(BZIP2_DIR)/Makefile
 	$(SED) "s,ln -s (lib.*),ln -sf \$$1 ; ln -sf libbz2.so.1.0.2 libbz2.so,g" \
 	    $(BZIP2_DIR)/Makefile-libbz2_so
+ifeq ($(strip $(BUILD_WITH_LARGEFILE)),false)
+	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile
+	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile-libbz2_so
+endif
 	touch $(BZIP2_DIR)/.unpacked
 
 $(STAGING_DIR)/lib/libbz2.so.1.0.2: $(BZIP2_DIR)/.unpacked
