@@ -3,9 +3,9 @@
 # ltrace
 #
 #############################################################
-LTRACE_SOURCE=ltrace_0.3.31.tar.gz
+LTRACE_SOURCE=ltrace_0.3.32.tar.gz
 LTRACE_SITE=http://ftp.debian.org/debian/pool/main/l/ltrace
-LTRACE_DIR=$(BUILD_DIR)/ltrace-0.3.31
+LTRACE_DIR=$(BUILD_DIR)/ltrace-0.3.32
 LTRACE_BINARY=ltrace
 LTRACE_TARGET_BINARY=usr/bin/ltrace
 

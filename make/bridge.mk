@@ -4,9 +4,9 @@
 #
 #############################################################
 #
-BRIDGE_SOURCE_URL=http://bridge.sourceforge.net/bridge-utils
-BRIDGE_SOURCE=bridge-utils-0.9.6.tar.gz
-BRIDGE_BUILD_DIR=$(BUILD_DIR)/bridge-utils-0.9.6
+BRIDGE_SOURCE_URL=http://umn.dl.sourceforge.net/sourceforge/bridge/
+BRIDGE_SOURCE=bridge-utils-1.0.4.tar.gz
+BRIDGE_BUILD_DIR=$(BUILD_DIR)/bridge-utils-1.0.4
 BRIDGE_TARGET_BINARY:=usr/sbin/brctl
 
 $(DL_DIR)/$(BRIDGE_SOURCE):
@@ -14,7 +14,6 @@ $(DL_DIR)/$(BRIDGE_SOURCE):
 
 $(BRIDGE_BUILD_DIR)/.unpacked: $(DL_DIR)/$(BRIDGE_SOURCE)
 	zcat $(DL_DIR)/$(BRIDGE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	mv -f $(BUILD_DIR)/bridge-utils $(BRIDGE_BUILD_DIR)
 	patch -p1 -d $(BRIDGE_BUILD_DIR) < $(SOURCE_DIR)/bridge.patch 
 	touch $(BRIDGE_BUILD_DIR)/.unpacked
 
