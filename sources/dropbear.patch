@@ -1,0 +1,41 @@
+--- dropbear-0.33/Makefile.in.orig	2003-06-23 14:29:05.000000000 -0600
++++ dropbear-0.33/Makefile.in	2003-06-23 14:42:04.000000000 -0600
+@@ -46,9 +46,12 @@
+ 	-strip dropbearconvert
+ 
+ install: all
+-	install -o root -g root dropbear $(sbindir)
+-	install -o root -g root dropbearkey $(bindir)
+-	install -o root -g root dropbearconvert $(bindir)
++	install -m 755 dropbear $(DESTDIR)$(sbindir)
++	install -m 755 dropbearkey $(DESTDIR)$(bindir)
++	install -m 755 dropbearconvert $(DESTDIR)$(bindir)
++	-chown root.root $(DESTDIR)$(sbindir)/dropbear
++	-chown root.root $(DESTDIR)$(sbindir)/dropbearkey
++	-chown root.root $(DESTDIR)$(sbindir)/dropbearconvert
+ 
+ static: dropbear-static dropbearkey-static dropbearconvert-static
+ 
+--- dropbear-0.33/configure.in.orig	2003-06-23 14:00:49.000000000 -0600
++++ dropbear-0.33/configure.in	2003-06-23 14:20:57.000000000 -0600
+@@ -358,7 +358,19 @@
+ AC_PROG_GCC_TRADITIONAL
+ AC_FUNC_MEMCMP
+ AC_FUNC_SELECT_ARGTYPES
+-AC_FUNC_SETPGRP
++
++# Avoid AC_FUNC_SETPGRP for uClibc since we know the answer anyways
++# and the AC_FUNC_SETPGRP check does not work when cross compiling
++AC_CHECK_DECL(__UCLIBC__, 
++	[
++	AC_DEFINE(SETPGRP_VOID,,)
++	AC_MSG_RESULT(stpgrp(void) is correct for uClibc.)
++	],
++	[
++	AC_FUNC_SETPGRP
++	],,)
++
++
+ AC_TYPE_SIGNAL
+ AC_CHECK_FUNCS([dup2 getspnam getusershell memset putenv select socket strdup clearenv openpty strlcpy strlcat])
+ 
