@@ -3,9 +3,20 @@
 # wtools - Wireless Tools
 #
 #############################################################
-WTOOLS_VER:=26
+
+# Pick your version of the Wireless Tools
+# v26 -> obsolete ; won't compile with proper WE because $(KERNEL_SRC) not set
+#WTOOLS_VER:=26
+#WTOOLS_SUBVER:=
+# v27 -> latest stable ; multi WE
+#WTOOLS_VER:=27
+#WTOOLS_SUBVER:=
+# v28.pre1 -> latest
+WTOOLS_VER:=28
+WTOOLS_SUBVER:=.pre1
+
 WTOOLS_SOURCE_URL:=http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux
-WTOOLS_SOURCE:=wireless_tools.$(WTOOLS_VER).tar.gz
+WTOOLS_SOURCE:=wireless_tools.$(WTOOLS_VER)$(WTOOLS_SUBVER).tar.gz
 WTOOLS_BUILD_DIR=$(BUILD_DIR)/wireless_tools.$(WTOOLS_VER)
 
 $(DL_DIR)/$(WTOOLS_SOURCE):
@@ -20,7 +31,7 @@ $(WTOOLS_BUILD_DIR)/.configured: $(WTOOLS_BUILD_DIR)/.unpacked
 
 $(WTOOLS_BUILD_DIR)/iwconfig: $(WTOOLS_BUILD_DIR)/.configured
 	$(MAKE) -C $(WTOOLS_BUILD_DIR) \
-		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
+		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS) -I." \
 		BUILD_SHARED=y # may want to make this an option
 
 $(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwconfig
