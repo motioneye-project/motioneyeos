@@ -54,6 +54,7 @@ GDB_TARGET_CONFIGURE_VARS:= \
 $(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
 	mkdir -p $(GDB_TARGET_DIR)
 	(cd $(GDB_TARGET_DIR); \
+		gdb_cv_func_sigsetjmp=yes \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS_FOR_TARGET="$(TARGET_CFLAGS)" \
 		$(GDB_TARGET_CONFIGURE_VARS) \
@@ -103,6 +104,7 @@ $(GDB_SERVER_DIR)/.configured: $(GDB_DIR)/.unpacked
 	mkdir -p $(GDB_SERVER_DIR)
 	(cd $(GDB_SERVER_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
+		gdb_cv_func_sigsetjmp=yes \
 		$(GDB_DIR)/gdb/gdbserver/configure \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
@@ -152,6 +154,7 @@ GDB_CLIENT_DIR:=$(TOOL_BUILD_DIR)/gdbclient-$(GDB_VERSION)
 $(GDB_CLIENT_DIR)/.configured: $(GDB_DIR)/.unpacked
 	mkdir -p $(GDB_CLIENT_DIR)
 	(cd $(GDB_CLIENT_DIR); \
+		gdb_cv_func_sigsetjmp=yes \
 		$(GDB_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
 		--build=$(GNU_HOST_NAME) \
@@ -161,6 +164,7 @@ $(GDB_CLIENT_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--without-uiout --disable-gdbmi \
 		--disable-tui --disable-gdbtk --without-x \
 		--without-included-gettext \
+		--enable-threads \
 	);
 	touch  $(GDB_CLIENT_DIR)/.configured
 
