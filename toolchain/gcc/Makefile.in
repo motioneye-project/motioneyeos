@@ -25,3 +25,8 @@ ifeq ($(INSTALL_LIBGCJ),true)
 INSTALL_LIBSTDCPP:=true
 endif
 
+
+ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
+TARGETS+=gcc_target
+endif
+

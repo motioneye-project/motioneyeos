@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_DNSMASQ
+	bool"dnsmasq"
+	default n
+	help
+	  Add help text here.
+

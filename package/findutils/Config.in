@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_FINDUTILS
+	bool"findutils"
+	default n
+	help
+	  Add help text here.
+

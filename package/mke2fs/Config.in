@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_MKE2FS
+	bool"mke2fs"
+	default n
+	help
+	  Add help text here.
+

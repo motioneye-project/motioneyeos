@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_MAKE
+	bool"make"
+	default n
+	help
+	  Add help text here.
+

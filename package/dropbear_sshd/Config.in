@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_DROPBEAR_SSHD
+	bool"dropbear_sshd"
+	default n
+	help
+	  Add help text here.
+

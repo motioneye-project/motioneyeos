@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_PACKAGE_SOCAT)),y)
+TARGETS+=socat
+endif

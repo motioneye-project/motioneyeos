@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_PCMCIA
+	bool"pcmcia"
+	default n
+	help
+	  Add help text here.
+

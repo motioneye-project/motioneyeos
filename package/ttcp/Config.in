@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_TTCP
+	bool"ttcp"
+	default n
+	help
+	  Add help text here.
+

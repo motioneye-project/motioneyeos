@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_FILE
+	bool"file"
+	default n
+	help
+	  Add help text here.
+

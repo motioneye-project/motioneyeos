@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_TN5250
+	bool"tn5250"
+	default n
+	help
+	  Add help text here.
+

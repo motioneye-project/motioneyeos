@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_SFDISK
+	bool"sfdisk"
+	default n
+	help
+	  Add help text here.
+

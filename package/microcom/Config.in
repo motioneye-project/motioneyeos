@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_MICROCOM
+	bool"microcom"
+	default n
+	help
+	  Add help text here.
+

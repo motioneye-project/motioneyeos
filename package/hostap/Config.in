@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_HOSTAP
+	bool"hostap"
+	default n
+	help
+	  Add help text here.
+

@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_PACKAGE_DIFFUTILS)),y)
+TARGETS+=diffutils
+endif

@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_PACKAGE_TN5250)),y)
+TARGETS+=tn5250
+endif

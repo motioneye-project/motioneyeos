@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_NTP
+	bool"ntp"
+	default n
+	help
+	  Add help text here.
+

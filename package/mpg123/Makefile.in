@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_PACKAGE_MPG123)),y)
+TARGETS+=mpg123
+endif

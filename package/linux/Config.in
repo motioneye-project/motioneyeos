@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_LINUX
+	bool"linux"
+	default n
+	help
+	  Add help text here.
+

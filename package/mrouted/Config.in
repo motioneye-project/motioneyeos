@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_MROUTED
+	bool"mrouted"
+	default n
+	help
+	  Add help text here.
+

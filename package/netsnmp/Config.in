@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_NETSNMP
+	bool"netsnmp"
+	default n
+	help
+	  Add help text here.
+

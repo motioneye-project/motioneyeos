@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_LRZSZ
+	bool"lrzsz"
+	default n
+	help
+	  Add help text here.
+

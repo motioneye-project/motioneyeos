@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_NEWT
+	bool"newt"
+	default n
+	help
+	  Add help text here.
+

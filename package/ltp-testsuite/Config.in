@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_LTP-TESTSUITE
+	bool"ltp-testsuite"
+	default n
+	help
+	  Add help text here.
+

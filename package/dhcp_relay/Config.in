@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_DHCP_RELAY
+	bool"dhcp_relay"
+	default n
+	help
+	  Add help text here.
+

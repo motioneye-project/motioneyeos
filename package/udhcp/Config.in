@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_UDHCP
+	bool"udhcp"
+	default n
+	help
+	  Add help text here.
+

@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_MICROWIN
+	bool"microwin"
+	default n
+	help
+	  Add help text here.
+

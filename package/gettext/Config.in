@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_GETTEXT
+	bool"gettext"
+	default n
+	help
+	  Add help text here.
+

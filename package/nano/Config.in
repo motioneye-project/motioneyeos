@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_NANO
+	bool"nano"
+	default n
+	help
+	  Add help text here.
+

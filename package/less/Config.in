@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_LESS
+	bool"less"
+	default n
+	help
+	  Add help text here.
+

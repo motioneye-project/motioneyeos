@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_PACKAGE_DISTCC)),y)
+TARGETS+=distcc
+endif

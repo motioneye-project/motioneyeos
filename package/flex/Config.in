@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_FLEX
+	bool"flex"
+	default n
+	help
+	  Add help text here.
+

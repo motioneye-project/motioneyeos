@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_GAWK
+	bool"gawk"
+	default n
+	help
+	  Add help text here.
+

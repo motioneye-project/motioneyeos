@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_PACKAGE_MKE2FS)),y)
+TARGETS+=mke2fs
+endif

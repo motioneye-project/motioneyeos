@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_JPEG
+	bool"jpeg"
+	default n
+	help
+	  Add help text here.
+

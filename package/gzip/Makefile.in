@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_PACKAGE_GZIP)),y)
+TARGETS+=gzip
+endif

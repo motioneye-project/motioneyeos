@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_RAIDTOOLS
+	bool"raidtools"
+	default n
+	help
+	  Add help text here.
+
