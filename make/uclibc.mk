@@ -27,12 +27,13 @@ ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
 UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
+UCLIBC_SITE:=ftp://www.uclibc.org/uClibc
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.12
-UCLIBC_SOURCE:=uClibc-0.9.12.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.13
+UCLIBC_SOURCE:=uClibc-0.9.13.tar.bz2
+UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 #UCLIBC_PATCH=$(SOURCE_DIR)/uClibc.patch
-UCLIBC_URI:=ftp://www.uclibc.org/uClibc
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 LARGEFILE=true
 else
@@ -43,7 +44,7 @@ CROSSARG:=--cross="$(CROSS)"
 endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
-	wget -P $(DL_DIR) --passive-ftp $(UCLIBC_URI)/$(UCLIBC_SOURCE)
+	wget -P $(DL_DIR) --passive-ftp $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE) #$(UCLIBC_PATCH)
 
