@@ -3,9 +3,9 @@
 # dropbear_sshd
 #
 #############################################################
-DROPBEAR_SSHD_SOURCE:=dropbear-0.41.tar.bz2
+DROPBEAR_SSHD_SOURCE:=dropbear-0.42.tar.bz2
 DROPBEAR_SSHD_SITE:=http://matt.ucc.asn.au/dropbear/releases/
-DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.41
+DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.42
 DROPBEAR_SSHD_CAT:=bzcat
 DROPBEAR_SSHD_BINARY:=dropbearmulti
 DROPBEAR_SSHD_TARGET_BINARY:=usr/sbin/dropbear
@@ -61,6 +61,8 @@ $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY): $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SS
 		$(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
 	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearkey
 	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearconvert
+	cp $(DROPBEAR_SSHD_DIR)/S50dropbear $(TARGET_DIR)/etc/init.d/
+	chmod a+x $(TARGET_DIR)/etc/init.d/S50dropbear
 
 dropbear_sshd: uclibc zlib $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
 
