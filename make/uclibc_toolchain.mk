@@ -177,10 +177,39 @@ $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-*.patch
 	touch $(GCC_DIR)/.patched
 
+$(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
+	#
+	# Hack things to use the correct shared lib loader
+	#
+	(cd $(GCC_DIR); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
+		if [ -n "$$LIST" ] ; then \
+		perl -i -p -e "s,-dynamic-linker.*\.so[\.0-9]*},\
+		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
+	#
+	# Prevent system glibc start files from leaking in uninvited...
+	#
+	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1=\
+		\"$(STAGING_DIR)/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
+	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2=\
+		\"$(STAGING_DIR)/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
+	#
+	# Prevent system glibc include files from leaking in uninvited...
+	#
+	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,\
+		NATIVE_SYSTEM_HEADER_DIR=$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,\
+		CROSS_SYSTEM_HEADER_DIR=$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+	#
+	# Prevent gcc from using the unwind-dw2-fde-glibc code
+	#
+	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
+	touch $(GCC_DIR)/.gcc_build_hacks
+
 # The --without-headers option stopped working with gcc 3.0 and has never been
 # # fixed, so we need to actually have working C library header files prior to
 # # the step or libgcc will not build...
-$(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
+$(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR1)
 	(cd $(GCC_BUILD_DIR1); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(ARCH)-uclibc-ar \
 		RANLIB=$(ARCH)-uclibc-ranlib CC=$(HOSTCC) $(GCC_DIR)/configure \
@@ -190,10 +219,11 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
+		--with-local-prefix=$(STAGING_DIR)/usr/local \
+		--oldincludedir=$(STAGING_DIR)/usr/include \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=c --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
-	-perl -i -p -e "s,ac_cv_prog_cc_cross=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR1)/config.cache
 	touch $(GCC_BUILD_DIR1)/.configured
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
@@ -237,7 +267,7 @@ $(UCLIBC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked linux_headers
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(BUILD_DIR)/linux/.configured
 	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=$(TARGET_CROSS),g' \
 		$(UCLIBC_DIR)/Rules.mak
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
@@ -299,21 +329,7 @@ uclibc-dirclean:
 #
 #############################################################
 GCC_BUILD_DIR2:=$(BUILD_DIR)/gcc-final
-$(GCC_DIR)/.ldso_hacks: $(GCC_DIR)/.patched
-	#
-	# Hack things to use the correct shared lib loader
-	#
-	(cd $(GCC_DIR); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
-		if [ -n "$$LIST" ] ; then \
-		perl -i -p -e "s,-dynamic-linker.*\.so[\.0-9]*},\
-		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
-	#
-	# Prevent glibc start files from ever leaking in uninvited...
-	#
-	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1=\
-		\"$(STAGING_DIR)/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
-	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2=\
-		\"$(STAGING_DIR)/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
+$(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 	#
 	# Hack up the soname for libstdc++
 	# 
@@ -334,14 +350,9 @@ $(GCC_DIR)/.ldso_hacks: $(GCC_DIR)/.patched
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
 	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_noninline.h \
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
-	#
-	# Prevent gcc from using the unwind-dw2-fde-glibc code
-	#
-	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
-		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
-	touch $(GCC_DIR)/.ldso_hacks
+	touch $(GCC_DIR)/.g++_build_hacks
 
-$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.ldso_hacks
+$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	mkdir -p $(GCC_BUILD_DIR2)
 	(cd $(GCC_BUILD_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(ARCH)-uclibc-ar \
 		RANLIB=$(ARCH)-uclibc-ranlib CC=$(HOSTCC) $(GCC_DIR)/configure \
@@ -351,10 +362,11 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.ldso_hacks
 		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
+		--with-local-prefix=$(STAGING_DIR)/usr/local \
+		--oldincludedir=$(STAGING_DIR)/usr/include \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
-	perl -i -p -e "s,ac_cv_prog_cc_cross=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR2)/config.cache
 	touch $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured

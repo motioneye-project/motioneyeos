@@ -13,33 +13,34 @@
 #   sources/kernel-patches/031-lowlatency-fixes-5.bz2
 #   sources/kernel-patches/099-shutup.bz2
 #
-# these patched will all be applied by the patch-kernel.sh
+# these patches will all be applied by the patch-kernel.sh
 # script (which will also abort the build if it finds rejects)
 #  -Erik
 #
 #############################################################
 ifneq ($(filter $(TARGETS),linux),)
 
-LINUX_DIR=$(BUILD_DIR)/linux-2.4.20
-LINUX_FORMAT=bzImage
-#LINUX_FORMAT=zImage.prep
-LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
-#LINUX_BINLOC=arch/ppc/boot/images/$(LINUX_FORMAT)
-LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
-LINUX_SOURCE=linux-2.4.20.tar.bz2
+LINUX_VERSION=2.4.20
+LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
+#LINUX_FORMAT=bzImage
+LINUX_FORMAT=zImage
+#LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
+LINUX_BINLOC=arch/ppc/boot/images/zImage.prep
+LINUX_SOURCE=linux-$(LINUX_VERSION).tar.bz2
 LINUX_SITE=http://ftp.us.kernel.org/pub/linux/kernel/v2.4
 LINUX_KCONFIG=$(SOURCE_DIR)/linux.config
-LINUX_VERSION=$(shell grep -s UTS_RELEASE $(LINUX_DIR)/include/linux/version.h | cut -f 2 -d \" ||  echo \"2.4.20\" )
+LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 
 $(DL_DIR)/$(LINUX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
-$(LINUX_DIR)/.dist: $(DL_DIR)/$(LINUX_SOURCE)
+$(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
 	rm -rf $(LINUX_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mkdir -p $(SOURCE_DIR)/kernel-patches
 	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR)/kernel-patches
-	touch $(LINUX_DIR)/.dist
+	-(cd $(BUILD_DIR); ln -sf $(LINUX_DIR) linux)
+	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_KCONFIG):
 	@if [ ! -f "$(LINUX_KCONFIG)" ] ; then \
@@ -50,7 +51,7 @@ $(LINUX_KCONFIG):
 		sleep 5; \
 	fi;
 
-$(LINUX_DIR)/.configured:  $(LINUX_DIR)/.dist  $(LINUX_KCONFIG)
+$(LINUX_DIR)/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
 	#perl -i -p -e "s,^CROSS_COMPILE.*,\
 	#	CROSS_COMPILE=$(STAGING_DIR)/bin/$(ARCH)-uclibc-,g;" \
 	#	$(LINUX_DIR)/Makefile
@@ -89,14 +90,5 @@ linuxclean: clean
 
 linux-dirclean:
 	rm -rf $(LINUX_DIR)
-
-#############################################################
-#
-# Setup the kernel headers, but don't compile anything for the target yet,
-# since we still need to build a cross-compiler to do that little task for
-# us...  Try to work around this little chicken-and-egg problem..
-#
-#############################################################
-linux_headers: $(LINUX_DIR)/.configured
 
 endif
