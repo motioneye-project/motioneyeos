@@ -51,26 +51,29 @@ $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 	# Otherwise, relative paths for include dirs break.
 	mkdir -p $(STAGING_DIR)/bin-ccache;
 	(cd $(STAGING_DIR)/bin-ccache; \
-		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-gcc; \
-		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-cc; \
-		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-uclibc-cc);
-	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc ] && \
-		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(STAGING_DIR)/bin-ccache/
+		ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(GNU_TARGET_NAME)-gcc; \
+		ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(GNU_TARGET_NAME)-cc; \
+		ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(REAL_GNU_TARGET_NAME)-cc);
+	[ -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc ] && \
+		mv $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/bin-ccache/
 	(cd $(STAGING_DIR)/bin; \
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-cc; \
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-gcc; \
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-cc; \
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc);
+		ln -fs ../usr/bin/ccache $(GNU_TARGET_NAME)-cc; \
+		ln -fs ../usr/bin/ccache $(GNU_TARGET_NAME)-gcc; \
+		ln -fs ../usr/bin/ccache $(REAL_GNU_TARGET_NAME)-cc; \
+		ln -fs ../usr/bin/ccache $(REAL_GNU_TARGET_NAME)-gcc);
 ifeq ($(INSTALL_LIBSTDCPP),true)
-	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-c++ ] && \
-		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-c++ $(STAGING_DIR)/bin-ccache/
-	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-g++ ] && \
-		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-g++  $(STAGING_DIR)/bin-ccache/
+	[ -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-c++ ] && \
+		mv $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-c++ $(STAGING_DIR)/bin-ccache/
+	[ -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-g++ ] && \
+		mv $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-g++  $(STAGING_DIR)/bin-ccache/
 	(cd $(STAGING_DIR)/bin; \
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-c++; \
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-g++;\
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-c++; \
-		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-g++);
+		ln -fs ../usr/bin/ccache $(GNU_TARGET_NAME)-c++; \
+		ln -fs ../usr/bin/ccache $(GNU_TARGET_NAME)-g++;\
+		ln -fs ../usr/bin/ccache $(REAL_GNU_TARGET_NAME)-c++; \
+		ln -fs ../usr/bin/ccache $(REAL_GNU_TARGET_NAME)-g++);
+	(cd $(STAGING_DIR)/bin-ccache; \
+		ln -fs $(REAL_GNU_TARGET_NAME)-c++ $(GNU_TARGET_NAME)-c++; \
+		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-g++);
 endif
 
 ccache: gcc $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)

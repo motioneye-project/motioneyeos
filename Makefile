@@ -50,6 +50,7 @@ ARCH:=i386
 #
 DEFAULT_KERNEL_HEADERS:=2.4.25
 #DEFAULT_KERNEL_HEADERS:=2.6.7
+#DEFAULT_KERNEL_HEADERS:=2.6.8
 
 # Choose gcc version.
 # WARNING -- 2.95 currently only builds for i386, arm, mips*, and powerpc.
@@ -59,7 +60,8 @@ DEFAULT_KERNEL_HEADERS:=2.4.25
 #GCC_VERSION:=3.3.3
 #GCC_VERSION:=3.3.4
 #GCC_VERSION:=3.4.0
-GCC_VERSION:=3.4.1
+#GCC_VERSION:=3.4.1
+GCC_VERSION:=3.4.2
 
 # Choose binutils version.
 #
@@ -70,9 +72,9 @@ GCC_VERSION:=3.4.1
 #BINUTILS_VERSION:=2.15.90.0.1
 #BINUTILS_VERSION:=2.15.90.0.1.1
 #BINUTILS_VERSION:=2.15.90.0.2
-BINUTILS_VERSION:=2.15.90.0.3
+#BINUTILS_VERSION:=2.15.90.0.3
 #BINUTILS_VERSION:=2.15.91.0.1
-#BINUTILS_VERSION:=2.15.91.0.2
+BINUTILS_VERSION:=2.15.91.0.2
 
 # Choose gdb version.
 #
@@ -212,8 +214,11 @@ TARGETS+=busybox #tinylogin
 # More development system stuff for those that want it
 #TARGETS+=m4 autoconf automake libtool
 
-# Some nice debugging tools
-#TARGETS+=gdb strace ltrace
+# Some nice debugging tools for the host
+#TARGETS+=gdbclient
+# Some nice debugging tools for the target
+#TARGETS+=gdbserver gdb_target
+#TARGETS+=strace ltrace
 
 # The Valgrind debugger (x86 only)
 #TARGETS+=valgrind
