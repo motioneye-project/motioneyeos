@@ -285,7 +285,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	-mv $(TARGET_DIR)/lib/*.a $(TARGET_DIR)/usr/lib/
 	-mv $(TARGET_DIR)/lib/*.la $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libstdc++.so
-	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib//lib/libstdc++.so.5.* libstdc++.so)
+	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.so.5.0.2 libstdc++.so)
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
