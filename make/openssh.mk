@@ -59,6 +59,8 @@ $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
 
 $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
 	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
+	cp $(OPENSSH_DIR)/S50sshd $(TARGET_DIR)/etc/init.d/
+	chmod a+x $(TARGET_DIR)/etc/init.d/S50sshd
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 openssh: $(TARGET_DIR)/usr/bin/ssh

@@ -142,3 +142,70 @@
  # override default of no subsystems
 -Subsystem	sftp	/usr/libexec/sftp-server
 +Subsystem	sftp	/usr/sbin/sftp-server
+--- openssh-3.6.1p1/S50sshd	Fri Sep 27 05:21:58 2002
++++ openssh-3.6.1p1/S50sshd	Mon Mar 17 14:55:00 2003
+@@ -0,0 +1,64 @@
++#!/bin/sh
++#
++# sshd        Starts sshd.
++#
++
++# Make sure the ssh-keygen progam exists
++[ -f /usr/bin/ssh-keygen ] || exit 0
++
++# Check for the SSH1 RSA key
++if [ ! -f /etc/ssh_host_key ] ; then
++	echo Generating RSA Key...
++	/usr/bin/ssh-keygen -t rsa1 -f /etc/ssh_host_key -C '' -N ''
++fi
++
++# Check for the SSH2 RSA key
++if [ ! -f /etc/ssh_host_rsa_key ] ; then
++	echo Generating RSA Key...
++	/usr/bin/ssh-keygen -t rsa -f /etc/ssh_host_rsa_key -C '' -N ''
++fi
++
++# Check for the SSH2 DSA key
++if [ ! -f /etc/ssh_host_dsa_key ] ; then
++	echo Generating DSA Key...
++	echo THIS CAN TAKE A MINUTE OR TWO DEPENDING ON YOUR PROCESSOR!
++	echo
++        /usr/bin/ssh-keygen -t dsa -f /etc/ssh_host_dsa_key -C '' -N ''
++fi
++                
++umask 077
++
++start() {
++ 	echo -n "Starting sshd: "
++	/usr/sbin/sshd
++	touch /var/lock/sshd
++	echo "OK"
++}	
++stop() {
++	echo -n "Stopping sshd: "
++        killall	sshd 
++	rm -f /var/lock/sshd
++	echo "OK" 
++}
++restart() {
++	stop
++	start
++}	
++
++case "$1" in
++  start)
++  	start
++	;;
++  stop)
++  	stop
++	;;
++  restart|reload)
++  	restart
++	;;
++  *)
++	echo $"Usage: $0 {start|stop|restart}"
++	exit 1
++esac
++
++exit $?
++
