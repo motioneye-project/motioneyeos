@@ -44,7 +44,7 @@ $(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
 	@if [ ! -f $(LINUX_DIR)/Makefile ] ; then \
 	    echo -e "VERSION = $(VERSION)\nPATCHLEVEL = $(PATCHLEVEL)\n" > \
 		    $(LINUX_DIR)/Makefile; \
-	    echo -e "SUBLEVEL = $(SUBLEVEL)\nEXTRAVERSION =\n" > \
+	    echo -e "SUBLEVEL = $(SUBLEVEL)\nEXTRAVERSION =\n" >> \
 		    $(LINUX_DIR)/Makefile; \
 	    echo -e "KERNELRELEASE=\$$(VERSION).\$$(PATCHLEVEL).\$$(SUBLEVEL)\$$(EXTRAVERSION)" >> \
 		    $(LINUX_DIR)/Makefile; \
