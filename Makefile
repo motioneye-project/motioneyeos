@@ -46,7 +46,7 @@ GCC_2_95_TOOLCHAIN:=false
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all, depending on what Erik is doing...
-USE_UCLIBC_SNAPSHOT:=true
+USE_UCLIBC_SNAPSHOT:=false
 
 # Enable this to use the busybox daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
@@ -83,8 +83,8 @@ endif
 # real kernel # that will run on its own?  Perhaps you have a 
 # kernel you have already configured and you want to use that?
 #TARGETS+=linux
-TARGETS+=user-mode-linux
-#TARGETS+=system-linux
+#TARGETS+=user-mode-linux
+TARGETS+=system-linux
 
 # The default minimal set
 TARGETS+=busybox tinylogin
