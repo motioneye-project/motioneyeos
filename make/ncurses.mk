@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.21 2003/02/12 08:10:38 andersen Exp $
+# $Id: ncurses.mk,v 1.22 2003/02/12 12:43:15 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -61,11 +61,11 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	);
 	touch  $(NCURSES_DIR)/.configured
 
-$(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
+$(NCURSES_DIR)/lib/libncurses.so.5.2: $(NCURSES_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
 		DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR)
 
-$(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so
+$(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.5.2
 	BUILD_CC=$(HOSTCC) \
 	    HOSTCC=$(HOSTCC) CC=$(TARGET_CC) $(MAKE) \
 	    prefix=$(STAGING_DIR) \
@@ -86,7 +86,7 @@ $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so
 	    chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
 	    touch -c $(STAGING_DIR)/lib/libncurses.a 
 
-$(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.a
+$(TARGET_DIR)/lib/libncurses.so.5.2: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
 	-cp -dpf $(STAGING_DIR)/usr/lib/terminfo $(TARGET_DIR)/usr/lib/
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo
@@ -94,7 +94,7 @@ $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.a
 		cp -dpf $(STAGING_DIR)/usr/share/terminfo/$${i} $(TARGET_DIR)/usr/share/terminfo/; \
 	done
 
-$(TARGET_DIR)/usr/lib/libncurses.a: $(TARGET_DIR)/lib/libncurses.so
+$(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/ncurses.h
 	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
@@ -120,5 +120,5 @@ ncurses-clean:
 ncurses-dirclean: 
 	rm -rf $(NCURSES_DIR)
 
-ncurses: $(TARGET_DIR)/lib/libncurses.so 
+ncurses: $(TARGET_DIR)/lib/libncurses.so.5.2
 
