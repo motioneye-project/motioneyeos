@@ -45,6 +45,7 @@ $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 	mkdir -p $(TOOL_BUILD_DIR)/.ccache;
 	cp $(CCACHE_DIR1)/ccache $(STAGING_DIR)/usr/bin
 	(cd $(STAGING_DIR)/usr/bin; \
+		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-gcc; \
 		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-cc; \
 		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-uclibc-cc);
 	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc ] && \
