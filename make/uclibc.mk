@@ -49,13 +49,6 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) #$(UCLIBC_PATCH)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
-ifeq ($(LINUX_DIR),)
-LINUX_DIR:=$(BUILD_DIR)/linux
-endif
-
-linux_headers: $(LINUX_DIR)/.configured
-
-
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCC=$(HOSTCC),g' $(UCLIBC_DIR)/Rules.mak
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
@@ -87,7 +80,8 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
 $(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) install_target_utils
 
-uclibc: linux_headers $(STAGING_DIR)/lib/libc.a $(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
+uclibc: $(BUILD_DIR)/linux/.configured $(STAGING_DIR)/lib/libc.a \
+	    $(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
 
 uclibc-clean:
 	rm -f $(TARGET_DIR)/lib/libc.so.0
