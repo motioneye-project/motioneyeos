@@ -21,9 +21,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-PCMCIA_SOURCE:=pcmcia-cs-3.2.3.tar.gz
+PCMCIA_SOURCE:=pcmcia-cs-3.2.4.tar.gz
 PCMCIA_SITE:=http://telia.dl.sourceforge.net/sourceforge/pcmcia-cs
-PCMCIA_DIR:=$(BUILD_DIR)/pcmcia-cs-3.2.3
+PCMCIA_DIR:=$(BUILD_DIR)/pcmcia-cs-3.2.4
 PCMCIA_PATCH:=$(SOURCE_DIR)/pcmcia.patch
 PCMCIA_CAT:=zcat
 
@@ -48,6 +48,8 @@ $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 	perl -i -p -e "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
 	perl -i -p -e "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config
 	perl -i -p -e "s/bind \"wvlan_cs\"/bind \"orinoco_cs\"/g" $(PCMCIA_DIR)/etc/config
+	perl -i -p -e "s,-f /etc/pcmcia.conf,-f /etc/default/pcmcia.conf,g" $(PCMCIA_DIR)/etc/rc.pcmcia
+	perl -i -p -e "s,\. /etc/pcmcia.conf,\. /etc/default/pcmcia.conf,g" $(PCMCIA_DIR)/etc/rc.pcmcia
 	touch $(PCMCIA_DIR)/.configured
 
 $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
@@ -80,6 +82,7 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -f $(TARGET_DIR)/sbin/ftl_format
 	rm -f $(TARGET_DIR)/usr/X11R6/bin/xcardinfo
 	rm -rf $(TARGET_DIR)/etc/sysconfig
+	cp -f $(PCMCIA_DIR)/etc/pcmcia $(TARGET_DIR)/etc/default/
 	cp -f $(PCMCIA_DIR)/etc/rc.pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
 	rm -rf $(TARGET_DIR)/etc/pcmcia/cis
 	chmod a+x $(TARGET_DIR)/etc/init.d/S30pcmcia
