@@ -41,9 +41,9 @@ $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked
 	touch $(PCMCIA_DIR)/.patched
 
 $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
-	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX_DIR) --noprompt \
+	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX_SOURCE_DIR) --noprompt \
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
-		--sysv --kcc=$(HOSTCC) --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
+		--sysv --kcc=$(KERNEL_CROSS)gcc --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
 	perl -i -p -e "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
 	perl -i -p -e "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config
