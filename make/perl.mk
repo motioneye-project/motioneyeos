@@ -41,6 +41,10 @@ $(TARGET_DIR)/$(PERL_TARGET_BINARY): $(PERL_DIR)/$(PERL_BINARY)
 	rm -f $(PERL_DIR)/install_me_here/usr/lib/perl/5.8.0/ExtUtils/MANIFEST.SKIP
 	rm -f $(PERL_DIR)/install_me_here/usr/lib/perl/5.8.0/unicore/Makefile
 	rm -rf $(TARGET_DIR)/usr/lib/perl
+	-$(STRIP) $(PERL_DIR)/install_me_here/usr/bin/a2p
+	-$(STRIP) $(PERL_DIR)/install_me_here/usr/bin/perl
+	rm -f $(PERL_DIR)/install_me_here/usr/bin/perl5.8.0
+	(cd $(PERL_DIR)/install_me_here/usr/bin; ln -sf perl perl5.8.0)
 	cp -fa $(PERL_DIR)/install_me_here/* $(TARGET_DIR)/
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
