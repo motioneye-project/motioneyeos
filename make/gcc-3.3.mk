@@ -326,12 +326,17 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 		--disable-shared $(MULTILIB) \
 		--enable-target-optspace $(DISABLE_NLS) \
 		--with-gnu-ld --disable-__cxa_atexit \
-		--enable-clocale=gnu \
 		--enable-languages=$(TARGET_LANGUAGES) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
 		--program-prefix="" \
 	);
 	touch $(GCC_BUILD_DIR3)/.configured
+#Fixme -- for locale handling?
+#ifeq ($(ENABLE_LOCALE),true)
+#		--enable-clocale=gnu \
+#endif
+
+
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	$(MAKE) -C $(GCC_BUILD_DIR3) \
