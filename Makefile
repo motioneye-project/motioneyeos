@@ -110,7 +110,7 @@ TARGETS+=busybox tinylogin
 #TARGETS+=valgrind
 
 # Some stuff for access points and firewalls
-#TARGETS+=iptables hostap wtools dhcp_relay
+#TARGETS+=iptables hostap wtools dhcp_relay bridge
 
 # Run customize.mk at the very end to add your own special config.
 # This is useful for making your own distro within the buildroot
