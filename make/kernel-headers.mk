@@ -81,6 +81,12 @@ $(LINUX_DIR)/.configured: $(LINUX_DIR)/.patched
 	     if [ ! -L proc ] ; then \
 	     ln -fs proc-armv proc; \
 	     ln -fs arch-ebsa285 arch; fi); \
+	elif [ "$(ARCH)" = "armeb" ];then \
+	    (cd $(LINUX_DIR)/include; ln -fs asm-arm$(NOMMU) asm; \
+	     cd asm; \
+	     if [ ! -L proc ] ; then \
+	     ln -fs proc-armv proc; \
+	     ln -fs arch-ebsa285 arch; fi); \
 	elif [ "$(ARCH)" = "cris" ];then \
 	    (cd $(LINUX_DIR)/include; ln -fs asm-cris asm;) \
 	else \
