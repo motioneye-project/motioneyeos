@@ -50,7 +50,7 @@ $(TARGET_DIR)/$(GAWK_TARGET_BINARY): $(GAWK_DIR)/$(GAWK_BINARY)
 	rm -f $(TARGET_DIR)/usr/bin/awk
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GAWK_DIR) install
 	rm -f $(TARGET_DIR)/usr/bin/gawk-*
-	(cd $(TARGET_DIR)/usr/bin; ln -sf gawk awk) 
+	(cd $(TARGET_DIR)/usr/bin; ln -sf gawk awk)
 	$(STRIP) $(TARGET_DIR)/usr/lib/awk/* > /dev/null 2>&1
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
