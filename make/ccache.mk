@@ -6,27 +6,100 @@
 CCACHE_SITE:=http://ccache.samba.org/ftp/ccache
 CCACHE_SOURCE:=ccache-2.3.tar.gz
 CCACHE_DIR:=$(TOOL_BUILD_DIR)/ccache-2.3
-CCACHE_DIR2:=$(BUILD_DIR)/ccache-2.3
+CCACHE_DIR1:=$(TOOL_BUILD_DIR)/ccache-host
+CCACHE_DIR2:=$(BUILD_DIR)/ccache-target
 CCACHE_CAT:=zcat
 CCACHE_BINARY:=ccache
 CCACHE_TARGET_BINARY:=usr/bin/ccache
 
-CCACHE_DIR1:=$(TOOL_BUILD_DIR)/ccache-build
 $(DL_DIR)/$(CCACHE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(CCACHE_SITE)/$(CCACHE_SOURCE)
 
-$(CCACHE_DIR)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
+$(CCACHE_DIR1)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
 	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
-	touch $(CCACHE_DIR)/.unpacked
+	mv $(CCACHE_DIR) $(CCACHE_DIR1)
+	touch $(CCACHE_DIR1)/.unpacked
 
-$(CCACHE_DIR)/.patched: $(CCACHE_DIR)/.unpacked
-	touch $(CCACHE_DIR)/.patched
+$(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
+	$(SED) "s,getenv(\"CCACHE_PATH\"),\"$(STAGING_DIR)/usr/bin\",g" \
+		$(CCACHE_DIR1)/execute.c
+	$(SED) "s,getenv(\"CCACHE_DIR\"),\"$(CCACHE_DIR1)\",g" \
+		$(CCACHE_DIR1)/ccache.c
+	touch $(CCACHE_DIR1)/.patched
 
-$(CCACHE_DIR2)/.configured: $(CCACHE_DIR)/.patched
+$(CCACHE_DIR1)/.configured: $(CCACHE_DIR1)/.patched
+	mkdir -p $(CCACHE_DIR1)
+	(cd $(CCACHE_DIR1); rm -rf config.cache; \
+		CC=$(HOSTCC) \
+		$(CCACHE_DIR1)/configure \
+		--target=$(GNU_HOST_NAME) \
+		--host=$(GNU_HOST_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+	);
+	touch $(CCACHE_DIR1)/.configured
+
+$(CCACHE_DIR1)/$(CCACHE_BINARY): $(CCACHE_DIR1)/.configured
+	$(MAKE) CC=$(HOSTCC) -C $(CCACHE_DIR1)
+
+$(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
+	mkdir -p $(STAGING_DIR)/usr/bin;
+	mkdir -p $(TOOL_BUILD_DIR)/.ccache;
+	cp $(CCACHE_DIR1)/ccache $(STAGING_DIR)/usr/bin
+	(cd $(STAGING_DIR)/usr/bin; \
+		ln -fs $(ARCH)-linux-uclibc-gcc $(ARCH)-linux-cc; \
+		ln -fs $(ARCH)-linux-uclibc-gcc $(ARCH)-linux-uclibc-cc);
+	[ -f $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-gcc ] && \
+		mv $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-gcc $(STAGING_DIR)/usr/bin/
+	[ -f $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-c++ ] && \
+		mv $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-c++ $(STAGING_DIR)/usr/bin/
+	[ -f $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-g++ ] && \
+		mv $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-g++  $(STAGING_DIR)/usr/bin/
+	(cd $(STAGING_DIR)/bin; \
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-cc; \
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-gcc; \
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-c++; \
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-g++;\
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-cc; \
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-gcc; \
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-c++; \
+		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-g++);
+
+ifeq ($(GCC_2_95_TOOLCHAIN),true)
+ccache: gcc2_95 $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
+else
+ccache: gcc3_3 $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
+endif
+
+ccache-clean:
+	$(MAKE) -C $(CCACHE_DIR1) uninstall
+	-$(MAKE) -C $(CCACHE_DIR1) clean
+
+ccache-dirclean:
+	rm -rf $(CCACHE_DIR1)
+
+
+
+
+#############################################################
+#
+# build ccache for use on the target system
+#
+#############################################################
+
+$(CCACHE_DIR2)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
+	$(CCACHE_CAT) $(DL_DIR)/$(CCACHE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	mv $(CCACHE_DIR) $(CCACHE_DIR2)
+	touch $(CCACHE_DIR2)/.unpacked
+
+$(CCACHE_DIR2)/.patched: $(CCACHE_DIR2)/.unpacked
+	touch $(CCACHE_DIR2)/.patched
+
+$(CCACHE_DIR2)/.configured: $(CCACHE_DIR2)/.patched
 	mkdir -p $(CCACHE_DIR2)
 	(cd $(CCACHE_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		$(CCACHE_DIR)/configure \
+		$(CCACHE_DIR2)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

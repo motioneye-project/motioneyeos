@@ -129,9 +129,9 @@ INSTALL_LIBGCJ:=false
 TARGETS:=host-sed
 
 ifeq ($(GCC_2_95_TOOLCHAIN),true)
-TARGETS+=uclibc-configured binutils gcc2_95
+TARGETS+=uclibc-configured binutils gcc2_95 ccache
 else
-TARGETS+=uclibc-configured binutils gcc3_3
+TARGETS+=uclibc-configured binutils gcc3_3 ccache
 endif
 
 # Do you want user mode Linux (x86 only), or are you building a
