@@ -51,7 +51,7 @@ $(LINUX_KCONFIG):
 		sleep 5; \
 	fi;
 
-$(LINUX_DIR)/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
+$(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
 	#perl -i -p -e "s,^CROSS_COMPILE.*,\
 	#	CROSS_COMPILE=$(STAGING_DIR)/bin/$(ARCH)-uclibc-,g;" \
 	#	$(LINUX_DIR)/Makefile

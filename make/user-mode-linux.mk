@@ -35,7 +35,7 @@ $(LINUX_DIR)/.set_arch: $(LINUX_DIR)/.patched
 	perl -i -p -e "s/^ARCH :=.*/ARCH:=um/g;" $(LINUX_DIR)/Makefile
 	touch $(LINUX_DIR)/.set_arch
 
-$(LINUX_DIR)/.configured:  $(LINUX_DIR)/.set_arch  $(LINUX_KCONFIG)
+$(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.set_arch  $(LINUX_KCONFIG)
 	cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
 	make -C $(LINUX_DIR) oldconfig include/linux/version.h
 	touch $(LINUX_DIR)/.configured
