@@ -88,11 +88,11 @@ config BR2_STAGING_DIR
 	string "Toolchain and header file location?"
 	default "$(BUILD_DIR)/staging_dir"
 	help
-	    This is the location where the toolchain will be installed.
-	    Since the toolchain will not work if it is moved from this
-	    location, it is important for people wishing to package up
-	    a uClibc toolchain that this be set to the location in which
-	    the toolchain will be used.
+	    This is the location where the toolchain will be installed.  The
+	    toolchain will not work if it is moved from this location.
+	    Therefore, if you wish to package up a uClibc toolchain, it is
+	    important that is is set to the final location where the toolchain
+	    will be used.
 
 	    Most people will leave this set to the default value of
 	    "$(BUILD_DIR)/staging_dir".
