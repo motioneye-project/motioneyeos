@@ -3,7 +3,7 @@
 # uchdp DHCP client and/or server
 #
 #############################################################
-# Copyright (C) 2001, 2002 by Erik Andersen <andersen@codepoet.org>
+# Copyright (C) 2001-2003 by Erik Andersen <andersen@codepoet.org>
 # Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -44,9 +44,16 @@ $(UDHCP_DIR)/udhcpc: $(UDHCP_DIR)/.unpacked
 	$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(UDHCP_DIR)
 
 $(TARGET_DIR)/sbin/udhcpc: $(UDHCP_DIR)/udhcpc
+	perl -i -p -e 's/pump/udhcpc/' $(TARGET_DIR)/etc/pcmcia/network*
+	perl -i -p -e 's/PUMP/UDHCPC/' $(TARGET_DIR)/etc/pcmcia/network*
+	perl -i -p -e 's/DHCP="n"/DHCP="y"/' $(TARGET_DIR)/etc/pcmcia/network*
+	mkdir -p $(TARGET_DIR)/sbin
 	cp $(UDHCP_DIR)/udhcpc $(TARGET_DIR)/sbin/
+	mkdir -p $(TARGET_DIR)/usr/share/udhcpc
+	cp $(UDHCP_DIR)/samples/simple.script $(TARGET_DIR)/usr/share/udhcpc/default.script
+	chmod a+x $(TARGET_DIR)/sbin/udhcpc $(TARGET_DIR)/usr/share/udhcpc/default.script
 
-udhcp: uclibc $(TARGET_DIR)/sbin/udhcpc
+udhcp: uclibc pcmcia $(TARGET_DIR)/sbin/udhcpc
 
 udhcp-clean:
 	rm -f $(TARGET_DIR)/sbin/udhcpc
