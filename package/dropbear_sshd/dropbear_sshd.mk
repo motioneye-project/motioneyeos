@@ -48,7 +48,8 @@ $(DROPBEAR_SSHD_DIR)/.configured: $(DROPBEAR_SSHD_DIR)/.unpacked
 
 $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY): $(DROPBEAR_SSHD_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) LD=$(TARGET_CC) \
-		-C $(DROPBEAR_SSHD_DIR) dropbearmulti
+		PROGRAMS="dropbear dbclient dropbearkey dropbearconvert scp" \
+		MULTI=1 SCPPROGRESS=1 -C $(DROPBEAR_SSHD_DIR)
 
 $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY): $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY)
 	#$(MAKE) DESTDIR=$(TARGET_DIR) $(TARGET_CONFIGURE_OPTS) \
@@ -59,6 +60,8 @@ $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY): $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SS
 	install -d -m 755 $(TARGET_DIR)/usr/bin
 	install -m 755 $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY) \
 		$(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
+	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/scp
+	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/ssh
 	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearkey
 	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearconvert
 	cp $(DROPBEAR_SSHD_DIR)/S50dropbear $(TARGET_DIR)/etc/init.d/
