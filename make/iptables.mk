@@ -21,6 +21,7 @@ $(IPTABLES_BUILD_DIR)/.configured: $(IPTABLES_BUILD_DIR)/.unpacked
 	touch  $(IPTABLES_BUILD_DIR)/.configured
 
 $(IPTABLES_BUILD_DIR)/iptables: $(IPTABLES_BUILD_DIR)/.configured
+	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) -C $(IPTABLES_BUILD_DIR) KERNEL_DIR=$(BUILD_DIR)/linux CC=$(TARGET_CC)
 
 $(TARGET_DIR)/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
