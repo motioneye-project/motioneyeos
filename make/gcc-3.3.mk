@@ -25,8 +25,16 @@ ifneq ($(GCC_2_95_TOOLCHAIN),true)
 #GCC_CAT:=zcat
 
 # Shiny new stuff...
-GCC_VERSION:=3.3.1
+GCC_VERSION:=3.3.2
+#GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/gcc-$(GCC_VERSION)
+#GCC_SITE:=http://www.binarycode.org/gcc/releases/gcc-$(GCC_VERSION)
 GCC_SITE:=http://gcc.get-software.com/releases/gcc-$(GCC_VERSION)
+
+#
+# snapshots....
+#GCC_VERSION:=3.3-20031013
+#GCC_SITE:=http://gcc.get-software.com/snapshots/$(GCC_VERSION)
+#
 GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)
 GCC_CAT:=bzcat
@@ -210,10 +218,7 @@ $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
 	    CC_FOR_TARGET=$(TARGET_CROSS)gcc $(MAKE) -C $(GCC_BUILD_DIR2)
 	touch $(GCC_BUILD_DIR2)/.compiled
 
-$(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
-	touch $(GCC_BUILD_DIR2)/.installed
-
-$(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
+$(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled $(STAGING_DIR)/lib/libc.a
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) install;
 	-mv $(STAGING_DIR)/bin/gcc $(STAGING_DIR)/usr/bin;
 	-mv $(STAGING_DIR)/bin/protoize $(STAGING_DIR)/usr/bin;
@@ -237,12 +242,13 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 		    ); \
 		fi; \
 	done;
+	touch $(GCC_BUILD_DIR2)/.installed
 
 ifneq ($(TARGET_DIR),)
-$(TARGET_DIR)/lib/libstdc++.so.5.0.5: $(STAGING_DIR)/lib/libstdc++.so.5.0.5
+$(TARGET_DIR)/lib/libstdc++.so.5.0.5: $(GCC_BUILD_DIR2)/.installed
 	cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
 
-$(TARGET_DIR)/lib/libgcc_s.so.0.9.9: $(STAGING_DIR)/lib/libgcc_s.so.0.9.9
+$(TARGET_DIR)/lib/libgcc_s.so.0.9.9: $(GCC_BUILD_DIR2)/.installed
 	cp -a $(STAGING_DIR)/lib/libgcc_s.so* $(TARGET_DIR)/lib/
 
 ifeq ($(INSTALL_LIBSTDCPP),true)
@@ -254,7 +260,7 @@ endif
 
 
 gcc3_3: binutils uclibc-configured gcc3_3_initial uclibc \
-	$(STAGING_DIR)/bin/$(ARCH)-uclibc-g++ $(GCC_TARGETS)
+	$(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
 
 gcc3_3-clean:
 	rm -rf $(GCC_BUILD_DIR2)
