@@ -21,11 +21,12 @@ $(SOURCE_DIR)/$(BUSYBOX_SOURCE):
 	done
 
 $(BUSYBOX_DIR)/.unpacked:	$(SOURCE_DIR)/$(BUSYBOX_SOURCE)
+	rm -rf $(BUSYBOX_DIR) # Make sure no older version interferes
 	tar -xzf $(SOURCE_DIR)/$(BUSYBOX_SOURCE)
 	touch $(BUSYBOX_DIR)/.unpacked
 	
 $(BUSYBOX_WORKDIR)/.config:	$(BUSYBOX_DIR)/.unpacked
-	rm -rf $(BUSYBOX_WORKDIR)
+	rm -rf $(BUSYBOX_WORKDIR) # Make sure no half-configured busybox interferes
 	mkdir -p $(BUSYBOX_WORKDIR)
 	(cd $(BUSYBOX_WORKDIR) && sh $(BUSYBOX_DIR)/pristine_setup.sh)
 	@perl -i -p \
@@ -40,13 +41,12 @@ $(BUSYBOX_WORKDIR)/.config:	$(BUSYBOX_DIR)/.unpacked
 		$(BUSYBOX_WORKDIR)/Config.h
 	touch $(BUSYBOX_WORKDIR)/.config
 
-$(BUSYBOX_WORKDIR)/busybox:	$(TARGET_CC) $(BUSYBOX_WORKDIR)/.config
-	rm -f $(BUSYBOX_WORKDIR)/busybox
+$(BUSYBOX_WORKDIR)/.built:	$(TARGET_CC) $(BUSYBOX_WORKDIR)/.config
 	make CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_WORKDIR)
+	touch $(BUSYBOX_WORKDIR)/.built
 
-$(TARGET_DIR)/bin/busybox:	$(BUSYBOX_WORKDIR)/busybox
-	make CROSS="$(TARGET_CROSS)" PREFIX=$(TARGET_DIR) \
-	-C $(BUSYBOX_WORKDIR) install
+$(TARGET_DIR)/bin/busybox:	$(BUSYBOX_WORKDIR)/.built
+	make PREFIX=$(TARGET_DIR) -C $(BUSYBOX_WORKDIR) install
 
 busybox: $(TARGET_DIR)/bin/busybox
 

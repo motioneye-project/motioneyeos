@@ -76,7 +76,7 @@ TARGETS=
 -include busybox.mk
 -include boa.mk
 
-world:	$(TARGETS) root_fs
+world:	$(TARGETS) root_fs $(LINUX)
 
 root_fs:	$(GENEXT2FS_DIR)/genext2fs $(TARGET_DIR)
 	$(GENEXT2FS_DIR)/genext2fs \
@@ -84,11 +84,6 @@ root_fs:	$(GENEXT2FS_DIR)/genext2fs $(TARGET_DIR)
 	 -i `echo $(IMAGE_INODES) | bc` \
 	 -d $(TARGET_DIR) \
 	 -D $(SOURCE_DIR)/device_table.txt root_fs
-
-$(STAGING_DIR)/.i_exist:
-	rm -rf $(STAGING_DIR)
-	mkdir $(STAGING_DIR)
-	touch $(STAGING_DIR)/.i_exist
 
 $(STAGING_DIR)/.target_dir_exists:
 	rm -rf $(TARGET_DIR)
@@ -104,6 +99,7 @@ $(SOURCE_DIR)/$(LINUX_SOURCE):
 	done
 
 $(LINUX_DIR)/.unpacked:	$(SOURCE_DIR)/$(LINUX_SOURCE)
+	rm -rf $(LINUX_DIR) # Keeps old versions from messing things up
 	bunzip2 -c $(SOURCE_DIR)/$(LINUX_SOURCE) | tar -xv
 	touch $(LINUX_DIR)/.unpacked
 
@@ -113,14 +109,21 @@ $(SOURCE_DIR)/$(USERMODELINUX_PATCH):
 	done
         
 $(LINUX_DIR)/.patched:	$(LINUX_DIR)/.unpacked $(SOURCE_DIR)/$(USERMODELINUX_PATCH)
+	# This step cannot gracefully recover from interruption
+	@if [ -f $(LINUX_DIR)/.started_patch ]; then \
+		echo "Something went wrong patching the kernel."; \
+		echo "Please rm -rf the kernel directory (\"$(LINUX_DIR)\") and type \"make\" again."; \
+		exit 1; \
+	fi
+	touch $(LINUX_DIR)/.started_patch
 	bzcat $(SOURCE_DIR)/$(USERMODELINUX_PATCH) | patch -d $(LINUX_DIR) -p1
 	cp -f $(KCONFIG) $(LINUX_DIR)/.config
-	touch $(LINUX_DIR)/.patched
+	mv $(LINUX_DIR)/.started_patch $(LINUX_DIR)/.patched # Hah! Atomic
 
 $(LINUX_DIR)/.um:	$(LINUX_DIR)/.patched
 	sed -e 's/^ARCH :=.*/ARCH=um/g' < $(LINUX_DIR)/Makefile > \
-		$(LINUX_DIR)/Makefile.new && mv -f \
-		$(LINUX_DIR)/Makefile.new $(LINUX_DIR)/Makefile
+		$(LINUX_DIR)/Makefile.new
+	mv -f $(LINUX_DIR)/Makefile.new $(LINUX_DIR)/Makefile
 	touch $(LINUX_DIR)/.um
 
 $(LINUX_DIR)/.configdone:	$(LINUX_DIR)/.um
@@ -144,14 +147,20 @@ $(SOURCE_DIR)/$(UCLIBC_SOURCE):
 	done;
 
 $(UCLIBC_DIR)/Config:	$(SOURCE_DIR)/$(UCLIBC_SOURCE)
-	tar -xzf $(SOURCE_DIR)/$(UCLIBC_SOURCE)
+	rm -rf $(UCLIBC_DIR) # Make sure no previous version interferes here
+	gzip -d -c $(SOURCE_DIR)/$(UCLIBC_SOURCE) | tar xf -
+	# The next step patches uClibc
+	# Place patches in the source directory, named uClibc-*.patch
 	for p in `find $(SOURCE_DIR) -name uClibc-*.patch | sort -g`;do \
 		patch -p0 < $$p ; \
 	done
-	-f $(SOURCE_DIR)/uClibc-Config.awk < \
-	$(UCLIBC_DIR)/extra/Configs/Config.$(ARCH) > $(UCLIBC_DIR)/Config;
+	# Finally, patch the Config file to our liking
+	# uClibc-Config.awk should be pretty staightforward
+	awk -f $(SOURCE_DIR)/uClibc-Config.awk < \
+		$(UCLIBC_DIR)/extra/Configs/Config.$(ARCH) > \
+		$(UCLIBC_DIR)/Config
 
-$(UCLIBC_DIR)/lib/libc.a:	$(STAGING_DIR)/.i_exist $(LINUX_DIR)/.dep $(UCLIBC_DIR)/Config
+$(UCLIBC_DIR)/lib/libc.a:	$(LINUX_DIR)/.dep $(UCLIBC_DIR)/Config
 	$(MAKE) CROSS=$(CROSS) \
 		DEVEL_PREFIX=$(STAGING_DIR) \
 		SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr \
@@ -166,7 +175,7 @@ $(TARGET_CC):	$(UCLIBC_DIR)/lib/libc.a
 	SHARED_LIB_LOADER_PATH=$(STAGING_DIR)/lib \
 	-C $(UCLIBC_DIR) install
 
-$(UCLIBC_DIR)/.installed_runtime:	$(TARGET_CC)
+$(UCLIBC_DIR)/.installed_runtime:	$(STAGING_DIR)/.target_dir_exists $(TARGET_CC)
 	$(MAKE) CROSS=$(CROSS) \
 	PREFIX=$(TARGET_DIR) \
 	DEVEL_PREFIX=/ \

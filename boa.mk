@@ -34,12 +34,9 @@ $(BOA_WORKDIR)/Makefile: $(TARGET_CC) $(BOA_DIR)/.unpacked
 		(cd $(BOA_WORKDIR) && CC=$(TARGET_CC) $(BOA_DIR)/src/configure); \
 	fi
 	touch $(BOA_WORKDIR)/.depend
-	touch $(BOA_WORKDIR)/.unpacked
         
-$(BOA_WORKDIR)/boa:	$(BOA_WORKDIR)/Makefile
-	make VPATH=$(BOA_DIR)/src/ -C $(BOA_WORKDIR)
-
-$(BOA_WORKDIR)/boa_indexer:	$(BOA_WORKDIR)/Makefile
+$(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer:	$(BOA_WORKDIR)/Makefile
+	rm -f $@
 	make VPATH=$(BOA_DIR)/src/ -C $(BOA_WORKDIR)
 
 $(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer
