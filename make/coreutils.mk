@@ -39,6 +39,8 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--disable-nls \
+		--disable-rpath \
+		--disable-dependency-tracking \
 	);
 	#Fix up the max number of open files per process, which apparently 
 	# is not set when cross compiling
