@@ -3,10 +3,10 @@
 # strace
 #
 #############################################################
-STRACE_SOURCE:=strace-4.5.tar.bz2
+STRACE_SOURCE:=strace-4.5.3.tar.bz2
 STRACE_SITE:=http://aleron.dl.sourceforge.net/sourceforge/strace
 STRACE_CAT:=bzcat
-STRACE_DIR:=$(BUILD_DIR)/strace-4.5
+STRACE_DIR:=$(BUILD_DIR)/strace-4.5.3
 
 
 $(DL_DIR)/$(STRACE_SOURCE):
