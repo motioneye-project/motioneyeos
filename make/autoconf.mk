@@ -55,7 +55,8 @@ $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(AUTOCONF_DIR) install;
-	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 autoconf: uclibc $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY)
 

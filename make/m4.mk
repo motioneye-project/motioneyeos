@@ -47,7 +47,8 @@ $(TARGET_DIR)/$(M4_TARGET_BINARY): $(M4_DIR)/src/$(M4_BINARY)
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(M4_DIR) install;
-	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 m4: uclibc $(TARGET_DIR)/$(M4_TARGET_BINARY)
 

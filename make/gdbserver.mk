@@ -42,6 +42,8 @@ $(GDB_WDIR)/gdbserver: $(GDB_WDIR)/.configured
 
 $(TARGET_DIR)/usr/bin/gdbserver: $(GDB_WDIR)/gdbserver
 	install -c $(GDB_WDIR)/gdbserver $(TARGET_DIR)/usr/bin/gdbserver
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
 

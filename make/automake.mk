@@ -56,7 +56,8 @@ $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY): $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY)
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(AUTOMAKE_DIR) install;
-	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	touch -c $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY)
 
 automake: uclibc $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY)

@@ -49,6 +49,8 @@ $(GDB_DIR)/gdb/gdb: $(GDB_DIR)/.configured
 
 $(TARGET_DIR)/usr/bin/gdb: $(GDB_DIR)/gdb/gdb
 	install -c $(GDB_DIR)/gdb/gdb $(TARGET_DIR)/usr/bin/gdb
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 gdb: $(TARGET_DIR)/usr/bin/gdb
 
