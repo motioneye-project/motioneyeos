@@ -3,24 +3,22 @@
 # newt
 #
 #############################################################
-NEWT_SOURCE=newt_0.50.17.orig.tar.gz
-NEWT_SITE=http://ftp.debian.org/debian/pool/main/n/newt
-NEWT_DIR=$(BUILD_DIR)/newt-0.50.17
-NEWT_PATCH=$(SOURCE_DIR)/newt.patch
+NEWT_SOURCE=newt-0.51.0.tar.bz2
+NEWT_SITE=ftp://busybox.net
+NEWT_DIR=$(BUILD_DIR)/newt-0.51.0
+NEWT_VERSION=0.51.0
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-NEWT_CFLAGS="-Os -g -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64"
+NEWT_CFLAGS=-Os -g -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 else
-NEWT_CFLAGS="-Os -g"
+NEWT_CFLAGS=-Os -g
 endif
-NEWT_CFLAGS+="-fPIC"
+NEWT_CFLAGS+=-fPIC
 
 $(DL_DIR)/$(NEWT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NEWT_SITE)/$(NEWT_SOURCE)
 
-$(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE) $(NEWT_PATCH)
-	zcat $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(NEWT_PATCH) | patch -p1 -d $(NEWT_DIR)
-	(cd $(NEWT_DIR); autoconf);
+$(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE)
+	bzcat $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(NEWT_DIR)/.source;
 
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
@@ -42,24 +40,24 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	);
 	touch $(NEWT_DIR)/.configured;
 
-$(NEWT_DIR)/libnewt.so.0.50.17: $(NEWT_DIR)/.configured
+$(NEWT_DIR)/libnewt.so.$(NEWT_VERSION): $(NEWT_DIR)/.configured
 	$(MAKE) CFLAGS=$(NEWT_CFLAGS) CC=$(TARGET_CC) -C  $(NEWT_DIR)
-	touch -c $(NEWT_DIR)/libnewt.so.0.50.17
+	touch -c $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
 
-$(STAGING_DIR)/lib/libnewt.so.0.50.17: $(NEWT_DIR)/libnewt.so.0.50.17
+$(STAGING_DIR)/lib/libnewt.a: $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
 	cp -a $(NEWT_DIR)/libnewt.a $(STAGING_DIR)/lib;
 	cp -a $(NEWT_DIR)/newt.h $(STAGING_DIR)/include;
 	cp -a $(NEWT_DIR)/libnewt.so* $(STAGING_DIR)/lib;
-	(cd $(STAGING_DIR)/lib; ln -fs libnewt.so.0.50.17 libnewt.so);
-	(cd $(STAGING_DIR)/lib; ln -fs libnewt.so.0.50.17 libnewt.so.0.50);
-	touch -c $(STAGING_DIR)/lib/libnewt.so.0.50.17
+	(cd $(STAGING_DIR)/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so);
+	(cd $(STAGING_DIR)/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so.0.51);
+	touch -c $(STAGING_DIR)/lib/libnewt.a
 
-$(TARGET_DIR)/lib/libnewt.so.0.50.17: $(STAGING_DIR)/lib/libnewt.so.0.50.17
+$(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION): $(STAGING_DIR)/lib/libnewt.a
 	cp -a $(STAGING_DIR)/lib/libnewt.so* $(TARGET_DIR)/lib;
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libnewt.so*
-	touch -c $(TARGET_DIR)/lib/libnewt.so.0.50.17
+	touch -c $(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION)
 
-newt: uclibc slang $(TARGET_DIR)/lib/libnewt.so.0.50.17
+newt: uclibc slang $(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION)
 
 newt-clean:
 	rm -f $(TARGET_DIR)/lib/libnewt.so*
