@@ -1,6 +1,7 @@
 # Makefile for to build a gcc/uClibc toolchain
 #
 # Copyright (C) 2002-2003 Erik Andersen <andersen@uclibc.org>
+# Copyright (C) 2004 Manuel Novoa III <mjn3@uclibc.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -19,7 +20,7 @@
 ifneq ($(GCC_2_95_TOOLCHAIN),true)
 
 # Shiny new stuff...
-GCC_VERSION:=3.3.2
+GCC_VERSION:=3.3.3
 #GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/gcc-$(GCC_VERSION)
 #GCC_SITE:=http://www.binarycode.org/gcc/releases/gcc-$(GCC_VERSION)
 GCC_SITE:=http://gcc.get-software.com/releases/gcc-$(GCC_VERSION)
@@ -79,7 +80,6 @@ endif
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	mkdir -p $(GCC_BUILD_DIR1)
 	-mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include
-	-(cd $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME) ; ln -sf include sys-include)
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) \
 		$(GCC_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
@@ -89,7 +89,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--enable-languages=c \
 		--disable-shared \
 		--includedir=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include \
-		--with-headers \
+		--with-sysroot=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
@@ -126,6 +126,8 @@ gcc3_3_initial-dirclean:
 GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-3.3-final
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
 	mkdir -p $(GCC_BUILD_DIR2)
+	# Important!  Required for limits.h to be fixed.
+	ln -sf include $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/sys-include
 	(cd $(GCC_BUILD_DIR2); PATH=$(TARGET_PATH) \
 		$(GCC_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
@@ -135,7 +137,6 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/$(REAL_GNU_TAR
 		--enable-languages=$(TARGET_LANGUAGES) \
 		--enable-shared \
 		--with-gxx-include-dir=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include/c++ \
-		--with-headers \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \

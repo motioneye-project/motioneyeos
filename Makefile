@@ -159,7 +159,7 @@ TARGETS+=busybox tinylogin
 
 #If you want a development system, you probably want gcc built
 # with uClibc so it can run within your dev system...
-#TARGETS+=gcc2_95_target ccache_target
+#TARGETS+=gcc2_95_target ccache_target   # NOT WORKING!!!
 #TARGETS+=gcc3_3_target ccache_target
 
 # Of course, if you are installing a development system, you
@@ -311,13 +311,9 @@ $(STAGING_DIR):
 	rm -rf $(STAGING_DIR)
 	mkdir -p $(STAGING_DIR)/lib
 	mkdir -p $(STAGING_DIR)/usr
-ifneq ($(GCC_2_95_TOOLCHAIN),true)
-	mkdir -p $(STAGING_DIR)/include
-else
-	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include
-	(cd $(STAGING_DIR); ln -fs $(REAL_GNU_TARGET_NAME)/include)
-endif
+	ln -fs $(REAL_GNU_TARGET_NAME)/include $(STAGING_DIR)/include
 	ln -fs ../lib $(STAGING_DIR)/usr/lib
+	ln -fs ../$(REAL_GNU_TARGET_NAME)/include $(STAGING_DIR)/usr/include
 
 $(TARGET_DIR):
 	rm -rf $(TARGET_DIR)

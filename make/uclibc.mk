@@ -73,10 +73,13 @@ endif
 ifeq ($(strip $(SOFT_FLOAT)),true)
 	$(SED) 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
 endif
+	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
+	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
+	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
 	$(MAKE) -C $(UCLIBC_DIR) \
-		PREFIX=$(STAGING_DIR)/ \
-		DEVEL_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
-		RUNTIME_PREFIX=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/ \
+		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
+		DEVEL_PREFIX=/usr/ \
+		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		pregen install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
