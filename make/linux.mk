@@ -27,7 +27,7 @@ LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
 #LINUX_FORMAT=zImage
 #LINUX_BINLOC=arch/ppc/boot/images/zImage.prep
 LINUX_SOURCE=linux-$(LINUX_VERSION).tar.bz2
-LINUX_SITE=http://ftp.us.kernel.org/pub/linux/kernel/v2.4
+LINUX_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.4
 LINUX_KCONFIG=$(SOURCE_DIR)/linux.config
 LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 
