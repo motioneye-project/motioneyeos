@@ -41,7 +41,7 @@ $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked
 	touch $(PCMCIA_DIR)/.patched
 
 $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
-	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX_SOURCE_DIR) --noprompt \
+	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX_DIR) --noprompt \
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
 		--sysv --kcc=$(HOSTCC) --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
@@ -74,7 +74,14 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -f $(TARGET_DIR)/usr/share/pnp.ids $(TARGET_DIR)/sbin/lspnp $(TARGET_DIR)/sbin/setpnp;
 	rm -f $(TARGET_DIR)/sbin/pcinitrd
 	rm -f $(TARGET_DIR)/sbin/probe
-	cp $(SOURCE_DIR)/target_skeleton/etc/init.d/S30pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
+	rm -f $(TARGET_DIR)/sbin/ide_info
+	rm -f $(TARGET_DIR)/sbin/scsi_info
+	rm -f $(TARGET_DIR)/sbin/ftl_check
+	rm -f $(TARGET_DIR)/sbin/ftl_format
+	rm -f $(TARGET_DIR)/usr/X11R6/bin/xcardinfo
+	rm -rf $(TARGET_DIR)/etc/sysconfig
+	cp $(PCMCIA_DIR)/etc/rc.pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
+	rm -rf $(TARGET_DIR)/etc/pcmcia/cis
 	chmod a+x $(TARGET_DIR)/etc/init.d/S30pcmcia
 	chmod -R u+w $(TARGET_DIR)/etc/pcmcia/*
 
