@@ -24,8 +24,9 @@ tinylogin-source: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 
 $(TINYLOGIN_DIR)/Config.h: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 	bzcat $(DL_DIR)/$(TINYLOGIN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	sed -ie "s/\`id -u\` -ne 0/0 == 1/;" \
-		-e "s/4755 --owner=root --group=root/755/" \
+	sed -ie "s/\`id -u\` -ne 0/0 == 1/" \
+		$(TINYLOGIN_DIR)/install.sh
+	sed -ie "s/4755 --owner=root --group=root/755/" \
 		$(TINYLOGIN_DIR)/install.sh
 	sed -ie "s/^DOSTATIC.*/DOSTATIC=false/g;" $(TINYLOGIN_DIR)/Makefile
 	sed -ie "s/^DODEBUG.*/DODEBUG=false/g;" $(TINYLOGIN_DIR)/Makefile
