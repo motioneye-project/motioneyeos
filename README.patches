@@ -1,0 +1,35 @@
+binutils-uclibc-001-debian.patch -- stuff ripped out of the debian/patches directory
+				    from debian testing.  Debian is tested on many
+				    architectures, and I trust the maintainers.
+binutils-uclibc-100-conf.patch -- Adds support for the $(ARCH)-linux-uclibc platform,
+				    which is what uClibc wants to use to make sure
+				    the correct shared lib loader, etc is used.
+binutils-uclibc-200-build_modules.patch  -- More of the same.  Could really be merged
+				    with binutils-uclibc-100-conf.patch I suppose.
+binutils-uclibc-210-cflags.patch  -- Fix an upstream bug that breaks Canadian cross
+				    binutils builds.
+
+
+gcc3.3-mega.patch.bz2 -- stuff ripped out of the debian/patches directory
+				from debian testing.  Debian is tested on many
+				architectures, and I trust the maintainers.
+gcc-uclibc-3.3-100-conf.patch -- Adds support for the $(ARCH)-linux-uclibc platform,
+				    which is what uClibc wants to use to make sure
+				    the correct shared lib loader, etc is used.
+gcc-uclibc-3.3-110-conf.patch -- More of the same.  Could really be merged
+				    with gcc-uclibc-3.3-100-conf.patch I suppose.
+gcc-uclibc-3.3-120-softfloat.patch -- When doing a Canadian cross gcc build when using
+				    soft float, make certain target stuff is in fact
+				    built with soft float.  Annoyingly that is not the
+				    default without some encouragement.
+gcc-uclibc-3.3-200-code.patch -- libstdc++ locale and wide-char support for uClibc
+gcc-uclibc-3.3-loop.patch -- Fix a bug that showed up on arm, causing kernel compiles
+				    to fail
+
+
+gcc2.95-mega.patch.bz2 -- stuff ripped out of the debian/patches directory
+				from debian testing.  Debian is tested on many
+				architectures, and I trust the maintainers.
+gcc2.95-uclibc-conf.patch -- Adds support for the $(ARCH)-linux-uclibc platform
+
+
