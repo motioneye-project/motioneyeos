@@ -26,15 +26,6 @@ $(M4_DIR)/.configured: $(M4_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--disable-nls \
 	);
 	touch  $(M4_DIR)/.configured
 
