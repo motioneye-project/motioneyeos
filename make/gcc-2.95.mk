@@ -67,40 +67,40 @@ $(GCC_DIR)/.gcc2_95_build_hacks: $(GCC_DIR)/.patched
 	#
 	(cd $(GCC_DIR); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
 		if [ -n "$$LIST" ] ; then \
-		perl -i -p -e "s,-dynamic-linker.*\.so[\.0-9]*},\
+		sed -ie "s,-dynamic-linker.*\.so[\.0-9]*},\
 		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
 	#
 	# Prevent system glibc start files from leaking in uninvited...
 	#
-	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
+	sed -ie "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
 		\"$(STAGING_DIR)/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
-	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2 =\
+	sed -ie "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2 =\
 		\"$(STAGING_DIR)/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
 	#
 	# Prevent system glibc include files from leaking in uninvited...
 	#
-	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
+	sed -ie "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
 		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
+	sed -ie "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
 		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
+	sed -ie "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"$(STAGING_DIR)/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	#
 	# Prevent system glibc libraries from being found by collect2 
 	# when it calls locatelib() and rummages about the system looking 
 	# for libraries with the correct name...
 	#
-	perl -i -p -e "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
-	perl -i -p -e "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
+	sed -ie "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
+	sed -ie "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
-	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+	sed -ie "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
 	#
 	# Use atexit() directly, rather than cxa_atexit
 	#
-	perl -i -p -e "s,int flag_use_cxa_atexit = 1;,int flag_use_cxa_atexit = 0;,g;"\
+	sed -ie "s,int flag_use_cxa_atexit = 1;,int flag_use_cxa_atexit = 0;,g;"\
 		$(GCC_DIR)/gcc/cp/decl2.c;
 	#
 	# We do not wish to build the libstdc++ library provided with gcc,

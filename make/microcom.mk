@@ -40,7 +40,7 @@ $(MICROCOM_DIR)/.unpacked: $(DL_DIR)/$(MICROCOM_SOURCE)
 	touch  $(MICROCOM_DIR)/.unpacked
 
 $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
-	perl -i -p -e 's~gcc~${TARGET_CC}~' $(MICROCOM_DIR)/Makefile
+	sed -ie 's~gcc~${TARGET_CC}~' $(MICROCOM_DIR)/Makefile
 	touch  $(MICROCOM_DIR)/.configured
 
 $(MICROCOM_DIR)/microcom: $(MICROCOM_DIR)/.configured

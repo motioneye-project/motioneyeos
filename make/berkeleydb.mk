@@ -43,7 +43,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--disable-compat185 \
 		--with-pic \
 	);
-	perl -i -p -e 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
+	sed -ie 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
 	touch  $(DB_DIR)/.configured
 
 $(DB_DIR)/build_unix/.libs/libdb-4.1.so: $(DB_DIR)/.configured

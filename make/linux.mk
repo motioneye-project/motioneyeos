@@ -65,7 +65,7 @@ $(LINUX_KCONFIG):
 	fi;
 
 $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
-	perl -i -p -e "s,^CROSS_COMPILE.*,CROSS_COMPILE=$(KERNEL_CROSS),g;" $(LINUX_DIR)/Makefile
+	sed -ie "s,^CROSS_COMPILE.*,CROSS_COMPILE=$(KERNEL_CROSS),g;" $(LINUX_DIR)/Makefile
 	-cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
 	$(MAKE) -C $(LINUX_DIR) oldconfig include/linux/version.h
 	touch $(LINUX_DIR)/.configured

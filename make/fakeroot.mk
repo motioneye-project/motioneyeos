@@ -17,7 +17,7 @@ fakeroot-source: $(DL_DIR)/$(FAKEROOT_SOURCE)
 $(FAKEROOT_DIR)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
 	$(FAKEROOT_CAT) $(DL_DIR)/$(FAKEROOT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# If using busybox getopt, make it be quiet.
-	perl -pi -e "s,getopt --version,getopt --version 2>/dev/null," \
+	sed -ie "s,getopt --version,getopt --version 2>/dev/null," \
 		$(FAKEROOT_DIR)/scripts/fakeroot
 	touch $(FAKEROOT_DIR)/.unpacked
 

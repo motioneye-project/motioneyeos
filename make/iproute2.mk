@@ -29,14 +29,14 @@ $(IPROUTE2_DIR)/.unpacked: $(DL_DIR)/$(IPROUTE2_SOURCE) #$(DL_DIR)/$(IPROUTE2_PA
 	touch $(IPROUTE2_DIR)/.unpacked
 
 $(IPROUTE2_DIR)/.configured: $(IPROUTE2_DIR)/.unpacked
-	perl -pi -e "s,-I/usr/include/db3,," $(IPROUTE2_DIR)/Makefile
-	perl -pi -e "s,^KERNEL_INCLUDE.*,KERNEL_INCLUDE=$(LINUX_DIR)/include," \
+	sed -ie "s,-I/usr/include/db3,," $(IPROUTE2_DIR)/Makefile
+	sed -ie "s,^KERNEL_INCLUDE.*,KERNEL_INCLUDE=$(LINUX_DIR)/include," \
 		$(IPROUTE2_DIR)/Makefile
-	perl -pi -e "s,^LIBC_INCLUDE.*,LIBC_INCLUDE=$(STAGING_DIR)/include," \
+	sed -ie "s,^LIBC_INCLUDE.*,LIBC_INCLUDE=$(STAGING_DIR)/include," \
 		$(IPROUTE2_DIR)/Makefile
 	# For now disable compiling of the misc directory because it seems to fail
 	rm -rf $(IPROUTE2_DIR)/misc 
-	perl -pi -e "s, misc,," $(IPROUTE2_DIR)/Makefile
+	sed -ie "s, misc,," $(IPROUTE2_DIR)/Makefile
 	touch  $(IPROUTE2_DIR)/.configured
 
 $(IPROUTE2_DIR)/tc/tc: $(IPROUTE2_DIR)/.configured

@@ -17,7 +17,7 @@ $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCH)
 	gunzip -c $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(OPENSSL_PATCH) | patch -p1 -d $(OPENSSL_DIR)
 	# sigh... we have to resort to this just to set a gcc flag.
-	perl -i -p -e 's,/CFLAG=,/CFLAG= $(TARGET_SOFT_FLOAT) ,g' \
+	sed -ie 's,/CFLAG=,/CFLAG= $(TARGET_SOFT_FLOAT) ,g' \
 		$(OPENSSL_DIR)/Configure
 	touch  $(OPENSSL_DIR)/.unpacked
 

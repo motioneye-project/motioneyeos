@@ -45,7 +45,7 @@ $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--without-included-gettext \
 	);
 ifeq ($(ENABLE_LOCALE),true)
-	-perl -i -p -e "s,^INTL *=.*,INTL = -lintl,g;" $(GDB_DIR)/gdb/Makefile
+	-sed -ie "s,^INTL *=.*,INTL = -lintl,g;" $(GDB_DIR)/gdb/Makefile
 endif
 	touch  $(GDB_DIR)/.configured
 

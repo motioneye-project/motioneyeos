@@ -45,9 +45,9 @@ $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
 		--sysv --kcc=$(KERNEL_CROSS)gcc --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
-	perl -i -p -e "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
-	perl -i -p -e "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config
-	perl -i -p -e "s/bind \"wvlan_cs\"/bind \"orinoco_cs\"/g" $(PCMCIA_DIR)/etc/config
+	sed -ie "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
+	sed -ie "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config
+	sed -ie "s/bind \"wvlan_cs\"/bind \"orinoco_cs\"/g" $(PCMCIA_DIR)/etc/config
 	touch $(PCMCIA_DIR)/.configured
 
 $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured

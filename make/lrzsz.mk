@@ -54,8 +54,8 @@ $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		--disable-timesync \
 	);
-	perl -i -p -e "s/-lnsl//;" $(LRZSZ_DIR)/src/Makefile
-	perl -i -p -e "s~(#define ENABLE_SYSLOG.*)~/* \1 */~;" $(LRZSZ_DIR)/config.h
+	sed -ie "s/-lnsl//;" $(LRZSZ_DIR)/src/Makefile
+	sed -ie "s~(#define ENABLE_SYSLOG.*)~/* \1 */~;" $(LRZSZ_DIR)/config.h
 	touch  $(LRZSZ_DIR)/.configured
 
 $(LRZSZ_DIR)/src/lrz: $(LRZSZ_DIR)/.configured

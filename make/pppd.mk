@@ -18,10 +18,10 @@ pppd-source: $(DL_DIR)/$(PPPD_SOURCE)
 
 $(PPPD_DIR)/.unpacked: $(DL_DIR)/$(PPPD_SOURCE)
 	$(PPPD_CAT) $(DL_DIR)/$(PPPD_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	perl -i -p -e 's/ -DIPX_CHANGE -DHAVE_MULTILINK -DHAVE_MMAP//' $(PPPD_DIR)/pppd/Makefile.linux
-	perl -i -p -e 's/$(INSTALL) -s/$(INSTALL)/' $(PPPD_DIR)/*/Makefile.linux
-	perl -i -p -e 's/ -o root//' $(PPPD_DIR)/*/Makefile.linux
-	perl -i -p -e 's/ -g daemon//' $(PPPD_DIR)/*/Makefile.linux
+	sed -ie 's/ -DIPX_CHANGE -DHAVE_MULTILINK -DHAVE_MMAP//' $(PPPD_DIR)/pppd/Makefile.linux
+	sed -ie 's/$(INSTALL) -s/$(INSTALL)/' $(PPPD_DIR)/*/Makefile.linux
+	sed -ie 's/ -o root//' $(PPPD_DIR)/*/Makefile.linux
+	sed -ie 's/ -g daemon//' $(PPPD_DIR)/*/Makefile.linux
 	touch $(PPPD_DIR)/.unpacked
 
 $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
