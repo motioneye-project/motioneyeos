@@ -14,6 +14,20 @@ UCLIBC_SOURCE:=uClibc-0.9.21.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
+UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
+                -e 's/i.86/i386/' \
+		-e 's/sparc.*/sparc/' \
+		-e 's/arm.*/arm/g' \
+		-e 's/m68k.*/m68k/' \
+		-e 's/ppc/powerpc/g' \
+		-e 's/v850.*/v850/g' \
+		-e 's/sh[2345]/sh/' \
+		-e 's/mips.*/mips/' \
+		-e 's/mipsel.*/mips/' \
+		-e 's/cris.*/cris/' \
+)
+
+
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
@@ -30,8 +44,8 @@ ifeq ($(ENABLE_LOCALE),true)
 else
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
 endif
-	perl -i -p -e 's,^TARGET_[a-z].*,TARGET_$(ARCH)=y,g' $(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(ARCH)\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^TARGET_[a-z].*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"$(STAGING_DIR)\",g' \
