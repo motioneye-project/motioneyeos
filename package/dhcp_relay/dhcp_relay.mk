@@ -19,7 +19,7 @@ $(DL_DIR)/$(DHCP_RELAY_SOURCE):
 dhcp_relay-source: $(DL_DIR)/$(DHCP_RELAY_SOURCE)
 
 $(DHCP_RELAY_DIR)/.unpacked: $(DL_DIR)/$(DHCP_RELAY_SOURCE)
-	$(DHCP_RELAY_CAT) $(DL_DIR)/$(DHCP_RELAY_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(DHCP_RELAY_CAT) $(DL_DIR)/$(DHCP_RELAY_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(DHCP_RELAY_DIR)/.unpacked
 
 $(DHCP_RELAY_DIR)/.configured: $(DHCP_RELAY_DIR)/.unpacked

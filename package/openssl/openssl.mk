@@ -13,7 +13,7 @@ $(DL_DIR)/$(OPENSSL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSL_SITE)/$(OPENSSL_SOURCE)
 
 $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
-	gunzip -c $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	gunzip -c $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	toolchain/patch-kernel.sh $(OPENSSL_DIR) package/openssl/ openssl\*.patch
 	# sigh... we have to resort to this just to set a gcc flag.
 	$(SED) 's,/CFLAG=,/CFLAG= $(TARGET_SOFT_FLOAT) ,g' \

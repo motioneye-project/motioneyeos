@@ -12,7 +12,7 @@ $(DL_DIR)/$(WTOOLS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(WTOOLS_SOURCE_URL)/$(WTOOLS_SOURCE) 
 
 $(WTOOLS_BUILD_DIR)/.unpacked: $(DL_DIR)/$(WTOOLS_SOURCE)
-	zcat $(DL_DIR)/$(WTOOLS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	zcat $(DL_DIR)/$(WTOOLS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(WTOOLS_BUILD_DIR)/.unpacked
 
 $(WTOOLS_BUILD_DIR)/.configured: $(WTOOLS_BUILD_DIR)/.unpacked

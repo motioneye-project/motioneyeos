@@ -23,7 +23,7 @@ $(DL_DIR)/$(PCIIDS_SOURCE):
 pciutils-source: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURCE)
 
 $(PCIUTILS_DIR)/.unpacked: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURCE)
-	$(PCIUTILS_CAT) $(DL_DIR)/$(PCIUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(PCIUTILS_CAT) $(DL_DIR)/$(PCIUTILS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	$(PCIIDS_CAT) $(DL_DIR)/$(PCIIDS_SOURCE) > $(PCIUTILS_DIR)/pci.id
 	toolchain/patch-kernel.sh $(PCIUTILS_DIR) package/pciutils pciutils*.patch
 	touch $(PCIUTILS_DIR)/.unpacked

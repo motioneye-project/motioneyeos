@@ -12,7 +12,7 @@ $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
 
 $(VALGRIND_DIR)/.unpacked: $(DL_DIR)/$(VALGRIND_SOURCE)
-	bzcat $(DL_DIR)/$(VALGRIND_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	bzcat $(DL_DIR)/$(VALGRIND_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch  $(VALGRIND_DIR)/.unpacked
 
 $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked

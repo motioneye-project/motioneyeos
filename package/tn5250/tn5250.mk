@@ -6,7 +6,7 @@ $(DL_DIR)/$(TN5250_SOURCE):
 	$(WGET) -P $(DL_DIR) $(TN5250_SITE)/$(TN5250_SOURCE) 
 
 $(TN5250_DIR)/.dist: $(DL_DIR)/$(TN5250_SOURCE)
-	gunzip -c $(DL_DIR)/$(TN5250_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	gunzip -c $(DL_DIR)/$(TN5250_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	-touch $(TN5250_DIR)/.dist
 
 $(TN5250_DIR)/.configured: $(TN5250_DIR)/.dist

@@ -70,7 +70,7 @@ $(DL_DIR)/host.def:
 # rule to make sure that we have the source, and it is configured.
 #
 $(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE) $(DL_DIR)/cross.def $(DL_DIR)/host.def
-	$(TINYX_CAT) $(DL_DIR)/$(TINYX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(TINYX_CAT) $(DL_DIR)/$(TINYX_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	toolchain/patch-kernel.sh $(TINYX_DIR) package/tinyx/ tinyx*.patch
 	cp $(DL_DIR)/host.def $(TINYX_CF)/host.def
 	cp $(DL_DIR)/cross.def $(TINYX_CF)/cross.def

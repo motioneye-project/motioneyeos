@@ -52,7 +52,7 @@ $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
 	-mkdir  $(TOOL_BUILD_DIR)
 	#mkdir -p $(LINUX_DIR)
 	#rm -rf $(LINUX_DIR)
-	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version	
 	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)

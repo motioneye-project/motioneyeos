@@ -16,7 +16,7 @@ $(DL_DIR)/$(GETTEXT_SOURCE):
 gettext-source: $(DL_DIR)/$(GETTEXT_SOURCE)
 
 $(GETTEXT_DIR)/.unpacked: $(DL_DIR)/$(GETTEXT_SOURCE)
-	$(GETTEXT_CAT) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(GETTEXT_CAT) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(GETTEXT_DIR)/.unpacked
 
 $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked

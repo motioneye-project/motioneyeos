@@ -18,7 +18,7 @@ $(DL_DIR)/$(BOA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BOA_SITE)/$(BOA_SOURCE)
 
 $(BOA_DIR)/.unpacked:	$(DL_DIR)/$(BOA_SOURCE)
-	gzip -d -c $(DL_DIR)/$(BOA_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	gzip -d -c $(DL_DIR)/$(BOA_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(BOA_DIR)/.unpacked
 
 $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked

@@ -17,7 +17,7 @@ $(DL_DIR)/$(NETSNMP_PATCH1):
 	$(WGET) -P $(DL_DIR) $(NETSNMP_PATCH1_URL)/$(NETSNMP_PATCH1)
 
 $(NETSNMP_DIR)/.unpacked: $(DL_DIR)/$(NETSNMP_SOURCE) $(DL_DIR)/$(NETSNMP_PATCH1)
-	zcat $(DL_DIR)/$(NETSNMP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	zcat $(DL_DIR)/$(NETSNMP_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	zcat $(DL_DIR)/$(NETSNMP_PATCH1) | patch -p1 -d $(NETSNMP_DIR)
 	toolchain/patch-kernel.sh $(NETSNMP_DIR) package/netsnmp/ netsnmp\*.patch
 	touch  $(NETSNMP_DIR)/.unpacked

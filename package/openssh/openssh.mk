@@ -12,7 +12,7 @@ $(DL_DIR)/$(OPENSSH_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSH_SITE)/$(OPENSSH_SOURCE)
 
 $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
-	zcat $(DL_DIR)/$(OPENSSH_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	zcat $(DL_DIR)/$(OPENSSH_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	toolchain/patch-kernel.sh $(OPENSSH_DIR) package/openssh/ openssh\*.patch
 	touch  $(OPENSSH_DIR)/.unpacked
 

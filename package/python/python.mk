@@ -17,7 +17,7 @@ $(DL_DIR)/$(PYTHON_SOURCE):
 python-source: $(DL_DIR)/$(PYTHON_SOURCE)
 
 $(PYTHON_DIR)/.unpacked: $(DL_DIR)/$(PYTHON_SOURCE)
-	$(PYTHON_CAT) $(DL_DIR)/$(PYTHON_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(PYTHON_CAT) $(DL_DIR)/$(PYTHON_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(PYTHON_DIR)/.unpacked
 
 $(PYTHON_DIR)/.patched: $(PYTHON_DIR)/.unpacked

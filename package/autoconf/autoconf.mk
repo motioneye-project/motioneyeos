@@ -16,7 +16,7 @@ $(DL_DIR)/$(AUTOCONF_SOURCE):
 autoconf-source: $(DL_DIR)/$(AUTOCONF_SOURCE)
 
 $(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
-	$(AUTOCONF_CAT) $(DL_DIR)/$(AUTOCONF_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(AUTOCONF_CAT) $(DL_DIR)/$(AUTOCONF_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(AUTOCONF_DIR)/.unpacked
 
 $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked

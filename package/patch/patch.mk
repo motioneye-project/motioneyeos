@@ -16,7 +16,7 @@ $(DL_DIR)/$(GNUPATCH_SOURCE):
 patch-source: $(DL_DIR)/$(GNUPATCH_SOURCE)
 
 $(GNUPATCH_DIR)/.unpacked: $(DL_DIR)/$(GNUPATCH_SOURCE)
-	$(GNUPATCH_CAT) $(DL_DIR)/$(GNUPATCH_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(GNUPATCH_CAT) $(DL_DIR)/$(GNUPATCH_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(GNUPATCH_DIR)/.unpacked
 
 $(GNUPATCH_DIR)/.configured: $(GNUPATCH_DIR)/.unpacked

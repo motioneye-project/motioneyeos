@@ -18,7 +18,7 @@ $(DL_DIR)/$(NEWT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NEWT_SITE)/$(NEWT_SOURCE)
 
 $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE)
-	bzcat $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	bzcat $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(NEWT_DIR)/.source;
 
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source

@@ -13,7 +13,7 @@ $(DL_DIR)/$(BRIDGE_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(BRIDGE_SOURCE_URL)/$(BRIDGE_SOURCE)
 
 $(BRIDGE_BUILD_DIR)/.unpacked: $(DL_DIR)/$(BRIDGE_SOURCE)
-	zcat $(DL_DIR)/$(BRIDGE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	zcat $(DL_DIR)/$(BRIDGE_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	patch -p1 -d $(BRIDGE_BUILD_DIR) < package/bridge/bridge.patch
 	touch $(BRIDGE_BUILD_DIR)/.unpacked
 

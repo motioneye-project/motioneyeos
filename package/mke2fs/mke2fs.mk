@@ -16,7 +16,7 @@ $(DL_DIR)/$(MKE2FS_SOURCE):
 mke2fs-source: $(DL_DIR)/$(MKE2FS_SOURCE)
 
 $(MKE2FS_DIR)/.unpacked: $(DL_DIR)/$(MKE2FS_SOURCE)
-	$(MKE2FS_CAT) $(DL_DIR)/$(MKE2FS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(MKE2FS_CAT) $(DL_DIR)/$(MKE2FS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(MKE2FS_DIR)/.unpacked
 
 $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked

@@ -21,7 +21,7 @@ $(DL_DIR)/$(DNSMASQ_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DNSMASQ_SITE)/$(DNSMASQ_SOURCE)
 
 $(DNSMASQ_DIR)/.source: $(DL_DIR)/$(DNSMASQ_SOURCE)
-	zcat $(DL_DIR)/$(DNSMASQ_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	zcat $(DL_DIR)/$(DNSMASQ_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	toolchain/patch-kernel.sh $(DNSMASQ_DIR) package/dnsmasq/ \
 		$(DNSMASQ_VER)-\*.patch
 	touch $(DNSMASQ_DIR)/.source

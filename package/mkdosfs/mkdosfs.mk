@@ -21,7 +21,7 @@ $(DL_DIR)/$(MKDOSFS_SOURCE):
 mkdosfs-source: $(DL_DIR)/$(MKDOSFS_SOURCE)
 
 $(MKDOSFS_DIR)/.unpacked: $(DL_DIR)/$(MKDOSFS_SOURCE)
-	$(MKDOSFS_CAT) $(DL_DIR)/$(MKDOSFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(MKDOSFS_CAT) $(DL_DIR)/$(MKDOSFS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(MKDOSFS_DIR)/.unpacked
 
 $(MKDOSFS_DIR)/$(MKDOSFS_BINARY): $(MKDOSFS_DIR)/.unpacked

@@ -18,7 +18,7 @@ $(DL_DIR)/$(LIBMAD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBMAD_SITE)/$(LIBMAD_SOURCE)
 
 $(LIBMAD_DIR)/.unpacked:	$(DL_DIR)/$(LIBMAD_SOURCE)
-	gzip -d -c $(DL_DIR)/$(LIBMAD_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	gzip -d -c $(DL_DIR)/$(LIBMAD_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(LIBMAD_DIR)/.unpacked
 
 $(LIBMAD_DIR)/.configured: $(LIBMAD_DIR)/.unpacked

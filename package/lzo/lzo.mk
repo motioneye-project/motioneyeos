@@ -19,7 +19,7 @@ $(DL_DIR)/$(LZO_SOURCE):
 lzo-source: $(DL_DIR)/$(LZO_SOURCE)
 
 $(LZO_DIR)/.unpacked: $(DL_DIR)/$(LZO_SOURCE)
-	$(LZO_CAT) $(DL_DIR)/$(LZO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(LZO_CAT) $(DL_DIR)/$(LZO_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	toolchain/patch-kernel.sh $(LZO_DIR) package/lzo/ lzo-\*.patch
 	touch $(LZO_DIR)/.unpacked
 

@@ -16,7 +16,7 @@ $(DL_DIR)/$(GAWK_SOURCE):
 gawk-source: $(DL_DIR)/$(GAWK_SOURCE)
 
 $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
-	$(GAWK_CAT) $(DL_DIR)/$(GAWK_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(GAWK_CAT) $(DL_DIR)/$(GAWK_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(GAWK_DIR)/.unpacked
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked

@@ -17,7 +17,7 @@ $(DL_DIR)/$(FINDUTILS_SOURCE):
 findutils-source: $(DL_DIR)/$(FINDUTILS_SOURCE)
 
 $(FINDUTILS_DIR)/.unpacked: $(DL_DIR)/$(FINDUTILS_SOURCE)
-	$(FINDUTILS_CAT) $(DL_DIR)/$(FINDUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(FINDUTILS_CAT) $(DL_DIR)/$(FINDUTILS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(FINDUTILS_DIR)/.unpacked
 
 $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked

@@ -15,7 +15,7 @@ $(DL_DIR)/$(FAKEROOT_SOURCE):
 fakeroot-source: $(DL_DIR)/$(FAKEROOT_SOURCE)
 
 $(FAKEROOT_DIR)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
-	$(FAKEROOT_CAT) $(DL_DIR)/$(FAKEROOT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(FAKEROOT_CAT) $(DL_DIR)/$(FAKEROOT_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	# If using busybox getopt, make it be quiet.
 	$(SED) "s,getopt --version,getopt --version 2>/dev/null," \
 		$(FAKEROOT_DIR)/scripts/fakeroot

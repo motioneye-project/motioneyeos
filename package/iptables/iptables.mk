@@ -11,7 +11,7 @@ $(DL_DIR)/$(IPTABLES_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(IPTABLES_SOURCE_URL)/$(IPTABLES_SOURCE) 
 
 $(IPTABLES_BUILD_DIR)/.unpacked: $(DL_DIR)/$(IPTABLES_SOURCE)
-	bzcat $(DL_DIR)/$(IPTABLES_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	bzcat $(DL_DIR)/$(IPTABLES_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(IPTABLES_BUILD_DIR)/.unpacked
 
 $(IPTABLES_BUILD_DIR)/.configured: $(IPTABLES_BUILD_DIR)/.unpacked

@@ -18,7 +18,7 @@ $(DL_DIR)/$(COREUTILS_SOURCE):
 coreutils-source: $(DL_DIR)/$(COREUTILS_SOURCE)
 
 $(COREUTILS_DIR)/.unpacked: $(DL_DIR)/$(COREUTILS_SOURCE)
-	$(COREUTILS_CAT) $(DL_DIR)/$(COREUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(COREUTILS_CAT) $(DL_DIR)/$(COREUTILS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(COREUTILS_DIR)/.unpacked
 
 $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked

@@ -16,7 +16,7 @@ $(DL_DIR)/$(M4_SOURCE):
 m4-source: $(DL_DIR)/$(M4_SOURCE)
 
 $(M4_DIR)/.unpacked: $(DL_DIR)/$(M4_SOURCE)
-	$(M4_CAT) $(DL_DIR)/$(M4_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(M4_CAT) $(DL_DIR)/$(M4_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(M4_DIR)/.unpacked
 
 $(M4_DIR)/.configured: $(M4_DIR)/.unpacked

@@ -18,7 +18,7 @@ $(DL_DIR)/$(MPG123_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MPG123_SITE)/$(MPG123_SOURCE)
 
 $(MPG123_DIR)/.unpacked:	$(DL_DIR)/$(MPG123_SOURCE)
-	gzip -d -c $(DL_DIR)/$(MPG123_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	gzip -d -c $(DL_DIR)/$(MPG123_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(MPG123_DIR)/.unpacked
 
 $(MPG123_WORKDIR)/mpg123:	$(MPG123_DIR)/.unpacked

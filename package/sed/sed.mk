@@ -32,7 +32,7 @@ sed-source: $(DL_DIR)/$(SED_SOURCE)
 $(SED_DIR1)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	mkdir -p $(STAGING_DIR)/bin;
-	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(TOOL_BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(SED_DIR1)/.unpacked
 
 $(SED_DIR1)/.configured: $(SED_DIR1)/.unpacked
@@ -82,7 +82,7 @@ host-sed-dirclean:
 #
 #############################################################
 $(SED_DIR2)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
-	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(SED_DIR2)/.unpacked
 
 $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked

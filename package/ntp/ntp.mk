@@ -17,7 +17,7 @@ $(DL_DIR)/$(NTP_SOURCE):
 ntp-source: $(DL_DIR)/$(NTP_SOURCE)
 
 $(NTP_DIR)/.unpacked: $(DL_DIR)/$(NTP_SOURCE)
-	$(NTP_CAT) $(DL_DIR)/$(NTP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(NTP_CAT) $(DL_DIR)/$(NTP_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	$(SED) "s,^#if.*__GLIBC__.*_BSD_SOURCE.*$$,#if 0," \
 		$(NTP_DIR)/ntpd/refclock_pcf.c;
 	touch $(NTP_DIR)/.unpacked

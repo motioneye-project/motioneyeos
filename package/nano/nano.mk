@@ -15,7 +15,7 @@ $(DL_DIR)/$(NANO_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NANO_SITE)/$(NANO_SOURCE)
 
 $(NANO_DIR)/.unpacked: $(DL_DIR)/$(NANO_SOURCE)
-	$(NANO_CAT) $(DL_DIR)/$(NANO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(NANO_CAT) $(DL_DIR)/$(NANO_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
 	touch $(NANO_DIR)/.unpacked
 
 $(NANO_DIR)/.configured: $(NANO_DIR)/.unpacked
