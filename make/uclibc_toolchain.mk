@@ -62,10 +62,11 @@ endif
 #GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/snapshots
 #GCC_SOURCE:=gcc-3.3.1-20030720.tar.bz2
 #GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1-20030720
+#GCC_CAT:=bzcat
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
 GCC_SOURCE:=gcc-3.3.tar.gz
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
-GCC_CAT:=bzcat
+GCC_CAT:=zcat
 
 
 
