@@ -44,11 +44,11 @@ $(LZO_DIR)/.configured: $(LZO_DIR)/.unpacked
 $(LZO_DIR)/src/liblzo.la: $(LZO_DIR)/.configured
 	$(MAKE) -C $(LZO_DIR)
 
-$(STAGING_DIR)/usr/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
+$(STAGING_DIR)/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
 	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) install
-	touch -c $(STAGING_DIR)/usr/lib/liblzo.a
+	touch -c $(STAGING_DIR)/lib/liblzo.a
 
-lzo: uclibc $(STAGING_DIR)/usr/lib/liblzo.a
+lzo: uclibc $(STAGING_DIR)/lib/liblzo.a
 
 lzo-clean:
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) uninstall
