@@ -35,11 +35,12 @@ IMAGE_SIZE=550 # library is 550K
 IMAGE_INODES=300
 
 LINUX_SOURCE=linux-2.4.14.tar.bz2
-USERMODELINUX_PATCH=uml-patch-2.4.14-6.bz2
-UCLIBC_SOURCE=uClibc-snapshot.tar.gz
-
 LINUX_URI=http://www.kernel.org/pub/linux/kernel/v2.4
+
+USERMODELINUX_PATCH=uml-patch-2.4.14-6.bz2
 USERMODELINUX_URI=http://prdownloads.sourceforge.net/user-mode-linux
+
+UCLIBC_SOURCE=uClibc-snapshot.tar.gz
 UCLIBC_URI=http://uclibc.org/downloads/
 
 # Don't alter below this line unless you (think) you know
@@ -109,6 +110,7 @@ $(SOURCE_DIR)/$(USERMODELINUX_PATCH):
         
 $(LINUX_DIR)/.patched:	$(LINUX_DIR)/.unpacked $(SOURCE_DIR)/$(USERMODELINUX_PATCH)
 	bzcat $(SOURCE_DIR)/$(USERMODELINUX_PATCH) | patch -d $(LINUX_DIR) -p1
+	cp -f $(KCONFIG) $(LINUX_DIR)/.config
 	touch $(LINUX_DIR)/.patched
 
 $(LINUX_DIR)/.um:	$(LINUX_DIR)/.patched
@@ -116,7 +118,6 @@ $(LINUX_DIR)/.um:	$(LINUX_DIR)/.patched
 	touch $(LINUX_DIR)/.um
 
 $(LINUX_DIR)/.configdone:	$(LINUX_DIR)/.um
-	cp -f $(KCONFIG) $(LINUX_DIR)/.config
 	make -C $(LINUX_DIR) oldconfig menuconfig
 	touch $(LINUX_DIR)/.configdone
 
@@ -154,26 +155,25 @@ $(UCLIBC_DIR)/lib/libc.a:	$(LINUX) $(UCLIBC_DIR)/Config
 		-C $(UCLIBC_DIR)
 
 uclibc:	$(UCLIBC_DIR)/lib/libc.a $(STAGING_DIR) $(TARGET_DIR)
-	@A=`cksum $(STAGING_DIR)/lib/libuClibc-0.9.5.so 2>/dev/null | awk '{ print $$1 }'`; \
-	B=`cksum $(UCLIBC_DIR)/lib/libuClibc-0.9.5.so 2>/dev/null | awk '{ print $$1 }'`; \
-	if [ "$$A" != "$$B" ] ; then \
+	@if [ $(UCLIBC_DIR)/lib/libc.a -nt $(UCLIBC_DIR)/.installed ]; then \
+		rm -f $(UCLIBC_DIR)/.installed; \
 		set -x; \
 		$(MAKE) \
 		DEVEL_PREFIX=$(STAGING_DIR) \
 		SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr \
 		SHARED_LIB_LOADER_PATH=$(STAGING_DIR)/lib \
 		-C $(UCLIBC_DIR) install; \
-	fi;
-	@A=`cksum $(TARGET_DIR)/lib/libuClibc-0.9.5.so 2>/dev/null | awk '{ print $$1 }'`; \
-	B=`cksum $(UCLIBC_DIR)/lib/libuClibc-0.9.5.so 2>/dev/null | awk '{ print $$1 }'`; \
-	if [ "$$A" != "$$B" ] ; then \
-		set -x; \
+		touch $(UCLIBC_DIR)/.installed ; \
+	fi
+	@if [ $(UCLIBC_DIR)/lib/libc.a -nt $(UCLIBC_DIR)/.installed_runtime ]; then \
+		rm -f $(UCLIBC_DIR)/.installed_runtime; \
 		$(MAKE) \
 		PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=/ \
 		SYSTEM_DEVEL_PREFIX=/usr \
 		SHARED_LIB_LOADER_PATH=/lib \
 		-C $(UCLIBC_DIR) install_runtime; \
+		touch $(UCLIBC_DIR)/.installed_runtime ; \
 	fi
         
 # genext2fs
