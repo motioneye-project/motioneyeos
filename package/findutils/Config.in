@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_FINDUTILS
-	bool"findutils"
+	bool "findutils"
 	default n
 	help
-	  Add help text here.
+	  Basic directory searching utilities.  Provides the 
+	  common 'find', 'xargs', 'locate', and 'updatedb' binaries.
 
+	  http://www.gnu.org/software/findutils/findutils.html
