@@ -3,42 +3,80 @@
 # bzip2
 #
 #############################################################
-BZIP2_SOURCE=bzip2-1.0.2.tar.gz
-BZIP2_SITE=ftp://sources.redhat.com/pub/bzip2/v102
-BZIP2_DIR=$(BUILD_DIR)/bzip2-1.0.2
+BZIP2_SOURCE:=bzip2-1.0.2.tar.gz
+BZIP2_SITE:=ftp://sources.redhat.com/pub/bzip2/v102
+BZIP2_DIR:=$(BUILD_DIR)/bzip2-1.0.2
+BZIP2_CAT:=zcat
+BZIP2_BINARY:=$(BZIP2_DIR)/bzip2
+BZIP2_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/bzmore
 
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-BZIP2_CFLAGS="-Os -g -mpreferred-stack-boundary=2 -falign-functions=1 -falign-jumps=0 -falign-loops=0 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64"
-else
-BZIP2_CFLAGS="-Os -g -mpreferred-stack-boundary=2 -falign-functions=1 -falign-jumps=0 -falign-loops=0"
+ifeq ($(strip $(BUILD_WITH_LARGEFILE)),false)
+BZIP2_LARGEFILE="--disable-largefile"
 endif
 
 $(DL_DIR)/$(BZIP2_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(BZIP2_SITE)/$(BZIP2_SOURCE)
 
-$(BZIP2_DIR)/.source: $(DL_DIR)/$(BZIP2_SOURCE)
-	zcat $(DL_DIR)/$(BZIP2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	touch $(BZIP2_DIR)/.source
+bzip2-source: $(DL_DIR)/$(BZIP2_SOURCE)
 
-$(BZIP2_DIR)/libbz2.a: $(BZIP2_DIR)/.source
-	$(MAKE) CC=$(TARGET_CC1) AR=$(TARGET_CROSS)ar RANLIB=$(TARGET_CROSS)ranlib \
-		CFLAGS=$(BZIP2_CFLAGS) -C $(BZIP2_DIR) libbz2.a;
-	touch -c $(BZIP2_DIR)/libbz2.a
+$(BZIP2_DIR)/.unpacked: $(DL_DIR)/$(BZIP2_SOURCE)
+	$(BZIP2_CAT) $(DL_DIR)/$(BZIP2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	perl -pi -e "s,ln \\$$\(,ln -sf \\$$\(,g" $(BZIP2_DIR)/Makefile
+	perl -pi -e "s,ln -s (lib.*),ln -sf \$$1 ; ln -sf libbz2.so.1.0.2 libbz2.so,g" \
+	    $(BZIP2_DIR)/Makefile-libbz2_so
+	touch $(BZIP2_DIR)/.unpacked
 
-$(STAGING_DIR)/lib/libbz2.a: $(BZIP2_DIR)/libbz2.a
-	cp -a $(BZIP2_DIR)/libbz2.a $(STAGING_DIR)/lib;
-	cp -a $(BZIP2_DIR)/bzlib.h $(STAGING_DIR)/include;
-	touch -c $(STAGING_DIR)/lib/libbz2.a
+$(STAGING_DIR)/lib/libbz2.so.1.0.2: $(BZIP2_DIR)/.unpacked
+	$(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) -f Makefile-libbz2_so
+	$(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) libbz2.a
+	cp $(BZIP2_DIR)/bzlib.h $(STAGING_DIR)/include/ 
+	cp $(BZIP2_DIR)/libbz2.so.1.0.2 $(STAGING_DIR)/lib/ 
+	cp $(BZIP2_DIR)/libbz2.a $(STAGING_DIR)/lib/ 
+	(cd $(STAGING_DIR)/lib/; ln -sf libbz2.so.1.0.2 libbz2.so) 
+	(cd $(STAGING_DIR)/lib/; ln -sf libbz2.so.1.0.2 libbz2.so.1.0) 
 
-#$(TARGET_DIR)/lib/libbz2.so.1.1.4: $(STAGING_DIR)/lib/libbz2.so.1.1.4
-#	cp -a $(STAGING_DIR)/lib/libbz2.so* $(TARGET_DIR)/lib;
-#	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libbz2.so*
-#	touch -c $(TARGET_DIR)/lib/libbz2.so.1.1.4
+$(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.1.0.2
+	$(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) bzip2 bzip2recover
 
-bzip2: uclibc $(STAGING_DIR)/lib/libbz2.a
+$(BZIP2_TARGET_BINARY): $(BZIP2_BINARY)
+	$(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) PREFIX=$(TARGET_DIR)/usr -C $(BZIP2_DIR) install
+	rm -f $(TARGET_DIR)/usr/lib/libbz2.a
+	rm -f $(TARGET_DIR)/usr/include/bzlib.h
+	cp $(BZIP2_DIR)/libbz2.so.1.0.2 $(TARGET_DIR)/usr/lib/
+	(cd $(TARGET_DIR)/usr/lib; \
+	ln -sf libbz2.so.1.0.2 libbz2.so.1.0; \
+	ln -sf libbz2.so.1.0.2 libbz2.so)
+	(cd $(TARGET_DIR)/usr/bin; \
+	ln -sf bzip2 bunzip2; \
+	ln -sf bzip2 bzcat; \
+	ln -sf bzdiff bzcmp; \
+	ln -sf bzmore bzless; \
+	ln -sf bzgrep bzegrep; \
+	ln -sf bzgrep bzfgrep;)
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+
+$(TARGET_DIR)/usr/lib/libbz2.a: $(STAGING_DIR)/lib/libbz2.a
+	mkdir -p $(TARGET_DIR)/usr/include 
+	cp $(STAGING_DIR)/include/bzlib.h $(TARGET_DIR)/usr/include/
+	cp $(STAGING_DIR)/lib/libbz2.a $(TARGET_DIR)/usr/lib/ 
+	rm -f $(TARGET_DIR)/lib/libbz2.so
+	(cd $(TARGET_DIR)/usr/lib; \
+		ln -fs /usr/lib/libbz2.so.1.0 libbz2.so; \
+	)
+	touch -c $(TARGET_DIR)/usr/lib/libbz2.a
+
+bzip2-headers: $(TARGET_DIR)/usr/lib/libbz2.a
+
+bzip2: uclibc $(BZIP2_TARGET_BINARY)
 
 bzip2-clean:
-	-make -C $(BZIP2_DIR) clean
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BZIP2_DIR) uninstall
+	-$(MAKE) -C $(BZIP2_DIR) clean
 
 bzip2-dirclean:
 	rm -rf $(BZIP2_DIR)
