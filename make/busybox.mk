@@ -3,7 +3,6 @@
 # busybox
 #
 #############################################################
-USE_BUSYBOX_SNAPSHOT=true
 ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox

@@ -3,10 +3,10 @@
 # tinylogin
 #
 #############################################################
-TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin-1.00
+TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin-1.02
 # FIXME - this changes daily. we should use a stable tarball and cvs up if desired
 #TINYLOGIN_SOURCE=tinylogin-snapshot.tar.bz2
-TINYLOGIN_SOURCE:=tinylogin-1.00.tar.bz2
+TINYLOGIN_SOURCE:=tinylogin-1.02.tar.bz2
 TINYLOGIN_SITE:=http://tinylogin.busybox.net/downloads
 
 $(DL_DIR)/$(TINYLOGIN_SOURCE):
