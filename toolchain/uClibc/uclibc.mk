@@ -114,11 +114,12 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
 		install_runtime
-	touch $(TARGET_DIR)/lib/libc.so.0
+	touch -c $(TARGET_DIR)/lib/libc.so.0
 
 $(TARGET_DIR)/usr/bin/ldd: gcc
 	$(MAKE) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
 		PREFIX=$(TARGET_DIR) utils install_utils
+	touch -c $(TARGET_DIR)/usr/bin/ldd
 
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
 endif
