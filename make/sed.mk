@@ -69,7 +69,7 @@ host-sed: $(HOST_SED_TARGET)
 
 host-sed-clean:
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SED_DIR1) uninstall
-	-sed -C $(SED_DIR1) clean
+	-$(MAKE) -C $(SED_DIR1) clean
 
 host-sed-dirclean:
 	rm -rf $(SED_DIR1)
@@ -127,7 +127,7 @@ sed: uclibc sed-target_binary
 
 sed-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) uninstall
-	-sed -C $(SED_DIR2) clean
+	-$(MAKE) -C $(SED_DIR2) clean
 
 sed-dirclean:
 	rm -rf $(SED_DIR2)
