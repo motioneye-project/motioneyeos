@@ -28,7 +28,7 @@ $(TARGET_DIR)/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	cp -af $(IPTABLES_BUILD_DIR)/iptables $(TARGET_DIR)/sbin/
 	cp -af $(IPTABLES_BUILD_DIR)/iptables-save $(TARGET_DIR)/sbin/
 	cp -af $(IPTABLES_BUILD_DIR)/iptables-restore $(TARGET_DIR)/sbin/
-	-mkdir $(TARGET_DIR)/usr/local/lib/iptables
+	-mkdir -p $(TARGET_DIR)/usr/local/lib/iptables
 	cp -af $(IPTABLES_BUILD_DIR)/extensions/*.so $(TARGET_DIR)/usr/local/lib/iptables/
 
 iptables: $(TARGET_DIR)/sbin/iptables 
