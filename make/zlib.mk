@@ -61,6 +61,8 @@ zlib-headers: $(TARGET_DIR)/usr/lib/libz.a
 
 zlib: uclibc $(TARGET_DIR)/lib/libz.so.1.1.4
 
+zlib-source: $(DL_DIR)/$(ZLIB_SOURCE)
+
 zlib-clean:
 	rm -f $(TARGET_DIR)/lib/libz.so*
 	-$(MAKE) -C $(ZLIB_DIR) clean

@@ -27,6 +27,8 @@ $(TARGET_DIR)/usr/bin/ttcp: $(TTCP_BUILD_DIR)/ttcp
 
 ttcp: $(TARGET_DIR)/usr/bin/ttcp 
 
+ttcp-source: $(DL_DIR)/$(TTCP_SOURCE)
+
 ttcp-clean:
 	rm -f $(TTCP_BUILD_DIR)/*.o $(TTCP_BUILD_DIR)/ttcp	
 

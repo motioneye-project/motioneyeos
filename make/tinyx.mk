@@ -116,6 +116,8 @@ $(TINYX_LIBX)/libX11.so.6.2: $(TINYX_XFBDEV)
 
 tinyx: zlib $(TINYX_LIBX)/libX11.so.6.2 $(TINYX_BINX)/Xfbdev
 
+tinyx-source: $(DL_DIR)/$(TINYX_SOURCE)
+
 tinyx-clean:
 	-rm -rf $(TARGET_DIR)/usr/X11R6
 	-$(MAKE) -C $(TINYX_DIR) clean

@@ -48,6 +48,8 @@ $(TARGET_DIR)/sbin/brctl: $(BRIDGE_BUILD_DIR)/brctl/brctl
 
 bridge: $(TARGET_DIR)/sbin/brctl 
 
+bridge-source: $(DL_DIR)/$(BRIDGE_SOURCE)
+
 bridge-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BRIDGE_BUILD_DIR) uninstall
 	-$(MAKE) -C $(BRIDGE_BUILD_DIR) clean

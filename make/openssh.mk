@@ -66,6 +66,8 @@ $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
 
 openssh: $(TARGET_DIR)/usr/bin/ssh
 
+openssh-source: $(DL_DIR)/$(OPENSSH_SOURCE)
+
 openssh-clean: 
 	$(MAKE) -C $(OPENSSH_DIR) clean
 

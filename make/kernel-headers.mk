@@ -50,13 +50,15 @@ $(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
 
 $(LINUX_KERNEL): $(LINUX_DIR)/.configured
 
-system-linux: $(LINUX_DIR)/.configured
+kernel-headers: $(LINUX_DIR)/.configured
 
-system-linux-clean: clean
+kernel-headers-source: $(DL_DIR)/$(LINUX_SOURCE)
+
+kernel-headers-clean: clean
 	rm -f $(LINUX_KERNEL)
 	rm -rf $(LINUX_DIR)
 
-system-linux-dirclean:
+kernel-headers-dirclean:
 	rm -rf $(LINUX_DIR)
 
 endif

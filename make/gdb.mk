@@ -60,6 +60,8 @@ $(TARGET_DIR)/usr/bin/gdb: $(GDB_DIR)/gdb/gdb
 
 gdb: $(TARGET_DIR)/usr/bin/gdb
 
+gdb-source: $(DL_DIR)/$(GDB_SOURCE)
+
 gdb-clean: 
 	$(MAKE) -C $(GDB_DIR) clean
 

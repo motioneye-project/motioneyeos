@@ -49,6 +49,8 @@ $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
 
 util-linux: uclibc $(UTIL-LINUX_TARGET_BINARY)
 
+util-linux-source: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
+
 util-linux-clean:
 	#There is no working 'uninstall' target.  Just skip it... 
 	#$(MAKE) DESTDIR=$(TARGET_DIR) -C $(UTIL-LINUX_DIR) uninstall

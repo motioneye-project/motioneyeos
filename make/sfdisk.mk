@@ -25,6 +25,8 @@ $(TARGET_DIR)/sbin/sfdisk: $(SFDISK_DIR)/sfdisk
 
 sfdisk: uclibc $(TARGET_DIR)/sbin/sfdisk
 
+sfdisk-source: $(DL_DIR)/$(SFDISK_SOURCE)
+
 sfdisk-clean:
 	rm -f $(TARGET_DIR)/sbin/sfdisk
 	-$(MAKE) -C $(SFDISK_DIR) clean

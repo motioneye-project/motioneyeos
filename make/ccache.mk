@@ -61,6 +61,8 @@ $(TARGET_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR2)/$(CCACHE_BINARY)
 
 ccache_target: uclibc $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
 
+ccache_target-sources: $(DL_DIR)/$(CCACHE_SOURCE)
+
 ccache_target-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(CCACHE_DIR2) uninstall
 	-$(MAKE) -C $(CCACHE_DIR2) clean

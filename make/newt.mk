@@ -61,6 +61,8 @@ $(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION): $(STAGING_DIR)/lib/libnewt.a
 
 newt: uclibc slang $(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION)
 
+newt-source: $(DL_DIR)/$(NEWT_SOURCE)
+
 newt-clean:
 	rm -f $(TARGET_DIR)/lib/libnewt.so*
 	-$(MAKE) -C $(NEWT_DIR) clean

@@ -45,6 +45,8 @@ $(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer
 
 boa:	uclibc $(BOA_WORKDIR)/.installed
 
+boa-source: $(DL_DIR)/$(BOA_SOURCE)
+
 boa-clean:
 	@if [ -d $(BOA_WORKDIR)/Makefile ] ; then \
 		$(MAKE) -C $(BOA_WORKDIR) clean ; \

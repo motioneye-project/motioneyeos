@@ -78,6 +78,8 @@ else
 valgrind:
 endif
 
+valgrind-source: $(DL_DIR)/$(VALGRIND_SOURCE)
+
 valgrind-clean: 
 	$(MAKE) -C $(VALGRIND_DIR) clean
 

@@ -32,6 +32,8 @@ $(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwconfig
 
 wtools: $(TARGET_DIR)/sbin/iwconfig 
 
+wtools-source: $(DL_DIR)/$(WTOOLS_SOURCE)
+
 wtools-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(WTOOLS_BUILD_DIR) uninstall
 	-$(MAKE) -C $(WTOOLS_BUILD_DIR) clean

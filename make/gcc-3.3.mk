@@ -56,6 +56,7 @@ endif
 #
 #############################################################
 GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc-3.3-initial
+
 $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
@@ -304,6 +305,8 @@ endif
 
 gcc3_3: binutils uclibc-configured gcc3_3_initial $(LIBFLOAT_TARGET) uclibc \
 	$(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
+
+gcc3_3-source: $(DL_DIR)/$(GCC_SOURCE)
 
 gcc3_3-clean:
 	rm -rf $(GCC_BUILD_DIR2)

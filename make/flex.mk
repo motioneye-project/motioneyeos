@@ -17,7 +17,7 @@ $(DL_DIR)/$(FLEX_SOURCE):
 $(DL_DIR)/$(FLEX_PATCH):
 	 $(WGET) -P $(DL_DIR) $(FLEX_SITE)/$(FLEX_PATCH)
 
-ed-source: $(DL_DIR)/$(FLEX_SOURCE) $(DL_DIR)/$(FLEX_PATCH)
+flex-source: $(DL_DIR)/$(FLEX_SOURCE) $(DL_DIR)/$(FLEX_PATCH)
 
 $(FLEX_DIR)/.unpacked: $(DL_DIR)/$(FLEX_SOURCE) $(DL_DIR)/$(FLEX_PATCH)
 	$(FLEX_CAT) $(DL_DIR)/$(FLEX_SOURCE) | tar -C $(BUILD_DIR) -xvf -

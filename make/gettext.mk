@@ -13,7 +13,7 @@ GETTEXT_TARGET_BINARY:=usr/bin/gettext
 $(DL_DIR)/$(GETTEXT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GETTEXT_SITE)/$(GETTEXT_SOURCE)
 
-ed-source: $(DL_DIR)/$(GETTEXT_SOURCE)
+gettext-source: $(DL_DIR)/$(GETTEXT_SOURCE)
 
 $(GETTEXT_DIR)/.unpacked: $(DL_DIR)/$(GETTEXT_SOURCE)
 	$(GETTEXT_CAT) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) -xvf -

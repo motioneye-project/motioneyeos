@@ -55,6 +55,8 @@ $(SOCAT_WORKDIR)/.installed: $(SOCAT_WORKDIR)/socat
 
 socat:	uclibc $(SOCAT_WORKDIR)/.installed
 
+socat-source: $(DL_DIR)/$(SOCAT_SOURCE)
+
 socat-clean:
 	@if [ -d $(SOCAT_WORKDIR)/Makefile ] ; then \
 		$(MAKE) -C $(SOCAT_WORKDIR) clean ; \

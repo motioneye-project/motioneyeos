@@ -95,6 +95,8 @@ $(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
 
 linux: $(STAGING_DIR)/include/linux/version.h $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
 
+linux-source: $(DL_DIR)/$(LINUX_SOURCE)
+
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linuxclean: clean
 	rm -f $(LINUX_KERNEL)

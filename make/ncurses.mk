@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.28 2003/11/01 05:34:39 mjn3 Exp $
+# $Id: ncurses.mk,v 1.29 2003/11/12 09:31:12 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -117,6 +117,8 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	touch -c $(TARGET_DIR)/usr/lib/libncurses.a
 
 ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
+
+ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
 
 ncurses-clean: 
 	rm -f $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/libncurses.so*

@@ -34,6 +34,8 @@ $(TARGET_DIR)/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 
 iptables: $(TARGET_DIR)/sbin/iptables 
 
+iptables-source: $(DL_DIR)/$(IPTABLES_SOURCE)
+
 iptables-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(IPTABLES_BUILD_DIR) uninstall
 	-$(MAKE) -C $(IPTABLES_BUILD_DIR) clean

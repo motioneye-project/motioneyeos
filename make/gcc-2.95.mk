@@ -48,6 +48,7 @@ endif
 #
 #############################################################
 GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc-2.95-initial
+
 $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
@@ -170,6 +171,7 @@ gcc2_95_initial-dirclean:
 #
 #############################################################
 STLPORT_PATCH=$(SOURCE_DIR)/STLport-4.5.3.patch
+
 $(DL_DIR)/$(STLPORT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(STLPORT_SITE)/$(STLPORT_SOURCE)
 
@@ -187,6 +189,8 @@ ifneq ($(HAS_MMU),true)
 endif
 
 stlport: $(STAGING_DIR)/lib/libstdc++.a
+
+stlport-source: $(DL_DIR)/$(STLPORT_SOURCE)
 
 stlport-clean:
 	rm -f $(STAGING_DIR)/lib/libstdc++*
@@ -279,6 +283,8 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 
 gcc2_95: binutils uclibc-configured gcc2_95_initial uclibc \
 	$(STAGING_DIR)/bin/$(ARCH)-uclibc-g++ $(STLPORT_TARGET)
+
+gcc2_95-source: $(DL_DIR)/$(GCC_SOURCE)
 
 gcc2_95-clean:
 	rm -rf $(GCC_BUILD_DIR2)

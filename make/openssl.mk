@@ -63,6 +63,10 @@ $(TARGET_DIR)/usr/lib/libssl.a: $(STAGING_DIR)/lib/libcrypto.a
 
 openssl-headers: $(TARGET_DIR)/usr/lib/libssl.a
 
+openssl: uclibc $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7
+
+openssl-source: $(DL_DIR)/$(OPENSSL_SOURCE)
+
 openssl-clean: 
 	rm -f $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/openssl
 	rm -f $(STAGING_DIR)/lib/libcrypto.so* $(TARGET_DIR)/lib/libcrypto.so*
@@ -71,6 +75,4 @@ openssl-clean:
 
 openssl-dirclean: 
 	rm -rf $(OPENSSL_DIR) 
-
-openssl: uclibc $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7
 

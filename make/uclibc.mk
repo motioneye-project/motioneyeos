@@ -32,8 +32,6 @@ UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
-uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE) #$(UCLIBC_PATCH)
-
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
@@ -96,6 +94,10 @@ uclibc-configured: $(UCLIBC_DIR)/.configured
 
 uclibc: $(STAGING_DIR)/bin/$(ARCH)-linux-gcc $(STAGING_DIR)/lib/libc.a \
 	$(UCLIBC_TARGETS)
+
+uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
+
+uclibc-configured-source: uclibc-source
 
 uclibc-clean:
 	-$(MAKE) -C $(UCLIBC_DIR) clean

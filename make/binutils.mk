@@ -9,6 +9,7 @@ BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.6
 BINUTILS_CAT:=bzcat
 
 BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-build
+
 $(DL_DIR)/$(BINUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
@@ -97,6 +98,8 @@ $(STAGING_DIR)/lib/libg.a:
 	cp -a $(BINUTILS_DIR1)/libiberty/libiberty.a $(STAGING_DIR)/usr/lib/
 
 binutils: $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/lib/libg.a
+
+binutils-source: $(DL_DIR)/$(BINUTILS_SOURCE)
 
 binutils-clean:
 	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)*
@@ -197,8 +200,4 @@ binutils_target-clean:
 
 binutils_target-dirclean:
 	rm -rf $(BINUTILS_DIR2)
-
-
-
-
 

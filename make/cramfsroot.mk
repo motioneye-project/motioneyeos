@@ -42,12 +42,11 @@ cramfsroot: cramfs
 	@rm -rf $(TARGET_DIR)/usr/info
 	$(CRAMFS_DIR)/mkcramfs -q -D $(SOURCE_DIR)/device_table.txt $(TARGET_DIR) $(IMAGE)
 
-cramfsroot-source: $(DL_DIR)/$(GENEXT2_SOURCE)
+cramfsroot-source: cramfs-source
 
 cramfsroot-clean:
-	-$(MAKE) -C $(GENEXT2_DIR) clean
+	-$(MAKE) -C $(CRAMFS_DIR) clean
 
 cramfsroot-dirclean:
-	rm -rf $(GENEXT2_DIR)
-
+	rm -rf $(CRAMFS_DIR)
 

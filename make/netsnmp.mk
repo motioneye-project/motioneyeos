@@ -95,6 +95,8 @@ netsnmp-headers: $(TARGET_DIR)/usr/include/net-snmp/net-snmp-config.h
 	cp -a $(STAGING_DIR)/include/net-snmp $(TARGET_DIR)/usr/include/net-snmp
 	cp -a $(STAGING_DIR)/include/ucd-snmp $(TARGET_DIR)/usr/include/net-snmp
 
+netsnmp-source: $(DL_DIR)/$(NETSNMP_SOURCE)
+
 netsnmp-clean: 
 	$(MAKE) -C $(NETSNMP_DIR) clean
 
