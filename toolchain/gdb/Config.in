@@ -39,6 +39,9 @@ choice
 	config BR2_GDB_VERSION_6_2_1
 		bool "gdb 6.2.1"
 
+	config BR2_GDB_VERSION_6_3
+		bool "gdb 6.3"
+
 endchoice
 
 config BR2_GDB_VERSION
@@ -47,5 +50,6 @@ config BR2_GDB_VERSION
 	default "6.1.1"    if BR2_GDB_VERSION_6_1_1
 	default "6.2"      if BR2_GDB_VERSION_6_2
 	default "6.2.1"    if BR2_GDB_VERSION_6_2_1
+	default "6.3"      if BR2_GDB_VERSION_6_3
 
 
