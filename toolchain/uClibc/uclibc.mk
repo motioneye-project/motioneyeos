@@ -5,9 +5,9 @@
 #############################################################
 
 ifeq ($(BR2_ENABLE_LOCALE),y)
-UCLIBC_CONFIG_FILE:=toolchain/uClibc/uClibc.config-locale
+UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc.config-locale
 else
-UCLIBC_CONFIG_FILE:=toolchain/uClibc/uClibc.config
+UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc.config
 endif
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
