@@ -202,7 +202,7 @@ diff -urN STLport-4.5.3/stlport/config/_prolog.h STLport-4.5.3-devel/stlport/con
 @@ -1,3 +1,8 @@
 +/* Evil hack to make sure everything behaves itself */
 +#define _STLP_USE_UCLIBC
-+#define _STLP_NO_WCHAR_T
++//#define _STLP_NO_WCHAR_T
 +//#define _ISOC99_SOURCE
 +//#define USE_SPRINTF_INSTEAD
  
@@ -246,7 +246,7 @@ diff -urN STLport-4.5.3/stlport/stl/_config.h STLport-4.5.3-devel/stlport/stl/_c
 +#define _STLP_NO_EXCEPTIONS		1
 +#define STL_NO_EXCEPTIONS		1
 +#define _STLP_USE_UCLIBC		1
-+#define _STLP_NO_WCHAR_T		1
++//#define _STLP_NO_WCHAR_T		1
 +#define _STLP_NO_LONG_DOUBLE		1
 +#define USE_SPRINTF_INSTEAD		1
 +#define _ISOC99_SOURCE			1
