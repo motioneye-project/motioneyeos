@@ -125,7 +125,7 @@ $(CCACHE_DIR2)/.configured: $(CCACHE_DIR2)/.patched
 	touch $(CCACHE_DIR2)/.configured
 
 $(CCACHE_DIR2)/$(CCACHE_BINARY): $(CCACHE_DIR2)/.configured
-	$(MAKE) -C $(CCACHE_DIR2)
+	$(MAKE) -C $(CCACHE_DIR2) CFLAGS="$(TARGET_CFLAGS)"
 
 $(TARGET_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR2)/$(CCACHE_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(CCACHE_DIR2) install
@@ -144,9 +144,8 @@ ccache_target: uclibc $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
 ccache_target-sources: $(DL_DIR)/$(CCACHE_SOURCE)
 
 ccache_target-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(CCACHE_DIR2) uninstall
+	rm -f $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
 	-$(MAKE) -C $(CCACHE_DIR2) clean
 
 ccache_target-dirclean:
 	rm -rf $(CCACHE_DIR2)
-
