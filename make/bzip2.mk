@@ -21,7 +21,7 @@ bzip2-source: $(DL_DIR)/$(BZIP2_SOURCE)
 
 $(BZIP2_DIR)/.unpacked: $(DL_DIR)/$(BZIP2_SOURCE)
 	$(BZIP2_CAT) $(DL_DIR)/$(BZIP2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	sed -ie "s,ln \\$$\(,ln -sf \\$$\(,g" $(BZIP2_DIR)/Makefile
+	sed -ie "s,ln \$$(,ln -sf \$$(,g" $(BZIP2_DIR)/Makefile
 	sed -ie "s,ln -s (lib.*),ln -sf \$$1 ; ln -sf libbz2.so.1.0.2 libbz2.so,g" \
 	    $(BZIP2_DIR)/Makefile-libbz2_so
 	touch $(BZIP2_DIR)/.unpacked
