@@ -45,7 +45,21 @@ $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
 	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR1) install
 
-binutils: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
+binutils-dependancies:
+	@if [ ! -x /usr/bin/bison ] ; then \
+		echo -e "\n\nYou must install 'bison' on your build machine\n"; \
+		exit 1; \
+	fi;
+	@if [ ! -x /usr/bin/flex ] ; then \
+		echo -e "\n\nYou must install 'flex' on your build machine\n"; \
+		exit 1; \
+	fi;
+	@if [ ! -x /usr/bin/msgfmt ] ; then \
+		echo -e "\n\nYou must install 'gettext' on your build machine\n"; \
+		exit 1; \
+	fi;
+
+binutils: binutils-dependancies $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
 
 binutils-source: $(DL_DIR)/$(BINUTILS_SOURCE)
 
