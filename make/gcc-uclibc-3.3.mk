@@ -242,7 +242,7 @@ endif
 	-(cd $(TARGET_DIR)/usr/lib; $(STRIP) libstdc++.so.*.*.* > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/lib; $(STRIP) libgcc_s.so.*.*.* > /dev/null 2>&1)
 	#
-	#rm -f $(TARGET_DIR)/usr/lib/*.la*
+	rm -f $(TARGET_DIR)/usr/lib/*.la*
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Work around problem of missing syslimits.h
