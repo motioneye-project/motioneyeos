@@ -31,6 +31,12 @@ $(LINUX_DIR)/.configured:
 	    ln -fs asm-mips asm; \
 	elif [ "$(ARCH)" = "mipsel" ];then \
 	    ln -fs asm-mips asm; \
+	elif [ "$(ARCH)" = "arm" ];then \
+	    ln -fs asm-arm asm; \
+	    (cd asm-arm; \
+	    if [ ! -L proc ] ; then \
+	    ln -fs proc-armv proc; \
+	    ln -fs arch-ebsa285 arch; fi); \
 	elif [ "$(ARCH)" = "cris" ];then \
 	    ln -fs asm-cris asm; \
 	else ln -fs asm-$(ARCH) asm; \
