@@ -1,0 +1,20 @@
+# Select the module that is correct for your hardware
+
+PCIC=yenta_socket
+#PCIC=i82365
+#PCIC=tcic
+#PCIC=sa1100_cs
+
+# Load up all the pcmcia modules
+/sbin/modprobe pcmcia_core
+/sbin/modprobe $PCIC
+/sbin/modprobe ds
+
+if [ $? != 0 ] ; then 
+    echo "pcmcia support not detected";
+    exit 0;
+fi
+
+/sbin/cardmgr -m /lib/modules
+
+exit 0;
