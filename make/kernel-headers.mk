@@ -19,6 +19,7 @@ $(DL_DIR)/$(LINUX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
+	mkdir -p $(TOOL_BUILD_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(LINUX_DIR)/.unpacked
 
