@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.1 2002/05/23 19:21:23 andersen Exp $
+# $Id: ncurses.mk,v 1.2 2002/05/29 14:26:13 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -57,7 +57,18 @@ $(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/Makefile
 
 $(STAGING_DIR)/lib/libncurses.so: $(NCURSES_DIR)/lib/libncurses.so
 	@echo "==============installing ncurses into staging...."
-	make -C $(NCURSES_DIR) install  DESTDIR=$(STAGING_DIR)
+	#make -C $(NCURSES_DIR) PREFIX=$(STAGING_DIR) install
+	$(STRIP) --strip-unneeded $(GDB_DIR)/gdb/gdb
+	cp -a $(NCURSES_DIR)/lib/libncurses.so* $(STAGING_DIR)/lib/
+	cp -a $(NCURSES_DIR)/include/curses.h $(STAGING_DIR)/include/
+	cp -a $(NCURSES_DIR)/include/eti.h $(STAGING_DIR)/include/
+	cp -a $(NCURSES_DIR)/include/form.h $(STAGING_DIR)/include/
+	cp -a $(NCURSES_DIR)/include/menu.h $(STAGING_DIR)/include/
+	cp -a $(NCURSES_DIR)/include/panel.h $(STAGING_DIR)/include/
+	cp -a $(NCURSES_DIR)/include/term.h $(STAGING_DIR)/include/
+	cp -a $(NCURSES_DIR)/include/termcap.h $(STAGING_DIR)/include/
+	cp -a $(NCURSES_DIR)/include/unctrl.h $(STAGING_DIR)/include/
+	(cd $(STAGING_DIR)/include; ln -s curses.h ncurses.h)
 
 $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
 	@echo "==============installing ncurses into root dir...."
