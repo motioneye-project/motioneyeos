@@ -5,9 +5,9 @@
 #############################################################
 
 NETSNMP_URL:=http://aleron.dl.sourceforge.net/sourceforge/net-snmp/
-NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-5.1
-NETSNMP_SOURCE:=net-snmp-5.1.tar.gz
-NETSNMP_PATCH1:=net-snmp_5.1-5.diff.gz
+NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-5.1.2
+NETSNMP_SOURCE:=net-snmp-5.1.2.tar.gz
+NETSNMP_PATCH1:=net-snmp_5.1.2-6.diff.gz
 NETSNMP_PATCH1_URL:=http://ftp.debian.org/debian/pool/main/n/net-snmp/
 
 $(DL_DIR)/$(NETSNMP_SOURCE):
@@ -88,7 +88,7 @@ $(TARGET_DIR)/usr/sbin/snmpd: $(NETSNMP_DIR)/agent/snmpd
 	cp $(NETSNMP_DIR)/agent/mibgroup/mibincl.h $(STAGING_DIR)/include/net-snmp/library
 	cp $(NETSNMP_DIR)/agent/mibgroup/header_complex.h $(STAGING_DIR)/include/net-snmp/agent
 
-netsnmp: $(TARGET_DIR)/usr/sbin/snmpd
+netsnmp: openssl $(TARGET_DIR)/usr/sbin/snmpd
 
 netsnmp-headers: $(TARGET_DIR)/usr/include/net-snmp/net-snmp-config.h
 	cp -a $(STAGING_DIR)/include/net-snmp $(TARGET_DIR)/usr/include/net-snmp

@@ -5,7 +5,7 @@
 #############################################################
 NANO_VER:=1.3.4
 NANO_SOURCE:=nano-$(NANO_VER).tar.gz
-NANO_SITE:=http://www.nano-editor.org/dist/v1.3/$(NANO_SOURCE)
+NANO_SITE:=http://www.nano-editor.org/dist/v1.3/
 NANO_DIR:=$(BUILD_DIR)/nano-$(NANO_VER)
 NANO_CAT:=zcat
 NANO_BINARY:=src/nano

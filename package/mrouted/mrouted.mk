@@ -20,7 +20,7 @@ $(DL_DIR)/$(MROUTED_PATCH):
 
 mrouted-source: $(DL_DIR)/$(MROUTED_SOURCE) $(DL_DIR)/$(MROUTED_PATCH)
 
-$(MROUTED_DIR)/.unpacked: mrouted-source
+$(MROUTED_DIR)/.unpacked: $(DL_DIR)/$(MROUTED_SOURCE) $(DL_DIR)/$(MROUTED_PATCH)
 	$(MROUTED_CAT) $(DL_DIR)/$(MROUTED_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(MROUTED_CAT) $(DL_DIR)/$(MROUTED_PATCH) | patch -p1 -d $(MROUTED_DIR)
 	toolchain/patch-kernel.sh $(MROUTED_DIR) package/mrouted/ mrouted-\*.patch

@@ -51,7 +51,7 @@ $(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer:	$(BOA_WORKDIR)/Makefile
 	rm -f $@
 	$(MAKE) -C $(BOA_WORKDIR)
 
-$(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer
+$(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer
 	mkdir -p $(TARGET_DIR)/usr/sbin
 	cp -f $(BOA_WORKDIR)/src/boa $(TARGET_DIR)/usr/sbin/boa
 	mkdir -p $(TARGET_DIR)/usr/lib/boa

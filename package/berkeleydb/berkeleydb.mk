@@ -6,7 +6,7 @@
 DB_SITE:=ftp://sleepycat1.inetu.net/releases/
 DB_SOURCE:=db-4.2.52.NC.tar.gz
 DB_DIR:=$(BUILD_DIR)/db-4.2.52.NC
-
+DB_SHARLIB:=libdb-4.2.so
 
 $(DL_DIR)/$(DB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DB_SITE)/$(DB_SOURCE)
@@ -46,10 +46,10 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 	$(SED) 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
 	touch  $(DB_DIR)/.configured
 
-$(DB_DIR)/build_unix/.libs/libdb-4.1.so: $(DB_DIR)/.configured
+$(DB_DIR)/build_unix/.libs/$(DB_SHARLIB): $(DB_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(DB_DIR)/build_unix
 
-$(STAGING_DIR)/lib/libdb-4.1.so: $(DB_DIR)/build_unix/.libs/libdb-4.1.so
+$(STAGING_DIR)/lib/$(DB_SHARLIB): $(DB_DIR)/build_unix/.libs/$(DB_SHARLIB)
 	$(MAKE) \
 	    prefix=$(STAGING_DIR) \
 	    exec_prefix=$(STAGING_DIR) \
@@ -69,11 +69,11 @@ $(STAGING_DIR)/lib/libdb-4.1.so: $(DB_DIR)/build_unix/.libs/libdb-4.1.so
 	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/info \
 		$(STAGING_DIR)/man $(STAGING_DIR)/share/doc
 
-$(TARGET_DIR)/lib/libdb-4.1.so: $(STAGING_DIR)/lib/libdb-4.1.so
+$(TARGET_DIR)/lib/$(DB_SHARLIB): $(STAGING_DIR)/lib/$(DB_SHARLIB)
 	rm -rf $(TARGET_DIR)/lib/libdb*
 	cp -a $(STAGING_DIR)/lib/libdb*so*  $(TARGET_DIR)/lib/
 	rm -f $(TARGET_DIR)/lib/libdb.so $(TARGET_DIR)/lib/libdb.la $(TARGET_DIR)/lib/libdb.a
-	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libdb-4.1.so libdb.so)
+	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/$(DB_SHARLIB) libdb.so)
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libdb*so*
 
 $(TARGET_DIR)/usr/lib/libdb.a: $(STAGING_DIR)/lib/libdb-4.1.a
@@ -84,11 +84,11 @@ $(TARGET_DIR)/usr/lib/libdb.a: $(STAGING_DIR)/lib/libdb-4.1.a
 
 berkeleydb-headers: $(TARGET_DIR)/usr/lib/libdb.a
 
-berkeleydb-clean: 
+berkeleydb-clean:
 	$(MAKE) -C $(DB_DIR)/build_unix clean
 
-berkeleydb-dirclean: 
-	rm -rf $(DB_DIR) 
+berkeleydb-dirclean:
+	rm -rf $(DB_DIR)
 
-berkeleydb: uclibc $(TARGET_DIR)/lib/libdb-4.1.so
+berkeleydb: uclibc $(TARGET_DIR)/lib/$(DB_SHARLIB)
 

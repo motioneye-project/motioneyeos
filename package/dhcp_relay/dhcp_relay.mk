@@ -3,10 +3,10 @@
 # dhcp_relay
 #
 #############################################################
-DHCP_RELAY_SOURCE:=dhcp-3.0pl2.tar.gz
+DHCP_RELAY_SOURCE:=dhcp-3.0.1.tar.gz
 DHCP_RELAY_SITE:=ftp://ftp.isc.org/isc/dhcp
 DHCP_RELAY_CAT:=zcat
-DHCP_RELAY_DIR:=$(BUILD_DIR)/dhcp-3.0pl2
+DHCP_RELAY_DIR:=$(BUILD_DIR)/dhcp-3.0.1
 DHCP_RELAY_BINARY:=work.linux-2.2/relay/dhcrelay
 DHCP_RELAY_TARGET_BINARY:=usr/sbin/dhcrelay
 BVARS=PREDEFINES='-D_PATH_DHCPD_DB=\"/var/lib/dhcp/dhcpd.leases\" \

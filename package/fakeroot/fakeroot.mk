@@ -3,10 +3,10 @@
 # fakeroot
 #
 #############################################################
-FAKEROOT_SOURCE:=fakeroot_0.7.5.tar.gz
+FAKEROOT_SOURCE:=fakeroot_1.1.2.tar.gz
 FAKEROOT_SITE:=http://ftp.debian.org/debian/pool/main/f/fakeroot
 FAKEROOT_CAT:=zcat
-FAKEROOT_DIR:=$(BUILD_DIR)/fakeroot-0.7.5
+FAKEROOT_DIR:=$(BUILD_DIR)/fakeroot-1.1.2
 
 
 $(DL_DIR)/$(FAKEROOT_SOURCE):
@@ -18,7 +18,7 @@ $(FAKEROOT_DIR)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
 	$(FAKEROOT_CAT) $(DL_DIR)/$(FAKEROOT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	# If using busybox getopt, make it be quiet.
 	$(SED) "s,getopt --version,getopt --version 2>/dev/null," \
-		$(FAKEROOT_DIR)/scripts/fakeroot
+		$(FAKEROOT_DIR)/scripts/fakeroot.in
 	touch $(FAKEROOT_DIR)/.unpacked
 
 $(FAKEROOT_DIR)/.configured: $(FAKEROOT_DIR)/.unpacked

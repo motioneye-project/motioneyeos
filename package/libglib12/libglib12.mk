@@ -8,7 +8,6 @@ LIBGLIB12_SITE:=ftp://ftp.gtk.org/pub/gtk/v1.2
 LIBGLIB12_CAT:=zcat
 LIBGLIB12_DIR:=$(BUILD_DIR)/glib-1.2.10
 LIBGLIB12_BINARY:=libglib.a
-LIBGLIB12_PATCH:=libglib_configure_1.2.10.bz2
 
 
 $(DL_DIR)/$(LIBGLIB12_SOURCE):
@@ -18,7 +17,7 @@ libglib12-source: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 
 $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 	$(LIBGLIB12_CAT) $(DL_DIR)/$(LIBGLIB12_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LIBGLIB12_DIR) package/libglib12/ $(LIBGLIB12_PATCH)
+	toolchain/patch-kernel.sh $(LIBGLIB12_DIR) package/libglib12/ *-patch*
 	touch $(LIBGLIB12_DIR)/.unpacked
 
 $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
