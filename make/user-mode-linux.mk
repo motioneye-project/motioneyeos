@@ -9,8 +9,8 @@ LINUX_VERSION=2.4.20
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(LINUX_VERSION).tar.bz2
 LINUX_SITE=http://ftp.us.kernel.org/pub/linux/kernel/v2.4
-LINUX_PATCH_1:=uml-patch-$(LINUX_VERSION)-5.bz2
-LINUX_PATCH_1_SITE:=http://telia.dl.sourceforge.net/sourceforge/user-mode-linux
+LINUX_PATCH_1:=uml-patch-$(LINUX_VERSION)-6.bz2
+LINUX_PATCH_1_SITE:=http://aleron.dl.sourceforge.net/sourceforge/user-mode-linux
 LINUX_KCONFIG=$(SOURCE_DIR)/linux-uml.config
 LINUX_KERNEL=$(BASE_DIR)/UMlinux
 # Used by pcmcia-cs and others

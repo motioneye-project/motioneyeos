@@ -4,7 +4,7 @@
 #
 #############################################################
 HOTPLUG_SOURCE=diethotplug-0.4.tar.gz
-HOTPLUG_SITE=http://telia.dl.sourceforge.net/sourceforge/linux-hotplug
+HOTPLUG_SITE=http://aleron.dl.sourceforge.net/sourceforge/linux-hotplug
 HOTPLUG_DIR=$(BUILD_DIR)/diethotplug-0.4
 HOTPLUG_PATCH=$(SOURCE_DIR)/hotplug.patch
 

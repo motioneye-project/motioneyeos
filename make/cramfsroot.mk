@@ -5,7 +5,7 @@
 #############################################################
 CRAMFS_DIR=$(BUILD_DIR)/cramfs-1.1
 CRAMFS_SOURCE=cramfs-1.1.tar.gz
-CRAMFS_SITE=http://telia.dl.sourceforge.net/sourceforge/cramfs
+CRAMFS_SITE=http://aleron.dl.sourceforge.net/sourceforge/cramfs
 CRAMFS_PATCH=$(SOURCE_DIR)/cramfs.patch
 
 $(DL_DIR)/$(CRAMFS_SOURCE):

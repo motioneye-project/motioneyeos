@@ -4,7 +4,7 @@
 #
 #############################################################
 MKE2FS_SOURCE=e2fsprogs-1.27.tar.gz
-MKE2FS_SITE=http://telia.dl.sourceforge.net/sourceforge/e2fsprogs
+MKE2FS_SITE=http://aleron.dl.sourceforge.net/sourceforge/e2fsprogs
 MKE2FS_DIR=$(BUILD_DIR)/e2fsprogs-1.27
 MKE2FS_CAT:=zcat
 MKE2FS_BINARY:=misc/mke2fs

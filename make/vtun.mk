@@ -7,7 +7,7 @@
 #
 #############################################################
 VTUN_SOURCE:=vtun-2.6.tar.gz
-VTUN_SITE:=http://unc.dl.sourceforge.net/sourceforge/vtun/
+VTUN_SITE:=http://aleron.dl.sourceforge.net/sourceforge/vtun/
 VTUN_DIR:=$(BUILD_DIR)/vtun-2.6
 VTUN_CAT:=zcat
 VTUN_BINARY:=vtund

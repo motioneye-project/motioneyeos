@@ -22,7 +22,7 @@
 # USA
 
 PCMCIA_SOURCE:=pcmcia-cs-3.2.4.tar.gz
-PCMCIA_SITE:=http://telia.dl.sourceforge.net/sourceforge/pcmcia-cs
+PCMCIA_SITE:=http://aleron.dl.sourceforge.net/sourceforge/pcmcia-cs
 PCMCIA_DIR:=$(BUILD_DIR)/pcmcia-cs-3.2.4
 PCMCIA_PATCH:=$(SOURCE_DIR)/pcmcia.patch
 PCMCIA_CAT:=zcat
