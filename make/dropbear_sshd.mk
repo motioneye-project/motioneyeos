@@ -3,9 +3,9 @@
 # dropbear_sshd
 #
 #############################################################
-DROPBEAR_SSHD_SOURCE:=dropbear-0.38.tar.bz2
+DROPBEAR_SSHD_SOURCE:=dropbear-0.39.tar.bz2
 DROPBEAR_SSHD_SITE:=http://matt.ucc.asn.au/dropbear/releases/
-DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.38
+DROPBEAR_SSHD_DIR:=$(BUILD_DIR)/dropbear-0.39
 DROPBEAR_SSHD_CAT:=bzcat
 DROPBEAR_SSHD_BINARY:=dropbear
 DROPBEAR_SSHD_TARGET_BINARY:=usr/sbin/dropbear
