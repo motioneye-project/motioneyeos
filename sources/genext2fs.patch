@@ -1,0 +1,800 @@
+diff -urN genext2fs-1.3.orig/Makefile genext2fs/Makefile
+--- genext2fs-1.3.orig/Makefile	Wed Dec 31 17:00:00 1969
++++ genext2fs/Makefile	Fri Sep 28 15:48:58 2001
+@@ -0,0 +1,19 @@
++CC=gcc
++CFLAGS=-Wall -O2
++
++SRC=genext2fs.c
++OBJS=$(patsubst %.c,%.o, $(SRC))
++
++
++all: genext2fs
++
++genext2fs: $(OBJS)
++	$(CC) $(CFLAGS) -o $@ $(OBJS) -o $@
++
++$(OBJS): %.o : %.c
++	$(CC) $(CFLAGS) -c $< -o $@
++
++$(OBJS): Makefile
++
++clean:
++	rm -f *.o *.a core genext2fs
+diff -urN genext2fs-1.3.orig/dev.txt genext2fs/dev.txt
+--- genext2fs-1.3.orig/dev.txt	Thu Sep 28 09:03:19 2000
++++ genext2fs/dev.txt	Wed Dec 31 17:00:00 1969
+@@ -1,94 +0,0 @@
+-drwx		/dev
+-crw-	10,190	/dev/lcd
+-crw-	10,191	/dev/splc781
+-crw-	4,0	/dev/console
+-crw-	5,64	/dev/cua0
+-crw-	5,65	/dev/cua1
+-crw-	5,66	/dev/cua2
+-crw-	5,70	/dev/cua6
+-crw-	5,71	/dev/cua7
+-crw-	5,72	/dev/cua8
+-crw-	5,73	/dev/cua9
+-crw-	29,0	/dev/fb0
+-crw-	29,32	/dev/fb1
+-crw-	1,2	/dev/kmem
+-crw-	1,1	/dev/mem
+-crw-	1,3	/dev/null
+-crw-	2,2	/dev/ptyp2
+-crw-	2,3	/dev/ptyp3
+-crw-	2,5	/dev/ptyp5
+-crw-	2,4	/dev/ptyp4
+-crw-	10,178	/dev/triokb
+-crw-	2,0	/dev/ptyp0
+-crw-	2,6	/dev/ptyp6
+-crw-	2,7	/dev/ptyp7
+-crw-	2,8	/dev/ptyp8
+-crw-	2,9	/dev/ptyp9
+-crw-	2,10	/dev/ptypa
+-crw-	2,11	/dev/ptypb
+-crw-	2,12	/dev/ptypc
+-crw-	2,13	/dev/ptypd
+-crw-	2,14	/dev/ptype
+-crw-	2,15	/dev/ptypf
+-brw-	1,0	/dev/ram0
+-brw-	1,1	/dev/ram1
+-brw-	1,2	/dev/ram2
+-brw-	1,3	/dev/ram3
+-br--	31,0	/dev/rom0
+-brw-	31,1	/dev/rom1
+-brw-	31,2	/dev/rom2
+-brw-	31,3	/dev/rom3
+-crw-	5,0	/dev/tty
+-crw-	4,0	/dev/tty0
+-crwx	4,1	/dev/tty1
+-crwx	4,2	/dev/tty2
+-crwx	4,3	/dev/tty3
+-crwx	4,4	/dev/tty4
+-crw-	4,5	/dev/tty5
+-crwx	4,6	/dev/tty6
+-crw-	4,7	/dev/tty7
+-crw-	4,8	/dev/tty8
+-crw-	4,9	/dev/tty9
+-crw-	4,64	/dev/ttyS0
+-crw-	4,65	/dev/ttyS1
+-crw-	4,66	/dev/ttyS2
+-crw-	4,67	/dev/ttyS3
+-crw-	4,68	/dev/ttyS4
+-crw-	4,69	/dev/ttyS5
+-crw-	4,70	/dev/ttyS6
+-crw-	4,71	/dev/ttyS7
+-crw-	4,72	/dev/ttyS8
+-crw-	4,73	/dev/ttyS9
+-crw-	3,0	/dev/ttyp0
+-crw-	3,1	/dev/ttyp1
+-crw-	3,2	/dev/ttyp2
+-crw-	3,3	/dev/ttyp3
+-crw-	3,4	/dev/ttyp4
+-crw-	3,5	/dev/ttyp5
+-crw-	3,6	/dev/ttyp6
+-crw-	3,7	/dev/ttyp7
+-crw-	3,8	/dev/ttyp8
+-crw-	3,9	/dev/ttyp9
+-crw-	3,10	/dev/ttypa
+-crw-	3,11	/dev/ttypb
+-crw-	3,12	/dev/ttypc
+-crw-	3,13	/dev/ttypd
+-crw-	3,14	/dev/ttype
+-crw-	3,15	/dev/ttypf
+-crw-	1,5	/dev/zero
+-crwx	10,111	/dev/dtedrv
+-crwx	4,110	/dev/ttyM
+-crw-	77,1	/dev/tssnd
+-crw-	77,2	/dev/tstone
+-crw-	2,1	/dev/ptyp1
+-crwx	10,180	/dev/triohook
+-crw-	90,0	/dev/mtd0
+-brw-	44,0	/dev/ftl0
+-crw-	10,175	/dev/tporta
+-crw-	10,176	/dev/tportb
+-crwx	10,100	/dev/softmodem
+-crwx	10,101	/dev/softmodem_signals
+-crwx	10,181	/dev/triovoice
+-crw-	5,67	/dev/cua3
+-crw-	5,68	/dev/cua4
+-crw-	5,69	/dev/cua5
+diff -urN genext2fs-1.3.orig/device_table.txt genext2fs/device_table.txt
+--- genext2fs-1.3.orig/device_table.txt	Wed Dec 31 17:00:00 1969
++++ genext2fs/device_table.txt	Fri Mar 15 02:14:39 2002
+@@ -0,0 +1,78 @@
++# device list table
++#<name>		<type>	<mode>	<uid>	<gid>	<major>	<minor>	<start>	<inc>	<count>
++/dev		d	755	0	0	-	-	-	-	-
++#
++# Normal stuff
++/dev/mem	c	640	0	0	1	1	0	0	-
++/dev/kmem	c	640	0	0	1	2	0	0	-
++/dev/null	c	640	0	0	1	3	0	0	-
++/dev/zero	c	640	0	0	1	5	0	0	-
++/dev/random	c	640	0	0	1	8	0	0	-
++/dev/urandom	c	640	0	0	1	9	0	0	-
++/dev/tty	c	640	0	0	5	0	0	0	-
++/dev/tty	c	640	0	0	4	0	0	1	6
++/dev/console	c	640	0	0	5	1	0	0	-
++/dev/ram	b	640	0	0	1	1	0	0	-
++/dev/ram	b	640	0	0	1	0	0	1	4
++/dev/loop	b	640	0	0	7	0	0	1	2
++#/dev/ttyS	c	640	0	0	4	64	0	1	4
++#/dev/psaux	c	640	0	0	10	1	0	0	-
++#/dev/rtc	c	640	0	0	10	135	0	0	-
++#/dev/fd	b	640	0	0	2	0	0	0	1
++#
++# Raid device directories
++#/dev/cciss	d	755	0	0	-	-	-	-	-
++#/dev/ida	d	755	0	0	-	-	-	-	-
++#/dev/rd		d	755	0	0	-	-	-	-	-
++#
++# IDE Devices
++/dev/hda	b	640	0	0	3	0	0	0	-
++/dev/hda	b	640	0	0	3	1	1	1	15
++/dev/hdb	b	640	0	0	3	64	0	0	-
++/dev/hdb	b	640	0	0	3	65	1	1	15
++/dev/hdc	b	640	0	0	22	0	0	0	-
++/dev/hdc	b	640	0	0	22	1	1	1	15
++/dev/hdd	b	640	0	0	22	64	0	0	-
++/dev/hdd	b	640	0	0	22	65	1	1	15
++#/dev/hde	b	640	0	0	33	0	0	0	-
++#/dev/hde	b	640	0	0	33	1	1	1	15
++#/dev/hdf	b	640	0	0	33	64	0	0	-
++#/dev/hdf	b	640	0	0	33	65	1	1	15
++#/dev/hdg	b	640	0	0	34	0	0	0	-
++#/dev/hdg	b	640	0	0	34	1	1	1	15
++#/dev/hdh	b	640	0	0	34	64	0	0	-
++#/dev/hdh	b	640	0	0	34	65	1	1	15
++# SCSI Devices
++#/dev/sda	b	640	0	0	8	0	0	0	-
++#/dev/sda	b	640	0	0	8	1	1	1	15
++#/dev/sdb	b	640	0	0	8	16	0	0	-
++#/dev/sdb	b	640	0	0	8	17	1	1	15
++#/dev/sdc	b	640	0	0	8	32	0	0	-
++#/dev/sdc	b	640	0	0	8	33	1	1	15
++#/dev/sdd	b	640	0	0	8	48	0	0	-
++#/dev/sdd	b	640	0	0	8	49	1	1	15
++#/dev/sde	b	640	0	0	8	64	0	0	-
++#/dev/sde	b	640	0	0	8	65	1	1	15
++#/dev/sdf	b	640	0	0	8	80	0	0	-
++#/dev/sdf	b	640	0	0	8	81	1	1	15
++#/dev/sdg	b	640	0	0	8	96	0	0	-
++#/dev/sdg	b	640	0	0	8	97	1	1	15
++#/dev/sdh	b	640	0	0	8	112	0	0	-
++#/dev/sdh	b	640	0	0	8	113	1	1	15
++#/dev/sg		c	640	0	0	21	0	0	1	15
++#/dev/scd	b	640	0	0	11	0	0	1	15
++#/dev/st		c	640	0	0	9	0	0	1	15
++# All the proprietary cdrom devices in the world
++#/dev/aztcd	b	640	0	0	29	0	0	0	-
++#/dev/bpcd	b	640	0	0	41	0	0	0	-
++#/dev/capi20	c	640	0	0	68	0	0	1	2
++#/dev/cdu31a	b	640	0	0	15	0	0	0	-
++#/dev/cdu535	b	640	0	0	24	0	0	0	-
++#/dev/cm206cd	b	640	0	0	32	0	0	0	-
++#/dev/sjcd	b	640	0	0	18	0	0	0	-
++#/dev/sonycd	b	640	0	0	15	0	0	0	-
++#/dev/gscd	b	640	0	0	16	0	0	0	-
++#/dev/sbpcd	b	640	0	0	25	0	0	0	-
++#/dev/sbpcd	b	640	0	0	25	0	0	1	4
++#/dev/mcd	b	640	0	0	23	0	0	0	-
++#/dev/optcd	b	640	0	0	17	0	0	0	-
+diff -urN genext2fs-1.3.orig/genext2fs.c genext2fs/genext2fs.c
+--- genext2fs-1.3.orig/genext2fs.c	Fri Mar 15 02:26:01 2002
++++ genext2fs/genext2fs.c	Fri Mar 15 02:25:46 2002
+@@ -26,6 +26,10 @@
+ // 			Bugfix: getcwd values for Solaris	xavier.gueguen@col.bsf.alcatel.fr
+ // 			Bugfix: ANSI scanf for non-GNU C	xavier.gueguen@col.bsf.alcatel.fr
+ // 	28 Jun 2001	Bugfix: getcwd differs for Solaris/GNU	mike@sowbug.com
++// 	19 Jun 2001	Erik Andersen <andersee@debian.org> added 
++// 	                    the -n (nosquash) option.
++// 	03 Mar 2002	Erik Andersen <andersee@debian.org> added 
++// 	                    mkfs.jffs2 compatible device table support
+ 
+ 
+ // `genext2fs' is a mean to generate an ext2 filesystem
+@@ -33,10 +37,6 @@
+ // the image file to copy files on it. It doesn't even require
+ // you to be the superuser to make device nodes.
+ //
+-// Warning ! `genext2fs' has been designed for embedded
+-// systems. As such, it will generate a filesystem for single-user
+-// usage: all files/directories/etc... will belong to UID/GID 0
+-//
+ // Example usage:
+ //
+ // # genext2fs -b 1440 -d srcdir /dev/fd0
+@@ -45,28 +45,24 @@
+ // a new ext2 filesystem image. You can then mount the floppy as
+ // usual.
+ //
+-// # genext2fs -b 1024 -d builddir -f devices.txt flashdisk.img
++// # genext2fs -b 1024 -d builddir -D device_table.txt flashdisk.img
+ //
+ // This one would build a filesystem from all the files in builddir,
+-// then would read a devices list and make apropriate nodes. The
+-// format for the device list is:
+-//
+-// drwx            /dev
+-// crw-    10,190  /dev/lcd
+-// brw-    1,0     /dev/ram0
+-// 
+-// This device list builds the /dev directory, a character device
+-// node /dev/lcd (major 10, minor 190) and a block device node
+-// /dev/ram0 (major 1, minor 0)
+-
++// then would read a devices table  and make apropriate nodes. The
++// format for the device list is illustrared in the device_table.txt
++// file which in included with the source
+ 
++#define _GNU_SOURCE
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <dirent.h>
+ #include <stdarg.h>
++#include <time.h>
+ #include <unistd.h>
+ #include <sys/stat.h>
++#include <ctype.h>
++#include <fcntl.h>
+ 
+ 
+ 
+@@ -390,6 +386,7 @@
+ #undef utdecl32
+ 
+ char * argv0;
++int nosquash = 0;
+ 
+ // error (un)handling
+ inline void errexit(const char *fmt, ...)
+@@ -663,14 +660,27 @@
+ }
+ 
+ // link an entry (inode #) to a directory
+-void add2dir(filesystem *fs, uint32 dnod, uint32 nod, const char* name)
++void add2dir(filesystem *fs, uint32 dnod, uint32 nod, const char* name, uint32 mode, uid_t uid, gid_t gid, time_t ctime)
+ {
+ 	blockwalker bw;
+ 	uint32 bk;
+ 	uint8 *b;
+ 	directory *d;
+ 	int reclen, nlen;
+-	if((get_nod(fs, dnod)->i_mode & FM_IFMT) != FM_IFDIR)
++	inode *node;
++	inode *pnode;
++
++	if (nosquash == 0) {
++	    /* Ok, squash everything */
++	    uid = 0;
++	    gid = 0;
++	    if(!S_ISDIR(mode))
++		mode &= ~(S_IWGRP | S_IWOTH); 
++	    mode &= ~(S_ISUID | S_ISGID); 
++	}
++	pnode = get_nod(fs, dnod);
++
++	if(!S_ISDIR(pnode->i_mode))
+ 		errexit("can't add '%s' to a non-directory", name);
+ 	if(!*name)
+ 		errexit("bad name '%s' (not meaningful)", name);
+@@ -691,9 +701,16 @@
+ 			if((!d->d_inode) && (d->d_rec_len >= reclen))
+ 			{
+ 				d->d_inode = nod;
+-				get_nod(fs, nod)->i_links_count++;
++				node = get_nod(fs, nod);
++				node->i_links_count++;
+ 				d->d_name_len = nlen;
+ 				strncpy(d->d_name, name, nlen);
++				node->i_mode = mode;
++				node->i_uid = uid;
++				node->i_gid = gid;
++				node->i_atime = ctime;
++				node->i_ctime = ctime;
++				node->i_mtime = ctime;
+ 				return;
+ 			}
+ 			// if entry with enough room (last one?), shrink it & use it
+@@ -705,9 +722,16 @@
+ 				d = (directory*) (((int8*)d) + d->d_rec_len);
+ 				d->d_rec_len = reclen;
+ 				d->d_inode = nod;
+-				get_nod(fs, nod)->i_links_count++;
++				node = get_nod(fs, nod);
++				node->i_links_count++;
+ 				d->d_name_len = nlen;
+ 				strncpy(d->d_name, name, nlen);
++				node->i_mode = mode;
++				node->i_uid = uid;
++				node->i_gid = gid;
++				node->i_atime = ctime;
++				node->i_ctime = ctime;
++				node->i_mtime = ctime;
+ 				return;
+ 			}
+ 		}
+@@ -716,10 +740,17 @@
+ 	b = get_workblk();
+ 	d = (directory*)b;
+ 	d->d_inode = nod;
+-	get_nod(fs, nod)->i_links_count++;
++	node = get_nod(fs, nod);
++	node->i_links_count++;
+ 	d->d_rec_len = BLOCKSIZE;
+ 	d->d_name_len = nlen;
+ 	strncpy(d->d_name, name, nlen);
++	node->i_mode = mode;
++	node->i_uid = uid;
++	node->i_gid = gid;
++	node->i_atime = ctime;
++	node->i_ctime = ctime;
++	node->i_mtime = ctime;
+ 	extend_blk(fs, dnod, b, 1);
+ 	get_nod(fs, dnod)->i_size += BLOCKSIZE;
+ 	free_workblk(b);
+@@ -770,27 +801,29 @@
+ }
+ 
+ // make a full-fledged directory (i.e. with "." & "..")
+-uint32 mkdir_fs(filesystem *fs, uint32 parent_nod, const char *name, uint32 mode)
++uint32 mkdir_fs(filesystem *fs, uint32 parent_nod, const char *name, uint32 mode, uid_t uid, gid_t gid, time_t ctime)
+ {
+ 	uint32 nod;
+ 	if((nod = find_dir(fs, parent_nod, name)))
+ 		return nod;
+        	nod = alloc_nod(fs);
+-	get_nod(fs, nod)->i_mode = FM_IFDIR | mode;
+-	add2dir(fs, parent_nod, nod, name);
+-	add2dir(fs, nod, nod, ".");
+-	add2dir(fs, nod, parent_nod, "..");
++	if (!(mode & FM_IFDIR))
++	    mode |= FM_IFDIR;
++	add2dir(fs, parent_nod, nod, name, mode, uid, gid, ctime);
++	add2dir(fs, nod, nod, ".", mode, uid, gid, ctime);
++	add2dir(fs, nod, parent_nod, "..", mode, uid, gid, ctime);
+ 	fs->gd.bg_used_dirs_count++;
+ 	return nod;
+ }
+ 
+ // make a symlink
+-uint32 mklink_fs(filesystem *fs, uint32 parent_nod, const char *name, size_t size, uint8 * b)
++uint32 mklink_fs(filesystem *fs, uint32 parent_nod, const char *name, size_t size, uint8 * b, uid_t uid, gid_t gid, time_t ctime)
+ {
++	uint32 mode;
+ 	uint32 nod = alloc_nod(fs);
+-	get_nod(fs, nod)->i_mode = FM_IFLNK | FM_IRWXU | FM_IRWXG | FM_IRWXO;
++	mode = FM_IFLNK | FM_IRWXU | FM_IRWXG | FM_IRWXO; 
+ 	get_nod(fs, nod)->i_size = size;
+-	add2dir(fs, parent_nod, nod, name);
++	add2dir(fs, parent_nod, nod, name, mode, uid, gid, ctime);
+ 	if(size <= 4 * (EXT2_TIND_BLOCK+1))
+ 	{
+ 		strncpy((char*)get_nod(fs, nod)->i_block, (char*)b, size);
+@@ -801,13 +834,13 @@
+ }
+ 
+ // make a file from a FILE*
+-uint32 mkfile_fs(filesystem *fs, uint32 parent_nod, const char *name, uint32 mode, size_t size, FILE *f)
++uint32 mkfile_fs(filesystem *fs, uint32 parent_nod, const char *name, uint32 mode, size_t size, FILE *f, uid_t uid, gid_t gid, time_t ctime)
+ {
+ 	uint8 * b;
+ 	uint32 nod = alloc_nod(fs);
+-	get_nod(fs, nod)->i_mode = FM_IFREG | mode;
++	mode |= FM_IFREG;
+ 	get_nod(fs, nod)->i_size = size;
+-	add2dir(fs, parent_nod, nod, name);
++	add2dir(fs, parent_nod, nod, name, mode, uid, gid, ctime);
+ 	if(!(b = (uint8*)malloc(rndup(size, BLOCKSIZE))))
+ 		errexit("not enough mem to read file '%s'", name);
+ 	memset(b, 0,rndup(size, BLOCKSIZE));
+@@ -824,6 +857,8 @@
+ uint32 get_mode(struct stat *st)
+ {
+ 	uint32 mode = 0;
++	if (nosquash == 1)
++	    return st->st_mode;
+ 	if(st->st_mode & S_IRUSR)
+ 		mode |= FM_IRUSR | FM_IRGRP | FM_IROTH;
+ 	if(st->st_mode & S_IWUSR)
+@@ -833,19 +868,6 @@
+ 	return mode;
+ }
+ 
+-// retrieves a mode info from a string
+-uint32 get_modestr(const char *p)
+-{
+-	uint32 mode = 0;
+-	if(p[0] == 'r')
+-		mode |= FM_IRUSR | FM_IRGRP | FM_IROTH;
+-	if(p[1] == 'w')
+-		mode |= FM_IWUSR | FM_IWGRP | FM_IWOTH;
+-	if(p[2] == 'x' || p[2] == 's')
+-		mode |= FM_IXUSR | FM_IXGRP | FM_IXOTH;
+-	return mode;
+-}
+-
+ // basename of a path - free me
+ char * basename(const char * fullpath)
+ {
+@@ -864,66 +886,6 @@
+ 	return n;
+ }
+ 
+-// adds entries to the filesystem from a text file
+-void add2fs_from_file(filesystem *fs, uint32 this_nod, FILE * fh)
+-{
+-	uint32 mode;
+-	uint32 nod, nod2;
+-	char cmod[11], *path, *name, *dir;
+-	int major, minor;
+-	while(fscanf(fh, "%10s", cmod))
+-	{
+-		if(feof(fh))
+-			break;
+-		mode = get_modestr(cmod + 1);
+-		switch(*cmod)
+-		{
+-			case 'd':
+-				fscanf(fh, "%" SCANF_PREFIX "s\n", SCANF_STRING(path));
+-				break;
+-			case 'c':
+-				mode |= FM_IFCHR;
+-				fscanf(fh, "%i, %i %" SCANF_PREFIX "s\n", &major, &minor, SCANF_STRING(path));
+-				break;
+-			case 'b':
+-				mode |= FM_IFBLK;
+-				fscanf(fh, "%i, %i %" SCANF_PREFIX "s\n", &major, &minor, SCANF_STRING(path));
+-				break;
+-			case '#':
+-				while(fgetc(fh) != '\n');
+-				continue;
+-			default:
+-				errexit("malformed text input file");
+-		}
+-		name = basename(path);
+-		dir = dirname(path);
+-		free(path);
+-		if(!(nod = find_path(fs, this_nod, dir)))
+-			errexit("can't find directory '%s' to create '%s''", dir, name);
+-		free(dir);
+-		if((!strcmp(name, ".")) || (!strcmp(name, "..")))
+-		{
+-			free(name);
+-			continue;
+-		}
+-		switch(*cmod)
+-		{
+-			case 'd':
+-				mkdir_fs(fs, nod, name, mode);
+-				break;
+-			case 'c':
+-			case 'b':
+-				nod2 = alloc_nod(fs);
+-				get_nod(fs, nod2)->i_mode = mode;
+-				((uint8*)get_nod(fs, nod2)->i_block)[0] = minor;
+-				((uint8*)get_nod(fs, nod2)->i_block)[1] = major;
+-				add2dir(fs, nod, nod2, name);
+-				break;
+-		}
+-		free(name);
+-	}
+-}
+-
+ // adds a tree of entries to the filesystem from current dir
+ void add2fs_from_dir(filesystem *fs, uint32 this_nod)
+ {
+@@ -948,24 +910,24 @@
+ 				get_nod(fs, nod)->i_mode = (((st.st_mode & S_IFMT) == S_IFCHR) ? FM_IFCHR : FM_IFBLK) | get_mode(&st);
+ 				((uint8*)get_nod(fs, nod)->i_block)[0] = (st.st_rdev & 0xff);
+ 				((uint8*)get_nod(fs, nod)->i_block)[1] = (st.st_rdev >> 8);
+-				add2dir(fs, this_nod, nod, dent->d_name);
++				add2dir(fs, this_nod, nod, dent->d_name, st.st_mode, st.st_uid, st.st_gid, st.st_ctime);
+ 				break;
+ 			case S_IFLNK:
+ 				if(!(b = (uint8*)malloc(rndup(st.st_size, BLOCKSIZE))))
+ 					errexit("out of memory");
+ 				if(readlink(dent->d_name, (char*)b, st.st_size) < 0)
+ 					pexit(dent->d_name);
+-				mklink_fs(fs, this_nod, dent->d_name, st.st_size, b);
++				mklink_fs(fs, this_nod, dent->d_name, st.st_size, b, st.st_uid, st.st_gid, st.st_ctime);
+ 				free(b);
+ 				break;
+ 			case S_IFREG:
+ 				if(!(fh = fopen(dent->d_name, "r")))
+ 					pexit(dent->d_name);
+-				mkfile_fs(fs, this_nod, dent->d_name, get_mode(&st), st.st_size, fh);
++				mkfile_fs(fs, this_nod, dent->d_name, st.st_mode, st.st_size, fh, st.st_uid, st.st_gid, st.st_ctime);
+ 				fclose(fh);
+ 				break;
+ 			case S_IFDIR:
+-				nod = mkdir_fs(fs, this_nod, dent->d_name, get_mode(&st));
++				nod = mkdir_fs(fs, this_nod, dent->d_name, st.st_mode, st.st_uid, st.st_gid, st.st_ctime);
+ 				if(chdir(dent->d_name) < 0)
+ 					pexit(dent->d_name);
+ 				add2fs_from_dir(fs, nod);
+@@ -983,7 +945,7 @@
+ {
+ 	int i;
+ 	int nblk = nod->i_blocks / INOBLK;
+-	if((nod->i_size && !nblk) || (nod->i_mode & (FM_IFBLK | FM_IFCHR)))
++	if(nod->i_size && !nblk)
+ 		for(i = 0; i <= EXT2_TIND_BLOCK; i++)
+ 			nod->i_block[i] = swab32(nod->i_block[i]);
+ 	if(nblk <= EXT2_IND_BLOCK)
+@@ -1004,7 +966,7 @@
+ {
+ 	int i;
+ 	int nblk = nod->i_blocks / INOBLK;
+-	if((nod->i_size && !nblk) || (nod->i_mode & (FM_IFBLK | FM_IFCHR)))
++	if(nod->i_size && !nblk)
+ 		for(i = 0; i <= EXT2_TIND_BLOCK; i++)
+ 			nod->i_block[i] = swab32(nod->i_block[i]);
+ 	if(nblk <= EXT2_IND_BLOCK)
+@@ -1147,7 +1109,7 @@
+ 	// make lost+found directory and reserve blocks
+ 	if(fs->sb.s_r_blocks_count)
+ 	{
+-		nod = mkdir_fs(fs, EXT2_ROOT_INO, "lost+found", FM_IRWXU | FM_IRWXG | FM_IRWXO);
++		nod = mkdir_fs(fs, EXT2_ROOT_INO, "lost+found", S_IRWXU|S_IRGRP|S_IXGRP|S_IROTH|S_IXOTH, 0, 0, time(NULL));
+ 		memset(b, 0, BLOCKSIZE);
+ 		((directory*)b)->d_rec_len = BLOCKSIZE;
+ 		for(i = 1; i < fs->sb.s_r_blocks_count; i++)
+@@ -1472,6 +1434,150 @@
+ 		swap_badfs(fs);
+ }
+ 
++char *simple_ltoa(unsigned long i)
++{
++    /* 21 digits plus null terminator, good for 64-bit or smaller ints */
++    static char local[21];
++    char *p = local;
++    *p-- = '\0';
++    do {
++	*p-- = '0' + i % 10;
++	i /= 10;
++    } while (i > 0);
++    return p + 1;
++}
++
++//# device list table
++//# <path>	<type> <mode>	<uid>	<gid>	<major>	<minor>	<start>	<inc>	<count>
++///dev/mem	c	640	0	0	1	1	0	0	-
++static int interpret_table_entry(filesystem *fs, char *line)
++{
++	int status;
++	char type, *path;
++	uint32 nod, nod2;
++	char *name, *dir;
++	unsigned long uid=0, gid=0, mode=755;
++	unsigned long major=0, minor=0, start=0, increment=1, count=0;
++
++	status = sscanf(line, "%" SCANF_PREFIX "s %c %lo %lu %lu %lu %lu %lu %lu %lu", 
++		    SCANF_STRING(path), &type, &mode, &uid, &gid, &major, &minor, 
++		    &start, &increment, &count); 
++	if (status<0)
++		return status;
++	
++	name = basename(path);
++	dir = dirname(path);
++	free(path);
++	if(!(nod = find_path(fs, EXT2_ROOT_INO, dir)))
++		errexit("can't find directory '%s' to create '%s''", dir, name);
++	free(dir);
++	if((!strcmp(name, ".")) || (!strcmp(name, "..")))
++	{
++		free(name);
++		return 1;
++	}
++	
++	switch(type)
++	{
++		case 'd':
++			mkdir_fs(fs, nod, name, mode|FM_IFDIR, uid, gid, time(NULL));
++			break;
++		case 'c':
++		case 'b':
++			mode|= (type=='c')? FM_IFCHR : FM_IFBLK;
++			if (count > 0) {
++			    int i, last;
++			    char buf[80];
++			    last = start+(count*increment);
++			    for(i = start; i<last; i++) {
++				nod2 = alloc_nod(fs);
++				((uint8*)get_nod(fs, nod2)->i_block)[0] = minor+(i*increment-start);
++				((uint8*)get_nod(fs, nod2)->i_block)[1] = major;
++				strncpy(buf, name, sizeof(buf)-1);
++				strncat(buf, simple_ltoa(i*increment), sizeof(buf)-1);
++				buf[79]='\0';
++				//fprintf(stderr, "start=%ld, i=%d adding '%s'(%ld, %ld)\n", start, i, buf, major, minor+(i*increment-start));
++				add2dir(fs, nod, nod2, buf, mode, uid, gid, time(NULL));
++			    }
++			}
++			else {
++			    nod2 = alloc_nod(fs);
++			    ((uint8*)get_nod(fs, nod2)->i_block)[0] = minor;
++			    ((uint8*)get_nod(fs, nod2)->i_block)[1] = major;
++			    add2dir(fs, nod, nod2, name, mode, uid, gid, time(NULL));
++			}
++			break;
++		default:
++			fprintf(stderr,"%s: Type '%c' is not supported\n", path, type);
++
++	}
++	free(name);
++	return 0;
++}
++
++int parse_device_table(filesystem *fs, char *filename)
++{
++	FILE *file;
++	char *line;
++	int status = 0;
++	size_t length = 0;
++	struct stat statbuf;
++
++	if (!filename) {
++		fprintf(stderr, "No filename specified.\n");
++		return(1);
++	}
++	if (!(file = fopen(filename, "r"))) {
++		perror(filename);
++		return(1);
++	}
++	if (fstat(fileno(file), &statbuf) < 0) {
++		perror(filename);
++		return(1);
++	}
++
++	if (statbuf.st_size < 10) {
++		fprintf(stderr, "%s: not a proper device table file\n", filename);
++		return(1);
++	}
++
++	/* Looks ok so far.  The general plan now is to read in one
++	 * line at a time, check for leading comment delimiters ('#'),
++	 * then try and parse the line as a device table.  If we fail
++	 * to parse things, try and help the poor fool to fix their
++	 * device table with a useful error msg... */
++	line = NULL;
++	while (getline(&line, &length, file) != -1) {
++		/* First trim off any whitespace */
++		int len = strlen(line);
++		/* trim trailing whitespace */
++		while ( len > 0 && isspace(line[len-1]))
++		    line[--len]='\0';
++		/* trim leading whitespace */
++		memmove(line, &line[strspn(line, " \n\r\t\v")], len);
++
++		/* If this is NOT a comment line, try to interpret it */
++		if (length && *line!='#') {
++			if (interpret_table_entry(fs, line))
++				status=1;
++		}
++
++		free(line);
++		line = NULL;
++	}
++
++
++	return status;
++}
++
++/*
++Local Variables:
++c-file-style: "linux"
++c-basic-offset: 4
++tab-width: 4
++End:
++*/
++
+ void showhelp(void)
+ {
+ 	fprintf(stderr, "Usage: %s [options] image\n"
+@@ -1485,6 +1591,8 @@
+ 	"  -g path                 Generate a block map file for this path\n"
+ 	"  -e value                Fill unallocated blocks with value\n"
+ 	"  -z                      Make files with holes\n"
++	"  -n                      Do not squash permissions and owners.  By default everythig is\n"
++	"                              owned by root.  This perserves file permissions and owners.\n"
+ 	"  -v                      Print resulting filesystem structure\n"
+ 	"  -h                      Show this help\n\n"
+ 	"Example of spec file:\n"
+@@ -1520,22 +1628,21 @@
+ 	int bigendian = !*(char*)&endian;
+ 	filesystem *fs;
+ 	int i;
+-	int c;
++	char c;
++	char * devtable = NULL;
+ 
+ 	argv0 = argv[0];
+-	if(argc <= 1)
+-	{
+-		showhelp();
+-		exit(1);
+-	}
+-	while((c = getopt(argc, argv, "x:f:d:b:i:r:g:e:zvh")) != EOF)
++	while((c = getopt(argc, argv, "D:x:f:d:b:i:r:g:e:zvhn")) != EOF)
+ 		switch(c)
+ 		{
+ 			case 'x':
+ 				fsin = optarg;
+ 				break;
+-			case 'd':
++			case 'D':
+ 			case 'f':
++				devtable = optarg;
++				break;
++			case 'd':
+ 				dopt[didx++] = optarg;
+ 				break;
+ 			case 'b':
+@@ -1556,6 +1663,9 @@
+ 			case 'z':
+ 				holes = 1;
+ 				break;
++			case 'n':
++				nosquash = 1;
++				break;
+ 			case 'v':
+ 				verbose = 1;
+ 				break;
+@@ -1595,17 +1705,10 @@
+ 	for(i = 0; i < didx; i++)
+ 	{
+ 		struct stat st;
+-		FILE *fh;
+ 		char *pdir;
+ 		stat(dopt[i], &st);
+ 		switch(st.st_mode & S_IFMT)
+ 		{
+-			case S_IFREG:
+-				if(!(fh = fopen(dopt[i], "r")))
+-					pexit(dopt[i]);
+-				add2fs_from_file(fs, EXT2_ROOT_INO, fh);
+-				fclose(fh);
+-				break;
+ 			case S_IFDIR:
+ 				if(!(pdir = getcwd(0, GETCWD_SIZE)))
+ 					pexit(dopt[i]);
+@@ -1617,13 +1720,15 @@
+ 				free(pdir);
+ 				break;
+ 			default:
+-				errexit("%s in neither a file nor a directory", dopt[i]);
++				errexit("%s must be a directory", dopt[i]);
+ 		}
+ 	}
+ 	if(emptyval)
+ 		for(i = 1; i < fs->sb.s_blocks_count; i++)
+ 			if(!allocated(fs->bbm, i))
+ 				memset(get_blk(fs, i), emptyval, BLOCKSIZE);
++	if(devtable)
++	    parse_device_table(fs, devtable);
+ 	if(verbose)
+ 		print_fs(fs);
+ 	for(i = 0; i < gidx; i++)

@@ -1,8 +1,0 @@
-#!/bin/sh
-
-echo -n "Starting system log daemon: "
-# start syslogging
-/sbin/syslogd -m 0
-echo "ok"
-
-

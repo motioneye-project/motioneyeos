@@ -16,15 +16,17 @@
 # main rc script
 ::sysinit:/etc/init.d/rcS
 
-# main setup program
-::respawn:-/bin/sh
+# Set up a couple of getty's
+tty1::respawn:/sbin/getty 38400 tty1
+tty2::respawn:/sbin/getty 38400 tty2
 
-# convenience shell
-tty2::askfirst:-/bin/sh
+# Put a getty on the serial port
+#ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
 
-# set up stuff for logging
-null::sysinit:/bin/dmesg > /dev/tty4
+# Logging junk
+tty2::once:/bin/touch /var/log/messages
 tty3::respawn:/usr/bin/tail -f /var/log/messages
+tty4::once:/bin/dmesg
 tty4::respawn:/usr/bin/tail -f /proc/kmsg
 
 # Stuff to do for the 3-finger salute
