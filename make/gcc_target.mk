@@ -56,8 +56,9 @@ $(BINUTILS_DIR2)/.configured:
 		CC=$(TARGET_CROSS)gcc \
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
-		--exec-prefix=$(STAGING_DIR) \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
 		--libexecdir=/usr/lib \
@@ -169,15 +170,19 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks:
 	# Make certain the uClibc include files are found
 	#
 	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
-		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
+		/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
-		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
+		/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	mkdir -p $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.gcc_build_hacks
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
+	mkdir -p $(TARGET_DIR)/usr/lib/gcc-lib
+	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)
+	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
+	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
 	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH \
 		AS=$(TARGET_CROSS)as \
 		LD=$(TARGET_CROSS)ld \
@@ -189,20 +194,20 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		RANLIB=$(TARGET_CROSS)ranlib \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec-prefix=$(STAGING_DIR) \
-		--bindir=$(STAGING_DIR)/bin \
-		--sbindir=$(STAGING_DIR)/sbin \
-		--sysconfdir=$(STAGING_DIR)/etc \
-		--datadir=$(STAGING_DIR)/share \
-		--localstatedir=$(STAGING_DIR)/var \
-		--mandir=$(STAGING_DIR)/man \
-		--infodir=$(STAGING_DIR)/info \
-		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
-		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
-		--oldincludedir=$(STAGING_DIR)/include \
+		--host=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--with-local-prefix=/usr/local \
+		--libdir=/usr/lib \
+		--includedir=$(TARGET_DIR)/usr/include \
+		--with-gxx-include-dir=$(TARGET_DIR)/usr/include/c++ \
 		--enable-shared $(MULTILIB) \
 		--enable-target-optspace --disable-nls \
 		--with-gnu-ld --disable-__cxa_atexit \
@@ -220,46 +225,58 @@ $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	    NM=$(TARGET_CROSS)nm \
 	    CC=$(TARGET_CROSS)gcc \
 	    GCC=$(TARGET_CROSS)gcc \
-	    CXX=$(TARGET_CROSS)c++ \
+	    CXX=$(TARGET_CROSS)g++ \
 	    RANLIB=$(TARGET_CROSS)ranlib \
 	    $(MAKE) -C $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
+	PATH=$(STAGING_DIR)/bin:$$PATH \
+	    $(MAKE) \
+	    CC=$(TARGET_CROSS)gcc \
 	    AS=$(TARGET_CROSS)as \
 	    LD=$(TARGET_CROSS)ld \
 	    AR=$(TARGET_CROSS)ar \
 	    NM=$(TARGET_CROSS)nm \
 	    CC=$(TARGET_CROSS)gcc \
 	    GCC=$(TARGET_CROSS)gcc \
-	    CXX=$(TARGET_CROSS)c++ \
+	    CXX=$(TARGET_CROSS)g++ \
 	    RANLIB=$(TARGET_CROSS)ranlib \
-	    $(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
 	    sbindir=$(TARGET_DIR)/usr/sbin \
-	    libexecdir=$(TARGET_DIR)/usr/lib \
+	    libexecdir=$(TARGET_DIR)/usr/libexec \
 	    datadir=$(TARGET_DIR)/usr/share \
 	    sysconfdir=$(TARGET_DIR)/etc \
 	    sharedstatedir=$(TARGET_DIR)/usr/com \
 	    localstatedir=$(TARGET_DIR)/var \
 	    libdir=$(TARGET_DIR)/usr/lib \
+	    includedir=$(TARGET_DIR)/usr/include \
+	    oldincludedir=$(TARGET_DIR)/usr/include \
 	    infodir=$(TARGET_DIR)/usr/info \
 	    mandir=$(TARGET_DIR)/usr/man \
-	    toolexecdir=$(TARGET_DIR)/lib/gcc-lib/$(GNU_TARGET_NAME) \
-	    -C $(GCC_BUILD_DIR3) install;
-	-$(STRIP) $(TARGET_DIR)/bin/* 
-	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
+	    gxx_include_dir=$(TARGET_DIR)/usr/include/c++ \
+	    tooldir=$(TARGET_DIR)/usr/$(GNU_TARGET_NAME) \
+	    build_tooldir=$(TARGET_DIR)/usr/$(GNU_TARGET_NAME) \
+	    -C $(GCC_BUILD_DIR3)/gcc install;
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
+	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
+	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-cpp $(TARGET_DIR)/usr/bin/cpp
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-gcc $(TARGET_DIR)/usr/bin/gcc
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++ $(TARGET_DIR)/usr/bin/c++
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-g++ $(TARGET_DIR)/usr/bin/g++
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++filt $(TARGET_DIR)/usr/bin/c++filt
+	-$(STRIP) $(TARGET_DIR)/bin/* 
+	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	# gcc "fixincludes" step is totally broken and takes unwanted
+	# stuff from the host system.  Fix that here.
+	rm -rf $(TARGET_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/*
+	cp -a $(STAGING_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/* \
+		$(TARGET_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/
 	touch -c $(TARGET_DIR)/usr/bin/gcc
 
 gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
