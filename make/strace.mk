@@ -3,10 +3,10 @@
 # strace
 #
 #############################################################
-STRACE_SOURCE:=strace_4.4-1.tar.gz
-STRACE_SITE:=http://telia.dl.sourceforge.net/sourceforge/strace
-STRACE_CAT:=zcat
-STRACE_DIR:=$(BUILD_DIR)/strace-4.4
+STRACE_SOURCE:=strace-4.4.98.tar.bz2
+STRACE_SITE:=http://aleron.dl.sourceforge.net/sourceforge/strace
+STRACE_CAT:=bzcat
+STRACE_DIR:=$(BUILD_DIR)/strace-4.4.98
 
 
 $(DL_DIR)/$(STRACE_SOURCE):
