@@ -3,9 +3,9 @@
 # bison
 #
 #############################################################
-BISON_SOURCE:=bison-1.75.tar.bz2
+BISON_SOURCE:=bison-1.35.tar.bz2
 BISON_SITE:=ftp://ftp.gnu.org/gnu/bison
-BISON_DIR:=$(BUILD_DIR)/bison-1.75
+BISON_DIR:=$(BUILD_DIR)/bison-1.35
 BISON_CAT:=bzcat
 BISON_BINARY:=src/bison
 BISON_TARGET_BINARY:=usr/bin/bison
@@ -45,7 +45,7 @@ $(TARGET_DIR)/$(BISON_TARGET_BINARY): $(BISON_DIR)/$(BISON_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BISON_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	(cd $(TARGET_DIR)/usr/bin; ln -s bison yacc)
+	(cd $(TARGET_DIR)/usr/bin; ln -fs bison yacc)
 
 bison: uclibc $(TARGET_DIR)/$(BISON_TARGET_BINARY)
 
