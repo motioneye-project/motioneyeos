@@ -19,6 +19,7 @@ $(LINKS_DIR)/.unpacked: $(DL_DIR)/$(LINKS_SOURCE)
 $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 	(cd $(LINKS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
