@@ -2,7 +2,7 @@
 #
 # Linux kernel targets
 #
-# Note:  If you have any patched to apply, create the directory
+# Note:  If you have any patches to apply, create the directory
 # sources/kernel-patches and put your patches in there and number
 # them in the order you wish to apply them...  i.e.
 #
@@ -12,6 +12,7 @@
 #   sources/kernel-patches/030-lowlatency-mini.bz2
 #   sources/kernel-patches/031-lowlatency-fixes-5.bz2
 #   sources/kernel-patches/099-shutup.bz2
+#   etc...
 #
 # these patches will all be applied by the patch-kernel.sh
 # script (which will also abort the build if it finds rejects)

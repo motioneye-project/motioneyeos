@@ -7,10 +7,11 @@ ZLIB_SOURCE=zlib-1.1.4.tar.bz2
 ZLIB_SITE=http://telia.dl.sourceforge.net/sourceforge/libpng
 ZLIB_DIR=$(BUILD_DIR)/zlib-1.1.4
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-ZLIB_CFLAGS="-Os -g -fPIC -D_FILE_OFFSET_BITS=64 -D__USE_FILE_OFFSET64"
+ZLIB_CFLAGS="-Os -g -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64"
 else
-ZLIB_CFLAGS="-Os -g -fPIC"
+ZLIB_CFLAGS="-Os -g"
 endif
+ZLIB_CFLAGS+="-fPIC"
 
 $(DL_DIR)/$(ZLIB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
