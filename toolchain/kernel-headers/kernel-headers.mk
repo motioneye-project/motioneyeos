@@ -51,7 +51,7 @@ endif
 ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.9")
 VERSION:=2
 PATCHLEVEL:=6
-SUBLEVEL:=8
+SUBLEVEL:=9
 LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.9.1.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.9.1
