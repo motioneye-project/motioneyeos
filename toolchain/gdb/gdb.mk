@@ -7,14 +7,8 @@ GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
 #"
 
 GDB_SITE:=http://ftp.gnu.org/gnu/gdb
-
-ifeq ($(GDB_VERSION),5.3)
-GDB_SOURCE:=gdb-$(GDB_VERSION).tar.gz
-GDB_CAT:=zcat
-else
 GDB_SOURCE:=gdb-$(GDB_VERSION).tar.bz2
 GDB_CAT:=bzcat
-endif
 
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
 
@@ -27,11 +21,6 @@ $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 	# Copy a config.sub from gcc.  This is only necessary until
 	# gdb's config.sub supports <arch>-linux-uclibc tuples.
 	# Should probably integrate this into the patch.
-ifeq ($(GDB_VERSION),5.3)
-	chmod u+x $(GDB_DIR)/gdb/gdbserver/configure
-	cp $(GCC_DIR)/config.sub $(GDB_DIR)
-	cp $(GCC_DIR)/config.sub $(GDB_DIR)/readline/support/
-endif
 	touch  $(GDB_DIR)/.unpacked
 
 ######################################################################
