@@ -3,10 +3,11 @@
 # coreutils
 #
 #############################################################
-COREUTILS_SOURCE:=coreutils-5.0.tar.bz2
+COREUTILS_VER:=5.2.1
+COREUTILS_SOURCE:=coreutils-$(COREUTILS_VER).tar.bz2
 COREUTILS_SITE:=ftp://ftp.gnu.org/gnu/coreutils/
 COREUTILS_CAT:=bzcat
-COREUTILS_DIR:=$(BUILD_DIR)/coreutils-5.0
+COREUTILS_DIR:=$(BUILD_DIR)/coreutils-$(COREUTILS_VER)
 COREUTILS_BINARY:=src/vdir
 COREUTILS_TARGET_BINARY:=bin/vdir
 BIN_PROGS:=cat chgrp chmod chown cp date dd df dir echo false hostname \
