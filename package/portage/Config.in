@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PORTAGE
+	bool "portage"
+	default n
+	help
+	  Portage, the Gentoo package management tool.
+
+	  http://www.gentoo.org/
