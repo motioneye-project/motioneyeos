@@ -22,7 +22,7 @@ $(DL_DIR)/$(IPROUTE2_PATCH):
 
 iproute2-source: $(DL_DIR)/$(IPROUTE2_SOURCE) #$(DL_DIR)/$(IPROUTE2_PATCH)
 
-$(IPROUTE2_DIR)/.unpacked: iproute2-source
+$(IPROUTE2_DIR)/.unpacked: $(DL_DIR)/$(IPROUTE2_SOURCE) #$(DL_DIR)/$(IPROUTE2_PATCH)
 	rm -rf $(IPROUTE2_DIR).orig $(IPROUTE2_DIR)
 	zcat $(DL_DIR)/$(IPROUTE2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	#zcat $(DL_DIR)/$(IPROUTE2_PATCH) | patch -p1 -d $(IPROUTE2_DIR)
