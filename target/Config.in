@@ -5,5 +5,6 @@ source "target/ext2/Config.in"
 source "target/jffs2/Config.in"
 source "target/squashfs/Config.in"
 source "target/tar/Config.in"
+source "target/device/Config.in"
 
 endmenu

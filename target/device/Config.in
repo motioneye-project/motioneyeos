@@ -1,0 +1,5 @@
+menu "Board Support Options"
+
+source "target/device/generic/Config.in"
+
+endmenu
