@@ -7,11 +7,11 @@ ZLIB_SOURCE=zlib-1.1.4.tar.bz2
 ZLIB_SITE=http://telia.dl.sourceforge.net/sourceforge/libpng
 ZLIB_DIR=$(BUILD_DIR)/zlib-1.1.4
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-ZLIB_CFLAGS="-Os -g -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64"
+ZLIB_CFLAGS=-Os -g -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 else
-ZLIB_CFLAGS="-Os -g"
+ZLIB_CFLAGS=-Os -g
 endif
-ZLIB_CFLAGS+="-fPIC"
+ZLIB_CFLAGS+=-fPIC
 
 $(DL_DIR)/$(ZLIB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
@@ -22,7 +22,6 @@ $(ZLIB_DIR)/.source: $(DL_DIR)/$(ZLIB_SOURCE)
 
 $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source
 	(cd $(ZLIB_DIR); \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
 		./configure \
 		--shared \
 		--prefix=/usr \
@@ -33,28 +32,28 @@ $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source
 	touch $(ZLIB_DIR)/.configured;
 
 $(ZLIB_DIR)/libz.so.1.1.4: $(ZLIB_DIR)/.configured
-	$(MAKE) LDSHARED="$(TARGET_CROSS)gcc --shared" CFLAGS=$(ZLIB_CFLAGS) \
-		CC=$(TARGET_CC1) -C $(ZLIB_DIR) all libz.a;
+	$(MAKE) LDSHARED="$(TARGET_CROSS)ld -shared -soname,libz.so.1" \
+		CFLAGS="$(ZLIB_CFLAGS)" CC=$(TARGET_CC1) -C $(ZLIB_DIR) all libz.a;
 	touch -c $(ZLIB_DIR)/libz.so.1.1.4
 
 $(STAGING_DIR)/lib/libz.so.1.1.4: $(ZLIB_DIR)/libz.so.1.1.4
-	cp -a $(ZLIB_DIR)/libz.a $(STAGING_DIR)/lib;
-	cp -a $(ZLIB_DIR)/zlib.h $(STAGING_DIR)/include;
-	cp -a $(ZLIB_DIR)/zconf.h $(STAGING_DIR)/include;
-	cp -a $(ZLIB_DIR)/libz.so* $(STAGING_DIR)/lib;
+	cp -dpf $(ZLIB_DIR)/libz.a $(STAGING_DIR)/lib;
+	cp -dpf $(ZLIB_DIR)/zlib.h $(STAGING_DIR)/include;
+	cp -dpf $(ZLIB_DIR)/zconf.h $(STAGING_DIR)/include;
+	cp -dpf $(ZLIB_DIR)/libz.so* $(STAGING_DIR)/lib;
 	(cd $(STAGING_DIR)/lib; ln -fs libz.so.1.1.4 libz.so.1);
 	touch -c $(STAGING_DIR)/lib/libz.so.1.1.4
 
 $(TARGET_DIR)/lib/libz.so.1.1.4: $(STAGING_DIR)/lib/libz.so.1.1.4
-	cp -a $(STAGING_DIR)/lib/libz.so* $(TARGET_DIR)/lib;
+	cp -dpf $(STAGING_DIR)/lib/libz.so* $(TARGET_DIR)/lib;
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libz.so*
 	touch -c $(TARGET_DIR)/lib/libz.so.1.1.4
 
 $(TARGET_DIR)/usr/include/zlib.h: $(TARGET_DIR)/lib/libz.so.1.1.4
 	mkdir -p $(TARGET_DIR)/usr/include
-	cp -a $(STAGING_DIR)/include/zlib.h $(TARGET_DIR)/usr/include/
-	cp -a $(STAGING_DIR)/include/zconf.h $(TARGET_DIR)/usr/include/
-	cp -a $(STAGING_DIR)/lib/libz.a $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/include/zlib.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(STAGING_DIR)/include/zconf.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(STAGING_DIR)/lib/libz.a $(TARGET_DIR)/usr/lib/
 	touch -c $(TARGET_DIR)/usr/include/zlib.h
 
 zlib-headers: $(TARGET_DIR)/usr/include/zlib.h
