@@ -52,8 +52,8 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=ftp://www.uclibc.org/uClibc
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.16
-UCLIBC_SOURCE:=uClibc-0.9.16.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.17
+UCLIBC_SOURCE:=uClibc-0.9.17.tar.bz2
 UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 
