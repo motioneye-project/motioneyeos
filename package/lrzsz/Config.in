@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_LRZSZ
-	bool"lrzsz"
+	bool "lrzsz"
 	default n
 	help
-	  Add help text here.
+	  Portable and fast implementation of the X/Y/Zmodem protocols.
 
+	  http://www.ohse.de/uwe/software/lrzsz.html

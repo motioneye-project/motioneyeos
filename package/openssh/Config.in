@@ -1,9 +1,9 @@
-#
-
 config BR2_PACKAGE_OPENSSH
-	bool"openssh"
+	bool "openssh"
 	default n
 	select BR2_PACKAGE_OPENSSL
 	help
-	  Add help text here.
+	  A free version of the SSH protocol suite of network connectivity 
+	  tools.  The standard 'ssh', 'sshd', 'scp', and friends.
 
+	  http://www.openssh.com/

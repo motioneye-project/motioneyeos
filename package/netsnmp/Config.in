@@ -1,9 +1,9 @@
-#
-
 config BR2_PACKAGE_NETSNMP
-	bool"netsnmp"
+	bool "netsnmp"
 	default n
 	select BR2_PACKAGE_OPENSSL
 	help
-	  Add help text here.
+	  Suite of applications used to implement SNMP v1, SNMP v2c, and 
+	  SNMP v3 using both IPv4 and IPv6.
 
+	  http://net-snmp.sourceforge.net/

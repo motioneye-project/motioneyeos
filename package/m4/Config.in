@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_M4
-	bool"m4"
+	bool "m4"
 	default n
 	help
-	  Add help text here.
+	  An implementation of the traditional Unix macro processor.
 
+	  http://www.gnu.org/software/m4/m4.html

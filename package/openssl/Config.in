@@ -1,8 +1,10 @@
-#
-
 config BR2_PACKAGE_OPENSSL
-	bool"openssl"
+	bool "openssl"
 	default n
 	help
-	  Add help text here.
+	  A collaborative effort to develop a robust, commercial-grade, fully 
+	  featured, and Open Source toolkit implementing the Secure Sockets 
+	  Layer (SSL v2/v3) and Transport Security (TLS v1) as well as a 
+	  full-strength general-purpose cryptography library.
 
+	  http://www.openssl.org/

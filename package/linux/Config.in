@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_LINUX
-	bool"linux"
+	bool "linux"
 	default n
 	help
-	  Add help text here.
+	  The Linux kernel.
 
+	  http://www.kernel.org/

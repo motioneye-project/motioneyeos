@@ -1,5 +1,3 @@
-#
-
 config BR2_PACKAGE_MICROWIN
 	bool "microwin"
 	default n
@@ -8,4 +6,3 @@ config BR2_PACKAGE_MICROWIN
 	 embedded enviroments.
 	 
 	 http://microwindows.censoft.com/
-

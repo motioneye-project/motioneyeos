@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_LTP-TESTSUITE
-	bool"ltp-testsuite"
+	bool "ltp-testsuite"
 	default n
 	help
-	  Add help text here.
+	  The Linux Test Project provides a huge testsuite for Linux.
 
+	  http://ltp.sourceforge.net/

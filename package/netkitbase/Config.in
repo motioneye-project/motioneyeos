@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_NETKITBASE
-	bool"netkitbase"
+	bool "netkitbase"
 	default n
 	help
-	  Add help text here.
+	  Old-style inetd.
 
+	  ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/

@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_MICROCOM
-	bool"microcom"
+	bool "microcom"
 	default n
 	help
-	  Add help text here.
+	  A minicom-like serial terminal emulator with scripting support.
 
+	  http://microcom.port5.com/

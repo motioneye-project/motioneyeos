@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_LTRACE
-	bool"ltrace"
+	bool "ltrace"
 	default n
 	help
-	  Add help text here.
+	  Debugging program which runs a specified command until it exits.
 
+	  http://packages.debian.org/unstable/utils/ltrace.html

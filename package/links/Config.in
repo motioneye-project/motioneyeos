@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_LINKS
-	bool"links"
+	bool "links"
 	default n
 	help
-	  Add help text here.
+	  Graphics and text mode WWW browser (kind of like lynx).
 
+	  http://atrey.karlin.mff.cuni.cz/~clock/twibright/links

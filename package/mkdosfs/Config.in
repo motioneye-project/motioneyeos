@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_MKDOSFS
-	bool"mkdosfs"
+	bool "mkdosfs"
 	default n
 	help
-	  Add help text here.
+	  Creates a DOS FAT filesystem on a device.
 
+	  ftp://ftp.uni-erlangen.de/pub/Linux/LOCAL/dosfstools/

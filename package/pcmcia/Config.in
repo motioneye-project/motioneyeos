@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_PCMCIA
-	bool"pcmcia"
+	bool "pcmcia"
 	default n
 	help
-	  Add help text here.
+	  PCMCIA tools for Linux.
 
+	  http://pcmcia-cs.sourceforge.net/

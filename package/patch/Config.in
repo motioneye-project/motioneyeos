@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_PATCH
-	bool"patch"
+	bool "patch"
 	default n
 	help
-	  Add help text here.
+	  Take patch files (containing difference listings) and apply them 
+	  to original files, producing patched versions.
 
+	  http://www.gnu.org/software/patch/
