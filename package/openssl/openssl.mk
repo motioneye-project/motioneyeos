@@ -5,9 +5,10 @@
 #############################################################
 
 # TARGETS
+OPENSSL_VER:=0.9.7d
 OPENSSL_SITE:=http://www.openssl.org/source
-OPENSSL_SOURCE:=openssl-0.9.7d.tar.gz
-OPENSSL_DIR:=$(BUILD_DIR)/openssl-0.9.7d
+OPENSSL_SOURCE:=openssl-$(OPENSSL_VER).tar.gz
+OPENSSL_DIR:=$(BUILD_DIR)/openssl-$(OPENSSL_VER)
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSL_SITE)/$(OPENSSL_SOURCE)
@@ -18,7 +19,9 @@ $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 	# sigh... we have to resort to this just to set a gcc flag.
 	$(SED) 's,/CFLAG=,/CFLAG= $(TARGET_SOFT_FLOAT) ,g' \
 		$(OPENSSL_DIR)/Configure
-	touch  $(OPENSSL_DIR)/.unpacked
+	$(SED) '/CFLAG=/s,/;, $(TARGET_CFLAGS)/;,' \
+		$(OPENSSL_DIR)/Configure
+	touch $(OPENSSL_DIR)/.unpacked
 
 $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 	(cd $(OPENSSL_DIR); \
@@ -73,5 +76,4 @@ openssl-clean:
 	$(MAKE) -C $(OPENSSL_DIR) clean
 
 openssl-dirclean: 
-	rm -rf $(OPENSSL_DIR) 
-
+	rm -rf $(OPENSSL_DIR)
