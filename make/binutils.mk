@@ -61,11 +61,11 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
-	$(MAKE) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
+	$(MAKE) $(JLEVEL) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
 		-C $(BINUTILS_DIR1);
 
 $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
-	$(MAKE) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
+	$(MAKE) $(JLEVEL) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
 		-C $(BINUTILS_DIR1) install;
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
@@ -144,7 +144,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	$(MAKE) -C $(BINUTILS_DIR2) \
+	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR2) \
 		CC_FOR_BUILD=$(HOSTCC) \
 		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
@@ -158,7 +158,7 @@ $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	touch -c $(BINUTILS_DIR2)/binutils/objdump
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
-	$(MAKE) -C $(BINUTILS_DIR2) \
+	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR2) \
 		CC_FOR_BUILD=$(HOSTCC) \
 		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \

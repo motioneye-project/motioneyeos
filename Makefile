@@ -78,6 +78,9 @@ MULTILIB:=--enable-multilib
 #Install libstdc++?
 INSTALL_LIBSTDCPP=true
 
+# For SMP machines some stuff can be run in parallel
+#JLEVEL=-j3
+
 #############################################################
 #
 # The list of stuff to build for the target filesystem
