@@ -33,22 +33,25 @@ ARCH:=i386
 #ARCH:=arm
 #ARCH:=mips
 #ARCH:=mipsel
+# Possible issues remaining with powerpc and soft float.
 #ARCH:=powerpc
 #ARCH:=sh4
+# Busybox link failing due to needing libgcc functions that are statics.
 #ARCH:=cris
+
+# The following currently fail to build since no shared lib support.
+#ARCH:=sh64
 #ARCH:=m68k
 #ARCH:=v850
 #ARCH:=sparc
-#ARCH:=sh64
 #ARCH:=whatever
-
-# enable to build a native gcc toolchain with uclibc support
-USE_UCLIBC_TOOLCHAIN:=true
 
 # If you are building a native gcc toolchain, do you want to
 # build the old gcc-2.95 based toolchain, or would you prefer
-# a nice and shiny new gcc-3.2.1 toolchain?
+# a nice and shiny new gcc-3.3.2 toolchain?
+# WARNING -- 2.95 currently does not build.
 GCC_2_95_TOOLCHAIN:=false
+# WARNING -- 2.95 currently does not build.
 
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
@@ -85,24 +88,26 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 #   The uClibc built will support _only_ applications compiled with the
 #      -msoft-float flag.  To avoid CFLAGS problems, you may want to use
 #      scripts similar to those in the build*/staging_dir/bin directory.
-# Uncomment the next 2 lines to build a soft-float toolchain and rootfs.
+# (Un)comment the appropriate line below.
+#SOFT_FLOAT:=true
 SOFT_FLOAT:=false
 
 TARGET_OPTIMIZATION=-Os
 TARGET_DEBUGGING= #-g
 
 # Any additional gcc options you may want to include....
-EXTRA_GCC_CONFIG_OPTIONS=
+EXTRA_GCC_CONFIG_OPTIONS:=
 
 # Enable the following if you want locale/gettext/i18n support.
+# NOTE!  Currently the pregnerated locale stuff only works for x86!
 #ENABLE_LOCALE:=true
 ENABLE_LOCALE:=false
 
 # If you want multilib enabled, enable this...
 MULTILIB:=--enable-multilib
 
-#Install libstdc++?
-INSTALL_LIBSTDCPP=true
+# Build/install c++ compiler and libstdc++?
+INSTALL_LIBSTDCPP:=true
 
 # For SMP machines some stuff can be run in parallel
 #JLEVEL=-j3
@@ -113,16 +118,11 @@ INSTALL_LIBSTDCPP=true
 #
 #############################################################
 TARGETS:=host-sed
-# The toolchain comes next if we are building one
-ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
+
 ifeq ($(GCC_2_95_TOOLCHAIN),true)
-TARGETS+=binutils uclibc-configured gcc2_95
+TARGETS+=uclibc-configured binutils gcc2_95
 else
-#TARGETS+=binutils uclibc-configured gcc3_3
 TARGETS+=uclibc-configured binutils gcc3_3
-endif
-else
-TARGETS+=uclibc
 endif
 
 # Do you want user mode Linux (x86 only), or are you building a
@@ -212,6 +212,11 @@ endif
 
 ifeq ($(ENABLE_LOCALE),true)
 EXTRA_GCC_CONFIG_OPTIONS += --enable-clocale=gnu
+endif
+
+# WARNING -- uClibc currently disables large file support on cris.
+ifeq ("$(strip $(ARCH))","cris")
+BUILD_WITH_LARGEFILE:=false
 endif
 
 ifneq ($(BUILD_WITH_LARGEFILE),true)

@@ -55,11 +55,9 @@ endif
 	$(SED) 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-	$(SED) "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=y/;" \
-		$(UCLIBC_DIR)/.config
+	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=y,g' $(UCLIBC_DIR)/.config
 else
-	$(SED) "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=n/;" \
-		$(UCLIBC_DIR)/.config
+	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=n,g' $(UCLIBC_DIR)/.config
 endif
 	$(SED) 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
 	if [ -n "$(strip $(TARGET_SOFT_FLOAT))" ] ; then \
@@ -148,14 +146,10 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 		ln -fs /lib/libthread_db.so.1 libthread_db.so; \
 	)
 
-ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 ifeq ($(GCC_2_95_TOOLCHAIN),true)
 uclibc_target: gcc2_95 uclibc $(TARGET_DIR)/usr/lib/libc.a
 else
 uclibc_target: gcc3_3 uclibc $(TARGET_DIR)/usr/lib/libc.a
-endif
-else
-uclibc_target: uclibc $(TARGET_DIR)/usr/lib/libc.a
 endif
 
 uclibc_target-clean:
