@@ -828,7 +828,7 @@
 +					/* Looks like we found a parent of the correct path */
 +					if (name[len] == '/') {
 +						if (e->child) {
-+							return (find_filesystem_entry (e, name, type));
++							return (find_filesystem_entry (e, name + len + 1, type));
 +						} else {
 +							return NULL;
 +						}
