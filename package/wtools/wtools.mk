@@ -3,10 +3,10 @@
 # wtools - Wireless Tools
 #
 #############################################################
-#
-WTOOLS_SOURCE_URL=http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux
-WTOOLS_SOURCE=wireless_tools.26.tar.gz
-WTOOLS_BUILD_DIR=$(BUILD_DIR)/wireless_tools.26
+WTOOLS_VER:=26
+WTOOLS_SOURCE_URL:=http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux
+WTOOLS_SOURCE:=wireless_tools.$(WTOOLS_VER).tar.gz
+WTOOLS_BUILD_DIR=$(BUILD_DIR)/wireless_tools.$(WTOOLS_VER)
 
 $(DL_DIR)/$(WTOOLS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(WTOOLS_SOURCE_URL)/$(WTOOLS_SOURCE) 
@@ -31,11 +31,11 @@ $(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwconfig
 	cp -af $(WTOOLS_BUILD_DIR)/iwlist $(TARGET_DIR)/sbin/
 	cp -af $(WTOOLS_BUILD_DIR)/iwpriv $(TARGET_DIR)/sbin/
 	cp -af $(WTOOLS_BUILD_DIR)/iwspy $(TARGET_DIR)/sbin/
-	cp -af $(WTOOLS_BUILD_DIR)/libiw.so.26 $(TARGET_DIR)/lib
+	cp -af $(WTOOLS_BUILD_DIR)/libiw.so.$(WTOOLS_VER) $(TARGET_DIR)/lib
 	$(STRIP) $(TARGET_DIR)/sbin/iwconfig $(TARGET_DIR)/sbin/iwevent \
 		$(TARGET_DIR)/sbin/iwgetid $(TARGET_DIR)/sbin/iwlist \
 		$(TARGET_DIR)/sbin/iwpriv $(TARGET_DIR)/sbin/iwspy \
-		$(TARGET_DIR)/lib/libiw.so.26
+		$(TARGET_DIR)/lib/libiw.so.$(WTOOLS_VER)
 
 wtools: $(TARGET_DIR)/sbin/iwconfig 
 
