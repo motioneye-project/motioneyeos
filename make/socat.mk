@@ -42,7 +42,7 @@ $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
         
 $(SOCAT_WORKDIR)/socat:	$(SOCAT_WORKDIR)/Makefile

@@ -33,7 +33,7 @@ $(ED_DIR)/.configured: $(ED_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(ED_DIR)/.configured
 

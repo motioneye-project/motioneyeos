@@ -37,7 +37,7 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--without-uiout --disable-valgrindmi \
 		--disable-tui --disable-valgrindtk \
 		--without-x --without-included-gettext \

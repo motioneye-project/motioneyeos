@@ -35,11 +35,10 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
 		--includedir=$(STAGING_DIR)/include \
 		--disable-lastlog --disable-utmp \
 		--disable-utmpx --disable-wtmp --disable-wtmpx \
-		--disable-nls --without-x \
+		--without-x $(DISABLE_NLS) \
 	);
 	touch  $(OPENSSH_DIR)/.configured
 

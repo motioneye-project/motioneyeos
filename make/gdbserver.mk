@@ -27,7 +27,7 @@ $(GDB_WDIR)/.configured: $(GDB_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--includedir=$(STAGING_DIR)/include \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--without-uiout --disable-gdbmi \
 		--disable-tui --disable-gdbtk --without-x \
 		--without-included-gettext \

@@ -38,7 +38,7 @@ $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 		--localstatedir=/var/lib \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(FINDUTILS_DIR)/.configured
 

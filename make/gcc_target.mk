@@ -148,18 +148,18 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-		prefix=$(TARGET_DIR)/usr \
-		exec_prefix=$(TARGET_DIR)/usr \
-		bindir=$(TARGET_DIR)/usr/bin \
-		sbindir=$(TARGET_DIR)/usr/sbin \
-		libexecdir=$(TARGET_DIR)/usr/lib \
-		datadir=$(TARGET_DIR)/usr/share \
-		sysconfdir=$(TARGET_DIR)/etc \
-		localstatedir=$(TARGET_DIR)/var \
-		libdir=$(TARGET_DIR)/usr/lib \
-		infodir=$(TARGET_DIR)/usr/info \
-		mandir=$(TARGET_DIR)/usr/man \
-		includedir=$(TARGET_DIR)/usr/include \
+		prefix=/usr \
+		exec_prefix=/usr \
+		bindir=/usr/bin \
+		sbindir=/usr/sbin \
+		libexecdir=/usr/lib \
+		datadir=/usr/share \
+		sysconfdir=/etc \
+		localstatedir=/var \
+		libdir=/usr/lib \
+		infodir=/usr/info \
+		mandir=/usr/man \
+		includedir=/usr/include \
 		DESTDIR=$(TARGET_DIR) install
 	rm -rf $(TARGET_DIR)/info $(TARGET_DIR)/man $(TARGET_DIR)/share/doc \
 		$(TARGET_DIR)/share/locale
@@ -275,18 +275,6 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.gcc_build_hacks
 		$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
 	perl -i -p -e "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
 		$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
-	#
-	# For now, we don't support locale-ified ctype (we will soon), 
-	# so bypass that problem for now...
-	#
-	perl -i -p -e "s,defined.*_GLIBCPP_USE_C99.*,1,g;" \
-		$(GCC_DIR)/libstdc++-v3/config/locale/generic/c_locale.cc;
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_base.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_inline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_noninline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
 	touch $(GCC_DIR)/.g++_build_hacks
 endif
 
@@ -340,7 +328,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		--with-local-prefix=/usr/local \
 		--libdir=/usr/lib \
 		--disable-shared $(MULTILIB) \
-		--enable-target-optspace --disable-nls \
+		--enable-target-optspace $(DISABLE_NLS) \
 		--with-gnu-ld --disable-__cxa_atexit \
 		--enable-languages=$(TARGET_LANGUAGES) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
@@ -376,18 +364,18 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-		prefix=$(TARGET_DIR)/usr \
-		exec_prefix=$(TARGET_DIR)/usr \
-		bindir=$(TARGET_DIR)/usr/bin \
-		sbindir=$(TARGET_DIR)/usr/sbin \
-		libexecdir=$(TARGET_DIR)/usr/lib \
-		datadir=$(TARGET_DIR)/usr/share \
-		sysconfdir=$(TARGET_DIR)/etc \
-		localstatedir=$(TARGET_DIR)/var \
-		libdir=$(TARGET_DIR)/usr/lib \
-		infodir=$(TARGET_DIR)/usr/info \
-		mandir=$(TARGET_DIR)/usr/man \
-		includedir=$(TARGET_DIR)/usr/include \
+		prefix=/usr \
+		exec_prefix=/usr \
+		bindir=/usr/bin \
+		sbindir=/usr/sbin \
+		libexecdir=/usr/lib \
+		datadir=/usr/share \
+		sysconfdir=/etc \
+		localstatedir=/var \
+		libdir=/usr/lib \
+		infodir=/usr/info \
+		mandir=/usr/man \
+		includedir=/usr/include \
 		DESTDIR=$(TARGET_DIR) install
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	(cd $(TARGET_DIR)/lib; ln -fs /usr/bin/cpp)
@@ -401,7 +389,9 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	-mv $(TARGET_DIR)/lib/*.a $(TARGET_DIR)/usr/lib/
 	-mv $(TARGET_DIR)/lib/*.la $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libstdc++.so
-	-(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.so.5.0.2 libstdc++.so)
+	-(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.so.5.0.5 libstdc++.so)
+	# A nasty hack to work around g++ adding -lgcc_eh to the link
+	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/3.3.1/ ; ln -s libgcc.a libgcc_eh.a)
 	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) 2>&1 > /dev/null)
 	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) 2>&1 > /dev/null)
 	rm -f $(TARGET_DIR)/usr/lib/*.la*

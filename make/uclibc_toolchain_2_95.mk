@@ -295,7 +295,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		--infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
 		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
-		--enable-target-optspace --disable-nls --with-gnu-ld \
+		--enable-target-optspace $(DISABLE_NLS) --with-gnu-ld \
 		--disable-shared --enable-languages=c --disable-__cxa_atexit \
 		$(EXTRA_GCC_CONFIG_OPTIONS) --program-prefix=$(ARCH)-uclibc-);
 	touch $(GCC_BUILD_DIR1)/.configured
@@ -488,7 +488,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
 		--oldincludedir=$(STAGING_DIR)/include \
 		--enable-shared $(MULTILIB) \
-		--enable-target-optspace --disable-nls \
+		--enable-target-optspace $(DISABLE_NLS) \
 		--with-gnu-ld --disable-__cxa_atexit \
 		--enable-languages=$(TARGET_LANGUAGES) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \

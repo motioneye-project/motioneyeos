@@ -35,7 +35,7 @@ $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--enable-shared \
 	);
 	touch  $(LIBGLIB12_DIR)/.configured

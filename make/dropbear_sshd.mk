@@ -38,7 +38,7 @@ $(DROPBEAR_SSHD_DIR)/.configured: $(DROPBEAR_SSHD_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--with-shared \
 	);
 	touch  $(DROPBEAR_SSHD_DIR)/.configured

@@ -36,7 +36,7 @@ $(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(LIBTOOL_DIR)/.configured
 

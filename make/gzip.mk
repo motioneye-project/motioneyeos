@@ -40,7 +40,7 @@ $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		$(GZIP_LARGEFILE) \
 	);
 	touch  $(GZIP_DIR)/.configured

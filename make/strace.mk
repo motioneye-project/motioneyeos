@@ -35,7 +35,7 @@ $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(STRACE_DIR)/.configured
 

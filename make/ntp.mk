@@ -39,7 +39,7 @@ $(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--with-shared \
 	);
 	touch  $(NTP_DIR)/.configured

@@ -5,7 +5,7 @@
 #############################################################
 #
 WTOOLS_SOURCE_URL=http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux
-WTOOLS_SOURCE=wireless_tools.26.pre7.tar.gz
+WTOOLS_SOURCE=wireless_tools.26.tar.gz
 WTOOLS_BUILD_DIR=$(BUILD_DIR)/wireless_tools.26
 
 $(DL_DIR)/$(WTOOLS_SOURCE):

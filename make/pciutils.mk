@@ -43,7 +43,7 @@ $(PCIUTILS_DIR)/.configured: $(PCIUTILS_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(PCIUTILS_DIR)/.configured
 

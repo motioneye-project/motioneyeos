@@ -36,7 +36,7 @@ $(GNUPATCH_DIR)/.configured: $(GNUPATCH_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(GNUPATCH_DIR)/.configured
 

@@ -22,6 +22,7 @@ $(BISON_DIR)/.unpacked: $(DL_DIR)/$(BISON_SOURCE)
 $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 	(cd $(BISON_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		gt_cv_func_gnugettext2_libintl=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -36,7 +37,7 @@ $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(BISON_DIR)/.configured
 

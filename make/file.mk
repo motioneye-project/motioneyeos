@@ -40,7 +40,7 @@ $(FILE_DIR)/.configured: $(FILE_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--enable-fsect-man5 \
 	);
 	touch  $(FILE_DIR)/.configured

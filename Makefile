@@ -20,6 +20,7 @@
 
 
 TARGETS=
+DISABLE_NLS=
 #############################################################
 #
 # EDIT this stuff to suit your system and preferences
@@ -68,6 +69,9 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 # Any additional gcc options you may want to include....
 EXTRA_GCC_CONFIG_OPTIONS=
 #EXTRA_GCC_CONFIG_OPTIONS=--without-float
+
+# Uncomment the following if you don't want gettext support.
+DISABLE_NLS:=--disable-nls
 
 #############################################################
 #

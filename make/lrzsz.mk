@@ -51,7 +51,7 @@ $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked
 		--localstatedir=/tmp \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--disable-timesync \
 	);
 	perl -i -p -e "s/-lnsl//;" $(LRZSZ_DIR)/src/Makefile

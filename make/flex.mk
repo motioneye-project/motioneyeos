@@ -41,7 +41,7 @@ $(FLEX_DIR)/.configured: $(FLEX_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(FLEX_DIR)/.configured
 

@@ -38,13 +38,16 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--disable-rpath \
 		--disable-dependency-tracking \
 	);
 	#Fix up the max number of open files per process, which apparently 
 	# is not set when cross compiling
 	perl -i -p -e 's,.*UTILS_OPEN_MAX.*,#define UTILS_OPEN_MAX 1019,g' \
+		$(COREUTILS_DIR)/config.h
+	# This is undefined when crosscompiling...
+	perl -i -p -e 's,.*HAVE_PROC_UPTIME.*,#define HAVE_PROC_UPTIME 1,g' \
 		$(COREUTILS_DIR)/config.h
 	touch  $(COREUTILS_DIR)/.configured
 

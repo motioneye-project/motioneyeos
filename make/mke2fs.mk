@@ -41,7 +41,7 @@ $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked
 		--disable-elf-shlibs --disable-swapfs \
 		--disable-debugfs --disable-imager \
 		--disable-resizer --disable-fsck \
-		--without-catgets --disable-nls \
+		--without-catgets $(DISABLE_NLS) \
 	);
 	touch  $(MKE2FS_DIR)/.configured
 

@@ -15,11 +15,15 @@ $(DL_DIR)/$(GDB_SOURCE):
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE) $(GDB_PATCH)
 	gunzip -c $(DL_DIR)/$(GDB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(GDB_PATCH) | patch -p1 -d $(GDB_DIR)
+	#-perl -i -p -e "s,\@INTLLIBS\@,-lintl,g;" $(GDB_DIR)/gdb/Makefile.in
 	touch  $(GDB_DIR)/.unpacked
 
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		ac_cv_type_uintptr_t=yes \
+		gt_cv_func_gettext_libintl=yes \
+		ac_cv_func_dcgettext=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -34,7 +38,7 @@ $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--includedir=$(STAGING_DIR)/include \
-		--disable-nls \
+		$(DISABLE_NLS) \
 		--without-uiout --disable-gdbmi \
 		--disable-tui --disable-gdbtk --without-x \
 		--disable-sim --enable-gdbserver \

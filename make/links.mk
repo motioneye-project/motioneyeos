@@ -33,7 +33,7 @@ $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 		--localstatedir=/tmp \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(LINKS_DIR)/.configured
 

@@ -38,7 +38,7 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch $(NEWT_DIR)/.configured;
 

@@ -37,7 +37,7 @@ $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(GAWK_DIR)/.configured
 

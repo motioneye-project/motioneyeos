@@ -41,7 +41,7 @@ $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-nls \
+		$(DISABLE_NLS) \
 	);
 	touch  $(PPPD_DIR)/.configured
 

@@ -271,7 +271,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		--infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
 		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
-		--enable-target-optspace --disable-nls --with-gnu-ld \
+		--enable-target-optspace $(DISABLE_NLS) --with-gnu-ld \
 		--disable-shared --enable-languages=c --disable-__cxa_atexit \
 		$(EXTRA_GCC_CONFIG_OPTIONS) --program-prefix=$(ARCH)-uclibc-);
 	touch $(GCC_BUILD_DIR1)/.configured
@@ -338,7 +338,10 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(BUILD_DIR)/linux/.configure
 	perl -i -p -e 's,^LD_BIN.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ld,g' \
 		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
 	$(MAKE) -C $(UCLIBC_DIR) oldconfig
-	$(MAKE) -C $(UCLIBC_DIR) headers install_dev;
+	$(MAKE) -C $(UCLIBC_DIR) headers
+	zcat $(DL_DIR)/uClibc-locale-030818.tgz | tar -C $(UCLIBC_DIR)/extra/locale -xvf -
+	$(MAKE) -C $(UCLIBC_DIR)/extra/locale pregen 
+	$(MAKE) -C $(UCLIBC_DIR) install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured
@@ -390,18 +393,6 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 		$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
 	perl -i -p -e "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
 		$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
-	#
-	# For now, we don't support locale-ified ctype (we will soon), 
-	# so bypass that problem for now...
-	#
-	perl -i -p -e "s,defined.*_GLIBCPP_USE_C99.*,1,g;" \
-		$(GCC_DIR)/libstdc++-v3/config/locale/generic/c_locale.cc;
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/ctype_base.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/ctype_inline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/ctype_noninline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/
 	touch $(GCC_DIR)/.g++_build_hacks
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
@@ -428,7 +419,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
 		--oldincludedir=$(STAGING_DIR)/include \
 		--enable-shared $(MULTILIB) \
-		--enable-target-optspace --disable-nls \
+		--enable-target-optspace $(DISABLE_NLS) \
 		--with-gnu-ld --disable-__cxa_atexit \
 		--enable-languages=$(TARGET_LANGUAGES) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
