@@ -33,3 +33,121 @@
  }
  
  
+--- valgrind-1.0pre6.orig/vg_unsafe.h	Thu Jun 13 10:02:37 2002
++++ valgrind-1.0pre6/vg_unsafe.h	Tue Jul 23 23:36:45 2002
+@@ -51,9 +51,13 @@
+ 
+ #include <linux/isdn.h>   /* for ISDN ioctls */
+ #include <scsi/sg.h>      /* for the SG_* ioctls */
++#include <scsi/scsi.h>    /* for a few SCSI ioctls */
++#include <scsi/scsi_ioctl.h>/* for even more SCSI ioctls */
+ #include <sched.h>        /* for struct sched_param */
+ #include <linux/sysctl.h> /* for struct __sysctl_args */
+ #include <linux/cdrom.h>  /* for cd-rom ioctls */
++#include <linux/hdreg.h>  /* for ide ioctls */
++#include <sys/mtio.h>     /* for tape drive junk */
+ 
+ #define __USE_LARGEFILE64
+ #include <sys/stat.h>     /* for struct stat */
+--- valgrind-1.0pre6.orig/vg_syscall_mem.c	Sat Jul 13 06:44:39 2002
++++ valgrind-1.0pre6/vg_syscall_mem.c	Tue Jul 23 23:44:39 2002
+@@ -2050,6 +2050,99 @@
+                     sizeof(struct cdrom_msf));
+                  KERNEL_DO_SYSCALL(tid,res);
+                  break;
++
++	    /* Stuff added by Erik Andersen for general device probing/handling */
++            case CDROM_DRIVE_STATUS:
++                 KERNEL_DO_SYSCALL(tid,res);
++                 break;
++#define BLKSSZGET  _IO(0x12,104)
++            case BLKSSZGET:
++               must_be_writable(tst, "ioctl(BLKSSZGET)", arg3, sizeof(int));
++               KERNEL_DO_SYSCALL(tid,res);
++               if (!VG_(is_kerror)(res) && res == 0)
++                  make_readable (arg3, sizeof(int));
++               break;
++#define BLKGETSIZE64 _IOR(0x12,114,sizeof(unsigned long long*))
++            case BLKGETSIZE64:
++               must_be_writable(tst, "ioctl(BLKGETSIZE64)", arg3, sizeof(unsigned long long));
++               KERNEL_DO_SYSCALL(tid,res);
++               if (!VG_(is_kerror)(res) && res == 0)
++                  make_readable (arg3, sizeof(unsigned long long));
++               break;
++            case HDIO_GETGEO:
++	       {
++		   struct hd_geometry {
++		       unsigned char heads;
++		       unsigned char sectors;
++		       unsigned short cylinders;
++		       unsigned long start;
++		   };
++
++		   must_be_writable(tst, "ioctl(HDIO_GETGEO)", arg3, sizeof(struct hd_geometry));
++		   KERNEL_DO_SYSCALL(tid,res);
++		   if (!VG_(is_kerror)(res) && res == 0)
++		       make_readable (arg3, sizeof(struct hd_geometry));
++	       }
++               break;
++            case HDIO_GET_IDENTITY:
++               must_be_writable(tst, "ioctl(HDIO_GET_IDENTITY)", arg3, sizeof(struct hd_driveid));
++               KERNEL_DO_SYSCALL(tid,res);
++               if (!VG_(is_kerror)(res) && res == 0)
++                  make_readable (arg3, sizeof(struct hd_driveid));
++               break;
++            case SCSI_IOCTL_GET_IDLUN:
++	       {
++		   struct scsi_idlun
++		   {
++		       int mux4;
++		       int host_unique_id;
++
++		   };
++		   must_be_writable(tst, "ioctl(SCSI_IOCTL_GET_IDLUN)", arg3, sizeof(struct scsi_idlun));
++		   KERNEL_DO_SYSCALL(tid,res);
++		   if (!VG_(is_kerror)(res) && res == 0)
++		       make_readable (arg3, sizeof(struct scsi_idlun));
++	       }
++               break;
++            case SCSI_IOCTL_SEND_COMMAND:
++               must_be_writable(tst, "ioctl(SCSI_IOCTL_SEND_COMMAND)", arg3, 
++		       ((2 * sizeof(unsigned int)) + 6 + 512));
++               KERNEL_DO_SYSCALL(tid,res);
++               if (!VG_(is_kerror)(res) && res == 0)
++                  make_readable (arg3, ((2 * sizeof(unsigned int)) + 6 + 512));
++               break;
++            case SCSI_IOCTL_GET_BUS_NUMBER:
++               must_be_writable(tst, "ioctl(SCSI_IOCTL_GET_BUS_NUMBER)", arg3, sizeof(int));
++               KERNEL_DO_SYSCALL(tid,res);
++               if (!VG_(is_kerror)(res) && res == 0)
++                  make_readable (arg3, sizeof(int));
++               break;
++            case SCSI_IOCTL_PROBE_HOST:
++	       {
++		   int xxxx;
++		   char *array = (char*)arg3;
++		   xxxx = array[0] + (array[1]<<8) + (array[2]<<16) + (array[3]<<24);
++		   must_be_writable(tst, "ioctl(SCSI_IOCTL_PROBE_HOST)", arg3, xxxx);
++		   KERNEL_DO_SYSCALL(tid,res);
++		   if (!VG_(is_kerror)(res) && res == 0)
++		       make_readable (arg3, xxxx);
++	       }
++               break;
++#define BLKFLSBUF  _IO(0x12,97)
++            case BLKFLSBUF:
++               KERNEL_DO_SYSCALL(tid,res);
++               break;
++#define BLKRRPART  _IO(0x12,95)
++            case BLKRRPART:
++               KERNEL_DO_SYSCALL(tid,res);
++               break;
++            case MTIOCTOP:
++	       must_be_writable(tst, "ioctl(MTIOCTOP)", arg3, sizeof(struct mtop));
++	       KERNEL_DO_SYSCALL(tid,res);
++	       if (!VG_(is_kerror)(res) && res == 0)
++		   make_readable (arg3, sizeof(struct mtop));
++	       break;
++
+             /* We don't have any specific information on it, so
+                try to do something reasonable based on direction and
+                size bits.  The encoding scheme is described in

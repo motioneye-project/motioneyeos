@@ -26,3 +26,20 @@ Have fun!
 
 Please feed suggestions, bug reports, insults, and bribes back to:
 	Erik Andersen <andersen@codepoet.org>
+
+
+
+NOTE:
+
+    For './configure' to behave itself with certain applications, you may need
+    to create a symlink under "/lib" on your system that points to the uClibc
+    shared library loader in the staging directory.  For example, on my system
+
+        $ cd /lib
+	$ sudo ln -s /home/andersen/buildroot/build/staging_dir/lib/ld-uClibc.so.0 ld-uClibc.so.0
+
+    If you don't use sudo, run 'su -' to become root when making the link.  If
+    you aren't root it won't work.  The reason for this symlink, is it allows
+    './configure' to actually execute the test applications it compiles against
+    uClibc during the configuration process....
+

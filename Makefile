@@ -58,7 +58,7 @@ ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 TARGETS=uclibc_toolchain
 endif
 
-TARGETS+=user-mode-linux busybox tinylogin ncurses gdb strace valgrind db
+TARGETS+=user-mode-linux busybox tinylogin ncurses gdb strace valgrind db openssl zlib openssh #stlport
 
 # Pick your root filesystem type.
 TARGETS+=ext2root
