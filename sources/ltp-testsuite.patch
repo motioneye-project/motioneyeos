@@ -57,33 +57,3 @@
  	@echo 'NPtcp has been built.'
  
  NPtcp-ipv6:	NPtcp.o TCP.o
---- ltp-full-20031106/testcases/kernel/syscalls/string/string01.orig.c	2004-01-01 23:54:37.000000000 -0700
-+++ ltp-full-20031106/testcases/kernel/syscalls/string/string01.c	2004-01-01 23:55:48.000000000 -0700
-@@ -413,10 +413,10 @@
- 	//fprintf(temp, "\tStrncmp\n" );
- 	i = 0;
- 	while ( t_ncmp[i].s1 ) {
--	    if ((n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n ))
--							!= t_ncmp[i].e_res) {
-+	    n = strncmp( t_ncmp[i].s1, t_ncmp[i].s2, t_ncmp[i].n );
-+	    if (sign(n) != sign(t_ncmp[i].e_res)) {
- 		  fprintf(temp, "(Strncmp) test %d: expected %d, got %d",
--			i, t_ncmp[i].e_res, n );
-+			i, sign(t_ncmp[i].e_res), sign(n) );
- 		  local_flag = FAILED;
- 		}
- 	    i++;
---- ltp-full-20040108/testcases/kernel/syscalls/pipe/pipe07.c.orig	2003-12-15 10:08:10.000000000 -0700
-+++ ltp-full-20040108/testcases/kernel/syscalls/pipe/pipe07.c	2004-01-11 00:55:55.000000000 -0700
-@@ -84,8 +84,9 @@
- 	setup();
-         /* Get the currently used number of file descriptors */
- 	mypid=getpid();
--	cmdstring=malloc(sizeof(cmdstring));
--	sprintf(cmdstring,"ls -A -1 /proc/%d/fd | wc -l | awk {'print $1'}> pipe07.tmp",mypid);
-+	cmdstring=malloc(BUFSIZ);
-+	snprintf(cmdstring, BUFSIZ, "ls -A -1 /proc/%d/fd | "
-+		"wc -l | awk {'print $1'}> pipe07.tmp", mypid);
- 	if (system(cmdstring) == 0)
- 	{
- 		f = fopen("pipe07.tmp", "r");	

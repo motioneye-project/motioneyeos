@@ -3,10 +3,10 @@
 # ltp-testsuite
 #
 #############################################################
-LTP_TESTSUITE_SOURCE:=ltp-full-20040108.tgz
+LTP_TESTSUITE_SOURCE:=ltp-full-20040206.tgz
 LTP_TESTSUITE_SITE:=http://aleron.dl.sourceforge.net/sourceforge/ltp
 LTP_TESTSUITE_CAT:=zcat
-LTP_TESTSUITE_DIR:=$(BUILD_DIR)/ltp-full-20040108
+LTP_TESTSUITE_DIR:=$(BUILD_DIR)/ltp-full-20040206
 LTP_TESTSUITE_PATCH:=$(SOURCE_DIR)/ltp-testsuite.patch
 
 
