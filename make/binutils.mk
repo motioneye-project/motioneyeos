@@ -31,12 +31,6 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply any files named binutils-*.patch from the source directory to binutils
 	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR) binutils-*.patch
-	#
-	# Hack binutils to use the correct default shared lib loader
-	#
-	(cd $(BINUTILS_DIR); perl -i -p -e "s,#.*define.*ELF_DYNAMIC_INTERPRETER.*\".*\",\
-		#define ELF_DYNAMIC_INTERPRETER \"/lib/ld-uClibc.so.0\",;" \
-		`grep -lr ELF_DYNAMIC_INTERPRETER *`);
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
