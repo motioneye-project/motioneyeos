@@ -9,38 +9,6 @@
  include memory 0xc0000-0xfffff
  include memory 0xa0000000-0xa0ffffff, memory 0x60000000-0x60ffffff
  
-diff -urN pcmcia-cs-3.2.3.orig/etc/pcmcia.conf pcmcia-cs-3.2.3/etc/pcmcia.conf
---- pcmcia-cs-3.2.3.orig/etc/pcmcia.conf	1969-12-31 17:00:00.000000000 -0700
-+++ pcmcia-cs-3.2.3/etc/pcmcia.conf	2003-02-14 05:05:07.000000000 -0700
-@@ -0,0 +1,13 @@
-+# Defaults for pcmcia
-+PCMCIA=yes
-+# Should be either yenta_socket, i82365, i82092, or tcic
-+PCIC=yenta_socket
-+# Put socket driver timing parameters here
-+PCIC_OPTS=
-+# Put pcmcia_core options here
-+CORE_OPTS=
-+# Put cardmgr options here
-+CARDMGR_OPTS=
-+# To set the PCMCIA scheme at startup...
-+SCHEME=
-+
-diff -urN pcmcia-cs-3.2.3.orig/etc/rc.pcmcia pcmcia-cs-3.2.3/etc/rc.pcmcia
---- pcmcia-cs-3.2.3.orig/etc/rc.pcmcia	2002-08-08 00:43:43.000000000 -0600
-+++ pcmcia-cs-3.2.3/etc/rc.pcmcia	2003-02-14 05:05:13.000000000 -0700
-@@ -26,9 +26,9 @@
- done
- 
- # Source PCMCIA configuration, if available
--if [ -f /etc/pcmcia.conf ] ; then
-+if [ -f /etc/pcmcia/pcmcia.conf ] ; then
-     # Debian startup option file
--    . /etc/pcmcia.conf
-+    . /etc/pcmcia/pcmcia.conf
- elif [ -f /etc/sysconfig/pcmcia ] ; then
-     # Red Hat startup option file
-     . /etc/sysconfig/pcmcia
 diff -urN pcmcia-cs-3.2.3.orig/etc/shared pcmcia-cs-3.2.3/etc/shared
 --- pcmcia-cs-3.2.3.orig/etc/shared	2002-08-18 21:21:11.000000000 -0600
 +++ pcmcia-cs-3.2.3/etc/shared	2003-02-14 05:05:07.000000000 -0700

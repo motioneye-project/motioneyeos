@@ -94,7 +94,7 @@ TARGETS+=busybox tinylogin
 
 # Everything needed to build a full uClibc development system!
 #TARGETS+=coreutils findutils bash make diffutils patch sed
-#TARGETS+=ed flex bison file gawk tar gcc_target
+#TARGETS+=ed flex bison file gawk tar grep gcc_target
 
 # Of course, if you are installing a development system, you
 # may want some header files so you can compile stuff....
