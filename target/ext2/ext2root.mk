@@ -39,30 +39,18 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 #
 #############################################################
 
-# How much KB we want to add to the calculated size for slack space
-GENEXT2_REALSIZE=$(subst total,, $(shell LANG=C du $(TARGET_DIR) -s -c -k | grep total ))
-GENEXT2_ADDTOROOTSIZE=$(shell if [ $(GENEXT2_REALSIZE) -ge 20000 ] ; then echo 16384; else echo 16; fi)
-GENEXT2_SIZE=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE) + 200)
-# We currently add about 400 device nodes, so add that into the total
-GENEXT2_INODES=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
-#GENEXT2_SIZE=100000
-
-EXT2_OPTS := 
-
-ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
-EXT2_OPTS += -b $(GENEXT2_SIZE)
-else
-EXT2_OPTS += -b $(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS))
-endif
-
-ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_INODES)),0)
-EXT2_OPTS += -i $(GENEXT2_INODES)
-else
-EXT2_OPTS += -i $(strip $(BR2_TARGET_ROOTFS_EXT2_INODES))
-endif
+EXT2_OPTS :=
 
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_SQUASH)),y)
 EXT2_OPTS += -q
+endif
+
+ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
+EXT2_OPTS += -b $(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS))
+endif
+
+ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_INODES)),0)
+EXT2_OPTS += -i $(strip $(BR2_TARGET_ROOTFS_EXT2_INODES))
 endif
 
 ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS)),0)
@@ -87,21 +75,35 @@ $(EXT2_BASE): genext2fs
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
+	GENEXT2_REALSIZE=`LANG=C du -l -s -c -k $(TARGET_DIR) | grep total | sed -e "s/total//"`; \
+	GENEXT2_ADDTOROOTSIZE=`if [ $$GENEXT2_REALSIZE -ge 20000 ] ; then echo 16384; else echo 1200; fi`; \
+	GENEXT2_SIZE=`expr $$GENEXT2_REALSIZE + $$GENEXT2_ADDTOROOTSIZE`; \
+	GENEXT2_ADDTOINODESIZE=`find $(TARGET_DIR) | wc -l`; \
+	GENEXT2_INODES=`expr $$GENEXT2_ADDTOINODESIZE + 400`; \
+	set -x; \
+	$(GENEXT2_DIR)/genext2fs \
+		-b $$GENEXT2_SIZE \
+		-i $$GENEXT2_INODES \
+		-d $(TARGET_DIR) \
+		$(EXT2_OPTS) $(EXT2_BASE)
+else
 	$(GENEXT2_DIR)/genext2fs \
 		-d $(TARGET_DIR) \
 		$(EXT2_OPTS) \
 		$(EXT2_BASE)
-		
+endif
+
 $(EXT2_BASE).gz: $(EXT2_BASE)
 	@gzip --best -fv $(EXT2_BASE)
-	
+
 EXT2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_COPYTO)))
-	
+
 ext2root: $(EXT2_TARGET)
 	@ls -l $(EXT2_TARGET)
 ifneq ($(EXT2_COPYTO),)
 	@cp -f $(EXT2_TARGET) $(EXT2_COPYTO)
-endif	
+endif
 
 ext2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)
 
