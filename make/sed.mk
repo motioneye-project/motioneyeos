@@ -3,11 +3,12 @@
 # sed
 #
 #############################################################
-SED_SOURCE:=sed-4.0.8.tar.gz
+SED_VER:=4.1.2
+SED_SOURCE:=sed-$(SED_VER).tar.gz
 SED_SITE:=ftp://ftp.gnu.org/gnu/sed
 SED_CAT:=zcat
-SED_DIR1:=$(TOOL_BUILD_DIR)/sed-4.0.8
-SED_DIR2:=$(BUILD_DIR)/sed-4.0.8
+SED_DIR1:=$(TOOL_BUILD_DIR)/sed-$(SED_VER)
+SED_DIR2:=$(BUILD_DIR)/sed-$(SED_VER)
 SED_BINARY:=sed/sed
 SED_TARGET_BINARY:=bin/sed
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
