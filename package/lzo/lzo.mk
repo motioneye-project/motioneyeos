@@ -46,6 +46,7 @@ $(LZO_DIR)/src/liblzo.la: $(LZO_DIR)/.configured
 
 $(STAGING_DIR)/usr/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
 	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) install
+	touch -c $(STAGING_DIR)/usr/lib/liblzo.a
 
 lzo: uclibc $(STAGING_DIR)/usr/lib/liblzo.a
 
