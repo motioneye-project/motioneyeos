@@ -94,6 +94,11 @@ SOFT_FLOAT:=false
 TARGET_OPTIMIZATION=-Os
 TARGET_DEBUGGING= #-g
 
+# Currently the unwind stuff seems to work for staticly linked apps but
+# not dynamic.  So use setjmp/longjmp exceptions by default.
+GCC_USE_SJLJ_EXCEPTIONS:=--enable-sjlj-exceptions
+#GCC_USE_SJLJ_EXCEPTIONS:=
+
 # Any additional gcc options you may want to include....
 EXTRA_GCC_CONFIG_OPTIONS:=
 
@@ -107,6 +112,11 @@ MULTILIB:=--enable-multilib
 
 # Build/install c++ compiler and libstdc++?
 INSTALL_LIBSTDCPP:=true
+
+# Build/install java compiler and libgcj? (requires c++)
+# WARNING!!! DOES NOT BUILD FOR TARGET WITHOUT INTERVENTION!!!  mjn3
+#INSTALL_LIBGCJ:=true
+INSTALL_LIBGCJ:=false
 
 # For SMP machines some stuff can be run in parallel
 #JLEVEL=-j3
@@ -207,6 +217,10 @@ else
 SOFT_FLOAT_CONFIG_OPTION:=
 TARGET_SOFT_FLOAT:=
 ARCH_FPU_SUFFIX:=
+endif
+
+ifeq ($(INSTALL_LIBGCJ),true)
+INSTALL_LIBSTDCPP:=true
 endif
 
 # WARNING -- uClibc currently disables large file support on cris.

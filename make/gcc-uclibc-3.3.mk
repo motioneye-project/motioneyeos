@@ -39,10 +39,14 @@ GCC_CAT:=bzcat
 #
 #############################################################
 
+ifeq ($(INSTALL_LIBGCJ),true)
+TARGET_LANGUAGES:=c,c++,java
+else
 ifeq ($(INSTALL_LIBSTDCPP),true)
 TARGET_LANGUAGES:=c,c++
 else
 TARGET_LANGUAGES:=c
+endif
 endif
 
 #############################################################
@@ -138,6 +142,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/$(REAL_GNU_TAR
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
+		$(GCC_USE_SJLJ_EXCEPTIONS) \
 		$(EXTRA_GCC_CONFIG_OPTIONS));
 	touch $(GCC_BUILD_DIR2)/.configured
 
@@ -205,6 +210,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR2)/.installed
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
+		$(GCC_USE_SJLJ_EXCEPTIONS) \
 		$(EXTRA_GCC_CONFIG_OPTIONS));
 	touch $(GCC_BUILD_DIR3)/.configured
 
