@@ -1773,6 +1773,19 @@ diff -urN gcc-3.3.2/libstdc++-v3/configure.in gcc-3.3.2-uClibc/libstdc++-v3/conf
      *-linux*)
        os_include_dir="os/gnu-linux"
        AC_CHECK_HEADERS([nan.h ieeefp.h endian.h sys/isa_defs.h \
+diff -urN gcc-3.3.2/libstdc++-v3/configure.target gcc-3.3.2-uClibc/libstdc++-v3/configure.target
+--- gcc-3.3.2/libstdc++-v3/configure.target	2004-01-24 12:02:59.000000000 -0600
++++ gcc-3.3.2-uClibc/libstdc++-v3/configure.target	2004-01-24 12:05:30.000000000 -0600
+@@ -133,6 +133,9 @@
+   freebsd*)
+     os_include_dir="os/bsd/freebsd"
+     ;;
++  linux-uclibc*)
++    os_include_dir="os/uclibc"
++    ;;
+   gnu* | linux*)
+     os_include_dir="os/gnu-linux"
+     ;;
 diff -urN gcc-3.3.2/libstdc++-v3/include/c_std/std_cstdlib.h gcc-3.3.2-uClibc/libstdc++-v3/include/c_std/std_cstdlib.h
 --- gcc-3.3.2/libstdc++-v3/include/c_std/std_cstdlib.h	2003-04-18 05:08:05.000000000 -0500
 +++ gcc-3.3.2-uClibc/libstdc++-v3/include/c_std/std_cstdlib.h	2004-01-06 18:22:00.000000000 -0600
