@@ -25,8 +25,7 @@ TARGET_ARCH="none"
 # ARCH_BIG_ENDIAN is not set
 # ARCH_HAS_NO_MMU is not set
 UCLIBC_HAS_FLOATS=y
-# ARCH_HAS_NO_FPU is not set
-# HAS_FPU is not set
+HAS_FPU=y
 DO_C99_MATH=y
 WARNINGS="-Wall"
 KERNEL_SOURCE="/usr/src/linux"
