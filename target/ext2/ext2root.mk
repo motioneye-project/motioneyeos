@@ -57,11 +57,6 @@ ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS)),0)
 EXT2_OPTS += -r $(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS))
 endif
 
-EXT2_DEVFILE := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_DEVFILE)))
-ifneq ($(EXT2_DEVFILE),)
-EXT2_OPTS += -D $(EXT2_DEVFILE)
-endif
-
 EXT2_BASE :=	$(subst ",,$(BR2_TARGET_ROOTFS_EXT2_OUTPUT))
 
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_GZ)),y)
@@ -77,7 +72,7 @@ $(EXT2_BASE): genext2fs
 	@rm -rf $(TARGET_DIR)/usr/info
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	GENEXT2_REALSIZE=`LANG=C du -l -s -c -k $(TARGET_DIR) | grep total | sed -e "s/total//"`; \
-	GENEXT2_ADDTOROOTSIZE=`if [ $$GENEXT2_REALSIZE -ge 20000 ] ; then echo 16384; else echo 1200; fi`; \
+	GENEXT2_ADDTOROOTSIZE=`if [ $$GENEXT2_REALSIZE -ge 20000 ] ; then echo 16384; else echo 2400; fi`; \
 	GENEXT2_SIZE=`expr $$GENEXT2_REALSIZE + $$GENEXT2_ADDTOROOTSIZE`; \
 	GENEXT2_ADDTOINODESIZE=`find $(TARGET_DIR) | wc -l`; \
 	GENEXT2_INODES=`expr $$GENEXT2_ADDTOINODESIZE + 400`; \
@@ -86,10 +81,12 @@ ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 		-b $$GENEXT2_SIZE \
 		-i $$GENEXT2_INODES \
 		-d $(TARGET_DIR) \
+		-D $(TARGET_DEVICE_TABLE) \
 		$(EXT2_OPTS) $(EXT2_BASE)
 else
 	$(GENEXT2_DIR)/genext2fs \
 		-d $(TARGET_DIR) \
+		-D $(TARGET_DEVICE_TABLE) \
 		$(EXT2_OPTS) \
 		$(EXT2_BASE)
 endif

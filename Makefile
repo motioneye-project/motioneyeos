@@ -109,9 +109,14 @@ $(STAGING_DIR):
 	@ln -sf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
-	zcat target/default/skel.tar.gz | tar -C $(BUILD_DIR) -xf -
-	cp -a target/default/target_skeleton/* $(TARGET_DIR)/
-	-find $(TARGET_DIR) -type d -name .svn -exec rm -rf {} \; > /dev/null 2>&1
+	if [ -f "$(TARGET_SKELETON)" ] ; then \
+		zcat $(TARGET_SKELETON) | tar -C $(BUILD_DIR) -xf -; \
+	fi;
+	if [ -d "$(TARGET_SKEL_DIR)" ] ; then \
+		cp -a $(TARGET_SKEL_DIR)/* $(TARGET_DIR)/; \
+	fi;
+	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
+	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
 
 source: $(TARGETS_SOURCE)
 

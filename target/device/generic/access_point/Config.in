@@ -1,6 +1,0 @@
-config BR2_TARGET_GENERIC_ACCESS_POINT
-	bool "Generic wireless access point"
-	default n
-	help
-	  Board support for a generic wireless access point.
-

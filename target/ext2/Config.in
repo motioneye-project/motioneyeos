@@ -24,11 +24,6 @@ config BR2_TARGET_ROOTFS_EXT2_SQUASH
 	depends on 	BR2_TARGET_ROOTFS_EXT2
 	default y
 
-config BR2_TARGET_ROOTFS_EXT2_DEVFILE
-	string "Location of device table file (blank for none)"
-	depends on BR2_TARGET_ROOTFS_EXT2
-	default "target/default/device_table.txt"
-
 config BR2_TARGET_ROOTFS_EXT2_OUTPUT
 	string "Output File"
 	depends on BR2_TARGET_ROOTFS_EXT2

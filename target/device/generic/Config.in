@@ -1,5 +1,0 @@
-comment "Generic Device Support"
-
-source "target/device/generic/access_point/Config.in"
-source "target/device/generic/firewall/Config.in"
-
