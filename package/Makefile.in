@@ -6,6 +6,10 @@ ARCH:=$(strip $(subst ",, $(BR2_ARCH)))
 #"
 WGET:=$(strip $(subst ",, $(BR2_WGET)))
 #"
+SVN:=$(strip $(subst ",, $(BR2_SVN)))
+#"
+
+
 
 ifneq ($(BR2_LARGEFILE),y)
 DISABLE_LARGEFILE= --disable-largefile
