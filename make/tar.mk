@@ -49,7 +49,8 @@ $(GNUTAR_DIR)/$(GNUTAR_BINARY): $(GNUTAR_DIR)/.configured
 tar-target_binary: $(GNUTAR_DIR)/$(GNUTAR_BINARY)
 	@if [ -L $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY) ] ; then \
 		rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi;
-	@if [ $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY) -ot $(GNUTAR_DIR)/$(GNUTAR_BINARY) ] ; then \
+       @if [ ! -f $(GNUTAR_DIR)/$(GNUTAR_BINARY) -o $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY) \
+       -ot $(GNUTAR_DIR)/$(GNUTAR_BINARY) ] ; then \
 	    set -x; \
 	    rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
 	    cp -a $(GNUTAR_DIR)/$(GNUTAR_BINARY) $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi ;
