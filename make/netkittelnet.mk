@@ -19,9 +19,9 @@ netkittelnet-source: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 $(NETKITTELNET_DIR)/.unpacked: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 	$(NETKITTELNET_CAT) $(DL_DIR)/$(NETKITTELNET_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# use ANSI syntax
-	sed -i -e "s/main\(\)/main(void)/;" $(NETKITTELNET_DIR)/configure
+	sed -i -e "s/main()/main(void)/;" $(NETKITTELNET_DIR)/configure
 	# Disable termcap support
-	sed -i -e "s~(.*termcap\.h.*)~/* \1 */~;" $(NETKITTELNET_DIR)/telnetd/telnetd.c
+	sed -i -e "s~\(.*termcap\.h.*\)~/* \1 */~;" $(NETKITTELNET_DIR)/telnetd/telnetd.c
 	# don't try to run cross compiled binaries while configuring things
 	cat $(NETKITTELNET_PATCH) | patch -p1 -d $(NETKITTELNET_DIR)
 	touch $(NETKITTELNET_DIR)/.unpacked
@@ -47,7 +47,7 @@ $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY): $(NETKITTELNET_DIR)/$(NETKITTELNET_
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-netkittelnet: uclibc $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
+netkittelnet: uclibc netkitbase $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
 
 netkittelnet-clean:
 	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITTELNET_DIR) uninstall
