@@ -24,10 +24,9 @@ tty2::respawn:/sbin/getty 38400 tty2
 #ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
 
 # Logging junk
-tty2::once:/bin/touch /var/log/messages
+tty3::once:/bin/touch /var/log/messages
 tty3::respawn:/usr/bin/tail -f /var/log/messages
-tty4::once:/bin/dmesg
-tty4::respawn:/usr/bin/tail -f /proc/kmsg
+::respawn:/sbin/klogd -n
 
 # Stuff to do for the 3-finger salute
 ::ctrlaltdel:/sbin/reboot

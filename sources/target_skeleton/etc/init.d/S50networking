@@ -4,4 +4,4 @@
 ifconfig lo 127.0.0.1 up
 route add -net 127.0.0.0 netmask 255.0.0.0 lo
 
-hostname dev.null
+hostname -F /etc/hostname

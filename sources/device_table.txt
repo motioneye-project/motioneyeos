@@ -26,6 +26,10 @@
 #/dev/rtc	c	640	0	0	10	135	0	0	-
 #/dev/fd	b	640	0	0	2	0	0	0	1
 #
+# User-mode Linux stuff
+/dev/ubda	b	640	0	0	98	0	0	0	-
+/dev/ubda	b	640	0	0	98	1	1	1	15
+#
 # Raid device directories
 /dev/cciss	d	755	0	0	-	-	-	-	-
 /dev/ida	d	755	0	0	-	-	-	-	-

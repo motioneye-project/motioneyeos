@@ -4,6 +4,7 @@
 # fsck, since we don't need it here...
 
 echo -n "Mounting local file systems: "
+/bin/mount / -o remount,rw > /dev/null 2>&1
 /bin/mount -a > /dev/null 2>&1
 if [ $? = 0 ] ; then
 	echo "ok"

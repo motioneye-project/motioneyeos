@@ -1,5 +1,5 @@
 --- busybox/Config.h	6 Apr 2002 04:22:15 -0000	1.116
-+++ busybox/Config.h	26 Apr 2002 10:54:28 -0000
++++ busybox/Config.h	26 Apr 2002 21:58:07 -0000
 @@ -18,9 +18,9 @@
  #define BB_CHROOT
  #define BB_CHVT
@@ -21,24 +21,15 @@
  //#define BB_DPKG
  //#define BB_DPKG_DEB
  //#define BB_DUTMP
-@@ -37,13 +37,13 @@
+@@ -37,7 +37,7 @@
  //#define BB_DUMPKMAP
  #define BB_ECHO
  #define BB_ENV
 -//#define BB_EXPR
--//#define BB_FBSET
 +#define BB_EXPR
-+#define BB_FBSET
+ //#define BB_FBSET
  //#define BB_FDFLUSH
  #define BB_FIND
- #define BB_FREE
--//#define BB_FREERAMDISK
--//#define BB_FSCK_MINIX
-+#define BB_FREERAMDISK
-+#define BB_FSCK_MINIX
- //#define BB_GETOPT
- #define BB_GREP
- #define BB_GUNZIP
 @@ -51,12 +51,12 @@
  #define BB_HALT
  #define BB_HEAD
@@ -55,7 +46,7 @@
  #define BB_KILL
  #define BB_KILLALL
  #define BB_KLOGD
-@@ -72,10 +72,10 @@
+@@ -72,7 +72,7 @@
  #define BB_LS
  #define BB_LSMOD
  //#define BB_MAKEDEVS
@@ -63,12 +54,8 @@
 +#define BB_MD5SUM
  #define BB_MKDIR
  //#define BB_MKFIFO
--//#define BB_MKFS_MINIX
-+#define BB_MKFS_MINIX
- #define BB_MKNOD
- #define BB_MKSWAP
- //#define BB_MKTEMP
-@@ -85,24 +85,24 @@
+ //#define BB_MKFS_MINIX
+@@ -85,58 +85,58 @@
  //#define BB_MSH
  //#define BB_MT
  #define BB_MV
@@ -100,7 +87,12 @@
  //#define BB_RPM2CPIO
  #define BB_SED
  //#define BB_SETKEYCODES
-@@ -114,29 +114,29 @@
+ #define BB_SLEEP
+ #define BB_SORT
+ //#define BB_STTY
+-#define BB_SWAPONOFF
++//#define BB_SWAPONOFF
+ #define BB_SYNC
  #define BB_SYSLOGD
  #define BB_TAIL
  #define BB_TAR
