@@ -24,13 +24,13 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	touch $(UCLIBC_DIR)/.unpacked
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(BUILD_DIR)/linux/.configured
-	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=$(TARGET_CROSS),g' \
-		$(UCLIBC_DIR)/Rules.mak
+	perl -i -p -e 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
 ifeq ($(ENABLE_LOCALE),true)
 	cp $(SOURCE_DIR)/uClibc.config-locale $(UCLIBC_DIR)/.config
 else
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
 endif
+	perl -i -p -e 's,^TARGET_[a-z].*,TARGET_$(ARCH)=y,g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"$(STAGING_DIR)\",g' \
