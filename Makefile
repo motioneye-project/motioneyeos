@@ -147,7 +147,7 @@ GCC_WITH_TUNE:=
 #SOFT_FLOAT:=true
 SOFT_FLOAT:=false
 
-TARGET_OPTIMIZATION=-Os
+TARGET_OPTIMIZATION=-Os -pipe
 TARGET_DEBUGGING= #-g
 
 # Currently the unwind stuff seems to work for staticly linked apps but
