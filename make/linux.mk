@@ -22,9 +22,9 @@
 ifneq ($(filter $(TARGETS),linux),)
 
 # Version of Linux to download and then apply patches to
-DOWNLOAD_LINUX_VERSION=2.4.25
+DOWNLOAD_LINUX_VERSION=2.4.26
 # Version of Linux AFTER patches
-LINUX_VERSION=2.4.26-pre5-erik
+LINUX_VERSION=2.4.26-erik
 
 LINUX_FORMAT=bzImage
 #LINUX_FORMAT=images/zImage.prep
