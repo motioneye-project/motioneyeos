@@ -1,0 +1,74 @@
+#############################################################
+#
+# netkitbase
+#
+#############################################################
+NETKITBASE_SOURCE:=netkit-base-0.17.tar.gz
+NETKITBASE_SITE:=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
+NETKITBASE_DIR:=$(BUILD_DIR)/netkit-base-0.17
+NETKITBASE_CAT:=bzcat
+NETKITBASE_BINARY:=inetd/inetd
+NETKITBASE_TARGET_BINARY:=usr/sbin/inetd
+
+$(DL_DIR)/$(NETKITBASE_SOURCE):
+	 $(WGET) -P $(DL_DIR) $(NETKITBASE_SITE)/$(NETKITBASE_SOURCE)
+
+netkitbase-source: $(DL_DIR)/$(NETKITBASE_SOURCE)
+
+$(NETKITBASE_DIR)/.unpacked: $(DL_DIR)/$(NETKITBASE_SOURCE)
+	$(NETKITBASE_CAT) $(DL_DIR)/$(NETKITBASE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	# use ANSI syntax
+	perl -i -p -e "s/main\(\)/main(void)/;" $(NETKITBASE_DIR)/configure
+	# don't try to run cross compiled binaries while configuring things
+	perl -i -p -e "s~./__conftest~#./__conftest~;" $(NETKITBASE_DIR)/configure
+	touch $(NETKITBASE_DIR)/.unpacked
+
+$(NETKITBASE_DIR)/.configured: $(NETKITBASE_DIR)/.unpacked
+	(cd $(NETKITBASE_DIR); rm -rf config.cache; \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+		--installroot=$(TARGET_DIR) \
+		--with-c-compiler=$(TARGET_CC) \
+	);
+	touch  $(NETKITBASE_DIR)/.configured
+
+$(NETKITBASE_DIR)/$(NETKITBASE_BINARY): $(NETKITBASE_DIR)/.configured
+	$(MAKE) CC=$(TARGET_CC1) -C $(NETKITBASE_DIR)
+	$(STRIP) $(NETKITBASE_DIR)/$(NETKITBASE_BINARY)
+
+$(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY): $(NETKITBASE_DIR)/$(NETKITBASE_BINARY)
+	# Only install a few selected items...
+	mkdir -p $(TARGET_DIR)/usr/sbin
+	cp $(NETKITBASE_DIR)/$(NETKITBASE_BINARY) $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NETKITBASE_DIR) install
+	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+
+$(TARGET_DIR)/etc/inetd.conf: $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
+	mkdir -p $(TARGET_DIR)/etc
+	cp $(NETKITBASE_DIR)/etc.sample/inetd.conf $(TARGET_DIR)/etc/
+	perl -i -p -e "s/^([a-z])/#\1/;" $(TARGET_DIR)/etc/inetd.conf
+
+netkitbase: uclibc $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY) $(TARGET_DIR)/etc/inetd.conf
+
+netkitbase-clean:
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NETKITBASE_DIR) uninstall
+	-rm -f $(TARGET_DIR)/usr/sbin/inetd $(TARGET_DIR)/etc/inetd.conf
+	-rm -f $(TARGET_DIR)/etc/inetd.conf
+	-$(MAKE) -C $(NETKITBASE_DIR) clean
+
+netkitbase-dirclean:
+	rm -rf $(NETKITBASE_DIR)
+

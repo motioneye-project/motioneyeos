@@ -1,0 +1,54 @@
+diff -urN pcmcia-cs-3.1.33.orig/etc/shared pcmcia-cs-3.1.33/etc/shared
+--- pcmcia-cs-3.1.33.orig/etc/shared	Thu Nov 22 11:25:24 2001
++++ pcmcia-cs-3.1.33/etc/shared	Mon Apr 15 00:39:47 2002
+@@ -2,6 +2,8 @@
+ # shared 1.28 2001/08/23 00:43:17 (David Hinds)
+ #
+ 
++umask 022
++
+ usage ()
+ {
+     echo "usage: $0 [action] [device name]"
+--- pcmcia-cs-3.1.34/etc/config.opts.orig	Tue Jul  9 09:36:23 2002
++++ pcmcia-cs-3.1.34/etc/config.opts	Tue Jul  9 09:37:47 2002
+@@ -5,7 +5,7 @@
+ 
+ # System resources available for PCMCIA devices
+ 
+-include port 0x100-0x4ff, port 0x800-0x8ff, port 0xc00-0xcff
++include port 0x100-0x4ff, port 0xc00-0xcff
+ include memory 0xc0000-0xfffff
+ include memory 0xa0000000-0xa0ffffff, memory 0x60000000-0x60ffffff
+ 
+@@ -22,7 +22,7 @@
+ # Second built-in serial port
+ #exclude irq 3
+ # First built-in parallel port
+-exclude irq 7
++#exclude irq 7
+ 
+ #----------------------------------------------------------------------
+ 
+@@ -36,7 +36,7 @@
+ 
+ # Options for Raylink/WebGear driver: uncomment only one line...
+ # Generic ad-hoc network
+-module "ray_cs" opts "essid=ADHOC_ESSID hop_dwell=128 beacon_period=256 translate=1"
++#module "ray_cs" opts "essid=ADHOC_ESSID hop_dwell=128 beacon_period=256 translate=1"
+ # Infrastructure network for older cards
+ #module "ray_cs" opts "net_type=1 essid=ESSID1"
+ # Infrastructure network for WebGear
+--- pcmcia-cs-3.2.1/Configure.orig	Thu Aug  8 00:38:15 2002
++++ pcmcia-cs-3.2.1/Configure	Tue Sep 10 05:41:24 2002
+@@ -669,6 +669,10 @@
+      >/dev/null 2>&1 ; then
+     CONFIG_IEEE1394=n
+ fi
++
++# Hack to disable network stuff for the time being...
++CONFIG_INET=n
++
+ printconfig
+ echo ""
+ 

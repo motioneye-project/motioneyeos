@@ -28,7 +28,7 @@ $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
-		--localstatedir=/var \
+		--localstatedir=/tmp \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--disable-nls \

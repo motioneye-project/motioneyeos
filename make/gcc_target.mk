@@ -22,7 +22,6 @@
 # hacking on the toolchain...
 #
 #############################################################
-GNU_TARGET_NAME:=$(ARCH)-linux
 TARGET_LANGUAGES:=c,c++
 
 # If you want multilib enabled, enable this...
@@ -52,21 +51,27 @@ $(BINUTILS_DIR2)/.configured:
 	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../lib)
 	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(BINUTILS_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
+	(cd $(BINUTILS_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
+		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
+		CC=$(TARGET_CROSS)gcc \
 		$(BINUTILS_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
-		--includedir=/usr/include \
 		--libdir=/usr/lib \
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--with-gxx-include-dir=/usr/include/c++ \
-		--disable-shared $(MULTILIB) );
+		--includedir=$(STAGING_DIR)/include \
+		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
+		--disable-shared $(MULTILIB) \
+		--program-prefix="" \
+	);
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
@@ -75,7 +80,11 @@ $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 		CC=$(TARGET_CROSS)gcc -C $(BINUTILS_DIR2)
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
-	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) \
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(HOSTCC) GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
+	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
+	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
+	    CC_FOR_TARGET=$(TARGET_CROSS)gcc \
+	    $(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
@@ -169,24 +178,53 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks:
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
-		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld CC=$(TARGET_CROSS)gcc \
-		$(GCC_DIR)/configure \
+		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
+		CC=$(TARGET_CROSS)gcc $(GCC_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
 		--prefix=$(TARGET_DIR)/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		--with-local-prefix=/usr/local \
+		--libdir=/usr/lib \
+		--includedir=$(STAGING_DIR)/include \
+		--with-gxx-include-dir=$(STAGING_DIR)/include/c++ \
+		--oldincludedir=$(STAGING_DIR)/include \
 		--enable-shared $(MULTILIB) \
-		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit );
+		--enable-target-optspace --disable-nls \
+		--with-gnu-ld --disable-__cxa_atexit \
+		--enable-languages=$(TARGET_LANGUAGES) \
+		$(EXTRA_GCC_CONFIG_OPTIONS) \
+		--program-prefix="" \
+	);
+		#$(GNU_TARGET_NAME) \
+		#--target=$(GNU_TARGET_NAME) \
+		#
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) AR=$(TARGET_CROSS)ar \
-		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
-		CC=$(TARGET_CROSS)gcc -C $(GCC_BUILD_DIR3)
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
+	    AR=$(TARGET_CROSS)ar RANLIB=$(TARGET_CROSS)ranlib \
+	    LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
+	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
+	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
+	    CC_FOR_TARGET=$(TARGET_CROSS)gcc LIBGCC2_INCLUDES=$(TARGET_DIR)/usr/include \
+	    $(MAKE) -C $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
-	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) \
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
+	    AR=$(TARGET_CROSS)ar RANLIB=$(TARGET_CROSS)ranlib \
+	    LD=$(TARGET_CROSS)ld NM=$(TARGET_CROSS)nm \
+	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
+	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
+	    CC_FOR_TARGET=$(TARGET_CROSS)gcc $(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \

@@ -5,8 +5,8 @@
 #############################################################
 GNUMAKE_SOURCE:=make-3.80.tar.bz2
 GNUMAKE_SITE:=ftp://ftp.gnu.org/gnu/make
-GNUMAKE_CAT:=bzcat
 GNUMAKE_DIR:=$(BUILD_DIR)/make-3.80
+GNUMAKE_CAT:=bzcat
 GNUMAKE_BINARY:=make
 GNUMAKE_TARGET_BINARY:=usr/bin/make
 
