@@ -121,7 +121,8 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	$(MAKE) -C $(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) -C $(BINUTILS_DIR2) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
 		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
@@ -135,7 +136,8 @@ $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	touch -c $(BINUTILS_DIR2)/binutils/objdump
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
-	$(MAKE) -C $(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) -C $(BINUTILS_DIR2) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
 		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
@@ -347,7 +349,8 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	$(MAKE) -C $(GCC_BUILD_DIR3) $(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) -C $(GCC_BUILD_DIR3) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
 		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
