@@ -89,8 +89,8 @@ endif
 UCLIBC_SITE:=ftp://www.uclibc.org/uClibc
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.1.tar.gz
-GCC_DIR:=$(BUILD_DIR)/gcc-3.1
+GCC_SOURCE:=gcc-3.1.1.tar.gz
+GCC_DIR:=$(BUILD_DIR)/gcc-3.1.1
 GCC_BUILD_DIR1:=$(BUILD_DIR)/gcc-initial
 GCC_BUILD_DIR2:=$(BUILD_DIR)/gcc-final
 
