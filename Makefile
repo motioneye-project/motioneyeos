@@ -160,7 +160,7 @@ uclibc:	$(UCLIBC_DIR)/lib/libc.a $(STAGING_DIR) $(TARGET_DIR)
 	@if [ $(UCLIBC_DIR)/lib/libc.a -nt $(UCLIBC_DIR)/.installed ]; then \
 		rm -f $(UCLIBC_DIR)/.installed; \
 		set -x; \
-		$(MAKE) \
+		$(MAKE) CROSS=$(CROSS) \
 		DEVEL_PREFIX=$(STAGING_DIR) \
 		SYSTEM_DEVEL_PREFIX=$(STAGING_DIR)/usr \
 		SHARED_LIB_LOADER_PATH=$(STAGING_DIR)/lib \
@@ -169,7 +169,7 @@ uclibc:	$(UCLIBC_DIR)/lib/libc.a $(STAGING_DIR) $(TARGET_DIR)
 	fi
 	@if [ $(UCLIBC_DIR)/lib/libc.a -nt $(UCLIBC_DIR)/.installed_runtime ]; then \
 		rm -f $(UCLIBC_DIR)/.installed_runtime; \
-		$(MAKE) \
+		$(MAKE) CROSS=$(CROSS) \
 		PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=/ \
 		SYSTEM_DEVEL_PREFIX=/usr \
