@@ -15,6 +15,7 @@ $(DL_DIR)/$(PROCPS_SOURCE):
 
 $(PROCPS_DIR)/.source: $(DL_DIR)/$(PROCPS_SOURCE)
 	zcat $(DL_DIR)/$(PROCPS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(SED) '/^CFLAGS/s:-O2:$(TARGET_CFLAGS):' $(PROCPS_DIR)/Makefile
 	touch $(PROCPS_DIR)/.source
 
 $(PROCPS_DIR)/$(PROCPS_BINARY): $(PROCPS_DIR)/.source
