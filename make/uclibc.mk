@@ -38,7 +38,7 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(BUILD_DIR)/linux/.configured
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(LINUX_DIR)/.configured
 	perl -i -p -e 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
 ifeq ($(ENABLE_LOCALE),true)
 	cp $(SOURCE_DIR)/uClibc.config-locale $(UCLIBC_DIR)/.config
