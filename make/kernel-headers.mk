@@ -9,7 +9,7 @@
 ifneq ($(filter $(TARGETS),kernel-headers),)
 
 LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
-LINUX_SOURCE:=kernel-headers-2.4.21.tar.bz2
+LINUX_SOURCE:=kernel-headers-2.4.25.tar.bz2
 LINUX_DIR:=$(TOOL_BUILD_DIR)/linux
 
 # Used by pcmcia-cs and others
@@ -43,8 +43,8 @@ $(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
 	    (cd $(LINUX_DIR)/include; ln -fs asm-$(ARCH)$(NOMMU) asm;) \
 	fi
 	touch $(LINUX_DIR)/include/linux/autoconf.h;
-	echo "#define UTS_RELEASE \"2.4.21\"" > $(LINUX_DIR)/include/linux/version.h;
-	echo "#define LINUX_VERSION_CODE 132117" >> $(LINUX_DIR)/include/linux/version.h;
+	echo "#define UTS_RELEASE \"2.4.25\"" > $(LINUX_DIR)/include/linux/version.h;
+	echo "#define LINUX_VERSION_CODE 132121" >> $(LINUX_DIR)/include/linux/version.h;
 	echo "#define KERNEL_VERSION(a,b,c) (((a) << 16) + ((b) << 8) + (c))" >> \
 		$(LINUX_DIR)/include/linux/version.h;
 	touch $(LINUX_DIR)/.configured
