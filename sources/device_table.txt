@@ -15,8 +15,8 @@
 /dev/zero	c	640	0	0	1	5	0	0	-
 /dev/random	c	640	0	0	1	8	0	0	-
 /dev/urandom	c	640	0	0	1	9	0	0	-
-/dev/tty	c	640	0	0	5	0	0	0	-
-/dev/tty	c	640	0	0	4	0	0	1	6
+/dev/tty	c	666	0	0	5	0	0	0	-
+/dev/tty	c	666	0	0	4	0	0	1	6
 /dev/console	c	640	0	0	5	1	0	0	-
 /dev/ram	b	640	0	0	1	1	0	0	-
 /dev/ram	b	640	0	0	1	0	0	1	4
