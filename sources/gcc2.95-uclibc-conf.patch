@@ -178,7 +178,7 @@ diff -urN gcc-20011006/gcc/configure gcc-20011006-new/gcc/configure
 +			tm_file="arm/linux-elf26.h $tm_file"
 +			;;
 +		esac
-+		tmake_file="t-linux arm/t-linux"
++		tmake_file="t-linux-uclibc arm/t-linux"
 +		extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
 +		gnu_ld=yes
 +		case x${enable_threads} in
