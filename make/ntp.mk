@@ -6,7 +6,7 @@
 NTP_SOURCE:=ntp-4.1.1.tar.gz
 NTP_SITE:=http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4
 NTP_DIR:=$(BUILD_DIR)/ntp-4.1.1
-NTP_CAT:=bzcat
+NTP_CAT:=zcat
 NTP_BINARY:=ntpdate/ntpdate
 NTP_TARGET_BINARY:=bin/ntpdate
 
