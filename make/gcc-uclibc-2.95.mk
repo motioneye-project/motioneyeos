@@ -75,6 +75,8 @@ $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 # # the step or libgcc will not build...
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	mkdir -p $(GCC_BUILD_DIR1)
+	-mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include
+	-(cd $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME) ; ln -sf include sys-include)
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) \
 		$(GCC_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
@@ -84,6 +86,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--enable-languages=c \
 		--disable-shared \
 		--includedir=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include \
+		--with-headers \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
@@ -164,6 +167,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/$(REAL_GNU_TAR
 		--enable-languages=$(TARGET_LANGUAGES) \
 		--enable-shared \
 		--with-gxx-include-dir=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include/c++ \
+		--with-headers \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
