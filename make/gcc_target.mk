@@ -171,14 +171,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld CC=$(TARGET_CROSS)gcc \
 		$(GCC_DIR)/configure \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--libdir=/usr/lib \
-		--localstatedir=/var \
+		--prefix=$(TARGET_DIR)/usr \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared $(MULTILIB) \
