@@ -313,7 +313,7 @@ gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
 
 gcc_target-clean:
 	rm -rf $(GCC_BUILD_DIR3)
-	rm -f $(TARGET_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
+	rm -f $(TARGET_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)*
 
 gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
