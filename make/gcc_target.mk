@@ -358,11 +358,6 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
 	rm -rf $(TARGET_DIR)/usr/include/include $(TARGET_DIR)/usr/usr
-	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-cpp $(TARGET_DIR)/usr/bin/cpp
-	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-gcc $(TARGET_DIR)/usr/bin/gcc
-	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++ $(TARGET_DIR)/usr/bin/c++
-	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-g++ $(TARGET_DIR)/usr/bin/g++
-	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++filt $(TARGET_DIR)/usr/bin/c++filt
 	-cp -dpf $(STAGING_DIR)/lib/libgcc* $(TARGET_DIR)/lib/
 	-chmod a-x $(STAGING_DIR)/lib/*++*
 	-cp -a $(STAGING_DIR)/lib/*++* $(TARGET_DIR)/lib/
@@ -371,8 +366,8 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	-mv $(TARGET_DIR)/lib/*.la $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libstdc++.so
 	-(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.so.5.0.2 libstdc++.so)
-	-$(STRIP) $(TARGET_DIR)/bin/* 
-	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
+	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP))
+	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP))
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	rm -f $(TARGET_DIR)/usr/lib/*.la*
