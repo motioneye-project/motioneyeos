@@ -17,8 +17,17 @@ VERSION:=2
 PATCHLEVEL:=4
 SUBLEVEL:=25
 LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
-LINUX_SOURCE:=kernel-headers-2.4.25.tar.bz2
-LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux
+LINUX_SOURCE:=linux-libc-headers-2.4.25.tar.bz2
+LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.25
+endif
+
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.4.27")
+VERSION:=2
+PATCHLEVEL:=4
+SUBLEVEL:=25
+LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
+LINUX_SOURCE:=linux-libc-headers-2.4.27.tar.bz2
+LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.27
 endif
 
 ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.7")

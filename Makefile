@@ -48,7 +48,8 @@ ARCH:=i386
 # Choose the kernel headers to use for kernel-headers target. This is
 # ignored if you are building your own kernel or using the system kernel.
 #
-DEFAULT_KERNEL_HEADERS:=2.4.25
+#DEFAULT_KERNEL_HEADERS:=2.4.25
+DEFAULT_KERNEL_HEADERS:=2.4.27
 #DEFAULT_KERNEL_HEADERS:=2.6.7
 #DEFAULT_KERNEL_HEADERS:=2.6.8
 
