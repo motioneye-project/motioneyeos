@@ -43,8 +43,10 @@ $(DL_DIR)/$(LINUX_SOURCE):
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
 	rm -rf $(LINUX_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version	
 	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)
+endif
 	mkdir -p $(SOURCE_DIR)/kernel-patches
 	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR)/kernel-patches
 	-(cd $(BUILD_DIR); ln -sf $(LINUX_DIR) linux)
@@ -75,6 +77,7 @@ $(LINUX_DIR)/$(LINUX_BINLOC): $(LINUX_DIR)/.depend_done
 
 $(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
 	cp -fa $(LINUX_DIR)/$(LINUX_BINLOC) $(LINUX_KERNEL)
+	touch -c $(LINUX_KERNEL)
 
 $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL)
 	rm -rf $(TARGET_DIR)/lib/modules
