@@ -1,4 +1,4 @@
-/* comment, test #5 */
+/* comment, test #6 */
 
 #include <unistd.h>
 
