@@ -1,4 +1,4 @@
 UMlinux
-root_fs
-build
-toolchain_build
+root_fs*
+build_*
+toolchain_build_*
