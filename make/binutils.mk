@@ -33,9 +33,10 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
-	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) \
-		CC_FOR_HOST=$(HOSTCC) \
-		CXX_FOR_HOST=$(HOSTCC) \
+	(cd $(BINUTILS_DIR1); CC="$(HOSTCC)" \
+		CC_FOR_HOST="$(HOSTCC)" \
+		CXX_FOR_HOST="$(HOSTCC)" \
+		LDFLAGS="$(HOSTLDFLAGS)" \
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_HOST_NAME) \
@@ -59,11 +60,13 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
-	$(MAKE) $(JLEVEL) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
+	$(MAKE) $(JLEVEL) CC_FOR_HOST="$(HOSTCC)" \
+		CXX_FOR_HOST="$(HOSTCC)" LDFLAGS="$(HOSTLDFLAGS)" \
 		-C $(BINUTILS_DIR1);
 
 $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
-	$(MAKE) $(JLEVEL) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
+	$(MAKE) $(JLEVEL) CC_FOR_HOST="$(HOSTCC)" \
+		CXX_FOR_HOST="$(HOSTCC)" LDFLAGS="$(HOSTLDFLAGS)" \
 		-C $(BINUTILS_DIR1) install;
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
@@ -86,7 +89,7 @@ $(STAGING_DIR)/lib/libg.a:
 	mkdir -p $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin
 	mkdir -p $(STAGING_DIR)/usr/include/
 	mkdir -p $(STAGING_DIR)/usr/lib/
-	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(STAGING_DIR)/lib/libg.a;
+	$(TARGET_CROSS)ar rv $(STAGING_DIR)/lib/libg.a;
 	cp $(BINUTILS_DIR)/include/ansidecl.h $(STAGING_DIR)/usr/include/
 	cp $(BINUTILS_DIR)/include/bfdlink.h $(STAGING_DIR)/usr/include/
 	cp $(BINUTILS_DIR)/include/dis-asm.h $(STAGING_DIR)/usr/include/
@@ -123,8 +126,9 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	(cd $(BINUTILS_DIR2); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
-		CC_FOR_BUILD=$(HOSTCC) \
-		CXX_FOR_BUILD=$(HOSTCC) \
+		CC_FOR_BUILD="$(HOSTCC)" \
+		CXX_FOR_BUILD="$(HOSTCC)" \
+		LDFLAGS="$(HOSTLDFLAGS)" \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -147,8 +151,9 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR2) \
-		CC_FOR_BUILD=$(HOSTCC) \
-		CXX_FOR_BUILD=$(HOSTCC) \
+		CC_FOR_BUILD="$(HOSTCC)" \
+		CXX_FOR_BUILD="$(HOSTCC)" \
+		LDFLAGS="$(HOSTLDFLAGS)" \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -161,8 +166,9 @@ $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
 	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR2) \
-		CC_FOR_BUILD=$(HOSTCC) \
-		CXX_FOR_BUILD=$(HOSTCC) \
+		CC_FOR_BUILD="$(HOSTCC)" \
+		CXX_FOR_BUILD="$(HOSTCC)" \
+		LDFLAGS="$(HOSTLDFLAGS)" \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \

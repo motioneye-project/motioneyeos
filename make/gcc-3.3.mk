@@ -120,7 +120,9 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc3_3_build_hacks
 	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR1)/gcc/xgcc -B$(GCC_BUILD_DIR1)/gcc/ -B$(STAGING_DIR)/arm-linux/bin/ -B$(STAGING_DIR)/arm-linux/lib/ -isystem $(STAGING_DIR)/arm-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR1)/target_gcc
 	chmod a+x $(GCC_BUILD_DIR1)/target_gcc
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
-		RANLIB=$(TARGET_CROSS)ranlib CC=$(HOSTCC) \
+		RANLIB=$(TARGET_CROSS)ranlib \
+		CC="$(HOSTCC)" \
+		LDFLAGS="$(HOSTLDFLAGS)" \
 		gcc_cv_as_hidden=no \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -147,6 +149,8 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc3_3_build_hacks
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
 	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR1) \
+	    CC="$(HOSTCC)" \
+	    LDFLAGS="$(HOSTLDFLAGS)" \
 	    AR_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-linux-ar \
 	    RANLIB_FOR_TARGET=$(STAGING_DIR)/bin/$(ARCH)-linux-ranlib \
 	    CC_FOR_TARGET=$(GCC_BUILD_DIR1)/target_gcc \
@@ -154,7 +158,10 @@ $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
 	touch $(GCC_BUILD_DIR1)/.compiled
 
 $(STAGING_DIR)/bin/$(ARCH)-linux-gcc: $(GCC_BUILD_DIR1)/.compiled
-	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR1) install;
+	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) \
+	    CC="$(HOSTCC)" \
+	    LDFLAGS="$(HOSTLDFLAGS)" \
+	    -C $(GCC_BUILD_DIR1) install;
 	#Cleanup then mess when --program-prefix mysteriously fails 
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-cpp $(STAGING_DIR)/bin/$(ARCH)-linux-cpp
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gcc $(STAGING_DIR)/bin/$(ARCH)-linux-gcc
@@ -209,7 +216,9 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	chmod a+x $(GCC_BUILD_DIR2)/target_gcc
 	(cd $(GCC_BUILD_DIR2); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
-		NM=$(TARGET_CROSS)nm CC=$(HOSTCC) \
+		NM=$(TARGET_CROSS)nm \
+		CC="$(HOSTCC)" \
+		LDFLAGS="$(HOSTLDFLAGS)" \
 		gcc_cv_as_hidden=no \
 		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -239,17 +248,22 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	touch $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
-	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR2) \
-	    CC=$(HOSTCC) \
+	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) \
+	    CC="$(HOSTCC)" \
+	    LDFLAGS="$(HOSTLDFLAGS)" \
 	    AR_FOR_TARGET=$(TARGET_CROSS)ar RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
 	    CC_FOR_TARGET=$(GCC_BUILD_DIR2)/target_gcc \
 	    GCC_FOR_TARGET=$(GCC_BUILD_DIR2)/target_gcc \
 	    CXX_FOR_TARGET=$(GCC_BUILD_DIR2)/target_g++
+	    -C $(GCC_BUILD_DIR2)
 	touch $(GCC_BUILD_DIR2)/.compiled
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled $(STAGING_DIR)/lib/libc.a
-	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR2) install;
+	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) \
+	    CC="$(HOSTCC)" \
+	    LDFLAGS="$(HOSTLDFLAGS)" \
+	    -C $(GCC_BUILD_DIR2) install;
 	-mv $(STAGING_DIR)/bin/gcc $(STAGING_DIR)/usr/bin;
 	-mv $(STAGING_DIR)/bin/protoize $(STAGING_DIR)/usr/bin;
 	-mv $(STAGING_DIR)/bin/unprotoize $(STAGING_DIR)/usr/bin;
@@ -328,10 +342,11 @@ TARGET_GCC_ARGS= $(TARGET_CONFIGURE_OPTS) \
 		LD_FOR_BUILD=ld \
 		NM_FOR_BUILD=nm \
 		RANLIB_FOR_BUILD=ranlib \
-		HOST_CC=$(HOSTCC) \
-		CC_FOR_BUILD=$(HOSTCC) \
-		GCC_FOR_BUILD=$(HOSTCC) \
-		CXX_FOR_BUILD=$(HOSTCC) \
+		CC="$(HOSTCC)" \
+		LDFLAGS="$(HOSTLDFLAGS)" \
+		CC_FOR_BUILD="$(HOSTCC)" \
+		GCC_FOR_BUILD="$(HOSTCC)" \
+		CXX_FOR_BUILD="$(HOSTCC)" \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
