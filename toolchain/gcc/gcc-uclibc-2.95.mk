@@ -100,11 +100,11 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	touch $(GCC_BUILD_DIR1)/.configured
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
-	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR1) all-gcc
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) all-gcc
 	touch $(GCC_BUILD_DIR1)/.compiled
 
 $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc: $(GCC_BUILD_DIR1)/.compiled
-	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR1) install-gcc
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) install-gcc
 	#rm -f $(STAGING_DIR)/bin/gccbug $(STAGING_DIR)/bin/gcov
 	#rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc $(STAGING_DIR)/share/locale
 
@@ -180,11 +180,11 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/$(REAL_GNU_TAR
 	touch $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
-	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR2) all
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) all
 	touch $(GCC_BUILD_DIR2)/.compiled
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
-	PATH=$(TARGET_PATH) $(MAKE) $(JLEVEL) -C $(GCC_BUILD_DIR2) install
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) install
 	# Strip the host binaries
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
 	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
@@ -242,12 +242,12 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR2)/.installed
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	PATH=$(TARGET_PATH) \
-	$(MAKE) $(JLEVEL) $(TARGET_GCC_ARGS) -C $(GCC_BUILD_DIR3) all
+	$(MAKE) $(TARGET_GCC_ARGS) -C $(GCC_BUILD_DIR3) all
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$(TARGET_PATH) \
-	$(MAKE) $(JLEVEL) DESTDIR=$(TARGET_DIR) -C $(GCC_BUILD_DIR3) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GCC_BUILD_DIR3) install
 	# Remove broken specs file (cross compile flag is set).
 	rm -f $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
 	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)

@@ -50,12 +50,12 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
-	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR1) all
+	$(MAKE) -C $(BINUTILS_DIR1) all
 
 # Make install will put gettext data in staging_dir/share/locale.
 # Unfortunatey, it isn't configureable.
 $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
-	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR1) install
+	$(MAKE) -C $(BINUTILS_DIR1) install
 
 binutils-dependancies:
 	@if [ ! -x /usr/bin/bison ] ; then \
@@ -109,11 +109,11 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	PATH=$(TARGET_PATH) \
-	$(MAKE) $(JLEVEL) -C $(BINUTILS_DIR2) all
+	$(MAKE) -C $(BINUTILS_DIR2) all
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	PATH=$(TARGET_PATH) \
-	$(MAKE) $(JLEVEL) DESTDIR=$(TARGET_DIR) \
+	$(MAKE) DESTDIR=$(TARGET_DIR) \
 		tooldir=/usr build_tooldir=/usr \
 		-C $(BINUTILS_DIR2) install
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
