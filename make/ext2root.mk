@@ -3,7 +3,7 @@
 # genext2fs to build to target ext2 filesystems
 #
 #############################################################
-GENEXT2_DIR=$(BUILD_DIR)/genext2fs-1.3.orig
+GENEXT2_DIR=$(BUILD_DIR)/genext2fs-1.3
 GENEXT2_SOURCE=genext2fs_1.3.orig.tar.gz
 GENEXT2_SITE=http://ftp.debian.org/debian/pool/main/g/genext2fs
 GENEXT2_PATCH=$(SOURCE_DIR)/genext2fs.patch
@@ -13,6 +13,7 @@ $(DL_DIR)/$(GENEXT2_SOURCE):
 
 $(GENEXT2_DIR): $(DL_DIR)/$(GENEXT2_SOURCE) $(GENEXT2_PATCH)
 	zcat $(DL_DIR)/$(GENEXT2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	mv $(GENEXT2_DIR).orig $(GENEXT2_DIR)
 	cat $(GENEXT2_PATCH) | patch -p1 -d $(GENEXT2_DIR)
 
 $(GENEXT2_DIR)/genext2fs: $(GENEXT2_DIR)
@@ -37,7 +38,7 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 
 # how much KB we want to add to the calculated size for the root directory,
 # to have additional space
-GENEXT2_ADDTOROOTSIZE := 256
+GENEXT2_ADDTOROOTSIZE := 512
 # maximal rootfilesystem size that can be handled
 # by genext2fs
 GENEXT2_MAXROOTSIZE := 8192
@@ -55,7 +56,7 @@ ext2root: genext2fs
 	-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	$(GENEXT2_DIR)/genext2fs -i $(GENEXT2_INODES) -b $(GENEXT2_SIZE) \
-		-d $(TARGET_DIR) -D $(SOURCE_DIR)/device_table.txt $(IMAGE)
+		-d $(TARGET_DIR) -q -D $(SOURCE_DIR)/device_table.txt $(IMAGE)
 
 ext2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)
 
