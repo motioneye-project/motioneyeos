@@ -32,6 +32,7 @@ TARGETS=
 # What sortof target system shall we compile this for?
 ARCH:=i386
 #ARCH:=arm
+#ARCH:=powerpc
 #ARCH:=whatever
 
 # enable to build a native gcc toolchain with uclibc support
@@ -52,6 +53,16 @@ BUILD_WITH_LARGEFILE:=true
 
 # Command used to download source code
 WGET:=wget --passive-ftp
+
+# Optimize toolchain for which type of CPU?
+#OPTIMIZE_FOR_CPU:=i486
+#OPTIMIZE_FOR_CPU:=strongarm
+#OPTIMIZE_FOR_CPU:=whatever
+OPTIMIZE_FOR_CPU:=$(ARCH)
+
+# Any additional gcc options you may want to include....
+#EXTRA_GCC_CONFIG_OPTIONS:=--without-float
+EXTRA_GCC_CONFIG_OPTIONS:=
 
 #############################################################
 #
@@ -95,6 +106,14 @@ TARGETS+=busybox tinylogin
 # Pick your root filesystem type.
 TARGETS+=ext2root
 
+# Must mount cramfs with 'ramdisk_blocksize=4096'
+#TARGETS+=cramfsroot
+
+# You may need to edit make/jffs2root.mk to change target 
+# endian-ness or similar, but this is sufficient for most
+# things as-is...
+#TARGETS+=jffs2root
+
 #############################################################
 #
 # You should probably leave this stuff alone unless you know 
@@ -116,6 +135,7 @@ TARGET_PATH:=$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:/bin:/sbin:/usr/bin:/usr/
 STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
 IMAGE:=$(BASE_DIR)/root_fs
+GNU_TARGET_NAME:=$(OPTIMIZE_FOR_CPU)-pc-linux-gnu
 ifneq ($(strip $(ARCH)),i386)
 CROSS:=$(ARCH)-linux-
 endif
