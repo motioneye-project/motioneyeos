@@ -43,6 +43,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 		--with-curses \
 		--enable-alias \
 	);

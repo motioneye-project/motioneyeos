@@ -40,6 +40,7 @@ $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch  $(FINDUTILS_DIR)/.configured
 

@@ -38,6 +38,7 @@ $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch  $(GNUMAKE_DIR)/.configured
 

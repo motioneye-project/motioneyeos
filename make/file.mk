@@ -39,6 +39,7 @@ $(FILE_DIR)/.configured: $(FILE_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 		--disable-fsect-man5 \
 	);
 	touch  $(FILE_DIR)/.configured

@@ -39,6 +39,7 @@ $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch  $(GAWK_DIR)/.configured
 

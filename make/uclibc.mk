@@ -54,8 +54,14 @@ endif
 		$(UCLIBC_DIR)/.config
 	sed -ie 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
-	sed -ie 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
+ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
+	sed -ie "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=y/;" \
 		$(UCLIBC_DIR)/.config
+else
+	sed -ie "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=n/;" \
+		$(UCLIBC_DIR)/.config
+endif
+	sed -ie 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
 	if [ -n "$(strip $(TARGET_SOFT_FLOAT))" ] ; then \
 		sed -ie 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
 			$(UCLIBC_DIR)/.config; \

@@ -38,6 +38,7 @@ $(GNUGREP_DIR)/.configured: $(GNUGREP_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 		--disable-perl-regexp \
 		--without-included-regex \
 	);

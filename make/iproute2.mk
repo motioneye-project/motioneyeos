@@ -40,7 +40,7 @@ $(IPROUTE2_DIR)/.configured: $(IPROUTE2_DIR)/.unpacked
 	touch  $(IPROUTE2_DIR)/.configured
 
 $(IPROUTE2_DIR)/tc/tc: $(IPROUTE2_DIR)/.configured
-	$(MAKE) -C $(IPROUTE2_DIR) KERNEL_INCLUDE=$(LINUX_SOURCE_DIR)/include CC=$(TARGET_CC)
+	$(MAKE) -C $(IPROUTE2_DIR) KERNEL_INCLUDE=$(LINUX_SOURCE_DIR)/include CC=$(TARGET_CC) AR=$(TARGET_AR)
 
 $(TARGET_DIR)/usr/sbin/tc: $(IPROUTE2_DIR)/tc/tc
 	# Copy The tc binary

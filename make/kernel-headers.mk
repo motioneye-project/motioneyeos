@@ -9,7 +9,7 @@
 ifneq ($(filter $(TARGETS),kernel-headers),)
 
 LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
-LINUX_SOURCE:=kernel-headers-2.4.21.tar.bz2
+LINUX_SOURCE:=kernel-headers-2.2.12.tar.bz2
 LINUX_DIR:=$(BUILD_DIR)/linux
 
 # Used by pcmcia-cs and others

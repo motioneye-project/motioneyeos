@@ -40,6 +40,7 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 		--disable-rpath \
 		--disable-dependency-tracking \
 	);

@@ -39,7 +39,9 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 		--includedir=$(STAGING_DIR)/include \
 		--disable-lastlog --disable-utmp \
 		--disable-utmpx --disable-wtmp --disable-wtmpx \
-		--without-x $(DISABLE_NLS) \
+		--without-x \
+		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch  $(OPENSSH_DIR)/.configured
 

@@ -19,7 +19,8 @@ $(WTOOLS_BUILD_DIR)/.configured: $(WTOOLS_BUILD_DIR)/.unpacked
 	touch  $(WTOOLS_BUILD_DIR)/.configured
 
 $(WTOOLS_BUILD_DIR)/iwconfig: $(WTOOLS_BUILD_DIR)/.configured
-	$(MAKE) -C $(WTOOLS_BUILD_DIR) KERNEL_SRC=$(BUILD_DIR)/linux CC=$(TARGET_CC)
+	$(MAKE) -C $(WTOOLS_BUILD_DIR) KERNEL_SRC=$(BUILD_DIR)/linux \
+		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)"
 
 $(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwconfig
 	# Copy The Wireless Tools

@@ -9,6 +9,9 @@ SED_CAT:=zcat
 SED_DIR:=$(BUILD_DIR)/sed-3.02
 SED_BINARY:=sed/sed
 SED_TARGET_BINARY:=bin/sed
+ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
+SED_CPPFLAGS=-D_FILE_OFFSET_BITS=64
+endif
 
 $(DL_DIR)/$(SED_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(SED_SITE)/$(SED_SOURCE)
@@ -23,6 +26,7 @@ $(SED_DIR)/.configured: $(SED_DIR)/.unpacked
 	(cd $(SED_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		CPPFLAGS="$(SED_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

@@ -43,6 +43,7 @@ $(FLEX_DIR)/.configured: $(FLEX_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch  $(FLEX_DIR)/.configured
 

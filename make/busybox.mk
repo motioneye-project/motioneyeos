@@ -31,7 +31,9 @@ ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 	sed -ie "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
 		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-	sed -ie "s/^.*DOLFS.*/DOLFS=y/;" $(BUSYBOX_DIR)/.config
+	sed -ie "s/^.*CONFIG_LFS.*/CONFIG_LFS=y/;" $(BUSYBOX_DIR)/.config
+else
+	sed -ie "s/^.*CONFIG_LFS.*/CONFIG_LFS=n/;" $(BUSYBOX_DIR)/.config
 endif
 	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
 else  # Not using snapshot

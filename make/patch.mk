@@ -38,6 +38,7 @@ $(GNUPATCH_DIR)/.configured: $(GNUPATCH_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch  $(GNUPATCH_DIR)/.configured
 
