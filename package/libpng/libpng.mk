@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBPNG_VER:=1.2.7
+LIBPNG_VER:=1.2.8
 LIBPNG_DIR:=$(BUILD_DIR)/libpng-$(LIBPNG_VER)
 #LIBPNG_SITE:=ftp://sunsite.cnlab-switch.ch/mirror/freetype/png
 LIBPNG_SITE:=ftp://ftp.simplesystems.org/pub/libpng/src/
