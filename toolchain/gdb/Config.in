@@ -23,9 +23,9 @@ config BR2_PACKAGE_GDB_CLIENT
 choice
 	prompt "GDB debuger Version"
 	default BR2_GDB_VERSION_6_3
-	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_HOST_GDB
+	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_CLIENT
 	help
-	  Select the version of gcc you wish to use.
+	  Select the version of gdb you wish to use.
 
 	config BR2_GDB_VERSION_6_1_1
 		bool "gdb 6.1.1"
