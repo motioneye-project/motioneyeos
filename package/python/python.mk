@@ -53,13 +53,17 @@ $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 	touch $(PYTHON_DIR)/.configured
 
 $(PYTHON_DIR)/$(PYTHON_BINARY): $(PYTHON_DIR)/.configured
+	export PYTHON_DISABLE_SSL=1
 	$(MAKE) CC=$(TARGET_CC) -C $(PYTHON_DIR) DESTDIR=$(TARGET_DIR) \
+		PYTHON_DISABLE_MODULES="readline pyexpat dbm gdbm bsddb _curses _curses_panel _tkinter" \
 		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
 
 $(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
+	export PYTHON_DISABLE_SSL=1
 	LD_LIBRARY_PATH=$(STAGING_DIR)/lib
 	$(MAKE) CC=$(TARGET_CC) -C $(PYTHON_DIR) install \
 		DESTDIR=$(TARGET_DIR) CROSS_COMPILE=yes \
+		PYTHON_DISABLE_MODULES="readline pyexpat dbm gdbm bsddb _curses _curses_panel _tkinter" \
 		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
 	rm $(TARGET_DIR)/usr/bin/python?.?
 	rm $(TARGET_DIR)/usr/bin/idle

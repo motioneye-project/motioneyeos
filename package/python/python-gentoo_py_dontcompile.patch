@@ -1,0 +1,17 @@
+--- Python-2.3.2/Python/import.c	2003-10-08 12:29:03.166032656 +0100
++++ import.c	2003-10-08 12:32:57.423420120 +0100
+@@ -808,8 +808,12 @@
+ write_compiled_module(PyCodeObject *co, char *cpathname, long mtime)
+ {
+ 	FILE *fp;
+-
+-	fp = open_exclusive(cpathname);
++   char *py_dontcompile = getenv("PYTHON_DONTCOMPILE");
++   
++   if (!py_dontcompile) 
++     fp = open_exclusive(cpathname);
++   else
++     fp = NULL;
+ 	if (fp == NULL) {
+ 		if (Py_VerboseFlag)
+ 			PySys_WriteStderr(

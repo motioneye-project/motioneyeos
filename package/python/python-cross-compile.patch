@@ -97,9 +97,9 @@
          # Ensure that /usr/local is always used
 -        add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
 -        add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
-+        add_dir_to_list(self.compiler.library_dirs, os.getenv('DESTDIR') + '/lib')
-+        add_dir_to_list(self.compiler.library_dirs, os.getenv('DESTDIR') + '/usr/lib')
-+        add_dir_to_list(self.compiler.include_dirs, os.getenv('DESTDIR') + '/usr/include')
++        #add_dir_to_list(self.compiler.library_dirs, os.getenv('DESTDIR') + '/lib')
++        #add_dir_to_list(self.compiler.library_dirs, os.getenv('DESTDIR') + '/usr/lib')
++        #add_dir_to_list(self.compiler.include_dirs, os.getenv('DESTDIR') + '/usr/include')
  
          # fink installs lots of goodies in /sw/... - make sure we
          # check there
