@@ -31,13 +31,15 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 	    --without-included-gettext);
 	touch  $(VALGRIND_DIR)/.configured
 
-$(VALGRIND_DIR)/valgrind: $(VALGRIND_DIR)/.configured
+$(VALGRIND_DIR)/valgrind.so: $(VALGRIND_DIR)/.configured
 	make CC=$(TARGET_CC1) -C $(VALGRIND_DIR)
 	-$(STRIP) --strip-unneeded $(VALGRIND_DIR)/*.so*
+	touch -c $(VALGRIND_DIR)/valgrind.so
 
-$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind
+$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind.so
 	make CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(VALGRIND_DIR) install
 	rm -rf $(TARGET_DIR)/usr/share/doc/valgrind
+	touch -c $(TARGET_DIR)/usr/bin/valgrind
 
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
 
