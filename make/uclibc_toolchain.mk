@@ -442,7 +442,9 @@ $(BUILD_DIR)/.shuffled: $(GCC_BUILD_DIR2)/.fixedup
 	touch $(BUILD_DIR)/.shuffled
 
 $(BUILD_DIR)/.stripped: $(BUILD_DIR)/.shuffled
-	-$(STRIP) --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
+	# Strip the host binaries
+	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
+	# Strip the target shared libs
 	-$(STRIP) --strip-unneeded -R .note -R .comment $(STAGING_DIR)/lib/*.so*;
 	touch $(BUILD_DIR)/.stripped
 
