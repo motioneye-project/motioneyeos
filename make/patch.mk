@@ -1,0 +1,55 @@
+#############################################################
+#
+# patch
+#
+#############################################################
+GNUPATCH_SOURCE:=patch-2.5.4.tar.gz
+GNUPATCH_SITE:=ftp://ftp.gnu.org/pub/gnu/patch
+GNUPATCH_CAT:=zcat
+GNUPATCH_DIR:=$(BUILD_DIR)/patch-2.5.4
+GNUPATCH_BINARY:=patch
+GNUPATCH_TARGET_BINARY:=usr/bin/patch
+
+$(DL_DIR)/$(GNUPATCH_SOURCE):
+	 $(WGET) -P $(DL_DIR) $(GNUPATCH_SITE)/$(GNUPATCH_SOURCE)
+
+patch-source: $(DL_DIR)/$(GNUPATCH_SOURCE)
+
+$(GNUPATCH_DIR)/.unpacked: $(DL_DIR)/$(GNUPATCH_SOURCE)
+	$(GNUPATCH_CAT) $(DL_DIR)/$(GNUPATCH_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	touch $(GNUPATCH_DIR)/.unpacked
+
+$(GNUPATCH_DIR)/.configured: $(GNUPATCH_DIR)/.unpacked
+	(cd $(GNUPATCH_DIR); rm -rf config.cache; \
+		PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-nls \
+	);
+	touch  $(GNUPATCH_DIR)/.configured
+
+$(GNUPATCH_DIR)/$(GNUPATCH_BINARY): $(GNUPATCH_DIR)/.configured
+	$(MAKE) CC=$(TARGET_CC) -C $(GNUPATCH_DIR)
+
+$(TARGET_DIR)/$(GNUPATCH_TARGET_BINARY): $(GNUPATCH_DIR)/$(GNUPATCH_BINARY)
+	cp -a $(GNUPATCH_DIR)/$(GNUPATCH_BINARY) $(TARGET_DIR)/$(GNUPATCH_TARGET_BINARY)
+
+patch: uclibc $(TARGET_DIR)/$(GNUPATCH_TARGET_BINARY)
+
+patch-clean:
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GNUPATCH_DIR) uninstall
+	-$(MAKE) -C $(GNUPATCH_DIR) clean
+
+patch-dirclean:
+	rm -rf $(GNUPATCH_DIR)
+
