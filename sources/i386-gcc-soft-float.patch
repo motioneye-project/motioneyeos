@@ -28,12 +28,12 @@ diff -urN gcc-3.3.2-orig/gcc/config/i386/i386.h gcc-3.3.2/gcc/config/i386/i386.h
  /* Set the value of FLT_EVAL_METHOD in float.h.  When using only the
     FPU, assume that the fpcw is set to extended precision; when using
 diff -urN gcc-3.3.2-orig/gcc/config/t-linux gcc-3.3.2/gcc/config/t-linux
---- gcc-3.3.2-orig/gcc/config/t-linux	2003-06-04 11:56:11.000000000 -0500
-+++ gcc-3.3.2/gcc/config/t-linux	2003-10-22 01:46:39.000000000 -0500
-@@ -14,3 +14,28 @@
- LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde-glibc.c \
+--- gcc-3.3.2-orig/gcc/config/t-linux-uclibc	2003-06-04 11:56:11.000000000 -0500
++++ gcc-3.3.2/gcc/config/t-linux-uclibc	2003-10-22 01:46:39.000000000 -0500
+@@ -21,3 +21,28 @@
+ LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde.c \
    $(srcdir)/unwind-sjlj.c $(srcdir)/unwind-c.c
- LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h unwind-dw2-fde.c
+ LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h
 +
 +##############################################
 +# We want fine grained libraries, so use the new code to build the
