@@ -1,0 +1,12 @@
+--- portmap_4/portmap.c.sigpipe	Sun Feb 11 17:45:11 2001
++++ portmap_4/portmap.c	Sun Feb 11 17:45:51 2001
+@@ -228,6 +228,9 @@
+ #else
+ 	(void)signal(SIGCHLD, reap);
+ #endif
++        /* Dying on SIGPIPE doesn't help anyone */
++        (void)signal(SIGPIPE, SIG_IGN);
++          
+ 	svc_run();
+ 	syslog(LOG_ERR, "run_svc returned unexpectedly");
+ 	abort();

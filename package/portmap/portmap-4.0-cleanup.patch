@@ -1,0 +1,85 @@
+Some cleanup for my last patch.
+
+
+-- 
+H.J. Lu (hjl@gnu.org)
+--
+--- portmap_4/pmap_check.c.hostname	Wed May 10 10:23:35 2000
++++ portmap_4/pmap_check.c	Wed May 10 11:03:22 2000
+@@ -35,6 +35,7 @@
+ static char sccsid[] = "@(#) pmap_check.c 1.6 93/11/21 20:58:59";
+ #endif
+ #include <unistd.h>
++#include <string.h>
+ #include <rpc/rpc.h>
+ #include <rpc/pmap_prot.h>
+ #include <syslog.h>
+@@ -69,8 +70,6 @@ int     deny_severity = LOG_WARNING;
+ /* coming from libwrap.a (tcp_wrappers) */
+ extern int hosts_ctl(char *daemon, char *name, char *addr, char *user);
+ 
+-#define	good_client(a) hosts_ctl("portmap", "", inet_ntoa(a->sin_addr), "")
+-
+ #define reserved_port(p) (IPPORT_RESERVED/2 < (p) && (p) < IPPORT_RESERVED)
+ 
+ #define unreserved_port(p) (IPPORT_RESERVED <= (p) && (p) != NFS_PORT)
+@@ -88,6 +87,59 @@ extern int hosts_ctl(char *daemon, char 
+ 
+ #define log_client(addr, proc, prog) \
+   logit(allow_severity, addr, proc, prog, "")
++
++#ifdef HOSTS_ACCESS
++static int
++good_client(addr)
++struct sockaddr_in *addr;
++{
++    struct hostent *hp;
++    char **sp;
++    char *tmpname;
++
++    /* Check the IP address first. */
++    if (hosts_ctl("portmap", "", inet_ntoa(addr->sin_addr), ""))
++	return 1;
++
++    /* Check the hostname. */
++    hp = gethostbyaddr ((const char *) &(addr->sin_addr),
++			sizeof (addr->sin_addr), AF_INET);
++
++    if (!hp)
++	return 0;
++
++    /* must make sure the hostent is authorative. */
++    tmpname = alloca (strlen (hp->h_name) + 1);
++    strcpy (tmpname, hp->h_name);
++    hp = gethostbyname(tmpname);
++    if (hp) {
++	/* now make sure the "addr->sin_addr" is on the list */
++	for (sp = hp->h_addr_list ; *sp ; sp++) {
++	    if (memcmp(*sp, &(addr->sin_addr), hp->h_length)==0)
++		break;
++	}
++	if (!*sp)
++	    /* it was a FAKE. */
++	    return 0;
++    }
++    else
++	   /* never heard of it. misconfigured DNS? */
++	   return 0;
++
++   /* Check the official name first. */
++   if (hosts_ctl("portmap", "", hp->h_name, ""))
++	return 1;
++
++   /* Check aliases. */
++   for (sp = hp->h_aliases; *sp ; sp++) {
++	if (hosts_ctl("portmap", "", *sp, ""))
++	    return 1;
++   }
++
++   /* No match */
++   return 0;
++}
++#endif
+ 
+ /* check_startup - additional startup code */
+ 

@@ -1,0 +1,18 @@
+--- portmap_5beta/portmap.c.orig	2002-12-31 22:13:17.000000000 +0200
++++ portmap_5beta/portmap.c	2002-12-31 22:13:50.000000000 +0200
+@@ -97,6 +97,7 @@
+ 
+ extern char *strerror();
+ #include <stdlib.h>
++#include <errno.h>
+ 
+ #ifndef LOG_PERROR
+ #define LOG_PERROR 0
+@@ -124,7 +125,6 @@
+ static void callit();
+ struct pmaplist *pmaplist;
+ int debugging = 0;
+-extern int errno;
+ 
+ #include "pmap_check.h"
+ 

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PORTMAP
+	bool "portmap"
+	default n
+	help
+	  The standard portmapper for RPC services.
+
+	  ftp://ftp.porcupine.org/pub/security/index.html

@@ -1,0 +1,338 @@
+diff -urN portmap_4/daemon.c portmap_4.new/daemon.c
+--- portmap_4/daemon.c	Thu Jun 11 13:53:12 1992
++++ portmap_4.new/daemon.c	Mon Nov 29 18:37:28 1999
+@@ -35,7 +35,9 @@
+ static char sccsid[] = "@(#)daemon.c	5.3 (Berkeley) 12/28/90";
+ #endif /* LIBC_SCCS and not lint */
+ 
++#include <sys/types.h>
+ #include <fcntl.h>
++#include <unistd.h>
+ 
+ /* From unistd.h */
+ #define STDIN_FILENO	0
+@@ -44,7 +46,7 @@
+ 
+ /* From paths.h */
+ #define _PATH_DEVNULL	"/dev/null"
+-
++int
+ daemon(nochdir, noclose)
+ 	int nochdir, noclose;
+ {
+diff -urN portmap_4/from_local.c portmap_4.new/from_local.c
+--- portmap_4/from_local.c	Fri May 31 06:52:58 1996
++++ portmap_4.new/from_local.c	Tue Nov 30 01:21:27 1999
+@@ -46,12 +46,14 @@
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <stdio.h>
+-#include <stdlib.h>
++#include <unistd.h>
+ #include <netdb.h>
+ #include <netinet/in.h>
+ #include <net/if.h>
+ #include <sys/ioctl.h>
+ #include <syslog.h>
++#include <stdlib.h>
++#include <string.h>
+ 
+ #ifndef TRUE
+ #define	TRUE	1
+@@ -95,7 +98,7 @@
+ }
+ 
+ /* find_local - find all IP addresses for this host */
+-
++int
+ find_local()
+ {
+     struct ifconf ifc;
+@@ -153,7 +156,7 @@
+ }
+ 
+ /* from_local - determine whether request comes from the local system */
+-
++int
+ from_local(addr)
+ struct sockaddr_in *addr;
+ {
+diff -urN portmap_4/pmap_check.c portmap_4.new/pmap_check.c
+--- portmap_4/pmap_check.c	Sun Nov 21 11:59:01 1993
++++ portmap_4.new/pmap_check.c	Tue Nov 30 01:19:37 1999
+@@ -34,7 +34,7 @@
+ #ifndef lint
+ static char sccsid[] = "@(#) pmap_check.c 1.6 93/11/21 20:58:59";
+ #endif
+-
++#include <unistd.h>
+ #include <rpc/rpc.h>
+ #include <rpc/pmap_prot.h>
+ #include <syslog.h>
+@@ -66,6 +66,9 @@
+ 
+ /* A handful of macros for "readability". */
+ 
++/* coming from libwrap.a (tcp_wrappers) */
++extern int hosts_ctl(char *daemon, char *name, char *addr, char *user);
++
+ #define	good_client(a) hosts_ctl("portmap", "", inet_ntoa(a->sin_addr), "")
+ 
+ #define	legal_port(a,p) \
+@@ -104,6 +107,7 @@
+ 
+ /* check_default - additional checks for NULL, DUMP, GETPORT and unknown */
+ 
++int
+ check_default(addr, proc, prog)
+ struct sockaddr_in *addr;
+ u_long  proc;
+@@ -121,7 +125,7 @@
+ }
+ 
+ /* check_privileged_port - additional checks for privileged-port updates */
+-
++int
+ check_privileged_port(addr, proc, prog, port)
+ struct sockaddr_in *addr;
+ u_long  proc;
+@@ -147,6 +147,6 @@
+ 
+ #ifdef LOOPBACK_SETUNSET
+-
++int
+ check_setunset(xprt, ludp_xprt, ltcp_xprt, proc, prog, port)
+ SVCXPRT *xprt;
+ SVCXPRT *ludp_xprt;
+@@ -173,6 +174,6 @@
+ 
+ #else
+-
++int
+ check_setunset(addr, proc, prog, port)
+ struct sockaddr_in *addr;
+ u_long  proc;
+@@ -160,7 +164,7 @@
+ }
+ 
+ /* check_callit - additional checks for forwarded requests */
+-
++int
+ check_callit(addr, proc, prog, aproc)
+ struct sockaddr_in *addr;
+ u_long  proc;
+@@ -213,13 +217,13 @@
+     };
+     struct proc_map *procp;
+     static struct proc_map procmap[] = {
+-	PMAPPROC_CALLIT, "callit",
+-	PMAPPROC_DUMP, "dump",
+-	PMAPPROC_GETPORT, "getport",
+-	PMAPPROC_NULL, "null",
+-	PMAPPROC_SET, "set",
+-	PMAPPROC_UNSET, "unset",
+-	0, 0,
++	{ PMAPPROC_CALLIT, "callit"},
++	{ PMAPPROC_DUMP, "dump"},
++	{ PMAPPROC_GETPORT, "getport"},
++	{ PMAPPROC_NULL, "null"},
++	{ PMAPPROC_SET, "set"},
++	{ PMAPPROC_UNSET, "unset"},
++	{ 0, 0},
+     };
+ 
+     /*
+@@ -233,7 +237,7 @@
+ 
+ 	if (prognum == 0) {
+ 	    progname = "";
+-	} else if (rpc = getrpcbynumber((int) prognum)) {
++	} else if ((rpc = getrpcbynumber((int) prognum))) {
+ 	    progname = rpc->r_name;
+ 	} else {
+ 	    sprintf(progname = progbuf, "%lu", prognum);
+diff -urN portmap_4/pmap_dump.c portmap_4.new/pmap_dump.c
+--- portmap_4/pmap_dump.c	Thu Jun 11 13:53:16 1992
++++ portmap_4.new/pmap_dump.c	Tue Nov 30 01:22:07 1999
+@@ -22,7 +22,7 @@
+ #include <rpc/pmap_prot.h>
+ 
+ static char *protoname();
+-
++int
+ main(argc, argv)
+ int     argc;
+ char  **argv;
+diff -urN portmap_4/pmap_set.c portmap_4.new/pmap_set.c
+--- portmap_4/pmap_set.c	Thu Jun 11 13:53:17 1992
++++ portmap_4.new/pmap_set.c	Tue Nov 30 01:23:49 1999
+@@ -17,6 +17,9 @@
+ #include <rpc/rpc.h>
+ #include <rpc/pmap_clnt.h>
+ 
++int parse_line(char *buf, u_long *, u_long *, int *, unsigned *); 
++
++int
+ main(argc, argv)
+ int     argc;
+ char  **argv;
+@@ -42,7 +45,7 @@
+ }
+ 
+ /* parse_line - convert line to numbers */
+-
++int
+ parse_line(buf, prog, vers, prot, port)
+ char   *buf;
+ u_long *prog;
+diff -urN portmap_4/portmap.c portmap_4.new/portmap.c
+--- portmap_4/portmap.c	Fri May 31 06:52:59 1996
++++ portmap_4.new/portmap.c	Tue Nov 30 01:01:32 1999
+@@ -83,6 +83,7 @@
+ #include <rpc/rpc.h>
+ #include <rpc/pmap_prot.h>
+ #include <stdio.h>
++#include <unistd.h>
+ #include <syslog.h>
+ #include <netdb.h>
+ #include <sys/socket.h>
+@@ -128,6 +129,7 @@
+ 
+ #include "pmap_check.h"
+ 
++int
+ main(argc, argv)
+ 	int argc;
+ 	char **argv;
+@@ -229,6 +231,7 @@
+ 	svc_run();
+ 	syslog(LOG_ERR, "run_svc returned unexpectedly");
+ 	abort();
++	/* never reached */
+ }
+ 
+ #ifndef lint
+@@ -290,7 +293,7 @@
+ 		 */
+ 		/* remote host authorization check */
+ 		check_default(svc_getcaller(xprt), rqstp->rq_proc, (u_long) 0);
+-		if (!svc_sendreply(xprt, xdr_void, (caddr_t)0) && debugging) {
++		if (!svc_sendreply(xprt, (xdrproc_t)xdr_void, (caddr_t)0) && debugging) {
+ 			abort();
+ 		}
+ 		break;
+@@ -299,7 +302,7 @@
+ 		/*
+ 		 * Set a program,version to port mapping
+ 		 */
+-		if (!svc_getargs(xprt, xdr_pmap, &reg))
++		if (!svc_getargs(xprt, (xdrproc_t)xdr_pmap, (caddr_t)&reg))
+ 			svcerr_decode(xprt);
+ 		else {
+ 			/* reject non-local requests, protect priv. ports */
+@@ -341,7 +344,7 @@
+ 				ans = 1;
+ 			}
+ 		done:
+-			if ((!svc_sendreply(xprt, xdr_int, (caddr_t)&ans)) &&
++			if ((!svc_sendreply(xprt, (xdrproc_t)xdr_int, (caddr_t)&ans)) &&
+ 			    debugging) {
+ 				(void) fprintf(stderr, "svc_sendreply\n");
+ 				abort();
+@@ -353,7 +356,7 @@
+ 		/*
+ 		 * Remove a program,version to port mapping.
+ 		 */
+-		if (!svc_getargs(xprt, xdr_pmap, &reg))
++		if (!svc_getargs(xprt, (xdrproc_t)xdr_pmap, (caddr_t)&reg))
+ 			svcerr_decode(xprt);
+ 		else {
+ 			ans = 0;
+@@ -387,7 +390,7 @@
+ 					prevpml->pml_next = pml;
+ 				free(t);
+ 			}
+-			if ((!svc_sendreply(xprt, xdr_int, (caddr_t)&ans)) &&
++			if ((!svc_sendreply(xprt, (xdrproc_t)xdr_int, (caddr_t)&ans)) &&
+ 			    debugging) {
+ 				(void) fprintf(stderr, "svc_sendreply\n");
+ 				abort();
+@@ -399,7 +402,7 @@
+ 		/*
+ 		 * Lookup the mapping for a program,version and return its port
+ 		 */
+-		if (!svc_getargs(xprt, xdr_pmap, &reg))
++		if (!svc_getargs(xprt, (xdrproc_t)xdr_pmap, (caddr_t)&reg))
+ 			svcerr_decode(xprt);
+ 		else {
+ 			/* remote host authorization check */
+@@ -414,7 +417,7 @@
+ 				port = fnd->pml_map.pm_port;
+ 			else
+ 				port = 0;
+-			if ((!svc_sendreply(xprt, xdr_int, (caddr_t)&port)) &&
++			if ((!svc_sendreply(xprt, (xdrproc_t)xdr_int, (caddr_t)&port)) &&
+ 			    debugging) {
+ 				(void) fprintf(stderr, "svc_sendreply\n");
+ 				abort();
+@@ -426,7 +429,7 @@
+ 		/*
+ 		 * Return the current set of mapped program,version
+ 		 */
+-		if (!svc_getargs(xprt, xdr_void, NULL))
++		if (!svc_getargs(xprt, (xdrproc_t)xdr_void, NULL))
+ 			svcerr_decode(xprt);
+ 		else {
+ 			/* remote host authorization check */
+@@ -437,7 +440,7 @@
+ 			} else {
+ 				p = pmaplist;
+ 			}
+-			if ((!svc_sendreply(xprt, xdr_pmaplist,
++			if ((!svc_sendreply(xprt, (xdrproc_t)xdr_pmaplist,
+ 			    (caddr_t)&p)) && debugging) {
+ 				(void) fprintf(stderr, "svc_sendreply\n");
+ 				abort();
+@@ -481,7 +484,7 @@
+ 	struct encap_parms *epp;
+ {
+ 
+-	return (xdr_bytes(xdrs, &(epp->args), &(epp->arglen), ARGSIZE));
++	return (xdr_bytes(xdrs, &(epp->args), (u_int *)&(epp->arglen), ARGSIZE));
+ }
+ 
+ struct rmtcallargs {
+@@ -585,7 +588,7 @@
+ 	timeout.tv_sec = 5;
+ 	timeout.tv_usec = 0;
+ 	a.rmt_args.args = buf;
+-	if (!svc_getargs(xprt, xdr_rmtcall_args, &a))
++	if (!svc_getargs(xprt, (xdrproc_t)xdr_rmtcall_args, (caddr_t)&a))
+ 		return;
+ 	/* host and service access control */
+ 	if (!check_callit(svc_getcaller(xprt), 
+@@ -614,9 +617,9 @@
+ 			   au->aup_uid, au->aup_gid, au->aup_len, au->aup_gids);
+ 		}
+ 		a.rmt_port = (u_long)port;
+-		if (clnt_call(client, a.rmt_proc, xdr_opaque_parms, &a,
+-		    xdr_len_opaque_parms, &a, timeout) == RPC_SUCCESS) {
+-			svc_sendreply(xprt, xdr_rmtcall_result, (caddr_t)&a);
++		if (clnt_call(client, a.rmt_proc, (xdrproc_t)xdr_opaque_parms, (caddr_t)&a,
++		    (xdrproc_t)xdr_len_opaque_parms, (caddr_t)&a, timeout) == RPC_SUCCESS) {
++			svc_sendreply(xprt, (xdrproc_t)xdr_rmtcall_result, (caddr_t)&a);
+ 		}
+ 		AUTH_DESTROY(client->cl_auth);
+ 		clnt_destroy(client);
+
++--------------------------------------------------------------------+
+| Ste'phane ERANIAN                       | Email eranian@hpl.hp.com |
+| Hewlett-Packard Laboratories            |                          |
+| 1501, Page Mill Road MS 1U-15           |                          |
+| Palo  Alto, CA 94303-096                |                          |
+| USA                                     |                          |
+| Tel : (650) 857-7174                    |                          |
+| Fax : (650) 857-5548                    |                          |
++--------------------------------------------------------------------+
+
+

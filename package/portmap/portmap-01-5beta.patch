@@ -1,0 +1,80 @@
+--- p/from_local.c
++++ p/from_local.c	2000/02/28 15:10:25
+@@ -46,6 +46,7 @@
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <stdio.h>
++#include <stdlib.h>
+ #include <netdb.h>
+ #include <netinet/in.h>
+ #include <net/if.h>
+--- p/Makefile
++++ p/Makefile	2000/02/28 15:10:25
+@@ -8,7 +8,7 @@
+ # if you disagree. See `man 3 syslog' for examples. Some syslog versions
+ # do not provide this flexibility.
+ #
+-FACILITY=LOG_MAIL
++FACILITY=LOG_AUTH
+ 
+ # To disable tcp-wrapper style access control, comment out the following
+ # macro definitions.  Access control can also be turned off by providing
+@@ -71,7 +71,7 @@
+ # With verbose logging on, HP-UX 9.x and AIX 4.1 leave zombies behind when
+ # SIGCHLD is not ignored. Enable next macro for a fix.
+ #
+-# ZOMBIES = -DIGNORE_SIGCHLD	# AIX 4.x, HP-UX 9.x
++ZOMBIES = -DIGNORE_SIGCHLD	# AIX 4.x, HP-UX 9.x
+ 
+ # Uncomment the following macro if your system does not have u_long.
+ #
+@@ -81,11 +81,15 @@
+ # libwrap.a object library. WRAP_DIR should specify the directory with
+ # that library.
+ 
+-WRAP_DIR= ../tcp_wrappers
++WRAP_DIR= /usr/lib
+ 
+ # Auxiliary object files that may be missing from your C library.
+ #
+-AUX	= daemon.o strerror.o
++AUX	= # daemon.o strerror.o
++
++LIBS	= -lwrap -lutil
++NSARCHS	= 
++O	= -Wall -O2 -pipe
+ 
+ # NEXTSTEP is a little different. The following seems to work with NS 3.2
+ #
+@@ -99,7 +103,7 @@
+ 
+ # Comment out if your compiler talks ANSI and understands const
+ #
+-CONST   = -Dconst=
++#CONST   = -Dconst=
+ 
+ ### End of configurable stuff.
+ ##############################
+@@ -109,7 +113,7 @@
+ COPT	= $(CONST) -Dperror=xperror $(HOSTS_ACCESS) $(CHECK_PORT) \
+ 	$(SYS) -DFACILITY=$(FACILITY) $(ULONG) $(ZOMBIES) $(SA_LEN) \
+ 	$(LOOPBACK) $(SETPGRP)
+-CFLAGS	= $(COPT) -O $(NSARCHS)
++CFLAGS	= $(COPT) $(O) $(NSARCHS)
+ OBJECTS	= portmap.o pmap_check.o from_local.o $(AUX)
+ 
+ all:	portmap pmap_dump pmap_set
+--- p/portmap.c
++++ p/portmap.c	2000/02/28 15:10:25
+@@ -182,9 +182,8 @@
+ 		exit(1);
+ 	}
+ 
+-#ifdef LOG_MAIL
+-	openlog("portmap", debugging ? LOG_PID | LOG_PERROR : LOG_PID,
+-	    FACILITY);
++#ifdef FACILITY
++	openlog("portmap", debugging ? LOG_PID | LOG_PERROR : LOG_PID, FACILITY);
+ #else
+ 	openlog("portmap", debugging ? LOG_PID | LOG_PERROR : LOG_PID);
+ #endif
