@@ -150,6 +150,7 @@ DEVEL_PREFIX="/usr/"
 #
 # uClibc development/debugging options
 #
+CROSS_COMPILER_PREFIX=""
 # DODEBUG is not set
 # DOASSERTS is not set
 # SUPPORT_LD_DEBUG is not set
