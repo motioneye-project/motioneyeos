@@ -75,7 +75,7 @@ $(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE) $(DL_DIR)/cross.def $(DL_DIR)
 	cat $(TINYX_PATCH) | patch -d $(TINYX_DIR) -p1
 	cp $(DL_DIR)/host.def $(TINYX_CF)/host.def
 	cp $(DL_DIR)/cross.def $(TINYX_CF)/cross.def
-	sed -ie 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' \
+	sed -i -e 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' \
 			$(TINYX_CF)/cross.def \
 			$(TINYX_LDIR)/X11/Xlib.h
 	touch $(TINYX_DIR)/.configure

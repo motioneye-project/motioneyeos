@@ -15,7 +15,7 @@ $(IPTABLES_BUILD_DIR)/.unpacked: $(DL_DIR)/$(IPTABLES_SOURCE)
 	touch $(IPTABLES_BUILD_DIR)/.unpacked
 
 $(IPTABLES_BUILD_DIR)/.configured: $(IPTABLES_BUILD_DIR)/.unpacked
-	sed -ie "s@shell.*YES.*@shell grep -q '__UCLIBC_HAS_IPV6__.*1' \
+	sed -i -e "s@shell.*YES.*@shell grep -q '__UCLIBC_HAS_IPV6__.*1' \
 		$(BUILD_DIR)/uClibc/include/bits/uClibc_config.h && \
 		echo YES\), YES\)@;" $(IPTABLES_BUILD_DIR)/Makefile
 	touch  $(IPTABLES_BUILD_DIR)/.configured

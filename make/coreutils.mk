@@ -46,10 +46,10 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 	);
 	#Fix up the max number of open files per process, which apparently 
 	# is not set when cross compiling
-	sed -ie 's,.*UTILS_OPEN_MAX.*,#define UTILS_OPEN_MAX 1019,g' \
+	sed -i -e 's,.*UTILS_OPEN_MAX.*,#define UTILS_OPEN_MAX 1019,g' \
 		$(COREUTILS_DIR)/config.h
 	# This is undefined when crosscompiling...
-	sed -ie 's,.*HAVE_PROC_UPTIME.*,#define HAVE_PROC_UPTIME 1,g' \
+	sed -i -e 's,.*HAVE_PROC_UPTIME.*,#define HAVE_PROC_UPTIME 1,g' \
 		$(COREUTILS_DIR)/config.h
 	touch  $(COREUTILS_DIR)/.configured
 

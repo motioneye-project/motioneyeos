@@ -28,20 +28,20 @@ $(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
-	sed -ie "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
+	sed -i -e "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
 		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-	sed -ie "s/^.*CONFIG_LFS.*/CONFIG_LFS=y/;" $(BUSYBOX_DIR)/.config
+	sed -i -e "s/^.*CONFIG_LFS.*/CONFIG_LFS=y/;" $(BUSYBOX_DIR)/.config
 else
-	sed -ie "s/^.*CONFIG_LFS.*/CONFIG_LFS=n/;" $(BUSYBOX_DIR)/.config
+	sed -i -e "s/^.*CONFIG_LFS.*/CONFIG_LFS=n/;" $(BUSYBOX_DIR)/.config
 endif
 	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
 else  # Not using snapshot
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/Config.h
-	sed -ie "s,^CROSS.*,CROSS=$(TARGET_CROSS),;" $(BUSYBOX_DIR)/Makefile
-	sed -ie "s,^PREFIX.*,PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Makefile
+	sed -i -e "s,^CROSS.*,CROSS=$(TARGET_CROSS),;" $(BUSYBOX_DIR)/Makefile
+	sed -i -e "s,^PREFIX.*,PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Makefile
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-	sed -ie "s/^DOLFS.*/DOLFS=true/;" $(BUSYBOX_DIR)/Makefile
+	sed -i -e "s/^DOLFS.*/DOLFS=true/;" $(BUSYBOX_DIR)/Makefile
 endif
 endif
 	touch $(BUSYBOX_DIR)/.configured

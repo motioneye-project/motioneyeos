@@ -44,9 +44,9 @@ $(UDHCP_DIR)/udhcpc: $(UDHCP_DIR)/.unpacked
 	$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(UDHCP_DIR)
 
 $(TARGET_DIR)/sbin/udhcpc: $(UDHCP_DIR)/udhcpc
-	sed -ie 's/pump/udhcpc/' $(TARGET_DIR)/etc/pcmcia/network*
-	sed -ie 's/PUMP/UDHCPC/' $(TARGET_DIR)/etc/pcmcia/network*
-	sed -ie 's/DHCP="n"/DHCP="y"/' $(TARGET_DIR)/etc/pcmcia/network*
+	sed -i -e 's/pump/udhcpc/' $(TARGET_DIR)/etc/pcmcia/network*
+	sed -i -e 's/PUMP/UDHCPC/' $(TARGET_DIR)/etc/pcmcia/network*
+	sed -i -e 's/DHCP="n"/DHCP="y"/' $(TARGET_DIR)/etc/pcmcia/network*
 	mkdir -p $(TARGET_DIR)/sbin
 	rm -f $(TARGET_DIR)/sbin/udhcpc
 	cp $(UDHCP_DIR)/udhcpc $(TARGET_DIR)/sbin/

@@ -37,33 +37,33 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	touch $(UCLIBC_DIR)/.unpacked
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(LINUX_DIR)/.configured
-	sed -ie 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
+	sed -i -e 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
 ifeq ($(ENABLE_LOCALE),true)
 	cp $(SOURCE_DIR)/uClibc.config-locale $(UCLIBC_DIR)/.config
 else
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
 endif
-	sed -ie 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
+	sed -i -e 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		$(UCLIBC_DIR)/.config
-	sed -ie 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
-	sed -ie 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
+	sed -i -e 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
+	sed -i -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
-	sed -ie 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
+	sed -i -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
 		$(UCLIBC_DIR)/.config
-	sed -ie 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
+	sed -i -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
 		$(UCLIBC_DIR)/.config
-	sed -ie 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
+	sed -i -e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
-	sed -ie "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=y/;" \
+	sed -i -e "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=y/;" \
 		$(UCLIBC_DIR)/.config
 else
-	sed -ie "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=n/;" \
+	sed -i -e "s/^.*UCLIBC_HAS_LFS.*/UCLIBC_HAS_LFS=n/;" \
 		$(UCLIBC_DIR)/.config
 endif
-	sed -ie 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
+	sed -i -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
 	if [ -n "$(strip $(TARGET_SOFT_FLOAT))" ] ; then \
-		sed -ie 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
+		sed -i -e 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
 			$(UCLIBC_DIR)/.config; \
 	fi
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(STAGING_DIR) headers install_dev;

@@ -19,7 +19,7 @@ $(HOSTAP_DIR)/.unpacked: $(DL_DIR)/$(HOSTAP_SOURCE)
 	touch $(HOSTAP_DIR)/.unpacked
 
 $(HOSTAP_DIR)/.configured: $(HOSTAP_DIR)/.unpacked
-	sed -ie "s,/.*#define PRISM2_DOWNLOAD_SUPPORT.*/,#define PRISM2_DOWNLOAD_SUPPORT,g" \
+	sed -i -e "s,/.*#define PRISM2_DOWNLOAD_SUPPORT.*/,#define PRISM2_DOWNLOAD_SUPPORT,g" \
 		$(HOSTAP_DIR)/driver/modules/hostap_config.h
 	touch  $(HOSTAP_DIR)/.configured
 
