@@ -270,7 +270,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++filt $(TARGET_DIR)/usr/bin/c++filt
 	-cp -dpf $(STAGING_DIR)/lib/libgcc* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/*++* $(TARGET_DIR)/lib/
-	cp -a $(STAGING_DIR)/include/c++ $(TARGET_DIR)/include/
+	cp -a $(STAGING_DIR)/include/c++ $(TARGET_DIR)/usr/include/
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
