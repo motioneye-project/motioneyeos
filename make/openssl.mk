@@ -43,6 +43,7 @@ $(TARGET_DIR)/lib/libcrypto.so.0: $(STAGING_DIR)/lib/libcrypto.so.0
 	#cp -fa $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/
 
 $(TARGET_DIR)/usr/include/openssl/crypto.h: $(TARGET_DIR)/lib/libcrypto.so.0
+	mkdir -p $(TARGET_DIR)/usr/include 
 	cp -a $(STAGING_DIR)/include/openssl $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libssl.a $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/lib/libcrypto.a $(TARGET_DIR)/usr/lib/
