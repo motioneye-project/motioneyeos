@@ -9,8 +9,8 @@ UCLIBC_DIR=$(BUILD_DIR)/uClibc
 UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.21
-UCLIBC_SOURCE:=uClibc-0.9.21.tar.bz2
+UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.22
+UCLIBC_SOURCE:=uClibc-0.9.22.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
@@ -128,16 +128,16 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 		ln -fs /lib/libnsl.so.0 libnsl.so; \
 		\
 		ln -fs /lib/libthread_db.so.1 libthread_db.so; \
-		rm -f ld-uClibc-0.9.21.so; \
-		rm -f libcrypt-0.9.21.so; \
-		rm -f libdl-0.9.21.so; \
-		rm -f libm-0.9.21.so; \
-		rm -f libnsl-0.9.21.so; \
-		rm -f libpthread-0.9.21.so; \
-		rm -f libresolv-0.9.21.so; \
-		rm -f libuClibc-0.9.21.so; \
-		rm -f libutil-0.9.21.so; \
-		rm -f libthread_db-0.9.21.so; \
+		rm -f ld-uClibc-0.9.22.so; \
+		rm -f libcrypt-0.9.22.so; \
+		rm -f libdl-0.9.22.so; \
+		rm -f libm-0.9.22.so; \
+		rm -f libnsl-0.9.22.so; \
+		rm -f libpthread-0.9.22.so; \
+		rm -f libresolv-0.9.22.so; \
+		rm -f libuClibc-0.9.22.so; \
+		rm -f libutil-0.9.22.so; \
+		rm -f libthread_db-0.9.22.so; \
 	)
 
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
