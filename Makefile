@@ -46,7 +46,7 @@ GCC_2_95_TOOLCHAIN:=false
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all, depending on what Erik is doing...
-USE_UCLIBC_SNAPSHOT:=false
+USE_UCLIBC_SNAPSHOT:=true
 
 # Enable this to use the busybox daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
@@ -143,10 +143,10 @@ BASE_DIR:=${shell pwd}
 SOURCE_DIR:=$(BASE_DIR)/sources
 DL_DIR:=$(SOURCE_DIR)/dl
 PATCH_DIR=$(SOURCE_DIR)/patches
-BUILD_DIR:=$(BASE_DIR)/build
+BUILD_DIR:=$(BASE_DIR)/build_$(ARCH)
 TARGET_DIR:=$(BUILD_DIR)/root
 STAGING_DIR=$(BUILD_DIR)/staging_dir
-TOOL_BUILD_DIR=$(BASE_DIR)/build
+TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)
 TARGET_PATH=$(STAGING_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
 TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 TARGET_CC=$(TARGET_CROSS)gcc

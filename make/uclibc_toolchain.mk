@@ -26,7 +26,7 @@ ifeq ($(GCC_2_95_TOOLCHAIN),false)
 #
 #############################################################
 #Directory in which to build the toolchain
-TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build
+TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)
 
 TARGET_LANGUAGES:=c,c++
 
@@ -62,8 +62,8 @@ UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.2.2.tar.gz
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.2.2
+GCC_SOURCE:=gcc-3.2.3.tar.gz
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.2.3
 
 
 

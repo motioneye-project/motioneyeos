@@ -26,7 +26,7 @@ ifeq ($(GCC_2_95_TOOLCHAIN),true)
 #
 #############################################################
 #Directory in which to build the toolchain
-TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build
+TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)
 
 TARGET_LANGUAGES:=c,c++
 
