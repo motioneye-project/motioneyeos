@@ -69,7 +69,7 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -rf $(TARGET_DIR)/usr/X11R6/man;
 	rm -rf $(TARGET_DIR)/etc/rc.d;
 	rm -rf $(TARGET_DIR)/etc/rc?.d;
-	rm -f $(TARGET_DIR)/etc/init.d/pcmcia.N;
+	rm -f $(TARGET_DIR)/etc/init.d/pcmcia*;
 	rm -f $(TARGET_DIR)/sbin/dump_cis $(TARGET_DIR)/sbin/pack_cis
 	rm -f $(TARGET_DIR)/usr/share/pnp.ids $(TARGET_DIR)/sbin/lspnp $(TARGET_DIR)/sbin/setpnp;
 	rm -f $(TARGET_DIR)/sbin/pcinitrd
@@ -80,7 +80,7 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -f $(TARGET_DIR)/sbin/ftl_format
 	rm -f $(TARGET_DIR)/usr/X11R6/bin/xcardinfo
 	rm -rf $(TARGET_DIR)/etc/sysconfig
-	cp $(PCMCIA_DIR)/etc/rc.pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
+	cp -f $(PCMCIA_DIR)/etc/rc.pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
 	rm -rf $(TARGET_DIR)/etc/pcmcia/cis
 	chmod a+x $(TARGET_DIR)/etc/init.d/S30pcmcia
 	chmod -R u+w $(TARGET_DIR)/etc/pcmcia/*
