@@ -28,6 +28,9 @@ ifneq ($(GCC_2_95_TOOLCHAIN),true)
 #Directory in which to build the toolchain
 TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)
 
+#Install libstdc++?
+INSTALL_LIBSTDCPP=true
+
 TARGET_LANGUAGES:=c,c++
 
 # If you want multilib enabled, enable this...
@@ -476,7 +479,11 @@ $(TARGET_DIR)/lib/libstdc++.so.5.0.5: $(STAGING_DIR)/lib/libstdc++.so.5.0.5
 $(TARGET_DIR)/lib/libgcc_s.so.0.9.9: $(STAGING_DIR)/lib/libgcc_s.so.0.9.9
 	cp -a $(STAGING_DIR)/lib/libgcc_s.so* $(TARGET_DIR)/lib/
 
-GCC_TARGETS=$(TARGET_DIR)/lib/libstdc++.so.5.0.5 $(TARGET_DIR)/lib/libgcc_s.so.0.9.9
+ifeq ($(INSTALL_LIBSTDCPP),true)
+GCC_TARGETS= $(TARGET_DIR)/lib/libgcc_s.so.0.9.9 $(TARGET_DIR)/lib/libstdc++.so.5.0.5 
+else
+GCC_TARGETS= $(TARGET_DIR)/lib/libgcc_s.so.0.9.9
+endif
 endif
 
 gcc_final: $(STAGING_DIR)/.setup binutils gcc_initial uclibc \
