@@ -3,10 +3,10 @@
 # grep
 #
 #############################################################
-GNUGREP_SOURCE:=grep-2.5.1.tar.bz2
-GNUGREP_SITE:=ftp://ftp.gnu.org/gnu/grep
+GNUGREP_SOURCE:=grep_2.5.1.orig.tar.gz
+GNUGREP_SITE:=http://ftp.debian.org/debian/pool/main/g/grep/
 GNUGREP_DIR:=$(BUILD_DIR)/grep-2.5.1
-GNUGREP_CAT:=bzcat
+GNUGREP_CAT:=zcat
 GNUGREP_BINARY:=src/grep
 GNUGREP_TARGET_BINARY:=bin/grep
 
