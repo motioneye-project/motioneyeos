@@ -1,4 +1,5 @@
 .config*
+.tmpconfig.h
 root_fs*
 build_*
 toolchain_build_*
