@@ -120,3 +120,36 @@
  		  local_flag = FAILED;
  		}
  	    i++;
+--- ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl08.c.orig	2004-01-03 02:26:31.000000000 -0700
++++ ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl08.c	2004-01-03 02:26:48.000000000 -0700
+@@ -399,7 +399,7 @@
+         /* FIXME: Start at -4 because ipcs prints four lines of header */
+         for (used_queues = -4; fgets(buff, BUFSIZE, f); used_queues++)
+                 ;
+-        fclose(f);
++        pclose(f);
+         if (used_queues < 0) {
+                 tst_resm(TBROK,"Could not read output of 'ipcs' to calculate used message queues");
+                 tst_exit();
+--- ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl09.c.orig	2004-01-03 02:26:36.000000000 -0700
++++ ltp-full-20031106/testcases/kernel/syscalls/ipc/msgctl/msgctl09.c	2004-01-03 02:26:53.000000000 -0700
+@@ -563,7 +563,7 @@
+         /* FIXME: Start at -4 because ipcs prints four lines of header */
+         for (used_queues = -4; fgets(buff, BUFSIZE, f); used_queues++)
+                 ;
+-        fclose(f);
++        pclose(f);
+         if (used_queues < 0) {
+                 tst_resm(TBROK,"Could not read output of 'ipcs' to calculate used message queues");
+                 tst_exit();
+--- ltp-full-20031106/testcases/kernel/syscalls/getcwd/getcwd03.orig.c	2004-01-03 02:43:05.000000000 -0700
++++ ltp-full-20031106/testcases/kernel/syscalls/getcwd/getcwd03.c	2004-01-03 02:43:19.000000000 -0700
+@@ -242,7 +242,7 @@
+ char *
+ getpwd()
+ {
+-	FILE *fin, *popen();
++	FILE *fin;
+ 	char *pwd = "/bin/pwd";
+ 	char *cp, *cp_cur;
+ 	char *buf;
