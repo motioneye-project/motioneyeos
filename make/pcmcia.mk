@@ -48,7 +48,6 @@ $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 	perl -i -p -e "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
 	perl -i -p -e "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config
 	perl -i -p -e "s/bind \"wvlan_cs\"/bind \"orinoco_cs\"/g" $(PCMCIA_DIR)/etc/config
-	perl -i -p -e "s,/etc/pcmcia.conf,/etc/pcmcia/pcmcia.conf," $(PCMCIA_DIR)/etc/rc.pcmcia
 	touch $(PCMCIA_DIR)/.configured
 
 $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
@@ -75,7 +74,6 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -f $(TARGET_DIR)/usr/share/pnp.ids $(TARGET_DIR)/sbin/lspnp $(TARGET_DIR)/sbin/setpnp;
 	rm -f $(TARGET_DIR)/sbin/pcinitrd
 	rm -f $(TARGET_DIR)/sbin/probe
-	perl -i -p -e "s,/etc/pcmcia.conf,/etc/pcmcia/pcmcia.conf," $(PCMCIA_DIR)/etc/rc.pcmcia
 	cp $(PCMCIA_DIR)/etc/rc.pcmcia $(TARGET_DIR)/etc/init.d/S30pcmcia
 	chmod a+x $(TARGET_DIR)/etc/init.d/S30pcmcia
 	chmod -R u+w $(TARGET_DIR)/etc/pcmcia/*
