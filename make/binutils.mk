@@ -67,13 +67,11 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
-	$(MAKE) CC_FOR_HOST=$(HOSTCC) \
-		CXX_FOR_HOST=$(HOSTCC) \
+	$(MAKE) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
 		-C $(BINUTILS_DIR1);
 
 $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
-	$(MAKE) CC_FOR_HOST=$(HOSTCC) \
-		CXX_FOR_HOST=$(HOSTCC) \
+	$(MAKE) CC_FOR_HOST=$(HOSTCC) CXX_FOR_HOST=$(HOSTCC) \
 		-C $(BINUTILS_DIR1) install;
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
@@ -94,7 +92,18 @@ $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 
 $(STAGING_DIR)/lib/libg.a:
 	mkdir -p $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin
+	mkdir -p $(STAGING_DIR)/usr/include/
+	mkdir -p $(STAGING_DIR)/usr/lib/
 	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(STAGING_DIR)/lib/libg.a;
+	cp $(BINUTILS_DIR)/include/ansidecl.h $(STAGING_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/bfdlink.h $(STAGING_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/dis-asm.h $(STAGING_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/libiberty.h $(STAGING_DIR)/usr/include/
+	cp $(BINUTILS_DIR)/include/symcat.h $(STAGING_DIR)/usr/include/
+	cp $(BINUTILS_DIR1)/bfd/bfd.h $(STAGING_DIR)/usr/include/
+	cp -a $(BINUTILS_DIR1)/bfd/.libs/* $(STAGING_DIR)/usr/lib/
+	cp -a $(BINUTILS_DIR1)/opcodes/.libs/* $(STAGING_DIR)/usr/lib/
+	cp -a $(BINUTILS_DIR1)/libiberty/libiberty.a $(STAGING_DIR)/usr/lib/
 
 binutils: $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/lib/libg.a
 
@@ -144,7 +153,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--enable-shared $(MULTILIB) \
+		$(MULTILIB) \
 		--program-prefix="" \
 	);
 	touch $(BINUTILS_DIR2)/.configured
@@ -176,17 +185,8 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 		prefix=/usr \
-		exec_prefix=/usr \
-		bindir=/usr/bin \
-		sbindir=/usr/sbin \
-		libexecdir=/usr/lib \
-		datadir=/usr/share \
-		sysconfdir=/etc \
-		localstatedir=/var \
-		libdir=/usr/lib \
 		infodir=/usr/info \
 		mandir=/usr/man \
-		includedir=/usr/include \
 		DESTDIR=$(TARGET_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc

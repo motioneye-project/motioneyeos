@@ -297,9 +297,15 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 	mkdir -p $(GCC_BUILD_DIR3)
 	(cd $(GCC_BUILD_DIR3); ln -fs $(ARCH)-linux build-$(GNU_TARGET_NAME))
 	(cd $(GCC_BUILD_DIR3); \
-		$(TARGET_CONFIGURE_OPTS) \
+		AR_FOR_BUILD=ar \
+		AS_FOR_BUILD=as \
+		LD_FOR_BUILD=ld \
+		NM_FOR_BUILD=nm \
+		CXX_FOR_BUILD=g++ \
+		RANLIB_FOR_BUILD=ranlib \
+		HOST_CC=$(HOSTCC) \
 		CC_FOR_BUILD=$(HOSTCC) \
-		CXX_FOR_BUILD=$(HOSTCC) \
+		GCC_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -340,8 +346,15 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	$(MAKE) -C $(GCC_BUILD_DIR3) \
+		AR_FOR_BUILD=ar \
+		AS_FOR_BUILD=as \
+		LD_FOR_BUILD=ld \
+		NM_FOR_BUILD=nm \
+		CXX_FOR_BUILD=g++ \
+		RANLIB_FOR_BUILD=ranlib \
+		HOST_CC=$(HOSTCC) \
 		CC_FOR_BUILD=$(HOSTCC) \
-		CXX_FOR_BUILD=$(HOSTCC) \
+		GCC_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -354,8 +367,16 @@ $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	$(MAKE) -C $(GCC_BUILD_DIR3) \
+		AR_FOR_BUILD=ar \
+		AS_FOR_BUILD=as \
+		LD_FOR_BUILD=ld \
+		NM_FOR_BUILD=nm \
+		CXX_FOR_BUILD=g++ \
+		RANLIB_FOR_BUILD=ranlib \
+		HOST_CC=$(HOSTCC) \
+		GCC_FOR_BUILD=$(HOSTCC) \
 		CC_FOR_BUILD=$(HOSTCC) \
-		CXX_FOR_BUILD=$(HOSTCC) \
+		GCC_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
