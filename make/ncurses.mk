@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.3 2002/05/31 10:45:43 andersen Exp $
+# $Id: ncurses.mk,v 1.4 2002/05/31 10:49:53 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -40,7 +40,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 $(NCURSES_DIR)/Makefile: $(NCURSES_DIR)/.dist
 	(cd ${NCURSES_DIR}; \
 	export PATH="${TARGET_PATH}"; \
-	./configure --with-shared --prefix=/usr --target=arm-linux  \
+	./configure --with-shared --prefix=/usr --target=$(ARCH)-linux  \
 	--enable-warnings --without-cxx --without-cxx-binding \
 	--exec_prefix=${STAGING_DIR}/usr/bin \
 	--libdir=${STAGING_DIR}/lib --includedir=${STAGING_DIR}/include) 
