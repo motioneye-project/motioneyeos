@@ -21,8 +21,9 @@ $(CCACHE_DIR1)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
 $(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
 	$(SED) "s,getenv(\"CCACHE_PATH\"),\"$(STAGING_DIR)/usr/bin\",g" \
 		$(CCACHE_DIR1)/execute.c
-	$(SED) "s,getenv(\"CCACHE_DIR\"),\"$(CCACHE_DIR1)\",g" \
+	$(SED) "s,getenv(\"CCACHE_DIR\"),\"$(CCACHE_DIR1)/cache\",g" \
 		$(CCACHE_DIR1)/ccache.c
+	mkdir -p $(CCACHE_DIR1)/cache
 	touch $(CCACHE_DIR1)/.patched
 
 $(CCACHE_DIR1)/.configured: $(CCACHE_DIR1)/.patched
