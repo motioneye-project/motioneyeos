@@ -12,31 +12,6 @@ diff -ur perl-5.8.0/ext/I18N/Langinfo/Makefile.PL perl-5.8.0.uclibc/ext/I18N/Lan
    push @names,           # This lot are only enums for __SVR4_I386_ABI_L1__:
      {name=>$_, type=>"IV",
       macro=>["#if defined($_) || (defined(__GNU_LIBRARY__) && defined(_NL_ITEM) && defined(__SVR4_I386_ABI_L1__))\n",
-diff -ur perl-5.8.0/ext/threads/Makefile.PL perl-5.8.0.uclibc/ext/threads/Makefile.PL
---- perl-5.8.0/ext/threads/Makefile.PL	2002-06-01 19:03:11.000000000 +0200
-+++ perl-5.8.0.uclibc/ext/threads/Makefile.PL	2003-03-12 09:38:13.000000000 +0100
-@@ -10,7 +10,7 @@
-       (ABSTRACT_FROM => 'threads.pm', # retrieve abstract from module
-        AUTHOR     => 'Artur Bergman  <artur@contiller.se>') : ()),
-     'MAN3PODS'		=> {},  # Pods will be built by installman
--    'LIBS'		=> [''], # e.g., '-lm'
-+    'LIBS'		=> ['-lpthread'], # e.g., '-lm'
-     'DEFINE'		=> '', # e.g., '-DHAVE_SOMETHING'
- 	# Insert -I. if you add *.h files later:
- #    'INC'		=> '', # e.g., '-I/usr/include/other'
-diff -ur perl-5.8.0/ext/threads/shared/Makefile.PL perl-5.8.0.uclibc/ext/threads/shared/Makefile.PL
---- perl-5.8.0/ext/threads/shared/Makefile.PL	2002-07-13 00:17:07.000000000 +0200
-+++ perl-5.8.0.uclibc/ext/threads/shared/Makefile.PL	2003-03-12 09:38:35.000000000 +0100
-@@ -13,7 +13,7 @@
-       (ABSTRACT_FROM => 'shared.pm', # retrieve abstract from module
-        AUTHOR     => 'Arthur Bergman <arthur@contiller.se>') : ()),
-     'MAN3PODS'		=> {},  # Pods will be built by installman
--    'LIBS'		=> [''], # e.g., '-lm'
-+    'LIBS'		=> ['-lpthread'], # e.g., '-lm'
-     'DEFINE'		=> '', # e.g., '-DHAVE_SOMETHING'
- 	# Insert -I. if you add *.h files later:
-     'INC'		=> '', # e.g., '-I/usr/include/other'
-
 diff -urN cross.o/Makefile cross.x/Makefile
 --- Makefile	2003-04-15 14:35:51.000000000 -0600
 +++ perl-5.8.0.uclibc/cross/Makefile	2003-06-27 16:38:23.000000000 -0600
