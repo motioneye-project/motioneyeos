@@ -4,6 +4,12 @@
 #
 #############################################################
 
+ifeq ($(BR2_ENABLE_LOCALE),y)
+UCLIBC_CONFIG_FILE:=toolchain/uClibc/uClibc.config-locale
+else
+UCLIBC_CONFIG_FILE:=toolchain/uClibc/uClibc.config
+endif
+
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 # Be aware that this changes daily....
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
@@ -44,11 +50,7 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 	$(SED) 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
-ifeq ($(BR2_ENABLE_LOCALE),y)
-	cp toolchain/uClibc/uClibc.config-locale $(UCLIBC_DIR)/.config
-else
-	cp toolchain/uClibc/uClibc.config $(UCLIBC_DIR)/.config
-endif
+	cp $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
 	$(SED) 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		$(UCLIBC_DIR)/.config
 	$(SED) 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
