@@ -8,14 +8,13 @@
 OPENSSL_SITE:=http://www.openssl.org/source
 OPENSSL_SOURCE:=openssl-0.9.7d.tar.gz
 OPENSSL_DIR:=$(BUILD_DIR)/openssl-0.9.7d
-OPENSSL_PATCH=$(SOURCE_DIR)/openssl.patch
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSL_SITE)/$(OPENSSL_SOURCE)
 
-$(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCH)
+$(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 	gunzip -c $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(OPENSSL_PATCH) | patch -p1 -d $(OPENSSL_DIR)
+	toolchain/patch-kernel.sh $(OPENSSL_DIR) package/openssl/ openssl\*.patch
 	# sigh... we have to resort to this just to set a gcc flag.
 	$(SED) 's,/CFLAG=,/CFLAG= $(TARGET_SOFT_FLOAT) ,g' \
 		$(OPENSSL_DIR)/Configure

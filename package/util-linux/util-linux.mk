@@ -20,7 +20,7 @@ $(DL_DIR)/$(UTIL-LINUX_PATCH):
 $(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE) $(DL_DIR)/$(UTIL-LINUX_PATCH)
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_PATCH) | patch -p1 -d $(UTIL-LINUX_DIR)
-	cat $(SOURCE_DIR)/util-linux.patch | patch -p1 -d $(UTIL-LINUX_DIR)
+	toolchain/patch-kernel.sh $(UTIL-LINUX_DIR) package/util-linux/ util-linux*.patch
 	touch $(UTIL-LINUX_DIR)/.unpacked
 
 $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked

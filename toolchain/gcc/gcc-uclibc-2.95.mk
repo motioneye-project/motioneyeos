@@ -62,7 +62,7 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
+	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
 	#
 	# We do not wish to build the libstdc++ library provided with gcc,
 	# since it doesn't seem to work at all with uClibc plus gcc 2.95...

@@ -30,8 +30,8 @@ $(LIBFLOAT_DIR)/.unpacked: $(DL_DIR)/$(LIBFLOAT_SOURCE) $(DL_DIR)/$(LIBFLOAT_PAT
 	$(LIBFLOAT_CAT) $(DL_DIR)/$(LIBFLOAT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# Remove the binary files distributed with the the package.
 	make -C $(LIBFLOAT_DIR) clean
-	$(SOURCE_DIR)/patch-kernel.sh $(LIBFLOAT_DIR) $(DL_DIR) $(LIBFLOAT_PATCH)
-	$(SOURCE_DIR)/patch-kernel.sh $(LIBFLOAT_DIR) $(SOURCE_DIR) libfloat.patch
+	toolchain/patch-kernel.sh $(LIBFLOAT_DIR) $(DL_DIR) $(LIBFLOAT_PATCH)
+	toolchain/patch-kernel.sh $(LIBFLOAT_DIR) package/libfloat/ libfloat\*.patch
 	touch $(LIBFLOAT_DIR)/.unpacked
 
 $(LIBFLOAT_DIR)/libfloat.so.1: $(LIBFLOAT_DIR)/.unpacked $(TARGET_CC)

@@ -49,7 +49,7 @@ $(TARGET_DIR)/$(BISON_TARGET_BINARY): $(BISON_DIR)/$(BISON_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BISON_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	cp -a $(SOURCE_DIR)/yacc $(TARGET_DIR)/usr/bin/yacc
+	cp -a package/bison/yacc $(TARGET_DIR)/usr/bin/yacc
 
 bison: uclibc $(TARGET_DIR)/$(BISON_TARGET_BINARY)
 

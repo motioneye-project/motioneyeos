@@ -7,7 +7,6 @@
 VALGRIND_SITE:=http://developer.kde.org/~sewardj/
 VALGRIND_DIR:=$(BUILD_DIR)/valgrind-2.1.1
 VALGRIND_SOURCE:=valgrind-2.1.1.tar.bz2
-VALGRIND_PATCH:=$(SOURCE_DIR)/valgrind.patch
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
@@ -17,7 +16,7 @@ $(VALGRIND_DIR)/.unpacked: $(DL_DIR)/$(VALGRIND_SOURCE)
 	touch  $(VALGRIND_DIR)/.unpacked
 
 $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked
-	cat $(VALGRIND_PATCH) | patch -d $(VALGRIND_DIR) -p1
+	toolchain/patch-kernel.sh $(VALGRIND_DIR) package/valgrind/ valgrind*.patch
 	touch $(VALGRIND_DIR)/.patched
 
 $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched

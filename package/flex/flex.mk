@@ -21,7 +21,7 @@ flex-source: $(DL_DIR)/$(FLEX_SOURCE) $(DL_DIR)/$(FLEX_PATCH)
 
 $(FLEX_DIR)/.unpacked: $(DL_DIR)/$(FLEX_SOURCE) $(DL_DIR)/$(FLEX_PATCH)
 	$(FLEX_CAT) $(DL_DIR)/$(FLEX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	#$(SOURCE_DIR)/patch-kernel.sh $(FLEX_DIR) $(DL_DIR) $(FLEX_PATCH)
+	#toolchain/patch-kernel.sh $(FLEX_DIR) $(DL_DIR) $(FLEX_PATCH)
 	touch $(FLEX_DIR)/.unpacked
 
 $(FLEX_DIR)/.configured: $(FLEX_DIR)/.unpacked

@@ -21,7 +21,7 @@ $(PYTHON_DIR)/.unpacked: $(DL_DIR)/$(PYTHON_SOURCE)
 	touch $(PYTHON_DIR)/.unpacked
 
 $(PYTHON_DIR)/.patched: $(PYTHON_DIR)/.unpacked
-	$(SOURCE_DIR)/patch-kernel.sh $(PYTHON_DIR) $(SOURCE_DIR) python*.patch
+	toolchain/patch-kernel.sh $(PYTHON_DIR) package/python/ python*.patch
 	touch $(PYTHON_DIR)/.patched
 
 $(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched

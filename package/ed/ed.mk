@@ -21,7 +21,7 @@ ed-source: $(DL_DIR)/$(ED_SOURCE) $(DL_DIR)/$(ED_PATCH)
 
 $(ED_DIR)/.unpacked: $(DL_DIR)/$(ED_SOURCE) $(DL_DIR)/$(ED_PATCH)
 	$(ED_CAT) $(DL_DIR)/$(ED_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	$(SOURCE_DIR)/patch-kernel.sh $(ED_DIR) $(DL_DIR) $(ED_PATCH)
+	toolchain/patch-kernel.sh $(ED_DIR) $(DL_DIR) $(ED_PATCH)
 	touch $(ED_DIR)/.unpacked
 
 $(ED_DIR)/.configured: $(ED_DIR)/.unpacked

@@ -7,14 +7,13 @@
 OPENSSH_SITE:=ftp://ftp.tux.org/bsd/openbsd/OpenSSH/portable/
 OPENSSH_DIR:=$(BUILD_DIR)/openssh-3.8p1
 OPENSSH_SOURCE:=openssh-3.8p1.tar.gz
-OPENSSH_PATCH:=$(SOURCE_DIR)/openssh.patch
 
 $(DL_DIR)/$(OPENSSH_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSH_SITE)/$(OPENSSH_SOURCE)
 
-$(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE) $(OPENSSH_PATCH)
+$(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 	zcat $(DL_DIR)/$(OPENSSH_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(OPENSSH_PATCH) | patch -p1 -d $(OPENSSH_DIR)
+	toolchain/patch-kernel.sh $(OPENSSH_DIR) package/openssh/ openssh\*.patch
 	touch  $(OPENSSH_DIR)/.unpacked
 
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked

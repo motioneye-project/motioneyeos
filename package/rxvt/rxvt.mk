@@ -21,7 +21,6 @@
 # USA
 
 RXVT_SOURCE:=rxvt-2.6.4.tar.bz2
-RXVT_PATCH:=$(SOURCE_DIR)/rxvt-2.6.4.patch
 RXVT_SITE:=ftp://ftp.rxvt.org/pub/rxvt/
 RXVT_CAT:=bzcat
 RXVT_DIR:=$(BUILD_DIR)/rxvt-2.6.4
@@ -49,7 +48,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--x-includes=$(TINYX_DIR)/exports/include \
 		--x-libraries=$(TINYX_DIR)/exports/lib \
 	);
-	cat $(RXVT_PATCH) | patch -d $(RXVT_DIR) -p1
+	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ rxvt*.patch
 	touch  $(RXVT_DIR)/.configured
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured

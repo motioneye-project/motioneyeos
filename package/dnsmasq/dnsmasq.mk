@@ -22,7 +22,7 @@ $(DL_DIR)/$(DNSMASQ_SOURCE):
 
 $(DNSMASQ_DIR)/.source: $(DL_DIR)/$(DNSMASQ_SOURCE)
 	zcat $(DL_DIR)/$(DNSMASQ_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	$(SOURCE_DIR)/patch-kernel.sh $(DNSMASQ_DIR) $(SOURCE_DIR) \
+	toolchain/patch-kernel.sh $(DNSMASQ_DIR) package/dnsmasq/ \
 		$(DNSMASQ_VER)-\*.patch
 	touch $(DNSMASQ_DIR)/.source
 

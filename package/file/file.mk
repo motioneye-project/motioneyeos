@@ -18,7 +18,7 @@ file-source: $(DL_DIR)/$(FILE_SOURCE)
 
 $(FILE_DIR)/.unpacked: $(DL_DIR)/$(FILE_SOURCE)
 	$(FILE_CAT) $(DL_DIR)/$(FILE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(SOURCE_DIR)/file.patch | patch -p1 -d $(FILE_DIR)
+	toolchain/patch-kernel.sh $(FILE_DIR) package/file/ file\*.patch
 	touch  $(FILE_DIR)/.unpacked
 
 $(FILE_DIR)/.configured: $(FILE_DIR)/.unpacked

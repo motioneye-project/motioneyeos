@@ -38,7 +38,7 @@ LINUX_BINLOC=arch/$(LINUX_KARCH)/boot/$(LINUX_FORMAT)
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
 LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.4
-LINUX_KCONFIG=$(SOURCE_DIR)/linux.config
+LINUX_KCONFIG=package/linux/linux.config
 LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 # Used by pcmcia-cs and others
 LINUX_SOURCE_DIR=$(LINUX_DIR)
@@ -57,8 +57,8 @@ ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version	
 	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)
 endif
-	mkdir -p $(SOURCE_DIR)/kernel-patches
-	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR)/kernel-patches
+	mkdir -p package/linux/kernel-patches
+	toolchain/patch-kernel.sh $(LINUX_DIR) package/linux/kernel-patches
 	-(cd $(TOOL_BUILD_DIR); ln -sf $(LINUX_DIR) linux)
 	touch $(LINUX_DIR)/.unpacked
 

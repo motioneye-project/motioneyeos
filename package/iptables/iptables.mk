@@ -16,7 +16,7 @@ $(IPTABLES_BUILD_DIR)/.unpacked: $(DL_DIR)/$(IPTABLES_SOURCE)
 
 $(IPTABLES_BUILD_DIR)/.configured: $(IPTABLES_BUILD_DIR)/.unpacked
 	# Allow patches.  Needed for openwrt for instance.
-	$(SOURCE_DIR)/patch-kernel.sh $(IPTABLES_BUILD_DIR) $(SOURCE_DIR) iptables-\*.patch
+	toolchain/patch-kernel.sh $(IPTABLES_BUILD_DIR) package/iptables/ iptables-\*.patch
 	#
 	$(SED) "s;\[ -f /usr/include/netinet/ip6.h \];grep -q '__UCLIBC_HAS_IPV6__ 1' \
 		$(BUILD_DIR)/uClibc/include/bits/uClibc_config.h;" $(IPTABLES_BUILD_DIR)/Makefile

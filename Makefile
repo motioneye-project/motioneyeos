@@ -48,6 +48,8 @@ include toolchain/Makefile.in
 include toolchain/*/Makefile.in
 include package/Makefile.in
 include package/*/Makefile.in
+include target/Makefile.in
+include target/*/Makefile.in
 
 #############################################################
 #

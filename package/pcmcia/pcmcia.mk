@@ -24,7 +24,6 @@
 PCMCIA_SOURCE:=pcmcia-cs-3.2.7.tar.gz
 PCMCIA_SITE:=http://aleron.dl.sourceforge.net/sourceforge/pcmcia-cs
 PCMCIA_DIR:=$(BUILD_DIR)/pcmcia-cs-3.2.7
-PCMCIA_PATCH:=$(SOURCE_DIR)/pcmcia.patch
 PCMCIA_CAT:=zcat
 
 $(DL_DIR)/$(PCMCIA_SOURCE):
@@ -37,7 +36,7 @@ $(PCMCIA_DIR)/.unpacked: $(DL_DIR)/$(PCMCIA_SOURCE)
 	touch $(PCMCIA_DIR)/.unpacked
 
 $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked
-	cat $(PCMCIA_PATCH) | patch -d $(PCMCIA_DIR) -p1
+	toolchain/patch-kernel.sh $(PCMCIA_DIR) package/pcmcia/ pcmcia\*.patch
 	touch $(PCMCIA_DIR)/.patched
 
 $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched

@@ -9,7 +9,6 @@ NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-5.1
 NETSNMP_SOURCE:=net-snmp-5.1.tar.gz
 NETSNMP_PATCH1:=net-snmp_5.1-5.diff.gz
 NETSNMP_PATCH1_URL:=http://ftp.debian.org/debian/pool/main/n/net-snmp/
-NETSNMP_PATCH2:=$(SOURCE_DIR)/netsnmp.patch
 
 $(DL_DIR)/$(NETSNMP_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NETSNMP_URL)/$(NETSNMP_SOURCE)
@@ -20,7 +19,7 @@ $(DL_DIR)/$(NETSNMP_PATCH1):
 $(NETSNMP_DIR)/.unpacked: $(DL_DIR)/$(NETSNMP_SOURCE) $(DL_DIR)/$(NETSNMP_PATCH1)
 	zcat $(DL_DIR)/$(NETSNMP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	zcat $(DL_DIR)/$(NETSNMP_PATCH1) | patch -p1 -d $(NETSNMP_DIR)
-	cat $(NETSNMP_PATCH2) | patch -p1 -d $(NETSNMP_DIR)
+	toolchain/patch-kernel.sh $(NETSNMP_DIR) package/netsnmp/ netsnmp\*.patch
 	touch  $(NETSNMP_DIR)/.unpacked
 
 # We set CAN_USE_SYSCTL to no and use /proc since the

@@ -12,7 +12,6 @@ VTUN_DIR:=$(BUILD_DIR)/vtun-2.6
 VTUN_CAT:=zcat
 VTUN_BINARY:=vtund
 VTUN_TARGET_BINARY:=usr/sbin/vtund
-VTUN_PATCH:=$(SOURCE_DIR)/vtun.patch
 
 $(DL_DIR)/$(VTUN_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(VTUN_SITE)/$(VTUN_SOURCE)
@@ -22,7 +21,7 @@ vtun-source: $(DL_DIR)/$(VTUN_SOURCE)
 $(VTUN_DIR)/.unpacked: $(DL_DIR)/$(VTUN_SOURCE)
 	$(VTUN_CAT) $(DL_DIR)/$(VTUN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(BUILD_DIR)/vtun $(VTUN_DIR)
-	cat $(VTUN_PATCH) | patch -p1 -d $(VTUN_DIR)
+	toolchain/patch-kernel.sh $(VTUN_DIR) package/vtun/ vtun*.patch
 	touch $(VTUN_DIR)/.unpacked
 
 $(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked zlib lzo openssl

@@ -3,8 +3,7 @@
 # Any custom stuff you feel like doing....
 #
 #############################################################
-CUST_DIR:=$(SOURCE_DIR)/customize
-ROOT_DIR:=$(BUILD_DIR)/root
+CUST_DIR:=package/customize/source
 
 customize:
-	cp -af $(CUST_DIR)/* $(ROOT_DIR)/
+	-cp -af $(CUST_DIR)/* $(TARGET_DIR)/

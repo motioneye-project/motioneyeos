@@ -12,7 +12,6 @@ LZO_SITE:=http://ftp.debian.org/debian/pool/main/l/lzo
 #LZO_SITE:=http://www.oberhumer.com/opensource/lzo/download
 LZO_DIR:=$(BUILD_DIR)/lzo-1.08
 LZO_CAT:=zcat
-LZO_PATCH:=$(SOURCE_DIR)/lzo-cross-compile.patch
 
 $(DL_DIR)/$(LZO_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LZO_SITE)/$(LZO_SOURCE)
@@ -21,7 +20,7 @@ lzo-source: $(DL_DIR)/$(LZO_SOURCE)
 
 $(LZO_DIR)/.unpacked: $(DL_DIR)/$(LZO_SOURCE)
 	$(LZO_CAT) $(DL_DIR)/$(LZO_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(LZO_PATCH) | patch -p1 -d $(LZO_DIR)
+	toolchain/patch-kernel.sh $(LZO_DIR) package/lzo/ lzo-\*.patch
 	touch $(LZO_DIR)/.unpacked
 
 LZO_CONFIG_SHARED:=--disable-shared

@@ -6,14 +6,13 @@
 HOTPLUG_SOURCE=diethotplug-0.4.tar.gz
 HOTPLUG_SITE=http://aleron.dl.sourceforge.net/sourceforge/linux-hotplug
 HOTPLUG_DIR=$(BUILD_DIR)/diethotplug-0.4
-HOTPLUG_PATCH=$(SOURCE_DIR)/hotplug.patch
 
 $(DL_DIR)/$(HOTPLUG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(HOTPLUG_SITE)/$(HOTPLUG_SOURCE)
 
-$(HOTPLUG_DIR): $(DL_DIR)/$(HOTPLUG_SOURCE) $(HOTPLUG_PATCH)
+$(HOTPLUG_DIR): $(DL_DIR)/$(HOTPLUG_SOURCE)
 	zcat $(DL_DIR)/$(HOTPLUG_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(HOTPLUG_PATCH) | patch -p1 -d $(HOTPLUG_DIR)
+	toolchain/patch-kernel.sh $(HOTPLUG_DIR) package/hotplug/ hotplug\*.patch
 
 $(HOTPLUG_DIR)/hotplug: $(HOTPLUG_DIR)
 	$(MAKE) CROSS=$(TARGET_CROSS) DEBUG=false KLIBC=false \

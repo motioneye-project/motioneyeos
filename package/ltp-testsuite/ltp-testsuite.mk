@@ -7,7 +7,6 @@ LTP_TESTSUITE_SOURCE:=ltp-full-20040506.tgz
 LTP_TESTSUITE_SITE:=http://aleron.dl.sourceforge.net/sourceforge/ltp
 LTP_TESTSUITE_CAT:=zcat
 LTP_TESTSUITE_DIR:=$(BUILD_DIR)/ltp-full-20040506
-LTP_TESTSUITE_PATCH:=$(SOURCE_DIR)/ltp-testsuite.patch
 
 
 $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
@@ -17,7 +16,7 @@ ltp-testsuite-source: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 
 $(LTP_TESTSUITE_DIR)/.unpacked: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 	$(LTP_TESTSUITE_CAT) $(DL_DIR)/$(LTP_TESTSUITE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(LTP_TESTSUITE_PATCH) | patch -p1 -d $(LTP_TESTSUITE_DIR)
+	toolchain/patch-kernel.sh $(LTP_TESTSUITE_DIR) package/ltp-testsuite/ ltp-testsuite-\*.patch
 	touch $(LTP_TESTSUITE_DIR)/.unpacked
 
 $(LTP_TESTSUITE_DIR)/ltp-testsuite: $(LTP_TESTSUITE_DIR)/.unpacked

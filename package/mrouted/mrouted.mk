@@ -8,7 +8,6 @@ MROUTED_SOURCE:=mrouted_3.9-beta3.orig.tar.gz
 MROUTED_SITE:=http://ftp.debian.org/debian/pool/non-free/m/mrouted
 MROUTED_DIR:=$(BUILD_DIR)/mrouted-3.9-beta3.orig
 MROUTED_CAT:=zcat
-#MROUTED_PATCH:=$(SOURCE_DIR)/mrouted_3.9-beta3-1.1.diff
 MROUTED_PATCH:=mrouted_3.9-beta3-1.1.diff.gz
 MROUTED_BINARY:=mrouted
 MROUTED_TARGET_BINARY:=usr/sbin/mrouted
@@ -24,7 +23,7 @@ mrouted-source: $(DL_DIR)/$(MROUTED_SOURCE) $(DL_DIR)/$(MROUTED_PATCH)
 $(MROUTED_DIR)/.unpacked: mrouted-source
 	$(MROUTED_CAT) $(DL_DIR)/$(MROUTED_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	$(MROUTED_CAT) $(DL_DIR)/$(MROUTED_PATCH) | patch -p1 -d $(MROUTED_DIR)
-	$(SOURCE_DIR)/patch-kernel.sh $(MROUTED_DIR) $(SOURCE_DIR) mrouted-\*.patch
+	toolchain/patch-kernel.sh $(MROUTED_DIR) package/mrouted/ mrouted-\*.patch
 	touch $(MROUTED_DIR)/.unpacked
 
 $(MROUTED_DIR)/$(MROUTED_BINARY): $(MROUTED_DIR)/.unpacked

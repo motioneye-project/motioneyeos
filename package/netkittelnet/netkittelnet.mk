@@ -9,7 +9,6 @@ NETKITTELNET_DIR:=$(BUILD_DIR)/netkit-telnet-0.17
 NETKITTELNET_CAT:=zcat
 NETKITTELNET_BINARY:=telnetd/telnetd
 NETKITTELNET_TARGET_BINARY:=usr/sbin/telnetd
-NETKITTELNET_PATCH:=$(SOURCE_DIR)/netkittelnet.patch
 
 $(DL_DIR)/$(NETKITTELNET_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(NETKITTELNET_SITE)/$(NETKITTELNET_SOURCE)
@@ -23,7 +22,7 @@ $(NETKITTELNET_DIR)/.unpacked: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 	# Disable termcap support
 	$(SED) "s~\(.*termcap\.h.*\)~/* \1 */~;" $(NETKITTELNET_DIR)/telnetd/telnetd.c
 	# don't try to run cross compiled binaries while configuring things
-	cat $(NETKITTELNET_PATCH) | patch -p1 -d $(NETKITTELNET_DIR)
+	toolchain/patch-kernel.sh $(NETKITTELNET_DIR) package/netkittelnet/ netkittelnet\*.patch
 	touch $(NETKITTELNET_DIR)/.unpacked
 
 $(NETKITTELNET_DIR)/.configured: $(NETKITTELNET_DIR)/.unpacked

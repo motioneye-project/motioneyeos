@@ -67,7 +67,7 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
+	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.
 	# However, we still need a patch for arm.  There's a similar patch for gcc 3.3.x
@@ -75,14 +75,14 @@ $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# anyone (?) who might still be using gcc 2.95.  mjn3
 ifeq ($(SOFT_FLOAT),true)
 ifeq ("$(strip $(ARCH))","arm")
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
+	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
 endif
 ifeq ("$(strip $(ARCH))","armeb")
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
+	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
 endif
 	# Not yet updated to 3.4.1.
 	#ifeq ("$(strip $(ARCH))","i386")
-	#$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) toolchain/gcc i386-gcc-soft-float.patch
+	#toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc i386-gcc-soft-float.patch
 	#endif
 endif
 	touch $(GCC_DIR)/.patched

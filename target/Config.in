@@ -1,0 +1,8 @@
+#
+
+menu "Target Options"
+
+source "target/cramfs/Config.in"
+
+endmenu
+

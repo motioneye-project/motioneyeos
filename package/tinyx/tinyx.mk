@@ -43,7 +43,6 @@ TINYX_LIBS:=ICE X11 Xext Xpm
 TINYX_DIR:=$(BUILD_DIR)/xc-011010
 TINYX_LDIR:=$(TINYX_DIR)/lib
 TINYX_PROGS:=$(TINYX_DIR)/programs
-TINYX_PATCH:=$(SOURCE_DIR)/tinyx-011010.patch
 TINYX_SOURCE:=xc-011010.tar.bz2
 TINYX_SITE:= http://intimate.handhelds.org/jacques/
 TINYX_CF:=$(TINYX_DIR)/config/cf
@@ -72,7 +71,7 @@ $(DL_DIR)/host.def:
 #
 $(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE) $(DL_DIR)/cross.def $(DL_DIR)/host.def
 	$(TINYX_CAT) $(DL_DIR)/$(TINYX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	cat $(TINYX_PATCH) | patch -d $(TINYX_DIR) -p1
+	toolchain/patch-kernel.sh $(TINYX_DIR) package/tinyx/ tinyx*.patch
 	cp $(DL_DIR)/host.def $(TINYX_CF)/host.def
 	cp $(DL_DIR)/cross.def $(TINYX_CF)/cross.def
 	$(SED) 's,arm-uclibc-,$(ARCH)-linux-uclibc-,g' $(TINYX_CF)/cross.def
