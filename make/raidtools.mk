@@ -39,15 +39,15 @@ $(RAIDTOOLS2_DIR)/.configured: $(RAIDTOOLS2_DIR)/.unpacked
 		$(DISABLE_NLS) \
                 --enable-fsect-man5 \
         );
-        touch  $(RAIDTOOLS2_DIR)/.configured
+	touch  $(RAIDTOOLS2_DIR)/.configured
 
 $(RAIDTOOLS2_DIR)/$(RAIDTOOLS2_BINARY): $(RAIDTOOLS2_DIR)/.configured
         $(MAKE) CC=$(TARGET_CC) -C $(RAIDTOOLS2_DIR)
 
 $(TARGET_DIR)/$(RAIDTOOLS2_TARGET_BINARY): $(RAIDTOOLS2_DIR)/$(RAIDTOOLS2_BINARY)
-        $(MAKE) ROOTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(RAIDTOOLS2_DIR) install
-        rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-                $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	$(MAKE) ROOTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(RAIDTOOLS2_DIR) install
+	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 raidtools2: zlib uclibc $(TARGET_DIR)/$(RAIDTOOLS2_TARGET_BINARY)
 
