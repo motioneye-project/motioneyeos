@@ -39,16 +39,3 @@ diff -urN pcmcia-cs-3.1.33.orig/etc/shared pcmcia-cs-3.1.33/etc/shared
  # Infrastructure network for older cards
  #module "ray_cs" opts "net_type=1 essid=ESSID1"
  # Infrastructure network for WebGear
---- pcmcia-cs-3.2.1/Configure.orig	Thu Aug  8 00:38:15 2002
-+++ pcmcia-cs-3.2.1/Configure	Tue Sep 10 05:41:24 2002
-@@ -669,6 +669,10 @@
-      >/dev/null 2>&1 ; then
-     CONFIG_IEEE1394=n
- fi
-+
-+# Hack to disable network stuff for the time being...
-+CONFIG_INET=n
-+
- printconfig
- echo ""
- 
