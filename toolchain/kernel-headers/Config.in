@@ -21,11 +21,14 @@ choice
 	config BR2_KERNEL_HEADERS_2_4_29
 		bool "Linux 2.4.29 kernel headers"
 
-	config BR2_KERNEL_HEADERS_2_6_8
-		bool "Linux 2.6.8 kernel headers (with mips fixes)"
-
 	config BR2_KERNEL_HEADERS_2_6_9
 		bool "Linux 2.6.9 kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_10
+		bool "Linux 2.6.10 kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_11
+		bool "Linux 2.6.11 kernel headers"
 
 endchoice
 
@@ -34,6 +37,7 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.4.25"    if BR2_KERNEL_HEADERS_2_4_25
 	default "2.4.27"    if BR2_KERNEL_HEADERS_2_4_27
 	default "2.4.29"    if BR2_KERNEL_HEADERS_2_4_29
-	default "2.6.8"	    if BR2_KERNEL_HEADERS_2_6_8
 	default "2.6.9"	    if BR2_KERNEL_HEADERS_2_6_9
+	default "2.6.10"    if BR2_KERNEL_HEADERS_2_6_10
+	default "2.6.11"    if BR2_KERNEL_HEADERS_2_6_11
 
