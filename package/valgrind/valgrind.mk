@@ -43,12 +43,12 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 	);
 	touch  $(VALGRIND_DIR)/.configured
 
-$(VALGRIND_DIR)/coregrind/valgrind.so: $(VALGRIND_DIR)/.configured
+$(VALGRIND_DIR)/none/vgskin_none.so: $(VALGRIND_DIR)/.configured
 	$(MAKE) -C $(VALGRIND_DIR)
 	-$(STRIP) --strip-unneeded $(VALGRIND_DIR)/*.so*
-	touch -c $(VALGRIND_DIR)/coregrind/valgrind.so
+	touch -c $(VALGRIND_DIR)/none/vgskin_none.so
 
-$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/coregrind/valgrind.so
+$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/none/vgskin_none.so
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
