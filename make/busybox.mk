@@ -7,11 +7,11 @@
 ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
-BUSYBOX_SOURCE=busybox-snapshot.tar.bz2
+BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 else
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-1.00-pre7
-BUSYBOX_SOURCE:=busybox-1.00-pre7.tar.bz2
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-1.00-pre8
+BUSYBOX_SOURCE:=busybox-1.00-pre8.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 BUSYBOX_UNZIP=bzcat
@@ -24,6 +24,8 @@ busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 
 $(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	# Allow busybox patches.
+	$(SOURCE_DIR)/patch-kernel.sh $(BUSYBOX_DIR) $(SOURCE_DIR) busybox-*.patch
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
 	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
 		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak
@@ -39,11 +41,11 @@ busybox-unpack: $(BUSYBOX_DIR)/.configured
 
 $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
-		-C $(BUSYBOX_DIR)
+		EXTRA_CFLAGS="$(TARGET_CFLAGS)" -C $(BUSYBOX_DIR)
 
 $(TARGET_DIR)/bin/busybox: $(BUSYBOX_DIR)/busybox
 	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
-		-C $(BUSYBOX_DIR) install
+		EXTRA_CFLAGS="$(TARGET_CFLAGS)" -C $(BUSYBOX_DIR) install
 	# Just in case
 	-chmod a+x $(TARGET_DIR)/usr/share/udhcpc/default.script
 
