@@ -22,7 +22,7 @@ $(DL_DIR)/$(GDB_SOURCE):
 
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 	$(GDB_CAT) $(DL_DIR)/$(GDB_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
-	toolchain/patch-kernel.sh $(GDB_DIR) $(SOURCE_DIR)/gdb/$(GDB_VERSION) \*.patch
+	toolchain/patch-kernel.sh $(GDB_DIR) toolchain/gdb/$(GDB_VERSION) \*.patch
 	# Copy a config.sub from gcc.  This is only necessary until
 	# gdb's config.sub supports <arch>-linux-uclibc tuples.
 	# Should probably integrate this into the patch.
