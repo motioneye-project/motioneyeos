@@ -19,6 +19,8 @@ $(FILE_DIR)/.unpacked: $(DL_DIR)/$(FILE_SOURCE)
 	$(FILE_CAT) $(DL_DIR)/$(FILE_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# Use the system file utility, not the one we just built
 	perl -pi -e "s,\./file,file,g" $(FILE_DIR)/Makefile.in $(FILE_DIR)/Makefile.am
+	touch $(FILE_DIR)/config.guess
+	touch $(FILE_DIR)/config.sub
 	touch $(FILE_DIR)/.unpacked
 
 $(FILE_DIR)/.configured: $(FILE_DIR)/.unpacked
