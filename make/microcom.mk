@@ -35,12 +35,11 @@ $(DL_DIR)/$(MICROCOM_SOURCE):
 microcom-source: $(DL_DIR)/$(MICROCOM_SOURCE)
 
 $(MICROCOM_DIR)/.unpacked: $(DL_DIR)/$(MICROCOM_SOURCE)
-	zcat $(DL_DIR)/$(MICROCOM_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	mkdir -p $(MICROCOM_DIR)
+	zcat $(DL_DIR)/$(MICROCOM_SOURCE) | tar -C $(MICROCOM_DIR) -xvf -
 	touch  $(MICROCOM_DIR)/.unpacked
 
 $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
-	mkdir -p $(MICROCOM_DIR)
-	zcat $(DL_DIR)/$(MICROCOM_SOURCE) | tar -C $(MICROCOM_DIR) -xvf -
 	perl -i -p -e 's~gcc~${TARGET_CC}~' $(MICROCOM_DIR)/Makefile
 	touch  $(MICROCOM_DIR)/.configured
 
