@@ -100,7 +100,7 @@ TARGETS+=busybox tinylogin
 # Some nice debugging tools
 #TARGETS+=gdb strace
 
-# The Valgrind debugger
+# The Valgrind debugger (x86 only)
 #TARGETS+=valgrind
 
 # Pick your root filesystem type.
