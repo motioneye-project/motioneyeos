@@ -49,7 +49,7 @@ $(DL_DIR)/$(LINUX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
-	mkdir  $(TOOL_BUILD_DIR)
+	-mkdir  $(TOOL_BUILD_DIR)
 	#mkdir -p $(LINUX_DIR)
 	#rm -rf $(LINUX_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
