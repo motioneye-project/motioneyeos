@@ -48,10 +48,6 @@ GENEXT2_SIZE=$(shell expr $(GENEXT2_REALSIZE) + $(GENEXT2_ADDTOROOTSIZE))
 # We currently add about 400 device nodes, so add that into the total
 GENEXT2_INODES=$(shell expr $(shell find $(TARGET_DIR) | wc -l) + 400)
 
-#ifeq (1,$(shell expr $(GENEXT2_SIZE) \> $(GENEXT2_MAXROOTSIZE)))
-#	$(error "Filesystem size, $(GENEXT2_SIZE) KB is greater than the maximum $(GENEXT2_MAXROOTSIZE) KB")
-#endif
-
 ext2root: genext2fs
 	-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;

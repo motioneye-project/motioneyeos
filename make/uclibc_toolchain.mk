@@ -133,7 +133,7 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
-		--enable-targets=$(GNU_TARGET_NAME) \
+		--enable-targets=$(GNU_TARGET_NAME) --enable-multilib \
 		--program-prefix=$(ARCH)-uclibc-);
 	touch $(BINUTILS_DIR1)/.configured
 
@@ -188,17 +188,19 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 	#
 	# Prevent system glibc start files from leaking in uninvited...
 	#
-	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1=\
+	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
 		\"$(STAGING_DIR)/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
-	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2=\
+	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2 =\
 		\"$(STAGING_DIR)/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
 	#
 	# Prevent system glibc include files from leaking in uninvited...
 	#
-	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,\
-		NATIVE_SYSTEM_HEADER_DIR=$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,\
-		CROSS_SYSTEM_HEADER_DIR=$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
+		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
+		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
+		\"$(STAGING_DIR)/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
@@ -220,7 +222,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--oldincludedir=$(STAGING_DIR)/usr/include \
+		--oldincludedir=$(STAGING_DIR)/usr/include --enable-multilib \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=c --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
@@ -363,7 +365,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--oldincludedir=$(STAGING_DIR)/usr/include \
+		--oldincludedir=$(STAGING_DIR)/usr/include --enable-multilib \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);

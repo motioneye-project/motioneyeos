@@ -22,7 +22,19 @@ $(OPENSSH_DIR)/.patched: $(OPENSSH_DIR)/.unpacked
 
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.patched
 	(cd $(OPENSSH_DIR); rm -rf config.cache; CC=$(TARGET_CC1) \
-	./configure --prefix=/usr \
+	    ./configure \
+	    --prefix=/usr \
+	    --exec-prefix=/usr \
+	    --bindir=/usr/bin \
+	    --sbindir=/usr/sbin \
+	    --sysconfdir=/etc \
+	    --libexecdir=/usr/lib \
+	    --datadir=/usr/share \
+	    --includedir=/usr/include \
+	    --libdir=/usr/lib \
+	    --localstatedir=/var \
+	    --mandir=/usr/man \
+	    --infodir=/usr/info \
 	    --includedir=$(STAGING_DIR)/include \
 	    --disable-lastlog --disable-utmp --disable-utmpx --disable-wtmp --disable-wtmpx \
 	    --disable-nls --without-x);

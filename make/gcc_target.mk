@@ -49,19 +49,46 @@ $(BINUTILS_DIR2)/.configured:
 	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../lib)
 	#(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include)
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
-	(cd $(BINUTILS_DIR2); PATH=$$PATH:$(STAGING_DIR)/bin CC=$(TARGET_CROSS)gcc \
-		$(BINUTILS_DIR)/configure --enable-shared \
-		--target=$(GNU_TARGET_NAME) --prefix=/usr \
-		--enable-targets=$(GNU_TARGET_NAME) \
-		--program-prefix="");
+	(cd $(BINUTILS_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
+		$(BINUTILS_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--includedir=/usr/include \
+		--libdir=/usr/lib \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--with-gxx-include-dir=/usr/include/c++ \
+		--disable-shared --enable-multilib \
+		--enable-targets=$(GNU_TARGET_NAME) );
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	$(MAKE) tooldir=$(TARGET_DIR) -C $(BINUTILS_DIR2);
+	$(MAKE) -C $(BINUTILS_DIR2);
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
-	$(MAKE) DESTDIR=$(TARGET_DIR) prefix=$(TARGET_DIR)/usr \
-		bindir=$(TARGET_DIR)/usr/bin -C $(BINUTILS_DIR2) install
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) \
+	    prefix=$(TARGET_DIR)/usr \
+	    exec_prefix=$(TARGET_DIR)/usr \
+	    bindir=$(TARGET_DIR)/usr/bin \
+	    sbindir=$(TARGET_DIR)/usr/sbin \
+	    libexecdir=$(TARGET_DIR)/usr/libexec \
+	    datadir=$(TARGET_DIR)/usr/share \
+	    sysconfdir=$(TARGET_DIR)/etc \
+	    sharedstatedir=$(TARGET_DIR)/usr/com \
+	    localstatedir=$(TARGET_DIR)/var \
+	    libdir=$(TARGET_DIR)/usr/lib \
+	    infodir=$(TARGET_DIR)/usr/info \
+	    mandir=$(TARGET_DIR)/usr/man \
+	    includedir=$(TARGET_DIR)/usr/include \
+	    gxx_include_dir=$(TARGET_DIR)/usr/include/c++ \
+	    toolexecdir=$(TARGET_DIR)/lib/gcc-lib/$(GNU_TARGET_NAME) \
+	    -C $(BINUTILS_DIR2) install;
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	-$(STRIP) $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/bin/*
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
@@ -117,29 +144,69 @@ uclibc_target-dirclean:
 # Next build target gcc compiler
 #
 #############################################################
-$(GCC_BUILD_DIR3)/.configured:
+$(GCC_BUILD_DIR3)/.gcc_build_hacks:
+	#
+	# Make certain the uClibc start files are found
+	#
+	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1=\
+		\"/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
+	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2=\
+		\"/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
+	#
+	# Make certain the uClibc include files are found
+	#
+	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
+		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
+		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
+		\"/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
+
+$(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR3)
-	(cd $(GCC_BUILD_DIR3); PATH=$$PATH:$(STAGING_DIR)/bin AR=$(TARGET_CROSS)ar \
+	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld CC=$(TARGET_CROSS)gcc \
 		$(GCC_DIR)/configure \
-		--host=$(GNU_TARGET_NAME) --target=$(GNU_TARGET_NAME) --prefix=/usr \
-		--with-local-prefix=$(STAGING_DIR)/usr \
+		--host=$(GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--libdir=/usr/lib \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-shared --enable-multilib \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--enable-shared --enable-languages=c,c++ );
-	perl -i -p -e "s,ac_cv_prog_cc_cross=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR3)/config.cache
-	perl -i -p -e "s,^SYSTEM_HEADER_DIR.*,SYSTEM_HEADER_DIR=$(TARGET_DIR)/include,g;" $(GCC_BUILD_DIR3)/gcc/Makefile
+		--enable-languages=c,c++ --disable-__cxa_atexit );
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) -C $(GCC_BUILD_DIR3)
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) -C $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.compiled
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
-	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) DESTDIR=$(TARGET_DIR) prefix=$(TARGET_DIR)/usr \
-		-C $(GCC_BUILD_DIR3) install;
+	PATH=$(STAGING_DIR)/bin:$$PATH $(MAKE) \
+	    prefix=$(TARGET_DIR)/usr \
+	    exec_prefix=$(TARGET_DIR)/usr \
+	    bindir=$(TARGET_DIR)/usr/bin \
+	    sbindir=$(TARGET_DIR)/usr/sbin \
+	    libexecdir=$(TARGET_DIR)/usr/libexec \
+	    datadir=$(TARGET_DIR)/usr/share \
+	    sysconfdir=$(TARGET_DIR)/etc \
+	    sharedstatedir=$(TARGET_DIR)/usr/com \
+	    localstatedir=$(TARGET_DIR)/var \
+	    libdir=$(TARGET_DIR)/usr/lib \
+	    infodir=$(TARGET_DIR)/usr/info \
+	    mandir=$(TARGET_DIR)/usr/man \
+	    toolexecdir=$(TARGET_DIR)/lib/gcc-lib/$(GNU_TARGET_NAME) \
+	    -C $(GCC_BUILD_DIR3) install;
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
 		$(TARGET_DIR)/usr/share/locale
-	(cd $(TARGET_DIR)/usr/bin; ln -s gcc cc)
+	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 

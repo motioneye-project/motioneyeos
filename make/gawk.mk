@@ -21,8 +21,22 @@ $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 	(cd $(GAWK_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
-	    CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr --disable-nls \
-	    --mandir=/junk --infodir=/junk \
+	    CFLAGS=-D_POSIX_SOURCE ./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--sysconfdir=/etc \
+		--libexecdir=/usr/lib \
+		--datadir=/usr/share \
+		--libdir=/usr/lib \
+		--localstatedir=/var \
+		--mandir=/junk \
+		--infodir=/junk \
+		--includedir=$(STAGING_DIR)/include \
+		--oldincludedir=$(STAGING_DIR)/usr/include \
+		--disable-nls \
 	);
 	touch  $(GAWK_DIR)/.configured
 

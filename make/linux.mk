@@ -22,10 +22,10 @@ ifneq ($(filter $(TARGETS),linux),)
 
 LINUX_VERSION=2.4.20
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
-#LINUX_FORMAT=bzImage
-LINUX_FORMAT=zImage
-#LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
-LINUX_BINLOC=arch/ppc/boot/images/zImage.prep
+LINUX_FORMAT=bzImage
+LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
+#LINUX_FORMAT=zImage
+#LINUX_BINLOC=arch/ppc/boot/images/zImage.prep
 LINUX_SOURCE=linux-$(LINUX_VERSION).tar.bz2
 LINUX_SITE=http://ftp.us.kernel.org/pub/linux/kernel/v2.4
 LINUX_KCONFIG=$(SOURCE_DIR)/linux.config
