@@ -1,0 +1,14 @@
+diff -urN gcc-3.3.2-orig/gcc/mklibgcc.in gcc-3.3.2/gcc/mklibgcc.in
+--- gcc-3.3.2-orig/gcc/mklibgcc.in	2003-09-08 19:37:34.000000000 -0500
++++ gcc-3.3.2/gcc/mklibgcc.in	2003-10-22 02:27:34.000000000 -0500
+@@ -296,7 +296,9 @@
+ 
+   libgcc_a_objs="$libgcc_objs $libgcc_st_objs"
+ 
+-  if [ "@libgcc_visibility@" = yes -a "$SHLIB_LINK" ]; then
++  #if [ "@libgcc_visibility@" = yes -a "$SHLIB_LINK" ]; then
++  if [ "@libgcc_visibility@" = I_AM_DISABLED -a "$SHLIB_LINK" ]; then
++    echo "OUCH!!!!! : @libgcc_visibility@ : $SHLIB_LINK : OUCH!!!!!"
+     libgcc_a_objs=
+     echo ""
+     for o in $libgcc_objs $libgcc_st_objs; do

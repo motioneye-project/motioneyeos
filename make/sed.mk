@@ -22,6 +22,7 @@ $(SED_DIR)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 $(SED_DIR)/.configured: $(SED_DIR)/.unpacked
 	(cd $(SED_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

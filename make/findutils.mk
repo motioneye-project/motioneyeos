@@ -23,6 +23,7 @@ $(FINDUTILS_DIR)/.unpacked: $(DL_DIR)/$(FINDUTILS_SOURCE)
 $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 	(cd $(FINDUTILS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_func_setvbuf_reversed=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -52,6 +53,7 @@ findutils-target_binary: $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
 	@if [ $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) -ot $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) ] ; then \
 	    set -x; \
 	    $(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) install; \
+	    $(STRIP) $(TARGET_DIR)/usr/lib/locate/* > /dev/null 2>&1; \
 	    rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; fi;
 

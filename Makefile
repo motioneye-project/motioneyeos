@@ -31,6 +31,8 @@
 # What sortof target system shall we compile this for?
 ARCH:=i386
 #ARCH:=arm
+#ARCH:=mipsel
+#ARCH:=mips
 #ARCH:=powerpc
 #ARCH:=whatever
 
@@ -64,9 +66,27 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 #OPTIMIZE_FOR_CPU=strongarm
 #OPTIMIZE_FOR_CPU=whatever
 
+# Soft floating point options.
+# Notes:
+#   Currently builds with gcc 3.3 for i386, arm, mips, mipsel.
+#   Only tested with multilib enabled.
+#   For i386, long double is the same as double (64 bits).  While this
+#      is unusual for x86, it seemed the best approach considering the
+#      limitations in the gcc floating point emulation library.
+#   For arm, soft float uses the usual libfloat routines.
+#   The uClibc built will support _only_ applications compiled with the
+#      -msoft-float flag.  To avoid CFLAGS problems, you may want to use
+#      scripts similar to those in the build*/staging_dir/bin directory.
+# Uncomment the next 2 lines to build a soft-float toolchain and rootfs.
+# SOFT_FLOAT_CONFIG_OPTION=--without-float
+# TARGET_SOFT_FLOAT=-msoft-float
+
+TARGET_OPTIMIZATION=-Os
+TARGET_DEBUGGING= #-g
+TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_SOFT_FLOAT)
+
 # Any additional gcc options you may want to include....
 EXTRA_GCC_CONFIG_OPTIONS=
-#EXTRA_GCC_CONFIG_OPTIONS=--without-float
 
 # Enable the following if you want locale/gettext/i18n support.
 #ENABLE_LOCALE:=true
@@ -172,23 +192,32 @@ TARGETS+=ext2root
 # what you are doing.
 #
 #############################################################
+ifeq ("$(strip $(TARGET_SOFT_FLOAT))","")
+ARCH_FPU_SUFFIX:=
+else
+ARCH_FPU_SUFFIX:=_nofpu
+endif
+
+
 HOSTCC:=gcc
 BASE_DIR:=${shell pwd}
 SOURCE_DIR:=$(BASE_DIR)/sources
 DL_DIR:=$(SOURCE_DIR)/dl
 PATCH_DIR=$(SOURCE_DIR)/patches
-BUILD_DIR:=$(BASE_DIR)/build_$(ARCH)
+BUILD_DIR:=$(BASE_DIR)/build_$(ARCH)$(ARCH_FPU_SUFFIX)
 TARGET_DIR:=$(BUILD_DIR)/root
 STAGING_DIR=$(BUILD_DIR)/staging_dir
-TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)
+TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)$(ARCH_FPU_SUFFIX)
 TARGET_PATH=$(STAGING_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
-TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
-TARGET_CC=$(TARGET_CROSS)gcc
+#TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
+TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-linux-
+TARGET_CC=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT)
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
-IMAGE:=$(BASE_DIR)/root_fs_$(ARCH)
+IMAGE:=$(BASE_DIR)/root_fs_$(ARCH)$(ARCH_FPU_SUFFIX)
 GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
-KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
+#KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
+KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-linux-
 HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/sparc.*/sparc/' \
 	-e 's/arm.*/arm/g' \
@@ -207,12 +236,10 @@ TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		AS=$(TARGET_CROSS)as \
 		LD=$(TARGET_CROSS)ld \
 		NM=$(TARGET_CROSS)nm \
-		CC=$(TARGET_CROSS)gcc \
-		GCC=$(TARGET_CROSS)gcc \
-		CXX=$(TARGET_CROSS)g++ \
+		CC=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		GCC=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		CXX=$(TARGET_CROSS)g++$(TARGET_SOFT_FLOAT) \
 		RANLIB=$(TARGET_CROSS)ranlib
-#Directory in which to build the toolchain
-TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)
 ifeq ($(ENABLE_LOCALE),true)
 DISABLE_NLS:=
 else

@@ -1,0 +1,24 @@
+diff -urN dropbear-0.38/libtomcrypt/makefile dropbear-0.38-new/libtomcrypt/makefile
+--- dropbear-0.38/libtomcrypt/makefile	2003-09-24 05:22:44.000000000 -0500
++++ dropbear-0.38-new/libtomcrypt/makefile	2003-10-29 23:39:57.000000000 -0600
+@@ -103,7 +103,7 @@
+ 
+ $(LIBNAME): $(OBJECTS)
+ 	$(AR) $(ARFLAGS) $@ $(OBJECTS) 
+-	ranlib $(LIBNAME)
++	$(RANLIB) $(LIBNAME)
+ 
+ #This rule makes the test program included with libtomcrypt
+ test: library $(TESTOBJECTS)
+diff -urN dropbear-0.38/libtommath/makefile dropbear-0.38-new/libtommath/makefile
+--- dropbear-0.38/libtommath/makefile	2003-09-24 03:55:34.000000000 -0500
++++ dropbear-0.38-new/libtommath/makefile	2003-10-29 23:40:18.000000000 -0600
+@@ -48,7 +48,7 @@
+ 
+ libtommath.a:  $(OBJECTS)
+ 	$(AR) $(ARFLAGS) libtommath.a $(OBJECTS)
+-	ranlib libtommath.a
++	$(RANLIB) libtommath.a
+ 
+ install: libtommath.a
+ 	install -d -g root -o root $(DESTDIR)$(LIBPATH)

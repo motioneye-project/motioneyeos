@@ -18,12 +18,14 @@ dropbear_sshd-source: $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE)
 
 $(DROPBEAR_SSHD_DIR)/.unpacked: $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE)
 	$(DROPBEAR_SSHD_CAT) $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(SOURCE_DIR)/patch-kernel.sh $(DROPBEAR_SSHD_DIR) $(SOURCE_DIR) dropbear-*.patch
 	touch $(DROPBEAR_SSHD_DIR)/.unpacked
 
 $(DROPBEAR_SSHD_DIR)/.configured: $(DROPBEAR_SSHD_DIR)/.unpacked
 	(cd $(DROPBEAR_SSHD_DIR); rm -rf config.cache; \
 		autoconf; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -44,17 +46,19 @@ $(DROPBEAR_SSHD_DIR)/.configured: $(DROPBEAR_SSHD_DIR)/.unpacked
 	touch  $(DROPBEAR_SSHD_DIR)/.configured
 
 $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY): $(DROPBEAR_SSHD_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(DROPBEAR_SSHD_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) LD=$(TARGET_CC) -C $(DROPBEAR_SSHD_DIR)
 
 $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY): $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(DROPBEAR_SSHD_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) $(TARGET_CONFIGURE_OPTS) LD=$(TARGET_CC) \
+		 -C $(DROPBEAR_SSHD_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 dropbear_sshd: uclibc zlib $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
 
 dropbear_sshd-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(DROPBEAR_SSHD_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) $(TARGET_CONFIGURE_OPTS) LD=$(TARGET_CC) \
+		 -C $(DROPBEAR_SSHD_DIR) uninstall
 	-$(MAKE) -C $(DROPBEAR_SSHD_DIR) clean
 
 dropbear_sshd-dirclean:

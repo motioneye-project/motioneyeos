@@ -25,6 +25,7 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	(cd $(BASH_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_func_setvbuf_reversed=no \
 		bash_cv_have_mbstate_t=yes \
 		./configure \

@@ -33,7 +33,7 @@ ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 	perl -i -p -e "s/^.*DOLFS.*/DOLFS=y/;" $(BUSYBOX_DIR)/.config
 endif
-	$(MAKE) CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
+	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
 else  # Not using snapshot
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/Config.h
 	perl -i -p -e "s,^CROSS.*,CROSS=$(TARGET_CROSS),;" $(BUSYBOX_DIR)/Makefile
@@ -47,10 +47,12 @@ endif
 busybox-unpack: $(BUSYBOX_DIR)/.configured
 
 $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
-	$(MAKE) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" -C $(BUSYBOX_DIR)
+	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
+		-C $(BUSYBOX_DIR)
 
 $(TARGET_DIR)/bin/busybox: $(BUSYBOX_DIR)/busybox
-	$(MAKE) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" -C $(BUSYBOX_DIR) install
+	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
+		-C $(BUSYBOX_DIR) install
 	# Just in case
 	-chmod a+x $(TARGET_DIR)/usr/share/udhcpc/default.script
 

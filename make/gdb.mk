@@ -21,6 +21,7 @@ $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE) $(GDB_PATCH)
 $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_type_uintptr_t=yes \
 		gt_cv_func_gettext_libintl=yes \
 		ac_cv_func_dcgettext=yes \

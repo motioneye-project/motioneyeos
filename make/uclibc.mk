@@ -44,10 +44,14 @@ endif
 	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
-		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^GCC_BIN.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc,g' \
+		$(UCLIBC_DIR)/.conf
+	if [ -n "$(strip $(TARGET_SOFT_FLOAT))" ] ; then \
+		perl -i -p -e 's,.*HAS_FPU.*,# HAS_FPU is not set\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
+			$(UCLIBC_DIR)/.config; \
+	fi
+	perl -i -p -e 's,^GCC_BIN.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-linux-gcc,g' \
 		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
-	perl -i -p -e 's,^LD_BIN.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ld,g' \
+	perl -i -p -e 's,^LD_BIN.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-linux-ld,g' \
 		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
 	$(MAKE) -C $(UCLIBC_DIR) oldconfig
 	$(MAKE) -C $(UCLIBC_DIR) pregen
@@ -55,7 +59,7 @@ endif
 	$(MAKE) -C $(UCLIBC_DIR) install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
-$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured
+$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 	$(MAKE) -C $(UCLIBC_DIR)
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
@@ -77,7 +81,7 @@ endif
 
 uclibc-configured: $(UCLIBC_DIR)/.configured
 
-uclibc: $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc $(STAGING_DIR)/lib/libc.a \
+uclibc: $(STAGING_DIR)/bin/$(ARCH)-linux-gcc $(STAGING_DIR)/lib/libc.a \
 	$(UCLIBC_TARGETS)
 
 uclibc-clean:
@@ -112,6 +116,18 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 		ln -fs /lib/libm.so.0 libm.so; \
 		ln -fs /lib/libpthread.so.0 libpthread.so; \
 		ln -fs /lib/libnsl.so.0 libnsl.so; \
+		\
+		ln -fs /lib/libthread_db.so.1 libthread_db.so; \
+		rm -f ld-uClibc-0.9.21.so; \
+		rm -f libcrypt-0.9.21.so; \
+		rm -f libdl-0.9.21.so; \
+		rm -f libm-0.9.21.so; \
+		rm -f libnsl-0.9.21.so; \
+		rm -f libpthread-0.9.21.so; \
+		rm -f libresolv-0.9.21.so; \
+		rm -f libuClibc-0.9.21.so; \
+		rm -f libutil-0.9.21.so; \
+		rm -f libthread_db-0.9.21.so; \
 	)
 
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)

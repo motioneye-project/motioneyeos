@@ -33,10 +33,11 @@ $(TINYLOGIN_DIR)/Config.h: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 	touch $(TINYLOGIN_DIR)/Config.h
 
 $(TINYLOGIN_DIR)/tinylogin: $(TINYLOGIN_DIR)/Config.h
-	$(MAKE) CROSS="$(TARGET_CROSS)" -C $(TINYLOGIN_DIR)
+	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" -C $(TINYLOGIN_DIR)
 
 $(TARGET_DIR)/bin/tinylogin: $(TINYLOGIN_DIR)/tinylogin
-	$(MAKE) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" -C $(TINYLOGIN_DIR) install
+	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" \
+		PREFIX="$(TARGET_DIR)" -C $(TINYLOGIN_DIR) install
 
 tinylogin: uclibc $(TARGET_DIR)/bin/tinylogin
 

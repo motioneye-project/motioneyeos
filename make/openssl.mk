@@ -16,6 +16,9 @@ $(DL_DIR)/$(OPENSSL_SOURCE):
 $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE) $(OPENSSL_PATCH)
 	gunzip -c $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(OPENSSL_PATCH) | patch -p1 -d $(OPENSSL_DIR)
+	# sigh... we have to resort to this just to set a gcc flag.
+	perl -i -p -e 's,/CFLAG=,/CFLAG= $(TARGET_SOFT_FLOAT) ,g' \
+		$(OPENSSL_DIR)/Configure
 	touch  $(OPENSSL_DIR)/.unpacked
 
 $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
@@ -28,6 +31,9 @@ $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 
 $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
 	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) all build-shared
+	# Work around openssl build bug to link libssl.so with libcrypto.so.
+	-rm $(OPENSSL_DIR)/libssl.so.*.*.*
+	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) do_linux-shared
 
 $(STAGING_DIR)/lib/libcrypto.a: $(OPENSSL_DIR)/apps/openssl
 	$(MAKE) CC=$(TARGET_CC) INSTALL_PREFIX=$(STAGING_DIR) -C $(OPENSSL_DIR) install
@@ -40,24 +46,18 @@ $(STAGING_DIR)/lib/libcrypto.a: $(OPENSSL_DIR)/apps/openssl
 	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.7 libssl.so)
 	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.7 libssl.so.0)
 
-$(TARGET_DIR)/lib/libcrypto.so.0.9.7: $(STAGING_DIR)/lib/libcrypto.a
-	cp -fa $(STAGING_DIR)/lib/libcrypto.so* $(TARGET_DIR)/lib/
-	cp -fa $(STAGING_DIR)/lib/libssl.so* $(TARGET_DIR)/lib/
+$(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7: $(STAGING_DIR)/lib/libcrypto.a
+	cp -fa $(STAGING_DIR)/lib/libcrypto.so* $(TARGET_DIR)/usr/lib/
+	cp -fa $(STAGING_DIR)/lib/libssl.so* $(TARGET_DIR)/usr/lib/
 	#cp -fa $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libssl.so.0.9.7
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7
 
 $(TARGET_DIR)/usr/lib/libssl.a: $(STAGING_DIR)/lib/libcrypto.a
 	mkdir -p $(TARGET_DIR)/usr/include 
 	cp -a $(STAGING_DIR)/include/openssl $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libssl.a $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/lib/libcrypto.a $(TARGET_DIR)/usr/lib/
-	rm -f $(TARGET_DIR)/lib/libcrypto.so
-	rm -f $(TARGET_DIR)/lib/libssl.so
-	(cd $(TARGET_DIR)/usr/lib; \
-		ln -fs /lib/libssl.so.0.9.7 libssl.so; \
-		ln -fs /lib/libcrypto.so.0.9.7 libcrypto.so; \
-	)
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libssl.so.0.9.7
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libcrypto.so.0.9.7
 	touch -c $(TARGET_DIR)/usr/lib/libssl.a
 
 openssl-headers: $(TARGET_DIR)/usr/lib/libssl.a
@@ -71,5 +71,5 @@ openssl-clean:
 openssl-dirclean: 
 	rm -rf $(OPENSSL_DIR) 
 
-openssl: uclibc $(TARGET_DIR)/lib/libcrypto.so.0.9.7
+openssl: uclibc $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7
 

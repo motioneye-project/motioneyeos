@@ -57,7 +57,8 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--with-sysroot=$(STAGING_DIR) \
 		--with-lib-path="$(STAGING_DIR)/usr/lib:$(STAGING_DIR)/lib" \
 		$(MULTILIB) \
-		--program-prefix=$(ARCH)-uclibc-);
+		$(SOFT_FLOAT_CONFIG_OPTION) \
+		--program-prefix=$(ARCH)-linux-);
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
@@ -74,12 +75,12 @@ $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 	for app in addr2line ar as c++filt gprof ld nm objcopy \
 		    objdump ranlib readelf size strings strip ; \
 	do \
-		if [ -x $(STAGING_DIR)/bin/$(ARCH)-uclibc-$${app} ] ; then \
+		if [ -x $(STAGING_DIR)/bin/$(ARCH)-linux-$${app} ] ; then \
 		    (cd $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin; \
-			ln -fs ../../bin/$(ARCH)-uclibc-$${app} $${app}; \
+			ln -fs ../../bin/$(ARCH)-linux-$${app} $${app}; \
 		    ); \
 		    (cd $(STAGING_DIR)/usr/bin; \
-			ln -fs ../../bin/$(ARCH)-uclibc-$${app} $${app}; \
+			ln -fs ../../bin/$(ARCH)-linux-$${app} $${app}; \
 		    ); \
 		fi; \
 	done;
@@ -122,15 +123,16 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
 	(cd $(BINUTILS_DIR2); \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		CC_FOR_BUILD=$(HOSTCC) \
 		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
 		NM_FOR_TARGET=$(TARGET_CROSS)nm \
-		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		GCC_FOR_TARGET=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		CXX_FOR_TARGET=$(TARGET_CROSS)g++$(TARGET_SOFT_FLOAT) \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -140,6 +142,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(MULTILIB) \
+		$(SOFT_FLOAT_CONFIG_OPTION) \
 	);
 	touch $(BINUTILS_DIR2)/.configured
 
@@ -151,9 +154,9 @@ $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
 		NM_FOR_TARGET=$(TARGET_CROSS)nm \
-		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		GCC_FOR_TARGET=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		CXX_FOR_TARGET=$(TARGET_CROSS)g++$(TARGET_SOFT_FLOAT) \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib
 	touch -c $(BINUTILS_DIR2)/binutils/objdump
 
@@ -165,9 +168,9 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
 		NM_FOR_TARGET=$(TARGET_CROSS)nm \
-		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		GCC_FOR_TARGET=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
+		CXX_FOR_TARGET=$(TARGET_CROSS)g++$(TARGET_SOFT_FLOAT) \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
 		prefix=/usr \
 		infodir=/usr/info \

@@ -23,6 +23,7 @@ $(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
 $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 	(cd $(STRACE_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -46,6 +47,7 @@ $(STRACE_DIR)/strace: $(STRACE_DIR)/.configured
 
 $(TARGET_DIR)/usr/bin/strace: $(STRACE_DIR)/strace
 	install -c $(STRACE_DIR)/strace $(TARGET_DIR)/usr/bin/strace
+	$(STRIP) $(TARGET_DIR)/usr/bin/strace > /dev/null 2>&1
 
 strace: uclibc $(TARGET_DIR)/usr/bin/strace 
 
