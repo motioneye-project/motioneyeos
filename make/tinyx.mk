@@ -62,7 +62,7 @@ $(DL_DIR)/$(TINYX_SOURCE):
 
 $(DL_DIR)/cross.def:
 	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/cross.def
-	$(SED) 's:arm-uclibc-:arm-linux-uclibc-:g' $(DL_DIR)/cross.def
+	$(SED) 's:arm-uclibc-:$(ARCH)-linux-uclibc-:g' $(DL_DIR)/cross.def
 
 $(DL_DIR)/host.def:
 	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/host.def
