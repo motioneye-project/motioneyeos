@@ -50,12 +50,13 @@ $(SED_DIR1)/$(SED_BINARY): $(SED_DIR1)/.configured
 build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 	@if [ -L $(STAGING_DIR)/$(SED_TARGET_BINARY) ] ; then \
 		rm -f $(STAGING_DIR)/$(SED_TARGET_BINARY); fi;
-	@if [ $(STAGING_DIR)/$(SED_TARGET_BINARY) -ot $(SED_DIR1)/$(SED_BINARY) ] ; then \
-	set -x; \
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SED_DIR1) install; \
-	mv $(STAGING_DIR)/usr/bin/sed $(STAGING_DIR)/bin/; \
-	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
-		$(STAGING_DIR)/usr/man $(STAGING_DIR)/usr/share/doc; fi
+       @if [ ! -f $(STAGING_DIR)/$(SED_TARGET_BINARY) -o $(STAGING_DIR)/$(SED_TARGET_BINARY) \
+       -ot $(SED_DIR1)/$(SED_BINARY) ] ; then \
+	    set -x; \
+	    $(MAKE) DESTDIR=$(STAGING_DIR) -C $(SED_DIR1) install; \
+	    mv $(STAGING_DIR)/usr/bin/sed $(STAGING_DIR)/bin/; \
+	    rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
+		    $(STAGING_DIR)/usr/man $(STAGING_DIR)/usr/share/doc; fi
 
 use-sed-host-binary:
 	@if [ -x /usr/bin/sed ]; then SED="/usr/bin/sed"; else \
@@ -113,12 +114,14 @@ $(SED_DIR2)/$(SED_BINARY): $(SED_DIR2)/.configured
 sed-target_binary: $(SED_DIR2)/$(SED_BINARY)
 	@if [ -L $(TARGET_DIR)/$(SED_TARGET_BINARY) ] ; then \
 		rm -f $(TARGET_DIR)/$(SED_TARGET_BINARY); fi;
-	@if [ $(TARGET_DIR)/$(SED_TARGET_BINARY) -ot $(SED_DIR2)/$(SED_BINARY) ] ; then \
-	set -x; \
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) install; \
-	mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/; \
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; fi
+
+       @if [ ! -f $(SED_DIR2)/$(SED_BINARY) -o $(TARGET_DIR)/$(SED_TARGET_BINARY) \
+       -ot $(SED_DIR2)/$(SED_BINARY) ] ; then \
+	    set -x; \
+	    $(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) install; \
+	    mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/; \
+	    rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		    $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; fi
 
 sed: uclibc sed-target_binary
 
