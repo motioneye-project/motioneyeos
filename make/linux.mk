@@ -45,7 +45,7 @@ LINUX_SOURCE_DIR=$(LINUX_DIR)
 
 
 $(DL_DIR)/$(LINUX_SOURCE):
-	mkdir  $(DL_DIR)
+	-mkdir  $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
