@@ -22,7 +22,8 @@ $(IPROUTE2_DIR)/.unpacked: $(DL_DIR)/$(IPROUTE2_SOURCE)
 $(IPROUTE2_DIR)/.configured: $(IPROUTE2_DIR)/.unpacked
 	(cd $(IPROUTE2_DIR); \
 		./configure; \
-		$(SED) '/TC_CONFIG_ATM/s:=.*:=n:' Config)
+		$(SED) '/TC_CONFIG_ATM/s:=.*:=n:' Config; \
+		$(SED) '/^CCOPTS/s:-O2.*:$(TARGET_CFLAGS):' Makefile)
 	touch  $(IPROUTE2_DIR)/.configured
 
 $(IPROUTE2_DIR)/$(IPROUTE2_BINARY): $(IPROUTE2_DIR)/.configured
