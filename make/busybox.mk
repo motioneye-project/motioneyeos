@@ -10,8 +10,8 @@ BUSYBOX_DIR:=$(BUILD_DIR)/busybox
 BUSYBOX_SOURCE=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 else
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-1.00-pre6
-BUSYBOX_SOURCE:=busybox-1.00-pre6.tar.bz2
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-1.00-pre7
+BUSYBOX_SOURCE:=busybox-1.00-pre7.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 BUSYBOX_UNZIP=bzcat
