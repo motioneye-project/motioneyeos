@@ -1,5 +1,5 @@
 # /etc/services:
-# $Id: services,v 1.3 2002/04/26 22:01:41 andersen Exp $
+# $Id: services,v 1.4 2003/06/14 00:47:20 andersen Exp $
 #
 # Network services, Internet style
 #
@@ -182,6 +182,9 @@ webster		765/udp
 #> does register or list uses of these ports as a convienence to the
 #> community.
 #
+nfsdstatus	1110/tcp
+nfsd-keepalive	1110/udp
+
 ingreslock	1524/tcp
 ingreslock	1524/udp
 prospero-np	1525/tcp			# Prospero non-privileged
@@ -194,6 +197,8 @@ radius		1812/tcp			# Radius
 radius		1812/udp			# Radius
 radacct		1813/tcp			# Radius Accounting
 radacct		1813/udp			# Radius Accounting
+nfsd		2049/tcp	nfs
+nfsd		2049/udp	nfs
 cvspserver	2401/tcp			# CVS client/server operations
 cvspserver	2401/udp			# CVS client/server operations
 mysql		3306/tcp			# MySQL
