@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBPNG
+	bool "libpng"
+	default n
+	help
+	  Library for handling PNG (Portable Network Graphics)
+	  images.
+
+	  http://www.libpng.org/
