@@ -12,7 +12,9 @@ LIBFLOAT_DIR:=$(BUILD_DIR)/libfloat
 LIBFLOAT_TARGET=
 ifeq ($(strip $(SOFT_FLOAT)),true)
 ifeq ("$(strip $(ARCH))","arm")
+ifeq ($(findstring 3.3.,$(GCC_VERSION)),3.3.)
 LIBFLOAT_TARGET+=$(STAGING_DIR)/lib/libfloat.so
+endif
 endif
 endif
 
