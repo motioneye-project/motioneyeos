@@ -4,16 +4,12 @@
 #
 #############################################################
 
-# Pick your version of the Wireless Tools
-# v26 -> obsolete ; won't compile with proper WE because $(KERNEL_SRC) not set
-#WTOOLS_VER:=26
-#WTOOLS_SUBVER:=
-# v27 -> latest stable ; multi WE
-#WTOOLS_VER:=27
-#WTOOLS_SUBVER:=
-# v28.pre1 -> latest
+# This Makefile only work with the multicall version of Wireless Tools,
+# which is available in 28-pre3 and later...
+# Jean II
+# v28.pre3 -> earliest possible
 WTOOLS_VER:=28
-WTOOLS_SUBVER:=.pre1
+WTOOLS_SUBVER:=.pre3
 
 WTOOLS_SOURCE_URL:=http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux
 WTOOLS_SOURCE:=wireless_tools.$(WTOOLS_VER)$(WTOOLS_SUBVER).tar.gz
@@ -29,24 +25,16 @@ $(WTOOLS_BUILD_DIR)/.unpacked: $(DL_DIR)/$(WTOOLS_SOURCE)
 $(WTOOLS_BUILD_DIR)/.configured: $(WTOOLS_BUILD_DIR)/.unpacked
 	touch  $(WTOOLS_BUILD_DIR)/.configured
 
-$(WTOOLS_BUILD_DIR)/iwconfig: $(WTOOLS_BUILD_DIR)/.configured
+$(WTOOLS_BUILD_DIR)/iwmulticall: $(WTOOLS_BUILD_DIR)/.configured
 	$(MAKE) -C $(WTOOLS_BUILD_DIR) \
-		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS) -I." \
-		BUILD_SHARED=y # may want to make this an option
+		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
+		iwmulticall
 
-$(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwconfig
-	# Copy The Wireless Tools
-	cp -af $(WTOOLS_BUILD_DIR)/iwconfig $(TARGET_DIR)/sbin/
-	cp -af $(WTOOLS_BUILD_DIR)/iwevent $(TARGET_DIR)/sbin/
-	cp -af $(WTOOLS_BUILD_DIR)/iwgetid $(TARGET_DIR)/sbin/
-	cp -af $(WTOOLS_BUILD_DIR)/iwlist $(TARGET_DIR)/sbin/
-	cp -af $(WTOOLS_BUILD_DIR)/iwpriv $(TARGET_DIR)/sbin/
-	cp -af $(WTOOLS_BUILD_DIR)/iwspy $(TARGET_DIR)/sbin/
-	cp -af $(WTOOLS_BUILD_DIR)/libiw.so.$(WTOOLS_VER) $(TARGET_DIR)/lib
-	$(STRIP) $(TARGET_DIR)/sbin/iwconfig $(TARGET_DIR)/sbin/iwevent \
-		$(TARGET_DIR)/sbin/iwgetid $(TARGET_DIR)/sbin/iwlist \
-		$(TARGET_DIR)/sbin/iwpriv $(TARGET_DIR)/sbin/iwspy \
-		$(TARGET_DIR)/lib/libiw.so.$(WTOOLS_VER)
+$(TARGET_DIR)/sbin/iwconfig: $(WTOOLS_BUILD_DIR)/iwmulticall
+	$(MAKE) -C $(WTOOLS_BUILD_DIR) \
+		PREFIX="$(TARGET_DIR)" \
+		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
+		install-iwmulticall
 
 wtools: $(TARGET_DIR)/sbin/iwconfig 
 
@@ -58,4 +46,3 @@ wtools-clean:
 
 wtools-dirclean:
 	rm -rf $(WTOOLS_BUILD_DIR)
-
