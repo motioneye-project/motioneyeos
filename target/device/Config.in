@@ -2,4 +2,7 @@ menu "Board Support Options"
 
 source "target/device/Soekris/Config.in"
 
+# This must be last
+source "target/generic/Config.in"
+
 endmenu
