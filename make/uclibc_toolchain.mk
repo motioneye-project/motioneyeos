@@ -45,8 +45,8 @@ MULTILIB:=--enable-multilib
 #
 #############################################################
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
-BINUTILS_SOURCE:=binutils-2.14.90.0.5.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.5
+BINUTILS_SOURCE:=binutils-2.14.90.0.6.tar.bz2
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.6
 BINUTILS_CAT:=bzcat
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
