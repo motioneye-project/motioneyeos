@@ -3,9 +3,10 @@
 # iptables
 #
 #############################################################
-IPTABLES_SOURCE_URL=http://www.netfilter.org/files
-IPTABLES_SOURCE=iptables-1.2.9.tar.bz2
-IPTABLES_BUILD_DIR=$(BUILD_DIR)/iptables-1.2.9
+IPTABLES_VER:=1.2.11
+IPTABLES_SOURCE_URL:=http://www.netfilter.org/files
+IPTABLES_SOURCE:=iptables-$(IPTABLES_VER).tar.bz2
+IPTABLES_BUILD_DIR:=$(BUILD_DIR)/iptables-$(IPTABLES_VER)
 
 $(DL_DIR)/$(IPTABLES_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(IPTABLES_SOURCE_URL)/$(IPTABLES_SOURCE) 
@@ -28,7 +29,7 @@ $(IPTABLES_BUILD_DIR)/iptables: $(IPTABLES_BUILD_DIR)/.configured
 		KERNEL_DIR=$(LINUX_DIR) PREFIX=/usr \
 		CC=$(TARGET_CC) COPT_FLAGS="$(TARGET_CFLAGS)"
 
-$(TARGET_DIR)/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
+$(TARGET_DIR)/usr/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) -C $(IPTABLES_BUILD_DIR) \
 		KERNEL_DIR=$(LINUX_DIR) PREFIX=/usr \
@@ -38,7 +39,7 @@ $(TARGET_DIR)/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	$(STRIP) $(TARGET_DIR)/usr/lib/iptables/*.so
 	rm -rf $(TARGET_DIR)/usr/man
 
-iptables: linux $(TARGET_DIR)/sbin/iptables
+iptables: kernel-headers $(TARGET_DIR)/usr/sbin/iptables
 
 iptables-source: $(DL_DIR)/$(IPTABLES_SOURCE)
 
@@ -48,4 +49,3 @@ iptables-clean:
 
 iptables-dirclean:
 	rm -rf $(IPTABLES_BUILD_DIR)
-
