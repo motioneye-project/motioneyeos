@@ -29,9 +29,9 @@ LINUX_VERSION=2.4.23-erik
 LINUX_FORMAT=bzImage
 #LINUX_FORMAT=images/zImage.prep
 LINUX_KARCH:=$(shell echo $(ARCH) | sed -e 's/i[3-9]86/i386/' \
-	sed -e 's/mipsel/mips/' \
-	sed -e 's/powerpc/ppc/' \
-	sed -e 's/sh[234]/sh/' \
+	-e 's/mipsel/mips/' \
+	-e 's/powerpc/ppc/' \
+	-e 's/sh[234]/sh/' \
 	)
 LINUX_BINLOC=arch/$(LINUX_KARCH)/boot/$(LINUX_FORMAT)
 
