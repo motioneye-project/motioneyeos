@@ -23,10 +23,13 @@ $(DL_DIR)/$(BUSYBOX_SOURCE):
 
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 
-$(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
+$(BUSYBOX_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	# Allow busybox patches.
 	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-\*.patch
+	touch $(BUSYBOX_DIR)/.unpacked
+
+$(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG)
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
 	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
 		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak
@@ -38,8 +41,6 @@ else
 endif
 	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
 	touch $(BUSYBOX_DIR)/.configured
-
-busybox-unpack: $(BUSYBOX_DIR)/.configured
 
 $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
