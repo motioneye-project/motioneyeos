@@ -293,7 +293,7 @@ diff -urN gcc-3.4.0-dist/gcc/config/t-linux-uclibc gcc-3.4.0/gcc/config/t-linux-
 +# Use unwind-dw2-fde
 +LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde.c \
 +  $(srcdir)/unwind-sjlj.c $(srcdir)/gthr-gnat.c $(srcdir)/unwind-c.c
-+LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h unwind-dw2-fde.c gthr-gnat.c
++LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h
 diff -urN gcc-3.4.0-dist/gcc/config.gcc gcc-3.4.0/gcc/config.gcc
 --- gcc-3.4.0-dist/gcc/config.gcc	2004-04-16 21:28:24.000000000 -0500
 +++ gcc-3.4.0/gcc/config.gcc	2004-08-12 16:51:15.000000000 -0500
