@@ -76,6 +76,7 @@ world: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) $(TARGETS)
 
 include toolchain/*/*.mk
 include package/*/*.mk
+include target/*/*.mk
 
 #############################################################
 #

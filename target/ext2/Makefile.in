@@ -1,0 +1,3 @@
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2)),y)
+TARGETS+=ext2root
+endif
