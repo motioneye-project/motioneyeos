@@ -30,3 +30,104 @@ diff -urN pcmcia-cs-3.2.3.orig/etc/shared pcmcia-cs-3.2.3/etc/shared
 +PCIC_OPTS=
 +CORE_OPTS=
 +CARDMGR_OPTS=
+--- pcmcia-cs-3.2.4/etc/rc.pcmcia.orig	2002-08-08 00:43:43.000000000 -0600
++++ pcmcia-cs-3.2.4/etc/rc.pcmcia	2003-06-09 15:17:28.000000000 -0600
+@@ -4,6 +4,8 @@
+ #
+ # This is designed to work in BSD as well as SysV init setups.  See
+ # the HOWTO for customization instructions.
++# Modified to comply with Debian's standards by Brian Mays
++# <brian@debian.org>.
+ 
+ # Tags for Red Hat init configuration tools
+ #
+@@ -26,9 +28,9 @@
+ done
+ 
+ # Source PCMCIA configuration, if available
+-if [ -f /etc/pcmcia.conf ] ; then
++if [ -f /etc/default/pcmcia ] ; then
+     # Debian startup option file
+-    . /etc/pcmcia.conf
++    . /etc/default/pcmcia
+ elif [ -f /etc/sysconfig/pcmcia ] ; then
+     # Red Hat startup option file
+     . /etc/sysconfig/pcmcia
+@@ -50,9 +52,22 @@
+ done
+ if [ "$PCMCIA" -a "$PCMCIA" != "yes" ] ; then exit 0 ; fi
+ 
++# Debian modification: Fix PCIC for stand-alone modules.
++# yenta_socket -> i82365 on these systems.
++# Existence of a standalone module implies that it is preferred.
++if [ -d /lib/modules/preferred ] ; then
++    PC=/lib/modules/preferred/pcmcia
++else
++    PC=/lib/modules/`uname -r`/pcmcia
++fi
++if [ "$PCIC" = yenta_socket -a -e $PC/i82365.o \
++    -a ! -L $PC/i82365.o ]; then
++    PCIC=i82365
++fi
++
+ usage()
+ {
+-    echo "Usage: $0 {start|stop|status|restart|reload}"
++    echo "Usage: $0 {start|stop|status|restart|reload|force-reload}"
+ }
+ 
+ cleanup()
+@@ -84,7 +99,7 @@
+ 	    SC=/var/lib/pcmcia/scheme
+ 	    RUN=/var/lib/pcmcia
+ 	else
+-	    SC=/var/run/pcmcia-scheme
++	    SC=/var/lib/misc/pcmcia-scheme
+ 	    RUN=/var/run
+ 	fi
+ 	if [ -L $SC -o ! -O $SC ] ; then rm -f $SC ; fi
+@@ -115,6 +130,9 @@
+ 	    fi
+ 	fi
+ 
++	if ! [ -e $PC/i82365.o -a ! -L $PC/i82365.o ]; then
++	    CARDMGR_OPTS="-C config-2.4 $CARDMGR_OPTS"
++	fi
+ 	if [ -s /var/run/cardmgr.pid ] && \
+ 	    kill -0 `cat /var/run/cardmgr.pid` 2>/dev/null ; then
+ 	    echo "cardmgr is already running."
+@@ -154,7 +172,7 @@
+ 	;;
+ 
+     status)
+-	pid=`/sbin/pidof cardmgr`
++	pid=`/bin/pidof cardmgr`
+ 	if [ "$pid" != "" ] ; then
+ 	    echo "cardmgr (pid $pid) is running..."
+ 	    EXITCODE=0
+@@ -164,12 +182,18 @@
+ 	fi
+ 	;;
+ 
+-    restart|reload)
++    restart)
+ 	$0 stop
+ 	$0 start
+ 	EXITCODE=$?
+ 	;;
+ 
++    reload|force-reload)
++	echo "Reloading $DESC configuration files."
++	kill -1 `cat /var/run/cardmgr.pid` 2>/dev/null
++	EXITCODE=0
++	;;
++
+     *)
+ 	usage
+ 	;;
+@@ -179,4 +203,4 @@
+ done
+ 
+ # Only exit if we're in our own subshell
+-case $0 in *rc.pcmcia) exit $EXITCODE ;; esac
++case $0 in *pcmcia) exit $EXITCODE ;; esac

@@ -48,8 +48,6 @@ $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 	perl -i -p -e "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
 	perl -i -p -e "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config
 	perl -i -p -e "s/bind \"wvlan_cs\"/bind \"orinoco_cs\"/g" $(PCMCIA_DIR)/etc/config
-	perl -i -p -e "s,-f /etc/pcmcia.conf,-f /etc/default/pcmcia.conf,g" $(PCMCIA_DIR)/etc/rc.pcmcia
-	perl -i -p -e "s,\. /etc/pcmcia.conf,\. /etc/default/pcmcia.conf,g" $(PCMCIA_DIR)/etc/rc.pcmcia
 	touch $(PCMCIA_DIR)/.configured
 
 $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
