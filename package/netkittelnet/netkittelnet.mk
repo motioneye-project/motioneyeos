@@ -16,7 +16,7 @@ $(DL_DIR)/$(NETKITTELNET_SOURCE):
 netkittelnet-source: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 
 $(NETKITTELNET_DIR)/.unpacked: $(DL_DIR)/$(NETKITTELNET_SOURCE)
-	$(NETKITTELNET_CAT) $(DL_DIR)/$(NETKITTELNET_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(NETKITTELNET_CAT) $(DL_DIR)/$(NETKITTELNET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	# use ANSI syntax
 	$(SED) "s/main()/main(void)/;" $(NETKITTELNET_DIR)/configure
 	# Disable termcap support

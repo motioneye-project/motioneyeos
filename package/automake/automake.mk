@@ -17,7 +17,7 @@ $(DL_DIR)/$(AUTOMAKE_SOURCE):
 automake-source: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 
 $(AUTOMAKE_DIR)/.unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
-	$(AUTOMAKE_CAT) $(DL_DIR)/$(AUTOMAKE_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(AUTOMAKE_CAT) $(DL_DIR)/$(AUTOMAKE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(AUTOMAKE_DIR)/.unpacked
 
 $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked

@@ -18,7 +18,7 @@ $(DL_DIR)/$(LTRACE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LTRACE_SITE)/$(LTRACE_SOURCE)
 
 $(LTRACE_DIR)/.source: $(DL_DIR)/$(LTRACE_SOURCE)
-	zcat $(DL_DIR)/$(LTRACE_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(LTRACE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LTRACE_DIR)/.source
 
 $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.source

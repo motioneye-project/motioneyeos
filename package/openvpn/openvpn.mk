@@ -19,7 +19,7 @@ $(DL_DIR)/$(OPENVPN_SOURCE):
 openvpn-source: $(DL_DIR)/$(OPENVPN_SOURCE)
 
 $(OPENVPN_DIR)/.unpacked: $(DL_DIR)/$(OPENVPN_SOURCE)
-	$(OPENVPN_CAT) $(DL_DIR)/$(OPENVPN_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(OPENVPN_CAT) $(DL_DIR)/$(OPENVPN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(OPENVPN_DIR)/.unpacked
 
 $(OPENVPN_DIR)/.configured: $(OPENVPN_DIR)/.unpacked

@@ -32,7 +32,7 @@ $(DL_DIR)/$(RXVT_SOURCE):
 rxvt-source: $(DL_DIR)/$(RXVT_SOURCE)
 
 $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
-	$(RXVT_CAT) $(DL_DIR)/$(RXVT_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(RXVT_CAT) $(DL_DIR)/$(RXVT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(RXVT_DIR)/.unpacked
 
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked

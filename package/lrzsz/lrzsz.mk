@@ -31,7 +31,7 @@ $(DL_DIR)/$(LRZSZ_SOURCE):
 lrzsz-source: $(DL_DIR)/$(LRZSZ_SOURCE)
 
 $(LRZSZ_DIR)/.unpacked: $(DL_DIR)/$(LRZSZ_SOURCE)
-	zcat $(DL_DIR)/$(LRZSZ_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(LRZSZ_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch  $(LRZSZ_DIR)/.unpacked
 
 $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked

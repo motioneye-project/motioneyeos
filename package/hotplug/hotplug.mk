@@ -11,7 +11,7 @@ $(DL_DIR)/$(HOTPLUG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(HOTPLUG_SITE)/$(HOTPLUG_SOURCE)
 
 $(HOTPLUG_DIR): $(DL_DIR)/$(HOTPLUG_SOURCE)
-	zcat $(DL_DIR)/$(HOTPLUG_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(HOTPLUG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(HOTPLUG_DIR) package/hotplug/ hotplug\*.patch
 
 $(HOTPLUG_DIR)/hotplug: $(HOTPLUG_DIR)

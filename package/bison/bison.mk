@@ -16,7 +16,7 @@ $(DL_DIR)/$(BISON_SOURCE):
 bison-source: $(DL_DIR)/$(BISON_SOURCE)
 
 $(BISON_DIR)/.unpacked: $(DL_DIR)/$(BISON_SOURCE)
-	$(BISON_CAT) $(DL_DIR)/$(BISON_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(BISON_CAT) $(DL_DIR)/$(BISON_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(BISON_DIR)/.unpacked
 
 $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked

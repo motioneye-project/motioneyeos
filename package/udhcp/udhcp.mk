@@ -31,7 +31,7 @@ $(DL_DIR)/$(UDHCP_SOURCE):
 udhcp-source: $(DL_DIR)/$(UDHCP_SOURCE)
 
 $(UDHCP_DIR)/.unpacked: $(DL_DIR)/$(UDHCP_SOURCE)
-	zcat $(DL_DIR)/$(UDHCP_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(UDHCP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(UDHCP_DIR)/.unpacked
 
 #$(UDHCP_DIR)/.unpacked: 

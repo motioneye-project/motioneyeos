@@ -36,7 +36,7 @@ microcom-source: $(DL_DIR)/$(MICROCOM_SOURCE)
 
 $(MICROCOM_DIR)/.unpacked: $(DL_DIR)/$(MICROCOM_SOURCE)
 	mkdir -p $(MICROCOM_DIR)
-	zcat $(DL_DIR)/$(MICROCOM_SOURCE) | tar -C $(MICROCOM_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(MICROCOM_SOURCE) | tar -C $(MICROCOM_DIR) $(TAR_OPTIONS) -
 	touch  $(MICROCOM_DIR)/.unpacked
 
 $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked

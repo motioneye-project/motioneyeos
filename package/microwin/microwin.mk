@@ -22,7 +22,7 @@ $(DL_DIR)/$(MICROWIN_SOURCE):
 microwin-source: $(DL_DIR)/$(MICROWIN_SOURCE)
 
 $(MICROWIN_DIR)/.unpacked: $(DL_DIR)/$(MICROWIN_SOURCE)
-	$(MICROWIN_CAT) $(DL_DIR)/$(MICROWIN_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(MICROWIN_CAT) $(DL_DIR)/$(MICROWIN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(MICROWIN_DIR)/.unpacked
 
 $(MICROWIN_DIR)/.configured: $(MICROWIN_DIR)/.unpacked

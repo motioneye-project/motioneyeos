@@ -24,7 +24,7 @@ $(DL_DIR)/$(BUSYBOX_SOURCE):
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 
 $(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
-	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	# Allow busybox patches.
 	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-\*.patch
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config

@@ -18,7 +18,7 @@ $(DL_DIR)/$(UTIL-LINUX_PATCH):
 	$(WGET) -P $(DL_DIR) $(UTIL-LINUX_SITE)/$(UTIL-LINUX_PATCH)
 
 $(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE) $(DL_DIR)/$(UTIL-LINUX_PATCH)
-	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_PATCH) | patch -p1 -d $(UTIL-LINUX_DIR)
 	toolchain/patch-kernel.sh $(UTIL-LINUX_DIR) package/util-linux/ util-linux*.patch
 	touch $(UTIL-LINUX_DIR)/.unpacked

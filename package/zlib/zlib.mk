@@ -16,7 +16,7 @@ $(DL_DIR)/$(ZLIB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
 
 $(ZLIB_DIR)/.source: $(DL_DIR)/$(ZLIB_SOURCE)
-	bzcat $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	bzcat $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(ZLIB_DIR)/.source
 
 $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source

@@ -20,7 +20,7 @@ $(DL_DIR)/$(GZIP_SOURCE):
 gzip-source: $(DL_DIR)/$(GZIP_SOURCE)
 
 $(GZIP_DIR)/.unpacked: $(DL_DIR)/$(GZIP_SOURCE)
-	$(GZIP_CAT) $(DL_DIR)/$(GZIP_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(GZIP_CAT) $(DL_DIR)/$(GZIP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(GZIP_DIR)/.unpacked
 
 $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked

@@ -19,7 +19,7 @@ $(DL_DIR)/$(VTUN_SOURCE):
 vtun-source: $(DL_DIR)/$(VTUN_SOURCE)
 
 $(VTUN_DIR)/.unpacked: $(DL_DIR)/$(VTUN_SOURCE)
-	$(VTUN_CAT) $(DL_DIR)/$(VTUN_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(VTUN_CAT) $(DL_DIR)/$(VTUN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	mv $(BUILD_DIR)/vtun $(VTUN_DIR)
 	toolchain/patch-kernel.sh $(VTUN_DIR) package/vtun/ vtun*.patch
 	touch $(VTUN_DIR)/.unpacked

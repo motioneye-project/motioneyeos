@@ -14,7 +14,7 @@ $(DL_DIR)/$(PROCPS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(PROCPS_SITE)/$(PROCPS_SOURCE)
 
 $(PROCPS_DIR)/.source: $(DL_DIR)/$(PROCPS_SOURCE)
-	zcat $(DL_DIR)/$(PROCPS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(PROCPS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(PROCPS_DIR)/.source
 
 $(PROCPS_DIR)/$(PROCPS_BINARY): $(PROCPS_DIR)/.source

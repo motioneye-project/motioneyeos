@@ -13,7 +13,7 @@ $(DL_DIR)/$(HOSTAP_SOURCE):
 hostap-source: $(DL_DIR)/$(HOSTAP_SOURCE)
 
 $(HOSTAP_DIR)/.unpacked: $(DL_DIR)/$(HOSTAP_SOURCE)
-	zcat $(DL_DIR)/$(HOSTAP_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(HOSTAP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	mv -f $(BUILD_DIR)/hostap $(HOSTAP_DIR)
 	touch $(HOSTAP_DIR)/.unpacked
 

@@ -16,7 +16,7 @@ $(DL_DIR)/$(NETKITBASE_SOURCE):
 netkitbase-source: $(DL_DIR)/$(NETKITBASE_SOURCE)
 
 $(NETKITBASE_DIR)/.unpacked: $(DL_DIR)/$(NETKITBASE_SOURCE)
-	$(NETKITBASE_CAT) $(DL_DIR)/$(NETKITBASE_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(NETKITBASE_CAT) $(DL_DIR)/$(NETKITBASE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	# use ANSI syntax
 	$(SED) "s/main()/main(void)/;" $(NETKITBASE_DIR)/configure
 	# don't try to run cross compiled binaries while configuring things

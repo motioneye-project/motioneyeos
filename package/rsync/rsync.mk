@@ -15,7 +15,7 @@ $(DL_DIR)/$(RSYNC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(RSYNC_SITE)/$(RSYNC_SOURCE)
 
 $(RSYNC_DIR)/.unpacked: $(DL_DIR)/$(RSYNC_SOURCE)
-	$(RSYNC_CAT) $(DL_DIR)/$(RSYNC_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(RSYNC_CAT) $(DL_DIR)/$(RSYNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(RSYNC_DIR)/.unpacked
 
 $(RSYNC_DIR)/.configured: $(RSYNC_DIR)/.unpacked

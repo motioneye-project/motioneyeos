@@ -15,7 +15,7 @@ $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
 ltp-testsuite-source: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 
 $(LTP_TESTSUITE_DIR)/.unpacked: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
-	$(LTP_TESTSUITE_CAT) $(DL_DIR)/$(LTP_TESTSUITE_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(LTP_TESTSUITE_CAT) $(DL_DIR)/$(LTP_TESTSUITE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LTP_TESTSUITE_DIR) package/ltp-testsuite/ ltp-testsuite-\*.patch
 	touch $(LTP_TESTSUITE_DIR)/.unpacked
 

@@ -16,7 +16,7 @@ $(DL_DIR)/$(LIBTOOL_SOURCE):
 libtool-source: $(DL_DIR)/$(LIBTOOL_SOURCE)
 
 $(LIBTOOL_DIR)/.unpacked: $(DL_DIR)/$(LIBTOOL_SOURCE)
-	$(LIBTOOL_CAT) $(DL_DIR)/$(LIBTOOL_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(LIBTOOL_CAT) $(DL_DIR)/$(LIBTOOL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LIBTOOL_DIR)/.unpacked
 
 $(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked

@@ -14,7 +14,7 @@ $(DL_DIR)/$(DISTCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DISTCC_SITE)/$(DISTCC_SOURCE)
 
 $(DISTCC_DIR)/.unpacked: $(DL_DIR)/$(DISTCC_SOURCE)
-	bzcat $(DL_DIR)/$(DISTCC_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	bzcat $(DL_DIR)/$(DISTCC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(DISTCC_DIR)/.unpacked
 
 $(DISTCC_DIR)/.configured: $(DISTCC_DIR)/.unpacked

@@ -20,7 +20,7 @@ $(DL_DIR)/$(SOCAT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SOCAT_SITE)/$(SOCAT_SOURCE)
 
 $(SOCAT_DIR)/.unpacked:	$(DL_DIR)/$(SOCAT_SOURCE)
-	bzip2 -d -c $(DL_DIR)/$(SOCAT_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	bzip2 -d -c $(DL_DIR)/$(SOCAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(SOCAT_DIR)/.unpacked
 
 $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked

@@ -32,7 +32,7 @@ $(DL_DIR)/$(PCMCIA_SOURCE):
 pcmcia-source: $(DL_DIR)/$(PCMCIA_SOURCE)
 
 $(PCMCIA_DIR)/.unpacked: $(DL_DIR)/$(PCMCIA_SOURCE)
-	$(PCMCIA_CAT) $(DL_DIR)/$(PCMCIA_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(PCMCIA_CAT) $(DL_DIR)/$(PCMCIA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(PCMCIA_DIR)/.unpacked
 
 $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked

@@ -15,7 +15,7 @@ $(DL_DIR)/$(WGET_SOURCE):
 	$(WGET) -P $(DL_DIR) $(WGET_SITE)/$(WGET_SOURCE)
 
 $(WGET_DIR)/.unpacked: $(DL_DIR)/$(WGET_SOURCE)
-	$(WGET_CAT) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(WGET_CAT) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(WGET_DIR)/.unpacked
 
 $(WGET_DIR)/.configured: $(WGET_DIR)/.unpacked

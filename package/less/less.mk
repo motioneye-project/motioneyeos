@@ -14,7 +14,7 @@ $(DL_DIR)/$(LESS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LESS_SITE)/$(LESS_SOURCE)
 
 $(LESS_DIR)/.source: $(DL_DIR)/$(LESS_SOURCE)
-	zcat $(DL_DIR)/$(LESS_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	zcat $(DL_DIR)/$(LESS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LESS_DIR)/.source
 
 $(LESS_DIR)/.configured: $(LESS_DIR)/.source

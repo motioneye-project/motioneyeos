@@ -16,7 +16,7 @@ $(DL_DIR)/$(GNUMAKE_SOURCE):
 make-source: $(DL_DIR)/$(GNUMAKE_SOURCE)
 
 $(GNUMAKE_DIR)/.unpacked: $(DL_DIR)/$(GNUMAKE_SOURCE)
-	$(GNUMAKE_CAT) $(DL_DIR)/$(GNUMAKE_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(GNUMAKE_CAT) $(DL_DIR)/$(GNUMAKE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(GNUMAKE_DIR)/.unpacked
 
 $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked

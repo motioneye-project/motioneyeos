@@ -17,7 +17,7 @@ $(DL_DIR)/$(LIBGLIB12_SOURCE):
 libglib12-source: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 
 $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
-	$(LIBGLIB12_CAT) $(DL_DIR)/$(LIBGLIB12_SOURCE) | tar -C $(BUILD_DIR) -x$(TAR_VERBOSITY)f -
+	$(LIBGLIB12_CAT) $(DL_DIR)/$(LIBGLIB12_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBGLIB12_DIR) package/libglib12/ $(LIBGLIB12_PATCH)
 	touch $(LIBGLIB12_DIR)/.unpacked
 
