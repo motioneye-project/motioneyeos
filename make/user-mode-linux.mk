@@ -32,7 +32,7 @@ $(UMLINUX_DIR)/.set_arch: $(UMLINUX_DIR)/.patched
 
 $(UMLINUX_DIR)/.configured:  $(UMLINUX_DIR)/.set_arch  $(UMLINUX_KCONFIG)
 	cp $(UMLINUX_KCONFIG) $(UMLINUX_DIR)/.config
-	make -C $(UMLINUX_DIR) oldconfig
+	make -C $(UMLINUX_DIR) oldconfig include/linux/version.h
 	touch $(UMLINUX_DIR)/.configured
 
 $(UMLINUX_DIR)/.depend_done:  $(UMLINUX_DIR)/.configured

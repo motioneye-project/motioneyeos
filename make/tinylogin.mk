@@ -19,6 +19,7 @@ $(TINYLOGIN_DIR)/Config.h: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 	perl -i -p -e "s/\`id -u\` -ne 0/0 == 1/;" \
 		-e "s/4755 --owner=root --group=root/755/" \
 		$(TINYLOGIN_DIR)/install.sh
+	perl -i -p -e "s/^DODEBUG.*/DODEBUG=true/g;" $(TINYLOGIN_DIR)/Makefile
 	# date test this one
 	touch $(TINYLOGIN_DIR)/Config.h
 

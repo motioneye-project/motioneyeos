@@ -35,12 +35,12 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 #
 #############################################################
 # FIXME -- calculate these numbers...
-SIZE=4000
+SIZE=8000
 INODES=1000
 
 ext2root: genext2fs #$(shell find $(TARGET_DIR) -type f)
-	-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
-	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
+	#-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
+	#-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	$(GENEXT2_DIR)/genext2fs -i $(INODES) -b $(SIZE) -d $(TARGET_DIR) -D $(SOURCE_DIR)/device_table.txt $(IMAGE)
 
 ext2root-source: $(DL_DIR)/$(GENEXT2_SOURCE)

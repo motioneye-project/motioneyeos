@@ -33,15 +33,18 @@ ARCH:=i386
 #ARCH:=arm
 #ARCH:=whatever
 
+# enable to build a native gcc toolchain with uclibc support
+USE_UCLIBC_TOOLCHAIN:=false
+
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
-# they may not even compile at all...
+# they may not even compile at all, depending on what Erik is doing...
 USE_UCLIBC_SNAPSHOT:=true
 
 # Enable this to use the busybox daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all....
-USE_BUSYBOX_SNAPSHOT:=false
+USE_BUSYBOX_SNAPSHOT:=true
 
 # Enable large file (files > 2 GB) support
 BUILD_WITH_LARGEFILE:=false
@@ -51,7 +54,11 @@ BUILD_WITH_LARGEFILE:=false
 # The list of stuff to build for the target filesystem
 #
 #############################################################
-TARGETS:=user-mode-linux uclibc busybox tinylogin
+ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
+TARGETS=uclibc_toolchain
+endif
+
+TARGETS+=user-mode-linux busybox tinylogin #ncurses gdb strace valgrind
 
 # Pick your root filesystem type.
 TARGETS+=ext2root
@@ -71,10 +78,10 @@ PATCH_DIR=$(SOURCE_DIR)/patches
 BUILD_DIR:=$(BASE_DIR)/build
 TARGET_DIR:=$(BUILD_DIR)/root
 STAGING_DIR:=$(BUILD_DIR)/staging_dir
-TARGET_CC:=$(STAGING_DIR)/bin/gcc
-TARGET_CROSS:=$(STAGING_DIR)/usr/bin/$(ARCH)-uclibc-
+TARGET_CC:=$(STAGING_DIR)/usr/bin/gcc
+TARGET_CROSS:=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 TARGET_CC1:=$(TARGET_CROSS)gcc
-TARGET_PATH:=$(STAGING_DIR)/usr/bin:$(STAGING_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
+TARGET_PATH:=$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:/bin:/sbin:/usr/bin:/usr/sbin
 STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 IMAGE:=$(BASE_DIR)/root_fs
 ifneq ($(strip $(ARCH)),i386)
