@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.25 2003/08/19 06:37:00 andersen Exp $
+# $Id: ncurses.mk,v 1.26 2003/08/22 12:49:54 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -63,10 +63,6 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		--enable-echo --enable-const --enable-overwrite \
 	);
 	touch  $(NCURSES_DIR)/.configured
-
-#		--includedir=$(STAGING_DIR)/include \
-#		HOSTCCFLAGS="-O2 -I../ncurses -I. -DNDEBUG -I. -I../include -I/usr/include -DHAVE_CONFIG_H" \
-#
 
 $(NCURSES_DIR)/lib/libncurses.so.5.2: $(NCURSES_DIR)/.configured
 	$(MAKE) BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
