@@ -3,10 +3,11 @@
 # findutils
 #
 #############################################################
-FINDUTILS_SOURCE:=findutils_4.1.7.orig.tar.gz
-FINDUTILS_SITE:=http://ftp.debian.org/debian/pool/main/f/findutils
+FINDUTILS_VER:=4.1.20
+FINDUTILS_SOURCE:=findutils-$(FINDUTILS_VER).tar.gz
+FINDUTILS_SITE:=ftp://alpha.gnu.org/gnu/findutils
 FINDUTILS_CAT:=zcat
-FINDUTILS_DIR:=$(BUILD_DIR)/findutils-4.1.7
+FINDUTILS_DIR:=$(BUILD_DIR)/findutils-$(FINDUTILS_VER)
 FINDUTILS_BINARY:=find/find
 FINDUTILS_TARGET_BINARY:=usr/bin/find
 
@@ -17,7 +18,6 @@ findutils-source: $(DL_DIR)/$(FINDUTILS_SOURCE)
 
 $(FINDUTILS_DIR)/.unpacked: $(DL_DIR)/$(FINDUTILS_SOURCE)
 	$(FINDUTILS_CAT) $(DL_DIR)/$(FINDUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	mv $(FINDUTILS_DIR).orig $(FINDUTILS_DIR)
 	touch $(FINDUTILS_DIR)/.unpacked
 
 $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
