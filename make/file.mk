@@ -3,9 +3,10 @@
 # file
 #
 #############################################################
-FILE_SOURCE:=file-4.10.tar.gz
+FILE_VER:=4.10
+FILE_SOURCE:=file-$(FILE_VER).tar.gz
 FILE_SITE:=ftp://ftp.astron.com/pub/file
-FILE_DIR:=$(BUILD_DIR)/file-4.10
+FILE_DIR:=$(BUILD_DIR)/file-$(FILE_VER)
 FILE_CAT:=zcat
 FILE_BINARY:=src/file
 FILE_TARGET_BINARY:=usr/bin/file
