@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_BRIDGE
-	bool"bridge"
+	bool "bridge"
 	default n
 	help
-	  Add help text here.
+	  Manage ethernet bridging; a way to connect networks together to 
+	  form a larger network.
 
+	  http://bridge.sourceforge.net/

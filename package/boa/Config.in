@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_BOA
-	bool"boa"
+	bool "boa"
 	default n
 	help
-	  Add help text here.
+	  A very small and very fast http daemon.  Not intended as 
+	  a feature-packed server.
 
+	  http://www.boa.org/

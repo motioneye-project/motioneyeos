@@ -1,8 +1,9 @@
-#
-
 config BR2_PACKAGE_GAWK
-	bool"gawk"
+	bool "gawk"
 	default n
 	help
-	  Add help text here.
+	  A special-purpose programming language which is data driven 
+	  rather than procedural.  Allows for simple data-reformatting jobs 
+	  with just a few lines of code.
 
+	  http://www.gnu.org/software/gawk/

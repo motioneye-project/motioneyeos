@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_AUTOCONF
-	bool"autoconf"
+	bool "autoconf"
 	default n
 	help
-	  Add help text here.
+	  Extensible program for developing configure scripts.  These 
+	  scripts handle all the mundane system/feature detection.
 
+	  http://www.gnu.org/software/autoconf/

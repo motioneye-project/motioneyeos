@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_BERKELEYDB
-	bool"berkeleydb"
+	bool "berkeleydb"
 	default n
 	help
-	  Add help text here.
+	  The Berkeley database.  A very common library for database 
+	  applications.
 
+	  http://www.sleepycat.com/products/db.shtml

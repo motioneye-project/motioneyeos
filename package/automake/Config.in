@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_AUTOMAKE
-	bool"automake"
+	bool "automake"
 	default n
 	help
-	  Add help text here.
+	  Tool for automatically generating Makefile's for input to 
+	  configure scripts (made by autoconf).
 
+	  http://www.gnu.org/software/automake/
