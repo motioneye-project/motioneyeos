@@ -76,12 +76,14 @@ GCC_VERSION:=3.4.2
 #BINUTILS_VERSION:=2.15.90.0.3
 #BINUTILS_VERSION:=2.15.91.0.1
 BINUTILS_VERSION:=2.15.91.0.2
+#BINUTILS_VERSION:=2.15.92.0.2
 
 # Choose gdb version.
 #
 #GDB_VERSION:=5.3
 GDB_VERSION:=6.1.1
 #GDB_VERSION:=6.2
+#GDB_VERSION:=6.2.1
 
 
 # Enable this to use the uClibc daily snapshot instead of a released
