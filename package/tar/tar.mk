@@ -18,6 +18,7 @@ tar-source: $(DL_DIR)/$(GNUTAR_SOURCE)
 
 $(GNUTAR_DIR)/.unpacked: $(DL_DIR)/$(GNUTAR_SOURCE)
 	$(GNUTAR_CAT) $(DL_DIR)/$(GNUTAR_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(GNUTAR_DIR) package/tar/ tar*.patch
 	touch $(GNUTAR_DIR)/.unpacked
 
 $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked

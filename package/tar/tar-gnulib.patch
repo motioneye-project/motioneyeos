@@ -1,0 +1,99 @@
+Index: argp.h
+===================================================================
+RCS file: /cvsroot/gnulib/gnulib/lib/argp.h,v
+retrieving revision 1.5
+retrieving revision 1.8
+diff -u -b -B -r1.5 -r1.8
+--- tar.broke/lib/argp.h	4 Oct 2003 12:28:07 -0000	1.5
++++ tar/lib/argp.h	30 Sep 2004 16:41:57 -0000	1.8
+@@ -1,5 +1,5 @@
+ /* Hierarchial argument parsing, layered over getopt.
+-   Copyright (C) 1995,1996,1997,1998,1999,2003 Free Software Foundation, Inc.
++   Copyright (C) 1995-1999,2003,2004 Free Software Foundation, Inc.
+    This file is part of the GNU C Library.
+    Written by Miles Bader <miles@gnu.ai.mit.edu>.
+ 
+@@ -34,6 +34,9 @@
+ #ifndef __THROW
+ # define __THROW
+ #endif
++#ifndef __NTH
++# define __NTH(fct) fct __THROW
++#endif
+ 
+ #ifndef __attribute__
+ /* This feature is available in gcc versions 2.5 and later.  */
+@@ -48,6 +51,18 @@
+ # endif
+ #endif
+ 
++/* GCC 2.95 and later have "__restrict"; C99 compilers have
++   "restrict", and "configure" may have defined "restrict".  */
++#ifndef __restrict
++# if ! (2 < __GNUC__ || (2 == __GNUC__ && 95 <= __GNUC_MINOR__))
++#  if defined restrict || 199901L <= __STDC_VERSION__
++#   define __restrict restrict
++#  else
++#   define __restrict
++#  endif
++# endif
++#endif
++
+ #ifndef __error_t_defined
+ typedef int error_t;
+ # define __error_t_defined
+@@ -111,11 +126,12 @@
+    should be displayed in much the same manner as the options.  If this flag
+    is set, then the option NAME field is displayed unmodified (e.g., no `--'
+    prefix is added) at the left-margin (where a *short* option would normally
+-   be displayed), and the documentation string in the normal place.  For
+-   purposes of sorting, any leading whitespace and punctuation is ignored,
+-   except that if the first non-whitespace character is not `-', this entry
+-   is displayed after all options (and OPTION_DOC entries with a leading `-')
+-   in the same group.  */
++   be displayed), and the documentation string in the normal place. The NAME
++   field will be translated using gettext, unless OPTION_NO_TRANS is set (see
++   below). For purposes of sorting, any leading whitespace and punctuation is
++   ignored, except that if the first non-whitespace character is not `-', this
++   entry is displayed after all options (and OPTION_DOC entries with a leading
++   `-') in the same group.  */
+ #define OPTION_DOC		0x8
+ 
+ /* This option shouldn't be included in `long' usage messages (but is still
+@@ -127,6 +143,11 @@
+    OPTION_NO_USAGE.  */
+ #define OPTION_NO_USAGE		0x10
+ 
++/* Valid only in conjunction with OPTION_DOC. This option disables translation
++   of option name. */
++#define OPTION_NO_TRANS         0x20
++
++
+ struct argp;			/* fwd declare this type */
+ struct argp_state;		/* " */
+ struct argp_child;		/* " */
+@@ -545,13 +566,13 @@
+ # endif
+ 
+ ARGP_EI void
+-__argp_usage (__const struct argp_state *__state) __THROW
++__NTH (__argp_usage (__const struct argp_state *__state))
+ {
+   __argp_state_help (__state, stderr, ARGP_HELP_STD_USAGE);
+ }
+ 
+ ARGP_EI int
+-__option_is_short (__const struct argp_option *__opt) __THROW
++__NTH (__option_is_short (__const struct argp_option *__opt))
+ {
+   if (__opt->flags & OPTION_DOC)
+     return 0;
+@@ -563,7 +584,7 @@
+ }
+ 
+ ARGP_EI int
+-__option_is_end (__const struct argp_option *__opt) __THROW
++__NTH (__option_is_end (__const struct argp_option *__opt))
+ {
+   return !__opt->key && !__opt->name && !__opt->doc && !__opt->group;
+ }
