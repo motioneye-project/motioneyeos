@@ -255,7 +255,7 @@ $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
 	    LD_FOR_TARGET=$(TARGET_CROSS)ld NM_FOR_TARGET=$(TARGET_CROSS)nm \
 	    CC_FOR_TARGET=$(GCC_BUILD_DIR2)/target_gcc \
 	    GCC_FOR_TARGET=$(GCC_BUILD_DIR2)/target_gcc \
-	    CXX_FOR_TARGET=$(GCC_BUILD_DIR2)/target_g++
+	    CXX_FOR_TARGET=$(GCC_BUILD_DIR2)/target_g++ \
 	    -C $(GCC_BUILD_DIR2)
 	touch $(GCC_BUILD_DIR2)/.compiled
 
