@@ -53,7 +53,7 @@ $(TARGET_DIR)/sbin/udhcpc: $(UDHCP_DIR)/udhcpc
 	cp $(UDHCP_DIR)/samples/simple.script $(TARGET_DIR)/usr/share/udhcpc/default.script
 	chmod a+x $(TARGET_DIR)/sbin/udhcpc $(TARGET_DIR)/usr/share/udhcpc/default.script
 
-udhcp: uclibc pcmcia $(TARGET_DIR)/sbin/udhcpc
+udhcp: uclibc $(TARGET_DIR)/sbin/udhcpc
 
 udhcp-clean:
 	rm -f $(TARGET_DIR)/sbin/udhcpc
