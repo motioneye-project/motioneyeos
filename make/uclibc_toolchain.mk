@@ -95,6 +95,8 @@ $(STAGING_DIR)/.setup:
 #############################################################
 uclibc_toolchain: gcc_final
 
+uclibc_toolchain-source: $(DL_DIR)/$(BINUTILS_SOURCE) $(DL_DIR)/$(UCLIBC_SOURCE) $(DL_DIR)/$(GCC_SOURCE)
+
 uclibc_toolchain-clean: gcc_final-clean uclibc-clean gcc_initial-clean binutils-clean
 
 uclibc_toolchain-dirclean: gcc_final-dirclean uclibc-dirclean gcc_initial-dirclean binutils-dirclean

@@ -154,17 +154,18 @@ STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
 IMAGE:=$(BASE_DIR)/root_fs
 GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
-#KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
-KERNEL_CROSS:=
+KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 
 all:   world
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
+TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 
 world: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) $(TARGETS)
 
-.PHONY: all world clean dirclean distclean $(TARGETS) $(TARGETS_CLEAN) $(TARGETS_DIRCLEAN)
+.PHONY: all world clean dirclean distclean source $(TARGETS) \
+	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE)
 
 include make/*.mk
 
@@ -192,6 +193,7 @@ $(TARGET_DIR):
 	cp -a $(SOURCE_DIR)/target_skeleton/* $(TARGET_DIR)/
 	-find $(TARGET_DIR) -type d -name CVS -exec rm -rf {} \; > /dev/null 2>&1
 
+source: $(TARGETS_SOURCE)
 
 #############################################################
 #

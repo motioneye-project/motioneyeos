@@ -83,6 +83,8 @@ $(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
 uclibc: $(BUILD_DIR)/linux/.configured $(STAGING_DIR)/lib/libc.a \
 	    $(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
 
+uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
+
 uclibc-clean:
 	rm -f $(TARGET_DIR)/lib/libc.so.0
 	-$(MAKE) -C $(UCLIBC_DIR) clean
