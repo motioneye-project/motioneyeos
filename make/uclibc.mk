@@ -54,7 +54,7 @@ LINUX_DIR:=$(BUILD_DIR)/linux
 endif
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
-	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCROSS=,g' $(UCLIBC_DIR)/Rules.mak
+	perl -i -p -e 's,^CROSS=.*,TARGET_ARCH=$(ARCH)\nCC=$(HOSTCC),g' $(UCLIBC_DIR)/Rules.mak
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
