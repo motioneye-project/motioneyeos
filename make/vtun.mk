@@ -25,7 +25,7 @@ $(VTUN_DIR)/.unpacked: $(DL_DIR)/$(VTUN_SOURCE)
 	cat $(VTUN_PATCH) | patch -p1 -d $(VTUN_DIR)
 	touch $(VTUN_DIR)/.unpacked
 
-$(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked
+$(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked zlib lzo openssl
 	(cd $(VTUN_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
@@ -42,7 +42,8 @@ $(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-lzo \
+		--with-ssl-headers=$(STAGING_DIR)/include/openssl \
+		--with-lzo-headers=$(STAGING_DIR)/include \
 	);
 	touch  $(VTUN_DIR)/.configured
 
