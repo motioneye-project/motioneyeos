@@ -201,10 +201,12 @@ TARGETS+=ext2root
 #############################################################
 
 ifeq ($(SOFT_FLOAT),true)
-SOFT_FLOAT_CONFIG_OPTION=--without-float
-TARGET_SOFT_FLOAT=-msoft-float
+SOFT_FLOAT_CONFIG_OPTION:=--without-float
+TARGET_SOFT_FLOAT:=-msoft-float
 ARCH_FPU_SUFFIX:=_nofpu
 else
+SOFT_FLOAT_CONFIG_OPTION:=
+TARGET_SOFT_FLOAT:=
 ARCH_FPU_SUFFIX:=
 endif
 
