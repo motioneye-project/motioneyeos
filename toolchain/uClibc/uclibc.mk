@@ -116,7 +116,7 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 		install_runtime
 	touch -c $(TARGET_DIR)/lib/libc.so.0
 
-$(TARGET_DIR)/usr/bin/ldd: gcc
+$(TARGET_DIR)/usr/bin/ldd:
 	$(MAKE1) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
 		PREFIX=$(TARGET_DIR) utils install_utils
 	touch -c $(TARGET_DIR)/usr/bin/ldd
