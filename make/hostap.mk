@@ -25,6 +25,8 @@ $(HOSTAP_BUILD_DIR)/.configured: $(HOSTAP_BUILD_DIR)/.unpacked
 
 $(HOSTAP_BUILD_DIR)/driver/modules/hostap.o: $(HOSTAP_BUILD_DIR)/.configured
 	$(MAKE) -C $(HOSTAP_BUILD_DIR) pccard KERNEL_PATH=$(LINUX_SOURCE_DIR) CC=$(TARGET_CC)
+	$(MAKE) -C $(HOSTAP_BUILD_DIR) pci KERNEL_PATH=$(LINUX_SOURCE_DIR) CC=$(TARGET_CC)
+	$(MAKE) -C $(HOSTAP_BUILD_DIR) plx KERNEL_PATH=$(LINUX_SOURCE_DIR) CC=$(TARGET_CC)
 	$(MAKE) -C $(HOSTAP_BUILD_DIR)/utils CC=$(TARGET_CC)
 	$(MAKE) -C $(HOSTAP_BUILD_DIR)/hostapd CC=$(TARGET_CC) 
 	touch -c $(HOSTAP_BUILD_DIR)/driver/modules/hostap.o
