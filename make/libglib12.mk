@@ -20,7 +20,7 @@ $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 
 $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 	(cd $(LIBGLIB12_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -39,10 +39,10 @@ $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 	touch  $(LIBGLIB12_DIR)/.configured
 
 $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(LIBGLIB12_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(LIBGLIB12_DIR)
 
 $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINARY)
-	$(MAKE) CC=$(TARGET_CC1) prefix=$(STAGING_DIR) -C $(LIBGLIB12_DIR) install
+	$(MAKE) CC=$(TARGET_CC) prefix=$(STAGING_DIR) -C $(LIBGLIB12_DIR) install
 
 $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY): $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY)
 	cp -a $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY) $(TARGET_DIR)/lib/

@@ -28,7 +28,7 @@ $(PCIUTILS_DIR)/.unpacked: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURC
 
 $(PCIUTILS_DIR)/.configured: $(PCIUTILS_DIR)/.unpacked
 	(cd $(PCIUTILS_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -46,7 +46,7 @@ $(PCIUTILS_DIR)/.configured: $(PCIUTILS_DIR)/.unpacked
 	touch  $(PCIUTILS_DIR)/.configured
 
 $(PCIUTILS_DIR)/lspci: $(PCIUTILS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(PCIUTILS_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(PCIUTILS_DIR)
 
 $(TARGET_DIR)/sbin/lspci: $(PCIUTILS_DIR)/lspci
 	install -c $(PCIUTILS_DIR)/lspci $(TARGET_DIR)/sbin/lspci
@@ -61,7 +61,7 @@ $(TARGET_DIR)/usr/share/misc/pci.ids: $(PCIUTILS_DIR)/.dist
 pciutils: uclibc $(TARGET_DIR)/sbin/setpci $(TARGET_DIR)/sbin/lspci $(TARGET_DIR)/usr/share/misc/pci.ids
 
 pciutils-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(PCIUTILS_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(PCIUTILS_DIR) uninstall
 	-$(MAKE) -C $(PCIUTILS_DIR) clean
 
 pciutils-dirclean:

@@ -21,7 +21,7 @@ $(BOA_DIR)/.unpacked:	$(DL_DIR)/$(BOA_SOURCE)
 	gzip -d -c $(DL_DIR)/$(BOA_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(BOA_DIR)/.unpacked
 
-$(BOA_WORKDIR)/Makefile: $(TARGET_CC) $(BOA_DIR)/.unpacked
+$(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 	rm -f $(BOA_WORKDIR)/Makefile
 	mkdir -p $(BOA_WORKDIR)
 	(cd $(BOA_WORKDIR) && CONFIG_SITE=$(SOURCE_DIR)/boa-config.site-$(ARCH) \

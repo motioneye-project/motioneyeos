@@ -11,7 +11,7 @@ $(TN5250_DIR)/.dist: $(DL_DIR)/$(TN5250_SOURCE)
 
 $(TN5250_DIR)/.configured: $(TN5250_DIR)/.dist
 	(cd $(TN5250_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -30,7 +30,7 @@ $(TN5250_DIR)/.configured: $(TN5250_DIR)/.dist
 	touch  $(TN5250_DIR)/.configured
 
 $(TN5250_DIR)/tn5250: $(TN5250_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(TN5250_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(TN5250_DIR)
 
 $(TARGET_DIR)/usr/bin/tn5250: $(TN5250_DIR)/tn5250
 	install -c $(TN5250_DIR)/tn5250 $(TARGET_DIR)/usr/bin/tn5250

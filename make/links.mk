@@ -18,7 +18,7 @@ $(LINKS_DIR)/.unpacked: $(DL_DIR)/$(LINKS_SOURCE)
 
 $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 	(cd $(LINKS_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -36,7 +36,7 @@ $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 	touch  $(LINKS_DIR)/.configured
 
 $(LINKS_DIR)/links: $(LINKS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(LINKS_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(LINKS_DIR)
 	$(STRIP) $(LINKS_DIR)/links
 
 $(TARGET_DIR)/usr/bin/links: $(LINKS_DIR)/links

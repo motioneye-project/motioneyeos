@@ -20,7 +20,7 @@ $(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
 
 $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 	(cd $(STRACE_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -38,7 +38,7 @@ $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 	touch  $(STRACE_DIR)/.configured
 
 $(STRACE_DIR)/strace: $(STRACE_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(STRACE_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(STRACE_DIR)
 
 $(TARGET_DIR)/usr/bin/strace: $(STRACE_DIR)/strace
 	install -c $(STRACE_DIR)/strace $(TARGET_DIR)/usr/bin/strace

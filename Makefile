@@ -137,9 +137,8 @@ PATCH_DIR=$(SOURCE_DIR)/patches
 BUILD_DIR:=$(BASE_DIR)/build
 TARGET_DIR:=$(BUILD_DIR)/root
 STAGING_DIR:=$(BUILD_DIR)/staging_dir
-TARGET_CC:=$(STAGING_DIR)/usr/bin/gcc
 TARGET_CROSS:=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
-TARGET_CC1:=$(TARGET_CROSS)gcc
+TARGET_CC:=$(TARGET_CROSS)gcc
 TARGET_PATH:=$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:/bin:/sbin:/usr/bin:/usr/sbin
 STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true

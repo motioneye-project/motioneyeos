@@ -21,10 +21,10 @@ $(MKE2FS_DIR)/.unpacked: $(DL_DIR)/$(MKE2FS_SOURCE)
 
 $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked
 	(cd $(MKE2FS_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
-		--with-cc=$(TARGET_CC1) \
+		--with-cc=$(TARGET_CC) \
 		--with-linker=$(TARGET_CROSS)ld \
 		--prefix=/usr \
 		--exec-prefix=/usr \
@@ -44,12 +44,12 @@ $(MKE2FS_DIR)/.configured: $(MKE2FS_DIR)/.unpacked
 	touch  $(MKE2FS_DIR)/.configured
 
 $(MKE2FS_DIR)/$(MKE2FS_BINARY): $(MKE2FS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(MKE2FS_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(MKE2FS_DIR)
 	$(STRIP) $(MKE2FS_DIR)/misc/mke2fs $(MKE2FS_DIR)/misc/badblocks;
 	touch -c $(MKE2FS_DIR)/misc/mke2fs
 
 $(TARGET_DIR)/$(MKE2FS_TARGET_BINARY): $(MKE2FS_DIR)/$(MKE2FS_BINARY)
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(MKE2FS_DIR) install
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(MKE2FS_DIR) install
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Only install a few selected items...
@@ -60,7 +60,7 @@ $(TARGET_DIR)/$(MKE2FS_TARGET_BINARY): $(MKE2FS_DIR)/$(MKE2FS_BINARY)
 mke2fs: uclibc $(TARGET_DIR)/$(MKE2FS_TARGET_BINARY)
 
 mke2fs-clean:
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(MKE2FS_DIR) uninstall
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(MKE2FS_DIR) uninstall
 	rm -f $(TARGET_DIR)/sbin/mke2fs $(TARGET_DIR)/sbin/badblocks;
 	-$(MAKE) -C $(MKE2FS_DIR) clean
 

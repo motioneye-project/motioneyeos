@@ -21,7 +21,7 @@ $(GNUMAKE_DIR)/.unpacked: $(DL_DIR)/$(GNUMAKE_SOURCE)
 
 $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 	(cd $(GNUMAKE_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -39,17 +39,17 @@ $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 	touch  $(GNUMAKE_DIR)/.configured
 
 $(GNUMAKE_DIR)/$(GNUMAKE_BINARY): $(GNUMAKE_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(GNUMAKE_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(GNUMAKE_DIR)
 
 $(TARGET_DIR)/$(GNUMAKE_TARGET_BINARY): $(GNUMAKE_DIR)/$(GNUMAKE_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(GNUMAKE_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GNUMAKE_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 make: uclibc $(TARGET_DIR)/$(GNUMAKE_TARGET_BINARY)
 
 make-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(GNUMAKE_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GNUMAKE_DIR) uninstall
 	-$(MAKE) -C $(GNUMAKE_DIR) clean
 
 make-dirclean:

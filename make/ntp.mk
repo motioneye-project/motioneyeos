@@ -24,7 +24,7 @@ $(NTP_DIR)/.unpacked: $(DL_DIR)/$(NTP_SOURCE)
 
 $(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
 	(cd $(NTP_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -43,17 +43,17 @@ $(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
 	touch  $(NTP_DIR)/.configured
 
 $(NTP_DIR)/$(NTP_BINARY): $(NTP_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(NTP_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(NTP_DIR)
 
 $(TARGET_DIR)/$(NTP_TARGET_BINARY): $(NTP_DIR)/$(NTP_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NTP_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NTP_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 ntp: uclibc $(TARGET_DIR)/$(NTP_TARGET_BINARY)
 
 ntp-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NTP_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NTP_DIR) uninstall
 	-$(MAKE) -C $(NTP_DIR) clean
 
 ntp-dirclean:

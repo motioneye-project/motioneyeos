@@ -19,7 +19,7 @@ $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
 
 $(DB_DIR)/.configured: $(DB_DIR)/.dist
 	(cd $(DB_DIR)/build_unix; rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		../dist/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -37,11 +37,11 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 	touch  $(DB_DIR)/.configured
 
 $(DB_DIR)/build_unix/.libs/libdb-4.0.so: $(DB_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(DB_DIR)/build_unix
+	$(MAKE) CC=$(TARGET_CC) -C $(DB_DIR)/build_unix
 
 $(STAGING_DIR)/lib/libdb-4.0.so: $(DB_DIR)/build_unix/.libs/libdb-4.0.so
 	-mkdir -p $(STAGING_DIR)/man/man1
-	$(MAKE) DESTDIR=$(STAGING_DIR) CC=$(TARGET_CC1) -C $(DB_DIR)/build_unix install 
+	$(MAKE) DESTDIR=$(STAGING_DIR) CC=$(TARGET_CC) -C $(DB_DIR)/build_unix install 
 	rm -rf $(STAGING_DIR)/man/man1
 
 $(TARGET_DIR)/lib/libdb-4.0.so: $(STAGING_DIR)/lib/libdb-4.0.so

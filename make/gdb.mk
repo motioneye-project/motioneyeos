@@ -20,7 +20,7 @@ $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 		PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
 		AS=$(TARGET_CROSS)as LD=$(TARGET_CROSS)ld \
 		RANLIB=$(TARGET_CROSS)ranlib NM=$(TARGET_CROSS)nm \
-		CC=$(TARGET_CC1) \
+		CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -43,7 +43,7 @@ $(GDB_DIR)/.configured: $(GDB_DIR)/.unpacked
 	touch  $(GDB_DIR)/.configured
 
 $(GDB_DIR)/gdb/gdb: $(GDB_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(GDB_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(GDB_DIR)
 	$(STRIP) $(GDB_DIR)/gdb/gdb
 
 $(TARGET_DIR)/usr/bin/gdb: $(GDB_DIR)/gdb/gdb

@@ -24,13 +24,13 @@ $(NETKITBASE_DIR)/.unpacked: $(DL_DIR)/$(NETKITBASE_SOURCE)
 	touch $(NETKITBASE_DIR)/.unpacked
 
 $(NETKITBASE_DIR)/.configured: $(NETKITBASE_DIR)/.unpacked
-	(cd $(NETKITBASE_DIR); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+	(cd $(NETKITBASE_DIR); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure --installroot=$(TARGET_DIR) --with-c-compiler=$(TARGET_CC) \
 	)
 	touch  $(NETKITBASE_DIR)/.configured
 
 $(NETKITBASE_DIR)/$(NETKITBASE_BINARY): $(NETKITBASE_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(NETKITBASE_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(NETKITBASE_DIR)
 	$(STRIP) $(NETKITBASE_DIR)/$(NETKITBASE_BINARY)
 
 $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY): $(NETKITBASE_DIR)/$(NETKITBASE_BINARY)
@@ -40,14 +40,14 @@ $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY): $(NETKITBASE_DIR)/$(NETKITBASE_BINARY
 	mkdir -p $(TARGET_DIR)/etc
 	cp $(NETKITBASE_DIR)/etc.sample/inetd.conf $(TARGET_DIR)/etc/
 	perl -i -p -e "s/^([a-z])/#\1/;" $(TARGET_DIR)/etc/inetd.conf
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NETKITBASE_DIR) install
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITBASE_DIR) install
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 netkitbase: uclibc $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
 
 netkitbase-clean:
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NETKITBASE_DIR) uninstall
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITBASE_DIR) uninstall
 	-rm -f $(TARGET_DIR)/usr/sbin/inetd $(TARGET_DIR)/etc/inetd.conf
 	-rm -f $(TARGET_DIR)/etc/inetd.conf
 	-$(MAKE) -C $(NETKITBASE_DIR) clean

@@ -23,7 +23,7 @@ $(COREUTILS_DIR)/.unpacked: $(DL_DIR)/$(COREUTILS_SOURCE)
 
 $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 	(cd $(COREUTILS_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -41,10 +41,10 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 	touch  $(COREUTILS_DIR)/.configured
 
 $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(COREUTILS_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(COREUTILS_DIR)
 
 $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY): $(COREUTILS_DIR)/$(COREUTILS_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(COREUTILS_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(COREUTILS_DIR) install
 	# some things go in root rather than usr
 	for f in $(BIN_PROGS); do \
 		mv $(TARGET_DIR)/usr/bin/$$f $(TARGET_DIR)/bin/$$f; \
@@ -59,7 +59,7 @@ $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY): $(COREUTILS_DIR)/$(COREUTILS_BINARY)
 coreutils: uclibc $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 
 coreutils-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(COREUTILS_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(COREUTILS_DIR) uninstall
 	-$(MAKE) -C $(COREUTILS_DIR) clean
 
 coreutils-dirclean:

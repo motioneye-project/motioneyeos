@@ -22,7 +22,7 @@ $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked
 
 $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 	(cd $(VALGRIND_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -43,12 +43,12 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 	touch  $(VALGRIND_DIR)/.configured
 
 $(VALGRIND_DIR)/valgrind.so: $(VALGRIND_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(VALGRIND_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(VALGRIND_DIR)
 	-$(STRIP) --strip-unneeded $(VALGRIND_DIR)/*.so*
 	touch -c $(VALGRIND_DIR)/valgrind.so
 
 $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind.so
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \

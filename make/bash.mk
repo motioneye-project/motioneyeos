@@ -21,7 +21,7 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	(cd $(BASH_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -41,10 +41,10 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	touch  $(BASH_DIR)/.configured
 
 $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(BASH_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(BASH_DIR)
 
 $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(BASH_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) install
 	mv $(TARGET_DIR)/usr/bin/bash* $(TARGET_DIR)/bin/
 	(cd $(TARGET_DIR)/bin; ln -fs bash sh)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
@@ -53,7 +53,7 @@ $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 bash: ncurses uclibc $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 
 bash-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(BASH_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) uninstall
 	-$(MAKE) -C $(BASH_DIR) clean
 
 bash-dirclean:

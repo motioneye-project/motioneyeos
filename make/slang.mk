@@ -17,7 +17,7 @@ $(SLANG_DIR): $(DL_DIR)/$(SLANG_SOURCE)
 	bzcat $(DL_DIR)/$(SLANG_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 
 $(SLANG_DIR)/libslang.so: $(SLANG_DIR)
-	$(MAKE) CFLAGS="-Os -g -fPIC $(SLANG_CFLAGS)" CC=$(TARGET_CC1) -C $(SLANG_DIR)
+	$(MAKE) CFLAGS="-Os -g -fPIC $(SLANG_CFLAGS)" CC=$(TARGET_CC) -C $(SLANG_DIR)
 	touch -c $(SLANG_DIR)/libslang.so;
 
 $(STAGING_DIR)/lib/libslang.so.1: $(SLANG_DIR)/libslang.so

@@ -21,7 +21,7 @@ $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 	(cd $(GAWK_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -39,17 +39,17 @@ $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 	touch  $(GAWK_DIR)/.configured
 
 $(GAWK_DIR)/$(GAWK_BINARY): $(GAWK_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(GAWK_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(GAWK_DIR)
 
 $(TARGET_DIR)/$(GAWK_TARGET_BINARY): $(GAWK_DIR)/$(GAWK_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(GAWK_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GAWK_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 gawk: uclibc $(TARGET_DIR)/$(GAWK_TARGET_BINARY)
 
 gawk-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(GAWK_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GAWK_DIR) uninstall
 	-$(MAKE) -C $(GAWK_DIR) clean
 
 gawk-dirclean:

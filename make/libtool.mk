@@ -21,7 +21,7 @@ $(LIBTOOL_DIR)/.unpacked: $(DL_DIR)/$(LIBTOOL_SOURCE)
 
 $(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked
 	(cd $(LIBTOOL_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -39,11 +39,11 @@ $(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked
 	touch  $(LIBTOOL_DIR)/.configured
 
 $(LIBTOOL_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(LIBTOOL_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(LIBTOOL_DIR)
 	touch -c $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
 
 $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
@@ -63,7 +63,7 @@ $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
 libtool: uclibc $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY)
 
 libtool-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(LIBTOOL_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBTOOL_DIR) uninstall
 	-$(MAKE) -C $(LIBTOOL_DIR) clean
 
 libtool-dirclean:

@@ -26,7 +26,7 @@ $(PPPD_DIR)/.unpacked: $(DL_DIR)/$(PPPD_SOURCE)
 
 $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 	(cd $(PPPD_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -44,10 +44,10 @@ $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 	touch  $(PPPD_DIR)/.configured
 
 $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(PPPD_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(PPPD_DIR)
 
 $(TARGET_DIR)/$(PPPD_TARGET_BINARY): $(PPPD_DIR)/$(PPPD_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(PPPD_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(PPPD_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
@@ -57,7 +57,7 @@ pppd-clean:
 	rm -f  $(TARGET_DIR)/usr/sbin/pppd
 	rm -f  $(TARGET_DIR)/usr/sbin/chat
 	rm -rf $(TARGET_DIR)/etc/ppp
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(PPPD_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(PPPD_DIR) uninstall
 	-$(MAKE) -C $(PPPD_DIR) clean
 
 pppd-dirclean:

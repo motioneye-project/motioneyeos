@@ -21,7 +21,7 @@ $(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 
 $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
 	(cd $(AUTOCONF_DIR); rm -rf config.cache; PATH=$(STAGING_DIR)/bin:$$PATH \
-		CC=$(TARGET_CC1) EMACS="no" \
+		CC=$(TARGET_CC) EMACS="no" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -38,10 +38,10 @@ $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
 	touch  $(AUTOCONF_DIR)/.configured
 
 $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(AUTOCONF_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(AUTOCONF_DIR)
 
 $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
-	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+	PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
@@ -61,7 +61,7 @@ $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
 autoconf: uclibc $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY)
 
 autoconf-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(AUTOCONF_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(AUTOCONF_DIR) uninstall
 	-$(MAKE) -C $(AUTOCONF_DIR) clean
 
 autoconf-dirclean:

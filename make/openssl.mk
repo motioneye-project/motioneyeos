@@ -26,10 +26,10 @@ $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 		shared no-idea no-mdc2 no-rc5)
 
 $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
-	$(MAKE) CC=$(TARGET_CC1) -C $(OPENSSL_DIR) all build-shared
+	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) all build-shared
 
 $(STAGING_DIR)/lib/libcrypto.so.0: $(OPENSSL_DIR)/apps/openssl
-	$(MAKE) CC=$(TARGET_CC1) -C $(OPENSSL_DIR) install
+	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) install
 	cp -fa $(OPENSSL_DIR)/libcrypto.so* $(STAGING_DIR)/lib/
 	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.6 libcrypto.so)
 	(cd $(STAGING_DIR)/lib; ln -fs libcrypto.so.0.9.6 libcrypto.so.0)

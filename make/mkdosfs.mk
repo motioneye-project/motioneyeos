@@ -25,7 +25,7 @@ $(MKDOSFS_DIR)/.unpacked: $(DL_DIR)/$(MKDOSFS_SOURCE)
 	touch $(MKDOSFS_DIR)/.unpacked
 
 $(MKDOSFS_DIR)/$(MKDOSFS_BINARY): $(MKDOSFS_DIR)/.unpacked
-	$(MAKE) CFLAGS=$(MKDOSFS_CFLAGS) CC=$(TARGET_CC1) -C $(MKDOSFS_DIR);
+	$(MAKE) CFLAGS=$(MKDOSFS_CFLAGS) CC=$(TARGET_CC) -C $(MKDOSFS_DIR);
 	$(STRIP) $(MKDOSFS_DIR)/mkdosfs/mkdosfs;
 	touch -c $(MKDOSFS_DIR)/mkdosfs/mkdosfs
 
@@ -36,7 +36,7 @@ $(TARGET_DIR)/$(MKDOSFS_TARGET_BINARY): $(MKDOSFS_DIR)/$(MKDOSFS_BINARY)
 mkdosfs: uclibc $(TARGET_DIR)/$(MKDOSFS_TARGET_BINARY)
 
 mkdosfs-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(MKDOSFS_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(MKDOSFS_DIR) uninstall
 	-$(MAKE) -C $(MKDOSFS_DIR) clean
 
 mkdosfs-dirclean:

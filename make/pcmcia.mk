@@ -43,7 +43,7 @@ $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked
 $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX_DIR) --noprompt \
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
-		--sysv --kcc=$(HOSTCC) --ucc=$(TARGET_CC1) --ld=$(TARGET_CROSS)ld \
+		--sysv --kcc=$(HOSTCC) --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
 	touch $(PCMCIA_DIR)/.configured
 

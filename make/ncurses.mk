@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.16 2003/01/17 08:03:59 andersen Exp $
+# $Id: ncurses.mk,v 1.17 2003/01/19 06:07:22 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -39,7 +39,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	(cd $(NCURSES_DIR); rm -rf config.cache; PATH=$(STAGING_DIR)/bin:$$PATH \
-		BUILD_CC=$(HOSTCC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC1) \
+		BUILD_CC=$(HOSTCC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -61,12 +61,12 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	touch  $(NCURSES_DIR)/.configured
 
 $(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) HOSTCC=$(HOSTCC) \
+	$(MAKE) CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
 		DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR)
 
 $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so
 	PATH=$(STAGING_DIR)/bin:$$PATH BUILD_CC=$(HOSTCC) \
-	    HOSTCC=$(HOSTCC) CC=$(TARGET_CC1) $(MAKE) \
+	    HOSTCC=$(HOSTCC) CC=$(TARGET_CC) $(MAKE) \
 	    prefix=$(STAGING_DIR) \
 	    exec_prefix=$(STAGING_DIR) \
 	    bindir=$(STAGING_DIR)/bin \

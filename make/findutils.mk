@@ -24,7 +24,7 @@ $(FINDUTILS_DIR)/.unpacked: $(DL_DIR)/$(FINDUTILS_SOURCE)
 
 $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 	(cd $(FINDUTILS_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -42,17 +42,17 @@ $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 	touch  $(FINDUTILS_DIR)/.configured
 
 $(FINDUTILS_DIR)/$(FINDUTILS_BINARY): $(FINDUTILS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(FINDUTILS_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(FINDUTILS_DIR)
 
 $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY): $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(FINDUTILS_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 findutils: uclibc $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY)
 
 findutils-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(FINDUTILS_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) uninstall
 	-$(MAKE) -C $(FINDUTILS_DIR) clean
 
 findutils-dirclean:

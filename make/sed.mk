@@ -21,7 +21,7 @@ $(SED_DIR)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 
 $(SED_DIR)/.configured: $(SED_DIR)/.unpacked
 	(cd $(SED_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -39,10 +39,10 @@ $(SED_DIR)/.configured: $(SED_DIR)/.unpacked
 	touch  $(SED_DIR)/.configured
 
 $(SED_DIR)/$(SED_BINARY): $(SED_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(SED_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(SED_DIR)
 
 $(TARGET_DIR)/$(SED_TARGET_BINARY): $(SED_DIR)/$(SED_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(SED_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR) install
 	mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
@@ -50,7 +50,7 @@ $(TARGET_DIR)/$(SED_TARGET_BINARY): $(SED_DIR)/$(SED_BINARY)
 sed: uclibc $(TARGET_DIR)/$(SED_TARGET_BINARY)
 
 sed-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(SED_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR) uninstall
 	-sed -C $(SED_DIR) clean
 
 sed-dirclean:

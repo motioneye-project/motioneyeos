@@ -27,13 +27,13 @@ $(NETKITTELNET_DIR)/.unpacked: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 	touch $(NETKITTELNET_DIR)/.unpacked
 
 $(NETKITTELNET_DIR)/.configured: $(NETKITTELNET_DIR)/.unpacked
-	(cd $(NETKITTELNET_DIR); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+	(cd $(NETKITTELNET_DIR); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure --installroot=$(TARGET_DIR) --with-c-compiler=$(TARGET_CC) \
 	)
 	touch  $(NETKITTELNET_DIR)/.configured
 
 $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY): $(NETKITTELNET_DIR)/.configured
-	$(MAKE) SUB=telnetd CC=$(TARGET_CC1) -C $(NETKITTELNET_DIR)
+	$(MAKE) SUB=telnetd CC=$(TARGET_CC) -C $(NETKITTELNET_DIR)
 	$(STRIP) $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY)
 
 $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY): $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY)
@@ -42,14 +42,14 @@ $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY): $(NETKITTELNET_DIR)/$(NETKITTELNET_
 	cp $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY) $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
 	# Enable telnet in inetd
 	perl -i -p -e "s~^#telnet.*~telnet\tstream\ttcp\tnowait\troot\t/usr/sbin/telnetd\t/usr/sbin/telnetd~;" $(TARGET_DIR)/etc/inetd.conf
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NETKITTELNET_DIR) install
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITTELNET_DIR) install
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 netkittelnet: uclibc $(TARGET_DIR)/$(NETKITTELNET_TARGET_BINARY)
 
 netkittelnet-clean:
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(NETKITTELNET_DIR) uninstall
+	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITTELNET_DIR) uninstall
 	-rm -f $(TARGET_DIR)/usr/sbin/telnetd
 	-$(MAKE) -C $(NETKITTELNET_DIR) clean
 

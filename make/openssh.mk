@@ -17,7 +17,7 @@ $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 	(cd $(OPENSSH_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -39,11 +39,11 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 	touch  $(OPENSSH_DIR)/.configured
 
 $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(OPENSSH_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSH_DIR)
 	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/*.so*
 
 $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
-	$(MAKE) CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
+	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 openssh: $(TARGET_DIR)/usr/bin/ssh

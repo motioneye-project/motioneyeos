@@ -38,7 +38,7 @@ $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
 
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 	(cd $(RXVT_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr/X11R6 \
@@ -51,7 +51,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 	touch  $(RXVT_DIR)/.configured
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC1) -C $(RXVT_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(RXVT_DIR)
 	$(STRIP) -x $(RXVT_BINARY)
 
 $(TARGET_DIR)/usr/X11R6/bin/rxvt: $(RXVT_BINARY)

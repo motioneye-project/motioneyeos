@@ -25,7 +25,7 @@ $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE) $(NEWT_PATCH)
 
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	(cd $(NEWT_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
@@ -43,7 +43,7 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	touch $(NEWT_DIR)/.configured;
 
 $(NEWT_DIR)/libnewt.so.0.50.17: $(NEWT_DIR)/.configured
-	$(MAKE) CFLAGS=$(NEWT_CFLAGS) CC=$(TARGET_CC1) -C  $(NEWT_DIR)
+	$(MAKE) CFLAGS=$(NEWT_CFLAGS) CC=$(TARGET_CC) -C  $(NEWT_DIR)
 	touch -c $(NEWT_DIR)/libnewt.so.0.50.17
 
 $(STAGING_DIR)/lib/libnewt.so.0.50.17: $(NEWT_DIR)/libnewt.so.0.50.17
