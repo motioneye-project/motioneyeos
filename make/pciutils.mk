@@ -41,11 +41,10 @@ $(TARGET_DIR)/sbin/setpci: $(PCIUTILS_DIR)/.compiled
 $(TARGET_DIR)/usr/share/misc/pci.ids: $(PCIUTILS_DIR)/.compiled
 	install -Dc $(PCIUTILS_DIR)/pci.ids $(TARGET_DIR)/usr/share/misc/pci.ids
 
-
 pciutils: uclibc $(TARGET_DIR)/sbin/setpci $(TARGET_DIR)/sbin/lspci $(TARGET_DIR)/usr/share/misc/pci.ids
 
 pciutils-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(PCIUTILS_DIR) uninstall
+	rm $(TARGET_DIR)/sbin/lspci $(TARGET_DIR)/sbin/setpci $(TARGET_DIR)/usr/share/misc/pci.ids
 	-$(MAKE) -C $(PCIUTILS_DIR) clean
 
 pciutils-dirclean:
