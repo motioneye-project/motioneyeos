@@ -20,7 +20,7 @@ $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 	touch $(GAWK_DIR)/.unpacked
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
-	(cd $(GAWK_DIR); autoconf; rm -f config.cache; CC=$(TARGET_CC1) \
+	(cd $(GAWK_DIR); rm -f config.cache; CC=$(TARGET_CC1) \
 	    CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr --disable-nls \
 	    --mandir=/junk --infodir=/junk \
 	);
