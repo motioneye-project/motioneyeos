@@ -62,7 +62,7 @@ TARGETS=uclibc_toolchain
 endif
 
 # The default minimal set
-TARGETS+=user-mode-linux busybox tinylogin #gdb strace valgrind db openssl zlib openssh
+TARGETS+=user-mode-linux busybox tinylogin
 
 # Openssh...
 #TARGETS+=zlib openssl openssh
