@@ -3,7 +3,9 @@ GCC_VERSION:=$(strip $(subst ",, $(BR2_GCC_VERSION)))
 GCC_USE_SJLJ_EXCEPTIONS:=$(strip $(subst ",, $(BR2_GCC_USE_SJLJ_EXCEPTIONS)))
 #"
 TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
-#""
+#"
+EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
+#"
 
 
 ifeq ($(BR2_SOFT_FLOAT),y)
