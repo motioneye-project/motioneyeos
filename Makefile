@@ -181,7 +181,9 @@ $(BUILD_DIR):
 
 $(STAGING_DIR):
 	rm -rf $(STAGING_DIR)
-	mkdir $(STAGING_DIR)
+	mkdir -p $(STAGING_DIR)/lib
+	mkdir -p $(STAGING_DIR)/usr/lib
+	mkdir -p $(STAGING_DIR)/include
 
 $(TARGET_DIR):
 	rm -rf $(TARGET_DIR)
