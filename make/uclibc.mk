@@ -21,7 +21,8 @@ UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
 		-e 's/m68k.*/m68k/' \
 		-e 's/ppc/powerpc/g' \
 		-e 's/v850.*/v850/g' \
-		-e 's/sh[2345]/sh/' \
+		-e 's/sh64/sh/' \
+		-e 's/sh[234]/sh/' \
 		-e 's/mips.*/mips/' \
 		-e 's/mipsel.*/mips/' \
 		-e 's/cris.*/cris/' \
@@ -53,10 +54,6 @@ endif
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
-		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' \
-		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
@@ -65,32 +62,32 @@ endif
 		perl -i -p -e 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
 			$(UCLIBC_DIR)/.config; \
 	fi
-	perl -i -p -e 's,^GCC_BIN.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-linux-gcc,g' \
-		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
-	perl -i -p -e 's,^LD_BIN.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-linux-ld,g' \
-		$(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
-	$(MAKE) -C $(UCLIBC_DIR) oldconfig
-	$(MAKE) -C $(UCLIBC_DIR) pregen
-	$(MAKE) -C $(UCLIBC_DIR) headers
-	$(MAKE) -C $(UCLIBC_DIR) install_dev;
+	$(MAKE) -C $(UCLIBC_DIR) headers install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
+	$(MAKE) -C $(UCLIBC_DIR) oldconfig
+	$(MAKE) -C $(UCLIBC_DIR) headers
+ifeq ($(ENABLE_LOCALE),true)
+	-$(MAKE) -C $(UCLIBC_DIR) pregen
+endif
 	$(MAKE) -C $(UCLIBC_DIR)
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) install_dev install_runtime install_utils
+	$(MAKE) -C $(UCLIBC_DIR) install_dev install_runtime
+	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(STAGING_DIR) utils install_utils
+	# Clean up the host compiled utils...
+	$(MAKE) -C $(UCLIBC_DIR)/utils clean
 
 ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) \
 		RUNTIME_PREFIX=$(TARGET_DIR) \
-		DEVEL_PREFIX=$(TARGET_DIR) \
-		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
-		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr install_runtime
+		DEVEL_PREFIX=$(TARGET_DIR) install_runtime
 
 $(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
-	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) install_target_utils
+	$(MAKE) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) PREFIX=$(TARGET_DIR) \
+		utils install_utils
 
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
 endif
@@ -120,8 +117,7 @@ uclibc-dirclean:
 $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) RUNTIME_PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=$(TARGET_DIR)/usr \
-		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
-		DEVEL_TOOL_PREFIX=$(TARGET_DIR) -C $(UCLIBC_DIR) \
+		-C $(UCLIBC_DIR) \
 		install_dev
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -fs /lib/libc.so.0 libc.so; \
