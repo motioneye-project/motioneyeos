@@ -326,6 +326,9 @@ $(GCC_DIR)/.ldso_hacks: $(GCC_DIR)/.patched
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
 	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_noninline.h \
 		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
+	# Prevent gcc from using the unwind-dw2-fde-glibc code
+	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n#ifndef inhibit_libc,g;" \
+		$(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
 	touch $(GCC_DIR)/.ldso_hacks
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.ldso_hacks

@@ -139,6 +139,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 		-C $(GCC_BUILD_DIR3) install;
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
 		$(TARGET_DIR)/usr/share/locale
+	(cd $(TARGET_DIR)/usr/bin; ln -s gcc cc)
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 
