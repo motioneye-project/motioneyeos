@@ -45,7 +45,7 @@ endif
 	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y\nUCLIBC_HAS_LOCALE=n,g' \
-		$(UCLIBC_DIR)/.conf
+		$(UCLIBC_DIR)/.config
 	if [ -n "$(strip $(TARGET_SOFT_FLOAT))" ] ; then \
 		perl -i -p -e 's,.*HAS_FPU.*,# HAS_FPU is not set\nUCLIBC_HAS_SOFT_FLOAT=y,g' \
 			$(UCLIBC_DIR)/.config; \
