@@ -12,8 +12,8 @@ BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 BUSYBOX_UNZIP=bzcat
 BUSYBOX_PATCH:=$(SOURCE_DIR)/busybox.patch
 else
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-0.60.4
-BUSYBOX_SOURCE:=busybox-0.60.4.tar.bz2
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-0.60.5
+BUSYBOX_SOURCE:=busybox-0.60.5.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 BUSYBOX_UNZIP=bzcat
 BUSYBOX_PATCH:=$(SOURCE_DIR)/busybox.patch
