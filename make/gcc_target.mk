@@ -59,15 +59,15 @@ $(BINUTILS_DIR2)/.configured:
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	$(MAKE) tooldir=$(TARGET_DIR) -C $(BINUTILS_DIR2);
 
-$(TARGET_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
+$(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
 	$(MAKE) DESTDIR=$(TARGET_DIR) prefix=$(TARGET_DIR)/usr \
 		bindir=$(TARGET_DIR)/usr/bin -C $(BINUTILS_DIR2) install
-	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share
+	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 $(TARGET_DIR)/usr/lib/libg.a:
 	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(TARGET_DIR)/usr/lib/libg.a;
 
-binutils_target: gcc_final $(TARGET_DIR)/$(GNU_TARGET_NAME)/bin/ld $(TARGET_DIR)/usr/lib/libg.a
+binutils_target: gcc_final $(TARGET_DIR)/usr/bin/ld $(TARGET_DIR)/usr/lib/libg.a
 
 binutils_target-clean:
 	rm -f $(TARGET_DIR)/bin/$(GNU_TARGET_NAME)*
@@ -85,13 +85,13 @@ binutils_target-dirclean:
 #
 #############################################################
 
-$(TARGET_DIR)/lib/libc.a: $(STAGING_DIR)/lib/libc.a
+$(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) DEVEL_PREFIX=$(TARGET_DIR)/usr SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
 		DEVEL_TOOL_PREFIX=$(TARGET_DIR) -C $(UCLIBC_DIR) \
 		install_dev
 	rm -rf $(TARGET_DIR)/include
 
-uclibc_target: gcc_final $(TARGET_DIR)/lib/libc.a
+uclibc_target: gcc_final $(TARGET_DIR)/usr/lib/libc.a
 
 uclibc_target-clean:
 	rm -f $(TARGET_DIR)/include
@@ -116,23 +116,37 @@ $(GCC_BUILD_DIR3)/.configured:
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--enable-shared --enable-languages=c,c++ );
 	perl -i -p -e "s,ac_cv_prog_cc_cross=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR3)/config.cache
-	perl -i -p -e "s,^build_tooldir=no,ac_cv_prog_cc_cross=yes,g;" $(GCC_BUILD_DIR3)/config.cache
+	perl -i -p -e "s,^SYSTEM_HEADER_DIR.*,SYSTEM_HEADER_DIR=$(TARGET_DIR)/include,g;" $(GCC_BUILD_DIR3)/gcc/Makefile
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) -C $(GCC_BUILD_DIR3)
+	# For some strange reason, gcc installs unwanted crap into
+	# the /usr/lib/gcc-lib/i386-linux/3.2/include/ directory along
+	# with the good stuff.  Kill the unwanted crap... 
+	#mkdir -p $(GCC_BUILD_DIR3)/gcc/__tmp;
+	#for i in README float.h iso646.h limits.h linux mmintrin.h \
+	#	stdarg.h stdbool.h stddef.h stdio.h syslimits.h \
+	#	varargs.h xmmintrin.h ; do \
+	#    if [ -f $(GCC_BUILD_DIR3)/gcc/include/$$i ] || \
+	#       [ -d $(GCC_BUILD_DIR3)/gcc/include/$$i] ; then \
+	#	mv $(GCC_BUILD_DIR3)/gcc/include/$$i \
+	#	    $(GCC_BUILD_DIR3)/gcc/__tmp/; \
+	#	fi; \
+	#done;
+	#rm -rf $(GCC_BUILD_DIR3)/gcc/include/*
+	#mv $(GCC_BUILD_DIR3)/gcc/__tmp/* \
+	#	$(GCC_BUILD_DIR3)/gcc/include/
+	#rm -rf $(GCC_BUILD_DIR3)/gcc/__tmp
 	touch $(GCC_BUILD_DIR3)/.compiled
 
-$(GCC_BUILD_DIR3)/.installed: $(GCC_BUILD_DIR3)/.compiled
+$(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) DESTDIR=$(TARGET_DIR) prefix=$(TARGET_DIR)/usr \
 		-C $(GCC_BUILD_DIR3) install;
-	touch $(GCC_BUILD_DIR3)/.installed
-
-$(GCC_BUILD_DIR3)/.stripped: $(GCC_BUILD_DIR3)/.installed
+	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	-strip --strip-all -R .note -R .comment $(TARGET_DIR)/bin/* 
-	touch $(BUILD_DIR)/.stripped
 
-gcc_target: uclibc_target binutils_target $(GCC_BUILD_DIR3)/.stripped
+gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
 
 gcc_target-clean:
 	rm -rf $(GCC_BUILD_DIR3)
