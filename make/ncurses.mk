@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.24 2003/03/13 20:30:07 andersen Exp $
+# $Id: ncurses.mk,v 1.25 2003/08/19 06:37:00 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -39,7 +39,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	(cd $(NCURSES_DIR); rm -rf config.cache; \
-		BUILD_CC=$(HOSTCC) HOSTCC=$(HOSTCC) \
+		BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -57,19 +57,26 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		--with-terminfo-dirs=/usr/share/terminfo \
 		--with-default-terminfo-dir=/usr/share/terminfo \
 		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
 		--with-shared --without-cxx --without-cxx-binding \
 		--without-ada --without-progs --disable-nls \
+		--without-profile --without-debug --disable-rpath \
+		--enable-echo --enable-const --enable-overwrite \
 	);
 	touch  $(NCURSES_DIR)/.configured
 
+#		--includedir=$(STAGING_DIR)/include \
+#		HOSTCCFLAGS="-O2 -I../ncurses -I. -DNDEBUG -I. -I../include -I/usr/include -DHAVE_CONFIG_H" \
+#
+
 $(NCURSES_DIR)/lib/libncurses.so.5.2: $(NCURSES_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
-		DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR)
+	$(MAKE) BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
+		BUILD_CCFLAGS="-I$(NCURSES_DIR) -I$(NCURSES_DIR)/include" \
+		BUILD_LDFLAGS="" DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \
+		libs panel menu form headers
 
 $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.5.2
-	BUILD_CC=$(HOSTCC) \
-	    HOSTCC=$(HOSTCC) CC=$(TARGET_CC) $(MAKE) \
+	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+	$(MAKE) \
 	    prefix=$(STAGING_DIR) \
 	    exec_prefix=$(STAGING_DIR) \
 	    bindir=$(STAGING_DIR)/bin \
