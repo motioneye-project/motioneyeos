@@ -5,9 +5,9 @@
 #############################################################
 
 VALGRIND_SITE:=http://developer.kde.org/~sewardj
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-1.0.1
-VALGRIND_SOURCE:=valgrind-1.0.1.tar.bz2
-VALGRIND_PATCH:=$(SOURCE_DIR)/valgrind.patch
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-1.0.4
+VALGRIND_SOURCE:=valgrind-1.0.4.tar.bz2
+VALGRIND_PATCH:=$(SOURCE_DIR)/valgrind.patch.bz2
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
@@ -17,7 +17,7 @@ $(VALGRIND_DIR)/.unpacked: $(DL_DIR)/$(VALGRIND_SOURCE)
 	touch  $(VALGRIND_DIR)/.unpacked
 
 $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked
-	cat $(VALGRIND_PATCH) | patch -d $(VALGRIND_DIR) -p1
+	bzcat $(VALGRIND_PATCH) | patch -d $(VALGRIND_DIR) -p1
 	touch $(VALGRIND_DIR)/.patched
 
 $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
@@ -54,6 +54,10 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind.so
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(VALGRIND_DIR) install;
 	rm -rf $(TARGET_DIR)/usr/share/doc/valgrind
+	mkdir -p $(TARGET_DIR)/etc/default
+	cp $(VALGRIND_DIR)/valgrind.default $(TARGET_DIR)/etc/default/valgrind
+	mkdir -p $(TARGET_DIR)/usr/lib/valgrind
+	cp $(VALGRIND_DIR)/woody.supp $(TARGET_DIR)/usr/lib/valgrind/
 	touch -c $(TARGET_DIR)/usr/bin/valgrind
 
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
