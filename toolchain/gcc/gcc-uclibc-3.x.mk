@@ -49,6 +49,10 @@ TARGET_LANGUAGES:=c
 endif
 endif
 
+ifeq ($(BR2_INSTALL_OBJC),y)
+TARGET_LANGUAGES:=$(TARGET_LANGUAGES),objc
+endif
+
 #############################################################
 #
 # build the first pass gcc compiler

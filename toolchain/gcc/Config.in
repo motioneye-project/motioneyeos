@@ -74,3 +74,10 @@ config BR2_INSTALL_LIBGCJ
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	    Build/install java compiler and libgcj?
+
+config BR2_INSTALL_OBJC
+	bool "Build/install Objective-C compiler and runtime?"
+	default n
+	help
+	    Build/install Objective-C compiler and runtime?
+
