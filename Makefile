@@ -103,7 +103,16 @@ TARGETS+=busybox tinylogin
 # The Valgrind debugger (x86 only)
 #TARGETS+=valgrind
 
+# Run customize.mk at the very end to add your own special config.
+# This is useful for making your own distro within the buildroot
+# process.
+# TARGETS+=customize
+
+#############################################################
+#
 # Pick your root filesystem type.
+#
+#############################################################
 TARGETS+=ext2root
 
 # Must mount cramfs with 'ramdisk_blocksize=4096'
