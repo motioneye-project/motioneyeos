@@ -235,6 +235,13 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"$(STAGING_DIR)/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	#
+	# Prevent system glibc libraries from being found by collect2 
+	# when it calls locatelib() and rummages about the system looking 
+	# for libraries with the correct name...
+	#
+	perl -i -p -e "s,\"/lib/,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
+	perl -i -p -e "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
+	#
 	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
 	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
