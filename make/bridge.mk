@@ -19,14 +19,27 @@ $(BRIDGE_BUILD_DIR)/.unpacked: $(DL_DIR)/$(BRIDGE_SOURCE)
 $(BRIDGE_BUILD_DIR)/.configured: $(BRIDGE_BUILD_DIR)/.unpacked
 	(cd $(BRIDGE_BUILD_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-                ./configure \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		$(DISABLE_NLS) \
 		--with-linux-headers=$(BUILD_DIR)/linux \
 	);
-	
 	touch  $(BRIDGE_BUILD_DIR)/.configured
 
 $(BRIDGE_BUILD_DIR)/brctl/brctl: $(BRIDGE_BUILD_DIR)/.configured
-	$(MAKE) -C $(BRIDGE_BUILD_DIR) CC=$(TARGET_CC)
+	$(MAKE) -C $(BRIDGE_BUILD_DIR)
 
 $(TARGET_DIR)/sbin/brctl: $(BRIDGE_BUILD_DIR)/brctl/brctl
 	cp -af $(BRIDGE_BUILD_DIR)/brctl/brctl $(TARGET_DIR)/sbin/

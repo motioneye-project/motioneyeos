@@ -3,7 +3,7 @@
 # iptables
 #
 #############################################################
-IPTABLES_SOURCE_URL=ftp://ftp.netfilter.org/pub/iptables
+IPTABLES_SOURCE_URL=http://www.netfilter.org/files
 IPTABLES_SOURCE=iptables-1.2.8.tar.bz2
 IPTABLES_BUILD_DIR=$(BUILD_DIR)/iptables-1.2.8
 
