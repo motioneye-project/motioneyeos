@@ -20,7 +20,7 @@ $(BZIP2_DIR)/.unpacked: $(DL_DIR)/$(BZIP2_SOURCE)
 	$(SED) "s,ln \$$(,ln -sf \$$(,g" $(BZIP2_DIR)/Makefile
 	$(SED) "s,ln -s (lib.*),ln -sf \$$1 ; ln -sf libbz2.so.1.0.2 libbz2.so,g" \
 	    $(BZIP2_DIR)/Makefile-libbz2_so
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),false)
+ifeq ($(BR2_LARGEFILE),y)
 	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile
 	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile-libbz2_so
 endif

@@ -15,7 +15,7 @@ BUSYBOX_SOURCE:=busybox-1.00-rc2.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 BUSYBOX_UNZIP=bzcat
-BUSYBOX_CONFIG:=$(SOURCE_DIR)/busybox.config
+BUSYBOX_CONFIG:=package/busybox/busybox.config
 
 $(DL_DIR)/$(BUSYBOX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(BUSYBOX_SITE)/$(BUSYBOX_SOURCE)
@@ -25,11 +25,11 @@ busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 $(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# Allow busybox patches.
-	$(SOURCE_DIR)/patch-kernel.sh $(BUSYBOX_DIR) $(SOURCE_DIR) busybox-\*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-\*.patch
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
 	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
 		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
+ifeq ($(BR2_LARGEFILE),y)
 	$(SED) "s/^.*CONFIG_LFS.*/CONFIG_LFS=y/;" $(BUSYBOX_DIR)/.config
 else
 	$(SED) "s/^.*CONFIG_LFS.*/CONFIG_LFS=n/;" $(BUSYBOX_DIR)/.config

@@ -8,7 +8,7 @@ ZLIB_SOURCE=zlib-$(ZLIB_VER).tar.bz2
 ZLIB_SITE=http://aleron.dl.sourceforge.net/sourceforge/libpng
 ZLIB_DIR=$(BUILD_DIR)/zlib-$(ZLIB_VER)
 ZLIB_CFLAGS= $(TARGET_CFLAGS) -fPIC
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
+ifeq ($(BR2_LARGEFILE),y)
 ZLIB_CFLAGS+= -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 

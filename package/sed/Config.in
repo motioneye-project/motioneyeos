@@ -1,0 +1,8 @@
+#
+
+config BR2_PACKAGE_SED
+	bool "sed"
+	default n
+	help
+	  Most people will answer Y.
+

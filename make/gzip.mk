@@ -10,7 +10,7 @@ GZIP_CAT:=zcat
 GZIP_BINARY:=$(GZIP_DIR)/gzip
 GZIP_TARGET_BINARY:=$(TARGET_DIR)/bin/zmore
 
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),false)
+ifneq ($(BR2_LARGEFILE),y)
 GZIP_LARGEFILE="--disable-largefile"
 endif
 

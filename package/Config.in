@@ -1,0 +1,23 @@
+#
+
+menu "Package Selection"
+
+#source "package/bash/Config.in"
+#source "package/coreutils/Config.in"
+#source "package/make/Config.in"
+source "package/busybox/Config.in"
+#source "package/findutils/Config.in"
+#source "package/diffutils/Config.in"
+#source "package/patch/Config.in"
+source "package/sed/Config.in"
+#source "package/ed/Config.in"
+#source "package/flex/Config.in"
+#source "package/bison/Config.in"
+#source "package/file/Config.in"
+#source "package/gawk/Config.in"
+#source "package/tar/Config.in"
+#source "package/grep/Config.in"
+#source "package/bzip2/Config.in"
+
+endmenu
+

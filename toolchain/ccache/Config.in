@@ -1,0 +1,14 @@
+#
+
+config BR2_HOST_CCACHE
+	bool "Enable ccache support?"
+	default y
+	help
+	    Enable ccache support?
+
+config BR2_PACKAGE_CCACHE
+	bool "Enable ccache support for the Target?"
+	default y
+	help
+	    Enable ccache support?
+

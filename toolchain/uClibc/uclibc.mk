@@ -4,10 +4,11 @@
 #
 #############################################################
 
-ifneq ($(strip $(USE_UCLIBC_SNAPSHOT)),)
+ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 # Be aware that this changes daily....
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
-UCLIBC_SOURCE:=uClibc-$(strip $(USE_UCLIBC_SNAPSHOT)).tar.bz2
+UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
+#"
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 else
 # Note: 0.9.26 has known problems.  So best use a snapshot until .27 is out.
@@ -41,12 +42,12 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(LINUX_HEADERS_DIR)/.configured
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 	$(SED) 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
-ifeq ($(ENABLE_LOCALE),true)
-	cp $(SOURCE_DIR)/uClibc.config-locale $(UCLIBC_DIR)/.config
+ifeq ($(BR2_ENABLE_LOCALE),y)
+	cp toolchain/uClibc/uClibc.config-locale $(UCLIBC_DIR)/.config
 else
-	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
+	cp toolchain/uClibc/uClibc.config $(UCLIBC_DIR)/.config
 endif
 	$(SED) 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		$(UCLIBC_DIR)/.config
@@ -59,13 +60,13 @@ endif
 		$(UCLIBC_DIR)/.config
 	$(SED) 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
+ifeq ($(BR2_LARGEFILE),y)
 	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=y,g' $(UCLIBC_DIR)/.config
 else
 	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=n,g' $(UCLIBC_DIR)/.config
 endif
 	$(SED) 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
-ifeq ($(strip $(SOFT_FLOAT)),true)
+ifeq ($(BR2_SOFT_FLOAT),true)
 	$(SED) 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
 endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include

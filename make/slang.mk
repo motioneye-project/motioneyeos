@@ -6,7 +6,7 @@
 SLANG_SOURCE=slang-1.4.5-mini.tar.bz2
 SLANG_SITE:=http://www.uclibc.org/
 SLANG_DIR=$(BUILD_DIR)/slang-1.4.5-mini
-ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
+ifeq ($(BR2_LARGEFILE),y)
 SLANG_CFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 SLANG_CFLAGS+=-fPIC
