@@ -178,11 +178,11 @@ ifeq ($(SOFT_FLOAT),true)
 endif
 	touch $(GCC_BUILD_DIR2)/.installed
 
-$(TARGET_DIR)/lib/libgcc_s.so.1: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s.so.1
+$(TARGET_DIR)/lib/libgcc_s.so.1: $(GCC_BUILD_DIR2)/.installed
 	# These are in /lib, so...
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
-	$(STRIP) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s.so.1
-	cp -a $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
+	-$(STRIP) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s.so.1
+	-cp -a $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
 
 gcc3_3: uclibc-configured binutils gcc3_3_initial $(LIBFLOAT_TARGET) uclibc \
 	$(TARGET_DIR)/lib/libgcc_s.so.1 $(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
