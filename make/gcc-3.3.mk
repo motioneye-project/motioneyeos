@@ -25,9 +25,10 @@ ifneq ($(GCC_2_95_TOOLCHAIN),true)
 #GCC_CAT:=zcat
 
 # Shiney new stuff...
-GCC_SITE:=http://gcc.get-software.com/releases/gcc-3.3.1
-GCC_SOURCE:=gcc-3.3.1.tar.bz2
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1
+GCC_VERSION:=3.3.1
+GCC_SITE:=http://gcc.get-software.com/releases/gcc-$(GCC_VERSION)
+GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)
 GCC_CAT:=bzcat
 
 #############################################################
@@ -278,24 +279,41 @@ ifeq ($(HOST_ARCH),$(ARCH))
 TARGET_GCC_ARGS=$(TARGET_CONFIGURE_OPTS)
 endif
 
-$(GCC_BUILD_DIR3)/.gcc3_3_build_hacks: $(GCC_DIR3_DEPENDS)
+# We need to unpack a pristine source tree to avoid some of
+# the previously applied hacks, which do not apply here...
+$(GCC_BUILD_DIR3)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
+	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	mv $(BUILD_DIR)/gcc-$(GCC_VERSION) $(GCC_BUILD_DIR3)
+	touch $(GCC_BUILD_DIR3)/.unpacked
+
+$(GCC_BUILD_DIR3)/.patched: $(GCC_BUILD_DIR3)/.unpacked
+	# Apply any files named gcc-*.patch from the source directory to gcc
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_BUILD_DIR3) $(SOURCE_DIR) gcc-*.patch
+	touch $(GCC_BUILD_DIR3)/.patched
+
+$(GCC_BUILD_DIR3)/.gcc3_3_build_hacks: $(GCC_BUILD_DIR3)/.patched
 	#
-	# Make certain the uClibc start files are found
+	# Hack things to use the correct shared lib loader
 	#
-	perl -i -p -e "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1=\
-		\"/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
-	perl -i -p -e "s,standard_startfile_prefix_2 = \".*,standard_startfile_prefix_2=\
-		\"/usr/lib/\";,;" $(GCC_DIR)/gcc/gcc.c;
+	(cd $(GCC_BUILD_DIR3); set -e; export LIST=`grep -lr -- "-dynamic-linker.*\.so[\.0-9]*" *`;\
+		if [ -n "$$LIST" ] ; then \
+		perl -i -p -e "s,-dynamic-linker.*\.so[\.0-9]*},\
+		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
 	#
-	# Make certain the uClibc include files are found
+	# Prevent gcc from using the unwind-dw2-fde-glibc code
 	#
-	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
-		/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
-		/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
-	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
-		\"/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
-	mkdir -p $(GCC_BUILD_DIR3)
+	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+		#ifndef inhibit_libc,g;" $(GCC_BUILD_DIR3)/gcc/unwind-dw2-fde-glibc.c;
+	#
+	# Hack up the soname for libstdc++
+	# 
+	perl -i -p -e "s,\.so\.1,.so.0.9.9,g;" $(GCC_BUILD_DIR3)/gcc/config/t-slibgcc-elf-ver;
+	perl -i -p -e "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
+		$(GCC_BUILD_DIR3)/libstdc++-v3/src/Makefile.am \
+		$(GCC_BUILD_DIR3)/libstdc++-v3/src/Makefile.in;
+	perl -i -p -e "s,3\.0\.0,9.9.0,g;" $(GCC_BUILD_DIR3)/libstdc++-v3/acinclude.m4 \
+		$(GCC_BUILD_DIR3)/libstdc++-v3/aclocal.m4 \
+		$(GCC_BUILD_DIR3)/libstdc++-v3/configure;
 	touch $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
@@ -320,27 +338,20 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-		$(GCC_DIR)/configure \
+		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(ARCH)-linux \
 		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--with-local-prefix=/usr/local \
-		--libdir=/usr/lib \
-		--disable-shared $(MULTILIB) \
+		--with-gxx-include-dir=/usr/include/c++/3.3 \
+		--enable-shared \
+		$(MULTILIB) \
 		--enable-target-optspace $(DISABLE_NLS) \
 		--with-gnu-ld --disable-__cxa_atexit \
 		--enable-languages=$(TARGET_LANGUAGES) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
-		--program-prefix="" \
 	);
 	touch $(GCC_BUILD_DIR3)/.configured
 #Fixme -- for locale handling?
@@ -390,18 +401,6 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-		prefix=/usr \
-		exec_prefix=/usr \
-		bindir=/usr/bin \
-		sbindir=/usr/sbin \
-		libexecdir=/usr/lib \
-		datadir=/usr/share \
-		sysconfdir=/etc \
-		localstatedir=/var \
-		libdir=/usr/lib \
-		infodir=/usr/info \
-		mandir=/usr/man \
-		includedir=/usr/include \
 		DESTDIR=$(TARGET_DIR) install
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	(cd $(TARGET_DIR)/lib; ln -fs /usr/bin/cpp)
@@ -417,7 +416,9 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	rm -f $(TARGET_DIR)/lib/libstdc++.so
 	-(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.so.5.0.5 libstdc++.so)
 	# A nasty hack to work around g++ adding -lgcc_eh to the link
-	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/3.3.1/ ; ln -s libgcc.a libgcc_eh.a)
+	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/ ; ln -s libgcc.a libgcc_eh.a)
+	# Make sure gcc does not think we are cross compiling
+	perl -i -p -e "s/^1/0/;" $(TARGET_DIR)/usr/lib/gcc-lib/$(ARCH)-linux/$(GCC_VERSION)/specs
 	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	rm -f $(TARGET_DIR)/usr/lib/*.la*
