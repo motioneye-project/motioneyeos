@@ -7,32 +7,39 @@
 ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
-BUSYBOX_SOURCE=busybox-snapshot.tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
+BUSYBOX_SOURCE=busybox-unstable.tar.bz2
+BUSYBOX_SITE:=ftp://ftp.busybox.net/busybox/snapshots
 BUSYBOX_UNZIP=bzcat
-BUSYBOX_PATCH:=$(SOURCE_DIR)/busybox.patch
+BUSYBOX_CONFIG:=$(SOURCE_DIR)/busybox.config
 else
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox-0.60.5
 BUSYBOX_SOURCE:=busybox-0.60.5.tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads
+BUSYBOX_SITE:=ftp://ftp.busybox.net/busybox
 BUSYBOX_UNZIP=bzcat
-BUSYBOX_PATCH:=$(SOURCE_DIR)/busybox.patch
+BUSYBOX_CONFIG:=$(SOURCE_DIR)/busybox.Config.h
 endif
 
 $(DL_DIR)/$(BUSYBOX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(BUSYBOX_SITE)/$(BUSYBOX_SOURCE)
 
-busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCH)
+busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 
-$(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCH)
+$(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	if [ -n "$(BUSYBOX_PATCH)" ] ; then \
-	cat $(BUSYBOX_PATCH) | patch -d $(BUSYBOX_DIR) -p1; fi
+ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
+	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
+	perl -i -p -e "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
+		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak
+ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
+	perl -i -p -e "s/^.*DOLFS.*/DOLFS=y/;" $(BUSYBOX_DIR)/.config
+endif
+else  # Not usine snapshot
+	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/Config.h
 	perl -i -p -e "s,^CROSS.*,CROSS=$(TARGET_CROSS),;" $(BUSYBOX_DIR)/Makefile
 	perl -i -p -e "s,^PREFIX.*,PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Makefile
-	perl -i -p -e "s/^MD5SUM_SIZE_VS_SPEED.*/MD5SUM_SIZE_VS_SPEED 0/;" $(BUSYBOX_DIR)/md5sum.c
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 	perl -i -p -e "s/^DOLFS.*/DOLFS=true/;" $(BUSYBOX_DIR)/Makefile
+endif
 endif
 	touch $(BUSYBOX_DIR)/.configured
 
