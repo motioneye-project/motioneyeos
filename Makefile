@@ -33,7 +33,6 @@ ARCH:=i386
 #ARCH:=arm
 #ARCH:=mips
 #ARCH:=mipsel
-# Possible issues remaining with powerpc and soft float.
 #ARCH:=powerpc
 #ARCH:=sh4
 # Busybox link failing due to needing libgcc functions that are statics.
@@ -49,9 +48,8 @@ ARCH:=i386
 # Enable this if you want to use an <arch>-linux-uclibc-* toolchain.
 # Note that, to avoid configure problems with apps that don't support
 # this tupple, we also put <arch>-linux-* symlinks in staging_dir/bin.
-# WARNING -- This does not yet support soft-float builds.
+# This is the preferred approach now.
 USE_LINUX_UCLIBC:=true
-#USE_LINUX_UCLIBC:=false
 
 # If you are building a native gcc toolchain, do you want to
 # build the old gcc-2.95 based toolchain, or would you prefer
@@ -82,6 +80,8 @@ WGET:=wget --passive-ftp
 ifeq ($(USE_LINUX_UCLIBC),true)
 OPTIMIZE_FOR_CPU=$(ARCH)
 #OPTIMIZE_FOR_CPU=i686
+# Note... gcc 2.95 does not seem to like anything higher than i586.
+#OPTIMIZE_FOR_CPU=i586
 #OPTIMIZE_FOR_CPU=whatever
 else
 # WARNING!!!  CURRENTLY BROKEN!!! LEAVE IT AS $(ARCH)!!!
@@ -91,15 +91,16 @@ endif
 
 # Soft floating point options.
 # Notes:
-#   Currently builds with gcc 3.3 for i386, arm, mips, mipsel.
+#   Currently builds with gcc 3.3 for arm, mips, mipsel, powerpc.
+#   (i386 support will be added back in at some point.)
 #   Only tested with multilib enabled.
 #   For i386, long double is the same as double (64 bits).  While this
 #      is unusual for x86, it seemed the best approach considering the
 #      limitations in the gcc floating point emulation library.
 #   For arm, soft float uses the usual libfloat routines.
-#   The uClibc built will support _only_ applications compiled with the
-#      -msoft-float flag.  To avoid CFLAGS problems, you may want to use
-#      scripts similar to those in the build*/staging_dir/bin directory.
+#   Custom specs files are used to set the default gcc mode to soft float
+#      as a convenience, since you shouldn't link hard and soft float
+#      together.  In fact, arm won't even let you.
 # (Un)comment the appropriate line below.
 #SOFT_FLOAT:=true
 SOFT_FLOAT:=false
@@ -212,11 +213,6 @@ TARGETS+=ext2root
 #
 #############################################################
 
-# The new stuff doesn't support soft float yet.
-ifeq ($(USE_LINUX_UCLIBC),true)
-SOFT_FLOAT:=false
-endif
-
 ifeq ($(SOFT_FLOAT),true)
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
 TARGET_SOFT_FLOAT:=-msoft-float
@@ -243,7 +239,7 @@ endif
 ifneq ($(BUILD_WITH_LARGEFILE),true)
 DISABLE_LARGEFILE= --disable-largefile 
 endif
-TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) $(TARGET_SOFT_FLOAT)
+TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 
 HOSTCC:=gcc
 BASE_DIR:=${shell pwd}
@@ -269,7 +265,7 @@ KERNEL_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-
 TARGET_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-
 endif
 
-TARGET_CC=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT)
+TARGET_CC=$(TARGET_CROSS)gcc
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 
 
@@ -291,10 +287,11 @@ TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		AS=$(TARGET_CROSS)as \
 		LD=$(TARGET_CROSS)ld \
 		NM=$(TARGET_CROSS)nm \
-		CC=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
-		GCC=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT) \
-		CXX=$(TARGET_CROSS)g++$(TARGET_SOFT_FLOAT) \
+		CC=$(TARGET_CROSS)gcc \
+		GCC=$(TARGET_CROSS)gcc \
+		CXX=$(TARGET_CROSS)g++ \
 		RANLIB=$(TARGET_CROSS)ranlib
+
 ifeq ($(ENABLE_LOCALE),true)
 DISABLE_NLS:=
 else

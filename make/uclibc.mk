@@ -33,6 +33,13 @@ $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
+ifeq ($(SOFT_FLOAT),true)
+	# Make sure we have a soft float specs file for this arch
+	if [ ! -f $(SOURCE_DIR)/specs-$(ARCH)-soft-float ] ; then \
+		echo soft float configured but no specs file for this arch ; \
+		/bin/false ; \
+	fi;
+endif
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	#(cd $(BUILD_DIR) ; ln -s $(DL_DIR)/uClibc)
 	#-mkdir $(UCLIBC_DIR)

@@ -160,6 +160,14 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 		   	$(GNU_TARGET_NAME)$${app##$(REAL_GNU_TARGET_NAME)}; \
 		done; \
 	);
+ifeq ($(SOFT_FLOAT),true)
+	# Replace specs file with one that defaults to soft float mode.
+	if [ ! -f $(STAGING_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs ] ; then \
+		echo staging dir specs file is missing ; \
+		/bin/false ; \
+	fi;
+	cp $(SOURCE_DIR)/specs-$(ARCH)-soft-float $(STAGING_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+endif
 	touch $(GCC_BUILD_DIR2)/.installed
 
 gcc3_3: uclibc-configured binutils gcc3_3_initial $(LIBFLOAT_TARGET) uclibc \
@@ -209,8 +217,19 @@ $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$(TARGET_PATH) \
 	$(MAKE) $(JLEVEL) DESTDIR=$(TARGET_DIR) -C $(GCC_BUILD_DIR3) install
+ifeq ($(SOFT_FLOAT),true)
+	# Replace specs file with one that defaults to soft float mode.
+	if [ ! -f $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs ] ; then \
+		echo target dir specs file is missing ; \
+		/bin/false ; \
+	fi;
+	cp $(SOURCE_DIR)/specs-$(ARCH)-soft-float $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+	# Make sure gcc does not think we are cross compiling
+	$(SED) "s/^1/0/;" $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+else
 	# Remove broken specs file (cross compile flag is set).
 	rm -f $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
+endif
 	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION); $(STRIP) cc1 cc1plus collect2 > /dev/null 2>&1)

@@ -1,12 +1,13 @@
 diff -urN libfloat-dist/Makefile libfloat/Makefile
 --- libfloat-dist/Makefile	2003-10-26 00:33:45.000000000 -0500
 +++ libfloat/Makefile	2003-10-26 01:07:26.000000000 -0500
-@@ -1,7 +1,6 @@
+@@ -1,7 +1,7 @@
  # Makefile for the Linux soft-float library
  
 -CC=gcc -O2 -freg-struct-return -fomit-frame-pointer -D__LIBFLOAT__
 -#CC=gcc -g -O2 -freg-struct-return -D__LIBFLOAT__
-+CFLAGS= -O2 -freg-struct-return -fomit-frame-pointer -D__LIBFLOAT__
++CFLAGS= -O2 -freg-struct-return -fomit-frame-pointer -D__LIBFLOAT__ -msoft-float
++LIBGCC=$(shell $(CC) -print-libgcc-file-name)
  AR=ar
  
  all: libfloat.a libfloat.so.1
@@ -15,7 +16,7 @@ diff -urN libfloat-dist/Makefile libfloat/Makefile
  libfloat.so.1: softfloat.os fplib_glue.os
  	rm -f libfloat.so.1
 -	gcc -shared -Wl,-soname,libfloat.so.1 softfloat.os fplib_glue.os -o libfloat.so.1
-+	$(LD) -shared -soname=libfloat.so.1 softfloat.os fplib_glue.os -o libfloat.so.1
++	$(LD) -shared -soname=libfloat.so.1 softfloat.os fplib_glue.os -o libfloat.so.1 $(LIBGCC)
  
  softfloat.o: softfloat/bits64/softfloat.c
 -	$(CC) -c -o softfloat.o -Isoftfloat/bits64/ARM-gcc softfloat/bits64/softfloat.c
