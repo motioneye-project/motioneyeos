@@ -3,7 +3,7 @@
 # automake
 #
 #############################################################
-AUTOMAKE_VER:=1.9.1
+AUTOMAKE_VER:=1.9.4
 AUTOMAKE_SOURCE:=automake-$(AUTOMAKE_VER).tar.bz2
 AUTOMAKE_SITE:=ftp://ftp.gnu.org/gnu/automake
 AUTOMAKE_CAT:=bzcat
