@@ -33,7 +33,9 @@ else
 endif
 	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
-	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
+	perl -i -p -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"$(STAGING_DIR)\",g' \
+		$(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"$(STAGING_DIR)/usr\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
@@ -61,7 +63,9 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 
 ifneq ($(TARGET_DIR),)
 $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) -C $(UCLIBC_DIR) DEVEL_PREFIX=$(TARGET_DIR) \
+	$(MAKE) -C $(UCLIBC_DIR) \
+		RUNTIME_PREFIX=$(TARGET_DIR) \
+		DEVEL_PREFIX=$(TARGET_DIR)/usr \
 		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
 		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr install_runtime
 
@@ -94,11 +98,11 @@ uclibc-dirclean:
 #############################################################
 
 $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
-	$(MAKE) DEVEL_PREFIX=$(TARGET_DIR)/usr SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
-		DEVEL_TOOL_PREFIX=$(TARGET_DIR) -C $(UCLIBC_DIR) \
-		install_dev
-	#remove the extra copy of the shared libs
-	rm -f $(TARGET_DIR)/usr/lib/*-*.so
+	$(MAKE) -C $(UCLIBC_DIR) \
+		RUNTIME_PREFIX=$(TARGET_DIR) \
+		DEVEL_PREFIX=$(TARGET_DIR)/usr \
+		SYSTEM_DEVEL_PREFIX=$(TARGET_DIR) \
+		DEVEL_TOOL_PREFIX=$(TARGET_DIR)/usr install_dev
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -fs /lib/libc.so.0 libc.so; \
 		ln -fs /lib/libdl.so.0 libdl.so; \
