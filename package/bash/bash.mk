@@ -63,7 +63,13 @@ $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
+#If both bash and busybox are selected, make certain bash wins
+#the fight over who gets to own the /bin/sh symlink
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+bash: ncurses uclibc busybox $(TARGET_DIR)/$(BASH_TARGET_BINARY)
+else
 bash: ncurses uclibc $(TARGET_DIR)/$(BASH_TARGET_BINARY)
+endif
 
 bash-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) uninstall
