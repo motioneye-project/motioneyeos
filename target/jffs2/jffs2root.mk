@@ -1,49 +1,68 @@
 #############################################################
 #
-# mtd provides us with mkfs.jffs2, to target JFFS2 filesystems
-#
-#############################################################
-
-MTD_DIR:=$(BUILD_DIR)/mtd-20011217
-MTD_SOURCE=mtd_20011217.orig.tar.gz
-MTD_SITE=http://ftp.debian.org/debian/pool/main/m/mtd
-MKFS_JFFS2=$(shell which mkfs.jffs2 2>/dev/null || echo $(MTD_DIR)/util/mkfs.jffs2)
-
-$(DL_DIR)/$(MTD_SOURCE):
-	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
-
-$(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	zcat $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	touch $(MTD_DIR)/.unpacked
-
-$(MTD_DIR)/util/mkfs.jffs2: $(MTD_DIR)/.unpacked
-	CFLAGS=-I$(LINUX_HEADERS_DIR)/include $(MAKE) LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
-
-mtd: $(MKFS_JFFS2)
-
-
-#############################################################
-#
 # Build the jffs2 root filesystem image
 #
 #############################################################
 
-jffs2root: mtd
-	#-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
+JFFS2_OPTS := -e $(strip $(BR2_TARGET_ROOTFS_JFFS2_EBSIZE))
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PAD)),y)
+JFFS2_OPTS += -p 
+ifneq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE)),0x0)
+JFFS2_OPTS += $(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE))
+endif
+endif
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_SQUASH)),y)
+JFFS2_OPTS += -q
+endif
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_LE)),y)
+JFFS2_OPTS += -l
+endif
+
+ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_BE)),y)
+JFFS2_OPTS += -b
+endif
+
+JFFS2_DEVFILE = $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_DEVFILE)))
+ifneq ($(JFFS2_DEVFILE),)
+JFFS2_OPTS += -D $(JFFS2_DEVFILE)
+endif
+
+JFFS2_TARGET := $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT))
+
+#
+# mtd-host is a dependency which builds a local copy of mkfs.jffs2 if it's needed.
+# the actual build is done from package/mtd/mtd.mk and it sets the
+# value of MKFS_JFFS2 to either the previously installed copy or the one
+# just built.
+#
+$(JFFS2_TARGET): mtd-host
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
+	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	$(MKFS_JFFS2) --pad --little-endian --squash -e 0x20000 \
-		-D target/default/device_table.txt -d $(TARGET_DIR) \
-		-o $(IMAGE).jffs2
+	$(MKFS_JFFS2) \
+		$(JFFS2_OPTS) \
+		-d $(BUILD_DIR)/root \
+		-o $(JFFS2_TARGET)
+	@ls -l $(JFFS2_TARGET)
 
-jffs2root-source: $(DL_DIR)/$(MTD_SOURCE)
+JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))
 
-jffs2root-clean:
-	-$(MAKE) -C $(MTD_DIR) clean
+jffs2root: $(JFFS2_TARGET)
+ifneq ($(JFFS2_COPYTO),)
+	@cp -f $(JFFS2_TARGET) $(JFFS2_COPYTO)
+endif	
 
-jffs2root-dirclean:
-	rm -rf $(MTD_DIR)
+jffs2root-source: mtd-host-source
+
+jffs2root-clean: mtd-host-clean
+	-rm -f $(JFFS2_TARGET)
+
+jffs2root-dirclean: mtd-host-dirclean
+	-rm -f $(JFFS2_TARGET)
 
 
 
