@@ -3,10 +3,10 @@
 # libtool
 #
 #############################################################
-LIBTOOL_SOURCE:=libtool_1.4.3.orig.tar.gz
-LIBTOOL_SITE:=http://ftp.debian.org/debian/pool/main/libt/libtool
+LIBTOOL_SOURCE:=libtool-1.5.8.tar.gz
+LIBTOOL_SITE:=ftp://ftp.gnu.org/gnu/libtool
 LIBTOOL_CAT:=zcat
-LIBTOOL_DIR:=$(BUILD_DIR)/libtool-1.4.3
+LIBTOOL_DIR:=$(BUILD_DIR)/libtool-1.5.8
 LIBTOOL_BINARY:=libtool
 LIBTOOL_TARGET_BINARY:=usr/bin/libtool
 

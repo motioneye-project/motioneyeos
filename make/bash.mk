@@ -46,6 +46,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		--with-curses \
 		--enable-alias \
+		--without-bash-malloc \
 	);
 	touch  $(BASH_DIR)/.configured
 

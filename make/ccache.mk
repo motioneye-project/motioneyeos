@@ -19,8 +19,11 @@ $(CCACHE_DIR1)/.unpacked: $(DL_DIR)/$(CCACHE_SOURCE)
 	touch $(CCACHE_DIR1)/.unpacked
 
 $(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
-	$(SED) "s,getenv(\"CCACHE_PATH\"),\"$(STAGING_DIR)/usr/bin\",g" \
+	# WARNING - this will break if the toolchain is moved.
+	# Should probably patch things to use a relative path.
+	$(SED) "s,getenv(\"CCACHE_PATH\"),\"$(STAGING_DIR)/bin-ccache\",g" \
 		$(CCACHE_DIR1)/execute.c
+	# WARNING - this will break if the toolchain build dir is deleted.
 	$(SED) "s,getenv(\"CCACHE_DIR\"),\"$(CCACHE_DIR1)/cache\",g" \
 		$(CCACHE_DIR1)/ccache.c
 	mkdir -p $(CCACHE_DIR1)/cache
@@ -43,14 +46,16 @@ $(CCACHE_DIR1)/$(CCACHE_BINARY): $(CCACHE_DIR1)/.configured
 
 $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 	mkdir -p $(STAGING_DIR)/usr/bin;
-	mkdir -p $(TOOL_BUILD_DIR)/.ccache;
 	cp $(CCACHE_DIR1)/ccache $(STAGING_DIR)/usr/bin
-	(cd $(STAGING_DIR)/usr/bin; \
+	# Keep the actual toolchain binaries in a directory at the same level.
+	# Otherwise, relative paths for include dirs break.
+	mkdir -p $(STAGING_DIR)/bin-ccache;
+	(cd $(STAGING_DIR)/bin-ccache; \
 		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-gcc; \
 		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-cc; \
 		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-uclibc-cc);
 	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc ] && \
-		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(STAGING_DIR)/usr/bin/
+		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(STAGING_DIR)/bin-ccache/
 	(cd $(STAGING_DIR)/bin; \
 		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-cc; \
 		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-gcc; \
@@ -58,9 +63,9 @@ $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc);
 ifeq ($(INSTALL_LIBSTDCPP),true)
 	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-c++ ] && \
-		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-c++ $(STAGING_DIR)/usr/bin/
+		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-c++ $(STAGING_DIR)/bin-ccache/
 	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-g++ ] && \
-		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-g++  $(STAGING_DIR)/usr/bin/
+		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-g++  $(STAGING_DIR)/bin-ccache/
 	(cd $(STAGING_DIR)/bin; \
 		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-c++; \
 		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-g++;\
@@ -68,11 +73,7 @@ ifeq ($(INSTALL_LIBSTDCPP),true)
 		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-g++);
 endif
 
-ifeq ($(GCC_2_95_TOOLCHAIN),true)
-ccache: gcc2_95 $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
-else
-ccache: gcc3_3 $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
-endif
+ccache: gcc $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
 
 ccache-clean:
 	$(MAKE) -C $(CCACHE_DIR1) uninstall
@@ -128,12 +129,11 @@ $(TARGET_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR2)/$(CCACHE_BINARY)
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# put a bunch of symlinks into /bin, since that is earlier
 	# in the default PATH than /usr/bin where gcc lives
-	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	(cd $(TARGET_DIR)/bin; \
-		ln -fs ../usr/bin/ccache cc; \
-		ln -fs ../usr/bin/ccache gcc; \
-		ln -fs ../usr/bin/ccache c++; \
-		ln -fs ../usr/bin/ccache g++;)
+		ln -fs /usr/bin/ccache cc; \
+		ln -fs /usr/bin/ccache gcc; \
+		ln -fs /usr/bin/ccache c++; \
+		ln -fs /usr/bin/ccache g++;)
 
 ccache_target: uclibc $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
 

@@ -2,6 +2,7 @@
 #
 # Copyright (C) 2001-2004 Erik Andersen <andersen@codepoet.org>
 # Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
+# Copyright (C) 2004 Manuel Novoa III <mjn3@uclibc.org>
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -28,39 +29,78 @@
 #
 #############################################################
 
-# What sortof target system shall we compile this for?
+# What sort of target system shall we compile this for?
+#
 ARCH:=i386
 #ARCH:=arm
 #ARCH:=mips
 #ARCH:=mipsel
 #ARCH:=powerpc
 #ARCH:=sh4
-# Busybox link failing due to needing libgcc functions that are statics.
 #ARCH:=cris
-
-# The following currently fail to build since no shared lib support.
 #ARCH:=sh64
 #ARCH:=m68k
 #ARCH:=v850
 #ARCH:=sparc
 #ARCH:=whatever
 
-# If you are building a native gcc toolchain, do you want to
-# build the old gcc-2.95 based toolchain, or would you prefer
-# a nice and shiny new gcc-3.3.2 toolchain?
+# Choose the kernel headers to use for kernel-headers target. This is
+# ignored if you are building your own kernel or using the system kernel.
+#
+DEFAULT_KERNEL_HEADERS:=2.4.25
+#DEFAULT_KERNEL_HEADERS:=2.6.7
+
+# Choose gcc version.
 # WARNING -- 2.95 currently only builds for i386, arm, mips*, and powerpc.
 # WARNING -- 2.95 does not currently build natively for the target.
-GCC_2_95_TOOLCHAIN:=false
+#
+#GCC_VERSION:=2.95
+#GCC_VERSION:=3.3.3
+#GCC_VERSION:=3.3.4
+#GCC_VERSION:=3.4.0
+GCC_VERSION:=3.4.1
+
+# Choose binutils version.
+#
+#BINUTILS_VERSION:=2.14.90.0.6
+#BINUTILS_VERSION:=2.14.90.0.7
+#BINUTILS_VERSION:=2.14.90.0.8
+#BINUTILS_VERSION:=2.15
+#BINUTILS_VERSION:=2.15.90.0.1
+#BINUTILS_VERSION:=2.15.90.0.1.1
+#BINUTILS_VERSION:=2.15.90.0.2
+BINUTILS_VERSION:=2.15.90.0.3
+#BINUTILS_VERSION:=2.15.91.0.1
+#BINUTILS_VERSION:=2.15.91.0.2
+
+# Choose gdb version.
+#
+#GDB_VERSION:=5.3
+GDB_VERSION:=6.1.1
+#GDB_VERSION:=6.2
+
 
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
-# they may not even compile at all, depending on what Erik is doing...
-USE_UCLIBC_SNAPSHOT:=true
+# they may not even compile at all, depending on what Erik is doing.
 
-# Enable this to use the busybox daily snapshot instead of a released
-# version.  Daily snapshots may contain new features and bugfixes. Or
-# they may not even compile at all....
-USE_BUSYBOX_SNAPSHOT:=true
+# Do you wish to use the latest release (), latest snapshot (snapshot),
+# or the snapshot from a specific date (yyyymmdd)?  Note that snapshots
+# may contain new features and bugfixes.  Or they may not even compile
+# at all, depending on what Erik and Manuel are doing.
+#
+#USE_UCLIBC_SNAPSHOT:=
+USE_UCLIBC_SNAPSHOT:=snapshot
+#USE_UCLIBC_SNAPSHOT:=20040807
+
+# Do you wish to use the latest release (), latest snapshot (snapshot),
+# or the snapshot from a specific date (yyyymmdd)?  Note that snapshots
+# may contain new features and bugfixes.  Or they may not even compile
+# at all...
+#
+#USE_BUSYBOX_SNAPSHOT:=
+USE_BUSYBOX_SNAPSHOT:=snapshot
+#USE_BUSYBOX_SNAPSHOT:=20040807
 
 # Enable large file (files > 2 GB) support
 BUILD_WITH_LARGEFILE:=true
@@ -74,6 +114,15 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 # Note... gcc 2.95 does not seem to like anything higher than i586.
 #OPTIMIZE_FOR_CPU=i586
 #OPTIMIZE_FOR_CPU=whatever
+
+# Might be worth experimenting with for gcc 3.4.x.
+GCC_WITH_CPU:=
+GCC_WITH_ARCH:=
+GCC_WITH_TUNE:=
+
+#GCC_WITH_CPU:=--with-cpu=
+#GCC_WITH_ARCH:=--with-arch=
+#GCC_WITH_TUNE:=--with-tune=
 
 # Soft floating point options.
 # Notes:
@@ -128,11 +177,7 @@ INSTALL_LIBGCJ:=false
 #############################################################
 TARGETS:=host-sed
 
-ifeq ($(GCC_2_95_TOOLCHAIN),true)
-TARGETS+=uclibc-configured binutils gcc2_95 ccache
-else
-TARGETS+=uclibc-configured binutils gcc3_3 ccache
-endif
+TARGETS+=uclibc-configured binutils gcc ccache
 
 # Are you building your own kernel?  Perhaps you have a kernel
 # you have already configured and you want to use that?  The
@@ -157,8 +202,7 @@ TARGETS+=busybox #tinylogin
 
 #If you want a development system, you probably want gcc built
 # with uClibc so it can run within your dev system...
-#TARGETS+=gcc2_95_target ccache_target   # NOT WORKING!!!
-#TARGETS+=gcc3_3_target ccache_target
+#TARGETS+=gcc_target ccache_target
 
 # Of course, if you are installing a development system, you
 # may want some header files so you can compile stuff....
@@ -187,7 +231,7 @@ TARGETS+=busybox #tinylogin
 # Pick your root filesystem type.
 #
 #############################################################
-TARGETS+=ext2root
+#TARGETS+=ext2root
 
 # Must mount cramfs with 'ramdisk_blocksize=4096'
 #TARGETS+=cramfsroot
@@ -205,7 +249,12 @@ TARGETS+=ext2root
 #############################################################
 
 ifeq ($(SOFT_FLOAT),true)
+# gcc 3.4.x soft float configuration is different than previous versions.
+ifeq ($(findstring 3.4.,$(GCC_VERSION)),3.4.)
+SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
+else
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
+endif
 TARGET_SOFT_FLOAT:=-msoft-float
 ARCH_FPU_SUFFIX:=_nofpu
 else
@@ -302,13 +351,15 @@ $(DL_DIR):
 $(BUILD_DIR):
 	mkdir $(BUILD_DIR)
 
+$(TOOL_BUILD_DIR):
+	mkdir $(TOOL_BUILD_DIR)
+
 $(STAGING_DIR):
 	rm -rf $(STAGING_DIR)
 	mkdir -p $(STAGING_DIR)/lib
-	mkdir -p $(STAGING_DIR)/usr
-	ln -fs $(REAL_GNU_TARGET_NAME)/include $(STAGING_DIR)/include
-	ln -fs ../lib $(STAGING_DIR)/usr/lib
-	ln -fs ../$(REAL_GNU_TARGET_NAME)/include $(STAGING_DIR)/usr/include
+	mkdir -p $(STAGING_DIR)/include
+	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)
+	ln -sf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
 	rm -rf $(TARGET_DIR)
@@ -324,15 +375,15 @@ source: $(TARGETS_SOURCE)
 #
 #############################################################
 clean: $(TARGETS_CLEAN)
-	rm -rf $(TARGET_DIR) $(STAGING_DIR) $(IMAGE)
+	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE)
 
 dirclean: $(TARGETS_DIRCLEAN)
-	rm -rf $(TARGET_DIR) $(STAGING_DIR) $(IMAGE)
+	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE)
 
 distclean:
 	rm -rf $(DL_DIR) $(BUILD_DIR) $(LINUX_KERNEL) $(IMAGE)
 
-sourceball: 
+sourceball:
 	rm -rf $(BUILD_DIR)
 	set -e; \
 	cd ..; \

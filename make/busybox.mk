@@ -4,14 +4,14 @@
 #
 #############################################################
 
-ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
+ifneq ($(strip $(USE_BUSYBOX_SNAPSHOT)),)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
-BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
+BUSYBOX_SOURCE:=busybox-$(strip $(USE_BUSYBOX_SNAPSHOT)).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 else
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-1.00-pre8
-BUSYBOX_SOURCE:=busybox-1.00-pre8.tar.bz2
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-1.00-rc2
+BUSYBOX_SOURCE:=busybox-1.00-rc2.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 BUSYBOX_UNZIP=bzcat

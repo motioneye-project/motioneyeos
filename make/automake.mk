@@ -3,10 +3,10 @@
 # automake
 #
 #############################################################
-AUTOMAKE_SOURCE:=automake-1.6.3.tar.bz2
+AUTOMAKE_SOURCE:=automake-1.9.tar.bz2
 AUTOMAKE_SITE:=ftp://ftp.gnu.org/gnu/automake
 AUTOMAKE_CAT:=bzcat
-AUTOMAKE_DIR:=$(BUILD_DIR)/automake-1.6.3
+AUTOMAKE_DIR:=$(BUILD_DIR)/automake-1.9
 AUTOMAKE_BINARY:=automake
 AUTOMAKE_TARGET_BINARY:=usr/bin/automake
 

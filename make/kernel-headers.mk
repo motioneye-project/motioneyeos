@@ -7,28 +7,44 @@
 #
 #############################################################
 ifneq ($(filter $(TARGETS),kernel-headers),)
+DEFAULT_KERNEL_HEADERS:=$(strip $(DEFAULT_KERNEL_HEADERS))
 
-VERSION=2
-PATCHLEVEL=4
-SUBLEVEL=25
+LINUX_SITE:=127.0.0.1
+LINUX_SOURCE:=unspecified-kernel-headers
+
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.4.25")
+VERSION:=2
+PATCHLEVEL:=4
+SUBLEVEL:=25
 LINUX_SITE:=http://www.uclibc.org/downloads/toolchain
 LINUX_SOURCE:=kernel-headers-2.4.25.tar.bz2
 LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux
+endif
 
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.7")
+VERSION:=2
+PATCHLEVEL:=6
+SUBLEVEL:=7
+LINUX_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
+LINUX_SOURCE:=linux-libc-headers-2.6.7.0.tar.bz2
+LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.7.0
+endif
 
-# Uncomment this for 2.6.x kernel header files
-#VERSION=2
-#PATCHLEVEL=6
-#SUBLEVEL=8
-#LINUX_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
-#LINUX_SOURCE:=linux-libc-headers-2.6.8.0.tar.bz2
-#LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.8.0
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.8")
+VERSION:=2
+PATCHLEVEL:=6
+SUBLEVEL:=8
+LINUX_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
+LINUX_SOURCE:=linux-libc-headers-2.6.8.0.tar.bz2
+LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.8.0
+endif
 
-
+LINUX_VERSION:=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
 
 LINUX_DIR:=$(TOOL_BUILD_DIR)/linux
 
 $(DL_DIR)/$(LINUX_SOURCE):
+	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
@@ -39,7 +55,11 @@ ifneq ($(LINUX_UNPACK_DIR),$(LINUX_DIR))
 endif
 	touch $(LINUX_DIR)/.unpacked
 
-$(LINUX_DIR)/.configured: $(LINUX_DIR)/.unpacked
+$(LINUX_DIR)/.patched: $(LINUX_DIR)/.unpacked
+	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR) linux-libc-headers-$(LINUX_VERSION)-*.patch
+	touch $(LINUX_DIR)/.patched
+
+$(LINUX_DIR)/.configured: $(LINUX_DIR)/.patched
 	rm -f $(LINUX_DIR)/include/asm
 	@if [ ! -f $(LINUX_DIR)/Makefile ] ; then \
 	    echo -e "VERSION = $(VERSION)\nPATCHLEVEL = $(PATCHLEVEL)\n" > \

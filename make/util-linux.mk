@@ -5,7 +5,7 @@
 #############################################################
 UTIL-LINUX_SOURCE:=util-linux_2.12.orig.tar.gz
 UTIL-LINUX_SITE:=http://ftp.debian.org/debian/pool/main/u/util-linux/
-UTIL-LINUX_PATCH:=util-linux_2.12-6.diff.gz
+UTIL-LINUX_PATCH:=util-linux_2.12-7.diff.gz
 UTIL-LINUX_CAT:=zcat
 UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-2.12
 UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/mcookie

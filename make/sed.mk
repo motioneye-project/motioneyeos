@@ -18,7 +18,8 @@ SED:=$(STAGING_DIR)/bin/sed -i -e
 HOST_SED_TARGET=$(shell ./sources/sedcheck.sh)
 
 $(DL_DIR)/$(SED_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(SED_SITE)/$(SED_SOURCE)
+	mkdir -p $(DL_DIR)
+	$(WGET) -P $(DL_DIR) $(SED_SITE)/$(SED_SOURCE)
 
 sed-source: $(DL_DIR)/$(SED_SOURCE)
 
@@ -30,7 +31,6 @@ sed-source: $(DL_DIR)/$(SED_SOURCE)
 #############################################################
 $(SED_DIR1)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
-	mkdir -p $(DL_DIR)
 	mkdir -p $(STAGING_DIR)/bin;
 	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(SED_DIR1)/.unpacked

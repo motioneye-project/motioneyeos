@@ -1,6 +1,6 @@
-diff -urN gcc-3.3.3/boehm-gc/config.sub gcc-3.3.3-new/boehm-gc/config.sub
---- gcc-3.3.3/boehm-gc/config.sub	2002-02-11 22:37:53.000000000 -0600
-+++ gcc-3.3.3-new/boehm-gc/config.sub	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/boehm-gc/config.sub gcc-3.3.3/boehm-gc/config.sub
+--- gcc-3.3.3-dist/boehm-gc/config.sub	2002-02-11 22:37:53.000000000 -0600
++++ gcc-3.3.3/boehm-gc/config.sub	2004-08-12 04:47:51.000000000 -0500
 @@ -118,7 +118,7 @@
  # Here we must recognize all the valid KERNEL-OS combinations.
  maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
@@ -20,9 +20,24 @@ diff -urN gcc-3.3.3/boehm-gc/config.sub gcc-3.3.3-new/boehm-gc/config.sub
  	      | -interix* | -uwin* | -rhapsody* | -darwin* | -opened* \
  	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
  	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
-diff -urN gcc-3.3.3/config.sub gcc-3.3.3-new/config.sub
---- gcc-3.3.3/config.sub	2003-01-30 17:25:36.000000000 -0600
-+++ gcc-3.3.3-new/config.sub	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/boehm-gc/configure gcc-3.3.3/boehm-gc/configure
+--- gcc-3.3.3-dist/boehm-gc/configure	2004-02-14 14:34:20.000000000 -0600
++++ gcc-3.3.3/boehm-gc/configure	2004-08-12 04:47:51.000000000 -0500
+@@ -1940,6 +1940,11 @@
+   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
+   ;;
+ 
++linux-uclibc*)
++  lt_cv_deplibs_check_method=pass_all
++  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
++  ;;
++
+ netbsd*)
+   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
+     lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
+diff -urN gcc-3.3.3-dist/config.sub gcc-3.3.3/config.sub
+--- gcc-3.3.3-dist/config.sub	2003-01-30 17:25:36.000000000 -0600
++++ gcc-3.3.3/config.sub	2004-08-12 04:47:51.000000000 -0500
 @@ -118,7 +118,7 @@
  # Here we must recognize all the valid KERNEL-OS combinations.
  maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
@@ -42,9 +57,9 @@ diff -urN gcc-3.3.3/config.sub gcc-3.3.3-new/config.sub
  	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
  	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
  	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
-diff -urN gcc-3.3.3/gcc/config/arm/linux-elf.h gcc-3.3.3-new/gcc/config/arm/linux-elf.h
---- gcc-3.3.3/gcc/config/arm/linux-elf.h	2003-09-16 10:39:23.000000000 -0500
-+++ gcc-3.3.3-new/gcc/config/arm/linux-elf.h	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/arm/linux-elf.h gcc-3.3.3/gcc/config/arm/linux-elf.h
+--- gcc-3.3.3-dist/gcc/config/arm/linux-elf.h	2003-09-16 10:39:23.000000000 -0500
++++ gcc-3.3.3/gcc/config/arm/linux-elf.h	2004-08-12 04:47:51.000000000 -0500
 @@ -78,6 +78,18 @@
    "%{!shared:crtend.o%s} %{shared:crtendS.o%s} crtn.o%s"
  
@@ -72,9 +87,9 @@ diff -urN gcc-3.3.3/gcc/config/arm/linux-elf.h gcc-3.3.3-new/gcc/config/arm/linu
  
  #define TARGET_OS_CPP_BUILTINS()		\
      do {					\
-diff -urN gcc-3.3.3/gcc/config/cris/linux.h gcc-3.3.3-new/gcc/config/cris/linux.h
---- gcc-3.3.3/gcc/config/cris/linux.h	2003-03-10 21:01:35.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/cris/linux.h	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/cris/linux.h gcc-3.3.3/gcc/config/cris/linux.h
+--- gcc-3.3.3-dist/gcc/config/cris/linux.h	2003-03-10 21:01:35.000000000 -0600
++++ gcc-3.3.3/gcc/config/cris/linux.h	2004-08-12 04:47:51.000000000 -0500
 @@ -81,6 +81,25 @@
  #undef CRIS_DEFAULT_CPU_VERSION
  #define CRIS_DEFAULT_CPU_VERSION CRIS_CPU_NG
@@ -110,16 +125,16 @@ diff -urN gcc-3.3.3/gcc/config/cris/linux.h gcc-3.3.3-new/gcc/config/cris/linux.
  
  /* Node: Run-time Target */
  
-diff -urN gcc-3.3.3/gcc/config/cris/t-linux-uclibc gcc-3.3.3-new/gcc/config/cris/t-linux-uclibc
---- gcc-3.3.3/gcc/config/cris/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/cris/t-linux-uclibc	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/cris/t-linux-uclibc gcc-3.3.3/gcc/config/cris/t-linux-uclibc
+--- gcc-3.3.3-dist/gcc/config/cris/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
++++ gcc-3.3.3/gcc/config/cris/t-linux-uclibc	2004-08-12 04:47:51.000000000 -0500
 @@ -0,0 +1,3 @@
 +T_CFLAGS = -DUSE_UCLIBC
 +TARGET_LIBGCC2_CFLAGS += -fPIC
 +CRTSTUFF_T_CFLAGS_S = $(TARGET_LIBGCC2_CFLAGS)
-diff -urN gcc-3.3.3/gcc/config/i386/linux.h gcc-3.3.3-new/gcc/config/i386/linux.h
---- gcc-3.3.3/gcc/config/i386/linux.h	2003-11-14 00:46:12.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/i386/linux.h	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/i386/linux.h gcc-3.3.3/gcc/config/i386/linux.h
+--- gcc-3.3.3-dist/gcc/config/i386/linux.h	2003-11-14 00:46:12.000000000 -0600
++++ gcc-3.3.3/gcc/config/i386/linux.h	2004-08-12 04:47:51.000000000 -0500
 @@ -136,6 +136,15 @@
  	%{static:-static}}}"
  #endif
@@ -144,9 +159,9 @@ diff -urN gcc-3.3.3/gcc/config/i386/linux.h gcc-3.3.3-new/gcc/config/i386/linux.
  
  /* A C statement (sans semicolon) to output to the stdio stream
     FILE the assembler definition of uninitialized global DECL named
-diff -urN gcc-3.3.3/gcc/config/mips/linux.h gcc-3.3.3-new/gcc/config/mips/linux.h
---- gcc-3.3.3/gcc/config/mips/linux.h	2003-12-23 02:58:00.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/mips/linux.h	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/mips/linux.h gcc-3.3.3/gcc/config/mips/linux.h
+--- gcc-3.3.3-dist/gcc/config/mips/linux.h	2003-12-23 02:58:00.000000000 -0600
++++ gcc-3.3.3/gcc/config/mips/linux.h	2004-08-12 04:47:51.000000000 -0500
 @@ -175,6 +175,17 @@
  
  /* Borrowed from sparc/linux.h */
@@ -173,9 +188,9 @@ diff -urN gcc-3.3.3/gcc/config/mips/linux.h gcc-3.3.3-new/gcc/config/mips/linux.
  
  #undef SUBTARGET_ASM_SPEC
  #define SUBTARGET_ASM_SPEC "\
-diff -urN gcc-3.3.3/gcc/config/sh/linux.h gcc-3.3.3-new/gcc/config/sh/linux.h
---- gcc-3.3.3/gcc/config/sh/linux.h	2003-11-06 17:13:33.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/sh/linux.h	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/sh/linux.h gcc-3.3.3/gcc/config/sh/linux.h
+--- gcc-3.3.3-dist/gcc/config/sh/linux.h	2003-11-06 17:13:33.000000000 -0600
++++ gcc-3.3.3/gcc/config/sh/linux.h	2004-08-12 04:47:51.000000000 -0500
 @@ -44,12 +44,21 @@
  #undef SUBTARGET_LINK_EMUL_SUFFIX
  #define SUBTARGET_LINK_EMUL_SUFFIX "_linux"
@@ -198,9 +213,9 @@ diff -urN gcc-3.3.3/gcc/config/sh/linux.h gcc-3.3.3-new/gcc/config/sh/linux.h
  
  /* The GNU C++ standard library requires that these macros be defined.  */
  #undef CPLUSPLUS_CPP_SPEC
-diff -urN gcc-3.3.3/gcc/config/sh/t-linux-uclibc gcc-3.3.3-new/gcc/config/sh/t-linux-uclibc
---- gcc-3.3.3/gcc/config/sh/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/sh/t-linux-uclibc	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/sh/t-linux-uclibc gcc-3.3.3/gcc/config/sh/t-linux-uclibc
+--- gcc-3.3.3-dist/gcc/config/sh/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
++++ gcc-3.3.3/gcc/config/sh/t-linux-uclibc	2004-08-12 04:47:51.000000000 -0500
 @@ -0,0 +1,16 @@
 +T_CFLAGS = -DUSE_UCLIBC
 +
@@ -218,9 +233,9 @@ diff -urN gcc-3.3.3/gcc/config/sh/t-linux-uclibc gcc-3.3.3-new/gcc/config/sh/t-l
 +MULTILIB_EXCEPTIONS=
 +
 +EXTRA_MULTILIB_PARTS= crtbegin.o crtend.o crtbeginS.o crtendS.o
-diff -urN gcc-3.3.3/gcc/config/sh/t-sh64-uclibc gcc-3.3.3-new/gcc/config/sh/t-sh64-uclibc
---- gcc-3.3.3/gcc/config/sh/t-sh64-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/sh/t-sh64-uclibc	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/sh/t-sh64-uclibc gcc-3.3.3/gcc/config/sh/t-sh64-uclibc
+--- gcc-3.3.3-dist/gcc/config/sh/t-sh64-uclibc	1969-12-31 18:00:00.000000000 -0600
++++ gcc-3.3.3/gcc/config/sh/t-sh64-uclibc	2004-08-12 04:47:51.000000000 -0500
 @@ -0,0 +1,13 @@
 +EXTRA_MULTILIB_PARTS= crtbegin.o crtend.o
 +
@@ -235,9 +250,9 @@ diff -urN gcc-3.3.3/gcc/config/sh/t-sh64-uclibc gcc-3.3.3-new/gcc/config/sh/t-sh
 +MULTILIB_DIRNAMES= $(MULTILIB_ENDIAN) nofpu compact nofpu/compact media64 nofpu/media64
 +MULTILIB_MATCHES=
 +MULTILIB_EXCEPTIONS=
-diff -urN gcc-3.3.3/gcc/config/t-linux-uclibc gcc-3.3.3-new/gcc/config/t-linux-uclibc
---- gcc-3.3.3/gcc/config/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config/t-linux-uclibc	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config/t-linux-uclibc gcc-3.3.3/gcc/config/t-linux-uclibc
+--- gcc-3.3.3-dist/gcc/config/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
++++ gcc-3.3.3/gcc/config/t-linux-uclibc	2004-08-12 04:47:51.000000000 -0500
 @@ -0,0 +1,23 @@
 +T_CFLAGS = -DUSE_UCLIBC
 +
@@ -262,9 +277,9 @@ diff -urN gcc-3.3.3/gcc/config/t-linux-uclibc gcc-3.3.3-new/gcc/config/t-linux-u
 +LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde.c \
 +  $(srcdir)/unwind-sjlj.c $(srcdir)/unwind-c.c
 +LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h
-diff -urN gcc-3.3.3/gcc/config.gcc gcc-3.3.3-new/gcc/config.gcc
---- gcc-3.3.3/gcc/config.gcc	2004-01-21 00:06:00.000000000 -0600
-+++ gcc-3.3.3-new/gcc/config.gcc	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/gcc/config.gcc gcc-3.3.3/gcc/config.gcc
+--- gcc-3.3.3-dist/gcc/config.gcc	2004-01-21 00:06:00.000000000 -0600
++++ gcc-3.3.3/gcc/config.gcc	2004-08-12 04:47:51.000000000 -0500
 @@ -697,6 +697,17 @@
  	extra_parts=""
  	use_collect2=yes
@@ -355,9 +370,9 @@ diff -urN gcc-3.3.3/gcc/config.gcc gcc-3.3.3-new/gcc/config.gcc
  	sh64*)
  		tmake_file="${tmake_file} sh/t-sh64"
  		tm_file="${tm_file} sh/sh64.h"
-diff -urN gcc-3.3.3/libstdc++-v3/aclocal.m4 gcc-3.3.3-new/libstdc++-v3/aclocal.m4
---- gcc-3.3.3/libstdc++-v3/aclocal.m4	2004-01-12 10:18:44.000000000 -0600
-+++ gcc-3.3.3-new/libstdc++-v3/aclocal.m4	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/libstdc++-v3/aclocal.m4 gcc-3.3.3/libstdc++-v3/aclocal.m4
+--- gcc-3.3.3-dist/libstdc++-v3/aclocal.m4	2004-01-12 10:18:44.000000000 -0600
++++ gcc-3.3.3/libstdc++-v3/aclocal.m4	2004-08-12 04:47:51.000000000 -0500
 @@ -1216,6 +1216,9 @@
    dnl Default to "generic"
    if test x$enable_clocale_flag = xno; then
@@ -410,10 +425,22 @@ diff -urN gcc-3.3.3/libstdc++-v3/aclocal.m4 gcc-3.3.3-new/libstdc++-v3/aclocal.m
      *)
        echo "$enable_clocale is an unknown locale package" 1>&2
        exit 1
-diff -urN gcc-3.3.3/libstdc++-v3/configure gcc-3.3.3-new/libstdc++-v3/configure
---- gcc-3.3.3/libstdc++-v3/configure	2004-01-12 10:18:45.000000000 -0600
-+++ gcc-3.3.3-new/libstdc++-v3/configure	2004-02-17 00:21:12.000000000 -0600
-@@ -2996,6 +2996,9 @@
+diff -urN gcc-3.3.3-dist/libstdc++-v3/configure gcc-3.3.3/libstdc++-v3/configure
+--- gcc-3.3.3-dist/libstdc++-v3/configure	2004-01-12 10:18:45.000000000 -0600
++++ gcc-3.3.3/libstdc++-v3/configure	2004-08-12 04:49:13.000000000 -0500
+@@ -2010,6 +2010,11 @@
+   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
+   ;;
+ 
++linux-uclibc*)
++  lt_cv_deplibs_check_method=pass_all
++  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
++  ;;
++
+ netbsd*)
+   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
+     lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
+@@ -2996,6 +3001,9 @@
  
        if test x$enable_clocale_flag = xno; then
      case x${target_os} in
@@ -423,7 +450,7 @@ diff -urN gcc-3.3.3/libstdc++-v3/configure gcc-3.3.3-new/libstdc++-v3/configure
        xlinux* | xgnu*)
  	cat > conftest.$ac_ext <<EOF
  #line 3002 "configure"
-@@ -3182,6 +3185,70 @@
+@@ -3182,6 +3190,70 @@
        CTIME_CC=config/locale/generic/time_members.cc
        CLOCALE_INTERNAL_H=config/locale/generic/c++locale_internal.h
        ;;
@@ -494,7 +521,7 @@ diff -urN gcc-3.3.3/libstdc++-v3/configure gcc-3.3.3-new/libstdc++-v3/configure
      *)
        echo "$enable_clocale is an unknown locale package" 1>&2
        exit 1
-@@ -4212,6 +4279,968 @@
+@@ -4212,6 +4284,968 @@
    # GLIBCPP_CHECK_MATH_SUPPORT
  
    case "$target" in
@@ -1463,9 +1490,9 @@ diff -urN gcc-3.3.3/libstdc++-v3/configure gcc-3.3.3-new/libstdc++-v3/configure
      *-linux*)
        os_include_dir="os/gnu-linux"
        for ac_hdr in nan.h ieeefp.h endian.h sys/isa_defs.h \
-diff -urN gcc-3.3.3/libstdc++-v3/configure.in gcc-3.3.3-new/libstdc++-v3/configure.in
---- gcc-3.3.3/libstdc++-v3/configure.in	2004-01-12 10:19:22.000000000 -0600
-+++ gcc-3.3.3-new/libstdc++-v3/configure.in	2004-02-16 23:13:45.000000000 -0600
+diff -urN gcc-3.3.3-dist/libstdc++-v3/configure.in gcc-3.3.3/libstdc++-v3/configure.in
+--- gcc-3.3.3-dist/libstdc++-v3/configure.in	2004-01-12 10:19:22.000000000 -0600
++++ gcc-3.3.3/libstdc++-v3/configure.in	2004-08-12 04:47:51.000000000 -0500
 @@ -117,6 +117,36 @@
    # GLIBCPP_CHECK_MATH_SUPPORT
  
@@ -1503,9 +1530,9 @@ diff -urN gcc-3.3.3/libstdc++-v3/configure.in gcc-3.3.3-new/libstdc++-v3/configu
      *-linux*)
        os_include_dir="os/gnu-linux"
        AC_CHECK_HEADERS([nan.h ieeefp.h endian.h sys/isa_defs.h \
-diff -urN gcc-3.3.3/libstdc++-v3/configure.target gcc-3.3.3-new/libstdc++-v3/configure.target
---- gcc-3.3.3/libstdc++-v3/configure.target	2003-10-01 14:07:07.000000000 -0500
-+++ gcc-3.3.3-new/libstdc++-v3/configure.target	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/libstdc++-v3/configure.target gcc-3.3.3/libstdc++-v3/configure.target
+--- gcc-3.3.3-dist/libstdc++-v3/configure.target	2003-10-01 14:07:07.000000000 -0500
++++ gcc-3.3.3/libstdc++-v3/configure.target	2004-08-12 04:47:51.000000000 -0500
 @@ -133,6 +133,9 @@
    freebsd*)
      os_include_dir="os/bsd/freebsd"
@@ -1516,9 +1543,9 @@ diff -urN gcc-3.3.3/libstdc++-v3/configure.target gcc-3.3.3-new/libstdc++-v3/con
    gnu* | linux*)
      os_include_dir="os/gnu-linux"
      ;;
-diff -urN gcc-3.3.3/libstdc++-v3/include/c_std/std_cstdlib.h gcc-3.3.3-new/libstdc++-v3/include/c_std/std_cstdlib.h
---- gcc-3.3.3/libstdc++-v3/include/c_std/std_cstdlib.h	2003-04-18 05:08:05.000000000 -0500
-+++ gcc-3.3.3-new/libstdc++-v3/include/c_std/std_cstdlib.h	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/libstdc++-v3/include/c_std/std_cstdlib.h gcc-3.3.3/libstdc++-v3/include/c_std/std_cstdlib.h
+--- gcc-3.3.3-dist/libstdc++-v3/include/c_std/std_cstdlib.h	2003-04-18 05:08:05.000000000 -0500
++++ gcc-3.3.3/libstdc++-v3/include/c_std/std_cstdlib.h	2004-08-12 04:47:51.000000000 -0500
 @@ -101,9 +101,11 @@
    using ::labs;
    using ::ldiv;
@@ -1542,9 +1569,9 @@ diff -urN gcc-3.3.3/libstdc++-v3/include/c_std/std_cstdlib.h gcc-3.3.3-new/libst
  
    inline long 
    abs(long __i) { return labs(__i); }
-diff -urN gcc-3.3.3/libstdc++-v3/include/c_std/std_cwchar.h gcc-3.3.3-new/libstdc++-v3/include/c_std/std_cwchar.h
---- gcc-3.3.3/libstdc++-v3/include/c_std/std_cwchar.h	2003-04-18 05:08:05.000000000 -0500
-+++ gcc-3.3.3-new/libstdc++-v3/include/c_std/std_cwchar.h	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/libstdc++-v3/include/c_std/std_cwchar.h gcc-3.3.3/libstdc++-v3/include/c_std/std_cwchar.h
+--- gcc-3.3.3-dist/libstdc++-v3/include/c_std/std_cwchar.h	2003-04-18 05:08:05.000000000 -0500
++++ gcc-3.3.3/libstdc++-v3/include/c_std/std_cwchar.h	2004-08-12 04:47:51.000000000 -0500
 @@ -165,7 +165,9 @@
    using ::wcscoll;
    using ::wcscpy;
@@ -1555,9 +1582,24 @@ diff -urN gcc-3.3.3/libstdc++-v3/include/c_std/std_cwchar.h gcc-3.3.3-new/libstd
    using ::wcslen;
    using ::wcsncat;
    using ::wcsncmp;
-diff -urN gcc-3.3.3/ltconfig gcc-3.3.3-new/ltconfig
---- gcc-3.3.3/ltconfig	2003-02-19 20:10:02.000000000 -0600
-+++ gcc-3.3.3-new/ltconfig	2004-02-16 21:12:16.000000000 -0600
+diff -urN gcc-3.3.3-dist/libtool.m4 gcc-3.3.3/libtool.m4
+--- gcc-3.3.3-dist/libtool.m4	2003-09-09 03:04:17.000000000 -0500
++++ gcc-3.3.3/libtool.m4	2004-08-12 04:47:51.000000000 -0500
+@@ -687,6 +687,11 @@
+   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
+   ;;
+ 
++linux-uclibc*)
++  lt_cv_deplibs_check_method=pass_all
++  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
++  ;;
++
+ netbsd*)
+   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
+     [lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$']
+diff -urN gcc-3.3.3-dist/ltconfig gcc-3.3.3/ltconfig
+--- gcc-3.3.3-dist/ltconfig	2003-02-19 20:10:02.000000000 -0600
++++ gcc-3.3.3/ltconfig	2004-08-12 04:47:51.000000000 -0500
 @@ -603,6 +603,7 @@
  # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
  case $host_os in

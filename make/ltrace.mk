@@ -3,9 +3,9 @@
 # ltrace
 #
 #############################################################
-LTRACE_SOURCE=ltrace_0.3.32.tar.gz
+LTRACE_SOURCE=ltrace_0.3.35.tar.gz
 LTRACE_SITE=http://ftp.debian.org/debian/pool/main/l/ltrace
-LTRACE_DIR=$(BUILD_DIR)/ltrace-0.3.32
+LTRACE_DIR=$(BUILD_DIR)/ltrace-0.3.35
 LTRACE_BINARY=ltrace
 LTRACE_TARGET_BINARY=usr/bin/ltrace
 
@@ -29,7 +29,7 @@ $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.source
 	touch $(LTRACE_DIR)/.configured;
 
 $(LTRACE_DIR)/$(LTRACE_BINARY): $(LTRACE_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(LTRACE_DIR)
+	$(MAKE) CC=$(TARGET_CC) LD=$(TARGET_CROSS)ld -C $(LTRACE_DIR)
 
 $(TARGET_DIR)/$(LTRACE_TARGET_BINARY): $(LTRACE_DIR)/$(LTRACE_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LTRACE_DIR) install

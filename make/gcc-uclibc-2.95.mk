@@ -17,7 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-ifeq ($(GCC_2_95_TOOLCHAIN),true)
+ifeq ($(findstring 2.95,$(GCC_VERSION)),2.95)
+GCC_VERSION:=$(strip $(GCC_VERSION))
 
 GCC_SITE:=http://www.uclibc.org/downloads/toolchain
 GCC_SOURCE:=gcc-20011006.tar.bz2
@@ -48,20 +49,20 @@ endif
 # build the first pass gcc compiler
 #
 #############################################################
-GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc2_95-initial
+GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-initial
 
 $(DL_DIR)/$(GCC_SOURCE):
+	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
+	mkdir -p $(TOOL_BUILD_DIR)
 	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(GCC_DIR)/.unpacked
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc2.95-mega.patch.bz2
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc2.95-uclibc-conf.patch
-	#$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-uclibc2_95*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR)/gcc/$(GCC_VERSION) *.patch
 	#
 	# We do not wish to build the libstdc++ library provided with gcc,
 	# since it doesn't seem to work at all with uClibc plus gcc 2.95...
@@ -107,13 +108,13 @@ $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc: $(GCC_BUILD_DIR1)/.compiled
 	#rm -f $(STAGING_DIR)/bin/gccbug $(STAGING_DIR)/bin/gcov
 	#rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc $(STAGING_DIR)/share/locale
 
-gcc2_95_initial: uclibc-configured binutils $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc
+gcc_initial: uclibc-configured binutils $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc
 
-gcc2_95_initial-clean:
+gcc_initial-clean:
 	rm -rf $(GCC_BUILD_DIR1)
 	rm -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
 
-gcc2_95_initial-dirclean:
+gcc_initial-dirclean:
 	rm -rf $(GCC_BUILD_DIR1)
 
 #############################################################
@@ -156,7 +157,7 @@ stlport-dirclean:
 # the newly built shared uClibc library.
 #
 #############################################################
-GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc2_95-final
+GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
 	mkdir -p $(GCC_BUILD_DIR2)
@@ -200,16 +201,16 @@ endif
 	);
 	touch $(GCC_BUILD_DIR2)/.installed
 
-gcc2_95: uclibc-configured binutils gcc2_95_initial $(LIBFLOAT_TARGET) uclibc \
+gcc: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) uclibc \
 	$(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS) $(STLPORT_TARGET)
 
-gcc2_95-source: $(DL_DIR)/$(GCC_SOURCE)
+gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 
-gcc2_95-clean:
+gcc-clean:
 	rm -rf $(GCC_BUILD_DIR2)
 	rm -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
 
-gcc2_95-dirclean:
+gcc-dirclean:
 	rm -rf $(GCC_BUILD_DIR2)
 
 #############################################################
@@ -217,7 +218,7 @@ gcc2_95-dirclean:
 # Next build target gcc compiler
 #
 #############################################################
-GCC_BUILD_DIR3:=$(BUILD_DIR)/gcc2_95-target
+GCC_BUILD_DIR3:=$(BUILD_DIR)/gcc-$(GCC_VERSION)-target
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR2)/.installed
 	mkdir -p $(GCC_BUILD_DIR3)
@@ -264,13 +265,13 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	#rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
 	#touch -c $(TARGET_DIR)/usr/bin/gcc
 
-gcc2_95_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
+gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
 
-gcc2_95_target-clean:
+gcc_target-clean:
 	rm -rf $(GCC_BUILD_DIR3)
 	rm -f $(TARGET_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
 
-gcc2_95_target-dirclean:
+gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
 endif

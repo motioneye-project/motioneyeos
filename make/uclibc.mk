@@ -3,14 +3,17 @@
 # uClibc (the C library)
 #
 #############################################################
-ifeq ($(USE_UCLIBC_SNAPSHOT),true)
+
+ifneq ($(strip $(USE_UCLIBC_SNAPSHOT)),)
 # Be aware that this changes daily....
-UCLIBC_DIR=$(BUILD_DIR)/uClibc
-UCLIBC_SOURCE=uClibc-snapshot.tar.bz2
+UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
+UCLIBC_SOURCE:=uClibc-$(strip $(USE_UCLIBC_SNAPSHOT)).tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 else
-UCLIBC_DIR:=$(BUILD_DIR)/uClibc-0.9.26
-UCLIBC_SOURCE:=uClibc-0.9.26.tar.bz2
+# Note: 0.9.26 has known problems.  So best use a snapshot until .27 is out.
+# Anticipate the change.
+UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-0.9.27
+UCLIBC_SOURCE:=uClibc-0.9.27.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
@@ -30,21 +33,12 @@ UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
 
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
+	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
-ifeq ($(SOFT_FLOAT),true)
-	# Make sure we have a soft float specs file for this arch
-	if [ ! -f $(SOURCE_DIR)/specs-$(ARCH)-soft-float ] ; then \
-		echo soft float configured but no specs file for this arch ; \
-		/bin/false ; \
-	fi;
-endif
-	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	#(cd $(BUILD_DIR) ; ln -s $(DL_DIR)/uClibc)
-	#-mkdir $(UCLIBC_DIR)
-	#(cd $(DL_DIR)/uClibc && tar cf - .) | (cd $(UCLIBC_DIR) && tar xvfp - )
-	$(SOURCE_DIR)/patch-kernel.sh $(UCLIBC_DIR) $(SOURCE_DIR) uClibc-*.patch
+	mkdir -p $(TOOL_BUILD_DIR)
+	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(UCLIBC_DIR)/.unpacked
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(LINUX_DIR)/.configured
@@ -77,38 +71,32 @@ endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
-	-$(MAKE) -C $(UCLIBC_DIR) \
+	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		HOSTCC="$(HOSTCC)" \
-		oldconfig;
-	-$(MAKE) -C $(UCLIBC_DIR) \
-		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
-		DEVEL_PREFIX=/usr/ \
-		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
-		HOSTCC="$(HOSTCC)" \
-		headers pregen install_dev;
+		pregen install_dev;
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX= \
-		DEVEL_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
+		DEVEL_PREFIX=/ \
 		RUNTIME_PREFIX=/ \
 		HOSTCC="$(HOSTCC)" \
 		all
 
-$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
+$(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX=$(STAGING_DIR)/ \
-		DEVEL_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
-		RUNTIME_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
+		DEVEL_PREFIX=/ \
+		RUNTIME_PREFIX=/ \
 		install_runtime
 	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX=$(STAGING_DIR)/ \
-		DEVEL_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
-		RUNTIME_PREFIX=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/ \
+		DEVEL_PREFIX=/ \
+		RUNTIME_PREFIX=/ \
 		install_dev
 	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX=$(STAGING_DIR) \
@@ -118,7 +106,7 @@ $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR)/utils clean
 
 ifneq ($(TARGET_DIR),)
-$(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
+$(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) \
 		PREFIX=$(TARGET_DIR) \
 		DEVEL_PREFIX=/usr/ \
@@ -134,7 +122,7 @@ endif
 
 uclibc-configured: $(UCLIBC_DIR)/.configured
 
-uclibc: $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a \
+uclibc: $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/lib/libc.a \
 	$(UCLIBC_TARGETS)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
@@ -165,11 +153,7 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
 		RUNTIME_PREFIX=/ \
 		install_dev
 
-ifeq ($(GCC_2_95_TOOLCHAIN),true)
-uclibc_target: gcc2_95 uclibc $(TARGET_DIR)/usr/lib/libc.a
-else
-uclibc_target: gcc3_3 uclibc $(TARGET_DIR)/usr/lib/libc.a
-endif
+uclibc_target: gcc uclibc $(TARGET_DIR)/usr/lib/libc.a
 
 uclibc_target-clean:
 	rm -f $(TARGET_DIR)/include

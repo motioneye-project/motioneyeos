@@ -3,25 +3,37 @@
 # build binutils for use on the host system
 #
 #############################################################
+BINUTILS_VERSION:=$(strip $(BINUTILS_VERSION))
+
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
-BINUTILS_SOURCE:=binutils-2.14.90.0.6.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14.90.0.6
+ifeq ($(BINUTILS_VERSION),2.15)
+BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
+endif
+ifeq ($(BINUTILS_VERSION),2.14)
+BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
+endif
+ifeq ($(BINUTILS_VERSION),2.13)
+BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
+endif
+
+BINUTILS_SOURCE:=binutils-$(BINUTILS_VERSION).tar.bz2
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)
 BINUTILS_CAT:=bzcat
 
-BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-build
+BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)-build
 
 $(DL_DIR)/$(BINUTILS_SOURCE):
+	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
 $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
-	mkdir -p $(DL_DIR)
 	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	touch $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
-	# Apply any files named binutils-*.patch from the source directory to binutils
-	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR) binutils-uclibc*.patch
+	# Apply appropriate binutils patches.
+	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR)/binutils/$(BINUTILS_VERSION) *.patch
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
@@ -77,7 +89,7 @@ binutils-dirclean:
 # build binutils for use on the target system
 #
 #############################################################
-BINUTILS_DIR2:=$(BUILD_DIR)/binutils-target
+BINUTILS_DIR2:=$(BUILD_DIR)/binutils-$(BINUTILS_VERSION)-target
 $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR2)
 	(cd $(BINUTILS_DIR2); \

@@ -45,11 +45,13 @@ LINUX_SOURCE_DIR=$(LINUX_DIR)
 
 
 $(DL_DIR)/$(LINUX_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
+	mkdir  $(DL_DIR)
+	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
-	mkdir -p $(LINUX_DIR) $(TOOL_BUILD_DIR)
-	rm -rf $(LINUX_DIR)
+	mkdir  $(TOOL_BUILD_DIR)
+	#mkdir -p $(LINUX_DIR)
+	#rm -rf $(LINUX_DIR)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version	
