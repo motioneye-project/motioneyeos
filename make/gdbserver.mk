@@ -15,7 +15,6 @@ $(GDB_WDIR)/.configured: $(GDB_DIR)/.unpacked
 	AR=$(TARGET_CROSS)ar NM=$(TARGET_CROSS)nm \
 	LD=$(TARGET_CROSS)ld AS=$(TARGET_CROSS)as \
 	$(GDB_DIR)/gdb/gdbserver/configure --prefix=/usr \
-            --target=$(GNU_TARGET_NAME) \
 	    --includedir=$(STAGING_DIR)/include \
 	    --disable-nls --without-uiout --disable-gdbmi \
 	    --disable-tui --disable-gdbtk --without-x \
