@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# $Id: dhcp3-relay,v 1.1 2004/04/16 15:41:08 ml Exp $
+#
+
+# It is not safe to start if we don't have a default configuration...
+if [ ! -f /etc/default/dhcp-relay ]; then
+	echo "/etc/default/dhcp-relay does not exist! - Aborting..."
+	echo "create this file to fix the problem."
+	exit 1
+fi
+
+# Read init script configuration (interfaces the daemon should listen on
+# and the DHCP server we should forward requests to.)
+. /etc/default/dhcp-relay
+
+# Build command line for interfaces (will be passed to dhrelay below.)
+IFCMD=""
+if test "$INTERFACES" != ""; then
+	for I in $INTERFACES; do
+		IFCMD=${IFCMD}"-i "${I}" "
+	done
+fi
+
+DHCRELAYPID=/var/run/dhcrelay.pid
+
+case "$1" in
+	start)
+		start-stop-daemon -S -x /usr/sbin/dhcrelay -- -q $OPTIONS $IFCMD $SERVERS
+		;;
+	stop)
+		start-stop-daemon -K -x /usr/sbin/dhcrelay
+		;;
+	restart | force-reload)
+		$0 stop
+		sleep 2
+		$0 start
+		;;
+	*)
+		echo "Usage: /etc/init.d/dhcp-relay {start|stop|restart|force-reload}"
+		exit 1 
+esac
+
+exit 0

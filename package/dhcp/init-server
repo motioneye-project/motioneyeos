@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# $Id: dhcp3-server.init.d,v 1.4 2003/07/13 19:12:41 mdz Exp $
+#
+
+test -f /usr/sbin/dhcpd || exit 0
+
+# It is not safe to start if we don't have a default configuration...
+if [ ! -f /etc/default/dhcp-server ]; then
+	echo "/etc/default/dhcp-server does not exist! - Aborting..."
+	exit 0
+fi
+
+# Read init script configuration (so far only interfaces the daemon
+# should listen on.)
+. /etc/default/dhcp-server
+
+case "$1" in
+	start)
+		echo -n "Starting DHCP server: "
+		test -d /var/lib/dhcp/ || mkdir -p /var/lib/dhcp/
+		test -f /var/lib/dhcp/dhcpd.leases || touch /var/lib/dhcp/dhcpd.leases	
+		start-stop-daemon -S -x /usr/sbin/dhcpd -- -q $INTERFACES
+		echo "."
+		;;
+	stop)
+		echo -n "Stopping DHCP server: dhcpd3"
+		start-stop-daemon -K -x /usr/sbin/dhcpd
+		echo "."
+		;;
+	restart | force-reload)
+		$0 stop
+		sleep 2
+		$0 start
+		if [ "$?" != "0" ]; then
+			exit 1
+		fi
+		;;
+	*)
+		echo "Usage: /etc/init.d/dhcp-server {start|stop|restart|force-reload}"
+		exit 1 
+esac
+
+exit 0

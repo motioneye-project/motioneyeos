@@ -22,6 +22,7 @@ dhcp-source: $(DL_DIR)/$(DHCP)
 
 $(DHCP_DIR)/.unpacked: $(DL_DIR)/$(DHCP)
 	$(DHCP_CAT) $(DL_DIR)/$(DHCP) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(DHCP_DIR) package/dhcp/ dhcp*.patch
 	touch $(DHCP_DIR)/.unpacked
 
 $(DHCP_DIR)/.configured: $(DHCP_DIR)/.unpacked
@@ -29,29 +30,30 @@ $(DHCP_DIR)/.configured: $(DHCP_DIR)/.unpacked
 	touch  $(DHCP_DIR)/.configured
 
 $(DHCP_DIR)/$(DHCP_RELAY_BINARY): $(DHCP_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) $(BVARS) -C $(DHCP_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(BVARS) -C $(DHCP_DIR)
 	$(STRIP) $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 
 $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	(cd $(TARGET_DIR)/var/lib; ln -sf /tmp dhcp)
-	install -m 0755 $(DHCP_DIR)/dhcpd $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY)
-	install -m 0755 $(DHCP_DIR)/dhcp-server $(TARGET_DIR)/etc/init.d/dhcp-server
-	install -m 0644 $(DHCP_DIR)/dhcpd.conf $(TARGET_DIR)/etc/dhcp/dhcpd.conf
+	$(INSTALL) -m 0755 -D $(DHCP_DIR)/dhcpd $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY)
+	$(INSTALL) -m 0755 -D package/dhcp/init-server $(TARGET_DIR)/etc/init.d/dhcp-server
+	$(INSTALL) -m 0644 -D package/dhcp/dhcpd.conf $(TARGET_DIR)/etc/dhcp/dhcpd.conf
+	$(INSTALL) -m 0644 -D package/dhcp/default-server $(TARGET_DIR)/etc/default/dhcp-server
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	(cd $(TARGET_DIR)/var/lib; ln -sf /tmp dhcp)
-	install -m 0755 $(DHCP_DIR)/work.linux-2.2/relay/dhcrelay $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY)
-	install -m 0755 $(DHCP_DIR)/work.linux-2.2/relay/dhcp-relay $(TARGET_DIR)/etc/init.d/dhcp-relay
-	install -m 0644 $(DHCP_DIR)/dhclient.conf $(TARGET_DIR)/etc/default/dhcp-relay
+	$(INSTALL) -m 0755 -D $(DHCP_DIR)/work.linux-2.2/relay/dhcrelay $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY)
+	$(INSTALL) -m 0755 -D package/dhcp/init-relay $(TARGET_DIR)/etc/init.d/dhcp-relay
+	$(INSTALL) -m 0644 -D package/dhcp/default-relay $(TARGET_DIR)/etc/default/dhcp-relay
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 $(TARGET_DIR)/$(DHCP_CLIENT_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	(cd $(TARGET_DIR)/var/lib; ln -sf /tmp dhcp)
-	install -m 0755 $(DHCP_DIR)/dhclient $(TARGET_DIR)/$(DHCP_CLIENT_TARGET_BINARY)
-	install -m 0644 $(DHCP_DIR)/dhclient.conf $(TARGET_DIR)/etc/dhcp/dhclient.conf
+	$(INSTALL) -m 0755 -D $(DHCP_DIR)/dhclient $(TARGET_DIR)/$(DHCP_CLIENT_TARGET_BINARY)
+	$(INSTALL) -m 0644 -D $(DHCP_DIR)/dhclient.conf $(TARGET_DIR)/etc/dhcp/dhclient.conf
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
