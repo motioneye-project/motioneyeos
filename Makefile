@@ -100,14 +100,12 @@ $(TOOL_BUILD_DIR):
 	mkdir $(TOOL_BUILD_DIR)
 
 $(STAGING_DIR):
-	rm -rf $(STAGING_DIR)
 	mkdir -p $(STAGING_DIR)/lib
 	mkdir -p $(STAGING_DIR)/include
 	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)
 	ln -sf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
-	rm -rf $(TARGET_DIR)
 	zcat target/default/skel.tar.gz | tar -C $(BUILD_DIR) -xf -
 	cp -a target/default/target_skeleton/* $(TARGET_DIR)/
 	-find $(TARGET_DIR) -type d -name CVS -exec rm -rf {} \; > /dev/null 2>&1
