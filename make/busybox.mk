@@ -8,12 +8,12 @@ ifeq ($(USE_BUSYBOX_SNAPSHOT),true)
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
 BUSYBOX_SOURCE=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
-UNZIP=bzcat
+BUSYBOX_UNZIP=bzcat
 else
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-0.60.2
-BUSYBOX_SOURCE:=busybox-0.60.2.tar.gz
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-0.60.3
+BUSYBOX_SOURCE:=busybox-0.60.3.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
-UNZIP=zcat
+BUSYBOX_UNZIP=bzcat
 endif
 BUSYBOX_PATCH:=$(SOURCE_DIR)/busybox.patch
 
@@ -24,7 +24,7 @@ $(DL_DIR)/$(BUSYBOX_SOURCE):
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCH)
 
 $(BUSYBOX_DIR)/Config.h: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_PATCH)
-	$(UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	cat $(BUSYBOX_PATCH) | patch -d $(BUSYBOX_DIR) -p1
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 	perl -i -p -e "s/^DOLFS.*/DOLFS=true/;" $(BUSYBOX_DIR)/Makefile

@@ -41,7 +41,7 @@ USE_UCLIBC_SNAPSHOT:=true
 # Enable this to use the busybox daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all....
-USE_BUSYBOX_SNAPSHOT:=true
+USE_BUSYBOX_SNAPSHOT:=false
 
 # Enable large file (files > 2 GB) support
 BUILD_WITH_LARGEFILE:=false
