@@ -5,12 +5,15 @@
 # TARGET_arm is not set
 # TARGET_cris is not set
 # TARGET_e1 is not set
+# TARGET_frv is not set
 # TARGET_h8300 is not set
 # TARGET_i386 is not set
 # TARGET_i960 is not set
 # TARGET_m68k is not set
 # TARGET_microblaze is not set
 # TARGET_mips is not set
+# TARGET_nios is not set
+# TARGET_nios2 is not set
 # TARGET_powerpc is not set
 # TARGET_sh is not set
 # TARGET_sparc is not set
@@ -38,6 +41,7 @@ HAVE_DOT_CONFIG=y
 DOPIC=y
 HAVE_SHARED=y
 BUILD_UCLIBC_LDSO=y
+# FORCE_SHAREABLE_TEXT_SEGMENTS is not set
 # UCLIBC_PIE_SUPPORT is not set
 LDSO_LDD_SUPPORT=y
 UCLIBC_CTOR_DTOR=y
@@ -47,6 +51,7 @@ UCLIBC_HAS_THREADS=y
 PTHREADS_DEBUG_SUPPORT=y
 UCLIBC_HAS_LFS=y
 # MALLOC is not set
+# MALLOC_SIMPLE is not set
 MALLOC_STANDARD=y
 MALLOC_GLIBC_COMPAT=y
 UCLIBC_DYNAMIC_ATEXIT=y
@@ -121,8 +126,8 @@ UCLIBC_HAS_GLOB=y
 # Library Installation Options
 #
 SHARED_LIB_LOADER_PREFIX="/lib"
-RUNTIME_PREFIX="/usr/$(TARGET_ARCH)-linux-uclibc"
-DEVEL_PREFIX="/usr/$(TARGET_ARCH)-linux-uclibc"
+RUNTIME_PREFIX="/"
+DEVEL_PREFIX="/usr/"
 
 #
 # uClibc development/debugging options
