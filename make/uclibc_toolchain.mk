@@ -59,12 +59,12 @@ UCLIBC_SOURCE:=uClibc-0.9.20.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
-#GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-#GCC_SOURCE:=gcc-3.3.tar.gz
-#GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
-GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/snapshots
-GCC_SOURCE:=gcc-3.3.1-20030720.tar.bz2
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1-20030720
+#GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/snapshots
+#GCC_SOURCE:=gcc-3.3.1-20030720.tar.bz2
+#GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1-20030720
+GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
+GCC_SOURCE:=gcc-3.3.tar.gz
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3
 GCC_CAT:=bzcat
 
 
