@@ -6,22 +6,30 @@ comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
-	default BR2_KERNEL_HEADERS_2_4
+	default BR2_KERNEL_HEADERS_2_4_27
 	help
 	  Select the version of kernel header files you wish to use.
 	  You must select the correct set of header files to match
 	  the kernel you intend to use on your target system.
 
-	config BR2_KERNEL_HEADERS_2_4
-		bool "Linux 2.4.x kernel headers"
+	config BR2_KERNEL_HEADERS_2_4_25
+		bool "Linux 2.4.25 kernel headers"
 
-	config BR2_KERNEL_HEADERS_2_6
-		bool "Linux 2.6.x kernel headers"
+	config BR2_KERNEL_HEADERS_2_4_27
+		bool "Linux 2.4.27 kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_8
+		bool "Linux 2.6.8 kernel headers (with mips fixes)"
+
+	config BR2_KERNEL_HEADERS_2_6_9
+		bool "Linux 2.6.9 kernel headers"
 
 endchoice
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "2.4.27"    if BR2_KERNEL_HEADERS_2_4
-	default "2.6.9"	    if BR2_KERNEL_HEADERS_2_6
+	default "2.4.25"    if BR2_KERNEL_HEADERS_2_4_25
+	default "2.4.27"    if BR2_KERNEL_HEADERS_2_4_27
+	default "2.6.8"	    if BR2_KERNEL_HEADERS_2_6_8
+	default "2.6.9"	    if BR2_KERNEL_HEADERS_2_6_9
 
