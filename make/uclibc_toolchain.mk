@@ -241,6 +241,8 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 	perl -i -p -e 's,^SYSTEM_DEVEL_PREFIX=.*,SYSTEM_DEVEL_PREFIX=\"$(STAGING_DIR)\",g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^DEVEL_TOOL_PREFIX=.*,DEVEL_TOOL_PREFIX=\"$(STAGING_DIR)/usr\",g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^SHARED_LIB_LOADER_PATH=.*,SHARED_LIB_LOADER_PATH=\"/lib\",g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^GCC_BIN=.*,GCC_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc,g'  $(UCLIBC_DIR)/extra/gcc-uClibc/Makefile
+	perl -i -p -e 's,^LD_BIN=.*,LD_BIN=$(STAGING_DIR)/bin/$(ARCH)-uclibc-ld,g'  $(UCLIBC_DIR)/extra/gcc-uClibc/Makefile     
 	$(MAKE) -C $(UCLIBC_DIR) oldconfig
 	# Note that since the target compiler does not yet exist, we will not
 	# be able to properly generate include/bits/syscall.h so we will need
