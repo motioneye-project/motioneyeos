@@ -3,10 +3,11 @@
 # fakeroot
 #
 #############################################################
-FAKEROOT_SOURCE:=fakeroot_1.1.2.tar.gz
+FAKEROOT_VERSION:=1.1.5
+FAKEROOT_SOURCE:=fakeroot_$(FAKEROOT_VERSION).tar.gz
 FAKEROOT_SITE:=http://ftp.debian.org/debian/pool/main/f/fakeroot
 FAKEROOT_CAT:=zcat
-FAKEROOT_DIR:=$(BUILD_DIR)/fakeroot-1.1.2
+FAKEROOT_DIR:=$(BUILD_DIR)/fakeroot-$(FAKEROOT_VERSION)
 
 
 $(DL_DIR)/$(FAKEROOT_SOURCE):
