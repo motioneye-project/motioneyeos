@@ -17,7 +17,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
-ifeq ($(GCC_2_95__TOOLCHAIN),false)
+ifeq ($(GCC_2_95_TOOLCHAIN),true)
 
 #############################################################
 #
@@ -58,9 +58,17 @@ UCLIBC_SOURCE:=uClibc-0.9.17.tar.bz2
 UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 
-GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.2.1.tar.gz
-GCC_DIR:=$(BUILD_DIR)/gcc-3.2.1
+GCC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc/toolchain
+GCC_SOURCE:=gcc-20011006.tar.bz2
+GCC_DIR:=$(BUILD_DIR)/gcc-20011006
+
+ELF2FLT_SITE:=http://www.kernel.org/pub/linux/libs/uclibc/toolchain
+ELF2FLT_SOURCE:=elf2flt-20020731.tar.bz2
+ELF2FLT_DIR:=$(BUILD_DIR)/elf2flt
+
+STLPORT_SITE=http://www.stlport.org/archive
+STLPORT_SOURCE=STLport-4.5.3.tar.gz
+STLPORT_DIR=$(BUILD_DIR)/STLport-4.5.3
 
 
 
@@ -89,12 +97,15 @@ $(BUILD_DIR)/.setup:
 # Setup some initial stuff
 #
 #############################################################
+ifeq ("$(TARGET_LANGUAGES)","c,c++")
+STLPORT_TARGET=stlport
+endif
+
 uclibc_toolchain: gcc_final
 
 uclibc_toolchain-clean: gcc_final-clean uclibc-clean gcc_initial-clean binutils-clean
 
 uclibc_toolchain-dirclean: gcc_final-dirclean uclibc-dirclean gcc_initial-dirclean binutils-dirclean
-
 
 
 #############################################################
@@ -179,12 +190,12 @@ $(DL_DIR)/$(GCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.unpacked: $(BUILD_DIR)/.setup $(DL_DIR)/$(GCC_SOURCE)
-	zcat $(DL_DIR)/$(GCC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	bzcat $(DL_DIR)/$(GCC_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $(GCC_DIR)/.unpacked
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-2.95-mega.patch.bz2
 	touch $(GCC_DIR)/.patched
 
 $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
@@ -216,6 +227,17 @@ $(GCC_DIR)/.gcc_build_hacks: $(GCC_DIR)/.patched
 	#
 	perl -i -p -e "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
+	#
+	# Use atexit() directly, rather than cxa_atexit
+	#
+	perl -i -p -e "s,int flag_use_cxa_atexit = 1;,int flag_use_cxa_atexit = 0;,g;"\
+		$(GCC_DIR)/gcc/cp/decl2.c;
+	#
+	# We do not wish to build the libstdc++ library provided with gcc,
+	# since it doesn't seem to work at all with uClibc plus gcc 2.95...
+	#
+	mv $(GCC_DIR)/libstdc++ $(GCC_DIR)/libstdc++.orig
+	mv $(GCC_DIR)/libio $(GCC_DIR)/libio.orig
 	touch $(GCC_DIR)/.gcc_build_hacks
 
 # The --without-headers option stopped working with gcc 3.0 and has never been
@@ -352,23 +374,23 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 	#
 	# Hack up the soname for libstdc++
 	# 
-	perl -i -p -e "s,\.so\.1,.so.0.9.9,g;" $(GCC_DIR)/gcc/config/t-slibgcc-elf-ver;
-	perl -i -p -e "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
-		$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
-	perl -i -p -e "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
-		$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
+	#perl -i -p -e "s,\.so\.1,.so.0.9.9,g;" $(GCC_DIR)/gcc/config/t-slibgcc-elf-ver;
+	#perl -i -p -e "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
+	#	$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
+	#perl -i -p -e "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
+	#	$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
 	#
 	# For now, we don't support locale-ified ctype (we will soon), 
 	# so bypass that problem for now...
 	#
-	perl -i -p -e "s,defined.*_GLIBCPP_USE_C99.*,1,g;" \
-		$(GCC_DIR)/libstdc++-v3/config/locale/generic/c_locale.cc;
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_base.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_inline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
-	cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_noninline.h \
-		$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
+	#perl -i -p -e "s,defined.*_GLIBCPP_USE_C99.*,1,g;" \
+	#	$(GCC_DIR)/libstdc++-v3/config/locale/generic/c_locale.cc;
+	#cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_base.h \
+	#	$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
+	#cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_inline.h \
+	#	$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
+	#cp $(GCC_DIR)/libstdc++-v3/config/os/generic/bits/ctype_noninline.h \
+	#	$(GCC_DIR)/libstdc++-v3/config/os/gnu-linux/bits/
 	touch $(GCC_DIR)/.g++_build_hacks
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
@@ -426,6 +448,48 @@ $(GCC_BUILD_DIR2)/.fixedup: $(GCC_BUILD_DIR2)/.installed
 		$(STAGING_DIR)/share/locale
 	touch $(GCC_BUILD_DIR2)/.fixedup
 
+
+#############################################################
+#
+# STLport -- an alternative C++ library
+#
+#############################################################
+STLPORT_PATCH=$(SOURCE_DIR)/STLport-4.5.3.patch
+$(DL_DIR)/$(STLPORT_SOURCE):
+	$(WGET) -P $(DL_DIR) $(STLPORT_SITE)/$(STLPORT_SOURCE)
+
+$(STLPORT_DIR)/Makefile: $(DL_DIR)/$(STLPORT_SOURCE) $(STLPORT_PATCH)
+	zcat $(DL_DIR)/$(STLPORT_SOURCE) | tar -C $(BUILD_DIR) -xvf - 
+	cat $(STLPORT_PATCH) | patch -d $(STLPORT_DIR) -p1
+
+$(STLPORT_DIR)/lib/libstdc++.a: $(STLPORT_DIR)/Makefile
+	$(MAKE) ARCH=$(ARCH) PREFIX=$(STAGING_DIR) -C $(STLPORT_DIR)
+
+$(STAGING_DIR)/lib/libstdc++.a: $(STLPORT_DIR)/lib/libstdc++.a
+	$(MAKE) ARCH=$(ARCH) PREFIX=$(STAGING_DIR) -C $(STLPORT_DIR) install
+ifneq ($(HAS_MMU),true)
+	rm -f $(STAGING_DIR)/lib/libstdc++*.so*
+endif
+
+stlport: $(STAGING_DIR)/lib/libstdc++.a
+
+stlport-clean:
+	rm -f $(STAGING_DIR)/lib/libstdc++*
+	rm -f $(STAGING_DIR)/include/c++*
+	-$(MAKE) -C $(STLPORT_DIR) clean
+
+stlport-dirclean:
+	rm -f $(STAGING_DIR)/lib/libstdc++*
+	rm -f $(STAGING_DIR)/include/g++-v3*
+	rm -rf $(STLPORT_DIR)
+
+
+
+#############################################################
+#
+# Final cleanups....
+#
+#############################################################
 $(BUILD_DIR)/.shuffled: $(GCC_BUILD_DIR2)/.fixedup
 	mkdir -p $(STAGING_DIR)/usr/bin;
 	(set -e; cd $(STAGING_DIR)/usr/bin; \
@@ -449,7 +513,7 @@ $(BUILD_DIR)/.stripped: $(BUILD_DIR)/.shuffled
 	-$(STRIP) --strip-unneeded -R .note -R .comment $(STAGING_DIR)/lib/*.so*;
 	touch $(BUILD_DIR)/.stripped
 
-gcc_final: uclibc $(BUILD_DIR)/.stripped
+gcc_final: uclibc $(GCC_BUILD_DIR2)/.fixedup $(BUILD_DIR)/.stripped $(STLPORT_TARGET)
 
 gcc_final-clean:
 	rm -rf $(GCC_BUILD_DIR2)
@@ -457,6 +521,7 @@ gcc_final-clean:
 
 gcc_final-dirclean:
 	rm -rf $(GCC_BUILD_DIR2)
+
 
 
 #############################################################

@@ -38,6 +38,11 @@ ARCH:=i386
 # enable to build a native gcc toolchain with uclibc support
 USE_UCLIBC_TOOLCHAIN:=true
 
+# If you are building a native gcc toolchain, do you want to
+# build the old gcc-2.95 based toolchain, or would you prefer
+# a nice and shiny new gcc-3.2.1 toolchain?
+GCC_2_95_TOOLCHAIN:=false
+
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all, depending on what Erik is doing...
