@@ -80,3 +80,9 @@ readline-dirclean:
 
 readline-source:  $(DL_DIR)/$(READLINE_SOURCE)   $(READLINE_DIR1)/.unpacked
 
+ifeq ($(strip $(BR2_READLINE)),y)
+TARGETS+=readline
+endif
+ifeq ($(strip $(BR2_PACKAGE_READLINE_TARGET)),y)
+TARGETS+=readline_target
+endif
