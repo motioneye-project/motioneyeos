@@ -6,6 +6,8 @@
 
 #Use GDB_DIR/etc values from gdb.mk
 #Build gdbserver in a dir outside of the main gdb tree
+GDB_WDIR:=$(BUILD_DIR)/gdbserver
+
 
 $(GDB_WDIR)/.configured: $(GDB_DIR)/.unpacked
 	mkdir -p $(GDB_WDIR)
