@@ -21,9 +21,9 @@ ifneq ($(GCC_2_95_TOOLCHAIN),true)
 
 # Shiny new stuff...
 GCC_VERSION:=3.3.3
-#GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/gcc-$(GCC_VERSION)
+GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(GCC_VERSION)
 #GCC_SITE:=http://www.binarycode.org/gcc/releases/gcc-$(GCC_VERSION)
-GCC_SITE:=http://gcc.get-software.com/releases/gcc-$(GCC_VERSION)
+#GCC_SITE:=http://gcc.get-software.com/releases/gcc-$(GCC_VERSION)
 
 #
 # snapshots....
