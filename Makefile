@@ -87,7 +87,7 @@ TARGETS:=
 # The toolchain comes next if we are building one
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 TARGETS+=binutils uclibc-configured gcc3_3
-#TARGETS+=binutils uclibc gcc_2_95
+#TARGETS+=binutils uclibc-configured gcc2_95
 else
 TARGETS+=uclibc
 endif

@@ -60,7 +60,7 @@ $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc2.95-mega.patch.bz2
 	touch $(GCC_DIR)/.patched
 
-$(GCC_DIR)/.gcc_2_95_build_hacks: $(GCC_DIR)/.patched
+$(GCC_DIR)/.gcc2_95_build_hacks: $(GCC_DIR)/.patched
 	#
 	# Hack things to use the correct shared lib loader
 	#
@@ -107,12 +107,12 @@ $(GCC_DIR)/.gcc_2_95_build_hacks: $(GCC_DIR)/.patched
 	#
 	mv $(GCC_DIR)/libstdc++ $(GCC_DIR)/libstdc++.orig
 	mv $(GCC_DIR)/libio $(GCC_DIR)/libio.orig
-	touch $(GCC_DIR)/.gcc_2_95_build_hacks
+	touch $(GCC_DIR)/.gcc2_95_build_hacks
 
 # The --without-headers option stopped working with gcc 3.0 and has never been
 # fixed, so we need to actually have working C library header files prior to
 # the step or libgcc will not build...
-$(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_2_95_build_hacks
+$(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc2_95_build_hacks
 	mkdir -p $(GCC_BUILD_DIR1)
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib CC=$(HOSTCC) \
@@ -153,13 +153,13 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc: $(GCC_BUILD_DIR1)/.compiled
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
 
-gcc_2_95_initial: binutils $(UCLIBC_DIR)/.configured $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
+gcc2_95_initial: binutils $(UCLIBC_DIR)/.configured $(STAGING_DIR)/bin/$(ARCH)-uclibc-gcc
 
-gcc_2_95_initial-clean:
+gcc2_95_initial-clean:
 	rm -rf $(GCC_BUILD_DIR1)
 	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)*
 
-gcc_2_95_initial-dirclean:
+gcc2_95_initial-dirclean:
 	rm -rf $(GCC_BUILD_DIR1)
 
 
@@ -277,14 +277,14 @@ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++: $(GCC_BUILD_DIR2)/.compiled
 		fi; \
 	done;
 
-gcc_2_95: binutils uclibc-configured gcc_2_95_initial uclibc \
+gcc2_95: binutils uclibc-configured gcc2_95_initial uclibc \
 	$(STAGING_DIR)/bin/$(ARCH)-uclibc-g++ $(STLPORT_TARGET)
 
-gcc_2_95-clean:
+gcc2_95-clean:
 	rm -rf $(GCC_BUILD_DIR2)
 	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)*
 
-gcc_2_95-dirclean:
+gcc2_95-dirclean:
 	rm -rf $(GCC_BUILD_DIR2)
 
 endif
