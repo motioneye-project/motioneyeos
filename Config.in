@@ -62,6 +62,9 @@ config BR2_WGET
 	string
 	default "wget --passive-ftp"
 
+config BR2_TAR_VERBOSITY
+	string
+	default "no"
 
 source "toolchain/Config.in"
 

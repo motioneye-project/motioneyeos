@@ -35,6 +35,12 @@ ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(TOPDIR).config
 endif
 
+ifeq ($(strip $(BR2_TAR_VERBOSITY)),"yes")
+TAR_VERBOSITY=v
+else
+TAR_VERBOSITY=
+endif
+
 ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 
 #############################################################
