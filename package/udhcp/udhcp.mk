@@ -3,7 +3,7 @@
 # uchdp DHCP client and/or server
 #
 #############################################################
-# Copyright (C) 2001-2003 by Erik Andersen <andersen@codepoet.org>
+# Copyright (C) 2001-2005 by Erik Andersen <andersen@codepoet.org>
 # Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
 #
 # This program is free software; you can redistribute it and/or modify
