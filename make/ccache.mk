@@ -3,10 +3,11 @@
 # build ccache to make recompiles faster on the build system
 #
 #############################################################
+CCACHE_VER:=2.3
 CCACHE_SITE:=http://ccache.samba.org/ftp/ccache
-CCACHE_SOURCE:=ccache-2.3.tar.gz
-CCACHE_DIR1:=$(TOOL_BUILD_DIR)/ccache-2.3
-CCACHE_DIR2:=$(BUILD_DIR)/ccache-2.3
+CCACHE_SOURCE:=ccache-$(CCACHE_VER).tar.gz
+CCACHE_DIR1:=$(TOOL_BUILD_DIR)/ccache-$(CCACHE_VER)
+CCACHE_DIR2:=$(BUILD_DIR)/ccache-$(CCACHE_VER)
 CCACHE_CAT:=zcat
 CCACHE_BINARY:=ccache
 CCACHE_TARGET_BINARY:=usr/bin/ccache
