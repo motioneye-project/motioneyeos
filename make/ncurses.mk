@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.14 2003/01/09 20:28:10 andersen Exp $
+# $Id: ncurses.mk,v 1.15 2003/01/16 22:04:22 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -63,7 +63,7 @@ $(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC1) HOSTCC=$(HOSTCC) \
 		DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR)
 
-$(STAGING_DIR)/lib/libncurses.so: $(NCURSES_DIR)/lib/libncurses.so
+$(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so
 	PATH=$(STAGING_DIR)/bin:$$PATH BUILD_CC=$(HOSTCC) \
 	    HOSTCC=$(HOSTCC) CC=$(TARGET_CC1) $(MAKE) \
 	    prefix=$(STAGING_DIR) \
@@ -79,25 +79,16 @@ $(STAGING_DIR)/lib/libncurses.so: $(NCURSES_DIR)/lib/libncurses.so
 	    mandir=$(STAGING_DIR)/man \
 	    includedir=$(STAGING_DIR)/include \
 	    gxx_include_dir=$(STAGING_DIR)/include/c++ \
+	    ticdir=$(STAGING_DIR)/usr/share/terminfo \
 	    -C $(NCURSES_DIR) install;
-	#cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(STAGING_DIR)/lib/
-	#cp -dpf $(NCURSES_DIR)/include/curses.h $(STAGING_DIR)/include/
-	#cp -dpf $(NCURSES_DIR)/include/eti.h $(STAGING_DIR)/include/
-	#cp -dpf $(NCURSES_DIR)/include/form.h $(STAGING_DIR)/include/
-	#cp -dpf $(NCURSES_DIR)/include/menu.h $(STAGING_DIR)/include/
-	#cp -dpf $(NCURSES_DIR)/include/panel.h $(STAGING_DIR)/include/
-	#cp -dpf $(NCURSES_DIR)/include/term.h $(STAGING_DIR)/include/
-	#cp -dpf $(NCURSES_DIR)/include/termcap.h $(STAGING_DIR)/include/
-	#cp -dpf $(NCURSES_DIR)/include/unctrl.h $(STAGING_DIR)/include/
-	#(cd $(STAGING_DIR)/include; ln -fs curses.h ncurses.h)
+	    touch -c $(STAGING_DIR)/lib/libncurses.a 
 
-$(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
-	cp -dpf $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
+$(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.a
+	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
 	-cp -dpf $(STAGING_DIR)/usr/lib/terminfo $(TARGET_DIR)/usr/lib/
+	mkdir -p $(TARGET_DIR)/usr/share/terminfo
 	for i in x/xterm x/xterm-color x/xterm-xfree86 v/vt100 v/vt200 a/ansi l/linux; do \
-		cd $(STAGING_DIR)/usr/share/; \
-		tar -cf - terminfo/$${i} | \
-			tar -C $(TARGET_DIR)/usr/share/ -xf - ; \
+		cp -dpf $(STAGING_DIR)/usr/share/terminfo/$${i} $(TARGET_DIR)/usr/share/terminfo/; \
 	done
 
 $(TARGET_DIR)/usr/include/ncurses.h: $(TARGET_DIR)/lib/libncurses.so
