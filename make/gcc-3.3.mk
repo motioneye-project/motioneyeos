@@ -405,10 +405,6 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
 	);
 	touch $(GCC_BUILD_DIR3)/.configured
-#Fixme -- for locale handling?
-#ifeq ($(ENABLE_LOCALE),true)
-#		--enable-clocale=gnu \
-#endif
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	$(MAKE) $(JLEVEL) $(TARGET_GCC_ARGS) -C $(GCC_BUILD_DIR3)
