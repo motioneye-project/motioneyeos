@@ -47,7 +47,7 @@ $(TARGET_DIR)/$(FILE_TARGET_BINARY): $(FILE_DIR)/$(FILE_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-file: uclibc $(TARGET_DIR)/$(FILE_TARGET_BINARY)
+file: zlib uclibc $(TARGET_DIR)/$(FILE_TARGET_BINARY)
 
 file-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FILE_DIR) uninstall
