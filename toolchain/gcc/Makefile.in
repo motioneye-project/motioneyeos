@@ -24,4 +24,3 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
 TARGETS+=gcc_target
 endif
-
