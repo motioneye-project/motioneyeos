@@ -86,8 +86,11 @@ INSTALL_LIBSTDCPP=true
 TARGETS:=
 # The toolchain comes next if we are building one
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
+ifeq ($(GCC_2_95_TOOLCHAIN),true)
+TARGETS+=binutils uclibc-configured gcc2_95
+else
 TARGETS+=binutils uclibc-configured gcc3_3
-#TARGETS+=binutils uclibc-configured gcc2_95
+endif
 else
 TARGETS+=uclibc
 endif
@@ -113,7 +116,12 @@ TARGETS+=busybox tinylogin
 
 # Everything needed to build a full uClibc development system!
 #TARGETS+=coreutils findutils bash make diffutils patch sed
-#TARGETS+=ed flex bison file gawk tar grep gcc_target
+#TARGETS+=ed flex bison file gawk tar grep
+
+#If you want a development system, you probably want gcc built
+# with uClibc so it can run within your dev system...
+#TARGETS+=gcc2_95_target
+TARGETS+=gcc3_3_target
 
 # Of course, if you are installing a development system, you
 # may want some header files so you can compile stuff....

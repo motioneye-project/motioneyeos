@@ -298,8 +298,8 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 	(cd $(GCC_BUILD_DIR3); ln -fs $(ARCH)-linux build-$(GNU_TARGET_NAME))
 	(cd $(GCC_BUILD_DIR3); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
-		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
+		CC_FOR_BUILD=$(HOSTCC) \
+		CXX_FOR_BUILD=$(HOSTCC) \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -326,6 +326,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 		--disable-shared $(MULTILIB) \
 		--enable-target-optspace $(DISABLE_NLS) \
 		--with-gnu-ld --disable-__cxa_atexit \
+		--enable-clocale=gnu \
 		--enable-languages=$(TARGET_LANGUAGES) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
 		--program-prefix="" \

@@ -111,7 +111,15 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 		ln -fs /lib/libnsl.so.0 libnsl.so; \
 	)
 
-uclibc_target: gcc_final uclibc $(TARGET_DIR)/usr/lib/libc.a
+ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
+ifeq ($(GCC_2_95_TOOLCHAIN),true)
+uclibc_target: gcc2_95 uclibc $(TARGET_DIR)/usr/lib/libc.a
+else
+uclibc_target: gcc3_3 uclibc $(TARGET_DIR)/usr/lib/libc.a
+endif
+else
+uclibc_target: uclibc $(TARGET_DIR)/usr/lib/libc.a
+endif
 
 uclibc_target-clean:
 	rm -f $(TARGET_DIR)/include
