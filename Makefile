@@ -66,7 +66,9 @@ BUILD_WITH_LARGEFILE:=true
 WGET:=wget --passive-ftp
 
 # Optimize toolchain for which type of CPU?
+# WARNING!!!  CURRENTLY BROKEN!!! LEAVE IT AS $(ARCH)!!!
 OPTIMIZE_FOR_CPU=$(ARCH)
+# WARNING!!!  CURRENTLY BROKEN!!! LEAVE IT AS $(ARCH)!!!
 #OPTIMIZE_FOR_CPU=i486
 #OPTIMIZE_FOR_CPU=strongarm
 #OPTIMIZE_FOR_CPU=whatever
