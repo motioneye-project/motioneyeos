@@ -4,10 +4,9 @@
 #
 #############################################################
 
-OPENSSH_SITE:=ftp://mirror.cs.wisc.edu/pub/mirrors/OpenBSD/OpenSSH/portable/
-OPENSSH_DIR:=$(BUILD_DIR)/openssh-3.4p1
-OPENSSH_SOURCE:=openssh-3.4p1.tar.gz
-OPENSSH_PATCH:=$(SOURCE_DIR)/openssh_3.4p1-4.diff.gz
+OPENSSH_SITE:=ftp://ftp.tux.org/bsd/openbsd/OpenSSH/portable/
+OPENSSH_DIR:=$(BUILD_DIR)/openssh-3.5p1
+OPENSSH_SOURCE:=openssh-3.5p1.tar.gz
 
 $(DL_DIR)/$(OPENSSH_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSH_SITE)/$(OPENSSH_SOURCE)
@@ -16,11 +15,7 @@ $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 	zcat $(DL_DIR)/$(OPENSSH_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch  $(OPENSSH_DIR)/.unpacked
 
-$(OPENSSH_DIR)/.patched: $(OPENSSH_DIR)/.unpacked
-	zcat $(OPENSSH_PATCH) | patch -d $(OPENSSH_DIR) -p1
-	touch $(OPENSSH_DIR)/.patched
-
-$(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.patched
+$(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 	(cd $(OPENSSH_DIR); rm -rf config.cache; \
 		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
 		./configure \
