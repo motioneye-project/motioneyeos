@@ -22,7 +22,7 @@ $(SOURCE_DIR)/$(BUSYBOX_SOURCE):
 
 $(BUSYBOX_DIR)/.unpacked:	$(SOURCE_DIR)/$(BUSYBOX_SOURCE)
 	rm -rf $(BUSYBOX_DIR) # Make sure no older version interferes
-	tar -xzf $(SOURCE_DIR)/$(BUSYBOX_SOURCE)
+	gzip -d -c $(SOURCE_DIR)/$(BUSYBOX_SOURCE) | tar -xvf -
 	touch $(BUSYBOX_DIR)/.unpacked
 	
 $(BUSYBOX_WORKDIR)/.config:	$(BUSYBOX_DIR)/.unpacked

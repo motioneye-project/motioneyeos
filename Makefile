@@ -100,7 +100,7 @@ $(SOURCE_DIR)/$(LINUX_SOURCE):
 
 $(LINUX_DIR)/.unpacked:	$(SOURCE_DIR)/$(LINUX_SOURCE)
 	rm -rf $(LINUX_DIR) # Keeps old versions from messing things up
-	bunzip2 -c $(SOURCE_DIR)/$(LINUX_SOURCE) | tar -xv
+	bzip2 -dc $(SOURCE_DIR)/$(LINUX_SOURCE) | tar -xvf -
 	touch $(LINUX_DIR)/.unpacked
 
 $(SOURCE_DIR)/$(USERMODELINUX_PATCH):
@@ -148,7 +148,7 @@ $(SOURCE_DIR)/$(UCLIBC_SOURCE):
 
 $(UCLIBC_DIR)/Config:	$(SOURCE_DIR)/$(UCLIBC_SOURCE)
 	rm -rf $(UCLIBC_DIR) # Make sure no previous version interferes here
-	gzip -d -c $(SOURCE_DIR)/$(UCLIBC_SOURCE) | tar xf -
+	gzip -d -c $(SOURCE_DIR)/$(UCLIBC_SOURCE) | tar -xvf -
 	# The next step patches uClibc
 	# Place patches in the source directory, named uClibc-*.patch
 	for p in `find $(SOURCE_DIR) -name uClibc-*.patch | sort -g`;do \

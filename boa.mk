@@ -22,7 +22,7 @@ $(SOURCE_DIR)/$(BOA_SOURCE):
 	done
 
 $(BOA_DIR)/.unpacked:	$(SOURCE_DIR)/$(BOA_SOURCE)
-	tar -xzf $(SOURCE_DIR)/$(BOA_SOURCE)
+	gzip -d -c $(SOURCE_DIR)/$(BOA_SOURCE) | tar -xvf -
 	touch $(BOA_DIR)/.unpacked
 
 $(BOA_WORKDIR)/Makefile: $(TARGET_CC) $(BOA_DIR)/.unpacked
