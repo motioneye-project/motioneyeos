@@ -239,7 +239,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
 		--oldincludedir=$(STAGING_DIR)/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--disable-shared --enable-languages=c --disable-__cxa_atexit \
+		--enable-shared --enable-languages=c --disable-__cxa_atexit \
 		$(EXTRA_GCC_CONFIG_OPTIONS) --program-prefix=$(ARCH)-uclibc-);
 	touch $(GCC_BUILD_DIR1)/.configured
 
@@ -421,7 +421,6 @@ $(GCC_BUILD_DIR2)/.fixedup: $(GCC_BUILD_DIR2)/.installed
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-g++ $(STAGING_DIR)/bin/$(ARCH)-uclibc-g++
 	-mv $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-c++filt $(STAGING_DIR)/bin/$(ARCH)-uclibc-c++filt
 	rm -f $(STAGING_DIR)/bin/cpp $(STAGING_DIR)/bin/gcov $(STAGING_DIR)/bin/*gccbug
-	rm -f $(STAGING_DIR)/lib/libgcc_s.so*
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
 	touch $(GCC_BUILD_DIR2)/.fixedup
@@ -443,9 +442,8 @@ $(BUILD_DIR)/.shuffled: $(GCC_BUILD_DIR2)/.fixedup
 	touch $(BUILD_DIR)/.shuffled
 
 $(BUILD_DIR)/.stripped: $(BUILD_DIR)/.shuffled
-	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
-	-$(STAGING_DIR)/bin/$(ARCH)-uclibc-strip --strip-unneeded \
-		-R .note -R .comment $(STAGING_DIR)/lib/*.so*;
+	-$(STRIP) --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
+	-$(STRIP) --strip-unneeded -R .note -R .comment $(STAGING_DIR)/lib/*.so*;
 	touch $(BUILD_DIR)/.stripped
 
 gcc_final: uclibc $(BUILD_DIR)/.stripped
