@@ -131,7 +131,6 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/lib/libc.a
 		ln -fs /lib/libm.so.0 libm.so; \
 		ln -fs /lib/libpthread.so.0 libpthread.so; \
 	)
-	rm -rf $(TARGET_DIR)/include
 
 uclibc_target: gcc_final $(TARGET_DIR)/usr/lib/libc.a
 
@@ -160,9 +159,9 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks:
 	# Make certain the uClibc include files are found
 	#
 	perl -i -p -e "s,^NATIVE_SYSTEM_HEADER_DIR.*,NATIVE_SYSTEM_HEADER_DIR=\
-		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^CROSS_SYSTEM_HEADER_DIR.*,CROSS_SYSTEM_HEADER_DIR=\
-		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
+		$(STAGING_DIR)/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
 	mkdir -p $(GCC_BUILD_DIR3)
