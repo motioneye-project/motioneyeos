@@ -56,7 +56,7 @@ endif
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_DIR)/.patched: $(LINUX_DIR)/.unpacked
-	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR) linux-libc-headers-$(LINUX_VERSION)-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(LINUX_DIR) $(SOURCE_DIR) linux-libc-headers-$(LINUX_VERSION)-\*.patch
 	touch $(LINUX_DIR)/.patched
 
 $(LINUX_DIR)/.configured: $(LINUX_DIR)/.patched

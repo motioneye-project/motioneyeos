@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.34 2004/09/03 00:49:33 mjn3 Exp $
+# $Id: ncurses.mk,v 1.35 2004/09/09 10:50:57 mjn3 Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -35,7 +35,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 	#use the local tic and not whatever the build system was going to find.
 	$(SED) 's~\$$srcdir/shlib tic\$$suffix~/usr/bin/tic~' \
 		$(NCURSES_DIR)/misc/run_tic.in
-	$(SOURCE_DIR)/patch-kernel.sh $(NCURSES_DIR) $(SOURCE_DIR) ncurses-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(NCURSES_DIR) $(SOURCE_DIR) ncurses-\*.patch
 	touch  $(NCURSES_DIR)/.dist
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist

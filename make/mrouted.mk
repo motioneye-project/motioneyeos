@@ -24,7 +24,7 @@ mrouted-source: $(DL_DIR)/$(MROUTED_SOURCE) $(DL_DIR)/$(MROUTED_PATCH)
 $(MROUTED_DIR)/.unpacked: mrouted-source
 	$(MROUTED_CAT) $(DL_DIR)/$(MROUTED_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	$(MROUTED_CAT) $(DL_DIR)/$(MROUTED_PATCH) | patch -p1 -d $(MROUTED_DIR)
-	$(SOURCE_DIR)/patch-kernel.sh $(MROUTED_DIR) $(SOURCE_DIR) mrouted-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(MROUTED_DIR) $(SOURCE_DIR) mrouted-\*.patch
 	touch $(MROUTED_DIR)/.unpacked
 
 $(MROUTED_DIR)/$(MROUTED_BINARY): $(MROUTED_DIR)/.unpacked

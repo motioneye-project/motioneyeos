@@ -25,7 +25,7 @@ busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 $(BUSYBOX_DIR)/.configured: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	# Allow busybox patches.
-	$(SOURCE_DIR)/patch-kernel.sh $(BUSYBOX_DIR) $(SOURCE_DIR) busybox-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(BUSYBOX_DIR) $(SOURCE_DIR) busybox-\*.patch
 	cp $(BUSYBOX_CONFIG) $(BUSYBOX_DIR)/.config
 	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
 		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak

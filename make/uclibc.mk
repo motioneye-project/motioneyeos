@@ -18,7 +18,7 @@ UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
 
 UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
-                -e 's/i.86/i386/' \
+		-e 's/i.86/i386/' \
 		-e 's/sparc.*/sparc/' \
 		-e 's/arm.*/arm/g' \
 		-e 's/m68k.*/m68k/' \

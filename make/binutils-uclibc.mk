@@ -33,7 +33,7 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply appropriate binutils patches.
-	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR)/binutils/$(BINUTILS_VERSION) *.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR)/binutils/$(BINUTILS_VERSION) \*.patch
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
