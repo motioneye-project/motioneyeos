@@ -24,7 +24,7 @@ $(PROCPS_DIR)/$(PROCPS_BINARY): $(PROCPS_DIR)/.source
 
 $(TARGET_DIR)/$(PROCPS_TARGET_BINARY): $(PROCPS_DIR)/$(PROCPS_BINARY)
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) DESTDIR=$(TARGET_DIR) \
-		install='install -D' -C $(PROCPS_DIR) \
+		install='install -D' -C $(PROCPS_DIR) lib64=/lib \
 		ldconfig='/bin/true' install
 	rm -Rf $(TARGET_DIR)/usr/man
 
@@ -33,8 +33,13 @@ procps: uclibc ncurses $(TARGET_DIR)/$(PROCPS_TARGET_BINARY)
 procps-source: $(DL_DIR)/$(PROCPS_SOURCE)
 
 procps-clean:
-	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(PROCPS_DIR) uninstall
-	-$(MAKE) -C $(PROCPS_DIR) clean
+	for bin in uptime tload free w \
+	           top vmstat watch skill \
+	           snice kill sysctl pmap \
+	           pgrep pkill slabtop ; do \
+		rm -f $(TARGET_DIR)/usr/bin/$${bin} ; \
+	done
+	rm -f $(TARGET_DIR)/lib/libproc*
 
 procps-dirclean:
 	rm -rf $(PROCPS_DIR)
