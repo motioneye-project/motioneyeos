@@ -208,7 +208,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		--libdir=/usr/lib \
 		--includedir=$(TARGET_DIR)/usr/include \
 		--with-gxx-include-dir=$(TARGET_DIR)/usr/include/c++ \
-		--enable-shared $(MULTILIB) \
+		--disable-shared $(MULTILIB) \
 		--enable-target-optspace --disable-nls \
 		--with-gnu-ld --disable-__cxa_atexit \
 		--enable-languages=$(TARGET_LANGUAGES) \
