@@ -27,14 +27,12 @@ DOWNLOAD_LINUX_VERSION=2.4.23
 LINUX_VERSION=2.4.23-erik
 
 LINUX_FORMAT=bzImage
+#LINUX_FORMAT=images/zImage.prep
 LINUX_KARCH:= echo $(ARCH) | sed -e 's/i[3-9]86/i386/' \
 	sed -e 's/mipsel/mips/' \
 	sed -e 's/powerpc/ppc/' \
 	sed -e 's/sh[234]/sh/'
 LINUX_BINLOC=arch/$(LINUX_KARCH)/boot/$(LINUX_FORMAT)
-LINUX_BINLOC=arch/$(ARCH)/boot/$(LINUX_FORMAT)
-#LINUX_FORMAT=zImage
-#LINUX_BINLOC=arch/ppc/boot/images/zImage.prep
 
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
