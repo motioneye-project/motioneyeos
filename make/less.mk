@@ -6,6 +6,8 @@
 LESS_SOURCE=less-381.tar.gz
 LESS_SITE=http://www.greenwoodsoftware.com/less
 LESS_DIR=$(BUILD_DIR)/less-381
+LESS_BINARY=less
+LESS_TARGET_BINARY=usr/bin/less
 
 $(DL_DIR)/$(LESS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LESS_SITE)/$(LESS_SOURCE)
