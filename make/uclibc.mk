@@ -67,7 +67,6 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 
 $(TARGET_DIR)/usr/bin/ldd: $(TARGET_DIR)/lib/libc.so.0
 	$(MAKE) -C $(UCLIBC_DIR) PREFIX=$(TARGET_DIR) install_target_utils
-	(cd $(TARGET_DIR)/sbin; ln -sf /bin/true ldconfig) 
 
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0 $(TARGET_DIR)/usr/bin/ldd
 endif
