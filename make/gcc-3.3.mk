@@ -84,6 +84,14 @@ $(GCC_DIR)/.gcc3_3_build_hacks: $(GCC_DIR)/.patched
 		$(SED) "s,-dynamic-linker.*\.so[\.0-9]*},\
 		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
 	#
+	# Prevent gcc from using the unwind-dw2-fde-glibc code used for
+	# unwinding stack frames for C++ exception handling.  The
+	# unwind-dw2-fde-glibc code depends on glibc's ldso, we ant to use
+	# the generic version instead.
+	#
+	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
+		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
+	#
 	# Prevent system glibc start files from leaking in uninvited...
 	#
 	$(SED) "s,standard_startfile_prefix_1 = \".*,standard_startfile_prefix_1 =\
@@ -106,11 +114,6 @@ $(GCC_DIR)/.gcc3_3_build_hacks: $(GCC_DIR)/.patched
 	#
 	$(SED) "s,\"/lib,\"$(STAGING_DIR)/lib,g;" $(GCC_DIR)/gcc/collect2.c
 	$(SED) "s,\"/usr/,\"$(STAGING_DIR)/usr/,g;" $(GCC_DIR)/gcc/collect2.c
-	#
-	# Prevent gcc from using the unwind-dw2-fde-glibc code
-	#
-	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
-		#ifndef inhibit_libc,g;" $(GCC_DIR)/gcc/unwind-dw2-fde-glibc.c;
 	touch $(GCC_DIR)/.gcc3_3_build_hacks
 
 # The --without-headers option stopped working with gcc 3.0 and has never been
@@ -197,18 +200,7 @@ gcc3_3_initial-dirclean:
 #
 #############################################################
 GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-3.3-final
-$(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
-	#
-	# Hack up the soname for libstdc++
-	# 
-	$(SED) "s,\.so\.1,.so.0.9.9,g;" $(GCC_DIR)/gcc/config/t-slibgcc-elf-ver;
-	$(SED) "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
-		$(GCC_DIR)/libstdc++-v3/src/Makefile.am $(GCC_DIR)/libstdc++-v3/src/Makefile.in;
-	$(SED) "s,3\.0\.0,9.9.0,g;" $(GCC_DIR)/libstdc++-v3/acinclude.m4 \
-		$(GCC_DIR)/libstdc++-v3/aclocal.m4 $(GCC_DIR)/libstdc++-v3/configure;
-	touch $(GCC_DIR)/.g++_build_hacks
-
-$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
+$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched
 	mkdir -p $(GCC_BUILD_DIR2)
 	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR2)/gcc/xgcc -B$(GCC_BUILD_DIR2)/gcc/ -B$(STAGING_DIR)/$(ARCH)-linux/bin/ -B$(STAGING_DIR)/$(ARCH)-linux/lib/ -isystem $(STAGING_DIR)/$(ARCH)-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR2)/target_g++
 	chmod a+x $(GCC_BUILD_DIR2)/target_g++
@@ -383,20 +375,13 @@ $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks: $(GCC_BUILD_DIR3)/.patched
 		$(SED) "s,-dynamic-linker.*\.so[\.0-9]*},\
 		    -dynamic-linker /lib/ld-uClibc.so.0},;" $$LIST; fi);
 	#
-	# Prevent gcc from using the unwind-dw2-fde-glibc code
+	# Prevent gcc from using the unwind-dw2-fde-glibc code used for
+	# unwinding stack frames for C++ exception handling.  The
+	# unwind-dw2-fde-glibc code depends on glibc's ldso, we ant to use
+	# the generic version instead.
 	#
 	$(SED) "s,^#ifndef inhibit_libc,#define inhibit_libc\n\
 		#ifndef inhibit_libc,g;" $(GCC_BUILD_DIR3)/gcc/unwind-dw2-fde-glibc.c;
-	#
-	# Hack up the soname for libstdc++
-	# 
-	$(SED) "s,\.so\.1,.so.0.9.9,g;" $(GCC_BUILD_DIR3)/gcc/config/t-slibgcc-elf-ver;
-	$(SED) "s,-version-info.*[0-9]:[0-9]:[0-9],-version-info 9:9:0,g;" \
-		$(GCC_BUILD_DIR3)/libstdc++-v3/src/Makefile.am \
-		$(GCC_BUILD_DIR3)/libstdc++-v3/src/Makefile.in;
-	$(SED) "s,3\.0\.0,9.9.0,g;" $(GCC_BUILD_DIR3)/libstdc++-v3/acinclude.m4 \
-		$(GCC_BUILD_DIR3)/libstdc++-v3/aclocal.m4 \
-		$(GCC_BUILD_DIR3)/libstdc++-v3/configure;
 	touch $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc3_3_build_hacks
