@@ -1,6 +1,40 @@
-diff -urN openssh-3.5p1.orig/configure.ac openssh-3.5p1/configure.ac
---- openssh-3.5p1.orig/configure.ac	2002-09-25 18:38:47.000000000 -0600
-+++ openssh-3.5p1/configure.ac	2003-03-04 04:54:47.000000000 -0700
+diff -uNr openssh-3.5p1.orig/Makefile.in openssh-3.5p1/Makefile.in
+--- openssh-3.5p1.orig/Makefile.in	Sun Jul 14 19:02:21 2002
++++ openssh-3.5p1/Makefile.in	Mon Mar 17 14:54:20 2003
+@@ -217,19 +217,19 @@
+ 	$(srcdir)/mkinstalldirs $(DESTDIR)$(mandir)/$(mansubdir)8
+ 	$(srcdir)/mkinstalldirs $(DESTDIR)$(libexecdir)
+ 	(umask 022 ; $(srcdir)/mkinstalldirs $(DESTDIR)$(PRIVSEP_PATH))
+-	$(INSTALL) -m 0755 -s ssh $(DESTDIR)$(bindir)/ssh
+-	$(INSTALL) -m 0755 -s scp $(DESTDIR)$(bindir)/scp
+-	$(INSTALL) -m 0755 -s ssh-add $(DESTDIR)$(bindir)/ssh-add
+-	$(INSTALL) -m 0755 -s ssh-agent $(DESTDIR)$(bindir)/ssh-agent
+-	$(INSTALL) -m 0755 -s ssh-keygen $(DESTDIR)$(bindir)/ssh-keygen
+-	$(INSTALL) -m 0755 -s ssh-keyscan $(DESTDIR)$(bindir)/ssh-keyscan
+-	$(INSTALL) -m 0755 -s sshd $(DESTDIR)$(sbindir)/sshd
++	$(INSTALL) -m 0755 ssh $(DESTDIR)$(bindir)/ssh
++	$(INSTALL) -m 0755 scp $(DESTDIR)$(bindir)/scp
++	$(INSTALL) -m 0755 ssh-add $(DESTDIR)$(bindir)/ssh-add
++	$(INSTALL) -m 0755 ssh-agent $(DESTDIR)$(bindir)/ssh-agent
++	$(INSTALL) -m 0755 ssh-keygen $(DESTDIR)$(bindir)/ssh-keygen
++	$(INSTALL) -m 0755 ssh-keyscan $(DESTDIR)$(bindir)/ssh-keyscan
++	$(INSTALL) -m 0755 sshd $(DESTDIR)$(sbindir)/sshd
+ 	if test ! -z "$(INSTALL_SSH_RAND_HELPER)" ; then \
+-		$(INSTALL) -m 0755 -s ssh-rand-helper $(DESTDIR)$(libexecdir)/ssh-rand-helper ; \
++		$(INSTALL) -m 0755 ssh-rand-helper $(DESTDIR)$(libexecdir)/ssh-rand-helper ; \
+ 	fi
+-	$(INSTALL) -m 4711 -s ssh-keysign $(DESTDIR)$(SSH_KEYSIGN)
+-	@NO_SFTP@$(INSTALL) -m 0755 -s sftp $(DESTDIR)$(bindir)/sftp
+-	@NO_SFTP@$(INSTALL) -m 0755 -s sftp-server $(DESTDIR)$(SFTP_SERVER)
++	$(INSTALL) -m 4711 ssh-keysign $(DESTDIR)$(SSH_KEYSIGN)
++	@NO_SFTP@$(INSTALL) -m 0755 sftp $(DESTDIR)$(bindir)/sftp
++	@NO_SFTP@$(INSTALL) -m 0755 sftp-server $(DESTDIR)$(SFTP_SERVER)
+ 	$(INSTALL) -m 644 ssh.1.out $(DESTDIR)$(mandir)/$(mansubdir)1/ssh.1
+ 	$(INSTALL) -m 644 scp.1.out $(DESTDIR)$(mandir)/$(mansubdir)1/scp.1
+ 	$(INSTALL) -m 644 ssh-add.1.out $(DESTDIR)$(mandir)/$(mansubdir)1/ssh-add.1
+diff -uNr openssh-3.5p1.orig/configure.ac openssh-3.5p1/configure.ac
+--- openssh-3.5p1.orig/configure.ac	Thu Sep 26 02:38:47 2002
++++ openssh-3.5p1/configure.ac	Mon Mar 17 14:55:00 2003
 @@ -504,6 +504,9 @@
  	[
  		AC_MSG_RESULT(no)
@@ -120,9 +154,9 @@ diff -urN openssh-3.5p1.orig/configure.ac openssh-3.5p1/configure.ac
  # Options from here on. Some of these are preset by platform above
  AC_ARG_WITH(mantype,
  	[  --with-mantype=man|cat|doc  Set man page type],
-diff -urN openssh-3.5p1.orig/sshd_config openssh-3.5p1/sshd_config
---- openssh-3.5p1.orig/sshd_config	2002-09-26 21:21:58.000000000 -0600
-+++ openssh-3.5p1/sshd_config	2003-03-04 04:42:03.000000000 -0700
+diff -uNr openssh-3.5p1.orig/sshd_config openssh-3.5p1/sshd_config
+--- openssh-3.5p1.orig/sshd_config	Fri Sep 27 05:21:58 2002
++++ openssh-3.5p1/sshd_config	Mon Mar 17 14:55:00 2003
 @@ -89,5 +89,8 @@
  #Banner /some/path
  #VerifyReverseMapping no
