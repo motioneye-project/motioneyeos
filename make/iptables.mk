@@ -4,8 +4,8 @@
 #
 #############################################################
 IPTABLES_SOURCE_URL=ftp://ftp.netfilter.org/pub/iptables
-IPTABLES_SOURCE=iptables-1.2.7a.tar.bz2
-IPTABLES_BUILD_DIR=$(BUILD_DIR)/iptables-1.2.7a
+IPTABLES_SOURCE=iptables-1.2.8.tar.bz2
+IPTABLES_BUILD_DIR=$(BUILD_DIR)/iptables-1.2.8
 
 $(DL_DIR)/$(IPTABLES_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(IPTABLES_SOURCE_URL)/$(IPTABLES_SOURCE) 
@@ -28,6 +28,8 @@ $(TARGET_DIR)/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	cp -af $(IPTABLES_BUILD_DIR)/iptables $(TARGET_DIR)/sbin/
 	cp -af $(IPTABLES_BUILD_DIR)/iptables-save $(TARGET_DIR)/sbin/
 	cp -af $(IPTABLES_BUILD_DIR)/iptables-restore $(TARGET_DIR)/sbin/
+	-mkdir $(TARGET_DIR)/usr/local/lib/iptables
+	cp -af $(IPTABLES_BUILD_DIR)/extensions/*.so $(TARGET_DIR)/usr/local/lib/iptables/
 
 iptables: $(TARGET_DIR)/sbin/iptables 
 
