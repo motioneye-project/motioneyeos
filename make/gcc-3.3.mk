@@ -117,7 +117,7 @@ $(GCC_DIR)/.gcc3_3_build_hacks: $(GCC_DIR)/.patched
 # # the step or libgcc will not build...
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc3_3_build_hacks
 	mkdir -p $(GCC_BUILD_DIR1)
-	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR1)/gcc/xgcc -B$(GCC_BUILD_DIR1)/gcc/ -B$(STAGING_DIR)/arm-linux/bin/ -B$(STAGING_DIR)/arm-linux/lib/ -isystem $(STAGING_DIR)/arm-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR1)/target_gcc
+	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR1)/gcc/xgcc -B$(GCC_BUILD_DIR1)/gcc/ -B$(STAGING_DIR)/$(ARCH)-linux/bin/ -B$(STAGING_DIR)/$(ARCH)-linux/lib/ -isystem $(STAGING_DIR)/$(ARCH)-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR1)/target_gcc
 	chmod a+x $(GCC_BUILD_DIR1)/target_gcc
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib \
@@ -209,10 +209,9 @@ $(GCC_DIR)/.g++_build_hacks: $(GCC_DIR)/.patched
 
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 	mkdir -p $(GCC_BUILD_DIR2)
-	#echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR2)/gcc/g++ -B$(GCC_BUILD_DIR2)/gcc/ -B$(STAGING_DIR)/arm-linux/bin/ -B$(STAGING_DIR)/arm-linux/lib/ -isystem $(STAGING_DIR)/arm-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR2)/target_g++
-	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR2)/gcc/xgcc -B$(GCC_BUILD_DIR2)/gcc/ -B$(STAGING_DIR)/arm-linux/bin/ -B$(STAGING_DIR)/arm-linux/lib/ -isystem $(STAGING_DIR)/arm-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR2)/target_g++
+	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR2)/gcc/xgcc -B$(GCC_BUILD_DIR2)/gcc/ -B$(STAGING_DIR)/$(ARCH)-linux/bin/ -B$(STAGING_DIR)/$(ARCH)-linux/lib/ -isystem $(STAGING_DIR)/$(ARCH)-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR2)/target_g++
 	chmod a+x $(GCC_BUILD_DIR2)/target_g++
-	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR2)/gcc/xgcc -B$(GCC_BUILD_DIR2)/gcc/ -B$(STAGING_DIR)/arm-linux/bin/ -B$(STAGING_DIR)/arm-linux/lib/ -isystem $(STAGING_DIR)/arm-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR2)/target_gcc
+	echo -e "#!/bin/sh\nexec $(GCC_BUILD_DIR2)/gcc/xgcc -B$(GCC_BUILD_DIR2)/gcc/ -B$(STAGING_DIR)/$(ARCH)-linux/bin/ -B$(STAGING_DIR)/$(ARCH)-linux/lib/ -isystem $(STAGING_DIR)/$(ARCH)-linux/include $(TARGET_SOFT_FLOAT) \$$@" > $(GCC_BUILD_DIR2)/target_gcc
 	chmod a+x $(GCC_BUILD_DIR2)/target_gcc
 	(cd $(GCC_BUILD_DIR2); PATH=$(TARGET_PATH) AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld \
