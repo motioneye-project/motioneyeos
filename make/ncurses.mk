@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.4 2002/05/31 10:49:53 andersen Exp $
+# $Id: ncurses.mk,v 1.5 2002/05/31 11:22:31 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -37,22 +37,20 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 		$(NCURSES_DIR)/misc/run_tic.in
 	touch  $(NCURSES_DIR)/.dist
 
-$(NCURSES_DIR)/Makefile: $(NCURSES_DIR)/.dist
-	(cd ${NCURSES_DIR}; \
-	export PATH="${TARGET_PATH}"; \
-	./configure --with-shared --prefix=/usr --target=$(ARCH)-linux  \
-	--enable-warnings --without-cxx --without-cxx-binding \
-	--exec_prefix=${STAGING_DIR}/usr/bin \
-	--libdir=${STAGING_DIR}/lib --includedir=${STAGING_DIR}/include) 
+$(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
+	(cd $(NCURSES_DIR); rm -rf config.cache; PATH=$(TARGET_PATH) \
+	./configure --prefix=/usr --with-shared --target=$(ARCH)-linux  \
+	    --without-cxx --without-cxx-binding --without-ada \
+	    --without-progs --exec_prefix=$(STAGING_DIR)/usr/bin \
+	    --libdir=$(STAGING_DIR)/lib --includedir=$(STAGING_DIR)/include \
+	    --disable-nls);
+	touch  $(NCURSES_DIR)/.configured
 
-
-$(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/Makefile
-	make -C $(NCURSES_DIR)    DESTDIR=$(STAGING_DIR) \
-	CC="${TARGET_CC}" LD="${TARGET_LD}" AS="${TARGET_AS}" \
-	BUILD_CC=/usr/bin/gcc
+$(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
+	make CC=$(TARGET_CC) LD=$(TARGET_LD) AS=$(TARGET_AS) \
+		DESTDIR=$(STAGING_DIR) BUILD_CC=/usr/bin/gcc -C $(NCURSES_DIR)
 
 $(STAGING_DIR)/lib/libncurses.so: $(NCURSES_DIR)/lib/libncurses.so
-	$(STRIP) --strip-unneeded $(GDB_DIR)/gdb/gdb
 	cp -a $(NCURSES_DIR)/lib/libncurses.so* $(STAGING_DIR)/lib/
 	cp -a $(NCURSES_DIR)/include/curses.h $(STAGING_DIR)/include/
 	cp -a $(NCURSES_DIR)/include/eti.h $(STAGING_DIR)/include/
@@ -62,7 +60,7 @@ $(STAGING_DIR)/lib/libncurses.so: $(NCURSES_DIR)/lib/libncurses.so
 	cp -a $(NCURSES_DIR)/include/term.h $(STAGING_DIR)/include/
 	cp -a $(NCURSES_DIR)/include/termcap.h $(STAGING_DIR)/include/
 	cp -a $(NCURSES_DIR)/include/unctrl.h $(STAGING_DIR)/include/
-	(cd $(STAGING_DIR)/include; ln -s curses.h ncurses.h)
+	(cd $(STAGING_DIR)/include; ln -fs curses.h ncurses.h)
 
 $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
 	cp -a $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
