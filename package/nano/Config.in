@@ -1,8 +1,6 @@
-#
-
 config BR2_PACKAGE_NANO
-	bool"nano"
+	bool "nano"
 	default n
 	help
-	  Add help text here.
-
+	  A nice ncurses-based editor.  Started out as a clone of pico.  
+	  Great editor for new users.
