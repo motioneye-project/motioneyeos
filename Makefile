@@ -88,13 +88,16 @@ endif
 # kernel you have already configured and you want to use that?
 #TARGETS+=linux
 #TARGETS+=user-mode-linux
-TARGETS+=system-linux
+#TARGETS+=system-linux
+TARGETS+=kernel-headers
 
 # The default minimal set
 TARGETS+=busybox tinylogin
 
 # Openssh...
 #TARGETS+=zlib openssl openssh
+# Dropbear sshd is much smaller than openssl + openssh
+#TARGETS+=dropbear_sshd
 
 # Everything needed to build a full uClibc development system!
 #TARGETS+=coreutils findutils bash make diffutils patch sed
@@ -160,7 +163,7 @@ TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 TARGET_CC=$(TARGET_CROSS)gcc
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
-IMAGE:=$(BASE_DIR)/root_fs
+IMAGE:=$(BASE_DIR)/root_fs_$(ARCH)
 GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
 KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
