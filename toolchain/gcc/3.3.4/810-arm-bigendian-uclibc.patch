@@ -1,0 +1,25 @@
+--- gcc-3.3.5-dist/gcc/config/arm/linux-elf.h
++++ gcc-3.3.5/gcc/config/arm/linux-elf.h
+@@ -106,7 +106,7 @@
+    %{rdynamic:-export-dynamic} \
+    %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0} \
+    -X \
+-   %{mbig-endian:-EB}" \
++   %{mbig-endian:-EB}  %{mlittle-endian:-EL}" \
+    SUBTARGET_EXTRA_LINK_SPEC
+ #else
+ #define LINK_SPEC "%{h*} %{version:-v} \
+--- gcc-3.3.5-dist/gcc/config.gcc
++++ gcc-3.3.5/gcc/config.gcc
+@@ -699,6 +699,11 @@
+ 	;;
+ arm*-*-linux-uclibc*)		# ARM GNU/Linux with ELF - uClibc
+ 	tm_file="dbxelf.h elfos.h arm/unknown-elf.h arm/elf.h arm/aout.h arm/arm.h arm/linux-gas.h arm/linux-elf.h"
++	case $target in
++	arm*b-*)
++		tm_defines="TARGET_BIG_ENDIAN_DEFAULT=1 $tm_defines"
++		;;
++	esac
+ 	tmake_file="t-slibgcc-elf-ver t-linux-uclibc arm/t-linux"
+ 	extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
+ 	gnu_ld=yes
