@@ -1,0 +1,29 @@
+diff -Naurp procps-3.2.3.orig/minimal.c procps-3.2.3/minimal.c
+--- procps-3.2.3.orig/minimal.c	2004-05-04 20:26:14.000000000 -0400
++++ procps-3.2.3/minimal.c	2004-08-20 02:01:35.868100752 -0400
+@@ -68,8 +68,8 @@
+ ///////////////////////////////////////////////////////////
+ 
+ #ifndef PAGE_SIZE
+-#warning PAGE_SIZE not defined, assuming it is 4096
+-#define PAGE_SIZE 4096
++#warning PAGE_SIZE not defined, using sysconf() to determine correct value
++#define PAGE_SIZE (sysconf(_SC_PAGESIZE))
+ #endif
+ 
+ 
+diff -Naurp procps-3.2.3.orig/ps/common.h procps-3.2.3/ps/common.h
+--- procps-3.2.3.orig/ps/common.h	2004-04-25 17:03:18.000000000 -0400
++++ procps-3.2.3/ps/common.h	2004-08-20 02:00:59.228670792 -0400
+@@ -16,6 +16,11 @@
+ #include "../proc/readproc.h"
+ #include <asm/page.h>  /* looks safe for glibc, we need PAGE_SIZE */
+ 
++#ifndef PAGE_SIZE
++#warning PAGE_SIZE not defined, using sysconf() to determine correct value
++#define PAGE_SIZE (sysconf(_SC_PAGESIZE))
++#endif
++
+ #if 0
+ #define trace(args...) printf(## args)
+ #else
