@@ -59,7 +59,7 @@ diff -urN y/valgrind-2.2.0/coregrind/vg_syscalls.c x/valgrind-2.2.0/coregrind/vg
  
  #ifdef HAVE_LINUX_FB_H
     case FBIOGET_VSCREENINFO: /* 0x4600 */
-@@ -3483,6 +3496,88 @@
+@@ -3483,6 +3496,87 @@
                       sizeof(struct timeval) );
        break;
  
@@ -68,11 +68,10 @@ diff -urN y/valgrind-2.2.0/coregrind/vg_syscalls.c x/valgrind-2.2.0/coregrind/vg
 +      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(BLKSSZGET)", arg3,
 +	      sizeof(int));
 +      break;
-+#ifndef BLKGETSIZE64
++#undef BLKGETSIZE64
 +#undef _IOR
 +#define _IOR(type,nr,size)      _IOC(_IOC_READ,(type),(nr),sizeof(size))
 +#define BLKGETSIZE64 _IOR(0x12,114,size_t)
-+#endif
 +   case BLKGETSIZE64:
 +      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(BLKGETSIZE64)", arg3,
 +	      sizeof(uint64_t));
@@ -238,3 +237,20 @@ diff -urN y/valgrind-2.2.0/coregrind/vg_syscalls.c x/valgrind-2.2.0/coregrind/vg
        /* We don't have any specific information on it, so
  	 try to do something reasonable based on direction and
  	 size bits.  The encoding scheme is described in
+--- valgrind-2.2.0.orig/coregrind/vg_unsafe.h	2005-02-18 18:49:47.000000000 -0700
++++ valgrind-2.2.0/coregrind/vg_unsafe.h	2005-02-18 19:40:39.000000000 -0700
+@@ -72,7 +72,13 @@
+ #ifndef HAVE_U16
+ typedef unsigned short u16;
+ #endif
+-#include <linux/mii.h>    /* for mii_* structs */
++/* Extracted from linux/mii.h for mii_* structs */
++struct mii_ioctl_data {
++	u16		phy_id;
++	u16		reg_num;
++	u16		val_in;
++	u16		val_out;
++};
+ #endif
+ #include <linux/ppdev.h>  /* for PP* ioctls */
+ 
