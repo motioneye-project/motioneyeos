@@ -134,15 +134,13 @@ else
 TARGETS+=uclibc-configured binutils gcc3_3 ccache
 endif
 
-# Do you want user mode Linux (x86 only), or are you building a
-# your own kernel that will run on its own?  Perhaps you have a
-# kernel you have already configured and you want to use that?
-# The default is to just use a set of known working kernel
-# headers.  Unless you want to build a kernel, I recommend just
-# using that...
+# Are you building your own kernel?  Perhaps you have a kernel
+# you have already configured and you want to use that?  The
+# default is to just use a set of known working kernel headers.
+# Unless you want to build a kernel, I recommend just using
+# that...
 TARGETS+=kernel-headers
 #TARGETS+=linux
-#TARGETS+=user-mode-linux
 #TARGETS+=system-linux
 
 # The default minimal set
