@@ -122,7 +122,7 @@ gcc_initial-dirclean:
 # STLport -- an alternative C++ library
 #
 #############################################################
-STLPORT_PATCH=$(SOURCE_DIR)/STLport-4.5.3.patch
+STLPORT_PATCH=toolchain/gcc/2.95/STLport-4.5.3.patch
 
 $(DL_DIR)/$(STLPORT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(STLPORT_SITE)/$(STLPORT_SOURCE)
