@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.5 2002/05/31 11:22:31 andersen Exp $
+# $Id: ncurses.mk,v 1.6 2002/06/10 15:32:56 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -64,7 +64,6 @@ $(STAGING_DIR)/lib/libncurses.so: $(NCURSES_DIR)/lib/libncurses.so
 
 $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
 	cp -a $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
-	cp -a $(STAGING_DIR)/usr/share/tabset $(TARGET_DIR)/usr/share/
 	cp -a $(STAGING_DIR)/usr/lib/terminfo $(TARGET_DIR)/usr/lib/
 	for i in x/xterm x/xterm-color x/xterm-xfree86 v/vt100 v/vt200 a/ansi l/linux; do \
 		cd $(STAGING_DIR)/usr/share/; \
