@@ -3,9 +3,9 @@
 # file
 #
 #############################################################
-FILE_SOURCE:=file-3.39.tar.gz
+FILE_SOURCE:=file-3.41.tar.gz
 FILE_SITE:=ftp://ftp.astron.com/pub/file
-FILE_DIR:=$(BUILD_DIR)/file-3.39
+FILE_DIR:=$(BUILD_DIR)/file-3.41
 FILE_CAT:=zcat
 FILE_BINARY:=file
 FILE_TARGET_BINARY:=usr/bin/file
