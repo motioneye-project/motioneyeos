@@ -68,7 +68,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	touch  $(NCURSES_DIR)/.configured
 
 $(NCURSES_DIR)/lib/libncurses.so.5.2: $(NCURSES_DIR)/.configured
-	$(MAKE) BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
+	$(MAKE1) BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
 		BUILD_CCFLAGS="-I$(NCURSES_DIR) -I$(NCURSES_DIR)/include" \
 		BUILD_LDFLAGS="" DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \
 		libs panel menu form headers
