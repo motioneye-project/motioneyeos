@@ -5,11 +5,11 @@
 #############################################################
 ifneq ($(filter $(TARGETS),user-mode-linux),)
 
-LINUX_VERSION=2.4.19
+LINUX_VERSION=2.4.20
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(LINUX_VERSION).tar.bz2
 LINUX_SITE=http://ftp.us.kernel.org/pub/linux/kernel/v2.4
-LINUX_PATCH_1:=uml-patch-$(LINUX_VERSION)-45.bz2
+LINUX_PATCH_1:=uml-patch-$(LINUX_VERSION)-5.bz2
 LINUX_PATCH_1_SITE:=http://telia.dl.sourceforge.net/sourceforge/user-mode-linux
 LINUX_KCONFIG=$(SOURCE_DIR)/linux-uml.config
 LINUX_KERNEL=$(BASE_DIR)/UMlinux
@@ -26,6 +26,7 @@ user-mode-linux-source: $(DL_DIR)/$(LINUX_SOURCE) $(DL_DIR)/$(LINUX_PATCH_1)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE) $(DL_DIR)/$(LINUX_PATCH_1)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	rm -rf $(BUILD_DIR)/linux
 	-(cd $(BUILD_DIR); ln -sf $(LINUX_DIR) linux)
 	touch $(LINUX_DIR)/.unpacked
 
