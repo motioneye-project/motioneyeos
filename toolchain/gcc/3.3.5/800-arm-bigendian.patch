@@ -18,7 +18,7 @@ See http://gcc.gnu.org/PR16350
 +#define TARGET_ENDIAN_OPTION "mbig-endian"
 +#define TARGET_LINKER_EMULATION "armelfb_linux"
 +#else
-+#define TARGET_ENDIAN_DEFAULT -ARM_FLAG_BIG_END
++#define TARGET_ENDIAN_DEFAULT 0
 +#define TARGET_ENDIAN_OPTION "mlittle-endian"
 +#define TARGET_LINKER_EMULATION "armelf_linux"
 +#endif
