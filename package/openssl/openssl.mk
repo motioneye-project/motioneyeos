@@ -32,10 +32,10 @@ $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 		shared no-idea no-mdc2 no-rc5)
 
 $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
-	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) all build-shared
+	$(MAKE1) CC=$(TARGET_CC) -C $(OPENSSL_DIR) all build-shared
 	# Work around openssl build bug to link libssl.so with libcrypto.so.
 	-rm $(OPENSSL_DIR)/libssl.so.*.*.*
-	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSL_DIR) do_linux-shared
+	$(MAKE1) CC=$(TARGET_CC) -C $(OPENSSL_DIR) do_linux-shared
 
 $(STAGING_DIR)/lib/libcrypto.a: $(OPENSSL_DIR)/apps/openssl
 	$(MAKE) CC=$(TARGET_CC) INSTALL_PREFIX=$(STAGING_DIR) -C $(OPENSSL_DIR) install
