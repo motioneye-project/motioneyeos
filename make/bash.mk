@@ -23,6 +23,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	(cd $(BASH_DIR); autoconf; rm -f config.cache; CC=$(TARGET_CC1) \
 	    CFLAGS=-D_POSIX_SOURCE ./configure --prefix=/usr --disable-nls \
 	    --mandir=/junk --infodir=/junk \
+	    --with-curses --enable-alias \
 	);
 	touch  $(BASH_DIR)/.configured
 
