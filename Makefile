@@ -145,16 +145,16 @@ DL_DIR:=$(SOURCE_DIR)/dl
 PATCH_DIR=$(SOURCE_DIR)/patches
 BUILD_DIR:=$(BASE_DIR)/build
 TARGET_DIR:=$(BUILD_DIR)/root
-STAGING_DIR:=$(BUILD_DIR)/staging_dir
+STAGING_DIR=$(BUILD_DIR)/staging_dir
 TOOL_BUILD_DIR=$(BASE_DIR)/build
-TARGET_PATH=$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:/bin:/sbin:/usr/bin:/usr/sbin
+TARGET_PATH=$(STAGING_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
 TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 TARGET_CC=$(TARGET_CROSS)gcc
-STRIP:=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
+STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 #STRIP:=/bin/true
 IMAGE:=$(BASE_DIR)/root_fs
-GNU_TARGET_NAME:=$(OPTIMIZE_FOR_CPU)-linux
-#KERNEL_CROSS:=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
+GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
+#KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
 KERNEL_CROSS:=
 
 all:   world
