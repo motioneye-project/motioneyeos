@@ -34,7 +34,7 @@ ARCH:=i386
 #ARCH:=whatever
 
 # enable to build a native gcc toolchain with uclibc support
-USE_UCLIBC_TOOLCHAIN:=false
+USE_UCLIBC_TOOLCHAIN:=true
 
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
