@@ -65,7 +65,7 @@ $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
 	chmod a+x $(TARGET_DIR)/etc/init.d/S50sshd
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-openssh: $(TARGET_DIR)/usr/bin/ssh
+openssh: openssl $(TARGET_DIR)/usr/bin/ssh
 
 openssh-source: $(DL_DIR)/$(OPENSSH_SOURCE)
 

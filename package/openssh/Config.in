@@ -3,6 +3,7 @@
 config BR2_PACKAGE_OPENSSH
 	bool"openssh"
 	default n
+	select BR2_PACKAGE_OPENSSL
 	help
 	  Add help text here.
 
