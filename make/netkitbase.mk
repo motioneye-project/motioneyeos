@@ -6,7 +6,7 @@
 NETKITBASE_SOURCE:=netkit-base-0.17.tar.gz
 NETKITBASE_SITE:=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
 NETKITBASE_DIR:=$(BUILD_DIR)/netkit-base-0.17
-NETKITBASE_CAT:=bzcat
+NETKITBASE_CAT:=zcat
 NETKITBASE_BINARY:=inetd/inetd
 NETKITBASE_TARGET_BINARY:=usr/sbin/inetd
 
@@ -24,24 +24,9 @@ $(NETKITBASE_DIR)/.unpacked: $(DL_DIR)/$(NETKITBASE_SOURCE)
 	touch $(NETKITBASE_DIR)/.unpacked
 
 $(NETKITBASE_DIR)/.configured: $(NETKITBASE_DIR)/.unpacked
-	(cd $(NETKITBASE_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
-		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--disable-nls \
-		--installroot=$(TARGET_DIR) \
-		--with-c-compiler=$(TARGET_CC) \
-	);
+	(cd $(NETKITBASE_DIR); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure --installroot=$(TARGET_DIR) --with-c-compiler=$(TARGET_CC) \
+	)
 	touch  $(NETKITBASE_DIR)/.configured
 
 $(NETKITBASE_DIR)/$(NETKITBASE_BINARY): $(NETKITBASE_DIR)/.configured

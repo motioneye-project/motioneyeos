@@ -6,7 +6,7 @@
 NETKITTELNET_SOURCE:=netkit-telnet-0.17.tar.gz
 NETKITTELNET_SITE:=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
 NETKITTELNET_DIR:=$(BUILD_DIR)/netkit-telnet-0.17
-NETKITTELNET_CAT:=bzcat
+NETKITTELNET_CAT:=zcat
 NETKITTELNET_BINARY:=telnetd/telnetd
 NETKITTELNET_TARGET_BINARY:=usr/sbin/telnetd
 NETKITTELNET_PATCH:=$(SOURCE_DIR)/netkittelnet.patch
@@ -27,24 +27,9 @@ $(NETKITTELNET_DIR)/.unpacked: $(DL_DIR)/$(NETKITTELNET_SOURCE)
 	touch $(NETKITTELNET_DIR)/.unpacked
 
 $(NETKITTELNET_DIR)/.configured: $(NETKITTELNET_DIR)/.unpacked
-	(cd $(NETKITTELNET_DIR); rm -rf config.cache; \
-		PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
-		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--disable-nls \
-		--installroot=$(TARGET_DIR) \
-		--with-c-compiler=$(TARGET_CC) \
-	);
+	(cd $(NETKITTELNET_DIR); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CC1) \
+		./configure --installroot=$(TARGET_DIR) --with-c-compiler=$(TARGET_CC) \
+	)
 	touch  $(NETKITTELNET_DIR)/.configured
 
 $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY): $(NETKITTELNET_DIR)/.configured

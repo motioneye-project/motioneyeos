@@ -1,6 +1,6 @@
 #############################################################
 #
-# lrzsz (provided zmodem)
+# lrzsz (provides zmodem)
 #
 #############################################################
 # Copyright (C) 2001-2003 by Erik Andersen <andersen@codepoet.org>
