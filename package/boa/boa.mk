@@ -4,7 +4,7 @@
 #
 #############################################################
 
-BOA_VERSION=0.94.14rc4
+BOA_VERSION=0.94.14rc20
 
 # Don't alter below this line unless you (think) you know
 # what you are doing! Danger, Danger!
@@ -24,13 +24,32 @@ $(BOA_DIR)/.unpacked:	$(DL_DIR)/$(BOA_SOURCE)
 $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 	rm -f $(BOA_WORKDIR)/Makefile
 	mkdir -p $(BOA_WORKDIR)
-	(cd $(BOA_WORKDIR) && CONFIG_SITE=package/boa/boa-config.site-$(ARCH) \
-		CC=$(TARGET_CC) $(BOA_DIR)/configure)
-	touch $(BOA_WORKDIR)/.depend
+	#CONFIG_SITE=package/boa/boa-config.site-$(ARCH)
+	(cd $(BOA_WORKDIR); rm -rf config.cache; \
+		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		CPPFLAGS="$(SED_CFLAGS)" \
+		$(BOA_DIR)/configure \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		$(DISABLE_NLS) \
+	);
+	touch  $(BOA_WORKDIR)/Makefile
 
 $(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer:	$(BOA_WORKDIR)/Makefile
 	rm -f $@
-	$(MAKE) VPATH=$(BOA_DIR)/src/ -C $(BOA_WORKDIR)
+	$(MAKE) -C $(BOA_WORKDIR)
 
 $(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/boa $(BOA_WORKDIR)/boa_indexer
 	mkdir -p $(TARGET_DIR)/usr/sbin
