@@ -32,6 +32,7 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
+		$(DISABLE_NLS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) );
 	touch $(BINUTILS_DIR1)/.configured
@@ -74,6 +75,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		--build=$(GNU_HOST_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
+		$(DISABLE_NLS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) );
 	touch $(BINUTILS_DIR2)/.configured
