@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_ZLIB
-	bool"zlib"
+	bool "zlib"
 	default n
 	help
-	  Add help text here.
+	  Standard (de)compression library.  Used by things like 
+	  gzip and libpng.
 
+	  http://www.gzip.org/zlib/

@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_PCIUTILS
-	bool"pciutils"
+	bool "pciutils"
 	default n
 	help
-	  Add help text here.
+	  Various utilities dealing with the PCI bus.
+	  Provides things like setpci and lspci.
 
+	  http://atrey.karlin.mff.cuni.cz/~mj/pciutils.html

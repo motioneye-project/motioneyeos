@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_WGET
-	bool"wget"
+	bool "wget"
 	default n
 	help
-	  Add help text here.
+	  Network utility to retrieve files from http/ftp/etc...
 
+	  http://wget.sunsite.dk/

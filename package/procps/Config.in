@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_PROCPS
-	bool"procps"
+	bool "procps"
 	default n
 	help
-	  Add help text here.
+	  Standard informational utilities and process-handling tools.
+	  Provides things like kill, ps, uptime, free, top, etc...
 
+	  http://procps.sourceforge.net/

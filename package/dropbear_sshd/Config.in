@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_DROPBEAR_SSHD
 	bool"dropbear_sshd"
 	default n
 	help
-	  Add help text here.
+	  A small SSH 2 server designed for small memory environments.
 
+	  http://matt.ucc.asn.au/dropbear/

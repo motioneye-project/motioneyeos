@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_FILE
-	bool"file"
+	bool "file"
 	default n
 	help
-	  Add help text here.
+	  Program to identify a file's format by scanning binary data 
+	  for known patterns.
 
+	  ftp://ftp.astron.com/pub/file/

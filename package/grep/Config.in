@@ -1,8 +1,7 @@
-#
-
 config BR2_PACKAGE_GREP
-	bool"grep"
+	bool "grep"
 	default n
 	help
-	  Add help text here.
+	  The GNU regular expression matcher.
 
+	  http://www.gnu.org/software/grep/grep.html

@@ -1,8 +1,12 @@
-#
-
 config BR2_PACKAGE_COREUTILS
-	bool"coreutils"
+	bool "coreutils"
 	default n
 	help
-	  Add help text here.
+	  All of the basic file/text/shell utilities.
 
+	  Things like:
+	  - chmod, cp, dd, dir, ls, etc...
+	  - sort, tr, head, tail, wc, etc...
+	  - whoami, who, etc...
+
+	  http://www.gnu.org/software/coreutils/

@@ -1,8 +1,8 @@
-#
-
 config BR2_PACKAGE_GZIP
-	bool"gzip"
+	bool "gzip"
 	default n
 	help
-	  Add help text here.
+	  Standard GNU compressor.  Provides things like gzip, 
+	  gunzip, gzcat, etc...
 
+	  http://www.gnu.org/software/gzip/gzip.html
