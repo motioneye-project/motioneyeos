@@ -1,8 +1,9 @@
 config BR2_PACKAGE_BRIDGE
 	bool "bridge"
 	default n
+	depends BR2_PACKAGE_LINUX
 	help
-	  Manage ethernet bridging; a way to connect networks together to 
+	  Manage ethernet bridging; a way to connect networks together to
 	  form a larger network.
 
 	  http://bridge.sourceforge.net/
