@@ -45,23 +45,26 @@ $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 	mkdir -p $(TOOL_BUILD_DIR)/.ccache;
 	cp $(CCACHE_DIR1)/ccache $(STAGING_DIR)/usr/bin
 	(cd $(STAGING_DIR)/usr/bin; \
-		ln -fs $(ARCH)-linux-uclibc-gcc $(ARCH)-linux-cc; \
-		ln -fs $(ARCH)-linux-uclibc-gcc $(ARCH)-linux-uclibc-cc);
-	[ -f $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-gcc ] && \
-		mv $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-gcc $(STAGING_DIR)/usr/bin/
-	[ -f $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-c++ ] && \
-		mv $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-c++ $(STAGING_DIR)/usr/bin/
-	[ -f $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-g++ ] && \
-		mv $(STAGING_DIR)/bin/$(ARCH)-linux-uclibc-g++  $(STAGING_DIR)/usr/bin/
+		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-cc; \
+		ln -fs $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(OPTIMIZE_FOR_CPU)-linux-uclibc-cc);
+	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc ] && \
+		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc $(STAGING_DIR)/usr/bin/
 	(cd $(STAGING_DIR)/bin; \
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-cc; \
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-gcc; \
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-c++; \
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-g++;\
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-cc; \
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-gcc; \
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-c++; \
-		ln -fs ../usr/bin/ccache $(ARCH)-linux-uclibc-g++);
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-cc; \
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-gcc; \
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-cc; \
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-gcc);
+ifeq ($(INSTALL_LIBSTDCPP),true)
+	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-c++ ] && \
+		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-c++ $(STAGING_DIR)/usr/bin/
+	[ -f $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-g++ ] && \
+		mv $(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-g++  $(STAGING_DIR)/usr/bin/
+	(cd $(STAGING_DIR)/bin; \
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-c++; \
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-g++;\
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-c++; \
+		ln -fs ../usr/bin/ccache $(OPTIMIZE_FOR_CPU)-linux-uclibc-g++);
+endif
 
 ifeq ($(GCC_2_95_TOOLCHAIN),true)
 ccache: gcc2_95 $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
