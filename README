@@ -1,0 +1,28 @@
+To build and use the buildroot stuff, do the following:
+
+1) run 'make'
+2) wait while it compiles 
+3) run './UMlinux' to test out your root filesystem using User Mode Linux.
+
+You do not need to be root to build or run this system.  Each Virtual Terminal
+will be opened in its own window.  You must be running X and have xterm
+installed for this to work -- otherwise you see a few errors on bootup as it
+tries to launch xterms.   It will still work on a console, but you will not
+have access to the other Virtual Terminals.
+
+Also, you the uClibc and busybox source trees that
+are downloaded are fully set up for anonymous CVS access.  You may need to set
+up your system for anonymous CVS access by running the following command:
+
+    cvs -d:pserver:anonymous@busybox.net:/var/cvs login
+
+Then just hit Enter when it prompts you for a password.  You only need to do
+this once.  Then, whenever you want to update your system, just go into the
+busybox or uClibc directory and run 'cvs update'.
+
+Have fun!
+
+ -Erik
+
+Please feed suggestions, bug reports, insults, and bribes back to:
+	Erik Andersen <andersen@codepoet.org>
