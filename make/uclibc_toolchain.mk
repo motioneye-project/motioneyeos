@@ -283,7 +283,7 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 		$(UCLIBC_DIR)/Config
 	perl -i -p -e 's,^DEVEL_TOOL_PREFIX.*,DEVEL_TOOL_PREFIX=$(STAGING_DIR)/usr,g' \
 		$(UCLIBC_DIR)/Config
-	perl -i -p -e 's,^HAS_WCHAR.*,HAS_WCHAR=true,g' $(UCLIBC_DIR)/Config
+	perl -i -p -e 's,^HAS_WCHAR.*,HAS_WCHAR=false,g' $(UCLIBC_DIR)/Config
 	# Note that since the target compiler does not yet exist, we will not
 	# be able to properly generate include/bits/syscall.h so we will need
 	# to run part again later...
