@@ -31,6 +31,7 @@ else
 	cp $(SOURCE_DIR)/uClibc.config $(UCLIBC_DIR)/.config
 endif
 	perl -i -p -e 's,^TARGET_[a-z].*,TARGET_$(ARCH)=y,g' $(UCLIBC_DIR)/.config
+	perl -i -p -e 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(ARCH)\",g' $(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_DIR)\",g' \
 		$(UCLIBC_DIR)/.config
 	perl -i -p -e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"$(STAGING_DIR)\",g' \
