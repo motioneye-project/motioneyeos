@@ -1,0 +1,29 @@
+diff -ur pciutils-2.1.11.orig/lib/configure pciutils-2.1.11/lib/configure
+--- pciutils-2.1.11.orig/lib/configure	2004-10-08 11:56:42.876316816 -0400
++++ pciutils-2.1.11/lib/configure	2004-10-08 11:57:04.965958680 -0400
+@@ -25,7 +25,6 @@
+ echo " $sys/$cpu $rel"
+ 
+ c=config.h
+-echo >$c "#define ARCH_`echo $cpu | tr 'a-z' 'A-Z'`"
+ echo >>$c "#define OS_`echo $sys | tr 'a-z' 'A-Z'`"
+ 
+ echo_n "Looking for access methods..."
+@@ -40,17 +39,6 @@
+ 						ok=1
+ 						;;
+ 		esac
+-		case $cpu in
+-				i386)		echo_n " i386-ports"
+-						echo >>$c '#define HAVE_PM_INTEL_CONF'
+-						ok=1
+-						;;
+-				alpha|ia64)	echo >>$c '#define HAVE_64BIT_ADDRESS'
+-						;;
+-				sparc|sparc64)	echo >>$c '#define HAVE_64BIT_ADDRESS'
+-						echo >>$c '#define HAVE_LONG_ADDRESS'
+-						;;
+-		esac
+ 		;;
+ 	FreeBSD)
+ 		echo_n " fbsd-device"

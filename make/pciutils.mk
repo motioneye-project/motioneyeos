@@ -3,9 +3,10 @@
 # pciutils
 #
 #############################################################
-PCIUTILS_SOURCE:=pciutils-2.1.10.tar.gz
+PCIUTILS_VER:=2.1.11
+PCIUTILS_SOURCE:=pciutils-$(PCIUTILS_VER).tar.gz
 PCIUTILS_SITE:=ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci
-PCIUTILS_DIR:=$(BUILD_DIR)/pciutils-2.1.10
+PCIUTILS_DIR:=$(BUILD_DIR)/pciutils-$(PCIUTILS_VER)
 PCIUTILS_CAT:=zcat
 
 # Yet more targets...
@@ -24,39 +25,20 @@ pciutils-source: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURCE)
 $(PCIUTILS_DIR)/.unpacked: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURCE)
 	$(PCIUTILS_CAT) $(DL_DIR)/$(PCIUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	$(PCIIDS_CAT) $(DL_DIR)/$(PCIIDS_SOURCE) > $(PCIUTILS_DIR)/pci.id
+	$(SOURCE_DIR)/patch-kernel.sh $(PCIUTILS_DIR) $(SOURCE_DIR) pciutils*.patch
 	touch $(PCIUTILS_DIR)/.unpacked
 
-$(PCIUTILS_DIR)/.configured: $(PCIUTILS_DIR)/.unpacked
-	(cd $(PCIUTILS_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		$(DISABLE_NLS) \
-	);
-	touch  $(PCIUTILS_DIR)/.configured
+$(PCIUTILS_DIR)/.compiled: $(PCIUTILS_DIR)/.unpacked
+	$(MAKE) CC=$(TARGET_CC) OPT=$(TARGET_CFLAGS) -C $(PCIUTILS_DIR)
+	touch $(PCIUTILS_DIR)/.compiled
 
-$(PCIUTILS_DIR)/lspci: $(PCIUTILS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(PCIUTILS_DIR)
-
-$(TARGET_DIR)/sbin/lspci: $(PCIUTILS_DIR)/lspci
+$(TARGET_DIR)/sbin/lspci: $(PCIUTILS_DIR)/.compiled
 	install -c $(PCIUTILS_DIR)/lspci $(TARGET_DIR)/sbin/lspci
 
-$(TARGET_DIR)/sbin/setpci: $(PCIUTILS_DIR)/setpci
+$(TARGET_DIR)/sbin/setpci: $(PCIUTILS_DIR)/.compiled
 	install -c $(PCIUTILS_DIR)/setpci $(TARGET_DIR)/sbin/setpci
 
-$(TARGET_DIR)/usr/share/misc/pci.ids: $(PCIUTILS_DIR)/.dist
+$(TARGET_DIR)/usr/share/misc/pci.ids: $(PCIUTILS_DIR)/.compiled
 	install -Dc $(PCIUTILS_DIR)/pci.ids $(TARGET_DIR)/usr/share/misc/pci.ids
 
 
