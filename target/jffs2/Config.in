@@ -8,52 +8,47 @@ config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	hex "Erase block size"
 	depends on BR2_TARGET_ROOTFS_JFFS2
 	default 0x20000
-	
+
 config BR2_TARGET_ROOTFS_JFFS2_PAD
 	bool "Pad output"
 	depends on BR2_TARGET_ROOTFS_JFFS2
-	
+
 config BR2_TARGET_ROOTFS_JFFS2_PADSIZE
 	hex "Pad output size (0x0 = to end of EB)"
 	depends on BR2_TARGET_ROOTFS_JFFS2_PAD
 	default 0x0
 	help
-		Set to 0x0 to pad to end of erase block.	
-	
+		Set to 0x0 to pad to end of erase block.
+
 choice
 	prompt "Endianess"
 	default BR2_TARGET_ROOTFS_JFFS2_LE
 	depends on BR2_TARGET_ROOTFS_JFFS2
-	
+
 config BR2_TARGET_ROOTFS_JFFS2_LE
 	bool "little-endian"
 	depends on 	BR2_TARGET_ROOTFS_JFFS2
-	
+
 config BR2_TARGET_ROOTFS_JFFS2_BE
 	bool "big-endian"
 	depends on 	BR2_TARGET_ROOTFS_JFFS2
-	
+
 endchoice
 
 config BR2_TARGET_ROOTFS_JFFS2_SQUASH
 	bool "Make all files be owned by root"
 	depends on 	BR2_TARGET_ROOTFS_JFFS2
 
-config BR2_TARGET_ROOTFS_JFFS2_DEVFILE
-	string "Location of device table file"
-	depends on BR2_TARGET_ROOTFS_JFFS2
-	default "target/default/device_table.txt"
-	
 config BR2_TARGET_ROOTFS_JFFS2_OUTPUT
 	string "Output File"
 	depends on BR2_TARGET_ROOTFS_JFFS2
 	default "$(IMAGE).jffs2"
-	
+
 config BR2_TARGET_ROOTFS_JFFS2_COPYTO
 	string "also copy the image to..."
 	depends on 	BR2_TARGET_ROOTFS_JFFS2
 	default ""
 	help
 		Copies the resulting image to a secondary location.
-		
-	
+
+

@@ -7,7 +7,7 @@
 JFFS2_OPTS := -e $(strip $(BR2_TARGET_ROOTFS_JFFS2_EBSIZE))
 
 ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PAD)),y)
-JFFS2_OPTS += -p 
+JFFS2_OPTS += -p
 ifneq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE)),0x0)
 JFFS2_OPTS += $(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE))
 endif
@@ -27,7 +27,7 @@ endif
 
 JFFS2_DEVFILE = $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_DEVFILE)))
 ifneq ($(JFFS2_DEVFILE),)
-JFFS2_OPTS += -D $(JFFS2_DEVFILE)
+JFFS2_OPTS += -D $(TARGET_DEVICE_TABLE)
 endif
 
 JFFS2_TARGET := $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT))
@@ -47,6 +47,7 @@ $(JFFS2_TARGET): mtd-host
 		$(JFFS2_OPTS) \
 		-d $(BUILD_DIR)/root \
 		-o $(JFFS2_TARGET)
+		-D $(TARGET_DEVICE_TABLE)
 	@ls -l $(JFFS2_TARGET)
 
 JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))
@@ -54,7 +55,7 @@ JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))
 jffs2root: $(JFFS2_TARGET)
 ifneq ($(JFFS2_COPYTO),)
 	@cp -f $(JFFS2_TARGET) $(JFFS2_COPYTO)
-endif	
+endif
 
 jffs2root-source: mtd-host-source
 
