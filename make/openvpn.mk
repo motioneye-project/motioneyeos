@@ -19,7 +19,7 @@ $(DL_DIR)/$(OPENVPN_SOURCE):
 
 openvpn-source: $(DL_DIR)/$(OPENVPN_SOURCE)
 
-$(OPENVPN_DIR)/.unpacked: $(DL_DIR)/$(OPENVPN_SOURCE) lzo openssl
+$(OPENVPN_DIR)/.unpacked: $(DL_DIR)/$(OPENVPN_SOURCE)
 	$(OPENVPN_CAT) $(DL_DIR)/$(OPENVPN_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	#cat $(OPENVPN_PATCH) | patch -p1 -d $(OPENVPN_DIR)
 	touch $(OPENVPN_DIR)/.unpacked
@@ -57,7 +57,7 @@ $(TARGET_DIR)/$(OPENVPN_TARGET_BINARY): $(OPENVPN_DIR)/$(OPENVPN_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-openvpn: uclibc $(TARGET_DIR)/$(OPENVPN_TARGET_BINARY)
+openvpn: uclibc lzo openssl $(TARGET_DIR)/$(OPENVPN_TARGET_BINARY)
 
 openvpn-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(OPENVPN_DIR) uninstall
