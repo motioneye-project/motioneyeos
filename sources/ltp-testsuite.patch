@@ -42,8 +42,8 @@
  
  all: $(TARGETS)
  
---- ltp-full-20031002/tools/netpipe-2.4-ipv6/Makefile.orig	2003-10-02 19:38:07.000000000 -0600
-+++ ltp-full-20031002/tools/netpipe-2.4-ipv6/Makefile	2003-10-02 19:38:38.000000000 -0600
+--- tools/netpipe-2.4-ipv6/Makefile.orig	2003-11-07 16:41:39.000000000 -0700
++++ tools/netpipe-2.4-ipv6/Makefile	2003-11-07 16:42:41.000000000 -0700
 @@ -10,7 +10,7 @@
  DRIV_OBJ   = netpipe.o
  INCLUDES   = netpipe.h
@@ -53,3 +53,18 @@
  # If you have TCP, MPI and PVM
  #TARGETS    = NPtcp NPmpi NPpvm
  CFLAGS		    += -O -Wall
+@@ -28,12 +28,12 @@
+ targets:    $(TARGETS)
+ 
+ install:
+-	@ln -f NPtcp-ipv6 ../../testcases/bin	
++	#@ln -f NPtcp-ipv6 ../../testcases/bin	
+ #
+ # This section of the Makefile is for compiling the binaries
+ #
+ 
+-TCP:	NPtcp-ipv6
++TCP:	#NPtcp-ipv6
+ 	@echo 'NPtcp has been built.'
+ 
+ NPtcp-ipv6:	NPtcp.o TCP.o
