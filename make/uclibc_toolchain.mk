@@ -132,6 +132,8 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
 	(cd $(BINUTILS_DIR1); CC=$(HOSTCC) \
+		CC_FOR_HOST=$(HOSTCC) \
+		CXX_FOR_HOST=$(HOSTCC) \
 		$(BINUTILS_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_HOST_NAME) \
@@ -155,10 +157,14 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
-	$(MAKE) -C $(BINUTILS_DIR1);
+	$(MAKE) CC_FOR_HOST=$(HOSTCC) \
+		CXX_FOR_HOST=$(HOSTCC) \
+		-C $(BINUTILS_DIR1);
 
 $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump 
-	$(MAKE) -C $(BINUTILS_DIR1) install
+	$(MAKE) CC_FOR_HOST=$(HOSTCC) \
+		CXX_FOR_HOST=$(HOSTCC) \
+		-C $(BINUTILS_DIR1) install;
 	rm -rf $(STAGING_DIR)/info $(STAGING_DIR)/man $(STAGING_DIR)/share/doc \
 		$(STAGING_DIR)/share/locale
 	mkdir -p $(STAGING_DIR)/usr/bin;
