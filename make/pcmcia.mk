@@ -78,7 +78,7 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 	rm -f $(TARGET_DIR)/usr/share/pnp.ids $(TARGET_DIR)/sbin/lspnp $(TARGET_DIR)/sbin/setpnp;
 	rm -f $(TARGET_DIR)/sbin/pcinitrd
 	rm -f $(TARGET_DIR)/sbin/probe
-	cp $(SOURCE_DIR)/target_skeleton/etc/init.d/pcmcia $(TARGET_DIR)/etc/init.d/pcmcia
+	cp $(SOURCE_DIR)/target_skeleton/etc/init.d/S30pcmcia $(TARGET_DIR)/etc/init.d/
 	chmod -R u+w $(TARGET_DIR)/etc/pcmcia/*
 
 pcmcia: uclibc $(TARGET_DIR)/sbin/cardmgr
