@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.6 2004/10/27 20:09:27 andersen Exp $
+# $Id: ncurses.mk,v 1.7 2005/01/03 04:38:13 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -74,7 +74,7 @@ $(NCURSES_DIR)/lib/libncurses.so.5.2: $(NCURSES_DIR)/.configured
 
 $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.5.2
 	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
-	$(MAKE) \
+	$(MAKE1) \
 	    prefix=$(STAGING_DIR) \
 	    exec_prefix=$(STAGING_DIR) \
 	    bindir=$(STAGING_DIR)/bin \
@@ -91,7 +91,7 @@ $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.5.2
 	    ticdir=$(STAGING_DIR)/usr/share/terminfo \
 	    -C $(NCURSES_DIR) install;
 	    chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
-	    touch -c $(STAGING_DIR)/lib/libncurses.a 
+	    touch -c $(STAGING_DIR)/lib/libncurses.a
 
 $(TARGET_DIR)/lib/libncurses.so.5.2: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
@@ -125,11 +125,11 @@ ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
 
 ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
 
-ncurses-clean: 
+ncurses-clean:
 	rm -f $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/libncurses.so*
-	rm -f $(STAGING_DIR)/usr/share/tabset $(TARGET_DIR)/usr/share/tabset
+	rm -rf $(STAGING_DIR)/usr/share/tabset $(TARGET_DIR)/usr/share/tabset
 	rm -rf $(STAGING_DIR)/usr/share/terminfo $(TARGET_DIR)/usr/share/terminfo
 	-$(MAKE) -C $(NCURSES_DIR) clean
 
-ncurses-dirclean: 
+ncurses-dirclean:
 	rm -rf $(NCURSES_DIR)
