@@ -29,7 +29,6 @@ MULTILIB:=--enable-multilib
 
 ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
 GCC_DEPENDANCY=gcc_final
-GCC_INSTALL_TARGET=install-gcc
 else
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
 BINUTILS_SOURCE:=binutils-2.14.90.0.5.tar.bz2
@@ -40,7 +39,6 @@ GCC_SITE:=http://gcc.get-software.com/releases/gcc-3.3.1
 GCC_SOURCE:=gcc-3.3.1.tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-3.3.1
 GCC_CAT:=bzcat
-GCC_INSTALL_TARGET=install
 endif
 
 #############################################################
@@ -91,9 +89,9 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 	mkdir -p $(TARGET_DIR)/usr/include
 	mkdir -p $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/
 	(cd $(BINUTILS_DIR2); ln -fs $(ARCH)-linux build-$(GNU_TARGET_NAME))
-	(cd $(BINUTILS_DIR2); \
-		CC_FOR_BUILD=$(HOSTCC) CXX_FOR_BUILD=$(HOSTCC) \
-		CC=$(HOSTCC) CXX=$(HOSTCC) \
+	(cd $(BINUTILS_DIR2); $(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
+		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -123,22 +121,9 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR2_DEPENDS)
 	touch $(BINUTILS_DIR2)/.configured
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	$(MAKE) -C $(BINUTILS_DIR2) \
-		CC_FOR_BUILD=$(HOSTCC) CXX_FOR_BUILD=$(HOSTCC) \
-		CC=$(HOSTCC) CXX=$(HOSTCC) \
-		AR_FOR_TARGET=$(TARGET_CROSS)ar \
-		AS_FOR_TARGET=$(TARGET_CROSS)as \
-		LD_FOR_TARGET=$(TARGET_CROSS)ld \
-		NM_FOR_TARGET=$(TARGET_CROSS)nm \
-		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
-		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
-		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib
-
-$(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
-	$(MAKE) -C $(BINUTILS_DIR2) \
-		CC_FOR_BUILD=$(HOSTCC) CXX_FOR_BUILD=$(HOSTCC) \
-		CC=$(HOSTCC) CXX=$(HOSTCC) \
+	$(MAKE) -C $(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
+		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -147,7 +132,42 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
+	touch -c $(BINUTILS_DIR2)/binutils/objdump
+
+$(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump 
+	$(MAKE) -C $(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
+		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
+		AR_FOR_TARGET=$(TARGET_CROSS)ar \
+		AS_FOR_TARGET=$(TARGET_CROSS)as \
+		LD_FOR_TARGET=$(TARGET_CROSS)ld \
+		NM_FOR_TARGET=$(TARGET_CROSS)nm \
+		CC_FOR_TARGET=$(TARGET_CROSS)gcc \
+		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
+		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
+		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
+		prefix=$(TARGET_DIR)/usr \
+		exec_prefix=$(TARGET_DIR)/usr \
+		bindir=$(TARGET_DIR)/usr/bin \
+		sbindir=$(TARGET_DIR)/usr/sbin \
+		libexecdir=$(TARGET_DIR)/usr/lib \
+		datadir=$(TARGET_DIR)/usr/share \
+		sysconfdir=$(TARGET_DIR)/etc \
+		localstatedir=$(TARGET_DIR)/var \
+		libdir=$(TARGET_DIR)/usr/lib \
+		infodir=$(TARGET_DIR)/usr/info \
+		mandir=$(TARGET_DIR)/usr/man \
+		includedir=$(TARGET_DIR)/usr/include \
 		DESTDIR=$(TARGET_DIR) install
+	rm -rf $(TARGET_DIR)/info $(TARGET_DIR)/man $(TARGET_DIR)/share/doc \
+		$(TARGET_DIR)/share/locale
+
+$(STAGING_DIR)/lib/libg.a:
+	$(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ar rv $(STAGING_DIR)/lib/libg.a;
+
+binutils: $(STAGING_DIR)/$(GNU_TARGET_NAME)/bin/ld $(STAGING_DIR)/lib/libg.a
+
+
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	-$(STRIP) $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/bin/*
@@ -291,9 +311,9 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks: $(GCC_DIR3_DEPENDS)
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR3)
 	(cd $(GCC_BUILD_DIR3); ln -fs $(ARCH)-linux build-$(GNU_TARGET_NAME))
-	(cd $(GCC_BUILD_DIR3); \
-		CC_FOR_BUILD=$(HOSTCC) CXX_FOR_BUILD=$(HOSTCC) \
-		CC=$(HOSTCC) CXX=$(HOSTCC) \
+	(cd $(GCC_BUILD_DIR3); $(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
+		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -302,7 +322,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-		$(BINUTILS_DIR)/configure \
+		$(GCC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(ARCH)-linux \
@@ -327,9 +347,9 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
-	$(MAKE) -C $(GCC_BUILD_DIR3) \
-		CC_FOR_BUILD=$(HOSTCC) CXX_FOR_BUILD=$(HOSTCC) \
-		CC=$(HOSTCC) CXX=$(HOSTCC) \
+	$(MAKE) -C $(GCC_BUILD_DIR3) $(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
+		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -342,8 +362,9 @@ $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	$(MAKE) -C $(GCC_BUILD_DIR3) \
-		CC_FOR_BUILD=$(HOSTCC) CXX_FOR_BUILD=$(HOSTCC) \
-		CC=$(HOSTCC) CXX=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD=$(TARGET_CROSS)gcc \
+		CXX_FOR_BUILD=$(TARGET_CROSS)g++ \
 		AR_FOR_TARGET=$(TARGET_CROSS)ar \
 		AS_FOR_TARGET=$(TARGET_CROSS)as \
 		LD_FOR_TARGET=$(TARGET_CROSS)ld \
@@ -352,32 +373,37 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 		GCC_FOR_TARGET=$(TARGET_CROSS)gcc \
 		CXX_FOR_TARGET=$(TARGET_CROSS)g++ \
 		RANLIB_FOR_TARGET=$(TARGET_CROSS)ranlib \
-		DESTDIR=$(TARGET_DIR) $(GCC_INSTALL_TARGET)
+		prefix=$(TARGET_DIR)/usr \
+		exec_prefix=$(TARGET_DIR)/usr \
+		bindir=$(TARGET_DIR)/usr/bin \
+		sbindir=$(TARGET_DIR)/usr/sbin \
+		libexecdir=$(TARGET_DIR)/usr/lib \
+		datadir=$(TARGET_DIR)/usr/share \
+		sysconfdir=$(TARGET_DIR)/etc \
+		localstatedir=$(TARGET_DIR)/var \
+		libdir=$(TARGET_DIR)/usr/lib \
+		infodir=$(TARGET_DIR)/usr/info \
+		mandir=$(TARGET_DIR)/usr/man \
+		includedir=$(TARGET_DIR)/usr/include \
+		DESTDIR=$(TARGET_DIR) install
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	(cd $(TARGET_DIR)/lib; ln -fs /usr/bin/cpp)
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
 	rm -rf $(TARGET_DIR)/usr/include/include $(TARGET_DIR)/usr/usr
-	-cp -dpf $(STAGING_DIR)/lib/libgcc* $(TARGET_DIR)/lib/
-	-chmod a-x $(STAGING_DIR)/lib/*++*
-	-cp -a $(STAGING_DIR)/lib/*++* $(TARGET_DIR)/lib/
-	-cp -a $(STAGING_DIR)/include/c++ $(TARGET_DIR)/usr/include/
+	#-cp -dpf $(STAGING_DIR)/lib/libgcc* $(TARGET_DIR)/lib/
+	#-chmod a-x $(STAGING_DIR)/lib/*++*
+	#-cp -a $(STAGING_DIR)/lib/*++* $(TARGET_DIR)/lib/
+	#-cp -a $(STAGING_DIR)/include/c++ $(TARGET_DIR)/usr/include/
 	-mv $(TARGET_DIR)/lib/*.a $(TARGET_DIR)/usr/lib/
 	-mv $(TARGET_DIR)/lib/*.la $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libstdc++.so
 	-(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/libstdc++.so.5.0.2 libstdc++.so)
-	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP))
-	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP))
+	-(cd $(TARGET_DIR)/bin; find -type f | xargs $(STRIP) 2>&1 > /dev/null)
+	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) 2>&1 > /dev/null)
+	rm -f $(TARGET_DIR)/usr/lib/*.la*
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	rm -f $(TARGET_DIR)/usr/lib/*.la*
-	# gcc "fixincludes" step is totally broken and takes unwanted
-	# stuff from the host system.  Fix that here.
-ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
-	rm -rf $(TARGET_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/*
-	-cp -a $(STAGING_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/* \
-		$(TARGET_DIR)/usr/lib/gcc-lib/$(GNU_TARGET_NAME)/*/include/
-endif
 	touch -c $(TARGET_DIR)/usr/bin/gcc
 
 gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
