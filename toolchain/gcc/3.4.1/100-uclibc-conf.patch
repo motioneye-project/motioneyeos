@@ -361,14 +361,23 @@ diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
  powerpc-*-linux*)
  	tm_file="${tm_file} dbxelf.h elfos.h svr4.h freebsd-spec.h rs6000/sysv4.h rs6000/linux.h"
  	tmake_file="rs6000/t-fprules rs6000/t-ppcos t-slibgcc-elf-ver t-linux rs6000/t-ppccomm"
+@@ -1916,7 +1945,7 @@
+ 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h sh/elf.h sh/embed-elf.h sh/rtemself.h rtems.h"
+ 	;;
+ sh-*-linux* | sh[2346lbe]*-*-linux*)
+-	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver t-linux"
++	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver"
+ 	case ${target} in
+ 	sh*be-*-* | sh*eb-*-*) ;;
+ 	*)
 @@ -1924,9 +1953,17 @@
  		tmake_file="${tmake_file} sh/t-le"
  		;;
  	esac
 -	tmake_file="${tmake_file} sh/t-linux"
 +	case ${target} in
-+	*-*-linux-uclibc*) tmake_file="${tmake_file} sh/t-linux-uclibc" ;;
-+	*) tmake_file="${tmake_file} sh/t-linux" ;;
++	*-*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc sh/t-linux-uclibc" ;;
++	*) tmake_file="${tmake_file} t-linux sh/t-linux" ;;
 +	esac
  	tm_file="${tm_file} dbxelf.h elfos.h svr4.h sh/elf.h sh/linux.h"
  	case ${target} in
