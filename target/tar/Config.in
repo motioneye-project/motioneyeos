@@ -1,4 +1,4 @@
-menuconfig BR2_TARGET_ROOTFS_TAR
+config BR2_TARGET_ROOTFS_TAR
 	bool "tar the root filesystem for the target device"
 	default n
 	help
