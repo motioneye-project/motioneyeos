@@ -39,8 +39,8 @@ MULTILIB:=--enable-multilib
 #
 #############################################################
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
-BINUTILS_SOURCE:=binutils-2.13.2.tar.bz2
-BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.13.2
+BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
+BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.13.2.1
 #
 # Perhaps you would perfer to use the older 2.12.1 version?
 #BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
@@ -59,8 +59,8 @@ UCLIBC_SITE:=http://www.kernel.org/pub/linux/libs/uclibc
 endif
 
 GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/
-GCC_SOURCE:=gcc-3.2.1.tar.gz
-GCC_DIR:=$(BUILD_DIR)/gcc-3.2.1
+GCC_SOURCE:=gcc-3.2.2.tar.gz
+GCC_DIR:=$(BUILD_DIR)/gcc-3.2.2
 
 
 
