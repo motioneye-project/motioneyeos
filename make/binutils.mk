@@ -1,3 +1,4 @@
+ifneq ($(USE_LINUX_UCLIBC),true)
 #############################################################
 #
 # build binutils for use on the host system
@@ -28,7 +29,7 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply any files named binutils-*.patch from the source directory to binutils
-	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR) binutils-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(BINUTILS_DIR) $(SOURCE_DIR) binutils-[0-9]*.patch
 	touch $(BINUTILS_DIR)/.patched
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
@@ -207,3 +208,4 @@ binutils_target-clean:
 binutils_target-dirclean:
 	rm -rf $(BINUTILS_DIR2)
 
+endif	#ifneq ($(USE_LINUX_UCLIBC),true)

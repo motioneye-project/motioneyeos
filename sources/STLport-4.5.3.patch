@@ -22,7 +22,7 @@ diff -urN STLport-4.5.3/Makefile STLport-4.5.3-devel/Makefile
 +
 +ARCH:=i386
 +PREFIX:=/usr/$(ARCH)-linux-uclibc
-+CROSS:= $(PREFIX)/bin/$(ARCH)-uclibc-
++CROSS:= $(PREFIX)/../bin/$(ARCH)-linux-uclibc-
 +CC=$(CROSS)gcc
 +CXX=$(CROSS)g++
 +AR = $(CROSS)ar
@@ -267,11 +267,64 @@ diff -urN STLport-4.5.3/stlport/stl/_config.h STLport-4.5.3-devel/stlport/stl/_c
 diff -urN STLport-4.5.3/stlport/stl/_stdio_file.h STLport-4.5.3-devel/stlport/stl/_stdio_file.h
 --- STLport-4.5.3/stlport/stl/_stdio_file.h	Fri Jan 18 15:07:00 2002
 +++ STLport-4.5.3-devel/stlport/stl/_stdio_file.h	Tue Jan  7 15:28:08 2003
-@@ -634,6 +634,57 @@
+@@ -634,6 +634,112 @@
  }
  # define _STLP_FILE_I_O_IDENTICAL
  
 +#elif defined(_STLP_USE_UCLIBC)
++
++#if defined(__MASK_READING)
++
++inline int   _FILE_fd(const FILE *__f) { return __f->__filedes; }
++
++//       Returns a pointer to the beginning of the buffer.
++inline char* _FILE_I_begin(const FILE *__f) { return (char*) __f->__bufstart; }
++
++//       Returns the current read/write position within the buffer.
++inline char* _FILE_I_next(const FILE *__f) { return (char*) __f->__bufpos; }
++
++//       Returns a pointer immediately past the end of the buffer.
++inline char* _FILE_I_end(const FILE *__f) { return (char*)__f->__bufend; }
++
++//       Returns the number of characters remaining in the buffer, i.e.
++//       _FILE_[IO]_end(__f) - _FILE_[IO]_next(__f).
++inline ptrdiff_t _FILE_I_avail(const FILE *__f) 
++  { return __f->__bufgetc_u - __f->__bufpos; }
++
++//       Increments the current read/write position by 1, returning the 
++//       character at the old position.
++inline char& _FILE_I_preincr(FILE *__f)  { return *(char*)(++__f->__bufpos); }
++
++//       Increments the current read/write position by 1, returning the 
++//       character at the old position.
++inline char& _FILE_I_postincr(FILE *__f)  { return *(char*)(__f->__bufpos++); }
++
++//       Decrements the current read/write position by 1, returning the 
++//       character at the old position.
++inline char& _FILE_I_predecr(FILE *__f)  { return *(char*)(--__f->__bufpos); }
++
++//       Decrements the current read/write position by 1, returning the 
++//       character at the old position.
++inline char& _FILE_I_postdecr(FILE *__f)  { return *(char*)(__f->__bufpos--); }
++
++//       Increments the current read/write position by __n.
++inline void  _FILE_I_bump(FILE *__f, int __n) { __f->__bufpos += __n; }
++
++//       Sets the beginning of the bufer to __begin, the current read/write
++//       position to __next, and the buffer's past-the-end pointer to __end.
++//       If any of those pointers is null, then all of them must be null.
++inline void _FILE_I_set(FILE *__f, char* __begin, char* __next, char* __end)
++{
++	__f->__bufstart = (unsigned char*)__begin;
++	__f->__bufpos  =  (unsigned char*)__next;
++	__f->__bufend  =  (unsigned char*)__end;
++	__f->__bufgetc_u = (unsigned char*)__begin;
++	__f->__bufputc_u = (unsigned char*)__end;
++}
++
++# define _STLP_FILE_I_O_IDENTICAL
++
++#else    // Support old stdio for a little while.
 +
 +inline int   _FILE_fd(const FILE *__f) { return __f->filedes; }
 +
@@ -316,11 +369,13 @@ diff -urN STLport-4.5.3/stlport/stl/_stdio_file.h STLport-4.5.3-devel/stlport/st
 +	__f->bufstart = (unsigned char*)__begin;
 +	__f->bufpos  =  (unsigned char*)__next;
 +	__f->bufend  =  (unsigned char*)__end;
-+	__f->bufgetc  = (unsigned char*)__begin;
++	__f->bufgetc = (unsigned char*)__begin;
 +	__f->bufputc = (unsigned char*)__end;
 +}
 +
 +# define _STLP_FILE_I_O_IDENTICAL
++
++#endif
 +
  #else  /* A C library that we don't have an implementation for. */
  
@@ -328,40 +383,23 @@ diff -urN STLport-4.5.3/stlport/stl/_stdio_file.h STLport-4.5.3-devel/stlport/st
 diff -urN STLport-4.5.3/stlport/stl/c_locale.h STLport-4.5.3-devel/stlport/stl/c_locale.h
 --- STLport-4.5.3/stlport/stl/c_locale.h	Fri Jan 18 15:07:00 2002
 +++ STLport-4.5.3-devel/stlport/stl/c_locale.h	Wed Jan  8 10:58:10 2003
-@@ -326,6 +326,29 @@
- # define _Locale_PRINT _R
- # define _Locale_ALPHA _A
- 
-+# elif defined (_STLP_USE_UCLIBC)
-+ 
-+//# include <linux/ctype.h>
-+
-+#define _U      0x01    /* upper */
-+#define _L      0x02    /* lower */
-+#define _D      0x04    /* digit */
-+#define _C      0x08    /* cntrl */
-+#define _P      0x10    /* punct */
-+#define _S      0x20    /* white space (space/lf/tab) */
-+#define _X      0x40    /* hex digit */
-+#define _SP     0x80    /* hard space (0x20) */
-+
-+# define _Locale_CNTRL _C
-+# define _Locale_UPPER _U
-+# define _Locale_LOWER _L
-+# define _Locale_DIGIT _D
-+# define _Locale_XDIGIT _X
-+# define _Locale_PUNCT _P
-+# define _Locale_SPACE _S
-+# define _Locale_PRINT (_P|_U|_L|_D|_SP)
-+# define _Locale_ALPHA (_U|_L)
-+
- # elif defined (__hpux) || defined (__osf__)
-  
- #   if defined(__HP_aCC) && !defined(_INCLUDE_HPUX_SOURCE)
-@@ -401,6 +424,8 @@
+@@ -401,6 +401,21 @@
  #  define _Locale_SPACE _S
  #  define _Locale_PRINT (_P | _U | _L | _N | _B)
  #  define _Locale_ALPHA (_U | _L)
++
++# elif defined(_STLP_USE_UCLIBC) /* linux, using the gnu compiler */
++
++#  define _Locale_CNTRL  _IScntrl
++#  define _Locale_UPPER  _ISupper
++#  define _Locale_LOWER  _ISlower
++#  define _Locale_DIGIT  _ISdigit
++#  define _Locale_XDIGIT _ISxdigit
++#  define _Locale_PUNCT  _ISpunct
++#  define _Locale_SPACE  _ISspace
++#  define _Locale_PRINT  _ISprint
++#  define _Locale_ALPHA  _ISalpha
++
 +#else
 +#  error Unknown Locale
  #endif

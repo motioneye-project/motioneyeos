@@ -46,17 +46,26 @@ ARCH:=i386
 #ARCH:=sparc
 #ARCH:=whatever
 
+# Enable this if you want to use an <arch>-linux-uclibc-* toolchain.
+# Note that, to avoid configure problems with apps that don't support
+# this tupple, we also put <arch>-linux-* symlinks in staging_dir/bin.
+# WARNING -- This does not yet support soft-float builds.
+USE_LINUX_UCLIBC:=true
+#USE_LINUX_UCLIBC:=false
+
 # If you are building a native gcc toolchain, do you want to
 # build the old gcc-2.95 based toolchain, or would you prefer
 # a nice and shiny new gcc-3.3.2 toolchain?
-# WARNING -- 2.95 currently does not build.
+# WARNING -- 2.95 currently does not build unless USE_LINUX_UCLIBC:=true.
+# WARNING -- 2.95 currently only builds for i386, arm, mips*, and powerpc.
+# WARNING -- 2.95 does not currently build natively for the target.
+#GCC_2_95_TOOLCHAIN:=true
 GCC_2_95_TOOLCHAIN:=false
-# WARNING -- 2.95 currently does not build.
 
 # Enable this to use the uClibc daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
 # they may not even compile at all, depending on what Erik is doing...
-USE_UCLIBC_SNAPSHOT:=false
+USE_UCLIBC_SNAPSHOT:=true
 
 # Enable this to use the busybox daily snapshot instead of a released
 # version.  Daily snapshots may contain new features and bugfixes. Or
@@ -70,12 +79,15 @@ BUILD_WITH_LARGEFILE:=true
 WGET:=wget --passive-ftp
 
 # Optimize toolchain for which type of CPU?
+ifeq ($(USE_LINUX_UCLIBC),true)
+OPTIMIZE_FOR_CPU=$(ARCH)
+#OPTIMIZE_FOR_CPU=i686
+#OPTIMIZE_FOR_CPU=whatever
+else
 # WARNING!!!  CURRENTLY BROKEN!!! LEAVE IT AS $(ARCH)!!!
 OPTIMIZE_FOR_CPU=$(ARCH)
 # WARNING!!!  CURRENTLY BROKEN!!! LEAVE IT AS $(ARCH)!!!
-#OPTIMIZE_FOR_CPU=i486
-#OPTIMIZE_FOR_CPU=strongarm
-#OPTIMIZE_FOR_CPU=whatever
+endif
 
 # Soft floating point options.
 # Notes:
@@ -200,6 +212,11 @@ TARGETS+=ext2root
 #
 #############################################################
 
+# The new stuff doesn't support soft float yet.
+ifeq ($(USE_LINUX_UCLIBC),true)
+SOFT_FLOAT:=false
+endif
+
 ifeq ($(SOFT_FLOAT),true)
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
 TARGET_SOFT_FLOAT:=-msoft-float
@@ -210,8 +227,12 @@ TARGET_SOFT_FLOAT:=
 ARCH_FPU_SUFFIX:=
 endif
 
+# The new stuff auto-detects approrpriate locale support.
+# So only set this for the old 'hacked' toolchain.
+ifneq ($(USE_LINUX_UCLIBC),true)
 ifeq ($(ENABLE_LOCALE),true)
 EXTRA_GCC_CONFIG_OPTIONS += --enable-clocale=gnu
+endif
 endif
 
 # WARNING -- uClibc currently disables large file support on cris.
@@ -234,15 +255,24 @@ TARGET_DIR:=$(BUILD_DIR)/root
 STAGING_DIR=$(BUILD_DIR)/staging_dir
 TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)$(ARCH_FPU_SUFFIX)
 TARGET_PATH=$(STAGING_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
-#TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
-TARGET_CROSS=$(STAGING_DIR)/bin/$(ARCH)-linux-
+IMAGE:=$(BASE_DIR)/root_fs_$(ARCH)$(ARCH_FPU_SUFFIX)
+
+ifeq ($(USE_LINUX_UCLIBC),true)
+REAL_GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux-uclibc
+GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
+KERNEL_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-
+TARGET_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-
+else
+REAL_GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
+GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
+KERNEL_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-
+TARGET_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-
+endif
+
 TARGET_CC=$(TARGET_CROSS)gcc$(TARGET_SOFT_FLOAT)
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
-#STRIP:=/bin/true
-IMAGE:=$(BASE_DIR)/root_fs_$(ARCH)$(ARCH_FPU_SUFFIX)
-GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
-#KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-uclibc-
-KERNEL_CROSS=$(STAGING_DIR)/bin/$(ARCH)-linux-
+
+
 HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/sparc.*/sparc/' \
 	-e 's/arm.*/arm/g' \
@@ -301,7 +331,12 @@ $(STAGING_DIR):
 	rm -rf $(STAGING_DIR)
 	mkdir -p $(STAGING_DIR)/lib
 	mkdir -p $(STAGING_DIR)/usr
+ifneq ($(GCC_2_95_TOOLCHAIN),true)
 	mkdir -p $(STAGING_DIR)/include
+else
+	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/include
+	(cd $(STAGING_DIR); ln -fs $(REAL_GNU_TARGET_NAME)/include)
+endif
 	ln -fs ../lib $(STAGING_DIR)/usr/lib
 
 $(TARGET_DIR):

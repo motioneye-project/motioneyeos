@@ -16,6 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+ifneq ($(USE_LINUX_UCLIBC),true)
 ifneq ($(GCC_2_95_TOOLCHAIN),true)
 
 # Older stuff...
@@ -67,7 +68,7 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) gcc-[0-9]*.patch
 ifeq ($(SOFT_FLOAT),true)
 ifeq ("$(strip $(ARCH))","i386")
 	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR) i386-gcc-soft-float.patch
@@ -360,7 +361,7 @@ $(GCC_BUILD_DIR3)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 
 $(GCC_BUILD_DIR3)/.patched: $(GCC_BUILD_DIR3)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	$(SOURCE_DIR)/patch-kernel.sh $(GCC_BUILD_DIR3) $(SOURCE_DIR) gcc-*.patch
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_BUILD_DIR3) $(SOURCE_DIR) gcc-[0-9]**.patch
 ifeq ("$(strip $(ARCH))","i386")
 	$(SOURCE_DIR)/patch-kernel.sh $(GCC_BUILD_DIR3) $(SOURCE_DIR) i386-gcc-*.patch
 endif
@@ -451,3 +452,4 @@ gcc3_3_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
 endif
+endif	#ifneq ($(USE_LINUX_UCLIBC),true)
