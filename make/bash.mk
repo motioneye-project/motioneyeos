@@ -33,6 +33,7 @@ $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
 $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC1) -C $(BASH_DIR) install
 	mv $(TARGET_DIR)/usr/bin/bash* $(TARGET_DIR)/bin/
+	(cd $(TARGET_DIR)/bin; ln -fs bash sh)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/junk
 
 bash: ncurses uclibc $(TARGET_DIR)/$(BASH_TARGET_BINARY)

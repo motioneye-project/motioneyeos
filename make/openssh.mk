@@ -34,7 +34,7 @@ $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
 
 $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
 	make CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
-	rm -rf $(TARGET_DIR)/usr/share/doc/openssh
+	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 openssh: $(TARGET_DIR)/usr/bin/ssh
 

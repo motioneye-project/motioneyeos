@@ -17,20 +17,24 @@
 ::sysinit:/etc/init.d/rcS
 
 # Set up a couple of getty's
-tty1::respawn:/sbin/getty 38400 tty1
-tty2::respawn:/sbin/getty 38400 tty2
+tty1::respawn:/sbin/getty 38400 tty2
+tty2::respawn:/sbin/getty 38400 tty3
 
 # Put a getty on the serial port
 #ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
 
 # Logging junk
-tty3::once:/bin/touch /var/log/messages
-tty3::respawn:/usr/bin/tail -f /var/log/messages
-::respawn:/sbin/klogd -n
+null::sysinit:/bin/touch /var/log/messages
+null::respawn:/sbin/syslogd -n -m 0
+null::respawn:/sbin/klogd -n
+tty4::respawn:/usr/bin/tail -f /var/log/messages
 
 # Stuff to do for the 3-finger salute
 ::ctrlaltdel:/sbin/reboot
 
 # Stuff to do before rebooting
+null::shutdown:/usr/bin/killall klogd
+null::shutdown:/usr/bin/killall syslogd
 null::shutdown:/bin/umount -a -r
 null::shutdown:/sbin/swapoff -a
+

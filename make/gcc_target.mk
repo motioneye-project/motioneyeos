@@ -137,7 +137,8 @@ $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$$PATH:$(STAGING_DIR)/bin $(MAKE) DESTDIR=$(TARGET_DIR) prefix=$(TARGET_DIR)/usr \
 		-C $(GCC_BUILD_DIR3) install;
-	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
+		$(TARGET_DIR)/usr/share/locale
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 

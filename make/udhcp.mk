@@ -20,37 +20,37 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
-UDHCP_DIR:=$(BUILD_DIR)/udhcp
-#UDHCP_SOURCE:=udhcp-0.9.6.tar.gz
-#UDHCP_SITE:=http://udhcp.busybox.net/downloads/
 
-#$(DL_DIR)/$(UDHCP_SOURCE):
-#	wget -P $(DL_DIR) $(UDHCP_SITE)/$(UDHCP_SOURCE)
+UDHCP_SOURCE:=udhcp-0.9.8.tar.gz
+UDHCP_SITE:=http://udhcp.busybox.net/downloads/
+UDHCP_DIR:=$(BUILD_DIR)/udhcp-0.9.8
 
-#udhcp-source: $(DL_DIR)/$(UDHCP_SOURCE)
+$(DL_DIR)/$(UDHCP_SOURCE):
+	wget -P $(DL_DIR) $(UDHCP_SITE)/$(UDHCP_SOURCE)
 
-#$(UDHCP_DIR)/Makefile: $(DL_DIR)/$(UDHCP_SOURCE)
-#	zcat $(DL_DIR)/$(UDHCP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-#	touch $(UDHCP_DIR)/Makefile
+udhcp-source: $(DL_DIR)/$(UDHCP_SOURCE)
 
-$(UDHCP_DIR)/Makefile: 
-	(cd $(BUILD_DIR); \
-	cvs -z3 -d:pserver:anonymous@busybox.net:/var/cvs co udhcp )
+$(UDHCP_DIR)/.unpacked: $(DL_DIR)/$(UDHCP_SOURCE)
+	zcat $(DL_DIR)/$(UDHCP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	touch $(UDHCP_DIR)/.unpacked
 
-$(UDHCP_DIR)/udhcpc: $(UDHCP_DIR)/Makefile
-	make CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(UDHCP_DIR)
+#$(UDHCP_DIR)/.unpacked: 
+#	(cd $(BUILD_DIR); \
+#	CVS_PASSFILE=$(CVS_PASSFILE) \
+#	cvs -z3 -d:pserver:anonymous@busybox.net:/var/cvs co udhcp )
+#	touch $(UDHCP_DIR)/.unpacked
+
+$(UDHCP_DIR)/udhcpc: $(UDHCP_DIR)/.unpacked
+	$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(UDHCP_DIR)
 
 $(TARGET_DIR)/sbin/udhcpc: $(UDHCP_DIR)/udhcpc
-	perl -i -p -e 's/pump/udhcpc/' $(TARGET_DIR)/etc/pcmcia/network*
-	perl -i -p -e 's/PUMP/UDHCPC/' $(TARGET_DIR)/etc/pcmcia/network*
-	perl -i -p -e 's/DHCP="n"/DHCP="y"/' $(TARGET_DIR)/etc/pcmcia/network*
 	cp $(UDHCP_DIR)/udhcpc $(TARGET_DIR)/sbin/
 
-udhcp: uclibc pcmcia $(TARGET_DIR)/sbin/udhcpc
+udhcp: uclibc $(TARGET_DIR)/sbin/udhcpc
 
 udhcp-clean:
 	rm -f $(TARGET_DIR)/sbin/udhcpc
-	-make -C $(UDHCP_DIR) clean
+	-$(MAKE) -C $(UDHCP_DIR) clean
 
 udhcp-dirclean:
 	rm -rf $(UDHCP_DIR)
