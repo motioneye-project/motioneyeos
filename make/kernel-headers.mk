@@ -19,10 +19,10 @@ LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux
 # Uncomment this for 2.6.x kernel header files
 #VERSION=2
 #PATCHLEVEL=6
-#SUBLEVEL=7
+#SUBLEVEL=8
 #LINUX_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
-#LINUX_SOURCE:=linux-libc-headers-2.6.7.0.tar.bz2
-#LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.7.0
+#LINUX_SOURCE:=linux-libc-headers-2.6.8.0.tar.bz2
+#LINUX_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.8.0
 
 
 
