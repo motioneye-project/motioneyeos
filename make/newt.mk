@@ -4,7 +4,7 @@
 #
 #############################################################
 NEWT_SOURCE=newt-0.51.0.tar.bz2
-NEWT_SITE=ftp://busybox.net
+NEWT_SITE=http://www.uclibc.org/
 NEWT_DIR=$(BUILD_DIR)/newt-0.51.0
 NEWT_VERSION=0.51.0
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)

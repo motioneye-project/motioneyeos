@@ -4,7 +4,7 @@
 #
 #############################################################
 SFDISK_SOURCE=sfdisk.tar.bz2
-SFDISK_SITE:=ftp://busybox.net/
+SFDISK_SITE:=http://www.uclibc.org/
 SFDISK_DIR=$(BUILD_DIR)/sfdisk
 
 
