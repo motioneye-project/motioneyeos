@@ -45,3 +45,11 @@ dhcp_relay-clean:
 dhcp_relay-dirclean:
 	rm -rf $(DHCP_RELAY_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_DHCP_RELAY)),y)
+TARGETS+=dhcp_relay
+endif

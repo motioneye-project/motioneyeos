@@ -42,3 +42,11 @@ mkdosfs-clean:
 mkdosfs-dirclean:
 	rm -rf $(MKDOSFS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_MKDOSFS)),y)
+TARGETS+=mkdosfs
+endif

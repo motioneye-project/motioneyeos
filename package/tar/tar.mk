@@ -66,3 +66,11 @@ tar-clean:
 tar-dirclean:
 	rm -rf $(GNUTAR_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_TAR)),y)
+TARGETS+=tar
+endif

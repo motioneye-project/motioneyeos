@@ -47,3 +47,11 @@ wget-clean:
 
 wget-dirclean:
 	rm -rf $(WGET_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_WGET)),y)
+TARGETS+=wget
+endif

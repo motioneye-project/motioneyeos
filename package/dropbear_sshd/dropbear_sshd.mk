@@ -77,3 +77,11 @@ dropbear_sshd-clean:
 dropbear_sshd-dirclean:
 	rm -rf $(DROPBEAR_SSHD_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_DROPBEAR_SSHD)),y)
+TARGETS+=dropbear_sshd
+endif

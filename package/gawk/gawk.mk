@@ -64,3 +64,11 @@ gawk-clean:
 gawk-dirclean:
 	rm -rf $(GAWK_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_GAWK)),y)
+TARGETS+=gawk
+endif

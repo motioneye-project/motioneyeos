@@ -45,3 +45,11 @@ procps-clean:
 procps-dirclean:
 	rm -rf $(PROCPS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PROCPS)),y)
+TARGETS+=procps
+endif

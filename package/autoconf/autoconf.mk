@@ -70,3 +70,11 @@ autoconf-clean:
 autoconf-dirclean:
 	rm -rf $(AUTOCONF_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_AUTOCONF)),y)
+TARGETS+=autoconf
+endif

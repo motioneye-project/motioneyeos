@@ -85,3 +85,11 @@ valgrind-clean:
 valgrind-dirclean: 
 	rm -rf $(VALGRIND_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_VALGRIND)),y)
+TARGETS+=valgrind
+endif

@@ -81,3 +81,11 @@ python-clean:
 
 python-dirclean:
 	rm -rf $(PYTHON_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PYTHON)),y)
+TARGETS+=python
+endif

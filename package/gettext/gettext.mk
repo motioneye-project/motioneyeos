@@ -59,3 +59,11 @@ gettext-clean:
 gettext-dirclean:
 	rm -rf $(GETTEXT_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_GETTEXT)),y)
+TARGETS+=gettext
+endif

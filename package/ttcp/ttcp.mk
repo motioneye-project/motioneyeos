@@ -35,3 +35,11 @@ ttcp-clean:
 ttcp-dirclean:
 	rm -rf $(TTCP_BUILD_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_TTCP)),y)
+TARGETS+=ttcp
+endif

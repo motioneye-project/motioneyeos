@@ -34,3 +34,11 @@ sfdisk-clean:
 
 sfdisk-dirclean:
 	rm -rf $(SFDISK_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_SFDISK)),y)
+TARGETS+=sfdisk
+endif

@@ -292,7 +292,7 @@
       skeleton.</li>
     </ul>
 
-    <p>Each directory contains at least 3 files :</p>
+    <p>Each directory contains at least 2 files :</p>
 
     <ul>
       <li><code>something.mk</code> is the Makefile that downloads, configures,
@@ -302,10 +302,6 @@
       description file. It describes the option related to the current
       software.</li>
 
-      <li><code>Makefile.in</code> is a part of Makefile that sets various
-      variables according to the configuration given through the configuration
-      tool. For most tools it simply involves adding the name of the tool to
-      the <code>TARGETS</code> variable.</li>
     </ul>
 
     <p>The main Makefile do the job through the following steps (once the
@@ -343,9 +339,10 @@
       <code>target/default/target_skeleton</code> and then removes useless
       <code>CVS/</code> directories.</li>
 
-      <li>Make the <code>TARGETS</code> dependency. This is where all the job
-      is done : all <code>Makefile.in</code> files "subscribe" targets into
-      this global variable, so that the needed tools gets compiled.</li>
+      <li>Add the <code>TARGETS</code> dependency. This should generally check
+      if the configuration option for this package is enabled, and if so then
+      "subscribe" this package to be compiled by adding it to the TARGETS
+      global variable.</li>
     </ol>
 
     <h2><a name="using_toolchain" id="using_toolchain"></a>Using the
@@ -441,26 +438,6 @@ config BR2_PACKAGE_FOO
     <p>Of course, you can add other options to configure particular
     things in your software.</p>
 
-    <h3><code>Makefile.in</code> file</h3>
-
-    <p>Then, write a <code>Makefile.in</code> file. Basically, this is
-    a very short <i>Makefile</i> that adds the name of the software to
-    the list of <code>TARGETS</code> that Buildroot will generate. In
-    fact, the name of the software is the the identifier of the target
-    inside the real <i>Makefile</i> that will do everything (download,
-    compile, install), and that we study below. Back to
-    <code>Makefile.in</code>, here is an example :</p>
-
-<pre>
-ifeq ($(strip $(BR2_PACKAGE_FOO)),y)
-TARGETS+=foo
-endif
-</pre>
-
-   <p>As you can see, this short <i>Makefile</i> simply adds the
-   target <code>foo</code> to the list of targets handled by Buildroot
-   if software <i>foo</i> was selected using the configuration tool.</p>
-
    <h3>The real <i>Makefile</i></h3>
 
    <p>Finally, here's the hardest part. Create a file named
@@ -520,6 +497,15 @@ endif
     48  foo-dirclean:
     49          rm -rf $(FOO_DIR)
     50
+    51 #############################################################
+    52 #
+    53 # Toplevel Makefile options
+    54 #
+    55 #############################################################
+    56 ifeq ($(strip $(BR2_PACKAGE_FOO)),y)
+    57 TARGETS+=foo
+    58 endif
+
 </pre>
 
     <p>First of all, this <i>Makefile</i> example works for a single
@@ -602,11 +588,13 @@ endif
     removed to save space.</p>
 
     <p>Line 40 defines the main target of the software, the one
-    referenced in the <code>Makefile.in</code> file. This targets
-    should first of all depends on the dependecies of the software (in
-    our example, <i>uclibc</i> and <i>ncurses</i>), and then to the
+    that will be eventually be used by the top level
+    <code>Makefile</code> to download, compile, and then install
+    this package. This target should first of all depends on all
+    needed dependecies of the software (in our example,
+    <i>uclibc</i> and <i>ncurses</i>), and also depend on the
     final binary. This last dependency will call all previous
-    dependencies in the right order. </p>
+    dependencies in the correct order. </p>
 
     <p>Line 42 defines a simple target that only downloads the code
     source. This is not used during normal operation of Buildroot, but
@@ -618,6 +606,17 @@ endif
     <p>Lines 48-49 define a simple target to completely remove the
     directory in which the software was uncompressed, configured and
     compiled.</p>
+
+    <p>Lines 51-58 adds the target <code>foo</code> to the list
+    of targets to be compiled by Buildroot by first checking if
+    the configuration option for this package has been enabled
+    using the configuration tool, and if so then "subscribes"
+    this package to be compiled by adding it to the TARGETS
+    global variable.  The name added to the TARGETS global
+    variable is the name of this package's target, as defined on
+    line 40, which is used by Buildroot to download, compile, and
+    then install this package.</p>
+
 
     <h3>Conclusion</h3>
 

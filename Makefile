@@ -51,11 +51,8 @@ ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 ##############################################################
 TARGETS:=host-sed kernel-headers uclibc-configured binutils gcc uclibc-target-utils
 include toolchain/Makefile.in
-include toolchain/*/Makefile.in
 include package/Makefile.in
-include package/*/Makefile.in
 include target/Makefile.in
-include target/*/Makefile.in
 
 #############################################################
 #
@@ -71,6 +68,13 @@ all:   world
 # In this section, we need .config
 include .config.cmd
 
+# We also need the various per-package makefiles, which also add
+# each selected package to TARGETS if that package was selected
+# in the .config file.
+include toolchain/*/*.mk
+include package/*/*.mk
+include target/*/*.mk
+
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
@@ -80,10 +84,6 @@ world: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) $(TARGETS)
 .PHONY: all world clean dirclean distclean source $(TARGETS) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
 	$(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR) $(STAGING_DIR)
-
-include toolchain/*/*.mk
-include package/*/*.mk
-include target/*/*.mk
 
 #############################################################
 #

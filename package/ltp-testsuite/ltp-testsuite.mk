@@ -36,3 +36,11 @@ ltp-testsuite-dirclean:
 	rm -rf $(LTP_TESTSUITE_DIR)
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LTP-TESTSUITE)),y)
+TARGETS+=ltp-testsuite
+endif

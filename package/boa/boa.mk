@@ -74,3 +74,11 @@ boa-clean:
 boa-dirclean:
 	rm -rf $(BOA_DIR) $(BOA_WORKDIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_BOA)),y)
+TARGETS+=boa
+endif

@@ -50,3 +50,11 @@ libmad-clean:
 
 libmad-dirclean:
 	rm -rf $(LIBMAD_DIR) $(LIBMAD_WORKDIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LIBMAD)),y)
+TARGETS+=libmad
+endif

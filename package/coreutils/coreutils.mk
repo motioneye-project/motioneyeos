@@ -88,3 +88,11 @@ coreutils-clean:
 coreutils-dirclean:
 	rm -rf $(COREUTILS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_COREUTILS)),y)
+TARGETS+=coreutils
+endif

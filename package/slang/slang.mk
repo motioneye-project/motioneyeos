@@ -46,3 +46,11 @@ slang-dirclean:
 	rm -rf $(SLANG_DIR)
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_SLANG)),y)
+TARGETS+=slang
+endif

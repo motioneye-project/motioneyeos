@@ -71,3 +71,11 @@ zlib-clean:
 zlib-dirclean:
 	rm -rf $(ZLIB_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_ZLIB)),y)
+TARGETS+=zlib
+endif

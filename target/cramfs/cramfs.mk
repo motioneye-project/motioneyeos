@@ -49,3 +49,11 @@ cramfsroot-clean:
 cramfsroot-dirclean:
 	rm -rf $(CRAMFS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_TARGET_ROOTFS_CRAMFS)),y)
+TARGETS+=cramfsroot
+endif

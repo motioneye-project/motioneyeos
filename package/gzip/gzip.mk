@@ -70,3 +70,11 @@ gzip-clean:
 gzip-dirclean:
 	rm -rf $(GZIP_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_GZIP)),y)
+TARGETS+=gzip
+endif

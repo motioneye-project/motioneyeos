@@ -44,3 +44,11 @@ which-clean:
 
 which-dirclean:
 	rm -rf $(WHICH_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_WHICH)),y)
+TARGETS+=which
+endif

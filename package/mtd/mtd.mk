@@ -96,3 +96,11 @@ mtd-dirclean:
 	rm -rf $(MTD_DIR)
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_MTD)),y)
+TARGETS+=mtd
+endif

@@ -67,3 +67,11 @@ socat-clean:
 socat-dirclean:
 	rm -rf $(SOCAT_DIR) $(SOCAT_WORKDIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_SOCAT)),y)
+TARGETS+=socat
+endif

@@ -64,5 +64,11 @@ jffs2root-clean: mtd-host-clean
 jffs2root-dirclean: mtd-host-dirclean
 	-rm -f $(JFFS2_TARGET)
 
-
-
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2)),y)
+TARGETS+=jffs2root
+endif

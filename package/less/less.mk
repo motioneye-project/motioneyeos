@@ -48,3 +48,11 @@ less-clean:
 less-dirclean:
 	rm -rf $(LESS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LESS)),y)
+TARGETS+=less
+endif

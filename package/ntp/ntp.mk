@@ -63,3 +63,11 @@ ntp-clean:
 ntp-dirclean:
 	rm -rf $(NTP_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_NTP)),y)
+TARGETS+=ntp
+endif

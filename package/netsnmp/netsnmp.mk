@@ -102,3 +102,11 @@ netsnmp-clean:
 netsnmp-dirclean: 
 	rm -rf $(NETSNMP_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_NETSNMP)),y)
+TARGETS+=netsnmp
+endif

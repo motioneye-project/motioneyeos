@@ -77,3 +77,11 @@ openssl-clean:
 
 openssl-dirclean: 
 	rm -rf $(OPENSSL_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_OPENSSL)),y)
+TARGETS+=openssl
+endif

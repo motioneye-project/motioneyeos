@@ -71,3 +71,11 @@ grep-clean:
 grep-dirclean:
 	rm -rf $(GNUGREP_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_GREP)),y)
+TARGETS+=grep
+endif

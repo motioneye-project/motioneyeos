@@ -1,3 +1,0 @@
-ifeq ($(strip $(BR2_PACKAGE_LIBGLIB12)),y)
-TARGETS+=libglib12
-endif

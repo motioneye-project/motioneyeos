@@ -36,3 +36,11 @@ hotplug-clean:
 hotplug-dirclean:
 	rm -rf $(HOTPLUG_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_HOTPLUG)),y)
+TARGETS+=hotplug
+endif

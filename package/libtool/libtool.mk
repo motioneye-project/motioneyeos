@@ -75,3 +75,11 @@ libtool-clean:
 libtool-dirclean:
 	rm -rf $(LIBTOOL_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LIBTOOL)),y)
+TARGETS+=libtool
+endif

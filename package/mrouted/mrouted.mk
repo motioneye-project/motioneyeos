@@ -42,3 +42,11 @@ mrouted-clean:
 mrouted-dirclean:
 	rm -rf $(MROUTED_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_MROUTED)),y)
+TARGETS+=mrouted
+endif

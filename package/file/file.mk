@@ -64,3 +64,11 @@ file-clean:
 file-dirclean:
 	rm -rf $(FILE_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_FILE)),y)
+TARGETS+=file
+endif

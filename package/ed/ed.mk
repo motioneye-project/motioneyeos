@@ -53,3 +53,11 @@ ed-clean:
 ed-dirclean:
 	rm -rf $(ED_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_ED)),y)
+TARGETS+=ed
+endif

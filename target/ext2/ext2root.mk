@@ -111,3 +111,11 @@ ext2root-clean:
 ext2root-dirclean:
 	rm -rf $(GENEXT2_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2)),y)
+TARGETS+=ext2root
+endif

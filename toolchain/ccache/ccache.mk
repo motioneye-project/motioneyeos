@@ -149,3 +149,14 @@ ccache_target-clean:
 
 ccache_target-dirclean:
 	rm -rf $(CCACHE_DIR2)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_CCACHE)),y)
+TARGETS+=ccache
+endif
+ifeq ($(strip $(BR2_PACKAGE_CCACHE_TARGET)),y)
+TARGETS+=ccache_target
+endif

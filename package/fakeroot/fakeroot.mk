@@ -62,3 +62,11 @@ fakeroot-dirclean:
 	rm -rf $(FAKEROOT_DIR) 
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_FAKEROOT)),y)
+TARGETS+=fakeroot
+endif

@@ -64,3 +64,11 @@ m4-clean:
 m4-dirclean:
 	rm -rf $(M4_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_M4)),y)
+TARGETS+=m4
+endif

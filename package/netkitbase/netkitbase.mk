@@ -55,3 +55,11 @@ netkitbase-clean:
 netkitbase-dirclean:
 	rm -rf $(NETKITBASE_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_NETKITBASE)),y)
+TARGETS+=netkitbase
+endif

@@ -1,3 +1,0 @@
-ifeq ($(strip $(BR2_PACKAGE_LZO)),y)
-TARGETS+=lzo
-endif

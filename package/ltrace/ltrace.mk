@@ -53,3 +53,11 @@ ltrace-clean:
 ltrace-dirclean:
 	rm -rf $(LTRACE_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LTRACE)),y)
+TARGETS+=ltrace
+endif

@@ -74,3 +74,11 @@ openssh-clean:
 
 openssh-dirclean: 
 	rm -rf $(OPENSSH_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_OPENSSH)),y)
+TARGETS+=openssh
+endif

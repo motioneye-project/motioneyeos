@@ -57,3 +57,11 @@ lzo-clean:
 lzo-dirclean:
 	rm -rf $(LZO_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LZO)),y)
+TARGETS+=lzo
+endif

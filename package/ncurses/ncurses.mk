@@ -133,3 +133,11 @@ ncurses-clean:
 
 ncurses-dirclean:
 	rm -rf $(NCURSES_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_NCURSES)),y)
+TARGETS+=ncurses
+endif

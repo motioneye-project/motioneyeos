@@ -187,3 +187,22 @@ gdbclient-dirclean:
 
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
+#"
+
+ifeq ($(strip $(BR2_PACKAGE_GDB)),y)
+TARGETS+=gdb_target
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_GDB_SERVER)),y)
+TARGETS+=gdbserver
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_GDB_CLIENT)),y)
+TARGETS+=gdbclient
+endif

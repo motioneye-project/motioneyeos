@@ -66,3 +66,11 @@ pppd-dirclean:
 	rm -rf $(PPPD_DIR)
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PPPD)),y)
+TARGETS+=pppd
+endif

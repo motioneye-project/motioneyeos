@@ -70,3 +70,11 @@ newt-clean:
 newt-dirclean: slang-dirclean
 	rm -rf $(NEWT_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_NEWT)),y)
+TARGETS+=newt
+endif

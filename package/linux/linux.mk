@@ -111,3 +111,11 @@ linux-dirclean:
 	rm -rf $(LINUX_DIR)
 
 endif
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
+TARGETS+=linux
+endif

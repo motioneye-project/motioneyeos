@@ -50,3 +50,11 @@ tinylogin-clean:
 
 tinylogin-dirclean:
 	rm -rf $(TINYLOGIN_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_TINYLOGIN)),y)
+TARGETS+=tinylogin
+endif

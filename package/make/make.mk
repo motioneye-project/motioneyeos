@@ -59,3 +59,11 @@ make-clean:
 make-dirclean:
 	rm -rf $(GNUMAKE_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_MAKE)),y)
+TARGETS+=make
+endif

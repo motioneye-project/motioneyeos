@@ -78,3 +78,11 @@ bash-clean:
 bash-dirclean:
 	rm -rf $(BASH_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_BASH)),y)
+TARGETS+=bash
+endif

@@ -56,3 +56,11 @@ distcc-clean:
 
 distcc-dirclean:
 	rm -rf $(DISTCC_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_DISTCC)),y)
+TARGETS+=distcc
+endif

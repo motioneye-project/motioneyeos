@@ -55,3 +55,11 @@ libfloat-clean:
 libfloat-dirclean:
 	rm -rf $(LIBFLOAT_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+#ifeq ($(strip $(BR2_PACKAGE_LIBFLOAT)),y)
+#TARGETS+=libfloat
+#endif

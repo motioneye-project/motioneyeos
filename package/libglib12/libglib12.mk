@@ -76,3 +76,11 @@ libglib12-clean:
 libglib12-dirclean:
 	rm -rf $(LIBGLIB12_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LIBGLIB12)),y)
+TARGETS+=libglib12
+endif

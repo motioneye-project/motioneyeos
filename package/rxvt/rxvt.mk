@@ -67,3 +67,11 @@ rxvt-clean:
 rxvt-dirclean:
 	rm -rf $(RXVT_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_RXVT)),y)
+TARGETS+=rxvt
+endif

@@ -92,3 +92,11 @@ berkeleydb-dirclean:
 
 berkeleydb: uclibc $(TARGET_DIR)/lib/$(DB_SHARLIB)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_BERKELEYDB)),y)
+TARGETS+=berkeleydb
+endif

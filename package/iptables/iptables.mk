@@ -49,3 +49,11 @@ iptables-clean:
 
 iptables-dirclean:
 	rm -rf $(IPTABLES_BUILD_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_IPTABLES)),y)
+TARGETS+=iptables
+endif

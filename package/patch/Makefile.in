@@ -1,3 +1,0 @@
-ifeq ($(strip $(BR2_PACKAGE_PATCH)),y)
-TARGETS+=patch
-endif

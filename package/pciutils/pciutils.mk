@@ -50,3 +50,11 @@ pciutils-clean:
 pciutils-dirclean:
 	rm -rf $(PCIUTILS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PCIUTILS)),y)
+TARGETS+=pciutils
+endif

@@ -59,3 +59,11 @@ diffutils-clean:
 diffutils-dirclean:
 	rm -rf $(DIFFUTILS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_DIFFUTILS)),y)
+TARGETS+=diffutils
+endif

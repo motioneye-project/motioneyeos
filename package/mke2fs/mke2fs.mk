@@ -72,3 +72,11 @@ mke2fs-clean:
 mke2fs-dirclean:
 	rm -rf $(MKE2FS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_MKE2FS)),y)
+TARGETS+=mke2fs
+endif

@@ -48,3 +48,11 @@ dnsmasq-clean:
 
 dnsmasq-dirclean:
 	rm -rf $(DNSMASQ_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_DNSMASQ)),y)
+TARGETS+=dnsmasq
+endif

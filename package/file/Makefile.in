@@ -1,3 +1,0 @@
-ifeq ($(strip $(BR2_PACKAGE_FILE)),y)
-TARGETS+=file
-endif

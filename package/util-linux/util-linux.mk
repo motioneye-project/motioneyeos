@@ -80,3 +80,11 @@ util-linux-dirclean:
 	rm -rf $(UTIL-LINUX_DIR)
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_UTIL-LINUX)),y)
+TARGETS+=util-linux
+endif

@@ -105,3 +105,11 @@ pcmcia-clean:
 
 pcmcia-dirclean:
 	rm -rf $(PCMCIA_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PCMCIA)),y)
+TARGETS+=pcmcia
+endif

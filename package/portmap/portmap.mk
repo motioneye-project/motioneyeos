@@ -33,3 +33,11 @@ portmap-clean:
 
 portmap-dirclean:
 	rm -rf $(PORTMAP_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PORTMAP)),y)
+TARGETS+=portmap
+endif

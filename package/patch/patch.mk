@@ -58,3 +58,11 @@ patch-clean:
 patch-dirclean:
 	rm -rf $(GNUPATCH_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PATCH)),y)
+TARGETS+=patch
+endif

@@ -46,3 +46,11 @@ nano-clean:
 
 nano-dirclean:
 	rm -rf $(NANO_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_NANO)),y)
+TARGETS+=nano
+endif

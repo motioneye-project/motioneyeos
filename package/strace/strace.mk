@@ -58,3 +58,11 @@ strace-dirclean:
 	rm -rf $(STRACE_DIR) 
 
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_STRACE)),y)
+TARGETS+=strace
+endif

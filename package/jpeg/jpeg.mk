@@ -72,3 +72,11 @@ jpeg: uclibc $(TARGET_DIR)/usr/lib/libjpeg.so.62.0.0
 
 jpeg-clean:
 	-$(MAKE) -C $(JPEG_DIR) clean
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_JPEG)),y)
+TARGETS+=jpeg
+endif

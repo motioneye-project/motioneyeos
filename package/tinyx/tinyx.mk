@@ -125,3 +125,11 @@ tinyx-clean:
 tinyx-dirclean:
 	-rm -rf $(TINYX_DIR)
 	-rm -rf $(TARGET_DIR)/usr/X11R6
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
+TARGETS+=tinyx
+endif

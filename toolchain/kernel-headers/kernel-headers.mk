@@ -143,3 +143,11 @@ kernel-headers-dirclean:
 	rm -rf $(LINUX_HEADERS_DIR)
 
 endif
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+DEFAULT_KERNEL_HEADERS:=$(strip $(subst ",, $(BR2_DEFAULT_KERNEL_HEADERS)))
+#"
+

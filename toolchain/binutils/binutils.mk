@@ -132,3 +132,9 @@ binutils_target-clean:
 
 binutils_target-dirclean:
 	rm -rf $(BINUTILS_DIR2)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+BINUTILS_VERSION:=$(strip $(subst ",, $(BR2_BINUTILS_VERSION)))

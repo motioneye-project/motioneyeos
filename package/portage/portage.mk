@@ -104,3 +104,11 @@ portage-clean:
 
 portage-dirclean:
 	rm -rf $(PORTAGE_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_PORTAGE)),y)
+TARGETS+=portage
+endif

@@ -86,3 +86,11 @@ bzip2-clean:
 bzip2-dirclean:
 	rm -rf $(BZIP2_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_BZIP2)),y)
+TARGETS+=bzip2
+endif

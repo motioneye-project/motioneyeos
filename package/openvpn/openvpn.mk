@@ -64,3 +64,11 @@ openvpn-clean:
 openvpn-dirclean:
 	rm -rf $(OPENVPN_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_OPENVPN)),y)
+TARGETS+=openvpn
+endif

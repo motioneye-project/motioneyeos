@@ -1,3 +1,9 @@
+# gcc has a bunch of options that need to be shared with
+# both gcc-uclibc-2.95.mk and gcc-uclibc-3.x.mk, and are
+# use by other packages...  So include them in this file
+# and arrange to include it soon after invoking make from
+# the top level.
+
 GCC_VERSION:=$(strip $(subst ",, $(BR2_GCC_VERSION)))
 #"
 GCC_USE_SJLJ_EXCEPTIONS:=$(strip $(subst ",, $(BR2_GCC_USE_SJLJ_EXCEPTIONS)))

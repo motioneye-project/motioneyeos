@@ -60,3 +60,11 @@ bison-clean:
 bison-dirclean:
 	rm -rf $(BISON_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_BISON)),y)
+TARGETS+=bison
+endif

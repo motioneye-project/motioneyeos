@@ -47,3 +47,11 @@ wtools-clean:
 
 wtools-dirclean:
 	rm -rf $(WTOOLS_BUILD_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_WTOOLS)),y)
+TARGETS+=wtools
+endif

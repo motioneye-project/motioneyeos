@@ -64,3 +64,11 @@ vtun-clean:
 vtun-dirclean:
 	rm -rf $(VTUN_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_VTUN)),y)
+TARGETS+=vtun
+endif

@@ -44,3 +44,11 @@ microwin-clean:
 microwin-dirclean:
 	rm -rf $(MICROWIN_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+#ifeq ($(strip $(BR2_PACKAGE_MICROWIN)),y)
+#TARGETS+=microwin
+#endif

@@ -74,3 +74,11 @@ automake-clean:
 automake-dirclean:
 	rm -rf $(AUTOMAKE_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_AUTOMAKE)),y)
+TARGETS+=automake
+endif

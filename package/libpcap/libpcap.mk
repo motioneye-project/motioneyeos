@@ -77,3 +77,11 @@ libpcap-clean:
 
 libpcap-dirclean:
 	rm -rf $(LIBPCAP_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LIBPCAP)),y)
+TARGETS+=libpcap
+endif

@@ -53,3 +53,11 @@ links-dirclean:
 
 links: uclibc $(TARGET_DIR)/usr/bin/links
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LINKS)),y)
+TARGETS+=links
+endif

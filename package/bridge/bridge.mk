@@ -59,3 +59,11 @@ bridge-clean:
 
 bridge-dirclean:
 	rm -rf $(BRIDGE_BUILD_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_BRIDGE)),y)
+TARGETS+=bridge
+endif

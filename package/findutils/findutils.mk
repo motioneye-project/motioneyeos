@@ -68,3 +68,11 @@ findutils-clean:
 findutils-dirclean:
 	rm -rf $(FINDUTILS_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_FINDUTILS)),y)
+TARGETS+=findutils
+endif

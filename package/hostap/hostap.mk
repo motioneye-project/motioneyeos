@@ -51,3 +51,11 @@ hostap-clean:
 hostap-dirclean:
 	rm -rf $(HOSTAP_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_HOSTAP)),y)
+TARGETS+=hostap
+endif

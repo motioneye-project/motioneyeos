@@ -56,3 +56,11 @@ netkittelnet-clean:
 netkittelnet-dirclean:
 	rm -rf $(NETKITTELNET_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_NETKITTELNET)),y)
+TARGETS+=netkittelnet
+endif

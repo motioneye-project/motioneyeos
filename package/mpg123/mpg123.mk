@@ -43,3 +43,11 @@ mpg123-clean:
 mpg123-dirclean:
 	rm -rf $(MPG123_DIR) $(MPG123_WORKDIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_MPG123)),y)
+TARGETS+=mpg123
+endif

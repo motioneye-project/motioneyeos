@@ -74,3 +74,11 @@ lrzsz-clean:
 
 lrzsz-dirclean:
 	rm -rf $(LRZSZ_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LRZSZ)),y)
+TARGETS+=lrzsz
+endif

@@ -69,3 +69,11 @@ libpng: uclibc zlib $(TARGET_DIR)/usr/lib/libpng.so
 
 libpng-clean:
 	-$(MAKE) -C $(LIBPNG_DIR) clean
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_LIBPNG)),y)
+TARGETS+=libpng
+endif

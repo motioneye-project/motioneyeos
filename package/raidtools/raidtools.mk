@@ -57,3 +57,11 @@ raidtools2-clean:
 
 raidtools2-dirclean:
 	rm -rf $(RAIDTOOLS2_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_RAIDTOOLS)),y)
+TARGETS+=raidtools
+endif

@@ -63,3 +63,11 @@ udhcp-clean:
 
 udhcp-dirclean:
 	rm -rf $(UDHCP_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_UDHCP)),y)
+TARGETS+=udhcp
+endif

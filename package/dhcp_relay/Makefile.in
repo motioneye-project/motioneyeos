@@ -1,3 +1,0 @@
-ifeq ($(strip $(BR2_PACKAGE_DHCP_RELAY)),y)
-TARGETS+=dhcp_relay
-endif

@@ -94,3 +94,11 @@ flex-clean:
 flex-dirclean:
 	rm -rf $(FLEX_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_FLEX)),y)
+TARGETS+=flex
+endif

@@ -73,3 +73,11 @@ tcpdump-clean:
 
 tcpdump-dirclean:
 	rm -rf $(TCPDUMP_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_TCPDUMP)),y)
+TARGETS+=tcpdump
+endif

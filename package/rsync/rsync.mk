@@ -46,3 +46,11 @@ rsync-clean:
 
 rsync-dirclean:
 	rm -rf $(RSYNC_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_RSYNC)),y)
+TARGETS+=rsync
+endif
