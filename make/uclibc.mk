@@ -44,9 +44,7 @@ endif
 	#(cd $(BUILD_DIR) ; ln -s $(DL_DIR)/uClibc)
 	#-mkdir $(UCLIBC_DIR)
 	#(cd $(DL_DIR)/uClibc && tar cf - .) | (cd $(UCLIBC_DIR) && tar xvfp - )
-ifeq ($(strip $(USE_UCLIBC_LDSO_0_9_24)),true)
-	$(SOURCE_DIR)/patch-kernel.sh $(UCLIBC_DIR) $(SOURCE_DIR) uClibc-ldso-0.9.24.patch
-endif
+	$(SOURCE_DIR)/patch-kernel.sh $(UCLIBC_DIR) $(SOURCE_DIR) uClibc-*.patch
 	touch $(UCLIBC_DIR)/.unpacked
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked $(LINUX_DIR)/.configured
@@ -100,15 +98,6 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 		RUNTIME_PREFIX=/ \
 		HOSTCC="$(HOSTCC)" \
 		all
-ifeq ($(strip $(USE_UCLIBC_LDSO_0_9_24)),true)
-	#rm -rf $(UCLIBC_DIR)/ld-uClibc* $(UCLIBC_DIR)/libdl*
-	$(MAKE) -C $(UCLIBC_DIR)/ldso-0.9.24 \
-		PREFIX= \
-		DEVEL_PREFIX=$(REAL_GNU_TARGET_NAME)/ \
-		RUNTIME_PREFIX=/ \
-		HOSTCC="$(HOSTCC)" \
-		all shared
-endif
 
 $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE) -C $(UCLIBC_DIR) \
