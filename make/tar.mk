@@ -43,11 +43,16 @@ $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 $(GNUTAR_DIR)/$(GNUTAR_BINARY): $(GNUTAR_DIR)/.configured
 	$(MAKE) -C $(GNUTAR_DIR)
 
-$(TARGET_DIR)/$(GNUTAR_TARGET_BINARY): $(GNUTAR_DIR)/$(GNUTAR_BINARY)
-	rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY)
-	cp -a $(GNUTAR_DIR)/$(GNUTAR_BINARY) $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY)
+# This stuff is needed to work around GNU make deficiencies
+tar-target_binary: $(GNUTAR_DIR)/$(GNUTAR_BINARY)
+	@if [ -L $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY) ] ; then \
+		rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi;
+	@if [ $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY) -ot $(GNUTAR_DIR)/$(GNUTAR_BINARY) ] ; then \
+	    set -x; \
+	    rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
+	    cp -a $(GNUTAR_DIR)/$(GNUTAR_BINARY) $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi ;
 
-tar: uclibc $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY)
+tar: uclibc tar-target_binary
 
 tar-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GNUTAR_DIR) uninstall

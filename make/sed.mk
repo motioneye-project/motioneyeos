@@ -43,13 +43,18 @@ $(SED_DIR)/.configured: $(SED_DIR)/.unpacked
 $(SED_DIR)/$(SED_BINARY): $(SED_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(SED_DIR)
 
-$(TARGET_DIR)/$(SED_TARGET_BINARY): $(SED_DIR)/$(SED_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR) install
-	mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/
+# This stuff is needed to work around GNU make deficiencies
+sed-target_binary: $(SED_DIR)/$(SED_BINARY)
+	@if [ -L $(TARGET_DIR)/$(SED_TARGET_BINARY) ] ; then \
+		rm -f $(TARGET_DIR)/$(SED_TARGET_BINARY); fi;
+	@if [ $(TARGET_DIR)/$(SED_TARGET_BINARY) -ot $(SED_DIR)/$(SED_BINARY) ] ; then \
+	set -x; \
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR) install; \
+	mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/; \
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; fi
 
-sed: uclibc $(TARGET_DIR)/$(SED_TARGET_BINARY)
+sed: uclibc sed-target_binary
 
 sed-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR) uninstall

@@ -45,12 +45,17 @@ $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 $(FINDUTILS_DIR)/$(FINDUTILS_BINARY): $(FINDUTILS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(FINDUTILS_DIR)
 
-$(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY): $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+# This stuff is needed to work around GNU make deficiencies
+findutils-target_binary: $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
+	@if [ -L $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) ] ; then \
+		rm -f $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY); fi;
+	@if [ $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) -ot $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) ] ; then \
+	    set -x; \
+	    $(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) install; \
+	    rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; fi;
 
-findutils: uclibc $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY)
+findutils: uclibc findutils-target_binary
 
 findutils-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) uninstall
