@@ -43,8 +43,9 @@ MULTILIB:=--enable-multilib
 #############################################################
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
 #BINUTILS_SOURCE:=binutils-2.14.tar.bz2
+#BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.14
 BINUTILS_SOURCE:=binutils-2.13.2.1.tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-2.14
+BINUTILS_DIR:=$(BUILD_DIR)/binutils-2.13.2.1
 
 ifeq ($(USE_UCLIBC_SNAPSHOT),true)
 # Be aware that this changes daily....
