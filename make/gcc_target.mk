@@ -164,10 +164,10 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks:
 		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
+	mkdir -p $(GCC_BUILD_DIR3)
 	touch $(GCC_BUILD_DIR3)/.gcc_build_hacks
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
-	mkdir -p $(GCC_BUILD_DIR3)
 	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld CC=$(TARGET_CROSS)gcc \
 		$(GCC_DIR)/configure \
