@@ -41,7 +41,7 @@ USERMODELINUX_PATCH=uml-patch-2.4.17-3.bz2
 USERMODELINUX_URI=http://prdownloads.sourceforge.net/user-mode-linux
 
 UCLIBC_SOURCE=uClibc-snapshot.tar.gz
-UCLIBC_URI=http://uclibc.org/downloads/
+UCLIBC_URI=http://www.uclibc.org/downloads/
 
 # Don't alter below this line unless you (think) you know
 # what you are doing! Danger, Danger!

@@ -8,7 +8,7 @@ TARGETS_DISTCLEAN += busybox_distclean
 
 BUSYBOX_DIR=$(BASE_DIR)/${shell basename $(BUSYBOX_SOURCE) .tar.gz}
 BUSYBOX_WORKDIR=$(BASE_DIR)/busybox_workdir
-BUSYBOX_URI=http://busybox.net/downloads/
+BUSYBOX_URI=http://www.busybox.net/downloads/
 BUSYBOX_SOURCE=busybox-0.60.2.tar.gz
 
 IMAGE_SIZE += +500
