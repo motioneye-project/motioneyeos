@@ -10,12 +10,21 @@ GENEXT2_SITE=http://ftp.debian.org/debian/pool/main/g/genext2fs
 $(DL_DIR)/$(GENEXT2_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GENEXT2_SITE)/$(GENEXT2_SOURCE)
 
-$(GENEXT2_DIR): $(DL_DIR)/$(GENEXT2_SOURCE)
+$(GENEXT2_DIR)/.unpacked: $(DL_DIR)/$(GENEXT2_SOURCE)
 	zcat $(DL_DIR)/$(GENEXT2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	mv $(GENEXT2_DIR).orig $(GENEXT2_DIR)
 	toolchain/patch-kernel.sh $(GENEXT2_DIR) target/ext2/ genext2fs*.patch
+	touch $(GENEXT2_DIR)/.unpacked
 
-$(GENEXT2_DIR)/genext2fs: $(GENEXT2_DIR)
+$(GENEXT2_DIR)/.configured: $(GENEXT2_DIR)/.unpacked
+	chmod a+x $(GENEXT2_DIR)/configure
+	(cd $(GENEXT2_DIR); rm -rf config.cache; \
+		./configure \
+		--prefix=$(STAGING_DIR) \
+	);
+	touch  $(GENEXT2_DIR)/.configured
+
+$(GENEXT2_DIR)/genext2fs: $(GENEXT2_DIR)/.configured
 	$(MAKE) CFLAGS="-Wall -O2 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
 		-D_FILE_OFFSET_BITS=64" -C $(GENEXT2_DIR);
 	touch -c $(GENEXT2_DIR)/genext2fs
