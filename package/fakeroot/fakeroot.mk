@@ -3,11 +3,12 @@
 # fakeroot
 #
 #############################################################
-FAKEROOT_VERSION:=1.2.2
+FAKEROOT_VERSION:=1.2.4
 FAKEROOT_SOURCE:=fakeroot_$(FAKEROOT_VERSION).tar.gz
 FAKEROOT_SITE:=http://ftp.debian.org/debian/pool/main/f/fakeroot
 FAKEROOT_CAT:=zcat
-FAKEROOT_DIR:=$(BUILD_DIR)/fakeroot-$(FAKEROOT_VERSION)
+FAKEROOT_DIR1:=$(TOOL_BUILD_DIR)/fakeroot-$(FAKEROOT_VERSION)
+FAKEROOT_DIR2:=$(BUILD_DIR)/fakeroot-$(FAKEROOT_VERSION)
 
 
 $(DL_DIR)/$(FAKEROOT_SOURCE):
@@ -15,15 +16,56 @@ $(DL_DIR)/$(FAKEROOT_SOURCE):
 
 fakeroot-source: $(DL_DIR)/$(FAKEROOT_SOURCE)
 
-$(FAKEROOT_DIR)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
+
+#############################################################
+#
+# build fakeroot for use on the host system
+#
+#############################################################
+$(FAKEROOT_DIR1)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
+	$(FAKEROOT_CAT) $(DL_DIR)/$(FAKEROOT_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(SED) "s,getopt --version,getopt --version 2>/dev/null," \
+		$(FAKEROOT_DIR1)/scripts/fakeroot.in
+	touch $(FAKEROOT_DIR1)/.unpacked
+
+$(FAKEROOT_DIR1)/.configured: $(FAKEROOT_DIR1)/.unpacked
+	(cd $(FAKEROOT_DIR1); rm -rf config.cache; \
+		./configure \
+		--prefix=/usr \
+	);
+	touch  $(FAKEROOT_DIR1)/.configured
+
+$(FAKEROOT_DIR1)/faked: $(FAKEROOT_DIR1)/.configured
+	$(MAKE) -C $(FAKEROOT_DIR1)
+
+$(STAGING_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR1)/faked
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(FAKEROOT_DIR1) install
+	#-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-faked $(TARGET_DIR)/usr/bin/faked
+	#-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-fakeroot $(TARGET_DIR)/usr/bin/fakeroot
+
+host-fakeroot: uclibc $(STAGING_DIR)/usr/bin/fakeroot
+
+host-fakeroot-clean:
+	$(MAKE) -C $(FAKEROOT_DIR1) clean
+
+host-fakeroot-dirclean:
+	rm -rf $(FAKEROOT_DIR1)
+
+
+#############################################################
+#
+# build fakeroot for use on the target system
+#
+#############################################################
+$(FAKEROOT_DIR2)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
 	$(FAKEROOT_CAT) $(DL_DIR)/$(FAKEROOT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	# If using busybox getopt, make it be quiet.
 	$(SED) "s,getopt --version,getopt --version 2>/dev/null," \
-		$(FAKEROOT_DIR)/scripts/fakeroot.in
-	touch $(FAKEROOT_DIR)/.unpacked
+		$(FAKEROOT_DIR2)/scripts/fakeroot.in
+	touch $(FAKEROOT_DIR2)/.unpacked
 
-$(FAKEROOT_DIR)/.configured: $(FAKEROOT_DIR)/.unpacked
-	(cd $(FAKEROOT_DIR); rm -rf config.cache; \
+$(FAKEROOT_DIR2)/.configured: $(FAKEROOT_DIR2)/.unpacked
+	(cd $(FAKEROOT_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -41,25 +83,25 @@ $(FAKEROOT_DIR)/.configured: $(FAKEROOT_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch  $(FAKEROOT_DIR)/.configured
+	touch  $(FAKEROOT_DIR2)/.configured
 
-$(FAKEROOT_DIR)/faked: $(FAKEROOT_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(FAKEROOT_DIR)
+$(FAKEROOT_DIR2)/faked: $(FAKEROOT_DIR2)/.configured
+	$(MAKE) CC=$(TARGET_CC) -C $(FAKEROOT_DIR2)
 
-$(TARGET_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR)/faked
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(FAKEROOT_DIR) install
-	-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-faked $(TARGET_DIR)/usr/bin/faked 
-	-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-fakeroot $(TARGET_DIR)/usr/bin/fakeroot 
+$(TARGET_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR2)/faked
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(FAKEROOT_DIR2) install
+	-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-faked $(TARGET_DIR)/usr/bin/faked
+	-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-fakeroot $(TARGET_DIR)/usr/bin/fakeroot
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-fakeroot: uclibc $(TARGET_DIR)/usr/bin/fakeroot 
+fakeroot: uclibc $(TARGET_DIR)/usr/bin/fakeroot
 
-fakeroot-clean: 
-	$(MAKE) -C $(FAKEROOT_DIR) clean
+fakeroot-clean:
+	$(MAKE) -C $(FAKEROOT_DIR2) clean
 
-fakeroot-dirclean: 
-	rm -rf $(FAKEROOT_DIR) 
+fakeroot-dirclean:
+	rm -rf $(FAKEROOT_DIR2)
 
 
 #############################################################
