@@ -42,6 +42,14 @@ $(TARGET_DIR)/lib/libcrypto.so.0: $(STAGING_DIR)/lib/libcrypto.so.0
 	cp -fa $(STAGING_DIR)/lib/libssl.so* $(TARGET_DIR)/lib/
 	#cp -fa $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/
 
+$(TARGET_DIR)/usr/include/openssl/crypto.h: $(TARGET_DIR)/lib/libcrypto.so.0
+	cp -a $(STAGING_DIR)/include/openssl $(TARGET_DIR)/usr/include/
+	cp -dpf $(STAGING_DIR)/lib/libssl.a $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/lib/libcrypto.a $(TARGET_DIR)/usr/lib/
+	touch -c $(TARGET_DIR)/usr/include/openssl/crypto.h
+
+openssl-headers: $(TARGET_DIR)/usr/include/openssl/crypto.h
+
 openssl-clean: 
 	rm -f $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/openssl
 	rm -f $(STAGING_DIR)/lib/libcrypto.so* $(TARGET_DIR)/lib/libcrypto.so*

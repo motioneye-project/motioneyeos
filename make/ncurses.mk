@@ -5,7 +5,7 @@
 #
 #############################################################
 # Copyright (C) 2002 by Ken Restivo <ken@246gt.com>
-# $Id: ncurses.mk,v 1.12 2003/01/08 02:37:03 andersen Exp $
+# $Id: ncurses.mk,v 1.13 2003/01/08 18:17:28 andersen Exp $
 #
 # This program is free software; you can redistribute it and/or modify
 # it under the terms of the GNU Library General Public License as
@@ -38,13 +38,25 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 	touch  $(NCURSES_DIR)/.dist
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
-	(cd $(NCURSES_DIR); rm -rf config.cache; \
-	    BUILD_CC=$(HOSTCC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC1) \
-	    ./configure --target=$(GNU_TARGET_NAME) --prefix=$(STAGING_DIR) \
-	    --with-shared --without-cxx --without-cxx-binding --without-ada \
-	    --without-progs --exec_prefix=$(STAGING_DIR)/usr/bin \
-	    --libdir=$(STAGING_DIR)/lib --includedir=$(STAGING_DIR)/include \
-	    --disable-nls);
+	(cd $(NCURSES_DIR); rm -rf config.cache; PATH=$(STAGING_DIR)/bin:$$PATH \
+		BUILD_CC=$(HOSTCC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC1) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--with-terminfo-dirs=/usr/share/terminfo \
+		--with-default-terminfo-dir=/usr/share/terminfo \
+		--libdir=$(STAGING_DIR)/lib \
+		--includedir=$(STAGING_DIR)/include \
+		--with-shared --without-cxx --without-cxx-binding --without-ada \
+		--without-progs --disable-nls);
 	touch  $(NCURSES_DIR)/.configured
 
 $(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
@@ -52,16 +64,32 @@ $(NCURSES_DIR)/lib/libncurses.so: $(NCURSES_DIR)/.configured
 		DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR)
 
 $(STAGING_DIR)/lib/libncurses.so: $(NCURSES_DIR)/lib/libncurses.so
-	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(STAGING_DIR)/lib/
-	cp -dpf $(NCURSES_DIR)/include/curses.h $(STAGING_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/eti.h $(STAGING_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/form.h $(STAGING_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/menu.h $(STAGING_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/panel.h $(STAGING_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/term.h $(STAGING_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/termcap.h $(STAGING_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(STAGING_DIR)/include/
-	(cd $(STAGING_DIR)/include; ln -fs curses.h ncurses.h)
+	PATH=$(STAGING_DIR)/bin:$$PATH BUILD_CC=$(HOSTCC) \
+	    HOSTCC=$(HOSTCC) CC=$(TARGET_CC1) $(MAKE) \
+	    prefix=$(STAGING_DIR) \
+	    exec_prefix=$(STAGING_DIR) \
+	    bindir=$(STAGING_DIR)/bin \
+	    sbindir=$(STAGING_DIR)/sbin \
+	    libexecdir=$(STAGING_DIR)/lib \
+	    datadir=$(STAGING_DIR)/usr/share \
+	    sysconfdir=$(STAGING_DIR)/etc \
+	    localstatedir=$(STAGING_DIR)/var \
+	    libdir=$(STAGING_DIR)/lib \
+	    infodir=$(STAGING_DIR)/info \
+	    mandir=$(STAGING_DIR)/man \
+	    includedir=$(STAGING_DIR)/include \
+	    gxx_include_dir=$(STAGING_DIR)/include/c++ \
+	    -C $(NCURSES_DIR) install;
+	#cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(STAGING_DIR)/lib/
+	#cp -dpf $(NCURSES_DIR)/include/curses.h $(STAGING_DIR)/include/
+	#cp -dpf $(NCURSES_DIR)/include/eti.h $(STAGING_DIR)/include/
+	#cp -dpf $(NCURSES_DIR)/include/form.h $(STAGING_DIR)/include/
+	#cp -dpf $(NCURSES_DIR)/include/menu.h $(STAGING_DIR)/include/
+	#cp -dpf $(NCURSES_DIR)/include/panel.h $(STAGING_DIR)/include/
+	#cp -dpf $(NCURSES_DIR)/include/term.h $(STAGING_DIR)/include/
+	#cp -dpf $(NCURSES_DIR)/include/termcap.h $(STAGING_DIR)/include/
+	#cp -dpf $(NCURSES_DIR)/include/unctrl.h $(STAGING_DIR)/include/
+	#(cd $(STAGING_DIR)/include; ln -fs curses.h ncurses.h)
 
 $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
 	cp -dpf $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
@@ -72,18 +100,17 @@ $(TARGET_DIR)/lib/libncurses.so: $(STAGING_DIR)/lib/libncurses.so
 			tar -C $(TARGET_DIR)/usr/share/ -xf - ; \
 	done
 
-$(TARGET_DIR)/usr/include/curses.h: $(TARGET_DIR)/lib/libncurses.so
-	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/eti.h $(TARGET_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/form.h $(TARGET_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/menu.h $(TARGET_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/panel.h $(TARGET_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/include/
-	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/include/
-	(cd $(TARGET_DIR)/include; ln -fs curses.h ncurses.h)
+$(TARGET_DIR)/usr/include/ncurses.h: $(TARGET_DIR)/lib/libncurses.so
+	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/ncurses.h
+	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(NCURSES_DIR)/lib/libncurses.a $(TARGET_DIR)/usr/lib/
+	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libcurses.a)
+	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libtermcap.a)
+	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
+	touch -c $(TARGET_DIR)/usr/include/ncurses.h
 
-ncurses-headers: $(TARGET_DIR)/usr/include/curses.h
+ncurses-headers: $(TARGET_DIR)/usr/include/ncurses.h
 
 ncurses-clean: 
 	rm -f $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/libncurses.so*

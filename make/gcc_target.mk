@@ -23,7 +23,11 @@
 #
 #############################################################
 GNU_TARGET_NAME:=$(ARCH)-linux
+TARGET_LANGUAGES:=c,c++
 MAKE:=make
+
+# If you want multilib enabled, enable this...
+#MULTILIB:=--enable-multilib
 
 #############################################################
 #
@@ -51,7 +55,6 @@ $(BINUTILS_DIR2)/.configured:
 	(cd $(TARGET_DIR)/usr/$(GNU_TARGET_NAME); ln -fs ../include sys-include)
 	(cd $(BINUTILS_DIR2); PATH=$(STAGING_DIR)/bin:$$PATH CC=$(TARGET_CROSS)gcc \
 		$(BINUTILS_DIR)/configure \
-		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -64,7 +67,7 @@ $(BINUTILS_DIR2)/.configured:
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-gxx-include-dir=/usr/include/c++ \
-		--disable-shared --enable-multilib \
+		--disable-shared $(MULTILIB) \
 		--enable-targets=$(GNU_TARGET_NAME) );
 	touch $(BINUTILS_DIR2)/.configured
 
@@ -77,7 +80,7 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
 	    sbindir=$(TARGET_DIR)/usr/sbin \
-	    libexecdir=$(TARGET_DIR)/usr/libexec \
+	    libexecdir=$(TARGET_DIR)/usr/lib \
 	    datadir=$(TARGET_DIR)/usr/share \
 	    sysconfdir=$(TARGET_DIR)/etc \
 	    sharedstatedir=$(TARGET_DIR)/usr/com \
@@ -161,14 +164,13 @@ $(GCC_BUILD_DIR3)/.gcc_build_hacks:
 		$(STAGING_DIR)/usr/include,;" $(GCC_DIR)/gcc/Makefile.in;
 	perl -i -p -e "s,^#define.*STANDARD_INCLUDE_DIR.*,#define STANDARD_INCLUDE_DIR \
 		\"/usr/include\",;" $(GCC_DIR)/gcc/cppdefault.h;
+	touch $(GCC_BUILD_DIR3)/.gcc_build_hacks
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 	mkdir -p $(GCC_BUILD_DIR3)
 	(cd $(GCC_BUILD_DIR3); PATH=$(STAGING_DIR)/bin:$$PATH AR=$(TARGET_CROSS)ar \
 		RANLIB=$(TARGET_CROSS)ranlib LD=$(TARGET_CROSS)ld CC=$(TARGET_CROSS)gcc \
 		$(GCC_DIR)/configure \
-		--host=$(GNU_TARGET_NAME) \
-		--target=$(GNU_TARGET_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -179,9 +181,9 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.gcc_build_hacks
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-shared --enable-multilib \
+		--disable-shared $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
-		--enable-languages=c,c++ --disable-__cxa_atexit );
+		--enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit );
 	touch $(GCC_BUILD_DIR3)/.configured
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
@@ -194,7 +196,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	    exec_prefix=$(TARGET_DIR)/usr \
 	    bindir=$(TARGET_DIR)/usr/bin \
 	    sbindir=$(TARGET_DIR)/usr/sbin \
-	    libexecdir=$(TARGET_DIR)/usr/libexec \
+	    libexecdir=$(TARGET_DIR)/usr/lib \
 	    datadir=$(TARGET_DIR)/usr/share \
 	    sysconfdir=$(TARGET_DIR)/etc \
 	    sharedstatedir=$(TARGET_DIR)/usr/com \

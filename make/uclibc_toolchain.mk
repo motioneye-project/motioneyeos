@@ -28,6 +28,9 @@ GNU_TARGET_NAME:=$(ARCH)-linux
 TARGET_LANGUAGES:=c,c++
 MAKE=make
 
+# If you want multilib enabled, enable this...
+#MULTILIB:=--enable-multilib
+
 #############################################################
 #
 # Where we can find things....
@@ -133,7 +136,7 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--datadir=$(STAGING_DIR)/share --includedir=$(STAGING_DIR)/include \
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
-		--enable-targets=$(GNU_TARGET_NAME) --enable-multilib \
+		--enable-targets=$(GNU_TARGET_NAME) $(MULTILIB) \
 		--program-prefix=$(ARCH)-uclibc-);
 	touch $(BINUTILS_DIR1)/.configured
 
@@ -222,7 +225,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.gcc_build_hacks
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--oldincludedir=$(STAGING_DIR)/usr/include --enable-multilib \
+		--oldincludedir=$(STAGING_DIR)/usr/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=c --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
@@ -365,7 +368,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.g++_build_hacks
 		--libdir=$(STAGING_DIR)/lib --localstatedir=$(STAGING_DIR)/var \
 		--mandir=$(STAGING_DIR)/man --infodir=$(STAGING_DIR)/info \
 		--with-local-prefix=$(STAGING_DIR)/usr/local \
-		--oldincludedir=$(STAGING_DIR)/usr/include --enable-multilib \
+		--oldincludedir=$(STAGING_DIR)/usr/include $(MULTILIB) \
 		--enable-target-optspace --disable-nls --with-gnu-ld \
 		--disable-shared --enable-languages=$(TARGET_LANGUAGES) --disable-__cxa_atexit \
 		--program-prefix=$(ARCH)-uclibc-);
