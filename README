@@ -1,26 +1,16 @@
 To build and use the buildroot stuff, do the following:
 
 1) run 'make'
-2) wait while it compiles
-3) run './UMlinux' to test out your root filesystem using User Mode Linux.
+2) select which packages you wish to compile
+3) run 'make'
+4) wait while it compiles
+5) Use your shiney new root filesystem.  Depending on which sortof
+    root filesystem you selecter, you may want to loop mount it,
+    chroot into it, loop mount it and then nfs mount that on your
+    target device, burn it to flash, or whatever is appropriate
+    for your target system.
 
-You do not need to be root to build or run this system.  Each Virtual Terminal
-will be opened in its own window.  You must be running X and have xterm
-installed for this to work -- otherwise you see a few errors on bootup as it
-tries to launch xterms.   It will still work on a console, but you will not
-have access to the other Virtual Terminals.
-
-Also, you the uClibc and busybox source trees that
-are downloaded are fully set up for anonymous CVS access.  You may need to set
-up your system for anonymous CVS access by running the following command:
-
-    cvs -d:pserver:anonymous@busybox.net:/var/cvs login
-
-Then just hit Enter when it prompts you for a password.  You only need to do
-this once.  Then, whenever you want to update your system, just go into the
-busybox or uClibc directory and run 'cvs update'.
-
-Have fun!
+You do not need to be root to build or run buildroot.  Have fun!
 
  -Erik
 
