@@ -69,32 +69,8 @@ $(TARGET_DIR)/usr/sbin/snmpd: $(NETSNMP_DIR)/agent/snmpd
 	    persistentdir=$(TARGET_DIR)/var/lib/snmp \
 	    infodir=$(TARGET_DIR)/usr/info \
 	    mandir=$(TARGET_DIR)/usr/man \
-	    -C $(NETSNMP_DIR) install;
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	# Copy the .conf files.
-	mkdir -p $(TARGET_DIR)/etc/snmp
-	cp $(NETSNMP_DIR)/EXAMPLE.conf $(TARGET_DIR)/etc/snmp/snmpd.conf
-	cp $(NETSNMP_DIR)/EXAMPLE-trap.conf $(TARGET_DIR)/etc/snmp/snmptrapd.conf
-	-mv $(TARGET_DIR)/usr/share/snmp/mib2c*.conf $(TARGET_DIR)/etc/snmp
-	mkdir -p $(TARGET_DIR)/etc/default
-	cp $(NETSNMP_DIR)/debian/snmpd.default $(TARGET_DIR)/etc/default/snmpd
-	# Remove the unsupported snmpcheck program
-	rm $(TARGET_DIR)/usr/bin/snmpcheck
-	# Remove the unwanted header files
-	rm -rf $(TARGET_DIR)/usr/include/net-snmp
-	rm -rf $(TARGET_DIR)/usr/include/ucd-snmp
-
-netsnmp: $(TARGET_DIR)/usr/sbin/snmpd
-
-netsnmp-headers: $(TARGET_DIR)/usr/include/net-snmp/net-snmp-config.h
-	#Seems easiest to just install everything...
-	$(MAKE) PREFIX=$(TARGET_DIR)/usr \
-	    prefix=$(TARGET_DIR)/usr \
-	    exec_prefix=$(TARGET_DIR)/usr \
-	    persistentdir=$(TARGET_DIR)/var/lib/snmp \
-	    infodir=$(TARGET_DIR)/usr/info \
-	    mandir=$(TARGET_DIR)/usr/man \
+	    includedir=$(STAGING_DIR)/include/net-snmp \
+	    ucdincludedir=$(STAGING_DIR)/include/ucd-snmp \
 	    -C $(NETSNMP_DIR) install;
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
@@ -108,10 +84,16 @@ netsnmp-headers: $(TARGET_DIR)/usr/include/net-snmp/net-snmp-config.h
 	# Remove the unsupported snmpcheck program
 	rm $(TARGET_DIR)/usr/bin/snmpcheck
 	# Install the "broken" headers
-	cp $(NETSNMP_DIR)/agent/mibgroup/struct.h $(TARGET_DIR)/usr/include/net-snmp/agent
-	cp $(NETSNMP_DIR)/agent/mibgroup/util_funcs.h $(TARGET_DIR)/usr/include/net-snmp
-	cp $(NETSNMP_DIR)/agent/mibgroup/mibincl.h $(TARGET_DIR)/usr/include/net-snmp/library
-	cp $(NETSNMP_DIR)/agent/mibgroup/header_complex.h $(TARGET_DIR)/usr/include/net-snmp/agent
+	cp $(NETSNMP_DIR)/agent/mibgroup/struct.h $(STAGING_DIR)/include/net-snmp/agent
+	cp $(NETSNMP_DIR)/agent/mibgroup/util_funcs.h $(STAGING_DIR)/include/net-snmp
+	cp $(NETSNMP_DIR)/agent/mibgroup/mibincl.h $(STAGING_DIR)/include/net-snmp/library
+	cp $(NETSNMP_DIR)/agent/mibgroup/header_complex.h $(STAGING_DIR)/include/net-snmp/agent
+
+netsnmp: $(TARGET_DIR)/usr/sbin/snmpd
+
+netsnmp-headers: $(TARGET_DIR)/usr/include/net-snmp/net-snmp-config.h
+	cp -a $(STAGING_DIR)/include/net-snmp $(TARGET_DIR)/usr/include/net-snmp
+	cp -a $(STAGING_DIR)/include/ucd-snmp $(TARGET_DIR)/usr/include/net-snmp
 
 netsnmp-clean: 
 	$(MAKE) -C $(NETSNMP_DIR) clean
