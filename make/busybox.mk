@@ -51,6 +51,8 @@ $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
 
 $(TARGET_DIR)/bin/busybox: $(BUSYBOX_DIR)/busybox
 	$(MAKE) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" -C $(BUSYBOX_DIR) install
+	# Just in case
+	-chmod a+x $(TARGET_DIR)/usr/share/udhcpc/default.script
 
 busybox: uclibc $(TARGET_DIR)/bin/busybox
 
