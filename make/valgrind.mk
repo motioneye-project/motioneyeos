@@ -5,8 +5,8 @@
 #############################################################
 
 VALGRIND_SITE:=http://developer.kde.org/~sewardj
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-20020601
-VALGRIND_SOURCE:=valgrind-20020601.tar.bz2
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-1.0pre6
+VALGRIND_SOURCE:=valgrind-1.0pre6.tar.bz2
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	wget -P $(DL_DIR) --passive-ftp $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
@@ -32,6 +32,7 @@ $(VALGRIND_DIR)/valgrind: $(VALGRIND_DIR)/.configured
 
 $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/valgrind
 	make CC=$(TARGET_CC1) DESTDIR=$(TARGET_DIR) -C $(VALGRIND_DIR) install
+	rm -rf $(TARGET_DIR)/usr/share/doc/valgrind
 
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
 

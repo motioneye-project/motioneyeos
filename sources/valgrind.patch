@@ -1,0 +1,18 @@
+--- build/valgrind-1.0pre6.orig/vg_libpthread.c	Sat Jul 13 06:59:27 2002
++++ build/valgrind-1.0pre6/vg_libpthread.c	Sat Jul 27 02:50:53 2002
+@@ -2821,6 +2821,7 @@
+ 
+ /* I've no idea what these are, but they get called quite a lot.
+    Anybody know? */
++#ifndef __UCLIBC__
+ 
+ #undef _IO_flockfile
+ void _IO_flockfile ( _IO_FILE * file )
+@@ -2837,6 +2838,7 @@
+ }
+ weak_alias(_IO_funlockfile, funlockfile);
+ 
++#endif
+ 
+ /* This doesn't seem to be needed to simulate libpthread.so's external
+    interface, but many people complain about its absence. */
