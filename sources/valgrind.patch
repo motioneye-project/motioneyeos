@@ -1,5 +1,5 @@
---- build/valgrind-1.0pre6.orig/vg_libpthread.c	Sat Jul 13 06:59:27 2002
-+++ build/valgrind-1.0pre6/vg_libpthread.c	Sat Jul 27 02:50:53 2002
+--- valgrind-1.0pre6.orig/vg_libpthread.c	Sat Jul 13 06:59:27 2002
++++ valgrind-1.0pre6/vg_libpthread.c	Sat Jul 27 02:50:53 2002
 @@ -2821,6 +2821,7 @@
  
  /* I've no idea what these are, but they get called quite a lot.
@@ -16,3 +16,20 @@
  
  /* This doesn't seem to be needed to simulate libpthread.so's external
     interface, but many people complain about its absence. */
+--- valgrind-1.0pre6.orig/vg_clientfuncs.c	Mon Jul 15 19:44:21 2002
++++ valgrind-1.0pre6/vg_clientfuncs.c	Sat Jul 27 02:59:33 2002
+@@ -560,12 +560,14 @@
+ void VG_(__libc_freeres_wrapper)( void )
+ {
+    int res;
++#ifndef __UCLIBC__
+    extern void __libc_freeres(void);
+    __libc_freeres();
+    VALGRIND_MAGIC_SEQUENCE(res, 0 /* default */,
+                            VG_USERREQ__LIBC_FREERES_DONE, 0, 0, 0, 0);
+    /*NOTREACHED*/
+    vg_assert(12345+54321 == 999999);
++#endif
+ }
+ 
+ 
