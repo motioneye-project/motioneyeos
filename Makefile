@@ -1,6 +1,6 @@
 # Makefile for a simple busybox/uClibc root filesystem
 #
-# Copyright (C) 2001-2002 by Erik Andersen <andersen@codepoet.org>
+# Copyright (C) 2001-2003 Erik Andersen <andersen@codepoet.org>
 # Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -19,6 +19,7 @@
 # USA
 
 
+TARGETS=
 #############################################################
 #
 # EDIT this stuff to suit your system and preferences
@@ -47,7 +48,7 @@ USE_UCLIBC_SNAPSHOT:=true
 USE_BUSYBOX_SNAPSHOT:=false
 
 # Enable large file (files > 2 GB) support
-BUILD_WITH_LARGEFILE:=false
+BUILD_WITH_LARGEFILE:=true
 
 # Command used to download source code
 WGET:=wget --passive-ftp
@@ -57,14 +58,15 @@ WGET:=wget --passive-ftp
 # The list of stuff to build for the target filesystem
 #
 #############################################################
-ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
-TARGETS=uclibc_toolchain
-endif
-
-# Do you want user mode Linux, or are you building a 
+# Do you want user mode Linux (x86 only), or are you building a 
 # real kernel that will run on its own?
 #TARGETS+=linux
 TARGETS+=user-mode-linux
+
+# The toolchain comes next if we are building one
+ifeq ($(USE_UCLIBC_TOOLCHAIN),true)
+TARGETS+=uclibc_toolchain
+endif
 
 # The default minimal set
 TARGETS+=busybox tinylogin
