@@ -259,7 +259,7 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	    gxx_include_dir=$(TARGET_DIR)/usr/include/c++ \
 	    tooldir=$(TARGET_DIR)/usr/$(GNU_TARGET_NAME) \
 	    build_tooldir=$(TARGET_DIR)/usr/$(GNU_TARGET_NAME) \
-	    -C $(GCC_BUILD_DIR3) install;
+	    -C $(GCC_BUILD_DIR3) install-gcc;
 	(cd $(TARGET_DIR)/usr/bin; ln -fs gcc cc)
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/include
 	rm -rf $(TARGET_DIR)/usr/$(GNU_TARGET_NAME)/sys-include
@@ -268,6 +268,9 @@ $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++ $(TARGET_DIR)/usr/bin/c++
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-g++ $(TARGET_DIR)/usr/bin/g++
 	-mv $(TARGET_DIR)/usr/bin/$(GNU_TARGET_NAME)-c++filt $(TARGET_DIR)/usr/bin/c++filt
+	-cp -dpf $(STAGING_DIR)/lib/libgcc* $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/lib/*++* $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/include/c++ $(TARGET_DIR)/include/
 	-$(STRIP) $(TARGET_DIR)/bin/* 
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* 
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
