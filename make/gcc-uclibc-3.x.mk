@@ -20,8 +20,8 @@
 ifneq ($(findstring 2.95,$(GCC_VERSION)),2.95)
 GCC_VERSION:=$(strip $(GCC_VERSION))
 
-GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(GCC_VERSION)
-#GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/releases/gcc-$(GCC_VERSION)
+#GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(GCC_VERSION)
+GCC_SITE:=http://mirrors.rcn.net/pub/sourceware/gcc/releases/gcc-$(GCC_VERSION)
 
 #
 # snapshots....
@@ -75,6 +75,9 @@ $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# anyone (?) who might still be using gcc 2.95.  mjn3
 ifeq ($(SOFT_FLOAT),true)
 ifeq ("$(strip $(ARCH))","arm")
+	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR)/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
+endif
+ifeq ("$(strip $(ARCH))","armeb")
 	$(SOURCE_DIR)/patch-kernel.sh $(GCC_DIR) $(SOURCE_DIR)/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
 endif
 	# Not yet updated to 3.4.1.
