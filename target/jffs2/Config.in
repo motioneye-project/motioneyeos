@@ -1,4 +1,4 @@
-menuconfig BR2_TARGET_ROOTFS_JFFS2
+config BR2_TARGET_ROOTFS_JFFS2
 	bool "jffs2 root filesystem for the target device"
 	default n
 	help

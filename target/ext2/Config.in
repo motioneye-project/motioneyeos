@@ -1,4 +1,4 @@
-menuconfig BR2_TARGET_ROOTFS_EXT2
+config BR2_TARGET_ROOTFS_EXT2
 	bool "ext2 root filesystem for the target device"
 	default y
 	help
