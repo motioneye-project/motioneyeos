@@ -47,6 +47,7 @@ $(STAGING_DIR)/lib/libcrypto.a: $(OPENSSL_DIR)/apps/openssl
 	(cd $(STAGING_DIR)/lib; ln -fs libssl.so.0.9.7 libssl.so.0)
 
 $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7: $(STAGING_DIR)/lib/libcrypto.a
+	mkdir -p $(TARGET_DIR)/usr/lib
 	cp -fa $(STAGING_DIR)/lib/libcrypto.so* $(TARGET_DIR)/usr/lib/
 	cp -fa $(STAGING_DIR)/lib/libssl.so* $(TARGET_DIR)/usr/lib/
 	#cp -fa $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/
