@@ -1,4 +1,3 @@
-ifeq ($(USE_LINUX_UCLIBC),true)
 #############################################################
 #
 # build binutils for use on the host system
@@ -102,4 +101,3 @@ binutils_target-clean:
 binutils_target-dirclean:
 	rm -rf $(BINUTILS_DIR2)
 
-endif	#ifeq ($(USE_LINUX_UCLIBC),true)

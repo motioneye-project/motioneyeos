@@ -1,6 +1,6 @@
 # Makefile for a simple busybox/uClibc root filesystem
 #
-# Copyright (C) 2001-2003 Erik Andersen <andersen@codepoet.org>
+# Copyright (C) 2001-2004 Erik Andersen <andersen@codepoet.org>
 # Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
 #
 # This program is free software; you can redistribute it and/or modify
@@ -23,7 +23,7 @@
 #
 # EDIT this stuff to suit your system and preferences
 #
-# Use := when possible to get precomputation, thereby 
+# Use := when possible to get precomputation, thereby
 # speeding up the build process.
 #
 #############################################################
@@ -45,19 +45,11 @@ ARCH:=i386
 #ARCH:=sparc
 #ARCH:=whatever
 
-# Enable this if you want to use an <arch>-linux-uclibc-* toolchain.
-# Note that, to avoid configure problems with apps that don't support
-# this tupple, we also put <arch>-linux-* symlinks in staging_dir/bin.
-# This is the preferred approach now.
-USE_LINUX_UCLIBC:=true
-
 # If you are building a native gcc toolchain, do you want to
 # build the old gcc-2.95 based toolchain, or would you prefer
 # a nice and shiny new gcc-3.3.2 toolchain?
-# WARNING -- 2.95 currently does not build unless USE_LINUX_UCLIBC:=true.
 # WARNING -- 2.95 currently only builds for i386, arm, mips*, and powerpc.
 # WARNING -- 2.95 does not currently build natively for the target.
-#GCC_2_95_TOOLCHAIN:=true
 GCC_2_95_TOOLCHAIN:=false
 
 # Enable this to use the uClibc daily snapshot instead of a released
@@ -77,17 +69,11 @@ BUILD_WITH_LARGEFILE:=true
 WGET:=wget --passive-ftp
 
 # Optimize toolchain for which type of CPU?
-ifeq ($(USE_LINUX_UCLIBC),true)
 OPTIMIZE_FOR_CPU=$(ARCH)
 #OPTIMIZE_FOR_CPU=i686
 # Note... gcc 2.95 does not seem to like anything higher than i586.
 #OPTIMIZE_FOR_CPU=i586
 #OPTIMIZE_FOR_CPU=whatever
-else
-# WARNING!!!  CURRENTLY BROKEN!!! LEAVE IT AS $(ARCH)!!!
-OPTIMIZE_FOR_CPU=$(ARCH)
-# WARNING!!!  CURRENTLY BROKEN!!! LEAVE IT AS $(ARCH)!!!
-endif
 
 # Soft floating point options.
 # Notes:
@@ -201,14 +187,14 @@ TARGETS+=ext2root
 # Must mount cramfs with 'ramdisk_blocksize=4096'
 #TARGETS+=cramfsroot
 
-# You may need to edit make/jffs2root.mk to change target 
+# You may need to edit make/jffs2root.mk to change target
 # endian-ness or similar, but this is sufficient for most
 # things as-is...
 #TARGETS+=jffs2root
 
 #############################################################
 #
-# You should probably leave this stuff alone unless you know 
+# You should probably leave this stuff alone unless you know
 # what you are doing.
 #
 #############################################################
@@ -223,21 +209,13 @@ TARGET_SOFT_FLOAT:=
 ARCH_FPU_SUFFIX:=
 endif
 
-# The new stuff auto-detects approrpriate locale support.
-# So only set this for the old 'hacked' toolchain.
-ifneq ($(USE_LINUX_UCLIBC),true)
-ifeq ($(ENABLE_LOCALE),true)
-EXTRA_GCC_CONFIG_OPTIONS += --enable-clocale=gnu
-endif
-endif
-
 # WARNING -- uClibc currently disables large file support on cris.
 ifeq ("$(strip $(ARCH))","cris")
 BUILD_WITH_LARGEFILE:=false
 endif
 
 ifneq ($(BUILD_WITH_LARGEFILE),true)
-DISABLE_LARGEFILE= --disable-largefile 
+DISABLE_LARGEFILE= --disable-largefile
 endif
 TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 
@@ -252,19 +230,10 @@ STAGING_DIR=$(BUILD_DIR)/staging_dir
 TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)$(ARCH_FPU_SUFFIX)
 TARGET_PATH=$(STAGING_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
 IMAGE:=$(BASE_DIR)/root_fs_$(ARCH)$(ARCH_FPU_SUFFIX)
-
-ifeq ($(USE_LINUX_UCLIBC),true)
 REAL_GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux-uclibc
 GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
 KERNEL_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-
 TARGET_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-
-else
-REAL_GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
-GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
-KERNEL_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-
-TARGET_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-
-endif
-
 TARGET_CC=$(TARGET_CROSS)gcc
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 
@@ -314,7 +283,7 @@ include make/*.mk
 
 #############################################################
 #
-# staging and target directories do NOT list these as 
+# staging and target directories do NOT list these as
 # dependancies anywhere else
 #
 #############################################################

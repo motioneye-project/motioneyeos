@@ -16,7 +16,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-ifeq ($(USE_LINUX_UCLIBC),true)
 ifeq ($(GCC_2_95_TOOLCHAIN),true)
 
 GCC_SITE:=http://www.uclibc.org/downloads/toolchain
@@ -271,4 +270,3 @@ gcc2_95_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
 endif
-endif	#ifeq ($(USE_LINUX_UCLIBC),true)

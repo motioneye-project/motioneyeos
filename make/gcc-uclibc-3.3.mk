@@ -16,7 +16,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-ifeq ($(USE_LINUX_UCLIBC),true)
 ifneq ($(GCC_2_95_TOOLCHAIN),true)
 
 # Shiny new stuff...
@@ -255,4 +254,3 @@ gcc3_3_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
 endif
-endif	#ifeq ($(USE_LINUX_UCLIBC),true)
