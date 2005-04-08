@@ -46,7 +46,7 @@ $(JFFS2_TARGET): mtd-host
 	$(MKFS_JFFS2) \
 		$(JFFS2_OPTS) \
 		-d $(BUILD_DIR)/root \
-		-o $(JFFS2_TARGET)
+		-o $(JFFS2_TARGET) \
 		-D $(TARGET_DEVICE_TABLE)
 	@ls -l $(JFFS2_TARGET)
 
