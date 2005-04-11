@@ -1,6 +1,6 @@
 --- binutils/bfd/elf32-mips.c~
 +++ binutils/bfd/elf32-mips.c
-@@ -1611,7 +1611,9 @@
+@@ -1613,7 +1613,9 @@
  
  /* The SVR4 MIPS ABI says that this should be 0x10000, and Linux uses
     page sizes of up to that limit, so we need to respect it.  */
@@ -13,7 +13,7 @@
  /* Include the target file again for this target.  */
 --- binutils/bfd/elfn32-mips.c~
 +++ binutils/bfd/elfn32-mips.c
-@@ -1976,7 +1976,9 @@
+@@ -2399,7 +2399,9 @@
  
  /* The SVR4 MIPS ABI says that this should be 0x10000, and Linux uses
     page sizes of up to that limit, so we need to respect it.  */

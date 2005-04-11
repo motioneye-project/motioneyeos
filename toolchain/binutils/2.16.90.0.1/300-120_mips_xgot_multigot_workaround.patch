@@ -28,12 +28,14 @@ exit 0
 diff -urNad /home/james/debian/packages/binutils/binutils-2.15/bfd/elfxx-mips.c binutils-2.15/bfd/elfxx-mips.c
 --- /home/james/debian/packages/binutils/binutils-2.15/bfd/elfxx-mips.c	2004-09-23 22:41:37.156466673 +0100
 +++ binutils-2.15/bfd/elfxx-mips.c	2004-09-23 22:42:15.998362861 +0100
-@@ -5883,6 +5883,8 @@
-   s->size += i * MIPS_ELF_GOT_SIZE (output_bfd);
+@@ -6594,7 +6594,9 @@
  
-   if (s->size > MIPS_ELF_GOT_MAX_SIZE (output_bfd)
+   mips_elf_resolve_final_got_entries (g);
+ 
+-  if (s->size > MIPS_ELF_GOT_MAX_SIZE (output_bfd))
++  if (s->size > MIPS_ELF_GOT_MAX_SIZE (output_bfd)
 +      && g->global_gotno <= (MIPS_ELF_GOT_MAX_SIZE (output_bfd)
 +                            / MIPS_ELF_GOT_SIZE (output_bfd))
-       && ! mips_elf_multi_got (output_bfd, info, g, s, local_gotno))
-     return FALSE;
- 
+     {
+       if (! mips_elf_multi_got (output_bfd, info, g, s, local_gotno))
+ 	return FALSE;
