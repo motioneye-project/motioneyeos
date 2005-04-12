@@ -5,7 +5,7 @@
 #############################################################
 LIBELF_VER=0.8.5
 LIBELF_SOURCE=libelf-$(LIBELF_VER).tar.gz
-LIBELF_SITE=http://www.stud.uni-hannover.de/~michael/software/
+LIBELF_SITE=http://www.mr511.de/software/
 LIBELF_DIR=$(BUILD_DIR)/libelf-$(LIBELF_VER)
 
 LIBELF_ARCH:=$(ARCH)
@@ -18,6 +18,7 @@ $(DL_DIR)/$(LIBELF_SOURCE):
 
 $(LIBELF_DIR)/.source: $(DL_DIR)/$(LIBELF_SOURCE)
 	zcat $(DL_DIR)/$(LIBELF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(LIBELF_DIR) package/libelf libelf\*.patch
 	touch $(LIBELF_DIR)/.source
 
 $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.source
@@ -29,16 +30,21 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.source
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
+		$(DISABLE_NLS) \
+		--enable-shared \
 	);
 	touch $(LIBELF_DIR)/.configured;
 
 $(LIBELF_DIR)/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) LD=$(TARGET_CROSS)ld ARCH=$(LIBELF_ARCH) \
-		-C $(LIBELF_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBELF_DIR)
 
-$(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/libelf.so.$(LIBELF_VER)
-	$(INSTALL) -d -m 0644 $(LIBELF_DIR)/libelf.so.$(LIBELF_VER) $(TARGET_DIR)/usr/lib/
-	$(INSTALL) -d -m 0644 $(LIBELF_DIR)/libelf.so $(TARGET_DIR)/usr/lib/
+$(STAGING_DIR)/usr/lib/libelf.a: $(LIBELF_DIR)/libelf.so.$(LIBELF_VER)
+	$(MAKE1) $(TARGET_CONFIGURE_OPTS) ${INSTALL}="install -D" \
+		instroot=$(STAGING_DIR) -C $(LIBELF_DIR) install
+
+$(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER): $(STAGING_DIR)/usr/lib/libelf.a
+	$(INSTALL) -m 0644 $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VER) $(TARGET_DIR)/usr/lib/
+	$(INSTALL) -m 0644 $(STAGING_DIR)/usr/lib/libelf.so.0 $(TARGET_DIR)/usr/lib/
 
 libelf: uclibc $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER)
 

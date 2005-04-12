@@ -1,0 +1,11 @@
+--- libelf-0.8.5/aclocal.m4.orig	2003-12-05 08:36:00.000000000 -0700
++++ libelf-0.8.5/aclocal.m4	2005-04-12 16:01:16.000000000 -0600
+@@ -191,7 +191,7 @@
+ }>>, changequote([, ])dnl
+       mr_cv_target_elf=yes,
+       mr_cv_target_elf=no,
+-      mr_cv_target_elf=no)])])
++      mr_cv_target_elf=yes)])])
+ 
+ AC_DEFUN(mr_ENABLE_SHARED, [
+   AC_PROVIDE([$0])
