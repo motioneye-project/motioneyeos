@@ -1,5 +1,5 @@
 config BR2_PACKAGE_BUSYBOX
-	bool "busybox"
+	bool "BusyBox"
 	default y
 	help
 	  The Swiss Army Knife of embedded Linux.  It slices, it dices, it
@@ -10,10 +10,21 @@ config BR2_PACKAGE_BUSYBOX
 	  Most people will answer Y.
 
 config BR2_PACKAGE_BUSYBOX_SNAPSHOT
-	bool "Use the daily snapshot of busybox?"
+	bool "Use the daily snapshot of BusyBox?"
 	depends BR2_PACKAGE_BUSYBOX
 	default y
 	help
-	  Use the latest busybox CVS snapshot instead of release.
+	  Use the latest BusyBox daily snapshot instead of release.
 
 	  For fun, you should say Y.
+
+config BR2_PACKAGE_BUSYBOX_CONFIG
+	string "BusyBox configuration file to use?"
+	depends BR2_PACKAGE_BUSYBOX
+	default "package/busybox/busybox.config"
+	help
+	  Some people may wish to use their own modified BusyBox configuration
+	  file, and will specify their config file location with this option.
+
+	  Most people will just use the default BusyBox configuration file.
+
