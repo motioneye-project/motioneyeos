@@ -39,7 +39,7 @@ cramfsroot: cramfs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	$(CRAMFS_DIR)/mkcramfs -q -D target/default/device_table.txt $(TARGET_DIR) $(IMAGE).cramfs
+	$(CRAMFS_DIR)/mkcramfs -q -D target/generic/device_table.txt $(TARGET_DIR) $(IMAGE).cramfs
 
 cramfsroot-source: cramfs-source
 
