@@ -4,6 +4,7 @@
 #
 #############################################################
 LTRACE_SOURCE=ltrace_0.3.36.orig.tar.gz
+LTRACE_SOURCE2=ltrace_0.3.36-2.diff.gz
 LTRACE_SITE=http://ftp.debian.org/debian/pool/main/l/ltrace
 LTRACE_DIR=$(BUILD_DIR)/ltrace-0.3.36
 LTRACE_BINARY=ltrace
@@ -17,8 +18,12 @@ endif
 $(DL_DIR)/$(LTRACE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LTRACE_SITE)/$(LTRACE_SOURCE)
 
-$(LTRACE_DIR)/.source: $(DL_DIR)/$(LTRACE_SOURCE)
+$(DL_DIR)/$(LTRACE_SOURCE2):
+	$(WGET) -P $(DL_DIR) $(LTRACE_SITE)/$(LTRACE_SOURCE2)
+
+$(LTRACE_DIR)/.source: $(DL_DIR)/$(LTRACE_SOURCE) $(DL_DIR)/$(LTRACE_SOURCE2)
 	zcat $(DL_DIR)/$(LTRACE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	zcat $(DL_DIR)/$(LTRACE_SOURCE2) | patch -p1 -d $(LTRACE_DIR)
 	touch $(LTRACE_DIR)/.source
 
 $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.source
@@ -42,7 +47,7 @@ $(TARGET_DIR)/$(LTRACE_TARGET_BINARY): $(LTRACE_DIR)/$(LTRACE_BINARY)
 		-C $(LTRACE_DIR) install
 	rm -Rf $(TARGET_DIR)/usr/man
 
-ltrace: uclibc $(TARGET_DIR)/$(LTRACE_TARGET_BINARY)
+ltrace: uclibc libelf $(TARGET_DIR)/$(LTRACE_TARGET_BINARY)
 
 ltrace-source: $(DL_DIR)/$(LTRACE_SOURCE)
 
