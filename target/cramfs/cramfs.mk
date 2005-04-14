@@ -33,13 +33,32 @@ cramfs-dirclean:
 # Build the cramfs root filesystem image
 #
 #############################################################
+ifeq ($(strip $(BR2_armeb)),y)
+CRAMFS_ENDIANNESS=-r
+endif
+ifeq ($(strip $(BR2_mips)),y)
+CRAMFS_ENDIANNESS=-r
+endif
+ifeq ($(strip $(BR2_powerpc)),y)
+CRAMFS_ENDIANNESS=-r
+endif
+ifeq ($(strip $(BR2_sh3eb)),y)
+CRAMFS_ENDIANNESS=-r
+endif
+ifeq ($(strip $(BR2_sh4eb)),y)
+CRAMFS_ENDIANNESS=-r
+endif
+ifeq ($(strip $(BR2_sparc)),y)
+CRAMFS_ENDIANNESS=-r
+endif
 
 cramfsroot: cramfs
 	#-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	$(CRAMFS_DIR)/mkcramfs -q -D target/generic/device_table.txt $(TARGET_DIR) $(IMAGE).cramfs
+	$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) -D \
+		target/generic/device_table.txt $(TARGET_DIR) $(IMAGE).cramfs
 
 cramfsroot-source: cramfs-source
 
