@@ -19,11 +19,26 @@
 #  -Erik
 #
 #############################################################
+ifneq ($(filter $(TARGETS),linux),)
 
-# Version of Linux to download and then apply patches to
+# Base version of Linux kernel that we need to download
 DOWNLOAD_LINUX_VERSION=2.4.29
-# Version of Linux AFTER patches
+# Version of Linux kernel AFTER applying all patches
 LINUX_VERSION=2.4.29-erik
+
+
+# File name for the Linux kernel binary
+LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
+
+
+# Linux kernel configuration file
+LINUX_KCONFIG=target/device/Soekris/net4521/linux.config
+
+# kernel patches
+LINUX_PATCH_DIR=target/device/Soekris/net4521/kernel-patches/
+
+
+
 
 LINUX_FORMAT=bzImage
 #LINUX_FORMAT=images/zImage.prep
@@ -33,12 +48,9 @@ LINUX_KARCH:=$(shell echo $(ARCH) | sed -e 's/i[3-9]86/i386/' \
 	-e 's/sh[234]/sh/' \
 	)
 LINUX_BINLOC=arch/$(LINUX_KARCH)/boot/$(LINUX_FORMAT)
-
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
 LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.4
-LINUX_KCONFIG=target/device/Soekris/net4521/linux.config
-LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 # Used by pcmcia-cs and others
 LINUX_SOURCE_DIR=$(LINUX_DIR)
 
@@ -49,14 +61,13 @@ $(DL_DIR)/$(LINUX_SOURCE):
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
 	-mkdir -p $(TOOL_BUILD_DIR)
-	-(cd $(TOOL_BUILD_DIR); ln -sf $(LINUX_DIR) linux)
+	-(cd $(TOOL_BUILD_DIR); ln -snf $(LINUX_DIR) linux)
 	bzcat $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version
 	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)
 endif
-	mkdir -p package/linux/kernel-patches
-	toolchain/patch-kernel.sh $(LINUX_DIR) package/linux/kernel-patches
+	toolchain/patch-kernel.sh $(LINUX_DIR) $(LINUX_PATCH_DIR)
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_KCONFIG):
@@ -69,18 +80,19 @@ $(LINUX_KCONFIG):
 	fi;
 
 $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
+	$(SED) "s,^ARCH.*,ARCH=$(LINUX_KARCH),g;" $(LINUX_DIR)/Makefile
 	$(SED) "s,^CROSS_COMPILE.*,CROSS_COMPILE=$(KERNEL_CROSS),g;" $(LINUX_DIR)/Makefile
 	-cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
-	$(MAKE) -C $(LINUX_DIR) oldconfig include/linux/version.h
+	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) oldconfig include/linux/version.h
 	touch $(LINUX_DIR)/.configured
 
 $(LINUX_DIR)/.depend_done:  $(LINUX_DIR)/.configured
-	$(MAKE) -C $(LINUX_DIR) dep
+	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) dep
 	touch $(LINUX_DIR)/.depend_done
 
 $(LINUX_DIR)/$(LINUX_BINLOC): $(LINUX_DIR)/.depend_done
-	$(MAKE) -C $(LINUX_DIR) $(LINUX_FORMAT)
-	$(MAKE) -C $(LINUX_DIR) modules
+	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) $(LINUX_FORMAT)
+	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) modules
 
 $(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
 	cp -fa $(LINUX_DIR)/$(LINUX_BINLOC) $(LINUX_KERNEL)
@@ -89,7 +101,8 @@ $(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
 $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL)
 	rm -rf $(TARGET_DIR)/lib/modules
 	rm -f $(TARGET_DIR)/sbin/cardmgr
-	$(MAKE) -C $(LINUX_DIR) INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
+	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) \
+		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
 	(cd $(TARGET_DIR)/lib/modules; ln -s $(LINUX_VERSION)/kernel/drivers .)
 
 $(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
