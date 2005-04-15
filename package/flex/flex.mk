@@ -68,7 +68,7 @@ $(TARGET_DIR)/$(FLEX_TARGET_BINARY): $(FLEX_DIR)/$(FLEX_BINARY)
 	    -C $(FLEX_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	(cd $(TARGET_DIR)/usr/bin; ln -sf flex lex)
+	(cd $(TARGET_DIR)/usr/bin; ln -snf flex lex)
 
 flex: uclibc $(TARGET_DIR)/$(FLEX_TARGET_BINARY)
 

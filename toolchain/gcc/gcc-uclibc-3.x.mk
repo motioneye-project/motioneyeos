@@ -151,7 +151,7 @@ GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/lib/libc.a
 	mkdir -p $(GCC_BUILD_DIR2)
 	# Important!  Required for limits.h to be fixed.
-	ln -sf ../include $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/sys-include
+	ln -snf ../include $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/sys-include
 	(cd $(GCC_BUILD_DIR2); PATH=$(TARGET_PATH) \
 		$(GCC_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
@@ -184,10 +184,10 @@ endif
 	# Set up the symlinks to enable lying about target name.
 	set -e; \
 	(cd $(STAGING_DIR); \
-		ln -sf $(REAL_GNU_TARGET_NAME) $(GNU_TARGET_NAME); \
+		ln -snf $(REAL_GNU_TARGET_NAME) $(GNU_TARGET_NAME); \
 		cd bin; \
 		for app in $(REAL_GNU_TARGET_NAME)-* ; do \
-			ln -sf $${app} \
+			ln -snf $${app} \
 		   	$(GNU_TARGET_NAME)$${app##$(REAL_GNU_TARGET_NAME)}; \
 		done; \
 	);

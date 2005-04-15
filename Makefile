@@ -106,7 +106,7 @@ $(STAGING_DIR):
 	@mkdir -p $(STAGING_DIR)/lib
 	@mkdir -p $(STAGING_DIR)/include
 	@mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)
-	@ln -sf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
+	@ln -snf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
 	if [ -f "$(TARGET_SKELETON)" ] ; then \

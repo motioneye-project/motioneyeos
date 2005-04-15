@@ -65,10 +65,10 @@ $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY): $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SS
 	install -m 755 $(DROPBEAR_SSHD_DIR)/$(DROPBEAR_SSHD_BINARY) \
 		$(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
 	$(STRIP) $(TARGET_DIR)/$(DROPBEAR_SSHD_TARGET_BINARY)
-	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/scp
-	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/ssh
-	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearkey
-	ln -sf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearconvert
+	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/scp
+	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/ssh
+	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearkey
+	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dropbearconvert
 	cp $(DROPBEAR_SSHD_DIR)/S50dropbear $(TARGET_DIR)/etc/init.d/
 	chmod a+x $(TARGET_DIR)/etc/init.d/S50dropbear
 

@@ -40,12 +40,12 @@ $(LIBFLOAT_DIR)/libfloat.so.1: $(LIBFLOAT_DIR)/.unpacked $(TARGET_CC)
 $(STAGING_DIR)/lib/libfloat.so: $(LIBFLOAT_DIR)/libfloat.so.1
 	cp -a $(LIBFLOAT_DIR)/libfloat.a $(STAGING_DIR)/lib/libfloat.a
 	cp -a $(LIBFLOAT_DIR)/libfloat.so.1 $(STAGING_DIR)/lib/libfloat.so.1
-	(cd $(STAGING_DIR)/lib ; ln -sf libfloat.so.1 libfloat.so)
+	(cd $(STAGING_DIR)/lib ; ln -snf libfloat.so.1 libfloat.so)
 	cp -a $(LIBFLOAT_DIR)/libfloat.a $(TARGET_DIR)/usr/lib/libfloat.a
 	cp -a $(LIBFLOAT_DIR)/libfloat.so.1 $(TARGET_DIR)/lib/libfloat.so.1
 	$(STRIP) $(TARGET_DIR)/lib/libfloat.so.1 > /dev/null 2>&1
-	(cd $(TARGET_DIR)/lib ; ln -sf libfloat.so.1 libfloat.so)
-	(cd $(TARGET_DIR)/usr/lib ; ln -sf /lib/libfloat.so libfloat.so)
+	(cd $(TARGET_DIR)/lib ; ln -snf libfloat.so.1 libfloat.so)
+	(cd $(TARGET_DIR)/usr/lib ; ln -snf /lib/libfloat.so libfloat.so)
 
 libfloat: $(STAGING_DIR)/lib/libfloat.so
 
