@@ -1,7 +1,0 @@
-# Defaults for dhcp initscript
-# sourced by /etc/init.d/dhcp-server
-# installed at /etc/default/dhcp-server by the maintainer scripts
-
-# On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
-#       Separate multiple interfaces with spaces, e.g. "eth0 eth1".
-INTERFACES=""

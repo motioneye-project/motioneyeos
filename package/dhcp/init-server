@@ -3,17 +3,21 @@
 # $Id: dhcp3-server.init.d,v 1.4 2003/07/13 19:12:41 mdz Exp $
 #
 
-test -f /usr/sbin/dhcpd || exit 0
+
+
+# On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
+#       Separate multiple interfaces with spaces, e.g. "eth0 eth1".
+INTERFACES=""
+
 
 # It is not safe to start if we don't have a default configuration...
-if [ ! -f /etc/default/dhcp-server ]; then
-	echo "/etc/default/dhcp-server does not exist! - Aborting..."
-	exit 0
-fi
+echo "/etc/init.d/dhcp-server not yet configured! - Aborting..."
+exit 1;
 
-# Read init script configuration (so far only interfaces the daemon
-# should listen on.)
-. /etc/default/dhcp-server
+
+
+test -f /usr/sbin/dhcpd || exit 0
+
 
 case "$1" in
 	start)

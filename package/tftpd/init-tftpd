@@ -3,6 +3,17 @@
 # Author:	Jaakko Niemi <liiwi@iki.fi>
 # Modified from skeleton file in sarge
 
+
+
+
+
+#Defaults for tftpd-hpa
+RUN_DAEMON="yes"
+OPTIONS="-l -s /var/lib/tftpboot"
+
+
+
+
 set -e
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
@@ -10,19 +21,14 @@ DESC="HPA's tftpd"
 NAME=in.tftpd
 DAEMON=/usr/sbin/$NAME
 PIDFILE=/var/run/$NAME.pid
-SCRIPTNAME=/etc/init.d/tftpd-hpa
+SCRIPTNAME=/etc/init.d/S80tftpd-hpa
 
 # Gracefully exit if the package has been removed.
 test -x $DAEMON || exit 0
 
-# Read config file if it is present.
-if [ -r /etc/default/tftpd-hpa ]
-then
-	. /etc/default/tftpd-hpa
-fi
 
-if [ "$RUN_DAEMON" = "yes" ] ; then
-         echo "tftpd-hpa disabled in /etc/default/tftpd-hpa"
+if [ "$RUN_DAEMON" != "yes" ] ; then
+         echo "tftpd-hpa disabled in /etc/init.d/S80tftpd-hpa"
 	 exit 0
 fi
 
