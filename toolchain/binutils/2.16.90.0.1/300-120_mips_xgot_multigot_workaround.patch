@@ -35,7 +35,7 @@ diff -urNad /home/james/debian/packages/binutils/binutils-2.15/bfd/elfxx-mips.c 
 -  if (s->size > MIPS_ELF_GOT_MAX_SIZE (output_bfd))
 +  if (s->size > MIPS_ELF_GOT_MAX_SIZE (output_bfd)
 +      && g->global_gotno <= (MIPS_ELF_GOT_MAX_SIZE (output_bfd)
-+                            / MIPS_ELF_GOT_SIZE (output_bfd))
++                            / MIPS_ELF_GOT_SIZE (output_bfd)))
      {
        if (! mips_elf_multi_got (output_bfd, info, g, s, local_gotno))
  	return FALSE;
