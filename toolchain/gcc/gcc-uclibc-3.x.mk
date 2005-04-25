@@ -216,8 +216,8 @@ endif
 
 $(TARGET_DIR)/lib/libgcc_s.so.1: $(GCC_BUILD_DIR2)/.installed
 	# These are in /lib, so...
-	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
-	-$(STRIP) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s.so.1
+	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
+	-$(STRIP) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s*.so.1
 	-cp -a $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 	-cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
@@ -309,7 +309,7 @@ endif
 	-(cd $(TARGET_DIR)/usr/bin; find -type f | xargs $(STRIP) > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR); $(STRIP) cc1 cc1plus collect2 > /dev/null 2>&1)
 	-(cd $(TARGET_DIR)/usr/lib; $(STRIP) libstdc++.so.*.*.* > /dev/null 2>&1)
-	-(cd $(TARGET_DIR)/lib; $(STRIP) libgcc_s.so.*.*.* > /dev/null 2>&1)
+	-(cd $(TARGET_DIR)/lib; $(STRIP) libgcc_s*.so.*.*.* > /dev/null 2>&1)
 	#
 	rm -f $(TARGET_DIR)/usr/lib/*.la*
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
@@ -321,7 +321,7 @@ endif
 			$(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/ ; \
 	fi
 	# These are in /lib, so...
-	#rm -rf $(TARGET_DIR)/usr/lib/libgcc_s.so*
+	#rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
 	#touch -c $(TARGET_DIR)/usr/bin/gcc
 
 gcc_target: uclibc_target binutils_target $(TARGET_DIR)/usr/bin/gcc
