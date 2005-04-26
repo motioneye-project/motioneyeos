@@ -1,0 +1,11 @@
+config BR2_PACKAGE_DIRECTFB
+	bool "directfb"
+	default n
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBSYSFS
+	select BR2_PACKAGE_FREETYPE
+	help
+
+	http://www.directfb.org/
