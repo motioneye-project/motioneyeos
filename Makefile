@@ -199,6 +199,6 @@ distclean: clean
 endif # ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 
 .PHONY: dummy subdirs release distclean clean config oldconfig \
-	menuconfig tags check test depend
+	menuconfig tags check test depend defconfig
 
 
