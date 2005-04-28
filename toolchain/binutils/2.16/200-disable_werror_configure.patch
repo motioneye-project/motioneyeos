@@ -1,0 +1,15 @@
+--- binutils-2.16/configure	2005-04-03 09:16:17.000000000 -0500
++++ binutils-2.16-patched/configure	2005-04-22 20:58:35.377578864 -0500
+@@ -4818,10 +4818,10 @@
+ # Change the default to "no" on release branches.
+ # Check whether --enable-werror or --disable-werror was given.
+ if test "${enable_werror+set}" = set; then
+-  enableval="$enable_werror"
++  enableval="no"
+   :
+ else
+-  enable_werror=yes
++  enable_werror=no
+ fi
+ 
+ case ${enable_werror} in

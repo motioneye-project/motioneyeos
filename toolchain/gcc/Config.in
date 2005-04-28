@@ -35,6 +35,9 @@ choice
 	config BR2_GCC_VERSION_3_4_3
 		bool "gcc 3.4.3"
 
+	config BR2_GCC_VERSION_4_1_0
+		bool "gcc 4.1.0"
+
 endchoice
 
 config BR2_GCC_VERSION
@@ -47,6 +50,7 @@ config BR2_GCC_VERSION
 	default "3.4.1"     if BR2_GCC_VERSION_3_4_1
 	default "3.4.2"     if BR2_GCC_VERSION_3_4_2
 	default "3.4.3"     if BR2_GCC_VERSION_3_4_3
+	default "4.1.0"     if BR2_GCC_VERSION_4_1_0
 
 
 config BR2_GCC_USE_SJLJ_EXCEPTIONS
