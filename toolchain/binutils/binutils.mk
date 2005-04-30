@@ -6,6 +6,9 @@
 BINUTILS_VERSION:=$(strip $(subst ",, $(BR2_BINUTILS_VERSION)))
 
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
+ifeq ($(BINUTILS_VERSION),2.16)
+BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
+endif
 ifeq ($(BINUTILS_VERSION),2.15)
 BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
 endif
@@ -46,6 +49,7 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--target=$(REAL_GNU_TARGET_NAME) \
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
+		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) );
 	touch $(BINUTILS_DIR1)/.configured
 
@@ -104,6 +108,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		--target=$(REAL_GNU_TARGET_NAME) \
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
+		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) );
 	touch $(BINUTILS_DIR2)/.configured
 
