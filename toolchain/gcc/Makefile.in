@@ -21,6 +21,13 @@ SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
 else
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
 endif
+# again... there must be a better way
+ifeq ($(findstring 4.0.,$(GCC_VERSION)),4.0.)
+SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
+endif
+ifeq ($(findstring 4.1.,$(GCC_VERSION)),4.1.)
+SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
+endif
 TARGET_SOFT_FLOAT:=-msoft-float
 ARCH_FPU_SUFFIX:=_nofpu
 else
