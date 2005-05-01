@@ -59,7 +59,8 @@ config BR2_GCC_VERSION
 
 config BR2_GCC_USE_SJLJ_EXCEPTIONS
 	string
-	default "--enable-sjlj-exceptions"
+	default "--enable-sjlj-exceptions" if BR2_GCC_VERSION_3_3_3
+	default ""
 	help
 	    Currently the unwind stuff seems to work for staticly linked apps
 	    but not dynamic.  So use setjmp/longjmp exceptions by default.
