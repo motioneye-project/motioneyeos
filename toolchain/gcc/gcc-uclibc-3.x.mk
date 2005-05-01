@@ -17,7 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-ifneq ($(findstring 2.95,$(GCC_VERSION)),2.95)
 GCC_VERSION:=$(strip $(GCC_VERSION))
 
 #GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/releases/gcc-$(GCC_VERSION)
@@ -340,4 +339,3 @@ gcc_target-clean:
 gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
-endif
