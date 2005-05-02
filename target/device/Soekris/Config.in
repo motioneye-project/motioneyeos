@@ -6,8 +6,12 @@ config BR2_TARGET_SOEKRIS_NET4521
 	help
 	  The Soekris net4521
 
+comment "Package support"
+	depends on BR2_TARGET_SOEKRIS_NET4521
+
 config BR2_PACKAGE_LINUX
 	bool "linux"
+	depends on BR2_TARGET_SOEKRIS_NET4521
 	default n
 	help
 	    The Linux kernel.
