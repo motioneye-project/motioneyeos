@@ -33,7 +33,6 @@ UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
 		-e 's/m68k.*/m68k/' \
 		-e 's/ppc/powerpc/g' \
 		-e 's/v850.*/v850/g' \
-		-e 's/sh64/sh/' \
 		-e 's/sh[234].*/sh/' \
 		-e 's/mips.*/mips/' \
 		-e 's/mipsel.*/mips/' \
