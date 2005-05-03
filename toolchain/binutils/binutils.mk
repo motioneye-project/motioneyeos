@@ -18,6 +18,9 @@ endif
 ifeq ($(BINUTILS_VERSION),2.13)
 BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
 endif
+ifeq ($(BINUTILS_VERSION),2.15.97)
+BINUTILS_SITE:=ftp://sources.redhat.com/pub/binutils/snapshots/
+endif
 
 BINUTILS_SOURCE:=binutils-$(BINUTILS_VERSION).tar.bz2
 BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)
