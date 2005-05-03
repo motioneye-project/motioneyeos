@@ -1,6 +1,6 @@
 diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/acinclude.m4
 --- gcc-4.1.0/libstdc++-v3/acinclude.m4	2005-04-11 19:13:06.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/acinclude.m4	2005-04-27 22:20:27.569248995 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/acinclude.m4	2005-04-30 19:36:16.917899167 -0500
 @@ -1047,7 +1047,7 @@
    AC_MSG_CHECKING([for C locale to use])
    GLIBCXX_ENABLE(clocale,auto,[@<:@=MODEL@:>@],
@@ -64,11 +64,11 @@ diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/aci
    # This is where the testsuite looks for locale catalogs, using the
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c++locale_internal.h
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	2005-04-27 22:20:27.571248664 -0500
-@@ -0,0 +1,59 @@
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	2005-04-30 19:36:16.918898999 -0500
+@@ -0,0 +1,63 @@
 +// Prototypes for GLIBC thread locale __-prefixed functions -*- C++ -*-
 +
-+// Copyright (C) 2002, 2004 Free Software Foundation, Inc.
++// Copyright (C) 2002, 2004, 2005 Free Software Foundation, Inc.
 +//
 +// This file is part of the GNU ISO C++ Library.  This library is free
 +// software; you can redistribute it and/or modify it under the
@@ -97,6 +97,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4
 +
 +// Written by Jakub Jelinek <jakub@redhat.com>
 +
++#include <bits/c++config.h>
 +#include <clocale>
 +
 +#ifdef __UCLIBC_MJN3_ONLY__
@@ -105,7 +106,6 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4
 +
 +#ifdef __UCLIBC_HAS_XLOCALE__
 +                                                  
-+extern "C" __typeof(iswctype_l) __iswctype_l;
 +extern "C" __typeof(nl_langinfo_l) __nl_langinfo_l;
 +extern "C" __typeof(strcoll_l) __strcoll_l;
 +extern "C" __typeof(strftime_l) __strftime_l;
@@ -113,21 +113,25 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4
 +extern "C" __typeof(strtof_l) __strtof_l;
 +extern "C" __typeof(strtold_l) __strtold_l;
 +extern "C" __typeof(strxfrm_l) __strxfrm_l;
++extern "C" __typeof(newlocale) __newlocale;
++extern "C" __typeof(freelocale) __freelocale;
++extern "C" __typeof(duplocale) __duplocale;
++extern "C" __typeof(uselocale) __uselocale;
++
++#ifdef _GLIBCXX_USE_WCHAR_T
++extern "C" __typeof(iswctype_l) __iswctype_l;
 +extern "C" __typeof(towlower_l) __towlower_l;
 +extern "C" __typeof(towupper_l) __towupper_l;
 +extern "C" __typeof(wcscoll_l) __wcscoll_l;
 +extern "C" __typeof(wcsftime_l) __wcsftime_l;
 +extern "C" __typeof(wcsxfrm_l) __wcsxfrm_l;
 +extern "C" __typeof(wctype_l) __wctype_l;
-+extern "C" __typeof(newlocale) __newlocale;
-+extern "C" __typeof(freelocale) __freelocale;
-+extern "C" __typeof(duplocale) __duplocale;
-+extern "C" __typeof(uselocale) __uselocale;
++#endif 
 +
 +#endif // GLIBC 2.3 and later
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.cc	2005-04-27 22:20:27.572248498 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.cc	2005-04-30 19:36:16.919898830 -0500
 @@ -0,0 +1,160 @@
 +// Wrapper for underlying C-language localization -*- C++ -*-
 +
@@ -291,11 +295,11 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patc
 +}  // namespace std
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.h
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.h	2005-04-27 22:20:27.573248332 -0500
-@@ -0,0 +1,115 @@
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.h	2005-04-30 19:36:16.920898661 -0500
+@@ -0,0 +1,117 @@
 +// Wrapper for underlying C-language localization -*- C++ -*-
 +
-+// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
++// Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 +//
 +// This file is part of the GNU ISO C++ Library.  This library is free
 +// software; you can redistribute it and/or modify it under the
@@ -379,8 +383,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patch
 +  // be avoided.
 +  template<typename _Tv>
 +    int
-+    __convert_from_v(char* __out, const int __size, const char* __fmt,
-+#ifdef __UCLIBC_HAS_XLOCALE__
++    __convert_from_v(char* __out, 
++		     const int __size __attribute__ ((__unused__)),
++		     const char* __fmt,
++#ifdef __UCLIBC_HAS_XCLOCALE__
 +		     _Tv __v, const __c_locale& __cloc, int __prec)
 +    {
 +      __c_locale __old = __gnu_cxx::__uselocale(__cloc);
@@ -397,7 +403,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patch
 +
 +      const int __ret = std::snprintf(__out, __size, __fmt, __prec, __v);
 +
-+#ifdef __UCLIBC_HAS_XLOCALE__
++#ifdef __UCLIBC_HAS_XCLOCALE__
 +      __gnu_cxx::__uselocale(__old);
 +#elif defined __UCLIBC_HAS_LOCALE__
 +      std::setlocale(LC_ALL, __sav);
@@ -410,7 +416,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patch
 +#endif
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/codecvt_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	2005-04-27 22:20:27.574248167 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	2005-04-30 19:36:16.921898492 -0500
 @@ -0,0 +1,306 @@
 +// std::codecvt implementation details, GNU version -*- C++ -*-
 +
@@ -720,7 +726,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc gcc-4.1
 +}
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/collate_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/collate_members.cc	2005-04-27 22:20:27.575248001 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/collate_members.cc	2005-04-30 19:36:16.922898323 -0500
 @@ -0,0 +1,80 @@
 +// std::collate implementation details, GNU version -*- C++ -*-
 +
@@ -804,7 +810,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc gcc-4.1
 +}
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/ctype_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/ctype_members.cc	2005-04-27 22:20:27.595244687 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/ctype_members.cc	2005-04-30 19:36:16.923898155 -0500
 @@ -0,0 +1,300 @@
 +// std::ctype implementation details, GNU version -*- C++ -*-
 +
@@ -914,7 +920,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0
 +	__ret = __wctype_l("graph", _M_c_locale_ctype);
 +	break;
 +      default:
-+	__ret = 0;
++	__ret = __wmask_type();
 +      }
 +    return __ret;
 +  }
@@ -1108,7 +1114,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0
 +}
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.cc	2005-04-27 22:20:27.618240876 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.cc	2005-04-30 19:36:16.925897817 -0500
 @@ -0,0 +1,100 @@
 +// std::messages implementation details, GNU version -*- C++ -*-
 +
@@ -1212,7 +1218,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc gcc-4.
 +}
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.h
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.h	2005-04-27 22:20:27.619240710 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.h	2005-04-30 19:36:16.925897817 -0500
 @@ -0,0 +1,118 @@
 +// std::messages implementation details, GNU version -*- C++ -*-
 +
@@ -1334,8 +1340,8 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1
 +     }
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/monetary_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/monetary_members.cc	2005-04-27 22:20:27.621240379 -0500
-@@ -0,0 +1,698 @@
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/monetary_members.cc	2005-04-30 19:36:16.927897479 -0500
+@@ -0,0 +1,692 @@
 +// std::moneypunct implementation details, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -1721,12 +1727,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +	  _M_data->_M_neg_format = money_base::_S_default_pattern;
 +
 +	  // Use ctype::widen code without the facet...
-+	  unsigned char uc;
 +	  for (size_t __i = 0; __i < money_base::_S_end; ++__i)
-+	    {
-+	      uc = static_cast<unsigned char>(money_base::_S_atoms[__i]);
-+	      _M_data->_M_atoms[__i] = btowc(uc);
-+	    }
++	    _M_data->_M_atoms[__i] =
++	      static_cast<wchar_t>(money_base::_S_atoms[__i]);
 +	}
 +      else
 +	{
@@ -1751,12 +1754,12 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
 +# endif
 +#else
-+	  union __s_and_w { const char *__s; unsigned int __w; } __u;
++	  union { char *__s; wchar_t __w; } __u;
 +	  __u.__s = __nl_langinfo_l(_NL_MONETARY_DECIMAL_POINT_WC, __cloc);
-+	  _M_data->_M_decimal_point = static_cast<wchar_t>(__u.__w);
++	  _M_data->_M_decimal_point = __u.__w;
 +
 +	  __u.__s = __nl_langinfo_l(_NL_MONETARY_THOUSANDS_SEP_WC, __cloc);
-+	  _M_data->_M_thousands_sep = static_cast<wchar_t>(__u.__w);
++	  _M_data->_M_thousands_sep = __u.__w;
 +#endif
 +	  _M_data->_M_grouping = __nl_langinfo_l(__MON_GROUPING, __cloc);
 +	  _M_data->_M_grouping_size = strlen(_M_data->_M_grouping);
@@ -1879,12 +1882,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +	  _M_data->_M_neg_format = money_base::_S_default_pattern;
 +
 +	  // Use ctype::widen code without the facet...
-+	  unsigned char uc;
 +	  for (size_t __i = 0; __i < money_base::_S_end; ++__i)
-+	    {
-+	      uc = static_cast<unsigned char>(money_base::_S_atoms[__i]);
-+	      _M_data->_M_atoms[__i] = btowc(uc);
-+	    }
++	    _M_data->_M_atoms[__i] =
++	      static_cast<wchar_t>(money_base::_S_atoms[__i]);
 +	}
 +      else
 +	{
@@ -1909,12 +1909,12 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
 +# endif
 +#else
-+	  union __s_and_w { const char *__s; unsigned int __w; } __u;
++          union { char *__s; wchar_t __w; } __u;
 +	  __u.__s = __nl_langinfo_l(_NL_MONETARY_DECIMAL_POINT_WC, __cloc);
-+	  _M_data->_M_decimal_point = static_cast<wchar_t>(__u.__w);
++	  _M_data->_M_decimal_point = __u.__w;
 +
 +	  __u.__s = __nl_langinfo_l(_NL_MONETARY_THOUSANDS_SEP_WC, __cloc);
-+	  _M_data->_M_thousands_sep = static_cast<wchar_t>(__u.__w);
++	  _M_data->_M_thousands_sep = __u.__w;
 +#endif
 +	  _M_data->_M_grouping = __nl_langinfo_l(__MON_GROUPING, __cloc);
 +          _M_data->_M_grouping_size = strlen(_M_data->_M_grouping);
@@ -2036,8 +2036,8 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +}
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/numeric_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/numeric_members.cc	2005-04-27 22:20:27.623240047 -0500
-@@ -0,0 +1,183 @@
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/numeric_members.cc	2005-04-30 19:36:38.467261324 -0500
+@@ -0,0 +1,160 @@
 +// std::numpunct implementation details, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -2129,10 +2129,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +      // NB: There is no way to extact this info from posix locales.
 +      // _M_truename = __nl_langinfo_l(YESSTR, __cloc);
 +      _M_data->_M_truename = "true";
-+      _M_data->_M_truename_size = strlen(_M_data->_M_truename);
++      _M_data->_M_truename_size = 4;
 +      // _M_falsename = __nl_langinfo_l(NOSTR, __cloc);
 +      _M_data->_M_falsename = "false";
-+      _M_data->_M_falsename_size = strlen(_M_data->_M_falsename);
++      _M_data->_M_falsename_size = 5;
 +    }
 + 
 +  template<> 
@@ -2157,48 +2157,25 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +	  _M_data->_M_decimal_point = L'.';
 +	  _M_data->_M_thousands_sep = L',';
 +
-+#ifdef __UCLIBC_HAS_XLOCALE__
-+	  __c_locale __old = __uselocale(_S_get_c_locale());
-+#endif
 +	  // Use ctype::widen code without the facet...
-+	  unsigned char uc;
 +	  for (size_t __i = 0; __i < __num_base::_S_oend; ++__i)
-+	    {
-+	      uc = static_cast<unsigned char>(__num_base::_S_atoms_out[__i]);
-+	      _M_data->_M_atoms_out[__i] = btowc(uc);
-+	    }
++	    _M_data->_M_atoms_out[__i] =
++	      static_cast<wchar_t>(__num_base::_S_atoms_out[__i]);
 +
 +	  for (size_t __j = 0; __j < __num_base::_S_iend; ++__j)
-+	    {
-+	      uc = static_cast<unsigned char>(__num_base::_S_atoms_in[__j]);
-+	      _M_data->_M_atoms_in[__j] = btowc(uc);
-+	    }
-+#ifdef __UCLIBC_HAS_XLOCALE__
-+	  __uselocale(__old);
-+#endif
++	    _M_data->_M_atoms_in[__j] =
++	      static_cast<wchar_t>(__num_base::_S_atoms_in[__j]);
 +	}
 +      else
 +	{
 +	  // Named locale.
-+#ifdef __UCLIBC_MJN3_ONLY__
-+#warning fix this
-+#endif
-+#ifdef __UCLIBC__
-+# ifdef __UCLIBC_HAS_XLOCALE__
-+	  _M_data->_M_decimal_point = __cloc->decimal_point_wc;
-+	  _M_data->_M_thousands_sep = __cloc->thousands_sep_wc;
-+# else
-+	  _M_data->_M_decimal_point = __global_locale->decimal_point_wc;
-+	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
-+# endif
-+#else
-+	  union __s_and_w { const char *__s; unsigned int __w; } __u;
++	  // NB: In the GNU model wchar_t is always 32 bit wide.
++	  union { char *__s; wchar_t __w; } __u;
 +	  __u.__s = __nl_langinfo_l(_NL_NUMERIC_DECIMAL_POINT_WC, __cloc);
-+	  _M_data->_M_decimal_point = static_cast<wchar_t>(__u.__w);
++	  _M_data->_M_decimal_point = __u.__w;
 +
 +	  __u.__s = __nl_langinfo_l(_NL_NUMERIC_THOUSANDS_SEP_WC, __cloc);
-+	  _M_data->_M_thousands_sep = static_cast<wchar_t>(__u.__w);
-+#endif
++	  _M_data->_M_thousands_sep = __u.__w;
 +
 +	  if (_M_data->_M_thousands_sep == L'\0')
 +	    _M_data->_M_grouping = "";
@@ -2210,10 +2187,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +      // NB: There is no way to extact this info from posix locales.
 +      // _M_truename = __nl_langinfo_l(YESSTR, __cloc);
 +      _M_data->_M_truename = L"true";
-+      _M_data->_M_truename_size = wcslen(_M_data->_M_truename);
++      _M_data->_M_truename_size = 4;
 +      // _M_falsename = __nl_langinfo_l(NOSTR, __cloc);
 +      _M_data->_M_falsename = L"false";
-+      _M_data->_M_falsename_size = wcslen(_M_data->_M_falsename);
++      _M_data->_M_falsename_size = 5;
 +    }
 +
 +  template<> 
@@ -2223,8 +2200,8 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +}
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.cc	2005-04-27 22:20:27.624239882 -0500
-@@ -0,0 +1,356 @@
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.cc	2005-04-30 19:36:16.929897142 -0500
+@@ -0,0 +1,406 @@
 +// std::time_get, std::time_put implementation, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -2371,7 +2348,8 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0-
 +	  _M_data->_M_time_format = __nl_langinfo_l(T_FMT, __cloc);
 +	  _M_data->_M_time_era_format = __nl_langinfo_l(ERA_T_FMT, __cloc);
 +	  _M_data->_M_date_time_format = __nl_langinfo_l(D_T_FMT, __cloc);
-+	  _M_data->_M_date_time_era_format = __nl_langinfo_l(ERA_D_T_FMT, __cloc);
++	  _M_data->_M_date_time_era_format = __nl_langinfo_l(ERA_D_T_FMT,
++							     __cloc);
 +	  _M_data->_M_am = __nl_langinfo_l(AM_STR, __cloc);
 +	  _M_data->_M_pm = __nl_langinfo_l(PM_STR, __cloc);
 +	  _M_data->_M_am_pm_format = __nl_langinfo_l(T_FMT_AMPM, __cloc);
@@ -2521,61 +2499,110 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0-
 +	{
 +	  _M_c_locale_timepunct = _S_clone_c_locale(__cloc); 
 +
-+	  _M_data->_M_date_format = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WD_FMT, __cloc));
-+	  _M_data->_M_date_era_format = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WERA_D_FMT, __cloc));
-+	  _M_data->_M_time_format = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WT_FMT, __cloc));
-+	  _M_data->_M_time_era_format = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WERA_T_FMT, __cloc));
-+	  _M_data->_M_date_time_format = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WD_T_FMT, __cloc));
-+	  _M_data->_M_date_time_era_format = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WERA_D_T_FMT, __cloc));
-+	  _M_data->_M_am = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WAM_STR, __cloc));
-+	  _M_data->_M_pm = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WPM_STR, __cloc));
-+	  _M_data->_M_am_pm_format = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WT_FMT_AMPM, __cloc));
++	  union { char *__s; wchar_t *__w; } __u;
++
++	  __u.__s = __nl_langinfo_l(_NL_WD_FMT, __cloc);
++	  _M_data->_M_date_format = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WERA_D_FMT, __cloc);
++	  _M_data->_M_date_era_format = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WT_FMT, __cloc);
++	  _M_data->_M_time_format = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WERA_T_FMT, __cloc);
++	  _M_data->_M_time_era_format = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WD_T_FMT, __cloc);
++	  _M_data->_M_date_time_format = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WERA_D_T_FMT, __cloc);
++	  _M_data->_M_date_time_era_format = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WAM_STR, __cloc);
++	  _M_data->_M_am = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WPM_STR, __cloc);
++	  _M_data->_M_pm = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WT_FMT_AMPM, __cloc);
++	  _M_data->_M_am_pm_format = __u.__w;
 +
 +	  // Day names, starting with "C"'s Sunday.
-+	  _M_data->_M_day1 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WDAY_1, __cloc));
-+	  _M_data->_M_day2 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WDAY_2, __cloc));
-+	  _M_data->_M_day3 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WDAY_3, __cloc));
-+	  _M_data->_M_day4 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WDAY_4, __cloc));
-+	  _M_data->_M_day5 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WDAY_5, __cloc));
-+	  _M_data->_M_day6 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WDAY_6, __cloc));
-+	  _M_data->_M_day7 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WDAY_7, __cloc));
++	  __u.__s = __nl_langinfo_l(_NL_WDAY_1, __cloc);
++	  _M_data->_M_day1 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WDAY_2, __cloc);
++	  _M_data->_M_day2 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WDAY_3, __cloc);
++	  _M_data->_M_day3 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WDAY_4, __cloc);
++	  _M_data->_M_day4 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WDAY_5, __cloc);
++	  _M_data->_M_day5 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WDAY_6, __cloc);
++	  _M_data->_M_day6 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WDAY_7, __cloc);
++	  _M_data->_M_day7 = __u.__w;
 +
 +	  // Abbreviated day names, starting with "C"'s Sun.
-+	  _M_data->_M_aday1 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABDAY_1, __cloc));
-+	  _M_data->_M_aday2 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABDAY_2, __cloc));
-+	  _M_data->_M_aday3 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABDAY_3, __cloc));
-+	  _M_data->_M_aday4 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABDAY_4, __cloc));
-+	  _M_data->_M_aday5 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABDAY_5, __cloc));
-+	  _M_data->_M_aday6 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABDAY_6, __cloc));
-+	  _M_data->_M_aday7 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABDAY_7, __cloc));
++	  __u.__s = __nl_langinfo_l(_NL_WABDAY_1, __cloc);
++	  _M_data->_M_aday1 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABDAY_2, __cloc);
++	  _M_data->_M_aday2 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABDAY_3, __cloc);
++	  _M_data->_M_aday3 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABDAY_4, __cloc);
++	  _M_data->_M_aday4 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABDAY_5, __cloc);
++	  _M_data->_M_aday5 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABDAY_6, __cloc);
++	  _M_data->_M_aday6 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABDAY_7, __cloc);
++	  _M_data->_M_aday7 = __u.__w;
 +
 +	  // Month names, starting with "C"'s January.
-+	  _M_data->_M_month01 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_1, __cloc));
-+	  _M_data->_M_month02 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_2, __cloc));
-+	  _M_data->_M_month03 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_3, __cloc));
-+	  _M_data->_M_month04 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_4, __cloc));
-+	  _M_data->_M_month05 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_5, __cloc));
-+	  _M_data->_M_month06 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_6, __cloc));
-+	  _M_data->_M_month07 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_7, __cloc));
-+	  _M_data->_M_month08 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_8, __cloc));
-+	  _M_data->_M_month09 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_9, __cloc));
-+	  _M_data->_M_month10 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_10, __cloc));
-+	  _M_data->_M_month11 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_11, __cloc));
-+	  _M_data->_M_month12 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WMON_12, __cloc));
++	  __u.__s = __nl_langinfo_l(_NL_WMON_1, __cloc);
++	  _M_data->_M_month01 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_2, __cloc);
++	  _M_data->_M_month02 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_3, __cloc);
++	  _M_data->_M_month03 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_4, __cloc);
++	  _M_data->_M_month04 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_5, __cloc);
++	  _M_data->_M_month05 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_6, __cloc);
++	  _M_data->_M_month06 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_7, __cloc);
++	  _M_data->_M_month07 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_8, __cloc);
++	  _M_data->_M_month08 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_9, __cloc);
++	  _M_data->_M_month09 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_10, __cloc);
++	  _M_data->_M_month10 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_11, __cloc);
++	  _M_data->_M_month11 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WMON_12, __cloc);
++	  _M_data->_M_month12 = __u.__w;
 +
 +	  // Abbreviated month names, starting with "C"'s Jan.
-+	  _M_data->_M_amonth01 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_1, __cloc));
-+	  _M_data->_M_amonth02 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_2, __cloc));
-+	  _M_data->_M_amonth03 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_3, __cloc));
-+	  _M_data->_M_amonth04 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_4, __cloc));
-+	  _M_data->_M_amonth05 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_5, __cloc));
-+	  _M_data->_M_amonth06 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_6, __cloc));
-+	  _M_data->_M_amonth07 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_7, __cloc));
-+	  _M_data->_M_amonth08 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_8, __cloc));
-+	  _M_data->_M_amonth09 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_9, __cloc));
-+	  _M_data->_M_amonth10 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_10, __cloc));
-+	  _M_data->_M_amonth11 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_11, __cloc));
-+	  _M_data->_M_amonth12 = reinterpret_cast<wchar_t*>(__nl_langinfo_l(_NL_WABMON_12, __cloc));
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_1, __cloc);
++	  _M_data->_M_amonth01 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_2, __cloc);
++	  _M_data->_M_amonth02 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_3, __cloc);
++	  _M_data->_M_amonth03 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_4, __cloc);
++	  _M_data->_M_amonth04 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_5, __cloc);
++	  _M_data->_M_amonth05 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_6, __cloc);
++	  _M_data->_M_amonth06 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_7, __cloc);
++	  _M_data->_M_amonth07 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_8, __cloc);
++	  _M_data->_M_amonth08 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_9, __cloc);
++	  _M_data->_M_amonth09 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_10, __cloc);
++	  _M_data->_M_amonth10 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_11, __cloc);
++	  _M_data->_M_amonth11 = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_WABMON_12, __cloc);
++	  _M_data->_M_amonth12 = __u.__w;
 +	}
 +#endif // 0
 +    }
@@ -2583,7 +2610,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0-
 +}
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.h
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.h	2005-04-27 22:20:27.625239716 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.h	2005-04-30 19:36:16.929897142 -0500
 @@ -0,0 +1,68 @@
 +// std::time_get, std::time_put implementation, GNU version -*- C++ -*-
 +
@@ -2655,11 +2682,11 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h gcc-4.1.0-p
 +    }
 diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_base.h
 --- gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_base.h	2005-04-27 22:20:27.626239550 -0500
-@@ -0,0 +1,58 @@
++++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_base.h	2005-04-30 19:36:16.930896973 -0500
+@@ -0,0 +1,64 @@
 +// Locale support -*- C++ -*-
 +
-+// Copyright (C) 1997, 1998, 1999, 2000, 2002, 2003
++// Copyright (C) 1997, 1998, 1999, 2000, 2002, 2003, 2004
 +// Free Software Foundation, Inc.
 +//
 +// This file is part of the GNU ISO C++ Library.  This library is free
@@ -2691,8 +2718,14 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h gcc-4.1.0-patched
 +// ISO C++ 14882: 22.1  Locales
 +//
 +  
++/** @file ctype_base.h
++ *  This is an internal header file, included by other library headers.
++ *  You should not attempt to use it directly.
++ */
++
 +// Information as gleaned from /usr/include/ctype.h
 +  
++  /// @brief  Base class for ctype.
 +  struct ctype_base
 +  {
 +    // Note: In uClibc, the following two types depend on configuration.
@@ -2717,7 +2750,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h gcc-4.1.0-patched
 +  };
 diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_inline.h
 --- gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_inline.h	2005-04-27 22:20:27.626239550 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_inline.h	2005-04-30 19:36:16.931896804 -0500
 @@ -0,0 +1,69 @@
 +// Locale support -*- C++ -*-
 +
@@ -2790,7 +2823,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h gcc-4.1.0-patch
 +  }
 diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_noninline.h
 --- gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_noninline.h	2005-04-27 22:20:27.627239385 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_noninline.h	2005-04-30 19:36:16.931896804 -0500
 @@ -0,0 +1,92 @@
 +// Locale support -*- C++ -*-
 +
@@ -2886,7 +2919,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h gcc-4.1.0-pa
 +  }
 diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/os_defines.h
 --- gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/os_defines.h	2005-04-27 22:20:27.628239219 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/os_defines.h	2005-04-30 19:36:16.932896635 -0500
 @@ -0,0 +1,44 @@
 +// Specific definitions for GNU/Linux  -*- C++ -*-
 +
@@ -2934,7 +2967,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h gcc-4.1.0-patched
 +#endif
 diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/configure
 --- gcc-4.1.0/libstdc++-v3/configure	2005-04-13 19:31:43.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/configure	2005-04-27 22:20:33.285301695 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/configure	2005-04-30 19:36:16.993886339 -0500
 @@ -3986,6 +3986,11 @@
    lt_cv_deplibs_check_method=pass_all
    ;;
@@ -3059,7 +3092,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
  cat >>confdefs.h <<\_ACEOF
 diff -urN gcc-4.1.0/libstdc++-v3/configure.host gcc-4.1.0-patched/libstdc++-v3/configure.host
 --- gcc-4.1.0/libstdc++-v3/configure.host	2005-01-13 16:48:14.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/configure.host	2005-04-27 22:20:28.088162997 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/configure.host	2005-04-30 19:36:16.996885833 -0500
 @@ -249,6 +249,12 @@
      ;;
  esac
@@ -3075,7 +3108,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure.host gcc-4.1.0-patched/libstdc++-v3/c
  # THIS TABLE IS SORTED.  KEEP IT THAT WAY.
 diff -urN gcc-4.1.0/libstdc++-v3/crossconfig.m4 gcc-4.1.0-patched/libstdc++-v3/crossconfig.m4
 --- gcc-4.1.0/libstdc++-v3/crossconfig.m4	2005-04-06 18:31:16.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/crossconfig.m4	2005-04-27 22:20:28.089162832 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/crossconfig.m4	2005-04-30 19:36:16.997885664 -0500
 @@ -143,6 +143,99 @@
  	;;
      esac
@@ -3187,7 +3220,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/crossconfig.m4 gcc-4.1.0-patched/libstdc++-v3/c
          AC_DEFINE(_GLIBCXX_USE_LFS)
 diff -urN gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h gcc-4.1.0-patched/libstdc++-v3/include/c_compatibility/wchar.h
 --- gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h	2003-12-08 21:51:45.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/include/c_compatibility/wchar.h	2005-04-27 22:20:28.089162832 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/include/c_compatibility/wchar.h	2005-04-30 19:36:16.997885664 -0500
 @@ -101,7 +101,9 @@
  using std::wmemcpy;
  using std::wmemmove;
@@ -3200,7 +3233,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h gcc-4.1.0-patch
  using std::wcstold;
 diff -urN gcc-4.1.0/libstdc++-v3/include/c_std/std_cwchar.h gcc-4.1.0-patched/libstdc++-v3/include/c_std/std_cwchar.h
 --- gcc-4.1.0/libstdc++-v3/include/c_std/std_cwchar.h	2004-07-20 03:47:42.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/include/c_std/std_cwchar.h	2005-04-27 22:20:28.090162666 -0500
++++ gcc-4.1.0-patched/libstdc++-v3/include/c_std/std_cwchar.h	2005-04-30 19:36:16.998885495 -0500
 @@ -179,7 +179,9 @@
    using ::wcscoll;
    using ::wcscpy;
