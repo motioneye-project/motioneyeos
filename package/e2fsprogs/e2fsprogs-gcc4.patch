@@ -1,0 +1,16 @@
+diff -urN e2fsprogs-1.35/configure e2fsprogs-1.35-patched/configure
+--- e2fsprogs-1.35/configure	2004-02-23 22:10:41.000000000 -0600
++++ e2fsprogs-1.35-patched/configure	2005-05-02 22:44:39.475979235 -0500
+@@ -5879,12 +5879,6 @@
+ 
+ fi
+ echo "$ac_t""$ac_cv_type_intptr_t" 1>&6
+-if test $ac_cv_type_intptr_t = no; then
+-  cat >> confdefs.h <<\EOF
+-#define intptr_t long
+-EOF
+-
+-fi
+ 
+ echo $ac_n "checking whether struct stat has a st_flags field""... $ac_c" 1>&6
+ echo "configure:5891: checking whether struct stat has a st_flags field" >&5

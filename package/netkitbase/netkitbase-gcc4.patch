@@ -1,0 +1,12 @@
+diff -ur netkit-base-0.17/inetd/servtab.c netkit-base-0.17-patched/inetd/servtab.c
+--- netkit-base-0.17/inetd/servtab.c	2000-07-22 15:20:50.000000000 -0500
++++ netkit-base-0.17-patched/inetd/servtab.c	2005-04-30 21:23:52.649630720 -0500
+@@ -771,7 +771,7 @@
+ 			return;
+ 		}
+ 		
+-#define SWAP(type, a, b) {type c=(type)a; (type)a=(type)b; (type)b=(type)c;}
++#define SWAP(type, a, b) {type c=(type)a; a=(type)b; b=(type)c;}
+ 
+ 		/*
+ 		 * sep->se_wait may be holding the pid of a daemon
