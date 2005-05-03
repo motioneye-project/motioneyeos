@@ -1,6 +1,7 @@
 menu "Board Support Options"
 
 source "target/device/Soekris/Config.in"
+source "target/device/Hitachi/Config.in"
 source "target/device/AMD/Config.in"
 
 # This must be last

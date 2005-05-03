@@ -1,0 +1,1 @@
+UCLIBC_CONFIG_FILE:=target/device/Hitachi/MS7206SE01/uClibc.config.sh2a_nofpueb

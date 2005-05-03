@@ -36,6 +36,28 @@ config BR2_mipsel
 config BR2_powerpc
 	bool "powerpc"
 
+config BR2_sh
+	bool "sh"
+
+config BR2_sparc
+	bool "sparc"
+
+endchoice
+
+#
+# Keep the variants seperate, there's no need to clutter everything else.
+# sh is fairly "special" in this regard, as virtually everyone else has
+# things kept down to a _sensible_ number of target variants. No such
+# luck for sh..
+#
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_sh
+	default BR2_sh4
+
+config BR2_sh2a_nofpueb
+	bool "sh2a_nofpueb"
+
 config BR2_sh3
 	bool "sh3"
 
@@ -48,27 +70,24 @@ config BR2_sh4
 config BR2_sh4eb
 	bool "sh4eb"
 
-config BR2_sparc
-	bool "sparc"
-
 endchoice
 
 config BR2_ARCH
 	string
-	default "arm"     if BR2_arm
-	default "armeb"   if BR2_armeb
-	default "cris"    if BR2_cris
-	default "i386"    if BR2_i386
-	default "m68k"    if BR2_m68k
-	default "mips"    if BR2_mips
-	default "mipsel"  if BR2_mipsel
-	default "powerpc" if BR2_powerpc
-	default "sh3"     if BR2_sh3
-	default "sh3eb"   if BR2_sh3eb
-	default "sh4"     if BR2_sh4
-	default "sh4eb"   if BR2_sh4eb
-	default "sparc"   if BR2_sparc
-
+	default "arm"		if BR2_arm
+	default "armeb"		if BR2_armeb
+	default "cris"		if BR2_cris
+	default "i386"		if BR2_i386
+	default "m68k"		if BR2_m68k
+	default "mips"		if BR2_mips
+	default "mipsel"	if BR2_mipsel
+	default "powerpc"	if BR2_powerpc
+	default "sh2a_nofpueb"	if BR2_sh2a_nofpueb
+	default "sh3"		if BR2_sh3
+	default "sh3eb"		if BR2_sh3eb
+	default "sh4"		if BR2_sh4
+	default "sh4eb"		if BR2_sh4eb
+	default "sparc"		if BR2_sparc
 
 menu "Build options"
 
