@@ -51,20 +51,16 @@ $(READLINE_DIR1)/.configured: $(READLINE_DIR1)/.unpacked
 
 # -SAJ changed HOSTCC to TARGET_CC
 $(READLINE_DIR1)/$(READLINE_BINARY): $(READLINE_DIR1)/.configured
-	#$(MAKE) -e CC=$(TARGET_CC) -C $(READLINE_DIR1)
 	$(MAKE)  -C $(READLINE_DIR1)
-	#$(MAKE) -e CC=$(TARGET_CC) -C $(READLINE_DIR1) install
-	# $(MAKE) -e CC=$(TARGET_CC) -C $(READLINE_DIR1) DESTDIR=$(TARGET_DIR)/opt/vp install
 
 $(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR1)/$(READLINE_BINARY)
-	#$(MAKE) -e CC=$(TARGET_CC) -C $(READLINE_DIR1)  install
 	$(MAKE) -C $(READLINE_DIR1)  install
 
 readline: $(STAGING_DIR)/$(READLINE_TARGET_BINARY)
 	# VP- do these post-install steps to clean up runtime env.
 	# VP- remove static libs from runtime environment
 	# also install  .so library files to target root
-	$(MAKE) -C $(READLINE_DIR1)  install-shared DESTDIR=$(TARGET_DIR)
+	$(MAKE) -C $(READLINE_DIR1)  install-shared
 	### rm $(TARGET_DIR)/lib/libreadline.a
 	## #rm $(TARGET_DIR)/lib/libhistory.a
 	# VP- remove backup versions runtime environment
