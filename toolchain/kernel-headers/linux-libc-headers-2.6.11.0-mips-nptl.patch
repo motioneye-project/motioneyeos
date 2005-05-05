@@ -1,0 +1,75 @@
+diff -urN linux-libc-headers-2.6.11.0/include/asm-mips/inst.h linux-libc-headers-2.6.11.0-nptl/include/asm-mips/inst.h
+--- linux-libc-headers-2.6.11.0/include/asm-mips/inst.h	2004-10-31 13:54:20.000000000 -0600
++++ linux-libc-headers-2.6.11.0-nptl/include/asm-mips/inst.h	2005-05-04 23:15:45.890613280 -0500
+@@ -28,7 +28,7 @@
+ 	sdl_op, sdr_op, swr_op, cache_op,
+ 	ll_op, lwc1_op, lwc2_op, pref_op,
+ 	lld_op, ldc1_op, ldc2_op, ld_op,
+-	sc_op, swc1_op, swc2_op, major_3b_op, /* Opcode 0x3b is unused */
++	sc_op, swc1_op, swc2_op, rdhwr_op,
+ 	scd_op, sdc1_op, sdc2_op, sd_op
+ };
+ 
+diff -urN linux-libc-headers-2.6.11.0/include/asm-mips/unistd.h linux-libc-headers-2.6.11.0-nptl/include/asm-mips/unistd.h
+--- linux-libc-headers-2.6.11.0/include/asm-mips/unistd.h	2005-01-08 08:02:51.000000000 -0600
++++ linux-libc-headers-2.6.11.0-nptl/include/asm-mips/unistd.h	2005-05-04 23:16:48.240229738 -0500
+@@ -303,16 +303,17 @@
+ #define __NR_add_key			(__NR_Linux + 280)
+ #define __NR_request_key		(__NR_Linux + 281)
+ #define __NR_keyctl			(__NR_Linux + 282)
++#define __NR_set_thread_area		(__NR_Linux + 283)
+ 
+ /*
+  * Offset of the last Linux o32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		282
++#define __NR_Linux_syscalls		283
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI32 */
+ 
+ #define __NR_O32_Linux			4000
+-#define __NR_O32_Linux_syscalls		282
++#define __NR_O32_Linux_syscalls		283
+ 
+ #if _MIPS_SIM == _MIPS_SIM_ABI64
+ 
+@@ -562,16 +563,17 @@
+ #define __NR_add_key			(__NR_Linux + 239)
+ #define __NR_request_key		(__NR_Linux + 240)
+ #define __NR_keyctl			(__NR_Linux + 241)
++#define __NR_set_thread_area		(__NR_Linux + 242)
+ 
+ /*
+  * Offset of the last Linux 64-bit flavoured syscall
+  */
+-#define __NR_Linux_syscalls		241
++#define __NR_Linux_syscalls		242
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_ABI64 */
+ 
+ #define __NR_64_Linux			5000
+-#define __NR_64_Linux_syscalls		241
++#define __NR_64_Linux_syscalls		242
+ 
+ #if _MIPS_SIM == _MIPS_SIM_NABI32
+ 
+@@ -825,16 +827,17 @@
+ #define __NR_add_key			(__NR_Linux + 243)
+ #define __NR_request_key		(__NR_Linux + 244)
+ #define __NR_keyctl			(__NR_Linux + 245)
++#define __NR_set_thread_area		(__NR_Linux + 246)
+ 
+ /*
+  * Offset of the last N32 flavoured syscall
+  */
+-#define __NR_Linux_syscalls		245
++#define __NR_Linux_syscalls		246
+ 
+ #endif /* _MIPS_SIM == _MIPS_SIM_NABI32 */
+ 
+ #define __NR_N32_Linux			6000
+-#define __NR_N32_Linux_syscalls		245
++#define __NR_N32_Linux_syscalls		246
+ 
+ #ifndef __ASSEMBLY__
+ 
