@@ -8,11 +8,12 @@
  
  static int warn_dev, warn_gid, warn_namelen, warn_skip, warn_size, warn_uid;
  static const char *const memory_exhausted = "memory exhausted";
-@@ -155,6 +156,7 @@
+@@ -155,6 +156,8 @@
  		" -i file    insert a file image into the filesystem (requires >= 2.4.0)\n"
  		" -n name    set name of cramfs filesystem\n"
  		" -p         pad by %d bytes for boot code\n"
-+		" -r         reverse endian-ness of filesystem\n"
++		" -l         litte endian filesystem\n"
++		" -b         big endian filesystem\n"
  		" -s         sort directory entries (old option, ignored)\n"
  		" -v         be more verbose\n"
  		" -z         make explicit holes (requires >= 2.3.39)\n"
@@ -108,17 +109,25 @@
  
  	/* command line options */
 -	while ((c = getopt(argc, argv, "hEe:i:n:psvzD:q")) != EOF) {
-+	while ((c = getopt(argc, argv, "hEe:i:n:prsvzD:q")) != EOF) {
++	while ((c = getopt(argc, argv, "hEe:i:n:psvzD:qlb")) != EOF) {
  		switch (c) {
  		case 'h':
  			usage(MKFS_OK);
-@@ -1174,6 +1226,10 @@
+@@ -1174,6 +1227,18 @@
  			opt_pad = PAD_SIZE;
  			fslen_ub += PAD_SIZE;
  			break;
-+		case 'r':
++		case 'b':
++#if __BYTE_ORDER == __LITTLE_ENDIAN
 +			swap_endian = 1;
 +			printf("Swapping filesystem endian-ness\n");
++#endif
++			break;
++		case 'l':
++#if __BYTE_ORDER == __BIG_ENDIAN
++			swap_endian = 1;
++			printf("Swapping filesystem endian-ness\n");
++#endif
 +			break;
  		case 's':
  			/* old option, ignored */
