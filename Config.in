@@ -58,6 +58,9 @@ choice
 config BR2_sh2a_nofpueb
 	bool "sh2a_nofpueb"
 
+config BR2_sh2eb
+	bool "sh2eb"
+
 config BR2_sh3
 	bool "sh3"
 
@@ -83,6 +86,7 @@ config BR2_ARCH
 	default "mipsel"	if BR2_mipsel
 	default "powerpc"	if BR2_powerpc
 	default "sh2a_nofpueb"	if BR2_sh2a_nofpueb
+	default "sh2eb"		if BR2_sh2eb
 	default "sh3"		if BR2_sh3
 	default "sh3eb"		if BR2_sh3eb
 	default "sh4"		if BR2_sh4
