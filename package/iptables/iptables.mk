@@ -39,7 +39,7 @@ $(TARGET_DIR)/usr/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	$(STRIP) $(TARGET_DIR)/usr/lib/iptables/*.so
 	rm -rf $(TARGET_DIR)/usr/man
 
-iptables: kernel-headers $(TARGET_DIR)/usr/sbin/iptables
+iptables: $(TARGET_DIR)/usr/sbin/iptables
 
 iptables-source: $(DL_DIR)/$(IPTABLES_SOURCE)
 
