@@ -1,0 +1,11 @@
+config BR2_PACKAGE_XORG
+	bool "X.org X Window System"
+	default n
+	depends !BR2_PACKAGE_TINYX
+	help
+	  The official X Window system and server.
+
+comment "X.org X Window System disabled, tinyx selected"
+	depends on BR2_PACKAGE_TINYX
+
+

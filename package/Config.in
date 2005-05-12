@@ -108,6 +108,7 @@ source "package/vtun/Config.in"
 source "package/wget/Config.in"
 source "package/which/Config.in"
 source "package/wireless-tools/Config.in"
+source "package/xorg/Config.in"
 source "package/zlib/Config.in"
 
 
