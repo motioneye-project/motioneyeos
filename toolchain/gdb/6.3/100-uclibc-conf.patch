@@ -5,7 +5,7 @@
      targ_selvecs=bfd_elf64_alpha_vec
      ;;
 -  alpha*-*-linux-gnu* | alpha*-*-elf*)
-+  alpha*-*-linux-gnu* | alpha*-*-linux-uclibc* | alpha*-*-elf*)
++  alpha*-*-linux-* | alpha*-*-elf*)
      targ_defvec=bfd_elf64_alpha_vec
      targ_selvecs=ecoffalpha_little_vec
      ;;
@@ -14,7 +14,7 @@
      targ_defvec=ecoffalpha_little_vec
      ;;
 -  ia64*-*-freebsd* | ia64*-*-netbsd* | ia64*-*-linux-gnu* | ia64*-*-elf* | ia64*-*-kfreebsd*-gnu)
-+  ia64*-*-freebsd* | ia64*-*-netbsd* | ia64*-*-linux-gnu* | ia64*-*-elf* | ia64*-*-kfreebsd*-gnu | ia64*-*-linux-uclibc*)
++  ia64*-*-freebsd* | ia64*-*-netbsd* | ia64*-*-linux-* | ia64*-*-elf* | ia64*-*-kfreebsd*-gnu)
      targ_defvec=bfd_elf64_ia64_little_vec
      targ_selvecs="bfd_elf64_ia64_big_vec bfd_efi_app_ia64_vec"
      ;;
@@ -23,7 +23,7 @@
      targ_selvecs=bfd_elf32_bigarm_vec
      ;;
 -  armeb-*-elf | arm*b-*-linux-gnu*)
-+  armeb-*-elf | arm*b-*-linux-gnu* | arm*b-*-linux-uclibc*)
++  armeb-*-elf | arm*b-*-linux-*)
      targ_defvec=bfd_elf32_bigarm_vec
      targ_selvecs=bfd_elf32_littlearm_vec
      ;;
@@ -32,7 +32,7 @@
      targ_selvecs=bfd_elf32_bigarm_vec
      ;;
 -  arm-*-elf | arm-*-freebsd* | arm*-*-linux-gnu* | arm*-*-conix* | \
-+  arm-*-elf | arm-*-freebsd* | arm*-*-linux-gnu* | arm*-*-linux-uclibc* | arm*-*-conix* | \
++  arm-*-elf | arm-*-freebsd* | arm*-*-linux-* | arm*-*-conix* | \
    arm*-*-uclinux* | arm-*-kfreebsd*-gnu | arm-*-vxworks | \
    arm*-*-eabi* )
      targ_defvec=bfd_elf32_littlearm_vec
@@ -41,7 +41,7 @@
  
  #ifdef BFD64
 -  hppa*64*-*-linux-gnu*)
-+  hppa*64*-*-linux-gnu* | hppa*64*-*-linux-uclibc*)
++  hppa*64*-*-linux-*)
      targ_defvec=bfd_elf64_hppa_linux_vec
      targ_selvecs=bfd_elf64_hppa_vec
      ;;
@@ -50,7 +50,7 @@
  #endif
  
 -  hppa*-*-linux-gnu*)
-+  hppa*-*-linux-gnu* | hppa*-*-linux-uclibc*)
++  hppa*-*-linux-*)
      targ_defvec=bfd_elf32_hppa_linux_vec
      targ_selvecs=bfd_elf32_hppa_vec
      ;;
@@ -59,7 +59,7 @@
      targ_underscore=yes
      ;;
 -  i[3-7]86-*-linux-gnu*)
-+  i[3-7]86-*-linux-gnu* | i[3-7]86-*-linux-uclibc*)
++  i[3-7]86-*-linux-*)
      targ_defvec=bfd_elf32_i386_vec
      targ_selvecs="i386linux_vec bfd_efi_app_ia32_vec"
      targ64_selvecs=bfd_elf64_x86_64_vec
@@ -68,7 +68,7 @@
      targ_selvecs="bfd_elf32_i386_vec i386netbsd_vec i386coff_vec bfd_efi_app_ia32_vec"
      ;;
 -  x86_64-*-linux-gnu*)
-+  x86_64-*-linux-gnu* | x86_64-*-linux-uclibc*)
++  x86_64-*-linux-*)
      targ_defvec=bfd_elf64_x86_64_vec
      targ_selvecs="bfd_elf32_i386_vec i386linux_vec bfd_efi_app_ia32_vec"
      ;;
@@ -81,34 +81,30 @@
      targ_defvec=m68klinux_vec
      targ_selvecs=bfd_elf32_m68k_vec
      targ_underscore=yes
-@@ -987,8 +987,8 @@
+@@ -987,7 +987,7 @@
      ;;
  #endif
    powerpc-*-*bsd* | powerpc-*-elf* | powerpc-*-sysv4* | powerpc-*-eabi* | \
 -  powerpc-*-solaris2* | powerpc-*-linux-gnu* | powerpc-*-rtems* | \
--  powerpc-*-chorus* | powerpc-*-vxworks* | powerpc-*-windiss*)
-+  powerpc-*-solaris2* | powerpc-*-linux-gnu* | powerpc-*-linux-uclibc* | powerpc-*-rtems* | \
-+  powerpc-*-chorus* | powerpc-*-vxworks* | powerpc-*-windiss* )
++  powerpc-*-solaris2* | powerpc-*-linux-* | powerpc-*-rtems* | \
+   powerpc-*-chorus* | powerpc-*-vxworks* | powerpc-*-windiss*)
      targ_defvec=bfd_elf32_powerpc_vec
      targ_selvecs="rs6000coff_vec bfd_elf32_powerpcle_vec ppcboot_vec"
-     targ64_selvecs="bfd_elf64_powerpc_vec bfd_elf64_powerpcle_vec"
-@@ -1024,8 +1024,8 @@
+@@ -1024,7 +1024,7 @@
      targ_selvecs="rs6000coff_vec bfd_elf32_powerpc_vec ppcboot_vec"
      ;;
    powerpcle-*-elf* | powerpcle-*-sysv4* | powerpcle-*-eabi* | \
 -  powerpcle-*-solaris2* | powerpcle-*-linux-gnu* | powerpcle-*-vxworks* |\
--  powerpcle-*-rtems*)
-+  powerpcle-*-solaris2* | powerpcle-*-linux-gnu* | powerpcle-*-linux-uclibc* | \
-+  powerpcle-*-vxworks* | powerpcle-*-rtems*)
++  powerpcle-*-solaris2* | powerpcle-*-linux-* | powerpcle-*-vxworks* |\
+   powerpcle-*-rtems*)
      targ_defvec=bfd_elf32_powerpcle_vec
      targ_selvecs="rs6000coff_vec bfd_elf32_powerpc_vec ppcboot_vec"
-     targ64_selvecs="bfd_elf64_powerpc_vec bfd_elf64_powerpcle_vec"
 @@ -1192,7 +1192,7 @@
      targ_selvecs="bfd_elf32_sparc_vec sunos_big_vec"
      targ_underscore=yes
      ;;
 -  sparc-*-linux-gnu*)
-+  sparc-*-linux-gnu* | sparc-*-linux-uclibc*)
++  sparc-*-linux-*)
      targ_defvec=bfd_elf32_sparc_vec
      targ_selvecs="sparclinux_vec bfd_elf64_sparc_vec sunos_big_vec"
      ;;
@@ -117,7 +113,7 @@
      targ_underscore=yes
      ;;
 -  sparc64-*-linux-gnu*)
-+  sparc64-*-linux-gnu* | sparc64-*-linux-uclibc*)
++  sparc64-*-linux-*)
      targ_defvec=bfd_elf64_sparc_vec
      targ_selvecs="bfd_elf32_sparc_vec sparclinux_vec sunos_big_vec"
      ;;
@@ -126,7 +122,7 @@
      ;;
  
 -  vax-*-linux-gnu*)
-+  vax-*-linux-gnu* | vax-*-linux-uclibc*)
++  vax-*-linux-*)
      targ_defvec=bfd_elf32_vax_vec
      ;;
  
@@ -149,7 +145,7 @@
  	COREFILE=''
  	;;
 -  alpha*-*-linux-gnu*)
-+  alpha*-*-linux-gnu* | alpha*-*-linux-uclibc*)
++  alpha*-*-linux-*)
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/alphalinux.h"'
  	;;
@@ -158,7 +154,7 @@
  	TRAD_HEADER='"hosts/i386mach3.h"'
  	;;
 -  i[3-7]86-*-linux-gnu*)
-+  i[3-7]86-*-linux-gnu* | i[3-7]86-*-linux-uclibc*)
++  i[3-7]86-*-linux-*)
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/i386linux.h"'
  	;;
@@ -167,7 +163,7 @@
  	TRAD_HEADER='"hosts/hp300bsd.h"'
  	;;
 -  m68*-*-linux-gnu*)
-+  m68*-*-linux-gnu* | m68*-*-linux-uclibc)
++  m68*-*-linux-*)
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/m68klinux.h"'
  	;;
@@ -176,7 +172,7 @@
  	TRAD_HEADER='"hosts/vaxult2.h"'
  	;;
 -  vax-*-linux-gnu*)
-+  vax-*-linux-gnu* | vax-*-linux-uclibc*)
++  vax-*-linux-*)
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/vaxlinux.h"'
  	;;
@@ -187,7 +183,7 @@
  	COREFILE=''
  	;;
 -  alpha*-*-linux-gnu*)
-+  alpha*-*-linux-gnu* | alpha*-*-linux-uclibc*)
++  alpha*-*-linux-*)
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/alphalinux.h"'
  	;;
@@ -196,7 +192,7 @@
  	;;
  changequote(,)dnl
 -  i[3-7]86-*-linux-gnu*)
-+  i[3-7]86-*-linux-gnu* | i[3-7]86-*-linux-uclibc*)
++  i[3-7]86-*-linux-*)
  changequote([,])dnl
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/i386linux.h"'
@@ -205,7 +201,7 @@
  	TRAD_HEADER='"hosts/hp300bsd.h"'
  	;;
 -  m68*-*-linux-gnu*)
-+  m68*-*-linux-gnu* | m68*-*-linux-uclibc*)
++  m68*-*-linux-*)
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/m68klinux.h"'
  	;;
@@ -214,7 +210,7 @@
  	TRAD_HEADER='"hosts/vaxult2.h"'
  	;;
 -  vax-*-linux-gnu*)
-+  vax-*-linux-gnu* | vax-*-linux-uclibc*)
++  vax-*-linux-*)
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/vaxlinux.h"'
  	;;
