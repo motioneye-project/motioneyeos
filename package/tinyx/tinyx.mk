@@ -40,6 +40,7 @@ TINYX_LIBS:=ICE X11 Xext Xpm
 #
 # Where resources are found.
 #
+
 TINYX_DIR:=$(BUILD_DIR)/xc-011010
 TINYX_LDIR:=$(TINYX_DIR)/lib
 TINYX_PROGS:=$(TINYX_DIR)/programs
@@ -59,25 +60,17 @@ TINYX_LIBX:=$(TARGET_DIR)/usr/lib/
 $(DL_DIR)/$(TINYX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/$(TINYX_SOURCE)
 
-$(DL_DIR)/cross.def:
-	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/cross.def
-	$(SED) 's:arm-uclibc-:$(ARCH)-linux-uclibc-:g' $(DL_DIR)/cross.def
-
-$(DL_DIR)/host.def:
-	$(WGET) -P $(DL_DIR) $(TINYX_SITE)/xcompile/tuxscreen/host.def
-
 #
 # rule to make sure that we have the source, and it is configured.
 #
-$(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE) $(DL_DIR)/cross.def $(DL_DIR)/host.def
+$(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE)
 	$(TINYX_CAT) $(DL_DIR)/$(TINYX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(TINYX_DIR) package/tinyx/ tinyx*.patch
-	cp $(DL_DIR)/host.def $(TINYX_CF)/host.def
-	cp $(DL_DIR)/cross.def $(TINYX_CF)/cross.def
-	$(SED) 's,arm-uclibc-,$(ARCH)-linux-uclibc-,g' $(TINYX_CF)/cross.def
-	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' \
-			$(TINYX_CF)/cross.def \
-			$(TINYX_LDIR)/X11/Xlib.h
+	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(TINYX_CF)/cross.def
+	$(SED) 's:REPLACE_ARCH:$(ARCH):g' $(TINYX_CF)/cross.def
+	$(SED) 's:#define CcCmd.*:#define CcCmd $(TARGET_CROSS)gcc:g' $(TINYX_CF)/cross.def
+	$(SED) 's:#define RanlibCmd.*:#define RanlibCmd $(TARGET_CROSS)ranlib:g' $(TINYX_CF)/cross.def
+	$(SED) 's:#define LdCmd.*:#define LdCmd $(TARGET_CROSS)ld:g' $(TINYX_CF)/cross.def
 	touch $(TINYX_DIR)/.configure
 
 #
@@ -85,7 +78,21 @@ $(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE) $(DL_DIR)/cross.def $(DL_DIR)
 #
 $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 	rm -f $(TINYX_BINX)/Xfbdev
-	( cd $(TINYX_DIR) ; $(MAKE) World ; cd $(BUILDROOT) )
+	#make World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=<cross compiler dir>";
+	#( cd $(TINYX_DIR) ; $(MAKE) World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=$(STAGING_DIR)/bin" )
+	#( cd $(TINYX_DIR) ; $(TARGET_CONFIGURE_OPTS) $(MAKE) World )
+	#
+	#mv $(TINYX_DIR)/Makefile $(TINYX_DIR)/Makefile.xxxx
+	#echo "AS=$(TARGET_CROSS)as" > $(TINYX_DIR)/Makefile
+	#echo "LD=$(TARGET_CROSS)ld" >> $(TINYX_DIR)/Makefile
+	#echo "NM=$(TARGET_CROSS)nm" >> $(TINYX_DIR)/Makefile
+	#echo "CC=$(TARGET_CROSS)gcc" >> $(TINYX_DIR)/Makefile
+	#echo "GCC=$(TARGET_CROSS)gcc" >> $(TINYX_DIR)/Makefile
+	#echo "CXX=$(TARGET_CROSS)g++" >> $(TINYX_DIR)/Makefile
+	#echo "RANLIB=$(TARGET_CROSS)ranlib" >> $(TINYX_DIR)/Makefile
+	#echo "OBJCOPY=$(TARGET_CROSS)objcopy" >> $(TINYX_DIR)/Makefile
+	#cat $(TINYX_DIR)/Makefile.xxxx >> $(TINYX_DIR)/Makefile
+	( cd $(TINYX_DIR) ; $(MAKE) World )
 
 #
 # Once Frame Buffer is built, we install executables.

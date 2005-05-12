@@ -1,0 +1,112 @@
+--- xc/config/cf/host.def~	2005-04-02 14:51:31.000000000 -0700
++++ xc/config/cf/host.def	2005-04-26 01:22:00.000000000 -0600
+@@ -0,0 +1,36 @@
++#define KDriveXServer		YES
++#define TinyXServer		YES
++#define XfbdevServer		YES
++#define CrossCompiling		YES
++#define ProjectRoot             /usr/X11R6
++#define NothingOutsideProjectRoot	YES
++
++#define HasFreetype2		NO
++#define HasFontconfig		NO
++#define HasLibpng		YES
++#define HasZlib			YES
++
++#define HasExpat		NO
++#define XprtServer		NO
++#define BuildXprintClients	NO
++#define TouchScreen		NO
++#define HasTsLib		NO
++#define BuildDocs		NO
++#define BuildXF86DRI		NO
++#define BuildGlxExt		NO
++#define BuildOSMesaLib		NO
++#define BuildLBX		NO
++#define BuildLowMem		NO
++#define BuildIPv6		NO
++
++/*
++#define XF86CardDrivers		mga glint nv tga s3virge sis rendition \
++				neomagic i740 tdfx savage \
++				cirrus vmware tseng trident chips apm \
++				GlideDriver fbdev i128 \
++				ati AgpGartDrivers DevelDrivers ark \
++				cyrix siliconmotion vesa vga \
++				XF86OSCardDrivers XF86ExtraCardDrivers
++*/
++
++#define XInputDrivers		mouse keyboard
+--- xc/config/cf/cross.def.orig	2001-03-29 19:15:17.000000000 -0700
++++ xc/config/cf/cross.def	2005-05-12 16:09:23.000000000 -0600
+@@ -5,34 +5,56 @@
+  * compiler images.  It will have to be edited to reflect these
+  * given your local configuration.
+  */
++
++#undef Arm32Architecture
+ #undef i386Architecture
++#undef Arm32Architecture
++#undef Arm32Architecture
++
++#if defined(__arm__)
+ #define Arm32Architecture
++#endif
++#if defined(__i386__)
++#defined i386Architecture
++#endif
++#if defined(__mc68000__)
++#define Mc68020Architecture
++#endif
++#if defined(__mips__)
++#define MipsArchitecture
++#endif
++#if defined(__powerpc__)
++#define PpcArchitecture
++#endif
+ 
+ #undef OptimizedCDebugFlags
+-#define OptimizedCDebugFlags 	-O2
+-#define ServerCDebugFlags	-O2
++#define OptimizedCDebugFlags 	-Os
++#define ServerCDebugFlags	-Os
+ #undef StandardDefines
+-#define StandardDefines 	-Dlinux -D__arm__ -D_POSIX_SOURCE \
+-				-D_BSD_SOURCE -D_GNU_SOURCE -DX_LOCALE
+-#undef CcCmd
+-#define StdIncDir /skiff/local/arm-linux/include
+-#define PreIncDir 
++#define StandardDefines 	-Dlinux -D__REPLACE_ARCH__ -D_POSIX_SOURCE \
++  				-D_BSD_SOURCE -D_GNU_SOURCE -DX_LOCALE
++#define StdIncDir REPLACE_STAGING_DIR/include
++#define PreIncDir
+ #undef PostIncDir
+-#define PostIncDir /skiff/local/lib/gcc-lib/arm-linux/2.95.2/include
+-#define CcCmd /skiff/local/bin/arm-linux-gcc
++#define PostIncDir REPLACE_STAGING_DIR/lib/gcc-lib/REPLACE_ARCH-linux-uclibc/3.3.3/include
++#undef CcCmd
++#define CcCmd REPLACE_STAGING_DIR/bin/REPLACE_ARCH-linux-gcc
++#undef HasCplusplus
++#define HasCplusplus NO
+ #undef CplusplusCmd
+-#define HasCplusplus YES
+-#define CplusplusCmd /skiff/local/bin/arm-linux-g++
++#define CplusplusCmd NO
+ #define DoRanlibCmd YES
+-#define RanlibCmd /skiff/local/bin/arm-linux-ranlib
++#define RanlibCmd REPLACE_STAGING_DIR/bin/REPLACE_ARCH-linux-ranlib
+ #undef ExtraLoadFlags
+ #define ExtraLoadFlags
+ #define FbNoPixelAddrCode
+ #undef TermcapLibrary
+-#define TermcapLibrary -ltermcap
++#define TermcapLibrary -lncurses
+ 
+ #undef LdPostLib
+-#define LdPostLib	-L/skiff/local/arm-linux/lib
++#define LdPostLib	-LREPLACE_STAGING_DIR/REPLACE_ARCH-linux-uclibc/lib
++#undef LdCmd
++#define LdCmd REPLACE_STAGING_DIR/bin/REPLACE_ARCH-linux-ld
+ 
+ #undef ExtensionOSDefines
+ #define ExtensionOSDefines

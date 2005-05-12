@@ -1,3 +1,25 @@
+--- xc-011010/config/cf/X11.tmpl.orig	2005-05-12 16:16:17.000000000 -0600
++++ xc-011010/config/cf/X11.tmpl	2005-05-12 16:16:23.000000000 -0600
+@@ -3055,7 +3055,7 @@
+ 	$(RM) index.raw file.nPS file.PS file.txt
+ #endif
+ 
+-#ifndef MakeSimpleDoc(file,srcs)
++#ifndef MakeSimpleDoc
+ #define MakeSimpleDoc(file,srcs) MakeDepSimpleDoc(file,srcs,srcs)
+ #endif
+ 
+--- xc-011010/config/cf/kdrive.cf.orig	2005-05-12 16:14:50.000000000 -0600
++++ xc-011010/config/cf/kdrive.cf	2005-05-12 16:15:03.000000000 -0600
+@@ -201,7 +201,7 @@
+ #undef ServerOSDefines
+ #define ServerOSDefines -DDDXOSINIT
+ 
+-#ifndef Other IConfigFiles
++#ifndef OtherIConfigFiles
+ #define OtherIConfigFile $(IRULESRC)/kdrive.cf
+ #endif
+ 
 diff -Nur --exclude=CVS xc-011010.src/include/extensions/lbxstr.h xc-011010/include/extensions/lbxstr.h
 --- xc-011010.src/include/extensions/lbxstr.h	Tue Jul 31 20:44:35 2001
 +++ xc-011010/include/extensions/lbxstr.h	Sun Apr 21 12:35:05 2002
