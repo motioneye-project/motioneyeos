@@ -3,7 +3,7 @@
 # e2fsprogs
 #
 #############################################################
-E2FSPROGS_VER:=1.35
+E2FSPROGS_VER:=1.37
 E2FSPROGS_SOURCE=e2fsprogs-$(E2FSPROGS_VER).tar.gz
 E2FSPROGS_SITE=http://telia.dl.sourceforge.net/sourceforge/e2fsprogs
 E2FSPROGS_DIR=$(BUILD_DIR)/e2fsprogs-$(E2FSPROGS_VER)
@@ -41,9 +41,10 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-elf-shlibs --disable-swapfs \
+		--enable-elf-shlibs --enable-dynamic-e2fsck --disable-swapfs \
 		--disable-debugfs --disable-imager \
 		--disable-resizer --enable-fsck \
+                --disable-e2initrd-helper \
 		--without-catgets $(DISABLE_NLS) \
 	);
 	touch  $(E2FSPROGS_DIR)/.configured
