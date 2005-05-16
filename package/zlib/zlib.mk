@@ -3,7 +3,7 @@
 # zlib
 #
 #############################################################
-ZLIB_VER=1.2.1
+ZLIB_VER=1.2.2
 ZLIB_SOURCE=zlib-$(ZLIB_VER).tar.bz2
 ZLIB_SITE=http://aleron.dl.sourceforge.net/sourceforge/libpng
 ZLIB_DIR=$(BUILD_DIR)/zlib-$(ZLIB_VER)
