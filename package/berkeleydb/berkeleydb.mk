@@ -3,10 +3,16 @@
 # berkeley db
 #
 #############################################################
+DB_VER:=4.3.28
+DB_SO_VER:=4.3
 DB_SITE:=ftp://sleepycat1.inetu.net/releases/
-DB_SOURCE:=db-4.2.52.NC.tar.gz
-DB_DIR:=$(BUILD_DIR)/db-4.2.52.NC
-DB_SHARLIB:=libdb-4.2.so
+DB_SOURCE:=db-$(DB_VER).NC.tar.gz
+DB_DIR:=$(BUILD_DIR)/db-$(DB_VER).NC
+DB_SHARLIB:=libdb-$(DB_SO_VER).so
+
+ifneq ($(BR2_LARGEFILE),y)
+DB_LARGEFILE="--disable-largefile"
+endif
 
 $(DL_DIR)/$(DB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DB_SITE)/$(DB_SOURCE)
@@ -42,6 +48,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--disable-tcl \
 		--disable-compat185 \
 		--with-pic \
+                $(DB_LARGEFILE) \
 	);
 	$(SED) 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
 	touch  $(DB_DIR)/.configured
@@ -76,7 +83,7 @@ $(TARGET_DIR)/lib/$(DB_SHARLIB): $(STAGING_DIR)/lib/$(DB_SHARLIB)
 	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/$(DB_SHARLIB) libdb.so)
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libdb*so*
 
-$(TARGET_DIR)/usr/lib/libdb.a: $(STAGING_DIR)/lib/libdb-4.1.a
+$(TARGET_DIR)/usr/lib/libdb.a: $(STAGING_DIR)/lib/libdb-$(DB_SO_VER).a
 	cp -dpf $(STAGING_DIR)/include/db.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libdb*.a $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/lib/libdb*.la $(TARGET_DIR)/usr/lib/
