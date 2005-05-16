@@ -3,9 +3,10 @@
 # bzip2
 #
 #############################################################
-BZIP2_SOURCE:=bzip2-1.0.2.tar.gz
-BZIP2_SITE:=ftp://sources.redhat.com/pub/bzip2/v102
-BZIP2_DIR:=$(BUILD_DIR)/bzip2-1.0.2
+BZIP2_VER:=1.0.3
+BZIP2_SOURCE:=bzip2-$(BZIP2_VER).tar.gz
+BZIP2_SITE:=http://www.bzip.org/$(BZIP2_VER)
+BZIP2_DIR:=$(BUILD_DIR)/bzip2-$(BZIP2_VER)
 BZIP2_CAT:=zcat
 BZIP2_BINARY:=$(BZIP2_DIR)/bzip2
 BZIP2_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/bzmore
@@ -18,8 +19,8 @@ bzip2-source: $(DL_DIR)/$(BZIP2_SOURCE)
 $(BZIP2_DIR)/.unpacked: $(DL_DIR)/$(BZIP2_SOURCE)
 	$(BZIP2_CAT) $(DL_DIR)/$(BZIP2_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(SED) "s,ln \$$(,ln -snf \$$(,g" $(BZIP2_DIR)/Makefile
-	$(SED) "s,ln -s (lib.*),ln -snf \$$1 ; ln -snf libbz2.so.1.0.2 libbz2.so,g" \
-	    $(BZIP2_DIR)/Makefile-libbz2_so
+	$(SED) "s,ln -s (lib.*),ln -snf \$$1 ; ln -snf libbz2.so.$(BZIP2_VER) \
+            libbz2.so,g" $(BZIP2_DIR)/Makefile-libbz2_so
 ifneq ($(BR2_LARGEFILE),y)
 	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile
 	$(SED) "s,^BIGFILES,#BIGFILES,g" $(BZIP2_DIR)/Makefile-libbz2_so
@@ -28,18 +29,18 @@ endif
 	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(BZIP2_DIR)/Makefile-libbz2_so
 	touch $(BZIP2_DIR)/.unpacked
 
-$(STAGING_DIR)/lib/libbz2.so.1.0.2: $(BZIP2_DIR)/.unpacked
+$(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VER): $(BZIP2_DIR)/.unpacked
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) -f Makefile-libbz2_so
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) libbz2.a
 	cp $(BZIP2_DIR)/bzlib.h $(STAGING_DIR)/include/
-	cp $(BZIP2_DIR)/libbz2.so.1.0.2 $(STAGING_DIR)/lib/
+	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VER) $(STAGING_DIR)/lib/
 	cp $(BZIP2_DIR)/libbz2.a $(STAGING_DIR)/lib/
-	(cd $(STAGING_DIR)/lib/; ln -snf libbz2.so.1.0.2 libbz2.so)
-	(cd $(STAGING_DIR)/lib/; ln -snf libbz2.so.1.0.2 libbz2.so.1.0)
+	(cd $(STAGING_DIR)/lib/; ln -snf libbz2.so.$(BZIP2_VER) libbz2.so)
+	(cd $(STAGING_DIR)/lib/; ln -snf libbz2.so.$(BZIP2_VER) libbz2.so.1.0)
 
-$(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.1.0.2
+$(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VER)
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) bzip2 bzip2recover
 
@@ -50,10 +51,10 @@ $(BZIP2_TARGET_BINARY): $(BZIP2_BINARY)
 	$(MAKE) PREFIX=$(TARGET_DIR)/usr -C $(BZIP2_DIR) install
 	rm -f $(TARGET_DIR)/usr/lib/libbz2.a
 	rm -f $(TARGET_DIR)/usr/include/bzlib.h
-	cp $(BZIP2_DIR)/libbz2.so.1.0.2 $(TARGET_DIR)/usr/lib/
+	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VER) $(TARGET_DIR)/usr/lib/
 	(cd $(TARGET_DIR)/usr/lib; \
-	ln -snf libbz2.so.1.0.2 libbz2.so.1.0; \
-	ln -snf libbz2.so.1.0.2 libbz2.so)
+	ln -snf libbz2.so.$(BZIP2_VER) libbz2.so.1.0; \
+	ln -snf libbz2.so.$(BZIP2_VER) libbz2.so)
 	(cd $(TARGET_DIR)/usr/bin; \
 	ln -snf bzip2 bunzip2; \
 	ln -snf bzip2 bzcat; \
