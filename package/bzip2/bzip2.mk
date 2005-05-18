@@ -31,9 +31,9 @@ endif
 
 $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VER): $(BZIP2_DIR)/.unpacked
 	$(TARGET_CONFIGURE_OPTS) \
-	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) -f Makefile-libbz2_so
+	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) -C $(BZIP2_DIR) -f Makefile-libbz2_so
 	$(TARGET_CONFIGURE_OPTS) \
-	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) libbz2.a
+	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) -C $(BZIP2_DIR) libbz2.a
 	cp $(BZIP2_DIR)/bzlib.h $(STAGING_DIR)/include/
 	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VER) $(STAGING_DIR)/lib/
 	cp $(BZIP2_DIR)/libbz2.a $(STAGING_DIR)/lib/

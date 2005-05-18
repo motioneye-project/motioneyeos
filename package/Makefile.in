@@ -33,6 +33,7 @@ GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
 KERNEL_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-
 TARGET_CROSS=$(STAGING_DIR)/bin/$(OPTIMIZE_FOR_CPU)-linux-uclibc-
 TARGET_CC=$(TARGET_CROSS)gcc
+TARGET_RANLIB=$(TARGET_CROSS)ranlib
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 INSTALL=/usr/bin/install
 
