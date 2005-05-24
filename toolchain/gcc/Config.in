@@ -14,11 +14,17 @@ choice
 	config BR2_GCC_VERSION_3_3_5
 		bool "gcc 3.3.5"
 
+	config BR2_GCC_VERSION_3_3_6
+		bool "gcc 3.3.6"
+
 	config BR2_GCC_VERSION_3_4_2
 		bool "gcc 3.4.2"
 
 	config BR2_GCC_VERSION_3_4_3
 		bool "gcc 3.4.3"
+
+	config BR2_GCC_VERSION_3_4_4
+		bool "gcc 3.4.4"
 
 	config BR2_GCC_VERSION_4_0_0
 		bool "gcc 4.0.0"
@@ -32,8 +38,10 @@ config BR2_GCC_VERSION
 	string
 	default "3.3.3"     if BR2_GCC_VERSION_3_3_3
 	default "3.3.5"     if BR2_GCC_VERSION_3_3_5
+	default "3.3.6"     if BR2_GCC_VERSION_3_3_6
 	default "3.4.2"     if BR2_GCC_VERSION_3_4_2
 	default "3.4.3"     if BR2_GCC_VERSION_3_4_3
+	default "3.4.4"     if BR2_GCC_VERSION_3_4_4
 	default "4.0.0"     if BR2_GCC_VERSION_4_0_0
 	default "4.1.0"     if BR2_GCC_VERSION_4_1_0
 
@@ -70,4 +78,3 @@ config BR2_INSTALL_OBJC
 	default n
 	help
 	    Build/install Objective-C compiler and runtime?
-
