@@ -1,0 +1,11 @@
+--- tcl8.4.9/compat/strtod.c	2002-02-25 16:26:12.000000000 +0200
++++ tcl8.4.9/compat/strtod.c	2005-05-30 08:55:18.000000000 +0300
+@@ -24,6 +24,8 @@
+ #define NULL 0
+ #endif
+ 
++#undef strtod
++
+ static int maxExponent = 511;	/* Largest possible base 10 exponent.  Any
+ 				 * exponent larger than this will already
+ 				 * produce underflow or overflow, so there's

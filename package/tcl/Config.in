@@ -1,0 +1,24 @@
+config BR2_PACKAGE_TCL
+	bool "tcl"
+	default n
+	help
+	  TCL(Tool Command Language) is a simple textual language.
+
+	  http://www.tcl.tk
+
+config BR2_PACKAGE_TCL_DEL_ENCODINGS
+	bool "delete encodings (saves 1.4Mb)"
+	default y
+	depends BR2_PACKAGE_TCL
+	help
+	  Delete encoding files for TCL. If your programs do not use various tcl
+	  character recoding functions, you may safely choose Y here.
+	  It saves approx. 1.4 Mb of space.
+
+config BR2_PACKAGE_TCL_SHLIB_ONLY
+	bool "install only shared library"
+	default y
+	depends BR2_PACKAGE_TCL
+	help
+	  Install only TCL shared library and not binary tcl interpreter(tclsh8.4).
+	  Saves ~14kb.
