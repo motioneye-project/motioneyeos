@@ -3002,6 +3002,15 @@ diff -urN gcc-3.4.2-dist/libstdc++-v3/configure gcc-3.4.2/libstdc++-v3/configure
  netbsd*)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
+@@ -5479,7 +5479,7 @@
+   enableval="$enable_clocale"
+ 
+       case "$enableval" in
+-       generic|gnu|ieee_1003.1-2001|yes|no|auto) ;;
++       generic|gnu|ieee_1003.1-2001|uclibc|yes|no|auto) ;;
+        *) { { echo "$as_me:$LINENO: error: Unknown argument to enable/disable clocale" >&5
+ echo "$as_me: error: Unknown argument to enable/disable clocale" >&2;}
+    { (exit 1); exit 1; }; } ;;
 @@ -5545,6 +5550,9 @@
    # Default to "generic".
    if test $enable_clocale_flag = auto; then
