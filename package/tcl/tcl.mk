@@ -56,7 +56,7 @@ tcl-clean:
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(TCL_DIR)/unix uninstall
 	-$(MAKE) -C $(TCL_DIR)/unix clean
 
-less-dirclean:
+tcl-dirclean:
 	rm -rf $(LESS_DIR)
 
 #############################################################
@@ -67,4 +67,3 @@ less-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_TCL)),y)
 TARGETS+=tcl
 endif
-
