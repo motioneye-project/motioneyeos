@@ -1,0 +1,76 @@
+#!/bin/sh
+#
+# udev	This is a minimal non-LSB version of a UDEV startup script.  It
+#	was derived by stripping down the udev-058 LSB version for use
+#	with buildroot on embedded hardware using Linux 2.6.12+ kernels.
+#
+#	You may need to customize this for your system's resource limits
+#	(including startup time!) and administration.  For example, if
+#	your early userspace has a custom initramfs or initrd you might
+#	need /dev much earlier; or without hotpluggable busses (like USB,
+#	PCMCIA, MMC/SD, and so on) your /dev might be static after boot.
+#
+#	This script assumes your system boots right into the eventual root
+#	filesystem, and that init runs this udev script before any programs
+#	needing more device nodes than the bare-bones set -- /dev/console,
+#	/dev/zero, /dev/null -- that's needed to boot and run this script.
+#
+
+# old kernels don't use udev
+case $(uname -r) in
+2.6*|2.7*)	;;
+*)		exit 0;;
+esac
+
+# Check for missing binaries
+UDEV_BIN=/sbin/udev
+test -x $UDEV_BIN || exit 5
+UDEVSTART_BIN=/sbin/udevstart
+test -x $UDEVSTART_BIN || exit 5
+
+# Check for config file and read it
+UDEV_CONFIG=/etc/udev/udev.conf
+test -r $UDEV_CONFIG || exit 6
+. $UDEV_CONFIG
+
+# Directory where sysfs is mounted
+SYSFS_DIR=/sys
+
+case "$1" in
+    start)
+	# mount sysfs if it's not yet mounted
+	if [ ! -d $SYSFS_DIR ]; then
+		echo "${0}: SYSFS_DIR \"$SYSFS_DIR\" not found"
+		exit 1
+	fi
+	grep -q "^sysfs $SYSFS_DIR" /proc/mounts ||
+		mount -t sysfs /sys /sys ||
+		exit 1
+
+	# mount $udev_root as ramfs if it's not yet mounted
+	# we know 2.6 kernels always support ramfs
+	if [ ! -d $udev_root ]; then
+		echo "${0}: udev_root \"$udev_root\" not found"
+		exit 1
+	fi
+	grep -q "^udev $udev_root" /proc/mounts ||
+		mount -t ramfs udev $udev_root ||
+		exit 1
+
+	# heck, go whole-hog:  use only new style hotplug
+	# echo $UDEV_BIN > /proc/sys/kernel/hotplug
+
+	# populate /dev (normally)
+	echo -n "Populating $udev_root using udev... "
+	$UDEVSTART_BIN || (echo "FAIL" && exit 1)
+	mkdir $udev_root/pts $udev_root/shm
+	echo "done"
+	;;
+    stop)
+	# do nothing
+	;;
+    *)
+	echo "Usage: $0 {start|stop}"
+	exit 1
+	;;
+esac
