@@ -21,9 +21,9 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBSYSFS_VER:=1.2.0
+LIBSYSFS_VER:=1.3.0
 LIBSYSFS_DIR:=$(BUILD_DIR)/sysfsutils-$(LIBSYSFS_VER)
-LIBSYSFS_SITE:=http://cogent.dl.sourceforge.net/sourceforge/linux-diag
+LIBSYSFS_SITE:=http://easynews.dl.sourceforge.net/sourceforge/linux-diag
 LIBSYSFS_SOURCE:=sysfsutils-$(LIBSYSFS_VER).tar.gz
 LIBSYSFS_CAT:=zcat
 
