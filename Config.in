@@ -100,8 +100,8 @@ config BR2_WGET
 	default "wget --passive-ftp -nd"
 
 config BR2_SVN
-        string
-        default "Subversion (svn) checkout command"
+        string "Subversion (svn) checkout command"
+	default "svn co"
 
 config BR2_TAR_VERBOSITY
 	bool "Tar verbose"
