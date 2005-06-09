@@ -4,7 +4,7 @@
 #
 #############################################################
 #
-BRIDGE_SOURCE_URL=http://umn.dl.sourceforge.net/sourceforge/bridge/
+BRIDGE_SOURCE_URL=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/bridge/
 BRIDGE_SOURCE=bridge-utils-1.0.4.tar.gz
 BRIDGE_BUILD_DIR=$(BUILD_DIR)/bridge-utils-1.0.4
 BRIDGE_TARGET_BINARY:=usr/sbin/brctl

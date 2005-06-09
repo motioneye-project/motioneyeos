@@ -107,6 +107,15 @@ config BR2_TAR_VERBOSITY
 	bool "Tar verbose"
 	default n
 
+config BR2_SOURCEFORGE_MIRROR
+        string "Sourceforge mirror site"
+	default "unc"
+	help
+	    Sourceforge has a system of mirror sites.  Some sites may be closer
+	    to your location, and sometimes mirror sites go down and are no longer
+	    available.  This option allows you to select your preferred Sourceforge
+	    mirror site.
+
 config BR2_STAGING_DIR
 	string "Toolchain and header file location?"
 	default "$(BUILD_DIR)/staging_dir"

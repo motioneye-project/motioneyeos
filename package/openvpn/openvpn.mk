@@ -7,7 +7,7 @@
 #
 #############################################################
 OPENVPN_SOURCE:=openvpn-1.5.0.tar.gz
-OPENVPN_SITE:=http://aleron.dl.sourceforge.net/sourceforge/openvpn/
+OPENVPN_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/openvpn/
 OPENVPN_DIR:=$(BUILD_DIR)/openvpn-1.5.0
 OPENVPN_CAT:=zcat
 OPENVPN_BINARY:=openvpn

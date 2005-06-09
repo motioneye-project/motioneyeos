@@ -5,7 +5,7 @@
 #############################################################
 SQUASHFS_DIR=$(BUILD_DIR)/squashfs1.3r3
 SQUASHFS_SOURCE=squashfs1.3r3.tar.gz
-SQUASHFS_SITE=http://aleron.dl.sourceforge.net/sourceforge/squashfs
+SQUASHFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/squashfs
 
 $(DL_DIR)/$(SQUASHFS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(SQUASHFS_SITE)/$(SQUASHFS_SOURCE)

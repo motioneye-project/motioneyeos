@@ -1,4 +1,4 @@
-TN5250_SITE:=http://aleron.dl.sourceforge.net/sourceforge/tn5250
+TN5250_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/tn5250
 TN5250_DIR:=$(BUILD_DIR)/tn5250-0.16.4
 TN5250_SOURCE:=tn5250-0.16.4.tar.gz
 

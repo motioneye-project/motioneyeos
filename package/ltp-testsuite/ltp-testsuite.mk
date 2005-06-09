@@ -4,7 +4,7 @@
 #
 #############################################################
 LTP_TESTSUITE_SOURCE:=ltp-full-20040506.tgz
-LTP_TESTSUITE_SITE:=http://aleron.dl.sourceforge.net/sourceforge/ltp
+LTP_TESTSUITE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ltp
 LTP_TESTSUITE_CAT:=zcat
 LTP_TESTSUITE_DIR:=$(BUILD_DIR)/ltp-full-20040506
 

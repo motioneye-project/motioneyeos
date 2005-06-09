@@ -5,7 +5,7 @@
 #############################################################
 STRACE_VER:=4.5.7
 STRACE_SOURCE:=strace-$(STRACE_VER).tar.bz2
-STRACE_SITE:=http://aleron.dl.sourceforge.net/sourceforge/strace
+STRACE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/strace
 STRACE_CAT:=bzcat
 STRACE_DIR:=$(BUILD_DIR)/strace-$(STRACE_VER)
 
