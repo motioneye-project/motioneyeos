@@ -38,7 +38,7 @@ $(NANO_DIR)/$(NANO_BINARY): $(NANO_DIR)/.configured
 $(TARGET_DIR)/$(NANO_TARGET_BINARY): $(NANO_DIR)/$(NANO_BINARY)
 	install -D $(NANO_DIR)/$(NANO_BINARY) $(TARGET_DIR)/$(NANO_TARGET_BINARY)
 
-nano: uclibc $(TARGET_DIR)/$(NANO_TARGET_BINARY)
+nano: uclibc ncurses $(TARGET_DIR)/$(NANO_TARGET_BINARY)
 
 nano-clean:
 	rm -f $(TARGET_DIR)/$(NANO_TARGET_BINARY)
