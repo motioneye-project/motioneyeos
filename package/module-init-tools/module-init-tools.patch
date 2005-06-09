@@ -1,0 +1,77 @@
+diff -aur module-init-tools-3.1~orig/Makefile.in module-init-tools-3.1~patched/Makefile.in
+--- module-init-tools-3.1~orig/Makefile.in	2004-11-15 01:59:48.000000000 +0100
++++ module-init-tools-3.1~patched/Makefile.in	2005-03-22 22:10:26.843808464 +0100
+@@ -613,7 +613,7 @@
+ check-am: all-am
+ 	$(MAKE) $(AM_MAKEFLAGS) check-TESTS
+ check: check-am
+-all-am: Makefile $(PROGRAMS) $(SCRIPTS) $(MANS)
++all-am: Makefile $(PROGRAMS) $(SCRIPTS) 
+ 
+ installdirs:
+ 	$(mkinstalldirs) $(DESTDIR)$(bindir) $(DESTDIR)$(sbindir) $(DESTDIR)$(sbindir) $(DESTDIR)$(man5dir) $(DESTDIR)$(man8dir)
+@@ -760,17 +760,10 @@
+ 
+ release: check clean tarball testsuite
+ 
+-moveold: check-for-sbin check-for-old move-old-targets
+-
+-check-for-sbin:
+-	if [ "`echo $(DESTDIR)$(sbindir) | tr -s / /`" = /sbin ]; then :;    \
+-	else								     \
+-		echo moveold usually only makes sense when installing into /sbin; \
+-		exit 1;							     \
+-	fi
++moveold: move-old-targets
+ 
+ check-for-old:
+-	if [ -f /sbin/lsmod.old ]; then					\
++	if [ -f $(sbindir)/lsmod.old ]; then			\
+ 		echo Someone already moved old versions. >&2; exit 1;	\
+ 	fi
+ 
+@@ -778,27 +771,28 @@
+ # RedHat 8.0 doesn't ship with readlink by default.  Use ls -l.
+ # Also, make symlink from /bin to /sbin for lsmod (FHS compliant).
+ move-old-targets:
++	if [ ! -f $(sbindir)/lsmod.old ]; then \
+ 	for f in lsmod modprobe rmmod depmod insmod modinfo; do		    \
+-	    if [ -L /sbin/$$f ]; then					    \
+-		ln -sf `ls -l /sbin/$$f | sed 's/.* -> //'`.old /sbin/$$f;  \
++  	  if [ -L $(sbindir)/$$f ]; then			    \
++		ln -sf `ls -l $(sbindir)/$$f | sed 's/.* -> //'`.old  $(sbindir)/$$f;  \
+ 	    fi;								    \
+-	    mv /sbin/$$f /sbin/$$f.old;					    \
+-	    if [ -f /usr/share/man/man8/$$f.8.gz ]; then		    \
+-		mv /usr/share/man/man8/$$f.8.gz				    \
+-			/usr/share/man/man8/$$f.old.8.gz;		    \
+-	    elif [ -f /usr/share/man/man8/$$f.8.bz2 ]; then		    \
+-	        mv /usr/share/man/man8/$$f.8.bz2			    \
+-			/usr/share/man/man8/$$f.old.8.bz2;		    \
+-	    else							    \
+-	        mv /usr/share/man/man8/$$f.8 /usr/share/man/man8/$$f.old.8; \
++  	  mv  $(sbindir)/$$f  $(sbindir)/$$f.old;	    \
++	    if [ -f $(prefix)/usr/share/man/man8/$$f.8.gz ]; then	    \
++		mv $(prefix)/usr/share/man/man8/$$f.8.gz		    \
++			$(prefix)/usr/share/man/man8/$$f.old.8.gz;	    \
++	    elif [ -f $(prefix)/usr/share/man/man8/$$f.8.bz2 ]; then	    \
++	        mv $(prefix)/usr/share/man/man8/$$f.8.bz2		    \
++			$(prefix)/usr/share/man/man8/$$f.old.8.bz2;	    \
++	    elif [ -f $(prefix)/usr/share/man/man8/$$f.8 ]; then	    \
++	        mv $(prefix)/usr/share/man/man8/$$f.8 /usr/share/man/man8/$$f.old.8; \
+ 	    fi;								    \
+-	done
++	done; \
+ 	for f in kallsyms ksyms; do					    \
+-	    if [ -L /sbin/$$f ]; then					    \
+-		ln -sf `ls -l /sbin/$$f | sed 's/.* -> //'`.old /sbin/$$f;  \
++	    if [ -L $(sbindir)/$$f ]; then			    \
++		ln -sf `ls -l $(sbindir)/$$f | sed 's/.* -> //'`.old $(sbindir)/$$f;  \
+ 	    fi;								    \
+-	done
+-	ln -s /sbin/lsmod.old /bin/lsmod.old
++	done; \
++	fi
+ 
+ # For installs in /usr/local/sbin
+ links:

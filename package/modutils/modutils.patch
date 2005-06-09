@@ -1,0 +1,24 @@
+--- _modutils-2.4.26/Makefile.in	2005-02-01 12:41:39.000000000 +0100
++++ modutils-2.4.26/Makefile.in	2005-02-01 12:39:18.000000000 +0100
+@@ -3,7 +3,7 @@
+ include	Makefile.common
+ 
+ TARGETS = all install-bin clean distclean realclean dep depend
+-SUBDIRS = util obj insmod genksyms depmod @kerneld_SUBDIR@
++SUBDIRS = util obj insmod depmod @kerneld_SUBDIR@
+ ifneq (@kerneld_SUBDIR@,)
+ 	SUBDIRS += man_kerneld
+ endif
+--- _modutils-2.4.26/insmod/Makefile.in	2003-10-27 05:42:07.000000000 +0100
++++ modutils-2.4.26/insmod/Makefile.in	2005-02-01 12:39:40.000000000 +0100
+@@ -126,10 +126,6 @@
+ 	$(MKDIR) $(DESTDIR)$(sbindir); \
+ 	$(INSTALL) $(STRIP) $$i $(DESTDIR)$(sbindir); done;
+ 	set -e; \
+-	for i in $(srcdir)/insmod_ksymoops_clean $(srcdir)/kernelversion; do \
+-	$(MKDIR) $(DESTDIR)$(sbindir); \
+-	$(INSTALL) $$i $(DESTDIR)$(sbindir); done;
+-	set -e; \
+ 	for i in $(COMB); do \
+ 	ln -sf insmod $(DESTDIR)$(sbindir)/$$i; \
+ 	(test "$(insmod_static)" = yes && \
