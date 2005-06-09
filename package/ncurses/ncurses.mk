@@ -97,10 +97,17 @@ $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.5.2
 $(TARGET_DIR)/lib/libncurses.so.5.2: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
 	-cp -dpf $(STAGING_DIR)/usr/lib/terminfo $(TARGET_DIR)/usr/lib/
-	mkdir -p $(TARGET_DIR)/usr/share/terminfo
-	for i in x/xterm x/xterm-color x/xterm-xfree86 v/vt100 v/vt200 a/ansi l/linux; do \
-		cp -dpf $(STAGING_DIR)/usr/share/terminfo/$${i} $(TARGET_DIR)/usr/share/terminfo/; \
-	done
+	mkdir -p $(TARGET_DIR)/usr/share/terminfo/x
+	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm $(TARGET_DIR)/usr/share/terminfo/x
+	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm-color $(TARGET_DIR)/usr/share/terminfo/x
+	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm-xfree86 $(TARGET_DIR)/usr/share/terminfo/x
+	mkdir -p $(TARGET_DIR)/usr/share/terminfo/v
+	cp -dpf $(STAGING_DIR)/usr/share/terminfo/v/vt100 $(TARGET_DIR)/usr/share/terminfo/v
+	cp -dpf $(STAGING_DIR)/usr/share/terminfo/v/vt200 $(TARGET_DIR)/usr/share/terminfo/v
+	mkdir -p $(TARGET_DIR)/usr/share/terminfo/a
+	cp -dpf $(STAGING_DIR)/usr/share/terminfo/a/ansi $(TARGET_DIR)/usr/share/terminfo/a
+	mkdir -p $(TARGET_DIR)/usr/share/terminfo/l
+	cp -dpf $(STAGING_DIR)/usr/share/terminfo/l/linux $(TARGET_DIR)/usr/share/terminfo/l
 	touch -c $(TARGET_DIR)/lib/libncurses.so.5.2
 
 $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
