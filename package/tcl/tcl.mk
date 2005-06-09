@@ -57,7 +57,7 @@ tcl-clean:
 	-$(MAKE) -C $(TCL_DIR)/unix clean
 
 tcl-dirclean:
-	rm -rf $(LESS_DIR)
+	rm -rf $(TCL_DIR)
 
 #############################################################
 #
