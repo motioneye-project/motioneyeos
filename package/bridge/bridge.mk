@@ -1,12 +1,13 @@
 #############################################################
 #
-# bridgeutils - User Space Program For Controling Bridging
+# bridgeutils - User Space Program For Controlling Bridging
 #
 #############################################################
 #
+BRIDGE_VERSION=1.0.6
 BRIDGE_SOURCE_URL=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/bridge/
-BRIDGE_SOURCE=bridge-utils-1.0.4.tar.gz
-BRIDGE_BUILD_DIR=$(BUILD_DIR)/bridge-utils-1.0.4
+BRIDGE_SOURCE=bridge-utils-$(BRIDGE_VERSION).tar.gz
+BRIDGE_BUILD_DIR=$(BUILD_DIR)/bridge-utils-$(BRIDGE_VERSION)
 BRIDGE_TARGET_BINARY:=usr/sbin/brctl
 
 $(DL_DIR)/$(BRIDGE_SOURCE):
@@ -36,7 +37,7 @@ $(BRIDGE_BUILD_DIR)/.configured: $(BRIDGE_BUILD_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-		--with-linux-headers=$(LINUX_DIR) \
+		--with-linux-headers=$(LINUX_HEADERS_DIR) \
 	);
 	touch  $(BRIDGE_BUILD_DIR)/.configured
 
@@ -49,7 +50,7 @@ $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY): $(BRIDGE_BUILD_DIR)/brctl/brctl
 	#cp -af $(BRIDGE_BUILD_DIR)/brctl/brctld $(TARGET_DIR)/usr/sbin/
 	#$(STRIP) $(TARGET_DIR)/usr/sbin/brctld
 
-bridge: linux $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
+bridge: $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
 
 bridge-source: $(DL_DIR)/$(BRIDGE_SOURCE)
 
