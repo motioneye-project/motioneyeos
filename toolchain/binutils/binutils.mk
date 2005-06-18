@@ -9,6 +9,9 @@ BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
 ifeq ($(BINUTILS_VERSION),2.16)
 BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
 endif
+ifeq ($(BINUTILS_VERSION),2.16.1)
+BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
+endif
 ifeq ($(BINUTILS_VERSION),2.15)
 BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
 endif
