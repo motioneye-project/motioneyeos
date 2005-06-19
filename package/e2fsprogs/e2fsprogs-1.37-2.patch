@@ -1,6 +1,6 @@
-diff -ur e2fsprogs-1.37/ChangeLog e2fsprogs-1.37-patched/ChangeLog
+diff -urN e2fsprogs-1.37/ChangeLog e2fsprogs-1.37-patched/ChangeLog
 --- e2fsprogs-1.37/ChangeLog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,8 @@
 +2005-03-31  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -10,9 +10,9 @@ diff -ur e2fsprogs-1.37/ChangeLog e2fsprogs-1.37-patched/ChangeLog
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/configure e2fsprogs-1.37-patched/configure
+diff -urN e2fsprogs-1.37/configure e2fsprogs-1.37-patched/configure
 --- e2fsprogs-1.37/configure	2005-02-05 14:53:55.000000000 -0600
-+++ e2fsprogs-1.37-patched/configure	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/configure	2005-06-18 16:34:01.000000000 -0500
 @@ -10713,7 +10713,8 @@
  
  
@@ -34,9 +34,9 @@ diff -ur e2fsprogs-1.37/configure e2fsprogs-1.37-patched/configure
  do
  as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
  echo "$as_me:$LINENO: checking for $ac_func" >&5
-diff -ur e2fsprogs-1.37/configure.in e2fsprogs-1.37-patched/configure.in
+diff -urN e2fsprogs-1.37/configure.in e2fsprogs-1.37-patched/configure.in
 --- e2fsprogs-1.37/configure.in	2005-02-05 14:53:55.000000000 -0600
-+++ e2fsprogs-1.37-patched/configure.in	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/configure.in	2005-06-18 16:34:01.000000000 -0500
 @@ -525,7 +525,7 @@
  else
    AC_CHECK_PROGS(BUILD_CC, gcc cc)
@@ -55,9 +55,9 @@ diff -ur e2fsprogs-1.37/configure.in e2fsprogs-1.37-patched/configure.in
  dnl
  dnl Check to see if -lsocket is required (solaris) to make something
  dnl that uses socket() to compile; this is needed for the UUID library
-diff -ur e2fsprogs-1.37/debian/changelog e2fsprogs-1.37-patched/debian/changelog
+diff -urN e2fsprogs-1.37/debian/changelog e2fsprogs-1.37-patched/debian/changelog
 --- e2fsprogs-1.37/debian/changelog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/debian/changelog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/debian/changelog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,20 @@
 +e2fsprogs (1.37-2) unstable; urgency=low
 +
@@ -79,9 +79,9 @@ diff -ur e2fsprogs-1.37/debian/changelog e2fsprogs-1.37-patched/debian/changelog
  e2fsprogs (1.37-1) unstable; urgency=low
  
    * New upstream release.
-diff -ur e2fsprogs-1.37/e2fsck/ChangeLog e2fsprogs-1.37-patched/e2fsck/ChangeLog
+diff -urN e2fsprogs-1.37/e2fsck/ChangeLog e2fsprogs-1.37-patched/e2fsck/ChangeLog
 --- e2fsprogs-1.37/e2fsck/ChangeLog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/e2fsck/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/e2fsck/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,9 @@
 +2005-04-06  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -92,9 +92,9 @@ diff -ur e2fsprogs-1.37/e2fsck/ChangeLog e2fsprogs-1.37-patched/e2fsck/ChangeLog
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/e2fsck/pass1.c e2fsprogs-1.37-patched/e2fsck/pass1.c
+diff -urN e2fsprogs-1.37/e2fsck/pass1.c e2fsprogs-1.37-patched/e2fsck/pass1.c
 --- e2fsprogs-1.37/e2fsck/pass1.c	2005-03-21 16:31:21.000000000 -0600
-+++ e2fsprogs-1.37-patched/e2fsck/pass1.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/e2fsck/pass1.c	2005-06-18 16:34:01.000000000 -0500
 @@ -518,7 +518,8 @@
  	if (ctx->progress)
  		if ((ctx->progress)(ctx, 1, 0, ctx->fs->group_desc_count))
@@ -105,9 +105,9 @@ diff -ur e2fsprogs-1.37/e2fsck/pass1.c e2fsprogs-1.37-patched/e2fsck/pass1.c
  		busted_fs_time = 1;
  
  	while (1) {
-diff -ur e2fsprogs-1.37/e2fsprogs.lsm e2fsprogs-1.37-patched/e2fsprogs.lsm
+diff -urN e2fsprogs-1.37/e2fsprogs.lsm e2fsprogs-1.37-patched/e2fsprogs.lsm
 --- e2fsprogs-1.37/e2fsprogs.lsm	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/e2fsprogs.lsm	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/e2fsprogs.lsm	2005-06-18 16:34:01.000000000 -0500
 @@ -8,7 +8,7 @@
  Author:         tytso@mit.edu (Theodore Tso)
  Maintained-by:  tytso@mit.edu (Theodore Tso)
@@ -117,9 +117,9 @@ diff -ur e2fsprogs-1.37/e2fsprogs.lsm e2fsprogs-1.37-patched/e2fsprogs.lsm
  		452kB e2fsprogs-libs-1.37.tar.gz
                  1kB   e2fsprogs-1.37.lsm
  Alternate-site: 
-diff -ur e2fsprogs-1.37/lib/blkid/ChangeLog e2fsprogs-1.37-patched/lib/blkid/ChangeLog
+diff -urN e2fsprogs-1.37/lib/blkid/ChangeLog e2fsprogs-1.37-patched/lib/blkid/ChangeLog
 --- e2fsprogs-1.37/lib/blkid/ChangeLog	2005-03-21 21:32:51.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/blkid/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/blkid/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,12 @@
 +2005-03-31  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -133,9 +133,9 @@ diff -ur e2fsprogs-1.37/lib/blkid/ChangeLog e2fsprogs-1.37-patched/lib/blkid/Cha
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/lib/blkid/cache.c e2fsprogs-1.37-patched/lib/blkid/cache.c
+diff -urN e2fsprogs-1.37/lib/blkid/cache.c e2fsprogs-1.37-patched/lib/blkid/cache.c
 --- e2fsprogs-1.37/lib/blkid/cache.c	2005-03-21 21:11:36.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/blkid/cache.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/blkid/cache.c	2005-06-18 16:34:01.000000000 -0500
 @@ -10,12 +10,48 @@
   * %End-Header%
   */
@@ -196,9 +196,9 @@ diff -ur e2fsprogs-1.37/lib/blkid/cache.c e2fsprogs-1.37-patched/lib/blkid/cache
  	if (!filename)
  		filename = BLKID_CACHE_FILE;
  	cache->bic_filename = blkid_strdup(filename);
-diff -ur e2fsprogs-1.37/lib/e2p/ChangeLog e2fsprogs-1.37-patched/lib/e2p/ChangeLog
+diff -urN e2fsprogs-1.37/lib/e2p/ChangeLog e2fsprogs-1.37-patched/lib/e2p/ChangeLog
 --- e2fsprogs-1.37/lib/e2p/ChangeLog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/e2p/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/e2p/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,15 @@
 +2005-04-09  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -215,9 +215,9 @@ diff -ur e2fsprogs-1.37/lib/e2p/ChangeLog e2fsprogs-1.37-patched/lib/e2p/ChangeL
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/lib/e2p/ls.c e2fsprogs-1.37-patched/lib/e2p/ls.c
+diff -urN e2fsprogs-1.37/lib/e2p/ls.c e2fsprogs-1.37-patched/lib/e2p/ls.c
 --- e2fsprogs-1.37/lib/e2p/ls.c	2005-03-19 14:59:40.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/e2p/ls.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/e2p/ls.c	2005-06-18 16:34:01.000000000 -0500
 @@ -12,6 +12,7 @@
   */
  
@@ -226,9 +226,9 @@ diff -ur e2fsprogs-1.37/lib/e2p/ls.c e2fsprogs-1.37-patched/lib/e2p/ls.c
  #include <sys/types.h>
  #include <string.h>
  #include <grp.h>
-diff -ur e2fsprogs-1.37/lib/e2p/ostype.c e2fsprogs-1.37-patched/lib/e2p/ostype.c
+diff -urN e2fsprogs-1.37/lib/e2p/ostype.c e2fsprogs-1.37-patched/lib/e2p/ostype.c
 --- e2fsprogs-1.37/lib/e2p/ostype.c	2005-03-19 00:17:09.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/e2p/ostype.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/e2p/ostype.c	2005-06-18 16:34:01.000000000 -0500
 @@ -9,6 +9,7 @@
  
  #include "e2p.h"
@@ -247,9 +247,9 @@ diff -ur e2fsprogs-1.37/lib/e2p/ostype.c e2fsprogs-1.37-patched/lib/e2p/ostype.c
          return ret;
  }
  
-diff -ur e2fsprogs-1.37/lib/ext2fs/ChangeLog e2fsprogs-1.37-patched/lib/ext2fs/ChangeLog
+diff -urN e2fsprogs-1.37/lib/ext2fs/ChangeLog e2fsprogs-1.37-patched/lib/ext2fs/ChangeLog
 --- e2fsprogs-1.37/lib/ext2fs/ChangeLog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ext2fs/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ext2fs/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,16 @@
 +2005-04-09  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -267,20 +267,58 @@ diff -ur e2fsprogs-1.37/lib/ext2fs/ChangeLog e2fsprogs-1.37-patched/lib/ext2fs/C
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/lib/ext2fs/ext2fs.h e2fsprogs-1.37-patched/lib/ext2fs/ext2fs.h
+diff -urN e2fsprogs-1.37/lib/ext2fs/Makefile.in e2fsprogs-1.37-patched/lib/ext2fs/Makefile.in
+--- e2fsprogs-1.37/lib/ext2fs/Makefile.in	2005-03-18 22:50:32.000000000 -0600
++++ e2fsprogs-1.37-patched/lib/ext2fs/Makefile.in	2005-06-18 16:49:05.000000000 -0500
+@@ -400,6 +400,7 @@
+  $(top_builddir)/lib/ext2fs/ext2_types.h $(srcdir)/ext2fs.h \
+  $(srcdir)/ext2_fs.h $(top_srcdir)/lib/et/com_err.h $(srcdir)/ext2_io.h \
+  $(top_builddir)/lib/ext2fs/ext2_err.h $(srcdir)/bitops.h
++ind_block.o: ext2_err.c
+ initialize.o: $(srcdir)/initialize.c $(srcdir)/ext2_fs.h \
+  $(top_builddir)/lib/ext2fs/ext2_types.h $(srcdir)/ext2fs.h \
+  $(srcdir)/ext2_fs.h $(top_srcdir)/lib/et/com_err.h $(srcdir)/ext2_io.h \
+diff -urN e2fsprogs-1.37/lib/ext2fs/ext2fs.h e2fsprogs-1.37-patched/lib/ext2fs/ext2fs.h
 --- e2fsprogs-1.37/lib/ext2fs/ext2fs.h	2005-03-20 21:31:41.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ext2fs/ext2fs.h	2005-06-11 21:28:17.000000000 -0500
-@@ -61,6 +61,7 @@
++++ e2fsprogs-1.37-patched/lib/ext2fs/ext2fs.h	2005-06-18 16:33:06.000000000 -0500
+@@ -61,7 +61,7 @@
  #include <stdio.h>
  #include <stdlib.h>
  
-+#define EXT2_FLAT_INCLUDES
- #if EXT2_FLAT_INCLUDES
+-#if EXT2_FLAT_INCLUDES
++#ifdef EXT2_FLAT_INCLUDES
  #include "e2_types.h"
  #include "ext2_fs.h"
-diff -ur e2fsprogs-1.37/lib/ext2fs/ind_block.c e2fsprogs-1.37-patched/lib/ext2fs/ind_block.c
+ #else
+@@ -76,14 +76,14 @@
+ typedef __s64		e2_blkcnt_t;
+ typedef __u32		ext2_dirhash_t;
+ 
+-#if EXT2_FLAT_INCLUDES
++#ifdef EXT2_FLAT_INCLUDES
+ #include "com_err.h"
+ #include "ext2_io.h"
+ #include "ext2_err.h"
+ #else
+ #include <et/com_err.h>
+-#include <ext2fs/ext2_io.h>
+ #include <ext2fs/ext2_err.h>
++#include <ext2fs/ext2_io.h>
+ #endif
+ 
+ /*
+@@ -245,7 +245,7 @@
+ 	io_channel			image_io;
+ };
+ 
+-#if EXT2_FLAT_INCLUDES
++#ifdef EXT2_FLAT_INCLUDES
+ #include "e2_bitops.h"
+ #else
+ #include <ext2fs/bitops.h>
+diff -urN e2fsprogs-1.37/lib/ext2fs/ind_block.c e2fsprogs-1.37-patched/lib/ext2fs/ind_block.c
 --- e2fsprogs-1.37/lib/ext2fs/ind_block.c	2005-01-05 22:15:49.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ext2fs/ind_block.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ext2fs/ind_block.c	2005-06-18 16:34:01.000000000 -0500
 @@ -32,7 +32,7 @@
  	else {
  		retval = io_channel_read_blk(fs->io, blk, 1, buf);
@@ -290,9 +328,9 @@ diff -ur e2fsprogs-1.37/lib/ext2fs/ind_block.c e2fsprogs-1.37-patched/lib/ext2fs
  	}
  #ifdef EXT2FS_ENABLE_SWAPFS
  	if (fs->flags & (EXT2_FLAG_SWAP_BYTES | EXT2_FLAG_SWAP_BYTES_READ)) {
-diff -ur e2fsprogs-1.37/lib/ext2fs/inode.c e2fsprogs-1.37-patched/lib/ext2fs/inode.c
+diff -urN e2fsprogs-1.37/lib/ext2fs/inode.c e2fsprogs-1.37-patched/lib/ext2fs/inode.c
 --- e2fsprogs-1.37/lib/ext2fs/inode.c	2005-03-21 00:10:13.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ext2fs/inode.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ext2fs/inode.c	2005-06-18 16:34:01.000000000 -0500
 @@ -724,7 +724,6 @@
  				 struct ext2_inode *inode)
  {
@@ -310,9 +348,9 @@ diff -ur e2fsprogs-1.37/lib/ext2fs/inode.c e2fsprogs-1.37-patched/lib/ext2fs/ino
  }
  
   
-diff -ur e2fsprogs-1.37/lib/ext2fs/test_io.c e2fsprogs-1.37-patched/lib/ext2fs/test_io.c
+diff -urN e2fsprogs-1.37/lib/ext2fs/test_io.c e2fsprogs-1.37-patched/lib/ext2fs/test_io.c
 --- e2fsprogs-1.37/lib/ext2fs/test_io.c	2004-12-06 16:45:50.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ext2fs/test_io.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ext2fs/test_io.c	2005-06-18 16:34:01.000000000 -0500
 @@ -22,6 +22,14 @@
  #if HAVE_SYS_TYPES_H
  #include <sys/types.h>
@@ -387,9 +425,9 @@ diff -ur e2fsprogs-1.37/lib/ext2fs/test_io.c e2fsprogs-1.37-patched/lib/ext2fs/t
  		data->write_abort_count = strtoul(value, NULL, 0);
  	
  	*channel = io;
-diff -ur e2fsprogs-1.37/lib/ss/ChangeLog e2fsprogs-1.37-patched/lib/ss/ChangeLog
+diff -urN e2fsprogs-1.37/lib/ss/ChangeLog e2fsprogs-1.37-patched/lib/ss/ChangeLog
 --- e2fsprogs-1.37/lib/ss/ChangeLog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ss/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ss/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,10 @@
 +2005-03-31  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -401,9 +439,9 @@ diff -ur e2fsprogs-1.37/lib/ss/ChangeLog e2fsprogs-1.37-patched/lib/ss/ChangeLog
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/lib/ss/get_readline.c e2fsprogs-1.37-patched/lib/ss/get_readline.c
+diff -urN e2fsprogs-1.37/lib/ss/get_readline.c e2fsprogs-1.37-patched/lib/ss/get_readline.c
 --- e2fsprogs-1.37/lib/ss/get_readline.c	2003-12-07 11:11:38.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ss/get_readline.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ss/get_readline.c	2005-06-18 16:34:01.000000000 -0500
 @@ -50,7 +50,7 @@
  	if (info->readline_handle)
  		return;
@@ -413,9 +451,9 @@ diff -ur e2fsprogs-1.37/lib/ss/get_readline.c e2fsprogs-1.37-patched/lib/ss/get_
  	if (!libpath)
  		libpath = DEFAULT_LIBPATH;
  	if (*libpath == 0 || !strcmp(libpath, "none"))
-diff -ur e2fsprogs-1.37/lib/ss/pager.c e2fsprogs-1.37-patched/lib/ss/pager.c
+diff -urN e2fsprogs-1.37/lib/ss/pager.c e2fsprogs-1.37-patched/lib/ss/pager.c
 --- e2fsprogs-1.37/lib/ss/pager.c	2003-12-07 11:11:38.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ss/pager.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ss/pager.c	2005-06-18 16:34:01.000000000 -0500
 @@ -28,11 +28,40 @@
  #include <sys/types.h>
  #include <sys/file.h>
@@ -466,9 +504,9 @@ diff -ur e2fsprogs-1.37/lib/ss/pager.c e2fsprogs-1.37-patched/lib/ss/pager.c
  			_ss_pager_name = MORE;
  	}
  	(void) execlp(_ss_pager_name, _ss_pager_name, (char *) NULL);
-diff -ur e2fsprogs-1.37/lib/ss/ss_internal.h e2fsprogs-1.37-patched/lib/ss/ss_internal.h
+diff -urN e2fsprogs-1.37/lib/ss/ss_internal.h e2fsprogs-1.37-patched/lib/ss/ss_internal.h
 --- e2fsprogs-1.37/lib/ss/ss_internal.h	2003-12-07 11:11:38.000000000 -0600
-+++ e2fsprogs-1.37-patched/lib/ss/ss_internal.h	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/lib/ss/ss_internal.h	2005-06-18 16:34:01.000000000 -0500
 @@ -89,6 +89,7 @@
  void ss_list_requests(int, char const * const *, int, pointer);
  int ss_execute_command(int sci_idx, char *argv[]);
@@ -477,9 +515,9 @@ diff -ur e2fsprogs-1.37/lib/ss/ss_internal.h e2fsprogs-1.37-patched/lib/ss/ss_in
  char **ss_rl_completion(const char *text, int start, int end);
  
  extern ss_data **_ss_table;
-diff -ur e2fsprogs-1.37/misc/ChangeLog e2fsprogs-1.37-patched/misc/ChangeLog
+diff -urN e2fsprogs-1.37/misc/ChangeLog e2fsprogs-1.37-patched/misc/ChangeLog
 --- e2fsprogs-1.37/misc/ChangeLog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/misc/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/misc/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,13 @@
 +2005-04-09  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -494,9 +532,9 @@ diff -ur e2fsprogs-1.37/misc/ChangeLog e2fsprogs-1.37-patched/misc/ChangeLog
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/misc/filefrag.c e2fsprogs-1.37-patched/misc/filefrag.c
+diff -urN e2fsprogs-1.37/misc/filefrag.c e2fsprogs-1.37-patched/misc/filefrag.c
 --- e2fsprogs-1.37/misc/filefrag.c	2005-03-18 19:25:28.000000000 -0600
-+++ e2fsprogs-1.37-patched/misc/filefrag.c	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/misc/filefrag.c	2005-06-18 16:34:01.000000000 -0500
 @@ -110,11 +110,8 @@
  		close(fd);
  		return;
@@ -511,9 +549,9 @@ diff -ur e2fsprogs-1.37/misc/filefrag.c e2fsprogs-1.37-patched/misc/filefrag.c
  	if (flags & EXT3_EXTENTS_FL) {
  		printf("File is stored in extents format\n");
  		is_ext2 = 0;
-diff -ur e2fsprogs-1.37/misc/mke2fs.8.in e2fsprogs-1.37-patched/misc/mke2fs.8.in
+diff -urN e2fsprogs-1.37/misc/mke2fs.8.in e2fsprogs-1.37-patched/misc/mke2fs.8.in
 --- e2fsprogs-1.37/misc/mke2fs.8.in	2005-01-05 10:12:19.000000000 -0600
-+++ e2fsprogs-1.37-patched/misc/mke2fs.8.in	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/misc/mke2fs.8.in	2005-06-18 16:34:01.000000000 -0500
 @@ -305,7 +305,7 @@
  .B \-M
  Set the last mounted directory for the filesystem.  This might be useful 
@@ -523,9 +561,9 @@ diff -ur e2fsprogs-1.37/misc/mke2fs.8.in e2fsprogs-1.37-patched/misc/mke2fs.8.in
  .TP
  .B \-n
  causes mke2fs to not actually create a filesystem, but display what it
-diff -ur e2fsprogs-1.37/tests/ChangeLog e2fsprogs-1.37-patched/tests/ChangeLog
+diff -urN e2fsprogs-1.37/tests/ChangeLog e2fsprogs-1.37-patched/tests/ChangeLog
 --- e2fsprogs-1.37/tests/ChangeLog	2005-03-21 21:37:01.000000000 -0600
-+++ e2fsprogs-1.37-patched/tests/ChangeLog	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/tests/ChangeLog	2005-06-18 16:34:01.000000000 -0500
 @@ -1,3 +1,8 @@
 +2005-04-09  Theodore Ts'o  <tytso@mit.edu>
 +
@@ -535,9 +573,9 @@ diff -ur e2fsprogs-1.37/tests/ChangeLog e2fsprogs-1.37-patched/tests/ChangeLog
  2005-03-21  Theodore Ts'o  <tytso@mit.edu>
  
  	* Release of E2fsprogs 1.37
-diff -ur e2fsprogs-1.37/tests/test_script.in e2fsprogs-1.37-patched/tests/test_script.in
+diff -urN e2fsprogs-1.37/tests/test_script.in e2fsprogs-1.37-patched/tests/test_script.in
 --- e2fsprogs-1.37/tests/test_script.in	2005-01-17 18:13:38.000000000 -0600
-+++ e2fsprogs-1.37-patched/tests/test_script.in	2005-06-11 21:25:24.000000000 -0500
++++ e2fsprogs-1.37-patched/tests/test_script.in	2005-06-18 16:34:01.000000000 -0500
 @@ -59,3 +59,4 @@
  
  echo "$num_ok tests succeeded	$num_failed tests failed"
