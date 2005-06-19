@@ -1,7 +1,18 @@
+diff -urN util-linux-2.12/configure util-linux-2.12-patched/configure
+--- util-linux-2.12/configure	2003-07-05 15:06:55.000000000 -0500
++++ util-linux-2.12-patched/configure	2005-06-18 11:36:07.000000000 -0500
+@@ -360,6 +360,7 @@
+ #
+ echo "
+ #include <sys/types.h>
++#include <linux/compiler.h>
+ #include <linux/cyclades.h>
+ int main(){ exit(0); }
+ " > conftest.c
 diff -urN util-linux-2.12/disk-utils/mkfs.minix.c util-linux-2.12-patched/disk-utils/mkfs.minix.c
---- util-linux-2.12/disk-utils/mkfs.minix.c	2005-04-30 21:38:42.924938555 -0500
-+++ util-linux-2.12-patched/disk-utils/mkfs.minix.c	2005-04-30 21:40:36.283237704 -0500
-@@ -124,17 +124,17 @@
+--- util-linux-2.12/disk-utils/mkfs.minix.c	2002-10-25 17:25:15.000000000 -0500
++++ util-linux-2.12-patched/disk-utils/mkfs.minix.c	2005-06-18 11:36:07.000000000 -0500
+@@ -128,17 +128,17 @@
  static char super_block_buffer[BLOCK_SIZE];
  static char boot_block_buffer[512];
  #define Super (*(struct minix_super_block *)super_block_buffer)
@@ -27,7 +38,7 @@ diff -urN util-linux-2.12/disk-utils/mkfs.minix.c util-linux-2.12-patched/disk-u
  #define MAGIC (Super.s_magic)
  #define NORM_FIRSTZONE (2+IMAPS+ZMAPS+INODE_BLOCKS)
  
-@@ -436,7 +436,10 @@
+@@ -475,7 +475,10 @@
  	MAGIC = magic;
  	ZONESIZE = 0;
  	MAXSIZE = version2 ? 0x7fffffff : (7+512+512*512)*1024;
@@ -39,7 +50,7 @@ diff -urN util-linux-2.12/disk-utils/mkfs.minix.c util-linux-2.12-patched/disk-u
  
  /* some magic nrs: 1 inode / 3 blocks */
  	if ( req_nr_inodes == 0 ) 
-@@ -478,11 +481,11 @@
+@@ -517,11 +520,11 @@
  	if (!inode_buffer)
  		die(_("unable to allocate buffer for inodes"));
  	memset(inode_buffer,0,INODE_BUFFER_SIZE);
@@ -55,3 +66,14 @@ diff -urN util-linux-2.12/disk-utils/mkfs.minix.c util-linux-2.12-patched/disk-u
  }
  
  /*
+diff -urN util-linux-2.12/sys-utils/cytune.c util-linux-2.12-patched/sys-utils/cytune.c
+--- util-linux-2.12/sys-utils/cytune.c	2002-03-08 17:04:30.000000000 -0600
++++ util-linux-2.12-patched/sys-utils/cytune.c	2005-06-18 11:36:51.000000000 -0500
+@@ -58,6 +58,7 @@
+ #include <linux/tqueue.h>	/* required for old kernels (for struct tq_struct) */
+ 				/* compilation errors on other kernels */
+ #endif
++#include <linux/compiler.h>
+ #include <linux/cyclades.h>
+ 
+ #if 0
