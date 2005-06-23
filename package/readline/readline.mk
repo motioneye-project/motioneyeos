@@ -1,80 +1,80 @@
 #############################################################
 #
-# build GNU readline 
+# build GNU readline
 #
 #############################################################
 READLINE_VER:=5.0
 READLINE_SITE:=ftp://ftp.cwru.edu/pub/bash
 READLINE_SOURCE:=readline-$(READLINE_VER).tar.gz
-#READLINE_DIR1:=$(TOOL_BUILD_DIR)/readline-$(READLINE_VER)
-READLINE_DIR1:=$(BUILD_DIR)/readline-$(READLINE_VER)
-#READLINE_DIR2:=$(BUILD_DIR)/readline-$(READLINE_VER)
+READLINE_DIR:=$(BUILD_DIR)/readline-$(READLINE_VER)
 READLINE_CAT:=zcat
-
-##READLINE_BINARY:=readline
-##READLINE_TARGET_BINARY:=usr/bin/readline
-#READLINE_BINARY:=libreadline.a
 READLINE_BINARY:=libhistory.so.$(READLINE_VER)
 READLINE_TARGET_BINARY:=$(TARGET_DIR)/lib/$(READLINE_BINARY)
-#READLINE_TARGET_BINARY:=$(DEST_DIR)/usr/lib/libreadline.a
 
 
 
 $(DL_DIR)/$(READLINE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(READLINE_SITE)/$(READLINE_SOURCE)
 
-$(READLINE_DIR1)/.unpacked: $(DL_DIR)/$(READLINE_SOURCE)
-	$(READLINE_CAT) $(DL_DIR)/$(READLINE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+$(READLINE_DIR)/.unpacked: $(DL_DIR)/$(READLINE_SOURCE)
+	mkdir -p $(READLINE_DIR)
+	tar  -C $(BUILD_DIR) -zxvf $(DL_DIR)/$(READLINE_SOURCE)
 	# patch to fix old autoconf
-	patch -d $(READLINE_DIR1) -p1 -u  < $(BASE_DIR)/package/readline/readline5.patch
-	touch $(READLINE_DIR1)/.unpacked
+	patch -d $(READLINE_DIR) -p1 -u  < $(BASE_DIR)/package/readline/readline5.patch
+	touch $(READLINE_DIR)/.unpacked
 
-
-#		--target=$(GNU_HOST_NAME) \
-# gnu-host-name: $(GNU_HOST_NAME)  powerpc-pc-linux-gnu   
-#		--host=powerpc-linux-uclibc \
-#		--program-prefix=$(TARGET_CROSS) \
-
-$(READLINE_DIR1)/.configured: $(READLINE_DIR1)/.unpacked
-	mkdir -p $(READLINE_DIR1)
-	# gnu-host-name: $(GNU_HOST_NAME) 
-	(cd $(READLINE_DIR1); rm -rf config.cache; \
-		$(READLINE_DIR1)/configure \
-		--build=powerpc-linux-uclibc \
-		--host=powerpc-linux-uclibc \
-		--prefix=$(STAGING_DIR) \
+$(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
+	mkdir -p $(READLINE_DIR)
+	(cd $(READLINE_DIR); rm -rf config.cache; \
+		$(READLINE_DIR)/configure \
+                --target=$(GNU_TARGET_NAME) \
+                --host=$(GNU_TARGET_NAME) \
+                --build=$(GNU_HOST_NAME)  \
+                --prefix=$(STAGING_DIR)  \
 	);
-	touch $(READLINE_DIR1)/.configured
+	touch $(READLINE_DIR)/.configured
 
-# old:		--prefix=$(TARGET_DIR) \
-# oldest:	--prefix=$(TARGET_DIR)/opt/vp \
 
-# -SAJ changed HOSTCC to TARGET_CC
-$(READLINE_DIR1)/$(READLINE_BINARY): $(READLINE_DIR1)/.configured
-	$(MAKE)  -C $(READLINE_DIR1)
+$(READLINE_DIR)/$(READLINE_BINARY): $(READLINE_DIR)/.configured
+	$(MAKE)  -C $(READLINE_DIR)
 
-$(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR1)/$(READLINE_BINARY)
-	$(MAKE) -C $(READLINE_DIR1)  install
+$(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/.configured
+	$(MAKE) -C $(READLINE_DIR)  install
 
-readline: $(STAGING_DIR)/$(READLINE_TARGET_BINARY)
-	# VP- do these post-install steps to clean up runtime env.
-	# VP- remove static libs from runtime environment
-	# also install  .so library files to target root
-	$(MAKE) -C $(READLINE_DIR1)  install-shared
-	### rm $(TARGET_DIR)/lib/libreadline.a
-	## #rm $(TARGET_DIR)/lib/libhistory.a
-	# VP- remove backup versions runtime environment
-	## #rm $(TARGET_DIR)/lib/libreadline*old
-	## #rm $(TARGET_DIR)/lib/libhistory*old
+# Install to Staging area
+readline: $(READLINE_DIR)/.configured
+	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+        $(MAKE1) \
+            prefix=$(STAGING_DIR) \
+            exec_prefix=$(STAGING_DIR) \
+            bindir=$(STAGING_DIR)/bin \
+            sbindir=$(STAGING_DIR)/sbin \
+            libexecdir=$(STAGING_DIR)/lib \
+            datadir=$(STAGING_DIR)/usr/share \
+            sysconfdir=$(STAGING_DIR)/etc \
+            localstatedir=$(STAGING_DIR)/var \
+            libdir=$(STAGING_DIR)/lib \
+            infodir=$(STAGING_DIR)/info \
+            mandir=$(STAGING_DIR)/man \
+            includedir=$(STAGING_DIR)/include \
+            -C $(READLINE_DIR) install;
+
+# Install only run-time to Target directory
+readline-target: $(READLINE_DIR)/.configured
+	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+	$(MAKE1) \
+            prefix=$(TARGET_DIR) \
+            libdir=$(TARGET_DIR)/lib \
+	-C $(READLINE_DIR) install-shared
 
 readline-clean:
-	$(MAKE) -C $(READLINE_DIR1) uninstall
-	-$(MAKE) -C $(READLINE_DIR1) clean
+	$(MAKE) -C $(READLINE_DIR) uninstall
+	-$(MAKE) -C $(READLINE_DIR) clean
 
 readline-dirclean:
-	rm -rf $(READLINE_DIR1)
+	rm -rf $(READLINE_DIR)
 
-readline-source:  $(DL_DIR)/$(READLINE_SOURCE)   $(READLINE_DIR1)/.unpacked
+readline-source:  $(DL_DIR)/$(READLINE_SOURCE)   $(READLINE_DIR)/.unpacked
 
 ifeq ($(strip $(BR2_READLINE)),y)
 TARGETS+=readline
