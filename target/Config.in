@@ -6,6 +6,11 @@ source "target/jffs2/Config.in"
 source "target/squashfs/Config.in"
 source "target/tar/Config.in"
 
+source "target/x86/grub/Config.in"
+source "target/x86/syslinux/Config.in"
+source "target/powerpc/yaboot/Config.in"
+
 endmenu
 
 source "target/device/Config.in"
+

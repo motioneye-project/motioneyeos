@@ -1,0 +1,6 @@
+config BR2_TARGET_YABOOT
+	bool "grub bootloader"
+	default n
+	depends on BR2_powerpc
+	help
+	  The yaboot bootloader for new world powerpc systems.
