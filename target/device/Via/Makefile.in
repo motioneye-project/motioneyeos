@@ -1,0 +1,10 @@
+# Override the default uClibc configuration
+ifeq ($(strip $(BR2_TARGET_VIA_EPIA_MII)),y)
+
+ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
+include target/device/Via/epia-mii/linux.mk
+TARGETS+=linux
+endif
+
+endif
+
