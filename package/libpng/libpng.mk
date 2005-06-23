@@ -23,8 +23,7 @@
 
 LIBPNG_VER:=1.2.8
 LIBPNG_DIR:=$(BUILD_DIR)/libpng-$(LIBPNG_VER)
-#LIBPNG_SITE:=ftp://sunsite.cnlab-switch.ch/mirror/freetype/png
-LIBPNG_SITE:=ftp://ftp.simplesystems.org/pub/libpng/src/
+LIBPNG_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
 LIBPNG_SOURCE:=libpng-$(LIBPNG_VER).tar.bz2
 LIBPNG_CAT:=bzcat
 
