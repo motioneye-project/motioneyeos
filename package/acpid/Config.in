@@ -1,0 +1,8 @@
+config BR2_PACKAGE_ACPID
+	bool "acpid"
+	default n
+	help
+	  Advanced Configuration and Power Interface event daemon.
+
+	  Acpid is designed to notify user-space programs of ACPI events,
+	  and allows you to configure specific actions for specific events.
