@@ -63,6 +63,7 @@ void bb_error_msg_and_die(const char *s, ...)
 	putc('\n', stderr);
 	exit(1);
 }
+
 void bb_vperror_msg(const char *s, va_list p)
 {
 	int err=errno;
@@ -146,8 +147,8 @@ int bb_make_directory (char *path, long mode, int flags)
 			/* If we failed for any other reason than the directory
 			 * already exists, output a diagnostic and return -1.*/
 			if (errno != EEXIST
-				|| !(flags & FILEUTILS_RECUR)
-				|| (stat(path, &st) < 0 || !S_ISDIR(st.st_mode))) {
+					|| !(flags & FILEUTILS_RECUR)
+					|| (stat(path, &st) < 0 || !S_ISDIR(st.st_mode))) {
 				fail_msg = "create";
 				umask(mask);
 				break;
@@ -321,68 +322,76 @@ char *concat_path_file(const char *path, const char *filename)
 	return outbuf;
 }
 
+void bb_show_usage(void)
+{
+	fprintf(stderr, "%s: [-d device_table] rootdir\n\n", bb_applet_name);
+	fprintf(stderr, "Creates a batch of special files as specified in a device table.\n");
+	fprintf(stderr, "Device table entries take the form of:\n");
+	fprintf(stderr, "type mode user group major minor start increment count\n\n");
+	fprintf(stderr, "Where name is the file name,  type can be one of:\n");
+	fprintf(stderr, "      f       A regular file\n");
+	fprintf(stderr, "      d       Directory\n");
+	fprintf(stderr, "      c       Character special device file\n");
+	fprintf(stderr, "      b       Block special device file\n");
+	fprintf(stderr, "      p       Fifo (named pipe)\n");
+	fprintf(stderr, "uid is the user id for the target file, gid is the group id for the\n");
+	fprintf(stderr, "target file.  The rest of the entries (major, minor, etc) apply to\n");
+	fprintf(stderr, "to device special files.  A '-' may be used for blank entries.\n\n");
+	fprintf(stderr, "For example:\n");
+	fprintf(stderr, "<name>    <type> <mode> <uid> <gid> <major> <minor> <start> <inc> <count>\n");
+	fprintf(stderr, "/dev         d    755    0    0     -       -       -       -     -\n");
+	fprintf(stderr, "/dev/console c    666    0    0     5       1       -       -     -\n");
+	fprintf(stderr, "/dev/null    c    666    0    0     1       3       0       0     -\n");
+	fprintf(stderr, "/dev/zero    c    666    0    0     1       5       0       0     -\n");
+	fprintf(stderr, "/dev/hda     b    640    0    0     3       0       0       0     -\n");
+	fprintf(stderr, "/dev/hda     b    640    0    0     3       1       1       1     15\n\n");
+	fprintf(stderr, "Will Produce:\n");
+	fprintf(stderr, "/dev\n");
+	fprintf(stderr, "/dev/console\n");
+	fprintf(stderr, "/dev/null\n");
+	fprintf(stderr, "/dev/zero\n");
+	fprintf(stderr, "/dev/hda\n");
+	fprintf(stderr, "/dev/hda[0-15]\n");
+	exit(1);
+}
+
 int main(int argc, char **argv)
 {
 	int opt;
 	FILE *table = stdin;
-	char *rootdir = "./";
-	char *line;
+	char *rootdir = NULL;
+	char *line = NULL;
 	int linenum = 0;
 	int ret = EXIT_SUCCESS;
 
 	bb_applet_name = basename(argv[0]);
-	argc--;
-	argv++;
 
 	while ((opt = getopt(argc, argv, "d:")) != -1) {
 		switch(opt) {
-		case 'd':
-			table = bb_xfopen(optarg, "r");
-			break;
-		default:
-			fprintf(stderr, "%s: [-d device_table] rootdir\n\n", bb_applet_name);
-			fprintf(stderr, "Creates a batch of special files as specified in a device table.\n");
-			fprintf(stderr, "Device table entries take the form of:\n");
-			fprintf(stderr, "type mode user group major minor start increment count\n\n");
-			fprintf(stderr, "Where name is the file name,  type can be one of:\n");
-			fprintf(stderr, "      f       A regular file\n");
-			fprintf(stderr, "      d       Directory\n");
-			fprintf(stderr, "      c       Character special device file\n");
-			fprintf(stderr, "      b       Block special device file\n");
-			fprintf(stderr, "      p       Fifo (named pipe)\n");
-			fprintf(stderr, "uid is the user id for the target file, gid is the group id for the\n");
-			fprintf(stderr, "target file.  The rest of the entries (major, minor, etc) apply to\n");
-			fprintf(stderr, "to device special files.  A '-' may be used for blank entries.\n\n");
-			fprintf(stderr, "For example:\n");
-            fprintf(stderr, "<name>    <type> <mode> <uid> <gid> <major> <minor> <start> <inc> <count>\n");
-            fprintf(stderr, "/dev         d    755    0    0     -       -       -       -     -\n");
-            fprintf(stderr, "/dev/console c    666    0    0     5       1       -       -     -\n");
-            fprintf(stderr, "/dev/null    c    666    0    0     1       3       0       0     -\n");
-            fprintf(stderr, "/dev/zero    c    666    0    0     1       5       0       0     -\n");
-            fprintf(stderr, "/dev/hda     b    640    0    0     3       0       0       0     -\n");
-            fprintf(stderr, "/dev/hda     b    640    0    0     3       1       1       1     15\n\n");
-            fprintf(stderr, "Will Produce:\n");
-            fprintf(stderr, "/dev\n");
-            fprintf(stderr, "/dev/console\n");
-            fprintf(stderr, "/dev/null\n");
-            fprintf(stderr, "/dev/zero\n");
-            fprintf(stderr, "/dev/hda\n");
-            fprintf(stderr, "/dev/hda[0-15]\n");
-			exit(1);
+			case 'd':
+				table = bb_xfopen((line=optarg), "r");
+				break;
+			default:
+				bb_show_usage();
 		}
 	}
 
-	if (optind >= argc) {
+	if (optind >= argc || (rootdir=argv[optind])==NULL) {
 		bb_error_msg_and_die("root directory not speficied");
 	}
-	rootdir = argv[optind];
-
 
 	if (chdir(rootdir) != 0) {
 		bb_perror_msg_and_die("Couldnt chdir to %s", rootdir);
 	}
 
 	umask(0);
+
+	printf("rootdir=%s\n", rootdir);
+	if (line) {
+		printf("table='%s'\n", line);
+	} else {
+		printf("table=<stdin>\n");
+	}
 
 	while ((line = bb_get_chomped_line_from_file(table))) {
 		char type;
@@ -402,9 +411,9 @@ int main(int argc, char **argv)
 		linenum++;
 
 		if ((2 > sscanf(line, "%40s %c %o %40s %40s %u %u %u %u %u", name,
-			&type, &mode, user, group, &major,
-			&minor, &start, &increment, &count)) ||
-			((major | minor | start | count | increment) > 255))
+						&type, &mode, user, group, &major,
+						&minor, &start, &increment, &count)) ||
+				((major | minor | start | count | increment) > 255))
 		{
 			if (*line=='\0' || *line=='#' || isspace(*line))
 				continue;
