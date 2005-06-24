@@ -25,7 +25,9 @@
 #include <pwd.h>
 #include <grp.h>
 #include <unistd.h>
+#include <ctype.h>
 #include <errno.h>
+#include <libgen.h>
 #include <stdarg.h>
 #include <sys/stat.h>
 #include <sys/types.h>
@@ -97,6 +99,13 @@ FILE *bb_xfopen(const char *path, const char *mode)
 	return fp;
 }
 
+enum {
+	FILEUTILS_PRESERVE_STATUS = 1,
+	FILEUTILS_DEREFERENCE = 2,
+	FILEUTILS_RECUR = 4,
+	FILEUTILS_FORCE = 8,
+	FILEUTILS_INTERACTIVE = 16
+};
 int bb_make_directory (char *path, long mode, int flags)
 {
 	mode_t mask;
@@ -104,13 +113,6 @@ int bb_make_directory (char *path, long mode, int flags)
 	char *s = path;
 	char c;
 	struct stat st;
-	enum {
-		FILEUTILS_PRESERVE_STATUS = 1,
-		FILEUTILS_DEREFERENCE = 2,
-		FILEUTILS_RECUR = 4,
-		FILEUTILS_FORCE = 8,
-		FILEUTILS_INTERACTIVE = 16
-	};
 
 	mask = umask(0);
 	if (mode == -1) {
@@ -325,20 +327,20 @@ int main(int argc, char **argv)
 	FILE *table = stdin;
 	char *rootdir = "./";
 	char *line;
+	int linenum = 0;
 	int ret = EXIT_SUCCESS;
 
-	bb_applet_name = argv[0];
+	bb_applet_name = basename(argv[0]);
+	argc--;
+	argv++;
 
-	while ((opt = getopt(argc, argv, "d:r:")) != -1) {
+	while ((opt = getopt(argc, argv, "d:")) != -1) {
 		switch(opt) {
 		case 'd':
 			table = bb_xfopen(optarg, "r");
 			break;
-		case 'n':
-			rootdir = optarg;
-			break;
 		default:
-			fprintf(stderr, "%s: [-r rootdir] [device_table]\n\n", bb_applet_name);
+			fprintf(stderr, "%s: [-d device_table] rootdir\n\n", bb_applet_name);
 			fprintf(stderr, "Creates a batch of special files as specified in a device table.\n");
 			fprintf(stderr, "Device table entries take the form of:\n");
 			fprintf(stderr, "type mode user group major minor start increment count\n\n");
@@ -370,8 +372,13 @@ int main(int argc, char **argv)
 		}
 	}
 
+	if (optind >= argc) {
+		bb_error_msg_and_die("root directory not speficied");
+	}
+	rootdir = argv[optind];
 
-	if (chdir(rootdir) == -1) {
+
+	if (chdir(rootdir) != 0) {
 		bb_perror_msg_and_die("Couldnt chdir to %s", rootdir);
 	}
 
@@ -392,11 +399,16 @@ int main(int argc, char **argv)
 		uid_t uid;
 		gid_t gid;
 
+		linenum++;
+
 		if ((2 > sscanf(line, "%40s %c %o %40s %40s %u %u %u %u %u", name,
 			&type, &mode, user, group, &major,
 			&minor, &start, &increment, &count)) ||
-			((major | minor | start | count | increment) > 255)) {
-			bb_error_msg("Ignoring invalid line\n%s\n", line);
+			((major | minor | start | count | increment) > 255))
+		{
+			if (*line=='\0' || *line=='#' || isspace(*line))
+				continue;
+			bb_error_msg("line %d invalid: '%s'\n", linenum, line);
 			ret = EXIT_FAILURE;
 			continue;
 		}
@@ -416,9 +428,9 @@ int main(int argc, char **argv)
 		full_name = concat_path_file(rootdir, name);
 
 		if (type == 'd') {
-			bb_make_directory(full_name, mode | S_IFDIR, 0);
+			bb_make_directory(full_name, mode | S_IFDIR, FILEUTILS_RECUR);
 			if (chown(full_name, uid, gid) == -1) {
-				bb_perror_msg("chown failed for %s", full_name);
+				bb_perror_msg("line %d: chown failed for %s", linenum, full_name);
 				ret = EXIT_FAILURE;
 				goto loop;
 			}
@@ -434,7 +446,7 @@ int main(int argc, char **argv)
 			else if (type == 'b') {
 				mode |= S_IFBLK;
 			} else {
-				bb_error_msg("Unsupported file type %c", type);
+				bb_error_msg("line %d: Unsupported file type %c", linenum, type);
 				ret = EXIT_FAILURE;
 				goto loop;
 			}
@@ -448,11 +460,11 @@ int main(int argc, char **argv)
 					sprintf(full_name_inc, "%s%d", full_name, i);
 					rdev = (major << 8) + minor + (i * increment - start);
 					if (mknod(full_name_inc, mode, rdev) == -1) {
-						bb_perror_msg("Couldnt create node %s", full_name_inc);
+						bb_perror_msg("line %d: Couldnt create node %s", linenum, full_name_inc);
 						ret = EXIT_FAILURE;
 					}
 					else if (chown(full_name_inc, uid, gid) == -1) {
-						bb_perror_msg("chown failed for %s", full_name_inc);
+						bb_perror_msg("line %d: chown failed for %s", linenum, full_name_inc);
 						ret = EXIT_FAILURE;
 					}
 				}
@@ -460,11 +472,11 @@ int main(int argc, char **argv)
 			} else {
 				rdev = (major << 8) + minor;
 				if (mknod(full_name, mode, rdev) == -1) {
-					bb_perror_msg("Couldnt create node %s", full_name);
+					bb_perror_msg("line %d: Couldnt create node %s", linenum, full_name);
 					ret = EXIT_FAILURE;
 				}
 				else if (chown(full_name, uid, gid) == -1) {
-					bb_perror_msg("chown failed for %s", full_name);
+					bb_perror_msg("line %d: chown failed for %s", linenum, full_name);
 					ret = EXIT_FAILURE;
 				}
 			}
