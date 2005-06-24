@@ -3,8 +3,8 @@
 # mksquashfs to build to target squashfs filesystems
 #
 #############################################################
-SQUASHFS_DIR=$(BUILD_DIR)/squashfs1.3r3
-SQUASHFS_SOURCE=squashfs1.3r3.tar.gz
+SQUASHFS_DIR=$(BUILD_DIR)/squashfs2.1-r2
+SQUASHFS_SOURCE=squashfs2.1-r2.tar.gz
 SQUASHFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/squashfs
 
 $(DL_DIR)/$(SQUASHFS_SOURCE):
@@ -33,6 +33,25 @@ squashfs-dirclean:
 # Build the squashfs root filesystem image
 #
 #############################################################
+SQUASHFS_ENDIANNESS=-le
+ifeq ($(strip $(BR2_armeb)),y)
+SQUASHFS_ENDIANNESS=-be
+endif
+ifeq ($(strip $(BR2_mips)),y)
+SQUASHFS_ENDIANNESS=-be
+endif
+ifeq ($(strip $(BR2_powerpc)),y)
+SQUASHFS_ENDIANNESS=-be
+endif
+ifeq ($(strip $(BR2_sh3eb)),y)
+SQUASHFS_ENDIANNESS=-be
+endif
+ifeq ($(strip $(BR2_sh4eb)),y)
+SQUASHFS_ENDIANNESS=-be
+endif
+ifeq ($(strip $(BR2_sparc)),y)
+SQUASHFS_ENDIANNESS=-be
+endif
 
 squashfsroot: squashfs host-fakeroot makedevs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
@@ -57,8 +76,10 @@ squashfsroot: squashfs host-fakeroot makedevs
 	$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
 		-s $(STAGING_DIR)/fakeroot.env -- \
-		$(SQUASHFS_DIR)/squashfs-tools/mksquashfs $(TARGET_DIR) \
-		$(IMAGE).squashfs -noappend
+		$(SQUASHFS_DIR)/squashfs-tools/mksquashfs \
+		    $(TARGET_DIR) \
+		    $(IMAGE).squashfs \
+		    -2.0 -noappend $(SQUASHFS_ENDIANNESS)
 
 squashfsroot-source: squashfs-source
 
