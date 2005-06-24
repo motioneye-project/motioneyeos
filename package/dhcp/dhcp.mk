@@ -25,7 +25,7 @@ dhcp-source: $(DL_DIR)/$(DHCP_SOURCE)
 
 $(DHCP_DIR)/.unpacked: $(DL_DIR)/$(DHCP_SOURCE)
 	$(DHCP_CAT) $(DL_DIR)/$(DHCP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(DHCP_DIR) package/dhcp/ dhcp*.patch
+	toolchain/patch-kernel.sh $(DHCP_DIR) package/dhcp/ dhcp\*.patch
 	touch $(DHCP_DIR)/.unpacked
 
 $(DHCP_DIR)/.configured: $(DHCP_DIR)/.unpacked

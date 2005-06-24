@@ -48,7 +48,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--x-includes=$(TINYX_DIR)/exports/include \
 		--x-libraries=$(TINYX_DIR)/exports/lib \
 	);
-	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ rxvt*.patch
+	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ rxvt\*.patch
 	touch  $(RXVT_DIR)/.configured
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured

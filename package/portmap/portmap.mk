@@ -16,7 +16,7 @@ $(DL_DIR)/$(PORTMAP_SOURCE):
 
 $(PORTMAP_DIR)/.unpacked: $(DL_DIR)/$(PORTMAP_SOURCE)
 	$(PORTMAP_CAT) $(DL_DIR)/$(PORTMAP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(PORTMAP_DIR) package/portmap/ portmap*.patch
+	toolchain/patch-kernel.sh $(PORTMAP_DIR) package/portmap/ portmap\*.patch
 	touch $(PORTMAP_DIR)/.unpacked
 
 $(PORTMAP_DIR)/$(PORTMAP_BINARY): $(PORTMAP_DIR)/.unpacked

@@ -35,7 +35,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 	#use the local tic and not whatever the build system was going to find.
 	$(SED) 's~\$$srcdir/shlib tic\$$suffix~/usr/bin/tic~' \
 		$(NCURSES_DIR)/misc/run_tic.in
-	toolchain/patch-kernel.sh $(NCURSES_DIR) package/ncurses/ ncurses-\*.patch
+	toolchain/patch-kernel.sh $(NCURSES_DIR) package/ncurses/ ncurses\*.patch
 	touch  $(NCURSES_DIR)/.dist
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist

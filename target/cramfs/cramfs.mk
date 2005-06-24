@@ -12,7 +12,7 @@ $(DL_DIR)/$(CRAMFS_SOURCE):
 
 $(CRAMFS_DIR): $(DL_DIR)/$(CRAMFS_SOURCE)
 	zcat $(DL_DIR)/$(CRAMFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	toolchain/patch-kernel.sh $(CRAMFS_DIR) target/cramfs/ cramfs*.patch
+	toolchain/patch-kernel.sh $(CRAMFS_DIR) target/cramfs/ cramfs\*.patch
 
 $(CRAMFS_DIR)/mkcramfs: $(CRAMFS_DIR)
 	$(MAKE) CFLAGS="-Wall -O2 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64" -C $(CRAMFS_DIR);

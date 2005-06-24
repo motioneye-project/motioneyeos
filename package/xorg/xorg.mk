@@ -40,7 +40,7 @@ $(DL_DIR)/$(XORG_SOURCE):
 
 $(XORG_DIR)/.configure: $(DL_DIR)/$(XORG_SOURCE)
 	$(XORG_CAT) $(DL_DIR)/$(XORG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(XORG_DIR) package/xorg/ xorg*.patch
+	toolchain/patch-kernel.sh $(XORG_DIR) package/xorg/ xorg\*.patch
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_CF)
 	$(SED) 's:REPLACE_ARCH:$(ARCH):g' $(XORG_CF)
 	$(SED) 's:#define CcCmd.*:#define CcCmd $(TARGET_CROSS)gcc:g' $(XORG_CF)

@@ -21,7 +21,7 @@ $(NETKITBASE_DIR)/.unpacked: $(DL_DIR)/$(NETKITBASE_SOURCE)
 	$(SED) "s/main()/main(void)/;" $(NETKITBASE_DIR)/configure
 	# don't try to run cross compiled binaries while configuring things
 	$(SED) "s~./__conftest~#./__conftest~;" $(NETKITBASE_DIR)/configure
-	toolchain/patch-kernel.sh $(NETKITBASE_DIR) package/netkitbase/ netkitbase*.patch
+	toolchain/patch-kernel.sh $(NETKITBASE_DIR) package/netkitbase/ netkitbase\*.patch
 	touch $(NETKITBASE_DIR)/.unpacked
 
 $(NETKITBASE_DIR)/.configured: $(NETKITBASE_DIR)/.unpacked

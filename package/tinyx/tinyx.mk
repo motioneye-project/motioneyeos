@@ -65,7 +65,7 @@ $(DL_DIR)/$(TINYX_SOURCE):
 #
 $(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE)
 	$(TINYX_CAT) $(DL_DIR)/$(TINYX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(TINYX_DIR) package/tinyx/ tinyx*.patch
+	toolchain/patch-kernel.sh $(TINYX_DIR) package/tinyx/ tinyx\*.patch
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(TINYX_CF)/cross.def
 	$(SED) 's:REPLACE_ARCH:$(ARCH):g' $(TINYX_CF)/cross.def
 	$(SED) 's:#define CcCmd.*:#define CcCmd $(TARGET_CROSS)gcc:g' $(TINYX_CF)/cross.def

@@ -16,7 +16,7 @@ $(VALGRIND_DIR)/.unpacked: $(DL_DIR)/$(VALGRIND_SOURCE)
 	touch  $(VALGRIND_DIR)/.unpacked
 
 $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked
-	toolchain/patch-kernel.sh $(VALGRIND_DIR) package/valgrind/ valgrind*.patch
+	toolchain/patch-kernel.sh $(VALGRIND_DIR) package/valgrind/ valgrind\*.patch
 	touch $(VALGRIND_DIR)/.patched
 
 $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched

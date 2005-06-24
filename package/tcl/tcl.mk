@@ -13,7 +13,7 @@ $(DL_DIR)/$(TCL_SOURCE):
 
 $(TCL_DIR)/.source: $(DL_DIR)/$(TCL_SOURCE)
 	zcat $(DL_DIR)/$(TCL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(TCL_DIR) package/tcl/ tcl*.patch
+	toolchain/patch-kernel.sh $(TCL_DIR) package/tcl/ tcl\*.patch
 	touch $(TCL_DIR)/.source
 
 $(TCL_DIR)/.configured: $(TCL_DIR)/.source

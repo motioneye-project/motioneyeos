@@ -18,7 +18,7 @@ tftpd-source: $(DL_DIR)/$(TFTP_HPA_SOURCE)
 
 $(TFTP_HPA_DIR)/.unpacked: $(DL_DIR)/$(TFTP_HPA_SOURCE)
 	$(TFTP_HPA_CAT) $(DL_DIR)/$(TFTP_HPA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(TFTP_HPA_DIR) package/tftpd/ tftpd*.patch
+	toolchain/patch-kernel.sh $(TFTP_HPA_DIR) package/tftpd/ tftpd\*.patch
 	touch $(TFTP_HPA_DIR)/.unpacked
 
 $(TFTP_HPA_DIR)/.configured: $(TFTP_HPA_DIR)/.unpacked

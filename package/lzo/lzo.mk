@@ -20,7 +20,7 @@ lzo-source: $(DL_DIR)/$(LZO_SOURCE)
 
 $(LZO_DIR)/.unpacked: $(DL_DIR)/$(LZO_SOURCE)
 	$(LZO_CAT) $(DL_DIR)/$(LZO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LZO_DIR) package/lzo/ lzo-\*.patch
+	toolchain/patch-kernel.sh $(LZO_DIR) package/lzo/ lzo\*.patch
 	touch $(LZO_DIR)/.unpacked
 
 LZO_CONFIG_SHARED:=--disable-shared

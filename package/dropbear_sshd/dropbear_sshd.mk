@@ -18,7 +18,7 @@ dropbear_sshd-source: $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE)
 
 $(DROPBEAR_SSHD_DIR)/.unpacked: $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE)
 	$(DROPBEAR_SSHD_CAT) $(DL_DIR)/$(DROPBEAR_SSHD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(DROPBEAR_SSHD_DIR) package/dropbear_sshd/ dropbear-\*.patch
+	toolchain/patch-kernel.sh $(DROPBEAR_SSHD_DIR) package/dropbear_sshd/ dropbear\*.patch
 	$(SED) 's,^/\* #define DROPBEAR_MULTI.*,#define DROPBEAR_MULTI,g' $(DROPBEAR_SSHD_DIR)/options.h
 	touch $(DROPBEAR_SSHD_DIR)/.unpacked
 
