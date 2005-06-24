@@ -6,17 +6,30 @@
 
 TAR_OPTS := $(strip $(BR2_TARGET_ROOTFS_TAR_OPTIONS))
 
-TAR_TARGET := $(IMAGE).tar
-
-$(TAR_TARGET):
+tarroot: host-fakeroot makedevs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
-	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	tar -c$(TAR_OPTS)f $(TAR_TARGET) -C $(TARGET_DIR) .
-		
-tarroot: $(TAR_TARGET)
-	@ls -l $(TAR_TARGET)
+	# Use fakeroot to munge permissions and do root-like things
+	rm -f $(STAGING_DIR)/fakeroot.env
+	touch $(STAGING_DIR)/fakeroot.env
+	# Use fakeroot to pretend all target binaries are owned by root
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		chown -R root:root $(TARGET_DIR)
+	# Use fakeroot to pretend to create all needed device nodes
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(STAGING_DIR)/bin/makedevs \
+		-r $(TARGET_DIR) \
+		-d target/generic/device_table.txt
+	# Use fakeroot to fake out mksquashfs per the previous fakery
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		tar -c$(TAR_OPTS)f $(IMAGE).tar -C $(TARGET_DIR) .
 
 tarroot-source:
 
