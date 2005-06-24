@@ -34,13 +34,25 @@ squashfs-dirclean:
 #
 #############################################################
 
-squashfsroot: squashfs
-	#-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
+squashfsroot: squashfs host-fakeroot makedevs
+	rm -f $(STAGING_DIR)/fakeroot.env
+	touch $(STAGING_DIR)/fakeroot.env
+	# Use fakeroot to pretend all target binaries are owned by root
+	$(STAGING_DIR)/usr/bin/fakeroot -i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		find $(TARGET_DIR) | xargs chown -R root:root
+	# Use fakeroot to pretend to create all needed device nodes
+	$(STAGING_DIR)/usr/bin/fakeroot -i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(STAGING_DIR)/bin/makedevs -r $(TARGET_DIR) \
+		target/default/device_table.txt
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	#$(SQUASHFS_DIR)/squashfs-tools/mksquashfs -q -D target/default/device_table.txt $(TARGET_DIR) $(IMAGE)
-	$(SQUASHFS_DIR)/squashfs-tools/mksquashfs $(TARGET_DIR) $(IMAGE).squashfs -noappend -root-owned
+	# Use fakeroot to fake out mksquashfs per the previous fakery
+	$(STAGING_DIR)/usr/bin/fakeroot -i $(STAGING_DIR)/fakeroot.env -- \
+		$(SQUASHFS_DIR)/squashfs-tools/mksquashfs $(TARGET_DIR) \
+		$(IMAGE).squashfs -noappend
 
 squashfsroot-source: squashfs-source
 

@@ -40,8 +40,6 @@ $(FAKEROOT_DIR1)/faked: $(FAKEROOT_DIR1)/.configured
 
 $(STAGING_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR1)/faked
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(FAKEROOT_DIR1) install
-	#-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-faked $(TARGET_DIR)/usr/bin/faked
-	#-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-fakeroot $(TARGET_DIR)/usr/bin/fakeroot
 
 host-fakeroot: uclibc $(STAGING_DIR)/usr/bin/fakeroot
 

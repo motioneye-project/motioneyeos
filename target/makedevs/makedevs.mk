@@ -15,7 +15,11 @@ $(MAKEDEVS_DIR)/makedevs: $(MAKEDEVS_DIR)
 	gcc -Wall -O2 makedevs.c -o makedevs
 	touch -c $(MAKEDEVS_DIR)/makedevs
 
-makedevs: $(MAKEDEVS_DIR)/makedevs
+$(STAGING_DIR)/bin/makedevs: $(MAKEDEVS_DIR)/makedevs
+	$(INSTALL) -m 755 $(MAKEDEVS_DIR)/makedevs $(STAGING_DIR)/bin/makedevs
+	touch -c $(STAGING_DIR)/bin/makedevs
+
+makedevs: $(STAGING_DIR)/bin/makedevs
 
 makedevs-source:
 
