@@ -79,7 +79,7 @@ squashfsroot: squashfs host-fakeroot makedevs
 		$(SQUASHFS_DIR)/squashfs-tools/mksquashfs \
 		    $(TARGET_DIR) \
 		    $(IMAGE).squashfs \
-		    -2.0 -noappend $(SQUASHFS_ENDIANNESS)
+		    -noappend $(SQUASHFS_ENDIANNESS)
 
 squashfsroot-source: squashfs-source
 
