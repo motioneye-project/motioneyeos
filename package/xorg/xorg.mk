@@ -5,6 +5,7 @@
 #############################################################
 
 ifneq ($(strip $(BR2_PACKAGE_TINYX)),y)
+ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
 
 XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap
 #xset/xset xdpyinfo/xdpyinfo xsetroot/xsetroot \
@@ -90,8 +91,6 @@ xorg-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
 TARGETS+=xorg
 endif
-
 endif

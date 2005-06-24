@@ -20,6 +20,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 #
+
+
+ifneq ($(strip $(BR2_PACKAGE_XORG)),y)
+ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
+
 #############################################################
 # You may want to change these.
 #############################################################
@@ -137,6 +142,6 @@ tinyx-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
 TARGETS+=tinyx
+endif
 endif
