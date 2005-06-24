@@ -51,8 +51,8 @@ squashfsroot: squashfs host-fakeroot makedevs
 		-i $(STAGING_DIR)/fakeroot.env \
 		-s $(STAGING_DIR)/fakeroot.env -- \
 		$(STAGING_DIR)/bin/makedevs \
-		-r $(TARGET_DIR) \
-		-d target/generic/device_table.txt
+		-d target/generic/device_table.txt \
+		$(TARGET_DIR)
 	# Use fakeroot to fake out mksquashfs per the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
