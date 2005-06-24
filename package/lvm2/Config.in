@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LVM2
+	bool "lvm2"
+	default n
+	select BR2_PACKAGE_DM
+	help
+	  LVM2 refers to a new userspace toolset that provide logical
+	  volume management facilities on linux. It is reasonably backwards-
+	  compatible with the original LVM toolset.
