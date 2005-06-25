@@ -25,7 +25,7 @@ tarroot: host-fakeroot makedevs
 		$(STAGING_DIR)/bin/makedevs \
 		-d target/generic/device_table.txt \
 		$(TARGET_DIR)
-	# Use fakeroot to fake out mksquashfs per the previous fakery
+	# Use fakeroot to fake out tar per the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
 		-s $(STAGING_DIR)/fakeroot.env -- \
