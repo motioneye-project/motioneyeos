@@ -21,7 +21,7 @@ config BR2_PACKAGE_GDB_CLIENT
 	    Build gdb to run on the host to debug programs running on the target.
 
 choice
-	prompt "GDB debuger Version"
+	prompt "GDB debugger Version"
 	default BR2_GDB_VERSION_6_3
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_CLIENT
 	help
