@@ -19,8 +19,6 @@ UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
 #"
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 else
-# Note: 0.9.26 has known problems.  So best use a snapshot until .27 is out.
-# Anticipate the change.
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-0.9.27
 UCLIBC_SOURCE:=uClibc-0.9.27.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
@@ -52,7 +50,9 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 	cp $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
-	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' $(UCLIBC_DIR)/.config \
+#	this does not work with uclibc-0.9.27 and older ... wait until next release before re-enabling
+#	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' $(UCLIBC_DIR)/.config
+	$(SED) 's,^CROSS=.*,CROSS=$(TARGET_CROSS),g' $(UCLIBC_DIR)/Rules.mak
 	$(SED) 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		$(UCLIBC_DIR)/.config
 	$(SED) 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
