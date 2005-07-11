@@ -4,9 +4,8 @@ UCLIBC_CONFIG_FILE:=target/device/Soekris/net4521/uClibc.config
 BR2_PACKAGE_BUSYBOX_CONFIG:=target/device/Soekris/net4521/busybox.config
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
-include target/device/Soekris/net4521/linux.mk
 TARGETS+=linux
+include target/device/Soekris/net4521/linux.mk
 endif
 
 endif
-

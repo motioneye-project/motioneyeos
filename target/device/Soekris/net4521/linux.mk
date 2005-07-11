@@ -122,3 +122,4 @@ linuxclean: clean
 linux-dirclean:
 	rm -rf $(LINUX_DIR)
 
+endif
