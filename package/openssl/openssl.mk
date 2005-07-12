@@ -25,7 +25,7 @@ $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 
 $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 	(cd $(OPENSSL_DIR); \
-	CFLAGS="-DOPENSSL_NO_KRB5 -DOPENSSL_NO_IDEA -DOPENSSL_NO_MDC2 -DOPENSSL_NO_RC5" \
+	CFLAGS="-DOPENSSL_NO_KRB5 -DOPENSSL_NO_IDEA -DOPENSSL_NO_MDC2 -DOPENSSL_NO_RC5 $(TARGET_CFLAGS)" \
 	PATH=$(TARGET_PATH) ./Configure linux-$(ARCH) --prefix=/ \
 		--openssldir=/usr/lib/ssl -L$(STAGING_DIR)/lib -ldl \
 		-I$(STAGING_DIR)/include $(OPENSSL_OPTS) no-threads \
@@ -84,4 +84,7 @@ openssl-dirclean:
 #############################################################
 ifeq ($(strip $(BR2_PACKAGE_OPENSSL)),y)
 TARGETS+=openssl
+endif
+ifeq ($(strip $(BR2_PACKAGE_OPENSSL_TARGET_HEADERS)),y)
+TARGETS+=openssl-headers
 endif

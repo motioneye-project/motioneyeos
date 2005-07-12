@@ -6,3 +6,10 @@ config BR2_PACKAGE_ZLIB
 	  gzip and libpng.
 
 	  http://www.gzip.org/zlib/
+
+config BR2_PACKAGE_ZLIB_TARGET_HEADERS
+	bool "zlib headers in target"
+	default n
+	depends on BR2_PACKAGE_ZLIB
+	help
+	  Put headers files in the target.

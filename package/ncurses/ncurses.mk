@@ -149,3 +149,6 @@ ncurses-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_NCURSES)),y)
 TARGETS+=ncurses
 endif
+ifeq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_HEADERS)),y)
+TARGETS+=ncurses-headers
+endif

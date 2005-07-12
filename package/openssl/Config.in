@@ -8,3 +8,10 @@ config BR2_PACKAGE_OPENSSL
 	  full-strength general-purpose cryptography library.
 
 	  http://www.openssl.org/
+
+config BR2_PACKAGE_OPENSSL_TARGET_HEADERS
+	bool "openssl headers in target"
+	default n
+	depends on BR2_PACKAGE_OPENSSL
+	help
+	  Put openssl headers in the target.

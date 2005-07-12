@@ -46,6 +46,7 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--disable-resizer --enable-fsck \
                 --disable-e2initrd-helper \
 		--without-catgets $(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch  $(E2FSPROGS_DIR)/.configured
 

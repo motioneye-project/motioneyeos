@@ -6,3 +6,10 @@ config BR2_PACKAGE_NCURSES
 	  curses in System V Release 4.0, and more.
 
 	  http://www.gnu.org/software/ncurses/
+
+config BR2_PACKAGE_NCURSES_TARGET_HEADERS
+	bool "ncurses headers in target"
+	default n
+	depends on BR2_PACKAGE_NCURSES
+	help
+	  Ncurses headers in target
