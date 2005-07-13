@@ -13,7 +13,7 @@ XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap
 #	xhost/xhost xauth/xauth oclock/oclock xeyes/xeyes
 #
 
-XORG_LIBS:=ICE X11 Xext Xpm
+XORG_LIBS:=ICE X11 Xext Xpm Xmuu
 # Xaw SM Xt Xmu
 
 #############################################################
@@ -29,12 +29,15 @@ XORG_CAT:=bzcat
 XORG_DIR:=$(BUILD_DIR)/xc
 XORG_LDIR:=$(XORG_DIR)/lib
 XORG_PROGS:=$(XORG_DIR)/programs
-XORG_BINX:=$(TARGET_DIR)/usr/X11R6/bin/
+TARGET_BINX:=/usr/bin/
+XORG_BINX:=$(TARGET_DIR)$(TARGET_BINX)
 XORG_LIBX:=$(TARGET_DIR)/usr/lib/
 XORG_CF:=$(XORG_DIR)/config/cf/cross.def
 
-# Install Xfbdev for use with the kernel frame buffer
-XORG_XSERVER:=$(XORG_DIR)/programs/Xserver/Xfbdev
+# Install Xvfb for use with the kernel frame buffer
+XSERVER:=Xvfb
+XORG_XSERVER:=$(XORG_DIR)/programs/Xserver/$(XSERVER)
+TARGET_XSERVER:=$(XORG_BINX)/$(XSERVER)
 
 $(DL_DIR)/$(XORG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(XORG_SITE)/$(XORG_SOURCE)
@@ -54,20 +57,22 @@ $(XORG_DIR)/.configure: $(DL_DIR)/$(XORG_SOURCE)
 	touch $(XORG_DIR)/.configure
 
 $(XORG_XSERVER): $(XORG_DIR)/.configure
-	rm -f $(XORG_BINX)/Xfbdev
-	( cd $(XORG_DIR) ; $(MAKE) World )
+	rm -f $(TARGET_XSERVER) $(XORG_XSERVER)
+	( cd $(XORG_DIR) ; $(MAKE) World XCURSORGEN=xcursorgen )
 
-$(XORG_BINX)/Xfbdev: $(XORG_XSERVER)
-	-mkdir $(TARGET_DIR)/usr/X11R6
-	-mkdir $(XORG_BINX)
+$(TARGET_XSERVER): $(XORG_XSERVER)
+	-mkdir -p $(XORG_BINX)
 	for file in $(XORG_APPS) ; do \
 		cp -f $(XORG_DIR)/programs/$$file $(XORG_BINX) ; \
 		$(STRIP) $(XORG_PROGS)/$$file ; \
 	done
-	cp $(XORG_DIR)/programs/Xserver/Xfbdev $(XORG_BINX)
-	$(STRIP) $(XORG_BINX)/Xfbdev
-	cp -f $(XORG_DIR)/startx $(TARGET_DIR)/bin
-	chmod a+x $(TARGET_DIR)/bin/startx
+	cp $(XORG_XSERVER) $(TARGET_XSERVER)
+	(cd $(XORG_BINX); ln -snf $(XSERVER) X)
+	$(STRIP) $(TARGET_XSERVER)
+	cp -f $(XORG_DIR)/programs/xinit/startx $(XORG_BINX)
+	cp -f $(XORG_DIR)/programs/xauth/xauth $(XORG_BINX)
+	cp -f $(XORG_DIR)/programs/xinit/xinit $(XORG_BINX)
+	chmod a+x $(XORG_BINX)/startx $(XORG_BINX)/xauth $(XORG_BINX)/xinit
 
 $(XORG_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 	for dirs in $(XORG_LIBS) ; do \
@@ -78,7 +83,7 @@ $(XORG_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 		cp -pRf $$file $(XORG_LIBX) ; \
 	done
 
-xorg: zlib $(XORG_LIBX)/libX11.so.6.2 $(XORG_BINX)/Xfbdev
+xorg: zlib $(XORG_LIBX)/libX11.so.6.2 $(TARGET_XSERVER)
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE)
 
