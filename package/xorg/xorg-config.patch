@@ -73,7 +73,7 @@
  #undef PostIncDir
 -#define PostIncDir /skiff/local/lib/gcc-lib/arm-linux/2.95.2/include
 -#define CcCmd /skiff/local/bin/arm-linux-gcc
-+#define PostIncDir REPLACE_STAGING_DIR/lib/gcc-lib/REPLACE_ARCH-linux-uclibc/3.3.3/include
++#define PostIncDir REPLACE_GCCINC_DIR
 +#define CcCmd REPLACE_STAGING_DIR/bin/REPLACE_ARCH-linux-gcc
  #undef CplusplusCmd
 -#define HasCplusplus YES
