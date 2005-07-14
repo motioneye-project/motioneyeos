@@ -29,13 +29,14 @@ XORG_CAT:=bzcat
 XORG_DIR:=$(BUILD_DIR)/xc
 XORG_LDIR:=$(XORG_DIR)/lib
 XORG_PROGS:=$(XORG_DIR)/programs
-TARGET_BINX:=/usr/bin/
+TARGET_BINX:=/usr/X11R6/bin/
+TARGET_LIBX:=/usr/X11R6/lib/
 XORG_BINX:=$(TARGET_DIR)$(TARGET_BINX)
-XORG_LIBX:=$(TARGET_DIR)/usr/lib/
+XORG_LIBX:=$(TARGET_DIR)$(TARGET_LIBX)
 XORG_CF:=$(XORG_DIR)/config/cf/cross.def
 
-# Install Xvfb for use with the kernel frame buffer
-XSERVER:=Xvfb
+# Install Xorg xserver
+XSERVER:=Xorg
 XORG_XSERVER:=$(XORG_DIR)/programs/Xserver/$(XSERVER)
 TARGET_XSERVER:=$(XORG_BINX)/$(XSERVER)
 
@@ -58,7 +59,7 @@ $(XORG_DIR)/.configure: $(DL_DIR)/$(XORG_SOURCE)
 
 $(XORG_XSERVER): $(XORG_DIR)/.configure
 	rm -f $(TARGET_XSERVER) $(XORG_XSERVER)
-	( cd $(XORG_DIR) ; $(MAKE) World XCURSORGEN=xcursorgen )
+	( cd $(XORG_DIR) ; $(MAKE) World XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 
 $(TARGET_XSERVER): $(XORG_XSERVER)
 	-mkdir -p $(XORG_BINX)
@@ -73,8 +74,14 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	cp -f $(XORG_DIR)/programs/xauth/xauth $(XORG_BINX)
 	cp -f $(XORG_DIR)/programs/xinit/xinit $(XORG_BINX)
 	chmod a+x $(XORG_BINX)/startx $(XORG_BINX)/xauth $(XORG_BINX)/xinit
+	mkdir -p $(XORG_LIBX)/modules
+	cp -dRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/modules/
+	( cd $(XORG_DIR)/fonts ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	#( cd $(XORG_DIR) ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	(cd $(TARGET_DIR)/usr/bin; ln -snf $(TARGET_BINX) X11)
 
 $(XORG_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
+	-mkdir -p $(XORG_LIBX)
 	for dirs in $(XORG_LIBS) ; do \
 		file=`find $(XORG_LDIR)/$$dirs -type f -iname "lib$$dirs.so*"` ; \
 		$(STRIP) --strip-unneeded $$file ; \
@@ -82,6 +89,9 @@ $(XORG_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 		file=`find $(XORG_LDIR)/$$dirs -type l -iname "lib$$dirs.so*"` ; \
 		cp -pRf $$file $(XORG_LIBX) ; \
 	done
+	(cd $(TARGET_DIR)/usr/lib; ln -snf $(TARGET_LIBX) X11)
+	echo "$(TARGET_LIBX)" >> $(TARGET_DIR)/etc/ld.so.conf
+
 
 xorg: zlib $(XORG_LIBX)/libX11.so.6.2 $(TARGET_XSERVER)
 
