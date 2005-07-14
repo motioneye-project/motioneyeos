@@ -72,6 +72,14 @@
 /dev/psaux	c	666	0	0	10	1	0	0	-
 #/dev/ppp	c	666	0	0	108	0	-	-	-
 
+# Input stuff
+/dev/input		d	755	0	0	-	-	-	-	-
+/dev/input/mice		c	640	0	0	13	63	0	0	-
+/dev/input/mouse	c	660	0	0	13	32	0	1	4
+/dev/input/event	c	660	0	0	13	64	0	1	4
+#/dev/input/js		c	660	0	0	13	0	0	1	4
+
+
 # MTD stuff
 /dev/mtd	c	640	0	0	90	0	0	2	4
 /dev/mtdblock	b	640	0	0	31	0	0	1	4
@@ -88,8 +96,8 @@
 #/dev/sndstat	c	666	0	29	14	6	-	-	-
 
 # User-mode Linux stuff
-/dev/ubda	b	640	0	0	98	0	0	0	-
-/dev/ubda	b	640	0	0	98	1	1	1	15
+#/dev/ubda	b	640	0	0	98	0	0	0	-
+#/dev/ubda	b	640	0	0	98	1	1	1	15
 
 # IDE Devices
 /dev/hda	b	640	0	0	3	0	0	0	-
