@@ -58,6 +58,7 @@ cramfsroot: cramfs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
+	/sbin/ldconfig -r $(TARGET_DIR)
 	$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) -D \
 		target/generic/device_table.txt $(TARGET_DIR) $(IMAGE).cramfs
 

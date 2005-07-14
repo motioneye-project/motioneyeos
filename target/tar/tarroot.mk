@@ -10,6 +10,7 @@ tarroot: host-fakeroot makedevs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
+	/sbin/ldconfig -r $(TARGET_DIR)
 	# Use fakeroot to munge permissions and do root-like things
 	rm -f $(STAGING_DIR)/fakeroot.env
 	touch $(STAGING_DIR)/fakeroot.env

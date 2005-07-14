@@ -43,6 +43,7 @@ $(JFFS2_TARGET): mtd-host
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
+	/sbin/ldconfig -r $(TARGET_DIR)
 	$(MKFS_JFFS2) \
 		$(JFFS2_OPTS) \
 		-d $(BUILD_DIR)/root \
