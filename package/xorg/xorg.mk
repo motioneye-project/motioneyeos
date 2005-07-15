@@ -7,14 +7,12 @@
 ifneq ($(strip $(BR2_PACKAGE_TINYX)),y)
 ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
 
-XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap
-#xset/xset xdpyinfo/xdpyinfo xsetroot/xsetroot \
-#	xrdb/xrdb xrandr/xrandr \
-#	xhost/xhost xauth/xauth oclock/oclock xeyes/xeyes
-#
+XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap xinit/startx \
+	xauth/xauth xinit/xinit xsetroot/xsetroot xset/xset \
+	xterm/xterm mkfontscale/mkfontscale mkfontdir/mkfontdir
 
-XORG_LIBS:=ICE X11 Xext Xpm Xmuu
-# Xaw SM Xt Xmu
+XORG_LIBS:= Xft fontconfig freetype expat Xrender Xaw Xmu Xt \
+	SM ICE Xpm Xp Xext X11 Xmuu
 
 #############################################################
 # Stuff below this line shouldn't need changes.
@@ -65,18 +63,17 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	-mkdir -p $(XORG_BINX)
 	for file in $(XORG_APPS) ; do \
 		cp -f $(XORG_DIR)/programs/$$file $(XORG_BINX) ; \
-		$(STRIP) $(XORG_PROGS)/$$file ; \
+		chmod a+x $(XORG_PROGS)/$$file ; \
+		$(STRIP) $(XORG_PROGS)/$$file || /bin/true ; \
 	done
 	cp $(XORG_XSERVER) $(TARGET_XSERVER)
 	(cd $(XORG_BINX); ln -snf $(XSERVER) X)
 	$(STRIP) $(TARGET_XSERVER)
-	cp -f $(XORG_DIR)/programs/xinit/startx $(XORG_BINX)
-	cp -f $(XORG_DIR)/programs/xauth/xauth $(XORG_BINX)
-	cp -f $(XORG_DIR)/programs/xinit/xinit $(XORG_BINX)
-	chmod a+x $(XORG_BINX)/startx $(XORG_BINX)/xauth $(XORG_BINX)/xinit
 	mkdir -p $(XORG_LIBX)/modules
 	cp -LRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/
 	( cd $(XORG_DIR)/fonts ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	cp -LRf $(XORG_DIR)/fonts/bdf/misc/*.bdf $(XORG_LIBX)/X11/fonts/misc/
+	( cd $(XORG_LIBX)/X11/fonts/misc/; mkfontdir )
 	#( cd $(XORG_DIR) ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 	(cd $(TARGET_DIR)/usr/bin; ln -snf $(TARGET_BINX) X11)
 
