@@ -75,7 +75,7 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	cp -f $(XORG_DIR)/programs/xinit/xinit $(XORG_BINX)
 	chmod a+x $(XORG_BINX)/startx $(XORG_BINX)/xauth $(XORG_BINX)/xinit
 	mkdir -p $(XORG_LIBX)/modules
-	cp -dRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/modules/
+	cp -LRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/
 	( cd $(XORG_DIR)/fonts ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 	#( cd $(XORG_DIR) ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 	(cd $(TARGET_DIR)/usr/bin; ln -snf $(TARGET_BINX) X11)
