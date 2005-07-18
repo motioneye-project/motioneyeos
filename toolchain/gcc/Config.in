@@ -8,9 +8,6 @@ choice
 	help
 	  Select the version of gcc you wish to use.
 
-	config BR2_GCC_VERSION_3_3_3
-		bool "gcc 3.3.3"
-
 	config BR2_GCC_VERSION_3_3_5
 		bool "gcc 3.3.5"
 
@@ -39,7 +36,6 @@ endchoice
 
 config BR2_GCC_VERSION
 	string
-	default "3.3.3"     if BR2_GCC_VERSION_3_3_3
 	default "3.3.5"     if BR2_GCC_VERSION_3_3_5
 	default "3.3.6"     if BR2_GCC_VERSION_3_3_6
 	default "3.4.2"     if BR2_GCC_VERSION_3_4_2
@@ -51,12 +47,13 @@ config BR2_GCC_VERSION
 
 
 config BR2_GCC_USE_SJLJ_EXCEPTIONS
-	string
-	default "--enable-sjlj-exceptions" if BR2_GCC_VERSION_3_3_3
-	default ""
+	bool "Enable setjmp/longjmp exceptions?"
+	default n
 	help
-	    Currently the unwind stuff seems to work for staticly linked apps
-	    but not dynamic.  So use setjmp/longjmp exceptions by default.
+	    For some platforms, proper stack unwinding works perfectly,
+	    while other platforms must use setjmp/longjmp exceptions for
+	    proper stack unwinding during exception handling.  Most people
+	    can leave this set to n.
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	string "Additional gcc options"

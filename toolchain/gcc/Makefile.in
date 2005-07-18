@@ -6,14 +6,15 @@
 
 GCC_VERSION:=$(strip $(subst ",, $(BR2_GCC_VERSION)))
 #"
-GCC_USE_SJLJ_EXCEPTIONS:=$(strip $(subst ",, $(BR2_GCC_USE_SJLJ_EXCEPTIONS)))
-#"
 TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
 #"
 EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
 #"
 
 
+ifeq ($(strip $(BR2_GCC_USE_SJLJ_EXCEPTIONS)),y)
+GCC_USE_SJLJ_EXCEPTIONS:=--enable-sjlj-exceptions
+endif
 ifeq ($(BR2_SOFT_FLOAT),y)
 # gcc 3.4.x soft float configuration is different than previous versions.
 ifeq ($(findstring 3.4.,$(GCC_VERSION)),3.4.)
@@ -39,3 +40,4 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
 TARGETS+=gcc_target
 endif
+
