@@ -42,6 +42,15 @@ LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.29.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.29
 endif
 
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.4.31")
+VERSION:=2
+PATCHLEVEL:=4
+SUBLEVEL:=31
+LINUX_HEADERS_SITE:=http://www.uclibc.org/downloads/toolchain
+LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.31.tar.bz2
+LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.31
+endif
+
 ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.9")
 VERSION:=2
 PATCHLEVEL:=6
@@ -67,6 +76,15 @@ SUBLEVEL:=11
 LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.11.0.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.11.0
+endif
+
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.12")
+VERSION:=2
+PATCHLEVEL:=6
+SUBLEVEL:=12
+LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
+LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.12.0.tar.bz2
+LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.12.0
 endif
 
 LINUX_VERSION:=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
