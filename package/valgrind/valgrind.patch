@@ -1,256 +1,134 @@
-diff -urN y/valgrind-2.2.0/coregrind/vg_libpthread.c x/valgrind-2.2.0/coregrind/vg_libpthread.c
---- valgrind-2.2.0/coregrind/vg_libpthread.c	2004-08-29 15:02:27.000000000 -0600
-+++ valgrind-2.2.0/coregrind/vg_libpthread.c	2005-01-21 03:42:19.000000000 -0700
-@@ -3389,6 +3389,8 @@
-    pthread_mutex).  So basically, this is completely broken on recent
-    glibcs. */
- 
-+#ifndef __UCLIBC__
-+
- #undef _IO_flockfile
- void _IO_flockfile ( _IO_FILE * file )
- {
-@@ -3406,6 +3408,7 @@
- weak_alias(_IO_funlockfile, funlockfile);
- #endif
- 
-+#endif
- 
- /* This doesn't seem to be needed to simulate libpthread.so's external
-    interface, but many people complain about its absence. */
-diff -urN y/valgrind-2.2.0/coregrind/vg_syscalls.c x/valgrind-2.2.0/coregrind/vg_syscalls.c
---- valgrind-2.2.0/coregrind/vg_syscalls.c	2004-08-30 18:08:37.000000000 -0600
-+++ valgrind-2.2.0/coregrind/vg_syscalls.c	2005-01-21 03:49:05.000000000 -0700
-@@ -3323,6 +3323,16 @@
+diff -urN ../valgrind-2.4.0/coregrind/vg_syscalls.c valgrind-2.4.0/coregrind/vg_syscalls.c
+--- ../valgrind-2.4.0/coregrind/vg_syscalls.c	2005-03-23 03:22:03.000000000 -0700
++++ valgrind-2.4.0/coregrind/vg_syscalls.c	2005-07-22 03:42:01.000000000 -0600
+@@ -3266,15 +3266,34 @@
+       SYS_PRE_MEM_WRITE( "ioctl(RTC_IRQP_READ)", arg3, sizeof(unsigned long));
        break;
- #           endif /* BLKGETSIZE */
  
-+   case BLKBSZSET:
-+      SYSCALL_TRACK( pre_mem_write,tid, "ioctl(BLKBSZSET)", arg3,
-+		     sizeof(unsigned long));
++   case VKI_BLKRRPART:
++   case VKI_BLKFLSBUF:
 +      break;
-+   case BLKRAGET:
-+      SYSCALL_TRACK( pre_mem_write,tid, "ioctl(BLKRAGET)", arg3,
-+		     sizeof(unsigned long));
+    case VKI_BLKGETSIZE:
+       SYS_PRE_MEM_WRITE( "ioctl(BLKGETSIZE)", arg3, sizeof(unsigned long));
+       break;
++   case VKI_BLKGETSIZE64:
++      SYS_PRE_MEM_WRITE( "ioctl(BLKGETSIZE64)", arg3, sizeof(__vki_u64));
 +      break;
-+   case BLKRASET:
++   case VKI_BLKSSZGET:
++      SYS_PRE_MEM_WRITE( "ioctl(BLKSSZGET)", arg3, sizeof(unsigned long));
 +      break;
++   case VKI_BLKBSZGET:
++      SYS_PRE_MEM_WRITE( "ioctl(BLKBSZGET)", arg3, sizeof(unsigned long));
++      break;
++   case VKI_BLKBSZSET:
++      SYS_PRE_MEM_READ( "ioctl(BLKBSZSET)", arg3, sizeof(unsigned long) );
++      break;
+ 
        /* Hard disks */
-    case HDIO_GET_IDENTITY: /* 0x030d */
-       SYSCALL_TRACK( pre_mem_write,tid, "ioctl(HDIO_GET_IDENTITY)", arg3,
-@@ -3375,6 +3385,7 @@
+    case VKI_HDIO_GET_IDENTITY: /* 0x030d */
+       SYS_PRE_MEM_WRITE( "ioctl(HDIO_GET_IDENTITY)", arg3,
+                      VKI_SIZEOF_STRUCT_HD_DRIVEID );
+       break;
++   case VKI_HDIO_GETGEO: /* 0x0301 */
++      SYS_PRE_MEM_WRITE( "ioctl(HDIO_GETGEO)", arg3,
++                     sizeof(struct vki_hd_geometry) );
++      break;
+ 
+       /* CD ROM stuff (??)  */
+    case VKI_CDROM_GET_MCN:
+@@ -3332,6 +3351,7 @@
        break;
        /* The following two are probably bogus (should check args
  	 for readability).  JRS 20021117 */
-+   case CDROMEJECT:
-    case CDROM_DRIVE_STATUS: /* 0x5326 */
-    case CDROM_CLEAR_OPTIONS: /* 0x5321 */
++   case VKI_CDROMEJECT:
+    case VKI_CDROM_DRIVE_STATUS: /* 0x5326 */
+    case VKI_CDROM_CLEAR_OPTIONS: /* 0x5321 */
        break;
-@@ -3383,10 +3394,12 @@
-       SYSCALL_TRACK( pre_mem_write,tid, "ioctl(FIGETBSZ)", arg3,
-                      sizeof(unsigned long));
-       break;
-+#if 0
-    case FIBMAP:
-       SYSCALL_TRACK( pre_mem_read,tid, "ioctl(FIBMAP)", arg3,
-                      sizeof(unsigned long));
-       break;
-+#endif
- 
- #ifdef HAVE_LINUX_FB_H
-    case FBIOGET_VSCREENINFO: /* 0x4600 */
-@@ -3483,6 +3496,87 @@
-                      sizeof(struct timeval) );
+@@ -3931,14 +3951,31 @@
+       VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
        break;
  
-+#define BLKSSZGET  _IO(0x12,104)
-+   case BLKSSZGET:
-+      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(BLKSSZGET)", arg3,
-+	      sizeof(int));
++   case VKI_BLKRRPART:
++   case VKI_BLKFLSBUF:
 +      break;
-+#undef BLKGETSIZE64
-+#undef _IOR
-+#define _IOR(type,nr,size)      _IOC(_IOC_READ,(type),(nr),sizeof(size))
-+#define BLKGETSIZE64 _IOR(0x12,114,size_t)
-+   case BLKGETSIZE64:
-+      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(BLKGETSIZE64)", arg3,
-+	      sizeof(uint64_t));
-+      break;
-+#define HDIO_GETGEO             0x0301  /* get device geometry */
-+   case HDIO_GETGEO:
-+      {
-+	  struct hd_geometry {
-+	      unsigned char heads;
-+	      unsigned char sectors;
-+	      unsigned short cylinders;
-+	      unsigned long start;
-+	  };
-+
-+	  SYSCALL_TRACK( pre_mem_write, tid, "ioctl(HDIO_GETGEO)", arg3,
-+		  sizeof(struct hd_geometry));
-+      }
-+      break;
-+#define SCSI_IOCTL_GET_IDLUN 0x5382
-+   case SCSI_IOCTL_GET_IDLUN:
-+      {
-+	  struct scsi_idlun
-+	  {
-+	      int mux4;
-+	      int host_unique_id;
-+
-+	  };
-+
-+	  SYSCALL_TRACK( pre_mem_write, tid, "ioctl(SCSI_IOCTL_GET_IDLUN)", arg3,
-+		  sizeof(struct scsi_idlun));
-+      }
-+      break;
-+#define SCSI_IOCTL_SEND_COMMAND 1
-+   case SCSI_IOCTL_SEND_COMMAND:
-+      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(SCSI_IOCTL_SEND_COMMAND)", arg3,
-+	      ((2 * sizeof(unsigned int)) + 6 + 512));
-+      break;
-+#define SCSI_IOCTL_GET_BUS_NUMBER 0x5386
-+   case SCSI_IOCTL_GET_BUS_NUMBER:
-+      SYSCALL_TRACK( pre_mem_write, tid, "ioctl(SCSI_IOCTL_GET_BUS_NUMBER)", arg3,
-+	      sizeof(long));
-+      break;
-+#define SCSI_IOCTL_PROBE_HOST 0x5385
-+   case SCSI_IOCTL_PROBE_HOST:
-+      {
-+	  unsigned long xxxx;
-+	  char *array = (char*)arg3;
-+	  xxxx = array[0] + (array[1]<<8) + (array[2]<<16) + (array[3]<<24);
-+	  SYSCALL_TRACK( pre_mem_write, tid, "ioctl(SCSI_IOCTL_PROBE_HOST)", arg3,
-+		  sizeof(unsigned long));
-+      }
-+      break;
-+#define BLKFLSBUF  _IO(0x12,97)
-+   case BLKFLSBUF:
-+      break;
-+#define BLKRRPART  _IO(0x12,95)
-+   case BLKRRPART:
-+      break;
-+#define MTIOCTOP  _IO(0x6d,0x1)
-+   case MTIOCTOP:
-+      {
-+	  struct mtop
-+	  {
-+	      short int mt_op;		/* Operations defined below.  */
-+	      int mt_count;		/* How many of them.  */
-+	  };
-+	  SYSCALL_TRACK( pre_mem_write, tid, "ioctl(MTIOCTOP)", arg3, 
-+		  sizeof(struct mtop));
-+      }
-+      break;
-+
-+
-       /* We don't have any specific information on it, so
- 	 try to do something reasonable based on direction and
- 	 size bits.  The encoding scheme is described in
-@@ -3519,12 +3614,16 @@
- 			 "guidance on writing a proper wrapper." );
- 	 }
-       } else {
--	 if ((dir & _IOC_WRITE) && size > 0)
-+	 if ((dir & _IOC_WRITE) && size > 0) {
-+	    VG_(message)(Vg_UserMsg, "genric ioctl 0x%x", arg2);
- 	    SYSCALL_TRACK( pre_mem_read,tid, "ioctl(generic)", 
- 			   arg3, size);
--	 if ((dir & _IOC_READ) && size > 0)
-+	 }
-+	 if ((dir & _IOC_READ) && size > 0) {
-+	    VG_(message)(Vg_UserMsg, "genric ioctl 0x%x", arg2);
- 	    SYSCALL_TRACK( pre_mem_write,tid, "ioctl(generic)", 
- 			   arg3, size);
-+	 }
-       }
+    case VKI_BLKGETSIZE:
+       VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
        break;
-    }
-@@ -3874,6 +3973,18 @@
- 	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
-       break;
- #           endif /* BLKGETSIZE */
-+   case BLKRAGET:
-+      if (res == 0)
-+	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
++   case VKI_BLKGETSIZE64:
++      VG_TRACK( post_mem_write,arg3, sizeof(__vki_u64));
 +      break;
-+   case BLKBSZSET:
-+      if (res == 0)
-+	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
++   case VKI_BLKSSZGET:
++      VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
 +      break;
-+   case BLKBSZGET:
-+      if (res == 0)
-+	 VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
++   case VKI_BLKBSZGET:
++      VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
++      break;
++   case VKI_BLKBSZSET:
 +      break;
  
        /* Hard disks */
-    case HDIO_GET_IDENTITY: /* 0x030d */
-@@ -3897,7 +4008,8 @@
-    case CDROMPLAYMSF:
+    case VKI_HDIO_GET_IDENTITY: /* 0x030d */
+       VG_TRACK( post_mem_write,arg3, VKI_SIZEOF_STRUCT_HD_DRIVEID );
+       break;
++   case VKI_HDIO_GETGEO: /* 0x0301 */
++      VG_TRACK( post_mem_write,arg3, sizeof(struct vki_hd_geometry) );
++      break;
+ 
+       /* CD ROM stuff (??)  */
+    case VKI_CDROMSUBCHNL:
+@@ -3967,6 +4004,7 @@
        break;
        /* The following two are probably bogus (should check args
--	 for readability).  JRS 20021117 */
-+        for readability).  JRS 20021117 */
-+   case CDROMEJECT:
-    case CDROM_DRIVE_STATUS: /* 0x5326 */
-    case CDROM_CLEAR_OPTIONS: /* 0x5321 */
+ 	 for readability).  JRS 20021117 */
++   case VKI_CDROMEJECT:
+    case VKI_CDROM_DRIVE_STATUS: /* 0x5326 */
+    case VKI_CDROM_CLEAR_OPTIONS: /* 0x5321 */
        break;
-@@ -3906,10 +4018,12 @@
-       if (res == 0)
-          VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
-       break;
-+#if 0
-    case FIBMAP:
-       if (res == 0)
-          VG_TRACK( post_mem_write,arg3, sizeof(unsigned long));
-       break;
-+#endif
+diff -urN ../valgrind-2.4.0/include/linux/vki.h valgrind-2.4.0/include/linux/vki.h
+--- ../valgrind-2.4.0/include/linux/vki.h	2005-03-10 23:28:14.000000000 -0700
++++ valgrind-2.4.0/include/linux/vki.h	2005-07-22 03:42:01.000000000 -0600
+@@ -1389,7 +1389,14 @@
+ // From linux-2.6.8.1/include/linux/fs.h
+ //----------------------------------------------------------------------
  
- #ifdef HAVE_LINUX_FB_H
-    case FBIOGET_VSCREENINFO: //0x4600
-@@ -3965,6 +4079,28 @@
-       VG_TRACK( post_mem_write, arg3, sizeof(struct timeval) );
-       break;
+-#define VKI_BLKGETSIZE _VKI_IO(0x12,96) /* return device size /512 (long *arg) */
++#define VKI_BLKGETSIZE	_VKI_IO(0x12,   96) /* return device size /512 (long *arg) */
++#define VKI_BLKGETSIZE64 _VKI_IOR(0x12, 114, __vki_u64)	/* return device size in bytes (u64 *arg) */
++#define VKI_BLKRRPART	_VKI_IO(0x12,	95)	/* re-read partition table */
++#define VKI_BLKFLSBUF	_VKI_IO(0x12,	97)	/* flush buffer cache */
++#define VKI_BLKSSZGET	_VKI_IO(0x12,	104)/* get block device sector size */
++#define VKI_BLKBSZGET	_VKI_IOR(0x12,	112, unsigned long)
++#define VKI_BLKBSZSET	_VKI_IOW(0x12,	113, unsigned long)
++
  
-+   case SCSI_IOCTL_GET_IDLUN:
-+      {
-+	  struct scsi_idlun
-+	  {
-+	      int mux4;
-+	      int host_unique_id;
-+
-+	  };
-+
-+	  VG_TRACK( post_mem_write, arg3, sizeof(struct scsi_idlun) );
-+      }
-+      break;
-+   case SCSI_IOCTL_SEND_COMMAND:
-+      VG_TRACK( post_mem_write, arg3, ((2 * sizeof(unsigned int)) + 6 + 512));
-+      break;
-+   case SCSI_IOCTL_GET_BUS_NUMBER:
-+      VG_TRACK( post_mem_write, arg3, sizeof(long) );
-+      break;
-+   case SCSI_IOCTL_PROBE_HOST:
-+      VG_TRACK( post_mem_write, arg3, sizeof(unsigned long) );
-+      break;
-+
-       /* We don't have any specific information on it, so
- 	 try to do something reasonable based on direction and
- 	 size bits.  The encoding scheme is described in
---- valgrind-2.2.0.orig/coregrind/vg_unsafe.h	2005-02-18 18:49:47.000000000 -0700
-+++ valgrind-2.2.0/coregrind/vg_unsafe.h	2005-02-18 19:40:39.000000000 -0700
-@@ -72,7 +72,13 @@
- #ifndef HAVE_U16
- typedef unsigned short u16;
- #endif
--#include <linux/mii.h>    /* for mii_* structs */
-+/* Extracted from linux/mii.h for mii_* structs */
-+struct mii_ioctl_data {
-+	u16		phy_id;
-+	u16		reg_num;
-+	u16		val_in;
-+	u16		val_out;
+ #define VKI_FIBMAP	_VKI_IO(0x00,1)	/* bmap access */
+ #define VKI_FIGETBSZ    _VKI_IO(0x00,2)	/* get the block size used for bmap */
+@@ -1464,6 +1471,7 @@
+                                            (struct cdrom_tochdr) */
+ #define VKI_CDROMREADTOCENTRY	0x5306 /* Read TOC entry 
+                                            (struct cdrom_tocentry) */
++#define VKI_CDROMEJECT		0x5309 /* Ejects the cdrom media */
+ #define VKI_CDROMSUBCHNL	0x530b /* Read subchannel data 
+                                            (struct cdrom_subchnl) */
+ #define VKI_CDROMREADMODE2	0x530c /* Read CDROM mode 2 data (2336 Bytes) 
+@@ -1674,12 +1682,20 @@
+ // From linux-2.6.8.1/include/linux/hdreg.h
+ //----------------------------------------------------------------------
+ 
++#define VKI_HDIO_GETGEO		0x0301	/* get device geometry */
+ #define VKI_HDIO_GET_IDENTITY	0x030d	/* get IDE identification info */
+ 
+ // [[Nb: done like this because the original type is a huge struct that will
+ //   always be the same size.]]
+ #define VKI_SIZEOF_STRUCT_HD_DRIVEID   512
+ 
++struct vki_hd_geometry {
++      unsigned char heads;
++      unsigned char sectors;
++      unsigned short cylinders;
++      unsigned long start;
 +};
- #endif
- #include <linux/ppdev.h>  /* for PP* ioctls */
- 
++
+ //----------------------------------------------------------------------
+ // From linux-2.6.8.1/include/linux/fb.h
+ //----------------------------------------------------------------------

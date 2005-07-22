@@ -4,9 +4,9 @@
 #
 #############################################################
 
-VALGRIND_SITE:=http://developer.kde.org/~sewardj/
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-2.2.0
-VALGRIND_SOURCE:=valgrind-2.2.0.tar.bz2
+VALGRIND_SITE:=http://valgrind.org/downloads/
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-2.4.0
+VALGRIND_SOURCE:=valgrind-2.4.0.tar.bz2
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
@@ -40,6 +40,7 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 		--without-uiout --disable-valgrindmi \
 		--disable-tui --disable-valgrindtk \
 		--without-x --without-included-gettext \
+		--disable-tls \
 	);
 	touch  $(VALGRIND_DIR)/.configured
 
