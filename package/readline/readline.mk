@@ -8,8 +8,8 @@ READLINE_SITE:=ftp://ftp.cwru.edu/pub/bash
 READLINE_SOURCE:=readline-$(READLINE_VER).tar.gz
 READLINE_DIR:=$(BUILD_DIR)/readline-$(READLINE_VER)
 READLINE_CAT:=zcat
-READLINE_BINARY:=libhistory.so.$(READLINE_VER)
-READLINE_TARGET_BINARY:=$(TARGET_DIR)/lib/$(READLINE_BINARY)
+READLINE_BINARY:=libhistory.a
+READLINE_TARGET_BINARY:=lib/$(READLINE_BINARY)
 
 
 
@@ -31,18 +31,21 @@ $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
                 --host=$(GNU_TARGET_NAME) \
                 --build=$(GNU_HOST_NAME)  \
                 --prefix=$(STAGING_DIR)  \
+		--disable-shared \
 	);
 	touch $(READLINE_DIR)/.configured
 
 
 $(READLINE_DIR)/$(READLINE_BINARY): $(READLINE_DIR)/.configured
 	$(MAKE)  -C $(READLINE_DIR)
+	touch -c $(READLINE_DIR)/$(READLINE_BINARY)
 
 $(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/.configured
 	$(MAKE) -C $(READLINE_DIR)  install
+	touch -c $(STAGING_DIR)/$(READLINE_TARGET_BINARY)
 
 # Install to Staging area
-readline: $(READLINE_DIR)/.configured
+$(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
         $(MAKE1) \
             prefix=$(STAGING_DIR) \
@@ -58,14 +61,21 @@ readline: $(READLINE_DIR)/.configured
             mandir=$(STAGING_DIR)/man \
             includedir=$(STAGING_DIR)/include \
             -C $(READLINE_DIR) install;
+	touch -c $(STAGING_DIR)/include/readline/readline.h
+
 
 # Install only run-time to Target directory
-readline-target: $(READLINE_DIR)/.configured
+$(TARGET_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
 	$(MAKE1) \
             prefix=$(TARGET_DIR) \
             libdir=$(TARGET_DIR)/lib \
 	-C $(READLINE_DIR) install-shared
+	touch -c $(TARGET_DIR)/include/readline/readline.h
+
+readline: $(STAGING_DIR)/include/readline/readline.h
+
+readline-target: $(TARGET_DIR)/include/readline/readline.h
 
 readline-clean:
 	$(MAKE) -C $(READLINE_DIR) uninstall
