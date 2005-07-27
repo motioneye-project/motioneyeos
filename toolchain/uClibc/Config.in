@@ -4,15 +4,17 @@
 comment "uClibc Options"
 
 config BR2_UCLIBC_VERSION_SNAPSHOT
-	bool "Use the daily snapshot of uClibc?"
+	bool "Use a daily snapshot of uClibc?"
 	default y
 	help
-	    Would you like to use the latest daily snapshot?
+ 	    Would you like to use a daily snapshot?
 
 config BR2_USE_UCLIBC_SNAPSHOT
-	string
+	string "Date (yyyymmdd) of snapshot or 'snapshot' for latest"
 	default "snapshot"
 	depends on BR2_UCLIBC_VERSION_SNAPSHOT
+	help
+	    Use latest snapshot or one from a specific date?
 
 config BR2_ENABLE_LOCALE
 	bool "Enable locale/gettext/i18n support?"

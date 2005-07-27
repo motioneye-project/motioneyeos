@@ -132,3 +132,153 @@
  		case 's':
  			/* old option, ignored */
  			break;
+--- cramfs-1.1/cramfsck.c.orig	2005-04-25 11:50:31.000000000 -0700
++++ cramfs-1.1/cramfsck.c	2005-04-25 16:53:25.000000000 -0700
+@@ -30,6 +30,7 @@
+  * 2000/07/15: Daniel Quinlan (initial support for block devices)
+  * 2002/01/10: Daniel Quinlan (additional checks, test more return codes,
+  *                            use read if mmap fails, standardize messages)
++ * 2004/09/01: Alfonso Acosta (Add swapping support)
+  */
+ 
+ /* compile-time options */
+@@ -51,6 +52,7 @@
+ #include <utime.h>
+ #include <sys/ioctl.h>
+ #define _LINUX_STRING_H_
++#include <byteswap.h>
+ #include "linux/cramfs_fs.h"
+ #include <zlib.h>
+ 
+@@ -74,6 +76,7 @@
+ static char *filename;		/* ROM image filename */
+ struct cramfs_super super;	/* just find the cramfs superblock once */
+ static int opt_verbose = 0;	/* 1 = verbose (-v), 2+ = very verbose (-vv) */
++static int need_swapping = 0;   /* fs and host dont have the same endianness */
+ #ifdef INCLUDE_FS_TESTS
+ static int opt_extract = 0;		/* extract cramfs (-x) */
+ static char *extract_dir = "/";	/* extraction directory (-x) */
+@@ -85,6 +88,9 @@
+ static unsigned long start_data = ~0UL;	/* start of the data (256 MB = max) */
+ static unsigned long end_data = 0;	/* end of the data */
+ 
++/* access 32 byte variables */
++#define CRAMFS_32(x)  (need_swapping ? bswap_32(x) : x)
++
+ /* Guarantee access to at least 8kB at a time */
+ #define ROMBUFFER_BITS	13
+ #define ROMBUFFERSIZE	(1 << ROMBUFFER_BITS)
+@@ -166,20 +172,34 @@
+ 	if (super.magic == CRAMFS_MAGIC) {
+ 		*start = 0;
+ 	}
++	else if (super.magic == bswap_32(CRAMFS_MAGIC)) {
++		*start = 0;
++		need_swapping = 1;
++	}
++
+ 	else if (*length >= (PAD_SIZE + sizeof(super))) {
+ 		lseek(fd, PAD_SIZE, SEEK_SET);
+ 		if (read(fd, &super, sizeof(super)) != sizeof(super)) {
+ 			die(FSCK_ERROR, 1, "read failed: %s", filename);
+ 		}
+-		if (super.magic == CRAMFS_MAGIC) {
++		if (super.magic == CRAMFS_32(CRAMFS_MAGIC)) {
+ 			*start = PAD_SIZE;
+ 		}
+ 	}
+ 
+ 	/* superblock tests */
+-	if (super.magic != CRAMFS_MAGIC) {
++	if (super.magic != CRAMFS_32(CRAMFS_MAGIC)) {
+ 		die(FSCK_UNCORRECTED, 0, "superblock magic not found");
+ 	}
++	if (need_swapping){
++		super.size = bswap_32(super.size);
++		super.flags = bswap_32(super.flags);
++		super.future = bswap_32(super.future);
++		super.fsid.crc = bswap_32(super.fsid.crc);
++		super.fsid.edition = bswap_32(super.fsid.edition);
++		super.fsid.blocks = bswap_32(super.fsid.blocks);
++		super.fsid.files = bswap_32(super.fsid.files); 
++	}	
+ 	if (super.flags & ~CRAMFS_SUPPORTED_FLAGS) {
+ 		die(FSCK_ERROR, 0, "unsupported filesystem features");
+ 	}
+@@ -215,7 +235,10 @@
+ 		die(FSCK_USAGE, 0, "unable to test CRC: old cramfs format");
+ #endif /* not INCLUDE_FS_TESTS */
+ 	}
+-
++	else if (need_swapping) {
++       /* crc checking in this case would mean  translating the whole file */
++		return;
++	}
+ 	crc = crc32(0L, Z_NULL, 0);
+ 
+ 	buf = mmap(NULL, super.size, PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
+@@ -300,12 +323,23 @@
+ 
+ static struct cramfs_inode *cramfs_iget(struct cramfs_inode * i)
+ {
++#define wswap(x)    (((x)>>24) | (((x)>>8)&0xff00) | (((x)&0xff00)<<8) | (((x)&0xff)<<24))
+ 	struct cramfs_inode *inode = malloc(sizeof(struct cramfs_inode));
+ 
+ 	if (!inode) {
+ 		die(FSCK_ERROR, 1, "malloc failed");
+ 	}
+-	*inode = *i;
++	if(!need_swapping) {
++		*inode = *i;
++	}
++	else { 
++		inode->mode=bswap_16(i->mode);
++		inode->uid=bswap_16(i->uid);
++		inode->size=bswap_32(i->size << 8);
++		inode->gid=i->gid;
++		inode->namelen = bswap_32(((u32*)i)[2]) >> 26;
++		inode->offset = bswap_32(((u32*)i)[2]) & 0x3FFFFFFF;
++	}
+ 	return inode;
+ }
+ 
+@@ -324,9 +358,9 @@
+  */
+ static struct cramfs_inode *read_super(void)
+ {
+-	unsigned long offset = super.root.offset << 2;
+-
+-	if (!S_ISDIR(super.root.mode))
++	struct cramfs_inode *root = cramfs_iget(&super.root);
++	unsigned long offset = root->offset << 2; 
++	if (!S_ISDIR(root->mode))
+ 		die(FSCK_UNCORRECTED, 0, "root inode is not directory");
+ 	if (!(super.flags & CRAMFS_FLAG_SHIFTED_ROOT_OFFSET) &&
+ 	    ((offset != sizeof(struct cramfs_super)) &&
+@@ -334,7 +368,7 @@
+ 	{
+ 		die(FSCK_UNCORRECTED, 0, "bad root offset (%lu)", offset);
+ 	}
+-	return cramfs_iget(&super.root);
++	return root;
+ }
+ 
+ static int uncompress_block(void *src, int len)
+@@ -366,7 +400,7 @@
+ 
+ 	do {
+ 		unsigned long out = PAGE_CACHE_SIZE;
+-		unsigned long next = *(u32 *) romfs_read(offset);
++		unsigned long next = CRAMFS_32(*(u32 *) romfs_read(offset));
+ 
+ 		if (next > end_data) {
+ 			end_data = next;
+@@ -529,7 +563,7 @@
+ {
+ 	unsigned long offset = i->offset << 2;
+ 	unsigned long curr = offset + 4;
+-	unsigned long next = *(u32 *) romfs_read(offset);
++	unsigned long next = CRAMFS_32(*(u32 *) romfs_read(offset));
+ 	unsigned long size;
+ 
+ 	if (offset == 0) {
