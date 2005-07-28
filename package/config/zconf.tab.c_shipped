@@ -175,6 +175,8 @@ static bool zconf_endtoken(int token, int starttoken, int endtoken);
 
 struct symbol *symbol_hash[257];
 
+static struct menu *current_menu, *current_entry;
+
 #define YYERROR_VERBOSE
 
 

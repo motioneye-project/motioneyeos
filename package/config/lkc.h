@@ -59,9 +59,6 @@ void menu_set_type(int type);
 struct file *file_lookup(const char *name);
 int file_write_dep(const char *name);
 
-extern struct menu *current_entry;
-extern struct menu *current_menu;
-
 /* symbol.c */
 void sym_init(void);
 void sym_clear_all_valid(void);

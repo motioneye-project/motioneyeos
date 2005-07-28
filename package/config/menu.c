@@ -10,7 +10,6 @@
 #include "lkc.h"
 
 struct menu rootmenu;
-struct menu *current_menu, *current_entry;
 static struct menu **last_entry_ptr;
 
 struct file *file_list;
