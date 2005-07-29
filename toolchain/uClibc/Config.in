@@ -22,4 +22,9 @@ config BR2_ENABLE_LOCALE
 	help
 	    Enable locale/gettext/i18n support?
 
+config BR2_PTHREADS_NATIVE
+	bool "Enable Native POSIX Threading (NPTL) support?"
+	default n
+	help
+	    Enable Native POSIX Threading (NPTL) support?
 

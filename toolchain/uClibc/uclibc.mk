@@ -73,6 +73,9 @@ endif
 ifeq ($(BR2_SOFT_FLOAT),y)
 	$(SED) 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
 endif
+ifeq ($(BR2_PTHREADS_NATIVE),y)
+	$(SED) 's,# PTHREADS_NATIVE is not set,PTHREADS_NATIVE=y,g' $(UCLIBC_DIR)/.config
+endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
