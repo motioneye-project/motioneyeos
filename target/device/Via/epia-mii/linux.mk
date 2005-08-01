@@ -19,6 +19,7 @@
 #  -Erik
 #
 #############################################################
+ifneq ($(filter $(TARGETS),linux),)
 
 # Version of Linux to download and then apply patches to
 DOWNLOAD_LINUX_VERSION=2.6.11.5
@@ -110,3 +111,4 @@ linuxclean: clean
 linux-dirclean:
 	rm -rf $(LINUX_DIR)
 
+endif
