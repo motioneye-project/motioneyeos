@@ -1,0 +1,260 @@
+--- /dev/null	2005-06-20 00:31:57.000000000 -0600
++++ bash-3.0/signames.h	2005-08-02 16:57:21.000000000 -0600
+@@ -0,0 +1,205 @@
++/* This file was automatically created by ./mksignames.
++   Do not edit.  Edit support/mksignames.c instead. */
++
++/* A translation list so we can be polite to our users. */
++char *signal_names[NSIG + 4] = {
++    "EXIT",
++#ifdef SIGHUP
++    [SIGHUP]    "SIGHUP",
++#endif
++#ifdef SIGINT
++    [SIGINT]    "SIGINT",
++#endif
++#ifdef SIGQUIT
++    [SIGQUIT]    "SIGQUIT",
++#endif
++#ifdef SIGILL
++    [SIGILL]    "SIGILL",
++#endif
++#ifdef SIGTRAP
++    [SIGTRAP]    "SIGTRAP",
++#endif
++#ifdef SIGABRT
++    [SIGABRT]    "SIGABRT",
++#endif
++#ifdef SIGBUS
++    [SIGBUS]    "SIGBUS",
++#endif
++#ifdef SIGFPE
++    [SIGFPE]    "SIGFPE",
++#endif
++#ifdef SIGKILL
++    [SIGKILL]    "SIGKILL",
++#endif
++#ifdef SIGUSR1
++    [SIGUSR1]    "SIGUSR1",
++#endif
++#ifdef SIGSEGV
++    [SIGSEGV]    "SIGSEGV",
++#endif
++#ifdef SIGUSR2
++    [SIGUSR2]    "SIGUSR2",
++#endif
++#ifdef SIGPIPE
++    [SIGPIPE]    "SIGPIPE",
++#endif
++#ifdef SIGALRM
++    [SIGALRM]    "SIGALRM",
++#endif
++#ifdef SIGTERM
++    [SIGTERM]    "SIGTERM",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(16)",
++#endif
++#ifdef SIGCHLD
++    [SIGCHLD]    "SIGCHLD",
++#endif
++#ifdef SIGCONT
++    [SIGCONT]    "SIGCONT",
++#endif
++#ifdef SIGSTOP
++    [SIGSTOP]    "SIGSTOP",
++#endif
++#ifdef SIGTSTP
++    [SIGTSTP]    "SIGTSTP",
++#endif
++#ifdef SIGTTIN
++    [SIGTTIN]    "SIGTTIN",
++#endif
++#ifdef SIGTTOU
++    [SIGTTOU]    "SIGTTOU",
++#endif
++#ifdef SIGURG
++    [SIGURG]    "SIGURG",
++#endif
++#ifdef SIGXCPU
++    [SIGXCPU]    "SIGXCPU",
++#endif
++#ifdef SIGXFSZ
++    [SIGXFSZ]    "SIGXFSZ",
++#endif
++#ifdef SIGVTALRM
++    [SIGVTALRM]    "SIGVTALRM",
++#endif
++#ifdef SIGPROF
++    [SIGPROF]    "SIGPROF",
++#endif
++#ifdef SIGWINCH
++    [SIGWINCH]    "SIGWINCH",
++#endif
++#ifdef SIGIO
++    [SIGIO]    "SIGIO",
++#endif
++#ifdef SIGPWR
++    [SIGPWR]    "SIGPWR",
++#endif
++#ifdef SIGSYS
++    [SIGSYS]    "SIGSYS",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(32)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(33)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(34)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(35)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(36)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(37)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(38)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(39)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(40)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(41)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(42)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(43)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(44)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(45)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(46)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(47)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(48)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(49)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(50)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(51)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(52)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(53)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(54)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(55)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(56)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(57)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(58)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(59)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(60)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(61)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(62)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(63)",
++#endif
++#ifdef SIGJUNK
++    [SIGJUNK]    "SIGJUNK(64)",
++#endif
++  [NSIG]	"DEBUG",
++
++  [NSIG + 1]	"ERR",
++
++  [NSIG + 2]	(char *)0x0
++};
++
+--- bash-3.0.orig/Makefile.in	2004-03-17 06:34:39.000000000 -0700
++++ bash-3.0/Makefile.in	2005-08-02 16:44:29.000000000 -0600
+@@ -410,9 +410,6 @@
+ 
+ SOURCES	 = $(CSOURCES) $(HSOURCES) $(BUILTIN_DEFS)
+ 
+-# header files chosen based on running of configure
+-SIGNAMES_H = @SIGNAMES_H@
+-
+ # object files chosen based on running of configure
+ JOBS_O = @JOBS_O@
+ SIGLIST_O = @SIGLIST_O@
+@@ -483,15 +480,12 @@
+ PO_SRC = $(srcdir)/po/
+ PO_DIR = $(dot)/po/
+ 
+-SIGNAMES_SUPPORT = $(SUPPORT_SRC)mksignames.c
+-
+ SUPPORT_SRC = $(srcdir)/support/
+ SDIR = $(dot)/support/
+ 
+ TESTS_SUPPORT = recho$(EXEEXT) zecho$(EXEEXT) printenv$(EXEEXT)
+ CREATED_SUPPORT = signames.h recho$(EXEEXT) zecho$(EXEEXT) printenv$(EXEEXT) \
+-		  tests/recho$(EXEEXT) tests/zecho$(EXEEXT) \
+-		  tests/printenv$(EXEEXT) mksignames$(EXEEXT) lsignames.h \
++		  tests/recho$(EXEEXT) tests/zecho$(EXEEXT) tests/printenv$(EXEEXT) \
+ 		  mksyntax${EXEEXT} syntax.c $(VERSPROG) $(VERSOBJ) \
+ 		  buildversion.o
+ CREATED_CONFIGURE = config.h config.cache config.status config.log \
+@@ -607,22 +601,9 @@
+ 
+ ${LIBINTL_H}:	${INTL_LIBRARY}
+ 
+-mksignames$(EXEEXT):	$(SUPPORT_SRC)mksignames.c
+-	$(CC_FOR_BUILD) $(CCFLAGS_FOR_BUILD) -o $@ $(SUPPORT_SRC)mksignames.c
+-
+ mksyntax$(EXEEXT):	${srcdir}/mksyntax.c config.h syntax.h ${BASHINCDIR}/chartypes.h
+ 	${CC_FOR_BUILD} ${CCFLAGS_FOR_BUILD} -o $@ ${srcdir}/mksyntax.c
+ 
+-# make a list of signals for the local system -- this is done when we're
+-# *not* cross-compiling
+-lsignames.h:   mksignames$(EXEEXT)
+-	$(RM) $@
+-	./mksignames $@
+-
+-# copy the correct signames header file to signames.h
+-signames.h: $(SIGNAMES_H)
+-	-if cmp -s $(SIGNAMES_H) $@ ; then :; else $(RM) $@ ; $(CP) $(SIGNAMES_H) $@ ; fi
+-
+ syntax.c:	mksyntax${EXEEXT} $(srcdir)/syntax.h 
+ 	$(RM) $@
+ 	./mksyntax -o $@
