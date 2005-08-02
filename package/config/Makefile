@@ -1,7 +1,20 @@
 # Makefile for buildroot2
 #
-# Copyright (C) 2002-2004 Erik Andersen <andersen@codepoet.org>
-
+# Copyright (C) 2002-2005 Erik Andersen <andersen@codepoet.org>
+#
+# This program is free software; you can redistribute it and/or modify it under
+# the terms of the GNU Library General Public License as published by the Free
+# Software Foundation; either version 2 of the License, or (at your option) any
+# later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+# FOR A PARTICULAR PURPOSE. See the GNU Library General Public License for more
+# details.
+#
+# You should have received a copy of the GNU Library General Public License
+# along with this program; if not, write to the Free Software Foundation, Inc.,
+# 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
 # Select the compiler needed to build binaries for your development system
 HOSTCC    = gcc
@@ -9,10 +22,13 @@ HOSTCFLAGS= -Wall -Wstrict-prototypes -O2 -fomit-frame-pointer
 # Ensure consistent sort order, 'gcc -print-search-dirs' behavior, etc.
 LC_ALL:= C
 
-
 all: ncurses conf mconf
 
+ifeq ($(shell uname),SunOS)
+LIBS = -lcurses
+else
 LIBS = -lncurses
+endif
 ifeq (/usr/include/ncurses/ncurses.h, $(wildcard /usr/include/ncurses/ncurses.h))
 	HOSTNCURSES += -I/usr/include/ncurses -DCURSES_LOC="<ncurses.h>"
 else
@@ -35,13 +51,16 @@ endif
 endif
 endif
 
-CONF_SRC  =conf.c
-MCONF_SRC =mconf.c checklist.c menubox.c textbox.c yesno.c inputbox.c util.c msgbox.c
-SHARED_SRC=zconf.tab.c
-SHARED_DEPS:=lkc.h lkc_proto.h lkc_defs.h expr.h zconf.tab.h
-CONF_OBJS =$(patsubst %.c,%.o, $(CONF_SRC))
-MCONF_OBJS=$(patsubst %.c,%.o, $(MCONF_SRC))
-SHARED_OBJS=$(patsubst %.c,%.o, $(SHARED_SRC))
+CONF_SRC     = conf.c
+MCONF_SRC    = mconf.c
+LXD_SRC      = lxdialog/checklist.c lxdialog/menubox.c lxdialog/textbox.c \
+               lxdialog/yesno.c lxdialog/inputbox.c lxdialog/util.c \
+               lxdialog/msgbox.c
+SHARED_SRC   = zconf.tab.c
+SHARED_DEPS := lkc.h lkc_proto.h lkc_defs.h expr.h zconf.tab.h
+CONF_OBJS    = $(patsubst %.c,%.o, $(CONF_SRC))
+MCONF_OBJS   = $(patsubst %.c,%.o, $(MCONF_SRC) $(LXD_SRC))
+SHARED_OBJS  = $(patsubst %.c,%.o, $(SHARED_SRC))
 
 conf: $(CONF_OBJS) $(SHARED_OBJS)
 	$(HOSTCC) $(NATIVE_LDFLAGS) $^ -o $@
@@ -94,19 +113,22 @@ endif
 ncurses:
 	@echo "main() {}" > lxtemp.c
 	@if $(HOSTCC) lxtemp.c $(LIBS) ; then \
-		rm -f lxtemp.c a.out; \
+		$(RM) lxtemp.c a.out; \
 	else \
-		rm -f lxtemp.c; \
+		$(RM) lxtemp.c; \
 		echo -e "\007" ;\
 		echo ">> Unable to find the Ncurses libraries." ;\
 		echo ">>" ;\
 		echo ">> You must have Ncurses installed in order" ;\
 		echo ">> to use 'make menuconfig'" ;\
+		echo ">>" ;\
+		echo ">> Maybe you want to try 'make config', which" ;\
+		echo ">> doesn't depend on the Ncurses libraries." ;\
 		echo ;\
 		exit 1 ;\
 	fi
 
 clean:
-	rm -f *.o *~ core $(TARGETS) $(MCONF_OBJS) $(CONF_OBJS) \
+	$(RM) *.o *~ core $(TARGETS) $(MCONF_OBJS) $(CONF_OBJS) \
 		conf mconf zconf.tab.c zconf.tab.h lex.zconf.c lkc_defs.h
 

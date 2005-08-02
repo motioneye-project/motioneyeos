@@ -23,10 +23,10 @@ const char *conf_confnames[] = {
 	NULL,
 };
 
-static char *conf_expand_value(const char *in)
+static char *conf_expand_value(const signed char *in)
 {
 	struct symbol *sym;
-	const char *src;
+	const signed char *src;
 	static char res_value[SYMBOL_MAXLENGTH];
 	char *dst, name[SYMBOL_MAXLENGTH];
 
@@ -257,7 +257,7 @@ int conf_read(const char *name)
 
 int conf_write(const char *name)
 {
-	FILE *out, *out_h;
+	FILE *out;
 	struct symbol *sym;
 	struct menu *menu;
 	const char *basename;
@@ -287,34 +287,13 @@ int conf_write(const char *name)
 	} else
 		basename = conf_def_filename;
 
-	sprintf(newname, "%s.tmpconfig.%d", dirname, getpid());
+	sprintf(newname, "%s.tmpconfig.%d", dirname, (int)getpid());
 	out = fopen(newname, "w");
 	if (!out)
 		return 1;
-	out_h = NULL;
-	if (!name) {
-		out_h = fopen(".tmpconfig.h", "w");
-		if (!out_h)
-			return 1;
-	}
 	fprintf(out, "#\n"
 		     "# Automatically generated make config: don't edit\n"
 		     "#\n");
-	if (out_h) {
-		fprintf(out_h, "/*\n"
-			     " * Automatically generated header file: don't edit\n"
-			     " */\n\n"
-			     "#define AUTOCONF_INCLUDED\n\n"
-			     "/* Version Number */\n"
-			     "#define BB_VER \"%s\"\n"
-			     "#define BB_BT \"%s\"\n",
-			     getenv("VERSION"),
-			     getenv("BUILDTIME"));
-		if (getenv("EXTRA_VERSION"))
-			fprintf(out_h, "#define BB_EXTRA_VERSION \"%s\"\n",
-				     getenv("EXTRA_VERSION"));
-		fprintf(out_h, "\n");
-	}
 
 	if (!sym_change_count)
 		sym_clear_all_valid();
@@ -330,11 +309,6 @@ int conf_write(const char *name)
 				     "#\n"
 				     "# %s\n"
 				     "#\n", str);
-			if (out_h)
-				fprintf(out_h, "\n"
-					       "/*\n"
-					       " * %s\n"
-					       " */\n", str);
 		} else if (!(sym->flags & SYMBOL_CHOICE)) {
 			sym_calc_value(sym);
 			if (!(sym->flags & SYMBOL_WRITE))
@@ -352,20 +326,12 @@ int conf_write(const char *name)
 				switch (sym_get_tristate_value(sym)) {
 				case no:
 					fprintf(out, "# %s is not set\n", sym->name);
-					if (out_h)
-						fprintf(out_h, "#undef %s\n", sym->name);
 					break;
 				case mod:
-#if 0
 					fprintf(out, "%s=m\n", sym->name);
-					if (out_h)
-						fprintf(out_h, "#define %s_MODULE 1\n", sym->name);
-#endif
 					break;
 				case yes:
 					fprintf(out, "%s=y\n", sym->name);
-					if (out_h)
-						fprintf(out_h, "#define %s 1\n", sym->name);
 					break;
 				}
 				break;
@@ -373,40 +339,28 @@ int conf_write(const char *name)
 				// fix me
 				str = sym_get_string_value(sym);
 				fprintf(out, "%s=\"", sym->name);
-				if (out_h)
-					fprintf(out_h, "#define %s \"", sym->name);
 				do {
 					l = strcspn(str, "\"\\");
 					if (l) {
 						fwrite(str, l, 1, out);
-						if (out_h)
-							fwrite(str, l, 1, out_h);
 					}
 					str += l;
 					while (*str == '\\' || *str == '"') {
 						fprintf(out, "\\%c", *str);
-						if (out_h)
-							fprintf(out_h, "\\%c", *str);
 						str++;
 					}
 				} while (*str);
 				fputs("\"\n", out);
-				if (out_h)
-					fputs("\"\n", out_h);
 				break;
 			case S_HEX:
 				str = sym_get_string_value(sym);
 				if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
 					fprintf(out, "%s=%s\n", sym->name, str);
-					if (out_h)
-						fprintf(out_h, "#define %s 0x%s\n", sym->name, str);
 					break;
 				}
 			case S_INT:
 				str = sym_get_string_value(sym);
 				fprintf(out, "%s=%s\n", sym->name, str);
-				if (out_h)
-					fprintf(out_h, "#define %s %s\n", sym->name, str);
 				break;
 			}
 		}
@@ -426,11 +380,6 @@ int conf_write(const char *name)
 		}
 	}
 	fclose(out);
-	if (out_h) {
-		fclose(out_h);
-		rename(".tmpconfig.h", "include/config.h");
-		file_write_dep(NULL);
-	}
 	if (!name || basename != conf_def_filename) {
 		if (!name)
 			name = conf_def_filename;

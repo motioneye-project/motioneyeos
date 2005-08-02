@@ -56,8 +56,20 @@ void menu_add_expr(enum prop_type type, struct expr *expr, struct expr *dep);
 void menu_add_symbol(enum prop_type type, struct symbol *sym, struct expr *dep);
 void menu_finalize(struct menu *parent);
 void menu_set_type(int type);
+
+/* util.c */
 struct file *file_lookup(const char *name);
-int file_write_dep(const char *name);
+
+struct gstr {
+	size_t len;
+	char  *s;
+};
+struct gstr str_new(void);
+struct gstr str_assign(const char *s);
+void str_free(struct gstr *gs);
+void str_append(struct gstr *gs, const char *s);
+void str_printf(struct gstr *gs, const char *fmt, ...);
+const char *str_get(struct gstr *gs);
 
 /* symbol.c */
 void sym_init(void);

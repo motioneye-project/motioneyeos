@@ -683,6 +683,7 @@ void zconfdump(FILE *out)
 }
 
 #include "lex.zconf.c"
+#include "util.c"
 #include "confdata.c"
 #include "expr.c"
 #include "symbol.c"

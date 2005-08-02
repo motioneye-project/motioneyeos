@@ -26,7 +26,7 @@
  *
  *    *)  A bugfix for the Page-Down problem
  *
- *    *)  Formerly when I used Page Down and Page Up, the cursor would be set
+ *    *)  Formerly when I used Page Down and Page Up, the cursor would be set 
  *        to the first position in the menu box.  Now lxdialog is a bit
  *        smarter and works more like other menu systems (just have a look at
  *        it).
@@ -71,7 +71,7 @@ print_item (WINDOW * win, const char *item, int choice, int selected, int hotkey
 
     strncpy(menu_item, item, menu_width);
     menu_item[menu_width] = 0;
-    j = first_alpha(menu_item, "YyNnMm");
+    j = first_alpha(menu_item, "YyNnMmHh");
 
     /* Clear 'residue' of last item */
     wattrset (win, menubox_attr);
@@ -225,7 +225,7 @@ dialog_menu (const char *title, const char *prompt, int height, int width,
 
     /*
      * Find length of longest item in order to center menu.
-     * Set 'choice' to default item.
+     * Set 'choice' to default item. 
      */
     item_x = 0;
     for (i = 0; i < item_no; i++) {
@@ -278,23 +278,23 @@ dialog_menu (const char *title, const char *prompt, int height, int width,
 
 	if (key < 256 && isalpha(key)) key = tolower(key);
 
-	if (strchr("ynm", key))
+	if (strchr("ynmh", key))
 		i = max_choice;
 	else {
         for (i = choice+1; i < max_choice; i++) {
-		j = first_alpha(items[scroll + i]->name, "YyNnMm>");
+		j = first_alpha(items[scroll + i]->name, "YyNnMmHh");
 		if (key == tolower(items[scroll + i]->name[j]))
                 	break;
 	}
 	if (i == max_choice)
        		for (i = 0; i < max_choice; i++) {
-			j = first_alpha(items[scroll + i]->name, "YyNnMm>");
+			j = first_alpha(items[scroll + i]->name, "YyNnMmHh");
 			if (key == tolower(items[scroll + i]->name[j]))
                 		break;
 		}
 	}
 
-	if (i < max_choice ||
+	if (i < max_choice || 
             key == KEY_UP || key == KEY_DOWN ||
             key == '-' || key == '+' ||
             key == KEY_PPAGE || key == KEY_NPAGE) {
@@ -398,6 +398,7 @@ dialog_menu (const char *title, const char *prompt, int height, int width,
 	case 'y':
 	case 'n':
 	case 'm':
+	case '/':
 	    /* save scroll info */
 	    if ( (f=fopen("lxdialog.scrltmp","w")) != NULL ) {
 		fprintf(f,"%d\n",scroll);
@@ -411,6 +412,7 @@ dialog_menu (const char *title, const char *prompt, int height, int width,
             case 'n': return 4;
             case 'm': return 5;
             case ' ': return 6;
+            case '/': return 7;
             }
 	    return 0;
 	case 'h':

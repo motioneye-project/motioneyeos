@@ -1087,3 +1087,13 @@ void expr_fprint(struct expr *e, FILE *out)
 {
 	expr_print(e, expr_print_file_helper, out, E_NONE);
 }
+
+static void expr_print_gstr_helper(void *data, const char *str)
+{
+	str_append((struct gstr*)data, str);
+}
+
+void expr_gstr_print(struct expr *e, struct gstr *gs)
+{
+	expr_print(e, expr_print_gstr_helper, gs, E_NONE);
+}

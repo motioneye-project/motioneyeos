@@ -448,21 +448,21 @@ static const unsigned short yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals. */
 static const char *const yytname[] =
 {
-  "$end", "error", "$undefined", "T_MAINMENU", "T_MENU", "T_ENDMENU",
-  "T_SOURCE", "T_CHOICE", "T_ENDCHOICE", "T_COMMENT", "T_CONFIG",
-  "T_MENUCONFIG", "T_HELP", "T_HELPTEXT", "T_IF", "T_ENDIF", "T_DEPENDS",
-  "T_REQUIRES", "T_OPTIONAL", "T_PROMPT", "T_DEFAULT", "T_TRISTATE",
-  "T_DEF_TRISTATE", "T_BOOLEAN", "T_DEF_BOOLEAN", "T_STRING", "T_INT",
-  "T_HEX", "T_WORD", "T_WORD_QUOTE", "T_UNEQUAL", "T_EOF", "T_EOL",
-  "T_CLOSE_PAREN", "T_OPEN_PAREN", "T_ON", "T_SELECT", "T_RANGE", "T_OR",
-  "T_AND", "T_EQUAL", "T_NOT", "$accept", "input", "block",
-  "common_block", "config_entry_start", "config_stmt",
-  "menuconfig_entry_start", "menuconfig_stmt", "config_option_list",
-  "config_option", "choice", "choice_entry", "choice_end", "choice_stmt",
-  "choice_option_list", "choice_option", "choice_block", "if", "if_end",
-  "if_stmt", "if_block", "menu", "menu_entry", "menu_end", "menu_stmt",
-  "menu_block", "source", "source_stmt", "comment", "comment_stmt",
-  "help_start", "help", "depends_list", "depends", "prompt_stmt_opt",
+  "$end", "error", "$undefined", "T_MAINMENU", "T_MENU", "T_ENDMENU", 
+  "T_SOURCE", "T_CHOICE", "T_ENDCHOICE", "T_COMMENT", "T_CONFIG", 
+  "T_MENUCONFIG", "T_HELP", "T_HELPTEXT", "T_IF", "T_ENDIF", "T_DEPENDS", 
+  "T_REQUIRES", "T_OPTIONAL", "T_PROMPT", "T_DEFAULT", "T_TRISTATE", 
+  "T_DEF_TRISTATE", "T_BOOLEAN", "T_DEF_BOOLEAN", "T_STRING", "T_INT", 
+  "T_HEX", "T_WORD", "T_WORD_QUOTE", "T_UNEQUAL", "T_EOF", "T_EOL", 
+  "T_CLOSE_PAREN", "T_OPEN_PAREN", "T_ON", "T_SELECT", "T_RANGE", "T_OR", 
+  "T_AND", "T_EQUAL", "T_NOT", "$accept", "input", "block", 
+  "common_block", "config_entry_start", "config_stmt", 
+  "menuconfig_entry_start", "menuconfig_stmt", "config_option_list", 
+  "config_option", "choice", "choice_entry", "choice_end", "choice_stmt", 
+  "choice_option_list", "choice_option", "choice_block", "if", "if_end", 
+  "if_stmt", "if_block", "menu", "menu_entry", "menu_end", "menu_stmt", 
+  "menu_block", "source", "source_stmt", "comment", "comment_stmt", 
+  "help_start", "help", "depends_list", "depends", "prompt_stmt_opt", 
   "prompt", "end", "nl_or_eof", "if_expr", "expr", "symbol", 0
 };
 #endif
@@ -1029,7 +1029,7 @@ yyparse ()
 #endif
 #endif
 {
-
+  
   register int yystate;
   register int yyn;
   int yyresult;
@@ -2121,6 +2121,7 @@ void zconfdump(FILE *out)
 }
 
 #include "lex.zconf.c"
+#include "util.c"
 #include "confdata.c"
 #include "expr.c"
 #include "symbol.c"

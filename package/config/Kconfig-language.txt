@@ -18,7 +18,7 @@ organized in a tree structure:
 	+- ...
 
 Every entry has its own dependencies. These dependencies are used
-to determine the visible of an entry. Any child entry is only
+to determine the visibility of an entry. Any child entry is only
 visible if its parent entry is also visible.
 
 Menu entries
@@ -50,7 +50,7 @@ applicable everywhere (see syntax).
 
 - type definition: "bool"/"tristate"/"string"/"hex"/"integer"
   Every config option must have a type. There are only two basic types:
-  tristate and string, the other types base on these two. The type
+  tristate and string, the other types are based on these two. The type
   definition optionally accepts an input prompt, so these two examples
   are equivalent:
 
@@ -64,12 +64,12 @@ applicable everywhere (see syntax).
   to the user. Optionally dependencies only for this prompt can be added
   with "if".
 
-- default value: "default" <symbol> ["if" <expr>]
+- default value: "default" <expr> ["if" <expr>]
   A config option can have any number of default values. If multiple
   default values are visible, only the first defined one is active.
   Default values are not limited to the menu entry, where they are
   defined, this means the default can be defined somewhere else or be
-  overriden by an earlier definition.
+  overridden by an earlier definition.
   The default value is only assigned to the config symbol if no other
   value was set by the user (via the input prompt above). If an input
   prompt is visible the default value is presented to the user and can
@@ -81,7 +81,7 @@ applicable everywhere (see syntax).
   This defines a dependency for this menu entry. If multiple
   dependencies are defined they are connected with '&&'. Dependencies
   are applied to all other options within this menu entry (which also
-  accept "if" expression), so these two examples are equivalent:
+  accept an "if" expression), so these two examples are equivalent:
 
 	bool "foo" if BAR
 	default y if BAR
@@ -90,10 +90,28 @@ applicable everywhere (see syntax).
 	bool "foo"
 	default y
 
-- help text: "help"
+- reverse dependencies: "select" <symbol> ["if" <expr>]
+  While normal dependencies reduce the upper limit of a symbol (see
+  below), reverse dependencies can be used to force a lower limit of
+  another symbol. The value of the current menu symbol is used as the
+  minimal value <symbol> can be set to. If <symbol> is selected multiple
+  times, the limit is set to the largest selection.
+  Reverse dependencies can only be used with boolean or tristate
+  symbols.
+
+- numerical ranges: "range" <symbol> <symbol> ["if" <expr>]
+  This allows to limit the range of possible input values for integer
+  and hex symbols. The user can only input a value which is larger than
+  or equal to the first symbol and smaller than or equal to the second
+  symbol.
+
+- help text: "help" or "---help---"
   This defines a help text. The end of the help text is determined by
-  the level indentation, this means it ends at the first line which has
+  the indentation level, this means it ends at the first line which has
   a smaller indentation than the first line of the help text.
+  "---help---" and "help" do not differ in behaviour, "---help---" is
+  used to help visually seperate configuration logic from help within
+  the file as an aid to developers.
 
 
 Menu dependencies
@@ -109,10 +127,10 @@ module state. Dependency expressions have the following syntax:
            <symbol> '!=' <symbol>               (3)
            '(' <expr> ')'                       (4)
            '!' <expr>                           (5)
-           <expr> '||' <expr>                   (6)
-           <expr> '&&' <expr>                   (7)
+           <expr> '&&' <expr>                   (6)
+           <expr> '||' <expr>                   (7)
 
-Expressions are listed in decreasing order of precedence.
+Expressions are listed in decreasing order of precedence. 
 
 (1) Convert the symbol into an expression. Boolean and tristate symbols
     are simply converted into the respective expression values. All
@@ -130,7 +148,7 @@ An expression can have a value of 'n', 'm' or 'y' (or 0, 1, 2
 respectively for calculations). A menu entry becomes visible when it's
 expression evaluates to 'm' or 'y'.
 
-There are two type of symbols: constant and nonconstant symbols.
+There are two types of symbols: constant and nonconstant symbols.
 Nonconstant symbols are the most common ones and are defined with the
 'config' statement. Nonconstant symbols consist entirely of alphanumeric
 characters or underscores.
@@ -142,7 +160,7 @@ Menu structure
 --------------
 
 The position of a menu entry in the tree is determined in two ways. First
-it can be specified explicitely:
+it can be specified explicitly:
 
 menu "Network device support"
 	depends NET
@@ -159,8 +177,8 @@ dependency list of the config option NETDEVICES.
 
 The other way to generate the menu structure is done by analyzing the
 dependencies. If a menu entry somehow depends on the previous entry, it
-can be made a submenu of it. First the the previous (parent) symbol must
-be part of the dependency list and then one of these two condititions
+can be made a submenu of it. First, the previous (parent) symbol must
+be part of the dependency list and then one of these two conditions
 must be true:
 - the child entry must become invisible, if the parent is set to 'n'
 - the child entry must only be visible, if the parent is visible
@@ -177,7 +195,7 @@ comment "module support disabled"
 
 MODVERSIONS directly depends on MODULES, this means it's only visible if
 MODULES is different from 'n'. The comment on the other hand is always
-visible when MODULES it's visible (the (empty) dependency of MODULES is
+visible when MODULES is visible (the (empty) dependency of MODULES is
 also part of the comment dependencies).
 
 
@@ -188,12 +206,13 @@ The configuration file describes a series of menu entries, where every
 line starts with a keyword (except help texts). The following keywords
 end a menu entry:
 - config
+- menuconfig
 - choice/endchoice
 - comment
 - menu/endmenu
 - if/endif
 - source
-The first four also start the definition of a menu entry.
+The first five also start the definition of a menu entry.
 
 config:
 
@@ -202,6 +221,14 @@ config:
 
 This defines a config symbol <symbol> and accepts any of above
 attributes as options.
+
+menuconfig:
+	"menuconfig" <symbol>
+	<config options>
+
+This is similiar to the simple config entry above, but it also gives a
+hint to front ends, that all suboptions should be displayed as a
+separate list of options.
 
 choices:
 
