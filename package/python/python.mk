@@ -68,7 +68,7 @@ $(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
 	rm $(TARGET_DIR)/usr/bin/python?.?
 	rm $(TARGET_DIR)/usr/bin/idle
 	rm $(TARGET_DIR)/usr/bin/pydoc
-	find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -o -name '*.pyo' | xargs rm
+	find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -o -name '*.pyo' -exec rm {} \;
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
 		$(TARGET_DIR)/usr/lib/python*/test
