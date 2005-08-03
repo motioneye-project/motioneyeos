@@ -14,7 +14,9 @@ SED_TARGET_BINARY:=bin/sed
 ifeq ($(strip $(BUILD_WITH_LARGEFILE)),true)
 SED_CPPFLAGS=-D_FILE_OFFSET_BITS=64
 endif
-SED:=$(STAGING_DIR)/bin/sed -i -e
+#HOST_SED_DIR:=$(STAGING_DIR)
+HOST_SED_DIR:=$(TOOL_BUILD_DIR)
+SED:=$(HOST_SED_DIR)/bin/sed -i -e
 HOST_SED_TARGET=$(shell package/sed/sedcheck.sh)
 
 $(DL_DIR)/$(SED_SOURCE):
@@ -31,14 +33,14 @@ sed-source: $(DL_DIR)/$(SED_SOURCE)
 #############################################################
 $(SED_DIR1)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
-	mkdir -p $(STAGING_DIR)/bin;
+	mkdir -p $(HOST_SED_DIR)/bin;
 	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(SED_DIR1)/.unpacked
 
 $(SED_DIR1)/.configured: $(SED_DIR1)/.unpacked
 	(cd $(SED_DIR1); rm -rf config.cache; \
 		./configure \
-		--prefix=$(STAGING_DIR) \
+		--prefix=$(HOST_SED_DIR) \
 		--prefix=/usr \
 	);
 	touch  $(SED_DIR1)/.configured
@@ -48,28 +50,28 @@ $(SED_DIR1)/$(SED_BINARY): $(SED_DIR1)/.configured
 
 # This stuff is needed to work around GNU make deficiencies
 build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
-	@if [ -L $(STAGING_DIR)/$(SED_TARGET_BINARY) ] ; then \
-		rm -f $(STAGING_DIR)/$(SED_TARGET_BINARY); fi;
-	@if [ ! -f $(STAGING_DIR)/$(SED_TARGET_BINARY) -o $(STAGING_DIR)/$(SED_TARGET_BINARY) \
+	@if [ -L $(HOST_SED_DIR)/$(SED_TARGET_BINARY) ] ; then \
+		rm -f $(HOST_SED_DIR)/$(SED_TARGET_BINARY); fi;
+	@if [ ! -f $(HOST_SED_DIR)/$(SED_TARGET_BINARY) -o $(HOST_SED_DIR)/$(SED_TARGET_BINARY) \
 	-ot $(SED_DIR1)/$(SED_BINARY) ] ; then \
 	    set -x; \
-	    mkdir -p $(STAGING_DIR)/bin; \
-	    $(MAKE) DESTDIR=$(STAGING_DIR) -C $(SED_DIR1) install; \
-	    mv $(STAGING_DIR)/usr/bin/sed $(STAGING_DIR)/bin/; \
-	    rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
-		    $(STAGING_DIR)/usr/man $(STAGING_DIR)/usr/share/doc; fi
+	    mkdir -p $(HOST_SED_DIR)/bin; \
+	    $(MAKE) DESTDIR=$(HOST_SED_DIR) -C $(SED_DIR1) install; \
+	    mv $(HOST_SED_DIR)/usr/bin/sed $(HOST_SED_DIR)/bin/; \
+	    rm -rf $(HOST_SED_DIR)/share/locale $(HOST_SED_DIR)/usr/info \
+		    $(HOST_SED_DIR)/usr/man $(HOST_SED_DIR)/usr/share/doc; fi
 
 use-sed-host-binary:
 	@if [ -x /usr/bin/sed ]; then SED="/usr/bin/sed"; else \
 	    if [ -x /bin/sed ]; then SED="/bin/sed"; fi; fi; \
-	    mkdir -p $(STAGING_DIR)/bin; \
-	    rm -f $(STAGING_DIR)/$(SED_TARGET_BINARY); \
-	    ln -s $$SED $(STAGING_DIR)/$(SED_TARGET_BINARY)
+	    mkdir -p $(HOST_SED_DIR)/bin; \
+	    rm -f $(HOST_SED_DIR)/$(SED_TARGET_BINARY); \
+	    ln -s $$SED $(HOST_SED_DIR)/$(SED_TARGET_BINARY)
 
 host-sed: $(HOST_SED_TARGET)
 
 host-sed-clean:
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SED_DIR1) uninstall
+	$(MAKE) DESTDIR=$(HOST_SED_DIR) -C $(SED_DIR1) uninstall
 	-$(MAKE) -C $(SED_DIR1) clean
 
 host-sed-dirclean:
