@@ -380,6 +380,7 @@ int conf_write(const char *name)
 		}
 	}
 	fclose(out);
+	file_write_dep(NULL);
 	if (!name || basename != conf_def_filename) {
 		if (!name)
 			name = conf_def_filename;
