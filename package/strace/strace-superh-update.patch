@@ -1,0 +1,28 @@
+--- strace/configure
++++ strace/configure
+@@ -1993,19 +1993,19 @@
+ _ACEOF
+ 
+ 	;;
+-sh)
+-	arch=sh
++sh64)
++	arch=sh64
+ 
+ cat >>confdefs.h <<\_ACEOF
+-#define SH 1
++#define SH64 1
+ _ACEOF
+ 
+ 	;;
+-sh64)
+-	arch=sh64
++sh*)
++	arch=sh
+ 
+ cat >>confdefs.h <<\_ACEOF
+-#define SH64 1
++#define SH 1
+ _ACEOF
+ 
+ 	;;

@@ -1,0 +1,10 @@
+--- strace/process.c
++++ strace/process.c
+@@ -2663,7 +2663,6 @@ const struct xlat struct_user_offsets[] 
+        { 4*REG_GBR,            "4*REG_GBR"                             },
+        { 4*REG_MACH,           "4*REG_MACH"                            },
+        { 4*REG_MACL,           "4*REG_MACL"                            },
+-       { 4*REG_SYSCALL,        "4*REG_SYSCALL"                         },
+        { 4*REG_FPUL,           "4*REG_FPUL"                            },
+        { 4*REG_FPREG0,         "4*REG_FPREG0"                          },
+        { 4*(REG_FPREG0+1),     "4*REG_FPREG1"                          },
