@@ -180,6 +180,14 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
 	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
 endif
+	# Make sure we have 'cc'.
+	if [ ! -e $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-cc ] ; then \
+		ln -snf $(REAL_GNU_TARGET_NAME)-gcc \
+			$(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-cc ; \
+	fi;
+	if [ ! -e $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/cc ] ; then \
+		ln -snf gcc $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/cc ; \
+	fi;
 	# Set up the symlinks to enable lying about target name.
 	set -e; \
 	(cd $(STAGING_DIR); \
@@ -326,6 +334,10 @@ endif
 		cp -f $(STAGING_DIR)/$(GCC_LIB_SUBDIR)/include/syslimits.h \
 			$(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/ ; \
 	fi
+	# Make sure we have 'cc'.
+	if [ ! -e $(TARGET_DIR)/usr/bin/cc ] ; then \
+		ln -snf gcc $(TARGET_DIR)/usr/bin/cc ; \
+	fi;
 	# These are in /lib, so...
 	#rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
 	#touch -c $(TARGET_DIR)/usr/bin/gcc
