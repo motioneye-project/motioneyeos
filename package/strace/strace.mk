@@ -3,7 +3,7 @@
 # strace
 #
 #############################################################
-STRACE_VER:=4.5.7
+STRACE_VER:=4.5.12
 STRACE_SOURCE:=strace-$(STRACE_VER).tar.bz2
 STRACE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/strace
 STRACE_CAT:=bzcat
@@ -17,6 +17,7 @@ strace-source: $(DL_DIR)/$(STRACE_SOURCE)
 
 $(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
 	$(STRACE_CAT) $(DL_DIR)/$(STRACE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(STRACE_DIR) package/strace strace\*.patch
 	touch $(STRACE_DIR)/.unpacked
 
 $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
