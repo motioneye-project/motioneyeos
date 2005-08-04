@@ -126,6 +126,11 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/lib/libc.a
 $(TARGET_DIR)/usr/bin/ldd:
 	$(MAKE1) -C $(UCLIBC_DIR) $(TARGET_CONFIGURE_OPTS) \
 		PREFIX=$(TARGET_DIR) utils install_utils
+ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
+	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils
+	install -c $(TARGET_DIR)/usr/bin/ldd \
+		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/ldd
+endif
 	touch -c $(TARGET_DIR)/usr/bin/ldd
 
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0

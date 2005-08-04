@@ -45,6 +45,17 @@ config BR2_TARGET_OPTIMIZATION
 	help
 	  Optimizations to use when building for the target host.
 
+config BR2_CROSS_TOOLCHAIN_TARGET_UTILS
+	string "Include target utils in cross toolchain."
+	default y
+	help
+	  When using buildroot to build a deployable cross toolchain, it is handy
+	  to include certain target apps with that toolchain as a convenience.
+	  Examples include ldd, gdbserver, and strace.
+
+	  Answer Y if you want these apps (if built) copied into the cross toolchain
+	  dir under <arch>-linux-uclibc/target_utils/.
+
 # Might be worth experimenting with for gcc 3.4.x.
 #GCC_WITH_CPU:=
 #GCC_WITH_ARCH:=

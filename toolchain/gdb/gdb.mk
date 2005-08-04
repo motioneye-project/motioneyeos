@@ -123,6 +123,11 @@ $(GDB_SERVER_DIR)/gdbserver: $(GDB_SERVER_DIR)/.configured
 	$(STRIP) $(GDB_SERVER_DIR)/gdbserver
 
 $(TARGET_DIR)/usr/bin/gdbserver: $(GDB_SERVER_DIR)/gdbserver
+ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
+	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils
+	install -c $(GDB_SERVER_DIR)/gdbserver \
+		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/gdbserver
+endif
 	install -c $(GDB_SERVER_DIR)/gdbserver $(TARGET_DIR)/usr/bin/gdbserver
 
 gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
@@ -164,8 +169,10 @@ $(GDB_CLIENT_DIR)/gdb/gdb: $(GDB_CLIENT_DIR)/.configured
 
 $(TARGET_CROSS)gdb: $(GDB_CLIENT_DIR)/gdb/gdb
 	install -c $(GDB_CLIENT_DIR)/gdb/gdb $(TARGET_CROSS)gdb
-	ln -fs ../../bin/$(REAL_GNU_TARGET_NAME)-gdb \
+	ln -snf ../../bin/$(REAL_GNU_TARGET_NAME)-gdb \
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/gdb
+	ln -snf $(REAL_GNU_TARGET_NAME)-gdb \
+		$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gdb
 
 gdbclient: $(TARGET_CROSS)gdb
 
