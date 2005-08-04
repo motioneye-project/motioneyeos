@@ -64,8 +64,24 @@ cramfsroot: cramfs
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	/sbin/ldconfig -r $(TARGET_DIR)
-	$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) -D \
-		target/generic/device_table.txt $(TARGET_DIR) $(IMAGE).cramfs
+	# Use fakeroot to pretend all target binaries are owned by root
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		chown -R root:root $(TARGET_DIR)
+	# Use fakeroot to pretend to create all needed device nodes
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(STAGING_DIR)/bin/makedevs \
+		-d $(TARGET_DEVICE_TABLE) \
+		$(TARGET_DIR)
+	# Use fakeroot so mkcramfs believes the previous fakery
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) \
+		$(TARGET_DIR) $(IMAGE).cramfs
 
 cramfsroot-source: cramfs-source
 

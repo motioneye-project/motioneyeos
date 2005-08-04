@@ -71,6 +71,19 @@ $(EXT2_BASE): genext2fs
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	/sbin/ldconfig -r $(TARGET_DIR)
+	# Use fakeroot to pretend all target binaries are owned by root
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		chown -R root:root $(TARGET_DIR)
+	# Use fakeroot to pretend to create all needed device nodes
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(STAGING_DIR)/bin/makedevs \
+		-d $(TARGET_DEVICE_TABLE) \
+		$(TARGET_DIR)
+	# Use fakeroot so genext2fs believes the previous fakery
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	GENEXT2_REALSIZE=`LANG=C du -l -s -c -k $(TARGET_DIR) | grep total | sed -e "s/total//"`; \
 	GENEXT2_ADDTOROOTSIZE=`if [ $$GENEXT2_REALSIZE -ge 20000 ] ; then echo 16384; else echo 2400; fi`; \
@@ -78,16 +91,20 @@ ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	GENEXT2_ADDTOINODESIZE=`find $(TARGET_DIR) | wc -l`; \
 	GENEXT2_INODES=`expr $$GENEXT2_ADDTOINODESIZE + 400`; \
 	set -x; \
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
 	$(GENEXT2_DIR)/genext2fs \
 		-b $$GENEXT2_SIZE \
 		-i $$GENEXT2_INODES \
 		-d $(TARGET_DIR) \
-		-D $(TARGET_DEVICE_TABLE) \
 		$(EXT2_OPTS) $(EXT2_BASE)
 else
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
 	$(GENEXT2_DIR)/genext2fs \
 		-d $(TARGET_DIR) \
-		-D $(TARGET_DEVICE_TABLE) \
 		$(EXT2_OPTS) \
 		$(EXT2_BASE)
 endif

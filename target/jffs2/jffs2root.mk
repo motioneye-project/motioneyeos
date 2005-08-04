@@ -44,11 +44,26 @@ $(JFFS2_TARGET): mtd-host
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	/sbin/ldconfig -r $(TARGET_DIR)
-	$(MKFS_JFFS2) \
-		$(JFFS2_OPTS) \
-		-d $(BUILD_DIR)/root \
-		-o $(JFFS2_TARGET) \
-		-D $(TARGET_DEVICE_TABLE)
+	# Use fakeroot to pretend all target binaries are owned by root
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		chown -R root:root $(TARGET_DIR)
+	# Use fakeroot to pretend to create all needed device nodes
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(STAGING_DIR)/bin/makedevs \
+		-d $(TARGET_DEVICE_TABLE) \
+		$(TARGET_DIR)
+	# Use fakeroot so mkfs.jffs2 believes the previous fakery
+	$(STAGING_DIR)/usr/bin/fakeroot \
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(MKFS_JFFS2) \
+			$(JFFS2_OPTS) \
+			-d $(BUILD_DIR)/root \
+			-o $(JFFS2_TARGET)
 	@ls -l $(JFFS2_TARGET)
 
 JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))

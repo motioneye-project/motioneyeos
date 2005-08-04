@@ -28,8 +28,10 @@ $(LTP_TESTSUITE_DIR)/testcases/kernel/syscalls/write/write01: $(LTP_TESTSUITE_DI
 $(LTP_TESTSUITE_DIR)/testcases/bin/1K_file: $(LTP_TESTSUITE_DIR)/testcases/kernel/syscalls/write/write01
 	# Use fakeroot to pretend to do 'make install' as root
 	$(STAGING_DIR)/usr/bin/fakeroot \
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) \
-		-C $(LTP_TESTSUITE_DIR) install
+		-i $(STAGING_DIR)/fakeroot.env \
+		-s $(STAGING_DIR)/fakeroot.env -- \
+		$(MAKE) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) \
+			-C $(LTP_TESTSUITE_DIR) install
 	touch -c $(LTP_TESTSUITE_DIR)/testcases/bin/1K_file
 
 ltp-testsuite: uclibc host-fakeroot $(LTP_TESTSUITE_DIR)/testcases/bin/1K_file

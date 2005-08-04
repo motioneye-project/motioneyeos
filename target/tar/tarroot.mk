@@ -11,9 +11,6 @@ tarroot: host-fakeroot makedevs
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	/sbin/ldconfig -r $(TARGET_DIR)
-	# Use fakeroot to munge permissions and do root-like things
-	rm -f $(STAGING_DIR)/fakeroot.env
-	touch $(STAGING_DIR)/fakeroot.env
 	# Use fakeroot to pretend all target binaries are owned by root
 	$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
@@ -24,9 +21,9 @@ tarroot: host-fakeroot makedevs
 		-i $(STAGING_DIR)/fakeroot.env \
 		-s $(STAGING_DIR)/fakeroot.env -- \
 		$(STAGING_DIR)/bin/makedevs \
-		-d target/generic/device_table.txt \
+		-d $(TARGET_DEVICE_TABLE) \
 		$(TARGET_DIR)
-	# Use fakeroot to fake out tar per the previous fakery
+	# Use fakeroot so tar believes the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
 		-s $(STAGING_DIR)/fakeroot.env -- \
