@@ -32,9 +32,7 @@ jpeg-source: $(DL_DIR)/$(JPEG_SOURCE)
 
 $(JPEG_DIR)/.unpacked: $(DL_DIR)/$(JPEG_SOURCE)
 	$(JPEG_CAT) $(DL_DIR)/$(JPEG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	# The config.guess distributed with the package is not able
-	# to handle cross compilation.  Use the one from binutils.
-	cp $(BINUTILS_DIR)/config.guess $(JPEG_DIR)/
+	$(CONFIG_UPDATE) $(JPEG_DIR)
 	touch $(JPEG_DIR)/.unpacked
 
 $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked

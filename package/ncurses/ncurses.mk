@@ -36,6 +36,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 	$(SED) 's~\$$srcdir/shlib tic\$$suffix~/usr/bin/tic~' \
 		$(NCURSES_DIR)/misc/run_tic.in
 	toolchain/patch-kernel.sh $(NCURSES_DIR) package/ncurses/ ncurses\*.patch
+	$(CONFIG_UPDATE) $(NCURSES_DIR)
 	touch  $(NCURSES_DIR)/.dist
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
