@@ -1,6 +1,67 @@
-diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/fmtmsg/Makefile ltp-full-20040506/testcases/kernel/syscalls/fmtmsg/Makefile
---- ltp-full-20040506.orig/testcases/kernel/syscalls/fmtmsg/Makefile	2003-03-04 09:15:27.000000000 -0700
-+++ ltp-full-20040506/testcases/kernel/syscalls/fmtmsg/Makefile	2004-05-12 14:03:56.000000000 -0600
+diff -urN ltp-full-20050707-dist/lib/tlibio.c ltp-full-20050707/lib/tlibio.c
+--- ltp-full-20050707-dist/lib/tlibio.c	2005-07-11 16:28:09.000000000 -0600
++++ ltp-full-20050707/lib/tlibio.c	2005-08-02 19:56:11.000000000 -0600
+@@ -101,9 +101,11 @@
+ #endif
+ #if defined(linux) || defined(__sun) || defined(__hpux) || defined(_AIX)
+ #ifndef UCLINUX
++#ifndef __UCLIBC__
+ #include <aio.h>
+ #endif
+ #endif
++#endif
+ #include <stdlib.h> /* atoi, abs */
+ 
+ #include "tlibio.h"		/* defines LIO* marcos */
+diff -urN ltp-full-20050707-dist/testcases/kernel/io/disktest/Makefile ltp-full-20050707/testcases/kernel/io/disktest/Makefile
+--- ltp-full-20050707-dist/testcases/kernel/io/disktest/Makefile	2005-05-04 11:54:00.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/io/disktest/Makefile	2005-08-02 21:13:22.000000000 -0600
+@@ -150,8 +150,8 @@
+ 
+ VER=`grep VER_STR main.h | awk -F\" '{print $$2}'`
+ GBLHDRS=main.h globals.h defs.h
+-ALLHDRS=$(wildcard *.h)
+-SRCS=$(wildcard *.c)
++ALLHDRS=#$(wildcard *.h)
++SRCS=#$(wildcard *.c)
+ OBJS=$(SRCS:.c=.o)
+ 
+ CFLAGS= -g -Wall -O -D"LINUX" -D"_THREAD_SAFE" -D"_GNU_SOURCE" -D"_LARGE_FILES" -D"_LARGEFILE64_SOURCE" -D"_FILE_OFFSET_BITS=64"
+@@ -159,7 +159,7 @@
+ all: $(OBJS) disktest
+ 
+ disktest: $(OBJS) $(SRCS) $(ALLHDRS)
+-	$(CC) $(CFLAGS) -lpthread -odisktest $(OBJS)
++	echo NEED TO $(CC) $(CFLAGS) -lpthread -odisktest $(OBJS)
+ 
+ main.o: main.c $(ALLHDRS)
+ sfunc.o: sfunc.c sfunc.h $(GBLHDRS)
+@@ -175,8 +175,8 @@
+ stats.o: stats.c stats.h $(GBLHDRS)
+ 
+ install: disktest
+-	cp disktest $(bindir)
+-	cp man1/disktest.1.gz $(mandir)/man1
++	echo NEED TO cp disktest $(bindir)
++	echo NEED TO cp man1/disktest.1.gz $(mandir)/man1
+ 
+ uninstall: disktest
+ 	rm -f $(bindir)/disktest
+diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/fmtmsg/Makefile ltp-full-20050707/testcases/kernel/syscalls/fmtmsg/Makefile
+--- ltp-full-20050707-dist/testcases/kernel/syscalls/fmtmsg/Makefile	2005-07-11 16:28:18.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/syscalls/fmtmsg/Makefile	2005-08-02 19:56:11.000000000 -0600
+@@ -26,7 +26,7 @@
+ LOADLIBES+=	$(if $(UCLINUX),-lc)
+ 
+ SRCS=$(wildcard *.c)
+-TARGETS=$(patsubst %.c,%,$(SRCS))
++TARGETS=#$(patsubst %.c,%,$(SRCS))
+ 
+ all: $(TARGETS)
+ 
+diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/getcontext01/Makefile ltp-full-20050707/testcases/kernel/syscalls/getcontext01/Makefile
+--- ltp-full-20050707-dist/testcases/kernel/syscalls/getcontext01/Makefile	2005-05-26 14:38:47.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/syscalls/getcontext01/Makefile	2005-08-02 19:56:11.000000000 -0600
 @@ -24,7 +24,7 @@
  LOADLIBES+=	-L../../../../lib -lltp
  
@@ -10,11 +71,11 @@ diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/fmtmsg/Makefile ltp-f
  
  all: $(TARGETS)
  
-diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/profil/Makefile ltp-full-20040506/testcases/kernel/syscalls/profil/Makefile
---- ltp-full-20040506.orig/testcases/kernel/syscalls/profil/Makefile	2003-03-04 09:16:26.000000000 -0700
-+++ ltp-full-20040506/testcases/kernel/syscalls/profil/Makefile	2004-05-12 14:03:56.000000000 -0600
-@@ -23,7 +23,7 @@
- LOADLIBES+=	-L../../../../lib -lltp 
+diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/profil/Makefile ltp-full-20050707/testcases/kernel/syscalls/profil/Makefile
+--- ltp-full-20050707-dist/testcases/kernel/syscalls/profil/Makefile	2005-07-11 16:28:53.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/syscalls/profil/Makefile	2005-08-02 19:56:11.000000000 -0600
+@@ -25,7 +25,7 @@
+ LOADLIBES+=	$(if $(UCLINUX),-lc)
  
  SRCS=$(wildcard *.c)
 -TARGETS=$(patsubst %.c,%,$(SRCS))
@@ -22,21 +83,33 @@ diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/profil/Makefile ltp-f
  
  all: $(TARGETS)
  
-diff -urN ltp-full-20040506.orig/testcases/kernel/syscalls/swapon/swapon02.c ltp-full-20040506/testcases/kernel/syscalls/swapon/swapon02.c
---- ltp-full-20040506.orig/testcases/kernel/syscalls/swapon/swapon02.c	2004-04-23 12:13:20.000000000 -0600
-+++ ltp-full-20040506/testcases/kernel/syscalls/swapon/swapon02.c	2004-05-12 23:02:50.000000000 -0600
-@@ -85,9 +85,7 @@
+diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/pselect/Makefile ltp-full-20050707/testcases/kernel/syscalls/pselect/Makefile
+--- ltp-full-20050707-dist/testcases/kernel/syscalls/pselect/Makefile	2005-05-26 09:35:58.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/syscalls/pselect/Makefile	2005-08-02 19:56:11.000000000 -0600
+@@ -24,7 +24,7 @@
+ LOADLIBES+=	-L../../../../lib -lltp
+ 
+ SRCS=$(wildcard *.c)
+-TARGETS=$(patsubst %.c,%,$(SRCS))
++TARGETS=#$(patsubst %.c,%,$(SRCS))
+ 
+ all: $(TARGETS)
+ 
+diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/swapon/swapon02.c ltp-full-20050707/testcases/kernel/syscalls/swapon/swapon02.c
+--- ltp-full-20050707-dist/testcases/kernel/syscalls/swapon/swapon02.c	2005-07-11 16:29:08.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/syscalls/swapon/swapon02.c	2005-08-02 19:56:38.000000000 -0600
+@@ -86,9 +86,7 @@
+ #include <sys/stat.h>
  #include <sys/swap.h>
  #include <asm/page.h>
- #include <asm/atomic.h>
 -#ifdef OLDER_DISTRO_RELEASE
 -#include <linux/swap.h>
 -#endif
-+#define MAX_SWAPFILES 32
++#define MAX_SWAPFILES 32 
  #include <fcntl.h>
  #include <pwd.h>
  #include <string.h>
-@@ -96,10 +94,6 @@
+@@ -97,10 +95,6 @@
  #include "test.h"
  #include "usctest.h"
  
