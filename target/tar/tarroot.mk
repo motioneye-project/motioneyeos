@@ -10,7 +10,9 @@ tarroot: host-fakeroot makedevs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	/sbin/ldconfig -r $(TARGET_DIR)
+	test -e "$(TARGET_DIR)/etc/ld.so.conf" \
+		&& /sbin/ldconfig -r $(TARGET_DIR) \
+		|| true
 	# Use fakeroot to pretend all target binaries are owned by root
 	$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
