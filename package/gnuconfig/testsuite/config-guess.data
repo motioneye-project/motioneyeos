@@ -1,0 +1,14 @@
+crisv32	2.6.6			Linux		ignored	crisv32-axis-linux-gnu
+frv	2.4.24			Linux		ignored	frv-unknown-linux-gnu
+3	2.3.3			XENIX		SysV	i386-pc-xenix
+2064	ignored			z/VM		ignored	s390-ibm-zvmoe
+amd64	1.5.12(0.116/4/2)	CYGWIN_NT-5.2	ignored	x86_64-unknown-cygwin
+crayx1	2.5.20			UNICOS/mp	ignored	craynv-cray-unicosmp2.5.X
+NSE-N	1.0			NONSTOP_KERNEL	ignored	nse-tandem-nsk1.0
+i386	ignored			VOS		ignored	i386-stratus-vos
+arm	ignored			RISCOS		ignored	arm-unknown-riscos
+arm	ignored			riscos		ignored	arm-unknown-riscos
+i586	5.0.0			skyos		ignored	i586-pc-skyos5.0.0
+i786-pc	ignored			windows32	ignored	i786-pc-mingw32
+or32	ignored			Linux		ignored	or32-unknown-linux-gnu
+x86_64	1.5.18(0.132/4/2)	CYGWIN_NT-5.2	ignored	x86_64-unknown-cygwin
