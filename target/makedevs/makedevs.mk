@@ -20,6 +20,10 @@ $(STAGING_DIR)/bin/makedevs: $(MAKEDEVS_DIR)/makedevs
 	$(INSTALL) -m 755 $(MAKEDEVS_DIR)/makedevs $(STAGING_DIR)/bin/makedevs
 	touch -c $(STAGING_DIR)/bin/makedevs
 
+$(STAGING_DIR)/fakeroot.env:
+	cat $(STAGING_DIR)/.fakeroot.* > $(STAGING_DIR)/fakeroot.env
+	touch -c $(STAGING_DIR)/fakeroot.env
+
 makedevs: $(STAGING_DIR)/bin/makedevs
 
 makedevs-source:
