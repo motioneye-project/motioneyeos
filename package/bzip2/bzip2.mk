@@ -43,6 +43,7 @@ $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VER): $(BZIP2_DIR)/.unpacked
 $(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VER)
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) bzip2 bzip2recover
+	touch -c $(BZIP2_BINARY)
 
 $(BZIP2_TARGET_BINARY): $(BZIP2_BINARY)
 	(cd $(TARGET_DIR)/usr/bin; \
