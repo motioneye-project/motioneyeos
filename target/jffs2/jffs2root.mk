@@ -38,12 +38,14 @@ JFFS2_TARGET := $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT))
 # value of MKFS_JFFS2 to either the previously installed copy or the one
 # just built.
 #
-$(JFFS2_TARGET): mtd-host
+$(JFFS2_TARGET): host-fakeroot mtd-host
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	/sbin/ldconfig -r $(TARGET_DIR)
+	test -e "$(TARGET_DIR)/etc/ld.so.conf" \
+		&& /sbin/ldconfig -r $(TARGET_DIR) \
+		|| true
 	# Use fakeroot to pretend all target binaries are owned by root
 	$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
