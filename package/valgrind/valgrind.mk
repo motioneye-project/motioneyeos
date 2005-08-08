@@ -65,6 +65,10 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/none/vgskin_none.so
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(VALGRIND_DIR) install;
+	mv $(TARGET_DIR)/usr/bin/valgrind $(TARGET_DIR)/usr/bin/valgrind.bin
+	cp package/valgrind/uclibc.supp $(TARGET_DIR)/usr/lib/valgrind/
+	cp package/valgrind/valgrind.sh $(TARGET_DIR)/usr/bin/valgrind
+	chmod a+x $(TARGET_DIR)/usr/bin/valgrind
 	rm -rf $(TARGET_DIR)/usr/share/doc/valgrind
 	#mkdir -p $(TARGET_DIR)/etc/default
 	#cp $(VALGRIND_DIR)/valgrind.default $(TARGET_DIR)/etc/default/valgrind
