@@ -53,13 +53,13 @@ ifeq ($(strip $(BR2_sparc)),y)
 SQUASHFS_ENDIANNESS=-be
 endif
 
-squashfsroot: squashfs host-fakeroot makedevs
+squashfsroot: host-fakeroot makedevs squashfs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
-	/sbin/ldconfig -r $(TARGET_DIR)
+	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
-	$(STAGING_DIR)/usr/bin/fakeroot \
+	-$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/fakeroot.env \
 		-s $(STAGING_DIR)/fakeroot.env -- \
 		chown -R root:root $(TARGET_DIR)
