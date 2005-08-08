@@ -53,7 +53,7 @@ ifeq ($(strip $(BR2_sparc)),y)
 SQUASHFS_ENDIANNESS=-be
 endif
 
-squashfsroot: host-fakeroot makedevs squashfs
+squashfsroot: host-fakeroot makedevs $(STAGING_DIR)/fakeroot.env squashfs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
