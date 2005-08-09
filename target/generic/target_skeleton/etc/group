@@ -5,6 +5,7 @@ sys:x:3:
 adm:x:4:
 tty:x:5:
 disk:x:6:
+wheel:x:10:root
 utmp:x:43:
 staff:x:50:
 nobody:x:99:
