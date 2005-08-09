@@ -120,3 +120,24 @@ diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/swapon/swapon02.c ltp
  static void setup();
  static void cleanup();
  static int setup01();
+--- ltp-full-20050707/testcases/kernel/fs/acls/acl_file_test.c.orig	2005-08-09 01:41:25.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/fs/acls/acl_file_test.c	2005-08-09 01:42:29.000000000 -0600
+@@ -52,12 +52,18 @@
+ 	}
+ 
+ 	//s = syscall(237, fd,tok); //fremovexattr
++#ifdef __NR_fremovexattr
+         s = syscall(__NR_fremovexattr, fd,tok); //fremovexattr
+ 	if (s == -1) {
+                 printf ("User unable to remove extended attributes file %s !\n", argv[1]);
+                 printf("errno = %i\n", errno);
+                 rc = 1;
+         }
++#else
++	printf ("User unable to remove extended attributes file %s !\n", argv[1]);
++	printf("errno = %i\n", ENOSYS);
++	rc = 1;
++#endif
+ 	
+ 	close (fd);	
+ 	return  rc;		
