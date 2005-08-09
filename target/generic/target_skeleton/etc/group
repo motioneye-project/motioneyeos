@@ -8,5 +8,6 @@ disk:x:6:
 utmp:x:43:
 staff:x:50:
 nobody:x:99:
+nogroup:x:99:
 users:x:100:
 default:x:1000:
