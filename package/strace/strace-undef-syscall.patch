@@ -1,0 +1,15 @@
+--- strace-4.5.12/linux/syscallent.h.orig	2005-08-09 01:48:54.000000000 -0600
++++ strace-4.5.12/linux/syscallent.h	2005-08-09 01:50:23.000000000 -0600
+@@ -298,7 +298,11 @@
+ 	{ 3,	0,	sys_io_cancel,		"io_cancel"	}, /* 249 */
+ 	{ 5,	TF,	sys_fadvise64,		"fadvise64"	}, /* 250 */
+ 	{ 5,	0,	printargs,		"SYS_251"	}, /* 251 */
+-	{ 1,	TP,	sys_exit,		"exit_group", __NR_exit_group }, /* 252 */
++	{ 1,	TP,	sys_exit,		"exit_group"
++#ifdef __NR_exit_group
++	    , __NR_exit_group
++#endif
++								}, /* 252 */
+ 	{ 4,	0,	printargs,		"lookup_dcookie"}, /* 253 */
+ 	{ 1,	0,	sys_epoll_create,	"epoll_create"	}, /* 254 */
+ 	{ 4,	0,	sys_epoll_ctl,		"epoll_ctl"	}, /* 255 */
