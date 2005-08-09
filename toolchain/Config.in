@@ -46,7 +46,7 @@ config BR2_TARGET_OPTIMIZATION
 	  Optimizations to use when building for the target host.
 
 config BR2_CROSS_TOOLCHAIN_TARGET_UTILS
-	bool "Include target utils in cross toolchain."
+	bool "Include target utils in cross toolchain"
 	default y
 	help
 	  When using buildroot to build a deployable cross toolchain, it is handy
