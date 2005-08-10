@@ -33,6 +33,7 @@ rxvt-source: $(DL_DIR)/$(RXVT_SOURCE)
 
 $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
 	$(RXVT_CAT) $(DL_DIR)/$(RXVT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ rxvt\*.patch
 	touch $(RXVT_DIR)/.unpacked
 
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
@@ -48,7 +49,6 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--x-includes=$(TINYX_DIR)/exports/include \
 		--x-libraries=$(TINYX_DIR)/exports/lib \
 	);
-	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ rxvt\*.patch
 	touch  $(RXVT_DIR)/.configured
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured
