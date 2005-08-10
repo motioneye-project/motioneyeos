@@ -56,17 +56,20 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 	);
 	touch  $(JPEG_DIR)/.configured
 
-$(JPEG_DIR)/.libs/libjpeg.so.62.0.0: $(JPEG_DIR)/.configured
+$(JPEG_DIR)/.libs/libjpeg.a: $(JPEG_DIR)/.configured
 	$(MAKE) -C $(JPEG_DIR) all
+	touch -c $(JPEG_DIR)/.libs/libjpeg.a
 
-$(STAGING_DIR)/lib/libjpeg.so.62.0.0: $(JPEG_DIR)/.libs/libjpeg.so.62.0.0
+$(STAGING_DIR)/lib/libjpeg.a: $(JPEG_DIR)/.libs/libjpeg.a
 	$(MAKE) -C $(JPEG_DIR) prefix=$(STAGING_DIR) exec_prefix=$(STAGING_DIR) install-headers install-lib
+	touch -c $(STAGING_DIR)/lib/libjpeg.a
 
-$(TARGET_DIR)/usr/lib/libjpeg.so.62.0.0: $(STAGING_DIR)/lib/libjpeg.so.62.0.0
-	cp -dpf $(STAGING_DIR)/lib/libjpeg.so* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libjpeg.so.62.0.0
+$(TARGET_DIR)/usr/lib/libjpeg.a: $(STAGING_DIR)/lib/libjpeg.a
+	cp -dpf $(STAGING_DIR)/lib/libjpeg* $(TARGET_DIR)/usr/lib/
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libjpeg.so*
+	touch -c $(TARGET_DIR)/usr/lib/libjpeg.a
 
-jpeg: uclibc $(TARGET_DIR)/usr/lib/libjpeg.so.62.0.0
+jpeg: uclibc $(TARGET_DIR)/usr/lib/libjpeg.a
 
 jpeg-clean:
 	-$(MAKE) -C $(JPEG_DIR) clean
