@@ -3,11 +3,12 @@
 # ltp-testsuite
 #
 #############################################################
-LTP_TESTSUITE_SOURCE:=ltp-full-20050707.tgz
+LTP_TESTSUITE_VERSION:=20050804
+LTP_TESTSUITE_SOURCE:=ltp-full-$(LTP_TESTSUITE_VERSION).tgz
 LTP_TESTSUITE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ltp
 LTP_TESTSUITE_CAT:=zcat
 LTP_TESTSUITE_ROOT:=$(TARGET_DIR)/root
-LTP_TESTSUITE_DIR:=$(LTP_TESTSUITE_ROOT)/ltp-full-20050707
+LTP_TESTSUITE_DIR:=$(LTP_TESTSUITE_ROOT)/ltp-full-$(LTP_TESTSUITE_VERSION)
 
 
 $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
