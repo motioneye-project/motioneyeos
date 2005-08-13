@@ -1,34 +1,36 @@
---- Python-2.3.4/Makefile.pre.in.orig	2003-11-18 14:54:00.000000000 -0500
-+++ Python-2.3.4/Makefile.pre.in	2004-07-29 21:44:47.075924464 -0400
-@@ -159,6 +159,7 @@
+Ripped from OpenEmbedded
+
+--- Python-2.4c1/Makefile.pre.in
++++ Python-2.4c1/Makefile.pre.in
+@@ -162,6 +162,7 @@
  
  PYTHON=		python$(EXE)
  BUILDPYTHON=	python$(BUILDEXE)
-+HOSTPYTHON=	./$(BUILDPYTHON)
++HOSTPYTHON=	$(BUILDPYTHON)
  
  # === Definitions added by makesetup ===
  
-@@ -186,6 +187,8 @@
+@@ -188,7 +189,7 @@
+ ##########################################################################
  # Parser
  PGEN=		Parser/pgen$(EXE)
- 
-+HOSTPGEN=	$(PGEN)
-+
+-
++HOSTPGEN=	$(PGEN)$(EXE)
  POBJS=		\
  		Parser/acceler.o \
  		Parser/grammar1.o \
-@@ -314,8 +317,8 @@
+@@ -320,8 +321,8 @@
  # Build the shared modules
  sharedmods: $(BUILDPYTHON)
  	case $$MAKEFLAGS in \
 -	*-s*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' ./$(BUILDPYTHON) -E $(srcdir)/setup.py -q build;; \
 -	*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' ./$(BUILDPYTHON) -E $(srcdir)/setup.py build;; \
-+	*-s*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' CROSS_COMPILE='yes' OPT='$(OPT)' DESTDIR='$(DESTDIR)'  $(HOSTPYTHON) -E $(srcdir)/setup.py -q build;; \
-+	*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' CROSS_COMPILE='yes' OPT='$(OPT)' DESTDIR='$(DESTDIR)' $(HOSTPYTHON) -E $(srcdir)/setup.py build;; \
++	*-s*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' $(HOSTPYTHON) -E $(srcdir)/setup.py -q build;; \
++	*) $(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' $(HOSTPYTHON) -E $(srcdir)/setup.py build;; \
  	esac
  
  # buildno should really depend on something like LIBRARY_SRC
-@@ -432,7 +435,7 @@
+@@ -442,7 +443,7 @@
  
  
  $(GRAMMAR_H) $(GRAMMAR_C): $(PGEN) $(GRAMMAR_INPUT)
@@ -37,7 +39,7 @@
  
  $(PGEN):	$(PGENOBJS)
  		$(CC) $(OPT) $(LDFLAGS) $(PGENOBJS) $(LIBS) -o $(PGEN)
-@@ -705,19 +708,19 @@
+@@ -718,19 +719,19 @@
  	done
  	$(INSTALL_DATA) $(srcdir)/LICENSE $(DESTDIR)$(LIBDEST)/LICENSE.txt
  	PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
@@ -50,68 +52,55 @@
 +		$(HOSTPYTHON) -Wi -tt -O $(DESTDIR)$(LIBDEST)/compileall.py \
  		-d $(LIBDEST) -f \
  		-x 'badsyntax|site-packages' $(DESTDIR)$(LIBDEST)
- 	PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
 -		./$(BUILDPYTHON) -Wi -t $(DESTDIR)$(LIBDEST)/compileall.py \
 +		$(HOSTPYTHON) -Wi -t $(DESTDIR)$(LIBDEST)/compileall.py \
  		-d $(LIBDEST)/site-packages -f \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
- 	PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
 -		./$(BUILDPYTHON) -Wi -t -O $(DESTDIR)$(LIBDEST)/compileall.py \
 +		$(HOSTPYTHON) -Wi -t -O $(DESTDIR)$(LIBDEST)/compileall.py \
  		-d $(LIBDEST)/site-packages -f \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
  
-@@ -812,7 +815,8 @@
+@@ -825,7 +826,7 @@
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall:
 -	$(RUNSHARED) ./$(BUILDPYTHON) -E $(srcdir)/setup.py install \
-+	CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' CROSS_COMPILE='$(CROSS_COMPILE)' \
-+		$(HOSTPYTHON) -E $(srcdir)/setup.py install \
++	$(RUNSHARED) $(HOSTPYTHON) -E $(srcdir)/setup.py install \
  	   	--prefix=$(prefix) \
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
---- Python-2.3.4/setup.py.orig	2004-07-29 21:32:12.993562408 -0400
-+++ Python-2.3.4/setup.py	2004-07-29 21:47:12.174866072 -0400
-@@ -213,6 +213,7 @@
+--- Python-2.4c1/setup.py
++++ Python-2.4c1/setup.py
+@@ -206,6 +206,7 @@
          try:
              imp.load_dynamic(ext.name, ext_filename)
          except ImportError, why:
-+          if os.environ.get('CROSS_COMPILE') != "yes":
++            return
              self.announce('*** WARNING: renaming "%s" since importing it'
                            ' failed: %s' % (ext.name, why), level=3)
              assert not self.inplace
-@@ -233,6 +234,9 @@
-                     os.remove(filename)
-             except AttributeError:
-                 self.announce('unable to remove files (ignored)')
-+          else:
-+            self.announce('WARNING: "%s" failed importing, but we leave it because we are cross-compiling' %
-+                          ext.name)
-         except:
-             exc_type, why, tb = sys.exc_info()
-             self.announce('*** WARNING: importing extension "%s" '
-@@ -245,8 +245,9 @@
+@@ -239,8 +240,6 @@
  
      def detect_modules(self):
          # Ensure that /usr/local is always used
 -        add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
 -        add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
-+        #add_dir_to_list(self.compiler.library_dirs, os.getenv('DESTDIR') + '/lib')
-+        #add_dir_to_list(self.compiler.library_dirs, os.getenv('DESTDIR') + '/usr/lib')
-+        #add_dir_to_list(self.compiler.include_dirs, os.getenv('DESTDIR') + '/usr/include')
  
-         # fink installs lots of goodies in /sw/... - make sure we
-         # check there
-@@ -254,11 +255,6 @@
-             add_dir_to_list(self.compiler.library_dirs, '/sw/lib')
-             add_dir_to_list(self.compiler.include_dirs, '/sw/include')
+         # Add paths to popular package managers on OS X/darwin
+         if sys.platform == "darwin":
+@@ -260,12 +260,6 @@
+             add_dir_to_list(self.compiler.library_dirs, '/opt/local/lib')
+             add_dir_to_list(self.compiler.include_dirs, '/opt/local/include')
  
 -        if os.path.normpath(sys.prefix) != '/usr':
 -            add_dir_to_list(self.compiler.library_dirs,
 -                            sysconfig.get_config_var("LIBDIR"))
 -            add_dir_to_list(self.compiler.include_dirs,
 -                            sysconfig.get_config_var("INCLUDEDIR"))
- 
+-
          try:
              have_unicode = unicode
+         except NameError:
