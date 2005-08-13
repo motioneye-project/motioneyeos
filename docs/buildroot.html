@@ -107,25 +107,24 @@
 
     <h2><a name="download" id="download"></a>Obtaining Buildroot</h2>
 
-    <p>Buildroot is available as daily CVS snapshots or directly using
-    CVS.</p>
+    <p>Buildroot is available as daily SVN snapshots or directly using
+    SVN.</p>
 
     <p>The latest snapshot is always available at <a
     href="http://uclibc.org/downloads/snapshots/buildroot-snapshot.tar.bz2">http://uclibc.org/downloads/snapshots/buildroot-snapshot.tar.bz2</a>,
     and previous snapshots are also available at <a
     href="http://uclibc.org/downloads/snapshots/">http://uclibc.org/downloads/snapshots/</a>.</p>
 
-    <p>To download Buildroot using CVS, you can simply follow
-    the rules described on the "Accessing CVS"-page (<a href=
-    "http://www.uclibc.org/cvs_anon.html">http://www.uclibc.org/cvs_anon.html</a>)
-    of the uClibc website (<a href=
-    "http://www.uclibc.org">http://www.uclibc.org</a>), and download the
-    <code>buildroot</code> CVS module. For the impatient, here's a quick
+    <p>To download Buildroot using SVN, you can simply follow
+    the rules described on the "Accessing SVN"-page (<a href=
+    "http://buildroot.uclibc.org/subversion.html">http://buildroot.uclibc.org/subversion.html</a>)
+    of the uClibc buildroot website (<a href=
+    "http://buildroot.uclibc.org">http://buildroot.uclibc.org</a>), and download the
+    <code>buildroot</code> SVN module. For the impatient, here's a quick
     recipe:</p>
 
  <pre>
- $ cvs -d:pserver:anonymous@uclibc.org:/var/cvs login
- $ cvs -z3 -d:pserver:anonymous@uclibc.org:/var/cvs co buildroot
+ $ svn co svn://uclibc.org/trunk/buildroot
 </pre>
 
     <h2><a name="using" id="using"></a>Using Buildroot</h2>
