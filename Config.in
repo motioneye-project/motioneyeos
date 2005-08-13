@@ -109,7 +109,7 @@ config BR2_TAR_VERBOSITY
 
 config BR2_SOURCEFORGE_MIRROR
         string "Sourceforge mirror site"
-	default "unc"
+	default "easynews"
 	help
 	    Sourceforge has a system of mirror sites.  Some sites may be closer
 	    to your location, and sometimes mirror sites go down and are no longer
