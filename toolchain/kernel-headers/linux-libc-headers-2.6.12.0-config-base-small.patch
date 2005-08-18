@@ -1,0 +1,30 @@
+diff -urN linux-libc-headers-2.6.12.0/include/linux/threads.h linux-libc-headers-2.6.12.0-patched/include/linux/threads.h
+--- linux-libc-headers-2.6.12.0/include/linux/threads.h	2005-07-05 19:17:23.000000000 -0500
++++ linux-libc-headers-2.6.12.0-patched/include/linux/threads.h	2005-08-18 11:39:15.000000000 -0500
+@@ -24,12 +24,11 @@
+ /*
+  * This controls the default maximum pid allocated to a process
+  */
+-#define PID_MAX_DEFAULT (CONFIG_BASE_SMALL ? 0x1000 : 0x8000)
++#define PID_MAX_DEFAULT 0x8000
+ 
+ /*
+  * A maximum of 4 million PIDs should be enough for a while:
+  */
+-#define PID_MAX_LIMIT (CONFIG_BASE_SMALL ? PAGE_SIZE * 8 : \
+-	(sizeof(long) > 4 ? 4 * 1024 * 1024 : PID_MAX_DEFAULT))
++#define PID_MAX_LIMIT (sizeof(long) > 4 ? 4 * 1024 * 1024 : PID_MAX_DEFAULT)
+ 
+ #endif
+diff -urN linux-libc-headers-2.6.12.0/include/linux/vt_kern.h linux-libc-headers-2.6.12.0-patched/include/linux/vt_kern.h
+--- linux-libc-headers-2.6.12.0/include/linux/vt_kern.h	2005-07-05 19:17:23.000000000 -0500
++++ linux-libc-headers-2.6.12.0-patched/include/linux/vt_kern.h	2005-08-18 11:39:30.000000000 -0500
+@@ -77,7 +77,7 @@
+  * we can easily avoid touching user space while holding the console spinlock.
+  */
+ 
+-#define CON_BUF_SIZE (CONFIG_BASE_SMALL ? 256 : PAGE_SIZE)
++#define CON_BUF_SIZE PAGE_SIZE
+ extern char con_buf[CON_BUF_SIZE];
+ extern struct semaphore con_buf_sem;
+ 
