@@ -13,6 +13,15 @@ OPENVPN_CAT:=zcat
 OPENVPN_BINARY:=openvpn
 OPENVPN_TARGET_BINARY:=usr/sbin/openvpn
 
+#
+# Select thread model.
+#
+ifeq ($(strip $(BR2_PTHREADS_NATIVE)),y)
+THREAD_MODEL="--enable-threads=posix"
+else
+THREAD_MODEL=--enable-pthread
+endif
+
 $(DL_DIR)/$(OPENVPN_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(OPENVPN_SITE)/$(OPENVPN_SOURCE)
 
@@ -41,7 +50,7 @@ $(OPENVPN_DIR)/.configured: $(OPENVPN_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--program-prefix="" \
-		--enable-pthread \
+		$(THREAD_MODEL) \
 	);
 	touch  $(OPENVPN_DIR)/.configured
 

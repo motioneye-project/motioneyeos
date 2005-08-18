@@ -21,6 +21,8 @@ $(DL_DIR)/$(MTD_SOURCE):
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	zcat $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
+		package/mtd \*.patch
 	touch $(MTD_HOST_DIR)/.unpacked
 
 $(MTD_HOST_DIR)/util/mkfs.jffs2: $(MTD_HOST_DIR)/.unpacked
@@ -46,6 +48,8 @@ MTD_DIR:=$(BUILD_DIR)/mtd-20050122.orig
 
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	zcat $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(MTD_DIR) \
+		package/mtd \*.patch
 	touch $(MTD_DIR)/.unpacked
 
 MTD_TARGETS_n :=

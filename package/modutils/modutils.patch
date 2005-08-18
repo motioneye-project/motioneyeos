@@ -1,5 +1,6 @@
---- _modutils-2.4.26/Makefile.in	2005-02-01 12:41:39.000000000 +0100
-+++ modutils-2.4.26/Makefile.in	2005-02-01 12:39:18.000000000 +0100
+diff -ur modutils-2.4.27/Makefile.in modutils-2.4.27-patched/Makefile.in
+--- modutils-2.4.27/Makefile.in	2004-03-07 01:24:48.000000000 -0600
++++ modutils-2.4.27-patched/Makefile.in	2005-08-17 08:41:57.000000000 -0500
 @@ -3,7 +3,7 @@
  include	Makefile.common
  
@@ -9,8 +10,26 @@
  ifneq (@kerneld_SUBDIR@,)
  	SUBDIRS += man_kerneld
  endif
---- _modutils-2.4.26/insmod/Makefile.in	2003-10-27 05:42:07.000000000 +0100
-+++ modutils-2.4.26/insmod/Makefile.in	2005-02-01 12:39:40.000000000 +0100
+diff -ur modutils-2.4.27/depmod/depmod.c modutils-2.4.27-patched/depmod/depmod.c
+--- modutils-2.4.27/depmod/depmod.c	2003-03-22 20:34:28.000000000 -0600
++++ modutils-2.4.27-patched/depmod/depmod.c	2005-08-17 21:33:40.000000000 -0500
+@@ -1132,8 +1132,11 @@
+ 			return -1;
+ 
+ 		for (ksym = ksyms; so_far < nksyms; ++so_far, ksym++) {
+-			if (strncmp((char *)ksym->name, "GPLONLY_", 8) == 0)
+-				((char *)ksym->name) += 8;
++			if (strncmp((char *)ksym->name, "GPLONLY_", 8) == 0) {
++				char *p = (char *)ksym->name;
++				p += 8;
++				ksym->name = p;
++			}
+ 			assert(n_syms < MAX_MAP_SYM);
+ 			symtab[n_syms++] = addsym((char *)ksym->name, mod, SYM_DEFINED, 0);
+ 		}
+diff -ur modutils-2.4.27/insmod/Makefile.in modutils-2.4.27-patched/insmod/Makefile.in
+--- modutils-2.4.27/insmod/Makefile.in	2003-10-26 22:42:07.000000000 -0600
++++ modutils-2.4.27-patched/insmod/Makefile.in	2005-08-17 08:41:57.000000000 -0500
 @@ -126,10 +126,6 @@
  	$(MKDIR) $(DESTDIR)$(sbindir); \
  	$(INSTALL) $(STRIP) $$i $(DESTDIR)$(sbindir); done;
@@ -22,3 +41,58 @@
  	for i in $(COMB); do \
  	ln -sf insmod $(DESTDIR)$(sbindir)/$$i; \
  	(test "$(insmod_static)" = yes && \
+diff -ur modutils-2.4.27/insmod/insmod.c modutils-2.4.27-patched/insmod/insmod.c
+--- modutils-2.4.27/insmod/insmod.c	2003-10-26 20:34:46.000000000 -0600
++++ modutils-2.4.27-patched/insmod/insmod.c	2005-08-17 21:34:04.000000000 -0500
+@@ -274,8 +274,11 @@
+ 		 */
+ 		if (strncmp((char *)s->name, "GPLONLY_", 8) == 0) {
+ 			gplonly_seen = 1;
+-			if (gpl)
+-				((char *)s->name) += 8;
++			if (gpl) {
++				char *p = (char *)s->name;
++				p += 8;
++				s->name = p;
++			}
+ 			else
+ 				continue;
+ 		}
+diff -ur modutils-2.4.27/obj/obj_kallsyms.c modutils-2.4.27-patched/obj/obj_kallsyms.c
+--- modutils-2.4.27/obj/obj_kallsyms.c	2002-02-28 18:39:06.000000000 -0600
++++ modutils-2.4.27-patched/obj/obj_kallsyms.c	2005-08-17 21:29:36.000000000 -0500
+@@ -200,8 +200,8 @@
+ 
+     /* Initial contents, header + one entry per input section.  No strings. */
+     osec->header.sh_size = sizeof(*a_hdr) + loaded*sizeof(*a_sec);
+-    a_hdr = (struct kallsyms_header *) osec->contents =
+-    	xmalloc(osec->header.sh_size);
++    osec->contents = xmalloc(osec->header.sh_size);
++    a_hdr = (struct kallsyms_header *) osec->contents;
+     memset(osec->contents, 0, osec->header.sh_size);
+     a_hdr->size = sizeof(*a_hdr);
+     a_hdr->sections = loaded;
+@@ -275,8 +275,8 @@
+ 	a_hdr->symbol_off +
+ 	a_hdr->symbols*a_hdr->symbol_size +
+ 	strings_size - strings_left;
+-    a_hdr = (struct kallsyms_header *) osec->contents =
+-	xrealloc(a_hdr, a_hdr->total_size);
++    osec->contents = xrealloc(a_hdr, a_hdr->total_size);
++    a_hdr = (struct kallsyms_header *) osec->contents;
+     p = (char *)a_hdr + a_hdr->symbol_off;
+     memcpy(p, symbols, a_hdr->symbols*a_hdr->symbol_size);
+     free(symbols);
+diff -ur modutils-2.4.27/obj/obj_mips.c modutils-2.4.27-patched/obj/obj_mips.c
+--- modutils-2.4.27/obj/obj_mips.c	2003-04-04 16:47:17.000000000 -0600
++++ modutils-2.4.27-patched/obj/obj_mips.c	2005-08-17 21:29:20.000000000 -0500
+@@ -244,7 +244,8 @@
+   archdata_sec->header.sh_size = 0;
+   sec = obj_find_section(f, "__dbe_table");
+   if (sec) {
+-    ad = (struct archdata *) (archdata_sec->contents) = xmalloc(sizeof(*ad));
++    archdata_sec->contents = xmalloc(sizeof(*ad));
++    ad = (struct archdata *) archdata_sec->contents;
+     memset(ad, 0, sizeof(*ad));
+     archdata_sec->header.sh_size = sizeof(*ad);
+     ad->__start___dbe_table = sec->header.sh_addr;
