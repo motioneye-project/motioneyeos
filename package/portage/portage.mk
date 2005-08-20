@@ -3,7 +3,7 @@
 # portage
 #
 #############################################################
-PORTAGE_VERSION:=2.0.51-r15
+PORTAGE_VERSION:=2.0.51.22
 PORTAGE_SOURCE:=portage-$(PORTAGE_VERSION).tar.bz2
 PORTAGE_SITE:=http://gentoo.twobit.net/portage/
 PORTAGE_CAT:=bzcat
@@ -11,14 +11,8 @@ PORTAGE_DIR:=$(BUILD_DIR)/portage-$(PORTAGE_VERSION)
 PORTAGE_TARGET_DIR:=$(TARGET_DIR)/usr/lib/portage
 PORTAGE_TARGET_BINARY:=usr/bin/emerge
 
-ifeq ($(ARCH), arm)
-	PORTAGE_ARCH:=arm
-endif
 ifeq ($(ARCH),cris)
 	PORTAGE_ARCH:=x86
-endif
-ifeq ($(ARCH), mips)
-	PORTAGE_ARCH:=mips
 endif
 ifeq ($(ARCH), mipsel)
 	PORTAGE_ARCH:=mips
@@ -32,11 +26,11 @@ endif
 ifeq ($(ARCH),sh64)
 	PORTAGE_ARCH:=sh
 endif
-ifeq ($(ARCH),sparc)
-	PORTAGE_ARCH:=sparc
-endif
 ifeq ($(ARCH), i386)
 	PORTAGE_ARCH:=x86
+endif
+ifeq ($(PORTAGE_ARCH),)
+	PORTAGE_ARCH:=$(ARCH)
 endif
 
 $(DL_DIR)/$(PORTAGE_SOURCE):
@@ -50,7 +44,6 @@ $(PORTAGE_DIR)/.unpacked: $(DL_DIR)/$(PORTAGE_SOURCE)
 	touch $(PORTAGE_DIR)/.unpacked
 
 $(PORTAGE_DIR)/.compiled: $(PORTAGE_DIR)/.unpacked
-	$(MAKE) CC=$(TARGET_CC) -C $(PORTAGE_DIR)/src/sandbox-1.1
 	$(TARGET_CC) $(TARGET_CFLAGS) $(PORTAGE_DIR)/src/tbz2tool.c -o $(PORTAGE_DIR)/src/tbz2tool
 	touch $(PORTAGE_DIR)/.compiled
 
@@ -58,7 +51,7 @@ newins=install -D
 doins=install
 dodir=install -d
 doexe=install -D -m 755
-dosym=ln -s
+dosym=ln -sf
 $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY): $(PORTAGE_DIR)/.compiled
 	(cd $(PORTAGE_DIR)/cnf; \
 		$(newins) make.globals $(TARGET_DIR)/etc/make.globals; \
@@ -74,7 +67,8 @@ $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY): $(PORTAGE_DIR)/.compiled
 	$(dodir) $(PORTAGE_TARGET_DIR)/bin
 	$(doexe) $(PORTAGE_DIR)/bin/* $(PORTAGE_DIR)/src/tbz2tool $(PORTAGE_TARGET_DIR)/bin/
 
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(PORTAGE_DIR)/src/sandbox-1.1 install
+	mkdir -p $(TARGET_DIR)/usr/portage/distfiles
+	mkdir -p $(TARGET_DIR)/var/lib/portage
 
 	$(dodir) $(PORTAGE_TARGET_DIR)/usr/bin
 	$(dodir) $(PORTAGE_TARGET_DIR)/usr/sbin
