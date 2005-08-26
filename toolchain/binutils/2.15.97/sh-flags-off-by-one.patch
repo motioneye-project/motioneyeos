@@ -1,0 +1,21 @@
+2005-08-25  Kaz Kojima  <kkojima@rr.iij4u.or.jp>
+
+	* elf32-sh.c (sh_elf_get_flags_from_mach): Fix off-by-one error.
+
+Index: bfd/elf32-sh.c
+===================================================================
+RCS file: /cvs/src/src/bfd/elf32-sh.c,v
+retrieving revision 1.128
+retrieving revision 1.129
+diff -u -p -r1.128 -r1.129
+--- binutils/bfd/elf32-sh.c	25 Aug 2005 02:32:10 -0000	1.128
++++ binutils/bfd/elf32-sh.c	25 Aug 2005 05:10:22 -0000	1.129
+@@ -6655,7 +6655,7 @@ sh_elf_set_mach_from_flags (bfd *abfd)
+ int
+ sh_elf_get_flags_from_mach (unsigned long mach)
+ {
+-  int i = ARRAY_SIZE (sh_ef_bfd_table);
++  int i = ARRAY_SIZE (sh_ef_bfd_table) - 1;
+   
+   for (; i>0; i--)
+     if (sh_ef_bfd_table[i] == mach)
