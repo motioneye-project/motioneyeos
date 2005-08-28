@@ -3,7 +3,7 @@
 # iptables
 #
 #############################################################
-IPTABLES_VER:=1.2.11
+IPTABLES_VER:=1.3.3
 IPTABLES_SOURCE_URL:=http://www.netfilter.org/files
 IPTABLES_SOURCE:=iptables-$(IPTABLES_VER).tar.bz2
 IPTABLES_BUILD_DIR:=$(BUILD_DIR)/iptables-$(IPTABLES_VER)
