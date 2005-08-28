@@ -3,7 +3,7 @@
 # dhcp
 #
 #############################################################
-DHCP_VER:=3.0.2
+DHCP_VER:=3.0.3
 DHCP_SOURCE:=dhcp-$(DHCP_VER).tar.gz
 DHCP_SITE:=ftp://ftp.isc.org/isc/dhcp
 DHCP_CAT:=zcat
