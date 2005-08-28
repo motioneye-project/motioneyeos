@@ -23,9 +23,10 @@
 # USA
 
 # TARGETS
+NCURSES_VER:=5.4
 NCURSES_SITE:=ftp://ftp.gnu.org/pub/gnu/ncurses
-NCURSES_DIR:=$(BUILD_DIR)/ncurses-5.2
-NCURSES_SOURCE:=ncurses-5.2.tar.gz
+NCURSES_DIR:=$(BUILD_DIR)/ncurses-$(NCURSES_VER)
+NCURSES_SOURCE:=ncurses-$(NCURSES_VER).tar.gz
 
 $(DL_DIR)/$(NCURSES_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NCURSES_SITE)/$(NCURSES_SOURCE)
@@ -41,7 +42,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	(cd $(NCURSES_DIR); rm -rf config.cache; \
-		BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
+		BUILD_CC=$(HOSTCC) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
@@ -68,14 +69,11 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	);
 	touch  $(NCURSES_DIR)/.configured
 
-$(NCURSES_DIR)/lib/libncurses.so.5.2: $(NCURSES_DIR)/.configured
-	$(MAKE1) BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
-		BUILD_CCFLAGS="-I$(NCURSES_DIR) -I$(NCURSES_DIR)/include" \
-		BUILD_LDFLAGS="" DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \
+$(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER): $(NCURSES_DIR)/.configured
+	$(MAKE1) DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \
 		libs panel menu form headers
 
-$(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.5.2
-	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+$(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER)
 	$(MAKE1) \
 	    prefix=$(STAGING_DIR) \
 	    exec_prefix=$(STAGING_DIR) \
@@ -95,7 +93,7 @@ $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.5.2
 	    chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
 	    touch -c $(STAGING_DIR)/lib/libncurses.a
 
-$(TARGET_DIR)/lib/libncurses.so.5.2: $(STAGING_DIR)/lib/libncurses.a
+$(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER): $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
 	-cp -dpf $(STAGING_DIR)/usr/lib/terminfo $(TARGET_DIR)/usr/lib/
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/x
@@ -109,7 +107,8 @@ $(TARGET_DIR)/lib/libncurses.so.5.2: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/a/ansi $(TARGET_DIR)/usr/share/terminfo/a
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/l
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/l/linux $(TARGET_DIR)/usr/share/terminfo/l
-	touch -c $(TARGET_DIR)/lib/libncurses.so.5.2
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
+	touch -c $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
 
 $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	mkdir -p $(TARGET_DIR)/usr/include
@@ -124,11 +123,11 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libtermcap.a)
 	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
 	rm -f $(TARGET_DIR)/lib/libncurses.so
-	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libncurses.so.5.2 libncurses.so)
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.5.2
+	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libncurses.so.$(NCURSES_VER) libncurses.so)
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
 	touch -c $(TARGET_DIR)/usr/lib/libncurses.a
 
-ncurses: $(TARGET_DIR)/lib/libncurses.so.5.2
+ncurses: $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
 
 ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
 
