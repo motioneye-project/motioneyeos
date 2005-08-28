@@ -68,6 +68,10 @@ $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 	$(MAKE) -C $(BINUTILS_DIR1) install
 
 binutils-dependancies:
+	@if ! which which > /dev/null ; then \
+		echo -e "\n\nYou must install 'which' on your build machine\n"; \
+		exit 1; \
+	fi;
 	@if ! which bison > /dev/null ; then \
 		echo -e "\n\nYou must install 'bison' on your build machine\n"; \
 		exit 1; \
