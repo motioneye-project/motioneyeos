@@ -6,17 +6,33 @@
 GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
 #"
 
+ifeq ($(GDB_VERSION),snapshot)
+# Be aware that this changes daily....
+GDB_SITE:=ftp://sources.redhat.com/pub/gdb/snapshots/current
+GDB_SOURCE:=gdb.tar.bz2
+GDB_CAT:=bzcat
+GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
+else
 GDB_SITE:=http://ftp.gnu.org/gnu/gdb
 GDB_SOURCE:=gdb-$(GDB_VERSION).tar.bz2
 GDB_CAT:=bzcat
 
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
 
+# NOTE: This option should not be used with newer gdb versions.
+DISABLE_GDBMI:=--disable-gdbmi
+endif
+
 $(DL_DIR)/$(GDB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GDB_SITE)/$(GDB_SOURCE)
 
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 	$(GDB_CAT) $(DL_DIR)/$(GDB_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+ifeq ($(GDB_VERSION),snapshot)
+	GDB_REAL_DIR=$(shell \
+		tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1)
+	ln -sf $(TOOL_BUILD_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
+endif
 	toolchain/patch-kernel.sh $(GDB_DIR) toolchain/gdb/$(GDB_VERSION) \*.patch
 	# Copy a config.sub from gcc.  This is only necessary until
 	# gdb's config.sub supports <arch>-linux-uclibc tuples.
@@ -54,7 +70,7 @@ $(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--prefix=/usr \
 		$(DISABLE_NLS) \
-		--without-uiout --disable-gdbmi \
+		--without-uiout $(DISABLE_GDBMI) \
 		--disable-tui --disable-gdbtk --without-x \
 		--disable-sim --enable-gdbserver \
 		--without-included-gettext \
@@ -111,7 +127,7 @@ $(GDB_SERVER_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--infodir=/usr/info \
 		--includedir=$(STAGING_DIR)/include \
 		$(DISABLE_NLS) \
-		--without-uiout --disable-gdbmi \
+		--without-uiout $(DISABLE_GDBMI) \
 		--disable-tui --disable-gdbtk --without-x \
 		--without-included-gettext \
 	);
@@ -155,7 +171,7 @@ $(GDB_CLIENT_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		$(DISABLE_NLS) \
-		--without-uiout --disable-gdbmi \
+		--without-uiout $(DISABLE_GDBMI) \
 		--disable-tui --disable-gdbtk --without-x \
 		--without-included-gettext \
 		--enable-threads \
