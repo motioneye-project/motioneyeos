@@ -174,7 +174,7 @@ diff -urN gcc-3.4.1-dist/gcc/config/mips/linux.h gcc-3.4.1/gcc/config/mips/linux
 diff -urN gcc-3.4.1-dist/gcc/config/rs6000/linux.h gcc-3.4.1/gcc/config/rs6000/linux.h
 --- gcc-3.4.1-dist/gcc/config/rs6000/linux.h	2004-02-25 09:11:19.000000000 -0600
 +++ gcc-3.4.1/gcc/config/rs6000/linux.h	2004-08-12 15:54:43.000000000 -0500
-@@ -61,7 +61,11 @@
+@@ -69,7 +69,11 @@
  #define LINK_START_DEFAULT_SPEC "%(link_start_linux)"
  
  #undef	LINK_OS_DEFAULT_SPEC
@@ -197,7 +197,7 @@ diff -urN gcc-3.4.1-dist/gcc/config/rs6000/sysv4.h gcc-3.4.1/gcc/config/rs6000/s
    mcall-openbsd: %(link_os_openbsd)     ; \
                 : %(link_os_default)     }"
  
-@@ -1124,6 +1125,10 @@
+@@ -1125,6 +1126,10 @@
    %{rdynamic:-export-dynamic} \
    %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}}}"
  
@@ -208,7 +208,7 @@ diff -urN gcc-3.4.1-dist/gcc/config/rs6000/sysv4.h gcc-3.4.1/gcc/config/rs6000/s
  #if defined(HAVE_LD_EH_FRAME_HDR)
  # define LINK_EH_SPEC "%{!static:--eh-frame-hdr} "
  #endif
-@@ -1290,6 +1295,7 @@
+@@ -1291,6 +1296,7 @@
    { "link_os_sim",		LINK_OS_SIM_SPEC },			\
    { "link_os_freebsd",		LINK_OS_FREEBSD_SPEC },			\
    { "link_os_linux",		LINK_OS_LINUX_SPEC },			\
@@ -241,40 +241,6 @@ diff -urN gcc-3.4.1-dist/gcc/config/sh/linux.h gcc-3.4.1/gcc/config/sh/linux.h
  
  #undef LIB_SPEC
  #define LIB_SPEC \
-diff -urN gcc-3.4.1-dist/gcc/config/sh/t-linux-uclibc gcc-3.4.1/gcc/config/sh/t-linux-uclibc
---- gcc-3.4.1-dist/gcc/config/sh/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.4.1/gcc/config/sh/t-linux-uclibc	2004-08-12 15:54:43.000000000 -0500
-@@ -0,0 +1,13 @@
-+T_CFLAGS = -DUSE_UCLIBC
-+
-+TARGET_LIBGCC2_CFLAGS = -fpic -DNO_FPSCR_VALUES
-+LIB1ASMFUNCS_CACHE = _ic_invalidate
-+
-+LIB2FUNCS_EXTRA=
-+
-+MULTILIB_OPTIONS= $(MULTILIB_ENDIAN) m3e/m4
-+MULTILIB_DIRNAMES= 
-+MULTILIB_MATCHES = 
-+MULTILIB_EXCEPTIONS=
-+
-+EXTRA_MULTILIB_PARTS= crtbegin.o crtend.o crtbeginS.o crtendS.o crtbeginT.o
-diff -urN gcc-3.4.1-dist/gcc/config/sh/t-sh64-uclibc gcc-3.4.1/gcc/config/sh/t-sh64-uclibc
---- gcc-3.4.1-dist/gcc/config/sh/t-sh64-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.4.1/gcc/config/sh/t-sh64-uclibc	2004-08-12 15:54:43.000000000 -0500
-@@ -0,0 +1,13 @@
-+EXTRA_MULTILIB_PARTS= crt1.o crti.o crtn.o crtbegin.o crtend.o
-+
-+LIB1ASMFUNCS = \
-+  _sdivsi3 _sdivsi3_i4 _udivsi3 _udivsi3_i4 _set_fpscr \
-+  _shcompact_call_trampoline _shcompact_return_trampoline \
-+  _shcompact_incoming_args _ic_invalidate _nested_trampoline \
-+  _push_pop_shmedia_regs \
-+  _udivdi3 _divdi3 _umoddi3 _moddi3
-+
-+MULTILIB_OPTIONS = $(MULTILIB_ENDIAN) m5-32media-nofpu/m5-compact/m5-compact-nofpu/m5-64media/m5-64media-nofpu
-+MULTILIB_DIRNAMES= $(MULTILIB_ENDIAN) nofpu compact nofpu/compact media64 nofpu/media64
-+MULTILIB_MATCHES=
-+MULTILIB_EXCEPTIONS=
 diff -urN gcc-3.4.1-dist/gcc/config/t-linux-uclibc gcc-3.4.1/gcc/config/t-linux-uclibc
 --- gcc-3.4.1-dist/gcc/config/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
 +++ gcc-3.4.1/gcc/config/t-linux-uclibc	2004-08-12 15:54:43.000000000 -0500
@@ -293,7 +259,7 @@ diff -urN gcc-3.4.1-dist/gcc/config/t-linux-uclibc gcc-3.4.1/gcc/config/t-linux-
 +# Use unwind-dw2-fde
 +LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde.c \
 +  $(srcdir)/unwind-sjlj.c $(srcdir)/gthr-gnat.c $(srcdir)/unwind-c.c
-+LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h
++LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h unwind-dw2-fde.c gthr-gnat.c
 diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
 --- gcc-3.4.1-dist/gcc/config.gcc	2004-04-21 10:12:35.000000000 -0500
 +++ gcc-3.4.1/gcc/config.gcc	2004-08-12 15:59:46.000000000 -0500
@@ -359,36 +325,21 @@ diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
 +	tmake_file="rs6000/t-fprules rs6000/t-ppcos t-slibgcc-elf-ver t-linux-uclibc rs6000/t-ppccomm"
 +	;;
  powerpc-*-linux*)
- 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h freebsd-spec.h rs6000/sysv4.h rs6000/linux.h"
+ 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h freebsd-spec.h rs6000/sysv4.h"
  	tmake_file="rs6000/t-fprules rs6000/t-ppcos t-slibgcc-elf-ver t-linux rs6000/t-ppccomm"
-@@ -1916,7 +1945,7 @@
+@@ -1916,7 +1945,11 @@
  	tm_file="${tm_file} dbxelf.h elfos.h svr4.h sh/elf.h sh/embed-elf.h sh/rtemself.h rtems.h"
  	;;
  sh-*-linux* | sh[2346lbe]*-*-linux*)
 -	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver t-linux"
 +	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver"
++	case ${target} in
++	*-*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
++	*) tmake_file="${tmake_file} t-linux" ;;
++	esac
  	case ${target} in
  	sh*be-*-* | sh*eb-*-*) ;;
  	*)
-@@ -1924,9 +1953,17 @@
- 		tmake_file="${tmake_file} sh/t-le"
- 		;;
- 	esac
--	tmake_file="${tmake_file} sh/t-linux"
-+	case ${target} in
-+	*-*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc sh/t-linux-uclibc" ;;
-+	*) tmake_file="${tmake_file} t-linux sh/t-linux" ;;
-+	esac
- 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h sh/elf.h sh/linux.h"
- 	case ${target} in
-+	sh64*-*-linux-uclibc*)
-+		tmake_file="${tmake_file} sh/t-sh64-uclibc"
-+		tm_file="${tm_file} sh/sh64.h"
-+		extra_headers="shmedia.h ushmedia.h sshmedia.h"
-+		;;
- 	sh64*)
- 		tmake_file="${tmake_file} sh/t-sh64"
- 		tm_file="${tm_file} sh/sh64.h"
 diff -urN gcc-3.4.1-dist/libtool.m4 gcc-3.4.1/libtool.m4
 --- gcc-3.4.1-dist/libtool.m4	2004-05-18 04:08:37.000000000 -0500
 +++ gcc-3.4.1/libtool.m4	2004-08-12 15:54:43.000000000 -0500
