@@ -1,0 +1,103 @@
+--- zlib/configure
++++ zlib/configure
+@@ -160,8 +160,8 @@
+ if test $shared -eq 1; then
+   echo Checking for shared library support...
+   # we must test in two steps (cc then ld), required at least on SunOS 4.x
+-  if test "`($CC -c $SFLAGS $test.c) 2>&1`" = "" &&
+-     test "`($LDSHARED -o $test$shared_ext $test.o) 2>&1`" = ""; then
++  if ($CC -c $SFLAGS $test.c) 2>>config.log &&
++     ($LDSHARED -o $test$shared_ext $test.o) 2>>config.log; then
+     CFLAGS="$SFLAGS"
+     LIBS="$LIBS $SHAREDLIBV"
+     echo Building shared library $SHAREDLIBV with $CC.
+@@ -185,7 +185,7 @@
+ #include <unistd.h>
+ int main() { return 0; }
+ EOF
+-if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+   sed < zconf.in.h "/HAVE_UNISTD_H/s%0%1%" > zconf.h
+   echo "Checking for unistd.h... Yes."
+ else
+@@ -208,7 +208,7 @@
+ }
+ EOF
+ 
+-if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+   echo "Checking whether to use vs[n]printf() or s[n]printf()... using vs[n]printf()"
+ 
+   cat > $test.c <<EOF
+@@ -232,7 +232,7 @@
+ }
+ EOF
+ 
+-  if test "`($CC $CFLAGS -o $test $test.c) 2>&1`" = ""; then
++  if ($CC $CFLAGS -o $test $test.c) 2>>config.log; then
+     echo "Checking for vsnprintf() in stdio.h... Yes."
+ 
+     cat >$test.c <<EOF
+@@ -257,7 +257,7 @@
+ }
+ EOF
+ 
+-    if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++    if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+       echo "Checking for return value of vsnprintf()... Yes."
+     else
+       CFLAGS="$CFLAGS -DHAS_vsnprintf_void"
+@@ -295,7 +295,7 @@
+ }
+ EOF
+ 
+-    if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++    if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+       echo "Checking for return value of vsprintf()... Yes."
+     else
+       CFLAGS="$CFLAGS -DHAS_vsprintf_void"
+@@ -325,7 +325,7 @@
+ }
+ EOF
+ 
+-  if test "`($CC $CFLAGS -o $test $test.c) 2>&1`" = ""; then
++  if ($CC $CFLAGS -o $test $test.c) 2>>config.log; then
+     echo "Checking for snprintf() in stdio.h... Yes."
+ 
+     cat >$test.c <<EOF
+@@ -344,7 +344,7 @@
+ }
+ EOF
+ 
+-    if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++    if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+       echo "Checking for return value of snprintf()... Yes."
+     else
+       CFLAGS="$CFLAGS -DHAS_snprintf_void"
+@@ -376,7 +376,7 @@
+ }
+ EOF
+ 
+-    if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++    if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+       echo "Checking for return value of sprintf()... Yes."
+     else
+       CFLAGS="$CFLAGS -DHAS_sprintf_void"
+@@ -392,7 +392,7 @@
+ #include <errno.h>
+ int main() { return 0; }
+ EOF
+-if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+   echo "Checking for errno.h... Yes."
+ else
+   echo "Checking for errno.h... No."
+@@ -407,7 +407,7 @@
+   return mmap((caddr_t)0, (off_t)0, PROT_READ, MAP_SHARED, 0, (off_t)0);
+ }
+ EOF
+-if test "`($CC -c $CFLAGS $test.c) 2>&1`" = ""; then
++if ($CC -c $CFLAGS $test.c) 2>>config.log; then
+   CFLAGS="$CFLAGS -DUSE_MMAP"
+   echo Checking for mmap support... Yes.
+ else

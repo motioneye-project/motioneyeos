@@ -1,0 +1,21 @@
+--- zlib-1.2.3/Makefile.in
++++ zlib-1.2.3/Makefile.in
+@@ -33,7 +33,8 @@
+ SHAREDLIBV=libz.so.1.2.3
+ SHAREDLIBM=libz.so.1
+ 
+-AR=ar rc
++AR=ar
++ARFLAGS=rc
+ RANLIB=ranlib
+ TAR=tar
+ SHELL=/bin/sh
+@@ -68,7 +69,7 @@
+ 	fi
+ 
+ libz.a: $(OBJS) $(OBJA)
+-	$(AR) $@ $(OBJS) $(OBJA)
++	$(AR) $(ARFLAGS) $@ $(OBJS) $(OBJA)
+ 	-@ ($(RANLIB) $@ || true) >/dev/null 2>&1
+ 
+ match.o: match.S
