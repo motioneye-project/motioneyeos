@@ -17,10 +17,12 @@ $(DL_DIR)/$(ZLIB_SOURCE):
 
 $(ZLIB_DIR)/.source: $(DL_DIR)/$(ZLIB_SOURCE)
 	bzcat $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(ZLIB_DIR) package/zlib/ zlib\*.patch
 	touch $(ZLIB_DIR)/.source
 
 $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source
 	(cd $(ZLIB_DIR); \
+		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		--shared \
 		--prefix=/usr \
@@ -31,8 +33,7 @@ $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source
 	touch $(ZLIB_DIR)/.configured;
 
 $(ZLIB_DIR)/libz.so.$(ZLIB_VER): $(ZLIB_DIR)/.configured
-	$(MAKE) LDSHARED="$(TARGET_CROSS)gcc -shared -Wl,-soname,libz.so.1 -shared-libgcc" \
-		CFLAGS="$(ZLIB_CFLAGS)" CC=$(TARGET_CC) -C $(ZLIB_DIR) all libz.a;
+	$(MAKE) -C $(ZLIB_DIR) all libz.a
 	touch -c $(ZLIB_DIR)/libz.so.$(ZLIB_VER)
 
 $(STAGING_DIR)/lib/libz.so.$(ZLIB_VER): $(ZLIB_DIR)/libz.so.$(ZLIB_VER)
