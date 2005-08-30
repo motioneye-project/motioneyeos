@@ -26,7 +26,7 @@ TOOL_BUILD_DIR=$(BASE_DIR)/toolchain_build_$(ARCH)$(ARCH_FPU_SUFFIX)
 # Strip off the annoying quoting
 STAGING_DIR:=$(strip $(subst ",, $(BR2_STAGING_DIR)))
 #"
-TARGET_PATH=$(STAGING_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
+TARGET_PATH=$(STAGING_DIR)/bin:$(TOOL_BUILD_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin
 IMAGE:=$(BASE_DIR)/rootfs.$(ARCH)$(ARCH_FPU_SUFFIX)
 REAL_GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux-uclibc
 GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
