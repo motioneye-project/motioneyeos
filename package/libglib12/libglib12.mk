@@ -17,15 +17,16 @@ libglib12-source: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 
 $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 	$(LIBGLIB12_CAT) $(DL_DIR)/$(LIBGLIB12_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LIBGLIB12_DIR) package/libglib12/ \*-patch\*
+	toolchain/patch-kernel.sh $(LIBGLIB12_DIR) package/libglib12/ \*.patch*
+	$(CONFIG_UPDATE) $(LIBGLIB12_DIR)
 	touch $(LIBGLIB12_DIR)/.unpacked
 
 $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 	(cd $(LIBGLIB12_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
+		--host=$(REAL_GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
@@ -63,8 +64,8 @@ $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINAR
 
 $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY): $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY)
 	cp -a $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY) $(TARGET_DIR)/lib/
-	#cp -a $(STAGING_DIR)/lib/libglib.so $(TARGET_DIR)/lib/
-	#cp -a $(STAGING_DIR)/lib/libglib-1.2.so.0 $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/lib/libglib.so $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/lib/libglib-1.2.so.0 $(TARGET_DIR)/lib/
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY)
 
 libglib12: uclibc $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY)
