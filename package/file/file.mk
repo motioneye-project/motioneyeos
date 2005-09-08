@@ -81,7 +81,7 @@ $(FILE_DIR2)/.configured: $(FILE_DIR2)/.unpacked
 	);
 	touch  $(FILE_DIR2)/.configured
 
-$(FILE_DIR2)/$(FILE_BINARY): $(FILE_DIR2)/.configured
+$(FILE_DIR2)/$(FILE_BINARY): $(FILE_DIR2)/.configured $(TOOL_BUILD_DIR)/bin/file
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) LDFLAGS="-static" -C $(FILE_DIR2)
 
 $(TARGET_DIR)/$(FILE_TARGET_BINARY): $(FILE_DIR2)/$(FILE_BINARY)
