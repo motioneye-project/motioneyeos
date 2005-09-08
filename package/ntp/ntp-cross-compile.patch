@@ -1,0 +1,11 @@
+--- ntp/ntpdc/Makefile.in
++++ ntp/ntpdc/Makefile.in
+@@ -157,7 +157,7 @@
+ bin_PROGRAMS = ntpdc
+ EXTRA_PROGRAMS = ntpdc-layout
+ EXTRA_DATA = check-layout
+-BUILT_SOURCES = maybe-layout
++BUILT_SOURCES = 
+ INCLUDES = -I$(top_srcdir)/include
+ # LDADD might need RESLIB and ADJLIB
+ ntpdc_LDADD = version.o ../libntp/libntp.a @READLINE_LIBS@

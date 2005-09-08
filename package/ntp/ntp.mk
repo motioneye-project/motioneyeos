@@ -18,6 +18,7 @@ ntp-source: $(DL_DIR)/$(NTP_SOURCE)
 
 $(NTP_DIR)/.unpacked: $(DL_DIR)/$(NTP_SOURCE)
 	$(NTP_CAT) $(DL_DIR)/$(NTP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(NTP_DIR) package/ntp/ ntp\*.patch
 	$(SED) "s,^#if.*__GLIBC__.*_BSD_SOURCE.*$$,#if 0," \
 		$(NTP_DIR)/ntpd/refclock_pcf.c;
 	touch $(NTP_DIR)/.unpacked
@@ -26,6 +27,7 @@ $(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
 	(cd $(NTP_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		ac_cv_lib_md5_MD5Init=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -43,11 +45,12 @@ $(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		--with-shared \
 		--program-transform-name=s,,, \
+		--without-crypto \
 	);
 	touch $(NTP_DIR)/.configured
 
 $(NTP_DIR)/$(NTP_BINARY): $(NTP_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(NTP_DIR)
+	$(MAKE) -C $(NTP_DIR)
 
 $(TARGET_DIR)/$(NTP_TARGET_BINARY): $(NTP_DIR)/$(NTP_BINARY)
 	install -m 755 $(NTP_DIR)/ntpd/ntpd $(TARGET_DIR)/usr/sbin/ntpd
