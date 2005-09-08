@@ -1,0 +1,66 @@
+--- jpeg/configure
++++ jpeg/configure
+@@ -1559,7 +1559,7 @@
+   if test "x$LTSTATIC" = xno; then
+     disable_static="--disable-static"
+   fi
+-  $srcdir/ltconfig $disable_shared $disable_static $srcdir/ltmain.sh
++  $srcdir/ltconfig $disable_shared $disable_static $srcdir/ltmain.sh $CHOST
+ fi
+ 
+ # Select memory manager depending on user input.
+--- jpeg/ltconfig
++++ jpeg/ltconfig
+@@ -299,6 +299,7 @@
+ # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
+ case "$host_os" in
+ linux-gnu*) ;;
++linux-uclibc*) ;;
+ linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
+ esac
+ 
+@@ -553,7 +553,9 @@
+     # On HP-UX, both CC and GCC only warn that PIC is supported... then they
+     # create non-PIC objects.  So, if there were any warnings, we assume that
+     # PIC is not supported.
++    # Make sure we only test warnings on HP-UX (pic_flag == +Z) or we can
++    # easily break Linux builds http://bugs.gentoo.org/70947
+-    if test -s conftest.err; then
++    if test -s conftest.err -a "$pic_flag" = "+Z"; then
+       echo "$ac_t"no 1>&6
+       can_build_shared=no
+       pic_flag=
+@@ -1210,7 +1210,6 @@
+   else
+     # Only the GNU ld.so supports shared libraries on MkLinux.
+     case "$host_cpu" in
+-    powerpc*) dynamic_linker=no ;;
+     *) dynamic_linker='Linux ld.so' ;;
+     esac
+   fi
+@@ -1259,6 +1260,25 @@
+   fi
+   ;;
+ 
++linux-uclibc*)
++  version_type=linux
++  need_lib_prefix=no
++  need_version=no
++  library_names_spec='${libname}${release}.so.$versuffix ${libname}${release}.so.$major $libname.so'
++  soname_spec='${libname}${release}.so.$major'
++  finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
++  shlibpath_var=LD_LIBRARY_PATH
++  shlibpath_overrides_runpath=no
++  deplibs_check_method=pass_all
++  # This implies no fast_install, which is unacceptable.
++  # Some rework will be needed to allow for fast_install
++  # before this can be enabled.
++  # Note: copied from linux-gnu, and may not be appropriate.
++  hardcode_into_libs=yes
++  # Assume using the uClibc dynamic linker.
++  dynamic_linker="uClibc ld.so"
++  ;;
++
+ netbsd* | openbsd*)
+   version_type=sunos
+   library_names_spec='${libname}${release}.so.$versuffix'

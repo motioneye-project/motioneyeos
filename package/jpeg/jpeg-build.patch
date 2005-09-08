@@ -1,0 +1,99 @@
+- Respect options from configure (bindir/libdir/etc...)
+- Grab AR from the env instead of hardcoding to 'ar'
+- Fix install to respect $(DESTDIR)
+- Also install jpegint.h #64254
+
+--- jpeg/makefile.cfg
++++ jpeg/makefile.cfg
+@@ -11,13 +11,13 @@
+ # Where to install the programs and man pages.
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-bindir = $(exec_prefix)/bin
+-libdir = $(exec_prefix)/lib
+-includedir = $(prefix)/include
++bindir = @bindir@
++libdir = @libdir@
++includedir = @includedir@
+ binprefix =
+ manprefix =
+ manext = 1
+-mandir = $(prefix)/man/man$(manext)
++mandir = @mandir@/man$(manext)
+ 
+ # The name of your C compiler:
+ CC= @CC@
+@@ -60,7 +60,8 @@
+ # directory creation command
+ MKDIR= mkdir
+ # library (.a) file creation command
+-AR= ar rc
++AR = @AR@
++ARFLAGS = rc
+ # second step in .a creation (use "touch" if not needed)
+ AR2= @RANLIB@
+ # installation program
+@@ -163,7 +164,7 @@
+ # without libtool:
+ libjpeg.a: @A2K_DEPS@ $(LIBOBJECTS)
+ 	$(RM) libjpeg.a
+-	$(AR) libjpeg.a  $(LIBOBJECTS)
++	$(AR) $(ARFLAGS) libjpeg.a  $(LIBOBJECTS)
+ 	$(AR2) libjpeg.a
+ 
+ # with libtool:
+@@ -191,25 +191,29 @@
+ # Installation rules:
+ 
+ install: cjpeg djpeg jpegtran rdjpgcom wrjpgcom @FORCE_INSTALL_LIB@
+-	$(INSTALL_PROGRAM) cjpeg $(bindir)/$(binprefix)cjpeg
+-	$(INSTALL_PROGRAM) djpeg $(bindir)/$(binprefix)djpeg
+-	$(INSTALL_PROGRAM) jpegtran $(bindir)/$(binprefix)jpegtran
+-	$(INSTALL_PROGRAM) rdjpgcom $(bindir)/$(binprefix)rdjpgcom
+-	$(INSTALL_PROGRAM) wrjpgcom $(bindir)/$(binprefix)wrjpgcom
+-	$(INSTALL_DATA) $(srcdir)/cjpeg.1 $(mandir)/$(manprefix)cjpeg.$(manext)
+-	$(INSTALL_DATA) $(srcdir)/djpeg.1 $(mandir)/$(manprefix)djpeg.$(manext)
+-	$(INSTALL_DATA) $(srcdir)/jpegtran.1 $(mandir)/$(manprefix)jpegtran.$(manext)
+-	$(INSTALL_DATA) $(srcdir)/rdjpgcom.1 $(mandir)/$(manprefix)rdjpgcom.$(manext)
+-	$(INSTALL_DATA) $(srcdir)/wrjpgcom.1 $(mandir)/$(manprefix)wrjpgcom.$(manext)
++	mkdir -p $(DESTDIR)$(bindir) $(DESTDIR)$(mandir)
++	$(INSTALL_PROGRAM) cjpeg $(DESTDIR)$(bindir)/$(binprefix)cjpeg
++	$(INSTALL_PROGRAM) djpeg $(DESTDIR)$(bindir)/$(binprefix)djpeg
++	$(INSTALL_PROGRAM) jpegtran $(DESTDIR)$(bindir)/$(binprefix)jpegtran
++	$(INSTALL_PROGRAM) rdjpgcom $(DESTDIR)$(bindir)/$(binprefix)rdjpgcom
++	$(INSTALL_PROGRAM) wrjpgcom $(DESTDIR)$(bindir)/$(binprefix)wrjpgcom
++	$(INSTALL_DATA) $(srcdir)/cjpeg.1 $(DESTDIR)$(mandir)/$(manprefix)cjpeg.$(manext)
++	$(INSTALL_DATA) $(srcdir)/djpeg.1 $(DESTDIR)$(mandir)/$(manprefix)djpeg.$(manext)
++	$(INSTALL_DATA) $(srcdir)/jpegtran.1 $(DESTDIR)$(mandir)/$(manprefix)jpegtran.$(manext)
++	$(INSTALL_DATA) $(srcdir)/rdjpgcom.1 $(DESTDIR)$(mandir)/$(manprefix)rdjpgcom.$(manext)
++	$(INSTALL_DATA) $(srcdir)/wrjpgcom.1 $(DESTDIR)$(mandir)/$(manprefix)wrjpgcom.$(manext)
+ 
+ install-lib: libjpeg.$(A) install-headers
+-	$(INSTALL_LIB) libjpeg.$(A) $(libdir)/$(binprefix)libjpeg.$(A)
++	mkdir -p $(DESTDIR)$(libdir)
++	$(INSTALL_LIB) libjpeg.$(A) $(DESTDIR)$(libdir)/$(binprefix)libjpeg.$(A)
+ 
+ install-headers: jconfig.h
+-	$(INSTALL_DATA) jconfig.h $(includedir)/jconfig.h
+-	$(INSTALL_DATA) $(srcdir)/jpeglib.h $(includedir)/jpeglib.h
+-	$(INSTALL_DATA) $(srcdir)/jmorecfg.h $(includedir)/jmorecfg.h
+-	$(INSTALL_DATA) $(srcdir)/jerror.h $(includedir)/jerror.h
++	mkdir -p $(DESTDIR)$(includedir)
++	$(INSTALL_DATA) jconfig.h $(DESTDIR)$(includedir)/jconfig.h
++	$(INSTALL_DATA) $(srcdir)/jpegint.h $(DESTDIR)$(includedir)/jpegint.h
++	$(INSTALL_DATA) $(srcdir)/jpeglib.h $(DESTDIR)$(includedir)/jpeglib.h
++	$(INSTALL_DATA) $(srcdir)/jmorecfg.h $(DESTDIR)$(includedir)/jmorecfg.h
++	$(INSTALL_DATA) $(srcdir)/jerror.h $(DESTDIR)$(includedir)/jerror.h
+ 
+ clean:
+ 	$(RM) *.o *.lo libjpeg.a libjpeg.la
+--- jpeg/configure
++++ jpeg/configure
+@@ -1777,6 +1777,7 @@
+ s%@CPP@%$CPP%g
+ s%@INSTALL_PROGRAM@%$INSTALL_PROGRAM%g
+ s%@INSTALL_DATA@%$INSTALL_DATA%g
++s%@AR@%${AR-ar}%g
+ s%@RANLIB@%$RANLIB%g
+ s%@LIBTOOL@%$LIBTOOL%g
+ s%@O@%$O%g

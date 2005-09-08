@@ -32,6 +32,7 @@ jpeg-source: $(DL_DIR)/$(JPEG_SOURCE)
 
 $(JPEG_DIR)/.unpacked: $(DL_DIR)/$(JPEG_SOURCE)
 	$(JPEG_CAT) $(DL_DIR)/$(JPEG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(JPEG_DIR) package/jpeg/ jpeg\*.patch
 	$(CONFIG_UPDATE) $(JPEG_DIR)
 	touch $(JPEG_DIR)/.unpacked
 
@@ -42,26 +43,19 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--prefix=$(STAGING_DIR) \
 		--enable-shared \
+		--enable-static \
 	);
-	touch  $(JPEG_DIR)/.configured
+	touch $(JPEG_DIR)/.configured
 
 $(JPEG_DIR)/.libs/libjpeg.a: $(JPEG_DIR)/.configured
 	$(MAKE) -C $(JPEG_DIR) all
 	touch -c $(JPEG_DIR)/.libs/libjpeg.a
 
 $(STAGING_DIR)/lib/libjpeg.a: $(JPEG_DIR)/.libs/libjpeg.a
-	$(MAKE) -C $(JPEG_DIR) prefix=$(STAGING_DIR) exec_prefix=$(STAGING_DIR) install-headers install-lib
+	$(MAKE) -C $(JPEG_DIR) install-headers install-lib
+	rm $(STAGING_DIR)/lib/libjpeg.la
 	touch -c $(STAGING_DIR)/lib/libjpeg.a
 
 $(TARGET_DIR)/usr/lib/libjpeg.a: $(STAGING_DIR)/lib/libjpeg.a
@@ -73,6 +67,10 @@ jpeg: uclibc $(TARGET_DIR)/usr/lib/libjpeg.a
 
 jpeg-clean:
 	-$(MAKE) -C $(JPEG_DIR) clean
+
+jpeg-dirclean:
+	rm -rf $(JPEG_DIR)
+
 #############################################################
 #
 # Toplevel Makefile options
