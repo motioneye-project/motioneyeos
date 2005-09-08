@@ -70,6 +70,7 @@ use-sed-host-binary:
 
 host-sed: $(HOST_SED_TARGET)
 
+ifeq ($(HOST_SED_TARGET),build-sed-host-binary)
 host-sed-clean:
 	$(MAKE) DESTDIR=$(HOST_SED_DIR) -C $(SED_DIR1) uninstall
 	-$(MAKE) -C $(SED_DIR1) clean
@@ -77,6 +78,10 @@ host-sed-clean:
 host-sed-dirclean:
 	rm -rf $(SED_DIR1)
 
+else
+host-sed-clean host-sed-dirclean:
+
+endif
 
 #############################################################
 #
