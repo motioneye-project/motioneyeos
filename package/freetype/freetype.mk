@@ -26,7 +26,7 @@ $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
-	--prefix=/usr );
+	--prefix=$(STAGING_DIR)/usr );
 	touch  $(FREETYPE_DIR)/.configured
 
 $(FREETYPE_DIR)/.compiled: $(FREETYPE_DIR)/.configured
@@ -34,7 +34,7 @@ $(FREETYPE_DIR)/.compiled: $(FREETYPE_DIR)/.configured
 	touch $(FREETYPE_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
-	$(MAKE) -C $(FREETYPE_DIR) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(FREETYPE_DIR) install
 	touch -c $(STAGING_DIR)/lib/libfreetype.so
 
 $(TARGET_DIR)/usr/lib/libfreetype.so: $(STAGING_DIR)/usr/lib/libfreetype.so
