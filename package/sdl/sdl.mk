@@ -3,7 +3,7 @@
 # SDL
 #
 #############################################################
-SDL_VERSION:=1.2.8
+SDL_VERSION:=1.2.9
 SDL_SOURCE:=SDL-$(SDL_VERSION).tar.gz
 SDL_SITE:=http://www.libsdl.org/release
 SDL_CAT:=zcat
@@ -26,7 +26,7 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
-	--prefix=/usr \
+	--prefix=$(STAGING_DIR)/usr \
 	--disable-esd \
 	--disable-video-x11 );
 	touch $(SDL_DIR)/.configured
@@ -36,14 +36,16 @@ $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured
 	touch $(SDL_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
-	$(MAKE) -C $(SDL_DIR) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(SDL_DIR) install
+	(cd $(STAGING_DIR)/usr/bin; \
+	ln -sf $(GNU_TARGET_NAME)-sdl-config sdl-config );
 	touch -c $(STAGING_DIR)/usr/lib/libSDL.so
 
 $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libSDL*.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libSDL.so
 
-sdl: uclibc $(TARGET_DIR)/usr/lib/libSDL.so
+SDL sdl: uclibc $(TARGET_DIR)/usr/lib/libSDL.so
 
 sdl-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SDL_DIR) uninstall
