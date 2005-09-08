@@ -64,10 +64,14 @@ $(TARGET_DIR)/usr/lib/libpng.so: $(STAGING_DIR)/lib/libpng.so
 	cp -dpf $(STAGING_DIR)/lib/libpng.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libpng.so
 
-libpng: uclibc zlib $(TARGET_DIR)/usr/lib/libpng.so
+png libpng: uclibc zlib $(TARGET_DIR)/usr/lib/libpng.so
 
 libpng-clean:
 	-$(MAKE) -C $(LIBPNG_DIR) clean
+
+libpng-dirclean:
+	rm -rf $(LIBPNG_DIR)
+
 #############################################################
 #
 # Toplevel Makefile options
