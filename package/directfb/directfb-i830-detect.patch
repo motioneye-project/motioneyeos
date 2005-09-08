@@ -1,0 +1,17 @@
+Detect the presence of the I830 fb driver rather than 
+just assuming it always exists.
+
+--- DirectFB-0.9.22/configure
++++ DirectFB-0.9.22/configure
+@@ -23622,9 +23622,9 @@
+ /* end confdefs.h.  */
+ 
+ #include <linux/fb.h>
+-//#ifdef FB_ACCEL_I830
++#ifdef FB_ACCEL_I830
+   yes
+-//#endif
++#endif
+ 
+ _ACEOF
+ if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
