@@ -176,20 +176,23 @@
       tools, these changes will be lost.</li>
 
       <li>Customize the target filesystem skeleton, available under
-      <code>target/default/target_skeleton/</code>. You can customize
+      <code>target/generic/target_skeleton/</code>. You can customize
       configuration files or other stuff here. However, the full file hierarchy
       is not yet present, because it's created during the compilation process.
       So you can't do everything on this target filesystem skeleton, but
-      changes to it remains even you completely rebuild the cross-compilation
+      changes to it remain even if you completely rebuild the cross-compilation
       toolchain and the tools.<br />
-      You can also customize the <code>target/default/device_table.txt</code>
+      You can also customize the <code>target/generic/device_table.txt</code>
       file which is used by the tools that generate the target filesystem image
       to properly set permissions and create device nodes. The
-      <code>target/default/skel.tar.gz</code> file contains the main
+      <code>target/generic/skel.tar.gz</code> file contains the main
       directories of a root filesystem and there is no obvious reason for which
       it should be changed. These main directories are in an tarball inside of
       inside the skeleton because it contains symlinks that would be broken
-      otherwise.</li>
+      otherwise.<br />
+      These customizations are deployed into <code>build_ARCH/root/</code> just
+      before the actual image is made. So simply rebuilding the image by running
+      make should propogate any new changes to the image.</li>
     </ul>
 
     <h2><a name="custom_busybox" id="custom_busybox"></a>Customizing the
@@ -333,9 +336,9 @@
       <li>Create the target directory (<code>build_ARCH/root/</code> by
       default) and the target filesystem skeleton. This directory will contain
       the final root filesystem. To setup it up, it first deletes it, then it
-      uncompress the <code>target/default/skel.tar.gz</code> file to create the
+      uncompress the <code>target/generic/skel.tar.gz</code> file to create the
       main subdirectories and symlinks, copies the skeleton available in
-      <code>target/default/target_skeleton</code> and then removes useless
+      <code>target/generic/target_skeleton</code> and then removes useless
       <code>.svn/</code> directories.</li>
 
       <li>Add the <code>TARGETS</code> dependency. This should generally check
