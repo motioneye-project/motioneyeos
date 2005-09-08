@@ -32,11 +32,19 @@ TARGET_LIBX:=/usr/X11R6/lib/
 XORG_BINX:=$(TARGET_DIR)$(TARGET_BINX)
 XORG_LIBX:=$(TARGET_DIR)$(TARGET_LIBX)
 XORG_CF:=$(XORG_DIR)/config/cf/cross.def
+XORG_HOST_DEF:=$(XORG_DIR)/config/cf/host.def
 
 # Install Xorg xserver
 XSERVER:=Xorg
 XORG_XSERVER:=$(XORG_DIR)/programs/Xserver/$(XSERVER)
 TARGET_XSERVER:=$(XORG_BINX)/$(XSERVER)
+
+# Check if we should use FreeType2.
+ifeq ($(BR2_PACKAGE_FREETYPE),y)
+HAS_FREETYPE2=YES
+else
+HAS_FREETYPE2=NO
+endif
 
 $(DL_DIR)/$(XORG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(XORG_SITE)/$(XORG_SOURCE)
@@ -44,6 +52,8 @@ $(DL_DIR)/$(XORG_SOURCE):
 $(XORG_DIR)/.configure: $(DL_DIR)/$(XORG_SOURCE)
 	$(XORG_CAT) $(DL_DIR)/$(XORG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(XORG_DIR) package/xorg/ xorg\*.patch
+	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_HOST_DEF)
+	$(SED) 's:REPLACE_HAS_FREETYPE2:$(HAS_FREETYPE2):g' $(XORG_HOST_DEF)
 	$(SED) 's:REPLACE_GCCINC_DIR:$(shell $(TARGET_CROSS)gcc -print-file-name=include):g' $(XORG_CF)
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_CF)
 	$(SED) 's:REPLACE_ARCH:$(ARCH):g' $(XORG_CF)

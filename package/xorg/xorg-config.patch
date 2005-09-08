@@ -5,10 +5,11 @@
 +#define TinyXServer		YES
 +#define XfbdevServer		YES
 +#define CrossCompiling		YES
-+#define ProjectRoot             /usr/X11R6
++#define ProjectRoot		/usr/X11R6
 +#define NothingOutsideProjectRoot	YES
 +
-+#define HasFreetype2		NO
++#define HasFreetype2		REPLACE_HAS_FREETYPE2
++#define Freetype2Dir		REPLACE_STAGING_DIR/usr
 +#define HasFontconfig		NO
 +#define HasLibpng		YES
 +#define HasZlib			YES
