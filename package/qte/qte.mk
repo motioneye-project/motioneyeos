@@ -3,6 +3,22 @@
 # qte: Qt/E build, includes Qt/E-2, QVfb, and Qtopia-2
 #
 #############################################################
+ifeq ($(BR2_QTE_VERSION),)
+BR2_QTE_VERSION:=FOOBAR1
+endif
+ifeq ($(BR2_QTE_QT3_VERSION),)
+BR2_QTE_QT3_VERSION:=FOOBAR2
+endif
+ifeq ($(BR2_QTE_QVFB_VERSION),)
+BR2_QTE_QVFB_VERSION:=FOOBAR3
+endif
+ifeq ($(BR2_QTE_QTOPIA_VERSION),)
+BR2_QTE_QTOPIA_VERSION:=FOOBAR4
+endif
+ifeq ($(BR2_QTE_TMAKE_VERSION),)
+BR2_QTE_TMAKE_VERSION:=FOOBAR5
+endif
+
 BR2_QTE_C_QTE_VERSION:=$(shell echo $(BR2_QTE_VERSION)| sed -e 's/"//g')
 BR2_QTE_C_QT3_VERSION:=$(shell echo $(BR2_QTE_QT3_VERSION)| sed -e 's/"//g')
 BR2_QTE_C_QVFB_VERSION:=$(shell echo $(BR2_QTE_QVFB_VERSION)| sed -e 's/"//g')
@@ -95,12 +111,12 @@ $(QTE_TMAKE_DIR)/.unpacked: $(DL_DIR)/$(QTE_TMAKE_SOURCE)
 	touch $@
 
 ifneq ($(BR2_QTE_C_QTE_VERSION),$(BR2_QTE_C_QT3_VERSION))
- $(QTE_QT3_DIR)/.unpacked: $(DL_DIR)/$(QTE_QT3_SOURCE)
+$(QTE_QT3_DIR)/.unpacked: $(DL_DIR)/$(QTE_QT3_SOURCE)
 	$(QTE_CAT) $(DL_DIR)/$(QTE_QT3_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 endif
 
- $(QTE_QTE_DIR)/.unpacked: $(DL_DIR)/$(QTE_QTE_SOURCE)
+$(QTE_QTE_DIR)/.unpacked: $(DL_DIR)/$(QTE_QTE_SOURCE)
 	$(QTE_CAT) $(DL_DIR)/$(QTE_QTE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 
