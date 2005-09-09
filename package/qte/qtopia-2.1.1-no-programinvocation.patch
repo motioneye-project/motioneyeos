@@ -1,0 +1,24 @@
+Qtopia includes a hard-coded config.h file that must have been built by ./configure at some point in its life.
+Nevertheless, this file now conflicts with what uClibc provides, so we need to patch it for some more sane
+Operation.  This change is required for rsync, the only thing I found using program_invocation_short_name
+
+diff -cr qtopia-phone-2.1.1/src/3rdparty/libraries/rsync/config_linux.h qtopia-phone-2.1.1-orig/src/3rdparty/libraries/rsync/config_linux.h
+*** qtopia-phone-2.1.1/src/3rdparty/libraries/rsync/config_linux.h	2005-08-18 23:23:00.000000000 +0800
+--- qtopia-phone-2.1.1/src/3rdparty/libraries/rsync/config_linux.h	2005-08-18 23:05:17.000000000 +0800
+***************
+*** 23,29 ****
+  #define _GNU_SOURCE 1
+  
+  /* GNU extension of saving argv[0] to program_invocation_short_name */
+! #define HAVE_PROGRAM_INVOCATION_NAME 1
+  
+  /* Define to a replacement type if intmax_t is not a builtin, or in
+     sys/types.h or stdlib.h or stddef.h */
+--- 23,29 ----
+  #define _GNU_SOURCE 1
+  
+  /* GNU extension of saving argv[0] to program_invocation_short_name */
+! /* #undef HAVE_PROGRAM_INVOCATION_NAME */
+  
+  /* Define to a replacement type if intmax_t is not a builtin, or in
+     sys/types.h or stdlib.h or stddef.h */

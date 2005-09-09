@@ -1,0 +1,262 @@
+config BR2_PACKAGE_QTE
+	bool "Qt/E"
+	default n
+	select BR2_INSTALL_LIBSTDCPP
+	select BR2_PTHREADS_NATIVE
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	help
+	  Trolltech's Qt/Embedded, which offers the same APIs used in building desktop applications tailored to a smaller footprint.
+
+	  http://trolltech.com/
+
+	  Only tested with threading on, PACKAGE_JPEG, PACKAGE_LIBPNG, but remove those if you like.
+
+
+config BR2_PACKAGE_QTE_COMMERCIAL_USERNAME
+        string "Qt/E Commercial License Username"
+        default ""
+	depends BR2_PACKAGE_QTE
+        help
+            Commercial users can download their source directly by providing a username.  I do not mean this to be a political or economic statement, just a convenience function
+
+
+config BR2_PACKAGE_QTE_COMMERCIAL_PASSWORD
+        string "Qt/E Commercial License Password"
+        default ""
+	depends BR2_PACKAGE_QTE
+        help
+            Commercial users can download their source directly by providing a password.  I do not mean this to be a political or economic statement, just a convenience function
+
+
+choice
+        prompt "Qt/E Version"
+        default BR2_QTE_VERSION_2_3_11
+	depends BR2_PACKAGE_QTE
+        help
+          Select the version of Qt/E you wish to use.
+
+        config BR2_QTE_VERSION_2_3_8
+                bool "Qt/E 2.3.8"
+
+        config BR2_QTE_VERSION_2_3_9
+                bool "Qt/E 2.3.9"
+
+        config BR2_QTE_VERSION_2_3_10
+                bool "Qt/E 2.3.10"
+
+        config BR2_QTE_VERSION_2_3_11
+                bool "Qt/E 2.3.11"
+
+endchoice
+
+config BR2_QTE_VERSION
+        string
+	default "2.3.8"		if BR2_QTE_VERSION_2_3_8
+	default "2.3.9"		if BR2_QTE_VERSION_2_3_9
+	default "2.3.10"		if BR2_QTE_VERSION_2_3_10
+	default "2.3.11"		if BR2_QTE_VERSION_2_3_11
+
+
+config BR2_PACKAGE_QTE_QVFB
+	bool "QVfb"
+	default n
+	depends BR2_PACKAGE_QTE
+	help
+	  Trolltech provides a Virtual Framebuffer used to simulate the embedded device during development
+
+	  http://trolltech.com/
+
+choice
+        prompt "QVfb Version"
+        default BR2_QTE_QVFB_VERSION_2_3_2
+	depends BR2_PACKAGE_QTE_QVFB
+        help
+          Select the version of QVfb you wish to use.
+
+        config BR2_QTE_QVFB_VERSION_2_3_2
+                bool "QVfb 2.3.2"
+
+        config BR2_QTE_QVFB_VERSION_2_3_9
+                bool "QVfb 2.3.9"
+
+endchoice
+
+config BR2_QTE_QVFB_VERSION
+        string
+	default "2.3.2"		if BR2_QTE_QVFB_VERSION_2_3_2
+	default "2.3.9"		if BR2_QTE_QVFB_VERSION_2_3_9
+
+
+
+config BR2_PACKAGE_QTE_QT3
+	bool "Qt/E-3.3.x for Qtopia build"
+	default n
+	depends BR2_PACKAGE_QTE_QTOPIA
+	help
+	  Qtopia requires a Qt/E version >= 3.3.0; when using a Qt/E-2.3.x on the runtime, Qtopia still needs a Qt/E-3.3.x codebase to build
+
+	  http://trolltech.com/
+
+choice
+        prompt "QT/E v3 Version"
+        default BR2_QTE_QT3_VERSION_3_3_4
+	depends BR2_PACKAGE_QTE_QT3
+        help
+          Select the version of QVfb you wish to use.
+
+        config BR2_QTE_QT3_VERSION_3_3_4
+                bool "Qt/E 3.3.4"
+
+        config BR2_QTE_QT3_VERSION_3_3_3
+                bool "Qt/E 3.3.3"
+
+endchoice
+
+config BR2_QTE_QT3_VERSION
+        string
+	default "3.3.4"		if BR2_QTE_QT3_VERSION_3_3_4
+	default "3.3.3"		if BR2_QTE_QT3_VERSION_3_3_3
+
+
+config BR2_PACKAGE_QTE_QTOPIA
+	bool "Qtopia"
+	default n
+	depends BR2_PACKAGE_QTE
+	help
+	  Qtopia defines some more advanced components used for mobile devices
+
+	  http://trolltech.com/
+
+choice
+        prompt "Qtopia Version"
+        default BR2_QTE_QTOPIA_VERSION_2_1_2
+	depends BR2_PACKAGE_QTE_QTOPIA
+        help
+          Select the version of Qtopia you wish to use.
+
+        config BR2_QTE_QTOPIA_VERSION_2_1_1
+                bool "Qtopia 2.1.1"
+
+        config BR2_QTE_QTOPIA_VERSION_2_1_2
+                bool "Qtopia 2.1.2"
+
+endchoice
+
+config BR2_QTE_QTOPIA_VERSION
+        string
+	default "2.1.1"		if BR2_QTE_QTOPIA_VERSION_2_1_1
+	default "2.1.2"		if BR2_QTE_QTOPIA_VERSION_2_1_2
+
+config BR2_QTE_TMAKE_VERSION
+        string
+	default "1.13"
+
+# generated from:
+# ls ~/src/buildroot/build_arm/qt-2.3.10/configs/*-static|cut -c56-|sed -e 's/-static//g'|\
+#   awk '{BR="BR2_QTE_CROSS_"toupper($1); gsub("-","_",BR); gsub("+","P",BR); printf"\tconfig %s\n\t\tbool \"%s\"\n\n",BR,$1}'
+
+choice
+        prompt "Qt/E Cross-Compiler Target Platform"
+        default BR2_QTE_CROSS_LINUX_ARM_GPP
+	depends BR2_PACKAGE_QTE
+        help
+          Select the Qt cross-platform string for your build
+
+	config BR2_QTE_CROSS_CYGWIN_ARM_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-cygwin-arm-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "cygwin-arm-g++"
+
+	config BR2_QTE_CROSS_CYGWIN_IPAQ_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-cygwin-ipaq-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "cygwin-ipaq-g++"
+
+	config BR2_QTE_CROSS_CYGWIN_SHARP_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-cygwin-sharp-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "cygwin-sharp-g++"
+
+	config BR2_QTE_CROSS_FREEBSD_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-freebsd-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "freebsd-g++"
+
+	config BR2_QTE_CROSS_LINUX_ARM_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-linux-arm-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "linux-arm-g++"
+
+	config BR2_QTE_CROSS_LINUX_CASSIOPEIA_GPP
+		bool "linux-cassiopeia-g++"
+
+	config BR2_QTE_CROSS_LINUX_GENERIC_GPP
+		bool "linux-generic-g++"
+
+	config BR2_QTE_CROSS_LINUX_INNOVATOR_GPP
+		bool "linux-innovator-g++"
+
+	config BR2_QTE_CROSS_LINUX_IPAQ_GPP
+		bool "linux-ipaq-g++"
+
+	config BR2_QTE_CROSS_LINUX_KOALA_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-linux-koala-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "linux-koala-g++"
+
+	config BR2_QTE_CROSS_LINUX_MIPS_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-linux-mips-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "linux-mips-g++"
+
+	config BR2_QTE_CROSS_LINUX_SH3_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-linux-sh3-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "linux-sh3-g++"
+
+	config BR2_QTE_CROSS_LINUX_SHARP_GPP
+		bool "linux-sharp-g++"
+
+	config BR2_QTE_CROSS_LINUX_X86_GPP
+		bool "linux-x86-g++"
+
+	config BR2_QTE_CROSS_QNX_RTP_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-qnx-rtp-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "qnx-rtp-g++"
+
+	config BR2_QTE_CROSS_SOLARIS_GPP
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-solaris-g++.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "solaris-g++"
+
+	config BR2_QTE_CROSS_WIN32_MSVC
+		# qtopia-phone does not have this platform in qtopia-phone-2.1.1/src/libraries/qtopia/custom-win32-msvc.{cpp,h}
+		depends !BR2_PACKAGE_QTE_QTOPIA
+		bool "win32-msvc"
+
+endchoice
+
+config BR2_QTE_CROSS_PLATFORM
+        string
+# generated from:
+# ls ~/src/buildroot/build_arm/qt-2.3.10/configs/*-static|cut -c56-|sed -e 's/-static//g'|\
+#   awk '{BR="BR2_QTE_CROSS_"toupper($1); gsub("-","_",BR); gsub("+","P",BR); printf"\tdefault \"%s\"\tif %s\n",$1,BR}'
+	default "cygwin-arm-g++"	if BR2_QTE_CROSS_CYGWIN_ARM_GPP
+	default "cygwin-ipaq-g++"	if BR2_QTE_CROSS_CYGWIN_IPAQ_GPP
+	default "cygwin-sharp-g++"	if BR2_QTE_CROSS_CYGWIN_SHARP_GPP
+	default "freebsd-g++"	if BR2_QTE_CROSS_FREEBSD_GPP
+	default "linux-arm-g++"	if BR2_QTE_CROSS_LINUX_ARM_GPP
+	default "linux-cassiopeia-g++"	if BR2_QTE_CROSS_LINUX_CASSIOPEIA_GPP
+	default "linux-generic-g++"	if BR2_QTE_CROSS_LINUX_GENERIC_GPP
+	default "linux-innovator-g++"	if BR2_QTE_CROSS_LINUX_INNOVATOR_GPP
+	default "linux-ipaq-g++"	if BR2_QTE_CROSS_LINUX_IPAQ_GPP
+	default "linux-koala-g++"	if BR2_QTE_CROSS_LINUX_KOALA_GPP
+	default "linux-mips-g++"	if BR2_QTE_CROSS_LINUX_MIPS_GPP
+	default "linux-sh3-g++"	if BR2_QTE_CROSS_LINUX_SH3_GPP
+	default "linux-sharp-g++"	if BR2_QTE_CROSS_LINUX_SHARP_GPP
+	default "linux-x86-g++"	if BR2_QTE_CROSS_LINUX_X86_GPP
+	default "qnx-rtp-g++"	if BR2_QTE_CROSS_QNX_RTP_GPP
+	default "solaris-g++"	if BR2_QTE_CROSS_SOLARIS_GPP
+	default "win32-msvc"	if BR2_QTE_CROSS_WIN32_MSVC
