@@ -3,7 +3,7 @@
 # microperl
 #
 #############################################################
-MICROPERL_VER=5.8.6
+MICROPERL_VER=5.8.7
 MICROPERL_SOURCE=perl-$(MICROPERL_VER).tar.bz2
 MICROPERL_SITE=ftp://ftp.cpan.org/pub/CPAN/src/5.0
 MICROPERL_DIR=$(BUILD_DIR)/perl-$(MICROPERL_VER)
