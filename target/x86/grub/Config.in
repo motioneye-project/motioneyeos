@@ -1,5 +1,5 @@
 config BR2_TARGET_GRUB
-	bool "grub bootloader"
+	bool "grub"
 	default n
 	depends on BR2_i386
 	help

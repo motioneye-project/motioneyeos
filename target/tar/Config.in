@@ -1,5 +1,5 @@
 config BR2_TARGET_ROOTFS_TAR
-	bool "tar the root filesystem for the target device"
+	bool "tar the root filesystem"
 	default n
 	help
 	  Build a tar archive of the root filesystem

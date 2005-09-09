@@ -1,5 +1,5 @@
 config BR2_TARGET_ROOTFS_CRAMFS
-	bool "cramfs root filesystem for the target device"
+	bool "cramfs root filesystem"
 	default n
 	help
 	  Build a cramfs root filesystem

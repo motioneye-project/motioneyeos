@@ -1,5 +1,5 @@
 config BR2_TARGET_SYSLINUX
-	bool "syslinux bootloader"
+	bool "syslinux"
 	default n
 	depends on BR2_i386
 	help

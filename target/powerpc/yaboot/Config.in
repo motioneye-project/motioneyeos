@@ -1,5 +1,5 @@
 config BR2_TARGET_YABOOT
-	bool "yaboot bootloader"
+	bool "yaboot"
 	default n
 	depends on BR2_powerpc
 	help
