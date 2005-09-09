@@ -133,7 +133,10 @@ dirclean: $(TARGETS_DIRCLEAN)
 	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE)
 
 distclean:
-	rm -rf $(DL_DIR) $(BUILD_DIR) $(LINUX_KERNEL) $(IMAGE)
+ifeq ($(DL_DIR),$(BASE_DIR)/dl)
+	rm -rf $(DL_DIR)
+endif
+	rm -rf $(BUILD_DIR) $(LINUX_KERNEL) $(IMAGE)
 
 sourceball:
 	rm -rf $(BUILD_DIR)
