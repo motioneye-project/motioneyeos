@@ -3,10 +3,11 @@
 # gawk
 #
 #############################################################
-GAWK_SOURCE:=gawk-3.1.2.tar.gz
+GAWK_VER:=3.1.5
+GAWK_SOURCE:=gawk-$(GAWK_VER).tar.gz
 GAWK_SITE:=ftp://ftp.gnu.org/gnu/gawk
 GAWK_CAT:=zcat
-GAWK_DIR:=$(BUILD_DIR)/gawk-3.1.2
+GAWK_DIR:=$(BUILD_DIR)/gawk-$(GAWK_VER)
 GAWK_BINARY:=gawk
 GAWK_TARGET_BINARY:=usr/bin/gawk
 
@@ -17,6 +18,7 @@ gawk-source: $(DL_DIR)/$(GAWK_SOURCE)
 
 $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 	$(GAWK_CAT) $(DL_DIR)/$(GAWK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(GAWK_DIR) package/gawk gawk\*.patch
 	touch $(GAWK_DIR)/.unpacked
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
