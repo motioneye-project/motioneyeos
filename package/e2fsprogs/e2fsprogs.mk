@@ -3,13 +3,17 @@
 # e2fsprogs
 #
 #############################################################
-E2FSPROGS_VER:=1.37
+E2FSPROGS_VER:=1.38
 E2FSPROGS_SOURCE=e2fsprogs-$(E2FSPROGS_VER).tar.gz
 E2FSPROGS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/e2fsprogs
 E2FSPROGS_DIR=$(BUILD_DIR)/e2fsprogs-$(E2FSPROGS_VER)
 E2FSPROGS_CAT:=zcat
 E2FSPROGS_BINARY:=misc/mke2fs
 E2FSPROGS_TARGET_BINARY:=sbin/mke2fs
+
+E2FSPROGS_MISC_STRIP:= \
+	badblocks blkid chattr dumpe2fs filefrag fsck logsave \
+	lsattr mke2fs mklost+found tune2fs uuidgen
 
 $(DL_DIR)/$(E2FSPROGS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(E2FSPROGS_SITE)/$(E2FSPROGS_SOURCE)
@@ -44,7 +48,7 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--enable-elf-shlibs --enable-dynamic-e2fsck --disable-swapfs \
 		--disable-debugfs --disable-imager \
 		--disable-resizer --enable-fsck \
-                --disable-e2initrd-helper \
+		--disable-e2initrd-helper \
 		--without-catgets $(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
@@ -52,7 +56,11 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 
 $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY): $(E2FSPROGS_DIR)/.configured
 	$(MAKE1) PATH=$(TARGET_PATH) -C $(E2FSPROGS_DIR)
-	-$(STRIP) $(E2FSPROGS_DIR)/misc/*
+	( \
+		cd $(E2FSPROGS_DIR)/misc ; \
+		$(STRIP) $(E2FSPROGS_MISC_STRIP) ; \
+	)
+	$(STRIP) $(E2FSPROGS_DIR)/lib/lib*.so.*.*
 	touch -c $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
 
 $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY): $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
