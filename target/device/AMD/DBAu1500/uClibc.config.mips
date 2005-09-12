@@ -90,6 +90,7 @@ UCLIBC_TZ_FILE_PATH="/etc/TZ"
 UCLIBC_HAS_IPV6=y
 UCLIBC_HAS_RPC=y
 UCLIBC_HAS_FULL_RPC=y
+# UCLIBC_HAS_REENTRANT_RPC is not set
 
 #
 # String and Stdio Support
