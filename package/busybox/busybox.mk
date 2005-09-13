@@ -27,6 +27,10 @@ busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG_FILE)
 
 $(BUSYBOX_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
+	# if we have external syslogd, force busybox to use it
+	$(SED) "/#include.*busybox\.h/a#define CONFIG_SYSLOGD" $(BUSYBOX_DIR)/init/init.c
+endif
 	# Allow busybox patches.
 	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox\*.patch
 	touch $(BUSYBOX_DIR)/.unpacked
