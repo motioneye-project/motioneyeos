@@ -1,0 +1,17 @@
+On MIPS architecture, sysklogd fails to compile because linux/module.h
+depends on asmlinkage, which is defined linux/linkage.h.
+
+The "proper" fix to this would probably be to apply the
+mips-fixed-fls-warning.patch to the linux sources, which patches
+asm-mips/system.h to always include linux/linkage.h.
+
+--- sysklogd-1.4.1/ksym_mod.c.orig	2000-09-12 14:15:28.000000000 -0700
++++ sysklogd-1.4.1/ksym_mod.c	2005-08-15 14:11:42.000000000 -0700
+@@ -89,6 +89,7 @@
+ #include <errno.h>
+ #include <sys/fcntl.h>
+ #include <sys/stat.h>
++#include <linux/linkage.h>
+ #if !defined(__GLIBC__)
+ #include <linux/time.h>
+ #include <linux/module.h>

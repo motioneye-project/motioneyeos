@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# Starts syslog.
+#
+
+
+
+umask 077
+
+start() {
+ 	echo -n "Starting syslogd: "
+	start-stop-daemon --start --quiet --pidfile /var/run/syslog.pid --exec /sbin/syslogd -- -m 0
+	echo "OK"
+
+	echo -n "Starting klogd: "
+	start-stop-daemon --start --quiet --pidfile /var/run/klogd.pid --exec /sbin/klogd
+	echo "OK"
+}
+stop() {
+	echo -n "Stopping klogd: "
+	start-stop-daemon --stop --name klogd
+	echo "OK"
+
+	echo -n "Stopping syslogd: "
+	start-stop-daemon --stop --name syslogd
+	echo "OK"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

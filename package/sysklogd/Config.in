@@ -1,0 +1,7 @@
+config BR2_PACKAGE_SYSKLOGD
+	bool "syslogd & klogd"
+	default n
+	help
+	  System log daemons syslogd and klogd.
+
+	  http://www.infodrom.org/products/sysklogd/
