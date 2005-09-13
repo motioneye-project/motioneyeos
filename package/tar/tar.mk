@@ -25,6 +25,7 @@ $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 	(cd $(GNUTAR_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		ac_cv_func_chown_works=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
