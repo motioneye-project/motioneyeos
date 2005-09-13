@@ -1,0 +1,2 @@
+#!/bin/sh
+# empty dhclient-script to keep dhclient from complaining
