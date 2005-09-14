@@ -36,7 +36,7 @@ $(OPENNTPD_DIR)/$(OPENNTPD_BINARY): $(OPENNTPD_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(OPENNTPD_DIR)
 
 $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY): $(OPENNTPD_DIR)/$(OPENNTPD_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR)/usr -C $(OPENNTPD_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(OPENNTPD_DIR) install
 	cp $(OPENNTPD_DIR)/ntpd.conf $(TARGET_DIR)/etc
 	rm -Rf $(TARGET_DIR)/usr/man
 
@@ -45,7 +45,7 @@ ntpd: uclibc $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
 ntpd-source: $(DL_DIR)/$(OPENNTPD_SOURCE)
 
 ntpd-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR)/usr -C $(OPENNTPD_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(OPENNTPD_DIR) uninstall
 	rm -f $(TARGET_DIR)/etc/ntpd.conf
 	-$(MAKE) -C $(OPENNTPD_DIR) clean
 
