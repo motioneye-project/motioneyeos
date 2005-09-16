@@ -1,0 +1,16 @@
+diff -urN gdb-6.3.50.20050915/readline/configure gdb-6.3.50.20050915-patched/readline/configure
+--- gdb-6.3.50.20050915/readline/configure	2005-07-03 03:22:47.000000000 -0500
++++ gdb-6.3.50.20050915-patched/readline/configure	2005-09-15 22:25:00.000000000 -0500
+@@ -6723,7 +6723,12 @@
+ 
+ 
+ echo "$as_me:$LINENO: checking for mbstate_t" >&5
++echo $ECHO_N "bash_cv_have_mbstate_t=$bash_cv_have_mbstate_t" >&6
+ echo $ECHO_N "checking for mbstate_t... $ECHO_C" >&6
++if test "${bash_cv_have_mbstate_t+set}" != set; then
++  bash_cv_have_mbstate_t=yes
++  echo $ECHO_N "WARNING!! forcing to yes!!! $ECHO_C" >&6
++fi
+ if test "${bash_cv_have_mbstate_t+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else

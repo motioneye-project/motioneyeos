@@ -1,0 +1,26 @@
+Fix some missing uses of DESTDIR in the sim/ directories.  The Debian
+packages use DESTDIR to build.
+--
+diff -ur gdb-6.3.50.20050915/sim/Makefile.in gdb-6.3.50.20050915-patched/sim/Makefile.in
+--- gdb-6.3.50.20050915/sim/Makefile.in	2005-01-28 18:53:13.000000000 -0600
++++ gdb-6.3.50.20050915-patched/sim/Makefile.in	2005-09-15 23:17:42.000000000 -0500
+@@ -93,6 +93,7 @@
+ 	"CC=$(CC)" \
+ 	"CC_FOR_BUILD=$(CC_FOR_BUILD)" \
+ 	"CFLAGS=$(CFLAGS)" \
++	"DESTDIR=$(DESTDIR)" \
+ 	"RANLIB=$(RANLIB)" \
+ 	"MAKEINFO=$(MAKEINFO)" \
+ 	"INSTALL=$(INSTALL)" \
+diff -ur gdb-6.3.50.20050915/sim/erc32/Makefile.in gdb-6.3.50.20050915-patched/sim/erc32/Makefile.in
+--- gdb-6.3.50.20050915/sim/erc32/Makefile.in	2000-03-07 09:32:49.000000000 -0600
++++ gdb-6.3.50.20050915-patched/sim/erc32/Makefile.in	2005-09-15 23:18:22.000000000 -0500
+@@ -53,7 +53,7 @@
+ # Copy the files into directories where they will be run.
+ install-sis: installdirs
+ 	n=`echo sis | sed '$(program_transform_name)'`; \
+-	$(INSTALL_PROGRAM) sis$(EXEEXT) $(bindir)/$$n$(EXEEXT)
++	$(INSTALL_PROGRAM) sis$(EXEEXT) $(DESTDIR)$(bindir)/$$n$(EXEEXT)
+ 
+ clean-sis:
+ 	rm -f sis end end.h

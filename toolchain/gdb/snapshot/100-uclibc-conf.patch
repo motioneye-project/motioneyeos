@@ -1,0 +1,94 @@
+diff -urN gdb-6.3.50.20050915/bfd/config.bfd gdb-6.3.50.20050915-patched/bfd/config.bfd
+--- gdb-6.3.50.20050915/bfd/config.bfd	2005-08-30 11:06:00.000000000 -0500
++++ gdb-6.3.50.20050915-patched/bfd/config.bfd	2005-09-15 20:08:49.000000000 -0500
+@@ -725,7 +725,7 @@
+     targ_defvec=hp300hpux_vec
+     targ_underscore=yes
+     ;;
+-  m68*-*-linux*aout*)
++  m68*-*-linux*aout* | m68*-*-linux-uclibc*)
+     targ_defvec=m68klinux_vec
+     targ_selvecs=bfd_elf32_m68k_vec
+     targ_underscore=yes
+diff -urN gdb-6.3.50.20050915/bfd/configure gdb-6.3.50.20050915-patched/bfd/configure
+--- gdb-6.3.50.20050915/bfd/configure	2005-08-26 04:47:43.000000000 -0500
++++ gdb-6.3.50.20050915-patched/bfd/configure	2005-09-15 20:09:54.000000000 -0500
+@@ -3585,6 +3585,11 @@
+   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
+   ;;
+ 
++linux-uclibc*)
++  lt_cv_deplibs_check_method=pass_all
++  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
++  ;;
++
+ netbsd* | knetbsd*-gnu)
+   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
+     lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
+diff -urN gdb-6.3.50.20050915/libtool.m4 gdb-6.3.50.20050915-patched/libtool.m4
+--- gdb-6.3.50.20050915/libtool.m4	2005-07-15 21:36:38.000000000 -0500
++++ gdb-6.3.50.20050915-patched/libtool.m4	2005-09-15 20:13:33.000000000 -0500
+@@ -653,6 +653,11 @@
+   fi
+   ;;
+ 
++linux-uclibc*)
++  lt_cv_deplibs_check_method=pass_all  
++  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
++  ;;
++
+ newsos6)
+   [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)']
+   lt_cv_file_magic_cmd=/usr/bin/file
+diff -urN gdb-6.3.50.20050915/ltconfig gdb-6.3.50.20050915-patched/ltconfig
+--- gdb-6.3.50.20050915/ltconfig	2005-07-15 21:36:38.000000000 -0500
++++ gdb-6.3.50.20050915-patched/ltconfig	2005-09-15 21:23:35.000000000 -0500
+@@ -602,7 +602,7 @@
+ 
+ # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
+ case $host_os in
+-linux-gnu*) ;;
++linux-gnu*|linux-uclibc*) ;;
+ linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
+ esac
+ 
+@@ -1270,6 +1270,24 @@
+   dynamic_linker='GNU/Linux ld.so'
+   ;;
+ 
++linux-uclibc*)
++  version_type=linux
++  need_lib_prefix=no
++  need_version=no
++  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
++  soname_spec='${libname}${release}.so$major'
++  finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
++  shlibpath_var=LD_LIBRARY_PATH
++  shlibpath_overrides_runpath=no
++  # This implies no fast_install, which is unacceptable.
++  # Some rework will be needed to allow for fast_install
++  # before this can be enabled.
++  # Note: copied from linux-gnu, and may not be appropriate.
++  hardcode_into_libs=yes
++  # Assume using the uClibc dynamic linker.
++  dynamic_linker="uClibc ld.so"
++  ;;
++
+ netbsd*)
+   need_lib_prefix=no
+   need_version=no
+diff -urN gdb-6.3.50.20050915/opcodes/configure gdb-6.3.50.20050915-patched/opcodes/configure
+--- gdb-6.3.50.20050915/opcodes/configure	2005-08-17 22:49:00.000000000 -0500
++++ gdb-6.3.50.20050915-patched/opcodes/configure	2005-09-15 21:22:20.000000000 -0500
+@@ -3596,6 +3596,11 @@
+   fi
+   ;;
+ 
++linux-uclibc*)
++  lt_cv_deplibs_check_method=pass_all
++  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
++  ;;
++
+ newsos6)
+   lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)'
+   lt_cv_file_magic_cmd=/usr/bin/file
