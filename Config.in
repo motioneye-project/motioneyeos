@@ -100,7 +100,7 @@ config BR2_WGET
 	default "wget --passive-ftp -nd"
 
 config BR2_SVN
-        string "Subversion (svn) checkout command"
+	string "Subversion (svn) checkout command"
 	default "svn co"
 
 config BR2_TAR_VERBOSITY
@@ -108,13 +108,16 @@ config BR2_TAR_VERBOSITY
 	default n
 
 config BR2_SOURCEFORGE_MIRROR
-        string "Sourceforge mirror site"
+	string "Sourceforge mirror site"
 	default "easynews"
 	help
 	    Sourceforge has a system of mirror sites.  Some sites may be closer
 	    to your location, and sometimes mirror sites go down and are no longer
 	    available.  This option allows you to select your preferred Sourceforge
 	    mirror site.
+
+	    The list of mirrors is available here:
+	    http://prdownloads.sourceforge.net/index-sf.html?download
 
 config BR2_STAGING_DIR
 	string "Toolchain and header file location?"
@@ -128,6 +131,24 @@ config BR2_STAGING_DIR
 
 	    Most people will leave this set to the default value of
 	    "$(BUILD_DIR)/staging_dir".
+
+config BR2_TOPDIR_PREFIX
+	string "Custom build dir prefix"
+	default ""
+	help
+	    Add a custom string to the beginning of the build directories.
+
+	    build_ARCH -> [PREFIX]_build_ARCH
+	    toolchain_build_ARCH -> [PREFIX]_toolchain_build_ARCH
+
+config BR2_TOPDIR_SUFFIX
+	string "Custom build dir suffix"
+	default ""
+	help
+	    Add a custom string to the end of the build directories.
+
+	    build_ARCH -> build_ARCH_[SUFFIX]
+	    toolchain_build_ARCH -> toolchain_build_ARCH_[SUFFIX] 
 
 config BR2_JLEVEL
 	int "Number of jobs to run simultaneously"
