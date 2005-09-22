@@ -3,9 +3,10 @@
 # bison
 #
 #############################################################
-BISON_SOURCE:=bison-1.35.tar.bz2
+BISON_VER:=2.1
+BISON_SOURCE:=bison-$(BISON_VER).tar.bz2
 BISON_SITE:=ftp://ftp.gnu.org/gnu/bison
-BISON_DIR:=$(BUILD_DIR)/bison-1.35
+BISON_DIR:=$(BUILD_DIR)/bison-$(BISON_VER)
 BISON_CAT:=bzcat
 BISON_BINARY:=src/bison
 BISON_TARGET_BINARY:=usr/bin/bison
@@ -40,6 +41,7 @@ $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
+	echo 'all install:' > $(BISON_DIR)/examples/Makefile
 	touch  $(BISON_DIR)/.configured
 
 $(BISON_DIR)/$(BISON_BINARY): $(BISON_DIR)/.configured
