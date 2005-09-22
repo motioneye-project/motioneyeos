@@ -176,6 +176,13 @@ $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) install
+	if [ -d "$(STAGING_DIR)/lib64" ] ; then \
+		if [ ! -e "$(STAGING_DIR)/lib" ] ; then \
+			mkdir "$(STAGING_DIR)/lib" ; \
+		fi ; \
+		mv "$(STAGING_DIR)/lib64/"* "$(STAGING_DIR)/lib/" ; \
+		rmdir "$(STAGING_DIR)/lib64" ; \
+	fi
 	# Strip the host binaries
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
 	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
