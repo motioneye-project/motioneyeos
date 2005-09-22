@@ -40,6 +40,19 @@ diff -urN gcc-3.4.1-dist/boehm-gc/ltconfig gcc-3.4.1/boehm-gc/ltconfig
  netbsd*)
    version_type=sunos
    if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
+--- gcc-3.4.4/gcc/config/alpha/linux-elf.h
++++ gcc-3.4.4/gcc/config/alpha/linux-elf.h
+ #define SUBTARGET_EXTRA_SPECS \
+ { "elf_dynamic_linker", ELF_DYNAMIC_LINKER },
+ 
++#if defined USE_UCLIBC
++#define ELF_DYNAMIC_LINKER	"/lib/ld-uClibc.so.0"
++#else
+ #define ELF_DYNAMIC_LINKER	"/lib/ld-linux.so.2"
++#endif
+ 
+ #define LINK_SPEC "-m elf64alpha %{G*} %{relax:-relax}		\
+   %{O*:-O3} %{!O*:-O1}						\
 diff -urN gcc-3.4.1-dist/gcc/config/arm/linux-elf.h gcc-3.4.1/gcc/config/arm/linux-elf.h
 --- gcc-3.4.1-dist/gcc/config/arm/linux-elf.h	2004-01-31 00:18:11.000000000 -0600
 +++ gcc-3.4.1/gcc/config/arm/linux-elf.h	2004-08-12 15:54:42.000000000 -0500
@@ -263,6 +276,19 @@ diff -urN gcc-3.4.1-dist/gcc/config/t-linux-uclibc gcc-3.4.1/gcc/config/t-linux-
 diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
 --- gcc-3.4.1-dist/gcc/config.gcc	2004-04-21 10:12:35.000000000 -0500
 +++ gcc-3.4.1/gcc/config.gcc	2004-08-12 15:59:46.000000000 -0500
+@@ -568,7 +568,11 @@
+ alpha*-*-linux*)
+ 	tm_file="${tm_file} alpha/elf.h alpha/linux.h alpha/linux-elf.h"
+ 	target_cpu_default="MASK_GAS"
+-	tmake_file="t-slibgcc-elf-ver t-linux alpha/t-crtfm alpha/t-alpha alpha/t-ieee"
++	tmake_file="t-slibgcc-elf-ver alpha/t-crtfm alpha/t-alpha alpha/t-ieee"
++	case ${target} in
++	*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
++	*) tmake_file="${tmake_file} t-linux" ;;
++	esac
+ 	;;
+ alpha*-*-gnu*)
+ 	target_cpu_default="MASK_GAS"
 @@ -664,6 +664,12 @@
  	extra_parts=""
  	use_collect2=yes
