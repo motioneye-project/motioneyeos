@@ -3,10 +3,11 @@
 # libtool
 #
 #############################################################
-LIBTOOL_SOURCE:=libtool-1.5.8.tar.gz
+LIBTOOL_VER:=1.5.20
+LIBTOOL_SOURCE:=libtool-$(LIBTOOL_VER).tar.gz
 LIBTOOL_SITE:=ftp://ftp.gnu.org/gnu/libtool
 LIBTOOL_CAT:=zcat
-LIBTOOL_DIR:=$(BUILD_DIR)/libtool-1.5.8
+LIBTOOL_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VER)
 LIBTOOL_BINARY:=libtool
 LIBTOOL_TARGET_BINARY:=usr/bin/libtool
 
