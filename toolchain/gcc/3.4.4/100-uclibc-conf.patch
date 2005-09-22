@@ -360,7 +360,7 @@ diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
 -	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver t-linux"
 +	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver"
 +	case ${target} in
-+	*-*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
++	*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
 +	*) tmake_file="${tmake_file} t-linux" ;;
 +	esac
  	case ${target} in
