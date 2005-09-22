@@ -155,6 +155,32 @@ diff -urN gcc-3.4.1-dist/gcc/config/i386/linux.h gcc-3.4.1/gcc/config/i386/linux
  
  /* A C statement (sans semicolon) to output to the stdio stream
     FILE the assembler definition of uninitialized global DECL named
+--- gcc-3.4.4/gcc/config/i386/linux64.h
++++ gcc-3.4.4/gcc/config/i386/linux64.h
+@@ -55,6 +55,15 @@
+    done.  */
+ 
+ #undef	LINK_SPEC
++#if defined USE_UCLIBC
++#define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
++  %{shared:-shared} \
++  %{!shared: \
++    %{!static: \
++      %{rdynamic:-export-dynamic} \
++      %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
++    %{static:-static}}"
++#else
+ #define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
+   %{shared:-shared} \
+   %{!shared: \
+@@ -63,6 +73,7 @@
+       %{m32:%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
+       %{!m32:%{!dynamic-linker:-dynamic-linker /lib64/ld-linux-x86-64.so.2}}} \
+     %{static:-static}}"
++#endif
+ 
+ #define MULTILIB_DEFAULTS { "m64" }
+ 
 diff -urN gcc-3.4.1-dist/gcc/config/mips/linux.h gcc-3.4.1/gcc/config/mips/linux.h
 --- gcc-3.4.1-dist/gcc/config/mips/linux.h	2004-06-15 20:42:24.000000000 -0500
 +++ gcc-3.4.1/gcc/config/mips/linux.h	2004-08-12 15:54:43.000000000 -0500
@@ -325,6 +351,19 @@ diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
  i[34567]86-*-linux*)	# Intel 80386's running GNU/Linux
  			# with ELF format using glibc 2
  			# aka GNU/Linux C library 6
+@@ -1032,7 +1032,11 @@
+ x86_64-*-linux*)
+ 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h svr4.h linux.h \
+ 		 i386/x86-64.h i386/linux64.h"
+-	tmake_file="t-slibgcc-elf-ver t-linux i386/t-linux64"
++	tmake_file="t-slibgcc-elf-ver i386/t-linux64"
++	case ${target} in
++	*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
++	*) tmake_file="${tmake_file} t-linux" ;;
++	esac
+ 	;;
+ i[34567]86-*-kfreebsd*-gnu) # must be before i[34567]86-*-gnu*
+ 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h svr4.h linux.h i386/linux.h kfreebsdgnu.h i386/kfreebsdgnu.h"
 @@ -1547,6 +1562,16 @@
  	gnu_ld=yes
  	gas=yes
