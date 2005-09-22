@@ -42,6 +42,7 @@ diff -urN gcc-3.4.1-dist/boehm-gc/ltconfig gcc-3.4.1/boehm-gc/ltconfig
    if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
 --- gcc-3.4.4/gcc/config/alpha/linux-elf.h
 +++ gcc-3.4.4/gcc/config/alpha/linux-elf.h
+@@ -27,7 +27,11 @@
  #define SUBTARGET_EXTRA_SPECS \
  { "elf_dynamic_linker", ELF_DYNAMIC_LINKER },
  
