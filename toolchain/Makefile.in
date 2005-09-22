@@ -1,5 +1,7 @@
 ifeq ($(BR2_ENABLE_MULTILIB),y)
 MULTILIB:=--enable-multilib
+else
+MULTILIB:=--disable-multilib
 endif
 
 
