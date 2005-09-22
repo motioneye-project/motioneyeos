@@ -51,6 +51,20 @@ diff -urN gcc-4.0.0-dist/contrib/regression/objs-gcc.sh gcc-4.0.0/contrib/regres
  elif [ $H_REAL_TARGET = $H_REAL_HOST ] ; then
    make bootstrap || exit 1
    make install || exit 1
+--- gcc-3.4.4/gcc/config/alpha/linux-elf.h
++++ gcc-3.4.4/gcc/config/alpha/linux-elf.h
+@@ -27,7 +27,11 @@
+ #define SUBTARGET_EXTRA_SPECS \
+ { "elf_dynamic_linker", ELF_DYNAMIC_LINKER },
+ 
++#if defined USE_UCLIBC
++#define ELF_DYNAMIC_LINKER	"/lib/ld-uClibc.so.0"
++#else
+ #define ELF_DYNAMIC_LINKER	"/lib/ld-linux.so.2"
++#endif
+ 
+ #define LINK_SPEC "-m elf64alpha %{G*} %{relax:-relax}		\
+   %{O*:-O3} %{!O*:-O1}						\
 diff -urN gcc-4.0.0-dist/gcc/config/arm/linux-elf.h gcc-4.0.0/gcc/config/arm/linux-elf.h
 --- gcc-4.0.0-dist/gcc/config/arm/linux-elf.h	2005-03-04 10:14:01.000000000 -0600
 +++ gcc-4.0.0/gcc/config/arm/linux-elf.h	2005-04-28 20:30:00.000000000 -0500
@@ -141,6 +155,32 @@ diff -urN gcc-4.0.0-dist/gcc/config/i386/linux.h gcc-4.0.0/gcc/config/i386/linux
  #undef  SUBTARGET_EXTRA_SPECS
  #define SUBTARGET_EXTRA_SPECS \
    { "link_emulation", LINK_EMULATION },\
+--- gcc-3.4.4/gcc/config/i386/linux64.h
++++ gcc-3.4.4/gcc/config/i386/linux64.h
+@@ -55,6 +55,15 @@
+    done.  */
+ 
+ #undef	LINK_SPEC
++#if defined USE_UCLIBC
++#define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
++  %{shared:-shared} \
++  %{!shared: \
++    %{!static: \
++      %{rdynamic:-export-dynamic} \
++      %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
++    %{static:-static}}"
++#else
+ #define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
+   %{shared:-shared} \
+   %{!shared: \
+@@ -63,6 +73,7 @@
+       %{m32:%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
+       %{!m32:%{!dynamic-linker:-dynamic-linker /lib64/ld-linux-x86-64.so.2}}} \
+     %{static:-static}}"
++#endif
+ 
+ #define MULTILIB_DEFAULTS { "m64" }
+ 
 diff -urN gcc-4.0.0-dist/gcc/config/mips/linux.h gcc-4.0.0/gcc/config/mips/linux.h
 --- gcc-4.0.0-dist/gcc/config/mips/linux.h	2005-01-25 20:04:46.000000000 -0600
 +++ gcc-4.0.0/gcc/config/mips/linux.h	2005-04-28 20:30:00.000000000 -0500
@@ -240,57 +280,6 @@ diff -urN gcc-4.0.0-dist/gcc/config/sh/linux.h gcc-4.0.0/gcc/config/sh/linux.h
  
  #undef LIB_SPEC
  #define LIB_SPEC \
-diff -urN gcc-4.0.0-dist/gcc/config/sh/t-linux-uclibc gcc-4.0.0/gcc/config/sh/t-linux-uclibc
---- gcc-4.0.0-dist/gcc/config/sh/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.0.0/gcc/config/sh/t-linux-uclibc	2005-04-28 20:30:00.000000000 -0500
-@@ -0,0 +1,47 @@
-+T_CFLAGS = -DUSE_UCLIBC
-+
-+TARGET_LIBGCC2_CFLAGS = -fpic -DNO_FPSCR_VALUES
-+LIB1ASMFUNCS_CACHE = _ic_invalidate
-+
-+LIB2FUNCS_EXTRA=
-+
-+MULTILIB_DIRNAMES= 
-+MULTILIB_MATCHES = 
-+MULTILIB_EXCEPTIONS=
-+
-+EXTRA_MULTILIB_PARTS= crtbegin.o crtend.o crtbeginS.o crtendS.o crtbeginT.o
-+
-+# Override t-slibgcc-elf-ver to export some libgcc symbols with
-+# the symbol versions that glibc used, and hide some lib1func
-+# routines which should not be called via PLT.  We have to create
-+# the list from scratch.
-+SHLIB_MAPFILES = \
-+	$(srcdir)/libgcc-std.ver \
-+	$(srcdir)/config/sh/libgcc-excl.ver \
-+	$(srcdir)/config/sh/libgcc-glibc.ver
-+
-+# Override SHLIB_LINK and SHLIB_INSTALL to use linker script
-+# libgcc_s.so.
-+SHLIB_LINK = $(GCC_FOR_TARGET) $(LIBGCC2_CFLAGS) -shared -nodefaultlibs \
-+	-Wl,--soname=$(SHLIB_SONAME) \
-+	-Wl,--version-script=$(SHLIB_MAP) \
-+	-o $(SHLIB_DIR)/$(SHLIB_SONAME).tmp @multilib_flags@ \
-+	$(SHLIB_OBJS) $(SHLIB_LC) && \
-+	rm -f $(SHLIB_DIR)/$(SHLIB_SOLINK) && \
-+	if [ -f $(SHLIB_DIR)/$(SHLIB_SONAME) ]; then \
-+	  mv -f $(SHLIB_DIR)/$(SHLIB_SONAME) \
-+		$(SHLIB_DIR)/$(SHLIB_SONAME).backup; \
-+	else true; fi && \
-+	mv $(SHLIB_DIR)/$(SHLIB_SONAME).tmp $(SHLIB_DIR)/$(SHLIB_SONAME) && \
-+	(echo "/* GNU ld script"; \
-+	 echo "   Use the shared library, but some functions are only in"; \
-+	 echo "   the static library.  */"; \
-+	 echo "GROUP ( $(SHLIB_SONAME) libgcc.a )" \
-+	) > $(SHLIB_DIR)/$(SHLIB_SOLINK)
-+SHLIB_INSTALL = \
-+	$$(mkinstalldirs) $$(DESTDIR)$$(slibdir)$(SHLIB_SLIBDIR_QUAL); \
-+	$(INSTALL_DATA) $(SHLIB_DIR)/$(SHLIB_SONAME) \
-+	  $$(DESTDIR)$$(slibdir)$(SHLIB_SLIBDIR_QUAL)/$(SHLIB_SONAME); \
-+	rm -f $$(DESTDIR)$$(slibdir)$(SHLIB_SLIBDIR_QUAL)/$(SHLIB_SOLINK); \
-+	$(INSTALL_DATA) $(SHLIB_DIR)/$(SHLIB_SOLINK) \
-+	  $$(DESTDIR)$$(slibdir)$(SHLIB_SLIBDIR_QUAL)/$(SHLIB_SOLINK)
 diff -urN gcc-4.0.0-dist/gcc/config/t-linux-uclibc gcc-4.0.0/gcc/config/t-linux-uclibc
 --- gcc-4.0.0-dist/gcc/config/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
 +++ gcc-4.0.0/gcc/config/t-linux-uclibc	2005-04-28 20:30:00.000000000 -0500
@@ -347,15 +336,6 @@ diff -urN gcc-4.0.0-dist/gcc/config.gcc gcc-4.0.0/gcc/config.gcc
    sh-*-netbsdelf* | shl*-*-netbsdelf* | sh5-*-netbsd* | sh5l*-*-netbsd* | \
     sh64-*-netbsd* | sh64l*-*-netbsd*)
  	tmake_file="${tmake_file} sh/t-sh sh/t-elf"
-@@ -1780,6 +1789,8 @@
- 	esac
- 	tm_file="${tm_file} sh/elf.h"
- 	case ${target} in
-+	sh*-*-linux-uclibc*) tmake_file="${tmake_file} sh/t-linux-uclibc"
-+			tm_file="${tm_file} sh/linux.h" ;;
- 	sh*-*-linux*)	tmake_file="${tmake_file} sh/t-linux"
- 			tm_file="${tm_file} sh/linux.h" ;;
- 	sh*-*-kaos*)	tm_file="${tm_file} sh/embed-elf.h kaos.h sh/kaos-sh.h"
 diff -urN gcc-4.0.0-dist/libffi/configure gcc-4.0.0/libffi/configure
 --- gcc-4.0.0-dist/libffi/configure	2004-12-02 05:04:21.000000000 -0600
 +++ gcc-4.0.0/libffi/configure	2005-04-30 12:18:05.000000000 -0500
