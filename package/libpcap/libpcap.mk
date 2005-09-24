@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBPCAP_VER:=0.8.3
+LIBPCAP_VER:=0.9.3
 LIBPCAP_DIR:=$(BUILD_DIR)/libpcap-$(LIBPCAP_VER)
 LIBPCAP_SITE:=http://www.tcpdump.org/release
 LIBPCAP_SOURCE:=libpcap-$(LIBPCAP_VER).tar.gz
