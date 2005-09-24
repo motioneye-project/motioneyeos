@@ -3,11 +3,11 @@
 # util-linux
 #
 #############################################################
-UTIL-LINUX_SOURCE:=util-linux_2.12.orig.tar.gz
-UTIL-LINUX_SITE:=http://ftp.debian.org/debian/pool/main/u/util-linux/
-UTIL-LINUX_PATCH:=util-linux_2.12-10.diff.gz
-UTIL-LINUX_CAT:=zcat
-UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-2.12
+UTIL-LINUX_VER:=2.12q
+UTIL-LINUX_SOURCE:=util-linux-$(UTIL-LINUX_VER).tar.bz2
+UTIL-LINUX_SITE:=http://www.kernel.org/pub/linux/utils/util-linux
+UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-$(UTIL-LINUX_VER)
+UTIL-LINUX_CAT:=bzcat
 UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/mcookie
 UTIL-LINUX_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/mcookie
 
@@ -19,7 +19,6 @@ $(DL_DIR)/$(UTIL-LINUX_PATCH):
 
 $(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE) $(DL_DIR)/$(UTIL-LINUX_PATCH)
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_PATCH) | patch -p1 -d $(UTIL-LINUX_DIR)
 	toolchain/patch-kernel.sh $(UTIL-LINUX_DIR) package/util-linux/ util-linux\*.patch
 ifneq ($(BR2_LARGEFILE),y)
 	$(SED) "/D_FILE_OFFSET_BITS/ d" $(UTIL-LINUX_DIR)/MCONFIG
