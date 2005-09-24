@@ -1,0 +1,7 @@
+config BR2_PACKAGE_MDADM
+	bool "mdadm"
+	default n
+	help
+	  Utility for managing RAID hardware.
+
+	  http://cgi.cse.unsw.edu.au/~neilb/mdadm
