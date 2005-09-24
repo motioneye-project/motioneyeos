@@ -14,40 +14,28 @@ choice
 
 config BR2_alpha
 	bool "alpha"
-
 config BR2_arm
 	bool "arm"
-
 config BR2_armeb
 	bool "armeb"
-
 config BR2_cris
 	bool "cris"
-
 config BR2_i386
 	bool "i386"
-
 config BR2_m68k
 	bool "m68k"
-
 config BR2_mips
 	bool "mips"
-
 config BR2_mipsel
 	bool "mipsel"
-
 config BR2_powerpc
 	bool "powerpc"
-
 config BR2_sh
 	bool "sh"
-
 config BR2_sparc
 	bool "sparc"
-
 config BR2_x86_64
 	bool "x86_64"
-
 endchoice
 
 #
@@ -60,25 +48,36 @@ choice
 	prompt "Target Architecture Variant"
 	depends BR2_sh
 	default BR2_sh4
-
 config BR2_sh2a_nofpueb
 	bool "sh2a_nofpueb"
-
 config BR2_sh2eb
 	bool "sh2eb"
-
 config BR2_sh3
 	bool "sh3"
-
 config BR2_sh3eb
 	bool "sh3eb"
-
 config BR2_sh4
 	bool "sh4"
-
 config BR2_sh4eb
 	bool "sh4eb"
+endchoice
 
+#
+# gcc builds libstdc++ differently depending on the
+# host tuplet given to it, so let people choose
+#
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_i386
+	default BR2_x86_i686
+config BR2_x86_i386
+	bool "i386"
+config BR2_x86_i486
+	bool "i486"
+config BR2_x86_i586
+	bool "i586"
+config BR2_x86_i686
+	bool "i686"
 endchoice
 
 config BR2_ARCH
@@ -87,7 +86,10 @@ config BR2_ARCH
 	default "arm"		if BR2_arm
 	default "armeb"		if BR2_armeb
 	default "cris"		if BR2_cris
-	default "i386"		if BR2_i386
+	default "i386"		if BR2_x86_i386
+	default "i486"		if BR2_x86_i486
+	default "i586"		if BR2_x86_i586
+	default "i686"		if BR2_x86_i686
 	default "m68k"		if BR2_m68k
 	default "mips"		if BR2_mips
 	default "mipsel"	if BR2_mipsel
