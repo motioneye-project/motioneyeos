@@ -1,6 +1,14 @@
-diff -ur pciutils-2.1.11.orig/lib/configure pciutils-2.1.11/lib/configure
---- pciutils-2.1.11.orig/lib/configure	2004-10-08 11:56:42.876316816 -0400
-+++ pciutils-2.1.11/lib/configure	2004-10-08 11:57:04.965958680 -0400
+--- pciutils-2.1.11/lib/configure
++++ pciutils-2.1.11/lib/configure
+@@ -12,7 +12,7 @@
+ echo_n "Configuring libpci for your system..."
+ sharedir=${1:-/usr/share}
+ version=${2:-0.0}
+-sys=`uname -s`
++sys=Linux
+ rel=`uname -r`
+ if [ "$sys" = "AIX" -a -x /usr/bin/oslevel -a -x /usr/sbin/lsattr ]
+ then
 @@ -25,7 +25,6 @@
  echo " $sys/$cpu $rel"
  
@@ -27,3 +35,42 @@ diff -ur pciutils-2.1.11.orig/lib/configure pciutils-2.1.11/lib/configure
  		;;
  	FreeBSD)
  		echo_n " fbsd-device"
+--- pciutils-2.1.11/Makefile
++++ pciutils-2.1.11/Makefile
+@@ -18,16 +18,6 @@
+ DIRINSTALL=install -d
+ PCILIB=libpci.a
+ 
+-ifeq ($(shell uname),NetBSD)
+-PCILIB=libpciutils.a
+-LDFLAGS+=-lpci
+-else
+-ifeq ($(shell uname),AIX)
+-CFLAGS=-g
+-INSTALL=installbsd
+-DIRINSTALL=mkdir -p
+-endif
+-endif
+ 
+ export
+ 
+--- pciutils-2.1.11/lspci.c
++++ pciutils-2.1.11/lspci.c
+@@ -51,7 +51,7 @@
+ 
+ /* Format strings used for IRQ numbers and memory addresses */
+ 
+-#ifdef ARCH_SPARC64
++#ifdef __sparc64__
+ #define IRQ_FORMAT "%08x"
+ #else
+ #define IRQ_FORMAT "%d"
+@@ -67,7 +67,7 @@
+ #define ADDR_FORMAT "%08lx"
+ #endif
+ 
+-#ifdef ARCH_SPARC64
++#ifdef __sparc64__
+ #define IO_FORMAT "%016Lx"
+ #elif defined(HAVE_LONG_ADDRESS)
+ #define IO_FORMAT "%04Lx"
