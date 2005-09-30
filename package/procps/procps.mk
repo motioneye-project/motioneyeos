@@ -27,7 +27,7 @@ $(TARGET_DIR)/$(PROCPS_TARGET_BINARY): $(PROCPS_DIR)/$(PROCPS_BINARY)
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) DESTDIR=$(TARGET_DIR) \
 		install='install -D' -C $(PROCPS_DIR) lib64=/lib \
 		ldconfig='/bin/true' install
-	rm -Rf $(TARGET_DIR)/usr/man
+	rm -Rf $(TARGET_DIR)/usr/share/man
 
 procps: uclibc ncurses $(TARGET_DIR)/$(PROCPS_TARGET_BINARY)
 
