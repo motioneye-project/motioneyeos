@@ -26,6 +26,7 @@ $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_func_chown_works=yes \
+		gl_cv_func_chown_follows_symlink=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
