@@ -5,10 +5,16 @@
 #############################################################
 
 # TARGETS
-OPENSSL_VER:=0.9.7e
+OPENSSL_VER:=0.9.8
 OPENSSL_SITE:=http://www.openssl.org/source
 OPENSSL_SOURCE:=openssl-$(OPENSSL_VER).tar.gz
 OPENSSL_DIR:=$(BUILD_DIR)/openssl-$(OPENSSL_VER)
+
+ifeq ($(BR2_i386),y)
+OPENSSL_TARGET_ARCH:=i386-$(ARCH)
+else
+OPENSSL_TARGET_ARCH:=$(ARCH)
+endif
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSL_SITE)/$(OPENSSL_SOURCE)
@@ -26,7 +32,7 @@ $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 	(cd $(OPENSSL_DIR); \
 	CFLAGS="-DOPENSSL_NO_KRB5 -DOPENSSL_NO_IDEA -DOPENSSL_NO_MDC2 -DOPENSSL_NO_RC5 $(TARGET_CFLAGS)" \
-	PATH=$(TARGET_PATH) ./Configure linux-$(ARCH) --prefix=/ \
+	PATH=$(TARGET_PATH) ./Configure linux-$(OPENSSL_TARGET_ARCH) --prefix=/ \
 		--openssldir=/usr/lib/ssl -L$(STAGING_DIR)/lib -ldl \
 		-I$(STAGING_DIR)/include $(OPENSSL_OPTS) no-threads \
 		shared no-idea no-mdc2 no-rc5)
