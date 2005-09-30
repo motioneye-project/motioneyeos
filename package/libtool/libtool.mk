@@ -73,6 +73,11 @@ libtool-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBTOOL_DIR) uninstall
 	-$(MAKE) -C $(LIBTOOL_DIR) clean
 
+libtool-cross: uclibc $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
+
+libtool-cross-clean:
+	-$(MAKE) -C $(LIBTOOL_DIR) clean
+
 libtool-dirclean:
 	rm -rf $(LIBTOOL_DIR)
 
