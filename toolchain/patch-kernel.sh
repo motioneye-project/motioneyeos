@@ -8,7 +8,8 @@
 # Set directories from arguments, or use defaults.
 targetdir=${1-.}
 patchdir=${2-../kernel-patches}
-patchpattern=${3-*}
+shift 2
+patchpattern=${@-*}
 
 if [ ! -d "${targetdir}" ] ; then
     echo "Aborting.  '${targetdir}' is not a directory."
@@ -19,7 +20,7 @@ if [ ! -d "${patchdir}" ] ; then
     exit 1
 fi
     
-for i in ${patchdir}/${patchpattern} ; do 
+for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do 
     case "$i" in
 	*.gz)
 	type="gzip"; uncomp="gunzip -dc"; ;; 
@@ -36,7 +37,7 @@ for i in ${patchdir}/${patchpattern} ; do
     esac
     echo ""
     echo "Applying ${i} using ${type}: " 
-    ${uncomp} ${i} | patch -p1 -E -d ${targetdir} 
+    ${uncomp} ${patchdir}/${i} | patch -p1 -E -d ${targetdir} 
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix $i!"
 	exit 1
