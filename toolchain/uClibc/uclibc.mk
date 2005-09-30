@@ -98,15 +98,10 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE1) -C $(UCLIBC_DIR) \
-		PREFIX=$(STAGING_DIR)/ \
-		DEVEL_PREFIX=/ \
-		RUNTIME_PREFIX=/ \
-		install_runtime
-	$(MAKE1) -C $(UCLIBC_DIR) \
-		PREFIX=$(STAGING_DIR)/ \
-		DEVEL_PREFIX=/ \
-		RUNTIME_PREFIX=/ \
-		install_dev
+		PREFIX= \
+		DEVEL_PREFIX=$(STAGING_DIR)/ \
+		RUNTIME_PREFIX=$(STAGING_DIR)/ \
+		install_runtime install_dev
 	# Build the host utils.  Need to add an install target...
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
 		PREFIX=$(STAGING_DIR) \
