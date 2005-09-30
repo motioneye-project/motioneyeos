@@ -1,0 +1,42 @@
+diff -urN TraceToolkit-0.9.5.orig/LibLTT/EventDB.c TraceToolkit-0.9.5/LibLTT/EventDB.c
+--- TraceToolkit-0.9.5.orig/LibLTT/EventDB.c	2002-04-15 09:10:13.000000000 -0700
++++ TraceToolkit-0.9.5/LibLTT/EventDB.c	2005-09-29 15:09:11.000000000 -0700
+@@ -2757,7 +2757,7 @@
+ 
+ 	/* Increment number of custom events */
+ 	pmTraceDB->NbCustom++;
+-	goto NoControlEvent;
++	continue;
+ 	break;
+ 
+       /* A custom event has occured */
+@@ -2800,8 +2800,6 @@
+       lLastCtrlEvent     = lEvent;
+       lLastCtrlEventTime = lEventTime;
+       }
+-
+-NoControlEvent:
+     } while(DBEventNext(pmTraceDB, &lEvent) == TRUE);
+ 
+   /* Remember the last event and its time */
+diff -urN TraceToolkit-0.9.5.orig/LibLTT/RTAIDB.c TraceToolkit-0.9.5/LibLTT/RTAIDB.c
+--- TraceToolkit-0.9.5.orig/LibLTT/RTAIDB.c	2002-04-15 20:00:05.000000000 -0700
++++ TraceToolkit-0.9.5/LibLTT/RTAIDB.c	2005-09-29 15:09:17.000000000 -0700
+@@ -2621,7 +2621,7 @@
+ 
+ 	/* Increment number of custom events */
+ 	pmTraceDB->NbCustom++;
+-	goto NoControlEvent;
++	continue;
+ 	break;
+ 
+       /* A custom event has occured */
+@@ -2936,8 +2936,6 @@
+       lLastCtrlEvent     = lEvent;
+       lLastCtrlEventTime = lEventTime;
+       }
+-
+-NoControlEvent:
+     } while(DBEventNext(pmTraceDB, &lEvent) == TRUE);
+ 
+   /* Remember the last event and it's time */

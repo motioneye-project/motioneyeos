@@ -1,0 +1,59 @@
+diff -urN xfsprogs-2.6.36.orig/libdisk/Makefile xfsprogs-2.6.36/libdisk/Makefile
+--- xfsprogs-2.6.36.orig/libdisk/Makefile	2005-08-01 07:20:49.000000000 -0700
++++ xfsprogs-2.6.36/libdisk/Makefile	2005-09-26 17:30:14.000000000 -0700
+@@ -53,6 +53,7 @@
+ include $(BUILDRULES)
+ 
+ install: default
++	$(INSTALL_LTLIB)
+ 
+ install-dev: default
+-	$(INSTALL_LTLIB_STATIC)
++	$(INSTALL_LTLIB_DEV)
+diff -urN xfsprogs-2.6.36.orig/libxcmd/Makefile xfsprogs-2.6.36/libxcmd/Makefile
+--- xfsprogs-2.6.36.orig/libxcmd/Makefile	2005-08-01 07:20:49.000000000 -0700
++++ xfsprogs-2.6.36/libxcmd/Makefile	2005-09-26 17:30:15.000000000 -0700
+@@ -45,6 +45,7 @@
+ include $(BUILDRULES)
+ 
+ install: default
++	$(INSTALL_LTLIB)
+ 
+ install-dev: default
+-	$(INSTALL_LTLIB_STATIC)
++	$(INSTALL_LTLIB_DEV)
+diff -urN xfsprogs-2.6.36.orig/libxfs/Makefile xfsprogs-2.6.36/libxfs/Makefile
+--- xfsprogs-2.6.36.orig/libxfs/Makefile	2005-08-01 07:20:50.000000000 -0700
++++ xfsprogs-2.6.36/libxfs/Makefile	2005-09-26 17:30:16.000000000 -0700
+@@ -70,6 +70,7 @@
+ include $(BUILDRULES)
+ 
+ install: default
++	$(INSTALL_LTLIB)
+ 
+ install-dev: default
+-	$(INSTALL_LTLIB_STATIC)
++	$(INSTALL_LTLIB_DEV)
+diff -urN xfsprogs-2.6.36.orig/libxlog/Makefile xfsprogs-2.6.36/libxlog/Makefile
+--- xfsprogs-2.6.36.orig/libxlog/Makefile	2005-08-01 07:20:51.000000000 -0700
++++ xfsprogs-2.6.36/libxlog/Makefile	2005-09-26 17:30:17.000000000 -0700
+@@ -48,6 +48,7 @@
+ include $(BUILDRULES)
+ 
+ install: default
++	$(INSTALL_LTLIB)
+ 
+ install-dev: default
+-	$(INSTALL_LTLIB_STATIC)
++	$(INSTALL_LTLIB_DEV)
+--- xfsprogs-2.6.36.orig/mkfs/Makefile	2005-08-01 07:20:54.000000000 -0700
++++ xfsprogs-2.6.36/mkfs/Makefile	2005-09-23 15:17:42.000000000 -0700
+@@ -51,7 +51,7 @@
+ include $(BUILDRULES)
+ 
+ $(FSTYP):
+-	$(LTLINK) $@.c -o $@ $(CFLAGS) $(LDFLAGS) $(LIBDISK) $(PLDLIBS)
++	$(LTLINK) $@.c -o $@ $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(LIBDISK) $(PLDLIBS)
+ 
+ install: default
+ 	$(INSTALL) -m 755 -d $(PKG_SBIN_DIR)

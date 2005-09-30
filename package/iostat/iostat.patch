@@ -1,0 +1,11 @@
+--- iostat-2.2/iostat.c.orig	2005-02-14 12:44:03.000000000 -0800
++++ iostat-2.2/iostat.c	2005-03-10 15:24:09.000000000 -0800
+@@ -140,7 +140,7 @@
+ 
+ 	handle_error("Can't open /proc/cpuinfo", !ncpufp);
+ 	while (fgets(buffer, sizeof(buffer), ncpufp)) {
+-		if (!strncmp(buffer, "processor\t:", 11))
++		if (!strncmp(buffer, "processor\t", 10))
+ 			ncpu++;
+ 	}
+ 	fclose(ncpufp);

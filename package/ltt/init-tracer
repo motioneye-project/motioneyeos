@@ -1,0 +1,93 @@
+#!/bin/sh
+#
+# Load tracer module and create tracer device node.
+#
+
+MODULE="tracer"
+MAIN_DEVICE="tracer"
+USER_DEVICE="tracerU"
+GROUP="root"
+MODE="664"
+
+start() {
+	if [ -e /dev/${MAIN_DEVICE} -o -e /dev/${USER_DEVICE} ]
+	then
+	    # tell the user about what we are doing
+	    echo "Deleting old tracer nodes: /dev/tracer and /dev/tracerU"
+
+	    # remove stale nodes
+	    rm -f /dev/${MAIN_DEVICE}
+	    rm -f /dev/${USER_DEVICE}
+	fi
+
+	# look for the major number
+	MAJOR=`/bin/grep " ${MODULE}$" /proc/devices | cut -d" " -f1`
+
+	# does the device exist?
+	if [ ${MAJOR} ]
+	then
+	    echo "Found tracer device with major number:" ${MAJOR}
+	else
+ 	    echo "Loading tracer kernel module: "
+	    # invoke modprobe
+	    /sbin/modprobe ${MODULE}
+	    MAJOR=`/bin/grep " ${MODULE}$" /proc/devices | cut -d" " -f1`
+	    if [ ${MAJOR} ]
+	    then
+		echo "Found tracer device with major number:" ${MAJOR}
+	    else
+		echo "Did not find tracer device ... /dev entries not created ..."
+		exit 1
+	    fi
+	fi
+
+	# tell the user about what we are doing
+	echo "Creating new tracer nodes: /dev/tracer and /dev/tracerU"
+
+	# create the character special file
+	/bin/mknod /dev/${MAIN_DEVICE} c ${MAJOR} 0
+	/bin/mknod /dev/${USER_DEVICE} c ${MAJOR} 1
+
+	# set permissions and ownership
+	/bin/chgrp ${GROUP} /dev/${MAIN_DEVICE}
+	/bin/chmod ${MODE}  /dev/${MAIN_DEVICE}
+	/bin/chgrp ${GROUP} /dev/${USER_DEVICE}
+	/bin/chmod ${MODE}  /dev/${USER_DEVICE}
+}
+stop() {
+	# tell the user about what we are doing
+	echo "Deleting tracer nodes: /dev/tracer and /dev/tracerU"
+
+	# remove nodes
+	rm -f /dev/${MAIN_DEVICE}
+	rm -f /dev/${USER_DEVICE}
+
+	if lsmod | /bin/grep "^${MODULE} "
+	then
+	    echo -n "Removing tracer kernel module: "
+	    # invoke modprobe -r
+	    /sbin/modprobe -r ${MODULE}
+	    echo "OK"
+	fi
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart|reload)
+  	restart
+	;;
+  *)
+	echo $"Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
