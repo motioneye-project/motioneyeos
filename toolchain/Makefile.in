@@ -1,3 +1,9 @@
+ifeq ($(BR2_PTHREADS),y)
+THREADS:=--enable-threads
+else
+THREADS:=--disable-threads
+endif
+
 ifeq ($(BR2_ENABLE_MULTILIB),y)
 MULTILIB:=--enable-multilib
 else

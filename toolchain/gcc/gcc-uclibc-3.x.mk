@@ -109,6 +109,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--enable-target-optspace \
 		--with-gnu-ld \
 		$(DISABLE_NLS) \
+		$(THREADS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_CPU) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
@@ -163,6 +164,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/lib/libc.a
 		--enable-target-optspace \
 		--with-gnu-ld \
 		$(DISABLE_NLS) \
+		$(THREADS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_CPU) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
@@ -279,6 +281,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR2)/.installed
 		--enable-target-optspace \
 		--with-gnu-ld \
 		$(DISABLE_NLS) \
+		$(THREADS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_CPU) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
