@@ -11,10 +11,14 @@ SVN:=$(strip $(subst ",, $(BR2_SVN)))
 
 
 
+
 ifneq ($(BR2_LARGEFILE),y)
 DISABLE_LARGEFILE= --disable-largefile
 endif
 TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
+HOSTCC:=gcc
+
+BASE_DIR:=${shell pwd}
 
 TOPDIR_PREFIX:=$(strip $(subst ",, $(BR2_TOPDIR_PREFIX)))_
 TOPDIR_SUFFIX:=_$(strip $(subst ",, $(BR2_TOPDIR_SUFFIX)))
@@ -25,9 +29,10 @@ ifeq ($(TOPDIR_SUFFIX),_)
 TOPDIR_SUFFIX:=
 endif
 
-HOSTCC:=gcc
-BASE_DIR:=${shell pwd}
+DL_DIR=$(strip $(subst ",, $(BR2_DL_DIR)))
+ifeq ($(DL_DIR),)
 DL_DIR:=$(BASE_DIR)/dl
+endif
 #PATCH_DIR=$(BASE_DIR)/sources/patches
 BUILD_DIR:=$(BASE_DIR)/$(TOPDIR_PREFIX)build_$(ARCH)$(ARCH_FPU_SUFFIX)$(TOPDIR_SUFFIX)
 TARGET_DIR:=$(BUILD_DIR)/root

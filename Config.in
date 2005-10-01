@@ -125,6 +125,12 @@ config BR2_TAR_VERBOSITY
 	bool "Tar verbose"
 	default n
 
+config BR2_DL_DIR
+	string "Download dir"
+	default "$(BASE_DIR)/dl"
+	help
+	  Directory to store all the source files that we need to fetch.
+
 config BR2_SOURCEFORGE_MIRROR
 	string "Sourceforge mirror site"
 	default "easynews"
