@@ -5,7 +5,7 @@
 #############################################################
 
 # TARGETS
-OPENSSL_VER:=0.9.8
+OPENSSL_VER:=0.9.7e
 OPENSSL_SITE:=http://www.openssl.org/source
 OPENSSL_SOURCE:=openssl-$(OPENSSL_VER).tar.gz
 OPENSSL_DIR:=$(BUILD_DIR)/openssl-$(OPENSSL_VER)
