@@ -11,7 +11,11 @@ OPENSSL_SOURCE:=openssl-$(OPENSSL_VER).tar.gz
 OPENSSL_DIR:=$(BUILD_DIR)/openssl-$(OPENSSL_VER)
 
 ifeq ($(BR2_i386),y)
+ifeq ($(ARCH),i686)
+OPENSSL_TARGET_ARCH:=i386-i686/cmov
+else
 OPENSSL_TARGET_ARCH:=i386-$(ARCH)
+endif
 else
 OPENSSL_TARGET_ARCH:=$(ARCH)
 endif
