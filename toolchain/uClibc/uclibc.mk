@@ -4,7 +4,7 @@
 #
 #############################################################
 
-ifndef $(UCLIBC_CONFIG_FILE)
+ifndef UCLIBC_CONFIG_FILE
 ifeq ($(BR2_ENABLE_LOCALE),y)
 UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc.config-locale
 else
