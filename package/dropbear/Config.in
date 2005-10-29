@@ -1,15 +1,15 @@
-config BR2_PACKAGE_DROPBEAR_SSHD
-	bool "dropbear_sshd"
+config BR2_PACKAGE_DROPBEAR
+	bool "dropbear"
 	default n
 	help
 	  A small SSH 2 server designed for small memory environments.
 
-	  http://matt.ucc.asn.au/dropbear/
+	  http://matt.ucc.asn.au/dropbear/dropbear.html
 
-config BR2_PACKAGE_DROPBEAR_SSHD_URANDOM
+config BR2_PACKAGE_DROPBEAR_URANDOM
 	bool "  Use /dev/urandom (low entropy systems only)?"
 	default n
-	depends on BR2_PACKAGE_DROPBEAR_SSHD
+	depends on BR2_PACKAGE_DROPBEAR
 	help
 	  By default, dropbear uses the much more secure /dev/random.  If you
 	  are using a system lacking usable entropy sources, this could cause
