@@ -3,7 +3,7 @@
 #   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
 #   2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 
-timestamp='2005-08-03'
+timestamp='2005-09-19'
 
 # This file is free software; you can redistribute it and/or modify it
 # under the terms of the GNU General Public License as published by
@@ -1203,7 +1203,6 @@ EOF
     *:Darwin:*:*)
 	UNAME_PROCESSOR=`uname -p` || UNAME_PROCESSOR=unknown
 	case $UNAME_PROCESSOR in
-	    *86) UNAME_PROCESSOR=i686 ;;
 	    unknown) UNAME_PROCESSOR=powerpc ;;
 	esac
 	echo ${UNAME_PROCESSOR}-apple-darwin${UNAME_RELEASE}

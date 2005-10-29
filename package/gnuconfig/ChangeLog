@@ -1,3 +1,7 @@
+2005-09-19  Gerben Wierda <Gerben.Wierda@rna.nl>
+
+	* config.guess (*:Darwin:*:*): Don't treat *86 specifically.
+
 2005-08-03  Ben Elliston  <bje@gnu.org>
 
 	Reported by Kulkin Alexey <kulkin@yandex.ru>:
