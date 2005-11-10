@@ -5,11 +5,18 @@
 #############################################################
 PORTAGE_VERSION:=2.0.51.22
 PORTAGE_SOURCE:=portage-$(PORTAGE_VERSION).tar.bz2
-PORTAGE_SITE:=http://gentoo.twobit.net/portage/
+PORTAGE_SITE:=http://gentoo.osuosl.org/distfiles
 PORTAGE_CAT:=bzcat
 PORTAGE_DIR:=$(BUILD_DIR)/portage-$(PORTAGE_VERSION)
 PORTAGE_TARGET_DIR:=$(TARGET_DIR)/usr/lib/portage
 PORTAGE_TARGET_BINARY:=usr/bin/emerge
+
+SANDBOX_VERSION:=1.2.13
+SANDBOX_SOURCE:=sandbox-$(SANDBOX_VERSION).tar.bz2
+SANDBOX_SITE:=$(PORTAGE_SITE)
+SANDBOX_CAT:=$(PORTAGE_CAT)
+SANDBOX_DIR:=$(BUILD_DIR)/sandbox-$(SANDBOX_VERSION)
+SANDBOX_TARGET_BINARY:=usr/bin/sandbox
 
 ifeq ($(ARCH),cris)
 	PORTAGE_ARCH:=x86
@@ -34,18 +41,26 @@ ifeq ($(PORTAGE_ARCH),)
 endif
 
 $(DL_DIR)/$(PORTAGE_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(PORTAGE_SITE)/$(PORTAGE_SOURCE)
+	$(WGET) -P $(DL_DIR) $(PORTAGE_SITE)/$(PORTAGE_SOURCE)
+$(DL_DIR)/$(SANDBOX_SOURCE):
+	$(WGET) -P $(DL_DIR) $(SANDBOX_SITE)/$(SANDBOX_SOURCE)
 
 portage-source: $(DL_DIR)/$(PORTAGE_SOURCE)
+sandbox-source: $(DL_DIR)/$(SANDBOX_SOURCE)
 
 $(PORTAGE_DIR)/.unpacked: $(DL_DIR)/$(PORTAGE_SOURCE)
 	$(PORTAGE_CAT) $(DL_DIR)/$(PORTAGE_SOURCE) | tar -C $(BUILD_DIR) -xf -
 	rm -f $(PORTAGE_DIR)/bin/tbz2tool
 	touch $(PORTAGE_DIR)/.unpacked
+$(SANDBOX_DIR)/.unpacked: $(DL_DIR)/$(SANDBOX_SOURCE)
+	$(SANDBOX_CAT) $(DL_DIR)/$(SANDBOX_SOURCE) | tar -C $(BUILD_DIR) -xf -
+	touch $(SANDBOX_DIR)/.unpacked
 
 $(PORTAGE_DIR)/.compiled: $(PORTAGE_DIR)/.unpacked
 	$(TARGET_CC) $(TARGET_CFLAGS) $(PORTAGE_DIR)/src/tbz2tool.c -o $(PORTAGE_DIR)/src/tbz2tool
 	touch $(PORTAGE_DIR)/.compiled
+$(SANDBOX_DIR)/.compiled: $(SANDBOX_DIR)/.unpacked
+	touch $(SANDBOX_DIR)/.compiled
 
 newins=install -D
 doins=install
@@ -80,8 +95,11 @@ $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY): $(PORTAGE_DIR)/.compiled
 	for bin in xpak repoman tbz2tool portageq g-cpan.pl quickpkg emerge ; do \
 		$(dosym) ../lib/portage/bin/$${bin} $(TARGET_DIR)/usr/bin/$${bin}; \
 	done
+$(TARGET_DIR)/$(SANDBOX_TARGET_BINARY): $(SANDBOX_DIR)/.compiled
+	touch $(TARGET_DIR)/$(SANDBOX_TARGET_BINARY)
 
-portage: python uclibc $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY)
+sandbox: uclibc $(TARGET_DIR)/$(SANDBOX_TARGET_BINARY)
+portage: sandbox python uclibc $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY)
 
 portage-clean:
 	(cd $(TARGET_DIR)/etc; \
@@ -95,14 +113,18 @@ portage-clean:
 	for bin in xpak repoman tbz2tool portageq g-cpan.pl quickpkg emerge ; do \
 		rm -f $(TARGET_DIR)/usr/bin/$${bin}; \
 	done
+sandbox-clean:
+	
 
 portage-dirclean:
 	rm -rf $(PORTAGE_DIR)
+sandbox-dirclean:
+	rm -rf $(SANDBOX_DIR)
 #############################################################
 #
 # Toplevel Makefile options
 #
 #############################################################
 ifeq ($(strip $(BR2_PACKAGE_PORTAGE)),y)
-TARGETS+=portage
+TARGETS+=portage sandbox
 endif
