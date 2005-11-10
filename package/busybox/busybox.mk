@@ -53,8 +53,12 @@ $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
 		EXTRA_CFLAGS="$(TARGET_CFLAGS)" -C $(BUSYBOX_DIR)
 
 $(TARGET_DIR)/bin/busybox: $(BUSYBOX_DIR)/busybox
+ifeq ($(BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS),y)
 	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
 		EXTRA_CFLAGS="$(TARGET_CFLAGS)" -C $(BUSYBOX_DIR) install
+else
+	install -D -m 0755 $(BUSYBOX_DIR)/busybox $(TARGET_DIR)/bin/busybox
+endif
 	# Just in case
 	-chmod a+x $(TARGET_DIR)/usr/share/udhcpc/default.script
 

@@ -18,6 +18,19 @@ config BR2_PACKAGE_BUSYBOX_SNAPSHOT
 
 	  For fun, you should say Y.
 
+config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
+	bool "Install symlinks for BusyBox applets"
+	depends BR2_PACKAGE_BUSYBOX
+	default y
+	help
+	  If you want to automatically install symlinks for all the
+	  supported applets to the busybox binary, then answer Y.
+
+	  This may overwrite files from other packages if your
+	  busybox includes replacement applets for the package.
+
+	  If you wish to just install /bin/busybox, then answer N.
+
 config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	depends BR2_PACKAGE_BUSYBOX
@@ -27,4 +40,3 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	  file, and will specify their config file location with this option.
 
 	  Most people will just use the default BusyBox configuration file.
-
