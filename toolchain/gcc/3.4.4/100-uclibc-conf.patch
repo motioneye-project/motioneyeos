@@ -1,52 +1,29 @@
-diff -urN gcc-3.4.1-dist/boehm-gc/configure gcc-3.4.1/boehm-gc/configure
---- gcc-3.4.1-dist/boehm-gc/configure	2004-07-01 14:14:03.000000000 -0500
-+++ gcc-3.4.1/boehm-gc/configure	2004-08-12 16:22:57.000000000 -0500
-@@ -1947,6 +1947,11 @@
-   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
-   ;;
+--- gcc-3.4.1/gcc/config.gcc
++++ gcc-3.4.1/gcc/config.gcc
+@@ -2310,10 +2310,16 @@
+ *)
+ 	echo "*** Configuration ${target} not supported" 1>&2
+ 	exit 1
+ 	;;
+ esac
++
++# Rather than hook into each target, just do it after all the linux
++# targets have been processed
++case ${target} in
++*-linux-uclibc*) tm_defines="${tm_defines} USE_UCLIBC"
++esac
  
-+linux-uclibc*)
-+  lt_cv_deplibs_check_method=pass_all
-+  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
-+  ;;
-+
- netbsd*)
-   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
-     lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-3.4.1-dist/boehm-gc/ltconfig gcc-3.4.1/boehm-gc/ltconfig
---- gcc-3.4.1-dist/boehm-gc/ltconfig	2002-11-20 09:59:06.000000000 -0600
-+++ gcc-3.4.1/boehm-gc/ltconfig	2004-08-12 15:54:42.000000000 -0500
-@@ -1981,6 +1981,23 @@
-   fi
-   ;;
- 
-+linux-uclibc*)
-+  version_type=linux
-+  need_lib_prefix=no
-+  need_version=no
-+  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
-+  soname_spec='${libname}${release}.so$major'
-+  finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
-+  shlibpath_var=LD_LIBRARY_PATH
-+  shlibpath_overrides_runpath=no
-+  deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
-+  file_magic_cmd=/usr/bin/file
-+  file_magic_test_file=`echo /lib/libuClibc-*.so`
-+
-+  # Assume using the uClibc dynamic linker.
-+  dynamic_linker="uClibc ld.so"
-+  ;;
-+
- netbsd*)
-   version_type=sunos
-   if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
+ # Support for --with-cpu and related options (and a few unrelated options,
+ # too).
+ case ${with_cpu} in
+   yes | no)
 --- gcc-3.4.4/gcc/config/alpha/linux-elf.h
 +++ gcc-3.4.4/gcc/config/alpha/linux-elf.h
 @@ -27,7 +27,11 @@
  #define SUBTARGET_EXTRA_SPECS \
  { "elf_dynamic_linker", ELF_DYNAMIC_LINKER },
  
-+#if defined USE_UCLIBC
++#ifdef USE_UCLIBC
 +#define ELF_DYNAMIC_LINKER	"/lib/ld-uClibc.so.0"
 +#else
  #define ELF_DYNAMIC_LINKER	"/lib/ld-linux.so.2"
@@ -54,37 +31,29 @@ diff -urN gcc-3.4.1-dist/boehm-gc/ltconfig gcc-3.4.1/boehm-gc/ltconfig
  
  #define LINK_SPEC "-m elf64alpha %{G*} %{relax:-relax}		\
    %{O*:-O3} %{!O*:-O1}						\
-diff -urN gcc-3.4.1-dist/gcc/config/arm/linux-elf.h gcc-3.4.1/gcc/config/arm/linux-elf.h
 --- gcc-3.4.1-dist/gcc/config/arm/linux-elf.h	2004-01-31 00:18:11.000000000 -0600
 +++ gcc-3.4.1/gcc/config/arm/linux-elf.h	2004-08-12 15:54:42.000000000 -0500
-@@ -81,6 +81,18 @@
+@@ -80,14 +80,19 @@
+ #define ENDFILE_SPEC \
    "%{!shared:crtend.o%s} %{shared:crtendS.o%s} crtn.o%s"
  
- #undef  LINK_SPEC
 +#ifdef USE_UCLIBC
-+#define LINK_SPEC "%{h*} %{version:-v} \
-+   %{b} %{Wl,*:%*} \
-+   %{static:-Bstatic} \
-+   %{shared:-shared} \
-+   %{symbolic:-Bsymbolic} \
-+   %{rdynamic:-export-dynamic} \
-+   %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0} \
-+   -X \
-+   %{mbig-endian:-EB}" \
-+   SUBTARGET_EXTRA_LINK_SPEC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
 +#else
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#endif
+ #undef  LINK_SPEC
  #define LINK_SPEC "%{h*} %{version:-v} \
     %{b} %{Wl,*:%*} \
     %{static:-Bstatic} \
-@@ -91,6 +103,7 @@
+    %{shared:-shared} \
+    %{symbolic:-Bsymbolic} \
+    %{rdynamic:-export-dynamic} \
+-   %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2} \
++   %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "} \
     -X \
     %{mbig-endian:-EB}" \
     SUBTARGET_EXTRA_LINK_SPEC
-+#endif
- 
- #define TARGET_OS_CPP_BUILTINS() LINUX_TARGET_OS_CPP_BUILTINS()
- 
-diff -urN gcc-3.4.1-dist/gcc/config/cris/linux.h gcc-3.4.1/gcc/config/cris/linux.h
 --- gcc-3.4.1-dist/gcc/config/cris/linux.h	2003-11-28 21:08:09.000000000 -0600
 +++ gcc-3.4.1/gcc/config/cris/linux.h	2004-08-12 15:54:43.000000000 -0500
 @@ -79,6 +79,25 @@
@@ -122,96 +91,153 @@ diff -urN gcc-3.4.1-dist/gcc/config/cris/linux.h gcc-3.4.1/gcc/config/cris/linux
  
  /* Node: Run-time Target */
  
-diff -urN gcc-3.4.1-dist/gcc/config/cris/t-linux-uclibc gcc-3.4.1/gcc/config/cris/t-linux-uclibc
---- gcc-3.4.1-dist/gcc/config/cris/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.4.1/gcc/config/cris/t-linux-uclibc	2004-08-12 15:54:43.000000000 -0500
-@@ -0,0 +1,3 @@
-+T_CFLAGS = -DUSE_UCLIBC
-+TARGET_LIBGCC2_CFLAGS += -fPIC
-+CRTSTUFF_T_CFLAGS_S = $(TARGET_LIBGCC2_CFLAGS)
-diff -urN gcc-3.4.1-dist/gcc/config/i386/linux.h gcc-3.4.1/gcc/config/i386/linux.h
 --- gcc-3.4.1-dist/gcc/config/i386/linux.h	2003-11-28 21:08:10.000000000 -0600
 +++ gcc-3.4.1/gcc/config/i386/linux.h	2004-08-12 15:54:43.000000000 -0500
-@@ -118,6 +118,15 @@
- 	%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.1}} \
- 	%{static:-static}}}"
- #else
-+#if defined USE_UCLIBC
-+#define LINK_SPEC "-m elf_i386 %{shared:-shared} \
-+  %{!shared: \
-+    %{!ibcs: \
-+      %{!static: \
-+	%{rdynamic:-export-dynamic} \
-+	%{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
-+	%{static:-static}}}"
+@@ -110,22 +110,21 @@
+ 
+ #undef	LINK_SPEC
+ #ifdef USE_GNULIBC_1
+-#define LINK_SPEC "-m elf_i386 %{shared:-shared} \
+-  %{!shared: \
+-    %{!ibcs: \
+-      %{!static: \
+-	%{rdynamic:-export-dynamic} \
+-	%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.1}} \
+-	%{static:-static}}}"
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux.so.1"
 +#else
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
+ #else
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#endif
++#endif
  #define LINK_SPEC "-m elf_i386 %{shared:-shared} \
    %{!shared: \
      %{!ibcs: \
-@@ -126,6 +135,7 @@
- 	%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
+       %{!static: \
+ 	%{rdynamic:-export-dynamic} \
+-	%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
++	%{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
  	%{static:-static}}}"
- #endif
-+#endif
+-#endif
  
  /* A C statement (sans semicolon) to output to the stdio stream
     FILE the assembler definition of uninitialized global DECL named
 --- gcc-3.4.4/gcc/config/i386/linux64.h
 +++ gcc-3.4.4/gcc/config/i386/linux64.h
-@@ -55,6 +55,15 @@
+@@ -54,14 +54,21 @@
+    When the -shared link option is used a final link is not being
     done.  */
  
- #undef	LINK_SPEC
-+#if defined USE_UCLIBC
-+#define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
-+  %{shared:-shared} \
-+  %{!shared: \
-+    %{!static: \
-+      %{rdynamic:-export-dynamic} \
-+      %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
-+    %{static:-static}}"
++#ifdef USE_UCLIBC
++#define ELF32_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define ELF64_DYNAMIC_LINKER "/lib/ld64-uClibc.so.0"
 +#else
++#define ELF32_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define ELF64_DYNAMIC_LINKER "/lib64/ld-linux-x86-64.so.2"
++#endif
+ #undef	LINK_SPEC
  #define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
    %{shared:-shared} \
    %{!shared: \
-@@ -63,6 +73,7 @@
-       %{m32:%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
-       %{!m32:%{!dynamic-linker:-dynamic-linker /lib64/ld-linux-x86-64.so.2}}} \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{m32:%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
+-      %{!m32:%{!dynamic-linker:-dynamic-linker /lib64/ld-linux-x86-64.so.2}}} \
++      %{m32:%{!dynamic-linker:-dynamic-linker " ELF32_DYNAMIC_LINKER "}} \
++      %{!m32:%{!dynamic-linker:-dynamic-linker " ELF64_DYNAMIC_LINKER "}}} \
      %{static:-static}}"
-+#endif
  
  #define MULTILIB_DEFAULTS { "m64" }
+--- gcc-3.4.4/gcc/config/ia64/linux.h
++++ gcc-3.4.4/gcc/config/ia64/linux.h
+@@ -37,13 +37,18 @@
+ /* Define this for shared library support because it isn't in the main
+    linux.h file.  */
  
-diff -urN gcc-3.4.1-dist/gcc/config/mips/linux.h gcc-3.4.1/gcc/config/mips/linux.h
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER	"/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux-ia64.so.2"
++#endif
+ #undef LINK_SPEC
+ #define LINK_SPEC "\
+   %{shared:-shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{!dynamic-linker:-dynamic-linker /lib/ld-linux-ia64.so.2}} \
++      %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+       %{static:-static}}"
+ 
+ 
+--- gcc-3.4.4/gcc/config/m68k/linux.h
++++ gcc-3.4.4/gcc/config/m68k/linux.h
+@@ -131,12 +131,17 @@
+ 
+ /* If ELF is the default format, we should not use /lib/elf.  */
+ 
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld.so.1"
++#endif
+ #undef	LINK_SPEC
+ #define LINK_SPEC "-m m68kelf %{shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{!dynamic-linker*:-dynamic-linker /lib/ld.so.1}} \
++      %{!dynamic-linker*:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+     %{static}}"
+ 
+ /* For compatibility with linux/a.out */
 --- gcc-3.4.1-dist/gcc/config/mips/linux.h	2004-06-15 20:42:24.000000000 -0500
 +++ gcc-3.4.1/gcc/config/mips/linux.h	2004-08-12 15:54:43.000000000 -0500
-@@ -109,6 +109,17 @@
+@@ -109,14 +109,19 @@
  
  /* Borrowed from sparc/linux.h */
  #undef LINK_SPEC
 +#ifdef USE_UCLIBC
-+#define LINK_SPEC \
-+ "%(endian_spec) \
-+  %{shared:-shared} \
-+  %{!shared: \
-+    %{!ibcs: \
-+      %{!static: \
-+        %{rdynamic:-export-dynamic} \
-+        %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
-+        %{static:-static}}}"
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
 +#else
++#define ELF_DYNAMIC_LINKER "/lib/ld.so.1"
++#endif
  #define LINK_SPEC \
   "%(endian_spec) \
    %{shared:-shared} \
-@@ -118,6 +129,7 @@
+   %{!shared: \
+     %{!ibcs: \
+       %{!static: \
          %{rdynamic:-export-dynamic} \
-         %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
+-        %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
++        %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
          %{static:-static}}}"
-+#endif
  
  #undef SUBTARGET_ASM_SPEC
- #define SUBTARGET_ASM_SPEC "\
-diff -urN gcc-3.4.1-dist/gcc/config/rs6000/linux.h gcc-3.4.1/gcc/config/rs6000/linux.h
+--- gcc-3.4.4/gcc/config/pa/pa-linux.h
++++ gcc-3.4.4/gcc/config/pa/pa-linux.h
+@@ -77,13 +77,18 @@
+ /* Define this for shared library support because it isn't in the main
+    linux.h file.  */
+ 
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld.so.1"
++#endif
+ #undef LINK_SPEC
+ #define LINK_SPEC "\
+   %{shared:-shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
++      %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+       %{static:-static}}"
+ 
+ /* glibc's profiling functions don't need gcc to allocate counters.  */
 --- gcc-3.4.1-dist/gcc/config/rs6000/linux.h	2004-02-25 09:11:19.000000000 -0600
 +++ gcc-3.4.1/gcc/config/rs6000/linux.h	2004-08-12 15:54:43.000000000 -0500
 @@ -69,7 +69,11 @@
@@ -226,7 +252,6 @@ diff -urN gcc-3.4.1-dist/gcc/config/rs6000/linux.h gcc-3.4.1/gcc/config/rs6000/l
  
  #define LINK_GCC_C_SEQUENCE_SPEC \
    "%{static:--start-group} %G %L %{static:--end-group}%{!static:%G}"
-diff -urN gcc-3.4.1-dist/gcc/config/rs6000/sysv4.h gcc-3.4.1/gcc/config/rs6000/sysv4.h
 --- gcc-3.4.1-dist/gcc/config/rs6000/sysv4.h	2004-06-10 01:39:50.000000000 -0500
 +++ gcc-3.4.1/gcc/config/rs6000/sysv4.h	2004-08-12 15:54:43.000000000 -0500
 @@ -947,6 +947,7 @@
@@ -256,157 +281,96 @@ diff -urN gcc-3.4.1-dist/gcc/config/rs6000/sysv4.h gcc-3.4.1/gcc/config/rs6000/s
    { "link_os_gnu",		LINK_OS_GNU_SPEC },			\
    { "link_os_netbsd",		LINK_OS_NETBSD_SPEC },			\
    { "link_os_openbsd",		LINK_OS_OPENBSD_SPEC },			\
-diff -urN gcc-3.4.1-dist/gcc/config/sh/linux.h gcc-3.4.1/gcc/config/sh/linux.h
+--- gcc-3.4.4/gcc/config/s390/linux.h
++++ gcc-3.4.4/gcc/config/s390/linux.h
+@@ -77,6 +77,13 @@
+ #define MULTILIB_DEFAULTS { "m31" }
+ #endif
+ 
++#ifdef USE_UCLIBC
++#define ELF31_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define ELF64_DYNAMIC_LINKER "/lib/ld64-uClibc.so.0"
++#else
++#define ELF31_DYNAMIC_LINKER "/lib/ld.so.1"
++#define ELF64_DYNAMIC_LINKER "/lib/ld64.so.1"
++#endif
+ #undef  LINK_SPEC
+ #define LINK_SPEC \
+   "%{m31:-m elf_s390}%{m64:-m elf64_s390} \
+@@ -86,8 +93,8 @@
+       %{!static: \
+ 	%{rdynamic:-export-dynamic} \
+ 	%{!dynamic-linker: \
+-          %{m31:-dynamic-linker /lib/ld.so.1} \
+-          %{m64:-dynamic-linker /lib/ld64.so.1}}}}"
++          %{m31:-dynamic-linker " ELF31_DYNAMIC_LINKER "} \
++          %{m64:-dynamic-linker " ELF64_DYNAMIC_LINKER "}}}}"
+ 
+ 
+ #define TARGET_ASM_FILE_END file_end_indicate_exec_stack
 --- gcc-3.4.1-dist/gcc/config/sh/linux.h	2004-01-11 20:29:13.000000000 -0600
 +++ gcc-3.4.1/gcc/config/sh/linux.h	2004-08-12 15:54:43.000000000 -0500
-@@ -73,12 +73,21 @@
+@@ -73,11 +73,16 @@
  #undef SUBTARGET_LINK_EMUL_SUFFIX
  #define SUBTARGET_LINK_EMUL_SUFFIX "_linux"
  #undef SUBTARGET_LINK_SPEC
 +#ifdef USE_UCLIBC
-+#define SUBTARGET_LINK_SPEC \
-+  "%{shared:-shared} \
-+   %{!static: \
-+     %{rdynamic:-export-dynamic} \
-+     %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
-+   %{static:-static}"
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
 +#else
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#endif
  #define SUBTARGET_LINK_SPEC \
    "%{shared:-shared} \
     %{!static: \
       %{rdynamic:-export-dynamic} \
-      %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
+-     %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
++     %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
     %{static:-static}"
-+#endif
  
  #undef LIB_SPEC
- #define LIB_SPEC \
-diff -urN gcc-3.4.1-dist/gcc/config/t-linux-uclibc gcc-3.4.1/gcc/config/t-linux-uclibc
---- gcc-3.4.1-dist/gcc/config/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-3.4.1/gcc/config/t-linux-uclibc	2004-08-12 15:54:43.000000000 -0500
-@@ -0,0 +1,15 @@
-+T_CFLAGS = -DUSE_UCLIBC
-+
-+# Compile crtbeginS.o and crtendS.o with pic.
-+CRTSTUFF_T_CFLAGS_S = $(CRTSTUFF_T_CFLAGS) -fPIC
-+# Compile libgcc2.a with pic.
-+TARGET_LIBGCC2_CFLAGS = -fPIC
-+
-+# Override t-slibgcc-elf-ver to export some libgcc symbols with
-+# the symbol versions that glibc used.
-+#SHLIB_MAPFILES += $(srcdir)/config/libgcc-glibc.ver
-+
-+# Use unwind-dw2-fde
-+LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde.c \
-+  $(srcdir)/unwind-sjlj.c $(srcdir)/gthr-gnat.c $(srcdir)/unwind-c.c
-+LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h unwind-dw2-fde.c gthr-gnat.c
-diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
---- gcc-3.4.1-dist/gcc/config.gcc	2004-04-21 10:12:35.000000000 -0500
-+++ gcc-3.4.1/gcc/config.gcc	2004-08-12 15:59:46.000000000 -0500
-@@ -568,7 +568,11 @@
- alpha*-*-linux*)
- 	tm_file="${tm_file} alpha/elf.h alpha/linux.h alpha/linux-elf.h"
- 	target_cpu_default="MASK_GAS"
--	tmake_file="t-slibgcc-elf-ver t-linux alpha/t-crtfm alpha/t-alpha alpha/t-ieee"
-+	tmake_file="t-slibgcc-elf-ver alpha/t-crtfm alpha/t-alpha alpha/t-ieee"
-+	case ${target} in
-+	*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
-+	*) tmake_file="${tmake_file} t-linux" ;;
-+	esac
- 	;;
- alpha*-*-gnu*)
- 	target_cpu_default="MASK_GAS"
-@@ -664,6 +664,12 @@
- 	extra_parts=""
- 	use_collect2=yes
- 	;;
-+arm*-*-linux-uclibc*)		# ARM GNU/Linux with ELF - uClibc
-+	tm_file="dbxelf.h elfos.h linux.h arm/elf.h  arm/linux-gas.h arm/linux-elf.h arm/aout.h arm/arm.h"
-+	tmake_file="t-slibgcc-elf-ver t-linux-uclibc arm/t-linux"
-+	extra_parts="crtbegin.o crtbeginS.o crtend.o crtendS.o"
-+	gnu_ld=yes
-+	;;
- arm*-*-linux*)			# ARM GNU/Linux with ELF
- 	tm_file="dbxelf.h elfos.h linux.h arm/elf.h  arm/linux-gas.h arm/linux-elf.h arm/aout.h arm/arm.h"
- 	tmake_file="t-slibgcc-elf-ver t-linux arm/t-linux"
-@@ -725,6 +731,10 @@
- 	tmake_file="cris/t-cris cris/t-elfmulti"
- 	gas=yes
- 	;;
-+cris-*-linux-uclibc*)
-+	tm_file="dbxelf.h elfos.h svr4.h ${tm_file} linux.h cris/linux.h"
-+	tmake_file="cris/t-cris t-slibgcc-elf-ver cris/t-linux-uclibc"
-+	;;
- cris-*-linux*)
- 	tm_file="dbxelf.h elfos.h svr4.h ${tm_file} linux.h cris/linux.h"
- 	tmake_file="cris/t-cris t-slibgcc-elf-ver cris/t-linux"
-@@ -988,6 +998,11 @@
- 		thread_file='single'
- 	fi
- 	;;
-+i[34567]86-*-linux*uclibc*)	# Intel 80386's running GNU/Linux
-+				# with ELF format using uClibc
-+	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h svr4.h linux.h i386/linux.h"
-+	tmake_file="t-slibgcc-elf-ver t-linux-uclibc i386/t-crtstuff"
-+	;;
- i[34567]86-*-linux*)	# Intel 80386's running GNU/Linux
- 			# with ELF format using glibc 2
- 			# aka GNU/Linux C library 6
-@@ -1032,7 +1032,11 @@
- x86_64-*-linux*)
- 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h svr4.h linux.h \
- 		 i386/x86-64.h i386/linux64.h"
--	tmake_file="t-slibgcc-elf-ver t-linux i386/t-linux64"
-+	tmake_file="t-slibgcc-elf-ver i386/t-linux64"
-+	case ${target} in
-+	*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
-+	*) tmake_file="${tmake_file} t-linux" ;;
-+	esac
- 	;;
- i[34567]86-*-kfreebsd*-gnu) # must be before i[34567]86-*-gnu*
- 	tm_file="${tm_file} i386/unix.h i386/att.h dbxelf.h elfos.h svr4.h linux.h i386/linux.h kfreebsdgnu.h i386/kfreebsdgnu.h"
-@@ -1547,6 +1562,16 @@
- 	gnu_ld=yes
- 	gas=yes
- 	;;
-+mips*-*-linux-uclibc*)			# Linux MIPS, either endian. uClibc
-+        tm_file="dbxelf.h elfos.h svr4.h linux.h ${tm_file} mips/linux.h"
-+	case ${target} in
-+        mipsisa32*-*)
-+                target_cpu_default="MASK_SOFT_FLOAT"
-+		tm_defines="MIPS_ISA_DEFAULT=32"
-+                ;;
-+        esac
-+	tmake_file="t-slibgcc-elf-ver t-linux-uclibc"
-+	;;
- mips*-*-linux*)				# Linux MIPS, either endian.
-         tm_file="dbxelf.h elfos.h svr4.h linux.h ${tm_file} mips/linux.h"
- 	case ${target} in
-@@ -1764,6 +1789,10 @@
- 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h freebsd-spec.h rs6000/sysv4.h rs6000/linux.h rs6000/linuxspe.h"
- 	tmake_file="rs6000/t-fprules rs6000/t-ppcos t-slibgcc-elf-ver t-linux rs6000/t-ppccomm"
- 	;;
-+powerpc-*-linux-uclibc*)
-+	tm_file="${tm_file} dbxelf.h elfos.h svr4.h freebsd-spec.h rs6000/sysv4.h rs6000/linux.h"
-+	tmake_file="rs6000/t-fprules rs6000/t-ppcos t-slibgcc-elf-ver t-linux-uclibc rs6000/t-ppccomm"
-+	;;
- powerpc-*-linux*)
- 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h freebsd-spec.h rs6000/sysv4.h"
- 	tmake_file="rs6000/t-fprules rs6000/t-ppcos t-slibgcc-elf-ver t-linux rs6000/t-ppccomm"
-@@ -1916,7 +1945,11 @@
- 	tm_file="${tm_file} dbxelf.h elfos.h svr4.h sh/elf.h sh/embed-elf.h sh/rtemself.h rtems.h"
- 	;;
- sh-*-linux* | sh[2346lbe]*-*-linux*)
--	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver t-linux"
-+	tmake_file="sh/t-sh sh/t-elf t-slibgcc-elf-ver"
-+	case ${target} in
-+	*-linux-uclibc*) tmake_file="${tmake_file} t-linux-uclibc" ;;
-+	*) tmake_file="${tmake_file} t-linux" ;;
-+	esac
- 	case ${target} in
- 	sh*be-*-* | sh*eb-*-*) ;;
- 	*)
-diff -urN gcc-3.4.1-dist/libtool.m4 gcc-3.4.1/libtool.m4
+--- gcc-3.4.4/gcc/config/sparc/linux.h
++++ gcc-3.4.4/gcc/config/sparc/linux.h
+@@ -162,13 +162,18 @@
+         %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.1}} \
+         %{static:-static}}}"
+ #else
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#endif
+ #define LINK_SPEC "-m elf32_sparc -Y P,/usr/lib %{shared:-shared} \
+   %{!mno-relax:%{!r:-relax}} \
+   %{!shared: \
+     %{!ibcs: \
+       %{!static: \
+         %{rdynamic:-export-dynamic} \
+-        %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
++        %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+         %{static:-static}}}"
+ #endif
+ 
+--- gcc-3.4.4/gcc/config/sparc/linux64.h
++++ gcc-3.4.4/gcc/config/sparc/linux64.h
+@@ -167,12 +166,17 @@
+   { "link_arch_default", LINK_ARCH_DEFAULT_SPEC },	  \
+   { "link_arch",	 LINK_ARCH_SPEC },
+     
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER	"/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER  "/lib/ld-linux.so.2"
++#endif
+ #define LINK_ARCH32_SPEC "-m elf32_sparc -Y P,/usr/lib %{shared:-shared} \
+   %{!shared: \
+     %{!ibcs: \
+       %{!static: \
+         %{rdynamic:-export-dynamic} \
+-        %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
++        %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+         %{static:-static}}} \
+ "
+ 
 --- gcc-3.4.1-dist/libtool.m4	2004-05-18 04:08:37.000000000 -0500
 +++ gcc-3.4.1/libtool.m4	2004-08-12 15:54:43.000000000 -0500
 @@ -689,6 +689,11 @@
@@ -421,7 +385,6 @@ diff -urN gcc-3.4.1-dist/libtool.m4 gcc-3.4.1/libtool.m4
  netbsd*)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      [lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$']
-diff -urN gcc-3.4.1-dist/ltconfig gcc-3.4.1/ltconfig
 --- gcc-3.4.1-dist/ltconfig	2004-03-05 15:05:41.000000000 -0600
 +++ gcc-3.4.1/ltconfig	2004-08-12 15:55:48.000000000 -0500
 @@ -602,6 +602,7 @@
@@ -457,3 +420,43 @@ diff -urN gcc-3.4.1-dist/ltconfig gcc-3.4.1/ltconfig
  netbsd*)
    need_lib_prefix=no
    need_version=no
+--- gcc-3.4.1-dist/boehm-gc/configure	2004-07-01 14:14:03.000000000 -0500
++++ gcc-3.4.1/boehm-gc/configure	2004-08-12 16:22:57.000000000 -0500
+@@ -1947,6 +1947,11 @@
+   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
+   ;;
+ 
++linux-uclibc*)
++  lt_cv_deplibs_check_method=pass_all
++  lt_cv_file_magic_test_file=`echo /lib/libuClibc-*.so`
++  ;;
++
+ netbsd*)
+   if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
+     lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
+--- gcc-3.4.1-dist/boehm-gc/ltconfig	2002-11-20 09:59:06.000000000 -0600
++++ gcc-3.4.1/boehm-gc/ltconfig	2004-08-12 15:54:42.000000000 -0500
+@@ -1981,6 +1981,23 @@
+   fi
+   ;;
+ 
++linux-uclibc*)
++  version_type=linux
++  need_lib_prefix=no
++  need_version=no
++  library_names_spec='${libname}${release}.so$versuffix ${libname}${release}.so$major $libname.so'
++  soname_spec='${libname}${release}.so$major'
++  finish_cmds='PATH="\$PATH:/sbin" ldconfig -n $libdir'
++  shlibpath_var=LD_LIBRARY_PATH
++  shlibpath_overrides_runpath=no
++  deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [LM]SB (shared object|dynamic lib )'
++  file_magic_cmd=/usr/bin/file
++  file_magic_test_file=`echo /lib/libuClibc-*.so`
++
++  # Assume using the uClibc dynamic linker.
++  dynamic_linker="uClibc ld.so"
++  ;;
++
+ netbsd*)
+   version_type=sunos
+   if echo __ELF__ | $CC -E - | grep __ELF__ >/dev/null; then
