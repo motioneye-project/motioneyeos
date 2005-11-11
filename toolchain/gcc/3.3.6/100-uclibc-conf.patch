@@ -35,28 +35,6 @@ diff -urN gcc-3.3.3-dist/boehm-gc/configure gcc-3.3.3/boehm-gc/configure
  netbsd*)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-3.3.3-dist/config.sub gcc-3.3.3/config.sub
---- gcc-3.3.3-dist/config.sub	2003-01-30 17:25:36.000000000 -0600
-+++ gcc-3.3.3/config.sub	2004-08-12 04:47:51.000000000 -0500
-@@ -118,7 +118,7 @@
- # Here we must recognize all the valid KERNEL-OS combinations.
- maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
- case $maybe_os in
--  nto-qnx* | linux-gnu* | freebsd*-gnu* | netbsd*-gnu* | storm-chaos* | os2-emx* | rtmk-nova*)
-+  nto-qnx* | linux-gnu* | linux-uclibc* | freebsd*-gnu* | netbsd*-gnu* | storm-chaos* | os2-emx* | rtmk-nova*)
-     os=-$maybe_os
-     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
-     ;;
-@@ -1112,7 +1112,8 @@
- 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
- 	      | -chorusos* | -chorusrdb* \
- 	      | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
--	      | -mingw32* | -linux-gnu* | -uxpv* | -beos* | -mpeix* | -udk* \
-+	      | -mingw32* | -linux-gnu* | -linux-uclibc* \
-+	      | -uxpv* | -beos* | -mpeix* | -udk* \
- 	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
- 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
- 	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
 diff -urN gcc-3.3.3-dist/gcc/config/arm/linux-elf.h gcc-3.3.3/gcc/config/arm/linux-elf.h
 --- gcc-3.3.3-dist/gcc/config/arm/linux-elf.h	2003-09-16 10:39:23.000000000 -0500
 +++ gcc-3.3.3/gcc/config/arm/linux-elf.h	2004-08-12 04:47:51.000000000 -0500

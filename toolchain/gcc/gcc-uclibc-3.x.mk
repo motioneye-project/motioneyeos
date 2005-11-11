@@ -66,6 +66,7 @@ $(DL_DIR)/$(GCC_SOURCE):
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(GCC_DIR)
 	touch $(GCC_DIR)/.unpacked
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
