@@ -23,7 +23,7 @@
 # USA
 
 # TARGETS
-NCURSES_VER:=5.4
+NCURSES_VER:=5.5
 NCURSES_SITE:=ftp://ftp.gnu.org/pub/gnu/ncurses
 NCURSES_DIR:=$(BUILD_DIR)/ncurses-$(NCURSES_VER)
 NCURSES_SOURCE:=ncurses-$(NCURSES_VER).tar.gz
