@@ -1,0 +1,58 @@
+--- at/config.h.in
++++ at/config.h.in
+@@ -182,3 +182,6 @@
+ 
+ #undef HAVE_ATTRIBUTE_NORETURN
+ #undef HAVE_PAM
++
++#undef NEED_YYWRAP
++
+--- at/configure
++++ at/configure
+@@ -1037,7 +1037,7 @@
+ echo $ac_n "checking Trying to compile a trivial ANSI C program""... $ac_c" 1>&6
+ echo "configure:1039: checking Trying to compile a trivial ANSI C program" >&5
+ if test "$cross_compiling" = yes; then
+-  { echo "configure: error: Could not compile and run even a trivial ANSI C program - check CC." 1>&2; exit 1; }
++  echo "$ac_t""assuming it works" 1>&6
+ else
+   cat > conftest.$ac_ext <<EOF
+ #line 1044 "configure"
+--- at/getloadavg.c
++++ at/getloadavg.c
+@@ -66,11 +66,12 @@
+ 
+ /* This should always be first.  */
+ #ifdef HAVE_CONFIG_H
+-#include <config.h>
++#include "config.h"
+ #endif
+ 
+-#include "lisp.h"
+-#include "sysfile.h" /* for encapsulated open, close, read, write */
++#include <sys/types.h>
++#include <sys/stat.h>
++#include <fcntl.h>
+ 
+ #ifndef HAVE_GETLOADAVG
+ 
+--- at/Makefile.in
++++ at/Makefile.in
+@@ -62,6 +62,8 @@
+ DIST = $(CSRCS) $(HEADERS) $(MISC) $(OTHERS)
+ LIST = Filelist Filelist.asc
+ 
++IROOT = $(DESTDIR)
++
+ .PHONY: all install clean dist distclean
+ 
+ all: at atd atrun
+--- at/parsetime.l
++++ at/parsetime.l
+@@ -1,5 +1,6 @@
+ %{
+
++#include "config.h"
+ #include <string.h>
+ #include <time.h>
+ #include "y.tab.h"

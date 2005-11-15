@@ -25,6 +25,7 @@ source "package/tar/Config.in"
 
 comment "Other stuff"
 source "package/acpid/Config.in"
+source "package/at/Config.in"
 source "package/autoconf/Config.in"
 source "package/automake/Config.in"
 source "package/berkeleydb/Config.in"
