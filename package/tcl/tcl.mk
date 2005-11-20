@@ -40,7 +40,6 @@ $(TARGET_DIR)/usr/lib/libtcl8.4.so: $(TCL_DIR)/unix/libtcl8.4.so
 	$(MAKE) INSTALL_ROOT=$(TARGET_DIR) -C $(TCL_DIR)/unix install
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libtcl8.4.so
 	rm -Rf $(TARGET_DIR)/usr/man
-	rm -Rf $(TARGET_DIR)/usr/include
 	-if [ "$(strip $(BR2_PACKAGE_TCL_DEL_ENCODINGS))" == "y" ]; then \
 	rm -Rf $(TARGET_DIR)/usr/lib/tcl8.4/encoding/*; \
 	fi
