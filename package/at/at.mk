@@ -47,6 +47,7 @@ $(TARGET_DIR)/$(AT_TARGET_BINARY): $(AT_DIR)/$(AT_BINARY)
 		$(MAKE) DAEMON_USERNAME=root DAEMON_GROUPNAME=root \
 		$(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(AT_DIR) install
 	$(INSTALL) -m 0755 -D $(AT_DIR)/debian/rc $(TARGET_DIR)/etc/init.d/S99at
+	rm -rf $(TARGET_DIR)/usr/man
 
 at: uclibc host-fakeroot $(TARGET_DIR)/$(AT_TARGET_BINARY)
 
