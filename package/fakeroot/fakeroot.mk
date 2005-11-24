@@ -33,7 +33,7 @@ $(FAKEROOT_DIR1)/.configured: $(FAKEROOT_DIR1)/.unpacked
 		./configure \
 		--prefix=/usr \
 	);
-	touch  $(FAKEROOT_DIR1)/.configured
+	touch $(FAKEROOT_DIR1)/.configured
 
 $(FAKEROOT_DIR1)/faked: $(FAKEROOT_DIR1)/.configured
 	$(MAKE) -C $(FAKEROOT_DIR1)
@@ -84,7 +84,7 @@ $(FAKEROOT_DIR2)/.configured: $(FAKEROOT_DIR2)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch  $(FAKEROOT_DIR2)/.configured
+	touch $(FAKEROOT_DIR2)/.configured
 
 $(FAKEROOT_DIR2)/faked: $(FAKEROOT_DIR2)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(FAKEROOT_DIR2)

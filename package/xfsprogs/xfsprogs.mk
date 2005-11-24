@@ -48,7 +48,7 @@ $(XFSPROGS_DIR)/.configured: e2fsprogs $(XFSPROGS_DIR)/.unpacked
 		--libdir=/usr/lib \
 		$(XFSPROGS_CONFIG_SHARED) \
 	);
-	touch  $(XFSPROGS_DIR)/.configured
+	touch $(XFSPROGS_DIR)/.configured
 
 $(XFSPROGS_DIR)/$(XFSPROGS_BINARY): $(XFSPROGS_DIR)/.configured
 	$(MAKE1) PATH=$(TARGET_PATH) CPPFLAGS=-I$(E2FSPROGS_DIR)/lib \

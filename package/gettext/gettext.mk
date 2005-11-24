@@ -38,7 +38,7 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
-	touch  $(GETTEXT_DIR)/.configured
+	touch $(GETTEXT_DIR)/.configured
 
 $(GETTEXT_DIR)/$(GETTEXT_BINARY): $(GETTEXT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GETTEXT_DIR)

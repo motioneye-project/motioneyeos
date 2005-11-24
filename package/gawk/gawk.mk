@@ -43,7 +43,7 @@ $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(GAWK_DIR)/.configured
+	touch $(GAWK_DIR)/.configured
 
 $(GAWK_DIR)/$(GAWK_BINARY): $(GAWK_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GAWK_DIR)

@@ -84,7 +84,7 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 	# This is undefined when crosscompiling...
 	$(SED) 's,.*HAVE_PROC_UPTIME.*,#define HAVE_PROC_UPTIME 1,g' \
 		$(COREUTILS_DIR)/config.h
-	touch  $(COREUTILS_DIR)/.configured
+	touch $(COREUTILS_DIR)/.configured
 
 $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(COREUTILS_DIR)

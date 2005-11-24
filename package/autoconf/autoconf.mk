@@ -38,7 +38,7 @@ $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
-	touch  $(AUTOCONF_DIR)/.configured
+	touch $(AUTOCONF_DIR)/.configured
 
 $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(AUTOCONF_DIR)

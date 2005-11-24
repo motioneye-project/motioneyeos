@@ -29,7 +29,7 @@ $(TN5250_DIR)/.configured: $(TN5250_DIR)/.dist
 		$(DISABLE_NLS) \
 		--with-slang --without-x --without-ssl \
 	);
-	touch  $(TN5250_DIR)/.configured
+	touch $(TN5250_DIR)/.configured
 
 $(TN5250_DIR)/tn5250: $(TN5250_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(TN5250_DIR)

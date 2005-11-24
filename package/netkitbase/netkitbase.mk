@@ -28,7 +28,7 @@ $(NETKITBASE_DIR)/.configured: $(NETKITBASE_DIR)/.unpacked
 	(cd $(NETKITBASE_DIR); PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure --installroot=$(TARGET_DIR) --with-c-compiler=$(TARGET_CC) \
 	)
-	touch  $(NETKITBASE_DIR)/.configured
+	touch $(NETKITBASE_DIR)/.configured
 
 $(NETKITBASE_DIR)/$(NETKITBASE_BINARY): $(NETKITBASE_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(NETKITBASE_DIR)

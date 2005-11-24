@@ -39,7 +39,7 @@ $(RAIDTOOLS2_DIR)/.configured: $(RAIDTOOLS2_DIR)/.unpacked
 		$(DISABLE_NLS) \
                 --enable-fsect-man5 \
         );
-	touch  $(RAIDTOOLS2_DIR)/.configured
+	touch $(RAIDTOOLS2_DIR)/.configured
 
 $(RAIDTOOLS2_DIR)/$(RAIDTOOLS2_BINARY): $(RAIDTOOLS2_DIR)/.configured
         $(MAKE) CC=$(TARGET_CC) -C $(RAIDTOOLS2_DIR)

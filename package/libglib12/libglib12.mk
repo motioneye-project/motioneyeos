@@ -40,7 +40,7 @@ $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		--enable-shared \
 	);
-	touch  $(LIBGLIB12_DIR)/.configured
+	touch $(LIBGLIB12_DIR)/.configured
 
 $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBGLIB12_DIR)

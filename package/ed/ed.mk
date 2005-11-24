@@ -36,7 +36,7 @@ $(ED_DIR)/.configured: $(ED_DIR)/.unpacked
 		--exec-prefix=/usr \
 		$(DISABLE_NLS) \
 	);
-	touch  $(ED_DIR)/.configured
+	touch $(ED_DIR)/.configured
 
 $(ED_DIR)/$(ED_BINARY): $(ED_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(ED_DIR)

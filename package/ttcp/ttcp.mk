@@ -17,7 +17,7 @@ $(TTCP_BUILD_DIR)/.unpacked: $(DL_DIR)/$(TTCP_SOURCE)
 	touch $(TTCP_BUILD_DIR)/.unpacked
 
 $(TTCP_BUILD_DIR)/.configured: $(TTCP_BUILD_DIR)/.unpacked
-	touch  $(TTCP_BUILD_DIR)/.configured
+	touch $(TTCP_BUILD_DIR)/.configured
 
 $(TTCP_BUILD_DIR)/ttcp: $(TTCP_BUILD_DIR)/.configured
 	$(TARGET_CC) -O2 -o $(TTCP_BUILD_DIR)/ttcp $(TTCP_BUILD_DIR)/$(TTCP_SOURCE) 

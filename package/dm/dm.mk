@@ -56,7 +56,7 @@ $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
 		--with-kernel-dir=/work/richard/xen/linux-2.6.10-xen0 \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
 	);
-	touch  $(DM_DIR)/.configured
+	touch $(DM_DIR)/.configured
 
 $(DM_DIR)/$(DM_BINARY): dm-build
 $(DM_DIR)/$(DM_LIBRARY): dm-build

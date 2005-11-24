@@ -29,7 +29,7 @@ $(NETKITTELNET_DIR)/.configured: $(NETKITTELNET_DIR)/.unpacked
 	(cd $(NETKITTELNET_DIR); PATH=$(TARGET_PATH) CC=$(TARGET_CC) \
 		./configure --installroot=$(TARGET_DIR) --with-c-compiler=$(TARGET_CC) \
 	)
-	touch  $(NETKITTELNET_DIR)/.configured
+	touch $(NETKITTELNET_DIR)/.configured
 
 $(NETKITTELNET_DIR)/$(NETKITTELNET_BINARY): $(NETKITTELNET_DIR)/.configured
 	$(MAKE) SUB=telnetd CC=$(TARGET_CC) -C $(NETKITTELNET_DIR)

@@ -28,7 +28,7 @@ $(MICROWIN_DIR)/.unpacked: $(DL_DIR)/$(MICROWIN_SOURCE)
 $(MICROWIN_DIR)/.configured: $(MICROWIN_DIR)/.unpacked
 	(cd $(MICROWIN_DIR); \
 	);
-	touch  $(MICROWIN_DIR)/.configured
+	touch $(MICROWIN_DIR)/.configured
 
 $(MICROWIN_BINARY): $(MICROWIN_DIR)/.configured
 	$(MAKE) ARCH=LINUX-$(shell echo $(ARCH) | tr a-z A-Z) $(shell echo $(ARCH) | tr a-z A-Z)TOOLSPREFIX=$(TARGET_CROSS) CC=$(TARGET_CC) -C $(MICROWIN_DIR)/src CONFIG=$(MICROWIN_CONFIG)

@@ -33,7 +33,7 @@ $(LTT_DIR1)/.configured: $(LTT_DIR1)/.unpacked
 		./configure \
 		--prefix=$(TOOL_BUILD_DIR) \
 	);
-	touch  $(LTT_DIR1)/.configured
+	touch $(LTT_DIR1)/.configured
 
 $(LTT_DIR1)/$(LTT_BINARY): $(LTT_DIR1)/.configured
 	$(MAKE) -C $(LTT_DIR1)/LibLTT
@@ -80,7 +80,7 @@ $(LTT_DIR2)/.configured: $(LTT_DIR2)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
-	touch  $(LTT_DIR2)/.configured
+	touch $(LTT_DIR2)/.configured
 
 $(LTT_DIR2)/$(LTT_TARGET_BINARY): $(LTT_DIR2)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LTT_DIR2)/LibUserTrace

@@ -43,7 +43,7 @@ $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(FINDUTILS_DIR)/.configured
+	touch $(FINDUTILS_DIR)/.configured
 
 $(FINDUTILS_DIR)/$(FINDUTILS_BINARY): $(FINDUTILS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(FINDUTILS_DIR)

@@ -24,7 +24,7 @@ $(UDEV_DIR)/.unpacked: $(DL_DIR)/$(UDEV_SOURCE)
 	touch $(UDEV_DIR)/.unpacked
 
 $(UDEV_DIR)/.configured: $(UDEV_DIR)/.unpacked
-	touch  $(UDEV_DIR)/.configured
+	touch $(UDEV_DIR)/.configured
 
 $(UDEV_DIR)/$(UDEV_BINARY): $(UDEV_DIR)/.configured
 	$(MAKE) CROSS=$(TARGET_CROSS) GCC=$(TARGET_CC) \

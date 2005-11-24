@@ -46,7 +46,7 @@ $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch  $(PPPD_DIR)/.configured
+	touch $(PPPD_DIR)/.configured
 
 $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(PPPD_DIR)

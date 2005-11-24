@@ -40,7 +40,7 @@ $(DIFFUTILS_DIR)/.configured: $(DIFFUTILS_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(DIFFUTILS_DIR)/.configured
+	touch $(DIFFUTILS_DIR)/.configured
 
 $(DIFFUTILS_DIR)/$(DIFFUTILS_BINARY): $(DIFFUTILS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(DIFFUTILS_DIR)

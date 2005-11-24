@@ -20,7 +20,7 @@ $(NETSNMP_DIR)/.unpacked: $(DL_DIR)/$(NETSNMP_SOURCE) $(DL_DIR)/$(NETSNMP_PATCH1
 	zcat $(DL_DIR)/$(NETSNMP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	zcat $(DL_DIR)/$(NETSNMP_PATCH1) | patch -p1 -d $(NETSNMP_DIR)
 	toolchain/patch-kernel.sh $(NETSNMP_DIR) package/netsnmp/ netsnmp\*.patch
-	touch  $(NETSNMP_DIR)/.unpacked
+	touch $(NETSNMP_DIR)/.unpacked
 
 # We set CAN_USE_SYSCTL to no and use /proc since the
 # sysctl code in this thing is apparently intended for
@@ -55,7 +55,7 @@ $(NETSNMP_DIR)/.configured: $(NETSNMP_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
-	touch  $(NETSNMP_DIR)/.configured
+	touch $(NETSNMP_DIR)/.configured
 
 $(NETSNMP_DIR)/agent/snmpd: $(NETSNMP_DIR)/.configured
 	$(MAKE) -C $(NETSNMP_DIR)

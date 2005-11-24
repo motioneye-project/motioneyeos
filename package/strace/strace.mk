@@ -41,7 +41,7 @@ $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(STRACE_DIR)/.configured
+	touch $(STRACE_DIR)/.configured
 
 $(STRACE_DIR)/strace: $(STRACE_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(STRACE_DIR)

@@ -30,7 +30,7 @@ $(DHCP_DIR)/.unpacked: $(DL_DIR)/$(DHCP_SOURCE)
 
 $(DHCP_DIR)/.configured: $(DHCP_DIR)/.unpacked
 	(cd $(DHCP_DIR); $(TARGET_CONFIGURE_OPTS) ./configure );
-	touch  $(DHCP_DIR)/.configured
+	touch $(DHCP_DIR)/.configured
 
 $(DHCP_DIR)/$(DHCP_RELAY_BINARY): $(DHCP_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(BVARS) -C $(DHCP_DIR)

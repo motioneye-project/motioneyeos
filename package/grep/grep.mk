@@ -46,7 +46,7 @@ $(GNUGREP_DIR)/.configured: $(GNUGREP_DIR)/.unpacked
 		--disable-perl-regexp \
 		--without-included-regex \
 	);
-	touch  $(GNUGREP_DIR)/.configured
+	touch $(GNUGREP_DIR)/.configured
 
 $(GNUGREP_DIR)/$(GNUGREP_BINARY): $(GNUGREP_DIR)/.configured
 	$(MAKE) -C $(GNUGREP_DIR)

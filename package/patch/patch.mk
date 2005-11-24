@@ -40,7 +40,7 @@ $(GNUPATCH_DIR)/.configured: $(GNUPATCH_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(GNUPATCH_DIR)/.configured
+	touch $(GNUPATCH_DIR)/.configured
 
 $(GNUPATCH_DIR)/$(GNUPATCH_BINARY): $(GNUPATCH_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GNUPATCH_DIR)

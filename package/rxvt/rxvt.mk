@@ -49,7 +49,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--x-includes=$(TINYX_DIR)/exports/include \
 		--x-libraries=$(TINYX_DIR)/exports/lib \
 	);
-	touch  $(RXVT_DIR)/.configured
+	touch $(RXVT_DIR)/.configured
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(RXVT_DIR)

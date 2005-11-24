@@ -52,7 +52,7 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
 	);
-	touch  $(LVM2_DIR)/.configured
+	touch $(LVM2_DIR)/.configured
 
 $(LVM2_TARGET_SBINS): $(LVM2_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LVM2_DIR)

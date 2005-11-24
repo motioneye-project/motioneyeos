@@ -40,7 +40,7 @@ $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
-	touch  $(AUTOMAKE_DIR)/.configured
+	touch $(AUTOMAKE_DIR)/.configured
 
 $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY): $(AUTOMAKE_DIR)/.configured
 	$(MAKE) -C $(AUTOMAKE_DIR)

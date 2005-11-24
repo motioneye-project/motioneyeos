@@ -52,7 +52,7 @@ $(OPENVPN_DIR)/.configured: $(OPENVPN_DIR)/.unpacked
 		--program-prefix="" \
 		$(THREAD_MODEL) \
 	);
-	touch  $(OPENVPN_DIR)/.configured
+	touch $(OPENVPN_DIR)/.configured
 
 $(OPENVPN_DIR)/$(OPENVPN_BINARY): $(OPENVPN_DIR)/.configured
 	$(MAKE) -C $(OPENVPN_DIR)

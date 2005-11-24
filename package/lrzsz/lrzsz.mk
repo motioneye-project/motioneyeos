@@ -32,7 +32,7 @@ lrzsz-source: $(DL_DIR)/$(LRZSZ_SOURCE)
 
 $(LRZSZ_DIR)/.unpacked: $(DL_DIR)/$(LRZSZ_SOURCE)
 	zcat $(DL_DIR)/$(LRZSZ_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch  $(LRZSZ_DIR)/.unpacked
+	touch $(LRZSZ_DIR)/.unpacked
 
 $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked
 	(cd $(LRZSZ_DIR); rm -rf config.cache; \
@@ -56,7 +56,7 @@ $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked
 	);
 	$(SED) "s/-lnsl//;" $(LRZSZ_DIR)/src/Makefile
 	$(SED) "s~\(#define ENABLE_SYSLOG.*\)~/* \1 */~;" $(LRZSZ_DIR)/config.h
-	touch  $(LRZSZ_DIR)/.configured
+	touch $(LRZSZ_DIR)/.configured
 
 $(LRZSZ_DIR)/src/lrz: $(LRZSZ_DIR)/.configured
 	$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(LRZSZ_DIR)

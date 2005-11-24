@@ -44,7 +44,7 @@ $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(GNUTAR_DIR)/.configured
+	touch $(GNUTAR_DIR)/.configured
 
 $(GNUTAR_DIR)/$(GNUTAR_BINARY): $(GNUTAR_DIR)/.configured
 	$(MAKE) -C $(GNUTAR_DIR)

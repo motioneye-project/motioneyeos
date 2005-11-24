@@ -13,7 +13,7 @@ $(DL_DIR)/$(VALGRIND_SOURCE):
 
 $(VALGRIND_DIR)/.unpacked: $(DL_DIR)/$(VALGRIND_SOURCE)
 	bzcat $(DL_DIR)/$(VALGRIND_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch  $(VALGRIND_DIR)/.unpacked
+	touch $(VALGRIND_DIR)/.unpacked
 
 $(VALGRIND_DIR)/.patched: $(VALGRIND_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(VALGRIND_DIR) package/valgrind/ valgrind\*.patch
@@ -42,7 +42,7 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 		--without-x --without-included-gettext \
 		--disable-tls \
 	);
-	touch  $(VALGRIND_DIR)/.configured
+	touch $(VALGRIND_DIR)/.configured
 
 $(VALGRIND_DIR)/none/vgskin_none.so: $(VALGRIND_DIR)/.configured
 	$(MAKE) -C $(VALGRIND_DIR)

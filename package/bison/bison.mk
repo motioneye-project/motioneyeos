@@ -42,7 +42,7 @@ $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 		$(DISABLE_NLS) \
 	);
 	echo 'all install:' > $(BISON_DIR)/examples/Makefile
-	touch  $(BISON_DIR)/.configured
+	touch $(BISON_DIR)/.configured
 
 $(BISON_DIR)/$(BISON_BINARY): $(BISON_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(BISON_DIR)

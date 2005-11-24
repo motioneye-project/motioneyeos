@@ -40,7 +40,7 @@ $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(GNUMAKE_DIR)/.configured
+	touch $(GNUMAKE_DIR)/.configured
 
 $(GNUMAKE_DIR)/$(GNUMAKE_BINARY): $(GNUMAKE_DIR)/.configured
 	$(MAKE) -C $(GNUMAKE_DIR)

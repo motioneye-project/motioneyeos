@@ -50,7 +50,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		--enable-alias \
 		--without-bash-malloc \
 	);
-	touch  $(BASH_DIR)/.configured
+	touch $(BASH_DIR)/.configured
 
 $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD=$(HOSTCC) -C $(BASH_DIR)

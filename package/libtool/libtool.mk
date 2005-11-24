@@ -40,7 +40,7 @@ $(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch  $(LIBTOOL_DIR)/.configured
+	touch $(LIBTOOL_DIR)/.configured
 
 $(LIBTOOL_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBTOOL_DIR)

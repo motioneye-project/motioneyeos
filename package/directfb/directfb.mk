@@ -41,7 +41,7 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 	--disable-video4linux \
 	--disable-video4linux2 \
 	--disable-fusion );
-	touch  $(DIRECTFB_DIR)/.configured
+	touch $(DIRECTFB_DIR)/.configured
 
 $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured
 	$(MAKE) -C $(DIRECTFB_DIR)

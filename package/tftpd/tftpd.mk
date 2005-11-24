@@ -42,7 +42,7 @@ $(TFTP_HPA_DIR)/.configured: $(TFTP_HPA_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		--without-tcpwrappers \
 	);
-	touch  $(TFTP_HPA_DIR)/.configured
+	touch $(TFTP_HPA_DIR)/.configured
 
 $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY): $(TFTP_HPA_DIR)/.configured
 	$(MAKE) -C $(TFTP_HPA_DIR)

@@ -45,7 +45,7 @@ $(FLEX_DIR)/.configured: $(FLEX_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(FLEX_DIR)/.configured
+	touch $(FLEX_DIR)/.configured
 
 $(FLEX_DIR)/$(FLEX_BINARY): $(FLEX_DIR)/.configured
 	$(MAKE) -C $(FLEX_DIR)

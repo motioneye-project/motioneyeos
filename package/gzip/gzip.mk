@@ -45,7 +45,7 @@ $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(GZIP_LARGEFILE) \
 	);
-	touch  $(GZIP_DIR)/.configured
+	touch $(GZIP_DIR)/.configured
 
 $(GZIP_BINARY): $(GZIP_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GZIP_DIR)

@@ -43,7 +43,7 @@ $(SED_DIR1)/.configured: $(SED_DIR1)/.unpacked
 		--prefix=$(HOST_SED_DIR) \
 		--prefix=/usr \
 	);
-	touch  $(SED_DIR1)/.configured
+	touch $(SED_DIR1)/.configured
 
 $(SED_DIR1)/$(SED_BINARY): $(SED_DIR1)/.configured
 	$(MAKE) -C $(SED_DIR1)
@@ -113,7 +113,7 @@ $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch  $(SED_DIR2)/.configured
+	touch $(SED_DIR2)/.configured
 
 $(SED_DIR2)/$(SED_BINARY): $(SED_DIR2)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(SED_DIR2)

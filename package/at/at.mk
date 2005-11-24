@@ -16,7 +16,7 @@ $(DL_DIR)/$(AT_SOURCE):
 $(AT_DIR)/.unpacked: $(DL_DIR)/$(AT_SOURCE)
 	$(AT_CAT) $(DL_DIR)/$(AT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(AT_DIR) package/at/ at\*.patch
-	touch  $(AT_DIR)/.unpacked
+	touch $(AT_DIR)/.unpacked
 
 $(AT_DIR)/.configured: $(AT_DIR)/.unpacked
 	(cd $(AT_DIR); rm -rf config.cache; \

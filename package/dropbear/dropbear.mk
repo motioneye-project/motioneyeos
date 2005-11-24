@@ -48,7 +48,7 @@ ifeq ($(strip $(BR2_PACKAGE_DROPBEAR_URANDOM)),y)
 	$(SED) 's,^#define DROPBEAR_RANDOM_DEV.*,#define DROPBEAR_RANDOM_DEV \"/dev/urandom\",' \
 		$(DROPBEAR_DIR)/options.h
 endif
-	touch  $(DROPBEAR_DIR)/.configured
+	touch $(DROPBEAR_DIR)/.configured
 
 $(DROPBEAR_DIR)/$(DROPBEAR_BINARY): $(DROPBEAR_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) LD=$(TARGET_CC) \

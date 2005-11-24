@@ -52,7 +52,7 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--without-catgets $(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch  $(E2FSPROGS_DIR)/.configured
+	touch $(E2FSPROGS_DIR)/.configured
 
 $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY): $(E2FSPROGS_DIR)/.configured
 	$(MAKE1) PATH=$(TARGET_PATH) -C $(E2FSPROGS_DIR)

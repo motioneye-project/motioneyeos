@@ -32,7 +32,7 @@ $(FILE_DIR1)/.configured: $(FILE_DIR1)/.unpacked
 		./configure \
 		--prefix=$(FILE_DIR1)/install \
 	);
-	touch  $(FILE_DIR1)/.configured
+	touch $(FILE_DIR1)/.configured
 
 $(TOOL_BUILD_DIR)/bin/file: $(FILE_DIR1)/.configured
 	$(MAKE) -C $(FILE_DIR1) install
@@ -54,7 +54,7 @@ host-file-dirclean:
 $(FILE_DIR2)/.unpacked: $(DL_DIR)/$(FILE_SOURCE)
 	$(FILE_CAT) $(DL_DIR)/$(FILE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(FILE_DIR2) package/file/ file\*.patch
-	touch  $(FILE_DIR2)/.unpacked
+	touch $(FILE_DIR2)/.unpacked
 
 $(FILE_DIR2)/.configured: $(FILE_DIR2)/.unpacked
 	(cd $(FILE_DIR2); rm -rf config.cache; \
@@ -79,7 +79,7 @@ $(FILE_DIR2)/.configured: $(FILE_DIR2)/.unpacked
 		--enable-static \
 		--disable-fsect-man5 \
 	);
-	touch  $(FILE_DIR2)/.configured
+	touch $(FILE_DIR2)/.configured
 
 $(FILE_DIR2)/$(FILE_BINARY): $(FILE_DIR2)/.configured $(TOOL_BUILD_DIR)/bin/file
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) LDFLAGS="-static" -C $(FILE_DIR2)

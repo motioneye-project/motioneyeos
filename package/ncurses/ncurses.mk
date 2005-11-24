@@ -38,7 +38,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 		$(NCURSES_DIR)/misc/run_tic.in
 	toolchain/patch-kernel.sh $(NCURSES_DIR) package/ncurses/ ncurses\*.patch
 	$(CONFIG_UPDATE) $(NCURSES_DIR)
-	touch  $(NCURSES_DIR)/.dist
+	touch $(NCURSES_DIR)/.dist
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	(cd $(NCURSES_DIR); rm -rf config.cache; \
@@ -67,7 +67,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		--enable-echo --enable-const --enable-overwrite \
 		--enable-broken_linker \
 	);
-	touch  $(NCURSES_DIR)/.configured
+	touch $(NCURSES_DIR)/.configured
 
 $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER): $(NCURSES_DIR)/.configured
 	$(MAKE1) DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \

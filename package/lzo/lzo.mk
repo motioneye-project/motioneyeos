@@ -39,7 +39,7 @@ $(LZO_DIR)/.configured: $(LZO_DIR)/.unpacked
 		--libdir=/lib \
 		$(LZO_CONFIG_SHARED) \
 	);
-	touch  $(LZO_DIR)/.configured
+	touch $(LZO_DIR)/.configured
 
 $(LZO_DIR)/src/liblzo.la: $(LZO_DIR)/.configured
 	$(MAKE) -C $(LZO_DIR)

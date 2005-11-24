@@ -37,11 +37,11 @@ microcom-source: $(DL_DIR)/$(MICROCOM_SOURCE)
 $(MICROCOM_DIR)/.unpacked: $(DL_DIR)/$(MICROCOM_SOURCE)
 	mkdir -p $(MICROCOM_DIR)
 	zcat $(DL_DIR)/$(MICROCOM_SOURCE) | tar -C $(MICROCOM_DIR) $(TAR_OPTIONS) -
-	touch  $(MICROCOM_DIR)/.unpacked
+	touch $(MICROCOM_DIR)/.unpacked
 
 $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
 	$(SED) 's~gcc~${TARGET_CC}~' $(MICROCOM_DIR)/Makefile
-	touch  $(MICROCOM_DIR)/.configured
+	touch $(MICROCOM_DIR)/.configured
 
 $(MICROCOM_DIR)/microcom: $(MICROCOM_DIR)/.configured
 	$(MAKE) -C $(MICROCOM_DIR)

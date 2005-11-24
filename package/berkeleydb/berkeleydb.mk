@@ -21,7 +21,7 @@ berkeleydb-source: $(DL_DIR)/$(DB_SOURCE)
 
 $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
 	zcat $(DL_DIR)/$(DB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch  $(DB_DIR)/.dist
+	touch $(DB_DIR)/.dist
 
 $(DB_DIR)/.configured: $(DB_DIR)/.dist
 	(cd $(DB_DIR)/build_unix; rm -rf config.cache; \
@@ -51,7 +51,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
                 $(DB_LARGEFILE) \
 	);
 	$(SED) 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
-	touch  $(DB_DIR)/.configured
+	touch $(DB_DIR)/.configured
 
 $(DB_DIR)/build_unix/.libs/$(DB_SHARLIB): $(DB_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(DB_DIR)/build_unix

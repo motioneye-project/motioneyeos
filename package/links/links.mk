@@ -14,7 +14,7 @@ links-source: $(DL_DIR)/$(LINKS_SOURCE)
 
 $(LINKS_DIR)/.unpacked: $(DL_DIR)/$(LINKS_SOURCE)
 	zcat $(DL_DIR)/$(LINKS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch  $(LINKS_DIR)/.unpacked
+	touch $(LINKS_DIR)/.unpacked
 
 $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 	(cd $(LINKS_DIR); rm -rf config.cache; \
@@ -36,7 +36,7 @@ $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch  $(LINKS_DIR)/.configured
+	touch $(LINKS_DIR)/.configured
 
 $(LINKS_DIR)/links: $(LINKS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LINKS_DIR)

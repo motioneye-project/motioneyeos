@@ -45,7 +45,7 @@ $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch  $(BOA_WORKDIR)/Makefile
+	touch $(BOA_WORKDIR)/Makefile
 
 $(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer:	$(BOA_WORKDIR)/Makefile
 	rm -f $@
