@@ -28,6 +28,7 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 	--build=$(GNU_HOST_NAME) \
 	--prefix=$(STAGING_DIR)/usr \
 	--disable-esd \
+	--disable-nasm \
 	--disable-video-x11 );
 	touch $(SDL_DIR)/.configured
 
