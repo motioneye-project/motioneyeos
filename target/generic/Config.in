@@ -57,5 +57,5 @@ config BR2_TARGET_GENERIC_DEV_SYSTEM
 	select BR2_PACKAGE_UTIL-LINUX
 	select BR2_PACKAGE_ZLIB
 	help
-	  Board support for a generic firewalling router.
+	  Board support for a generic development system.
 
