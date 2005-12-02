@@ -26,6 +26,7 @@ endif
 $(DL_DIR)/$(GDB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(GDB_SITE)/$(GDB_SOURCE)
 
+gdb-unpacked: $(GDB_DIR)/.unpacked
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
 	$(GDB_CAT) $(DL_DIR)/$(GDB_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 ifeq ($(GDB_VERSION),snapshot)
@@ -38,6 +39,9 @@ endif
 	# gdb's config.sub supports <arch>-linux-uclibc tuples.
 	# Should probably integrate this into the patch.
 	touch  $(GDB_DIR)/.unpacked
+
+gdb-dirclean:
+	rm -rf $(GDB_DIR)
 
 ######################################################################
 #
