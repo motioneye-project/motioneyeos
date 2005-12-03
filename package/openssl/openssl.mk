@@ -10,19 +10,23 @@ OPENSSL_SITE:=http://www.openssl.org/source
 OPENSSL_SOURCE:=openssl-$(OPENSSL_VER).tar.gz
 OPENSSL_DIR:=$(BUILD_DIR)/openssl-$(OPENSSL_VER)
 
+OPENSSL_TARGET_ARCH:=
 ifeq ($(BR2_i386),y)
 ifeq ($(ARCH),i686)
 OPENSSL_TARGET_ARCH:=i386-i686/cmov
-else
+endif
+ifneq ($(ARCH),i386)
 OPENSSL_TARGET_ARCH:=i386-$(ARCH)
 endif
-else
+endif
+ifeq ($(OPENSSL_TARGET_ARCH),)
 OPENSSL_TARGET_ARCH:=$(ARCH)
 endif
 
 $(DL_DIR)/$(OPENSSL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSL_SITE)/$(OPENSSL_SOURCE)
 
+openssl-unpack: $(OPENSSL_DIR)/.unpacked
 $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 	gunzip -c $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(OPENSSL_DIR) package/openssl/ openssl\*.patch
