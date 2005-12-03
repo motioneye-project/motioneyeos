@@ -195,28 +195,6 @@ diff -urN binutils-2.14.90.0.8-001-debian/bfd/configure.in binutils-2.14.90.0.8/
  	COREFILE=trad-core.lo
  	TRAD_HEADER='"hosts/m68klinux.h"'
  	;;
-diff -urN binutils-2.14.90.0.8-001-debian/config.sub binutils-2.14.90.0.8/config.sub
---- binutils-2.14.90.0.8-001-debian/config.sub	2004-01-14 15:07:42.000000000 -0600
-+++ binutils-2.14.90.0.8/config.sub	2004-02-12 14:09:10.000000000 -0600
-@@ -118,7 +118,7 @@
- # Here we must recognize all the valid KERNEL-OS combinations.
- maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
- case $maybe_os in
--  nto-qnx* | linux-gnu* | freebsd*-gnu* | netbsd*-gnu* | storm-chaos* | os2-emx* | rtmk-nova*)
-+  nto-qnx* | linux-gnu* | linux-uclibc* | freebsd*-gnu* | netbsd*-gnu* | storm-chaos* | os2-emx* | rtmk-nova*)
-     os=-$maybe_os
-     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
-     ;;
-@@ -1131,7 +1131,8 @@
- 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
- 	      | -chorusos* | -chorusrdb* \
- 	      | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
--	      | -mingw32* | -linux-gnu* | -uxpv* | -beos* | -mpeix* | -udk* \
-+	      | -mingw32* | -linux-gnu* | -linux-uclibc* \
-+	      | -uxpv* | -beos* | -mpeix* | -udk* \
- 	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
- 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
- 	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
 diff -urN binutils-2.14.90.0.8-001-debian/configure binutils-2.14.90.0.8/configure
 --- binutils-2.14.90.0.8-001-debian/configure	2004-01-14 15:07:42.000000000 -0600
 +++ binutils-2.14.90.0.8/configure	2004-02-12 14:09:10.000000000 -0600

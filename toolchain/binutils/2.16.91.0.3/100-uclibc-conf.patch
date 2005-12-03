@@ -198,33 +198,3 @@ diff -Nurp binutils-2.16.91.0.2.orig/opcodes/configure binutils-2.16.91.0.2/opco
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -Nurp binutils-2.16.91.0.2.orig/config.sub binutils-2.16.91.0.2/config.sub
---- binutils-2.16.91.0.2.orig/config.sub	2005-07-20 15:27:26.000000000 -0400
-+++ binutils-2.16.91.0.2/config.sub	2005-08-02 00:18:58.000000000 -0400
-@@ -268,7 +268,7 @@ case $basic_machine in
- 	| pdp10 | pdp11 | pj | pjl \
- 	| powerpc | powerpc64 | powerpc64le | powerpcle | ppcbe \
- 	| pyramid \
--	| sh | sh[1234] | sh[24]a | sh[23]e | sh[34]eb | shbe | shle | sh[1234]le | sh3ele \
-+	| sh | sh[1234]* | sh[24]a | sh[23]e | sh[34]eb | shbe | shle | sh[1234]le | sh3ele \
- 	| sh64 | sh64le \
- 	| sparc | sparc64 | sparc64b | sparc86x | sparclet | sparclite \
- 	| sparcv8 | sparcv9 | sparcv9b \
-@@ -348,7 +348,7 @@ case $basic_machine in
- 	| powerpc-* | powerpc64-* | powerpc64le-* | powerpcle-* | ppcbe-* \
- 	| pyramid-* \
- 	| romp-* | rs6000-* \
--	| sh-* | sh[1234]-* | sh[24]a-* | sh[23]e-* | sh[34]eb-* | shbe-* \
-+	| sh-* | sh[1234]*-* | sh[24]a-* | sh[23]e-* | sh[34]eb-* | shbe-* \
- 	| shle-* | sh[1234]le-* | sh3ele-* | sh64-* | sh64le-* \
- 	| sparc-* | sparc64-* | sparc64b-* | sparc86x-* | sparclet-* \
- 	| sparclite-* \
-@@ -1102,7 +1102,7 @@ case $basic_machine in
- 	we32k)
- 		basic_machine=we32k-att
- 		;;
--	sh[1234] | sh[24]a | sh[34]eb | sh[1234]le | sh[23]ele)
-+	sh[1234]* | sh[24]a | sh[34]eb | sh[1234]le | sh[23]ele)
- 		basic_machine=sh-unknown
- 		;;
- 	sparc | sparcv8 | sparcv9 | sparcv9b)
