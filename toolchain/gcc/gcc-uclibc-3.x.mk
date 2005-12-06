@@ -63,6 +63,7 @@ $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
+gcc-unpacked: $(GCC_DIR)/.unpacked
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
@@ -361,4 +362,3 @@ gcc_target-clean:
 
 gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
-

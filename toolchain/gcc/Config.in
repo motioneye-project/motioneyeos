@@ -23,6 +23,9 @@ choice
 	config BR2_GCC_VERSION_3_4_4
 		bool "gcc 3.4.4"
 
+	config BR2_GCC_VERSION_3_4_5
+		bool "gcc 3.4.5"
+
 	config BR2_GCC_VERSION_4_0_0
 		bool "gcc 4.0.0"
 
@@ -44,6 +47,7 @@ config BR2_GCC_VERSION
 	default "3.4.2"     if BR2_GCC_VERSION_3_4_2
 	default "3.4.3"     if BR2_GCC_VERSION_3_4_3
 	default "3.4.4"     if BR2_GCC_VERSION_3_4_4
+	default "3.4.5"     if BR2_GCC_VERSION_3_4_5
 	default "4.0.0"     if BR2_GCC_VERSION_4_0_0
 	default "4.0.1"     if BR2_GCC_VERSION_4_0_1
 	default "4.0.2"     if BR2_GCC_VERSION_4_0_2
