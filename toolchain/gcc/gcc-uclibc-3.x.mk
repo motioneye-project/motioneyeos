@@ -52,6 +52,10 @@ ifeq ($(BR2_INSTALL_OBJC),y)
 TARGET_LANGUAGES:=$(TARGET_LANGUAGES),objc
 endif
 
+ifeq ($(BR2_INSTALL_FORTRAN),y)
+TARGET_LANGUAGES:=$(TARGET_LANGUAGES),fortran
+endif
+
 #############################################################
 #
 # build the first pass gcc compiler
@@ -92,9 +96,12 @@ endif
 endif
 	touch $(GCC_DIR)/.patched
 
+ifeq ("$(GCC_VERSION)","4.2.0")
+EXTRA_GCC_CONFIG_OPTIONS+= --disable-libmudflap
+endif
 # The --without-headers option stopped working with gcc 3.0 and has never been
-# # fixed, so we need to actually have working C library header files prior to
-# # the step or libgcc will not build...
+# fixed, so we need to actually have working C library header files prior to
+# the step or libgcc will not build...
 
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	mkdir -p $(GCC_BUILD_DIR1)
@@ -311,6 +318,9 @@ endif
 ifeq ($(findstring 4.1.,$(GCC_VERSION)),4.1.)
 GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
 endif
+ifeq ($(findstring 4.2.,$(GCC_VERSION)),4.2.)
+GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
+endif
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$(TARGET_PATH) \
@@ -341,8 +351,8 @@ endif
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Work around problem of missing syslimits.h
-	@if [ ! -f $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/syslimits.h ] ; then \
-		echo "warning: working around missing syslimits.h" ; \
+	if [ ! -f $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/syslimits.h ] ; then \
+		@echo "warning: working around missing syslimits.h" ; \
 		cp -f $(STAGING_DIR)/$(GCC_LIB_SUBDIR)/include/syslimits.h \
 			$(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/ ; \
 	fi
