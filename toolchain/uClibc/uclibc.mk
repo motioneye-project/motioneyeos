@@ -37,32 +37,51 @@ UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
 		-e 's/mipsel.*/mips/' \
 		-e 's/cris.*/cris/' \
 )
-
+# just handle the ones that can be big or little
+UCLIBC_TARGET_ENDIAN:=$(shell echo $(ARCH) | sed \
+		-e 's/armeb/BIG/' \
+		-e 's/arm/LITTLE/' \
+		-e 's/mipsel/LITTLE/' \
+		-e 's/mips/BIG/' \
+)
+ifneq ($(UCLIBC_TARGET_ENDIAN),LITTLE)
+ifneq ($(UCLIBC_TARGET_ENDIAN),BIG)
+UCLIBC_TARGET_ENDIAN:=
+endif
+endif
+ifeq ($(UCLIBC_TARGET_ENDIAN),LITTLE)
+UCLIBC_NOT_TARGET_ENDIAN:=BIG
+else
+UCLIBC_NOT_TARGET_ENDIAN:=LITTLE
+endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
+uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	bzcat $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ \*.patch
 	touch $(UCLIBC_DIR)/.unpacked
 
+uclibc-configured: $(UCLIBC_DIR)/.configured
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 	cp $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
-	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' $(UCLIBC_DIR)/.config
-	$(SED) 's,^.*TARGET_$(UCLIBC_TARGET_ARCH).*,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
+	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' \
+		-e 's,# TARGET_$(UCLIBC_TARGET_ARCH) is not set,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
+		-e 's,^TARGET_ARCH="none",TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' \
+		-e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_HEADERS_DIR)\",g' \
+		-e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
+		-e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
+		-e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
-	$(SED) 's,^TARGET_ARCH.*,TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' $(UCLIBC_DIR)/.config
-	$(SED) 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_HEADERS_DIR)\",g' \
+ifneq ($(UCLIBC_TARGET_ENDIAN),)
+	$(SED) '/^# ARCH_$(UCLIBC_TARGET_ENDIAN)_ENDIAN /s,# ,,;s, is not set,=y,g' \
+		-e '/^# ARCH_$(UCLIBC_NOT_TARGET_ENDIAN)_ENDIAN /s,# ,,;s, is not set,=n,' \
 		$(UCLIBC_DIR)/.config
-	$(SED) 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
-		$(UCLIBC_DIR)/.config
-	$(SED) 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
-		$(UCLIBC_DIR)/.config
-	$(SED) 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
-		$(UCLIBC_DIR)/.config
+endif
 ifeq ($(BR2_LARGEFILE),y)
 	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=y,g' $(UCLIBC_DIR)/.config
 else
@@ -72,9 +91,18 @@ endif
 ifeq ($(BR2_SOFT_FLOAT),y)
 	$(SED) 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
 endif
+ifneq ($(BR2_PTHREADS_NONE),y)
+	$(SED) 's,# UCLIBC_HAS_THREADS is not set,UCLIBC_HAS_THREADS=y,g' $(UCLIBC_DIR)/.config
+	$(SED) 's,# PTHREADS_DEBUG_SUPPORT is not set,PTHREADS_DEBUG_SUPPORT=y,g' $(UCLIBC_DIR)/.config
+endif
+ifeq ($(BR2_PTHREADS),y)
+	$(SED) 's,# LINUXTHREADS is not set,LINUXTHREADS=y,g' $(UCLIBC_DIR)/.config
+endif
+ifeq ($(BR2_PTHREADS_OLD),y)
+	$(SED) 's,# LINUXTHREADS_OLD is not set,LINUXTHREADS_OLD=y,g' $(UCLIBC_DIR)/.config
+endif
 ifeq ($(BR2_PTHREADS_NATIVE),y)
 	$(SED) 's,# UCLIBC_HAS_THREADS_NATIVE is not set,UCLIBC_HAS_THREADS_NATIVE=y,g' $(UCLIBC_DIR)/.config
-	$(SED) 's,# UCLIBC_HAS_THREADS is not set,UCLIBC_HAS_THREADS=y,g' $(UCLIBC_DIR)/.config
 endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
