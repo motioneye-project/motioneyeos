@@ -17,7 +17,6 @@ diffutils-source: $(DL_DIR)/$(DIFFUTILS_SOURCE)
 
 $(DIFFUTILS_DIR)/.unpacked: $(DL_DIR)/$(DIFFUTILS_SOURCE)
 	$(DIFFUTILS_CAT) $(DL_DIR)/$(DIFFUTILS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(DIFFUTILS_DIR) package/diffutils/ diffutils*.patch
 	touch $(DIFFUTILS_DIR)/.unpacked
 
 $(DIFFUTILS_DIR)/.configured: $(DIFFUTILS_DIR)/.unpacked
