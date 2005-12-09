@@ -3,9 +3,9 @@
 # module-init-tools
 #
 #############################################################
-MODULE_INIT_TOOLS_SOURCE=module-init-tools-3.1.tar.bz2
+MODULE_INIT_TOOLS_SOURCE=module-init-tools-3.2.2.tar.bz2
 MODULE_INIT_TOOLS_SITE=ftp://ftp.kernel.org/pub/linux/utils/kernel/module-init-tools/
-MODULE_INIT_TOOLS_DIR=$(BUILD_DIR)/module-init-tools-3.1
+MODULE_INIT_TOOLS_DIR=$(BUILD_DIR)/module-init-tools-3.2.2
 MODULE_INIT_TOOLS_BINARY=modprobe
 MODULE_INIT_TOOLS_TARGET_BINARY=$(TARGET_DIR)/sbin/$(MODULE_INIT_TOOLS_BINARY)
 
