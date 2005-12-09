@@ -1,4 +1,3 @@
-diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/fmtmsg/Makefile ltp-full-20050707/testcases/kernel/syscalls/fmtmsg/Makefile
 --- ltp-full-20050707-dist/testcases/kernel/syscalls/fmtmsg/Makefile	2005-07-11 16:28:18.000000000 -0600
 +++ ltp-full-20050707/testcases/kernel/syscalls/fmtmsg/Makefile	2005-08-02 19:56:11.000000000 -0600
 @@ -26,7 +26,7 @@
@@ -10,7 +9,6 @@ diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/fmtmsg/Makefile ltp-f
  
  all: $(TARGETS)
  
-diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/getcontext01/Makefile ltp-full-20050707/testcases/kernel/syscalls/getcontext01/Makefile
 --- ltp-full-20050707-dist/testcases/kernel/syscalls/getcontext01/Makefile	2005-05-26 14:38:47.000000000 -0600
 +++ ltp-full-20050707/testcases/kernel/syscalls/getcontext01/Makefile	2005-08-02 19:56:11.000000000 -0600
 @@ -24,7 +24,7 @@
@@ -22,7 +20,6 @@ diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/getcontext01/Makefile
  
  all: $(TARGETS)
  
-diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/profil/Makefile ltp-full-20050707/testcases/kernel/syscalls/profil/Makefile
 --- ltp-full-20050707-dist/testcases/kernel/syscalls/profil/Makefile	2005-07-11 16:28:53.000000000 -0600
 +++ ltp-full-20050707/testcases/kernel/syscalls/profil/Makefile	2005-08-02 19:56:11.000000000 -0600
 @@ -25,7 +25,7 @@
@@ -34,7 +31,6 @@ diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/profil/Makefile ltp-f
  
  all: $(TARGETS)
  
-diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/pselect/Makefile ltp-full-20050707/testcases/kernel/syscalls/pselect/Makefile
 --- ltp-full-20050707-dist/testcases/kernel/syscalls/pselect/Makefile	2005-05-26 09:35:58.000000000 -0600
 +++ ltp-full-20050707/testcases/kernel/syscalls/pselect/Makefile	2005-08-02 19:56:11.000000000 -0600
 @@ -24,7 +24,7 @@
@@ -46,7 +42,6 @@ diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/pselect/Makefile ltp-
  
  all: $(TARGETS)
  
-diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/swapon/swapon02.c ltp-full-20050707/testcases/kernel/syscalls/swapon/swapon02.c
 --- ltp-full-20050707-dist/testcases/kernel/syscalls/swapon/swapon02.c	2005-07-11 16:29:08.000000000 -0600
 +++ ltp-full-20050707/testcases/kernel/syscalls/swapon/swapon02.c	2005-08-02 19:56:38.000000000 -0600
 @@ -86,9 +86,7 @@
@@ -92,3 +87,145 @@ diff -urN ltp-full-20050707-dist/testcases/kernel/syscalls/swapon/swapon02.c ltp
  	
  	close (fd);	
  	return  rc;		
+--- ltp-full-20050804/testcases/kernel/syscalls/sysfs.orig/sysfs01.c	2005-12-08 18:26:07.000000000 -0700
++++ ltp-full-20050804/testcases/kernel/syscalls/sysfs/sysfs01.c	2005-12-08 18:28:26.000000000 -0700
+@@ -72,10 +72,6 @@
+ #include <unistd.h>
+ #include <syscall.h>
+ 
+-#ifndef _syscall2
+-#include <linux/unistd.h>
+-#endif
+-
+ static void setup();
+ static void cleanup();
+ 
+@@ -83,11 +79,7 @@
+ int TST_TOTAL = 1;	/* Total number of test cases. */
+ extern int Tst_count;	/* Test Case counter for tst_* routines */
+ 
+-#if defined(__ia64__)
+ #define sysfs(arg1, arg2) syscall(__NR_sysfs, arg1, arg2)
+-#else
+-_syscall2(long, sysfs, int, option, const char*, fsname);
+-#endif
+ 
+ int
+ main(int ac, char **av)
+--- ltp-full-20050804/testcases/kernel/syscalls/sysfs.orig/sysfs02.c	2005-08-04 14:33:06.000000000 -0600
++++ ltp-full-20050804/testcases/kernel/syscalls/sysfs/sysfs02.c	2005-12-08 18:31:00.000000000 -0700
+@@ -70,10 +70,6 @@
+ #include <unistd.h>
+ #include <syscall.h>
+ 
+-#ifndef _syscall2
+-#include <linux/unistd.h>
+-#endif
+-
+ static void setup();
+ static void cleanup();
+ 
+@@ -81,11 +77,7 @@
+ int TST_TOTAL = 1;	/* Total number of test cases. */
+ extern int Tst_count;	/* Test Case counter for tst_* routines */
+ 
+-#if defined(__ia64__)
+ #define sysfs(arg1, arg2, arg3) syscall(__NR_sysfs, arg1, arg2, arg3)
+-#else
+-_syscall3(long, sysfs, int, option, unsigned int, arg1, char*, buf);
+-#endif
+ 
+ int
+ main(int ac, char **av)
+--- ltp-full-20050804/testcases/kernel/syscalls/sysfs.orig/sysfs03.c	2005-08-04 14:33:06.000000000 -0600
++++ ltp-full-20050804/testcases/kernel/syscalls/sysfs/sysfs03.c	2005-12-08 18:31:27.000000000 -0700
+@@ -70,10 +70,6 @@
+ #include <unistd.h>
+ #include <syscall.h>
+ 
+-#ifndef _syscall2
+-#include <linux/unistd.h>
+-#endif
+-
+ static void setup();
+ static void cleanup();
+ 
+@@ -81,11 +77,7 @@
+ int TST_TOTAL = 1;	/* Total number of test cases. */
+ extern int Tst_count;	/* Test Case counter for tst_* routines */
+ 
+-#if defined(__ia64__)
+ #define sysfs(arg1) syscall(__NR_sysfs, arg1)
+-#else
+-_syscall1(long, sysfs, int, option);
+-#endif
+ 
+ int
+ main(int ac, char **av)
+--- ltp-full-20050804/testcases/kernel/syscalls/sysfs.orig/sysfs04.c	2005-08-04 14:33:06.000000000 -0600
++++ ltp-full-20050804/testcases/kernel/syscalls/sysfs/sysfs04.c	2005-12-08 18:31:37.000000000 -0700
+@@ -73,10 +73,6 @@
+ #include "test.h"
+ #include "usctest.h"
+ 
+-#ifndef _syscall2
+-#include <linux/unistd.h>
+-#endif
+-
+ #define INVALID_OPTION 100
+ static void setup();
+ static void cleanup();
+@@ -86,11 +82,7 @@
+ extern int Tst_count;		/* Test Case counter for tst_* routines */
+ static int exp_enos[] = {EINVAL, 0};
+ 
+-#if defined(__ia64__)
+ #define sysfs(arg1) syscall(__NR_sysfs, arg1)
+-#else
+-_syscall1(long, sysfs, int, option);
+-#endif
+ 
+ int
+ main(int ac, char **av)
+--- ltp-full-20050804/testcases/kernel/syscalls/sysfs.orig/sysfs05.c	2005-08-04 14:33:06.000000000 -0600
++++ ltp-full-20050804/testcases/kernel/syscalls/sysfs/sysfs05.c	2005-12-08 18:31:45.000000000 -0700
+@@ -74,18 +74,10 @@
+ #include "test.h"
+ #include "usctest.h"
+ 
+-#ifndef _syscall2
+-#include <linux/unistd.h>
+-#endif
+-
+ static void setup();
+ static void cleanup();
+ 
+-#if defined(__ia64__)
+ #define sysfs(arg1, arg2) syscall(__NR_sysfs, arg1, arg2)
+-#else
+-_syscall2(long, sysfs, int, option, const char*, fsname);
+-#endif
+ 
+ char *TCID = "sysfs05";		/* Test program identifier.    */
+ int TST_TOTAL = 3;		/* Total number of test cases. */
+--- ltp-full-20050804/testcases/kernel/syscalls/sysfs.orig/sysfs06.c	2005-08-04 14:33:06.000000000 -0600
++++ ltp-full-20050804/testcases/kernel/syscalls/sysfs/sysfs06.c	2005-12-08 18:31:56.000000000 -0700
+@@ -75,18 +75,10 @@
+ #include "test.h"
+ #include "usctest.h"
+ 
+-#ifndef _syscall2
+-#include <linux/unistd.h>
+-#endif
+-
+ static void setup();
+ static void cleanup();
+ 
+-#if defined(__ia64__)
+ #define sysfs(arg1, arg2, arg3) syscall(__NR_sysfs, arg1, arg2, arg3)
+-#else
+-_syscall3(long, sysfs, int, option, unsigned int, fs_index, char, bad_addr);
+-#endif
+ 
+ char *TCID = "sysfs06"; 	/* Test program identifier.    */
+ int TST_TOTAL = 3;		/* Total number of test cases. */
