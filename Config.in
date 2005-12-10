@@ -121,13 +121,13 @@ config BR2_SVN
 	string "Subversion (svn) checkout command"
 	default "svn co"
 
-config BR2_TAR_VERBOSITY
-	bool "Tar verbose"
-	default n
-
 config BR2_TAR_OPTIONS
 	string "Tar options"
-	default "--exclude='.svn'"
+	default ""
+	help
+	  Options to pass to tar when extracting the sources.
+	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal files
+	  and to be verbose.
 
 config BR2_DL_DIR
 	string "Download dir"
