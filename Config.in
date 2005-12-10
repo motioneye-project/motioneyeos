@@ -125,6 +125,10 @@ config BR2_TAR_VERBOSITY
 	bool "Tar verbose"
 	default n
 
+config BR2_TAR_OPTIONS
+	string "Tar options"
+	default "--exclude='.svn'"
+
 config BR2_DL_DIR
 	string "Download dir"
 	default "$(BASE_DIR)/dl"

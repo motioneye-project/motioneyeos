@@ -36,9 +36,11 @@ ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 endif
 
 ifeq ($(BR2_TAR_VERBOSITY),y)
-TAR_OPTIONS=-xvf
+TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xvf
+#"
 else
-TAR_OPTIONS=-xf
+TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xf
+#"
 endif
 
 ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
