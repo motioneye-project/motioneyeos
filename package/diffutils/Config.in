@@ -4,5 +4,5 @@ config BR2_PACKAGE_DIFFUTILS
 	bool"diffutils"
 	default n
 	help
-	  Add help text here.
+	  GNU diff. Compare files per line.
 
