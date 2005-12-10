@@ -4,8 +4,8 @@
 #
 #############################################################
 
-TAR_OPTS := $(strip $(BR2_TARGET_ROOTFS_TAR_OPTIONS))
-
+TAR_OPTS := $(strip $(subst ",, $(BR2_TARGET_ROOTFS_TAR_OPTIONS)))
+#"
 tarroot: host-fakeroot makedevs $(STAGING_DIR)/fakeroot.env
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
