@@ -1,0 +1,9 @@
+--- sysvinit/src/Makefile
++++ sysvinit/src/Makefile
+@@ -10,5 +10,3 @@
+ 
+-CC	= gcc
+-CFLAGS	= -Wall -O2 -fomit-frame-pointer -D_GNU_SOURCE
+-LDFLAGS	= -s
++CFLAGS	+= -Wall -D_GNU_SOURCE
+ STATIC	=
