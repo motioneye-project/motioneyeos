@@ -3,7 +3,7 @@
 # build GNU readline
 #
 #############################################################
-READLINE_VER:=5.0
+READLINE_VER:=5.1
 READLINE_SITE:=ftp://ftp.cwru.edu/pub/bash
 READLINE_SOURCE:=readline-$(READLINE_VER).tar.gz
 READLINE_DIR:=$(BUILD_DIR)/readline-$(READLINE_VER)
@@ -11,30 +11,26 @@ READLINE_CAT:=zcat
 READLINE_BINARY:=libhistory.a
 READLINE_TARGET_BINARY:=lib/$(READLINE_BINARY)
 
-
-
 $(DL_DIR)/$(READLINE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(READLINE_SITE)/$(READLINE_SOURCE)
 
 $(READLINE_DIR)/.unpacked: $(DL_DIR)/$(READLINE_SOURCE)
 	mkdir -p $(READLINE_DIR)
-	tar  -C $(BUILD_DIR) -zxvf $(DL_DIR)/$(READLINE_SOURCE)
-	# patch to fix old autoconf
-	patch -d $(READLINE_DIR) -p1 -u  < $(BASE_DIR)/package/readline/readline5.patch
+	tar -C $(BUILD_DIR) -zxf $(DL_DIR)/$(READLINE_SOURCE)
+	$(CONFIG_UPDATE) $(READLINE_DIR)
 	touch $(READLINE_DIR)/.unpacked
 
 $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
-	mkdir -p $(READLINE_DIR)
 	(cd $(READLINE_DIR); rm -rf config.cache; \
-		$(READLINE_DIR)/configure \
-                --target=$(GNU_TARGET_NAME) \
-                --host=$(GNU_TARGET_NAME) \
-                --build=$(GNU_HOST_NAME)  \
-                --prefix=$(STAGING_DIR)  \
-		--disable-shared \
+		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=$(STAGING_DIR) \
 	);
 	touch $(READLINE_DIR)/.configured
-
 
 $(READLINE_DIR)/$(READLINE_BINARY): $(READLINE_DIR)/.configured
 	$(MAKE)  -C $(READLINE_DIR)
