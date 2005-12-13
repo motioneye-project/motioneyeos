@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBUSB
+	bool "libusb"
+	default n
+	help
+	  Userspace library for accessing USB devices
+
+	  http://libusb.sourceforge.net/
