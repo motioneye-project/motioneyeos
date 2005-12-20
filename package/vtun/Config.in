@@ -1,6 +1,8 @@
 config BR2_PACKAGE_VTUN
 	bool "vtun"
 	default n
+	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_OPENSSL
 	help
 	  Tool for easily creating Virtual Tunnels over TCP/IP networks 
 	  with traffic shaping, compression, and encryption.
