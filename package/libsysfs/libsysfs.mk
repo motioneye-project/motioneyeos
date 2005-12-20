@@ -63,6 +63,10 @@ libsysfs: uclibc $(TARGET_DIR)/usr/lib/libsysfs.so
 
 libsysfs-clean:
 	-$(MAKE) -C $(LIBSYSFS_DIR) clean
+
+libsysfs-dirclean:
+	rm -rf $(LIBSYSFS_DIR)
+
 #############################################################
 #
 # Toplevel Makefile options
