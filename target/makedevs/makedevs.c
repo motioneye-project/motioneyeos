@@ -424,12 +424,12 @@ int main(int argc, char **argv)
 		if (name[0] == '#') {
 			continue;
 		}
-		if (group) {
+		if (*group) {
 			gid = get_ug_id(group, my_getgrnam);
 		} else {
 			gid = getgid();
 		}
-		if (user) {
+		if (*user) {
 			uid = get_ug_id(user, my_getpwnam);
 		} else {
 			uid = getuid();
