@@ -96,9 +96,6 @@ endif
 endif
 	touch $(GCC_DIR)/.patched
 
-ifeq ("$(GCC_VERSION)","4.2.0")
-EXTRA_GCC_CONFIG_OPTIONS+= --disable-libmudflap
-endif
 # The --without-headers option stopped working with gcc 3.0 and has never been
 # fixed, so we need to actually have working C library header files prior to
 # the step or libgcc will not build...
@@ -106,6 +103,7 @@ endif
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	mkdir -p $(GCC_BUILD_DIR1)
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) \
+		CC="$(HOSTCC)" \
 		$(GCC_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
 		--build=$(GNU_HOST_NAME) \
@@ -162,6 +160,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/lib/libc.a
 	# Important!  Required for limits.h to be fixed.
 	ln -snf ../include $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/sys-include
 	(cd $(GCC_BUILD_DIR2); PATH=$(TARGET_PATH) \
+		CC="$(HOSTCC)" \
 		$(GCC_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
 		--build=$(GNU_HOST_NAME) \
