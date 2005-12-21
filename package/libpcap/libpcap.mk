@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBPCAP_VER:=0.9.3
+LIBPCAP_VER:=0.9.4
 LIBPCAP_DIR:=$(BUILD_DIR)/libpcap-$(LIBPCAP_VER)
 LIBPCAP_SITE:=http://www.tcpdump.org/release
 LIBPCAP_SOURCE:=libpcap-$(LIBPCAP_VER).tar.gz
@@ -41,14 +41,14 @@ $(LIBPCAP_DIR)/.configured: $(LIBPCAP_DIR)/.unpacked
 	( \
 		cd $(LIBPCAP_DIR) ; \
 		ac_cv_linux_vers=$(BR2_DEFAULT_KERNEL_HEADERS) \
-		BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
+		BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--with-build-cc=$(HOSTCC) \
+		--with-build-cc="$(HOSTCC)" \
 		--disable-yydebug \
 		--prefix=/usr \
 		--with-pcap=linux \
@@ -57,6 +57,7 @@ $(LIBPCAP_DIR)/.configured: $(LIBPCAP_DIR)/.unpacked
 
 $(LIBPCAP_DIR)/libpcap.a: $(LIBPCAP_DIR)/.configured
 	$(MAKE) \
+		CC="$(TARGET_CC)" \
 		AR="$(TARGET_CROSS)ar" \
 		-C $(LIBPCAP_DIR)
 

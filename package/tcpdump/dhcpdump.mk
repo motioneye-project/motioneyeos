@@ -24,14 +24,14 @@ $(DHCPDUMP_DIR)/.unpacked: $(DL_DIR)/$(DHCPDUMP_SOURCE)
 $(DHCPDUMP_DIR)/.configured: $(DHCPDUMP_DIR)/.unpacked
 	( \
 		cd $(DHCPDUMP_DIR) ; \
-		BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) \
+		BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--with-build-cc=$(HOSTCC) \
+		--with-build-cc="$(HOSTCC)" \
 		--prefix=$(STAGING_DIR) \
 		--libdir=$(STAGING_DIR)/lib \
 		--includedir=$(STAGING_DIR)/include \
@@ -39,7 +39,7 @@ $(DHCPDUMP_DIR)/.configured: $(DHCPDUMP_DIR)/.unpacked
 	touch $(DHCPDUMP_DIR)/.configured
 
 $(DHCPDUMP_DIR)/dhcpdump: $(DHCPDUMP_DIR)/.configured
-	$(MAKE) -C $(DHCPDUMP_DIR)
+	$(MAKE) CC="$(TARGET_CC)" -C $(DHCPDUMP_DIR)
 
 $(TARGET_DIR)/sbin/dhcpdump: $(DHCPDUMP_DIR)/dhcpdump
 	cp -af $< $@
