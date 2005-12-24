@@ -3,7 +3,7 @@
 # dropbear
 #
 #############################################################
-DROPBEAR_VER:=0.46
+DROPBEAR_VER:=0.47
 DROPBEAR_SOURCE:=dropbear-$(DROPBEAR_VER).tar.bz2
 DROPBEAR_SITE:=http://matt.ucc.asn.au/dropbear/releases/
 DROPBEAR_DIR:=$(BUILD_DIR)/dropbear-$(DROPBEAR_VER)
