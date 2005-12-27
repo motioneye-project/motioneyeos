@@ -65,7 +65,7 @@ HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/cris.*/cris/' \
 	-e 's/i[3-9]86/i386/' \
 	)
-GNU_HOST_NAME:=$(HOST_ARCH)-pc-linux-gnu
+GNU_HOST_NAME:=$(HOST_ARCH)-$(subst ",,$(BR2_GNU_BUILD_SUFFIX))
 TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		AR=$(TARGET_CROSS)ar \
 		AS=$(TARGET_CROSS)as \
