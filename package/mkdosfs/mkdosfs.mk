@@ -3,16 +3,17 @@
 # mkdosfs
 #
 #############################################################
-MKDOSFS_SOURCE=dosfstools-2.8.src.tar.gz
-MKDOSFS_SITE=http://ftp.uni-erlangen.de/pub/Linux/LOCAL/dosfstools
-MKDOSFS_DIR=$(BUILD_DIR)/dosfstools-2.8
+MKDOSFS_VER:=2.11
+MKDOSFS_SOURCE:=dosfstools-$(MKDOSFS_VER).src.tar.gz
+MKDOSFS_SITE:=http://ftp.uni-erlangen.de/pub/Linux/LOCAL/dosfstools
+MKDOSFS_DIR:=$(BUILD_DIR)/dosfstools-$(MKDOSFS_VER)
 MKDOSFS_CAT:=zcat
 MKDOSFS_BINARY:=mkdosfs/mkdosfs
 MKDOSFS_TARGET_BINARY:=sbin/mkdosfs
+
+MKDOSFS_CFLAGS=$(TARGET_CFLAGS)
 ifeq ($(BR2_LARGEFILE),y)
-MKDOSFS_CFLAGS="-Os -g -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64"
-else
-MKDOSFS_CFLAGS="-Os -g"
+MKDOSFS_CFLAGS+= -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 
 $(DL_DIR)/$(MKDOSFS_SOURCE):
@@ -25,8 +26,8 @@ $(MKDOSFS_DIR)/.unpacked: $(DL_DIR)/$(MKDOSFS_SOURCE)
 	touch $(MKDOSFS_DIR)/.unpacked
 
 $(MKDOSFS_DIR)/$(MKDOSFS_BINARY): $(MKDOSFS_DIR)/.unpacked
-	$(MAKE) CFLAGS=$(MKDOSFS_CFLAGS) CC=$(TARGET_CC) -C $(MKDOSFS_DIR);
-	$(STRIP) $(MKDOSFS_DIR)/mkdosfs/mkdosfs;
+	$(MAKE) CFLAGS="$(MKDOSFS_CFLAGS)" CC="$(TARGET_CC)" -C $(MKDOSFS_DIR);
+	$(STRIP) $(MKDOSFS_DIR)/mkdosfs/mkdosfs
 	touch -c $(MKDOSFS_DIR)/mkdosfs/mkdosfs
 
 $(TARGET_DIR)/$(MKDOSFS_TARGET_BINARY): $(MKDOSFS_DIR)/$(MKDOSFS_BINARY)
