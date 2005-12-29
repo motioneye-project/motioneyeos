@@ -3,7 +3,7 @@
 # util-linux
 #
 #############################################################
-UTIL-LINUX_VER:=2.12q
+UTIL-LINUX_VER:=2.12r
 UTIL-LINUX_SOURCE:=util-linux-$(UTIL-LINUX_VER).tar.bz2
 UTIL-LINUX_SITE:=http://www.kernel.org/pub/linux/utils/util-linux
 UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-$(UTIL-LINUX_VER)
@@ -14,10 +14,7 @@ UTIL-LINUX_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/mcookie
 $(DL_DIR)/$(UTIL-LINUX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UTIL-LINUX_SITE)/$(UTIL-LINUX_SOURCE)
 
-$(DL_DIR)/$(UTIL-LINUX_PATCH):
-	$(WGET) -P $(DL_DIR) $(UTIL-LINUX_SITE)/$(UTIL-LINUX_PATCH)
-
-$(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE) $(DL_DIR)/$(UTIL-LINUX_PATCH)
+$(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(UTIL-LINUX_DIR) package/util-linux/ util-linux\*.patch
 ifneq ($(BR2_LARGEFILE),y)
