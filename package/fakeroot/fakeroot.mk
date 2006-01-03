@@ -3,7 +3,7 @@
 # fakeroot
 #
 #############################################################
-FAKEROOT_VERSION:=1.2.10
+FAKEROOT_VERSION:=1.2.13
 FAKEROOT_SOURCE:=fakeroot_$(FAKEROOT_VERSION).tar.gz
 FAKEROOT_SITE:=http://ftp.debian.org/debian/pool/main/f/fakeroot
 FAKEROOT_CAT:=zcat
@@ -30,6 +30,7 @@ $(FAKEROOT_DIR1)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
 
 $(FAKEROOT_DIR1)/.configured: $(FAKEROOT_DIR1)/.unpacked
 	(cd $(FAKEROOT_DIR1); rm -rf config.cache; \
+		CC="$(HOSTCC)" \
 		./configure \
 		--prefix=/usr \
 	);
