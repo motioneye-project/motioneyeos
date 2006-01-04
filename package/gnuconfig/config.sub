@@ -3,7 +3,7 @@
 #   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
 #   2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 
-timestamp='2005-11-13'
+timestamp='2006-01-02'
 
 # This file is (in principle) common to ALL GNU software.
 # The presence of a machine in this file suggests that SOME GNU software
@@ -119,8 +119,9 @@ esac
 # Here we must recognize all the valid KERNEL-OS combinations.
 maybe_os=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\2/'`
 case $maybe_os in
-  nto-qnx* | linux-gnu* | linux-dietlibc | linux-uclibc* | uclinux-uclibc* | uclinux-gnu* | \
-  kfreebsd*-gnu* | knetbsd*-gnu* | netbsd*-gnu* | storm-chaos* | os2-emx* | rtmk-nova*)
+  nto-qnx* | linux-gnu* | linux-dietlibc | linux-newlib* | linux-uclibc* | \
+  uclinux-uclibc* | uclinux-gnu* | kfreebsd*-gnu* | knetbsd*-gnu* | netbsd*-gnu* | \
+  storm-chaos* | os2-emx* | rtmk-nova*)
     os=-$maybe_os
     basic_machine=`echo $1 | sed 's/^\(.*\)-\([^-]*-[^-]*\)$/\1/'`
     ;;
@@ -247,7 +248,7 @@ case $basic_machine in
 	| h8300 | h8500 | hppa | hppa1.[01] | hppa2.0 | hppa2.0[nw] | hppa64 \
 	| i370 | i860 | i960 | ia64 \
 	| ip2k | iq2000 \
-	| m32r | m32rle | m68000 | m68k | m88k | maxq | mcore \
+	| m32r | m32rle | m68000 | m68k | m88k | maxq | mb | microblaze | mcore \
 	| mips | mipsbe | mipseb | mipsel | mipsle \
 	| mips16 \
 	| mips64 | mips64el \
@@ -265,7 +266,7 @@ case $basic_machine in
 	| mipsisa64sr71k | mipsisa64sr71kel \
 	| mipstx39 | mipstx39el \
 	| mn10200 | mn10300 \
-	| ms1 \
+	| mt \
 	| msp430 \
 	| ns16k | ns32k \
 	| or32 \
@@ -293,6 +294,13 @@ case $basic_machine in
 		os=-none
 		;;
 	m88110 | m680[12346]0 | m683?2 | m68360 | m5200 | v70 | w65 | z8k)
+		;;
+	ms1)
+		basic_machine=mt-unknown
+		;;
+	nios2 | nios2-* | nios2 | nios2-*)
+		basic_machine=nios2-altera
+		os=-none
 		;;
 
 	# We use `pc' rather than `unknown'
@@ -344,7 +352,7 @@ case $basic_machine in
 	| mipsisa64sr71k-* | mipsisa64sr71kel-* \
 	| mipstx39-* | mipstx39el-* \
 	| mmix-* \
-	| ms1-* \
+	| mt-* \
 	| msp430-* \
 	| none-* | np1-* | ns16k-* | ns32k-* \
 	| orion-* \
@@ -722,6 +730,9 @@ case $basic_machine in
 		basic_machine=i386-pc
 		os=-msdos
 		;;
+	ms1-*)
+		basic_machine=`echo $basic_machine | sed -e 's/ms1-/mt-/'`
+		;;
 	mvs)
 		basic_machine=i370-ibm
 		os=-mvs
@@ -829,6 +840,12 @@ case $basic_machine in
 	pc532 | pc532-*)
 		basic_machine=ns32k-pc532
 		;;
+	pc98)
+		basic_machine=i386-pc
+		;;
+	pc98-*)
+		basic_machine=i386-`echo $basic_machine | sed 's/^[^-]*-//'`
+		;;
 	pentium | p5 | k5 | k6 | nexgen | viac3)
 		basic_machine=i586-pc
 		;;
@@ -884,6 +901,10 @@ case $basic_machine in
 	pw32)
 		basic_machine=i586-unknown
 		os=-pw32
+		;;
+	rdos)
+		basic_machine=i386-pc
+		os=-rdos
 		;;
 	rom68k)
 		basic_machine=m68k-rom68k
@@ -1200,21 +1221,23 @@ case $os in
 	      | -aos* \
 	      | -nindy* | -vxsim* | -vxworks* | -ebmon* | -hms* | -mvs* \
 	      | -clix* | -riscos* | -uniplus* | -iris* | -rtu* | -xenix* \
-	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* | -openbsd* \
+	      | -hiux* | -386bsd* | -knetbsd* | -mirbsd* | -netbsd* \
+	      | -openbsd* | -solidbsd* \
 	      | -ekkobsd* | -kfreebsd* | -freebsd* | -riscix* | -lynxos* \
 	      | -bosx* | -nextstep* | -cxux* | -aout* | -elf* | -oabi* \
 	      | -ptx* | -coff* | -ecoff* | -winnt* | -domain* | -vsta* \
 	      | -udi* | -eabi* | -lites* | -ieee* | -go32* | -aux* \
 	      | -chorusos* | -chorusrdb* \
 	      | -cygwin* | -pe* | -psos* | -moss* | -proelf* | -rtems* \
-	      | -mingw32* | -linux-gnu* | -linux-uclibc* | -uxpv* | -beos* | -mpeix* | -udk* \
+	      | -mingw32* | -linux-gnu* | -linux-newlib* | -linux-uclibc* \
+	      | -uxpv* | -beos* | -mpeix* | -udk* \
 	      | -interix* | -uwin* | -mks* | -rhapsody* | -darwin* | -opened* \
 	      | -openstep* | -oskit* | -conix* | -pw32* | -nonstopux* \
 	      | -storm-chaos* | -tops10* | -tenex* | -tops20* | -its* \
 	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
 	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
 	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
-	      | -skyos* | -haiku* | -irx*)
+	      | -skyos* | -haiku* | -rdos* | -irx*)
 	# Remember, each alternative MUST END IN *, to match a version number.
 		;;
 	-qnx*)

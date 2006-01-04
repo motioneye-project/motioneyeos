@@ -1,3 +1,58 @@
+2006-01-02  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (*:SolidBSD:*:*): New.
+	* config.sub (-solidbsd*): New.
+	* testsuite/config-guess.data: Add test case.
+	* testsuite/config-sub.data: Ditto.
+
+2005-12-23  Ben Elliston  <bje@gnu.org>
+
+	From Takahashi Yoshihiro <nyan@jp.FreeBSD.org>:
+	* config.guess (pc98:FreeBSD:*:*) Add special case.
+	* config.sub (pc98, pc98-*): New.
+	* testsuite/config-guess.data: Add test case.
+	* testsuite/config-sub.data: Ditto.
+
+2005-12-22  Ben Elliston  <bje@gnu.org>
+
+	From John Williams <jwilliams@itee.uq.edu.au>:
+	* config.sub (mb, microblaze): New basic_machine.
+	* testsuite/config-sub.data: New tests.
+
+2005-12-13  Ralf Wildenhues  <Ralf.Wildenhues@gmx.de>
+
+	* config.guess (mips:Linux:*:*, mips64:Linux:*:*, i*86:Linux:*:*):
+	Fix quoting of eval command line, allow for preprocessor to insert
+	white space between C tokens.
+	(i*86:Linux:*:*): Handle Portland Group pgcc like Intel icc; it
+	doesn't define __ELF__ either.
+
+2005-12-11  Ben Elliston  <bje@gnu.org>
+
+	From Shaun Jackman <sjackman@gmail.com>:
+	* config.sub: Add the KERNEL-OS combination linux-newlib*.
+	* testsuite/config-sub.data: Add a test for i386-linux-newlib.
+
+2005-12-11  Ben Elliston  <bje@gnu.org>
+
+	Reported by Leif Ekblad <leif@rdos.net>:
+	* config.guess (i*86:rdos:*:*): New.
+	* config.sub: Handle rdos.
+	* testsuite/config-guess.data: Add test case for RDOS.
+	* testsuite/config-sub.data: Likewise.
+
+2005-12-09  Ben Elliston  <bje@gnu.org>
+
+	Reported by Jan-Benedict Glaw <jbglaw@lug-owl.de>:
+	* config.guess (vax:Linux:*:): Detect as vax-dec-linux-gnu.
+	* testsuite/config-guess.data: Add test.
+
+2005-12-09  Nathan Sidwell  <nathan@codesourcery.com>
+
+	* config.sub (mt): Rename from ms1.
+	(ms1): Alias it to mt for backward compatibility.
+	* testsuite/config-sub.data: Update testsuite.
+
 2005-11-13  Kean Johnston  <jkj@sco.com>
 
 	* config.sub: Allow -sco6 and -sco5v6 to be aliases for SCO

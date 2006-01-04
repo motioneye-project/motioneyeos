@@ -14,3 +14,7 @@ or32	ignored			Linux		ignored	or32-unknown-linux-gnu
 x86_64	1.5.18(0.132/4/2)	CYGWIN_NT-5.2	ignored	x86_64-unknown-cygwin
 x86	5.0			Interix		ignored	i586-pc-interix5
 ppc64	2.6.9-22		Linux		ignored	powerpc64-unknown-linux-gnu
+vax	2.6.15			Linux		ignored	vax-dec-linux-gnu
+i586	ignored			rdos		ignored	i586-pc-rdos
+pc98	7.0			FreeBSD		ignored	i386-unknown-freebsd7.0
+i586	1.0			SolidBSD	ignored	i586-unknown-solidbsd1.0

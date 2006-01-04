@@ -1,11 +1,11 @@
 Index: config.sub
 ===================================================================
 RCS file: /cvsroot/config/config/config.sub,v
-retrieving revision 1.330
-diff -u -p -r1.330 config.sub
---- config.sub
-+++ config.sub
-@@ -234,7 +234,7 @@ case $basic_machine in
+retrieving revision 1.336
+diff -u -p -r1.336 config.sub
+--- config.sub	22 Dec 2005 23:50:21 -0000	1.336
++++ config.sub	30 Dec 2005 23:38:29 -0000
+@@ -243,7 +243,7 @@ case $basic_machine in
  	| arc | arm | arm[bl]e | arme[lb] | armv[2345] | armv[345][lb] | avr \
  	| bfin \
  	| c4x | clipper \
@@ -14,7 +14,7 @@ diff -u -p -r1.330 config.sub
  	| fr30 | frv \
  	| h8300 | h8500 | hppa | hppa1.[01] | hppa2.0 | hppa2.0[nw] | hppa64 \
  	| i370 | i860 | i960 | ia64 \
-@@ -678,6 +678,24 @@ case $basic_machine in
+@@ -690,6 +690,24 @@ case $basic_machine in
  		basic_machine=m68k-atari
  		os=-mint
  		;;
@@ -39,12 +39,12 @@ diff -u -p -r1.330 config.sub
  	mips3*-*)
  		basic_machine=`echo $basic_machine | sed -e 's/mips3/mips64/'`
  		;;
-@@ -1188,7 +1206,7 @@ case $os in
+@@ -1214,7 +1232,7 @@ case $os in
  	      | -os2* | -vos* | -palmos* | -uclinux* | -nucleus* \
  	      | -morphos* | -superux* | -rtmk* | -rtmk-nova* | -windiss* \
  	      | -powermax* | -dnix* | -nx6 | -nx7 | -sei* | -dragonfly* \
--	      | -skyos* | -haiku*)
-+	      | -skyos* | -haiku* | -irx*)
+-	      | -skyos* | -haiku* | -rdos*)
++	      | -skyos* | -haiku* | -rdos* | -irx*)
  	# Remember, each alternative MUST END IN *, to match a version number.
  		;;
  	-qnx*)

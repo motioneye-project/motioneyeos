@@ -11,6 +11,7 @@ i386-linux			i386-pc-linux-gnu
 i386-netbsd			i386-pc-netbsd
 i386-openbsd			i386-pc-openbsd
 i386-freebsd			i386-pc-freebsd
+pc98-freebsd			i386-pc-freebsd
 i386-elf			i386-pc-elf
 i486-elf			i486-pc-elf
 i586-elf			i586-pc-elf
@@ -39,8 +40,8 @@ arm-unknown-riscos		arm-unknown-riscos
 i586-skyos			i586-pc-skyos
 m32c				m32c-unknown-none
 m32c-elf			m32c-unknown-elf
-ms1				ms1-unknown-none
-ms1-elf				ms1-unknown-elf
+ms1				mt-unknown-none
+ms1-elf				mt-unknown-elf
 mips64vr5900-elf		mips64vr5900-unknown-elf
 mips64vr5900el-elf		mips64vr5900el-unknown-elf
 mips64vr5900			mips64vr5900-unknown-elf
@@ -72,3 +73,11 @@ sparc-haiku			sparc-unknown-haiku
 powerpc-haiku			powerpc-unknown-haiku
 i386-pc-sco6			i386-pc-sco5v6
 i386-pc-sco5v6			i386-pc-sco5v6
+mt				mt-unknown-none
+mt-elf				mt-unknown-elf
+rdos				i386-pc-rdos
+i586-rdos			i586-pc-rdos
+i386-linux-newlib		i386-pc-linux-newlib
+mb-elf				mb-unknown-elf
+microblaze-elf			microblaze-unknown-elf
+i386-solidbsd			i386-pc-solidbsd
