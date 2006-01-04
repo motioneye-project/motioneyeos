@@ -9,36 +9,46 @@ choice
 	  Select the version of binutils you wish to use.
 
 	config BR2_BINUTILS_VERSION_2_14_90_0_8
+		depends !BR2_nios2
 		bool "binutils 2.14.90.0.8"
 
 	config BR2_BINUTILS_VERSION_2_15
 		bool "binutils 2.15"
 
 	config BR2_BINUTILS_VERSION_2_15_94_0_2_2
+		depends !BR2_nios2
 		bool "binutils 2.15.94.0.2.2"
 
 	config BR2_BINUTILS_VERSION_2_15_97
+		depends !BR2_nios2
 		bool "binutils 2.15.97"
 
 	config BR2_BINUTILS_VERSION_2_16
+		depends !BR2_nios2
 		bool "binutils 2.16"
 
 	config BR2_BINUTILS_VERSION_2_16_1
+		depends !BR2_nios2
 		bool "binutils 2.16.1"
 
 	config BR2_BINUTILS_VERSION_2_16_90_0_3
+		depends !BR2_nios2
 		bool "binutils 2.16.90.0.3"
 
 	config BR2_BINUTILS_VERSION_2_16_91_0_2
+		depends !BR2_nios2
 		bool "binutils 2.16.91.0.2"
 
 	config BR2_BINUTILS_VERSION_2_16_91_0_3
+		depends !BR2_nios2
 		bool "binutils 2.16.91.0.3"
 
 	config BR2_BINUTILS_VERSION_2_16_91_0_4
+		depends !BR2_nios2
 		bool "binutils 2.16.91.0.4"
 
 	config BR2_BINUTILS_VERSION_2_16_91_0_5
+		depends !BR2_nios2
 		bool "binutils 2.16.91.0.5"
 
 endchoice

@@ -36,6 +36,7 @@ UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
 		-e 's/mips.*/mips/' \
 		-e 's/mipsel.*/mips/' \
 		-e 's/cris.*/cris/' \
+		-e 's/nios2.*/nios2/' \
 )
 # just handle the ones that can be big or little
 UCLIBC_TARGET_ENDIAN:=$(shell echo $(ARCH) | sed \

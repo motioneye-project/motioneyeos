@@ -28,6 +28,8 @@ config BR2_mips
 	bool "mips"
 config BR2_mipsel
 	bool "mipsel"
+config BR2_nios2
+	bool "nios2"
 config BR2_powerpc
 	bool "powerpc"
 config BR2_sh
@@ -93,6 +95,7 @@ config BR2_ARCH
 	default "m68k"		if BR2_m68k
 	default "mips"		if BR2_mips
 	default "mipsel"	if BR2_mipsel
+	default "nios2"		if BR2_nios2
 	default "powerpc"	if BR2_powerpc
 	default "sh2a_nofpueb"	if BR2_sh2a_nofpueb
 	default "sh2eb"		if BR2_sh2eb
@@ -106,7 +109,7 @@ config BR2_ARCH
 config BR2_ENDIAN
 	string
 	default "LITTLE" if BR2_arm || BR2_cris || BR2_i386 || BR2_mipsel || \
-	                    BR2_sh3 || BR2_sh4 || BR2_x86_64
+	                    BR2_sh3 || BR2_sh4 || BR2_x86_64 || BR2_nios2
 	default "BIG"    if BR2_alpha || BR2_armeb || BR2_m68k || BR2_mips || \
 	                    BR2_powerpc || BR2_sh2a_nofpueb || BR2_sh2eb || \
 	                    BR2_sh3eb || BR2_sh4eb || BR2_sparc
@@ -204,4 +207,3 @@ source "toolchain/Config.in"
 source "package/Config.in"
 
 source "target/Config.in"
-

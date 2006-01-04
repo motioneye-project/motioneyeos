@@ -9,9 +9,11 @@ choice
 	  Select the version of gcc you wish to use.
 
 	config BR2_GCC_VERSION_3_3_5
+		depends !BR2_nios2
 		bool "gcc 3.3.5"
 
 	config BR2_GCC_VERSION_3_3_6
+		depends !BR2_nios2
 		bool "gcc 3.3.6"
 
 	config BR2_GCC_VERSION_3_4_2
@@ -21,24 +23,31 @@ choice
 		bool "gcc 3.4.3"
 
 	config BR2_GCC_VERSION_3_4_4
+		depends !BR2_nios2
 		bool "gcc 3.4.4"
 
 	config BR2_GCC_VERSION_3_4_5
+		depends !BR2_nios2
 		bool "gcc 3.4.5"
 
 	config BR2_GCC_VERSION_4_0_0
+		depends !BR2_nios2
 		bool "gcc 4.0.0"
 
 	config BR2_GCC_VERSION_4_0_1
+		depends !BR2_nios2
 		bool "gcc 4.0.1"
 
 	config BR2_GCC_VERSION_4_0_2
+		depends !BR2_nios2
 		bool "gcc 4.0.2"
 
 	config BR2_GCC_VERSION_4_1_0
+		depends !BR2_nios2
 		bool "gcc 4.1.0"
 
 	config BR2_GCC_VERSION_4_2_0
+		depends !BR2_nios2
 		bool "gcc 4.2.0"
 
 endchoice

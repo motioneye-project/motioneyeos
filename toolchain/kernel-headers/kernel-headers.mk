@@ -106,6 +106,9 @@ endif
 
 $(LINUX_HEADERS_DIR)/.patched: $(LINUX_HEADERS_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_DIR) toolchain/kernel-headers linux-libc-headers-$(LINUX_VERSION)\*.patch
+ifeq ($(strip $(ARCH)),nios2)
+	toolchain/patch-kernel.sh $(LINUX_HEADERS_DIR) toolchain/kernel-headers linux-libc-headers-$(LINUX_VERSION)-nios2nommu.patch.conditional
+endif
 	touch $(LINUX_HEADERS_DIR)/.patched
 
 $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
@@ -124,6 +127,8 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-mips$(NOMMU) asm;) \
 	elif [ "$(ARCH)" = "mipsel" ];then \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-mips$(NOMMU) asm;) \
+	elif [ "$(ARCH)" = "nios2" ];then \
+	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-nios2nommu asm;) \
 	elif [ "$(ARCH)" = "arm" ];then \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-arm$(NOMMU) asm; \
 	     cd asm; \
