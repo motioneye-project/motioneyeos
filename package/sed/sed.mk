@@ -62,11 +62,18 @@ build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 		    $(HOST_SED_DIR)/usr/man $(HOST_SED_DIR)/usr/share/doc; fi
 
 use-sed-host-binary:
-	@if [ -x /usr/bin/sed ]; then SED="/usr/bin/sed"; else \
-	    if [ -x /bin/sed ]; then SED="/bin/sed"; fi; fi; \
-	    mkdir -p $(HOST_SED_DIR)/bin; \
-	    rm -f $(HOST_SED_DIR)/$(SED_TARGET_BINARY); \
-	    ln -s $$SED $(HOST_SED_DIR)/$(SED_TARGET_BINARY)
+	@if [ -x /usr/bin/sed ] ; then \
+		SED="/usr/bin/sed" ; \
+	else \
+		if [ -x /bin/sed ] ; then \
+			SED="/bin/sed" ; \
+		fi \
+	fi ; \
+	if [ ! -e "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)" ] ; then \
+		mkdir -p "$(HOST_SED_DIR)/bin"; \
+		rm -f "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
+		ln -s "$$SED" "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
+	fi
 
 host-sed: $(HOST_SED_TARGET)
 
