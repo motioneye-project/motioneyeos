@@ -1,0 +1,12 @@
+comment "elf2flt"
+
+config BR2_ELF2FLT
+	bool "Enable elf2flt support?"
+	default n
+	help
+	  uCLinux uses a Binary Flat format commonly known as BFLT. It
+	  is a relatively simple and lightweight executable format
+	  based on the original a.out format.
+
+	  This option compiles the required tools and makes the required
+	  modifications on your toolchain (linker).

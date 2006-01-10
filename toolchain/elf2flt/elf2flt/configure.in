@@ -1,0 +1,114 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(elf2flt.c)
+
+AC_ARG_WITH(libbfd,
+	[ --with-libbfd=<file>  path to libbfd.a library to use ],
+	[ ac_libbfd=$withval ],
+	[ ac_libbfd=NONE ]
+)
+
+AC_ARG_WITH(libiberty,
+	[ --with-libiberty=<file>  path to libiberty.a library to use ],
+	[ ac_libiberty=$withval ],
+	[ ac_libiberty=NONE ]
+)
+
+AC_ARG_WITH(bfd-include-dir,
+	[ --with-bfd-include-dir=<dir>  include path for correct bfd.h ],
+	[ ac_bfd_include_dir=$withval ],
+	[ ac_bfd_include_dir=NONE ]
+)
+
+AC_ARG_WITH(binutils-include-dir,
+	[ --with-binutils-include-dir=<dir>  include path for binutils headers ],
+	[ ac_binutils_include_dir=$withval ],
+	[ ac_binutils_include_dir=NONE ]
+)
+
+AC_ARG_ENABLE(got-check,
+	[ --disable-got-check - disable check for GOT (needed on H8) ],
+	[ got_check=$enableval ],
+	[ got_check=yes ]
+)
+
+AC_CANONICAL_HOST
+AC_CANONICAL_TARGET
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_INSTALL
+
+dnl Checks for libraries.
+if test "$ac_libiberty" = "NONE"; then
+  AC_CHECK_LIB(iberty, objalloc_create)
+  ac_libiberty=auto
+else
+  LIBS="$ac_libiberty $LIBS"
+fi
+if test "$ac_libbfd" = "NONE"; then
+  AC_CHECK_LIB(bfd, bfd_openr)
+  ac_libbfd=auto
+else
+  LIBS="$ac_libbfd $LIBS"
+fi
+
+bfd_include_dir=
+if test "$ac_bfd_include_dir" != "NONE"; then
+  bfd_include_dir="-I$ac_bfd_include_dir"
+fi
+
+binutils_include_dir=
+if test "$ac_binutils_include_dir" != "NONE"; then
+  binutils_include_dir="-I$ac_binutils_include_dir"
+fi
+
+if test "$ac_libbfd" = "NONE" -o "$ac_libiberty" = "NONE" ; then
+	echo
+	echo "You need to specify the location of the libfd.a and libiberty.a"
+	echo "host libraries from the binutils package."
+	echo
+	echo "Run configure again specifying these options:"
+	echo
+	echo "  ./configure --target=<ARCH> --with-bfd-include-dir=<dir> --with-libbfd=<libbfd.a> --with-libiberty=<libiberty.a>"
+	echo
+	exit 1
+fi
+
+if test "$ac_bfd_include_dir" = "NONE" ; then
+	echo
+	echo "You need to specify the location of the bfd.h header from a"
+	echo "configured/compiled version of the binutils package for your target."
+	echo "Without this your elf2flt may crash as it will try to use the"
+	echo "systems bfd.h which may be from a different binutils package."
+	echo
+	echo "Run configure again specifying these options:"
+	echo
+	echo "  ./configure --target=<ARCH> --with-bfd-include-dir=<dir> --with-libbfd=<libbfd.a> --with-libiberty=<libiberty.a>"
+	echo
+	exit 1
+fi
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS(fcntl.h unistd.h bfd.h)
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl Checks for library functions.
+AC_FUNC_VPRINTF
+
+AC_CHECK_FUNCS(dcgettext)
+
+dnl Subsitute values
+AC_SUBST(target)
+AC_SUBST(target_alias)
+AC_SUBST(target_cpu)
+AC_SUBST(target_os)
+AC_SUBST(target_vendor)
+AC_SUBST(bfd_include_dir)
+AC_SUBST(binutils_include_dir)
+AC_SUBST(got_check)
+
+AC_OUTPUT(Makefile ld-elf2flt)
+

@@ -1,0 +1,174 @@
+#!/bin/sh
+#
+# allow us to do flat processing if the flag -Wl,-elf2flt or -elf2flt to
+# the 'C' compiler or linker respectively
+#
+# uses the env. var FLTFLAGS as extra parameters to pass to elf2flt
+# arguments given like -Wl,-elf2flt="-b 10000 -v" are given before FLTFLAGS
+#
+# Copyright (C) 2002,2003 David McCullough <davidm@snapgear.com>
+# Copyright (C) 2000, Lineo. davidm@lineo.com
+#
+# This is Free Software, under the GNU Public Licence v2 or greater.
+#
+
+LINKER="$0.real"            # the original renamed-linker
+ELF2FLT="`expr $0 : '\(.*\)ld'`elf2flt"
+TOOLDIR="`dirname $0`"      # let gcc find the tools for us
+LDSCRIPTPATH="${TOOLDIR}/../@target_alias@/lib"		# and the scripts
+SHARED_ID=""
+NEWLDSCRIPT=""
+
+# check TOOLDIR from prefix/bin/ or prefix/target-alias/bin/
+[ -d "${TOOLDIR}/../@target_alias@/lib" ] || LDSCRIPTPATH="${TOOLDIR}/../lib"
+
+#
+# if we have the elf2flt options, run it
+#
+
+if expr "$*" : ".*-elf2flt.*" > /dev/null
+then
+	ARG1=
+	ARG2=
+	OFILE="a.out"
+	PIC=
+	SDIRS=
+	LDSCRIPT=
+	FINAL="yes"
+	FINAL_ONLY=
+	MOVDAT=
+	VERBOSE=
+
+	while [ $# -ne 0 ]
+	do
+		case "$1" in
+
+		-elf2flt) ;;                           # we already know this
+		-elf2flt*)FLTFLAGS="`expr \"$1\" : '-elf2flt=\(.*\)'` $FLTFLAGS";; 
+
+		-move-rodata)
+		          MOVDAT="y";;                 # Put rodata in ROM if possible
+			 
+		-shared-lib-id)
+		          shift; SHARED_ID="$1";;      # Shared library ID
+
+		-o)       shift; OFILE="$1";;          # the final outfile
+		-o*)      OFILE="`expr \"$1\" : '-o\(.*\)'`";;
+
+		-T)       shift; LDSCRIPT="$1";;       # they have a linker script
+		-c)       shift; LDSCRIPT="$1";;
+
+		-L)       ARG1="$ARG1 $1"              # remember search dirs
+		          shift;
+				  ARG1="$ARG1 $1"
+				  SDIRS="$SDIRS -L$1"
+				  ;;
+		-L*)      ARG1="$ARG1 $1"; SDIRS="$SDIRS $1";;
+
+		-EB)      ARG1="$ARG1 $1"; SDIRS="$SDIRS $1";; # arm big endian
+
+		-relax)   ;;                           # eat this for microblaze
+
+		-r|-Ur)   FINAL=""                     # this is not a final link
+		          ARG1="$ARG1 $1"
+				  ;;
+
+		-v)       ARG1="$ARG1 $1"
+				  VERBOSE="y"
+				  ;;
+
+		-m)       shift; EMUL="-m $1";;        # ld emulations for h8300
+		-m*)      EMUL=$1;;
+ 
+		*)        ARG1="$ARG1 $1"
+				  ;;
+		esac
+		shift
+	done
+
+	if [ "$FINAL" = "yes" ]
+	then
+		[ "$VERBOSE" = "y" ] && set -x
+		ARG1="$ARG1 $FINAL_ONLY"
+		NEWLDSCRIPT=`mktemp /tmp/flt-XXXXXX`
+		SEDOP=" -e s/^R_RODAT// -e /^W_RODAT/d"
+		if [ "$MOVDAT" ]
+		then
+			$LINKER -r -d -o "$OFILE.elf2flt" $ARG1  || exit $?
+			if [ "`@target_alias@-objdump -h "$OFILE.elf2flt" | \
+					egrep -A1 '[.]rodata' | grep RELOC`" ]
+			then
+				echo "warning: .rodata section contains relocations"
+			else
+				SEDOP="-e /^R_RODAT/d -e s/^W_RODAT//"
+			fi
+		fi
+		if [ "$SHARED_ID" ]
+		then
+			# Massage the linker script into something useful.  These
+			# regexps are ugly due to some bizzare shell quoting rules.
+			#    SEDOP="$SEDOP -e \"s/ORIGIN = 0x0,/ORIGIN = 0x${SHARED_ID}000000,/\""
+			#    SEDOP="$SEDOP -e \"s/.text 0x0 :/.text 0x${SHARED_ID}000000 :/\""			
+			SEDOP="$SEDOP -e s/\\(ORIGIN.=.0\\)x0,/\\1x${SHARED_ID}000000,/"
+			SEDOP="$SEDOP -e s/\\([.]text.0\\)x0[^0-9]:/\\1x${SHARED_ID}000000:/"
+			
+			if [ "$SHARED_ID" -gt 0 ]
+			then
+				# Non application modules enter via main not _start
+				#    SEDOP="$SEDOP -e 's/ENTRY (_start)/ENTRY (main)/'"
+				SEDOP="$SEDOP -e s/\\(ENTRY.\\)(_start)/\1(lib_main)/"
+			fi
+
+			# Provide the magic parameter that defines the library data segment pointer offset
+			case "@target_cpu@" in
+			    h8300) GOT_OFFSET="__current_shared_library_er5_offset_";;
+			    *)     GOT_OFFSET="_current_shared_library_a5_offset_";;
+			esac
+			ARG1="$ARG1 -defsym $GOT_OFFSET=`expr ${SHARED_ID} '*' -4 - 4`"
+		fi
+		
+		# provide a default linker script, we usually need one
+		[ -z "$LDSCRIPT" ] && LDSCRIPT="${LDSCRIPTPATH}/elf2flt.ld"
+
+		# if we can find the linker script we preprocess it,  otherwise
+		# we assume the user knows what they are doing
+		if [ -f "$LDSCRIPT" ]; then
+			sed $SEDOP < "$LDSCRIPT" > "$NEWLDSCRIPT"
+			LDSCRIPT="$NEWLDSCRIPT"
+		elif [ -f "${LDSCRIPTPATH}/$LDSCRIPT" ]; then
+			sed $SEDOP < "${LDSCRIPTPATH}/$LDSCRIPT" > "$NEWLDSCRIPT"
+			LDSCRIPT="$NEWLDSCRIPT"
+		elif [ -f "${LDSCRIPTPATH}/ldscripts/$LDSCRIPT" ]; then
+			sed $SEDOP < "${LDSCRIPTPATH}/ldscripts/$LDSCRIPT" > "$NEWLDSCRIPT"
+			LDSCRIPT="$NEWLDSCRIPT"
+		fi
+
+		if [ "@got_check@" = "no" ]
+		then
+		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -d -o "$OFILE.elf" $ARG1         ||exit $?
+		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" $ARG1                ||exit $?
+		else
+		 $LINKER $EMUL -r -d -o "$OFILE.elf2flt" $ARG1                          ||exit $?
+		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -o "$OFILE.elf" "$OFILE.elf2flt" ||exit $?
+		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" "$OFILE.elf2flt"     ||exit $?
+		 rm -f "$OFILE.elf2flt"
+		fi
+		if grep _GLOBAL_OFFSET_TABLE_ "$OFILE.gdb" > /dev/null 
+		then
+			$ELF2FLT $FLTFLAGS -o "$OFILE" -p "$OFILE.gdb" "$OFILE.elf" || exit $?
+		else
+			$ELF2FLT $FLTFLAGS -o "$OFILE" -r "$OFILE.elf" || exit $?
+		fi
+		rm -f "$OFILE.elf"  # not needed for any reason
+		rm -f "$NEWLDSCRIPT"
+		exit 0
+	fi
+
+	exec $LINKER -o "$OFILE" $ARG1
+fi
+
+#
+# otherwise pretend we aren't here
+#
+
+exec $LINKER "$@"

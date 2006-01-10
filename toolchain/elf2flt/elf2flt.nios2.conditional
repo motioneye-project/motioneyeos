@@ -1,0 +1,335 @@
+--- elf2flt/Makefile.in
++++ elf2flt/Makefile.in
+@@ -34,6 +34,12 @@ else 
+ SRC_LDFILE= elf2flt.ld
+ endif
+ 
++ifeq ($(strip $(CPU)),nios2)
++SRC_LDFILE= $(CPU)-elf2flt.ld
++else 
++SRC_LDFILE= elf2flt.ld
++endif
++
+ target_bindir = $(prefix)/$(TARGET)/bin
+ target_libdir = $(prefix)/$(TARGET)/lib
+ 
+--- elf2flt/elf2flt.c
++++ elf2flt/elf2flt.c
+@@ -553,9 +553,11 @@ dump_symbols(symbols, number_of_symbols)
+ 	 *	Only relocate things in the data sections if we are PIC/GOT.
+ 	 *	otherwise do text as well
+ 	 */
+-	if (!pic_with_got && (a->flags & SEC_CODE))
++// wentao	if (!pic_with_got && (a->flags & SEC_CODE))
++	if (!pic_with_got && (strcmp(".text", a->name) == 0))
+ 		sectionp = text + (a->vma - text_vma);
+-	else if (a->flags & SEC_DATA)
++//	wentao else if (a->flags & SEC_DATA)
++	else if (strcmp(".data", a->name) == 0)
+ 		sectionp = data + (a->vma - data_vma);
+ 	else
+ 		continue;
+@@ -926,8 +928,7 @@ dump_symbols(symbols, number_of_symbols)
+ 						bad_relocs++;
+ 						continue;
+ 					}
+-					/* Absolute symbol done not relocation */
+-					relocation_needed = !bfd_is_abs_section(sym_section);
++					relocation_needed = 1;
+ 					sym_addr = (*(q->sym_ptr_ptr))->value;
+ 					sym_vma = bfd_section_vma(abs_bfd, sym_section);
+ 					sym_addr += sym_vma + q->addend;
+@@ -1013,19 +1014,10 @@ dump_symbols(symbols, number_of_symbols)
+ 
+ 					/* grab any offset from the text */
+ 					offset = (p[0]<<24) + (p[1] << 16) + (p[2] << 8) + (p[3]);
++					//sym_addr = (*(q->sym_ptr_ptr))->value;
+ 					sym_vma = bfd_section_vma(abs_bfd, sym_section);
+-					/* This is a horrible kludge.  For some
+-					   reason, *sometimes* the offset is in
+-					   both addend and the code.  Detect
+-					   it, and cancel the effect.  Otherwise
+-					   the offset gets added twice - ouch.
+-					   There should be a better test
+-					   for this condition, based on the
+-					   BFD data structures */
+-					if(offset==q->addend)
+-						offset=0;
+-
+ 					sym_addr += offset + sym_vma + q->addend;
++
+ 					relocation_needed = 1;
+ 					break;
+ 				}
+@@ -1848,32 +1840,27 @@ int main(int argc, char *argv[])
+   /* Group output sections into text, data, and bss, and calc their sizes.  */
+   for (s = abs_bfd->sections; s != NULL; s = s->next) {
+     unsigned long *vma, *len;
+-    bfd_size_type sec_size;
+-    bfd_vma sec_vma;
+ 
+-    if (s->flags & SEC_CODE) {
++	if (strcmp(s->name, ".text") == 0) /*wentao    if (s->flags & SEC_CODE)*/ {
+       vma = &text_vma;
+       len = &text_len;
+-    } else if (s->flags & SEC_DATA) {
++    } else if (strcmp(s->name, ".data") == 0) /* wentao (s->flags & SEC_DATA)*/ {
+       vma = &data_vma;
+       len = &data_len;
+-    } else if (s->flags & SEC_ALLOC) {
++    } else if (strcmp(s->name, ".bss") == 0) /*(s->flags & SEC_ALLOC)*/ {
+       vma = &bss_vma;
+       len = &bss_len;
+     } else
+       continue;
+ 
+-    sec_size = bfd_section_size(abs_bfd, s);
+-    sec_vma  = bfd_section_vma(abs_bfd, s);
+-
+-    if (sec_vma < *vma) {
++    if (s->vma < *vma) {
+       if (*len > 0)
+-	*len += sec_vma - *vma;
++	*len += s->vma - *vma;
+       else
+-	*len = sec_size;
+-      *vma = sec_vma;
+-    } else if (sec_vma + sec_size > *vma + *len)
+-      *len = sec_vma + sec_size - *vma;
++	*len = s->_raw_size;
++      *vma = s->vma;
++    } else if (s->vma + s->_raw_size > *vma + *len)
++      *len = s->vma + s->_raw_size - *vma;
+   }
+ 
+   if (text_len == 0) {
+@@ -1888,10 +1875,10 @@ int main(int argc, char *argv[])
+ 
+   /* Read in all text sections.  */
+   for (s = abs_bfd->sections; s != NULL; s = s->next)
+-    if (s->flags & SEC_CODE) 
++    if (strcmp(s->name, ".text") == 0) /* wentao (s->flags & SEC_CODE) */
+       if (!bfd_get_section_contents(abs_bfd, s,
+ 				   text + (s->vma - text_vma), 0,
+-				   bfd_section_size(abs_bfd, s)))
++				   s->_raw_size))
+       {
+ 	fprintf(stderr, "read error section %s\n", s->name);
+ 	exit(2);
+@@ -1919,10 +1906,10 @@ int main(int argc, char *argv[])
+ 
+   /* Read in all data sections.  */
+   for (s = abs_bfd->sections; s != NULL; s = s->next)
+-    if (s->flags & SEC_DATA) 
++    if (strcmp(s->name, ".data") == 0) /* wentao (s->flags & SEC_DATA)*/ 
+       if (!bfd_get_section_contents(abs_bfd, s,
+ 				   data + (s->vma - data_vma), 0,
+-				   bfd_section_size(abs_bfd, s)))
++				   s->_raw_size))
+       {
+ 	fprintf(stderr, "read error section %s\n", s->name);
+ 	exit(2);
+--- elf2flt/nios2-elf2flt.ld
++++ elf2flt/nios2-elf2flt.ld
+@@ -0,0 +1,126 @@
++ENTRY (_start)
++
++MEMORY {
++        flatmem : ORIGIN = 0x0, LENGTH = 0xfffffff
++}
++
++SECTIONS {
++        .text 0 : {
++		/* Avoid address 0; binfmt_flat treats it specially.  */
++		. = . + 4 ;
++
++                . = ALIGN(0x4) ;
++                _stext = . ;
++
++                *(.text)
++                *(.text.*)
++                *(.gnu.warning)
++                *(.stub)
++                *(.gnu.linkonce.t*)
++				*(.jcr)
++                *(.init)
++                *(.fini)
++
++		/* This is special code area at the end of the normal
++		   text section.  It contains a small lookup table at
++		   the start followed by the code pointed to by entries
++		   in the lookup table.  */
++		. = ALIGN (4) ;
++		PROVIDE(__ctbp = .);
++		*(.call_table_data)
++		*(.call_table_text)
++
++		. = ALIGN(0x10) ;
++		_etext = . ;
++        } > flatmem
++        .data : {
++                . = ALIGN(0x4) ;
++                _sdata = . ;
++				__data_start = . ;
++				data_start = . ;
++				*(.rela.got)
++				*(.rel.got)
++				*(.got.plt)
++				*(.got)
++				LONG(-1)
++                *(.rodata)
++                *(.rodata1)
++                *(.rodata.*)
++                *(.gnu.linkonce.r*)
++                *(.data)
++                *(.data.*)
++                *(.gnu.linkonce.d*)
++                *(.data1)
++                *(.eh_frame)
++                *(.gcc_except_table)
++				. = ALIGN(4) ;
++				*(.ctors.*)
++				*(.ctors)
++				LONG(0)
++				*(.dtors.*)
++				*(.dtors)
++				LONG(0)
++                . = ALIGN(0x10) ;
++
++				_gp = ABSOLUTE(ALIGN(16) + 0x7ff0);
++		  		PROVIDE(gp = _gp);
++                *(.sdata) 
++                *(.sdata.*)
++                *(.sbss)
++                *(.gnu.linkonce.s.*)
++                _edata = . ;
++        } > flatmem
++        .bss : {
++                . = ALIGN(0x4) ;
++                _sbss = ALIGN(0x4) ;
++				__bss_start = . ;
++                *(.dynsbss)
++                *(.sbss)
++                *(.sbss.*)
++                *(.scommon)
++                *(.dynbss)
++                *(.bss)
++                *(.bss.*)
++                *(COMMON)
++                . = ALIGN(0x4) ;
++                _ebss = . ;
++				_end = . ;
++				end = . ;
++        } > flatmem
++        
++  .junk 0 : { *(.rel*) *(.rela*) }
++  /* Stabs debugging sections.  */
++  .stab 0 : { *(.stab) }
++  .stabstr 0 : { *(.stabstr) }
++  .stab.excl 0 : { *(.stab.excl) }
++  .stab.exclstr 0 : { *(.stab.exclstr) }
++  .stab.index 0 : { *(.stab.index) }
++  .stab.indexstr 0 : { *(.stab.indexstr) }
++  .comment 0 : { *(.comment) }
++  /* DWARF debug sections.
++     Symbols in the DWARF debugging sections are relative to the beginning
++     of the section so we begin them at 0.  */
++  /* DWARF 1 */
++  .debug          0 : { *(.debug) }
++  .line           0 : { *(.line) }
++  /* GNU DWARF 1 extensions */
++  .debug_srcinfo  0 : { *(.debug_srcinfo) }
++  .debug_sfnames  0 : { *(.debug_sfnames) }
++  /* DWARF 1.1 and DWARF 2 */
++  .debug_aranges  0 : { *(.debug_aranges) }
++  .debug_pubnames 0 : { *(.debug_pubnames) }
++  /* DWARF 2 */
++  .debug_info     0 : { *(.debug_info) }
++  .debug_abbrev   0 : { *(.debug_abbrev) }
++  .debug_line     0 : { *(.debug_line) }
++  .debug_frame    0 : { *(.debug_frame) }
++  .debug_str      0 : { *(.debug_str) }
++  .debug_loc      0 : { *(.debug_loc) }
++  .debug_macinfo  0 : { *(.debug_macinfo) }
++  /* SGI/MIPS DWARF 2 extensions */
++  .debug_weaknames 0 : { *(.debug_weaknames) }
++  .debug_funcnames 0 : { *(.debug_funcnames) }
++  .debug_typenames 0 : { *(.debug_typenames) }
++  .debug_varnames  0 : { *(.debug_varnames) }
++  /* These must appear regardless of  .  */        
++}
+--- elf2flt/ld-elf2flt.in
++++ elf2flt/ld-elf2flt.in
+@@ -15,13 +15,9 @@
+ LINKER="$0.real"            # the original renamed-linker
+ ELF2FLT="`expr $0 : '\(.*\)ld'`elf2flt"
+ TOOLDIR="`dirname $0`"      # let gcc find the tools for us
+-LDSCRIPTPATH="${TOOLDIR}/../@target_alias@/lib"		# and the scripts
+ SHARED_ID=""
+ NEWLDSCRIPT=""
+ 
+-# check TOOLDIR from prefix/bin/ or prefix/target-alias/bin/
+-[ -d "${TOOLDIR}/../@target_alias@/lib" ] || LDSCRIPTPATH="${TOOLDIR}/../lib"
+-
+ #
+ # if we have the elf2flt options, run it
+ #
+@@ -77,9 +73,6 @@ then
+ 				  VERBOSE="y"
+ 				  ;;
+ 
+-		-m)       shift; EMUL="-m $1";;        # ld emulations for h8300
+-		-m*)      EMUL=$1;;
+- 
+ 		*)        ARG1="$ARG1 $1"
+ 				  ;;
+ 		esac
+@@ -120,37 +113,33 @@ then
+ 			fi
+ 
+ 			# Provide the magic parameter that defines the library data segment pointer offset
+-			case "@target_cpu@" in
+-			    h8300) GOT_OFFSET="__current_shared_library_er5_offset_";;
+-			    *)     GOT_OFFSET="_current_shared_library_a5_offset_";;
+-			esac
+-			ARG1="$ARG1 -defsym $GOT_OFFSET=`expr ${SHARED_ID} '*' -4 - 4`"
++			ARG1="$ARG1 -defsym _current_shared_library_a5_offset_=`expr ${SHARED_ID} '*' -4 - 4`"
+ 		fi
+ 		
+ 		# provide a default linker script, we usually need one
+-		[ -z "$LDSCRIPT" ] && LDSCRIPT="${LDSCRIPTPATH}/elf2flt.ld"
++		[ -z "$LDSCRIPT" ] && LDSCRIPT="@prefix@/@target_alias@/lib/elf2flt.ld"
+ 
+ 		# if we can find the linker script we preprocess it,  otherwise
+ 		# we assume the user knows what they are doing
+ 		if [ -f "$LDSCRIPT" ]; then
+ 			sed $SEDOP < "$LDSCRIPT" > "$NEWLDSCRIPT"
+ 			LDSCRIPT="$NEWLDSCRIPT"
+-		elif [ -f "${LDSCRIPTPATH}/$LDSCRIPT" ]; then
+-			sed $SEDOP < "${LDSCRIPTPATH}/$LDSCRIPT" > "$NEWLDSCRIPT"
++		elif [ -f "@prefix@/@target_alias@/lib/$LDSCRIPT" ]; then
++			sed $SEDOP < "@prefix@/@target_alias@/lib/$LDSCRIPT" > "$NEWLDSCRIPT"
+ 			LDSCRIPT="$NEWLDSCRIPT"
+-		elif [ -f "${LDSCRIPTPATH}/ldscripts/$LDSCRIPT" ]; then
+-			sed $SEDOP < "${LDSCRIPTPATH}/ldscripts/$LDSCRIPT" > "$NEWLDSCRIPT"
++		elif [ -f "@prefix@/@target_alias@/lib/ldscripts/$LDSCRIPT" ]; then
++			sed $SEDOP < "@prefix@/@target_alias@/lib/ldscripts/$LDSCRIPT" > "$NEWLDSCRIPT"
+ 			LDSCRIPT="$NEWLDSCRIPT"
+ 		fi
+ 
+ 		if [ "@got_check@" = "no" ]
+ 		then
+-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -d -o "$OFILE.elf" $ARG1         ||exit $?
+-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" $ARG1                ||exit $?
++		 $LINKER $SDIRS -T $LDSCRIPT -Ur -d -o "$OFILE.elf" $ARG1         ||exit $?
++		 $LINKER $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" $ARG1                ||exit $?
+ 		else
+-		 $LINKER $EMUL -r -d -o "$OFILE.elf2flt" $ARG1                          ||exit $?
+-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -o "$OFILE.elf" "$OFILE.elf2flt" ||exit $?
+-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" "$OFILE.elf2flt"     ||exit $?
++		 $LINKER -r -d -o "$OFILE.elf2flt" $ARG1                          ||exit $?
++		 $LINKER $SDIRS -T $LDSCRIPT -Ur -o "$OFILE.elf" "$OFILE.elf2flt" ||exit $?
++		 $LINKER $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" "$OFILE.elf2flt"     ||exit $?
+ 		 rm -f "$OFILE.elf2flt"
+ 		fi
+ 		if grep _GLOBAL_OFFSET_TABLE_ "$OFILE.gdb" > /dev/null 
