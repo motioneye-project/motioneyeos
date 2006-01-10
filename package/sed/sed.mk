@@ -3,7 +3,7 @@
 # sed
 #
 #############################################################
-SED_VER:=4.1.2
+SED_VER:=4.1.4
 SED_SOURCE:=sed-$(SED_VER).tar.gz
 SED_SITE:=ftp://ftp.gnu.org/gnu/sed
 SED_CAT:=zcat
