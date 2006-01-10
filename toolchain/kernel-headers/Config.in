@@ -32,7 +32,6 @@ choice
 		bool "Linux 2.6.9 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_11
-		depends !BR2_nios2
 		bool "Linux 2.6.11 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_12

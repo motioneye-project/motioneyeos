@@ -1,3 +1,40 @@
+--- linux/include/asm-generic/4level-fixup.h
++++ linux/include/asm-generic/4level-fixup.h
+@@ -0,0 +1,34 @@
++#ifndef _4LEVEL_FIXUP_H
++#define _4LEVEL_FIXUP_H
++
++#define __ARCH_HAS_4LEVEL_HACK
++
++#define PUD_SIZE			PGDIR_SIZE
++#define PUD_MASK			PGDIR_MASK
++#define PTRS_PER_PUD			1
++
++#define pud_t				pgd_t
++
++#define pmd_alloc(mm, pud, address)			\
++({	pmd_t *ret;					\
++	if (pgd_none(*pud))				\
++ 		ret = __pmd_alloc(mm, pud, address);	\
++ 	else						\
++		ret = pmd_offset(pud, address);		\
++ 	ret;						\
++})
++
++#define pud_alloc(mm, pgd, address)	(pgd)
++#define pud_offset(pgd, start)		(pgd)
++#define pud_none(pud)			0
++#define pud_bad(pud)			0
++#define pud_present(pud)		1
++#define pud_ERROR(pud)			do { } while (0)
++#define pud_clear(pud)			pgd_clear(pud)
++
++#undef pud_free_tlb
++#define pud_free_tlb(tlb, x)            do { } while (0)
++#define pud_free(x)			do { } while (0)
++#define __pud_free_tlb(tlb, x)		do { } while (0)
++
++#endif
 --- linux/include/asm-generic/bitops.h
 +++ linux/include/asm-generic/bitops.h
 @@ -0,0 +1,81 @@
@@ -119,49 +156,6 @@
 +#endif
 +
 +#endif
---- linux/include/asm-generic/cpumask.h
-+++ linux/include/asm-generic/cpumask.h
-@@ -0,0 +1,40 @@
-+#ifndef __ASM_GENERIC_CPUMASK_H
-+#define __ASM_GENERIC_CPUMASK_H
-+
-+// #include <linux/config.h>
-+#include <linux/kernel.h>
-+#include <linux/threads.h>
-+#include <linux/types.h>
-+#include <linux/bitmap.h>
-+
-+#if NR_CPUS > BITS_PER_LONG && NR_CPUS != 1
-+#define CPU_ARRAY_SIZE		BITS_TO_LONGS(NR_CPUS)
-+
-+struct cpumask
-+{
-+	unsigned long mask[CPU_ARRAY_SIZE];
-+};
-+
-+typedef struct cpumask cpumask_t;
-+
-+#else
-+typedef unsigned long cpumask_t;
-+#endif
-+
-+#ifdef CONFIG_SMP
-+#if NR_CPUS > BITS_PER_LONG
-+#include <asm-generic/cpumask_array.h>
-+#else
-+#include <asm-generic/cpumask_arith.h>
-+#endif
-+#else
-+#include <asm-generic/cpumask_up.h>
-+#endif
-+
-+#if NR_CPUS <= 4*BITS_PER_LONG
-+#include <asm-generic/cpumask_const_value.h>
-+#else
-+#include <asm-generic/cpumask_const_reference.h>
-+#endif
-+
-+#endif /* __ASM_GENERIC_CPUMASK_H */
 --- linux/include/asm-generic/cpumask_arith.h
 +++ linux/include/asm-generic/cpumask_arith.h
 @@ -0,0 +1,49 @@
@@ -327,6 +321,49 @@
 +#define any_online_cpu_const(map)	any_online_cpu(map)
 +
 +#endif /* __ASM_GENERIC_CPUMASK_CONST_VALUE_H */
+--- linux/include/asm-generic/cpumask.h
++++ linux/include/asm-generic/cpumask.h
+@@ -0,0 +1,40 @@
++#ifndef __ASM_GENERIC_CPUMASK_H
++#define __ASM_GENERIC_CPUMASK_H
++
++// #include <linux/config.h>
++#include <linux/kernel.h>
++#include <linux/threads.h>
++#include <linux/types.h>
++#include <linux/bitmap.h>
++
++#if NR_CPUS > BITS_PER_LONG && NR_CPUS != 1
++#define CPU_ARRAY_SIZE		BITS_TO_LONGS(NR_CPUS)
++
++struct cpumask
++{
++	unsigned long mask[CPU_ARRAY_SIZE];
++};
++
++typedef struct cpumask cpumask_t;
++
++#else
++typedef unsigned long cpumask_t;
++#endif
++
++#ifdef CONFIG_SMP
++#if NR_CPUS > BITS_PER_LONG
++#include <asm-generic/cpumask_array.h>
++#else
++#include <asm-generic/cpumask_arith.h>
++#endif
++#else
++#include <asm-generic/cpumask_up.h>
++#endif
++
++#if NR_CPUS <= 4*BITS_PER_LONG
++#include <asm-generic/cpumask_const_value.h>
++#else
++#include <asm-generic/cpumask_const_reference.h>
++#endif
++
++#endif /* __ASM_GENERIC_CPUMASK_H */
 --- linux/include/asm-generic/cpumask_up.h
 +++ linux/include/asm-generic/cpumask_up.h
 @@ -0,0 +1,59 @@
@@ -389,6 +426,73 @@
 +#define CPU_MASK_NONE	0UL
 +
 +#endif /* __ASM_GENERIC_CPUMASK_UP_H */
+--- linux/include/asm-generic/cputime.h
++++ linux/include/asm-generic/cputime.h
+@@ -0,0 +1,64 @@
++#ifndef _ASM_GENERIC_CPUTIME_H
++#define _ASM_GENERIC_CPUTIME_H
++
++#include <linux/time.h>
++#include <linux/jiffies.h>
++
++typedef unsigned long cputime_t;
++
++#define cputime_zero			(0UL)
++#define cputime_max			((~0UL >> 1) - 1)
++#define cputime_add(__a, __b)		((__a) +  (__b))
++#define cputime_sub(__a, __b)		((__a) -  (__b))
++#define cputime_eq(__a, __b)		((__a) == (__b))
++#define cputime_gt(__a, __b)		((__a) >  (__b))
++#define cputime_ge(__a, __b)		((__a) >= (__b))
++#define cputime_lt(__a, __b)		((__a) <  (__b))
++#define cputime_le(__a, __b)		((__a) <= (__b))
++#define cputime_to_jiffies(__ct)	(__ct)
++#define jiffies_to_cputime(__hz)	(__hz)
++
++typedef u64 cputime64_t;
++
++#define cputime64_zero (0ULL)
++#define cputime64_add(__a, __b)		((__a) + (__b))
++#define cputime64_to_jiffies64(__ct)	(__ct)
++#define cputime_to_cputime64(__ct)	((u64) __ct)
++
++
++/*
++ * Convert cputime to milliseconds and back.
++ */
++#define cputime_to_msecs(__ct)		jiffies_to_msecs(__ct)
++#define msecs_to_cputime(__msecs)	msecs_to_jiffies(__msecs)
++
++/*
++ * Convert cputime to seconds and back.
++ */
++#define cputime_to_secs(jif)		((jif) / HZ)
++#define secs_to_cputime(sec)		((sec) * HZ)
++
++/*
++ * Convert cputime to timespec and back.
++ */
++#define timespec_to_cputime(__val)	timespec_to_jiffies(__val)
++#define cputime_to_timespec(__ct,__val)	jiffies_to_timespec(__ct,__val)
++
++/*
++ * Convert cputime to timeval and back.
++ */
++#define timeval_to_cputime(__val)	timeval_to_jiffies(__val)
++#define cputime_to_timeval(__ct,__val)	jiffies_to_timeval(__ct,__val)
++
++/*
++ * Convert cputime to clock and back.
++ */
++#define cputime_to_clock_t(__ct)	jiffies_to_clock_t(__ct)
++#define clock_t_to_cputime(__x)		clock_t_to_jiffies(__x)
++
++/*
++ * Convert cputime64 to clock.
++ */
++#define cputime64_to_clock_t(__ct)	jiffies_64_to_clock_t(__ct)
++
++#endif
 --- linux/include/asm-generic/div64.h
 +++ linux/include/asm-generic/div64.h
 @@ -0,0 +1,58 @@
@@ -464,7 +568,7 @@
 +		   int flag)
 +{
 +	BUG();
-+	return 0;
++	return NULL;
 +}
 +
 +static inline void
@@ -831,7 +935,7 @@
 +#endif
 --- linux/include/asm-generic/errno.h
 +++ linux/include/asm-generic/errno.h
-@@ -0,0 +1,100 @@
+@@ -0,0 +1,105 @@
 +#ifndef _ASM_GENERIC_ERRNO_H
 +#define _ASM_GENERIC_ERRNO_H
 +
@@ -930,6 +1034,11 @@
 +
 +#define	ENOMEDIUM	123	/* No medium found */
 +#define	EMEDIUMTYPE	124	/* Wrong medium type */
++#define	ECANCELED	125	/* Operation Canceled */
++#define	ENOKEY		126	/* Required key not available */
++#define	EKEYEXPIRED	127	/* Key has expired */
++#define	EKEYREVOKED	128	/* Key has been revoked */
++#define	EKEYREJECTED	129	/* Key was rejected by service */
 +
 +#endif
 --- linux/include/asm-generic/hdreg.h
@@ -1283,7 +1392,7 @@
 +#endif
 --- linux/include/asm-generic/pci.h
 +++ linux/include/asm-generic/pci.h
-@@ -0,0 +1,27 @@
+@@ -0,0 +1,34 @@
 +/*
 + * linux/include/asm-generic/pci.h
 + *
@@ -1309,6 +1418,13 @@
 +}
 +
 +#define pcibios_scan_all_fns(a, b)	0
++
++#ifndef HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ
++static inline int pci_get_legacy_ide_irq(struct pci_dev *dev, int channel)
++{
++	return channel ? 15 : 14;
++}
++#endif /* HAVE_ARCH_PCI_GET_LEGACY_IDE_IRQ */
 +
 +#endif
 --- linux/include/asm-generic/percpu.h
@@ -1496,6 +1612,191 @@
 +#endif
 +
 +#endif /* _ASM_GENERIC_PGTABLE_H */
+--- linux/include/asm-generic/pgtable-nopmd.h
++++ linux/include/asm-generic/pgtable-nopmd.h
+@@ -0,0 +1,60 @@
++#ifndef _PGTABLE_NOPMD_H
++#define _PGTABLE_NOPMD_H
++
++#ifndef __ASSEMBLY__
++
++#include <asm-generic/pgtable-nopud.h>
++
++/*
++ * Having the pmd type consist of a pud gets the size right, and allows
++ * us to conceptually access the pud entry that this pmd is folded into
++ * without casting.
++ */
++typedef struct { pud_t pud; } pmd_t;
++
++#define PMD_SHIFT	PUD_SHIFT
++#define PTRS_PER_PMD	1
++#define PMD_SIZE  	(1UL << PMD_SHIFT)
++#define PMD_MASK  	(~(PMD_SIZE-1))
++
++/*
++ * The "pud_xxx()" functions here are trivial for a folded two-level
++ * setup: the pmd is never bad, and a pmd always exists (as it's folded
++ * into the pud entry)
++ */
++static inline int pud_none(pud_t pud)		{ return 0; }
++static inline int pud_bad(pud_t pud)		{ return 0; }
++static inline int pud_present(pud_t pud)	{ return 1; }
++static inline void pud_clear(pud_t *pud)	{ }
++#define pmd_ERROR(pmd)				(pud_ERROR((pmd).pud))
++
++#define pud_populate(mm, pmd, pte)		do { } while (0)
++
++/*
++ * (pmds are folded into puds so this doesn't get actually called,
++ * but the define is needed for a generic inline function.)
++ */
++#define set_pud(pudptr, pudval)			set_pmd((pmd_t *)(pudptr), (pmd_t) { pudval })
++
++static inline pmd_t * pmd_offset(pud_t * pud, unsigned long address)
++{
++	return (pmd_t *)pud;
++}
++
++#define pmd_val(x)				(pud_val((x).pud))
++#define __pmd(x)				((pmd_t) { __pud(x) } )
++
++#define pud_page(pud)				(pmd_page((pmd_t){ pud }))
++#define pud_page_kernel(pud)			(pmd_page_kernel((pmd_t){ pud }))
++
++/*
++ * allocating and freeing a pmd is trivial: the 1-entry pmd is
++ * inside the pud, so has no extra memory associated with it.
++ */
++#define pmd_alloc_one(mm, address)		NULL
++#define pmd_free(x)				do { } while (0)
++#define __pmd_free_tlb(tlb, x)			do { } while (0)
++
++#endif /* __ASSEMBLY__ */
++
++#endif /* _PGTABLE_NOPMD_H */
+--- linux/include/asm-generic/pgtable-nopud.h
++++ linux/include/asm-generic/pgtable-nopud.h
+@@ -0,0 +1,56 @@
++#ifndef _PGTABLE_NOPUD_H
++#define _PGTABLE_NOPUD_H
++
++#ifndef __ASSEMBLY__
++
++/*
++ * Having the pud type consist of a pgd gets the size right, and allows
++ * us to conceptually access the pgd entry that this pud is folded into
++ * without casting.
++ */
++typedef struct { pgd_t pgd; } pud_t;
++
++#define PUD_SHIFT	PGDIR_SHIFT
++#define PTRS_PER_PUD	1
++#define PUD_SIZE  	(1UL << PUD_SHIFT)
++#define PUD_MASK  	(~(PUD_SIZE-1))
++
++/*
++ * The "pgd_xxx()" functions here are trivial for a folded two-level
++ * setup: the pud is never bad, and a pud always exists (as it's folded
++ * into the pgd entry)
++ */
++static inline int pgd_none(pgd_t pgd)		{ return 0; }
++static inline int pgd_bad(pgd_t pgd)		{ return 0; }
++static inline int pgd_present(pgd_t pgd)	{ return 1; }
++static inline void pgd_clear(pgd_t *pgd)	{ }
++#define pud_ERROR(pud)				(pgd_ERROR((pud).pgd))
++
++#define pgd_populate(mm, pgd, pud)		do { } while (0)
++/*
++ * (puds are folded into pgds so this doesn't get actually called,
++ * but the define is needed for a generic inline function.)
++ */
++#define set_pgd(pgdptr, pgdval)			set_pud((pud_t *)(pgdptr), (pud_t) { pgdval })
++
++static inline pud_t * pud_offset(pgd_t * pgd, unsigned long address)
++{
++	return (pud_t *)pgd;
++}
++
++#define pud_val(x)				(pgd_val((x).pgd))
++#define __pud(x)				((pud_t) { __pgd(x) } )
++
++#define pgd_page(pgd)				(pud_page((pud_t){ pgd }))
++#define pgd_page_kernel(pgd)			(pud_page_kernel((pud_t){ pgd }))
++
++/*
++ * allocating and freeing a pud is trivial: the 1-entry pud is
++ * inside the pgd, so has no extra memory associated with it.
++ */
++#define pud_alloc_one(mm, address)		NULL
++#define pud_free(x)				do { } while (0)
++#define __pud_free_tlb(tlb, x)			do { } while (0)
++
++#endif /* __ASSEMBLY__ */
++#endif /* _PGTABLE_NOPUD_H */
+--- linux/include/asm-generic/resource.h
++++ linux/include/asm-generic/resource.h
+@@ -0,0 +1,60 @@
++#ifndef _ASM_GENERIC_RESOURCE_H
++#define _ASM_GENERIC_RESOURCE_H
++
++/*
++ * Resource limits
++ */
++
++/* Allow arch to control resource order */
++#ifndef __ARCH_RLIMIT_ORDER
++#define RLIMIT_CPU		0	/* CPU time in ms */
++#define RLIMIT_FSIZE		1	/* Maximum filesize */
++#define RLIMIT_DATA		2	/* max data size */
++#define RLIMIT_STACK		3	/* max stack size */
++#define RLIMIT_CORE		4	/* max core file size */
++#define RLIMIT_RSS		5	/* max resident set size */
++#define RLIMIT_NPROC		6	/* max number of processes */
++#define RLIMIT_NOFILE		7	/* max number of open files */
++#define RLIMIT_MEMLOCK		8	/* max locked-in-memory address space */
++#define RLIMIT_AS		9	/* address space limit */
++#define RLIMIT_LOCKS		10	/* maximum file locks held */
++#define RLIMIT_SIGPENDING	11	/* max number of pending signals */
++#define RLIMIT_MSGQUEUE		12	/* maximum bytes in POSIX mqueues */
++
++#define RLIM_NLIMITS		13
++#endif
++
++/*
++ * SuS says limits have to be unsigned.
++ * Which makes a ton more sense anyway.
++ */
++#ifndef RLIM_INFINITY
++#define RLIM_INFINITY	(~0UL)
++#endif
++
++#ifndef _STK_LIM_MAX
++#define _STK_LIM_MAX	RLIM_INFINITY
++#endif
++
++#ifdef __KERNEL__
++
++#define INIT_RLIMITS							\
++{									\
++	[RLIMIT_CPU]		= { RLIM_INFINITY, RLIM_INFINITY },	\
++	[RLIMIT_FSIZE]		= { RLIM_INFINITY, RLIM_INFINITY },	\
++	[RLIMIT_DATA]		= { RLIM_INFINITY, RLIM_INFINITY },	\
++	[RLIMIT_STACK]		= {      _STK_LIM, _STK_LIM_MAX  },	\
++	[RLIMIT_CORE]		= {             0, RLIM_INFINITY },	\
++	[RLIMIT_RSS]		= { RLIM_INFINITY, RLIM_INFINITY },	\
++	[RLIMIT_NPROC]		= {             0,             0 },	\
++	[RLIMIT_NOFILE]		= {      INR_OPEN,     INR_OPEN  },	\
++	[RLIMIT_MEMLOCK]	= {   MLOCK_LIMIT,   MLOCK_LIMIT },	\
++	[RLIMIT_AS]		= { RLIM_INFINITY, RLIM_INFINITY },	\
++	[RLIMIT_LOCKS]		= { RLIM_INFINITY, RLIM_INFINITY },	\
++	[RLIMIT_SIGPENDING]	= { MAX_SIGPENDING, MAX_SIGPENDING },	\
++	[RLIMIT_MSGQUEUE]	= { MQ_BYTES_MAX, MQ_BYTES_MAX },	\
++}
++
++#endif	/* __KERNEL__ */
++
++#endif
 --- linux/include/asm-generic/rmap.h
 +++ linux/include/asm-generic/rmap.h
 @@ -0,0 +1,90 @@
@@ -1807,7 +2108,7 @@
 +#endif /* __ASM_RTC_H__ */
 --- linux/include/asm-generic/sections.h
 +++ linux/include/asm-generic/sections.h
-@@ -0,0 +1,12 @@
+@@ -0,0 +1,13 @@
 +#ifndef _ASM_GENERIC_SECTIONS_H_
 +#define _ASM_GENERIC_SECTIONS_H_
 +
@@ -1818,11 +2119,12 @@
 +extern char __bss_start[], __bss_stop[];
 +extern char __init_begin[], __init_end[];
 +extern char _sinittext[], _einittext[];
++extern char _end[];
 +
 +#endif /* _ASM_GENERIC_SECTIONS_H_ */
 --- linux/include/asm-generic/siginfo.h
 +++ linux/include/asm-generic/siginfo.h
-@@ -0,0 +1,295 @@
+@@ -0,0 +1,288 @@
 +#ifndef _ASM_GENERIC_SIGINFO_H
 +#define _ASM_GENERIC_SIGINFO_H
 +
@@ -1979,7 +2281,6 @@
 +#define SI_FROMUSER(siptr)	((siptr)->si_code <= 0)
 +#define SI_FROMKERNEL(siptr)	((siptr)->si_code > 0)
 +
-+#ifndef HAVE_ARCH_SI_CODES
 +/*
 + * SIGILL si_codes
 + */
@@ -2050,8 +2351,6 @@
 +#define POLL_HUP	(__SI_POLL|6)	/* device disconnected */
 +#define NSIGPOLL	6
 +
-+#endif
-+
 +/*
 + * sigevent definitions
 + * 
@@ -2070,8 +2369,6 @@
 +#define SIGEV_PAD_SIZE	((SIGEV_MAX_SIZE/sizeof(int)) - 3)
 +#endif
 +
-+#ifndef HAVE_ARCH_SIGEVENT_T
-+
 +typedef struct sigevent {
 +	sigval_t sigev_value;
 +	int sigev_signo;
@@ -2086,8 +2383,6 @@
 +		} _sigev_thread;
 +	} _sigev_un;
 +} sigevent_t;
-+
-+#endif
 +
 +#define sigev_notify_function	_sigev_un._sigev_thread._function
 +#define sigev_notify_attributes	_sigev_un._sigev_thread._attribute
@@ -2172,9 +2467,81 @@
 +};
 +
 +#endif
+--- linux/include/asm-generic/termios.h
++++ linux/include/asm-generic/termios.h
+@@ -0,0 +1,69 @@
++/* termios.h: generic termios/termio user copying/translation
++ */
++
++#ifndef _ASM_GENERIC_TERMIOS_H
++#define _ASM_GENERIC_TERMIOS_H
++
++#include <asm/uaccess.h>
++
++#ifndef __ARCH_TERMIO_GETPUT
++
++/*
++ * Translate a "termio" structure into a "termios". Ugh.
++ */
++static inline int user_termio_to_kernel_termios(struct termios *termios,
++						struct termio __user *termio)
++{
++	unsigned short tmp;
++
++	if (get_user(tmp, &termio->c_iflag) < 0)
++		goto fault;
++	termios->c_iflag = (0xffff0000 & termios->c_iflag) | tmp;
++
++	if (get_user(tmp, &termio->c_oflag) < 0)
++		goto fault;
++	termios->c_oflag = (0xffff0000 & termios->c_oflag) | tmp;
++
++	if (get_user(tmp, &termio->c_cflag) < 0)
++		goto fault;
++	termios->c_cflag = (0xffff0000 & termios->c_cflag) | tmp;
++
++	if (get_user(tmp, &termio->c_lflag) < 0)
++		goto fault;
++	termios->c_lflag = (0xffff0000 & termios->c_lflag) | tmp;
++
++	if (get_user(termios->c_line, &termio->c_line) < 0)
++		goto fault;
++
++	if (copy_from_user(termios->c_cc, termio->c_cc, NCC) != 0)
++		goto fault;
++
++	return 0;
++
++ fault:
++	return -EFAULT;
++}
++
++/*
++ * Translate a "termios" structure into a "termio". Ugh.
++ */
++static inline int kernel_termios_to_user_termio(struct termio __user *termio,
++						struct termios *termios)
++{
++	if (put_user(termios->c_iflag, &termio->c_iflag) < 0 ||
++	    put_user(termios->c_oflag, &termio->c_oflag) < 0 ||
++	    put_user(termios->c_cflag, &termio->c_cflag) < 0 ||
++	    put_user(termios->c_lflag, &termio->c_lflag) < 0 ||
++	    put_user(termios->c_line,  &termio->c_line) < 0 ||
++	    copy_to_user(termio->c_cc, termios->c_cc, NCC) != 0)
++		return -EFAULT;
++
++	return 0;
++}
++
++#define user_termios_to_kernel_termios(k, u) copy_from_user(k, u, sizeof(struct termios))
++#define kernel_termios_to_user_termios(u, k) copy_to_user(u, k, sizeof(struct termios))
++
++#endif	/* __ARCH_TERMIO_GETPUT */
++
++#endif /* _ASM_GENERIC_TERMIOS_H */
 --- linux/include/asm-generic/tlb.h
 +++ linux/include/asm-generic/tlb.h
-@@ -0,0 +1,152 @@
+@@ -0,0 +1,160 @@
 +/* asm-generic/tlb.h
 + *
 + *	Generic TLB shootdown code
@@ -2318,6 +2685,14 @@
 +		__pte_free_tlb(tlb, ptep);			\
 +	} while (0)
 +
++#ifndef __ARCH_HAS_4LEVEL_HACK
++#define pud_free_tlb(tlb, pudp)					\
++	do {							\
++		tlb->need_flush = 1;				\
++		__pud_free_tlb(tlb, pudp);			\
++	} while (0)
++#endif
++
 +#define pmd_free_tlb(tlb, pmdp)					\
 +	do {							\
 +		tlb->need_flush = 1;				\
@@ -2329,7 +2704,7 @@
 +#endif /* _ASM_GENERIC__TLB_H */
 --- linux/include/asm-generic/topology.h
 +++ linux/include/asm-generic/topology.h
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,48 @@
 +/*
 + * linux/include/asm-generic/topology.h
 + *
@@ -2375,11 +2750,6 @@
 +#endif
 +#ifndef pcibus_to_cpumask
 +#define pcibus_to_cpumask(bus)	(cpu_online_map)
-+#endif
-+
-+/* Cross-node load balancing interval. */
-+#ifndef NODE_BALANCE_RATE
-+#define NODE_BALANCE_RATE 10
 +#endif
 +
 +#endif /* _ASM_GENERIC_TOPOLOGY_H */
@@ -2437,7 +2807,7 @@
 +#endif /* _ASM_GENERIC_UNALIGNED_H */
 --- linux/include/asm-generic/vmlinux.lds.h
 +++ linux/include/asm-generic/vmlinux.lds.h
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,90 @@
 +#ifndef LOAD_OFFSET
 +#define LOAD_OFFSET 0
 +#endif
@@ -2458,12 +2828,18 @@
 +									\
 +	/* PCI quirks */						\
 +	.pci_fixup        : AT(ADDR(.pci_fixup) - LOAD_OFFSET) {	\
++		VMLINUX_SYMBOL(__start_pci_fixups_early) = .;		\
++		*(.pci_fixup_early)					\
++		VMLINUX_SYMBOL(__end_pci_fixups_early) = .;		\
 +		VMLINUX_SYMBOL(__start_pci_fixups_header) = .;		\
 +		*(.pci_fixup_header)					\
 +		VMLINUX_SYMBOL(__end_pci_fixups_header) = .;		\
 +		VMLINUX_SYMBOL(__start_pci_fixups_final) = .;		\
 +		*(.pci_fixup_final)					\
 +		VMLINUX_SYMBOL(__end_pci_fixups_final) = .;		\
++		VMLINUX_SYMBOL(__start_pci_fixups_enable) = .;		\
++		*(.pci_fixup_enable)					\
++		VMLINUX_SYMBOL(__end_pci_fixups_enable) = .;		\
 +	}								\
 +									\
 +	/* Kernel symbol table: Normal symbols */			\
@@ -3243,23 +3619,45 @@
 +		xor_speed(&xor_block_32regs);	\
 +		xor_speed(&xor_block_32regs_p);	\
 +	} while (0)
---- linux/include/asm-nios2nommu/ChangeLog
-+++ linux/include/asm-nios2nommu/ChangeLog
-@@ -0,0 +1,14 @@
-+2004-06-29  Ken Hill  <khill@microtronix.com>
+--- linux/include/asm-nios2nommu/altera_juart.h
++++ linux/include/asm-nios2nommu/altera_juart.h
+@@ -0,0 +1,36 @@
++/*------------------------------------------------------------------------
++ *
++ *  linux/drivers/serial/altera_juart.h
++ *
++ *  Driver for Altera JTAG UART core with Avalon interface
++ *
++ * Copyright (C) 2004 Microtronix Datacom Ltd
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ * History:
++ *    Jun/20/2005   DGT Microtronix Datacom NiosII
++ *
++ -----------------------------------------------------------------------*/
 +
-+	* bitops.h (find_next_zero_bit): Fix problem with with masking for found_first
-+	handling. The masking of the upper bits for size < 32 bits would set all
-+	the bits to 1. Removing any zero's there may have been.
++#ifndef _ALTERA_JUART_H_
++    #define _ALTERA_JUART_H_
 +
-+2004-06-02  Ken Hill  <khill@microtronix.com>
++    /* jtag uart details needed outside of the driver itself:           */
++    /*  by: arch/kernel/start.c - boot time error message(s)            */
 +
-+	* processor.h (TASK_SIZE): Change na_sdram_end to nasys_program_mem_end to remove
-+	dependancy on quartus memory component name.
++    void jtaguart_console_write
++            (       struct console  *co,
++             const  char            *s,
++                    unsigned int     count);
 +
-+	* page.h (PAGE_OFFSET): Change na_sdram to nasys_program_mem to remove
-+	dependancy on quartus memory component name.
-+
++#endif  /* _ALTERA_JUART_H_ */
 --- linux/include/asm-nios2nommu/a.out.h
 +++ linux/include/asm-nios2nommu/a.out.h
 @@ -0,0 +1,85 @@
@@ -3906,7 +4304,7 @@
 +
 +
 +#ifdef __KERNEL__
-+#include <linux/config.h>
++// #include <linux/config.h>
 +#include <linux/compiler.h>
 +#include <asm/byteorder.h>	/* swab32 */
 +#include <asm/system.h>
@@ -4490,43 +4888,6 @@
 +
 +#endif
 +
---- linux/include/asm-nios2nommu/cache.h
-+++ linux/include/asm-nios2nommu/cache.h
-@@ -0,0 +1,34 @@
-+/*
-+ * Copyright (C) 2004 Microtronix Datacom Ltd.
-+ *
-+ * All rights reserved.          
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful, but
-+ * WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
-+ * NON INFRINGEMENT.  See the GNU General Public License for more
-+ * details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+#ifndef __ARCH_NIOS2NOMMU_CACHE_H
-+#define __ARCH_NIOS2NOMMU_CACHE_H
-+
-+#include <asm/nios.h>
-+
-+/* bytes per L1 cache line */
-+#define        L1_CACHE_BYTES	nasys_icache_line_size 	/* this need to be at least 1 */
-+
-+
-+#define __cacheline_aligned
-+#define ____cacheline_aligned
-+
-+#endif
 --- linux/include/asm-nios2nommu/cachectl.h
 +++ linux/include/asm-nios2nommu/cachectl.h
 @@ -0,0 +1,36 @@
@@ -4568,7 +4929,7 @@
 +#endif /* _NIOS2NOMMU_CACHECTL_H */
 --- linux/include/asm-nios2nommu/cacheflush.h
 +++ linux/include/asm-nios2nommu/cacheflush.h
-@@ -0,0 +1,56 @@
+@@ -0,0 +1,59 @@
 +#ifndef _NIOS2NOMMU_CACHEFLUSH_H
 +#define _NIOS2NOMMU_CACHEFLUSH_H
 +
@@ -4602,13 +4963,16 @@
 +extern void dcache_push (unsigned long vaddr, int len);
 +extern void icache_push (unsigned long vaddr, int len);
 +extern void cache_push_all (void);
++extern void cache_clear (unsigned long paddr, int len);
 +
 +#define flush_cache_all()			__flush_cache_all()
 +#define flush_cache_mm(mm)			do { } while (0)
-+#define flush_cache_range(vma, start, end)	do { } while (0)
++#define flush_cache_range(vma, start, end)	cache_push(start, end - start)
 +#define flush_cache_page(vma, vmaddr)		do { } while (0)
 +#define flush_dcache_range(start,end)		dcache_push(start, end - start)
 +#define flush_dcache_page(page)			do { } while (0)
++#define flush_dcache_mmap_lock(mapping)		do { } while (0)
++#define flush_dcache_mmap_unlock(mapping)	do { } while (0)
 +#define flush_icache_range(start,end)		cache_push(start, end - start)
 +#define flush_icache_page(vma,pg)		do { } while (0)
 +#define flush_icache_user_range(vma,pg,adr,len)	do { } while (0)
@@ -4625,6 +4989,60 @@
 +}
 +
 +#endif /* _NIOS2NOMMU_CACHEFLUSH_H */
+--- linux/include/asm-nios2nommu/cache.h
++++ linux/include/asm-nios2nommu/cache.h
+@@ -0,0 +1,34 @@
++/*
++ * Copyright (C) 2004 Microtronix Datacom Ltd.
++ *
++ * All rights reserved.          
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
++ * NON INFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++#ifndef __ARCH_NIOS2NOMMU_CACHE_H
++#define __ARCH_NIOS2NOMMU_CACHE_H
++
++#include <asm/nios.h>
++
++/* bytes per L1 cache line */
++#define        L1_CACHE_BYTES	nasys_icache_line_size 	/* this need to be at least 1 */
++
++
++#define __cacheline_aligned
++#define ____cacheline_aligned
++
++#endif
+--- linux/include/asm-nios2nommu/ChangeLog
++++ linux/include/asm-nios2nommu/ChangeLog
+@@ -0,0 +1,14 @@
++2004-06-29  Ken Hill  <khill@microtronix.com>
++
++	* bitops.h (find_next_zero_bit): Fix problem with with masking for found_first
++	handling. The masking of the upper bits for size < 32 bits would set all
++	the bits to 1. Removing any zero's there may have been.
++
++2004-06-02  Ken Hill  <khill@microtronix.com>
++
++	* processor.h (TASK_SIZE): Change na_sdram_end to nasys_program_mem_end to remove
++	dependancy on quartus memory component name.
++
++	* page.h (PAGE_OFFSET): Change na_sdram to nasys_program_mem to remove
++	dependancy on quartus memory component name.
++
 --- linux/include/asm-nios2nommu/checksum.h
 +++ linux/include/asm-nios2nommu/checksum.h
 @@ -0,0 +1,320 @@
@@ -5020,6 +5438,40 @@
 +#include <asm-generic/cpumask.h>
 +
 +#endif /* _ASM_NIOS2NOMMU_CPUMASK_H */
+--- linux/include/asm-nios2nommu/cputime.h
++++ linux/include/asm-nios2nommu/cputime.h
+@@ -0,0 +1,31 @@
++/*
++ *	cputime.h
++ *	(C) Copyright 2004, Microtronix Datacom Ltd.
++ *
++ * Taken from m68knommu
++ *
++ * All rights reserved.          
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
++ * NON INFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#ifndef __NIOS2NOMMU_CPUTIME_H
++#define __NIOS2NOMMU_CPUTIME_H
++
++#include <asm-generic/cputime.h>
++
++#endif /* __NIOS@NOMMU_CPUTIME_H */
 --- linux/include/asm-nios2nommu/current.h
 +++ linux/include/asm-nios2nommu/current.h
 @@ -0,0 +1,39 @@
@@ -5195,40 +5647,11 @@
 +
 +#endif
 +
---- linux/include/asm-nios2nommu/dma-mapping.h
-+++ linux/include/asm-nios2nommu/dma-mapping.h
-@@ -0,0 +1,25 @@
-+/*
-+ *  include/asm-s390/dma-mapping.h
-+ *
-+ *  S390 version
-+ *
-+ *  This file exists so that #include <dma-mapping.h> doesn't break anything.
-+ */
-+
-+#ifndef _ASM_DMA_MAPPING_H
-+#define _ASM_DMA_MAPPING_H
-+
-+static inline void *dma_alloc_coherent(struct device *dev, size_t size,
-+			 dma_addr_t *dma_handle, int flag)
-+{
-+	BUG();
-+	return 0;
-+}
-+
-+static inline void dma_free_coherent(struct device *dev, size_t size,
-+		       void *vaddr, dma_addr_t dma_handle)
-+{
-+	BUG();
-+}
-+
-+#endif /* _ASM_DMA_MAPPING_H */
 --- linux/include/asm-nios2nommu/dma.h
 +++ linux/include/asm-nios2nommu/dma.h
-@@ -0,0 +1,40 @@
-+/* $Id: dma.h,v 1.5 2004/03/02 16:05:52 ken-h Exp $
+@@ -0,0 +1,57 @@
++/* $Id: dma.h,v 1.6 2005/04/07 21:00:26 wentao Exp $
 + *
-+ * Copyright 1995 (C) David S. Miller (davem@caip.rutgers.edu)
 + * Copyright 2004 (C) Microtronix Datacom Ltd.
 + *
 + * All rights reserved.          
@@ -5256,16 +5679,170 @@
 +#include <linux/kernel.h>
 +#include <asm/asm-offsets.h>
 +
-+#define MAX_DMA_CHANNELS 2
-+#define MAX_DMA_ADDRESS  (LINUX_SDRAM_START)
-+#define DMA_MODE_READ    1
-+#define DMA_MODE_WRITE   2
++#define MAX_DMA_ADDRESS	(LINUX_SDRAM_END)
 +
-+extern int get_dma_list(char *);
-+extern int request_dma(unsigned int, const char *);
-+extern void free_dma(unsigned int);
++int request_dma(unsigned int, const char *);
++void free_dma(unsigned int);
++void enable_dma(unsigned int dmanr);
++void disable_dma(unsigned int dmanr);
++void set_dma_count(unsigned int dmanr, unsigned int count);
++int get_dma_residue(unsigned int dmanr);
++void nios2_set_dma_data_width(unsigned int dmanr, unsigned int width);
++
++void nios2_set_dma_handler(unsigned int dmanr, int (*handler)(void*, int), void* user);
++int nios2_request_dma(const char *);
++
++void nios2_set_dma_mode(unsigned int dmanr, unsigned int mode);
++void nios2_set_dma_rcon(unsigned int dmanr, unsigned int set);
++void nios2_set_dma_wcon(unsigned int dmanr, unsigned int set);
++void nios2_set_dma_raddr(unsigned int dmanr, unsigned int a);
++void nios2_set_dma_waddr(unsigned int dmanr, unsigned int a);
++
++static inline unsigned long claim_dma_lock(void)
++{
++}
++
++static inline void release_dma_lock(unsigned long flags)
++{
++}
 +
 +#endif /* !(_ASM_NIOS2_DMA_H) */
+--- linux/include/asm-nios2nommu/dma-mapping.h
++++ linux/include/asm-nios2nommu/dma-mapping.h
+@@ -0,0 +1,133 @@
++/*
++ *  include/asm-nios2nommu/dma-mapping.h
++ *
++ *  This file exists so that #include <dma-mapping.h> doesn't break anything.
++ */
++
++#ifndef _ASM_DMA_MAPPING_H
++#define _ASM_DMA_MAPPING_H
++
++#include <asm/scatterlist.h>
++#include <linux/mm.h>
++#include <asm/io.h>
++#include <asm/cacheflush.h>
++
++static inline void *dma_alloc_coherent(struct device *dev, size_t size,
++			 dma_addr_t *dma_handle, int flag)
++{
++	BUG();
++	return 0;
++}
++
++static inline void dma_free_coherent(struct device *dev, size_t size,
++		       void *vaddr, dma_addr_t dma_handle)
++{
++	BUG();
++}
++
++/**
++ * dma_map_single - map a single buffer for streaming DMA
++ * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices
++ * @cpu_addr: CPU direct mapped address of buffer
++ * @size: size of buffer to map
++ * @dir: DMA transfer direction
++ *
++ * Ensure that any data held in the cache is appropriately discarded
++ * or written back.
++ *
++ * The device owns this memory once this call has completed.  The CPU
++ * can regain ownership by calling dma_unmap_single() or
++ * dma_sync_single_for_cpu().
++ */
++static inline dma_addr_t
++dma_map_single(struct device *dev, void *cpu_addr, size_t size,
++	       enum dma_data_direction dir)
++{
++	cache_push ((unsigned long)cpu_addr, size);
++	return virt_to_bus((unsigned long)cpu_addr);
++}
++
++/**
++ * dma_unmap_single - unmap a single buffer previously mapped
++ * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices
++ * @handle: DMA address of buffer
++ * @size: size of buffer to map
++ * @dir: DMA transfer direction
++ *
++ * Unmap a single streaming mode DMA translation.  The handle and size
++ * must match what was provided in the previous dma_map_single() call.
++ * All other usages are undefined.
++ *
++ * After this call, reads by the CPU to the buffer are guaranteed to see
++ * whatever the device wrote there.
++ */
++static inline void
++dma_unmap_single(struct device *dev, dma_addr_t handle, size_t size,
++		 enum dma_data_direction dir)
++{
++	cache_clear((unsigned long)bus_to_virt(handle), size);
++}
++
++/**
++ * dma_map_sg - map a set of SG buffers for streaming mode DMA
++ * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices
++ * @sg: list of buffers
++ * @nents: number of buffers to map
++ * @dir: DMA transfer direction
++ *
++ * Map a set of buffers described by scatterlist in streaming
++ * mode for DMA.  This is the scatter-gather version of the
++ * above dma_map_single interface.  Here the scatter gather list
++ * elements are each tagged with the appropriate dma address
++ * and length.  They are obtained via sg_dma_{address,length}(SG).
++ *
++ * NOTE: An implementation may be able to use a smaller number of
++ *       DMA address/length pairs than there are SG table elements.
++ *       (for example via virtual mapping capabilities)
++ *       The routine returns the number of addr/length pairs actually
++ *       used, at most nents.
++ *
++ * Device ownership issues as mentioned above for dma_map_single are
++ * the same here.
++ */
++static inline int
++dma_map_sg(struct device *dev, struct scatterlist *sg, int nents,
++	   enum dma_data_direction dir)
++{
++	int i;
++
++	for (i = 0; i < nents; i++, sg++) {
++		char *virt;
++
++		sg->dma_address = page_to_bus(sg->page) + sg->offset;
++		virt = page_address(sg->page) + sg->offset;
++		cache_push ((unsigned long)virt, sg->length);
++	}
++
++	return nents;
++}
++
++/**
++ * dma_unmap_sg - unmap a set of SG buffers mapped by dma_map_sg
++ * @dev: valid struct device pointer, or NULL for ISA and EISA-like devices
++ * @sg: list of buffers
++ * @nents: number of buffers to map
++ * @dir: DMA transfer direction
++ *
++ * Unmap a set of streaming mode DMA translations.
++ * Again, CPU read rules concerning calls here are the same as for
++ * dma_unmap_single() above.
++ */
++static inline void
++dma_unmap_sg(struct device *dev, struct scatterlist *sg, int nents,
++	     enum dma_data_direction dir)
++{
++	int i;
++
++	for (i = 0; i < nents; i++, sg++) {
++		char *virt;
++		virt = page_address(sg->page) + sg->offset;
++		cache_clear ((unsigned long)virt, sg->length);
++	}
++}
++#endif /* _ASM_DMA_MAPPING_H */
 --- linux/include/asm-nios2nommu/elf.h
 +++ linux/include/asm-nios2nommu/elf.h
 @@ -0,0 +1,141 @@
@@ -5854,7 +6431,7 @@
 +#endif /* __NIOS2_FLAT_H__ */
 --- linux/include/asm-nios2nommu/hardirq.h
 +++ linux/include/asm-nios2nommu/hardirq.h
-@@ -0,0 +1,85 @@
+@@ -0,0 +1,53 @@
 +/*
 + * Ported from m68knommu
 + *
@@ -5888,34 +6465,11 @@
 +
 +typedef struct {
 +	unsigned int __softirq_pending;
-+	unsigned int __syscall_count;
-+	struct task_struct * __ksoftirqd_task;
 +} ____cacheline_aligned irq_cpustat_t;
 +
 +#include <linux/irq_cpustat.h>	/* Standard mappings for irq_cpustat_t above */
 +
-+/*
-+ * We put the hardirq and softirq counter into the preemption
-+ * counter. The bitmask has the following meaning:
-+ *
-+ * - bits 0-7 are the preemption count (max preemption depth: 256)
-+ * - bits 8-15 are the softirq count (max # of softirqs: 256)
-+ * - bits 16-23 are the hardirq count (max # of hardirqs: 256)
-+ *
-+ * - ( bit 26 is the PREEMPT_ACTIVE flag. )
-+ *
-+ * PREEMPT_MASK: 0x000000ff
-+ * HARDIRQ_MASK: 0x0000ff00
-+ * SOFTIRQ_MASK: 0x00ff0000
-+ */
-+
-+#define PREEMPT_BITS	8
-+#define SOFTIRQ_BITS	8
 +#define HARDIRQ_BITS	8
-+
-+#define PREEMPT_SHIFT	0
-+#define SOFTIRQ_SHIFT	(PREEMPT_SHIFT + PREEMPT_BITS)
-+#define HARDIRQ_SHIFT	(SOFTIRQ_SHIFT + SOFTIRQ_BITS)
 +
 +/*
 + * The hardirq mask has to be large enough to have
@@ -5925,15 +6479,6 @@
 +#if (1 << HARDIRQ_BITS) < NR_IRQS
 +# error HARDIRQ_BITS is too low!
 +#endif
-+
-+#define irq_enter()		(preempt_count() += HARDIRQ_OFFSET)
-+#define irq_exit()							\
-+do {									\
-+		preempt_count() -= IRQ_EXIT_OFFSET;			\
-+		if (!in_interrupt() && softirq_pending(smp_processor_id())) \
-+			do_softirq();					\
-+		preempt_enable_no_resched();				\
-+} while (0)
 +
 +#ifdef CONFIG_SMP
 +# error nios2nommu SMP is not available
@@ -6067,248 +6612,6 @@
 + *
 + */
 +#error "<asm/init.h> should never be used - use <linux/init.h> instead"
---- linux/include/asm-nios2nommu/io.h
-+++ linux/include/asm-nios2nommu/io.h
-@@ -0,0 +1,239 @@
-+/*
-+ * Copyright (C) 2004, Microtronix Datacom Ltd.
-+ *
-+ * All rights reserved.          
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful, but
-+ * WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
-+ * NON INFRINGEMENT.  See the GNU General Public License for more
-+ * details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+#ifndef __NIOS2_IO_H
-+#define __NIOS2_IO_H
-+
-+#ifdef __KERNEL__
-+
-+#include <linux/kernel.h>
-+
-+#include <asm/page.h>      /* IO address mapping routines need this */
-+#include <asm/system.h>
-+#include <asm/unaligned.h>
-+
-+extern void insw(unsigned long port, void *dst, unsigned long count);
-+extern void outsw(unsigned long port, void *src, unsigned long count);
-+extern void insl(unsigned long port, void *dst, unsigned long count);
-+extern void outsl(unsigned long port, void *src, unsigned long count);
-+
-+
-+/*
-+ * readX/writeX() are used to access memory mapped devices. On some
-+ * architectures the memory mapped IO stuff needs to be accessed
-+ * differently. On the Nios architecture, we just read/write the
-+ * memory location directly.
-+ */
-+
-+#define readb(addr) 	\
-+({						\
-+	unsigned char __res;\
-+	__asm__ __volatile__( \
-+		"ldbuio %0, 0(%1)" \
-+		: "=r"(__res)	\
-+		: "r" (addr));	\
-+	__res;				\
-+})
-+
-+#define readw(addr) 	\
-+({						\
-+	unsigned short __res;\
-+	__asm__ __volatile__( \
-+		"ldhuio %0, 0(%1)" \
-+		: "=r"(__res)	\
-+		: "r" (addr));	\
-+	__res;				\
-+})
-+
-+#define readl(addr) 	\
-+({						\
-+	unsigned int __res;\
-+	__asm__ __volatile__( \
-+		"ldwio %0, 0(%1)" \
-+		: "=r"(__res)	\
-+		: "r" (addr));	\
-+	__res;				\
-+})
-+
-+#define writeb(b,addr)	\
-+({						\
-+	__asm__ __volatile__( \
-+		"stbio %0, 0(%1)" \
-+		: : "r"(b), "r" (addr));	\
-+})
-+
-+#define writew(b,addr)	\
-+({						\
-+	__asm__ __volatile__( \
-+		"sthio %0, 0(%1)" \
-+		: : "r"(b), "r" (addr));	\
-+})
-+
-+#define writel(b,addr)	\
-+({						\
-+	__asm__ __volatile__( \
-+		"stwio %0, 0(%1)" \
-+		: : "r"(b), "r" (addr));	\
-+})
-+
-+#define __raw_readb readb
-+#define __raw_readw readw
-+#define __raw_readl readl
-+#define __raw_writeb writeb
-+#define __raw_writew writew
-+#define __raw_writel writel
-+
-+
-+/*
-+ *	make the short names macros so specific devices
-+ *	can override them as required
-+ */
-+
-+#define memset_io(addr,c,len)	memset((void *)(((unsigned int)(addr)) | 0x80000000),(c),(len))
-+#define memcpy_fromio(to,from,len)	memcpy((to),(void *)(((unsigned int)(from)) | 0x80000000),(len))
-+#define memcpy_toio(to,from,len)	memcpy((void *)(((unsigned int)(to)) | 0x80000000),(from),(len))
-+
-+#define inb(addr)    readb(addr)
-+#define inw(addr)    readw(addr)
-+#define inl(addr)    readl(addr)
-+
-+#define outb(x,addr) ((void) writeb(x,addr))
-+#define outw(x,addr) ((void) writew(x,addr))
-+#define outl(x,addr) ((void) writel(x,addr))
-+
-+#define inb_p(addr)    inb(addr)
-+#define inw_p(addr)    inw(addr)
-+#define inl_p(addr)    inl(addr)
-+
-+#define outb_p(x,addr) outb(x,addr)
-+#define outw_p(x,addr) outw(x,addr)
-+#define outl_p(x,addr) outl(x,addr)
-+
-+
-+
-+extern inline void insb(unsigned long port, void *dst, unsigned long count)
-+{
-+	unsigned char *p=(unsigned char*)dst;
-+	while (count--)
-+		*p++ = inb(port);
-+}
-+
-+/* See arch/niosnommu/io.c for optimized version */
-+extern inline void _insw(unsigned long port, void *dst, unsigned long count)
-+{
-+	unsigned short *p=(unsigned short*)dst;
-+	while (count--)
-+		*p++ = inw(port);
-+}
-+
-+/* See arch/niosnommu/kernel/io.c for unaligned destination pointer */
-+extern inline void _insl(unsigned long port, void *dst, unsigned long count)
-+{
-+	unsigned long *p=(unsigned long*)dst;
-+	while (count--)
-+		*p++ = inl(port);
-+}
-+
-+extern inline void outsb(unsigned long port, void *src, unsigned long count)
-+{
-+	unsigned char *p=(unsigned char*)src;
-+	while (count--) 
-+        outb( *p++, port );
-+}
-+
-+/* See arch/niosnommu/io.c for optimized version */
-+extern inline void _outsw(unsigned long port, void *src, unsigned long count)
-+{
-+	unsigned short *p=(unsigned short*)src;
-+	while (count--) 
-+        outw( *p++, port );
-+}
-+
-+/* See arch/niosnommu/kernel/io.c for unaligned source pointer */
-+extern inline void _outsl(unsigned long port, void *src, unsigned long count)
-+{
-+	unsigned long *p=(unsigned long*)src;
-+	while (count--) 
-+        outl( *p++, port );
-+}
-+
-+
-+
-+extern inline void mapioaddr(unsigned long physaddr, unsigned long virt_addr,
-+			     int bus, int rdonly)
-+{
-+	return;
-+}
-+
-+//vic - copied from m68knommu
-+
-+/* Values for nocacheflag and cmode */
-+#define IOMAP_FULL_CACHING		0
-+#define IOMAP_NOCACHE_SER		1
-+#define IOMAP_NOCACHE_NONSER		2
-+#define IOMAP_WRITETHROUGH		3
-+
-+extern void *__ioremap(unsigned long physaddr, unsigned long size, int cacheflag);
-+extern void __iounmap(void *addr, unsigned long size);
-+
-+extern inline void *ioremap(unsigned long physaddr, unsigned long size)
-+{
-+	return __ioremap(physaddr, size, IOMAP_NOCACHE_SER);
-+}
-+extern inline void *ioremap_nocache(unsigned long physaddr, unsigned long size)
-+{
-+	return __ioremap(physaddr, size, IOMAP_NOCACHE_SER);
-+}
-+extern inline void *ioremap_writethrough(unsigned long physaddr, unsigned long size)
-+{
-+	return __ioremap(physaddr, size, IOMAP_WRITETHROUGH);
-+}
-+extern inline void *ioremap_fullcache(unsigned long physaddr, unsigned long size)
-+{
-+	return __ioremap(physaddr, size, IOMAP_FULL_CACHING);
-+}
-+
-+extern void iounmap(void *addr);
-+
-+
-+#define IO_SPACE_LIMIT 0xffffffff
-+
-+#define dma_cache_inv(_start,_size)		do { } while (0)
-+#define dma_cache_wback(_start,_size)		do { } while (0)
-+#define dma_cache_wback_inv(_start,_size)	do { } while (0)
-+
-+/* Pages to physical address... */
-+#define page_to_phys(page)      ((page - mem_map) << PAGE_SHIFT)
-+#define page_to_bus(page)       ((page - mem_map) << PAGE_SHIFT)
-+
-+#define mm_ptov(vaddr)		((void *) (vaddr))
-+#define mm_vtop(vaddr)		((unsigned long) (vaddr))
-+#define phys_to_virt(vaddr)	((void *) (vaddr))
-+#define virt_to_phys(vaddr)	((unsigned long) (vaddr))
-+
-+#define virt_to_bus virt_to_phys
-+#define bus_to_virt phys_to_virt
-+
-+#endif /* __KERNEL__ */
-+
-+#endif /* !(__NIOS2_IO_H) */
-+
 --- linux/include/asm-nios2nommu/ioctl.h
 +++ linux/include/asm-nios2nommu/ioctl.h
 @@ -0,0 +1,100 @@
@@ -6518,6 +6821,301 @@
 +#define TIOCSER_TEMT    0x01	/* Transmitter physically empty */
 +
 +#endif /* __ARCH_NIOS2_IOCTLS_H__ */
+--- linux/include/asm-nios2nommu/io.h
++++ linux/include/asm-nios2nommu/io.h
+@@ -0,0 +1,240 @@
++/*
++ * Copyright (C) 2004, Microtronix Datacom Ltd.
++ *
++ * All rights reserved.          
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
++ * NON INFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#ifndef __NIOS2_IO_H
++#define __NIOS2_IO_H
++
++#ifdef __KERNEL__
++
++#include <linux/kernel.h>
++
++#include <asm/page.h>      /* IO address mapping routines need this */
++#include <asm/system.h>
++#include <asm/unaligned.h>
++
++extern void insw(unsigned long port, void *dst, unsigned long count);
++extern void outsw(unsigned long port, void *src, unsigned long count);
++extern void insl(unsigned long port, void *dst, unsigned long count);
++extern void outsl(unsigned long port, void *src, unsigned long count);
++
++
++/*
++ * readX/writeX() are used to access memory mapped devices. On some
++ * architectures the memory mapped IO stuff needs to be accessed
++ * differently. On the Nios architecture, we just read/write the
++ * memory location directly.
++ */
++
++#define readb(addr) 	\
++({						\
++	unsigned char __res;\
++	__asm__ __volatile__( \
++		"ldbuio %0, 0(%1)" \
++		: "=r"(__res)	\
++		: "r" (addr));	\
++	__res;				\
++})
++
++#define readw(addr) 	\
++({						\
++	unsigned short __res;\
++	__asm__ __volatile__( \
++		"ldhuio %0, 0(%1)" \
++		: "=r"(__res)	\
++		: "r" (addr));	\
++	__res;				\
++})
++
++#define readl(addr) 	\
++({						\
++	unsigned int __res;\
++	__asm__ __volatile__( \
++		"ldwio %0, 0(%1)" \
++		: "=r"(__res)	\
++		: "r" (addr));	\
++	__res;				\
++})
++
++#define writeb(b,addr)	\
++({						\
++	__asm__ __volatile__( \
++		"stbio %0, 0(%1)" \
++		: : "r"(b), "r" (addr));	\
++})
++
++#define writew(b,addr)	\
++({						\
++	__asm__ __volatile__( \
++		"sthio %0, 0(%1)" \
++		: : "r"(b), "r" (addr));	\
++})
++
++#define writel(b,addr)	\
++({						\
++	__asm__ __volatile__( \
++		"stwio %0, 0(%1)" \
++		: : "r"(b), "r" (addr));	\
++})
++
++#define __raw_readb readb
++#define __raw_readw readw
++#define __raw_readl readl
++#define __raw_writeb writeb
++#define __raw_writew writew
++#define __raw_writel writel
++
++#define mmiowb()
++
++/*
++ *	make the short names macros so specific devices
++ *	can override them as required
++ */
++
++#define memset_io(addr,c,len)	memset((void *)(((unsigned int)(addr)) | 0x80000000),(c),(len))
++#define memcpy_fromio(to,from,len)	memcpy((to),(void *)(((unsigned int)(from)) | 0x80000000),(len))
++#define memcpy_toio(to,from,len)	memcpy((void *)(((unsigned int)(to)) | 0x80000000),(from),(len))
++
++#define inb(addr)    readb(addr)
++#define inw(addr)    readw(addr)
++#define inl(addr)    readl(addr)
++
++#define outb(x,addr) ((void) writeb(x,addr))
++#define outw(x,addr) ((void) writew(x,addr))
++#define outl(x,addr) ((void) writel(x,addr))
++
++#define inb_p(addr)    inb(addr)
++#define inw_p(addr)    inw(addr)
++#define inl_p(addr)    inl(addr)
++
++#define outb_p(x,addr) outb(x,addr)
++#define outw_p(x,addr) outw(x,addr)
++#define outl_p(x,addr) outl(x,addr)
++
++
++
++extern inline void insb(unsigned long port, void *dst, unsigned long count)
++{
++	unsigned char *p=(unsigned char*)dst;
++	while (count--)
++		*p++ = inb(port);
++}
++
++/* See arch/niosnommu/io.c for optimized version */
++extern inline void _insw(unsigned long port, void *dst, unsigned long count)
++{
++	unsigned short *p=(unsigned short*)dst;
++	while (count--)
++		*p++ = inw(port);
++}
++
++/* See arch/niosnommu/kernel/io.c for unaligned destination pointer */
++extern inline void _insl(unsigned long port, void *dst, unsigned long count)
++{
++	unsigned long *p=(unsigned long*)dst;
++	while (count--)
++		*p++ = inl(port);
++}
++
++extern inline void outsb(unsigned long port, void *src, unsigned long count)
++{
++	unsigned char *p=(unsigned char*)src;
++	while (count--) 
++        outb( *p++, port );
++}
++
++/* See arch/niosnommu/io.c for optimized version */
++extern inline void _outsw(unsigned long port, void *src, unsigned long count)
++{
++	unsigned short *p=(unsigned short*)src;
++	while (count--) 
++        outw( *p++, port );
++}
++
++/* See arch/niosnommu/kernel/io.c for unaligned source pointer */
++extern inline void _outsl(unsigned long port, void *src, unsigned long count)
++{
++	unsigned long *p=(unsigned long*)src;
++	while (count--) 
++        outl( *p++, port );
++}
++
++
++
++extern inline void mapioaddr(unsigned long physaddr, unsigned long virt_addr,
++			     int bus, int rdonly)
++{
++	return;
++}
++
++//vic - copied from m68knommu
++
++/* Values for nocacheflag and cmode */
++#define IOMAP_FULL_CACHING		0
++#define IOMAP_NOCACHE_SER		1
++#define IOMAP_NOCACHE_NONSER		2
++#define IOMAP_WRITETHROUGH		3
++
++extern void *__ioremap(unsigned long physaddr, unsigned long size, int cacheflag);
++extern void __iounmap(void *addr, unsigned long size);
++
++extern inline void *ioremap(unsigned long physaddr, unsigned long size)
++{
++	return __ioremap(physaddr, size, IOMAP_NOCACHE_SER);
++}
++extern inline void *ioremap_nocache(unsigned long physaddr, unsigned long size)
++{
++	return __ioremap(physaddr, size, IOMAP_NOCACHE_SER);
++}
++extern inline void *ioremap_writethrough(unsigned long physaddr, unsigned long size)
++{
++	return __ioremap(physaddr, size, IOMAP_WRITETHROUGH);
++}
++extern inline void *ioremap_fullcache(unsigned long physaddr, unsigned long size)
++{
++	return __ioremap(physaddr, size, IOMAP_FULL_CACHING);
++}
++
++extern void iounmap(void *addr);
++
++
++#define IO_SPACE_LIMIT 0xffffffff
++
++#define dma_cache_inv(_start,_size)		do { } while (0)
++#define dma_cache_wback(_start,_size)		do { } while (0)
++#define dma_cache_wback_inv(_start,_size)	do { } while (0)
++
++/* Pages to physical address... */
++#define page_to_phys(page)      ((page - mem_map) << PAGE_SHIFT)
++#define page_to_bus(page)       ((page - mem_map) << PAGE_SHIFT)
++
++#define mm_ptov(vaddr)		((void *) (vaddr))
++#define mm_vtop(vaddr)		((unsigned long) (vaddr))
++#define phys_to_virt(vaddr)	((void *) (vaddr))
++#define virt_to_phys(vaddr)	((unsigned long) (vaddr))
++
++#define virt_to_bus virt_to_phys
++#define bus_to_virt phys_to_virt
++
++#endif /* __KERNEL__ */
++
++#endif /* !(__NIOS2_IO_H) */
++
+--- linux/include/asm-nios2nommu/ipcbuf.h
++++ linux/include/asm-nios2nommu/ipcbuf.h
+@@ -0,0 +1,49 @@
++#ifndef __NIOS2_IPCBUF_H__
++#define __NIOS2_IPCBUF_H__
++
++/* Copied from asm-m68k/ipcbuf.h
++ * The user_ipc_perm structure for Nios architecture.
++ * Note extra padding because this structure is passed back and forth
++ * between kernel and user space.
++ *
++ * Pad space is left for:
++ * - 32-bit mode_t and seq
++ * - 2 miscellaneous 32-bit values
++ * 
++ * Copyright (C) 2004, Microtronix Datacom Ltd.
++ *
++ * All rights reserved.          
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
++ * NON INFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++struct ipc64_perm
++{
++	__kernel_key_t		key;
++	__kernel_uid32_t	uid;
++	__kernel_gid32_t	gid;
++	__kernel_uid32_t	cuid;
++	__kernel_gid32_t	cgid;
++	__kernel_mode_t		mode;
++	unsigned short		__pad1;
++	unsigned short		seq;
++	unsigned short		__pad2;
++	unsigned long		__unused1;
++	unsigned long		__unused2;
++};
++
++#endif /* __NIOS2_IPCBUF_H__ */
 --- linux/include/asm-nios2nommu/ipc.h
 +++ linux/include/asm-nios2nommu/ipc.h
 @@ -0,0 +1,51 @@
@@ -6572,58 +7170,6 @@
 +#define IPCCALL(version,op)	((version)<<16 | (op))
 +
 +#endif
---- linux/include/asm-nios2nommu/ipcbuf.h
-+++ linux/include/asm-nios2nommu/ipcbuf.h
-@@ -0,0 +1,49 @@
-+#ifndef __NIOS2_IPCBUF_H__
-+#define __NIOS2_IPCBUF_H__
-+
-+/* Copied from asm-m68k/ipcbuf.h
-+ * The user_ipc_perm structure for Nios architecture.
-+ * Note extra padding because this structure is passed back and forth
-+ * between kernel and user space.
-+ *
-+ * Pad space is left for:
-+ * - 32-bit mode_t and seq
-+ * - 2 miscellaneous 32-bit values
-+ * 
-+ * Copyright (C) 2004, Microtronix Datacom Ltd.
-+ *
-+ * All rights reserved.          
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful, but
-+ * WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
-+ * NON INFRINGEMENT.  See the GNU General Public License for more
-+ * details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+struct ipc64_perm
-+{
-+	__kernel_key_t		key;
-+	__kernel_uid32_t	uid;
-+	__kernel_gid32_t	gid;
-+	__kernel_uid32_t	cuid;
-+	__kernel_gid32_t	cgid;
-+	__kernel_mode_t		mode;
-+	unsigned short		__pad1;
-+	unsigned short		seq;
-+	unsigned short		__pad2;
-+	unsigned long		__unused1;
-+	unsigned long		__unused2;
-+};
-+
-+#endif /* __NIOS2_IPCBUF_H__ */
 --- linux/include/asm-nios2nommu/irq.h
 +++ linux/include/asm-nios2nommu/irq.h
 @@ -0,0 +1,182 @@
@@ -7977,56 +8523,6 @@
 +
 +#endif /* __NIOS2_MMAN_H__ */
 +
---- linux/include/asm-nios2nommu/mmu.h
-+++ linux/include/asm-nios2nommu/mmu.h
-@@ -0,0 +1,47 @@
-+/*
-+ *
-+ * Taken from the m68knommu.
-+ * 
-+ * Copyright (C) 2004, Microtronix Datacom Ltd.
-+ *
-+ * All rights reserved.          
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful, but
-+ * WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
-+ * NON INFRINGEMENT.  See the GNU General Public License for more
-+ * details.
-+ *
-+ * You should have received a copy of the GNU General Public License
-+ * along with this program; if not, write to the Free Software
-+ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
-+ *
-+ */
-+
-+#ifndef __NIOS2NOMMU_MMU_H
-+#define __NIOS2NOMMU_MMU_H
-+
-+/* Copyright (C) 2002, David McCullough <davidm@snapgear.com> */
-+
-+struct mm_rblock_struct {
-+	int	size;
-+	int	refcount;
-+	void	*kblock;
-+};
-+
-+struct mm_tblock_struct {
-+	struct mm_rblock_struct	*rblock;
-+	struct mm_tblock_struct	*next;
-+};
-+
-+typedef struct {
-+	struct mm_tblock_struct	tblock;
-+	unsigned long		end_brk;
-+} mm_context_t;
-+
-+#endif /* __NIOS2NOMMU_MMU_H */
 --- linux/include/asm-nios2nommu/mmu_context.h
 +++ linux/include/asm-nios2nommu/mmu_context.h
 @@ -0,0 +1,58 @@
@@ -8058,7 +8554,7 @@
 +#ifndef __NIOS2NOMMU_MMU_CONTEXT_H
 +#define __NIOS2NOMMU_MMU_CONTEXT_H
 +
-+// #include <linux/config.h>
++#include <linux/config.h>
 +#include <asm/setup.h>
 +#include <asm/page.h>
 +#include <asm/pgalloc.h>
@@ -8088,6 +8584,45 @@
 +}
 +
 +#endif
+--- linux/include/asm-nios2nommu/mmu.h
++++ linux/include/asm-nios2nommu/mmu.h
+@@ -0,0 +1,36 @@
++/*
++ *
++ * Taken from the m68knommu.
++ * 
++ * Copyright (C) 2004, Microtronix Datacom Ltd.
++ *
++ * All rights reserved.          
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful, but
++ * WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE, GOOD TITLE or
++ * NON INFRINGEMENT.  See the GNU General Public License for more
++ * details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ *
++ */
++
++#ifndef __NIOS2NOMMU_MMU_H
++#define __NIOS2NOMMU_MMU_H
++
++/* Copyright (C) 2002, David McCullough <davidm@snapgear.com> */
++
++typedef struct {
++	struct vm_list_struct	*vmlist;
++	unsigned long		end_brk;
++} mm_context_t;
++
++#endif /* __NIOS2NOMMU_MMU_H */
 --- linux/include/asm-nios2nommu/module.h
 +++ linux/include/asm-nios2nommu/module.h
 @@ -0,0 +1,36 @@
@@ -8640,7 +9175,7 @@
 +#endif /* _NIOS2NOMMU_PGALLOC_H */
 --- linux/include/asm-nios2nommu/pgtable.h
 +++ linux/include/asm-nios2nommu/pgtable.h
-@@ -0,0 +1,100 @@
+@@ -0,0 +1,104 @@
 +#ifndef _NIOS_PGTABLE_H
 +#define _NIOS_PGTABLE_H
 +
@@ -8667,6 +9202,7 @@
 + *
 + ---------------------------------------------------------------------*/
 +
++#include <asm-generic/4level-fixup.h>
 +
 +//vic - this bit copied from m68knommu version
 +// #include <linux/config.h>
@@ -8707,11 +9243,14 @@
 +#define ZERO_PAGE(vaddr)	(virt_to_page(0))
 +
 +extern unsigned int kobjsize(const void *objp);
++extern int is_in_rom(unsigned long);
 +
 +/*
 + * No page table caches to initialise
 + */
 +#define pgtable_cache_init()   do { } while (0)
++#define io_remap_page_range(vma, vaddr, paddr, size, prot) \
++	remap_pfn_range(vma, vaddr, (paddr) >> PAGE_SHIFT, size, prot)
 +
 +extern inline void flush_cache_mm(struct mm_struct *mm)
 +{
@@ -9319,7 +9858,7 @@
 +
 --- linux/include/asm-nios2nommu/scatterlist.h
 +++ linux/include/asm-nios2nommu/scatterlist.h
-@@ -0,0 +1,40 @@
+@@ -0,0 +1,42 @@
 +#ifndef _NIOS2NOMMU_SCATTERLIST_H
 +#define _NIOS2NOMMU_SCATTERLIST_H
 +
@@ -9346,6 +9885,7 @@
 + *
 + ---------------------------------------------------------------------*/
 +
++#include <linux/mm.h>
 +
 +struct scatterlist {
 +	struct page	*page;
@@ -9354,6 +9894,7 @@
 +	unsigned int	length;
 +};
 +
++#define sg_address(sg) (page_address((sg)->page) + (sg)->offset
 +#define sg_dma_address(sg)	((sg)->dma_address)
 +#define sg_dma_len(sg)		((sg)->length)
 +
@@ -9471,110 +10012,6 @@
 +#endif /* __ASSEMBLY__ */
 +
 +#endif /* _NIOS2NOMMU_SEGMENT_H */
---- linux/include/asm-nios2nommu/semaphore-helper.h
-+++ linux/include/asm-nios2nommu/semaphore-helper.h
-@@ -0,0 +1,101 @@
-+#ifndef _NIOS2NOMMU_SEMAPHORE_HELPER_H
-+#define _NIOS2NOMMU_SEMAPHORE_HELPER_H
-+
-+/*--------------------------------------------------------------------
-+ *
-+ * include/asm-nios2nommu/semaphore.h
-+ *
-+ * SMP- and interrupt-safe semaphores helper functions.
-+ *
-+ * Derived from M68knommu
-+ *
-+ * (C) Copyright 1996 Linus Torvalds
-+ * m68k version by Andreas Schwab
-+ * Copyright (C) 2004   Microtronix Datacom Ltd
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ * Jan/20/2004		dgt	    NiosII
-+ *
-+ ---------------------------------------------------------------------*/
-+
-+// #include <linux/config.h>
-+
-+/*
-+ * These two _must_ execute atomically wrt each other.
-+ */
-+static inline void wake_one_more(struct semaphore * sem)
-+{
-+	atomic_inc(&sem->waking);
-+}
-+
-+static inline int waking_non_zero(struct semaphore *sem)
-+{
-+	int ret;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&semaphore_wake_lock, flags);
-+	ret = 0;
-+	if (atomic_read(&sem->waking) > 0) {
-+		atomic_dec(&sem->waking);
-+		ret = 1;
-+	}
-+	spin_unlock_irqrestore(&semaphore_wake_lock, flags);
-+	return ret;
-+}
-+
-+/*
-+ * waking_non_zero_interruptible:
-+ *	1	got the lock
-+ *	0	go to sleep
-+ *	-EINTR	interrupted
-+ */
-+static inline int waking_non_zero_interruptible(struct semaphore *sem,
-+						struct task_struct *tsk)
-+{
-+	int ret;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&semaphore_wake_lock, flags);
-+	ret = 0;
-+	if (atomic_read(&sem->waking) > 0) {
-+		atomic_dec(&sem->waking);
-+		ret = 1;
-+	} else if (signal_pending(tsk)) {
-+		atomic_inc(&sem->count);
-+		ret = -EINTR;
-+	}
-+	spin_unlock_irqrestore(&semaphore_wake_lock, flags);
-+	return ret;
-+}
-+
-+/*
-+ * waking_non_zero_trylock:
-+ *	1	failed to lock
-+ *	0	got the lock
-+ */
-+static inline int waking_non_zero_trylock(struct semaphore *sem)
-+{
-+	int ret;
-+	unsigned long flags;
-+
-+	spin_lock_irqsave(&semaphore_wake_lock, flags);
-+	ret = 1;
-+	if (atomic_read(&sem->waking) > 0) {
-+		atomic_dec(&sem->waking);
-+		ret = 0;
-+	} else
-+		atomic_inc(&sem->count);
-+	spin_unlock_irqrestore(&semaphore_wake_lock, flags);
-+	return ret;
-+}
-+
-+#endif
 --- linux/include/asm-nios2nommu/semaphore.h
 +++ linux/include/asm-nios2nommu/semaphore.h
 @@ -0,0 +1,155 @@
@@ -9731,6 +10168,110 @@
 +}
 +
 +#endif /* __ASSEMBLY__ */
++
++#endif
+--- linux/include/asm-nios2nommu/semaphore-helper.h
++++ linux/include/asm-nios2nommu/semaphore-helper.h
+@@ -0,0 +1,101 @@
++#ifndef _NIOS2NOMMU_SEMAPHORE_HELPER_H
++#define _NIOS2NOMMU_SEMAPHORE_HELPER_H
++
++/*--------------------------------------------------------------------
++ *
++ * include/asm-nios2nommu/semaphore.h
++ *
++ * SMP- and interrupt-safe semaphores helper functions.
++ *
++ * Derived from M68knommu
++ *
++ * (C) Copyright 1996 Linus Torvalds
++ * m68k version by Andreas Schwab
++ * Copyright (C) 2004   Microtronix Datacom Ltd
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * Jan/20/2004		dgt	    NiosII
++ *
++ ---------------------------------------------------------------------*/
++
++// #include <linux/config.h>
++
++/*
++ * These two _must_ execute atomically wrt each other.
++ */
++static inline void wake_one_more(struct semaphore * sem)
++{
++	atomic_inc(&sem->waking);
++}
++
++static inline int waking_non_zero(struct semaphore *sem)
++{
++	int ret;
++	unsigned long flags;
++
++	spin_lock_irqsave(&semaphore_wake_lock, flags);
++	ret = 0;
++	if (atomic_read(&sem->waking) > 0) {
++		atomic_dec(&sem->waking);
++		ret = 1;
++	}
++	spin_unlock_irqrestore(&semaphore_wake_lock, flags);
++	return ret;
++}
++
++/*
++ * waking_non_zero_interruptible:
++ *	1	got the lock
++ *	0	go to sleep
++ *	-EINTR	interrupted
++ */
++static inline int waking_non_zero_interruptible(struct semaphore *sem,
++						struct task_struct *tsk)
++{
++	int ret;
++	unsigned long flags;
++
++	spin_lock_irqsave(&semaphore_wake_lock, flags);
++	ret = 0;
++	if (atomic_read(&sem->waking) > 0) {
++		atomic_dec(&sem->waking);
++		ret = 1;
++	} else if (signal_pending(tsk)) {
++		atomic_inc(&sem->count);
++		ret = -EINTR;
++	}
++	spin_unlock_irqrestore(&semaphore_wake_lock, flags);
++	return ret;
++}
++
++/*
++ * waking_non_zero_trylock:
++ *	1	failed to lock
++ *	0	got the lock
++ */
++static inline int waking_non_zero_trylock(struct semaphore *sem)
++{
++	int ret;
++	unsigned long flags;
++
++	spin_lock_irqsave(&semaphore_wake_lock, flags);
++	ret = 1;
++	if (atomic_read(&sem->waking) > 0) {
++		atomic_dec(&sem->waking);
++		ret = 0;
++	} else
++		atomic_inc(&sem->count);
++	spin_unlock_irqrestore(&semaphore_wake_lock, flags);
++	return ret;
++}
 +
 +#endif
 --- linux/include/asm-nios2nommu/sembuf.h
@@ -10480,6 +11021,99 @@
 +#error "Nios doesn't do SMP yet"
 +
 +#endif
+--- linux/include/asm-nios2nommu/spi_struct.h
++++ linux/include/asm-nios2nommu/spi_struct.h
+@@ -0,0 +1,57 @@
++// SPI Registers
++typedef volatile struct
++  {
++  int np_spirxdata;       // Read-only, 1-16 bit
++  int np_spitxdata;       // Write-only, same width as rxdata
++  int np_spistatus;       // Read-only, 9-bit
++  int np_spicontrol;      // Read/Write, 9-bit
++  int np_spireserved;     // reserved
++  int np_spislaveselect;  // Read/Write, 1-16 bit, master only
++  int np_spiendofpacket;  // Read/write, same width as txdata, rxdata.
++  } np_spi;
++
++// SPI Status Register Bits
++enum
++  {
++  np_spistatus_eop_bit  = 9,
++  np_spistatus_e_bit    = 8,
++  np_spistatus_rrdy_bit = 7,
++  np_spistatus_trdy_bit = 6,
++  np_spistatus_tmt_bit  = 5,
++  np_spistatus_toe_bit  = 4,
++  np_spistatus_roe_bit  = 3,
++
++  np_spistatus_eop_mask  = (1 << 9),
++  np_spistatus_e_mask    = (1 << 8),
++  np_spistatus_rrdy_mask = (1 << 7),
++  np_spistatus_trdy_mask = (1 << 6),
++  np_spistatus_tmt_mask  = (1 << 5),
++  np_spistatus_toe_mask  = (1 << 4),
++  np_spistatus_roe_mask  = (1 << 3),
++  };
++
++// SPI Control Register Bits
++enum
++  {
++  np_spicontrol_sso_bit   = 10,
++  np_spicontrol_ieop_bit  = 9,
++  np_spicontrol_ie_bit    = 8,
++  np_spicontrol_irrdy_bit = 7,
++  np_spicontrol_itrdy_bit = 6,
++  np_spicontrol_itoe_bit  = 4,
++  np_spicontrol_iroe_bit  = 3,
++
++  np_spicontrol_sso_mask   = (1 << 10),
++  np_spicontrol_ieop_mask  = (1 << 9),
++  np_spicontrol_ie_mask    = (1 << 8),
++  np_spicontrol_irrdy_mask = (1 << 7),
++  np_spicontrol_itrdy_mask = (1 << 6),
++  np_spicontrol_itoe_mask  = (1 << 4),
++  np_spicontrol_iroe_mask  = (1 << 3),
++  };
++
++// SPI Routines.
++int nr_spi_rxchar(np_spi *spiBase);
++int nr_spi_txchar(int i, np_spi *spiBase);
++
++
+--- linux/include/asm-nios2nommu/statfs.h
++++ linux/include/asm-nios2nommu/statfs.h
+@@ -0,0 +1,30 @@
++#ifndef _NIOS2NOMMU_STATFS_H
++#define _NIOS2NOMMU_STATFS_H
++
++/*--------------------------------------------------------------------
++ *
++ * include/asm-nios2nommu/statfs.h
++ *
++ * Derived from M68knommu
++ *
++ * Copyright (C) 2004   Microtronix Datacom Ltd
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ * Jan/20/2004		dgt	    NiosII
++ *
++ ---------------------------------------------------------------------*/
++
++
++#include <asm-generic/statfs.h>
++
++#endif /* _NIOS2NOMMU_STATFS_H */
 --- linux/include/asm-nios2nommu/stat.h
 +++ linux/include/asm-nios2nommu/stat.h
 @@ -0,0 +1,102 @@
@@ -10585,39 +11219,6 @@
 +};
 +
 +#endif
---- linux/include/asm-nios2nommu/statfs.h
-+++ linux/include/asm-nios2nommu/statfs.h
-@@ -0,0 +1,30 @@
-+#ifndef _NIOS2NOMMU_STATFS_H
-+#define _NIOS2NOMMU_STATFS_H
-+
-+/*--------------------------------------------------------------------
-+ *
-+ * include/asm-nios2nommu/statfs.h
-+ *
-+ * Derived from M68knommu
-+ *
-+ * Copyright (C) 2004   Microtronix Datacom Ltd
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ *
-+ * Jan/20/2004		dgt	    NiosII
-+ *
-+ ---------------------------------------------------------------------*/
-+
-+
-+#include <asm-generic/statfs.h>
-+
-+#endif /* _NIOS2NOMMU_STATFS_H */
 --- linux/include/asm-nios2nommu/string.h
 +++ linux/include/asm-nios2nommu/string.h
 @@ -0,0 +1,45 @@
@@ -11180,7 +11781,7 @@
 +#endif /* _NIOS_TERMIOS_H */
 --- linux/include/asm-nios2nommu/thread_info.h
 +++ linux/include/asm-nios2nommu/thread_info.h
-@@ -0,0 +1,126 @@
+@@ -0,0 +1,127 @@
 +/* thread_info.h: niosnommu low-level thread information
 + * adapted from the m68knommu
 + *
@@ -11279,6 +11880,7 @@
 +#define TIF_NEED_RESCHED  	3	/* rescheduling necessary */
 +#define TIF_POLLING_NRFLAG	4	/* true if poll_idle() is polling
 +					   TIF_NEED_RESCHED */
++#define TIF_MEMDIE		5
 +
 +/* as above, but as bit values */
 +#define _TIF_SYSCALL_TRACE	(1<<TIF_SYSCALL_TRACE)
@@ -11399,44 +12001,6 @@
 +}
 +
 +#endif
---- linux/include/asm-nios2nommu/tlb.h
-+++ linux/include/asm-nios2nommu/tlb.h
-@@ -0,0 +1,35 @@
-+#ifndef __NIOS_TLB_H__
-+#define __NIOS_TLB_H__
-+
-+/*--------------------------------------------------------------------
-+ *
-+ * include/asm-nios2nommu/tlb.h
-+ *
-+ * Derived from various works, Alpha, ix86, M68K, Sparc, ...et al
-+ *
-+ *  Copyright (C) 2003  Microtronix Datacom Ltd
-+ *  Copyright (C) 2002  NEC Corporation
-+ *  Copyright (C) 2002  Miles Bader <miles@gnu.org>
-+ *
-+ * This program is free software; you can redistribute it and/or modify
-+ * it under the terms of the GNU General Public License as published by
-+ * the Free Software Foundation; either version 2 of the License, or
-+ * (at your option) any later version.
-+ *
-+ * This program is distributed in the hope that it will be useful,
-+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
-+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-+ * GNU General Public License for more details.
-+ *
-+ *
-+ * Written by Miles Bader <miles@gnu.org>
-+ * Jan/20/2004		dgt	    NiosII
-+ *
-+ ---------------------------------------------------------------------*/
-+
-+#define tlb_flush(tlb)	((void)0)
-+
-+#include <asm-generic/tlb.h>
-+
-+#endif /* __NIOS_TLB_H__ */
-+
 --- linux/include/asm-nios2nommu/tlbflush.h
 +++ linux/include/asm-nios2nommu/tlbflush.h
 @@ -0,0 +1,86 @@
@@ -11526,6 +12090,44 @@
 +}
 +
 +#endif /* _NIOS2NOMMU_TLBFLUSH_H */
+--- linux/include/asm-nios2nommu/tlb.h
++++ linux/include/asm-nios2nommu/tlb.h
+@@ -0,0 +1,35 @@
++#ifndef __NIOS_TLB_H__
++#define __NIOS_TLB_H__
++
++/*--------------------------------------------------------------------
++ *
++ * include/asm-nios2nommu/tlb.h
++ *
++ * Derived from various works, Alpha, ix86, M68K, Sparc, ...et al
++ *
++ *  Copyright (C) 2003  Microtronix Datacom Ltd
++ *  Copyright (C) 2002  NEC Corporation
++ *  Copyright (C) 2002  Miles Bader <miles@gnu.org>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ *
++ * Written by Miles Bader <miles@gnu.org>
++ * Jan/20/2004		dgt	    NiosII
++ *
++ ---------------------------------------------------------------------*/
++
++#define tlb_flush(tlb)	((void)0)
++
++#include <asm-generic/tlb.h>
++
++#endif /* __NIOS_TLB_H__ */
++
 --- linux/include/asm-nios2nommu/topology.h
 +++ linux/include/asm-nios2nommu/topology.h
 @@ -0,0 +1,30 @@
