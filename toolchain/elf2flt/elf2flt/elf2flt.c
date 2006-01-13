@@ -626,166 +626,6 @@ dump_symbols(symbols, number_of_symbols);
 			}
 #endif /* TARGET_microblaze */
 
-#ifdef TARGET_nios2
-#define  htoniosl(x)	(x)
-#define  niostohl(x)	(x)
-			switch ((*p)->howto->type) 
-			{
-				case R_NIOS2_BFD_RELOC_32:
-					relocation_needed = 1;
-					pflags = (FLAT_NIOS2_R_32 << 28);
-					sym_vma = bfd_section_vma(abs_bfd, sym_section);
-					sym_addr += sym_vma + q->addend;
-					/* modify target, in target order */
-					*(unsigned long *)r_mem = htoniosl(sym_addr);
-					break;
-				case R_NIOS2_CALL26:
-				{
-					unsigned long exist_val;
-					relocation_needed = 1;
-					pflags = (FLAT_NIOS2_R_CALL26 << 28);
-					sym_vma = bfd_section_vma(abs_bfd, sym_section);
-					sym_addr += sym_vma + q->addend;
-					
-					/* modify target, in target order */
-					// exist_val = niostohl(*(unsigned long *)r_mem);
-					exist_val = ((sym_addr >> 2) << 6);
-					*(unsigned long *)r_mem = htoniosl(exist_val);
-					break;
-				}
-				case R_NIOS2_HIADJ16:
-				case R_NIOS2_HI16:
-				{
-					unsigned long exist_val;
-					int r2_type;
-					/* handle the adjacent HI/LO pairs */
-					if (relcount == 0)
-						r2_type = R_NIOS2_NONE;
-					else
-						r2_type = p[1]->howto->type;
-					if ((r2_type == R_NIOS2_LO16)
-					    && (p[0]->sym_ptr_ptr == p[1]->sym_ptr_ptr)
-					    && (p[0]->addend == p[1]->addend)) 
-					    {
-							unsigned char * r2_mem = sectionp + p[1]->address;
-							if (p[1]->address - q->address!=4)
-								printf("Err: HI/LO not adjacent %d\n", p[1]->address - q->address);
-							relocation_needed = 1;
-							pflags = (q->howto->type == R_NIOS2_HIADJ16) 
-								? FLAT_NIOS2_R_HIADJ_LO : FLAT_NIOS2_R_HI_LO;
-							pflags <<= 28;
-						
-							sym_vma = bfd_section_vma(abs_bfd, sym_section);
-							sym_addr += sym_vma + q->addend;
-
-							/* modify high 16 bits, in target order */
-							exist_val = niostohl(*(unsigned long *)r_mem);
-							exist_val =  ((exist_val >> 22) << 22) | (exist_val & 0x3f);
-							if (q->howto->type == R_NIOS2_HIADJ16)
-								exist_val |= ((((sym_addr >> 16) + ((sym_addr >> 15) & 1)) & 0xFFFF) << 6);
-							else
-								exist_val |= (((sym_addr >> 16) & 0xFFFF) << 6);
-							*(unsigned long *)r_mem = htoniosl(exist_val);
-
-							/* modify low 16 bits, in target order */
-							exist_val = niostohl(*(unsigned long *)r2_mem);
-							exist_val =  ((exist_val >> 22) << 22) | (exist_val & 0x3f);
-							exist_val |= ((sym_addr & 0xFFFF) << 6);
-							*(unsigned long *)r2_mem = htoniosl(exist_val);
-						
-						} else 
-							goto NIOS2_RELOC_ERR;
-					}
-					break;
-
-				case R_NIOS2_GPREL:
-				{
-					unsigned long exist_val, temp;
-					//long gp = get_symbol_offset("_gp", sym_section, symbols, number_of_symbols);
-					long gp = get_gp_value(symbols, number_of_symbols);
-					if (gp == -1) {
-						printf("Err: unresolved symbol _gp when relocating %s\n", sym_name);
-						goto NIOS2_RELOC_ERR;
-					}
-					/* _gp holds a absolute value, otherwise the ld cannot generate correct code */
-					sym_vma = bfd_section_vma(abs_bfd, sym_section);
-					//printf("sym=%x, %d, _gp=%x, %d\n", sym_addr+sym_vma, sym_addr+sym_vma, gp, gp);
-					sym_addr += sym_vma + q->addend;
-					sym_addr -= gp;
-					//printf("sym - _gp=%x, %d\n", sym_addr, sym_addr);
-					/* modify the target, in target order (little_endian) */
-					exist_val = niostohl(*(unsigned long *)r_mem);
-					temp = ((exist_val >> 6) & 0x3ff0000) | (sym_addr & 0xffff);
-					temp <<= 6;
-					temp |= (exist_val & 0x3f);
-					*(unsigned long *)r_mem = htoniosl(temp);
-					if (verbose)
-						printf("omit: offset=0x%x symbol=%s%s "
-								"section=%s size=%d "
-								"fixup=0x%x (reloc=0x%x) GPREL\n", 
-								q->address, sym_name, addstr,
-								section_name, sym_reloc_size,
-								sym_addr, section_vma + q->address);
-					continue;
-				}
-				case R_NIOS2_PCREL16:
-				{
-					unsigned long exist_val;
-					sym_vma = 0;
-					sym_addr += sym_vma + q->addend;
-					sym_addr -= (q->address + 4);
-					/* modify the target, in target order (little_endian) */
-					exist_val = niostohl(*(unsigned long *)r_mem);
-					exist_val =  ((exist_val >> 22) << 22) | (exist_val & 0x3f);
-					exist_val |= ((sym_addr & 0xFFFF) << 6);
-					*(unsigned long *)r_mem = htoniosl(exist_val);
-					if (verbose)
-						printf("omit: offset=0x%x symbol=%s%s "
-								"section=%s size=%d "
-								"fixup=0x%x (reloc=0x%x) PCREL\n", 
-								q->address, sym_name, addstr,
-								section_name, sym_reloc_size,
-								sym_addr, section_vma + q->address);
-					continue;
-				}
-
-				case R_NIOS2_LO16:
-					/* check if this is actually the 2nd half of a pair */
-					if ((p > relpp)
-						&& ((p[-1]->howto->type == R_NIOS2_HIADJ16) 
-							|| (p[-1]->howto->type == R_NIOS2_HI16))
-					    && (p[-1]->sym_ptr_ptr == p[0]->sym_ptr_ptr)
-					    && (p[-1]->addend == p[0]->addend)) {
-						if (verbose)
-							printf("omit: offset=0x%x symbol=%s%s "
-								"section=%s size=%d LO16\n", 
-								q->address, sym_name, addstr,
-								section_name, sym_reloc_size);
-						continue;
-					}
-
-					/* error, fall through */
-
-				case R_NIOS2_S16:
-				case R_NIOS2_U16:
-				case R_NIOS2_CACHE_OPX:
-				case R_NIOS2_IMM5:
-				case R_NIOS2_IMM6:
-				case R_NIOS2_IMM8:
-				case R_NIOS2_BFD_RELOC_16:
-				case R_NIOS2_BFD_RELOC_8:
-				case R_NIOS2_GNU_VTINHERIT:
-				case R_NIOS2_GNU_VTENTRY:
-				case R_NIOS2_UJMP:
-				case R_NIOS2_CJMP:
-				case R_NIOS2_CALLR:
-NIOS2_RELOC_ERR:
-					printf("Err: unexpected reloc type %s(%d)\n", q->howto->name, q->howto->type);
-					bad_relocs++;
-					continue;
-			}
-#endif /* TARGET_nios2 */
-
 #ifdef TARGET_v850
 			/* Skip this relocation entirely if possible (we
 			   do this early, before doing any other
@@ -1223,6 +1063,166 @@ NIOS2_RELOC_ERR:
 
 #endif /* TARGET_microblaze */
 					
+#ifdef TARGET_nios2
+#define  htoniosl(x)	(x)
+#define  niostohl(x)	(x)
+			switch ((*p)->howto->type) 
+			{
+				case R_NIOS2_BFD_RELOC_32:
+					relocation_needed = 1;
+					pflags = (FLAT_NIOS2_R_32 << 28);
+					sym_vma = bfd_section_vma(abs_bfd, sym_section);
+					sym_addr += sym_vma + q->addend;
+					/* modify target, in target order */
+					*(unsigned long *)r_mem = htoniosl(sym_addr);
+					break;
+				case R_NIOS2_CALL26:
+				{
+					unsigned long exist_val;
+					relocation_needed = 1;
+					pflags = (FLAT_NIOS2_R_CALL26 << 28);
+					sym_vma = bfd_section_vma(abs_bfd, sym_section);
+					sym_addr += sym_vma + q->addend;
+					
+					/* modify target, in target order */
+					// exist_val = niostohl(*(unsigned long *)r_mem);
+					exist_val = ((sym_addr >> 2) << 6);
+					*(unsigned long *)r_mem = htoniosl(exist_val);
+					break;
+				}
+				case R_NIOS2_HIADJ16:
+				case R_NIOS2_HI16:
+				{
+					unsigned long exist_val;
+					int r2_type;
+					/* handle the adjacent HI/LO pairs */
+					if (relcount == 0)
+						r2_type = R_NIOS2_NONE;
+					else
+						r2_type = p[1]->howto->type;
+					if ((r2_type == R_NIOS2_LO16)
+					    && (p[0]->sym_ptr_ptr == p[1]->sym_ptr_ptr)
+					    && (p[0]->addend == p[1]->addend)) 
+					    {
+							unsigned char * r2_mem = sectionp + p[1]->address;
+							if (p[1]->address - q->address!=4)
+								printf("Err: HI/LO not adjacent %d\n", p[1]->address - q->address);
+							relocation_needed = 1;
+							pflags = (q->howto->type == R_NIOS2_HIADJ16) 
+								? FLAT_NIOS2_R_HIADJ_LO : FLAT_NIOS2_R_HI_LO;
+							pflags <<= 28;
+						
+							sym_vma = bfd_section_vma(abs_bfd, sym_section);
+							sym_addr += sym_vma + q->addend;
+
+							/* modify high 16 bits, in target order */
+							exist_val = niostohl(*(unsigned long *)r_mem);
+							exist_val =  ((exist_val >> 22) << 22) | (exist_val & 0x3f);
+							if (q->howto->type == R_NIOS2_HIADJ16)
+								exist_val |= ((((sym_addr >> 16) + ((sym_addr >> 15) & 1)) & 0xFFFF) << 6);
+							else
+								exist_val |= (((sym_addr >> 16) & 0xFFFF) << 6);
+							*(unsigned long *)r_mem = htoniosl(exist_val);
+
+							/* modify low 16 bits, in target order */
+							exist_val = niostohl(*(unsigned long *)r2_mem);
+							exist_val =  ((exist_val >> 22) << 22) | (exist_val & 0x3f);
+							exist_val |= ((sym_addr & 0xFFFF) << 6);
+							*(unsigned long *)r2_mem = htoniosl(exist_val);
+						
+						} else 
+							goto NIOS2_RELOC_ERR;
+					}
+					break;
+
+				case R_NIOS2_GPREL:
+				{
+					unsigned long exist_val, temp;
+					//long gp = get_symbol_offset("_gp", sym_section, symbols, number_of_symbols);
+					long gp = get_gp_value(symbols, number_of_symbols);
+					if (gp == -1) {
+						printf("Err: unresolved symbol _gp when relocating %s\n", sym_name);
+						goto NIOS2_RELOC_ERR;
+					}
+					/* _gp holds a absolute value, otherwise the ld cannot generate correct code */
+					sym_vma = bfd_section_vma(abs_bfd, sym_section);
+					//printf("sym=%x, %d, _gp=%x, %d\n", sym_addr+sym_vma, sym_addr+sym_vma, gp, gp);
+					sym_addr += sym_vma + q->addend;
+					sym_addr -= gp;
+					//printf("sym - _gp=%x, %d\n", sym_addr, sym_addr);
+					/* modify the target, in target order (little_endian) */
+					exist_val = niostohl(*(unsigned long *)r_mem);
+					temp = ((exist_val >> 6) & 0x3ff0000) | (sym_addr & 0xffff);
+					temp <<= 6;
+					temp |= (exist_val & 0x3f);
+					*(unsigned long *)r_mem = htoniosl(temp);
+					if (verbose)
+						printf("omit: offset=0x%x symbol=%s%s "
+								"section=%s size=%d "
+								"fixup=0x%x (reloc=0x%x) GPREL\n", 
+								q->address, sym_name, addstr,
+								section_name, sym_reloc_size,
+								sym_addr, section_vma + q->address);
+					continue;
+				}
+				case R_NIOS2_PCREL16:
+				{
+					unsigned long exist_val;
+					sym_vma = 0;
+					sym_addr += sym_vma + q->addend;
+					sym_addr -= (q->address + 4);
+					/* modify the target, in target order (little_endian) */
+					exist_val = niostohl(*(unsigned long *)r_mem);
+					exist_val =  ((exist_val >> 22) << 22) | (exist_val & 0x3f);
+					exist_val |= ((sym_addr & 0xFFFF) << 6);
+					*(unsigned long *)r_mem = htoniosl(exist_val);
+					if (verbose)
+						printf("omit: offset=0x%x symbol=%s%s "
+								"section=%s size=%d "
+								"fixup=0x%x (reloc=0x%x) PCREL\n", 
+								q->address, sym_name, addstr,
+								section_name, sym_reloc_size,
+								sym_addr, section_vma + q->address);
+					continue;
+				}
+
+				case R_NIOS2_LO16:
+					/* check if this is actually the 2nd half of a pair */
+					if ((p > relpp)
+						&& ((p[-1]->howto->type == R_NIOS2_HIADJ16) 
+							|| (p[-1]->howto->type == R_NIOS2_HI16))
+					    && (p[-1]->sym_ptr_ptr == p[0]->sym_ptr_ptr)
+					    && (p[-1]->addend == p[0]->addend)) {
+						if (verbose)
+							printf("omit: offset=0x%x symbol=%s%s "
+								"section=%s size=%d LO16\n", 
+								q->address, sym_name, addstr,
+								section_name, sym_reloc_size);
+						continue;
+					}
+
+					/* error, fall through */
+
+				case R_NIOS2_S16:
+				case R_NIOS2_U16:
+				case R_NIOS2_CACHE_OPX:
+				case R_NIOS2_IMM5:
+				case R_NIOS2_IMM6:
+				case R_NIOS2_IMM8:
+				case R_NIOS2_BFD_RELOC_16:
+				case R_NIOS2_BFD_RELOC_8:
+				case R_NIOS2_GNU_VTINHERIT:
+				case R_NIOS2_GNU_VTENTRY:
+				case R_NIOS2_UJMP:
+				case R_NIOS2_CJMP:
+				case R_NIOS2_CALLR:
+NIOS2_RELOC_ERR:
+					printf("Err: unexpected reloc type %s(%d)\n", q->howto->name, q->howto->type);
+					bad_relocs++;
+					continue;
+			}
+#endif /* TARGET_nios2 */
+
 #ifdef TARGET_sparc
 				case R_SPARC_32:
 				case R_SPARC_UA32:
