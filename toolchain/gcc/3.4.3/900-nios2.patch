@@ -6989,7 +6989,7 @@
 +
 +#undef STARTFILE_SPEC 
 +#define STARTFILE_SPEC  \
-+"%{msys-crt0=*: %*} %{!msys-crt0=*: crt0%O%s} \
++"%{msys-crt0=*: %*} %{!msys-crt0=*: crt1%O%s} \
 + %{msys-crt0=: %eYou need a C startup file for -msys-crt0=} \
 + %{mctors-in-init: crti%O%s crtbegin%O%s} \
 +"
