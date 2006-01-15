@@ -1066,8 +1066,6 @@ dump_symbols(symbols, number_of_symbols);
 #ifdef TARGET_nios2
 #define  htoniosl(x)	(x)
 #define  niostohl(x)	(x)
-			switch ((*p)->howto->type) 
-			{
 				case R_NIOS2_BFD_RELOC_32:
 					relocation_needed = 1;
 					pflags = (FLAT_NIOS2_R_32 << 28);
@@ -1220,7 +1218,6 @@ NIOS2_RELOC_ERR:
 					printf("Err: unexpected reloc type %s(%d)\n", q->howto->name, q->howto->type);
 					bad_relocs++;
 					continue;
-			}
 #endif /* TARGET_nios2 */
 
 #ifdef TARGET_sparc
