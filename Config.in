@@ -48,6 +48,48 @@ endchoice
 #
 choice
 	prompt "Target Architecture Variant"
+	depends BR2_arm || BR2_armeb
+	default BR2_generic_arm
+config BR2_generic_arm
+	bool "generic_arm"
+config BR2_arm610
+	bool "arm610"
+config BR2_arm710
+	bool "arm710"
+config BR2_arm720t
+	bool "arm720t"
+config BR2_arm920t
+	bool "arm920t"
+config BR2_arm922t
+	bool "arm922t"
+config BR2_arm926t
+	bool "arm926t"
+config BR2_arm1136jf_s
+	bool "arm1136jf_s"
+config BR2_sa110
+	bool "sa110"
+config BR2_sa1100
+	bool "sa1100"
+config BR2_xscale
+	bool "xscale"
+endchoice
+
+config BR2_ARM_TYPE
+	string
+	default ARM610		if BR2_arm610
+	default ARM710		if BR2_arm710
+	default ARM720T		if BR2_arm720t
+	default ARM920T		if BR2_arm920t
+	default ARM922T		if BR2_arm922t
+	default ARM926T		if BR2_arm926t
+	default ARM1136JF_S 	if BR2_arm1136jf_s
+	default ARM_SA110	if BR2_sa110
+	default ARM_SA1100	if BR2_sa1100
+	default ARM_XSCALE	if BR2_xscale
+	default GENERIC_ARM	if BR2_generic_arm
+
+choice
+	prompt "Target Architecture Variant"
 	depends BR2_sh
 	default BR2_sh4
 config BR2_sh2a_nofpueb
