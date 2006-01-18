@@ -79,8 +79,8 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 		-e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
-	$(SED) '/^# ARCH_$(UCLIBC_TARGET_ENDIAN)_ENDIAN /s,# ,,;s, is not set,=y,g' \
-		-e '/^# ARCH_$(UCLIBC_NOT_TARGET_ENDIAN)_ENDIAN /s,# ,,;s, is not set,=n,' \
+	$(SED) '/^# ARCH_$(UCLIBC_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=y,g}' \
+		-e '/^# ARCH_$(UCLIBC_NOT_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=n,g}' \
 		$(UCLIBC_DIR)/.config
 endif
 ifeq ($(BR2_LARGEFILE),y)
