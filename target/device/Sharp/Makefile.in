@@ -1,0 +1,7 @@
+# Override the default uClibc configuration
+ifeq ($(strip $(BR2_TARGET_SHARP_LNODE80)),y)
+
+include target/device/Sharp/LNode80/Makefile.in
+include target/device/Sharp/LNode80/linux.mk
+
+endif

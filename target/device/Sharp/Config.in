@@ -1,0 +1,9 @@
+comment "Sharp Specific Device Support"
+	depends BR2_arm
+
+config BR2_TARGET_SHARP_LNODE80
+	bool "Board support for the LNode80 development board"
+	depends BR2_arm
+	default n
+	help
+	  Support for the LNode80 LH79520 based device
