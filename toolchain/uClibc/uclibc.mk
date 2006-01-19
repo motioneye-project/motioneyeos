@@ -78,7 +78,7 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 		-e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
 		-e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
-ifeq ($(BR2_ARCH),"arm")
+ifeq ($(UCLIBC_TARGET_ARCH),"arm")
        $(SED) 's,^.*CONFIG_$(shell echo $(BR2_ARM_TYPE)).*,CONFIG_$(shell echo $(BR2_ARM_TYPE))=y,g' \
        $(UCLIBC_DIR)/.config
 endif
