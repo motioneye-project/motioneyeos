@@ -23,11 +23,9 @@ choice
 		bool "gcc 3.4.3"
 
 	config BR2_GCC_VERSION_3_4_4
-		depends !BR2_nios2
 		bool "gcc 3.4.4"
 
 	config BR2_GCC_VERSION_3_4_5
-		depends !BR2_nios2
 		bool "gcc 3.4.5"
 
 	config BR2_GCC_VERSION_4_0_0
