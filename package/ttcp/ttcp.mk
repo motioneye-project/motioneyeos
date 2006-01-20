@@ -4,7 +4,7 @@
 #
 #############################################################
 #
-TTCP_SOURCE_URL=http://ftp.sunet.se/ftp/pub/network/monitoring/ttcp
+TTCP_SOURCE_URL=http://ftp.sunet.se/pub/network/monitoring/ttcp
 TTCP_SOURCE=ttcp.c
 TTCP_BUILD_DIR=$(BUILD_DIR)/ttcp
 
