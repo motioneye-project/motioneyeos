@@ -1,2 +1,5 @@
 include target/generic/Makefile.in
 include target/device/Makefile.in
+include target/x86/Makefile.in
+include target/arm/Makefile.in
+include target/powerpc/Makefile.in
