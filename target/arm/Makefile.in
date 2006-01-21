@@ -1,1 +1,1 @@
-include target/arm/*/*.mk
+-include target/arm/*/*.mk
