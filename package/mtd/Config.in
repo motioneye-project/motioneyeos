@@ -10,7 +10,7 @@ config BR2_PACKAGE_MTD_FLASH_ERASE
 	default y
 	depends on BR2_PACKAGE_MTD
 
-config BR2_PACKAGE_MTD_FLASH_ERASEASLL
+config BR2_PACKAGE_MTD_FLASH_ERASEALL
 	bool "flash_eraseall"
 	default y
 	depends on BR2_PACKAGE_MTD
@@ -37,6 +37,11 @@ config BR2_PACKAGE_MTD_FLASHCP
 
 config BR2_PACKAGE_MTD_JFFS2DUMP
 	bool "jffs2dump"
+	default y
+	depends on BR2_PACKAGE_MTD
+
+config BR2_PACKAGE_MTD_JFFS3DUMP
+	bool "jffs3dump"
 	default y
 	depends on BR2_PACKAGE_MTD
 
