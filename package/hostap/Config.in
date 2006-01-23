@@ -1,6 +1,7 @@
 config BR2_PACKAGE_HOSTAP
 	bool "hostap"
 	default n
+	select BR2_PACKAGE_PCMCIA
 	help
 	  Linux driver for wireless LAN cards based on Intersil's 
 	  Prism2/2.5/3 chipset.
