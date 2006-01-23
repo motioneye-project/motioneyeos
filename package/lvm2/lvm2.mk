@@ -23,8 +23,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LVM2_BASEVER=2.00
-LVM2_PATCH=33
+LVM2_BASEVER=2.01
+LVM2_PATCH=15
 LVM2_VERSION=$(LVM2_BASEVER).$(LVM2_PATCH)
 LVM2_SOURCE:=LVM2.$(LVM2_VERSION).tgz
 LVM2_SITE:=ftp://sources.redhat.com/pub/lvm2
@@ -55,7 +55,7 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 	touch $(LVM2_DIR)/.configured
 
 $(LVM2_TARGET_SBINS): $(LVM2_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(LVM2_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
 	$(MAKE) CC=$(TARGET_CC) -C $(LVM2_DIR) install prefix=$(STAGING_DIR) exec_prefix=$(STAGING_DIR)
 	for binary in $(LVM2_SBIN); do echo $$binary; cp -a $(STAGING_DIR)/sbin/$$binary $(TARGET_DIR)/sbin; done
 
