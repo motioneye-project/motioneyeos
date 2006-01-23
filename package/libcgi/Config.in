@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBCGI
+	bool "libcgi"
+	default n
+	help
+		LibCGI is a library written from scratch to easily make 
+		CGI applications in C.
+
+		There are a lot of functions like string manipulation, 
+		session and cookie support, GET and POST methods manipulation 
+		etc..., to help you to quickly write powerful CGI programs.
+
+		http://libcgi.sourceforge.net/
