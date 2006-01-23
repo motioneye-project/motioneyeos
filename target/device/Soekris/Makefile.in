@@ -9,3 +9,17 @@ include target/device/Soekris/net4521/linux.mk
 endif
 
 endif
+
+SOEKRIS_NET4801_PATH=target/device/Soekris/net4801
+
+ifeq ($(strip $(BR2_TARGET_SOEKRIS_NET4801)),y)
+UCLIBC_CONFIG_FILE:=$(SOEKRIS_NET4801_PATH)/uClibc.config
+BR2_PACKAGE_BUSYBOX_CONFIG:=$(SOEKRIS_NET4801_PATH)/busybox.config
+
+ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
+TARGETS+=linux
+include $(SOEKRIS_NET4801_PATH)/linux.mk
+include target/device/Soekris/soekris_gpio/soekris_gpio.mk
+endif
+
+endif
