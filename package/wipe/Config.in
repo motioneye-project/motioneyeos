@@ -1,0 +1,9 @@
+config BR2_PACKAGE_WIPE
+	bool "wipe"
+	default n
+	help
+	  Wipe is a little command for securely erasing files
+	  from magnetic media. It compiles under various unix platforms.
+
+	  http://abaababa.ouvaton.org/wipe/
+
