@@ -3,8 +3,9 @@
 # mtd provides jffs2 utilities
 #
 #############################################################
-MTD_SOURCE=mtd_20050122.orig.tar.gz
-MTD_SITE=http://ftp.debian.org/debian/pool/main/m/mtd
+MTD_SOURCE   := mtd_20050122.orig.tar.gz
+MTD_SITE     := http://ftp.debian.org/debian/pool/main/m/mtd
+MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd-20050122.orig
 
 #############################################################
 #
@@ -12,9 +13,8 @@ MTD_SITE=http://ftp.debian.org/debian/pool/main/m/mtd
 # needed by target/jffs2root.
 #
 #############################################################
-MKFS_JFFS2 = $(MTD_HOST_DIR)/util/mkfs.jffs2
+MKFS_JFFS2 := $(MTD_HOST_DIR)/util/mkfs.jffs2
 
-MTD_HOST_DIR	:=	$(TOOL_BUILD_DIR)/mtd-20050122.orig
 
 $(DL_DIR)/$(MTD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
@@ -44,7 +44,7 @@ mtd-host-dirclean:
 # build mtd for use on the target system
 #
 #############################################################
-MTD_DIR:=$(BUILD_DIR)/mtd-20050122.orig
+MTD_DIR := $(BUILD_DIR)/mtd-20050122.orig
 
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	zcat $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -86,7 +86,8 @@ MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
 
 $(MTD_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/util/%
 	cp -f $< $@
-
+	$(STRIP) $@
+	
 mtd: zlib $(MTD_TARGETS)
 
 mtd-source: $(DL_DIR)/$(MTD_SOURCE)
