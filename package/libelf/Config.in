@@ -3,6 +3,7 @@ config BR2_PACKAGE_LIBELF
 	default n
 	help
 	  This is the public release of libelf-0.8.5, a free ELF object
-	  file access library.
+	  file access library. This build does not generate a shared
+	  library.
 
 	  http://www.stud.uni-hannover.de/~michael/software/

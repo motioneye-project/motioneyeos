@@ -31,7 +31,7 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.source
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		$(DISABLE_NLS) \
-		--enable-shared \
+		--disable-shared \
 	);
 	touch $(LIBELF_DIR)/.configured;
 
