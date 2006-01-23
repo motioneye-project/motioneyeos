@@ -66,6 +66,9 @@ $(TARGET_DIR)/$(FLEX_TARGET_BINARY): $(FLEX_DIR)/$(FLEX_BINARY)
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(FLEX_DIR) install
+ifeq ($(strip $(BR2_PACKAGE_FLEX_LIBFL)),y)
+	install -D $(FLEX_DIR)/libfl.a $(STAGING_DIR)/lib/libfl.a
+endif
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/usr/bin; ln -snf flex lex)
@@ -89,6 +92,9 @@ flex-clean:
 	    includedir=$(TARGET_DIR)/usr/include \
 		-C $(FLEX_DIR) uninstall
 	rm -f $(TARGET_DIR)/usr/bin/lex
+ifeq ($(strip $(BR2_PACKAGE_FLEX_LIBFL)),y)
+	-rm $(STAGING_DIR)/lib/libfl.a
+endif
 	-$(MAKE) -C $(FLEX_DIR) clean
 
 flex-dirclean:

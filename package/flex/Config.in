@@ -6,3 +6,11 @@ config BR2_PACKAGE_FLEX
 	  programs that perform pattern-matching on text.
 
 	  http://www.gnu.org/software/flex/
+
+config BR2_PACKAGE_FLEX_LIBFL
+	bool "Install libfl.a under staging_dir/lib"
+	default y
+	depends on BR2_PACKAGE_FLEX
+	help
+	  Install libfl.a under staging_dir/lib for further development
+	  on a host machine.
