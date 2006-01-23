@@ -43,8 +43,6 @@ $(STAGING_DIR)/usr/lib/libelf.a: $(LIBELF_DIR)/libelf.so.$(LIBELF_VER)
 		instroot=$(STAGING_DIR) -C $(LIBELF_DIR) install
 
 $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER): $(STAGING_DIR)/usr/lib/libelf.a
-	$(INSTALL) -m 0644 $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VER) $(TARGET_DIR)/usr/lib/
-	$(INSTALL) -m 0644 $(STAGING_DIR)/usr/lib/libelf.so.0 $(TARGET_DIR)/usr/lib/
 
 libelf: uclibc $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER)
 
