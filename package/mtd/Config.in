@@ -5,6 +5,44 @@ config BR2_PACKAGE_MTD
 	help
 	  Build mtd/jffs utilities
 
+menu "MTD package selection"
+	depends on BR2_PACKAGE_MTD
+
+choice
+	prompt "Source package selection"
+	depends on BR2_PACKAGE_MTD
+	default BR2_PACKAGE_MTD_ORIG
+	
+
+config BR2_PACKAGE_MTD_ORIG
+	bool "Default source"
+	depends on BR2_PACKAGE_MTD
+	help
+	  Use the stable release.
+
+config BR2_PACKAGE_MTD_SNAPSHOT
+	bool "Daily snapshot"
+	depends on BR2_PACKAGE_MTD
+	help
+	  Use the latest MTD daily snapshot instead of release.
+	  You should probably say NO except for specific purpose.
+
+endchoice
+
+config BR2_PACKAGE_MTD_ORIG_STRING
+	string "MTD package name"
+	depends on BR2_PACKAGE_MTD_ORIG
+	default "mtd_20050122.orig.tar.gz"
+	help
+	  You should not modify the file name, unless you want to
+	  use a specific and private MTD package.
+	  Default is mtd_20050122.orig.tar.gz
+
+endmenu
+
+menu "MTD tools selection"
+	depends BR2_PACKAGE_MTD
+
 config BR2_PACKAGE_MTD_FLASH_ERASE
 	bool "flash_erase"
 	default y
@@ -104,3 +142,5 @@ config BR2_PACKAGE_MTD_DOC_LOADBIOS
 	bool "doc_loadbios"
 	default y
 	depends on BR2_PACKAGE_MTD
+
+endmenu

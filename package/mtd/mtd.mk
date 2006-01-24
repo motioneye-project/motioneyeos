@@ -3,9 +3,24 @@
 # mtd provides jffs2 utilities
 #
 #############################################################
-MTD_SOURCE   := mtd_20050122.orig.tar.gz
-MTD_SITE     := http://ftp.debian.org/debian/pool/main/m/mtd
-MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd-20050122.orig
+ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
+# Be aware that this changes daily....
+TODAY=$(shell date -u +%Y%m%d)
+MTD_DL_SOURCE=mtd-snapshot-$(TODAY).tar.bz2
+MTD_SOURCE=mtd-snapshot.tar.bz2
+MTD_SITE=ftp://ftp.uk.linux.org/pub/people/dwmw2/mtd/cvs
+MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_snapshot
+MTD_DIR:=$(BUILD_DIR)/mtd_snapshot
+MTD_UNZIP=bzcat
+else
+MTD_SOURCE=$(shell echo -n $(BR2_PACKAGE_MTD_ORIG_STRING))
+MTD_SITE=http://ftp.debian.org/debian/pool/main/m/mtd
+MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_orig
+MTD_DIR:=$(BUILD_DIR)/mtd_orig
+MTD_UNZIP=zcat
+endif
+
+
 
 #############################################################
 #
@@ -15,15 +30,27 @@ MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd-20050122.orig
 #############################################################
 MKFS_JFFS2 := $(MTD_HOST_DIR)/util/mkfs.jffs2
 
-
+ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
 $(DL_DIR)/$(MTD_SOURCE):
+	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_DL_SOURCE)
+	mv $(DL_DIR)/$(MTD_DL_SOURCE) $(DL_DIR)/$(MTD_SOURCE)
+
+$(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE_GENERIC)
+	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS)
+	mv $(TOOL_BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
+	touch $(MTD_HOST_DIR)/.unpacked
+else
+$(DL_DIR)/$(MTD_SOURCE):
+	echo $(DL_DIR)/$(MTD_SOURCE)
 	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	zcat $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS)
+	mv $(TOOL_BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
 		package/mtd \*.patch
 	touch $(MTD_HOST_DIR)/.unpacked
+endif
 
 $(MTD_HOST_DIR)/util/mkfs.jffs2: $(MTD_HOST_DIR)/.unpacked
 	CFLAGS=-I$(LINUX_HEADERS_DIR)/include \
@@ -44,13 +71,17 @@ mtd-host-dirclean:
 # build mtd for use on the target system
 #
 #############################################################
-MTD_DIR := $(BUILD_DIR)/mtd-20050122.orig
-
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	zcat $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
+	mv $(BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_DIR)
+	touch $(MTD_DIR)/.unpacked
+else
+	mv $(BUILD_DIR)/$(shell tar tzf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_DIR)
 	toolchain/patch-kernel.sh $(MTD_DIR) \
 		package/mtd \*.patch
 	touch $(MTD_DIR)/.unpacked
+endif
 
 MTD_TARGETS_n :=
 MTD_TARGETS_y :=
