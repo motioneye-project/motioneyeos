@@ -159,6 +159,8 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-sh asm; \
 	     cd asm; \
 	     ln -s cpu-sh4 cpu) \
+	elif [ "$(ARCH)" = "i386" -o "$(ARCH)" = "i486" -o "$(ARCH)" = "i586" -o "$(ARCH)" = "i686" ];then \
+	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-i386$(NOMMU) asm;) \
 	else \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-$(ARCH)$(NOMMU) asm;) \
 	fi
