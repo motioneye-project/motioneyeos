@@ -23,8 +23,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-DM_BASEVER=1.00
-DM_PATCH=21
+DM_BASEVER=1.01
+DM_PATCH=05
 DM_VERSION=$(DM_BASEVER).$(DM_PATCH)
 DM_SOURCE:=device-mapper.$(DM_VERSION).tgz
 DM_SITE:=ftp://sources.redhat.com/pub/dm
@@ -62,7 +62,7 @@ $(DM_DIR)/$(DM_BINARY): dm-build
 $(DM_DIR)/$(DM_LIBRARY): dm-build
 
 $(DM_STAGING_BINARY) $(DM_STAGING_LIBRARY): $(DM_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(DM_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(DM_DIR) DESTDIR=$(STAGING_DIR)
 	$(MAKE) -C $(DM_DIR) install prefix=$(STAGING_DIR)
 
 # Install dmsetup from staging to target
@@ -75,7 +75,7 @@ $(DM_TARGET_LIBRARY).$(DM_BASEVER): $(DM_STAGING_LIBRARY)
 
 # Makes libdevmapper.so a symlink to libdevmapper.so.1.00
 $(DM_TARGET_LIBRARY): $(DM_TARGET_LIBRARY).$(DM_BASEVER)
-	rm $@
+	rm -f $@
 	ln -s $(<F) $@
 
 dm: uclibc $(DM_TARGET_BINARY) $(DM_TARGET_LIBRARY)
