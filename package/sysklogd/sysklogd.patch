@@ -1,17 +1,92 @@
-On MIPS architecture, sysklogd fails to compile because linux/module.h
-depends on asmlinkage, which is defined linux/linkage.h.
+--- sysklogd-1.4.1/module.h.orig	1970-01-01 10:00:00.000000000 +1000
++++ sysklogd-1.4.1/module.h	2005-11-24 01:40:09.000000000 +1000
+@@ -0,0 +1,62 @@
++/* this file eliminates the need to include <kernel/module.h> */
++/* Module definitions for klogd's module support */
++struct kernel_sym
++{
++	        unsigned long value;
++	        char name[60];
++};
++
++struct module_symbol
++{
++	unsigned long value;
++	const char *name;
++};
++
++struct module_ref
++{
++	struct module *dep;     /* "parent" pointer */
++	struct module *ref;     /* "child" pointer */
++	struct module_ref *next_ref;
++};
++
++struct module_info
++{
++	unsigned long addr;
++	unsigned long size;
++	unsigned long flags;
++	long usecount;
++};
++
++
++typedef struct { volatile int counter; } atomic_t;
++
++struct module
++{
++	unsigned long size_of_struct;   /* == sizeof(module) */
++	struct module *next;
++	const char *name;
++	unsigned long size;
++	
++	union
++	{
++		atomic_t usecount;
++		long pad;
++        } uc;                           /* Needs to keep its size - so says rth */
++	
++	unsigned long flags;            /* AUTOCLEAN et al */
++	
++	unsigned nsyms;
++	unsigned ndeps;
++	
++	struct module_symbol *syms;
++	struct module_ref *deps;
++	struct module_ref *refs;
++	int (*init)(void);
++	void (*cleanup)(void);
++	const struct exception_table_entry *ex_table_start;
++	const struct exception_table_entry *ex_table_end;
++#ifdef __alpha__
++	unsigned long gp;
++#endif
++};
++	
 
-The "proper" fix to this would probably be to apply the
-mips-fixed-fls-warning.patch to the linux sources, which patches
-asm-mips/system.h to always include linux/linkage.h.
-
---- sysklogd-1.4.1/ksym_mod.c.orig	2000-09-12 14:15:28.000000000 -0700
-+++ sysklogd-1.4.1/ksym_mod.c	2005-08-15 14:11:42.000000000 -0700
-@@ -89,6 +89,7 @@
+--- sysklogd-1.4.1/ksym_mod.c.orig	2005-11-24 23:15:01.000000000 +1000
++++ sysklogd-1.4.1/ksym_mod.c	2005-11-24 23:11:54.000000000 +1000
+@@ -89,17 +89,22 @@
  #include <errno.h>
  #include <sys/fcntl.h>
  #include <sys/stat.h>
 +#include <linux/linkage.h>
++#include <linux/version.h>
  #if !defined(__GLIBC__)
  #include <linux/time.h>
  #include <linux/module.h>
+ #else /* __GLIBC__ */
++#if LINUX_VERSION_CODE >= 0x20500
++#include "module.h"
++#else
+ #include <linux/module.h>
++#endif
+ extern __off64_t lseek64 __P ((int __fd, __off64_t __offset, int __whence));
+ extern int get_kernel_syms __P ((struct kernel_sym *__table));
+ #endif /* __GLIBC__ */
+ #include <stdarg.h>
+ #include <paths.h>
+-#include <linux/version.h>
+ 
+ #include "klogd.h"
+ #include "ksyms.h"
