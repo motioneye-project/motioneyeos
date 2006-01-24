@@ -72,7 +72,7 @@ use-sed-host-binary:
 	if [ ! -e "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)" ] ; then \
 		mkdir -p "$(HOST_SED_DIR)/bin"; \
 		rm -f "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
-		ln -s "$$SED" "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
+		ln -sf "$$SED" "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
 	fi
 
 host-sed: $(HOST_SED_TARGET)
