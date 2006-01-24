@@ -53,7 +53,7 @@ $(SOCAT_WORKDIR)/socat:	$(SOCAT_WORKDIR)/Makefile
 
 $(SOCAT_WORKDIR)/.installed: $(SOCAT_WORKDIR)/socat
 	mkdir -p $(TARGET_DIR)/usr/man/man1
-	$(MAKE) -C $(SOCAT_WORKDIR) install prefix=$(TARGET_DIR)/usr
+	$(MAKE) -C $(SOCAT_WORKDIR) install prefix=$(TARGET_DIR)/usr DESTDIR=$(TARGET_DIR)
 
 socat:	uclibc $(SOCAT_WORKDIR)/.installed
 
