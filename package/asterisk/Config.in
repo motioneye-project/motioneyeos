@@ -1,0 +1,10 @@
+config BR2_PACKAGE_ASTERISK
+	bool "asterisk"
+	default n
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_MPG123
+	help
+		Asterisk - the Open Source PBX
+
