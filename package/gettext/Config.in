@@ -7,3 +7,12 @@ config BR2_PACKAGE_GETTEXT
 	  messages.
 
 	  http://www.gnu.org/software/gettext/
+
+config BR2_PACKAGE_LIBINTL
+	bool "libintl"
+	default n
+	help
+	  Selecting this package installs all of gettext in the staging
+	  directory and the shared library for it's use in the target.
+
+	  http://www.gnu.org/software/gettext/

@@ -43,14 +43,10 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 $(GETTEXT_DIR)/$(GETTEXT_BINARY): $(GETTEXT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GETTEXT_DIR)
 
-$(TARGET_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
+$(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) install
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
-		$(TARGET_DIR)/usr/doc
 
-gettext: uclibc $(TARGET_DIR)/$(GETTEXT_TARGET_BINARY)
+gettext: uclibc $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 
 gettext-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) uninstall
@@ -61,9 +57,33 @@ gettext-dirclean:
 
 #############################################################
 #
+# gettext on the target
+#
+#############################################################
+   
+gettext-target: $(GETTEXT_DIR)/$(GETTEXT_BINARY)
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) install
+	chmod +x $(TARGET_DIR)/usr/lib/libintl.so.2.2.0 # identify as needing to be stipped
+	rm -rf  $(TARGET_DIR)/usr/info \
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
+		$(TARGET_DIR)/usr/doc $(TARGET_DIR)/usr/share/aclocal \
+		$(TARGET_DIR)/usr/include/libintl.h
+	-rmdir $(TARGET_DIR)/usr/include
+   
+libintl: $(TARGET_DIR)/usr/lib/libintl.so
+
+$(TARGET_DIR)/usr/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
+	cp -a $(STAGING_DIR)/usr/lib/libintl.so* $(TARGET_DIR)/usr/lib
+	touch $@
+    
+#############################################################
+#
 # Toplevel Makefile options
 #
 #############################################################
+ifeq ($(strip $(BR2_PACKAGE_LIBINTL)),y)
+TARGETS+=libintl
+endif
 ifeq ($(strip $(BR2_PACKAGE_GETTEXT)),y)
-TARGETS+=gettext
+TARGETS+=gettext-target
 endif
