@@ -1,0 +1,57 @@
+#!/bin/sh
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+
+# for a chrooted server: "-u bind -t /var/lib/named"
+OPTIONS=""
+
+test -x /usr/sbin/rndc || exit 0
+
+case "$1" in
+    start)
+	echo -n "Starting domain name service: named"
+
+	# dirs under /var/run can go away on reboots.
+	mkdir -p /var/run/bind/run
+	chmod 775 /var/run/bind/run
+	chown root:bind /var/run/bind/run >/dev/null 2>&1 || true
+
+	if [ ! -x /usr/sbin/named ]; then
+	    echo "named binary missing - not starting"
+	    exit 1
+	fi
+	if start-stop-daemon --start --quiet --exec /usr/sbin/named \
+		--pidfile /var/run/bind/run/named.pid -- $OPTIONS; then
+	    if [ -x /sbin/resolvconf ] ; then
+		echo "nameserver 127.0.0.1" | /sbin/resolvconf -a lo
+	    fi
+	fi
+	echo "."	
+    ;;
+
+    stop)
+	echo -n "Stopping domain name service: named"
+	if [ -x /sbin/resolvconf ]; then
+	    /sbin/resolvconf -d lo
+	fi
+	/usr/sbin/rndc stop
+	echo "."	
+    ;;
+
+    reload)
+	/usr/sbin/rndc reload
+    ;;
+
+    restart|force-reload)
+	$0 stop
+	sleep 2
+	$0 start
+    ;;
+    
+    *)
+	echo "Usage: /etc/init.d/bind {start|stop|reload|restart|force-reload}" >&2
+	exit 1
+    ;;
+esac
+
+exit 0

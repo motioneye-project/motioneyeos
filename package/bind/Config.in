@@ -1,0 +1,22 @@
+config BR2_PACKAGE_BIND
+	bool "bind"
+	default n
+	help
+	  BIND (Berkeley Internet Name Domain) is an implementation of
+	  the Domain Name System (DNS) protocols and provides an openly
+	  redistributable reference implementation of the major
+	  components of the Domain Name System, including:
+
+	    * a Domain Name System server (named)
+	    * a Domain Name System resolver library
+	    * tools for verifying the proper operation of the DNS server 
+
+	  The BIND DNS Server is used on the vast majority of name
+	  serving machines on the Internet, providing a robust and
+	  stable architecture on top of which an organization's naming
+	  architecture can be built. The resolver library included in
+	  the BIND distribution provides the standard APIs for
+	  translation between domain names and Internet addresses and is
+	  intended to be linked with applications requiring name service. 
+
+	  http://www.isc.org/sw/bind/

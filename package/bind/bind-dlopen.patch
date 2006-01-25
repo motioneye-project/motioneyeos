@@ -1,0 +1,89 @@
+--- bind-9.3.1/bin/named/Makefile.in	2004-09-06 14:47:25.000000000 -0700
++++ bind/bin/named/Makefile.in	2005-09-19 15:55:17.000000000 -0700
+@@ -29,7 +29,7 @@
+ DBDRIVER_OBJS =
+ DBDRIVER_SRCS =
+ DBDRIVER_INCLUDES =
+-DBDRIVER_LIBS =
++DBDRIVER_LIBS = -ldl
+ 
+ CINCLUDES =	-I${srcdir}/include -I${srcdir}/unix/include \
+ 		${LWRES_INCLUDES} ${DNS_INCLUDES} ${BIND9_INCLUDES} \
+diff -aur bind-9.3.1/bin/named/main.c bind/bin/named/main.c
+--- bind-9.3.1/bin/named/main.c	2004-10-24 17:42:54.000000000 -0700
++++ bind/bin/named/main.c	2005-09-14 10:49:28.000000000 -0700
+@@ -22,6 +22,7 @@
+ #include <ctype.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <dlfcn.h>
+ 
+ #include <isc/app.h>
+ #include <isc/commandline.h>
+@@ -540,6 +541,7 @@
+ static void
+ setup(void) {
+ 	isc_result_t result;
++	void        *handle;
+ 
+ 	/*
+ 	 * Get the user and group information before changing the root
+@@ -655,13 +657,33 @@
+ 	/*
+ 	 * Add calls to register sdb drivers here.
+ 	 */
+-	/* xxdb_init(); */
+-
++	handle = dlopen ("cadb.so", RTLD_NOW);
++	if (!handle) {
++	    fprintf (stderr, "failed to load cadb driver: %s\n", dlerror());
++	} else {
++	    isc_result_t (*cadbinit)(void);
++	    const char *error;
++	    
++	    dlerror();    /* Clear any existing error */
++	    *(void **) (&cadbinit) = dlsym(handle, "cadb_init");
++	    if ((error = dlerror()) != NULL)  {
++		fprintf (stderr, "failing loading cadbinit symbol: %s\n", error);
++		exit(1);
++	    }
++	   
++	    if((*cadbinit)() != ISC_R_SUCCESS) {
++		fprintf (stderr, "cadbinit failed");
++		exit(1);
++	    }
++	}
++	
+ 	ns_server_create(ns_g_mctx, &ns_g_server);
+ }
+ 
+ static void
+ cleanup(void) {
++	void *handle;
++
+ 	destroy_managers();
+ 
+ 	ns_server_destroy(&ns_g_server);
+@@ -671,7 +693,21 @@
+ 	/*
+ 	 * Add calls to unregister sdb drivers here.
+ 	 */
+-	/* xxdb_clear(); */
++	handle = dlopen ("cadb.so", RTLD_NOW);
++	if (!handle) {
++	    fprintf (stderr, "failed to load cadb driver: %s\n", dlerror());
++	} else {
++	    isc_result_t (*cadbclear)(void);
++	    const char *error;
++	    
++	    dlerror();    /* Clear any existing error */
++	    *(void **) (&cadbclear) = dlsym(handle, "cadb_clear");
++	    if ((error = dlerror()) != NULL)  {
++		fprintf (stderr, "failing loading cadbclear symbol: %s\n", error);
++	    } else {
++	        (*cadbclear)();
++	    }
++	}
+ 
+ 	isc_log_write(ns_g_lctx, NS_LOGCATEGORY_GENERAL, NS_LOGMODULE_MAIN,
+ 		      ISC_LOG_NOTICE, "exiting");

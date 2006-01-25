@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# System-V init to control the bind DNS Daemon
+#
+
+NAME=named
+DAEMON=/usr/sbin/$NAME
+
+# this file contains a few tunable parameters
+test -r /etc/default/named && . /etc/default/named
+
+test -f $DAEMON || exit 0
+
+set -e
+
+case "$1" in
+	start)
+		test -z "$CHROOT" || ARGS="$ARGS -t $CHROOT"
+		test -z "$SETUID" || ARGS="$ARGS -u $SETUID"
+		if [ ! -f $CHROOT/etc/rndc.key ]; then
+		    echo -n "Initializing $NAME control key: rndc-confgen"
+		    set +e 
+		    touch $CHROOT/etc/rndc.key # handle symlinks
+		    rndc-confgen -a -r /dev/urandom $ARGS || echo "."
+		    set -e
+		fi
+		test -z "$CONF" || ARGS="$ARGS -c $CONF"
+		echo -n "Starting domain name daemon: $NAME"
+		trap 'echo failed' 0
+		start-stop-daemon -S -x $DAEMON -- $ARGS
+		trap - 0
+		echo "."
+		;;
+	stop)
+		echo -n "Stopping domain name daemon: $NAME"
+		rndc stop || start-stop-daemon -K -x $DAEMON
+		echo "."
+		;;
+	restart)
+		$0 stop
+		sleep 2
+		$0 start && exit $?
+		;;
+	reload|force-reload)
+		rndc reload && exit $?
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload|force-reload}"
+		exit 1 
+esac
+
+exit 0
