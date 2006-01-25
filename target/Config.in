@@ -3,6 +3,7 @@ menu "Target Options"
 comment "filesystem for target device"
 
 source "target/cramfs/Config.in"
+source "target/cloop/Config.in"
 source "target/ext2/Config.in"
 source "target/jffs2/Config.in"
 source "target/squashfs/Config.in"
