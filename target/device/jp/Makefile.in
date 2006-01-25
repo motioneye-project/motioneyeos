@@ -1,0 +1,7 @@
+# Override the default uClibc configuration
+ifeq ($(strip $(BR2_TARGET_Q5)),y)
+
+include target/device/jp/q5/Makefile.in
+include target/device/jp/q5/linux.mk
+
+endif

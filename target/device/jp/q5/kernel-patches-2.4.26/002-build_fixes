@@ -1,0 +1,81 @@
+diff -Naur linux-2.4.26-q5.org/arch/mips/au1000/common/clocks.c linux-2.4.26-q5/arch/mips/au1000/common/clocks.c
+--- linux-2.4.26-q5.org/arch/mips/au1000/common/clocks.c	2003-08-25 07:44:39.000000000 -0400
++++ linux-2.4.26-q5/arch/mips/au1000/common/clocks.c	2005-06-23 02:52:03.390000000 -0400
+@@ -85,9 +85,8 @@
+ 		lcd_clock = sys_busclk / 4;
+ 
+ 	if (lcd_clock > 50000) /* Epson MAX */
+-			printk(__FUNCTION__
+-			       ": warning: LCD clock too high (%d KHz)\n",
+-			       lcd_clock);
++			printk("%s: warning: LCD clock too high (%d KHz)\n",
++			       __FUNCTION__, lcd_clock);
+ }
+ 
+ unsigned int get_au1x00_lcd_clock(void)
+--- linux-2.4.26-q5.org/arch/mips/kernel/time.c	2004-02-18 08:36:30.000000000 -0500
++++ linux-2.4.26-q5/arch/mips/kernel/time.c	2005-06-23 03:13:07.720000000 -0400
+@@ -25,6 +25,7 @@
+ #include <linux/interrupt.h>
+ #include <linux/module.h>
+ 
++#include <asm/compiler.h>
+ #include <asm/bootinfo.h>
+ #include <asm/cpu.h>
+ #include <asm/time.h>
+@@ -242,7 +243,7 @@
+ 	__asm__("multu	%1,%2"
+ 		: "=h" (res)
+ 		: "r" (count), "r" (sll32_usecs_per_cycle)
+-		: "lo", "accum");
++		: "lo", GCC_REG_ACCUM);
+ 
+ 	/*
+ 	 * Due to possible jiffies inconsistencies, we need to check
+@@ -297,7 +298,7 @@
+ 	__asm__("multu  %1,%2"
+ 		: "=h" (res)
+ 		: "r" (count), "r" (quotient)
+-		: "lo", "accum");
++		: "lo", GCC_REG_ACCUM);
+ 
+ 	/*
+ 	 * Due to possible jiffies inconsistencies, we need to check
+@@ -339,7 +340,7 @@
+ 				: "r" (timerhi), "m" (timerlo),
+ 				  "r" (tmp), "r" (USECS_PER_JIFFY),
+ 				  "r" (USECS_PER_JIFFY_FRAC)
+-				: "hi", "lo", "accum");
++				: "hi", "lo", GCC_REG_ACCUM);
+ 			cached_quotient = quotient;
+ 		}
+ 	}
+@@ -353,7 +354,7 @@
+ 	__asm__("multu	%1,%2"
+ 		: "=h" (res)
+ 		: "r" (count), "r" (quotient)
+-		: "lo", "accum");
++		: "lo", GCC_REG_ACCUM);
+ 
+ 	/*
+ 	 * Due to possible jiffies inconsistencies, we need to checkdiff -Naur linux-2.4.26-q5.org/include/asm-mips/compiler.h linux-2.4.26-q5/include/asm-mips/compiler.h
+--- linux-2.4.26-q5.org/include/asm-mips/compiler.h	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.4.26-q5/include/asm-mips/compiler.h	2005-06-23 02:52:25.000000000 -0400
+@@ -0,0 +1,17 @@
++/*
++ * Copyright (C) 2004  Maciej W. Rozycki
++ *
++ * This file is subject to the terms and conditions of the GNU General Public
++ * License.  See the file "COPYING" in the main directory of this archive
++ * for more details.
++ */
++#ifndef _ASM_COMPILER_H
++#define _ASM_COMPILER_H
++
++#if __GNUC__ > 3 || (__GNUC__ == 3 && __GNUC_MINOR__ >= 4)
++#define GCC_REG_ACCUM "$0"
++#else
++#define GCC_REG_ACCUM "accum"
++#endif
++
++#endif /* _ASM_COMPILER_H */

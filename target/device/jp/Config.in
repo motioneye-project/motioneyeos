@@ -1,0 +1,18 @@
+config BR2_TARGET_Q5
+	bool "jp-embedded Q5 board support"
+	default n
+	depends BR2_mipsel
+	select BR2_PACKAGE_LINUX
+	help
+	  jp-embedded Q5 series MIPS based boards, see http://www.jp-embedded.com for further information.
+
+comment "Package support"
+	depends BR2_TARGET_Q5
+
+config BR2_PACKAGE_LINUX
+	bool "linux"
+	default n
+	depends BR2_TARGET_Q5
+	help
+	    The Linux kernel.
+	    http://www.kernel.org/

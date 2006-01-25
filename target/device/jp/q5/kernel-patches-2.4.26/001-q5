@@ -1,0 +1,730 @@
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/arch/mips/au1000/common/Makefile linux-2.4.25-rc2_q/arch/mips/au1000/common/Makefile
+--- linux-2.4.25-rc2_org/arch/mips/au1000/common/Makefile	2004-02-13 01:03:35.000000000 +0100
++++ linux-2.4.25-rc2_q/arch/mips/au1000/common/Makefile	2004-02-13 10:04:07.000000000 +0100
+@@ -16,7 +16,7 @@ all: au1000.o
+ 
+ O_TARGET := au1000.o
+ 
+-export-objs		= prom.o clocks.o power.o usbdev.o
++export-objs		= prom.o clocks.o power.o usbdev.o setup.o
+ 
+ obj-y := prom.o int-handler.o dma.o irq.o puts.o time.o reset.o \
+ 	clocks.o power.o setup.o sleeper.o
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/arch/mips/au1000/common/pci_fixup.c linux-2.4.25-rc2_q/arch/mips/au1000/common/pci_fixup.c
+--- linux-2.4.25-rc2_org/arch/mips/au1000/common/pci_fixup.c	2004-02-13 01:03:35.000000000 +0100
++++ linux-2.4.25-rc2_q/arch/mips/au1000/common/pci_fixup.c	2004-02-13 10:09:43.000000000 +0100
+@@ -105,42 +105,8 @@ void __init pcibios_fixup(void)
+ 
+ void __init pcibios_fixup_irqs(void)
+ {
+-#if defined( CONFIG_SOC_AU1500 ) || defined( CONFIG_SOC_AU1550 )
+-	unsigned int slot, func;
+-	unsigned char pin;
+-	struct pci_dev *dev;
+-
+-	pci_for_each_dev(dev) {
+-		if (dev->bus->number != 0)
+-			return;
+-
+-		dev->irq = 0xff;
+-		slot = PCI_SLOT(dev->devfn);
+-#if defined( CONFIG_SOC_AU1500 )
+-		switch (slot) {
+-			case 12:
+-			case 13:
+-			default:
+-				dev->irq = AU1000_PCI_INTA;
+-				break;
+-		}
+-#elif defined( CONFIG_SOC_AU1550 )
+-		switch (slot) {
+-			default:
+-			case 12:
+-				dev->irq = AU1000_PCI_INTA;
+-				break;
+-			case 13:
+-				dev->irq = AU1000_PCI_INTB;
+-				break;
+-		}
+-#endif
+-
+-		pci_write_config_byte(dev, PCI_INTERRUPT_LINE, dev->irq);
+-		DBG("slot %d irq %d\n", slot, dev->irq);
+-	}
+-#endif
+ }
++
+ unsigned int pcibios_assign_all_busses(void)
+ {
+ 	return 0;
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/arch/mips/au1000/common/prom.c linux-2.4.25-rc2_q/arch/mips/au1000/common/prom.c
+--- linux-2.4.25-rc2_org/arch/mips/au1000/common/prom.c	2004-02-13 01:03:32.000000000 +0100
++++ linux-2.4.25-rc2_q/arch/mips/au1000/common/prom.c	2004-02-13 10:07:12.000000000 +0100
+@@ -81,7 +81,7 @@ void  prom_init_cmdline(void)
+ }
+ 
+ 
+-char *prom_getenv(char *envname)
++char *prom_getenv_n(char *envname, int n)
+ {
+ 	/*
+ 	 * Return a pointer to the given environment variable.
+@@ -89,19 +89,24 @@ char *prom_getenv(char *envname)
+ 	 */
+ 
+ 	t_env_var *env = (t_env_var *)prom_envp;
+-	int i;
++	int i, j=0;
+ 
+ 	i = strlen(envname);
+ 
+ 	while(env->name) {
+ 		if(strncmp(envname, env->name, i) == 0) {
+-			return(env->name + strlen(envname) + 1);
++			if(j++ == n) return(env->name + strlen(envname) + 1);
+ 		}
+ 		env++;
+ 	}
+ 	return(NULL);
+ }
+ 
++char *prom_getenv(char *envname)
++{
++      return prom_getenv_n(envname, 0);
++}
++
+ inline unsigned char str2hexnum(unsigned char c)
+ {
+ 	if(c >= '0' && c <= '9')
+@@ -128,18 +133,18 @@ inline void str2eaddr(unsigned char *ea,
+ 	}
+ }
+ 
+-int get_ethernet_addr(char *ethernet_addr)
++int get_ethernet_addr_n(char *ethernet_addr, int n)
+ {
+         char *ethaddr_str;
+ 
+-        ethaddr_str = prom_getenv("ethaddr");
++        ethaddr_str = prom_getenv_n("ethaddr", n);
+ 	if (!ethaddr_str) {
+ 	        printk("ethaddr not set in boot prom\n");
+ 		return -1;
+ 	}
+ 	str2eaddr(ethernet_addr, ethaddr_str);
+ 
+-#if 0
++#if 1
+ 	{
+ 		int i;
+ 
+@@ -153,7 +158,13 @@ int get_ethernet_addr(char *ethernet_add
+ 	return 0;
+ }
+ 
++int get_ethernet_addr(char *ethernet_addr)
++{
++      return get_ethernet_addr_n(ethernet_addr, 0);
++}
++
+ void prom_free_prom_memory (void) {}
++EXPORT_SYMBOL(get_ethernet_addr_n);
+ EXPORT_SYMBOL(prom_getcmdline);
+ EXPORT_SYMBOL(get_ethernet_addr);
+ EXPORT_SYMBOL(str2eaddr);
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/arch/mips/au1000/common/setup.c linux-2.4.25-rc2_q/arch/mips/au1000/common/setup.c
+--- linux-2.4.25-rc2_org/arch/mips/au1000/common/setup.c	2004-02-13 01:03:31.000000000 +0100
++++ linux-2.4.25-rc2_q/arch/mips/au1000/common/setup.c	2004-02-13 10:04:07.000000000 +0100
+@@ -57,6 +57,7 @@ extern struct ide_ops *ide_ops;
+ #endif
+ 
+ extern struct rtc_ops no_rtc_ops;
++void (*__wbflush) (void);
+ extern char * __init prom_getcmdline(void);
+ extern void __init board_setup(void);
+ extern void au1000_restart(char *);
+@@ -71,6 +72,11 @@ static phys_t au1500_fixup_bigphys_addr(
+ extern void au1xxx_time_init(void);
+ extern void au1xxx_timer_setup(void);
+ 
++void au1500_wbflush(void)
++{
++        __asm__ volatile ("sync");
++}
++
+ void __init au1x00_setup(void)
+ {
+ 	char *argptr;
+@@ -89,6 +95,8 @@ void __init au1x00_setup(void)
+ 	}
+ #endif	  
+ 
++	__wbflush = au1500_wbflush;
++
+ #ifdef CONFIG_FB_AU1100
+     if ((argptr = strstr(argptr, "video=")) == NULL) {
+         argptr = prom_getcmdline();
+@@ -215,3 +223,6 @@ static phys_t au1500_fixup_bigphys_addr(
+ 		return phys_addr;
+ }
+ #endif
++
++EXPORT_SYMBOL(__wbflush);
++
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/arch/mips/au1000/pb1500/irqmap.c linux-2.4.25-rc2_q/arch/mips/au1000/pb1500/irqmap.c
+--- linux-2.4.25-rc2_org/arch/mips/au1000/pb1500/irqmap.c	2004-02-13 01:03:28.000000000 +0100
++++ linux-2.4.25-rc2_q/arch/mips/au1000/pb1500/irqmap.c	2004-02-13 10:10:21.000000000 +0100
+@@ -76,6 +76,7 @@ au1xxx_irq_map_t au1xxx_irq_map[] = {
+ 	{ AU1500_GPIO_202, INTC_INT_LOW_LEVEL, 0 },
+ 	{ AU1500_GPIO_203, INTC_INT_LOW_LEVEL, 0 },
+ 	{ AU1500_GPIO_205, INTC_INT_LOW_LEVEL, 0 },
++	{ AU1500_GPIO_206, INTC_INT_FALL_EDGE, 0 },
+ 	{ AU1500_GPIO_207, INTC_INT_LOW_LEVEL, 0 },
+ 
+ 	{ AU1000_ACSYNC_INT, INTC_INT_RISE_EDGE, 0 },
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/arch/mips/kernel/head.S linux-2.4.25-rc2_q/arch/mips/kernel/head.S
+--- linux-2.4.25-rc2_org/arch/mips/kernel/head.S	2004-02-13 01:02:42.000000000 +0100
++++ linux-2.4.25-rc2_q/arch/mips/kernel/head.S	2004-02-13 10:07:43.000000000 +0100
+@@ -33,7 +33,9 @@
+ 		 * Reserved space for exception handlers.
+ 		 * Necessary for machines which link their kernels at KSEG0.
+ 		 */
+-		.fill	0x400
++		j kernel_entry
++		nop
++		.org 0x400
+ 
+ 		/* The following two symbols are used for kernel profiling. */
+ 		EXPORT(stext)
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/arch/mips/Makefile linux-2.4.25-rc2_q/arch/mips/Makefile
+--- linux-2.4.25-rc2_org/arch/mips/Makefile	2004-02-13 01:01:00.000000000 +0100
++++ linux-2.4.25-rc2_q/arch/mips/Makefile	2004-04-09 10:40:09.000000000 +0200
+@@ -69,13 +69,13 @@ endif
+ set_gccflags = $(shell \
+ while :; do \
+ 	cpu=$(1); isa=-$(2); \
+-	for gcc_opt in -march= -mcpu=; do \
++	for gcc_opt in -march=; do \
+ 		$(CC) $$gcc_opt$$cpu $$isa -S -o /dev/null \
+ 			-xc /dev/null > /dev/null 2>&1 && \
+ 			break 2; \
+ 	done; \
+ 	cpu=$(3); isa=-$(4); \
+-	for gcc_opt in -march= -mcpu=; do \
++	for gcc_opt in -march=; do \
+ 		$(CC) $$gcc_opt$$cpu $$isa -S -o /dev/null \
+ 			-xc /dev/null > /dev/null 2>&1 && \
+ 			break 2; \
+@@ -90,7 +90,7 @@ else \
+ fi; \
+ gas_abi=-Wa,-32; gas_cpu=$$cpu; gas_isa=-Wa,$$isa; \
+ while :; do \
+-	for gas_opt in -Wa,-march= -Wa,-mcpu=; do \
++	for gas_opt in -Wa,-march=; do \
+ 		$(CC) $$gas_abi $$gas_opt$$cpu $$gas_isa -Wa,-Z -c \
+ 			-o /dev/null -xassembler /dev/null > /dev/null 2>&1 && \
+ 			break 2; \
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/char/dummy_keyb.c linux-2.4.25-rc2_q/drivers/char/dummy_keyb.c
+--- linux-2.4.25-rc2_org/drivers/char/dummy_keyb.c	2004-02-12 23:51:10.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/char/dummy_keyb.c	2004-02-13 10:11:06.000000000 +0100
+@@ -29,6 +29,7 @@
+ #include <linux/errno.h>
+ #include <linux/init.h>
+ #include <linux/input.h>
++#include <linux/pm.h>
+ 
+ void kbd_leds(unsigned char leds)
+ {
+@@ -140,3 +141,46 @@ void __init kbd_init_hw(void)
+ {
+ 	printk("Dummy keyboard driver installed.\n");
+ }
++
++
++void panic_blink(void)
++ {
++ }
++
++
++ int pckbd_translate(unsigned char scancode, unsigned char *keycode,
++                   char raw_mode)
++ {
++   return 0;
++ }
++
++ char pckbd_unexpected_up(unsigned char keycode)
++ {
++   return 0;
++ }
++
++
++ void pckbd_leds(unsigned char leds)
++ {
++ }
++
++
++ int pckbd_setkeycode(unsigned int scancode, unsigned int keycode)
++ {
++   return 0;
++ }
++
++ int pckbd_getkeycode(unsigned int scancode)
++ {
++   return 0;
++ }
++
++ void __init pckbd_init_hw(void)
++ {
++ }
++
++ int pckbd_pm_resume(struct pm_dev *dev, pm_request_t rqst, void *data)
++ {
++   return 0;
++ }
++
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/char/Makefile linux-2.4.25-rc2_q/drivers/char/Makefile
+--- linux-2.4.25-rc2_org/drivers/char/Makefile	2004-02-12 23:50:40.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/char/Makefile	2004-02-13 10:11:06.000000000 +0100
+@@ -32,7 +32,7 @@ mod-subdirs	:=	joystick ftape drm drm-4.
+ list-multi	:=	
+ 
+ KEYMAP   =defkeymap.o
+-KEYBD    =pc_keyb.o
++KEYBD    =dummy_keyb.o
+ CONSOLE  =console.o
+ SERIAL   =serial.o
+ 
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/mtd/chips/cfi_cmdset_0002.c linux-2.4.25-rc2_q/drivers/mtd/chips/cfi_cmdset_0002.c
+--- linux-2.4.25-rc2_org/drivers/mtd/chips/cfi_cmdset_0002.c	2004-02-13 00:49:45.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/mtd/chips/cfi_cmdset_0002.c	2004-03-16 10:04:18.000000000 +0100
+@@ -511,7 +511,7 @@ static int do_write_oneword(struct map_i
+ 	   or tells us why it failed. */        
+ 	dq6 = CMD(1<<6);
+ 	dq5 = CMD(1<<5);
+-	timeo = jiffies + (HZ/1000); /* setting timeout to 1ms for now */
++	timeo = jiffies + HZ; /* setting timeout to 1ms for now */
+ 		
+ 	oldstatus = cfi_read(map, adr);
+ 	status = cfi_read(map, adr);
+@@ -540,9 +540,7 @@ static int do_write_oneword(struct map_i
+ 			oldstatus = cfi_read(map, adr);
+ 			status = cfi_read(map, adr);
+ 		    
+-			if ( (oldstatus & 0x00FF) == (status & 0x00FF) ) {
+-				printk(KERN_WARNING "Warning: DQ5 raised while program operation was in progress, however operation completed OK\n" );
+-			} else { 
++			if ( (oldstatus & 0x00FF) != (status & 0x00FF) ) {
+ 				/* DQ5 is active so we can do a reset and stop the erase */
+ 				cfi_write(map, CMD(0xF0), chip->start);
+ 				printk(KERN_WARNING "Internal flash device timeout occurred or write operation was performed while flash was programming.\n" );
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/mtd/maps/physmap.c linux-2.4.25-rc2_q/drivers/mtd/maps/physmap.c
+--- linux-2.4.25-rc2_org/drivers/mtd/maps/physmap.c	2004-02-13 00:50:09.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/mtd/maps/physmap.c	2004-02-13 10:11:40.000000000 +0100
+@@ -86,28 +86,24 @@ static int                   mtd_parts_n
+ #else
+ static struct mtd_partition physmap_partitions[] = {
+ /* Put your own partition definitions here */
+-#if 0
+ 	{
+-		name:		"bootROM",
+-		size:		0x80000,
++		name:		"fs1",
++		size:		28*1024*1024,
+ 		offset:		0,
+-		mask_flags:	MTD_WRITEABLE,  /* force read-only */
+ 	}, {
+-		name:		"zImage",
+-		size:		0x100000,
++		name:		"bootldr",
++		size:		128*1024,
+ 		offset:		MTDPART_OFS_APPEND,
+ 		mask_flags:	MTD_WRITEABLE,  /* force read-only */
+ 	}, {
+-		name:		"ramdisk.gz",
+-		size:		0x300000,
++		name:		"kernel",
++		size:		1*1024*1024,
+ 		offset:		MTDPART_OFS_APPEND,
+-		mask_flags:	MTD_WRITEABLE,  /* force read-only */
+ 	}, {
+-		name:		"User FS",
++		name:		"fs2",
+ 		size:		MTDPART_SIZ_FULL,
+ 		offset:		MTDPART_OFS_APPEND,
+ 	}
+-#endif
+ };
+ 
+ #define NUM_PARTITIONS	(sizeof(physmap_partitions)/sizeof(struct mtd_partition))
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/net/au1000_eth.c linux-2.4.25-rc2_q/drivers/net/au1000_eth.c
+--- linux-2.4.25-rc2_org/drivers/net/au1000_eth.c	2004-02-12 23:33:59.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/net/au1000_eth.c	2004-02-13 10:06:01.000000000 +0100
+@@ -97,6 +97,7 @@ extern int get_ethernet_addr(char *ether
+ extern inline void str2eaddr(unsigned char *ea, unsigned char *str);
+ extern inline unsigned char str2hexnum(unsigned char c);
+ extern char * __init prom_getcmdline(void);
++extern int get_ethernet_addr_n(char *ethernet_addr, int n);
+ 
+ /*
+  * Theory of operation
+@@ -591,6 +592,99 @@ int ks8995m_status(struct net_device *de
+ 	return 0;
+ }
+ 
++int ns_83847_reset(struct net_device *dev, int phy_addr)
++ {
++       s16 mii_control, timeout;
++
++ //    printk("ns_reset\n");
++       mii_control = mdio_read(dev, phy_addr, MII_CONTROL);
++       mdio_write(dev, phy_addr, MII_CONTROL, mii_control | MII_CNTL_RESET);
++       mdelay(1);
++       for (timeout = 100; timeout > 0; --timeout) {
++               mii_control = mdio_read(dev, phy_addr, MII_CONTROL);
++               if ((mii_control & MII_CNTL_RESET) == 0)
++                       break;
++               mdelay(1);
++       }
++       if (mii_control & MII_CNTL_RESET) {
++               printk(KERN_ERR "%s PHY reset timeout !\n", dev->name);
++               return -1;
++       }
++       return 0;
++ }
++
++int ns_83847_init(struct net_device *dev, int phy_addr)
++ {
++      s16 data;
++ //    printk("ns_init\n");
++
++       /* Stop auto-negotiation */
++ //    data = mdio_read(dev, phy_addr, MII_CONTROL);
++ //    mdio_write(dev, phy_addr, MII_CONTROL, data & ~MII_CNTL_AUTO);
++ //    mdio_write(dev, phy_addr,    0, 0x0000);
++       mdio_write(dev, phy_addr, MII_CONTROL, MII_CNTL_F100 /* | MII_CNTL_FDX */);
++
++       /* Set advertisement to 10/100 and Half/Full duplex (full capabilities) */
++       data = mdio_read(dev, phy_addr, MII_ANADV);
++       /* obs PAUSE bit */
++       data |= MII_NWAY_TX | MII_NWAY_TX_FDX | MII_NWAY_T_FDX | MII_NWAY_T; /* MII_NWAY_T4 not sopported */ ;
++       mdio_write(dev, phy_addr, MII_ANADV, data);
++
++       /* Bypass led stretching? */
++       data = mdio_read(dev, phy_addr, MII_NS_PHYCTRL);
++       data |= MII_NS_PHYCTRL_BP_STRETCH;
++       mdio_write(dev, phy_addr, MII_NS_PHYCTRL, data);
++
++       /* Restart auto-negotiation */
++       data = mdio_read(dev, phy_addr, MII_CONTROL);
++       data |= MII_CNTL_RST_AUTO | MII_CNTL_AUTO;
++       mdio_write(dev, phy_addr, MII_CONTROL, data);
++
++       return 0;
++ }
++
++int ns_83847_status(struct net_device *dev, int phy_addr, u16 *link, u16 *speed)
++ {
++       u16 mii_data;
++       struct au1000_private *aup;
++
++       if (!dev) {
++               printk(KERN_ERR "ns_83847_status error: NULL dev\n");
++               return -1;
++       }
++       aup = (struct au1000_private *) dev->priv;
++
++       mii_data = mdio_read(dev, aup->phy_addr, MII_STATUS);
++ //    printk("ns_status: %04x\n", mii_data);
++       if (mii_data & MII_STAT_LINK) {
++               *link = 1;
++               mii_data = mdio_read(dev, aup->phy_addr, MII_NS_PHYSTS);
++               if (mii_data & MII_NS_PHYSTS_SPEED_10) {
++                       *speed = IF_PORT_10BASET;
++                       dev->if_port = IF_PORT_10BASET;
++               }
++               else  {
++                       if (mii_data & MII_NS_PHYSTS_DUPLEX_FULL) {
++                               *speed = IF_PORT_100BASEFX;
++                               dev->if_port = IF_PORT_100BASEFX;
++                       }
++                       else {
++                               *speed = IF_PORT_100BASETX;
++                               dev->if_port = IF_PORT_100BASETX;
++                       }
++               }
++
++       }
++       else {
++               *link = 0;
++               *speed = 0;
++               dev->if_port = IF_PORT_UNKNOWN;
++       }
++       return 0;
++ }
++
++
++
+ #ifdef CONFIG_MIPS_BOSPORUS
+ int stub_init(struct net_device *dev, int phy_addr)
+ {
+@@ -616,6 +710,12 @@ stub_status(struct net_device *dev, int 
+ }
+ #endif
+ 
++struct phy_ops ns_83847_ops = {
++       ns_83847_init,
++       ns_83847_reset,
++       ns_83847_status,
++};
++
+ struct phy_ops bcm_5201_ops = {
+ 	bcm_5201_init,
+ 	bcm_5201_reset,
+@@ -667,6 +767,7 @@ static struct mii_chip_info {
+ 	struct phy_ops *phy_ops;	
+ 	int dual_phy;
+ } mii_chip_table[] = {
++	{"Natsemi DP83847 PHY", 0x2000, 0x5c30, &ns_83847_ops },
+ 	{"Broadcom BCM5201 10/100 BaseT PHY",0x0040,0x6212, &bcm_5201_ops,0},
+ 	{"Broadcom BCM5221 10/100 BaseT PHY",0x0040,0x61e4, &bcm_5201_ops,0},
+ 	{"Broadcom BCM5222 10/100 BaseT PHY",0x0040,0x6322, &bcm_5201_ops,1},
+@@ -868,6 +969,8 @@ static int mii_probe (struct net_device 
+ 			}
+ 		}
+ 	}
++	printk(KERN_ERR "%s: Au1x No MII transceivers found!\n", dev->name);
++	return -1;
+ found:
+ 
+ #ifdef CONFIG_MIPS_BOSPORUS
+@@ -1176,21 +1279,10 @@ au1000_probe(u32 ioaddr, int irq, int po
+ 	switch (ioaddr) {
+ 	case AU1000_ETH0_BASE:
+ 	case AU1500_ETH0_BASE:
+-		/* check env variables first */
+ 		if (!get_ethernet_addr(ethaddr)) { 
+ 			memcpy(au1000_mac_addr, ethaddr, sizeof(dev->dev_addr));
+ 		} else {
+-			/* Check command line */
+-			argptr = prom_getcmdline();
+-			if ((pmac = strstr(argptr, "ethaddr=")) == NULL) {
+-				printk(KERN_INFO "%s: No mac address found\n", 
+-						dev->name);
+-				/* use the hard coded mac addresses */
+-			} else {
+-				str2eaddr(ethaddr, pmac + strlen("ethaddr="));
+-				memcpy(au1000_mac_addr, ethaddr, 
+-						sizeof(dev->dev_addr));
+-			}
++			printk(KERN_INFO "%s: No mac address found\n", dev->name);
+ 		}
+ 		if (ioaddr == AU1000_ETH0_BASE)
+ 			aup->enable = (volatile u32 *) 
+@@ -1206,6 +1298,11 @@ au1000_probe(u32 ioaddr, int irq, int po
+ 
+ 	case AU1000_ETH1_BASE:
+ 	case AU1500_ETH1_BASE:
++		if (!get_ethernet_addr_n(ethaddr, 1)) {
++                        memcpy(au1000_mac_addr, ethaddr, sizeof(dev->dev_addr));
++                } else {
++                        printk(KERN_INFO "%s: No mac address found\n", dev->name);
++                }
+ 		if (ioaddr == AU1000_ETH1_BASE)
+ 			aup->enable = (volatile u32 *) 
+ 				((unsigned long)AU1000_MAC1_ENABLE);
+@@ -1213,7 +1310,6 @@ au1000_probe(u32 ioaddr, int irq, int po
+ 			aup->enable = (volatile u32 *) 
+ 				((unsigned long)AU1500_MAC1_ENABLE);
+ 		memcpy(dev->dev_addr, au1000_mac_addr, sizeof(dev->dev_addr));
+-		dev->dev_addr[4] += 0x10;
+ 		setup_hw_rings(aup, MAC1_RX_DMA_ADDR, MAC1_TX_DMA_ADDR);
+ 		aup->mac_id = 1;
+ 		au_macs[1] = aup;
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/net/au1000_eth.h linux-2.4.25-rc2_q/drivers/net/au1000_eth.h
+--- linux-2.4.25-rc2_org/drivers/net/au1000_eth.h	2004-02-12 23:33:54.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/net/au1000_eth.h	2004-02-13 10:06:01.000000000 +0100
+@@ -86,6 +86,28 @@
+ #define MII_STAT_CAN_TX_FDX 0x4000
+ #define	MII_STAT_CAN_T4     0x8000
+ 
++/* mii registers for NS 83847 */
++#define MII_NS_PHYSTS   0x10
++#define MII_NS_FCSCR    0x14
++#define MII_NS_RECR     0x15
++#define MII_NS_PCSR     0x16
++#define MII_NS_PHYCTRL  0x19
++#define MII_NS_10BTSCR  0x1a
++#define MII_NS_CDCTRL   0x1b
++
++/* MII_NS_PHYSTS bits */
++#define MII_NS_PHYSTS_LINK            (1)
++#define MII_NS_PHYSTS_SPEED_10        (1<<1)
++#define MII_NS_PHYSTS_DUPLEX_FULL     (1<<2)
++
++/* MII_NS_PHYCTRL bits */
++#define MII_NS_PHYCTRL_BP_STRETCH     (1<<8)
++
++/* MII_NS_CDCTRL bits */
++#define MII_NS_CDCTRL_CD_ENABLE       (1<<15)
++#define MII_NS_CDCTRL_RISETIME        (1<<11)
++#define MII_NS_CDCTRL_FALLTIME        (1<<9)
++
+ 
+ #define		MII_ID1_OUI_LO		0xFC00	/* low bits of OUI mask */
+ #define		MII_ID1_MODEL		0x03F0	/* model number */
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/net/natsemi.c linux-2.4.25-rc2_q/drivers/net/natsemi.c
+--- linux-2.4.25-rc2_org/drivers/net/natsemi.c	2004-02-12 23:29:19.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/net/natsemi.c	2004-04-22 09:28:51.000000000 +0200
+@@ -773,7 +773,11 @@ static int __devinit natsemi_probe1 (str
+ 		goto err_ioremap;
+ 	}
+ 
+-	/* Work around the dropped serial bit. */
++#ifdef __mips__
++	if (get_ethernet_addr_n(dev->dev_addr, 2)) {
++		printk(KERN_INFO "%s: No mac address found\n", dev->name);
++	}
++#else
+ 	prev_eedata = eeprom_read(ioaddr, 6);
+ 	for (i = 0; i < 3; i++) {
+ 		int eedata = eeprom_read(ioaddr, i + 7);
+@@ -781,6 +785,7 @@ static int __devinit natsemi_probe1 (str
+ 		dev->dev_addr[i*2+1] = eedata >> 7;
+ 		prev_eedata = eedata;
+ 	}
++#endif
+ 
+ 	dev->base_addr = ioaddr;
+ 	dev->irq = irq;
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/drivers/net/wireless/hermes.h linux-2.4.25-rc2_q/drivers/net/wireless/hermes.h
+--- linux-2.4.25-rc2_org/drivers/net/wireless/hermes.h	2004-02-12 23:47:43.000000000 +0100
++++ linux-2.4.25-rc2_q/drivers/net/wireless/hermes.h	2004-02-13 10:13:40.000000000 +0100
+@@ -302,9 +302,9 @@ typedef struct hermes_response {
+ #define hermes_read_reg(hw, off) ((hw)->io_space ? \
+ 	inw((hw)->iobase + ( (off) << (hw)->reg_spacing )) : \
+ 	readw((hw)->iobase + ( (off) << (hw)->reg_spacing )))
+-#define hermes_write_reg(hw, off, val) ((hw)->io_space ? \
+-	outw_p((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )) : \
+-	writew((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )))
++#define hermes_write_reg(hw, off, val) { if((hw)->io_space) \
++	outw_p((val), (hw)->iobase + ( (off) << (hw)->reg_spacing )); else \
++	writew((val), (hw)->iobase + ( (off) << (hw)->reg_spacing ));}
+ 
+ #define hermes_read_regn(hw, name) (hermes_read_reg((hw), HERMES_##name))
+ #define hermes_write_regn(hw, name, val) (hermes_write_reg((hw), HERMES_##name, (val)))
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/include/asm-mips/au1000.h linux-2.4.25-rc2_q/include/asm-mips/au1000.h
+--- linux-2.4.25-rc2_org/include/asm-mips/au1000.h	2004-02-12 23:06:31.000000000 +0100
++++ linux-2.4.25-rc2_q/include/asm-mips/au1000.h	2004-02-13 10:41:49.000000000 +0100
+@@ -283,14 +283,14 @@ extern au1xxx_irq_map_t au1xxx_irq_map[]
+ #define INTC_INT_HIGH_AND_LOW_LEVEL    0x7
+ 
+ /* Interrupt Numbers */
+-#define AU1000_UART0_INT          0
++#define AU1000_UART0_INT          3
+ #define AU1000_UART1_INT          1 /* au1000 */
+ #define AU1000_UART2_INT          2 /* au1000 */
+ 
+ #define AU1000_PCI_INTA           1 /* au1500 */
+ #define AU1000_PCI_INTB           2 /* au1500 */
+ 
+-#define AU1000_UART3_INT          3
++#define AU1000_UART3_INT          0
+ 
+ #define AU1000_SSI0_INT           4 /* au1000 */
+ #define AU1000_SSI1_INT           5 /* au1000 */
+@@ -693,12 +693,12 @@ extern au1xxx_irq_map_t au1xxx_irq_map[]
+ 
+ 
+ /* UARTS 0-3 */
+-#define UART0_ADDR                0xB1100000
++#define UART0_ADDR                0xB1400000
+ #define UART1_ADDR                0xB1200000
+ #define UART2_ADDR                0xB1300000
+-#define UART3_ADDR                0xB1400000
++#define UART3_ADDR                0xB1100000
+ #define UART_BASE                 UART0_ADDR
+-#define UART_DEBUG_BASE           UART3_ADDR
++#define UART_DEBUG_BASE           UART0_ADDR
+ 
+ #define UART_RX		0	/* Receive buffer */
+ #define UART_TX		4	/* Transmit buffer */
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/include/asm-mips/page.h linux-2.4.25-rc2_q/include/asm-mips/page.h
+--- linux-2.4.25-rc2_org/include/asm-mips/page.h	2004-02-12 23:06:14.000000000 +0100
++++ linux-2.4.25-rc2_q/include/asm-mips/page.h	2004-03-23 14:18:38.000000000 +0100
+@@ -13,7 +13,6 @@
+ #include <linux/config.h>
+ #include <asm/break.h>
+ 
+-#ifdef __KERNEL__
+ 
+ /*
+  * PAGE_SHIFT determines the page size
+@@ -30,6 +29,7 @@
+ #define PAGE_SIZE	(1L << PAGE_SHIFT)
+ #define PAGE_MASK	(~(PAGE_SIZE-1))
+ 
++#ifdef __KERNEL__
+ #ifndef __ASSEMBLY__
+ 
+ #include <asm/cacheflush.h>
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/include/asm-mips/wbflush.h linux-2.4.25-rc2_q/include/asm-mips/wbflush.h
+--- linux-2.4.25-rc2_org/include/asm-mips/wbflush.h	2004-02-12 23:06:33.000000000 +0100
++++ linux-2.4.25-rc2_q/include/asm-mips/wbflush.h	2004-02-13 20:42:57.000000000 +0100
+@@ -15,8 +15,11 @@
+ 
+ #ifdef CONFIG_CPU_HAS_WB
+ 
+-extern void (*__wbflush)(void);
+-extern void wbflush_setup(void);
++//extern void (*__wbflush)(void);
++//extern void wbflush_setup(void);
++
++
++#define __wbflush() { __asm__ volatile ("sync"); }
+ 
+ #define wbflush()			\
+ 	do {				\
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/include/pcmcia/cs_types.h linux-2.4.25-rc2_q/include/pcmcia/cs_types.h
+--- linux-2.4.25-rc2_org/include/pcmcia/cs_types.h	2004-02-12 23:13:05.000000000 +0100
++++ linux-2.4.25-rc2_q/include/pcmcia/cs_types.h	2004-02-13 10:15:10.000000000 +0100
+@@ -37,6 +37,7 @@
+ #endif
+ 
+ #if defined(__arm__) || defined(__mips__)
++//obs jp: on mips, "typedef unsigned long long ioaddr_t;" may be needed to support cardbus
+ typedef u_int   ioaddr_t;
+ #else
+ typedef u_short	ioaddr_t;
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/include/pcmcia/ss.h linux-2.4.25-rc2_q/include/pcmcia/ss.h
+--- linux-2.4.25-rc2_org/include/pcmcia/ss.h	2004-02-12 23:13:02.000000000 +0100
++++ linux-2.4.25-rc2_q/include/pcmcia/ss.h	2004-02-13 10:15:32.000000000 +0100
+@@ -112,7 +112,7 @@ typedef struct pccard_mem_map {
+     u_char	map;
+     u_char	flags;
+     u_short	speed;
+-    u_long	sys_start, sys_stop;
++    ioaddr_t	sys_start, sys_stop;
+     u_int	card_start;
+ } pccard_mem_map;
+ 
+diff -Naur -p -X do_not_diff -I '\$Id' -I '@(#)' linux-2.4.25-rc2_org/init/do_mounts.c linux-2.4.25-rc2_q/init/do_mounts.c
+--- linux-2.4.25-rc2_org/init/do_mounts.c	2004-02-12 22:59:08.000000000 +0100
++++ linux-2.4.25-rc2_q/init/do_mounts.c	2004-02-13 10:16:02.000000000 +0100
+@@ -760,8 +760,6 @@ static void __init devfs_make_root(char 
+ static void __init mount_root(void)
+ {
+ #ifdef CONFIG_ROOT_NFS
+-       if (MAJOR(ROOT_DEV) == NFS_MAJOR
+-           && MINOR(ROOT_DEV) == NFS_MINOR) {
+ 		if (mount_nfs_root()) {
+ 			sys_chdir("/root");
+ 			ROOT_DEV = current->fs->pwdmnt->mnt_sb->s_dev;
+@@ -770,7 +768,6 @@ static void __init mount_root(void)
+ 		}
+ 		printk(KERN_ERR "VFS: Unable to mount root fs via NFS, trying floppy.\n");
+ 		ROOT_DEV = MKDEV(FLOPPY_MAJOR, 0);
+-	}
+ #endif
+ 	devfs_make_root(root_device_name);
+ 	create_dev("/dev/root", ROOT_DEV, root_device_name);
+
