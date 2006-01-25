@@ -27,8 +27,7 @@ CONFIG_DEFCONFIG = .defconfig
 CONFIG = package/config
 
 noconfig_targets := menuconfig config oldconfig randconfig \
-	defconfig allyesconfig allnoconfig clean distclean \
-	release tags
+	defconfig allyesconfig allnoconfig release tags
 
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
