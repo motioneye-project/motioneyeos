@@ -36,7 +36,7 @@ $(DL_DIR)/$(MTD_SOURCE):
 	mv $(DL_DIR)/$(MTD_DL_SOURCE) $(DL_DIR)/$(MTD_SOURCE)
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE_GENERIC)
-	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS)
+	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	mv $(TOOL_BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
 	touch $(MTD_HOST_DIR)/.unpacked
 else
@@ -45,8 +45,8 @@ $(DL_DIR)/$(MTD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS)
-	mv $(TOOL_BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
+	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	mv $(TOOL_BUILD_DIR)/$(shell tar tzf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
 		package/mtd \*.patch
 	touch $(MTD_HOST_DIR)/.unpacked
@@ -118,7 +118,7 @@ MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
 $(MTD_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/util/%
 	cp -f $< $@
 	$(STRIP) $@
-	
+
 mtd: zlib $(MTD_TARGETS)
 
 mtd-source: $(DL_DIR)/$(MTD_SOURCE)
