@@ -1,6 +1,6 @@
 diff -ruNp gcc-4.2.0.oorig/boehm-gc/configure gcc-4.2.0/boehm-gc/configure
---- gcc-4.2.0.oorig/boehm-gc/configure	2005-10-31 18:09:11.000000000 +0100
-+++ gcc-4.2.0/boehm-gc/configure	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/boehm-gc/configure	2006-01-26 07:59:58.000000000 +0100
++++ gcc-4.2.0/boehm-gc/configure	2006-01-28 19:18:19.000000000 +0100
 @@ -4320,6 +4320,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
@@ -13,33 +13,9 @@ diff -ruNp gcc-4.2.0.oorig/boehm-gc/configure gcc-4.2.0/boehm-gc/configure
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -ruNp gcc-4.2.0.oorig/configure gcc-4.2.0/configure
---- gcc-4.2.0.oorig/configure	2005-11-30 20:49:49.000000000 +0100
-+++ gcc-4.2.0/configure	2005-12-02 18:38:22.000000000 +0100
-@@ -1133,7 +1133,7 @@ no)
-     ;;
- "")
-     case "${target}" in
--    *-*-linux*-gnu | *-*-gnu* | *-*-k*bsd*-gnu)
-+    *-*-linux*-gnu | *-*-gnu* | *-*-k*bsd*-gnu | *-*-linux-uclibc*)
-         # Enable libmudflap by default in GNU and friends.
- 	;;
-     *-*-freebsd*)
-diff -ruNp gcc-4.2.0.oorig/configure.in gcc-4.2.0/configure.in
---- gcc-4.2.0.oorig/configure.in	2005-11-30 20:49:49.000000000 +0100
-+++ gcc-4.2.0/configure.in	2005-12-02 18:38:22.000000000 +0100
-@@ -341,7 +341,7 @@ no)
-     ;;
- "")
-     case "${target}" in
--    *-*-linux*-gnu | *-*-gnu* | *-*-k*bsd*-gnu)
-+    *-*-linux*-gnu | *-*-gnu* | *-*-k*bsd*-gnu | *-*-linux-uclibc*)
-         # Enable libmudflap by default in GNU and friends.
- 	;;
-     *-*-freebsd*)
 diff -ruNp gcc-4.2.0.oorig/contrib/regression/objs-gcc.sh gcc-4.2.0/contrib/regression/objs-gcc.sh
 --- gcc-4.2.0.oorig/contrib/regression/objs-gcc.sh	2005-10-31 18:10:00.000000000 +0100
-+++ gcc-4.2.0/contrib/regression/objs-gcc.sh	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/contrib/regression/objs-gcc.sh	2006-01-28 19:18:19.000000000 +0100
 @@ -105,6 +105,10 @@ if [ $H_REAL_TARGET = $H_REAL_HOST -a $H
   then
    make all-gdb all-dejagnu all-ld || exit 1
@@ -53,7 +29,7 @@ diff -ruNp gcc-4.2.0.oorig/contrib/regression/objs-gcc.sh gcc-4.2.0/contrib/regr
    make install || exit 1
 diff -ruNp gcc-4.2.0.oorig/gcc/config/alpha/linux-elf.h gcc-4.2.0/gcc/config/alpha/linux-elf.h
 --- gcc-4.2.0.oorig/gcc/config/alpha/linux-elf.h	2005-10-31 18:00:45.000000000 +0100
-+++ gcc-4.2.0/gcc/config/alpha/linux-elf.h	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/gcc/config/alpha/linux-elf.h	2006-01-28 19:18:19.000000000 +0100
 @@ -27,7 +27,11 @@ Boston, MA 02110-1301, USA.  */
  #define SUBTARGET_EXTRA_SPECS \
  { "elf_dynamic_linker", ELF_DYNAMIC_LINKER },
@@ -67,8 +43,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/alpha/linux-elf.h gcc-4.2.0/gcc/config/alp
  #define LINK_SPEC "-m elf64alpha %{G*} %{relax:-relax}		\
    %{O*:-O3} %{!O*:-O1}						\
 diff -ruNp gcc-4.2.0.oorig/gcc/config/arm/linux-elf.h gcc-4.2.0/gcc/config/arm/linux-elf.h
---- gcc-4.2.0.oorig/gcc/config/arm/linux-elf.h	2005-11-22 14:56:32.000000000 +0100
-+++ gcc-4.2.0/gcc/config/arm/linux-elf.h	2005-12-02 18:35:28.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config/arm/linux-elf.h	2005-11-22 14:45:02.000000000 +0100
++++ gcc-4.2.0/gcc/config/arm/linux-elf.h	2006-01-28 19:18:19.000000000 +0100
 @@ -51,7 +51,11 @@
  
  #define LIBGCC_SPEC "%{msoft-float:-lfloat} %{mfloat-abi=soft*:-lfloat} -lgcc"
@@ -82,8 +58,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/arm/linux-elf.h gcc-4.2.0/gcc/config/arm/l
  #define LINUX_TARGET_LINK_SPEC  "%{h*} %{version:-v} \
     %{b} \
 diff -ruNp gcc-4.2.0.oorig/gcc/config/cris/linux.h gcc-4.2.0/gcc/config/cris/linux.h
---- gcc-4.2.0.oorig/gcc/config/cris/linux.h	2005-11-22 14:56:32.000000000 +0100
-+++ gcc-4.2.0/gcc/config/cris/linux.h	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config/cris/linux.h	2005-11-22 14:45:02.000000000 +0100
++++ gcc-4.2.0/gcc/config/cris/linux.h	2006-01-28 19:18:19.000000000 +0100
 @@ -73,6 +73,25 @@ Boston, MA 02110-1301, USA.  */
  #undef CRIS_DEFAULT_CPU_VERSION
  #define CRIS_DEFAULT_CPU_VERSION CRIS_CPU_NG
@@ -121,14 +97,14 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/cris/linux.h gcc-4.2.0/gcc/config/cris/lin
  
 diff -ruNp gcc-4.2.0.oorig/gcc/config/cris/t-linux-uclibc gcc-4.2.0/gcc/config/cris/t-linux-uclibc
 --- gcc-4.2.0.oorig/gcc/config/cris/t-linux-uclibc	1970-01-01 01:00:00.000000000 +0100
-+++ gcc-4.2.0/gcc/config/cris/t-linux-uclibc	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/gcc/config/cris/t-linux-uclibc	2006-01-28 19:18:19.000000000 +0100
 @@ -0,0 +1,3 @@
 +T_CFLAGS = -DUSE_UCLIBC
 +TARGET_LIBGCC2_CFLAGS += -fPIC
 +CRTSTUFF_T_CFLAGS_S = $(TARGET_LIBGCC2_CFLAGS)
 diff -ruNp gcc-4.2.0.oorig/gcc/config/i386/linux64.h gcc-4.2.0/gcc/config/i386/linux64.h
---- gcc-4.2.0.oorig/gcc/config/i386/linux64.h	2005-11-22 14:56:29.000000000 +0100
-+++ gcc-4.2.0/gcc/config/i386/linux64.h	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config/i386/linux64.h	2005-11-22 14:45:00.000000000 +0100
++++ gcc-4.2.0/gcc/config/i386/linux64.h	2006-01-28 19:18:19.000000000 +0100
 @@ -50,6 +50,15 @@ Boston, MA 02110-1301, USA.  */
     done.  */
  
@@ -154,8 +130,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/i386/linux64.h gcc-4.2.0/gcc/config/i386/l
  /* Similar to standard Linux, but adding -ffast-math support.  */
  #undef  ENDFILE_SPEC
 diff -ruNp gcc-4.2.0.oorig/gcc/config/i386/linux.h gcc-4.2.0/gcc/config/i386/linux.h
---- gcc-4.2.0.oorig/gcc/config/i386/linux.h	2005-11-22 14:56:29.000000000 +0100
-+++ gcc-4.2.0/gcc/config/i386/linux.h	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config/i386/linux.h	2005-11-22 14:45:00.000000000 +0100
++++ gcc-4.2.0/gcc/config/i386/linux.h	2006-01-28 19:18:19.000000000 +0100
 @@ -102,6 +102,11 @@ Boston, MA 02110-1301, USA.  */
  #define LINK_EMULATION "elf_i386"
  #define DYNAMIC_LINKER "/lib/ld-linux.so.2"
@@ -169,8 +145,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/i386/linux.h gcc-4.2.0/gcc/config/i386/lin
  #define SUBTARGET_EXTRA_SPECS \
    { "link_emulation", LINK_EMULATION },\
 diff -ruNp gcc-4.2.0.oorig/gcc/config/mips/linux.h gcc-4.2.0/gcc/config/mips/linux.h
---- gcc-4.2.0.oorig/gcc/config/mips/linux.h	2005-11-22 14:56:32.000000000 +0100
-+++ gcc-4.2.0/gcc/config/mips/linux.h	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config/mips/linux.h	2005-11-22 14:45:02.000000000 +0100
++++ gcc-4.2.0/gcc/config/mips/linux.h	2006-01-28 19:18:19.000000000 +0100
 @@ -100,6 +100,17 @@ Boston, MA 02110-1301, USA.  */
  
  /* Borrowed from sparc/linux.h */
@@ -198,8 +174,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/mips/linux.h gcc-4.2.0/gcc/config/mips/lin
  #undef SUBTARGET_ASM_SPEC
  #define SUBTARGET_ASM_SPEC "%{mabi=64: -64} %{!mno-abicalls:-KPIC}"
 diff -ruNp gcc-4.2.0.oorig/gcc/config/rs6000/linux.h gcc-4.2.0/gcc/config/rs6000/linux.h
---- gcc-4.2.0.oorig/gcc/config/rs6000/linux.h	2005-10-31 18:01:48.000000000 +0100
-+++ gcc-4.2.0/gcc/config/rs6000/linux.h	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config/rs6000/linux.h	2006-01-28 12:58:41.000000000 +0100
++++ gcc-4.2.0/gcc/config/rs6000/linux.h	2006-01-28 19:18:19.000000000 +0100
 @@ -72,7 +72,11 @@
  #define LINK_START_DEFAULT_SPEC "%(link_start_linux)"
  
@@ -213,9 +189,9 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/rs6000/linux.h gcc-4.2.0/gcc/config/rs6000
  #define LINK_GCC_C_SEQUENCE_SPEC \
    "%{static:--start-group} %G %L %{static:--end-group}%{!static:%G}"
 diff -ruNp gcc-4.2.0.oorig/gcc/config/rs6000/sysv4.h gcc-4.2.0/gcc/config/rs6000/sysv4.h
---- gcc-4.2.0.oorig/gcc/config/rs6000/sysv4.h	2005-11-28 19:45:18.000000000 +0100
-+++ gcc-4.2.0/gcc/config/rs6000/sysv4.h	2005-12-02 18:38:22.000000000 +0100
-@@ -850,6 +850,7 @@ extern int fixuplabelno;
+--- gcc-4.2.0.oorig/gcc/config/rs6000/sysv4.h	2006-01-28 12:58:41.000000000 +0100
++++ gcc-4.2.0/gcc/config/rs6000/sysv4.h	2006-01-28 19:18:19.000000000 +0100
+@@ -739,6 +739,7 @@ extern int fixuplabelno;
    mcall-linux  : %(link_os_linux)       ; \
    mcall-gnu    : %(link_os_gnu)         ; \
    mcall-netbsd : %(link_os_netbsd)      ; \
@@ -223,7 +199,7 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/rs6000/sysv4.h gcc-4.2.0/gcc/config/rs6000
    mcall-openbsd: %(link_os_openbsd)     ; \
                 : %(link_os_default)     }"
  
-@@ -1027,6 +1028,10 @@ extern int fixuplabelno;
+@@ -916,6 +917,10 @@ extern int fixuplabelno;
    %{rdynamic:-export-dynamic} \
    %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}}}"
  
@@ -234,7 +210,7 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/rs6000/sysv4.h gcc-4.2.0/gcc/config/rs6000
  #if defined(HAVE_LD_EH_FRAME_HDR)
  # define LINK_EH_SPEC "%{!static:--eh-frame-hdr} "
  #endif
-@@ -1193,6 +1198,7 @@ ncrtn.o%s"
+@@ -1082,6 +1087,7 @@ ncrtn.o%s"
    { "link_os_sim",		LINK_OS_SIM_SPEC },			\
    { "link_os_freebsd",		LINK_OS_FREEBSD_SPEC },			\
    { "link_os_linux",		LINK_OS_LINUX_SPEC },			\
@@ -243,8 +219,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/rs6000/sysv4.h gcc-4.2.0/gcc/config/rs6000
    { "link_os_netbsd",		LINK_OS_NETBSD_SPEC },			\
    { "link_os_openbsd",		LINK_OS_OPENBSD_SPEC },			\
 diff -ruNp gcc-4.2.0.oorig/gcc/config/sh/linux.h gcc-4.2.0/gcc/config/sh/linux.h
---- gcc-4.2.0.oorig/gcc/config/sh/linux.h	2005-11-22 14:56:32.000000000 +0100
-+++ gcc-4.2.0/gcc/config/sh/linux.h	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config/sh/linux.h	2005-11-22 14:45:01.000000000 +0100
++++ gcc-4.2.0/gcc/config/sh/linux.h	2006-01-28 19:18:19.000000000 +0100
 @@ -51,12 +51,21 @@ Boston, MA 02110-1301, USA.  */
  #undef SUBTARGET_LINK_EMUL_SUFFIX
  #define SUBTARGET_LINK_EMUL_SUFFIX "_linux"
@@ -269,7 +245,7 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/sh/linux.h gcc-4.2.0/gcc/config/sh/linux.h
  
 diff -ruNp gcc-4.2.0.oorig/gcc/config/t-linux-uclibc gcc-4.2.0/gcc/config/t-linux-uclibc
 --- gcc-4.2.0.oorig/gcc/config/t-linux-uclibc	1970-01-01 01:00:00.000000000 +0100
-+++ gcc-4.2.0/gcc/config/t-linux-uclibc	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/gcc/config/t-linux-uclibc	2006-01-28 19:18:19.000000000 +0100
 @@ -0,0 +1,15 @@
 +T_CFLAGS = -DUSE_UCLIBC
 +
@@ -287,8 +263,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config/t-linux-uclibc gcc-4.2.0/gcc/config/t-linu
 +  $(srcdir)/unwind-sjlj.c $(srcdir)/gthr-gnat.c $(srcdir)/unwind-c.c
 +LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h
 diff -ruNp gcc-4.2.0.oorig/gcc/config.gcc gcc-4.2.0/gcc/config.gcc
---- gcc-4.2.0.oorig/gcc/config.gcc	2005-11-30 20:49:48.000000000 +0100
-+++ gcc-4.2.0/gcc/config.gcc	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/gcc/config.gcc	2006-01-20 19:14:30.000000000 +0100
++++ gcc-4.2.0/gcc/config.gcc	2006-01-28 19:18:19.000000000 +0100
 @@ -451,7 +451,12 @@ case ${target} in
    case ${enable_threads} in
      "" | yes | posix) thread_file='posix' ;;
@@ -314,7 +290,7 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config.gcc gcc-4.2.0/gcc/config.gcc
  cris-*-linux*)
  	tm_file="dbxelf.h elfos.h svr4.h ${tm_file} linux.h cris/linux.h"
  	# We need to avoid using t-linux, so override default tmake_file
-@@ -1876,7 +1885,7 @@ s390x-ibm-tpf*)
+@@ -1883,7 +1892,7 @@ s390x-ibm-tpf*)
  	;;
  sh-*-elf* | sh[12346l]*-*-elf* | sh*-*-kaos* | \
  sh-*-symbianelf* | sh[12346l]*-*-symbianelf* | \
@@ -324,8 +300,8 @@ diff -ruNp gcc-4.2.0.oorig/gcc/config.gcc gcc-4.2.0/gcc/config.gcc
     sh64-*-netbsd* | sh64l*-*-netbsd*)
  	tmake_file="${tmake_file} sh/t-sh sh/t-elf"
 diff -ruNp gcc-4.2.0.oorig/libffi/configure gcc-4.2.0/libffi/configure
---- gcc-4.2.0.oorig/libffi/configure	2005-10-31 18:09:56.000000000 +0100
-+++ gcc-4.2.0/libffi/configure	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/libffi/configure	2006-01-22 12:38:53.000000000 +0100
++++ gcc-4.2.0/libffi/configure	2006-01-28 19:18:19.000000000 +0100
 @@ -3457,6 +3457,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
@@ -339,9 +315,9 @@ diff -ruNp gcc-4.2.0.oorig/libffi/configure gcc-4.2.0/libffi/configure
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
 diff -ruNp gcc-4.2.0.oorig/libgfortran/configure gcc-4.2.0/libgfortran/configure
---- gcc-4.2.0.oorig/libgfortran/configure	2005-11-30 20:49:48.000000000 +0100
-+++ gcc-4.2.0/libgfortran/configure	2005-12-02 18:38:22.000000000 +0100
-@@ -3669,6 +3669,11 @@ linux-gnu*)
+--- gcc-4.2.0.oorig/libgfortran/configure	2006-01-17 12:33:05.000000000 +0100
++++ gcc-4.2.0/libgfortran/configure	2006-01-28 19:18:19.000000000 +0100
+@@ -3699,6 +3699,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -354,8 +330,8 @@ diff -ruNp gcc-4.2.0.oorig/libgfortran/configure gcc-4.2.0/libgfortran/configure
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
 diff -ruNp gcc-4.2.0.oorig/libjava/configure gcc-4.2.0/libjava/configure
---- gcc-4.2.0.oorig/libjava/configure	2005-11-25 18:32:38.000000000 +0100
-+++ gcc-4.2.0/libjava/configure	2005-12-02 18:38:22.000000000 +0100
+--- gcc-4.2.0.oorig/libjava/configure	2006-01-24 21:41:59.000000000 +0100
++++ gcc-4.2.0/libjava/configure	2006-01-28 19:18:19.000000000 +0100
 @@ -5137,6 +5137,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
@@ -370,7 +346,7 @@ diff -ruNp gcc-4.2.0.oorig/libjava/configure gcc-4.2.0/libjava/configure
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
 diff -ruNp gcc-4.2.0.oorig/libmudflap/configure gcc-4.2.0/libmudflap/configure
 --- gcc-4.2.0.oorig/libmudflap/configure	2005-10-31 18:08:44.000000000 +0100
-+++ gcc-4.2.0/libmudflap/configure	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/libmudflap/configure	2006-01-28 19:18:19.000000000 +0100
 @@ -5382,6 +5382,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
@@ -384,9 +360,9 @@ diff -ruNp gcc-4.2.0.oorig/libmudflap/configure gcc-4.2.0/libmudflap/configure
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
 diff -ruNp gcc-4.2.0.oorig/libobjc/configure gcc-4.2.0/libobjc/configure
---- gcc-4.2.0.oorig/libobjc/configure	2005-11-20 13:52:50.000000000 +0100
-+++ gcc-4.2.0/libobjc/configure	2005-12-02 18:38:22.000000000 +0100
-@@ -3312,6 +3312,11 @@ linux-gnu*)
+--- gcc-4.2.0.oorig/libobjc/configure	2006-01-24 23:36:09.000000000 +0100
++++ gcc-4.2.0/libobjc/configure	2006-01-28 19:18:19.000000000 +0100
+@@ -3313,6 +3313,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -400,7 +376,7 @@ diff -ruNp gcc-4.2.0.oorig/libobjc/configure gcc-4.2.0/libobjc/configure
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
 diff -ruNp gcc-4.2.0.oorig/libtool.m4 gcc-4.2.0/libtool.m4
 --- gcc-4.2.0.oorig/libtool.m4	2005-10-31 18:19:54.000000000 +0100
-+++ gcc-4.2.0/libtool.m4	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/libtool.m4	2006-01-28 19:18:19.000000000 +0100
 @@ -743,6 +743,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
@@ -415,7 +391,7 @@ diff -ruNp gcc-4.2.0.oorig/libtool.m4 gcc-4.2.0/libtool.m4
      [lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$']
 diff -ruNp gcc-4.2.0.oorig/ltconfig gcc-4.2.0/ltconfig
 --- gcc-4.2.0.oorig/ltconfig	2005-10-31 18:19:54.000000000 +0100
-+++ gcc-4.2.0/ltconfig	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/ltconfig	2006-01-28 19:18:19.000000000 +0100
 @@ -603,6 +603,7 @@ host_os=`echo $host | sed 's/^\([^-]*\)-
  
  # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
@@ -450,7 +426,7 @@ diff -ruNp gcc-4.2.0.oorig/ltconfig gcc-4.2.0/ltconfig
    need_version=no
 diff -ruNp gcc-4.2.0.oorig/zlib/configure gcc-4.2.0/zlib/configure
 --- gcc-4.2.0.oorig/zlib/configure	2005-10-31 18:07:37.000000000 +0100
-+++ gcc-4.2.0/zlib/configure	2005-12-02 18:38:22.000000000 +0100
++++ gcc-4.2.0/zlib/configure	2006-01-28 19:18:19.000000000 +0100
 @@ -3426,6 +3426,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
