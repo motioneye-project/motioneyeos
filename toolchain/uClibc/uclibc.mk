@@ -117,7 +117,7 @@ endif
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		HOSTCC="$(HOSTCC)" \
-		pregen install_dev;
+		pregen install_dev && \
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
