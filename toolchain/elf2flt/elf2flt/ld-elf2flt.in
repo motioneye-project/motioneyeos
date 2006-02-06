@@ -15,12 +15,12 @@
 LINKER="$0.real"            # the original renamed-linker
 ELF2FLT="`expr $0 : '\(.*\)ld'`elf2flt"
 TOOLDIR="`dirname $0`"      # let gcc find the tools for us
-LDSCRIPTPATH="${TOOLDIR}/../@target_alias@/lib"		# and the scripts
+LDSCRIPTPATH="@binutils_ldscript_dir@"	# and the scripts
 SHARED_ID=""
 NEWLDSCRIPT=""
 
 # check TOOLDIR from prefix/bin/ or prefix/target-alias/bin/
-[ -d "${TOOLDIR}/../@target_alias@/lib" ] || LDSCRIPTPATH="${TOOLDIR}/../lib"
+[ -d "${LDSCRIPTPATH}" ] || LDSCRIPTPATH="${TOOLDIR}/../lib"
 
 #
 # if we have the elf2flt options, run it

@@ -9,9 +9,9 @@
 /elf2flt.ld/1.12/Tue Jan 10 05:12:32 2006/-ko/
 /config.sub/1.8/Wed Jan 11 13:36:39 2006/-ko/
 /cygwin-elf.h/1.4/Wed Jan 11 13:36:39 2006//
-/Makefile.in/1.14/Thu Jan 12 03:00:33 2006/-ko/
-/configure/1.9/Thu Jan 12 03:00:33 2006/-ko/
-/configure.in/1.7/Thu Jan 12 03:00:33 2006/-ko/
-/ld-elf2flt.in/1.10/Thu Jan 12 03:00:55 2006//
 /elf2flt.c/1.38/Fri Jan 13 08:02:22 2006/-ko/
+/Makefile.in/1.15/Result of merge/-ko/
+/configure.in/1.8/Mon Feb  6 05:04:36 2006/-ko/
+/ld-elf2flt.in/1.11/Mon Feb  6 05:04:36 2006//
+/configure/1.9/Mon Feb  6 05:05:05 2006/-ko/
 D

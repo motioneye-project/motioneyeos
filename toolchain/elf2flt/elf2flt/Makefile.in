@@ -13,16 +13,16 @@ TARGET = @target_alias@
 CFLAGS = @CFLAGS@
 INCLUDES = @bfd_include_dir@ @binutils_include_dir@
 CPPFLAGS = @CPPFLAGS@
-LDFLAGS = @LDFLAGS@ -static
+LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 INSTALL = @INSTALL@
 DEFS = @DEFS@ -DTARGET_$(CPU)
 EXEEXT = @EXEEXT@
 OBJEXT = @OBJEXT@
 
-UNAME := $(shell uname -s)
+HOST = @host_alias@
 
-ifneq (,$(findstring MINGW,$(UNAME)))
+ifneq (,$(findstring mingw32,$(HOST)))
    LIBS :=  $(LIBS) -lws2_32
 endif
 
