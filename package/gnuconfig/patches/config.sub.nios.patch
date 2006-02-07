@@ -5,13 +5,12 @@ retrieving revision 1.336
 diff -u -p -r1.336 config.sub
 --- config.sub	22 Dec 2005 23:50:21 -0000	1.336
 +++ config.sub	30 Dec 2005 23:37:29 -0000
-@@ -298,6 +298,10 @@ case $basic_machine in
+@@ -298,6 +298,9 @@ case $basic_machine in
  	ms1)
  		basic_machine=mt-unknown
  		;;
 +	nios2 | nios2-* | nios2 | nios2-*)
 +		basic_machine=nios2-altera
-+		os=-none
 +		;;
  
  	# We use `pc' rather than `unknown'

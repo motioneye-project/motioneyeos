@@ -300,7 +300,6 @@ case $basic_machine in
 		;;
 	nios2 | nios2-* | nios2 | nios2-*)
 		basic_machine=nios2-altera
-		os=-none
 		;;
 
 	# We use `pc' rather than `unknown'
