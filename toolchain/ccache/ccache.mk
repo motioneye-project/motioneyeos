@@ -4,7 +4,7 @@
 #
 #############################################################
 CCACHE_VER:=2.4
-CCACHE_SITE:=http://ccache.samba.org/ftp/ccache
+CCACHE_SITE:=http://samba.org/ftp/ccache
 CCACHE_SOURCE:=ccache-$(CCACHE_VER).tar.gz
 CCACHE_DIR1:=$(TOOL_BUILD_DIR)/ccache-$(CCACHE_VER)
 CCACHE_DIR2:=$(BUILD_DIR)/ccache-$(CCACHE_VER)
