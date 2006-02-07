@@ -6849,7 +6849,7 @@
 +
 --- gcc-3.4.3/gcc/config/nios2/nios2.h
 +++ gcc-3.4.3-nios2/gcc/config/nios2/nios2.h
-@@ -0,0 +1,823 @@
+@@ -0,0 +1,824 @@
 +/* Definitions of target machine for Altera NIOS 2G NIOS2 version.
 +   Copyright (C) 2003 Altera 
 +   Contributed by Jonah Graham (jgraham@altera.com).
@@ -6878,6 +6878,7 @@
 +    {						\
 +      builtin_define_std ("NIOS2");		\
 +      builtin_define_std ("nios2");		\
++      builtin_define ("_GNU_SOURCE");		\
 +    }						\
 +  while (0)
 +#define TARGET_VERSION fprintf (stderr, " (Altera Nios II)")

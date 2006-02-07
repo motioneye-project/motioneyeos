@@ -1,6 +1,6 @@
---- gcc-3.4.2/gcc/Makefile.in
-+++ gcc-3.4.2.nios2/gcc/Makefile.in
-@@ -3067,7 +3067,7 @@ install-mkheaders: stmp-int-hdrs $(STMP_
+--- gcc-3.4.3/gcc/Makefile.in
++++ gcc-3.4.3-nios2/gcc/Makefile.in
+@@ -3085,7 +3085,7 @@ install-mkheaders: stmp-int-hdrs $(STMP_
  	  $(INSTALL_DATA) $(srcdir)/README-fixinc \
  	    $(DESTDIR)$(itoolsdatadir)/include/README ; \
  	  $(INSTALL_SCRIPT) fixinc.sh $(DESTDIR)$(itoolsdir)/fixinc.sh ; \
@@ -9,9 +9,9 @@
  	  $(INSTALL_DATA) $(srcdir)/gsyslimits.h \
  	    $(DESTDIR)$(itoolsdatadir)/gsyslimits.h ; \
  	else :; fi
---- gcc-3.4.2/gcc/combine.c
-+++ gcc-3.4.2.nios2/gcc/combine.c
-@@ -4379,6 +4379,14 @@ combine_simplify_rtx (rtx x, enum machin
+--- gcc-3.4.3/gcc/combine.c
++++ gcc-3.4.3-nios2/gcc/combine.c
+@@ -4380,6 +4380,14 @@ combine_simplify_rtx (rtx x, enum machin
  					 mode);
  	    }
  
@@ -26,7 +26,7 @@
  	  else if (STORE_FLAG_VALUE == 1
  		   && new_code == EQ && GET_MODE_CLASS (mode) == MODE_INT
  		   && op1 == const0_rtx
-@@ -4390,6 +4398,7 @@ combine_simplify_rtx (rtx x, enum machin
+@@ -4391,6 +4399,7 @@ combine_simplify_rtx (rtx x, enum machin
  				 gen_lowpart_for_combine (mode, op0),
  				 const1_rtx);
  	    }
@@ -34,8 +34,8 @@
  
  	  else if (STORE_FLAG_VALUE == 1
  		   && new_code == EQ && GET_MODE_CLASS (mode) == MODE_INT
---- gcc-3.4.2/gcc/config/nios2/crti.asm
-+++ gcc-3.4.2.nios2/gcc/config/nios2/crti.asm
+--- gcc-3.4.3/gcc/config/nios2/crti.asm
++++ gcc-3.4.3-nios2/gcc/config/nios2/crti.asm
 @@ -0,0 +1,88 @@
 +/*
 +  Copyright (C) 2003 
@@ -125,8 +125,8 @@
 +	mov	fp, sp
 +	
 +
---- gcc-3.4.2/gcc/config/nios2/crtn.asm
-+++ gcc-3.4.2.nios2/gcc/config/nios2/crtn.asm
+--- gcc-3.4.3/gcc/config/nios2/crtn.asm
++++ gcc-3.4.3-nios2/gcc/config/nios2/crtn.asm
 @@ -0,0 +1,70 @@
 +/*
 +  Copyright (C) 2003 
@@ -198,8 +198,8 @@
 +	addi	sp, sp, -48
 +	ret
 +	
---- gcc-3.4.2/gcc/config/nios2/lib2-divmod-hi.c
-+++ gcc-3.4.2.nios2/gcc/config/nios2/lib2-divmod-hi.c
+--- gcc-3.4.3/gcc/config/nios2/lib2-divmod-hi.c
++++ gcc-3.4.3-nios2/gcc/config/nios2/lib2-divmod-hi.c
 @@ -0,0 +1,123 @@
 +
 +/* We include auto-host.h here to get HAVE_GAS_HIDDEN.  This is
@@ -324,8 +324,8 @@
 +  return udivmodhi4 (a, b, 1);
 +}
 +
---- gcc-3.4.2/gcc/config/nios2/lib2-divmod.c
-+++ gcc-3.4.2.nios2/gcc/config/nios2/lib2-divmod.c
+--- gcc-3.4.3/gcc/config/nios2/lib2-divmod.c
++++ gcc-3.4.3-nios2/gcc/config/nios2/lib2-divmod.c
 @@ -0,0 +1,126 @@
 +
 +/* We include auto-host.h here to get HAVE_GAS_HIDDEN.  This is
@@ -453,8 +453,8 @@
 +  return udivmodsi4 (a, b, 1);
 +}
 +
---- gcc-3.4.2/gcc/config/nios2/lib2-divtable.c
-+++ gcc-3.4.2.nios2/gcc/config/nios2/lib2-divtable.c
+--- gcc-3.4.3/gcc/config/nios2/lib2-divtable.c
++++ gcc-3.4.3-nios2/gcc/config/nios2/lib2-divtable.c
 @@ -0,0 +1,46 @@
 +
 +/* We include auto-host.h here to get HAVE_GAS_HIDDEN.  This is
@@ -502,8 +502,8 @@
 +  0, 15/1, 15/2, 15/3, 15/4, 15/5, 15/6, 15/7, 15/8, 15/9, 15/10, 15/11, 15/12, 15/13, 15/14, 15/15,
 +};
 +
---- gcc-3.4.2/gcc/config/nios2/lib2-mul.c
-+++ gcc-3.4.2.nios2/gcc/config/nios2/lib2-mul.c
+--- gcc-3.4.3/gcc/config/nios2/lib2-mul.c
++++ gcc-3.4.3-nios2/gcc/config/nios2/lib2-mul.c
 @@ -0,0 +1,103 @@
 +/* while we are debugging (ie compile outside of gcc build) 
 +   disable gcc specific headers */
@@ -608,8 +608,8 @@
 +  return error;
 +}
 +#endif
---- gcc-3.4.2/gcc/config/nios2/nios2-dp-bit.c
-+++ gcc-3.4.2.nios2/gcc/config/nios2/nios2-dp-bit.c
+--- gcc-3.4.3/gcc/config/nios2/nios2-dp-bit.c
++++ gcc-3.4.3-nios2/gcc/config/nios2/nios2-dp-bit.c
 @@ -0,0 +1,1652 @@
 +
 +/* This is a software floating point library which can be used
@@ -2263,8 +2263,8 @@
 +
 +#endif /* ! FLOAT */
 +#endif /* !EXTENDED_FLOAT_STUBS */
---- gcc-3.4.2/gcc/config/nios2/nios2-fp-bit.c
-+++ gcc-3.4.2.nios2/gcc/config/nios2/nios2-fp-bit.c
+--- gcc-3.4.3/gcc/config/nios2/nios2-fp-bit.c
++++ gcc-3.4.3-nios2/gcc/config/nios2/nios2-fp-bit.c
 @@ -0,0 +1,1652 @@
 +#define FLOAT
 +/* This is a software floating point library which can be used
@@ -3918,8 +3918,8 @@
 +
 +#endif /* ! FLOAT */
 +#endif /* !EXTENDED_FLOAT_STUBS */
---- gcc-3.4.2/gcc/config/nios2/nios2-protos.h
-+++ gcc-3.4.2.nios2/gcc/config/nios2/nios2-protos.h
+--- gcc-3.4.3/gcc/config/nios2/nios2-protos.h
++++ gcc-3.4.3-nios2/gcc/config/nios2/nios2-protos.h
 @@ -0,0 +1,70 @@
 +/* Subroutines for assembler code output for Altera NIOS 2G NIOS2 version.
 +   Copyright (C) 2003 Altera 
@@ -3991,8 +3991,8 @@
 +extern int nios2_return_in_memory (tree);
 +
 +#endif /* TREE_CODE */
---- gcc-3.4.2/gcc/config/nios2/nios2.c
-+++ gcc-3.4.2.nios2/gcc/config/nios2/nios2.c
+--- gcc-3.4.3/gcc/config/nios2/nios2.c
++++ gcc-3.4.3-nios2/gcc/config/nios2/nios2.c
 @@ -0,0 +1,2853 @@
 +/* Subroutines for assembler code output for Altera NIOS 2G NIOS2 version.
 +   Copyright (C) 2003 Altera
@@ -6847,9 +6847,9 @@
 +
 +#include "gt-nios2.h"
 +
---- gcc-3.4.2/gcc/config/nios2/nios2.h
-+++ gcc-3.4.2.nios2/gcc/config/nios2/nios2.h
-@@ -0,0 +1,823 @@
+--- gcc-3.4.3/gcc/config/nios2/nios2.h
++++ gcc-3.4.3-nios2/gcc/config/nios2/nios2.h
+@@ -0,0 +1,824 @@
 +/* Definitions of target machine for Altera NIOS 2G NIOS2 version.
 +   Copyright (C) 2003 Altera 
 +   Contributed by Jonah Graham (jgraham@altera.com).
@@ -6878,6 +6878,7 @@
 +    {						\
 +      builtin_define_std ("NIOS2");		\
 +      builtin_define_std ("nios2");		\
++      builtin_define ("_GNU_SOURCE");		\
 +    }						\
 +  while (0)
 +#define TARGET_VERSION fprintf (stderr, " (Altera Nios II)")
@@ -7673,8 +7674,8 @@
 +#define LOAD_EXTEND_OP(MODE) (ZERO_EXTEND)
 +
 +#define WORD_REGISTER_OPERATIONS
---- gcc-3.4.2/gcc/config/nios2/nios2.md
-+++ gcc-3.4.2.nios2/gcc/config/nios2/nios2.md
+--- gcc-3.4.3/gcc/config/nios2/nios2.md
++++ gcc-3.4.3-nios2/gcc/config/nios2/nios2.md
 @@ -0,0 +1,2078 @@
 +;; Machine Description for Altera NIOS 2G NIOS2 version.
 +;;    Copyright (C) 2003 Altera 
@@ -9754,8 +9755,8 @@
 +;*****************************************************************************
 +
 +
---- gcc-3.4.2/gcc/config/nios2/t-nios2
-+++ gcc-3.4.2.nios2/gcc/config/nios2/t-nios2
+--- gcc-3.4.3/gcc/config/nios2/t-nios2
++++ gcc-3.4.3-nios2/gcc/config/nios2/t-nios2
 @@ -0,0 +1,123 @@
 +##
 +## Compiler flags to use when compiling libgcc2.c.
@@ -9880,8 +9881,8 @@
 +## of options to be used for all builds.
 +##
 +
---- gcc-3.4.2/gcc/config.gcc
-+++ gcc-3.4.2.nios2/gcc/config.gcc
+--- gcc-3.4.3/gcc/config.gcc
++++ gcc-3.4.3-nios2/gcc/config.gcc
 @@ -1321,6 +1321,10 @@ m32rle-*-linux*)
  		thread_file='posix'
  	fi
@@ -9893,9 +9894,9 @@
  # m68hc11 and m68hc12 share the same machine description.
  m68hc11-*-*|m6811-*-*)
  	tm_file="dbxelf.h elfos.h m68hc11/m68hc11.h"
---- gcc-3.4.2/gcc/cse.c
-+++ gcc-3.4.2.nios2/gcc/cse.c
-@@ -3133,6 +3133,10 @@ find_comparison_args (enum rtx_code code
+--- gcc-3.4.3/gcc/cse.c
++++ gcc-3.4.3-nios2/gcc/cse.c
+@@ -3134,6 +3134,10 @@ find_comparison_args (enum rtx_code code
  #ifdef FLOAT_STORE_FLAG_VALUE
  	  REAL_VALUE_TYPE fsfv;
  #endif
@@ -9906,8 +9907,8 @@
  
  	  /* If the entry isn't valid, skip it.  */
  	  if (! exp_equiv_p (p->exp, p->exp, 1, 0))
---- gcc-3.4.2/gcc/doc/extend.texi
-+++ gcc-3.4.2.nios2/gcc/doc/extend.texi
+--- gcc-3.4.3/gcc/doc/extend.texi
++++ gcc-3.4.3-nios2/gcc/doc/extend.texi
 @@ -5636,12 +5636,118 @@ to those machines.  Generally these gene
  instructions, but allow the compiler to schedule those calls.
  
@@ -10027,8 +10028,8 @@
  @node Alpha Built-in Functions
  @subsection Alpha Built-in Functions
  
---- gcc-3.4.2/gcc/doc/invoke.texi
-+++ gcc-3.4.2.nios2/gcc/doc/invoke.texi
+--- gcc-3.4.3/gcc/doc/invoke.texi
++++ gcc-3.4.3-nios2/gcc/doc/invoke.texi
 @@ -337,6 +337,14 @@ in the following sections.
  @item Machine Dependent Options
  @xref{Submodel Options,,Hardware Models and Configurations}.
@@ -10156,8 +10157,8 @@
  @node M680x0 Options
  @subsection M680x0 Options
  @cindex M680x0 options
---- gcc-3.4.2/gcc/doc/md.texi
-+++ gcc-3.4.2.nios2/gcc/doc/md.texi
+--- gcc-3.4.3/gcc/doc/md.texi
++++ gcc-3.4.3-nios2/gcc/doc/md.texi
 @@ -1335,6 +1335,49 @@ However, here is a summary of the machin
  available on some particular machines.
  
