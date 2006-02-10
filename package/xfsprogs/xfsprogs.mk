@@ -3,7 +3,7 @@
 # xfsprogs
 #
 #############################################################
-XFSPROGS_VER:=2.6.36
+XFSPROGS_VER:=2.7.11
 XFSPROGS_SOURCE=xfsprogs-$(XFSPROGS_VER).src.tar.gz
 XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/cmd_tars
 XFSPROGS_DIR=$(BUILD_DIR)/xfsprogs-$(XFSPROGS_VER)
