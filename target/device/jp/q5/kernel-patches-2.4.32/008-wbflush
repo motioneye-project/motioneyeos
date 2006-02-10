@@ -1,0 +1,14 @@
+--- linux-2.4.32_old/include/asm-mips/wbflush.h	2006-01-26 15:16:14.000000000 +0100
++++ linux-2.4.32/include/asm-mips/wbflush.h	2006-01-27 15:25:54.030500656 +0100
+@@ -15,9 +15,8 @@
+ 
+ #ifdef CONFIG_CPU_HAS_WB
+ 
+-extern void (*__wbflush)(void);
+-extern void wbflush_setup(void);
+-
++#define __wbflush() { __asm__ volatile ("sync"); }
++ 
+ #define wbflush()			\
+ 	do {				\
+ 		__sync();		\

@@ -22,7 +22,7 @@
 ifneq ($(filter $(TARGETS),linux),)
 
 # Base version of Linux kernel that we need to download
-DOWNLOAD_LINUX_VERSION=2.4.26
+DOWNLOAD_LINUX_VERSION=2.4.32
 # Version of Linux kernel AFTER applying all patches
 LINUX_VERSION=$(DOWNLOAD_LINUX_VERSION)-q5
 
@@ -53,7 +53,6 @@ LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.4
 # Used by pcmcia-cs and others
 LINUX_SOURCE_DIR=$(LINUX_DIR)
 
-
 $(DL_DIR)/$(LINUX_SOURCE):
 	-mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
@@ -67,6 +66,8 @@ ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
 	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)
 endif
 	toolchain/patch-kernel.sh $(LINUX_DIR) $(LINUX_PATCH_DIR)
+	#New versions of binutils does not have -mcpu, but -mtune. -march is not needed because -mips2 is used
+	mv $(LINUX_DIR)/arch/mips/Makefile $(LINUX_DIR)/arch/mips/Makefile.org && sed 's/-mcpu/-mtune/g' < $(LINUX_DIR)/arch/mips/Makefile.org > $(LINUX_DIR)/arch/mips/Makefile
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_KCONFIG):

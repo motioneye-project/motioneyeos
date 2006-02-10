@@ -1,0 +1,13 @@
+--- linux-2.4.32_old/arch/mips/au1000/common/clocks.c	2005-01-19 15:09:26.000000000 +0100
++++ linux-2.4.32/arch/mips/au1000/common/clocks.c	2006-01-27 13:51:39.000000000 +0100
+@@ -85,9 +85,7 @@
+ 		lcd_clock = sys_busclk / 4;
+ 
+ 	if (lcd_clock > 50000) /* Epson MAX */
+-			printk(__FUNCTION__
+-			       ": warning: LCD clock too high (%d KHz)\n",
+-			       lcd_clock);
++			printk("warning: LCD clock too high (%d KHz)\n", lcd_clock);
+ }
+ 
+ unsigned int get_au1x00_lcd_clock(void)

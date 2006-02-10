@@ -43,7 +43,7 @@ ARCH_HAS_MMU=y
 UCLIBC_HAS_FLOATS=y
 HAS_FPU=y
 DO_C99_MATH=y
-KERNEL_SOURCE="/home/jp/buildroot_jp/build_test/toolchain_build_mipsel/linux"
+KERNEL_SOURCE="/mnt/storage1/jp/cvs/q5/sw/build/buildroot/toolchain_build_mipsel/linux"
 C_SYMBOL_PREFIX=""
 HAVE_DOT_CONFIG=y
 
@@ -61,6 +61,7 @@ LDSO_LDD_SUPPORT=y
 LDSO_CACHE_SUPPORT=y
 # LDSO_PRELOAD_FILE_SUPPORT is not set
 LDSO_BASE_FILENAME="ld.so"
+LDSO_RUNPATH=y
 # DL_FINI_CRT_COMPAT is not set
 UCLIBC_CTOR_DTOR=y
 # HAS_NO_THREADS is not set
@@ -115,6 +116,7 @@ UCLIBC_HAS_STDIO_BUFSIZ_4096=y
 UCLIBC_HAS_STDIO_BUILTIN_BUFFER_NONE=y
 # UCLIBC_HAS_STDIO_BUILTIN_BUFFER_4 is not set
 # UCLIBC_HAS_STDIO_BUILTIN_BUFFER_8 is not set
+# UCLIBC_HAS_STDIO_SHUTDOWN_ON_ABORT is not set
 UCLIBC_HAS_STDIO_GETC_MACRO=y
 UCLIBC_HAS_STDIO_PUTC_MACRO=y
 UCLIBC_HAS_STDIO_AUTO_RW_TRANSITION=y
@@ -151,8 +153,9 @@ DEVEL_PREFIX="/usr/"
 #
 # uClibc development/debugging options
 #
-CROSS_COMPILER_PREFIX=""
+CROSS_COMPILER_PREFIX="/mnt/storage1/jp/cvs/q5/sw/build/buildroot/build_mipsel/staging_dir/bin/mipsel-linux-uclibc-"
 # DODEBUG is not set
+# DODEBUG_PT is not set
 # DOASSERTS is not set
 # SUPPORT_LD_DEBUG is not set
 # SUPPORT_LD_DEBUG_EARLY is not set

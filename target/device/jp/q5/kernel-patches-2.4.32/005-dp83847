@@ -1,0 +1,162 @@
+diff -Naur linux-2.4.31.org/drivers/net/au1000_eth.c linux-2.4.31/drivers/net/au1000_eth.c
+--- linux-2.4.31.org/drivers/net/au1000_eth.c	2005-01-19 09:09:56.000000000 -0500
++++ linux-2.4.31/drivers/net/au1000_eth.c	2005-08-22 12:24:31.000000000 -0400
+@@ -595,6 +595,97 @@
+ 	return 0;
+ }
+ 
++int ns_83847_reset(struct net_device *dev, int phy_addr)
++ {
++       s16 mii_control, timeout;
++
++ //    printk("ns_reset\n");
++       mii_control = mdio_read(dev, phy_addr, MII_CONTROL);
++       mdio_write(dev, phy_addr, MII_CONTROL, mii_control | MII_CNTL_RESET);
++       mdelay(1);
++       for (timeout = 100; timeout > 0; --timeout) {
++               mii_control = mdio_read(dev, phy_addr, MII_CONTROL);
++               if ((mii_control & MII_CNTL_RESET) == 0)
++                       break;
++               mdelay(1);
++       }
++       if (mii_control & MII_CNTL_RESET) {
++               printk(KERN_ERR "%s PHY reset timeout !\n", dev->name);
++               return -1;
++       }
++       return 0;
++ }
++
++int ns_83847_init(struct net_device *dev, int phy_addr)
++ {
++      s16 data;
++ //    printk("ns_init\n");
++
++       /* Stop auto-negotiation */
++ //    data = mdio_read(dev, phy_addr, MII_CONTROL);
++ //    mdio_write(dev, phy_addr, MII_CONTROL, data & ~MII_CNTL_AUTO);
++ //    mdio_write(dev, phy_addr,    0, 0x0000);
++       mdio_write(dev, phy_addr, MII_CONTROL, MII_CNTL_F100 /* | MII_CNTL_FDX */);
++
++       /* Set advertisement to 10/100 and Half/Full duplex (full capabilities) */
++       data = mdio_read(dev, phy_addr, MII_ANADV);
++       /* obs PAUSE bit */
++       data |= MII_NWAY_TX | MII_NWAY_TX_FDX | MII_NWAY_T_FDX | MII_NWAY_T; /* MII_NWAY_T4 not sopported */ ;
++       mdio_write(dev, phy_addr, MII_ANADV, data);
++
++       /* Bypass led stretching? */
++       data = mdio_read(dev, phy_addr, MII_NS_PHYCTRL);
++       data |= MII_NS_PHYCTRL_BP_STRETCH;
++       mdio_write(dev, phy_addr, MII_NS_PHYCTRL, data);
++
++       /* Restart auto-negotiation */
++       data = mdio_read(dev, phy_addr, MII_CONTROL);
++       data |= MII_CNTL_RST_AUTO | MII_CNTL_AUTO;
++       mdio_write(dev, phy_addr, MII_CONTROL, data);
++
++       return 0;
++ }
++
++int ns_83847_status(struct net_device *dev, int phy_addr, u16 *link, u16 *speed)
++ {
++       u16 mii_data;
++       struct au1000_private *aup;
++
++       if (!dev) {
++               printk(KERN_ERR "ns_83847_status error: NULL dev\n");
++               return -1;
++       }
++       aup = (struct au1000_private *) dev->priv;
++
++       mii_data = mdio_read(dev, aup->phy_addr, MII_STATUS);
++ //    printk("ns_status: %04x\n", mii_data);
++       if (mii_data & MII_STAT_LINK) {
++               *link = 1;
++               mii_data = mdio_read(dev, aup->phy_addr, MII_NS_PHYSTS);
++               if (mii_data & MII_NS_PHYSTS_SPEED_10) {
++                       *speed = IF_PORT_10BASET;
++                       dev->if_port = IF_PORT_10BASET;
++               }
++               else  {
++                       if (mii_data & MII_NS_PHYSTS_DUPLEX_FULL) {
++                               *speed = IF_PORT_100BASEFX;
++                               dev->if_port = IF_PORT_100BASEFX;
++                       }
++                       else {
++                               *speed = IF_PORT_100BASETX;
++                               dev->if_port = IF_PORT_100BASETX;
++                       }
++               }
++
++       }
++       else {
++               *link = 0;
++               *speed = 0;
++               dev->if_port = IF_PORT_UNKNOWN;
++       }
++       return 0;
++ }
++
+ #ifdef CONFIG_MIPS_BOSPORUS
+ int stub_init(struct net_device *dev, int phy_addr)
+ {
+@@ -620,6 +711,12 @@
+ }
+ #endif
+ 
++struct phy_ops ns_83847_ops = {
++       ns_83847_init,
++       ns_83847_reset,
++       ns_83847_status,
++};
++
+ struct phy_ops bcm_5201_ops = {
+ 	bcm_5201_init,
+ 	bcm_5201_reset,
+@@ -679,6 +776,7 @@
+ 	{"LSI 80227 10/100 BaseT PHY",0x0016,0xf840, &lsi_80227_ops,0},
+ 	{"Intel LXT971A Dual Speed PHY",0x0013,0x78e2, &lxt971a_ops,0},
+ 	{"Kendin KS8995M 10/100 BaseT PHY",0x0022,0x1450, &ks8995m_ops,0},
++	{"Natsemi DP83847 PHY", 0x2000, 0x5c30, &ns_83847_ops },
+ #ifdef CONFIG_MIPS_BOSPORUS
+ 	{"Stub", 0x1234, 0x5678, &stub_ops },
+ #endif
+@@ -872,6 +970,8 @@
+ 			}
+ 		}
+ 	}
++	printk(KERN_ERR "%s: Au1x No MII transceivers found!\n", dev->name);
++	return -1;
+ found:
+ 
+ #ifdef CONFIG_MIPS_BOSPORUS
+diff -Naur linux-2.4.31.org/drivers/net/au1000_eth.h linux-2.4.31/drivers/net/au1000_eth.h
+--- linux-2.4.31.org/drivers/net/au1000_eth.h	2004-02-18 08:36:31.000000000 -0500
++++ linux-2.4.31/drivers/net/au1000_eth.h	2005-08-22 12:31:37.000000000 -0400
+@@ -86,6 +86,27 @@
+ #define MII_STAT_CAN_TX_FDX 0x4000
+ #define	MII_STAT_CAN_T4     0x8000
+ 
++/* mii registers for NS 83847 */
++#define MII_NS_PHYSTS   0x10
++#define MII_NS_FCSCR    0x14
++#define MII_NS_RECR     0x15
++#define MII_NS_PCSR     0x16
++#define MII_NS_PHYCTRL  0x19
++#define MII_NS_10BTSCR  0x1a
++#define MII_NS_CDCTRL   0x1b
++
++/* MII_NS_PHYSTS bits */
++#define MII_NS_PHYSTS_LINK            (1)
++#define MII_NS_PHYSTS_SPEED_10        (1<<1)
++#define MII_NS_PHYSTS_DUPLEX_FULL     (1<<2)
++
++/* MII_NS_PHYCTRL bits */
++#define MII_NS_PHYCTRL_BP_STRETCH     (1<<8)
++
++/* MII_NS_CDCTRL bits */
++#define MII_NS_CDCTRL_CD_ENABLE       (1<<15)
++#define MII_NS_CDCTRL_RISETIME        (1<<11)
++#define MII_NS_CDCTRL_FALLTIME        (1<<9)
+ 
+ #define		MII_ID1_OUI_LO		0xFC00	/* low bits of OUI mask */
+ #define		MII_ID1_MODEL		0x03F0	/* model number */

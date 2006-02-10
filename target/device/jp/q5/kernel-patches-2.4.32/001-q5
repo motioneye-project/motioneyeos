@@ -1,0 +1,342 @@
+diff -Naur linux-2.4.31.org/arch/mips/Makefile linux-2.4.31/arch/mips/Makefile
+--- linux-2.4.31.org/arch/mips/Makefile	2005-01-19 09:09:26.000000000 -0500
++++ linux-2.4.31/arch/mips/Makefile	2005-09-10 17:29:44.000000000 -0400
+@@ -241,6 +241,16 @@
+ endif
+ 
+ #
++# jp-embedded Q5 board
++#
++ifdef CONFIG_MIPS_Q5
++LIBS		+= arch/mips/jp-embedded/q5/q5.o \
++		   arch/mips/au1000/common/au1000.o
++SUBDIRS		+= arch/mips/jp-embedded/q5 arch/mips/au1000/common
++LOADADDR	:= 0x80100000
++endif
++
++#
+ # Au1x00 (AMD/Alchemy) eval boards
+ #
+ ifdef CONFIG_MIPS_DB1000
+diff -Naur linux-2.4.31.org/arch/mips/au1000/common/pci_fixup.c linux-2.4.31/arch/mips/au1000/common/pci_fixup.c
+--- linux-2.4.31.org/arch/mips/au1000/common/pci_fixup.c	2005-01-19 09:09:26.000000000 -0500
++++ linux-2.4.31/arch/mips/au1000/common/pci_fixup.c	2005-09-10 17:47:29.000000000 -0400
+@@ -101,7 +101,7 @@
+ 
+ void __init pcibios_fixup_irqs(void)
+ {
+-#if defined( CONFIG_SOC_AU1500 ) || defined( CONFIG_SOC_AU1550 )
++#if defined( CONFIG_MIPS_PB1500 ) || defined( CONFIG_MIPS_PB1550 )
+ 	unsigned int slot;
+ 	unsigned char pin;
+ 	struct pci_dev *dev;
+diff -Naur linux-2.4.31.org/arch/mips/config-shared.in linux-2.4.31/arch/mips/config-shared.in
+--- linux-2.4.31.org/arch/mips/config-shared.in	2005-01-19 09:09:27.000000000 -0500
++++ linux-2.4.31/arch/mips/config-shared.in	2005-08-23 00:30:32.000000000 -0400
+@@ -31,6 +31,7 @@
+ dep_bool 'Support for Alchemy PB1500 board' CONFIG_MIPS_PB1500 $CONFIG_MIPS32
+ dep_bool 'Support for Alchemy Hydrogen3 board' CONFIG_MIPS_HYDROGEN3 $CONFIG_MIPS32
+ dep_bool 'Support for Alchemy PB1550 board' CONFIG_MIPS_PB1550 $CONFIG_MIPS32
++dep_bool 'Support for jp-embedded Q5 board' CONFIG_MIPS_Q5 $CONFIG_MIPS32
+ dep_bool 'Support for MyCable XXS1500 board' CONFIG_MIPS_XXS1500 $CONFIG_MIPS32
+ dep_bool 'Support for 4G Systems MTX-1 board' CONFIG_MIPS_MTX1 $CONFIG_MIPS32
+ dep_bool 'Support for Cogent CSB250 board' CONFIG_COGENT_CSB250 $CONFIG_MIPS32
+@@ -277,6 +278,12 @@
+    define_bool CONFIG_NONCOHERENT_IO y
+    define_bool CONFIG_PC_KEYB y
+ fi
++if [ "$CONFIG_MIPS_Q5" = "y" ]; then
++   define_bool CONFIG_SOC_AU1X00 y
++   define_bool CONFIG_SOC_AU1500 y
++   define_bool CONFIG_NONCOHERENT_IO y
++   define_bool CONFIG_PC_KEYB y
++fi
+ if [ "$CONFIG_MIPS_DB1000" = "y" ]; then
+    define_bool CONFIG_SOC_AU1X00 y
+    define_bool CONFIG_SOC_AU1000 y
+@@ -729,6 +736,7 @@
+      "$CONFIG_MIPS_PB1000" = "y" -o \
+      "$CONFIG_MIPS_PB1100" = "y" -o \
+      "$CONFIG_MIPS_PB1500" = "y" -o \
++     "$CONFIG_MIPS_Q5" = "y" -o \
+      "$CONFIG_NEC_OSPREY" = "y" -o \
+      "$CONFIG_NEC_EAGLE" = "y" -o \
+      "$CONFIG_NINO" = "y" -o \
+diff -Naur linux-2.4.31.org/arch/mips/jp-embedded/q5/Makefile linux-2.4.31/arch/mips/jp-embedded/q5/Makefile
+--- linux-2.4.31.org/arch/mips/jp-embedded/q5/Makefile	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.4.31/arch/mips/jp-embedded/q5/Makefile	2005-09-10 16:46:20.000000000 -0400
+@@ -0,0 +1,9 @@
++USE_STANDARD_AS_RULE := true
++
++O_TARGET := q5.o
++
++export-objs = init.o
++
++obj-y := init.o board_setup.o irqmap.o
++
++include $(TOPDIR)/Rules.make
+diff -Naur linux-2.4.31.org/arch/mips/jp-embedded/q5/board_setup.c linux-2.4.31/arch/mips/jp-embedded/q5/board_setup.c
+--- linux-2.4.31.org/arch/mips/jp-embedded/q5/board_setup.c	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.4.31/arch/mips/jp-embedded/q5/board_setup.c	2005-08-30 14:46:21.000000000 -0400
+@@ -0,0 +1,97 @@
++/*
++ *
++ * BRIEF MODULE DESCRIPTION
++ *	jp-embedded Q5 board setup.
++ *
++ * Author: jp@jp-embedded.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++#include <linux/config.h>
++#include <linux/init.h>
++#include <linux/sched.h>
++#include <linux/ioport.h>
++#include <linux/mm.h>
++#include <linux/console.h>
++#include <linux/mc146818rtc.h>
++#include <linux/delay.h>
++
++#include <asm/cpu.h>
++#include <asm/bootinfo.h>
++#include <asm/irq.h>
++#include <asm/keyboard.h>
++#include <asm/mipsregs.h>
++#include <asm/reboot.h>
++#include <asm/pgtable.h>
++#include <asm/au1000.h>
++#include <asm/pb1500.h>
++
++#ifdef CONFIG_USB_OHCI
++// Enable the workaround for the OHCI DoneHead
++// register corruption problem.
++#define CONFIG_AU1000_OHCI_FIX
++#endif
++
++#ifdef CONFIG_RTC
++extern struct rtc_ops pb1500_rtc_ops;
++#endif
++
++void board_reset (void)
++{
++    /* Hit BCSR.SYSTEM_CONTROL[SW_RST] obs */
++    au_writel(0x00000000, 0xAE00001C);
++}
++
++void __init board_setup(void)
++{
++	u32 pin_func;
++	u32 sys_freqctrl, sys_clksrc;
++
++#ifdef CONFIG_PCI
++	// Setup PCI bus controller
++	au_writel(0, Au1500_PCI_CMEM);
++	au_writel(0x00003fff, Au1500_CFG_BASE);
++	au_writel(0xf, Au1500_PCI_CFG);
++	au_writel(0xf0000000, Au1500_PCI_MWMASK_DEV);
++	au_writel(0, Au1500_PCI_MWBASE_REV_CCL);
++	au_writel(0x02a00356, Au1500_PCI_STATCMD);
++	au_writel(0x00003c04, Au1500_PCI_HDRTYPE);
++	au_writel(0x00000008, Au1500_PCI_MBAR);
++	au_sync();
++#endif
++
++	/* Enable sys bus clock divider when IDLE state or no bus activity. */
++	au_writel(au_readl(SYS_POWERCTRL) | (0x3 << 5), SYS_POWERCTRL);
++
++#ifdef CONFIG_RTC
++	rtc_ops = &pb1500_rtc_ops;
++	// Enable the RTC if not already enabled
++	if (!(au_readl(0xac000028) & 0x20)) {
++		printk("enabling clock ...\n");
++		au_writel((au_readl(0xac000028) | 0x20), 0xac000028);
++	}
++	// Put the clock in BCD mode
++	if (readl(0xac00002C) & 0x4) { /* reg B */
++		au_writel(au_readl(0xac00002c) & ~0x4, 0xac00002c);
++		au_sync();
++	}
++#endif
++}
+diff -Naur linux-2.4.31.org/arch/mips/jp-embedded/q5/init.c linux-2.4.31/arch/mips/jp-embedded/q5/init.c
+--- linux-2.4.31.org/arch/mips/jp-embedded/q5/init.c	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.4.31/arch/mips/jp-embedded/q5/init.c	2005-09-10 16:43:21.000000000 -0400
+@@ -0,0 +1,80 @@
++/*
++ *
++ * BRIEF MODULE DESCRIPTION
++ *	jp-embedded Q5 board setup.
++ *
++ * Author: jp@jp-embedded.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++#include <linux/init.h>
++#include <linux/mm.h>
++#include <linux/sched.h>
++#include <linux/bootmem.h>
++#include <asm/addrspace.h>
++#include <asm/bootinfo.h>
++#include <linux/string.h>
++#include <linux/kernel.h>
++#include <linux/sched.h>
++
++int prom_argc;
++char **prom_argv, **prom_envp;
++extern void  __init prom_init_cmdline(void);
++extern char *prom_getenv(char *envname);
++void (*__wbflush) (void);
++
++void au1500_wbflush(void)
++{
++	__asm__ volatile ("sync");
++}
++
++const char *get_system_type(void)
++{
++	return "jp-embedded Q5";
++}
++
++int __init prom_init(int argc, char **argv, char **envp, int *prom_vec)
++{
++	unsigned char *memsize_str;
++	unsigned long memsize;
++
++	prom_argc = argc;
++	prom_argv = argv;
++	prom_envp = envp;
++
++	__wbflush = au1500_wbflush;
++
++        /* obs */
++	mips_machgroup = MACH_GROUP_ALCHEMY;
++	mips_machtype = MACH_PB1500;
++
++	prom_init_cmdline();
++	memsize_str = prom_getenv("memsize");
++	if (!memsize_str) {
++		memsize = 0x04000000;
++	} else {
++		memsize = simple_strtol(memsize_str, NULL, 0);
++	}
++	add_memory_region(0, memsize, BOOT_MEM_RAM);
++	return 0;
++}
++
++EXPORT_SYMBOL(__wbflush);
+diff -Naur linux-2.4.31.org/arch/mips/jp-embedded/q5/irqmap.c linux-2.4.31/arch/mips/jp-embedded/q5/irqmap.c
+--- linux-2.4.31.org/arch/mips/jp-embedded/q5/irqmap.c	1969-12-31 19:00:00.000000000 -0500
++++ linux-2.4.31/arch/mips/jp-embedded/q5/irqmap.c	2005-09-10 16:45:18.000000000 -0400
+@@ -0,0 +1,61 @@
++/*
++ *
++ * BRIEF MODULE DESCRIPTION
++ *	jp-embedded Q5 board setup.
++ *
++ * Author: jp@jp-embedded.com
++ *
++ *  This program is free software; you can redistribute  it and/or modify it
++ *  under  the terms of  the GNU General  Public License as published by the
++ *  Free Software Foundation;  either version 2 of the  License, or (at your
++ *  option) any later version.
++ *
++ *  THIS  SOFTWARE  IS PROVIDED   ``AS  IS'' AND   ANY  EXPRESS OR IMPLIED
++ *  WARRANTIES,   INCLUDING, BUT NOT  LIMITED  TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN
++ *  NO  EVENT  SHALL   THE AUTHOR  BE    LIABLE FOR ANY   DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ *  NOT LIMITED   TO, PROCUREMENT OF  SUBSTITUTE GOODS  OR SERVICES; LOSS OF
++ *  USE, DATA,  OR PROFITS; OR  BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
++ *  ANY THEORY OF LIABILITY, WHETHER IN  CONTRACT, STRICT LIABILITY, OR TORT
++ *  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ *  THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the  GNU General Public License along
++ *  with this program; if not, write  to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++#include <linux/errno.h>
++#include <linux/init.h>
++#include <linux/irq.h>
++#include <linux/kernel_stat.h>
++#include <linux/module.h>
++#include <linux/signal.h>
++#include <linux/sched.h>
++#include <linux/types.h>
++#include <linux/interrupt.h>
++#include <linux/ioport.h>
++#include <linux/timex.h>
++#include <linux/slab.h>
++#include <linux/random.h>
++#include <linux/delay.h>
++
++#include <asm/bitops.h>
++#include <asm/bootinfo.h>
++#include <asm/io.h>
++#include <asm/mipsregs.h>
++#include <asm/system.h>
++#include <asm/au1000.h>
++
++au1xxx_irq_map_t au1xxx_irq_map[] = {
++	{ AU1500_GPIO_201, INTC_INT_LOW_LEVEL, 0 },
++	{ AU1500_GPIO_202, INTC_INT_LOW_LEVEL, 0 },
++	{ AU1500_GPIO_203, INTC_INT_LOW_LEVEL, 0 },
++	{ AU1500_GPIO_204, INTC_INT_HIGH_LEVEL, 0},
++	{ AU1500_GPIO_205, INTC_INT_LOW_LEVEL, 0 },
++	{ AU1500_GPIO_206, INTC_INT_FALL_EDGE, 0 },
++	{ AU1500_GPIO_207, INTC_INT_LOW_LEVEL, 0 },
++};
++
++int au1xxx_nr_irqs = sizeof(au1xxx_irq_map)/sizeof(au1xxx_irq_map_t);
++
+--- linux-2.4.31.org/Documentation/Configure.help	2005-04-03 21:42:19.000000000 -0400
++++ linux-2.4.31/Documentation/Configure.help	2005-09-10 18:50:14.340000000 -0400
+@@ -2197,6 +2197,12 @@
+   MIPS-32-based Baget embedded system.  This chipset is better known
+   via the NE2100 cards.
+ 
++jp-embedded Q5 support
++CONFIG_MIPS_Q5
++  This enables support for jp-embedded's MIPS based boards. The
++  boards uses the AU1500 cpu. For more information about these
++  boards, see <http://www.jp-embedded.com/>.
++
+ Support for DECstations
+ CONFIG_DECSTATION
+   This enables support for DEC's MIPS based workstations.  For details

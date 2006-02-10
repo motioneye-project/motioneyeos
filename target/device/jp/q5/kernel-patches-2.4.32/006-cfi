@@ -1,0 +1,27 @@
+diff -Naur linux-2.4.31.org/drivers/mtd/chips/cfi_cmdset_0002.c linux-2.4.31/drivers/mtd/chips/cfi_cmdset_0002.c
+--- linux-2.4.31.org/drivers/mtd/chips/cfi_cmdset_0002.c	2004-11-17 06:54:21.000000000 -0500
++++ linux-2.4.31/drivers/mtd/chips/cfi_cmdset_0002.c	2005-08-22 12:14:17.000000000 -0400
+@@ -510,7 +510,7 @@
+ 	   or tells us why it failed. */        
+ 	dq6 = CMD(1<<6);
+ 	dq5 = CMD(1<<5);
+-	timeo = jiffies + (HZ/1000); /* setting timeout to 1ms for now */
++	timeo = jiffies + (HZ); /* setting timeout to 1s for now */
+ 		
+ 	oldstatus = cfi_read(map, adr);
+ 	status = cfi_read(map, adr);
+@@ -950,12 +950,8 @@
+ 		    oldstatus   = cfi_read( map, adr );
+ 		    status      = cfi_read( map, adr );
+ 		    
+-		    if( ( oldstatus & 0x00FF ) == ( status & 0x00FF ) )
++		    if( ( oldstatus & 0x00FF ) != ( status & 0x00FF ) )
+ 		    {
+-                printk( "Warning: DQ5 raised while erase operation was in progress, but erase completed OK\n" ); 		    
+-		    } 			
+-			else
+-            {
+ 			    /* DQ5 is active so we can do a reset and stop the erase */
+ 				cfi_write(map, CMD(0xF0), chip->start);
+                 printk( KERN_WARNING "Internal flash device timeout occured or write operation was performed while flash was erasing\n" );
+
