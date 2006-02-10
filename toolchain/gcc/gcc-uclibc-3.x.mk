@@ -136,10 +136,9 @@ gcc_initial: uclibc-configured binutils $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAM
 
 gcc_initial-clean:
 	rm -rf $(GCC_BUILD_DIR1)
-	rm -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
 
 gcc_initial-dirclean:
-	rm -rf $(GCC_BUILD_DIR1)
+	rm -rf $(GCC_BUILD_DIR1) $(GCC_DIR)
 
 #############################################################
 #
@@ -241,7 +240,6 @@ endif
 $(TARGET_DIR)/lib/libgcc_s.so.1: $(GCC_BUILD_DIR2)/.installed
 	# These are in /lib, so...
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
-	-$(STRIP) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s*.so.1
 	-cp -a $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 	-cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
@@ -262,9 +260,12 @@ gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 
 gcc-clean:
 	rm -rf $(GCC_BUILD_DIR2)
-	rm -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
+	for prog in cpp gcc gcc-[0-9]* protoize unprotoize gcov gccbug cc; do \
+	    rm -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-$$prog \
+	    rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-$$prog; \
+	done
 
-gcc-dirclean:
+gcc-dirclean: gcc_initial-dirclean
 	rm -rf $(GCC_BUILD_DIR2)
 
 #############################################################
