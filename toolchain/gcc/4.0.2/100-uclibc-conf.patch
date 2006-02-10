@@ -1,3 +1,11 @@
+--- gcc-4.0.2/gcc/config/t-linux-uclibc
++++ gcc-4.0.2/gcc/config/t-linux-uclibc
+@@ -0,0 +1,5 @@
++# Remove glibc specific files added in t-linux
++SHLIB_MAPFILES := $(filter-out $(srcdir)/config/libgcc-glibc.ver, $(SHLIB_MAPFILES))
++
++# Use unwind-dw2-fde instead of unwind-dw2-fde-glibc
++LIB2ADDEH := $(subst unwind-dw2-fde-glibc.c,unwind-dw2-fde.c,$(LIB2ADDEH))
 --- gcc-4.0.2/gcc/config.gcc
 +++ gcc-4.0.2/gcc/config.gcc
 @@ -1778,7 +1778,7 @@
@@ -19,7 +27,7 @@
 +# Rather than hook into each target, just do it after all the linux
 +# targets have been processed
 +case ${target} in
-+*-linux-uclibc*) tm_defines="${tm_defines} USE_UCLIBC"
++*-linux-uclibc*) tm_defines="${tm_defines} USE_UCLIBC" ; tmake_file="${tmake_file} t-linux-uclibc"
 +esac
  
  case ${target} in
