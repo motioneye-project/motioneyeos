@@ -2,6 +2,7 @@ comment "elf2flt"
 
 config BR2_ELF2FLT
 	bool "Enable elf2flt support?"
+	depends !BR2_alpha && !BR2_x86_64
 	default n
 	help
 	  uCLinux uses a Binary Flat format commonly known as BFLT. It
