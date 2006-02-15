@@ -5,19 +5,19 @@
 #############################################################
 ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
 # Be aware that this changes daily....
-TODAY=$(shell date -u +%Y%m%d)
-MTD_DL_SOURCE=mtd-snapshot-$(TODAY).tar.bz2
-MTD_SOURCE=mtd-snapshot.tar.bz2
-MTD_SITE=ftp://ftp.uk.linux.org/pub/people/dwmw2/mtd/cvs
+TODAY:=$(shell date -u +%Y%m%d)
+MTD_DL_SOURCE:=mtd-snapshot-$(TODAY).tar.bz2
+MTD_SOURCE:=mtd-snapshot.tar.bz2
+MTD_SITE:=ftp://ftp.uk.linux.org/pub/people/dwmw2/mtd/cvs
 MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_snapshot
 MTD_DIR:=$(BUILD_DIR)/mtd_snapshot
-MTD_UNZIP=bzcat
+MTD_UNZIP:=bzcat
 else
-MTD_SOURCE=$(shell echo -n $(BR2_PACKAGE_MTD_ORIG_STRING))
-MTD_SITE=http://ftp.debian.org/debian/pool/main/m/mtd
+MTD_SOURCE:=$(strip $(BR2_PACKAGE_MTD_ORIG_STRING))
+MTD_SITE:=http://ftp.debian.org/debian/pool/main/m/mtd
 MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_orig
 MTD_DIR:=$(BUILD_DIR)/mtd_orig
-MTD_UNZIP=zcat
+MTD_UNZIP:=zcat
 endif
 
 
@@ -40,9 +40,10 @@ $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE_GENERIC)
 	mv $(TOOL_BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
 	touch $(MTD_HOST_DIR)/.unpacked
 else
+ifneq ($(MTD_SOURCE),)
 $(DL_DIR)/$(MTD_SOURCE):
-	echo $(DL_DIR)/$(MTD_SOURCE)
 	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
+endif
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
