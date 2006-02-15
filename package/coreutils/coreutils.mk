@@ -3,7 +3,7 @@
 # coreutils
 #
 #############################################################
-COREUTILS_VER:=5.3.0
+COREUTILS_VER:=5.94
 COREUTILS_SOURCE:=coreutils-$(COREUTILS_VER).tar.bz2
 #COREUTILS_SITE:=ftp://ftp.gnu.org/gnu/coreutils/
 COREUTILS_SITE:=ftp://alpha.gnu.org/gnu/coreutils/
