@@ -17,7 +17,7 @@ source "toolchain/sstrip/Config.in"
 
 config BR2_ENABLE_MULTILIB
 	bool "Enable multilib support?"
-	default y
+	default n
 	help
 	    If you want multilib enabled, enable this...
 
