@@ -3,7 +3,7 @@
 # file
 #
 #############################################################
-FILE_VER:=4.15
+FILE_VER:=4.16
 FILE_SOURCE:=file-$(FILE_VER).tar.gz
 FILE_SITE:=ftp://ftp.astron.com/pub/file
 FILE_DIR1:=$(TOOL_BUILD_DIR)/file-$(FILE_VER)
@@ -51,6 +51,7 @@ host-file-dirclean:
 # build file for use on the target system
 #
 #############################################################
+file-unpacked: $(FILE_DIR2)/.unpacked
 $(FILE_DIR2)/.unpacked: $(DL_DIR)/$(FILE_SOURCE)
 	$(FILE_CAT) $(DL_DIR)/$(FILE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(FILE_DIR2) package/file/ file\*.patch
