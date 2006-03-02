@@ -19,12 +19,12 @@ retrieving revision 1.336
 diff -u -p -r1.336 config.sub
 --- config.sub	22 Dec 2005 23:50:21 -0000	1.336
 +++ config.sub	30 Dec 2005 23:36:24 -0000
-@@ -273,7 +273,7 @@ case $basic_machine in
+@@ -275,7 +275,7 @@ case $basic_machine in
  	| pdp10 | pdp11 | pj | pjl \
  	| powerpc | powerpc64 | powerpc64le | powerpcle | ppcbe \
  	| pyramid \
 -	| sh | sh[1234] | sh[24]a | sh[23]e | sh[34]eb | shbe | shle | sh[1234]le | sh3ele \
-+	| sh | sh[1234] | sh[24]a | sh[24]a*eb | sh[23]e | sh[34]eb | shbe | shle | sh[1234]le | sh3ele \
++	| sh | sh[1234] | sh[24]a | sh[24]a*eb | sh[23]e | sh[34]eb | shbe | sheb | shle | sh[1234]le | sh3ele \
  	| sh64 | sh64le \
- 	| sparc | sparc64 | sparc64b | sparc86x | sparclet | sparclite \
- 	| sparcv8 | sparcv9 | sparcv9b \
+ 	| sparc | sparc64 | sparc64b | sparc64v | sparc86x | sparclet | sparclite \
+ 	| sparcv8 | sparcv9 | sparcv9b | sparcv9v \

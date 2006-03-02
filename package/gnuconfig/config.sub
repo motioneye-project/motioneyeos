@@ -1,9 +1,10 @@
 #! /bin/sh
 # Configuration validation subroutine script.
 #   Copyright (C) 1992, 1993, 1994, 1995, 1996, 1997, 1998, 1999,
-#   2000, 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
+#   2000, 2001, 2002, 2003, 2004, 2005, 2006 Free Software Foundation,
+#   Inc.
 
-timestamp='2006-01-02'
+timestamp='2006-02-27'
 
 # This file is (in principle) common to ALL GNU software.
 # The presence of a machine in this file suggests that SOME GNU software
@@ -268,15 +269,16 @@ case $basic_machine in
 	| mn10200 | mn10300 \
 	| mt \
 	| msp430 \
+	| nios | nios2 \
 	| ns16k | ns32k \
 	| or32 \
 	| pdp10 | pdp11 | pj | pjl \
 	| powerpc | powerpc64 | powerpc64le | powerpcle | ppcbe \
 	| pyramid \
-	| sh | sh[1234] | sh[24]a | sh[24]a*eb | sh[23]e | sh[34]eb | shbe | shle | sh[1234]le | sh3ele \
+	| sh | sh[1234] | sh[24]a | sh[24]a*eb | sh[23]e | sh[34]eb | shbe | sheb | shle | sh[1234]le | sh3ele \
 	| sh64 | sh64le \
-	| sparc | sparc64 | sparc64b | sparc86x | sparclet | sparclite \
-	| sparcv8 | sparcv9 | sparcv9b \
+	| sparc | sparc64 | sparc64b | sparc64v | sparc86x | sparclet | sparclite \
+	| sparcv8 | sparcv9 | sparcv9b | sparcv9v \
 	| strongarm \
 	| tahoe | thumb | tic4x | tic80 | tron \
 	| v850 | v850e \
@@ -297,9 +299,6 @@ case $basic_machine in
 		;;
 	ms1)
 		basic_machine=mt-unknown
-		;;
-	nios2 | nios2-* | nios2 | nios2-*)
-		basic_machine=nios2-altera
 		;;
 
 	# We use `pc' rather than `unknown'
@@ -353,6 +352,7 @@ case $basic_machine in
 	| mmix-* \
 	| mt-* \
 	| msp430-* \
+	| nios-* | nios2-* \
 	| none-* | np1-* | ns16k-* | ns32k-* \
 	| orion-* \
 	| pdp10-* | pdp11-* | pj-* | pjl-* | pn-* | power-* \
@@ -361,9 +361,9 @@ case $basic_machine in
 	| romp-* | rs6000-* \
 	| sh-* | sh[1234]-* | sh[24]a-* | sh[23]e-* | sh[34]eb-* | shbe-* \
 	| shle-* | sh[1234]le-* | sh3ele-* | sh64-* | sh64le-* \
-	| sparc-* | sparc64-* | sparc64b-* | sparc86x-* | sparclet-* \
+	| sparc-* | sparc64-* | sparc64b-* | sparc64v-* | sparc86x-* | sparclet-* \
 	| sparclite-* \
-	| sparcv8-* | sparcv9-* | sparcv9b-* | strongarm-* | sv1-* | sx?-* \
+	| sparcv8-* | sparcv9-* | sparcv9b-* | sparcv9v-* | strongarm-* | sv1-* | sx?-* \
 	| tahoe-* | thumb-* \
 	| tic30-* | tic4x-* | tic54x-* | tic55x-* | tic6x-* | tic80-* \
 	| tron-* \
@@ -1147,7 +1147,7 @@ case $basic_machine in
 	sh[1234] | sh[24]a | sh[34]eb | sh[1234]le | sh[23]ele)
 		basic_machine=sh-unknown
 		;;
-	sparc | sparcv8 | sparcv9 | sparcv9b)
+	sparc | sparcv8 | sparcv9 | sparcv9b | sparcv9v)
 		basic_machine=sparc-sun
 		;;
 	cydra)

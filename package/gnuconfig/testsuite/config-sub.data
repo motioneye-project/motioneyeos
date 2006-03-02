@@ -81,3 +81,12 @@ i386-linux-newlib		i386-pc-linux-newlib
 mb-elf				mb-unknown-elf
 microblaze-elf			microblaze-unknown-elf
 i386-solidbsd			i386-pc-solidbsd
+amd64-kfreebsd5.4-gnu		x86_64-pc-kfreebsd5.4-gnu
+nios				nios-unknown-none
+nios2				nios2-unknown-none
+nios-elf			nios-unknown-elf
+nios2-elf			nios2-unknown-elf
+sparcv9v-elf			sparcv9v-unknown-elf
+sparc64v-elf			sparc64v-unknown-elf
+sparcv9v-solaris2.9		sparcv9v-unknown-solaris2.9
+sparc64v-solaris2.9		sparc64v-unknown-solaris2.9

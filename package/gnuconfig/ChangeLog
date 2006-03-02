@@ -1,3 +1,58 @@
+2006-02-27  David S. Miller  <davem@sunset.davemloft.net>
+	    Ben Elliston  <bje@gnu.org>
+
+	* config.sub (sparcv9v, sparc64v): Recognise SUN4V-based SPARCs.
+	* testsuite/config-sub.data: Add test cases.
+
+2006-02-27  Ben Elliston  <bje@gnu.org>
+
+	* config.guess, config.sub: Add 2006 to copyright years.
+
+2006-02-23  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (EM64T:Interix:*:*): New case.
+	* testsuite/config-guess.data: Add test case.
+
+2006-02-23  Mike Frysinger  <vapier@gentoo.org>
+
+	* config.sub (nios, nios2): New.
+	* testsuite/config-sub.data: Add test cases.
+
+2006-02-23  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (x86:Interix*:[345]*): Retain full Interix version.
+	* testsuite/config-guess.data: Update Interix test(s).
+
+2006-02-23  Ben Elliston  <bje@gnu.org>
+
+	* testsuite/config-guess.data: Tweak MSYS_NT-5.1 test.
+
+2006-02-23  Dan Nicolaescu  <dann@ics.uci.edu>
+
+	* config.guess (i*86:Linux:*:*): Recognise the Sun Studio compiler
+	by handling #if defined(__sun).
+
+2006-02-23  Ben Elliston  <bje@gnu.org>
+
+	* config.guess: Handle i*:MSYS_NT-*:*:* for MSYS/Mingw.
+	* testsuite/config-guess.data: Add test case.
+
+2006-01-30  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* config.guess: Don't use semicolons to separate sed commands, as
+	POSIX says it's not portable.
+	Noted by Paul Eggert <eggert@cs.ucla.edu>.
+
+2006-01-30  Ralf Wildenhues <Ralf.Wildenhues@gmx.de>
+
+	* config.guess (set_cc_for_build): Do not pass `-q' to mktemp.
+	Reported by Bruce Korb <bkorb@gnu.org>.
+
+2006-01-19  Robert Millan  <robertmh@gnu.org>
+
+	* testsuite/config-guess.data: Add test case for GNU/kFreeBSD.
+	* testsuite/config-sub.data: Add test case for amd64-kfreebsd5.4-gnu.
+
 2006-01-02  Ben Elliston  <bje@gnu.org>
 
 	* config.guess (*:SolidBSD:*:*): New.

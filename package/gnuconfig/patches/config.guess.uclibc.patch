@@ -1,11 +1,11 @@
 Index: config.guess
 ===================================================================
 RCS file: /cvsroot/config/config/config.guess,v
-retrieving revision 1.341
-diff -u -p -r1.341 config.guess
---- config.guess	22 Dec 2005 23:50:21 -0000	1.341
-+++ config.guess	30 Dec 2005 23:47:21 -0000
-@@ -138,6 +138,23 @@ UNAME_RELEASE=`(uname -r) 2>/dev/null` |
+retrieving revision 1.349
+diff -u -p -r1.349 config.guess
+--- config.guess	26 Feb 2006 23:11:20 -0000	1.349
++++ config.guess	2 Mar 2006 06:15:33 -0000
+@@ -139,6 +139,23 @@ UNAME_RELEASE=`(uname -r) 2>/dev/null` |
  UNAME_SYSTEM=`(uname -s) 2>/dev/null`  || UNAME_SYSTEM=unknown
  UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
  
@@ -29,7 +29,7 @@ diff -u -p -r1.341 config.guess
  # Note: order is significant - the case branches are not exclusive.
  
  case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" in
-@@ -820,25 +837,25 @@ EOF
+@@ -830,25 +847,25 @@ EOF
  	echo ${UNAME_MACHINE}-pc-minix
  	exit ;;
      arm*:Linux:*:*)
@@ -62,19 +62,19 @@ diff -u -p -r1.341 config.guess
  	exit ;;
      mips:Linux:*:*)
  	eval $set_cc_for_build
-@@ -857,7 +874,7 @@ EOF
- 	#endif
- EOF
- 	eval "`$CC_FOR_BUILD -E $dummy.c 2>/dev/null | sed -n '/^CPU/{s: ::g;p;}'`"
+@@ -871,7 +888,7 @@ EOF
+ 		s: ::g
+ 		p
+ 	    }'`"
 -	test x"${CPU}" != x && { echo "${CPU}-unknown-linux-gnu"; exit; }
 +	test x"${CPU}" != x && { echo "${CPU}-unknown-linux-${LIBC}"; exit; }
  	;;
      mips64:Linux:*:*)
  	eval $set_cc_for_build
-@@ -876,16 +893,16 @@ EOF
- 	#endif
- EOF
- 	eval "`$CC_FOR_BUILD -E $dummy.c 2>/dev/null | sed -n '/^CPU/{s: ::g;p;}'`"
+@@ -894,16 +911,16 @@ EOF
+ 		s: ::g
+ 		p
+ 	    }'`"
 -	test x"${CPU}" != x && { echo "${CPU}-unknown-linux-gnu"; exit; }
 +	test x"${CPU}" != x && { echo "${CPU}-unknown-linux-${LIBC}"; exit; }
  	;;
@@ -92,7 +92,7 @@ diff -u -p -r1.341 config.guess
  	exit ;;
      alpha:Linux:*:*)
  	case `sed -n '/^cpu model/s/^.*: \(.*\)/\1/p' < /proc/cpuinfo` in
-@@ -898,37 +915,37 @@ EOF
+@@ -916,37 +933,37 @@ EOF
  	  EV68*) UNAME_MACHINE=alphaev68 ;;
          esac
  	objdump --private-headers /bin/sh | grep ld.so.1 >/dev/null
@@ -141,7 +141,7 @@ diff -u -p -r1.341 config.guess
  	exit ;;
      i*86:Linux:*:*)
  	# The BFD linker knows what the default object file format is, so
-@@ -943,20 +960,22 @@ EOF
+@@ -961,20 +978,22 @@ EOF
  				    p'`
          case "$ld_supported_targets" in
  	  elf32-i386)
