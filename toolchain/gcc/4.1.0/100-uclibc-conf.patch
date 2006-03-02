@@ -1,7 +1,38 @@
-diff -urN gcc-4.0.0-dist/boehm-gc/configure gcc-4.0.0/boehm-gc/configure
---- gcc-4.0.0-dist/boehm-gc/configure	2005-04-21 02:04:10.000000000 -0500
-+++ gcc-4.0.0/boehm-gc/configure	2005-04-30 13:22:27.495094224 -0500
-@@ -4320,6 +4320,11 @@
+--- gcc-4.1.0/gcc/config/t-linux-uclibc
++++ gcc-4.1.0/gcc/config/t-linux-uclibc
+@@ -0,0 +1,5 @@
++# Remove glibc specific files added in t-linux
++SHLIB_MAPFILES := $(filter-out $(srcdir)/config/libgcc-glibc.ver, $(SHLIB_MAPFILES))
++
++# Use unwind-dw2-fde instead of unwind-dw2-fde-glibc
++LIB2ADDEH := $(subst unwind-dw2-fde-glibc.c,unwind-dw2-fde.c,$(LIB2ADDEH))
+--- gcc-4.1.0/gcc/config.gcc
++++ gcc-4.1.0/gcc/config.gcc
+@@ -1887,7 +1887,7 @@ s390x-ibm-tpf*)
+ 	;;
+ sh-*-elf* | sh[12346l]*-*-elf* | sh*-*-kaos* | \
+ sh-*-symbianelf* | sh[12346l]*-*-symbianelf* | \
+-  sh-*-linux* | sh[346lbe]*-*-linux* | \
++  sh*-*-linux* | sh[346lbe]*-*-linux* | \
+   sh-*-netbsdelf* | shl*-*-netbsdelf* | sh5-*-netbsd* | sh5l*-*-netbsd* | \
+    sh64-*-netbsd* | sh64l*-*-netbsd*)
+ 	tmake_file="${tmake_file} sh/t-sh sh/t-elf"
+@@ -2341,6 +2341,12 @@ m32c-*-elf*)
+ 	;;
+ esac
+ 
++# Rather than hook into each target, just do it after all the linux
++# targets have been processed
++case ${target} in
++*-linux-uclibc*) tm_defines="${tm_defines} USE_UCLIBC" ; tmake_file="${tmake_file} t-linux-uclibc"
++esac
++
+ case ${target} in
+ i[34567]86-*-linux*aout* | i[34567]86-*-linux*libc1)
+ 	tmake_file="${tmake_file} i386/t-gmm_malloc"
+--- gcc-4.1.0/boehm-gc/configure
++++ gcc-4.1.0/boehm-gc/configure
+@@ -4320,6 +4320,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -13,10 +44,9 @@ diff -urN gcc-4.0.0-dist/boehm-gc/configure gcc-4.0.0/boehm-gc/configure
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-4.0.0-dist/configure gcc-4.0.0/configure
---- gcc-4.0.0-dist/configure	2005-04-21 02:04:10.000000000 -0500
-+++ gcc-4.0.0/configure	2005-04-30 12:27:56.000000000 -0500
-@@ -1136,7 +1136,7 @@
+--- gcc-4.1.0/configure
++++ gcc-4.1.0/configure
+@@ -1133,7 +1133,7 @@ no)
      ;;
  "")
      case "${target}" in
@@ -25,10 +55,9 @@ diff -urN gcc-4.0.0-dist/configure gcc-4.0.0/configure
          # Enable libmudflap by default in GNU and friends.
  	;;
      *-*-freebsd*)
-diff -urN gcc-4.0.0-dist/configure.in gcc-4.0.0/configure.in
---- gcc-4.0.0-dist/configure.in	2005-04-20 21:45:11.000000000 -0500
-+++ gcc-4.0.0/configure.in	2005-04-30 12:22:09.000000000 -0500
-@@ -345,7 +345,7 @@
+--- gcc-4.1.0/configure.in
++++ gcc-4.1.0/configure.in
+@@ -341,7 +341,7 @@ no)
      ;;
  "")
      case "${target}" in
@@ -37,10 +66,9 @@ diff -urN gcc-4.0.0-dist/configure.in gcc-4.0.0/configure.in
          # Enable libmudflap by default in GNU and friends.
  	;;
      *-*-freebsd*)
-diff -urN gcc-4.0.0-dist/contrib/regression/objs-gcc.sh gcc-4.0.0/contrib/regression/objs-gcc.sh
---- gcc-4.0.0-dist/contrib/regression/objs-gcc.sh	2002-10-11 15:23:21.000000000 -0500
-+++ gcc-4.0.0/contrib/regression/objs-gcc.sh	2005-04-30 12:29:58.000000000 -0500
-@@ -105,6 +105,10 @@
+--- gcc-4.1.0/contrib/regression/objs-gcc.sh
++++ gcc-4.1.0/contrib/regression/objs-gcc.sh
+@@ -105,6 +105,10 @@ if [ $H_REAL_TARGET = $H_REAL_HOST -a $H
   then
    make all-gdb all-dejagnu all-ld || exit 1
    make install-gdb install-dejagnu install-ld || exit 1
@@ -51,9 +79,9 @@ diff -urN gcc-4.0.0-dist/contrib/regression/objs-gcc.sh gcc-4.0.0/contrib/regres
  elif [ $H_REAL_TARGET = $H_REAL_HOST ] ; then
    make bootstrap || exit 1
    make install || exit 1
---- gcc-3.4.4/gcc/config/alpha/linux-elf.h
-+++ gcc-3.4.4/gcc/config/alpha/linux-elf.h
-@@ -27,7 +27,11 @@
+--- gcc-4.1.0/gcc/config/alpha/linux-elf.h
++++ gcc-4.1.0/gcc/config/alpha/linux-elf.h
+@@ -27,7 +27,11 @@ Boston, MA 02110-1301, USA.  */
  #define SUBTARGET_EXTRA_SPECS \
  { "elf_dynamic_linker", ELF_DYNAMIC_LINKER },
  
@@ -65,40 +93,23 @@ diff -urN gcc-4.0.0-dist/contrib/regression/objs-gcc.sh gcc-4.0.0/contrib/regres
  
  #define LINK_SPEC "-m elf64alpha %{G*} %{relax:-relax}		\
    %{O*:-O3} %{!O*:-O1}						\
-diff -urN gcc-4.0.0-dist/gcc/config/arm/linux-elf.h gcc-4.0.0/gcc/config/arm/linux-elf.h
---- gcc-4.0.0-dist/gcc/config/arm/linux-elf.h	2005-03-04 10:14:01.000000000 -0600
-+++ gcc-4.0.0/gcc/config/arm/linux-elf.h	2005-04-28 20:30:00.000000000 -0500
-@@ -82,6 +82,18 @@
-   "%{!shared:crtend.o%s} %{shared:crtendS.o%s} crtn.o%s"
+--- gcc-4.1.0/gcc/config/arm/linux-elf.h
++++ gcc-4.1.0/gcc/config/arm/linux-elf.h
+@@ -51,7 +51,11 @@
  
- #undef  LINK_SPEC
+ #define LIBGCC_SPEC "%{msoft-float:-lfloat} %{mfloat-abi=soft*:-lfloat} -lgcc"
+ 
 +#ifdef USE_UCLIBC
-+#define LINK_SPEC "%{h*} %{version:-v} \
-+   %{b} %{Wl,*:%*} \
-+   %{static:-Bstatic} \
-+   %{shared:-shared} \
-+   %{symbolic:-Bsymbolic} \
-+   %{rdynamic:-export-dynamic} \
-+   %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0} \
-+   -X \
-+   %{mbig-endian:-EB}" \
-+   SUBTARGET_EXTRA_LINK_SPEC
++#define LINUX_TARGET_INTERPRETER "/lib/ld-uClibc.so.0"
 +#else
- #define LINK_SPEC "%{h*} %{version:-v} \
-    %{b} %{Wl,*:%*} \
-    %{static:-Bstatic} \
-@@ -92,6 +104,7 @@
-    -X \
-    %{mbig-endian:-EB}" \
-    SUBTARGET_EXTRA_LINK_SPEC
+ #define LINUX_TARGET_INTERPRETER "/lib/ld-linux.so.2"
 +#endif
  
- #define TARGET_OS_CPP_BUILTINS()		\
-   do						\
-diff -urN gcc-4.0.0-dist/gcc/config/cris/linux.h gcc-4.0.0/gcc/config/cris/linux.h
---- gcc-4.0.0-dist/gcc/config/cris/linux.h	2003-11-28 21:08:09.000000000 -0600
-+++ gcc-4.0.0/gcc/config/cris/linux.h	2005-04-28 20:30:00.000000000 -0500
-@@ -79,6 +79,25 @@
+ #define LINUX_TARGET_LINK_SPEC  "%{h*} %{version:-v} \
+    %{b} \
+--- gcc-4.1.0/gcc/config/cris/linux.h
++++ gcc-4.1.0/gcc/config/cris/linux.h
+@@ -73,6 +73,25 @@ Boston, MA 02110-1301, USA.  */
  #undef CRIS_DEFAULT_CPU_VERSION
  #define CRIS_DEFAULT_CPU_VERSION CRIS_CPU_NG
  
@@ -124,7 +135,7 @@ diff -urN gcc-4.0.0-dist/gcc/config/cris/linux.h gcc-4.0.0/gcc/config/cris/linux
  #undef CRIS_SUBTARGET_VERSION
  #define CRIS_SUBTARGET_VERSION " - cris-axis-linux-gnu"
  
-@@ -93,6 +112,8 @@
+@@ -87,6 +106,8 @@ Boston, MA 02110-1301, USA.  */
    %{!shared:%{!static:%{rdynamic:-export-dynamic}}}\
    %{!r:%{O2|O3: --gc-sections}}"
  
@@ -133,17 +144,9 @@ diff -urN gcc-4.0.0-dist/gcc/config/cris/linux.h gcc-4.0.0/gcc/config/cris/linux
  
  /* Node: Run-time Target */
  
-diff -urN gcc-4.0.0-dist/gcc/config/cris/t-linux-uclibc gcc-4.0.0/gcc/config/cris/t-linux-uclibc
---- gcc-4.0.0-dist/gcc/config/cris/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.0.0/gcc/config/cris/t-linux-uclibc	2005-04-28 20:30:00.000000000 -0500
-@@ -0,0 +1,3 @@
-+T_CFLAGS = -DUSE_UCLIBC
-+TARGET_LIBGCC2_CFLAGS += -fPIC
-+CRTSTUFF_T_CFLAGS_S = $(TARGET_LIBGCC2_CFLAGS)
-diff -urN gcc-4.0.0-dist/gcc/config/i386/linux.h gcc-4.0.0/gcc/config/i386/linux.h
---- gcc-4.0.0-dist/gcc/config/i386/linux.h	2004-11-27 10:45:14.000000000 -0600
-+++ gcc-4.0.0/gcc/config/i386/linux.h	2005-04-28 20:30:00.000000000 -0500
-@@ -107,6 +107,11 @@
+--- gcc-4.1.0/gcc/config/i386/linux.h
++++ gcc-4.1.0/gcc/config/i386/linux.h
+@@ -107,6 +107,11 @@ Boston, MA 02110-1301, USA.  */
  #define LINK_EMULATION "elf_i386"
  #define DYNAMIC_LINKER "/lib/ld-linux.so.2"
  
@@ -155,65 +158,123 @@ diff -urN gcc-4.0.0-dist/gcc/config/i386/linux.h gcc-4.0.0/gcc/config/i386/linux
  #undef  SUBTARGET_EXTRA_SPECS
  #define SUBTARGET_EXTRA_SPECS \
    { "link_emulation", LINK_EMULATION },\
---- gcc-3.4.4/gcc/config/i386/linux64.h
-+++ gcc-3.4.4/gcc/config/i386/linux64.h
-@@ -55,6 +55,15 @@
+--- gcc-4.1.0/gcc/config/i386/linux64.h
++++ gcc-4.1.0/gcc/config/i386/linux64.h
+@@ -54,14 +54,21 @@ Boston, MA 02110-1301, USA.  */
+    When the -shared link option is used a final link is not being
     done.  */
  
- #undef	LINK_SPEC
-+#if defined USE_UCLIBC
-+#define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
-+  %{shared:-shared} \
-+  %{!shared: \
-+    %{!static: \
-+      %{rdynamic:-export-dynamic} \
-+      %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
-+    %{static:-static}}"
++#ifdef USE_UCLIBC
++#define ELF32_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define ELF64_DYNAMIC_LINKER "/lib/ld64-uClibc.so.0"
 +#else
++#define ELF32_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#define ELF64_DYNAMIC_LINKER "/lib64/ld-linux-x86-64.so.2"
++#endif
+ #undef	LINK_SPEC
  #define LINK_SPEC "%{!m32:-m elf_x86_64} %{m32:-m elf_i386} \
    %{shared:-shared} \
    %{!shared: \
-@@ -63,6 +73,7 @@
-       %{m32:%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
-       %{!m32:%{!dynamic-linker:-dynamic-linker /lib64/ld-linux-x86-64.so.2}}} \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{m32:%{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
+-      %{!m32:%{!dynamic-linker:-dynamic-linker /lib64/ld-linux-x86-64.so.2}}} \
++      %{m32:%{!dynamic-linker:-dynamic-linker " ELF32_DYNAMIC_LINKER "}} \
++      %{!m32:%{!dynamic-linker:-dynamic-linker " ELF64_DYNAMIC_LINKER "}}} \
      %{static:-static}}"
+ 
+ /* Similar to standard Linux, but adding -ffast-math support.  */
+--- gcc-4.1.0/gcc/config/ia64/linux.h
++++ gcc-4.1.0/gcc/config/ia64/linux.h
+@@ -37,13 +37,18 @@ do {						\
+ /* Define this for shared library support because it isn't in the main
+    linux.h file.  */
+ 
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER	"/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux-ia64.so.2"
 +#endif
+ #undef LINK_SPEC
+ #define LINK_SPEC "\
+   %{shared:-shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{!dynamic-linker:-dynamic-linker /lib/ld-linux-ia64.so.2}} \
++      %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+       %{static:-static}}"
  
- #define MULTILIB_DEFAULTS { "m64" }
  
-diff -urN gcc-4.0.0-dist/gcc/config/mips/linux.h gcc-4.0.0/gcc/config/mips/linux.h
---- gcc-4.0.0-dist/gcc/config/mips/linux.h	2005-01-25 20:04:46.000000000 -0600
-+++ gcc-4.0.0/gcc/config/mips/linux.h	2005-04-28 20:30:00.000000000 -0500
-@@ -108,6 +108,17 @@
+--- gcc-4.1.0/gcc/config/m68k/linux.h
++++ gcc-4.1.0/gcc/config/m68k/linux.h
+@@ -123,12 +123,17 @@ Boston, MA 02110-1301, USA.  */
+ 
+ /* If ELF is the default format, we should not use /lib/elf.  */
+ 
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld.so.1"
++#endif
+ #undef	LINK_SPEC
+ #define LINK_SPEC "-m m68kelf %{shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{!dynamic-linker*:-dynamic-linker /lib/ld.so.1}} \
++      %{!dynamic-linker*:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+     %{static}}"
+ 
+ /* For compatibility with linux/a.out */
+--- gcc-4.1.0/gcc/config/mips/linux.h
++++ gcc-4.1.0/gcc/config/mips/linux.h
+@@ -105,6 +105,11 @@ Boston, MA 02110-1301, USA.  */
  
  /* Borrowed from sparc/linux.h */
  #undef LINK_SPEC
 +#ifdef USE_UCLIBC
-+#define LINK_SPEC \
-+ "%(endian_spec) \
-+  %{shared:-shared} \
-+  %{!shared: \
-+    %{!ibcs: \
-+      %{!static: \
-+        %{rdynamic:-export-dynamic} \
-+        %{!dynamic-linker:-dynamic-linker /lib/ld-uClibc.so.0}} \
-+        %{static:-static}}}"
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
 +#else
++#define ELF_DYNAMIC_LINKER "/lib/ld.so.1"
++#endif
  #define LINK_SPEC \
   "%(endian_spec) \
    %{shared:-shared} \
-@@ -117,6 +128,7 @@
+@@ -112,7 +117,7 @@ Boston, MA 02110-1301, USA.  */
+     %{!ibcs: \
+       %{!static: \
          %{rdynamic:-export-dynamic} \
-         %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
+-        %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
++        %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
          %{static:-static}}}"
-+#endif
  
  #undef SUBTARGET_ASM_SPEC
- #define SUBTARGET_ASM_SPEC "%{mabi=64: -64} %{!mno-abicalls:-KPIC}"
-diff -urN gcc-4.0.0-dist/gcc/config/rs6000/linux.h gcc-4.0.0/gcc/config/rs6000/linux.h
---- gcc-4.0.0-dist/gcc/config/rs6000/linux.h	2004-12-01 20:21:28.000000000 -0600
-+++ gcc-4.0.0/gcc/config/rs6000/linux.h	2005-04-28 20:30:00.000000000 -0500
-@@ -69,7 +69,11 @@
+--- gcc-4.1.0/gcc/config/pa/pa-linux.h
++++ gcc-4.1.0/gcc/config/pa/pa-linux.h
+@@ -49,13 +49,18 @@ Boston, MA 02110-1301, USA.  */
+ /* Define this for shared library support because it isn't in the main
+    linux.h file.  */
+ 
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld.so.1"
++#endif
+ #undef LINK_SPEC
+ #define LINK_SPEC "\
+   %{shared:-shared} \
+   %{!shared: \
+     %{!static: \
+       %{rdynamic:-export-dynamic} \
+-      %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}} \
++      %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+       %{static:-static}}"
+ 
+ /* glibc's profiling functions don't need gcc to allocate counters.  */
+--- gcc-4.1.0/gcc/config/rs6000/linux.h
++++ gcc-4.1.0/gcc/config/rs6000/linux.h
+@@ -72,7 +72,11 @@
  #define LINK_START_DEFAULT_SPEC "%(link_start_linux)"
  
  #undef	LINK_OS_DEFAULT_SPEC
@@ -225,10 +286,9 @@ diff -urN gcc-4.0.0-dist/gcc/config/rs6000/linux.h gcc-4.0.0/gcc/config/rs6000/l
  
  #define LINK_GCC_C_SEQUENCE_SPEC \
    "%{static:--start-group} %G %L %{static:--end-group}%{!static:%G}"
-diff -urN gcc-4.0.0-dist/gcc/config/rs6000/sysv4.h gcc-4.0.0/gcc/config/rs6000/sysv4.h
---- gcc-4.0.0-dist/gcc/config/rs6000/sysv4.h	2005-02-15 09:53:52.000000000 -0600
-+++ gcc-4.0.0/gcc/config/rs6000/sysv4.h	2005-04-28 20:30:00.000000000 -0500
-@@ -956,6 +956,7 @@
+--- gcc-4.1.0/gcc/config/rs6000/sysv4.h
++++ gcc-4.1.0/gcc/config/rs6000/sysv4.h
+@@ -866,6 +866,7 @@ extern int fixuplabelno;
    mcall-linux  : %(link_os_linux)       ; \
    mcall-gnu    : %(link_os_gnu)         ; \
    mcall-netbsd : %(link_os_netbsd)      ; \
@@ -236,7 +296,7 @@ diff -urN gcc-4.0.0-dist/gcc/config/rs6000/sysv4.h gcc-4.0.0/gcc/config/rs6000/s
    mcall-openbsd: %(link_os_openbsd)     ; \
                 : %(link_os_default)     }"
  
-@@ -1134,6 +1135,10 @@
+@@ -1043,6 +1044,10 @@ extern int fixuplabelno;
    %{rdynamic:-export-dynamic} \
    %{!dynamic-linker:-dynamic-linker /lib/ld.so.1}}}"
  
@@ -247,7 +307,7 @@ diff -urN gcc-4.0.0-dist/gcc/config/rs6000/sysv4.h gcc-4.0.0/gcc/config/rs6000/s
  #if defined(HAVE_LD_EH_FRAME_HDR)
  # define LINK_EH_SPEC "%{!static:--eh-frame-hdr} "
  #endif
-@@ -1300,6 +1305,7 @@
+@@ -1209,6 +1214,7 @@ ncrtn.o%s"
    { "link_os_sim",		LINK_OS_SIM_SPEC },			\
    { "link_os_freebsd",		LINK_OS_FREEBSD_SPEC },			\
    { "link_os_linux",		LINK_OS_LINUX_SPEC },			\
@@ -255,10 +315,36 @@ diff -urN gcc-4.0.0-dist/gcc/config/rs6000/sysv4.h gcc-4.0.0/gcc/config/rs6000/s
    { "link_os_gnu",		LINK_OS_GNU_SPEC },			\
    { "link_os_netbsd",		LINK_OS_NETBSD_SPEC },			\
    { "link_os_openbsd",		LINK_OS_OPENBSD_SPEC },			\
-diff -urN gcc-4.0.0-dist/gcc/config/sh/linux.h gcc-4.0.0/gcc/config/sh/linux.h
---- gcc-4.0.0-dist/gcc/config/sh/linux.h	2005-01-25 20:04:48.000000000 -0600
-+++ gcc-4.0.0/gcc/config/sh/linux.h	2005-04-28 20:30:00.000000000 -0500
-@@ -67,12 +67,21 @@
+--- gcc-4.1.0/gcc/config/s390/linux.h
++++ gcc-4.1.0/gcc/config/s390/linux.h
+@@ -77,6 +77,13 @@ Software Foundation, 51 Franklin Street,
+ #define MULTILIB_DEFAULTS { "m31" }
+ #endif
+ 
++#ifdef USE_UCLIBC
++#define ELF31_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#define ELF64_DYNAMIC_LINKER "/lib/ld64-uClibc.so.0"
++#else
++#define ELF31_DYNAMIC_LINKER "/lib/ld.so.1"
++#define ELF64_DYNAMIC_LINKER "/lib/ld64.so.1"
++#endif
+ #undef  LINK_SPEC
+ #define LINK_SPEC \
+   "%{m31:-m elf_s390}%{m64:-m elf64_s390} \
+@@ -86,8 +93,8 @@ Software Foundation, 51 Franklin Street,
+       %{!static: \
+ 	%{rdynamic:-export-dynamic} \
+ 	%{!dynamic-linker: \
+-          %{m31:-dynamic-linker /lib/ld.so.1} \
+-          %{m64:-dynamic-linker /lib/ld64.so.1}}}}"
++          %{m31:-dynamic-linker " ELF31_DYNAMIC_LINKER "} \
++          %{m64:-dynamic-linker " ELF64_DYNAMIC_LINKER "}}}}"
+ 
+ 
+ #define TARGET_ASM_FILE_END file_end_indicate_exec_stack
+--- gcc-4.1.0/gcc/config/sh/linux.h
++++ gcc-4.1.0/gcc/config/sh/linux.h
+@@ -56,12 +56,21 @@ Boston, MA 02110-1301, USA.  */
  #undef SUBTARGET_LINK_EMUL_SUFFIX
  #define SUBTARGET_LINK_EMUL_SUFFIX "_linux"
  #undef SUBTARGET_LINK_SPEC
@@ -278,68 +364,55 @@ diff -urN gcc-4.0.0-dist/gcc/config/sh/linux.h gcc-4.0.0/gcc/config/sh/linux.h
     %{static:-static}"
 +#endif
  
- #undef LIB_SPEC
- #define LIB_SPEC \
-diff -urN gcc-4.0.0-dist/gcc/config/t-linux-uclibc gcc-4.0.0/gcc/config/t-linux-uclibc
---- gcc-4.0.0-dist/gcc/config/t-linux-uclibc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.0.0/gcc/config/t-linux-uclibc	2005-04-28 20:30:00.000000000 -0500
-@@ -0,0 +1,15 @@
-+T_CFLAGS = -DUSE_UCLIBC
-+
-+# Compile crtbeginS.o and crtendS.o with pic.
-+CRTSTUFF_T_CFLAGS_S = $(CRTSTUFF_T_CFLAGS) -fPIC
-+# Compile libgcc2.a with pic.
-+TARGET_LIBGCC2_CFLAGS = -fPIC
-+
-+# Override t-slibgcc-elf-ver to export some libgcc symbols with
-+# the symbol versions that glibc used.
-+#SHLIB_MAPFILES += $(srcdir)/config/libgcc-glibc.ver
-+
-+# Use unwind-dw2-fde
-+LIB2ADDEH = $(srcdir)/unwind-dw2.c $(srcdir)/unwind-dw2-fde.c \
-+  $(srcdir)/unwind-sjlj.c $(srcdir)/gthr-gnat.c $(srcdir)/unwind-c.c
-+LIB2ADDEHDEP = unwind.inc unwind-dw2-fde.h
-diff -urN gcc-4.0.0-dist/gcc/config.gcc gcc-4.0.0/gcc/config.gcc
---- gcc-4.0.0-dist/gcc/config.gcc	2005-03-30 21:17:08.000000000 -0600
-+++ gcc-4.0.0/gcc/config.gcc	2005-04-28 20:30:00.000000000 -0500
-@@ -439,7 +439,12 @@
-   case ${enable_threads} in
-     "" | yes | posix) thread_file='posix' ;;
-   esac
--  tmake_file="t-slibgcc-elf-ver t-linux"
-+  case ${target} in
-+    *-*-linux-uclibc*)
-+      tmake_file="t-slibgcc-elf-ver t-linux-uclibc" ;;
-+    *)
-+      tmake_file="t-slibgcc-elf-ver t-linux" ;;
-+  esac
-   ;;
- *-*-gnu*)
-   # On the Hurd, the setup is just about the same on
-@@ -744,6 +749,10 @@
- 	tmake_file="cris/t-cris cris/t-elfmulti"
- 	gas=yes
- 	;;
-+cris-*-linux-uclibc*)
-+	tm_file="dbxelf.h elfos.h svr4.h ${tm_file} linux.h cris/linux.h"
-+	tmake_file="cris/t-cris t-slibgcc-elf-ver cris/t-linux-uclibc"
-+	;;
- cris-*-linux*)
- 	tm_file="dbxelf.h elfos.h svr4.h ${tm_file} linux.h cris/linux.h"
- 	# We need to avoid using t-linux, so override default tmake_file
-@@ -1759,7 +1759,7 @@
- 	;;
- sh-*-elf* | sh[12346l]*-*-elf* | sh*-*-kaos* | \
- sh-*-symbianelf* | sh[12346l]*-*-symbianelf* | \
--  sh-*-linux* | sh[346lbe]*-*-linux* | \
-+  sh*-*-linux* | sh[346lbe]*-*-linux* | \
-   sh-*-netbsdelf* | shl*-*-netbsdelf* | sh5-*-netbsd* | sh5l*-*-netbsd* | \
-    sh64-*-netbsd* | sh64l*-*-netbsd*)
- 	tmake_file="${tmake_file} sh/t-sh sh/t-elf"
-diff -urN gcc-4.0.0-dist/libffi/configure gcc-4.0.0/libffi/configure
---- gcc-4.0.0-dist/libffi/configure	2004-12-02 05:04:21.000000000 -0600
-+++ gcc-4.0.0/libffi/configure	2005-04-30 12:18:05.000000000 -0500
-@@ -3457,6 +3457,11 @@
+ /* Output assembler code to STREAM to call the profiler.  */
+ 
+--- gcc-4.1.0/gcc/config/sparc/linux.h
++++ gcc-4.1.0/gcc/config/sparc/linux.h
+@@ -125,6 +125,11 @@ Boston, MA 02110-1301, USA.  */
+ 
+ /* If ELF is the default format, we should not use /lib/elf.  */
+ 
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER "/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER "/lib/ld-linux.so.2"
++#endif
+ #undef  LINK_SPEC
+ #define LINK_SPEC "-m elf32_sparc -Y P,/usr/lib %{shared:-shared} \
+   %{!mno-relax:%{!r:-relax}} \
+@@ -132,7 +137,7 @@ Boston, MA 02110-1301, USA.  */
+     %{!ibcs: \
+       %{!static: \
+         %{rdynamic:-export-dynamic} \
+-        %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
++        %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+         %{static:-static}}}"
+ 
+ /* The sun bundled assembler doesn't accept -Yd, (and neither does gas).
+--- gcc-4.1.0/gcc/config/sparc/linux64.h
++++ gcc-4.1.0/gcc/config/sparc/linux64.h
+@@ -162,12 +162,17 @@ Boston, MA 02110-1301, USA.  */
+   { "link_arch_default", LINK_ARCH_DEFAULT_SPEC },	  \
+   { "link_arch",	 LINK_ARCH_SPEC },
+     
++#ifdef USE_UCLIBC
++#define ELF_DYNAMIC_LINKER	"/lib/ld-uClibc.so.0"
++#else
++#define ELF_DYNAMIC_LINKER  "/lib/ld-linux.so.2"
++#endif
+ #define LINK_ARCH32_SPEC "-m elf32_sparc -Y P,/usr/lib %{shared:-shared} \
+   %{!shared: \
+     %{!ibcs: \
+       %{!static: \
+         %{rdynamic:-export-dynamic} \
+-        %{!dynamic-linker:-dynamic-linker /lib/ld-linux.so.2}} \
++        %{!dynamic-linker:-dynamic-linker " ELF_DYNAMIC_LINKER "}} \
+         %{static:-static}}} \
+ "
+ 
+--- gcc-4.1.0/libffi/configure
++++ gcc-4.1.0/libffi/configure
+@@ -3457,6 +3457,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -351,10 +424,9 @@ diff -urN gcc-4.0.0-dist/libffi/configure gcc-4.0.0/libffi/configure
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-4.0.0-dist/libgfortran/configure gcc-4.0.0/libgfortran/configure
---- gcc-4.0.0-dist/libgfortran/configure	2005-04-21 02:04:10.000000000 -0500
-+++ gcc-4.0.0/libgfortran/configure	2005-04-30 12:26:15.000000000 -0500
-@@ -3684,6 +3684,11 @@
+--- gcc-4.1.0/libgfortran/configure
++++ gcc-4.1.0/libgfortran/configure
+@@ -3699,6 +3699,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -366,10 +438,9 @@ diff -urN gcc-4.0.0-dist/libgfortran/configure gcc-4.0.0/libgfortran/configure
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-4.0.0-dist/libjava/configure gcc-4.0.0/libjava/configure
---- gcc-4.0.0-dist/libjava/configure	2005-04-21 02:04:10.000000000 -0500
-+++ gcc-4.0.0/libjava/configure	2005-04-30 12:27:15.000000000 -0500
-@@ -4354,6 +4354,11 @@
+--- gcc-4.1.0/libjava/configure
++++ gcc-4.1.0/libjava/configure
+@@ -5137,6 +5137,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -381,10 +452,9 @@ diff -urN gcc-4.0.0-dist/libjava/configure gcc-4.0.0/libjava/configure
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-4.0.0-dist/libmudflap/configure gcc-4.0.0/libmudflap/configure
---- gcc-4.0.0-dist/libmudflap/configure	2005-01-02 16:24:50.000000000 -0600
-+++ gcc-4.0.0/libmudflap/configure	2005-04-30 12:25:24.000000000 -0500
-@@ -5380,6 +5380,11 @@
+--- gcc-4.1.0/libmudflap/configure
++++ gcc-4.1.0/libmudflap/configure
+@@ -5382,6 +5382,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -396,10 +466,9 @@ diff -urN gcc-4.0.0-dist/libmudflap/configure gcc-4.0.0/libmudflap/configure
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-4.0.0-dist/libobjc/configure gcc-4.0.0/libobjc/configure
---- gcc-4.0.0-dist/libobjc/configure	2005-04-21 02:04:10.000000000 -0500
-+++ gcc-4.0.0/libobjc/configure	2005-04-30 12:25:55.000000000 -0500
-@@ -3283,6 +3283,11 @@
+--- gcc-4.1.0/libobjc/configure
++++ gcc-4.1.0/libobjc/configure
+@@ -3312,6 +3312,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -411,10 +480,9 @@ diff -urN gcc-4.0.0-dist/libobjc/configure gcc-4.0.0/libobjc/configure
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-diff -urN gcc-4.0.0-dist/libtool.m4 gcc-4.0.0/libtool.m4
---- gcc-4.0.0-dist/libtool.m4	2004-11-29 17:45:17.000000000 -0600
-+++ gcc-4.0.0/libtool.m4	2005-04-30 12:28:32.000000000 -0500
-@@ -682,6 +682,11 @@
+--- gcc-4.1.0/libtool.m4
++++ gcc-4.1.0/libtool.m4
+@@ -743,6 +743,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -426,10 +494,9 @@ diff -urN gcc-4.0.0-dist/libtool.m4 gcc-4.0.0/libtool.m4
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      [lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$']
-diff -urN gcc-4.0.0-dist/ltconfig gcc-4.0.0/ltconfig
---- gcc-4.0.0-dist/ltconfig	2004-10-02 11:33:06.000000000 -0500
-+++ gcc-4.0.0/ltconfig	2005-04-30 13:26:08.000000000 -0500
-@@ -602,6 +602,7 @@
+--- gcc-4.1.0/ltconfig
++++ gcc-4.1.0/ltconfig
+@@ -603,6 +603,7 @@ host_os=`echo $host | sed 's/^\([^-]*\)-
  
  # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
  case $host_os in
@@ -437,7 +504,7 @@ diff -urN gcc-4.0.0-dist/ltconfig gcc-4.0.0/ltconfig
  linux-gnu*) ;;
  linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
  esac
-@@ -1273,6 +1274,23 @@
+@@ -1274,6 +1275,23 @@ linux-gnu*)
    dynamic_linker='GNU/Linux ld.so'
    ;;
  
@@ -461,10 +528,9 @@ diff -urN gcc-4.0.0-dist/ltconfig gcc-4.0.0/ltconfig
  netbsd*)
    need_lib_prefix=no
    need_version=no
-diff -urN gcc-4.0.0-dist/zlib/configure gcc-4.0.0/zlib/configure
---- gcc-4.0.0-dist/zlib/configure	2004-11-24 16:04:38.000000000 -0600
-+++ gcc-4.0.0/zlib/configure	2005-04-30 12:30:40.000000000 -0500
-@@ -3426,6 +3426,11 @@
+--- gcc-4.1.0/zlib/configure
++++ gcc-4.1.0/zlib/configure
+@@ -3426,6 +3426,11 @@ linux-gnu*)
    lt_cv_deplibs_check_method=pass_all
    ;;
  
