@@ -20,7 +20,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/aci
        linux* | gnu* | kfreebsd*-gnu | knetbsd*-gnu)
          AC_EGREP_CPP([_GLIBCXX_ok], [
          #include <features.h>
-@@ -1206,6 +1209,41 @@
+@@ -1206,6 +1209,40 @@
        CTIME_CC=config/locale/generic/time_members.cc
        CLOCALE_INTERNAL_H=config/locale/generic/c++locale_internal.h
        ;;
@@ -47,7 +47,6 @@ diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/aci
 +
 +      CLOCALE_H=config/locale/uclibc/c_locale.h
 +      CLOCALE_CC=config/locale/uclibc/c_locale.cc
-+      CCODECVT_H=config/locale/ieee_1003.1-2001/codecvt_specializations.h
 +      CCODECVT_CC=config/locale/uclibc/codecvt_members.cc
 +      CCOLLATE_CC=config/locale/uclibc/collate_members.cc
 +      CCTYPE_CC=config/locale/uclibc/ctype_members.cc
@@ -2980,6 +2979,15 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
+@@ -5719,7 +5724,7 @@
+   enableval="$enable_clocale"
+ 
+       case "$enableval" in
+-       generic|gnu|ieee_1003.1-2001|yes|no|auto) ;;
++       generic|gnu|ieee_1003.1-2001|uclibc|yes|no|auto) ;;
+        *) { { echo "$as_me:$LINENO: error: Unknown argument to enable/disable clocale" >&5
+ echo "$as_me: error: Unknown argument to enable/disable clocale" >&2;}
+    { (exit 1); exit 1; }; } ;;
 @@ -5744,6 +5749,9 @@
    # Default to "generic".
    if test $enable_clocale_flag = auto; then
@@ -2990,7 +2998,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
        linux* | gnu* | kfreebsd*-gnu | knetbsd*-gnu)
          cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -5974,6 +5982,77 @@
+@@ -5974,6 +5982,76 @@
        CTIME_CC=config/locale/generic/time_members.cc
        CLOCALE_INTERNAL_H=config/locale/generic/c++locale_internal.h
        ;;
@@ -3053,7 +3061,6 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
 +
 +      CLOCALE_H=config/locale/uclibc/c_locale.h
 +      CLOCALE_CC=config/locale/uclibc/c_locale.cc
-+      CCODECVT_H=config/locale/ieee_1003.1-2001/codecvt_specializations.h
 +      CCODECVT_CC=config/locale/uclibc/codecvt_members.cc
 +      CCOLLATE_CC=config/locale/uclibc/collate_members.cc
 +      CCTYPE_CC=config/locale/uclibc/ctype_members.cc
@@ -3068,7 +3075,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
    esac
  
    # This is where the testsuite looks for locale catalogs, using the
-@@ -7686,21 +7765,6 @@
+@@ -7686,21 +7764,6 @@
  echo "${ECHO_T}$enable_long_long" >&6
  
  
