@@ -4,11 +4,11 @@ ifeq ($(ARCH),i386)
 # grub
 #
 #############################################################
-GRUB_SOURCE:=grub_0.95+cvs20040624.orig.tar.gz
-GRUB_PATCH=grub_0.95+cvs20040624-17.diff.gz
+GRUB_SOURCE:=grub_0.97.orig.tar.gz
+GRUB_PATCH=grub_0.97-5.diff.gz
 GRUB_SITE=http://ftp.debian.org/debian/pool/main/g/grub
 GRUB_CAT:=zcat
-GRUB_DIR:=$(BUILD_DIR)/grub-0.95+cvs20040624
+GRUB_DIR:=$(BUILD_DIR)/grub-0.97
 GRUB_BINARY:=grub/grub
 GRUB_TARGET_BINARY:=bin/grub
 
