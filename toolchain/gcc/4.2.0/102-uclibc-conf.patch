@@ -1,0 +1,231 @@
+--- gcc/libgomp/configure.uclibc100~	2006-03-10 14:42:44 +0100
++++ gcc/libgomp/configure	2006-03-10 14:42:57 +0100
+@@ -3771,7 +3771,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/gcc/config/cris/linux.h.uclibc100~	2006-03-06 20:36:46 +0100
++++ gcc/gcc/config/cris/linux.h	2006-03-10 14:40:13 +0100
+@@ -74,7 +74,11 @@
+ #define CRIS_DEFAULT_CPU_VERSION CRIS_CPU_NG
+ 
+ #undef CRIS_SUBTARGET_VERSION
+-#define CRIS_SUBTARGET_VERSION " - cris-axis-linux-gnu"
++#if UCLIBC_DEFAULT
++# define CRIS_SUBTARGET_VERSION " - cris-axis-linux-uclibc"
++#else
++# define CRIS_SUBTARGET_VERSION " - cris-axis-linux-gnu"
++#endif
+ 
+ #define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
+ 
+--- gcc/libstdc++-v3/configure.uclibc100~	2006-03-06 21:23:58 +0100
++++ gcc/libstdc++-v3/configure	2006-03-10 14:40:13 +0100
+@@ -4276,7 +4276,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+@@ -99523,7 +99523,7 @@
+ 
+     case "$target" in
+       *-uclinux*)
+-        # Don't enable LFS with uClibc
++        # Don't enable LFS with uClinux
+         ;;
+       *)
+         cat >>confdefs.h <<\_ACEOF
+--- gcc/libstdc++-v3/crossconfig.m4.uclibc100~	2006-03-06 21:23:58 +0100
++++ gcc/libstdc++-v3/crossconfig.m4	2006-03-10 14:40:13 +0100
+@@ -161,7 +161,7 @@
+     AC_DEFINE(HAVE_INT64_T)
+     case "$target" in
+       *-uclinux*)
+-        # Don't enable LFS with uClibc
++        # Don't enable LFS with uClinux
+         ;;
+       *)
+         AC_DEFINE(_GLIBCXX_USE_LFS)
+--- gcc/zlib/configure.uclibc100~	2006-03-06 21:27:15 +0100
++++ gcc/zlib/configure	2006-03-10 14:40:13 +0100
+@@ -3422,7 +3422,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libobjc/configure.uclibc100~	2006-03-06 21:28:36 +0100
++++ gcc/libobjc/configure	2006-03-10 14:40:13 +0100
+@@ -3309,7 +3309,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libgfortran/configure.uclibc100~	2006-03-06 21:35:15 +0100
++++ gcc/libgfortran/configure	2006-03-10 14:40:14 +0100
+@@ -3695,7 +3695,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libmudflap/configure.uclibc100~	2006-03-06 21:36:09 +0100
++++ gcc/libmudflap/configure	2006-03-10 14:40:14 +0100
+@@ -5378,7 +5378,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/boehm-gc/configure.uclibc100~	2006-03-06 21:38:35 +0100
++++ gcc/boehm-gc/configure	2006-03-10 14:40:14 +0100
+@@ -4316,7 +4316,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libffi/configure.uclibc100~	2006-03-06 21:43:16 +0100
++++ gcc/libffi/configure	2006-03-10 14:40:14 +0100
+@@ -3453,7 +3453,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libssp/configure.uclibc100~	2006-03-06 21:43:38 +0100
++++ gcc/libssp/configure	2006-03-10 14:40:14 +0100
+@@ -4409,7 +4409,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/contrib/regression/objs-gcc.sh.uclibc100~	2006-03-06 21:43:42 +0100
++++ gcc/contrib/regression/objs-gcc.sh	2006-03-10 14:40:14 +0100
+@@ -105,6 +105,10 @@
+  then
+   make all-gdb all-dejagnu all-ld || exit 1
+   make install-gdb install-dejagnu install-ld || exit 1
++elif [ $H_REAL_TARGET = $H_REAL_HOST -a $H_REAL_TARGET = i686-pc-linux-uclibc ]
++ then
++  make all-gdb all-dejagnu all-ld || exit 1
++  make install-gdb install-dejagnu install-ld || exit 1
+ elif [ $H_REAL_TARGET = $H_REAL_HOST ] ; then
+   make bootstrap || exit 1
+   make install || exit 1
+--- gcc/libjava/classpath/ltconfig.uclibc100~	2006-03-06 22:43:49 +0100
++++ gcc/libjava/classpath/ltconfig	2006-03-10 14:40:14 +0100
+@@ -603,7 +603,7 @@
+ 
+ # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
+ case $host_os in
+-linux-gnu*) ;;
++linux-gnu*|linux-uclibc*) ;;
+ linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
+ esac
+ 
+@@ -1251,7 +1251,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
+--- gcc/libjava/classpath/configure.uclibc100~	2006-03-06 22:43:48 +0100
++++ gcc/libjava/classpath/configure	2006-03-10 14:40:14 +0100
+@@ -4665,7 +4665,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libjava/configure.uclibc100~	2006-03-10 13:47:50 +0100
++++ gcc/libjava/configure	2006-03-10 14:40:14 +0100
+@@ -5212,7 +5212,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libgcc-math/configure.uclibc100~	2006-03-10 14:43:03 +0100
++++ gcc/libgcc-math/configure	2006-03-10 14:43:11 +0100
+@@ -3829,7 +3829,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/libtool.m4.uclibc100~	2006-03-06 22:53:26 +0100
++++ gcc/libtool.m4	2006-03-10 14:40:14 +0100
+@@ -739,7 +739,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   lt_cv_deplibs_check_method=pass_all
+   ;;
+ 
+--- gcc/ltconfig.uclibc100~	2006-03-06 22:53:26 +0100
++++ gcc/ltconfig	2006-03-10 14:40:14 +0100
+@@ -603,7 +603,7 @@
+ 
+ # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
+ case $host_os in
+-linux-gnu*) ;;
++linux-gnu*|linux-uclibc*) ;;
+ linux*) host=`echo $host | sed 's/^\(.*-.*-linux\)\(.*\)$/\1-gnu\2/'`
+ esac
+ 
+@@ -1251,7 +1251,7 @@
+   ;;
+ 
+ # This must be Linux ELF.
+-linux-gnu*)
++linux*)
+   version_type=linux
+   need_lib_prefix=no
+   need_version=no
