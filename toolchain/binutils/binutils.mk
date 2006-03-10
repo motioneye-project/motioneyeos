@@ -5,6 +5,8 @@
 #############################################################
 BINUTILS_VERSION:=$(strip $(subst ",, $(BR2_BINUTILS_VERSION)))
 
+EXTRA_BINUTILS_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_BINUTILS_CONFIG_OPTIONS)))
+#"
 BINUTILS_SITE:=http://ftp.kernel.org/pub/linux/devel/binutils
 ifeq ($(BINUTILS_VERSION),2.16)
 BINUTILS_SITE:=http://ftp.gnu.org/gnu/binutils/
@@ -49,6 +51,7 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
 	(cd $(BINUTILS_DIR1); \
+		CC="$(HOSTCC)" \
 		$(BINUTILS_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
 		--build=$(GNU_HOST_NAME) \
@@ -57,7 +60,8 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
 		--disable-werror \
-		$(SOFT_FLOAT_CONFIG_OPTION) );
+		$(SOFT_FLOAT_CONFIG_OPTION) \
+		$(EXTRA_BINUTILS_CONFIG_OPTIONS));
 	touch $(BINUTILS_DIR1)/.configured
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured

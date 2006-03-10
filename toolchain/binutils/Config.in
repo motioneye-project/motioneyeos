@@ -61,3 +61,12 @@ config BR2_BINUTILS_VERSION
 	default "2.16.91.0.4"     if BR2_BINUTILS_VERSION_2_16_91_0_4
 	default "2.16.91.0.5"     if BR2_BINUTILS_VERSION_2_16_91_0_5
 	default "2.16.91.0.6"     if BR2_BINUTILS_VERSION_2_16_91_0_6
+
+
+config BR2_EXTRA_BINUTILS_CONFIG_OPTIONS
+        string "Additional binutils options"
+        default ""
+        help
+            Any additional binutils options you may want to include..
+
+
