@@ -19,7 +19,7 @@ $(DISTCC_DIR)/.unpacked: $(DL_DIR)/$(DISTCC_SOURCE)
 
 $(DISTCC_DIR)/.configured: $(DISTCC_DIR)/.unpacked
 	(cd $(DISTCC_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

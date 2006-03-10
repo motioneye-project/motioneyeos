@@ -33,7 +33,7 @@ $(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
 $(CCACHE_DIR1)/.configured: $(CCACHE_DIR1)/.patched
 	mkdir -p $(CCACHE_DIR1)
 	(cd $(CCACHE_DIR1); rm -rf config.cache; \
-		CC=$(HOSTCC) \
+		CC="$(HOSTCC)" \
 		$(CCACHE_DIR1)/configure \
 		--target=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
@@ -43,7 +43,7 @@ $(CCACHE_DIR1)/.configured: $(CCACHE_DIR1)/.patched
 	touch $(CCACHE_DIR1)/.configured
 
 $(CCACHE_DIR1)/$(CCACHE_BINARY): $(CCACHE_DIR1)/.configured
-	$(MAKE) CC=$(HOSTCC) -C $(CCACHE_DIR1)
+	$(MAKE) CC="$(HOSTCC)" -C $(CCACHE_DIR1)
 
 $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 	mkdir -p $(STAGING_DIR)/usr/bin;

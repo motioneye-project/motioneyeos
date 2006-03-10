@@ -42,7 +42,7 @@ $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
 
 $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 	(cd $(NCURSES_DIR); rm -rf config.cache; \
-		BUILD_CC=$(HOSTCC) \
+		BUILD_CC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \

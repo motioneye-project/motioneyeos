@@ -21,7 +21,7 @@ $(RSYNC_DIR)/.unpacked: $(DL_DIR)/$(RSYNC_SOURCE)
 
 $(RSYNC_DIR)/.configured: $(RSYNC_DIR)/.unpacked
 	(cd $(RSYNC_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

@@ -42,7 +42,7 @@ $(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/.configured
 
 # Install to Staging area
 $(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
-	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
         $(MAKE1) \
             prefix=$(STAGING_DIR) \
             exec_prefix=$(STAGING_DIR) \
@@ -62,7 +62,7 @@ $(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 
 # Install only run-time to Target directory
 $(TARGET_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
-	BUILD_CC=$(TARGET_CC) HOSTCC=$(HOSTCC) CC=$(TARGET_CC) \
+	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
 	$(MAKE1) \
             prefix=$(TARGET_DIR) \
             libdir=$(TARGET_DIR)/lib \

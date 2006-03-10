@@ -20,7 +20,7 @@ $(CVS_DIR)/.unpacked: $(DL_DIR)/$(CVS_SOURCE)
 
 $(CVS_DIR)/.configured: $(CVS_DIR)/.unpacked
 	(cd $(CVS_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		cvs_cv_func_printf_ptr=yes \
 		./configure \

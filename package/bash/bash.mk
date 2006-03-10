@@ -28,7 +28,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	#		ac_cv_func_setvbuf_reversed=no
 	#		bash_cv_have_mbstate_t=yes
 	(cd $(BASH_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -53,7 +53,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	touch $(BASH_DIR)/.configured
 
 $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD=$(HOSTCC) -C $(BASH_DIR)
+	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD="$(HOSTCC)" -C $(BASH_DIR)
 
 $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) install
