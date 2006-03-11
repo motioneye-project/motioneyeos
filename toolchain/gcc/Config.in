@@ -40,6 +40,10 @@ choice
 		depends !BR2_nios2
 		bool "gcc 4.0.2"
 
+	config BR2_GCC_VERSION_4_0_3
+		depends !BR2_nios2
+		bool "gcc 4.0.3"
+
 	config BR2_GCC_VERSION_4_1_0
 		depends !BR2_nios2
 		bool "gcc 4.1.0"
@@ -61,6 +65,7 @@ config BR2_GCC_VERSION
 	default "4.0.0"     if BR2_GCC_VERSION_4_0_0
 	default "4.0.1"     if BR2_GCC_VERSION_4_0_1
 	default "4.0.2"     if BR2_GCC_VERSION_4_0_2
+	default "4.0.3"     if BR2_GCC_VERSION_4_0_3
 	default "4.1.0"     if BR2_GCC_VERSION_4_1_0
 	default "4.2.0"     if BR2_GCC_VERSION_4_2_0
 
