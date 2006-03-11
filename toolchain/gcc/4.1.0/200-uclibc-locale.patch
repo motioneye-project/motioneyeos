@@ -3075,28 +3075,6 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
    esac
  
    # This is where the testsuite looks for locale catalogs, using the
-@@ -7686,21 +7764,6 @@
- echo "${ECHO_T}$enable_long_long" >&6
- 
- 
--   # Check whether --enable-wchar_t or --disable-wchar_t was given.
--if test "${enable_wchar_t+set}" = set; then
--  enableval="$enable_wchar_t"
--
--      case "$enableval" in
--       yes|no) ;;
--       *) { { echo "$as_me:$LINENO: error: Argument to enable/disable wchar_t must be yes or no" >&5
--echo "$as_me: error: Argument to enable/disable wchar_t must be yes or no" >&2;}
--   { (exit 1); exit 1; }; } ;;
--      esac
--
--else
--  enable_wchar_t=yes
--fi;
--
-   if test x"$ac_c99_wchar" = x"yes" && test x"$enable_wchar_t" = x"yes"; then
- 
- cat >>confdefs.h <<\_ACEOF
 diff -urN gcc-4.1.0/libstdc++-v3/configure.host gcc-4.1.0-patched/libstdc++-v3/configure.host
 --- gcc-4.1.0/libstdc++-v3/configure.host	2005-01-13 16:48:14.000000000 -0600
 +++ gcc-4.1.0-patched/libstdc++-v3/configure.host	2005-04-30 19:36:16.996885833 -0500
