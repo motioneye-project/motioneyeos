@@ -1,0 +1,11 @@
+diff -ur dropbear-0.48/includes.h dropbear-0.48-patched/includes.h
+--- dropbear-0.48/includes.h	2006-03-09 09:06:02.000000000 -0600
++++ dropbear-0.48-patched/includes.h	2006-03-15 22:36:12.000000000 -0600
+@@ -35,6 +35,7 @@
+ #include <sys/param.h> /* required for BSD4_4 define */
+ #include <sys/socket.h>
+ #include <sys/stat.h>
++#define __USE_GNU
+ #include <sys/time.h>
+ #include <sys/un.h>
+ #include <sys/wait.h>
