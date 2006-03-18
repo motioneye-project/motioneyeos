@@ -1,0 +1,11 @@
+--- grub-0.97.oorig/stage2/disk_io.c	2004-05-23 18:35:24.000000000 +0200
++++ grub-0.97/stage2/disk_io.c	2006-03-12 14:11:51.000000000 +0100
+@@ -365,7 +365,7 @@ rawwrite (int drive, int sector, char *b
+ int
+ devwrite (int sector, int sector_count, char *buf)
+ {
+-#if defined(GRUB_UTIL) && defined(__linux__)
++#if defined(GRUB_UTIL) && defined(__linux__) && !defined(SUPPORT_LOOPDEV)
+   if (current_partition != 0xFFFFFF
+       && is_disk_device (device_map, current_drive))
+     {

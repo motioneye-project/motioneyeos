@@ -1,0 +1,1407 @@
+diff -rup grub-0.97.oorig/aclocal.m4 grub-0.97/aclocal.m4
+--- grub-0.97.oorig/aclocal.m4	2005-05-08 04:41:18.000000000 +0200
++++ grub-0.97/aclocal.m4	2006-03-12 14:00:35.000000000 +0100
+@@ -1,7 +1,7 @@
+-# generated automatically by aclocal 1.9.4 -*- Autoconf -*-
++# generated automatically by aclocal 1.9.6 -*- Autoconf -*-
+ 
+-# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004
+-# Free Software Foundation, Inc.
++# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004,
++# 2005  Free Software Foundation, Inc.
+ # This file is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -11,23 +11,11 @@
+ # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ # PARTICULAR PURPOSE.
+ 
+-#                                                        -*- Autoconf -*-
+-# Copyright (C) 2002, 2003  Free Software Foundation, Inc.
+-# Generated from amversion.in; do not edit by hand.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
++# Copyright (C) 2002, 2003, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+ # AM_AUTOMAKE_VERSION(VERSION)
+ # ----------------------------
+@@ -40,26 +28,15 @@ AC_DEFUN([AM_AUTOMAKE_VERSION], [am__api
+ # Call AM_AUTOMAKE_VERSION so it can be traced.
+ # This function is AC_REQUIREd by AC_INIT_AUTOMAKE.
+ AC_DEFUN([AM_SET_CURRENT_AUTOMAKE_VERSION],
+-	 [AM_AUTOMAKE_VERSION([1.9.4])])
+-
+-# AM_AUX_DIR_EXPAND
+-
+-# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
++	 [AM_AUTOMAKE_VERSION([1.9.6])])
+ 
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
++# AM_AUX_DIR_EXPAND                                         -*- Autoconf -*-
+ 
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 2001, 2003, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+ # For projects using AC_CONFIG_AUX_DIR([foo]), Autoconf sets
+ # $ac_aux_dir to `$srcdir/foo'.  In other projects, it is set to
+@@ -106,26 +83,16 @@ AC_PREREQ([2.50])dnl
+ am_aux_dir=`cd $ac_aux_dir && pwd`
+ ])
+ 
+-# AM_CONDITIONAL                                              -*- Autoconf -*-
++# AM_CONDITIONAL                                            -*- Autoconf -*-
+ 
+-# Copyright (C) 1997, 2000, 2001, 2003, 2004 Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 1997, 2000, 2001, 2003, 2004, 2005
++# Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# serial 6
++# serial 7
+ 
+ # AM_CONDITIONAL(NAME, SHELL-CONDITION)
+ # -------------------------------------
+@@ -149,26 +116,15 @@ AC_CONFIG_COMMANDS_PRE(
+ Usually this means the macro was only invoked conditionally.]])
+ fi])])
+ 
+-# serial 7						-*- Autoconf -*-
+ 
+-# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004
++# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005
+ # Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
+-
++# serial 8
+ 
+ # There are a few dirty hacks below to avoid letting `AC_PROG_CC' be
+ # written in clear, in which case automake, when reading aclocal.m4,
+@@ -177,7 +133,6 @@ fi])])
+ # CC etc. in the Makefile, will ask for an AC_PROG_CC use...
+ 
+ 
+-
+ # _AM_DEPENDENCIES(NAME)
+ # ----------------------
+ # See how the compiler implements dependency checking.
+@@ -317,27 +272,16 @@ AM_CONDITIONAL([AMDEP], [test "x$enable_
+ AC_SUBST([AMDEPBACKSLASH])
+ ])
+ 
+-# Generate code to set up dependency tracking.   -*- Autoconf -*-
+-
+-# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004
+-#   Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
++# Generate code to set up dependency tracking.              -*- Autoconf -*-
+ 
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 1999, 2000, 2001, 2002, 2003, 2004, 2005
++# Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-#serial 2
++#serial 3
+ 
+ # _AM_OUTPUT_DEPENDENCY_COMMANDS
+ # ------------------------------
+@@ -396,30 +340,19 @@ AC_DEFUN([AM_OUTPUT_DEPENDENCY_COMMANDS]
+      [AMDEP_TRUE="$AMDEP_TRUE" ac_aux_dir="$ac_aux_dir"])
+ ])
+ 
+-# Do all the work for Automake.                            -*- Autoconf -*-
++# Do all the work for Automake.                             -*- Autoconf -*-
+ 
+-# This macro actually does too much some checks are only needed if
+-# your package does certain things.  But this isn't really a big deal.
+-
+-# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004
++# Copyright (C) 1996, 1997, 1998, 1999, 2000, 2001, 2002, 2003, 2004, 2005
+ # Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# serial 12
+ 
+-# serial 11
++# This macro actually does too much.  Some checks are only needed if
++# your package does certain things.  But this isn't really a big deal.
+ 
+ # AM_INIT_AUTOMAKE(PACKAGE, VERSION, [NO-DEFINE])
+ # AM_INIT_AUTOMAKE([OPTIONS])
+@@ -521,51 +454,27 @@ for _am_header in $config_headers :; do
+ done
+ echo "timestamp for $1" >`AS_DIRNAME([$1])`/stamp-h[]$_am_stamp_count])
+ 
++# Copyright (C) 2001, 2003, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
++
+ # AM_PROG_INSTALL_SH
+ # ------------------
+ # Define $install_sh.
+-
+-# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
+-
+ AC_DEFUN([AM_PROG_INSTALL_SH],
+ [AC_REQUIRE([AM_AUX_DIR_EXPAND])dnl
+ install_sh=${install_sh-"$am_aux_dir/install-sh"}
+ AC_SUBST(install_sh)])
+ 
+-#                                                          -*- Autoconf -*-
+-# Copyright (C) 2003  Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 2003, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# serial 1
++# serial 2
+ 
+ # Check whether the underlying file-system supports filenames
+ # with a leading dot.  For instance MS-DOS doesn't.
+@@ -580,28 +489,17 @@ fi
+ rmdir .tst 2>/dev/null
+ AC_SUBST([am__leading_dot])])
+ 
+-# Add --enable-maintainer-mode option to configure.
++# Add --enable-maintainer-mode option to configure.         -*- Autoconf -*-
+ # From Jim Meyering
+ 
+-# Copyright (C) 1996, 1998, 2000, 2001, 2002, 2003, 2004
++# Copyright (C) 1996, 1998, 2000, 2001, 2002, 2003, 2004, 2005
+ # Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
+-
+-# serial 3
++# serial 4
+ 
+ AC_DEFUN([AM_MAINTAINER_MODE],
+ [AC_MSG_CHECKING([whether to enable maintainer-specific portions of Makefiles])
+@@ -620,26 +518,15 @@ AC_DEFUN([AM_MAINTAINER_MODE],
+ 
+ AU_DEFUN([jm_MAINTAINER_MODE], [AM_MAINTAINER_MODE])
+ 
+-# Check to see how 'make' treats includes.	-*- Autoconf -*-
+-
+-# Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
++# Check to see how 'make' treats includes.	            -*- Autoconf -*-
+ 
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 2001, 2002, 2003, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# serial 2
++# serial 3
+ 
+ # AM_MAKE_INCLUDE()
+ # -----------------
+@@ -683,27 +570,16 @@ AC_MSG_RESULT([$_am_result])
+ rm -f confinc confmf
+ ])
+ 
+-#  -*- Autoconf -*-
+-
+-
+-# Copyright (C) 1997, 1999, 2000, 2001, 2003 Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
++# Fake the existence of programs that GNU maintainers use.  -*- Autoconf -*-
+ 
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 1997, 1999, 2000, 2001, 2003, 2005
++# Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# serial 3
++# serial 4
+ 
+ # AM_MISSING_PROG(NAME, PROGRAM)
+ # ------------------------------
+@@ -729,27 +605,16 @@ else
+ fi
+ ])
+ 
++# Copyright (C) 2003, 2004, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
++
+ # AM_PROG_MKDIR_P
+ # ---------------
+ # Check whether `mkdir -p' is supported, fallback to mkinstalldirs otherwise.
+-
+-# Copyright (C) 2003, 2004 Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
+-
++#
+ # Automake 1.8 used `mkdir -m 0755 -p --' to ensure that directories
+ # created by `make install' are always world readable, even if the
+ # installer happens to have an overly restrictive umask (e.g. 077).
+@@ -803,26 +668,15 @@ else
+ fi
+ AC_SUBST([mkdir_p])])
+ 
+-# Helper functions for option handling.                    -*- Autoconf -*-
++# Helper functions for option handling.                     -*- Autoconf -*-
+ 
+-# Copyright (C) 2001, 2002, 2003  Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 2001, 2002, 2003, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# serial 2
++# serial 3
+ 
+ # _AM_MANGLE_OPTION(NAME)
+ # -----------------------
+@@ -847,28 +701,16 @@ AC_DEFUN([_AM_SET_OPTIONS],
+ AC_DEFUN([_AM_IF_OPTION],
+ [m4_ifset(_AM_MANGLE_OPTION([$1]), [$2], [$3])])
+ 
+-#
+-# Check to make sure that the build environment is sane.
+-#
+-
+-# Copyright (C) 1996, 1997, 2000, 2001, 2003 Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
++# Check to make sure that the build environment is sane.    -*- Autoconf -*-
+ 
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 1996, 1997, 2000, 2001, 2003, 2005
++# Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
+-# serial 3
++# serial 4
+ 
+ # AM_SANITY_CHECK
+ # ---------------
+@@ -911,25 +753,14 @@ Check your system clock])
+ fi
+ AC_MSG_RESULT(yes)])
+ 
+-# AM_PROG_INSTALL_STRIP
+-
+-# Copyright (C) 2001, 2003 Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
++# Copyright (C) 2001, 2003, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
++# AM_PROG_INSTALL_STRIP
++# ---------------------
+ # One issue with vendor `install' (even GNU) is that you can't
+ # specify the program used to strip binaries.  This is especially
+ # annoying in cross-compiling environments, where the build's strip
+@@ -952,25 +783,13 @@ AC_SUBST([INSTALL_STRIP_PROGRAM])])
+ 
+ # Check how to create a tarball.                            -*- Autoconf -*-
+ 
+-# Copyright (C) 2004  Free Software Foundation, Inc.
+-
+-# This program is free software; you can redistribute it and/or modify
+-# it under the terms of the GNU General Public License as published by
+-# the Free Software Foundation; either version 2, or (at your option)
+-# any later version.
+-
+-# This program is distributed in the hope that it will be useful,
+-# but WITHOUT ANY WARRANTY; without even the implied warranty of
+-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+-# GNU General Public License for more details.
+-
+-# You should have received a copy of the GNU General Public License
+-# along with this program; if not, write to the Free Software
+-# Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+-# 02111-1307, USA.
+-
+-# serial 1
++# Copyright (C) 2004, 2005  Free Software Foundation, Inc.
++#
++# This file is free software; the Free Software Foundation
++# gives unlimited permission to copy and/or distribute it,
++# with or without modifications, as long as this notice is preserved.
+ 
++# serial 2
+ 
+ # _AM_PROG_TAR(FORMAT)
+ # --------------------
+Only in grub-0.97/: autom4te.cache
+diff -rup grub-0.97.oorig/configure grub-0.97/configure
+--- grub-0.97.oorig/configure	2005-05-08 04:48:12.000000000 +0200
++++ grub-0.97/configure	2006-03-12 14:00:38.000000000 +0100
+@@ -311,7 +311,7 @@ ac_includes_default="\
+ # include <unistd.h>
+ #endif"
+ 
+-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar build build_cpu build_vendor build_os host host_cpu host_vendor host_os MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT PERL CC ac_ct_CC CFLAGS LDFLAGS CPPFLAGS EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CCAS RANLIB ac_ct_RANLIB STAGE1_CFLAGS STAGE2_CFLAGS GRUB_CFLAGS OBJCOPY ac_ct_OBJCOPY GRUB_LIBS CPP EGREP NETBOOT_SUPPORT_TRUE NETBOOT_SUPPORT_FALSE DISKLESS_SUPPORT_TRUE DISKLESS_SUPPORT_FALSE HERCULES_SUPPORT_TRUE HERCULES_SUPPORT_FALSE SERIAL_SUPPORT_TRUE SERIAL_SUPPORT_FALSE SERIAL_SPEED_SIMULATION_TRUE SERIAL_SPEED_SIMULATION_FALSE BUILD_EXAMPLE_KERNEL_TRUE BUILD_EXAMPLE_KERNEL_FALSE FSYS_CFLAGS NET_CFLAGS NET_EXTRAFLAGS NETBOOT_DRIVERS CCASFLAGS LIBOBJS LTLIBOBJS'
++ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS INSTALL_PROGRAM INSTALL_SCRIPT INSTALL_DATA CYGPATH_W PACKAGE VERSION ACLOCAL AUTOCONF AUTOMAKE AUTOHEADER MAKEINFO install_sh STRIP ac_ct_STRIP INSTALL_STRIP_PROGRAM mkdir_p AWK SET_MAKE am__leading_dot AMTAR am__tar am__untar build build_cpu build_vendor build_os host host_cpu host_vendor host_os MAINTAINER_MODE_TRUE MAINTAINER_MODE_FALSE MAINT PERL CC ac_ct_CC CFLAGS LDFLAGS CPPFLAGS EXEEXT OBJEXT DEPDIR am__include am__quote AMDEP_TRUE AMDEP_FALSE AMDEPBACKSLASH CCDEPMODE am__fastdepCC_TRUE am__fastdepCC_FALSE CCAS RANLIB ac_ct_RANLIB STAGE1_CFLAGS STAGE2_CFLAGS GRUB_CFLAGS OBJCOPY ac_ct_OBJCOPY GRUB_LIBS CPP EGREP NETBOOT_SUPPORT_TRUE NETBOOT_SUPPORT_FALSE DISKLESS_SUPPORT_TRUE DISKLESS_SUPPORT_FALSE GRAPHICS_SUPPORT_TRUE GRAPHICS_SUPPORT_FALSE HERCULES_SUPPORT_TRUE HERCULES_SUPPORT_FALSE SERIAL_SUPPORT_TRUE SERIAL_SUPPORT_FALSE SERIAL_SPEED_SIMULATION_TRUE SERIAL_SPEED_SIMULATION_FALSE BUILD_EXAMPLE_KERNEL_TRUE BUILD_EXAMPLE_KERNEL_FALSE FSYS_CFLAGS NET_CFLAGS NET_EXTRAFLAGS NETBOOT_DRIVERS CCASFLAGS LIBOBJS LTLIBOBJS'
+ ac_subst_files=''
+ 
+ # Initialize some variables set by options.
+@@ -914,6 +914,7 @@ Optional Features:
+                           set the default memory location for WD/SMC
+   --enable-cs-scan=LIST   probe for CS89x0 base address using LIST
+   --enable-diskless       enable diskless support
++  --disable-graphics      disable graphics terminal support
+   --disable-hercules      disable hercules terminal support
+   --disable-serial        disable serial terminal support
+   --enable-serial-speed-simulation
+@@ -1032,7 +1033,7 @@ esac
+     else
+       echo "$as_me: WARNING: no configuration information is in $ac_dir" >&2
+     fi
+-    cd $ac_popdir
++    cd "$ac_popdir"
+   done
+ fi
+ 
+@@ -2631,8 +2632,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2690,8 +2690,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2807,8 +2806,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2862,8 +2860,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2908,8 +2905,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -2953,8 +2949,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3458,8 +3453,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3523,8 +3517,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3595,8 +3588,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -3656,8 +3648,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4095,8 +4086,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4161,8 +4151,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4234,8 +4223,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4300,8 +4288,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4366,8 +4353,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4440,8 +4426,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4506,8 +4491,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4597,8 +4581,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4673,8 +4656,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -4745,8 +4727,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_l
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5070,8 +5051,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5241,8 +5221,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5313,8 +5292,7 @@ if { (eval echo "$as_me:$LINENO: \"$ac_c
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+   (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
++	 { ac_try='test -z "$ac_c_werror_flag"			 || test ! -s conftest.err'
+   { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+   (eval $ac_try) 2>&5
+   ac_status=$?
+@@ -5966,6 +5944,22 @@ else
+ fi
+ 
+ 
++# Check whether --enable-graphics or --disable-graphics was given.
++if test "${enable_graphics+set}" = set; then
++  enableval="$enable_graphics"
++
++fi;
++
++
++if test "x$enable_graphics" != xno; then
++  GRAPHICS_SUPPORT_TRUE=
++  GRAPHICS_SUPPORT_FALSE='#'
++else
++  GRAPHICS_SUPPORT_TRUE='#'
++  GRAPHICS_SUPPORT_FALSE=
++fi
++
++
+ # Check whether --enable-hercules or --disable-hercules was given.
+ if test "${enable_hercules+set}" = set; then
+   enableval="$enable_hercules"
+@@ -6270,6 +6264,13 @@ echo "$as_me: error: conditional \"DISKL
+ Usually this means the macro was only invoked conditionally." >&2;}
+    { (exit 1); exit 1; }; }
+ fi
++if test -z "${GRAPHICS_SUPPORT_TRUE}" && test -z "${GRAPHICS_SUPPORT_FALSE}"; then
++  { { echo "$as_me:$LINENO: error: conditional \"GRAPHICS_SUPPORT\" was never defined.
++Usually this means the macro was only invoked conditionally." >&5
++echo "$as_me: error: conditional \"GRAPHICS_SUPPORT\" was never defined.
++Usually this means the macro was only invoked conditionally." >&2;}
++   { (exit 1); exit 1; }; }
++fi
+ if test -z "${HERCULES_SUPPORT_TRUE}" && test -z "${HERCULES_SUPPORT_FALSE}"; then
+   { { echo "$as_me:$LINENO: error: conditional \"HERCULES_SUPPORT\" was never defined.
+ Usually this means the macro was only invoked conditionally." >&5
+@@ -6907,6 +6908,8 @@ s,@NETBOOT_SUPPORT_TRUE@,$NETBOOT_SUPPOR
+ s,@NETBOOT_SUPPORT_FALSE@,$NETBOOT_SUPPORT_FALSE,;t t
+ s,@DISKLESS_SUPPORT_TRUE@,$DISKLESS_SUPPORT_TRUE,;t t
+ s,@DISKLESS_SUPPORT_FALSE@,$DISKLESS_SUPPORT_FALSE,;t t
++s,@GRAPHICS_SUPPORT_TRUE@,$GRAPHICS_SUPPORT_TRUE,;t t
++s,@GRAPHICS_SUPPORT_FALSE@,$GRAPHICS_SUPPORT_FALSE,;t t
+ s,@HERCULES_SUPPORT_TRUE@,$HERCULES_SUPPORT_TRUE,;t t
+ s,@HERCULES_SUPPORT_FALSE@,$HERCULES_SUPPORT_FALSE,;t t
+ s,@SERIAL_SUPPORT_TRUE@,$SERIAL_SUPPORT_TRUE,;t t
+@@ -7088,11 +7091,6 @@ esac
+   *) ac_INSTALL=$ac_top_builddir$INSTALL ;;
+   esac
+ 
+-  if test x"$ac_file" != x-; then
+-    { echo "$as_me:$LINENO: creating $ac_file" >&5
+-echo "$as_me: creating $ac_file" >&6;}
+-    rm -f "$ac_file"
+-  fi
+   # Let's still pretend it is `configure' which instantiates (i.e., don't
+   # use $as_me), people would be surprised to read:
+   #    /* config.h.  Generated by config.status.  */
+@@ -7131,6 +7129,12 @@ echo "$as_me: error: cannot find input f
+ 	 fi;;
+       esac
+     done` || { (exit 1); exit 1; }
++
++  if test x"$ac_file" != x-; then
++    { echo "$as_me:$LINENO: creating $ac_file" >&5
++echo "$as_me: creating $ac_file" >&6;}
++    rm -f "$ac_file"
++  fi
+ _ACEOF
+ cat >>$CONFIG_STATUS <<_ACEOF
+   sed "$ac_vpsub
+diff -rup grub-0.97.oorig/docs/Makefile.in grub-0.97/docs/Makefile.in
+--- grub-0.97.oorig/docs/Makefile.in	2005-05-08 04:42:34.000000000 +0200
++++ grub-0.97/docs/Makefile.in	2006-03-12 14:00:43.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -15,8 +15,6 @@
+ @SET_MAKE@
+ 
+ 
+-SOURCES = $(kernel_SOURCES)
+-
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ VPATH = @srcdir@
+@@ -120,6 +118,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@
+@@ -304,9 +304,11 @@ kernel-kernel.obj: kernel.c
+ 	restore=: && backupdir="$(am__leading_dot)am$$$$" && \
+ 	am__cwd=`pwd` && cd $(srcdir) && \
+ 	rm -rf $$backupdir && mkdir $$backupdir && \
+-	for f in $@ $@-[0-9] $@-[0-9][0-9] $(@:.info=).i[0-9] $(@:.info=).i[0-9][0-9]; do \
+-	  if test -f $$f; then mv $$f $$backupdir; restore=mv; else :; fi; \
+-	done; \
++	if ($(MAKEINFO) --version) >/dev/null 2>&1; then \
++	  for f in $@ $@-[0-9] $@-[0-9][0-9] $(@:.info=).i[0-9] $(@:.info=).i[0-9][0-9]; do \
++	    if test -f $$f; then mv $$f $$backupdir; restore=mv; else :; fi; \
++	  done; \
++	else :; fi && \
+ 	cd "$$am__cwd"; \
+ 	if $(MAKEINFO) $(AM_MAKEINFOFLAGS) $(MAKEINFOFLAGS) -I $(srcdir) \
+ 	 -o $@ $<; \
+@@ -371,10 +373,11 @@ multiboot.dvi: multiboot.texi $(multiboo
+ multiboot.pdf: multiboot.texi $(multiboot_TEXINFOS)
+ multiboot.html: multiboot.texi $(multiboot_TEXINFOS)
+ .dvi.ps:
++	TEXINPUTS="$(am__TEXINFO_TEX_DIR)$(PATH_SEPARATOR)$$TEXINPUTS" \
+ 	$(DVIPS) -o $@ $<
+ 
+ uninstall-info-am:
+-	$(PRE_UNINSTALL)
++	@$(PRE_UNINSTALL)
+ 	@if (install-info --version && \
+ 	     install-info --version 2>&1 | sed 1q | grep -i -v debian) >/dev/null 2>&1; then \
+ 	  list='$(INFO_DEPS)'; \
+@@ -390,7 +393,7 @@ uninstall-info-am:
+ 	  relfile=`echo "$$file" | sed 's|^.*/||'`; \
+ 	  relfile_i=`echo "$$relfile" | sed 's|\.info$$||;s|$$|.i|'`; \
+ 	  (if cd "$(DESTDIR)$(infodir)"; then \
+-	     echo " rm -f $$relfile $$relfile-[0-9] $$relfile-[0-9][0-9] $$relfile_i[0-9] $$relfile_i[0-9][0-9])"; \
++	     echo " cd '$(DESTDIR)$(infodir)' && rm -f $$relfile $$relfile-[0-9] $$relfile-[0-9][0-9] $$relfile_i[0-9] $$relfile_i[0-9][0-9]"; \
+ 	     rm -f $$relfile $$relfile-[0-9] $$relfile-[0-9][0-9] $$relfile_i[0-9] $$relfile_i[0-9][0-9]; \
+ 	   else :; fi); \
+ 	done
+@@ -403,10 +406,13 @@ dist-info: $(INFO_DEPS)
+ 	    $(srcdir)/*) base=`echo "$$base" | sed "s|^$$srcdirstrip/||"`;; \
+ 	  esac; \
+ 	  if test -f $$base; then d=.; else d=$(srcdir); fi; \
+-	  for file in $$d/$$base*; do \
+-	    relfile=`expr "$$file" : "$$d/\(.*\)"`; \
+-	    test -f $(distdir)/$$relfile || \
+-	      cp -p $$file $(distdir)/$$relfile; \
++	  base_i=`echo "$$base" | sed 's|\.info$$||;s|$$|.i|'`; \
++	  for file in $$d/$$base $$d/$$base-[0-9] $$d/$$base-[0-9][0-9] $$d/$$base_i[0-9] $$d/$$base_i[0-9][0-9]; do \
++	    if test -f $$file; then \
++	      relfile=`expr "$$file" : "$$d/\(.*\)"`; \
++	      test -f $(distdir)/$$relfile || \
++		cp -p $$file $(distdir)/$$relfile; \
++	    else :; fi; \
+ 	  done; \
+ 	done
+ 
+diff -rup grub-0.97.oorig/grub/Makefile.in grub-0.97/grub/Makefile.in
+--- grub-0.97.oorig/grub/Makefile.in	2005-05-08 04:42:34.000000000 +0200
++++ grub-0.97/grub/Makefile.in	2006-03-12 14:00:43.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -14,8 +14,6 @@
+ 
+ @SET_MAKE@
+ 
+-SOURCES = $(grub_SOURCES)
+-
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ VPATH = @srcdir@
+@@ -97,6 +95,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@
+diff -rup grub-0.97.oorig/lib/Makefile.in grub-0.97/lib/Makefile.in
+--- grub-0.97.oorig/lib/Makefile.in	2005-05-08 04:42:35.000000000 +0200
++++ grub-0.97/lib/Makefile.in	2006-03-12 14:00:44.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -14,8 +14,6 @@
+ 
+ @SET_MAKE@
+ 
+-SOURCES = $(libcommon_a_SOURCES)
+-
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ VPATH = @srcdir@
+@@ -96,6 +94,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@
+diff -rup grub-0.97.oorig/Makefile.in grub-0.97/Makefile.in
+--- grub-0.97.oorig/Makefile.in	2005-05-08 04:42:40.000000000 +0200
++++ grub-0.97/Makefile.in	2006-03-12 14:00:49.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -101,6 +101,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@
+@@ -250,7 +252,13 @@ uninstall-info-am:
+ #     (which will cause the Makefiles to be regenerated when you run `make');
+ # (2) otherwise, pass the desired values on the `make' command line.
+ $(RECURSIVE_TARGETS):
+-	@set fnord $$MAKEFLAGS; amf=$$2; \
++	@failcom='exit 1'; \
++	for f in x $$MAKEFLAGS; do \
++	  case $$f in \
++	    *=* | --[!k]*);; \
++	    *k*) failcom='fail=yes';; \
++	  esac; \
++	done; \
+ 	dot_seen=no; \
+ 	target=`echo $@ | sed s/-recursive//`; \
+ 	list='$(SUBDIRS)'; for subdir in $$list; do \
+@@ -262,7 +270,7 @@ $(RECURSIVE_TARGETS):
+ 	    local_target="$$target"; \
+ 	  fi; \
+ 	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+-	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
++	  || eval $$failcom; \
+ 	done; \
+ 	if test "$$dot_seen" = "no"; then \
+ 	  $(MAKE) $(AM_MAKEFLAGS) "$$target-am" || exit 1; \
+@@ -270,7 +278,13 @@ $(RECURSIVE_TARGETS):
+ 
+ mostlyclean-recursive clean-recursive distclean-recursive \
+ maintainer-clean-recursive:
+-	@set fnord $$MAKEFLAGS; amf=$$2; \
++	@failcom='exit 1'; \
++	for f in x $$MAKEFLAGS; do \
++	  case $$f in \
++	    *=* | --[!k]*);; \
++	    *k*) failcom='fail=yes';; \
++	  esac; \
++	done; \
+ 	dot_seen=no; \
+ 	case "$@" in \
+ 	  distclean-* | maintainer-clean-*) list='$(DIST_SUBDIRS)' ;; \
+@@ -291,7 +305,7 @@ maintainer-clean-recursive:
+ 	    local_target="$$target"; \
+ 	  fi; \
+ 	  (cd $$subdir && $(MAKE) $(AM_MAKEFLAGS) $$local_target) \
+-	   || case "$$amf" in *=*) exit 1;; *k*) fail=yes;; *) exit 1;; esac; \
++	  || eval $$failcom; \
+ 	done && test -z "$$fail"
+ tags-recursive:
+ 	list='$(SUBDIRS)'; for subdir in $$list; do \
+diff -rup grub-0.97.oorig/netboot/Makefile.in grub-0.97/netboot/Makefile.in
+--- grub-0.97.oorig/netboot/Makefile.in	2005-05-08 04:42:35.000000000 +0200
++++ grub-0.97/netboot/Makefile.in	2006-03-12 14:00:44.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -14,8 +14,6 @@
+ 
+ @SET_MAKE@
+ 
+-SOURCES = $(libdrivers_a_SOURCES) $(EXTRA_libdrivers_a_SOURCES)
+-
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ VPATH = @srcdir@
+@@ -97,6 +95,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@
+diff -rup grub-0.97.oorig/stage1/Makefile.in grub-0.97/stage1/Makefile.in
+--- grub-0.97.oorig/stage1/Makefile.in	2005-05-08 04:42:36.000000000 +0200
++++ grub-0.97/stage1/Makefile.in	2006-03-12 14:00:45.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -15,8 +15,6 @@
+ @SET_MAKE@
+ 
+ 
+-SOURCES = $(stage1_exec_SOURCES)
+-
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ VPATH = @srcdir@
+@@ -102,6 +100,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@
+diff -rup grub-0.97.oorig/stage2/Makefile.in grub-0.97/stage2/Makefile.in
+--- grub-0.97.oorig/stage2/Makefile.in	2005-05-08 04:42:39.000000000 +0200
++++ grub-0.97/stage2/Makefile.in	2006-03-12 14:00:48.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -18,8 +18,6 @@
+ 
+ 
+ 
+-SOURCES = $(libgrub_a_SOURCES) $(diskless_exec_SOURCES) $(e2fs_stage1_5_exec_SOURCES) $(fat_stage1_5_exec_SOURCES) $(ffs_stage1_5_exec_SOURCES) $(iso9660_stage1_5_exec_SOURCES) $(jfs_stage1_5_exec_SOURCES) $(minix_stage1_5_exec_SOURCES) $(nbloader_exec_SOURCES) $(pre_stage2_exec_SOURCES) $(pxeloader_exec_SOURCES) $(reiserfs_stage1_5_exec_SOURCES) $(start_exec_SOURCES) $(start_eltorito_exec_SOURCES) $(ufs2_stage1_5_exec_SOURCES) $(vstafs_stage1_5_exec_SOURCES) $(xfs_stage1_5_exec_SOURCES)
+-
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ VPATH = @srcdir@
+@@ -100,7 +98,7 @@ am_libgrub_a_OBJECTS = libgrub_a-boot.$(
+ 	libgrub_a-fsys_xfs.$(OBJEXT) libgrub_a-gunzip.$(OBJEXT) \
+ 	libgrub_a-md5.$(OBJEXT) libgrub_a-serial.$(OBJEXT) \
+ 	libgrub_a-stage2.$(OBJEXT) libgrub_a-terminfo.$(OBJEXT) \
+-	libgrub_a-tparm.$(OBJEXT)
++	libgrub_a-tparm.$(OBJEXT) libgrub_a-graphics.$(OBJEXT)
+ libgrub_a_OBJECTS = $(am_libgrub_a_OBJECTS)
+ PROGRAMS = $(noinst_PROGRAMS)
+ am__objects_1 = diskless_exec-asm.$(OBJEXT) \
+@@ -125,7 +123,8 @@ am__objects_1 = diskless_exec-asm.$(OBJE
+ 	diskless_exec-serial.$(OBJEXT) \
+ 	diskless_exec-smp-imps.$(OBJEXT) \
+ 	diskless_exec-stage2.$(OBJEXT) \
+-	diskless_exec-terminfo.$(OBJEXT) diskless_exec-tparm.$(OBJEXT)
++	diskless_exec-terminfo.$(OBJEXT) diskless_exec-tparm.$(OBJEXT) \
++	diskless_exec-graphics.$(OBJEXT)
+ am_diskless_exec_OBJECTS = $(am__objects_1)
+ diskless_exec_OBJECTS = $(am_diskless_exec_OBJECTS)
+ diskless_exec_DEPENDENCIES = ../netboot/libdrivers.a
+@@ -217,7 +216,8 @@ am_pre_stage2_exec_OBJECTS = pre_stage2_
+ 	pre_stage2_exec-smp-imps.$(OBJEXT) \
+ 	pre_stage2_exec-stage2.$(OBJEXT) \
+ 	pre_stage2_exec-terminfo.$(OBJEXT) \
+-	pre_stage2_exec-tparm.$(OBJEXT)
++	pre_stage2_exec-tparm.$(OBJEXT) \
++	pre_stage2_exec-graphics.$(OBJEXT)
+ pre_stage2_exec_OBJECTS = $(am_pre_stage2_exec_OBJECTS)
+ @NETBOOT_SUPPORT_TRUE@pre_stage2_exec_DEPENDENCIES =  \
+ @NETBOOT_SUPPORT_TRUE@	../netboot/libdrivers.a
+@@ -344,6 +344,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@
+@@ -435,7 +437,7 @@ noinst_HEADERS = apic.h defs.h dir.h dis
+         fat.h filesys.h freebsd.h fs.h hercules.h i386-elf.h \
+ 	imgact_aout.h iso9660.h jfs.h mb_header.h mb_info.h md5.h \
+ 	nbi.h pc_slice.h serial.h shared.h smp-imps.h term.h \
+-	terminfo.h tparm.h nbi.h ufs2.h vstafs.h xfs.h
++	terminfo.h tparm.h nbi.h ufs2.h vstafs.h xfs.h graphics.h
+ 
+ EXTRA_DIST = setjmp.S apm.S $(noinst_SCRIPTS)
+ 
+@@ -448,7 +450,7 @@ libgrub_a_SOURCES = boot.c builtins.c ch
+ 	disk_io.c fsys_ext2fs.c fsys_fat.c fsys_ffs.c fsys_iso9660.c \
+ 	fsys_jfs.c fsys_minix.c fsys_reiserfs.c fsys_ufs2.c \
+ 	fsys_vstafs.c fsys_xfs.c gunzip.c md5.c serial.c stage2.c \
+-	terminfo.c tparm.c
++	terminfo.c tparm.c graphics.c
+ 
+ libgrub_a_CFLAGS = $(GRUB_CFLAGS) -I$(top_srcdir)/lib \
+ 	-DGRUB_UTIL=1 -DFSYS_EXT2FS=1 -DFSYS_FAT=1 -DFSYS_FFS=1 \
+@@ -479,8 +481,10 @@ START_ELTORITO_LINK = -nostdlib -Wl,-N -
+ @SERIAL_SUPPORT_TRUE@SERIAL_FLAGS = -DSUPPORT_SERIAL=1
+ @HERCULES_SUPPORT_FALSE@HERCULES_FLAGS = 
+ @HERCULES_SUPPORT_TRUE@HERCULES_FLAGS = -DSUPPORT_HERCULES=1
++@GRAPHICS_SUPPORT_FALSE@GRAPHICS_FLAGS = 
++@GRAPHICS_SUPPORT_TRUE@GRAPHICS_FLAGS = -DSUPPORT_GRAPHICS=1
+ STAGE2_COMPILE = $(STAGE2_CFLAGS) -fno-builtin -nostdinc \
+-	$(NETBOOT_FLAGS) $(SERIAL_FLAGS) $(HERCULES_FLAGS)
++	$(NETBOOT_FLAGS) $(SERIAL_FLAGS) $(HERCULES_FLAGS) $(GRAPHICS_FLAGS)
+ 
+ STAGE1_5_LINK = -nostdlib -Wl,-N -Wl,-Ttext -Wl,2000
+ STAGE1_5_COMPILE = $(STAGE2_COMPILE) -DNO_DECOMPRESSION=1 -DSTAGE1_5=1
+@@ -490,7 +494,8 @@ pre_stage2_exec_SOURCES = asm.S bios.c b
+ 	cmdline.c common.c console.c disk_io.c fsys_ext2fs.c \
+ 	fsys_fat.c fsys_ffs.c fsys_iso9660.c fsys_jfs.c fsys_minix.c \
+ 	fsys_reiserfs.c fsys_ufs2.c fsys_vstafs.c fsys_xfs.c gunzip.c \
+-	hercules.c md5.c serial.c smp-imps.c stage2.c terminfo.c tparm.c
++	hercules.c md5.c serial.c smp-imps.c stage2.c terminfo.c tparm.c \
++	graphics.c
+ 
+ pre_stage2_exec_CFLAGS = $(STAGE2_COMPILE) $(FSYS_CFLAGS)
+ pre_stage2_exec_CCASFLAGS = $(STAGE2_COMPILE) $(FSYS_CFLAGS)
+@@ -766,6 +771,7 @@ distclean-compile:
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diskless_exec-fsys_ufs2.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diskless_exec-fsys_vstafs.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diskless_exec-fsys_xfs.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diskless_exec-graphics.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diskless_exec-gunzip.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diskless_exec-hercules.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/diskless_exec-md5.Po@am__quote@
+@@ -820,6 +826,7 @@ distclean-compile:
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgrub_a-fsys_ufs2.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgrub_a-fsys_vstafs.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgrub_a-fsys_xfs.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgrub_a-graphics.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgrub_a-gunzip.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgrub_a-md5.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libgrub_a-serial.Po@am__quote@
+@@ -850,6 +857,7 @@ distclean-compile:
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_stage2_exec-fsys_ufs2.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_stage2_exec-fsys_vstafs.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_stage2_exec-fsys_xfs.Po@am__quote@
++@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_stage2_exec-graphics.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_stage2_exec-gunzip.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_stage2_exec-hercules.Po@am__quote@
+ @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/pre_stage2_exec-md5.Po@am__quote@
+@@ -1367,6 +1375,20 @@ libgrub_a-tparm.obj: tparm.c
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+ @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgrub_a_CFLAGS) $(CFLAGS) -c -o libgrub_a-tparm.obj `if test -f 'tparm.c'; then $(CYGPATH_W) 'tparm.c'; else $(CYGPATH_W) '$(srcdir)/tparm.c'; fi`
+ 
++libgrub_a-graphics.o: graphics.c
++@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgrub_a_CFLAGS) $(CFLAGS) -MT libgrub_a-graphics.o -MD -MP -MF "$(DEPDIR)/libgrub_a-graphics.Tpo" -c -o libgrub_a-graphics.o `test -f 'graphics.c' || echo '$(srcdir)/'`graphics.c; \
++@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libgrub_a-graphics.Tpo" "$(DEPDIR)/libgrub_a-graphics.Po"; else rm -f "$(DEPDIR)/libgrub_a-graphics.Tpo"; exit 1; fi
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='graphics.c' object='libgrub_a-graphics.o' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgrub_a_CFLAGS) $(CFLAGS) -c -o libgrub_a-graphics.o `test -f 'graphics.c' || echo '$(srcdir)/'`graphics.c
++
++libgrub_a-graphics.obj: graphics.c
++@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgrub_a_CFLAGS) $(CFLAGS) -MT libgrub_a-graphics.obj -MD -MP -MF "$(DEPDIR)/libgrub_a-graphics.Tpo" -c -o libgrub_a-graphics.obj `if test -f 'graphics.c'; then $(CYGPATH_W) 'graphics.c'; else $(CYGPATH_W) '$(srcdir)/graphics.c'; fi`; \
++@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/libgrub_a-graphics.Tpo" "$(DEPDIR)/libgrub_a-graphics.Po"; else rm -f "$(DEPDIR)/libgrub_a-graphics.Tpo"; exit 1; fi
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='graphics.c' object='libgrub_a-graphics.obj' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libgrub_a_CFLAGS) $(CFLAGS) -c -o libgrub_a-graphics.obj `if test -f 'graphics.c'; then $(CYGPATH_W) 'graphics.c'; else $(CYGPATH_W) '$(srcdir)/graphics.c'; fi`
++
+ diskless_exec-bios.o: bios.c
+ @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(diskless_exec_CFLAGS) $(CFLAGS) -MT diskless_exec-bios.o -MD -MP -MF "$(DEPDIR)/diskless_exec-bios.Tpo" -c -o diskless_exec-bios.o `test -f 'bios.c' || echo '$(srcdir)/'`bios.c; \
+ @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/diskless_exec-bios.Tpo" "$(DEPDIR)/diskless_exec-bios.Po"; else rm -f "$(DEPDIR)/diskless_exec-bios.Tpo"; exit 1; fi
+@@ -1731,6 +1753,20 @@ diskless_exec-tparm.obj: tparm.c
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+ @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(diskless_exec_CFLAGS) $(CFLAGS) -c -o diskless_exec-tparm.obj `if test -f 'tparm.c'; then $(CYGPATH_W) 'tparm.c'; else $(CYGPATH_W) '$(srcdir)/tparm.c'; fi`
+ 
++diskless_exec-graphics.o: graphics.c
++@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(diskless_exec_CFLAGS) $(CFLAGS) -MT diskless_exec-graphics.o -MD -MP -MF "$(DEPDIR)/diskless_exec-graphics.Tpo" -c -o diskless_exec-graphics.o `test -f 'graphics.c' || echo '$(srcdir)/'`graphics.c; \
++@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/diskless_exec-graphics.Tpo" "$(DEPDIR)/diskless_exec-graphics.Po"; else rm -f "$(DEPDIR)/diskless_exec-graphics.Tpo"; exit 1; fi
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='graphics.c' object='diskless_exec-graphics.o' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(diskless_exec_CFLAGS) $(CFLAGS) -c -o diskless_exec-graphics.o `test -f 'graphics.c' || echo '$(srcdir)/'`graphics.c
++
++diskless_exec-graphics.obj: graphics.c
++@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(diskless_exec_CFLAGS) $(CFLAGS) -MT diskless_exec-graphics.obj -MD -MP -MF "$(DEPDIR)/diskless_exec-graphics.Tpo" -c -o diskless_exec-graphics.obj `if test -f 'graphics.c'; then $(CYGPATH_W) 'graphics.c'; else $(CYGPATH_W) '$(srcdir)/graphics.c'; fi`; \
++@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/diskless_exec-graphics.Tpo" "$(DEPDIR)/diskless_exec-graphics.Po"; else rm -f "$(DEPDIR)/diskless_exec-graphics.Tpo"; exit 1; fi
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='graphics.c' object='diskless_exec-graphics.obj' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(diskless_exec_CFLAGS) $(CFLAGS) -c -o diskless_exec-graphics.obj `if test -f 'graphics.c'; then $(CYGPATH_W) 'graphics.c'; else $(CYGPATH_W) '$(srcdir)/graphics.c'; fi`
++
+ e2fs_stage1_5_exec-common.o: common.c
+ @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(e2fs_stage1_5_exec_CFLAGS) $(CFLAGS) -MT e2fs_stage1_5_exec-common.o -MD -MP -MF "$(DEPDIR)/e2fs_stage1_5_exec-common.Tpo" -c -o e2fs_stage1_5_exec-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c; \
+ @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/e2fs_stage1_5_exec-common.Tpo" "$(DEPDIR)/e2fs_stage1_5_exec-common.Po"; else rm -f "$(DEPDIR)/e2fs_stage1_5_exec-common.Tpo"; exit 1; fi
+@@ -2599,6 +2635,20 @@ pre_stage2_exec-tparm.obj: tparm.c
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+ @am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pre_stage2_exec_CFLAGS) $(CFLAGS) -c -o pre_stage2_exec-tparm.obj `if test -f 'tparm.c'; then $(CYGPATH_W) 'tparm.c'; else $(CYGPATH_W) '$(srcdir)/tparm.c'; fi`
+ 
++pre_stage2_exec-graphics.o: graphics.c
++@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pre_stage2_exec_CFLAGS) $(CFLAGS) -MT pre_stage2_exec-graphics.o -MD -MP -MF "$(DEPDIR)/pre_stage2_exec-graphics.Tpo" -c -o pre_stage2_exec-graphics.o `test -f 'graphics.c' || echo '$(srcdir)/'`graphics.c; \
++@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/pre_stage2_exec-graphics.Tpo" "$(DEPDIR)/pre_stage2_exec-graphics.Po"; else rm -f "$(DEPDIR)/pre_stage2_exec-graphics.Tpo"; exit 1; fi
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='graphics.c' object='pre_stage2_exec-graphics.o' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pre_stage2_exec_CFLAGS) $(CFLAGS) -c -o pre_stage2_exec-graphics.o `test -f 'graphics.c' || echo '$(srcdir)/'`graphics.c
++
++pre_stage2_exec-graphics.obj: graphics.c
++@am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pre_stage2_exec_CFLAGS) $(CFLAGS) -MT pre_stage2_exec-graphics.obj -MD -MP -MF "$(DEPDIR)/pre_stage2_exec-graphics.Tpo" -c -o pre_stage2_exec-graphics.obj `if test -f 'graphics.c'; then $(CYGPATH_W) 'graphics.c'; else $(CYGPATH_W) '$(srcdir)/graphics.c'; fi`; \
++@am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/pre_stage2_exec-graphics.Tpo" "$(DEPDIR)/pre_stage2_exec-graphics.Po"; else rm -f "$(DEPDIR)/pre_stage2_exec-graphics.Tpo"; exit 1; fi
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	source='graphics.c' object='pre_stage2_exec-graphics.obj' libtool=no @AMDEPBACKSLASH@
++@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
++@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(pre_stage2_exec_CFLAGS) $(CFLAGS) -c -o pre_stage2_exec-graphics.obj `if test -f 'graphics.c'; then $(CYGPATH_W) 'graphics.c'; else $(CYGPATH_W) '$(srcdir)/graphics.c'; fi`
++
+ reiserfs_stage1_5_exec-common.o: common.c
+ @am__fastdepCC_TRUE@	if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(reiserfs_stage1_5_exec_CFLAGS) $(CFLAGS) -MT reiserfs_stage1_5_exec-common.o -MD -MP -MF "$(DEPDIR)/reiserfs_stage1_5_exec-common.Tpo" -c -o reiserfs_stage1_5_exec-common.o `test -f 'common.c' || echo '$(srcdir)/'`common.c; \
+ @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/reiserfs_stage1_5_exec-common.Tpo" "$(DEPDIR)/reiserfs_stage1_5_exec-common.Po"; else rm -f "$(DEPDIR)/reiserfs_stage1_5_exec-common.Tpo"; exit 1; fi
+diff -rup grub-0.97.oorig/util/Makefile.in grub-0.97/util/Makefile.in
+--- grub-0.97.oorig/util/Makefile.in	2005-05-08 04:42:39.000000000 +0200
++++ grub-0.97/util/Makefile.in	2006-03-12 14:00:48.000000000 +0100
+@@ -1,8 +1,8 @@
+-# Makefile.in generated by automake 1.9.4 from Makefile.am.
++# Makefile.in generated by automake 1.9.6 from Makefile.am.
+ # @configure_input@
+ 
+ # Copyright (C) 1994, 1995, 1996, 1997, 1998, 1999, 2000, 2001, 2002,
+-# 2003, 2004  Free Software Foundation, Inc.
++# 2003, 2004, 2005  Free Software Foundation, Inc.
+ # This Makefile.in is free software; the Free Software Foundation
+ # gives unlimited permission to copy and/or distribute it,
+ # with or without modifications, as long as this notice is preserved.
+@@ -15,8 +15,6 @@
+ @SET_MAKE@
+ 
+ 
+-SOURCES = $(mbchk_SOURCES)
+-
+ srcdir = @srcdir@
+ top_srcdir = @top_srcdir@
+ VPATH = @srcdir@
+@@ -102,6 +100,8 @@ ECHO_T = @ECHO_T@
+ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FSYS_CFLAGS = @FSYS_CFLAGS@
++GRAPHICS_SUPPORT_FALSE = @GRAPHICS_SUPPORT_FALSE@
++GRAPHICS_SUPPORT_TRUE = @GRAPHICS_SUPPORT_TRUE@
+ GRUB_CFLAGS = @GRUB_CFLAGS@
+ GRUB_LIBS = @GRUB_LIBS@
+ HERCULES_SUPPORT_FALSE = @HERCULES_SUPPORT_FALSE@

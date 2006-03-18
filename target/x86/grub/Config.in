@@ -4,3 +4,14 @@ config BR2_TARGET_GRUB
 	depends on BR2_i386
 	help
 	  The GRand Unified Bootloader for x86 systems.
+
+config BR2_TARGET_GRUB_SPLASH
+	bool "  Splashimage support"
+	default n
+	depends on BR2_TARGET_GRUB
+	help
+	  Add support for splashimage.
+	  
+	  A splashimage is a 14-color indexed .xpm picture which
+	  is displayed as background for the grub menu.
+

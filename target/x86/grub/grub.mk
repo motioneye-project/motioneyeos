@@ -12,6 +12,12 @@ GRUB_DIR:=$(BUILD_DIR)/grub-0.97
 GRUB_BINARY:=grub/grub
 GRUB_TARGET_BINARY:=bin/grub
 
+ifeq ($(BR2_TARGET_GRUB_SPLASH),y)
+GRUB_CONFIGURE_ARGS+=--enable-graphics
+GRUB_SPLASHIMAGE=splash.xpm.gz
+endif
+GRUB_CFLAGS=-DSUPPORT_LOOPDEV
+
 $(DL_DIR)/$(GRUB_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GRUB_SITE)/$(GRUB_SOURCE)
 
@@ -23,9 +29,10 @@ grub-source: $(DL_DIR)/$(GRUB_SOURCE) $(DL_DIR)/$(GRUB_PATCH)
 $(GRUB_DIR)/.unpacked: $(DL_DIR)/$(GRUB_SOURCE) $(DL_DIR)/$(GRUB_PATCH)
 	$(GRUB_CAT) $(DL_DIR)/$(GRUB_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	$(GRUB_CAT) $(DL_DIR)/$(GRUB_PATCH)  | patch -p1 -d $(GRUB_DIR)
-	for i in `cat $(GRUB_DIR)/debian/patches/00list`; do \
+	for i in `grep -v "^#" $(GRUB_DIR)/debian/patches/00list`; do \
 		cat $(GRUB_DIR)/debian/patches/$$i | patch -p1 -d $(GRUB_DIR); \
 	done
+	toolchain/patch-kernel.sh $(GRUB_DIR) target/x86/grub/ grub\*.patch
 	touch $(GRUB_DIR)/.unpacked
 
 $(GRUB_DIR)/.configured: $(GRUB_DIR)/.unpacked
@@ -41,6 +48,7 @@ $(GRUB_DIR)/.configured: $(GRUB_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--disable-auto-linux-mem-opt \
+		$(GRUB_CONFIGURE_ARGS) \
 	);
 	touch  $(GRUB_DIR)/.configured
 
