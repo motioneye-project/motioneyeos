@@ -1,0 +1,77 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.1
+Patch-ID: readline51-001
+
+Bug-Reported-by: Andreas Schwab <schwab@suse.de>
+Bug-Reference-ID: <20051213141916.4014A394BFABD@sykes.suse.de>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2005-12/msg00038.html
+
+Bug-Description:
+
+A problem with the readline callback interface can result in segmentation
+faults when using the delete-char function via a multiple-key sequence.
+Two consecutive calls to delete-char will crash the application calling
+readline.
+
+Patch:
+
+*** readline-5.1/readline.c	Mon Jul  4 22:29:35 2005
+--- readline-5.1/readline.c	Tue Dec 20 17:38:29 2005
+***************
+*** 715,719 ****
+  	  rl_dispatching = 1;
+  	  RL_SETSTATE(RL_STATE_DISPATCHING);
+! 	  r = (*map[key].function)(rl_numeric_arg * rl_arg_sign, key);
+  	  RL_UNSETSTATE(RL_STATE_DISPATCHING);
+  	  rl_dispatching = 0;
+--- 715,719 ----
+  	  rl_dispatching = 1;
+  	  RL_SETSTATE(RL_STATE_DISPATCHING);
+! 	  (*map[key].function)(rl_numeric_arg * rl_arg_sign, key);
+  	  RL_UNSETSTATE(RL_STATE_DISPATCHING);
+  	  rl_dispatching = 0;
+*** ../readline-5.1/text.c	Sat Sep 24 19:06:07 2005
+--- text.c	Tue Dec 20 17:38:26 2005
+***************
+*** 1072,1077 ****
+       int count, key;
+  {
+-   int r;
+- 
+    if (count < 0)
+      return (_rl_rubout_char (-count, key));
+--- 1072,1075 ----
+***************
+*** 1091,1097 ****
+  	rl_forward_byte (count, key);
+  
+!       r = rl_kill_text (orig_point, rl_point);
+        rl_point = orig_point;
+-       return r;
+      }
+    else
+--- 1089,1094 ----
+  	rl_forward_byte (count, key);
+  
+!       rl_kill_text (orig_point, rl_point);
+        rl_point = orig_point;
+      }
+    else
+***************
+*** 1100,1105 ****
+  
+        new_point = MB_NEXTCHAR (rl_line_buffer, rl_point, 1, MB_FIND_NONZERO);
+!       return (rl_delete_text (rl_point, new_point));
+      }
+  }
+  
+--- 1097,1103 ----
+  
+        new_point = MB_NEXTCHAR (rl_line_buffer, rl_point, 1, MB_FIND_NONZERO);
+!       rl_delete_text (rl_point, new_point);
+      }
++   return 0;
+  }
+  

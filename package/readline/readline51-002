@@ -1,0 +1,43 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.1
+Patch-ID: readline51-002
+
+Bug-Reported-by: Mike Frysinger <vapier@gentoo.org>
+Bug-Reference-ID: <200601120613.11907.vapier@gentoo.org>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2006-01/msg00045.html
+
+Bug-Description:
+
+Under some circumstances, Readline can use an incorrect setting for the flag
+that indicates whether or not the terminal can auto-wrap, resulting in line-
+wrapping errors.
+
+Patch:
+
+*** readline-5.1/terminal.c	Sat Nov 12 20:46:54 2005
+--- readline-5.1/terminal.c	Tue Jan 31 10:57:54 2006
+***************
+*** 123,127 ****
+  
+  /* Non-zero means the terminal can auto-wrap lines. */
+! int _rl_term_autowrap;
+  
+  /* Non-zero means that this terminal has a meta key. */
+--- 126,130 ----
+  
+  /* Non-zero means the terminal can auto-wrap lines. */
+! int _rl_term_autowrap = -1;
+  
+  /* Non-zero means that this terminal has a meta key. */
+***************
+*** 275,278 ****
+--- 278,284 ----
+       int rows, cols;
+  {
++   if (_rl_term_autowrap == -1)
++     _rl_init_terminal_io (rl_terminal_name);
++ 
+    if (rows > 0)
+      _rl_screenheight = rows;
