@@ -1340,7 +1340,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/monetary_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc	1969-12-31 18:00:00.000000000 -0600
 +++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/monetary_members.cc	2005-04-30 19:36:16.927897479 -0500
-@@ -0,0 +1,692 @@
+@@ -0,0 +1,704 @@
 +// std::moneypunct implementation details, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -1746,11 +1746,17 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +#endif
 +#ifdef __UCLIBC__
 +# ifdef __UCLIBC_HAS_XLOCALE__
-+	  _M_data->_M_decimal_point = __cloc->decimal_point_wc;
-+	  _M_data->_M_thousands_sep = __cloc->thousands_sep_wc;
++	  union { char *__s; wchar_t __w; } __u;
++	  __u.__s = __nl_langinfo_l(_NL_MONETARY_DECIMAL_POINT_WC, __cloc);
++	  _M_data->_M_decimal_point = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_MONETARY_THOUSANDS_SEP_WC, __cloc);
++	  _M_data->_M_thousands_sep = __u.__w;
 +# else
-+	  _M_data->_M_decimal_point = __global_locale->decimal_point_wc;
-+	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
++	  union { char *__s; wchar_t __w; } __u;
++	  __u.__s = 0;
++	  _M_data->_M_decimal_point = __u.__w;
++	  __u.__s = 0;
++	  _M_data->_M_thousands_sep = __u.__w;
 +# endif
 +#else
 +	  union { char *__s; wchar_t __w; } __u;
@@ -1901,11 +1907,17 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +#endif
 +#ifdef __UCLIBC__
 +# ifdef __UCLIBC_HAS_XLOCALE__
-+	  _M_data->_M_decimal_point = __cloc->decimal_point_wc;
-+	  _M_data->_M_thousands_sep = __cloc->thousands_sep_wc;
++          union { char *__s; wchar_t __w; } __u;
++	  __u.__s = __nl_langinfo_l(_NL_MONETARY_DECIMAL_POINT_WC, __cloc);
++	  _M_data->_M_decimal_point = __u.__w;
++	  __u.__s = __nl_langinfo_l(_NL_MONETARY_THOUSANDS_SEP_WC, __cloc);
++	  _M_data->_M_thousands_sep = __u.__w;
 +# else
-+	  _M_data->_M_decimal_point = __global_locale->decimal_point_wc;
-+	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
++          union { char *__s; wchar_t __w; } __u;
++	  __u.__s = 0;
++	  _M_data->_M_decimal_point = __u.__w;
++	  __u.__s = 0;
++	  _M_data->_M_thousands_sep = __u.__w;
 +# endif
 +#else
 +          union { char *__s; wchar_t __w; } __u;
@@ -2036,7 +2048,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/numeric_members.cc
 --- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc	1969-12-31 18:00:00.000000000 -0600
 +++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/numeric_members.cc	2005-04-30 19:36:38.467261324 -0500
-@@ -0,0 +1,160 @@
+@@ -0,0 +1,168 @@
 +// std::numpunct implementation details, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -2170,10 +2182,18 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +	  // Named locale.
 +	  // NB: In the GNU model wchar_t is always 32 bit wide.
 +	  union { char *__s; wchar_t __w; } __u;
++#ifdef __UCLIBC_HAS_XLOCALE__
 +	  __u.__s = __nl_langinfo_l(_NL_NUMERIC_DECIMAL_POINT_WC, __cloc);
++#else
++	  __u.__s = 0;
++#endif
 +	  _M_data->_M_decimal_point = __u.__w;
 +
++#ifdef __UCLIBC_HAS_XLOCALE__
 +	  __u.__s = __nl_langinfo_l(_NL_NUMERIC_THOUSANDS_SEP_WC, __cloc);
++#else
++	  __u.__s = 0;
++#endif
 +	  _M_data->_M_thousands_sep = __u.__w;
 +
 +	  if (_M_data->_M_thousands_sep == L'\0')
