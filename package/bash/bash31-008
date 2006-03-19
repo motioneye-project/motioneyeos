@@ -1,0 +1,51 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-008
+
+Bug-Reported-by: Ingemar Nilsson <init@kth.se>
+Bug-Reference-ID: <43C38D35.7020404@kth.se>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2006-01/msg00044.html
+
+Bug-Description:
+
+In some cases, bash inappropriately allows SIGINT from the terminal to
+reach background processes.
+
+Patch:
+
+*** bash-3.1/jobs.c	Fri Nov 11 23:13:27 2005
+--- bash-3.1/jobs.c	Wed Feb  1 13:55:38 2006
+***************
+*** 2199,2203 ****
+    wait_sigint_received = 0;
+    if (job_control == 0)
+!     old_sigint_handler = set_signal_handler (SIGINT, wait_sigint_handler);
+  
+    termination_state = last_command_exit_value;
+--- 2298,2306 ----
+    wait_sigint_received = 0;
+    if (job_control == 0)
+!     {
+!       old_sigint_handler = set_signal_handler (SIGINT, wait_sigint_handler);
+!       if (old_sigint_handler == SIG_IGN)
+! 	set_signal_handler (SIGINT, old_sigint_handler);
+!     }
+  
+    termination_state = last_command_exit_value;
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */

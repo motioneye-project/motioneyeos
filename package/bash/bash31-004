@@ -1,0 +1,48 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-004
+
+Bug-Reported-by: Mike Frysinger <vapier@gentoo.org>
+Bug-Reference-ID: <20051223172359.GF14579@toucan.gentoo.org>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2005-12/msg00062.html
+
+Bug-Description:
+
+A local array variable declared at function scope that shadows a variable
+of the same name declared in a previous scope did not create a separate
+variable instance, but used the previous one.
+
+Patch:
+
+*** bash-3.1/subst.c	Mon Oct 24 09:51:13 2005
+--- bash-3.1/subst.c	Fri Dec 30 12:11:53 2005
+***************
+*** 2188,2192 ****
+      {
+        v = find_variable (name);
+!       if (v == 0 || array_p (v) == 0)
+          v = make_local_array_variable (name);
+        v = assign_array_var_from_string (v, value, flags);
+--- 2188,2192 ----
+      {
+        v = find_variable (name);
+!       if (v == 0 || array_p (v) == 0 || v->context != variable_context)
+          v = make_local_array_variable (name);
+        v = assign_array_var_from_string (v, value, flags);
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 3
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 4
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -1,0 +1,47 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-003
+
+Bug-Reported-by: Adam Buraczewski <adamb@nor.pl>
+Bug-Reference-ID: <200512210950.jBL9o4C2008608@localhost.localdomain>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2005-12/msg00055.html
+
+Bug-Description:
+
+A missing #define guard causes bash to not compile when readline is not
+configured in, either as the result of explicit disabling or when the
+`--enable-minimal-config' option is given to configure.
+
+Patch:
+
+*** bash-3.1/variables.c	Sat Nov 12 21:22:37 2005
+--- bash-3.1/variables.c	Mon Dec 26 13:34:03 2005
+***************
+*** 861,867 ****
+--- 863,871 ----
+    char val[INT_STRLEN_BOUND(int) + 1], *v;
+  
++ #if defined (READLINE)
+    /* If we are currently assigning to LINES or COLUMNS, don't do anything. */
+    if (winsize_assignment)
+      return;
++ #endif
+  
+    v = inttostr (lines, val, sizeof (val));
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 2
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 3
+  
+  #endif /* _PATCHLEVEL_H_ */

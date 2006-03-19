@@ -1,0 +1,104 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-001
+
+Bug-Reported-by: Mike Frysinger <vapier@gentoo.org>
+Bug-Reference-ID: <20051212015924.GA820@toucan.gentoo.org> <20051214034438.GK1863@toucan.gentoo.org>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2005-12/msg00030.html http://lists.gnu.org/archive/html/bug-bash/2005-12/msg00041.html
+
+Bug-Description:
+
+There are parsing problems with compound assignments in several contexts,
+including as arguments to builtins like `local', `eval', and `let', and
+as multiple assignments in a single command.
+
+Patch:
+
+*** bash-3.1/parse.y	Fri Nov 11 23:14:18 2005
+--- bash-3.1/parse.y	Fri Dec 16 20:43:07 2005
+***************
+*** 3696,3700 ****
+        b = builtin_address_internal (token, 0);
+        if (b && (b->flags & ASSIGNMENT_BUILTIN))
+!         parser_state |= PST_ASSIGNOK;
+      }
+  
+--- 3696,3702 ----
+        b = builtin_address_internal (token, 0);
+        if (b && (b->flags & ASSIGNMENT_BUILTIN))
+! 	parser_state |= PST_ASSIGNOK;
+!       else if (STREQ (token, "eval") || STREQ (token, "let"))
+! 	parser_state |= PST_ASSIGNOK;
+      }
+  
+***************
+*** 4687,4691 ****
+  {
+    WORD_LIST *wl, *rl;
+!   int tok, orig_line_number, orig_token_size;
+    char *saved_token, *ret;
+  
+--- 4689,4693 ----
+  {
+    WORD_LIST *wl, *rl;
+!   int tok, orig_line_number, orig_token_size, orig_last_token, assignok;
+    char *saved_token, *ret;
+  
+***************
+*** 4693,4696 ****
+--- 4695,4699 ----
+    orig_token_size = token_buffer_size;
+    orig_line_number = line_number;
++   orig_last_token = last_read_token;
+  
+    last_read_token = WORD;	/* WORD to allow reserved words here */
+***************
+*** 4699,4702 ****
+--- 4702,4707 ----
+    token_buffer_size = 0;
+  
++   assignok = parser_state&PST_ASSIGNOK;		/* XXX */
++ 
+    wl = (WORD_LIST *)NULL;	/* ( */
+    parser_state |= PST_COMPASSIGN;
+***************
+*** 4741,4745 ****
+      }
+  
+!   last_read_token = WORD;
+    if (wl)
+      {
+--- 4746,4750 ----
+      }
+  
+!   last_read_token = orig_last_token;		/* XXX - was WORD? */
+    if (wl)
+      {
+***************
+*** 4753,4756 ****
+--- 4758,4765 ----
+    if (retlenp)
+      *retlenp = (ret && *ret) ? strlen (ret) : 0;
++ 
++   if (assignok)
++     parser_state |= PST_ASSIGNOK;
++ 
+    return ret;
+  }
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 0
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 1
+  
+  #endif /* _PATCHLEVEL_H_ */

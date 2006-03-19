@@ -1,0 +1,121 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-007
+
+Bug-Reported-by: Tim Waugh <twaugh@redhat.com>, Laird Breyer <laird@lbreyer.com>
+Bug-Reference-ID: <20060105174434.GY16000@redhat.com>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2006-01/msg00009.html
+		   http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=347695
+
+Bug-Description:
+
+When the number of saved jobs exceeds the initial size of the jobs array
+(4096 slots), the array must be compacted and reallocated.  An error in
+the code to do that could cause a segmentation fault.
+
+Patch:
+
+*** bash-3.1/jobs.c	Fri Nov 11 23:13:27 2005
+--- bash-3.1/jobs.c	Wed Feb  1 13:55:38 2006
+***************
+*** 845,851 ****
+  {
+    sigset_t set, oset;
+!   int nsize, i, j;
+    JOB **nlist;
+  
+    nsize = ((js.j_njobs + JOB_SLOTS - 1) / JOB_SLOTS);
+    nsize *= JOB_SLOTS;
+--- 888,895 ----
+  {
+    sigset_t set, oset;
+!   int nsize, i, j, ncur, nprev;
+    JOB **nlist;
+  
++   ncur = nprev = NO_JOB;
+    nsize = ((js.j_njobs + JOB_SLOTS - 1) / JOB_SLOTS);
+    nsize *= JOB_SLOTS;
+***************
+*** 855,869 ****
+  
+    BLOCK_CHILD (set, oset);
+!   nlist = (JOB **) xmalloc (nsize * sizeof (JOB *));
+    for (i = j = 0; i < js.j_jobslots; i++)
+      if (jobs[i])
+!       nlist[j++] = jobs[i];
+  
+    js.j_firstj = 0;
+!   js.j_lastj = (j > 0) ? j - 1: 0;
+    js.j_jobslots = nsize;
+  
+!   free (jobs);
+!   jobs = nlist;
+  
+    UNBLOCK_CHILD (oset);
+--- 899,947 ----
+  
+    BLOCK_CHILD (set, oset);
+!   nlist = (js.j_jobslots == nsize) ? jobs : (JOB **) xmalloc (nsize * sizeof (JOB *));
+! 
+    for (i = j = 0; i < js.j_jobslots; i++)
+      if (jobs[i])
+!       {
+! 	if (i == js.j_current)
+! 	  ncur = j;
+! 	if (i == js.j_previous)
+! 	  nprev = j;
+! 	nlist[j++] = jobs[i];
+!       }
+! 
+! #if defined (DEBUG)
+!   itrace ("realloc_jobs_list: resize jobs list from %d to %d", js.j_jobslots, nsize);
+!   itrace ("realloc_jobs_list: j_lastj changed from %d to %d", js.j_lastj, (j > 0) ? j - 1 : 0);
+!   itrace ("realloc_jobs_list: j_njobs changed from %d to %d", js.j_njobs, (j > 0) ? j - 1 : 0);
+! #endif
+  
+    js.j_firstj = 0;
+!   js.j_lastj = (j > 0) ? j - 1 : 0;
+!   js.j_njobs = j;
+    js.j_jobslots = nsize;
+  
+!   /* Zero out remaining slots in new jobs list */
+!   for ( ; j < nsize; j++)
+!     nlist[j] = (JOB *)NULL;
+! 
+!   if (jobs != nlist)
+!     {
+!       free (jobs);
+!       jobs = nlist;
+!     }
+! 
+!   if (ncur != NO_JOB)
+!     js.j_current = ncur;
+!   if (nprev != NO_JOB)
+!     js.j_previous = nprev;
+! 
+!   /* Need to reset these */
+!   if (js.j_current == NO_JOB || js.j_previous == NO_JOB || js.j_current > js.j_lastj || js.j_previous > js.j_lastj)
+!     reset_current ();
+! 
+! #ifdef DEBUG
+!   itrace ("realloc_jobs_list: reset js.j_current (%d) and js.j_previous (%d)", js.j_current, js.j_previous);
+! #endif
+  
+    UNBLOCK_CHILD (oset);
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 6
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
