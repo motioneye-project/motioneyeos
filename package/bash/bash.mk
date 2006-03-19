@@ -3,7 +3,7 @@
 # bash
 #
 #############################################################
-BASH_VER:=3.0
+BASH_VER:=3.1
 BASH_SOURCE:=bash-$(BASH_VER).tar.gz
 BASH_SITE:=ftp://ftp.gnu.org/gnu/bash
 BASH_CAT:=zcat
@@ -25,11 +25,11 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	touch $(BASH_DIR)/.unpacked
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
-	#		ac_cv_func_setvbuf_reversed=no
 	#		bash_cv_have_mbstate_t=yes
 	(cd $(BASH_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		ac_cv_func_setvbuf_reversed=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
