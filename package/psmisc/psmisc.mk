@@ -3,7 +3,7 @@
 # psmisc
 #
 #############################################################
-PSMISC_VER:=21.8
+PSMISC_VER:=22.2
 PSMISC_SOURCE:=psmisc-$(PSMISC_VER).tar.gz
 PSMISC_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/psmisc
 PSMISC_DIR:=$(BUILD_DIR)/psmisc-$(PSMISC_VER)
