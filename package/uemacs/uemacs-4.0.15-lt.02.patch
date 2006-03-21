@@ -1,0 +1,26 @@
+--- em-4.0.15-lt.oorig/lock.c	1999-05-16 09:04:17.000000000 +0200
++++ em-4.0.15-lt/lock.c	2006-03-10 15:22:16.000000000 +0100
+@@ -152,10 +152,8 @@
+ 
+ 	strcpy(obuf, errstr);
+ 	strcat(obuf, " - ");
+-	if (errno < sys_nerr)
+-		strcat(obuf, sys_errlist[errno]);
+-	else
+-		strcat(obuf, "(can not get system error message)");
++	strcat(obuf, strerror(errno));
++
+ 	mlwrite(obuf);
+ }
+ #endif
+--- em-4.0.15-lt.oorig/input.c	1994-05-21 12:41:02.000000000 +0200
++++ em-4.0.15-lt/input.c	2006-03-10 15:31:18.000000000 +0100
+@@ -581,7 +581,7 @@
+ 				if (! iswild)
+ 					strcat(ffbuf,"*");
+ 				strcat(ffbuf, " >");
+-				mktemp(tmp);
++				mkstemp(tmp);
+ 				strcat(ffbuf, tmp);
+ 				strcat(ffbuf, " 2>&1");
+ 				system(ffbuf);

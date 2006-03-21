@@ -1,0 +1,33 @@
+diff -rup em-4.0.15-lt.oorig/display.c em-4.0.15-lt/display.c
+--- em-4.0.15-lt.oorig/display.c	1994-05-21 12:40:56.000000000 +0200
++++ em-4.0.15-lt/display.c	2005-11-16 16:54:22.000000000 +0100
+@@ -9,6 +9,7 @@
+  */
+ 
+ #include        <stdio.h>
++#include        <errno.h>
+ #include	"estruct.h"
+ #include        "edef.h"
+ 
+diff -rup em-4.0.15-lt.oorig/main.c em-4.0.15-lt/main.c
+--- em-4.0.15-lt.oorig/main.c	1994-05-21 12:41:03.000000000 +0200
++++ em-4.0.15-lt/main.c	2005-11-16 16:54:01.000000000 +0100
+@@ -123,7 +123,7 @@ char *argv[];	/* argument strings */
+ #endif
+ 
+ #if UNIX
+-	static void emergencyexit();
++	void emergencyexit();
+ #ifdef SIGWINCH
+ 	extern void sizesignal();
+ #endif
+@@ -599,7 +599,7 @@ quickexit(f, n)
+ 	return(TRUE);
+ }
+ 
+-static void emergencyexit(signr)
++void emergencyexit(signr)
+ int signr;
+ {
+ 	quickexit(FALSE, 0);
+
