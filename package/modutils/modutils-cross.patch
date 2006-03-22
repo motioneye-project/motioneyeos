@@ -245,10 +245,50 @@ diff -urN modutils-2.4.27.0.orig/obj/obj_common.c modutils-2.4.27.0/obj/obj_comm
  /*======================================================================*/
  
  /* Standard ELF hash function.  */
-diff -urN modutils-2.4.27.0.orig/obj/obj_load.c modutils-2.4.27.0/obj/obj_load.c
---- modutils-2.4.27.0.orig/obj/obj_load.c	2003-10-26 19:59:12.000000000 -0700
-+++ modutils-2.4.27.0/obj/obj_load.c	2005-09-29 17:00:23.000000000 -0600
-@@ -62,6 +62,54 @@
+diff -urN modutils-2.4.27.0.orig/util/modstat.c modutils-2.4.27.0/util/modstat.c
+--- modutils-2.4.27.0.orig/util/modstat.c	2002-11-24 21:01:57.000000000 -0700
++++ modutils-2.4.27.0/util/modstat.c	2005-09-29 14:41:13.000000000 -0600
+@@ -408,6 +408,7 @@
+ 
+ int get_kernel_info(int type)
+ {
++#if 0
+ 	k_new_syscalls = !query_module(NULL, 0, NULL, 0, NULL);
+ 
+ #ifdef COMPAT_2_0
+@@ -416,4 +417,7 @@
+ #endif /* COMPAT_2_0 */
+ 
+ 	return new_get_kernel_info(type);
++#else
++	return 1;
++#endif
+ }
+--- modutils-2.4.27/obj/obj_ppc.c.orig	2005-10-24 11:54:44.000000000 -0600
++++ modutils-2.4.27/obj/obj_ppc.c	2005-10-24 11:55:54.000000000 -0600
+@@ -20,6 +20,8 @@
+    along with this program; if not, write to the Free Software Foundation,
+    Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.  */
+ 
++#include <string.h>
++#include <stdlib.h>
+ #include <stddef.h>
+ #include <module.h>
+ #include <obj.h>
+@@ -255,7 +257,9 @@
+   archdata_sec->header.sh_size = 0;
+   sec = obj_find_section(f, "__ftr_fixup");
+   if (sec) {
+-    ad = (struct archdata *) (archdata_sec->contents) = xmalloc(sizeof(*ad));
++    struct archdata * ad;
++    archdata_sec->contents = xmalloc(sizeof(*ad));
++    ad = (struct archdata *) (archdata_sec->contents);
+     memset(ad, 0, sizeof(*ad));
+     archdata_sec->header.sh_size = sizeof(*ad);
+     ad->__start___ftr_fixup = sec->header.sh_addr;
+--- modutils-2.4.27/obj/obj_load.c.orig	2006-01-10 06:10:37.000000000 -0700
++++ modutils-2.4.27/obj/obj_load.c	2006-01-10 06:10:47.000000000 -0700
+@@ -62,13 +62,61 @@
        error("%s is not an ELF file", filename);
        return NULL;
      }
@@ -303,6 +343,15 @@ diff -urN modutils-2.4.27.0.orig/obj/obj_load.c modutils-2.4.27.0/obj/obj_load.c
    if (f->header.e_ident[EI_CLASS] != ELFCLASSM
        || f->header.e_ident[EI_DATA] != ELFDATAM
        || f->header.e_ident[EI_VERSION] != EV_CURRENT
+       || !MATCH_MACHINE(f->header.e_machine))
+     {
+-      error("ELF file %s not for this architecture", filename);
+-      return NULL;
++      error("WARNING: ELF file %s not for this architecture", filename);
++      //return NULL;
+     }
+   if (f->header.e_type != e_type && e_type != ET_NONE)
+     {
 @@ -116,6 +164,33 @@
      {
        struct obj_section *sec;
@@ -432,22 +481,47 @@ diff -urN modutils-2.4.27.0.orig/obj/obj_load.c modutils-2.4.27.0/obj/obj_load.c
  		    intsym->r_type = ELFW(R_TYPE)(rel->r_info);
  		  }
  	      }
-diff -urN modutils-2.4.27.0.orig/util/modstat.c modutils-2.4.27.0/util/modstat.c
---- modutils-2.4.27.0.orig/util/modstat.c	2002-11-24 21:01:57.000000000 -0700
-+++ modutils-2.4.27.0/util/modstat.c	2005-09-29 14:41:13.000000000 -0600
-@@ -408,6 +408,7 @@
+--- odutils-2.4.27.0.orig/include/module.h.orig	2006-01-10 08:15:09.000000000 -0700
++++ odutils-2.4.27.0/include/module.h	2006-01-10 08:15:13.000000000 -0700
+@@ -88,16 +88,34 @@
+ /* For sizeof() which are related to the module platform and not to the
+    environment isnmod is running in, use sizeof_xx instead of sizeof(xx).  */
  
- int get_kernel_info(int type)
- {
-+#if 0
- 	k_new_syscalls = !query_module(NULL, 0, NULL, 0, NULL);
+-#define tgt_sizeof_char		sizeof(char)
+-#define tgt_sizeof_short	sizeof(short)
+-#define tgt_sizeof_int		sizeof(int)
+-#define tgt_sizeof_long		sizeof(long)
+-#define tgt_sizeof_char_p	sizeof(char *)
+-#define tgt_sizeof_void_p	sizeof(void *)
+-#define tgt_long		long
++#include <stdint.h>
++
++#if ELFCLASSM == ELFCLASS32
++
++#define tgt_sizeof_char		1
++#define tgt_sizeof_short	2
++#define tgt_sizeof_int		4
++#define tgt_sizeof_long		4
++#define tgt_sizeof_char_p	4
++#define tgt_sizeof_void_p	4
++#define tgt_long		int
+ #define tgt_long_fmt		"l"
+ #define tgt_strtoul		strtoul
  
- #ifdef COMPAT_2_0
-@@ -416,4 +417,7 @@
- #endif /* COMPAT_2_0 */
- 
- 	return new_get_kernel_info(type);
 +#else
-+	return 1;
++
++#define tgt_sizeof_char		1
++#define tgt_sizeof_short	2
++#define tgt_sizeof_int		4
++#define tgt_sizeof_long		8
++#define tgt_sizeof_char_p	8
++#define tgt_sizeof_void_p	8
++#define tgt_long		long
++#define tgt_long_fmt		"ll"
++#define tgt_strtoul		strtoull
++
 +#endif
- }
++
+ /* This assumes that long long on a 32 bit system is equivalent to long on the
+  * equivalent 64 bit system.  Also that void and char pointers are 8 bytes on
+  * all 64 bit systems.  Add per system tweaks if it ever becomes necessary.
