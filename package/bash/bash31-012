@@ -1,0 +1,47 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-012
+
+Bug-Reported-by: Alexander Kshevetskiy <alex@dgap.mipt.ru>
+Bug-Reference-ID: <308374997.20060124175849@dgap.mipt.ru>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2006-01/msg00097.html
+
+Bug-Description:
+
+There is a parsing problem involving parentheses in assignment statements
+that causes words to be terminated prematurely.
+
+Patch:
+
+*** bash-3.1/parse.y	Fri Nov 11 23:14:18 2005
+--- bash-3.1/parse.y	Wed Jan 25 14:55:18 2006
+***************
+*** 3579,3583 ****
+  	      all_digit_token = 0;
+  	      compound_assignment = 1;
+! #if 0
+  	      goto next_character;
+  #else
+--- 3584,3588 ----
+  	      all_digit_token = 0;
+  	      compound_assignment = 1;
+! #if 1
+  	      goto next_character;
+  #else
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */

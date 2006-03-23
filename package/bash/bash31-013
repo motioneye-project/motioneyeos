@@ -1,0 +1,44 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-013
+
+Bug-Reported-by: Bob Rossi <bob@brasko.net>
+Bug-Reference-ID: <43F60606.80708@case.edu>
+Bug-Reference-URL:
+
+Bug-Description:
+
+In some cases, readline will reference freed memory when attempting to
+display a portion of the prompt.
+
+Patch:
+
+*** bash-3.1-patched/lib/readline/readline.c	Mon Jul  4 22:29:35 2005
+--- bash-3.1/lib/readline/readline.c	Fri Feb 17 22:54:22 2006
+***************
+*** 282,287 ****
+--- 282,288 ----
+  {
+    FREE (rl_prompt);
+    rl_prompt = prompt ? savestring (prompt) : (char *)NULL;
++   rl_display_prompt = rl_prompt ? rl_prompt : "";
+  
+    rl_visible_prompt_length = rl_expand_prompt (rl_prompt);
+    return 0;
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 13
+  
+  #endif /* _PATCHLEVEL_H_ */
