@@ -1,0 +1,12 @@
+--- orig/Makefile	2005-12-03 09:22:07 +0000
++++ linux-2.6.14/Makefile	2005-12-03 09:22:07 +0000
+@@ -1,7 +1,7 @@
+ VERSION = 2
+ PATCHLEVEL = 6
+-SUBLEVEL = 16
+-EXTRAVERSION =
++SUBLEVEL = 16
++EXTRAVERSION = -erik
+ NAME=Sliding Snow Leopard
+ 
+ # *DOCUMENTATION*

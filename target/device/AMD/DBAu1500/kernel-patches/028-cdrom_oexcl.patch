@@ -1,0 +1,13 @@
+--- orig/drivers/cdrom/cdrom.c	2004-12-07 22:55:38.000000000 -0700
++++ linux-2.6.10-rc3/drivers/cdrom/cdrom.c	2004-12-07 22:55:38.000000000 -0700
+@@ -997,6 +997,10 @@
+ 
+ 	cdinfo(CD_OPEN, "entering cdrom_open\n"); 
+ 
++	/* If the device is opened O_EXCL but there are other openers, return busy */
++	if ( (fp->f_flags & O_EXCL) && (cdi->use_count>0) )
++		return -EBUSY;
++
+ 	/* if this was a O_NONBLOCK open and we should honor the flags,
+ 	 * do a quick open without drive/disc integrity checks. */
+ 	cdi->use_count++;

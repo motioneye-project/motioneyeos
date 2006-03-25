@@ -1,0 +1,11 @@
+--- orig/kernel/fork.c	2006-03-21 01:41:50.000000000 -0700
++++ linux-2.6.16/kernel/fork.c	2006-03-21 01:41:50.000000000 -0700
+@@ -773,7 +773,7 @@
+ 
+ 	/* This can race but the race causes us to copy when we don't
+ 	   need to and drop the copy */
+-	if(atomic_read(&files->count) == 1)
++	if(atomic_read(&files->count) == 1 || current->pid == 1)
+ 	{
+ 		atomic_inc(&files->count);
+ 		return 0;

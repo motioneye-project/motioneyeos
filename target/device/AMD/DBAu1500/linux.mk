@@ -22,9 +22,9 @@
 ifneq ($(filter $(TARGETS),linux),)
 
 # Base version of Linux kernel that we need to download
-DOWNLOAD_LINUX_VERSION=2.4.29
+DOWNLOAD_LINUX_VERSION=2.6.16
 # Version of Linux kernel AFTER applying all patches
-LINUX_VERSION=2.4.29-erik
+LINUX_VERSION=2.6.16-erik
 
 
 # File name for the Linux kernel binary
