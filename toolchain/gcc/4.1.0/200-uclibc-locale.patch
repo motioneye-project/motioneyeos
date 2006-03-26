@@ -1,7 +1,7 @@
-diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/acinclude.m4
---- gcc-4.1.0/libstdc++-v3/acinclude.m4	2005-04-11 19:13:06.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/acinclude.m4	2005-04-30 19:36:16.917899167 -0500
-@@ -1047,7 +1047,7 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/acinclude.m4 gcc-4.1.0/libstdc++-v3/acinclude.m4
+--- gcc-4.1.0-dist/libstdc++-v3/acinclude.m4	2006-03-26 12:08:28.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/acinclude.m4	2006-03-25 22:06:30.000000000 -0700
+@@ -1071,7 +1071,7 @@
    AC_MSG_CHECKING([for C locale to use])
    GLIBCXX_ENABLE(clocale,auto,[@<:@=MODEL@:>@],
      [use MODEL for target locale package],
@@ -10,7 +10,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/aci
    
    # If they didn't use this option switch, or if they specified --enable
    # with no specific model, we'll have to look for one.  If they
-@@ -1063,6 +1063,9 @@
+@@ -1087,6 +1087,9 @@
    # Default to "generic".
    if test $enable_clocale_flag = auto; then
      case ${target_os} in
@@ -20,7 +20,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/aci
        linux* | gnu* | kfreebsd*-gnu | knetbsd*-gnu)
          AC_EGREP_CPP([_GLIBCXX_ok], [
          #include <features.h>
-@@ -1206,6 +1209,40 @@
+@@ -1230,6 +1233,40 @@
        CTIME_CC=config/locale/generic/time_members.cc
        CLOCALE_INTERNAL_H=config/locale/generic/c++locale_internal.h
        ;;
@@ -61,9 +61,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/acinclude.m4 gcc-4.1.0-patched/libstdc++-v3/aci
    esac
  
    # This is where the testsuite looks for locale catalogs, using the
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c++locale_internal.h
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	2005-04-30 19:36:16.918898999 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	2006-03-25 22:18:37.000000000 -0700
 @@ -0,0 +1,63 @@
 +// Prototypes for GLIBC thread locale __-prefixed functions -*- C++ -*-
 +
@@ -82,7 +82,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -128,13 +128,14 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c++locale_internal.h gcc-4
 +#endif 
 +
 +#endif // GLIBC 2.3 and later
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.cc	2005-04-30 19:36:16.919898830 -0500
-@@ -0,0 +1,160 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/c_locale.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc	2006-03-25 22:18:37.000000000 -0700
+@@ -0,0 +1,152 @@
 +// Wrapper for underlying C-language localization -*- C++ -*-
 +
-+// Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
++// Copyright (C) 2001, 2002, 2003, 2004, 2005 
++// Free Software Foundation, Inc.
 +//
 +// This file is part of the GNU ISO C++ Library.  This library is free
 +// software; you can redistribute it and/or modify it under the
@@ -149,7 +150,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patc
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -194,16 +195,13 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patc
 +    __convert_to_v(const char* __s, float& __v, ios_base::iostate& __err, 
 +		   const __c_locale& __cloc)
 +    {
-+      if (!(__err & ios_base::failbit))
-+	{
-+	  char* __sanity;
-+	  errno = 0;
-+	  float __f = __strtof_l(__s, &__sanity, __cloc);
-+          if (__sanity != __s && errno != ERANGE)
-+	    __v = __f;
-+	  else
-+	    __err |= ios_base::failbit;
-+	}
++      char* __sanity;
++      errno = 0;
++      float __f = __strtof_l(__s, &__sanity, __cloc);
++      if (__sanity != __s && errno != ERANGE)
++	__v = __f;
++      else
++	__err |= ios_base::failbit;
 +    }
 +
 +  template<>
@@ -211,16 +209,13 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patc
 +    __convert_to_v(const char* __s, double& __v, ios_base::iostate& __err, 
 +		   const __c_locale& __cloc)
 +    {
-+      if (!(__err & ios_base::failbit))
-+	{
-+	  char* __sanity;
-+	  errno = 0;
-+	  double __d = __strtod_l(__s, &__sanity, __cloc);
-+          if (__sanity != __s && errno != ERANGE)
-+	    __v = __d;
-+	  else
-+	    __err |= ios_base::failbit;
-+	}
++      char* __sanity;
++      errno = 0;
++      double __d = __strtod_l(__s, &__sanity, __cloc);
++      if (__sanity != __s && errno != ERANGE)
++	__v = __d;
++      else
++	__err |= ios_base::failbit;
 +    }
 +
 +  template<>
@@ -228,16 +223,13 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patc
 +    __convert_to_v(const char* __s, long double& __v, ios_base::iostate& __err,
 +		   const __c_locale& __cloc)
 +    {
-+      if (!(__err & ios_base::failbit))
-+	{
-+	  char* __sanity;
-+	  errno = 0;
-+	  long double __ld = __strtold_l(__s, &__sanity, __cloc);
-+          if (__sanity != __s && errno != ERANGE)
-+	    __v = __ld;
-+	  else
-+	    __err |= ios_base::failbit;
-+	}
++      char* __sanity;
++      errno = 0;
++      long double __ld = __strtold_l(__s, &__sanity, __cloc);
++      if (__sanity != __s && errno != ERANGE)
++	__v = __ld;
++      else
++	__err |= ios_base::failbit;
 +    }
 +
 +  void
@@ -258,7 +250,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patc
 +  void
 +  locale::facet::_S_destroy_c_locale(__c_locale& __cloc)
 +  {
-+    if (_S_get_c_locale() != __cloc)
++    if (__cloc && _S_get_c_locale() != __cloc)
 +      __freelocale(__cloc); 
 +  }
 +
@@ -292,9 +284,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.cc gcc-4.1.0-patc
 +{
 +  const char* const* const locale::_S_categories = __gnu_cxx::category_names;
 +}  // namespace std
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.h
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/c_locale.h	2005-04-30 19:36:16.920898661 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/c_locale.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h	2006-03-26 13:03:42.000000000 -0700
 @@ -0,0 +1,117 @@
 +// Wrapper for underlying C-language localization -*- C++ -*-
 +
@@ -313,7 +305,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patch
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -385,7 +377,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patch
 +    __convert_from_v(char* __out, 
 +		     const int __size __attribute__ ((__unused__)),
 +		     const char* __fmt,
-+#ifdef __UCLIBC_HAS_XCLOCALE__
++#ifdef __UCLIBC_HAS_XLOCALE__
 +		     _Tv __v, const __c_locale& __cloc, int __prec)
 +    {
 +      __c_locale __old = __gnu_cxx::__uselocale(__cloc);
@@ -402,7 +394,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patch
 +
 +      const int __ret = std::snprintf(__out, __size, __fmt, __prec, __v);
 +
-+#ifdef __UCLIBC_HAS_XCLOCALE__
++#ifdef __UCLIBC_HAS_XLOCALE__
 +      __gnu_cxx::__uselocale(__old);
 +#elif defined __UCLIBC_HAS_LOCALE__
 +      std::setlocale(LC_ALL, __sav);
@@ -413,9 +405,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/c_locale.h gcc-4.1.0-patch
 +}
 +
 +#endif
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/codecvt_members.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	2005-04-30 19:36:16.921898492 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/codecvt_members.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	2006-03-25 22:18:37.000000000 -0700
 @@ -0,0 +1,306 @@
 +// std::codecvt implementation details, GNU version -*- C++ -*-
 +
@@ -434,7 +426,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc gcc-4.1
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -723,9 +715,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/codecvt_members.cc gcc-4.1
 +  }
 +#endif
 +}
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/collate_members.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/collate_members.cc	2005-04-30 19:36:16.922898323 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/collate_members.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/collate_members.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc	2006-03-25 22:18:37.000000000 -0700
 @@ -0,0 +1,80 @@
 +// std::collate implementation details, GNU version -*- C++ -*-
 +
@@ -744,7 +736,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc gcc-4.1
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -807,10 +799,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/collate_members.cc gcc-4.1
 +    { return __wcsxfrm_l(__to, __from, __n, _M_c_locale_collate); }
 +#endif
 +}
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/ctype_members.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/ctype_members.cc	2005-04-30 19:36:16.923898155 -0500
-@@ -0,0 +1,300 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/ctype_members.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc	2006-03-25 22:18:37.000000000 -0700
+@@ -0,0 +1,314 @@
 +// std::ctype implementation details, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -828,7 +820,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -958,20 +950,34 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0
 +  ctype<wchar_t>::
 +  do_is(mask __m, wchar_t __c) const
 +  { 
-+    // Highest bitmask in ctype_base == 10, but extra in "C"
-+    // library for blank.
++    // The case of __m == ctype_base::space is particularly important,
++    // due to its use in many istream functions.  Therefore we deal with
++    // it first, exploiting the knowledge that on GNU systems _M_bit[5]
++    // is the mask corresponding to ctype_base::space.  NB: an encoding
++    // change would not affect correctness!
 +    bool __ret = false;
-+    const size_t __bitmasksize = 11; 
-+    for (size_t __bitcur = 0; __bitcur <= __bitmasksize; ++__bitcur)
-+      if (__m & _M_bit[__bitcur]
-+	  && __iswctype_l(__c, _M_wmask[__bitcur], _M_c_locale_ctype))
-+	{
-+	  __ret = true;
-+	  break;
-+	}
++    if (__m == _M_bit[5])
++      __ret = __iswctype_l(__c, _M_wmask[5], _M_c_locale_ctype);
++    else
++      {
++	// Highest bitmask in ctype_base == 10, but extra in "C"
++	// library for blank.
++	const size_t __bitmasksize = 11;
++	for (size_t __bitcur = 0; __bitcur <= __bitmasksize; ++__bitcur)
++	  if (__m & _M_bit[__bitcur])
++	    {
++	      if (__iswctype_l(__c, _M_wmask[__bitcur], _M_c_locale_ctype))
++		{
++		  __ret = true;
++		  break;
++		}
++	      else if (__m == _M_bit[__bitcur])
++		break;
++	    }
++      }
 +    return __ret;    
 +  }
-+  
++
 +  const wchar_t* 
 +  ctype<wchar_t>::
 +  do_is(const wchar_t* __lo, const wchar_t* __hi, mask* __vec) const
@@ -1111,9 +1117,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/ctype_members.cc gcc-4.1.0
 +  }
 +#endif //  _GLIBCXX_USE_WCHAR_T
 +}
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.cc	2005-04-30 19:36:16.925897817 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/messages_members.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/messages_members.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc	2006-03-25 22:18:37.000000000 -0700
 @@ -0,0 +1,100 @@
 +// std::messages implementation details, GNU version -*- C++ -*-
 +
@@ -1132,7 +1138,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc gcc-4.
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -1215,13 +1221,13 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.cc gcc-4.
 +    }
 +#endif
 +}
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.h
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/messages_members.h	2005-04-30 19:36:16.925897817 -0500
-@@ -0,0 +1,118 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/messages_members.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h	2006-03-25 22:18:37.000000000 -0700
+@@ -0,0 +1,121 @@
 +// std::messages implementation details, GNU version -*- C++ -*-
 +
-+// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
++// Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 +//
 +// This file is part of the GNU ISO C++ Library.  This library is free
 +// software; you can redistribute it and/or modify it under the
@@ -1236,7 +1242,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -1272,18 +1278,21 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1
 +  template<typename _CharT>
 +     messages<_CharT>::messages(size_t __refs)
 +     : facet(__refs), _M_c_locale_messages(_S_get_c_locale()), 
-+     _M_name_messages(_S_get_c_name())
++       _M_name_messages(_S_get_c_name())
 +     { }
 +
 +  template<typename _CharT>
 +     messages<_CharT>::messages(__c_locale __cloc, const char* __s, 
 +				size_t __refs) 
-+     : facet(__refs), _M_c_locale_messages(_S_clone_c_locale(__cloc)),
-+     _M_name_messages(__s)
++     : facet(__refs), _M_c_locale_messages(NULL), _M_name_messages(NULL)
 +     {
-+       char* __tmp = new char[std::strlen(__s) + 1];
-+       std::strcpy(__tmp, __s);
++       const size_t __len = std::strlen(__s) + 1;
++       char* __tmp = new char[__len];
++       std::memcpy(__tmp, __s, __len);
 +       _M_name_messages = __tmp;
++
++       // Last to avoid leaking memory if new throws.
++       _M_c_locale_messages = _S_clone_c_locale(__cloc);
 +     }
 +
 +  template<typename _CharT>
@@ -1337,10 +1346,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/messages_members.h gcc-4.1
 +	   this->_S_create_c_locale(this->_M_c_locale_messages, __s); 
 +	 }
 +     }
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/monetary_members.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/monetary_members.cc	2005-04-30 19:36:16.927897479 -0500
-@@ -0,0 +1,704 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/monetary_members.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc	2006-03-25 22:18:37.000000000 -0700
+@@ -0,0 +1,692 @@
 +// std::moneypunct implementation details, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -1358,7 +1367,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -1553,7 +1562,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +	  }
 +	break;
 +      default:
-+	;
++	__ret = pattern();
 +      }
 +    return __ret;
 +  }
@@ -1746,17 +1755,11 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +#endif
 +#ifdef __UCLIBC__
 +# ifdef __UCLIBC_HAS_XLOCALE__
-+	  union { char *__s; wchar_t __w; } __u;
-+	  __u.__s = __nl_langinfo_l(_NL_MONETARY_DECIMAL_POINT_WC, __cloc);
-+	  _M_data->_M_decimal_point = __u.__w;
-+	  __u.__s = __nl_langinfo_l(_NL_MONETARY_THOUSANDS_SEP_WC, __cloc);
-+	  _M_data->_M_thousands_sep = __u.__w;
++	  _M_data->_M_decimal_point = __cloc->decimal_point_wc;
++	  _M_data->_M_thousands_sep = __cloc->thousands_sep_wc;
 +# else
-+	  union { char *__s; wchar_t __w; } __u;
-+	  __u.__s = 0;
-+	  _M_data->_M_decimal_point = __u.__w;
-+	  __u.__s = 0;
-+	  _M_data->_M_thousands_sep = __u.__w;
++	  _M_data->_M_decimal_point = __global_locale->decimal_point_wc;
++	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
 +# endif
 +#else
 +	  union { char *__s; wchar_t __w; } __u;
@@ -1907,17 +1910,11 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +#endif
 +#ifdef __UCLIBC__
 +# ifdef __UCLIBC_HAS_XLOCALE__
-+          union { char *__s; wchar_t __w; } __u;
-+	  __u.__s = __nl_langinfo_l(_NL_MONETARY_DECIMAL_POINT_WC, __cloc);
-+	  _M_data->_M_decimal_point = __u.__w;
-+	  __u.__s = __nl_langinfo_l(_NL_MONETARY_THOUSANDS_SEP_WC, __cloc);
-+	  _M_data->_M_thousands_sep = __u.__w;
++	  _M_data->_M_decimal_point = __cloc->decimal_point_wc;
++	  _M_data->_M_thousands_sep = __cloc->thousands_sep_wc;
 +# else
-+          union { char *__s; wchar_t __w; } __u;
-+	  __u.__s = 0;
-+	  _M_data->_M_decimal_point = __u.__w;
-+	  __u.__s = 0;
-+	  _M_data->_M_thousands_sep = __u.__w;
++	  _M_data->_M_decimal_point = __global_locale->decimal_point_wc;
++	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
 +# endif
 +#else
 +          union { char *__s; wchar_t __w; } __u;
@@ -2045,10 +2042,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/monetary_members.cc gcc-4.
 +    }
 +#endif
 +}
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/numeric_members.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/numeric_members.cc	2005-04-30 19:36:38.467261324 -0500
-@@ -0,0 +1,168 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/numeric_members.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc	2006-03-25 22:18:37.000000000 -0700
+@@ -0,0 +1,173 @@
 +// std::numpunct implementation details, GNU version -*- C++ -*-
 +
 +// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
@@ -2066,7 +2063,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -2181,20 +2178,25 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +	{
 +	  // Named locale.
 +	  // NB: In the GNU model wchar_t is always 32 bit wide.
-+	  union { char *__s; wchar_t __w; } __u;
-+#ifdef __UCLIBC_HAS_XLOCALE__
-+	  __u.__s = __nl_langinfo_l(_NL_NUMERIC_DECIMAL_POINT_WC, __cloc);
-+#else
-+	  __u.__s = 0;
++#ifdef __UCLIBC_MJN3_ONLY__
++#warning fix this
 +#endif
++#ifdef __UCLIBC__
++# ifdef __UCLIBC_HAS_XLOCALE__
++	  _M_data->_M_decimal_point = __cloc->decimal_point_wc;
++	  _M_data->_M_thousands_sep = __cloc->thousands_sep_wc;
++# else
++	  _M_data->_M_decimal_point = __global_locale->decimal_point_wc;
++	  _M_data->_M_thousands_sep = __global_locale->thousands_sep_wc;
++# endif
++#else
++	  union { char *__s; wchar_t __w; } __u;
++	  __u.__s = __nl_langinfo_l(_NL_NUMERIC_DECIMAL_POINT_WC, __cloc);
 +	  _M_data->_M_decimal_point = __u.__w;
 +
-+#ifdef __UCLIBC_HAS_XLOCALE__
 +	  __u.__s = __nl_langinfo_l(_NL_NUMERIC_THOUSANDS_SEP_WC, __cloc);
-+#else
-+	  __u.__s = 0;
-+#endif
 +	  _M_data->_M_thousands_sep = __u.__w;
++#endif
 +
 +	  if (_M_data->_M_thousands_sep == L'\0')
 +	    _M_data->_M_grouping = "";
@@ -2217,9 +2219,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/numeric_members.cc gcc-4.1
 +    { delete _M_data; }
 + #endif
 +}
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.cc
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.cc	2005-04-30 19:36:16.929897142 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/time_members.cc	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc	2006-03-25 22:18:37.000000000 -0700
 @@ -0,0 +1,406 @@
 +// std::time_get, std::time_put implementation, GNU version -*- C++ -*-
 +
@@ -2238,7 +2240,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0-
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -2627,13 +2629,13 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.cc gcc-4.1.0-
 +    }
 +#endif
 +}
-diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.h
---- gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/locale/uclibc/time_members.h	2005-04-30 19:36:16.929897142 -0500
-@@ -0,0 +1,68 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/time_members.h gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/locale/uclibc/time_members.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h	2005-10-21 02:34:06.000000000 -0600
+@@ -0,0 +1,76 @@
 +// std::time_get, std::time_put implementation, GNU version -*- C++ -*-
 +
-+// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
++// Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
 +//
 +// This file is part of the GNU ISO C++ Library.  This library is free
 +// software; you can redistribute it and/or modify it under the
@@ -2648,7 +2650,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h gcc-4.1.0-p
 +
 +// You should have received a copy of the GNU General Public License along
 +// with this library; see the file COPYING.  If not, write to the Free
-+// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
++// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
 +// USA.
 +
 +// As a special exception, you may use this file as part of a free software
@@ -2670,25 +2672,33 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h gcc-4.1.0-p
 +  template<typename _CharT>
 +    __timepunct<_CharT>::__timepunct(size_t __refs) 
 +    : facet(__refs), _M_data(NULL), _M_c_locale_timepunct(NULL), 
-+    _M_name_timepunct(_S_get_c_name())
++      _M_name_timepunct(_S_get_c_name())
 +    { _M_initialize_timepunct(); }
 +
 +  template<typename _CharT>
 +    __timepunct<_CharT>::__timepunct(__cache_type* __cache, size_t __refs) 
 +    : facet(__refs), _M_data(__cache), _M_c_locale_timepunct(NULL), 
-+    _M_name_timepunct(_S_get_c_name())
++      _M_name_timepunct(_S_get_c_name())
 +    { _M_initialize_timepunct(); }
 +
 +  template<typename _CharT>
 +    __timepunct<_CharT>::__timepunct(__c_locale __cloc, const char* __s,
 +				     size_t __refs) 
 +    : facet(__refs), _M_data(NULL), _M_c_locale_timepunct(NULL), 
-+    _M_name_timepunct(__s)
++      _M_name_timepunct(NULL)
 +    { 
-+      char* __tmp = new char[std::strlen(__s) + 1];
-+      std::strcpy(__tmp, __s);
++      const size_t __len = std::strlen(__s) + 1;
++      char* __tmp = new char[__len];
++      std::memcpy(__tmp, __s, __len);
 +      _M_name_timepunct = __tmp;
-+      _M_initialize_timepunct(__cloc); 
++
++      try
++	{ _M_initialize_timepunct(__cloc); }
++      catch(...)
++	{
++	  delete [] _M_name_timepunct;
++	  __throw_exception_again;
++	}
 +    }
 +
 +  template<typename _CharT>
@@ -2699,9 +2709,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/locale/uclibc/time_members.h gcc-4.1.0-p
 +      delete _M_data; 
 +      _S_destroy_c_locale(_M_c_locale_timepunct); 
 +    }
-diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_base.h
---- gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_base.h	2005-04-30 19:36:16.930896973 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/ctype_base.h gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/ctype_base.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h	2006-03-25 22:06:30.000000000 -0700
 @@ -0,0 +1,64 @@
 +// Locale support -*- C++ -*-
 +
@@ -2767,9 +2777,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_base.h gcc-4.1.0-patched
 +    static const mask punct 	= _ISpunct;
 +    static const mask alnum 	= _ISalpha | _ISdigit;
 +  };
-diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_inline.h
---- gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_inline.h	2005-04-30 19:36:16.931896804 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/ctype_inline.h gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/ctype_inline.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h	2006-03-25 22:06:30.000000000 -0700
 @@ -0,0 +1,69 @@
 +// Locale support -*- C++ -*-
 +
@@ -2840,9 +2850,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_inline.h gcc-4.1.0-patch
 +      ++__low;
 +    return __low;
 +  }
-diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_noninline.h
---- gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/ctype_noninline.h	2005-04-30 19:36:16.931896804 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/ctype_noninline.h gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/ctype_noninline.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h	2006-03-25 22:06:30.000000000 -0700
 @@ -0,0 +1,92 @@
 +// Locale support -*- C++ -*-
 +
@@ -2936,9 +2946,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/ctype_noninline.h gcc-4.1.0-pa
 +      }
 +    return __high;
 +  }
-diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/os_defines.h
---- gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h	1969-12-31 18:00:00.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/config/os/uclibc/os_defines.h	2005-04-30 19:36:16.932896635 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/os_defines.h gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h
+--- gcc-4.1.0-dist/libstdc++-v3/config/os/uclibc/os_defines.h	1969-12-31 17:00:00.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h	2006-03-25 22:06:30.000000000 -0700
 @@ -0,0 +1,44 @@
 +// Specific definitions for GNU/Linux  -*- C++ -*-
 +
@@ -2984,10 +2994,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/config/os/uclibc/os_defines.h gcc-4.1.0-patched
 +#define __NO_STRING_INLINES
 +
 +#endif
-diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/configure
---- gcc-4.1.0/libstdc++-v3/configure	2005-04-13 19:31:43.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/configure	2005-04-30 19:36:16.993886339 -0500
-@@ -3986,6 +3986,11 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/configure gcc-4.1.0/libstdc++-v3/configure
+--- gcc-4.1.0-dist/libstdc++-v3/configure	2006-03-26 12:08:28.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/configure	2006-03-25 22:06:30.000000000 -0700
+@@ -4005,6 +4005,11 @@
    lt_cv_deplibs_check_method=pass_all
    ;;
  
@@ -2999,7 +3009,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
-@@ -5719,7 +5724,7 @@
+@@ -5740,7 +5745,7 @@
    enableval="$enable_clocale"
  
        case "$enableval" in
@@ -3008,7 +3018,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
         *) { { echo "$as_me:$LINENO: error: Unknown argument to enable/disable clocale" >&5
  echo "$as_me: error: Unknown argument to enable/disable clocale" >&2;}
     { (exit 1); exit 1; }; } ;;
-@@ -5744,6 +5749,9 @@
+@@ -5765,6 +5770,9 @@
    # Default to "generic".
    if test $enable_clocale_flag = auto; then
      case ${target_os} in
@@ -3018,7 +3028,7 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
        linux* | gnu* | kfreebsd*-gnu | knetbsd*-gnu)
          cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -5974,6 +5982,76 @@
+@@ -5995,6 +6003,76 @@
        CTIME_CC=config/locale/generic/time_members.cc
        CLOCALE_INTERNAL_H=config/locale/generic/c++locale_internal.h
        ;;
@@ -3095,10 +3105,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure gcc-4.1.0-patched/libstdc++-v3/config
    esac
  
    # This is where the testsuite looks for locale catalogs, using the
-diff -urN gcc-4.1.0/libstdc++-v3/configure.host gcc-4.1.0-patched/libstdc++-v3/configure.host
---- gcc-4.1.0/libstdc++-v3/configure.host	2005-01-13 16:48:14.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/configure.host	2005-04-30 19:36:16.996885833 -0500
-@@ -249,6 +249,12 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/configure.host gcc-4.1.0/libstdc++-v3/configure.host
+--- gcc-4.1.0-dist/libstdc++-v3/configure.host	2006-03-26 12:08:28.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/configure.host	2006-03-25 22:06:30.000000000 -0700
+@@ -261,6 +261,12 @@
      ;;
  esac
  
@@ -3111,9 +3121,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/configure.host gcc-4.1.0-patched/libstdc++-v3/c
  
  # Set any OS-dependent and CPU-dependent bits.
  # THIS TABLE IS SORTED.  KEEP IT THAT WAY.
-diff -urN gcc-4.1.0/libstdc++-v3/crossconfig.m4 gcc-4.1.0-patched/libstdc++-v3/crossconfig.m4
---- gcc-4.1.0/libstdc++-v3/crossconfig.m4	2005-04-06 18:31:16.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/crossconfig.m4	2005-04-30 19:36:16.997885664 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/crossconfig.m4 gcc-4.1.0/libstdc++-v3/crossconfig.m4
+--- gcc-4.1.0-dist/libstdc++-v3/crossconfig.m4	2006-03-26 12:08:28.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/crossconfig.m4	2006-03-25 22:06:30.000000000 -0700
 @@ -143,6 +143,99 @@
  	;;
      esac
@@ -3223,9 +3233,9 @@ diff -urN gcc-4.1.0/libstdc++-v3/crossconfig.m4 gcc-4.1.0-patched/libstdc++-v3/c
          ;;
        *)
          AC_DEFINE(_GLIBCXX_USE_LFS)
-diff -urN gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h gcc-4.1.0-patched/libstdc++-v3/include/c_compatibility/wchar.h
---- gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h	2003-12-08 21:51:45.000000000 -0600
-+++ gcc-4.1.0-patched/libstdc++-v3/include/c_compatibility/wchar.h	2005-04-30 19:36:16.997885664 -0500
+diff -urN gcc-4.1.0-dist/libstdc++-v3/include/c_compatibility/wchar.h gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h
+--- gcc-4.1.0-dist/libstdc++-v3/include/c_compatibility/wchar.h	2006-03-26 12:08:28.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h	2006-03-25 22:06:30.000000000 -0700
 @@ -101,7 +101,9 @@
  using std::wmemcpy;
  using std::wmemmove;
@@ -3236,10 +3246,10 @@ diff -urN gcc-4.1.0/libstdc++-v3/include/c_compatibility/wchar.h gcc-4.1.0-patch
  
  #if _GLIBCXX_USE_C99
  using std::wcstold;
-diff -urN gcc-4.1.0/libstdc++-v3/include/c_std/std_cwchar.h gcc-4.1.0-patched/libstdc++-v3/include/c_std/std_cwchar.h
---- gcc-4.1.0/libstdc++-v3/include/c_std/std_cwchar.h	2004-07-20 03:47:42.000000000 -0500
-+++ gcc-4.1.0-patched/libstdc++-v3/include/c_std/std_cwchar.h	2005-04-30 19:36:16.998885495 -0500
-@@ -179,7 +179,9 @@
+diff -urN gcc-4.1.0-dist/libstdc++-v3/include/c_std/std_cwchar.h gcc-4.1.0/libstdc++-v3/include/c_std/std_cwchar.h
+--- gcc-4.1.0-dist/libstdc++-v3/include/c_std/std_cwchar.h	2006-03-26 12:08:28.000000000 -0700
++++ gcc-4.1.0/libstdc++-v3/include/c_std/std_cwchar.h	2006-03-25 22:06:30.000000000 -0700
+@@ -180,7 +180,9 @@
    using ::wcscoll;
    using ::wcscpy;
    using ::wcscspn;
