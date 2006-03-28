@@ -1,0 +1,14 @@
+this old configure script has broken CPP logic is CPP is set in the
+host environment
+
+--- ed-0.2/configure
++++ ed-0.2/configure
+@@ -731,6 +731,8 @@
+ rm -f conftest*
+   ac_cv_prog_CPP="$CPP"
+ fi
++else
++  ac_cv_prog_CPP="$CPP"
+ fi
+ CPP="$ac_cv_prog_CPP"
+ echo "$ac_t""$CPP" 1>&4
