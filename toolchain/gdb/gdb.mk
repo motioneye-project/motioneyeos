@@ -159,15 +159,15 @@ gdbserver-dirclean:
 
 ######################################################################
 #
-# gdb client
+# gdb on host
 #
 ######################################################################
 
-GDB_CLIENT_DIR:=$(TOOL_BUILD_DIR)/gdbclient-$(GDB_VERSION)
+GDB_HOST_DIR:=$(TOOL_BUILD_DIR)/gdbhost-$(GDB_VERSION)
 
-$(GDB_CLIENT_DIR)/.configured: $(GDB_DIR)/.unpacked
-	mkdir -p $(GDB_CLIENT_DIR)
-	(cd $(GDB_CLIENT_DIR); \
+$(GDB_HOST_DIR)/.configured: $(GDB_DIR)/.unpacked
+	mkdir -p $(GDB_HOST_DIR)
+	(cd $(GDB_HOST_DIR); \
 		gdb_cv_func_sigsetjmp=yes \
 		$(GDB_DIR)/configure \
 		--prefix=$(STAGING_DIR) \
@@ -180,26 +180,26 @@ $(GDB_CLIENT_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--without-included-gettext \
 		--enable-threads \
 	);
-	touch  $(GDB_CLIENT_DIR)/.configured
+	touch  $(GDB_HOST_DIR)/.configured
 
-$(GDB_CLIENT_DIR)/gdb/gdb: $(GDB_CLIENT_DIR)/.configured
-	$(MAKE) -C $(GDB_CLIENT_DIR)
-	strip $(GDB_CLIENT_DIR)/gdb/gdb
+$(GDB_HOST_DIR)/gdb/gdb: $(GDB_HOST_DIR)/.configured
+	$(MAKE) -C $(GDB_HOST_DIR)
+	strip $(GDB_HOST_DIR)/gdb/gdb
 
-$(TARGET_CROSS)gdb: $(GDB_CLIENT_DIR)/gdb/gdb
-	install -c $(GDB_CLIENT_DIR)/gdb/gdb $(TARGET_CROSS)gdb
+$(TARGET_CROSS)gdb: $(GDB_HOST_DIR)/gdb/gdb
+	install -c $(GDB_HOST_DIR)/gdb/gdb $(TARGET_CROSS)gdb
 	ln -snf ../../bin/$(REAL_GNU_TARGET_NAME)-gdb \
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/gdb
 	ln -snf $(REAL_GNU_TARGET_NAME)-gdb \
 		$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-gdb
 
-gdbclient: $(TARGET_CROSS)gdb
+gdbhost: $(TARGET_CROSS)gdb
 
-gdbclient-clean:
-	$(MAKE) -C $(GDB_CLIENT_DIR) clean
+gdbhost-clean:
+	$(MAKE) -C $(GDB_HOST_DIR) clean
 
-gdbclient-dirclean:
-	rm -rf $(GDB_CLIENT_DIR)
+gdbhost-dirclean:
+	rm -rf $(GDB_HOST_DIR)
 
 
 
@@ -216,6 +216,6 @@ ifeq ($(strip $(BR2_PACKAGE_GDB_SERVER)),y)
 TARGETS+=gdbserver
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_GDB_CLIENT)),y)
-TARGETS+=gdbclient
+ifeq ($(strip $(BR2_PACKAGE_GDB_HOST)),y)
+TARGETS+=gdbhost
 endif

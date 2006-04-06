@@ -14,16 +14,16 @@ config BR2_PACKAGE_GDB_SERVER
 	    Build the gdbserver stub to run on the target.
 	    A full gdb is needed to debug the progam.
 
-config BR2_PACKAGE_GDB_CLIENT
-	bool "Build gdb client for the Host"
+config BR2_PACKAGE_GDB_HOST
+	bool "Build gdb for the Host"
 	default n
 	help
-	    Build gdb to run on the host to debug programs running on the target.
+	    Build gdb to run on the host to debug programs run on the target.
 
 choice
 	prompt "GDB debugger Version"
 	default BR2_GDB_VERSION_6_3
-	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_CLIENT
+	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_HOST
 	help
 	  Select the version of gdb you wish to use.
 
