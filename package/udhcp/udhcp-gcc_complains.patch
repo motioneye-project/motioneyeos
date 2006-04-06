@@ -1,0 +1,11 @@
+--- udhcp-0.9.8/dhcpc.c.orig	2005-11-24 01:41:48.000000000 +1000
++++ udhcp-0.9.8/dhcpc.c	2005-11-24 01:44:16.000000000 +1000
+@@ -132,6 +132,8 @@
+ 		state = INIT_SELECTING;
+ 		break;
+ 	case INIT_SELECTING:
++	default:
++		break;
+ 	}
+ 
+ 	/* start things over */
