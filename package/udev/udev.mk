@@ -21,6 +21,7 @@ udev-source: $(DL_DIR)/$(UDEV_SOURCE)
 
 $(UDEV_DIR)/.unpacked: $(DL_DIR)/$(UDEV_SOURCE)
 	$(UDEV_CAT) $(DL_DIR)/$(UDEV_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(UDEV_DIR) package/udev \*.patch
 	touch $(UDEV_DIR)/.unpacked
 
 $(UDEV_DIR)/.configured: $(UDEV_DIR)/.unpacked
