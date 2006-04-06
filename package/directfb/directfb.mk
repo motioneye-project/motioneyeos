@@ -52,9 +52,12 @@ $(STAGING_DIR)/usr/lib/libdirectfb.so: $(DIRECTFB_DIR)/.compiled
 	touch -c $(STAGING_DIR)/lib/libdirectfb.so
 
 $(TARGET_DIR)/usr/lib/libdirectfb.so: $(STAGING_DIR)/usr/lib/libdirectfb.so
-	cp -dpf $(STAGING_DIR)/usr/lib/libdirectfb* $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/usr/lib/libdirect* $(STAGING_DIR)/usr/lib/libfusion* $(TARGET_DIR)/usr/lib/
 	cp -rdpf $(STAGING_DIR)/usr/lib/directfb-$(DIRECTFB_VERSION) $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libdirectfb.so
+	-$(STRIP) --strip-unneeded \
+		$(TARGET_DIR)/usr/lib/libdirectfb.so \
+		$(TARGET_DIR)/usr/lib/libdirect.so \
+		$(TARGET_DIR)/usr/lib/libfusion.so
 
 directfb: uclibc jpeg libpng freetype libsysfs $(TARGET_DIR)/usr/lib/libdirectfb.so
 
