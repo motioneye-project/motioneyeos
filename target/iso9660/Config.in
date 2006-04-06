@@ -1,0 +1,18 @@
+config BR2_TARGET_ROOTFS_ISO9660
+	bool "iso image"
+	default n
+	depends on BR2_i386
+	select BR2_TARGET_ROOTFS_EXT2
+	select BR2_PACKAGE_GRUB
+	help
+	  Build a bootable iso9660 image
+
+config BR2_TARGET_ROOTFS_ISO9660_OUTPUT
+	string "Output File"
+	depends on BR2_TARGET_ROOTFS_ISO9660
+	default "$(IMAGE).iso"
+
+config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
+	string "Boot menu.lst file"
+	depends on BR2_TARGET_ROOTFS_ISO9660
+	default "target/iso9660/menu.lst"
