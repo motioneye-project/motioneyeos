@@ -28,10 +28,14 @@ $(LTT_DIR1)/.unpacked: $(DL_DIR)/$(LTT_SOURCE)
 	toolchain/patch-kernel.sh $(LTT_DIR1) package/ltt ltt\*.patch
 	touch $(LTT_DIR1)/.unpacked
 
+# Build without GTK if not available
+LTT_WITHOUT_GTK:=$(shell which gtk-config >& /dev/null || echo "--without-gtk")
+
 $(LTT_DIR1)/.configured: $(LTT_DIR1)/.unpacked
 	(cd $(LTT_DIR1); rm -rf config.cache; \
 		./configure \
 		--prefix=$(TOOL_BUILD_DIR) \
+		$(LTT_WITHOUT_GTK) \
 	);
 	touch $(LTT_DIR1)/.configured
 
