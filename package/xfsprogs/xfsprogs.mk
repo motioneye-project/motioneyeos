@@ -30,7 +30,7 @@ $(XFSPROGS_DIR)/.unpacked: $(DL_DIR)/$(XFSPROGS_SOURCE)
 #XFSPROGS_CONFIG_SHARED:=--disable-shared
 XFSPROGS_CONFIG_SHARED:=--enable-shared
 
-$(XFSPROGS_DIR)/.configured: e2fsprogs $(XFSPROGS_DIR)/.unpacked
+$(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 	(cd $(XFSPROGS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
