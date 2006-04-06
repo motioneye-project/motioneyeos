@@ -40,7 +40,7 @@ $(TARGET_DIR)/$(THTTPD_TARGET_BINARY): $(THTTPD_DIR)/$(THTTPD_BINARY)
 	install -D $(THTTPD_DIR)/extras/htpasswd $(TARGET_DIR)/bin/htpasswd
 	install -D $(THTTPD_DIR)/extras/makeweb $(TARGET_DIR)/bin/makeweb
 	install -D $(THTTPD_DIR)/extras/syslogtocern $(TARGET_DIR)/bin/syslogtocern
-	install -D $(THTTPD_DIR)/scripts/thttpd_wrapper $(TARGET_DIR)/sbin
+	install -D $(THTTPD_DIR)/scripts/thttpd_wrapper $(TARGET_DIR)/sbin/thttpd_wrapper
 	install -D $(THTTPD_DIR)/scripts/thttpd.sh $(TARGET_DIR)/etc/init.d/S90thttpd
 	cp $(TARGET_DIR)/etc/init.d/S90thttpd $(TARGET_DIR)/etc/init.d/S90thttpd.in
 	cp $(TARGET_DIR)/sbin/thttpd_wrapper $(TARGET_DIR)/sbin/thttpd_wrapper.in
