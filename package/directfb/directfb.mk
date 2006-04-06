@@ -30,7 +30,7 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
-	--prefix=$(STAGING_DIR)/usr \
+	--prefix=/usr \
 	--with-gfxdrivers=cle266,unichrome \
 	--enable-jpeg \
 	--enable-png \
@@ -48,7 +48,7 @@ $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured
 	touch $(DIRECTFB_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libdirectfb.so: $(DIRECTFB_DIR)/.compiled
-	$(MAKE) -C $(DIRECTFB_DIR) install
+	$(MAKE) -C $(DIRECTFB_DIR) install prefix=$(STAGING_DIR)/usr exec_prefix=$(STAGING_DIR)/usr
 	touch -c $(STAGING_DIR)/lib/libdirectfb.so
 
 $(TARGET_DIR)/usr/lib/libdirectfb.so: $(STAGING_DIR)/usr/lib/libdirectfb.so
