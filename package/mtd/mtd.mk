@@ -37,7 +37,8 @@ $(DL_DIR)/$(MTD_SOURCE):
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE_GENERIC)
 	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	mv $(TOOL_BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
+	mv $(TOOL_BUILD_DIR)/$(shell tar tjf $(DL_DIR)/$(MTD_SOURCE) \
+		| head -n 1 | xargs basename) $(MTD_HOST_DIR)
 	touch $(MTD_HOST_DIR)/.unpacked
 else
 ifneq ($(MTD_SOURCE),)
@@ -47,7 +48,8 @@ endif
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	mv $(TOOL_BUILD_DIR)/$(shell tar tzf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_HOST_DIR)
+	mv $(TOOL_BUILD_DIR)/$(shell tar tzf $(DL_DIR)/$(MTD_SOURCE) | head -n 1 \
+		| xargs basename) $(MTD_HOST_DIR)
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
 		package/mtd \*.patch
 	touch $(MTD_HOST_DIR)/.unpacked
@@ -75,10 +77,12 @@ mtd-host-dirclean:
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_UNZIP) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
-	mv $(BUILD_DIR)/$(shell tar tjf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_DIR)
+	mv $(BUILD_DIR)/$(shell tar tjf $(DL_DIR)/$(MTD_SOURCE) \
+		| head -n 1 | xargs basename) $(MTD_DIR)
 	touch $(MTD_DIR)/.unpacked
 else
-	mv $(BUILD_DIR)/$(shell tar tzf dl/$(MTD_SOURCE) | head -n 1 | xargs basename) $(MTD_DIR)
+	mv $(BUILD_DIR)/$(shell tar tzf $(DL_DIR)/$(MTD_SOURCE) \
+		| head -n 1 | xargs basename) $(MTD_DIR)
 	toolchain/patch-kernel.sh $(MTD_DIR) \
 		package/mtd \*.patch
 	touch $(MTD_DIR)/.unpacked
