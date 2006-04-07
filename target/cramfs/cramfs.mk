@@ -58,30 +58,33 @@ ifeq ($(strip $(BR2_sparc)),y)
 CRAMFS_ENDIANNESS=-b
 endif
 
-cramfsroot: host-fakeroot makedevs $(STAGING_DIR)/fakeroot.env cramfs
+CRAMFS_TARGET=$(IMAGE).cramfs
+
+cramfsroot: host-fakeroot makedevs cramfs
 	#-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIP) --strip-unneeded 2>/dev/null || true;
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
+	rm -f $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET)
+	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/fakeroot.env \
-		-s $(STAGING_DIR)/fakeroot.env -- \
+		-i $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) -- \
 		chown -R root:root $(TARGET_DIR)
 	# Use fakeroot to pretend to create all needed device nodes
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/fakeroot.env \
-		-s $(STAGING_DIR)/fakeroot.env -- \
-		$(STAGING_DIR)/bin/makedevs \
-		-d $(TARGET_DEVICE_TABLE) \
-		$(TARGET_DIR)
+		-i $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) -- \
+		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
 	# Use fakeroot so mkcramfs believes the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/fakeroot.env \
-		-s $(STAGING_DIR)/fakeroot.env -- \
-		$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) \
-		$(TARGET_DIR) $(IMAGE).cramfs
+		-i $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) -- \
+	    $(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) \
+		$(TARGET_DIR) $(CRAMFS_TARGET)
+	-@rm -f $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET)
 
 cramfsroot-source: cramfs-source
 

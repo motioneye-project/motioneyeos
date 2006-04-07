@@ -53,31 +53,34 @@ ifeq ($(strip $(BR2_sparc)),y)
 SQUASHFS_ENDIANNESS=-be
 endif
 
-squashfsroot: host-fakeroot makedevs $(STAGING_DIR)/fakeroot.env squashfs
+SQUASHFS_TARGET:=$(IMAGE).squashfs
+
+squashfsroot: host-fakeroot makedevs squashfs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
+	rm -f $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET)
+	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/fakeroot.env \
-		-s $(STAGING_DIR)/fakeroot.env -- \
+		-i $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET) -- \
 		chown -R root:root $(TARGET_DIR)
 	# Use fakeroot to pretend to create all needed device nodes
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/fakeroot.env \
-		-s $(STAGING_DIR)/fakeroot.env -- \
-		$(STAGING_DIR)/bin/makedevs \
-		-d $(TARGET_DEVICE_TABLE) \
-		$(TARGET_DIR)
+		-i $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET) -- \
+		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
 	# Use fakeroot so mksquashfs believes the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/fakeroot.env \
-		-s $(STAGING_DIR)/fakeroot.env -- \
-		$(SQUASHFS_DIR)/squashfs-tools/mksquashfs \
+		-i $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET) -- \
+	    $(SQUASHFS_DIR)/squashfs-tools/mksquashfs \
 		    $(TARGET_DIR) \
-		    $(IMAGE).squashfs \
+		    $(SQUASHFS_TARGET) \
 		    -noappend $(SQUASHFS_ENDIANNESS)
+	-@rm -f $(STAGING_DIR)/_fakeroot.$(SQUASHFS_TARGET)
 
 squashfsroot-source: squashfs-source
 
