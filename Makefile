@@ -111,7 +111,7 @@ $(TARGET_DIR):
 	if [ -d "$(TARGET_SKEL_DIR)" ] ; then \
 		cp -a $(TARGET_SKEL_DIR)/* $(TARGET_DIR)/; \
 	fi;
-	touch $(STAGING_DIR)/fakeroot.env
+	touch $(STAGING_DIR)/.fakeroot.00000
 	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
 	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
 

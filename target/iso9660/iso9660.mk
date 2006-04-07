@@ -61,6 +61,7 @@ $(ISO9660_TARGET): host-fakeroot $(EXT2_TARGET) grub mkisofs
 	cp $(EXT2_TARGET) $(ISO9660_TARGET_DIR)/initrd
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET)
+	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET) \

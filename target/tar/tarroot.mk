@@ -14,6 +14,7 @@ tarroot: host-fakeroot makedevs
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(STAGING_DIR)/_fakeroot.$(TAR_TARGET)
+	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(TAR_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/_fakeroot.$(TAR_TARGET) \

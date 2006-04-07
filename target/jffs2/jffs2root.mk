@@ -46,6 +46,7 @@ $(JFFS2_TARGET): host-fakeroot makedevs mtd-host
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET)
+	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
 		-i $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET) \
