@@ -1,0 +1,23 @@
+--- orig/TraceToolkit-0.9.5/Visualizer/MainWindow.c	2002-04-15 19:23:49.000000000 -0700
++++ TraceToolkit-0.9.5/Visualizer/MainWindow.c	2006-04-05 16:04:47.000000000 -0700
+@@ -28,6 +28,7 @@
+ #include <string.h>
+ #include <fcntl.h>
+ #include <unistd.h>
++#include <stdlib.h>
+ #include <sys/stat.h>
+ #include <gdk/gdkkeysyms.h>
+ 
+@@ -3146,8 +3147,10 @@
+ 
+   /* FORCEFULLY disconnect event handlers from the notebook widget */
+   /*  I didn't find any cleaner way to do this. K.Y. 9/5/2000 */
+-  GTK_SIGNAL_FUNC(GTK_WIDGET_CLASS(GTK_OBJECT(pmSysView->Window->MNotebook)->klass)->key_press_event) = NULL,
+-  GTK_SIGNAL_FUNC(GTK_WIDGET_CLASS(GTK_OBJECT(pmSysView->Window->MNotebook)->klass)->focus_in_event) = NULL,
++  gtk_type_free(GTK_TYPE_SIGNAL, 
++		GTK_SIGNAL_FUNC(GTK_WIDGET_CLASS(GTK_OBJECT(pmSysView->Window->MNotebook)->klass)->key_press_event));
++  gtk_type_free(GTK_TYPE_SIGNAL,
++		GTK_SIGNAL_FUNC(GTK_WIDGET_CLASS(GTK_OBJECT(pmSysView->Window->MNotebook)->klass)->focus_in_event));
+ 
+   /* Connect the key press event */
+   gtk_signal_connect(GTK_OBJECT(pmSysView->Window->MWindow),
