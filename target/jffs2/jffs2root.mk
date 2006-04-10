@@ -45,25 +45,25 @@ $(JFFS2_TARGET): host-fakeroot makedevs mtd-host
 	@rm -rf $(TARGET_DIR)/usr/info
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET)
+	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET)
+	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) -- \
 		chown -R root:root $(TARGET_DIR)
 	# Use fakeroot to pretend to create all needed device nodes
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) -- \
 		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
 	# Use fakeroot so mkfs.jffs2 believes the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) -- \
 	    $(MKFS_JFFS2) $(JFFS2_OPTS) \
 			-d $(BUILD_DIR)/root -o $(JFFS2_TARGET)
-	-@rm -f $(STAGING_DIR)/_fakeroot.$(JFFS2_TARGET)
+	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	@ls -l $(JFFS2_TARGET)
 
 JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))

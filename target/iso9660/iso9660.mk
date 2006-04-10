@@ -60,23 +60,23 @@ $(ISO9660_TARGET): host-fakeroot $(EXT2_TARGET) grub mkisofs
 	cp $(LINUX_KERNEL) $(ISO9660_TARGET_DIR)/kernel
 	cp $(EXT2_TARGET) $(ISO9660_TARGET_DIR)/initrd
 	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET)
+	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $ISO9660_TARGET)
 	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET)
+	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $ISO9660_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $ISO9660_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $ISO9660_TARGET) -- \
 		chown -R root:root $(ISO9660_TARGET_DIR)
 	# Use fakeroot so mkisofs believes the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $ISO9660_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $ISO9660_TARGET) -- \
 	    $(MKISOFS_TARGET) \
 		-R -b boot/grub/stage2_eltorito -no-emul-boot \
 		-boot-load-size 4 -boot-info-table \
 		-o $(ISO9660_TARGET) \
 		$(ISO9660_TARGET_DIR)
-	-@rm -f $(STAGING_DIR)/_fakeroot.$(ISO9660_TARGET)
+	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $ISO9660_TARGET)
 
 iso9660root: $(ISO9660_TARGET)
 	echo $(ISO9660_TARGET)

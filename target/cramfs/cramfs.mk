@@ -67,25 +67,25 @@ cramfsroot: host-fakeroot makedevs cramfs
 	@rm -rf $(TARGET_DIR)/usr/info
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET)
+	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET)
+	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) -- \
 		chown -R root:root $(TARGET_DIR)
 	# Use fakeroot to pretend to create all needed device nodes
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) -- \
 		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
 	# Use fakeroot so mkcramfs believes the previous fakery
 	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET) -- \
+		-i $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) \
+		-s $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) -- \
 	    $(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) \
 		$(TARGET_DIR) $(CRAMFS_TARGET)
-	-@rm -f $(STAGING_DIR)/_fakeroot.$(CRAMFS_TARGET)
+	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 
 cramfsroot-source: cramfs-source
 
