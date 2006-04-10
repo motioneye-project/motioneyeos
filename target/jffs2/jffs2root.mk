@@ -25,15 +25,15 @@ ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_BE)),y)
 JFFS2_OPTS += -b
 endif
 
+JFFS2_TARGET := $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT))
 JFFS2_DEVFILE = $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_DEVFILE)))
 ifneq ($(JFFS2_DEVFILE),)
 JFFS2_OPTS += -D $(TARGET_DEVICE_TABLE)
 endif
 
-JFFS2_TARGET := $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT))
 
 #
-# mtd-host is a dependency which builds a local copy of mkfs.jffs2 if it's needed.
+# mtd-host is a dependency which builds a local copy of mkfs.jffs2 if it is needed.
 # the actual build is done from package/mtd/mtd.mk and it sets the
 # value of MKFS_JFFS2 to either the previously installed copy or the one
 # just built.
@@ -48,25 +48,20 @@ $(JFFS2_TARGET): host-fakeroot makedevs mtd-host
 	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
-	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) -- \
-		chown -R root:root $(TARGET_DIR)
+	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	# Use fakeroot to pretend to create all needed device nodes
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) -- \
-		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
+	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	# Use fakeroot so mkfs.jffs2 believes the previous fakery
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET) -- \
-	    $(MKFS_JFFS2) $(JFFS2_OPTS) \
-			-d $(BUILD_DIR)/root -o $(JFFS2_TARGET)
+	echo "$(MKFS_JFFS2) $(JFFS2_OPTS) -d $(BUILD_DIR)/root -o $(JFFS2_TARGET)" \
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
+	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $JFFS2_TARGET)
 	@ls -l $(JFFS2_TARGET)
 
 JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))
+# " stupid syntax highlighting does not like unmatched quote from above line
 
 jffs2root: $(JFFS2_TARGET)
 ifneq ($(JFFS2_COPYTO),)

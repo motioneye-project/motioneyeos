@@ -16,20 +16,15 @@ tarroot: host-fakeroot makedevs
 	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
-	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET) -- \
-		chown -R root:root $(TARGET_DIR)
+	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
 	# Use fakeroot to pretend to create all needed device nodes
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET) -- \
-		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
+	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
 	# Use fakeroot so tar believes the previous fakery
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET) -- \
-	    tar -c$(TAR_OPTS)f $(TAR_TARGET) -C $(TARGET_DIR) .
+	echo "tar -c$(TAR_OPTS)f $(TAR_TARGET) -C $(TARGET_DIR) ." \
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
+	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
 	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $TAR_TARGET)
 
 tarroot-source:

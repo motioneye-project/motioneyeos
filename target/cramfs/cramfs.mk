@@ -6,6 +6,7 @@
 CRAMFS_DIR=$(BUILD_DIR)/cramfs-1.1
 CRAMFS_SOURCE=cramfs-1.1.tar.gz
 ifeq ($(strip $(subst ",,$(BR2_SOURCEFORGE_MIRROR))),unc)
+# " stupid syntax highlighting does not like unmatched quote from above line
 # UNC does not seem to have cramfs
 CRAMFS_SITE=http://internap.dl.sourceforge.net/sourceforge/cramfs
 else
@@ -70,21 +71,15 @@ cramfsroot: host-fakeroot makedevs cramfs
 	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
-	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) -- \
-		chown -R root:root $(TARGET_DIR)
+	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 	# Use fakeroot to pretend to create all needed device nodes
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) -- \
-		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
+	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 	# Use fakeroot so mkcramfs believes the previous fakery
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET) -- \
-	    $(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) \
-		$(TARGET_DIR) $(CRAMFS_TARGET)
+	echo "$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) " \
+		"$(TARGET_DIR) $(CRAMFS_TARGET)" >> $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
+	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $CRAMFS_TARGET)
 
 cramfsroot-source: cramfs-source

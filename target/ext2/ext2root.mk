@@ -58,6 +58,7 @@ EXT2_OPTS += -r $(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS))
 endif
 
 EXT2_BASE :=	$(subst ",,$(BR2_TARGET_ROOTFS_EXT2_OUTPUT))
+# " stupid syntax highlighting does not like unmatched quote from above line
 
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_GZ)),y)
 EXT2_TARGET := $(EXT2_BASE).gz
@@ -75,15 +76,10 @@ $(EXT2_BASE): host-fakeroot makedevs genext2fs
 	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
-	-$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) -- \
-		chown -R root:root $(TARGET_DIR)
+	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
 	# Use fakeroot to pretend to create all needed device nodes
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) -- \
-		$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)
+	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
 	# Use fakeroot so genext2fs believes the previous fakery
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	GENEXT2_REALSIZE=`LANG=C du -l -s -c -k $(TARGET_DIR) | grep total | sed -e "s/total//"`; \
@@ -92,29 +88,22 @@ ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	GENEXT2_ADDTOINODESIZE=`find $(TARGET_DIR) | wc -l`; \
 	GENEXT2_INODES=`expr $$GENEXT2_ADDTOINODESIZE + 400`; \
 	set -x; \
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) -- \
-	    $(GENEXT2_DIR)/genext2fs \
-		-b $$GENEXT2_SIZE \
-		-i $$GENEXT2_INODES \
-		-d $(TARGET_DIR) \
-		$(EXT2_OPTS) $(EXT2_BASE)
+	echo "$(GENEXT2_DIR)/genext2fs -b $$GENEXT2_SIZE " \
+		"-i $$GENEXT2_INODES -d $(TARGET_DIR) " \
+		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
 else
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-i $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) \
-		-s $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET) -- \
-	    $(GENEXT2_DIR)/genext2fs \
-		-d $(TARGET_DIR) \
-		$(EXT2_OPTS) \
-		$(EXT2_BASE)
+	echo "$(GENEXT2_DIR)/genext2fs -d $(TARGET_DIR) " \
+		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
 endif
+	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
 	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
 
 $(EXT2_BASE).gz: $(EXT2_BASE)
 	@gzip --best -fv $(EXT2_BASE)
 
 EXT2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_COPYTO)))
+# " stupid syntax highlighting does not like unmatched quote from above line
 
 ext2root: $(EXT2_TARGET)
 	@ls -l $(EXT2_TARGET)

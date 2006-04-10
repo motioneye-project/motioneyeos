@@ -42,10 +42,9 @@ $(AT_DIR)/$(AT_BINARY): $(AT_DIR)/.configured
 
 $(TARGET_DIR)/$(AT_TARGET_BINARY): $(AT_DIR)/$(AT_BINARY)
 	# Use fakeroot to pretend to do 'make install' as root
-	rm -f $(STAGING_DIR)/.fakeroot.at
-	$(STAGING_DIR)/usr/bin/fakeroot -s $(STAGING_DIR)/.fakeroot.at -- \
-		$(MAKE) DAEMON_USERNAME=root DAEMON_GROUPNAME=root \
-		$(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(AT_DIR) install
+	echo "$(MAKE) DAEMON_USERNAME=root DAEMON_GROUPNAME=root " \
+		"$(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(AT_DIR) install" \
+		> $(STAGING_DIR)/.fakeroot.at
 	$(INSTALL) -m 0755 -D $(AT_DIR)/debian/rc $(TARGET_DIR)/etc/init.d/S99at
 	rm -rf $(TARGET_DIR)/usr/man
 

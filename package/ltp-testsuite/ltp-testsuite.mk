@@ -28,11 +28,9 @@ $(LTP_TESTSUITE_DIR)/.compiled: $(LTP_TESTSUITE_DIR)/Makefile
 
 $(LTP_TESTSUITE_DIR)/.installed: $(LTP_TESTSUITE_DIR)/.compiled
 	# Use fakeroot to pretend to do 'make install' as root
-	rm -f $(STAGING_DIR)/.fakeroot.ltp
-	$(STAGING_DIR)/usr/bin/fakeroot \
-		-s $(STAGING_DIR)/.fakeroot.ltp -- \
-		$(MAKE1) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) \
-			-C $(LTP_TESTSUITE_DIR) install
+	echo "$(MAKE1) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) " \
+			"-C $(LTP_TESTSUITE_DIR) install" \
+			> $(STAGING_DIR)/.fakeroot.ltp
 	touch $(LTP_TESTSUITE_DIR)/.installed
 
 ltp-testsuite: uclibc host-fakeroot $(LTP_TESTSUITE_DIR)/.installed
