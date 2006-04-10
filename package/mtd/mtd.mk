@@ -13,7 +13,8 @@ MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_snapshot
 MTD_DIR:=$(BUILD_DIR)/mtd_snapshot
 MTD_UNZIP:=bzcat
 else
-MTD_SOURCE:=$(strip $(BR2_PACKAGE_MTD_ORIG_STRING))
+MTD_SOURCE:=$(strip $(subst ",, $(BR2_PACKAGE_MTD_ORIG_STRING)))
+#"
 MTD_SITE:=http://ftp.debian.org/debian/pool/main/m/mtd
 MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_orig
 MTD_DIR:=$(BUILD_DIR)/mtd_orig

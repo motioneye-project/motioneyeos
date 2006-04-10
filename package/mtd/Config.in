@@ -12,7 +12,7 @@ choice
 	prompt "Source package selection"
 	depends on BR2_PACKAGE_MTD
 	default BR2_PACKAGE_MTD_ORIG
-	
+
 
 config BR2_PACKAGE_MTD_ORIG
 	bool "Default source"
