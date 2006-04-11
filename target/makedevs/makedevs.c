@@ -527,5 +527,7 @@ loop:
 	}
 	fclose(table);
 
+	system("/bin/sync");
+
 	return 0;
 }
