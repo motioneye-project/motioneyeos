@@ -105,7 +105,7 @@ $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL) cross-de
 	rm -rf $(TARGET_DIR)/lib/modules
 	rm -f $(TARGET_DIR)/sbin/cardmgr
 	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) \
-		DEPMOD=DEPMOD=$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod \
+		DEPMOD=$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod \
 		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
 
 $(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
