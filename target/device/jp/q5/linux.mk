@@ -101,17 +101,12 @@ $(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
 	$(KERNEL_CROSS)objcopy -O srec $(LINUX_DIR)/$(LINUX_BINLOC) $(LINUX_KERNEL)
 	touch -c $(LINUX_KERNEL)
 
-$(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL)
+$(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL) cross-depmod
 	rm -rf $(TARGET_DIR)/lib/modules
 	rm -f $(TARGET_DIR)/sbin/cardmgr
-	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) DEPMOD=`which true` \
+	$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) \
+		DEPMOD=DEPMOD=$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod \
 		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
-	(cd $(TARGET_DIR)/lib/modules; ln -s $(LINUX_VERSION)/kernel/drivers .)
-	$(JP_Q5_PATH)/depmod.pl \
-		-b $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/ \
-		-k $(LINUX_DIR)/vmlinux \
-		-F $(LINUX_DIR)/System.map \
-		> $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
 
 $(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
 	mkdir -p $(STAGING_DIR)/include
