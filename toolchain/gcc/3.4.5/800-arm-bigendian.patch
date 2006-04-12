@@ -3,9 +3,8 @@ Adds support for arm*b-linux* big-endian ARM targets
 
 See http://gcc.gnu.org/PR16350
 
-diff -urN gcc-3.4.1-dist/gcc/config/arm/linux-elf.h gcc-3.4.1/gcc/config/arm/linux-elf.h
---- gcc-3.4.1-dist/gcc/config/arm/linux-elf.h	2004-08-16 16:01:50.000000000 -0500
-+++ gcc-3.4.1/gcc/config/arm/linux-elf.h	2004-08-16 15:43:40.000000000 -0500
+--- gcc-3.4.1-dist/gcc/config/arm/linux-elf.h
++++ gcc-3.4.1/gcc/config/arm/linux-elf.h
 @@ -30,17 +30,34 @@
  /* Do not assume anything about header files.  */
  #define NO_IMPLICIT_EXTERN_C
@@ -53,9 +52,8 @@ diff -urN gcc-3.4.1-dist/gcc/config/arm/linux-elf.h gcc-3.4.1/gcc/config/arm/lin
     SUBTARGET_EXTRA_LINK_SPEC
  #endif
  
-diff -urN gcc-3.4.1-dist/gcc/config.gcc gcc-3.4.1/gcc/config.gcc
---- gcc-3.4.1-dist/gcc/config.gcc	2004-08-16 16:01:50.000000000 -0500
-+++ gcc-3.4.1/gcc/config.gcc	2004-08-16 16:01:25.000000000 -0500
+--- gcc-3.4.1-dist/gcc/config.gcc
++++ gcc-3.4.1/gcc/config.gcc
 @@ -672,6 +672,11 @@
  	;;
  arm*-*-linux*)			# ARM GNU/Linux with ELF
