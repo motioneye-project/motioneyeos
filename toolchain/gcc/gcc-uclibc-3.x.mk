@@ -17,18 +17,17 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-GCC_VERSION:=$(strip $(GCC_VERSION))
-
+ifeq ($(GCC_SNAP_DATE),)
+GCC_OFFICIAL_VER:=$(GCC_VERSION)
 #GCC_SITE:=ftp://ftp.gnu.org/gnu/gcc/gcc-$(GCC_VERSION)
-GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_VERSION)
+GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_OFFICIAL_VER)
+else
+GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
+GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VER)
+endif
 
-#
-# snapshots....
-#GCC_VERSION:=3.3-20031013
-#GCC_SITE:=http://gcc.get-software.com/snapshots/$(GCC_VERSION)
-#
-GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)
+GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)
 GCC_CAT:=bzcat
 GCC_STRIP_HOST_BINARIES:=true
 
@@ -76,7 +75,16 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
+ifeq ($(GCC_SNAP_DATE),)
 	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
+else
+ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),)
+	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_OFFICIAL_VER) \*.patch
+else
+	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
+endif
+endif
+
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.
 	# However, we still need a patch for arm.  There's a similar patch for gcc 3.3.x

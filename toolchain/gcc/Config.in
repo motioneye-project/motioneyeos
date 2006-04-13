@@ -51,11 +51,24 @@ choice
 		depends !BR2_nios2
 		bool "gcc 4.1.0"
 
-	config BR2_GCC_VERSION_4_2_0
+	config BR2_GCC_VERSION_4_2
 		depends !BR2_nios2
-		bool "gcc 4.2.0"
+		select BR2_GCC_IS_SNAP
+		bool "gcc 4.2"
 
 endchoice
+
+config BR2_GCC_IS_SNAP
+	bool
+	default n
+
+config BR2_GCC_SNAP_DATE
+	string "GCC snapshot date"
+	default "20060408"
+	depends BR2_GCC_IS_SNAP
+	help
+	  Enter snapshot date to use for gcc.  Format is:
+	  YYYYMMDD
 
 config BR2_GCC_VERSION
 	string
@@ -71,7 +84,7 @@ config BR2_GCC_VERSION
 	default "4.0.2"     if BR2_GCC_VERSION_4_0_2
 	default "4.0.3"     if BR2_GCC_VERSION_4_0_3
 	default "4.1.0"     if BR2_GCC_VERSION_4_1_0
-	default "4.2.0"     if BR2_GCC_VERSION_4_2_0
+	default "4.2"       if BR2_GCC_VERSION_4_2
 
 
 config BR2_GCC_USE_SJLJ_EXCEPTIONS

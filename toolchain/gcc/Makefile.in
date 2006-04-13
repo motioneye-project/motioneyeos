@@ -10,6 +10,11 @@ TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
 #"
 EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
 #"
+ifeq ($(strip $(subst ",, $(BR2_GCC_IS_SNAP))),y)
+GCC_SNAP_DATE:=$(strip $(subst ",, $(BR2_GCC_SNAP_DATE)))
+else
+GCC_SNAP_DATE:=
+endif
 
 
 ifeq ($(strip $(BR2_GCC_USE_SJLJ_EXCEPTIONS)),y)
@@ -40,4 +45,3 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
 TARGETS+=gcc_target
 endif
-
