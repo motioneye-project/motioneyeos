@@ -1,34 +1,5 @@
---- gcc/libstdc++-v3/config/locale/uclibc/c++locale_internal.h.uclibc200_update~	2006-03-10 15:32:37 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 --- gcc/libstdc++-v3/config/locale/uclibc/c_locale.cc.uclibc200_update~	2006-03-10 15:32:37 +0100
 +++ gcc/libstdc++-v3/config/locale/uclibc/c_locale.cc	2006-03-10 15:39:14 +0100
-@@ -1,6 +1,7 @@
- // Wrapper for underlying C-language localization -*- C++ -*-
- 
--// Copyright (C) 2001, 2002, 2003 Free Software Foundation, Inc.
-+// Copyright (C) 2001, 2002, 2003, 2004, 2005 
-+// Free Software Foundation, Inc.
- //
- // This file is part of the GNU ISO C++ Library.  This library is free
- // software; you can redistribute it and/or modify it under the
-@@ -15,7 +16,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 @@ -46,16 +47,13 @@
      __convert_to_v(const char* __s, float& __v, ios_base::iostate& __err, 
  		   const __c_locale& __cloc)
@@ -112,15 +83,6 @@
  
 --- gcc/libstdc++-v3/config/locale/uclibc/c_locale.h.uclibc200_update~	2006-03-10 15:32:37 +0100
 +++ gcc/libstdc++-v3/config/locale/uclibc/c_locale.h	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 @@ -45,15 +45,16 @@
  #ifdef __UCLIBC_MJN3_ONLY__
  #warning fix this
@@ -140,39 +102,8 @@
  #endif
  #define _GLIBCXX_C_LOCALE_GNU 1
  
---- gcc/libstdc++-v3/config/locale/uclibc/codecvt_members.cc.uclibc200_update~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
---- gcc/libstdc++-v3/config/locale/uclibc/collate_members.cc.uclibc200_update~	2006-03-10 15:32:37 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/collate_members.cc	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 --- gcc/libstdc++-v3/config/locale/uclibc/ctype_members.cc.uclibc200_update~	2006-03-10 15:32:37 +0100
 +++ gcc/libstdc++-v3/config/locale/uclibc/ctype_members.cc	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 @@ -33,9 +33,14 @@
  
  // Written by Benjamin Kosnik <bkoz@redhat.com>
@@ -234,36 +165,8 @@
    const wchar_t* 
    ctype<wchar_t>::
    do_is(const wchar_t* __lo, const wchar_t* __hi, mask* __vec) const
---- gcc/libstdc++-v3/config/locale/uclibc/messages_members.cc.uclibc200_update~	2006-03-10 15:32:37 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/messages_members.cc	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 --- gcc/libstdc++-v3/config/locale/uclibc/messages_members.h.uclibc200_update~	2006-03-10 15:32:37 +0100
 +++ gcc/libstdc++-v3/config/locale/uclibc/messages_members.h	2006-03-10 15:39:14 +0100
-@@ -1,6 +1,6 @@
- // std::messages implementation details, GNU version -*- C++ -*-
- 
--// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
-+// Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
- //
- // This file is part of the GNU ISO C++ Library.  This library is free
- // software; you can redistribute it and/or modify it under the
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 @@ -47,18 +47,21 @@
    template<typename _CharT>
       messages<_CharT>::messages(size_t __refs)
@@ -293,15 +196,6 @@
    template<typename _CharT>
 --- gcc/libstdc++-v3/config/locale/uclibc/monetary_members.cc.uclibc200_update~	2006-03-10 15:37:27 +0100
 +++ gcc/libstdc++-v3/config/locale/uclibc/monetary_members.cc	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 @@ -33,9 +33,14 @@
  
  // Written by Benjamin Kosnik <bkoz@redhat.com>
@@ -328,15 +222,6 @@
    }
 --- gcc/libstdc++-v3/config/locale/uclibc/numeric_members.cc.uclibc200_update~	2006-03-10 15:37:27 +0100
 +++ gcc/libstdc++-v3/config/locale/uclibc/numeric_members.cc	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 @@ -33,9 +33,14 @@
  
  // Written by Benjamin Kosnik <bkoz@redhat.com>
@@ -352,36 +237,8 @@
  #include <bits/c++locale_internal.h>
  
  #ifdef __UCLIBC_MJN3_ONLY__
---- gcc/libstdc++-v3/config/locale/uclibc/time_members.cc.uclibc200_update~	2006-03-10 15:32:37 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/time_members.cc	2006-03-10 15:39:14 +0100
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 --- gcc/libstdc++-v3/config/locale/uclibc/time_members.h.uclibc200_update~	2006-03-10 15:06:17 +0100
 +++ gcc/libstdc++-v3/config/locale/uclibc/time_members.h	2006-03-10 15:39:14 +0100
-@@ -1,6 +1,6 @@
- // std::time_get, std::time_put implementation, GNU version -*- C++ -*-
- 
--// Copyright (C) 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
-+// Copyright (C) 2001, 2002, 2003, 2004, 2005 Free Software Foundation, Inc.
- //
- // This file is part of the GNU ISO C++ Library.  This library is free
- // software; you can redistribute it and/or modify it under the
-@@ -15,7 +15,7 @@
- 
- // You should have received a copy of the GNU General Public License along
- // with this library; see the file COPYING.  If not, write to the Free
--// Software Foundation, 59 Temple Place - Suite 330, Boston, MA 02111-1307,
-+// Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301,
- // USA.
- 
- // As a special exception, you may use this file as part of a free software
 @@ -37,25 +37,33 @@
    template<typename _CharT>
      __timepunct<_CharT>::__timepunct(size_t __refs) 
