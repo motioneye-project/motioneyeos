@@ -1,37 +1,5 @@
-diff -Naur bind-9.3.1/configure bind/configure
---- bind-9.3.1/configure	2004-12-08 20:09:03.000000000 -0800
-+++ bind/configure	2005-09-09 16:06:50.000000000 -0700
-@@ -23678,11 +23678,9 @@
- echo "$as_me:$LINENO: checking for inet_ntop with IPv6 support" >&5
- echo $ECHO_N "checking for inet_ntop with IPv6 support... $ECHO_C" >&6
- if test "$cross_compiling" = yes; then
--  { { echo "$as_me:$LINENO: error: cannot run test program while cross compiling
--See \`config.log' for more details." >&5
--echo "$as_me: error: cannot run test program while cross compiling
--See \`config.log' for more details." >&2;}
--   { (exit 1); exit 1; }; }
-+  echo "$as_me:$LINENO: result: assuming target platform has working inet_ntop" >&5
-+echo "${ECHO_T}assuming target platform has working inet_ntop" >&6
-+	ISC_PLATFORM_NEEDNTOP="#undef ISC_PLATFORM_NEEDNTOP"
- else
-   cat >conftest.$ac_ext <<_ACEOF
- /* confdefs.h.  */
-diff -Naur bind-9.3.1/configure.in bind/configure.in
---- bind-9.3.1/configure.in	2004-12-08 20:07:10.000000000 -0800
-+++ bind/configure.in	2005-09-09 16:06:39.000000000 -0700
-@@ -1414,7 +1414,9 @@
-         [AC_MSG_RESULT(no)
-         ISC_EXTRA_OBJS="$ISC_EXTRA_OBJS inet_ntop.$O"
-         ISC_EXTRA_SRCS="$ISC_EXTRA_SRCS inet_ntop.c"
--        ISC_PLATFORM_NEEDNTOP="#define ISC_PLATFORM_NEEDNTOP 1"])
-+        ISC_PLATFORM_NEEDNTOP="#define ISC_PLATFORM_NEEDNTOP 1"],
-+        [AC_MSG_RESULT(assuming target platform has working inet_ntop)
-+        ISC_PLATFORM_NEEDNTOP="#undef ISC_PLATFORM_NEEDNTOP"])
- 
- 
- # On NetBSD 1.4.2 and maybe others, inet_pton() incorrectly accepts
---- bind-9.3.1/lib/dns/Makefile.in	2005-09-09 16:21:34.000000000 -0700
-+++ bind/lib/dns/Makefile.in	2005-09-09 16:28:16.000000000 -0700
+--- bind-9.3.2/lib/dns/Makefile.in
++++ bind-9.3.2/lib/dns/Makefile.in
 @@ -156,7 +156,7 @@
  	./gen -s ${srcdir} > code.h
  

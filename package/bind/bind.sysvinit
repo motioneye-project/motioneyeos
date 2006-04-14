@@ -18,10 +18,14 @@ case "$1" in
 		test -z "$CHROOT" || ARGS="$ARGS -t $CHROOT"
 		test -z "$SETUID" || ARGS="$ARGS -u $SETUID"
 		if [ ! -f $CHROOT/etc/rndc.key ]; then
-		    echo -n "Initializing $NAME control key: rndc-confgen"
-		    set +e 
-		    touch $CHROOT/etc/rndc.key # handle symlinks
-		    rndc-confgen -a -r /dev/urandom $ARGS || echo "."
+		    echo "Initializing $NAME control key: rndc-confgen"
+		    set +e
+
+                    # if rndc.key is a symlink, the target must exist
+		    touch $CHROOT/etc/rndc.key
+		    touch etc/rndc.key
+
+		    rndc-confgen -a -r /dev/urandom $ARGS || true
 		    set -e
 		fi
 		test -z "$CONF" || ARGS="$ARGS -c $CONF"
@@ -37,12 +41,12 @@ case "$1" in
 		echo "."
 		;;
 	restart)
-		$0 stop
+		$0 stop || true
 		sleep 2
-		$0 start && exit $?
+		$0 start
 		;;
 	reload|force-reload)
-		rndc reload && exit $?
+		rndc reload || $0 restart
 		;;
 	*)
 		echo "Usage: $0 {start|stop|restart|reload|force-reload}"

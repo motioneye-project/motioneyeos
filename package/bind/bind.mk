@@ -3,7 +3,7 @@
 # bind
 #
 #############################################################
-BIND_VER:=9.3.1
+BIND_VER:=9.3.2
 BIND_SOURCE:=bind-$(BIND_VER).tar.gz
 BIND_SITE:=ftp://ftp.isc.org/isc/bind9/$(BIND_VER)
 BIND_DIR1:=$(TOOL_BUILD_DIR)/bind-$(BIND_VER)
@@ -44,8 +44,8 @@ $(BIND_DIR2)/Makefile: $(BIND_DIR2)/.unpacked
 		--without-openssl \
 		--with-randomdev=/dev/random \
 		--enable-ipv6 \
-		--disable-static \
 		--with-libtool \
+		--with-pic \
 	);
 
 $(BIND_DIR2)/$(BIND_BINARY): $(BIND_DIR2)/Makefile
@@ -73,18 +73,17 @@ bind-bin: $(TARGET_DIR)/$(BIND_TARGET_BINARY) bind-lib
 $(STAGING_DIR)/lib/libdns.so: $(BIND_DIR2)/$(BIND_BINARY)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -j1 DESTDIR=$(STAGING_DIR) -C $(BIND_DIR2)/lib install
 
-$(TARGET_DIR)/usr/lib/libdns.so: $(STAGING_DIR)/lib/libdns.so
-	mkdir -p $(TARGET_DIR)/usr/lib
+$(TARGET_DIR)/lib/libdns.so: $(STAGING_DIR)/lib/libdns.so
+	mkdir -p $(TARGET_DIR)/lib
 	cd $(STAGING_DIR)/lib; \
-	    cp -a libdns.* libisc.* libisccc.* libbind9.* liblwres.* libisccfg.* \
-		$(TARGET_DIR)/usr/lib
+	    cp -a libdns*so* libisc*so* libbind9*so* \
+	    liblwres*so* $(TARGET_DIR)/lib
 					
-bind-lib: $(STAGING_DIR)/lib/libdns.so $(TARGET_DIR)/usr/lib/libdns.so
+bind-lib: $(STAGING_DIR)/lib/libdns.so $(TARGET_DIR)/lib/libdns.so
 				      
 bind: uclibc bind-bin bind-lib
 
 bind-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BIND_DIR2) uninstall
 	-$(MAKE) -C $(BIND_DIR2) clean
 
 bind-dirclean:
