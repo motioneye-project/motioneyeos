@@ -1,7 +1,7 @@
-ifeq ($(BR2_PTHREADS),y)
-THREADS:=--enable-threads
-else
+ifeq ($(BR2_PTHREADS_NONE),y)
 THREADS:=--disable-threads
+else
+THREADS:=--enable-threads
 endif
 
 ifeq ($(BR2_ENABLE_MULTILIB),y)
