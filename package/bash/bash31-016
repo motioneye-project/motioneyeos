@@ -1,0 +1,51 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.1
+Patch-ID: bash31-016
+
+Bug-Reported-by: Nikita Danilov <nikita@clusterfs.com>
+Bug-Reference-ID: <17397.51015.769854.541057@gargle.gargle.HOWL>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2006-02/msg00064.html
+
+Bug-Description:
+
+Bash will dump core when attempting to perform globbing in directories with
+very large numbers of files.
+
+Patch:
+
+*** bash-3.1/lib/glob/glob.c	Thu Mar 24 12:42:27 2005
+--- bash-3.1/lib/glob/glob.c	Fri Mar  3 16:54:12 2006
+***************
+*** 361,364 ****
+--- 361,365 ----
+  
+    firstmalloc = 0;
++   nalloca = 0;
+  
+    /* If PAT is empty, skip the loop, but return one (empty) filename. */
+***************
+*** 547,550 ****
+--- 551,556 ----
+  	      tmplink = lastlink;
+  	    }
++ 	  else
++ 	    tmplink = 0;
+  	  free (lastlink->name);
+  	  lastlink = lastlink->next;
+*** bash-3.1/patchlevel.h	Wed Jul 20 13:58:20 2005
+--- bash-3.1/patchlevel.h	Wed Dec  7 13:48:42 2005
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 16
+  
+  #endif /* _PATCHLEVEL_H_ */
