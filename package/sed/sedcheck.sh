@@ -1,21 +1,25 @@
 #!/bin/sh
 
-if [ -x /usr/bin/sed ]; then 
-    SED="/usr/bin/sed";
+# Make sure the host sed supports '-i' (in-place).
+# If it doesn't, we'll build and use our own.
+
+if test -x /usr/bin/sed ; then
+	SED="/usr/bin/sed"
 else
-    if [ -x /bin/sed ]; then 
-	SED="/bin/sed";
-    fi;
-fi;
+	if test -x /bin/sed ; then
+		SED="/bin/sed"
+	else
+		SED="sed"
+	fi
+fi
 
 echo "HELLO" > .sedtest
 $SED -i -e "s/HELLO/GOODBYE/" .sedtest >/dev/null 2>&1
 
-if [ $? != 0 ] ; then
+if test $? != 0 ; then
 	echo build-sed-host-binary
 else
 	echo use-sed-host-binary
-fi;
+fi
+
 rm -f .sedtest
-
-
