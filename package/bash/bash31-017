@@ -95,8 +95,8 @@ Patch:
 + 
   /* De-quoted quoted characters in STRING. */
   extern char *dequote_string __P((char *));
-*** ../bash-3.1-patched/arrayfunc.c	Mon Jul  4 20:25:58 2005
---- arrayfunc.c	Mon Mar 27 09:10:47 2006
+*** bash-3.1/arrayfunc.c	Mon Jul  4 20:25:58 2005
+--- bash-3.1/arrayfunc.c	Mon Mar 27 09:10:47 2006
 ***************
 *** 593,601 ****
     strncpy (exp, s, len - 1);
