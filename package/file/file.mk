@@ -3,7 +3,7 @@
 # file
 #
 #############################################################
-FILE_VER:=4.16
+FILE_VER:=4.17
 FILE_SOURCE:=file-$(FILE_VER).tar.gz
 FILE_SITE:=ftp://ftp.astron.com/pub/file
 FILE_DIR1:=$(TOOL_BUILD_DIR)/file-$(FILE_VER)
