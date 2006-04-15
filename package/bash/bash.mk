@@ -16,6 +16,7 @@ $(DL_DIR)/$(BASH_SOURCE):
 
 bash-source: $(DL_DIR)/$(BASH_SOURCE)
 
+bash-unpacked: $(BASH_DIR)/.unpacked
 $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	$(BASH_CAT) $(DL_DIR)/$(BASH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(BASH_DIR) package/bash/ bash??-*
