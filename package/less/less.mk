@@ -3,7 +3,7 @@
 # less
 #
 #############################################################
-LESS_VERSION:=385
+LESS_VERSION:=394
 LESS_SOURCE:=less-$(LESS_VERSION).tar.gz
 LESS_SITE:=http://www.greenwoodsoftware.com/less
 LESS_DIR:=$(BUILD_DIR)/less-$(LESS_VERSION)
