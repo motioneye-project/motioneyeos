@@ -3,9 +3,9 @@
 # berkeley db
 #
 #############################################################
-DB_VER:=4.3.28
+DB_VER:=4.3.29
 DB_SO_VER:=4.3
-DB_SITE:=ftp://sleepycat1.inetu.net/releases/
+DB_SITE:=ftp://ftp.sleepycat.com/releases
 DB_SOURCE:=db-$(DB_VER).NC.tar.gz
 DB_DIR:=$(BUILD_DIR)/db-$(DB_VER).NC
 DB_SHARLIB:=libdb-$(DB_SO_VER).so
