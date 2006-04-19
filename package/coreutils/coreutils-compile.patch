@@ -1,5 +1,5 @@
---- lib/time_r.h.orig	2006-04-19 12:03:46.000000000 -0600
-+++ lib/time_r.h	2006-04-19 12:03:50.000000000 -0600
+--- coreutils/lib/time_r.h.orig	2006-04-19 12:03:46.000000000 -0600
++++ coreutils/lib/time_r.h	2006-04-19 12:03:50.000000000 -0600
 @@ -26,7 +26,7 @@
     those declarations.  */
  #include <time.h>
