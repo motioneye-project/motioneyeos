@@ -109,7 +109,7 @@ $(TARGET_DIR):
 		zcat $(TARGET_SKELETON) | tar -C $(BUILD_DIR) -xf -; \
 	fi;
 	if [ -d "$(TARGET_SKEL_DIR)" ] ; then \
-		cp -a $(TARGET_SKEL_DIR)/* $(TARGET_DIR)/; \
+		cp -fa $(TARGET_SKEL_DIR)/* $(TARGET_DIR)/; \
 	fi;
 	touch $(STAGING_DIR)/.fakeroot.00000
 	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
