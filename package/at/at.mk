@@ -3,7 +3,7 @@
 # at
 #
 #############################################################
-AT_VER:=3.1.9
+AT_VER:=3.1.10
 AT_SOURCE:=at_$(AT_VER).tar.gz
 AT_SITE:=http://ftp.debian.org/debian/pool/main/a/at
 AT_DIR:=$(BUILD_DIR)/at-$(AT_VER)
