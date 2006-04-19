@@ -3,7 +3,7 @@
 # fakeroot
 #
 #############################################################
-FAKEROOT_VERSION:=1.2.13
+FAKEROOT_VERSION:=1.5.8
 FAKEROOT_SOURCE:=fakeroot_$(FAKEROOT_VERSION).tar.gz
 FAKEROOT_SITE:=http://ftp.debian.org/debian/pool/main/f/fakeroot
 FAKEROOT_CAT:=zcat
@@ -26,6 +26,7 @@ $(FAKEROOT_DIR1)/.unpacked: $(DL_DIR)/$(FAKEROOT_SOURCE)
 	$(FAKEROOT_CAT) $(DL_DIR)/$(FAKEROOT_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	$(SED) "s,getopt --version,getopt --version 2>/dev/null," \
 		$(FAKEROOT_DIR1)/scripts/fakeroot.in
+	toolchain/patch-kernel.sh $(FAKEROOT_DIR1) package/fakeroot/ \*.patch
 	touch $(FAKEROOT_DIR1)/.unpacked
 
 $(FAKEROOT_DIR1)/.configured: $(FAKEROOT_DIR1)/.unpacked
@@ -33,6 +34,7 @@ $(FAKEROOT_DIR1)/.configured: $(FAKEROOT_DIR1)/.unpacked
 		CC="$(HOSTCC)" \
 		./configure \
 		--prefix=/usr \
+		$(DISABLE_NLS) \
 	);
 	touch $(FAKEROOT_DIR1)/.configured
 

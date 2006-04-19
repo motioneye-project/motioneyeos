@@ -1,0 +1,20 @@
+--- fakeroot/Makefile.am.orig	2006-04-19 11:50:35.000000000 -0600
++++ fakeroot/Makefile.am	2006-04-19 11:50:59.000000000 -0600
+@@ -1,5 +1,5 @@
+ AUTOMAKE_OPTIONS=foreign
+-SUBDIRS=scripts doc test
++SUBDIRS=scripts test
+ 
+ noinst_LTLIBRARIES = libcommunicate.la
+ libcommunicate_la_SOURCES = communicate.c
+--- fakeroot/Makefile.in.orig	2006-04-19 11:50:43.000000000 -0600
++++ fakeroot/Makefile.in	2006-04-19 11:51:21.000000000 -0600
+@@ -214,7 +214,7 @@
+ target_os = @target_os@
+ target_vendor = @target_vendor@
+ AUTOMAKE_OPTIONS = foreign
+-SUBDIRS = scripts doc test
++SUBDIRS = scripts test
+ noinst_LTLIBRARIES = libcommunicate.la
+ libcommunicate_la_SOURCES = communicate.c
+ lib_LTLIBRARIES = libfakeroot.la
