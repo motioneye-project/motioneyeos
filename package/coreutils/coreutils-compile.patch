@@ -1,0 +1,11 @@
+--- lib/time_r.h.orig	2006-04-19 12:03:46.000000000 -0600
++++ lib/time_r.h	2006-04-19 12:03:50.000000000 -0600
+@@ -26,7 +26,7 @@
+    those declarations.  */
+ #include <time.h>
+ 
+-#if !HAVE_TIME_R_POSIX
++#if 0
+ # undef asctime_r
+ # undef ctime_r
+ # undef gmtime_r
