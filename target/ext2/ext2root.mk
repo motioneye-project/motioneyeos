@@ -73,13 +73,13 @@ $(EXT2_BASE): host-fakeroot makedevs genext2fs
 	@rm -rf $(TARGET_DIR)/usr/info
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
+	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
-	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
+	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 	# Use fakeroot so genext2fs believes the previous fakery
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	GENEXT2_REALSIZE=`LANG=C du -l -s -c -k $(TARGET_DIR) | grep total | sed -e "s/total//"`; \
@@ -90,14 +90,14 @@ ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	set -x; \
 	echo "$(GENEXT2_DIR)/genext2fs -b $$GENEXT2_SIZE " \
 		"-i $$GENEXT2_INODES -d $(TARGET_DIR) " \
-		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
+		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 else
 	echo "$(GENEXT2_DIR)/genext2fs -d $(TARGET_DIR) " \
-		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
+		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 endif
-	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
-	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
-	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $EXT2_TARGET)
+	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 
 $(EXT2_BASE).gz: $(EXT2_BASE)
 	@gzip --best -fv $(EXT2_BASE)

@@ -61,21 +61,21 @@ squashfsroot: host-fakeroot makedevs squashfs
 	@rm -rf $(TARGET_DIR)/usr/info
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
+	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
 	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
-	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
+	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
+	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
 	# Use fakeroot so mksquashfs believes the previous fakery
 	echo "$(SQUASHFS_DIR)/squashfs-tools/mksquashfs " \
 		    "$(TARGET_DIR) $(SQUASHFS_TARGET) " \
 		    "-noappend $(SQUASHFS_ENDIANNESS)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
-	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
-	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
-	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $SQUASHFS_TARGET)
+		>> $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
+	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
+	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(SQUASHFS_TARGET))
 
 squashfsroot-source: squashfs-source
 
