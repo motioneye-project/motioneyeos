@@ -1,0 +1,12 @@
+diff -urpN linux-libc-headers-2.6.12.0/include/linux/i2c-dev.h linux-libc-headers-2.6.12.0-patched/include/linux/i2c-dev.h
+--- linux-libc-headers-2.6.12.0/include/linux/i2c-dev.h	2005-07-06 02:17:21.000000000 +0200
++++ linux-libc-headers-2.6.12.0-patched/include/linux/i2c-dev.h	2006-04-26 13:10:56.000000000 +0200
+@@ -44,8 +44,6 @@ struct i2c_msg {
+ #define I2C_M_NO_RD_ACK		0x0800
+ 	short len;		/* msg length				*/
+ 	char *buf;		/* pointer to msg data			*/
+-	int err;
+-	short done;
+ };
+ 
+ /* To determine what functionality is present */
