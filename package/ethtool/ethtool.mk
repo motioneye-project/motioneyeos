@@ -6,7 +6,7 @@
 
 ETHTOOL_VERSION=3
 ETHTOOL_SOURCE=ethtool-$(ETHTOOL_VERSION).tar.gz
-ETHTOOL_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ethtool/
+ETHTOOL_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/gkernel/
 ETHTOOL_DIR=$(BUILD_DIR)/${shell basename $(ETHTOOL_SOURCE) .tar.gz}
 ETHTOOL_WORKDIR=$(BUILD_DIR)/ethtool-$(ETHTOOL_VERSION)
 ETHTOOL_CAT:=zcat
