@@ -3,7 +3,7 @@
 # rsync
 #
 #############################################################
-RSYNC_VER:=2.6.7
+RSYNC_VER:=2.6.8
 RSYNC_SOURCE:=rsync-$(RSYNC_VER).tar.gz
 RSYNC_SITE:=http://rsync.samba.org/ftp/rsync/
 RSYNC_DIR:=$(BUILD_DIR)/rsync-$(RSYNC_VER)
