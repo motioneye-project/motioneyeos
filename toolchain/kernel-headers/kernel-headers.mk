@@ -87,7 +87,7 @@ LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.12.0.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.12.0
 endif
 
-LINUX_VERSION:=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
+LINUX_HEADERS_VERSION:=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
 
 LINUX_HEADERS_DIR:=$(TOOL_BUILD_DIR)/linux
 
@@ -105,9 +105,9 @@ endif
 	touch $(LINUX_HEADERS_DIR)/.unpacked
 
 $(LINUX_HEADERS_DIR)/.patched: $(LINUX_HEADERS_DIR)/.unpacked
-	toolchain/patch-kernel.sh $(LINUX_HEADERS_DIR) toolchain/kernel-headers linux-libc-headers-$(LINUX_VERSION)\*.patch
+	toolchain/patch-kernel.sh $(LINUX_HEADERS_DIR) toolchain/kernel-headers linux-libc-headers-$(LINUX_HEADERS_VERSION)\*.patch
 ifeq ($(strip $(ARCH)),nios2)
-	toolchain/patch-kernel.sh $(LINUX_HEADERS_DIR) toolchain/kernel-headers linux-libc-headers-$(LINUX_VERSION)-nios2nommu.patch.conditional
+	toolchain/patch-kernel.sh $(LINUX_HEADERS_DIR) toolchain/kernel-headers linux-libc-headers-$(LINUX_HEADERS_VERSION)-nios2nommu.patch.conditional
 endif
 	touch $(LINUX_HEADERS_DIR)/.patched
 
