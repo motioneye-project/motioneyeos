@@ -44,7 +44,19 @@ $(GETTEXT_DIR)/$(GETTEXT_BINARY): $(GETTEXT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GETTEXT_DIR)
 
 $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
-	$(MAKE) DESTDIR=$(STAGING_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) install
+	$(MAKE) prefix=$(STAGING_DIR)/usr \
+		exec_prefix=$(STAGING_DIR)/usr \
+		bindir=$(STAGING_DIR)/usr/bin \
+		sbindir=$(STAGING_DIR)/usr/sbin \
+		libexecdir=$(STAGING_DIR)/usr/lib \
+		datadir=$(STAGING_DIR)/usr/share \
+		sysconfdir=$(STAGING_DIR)/etc \
+		localstatedir=$(STAGING_DIR)/var \
+		libdir=$(STAGING_DIR)/usr/lib \
+		infodir=$(STAGING_DIR)/info \
+		mandir=$(STAGING_DIR)/man \
+		includedir=$(STAGING_DIR)/include \
+		-C $(GETTEXT_DIR) install;
 
 gettext: uclibc $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 
