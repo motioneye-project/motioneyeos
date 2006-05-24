@@ -3,15 +3,17 @@
 # mksquashfs to build to target squashfs filesystems
 #
 #############################################################
-SQUASHFS_DIR=$(BUILD_DIR)/squashfs2.1-r2
-SQUASHFS_SOURCE=squashfs2.1-r2.tar.gz
-SQUASHFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/squashfs
+SQUASHFS_VERSION:=3.0
+SQUASHFS_DIR:=$(BUILD_DIR)/squashfs$(SQUASHFS_VERSION)
+SQUASHFS_SOURCE:=squashfs$(SQUASHFS_VERSION).tar.gz
+SQUASHFS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/squashfs
+SQUASHFS_CAT:=zcat
 
 $(DL_DIR)/$(SQUASHFS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(SQUASHFS_SITE)/$(SQUASHFS_SOURCE)
 
 $(SQUASHFS_DIR)/.unpacked: $(DL_DIR)/$(SQUASHFS_SOURCE) #$(SQUASHFS_PATCH)
-	zcat $(DL_DIR)/$(SQUASHFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(SQUASHFS_CAT) $(DL_DIR)/$(SQUASHFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(SQUASHFS_DIR) target/squashfs/ squashfs\*.patch
 	touch $(SQUASHFS_DIR)/.unpacked
 
