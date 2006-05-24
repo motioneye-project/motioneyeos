@@ -17,6 +17,7 @@ gettext-source: $(DL_DIR)/$(GETTEXT_SOURCE)
 
 $(GETTEXT_DIR)/.unpacked: $(DL_DIR)/$(GETTEXT_SOURCE)
 	$(GETTEXT_CAT) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(GETTEXT_DIR) package/gettext/ gettext\*.patch
 	touch $(GETTEXT_DIR)/.unpacked
 
 $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
