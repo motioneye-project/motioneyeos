@@ -3,7 +3,7 @@
 # SDL
 #
 #############################################################
-SDL_VERSION:=1.2.9
+SDL_VERSION:=1.2.10
 SDL_SOURCE:=SDL-$(SDL_VERSION).tar.gz
 SDL_SITE:=http://www.libsdl.org/release
 SDL_CAT:=zcat
@@ -38,8 +38,6 @@ $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
 	$(MAKE) -C $(SDL_DIR) install
-	(cd $(STAGING_DIR)/usr/bin; \
-	ln -sf $(GNU_TARGET_NAME)-sdl-config sdl-config );
 	touch -c $(STAGING_DIR)/usr/lib/libSDL.so
 
 $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so
