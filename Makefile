@@ -86,7 +86,7 @@ world: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) $(TARGETS)
 #############################################################
 #
 # staging and target directories do NOT list these as
-# dependancies anywhere else
+# dependencies anywhere else
 #
 #############################################################
 $(DL_DIR):

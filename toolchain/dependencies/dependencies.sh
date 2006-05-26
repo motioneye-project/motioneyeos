@@ -3,7 +3,7 @@
 set -e
 #set -x
 
-echo "Checking build system dependancies:"
+echo "Checking build system dependencies:"
 echo ""
 
 
@@ -125,5 +125,5 @@ echo "gettext installed:		    Ok"
 # All done
 #
 #############################################################
-echo "Build system dependancies:	    Ok"
+echo "Build system dependencies:	    Ok"
 

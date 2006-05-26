@@ -1,19 +1,19 @@
 ######################################################################
 #
-# Check buildroot dependancies and bail out if the user's
+# Check buildroot dependencies and bail out if the user's
 # system is judged to be lacking....
 #
 ######################################################################
 
-dependancies:
-	$(TOPDIR)/toolchain/dependancies/dependancies.sh
+dependencies:
+	$(TOPDIR)/toolchain/dependencies/dependencies.sh
 
-dependancies-source:
+dependencies-source:
 
-dependancies-clean:
+dependencies-clean:
 	rm -f $(SSTRIP_TARGET)
 
-dependancies-dirclean:
+dependencies-dirclean:
 	true
 
 #############################################################
@@ -22,4 +22,4 @@ dependancies-dirclean:
 #
 #############################################################
 # unconditionally include this one...
-TARGETS+=dependancies
+TARGETS+=dependencies

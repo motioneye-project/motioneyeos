@@ -73,7 +73,7 @@ $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 	$(MAKE) -C $(BINUTILS_DIR1) install
 
-binutils: dependancies $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
+binutils: dependencies $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
 
 binutils-source: $(DL_DIR)/$(BINUTILS_SOURCE)
 
