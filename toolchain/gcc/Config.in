@@ -105,6 +105,7 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 config BR2_INSTALL_LIBSTDCPP
 	bool "Build/install c++ compiler and libstdc++?"
 	default n
+	select BR2_LARGEFILE
 	help
 	    Build/install c++ compiler and libstdc++?
 
