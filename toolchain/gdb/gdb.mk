@@ -97,7 +97,9 @@ gdb_target: ncurses $(TARGET_DIR)/usr/bin/gdb
 gdb_target-source: $(DL_DIR)/$(GDB_SOURCE)
 
 gdb_target-clean:
-	$(MAKE) -C $(GDB_DIR) clean
+	@if [ -d $(GDB_DIR)/Makefile ] ; then \
+		$(MAKE) -C $(GDB_DIR) clean ; \
+	fi;
 
 gdb_target-dirclean:
 	rm -rf $(GDB_DIR)
@@ -152,7 +154,9 @@ endif
 gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
 
 gdbserver-clean:
-	$(MAKE) -C $(GDB_SERVER_DIR) clean
+	@if [ -d $(GDB_SERVER_DIR)/Makefile ] ; then \
+		$(MAKE) -C $(GDB_SERVER_DIR) clean ; \
+	fi;
 
 gdbserver-dirclean:
 	rm -rf $(GDB_SERVER_DIR)
@@ -196,7 +200,9 @@ $(TARGET_CROSS)gdb: $(GDB_HOST_DIR)/gdb/gdb
 gdbhost: $(TARGET_CROSS)gdb
 
 gdbhost-clean:
-	$(MAKE) -C $(GDB_HOST_DIR) clean
+	@if [ -d $(GDB_HOST_DIR)/Makefile ] ; then \
+		$(MAKE) -C $(GDB_HOST_DIR) clean ; \
+	fi;
 
 gdbhost-dirclean:
 	rm -rf $(GDB_HOST_DIR)
