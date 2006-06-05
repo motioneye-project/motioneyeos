@@ -86,6 +86,10 @@ ifneq ($(UCLIBC_TARGET_ENDIAN),)
 	$(SED) '/^# ARCH_$(UCLIBC_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=y,g}' \
 		-e '/^# ARCH_$(UCLIBC_NOT_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=n,g}' \
 		$(UCLIBC_DIR)/.config
+
+	$(SED) '/^# ARCH_WANTS_$(UCLIBC_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=y,g}' \
+		-e '/^# ARCH_WANTS_$(UCLIBC_NOT_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=n,g}' \
+		$(UCLIBC_DIR)/.config
 endif
 ifeq ($(BR2_LARGEFILE),y)
 	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=y,g' $(UCLIBC_DIR)/.config
@@ -94,7 +98,7 @@ else
 endif
 	$(SED) 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
 ifeq ($(BR2_SOFT_FLOAT),y)
-	$(SED) 's,.*HAS_FPU.*,HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
+	$(SED) 's,.*UCLIBC_HAS_FPU.*,UCLIBC_HAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
 endif
 ifneq ($(BR2_PTHREADS_NONE),y)
 	$(SED) 's,# UCLIBC_HAS_THREADS is not set,UCLIBC_HAS_THREADS=y,g' $(UCLIBC_DIR)/.config
