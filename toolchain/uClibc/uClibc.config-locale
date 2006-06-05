@@ -41,6 +41,7 @@ DO_C99_MATH=y
 WARNINGS="-Wall"
 KERNEL_SOURCE="/usr/src/linux"
 HAVE_DOT_CONFIG=y
+# CONFIG_ARM_EABI is not set
 # CONFIG_GENERIC_ARM is not set
 # CONFIG_ARM610 is not set
 # CONFIG_ARM710 is not set

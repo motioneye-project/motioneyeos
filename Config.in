@@ -89,6 +89,16 @@ config BR2_ARM_TYPE
 	default GENERIC_ARM	if BR2_generic_arm
 
 choice
+	prompt "Target ABI"
+	depends BR2_arm || BR2_armeb
+	default BR2_ARM_OABI
+config BR2_ARM_OABI
+	bool "OABI"
+config BR2_ARM_EABI
+	bool "EABI"
+endchoice
+
+choice
 	prompt "Target Architecture Variant"
 	depends BR2_sh
 	default BR2_sh4
@@ -238,6 +248,7 @@ config BR2_GNU_BUILD_SUFFIX
 
 config BR2_GNU_TARGET_SUFFIX
 	string "GNU target suffix"
+	default "linux-uclibcgnueabi" if BR2_ARM_EABI
 	default "linux-uclibc"
 	help
 	    The string used to pass to configure scripts via the

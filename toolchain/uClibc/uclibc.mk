@@ -82,6 +82,9 @@ ifeq ($(UCLIBC_TARGET_ARCH),arm)
 	$(SED) 's,^.*CONFIG_$(shell echo $(BR2_ARM_TYPE)).*,CONFIG_$(shell echo $(BR2_ARM_TYPE))=y,g' \
 	$(UCLIBC_DIR)/.config
 endif
+ifeq ($(BR2_ARM_EABI),y)
+	$(SED) 's,# CONFIG_ARM_EABI is not set,CONFIG_ARM_EABI=y,g' $(UCLIBC_DIR)/.config
+endif
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
 	$(SED) '/^# ARCH_$(UCLIBC_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=y,g}' \
 		-e '/^# ARCH_$(UCLIBC_NOT_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=n,g}' \
