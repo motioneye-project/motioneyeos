@@ -55,7 +55,7 @@ $(SUDO_DIR)/sudo: $(SUDO_DIR)/.configured
 
 $(TARGET_DIR)/usr/bin/sudo: $(SUDO_DIR)/sudo
 	# Use fakeroot to pretend to do 'make install' as root
-	echo "$(MAKE) DESTDIR="$(TARGET_DIR)" -C $(SUDO_DIR) install" \
+	echo "$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR="$(TARGET_DIR)" -C $(SUDO_DIR) install" \
 		> $(STAGING_DIR)/.fakeroot.sudo
 
 sudo: uclibc $(TARGET_DIR)/usr/bin/sudo

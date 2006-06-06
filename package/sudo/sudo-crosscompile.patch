@@ -1,19 +1,53 @@
---- sudo-1.6.8p9/configure.in-old	2005-10-13 12:58:08.000000000 -0700
-+++ sudo-1.6.8p9/configure.in	2005-10-13 13:30:49.000000000 -0700
-@@ -1703,9 +1703,9 @@
- AC_CHECK_FUNCS(lockf flock, [break])
- AC_CHECK_FUNCS(waitpid wait3, [break])
- AC_CHECK_FUNCS(innetgr _innetgr, [AC_CHECK_FUNCS(getdomainname) [break]])
--AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], AC_LIBOBJ(lsearch), -), AC_LIBOBJ(lsearch))])
-+AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, [AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], [AC_LIBOBJ(lsearch)], -)], [AC_LIBOBJ(lsearch)])])
- AC_CHECK_FUNCS(utimes, [AC_CHECK_FUNCS(futimes futimesat, [break])], [AC_CHECK_FUNCS(futime) AC_LIBOBJ(utimes)])
--SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), AC_LIBOBJ(fnmatch))
-+SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), [AC_LIBOBJ(fnmatch)])
- SUDO_FUNC_ISBLANK
- AC_REPLACE_FUNCS(strerror strcasecmp sigaction strlcpy strlcat closefrom)
- AC_CHECK_FUNCS(snprintf vsnprintf asprintf vasprintf, , [NEED_SNPRINTF=1])
---- sudo-1.6.8p9/configure-old	2004-11-26 12:04:30.000000000 -0800
-+++ sudo-1.6.8p9/configure	2005-10-13 13:30:59.000000000 -0700
+diff -ur sudo-1.6.8p9/aclocal.m4 sudo-1.6.8p9-patched/aclocal.m4
+--- sudo-1.6.8p9/aclocal.m4	2004-09-07 12:14:51.000000000 -0500
++++ sudo-1.6.8p9-patched/aclocal.m4	2006-05-26 13:05:14.000000000 -0500
+@@ -220,13 +220,13 @@
+ AC_TRY_RUN([#include <fnmatch.h>
+ main() { exit(fnmatch("/*/bin/echo *", "/usr/bin/echo just a test", FNM_CASEFOLD)); }
+ ], sudo_cv_func_fnmatch=yes, sudo_cv_func_fnmatch=no,
+-  sudo_cv_func_fnmatch=no)
++  sudo_cv_func_fnmatch=no,[true])
+ rm -f core core.* *.core])dnl
+ AC_MSG_RESULT($sudo_cv_func_fnmatch)
+ if test $sudo_cv_func_fnmatch = yes; then
+-  [$1]
++  $1
+ else
+-  [$2]
++  $2
+ fi
+ ])
+ 
+@@ -256,7 +256,7 @@
+ s.sa_len = 0;
+ exit(0);
+ }], sudo_cv_sock_sa_len=yes, sudo_cv_sock_sa_len=no,
+-  sudo_cv_sock_sa_len=no)
++  sudo_cv_sock_sa_len=no,[true])
+ rm -f core core.* *.core])dnl
+ AC_MSG_RESULT($sudo_cv_sock_sa_len)
+ if test $sudo_cv_sock_sa_len = yes; then
+@@ -292,7 +292,7 @@
+   (void) fprintf(f, "%d\n", strlen(b));
+   (void) fclose(f);
+   exit(0);
+-}], sudo_cv_uid_t_len=`cat conftestdata`, sudo_cv_uid_t_len=10)
++}], sudo_cv_uid_t_len=`cat conftestdata`, sudo_cv_uid_t_len=10,[true])
+ ])
+ rm -f conftestdata
+ AC_MSG_RESULT($sudo_cv_uid_t_len)
+@@ -305,7 +305,7 @@
+ dnl
+ AC_DEFUN(SUDO_LONG_LONG, [AC_MSG_CHECKING(for long long support)
+ AC_TRY_LINK(, [long long foo = 1000; foo /= 10;], AC_DEFINE(HAVE_LONG_LONG, 1, [Define if your compiler supports the "long long" type.])
+-[AC_TRY_RUN([main() {if (sizeof(long long) == sizeof(long)) exit(0); else exit(1);}], AC_DEFINE(LONG_IS_QUAD, 1, [Define if sizeof(long) == sizeof(long long).]))]
++[AC_TRY_RUN([main() {if (sizeof(long long) == sizeof(long)) exit(0); else exit(1);}], AC_DEFINE(LONG_IS_QUAD, 1, [Define if sizeof(long) == sizeof(long long).]),[true],[true])]
+ AC_MSG_RESULT(yes), AC_MSG_RESULT(no))])
+ 
+ dnl
+diff -ur sudo-1.6.8p9/configure sudo-1.6.8p9-patched/configure
+--- sudo-1.6.8p9/configure	2004-11-26 14:04:30.000000000 -0600
++++ sudo-1.6.8p9-patched/configure	2006-05-26 13:05:14.000000000 -0500
 @@ -1,9 +1,8 @@
  #! /bin/sh
  # Guess values for system-dependent variables and create Makefiles.
@@ -10149,49 +10183,37 @@
  echo X"$as_dir" |
      sed '/^X\(.*[^/]\)\/\/*[^/][^/]*\/*$/{ s//\1/; q; }
    	  /^X\(\/\/\)[^/].*/{ s//\1/; q; }
---- sudo-1.6.8p9/aclocal.m4-old	2005-10-13 12:52:38.000000000 -0700
-+++ sudo-1.6.8p9/aclocal.m4	2005-10-13 13:30:09.000000000 -0700
-@@ -220,13 +220,13 @@
- AC_TRY_RUN([#include <fnmatch.h>
- main() { exit(fnmatch("/*/bin/echo *", "/usr/bin/echo just a test", FNM_CASEFOLD)); }
- ], sudo_cv_func_fnmatch=yes, sudo_cv_func_fnmatch=no,
--  sudo_cv_func_fnmatch=no)
-+  sudo_cv_func_fnmatch=no,[true])
- rm -f core core.* *.core])dnl
- AC_MSG_RESULT($sudo_cv_func_fnmatch)
- if test $sudo_cv_func_fnmatch = yes; then
--  [$1]
-+  $1
- else
--  [$2]
-+  $2
- fi
- ])
+diff -ur sudo-1.6.8p9/configure.in sudo-1.6.8p9-patched/configure.in
+--- sudo-1.6.8p9/configure.in	2004-11-25 11:31:20.000000000 -0600
++++ sudo-1.6.8p9-patched/configure.in	2006-05-26 13:05:14.000000000 -0500
+@@ -1703,9 +1703,9 @@
+ AC_CHECK_FUNCS(lockf flock, [break])
+ AC_CHECK_FUNCS(waitpid wait3, [break])
+ AC_CHECK_FUNCS(innetgr _innetgr, [AC_CHECK_FUNCS(getdomainname) [break]])
+-AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], AC_LIBOBJ(lsearch), -), AC_LIBOBJ(lsearch))])
++AC_CHECK_FUNCS(lsearch, , [AC_CHECK_LIB(compat, lsearch, [AC_CHECK_HEADER(search.h, AC_DEFINE(HAVE_LSEARCH) [LIBS="${LIBS} -lcompat"], [AC_LIBOBJ(lsearch)], -)], [AC_LIBOBJ(lsearch)])])
+ AC_CHECK_FUNCS(utimes, [AC_CHECK_FUNCS(futimes futimesat, [break])], [AC_CHECK_FUNCS(futime) AC_LIBOBJ(utimes)])
+-SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), AC_LIBOBJ(fnmatch))
++SUDO_FUNC_FNMATCH(AC_DEFINE(HAVE_FNMATCH), [AC_LIBOBJ(fnmatch)])
+ SUDO_FUNC_ISBLANK
+ AC_REPLACE_FUNCS(strerror strcasecmp sigaction strlcpy strlcat closefrom)
+ AC_CHECK_FUNCS(snprintf vsnprintf asprintf vasprintf, , [NEED_SNPRINTF=1])
+diff -ur sudo-1.6.8p9/Makefile.in sudo-1.6.8p9-patched/Makefile.in
+--- sudo-1.6.8p9/Makefile.in	2005-06-19 15:03:50.000000000 -0500
++++ sudo-1.6.8p9-patched/Makefile.in	2006-05-26 13:04:20.000000000 -0500
+@@ -301,11 +301,13 @@
+ 	    $(DESTDIR)$(noexecdir)
  
-@@ -256,7 +256,7 @@
- s.sa_len = 0;
- exit(0);
- }], sudo_cv_sock_sa_len=yes, sudo_cv_sock_sa_len=no,
--  sudo_cv_sock_sa_len=no)
-+  sudo_cv_sock_sa_len=no,[true])
- rm -f core core.* *.core])dnl
- AC_MSG_RESULT($sudo_cv_sock_sa_len)
- if test $sudo_cv_sock_sa_len = yes; then
-@@ -292,7 +292,7 @@
-   (void) fprintf(f, "%d\n", strlen(b));
-   (void) fclose(f);
-   exit(0);
--}], sudo_cv_uid_t_len=`cat conftestdata`, sudo_cv_uid_t_len=10)
-+}], sudo_cv_uid_t_len=`cat conftestdata`, sudo_cv_uid_t_len=10,[true])
- ])
- rm -f conftestdata
- AC_MSG_RESULT($sudo_cv_uid_t_len)
-@@ -305,7 +305,7 @@
- dnl
- AC_DEFUN(SUDO_LONG_LONG, [AC_MSG_CHECKING(for long long support)
- AC_TRY_LINK(, [long long foo = 1000; foo /= 10;], AC_DEFINE(HAVE_LONG_LONG, 1, [Define if your compiler supports the "long long" type.])
--[AC_TRY_RUN([main() {if (sizeof(long long) == sizeof(long)) exit(0); else exit(1);}], AC_DEFINE(LONG_IS_QUAD, 1, [Define if sizeof(long) == sizeof(long long).]))]
-+[AC_TRY_RUN([main() {if (sizeof(long long) == sizeof(long)) exit(0); else exit(1);}], AC_DEFINE(LONG_IS_QUAD, 1, [Define if sizeof(long) == sizeof(long long).]),[true],[true])]
- AC_MSG_RESULT(yes), AC_MSG_RESULT(no))])
+ install-binaries: $(PROGS)
+-	$(INSTALL) -O $(install_uid) -G $(install_gid) -M 4111 -s sudo $(DESTDIR)$(sudodir)/sudo
++	$(INSTALL) -O $(install_uid) -G $(install_gid) -M 4111 sudo $(DESTDIR)$(sudodir)/sudo
++	$(STRIP) $(DESTDIR)$(sudodir)/sudo
+ 	rm -f $(DESTDIR)$(sudodir)/sudoedit
+ 	ln $(DESTDIR)$(sudodir)/sudo $(DESTDIR)$(sudodir)/sudoedit
  
- dnl
+-	$(INSTALL) -O $(install_uid) -G $(install_gid) -M 0111 -s visudo $(DESTDIR)$(visudodir)/visudo
++	$(INSTALL) -O $(install_uid) -G $(install_gid) -M 0111 visudo $(DESTDIR)$(visudodir)/visudo
++	$(STRIP) $(DESTDIR)$(visudodir)/visudo
+ 
+ install-noexec: sudo_noexec.la
+ 	$(LIBTOOL) --mode=install $(INSTALL) sudo_noexec.la $(DESTDIR)$(noexecdir)
