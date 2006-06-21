@@ -35,10 +35,8 @@ ifeq ($(GDB_VERSION),snapshot)
 	ln -sf $(TOOL_BUILD_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
 endif
 	toolchain/patch-kernel.sh $(GDB_DIR) toolchain/gdb/$(GDB_VERSION) \*.patch
-	# Copy a config.sub from gcc.  This is only necessary until
-	# gdb's config.sub supports <arch>-linux-uclibc tuples.
-	# Should probably integrate this into the patch.
-	touch  $(GDB_DIR)/.unpacked
+	$(CONFIG_UPDATE) $(GDB_DIR)
+	touch $(GDB_DIR)/.unpacked
 
 gdb-dirclean:
 	rm -rf $(GDB_DIR)
