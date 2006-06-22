@@ -27,7 +27,8 @@ CONFIG_DEFCONFIG = .defconfig
 CONFIG = package/config
 
 noconfig_targets := menuconfig config oldconfig randconfig \
-	defconfig allyesconfig allnoconfig release tags
+	defconfig allyesconfig allnoconfig release tags    \
+	$(shell find . -name *_defconfig |sed 's/.*\///')
 
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
@@ -183,6 +184,10 @@ allnoconfig: $(CONFIG)/conf
 
 defconfig: $(CONFIG)/conf
 	@$(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
+
+%_defconfig: $(CONFIG)/conf
+	cp $(shell find . -name $@) .config
+	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
 
 #############################################################
 #
