@@ -3,7 +3,7 @@
 # udev
 #
 #############################################################
-UDEV_VERSION:=058
+UDEV_VERSION:=094
 UDEV_SOURCE:=udev-$(UDEV_VERSION).tar.bz2
 UDEV_SITE:=ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
 UDEV_CAT:=bzcat
