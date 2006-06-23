@@ -4,7 +4,7 @@
 #
 #############################################################
 AUTOCONF_SOURCE:=autoconf-2.59.tar.bz2
-AUTOCONF_SITE:=ftp://ftp.gnu.org/gnu/autoconf
+AUTOCONF_SITE:=http://ftp.gnu.org/pub/gnu/autoconf
 AUTOCONF_CAT:=bzcat
 AUTOCONF_DIR:=$(BUILD_DIR)/autoconf-2.59
 AUTOCONF_BINARY:=autoconf

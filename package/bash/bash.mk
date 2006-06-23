@@ -5,7 +5,7 @@
 #############################################################
 BASH_VER:=3.1
 BASH_SOURCE:=bash-$(BASH_VER).tar.gz
-BASH_SITE:=ftp://ftp.gnu.org/gnu/bash
+BASH_SITE:=http://ftp.gnu.org/pub/gnu/bash
 BASH_CAT:=zcat
 BASH_DIR:=$(BUILD_DIR)/bash-$(BASH_VER)
 BASH_BINARY:=bash

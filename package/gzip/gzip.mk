@@ -5,7 +5,8 @@
 #############################################################
 GZIP_VER:=1.3.5
 GZIP_SOURCE:=gzip-$(GZIP_VER).tar.gz
-GZIP_SITE:=ftp://alpha.gnu.org/gnu/gzip
+#GZIP_SITE:=ftp://alpha.gnu.org/gnu/gzip
+GZIP_SITE:=http://mirrors.ircam.fr/pub/gnu/alpha/gnu/gzip
 GZIP_DIR:=$(BUILD_DIR)/gzip-$(GZIP_VER)
 GZIP_CAT:=zcat
 GZIP_BINARY:=$(GZIP_DIR)/gzip

@@ -3,9 +3,9 @@
 # bison
 #
 #############################################################
-BISON_VER:=2.1
+BISON_VER:=2.3
 BISON_SOURCE:=bison-$(BISON_VER).tar.bz2
-BISON_SITE:=ftp://ftp.gnu.org/gnu/bison
+BISON_SITE:=http://ftp.gnu.org/pub/gnu/bison
 BISON_DIR:=$(BUILD_DIR)/bison-$(BISON_VER)
 BISON_CAT:=bzcat
 BISON_BINARY:=src/bison

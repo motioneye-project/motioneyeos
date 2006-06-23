@@ -3,9 +3,9 @@
 # sed
 #
 #############################################################
-SED_VER:=4.1.4
+SED_VER:=4.1.5
 SED_SOURCE:=sed-$(SED_VER).tar.gz
-SED_SITE:=ftp://ftp.gnu.org/gnu/sed
+SED_SITE:=http://ftp.gnu.org/pub/gnu/sed
 SED_CAT:=zcat
 SED_DIR1:=$(TOOL_BUILD_DIR)/sed-$(SED_VER)
 SED_DIR2:=$(BUILD_DIR)/sed-$(SED_VER)

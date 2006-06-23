@@ -5,7 +5,7 @@
 #############################################################
 WGET_VER:=1.10.2
 WGET_SOURCE:=wget-$(WGET_VER).tar.gz
-WGET_SITE:=ftp://mirrors.kernel.org/gnu/wget
+WGET_SITE:=http://ftp.gnu.org/pub/gnu/wget
 WGET_DIR:=$(BUILD_DIR)/wget-$(WGET_VER)
 WGET_CAT:=zcat
 WGET_BINARY:=src/wget

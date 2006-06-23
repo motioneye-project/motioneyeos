@@ -4,9 +4,9 @@
 #
 #############################################################
 GAWK_VER:=3.1.5
-GAWK_SOURCE:=gawk-$(GAWK_VER).tar.gz
-GAWK_SITE:=ftp://ftp.gnu.org/gnu/gawk
-GAWK_CAT:=zcat
+GAWK_SOURCE:=gawk-$(GAWK_VER).tar.bz2
+GAWK_SITE:=http://ftp.gnu.org/pub/gnu/gawk
+GAWK_CAT:=bzcat
 GAWK_DIR:=$(BUILD_DIR)/gawk-$(GAWK_VER)
 GAWK_BINARY:=gawk
 GAWK_TARGET_BINARY:=usr/bin/gawk
