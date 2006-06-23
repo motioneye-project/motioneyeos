@@ -49,7 +49,7 @@ LINUX_KARCH:=$(shell echo $(ARCH) | sed -e 's/i[3-9]86/i386/' \
 LINUX_BINLOC=$(LINUX_FORMAT)
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
-LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.4
+LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.6
 # Used by pcmcia-cs and others
 LINUX_SOURCE_DIR=$(LINUX_DIR)
 
