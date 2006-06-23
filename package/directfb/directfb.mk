@@ -3,7 +3,7 @@
 # directfb
 #
 #############################################################
-DIRECTFB_VERSION:=0.9.24
+DIRECTFB_VERSION:=0.9.25.1
 DIRECTFB_SOURCE:=DirectFB-$(DIRECTFB_VERSION).tar.gz
 DIRECTFB_SITE:=http://www.directfb.org/downloads/Core
 DIRECTFB_CAT:=zcat
@@ -53,7 +53,7 @@ $(STAGING_DIR)/usr/lib/libdirectfb.so: $(DIRECTFB_DIR)/.compiled
 
 $(TARGET_DIR)/usr/lib/libdirectfb.so: $(STAGING_DIR)/usr/lib/libdirectfb.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libdirect* $(STAGING_DIR)/usr/lib/libfusion* $(TARGET_DIR)/usr/lib/
-	cp -rdpf $(STAGING_DIR)/usr/lib/directfb-$(DIRECTFB_VERSION) $(TARGET_DIR)/usr/lib/
+	cp -rdpf $(STAGING_DIR)/usr/lib/directfb-* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) --strip-unneeded \
 		$(TARGET_DIR)/usr/lib/libdirectfb.so \
 		$(TARGET_DIR)/usr/lib/libdirect.so \
