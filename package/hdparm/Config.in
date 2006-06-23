@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HDPARM
+	bool "hdparm"
+	default y
+	help
+	  hdparm - get/set hard disk parameters for Linux IDE drives.
+
+	  http://www.ibiblio.org/pub/Linux/system/hardware/
