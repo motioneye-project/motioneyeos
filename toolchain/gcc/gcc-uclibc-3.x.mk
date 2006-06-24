@@ -73,6 +73,7 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	$(CONFIG_UPDATE) $(GCC_DIR)
 	touch $(GCC_DIR)/.unpacked
 
+gcc-patched: $(GCC_DIR)/.patched
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
 ifeq ($(GCC_SNAP_DATE),)
