@@ -3,7 +3,7 @@
 # SDL
 #
 #############################################################
-SDL_VERSION:=1.2.10
+SDL_VERSION:=1.2.11
 SDL_SOURCE:=SDL-$(SDL_VERSION).tar.gz
 SDL_SITE:=http://www.libsdl.org/release
 SDL_CAT:=zcat
