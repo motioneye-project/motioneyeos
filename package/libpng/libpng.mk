@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBPNG_VER:=1.2.8
+LIBPNG_VER:=1.2.12
 LIBPNG_DIR:=$(BUILD_DIR)/libpng-$(LIBPNG_VER)
 LIBPNG_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
 LIBPNG_SOURCE:=libpng-$(LIBPNG_VER).tar.bz2
@@ -37,13 +37,16 @@ $(LIBPNG_DIR)/.unpacked: $(DL_DIR)/$(LIBPNG_SOURCE)
 	touch $(LIBPNG_DIR)/.unpacked
 
 $(LIBPNG_DIR)/.configured: $(LIBPNG_DIR)/.unpacked
-	( \
-		cd $(LIBPNG_DIR) ; \
-		cp scripts/makefile.linux Makefile ; \
-		$(SED) 's~prefix=/usr/local/~$(STAGING_DIR)~' Makefile ; \
-		$(SED) 's~gcc~${TARGET_CC}~' Makefile ; \
-		$(SED) "s~-O3 -funroll-loops~${TARGET_CFLAGS}~" Makefile ; \
-	)
+	(cd $(LIBPNG_DIR); rm -rf config.cache; \
+		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--without-libpng-compat \
+	);
 	touch $(LIBPNG_DIR)/.configured
 
 $(LIBPNG_DIR)/.compiled: $(LIBPNG_DIR)/.configured
@@ -53,15 +56,13 @@ $(LIBPNG_DIR)/.compiled: $(LIBPNG_DIR)/.configured
 $(STAGING_DIR)/lib/libpng.so: $(LIBPNG_DIR)/.compiled
 	$(MAKE) \
 		-C $(LIBPNG_DIR) \
-		prefix=$(STAGING_DIR) \
-		exec_prefix=$(STAGING_DIR) \
-		bindir=$(STAGING_DIR)/bin \
-		datadir=$(STAGING_DIR)/share \
+		DESTDIR=$(STAGING_DIR) \
+		prefix=/ \
 		install
 	touch -c $(STAGING_DIR)/lib/libpng.so
 
 $(TARGET_DIR)/usr/lib/libpng.so: $(STAGING_DIR)/lib/libpng.so
-	cp -dpf $(STAGING_DIR)/lib/libpng.so* $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/lib/libpng*.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libpng.so
 
 png libpng: uclibc zlib $(TARGET_DIR)/usr/lib/libpng.so
