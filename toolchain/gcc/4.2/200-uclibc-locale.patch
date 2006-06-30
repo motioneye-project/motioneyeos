@@ -1,29 +1,67 @@
---- gcc/libstdc++-v3/include/c_compatibility/wchar.h.uclibc200~	2006-03-06 20:52:07 +0100
-+++ gcc/libstdc++-v3/include/c_compatibility/wchar.h	2006-03-10 15:06:17 +0100
-@@ -101,7 +101,9 @@
- using std::wmemcpy;
- using std::wmemmove;
- using std::wmemset;
-+#if _GLIBCXX_HAVE_WCSFTIME
- using std::wcsftime;
-+#endif
+--- gcc/libstdc++-v3/acinclude.m4
++++ gcc/libstdc++-v3/acinclude.m4
+@@ -1369,7 +1369,7 @@
+   AC_MSG_CHECKING([for C locale to use])
+   GLIBCXX_ENABLE(clocale,auto,[@<:@=MODEL@:>@],
+     [use MODEL for target locale package],
+-    [permit generic|gnu|ieee_1003.1-2001|yes|no|auto])
++    [permit generic|gnu|ieee_1003.1-2001|uclibc|yes|no|auto])
+   
+   # If they didn't use this option switch, or if they specified --enable
+   # with no specific model, we'll have to look for one.  If they
+@@ -1385,6 +1385,9 @@
+   # Default to "generic".
+   if test $enable_clocale_flag = auto; then
+     case ${target_os} in
++      *-uclibc*)
++        enable_clocale_flag=uclibc
++        ;;
+       linux* | gnu* | kfreebsd*-gnu | knetbsd*-gnu)
+         AC_EGREP_CPP([_GLIBCXX_ok], [
+         #include <features.h>
+@@ -1528,6 +1531,40 @@
+       CTIME_CC=config/locale/generic/time_members.cc
+       CLOCALE_INTERNAL_H=config/locale/generic/c++locale_internal.h
+       ;;
++    uclibc)
++      AC_MSG_RESULT(uclibc)
++
++      # Declare intention to use gettext, and add support for specific
++      # languages.
++      # For some reason, ALL_LINGUAS has to be before AM-GNU-GETTEXT
++      ALL_LINGUAS="de fr"
++
++      # Don't call AM-GNU-GETTEXT here. Instead, assume glibc.
++      AC_CHECK_PROG(check_msgfmt, msgfmt, yes, no)
++      if test x"$check_msgfmt" = x"yes" && test x"$enable_nls" = x"yes"; then
++        USE_NLS=yes
++      fi
++      # Export the build objects.
++      for ling in $ALL_LINGUAS; do \
++        glibcxx_MOFILES="$glibcxx_MOFILES $ling.mo"; \
++        glibcxx_POFILES="$glibcxx_POFILES $ling.po"; \
++      done
++      AC_SUBST(glibcxx_MOFILES)
++      AC_SUBST(glibcxx_POFILES)
++
++      CLOCALE_H=config/locale/uclibc/c_locale.h
++      CLOCALE_CC=config/locale/uclibc/c_locale.cc
++      CCODECVT_CC=config/locale/uclibc/codecvt_members.cc
++      CCOLLATE_CC=config/locale/uclibc/collate_members.cc
++      CCTYPE_CC=config/locale/uclibc/ctype_members.cc
++      CMESSAGES_H=config/locale/uclibc/messages_members.h
++      CMESSAGES_CC=config/locale/uclibc/messages_members.cc
++      CMONEY_CC=config/locale/uclibc/monetary_members.cc
++      CNUMERIC_CC=config/locale/uclibc/numeric_members.cc
++      CTIME_H=config/locale/uclibc/time_members.h
++      CTIME_CC=config/locale/uclibc/time_members.cc
++      CLOCALE_INTERNAL_H=config/locale/uclibc/c++locale_internal.h
++      ;;
+   esac
  
- #if _GLIBCXX_USE_C99
- using std::wcstold;
---- gcc/libstdc++-v3/include/c_std/std_cwchar.h.uclibc200~	2006-03-06 20:52:14 +0100
-+++ gcc/libstdc++-v3/include/c_std/std_cwchar.h	2006-03-10 15:06:17 +0100
-@@ -182,7 +182,9 @@
-   using ::wcscoll;
-   using ::wcscpy;
-   using ::wcscspn;
-+#if _GLIBCXX_HAVE_WCSFTIME
-   using ::wcsftime;
-+#endif
-   using ::wcslen;
-   using ::wcsncat;
-   using ::wcsncmp;
---- gcc/libstdc++-v3/config/locale/uclibc/c++locale_internal.h.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/c++locale_internal.h	2006-03-10 15:06:17 +0100
+   # This is where the testsuite looks for locale catalogs, using the
+--- gcc/libstdc++-v3/config/locale/uclibc/c++locale_internal.h
++++ gcc/libstdc++-v3/config/locale/uclibc/c++locale_internal.h
 @@ -0,0 +1,63 @@
 +// Prototypes for GLIBC thread locale __-prefixed functions -*- C++ -*-
 +
@@ -88,8 +126,8 @@
 +#endif 
 +
 +#endif // GLIBC 2.3 and later
---- gcc/libstdc++-v3/config/locale/uclibc/c_locale.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/c_locale.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/c_locale.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/c_locale.cc
 @@ -0,0 +1,160 @@
 +// Wrapper for underlying C-language localization -*- C++ -*-
 +
@@ -251,8 +289,8 @@
 +{
 +  const char* const* const locale::_S_categories = __gnu_cxx::category_names;
 +}  // namespace std
---- gcc/libstdc++-v3/config/locale/uclibc/c_locale.h.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/c_locale.h	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/c_locale.h
++++ gcc/libstdc++-v3/config/locale/uclibc/c_locale.h
 @@ -0,0 +1,117 @@
 +// Wrapper for underlying C-language localization -*- C++ -*-
 +
@@ -371,8 +409,8 @@
 +}
 +
 +#endif
---- gcc/libstdc++-v3/config/locale/uclibc/codecvt_members.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/codecvt_members.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/codecvt_members.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/codecvt_members.cc
 @@ -0,0 +1,306 @@
 +// std::codecvt implementation details, GNU version -*- C++ -*-
 +
@@ -680,8 +718,8 @@
 +  }
 +#endif
 +}
---- gcc/libstdc++-v3/config/locale/uclibc/collate_members.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/collate_members.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/collate_members.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/collate_members.cc
 @@ -0,0 +1,80 @@
 +// std::collate implementation details, GNU version -*- C++ -*-
 +
@@ -763,8 +801,8 @@
 +    { return __wcsxfrm_l(__to, __from, __n, _M_c_locale_collate); }
 +#endif
 +}
---- gcc/libstdc++-v3/config/locale/uclibc/ctype_members.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/ctype_members.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/ctype_members.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/ctype_members.cc
 @@ -0,0 +1,300 @@
 +// std::ctype implementation details, GNU version -*- C++ -*-
 +
@@ -1066,8 +1104,8 @@
 +  }
 +#endif //  _GLIBCXX_USE_WCHAR_T
 +}
---- gcc/libstdc++-v3/config/locale/uclibc/messages_members.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/messages_members.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/messages_members.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/messages_members.cc
 @@ -0,0 +1,100 @@
 +// std::messages implementation details, GNU version -*- C++ -*-
 +
@@ -1169,8 +1207,8 @@
 +    }
 +#endif
 +}
---- gcc/libstdc++-v3/config/locale/uclibc/messages_members.h.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/messages_members.h	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/messages_members.h
++++ gcc/libstdc++-v3/config/locale/uclibc/messages_members.h
 @@ -0,0 +1,118 @@
 +// std::messages implementation details, GNU version -*- C++ -*-
 +
@@ -1290,8 +1328,8 @@
 +	   this->_S_create_c_locale(this->_M_c_locale_messages, __s); 
 +	 }
 +     }
---- gcc/libstdc++-v3/config/locale/uclibc/monetary_members.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/monetary_members.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/monetary_members.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/monetary_members.cc
 @@ -0,0 +1,692 @@
 +// std::moneypunct implementation details, GNU version -*- C++ -*-
 +
@@ -1985,8 +2023,8 @@
 +    }
 +#endif
 +}
---- gcc/libstdc++-v3/config/locale/uclibc/numeric_members.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/numeric_members.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/numeric_members.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/numeric_members.cc
 @@ -0,0 +1,160 @@
 +// std::numpunct implementation details, GNU version -*- C++ -*-
 +
@@ -2148,8 +2186,8 @@
 +    { delete _M_data; }
 + #endif
 +}
---- gcc/libstdc++-v3/config/locale/uclibc/time_members.cc.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/time_members.cc	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/time_members.cc
++++ gcc/libstdc++-v3/config/locale/uclibc/time_members.cc
 @@ -0,0 +1,406 @@
 +// std::time_get, std::time_put implementation, GNU version -*- C++ -*-
 +
@@ -2557,8 +2595,8 @@
 +    }
 +#endif
 +}
---- gcc/libstdc++-v3/config/locale/uclibc/time_members.h.uclibc200~	2006-03-10 15:06:17 +0100
-+++ gcc/libstdc++-v3/config/locale/uclibc/time_members.h	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/config/locale/uclibc/time_members.h
++++ gcc/libstdc++-v3/config/locale/uclibc/time_members.h
 @@ -0,0 +1,68 @@
 +// std::time_get, std::time_put implementation, GNU version -*- C++ -*-
 +
@@ -2628,70 +2666,8 @@
 +      delete _M_data; 
 +      _S_destroy_c_locale(_M_c_locale_timepunct); 
 +    }
---- gcc/libstdc++-v3/acinclude.m4.uclibc200~	2006-03-06 21:23:58 +0100
-+++ gcc/libstdc++-v3/acinclude.m4	2006-03-10 15:06:17 +0100
-@@ -1369,7 +1369,7 @@
-   AC_MSG_CHECKING([for C locale to use])
-   GLIBCXX_ENABLE(clocale,auto,[@<:@=MODEL@:>@],
-     [use MODEL for target locale package],
--    [permit generic|gnu|ieee_1003.1-2001|yes|no|auto])
-+    [permit generic|gnu|ieee_1003.1-2001|uclibc|yes|no|auto])
-   
-   # If they didn't use this option switch, or if they specified --enable
-   # with no specific model, we'll have to look for one.  If they
-@@ -1385,6 +1385,9 @@
-   # Default to "generic".
-   if test $enable_clocale_flag = auto; then
-     case ${target_os} in
-+      *-uclibc*)
-+        enable_clocale_flag=uclibc
-+        ;;
-       linux* | gnu* | kfreebsd*-gnu | knetbsd*-gnu)
-         AC_EGREP_CPP([_GLIBCXX_ok], [
-         #include <features.h>
-@@ -1528,6 +1531,40 @@
-       CTIME_CC=config/locale/generic/time_members.cc
-       CLOCALE_INTERNAL_H=config/locale/generic/c++locale_internal.h
-       ;;
-+    uclibc)
-+      AC_MSG_RESULT(uclibc)
-+
-+      # Declare intention to use gettext, and add support for specific
-+      # languages.
-+      # For some reason, ALL_LINGUAS has to be before AM-GNU-GETTEXT
-+      ALL_LINGUAS="de fr"
-+
-+      # Don't call AM-GNU-GETTEXT here. Instead, assume glibc.
-+      AC_CHECK_PROG(check_msgfmt, msgfmt, yes, no)
-+      if test x"$check_msgfmt" = x"yes" && test x"$enable_nls" = x"yes"; then
-+        USE_NLS=yes
-+      fi
-+      # Export the build objects.
-+      for ling in $ALL_LINGUAS; do \
-+        glibcxx_MOFILES="$glibcxx_MOFILES $ling.mo"; \
-+        glibcxx_POFILES="$glibcxx_POFILES $ling.po"; \
-+      done
-+      AC_SUBST(glibcxx_MOFILES)
-+      AC_SUBST(glibcxx_POFILES)
-+
-+      CLOCALE_H=config/locale/uclibc/c_locale.h
-+      CLOCALE_CC=config/locale/uclibc/c_locale.cc
-+      CCODECVT_CC=config/locale/uclibc/codecvt_members.cc
-+      CCOLLATE_CC=config/locale/uclibc/collate_members.cc
-+      CCTYPE_CC=config/locale/uclibc/ctype_members.cc
-+      CMESSAGES_H=config/locale/uclibc/messages_members.h
-+      CMESSAGES_CC=config/locale/uclibc/messages_members.cc
-+      CMONEY_CC=config/locale/uclibc/monetary_members.cc
-+      CNUMERIC_CC=config/locale/uclibc/numeric_members.cc
-+      CTIME_H=config/locale/uclibc/time_members.h
-+      CTIME_CC=config/locale/uclibc/time_members.cc
-+      CLOCALE_INTERNAL_H=config/locale/uclibc/c++locale_internal.h
-+      ;;
-   esac
- 
-   # This is where the testsuite looks for locale catalogs, using the
---- gcc/libstdc++-v3/configure.uclibc200~	2006-03-10 14:40:13 +0100
-+++ gcc/libstdc++-v3/configure	2006-03-10 15:06:17 +0100
+--- gcc/libstdc++-v3/configure
++++ gcc/libstdc++-v3/configure
 @@ -5764,7 +5764,7 @@
    enableval="$enable_clocale"
  
@@ -2788,3 +2764,27 @@
    esac
  
    # This is where the testsuite looks for locale catalogs, using the
+--- gcc/libstdc++-v3/include/c_compatibility/wchar.h
++++ gcc/libstdc++-v3/include/c_compatibility/wchar.h
+@@ -101,7 +101,9 @@
+ using std::wmemcpy;
+ using std::wmemmove;
+ using std::wmemset;
++#if _GLIBCXX_HAVE_WCSFTIME
+ using std::wcsftime;
++#endif
+ 
+ #if _GLIBCXX_USE_C99
+ using std::wcstold;
+--- gcc/libstdc++-v3/include/c_std/std_cwchar.h
++++ gcc/libstdc++-v3/include/c_std/std_cwchar.h
+@@ -182,7 +182,9 @@
+   using ::wcscoll;
+   using ::wcscpy;
+   using ::wcscspn;
++#if _GLIBCXX_HAVE_WCSFTIME
+   using ::wcsftime;
++#endif
+   using ::wcslen;
+   using ::wcsncat;
+   using ::wcsncmp;
