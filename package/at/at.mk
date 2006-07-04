@@ -39,6 +39,7 @@ $(AT_DIR)/.configured: $(AT_DIR)/.unpacked
 
 $(AT_DIR)/$(AT_BINARY): $(AT_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(AT_DIR)
+	touch -c $(AT_DIR)/$(AT_BINARY)
 
 $(TARGET_DIR)/$(AT_TARGET_BINARY): $(AT_DIR)/$(AT_BINARY)
 	# Use fakeroot to pretend to do 'make install' as root
@@ -47,6 +48,7 @@ $(TARGET_DIR)/$(AT_TARGET_BINARY): $(AT_DIR)/$(AT_BINARY)
 		> $(STAGING_DIR)/.fakeroot.at
 	$(INSTALL) -m 0755 -D $(AT_DIR)/debian/rc $(TARGET_DIR)/etc/init.d/S99at
 	rm -rf $(TARGET_DIR)/usr/man
+	touch -c $(TARGET_DIR)/$(AT_TARGET_BINARY)
 
 at: uclibc host-fakeroot $(TARGET_DIR)/$(AT_TARGET_BINARY)
 
