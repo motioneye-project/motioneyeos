@@ -187,17 +187,6 @@
    lt_cv_deplibs_check_method=pass_all
    ;;
  
---- gcc/libgcc-math/configure
-+++ gcc/libgcc-math/configure
-@@ -3829,7 +3829,7 @@
-   ;;
- 
- # This must be Linux ELF.
--linux-gnu*)
-+linux*)
-   lt_cv_deplibs_check_method=pass_all
-   ;;
- 
 --- gcc/libtool.m4
 +++ gcc/libtool.m4
 @@ -739,7 +739,7 @@
