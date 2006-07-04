@@ -1515,7 +1515,7 @@ diff -urN linux-2.4.26/Documentation/cpufreq-old linux-2.4.26-vrs1/Documentation
 +
 +CPUFreq architecture drivers are the pieces of kernel code that
 +actually perform CPU frequency transitions. These need to be
-+initialised seperately (seperate initcalls), and may be
++initialised separately (separate initcalls), and may be
 +modularized. They interact with the CPUFreq core in the following way:
 +
 +
@@ -20140,7 +20140,7 @@ diff -urN linux-2.4.26/drivers/char/clps711x_keyb.c linux-2.4.26-vrs1/drivers/ch
 + * Basic Function:
 + *
 + * Basicly the driver is interrupt driven. It sets all column drivers	
-+ * high. If any key is pressed, a interrupt occures. Now a seperate scan of
++ * high. If any key is pressed, a interrupt occures. Now a separate scan of
 + * each column is done. This scan is timer based, because we use a keyboard 
 + * interface with decoupling capacitors (neccecary if you want to survive 
 + * EMC compliance tests). Always one line is set high. When next timer event 
@@ -20150,7 +20150,7 @@ diff -urN linux-2.4.26/drivers/char/clps711x_keyb.c linux-2.4.26-vrs1/drivers/ch
 + * pressed. If any is pressed we reschedule the scan within a programmable
 + * delay. If we would switch back to interrupt mode as long as a key is pressed,
 + * we come right back to the interrupt, because the int. is level triggered !
-+ * The timer based scan of the seperate columns can also be done in one
++ * The timer based scan of the separate columns can also be done in one
 + * timer event (set fastscan to 1).
 + *
 + * Summary:

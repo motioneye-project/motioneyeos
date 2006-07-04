@@ -41,7 +41,7 @@ config BR2_x86_64
 endchoice
 
 #
-# Keep the variants seperate, there's no need to clutter everything else.
+# Keep the variants separate, there's no need to clutter everything else.
 # sh is fairly "special" in this regard, as virtually everyone else has
 # things kept down to a _sensible_ number of target variants. No such
 # luck for sh..
@@ -259,11 +259,15 @@ config BR2_GNU_TARGET_SUFFIX
 	    other users (most notably ARM EABI) like to add on to this in
 	    order to stay in line with gcc conventions.
 
+	    Default options are:
+	      linux-uclibcgnueabi for ARM EABI
+	      linux-uclibc for the rest
+
 config BR2_JLEVEL
 	int "Number of jobs to run simultaneously"
 	default "1"
 	help
-	    Number of jobs to run simultanesouly
+	    Number of jobs to run simultaneously
 
 endmenu
 
