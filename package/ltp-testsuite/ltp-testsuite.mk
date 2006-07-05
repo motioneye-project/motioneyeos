@@ -10,6 +10,17 @@ LTP_TESTSUITE_CAT:=zcat
 LTP_TESTSUITE_ROOT:=$(TARGET_DIR)/root
 LTP_TESTSUITE_DIR:=$(LTP_TESTSUITE_ROOT)/ltp-full-$(LTP_TESTSUITE_VERSION)
 
+#
+# We enable Open POSIX Testsuite if Native POSIX Threads Library (NPTL)
+# is selected. Otherwise, we filter out the patch for it.
+#
+LTP_PATCHES:=$(subst package/ltp-testsuite/,,				 \
+	     $(wildcard package/ltp-testsuite/*.patch))
+ifneq ($(BR2_PTHREADS_NATIVE),y)
+LTP_PATCHES:=$(filter-out ltp-testsuite-enable-openposix-for-nptl.patch, \
+	     $(LTP_PATCHES))
+endif
+
 
 $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LTP_TESTSUITE_SITE)/$(LTP_TESTSUITE_SOURCE)
@@ -18,7 +29,7 @@ ltp-testsuite-source: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 
 $(LTP_TESTSUITE_DIR)/Makefile: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 	$(LTP_TESTSUITE_CAT) $(DL_DIR)/$(LTP_TESTSUITE_SOURCE) | tar -C $(LTP_TESTSUITE_ROOT) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LTP_TESTSUITE_DIR) package/ltp-testsuite/ ltp-testsuite\*.patch
+	toolchain/patch-kernel.sh $(LTP_TESTSUITE_DIR) package/ltp-testsuite/ $(LTP_PATCHES)
 	touch -c $(LTP_TESTSUITE_DIR)/Makefile
 
 $(LTP_TESTSUITE_DIR)/.compiled: $(LTP_TESTSUITE_DIR)/Makefile

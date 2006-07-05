@@ -1,0 +1,33 @@
+diff -ur ltp-full-20060615/testcases/Makefile ltp-full-20060615-patched/testcases/Makefile
+--- ltp-full-20060615/testcases/Makefile	2006-01-31 08:48:38.000000000 -0600
++++ ltp-full-20060615-patched/testcases/Makefile	2006-07-04 22:20:40.298850250 -0500
+@@ -1,4 +1,4 @@
+-SUBDIRS = `ls */Makefile | sed "s/Makefile//g" | grep -v open | grep -v pounder | grep -v DOTS`
++SUBDIRS = `ls */Makefile | sed "s/Makefile//g" | grep -v open_hpi | grep -v pounder | grep -v DOTS`
+ UCLINUX_SUBDIRS = kernel
+ 
+ all:
+diff -ur ltp-full-20060615/testcases/open_posix_testsuite/LDFLAGS ltp-full-20060615-patched/testcases/open_posix_testsuite/LDFLAGS
+--- ltp-full-20060615/testcases/open_posix_testsuite/LDFLAGS	2005-06-03 11:29:49.000000000 -0500
++++ ltp-full-20060615-patched/testcases/open_posix_testsuite/LDFLAGS	2006-07-04 22:21:34.322226500 -0500
+@@ -14,3 +14,5 @@
+ # allow for the NPTL-specific compilation (used in some test cases)
+ # Note: this sometimes require the package nptl-devel.*.rpm to be installed.
+ #-I /usr/include/nptl -L /usr/lib/nptl -D_XOPEN_SOURCE=600 -lpthread -lrt -lm
++
++-D_XOPEN_SOURCE=600 -lpthread -lrt -lm -D_GNU_SOURCE
+diff -ur ltp-full-20060615/testcases/open_posix_testsuite/Makefile ltp-full-20060615-patched/testcases/open_posix_testsuite/Makefile
+--- ltp-full-20060615/testcases/open_posix_testsuite/Makefile	2006-05-21 18:38:52.000000000 -0500
++++ ltp-full-20060615-patched/testcases/open_posix_testsuite/Makefile	2006-07-04 22:22:16.660872500 -0500
+@@ -45,7 +45,10 @@
+ TIMEOUT = $(top_builddir)/t0 $(TIMEOUT_VAL)
+ 
+ 
+-all: build-tests run-tests 
++all: build-tests $(top_builddir)/t0
++
++install:
++	@echo " "
+ 
+ build-tests: $(BUILD_TESTS:.c=.test)
+ run-tests: $(RUN_TESTS:.test=.run-test)
