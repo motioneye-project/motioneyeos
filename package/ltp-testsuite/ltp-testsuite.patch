@@ -9,8 +9,8 @@
  
  all: $(TARGETS)
  
---- ltp-full-20050707-dist/testcases/kernel/syscalls/getcontext01/Makefile	2005-05-26 14:38:47.000000000 -0600
-+++ ltp-full-20050707/testcases/kernel/syscalls/getcontext01/Makefile	2005-08-02 19:56:11.000000000 -0600
+--- ltp-full-20050707-dist/testcases/kernel/syscalls/getcontext/Makefile	2005-05-26 14:38:47.000000000 -0600
++++ ltp-full-20050707/testcases/kernel/syscalls/getcontext/Makefile	2005-08-02 19:56:11.000000000 -0600
 @@ -24,7 +24,7 @@
  LOADLIBES+=	-L../../../../lib -lltp
  
@@ -66,27 +66,6 @@
  static void setup();
  static void cleanup();
  static int setup01();
---- ltp-full-20050707/testcases/kernel/fs/acls/acl_file_test.c.orig	2005-08-09 01:41:25.000000000 -0600
-+++ ltp-full-20050707/testcases/kernel/fs/acls/acl_file_test.c	2005-08-09 01:42:29.000000000 -0600
-@@ -52,12 +52,18 @@
- 	}
- 
- 	//s = syscall(237, fd,tok); //fremovexattr
-+#ifdef __NR_fremovexattr
-         s = syscall(__NR_fremovexattr, fd,tok); //fremovexattr
- 	if (s == -1) {
-                 printf ("User unable to remove extended attributes file %s !\n", argv[1]);
-                 printf("errno = %i\n", errno);
-                 rc = 1;
-         }
-+#else
-+	printf ("User unable to remove extended attributes file %s !\n", argv[1]);
-+	printf("errno = %i\n", ENOSYS);
-+	rc = 1;
-+#endif
- 	
- 	close (fd);	
- 	return  rc;		
 --- ltp-full-20050804/testcases/kernel/syscalls/sysfs.orig/sysfs01.c	2005-12-08 18:26:07.000000000 -0700
 +++ ltp-full-20050804/testcases/kernel/syscalls/sysfs/sysfs01.c	2005-12-08 18:28:26.000000000 -0700
 @@ -72,10 +72,6 @@
