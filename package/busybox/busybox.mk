@@ -25,7 +25,7 @@ $(DL_DIR)/$(BUSYBOX_SOURCE):
 
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG_FILE)
 
-$(BUSYBOX_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
+$(BUSYBOX_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUILD_DIR)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
 	# if we have external syslogd, force busybox to use it
@@ -49,7 +49,7 @@ endif
 	touch $(BUSYBOX_DIR)/.configured
 
 $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
+	$(MAKE) CC=$(TARGET_CC) CROSS_COMPILE="$(TARGET_CROSS)" CROSS="$(TARGET_CROSS)" PREFIX="$(TARGET_DIR)" \
 		EXTRA_CFLAGS="$(TARGET_CFLAGS)" -C $(BUSYBOX_DIR)
 
 $(TARGET_DIR)/bin/busybox: $(BUSYBOX_DIR)/busybox
@@ -63,6 +63,9 @@ endif
 	-chmod a+x $(TARGET_DIR)/usr/share/udhcpc/default.script
 
 busybox: uclibc $(TARGET_DIR)/bin/busybox
+
+busybox-menuconfig: $(BUSYBOX_DIR)/.configured
+	$(MAKE) __TARGET_ARCH=$(ARCH) -C $(BUSYBOX_DIR) menuconfig
 
 busybox-clean:
 	rm -f $(TARGET_DIR)/bin/busybox
