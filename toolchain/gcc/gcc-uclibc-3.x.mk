@@ -362,7 +362,7 @@ endif
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Work around problem of missing syslimits.h
 	if [ ! -f $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/syslimits.h ] ; then \
-		@echo "warning: working around missing syslimits.h" ; \
+		echo "warning: working around missing syslimits.h" ; \
 		cp -f $(STAGING_DIR)/$(GCC_LIB_SUBDIR)/include/syslimits.h \
 			$(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/ ; \
 	fi
