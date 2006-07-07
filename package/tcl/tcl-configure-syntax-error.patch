@@ -1,0 +1,42 @@
+diff -ur tcl8.4.9/unix/configure tcl8.4.9-patched/unix/configure
+--- tcl8.4.9/unix/configure	2004-12-06 18:23:45.000000000 -0600
++++ tcl8.4.9-patched/unix/configure	2006-07-06 21:02:18.884355250 -0500
+@@ -2131,7 +2131,7 @@
+ 	    # results, and the version is kept in special file).
+ 	
+ 	    if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
+-		system=MP-RAS-`awk '{print }' /etc/.relid'`
++		system=MP-RAS-`awk '{print }' /etc/.relid`
+ 	    fi
+ 	    if test "`uname -s`" = "AIX" ; then
+ 		system=AIX-`uname -v`.`uname -r`
+@@ -7322,7 +7322,7 @@
+ 	    # results, and the version is kept in special file).
+ 	
+ 	    if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
+-		system=MP-RAS-`awk '{print }' /etc/.relid'`
++		system=MP-RAS-`awk '{print }' /etc/.relid`
+ 	    fi
+ 	    if test "`uname -s`" = "AIX" ; then
+ 		system=AIX-`uname -v`.`uname -r`
+diff -ur tcl8.4.9/unix/tcl.m4 tcl8.4.9-patched/unix/tcl.m4
+--- tcl8.4.9/unix/tcl.m4	2004-12-06 18:23:45.000000000 -0600
++++ tcl8.4.9-patched/unix/tcl.m4	2006-07-06 21:02:35.653403250 -0500
+@@ -844,7 +844,7 @@
+ 	    # results, and the version is kept in special file).
+ 	
+ 	    if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
+-		system=MP-RAS-`awk '{print $3}' /etc/.relid'`
++		system=MP-RAS-`awk '{print $3}' /etc/.relid`
+ 	    fi
+ 	    if test "`uname -s`" = "AIX" ; then
+ 		system=AIX-`uname -v`.`uname -r`
+@@ -2190,7 +2190,7 @@
+ 	    # results, and the version is kept in special file).
+ 	
+ 	    if test -r /etc/.relid -a "X`uname -n`" = "X`uname -s`" ; then
+-		system=MP-RAS-`awk '{print $3}' /etc/.relid'`
++		system=MP-RAS-`awk '{print $3}' /etc/.relid`
+ 	    fi
+ 	    if test "`uname -s`" = "AIX" ; then
+ 		system=AIX-`uname -v`.`uname -r`
