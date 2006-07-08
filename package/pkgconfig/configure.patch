@@ -1,0 +1,331 @@
+--- pkgconfig-0.15.0/glib-1.2.8/Makefile.am~configure.patch
++++ pkgconfig-0.15.0/glib-1.2.8/Makefile.am
+@@ -65,7 +65,7 @@
+ 
+ CONFIGURE_DEPENDENCIES = acglib.m4		
+ 
+-BUILT_SOURCES = stamp-gc-h #note: not glibconfig.h
++BUILT_SOURCES += stamp-gc-h #note: not glibconfig.h
+ glibconfig.h: stamp-gc-h
+ 	@:
+ stamp-gc-h: config.status
+--- pkgconfig-0.20/configure.in~configure.patch
++++ pkgconfig-0.20/configure.in
+@@ -1,6 +1,7 @@
+ 
+ AC_INIT(pkg-config.1)
+ 
++AC_CONFIG_AUX_DIR(.)
+ AM_INIT_AUTOMAKE(pkg-config, 0.20)
+ AM_MAINTAINER_MODE
+ 
+@@ -92,8 +93,6 @@
+ 
+   AC_SUBST(GLIB_LIBS)
+   AC_SUBST(GLIB_CFLAGS)
+-
+-  AC_CONFIG_AUX_DIR(.)
+ else
+   AC_CONFIG_SUBDIRS(glib-1.2.8)
+ fi # !native_win32
+--- pkgconfig-0.20/glib-1.2.8/configure.in.orig	2005-10-16 11:12:52.000000000 -0600
++++ pkgconfig-0.20/glib-1.2.8/configure.in	2006-07-07 16:11:05.000000000 -0600
+@@ -1,10 +1,11 @@
+ dnl ***********************************
+ dnl *** include special GLib macros ***
+ dnl ***********************************
+-builtin(include, acglib.m4)dnl
++dnl no need, just use aclocal -I . --CL
++dnl builtin(include, acglib.m4)dnl
+ 
+ # require autoconf 2.13
+-AC_PREREQ(2.13)
++AC_PREREQ(2.53)
+ 
+ # init autoconf (and check for presence of glist.c)
+ AC_INIT(glist.c)
+@@ -15,6 +16,39 @@
+ # we rewrite this file
+ rm -f glibconfig-sysdefs.h
+ 
++# config defines
++
++AH_TEMPLATE([ENABLE_MEM_CHECK], [Define if enabling memory checking])
++AH_TEMPLATE([ENABLE_MEM_PROFILE], [])
++AH_TEMPLATE([GLIB_BINARY_AGE], [])
++AH_TEMPLATE([GLIB_BYTE_CONTENTS_GMUTEX], [])
++AH_TEMPLATE([GLIB_INTERFACE_AGE], [])
++AH_TEMPLATE([GLIB_MAJOR_VERSION], [])
++AH_TEMPLATE([GLIB_MINOR_VERSION], [])
++AH_TEMPLATE([GLIB_MICRO_VERSION], [])
++AH_TEMPLATE([GLIB_SIZEOF_GMUTEX], [])
++AH_TEMPLATE([G_COMPILED_WITH_DEBUGGING], [])
++AH_TEMPLATE([G_HAVE_INLINE], [])
++AH_TEMPLATE([G_HAVE___INLINE], [])
++AH_TEMPLATE([G_HAVE___INLINE__], [])
++AH_TEMPLATE([G_THREAD_SOURCE], [])
++AH_TEMPLATE([G_VA_COPY], [])
++AH_TEMPLATE([G_VA_COPY_AS_ARRAY], [])
++AH_TEMPLATE([HAVE_BROKEN_WCTYPE], [])
++AH_TEMPLATE([HAVE_GETPWUID_R], [])
++AH_TEMPLATE([HAVE_GETPWUID_R_POSIX], [])
++AH_TEMPLATE([HAVE_PTHREAD_COND_TIMEDWAIT_POSIX], [])
++AH_TEMPLATE([HAVE_PTHREAD_GETSPECIFIC_POSIX], [])
++AH_TEMPLATE([HAVE_PTHREAD_MUTEX_TRYLOCK_POSIX], [])
++AH_TEMPLATE([HAVE_WCHAR_H], [])
++AH_TEMPLATE([HAVE_WCTYPE_H], [])
++AH_TEMPLATE([NO_FD_SET], [])
++AH_TEMPLATE([NO_SYS_ERRLIST], [])
++AH_TEMPLATE([NO_SYS_SIGLIST], [])
++AH_TEMPLATE([NO_SYS_SIGLIST_DECL], [])
++AH_TEMPLATE([REALLOC_0_WORKS], [])
++
++
+ dnl we need to AC_DIVERT_PUSH/AC_DIVERT_POP these variable definitions so they
+ dnl are available for $ac_help expansion (don't we all *love* autoconf?)
+ GLIB_AC_DIVERT_BEFORE_HELP([
+@@ -173,7 +207,9 @@
+          CFLAGS=$glib_save_CFLAGS
+          AC_MSG_WARN(
+                 [No ANSI prototypes found in library. (-std1 didn't work.)])
++	, AC_MSG_WARN([Skipping test due to crosscompilation])
+      )
++     , AC_MSG_WARN([Skipping test due to crosscompilation])
+ )
+ LIBS=$glib_save_LIBS
+ 
+@@ -384,11 +420,13 @@
+ 	  return realloc (0, sizeof (int)) == 0;
+ 	}],
+ 	glib_cv_sane_realloc=yes
+-	AC_DEFINE(REALLOC_0_WORKS)
+ 	,
+ 	glib_cv_sane_realloc=no
+ 	,)
+ ])
++if test "x$glib_cv_sane_realloc" = "xyes"; then
++	AC_DEFINE(REALLOC_0_WORKS)
++fi
+ AC_MSG_RESULT($glib_cv_sane_realloc)
+ 
+ 
+@@ -464,7 +502,8 @@
+ ])
+ if test "x$glib_cv_va_copy" = "xyes"; then
+   AC_DEFINE(G_VA_COPY, va_copy)
+-else if test "x$glib_cv___va_copy" = "xyes"; then
++else
++if test "x$glib_cv___va_copy" = "xyes"; then
+   AC_DEFINE(G_VA_COPY, __va_copy)
+ fi
+ fi
+@@ -473,6 +512,7 @@
+ fi
+ AC_MSG_RESULT($glib_cv_va_val_copy)
+ 
++AC_MSG_WARN([hi mom])
+ 
+ dnl ***********************
+ dnl *** g_module checks ***
+@@ -484,12 +524,12 @@
+ G_MODULE_HAVE_DLERROR=0
+ dnl *** dlopen() and dlsym() in system libraries
+ if test -z "$G_MODULE_IMPL"; then
+-	AC_CHECK_FUNC(dlopen,
+-		[AC_CHECK_FUNC(dlsym,
++	AC_CHECK_FUNC(dlopen,[
++		AC_CHECK_FUNC(dlsym,[
+ 			G_MODULE_IMPL=G_MODULE_IMPL_DL
+-		,)]
+-	,)
+-
++			],
++		)],
++	)
+ fi
+ 
+ dnl *** dlopen() and dlsym() in libdl
+@@ -578,6 +618,7 @@
+ AC_SUBST(G_MODULE_HAVE_DLERROR)
+ AC_SUBST(G_MODULE_NEED_USCORE)
+ AC_SUBST(GLIB_DEBUG_FLAGS)
++AC_MSG_WARN([hi mom])
+ 
+ 
+ dnl ***********************
+@@ -891,13 +932,14 @@
+ dnl ****************************************
+ dnl *** GLib POLL* compatibility defines ***
+ dnl ****************************************
++if test x"$cross_compiling" != xyes; then
+ GLIB_SYSDEFS(
+ [#include <sys/types.h>
+ #include <sys/poll.h>],
+ 	POLLIN:1 POLLOUT:4 POLLPRI:2 POLLERR:8 POLLHUP:16 POLLNVAL:32,
+ 	glibconfig-sysdefs.h,
+ 	=)
+-
++fi
+ 
+ dnl ******************************
+ dnl *** output the whole stuff ***
+@@ -954,7 +996,7 @@
+ 	  echo '#define GLIB_HAVE_SYS_POLL_H' >> $outfile
+ 	fi
+ 
+-	cat >> $outfile <<_______EOF
++	cat >> $outfile <<EOF
+ 
+ #define G_MINFLOAT	$glib_mf
+ #define G_MAXFLOAT	$glib_Mf
+@@ -967,60 +1009,60 @@
+ #define G_MINLONG	$glib_ml
+ #define G_MAXLONG	$glib_Ml
+ 
+-_______EOF
++EOF
+ 
+ 
+ 	### this should always be true in a modern C/C++ compiler
+-	cat >>$outfile <<_______EOF
++	cat >>$outfile <<EOF
+ typedef signed char gint8;
+ typedef unsigned char guint8;
+-_______EOF
++EOF
+ 
+ 
+ 	if test -n "$gint16"; then
+-	  cat >>$outfile <<_______EOF
++	  cat >>$outfile <<EOF
+ typedef signed $gint16 gint16;
+ typedef unsigned $gint16 guint16;
+-_______EOF
++EOF
+ 	fi
+ 
+ 
+ 	if test -n "$gint32"; then
+-	  cat >>$outfile <<_______EOF
++	  cat >>$outfile <<EOF
+ typedef signed $gint32 gint32;
+ typedef unsigned $gint32 guint32;
+-_______EOF
++EOF
+ 	fi
+ 
+ 
+ 	if test -n "$gint64"; then
+-	  cat >>$outfile <<_______EOF
++	  cat >>$outfile <<EOF
+ ${glib_warning_guard}#define G_HAVE_GINT64 1
+ 
+ ${glib_extension}typedef signed $gint64 gint64;
+ ${glib_extension}typedef unsigned $gint64 guint64;
+ 
+ #define G_GINT64_CONSTANT(val)	$gint64_constant
+-_______EOF
++EOF
+ 	fi
+ 
+ 
+ 	if test -z "$glib_unknown_void_p"; then
+-	  cat >>$outfile <<_______EOF
++	  cat >>$outfile <<EOF
+ 
+ #define GPOINTER_TO_INT(p)	((gint)  ${glib_gpi_cast} (p))
+ #define GPOINTER_TO_UINT(p)	((guint) ${glib_gpui_cast} (p))
+ 
+ #define GINT_TO_POINTER(i)	((gpointer) ${glib_gpi_cast} (i))
+ #define GUINT_TO_POINTER(u)	((gpointer) ${glib_gpui_cast} (u))
+-_______EOF
++EOF
+ 	else
+ 	  echo '#error SIZEOF_VOID_P unknown - This should never happen' >>$outfile
+ 	fi
+ 
+ 
+ 
+-	cat >>$outfile <<_______EOF
++	cat >>$outfile <<EOF
+ $glib_atexit
+ $glib_memmove
+ $glib_defines
+@@ -1032,11 +1074,11 @@
+ #else	/* !__cplusplus */
+ $glib_inline
+ #endif	/* !__cplusplus */
+-_______EOF
++EOF
+ 
+ 	echo >>$outfile
+ 	if test x$g_mutex_has_default = xyes; then
+-		cat >>$outfile <<_______EOF
++		cat >>$outfile <<EOF
+ $g_enable_threads_def G_THREADS_ENABLED
+ #define G_THREADS_IMPL_$g_threads_impl_def
+ typedef struct _GStaticMutex GStaticMutex;
+@@ -1054,15 +1096,15 @@
+ #define	g_static_mutex_get_mutex(mutex) \
+   (g_thread_use_default_impl ? ((GMutex*) &((mutex)->aligned_pad_u)) : \
+    g_static_mutex_get_mutex_impl (&((mutex)->runtime_mutex)))
+-_______EOF
++EOF
+ 	else
+-		cat >>$outfile <<_______EOF
++		cat >>$outfile <<EOF
+ $g_enable_threads_def G_THREADS_ENABLED
+ #define G_THREADS_IMPL_$g_threads_impl_def
+ typedef struct _GMutex* GStaticMutex;
+ #define G_STATIC_MUTEX_INIT NULL
+ #define g_static_mutex_get_mutex(mutex) (g_static_mutex_get_mutex_impl (mutex))
+-_______EOF
++EOF
+ 	fi
+ 
+ 	echo >>$outfile
+@@ -1071,15 +1113,15 @@
+ 	  g_bit_sizes="$g_bit_sizes 64"
+ 	fi
+ 	for bits in $g_bit_sizes; do
+-	  cat >>$outfile <<_______EOF
++	  cat >>$outfile <<EOF
+ #define GINT${bits}_TO_${g_bs_native}(val)	((gint${bits}) (val))
+ #define GUINT${bits}_TO_${g_bs_native}(val)	((guint${bits}) (val))
+ #define GINT${bits}_TO_${g_bs_alien}(val)	((gint${bits}) GUINT${bits}_SWAP_LE_BE (val))
+ #define GUINT${bits}_TO_${g_bs_alien}(val)	(GUINT${bits}_SWAP_LE_BE (val))
+-_______EOF
++EOF
+ 	done
+ 
+-	cat >>$outfile <<_______EOF
++	cat >>$outfile <<EOF
+ #define GLONG_TO_LE(val)	((glong) GINT${glongbits}_TO_LE (val))
+ #define GULONG_TO_LE(val)	((gulong) GUINT${glongbits}_TO_LE (val))
+ #define GLONG_TO_BE(val)	((glong) GINT${glongbits}_TO_BE (val))
+@@ -1090,14 +1132,14 @@
+ #define GUINT_TO_BE(val)	((guint) GUINT${gintbits}_TO_BE (val))
+ #define G_BYTE_ORDER $g_byte_order
+ 
+-_______EOF
++EOF
+ 
+ 	if test -r glibconfig-sysdefs.h; then
+ 	  cat glibconfig-sysdefs.h >>$outfile
+ 	fi
+ 
+ 
+-	cat >>$outfile <<_______EOF
++	cat >>$outfile <<EOF
+ 
+ $glib_wc
+ 
+@@ -1107,7 +1149,7 @@
+ #endif /* __cplusplus */
+ 
+ #endif /* GLIBCONFIG_H */
+-_______EOF
++EOF
+ 
+ 
+ 	if cmp -s $outfile glibconfig.h; then
