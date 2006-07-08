@@ -41,6 +41,12 @@ $(LIBPNG_DIR)/.configured: $(LIBPNG_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
+		ac_cv_func_memcmp_working=yes \
+		ac_cv_have_decl_malloc=yes \
+		gl_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_calloc_0_nonnull=yes \
+		ac_cv_func_realloc_0_nonnull=yes \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
