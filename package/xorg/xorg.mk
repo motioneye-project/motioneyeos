@@ -51,7 +51,7 @@ $(DL_DIR)/$(XORG_SOURCE):
 
 $(XORG_DIR)/.configure: $(DL_DIR)/$(XORG_SOURCE)
 	$(XORG_CAT) $(DL_DIR)/$(XORG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(XORG_DIR) package/xorg/ xorg\*.patch
+	toolchain/patch-kernel.sh $(XORG_DIR) package/xorg/ \*.patch
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_HOST_DEF)
 	$(SED) 's:REPLACE_HAS_FREETYPE2:$(HAS_FREETYPE2):g' $(XORG_HOST_DEF)
 	$(SED) 's:REPLACE_GCCINC_DIR:$(shell $(TARGET_CROSS)gcc -print-file-name=include):g' $(XORG_CF)
@@ -67,7 +67,9 @@ $(XORG_DIR)/.configure: $(DL_DIR)/$(XORG_SOURCE)
 
 $(XORG_XSERVER): $(XORG_DIR)/.configure
 	rm -f $(TARGET_XSERVER) $(XORG_XSERVER)
-	( cd $(XORG_DIR) ; $(MAKE) World XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	( cd $(XORG_DIR) ; $(MAKE) \
+		PKG_CONFIG=$(STAGING_DIR)/$(PKGCONFIG_TARGET_BINARY) \
+		World XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 
 $(TARGET_XSERVER): $(XORG_XSERVER)
 	-mkdir -p $(XORG_BINX)
@@ -81,10 +83,10 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	$(STRIP) $(TARGET_XSERVER)
 	mkdir -p $(XORG_LIBX)/modules
 	cp -LRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/
-	( cd $(XORG_DIR)/fonts ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	( cd $(XORG_DIR)/fonts ; $(MAKE) \
+		DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 	cp -LRf $(XORG_DIR)/fonts/bdf/misc/*.bdf $(XORG_LIBX)/X11/fonts/misc/
 	( cd $(XORG_LIBX)/X11/fonts/misc/; mkfontdir )
-	#( cd $(XORG_DIR) ; $(MAKE) DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 	(cd $(TARGET_DIR)/usr/bin; ln -snf $(TARGET_BINX) X11)
 
 $(XORG_LIBX)/libX11.so.6.2: $(XORG_XSERVER)

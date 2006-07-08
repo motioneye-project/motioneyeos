@@ -1,6 +1,6 @@
 --- xc/config/cf/host.def~	Thu May 12 15:28:01 MDT 2005
 +++ xc/config/cf/host.def	Thu May 12 15:28:01 MDT 2005
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,42 @@
 +#define KDriveXServer		YES
 +#define TinyXServer		YES
 +#define XfbdevServer		YES
@@ -13,6 +13,10 @@
 +#define HasFontconfig		NO
 +#define HasLibpng		YES
 +#define HasZlib			YES
++#define HaveLib64		NO
++#define LibDirName		lib
++#define SystemUsrLibDir	/usr/lib
++#define TkLibDir		/usr/lib
 +
 +#define HasExpat		NO
 +#define XprtServer		NO
@@ -105,3 +109,34 @@
  #define HostCcCmd  cc
 -#endif
  #include <cross.rules>
+--- xc/include/Xfuncs.h.orig	2006-07-07 17:09:16.000000000 -0600
++++ xc/include/Xfuncs.h	2006-07-07 17:11:33.000000000 -0600
+@@ -44,18 +44,28 @@
+ #if defined(SYSV) && !defined(SCO325) && !defined(sun)
+ #include <memory.h>
+ void bcopy();
++#ifndef bzero
+ #define bzero(b,len) memset(b, 0, len)
++#endif
++#ifndef bcmp
+ #define bcmp(b1,b2,len) memcmp(b1, b2, len)
++#endif
+ #else
+ #include <string.h>
+ #if defined(SCO325) || defined(sun)
+ #include <strings.h>
+ #endif
+ #define _XFUNCS_H_INCLUDED_STRING_H
++#ifndef bcopy
+ #define bcopy(b1,b2,len) memmove(b2, b1, (size_t)(len))
++#endif
++#ifndef bzero
+ #define bzero(b,len) memset(b, 0, (size_t)(len))
++#endif
++#ifndef bcmp
+ #define bcmp(b1,b2,len) memcmp(b1, b2, (size_t)(len))
+ #endif
++#endif
+ #endif /* X_USEBFUNCS */
+ 
+ /* the new Xfuncs.h */

@@ -1,0 +1,148 @@
+--- xc/programs/Xserver/fb/fbmmx.c.orig	2005-03-01 19:01:35.401903000 -0500
++++ xc/programs/Xserver/fb/fbmmx.c	2005-03-01 19:01:39.330305792 -0500
+@@ -29,6 +29,8 @@
+ 
+ #ifdef RENDER
+ 
++#include <mmintrin.h>
++
+ #include "picturestr.h"
+ #include "mipict.h"
+ #include "fbpict.h"
+@@ -48,6 +50,10 @@
+ #define CHECKPOINT()
+ #endif
+ 
++#define mmx_and(a,b)	((Vector1x64)_mm_and_si64((__m64)(a),(__m64)(b)))
++#define mmx_or(a,b)	((Vector1x64)_mm_or_si64((__m64)(a),(__m64)(b)))
++#define mmx_xor(a,b)	((Vector1x64)_mm_xor_si64((__m64)(a),(__m64)(b)))
++
+ typedef struct
+ {
+     ullong mmx_zero;
+@@ -102,7 +108,7 @@
+ static __inline__ Vector4x16
+ negate (Vector4x16 mask)
+ {
+-    return (Vector4x16)__builtin_ia32_pxor (
++    return (Vector4x16)mmx_xor (
+ 	(Vector1x64)mask,
+ 	(Vector1x64)c.mmx_4x00ff);
+ }
+@@ -163,9 +169,9 @@
+ 
+     t1 = shift ((Vector1x64)pixel, -48);
+     t2 = shift (t1, 16);
+-    t1 = __builtin_ia32_por (t1, t2);
++    t1 = mmx_or (t1, t2);
+     t2 = shift (t1, 32);
+-    t1 = __builtin_ia32_por (t1, t2);
++    t1 = mmx_or (t1, t2);
+ 
+     return (Vector4x16)t1;
+ }
+@@ -178,9 +184,9 @@
+     t1 = shift ((Vector1x64)pixel,  48);
+     t1 = shift (t1, -48);
+     t2 = shift (t1, 16);
+-    t1 = __builtin_ia32_por (t1, t2);
++    t1 = mmx_or (t1, t2);
+     t2 = shift (t1, 32);
+-    t1 = __builtin_ia32_por (t1, t2);
++    t1 = mmx_or (t1, t2);
+ 
+     return (Vector4x16)t1;
+ }
+@@ -192,15 +198,15 @@
+ 
+     x = y = z = (Vector1x64)pixel;
+ 
+-    x = __builtin_ia32_pand (x, (Vector1x64)c.mmx_ffff0000ffff0000);
+-    y = __builtin_ia32_pand (y, (Vector1x64)c.mmx_000000000000ffff);
+-    z = __builtin_ia32_pand (z, (Vector1x64)c.mmx_0000ffff00000000);
++    x = mmx_and (x, (Vector1x64)c.mmx_ffff0000ffff0000);
++    y = mmx_and (y, (Vector1x64)c.mmx_000000000000ffff);
++    z = mmx_and (z, (Vector1x64)c.mmx_0000ffff00000000);
+ 
+     y = shift (y, 32);
+     z = shift (z, -32);
+ 
+-    x = __builtin_ia32_por (x, y);
+-    x = __builtin_ia32_por (x, z);
++    x = mmx_or (x, y);
++    x = mmx_or (x, z);
+ 
+     return (Vector4x16)x;
+ }
+@@ -234,7 +240,7 @@
+ over_rev_non_pre (Vector4x16 src, Vector4x16 dest)
+ {
+     Vector4x16 srca = expand_alpha (src);
+-    Vector4x16 srcfaaa = (Vector4x16)__builtin_ia32_por((Vector1x64)srca, (Vector1x64)c.mmx_full_alpha);
++    Vector4x16 srcfaaa = (Vector4x16)mmx_or((Vector1x64)srca, (Vector1x64)c.mmx_full_alpha);
+ 
+     return over(pix_multiply(invert_colors(src), srcfaaa), srca, dest);
+ }
+@@ -300,9 +306,9 @@
+     Vector1x64 t1 = shift (p, 36 - 11);
+     Vector1x64 t2 = shift (p, 16 - 5);
+     
+-    p = __builtin_ia32_por (t1, p);
+-    p = __builtin_ia32_por (t2, p);
+-    p = __builtin_ia32_pand (p, (Vector1x64)c.mmx_565_rgb);
++    p = mmx_or (t1, p);
++    p = mmx_or (t2, p);
++    p = mmx_and (p, (Vector1x64)c.mmx_565_rgb);
+     
+     pixel = __builtin_ia32_pmullw ((Vector4x16)p, (Vector4x16)c.mmx_565_unpack_multiplier);
+     return __builtin_ia32_psrlw (pixel, 8);
+@@ -324,27 +330,27 @@
+     Vector1x64 t = (Vector1x64)target;
+     Vector1x64 r, g, b;
+     
+-    r = __builtin_ia32_pand (p, (Vector1x64)c.mmx_565_r);
+-    g = __builtin_ia32_pand (p, (Vector1x64)c.mmx_565_g);
+-    b = __builtin_ia32_pand (p, (Vector1x64)c.mmx_565_b);
++    r = mmx_and (p, (Vector1x64)c.mmx_565_r);
++    g = mmx_and (p, (Vector1x64)c.mmx_565_g);
++    b = mmx_and (p, (Vector1x64)c.mmx_565_b);
+     
+     r = shift (r, - (32 - 8) + pos * 16);
+     g = shift (g, - (16 - 3) + pos * 16);
+     b = shift (b, - (0  + 3) + pos * 16);
+ 
+     if (pos == 0)
+-	t = __builtin_ia32_pand (t, (Vector1x64)c.mmx_mask_0);
++	t = mmx_and (t, (Vector1x64)c.mmx_mask_0);
+     else if (pos == 1)
+-	t = __builtin_ia32_pand (t, (Vector1x64)c.mmx_mask_1);
++	t = mmx_and (t, (Vector1x64)c.mmx_mask_1);
+     else if (pos == 2)
+-	t = __builtin_ia32_pand (t, (Vector1x64)c.mmx_mask_2);
++	t = mmx_and (t, (Vector1x64)c.mmx_mask_2);
+     else if (pos == 3)
+-	t = __builtin_ia32_pand (t, (Vector1x64)c.mmx_mask_3);
++	t = mmx_and (t, (Vector1x64)c.mmx_mask_3);
+     
+-    p = __builtin_ia32_por (r, t);
+-    p = __builtin_ia32_por (g, p);
++    p = mmx_or (r, t);
++    p = mmx_or (g, p);
+     
+-    return (Vector4x16)__builtin_ia32_por (b, p);
++    return (Vector4x16)mmx_or (b, p);
+ }
+ 
+ static __inline__ void
+--- xc/programs/Xserver/hw/xfree86/drivers/ati/radeon_probe.h.orig	2006-07-07 17:38:25.000000000 -0600
++++ xc/programs/Xserver/hw/xfree86/drivers/ati/radeon_probe.h	2006-07-07 17:38:34.000000000 -0600
+@@ -146,9 +146,6 @@
+ extern Bool                 RADEONProbe
+ 			    FunctionPrototype((DriverPtr, int));
+ 
+-extern SymTabRec            RADEONChipsets[];
+-extern PciChipsets          RADEONPciChipsets[];
+-
+ /* radeon_driver.c */
+ extern void                 RADEONLoaderRefSymLists
+ 			    FunctionPrototype((void));

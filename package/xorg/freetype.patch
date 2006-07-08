@@ -1,0 +1,22 @@
+--- xc/lib/font/FreeType/Imakefile.old	2005-06-03 20:18:51.000000000 +0100
++++ xc/lib/font/FreeType/Imakefile	2005-06-03 20:18:52.000000000 +0100
+@@ -20,7 +20,7 @@
+ 
+ INCLUDES = $(FT2INCS) -I. -I$(FONTINCSRC) -I../include -I$(XINCLUDESRC) \
+            -I$(SERVERSRC)/include $(EXTRAINCLUDES) \
+-           -I$(INCLUDESRC)
++           -I$(INCLUDESRC) $(CC_STAGING)
+ 
+ SRCS = xttcap.c ftfuncs.c ftenc.c fttools.c
+ OBJS = xttcap.o ftfuncs.o ftenc.o fttools.o
+--- xc/config/cf/X11.tmpl.old	2005-06-03 20:40:24.000000000 +0100
++++ xc/config/cf/X11.tmpl	2005-06-03 20:40:40.000000000 +0100
+@@ -3371,7 +3371,7 @@
+ 
+ #if BuildFreetype2Library || HasFreetype2
+ #if Freetype2IncDirStandard
+-FREETYPE2INCLUDES = -I$(FREETYPE2INCDIR)/freetype2 -I$(FREETYPE2INCDIR)/freetype2/config
++FREETYPE2INCLUDES = `pkg-config --cflags freetype2`
+ #else
+ FREETYPE2INCLUDES = -I$(FREETYPE2INCDIR) -I$(FREETYPE2INCDIR)/freetype2 -I$(FREETYPE2INCDIR)/freetype2/config
+ #endif
