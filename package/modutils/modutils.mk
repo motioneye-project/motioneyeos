@@ -40,12 +40,14 @@ $(MODUTILS_DIR1)/.configured: $(MODUTILS_DIR1)/.source
 	touch $(MODUTILS_DIR1)/.configured;
 
 $(MODUTILS_DIR1)/$(MODUTILS_BINARY): $(MODUTILS_DIR1)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(MODUTILS_DIR1)
+	$(MAKE1) CC=$(TARGET_CC) -C $(MODUTILS_DIR1)
+	touch -c $(MODUTILS_DIR1)/$(MODUTILS_BINARY)
 
 $(TARGET_DIR)/$(MODUTILS_TARGET_BINARY): $(MODUTILS_DIR1)/$(MODUTILS_BINARY)
 	STRIPPROG='$(STRIPPROG)' \
 	$(MAKE) prefix=$(TARGET_DIR) -C $(MODUTILS_DIR1) install-bin
 	rm -Rf $(TARGET_DIR)/usr/man
+	touch -c $(TARGET_DIR)/$(MODUTILS_TARGET_BINARY)
 
 modutils: uclibc $(TARGET_DIR)/$(MODUTILS_TARGET_BINARY)
 
@@ -89,10 +91,12 @@ $(MODUTILS_DIR2)/.configured: $(MODUTILS_DIR2)/.source
 	touch $(MODUTILS_DIR2)/.configured;
 
 $(MODUTILS_DIR2)/$(MODUTILS_BINARY): $(MODUTILS_DIR2)/.configured
-	$(MAKE) -C $(MODUTILS_DIR2)
+	$(MAKE1) -C $(MODUTILS_DIR2)
+	touch -c $(MODUTILS_DIR2)/$(MODUTILS_BINARY)
 
 $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod: $(MODUTILS_DIR2)/$(MODUTILS_BINARY)
 	cp $(MODUTILS_DIR2)/$(MODUTILS_BINARY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod
+	touch -c $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod
 
 cross-depmod: uclibc $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod
 

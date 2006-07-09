@@ -1,6 +1,7 @@
 config BR2_PACKAGE_MODUTILS
 	bool "modutils"
 	default n
+	depends on !BR2_PACKAGE_MODULE_INIT_TOOLS
 	help
 	  The modutils packages includes the kerneld program for automatic 
 	  loading and unloading of modules, as well as other module 

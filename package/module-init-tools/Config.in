@@ -1,6 +1,7 @@
 config BR2_PACKAGE_MODULE_INIT_TOOLS
 	bool "module-init-tools"
 	default n
+	depends on !BR2_PACKAGE_MODUTILS
 	help
 	  The module-init-tools package contains a set of programs for 
 	  loading, inserting, and removing kernel modules for Linux 

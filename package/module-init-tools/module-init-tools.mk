@@ -14,13 +14,13 @@ STRIPPROG=$(STRIP)
 $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MODULE_INIT_TOOLS_SITE)/$(MODULE_INIT_TOOLS_SOURCE)
 
-$(MODULE_INIT_TOOLS_DIR)/.source: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
+$(MODULE_INIT_TOOLS_DIR)/.unpacked: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
 	bzcat $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(MODULE_INIT_TOOLS_DIR) \
 		package/module-init-tools \*.patch
-	touch $(MODULE_INIT_TOOLS_DIR)/.source
+	touch $(MODULE_INIT_TOOLS_DIR)/.unpacked
 
-$(MODULE_INIT_TOOLS_DIR)/.configured: $(MODULE_INIT_TOOLS_DIR)/.source
+$(MODULE_INIT_TOOLS_DIR)/.configured: $(MODULE_INIT_TOOLS_DIR)/.unpacked
 	(cd $(MODULE_INIT_TOOLS_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		INSTALL=$(MODULE_INIT_TOOLS_DIR)/install-sh \
