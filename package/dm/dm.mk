@@ -23,8 +23,8 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-DM_BASEVER=1.01
-DM_PATCH=05
+DM_BASEVER=1.02
+DM_PATCH=07
 DM_VERSION=$(DM_BASEVER).$(DM_PATCH)
 DM_SOURCE:=device-mapper.$(DM_VERSION).tgz
 DM_SITE:=ftp://sources.redhat.com/pub/dm
@@ -46,6 +46,12 @@ $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
 	(cd $(DM_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		ac_cv_have_decl_malloc=yes \
+		gl_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_malloc_0_nonnull=yes \
+		ac_cv_func_calloc_0_nonnull=yes \
+		ac_cv_func_realloc_0_nonnull=yes \
+		ac_cv_func_lstat_dereferences_slashed_symlink=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -53,7 +59,6 @@ $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
 		--prefix=/usr \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-		--with-kernel-dir=/work/richard/xen/linux-2.6.10-xen0 \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
 	);
 	touch $(DM_DIR)/.configured
@@ -68,15 +73,20 @@ $(DM_STAGING_BINARY) $(DM_STAGING_LIBRARY): $(DM_DIR)/.configured
 # Install dmsetup from staging to target
 $(DM_TARGET_BINARY): $(DM_STAGING_BINARY)
 	$(INSTALL) -m 0755 $? $@
+	-$(STRIP) $(DM_TARGET_BINARY)
+	touch -c $(DM_TARGET_BINARY)
 
 # Install libdevmapper.so.1.00 from staging to target
 $(DM_TARGET_LIBRARY).$(DM_BASEVER): $(DM_STAGING_LIBRARY)
 	$(INSTALL) -m 0644 $? $@
+	-$(STRIP) $(DM_TARGET_LIBRARY)
+	touch -c $(DM_TARGET_LIBRARY).$(DM_BASEVER)
 
 # Makes libdevmapper.so a symlink to libdevmapper.so.1.00
 $(DM_TARGET_LIBRARY): $(DM_TARGET_LIBRARY).$(DM_BASEVER)
 	rm -f $@
 	ln -s $(<F) $@
+	touch -c $(DM_TARGET_LIBRARY)
 
 dm: uclibc $(DM_TARGET_BINARY) $(DM_TARGET_LIBRARY)
 
