@@ -2,6 +2,8 @@ config BR2_PACKAGE_XORG
 	bool "X.org X Window System"
 	default n
 	depends !BR2_PACKAGE_TINYX
+	depends BR2_PACKAGE_ZLIB
+	depends BR2_PACKAGE_LIBPNG
 	help
 	  The official X Window system and server.
 

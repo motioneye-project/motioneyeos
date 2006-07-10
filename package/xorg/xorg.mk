@@ -102,7 +102,13 @@ $(XORG_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 	echo "$(TARGET_LIBX)" >> $(TARGET_DIR)/etc/ld.so.conf
 
 
-xorg: zlib $(XORG_LIBX)/libX11.so.6.2 $(TARGET_XSERVER)
+$(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_LIBX)/libX11.so.6.2
+	-mkdir -p $(STAGING_DIR)$(TARGET_LIBX)
+	( cd $(XORG_DIR); $(MAKE) \
+		DESTDIR=$(STAGING_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	touch -c $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
+
+xorg: zlib png $(XORG_LIBX)/libX11.so.6.2 $(TARGET_XSERVER) $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE)
 
