@@ -38,6 +38,7 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 	--enable-zlib \
 	--enable-freetype \
 	--enable-sysfs \
+	--disable-sdl \
 	--disable-video4linux \
 	--disable-video4linux2 \
 	--disable-fusion );
