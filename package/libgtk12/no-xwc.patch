@@ -1,0 +1,267 @@
+remove mb and XWC support, as tinyx doesnt support this 
+
+#
+# Patch managed by http://www.holgerschurig.de/patcher.html
+#
+
+--- gtk+-1.2.10/gdk/gdkdraw.c~no-xwc
++++ gtk+-1.2.10/gdk/gdkdraw.c
+@@ -236,12 +236,14 @@
+ 			 strlen (string) / 2);
+ 	}
+     }
++#ifdef HAVE_XWC
+   else if (font->type == GDK_FONT_FONTSET)
+     {
+       XFontSet fontset = (XFontSet) font_private->xfont;
+       XmbDrawString (drawable_private->xdisplay, drawable_private->xwindow,
+ 		     fontset, gc_private->xgc, x, y, string, strlen (string));
+     }
++#endif
+   else
+     g_error("undefined font type\n");
+ }
+@@ -291,12 +293,14 @@
+ 			 gc_private->xgc, x, y, (XChar2b *) text, text_length / 2);
+ 	}
+     }
++#ifdef HAVE_XWC
+   else if (font->type == GDK_FONT_FONTSET)
+     {
+       XFontSet fontset = (XFontSet) font_private->xfont;
+       XmbDrawString (drawable_private->xdisplay, drawable_private->xwindow,
+ 		     fontset, gc_private->xgc, x, y, text, text_length);
+     }
++#endif
+   else
+     g_error("undefined font type\n");
+ }
+@@ -337,6 +341,7 @@
+ 	  g_free (glyphs);
+ 	}
+     }
++#ifdef HAVE_XWC
+   else if (font->type == GDK_FONT_FONTSET)
+     {
+       if (sizeof(GdkWChar) == sizeof(wchar_t))
+@@ -357,6 +362,7 @@
+ 	  g_free (text_wchar);
+ 	}
+     }
++#endif
+   else
+     g_error("undefined font type\n");
+ }
+--- gtk+-1.2.10/gdk/gdkim.c~no-xwc
++++ gtk+-1.2.10/gdk/gdkim.c
+@@ -121,6 +121,7 @@
+ 
+   current_locale = setlocale (LC_ALL, NULL);
+ 
++#ifdef HAVE_XWC
+   if ((strcmp (current_locale, "C")) && (strcmp (current_locale, "POSIX")))
+     {
+       gdk_use_mb = TRUE;
+@@ -145,7 +146,8 @@
+   GDK_NOTE (XIM,
+ 	    g_message ("%s multi-byte string functions.", 
+ 		       gdk_use_mb ? "Using" : "Not using"));
+-  
++#endif
++ 
+   return current_locale;
+ }
+ 
+@@ -1551,6 +1553,7 @@
+   else
+     length = len;
+ 
++#ifdef HAVE_XWC
+   if (gdk_use_mb)
+     {
+       XTextProperty tpr;
+@@ -1589,6 +1592,7 @@
+ 	g_free (src_wc);
+     }
+   else
++#endif 
+     {
+       gint i;
+ 
+@@ -1644,6 +1648,7 @@
+ 	  /* NoMem or LocaleNotSupp */
+ 	  return -1;
+ 	}
++#ifdef HAVE_XWC
+       if (XwcTextPropertyToTextList (gdk_display, &tpr, &wstrs, &num_wstrs)
+ 	  != Success)
+ 	{
+@@ -1659,6 +1664,7 @@
+ 	dest[len_cpy] = wstr_src[len_cpy];
+       XwcFreeStringList (wstrs);
+       return len_cpy;
++#endif
+     }
+   else
+     {
+--- gtk+-1.2.10/gdk/gdkfont.c~no-xwc
++++ gtk+-1.2.10/gdk/gdkfont.c
+@@ -244,9 +244,11 @@
+ 	  gdk_xid_table_remove (((XFontStruct *) private->xfont)->fid);
+ 	  XFreeFont (private->xdisplay, (XFontStruct *) private->xfont);
+ 	  break;
++#ifdef HAVE_XWC
+ 	case GDK_FONT_FONTSET:
+ 	  XFreeFontSet (private->xdisplay, (XFontSet) private->xfont);
+ 	  break;
++#endif
+ 	default:
+ 	  g_error ("unknown font type.");
+ 	  break;
+@@ -292,6 +294,7 @@
+       return (((XFontStruct *) privatea->xfont)->fid ==
+ 	      ((XFontStruct *) privateb->xfont)->fid);
+     }
++#ifdef HAVE_XWC
+   else if (fonta->type == GDK_FONT_FONTSET && fontb->type == GDK_FONT_FONTSET)
+     {
+       gchar *namea, *nameb;
+@@ -301,6 +304,7 @@
+       
+       return (strcmp(namea, nameb) == 0);
+     }
++#endif
+   else
+     /* fontset != font */
+     return FALSE;
+@@ -333,10 +337,12 @@
+ 	  width = XTextWidth16 (xfont, (XChar2b *) string, strlen (string) / 2);
+ 	}
+       break;
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) font_private->xfont;
+       width = XmbTextEscapement (fontset, string, strlen(string));
+       break;
++#endif
+     default:
+       width = 0;
+     }
+@@ -372,10 +378,12 @@
+ 	  width = XTextWidth16 (xfont, (XChar2b *) text, text_length / 2);
+ 	}
+       break;
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) private->xfont;
+       width = XmbTextEscapement (fontset, text, text_length);
+       break;
++#endif
+     default:
+       width = 0;
+     }
+@@ -414,6 +422,7 @@
+ 
+ 	break;
+       }
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       if (sizeof(GdkWChar) == sizeof(wchar_t))
+ 	{
+@@ -431,6 +440,7 @@
+ 	  g_free (text_wchar);
+ 	}
+       break;
++#endif
+     default:
+       width = 0;
+     }
+@@ -474,10 +484,12 @@
+ 	  width = XTextWidth (xfont, &character, 1);
+ 	}
+       break;
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) private->xfont;
+       width = XmbTextEscapement (fontset, &character, 1) ;
+       break;
++#endif
+     default:
+       width = 0;
+     }
+@@ -523,6 +535,7 @@
+ 	  
+ 	  break;
+ 	}
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) private->xfont;
+       {
+@@ -530,6 +543,7 @@
+         width = XwcTextEscapement (fontset, &char_wc, 1) ;
+       }
+       break;
++#endif
+     default:
+       width = 0;
+     }
+@@ -597,6 +611,7 @@
+       if (descent)
+ 	*descent = overall.descent;
+       break;
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) private->xfont;
+       XmbTextExtents (fontset, text, text_length, &ink, &logical);
+@@ -611,6 +626,7 @@
+       if (descent)
+ 	*descent = ink.y + ink.height;
+       break;
++#endif
+     }
+ 
+ }
+@@ -664,6 +680,7 @@
+ 
+ 	break;
+       }
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) private->xfont;
+ 
+@@ -691,6 +708,7 @@
+       if (descent)
+ 	*descent = ink.y + ink.height;
+       break;
++#endif
+     }
+ 
+ }
+@@ -750,11 +768,13 @@
+ 	}
+       width = overall.rbearing;
+       break;
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) private->xfont;
+       XmbTextExtents (fontset, text, text_length, &ink, &log);
+       width = ink.x + ink.width;
+       break;
++#endif
+     default:
+       width = 0;
+     }
+@@ -818,11 +838,13 @@
+ 	}
+       height = overall.ascent + overall.descent;
+       break;
++#ifdef HAVE_XWC
+     case GDK_FONT_FONTSET:
+       fontset = (XFontSet) private->xfont;
+       XmbTextExtents (fontset, text, text_length, &ink, &log);
+       height = log.height;
+       break;
++#endif
+     default:
+       height = 0;
+     }
