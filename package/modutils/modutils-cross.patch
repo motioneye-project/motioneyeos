@@ -481,6 +481,27 @@ diff -urN modutils-2.4.27.0.orig/util/modstat.c modutils-2.4.27.0/util/modstat.c
  		    intsym->r_type = ELFW(R_TYPE)(rel->r_info);
  		  }
  	      }
+--- modutils-2.4.27/obj/obj_reloc.c.orig	2003-10-26 18:25:08.000000000 -0800
++++ modutils-2.4.27/obj/obj_reloc.c	2006-06-20 17:47:11.000000000 -0700
+@@ -331,6 +331,18 @@
+ 	  value += rel->r_addend;
+ #endif
+ 
++	  /* Byte swap if necessary. For some archs, other adjustments may
++	     need to be done in arch_apply_relocation. */
++	  if (byteswap==1)
++	    {
++	      if (sizeof(unsigned tgt_long) == 4)
++		*(tgt_long *)(targsec->contents + rel->r_offset) =
++		  bswap_32(*(tgt_long *)(targsec->contents + rel->r_offset));
++	      else if (sizeof(unsigned tgt_long) == 8)
++		*(tgt_long *)(targsec->contents + rel->r_offset) =
++		  bswap_64(*(tgt_long *)(targsec->contents + rel->r_offset));
++	    }
++
+ 	  /* Do it! */
+ 	  switch (arch_apply_relocation(f,targsec,symsec,intsym,rel,value))
+ 	    {
 --- odutils-2.4.27.0.orig/include/module.h.orig	2006-01-10 08:15:09.000000000 -0700
 +++ odutils-2.4.27.0/include/module.h	2006-01-10 08:15:13.000000000 -0700
 @@ -88,16 +88,34 @@
