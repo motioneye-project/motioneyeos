@@ -68,9 +68,7 @@ config BR2_BINUTILS_VERSION
 	default "2.17.50.0.3"     if BR2_BINUTILS_VERSION_2_17_50_0_3
 
 config BR2_EXTRA_BINUTILS_CONFIG_OPTIONS
-        string "Additional binutils options"
-        default ""
-        help
-            Any additional binutils options you may want to include..
-
-
+	string "Additional binutils options"
+	default ""
+	help
+	  Any additional binutils options you may want to include ...
