@@ -68,7 +68,7 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	touch $(UCLIBC_DIR)/.unpacked
 
 uclibc-configured: $(UCLIBC_DIR)/.configured
-$(UCLIBC_DIR)/.configured: dependencies $(UCLIBC_DIR)/.unpacked
+$(UCLIBC_DIR)/.configured: dependencies kernel-headers $(UCLIBC_DIR)/.unpacked
 	cp $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
 	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' \
 		-e 's,# TARGET_$(UCLIBC_TARGET_ARCH) is not set,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
