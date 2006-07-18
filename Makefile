@@ -35,9 +35,6 @@ ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(TOPDIR).config
 endif
 
-TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xf
-#"
-
 ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 
 #############################################################
