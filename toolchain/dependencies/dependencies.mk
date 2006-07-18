@@ -5,7 +5,7 @@
 #
 ######################################################################
 
-dependencies:
+dependencies: host-sed
 	$(TOPDIR)/toolchain/dependencies/dependencies.sh
 
 dependencies-source:
