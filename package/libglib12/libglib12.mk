@@ -29,6 +29,8 @@ $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=$(STAGING_DIR) \
 		--exec_prefix=$(STAGING_DIR) \
+		--libdir=$(STAGING_DIR)/lib \
+		--includedir=$(STAGING_DIR)/include \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
 		--libexecdir=/usr/lib \
