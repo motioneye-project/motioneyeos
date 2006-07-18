@@ -3,8 +3,8 @@
 set -e
 #set -x
 
-echo "Checking build system dependencies:"
 echo ""
+echo "Checking build system dependencies:"
 
 #############################################################
 #
