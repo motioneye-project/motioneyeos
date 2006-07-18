@@ -148,4 +148,5 @@ echo "gettext installed:		    Ok"
 #
 #############################################################
 echo "Build system dependencies:	    Ok"
+echo ""
 
