@@ -156,3 +156,4 @@ sed-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_SED)),y)
 TARGETS+=sed
 endif
+.PHONY: sed host-sed

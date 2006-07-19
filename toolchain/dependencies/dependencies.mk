@@ -6,7 +6,7 @@
 ######################################################################
 
 dependencies: host-sed
-	$(TOPDIR)/toolchain/dependencies/dependencies.sh
+	@$(TOPDIR)/toolchain/dependencies/dependencies.sh
 
 dependencies-source:
 
@@ -21,5 +21,5 @@ dependencies-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-# unconditionally include this one...
-TARGETS+=dependencies
+.PHONY: dependencies
+

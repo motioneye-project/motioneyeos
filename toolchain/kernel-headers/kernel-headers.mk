@@ -177,3 +177,4 @@ kernel-headers-clean: clean
 kernel-headers-dirclean:
 	rm -rf $(LINUX_HEADERS_DIR)
 
+.PHONY: kernel-headers
