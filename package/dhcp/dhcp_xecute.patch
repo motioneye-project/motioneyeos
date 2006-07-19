@@ -412,11 +412,11 @@ diff -urN dhcp-3.0.2.orig/includes/dhctoken.h dhcp-3.0.2/includes/dhctoken.h
 --- dhcp-3.0.2.orig/includes/dhctoken.h	2004-09-21 13:25:38.000000000 -0600
 +++ dhcp-3.0.2/includes/dhctoken.h	2005-02-24 12:33:21.000000000 -0700
 @@ -308,7 +308,8 @@
- 	REFRESH = 612,
  	DOMAIN_NAME = 613,
  	DO_FORWARD_UPDATE = 614,
--	KNOWN_CLIENTS = 615
-+	KNOWN_CLIENTS = 615,
+ 	KNOWN_CLIENTS = 615,
+-	ATSFP = 616
++	ATSFP = 616,
 +	EXECUTE = 616
  };
  
