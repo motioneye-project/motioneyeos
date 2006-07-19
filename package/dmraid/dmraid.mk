@@ -18,7 +18,7 @@ $(DL_DIR)/$(DMRAID_SOURCE):
 
 $(DMRAID_DIR)/.unpacked: $(DL_DIR)/$(DMRAID_SOURCE)
 	$(DMRAID_CAT) $(DL_DIR)/$(DMRAID_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	$(SOURCE_DIR)/patch-kernel.sh $(DMRAID_DIR) $(SOURCE_DIR) dmraid\*.patch
+	toolchain/patch-kernel.sh $(DMRAID_DIR) package/dmraid \*.patch
 	touch $(DMRAID_DIR)/.unpacked
 
 $(DMRAID_DIR)/.configured: $(DMRAID_DIR)/.unpacked
@@ -44,7 +44,7 @@ $(DMRAID_DIR)/tools/$(DMRAID_BINARY): $(DMRAID_DIR)/.configured
 
 $(DMRAID_TARGET_BINARY): $(DMRAID_DIR)/tools/$(DMRAID_BINARY)
 	$(INSTALL) -m 0755 $? $@
-	$(INSTALL) -m 0755 $(SOURCE_DIR)/dmraid.init $(TARGET_DIR)/etc/init.d/dmraid
+	$(INSTALL) -m 0755 package/dmraid/dmraid.init $(TARGET_DIR)/etc/init.d/dmraid
 
 dmraid: uclibc dm $(DMRAID_TARGET_BINARY)
 

@@ -1,0 +1,31 @@
+#!/bin/sh
+
+# try to load module in case that hasn't been done yet
+modprobe dm-mod >/dev/null 2>&1
+
+set -e
+
+[ -x /sbin/dmraid ] || exit 0
+
+case "$1" in
+	start|"")
+		echo "Setting up DMRAID devices..."
+		/sbin/dmraid --activate yes --ignorelocking --verbose
+		;;
+
+	stop)
+		echo "Shutting down DMRAID devices... "
+		/sbin/dmraid --activate no --ignorelocking --verbose
+		;;
+
+	restart|force-reload)
+		$0 stop
+		sleep 1
+		$0 start
+		;;
+
+	*)
+		echo "Usage: dmraid {start|stop|restart|force-reload}"
+		exit 1
+		;;
+esac
