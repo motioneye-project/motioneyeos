@@ -8,12 +8,9 @@
 #############################################################
 DEFAULT_KERNEL_HEADERS:=$(strip $(subst ",, $(BR2_DEFAULT_KERNEL_HEADERS)))
 #"
-
-ifneq ($(filter $(TARGETS),kernel-headers),)
-DEFAULT_KERNEL_HEADERS:=$(strip $(DEFAULT_KERNEL_HEADERS))
-
 LINUX_HEADERS_SITE:=127.0.0.1
 LINUX_HEADERS_SOURCE:=unspecified-kernel-headers
+LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-null
 
 ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.4.25")
 VERSION:=2
@@ -180,4 +177,3 @@ kernel-headers-clean: clean
 kernel-headers-dirclean:
 	rm -rf $(LINUX_HEADERS_DIR)
 
-endif
