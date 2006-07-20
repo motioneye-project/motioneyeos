@@ -20,10 +20,11 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-RXVT_SOURCE:=rxvt-2.6.4.tar.bz2
-RXVT_SITE:=ftp://ftp.rxvt.org/pub/rxvt/
-RXVT_CAT:=bzcat
-RXVT_DIR:=$(BUILD_DIR)/rxvt-2.6.4
+RXVT_VERSION:=2.6.4
+RXVT_SOURCE:=rxvt-$(RXVT_VERSION).tar.gz
+RXVT_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/rxvt
+RXVT_CAT:=zcat
+RXVT_DIR:=$(BUILD_DIR)/rxvt-$(RXVT_VERSION)
 RXVT_BINARY:=$(RXVT_DIR)/src/rxvt
 
 $(DL_DIR)/$(RXVT_SOURCE):
@@ -33,12 +34,13 @@ rxvt-source: $(DL_DIR)/$(RXVT_SOURCE)
 
 $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
 	$(RXVT_CAT) $(DL_DIR)/$(RXVT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ rxvt\*.patch
+	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ \*.patch
 	touch $(RXVT_DIR)/.unpacked
 
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 	(cd $(RXVT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		rxvt_cv_ptys=GLIBC \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -46,8 +48,11 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--prefix=/usr/X11R6 \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--x-includes=$(TINYX_DIR)/exports/include \
-		--x-libraries=$(TINYX_DIR)/exports/lib \
+		--x-includes=$(STAGING_DIR)/usr/X11R6/include \
+		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
+		--disable-resources \
+		--disable-memset \
+		--enable-xgetdefault \
 	);
 	touch $(RXVT_DIR)/.configured
 
@@ -57,8 +62,14 @@ $(RXVT_BINARY): $(RXVT_DIR)/.configured
 
 $(TARGET_DIR)/usr/X11R6/bin/rxvt: $(RXVT_BINARY)
 	cp -f $(RXVT_BINARY) $(TARGET_DIR)/usr/X11R6/bin
+	(cd $(TARGET_DIR)/usr/X11R6/bin; ln -fs rxvt xterm)
 
+ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
 rxvt: tinyx $(TARGET_DIR)/usr/X11R6/bin/rxvt
+endif
+ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
+rxvt: xorg $(TARGET_DIR)/usr/X11R6/bin/rxvt
+endif
 
 rxvt-clean:
 	rm -f $(TARGET_DIR)/usr/X11R6/bin/rxvt

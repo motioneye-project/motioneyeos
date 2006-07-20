@@ -1,0 +1,1132 @@
+--- rxvt-2.6.4.orig/src/graphics/Makefile.in
++++ rxvt-2.6.4/src/graphics/Makefile.in
+@@ -1,6 +1,6 @@
+ # test/graphics/Makefile.in	-*- Makefile -*-
+ # $Id: Makefile.in,v 1.3 1998/11/26 05:28:28 mason Exp $
+-@MCOMMON@
++#@MCOMMON@
+ 
+ srcdir =	@srcdir@
+ VPATH =		@srcdir@
+--- rxvt-2.6.4.orig/src/command.h
++++ rxvt-2.6.4/src/command.h
+@@ -181,7 +181,7 @@
+ 
+ /* time factor to slow down a `jumpy' mouse */
+ #define MOUSE_THRESHOLD		50
+-#define CONSOLE		"/dev/console"	/* console device */
++#define CONSOLE		"/dev/xconsole"	/* console device */
+ 
+ /*
+  * key-strings: if only these keys were standardized <sigh>
+@@ -196,20 +196,27 @@
+ 
+ #ifdef SCROLL_ON_SHIFT
+ # define SCROLL_SHIFTKEY (shft)
++# define NOSCROLL_SHIFTKEY 0
+ #else
+ # define SCROLL_SHIFTKEY 0
++# define NOSCROLL_SHIFTKEY (shft)
+ #endif
+ #ifdef SCROLL_ON_CTRL
+ # define SCROLL_CTRLKEY  (ctrl)
++# define NOSCROLL_CTRLKEY 0
+ #else
+ # define SCROLL_CTRLKEY 0
++# define NOSCROLL_CTRLKEY (ctrl)
+ #endif
+ #ifdef SCROLL_ON_META
+ # define SCROLL_METAKEY  (meta)
++# define NOSCROLL_METAKEY 0
+ #else
+ # define SCROLL_METAKEY 0
++# define NOSCROLL_METAKEY (meta)
+ #endif
+-#define IS_SCROLL_MOD  (SCROLL_SHIFTKEY || SCROLL_CTRLKEY || SCROLL_METAKEY)
++#define IS_SCROLL_MOD  ((SCROLL_SHIFTKEY || SCROLL_CTRLKEY || SCROLL_METAKEY) \
++              && (!NOSCROLL_SHIFTKEY && !NOSCROLL_CTRLKEY && !NOSCROLL_METAKEY))
+ 
+ typedef struct XCNQueue_t {
+     struct XCNQueue_t *next;
+--- rxvt-2.6.4.orig/src/rsizes.h
++++ rxvt-2.6.4/src/rsizes.h
+@@ -0,0 +1,22 @@
++/*
++ * If we haven't pulled in typedef's like int16_t , then do them ourself
++ */
++
++/* type of (normal and unsigned) basic sizes */
++/* e.g. typedef short int16_t */
++
++/* e.g. typedef unsigned short u_int16_t */
++
++/* e.g. typedef int int32_t */
++
++/* e.g. typedef unsigned int u_int32_t */
++
++/* e.g. typedef long int64_t */
++
++/* e.g. typedef unsigned long u_int64_t */
++
++
++/* whatever normal size corresponds to a integer pointer */
++#define intp_t int32_t
++/* whatever normal size corresponds to a unsigned integer pointer */
++#define u_intp_t u_int32_t
+--- rxvt-2.6.4.orig/src/xdefaults.c
++++ rxvt-2.6.4/src/xdefaults.c
+@@ -215,6 +215,8 @@
+ #ifdef MULTICHAR_SET
+     STRG(Rs_multichar_encoding, "multichar_encoding", "km", "mode",
+          "multiple-character font encoding; mode = eucj | sjis | big5 | gb"),
++    BOOL(Rs_mc_hack, "mcCursor", "mcc", Opt_mc_hack,
++	"Multibyte character cursor movement"),
+ #endif				/* MULTICHAR_SET */
+ #ifdef USE_XIM
+     STRG(Rs_preeditType, "preeditType", "pt", "style",
+@@ -299,10 +301,10 @@
+     fprintf(stderr, "Kanji,");
+ #endif
+ #ifdef ZH
+-    fprintf(stderr, "Chinese,");
++    fprintf(stderr, "Chinese (Big5),");
+ #endif
+ #ifdef ZHCN
+-    fprintf(stderr, "Chinese(GB),");
++    fprintf(stderr, "Chinese (GB),");
+ #endif
+ #ifdef XTERM_SCROLLBAR
+     fprintf(stderr, "XTerm-scrollbar,");
+@@ -760,14 +762,23 @@
+ 
+     for (entry = 0; entry < optList_size(); entry++) {
+ 	int             s;
+-	char           *p;
++	char           *p, *p0;
+ 	const char     *kw = optList[entry].kw;
+ 
+ 	if (kw == NULL || *(optList[entry].dp) != NULL)
+ 	    continue;		/* previously set */
+-	if ((p = XGetDefault(display, name, kw)) != NULL
+-	    || (p = XGetDefault(display, APL_SUBCLASS, kw)) != NULL
+-	    || (p = XGetDefault(display, APL_CLASS, kw)) != NULL) {
++
++#define STRCMP(x, y)		strcmp((const char *)(x), (const char *)(y))
++	p = XGetDefault(display, name, kw);
++	p0 = XGetDefault(display, "!INVALIDPROGRAMMENAMEDONTMATCH!", kw);
++	if (p == NULL || (p0 && STRCMP(p, p0) == 0)) {
++	    p = XGetDefault(display, APL_SUBCLASS, kw);
++	    if (p == NULL || (p0 && STRCMP(p, p0) == 0))
++		p = XGetDefault(display, APL_CLASS, kw);
++	}
++	if (p == NULL && p0)
++	    p = p0;
++	if (p) {
+ 	    *optList[entry].dp = p;
+ 
+ 	    if (optList_isBool(entry)) {
+--- rxvt-2.6.4.orig/src/screen.c
++++ rxvt-2.6.4/src/screen.c
+@@ -188,7 +188,7 @@
+ 	rp[row] = MALLOC(sizeof(rend_t) * TermWin.ncol);
+     }
+     if (!keepr)
+-	efs &= ~(RS_Uline);
++	efs &= ~(RS_Uline | RS_RVid);
+     MEMSET(tp[row], ' ', width);
+     for (er = rp[row]; width--;)
+ 	*er++ = efs;
+@@ -2107,6 +2107,54 @@
+ #define FONT_RBEAR(X, Y)						\
+     (X)->per_char[(Y) - (X)->min_char_or_byte2].rbearing
+ 
++#ifdef MULTICHAR_SET
++static int
++draw_string16(Display *display,
++	      Drawable d,
++	      GC gc,
++	      int x,
++	      int y,
++	      XChar2b *str,
++	      int len)
++{
++    while (len > 0) {
++	XDrawString16(display, d, gc, x, y, str, 1);
++	if (str->byte1 == '\0') {
++	    x += TermWin.fwidth;
++	}
++	else {
++	    x += TermWin.fwidth * 2;
++	}
++	str++;
++	len--;
++    }
++    return 0;
++}
++
++static int
++draw_image_string16(Display *display,
++		    Drawable d,
++		    GC gc,
++		    int x,
++		    int y,
++		    XChar2b *str,
++		    int len)
++{
++    while (len > 0) {
++	XDrawImageString16(display, d, gc, x, y, str, 1);
++	if (str->byte1 == '\0') {
++	    x += TermWin.fwidth;
++	}
++	else {
++	    x += TermWin.fwidth * 2;
++	}
++	str++;
++	len--;
++    }
++    return 0;
++}
++#endif
++
+ /* EXTPROTO */
+ void
+ scr_refresh(int type)
+@@ -2262,11 +2310,19 @@
+ #ifndef NO_CURSORCOLOR
+ 	cc1 = *srp & (RS_fgMask | RS_bgMask);
+ 	if (Xdepth <= 2 || !rs[Rs_color + Color_cursor])
++#ifdef CURSOR_COLOR_IS_RENDITION_COLOR
++	    ccol1 = GET_FGCOLOR(rstyle);
++#else
+ 	    ccol1 = Color_fg;
++#endif
+ 	else
+ 	    ccol1 = Color_cursor;
+ 	if (Xdepth <= 2 || !rs[Rs_color + Color_cursor2])
++#ifdef CURSOR_COLOR_IS_RENDITION_COLOR
++	    ccol2 = GET_BGCOLOR(rstyle);
++#else
+ 	    ccol2 = Color_bg;
++#endif
+ 	else
+ 	    ccol2 = Color_cursor2;
+ 	*srp = SET_FGCOLOR(*srp, ccol1);
+@@ -2366,9 +2422,9 @@
+ 	    len = 0;
+ 	    buffer[len++] = stp[col];
+ 	    ypixelc = Row2Pixel(row);
+-	    ypixel = ypixelc + TermWin.font->ascent;
++	    ypixel = ypixelc + TermWin.fascent;
+ 	    xpixel = Col2Pixel(col);
+-	    fontdiff = 0;
++	    fontdiff = TermWin.fontdiff;
+ 	    wlen = 1;
+ 
+ /*
+@@ -2382,9 +2438,14 @@
+ 		    if (!wbyte) {
+ 			wbyte = 1;
+ 			XSetFont(Xdisplay, TermWin.gc, TermWin.mfont->fid);
+-		    fontdiff = TermWin.mprop;
+-			draw_string = XDrawString16;
+-			draw_image_string = XDrawImageString16;
++			fontdiff |= TermWin.mprop;
++			if (TermWin.mprop) {
++			    draw_string = draw_string16;
++			    draw_image_string = draw_image_string16;
++			} else {
++			    draw_string = XDrawString16;
++			    draw_image_string = XDrawImageString16;
++			}
+ 		    }
+ 		/* double stepping - we're in Kanji mode */
+ 		    for (; ++col < TermWin.ncol;) {
+@@ -2512,11 +2573,12 @@
+ 	    if (!wbyte && MONO_BOLD(rend) && TermWin.boldFont != NULL) {
+ 		bfont = 1;
+ 		XSetFont(Xdisplay, TermWin.gc, TermWin.boldFont->fid);
+-		fontdiff = TermWin.bprop;
++		fontdiff |= TermWin.bprop;
+ 		rend &= ~RS_Bold;	/* we've taken care of it */
+ 	    } else if (bfont) {
+ 		bfont = 0;
+-		XSetFont(Xdisplay, TermWin.gc, TermWin.font->fid);
++		if (!wbyte)
++		    XSetFont(Xdisplay, TermWin.gc, TermWin.font->fid);
+ 	    }
+ #endif
+ /*
+@@ -3341,14 +3403,6 @@
+ 
+ /* ------------------------------------------------------------------------- */
+ /*
+- * On some systems, the Atom typedef is 64 bits wide.  We need to have a type
+- * that is exactly 32 bits wide, because a format of 64 is not allowed by
+- * the X11 protocol.
+- */
+-typedef CARD32  Atom32;
+-
+-/* ------------------------------------------------------------------------- */
+-/*
+  * Respond to a request for our current selection
+  * EXT: SelectionRequest
+  */
+@@ -3357,7 +3411,7 @@
+ selection_send(const XSelectionRequestEvent * rq)
+ {
+     XEvent          ev;
+-    Atom32          target_list[4];
++    Atom            target_list[4];
+     Atom            target;
+     static Atom     xa_targets = None;
+     static Atom     xa_compound_text = None;
+@@ -3382,13 +3436,12 @@
+     ev.xselection.time = rq->time;
+ 
+     if (rq->target == xa_targets) {
+-	target_list[0] = (Atom32) xa_targets;
+-	target_list[1] = (Atom32) XA_STRING;
+-	target_list[2] = (Atom32) xa_text;
+-	target_list[3] = (Atom32) xa_compound_text;
++	target_list[0] = xa_targets;
++	target_list[1] = XA_STRING;
++	target_list[2] = xa_text;
++	target_list[3] = xa_compound_text;
+ 	XChangeProperty(Xdisplay, rq->requestor, rq->property, rq->target,
+-			(8 * sizeof(target_list[0])), PropModeReplace,
+-			(unsigned char *)target_list,
++			32, PropModeReplace, (unsigned char *)target_list,
+ 			(sizeof(target_list) / sizeof(target_list[0])));
+ 	ev.xselection.property = rq->property;
+     } else if (rq->target == XA_STRING
+@@ -3503,3 +3556,26 @@
+     pos->y = Height2Pixel((screen.cur.row + 1)) + xwa.y;
+ }
+ #endif
++
++#ifdef MULTICHAR_SET
++/* EXTPROTO */
++int
++scr_multi1(void)
++{
++    rend_t          rend;
++    
++    rend = screen.rend[screen.cur.row + TermWin.saveLines][screen.cur.col];
++    return ((rend & RS_multiMask)==RS_multi1);
++}
++
++/* EXTPROTO */
++int
++scr_multi2(void)
++{
++    rend_t          rend;
++    
++    if (screen.cur.col==0)  return 0;
++    rend = screen.rend[screen.cur.row + TermWin.saveLines][screen.cur.col-1];
++    return ((rend & RS_multiMask)==RS_multi2);
++}
++#endif
+--- rxvt-2.6.4.orig/src/main.c
++++ rxvt-2.6.4/src/main.c
+@@ -1010,6 +1010,9 @@
+ 
+ 	TermWin.fwidth = fw;
+ 	TermWin.fheight = fh;
++	TermWin.fascent = TermWin.font->ascent;
++	TermWin.fdescent = TermWin.font->descent;
++	TermWin.fontdiff = 0;
+     }
+ 
+ /* check that size of boldFont is okay */
+@@ -1035,10 +1038,17 @@
+ 	    int             fh, fw;
+ 
+ 	    fw = get_fontwidest(TermWin.mfont);
+-	    fh = TermWin.mfont->ascent + TermWin.mfont->descent;
+-	    if (fw <= TermWin.fwidth && fh <= TermWin.fheight)
+-		/* WHAT TO DO!! */ ;
+-	    TermWin.mprop = !(fw == TermWin.fwidth /* && fh == TermWin.fheight */ );
++	    if (TermWin.mfont->ascent > TermWin.fascent) {
++		TermWin.fascent = TermWin.mfont->ascent;
++		TermWin.fontdiff = 1;
++	    }
++	    if (TermWin.mfont->descent > TermWin.fdescent) {
++		TermWin.fdescent = TermWin.mfont->descent;
++		TermWin.fontdiff = 1;
++	    }
++	    if (TermWin.fontdiff)
++		TermWin.fheight = TermWin.fascent + TermWin.fdescent;
++	    TermWin.mprop = (fw != TermWin.fwidth * 2);
+ 	}
+ #endif
+ 
+@@ -1348,6 +1358,16 @@
+ 	sprintf(env_term, "TERM=%s", rs[Rs_term_name]);
+ 	putenv(env_term);
+     } else {
++	/* Debian hack: We at Debian prefer to be correct.  Therefore, we
++           use TERM=rxvt on color displays and TERM=rxvt-m (the -m stands
++           for monochrome, see terminfo(5)) on monochrome displays.  For
++           some unknown reason, the upstream maintianers don't recognize
++           the usefulness of this.  Oh well. */
++#ifndef KANJI
++	if (Xdepth <= 2)
++	    putenv("TERM=" TERMENV "-m");
++	else
++#endif
+ 	putenv("TERM=" TERMENV);
+     }
+ }
+--- rxvt-2.6.4.orig/src/grkelot.c
++++ rxvt-2.6.4/src/grkelot.c
+@@ -158,9 +158,9 @@
+ 
+ #define NUM_XLAT_TYPES	(sizeof(xlat_type) / sizeof(xlat_type[0]))
+ 
+-static void     kstate_add_xlat(char *str);
+-static void     kstate_add_switcher(char *str);
+-static void     kstate_set_life(char *str);
++void     kstate_add_xlat(char *str);
++void     kstate_add_switcher(char *str);
++void     kstate_set_life(char *str);
+ 
+ /* --- Functions ------------- */
+ /* INTPROTO */
+--- rxvt-2.6.4.orig/src/graphics.c
++++ rxvt-2.6.4/src/graphics.c
+@@ -144,15 +144,15 @@
+ 	x -= (XTextWidth(TermWin.font, data->text, data->coords[3]) >> 1);
+ 
+     if (align & TOP_TEXT)
+-	y += TermWin.font->ascent;
++	y += TermWin.fascent;
+     else if (align & BOTTOM_TEXT)
+-	y -= TermWin.font->descent;
++	y -= TermWin.fdescent;
+ 
+     if (align & VCENTER_TEXT)
+-	y -= TermWin.font->descent
+-	     + ((TermWin.font->ascent + TermWin.font->descent) >> 1);
++	y -= TermWin.fdescent
++	     + ((TermWin.fascent + TermWin.fdescent) >> 1);
+     if (align & VCAPS_CENTER_TEXT)
+-	y += (TermWin.font->ascent >> 1);
++	y += (TermWin.fascent >> 1);
+ 
+     XPMClearArea(Xdisplay, grwin->win, x, y, Width2Pixel(data->coords[3]),
+ 		 Height2Pixel(1), 0);
+--- rxvt-2.6.4.orig/src/command.c
++++ rxvt-2.6.4/src/command.c
+@@ -992,7 +992,9 @@
+     else {
+     /* To avoid Segmentation Fault in C locale */
+ 	setTermFontSet();
++#ifdef MULTICHAR_SET
+         if (strcmp(locale, "C"))
++#endif
+ 	    XRegisterIMInstantiateCallback(Xdisplay, NULL, NULL, NULL,
+ 					   IMInstantiateCallback, NULL);
+     }
+@@ -1214,11 +1216,23 @@
+ 				^ !!(shft | ctrl)) ? '\b' : '\177');
+ 		} else
+ 		    len = strlen(STRCPY(kbuf, key_backspace));
++#ifdef MULTICHAR_SET
++		if ((Options & Opt_mc_hack) && scr_multi2()) {
++		    memmove(kbuf + len, kbuf, len);
++		    len *= 2;
++		}
++#endif
+ 		break;
+ #endif
+ #ifndef NO_DELETE_KEY
+ 	    case XK_Delete:
+ 		len = strlen(STRCPY(kbuf, key_delete));
++#ifdef MULTICHAR_SET
++		if ((Options & Opt_mc_hack) && scr_multi1()) {
++		    memmove(kbuf + len, kbuf, len);
++		    len *= 2;
++		}
++#endif
+ 		break;
+ #endif
+ 	    case XK_Tab:
+@@ -1244,13 +1258,13 @@
+ 
+ #ifdef XK_KP_Left
+ 	    case XK_KP_Up:	/* \033Ox or standard */
+-	    case XK_KP_Down:	/* \033Ow or standard */
++	    case XK_KP_Down:	/* \033Or or standard */
+ 	    case XK_KP_Right:	/* \033Ov or standard */
+ 	    case XK_KP_Left:	/* \033Ot or standard */
+ 		if ((PrivateModes & PrivMode_aplKP) ? !shft : shft) {
+ 		    len = 3;
+ 		    STRCPY(kbuf, "\033OZ");
+-		    kbuf[2] = ("txvw"[keysym - XK_KP_Left]);
++		    kbuf[2] = ("txvr"[keysym - XK_KP_Left]);
+ 		    break;
+ 		} else
+ 		/* translate to std. cursor key */
+@@ -1272,6 +1286,14 @@
+ 		    kbuf[2] = ("dacb"[keysym - XK_Left]);
+ 		} else if (PrivateModes & PrivMode_aplCUR)
+ 		    kbuf[1] = 'O';
++#ifdef MULTICHAR_SET
++		if ((Options & Opt_mc_hack) &&
++		    ((keysym==XK_Left && scr_multi2()) ||
++		    (keysym==XK_Right && scr_multi1()))) {
++		    memmove(kbuf + len, kbuf, len);
++		    len *= 2;
++		}
++#endif
+ 		break;
+ 
+ #ifndef UNSHIFTED_SCROLLKEYS
+@@ -1670,8 +1692,16 @@
+ 
+ 	    cmdbuf_ptr = cmdbuf_endp = cmdbuf_base;
+ 	    for (count = BUFSIZ; count; count -= n, cmdbuf_endp += n)
+-		if ((n = read(cmd_fd, cmdbuf_endp, count)) <= 0)
++		if ((n = read(cmd_fd, cmdbuf_endp, count)) > 0)
++		    continue;
++		else if (n == 0 || (n < 0 && errno == EAGAIN))
+ 		    break;
++		else {
++#if !defined (HAVE_ATEXIT) && !defined (__sun__)
++		    clean_exit();
++#endif
++		    exit(1);	/* bad order of events? */
++		}
+ 	    if (count != BUFSIZ)	/* some characters read in */
+ 		return (*cmdbuf_ptr++);
+ 	}
+@@ -2376,7 +2406,7 @@
+     unsigned char   buf[256];
+ 
+     va_start(arg_ptr, fmt);
+-    vsprintf(buf, fmt, arg_ptr);
++    vsnprintf(buf, sizeof(buf), fmt, arg_ptr);
+     va_end(arg_ptr);
+     tt_write(buf, strlen(buf));
+ }
+@@ -2826,6 +2856,7 @@
+     case 18:			/* report window size (chars) */
+ 	tt_printf("\033[8;%d;%dt", TermWin.nrow, TermWin.ncol);
+ 	break;
++#if 0 /* XXX: currently disabled due to security concerns */
+     case 20:			/* report icon label */
+ 	XGetIconName(Xdisplay, TermWin.parent[0], &s);
+ 	tt_printf("\033]L%-.200s\033\\", s ? s : "");
+@@ -2834,6 +2865,7 @@
+ 	XFetchName(Xdisplay, TermWin.parent[0], &s);
+ 	tt_printf("\033]l%-.200s\033\\", s ? s : "");
+ 	break;
++#endif
+     }
+ }
+ #endif
+@@ -2853,7 +2885,8 @@
+     if (ch == ';') {
+ 	int             n = 0;
+ 
+-	while ((ch = cmd_getc()) != 007) {
++	while ((ch = cmd_getc()) != 007 &&
++	    !(ch == 0x1b && cmd_getc() == 0x5c)) {
+ 	    if (ch) {
+ 		if (ch == '\t')
+ 		    ch = ' ';	/* translate '\t' to space */
+@@ -2870,7 +2903,11 @@
+      * so do it here
+      */
+ 	if (arg == XTerm_Menu)
++#if 0 /* XXX: currently disabled due to security concerns */
+ 	    menubar_dispatch((char *)string);
++#else
++	    0;
++#endif
+ 	else
+ 	    xterm_seq(arg, (char *)string);
+     }
+--- rxvt-2.6.4.orig/src/rxvt.h
++++ rxvt-2.6.4/src/rxvt.h
+@@ -173,9 +173,12 @@
+ 		    height,	/* window height [pixels]                   */
+ 		    fwidth,	/* font width [pixels]                      */
+ 		    fheight,	/* font height [pixels]                     */
++		    fascent,	/* font ascent [pixels]                     */
++		    fdescent,	/* font descent [pixels]                    */
+ 		    fprop,	/* font is proportional                     */
+ 		    bprop,	/* treat bold font as proportional          */
+ 		    mprop,	/* treat multichar font as proportional     */
++		    fontdiff,	/* font size different                      */
+ 		    ncol, nrow,	/* window size [characters]                 */
+ 		    focus,	/* window has focus                         */
+ 		    mapped,	/* window state mapped?                     */
+@@ -469,6 +472,7 @@
+ #define Opt_scrollTtyOutput	(1LU<<11)
+ #define Opt_scrollKeypress	(1LU<<12)
+ #define Opt_transparent		(1LU<<13)
++#define Opt_mc_hack		(1LU<<14)
+ /* place holder used for parsing command-line options */
+ #define Opt_Reverse		(1LU<<30)
+ #define Opt_Boolean		(1LU<<31)
+@@ -610,6 +614,9 @@
+     Rs_preeditType,
+     Rs_inputMethod,
+ #endif
++#ifdef MULTICHAR_SET
++    Rs_mc_hack,
++#endif
+ #if defined (HOTKEY_CTRL) || defined (HOTKEY_META)
+     Rs_bigfont_key,
+     Rs_smallfont_key,
+--- rxvt-2.6.4.orig/src/feature.h
++++ rxvt-2.6.4/src/feature.h
+@@ -368,6 +368,10 @@
+  */
+ #define SUPPORT_BROKEN_APPS_WHICH_RELY_ON_UNDEFINED_BW_BEHAVIOUR_AS_XTERM
+ 
++/* Debian modification to change the cursor color to the foreground
++   color */
++#define CURSOR_COLOR_IS_RENDITION_COLOR
++
+ /*
+  * List of default fonts available
+  * NFONTS is the number of fonts in the list
+--- rxvt-2.6.4.orig/doc/etc/rxvt.terminfo
++++ rxvt-2.6.4/doc/etc/rxvt.terminfo
+@@ -13,7 +13,13 @@
+ # rxvt is normally configured to look for "xterm" or "xterm-color" as $TERM.
+ # Since rxvt is not really compatible with xterm, it should be configured as
+ # "rxvt-basic" (monochrom) and "rxvt"
+-rxvt-basic|rxvt terminal base (X Window System), 
++#
++# Debian's changes:
++#   Debian has uses two termcap/terminfo entries:
++#	rxvt	for color displays
++#	rxvt-m	for monochrome displays
++#   Debian also prefers ^? for kbs (backspace).
++rxvt-m|monochrome rxvt terminal emulator (X Window System), 
+         am, bce, eo, km, mir, msgr, xenl, xon, 
+         cols#80, it#8, lines#24, 
+         acsc=``aaffggjjkkllmmnnooppqqrrssttuuvvwwxxyyzz{{||}}~~, 
+@@ -29,7 +35,7 @@
+         ind=^J, is1=\E[?47l\E=\E[?1l, 
+         is2=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;3;4;6l\E[4l, 
+         kDC=\E[3$, kEND=\E[8$, kHOM=\E[7$, kLFT=\E[d, kNXT=\E[6$, 
+-        kPRV=\E[5$, kRIT=\E[c, ka1=\EOw, ka3=\EOy, kb2=\EOu, kbs=^H, 
++        kPRV=\E[5$, kRIT=\E[c, ka1=\EOw, ka3=\EOy, kb2=\EOu, kbs=^?, 
+         kc1=\EOq, kc3=\EOs, kcbt=\E[Z, kcub1=\E[D, kcud1=\E[B, 
+         kcuf1=\E[C, kcuu1=\E[A, kdch1=\E[3~, kel=\E[8\^, 
+         kend=\E[8~, kent=\EOM, kf0=\E[21~, kf1=\E[11~, kf10=\E[21~, 
+@@ -50,4 +56,4 @@
+         colors#8, pairs#64, 
+         op=\E[39;49m, setab=\E[%p1%{40}%+%dm, 
+         sgr0=\E[m\017, setaf=\E[%p1%{30}%+%dm,
+-        use=rxvt-basic, 
++        use=rxvt-m, 
+--- rxvt-2.6.4.orig/doc/etc/rxvt.termcap
++++ rxvt-2.6.4/doc/etc/rxvt.termcap
+@@ -1,5 +1,8 @@
+-#	Reconstructed via infocmp from file: /usr/share/terminfo/r/rxvt
+-rxvt|rxvt terminal emulator (X Window System):\
++# Debian's changes:
++#   Debian has uses two termcap/terminfo entries:
++#	rxvt	for color displays
++#	rxvt-m	for monochrome displays
++rxvt-m|monochrome rxvt terminal emulator (X Window System):\
+ 	:am:eo:km:mi:ms:xn:xo:\
+ 	:co#80:it#8:li#24:\
+ 	:AL=\E[%dL:DC=\E[%dP:DL=\E[%dM:DO=\E[%dB:IC=\E[%d@:\
+@@ -11,9 +14,27 @@
+ 	:is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;3;4;6l\E[4l:\
+ 	:k0=\E[21~:k1=\E[11~:k2=\E[12~:k3=\E[13~:k4=\E[14~:\
+ 	:k5=\E[15~:k6=\E[17~:k7=\E[18~:k8=\E[19~:k9=\E[20~:\
+-	:kD=\E[3~:kI=\E[2~:kN=\E[6~:kP=\E[5~:kb=^H:kd=\E[B:ke=\E>:\
+-	:kh=\E[7~:kl=\E[D:kr=\E[C:ks=\E=:ku=\E[A:le=^H:mb=\E[5m:\
+-	:md=\E[1m:me=\E[m\017:mr=\E[7m:nd=\E[C:rc=\E8:sc=\E7:\
++	:kD=\E[3~:kI=\E[2~:kN=\E[6~:kP=\E[5~:kb=\177:kd=\E[B:\
++	:ke=\E>:kh=\E[7~:kl=\E[D:kr=\E[C:ks=\E=:ku=\E[A:le=^H:\
++	:mb=\E[5m:md=\E[1m:mr=\E[7m:nd=\E[C:rc=\E8:sc=\E7:\
+ 	:se=\E[27m:sf=^J:so=\E[7m:sr=\EM:st=\EH:ta=^I:\
+ 	:te=\E[?47l\E8:ti=\E7\E[?47h:ue=\E[24m:up=\E[A:us=\E[4m:\
+ 	:vb=\E[?5h\E[?5l:ve=\E[?25h:vi=\E[?25l:vs=\E[?25h:
++rxvt|rxvt terminal emulator (X Window System):\
++	:am:eo:km:mi:ms:xn:xo:\
++	:co#80:it#8:li#24:\
++	:AL=\E[%dL:DC=\E[%dP:DL=\E[%dM:DO=\E[%dB:IC=\E[%d@:\
++	:K1=\EOw:K2=\EOu:K3=\EOy:K4=\EOq:K5=\EOs:LE=\E[%dD:\
++	:RI=\E[%dC:UP=\E[%dA:ae=^O:al=\E[L:as=^N:bl=^G:cd=\E[J:\
++	:ce=\E[K:cl=\E[H\E[2J:cm=\E[%i%d;%dH:cr=^M:\
++	:cs=\E[%i%d;%dr:ct=\E[3g:dc=\E[P:dl=\E[M:do=^J:ei=\E[4l:\
++	:ho=\E[H:i1=\E[?47l\E=\E[?1l:ic=\E[@:im=\E[4h:\
++	:is=\E[r\E[m\E[2J\E[H\E[?7h\E[?1;3;4;6l\E[4l:\
++	:k0=\E[21~:k1=\E[11~:k2=\E[12~:k3=\E[13~:k4=\E[14~:\
++	:k5=\E[15~:k6=\E[17~:k7=\E[18~:k8=\E[19~:k9=\E[20~:\
++	:kD=\E[3~:kI=\E[2~:kN=\E[6~:kP=\E[5~:kb=\177:kd=\E[B:\
++	:ke=\E>:kh=\E[7~:kl=\E[D:kr=\E[C:ks=\E=:ku=\E[A:le=^H:\
++	:mb=\E[5m:md=\E[1m:me=\E[m\017:mr=\E[7m:nd=\E[C:rc=\E8:\
++	:sc=\E7:se=\E[27m:sf=^J:so=\E[7m:sr=\EM:st=\EH:ta=^I:\
++	:te=\E[?47l\E8:ti=\E7\E[?47h:ue=\E[24m:up=\E[A:us=\E[4m:\
++	:vb=\E[?5h\E[?5l:ve=\E[?25h:vi=\E[?25l:vs=\E[?25h:
+--- rxvt-2.6.4.orig/doc/yodl/rxvt-resources.yo
++++ rxvt-2.6.4/doc/yodl/rxvt-resources.yo
+@@ -221,7 +221,7 @@
+     dit(bf(cutchars:) em(string))
+ 	The characters used as delimiters for double-click word selection. 
+ 	The built-in default: nl()\
+-	bf(BACKSLASH `"'&()*,;<=>?@[]{|})
++	bf(BACKSLASH \ `"'&()*,;<=>?@[]{|})
+     dit(bf(preeditType:) em(style))
+ 	bf(OverTheSpot), bf(OffTheSpot), bf(Root);
+ 	option bf(-pt).
+--- rxvt-2.6.4.orig/doc/rxvt.tbl
++++ rxvt-2.6.4/doc/rxvt.tbl
+@@ -1,4 +1,5 @@
+-.TH "1" "RXVT" "02 NOVEMBER 2001" "X Version 11" "X Tools" 
++'\" t
++.TH "RXVT" 1 "02 NOVEMBER 2001" "X Version 11" "X Tools" 
+ .SH "NAME" 
+ rxvt (ouR XVT) \- a VT102 emulator for the X window system
+ .PP 
+@@ -17,19 +18,19 @@
+ .PP 
+ .SH "OPTIONS" 
+ .PP 
+-The \fBrxvt\fP options (mostly a subset of \fIxterm\fP\'s) are listed below\&.
++The \fBrxvt\fP options (mostly a subset of \fIxterm\fP's) are listed below\&.
+ In keeping with the smaller-is-better philosophy, options may be eliminated
+ or default values chosen at compile-time, so options and defaults listed
+ may not accurately reflect the version installed on your system\&.  
+-`rxvt -h\' gives a list of major compile-time options on the usage line\&.
++\(lqrxvt -h\(rq gives a list of major compile-time options on the usage line\&.
+ Option descriptions may be prefixed with which compile option each is
+-dependent upon\&.  e\&.g\&. `Compile \fIXIM\fP:\' requires \fIXIM\fP on the usage line\&.
+-Note: `rxvt -help\' gives a list of all options compiled into your version\&.
++dependent upon\&.  e\&.g\&. \(lqCompile \fIXIM\fP:\(rq requires \fIXIM\fP on the usage line\&.
++Note: \(lqrxvt -help\(rq gives a list of all options compiled into your version\&.
+ .PP 
+ Note that \fBrxvt\fP permits the resource name to be used as a long-option
+ (--/++ option) so the potential command-line options are far greater than
+ those listed\&.
+-For example: `rxvt --loginShell --color1 Orange\'\&.
++For example: \(lqrxvt --loginShell --color1 Orange\(rq\&.
+ .PP 
+ .IP "\fB-help\fP, \fB--help\fP" 
+ Print out a message describing available options\&.
+@@ -44,7 +45,7 @@
+ Turn on/off simulated reverse video;
+ resource \fBreverseVideo\fP\&.
+ .IP "\fB-ip\fP|\fB+ip\fP" 
+-Turn on/off inheriting parent window\'s pixmap\&.  Alternative form
++Turn on/off inheriting parent window's pixmap\&.  Alternative form
+ is \fB-tr\fP;
+ resource \fBinheritPixmap\fP\&.
+ .IP "\fB-bg\fP \fIcolour\fP" 
+@@ -57,7 +58,7 @@
+ Compile \fIXPM\fP: Specify XPM file for the background and also
+ optionally specify its scaling with a geometry string\&.  Note you
+ may need to add quotes to avoid special shell interpretation of
+-the `;\' in the command-line;
++the \(lq;\(rq in the command-line;
+ resource \fBbackgroundPixmap\fP\&.
+ .IP "\fB-cr\fP \fIcolour\fP" 
+ The cursor colour;
+@@ -90,7 +91,7 @@
+ .IP "\fB-name\fP \fIname\fP" 
+ Specify the application name under which resources
+ are to be obtained, rather than the default executable file name\&.
+-Name should not contain `\&.\' or `*\' characters\&.
++Name should not contain \(lq\&.\(rq or \(lq*\(rq characters\&.
+ Also sets the icon and title name\&.
+ .IP "\fB-ls\fP|\fB+ls\fP" 
+ Start as a login-shell/sub-shell;
+@@ -127,6 +128,9 @@
+ \fBTERM\fP environment variable\&. This terminal type must exist in the
+ \fItermcap(5)\fP database and should have \fIli#\fP and \fIco#\fP entries;
+ resource \fBtermName\fP\&.
++.IP "\fB-im\fP \fImethod\fP" 
++This option specifies the input method to use;
++resource \fBinputMethod\fP\&.
+ .IP "\fB-e\fP \fIcommand [arguments]\fP" 
+ Run the command with its command-line arguments in the \fBrxvt\fP
+ window; also sets the window title and icon name to be the basename
+@@ -160,11 +164,11 @@
+ resource \fImodifier\fP\&.
+ .IP "\fB-xrm\fP \fIresourcestring\fP" 
+ No effect on rxvt\&.  Simply passes through an argument to be made
+-available in the instance\'s argument list\&.  Appears in \fIWM_COMMAND\fP
++available in the instance's argument list\&.  Appears in \fIWM_COMMAND\fP
+ in some window managers\&.
+ .SH "RESOURCES (available also as long-options)" 
+ .PP 
+-Note: `rxvt --help\' gives a list of all resources (long options) compiled
++Note: \(lqrxvt --help\(rq gives a list of all resources (long options) compiled
+ into your version\&.
+ If compiled with internal Xresources support (i\&.e\&. \fBrxvt -h\fP lists 
+ \fB\&.Xdefaults\fP) then \fBrxvt\fP accepts application defaults set in
+@@ -185,11 +189,11 @@
+ 80x24];
+ option \fB-geometry\fP\&.
+ .IP "\fBbackground:\fP \fIcolour\fP" 
+-Use the specified colour as the window\'s background colour [default
++Use the specified colour as the window's background colour [default
+ White];
+ option \fB-bg\fP\&.
+ .IP "\fBforeground:\fP \fIcolour\fP" 
+-Use the specified colour as the window\'s foreground colour [default
++Use the specified colour as the window's foreground colour [default
+ Black];
+ option \fB-fg\fP\&.
+ .IP "\fBcolor\fP\fIn\fP\fB:\fP \fIcolour\fP" 
+@@ -221,26 +225,26 @@
+ option \fB+rv\fP\&.
+ See note in \fBCOLORS AND GRAPHICS\fP section\&.
+ .IP "\fBinheritPixmap:\fP \fIboolean\fP" 
+-\fBTrue\fP: make the background inherit the parent windows\' pixmap,
++\fBTrue\fP: make the background inherit the parent windows' pixmap,
+ giving artificial transparency\&.
+-\fBFalse\fP: do not inherit the parent windows\' pixmap\&.
++\fBFalse\fP: do not inherit the parent windows' pixmap\&.
+ .IP "\fBscrollColor:\fP \fIcolour\fP" 
+ Use the specified colour for the scrollbar [default #B2B2B2]\&.
+ .IP "\fBtroughColor:\fP \fIcolour\fP" 
+-Use the specified colour for the scrollbar\'s trough area [default
++Use the specified colour for the scrollbar's trough area [default
+ #969696]\&.  Only relevant for normal (non XTerm/NeXT) scrollbar\&.
+ .IP "\fBbackgroundPixmap:\fP \fIfile[;geom]\fP" 
+-Use the specified XPM file (note the `\&.xpm\' extension is optional)
++Use the specified XPM file (note the \(lq\&.xpm\(rq extension is optional)
+ for the background and also optionally specify its scaling with a
+-geometry string \fBWxH+X+Y\fP, in which \fB"W" / "H"\fP specify the
+-horizontal/vertical scale (percent) and \fB"X" / "Y"\fP locate the
++geometry string \fBWxH+X+Y\fP, in which \fB\(lqW\(rq / \(lqH\(rq\fP specify the
++horizontal/vertical scale (percent) and \fB\(lqX\(rq / \(lqY\(rq\fP locate the
+ image centre (percent)\&.  A scale of 0 displays the image with tiling\&.
+ A scale of 1 displays the image without any scaling\&.  A scale of 2 to
+ 9 specifies an integer number of images in that direction\&.  No image
+ will be magnified beyond 10 times its original size\&.  The maximum
+ permitted scale is 1000\&.  [default 0x0+50+50]
+ .IP "\fBmenu:\fP \fIfile[;tag]\fP" 
+-Read in the specified menu file (note the `\&.menu\' extension is
++Read in the specified menu file (note the \(lq\&.menu\(rq extension is
+ optional) and also optionally specify a starting tag to find\&.  See
+ the reference documentation for details on the syntax for the menuBar\&.
+ .IP "\fBpath:\fP \fIpath\fP" 
+@@ -304,8 +308,8 @@
+ name;
+ option \fB-title\fP\&.
+ .IP "\fBiconName:\fP \fItext\fP" 
+-Set the name used to label the window\'s icon or displayed in an icon
+-manager window, it also sets the window\'s title unless it is
++Set the name used to label the window's icon or displayed in an icon
++manager window, it also sets the window's title unless it is
+ explicitly set;
+ option \fB-n\fP\&.
+ .IP "\fBmapAlert:\fP \fIboolean\fP" 
+@@ -318,7 +322,7 @@
+ \fBFalse\fP: no visual bell [default];
+ option \fB+vb\fP\&.
+ .IP "\fBloginShell:\fP \fIboolean\fP" 
+-\fBTrue\fP: start as a login shell by prepending a `-\' to \fBargv[0]\fP
++\fBTrue\fP: start as a login shell by prepending a \(lq-\(rq to \fBargv[0]\fP
+ of the shell;
+ option \fB-ls\fP\&.
+ \fBFalse\fP: start as a normal sub-shell [default];
+@@ -372,6 +376,9 @@
+ Specifies the terminal type name to be set in the \fBTERM\fP
+ environment variable;
+ option \fB-tn\fP\&.
++.IP "\fBinputMethod:\fP \fImethod\fP" 
++Specifies the input method to use;
++option \fB-im\fP\&.
+ .IP "\fBmeta8:\fP \fIboolean\fP" 
+ \fBTrue\fP: handle Meta (Alt) + keypress to set the 8th bit\&.
+ \fBFalse\fP: handle Meta (Alt) + keypress as an escape prefix [default]\&.
+@@ -388,7 +395,7 @@
+ The characters used as delimiters for double-click word selection\&. 
+ The built-in default: 
+ .br 
+-\fBBACKSLASH `"\'&()*,;<=>?@[]{|}\fP
++\fBBACKSLASH \ `"'&()*,;<=>?@[]{|}\fP
+ .IP "\fBpreeditType:\fP \fIstyle\fP" 
+ \fBOverTheSpot\fP, \fBOffTheSpot\fP, \fBRoot\fP;
+ option \fB-pt\fP\&.
+@@ -497,7 +504,7 @@
+ as a number 0-15, as a convenient shorthand to reference the colour name of
+ color0-color15\&.
+ .PP 
+-Note that \fB-rv\fP (\fB"reverseVideo: True"\fP) simulates reverse video by
++Note that \fB-rv\fP (\fB\(lqreverseVideo: True\(rq\fP) simulates reverse video by
+ always swapping the foreground/background colours\&.  This is in contrast to
+ \fIxterm\fP(1) where the colours are only swapped if they have not otherwise been
+ specified\&.
+@@ -520,6 +527,16 @@
+ .IP "\fB/usr/lib/X11/rgb\&.txt\fP" 
+ Color names\&.
+ .PP 
++.SH "DEBIAN NOTES"
++.PP 
++The standard Debian \fBrxvt\fP package provides two versions of the
++\fBrxvt\fP binary:
++.IP "\fBrxvt-xterm\fP"
++This version is compiled with no XPM support.  It has been configured to
++be a smaller, more efficient xterm substitute.
++.IP "\fBrxvt-xpm\fP"
++This version is compiled with XPM and menu support.
++.PP 
+ .SH "SEE ALSO" 
+ .PP 
+ \fIxterm\fP(1), \fIsh\fP(1), \fIresize\fP(1), \fIX\fP(1), \fIpty\fP(4), \fItty\fP(4),
+@@ -534,7 +551,7 @@
+ .PP 
+ Cursor change support is not yet implemented\&.
+ .PP 
+-Click-and-drag doesn\'t work with X11 mouse report overriding\&.
++Click-and-drag doesn't work with X11 mouse report overriding\&.
+ .PP 
+ Graphics support is fairly crude\&.
+ .PP 
+--- rxvt-2.6.4.orig/doc/Makefile
++++ rxvt-2.6.4/doc/Makefile
+@@ -0,0 +1,178 @@
++# Generated automatically from Makefile.in by configure.
++# doc/Makefile.in	-*- Makefile -*-
++# $Id: Makefile.in,v 1.12.4.4 2000/04/15 08:59:44 gcw Exp $
++
++# autoconf/Make.common.in	 -*- Makefile -*-
++# release date (man), LSM date, version number/name, current maintainer
++DATE=02 NOVEMBER 2001
++LSMDATE=02NOV01
++VERSION=2.6.4
++VERNAME=rxvt-$(VERSION)#
++MAINT=Geoff Wing#
++MAINTEMAIL=<gcw@rxvt.org>#
++WEBMAINT=Oezguer Kesim#
++WEBMAINTEMAIL=<oec@rxvt.org>#
++WEBPAGE=<http://www.rxvt.org/>#
++FTPSITENAME=ftp.rxvt.org#
++FTPSITEDIR=/pub/rxvt#
++#-------------------------------------------------------------------------
++
++SHELL = /bin/sh
++
++# This variable makes it possible to move the installation root to another
++# directory. This is useful when you're creating a binary distribution
++# If empty, normal root will be used.
++# You can run eg. 'make install DESTDIR=/packages/rxvt-xx' to accomplish
++# that.
++# DESTDIR = /usr/local/X11/$(VERNAME)
++
++# Installation target directories & other installation stuff
++prefix = /usr
++exec_prefix = ${prefix}
++binprefix =
++manprefix =
++bindir = ${exec_prefix}/bin
++mandir = ${prefix}/share/man/man1
++manext = 1
++
++# Tools & program stuff
++CC = gcc
++CPP = gcc -E
++MV = /bin/mv
++RM = /bin/rm
++RMF = /bin/rm -f
++CP = /bin/cp
++SED = /bin/sed
++AWK = /usr/bin/awk
++ECHO = /bin/echo
++CMP = /usr/bin/cmp
++TBL = /usr/bin/tbl
++INSTALL = /usr/bin/install -c
++INSTALL_PROGRAM = /usr/bin/install -c -s -m 755
++INSTALL_DATA = /usr/bin/install -c -m 644
++
++# Flags & libs
++# add -DBINDIR=\""$(bindir)/"\" to CPPFLAGS, if we need to spawn a program
++
++CFLAGS = -O 
++CPPFLAGS =  -DHAVE_LIBXPM
++LDFLAGS = 
++DEFS = -DHAVE_CONFIG_H
++LIBS = 
++DINCLUDE = 
++DLIB = 
++
++# X Include directory
++XINC =  -I/usr/X11R6/include -I/usr/include/X11
++
++# extra libraries needed by X on some systems, X library location
++XLIB =  -L/usr/X11R6/lib -L/usr/X11R6/lib -lXpm -lX11 
++
++# End of common section of the Makefile
++#-------------------------------------------------------------------------
++
++srcdir =	.
++.PATH:		.
++
++basedir = ..
++thisdir = doc
++
++first_rule: all
++dummy:
++
++#
++# Distribution variables
++#
++
++YODL_RXVT = yodl/rxvt-colours.yo yodl/rxvt-environment.yo\
++	    yodl/rxvt-files.yo yodl/rxvt-fonts.yo yodl/rxvt-login.yo\
++	    yodl/rxvt-mousereporting.yo yodl/rxvt-options.yo\
++	    yodl/rxvt-resources.yo yodl/rxvt-scrollbar.yo\
++	    yodl/rxvt-textselection.yo
++YODL_RREF = yodl/rxvtRef-csi.yo yodl/rxvtRef-definitions.yo\
++	    yodl/rxvtRef-graphics.yo yodl/rxvtRef-keycodes.yo\
++	    yodl/rxvtRef-menubar.yo yodl/rxvtRef-mouse.yo\
++	    yodl/rxvtRef-privatemodes.yo yodl/rxvtRef-sequences.yo\
++	    yodl/rxvtRef-values.yo yodl/rxvtRef-xpm.yo yodl/rxvtRef-xterm.yo
++
++DIST_ETC  = etc/rxvt.termcap etc/rxvt.terminfo etc/XTerm.ad
++DIST_YODL = yodl/masonyodl.yo yodl/versioninfo.yo yodl/versioninfo.yo.in\
++	    $(YODL_RXVT) yodl/rxvt.yo yodl/rxvt.yo.in $(YODL_RREF)\
++	    yodl/rxvtRef.yo.in
++DIST_MENU = menu/menu menu/example.menu menu/rxvt.menu menu/terminal.menu\
++	    menu/jedmenu.sl
++DIST	  = Makefile.in README.greek README.menu README.xvt BUGS FAQ TODO\
++	    changes.txt xterm.seq LSM.in rxvt.1 rxvt.tbl rxvtRef.txt\
++	    rxvtRef.html rxvtRef-frame.html rxvtRef-toc.html rxvt.html 
++
++#-------------------------------------------------------------------------
++
++all: rxvt.1
++
++rxvt.1: Makefile
++	@if test x$(TBL) = x; then : ; else echo "$(TBL) $(srcdir)/rxvt.tbl | grep -v '^.lf' > rxvt.1"; $(TBL) $(srcdir)/rxvt.tbl | grep -v '^.lf' > rxvt.1 ; fi
++
++SEDREPLACE = -e 's%@RXVT_VERSION@%$(VERSION)%g;'\
++	     -e 's%@RXVT_LSMDATE@%$(LSMDATE)%g;'\
++	     -e 's%@RXVT_DATE@%$(DATE)%g;'\
++	     -e 's%@RXVT_MAINTEMAIL@%$(MAINTEMAIL)%g;'\
++	     -e 's%@RXVT_MAINT@%$(MAINT)%g;'\
++	     -e 's%@RXVT_WEBPAGE@%$(WEBPAGE)%g;'\
++	     -e 's%@RXVT_WEBMAINTEMAIL@%$(WEBMAINTEMAIL)%g;'\
++	     -e 's%@RXVT_WEBMAINT@%$(WEBMAINT)%g;'\
++	     -e 's%@RXVT_FTPSITENAME@%$(FTPSITENAME)%g;'\
++	     -e 's%@RXVT_FTPSITEDIR@%$(FTPSITEDIR)%g;'
++
++tags allbin:
++
++alldoc:	$(basedir)/$(VERNAME).lsm rxvt.tbl rxvt.1 rxvt.html rxvtRef.html rxvtRef.txt
++
++yodl/versioninfo.yo: yodl/versioninfo.yo.in ../src/version.h
++	$(SED) $(SEDREPLACE) < $(srcdir)/yodl/versioninfo.yo.in > $@
++
++$(basedir)/$(VERNAME).lsm: LSM.in $(srcdir)/../autoconf/Make.common.in $(srcdir)/../src/version.h
++	$(SED) $(SEDREPLACE) < $(srcdir)/LSM.in > $@
++
++rxvt.tbl: yodl/rxvt.yo $(YODL_RXVT) yodl/versioninfo.yo yodl/masonyodl.yo
++	yodl2man -orxvt.tbl yodl/rxvt.yo
++
++rxvt.html: yodl/rxvt.yo $(YODL_RXVT) yodl/versioninfo.yo yodl/masonyodl.yo
++	yodl2html -o$@ yodl/rxvt.yo
++
++rxvtRef.html: $(YODL_RREF) yodl/rxvtRef.yo yodl/masonyodl.yo
++	yodl2html -o$@ yodl/rxvtRef.yo
++
++rxvtRef.txt: $(YODL_RREF) yodl/rxvtRef.yo yodl/masonyodl.yo
++	yodl2txt -o$@ yodl/rxvtRef.yo
++
++clean:
++	$(RMF) rxvt.man *~ yodl/*~
++
++realclean: clean
++	$(RMF) tags rxvt.1 rxvt.html rxvtRef.html rxvtRef.txt
++
++distclean:
++
++install:
++	$(INSTALL_DATA) rxvt.1 $(DESTDIR)$(mandir)/$(manprefix)rxvt.$(manext)
++
++uninstall:
++	-cd $(mandir); $(RMF) $(manprefix)rxvt.$(manext)
++
++distdirs:
++	mkdir $(basedir)/../$(VERNAME)/$(thisdir)
++	mkdir $(basedir)/../$(VERNAME)/$(thisdir)/etc
++	mkdir $(basedir)/../$(VERNAME)/$(thisdir)/menu
++	mkdir $(basedir)/../$(VERNAME)/$(thisdir)/yodl
++
++distcopy: distdepend
++	$(CP) -p $(basedir)/$(VERNAME).lsm $(basedir)/../$(VERNAME);
++	$(CP) -p $(DIST)      $(basedir)/../$(VERNAME)/$(thisdir)
++	$(CP) -p $(DIST_ETC)  $(basedir)/../$(VERNAME)/$(thisdir)/etc
++	$(CP) -p $(DIST_MENU) $(basedir)/../$(VERNAME)/$(thisdir)/menu
++	$(CP) -p $(DIST_YODL) $(basedir)/../$(VERNAME)/$(thisdir)/yodl
++
++distdepend: alldoc
++
++# ------------------------------------------------------------------------
++# DO NOT DELETE: ugly dependency list follows
+--- rxvt-2.6.4.orig/doc/rxvt.html
++++ rxvt-2.6.4/doc/rxvt.html
+@@ -468,7 +468,7 @@
+ 	with the <strong>Execute</strong> key.
+     <p></p><dt><strong><strong>cutchars:</strong> <em>string</em></strong><dd>
+ 	The characters used as delimiters for double-click word selection. 
+-	The built-in default: <br><strong>BACKSLASH `"'&amp;()*,;&lt;=&gt;?@[]{|}</strong>
++	The built-in default: <br><strong>BACKSLASH \ `"'&amp;()*,;&lt;=&gt;?@[]{|}</strong>
+     <p></p><dt><strong><strong>preeditType:</strong> <em>style</em></strong><dd>
+ 	<strong>OverTheSpot</strong>, <strong>OffTheSpot</strong>, <strong>Root</strong>;
+ 	option <strong>-pt</strong>.
+--- rxvt-2.6.4.orig/rclock/rclock.c
++++ rxvt-2.6.4/rclock/rclock.c
+@@ -336,7 +336,7 @@
+ 	if (*opt == 'd' && val)		display_name = val;	/* "d", "display" */
+ 	else if (*opt == 'g' && val)	rs_geometry = val;	/* "g", "geometry" */
+ #ifdef ICONWIN
+-	else if (*opt == 'i' && val)	/* "ic", "iconic" */
++	else if (*opt == 'i')	/* "ic", "iconic" */
+ 	  {
+ 	     iconic_state = IconicState;
+ 	     i--;	/* no argument */
+@@ -1201,8 +1201,16 @@
+ 		       int n = (sizeof(execPrgm) - strlen (execPrgm) - 2);
+ 		       if ((n > 0) && (n >= strlen (prgm)))
+ 			 {
+-			    /* for co-occurring programs */
+-			    strcat (execPrgm, ";");
++			   /* for co-occurring programs */
++			   switch (execPrgm[strlen (execPrgm)-1])
++			     {
++			     case '&':
++			     case ';':
++			       break;
++			     default:
++			       strcat (execPrgm, ";");
++			       break;
++			     }
+ 			    strncat (execPrgm, prgm, n);
+ 			 }
+ 		    }
+--- rxvt-2.6.4.orig/rclock/feature.h
++++ rxvt-2.6.4/rclock/feature.h
+@@ -53,7 +53,7 @@
+ #define MAIL
+ /* #define MAIL_BELL */
+ /* #define MAIL_SPAWN	"xmh\ -font\ 7x14\&" */
+-/* #define MAIL_SPOOL	"/var/spool/mail/" */
++#define MAIL_SPOOL	"/var/spool/mail/"
+ 
+ /*----------------------------------------------------------------------*
+  * #define CLOCKUPDATE	30
+--- rxvt-2.6.4.orig/Makefile.in
++++ rxvt-2.6.4/Makefile.in
+@@ -1,6 +1,6 @@
+ # ./Makefile.in			-*- Makefile -*-
+ # $Id: Makefile.in,v 1.5 1999/03/29 05:31:37 mason Exp $
+-@MCOMMON@
++#@MCOMMON@
+ 
+ srcdir =	@srcdir@
+ VPATH =		@srcdir@
