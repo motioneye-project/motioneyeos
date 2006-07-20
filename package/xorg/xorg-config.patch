@@ -1,6 +1,6 @@
 --- xc/config/cf/host.def~	Thu May 12 15:28:01 MDT 2005
 +++ xc/config/cf/host.def	Thu May 12 15:28:01 MDT 2005
-@@ -0,0 +1,42 @@
+@@ -0,0 +1,43 @@
 +#define KDriveXServer		YES
 +#define TinyXServer		YES
 +#define XfbdevServer		YES
@@ -32,7 +32,8 @@
 +#define BuildIPv6		NO
 +#define HasPam			NO
 +#define HasPamMisc		NO
-+
++#define BuildXterm		NO
++#define BuildXFree86ConfigTools		NO
 +/*
 +#define XF86CardDrivers		mga glint nv tga s3virge sis rendition \
 +				neomagic i740 tdfx savage \

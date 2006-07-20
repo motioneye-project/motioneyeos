@@ -9,10 +9,12 @@ ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
 
 XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap xinit/startx \
 	xauth/xauth xinit/xinit xsetroot/xsetroot xset/xset \
-	xterm/xterm mkfontscale/mkfontscale mkfontdir/mkfontdir
+	mkfontscale/mkfontscale mkfontdir/mkfontdir \
+	#xterm/xterm
 
 XORG_LIBS:= Xft fontconfig expat Xrender Xaw Xmu Xt \
-	SM ICE Xpm Xp Xext X11 Xmuu
+	SM ICE Xpm Xp Xext X11 Xmuu Xxf86misc
+
 
 #############################################################
 # Stuff below this line shouldn't need changes.
@@ -72,6 +74,12 @@ $(XORG_XSERVER): $(XORG_DIR)/.configured
 		World XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 	touch -c $(XORG_XSERVER)
 
+$(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
+	-mkdir -p $(STAGING_DIR)$(TARGET_LIBX)
+	( cd $(XORG_DIR); $(MAKE) \
+		DESTDIR=$(STAGING_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	touch -c $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
+
 $(TARGET_XSERVER): $(XORG_XSERVER)
 	-mkdir -p $(XORG_BINX)
 	for file in $(XORG_APPS) ; do \
@@ -89,6 +97,9 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	cp -LRf $(XORG_DIR)/fonts/bdf/misc/*.bdf $(XORG_LIBX)/X11/fonts/misc/
 	( cd $(XORG_LIBX)/X11/fonts/misc/; mkfontdir )
 	(cd $(TARGET_DIR)/usr/bin; ln -snf $(TARGET_BINX) X11)
+	mkdir -p $(TARGET_DIR)/etc/X11/
+	cp package/xorg/xorg.conf $(TARGET_DIR)/etc/X11/
+	cp -a $(STAGING_DIR)$(TARGET_LIBX)/X11/rgb* $(XORG_LIBX)/X11/
 	touch -c $(TARGET_XSERVER)
 
 $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
@@ -101,19 +112,14 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
 		cp -pRf $$file $(XORG_LIBX) ; \
 	done
 	(cd $(TARGET_DIR)/usr/lib; ln -snf $(TARGET_LIBX) X11)
-	if [ grep -q '$(TARGET_LIBX)' $(TARGET_DIR)/etc/ld.so.conf ] ; then \
+	touch $(TARGET_DIR)/etc/ld.so.conf
+	if [ "`grep -c '$(TARGET_LIBX)' $(TARGET_DIR)/etc/ld.so.conf`" = "0" ] ; then \
 		echo "$(TARGET_LIBX)" >> $(TARGET_DIR)/etc/ld.so.conf; \
 	fi;
 	touch -c $(XORG_LIBX)/libX11.so.6.2
 
 
-$(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
-	-mkdir -p $(STAGING_DIR)$(TARGET_LIBX)
-	( cd $(XORG_DIR); $(MAKE) \
-		DESTDIR=$(STAGING_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
-	touch -c $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
-
-xorg: zlib png $(XORG_LIBX)/libX11.so.6.2 $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
+xorg: zlib png $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 $(XORG_LIBX)/libX11.so.6.2
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE)
 

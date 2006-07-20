@@ -1,0 +1,13 @@
+--- xc/programs/Xserver/hw/xfree86/Imakefile.orig	2006-07-20 12:51:58.000000000 -0600
++++ xc/programs/Xserver/hw/xfree86/Imakefile	2006-07-20 12:52:04.000000000 -0600
+@@ -84,10 +84,6 @@
+ DRIVERSDK = sdk
+ #endif
+ 
+-#if !BuildServersOnly || BuildXFree86ConfigTools
+-XF86CFGDIRS = xf86cfg xf86config
+-#endif
+-
+ SUBDIRS = os-support common $(I2CDIR) $(XAADIR) $(XF1BPPDIR) $(XF4BPPDIR) \
+           $(XF8_32BPPDIR) $(XF8_16BPPDIR) $(XF24_32BPPDIR) $(SHADOWFBDIR) \
+ 	  drivers $(LOADERDIR) $(VGAHWDIR) $(FBDEVHWDIR) $(RAMDACDIR) \
