@@ -100,8 +100,17 @@ $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 	( cd $(TINYX_DIR) ; $(MAKE) World )
 
 #
-# Once Frame Buffer is built, we install executables.
+# Install x-includes and x-libraries in $(STAGING_DIR)/usr/X11R6/
+# and add a symbolic link between /usr/bin/X11 and /usr/X11R6/bin
+$(STAGING_DIR)/usr/X11R6/lib/libX11.so.6.2: $(TINYX_XFBDEV)
+       mkdir -p $(STAGING_DIR)/usr/X11R6/lib
+       mkdir -p $(STAGING_DIR)/usr/X11R6/include
+       cp -fRL $(TINYX_DIR)/exports/include/* $(STAGING_DIR)/usr/X11R6/include/
+       cp -fRL $(TINYX_DIR)/exports/lib/* $(STAGING_DIR)/usr/X11R6/lib/
+       ln -s /usr/X11R6/bin $(TARGET_DIR)/usr/bin/X11
+
 #
+# Once Frame Buffer is built, we install executables.
 $(TINYX_BINX)/Xfbdev: $(TINYX_XFBDEV)
 	-mkdir $(TARGET_DIR)/usr/X11R6
 	-mkdir $(TINYX_BINX)
@@ -116,7 +125,6 @@ $(TINYX_BINX)/Xfbdev: $(TINYX_XFBDEV)
 
 #
 # After we have executables installed, install the libraries.
-#
 $(TINYX_LIBX)/libX11.so.6.2: $(TINYX_XFBDEV)
 	for dirs in $(TINYX_LIBS) ; do \
 		file=`find $(TINYX_LDIR)/$$dirs -type f -iname "lib$$dirs.so*"` ; \
@@ -126,7 +134,8 @@ $(TINYX_LIBX)/libX11.so.6.2: $(TINYX_XFBDEV)
 		cp -pRf $$file $(TINYX_LIBX) ; \
 	done
 
-tinyx: zlib $(TINYX_LIBX)/libX11.so.6.2 $(TINYX_BINX)/Xfbdev
+tinyx: zlib $(STAGING_DIR)/usr/X11R6/lib/libX11.so.6.2 \
+	$(TINYX_LIBX)/libX11.so.6.2 $(TINYX_BINX)/Xfbdev
 
 tinyx-source: $(DL_DIR)/$(TINYX_SOURCE)
 
