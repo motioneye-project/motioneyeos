@@ -103,11 +103,11 @@ $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 # Install x-includes and x-libraries in $(STAGING_DIR)/usr/X11R6/
 # and add a symbolic link between /usr/bin/X11 and /usr/X11R6/bin
 $(STAGING_DIR)/usr/X11R6/lib/libX11.so.6.2: $(TINYX_XFBDEV)
-       mkdir -p $(STAGING_DIR)/usr/X11R6/lib
-       mkdir -p $(STAGING_DIR)/usr/X11R6/include
-       cp -fRL $(TINYX_DIR)/exports/include/* $(STAGING_DIR)/usr/X11R6/include/
-       cp -fRL $(TINYX_DIR)/exports/lib/* $(STAGING_DIR)/usr/X11R6/lib/
-       ln -s /usr/X11R6/bin $(TARGET_DIR)/usr/bin/X11
+	mkdir -p $(STAGING_DIR)/usr/X11R6/lib
+	mkdir -p $(STAGING_DIR)/usr/X11R6/include
+	cp -fRL $(TINYX_DIR)/exports/include/* $(STAGING_DIR)/usr/X11R6/include/
+	cp -fRL $(TINYX_DIR)/exports/lib/* $(STAGING_DIR)/usr/X11R6/lib/
+	ln -s /usr/X11R6/bin $(TARGET_DIR)/usr/bin/X11
 
 #
 # Once Frame Buffer is built, we install executables.
