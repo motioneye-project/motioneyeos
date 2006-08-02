@@ -1,0 +1,6 @@
+config BR2_MKLIBS
+	bool "Run mklibs on the built root filesystem"
+	default n
+	help
+	  Recompiles all the shared libraries to only include the
+	  symbols actually needed to run the binaries on the target

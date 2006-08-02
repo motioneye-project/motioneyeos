@@ -10,6 +10,7 @@ source "toolchain/gcc/Config.in"
 source "toolchain/ccache/Config.in"
 source "toolchain/gdb/Config.in"
 source "toolchain/elf2flt/Config.in"
+source "toolchain/mklibs/Config.in"
 
 comment "Common Toolchain Options"
 
