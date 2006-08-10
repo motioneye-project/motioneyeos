@@ -5,8 +5,8 @@
 #############################################################
 
 VALGRIND_SITE:=http://valgrind.org/downloads/
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-2.4.0
-VALGRIND_SOURCE:=valgrind-2.4.0.tar.bz2
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-3.2.0
+VALGRIND_SOURCE:=valgrind-3.2.0.tar.bz2
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
@@ -76,7 +76,7 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/none/vgskin_none.so
 	#cp $(VALGRIND_DIR)/woody.supp $(TARGET_DIR)/usr/lib/valgrind/
 	touch -c $(TARGET_DIR)/usr/bin/valgrind
 
-ifeq ($(ARCH),i386)
+ifeq ($(BR2_i386),y)
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
 else
 valgrind:
@@ -84,10 +84,10 @@ endif
 
 valgrind-source: $(DL_DIR)/$(VALGRIND_SOURCE)
 
-valgrind-clean: 
+valgrind-clean:
 	$(MAKE) -C $(VALGRIND_DIR) clean
 
-valgrind-dirclean: 
+valgrind-dirclean:
 	rm -rf $(VALGRIND_DIR)
 
 #############################################################
