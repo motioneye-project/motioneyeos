@@ -18,22 +18,22 @@ SANDBOX_CAT:=$(PORTAGE_CAT)
 SANDBOX_DIR:=$(BUILD_DIR)/sandbox-$(SANDBOX_VERSION)
 SANDBOX_TARGET_BINARY:=usr/bin/sandbox
 
-ifeq ($(ARCH),cris)
+ifeq ($(BR2_cris),y)
 	PORTAGE_ARCH:=x86
 endif
-ifeq ($(ARCH), mipsel)
+ifeq ($(BR2_mipsel),y)
 	PORTAGE_ARCH:=mips
 endif
-ifeq ($(ARCH), powerpc)
+ifeq ($(BR2_powerpc),y)
 	PORTAGE_ARCH:=ppc
 endif
-ifeq ($(ARCH),sh4)
+ifeq ($(BR2_sh4),y)
 	PORTAGE_ARCH:=sh
 endif
-ifeq ($(ARCH),sh64)
+ifeq ($(BR2_sh64),y)
 	PORTAGE_ARCH:=sh
 endif
-ifeq ($(ARCH), i386)
+ifeq ($(BR2_i386),y)
 	PORTAGE_ARCH:=x86
 endif
 ifeq ($(PORTAGE_ARCH),)
