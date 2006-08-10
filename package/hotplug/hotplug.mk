@@ -3,15 +3,13 @@
 # hotplug support
 #
 #############################################################
-HOTPLUG_SOURCE=diethotplug-0.4.tar.gz
+HOTPLUG_SOURCE=package/hotplug/diethotplug-0.5.tar
 HOTPLUG_SITE=http://www.kernel.org/pub/linux/utils/kernel/hotplug/
-HOTPLUG_DIR=$(BUILD_DIR)/diethotplug-0.4
+HOTPLUG_DIR=$(BUILD_DIR)/diethotplug-0.5
+HOTPLUG_CAT=cat
 
-$(DL_DIR)/$(HOTPLUG_SOURCE):
-	$(WGET) -P $(DL_DIR) $(HOTPLUG_SITE)/$(HOTPLUG_SOURCE)
-
-$(HOTPLUG_DIR): $(DL_DIR)/$(HOTPLUG_SOURCE)
-	zcat $(DL_DIR)/$(HOTPLUG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+$(HOTPLUG_DIR): $(HOTPLUG_SOURCE)
+	$(HOTPLUG_CAT) $(HOTPLUG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(HOTPLUG_DIR) package/hotplug/ hotplug\*.patch
 
 $(HOTPLUG_DIR)/hotplug: $(HOTPLUG_DIR)
