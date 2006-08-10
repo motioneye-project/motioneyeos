@@ -3,10 +3,12 @@
 # module-init-tools
 #
 #############################################################
-MODULE_INIT_TOOLS_SOURCE=module-init-tools-3.2.2.tar.bz2
-MODULE_INIT_TOOLS_SITE=ftp://ftp.kernel.org/pub/linux/utils/kernel/module-init-tools/
-MODULE_INIT_TOOLS_DIR=$(BUILD_DIR)/module-init-tools-3.2.2
-MODULE_INIT_TOOLS_BINARY=modprobe
+MODULE_INIT_TOOLS_VERSION=3.2.2
+MODULE_INIT_TOOLS_SOURCE=module-init-tools-$(MODULE_INIT_TOOLS_VERSION).tar.bz2
+MODULE_INIT_TOOLS_SITE=http://ftp.kernel.org/pub/linux/utils/kernel/module-init-tools/
+MODULE_INIT_TOOLS_DIR=$(BUILD_DIR)/module-init-tools-$(MODULE_INIT_TOOLS_VERSION)
+MODULE_INIT_TOOLS_DIR2=$(TOOL_BUILD_DIR)/module-init-tools-$(MODULE_INIT_TOOLS_VERSION)
+MODULE_INIT_TOOLS_BINARY=depmod
 MODULE_INIT_TOOLS_TARGET_BINARY=$(TARGET_DIR)/sbin/$(MODULE_INIT_TOOLS_BINARY)
 
 STRIPPROG=$(STRIP)
@@ -16,8 +18,7 @@ $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE):
 
 $(MODULE_INIT_TOOLS_DIR)/.unpacked: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
 	bzcat $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	toolchain/patch-kernel.sh $(MODULE_INIT_TOOLS_DIR) \
-		package/module-init-tools \*.patch
+	toolchain/patch-kernel.sh $(MODULE_INIT_TOOLS_DIR) package/module-init-tools \*.patch
 	touch $(MODULE_INIT_TOOLS_DIR)/.unpacked
 
 $(MODULE_INIT_TOOLS_DIR)/.configured: $(MODULE_INIT_TOOLS_DIR)/.unpacked
@@ -64,6 +65,44 @@ module-init-tools-clean:
 
 module-init-tools-dirclean:
 	rm -rf $(MODULE_INIT_TOOLS_DIR)
+
+#############################################################
+
+
+$(MODULE_INIT_TOOLS_DIR2)/.source: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
+	bzcat $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	toolchain/patch-kernel.sh $(MODULE_INIT_TOOLS_DIR2) package/module-init-tools \*.patch
+	touch $(MODULE_INIT_TOOLS_DIR2)/.source
+
+$(MODULE_INIT_TOOLS_DIR2)/.configured: $(MODULE_INIT_TOOLS_DIR2)/.source
+	(cd $(MODULE_INIT_TOOLS_DIR2); \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_HOST_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--sysconfdir=/etc \
+		--program-transform-name='' \
+	);
+	touch $(MODULE_INIT_TOOLS_DIR2)/.configured;
+
+$(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY): $(MODULE_INIT_TOOLS_DIR2)/.configured
+	$(MAKE) -C $(MODULE_INIT_TOOLS_DIR2)
+	touch -c $(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY)
+
+
+$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26: $(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY)
+	cp $(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY) $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26
+
+cross-depmod26: $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26
+
+cross-depmod26-source: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
+
+cross-depmod26-clean:
+	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26
+	-$(MAKE) -C $(MODULE_INIT_TOOLS_DIR2) clean
+
+cross-depmod26-dirclean:
+	rm -rf $(MODULE_INIT_TOOLS_DIR2)
 
 #############################################################
 #
