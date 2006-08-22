@@ -7,9 +7,10 @@
 JFFS2_OPTS := -e $(strip $(BR2_TARGET_ROOTFS_JFFS2_EBSIZE))
 
 ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PAD)),y)
-JFFS2_OPTS += -p
 ifneq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE)),0x0)
-JFFS2_OPTS += $(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE))
+JFFS2_OPTS += --pad=$(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE))
+else
+JFFS2_OPTS += -p
 endif
 endif
 
