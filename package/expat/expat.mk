@@ -4,10 +4,10 @@
 #
 #############################################################
 
-EXPAT_VERSION=1.95.8
+EXPAT_VERSION=2.0.0
 
 EXPAT_SOURCE=expat-$(EXPAT_VERSION).tar.gz
-EXPAT_SITE=http://internap.dl.sourceforge.net/sourceforge/expat
+EXPAT_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/expat
 EXPAT_DIR:=$(BUILD_DIR)/expat-$(EXPAT_VERSION)
 
 $(DL_DIR)/$(EXPAT_SOURCE):
