@@ -91,7 +91,6 @@ $(PCMCIA_DIR)/.modules.dep: $(BUSYBOX_DIR)/.configured $(TARGET_DIR)/lib/modules
 	[ -d $(TARGET_DIR)/lib/modules/$(LINUX_VERSION) ] && \
 	$(BUSYBOX_DIR)/examples/depmod.pl \
 		-b $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/ \
-		-k $(LINUX_DIR)/vmlinux \
 		-F $(LINUX_DIR)/System.map \
 		> $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
 	touch $(PCMCIA_DIR)/.modules.dep
