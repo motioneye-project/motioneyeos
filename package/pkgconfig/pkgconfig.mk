@@ -3,7 +3,7 @@
 # pkgconfig
 #
 #############################################################
-PKGCONFIG_VER:=0.20
+PKGCONFIG_VER:=0.21
 PKGCONFIG_SOURCE:=pkg-config-$(PKGCONFIG_VER).tar.gz
 PKGCONFIG_SITE:=http://pkgconfig.freedesktop.org/releases/
 PKGCONFIG_DIR:=$(BUILD_DIR)/pkg-config-$(PKGCONFIG_VER)

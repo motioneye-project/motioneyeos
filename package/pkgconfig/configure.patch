@@ -16,7 +16,7 @@
  AC_INIT(pkg-config.1)
  
 +AC_CONFIG_AUX_DIR(.)
- AM_INIT_AUTOMAKE(pkg-config, 0.20)
+ AM_INIT_AUTOMAKE(pkg-config, 0.21)
  AM_MAINTAINER_MODE
  
 @@ -92,8 +93,6 @@
