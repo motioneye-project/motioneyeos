@@ -95,7 +95,7 @@
 +#ifdef HAVE_LIBINTL_H
  #include <libintl.h> 		// For messages
  #endif
- 
+ #include <cstdarg>
  #ifdef __UCLIBC_MJN3_ONLY__
  #warning what is _GLIBCXX_C_LOCALE_GNU for
 +// psm: used in os/gnu-linux/ctype_noninline.h
