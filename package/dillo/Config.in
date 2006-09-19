@@ -1,0 +1,13 @@
+config BR2_PACKAGE_DILLO
+	bool "dillo"
+	default n
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBGLIB12
+	select BR2_PACKAGE_LIBGTK12
+	depends BR2_PACKAGE_XORG
+	help
+	  Dillo is a small GTK+ based web browser written in C.
+
+	  http://www.dillo.org/
