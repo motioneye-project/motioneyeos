@@ -77,11 +77,7 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/none/vgskin_none.so
 	#cp $(VALGRIND_DIR)/woody.supp $(TARGET_DIR)/usr/lib/valgrind/
 	touch -c $(TARGET_DIR)/usr/bin/valgrind
 
-ifeq ($(BR2_i386),y)
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
-else
-valgrind:
-endif
 
 valgrind-source: $(DL_DIR)/$(VALGRIND_SOURCE)
 
