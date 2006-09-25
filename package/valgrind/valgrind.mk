@@ -4,9 +4,10 @@
 #
 #############################################################
 
+VALGRIND_VERSION=3.2.1
 VALGRIND_SITE:=http://valgrind.org/downloads/
-VALGRIND_DIR:=$(BUILD_DIR)/valgrind-3.2.0
-VALGRIND_SOURCE:=valgrind-3.2.0.tar.bz2
+VALGRIND_DIR:=$(BUILD_DIR)/valgrind-$(VALGRIND_VERSION)
+VALGRIND_SOURCE:=valgrind-$(VALGRIND_VERSION).tar.bz2
 
 $(DL_DIR)/$(VALGRIND_SOURCE):
 	$(WGET) -P $(DL_DIR) $(VALGRIND_SITE)/$(VALGRIND_SOURCE)
