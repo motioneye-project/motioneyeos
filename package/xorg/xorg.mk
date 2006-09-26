@@ -48,6 +48,27 @@ else
 HAS_FREETYPE2=NO
 endif
 
+# figure out Xorg's idea of corresponding architecture name
+ifeq ($(BR2_alpha),y)
+XARCH=Alpha
+else ifeq ($(BR2_arm),y)
+XARCH=Arm32
+else ifeq ($(BR2_armeb),y)
+XARCH=Arm32
+else ifeq ($(BR2_i386),y)
+XARCH=i386A
+else ifeq ($(BR2_mips),y)
+XARCH=Mips
+else ifeq ($(BR2_mipsel),y)
+XARCH=Mips
+else ifeq ($(BR2_powerpc),y)
+XARCH=Ppc
+else ifeq ($(BR2_sparc),y)
+XARCH=Sparc
+else ifeq ($(BR2_x86_64),y)
+XARCH=AMD64
+endif
+
 $(DL_DIR)/$(XORG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(XORG_SITE)/$(XORG_SOURCE)
 
@@ -65,6 +86,7 @@ $(XORG_DIR)/.configured: $(DL_DIR)/$(XORG_SOURCE)
 	$(SED) 's:#.*define.*HasPam.*YES::g' $(XORG_DIR)/config/cf/linux.cf
 	$(SED) 's:#.*define.*CrossCompiling.*NO:#define CrossCompiling YES:g' $(XORG_DIR)/config/cf/Imake.tmpl
 	$(SED) 's:#.*undef.*CrossCompileDir.*:#define CrossCompileDir$(STAGING_DIR)/bin:g' $(XORG_DIR)/config/cf/Imake.tmpl
+	$(SED) 's:REPLACE_XORG_ARCH:$(XARCH):g' $(XORG_DIR)/config/cf/cross.def
 	touch $(XORG_DIR)/.configured
 
 $(XORG_XSERVER): $(XORG_DIR)/.configured
