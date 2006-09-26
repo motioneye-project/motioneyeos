@@ -1,0 +1,8 @@
+config BR2_PACKAGE_SQLITE
+	bool "sqlite"
+	default n
+	help
+	  SQLite is a small C library that implements a self-contained,
+	  embeddable, zero-configuration SQL database engine.
+
+	  http://www.sqlite.org/
