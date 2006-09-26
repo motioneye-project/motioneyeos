@@ -86,5 +86,5 @@ ifeq ($(strip $(BR2_READLINE)),y)
 TARGETS+=readline
 endif
 ifeq ($(strip $(BR2_PACKAGE_READLINE_TARGET)),y)
-TARGETS+=readline_target
+TARGETS+=readline-target
 endif
