@@ -31,7 +31,6 @@ $(SQLITE_DIR)/.configured: $(SQLITE_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-		--disable-tcl \
 		--enable-shared \
 		--enable-static \
 		--disable-tcl \
