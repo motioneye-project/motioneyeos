@@ -51,21 +51,29 @@ endif
 # figure out Xorg's idea of corresponding architecture name
 ifeq ($(BR2_alpha),y)
 XARCH=Alpha
-else ifeq ($(BR2_arm),y)
+endif
+ifeq ($(BR2_arm),y)
 XARCH=Arm32
-else ifeq ($(BR2_armeb),y)
+endif
+ifeq ($(BR2_armeb),y)
 XARCH=Arm32
-else ifeq ($(BR2_i386),y)
+endif
+ifeq ($(BR2_i386),y)
 XARCH=i386A
-else ifeq ($(BR2_mips),y)
+endif
+ifeq ($(BR2_mips),y)
 XARCH=Mips
-else ifeq ($(BR2_mipsel),y)
+endif
+ifeq ($(BR2_mipsel),y)
 XARCH=Mips
-else ifeq ($(BR2_powerpc),y)
+endif
+ifeq ($(BR2_powerpc),y)
 XARCH=Ppc
-else ifeq ($(BR2_sparc),y)
+endif
+ifeq ($(BR2_sparc),y)
 XARCH=Sparc
-else ifeq ($(BR2_x86_64),y)
+endif
+ifeq ($(BR2_x86_64),y)
 XARCH=AMD64
 endif
 
