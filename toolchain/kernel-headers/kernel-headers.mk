@@ -84,6 +84,15 @@ LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.12.0.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.12.0
 endif
 
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.18")
+VERSION:=2
+PATCHLEVEL:=6
+SUBLEVEL:=18
+LINUX_HEADERS_SITE:=http://www.kernel.org/pub/linux/kernel/v2.6/
+LINUX_HEADERS_SOURCE:=linux-2.6.18.tar.bz2
+LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-2.6.18
+endif
+
 LINUX_HEADERS_VERSION:=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
 
 LINUX_HEADERS_DIR:=$(TOOL_BUILD_DIR)/linux
@@ -162,6 +171,9 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-$(ARCH)$(NOMMU) asm;) \
 	fi
 	touch $(LINUX_HEADERS_DIR)/include/linux/autoconf.h;
+ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.18")
+	(cd $(LINUX_HEADERS_DIR) ; $(MAKE) include/linux/version.h ; )
+endif
 	touch $(LINUX_HEADERS_DIR)/.configured
 
 $(LINUX_KERNEL): $(LINUX_HEADERS_DIR)/.configured
