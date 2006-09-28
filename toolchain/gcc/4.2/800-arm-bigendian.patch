@@ -51,17 +51,17 @@ See http://gcc.gnu.org/PR16350
     SUBTARGET_EXTRA_LINK_SPEC
  
  #undef  LINK_SPEC
---- gcc-4.2.0/gcc/config.gcc
-+++ gcc-4.2.0/gcc/config.gcc
-@@ -694,6 +694,11 @@
- 	;;
- arm*-*-linux*)			# ARM GNU/Linux with ELF
- 	tm_file="dbxelf.h elfos.h linux.h arm/elf.h arm/linux-gas.h arm/linux-elf.h" 
-+	case $target in
+--- gcc-4.2.0/gcc/config.gcc.orig	2006-09-22 14:53:41.000000000 +0200
++++ gcc-4.2.0/gcc/config.gcc	2006-09-25 10:45:21.000000000 +0200
+@@ -696,6 +696,11 @@
+ 	tm_file="dbxelf.h elfos.h linux.h arm/elf.h arm/linux-gas.h arm/linux-elf.h"
+ 	tmake_file="${tmake_file} t-linux arm/t-arm"
+ 	case ${target} in
 +	arm*b-*)
 +		tm_defines="${tm_defines} TARGET_BIG_ENDIAN_DEFAULT=1"
 +		;;
 +	esac
- 	tmake_file="${tmake_file} t-linux arm/t-arm"
- 	case ${target} in
++	case ${target} in
  	arm*-*-linux-*eabi)
+ 	    tm_file="$tm_file arm/bpabi.h arm/linux-eabi.h"
+ 	    tmake_file="$tmake_file arm/t-arm-elf arm/t-bpabi arm/t-linux-eabi"
