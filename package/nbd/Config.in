@@ -1,0 +1,9 @@
+config BR2_PACKAGE_NBD
+	bool "nbd"
+	default n
+	help
+	  NBD is a set of utilities to configure network block devices,
+	  allowing access to remote block devices over TCP/IP network.
+	  Notice: This package only provides the NBD client.
+
+	  http://nbd.sf.net/
