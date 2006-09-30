@@ -1,7 +1,7 @@
 # DP: Build and install libstdc++_pic.a library.
 
---- gcc/libstdc++-v3/src/Makefile.am~	2003-02-28 09:21:05.000000000 +0100
-+++ gcc/libstdc++-v3/src/Makefile.am	2003-02-28 09:28:50.000000000 +0100
+--- gcc/libstdc++-v3/src/Makefile.am
++++ gcc/libstdc++-v3/src/Makefile.am
 @@ -224,6 +224,10 @@
  	  @OPT_LDFLAGS@ @SECTION_LDFLAGS@ $(AM_CXXFLAGS) $(LDFLAGS) -o $@
  
@@ -14,8 +14,8 @@
  if GLIBCPP_BUILD_DEBUG
  all-local: build_debug
 
---- gcc/libstdc++-v3/src/Makefile.in~	2004-02-21 09:55:48.000000000 +0100
-+++ gcc/libstdc++-v3/src/Makefile.in	2004-02-21 09:59:34.000000000 +0100
+--- gcc/libstdc++-v3/src/Makefile.in
++++ gcc/libstdc++-v3/src/Makefile.in
 @@ -585,7 +585,7 @@
  
  install-data-am: install-data-local

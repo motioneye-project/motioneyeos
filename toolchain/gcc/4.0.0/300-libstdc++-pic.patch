@@ -1,6 +1,5 @@
-diff -urN gcc-4.0.0-200/libstdc++-v3/src/Makefile.am gcc-4.0.0/libstdc++-v3/src/Makefile.am
---- gcc-4.0.0-200/libstdc++-v3/src/Makefile.am	2004-11-15 17:33:05.000000000 -0600
-+++ gcc-4.0.0/libstdc++-v3/src/Makefile.am	2005-04-28 21:42:18.614344056 -0500
+--- gcc-4.0.0/libstdc++-v3/src/Makefile.am
++++ gcc-4.0.0/libstdc++-v3/src/Makefile.am
 @@ -214,6 +214,10 @@
  	  $(OPT_LDFLAGS) $(SECTION_LDFLAGS) $(AM_CXXFLAGS) $(LDFLAGS) -o $@
  
@@ -12,9 +11,8 @@ diff -urN gcc-4.0.0-200/libstdc++-v3/src/Makefile.am gcc-4.0.0/libstdc++-v3/src/
  # Added bits to build debug library.
  if GLIBCXX_BUILD_DEBUG
  all-local: build_debug
-diff -urN gcc-4.0.0-200/libstdc++-v3/src/Makefile.in gcc-4.0.0/libstdc++-v3/src/Makefile.in
---- gcc-4.0.0-200/libstdc++-v3/src/Makefile.in	2005-02-01 00:56:27.000000000 -0600
-+++ gcc-4.0.0/libstdc++-v3/src/Makefile.in	2005-04-28 21:44:20.868758560 -0500
+--- gcc-4.0.0/libstdc++-v3/src/Makefile.in
++++ gcc-4.0.0/libstdc++-v3/src/Makefile.in
 @@ -625,7 +625,7 @@
  
  install-data-am: install-data-local
