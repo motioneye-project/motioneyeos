@@ -44,7 +44,7 @@ GNU_TARGET_SUFFIX:=-$(strip $(subst ",, $(BR2_GNU_TARGET_SUFFIX)))
 # Strip off the annoying quoting
 STAGING_DIR:=$(strip $(subst ",, $(BR2_STAGING_DIR)))
 #"
-TARGET_PATH=$(STAGING_DIR)/bin:$(TOOL_BUILD_DIR)/bin:/bin:/sbin:/usr/bin:/usr/sbin:$(PATH)
+TARGET_PATH=$(STAGING_DIR)/bin:$(TOOL_BUILD_DIR)/bin:$(PATH)
 IMAGE:=$(BASE_DIR)/rootfs.$(ARCH)$(ARCH_FPU_SUFFIX)
 REAL_GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)$(GNU_TARGET_SUFFIX)
 GNU_TARGET_NAME=$(OPTIMIZE_FOR_CPU)-linux
