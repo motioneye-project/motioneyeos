@@ -24,7 +24,7 @@
 PCMCIA_SOURCE:=pcmcia-cs-3.2.7.tar.gz
 PCMCIA_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/pcmcia-cs
 PCMCIA_DIR:=$(BUILD_DIR)/pcmcia-cs-3.2.7
-PCMCIA_CAT:=zcat
+PCMCIA_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(PCMCIA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(PCMCIA_SITE)/$(PCMCIA_SOURCE)

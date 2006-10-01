@@ -7,7 +7,7 @@ BZIP2_VER:=1.0.3
 BZIP2_SOURCE:=bzip2-$(BZIP2_VER).tar.gz
 BZIP2_SITE:=http://www.bzip.org/$(BZIP2_VER)
 BZIP2_DIR:=$(BUILD_DIR)/bzip2-$(BZIP2_VER)
-BZIP2_CAT:=zcat
+BZIP2_CAT:=$(ZCAT)
 BZIP2_BINARY:=$(BZIP2_DIR)/bzip2
 BZIP2_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/bzmore
 

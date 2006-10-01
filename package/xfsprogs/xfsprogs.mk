@@ -7,7 +7,7 @@ XFSPROGS_VER:=2.7.11
 XFSPROGS_SOURCE=xfsprogs-$(XFSPROGS_VER).src.tar.gz
 XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/cmd_tars
 XFSPROGS_DIR=$(BUILD_DIR)/xfsprogs-$(XFSPROGS_VER)
-XFSPROGS_CAT:=zcat
+XFSPROGS_CAT:=$(ZCAT)
 XFSPROGS_BINARY:=mkfs/mkfs.xfs
 XFSPROGS_TARGET_BINARY:=sbin/mkfs.xfs
 

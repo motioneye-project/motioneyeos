@@ -10,7 +10,7 @@ MICROWIN_DIR:=$(BUILD_DIR)/microwin
 #MICROWIN_SOURCE:=microwindows-0.91.tar.gz
 #MICROWIN_DIR:=$(BUILD_DIR)/microwindows-0.91
 
-MICROWIN_CAT:=zcat
+MICROWIN_CAT:=$(ZCAT)
 MICROWIN_BINARY:=$(MICROWIN_DIR)/src/bin/nano-X
 MICROWIN_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/nano-X
 

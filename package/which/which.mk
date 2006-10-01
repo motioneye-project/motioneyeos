@@ -7,7 +7,7 @@ WHICH_VER:=2.16
 WHICH_SOURCE:=which-$(WHICH_VER).tar.gz
 WHICH_SITE:=http://www.xs4all.nl/~carlo17/which/
 WHICH_DIR:=$(BUILD_DIR)/which-$(WHICH_VER)
-WHICH_CAT:=zcat
+WHICH_CAT:=$(ZCAT)
 WHICH_BINARY:=which
 WHICH_TARGET_BINARY:=bin/which
 

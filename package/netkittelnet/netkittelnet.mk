@@ -6,7 +6,7 @@
 NETKITTELNET_SOURCE:=netkit-telnet-0.17.tar.gz
 NETKITTELNET_SITE:=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
 NETKITTELNET_DIR:=$(BUILD_DIR)/netkit-telnet-0.17
-NETKITTELNET_CAT:=zcat
+NETKITTELNET_CAT:=$(ZCAT)
 NETKITTELNET_BINARY:=telnetd/telnetd
 NETKITTELNET_TARGET_BINARY:=usr/sbin/telnetd
 

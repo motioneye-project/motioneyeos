@@ -6,7 +6,7 @@
 PPPD_SOURCE:=ppp-2.4.3.tar.gz
 PPPD_SITE:=ftp://ftp.samba.org/pub/ppp
 PPPD_DIR:=$(BUILD_DIR)/ppp-2.4.3
-PPPD_CAT:=zcat
+PPPD_CAT:=$(ZCAT)
 PPPD_BINARY:=pppd/pppd
 PPPD_TARGET_BINARY:=usr/sbin/pppd
 

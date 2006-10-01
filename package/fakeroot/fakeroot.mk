@@ -6,7 +6,7 @@
 FAKEROOT_VERSION:=1.5.8
 FAKEROOT_SOURCE:=fakeroot_$(FAKEROOT_VERSION).tar.gz
 FAKEROOT_SITE:=http://ftp.debian.org/debian/pool/main/f/fakeroot
-FAKEROOT_CAT:=zcat
+FAKEROOT_CAT:=$(ZCAT)
 FAKEROOT_DIR1:=$(TOOL_BUILD_DIR)/fakeroot-$(FAKEROOT_VERSION)
 FAKEROOT_DIR2:=$(BUILD_DIR)/fakeroot-$(FAKEROOT_VERSION)
 

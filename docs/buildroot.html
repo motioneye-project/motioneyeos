@@ -465,7 +465,7 @@ config BR2_PACKAGE_FOO
     14          $(WGET) -P $(DL_DIR) $(FOO_SITE)/$(FOO_SOURCE)
     15
     16  $(FOO_DIR)/.source: $(DL_DIR)/$(FOO_SOURCE)
-    17          zcat $(DL_DIR)/$(FOO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+    17          $(ZCAT) $(DL_DIR)/$(FOO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
     18          touch $(FOO_DIR)/.source
     19
     20  $(FOO_DIR)/.configured: $(FOO_DIR)/.source

@@ -16,7 +16,7 @@ $(DL_DIR)/$(YABOOT_SOURCE):
 yaboot-source: $(DL_DIR)/$(YABOOT_SOURCE)
 
 $(YABOOT_DIR)/Makefile: $(DL_DIR)/$(YABOOT_SOURCE)
-	zcat $(DL_DIR)/$(YABOOT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(ZCAT) $(DL_DIR)/$(YABOOT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch -c $(YABOOT_DIR)/Makefile
 
 $(YABOOT_DIR)/second/yaboot: $(YABOOT_DIR)/Makefile

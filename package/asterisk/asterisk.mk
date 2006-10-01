@@ -14,7 +14,7 @@ $(DL_DIR)/$(ASTERISK_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ASTERISK_SITE)/$(ASTERISK_SOURCE)
 
 $(ASTERISK_DIR)/.source: $(DL_DIR)/$(ASTERISK_SOURCE)
-	zcat $(DL_DIR)/$(ASTERISK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(ASTERISK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(ASTERISK_DIR) package/asterisk/ asterisk\*.patch
 	touch $(ASTERISK_DIR)/.source
 

@@ -7,7 +7,7 @@ PCIUTILS_VER:=2.1.11
 PCIUTILS_SOURCE:=pciutils-$(PCIUTILS_VER).tar.gz
 PCIUTILS_SITE:=ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci
 PCIUTILS_DIR:=$(BUILD_DIR)/pciutils-$(PCIUTILS_VER)
-PCIUTILS_CAT:=zcat
+PCIUTILS_CAT:=$(ZCAT)
 
 # Yet more targets...
 PCIIDS_SITE:=http://pciids.sourceforge.net/

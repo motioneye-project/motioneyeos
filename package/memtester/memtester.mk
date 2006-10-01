@@ -16,7 +16,7 @@ $(DL_DIR)/$(MEMTESTER_SOURCE):
 memtester-source: $(DL_DIR)/$(MEMTESTER_SOURCE)
 
 $(MEMTESTER_DIR)/.unpacked: $(DL_DIR)/$(MEMTESTER_SOURCE)
-	zcat $(DL_DIR)/$(MEMTESTER_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(MEMTESTER_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	#toolchain/patch-kernel.sh $(MEMTESTER_DIR) package/memtester/ memtester\*.patch
 	$(SED) "s,cc,$(TARGET_CC)," $(MEMTESTER_DIR)/conf-*
 	touch $(MEMTESTER_DIR)/.unpacked

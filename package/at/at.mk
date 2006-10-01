@@ -7,7 +7,7 @@ AT_VER:=3.1.10
 AT_SOURCE:=at_$(AT_VER).tar.gz
 AT_SITE:=http://ftp.debian.org/debian/pool/main/a/at
 AT_DIR:=$(BUILD_DIR)/at-$(AT_VER)
-AT_CAT:=zcat
+AT_CAT:=$(ZCAT)
 AT_TARGET_BINARY:=usr/bin/at
 
 $(DL_DIR)/$(AT_SOURCE):

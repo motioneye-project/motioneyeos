@@ -6,7 +6,7 @@
 ED_SOURCE:=ed_0.2.orig.tar.gz
 ED_PATCH:=ed_0.2-19.diff.gz
 ED_SITE:=http://ftp.debian.org/debian/pool/main/e/ed
-ED_CAT:=zcat
+ED_CAT:=$(ZCAT)
 ED_DIR:=$(BUILD_DIR)/ed-0.2
 ED_BINARY:=ed
 ED_TARGET_BINARY:=bin/ed

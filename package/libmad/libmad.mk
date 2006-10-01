@@ -9,7 +9,7 @@ LIBMAD_SOURCE=libmad-$(LIBMAD_VERSION).tar.gz
 LIBMAD_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/mad/
 LIBMAD_DIR=$(BUILD_DIR)/${shell basename $(LIBMAD_SOURCE) .tar.gz}
 LIBMAD_WORKDIR=$(BUILD_DIR)/libmad-$(LIBMAD_VERSION)
-LIBMAD_CAT:=zcat
+LIBMAD_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(LIBMAD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBMAD_SITE)/$(LIBMAD_SOURCE)

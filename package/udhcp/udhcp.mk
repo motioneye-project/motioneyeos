@@ -31,7 +31,7 @@ $(DL_DIR)/$(UDHCP_SOURCE):
 udhcp-source: $(DL_DIR)/$(UDHCP_SOURCE)
 
 $(UDHCP_DIR)/.unpacked: $(DL_DIR)/$(UDHCP_SOURCE)
-	zcat $(DL_DIR)/$(UDHCP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(UDHCP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(SED) 's/-Os -fomit-frame-pointer/$(TARGET_CFLAGS)/' $(UDHCP_DIR)/Makefile
 	toolchain/patch-kernel.sh $(UDHCP_DIR) package/udhcp/ udhcp\*.patch
 	touch $(UDHCP_DIR)/.unpacked

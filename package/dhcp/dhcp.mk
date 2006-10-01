@@ -6,7 +6,7 @@
 DHCP_VER:=3.0.4
 DHCP_SOURCE:=dhcp-$(DHCP_VER).tar.gz
 DHCP_SITE:=ftp://ftp.isc.org/isc/dhcp
-DHCP_CAT:=zcat
+DHCP_CAT:=$(ZCAT)
 DHCP_DIR:=$(BUILD_DIR)/dhcp-$(DHCP_VER)
 DHCP_SERVER_BINARY:=work.linux-2.2/server/dhcpd
 DHCP_RELAY_BINARY:=work.linux-2.2/relay/dhcrelay

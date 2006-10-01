@@ -8,7 +8,7 @@ GZIP_SOURCE:=gzip-$(GZIP_VER).tar.gz
 #GZIP_SITE:=ftp://alpha.gnu.org/gnu/gzip
 GZIP_SITE:=http://mirrors.ircam.fr/pub/gnu/alpha/gnu/gzip
 GZIP_DIR:=$(BUILD_DIR)/gzip-$(GZIP_VER)
-GZIP_CAT:=zcat
+GZIP_CAT:=$(ZCAT)
 GZIP_BINARY:=$(GZIP_DIR)/gzip
 GZIP_TARGET_BINARY:=$(TARGET_DIR)/bin/zmore
 
@@ -57,7 +57,7 @@ $(GZIP_TARGET_BINARY): $(GZIP_BINARY)
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/bin; \
 	ln -snf gzip gunzip; \
-	ln -snf gzip zcat; \
+	ln -snf gzip $(ZCAT); \
 	ln -snf zdiff zcmp; \
 	ln -snf zgrep zegrep; \
 	ln -snf zgrep zfgrep;)

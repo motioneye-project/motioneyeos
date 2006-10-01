@@ -13,7 +13,7 @@ $(DL_DIR)/$(LINKS_SOURCE):
 links-source: $(DL_DIR)/$(LINKS_SOURCE)
 
 $(LINKS_DIR)/.unpacked: $(DL_DIR)/$(LINKS_SOURCE)
-	zcat $(DL_DIR)/$(LINKS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(LINKS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LINKS_DIR)/.unpacked
 
 $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked

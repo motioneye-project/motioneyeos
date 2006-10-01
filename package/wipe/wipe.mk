@@ -7,7 +7,7 @@
 WIPE_SOURCE:=wipe-0.20.tar.gz
 #WIPE_PATCH:=wipe_0.2-19.diff.gz
 WIPE_SITE:=http://abaababa.ouvaton.org/wipe
-WIPE_CAT:=zcat
+WIPE_CAT:=$(ZCAT)
 WIPE_DIR:=$(BUILD_DIR)/wipe-0.20
 WIPE_BINARY:=wipe
 WIPE_TARGET_BINARY:=bin/wipe

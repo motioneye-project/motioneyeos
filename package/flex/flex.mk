@@ -7,7 +7,7 @@ FLEX_SOURCE:=flex_2.5.4a.orig.tar.gz
 FLEX_PATCH:=flex_2.5.4a-24.diff.gz
 FLEX_SITE:=http://ftp.debian.org/debian/pool/main/f/flex
 FLEX_DIR:=$(BUILD_DIR)/flex-2.5.4
-FLEX_CAT:=zcat
+FLEX_CAT:=$(ZCAT)
 FLEX_BINARY:=flex
 FLEX_TARGET_BINARY:=usr/bin/flex
 

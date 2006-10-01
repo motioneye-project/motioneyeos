@@ -7,7 +7,7 @@ PORTMAP_VER:=5b
 PORTMAP_SOURCE:=portmap_$(PORTMAP_VER)eta.tar.gz
 PORTMAP_SITE:=ftp://ftp.porcupine.org/pub/security/
 PORTMAP_DIR:=$(BUILD_DIR)/portmap_$(PORTMAP_VER)eta
-PORTMAP_CAT:=zcat
+PORTMAP_CAT:=$(ZCAT)
 PORTMAP_BINARY:=portmap
 PORTMAP_TARGET_BINARY:=sbin/portmap
 

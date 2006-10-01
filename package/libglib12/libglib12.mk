@@ -5,7 +5,7 @@
 #############################################################
 LIBGLIB12_SOURCE:=glib-1.2.10.tar.gz
 LIBGLIB12_SITE:=http://ftp.gnome.org/pub/gnome/sources/glib/1.2
-LIBGLIB12_CAT:=zcat
+LIBGLIB12_CAT:=$(ZCAT)
 LIBGLIB12_DIR:=$(BUILD_DIR)/glib-1.2.10
 LIBGLIB12_BINARY:=libglib.a
 

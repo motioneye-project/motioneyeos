@@ -11,7 +11,7 @@ $(DL_DIR)/$(ACPID_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ACPID_SITE)/$(ACPID_SOURCE)
 
 $(ACPID_DIR)/Makefile: $(DL_DIR)/$(ACPID_SOURCE)
-	zcat $(DL_DIR)/$(ACPID_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(ZCAT) $(DL_DIR)/$(ACPID_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	$(SED) "s:ACPI_SOCKETFILE.*:ACPI_SOCKETFILE \"/tmp/acpid.socket\":" $(ACPID_DIR)/acpid.h
 	touch -c $(ACPID_DIR)/Makefile
 

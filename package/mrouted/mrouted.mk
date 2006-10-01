@@ -7,7 +7,7 @@
 MROUTED_SOURCE:=mrouted_3.9-beta3.orig.tar.gz
 MROUTED_SITE:=http://ftp.debian.org/debian/pool/non-free/m/mrouted
 MROUTED_DIR:=$(BUILD_DIR)/mrouted-3.9-beta3.orig
-MROUTED_CAT:=zcat
+MROUTED_CAT:=$(ZCAT)
 MROUTED_PATCH:=mrouted_3.9-beta3-1.1.diff.gz
 MROUTED_BINARY:=mrouted
 MROUTED_TARGET_BINARY:=usr/sbin/mrouted

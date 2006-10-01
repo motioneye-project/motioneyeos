@@ -23,7 +23,7 @@
 JPEG_DIR=$(BUILD_DIR)/jpeg-6b
 JPEG_SITE:=ftp://ftp.uu.net/graphics/jpeg/
 JPEG_SOURCE=jpegsrc.v6b.tar.gz
-JPEG_CAT:=zcat
+JPEG_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(JPEG_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(JPEG_SITE)/$(JPEG_SOURCE)

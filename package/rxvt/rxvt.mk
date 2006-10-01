@@ -23,7 +23,7 @@
 RXVT_VERSION:=2.6.4
 RXVT_SOURCE:=rxvt-$(RXVT_VERSION).tar.gz
 RXVT_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/rxvt
-RXVT_CAT:=zcat
+RXVT_CAT:=$(ZCAT)
 RXVT_DIR:=$(BUILD_DIR)/rxvt-$(RXVT_VERSION)
 RXVT_BINARY:=$(RXVT_DIR)/src/rxvt
 

@@ -22,8 +22,8 @@ $(DL_DIR)/$(LTRACE_SOURCE2):
 	$(WGET) -P $(DL_DIR) $(LTRACE_SITE)/$(LTRACE_SOURCE2)
 
 $(LTRACE_DIR)/.source: $(DL_DIR)/$(LTRACE_SOURCE) $(DL_DIR)/$(LTRACE_SOURCE2)
-	zcat $(DL_DIR)/$(LTRACE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	zcat $(DL_DIR)/$(LTRACE_SOURCE2) | patch -p1 -d $(LTRACE_DIR)
+	$(ZCAT) $(DL_DIR)/$(LTRACE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(LTRACE_SOURCE2) | patch -p1 -d $(LTRACE_DIR)
 	touch $(LTRACE_DIR)/.source
 
 $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.source

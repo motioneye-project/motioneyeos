@@ -104,7 +104,7 @@ $(STAGING_DIR):
 
 $(TARGET_DIR):
 	if [ -f "$(TARGET_SKELETON)" ] ; then \
-		zcat $(TARGET_SKELETON) | tar -C $(BUILD_DIR) -xf -; \
+		$(ZCAT) $(TARGET_SKELETON) | tar -C $(BUILD_DIR) -xf -; \
 	fi;
 	if [ -d "$(TARGET_SKEL_DIR)" ] ; then \
 		cp -fa $(TARGET_SKEL_DIR)/* $(TARGET_DIR)/; \

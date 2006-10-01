@@ -9,7 +9,7 @@ HASERL_SOURCE=haserl-$(HASERL_VERSION).tar.gz
 HASERL_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/haserl/
 HASERL_DIR=$(BUILD_DIR)/${shell basename $(HASERL_SOURCE) .tar.gz}
 HASERL_WORKDIR=$(BUILD_DIR)/haserl-$(HASERL_VERSION)
-HASERL_CAT:=zcat
+HASERL_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(HASERL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(HASERL_SITE)/$(HASERL_SOURCE)

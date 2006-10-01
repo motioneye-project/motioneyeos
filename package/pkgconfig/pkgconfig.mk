@@ -7,7 +7,7 @@ PKGCONFIG_VER:=0.21
 PKGCONFIG_SOURCE:=pkg-config-$(PKGCONFIG_VER).tar.gz
 PKGCONFIG_SITE:=http://pkgconfig.freedesktop.org/releases/
 PKGCONFIG_DIR:=$(BUILD_DIR)/pkg-config-$(PKGCONFIG_VER)
-PKGCONFIG_CAT:=zcat
+PKGCONFIG_CAT:=$(ZCAT)
 PKGCONFIG_BINARY:=pkg-config
 PKGCONFIG_TARGET_BINARY:=usr/bin/pkg-config
 

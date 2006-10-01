@@ -7,7 +7,7 @@ LIGHTTPD_VER:=1.4.3
 LIGHTTPD_SOURCE:=lighttpd-$(LIGHTTPD_VER).tar.gz
 LIGHTTPD_SITE:=http://www.lighttpd.net/download
 LIGHTTPD_DIR:=$(BUILD_DIR)/lighttpd-$(LIGHTTPD_VER)
-LIGHTTPD_CAT:=zcat
+LIGHTTPD_CAT:=$(ZCAT)
 LIGHTTPD_BINARY:=src/lighttpd
 LIGHTTPD_TARGET_BINARY:=usr/sbin/lighttpd
 

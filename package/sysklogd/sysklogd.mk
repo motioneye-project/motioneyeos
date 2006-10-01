@@ -20,7 +20,7 @@ $(DL_DIR)/$(SYSKLOGD_SOURCE):
 sysklogd-source: $(DL_DIR)/$(SYSKLOGD_SOURCE)
 
 $(SYSKLOGD_DIR)/.unpacked: $(DL_DIR)/$(SYSKLOGD_SOURCE)
-	zcat $(DL_DIR)/$(SYSKLOGD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(SYSKLOGD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(SYSKLOGD_DIR) package/sysklogd/ sysklogd\*.patch
 	touch $(SYSKLOGD_DIR)/.unpacked
 

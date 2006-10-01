@@ -8,7 +8,7 @@ FILE_SOURCE:=file-$(FILE_VER).tar.gz
 FILE_SITE:=ftp://ftp.astron.com/pub/file
 FILE_DIR1:=$(TOOL_BUILD_DIR)/file-$(FILE_VER)
 FILE_DIR2:=$(BUILD_DIR)/file-$(FILE_VER)
-FILE_CAT:=zcat
+FILE_CAT:=$(ZCAT)
 FILE_BINARY:=src/file
 FILE_TARGET_BINARY:=usr/bin/file
 

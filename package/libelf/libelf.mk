@@ -17,7 +17,7 @@ $(DL_DIR)/$(LIBELF_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBELF_SITE)/$(LIBELF_SOURCE)
 
 $(LIBELF_DIR)/.source: $(DL_DIR)/$(LIBELF_SOURCE)
-	zcat $(DL_DIR)/$(LIBELF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(LIBELF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBELF_DIR) package/libelf libelf\*.patch
 	touch $(LIBELF_DIR)/.source
 

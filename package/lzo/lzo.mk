@@ -12,7 +12,7 @@ LZO_SITE:=http://ftp.debian.org/debian/pool/main/l/lzo
 #LZO_SOURCE:=lzo-$(LZO_VERSION).tar.bz2
 #LZO_SITE:=http://www.oberhumer.com/opensource/lzo/download
 LZO_DIR:=$(BUILD_DIR)/lzo-$(LZO_VERSION)
-LZO_CAT:=zcat
+LZO_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(LZO_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LZO_SITE)/$(LZO_SOURCE)

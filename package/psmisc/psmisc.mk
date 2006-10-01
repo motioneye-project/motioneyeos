@@ -14,7 +14,7 @@ $(DL_DIR)/$(PSMISC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(PSMISC_SITE)/$(PSMISC_SOURCE)
 
 $(PSMISC_DIR)/.unpacked: $(DL_DIR)/$(PSMISC_SOURCE)
-	zcat $(DL_DIR)/$(PSMISC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(PSMISC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(PSMISC_DIR)/.unpacked
 
 $(PSMISC_DIR)/.configured: $(PSMISC_DIR)/.unpacked

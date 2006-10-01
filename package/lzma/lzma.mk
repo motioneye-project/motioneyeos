@@ -19,7 +19,7 @@ $(DL_DIR)/$(LZMA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LZMA_SITE)/$(LZMA_SOURCE)
 
 $(LZMA_DIR)/.source: $(DL_DIR)/$(LZMA_SOURCE)
-	zcat $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LZMA_DIR) package/lzma/ lzma\*.patch
 	touch $(LZMA_DIR)/.source
 

@@ -7,7 +7,7 @@ SYSVINIT_VER:=2.86
 SYSVINIT_SOURCE:=sysvinit-$(SYSVINIT_VER).tar.gz
 SYSVINIT_SITE:=ftp://ftp.cistron.nl/pub/people/miquels/software
 SYSVINIT_DIR:=$(BUILD_DIR)/sysvinit-$(SYSVINIT_VER)
-SYSVINIT_CAT:=zcat
+SYSVINIT_CAT:=$(ZCAT)
 SYSVINIT_BINARY:=src/init
 SYSVINIT_TARGET_BINARY:=bin/init
 

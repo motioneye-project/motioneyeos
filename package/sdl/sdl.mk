@@ -6,7 +6,7 @@
 SDL_VERSION:=1.2.11
 SDL_SOURCE:=SDL-$(SDL_VERSION).tar.gz
 SDL_SITE:=http://www.libsdl.org/release
-SDL_CAT:=zcat
+SDL_CAT:=$(ZCAT)
 SDL_DIR:=$(BUILD_DIR)/SDL-$(SDL_VERSION)
 
 $(DL_DIR)/$(SDL_SOURCE):

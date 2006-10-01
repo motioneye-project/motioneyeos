@@ -6,7 +6,7 @@
 NETKITBASE_SOURCE:=netkit-base-0.17.tar.gz
 NETKITBASE_SITE:=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
 NETKITBASE_DIR:=$(BUILD_DIR)/netkit-base-0.17
-NETKITBASE_CAT:=zcat
+NETKITBASE_CAT:=$(ZCAT)
 NETKITBASE_BINARY:=inetd/inetd
 NETKITBASE_TARGET_BINARY:=usr/sbin/inetd
 

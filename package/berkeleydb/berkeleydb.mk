@@ -20,7 +20,7 @@ $(DL_DIR)/$(DB_SOURCE):
 berkeleydb-source: $(DL_DIR)/$(DB_SOURCE)
 
 $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
-	zcat $(DL_DIR)/$(DB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(DB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(DB_DIR)/.dist
 
 $(DB_DIR)/.configured: $(DB_DIR)/.dist

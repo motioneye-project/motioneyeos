@@ -16,7 +16,7 @@ $(DL_DIR)/$(IOSTAT_SOURCE):
 iostat-source: $(DL_DIR)/$(IOSTAT_SOURCE)
 
 $(IOSTAT_DIR)/.unpacked: $(DL_DIR)/$(IOSTAT_SOURCE)
-	zcat $(DL_DIR)/$(IOSTAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(IOSTAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(IOSTAT_DIR) package/iostat/ iostat\*.patch
 	touch $(IOSTAT_DIR)/.unpacked
 

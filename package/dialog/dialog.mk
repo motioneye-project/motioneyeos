@@ -21,8 +21,8 @@ $(DL_DIR)/$(DIALOG_PATCH1):
 	$(WGET) -P $(DL_DIR) $(DIALOG_PATCH1_URL)/$(DIALOG_PATCH1)
 
 $(DIALOG_DIR)/.source: $(DL_DIR)/$(DIALOG_SOURCE) $(DL_DIR)/$(DIALOG_PATCH1)
-	zcat $(DL_DIR)/$(DIALOG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	zcat $(DL_DIR)/$(DIALOG_PATCH1) | patch -p1 -d $(DIALOG_DIR)
+	$(ZCAT) $(DL_DIR)/$(DIALOG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(DIALOG_PATCH1) | patch -p1 -d $(DIALOG_DIR)
 	touch $(DIALOG_DIR)/.source
 
 $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source

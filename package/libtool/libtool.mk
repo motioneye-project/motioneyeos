@@ -6,7 +6,7 @@
 LIBTOOL_VER:=1.5.22
 LIBTOOL_SOURCE:=libtool-$(LIBTOOL_VER).tar.gz
 LIBTOOL_SITE:=http://ftp.gnu.org/pub/gnu/libtool
-LIBTOOL_CAT:=zcat
+LIBTOOL_CAT:=$(ZCAT)
 LIBTOOL_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VER)
 LIBTOOL_BINARY:=libtool
 LIBTOOL_TARGET_BINARY:=usr/bin/libtool

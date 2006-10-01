@@ -7,7 +7,7 @@ MKDOSFS_VER:=2.11
 MKDOSFS_SOURCE:=dosfstools-$(MKDOSFS_VER).src.tar.gz
 MKDOSFS_SITE:=http://ftp.uni-erlangen.de/pub/Linux/LOCAL/dosfstools
 MKDOSFS_DIR:=$(BUILD_DIR)/dosfstools-$(MKDOSFS_VER)
-MKDOSFS_CAT:=zcat
+MKDOSFS_CAT:=$(ZCAT)
 MKDOSFS_BINARY:=mkdosfs/mkdosfs
 MKDOSFS_TARGET_BINARY:=sbin/mkdosfs
 

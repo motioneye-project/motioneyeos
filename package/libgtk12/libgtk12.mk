@@ -5,7 +5,7 @@
 #############################################################
 LIBGTK12_SOURCE:=gtk+-1.2.10.tar.gz
 LIBGTK12_SITE:=http://ftp.gnome.org/pub/gnome/sources/gtk+/1.2
-LIBGTK12_CAT:=zcat
+LIBGTK12_CAT:=$(ZCAT)
 LIBGTK12_DIR:=$(BUILD_DIR)/gtk+-1.2.10
 LIBGTK12_BINARY:=libgtk.a
 

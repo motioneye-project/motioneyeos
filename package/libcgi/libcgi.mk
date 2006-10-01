@@ -14,7 +14,7 @@ $(DL_DIR)/$(LIBCGI_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBCGI_SITE)/$(LIBCGI_SOURCE)
 
 $(LIBCGI_DIR)/.source: $(DL_DIR)/$(LIBCGI_SOURCE)
-	zcat $(DL_DIR)/$(LIBCGI_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZCAT) $(DL_DIR)/$(LIBCGI_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LIBCGI_DIR)/.source
 
 $(LIBCGI_DIR)/.configured: $(LIBCGI_DIR)/.source

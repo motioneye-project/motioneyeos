@@ -17,7 +17,7 @@ $(DL_DIR)/$(CRAMFS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(CRAMFS_SITE)/$(CRAMFS_SOURCE)
 
 $(CRAMFS_DIR): $(DL_DIR)/$(CRAMFS_SOURCE)
-	zcat $(DL_DIR)/$(CRAMFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(ZCAT) $(DL_DIR)/$(CRAMFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(CRAMFS_DIR) target/cramfs/ cramfs\*.patch
 
 $(CRAMFS_DIR)/mkcramfs: $(CRAMFS_DIR)

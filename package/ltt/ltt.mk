@@ -6,7 +6,7 @@
 LTT_VER:=0.9.5a
 LTT_SOURCE:=TraceToolkit-$(LTT_VER).tgz
 LTT_SITE:=http://www.opersys.com/ftp/pub/LTT
-LTT_CAT:=zcat
+LTT_CAT:=$(ZCAT)
 LTT_DIR1:=$(TOOL_BUILD_DIR)/TraceToolkit-$(LTT_VER:a=)
 LTT_DIR2:=$(BUILD_DIR)/TraceToolkit-$(LTT_VER:a=)
 LTT_BINARY:=Visualizer/tracevisualizer
