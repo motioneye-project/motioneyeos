@@ -180,6 +180,16 @@ config BR2_SVN
 	string "Subversion (svn) checkout command"
 	default "svn co"
 
+config BR2_ZCAT
+	string "zcat command"
+	default "zcat"
+	help
+	  Command to be used to extract a gzip'ed file to stdout.
+	  zcat is identical to gunzip -c except that the former may
+	  not be available on your system.
+	  Default is "zcat"
+	  Other possible values include "gunzip -c"
+
 config BR2_TAR_OPTIONS
 	string "Tar options"
 	default ""
