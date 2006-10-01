@@ -8,6 +8,8 @@ WGET:=$(strip $(subst ",, $(BR2_WGET)))
 #"
 SVN:=$(strip $(subst ",, $(BR2_SVN)))
 #"
+ZCAT:=$(strip $(subst ",, $(BR2_ZCAT)))
+#"
 TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xf
 #"
 
