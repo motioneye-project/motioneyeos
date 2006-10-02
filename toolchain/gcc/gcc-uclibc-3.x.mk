@@ -55,6 +55,12 @@ ifeq ($(BR2_INSTALL_FORTRAN),y)
 TARGET_LANGUAGES:=$(TARGET_LANGUAGES),fortran
 endif
 
+ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
+GCC_SHARED_LIBGCC:=--enable-shared
+else
+GCC_SHARED_LIBGCC:=--disable-shared
+endif
+
 #############################################################
 #
 # build the first pass gcc compiler
@@ -119,11 +125,11 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--enable-languages=c \
-		--disable-shared \
 		--with-sysroot=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
+		--disable-shared \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(MULTILIB) \
@@ -175,10 +181,10 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/lib/libc.a
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--enable-languages=$(TARGET_LANGUAGES) \
-		--enable-shared \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
+		$(GCC_SHARED_LIBGCC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(MULTILIB) \
@@ -264,7 +270,7 @@ endif
 	touch -c $(TARGET_DIR)/lib/libgcc_s.so.1
 
 gcc: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) uclibc \
-	$(TARGET_DIR)/lib/libgcc_s.so.1 $(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
+	$(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
 
 gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 
@@ -294,11 +300,11 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR2)/.installed
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--enable-languages=$(TARGET_LANGUAGES) \
-		--enable-shared \
 		--with-gxx-include-dir=/usr/include/c++ \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
+		$(GCC_SHARED_LIBGCC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(MULTILIB) \
