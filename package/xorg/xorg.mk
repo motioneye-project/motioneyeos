@@ -59,7 +59,7 @@ ifeq ($(BR2_armeb),y)
 XARCH=Arm32
 endif
 ifeq ($(BR2_i386),y)
-XARCH=i386A
+XARCH=i386
 endif
 ifeq ($(BR2_mips),y)
 XARCH=Mips
