@@ -5,11 +5,7 @@
 #############################################################
 
 ifndef UCLIBC_CONFIG_FILE
-ifeq ($(BR2_ENABLE_LOCALE),y)
-UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc.config-locale
-else
 UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc.config
-endif
 endif
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
@@ -70,6 +66,9 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 uclibc-configured: dependencies kernel-headers $(UCLIBC_DIR)/.configured
 $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
 	cp $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
+ifeq ($(ENABLE_LOCALE),true)
+	$(SED) 's,^.*UCLIBC_HAS_LOCALE.*,UCLIBC_HAS_LOCALE=y\nUCLIBC_PREGENERATED_LOCALE_DATA=y\nUCLIBC_DOWNLOAD_PREGENERATED_LOCALE_DATA=y\nUCLIBC_HAS_XLOCALE=y\nUCLIBC_HAS_GLIBC_DIGIT_GROUPING=n\n,g' $(UCLIBC_DIR)/.config
+endif
 	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' \
 		-e 's,# TARGET_$(UCLIBC_TARGET_ARCH) is not set,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		-e 's,^TARGET_ARCH="none",TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' \
