@@ -20,7 +20,7 @@ lsof-unpacked: $(LSOF_DIR)/.unpacked
 $(LSOF_DIR)/.unpacked: $(DL_DIR)/$(LSOF_SOURCE)
 	$(LSOF_CAT) $(DL_DIR)/$(LSOF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	(cd $(LSOF_DIR);tar xf lsof_4.77_src.tar;rm -f lsof_4.77_src.tar)
-	toolchain/patch-kernel.sh $(LSOF_DIR) package/lsof/ *.patch
+	toolchain/patch-kernel.sh $(LSOF_DIR) package/lsof/ \*.patch
 	touch $(LSOF_DIR)/.unpacked
 
 $(LSOF_DIR)/.configured: $(LSOF_DIR)/.unpacked
