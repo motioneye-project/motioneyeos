@@ -5,10 +5,10 @@
 #############################################################
 
 SUDO_VER:=1.6.8p9
-SUDO_DIR:=$(BUILD_DIR)/sudo-$(SUDO_VER)
 SUDO_SOURCE:=sudo-$(SUDO_VER).tar.gz
-SUDO_SITE=http://www.courtesan.com/sudo/dist
-SUDO_UNZIP=$(ZCAT)
+SUDO_SITE:=http://www.courtesan.com/sudo/dist
+SUDO_DIR:=$(BUILD_DIR)/sudo-$(SUDO_VER)
+SUDO_UNZIP:=$(ZCAT)
 
 $(DL_DIR)/$(SUDO_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(SUDO_SITE)/$(SUDO_SOURCE)
