@@ -17,6 +17,7 @@ choice
 config BR2_PACKAGE_MTD_ORIG
 	bool "Default source"
 	depends on BR2_PACKAGE_MTD
+	default y
 	help
 	  Use the stable release.
 
