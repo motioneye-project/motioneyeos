@@ -16,14 +16,11 @@ choice
 
 config BR2_PACKAGE_MTD_ORIG
 	bool "Default source"
-	depends on BR2_PACKAGE_MTD
-	default y
 	help
 	  Use the stable release.
 
 config BR2_PACKAGE_MTD_SNAPSHOT
 	bool "Daily snapshot"
-	depends on BR2_PACKAGE_MTD
 	help
 	  Use the latest MTD daily snapshot instead of release.
 	  You should probably say NO except for specific purpose.
