@@ -83,6 +83,7 @@ LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.12.0.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.12.0
 endif
+LINUX_HEADERS_IS_KERNEL=n
 
 ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.18")
 VERSION:=2
@@ -91,25 +92,51 @@ SUBLEVEL:=18
 LINUX_HEADERS_SITE:=http://www.kernel.org/pub/linux/kernel/v2.6/
 LINUX_HEADERS_SOURCE:=linux-2.6.18.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-2.6.18
+LINUX_HEADERS_IS_KERNEL=y
 endif
 
 LINUX_HEADERS_VERSION:=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)
 
 LINUX_HEADERS_DIR:=$(TOOL_BUILD_DIR)/linux
 
+LINUX_HEADERS_DO_MOVE=n
+ifneq ($(LINUX_HEADERS_UNPACK_DIR),$(LINUX_HEADERS_DIR))
+LINUX_HEADERS_DO_MOVE=y
+endif
+ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
+LINUX_HEADERS_DO_MOVE=n
+endif
+
 $(DL_DIR)/$(LINUX_HEADERS_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(LINUX_HEADERS_SITE)/$(LINUX_HEADERS_SOURCE)
 
+ifeq ($(LINUX_HEADERS_DO_MOVE),y)
 $(LINUX_HEADERS_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
 	rm -rf $(LINUX_HEADERS_DIR)
 	mkdir -p $(TOOL_BUILD_DIR)
 	bzcat $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-ifneq ($(LINUX_HEADERS_UNPACK_DIR),$(LINUX_HEADERS_DIR))
 	mv $(LINUX_HEADERS_UNPACK_DIR) $(LINUX_HEADERS_DIR)
-endif
 	touch $(LINUX_HEADERS_DIR)/.unpacked
+else
+$(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
+	rm -rf $(LINUX_HEADERS_DIR)
+	mkdir -p $(TOOL_BUILD_DIR)
+	bzcat $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	touch $(LINUX_HEADERS_UNPACK_DIR)/.unpacked
+endif
 
+ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
+# full kernel tarball >= 2.6.18
+$(LINUX_HEADERS_UNPACK_DIR)/.patched: $(LINUX_HEADERS_UNPACK_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) toolchain/kernel-headers linux-$(LINUX_HEADERS_VERSION)\*.patch
+
+$(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_UNPACK_DIR)/.patched
+	(cd $(LINUX_HEADERS_UNPACK_DIR) ; \
+	 $(MAKE) INSTALL_HDR_PATH=$(LINUX_HEADERS_DIR) headers_install)
+	touch $(LINUX_HEADERS_DIR)/.configured
+else
+# the sanitized kernel-headers
 $(LINUX_HEADERS_DIR)/.patched: $(LINUX_HEADERS_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_DIR) toolchain/kernel-headers linux-libc-headers-$(LINUX_HEADERS_VERSION)\*.patch
 ifeq ($(strip $(ARCH)),nios2)
@@ -171,10 +198,8 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-$(ARCH)$(NOMMU) asm;) \
 	fi
 	touch $(LINUX_HEADERS_DIR)/include/linux/autoconf.h;
-ifeq ("$(strip $(DEFAULT_KERNEL_HEADERS))","2.6.18")
-	(cd $(LINUX_HEADERS_DIR) ; $(MAKE) include/linux/version.h ; )
-endif
 	touch $(LINUX_HEADERS_DIR)/.configured
+endif
 
 $(LINUX_KERNEL): $(LINUX_HEADERS_DIR)/.configured
 
