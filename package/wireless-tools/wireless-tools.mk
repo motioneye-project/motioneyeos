@@ -9,9 +9,9 @@
 # Jean II
 # v28.pre3 -> earliest possible
 WIRELESS_TOOLS_VER:=28
-WIRELESS_TOOLS_SUBVER:=.pre3
+WIRELESS_TOOLS_SUBVER:=
 
-WIRELESS_TOOLS_SOURCE_URL:=http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux
+WIRELESS_TOOLS_SOURCE_URL:=http://pcmcia-cs.sourceforge.net/ftp/contrib
 WIRELESS_TOOLS_SOURCE:=wireless_tools.$(WIRELESS_TOOLS_VER)$(WIRELESS_TOOLS_SUBVER).tar.gz
 WIRELESS_TOOLS_BUILD_DIR=$(BUILD_DIR)/wireless_tools.$(WIRELESS_TOOLS_VER)
 
