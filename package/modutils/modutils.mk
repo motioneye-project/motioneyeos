@@ -4,7 +4,7 @@
 #
 #############################################################
 MODUTILS_SOURCE=modutils-2.4.27.tar.bz2
-MODUTILS_SITE=ftp://ftp.kernel.org/pub/linux/utils/kernel/modutils/v2.4/
+MODUTILS_SITE=http://ftp.kernel.org/pub/linux/utils/kernel/modutils/v2.4/
 MODUTILS_DIR1=$(BUILD_DIR)/modutils-2.4.27
 MODUTILS_DIR2=$(TOOL_BUILD_DIR)/modutils-2.4.27
 MODUTILS_BINARY=depmod/depmod
