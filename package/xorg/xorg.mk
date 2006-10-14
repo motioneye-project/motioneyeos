@@ -93,7 +93,7 @@ $(XORG_DIR)/.configured: $(DL_DIR)/$(XORG_SOURCE)
 	$(SED) 's:#define LdCmd.*:#define LdCmd $(TARGET_CROSS)ld:g' $(XORG_CF)
 	$(SED) 's:#.*define.*HasPam.*YES::g' $(XORG_DIR)/config/cf/linux.cf
 	$(SED) 's:#.*define.*CrossCompiling.*NO:#define CrossCompiling YES:g' $(XORG_DIR)/config/cf/Imake.tmpl
-	$(SED) 's:#.*undef.*CrossCompileDir.*:#define CrossCompileDir$(STAGING_DIR)/bin:g' $(XORG_DIR)/config/cf/Imake.tmpl
+	$(SED) 's:#.*undef.*CrossCompileDir.*:#define CrossCompileDir $(STAGING_DIR)/bin:g' $(XORG_DIR)/config/cf/Imake.tmpl
 	$(SED) 's:REPLACE_XORG_ARCH:$(XARCH):g' $(XORG_DIR)/config/cf/cross.def
 	touch $(XORG_DIR)/.configured
 
