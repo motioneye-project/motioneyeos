@@ -85,7 +85,7 @@ TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		STRIP=$(TARGET_CROSS)strip \
 		OBJCOPY=$(TARGET_CROSS)objcopy
 
-ifeq ($(ENABLE_LOCALE),true)
+ifeq ($(BR2_ENABLE_LOCALE),y)
 DISABLE_NLS:=
 else
 DISABLE_NLS:=--disable-nls
