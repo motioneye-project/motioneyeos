@@ -4,7 +4,7 @@ comment "Binutils Options"
 
 choice
 	prompt "Binutils Version"
-	default BR2_BINUTILS_VERSION_2_16_1
+	default BR2_BINUTILS_VERSION_2_16_91_0_7
 	help
 	  Select the version of binutils you wish to use.
 
