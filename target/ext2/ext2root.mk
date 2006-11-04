@@ -66,6 +66,10 @@ else
 EXT2_TARGET := $(EXT2_BASE)
 endif
 
+ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_LZMA)),y)
+EXT2_TARGET := $(EXT2_BASE).lzma
+endif
+
 $(EXT2_BASE): host-fakeroot makedevs genext2fs
 	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	@rm -rf $(TARGET_DIR)/usr/man
@@ -101,6 +105,9 @@ endif
 
 $(EXT2_BASE).gz: $(EXT2_BASE)
 	@gzip --best -fv $(EXT2_BASE)
+
+$(EXT2_BASE).lzma: lzma-host $(EXT2_BASE)
+	@$(STAGING_DIR)/bin/lzma -vc $(EXT2_BASE) > $(EXT2_BASE).lzma
 
 EXT2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_COPYTO)))
 # " stupid syntax highlighting does not like unmatched quote from above line

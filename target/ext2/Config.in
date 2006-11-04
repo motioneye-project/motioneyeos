@@ -34,6 +34,13 @@ config BR2_TARGET_ROOTFS_EXT2_GZ
 	depends on 	BR2_TARGET_ROOTFS_EXT2
 	default n
 
+config BR2_TARGET_ROOTFS_EXT2_LZMA
+	bool "lzma the output file" 
+	depends on	BR2_TARGET_ROOTFS_EXT2 
+	select		BR2_PACKAGE_LZMA_HOST
+	default n
+
+
 config BR2_TARGET_ROOTFS_EXT2_COPYTO
 	string "also copy the image to..."
 	depends on 	BR2_TARGET_ROOTFS_EXT2
