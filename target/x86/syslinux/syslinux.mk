@@ -5,15 +5,20 @@ ifeq ($(ARCH),i386)
 #
 #############################################################
 
-SYSLINUX_DIR=$(BUILD_DIR)/syslinux-3.09
-SYSLINUX_SOURCE=syslinux-3.09.tar.bz2
-SYSLINUX_SITE=http://www.kernel.org/pub/linux/utils/boot/syslinux/
+SYSLINUX_VERSION:=3.31
+SYSLINUX_DIR=$(BUILD_DIR)/syslinux-$(SYSLINUX_VERSION)
+SYSLINUX_DIR2=$(TOOL_BUILD_DIR)/syslinux-$(SYSLINUX_VERSION)
+SYSLINUX_SOURCE=syslinux-$(SYSLINUX_VERSION).tar.bz2
+SYSLINUX_SITE=http://www.kernel.org/pub/linux/utils/boot/syslinux
+SYSLINUX_BIN=$(SYSLINUX_DIR2)/mtools/syslinux
+
 
 $(DL_DIR)/$(SYSLINUX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(SYSLINUX_SITE)/$(SYSLINUX_SOURCE)
 
 $(SYSLINUX_DIR)/Makefile: $(DL_DIR)/$(SYSLINUX_SOURCE) $(SYSLINUX_PATCH)
 	bzcat $(DL_DIR)/$(SYSLINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	toolchain/patch-kernel.sh $(SYSLINUX_DIR) target/x86/syslinux/ \*.patch
 	touch -c $(SYSLINUX_DIR)/Makefile
 
 $(SYSLINUX_DIR)/isolinux.bin: $(SYSLINUX_DIR)/Makefile
