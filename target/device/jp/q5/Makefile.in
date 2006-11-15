@@ -3,8 +3,7 @@ JP_Q5_PATH=target/device/jp/q5
 BR2_PACKAGE_BUSYBOX_CONFIG=$(JP_Q5_PATH)/busybox.config
 UCLIBC_CONFIG_FILE=$(JP_Q5_PATH)/uClibc.config.$(ARCH)
 
-TARGET_SKELETON=$(JP_Q5_PATH)/skel.tar.gz
-TARGET_SKEL_DIR=$(JP_Q5_PATH)/target_skeleton
+TARGET_SKELETON=$(JP_Q5_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(JP_Q5_PATH)/device_table.txt
 
 TARGETS+=linux

@@ -1,6 +1,6 @@
 SHARP_LNODE80_PATH=target/device/Sharp/LNode80
 
-TARGET_SKEL_DIR=$(SHARP_LNODE80_PATH)/target_skeleton
+TARGET_SKELETON=$(SHARP_LNODE80_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(SHARP_LNODE80_PATH)/device_table.txt
 
 TARGETS+=linux

@@ -103,11 +103,8 @@ $(STAGING_DIR):
 	@ln -snf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
-	if [ -f "$(TARGET_SKELETON)" ] ; then \
-		$(ZCAT) $(TARGET_SKELETON) | tar -C $(BUILD_DIR) -xf -; \
-	fi;
-	if [ -d "$(TARGET_SKEL_DIR)" ] ; then \
-		cp -fa $(TARGET_SKEL_DIR)/* $(TARGET_DIR)/; \
+	if [ -d "$(TARGET_SKELETON)" ] ; then \
+		cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
 	fi;
 	touch $(STAGING_DIR)/.fakeroot.00000
 	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
