@@ -103,6 +103,7 @@ $(STAGING_DIR):
 	@ln -snf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
+	mkdir -p $(TARGET_DIR)
 	if [ -d "$(TARGET_SKELETON)" ] ; then \
 		cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
 	fi;
