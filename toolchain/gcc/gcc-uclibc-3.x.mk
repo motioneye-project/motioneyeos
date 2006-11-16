@@ -250,6 +250,9 @@ endif
 	#
 	# Ok... that's enough of that.
 	#
+	touch $(GCC_BUILD_DIR2)/.installed
+
+gcc-target-libs: $(GCC_BUILD_DIR2)/.installed
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 	# These are in /lib, so...
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
@@ -266,10 +269,9 @@ ifeq ($(BR2_INSTALL_LIBGCJ),y)
 	-cp -a $(STAGING_DIR)/usr/lib/security/libgcj.security $(TARGET_DIR)/usr/lib/security/
 	-cp -a $(STAGING_DIR)/usr/lib/security/classpath.security $(TARGET_DIR)/usr/lib/security/
 endif
-	touch $(GCC_BUILD_DIR2)/.installed
 
 gcc: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) uclibc \
-	$(GCC_BUILD_DIR2)/.installed $(GCC_TARGETS)
+	$(GCC_BUILD_DIR2)/.installed gcc-target-libs $(GCC_TARGETS)
 
 gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 
