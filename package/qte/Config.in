@@ -151,6 +151,7 @@ config BR2_QTE_QTOPIA_VERSION
 config BR2_QTE_TMAKE_VERSION
         string
 	default "1.13"
+	depends BR2_PACKAGE_QTE
 
 # generated from:
 # ls ~/src/buildroot/build_arm/qt-2.3.10/configs/*-static|cut -c56-|sed -e 's/-static//g'|\
