@@ -3,9 +3,10 @@
 # pppd
 #
 #############################################################
-PPPD_SOURCE:=ppp-2.4.3.tar.gz
+PPPD_VERSION:=2.4.4
+PPPD_SOURCE:=ppp-$(PPPD_VERSION).tar.gz
 PPPD_SITE:=ftp://ftp.samba.org/pub/ppp
-PPPD_DIR:=$(BUILD_DIR)/ppp-2.4.3
+PPPD_DIR:=$(BUILD_DIR)/ppp-$(PPPD_VERSION)
 PPPD_CAT:=$(ZCAT)
 PPPD_BINARY:=pppd/pppd
 PPPD_TARGET_BINARY:=usr/sbin/pppd
@@ -49,7 +50,7 @@ $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 	touch $(PPPD_DIR)/.configured
 
 $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(PPPD_DIR)
+	$(MAKE) CC=$(TARGET_CC) COPTS="$(TARGET_CFLAGS)" -C $(PPPD_DIR)
 
 $(TARGET_DIR)/$(PPPD_TARGET_BINARY): $(PPPD_DIR)/$(PPPD_BINARY)
 	$(MAKE1) DESTDIR=$(TARGET_DIR)/usr CC=$(TARGET_CC) -C $(PPPD_DIR) install
