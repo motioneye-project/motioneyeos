@@ -57,7 +57,7 @@ $(GZIP_TARGET_BINARY): $(GZIP_BINARY)
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/bin; \
 	ln -snf gzip gunzip; \
-	ln -snf gzip $(ZCAT); \
+	ln -snf gzip zcat; \
 	ln -snf zdiff zcmp; \
 	ln -snf zgrep zegrep; \
 	ln -snf zgrep zfgrep;)

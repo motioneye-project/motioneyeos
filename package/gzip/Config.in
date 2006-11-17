@@ -3,6 +3,6 @@ config BR2_PACKAGE_GZIP
 	default n
 	help
 	  Standard GNU compressor.  Provides things like gzip, 
-	  gunzip, g$(ZCAT), etc...
+	  gunzip, gzcat, etc...
 
 	  http://www.gnu.org/software/gzip/gzip.html
