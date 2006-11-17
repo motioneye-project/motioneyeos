@@ -3,7 +3,7 @@
 # strace
 #
 #############################################################
-STRACE_VER:=4.5.12
+STRACE_VER:=4.5.14
 STRACE_SOURCE:=strace-$(STRACE_VER).tar.bz2
 STRACE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/strace
 STRACE_CAT:=bzcat
@@ -24,9 +24,10 @@ $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 	(cd $(STRACE_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		aaa_ac_cv_header_linux_if_packet_h=yes \
 		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
+		--target=$(REAL_GNU_TARGET_NAME) \
+		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
