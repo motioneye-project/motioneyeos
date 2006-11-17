@@ -10,6 +10,7 @@ BOA_VERSION=0.94.14rc21
 # what you are doing! Danger, Danger!
 
 BOA_SOURCE=boa-$(BOA_VERSION).tar.gz
+BOA_CAT:=$(ZCAT)
 BOA_SITE=http://www.boa.org/
 BOA_DIR=$(BUILD_DIR)/${shell basename $(BOA_SOURCE) .tar.gz}
 BOA_WORKDIR=$(BUILD_DIR)/boa_workdir
@@ -18,7 +19,7 @@ $(DL_DIR)/$(BOA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BOA_SITE)/$(BOA_SOURCE)
 
 $(BOA_DIR)/.unpacked:	$(DL_DIR)/$(BOA_SOURCE)
-	gzip -d -c $(DL_DIR)/$(BOA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(BOA_CAT) $(DL_DIR)/$(BOA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(BOA_DIR)/.unpacked
 
 $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked

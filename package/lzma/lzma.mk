@@ -5,6 +5,7 @@
 #############################################################
 LZMA_VER:=4.32.0beta3
 LZMA_SOURCE:=lzma-$(LZMA_VER).tar.gz
+LZMA_CAT:=$(ZCAT)
 LZMA_SITE:=http://tukaani.org/lzma/
 LZMA_HOST_DIR:=$(TOOL_BUILD_DIR)/lzma-$(LZMA_VER)
 LZMA_TARGET_DIR:=$(BUILD_DIR)/lzma-$(LZMA_VER)
@@ -26,7 +27,7 @@ $(DL_DIR)/$(LZMA_SOURCE):
 ######################################################################
 
 $(LZMA_HOST_DIR)/.source: $(DL_DIR)/$(LZMA_SOURCE)
-	zcat $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(LZMA_CAT) $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LZMA_HOST_DIR) package/lzma/ lzma\*.patch
 	touch $(LZMA_HOST_DIR)/.source
 
@@ -54,7 +55,7 @@ lzma-host: uclibc $(STAGING_DIR)/bin/lzma
 ######################################################################
 
 $(LZMA_TARGET_DIR)/.source: $(DL_DIR)/$(LZMA_SOURCE)
-	zcat $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(LZMA_CAT) $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LZMA_TARGET_DIR) package/lzma/ lzma\*.patch
 	touch $(LZMA_TARGET_DIR)/.source
 

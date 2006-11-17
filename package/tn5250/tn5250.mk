@@ -1,12 +1,13 @@
 TN5250_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/tn5250
 TN5250_DIR:=$(BUILD_DIR)/tn5250-0.16.4
 TN5250_SOURCE:=tn5250-0.16.4.tar.gz
+TN5250_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(TN5250_SOURCE):
 	$(WGET) -P $(DL_DIR) $(TN5250_SITE)/$(TN5250_SOURCE) 
 
 $(TN5250_DIR)/.dist: $(DL_DIR)/$(TN5250_SOURCE)
-	gunzip -c $(DL_DIR)/$(TN5250_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(TN5250_CAT) $(DL_DIR)/$(TN5250_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	-touch $(TN5250_DIR)/.dist
 
 $(TN5250_DIR)/.configured: $(TN5250_DIR)/.dist

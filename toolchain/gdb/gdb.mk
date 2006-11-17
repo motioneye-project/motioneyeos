@@ -4,18 +4,18 @@
 #
 ######################################################################
 GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
-#"
+#"))
 
 ifeq ($(GDB_VERSION),snapshot)
 # Be aware that this changes daily....
 GDB_SITE:=ftp://sources.redhat.com/pub/gdb/snapshots/current
 GDB_SOURCE:=gdb.tar.bz2
-GDB_CAT:=bzcat
+GDB_CAT:=$(BZCAT)
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
 else
 GDB_SITE:=http://ftp.gnu.org/gnu/gdb
 GDB_SOURCE:=gdb-$(GDB_VERSION).tar.bz2
-GDB_CAT:=bzcat
+GDB_CAT:=$(BZCAT)
 
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
 

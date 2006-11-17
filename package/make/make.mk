@@ -7,7 +7,7 @@ GNUMAKE_VER:=3.81
 GNUMAKE_SOURCE:=make-$(GNUMAKE_VER).tar.bz2
 GNUMAKE_SITE:=http://ftp.gnu.org/pub/gnu/make
 GNUMAKE_DIR:=$(BUILD_DIR)/make-$(GNUMAKE_VER)
-GNUMAKE_CAT:=bzcat
+GNUMAKE_CAT:=$(BZCAT)
 GNUMAKE_BINARY:=make
 GNUMAKE_TARGET_BINARY:=usr/bin/make
 

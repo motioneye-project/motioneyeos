@@ -4,6 +4,7 @@
 #
 #############################################################
 SLANG_SOURCE=slang-1.4.5-mini.tar.bz2
+SLANG_CAT:=$(BZCAT)
 SLANG_SITE:=http://www.uclibc.org/
 SLANG_DIR=$(BUILD_DIR)/slang-1.4.5-mini
 ifeq ($(BR2_LARGEFILE),y)
@@ -15,7 +16,7 @@ $(DL_DIR)/$(SLANG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SLANG_SITE)/$(SLANG_SOURCE)
 
 $(SLANG_DIR): $(DL_DIR)/$(SLANG_SOURCE)
-	bzcat $(DL_DIR)/$(SLANG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(SLANG_CAT) $(DL_DIR)/$(SLANG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 
 $(SLANG_DIR)/libslang.so: $(SLANG_DIR)
 	$(MAKE1) CFLAGS="-Os -g $(SLANG_CFLAGS)" CC=$(TARGET_CC) -C $(SLANG_DIR)

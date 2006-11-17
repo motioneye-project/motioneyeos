@@ -188,7 +188,17 @@ config BR2_ZCAT
 	  zcat is identical to gunzip -c except that the former may
 	  not be available on your system.
 	  Default is "zcat"
-	  Other possible values include "gunzip -c"
+	  Other possible values include "gunzip -c" or "gzip -d -c".
+
+config BR2_BZCAT
+	string "bzcat command"
+	default "bzcat"
+	help
+	  Command to be used to extract a bzip2'ed file to stdout.
+	  bzcat is identical to bunzip2 -c except that the former may
+	  not be available on your system.
+	  Default is "bzcat"
+	  Other possible values include "bunzip2 -c" or "bzip2 -d -c".
 
 config BR2_TAR_OPTIONS
 	string "Tar options"

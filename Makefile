@@ -75,8 +75,8 @@ TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 
+world: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) $(TARGETS)
 dirs: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR)
-world: dirs $(TARGET_DIR) $(TARGETS)
 
 .PHONY: all world dirs clean dirclean distclean source $(TARGETS) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \

@@ -6,7 +6,7 @@
 AUTOCONF_VER:=2.60
 AUTOCONF_SOURCE:=autoconf-$(AUTOCONF_VER).tar.bz2
 AUTOCONF_SITE:=http://ftp.gnu.org/pub/gnu/autoconf
-AUTOCONF_CAT:=bzcat
+AUTOCONF_CAT:=$(BZCAT)
 AUTOCONF_DIR:=$(BUILD_DIR)/autoconf-$(AUTOCONF_VER)
 AUTOCONF_BINARY:=autoconf
 AUTOCONF_TARGET_BINARY:=usr/bin/autoconf

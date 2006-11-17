@@ -16,6 +16,7 @@ TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin-1.4
 TINYLOGIN_SOURCE:=tinylogin-1.4.tar.bz2
 TINYLOGIN_SITE:=http://tinylogin.busybox.net/downloads
 endif
+TINYLOGIN_CAT:=$(BZCAT)
 
 $(DL_DIR)/$(TINYLOGIN_SOURCE):
 	$(WGET) -P $(DL_DIR) $(TINYLOGIN_SITE)/$(TINYLOGIN_SOURCE)
@@ -23,7 +24,7 @@ $(DL_DIR)/$(TINYLOGIN_SOURCE):
 tinylogin-source: $(DL_DIR)/$(TINYLOGIN_SOURCE)
 
 $(TINYLOGIN_DIR)/Config.h: $(DL_DIR)/$(TINYLOGIN_SOURCE)
-	bzcat $(DL_DIR)/$(TINYLOGIN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(TINYLOGIN_CAT) $(DL_DIR)/$(TINYLOGIN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(SED) "s/\`id -u\` -ne 0/0 == 1/" \
 		$(TINYLOGIN_DIR)/install.sh
 	$(SED) "s/4755 --owner=root --group=root/755/" \

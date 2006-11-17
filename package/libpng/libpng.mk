@@ -25,7 +25,7 @@ LIBPNG_VER:=1.2.12
 LIBPNG_DIR:=$(BUILD_DIR)/libpng-$(LIBPNG_VER)
 LIBPNG_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
 LIBPNG_SOURCE:=libpng-$(LIBPNG_VER).tar.bz2
-LIBPNG_CAT:=bzcat
+LIBPNG_CAT:=$(BZCAT)
 
 $(DL_DIR)/$(LIBPNG_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LIBPNG_SITE)/$(LIBPNG_SOURCE)

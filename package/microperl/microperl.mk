@@ -5,6 +5,7 @@
 #############################################################
 MICROPERL_VER=5.8.7
 MICROPERL_SOURCE=perl-$(MICROPERL_VER).tar.bz2
+MICROPERL_CAT:=$(BZCAT)
 MICROPERL_SITE=ftp://ftp.cpan.org/pub/CPAN/src/5.0
 MICROPERL_DIR=$(BUILD_DIR)/perl-$(MICROPERL_VER)
 
@@ -12,7 +13,7 @@ $(DL_DIR)/$(MICROPERL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MICROPERL_SITE)/$(MICROPERL_SOURCE)
 
 $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
-	bzcat $(DL_DIR)/$(MICROPERL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(MICROPERL_CAT) $(DL_DIR)/$(MICROPERL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(MICROPERL_DIR)/.source
 
 $(MICROPERL_DIR)/microperl: $(MICROPERL_DIR)/.source

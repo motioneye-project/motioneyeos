@@ -5,14 +5,14 @@
 #############################################################
 PCIUTILS_VER:=2.1.11
 PCIUTILS_SOURCE:=pciutils-$(PCIUTILS_VER).tar.gz
+PCIUTILS_CAT:=$(ZCAT)
 PCIUTILS_SITE:=ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci
 PCIUTILS_DIR:=$(BUILD_DIR)/pciutils-$(PCIUTILS_VER)
-PCIUTILS_CAT:=$(ZCAT)
 
 # Yet more targets...
 PCIIDS_SITE:=http://pciids.sourceforge.net/
 PCIIDS_SOURCE:=pci.ids.bz2
-PCIIDS_CAT:=bzcat
+PCIIDS_CAT:=$(BZCAT)
 
 $(DL_DIR)/$(PCIUTILS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(PCIUTILS_SITE)/$(PCIUTILS_SOURCE)

@@ -5,6 +5,7 @@
 #############################################################
 DISTCC_VER:=2.18.3
 DISTCC_SOURCE:=distcc-$(DISTCC_VER).tar.bz2
+DISTCC_CAT:=$(BZCAT)
 DISTCC_SITE:=http://distcc.samba.org/ftp/distcc/
 DISTCC_DIR:=$(BUILD_DIR)/distcc-$(DISTCC_VER)
 DISTCC_BINARY:=distcc
@@ -14,7 +15,7 @@ $(DL_DIR)/$(DISTCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DISTCC_SITE)/$(DISTCC_SOURCE)
 
 $(DISTCC_DIR)/.unpacked: $(DL_DIR)/$(DISTCC_SOURCE)
-	bzcat $(DL_DIR)/$(DISTCC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(DISTCC_CAT) $(DL_DIR)/$(DISTCC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(DISTCC_DIR)/.unpacked
 
 $(DISTCC_DIR)/.configured: $(DISTCC_DIR)/.unpacked

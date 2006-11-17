@@ -25,7 +25,7 @@ XORG_LIBS:= Xft fontconfig expat Xrender Xaw Xmu Xt \
 #
 XORG_SOURCE:=X11R6.8.2-src.tar.bz2
 XORG_SITE:=http://xorg.freedesktop.org/X11R6.8.2/src-single/
-XORG_CAT:=bzcat
+XORG_CAT:=$(BZCAT)
 XORG_DIR:=$(BUILD_DIR)/xc
 XORG_LDIR:=$(XORG_DIR)/lib
 XORG_PROGS:=$(XORG_DIR)/programs

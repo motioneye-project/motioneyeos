@@ -6,9 +6,9 @@
 
 NBD_VERSION=2.8.6
 NBD_SOURCE=nbd-$(NBD_VERSION).tar.bz2
+NBD_CAT:=$(BZCAT)
 NBD_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/nbd/
 NBD_DIR=$(BUILD_DIR)/nbd-$(NBD_VERSION)
-NBD_CAT:=bzcat
 
 $(DL_DIR)/$(NBD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NBD_SITE)/$(NBD_SOURCE)

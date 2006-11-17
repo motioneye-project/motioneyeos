@@ -7,6 +7,7 @@
 EXPAT_VERSION=2.0.0
 
 EXPAT_SOURCE=expat-$(EXPAT_VERSION).tar.gz
+EXPAT_CAT:=$(ZCAT)
 EXPAT_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/expat
 EXPAT_DIR:=$(BUILD_DIR)/expat-$(EXPAT_VERSION)
 
@@ -16,7 +17,7 @@ $(DL_DIR)/$(EXPAT_SOURCE):
 expat-source: $(DL_DIR)/$(EXPAT_SOURCE)
 
 $(EXPAT_DIR)/.unpacked: $(DL_DIR)/$(EXPAT_SOURCE)
-	gunzip -c  $(DL_DIR)/$(EXPAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(EXPAT_CAT) $(DL_DIR)/$(EXPAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(EXPAT_DIR)/.unpacked
 
 $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked

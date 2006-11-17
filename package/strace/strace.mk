@@ -6,7 +6,7 @@
 STRACE_VER:=4.5.14
 STRACE_SOURCE:=strace-$(STRACE_VER).tar.bz2
 STRACE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/strace
-STRACE_CAT:=bzcat
+STRACE_CAT:=$(BZCAT)
 STRACE_DIR:=$(BUILD_DIR)/strace-$(STRACE_VER)
 
 

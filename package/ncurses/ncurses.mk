@@ -27,12 +27,13 @@ NCURSES_VER:=5.5
 NCURSES_SITE:=http://ftp.gnu.org/pub/gnu/ncurses
 NCURSES_DIR:=$(BUILD_DIR)/ncurses-$(NCURSES_VER)
 NCURSES_SOURCE:=ncurses-$(NCURSES_VER).tar.gz
+NCURSES_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(NCURSES_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NCURSES_SITE)/$(NCURSES_SOURCE)
 
 $(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
-	gunzip -c $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(NCURSES_CAT) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	#use the local tic and not whatever the build system was going to find.
 	$(SED) 's~\$$srcdir/shlib tic\$$suffix~/usr/bin/tic~' \
 		$(NCURSES_DIR)/misc/run_tic.in

@@ -6,7 +6,7 @@
 AUTOMAKE_VER:=1.9.6
 AUTOMAKE_SOURCE:=automake-$(AUTOMAKE_VER).tar.bz2
 AUTOMAKE_SITE:=http://ftp.gnu.org/pub/gnu/automake
-AUTOMAKE_CAT:=bzcat
+AUTOMAKE_CAT:=$(BZCAT)
 AUTOMAKE_DIR:=$(BUILD_DIR)/automake-$(AUTOMAKE_VER)
 AUTOMAKE_BINARY:=automake
 AUTOMAKE_TARGET_BINARY:=usr/bin/automake

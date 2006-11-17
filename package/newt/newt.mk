@@ -4,6 +4,7 @@
 #
 #############################################################
 NEWT_SOURCE=newt-0.51.0.tar.bz2
+NEWT_CAT:=$(BZCAT)
 NEWT_SITE=http://www.uclibc.org/
 NEWT_DIR=$(BUILD_DIR)/newt-0.51.0
 NEWT_VERSION=0.51.0
@@ -18,7 +19,7 @@ $(DL_DIR)/$(NEWT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NEWT_SITE)/$(NEWT_SOURCE)
 
 $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE)
-	bzcat $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(NEWT_CAT) $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(NEWT_DIR)/.source;
 
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source

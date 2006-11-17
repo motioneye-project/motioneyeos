@@ -7,7 +7,7 @@ CVS_VER:=1.12.12
 CVS_SOURCE:=cvs-$(CVS_VER).tar.bz2
 CVS_SITE:=http://ccvs.cvshome.org/files/documents/19/872/$(CVS_SOURCE)
 CVS_DIR:=$(BUILD_DIR)/cvs-$(CVS_VER)
-CVS_CAT:=bzcat
+CVS_CAT:=$(BZCAT)
 CVS_BINARY:=src/cvs
 CVS_TARGET_BINARY:=usr/bin/cvs
 

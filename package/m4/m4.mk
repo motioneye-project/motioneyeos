@@ -5,8 +5,8 @@
 #############################################################
 M4_VER:=1.4.4
 M4_SOURCE:=m4-$(M4_VER).tar.bz2
+M4_CAT:=$(BZCAT)
 M4_SITE:=http://ftp.gnu.org/pub/gnu/m4
-M4_CAT:=bzcat
 M4_DIR:=$(BUILD_DIR)/m4-$(M4_VER)
 M4_BINARY:=m4
 M4_TARGET_BINARY:=usr/bin/m4

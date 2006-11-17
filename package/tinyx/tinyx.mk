@@ -55,7 +55,7 @@ TINYX_CF:=$(TINYX_DIR)/config/cf
 #
 # Some things that you may want to change.
 TINYX_XFBDEV:=$(TINYX_DIR)/programs/Xserver/Xfbdev
-TINYX_CAT:=bzcat
+TINYX_CAT:=$(BZCAT)
 TINYX_BINX:=$(TARGET_DIR)/usr/X11R6/bin/
 TINYX_LIBX:=$(TARGET_DIR)/usr/lib/
 

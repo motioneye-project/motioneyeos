@@ -7,7 +7,7 @@ BISON_VER:=2.3
 BISON_SOURCE:=bison-$(BISON_VER).tar.bz2
 BISON_SITE:=http://ftp.gnu.org/pub/gnu/bison
 BISON_DIR:=$(BUILD_DIR)/bison-$(BISON_VER)
-BISON_CAT:=bzcat
+BISON_CAT:=$(BZCAT)
 BISON_BINARY:=src/bison
 BISON_TARGET_BINARY:=usr/bin/bison
 

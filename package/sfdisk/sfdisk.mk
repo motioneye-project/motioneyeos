@@ -4,6 +4,7 @@
 #
 #############################################################
 SFDISK_SOURCE=sfdisk.tar.bz2
+SFDISK_CAT:=$(BZCAT)
 SFDISK_SITE:=http://www.uclibc.org/
 SFDISK_DIR=$(BUILD_DIR)/sfdisk
 
@@ -11,7 +12,7 @@ $(DL_DIR)/$(SFDISK_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SFDISK_SITE)/$(SFDISK_SOURCE)
 
 $(SFDISK_DIR)/.patched: $(DL_DIR)/$(SFDISK_SOURCE)
-	bzcat $(DL_DIR)/$(SFDISK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(SFDISK_CAT) $(DL_DIR)/$(SFDISK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(SFDISK_DIR) package/sfdisk/ sfdisk.\*.patch
 	touch $@
 	

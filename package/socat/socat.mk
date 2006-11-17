@@ -10,6 +10,7 @@ SOCAT_VERSION=1.4.0.3
 # what you are doing! Danger, Danger!
 
 SOCAT_SOURCE=socat-$(SOCAT_VERSION).tar.bz2
+SOCAT_CAT:=$(BZCAT)
 SOCAT_SITE=http://www.dest-unreach.org/socat/download/
 #SOCAT_DIR=$(BUILD_DIR)/${shell basename $(SOCAT_SOURCE) .tar.bz2}
 SOCAT_DIR=$(BUILD_DIR)/socat-1.4
@@ -20,7 +21,7 @@ $(DL_DIR)/$(SOCAT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SOCAT_SITE)/$(SOCAT_SOURCE)
 
 $(SOCAT_DIR)/.unpacked:	$(DL_DIR)/$(SOCAT_SOURCE)
-	bzip2 -d -c $(DL_DIR)/$(SOCAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(SOCAT_CAT) $(DL_DIR)/$(SOCAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(SOCAT_DIR)/.unpacked
 
 $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked

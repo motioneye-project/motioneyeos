@@ -7,7 +7,7 @@ GNUTAR_VER:=1.15.1
 GNUTAR_SOURCE:=tar-$(GNUTAR_VER).tar.bz2
 GNUTAR_SITE:=http://ftp.gnu.org/gnu/tar/
 GNUTAR_DIR:=$(BUILD_DIR)/tar-$(GNUTAR_VER)
-GNUTAR_CAT:=bzcat
+GNUTAR_CAT:=$(BZCAT)
 GNUTAR_BINARY:=src/tar
 GNUTAR_TARGET_BINARY:=bin/tar
 

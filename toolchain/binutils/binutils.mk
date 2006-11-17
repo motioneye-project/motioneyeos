@@ -4,9 +4,10 @@
 #
 #############################################################
 BINUTILS_VERSION:=$(strip $(subst ",, $(BR2_BINUTILS_VERSION)))
+#"))
 
 EXTRA_BINUTILS_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_BINUTILS_CONFIG_OPTIONS)))
-#"
+#"))
 BINUTILS_SITE:=ftp://ftp.kernel.org/pub/linux/devel/binutils
 ifeq ($(BINUTILS_VERSION),2.17)
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
@@ -32,7 +33,7 @@ endif
 
 BINUTILS_SOURCE:=binutils-$(BINUTILS_VERSION).tar.bz2
 BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)
-BINUTILS_CAT:=bzcat
+BINUTILS_CAT:=$(BZCAT)
 
 BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)-build
 

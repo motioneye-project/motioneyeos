@@ -5,6 +5,7 @@
 #############################################################
 ZLIB_VER:=1.2.3
 ZLIB_SOURCE:=zlib-$(ZLIB_VER).tar.bz2
+ZLIB_CAT:=$(BZCAT)
 ZLIB_SITE:=http://www.zlib.net/
 ZLIB_DIR:=$(BUILD_DIR)/zlib-$(ZLIB_VER)
 ZLIB_CFLAGS:=$(TARGET_CFLAGS) -fPIC
@@ -16,7 +17,7 @@ $(DL_DIR)/$(ZLIB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
 
 $(ZLIB_DIR)/.source: $(DL_DIR)/$(ZLIB_SOURCE)
-	bzcat $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(ZLIB_CAT) $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(ZLIB_DIR) package/zlib/ zlib\*.patch
 	touch $(ZLIB_DIR)/.source
 

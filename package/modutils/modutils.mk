@@ -4,6 +4,7 @@
 #
 #############################################################
 MODUTILS_SOURCE=modutils-2.4.27.tar.bz2
+MODUTILS_CAT:=$(BZCAT)
 MODUTILS_SITE=http://ftp.kernel.org/pub/linux/utils/kernel/modutils/v2.4/
 MODUTILS_DIR1=$(BUILD_DIR)/modutils-2.4.27
 MODUTILS_DIR2=$(TOOL_BUILD_DIR)/modutils-2.4.27
@@ -21,7 +22,7 @@ $(DL_DIR)/$(MODUTILS_SOURCE):
 #
 #############################################################
 $(MODUTILS_DIR1)/.source: $(DL_DIR)/$(MODUTILS_SOURCE)
-	bzcat $(DL_DIR)/$(MODUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+	$(MODUTILS_CAT) $(DL_DIR)/$(MODUTILS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(MODUTILS_DIR1) \
 		package/modutils \*.patch
 	touch $(MODUTILS_DIR1)/.source
@@ -74,7 +75,7 @@ DEPMOD_EXTRA_STUFF=CFLAGS=-D__MIPSEL__
 endif
 
 $(MODUTILS_DIR2)/.source: $(DL_DIR)/$(MODUTILS_SOURCE)
-	bzcat $(DL_DIR)/$(MODUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
+	$(MODUTILS_CAT) $(DL_DIR)/$(MODUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(MODUTILS_DIR2) \
 		package/modutils \*.patch
 	touch $(MODUTILS_DIR2)/.source

@@ -10,6 +10,7 @@ MPG123_VERSION=0.59r
 # what you are doing! Danger, Danger!
 
 MPG123_SOURCE=mpg123-$(MPG123_VERSION).tar.gz
+MPG123_CAT:=$(ZCAT)
 MPG123_SITE=http://www.mpg123.de/mpg123
 MPG123_DIR=$(BUILD_DIR)/${shell basename $(MPG123_SOURCE) .tar.gz}
 MPG123_WORKDIR=$(BUILD_DIR)/mpg123-$(MPG123_VERSION)
@@ -18,7 +19,7 @@ $(DL_DIR)/$(MPG123_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MPG123_SITE)/$(MPG123_SOURCE)
 
 $(MPG123_DIR)/.unpacked:	$(DL_DIR)/$(MPG123_SOURCE)
-	gzip -d -c $(DL_DIR)/$(MPG123_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(MPG123_CAT) $(DL_DIR)/$(MPG123_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(MPG123_DIR)/.unpacked
 
 $(MPG123_WORKDIR)/mpg123:	$(MPG123_DIR)/.unpacked

@@ -6,8 +6,8 @@
 MPFR_VERSION:=2.2.0
 MPFR_PATCH:=patches
 MPFR_SOURCE:=mpfr-$(MPFR_VERSION).tar.bz2
+MPFR_CAT:=$(BZCAT)
 MPFR_SITE:=http://www.mpfr.org/mpfr-current/
-MPFR_CAT:=bzcat
 MPFR_DIR:=$(BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_BINARY:=libmpfr.a
 MPFR_LIBVERSION:=1.0.0

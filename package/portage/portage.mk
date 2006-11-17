@@ -6,7 +6,7 @@
 PORTAGE_VERSION:=2.0.51.22
 PORTAGE_SOURCE:=portage-$(PORTAGE_VERSION).tar.bz2
 PORTAGE_SITE:=http://gentoo.osuosl.org/distfiles
-PORTAGE_CAT:=bzcat
+PORTAGE_CAT:=$(BZCAT)
 PORTAGE_DIR:=$(BUILD_DIR)/portage-$(PORTAGE_VERSION)
 PORTAGE_TARGET_DIR:=$(TARGET_DIR)/usr/lib/portage
 PORTAGE_TARGET_BINARY:=usr/bin/emerge

@@ -5,6 +5,7 @@
 #############################################################
 MDADM_VERSION:=2.4.1
 MDADM_SOURCE:=mdadm-$(MDADM_VERSION).tar.bz2
+MDADM_CAT:=$(BZCAT)
 MDADM_SITE:=http://www.kernel.org/pub/linux/utils/raid/mdadm
 MDADM_DIR:=$(BUILD_DIR)/mdadm-$(MDADM_VERSION)
 MDADM_BINARY:=mdadm
@@ -14,7 +15,7 @@ $(DL_DIR)/$(MDADM_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MDADM_SITE)/$(MDADM_SOURCE)
 
 $(MDADM_DIR)/.source: $(DL_DIR)/$(MDADM_SOURCE)
-	bzcat $(DL_DIR)/$(MDADM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(MDADM_CAT) $(DL_DIR)/$(MDADM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(MDADM_DIR)/.source
 
 $(MDADM_DIR)/$(MDADM_BINARY): $(MDADM_DIR)/.source

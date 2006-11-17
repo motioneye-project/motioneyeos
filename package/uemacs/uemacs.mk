@@ -5,6 +5,7 @@
 #############################################################
 UEMACS_VER:=4.0.15-lt
 UEMACS_SOURCE:=em-$(UEMACS_VER).tar.bz2
+UEMACS_CAT:=$(BZCAT)
 UEMACS_SITE:=ftp://ftp.kernel.org/pub/software/editors/uemacs/
 UEMACS_DIR:=$(BUILD_DIR)/em-$(UEMACS_VER)
 UEMACS_BINARY:=em
@@ -16,7 +17,7 @@ $(DL_DIR)/$(UEMACS_SOURCE):
 uemacs-source: $(DL_DIR)/$(UEMACS_SOURCE)
 
 $(UEMACS_DIR)/.unpacked: $(DL_DIR)/$(UEMACS_SOURCE)
-	bzcat $(DL_DIR)/$(UEMACS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(UEMACS_CAT) $(DL_DIR)/$(UEMACS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(UEMACS_DIR) package/uemacs/ uemacs\*.patch
 	touch $(UEMACS_DIR)/.unpacked
 

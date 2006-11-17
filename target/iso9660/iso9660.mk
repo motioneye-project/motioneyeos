@@ -4,6 +4,7 @@
 #
 #############################################################
 MKISOFS_SOURCE:=cdrtools-2.01.tar.bz2
+MKISOFS_CAT:=$(BZCAT)
 MKISOFS_SITE:=ftp://ftp.berlios.de/pub/cdrecord/
 MKISOFS_DIR:=$(BUILD_DIR)/cdrtools-2.01
 MKISOFS_TARGET:=$(MKISOFS_DIR)/mkisofs/OBJ/i686-linux-cc/mkisofs
@@ -14,7 +15,7 @@ $(DL_DIR)/$(MKISOFS_SOURCE):
 mkisofs-source: $(DL_DIR)/$(MKISOFS_SOURCE)
 
 $(MKISOFS_DIR)/.unpacked: $(DL_DIR)/$(MKISOFS_SOURCE)
-	bzcat $(DL_DIR)/$(MKISOFS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(MKISOFS_CAT) $(DL_DIR)/$(MKISOFS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(MKISOFS_DIR) target/iso9660/ \*.patch
 	touch $(MKISOFS_DIR)/.unpacked
 

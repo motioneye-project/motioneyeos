@@ -7,7 +7,7 @@
 #
 #############################################################
 DEFAULT_KERNEL_HEADERS:=$(strip $(subst ",, $(BR2_DEFAULT_KERNEL_HEADERS)))
-#"
+#"))
 LINUX_HEADERS_SITE:=127.0.0.1
 LINUX_HEADERS_SOURCE:=unspecified-kernel-headers
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-null
@@ -18,6 +18,7 @@ PATCHLEVEL:=4
 SUBLEVEL:=25
 LINUX_HEADERS_SITE:=http://www.uclibc.org/downloads/toolchain
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.25.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.25
 endif
 
@@ -26,6 +27,7 @@ VERSION:=2
 PATCHLEVEL:=4
 SUBLEVEL:=27
 LINUX_HEADERS_SITE:=http://www.uclibc.org/downloads/toolchain
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.27.tar.bz2
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.27
 endif
@@ -36,6 +38,7 @@ PATCHLEVEL:=4
 SUBLEVEL:=29
 LINUX_HEADERS_SITE:=http://www.uclibc.org/downloads/toolchain
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.29.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.29
 endif
 
@@ -45,6 +48,7 @@ PATCHLEVEL:=4
 SUBLEVEL:=31
 LINUX_HEADERS_SITE:=http://www.uclibc.org/downloads/toolchain
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.4.31.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.4.31
 endif
 
@@ -54,6 +58,7 @@ PATCHLEVEL:=6
 SUBLEVEL:=9
 LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.9.1.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.9.1
 endif
 
@@ -63,6 +68,7 @@ PATCHLEVEL:=6
 SUBLEVEL:=10
 LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.10.0.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.10.0
 endif
 
@@ -72,6 +78,7 @@ PATCHLEVEL:=6
 SUBLEVEL:=11
 LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.11.0.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.11.0
 endif
 
@@ -81,6 +88,7 @@ PATCHLEVEL:=6
 SUBLEVEL:=12
 LINUX_HEADERS_SITE:=http://ep09.pld-linux.org/~mmazur/linux-libc-headers/
 LINUX_HEADERS_SOURCE:=linux-libc-headers-2.6.12.0.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-libc-headers-2.6.12.0
 endif
 LINUX_HEADERS_IS_KERNEL=n
@@ -91,6 +99,7 @@ PATCHLEVEL:=6
 SUBLEVEL:=18
 LINUX_HEADERS_SITE:=http://www.kernel.org/pub/linux/kernel/v2.6/
 LINUX_HEADERS_SOURCE:=linux-2.6.18.tar.bz2
+LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-2.6.18
 LINUX_HEADERS_IS_KERNEL=y
 endif
@@ -115,14 +124,14 @@ ifeq ($(LINUX_HEADERS_DO_MOVE),y)
 $(LINUX_HEADERS_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
 	rm -rf $(LINUX_HEADERS_DIR)
 	mkdir -p $(TOOL_BUILD_DIR)
-	bzcat $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(LINUX_HEADERS_CAT) $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	mv $(LINUX_HEADERS_UNPACK_DIR) $(LINUX_HEADERS_DIR)
 	touch $(LINUX_HEADERS_DIR)/.unpacked
 else
 $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
 	rm -rf $(LINUX_HEADERS_DIR)
 	mkdir -p $(TOOL_BUILD_DIR)
-	bzcat $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(LINUX_HEADERS_CAT) $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LINUX_HEADERS_UNPACK_DIR)/.unpacked
 endif
 

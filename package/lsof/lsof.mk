@@ -5,7 +5,7 @@
 #############################################################
 LSOF_SOURCE:=lsof_4.77.tar.bz2
 LSOF_SITE:=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
-LSOF_CAT:=bzip2 -cd
+LSOF_CAT:=$(BZCAT)
 LSOF_DIR:=$(BUILD_DIR)/lsof_4.77
 LSOF_BINARY:=lsof
 LSOF_TARGET_BINARY:=bin/lsof
