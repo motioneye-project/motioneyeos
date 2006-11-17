@@ -10,10 +10,13 @@ SFDISK_DIR=$(BUILD_DIR)/sfdisk
 $(DL_DIR)/$(SFDISK_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SFDISK_SITE)/$(SFDISK_SOURCE)
 
-$(SFDISK_DIR): $(DL_DIR)/$(SFDISK_SOURCE)
+$(SFDISK_DIR)/.patched: $(DL_DIR)/$(SFDISK_SOURCE)
 	bzcat $(DL_DIR)/$(SFDISK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(SFDISK_DIR) package/sfdisk/ sfdisk.\*.patch
+	touch $@
+	
 
-$(SFDISK_DIR)/sfdisk: $(SFDISK_DIR)
+$(SFDISK_DIR)/sfdisk: $(SFDISK_DIR)/.patched
 	$(MAKE) \
 		CROSS=$(TARGET_CROSS) DEBUG=false OPTIMIZATION="$(TARGET_CFLAGS)" \
 		-C $(SFDISK_DIR)

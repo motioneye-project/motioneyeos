@@ -1,0 +1,12 @@
+--- sfdisk/sfdisk.c.oorig	2006-10-09 16:24:06.000000000 +0200
++++ sfdisk/sfdisk.c	2006-10-09 16:24:20.000000000 +0200
+@@ -47,6 +47,9 @@
+ #include <sys/stat.h>
+ #include <sys/utsname.h>
+ #ifdef __linux__
++#define _LIBC
++#include <sys/syscall.h>
++#undef _LIBC
+ #include <linux/unistd.h>	/* _syscall */
+ #endif
+ #include "nls.h"
