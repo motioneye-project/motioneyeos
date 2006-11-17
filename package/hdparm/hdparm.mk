@@ -3,10 +3,11 @@
 # hdparm
 #
 #############################################################
-HDPARM_SOURCE:=hdparm-6.5.tar.gz
+HDPARM_VERSION:=6.7
+HDPARM_SOURCE:=hdparm-$(HDPARM_VERSION).tar.gz
 HDPARM_SITE:=http://www.ibiblio.org/pub/Linux/system/hardware/
 HDPARM_CAT:=$(ZCAT)
-HDPARM_DIR:=$(BUILD_DIR)/hdparm-6.5
+HDPARM_DIR:=$(BUILD_DIR)/hdparm-$(HDPARM_VERSION)
 HDPARM_BINARY:=hdparm
 HDPARM_TARGET_BINARY:=sbin/hdparm
 
