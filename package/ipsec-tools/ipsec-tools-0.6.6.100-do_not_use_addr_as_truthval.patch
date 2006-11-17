@@ -1,0 +1,45 @@
+diff -rup ipsec-tools-0.6.6.oorig/src/racoon/eaytest.c ipsec-tools-0.6.6/src/racoon/eaytest.c
+--- ipsec-tools-0.6.6.oorig/src/racoon/eaytest.c	2005-06-29 00:38:02.000000000 +0200
++++ ipsec-tools-0.6.6/src/racoon/eaytest.c	2006-10-11 16:01:45.000000000 +0200
+@@ -311,7 +311,7 @@ certtest(ac, av)
+ 
+ 	printf("exact match: succeed.\n");
+ 
+-	if (dnstr_w1) {
++	if (*dnstr_w1) {
+ 		asn1dn = eay_str2asn1dn(dnstr_w1, strlen(dnstr_w1));
+ 		if (asn1dn == NULL || asn1dn->l == asn1dn0.l)
+ 			errx(1, "asn1dn length wrong for wildcard 1\n");
+@@ -321,7 +321,7 @@ certtest(ac, av)
+ 		printf("wildcard 1 match: succeed.\n");
+ 	}
+ 
+-	if (dnstr_w1) {
++	if (*dnstr_w1) {
+ 		asn1dn = eay_str2asn1dn(dnstr_w2, strlen(dnstr_w2));
+ 		if (asn1dn == NULL || asn1dn->l == asn1dn0.l)
+ 			errx(1, "asn1dn length wrong for wildcard 2\n");
+diff -rup ipsec-tools-0.6.6.oorig/src/racoon/var.h ipsec-tools-0.6.6/src/racoon/var.h
+--- ipsec-tools-0.6.6.oorig/src/racoon/var.h	2004-11-20 17:16:59.000000000 +0100
++++ ipsec-tools-0.6.6/src/racoon/var.h	2006-10-11 16:00:15.000000000 +0200
+@@ -76,9 +76,9 @@
+ do { \
+ 	if (getnameinfo((x), sysdep_sa_len(x), (y), sizeof(y), (z), sizeof(z), \
+ 			NIFLAGS) != 0) { \
+-		if (y) \
++		if (*y) \
+ 			strncpy((y), "(invalid)", sizeof(y)); \
+-		if (z) \
++		if (*z) \
+ 			strncpy((z), "(invalid)", sizeof(z)); \
+ 	} \
+ } while (0);
+@@ -87,7 +87,7 @@ do { \
+ do { \
+ 	if (getnameinfo((x), sysdep_sa_len(x), (y), sizeof(y), NULL, 0, \
+ 			NIFLAGS) != 0) { \
+-		if (y) \
++		if (*y) \
+ 			strncpy((y), "(invalid)", sizeof(y)); \
+ 	} \
+ } while (0);

@@ -4,7 +4,7 @@
 #
 #############################################################
 
-IPSEC_TOOLS_VER:=0.6.1
+IPSEC_TOOLS_VER:=0.6.6
 IPSEC_TOOLS_SOURCE:=ipsec-tools-$(IPSEC_TOOLS_VER).tar.bz2
 IPSEC_TOOLS_DIR:=$(BUILD_DIR)/ipsec-tools-$(IPSEC_TOOLS_VER)
 
@@ -65,6 +65,7 @@ $(DL_DIR)/$(IPSEC_TOOLS_SOURCE):
 
 $(IPSEC_TOOLS_DIR)/.source: $(DL_DIR)/$(IPSEC_TOOLS_SOURCE)
 	bunzip2 -c  $(DL_DIR)/$(IPSEC_TOOLS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(IPSEC_TOOLS_DIR) package/ipsec-tools ipsec-tools-$(IPSEC_TOOLS_VER)\*.patch
 	touch $(IPSEC_TOOLS_DIR)/.source
 
 $(IPSEC_TOOLS_DIR)/.configured: $(IPSEC_TOOLS_DIR)/.source

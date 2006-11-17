@@ -1,0 +1,32 @@
+diff -rup ipsec-tools-0.6.6.oorig/src/racoon/missing/crypto/rijndael/rijndael-api-fst.c ipsec-tools-0.6.6/src/racoon/missing/crypto/rijndael/rijndael-api-fst.c
+--- ipsec-tools-0.6.6.oorig/src/racoon/missing/crypto/rijndael/rijndael-api-fst.c	2004-01-12 23:31:45.000000000 +0100
++++ ipsec-tools-0.6.6/src/racoon/missing/crypto/rijndael/rijndael-api-fst.c	2006-10-11 16:29:42.000000000 +0200
+@@ -30,8 +30,12 @@
+ #include <crypto/rijndael/rijndael_local.h>
+ 
+ #include <err.h>
++#ifndef bcopy
+ #define bcopy(a, b, c) memcpy(b, a, c)
++#endif
++#ifndef bzero
+ #define bzero(a, b) memset(a, 0, b)
++#endif
+ #define panic(a) err(1, (a))
+ 
+ int rijndael_makeKey(keyInstance *key, BYTE direction, int keyLen, char *keyMaterial) {
+diff -rup ipsec-tools-0.6.6.oorig/src/racoon/missing/crypto/sha2/sha2.c ipsec-tools-0.6.6/src/racoon/missing/crypto/sha2/sha2.c
+--- ipsec-tools-0.6.6.oorig/src/racoon/missing/crypto/sha2/sha2.c	2004-09-21 16:35:25.000000000 +0200
++++ ipsec-tools-0.6.6/src/racoon/missing/crypto/sha2/sha2.c	2006-10-11 16:29:08.000000000 +0200
+@@ -50,8 +50,12 @@
+ 
+ #include <err.h>
+ #include <string.h>
++#ifndef bcopy
+ #define bcopy(a, b, c) memcpy((b), (a), (c))
++#endif
++#ifndef bzero
+ #define bzero(a, b) memset((a), 0, (b))
++#endif
+ #define panic(a) err(1, (a))
+ 
+ #if OPENSSL_VERSION_NUMBER >= 0x00907000L
