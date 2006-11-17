@@ -83,7 +83,7 @@ $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION): $(STAGING_DIR)/lib/$(MPFR_BINAR
 		$(TARGET_DIR)/lib/
 ifeq ($(BR2_PACKAGE_MPFR_HEADERS),y)
 	cp -a $(STAGING_DIR)/include/mpfr.h $(STAGING_DIR)/include/mpf2mpfr.h \
-		$(TARGET_DIR)/include/
+		$(TARGET_DIR)/usr/include/
 endif
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libmpfr.so* \
 		$(TARGET_DIR)/lib/libmpfr.a

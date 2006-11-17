@@ -76,7 +76,8 @@ $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION): $(STAGING_DIR)/lib/$(GMP_BINARY)
 	cp -a $(STAGING_DIR)/lib/libgmp.so* $(STAGING_DIR)/lib/libgmp.a \
 		 $(TARGET_DIR)/lib/
 ifeq ($(BR2_PACKAGE_GMP_HEADERS),y)
-	cp -a $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/include/
+	test -d $(TARGET_DIR)/usr/include || mkdir -p $(TARGET_DIR)/usr/include
+	cp -a $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/usr/include/
 endif
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgmp.so* \
 		$(TARGET_DIR)/lib/libgmp.a
