@@ -23,7 +23,7 @@ BUSYBOX_CONFIG_FILE=$(subst ",, $(strip $(BR2_PACKAGE_BUSYBOX_CONFIG)))
 $(DL_DIR)/$(BUSYBOX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(BUSYBOX_SITE)/$(BUSYBOX_SOURCE)
 
-busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG_FILE) $(BUILD_DIR) host-sed
+busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG_FILE) dirs host-sed
 
 $(BUSYBOX_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -37,8 +37,10 @@ endif
 
 $(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)
 	cp $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
-	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
-		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak
+	if [ -f $(BUSYBOX_DIR)/Rules.mak ]; then \
+		$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
+		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak ; \
+	fi
 ifeq ($(BR2_LARGEFILE),y)
 	$(SED) "s/^.*CONFIG_LFS.*/CONFIG_LFS=y/;" $(BUSYBOX_DIR)/.config
 else
@@ -64,7 +66,7 @@ endif
 
 busybox: uclibc $(TARGET_DIR)/bin/busybox
 
-busybox-menuconfig: $(BUSYBOX_DIR)/.configured
+busybox-menuconfig: busybox-source $(BUSYBOX_DIR)/.configured
 	$(MAKE) __TARGET_ARCH=$(ARCH) -C $(BUSYBOX_DIR) menuconfig
 
 busybox-clean:
