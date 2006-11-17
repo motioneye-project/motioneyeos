@@ -24,7 +24,7 @@
 # USA
 
 DM_BASEVER=1.02
-DM_PATCH=10
+DM_PATCH=12
 DM_VERSION=$(DM_BASEVER).$(DM_PATCH)
 DM_SOURCE:=device-mapper.$(DM_VERSION).tgz
 DM_SITE:=ftp://sources.redhat.com/pub/dm
@@ -40,6 +40,7 @@ $(DL_DIR)/$(DM_SOURCE):
 
 $(DM_DIR)/.unpacked: $(DL_DIR)/$(DM_SOURCE)
 	$(DM_CAT) $(DL_DIR)/$(DM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(DM_DIR) package/dm/ \*.patch
 	touch $(DM_DIR)/.unpacked
 
 $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
@@ -67,7 +68,7 @@ $(DM_DIR)/$(DM_BINARY): dm-build
 $(DM_DIR)/$(DM_LIBRARY): dm-build
 
 $(DM_STAGING_BINARY) $(DM_STAGING_LIBRARY): $(DM_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(DM_DIR) DESTDIR=$(STAGING_DIR)
+	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(STAGING_DIR) -C $(DM_DIR)
 	$(MAKE) -C $(DM_DIR) install prefix=$(STAGING_DIR)
 
 # Install dmsetup from staging to target

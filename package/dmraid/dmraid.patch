@@ -1,0 +1,20 @@
+--- 1.0.0.rc10/lib/device/scan.c.orig	2006-04-20 18:20:24.000000000 -0600
++++ 1.0.0.rc10/lib/device/scan.c	2006-04-20 18:21:00.000000000 -0600
+@@ -66,7 +66,7 @@
+ 	static char *ret = NULL, *sysfs_mp;
+ 
+ 	if (!(sysfs_mp = find_sysfs_mp(lc)))
+-		LOG_ERR(lc, NULL, "finding sysfs mount point");
++		{ log_notice(lc, "finding sysfs mount point"); return NULL; }
+ 
+ 	if ((ret = dbg_malloc(strlen(sysfs_mp) + strlen(path) + 1)))
+ 		sprintf(ret, "%s%s", sysfs_mp, path);
+@@ -308,7 +308,7 @@
+ 	} else {
+ 		sysfs = 0;
+ 		path = (char*) _PATH_DEV;
+-		log_print(lc, "carrying on with %s", path);
++		log_notice(lc, "carrying on with %s", path);
+ 	}
+ 
+ 	if (!(d = opendir(path))) {

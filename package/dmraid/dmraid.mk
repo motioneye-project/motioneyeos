@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DMRAID_VERSION=1.0.0.rc11
+DMRAID_VERSION=1.0.0.rc13
 DMRAID_SOURCE:=dmraid-$(DMRAID_VERSION).tar.bz2
 DMRAID_SITE:=http://people.redhat.com/~heinzm/sw/dmraid/src
 DMRAID_DIR:=$(BUILD_DIR)/dmraid/$(DMRAID_VERSION)
@@ -46,7 +46,7 @@ $(DMRAID_TARGET_BINARY): $(DMRAID_DIR)/tools/$(DMRAID_BINARY)
 	$(INSTALL) -m 0755 $? $@
 	$(INSTALL) -m 0755 package/dmraid/dmraid.init $(TARGET_DIR)/etc/init.d/dmraid
 
-dmraid: uclibc dm $(DMRAID_TARGET_BINARY)
+dmraid: uclibc dm zlib $(DMRAID_TARGET_BINARY)
 
 dmraid-clean:
 	rm $(DMRAID_TARGET_BINARY)
