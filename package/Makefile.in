@@ -23,6 +23,7 @@ DISABLE_LARGEFILE= --disable-largefile
 endif
 TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 HOSTCC:=gcc
+HOSTCXX:=g++
 
 BASE_DIR:=${shell pwd}
 

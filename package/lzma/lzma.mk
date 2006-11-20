@@ -34,6 +34,7 @@ $(LZMA_HOST_DIR)/.source: $(DL_DIR)/$(LZMA_SOURCE)
 $(LZMA_HOST_DIR)/.configured: $(LZMA_HOST_DIR)/.source
 	(cd $(LZMA_HOST_DIR); rm -f config.cache ;\
 		CC="$(HOSTCC)" \
+		CXX="$(HOSTCXX)" \
 		./configure \
 		--prefix=/ \
 	);
