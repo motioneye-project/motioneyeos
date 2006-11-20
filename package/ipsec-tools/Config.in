@@ -2,6 +2,7 @@ config BR2_PACKAGE_IPSEC_TOOLS
 	bool "ipsec-tools"
 	default n
         select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_FLEX
 	help
 	  This package is required to support IPSec for Linux 2.6+
 
