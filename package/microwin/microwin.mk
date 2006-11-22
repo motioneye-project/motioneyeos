@@ -29,7 +29,7 @@ $(MICROWIN_DIR)/.unpacked: $(DL_DIR)/$(MICROWIN_SOURCE)
 
 $(MICROWIN_DIR)/.prepared: $(MICROWIN_DIR)/.unpacked
 	mv $(MICROWIN_DIR)/microwindows-$(MICROWIN_VERSION)/* $(MICROWIN_DIR)
-	toolchain/patch-kernel.sh $(UEMACS_DIR) package/uemacs/ microwindows-$(MICROWIN_VERSION)\*.patch
+	toolchain/patch-kernel.sh $(MICROWIN_DIR) package/microwin/ microwindows-$(MICROWIN_VERSION)\*.patch
 	touch $(MICROWIN_DIR)/.prepared
 
 $(MICROWIN_DIR)/.configured: $(MICROWIN_DIR)/.prepared
