@@ -7,6 +7,7 @@
 CPIO_TARGET:=$(IMAGE).cpio
 
 cpioroot-init:
+	rm -f $(TARGET_DIR)/init
 	ln -s sbin/init $(TARGET_DIR)/init
 
 cpioroot: host-fakeroot makedevs cpioroot-init
