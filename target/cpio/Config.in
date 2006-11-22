@@ -1,0 +1,6 @@
+config BR2_TARGET_ROOTFS_CPIO
+       bool "cpio the root filesystem"
+       default n
+       help
+         Build a cpio archive of the root filesystem
+
