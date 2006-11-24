@@ -3,7 +3,8 @@
 # microperl
 #
 #############################################################
-MICROPERL_VER=5.8.8
+MICROPERL_MAJ=5
+MICROPERL_VER=$(MICROPERL_MAJ).8.8
 MICROPERL_SOURCE=perl-$(MICROPERL_VER).tar.bz2
 MICROPERL_CAT:=$(BZCAT)
 MICROPERL_SITE=ftp://ftp.cpan.org/pub/CPAN/src/5.0
@@ -14,10 +15,22 @@ $(DL_DIR)/$(MICROPERL_SOURCE):
 
 $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
 	$(MICROPERL_CAT) $(DL_DIR)/$(MICROPERL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(MICROPERL_DIR)/.source
+	touch $@
 
-$(MICROPERL_DIR)/microperl: $(MICROPERL_DIR)/.source
-	$(MAKE) -f Makefile.micro CC=$(TARGET_CC) -C $(MICROPERL_DIR)
+$(MICROPERL_DIR)/.configured: $(MICROPERL_DIR)/.source
+	(cd $(MICROPERL_DIR) ; chmod u+w uconfig.h ; . ./uconfig.sh ; \
+	 make -f Makefile.micro regen_uconfig ; \
+	 $(SED) \
+	 's,PRIVLIB ".*,PRIVLIB "/usr/lib/perl$(MICROPERL_MAJ)/$(MICROPERL_VER)",' \
+	 -e 's,PRIVLIB_EXP ".*,PRIVLIB_EXP "/usr/lib/perl$(MICROPERL_MAJ)/$(MICROPERL_VER)",' \
+	 -e 's,BIN ".*,BIN "/usr/bin",' \
+	 ./uconfig.h ; \
+	)
+	touch $@
+
+$(MICROPERL_DIR)/microperl: $(MICROPERL_DIR)/.configured
+	$(MAKE) -f Makefile.micro CC=$(TARGET_CC) \
+		OPTIMIZE="$(TARGET_CFLAGS)" -C $(MICROPERL_DIR)
 
 $(TARGET_DIR)/usr/bin/microperl: $(MICROPERL_DIR)/microperl
 	cp -dpf $(MICROPERL_DIR)/microperl $(TARGET_DIR)/usr/bin/microperl
