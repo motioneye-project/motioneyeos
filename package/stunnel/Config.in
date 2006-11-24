@@ -1,0 +1,5 @@
+config BR2_PACKAGE_STUNNEL
+	bool "stunnel"
+	default n
+	help
+	  Stunnel is a utility that utilised OpenSSL to wrap plaintext TCP communications with SSL. Can be used to secure a programmes insecure network communications.

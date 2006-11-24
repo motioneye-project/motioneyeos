@@ -1,0 +1,15 @@
+--- stunnel-4.16/configure.ac.orig	2006-08-20 04:28:14.000000000 +0800
++++ stunnel-4.16/configure.ac	2006-11-24 10:17:01.053905560 +0800
+@@ -45,8 +45,10 @@
+     AC_DEFINE(socklen_t, int))
+ 
+ AC_MSG_NOTICE([**************************************** PTY device files])
+-AC_CHECK_FILE("/dev/ptmx", AC_DEFINE(HAVE_DEV_PTMX))
+-AC_CHECK_FILE("/dev/ptc", AC_DEFINE(HAVE_DEV_PTS_AND_PTC))
++#AC_CHECK_FILE("/dev/ptmx", AC_DEFINE(HAVE_DEV_PTMX))
++#AC_CHECK_FILE("/dev/ptc", AC_DEFINE(HAVE_DEV_PTS_AND_PTC))
++AC_DEFINE(HAVE_DEV_PTMX)
++AC_DEFINE(HAVE_DEV_PTS_AND_PTC)
+ 
+ AC_MSG_NOTICE([**************************************** entropy])
+ 
