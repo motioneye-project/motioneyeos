@@ -1,0 +1,12 @@
+--- openswan-2.4.7.orig/programs/spi/spi.c	2006-02-15 05:36:36.000000000 +0100
++++ openswan-2.4.7/programs/spi/spi.c	2006-11-28 15:52:41.000000000 +0100
+@@ -538,7 +538,9 @@ main(int argc, char *argv[])
+ 		case 'g':
+ 			debug = 1;
+ 			pfkey_lib_debug = PF_KEY_DEBUG_PARSE_MAX;
++#if !defined(NO_DEBUG)
+ 			cur_debugging = 0xffffffff;
++#endif
+ 			argcount--;
+ 			break;
+ 

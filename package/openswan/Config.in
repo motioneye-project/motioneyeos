@@ -1,0 +1,9 @@
+config BR2_PACKAGE_OPENSWAN
+        bool "openswan"
+        default n
+        select BR2_PACKAGE_LIBGMP
+        select BR2_PACKAGE_MICROPERL
+        help
+	  Openswan is an implementation of IPsec for Linux.
+          http://openswan.org/
+

@@ -1,0 +1,12 @@
+--- openswan-2.4.7.orig/lib/libopenswan/alloc.c	2004-10-17 01:42:13.000000000 +0200
++++ openswan-2.4.7/lib/libopenswan/alloc.c	2006-11-28 16:06:27.000000000 +0100
+@@ -26,7 +26,9 @@
+ #include "constants.h"
+ #include "oswlog.h"
+ 
++#if !defined(NO_DEBUG)
+ #define LEAK_DETECTIVE
++#endif
+ #include "oswalloc.h"
+ 
+ const chunk_t empty_chunk = { NULL, 0 };

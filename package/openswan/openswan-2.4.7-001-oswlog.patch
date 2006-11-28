@@ -1,0 +1,30 @@
+--- openswan-2.4.7.orig/lib/libopenswan/oswlog.c	2004-10-17 01:42:13.000000000 +0200
++++ openswan-2.4.7/lib/libopenswan/oswlog.c	2006-11-28 16:08:18.000000000 +0100
+@@ -41,9 +41,11 @@ bool
+ bool
+     logged_txt_warning = FALSE;  /* should we complain about finding KEY? */
+ 
++#if !defined(NO_DEBUG)
+ void openswanlib_passert_fail(const char *pred_str, const char *file_str,
+ 			      unsigned long line_no);
+ openswan_passert_fail_t openswan_passert_fail = openswanlib_passert_fail;
++#endif /* NO_DEBUG */
+ 
+ void
+ tool_init_log(void)
+@@ -104,6 +106,7 @@ openswan_log(const char *message, ...)
+ 	syslog(LOG_WARNING, "%s", m);
+ }
+ 
++#if !defined(NO_DEBUG)
+ void
+ openswan_loglog(int mess_no, const char *message, ...)
+ {
+@@ -119,6 +122,7 @@ openswan_loglog(int mess_no, const char 
+     if (log_to_syslog)
+ 	syslog(LOG_WARNING, "%s", m);
+ }
++#endif
+ 
+ void
+ openswan_log_errno_routine(int e, const char *message, ...)

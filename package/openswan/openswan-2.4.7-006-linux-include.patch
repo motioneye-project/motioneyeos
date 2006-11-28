@@ -1,0 +1,12 @@
+diff -urp openswan-2.4.7.orig/linux/include/openswan/passert.h openswan-2.4.7/linux/include/openswan/passert.h
+--- openswan-2.4.7.orig/linux/include/openswan/passert.h	2004-10-21 20:44:42.000000000 +0200
++++ openswan-2.4.7/linux/include/openswan/passert.h	2006-11-28 17:50:03.000000000 +0100
+@@ -69,7 +69,7 @@ extern void switch_fail(int n
+ # define bad_case(n) abort()
+ # define passert(pred)  { }	/* do nothing */
+ # define happy(x)  { (void) x; }	/* evaluate non-judgementally */
+-
++# define pexpect(x) do { } while(0)
+ #endif /*!DEBUG*/
+ 
+ #endif /* _OPENSWAN_PASSERT_H */

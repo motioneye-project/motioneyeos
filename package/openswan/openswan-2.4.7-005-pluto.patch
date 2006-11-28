@@ -1,0 +1,207 @@
+diff -urp openswan-2.4.7.orig/programs/pluto/connections.c openswan-2.4.7/programs/pluto/connections.c
+--- openswan-2.4.7.orig/programs/pluto/connections.c	2006-09-04 19:00:01.000000000 +0200
++++ openswan-2.4.7/programs/pluto/connections.c	2006-11-28 16:53:33.000000000 +0100
+@@ -2084,10 +2084,10 @@ initiate_connection(const char *name, in
+     if (c != NULL)
+     {
+ 	set_cur_connection(c);
+-
++#ifdef DEBUG
+ 	/* turn on any extra debugging asked for */
+ 	c->extra_debugging |= moredebug;
+-
++#endif
+ 	if (!oriented(*c))
+ 	{
+ 	    loglog(RC_ORIENT, "We cannot identify ourselves with either end of this connection.");
+@@ -2577,6 +2577,7 @@ initiate_opportunistic_body(struct find_
+     ourport = ntohs(portof(&b->our_client));
+     hisport = ntohs(portof(&b->peer_client));
+ 
++#ifdef DEBUG
+     snprintf(demandbuf, 256, "initiate on demand from %s:%d to %s:%d proto=%d state: %s because: %s"
+ 	     , ours, ourport, his, hisport, b->transport_proto
+ 	     , oppo_step_name[b->step], b->want);
+@@ -2588,7 +2589,7 @@ initiate_opportunistic_body(struct find_
+ 	whack_log(RC_COMMENT, "%s", demandbuf);
+ 	loggedit = TRUE;
+     }
+-
++#endif
+     if (isanyaddr(&b->our_client) || isanyaddr(&b->peer_client))
+     {
+ 	cannot_oppo(NULL, b, "impossible IP address");
+@@ -3069,10 +3070,11 @@ initiate_opportunistic_body(struct find_
+ 		    }
+ #endif
+ 		    c->gw_info->key->last_tried_time = now();
++#ifdef DEBUG
+ 		    openswan_log("initiate on demand from %s:%d to %s:%d proto=%d state: %s because: %s"
+ 				 , ours, ourport, his, hisport, b->transport_proto
+ 				 , oppo_step_name[b->step], b->want);
+-
++#endif
+ 		    ipsecdoi_initiate(b->whackfd, c, c->policy, 1
+ 				      , SOS_NOBODY, pcim_local_crypto);
+ 		    b->whackfd = NULL_FD;	/* protect from close */
+@@ -4465,6 +4467,7 @@ show_connections_status(void)
+ 		      , c->dpd_delay, c->dpd_timeout);
+ 	}
+ 
++#ifdef DEBUG
+ 	if(c->extra_debugging) {
+ 	    whack_log(RC_COMMENT, "\"%s\"%s:   debug: %s"
+ 		      , c->name
+@@ -4472,6 +4475,7 @@ show_connections_status(void)
+ 		      , bitnamesof(debug_bit_names
+ 				   , c->extra_debugging));
+ 	}
++#endif
+ 
+ 	whack_log(RC_COMMENT
+ 	    , "\"%s\"%s:   newest ISAKMP SA: #%ld; newest IPsec SA: #%ld; "
+Only in openswan-2.4.7/programs/pluto/: connections.o
+Only in openswan-2.4.7/programs/pluto/: cookie.o
+Only in openswan-2.4.7/programs/pluto/: crypt_dh.o
+Only in openswan-2.4.7/programs/pluto/: crypt_ke.o
+Only in openswan-2.4.7/programs/pluto/: crypt_utils.o
+Only in openswan-2.4.7/programs/pluto/: crypto.o
+Only in openswan-2.4.7/programs/pluto/: db_ops.o
+Only in openswan-2.4.7/programs/pluto/: defs.o
+diff -urp openswan-2.4.7.orig/programs/pluto/demux.c openswan-2.4.7/programs/pluto/demux.c
+--- openswan-2.4.7.orig/programs/pluto/demux.c	2005-10-06 02:57:26.000000000 +0200
++++ openswan-2.4.7/programs/pluto/demux.c	2006-11-28 17:04:27.000000000 +0100
+@@ -1009,7 +1009,9 @@ send_packet(struct state *st, const char
+ 		      , len, 0
+ 		      , sockaddrof(&st->st_remoteaddr)
+ 		      , sockaddrlenof(&st->st_remoteaddr));
++#ifdef DEBUG
+     }
++#endif
+ 
+ 	
+ #endif
+Only in openswan-2.4.7/programs/pluto/: demux.o
+Only in openswan-2.4.7/programs/pluto/: dnskey.o
+Only in openswan-2.4.7/programs/pluto/: dpd.o
+Only in openswan-2.4.7/programs/pluto/: foodgroups.o
+Only in openswan-2.4.7/programs/pluto/: id.o
+Only in openswan-2.4.7/programs/pluto/: ike_alg.o
+Only in openswan-2.4.7/programs/pluto/: ike_alg_aes.o
+Only in openswan-2.4.7/programs/pluto/: ike_alginit.o
+Only in openswan-2.4.7/programs/pluto/: ikeping.o
+Only in openswan-2.4.7/programs/pluto/: ikev1_aggr.o
+Only in openswan-2.4.7/programs/pluto/: ikev1_quick.o
+Only in openswan-2.4.7/programs/pluto/: ipsec_doi.o
+Only in openswan-2.4.7/programs/pluto/: kernel.o
+Only in openswan-2.4.7/programs/pluto/: kernel_netlink.o
+Only in openswan-2.4.7/programs/pluto/: kernel_noklips.o
+Only in openswan-2.4.7/programs/pluto/: kernel_pfkey.o
+Only in openswan-2.4.7/programs/pluto/: keys.o
+Only in openswan-2.4.7/programs/pluto/: lex.o
+diff -urp openswan-2.4.7.orig/programs/pluto/log.c openswan-2.4.7/programs/pluto/log.c
+--- openswan-2.4.7.orig/programs/pluto/log.c	2005-07-18 21:40:15.000000000 +0200
++++ openswan-2.4.7/programs/pluto/log.c	2006-11-28 16:56:53.000000000 +0100
+@@ -424,6 +424,7 @@ openswan_log(const char *message, ...)
+     whack_log(RC_LOG, "~%s", m);
+ }
+ 
++#if !defined(NO_DEBUG)
+ void
+ loglog(int mess_no, const char *message, ...)
+ {
+@@ -443,6 +444,7 @@ loglog(int mess_no, const char *message,
+ 
+     whack_log(mess_no, "~%s", m);
+ }
++#endif
+ 
+ void
+ log_errno_routine(int e, const char *message, ...)
+diff -urp openswan-2.4.7.orig/programs/pluto/log.h openswan-2.4.7/programs/pluto/log.h
+--- openswan-2.4.7.orig/programs/pluto/log.h	2004-10-21 21:13:37.000000000 +0200
++++ openswan-2.4.7/programs/pluto/log.h	2006-11-28 16:13:26.000000000 +0100
+@@ -151,10 +151,12 @@ extern void exit_log_errno_routine(int e
+ 
+ extern void whack_log(int mess_no, const char *message, ...) PRINTF_LIKE(2);
+ 
++#if !defined(NO_DEBUG)
+ /* Log to both main log and whack log
+  * Much like log, actually, except for specifying mess_no.
+  */
+ extern void loglog(int mess_no, const char *message, ...) PRINTF_LIKE(2);
++#endif
+ 
+ /* show status, usually on whack log */
+ extern void show_status(void);
+Only in openswan-2.4.7/programs/pluto/: log.o
+Only in openswan-2.4.7/programs/pluto/: md5.o
+Only in openswan-2.4.7/programs/pluto/: nat_traversal.o
+Only in openswan-2.4.7/programs/pluto/: pending.o
+Only in openswan-2.4.7/programs/pluto/: pluto_constants.o
+diff -urp openswan-2.4.7.orig/programs/pluto/pluto_crypt.c openswan-2.4.7/programs/pluto/pluto_crypt.c
+--- openswan-2.4.7.orig/programs/pluto/pluto_crypt.c	2005-07-13 04:14:08.000000000 +0200
++++ openswan-2.4.7/programs/pluto/pluto_crypt.c	2006-11-28 17:25:43.000000000 +0100
+@@ -658,7 +658,9 @@ static void init_crypto_helper(struct pl
+ 	pluto_init_log();
+ 	init_rnd_pool();
+ 	free_preshared_secrets();
++#if !defined(NO_DEBUG)
+ 	openswan_passert_fail = helper_passert_fail;
++#endif
+ 	debug_prefix='!';
+ 
+ 	pluto_crypto_helper(fds[1], n);
+Only in openswan-2.4.7/programs/pluto/: pluto_crypt.o
+Only in openswan-2.4.7/programs/pluto/: plutoalg.o
+diff -urp openswan-2.4.7.orig/programs/pluto/plutomain.c openswan-2.4.7/programs/pluto/plutomain.c
+--- openswan-2.4.7.orig/programs/pluto/plutomain.c	2006-10-27 05:00:30.000000000 +0200
++++ openswan-2.4.7/programs/pluto/plutomain.c	2006-11-28 17:00:56.000000000 +0100
+@@ -85,9 +85,9 @@
+ 
+ const char *ipsec_dir = IPSECDIR;
+ const char *ctlbase = "/var/run/pluto";
+-
++#if !defined(NO_DEBUG)
+ openswan_passert_fail_t openswan_passert_fail = passert_fail;
+-
++#endif
+ /** usage - print help messages
+  *
+  * @param mess String - alternate message to print
+@@ -282,7 +282,9 @@ main(int argc, char **argv)
+ 
+     global_argv = argv;
+     global_argc = argc;
++#if !defined(NO_DEBUG)
+     openswan_passert_fail = passert_fail;
++#endif
+ 
+     /* see if there is an environment variable */
+     coredir = getenv("PLUTO_CORE_DIR");
+@@ -564,10 +566,12 @@ main(int argc, char **argv)
+ 	case '4':	/* --disable_port_floating */
+ 	    nat_t_spf = FALSE;
+ 	    continue;
++#ifdef DEBUG
+ 	case '5':	/* --debug-nat_t */
+ 	    base_debugging |= DBG_NATT;
+ 	    continue;
+ #endif
++#endif
+ #ifdef VIRTUAL_IP
+ 	case '6':	/* --virtual_private */
+ 	    virtual_private = optarg;
+Only in openswan-2.4.7/programs/pluto/: plutomain.o
+Only in openswan-2.4.7/programs/pluto/: rcv_whack.o
+Only in openswan-2.4.7/programs/pluto/: rnd.o
+Only in openswan-2.4.7/programs/pluto/: server.o
+Only in openswan-2.4.7/programs/pluto/: sha1.o
+Only in openswan-2.4.7/programs/pluto/: spdb.o
+Only in openswan-2.4.7/programs/pluto/: spdb_print.o
+Only in openswan-2.4.7/programs/pluto/: spdb_struct.o
+Only in openswan-2.4.7/programs/pluto/: state.o
+Only in openswan-2.4.7/programs/pluto/: timer.o
+Only in openswan-2.4.7/programs/pluto/: vendor.o
+Only in openswan-2.4.7/programs/pluto/: virtual.o
+Only in openswan-2.4.7/programs/pluto/: xauth.o

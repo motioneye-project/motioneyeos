@@ -1,0 +1,34 @@
+diff -urp openswan-2.4.7.orig/include/oswlog.h openswan-2.4.7/include/oswlog.h
+--- openswan-2.4.7.orig/include/oswlog.h	2005-01-26 01:52:16.000000000 +0100
++++ openswan-2.4.7/include/oswlog.h	2006-11-28 17:56:59.000000000 +0100
+@@ -53,6 +53,16 @@ extern void tool_close_log(void);
+ #else /*!DEBUG*/
+ 
+ #define DBG(cond, action)	{ }	/* do nothing */
++#define DBGP(...) (0)
++#define exit_tool exit
++#define loglog(...) do { } while(0)
++#define openswan_loglog(...) do { } while(0)
++#define openswan_DBG_dump(...) do { } while(0)
++#define plog    openswan_log
++extern void openswan_log(const char *message, ...) PRINTF_LIKE(1);
++#define DBG_log(...) do { } while(0)
++extern void tool_init_log(void);
++extern void tool_close_log(void);
+ 
+ #endif /*!DEBUG*/
+ 
+diff -urp openswan-2.4.7.orig/include/pluto_constants.h openswan-2.4.7/include/pluto_constants.h
+--- openswan-2.4.7.orig/include/pluto_constants.h	2005-11-16 23:41:30.000000000 +0100
++++ openswan-2.4.7/include/pluto_constants.h	2006-11-28 17:34:20.000000000 +0100
+@@ -175,6 +175,10 @@ extern const char *const debug_bit_names
+ 
+ #define DBG_NONE	0	/* no options on, including impairments */
+ #define DBG_ALL		LRANGES(DBG_RAW, DBG_X509)  /* all logging options on EXCEPT DBG_PRIVATE */
++#else
++/* FIXME: better cleanup ac.c instead of this */
++#define DBG_RAW         LELEM(0)
++#define DBG_PRIVATE     LELEM(20)
+ #endif
+ 
+ /* State of exchanges
