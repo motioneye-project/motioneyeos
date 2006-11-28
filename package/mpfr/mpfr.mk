@@ -22,7 +22,7 @@ $(DL_DIR)/$(MPFR_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(MPFR_SITE)/$(MPFR_SOURCE)
 
 
-mpfr-source: $(DL_DIR)/$(MPFR_SOURCE)
+libmpfr-source: $(DL_DIR)/$(MPFR_SOURCE)
 
 $(MPFR_DIR)/.unpacked: $(DL_DIR)/$(MPFR_SOURCE)
 	$(MPFR_CAT) $(DL_DIR)/$(MPFR_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -81,20 +81,20 @@ $(STAGING_DIR)/lib/$(MPFR_BINARY): $(MPFR_DIR)/.libs/$(MPFR_BINARY)
 $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION): $(STAGING_DIR)/lib/$(MPFR_BINARY)
 	cp -a $(STAGING_DIR)/lib/libmpfr.so* $(STAGING_DIR)/lib/libmpfr.a \
 		$(TARGET_DIR)/lib/
-ifeq ($(BR2_PACKAGE_MPFR_HEADERS),y)
+ifeq ($(BR2_PACKAGE_LIBMPFR_HEADERS),y)
 	cp -a $(STAGING_DIR)/include/mpfr.h $(STAGING_DIR)/include/mpf2mpfr.h \
 		$(TARGET_DIR)/usr/include/
 endif
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libmpfr.so* \
 		$(TARGET_DIR)/lib/libmpfr.a
 
-mpfr: uclibc $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION)
+libmpfr: uclibc libgmp $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION)
 
-mpfr-clean:
+libmpfr-clean:
 	rm -f $(TARGET_DIR)/lib/$(MPFR_BINARY)
 	-$(MAKE) -C $(MPFR_DIR) clean
 
-mpfr-dirclean:
+libmpfr-dirclean:
 	rm -rf $(MPFR_DIR)
 
 #############################################################
@@ -102,6 +102,6 @@ mpfr-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MPFR)),y)
-TARGETS+=mpfr
+ifeq ($(strip $(BR2_PACKAGE_LIBMPFR)),y)
+TARGETS+=libmpfr
 endif

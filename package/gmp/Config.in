@@ -1,4 +1,4 @@
-config BR2_PACKAGE_GMP
+config BR2_PACKAGE_LIBGMP
 	bool "gmp"
 	default n
 	help
@@ -7,10 +7,10 @@ config BR2_PACKAGE_GMP
 	  http://www.swox.com/gmp/
 
 
-config BR2_PACKAGE_GMP_HEADERS
+config BR2_PACKAGE_LIBGMP_HEADERS
 	bool "gmp headers for target"
 	default n
-	depends on BR2_PACKAGE_GMP
+	depends on BR2_PACKAGE_LIBGMP
 	help
 	  Install the gmp.h for the target.
 

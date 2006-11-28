@@ -20,7 +20,7 @@ endif
 $(DL_DIR)/$(GMP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GMP_SITE)/$(GMP_SOURCE)
 
-gmp-source: $(DL_DIR)/$(GMP_SOURCE)
+libgmp-source: $(DL_DIR)/$(GMP_SOURCE)
 
 $(GMP_DIR)/.unpacked: $(DL_DIR)/$(GMP_SOURCE)
 	$(GMP_CAT) $(DL_DIR)/$(GMP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -75,20 +75,20 @@ $(STAGING_DIR)/lib/$(GMP_BINARY): $(GMP_DIR)/.libs/$(GMP_BINARY)
 $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION): $(STAGING_DIR)/lib/$(GMP_BINARY)
 	cp -a $(STAGING_DIR)/lib/libgmp.so* $(STAGING_DIR)/lib/libgmp.a \
 		 $(TARGET_DIR)/lib/
-ifeq ($(BR2_PACKAGE_GMP_HEADERS),y)
+ifeq ($(BR2_PACKAGE_LIBGMP_HEADERS),y)
 	test -d $(TARGET_DIR)/usr/include || mkdir -p $(TARGET_DIR)/usr/include
 	cp -a $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/usr/include/
 endif
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgmp.so* \
 		$(TARGET_DIR)/lib/libgmp.a
 
-gmp: uclibc $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION)
+libgmp: uclibc $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION)
 
-gmp-clean:
+libgmp-clean:
 	rm -f $(TARGET_DIR)/lib/$(GMP_BINARY)
 	-$(MAKE) -C $(GMP_DIR) clean
 
-gmp-dirclean:
+libgmp-dirclean:
 	rm -rf $(GMP_DIR)
 
 #############################################################
@@ -96,6 +96,6 @@ gmp-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_GMP)),y)
-TARGETS+=gmp
+ifeq ($(strip $(BR2_PACKAGE_LIBGMP)),y)
+TARGETS+=libgmp
 endif
