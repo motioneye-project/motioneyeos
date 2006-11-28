@@ -86,7 +86,7 @@ $(EXT2_BASE): host-fakeroot makedevs genext2fs
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 	# Use fakeroot so genext2fs believes the previous fakery
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
-	GENEXT2_REALSIZE=`LANG=C LC_ALL=POSIX du -l -s -c -k $(TARGET_DIR) | grep total | sed -e "s/total//"`; \
+	GENEXT2_REALSIZE=`LC_ALL=C du -l -s -c -k $(TARGET_DIR) | grep total | sed -e "s/total//"`; \
 	GENEXT2_ADDTOROOTSIZE=`if [ $$GENEXT2_REALSIZE -ge 20000 ] ; then echo 16384; else echo 2400; fi`; \
 	GENEXT2_SIZE=`expr $$GENEXT2_REALSIZE + $$GENEXT2_ADDTOROOTSIZE`; \
 	GENEXT2_ADDTOINODESIZE=`find $(TARGET_DIR) | wc -l`; \
