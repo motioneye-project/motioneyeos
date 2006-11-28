@@ -61,7 +61,7 @@ echo "GNU make version '$MAKE_VERSION':	    Ok"
 # check build system 'gcc'
 #
 #############################################################
-COMPILER=$(which gcc)
+COMPILER=$(which $HOSTCC)
 if [ -z "$COMPILER" ] ; then
 	COMPILER=$(which cc)
 	if [ -z "$COMPILER" ] ; then
@@ -70,7 +70,7 @@ if [ -z "$COMPILER" ] ; then
 		exit 1;
 	fi;
 fi;
-COMPILER_VERSION=$($COMPILER --version 2>&1 | head -n1 | $XSED -e 's/^.* \([0-9\.]\)/\1/g' -e "s/[-\ ].*//g")
+COMPILER_VERSION=$($COMPILER --version 2>&1 | head -n1 | $XSED -e 's/^.*(.CC) \([0-9\.]\)/\1/g' -e "s/[-\ ].*//g")
 if [ -z "$COMPILER_VERSION" ] ; then
 	echo "gcc installed:		    FALSE"
 	echo -e "\n\nYou must install 'gcc' on your build machine\n";
