@@ -10,15 +10,15 @@ TAR_TARGET:=$(IMAGE).tar
 TAR_COMPRESSOR:=
 TAR_COMPRESSOR_EXT:=.none
 ifeq ($(BR2_TARGET_ROOTFS_TAR_GZIP),y)
-TAR_COMPRESSOR:=gzip -9
+TAR_COMPRESSOR:=gzip -9 -c
 TAR_COMPRESSOR_EXT:=gz
 endif
 ifeq ($(BR2_TARGET_ROOTFS_TAR_BZIP2),y)
-TAR_COMPRESSOR:=bzip2 -9
+TAR_COMPRESSOR:=bzip2 -9 -c
 TAR_COMPRESSOR_EXT:=bz2
 endif
 ifeq ($(BR2_TARGET_ROOTFS_TAR_LZMA),y)
-TAR_COMPRESSOR:=lzma -9
+TAR_COMPRESSOR:=lzma -9 -c
 TAR_COMPRESSOR_EXT:=lzma
 endif
 
@@ -42,7 +42,7 @@ tarroot: host-fakeroot makedevs
 	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 ifneq ($(TAR_COMPRESSOR),)
 	-rm -f $(TAR_TARGET).$()
-	PATH="$(STAGING_DIR)/sbin:$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/sbin:$(STAGING_DIR)/usr/bin:$(PATH)" $(TAR_COMPRESSOR) $(TAR_TARGET)
+	PATH="$(STAGING_DIR)/sbin:$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/sbin:$(STAGING_DIR)/usr/bin:$(PATH)" $(TAR_COMPRESSOR) $(TAR_TARGET) > $(TAR_TARGET).$(TAR_COMPRESSOR_EXT)
 endif
 	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 
