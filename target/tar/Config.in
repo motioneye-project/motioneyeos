@@ -4,11 +4,46 @@ config BR2_TARGET_ROOTFS_TAR
 	help
 	  Build a tar archive of the root filesystem
 
+choice
+	prompt "Compression method"
+	default BR2_TARGET_ROOTFS_TAR_NONE
+	depends on BR2_TARGET_ROOTFS_TAR
+	help
+	  Select compressor for tar archive of the root filesystem
+
+config BR2_TARGET_ROOTFS_TAR_NONE
+	bool "no compression"
+	help
+	 Do not compress the tarball.
+
+config BR2_TARGET_ROOTFS_TAR_GZIP
+	bool "gzip"
+	help
+	 Do compress the tarball with gzip.
+	 Note that you either have to have gzip installed on your host
+	 or select to build a gzip for your host. See the packages submenu.
+
+config BR2_TARGET_ROOTFS_TAR_BZIP2
+	bool "bzip2"
+	help
+	 Do compress the tarball with bzip2.
+	 Note that you either have to have bzip2 installed on your host
+	 or select to build a bzip2 for your host. See the packages submenu.
+
+config BR2_TARGET_ROOTFS_TAR_LZMA
+	bool "lzma"
+	help
+	 Do compress the tarball with lzma.
+	 Note that you either have to have lzma installed on your host
+	 or select to build a lzma for your host. See the packages submenu.
+
+endchoice
+
 config BR2_TARGET_ROOTFS_TAR_OPTIONS
-	string "random options to pass to tar"
+	string "other random options to pass to tar"
 	depends on BR2_TARGET_ROOTFS_TAR
 	default ""
 	help
-	  Common options:
-	   j - compress with bzip2
-	   z - compress with gzip
+	  Any other flags you want to pass to tar
+	  Refer to tar --help for details
+
