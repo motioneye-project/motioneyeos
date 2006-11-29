@@ -83,7 +83,7 @@ grub: grub-target_binary
 
 grub-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GRUB_DIR) uninstall
-	-grub -C $(GRUB_DIR) clean
+	-$(MAKE) -C $(GRUB_DIR) clean
 
 grub-dirclean:
 	rm -rf $(GRUB_DIR)
