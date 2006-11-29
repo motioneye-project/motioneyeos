@@ -1,6 +1,5 @@
 #!/bin/sh
 
-set -e
 #set -x
 
 echo ""
@@ -28,6 +27,19 @@ else
 	echo "sed works:			    Ok"
 fi
 XSED=$HOST_SED_DIR/bin/sed
+
+#############################################################
+#
+# check build system 'which'
+#
+#############################################################
+if ! which which > /dev/null ; then
+	echo "which installed:		    FALSE"
+	echo -e "\n\nYou must install 'which' on your build machine\n";
+	exit 1;
+fi;
+echo "which installed:		    Ok"
+
 
 #############################################################
 #
@@ -64,12 +76,13 @@ echo "GNU make version '$MAKE_VERSION':	    Ok"
 COMPILER=$(which $HOSTCC)
 if [ -z "$COMPILER" ] ; then
 	COMPILER=$(which cc)
-	if [ -z "$COMPILER" ] ; then
-		echo "gcc installed:		    FALSE"
-		echo -e "\n\nYou must install 'gcc' on your build machine\n";
-		exit 1;
-	fi;
 fi;
+if [ -z "$COMPILER" ] ; then
+	echo "C Compiler installed:		    FALSE"
+	echo -e "\n\nYou must install 'gcc' on your build machine\n";
+	exit 1;
+fi;
+
 COMPILER_VERSION=$($COMPILER --version 2>&1 | head -n1 | $XSED -e 's/^.*(.CC) \([0-9\.]\)/\1/g' -e "s/[-\ ].*//g")
 if [ -z "$COMPILER_VERSION" ] ; then
 	echo "gcc installed:		    FALSE"
@@ -82,22 +95,9 @@ if [ $COMPILER_MAJOR -lt 3 -o $COMPILER_MAJOR -eq 2 -a $COMPILER_MINOR -lt 95 ] 
 	echo "You have gcc '$COMPILER_VERSION' installed.  gcc >= 2.95 is required"
 	exit 1;
 fi;
-echo "gcc version '$COMPILER_VERSION':		    Ok"
+echo "C compiler '$COMPILER'"
+echo "C compiler version '$COMPILER_VERSION':	    Ok"
 
-
-
-
-#############################################################
-#
-# check build system 'which'
-#
-#############################################################
-if ! which which > /dev/null ; then
-	echo "which installed:		    FALSE"
-	echo -e "\n\nYou must install 'which' on your build machine\n";
-	exit 1;
-fi;
-echo "which installed:		    Ok"
 
 
 #############################################################
