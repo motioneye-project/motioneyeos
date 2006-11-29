@@ -10,12 +10,12 @@ ACPID_SITE=http://ftp.debian.org/debian/pool/main/a/acpid
 $(DL_DIR)/$(ACPID_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ACPID_SITE)/$(ACPID_SOURCE)
 
-$(ACPID_DIR)/Makefile: $(DL_DIR)/$(ACPID_SOURCE)
+$(ACPID_DIR)/.unpacked: $(DL_DIR)/$(ACPID_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(ACPID_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	$(SED) "s:ACPI_SOCKETFILE.*:ACPI_SOCKETFILE \"/tmp/acpid.socket\":" $(ACPID_DIR)/acpid.h
-	touch -c $(ACPID_DIR)/Makefile
+	toolchain/patch-kernel.sh $(ACPID_DIR) package/acpid/ acpid\*.patch
+	touch $(ACPID_DIR)/.unpacked
 
-$(ACPID_DIR)/acpid: $(ACPID_DIR)/Makefile
+$(ACPID_DIR)/acpid: $(ACPID_DIR)/.unpacked
 	$(MAKE) CC=$(TARGET_CC) -C $(ACPID_DIR)
 	$(STRIP) -s $(ACPID_DIR)/acpid
 	$(STRIP) -s $(ACPID_DIR)/acpi_listen

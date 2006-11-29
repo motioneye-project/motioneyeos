@@ -1,0 +1,11 @@
+--- acpid-1.0.4/ud_socket.c
++++ acpid-1.0.4/ud_socket.c
+@@ -58,7 +58,7 @@ ud_accept(int listenfd, struct ucred *cr
+ 	while (1) {
+ 		int newsock = 0;
+ 		struct sockaddr_un cliaddr;
+-		int len = sizeof(struct sockaddr_un);
++		socklen_t len = sizeof(struct sockaddr_un);
+ 
+ 		newsock = accept(listenfd, (struct sockaddr *)&cliaddr, &len);
+ 		if (newsock < 0) {

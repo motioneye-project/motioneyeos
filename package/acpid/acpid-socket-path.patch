@@ -1,0 +1,11 @@
+--- acpid-1.0.4/acpid.h
++++ acpid-1.0.4/acpid.h
+@@ -32,7 +32,7 @@
+ #define ACPI_EVENTFILE		ACPI_PROCDIR "/event"
+ #define ACPI_CONFDIR		"/etc/acpi/events"
+ #define ACPI_LOGFILE		"/var/log/acpid"
+-#define ACPI_SOCKETFILE		"/var/run/acpid.socket"
++#define ACPI_SOCKETFILE		"/tmp/acpid.socket"
+ #define ACPI_SOCKETMODE		0666
+ #define ACPI_MAX_ERRS		5
+ 
