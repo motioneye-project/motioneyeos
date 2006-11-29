@@ -21,7 +21,7 @@ openswan-source: $(DL_DIR)/$(OPENSWAN_SOURCE)
 
 $(OPENSWAN_DIR)/.unpacked: $(DL_DIR)/$(OPENSWAN_SOURCE)
 	$(OPENSWAN_CAT) $(DL_DIR)/$(OPENSWAN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(OPENSWAN_DIR) package/openswan/ openswan.patch
+	toolchain/patch-kernel.sh $(OPENSWAN_DIR) package/openswan/ openswan\*.patch
 	touch $(OPENSWAN_DIR)/.unpacked
 
 $(OPENSWAN_DIR)/.configured: $(OPENSWAN_DIR)/.unpacked
