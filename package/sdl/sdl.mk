@@ -21,12 +21,13 @@ $(SDL_DIR)/.unpacked: $(DL_DIR)/$(SDL_SOURCE)
 $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 	(cd $(SDL_DIR); \
 	$(TARGET_CONFIGURE_OPTS) \
-	CFLAGS="$(TARGET_CFLAGS) " \
+	CFLAGS="$(TARGET_CFLAGS)" \
 	./configure \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
 	--prefix=$(STAGING_DIR)/usr \
+	--disable-arts \
 	--disable-esd \
 	--disable-nasm \
 	--disable-video-x11 );
