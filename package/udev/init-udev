@@ -27,6 +27,8 @@ UDEV_BIN=/sbin/udev
 test -x $UDEV_BIN || exit 5
 UDEVSTART_BIN=/sbin/udevstart
 test -x $UDEVSTART_BIN || exit 5
+UDEVD_BIN=/sbin/udevd
+test -x $UDEVD_BIN || exit 5
 
 # Check for config file and read it
 UDEV_CONFIG=/etc/udev/udev.conf
@@ -64,7 +66,10 @@ case "$1" in
 	echo -n "Populating $udev_root using udev... "
 	$UDEVSTART_BIN || (echo "FAIL" && exit 1)
 	mkdir $udev_root/pts $udev_root/shm
+	# start daemon
+	$UDEVD_BIN --daemon || (echo "udevd FAIL" && exit 1)
 	echo "done"
+	mount -a
 	;;
     stop)
 	# do nothing

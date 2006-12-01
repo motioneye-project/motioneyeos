@@ -1,0 +1,12 @@
+diff -u udev-100/Makefile udev-100.ynezz/Makefile
+--- udev-100/Makefile	2006-09-07 11:32:45.000000000 +0200
++++ udev-100.ynezz/Makefile	2006-09-18 17:35:33.000000000 +0200
+@@ -276,6 +276,8 @@
+ install-bin:
+ 	$(INSTALL) -d $(DESTDIR)$(udevdir)
+ 	$(INSTALL_PROGRAM) -D udevd $(DESTDIR)$(sbindir)/udevd
++	$(INSTALL_PROGRAM) -D udev $(DESTDIR)$(sbindir)/udev
++	$(INSTALL_PROGRAM) -D udevstart $(DESTDIR)$(sbindir)/udevstart
+ 	$(INSTALL_PROGRAM) -D udevtrigger $(DESTDIR)$(sbindir)/udevtrigger
+ 	$(INSTALL_PROGRAM) -D udevsettle $(DESTDIR)$(sbindir)/udevsettle
+ 	$(INSTALL_PROGRAM) -D udevcontrol $(DESTDIR)$(sbindir)/udevcontrol

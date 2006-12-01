@@ -3,7 +3,7 @@
 # udev
 #
 #############################################################
-UDEV_VERSION:=094
+UDEV_VERSION:=100
 UDEV_SOURCE:=udev-$(UDEV_VERSION).tar.bz2
 UDEV_SITE:=ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
 UDEV_CAT:=$(BZCAT)
@@ -35,7 +35,7 @@ $(UDEV_DIR)/.configured: $(UDEV_DIR)/.unpacked
 	touch $(UDEV_DIR)/.configured
 
 $(UDEV_DIR)/$(UDEV_BINARY): $(UDEV_DIR)/.configured
-	$(MAKE) CROSS=$(TARGET_CROSS) CC=$(TARGET_CC) LD=$(TARGET_CC) \
+	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) CC=$(TARGET_CC) LD=$(TARGET_CC)\
 		CFLAGS="$(BR2_UDEV_CFLAGS)" \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) -C $(UDEV_DIR)
@@ -45,19 +45,21 @@ $(UDEV_DIR)/$(UDEV_BINARY): $(UDEV_DIR)/.configured
 # default access controls prevent non-root tasks from running.  Many of the
 # rule files rely on PROGRAM invocations (e.g. extra /etc/udev/scripts);
 # for now we'll avoid having buildroot systems rely on them.
-UDEV_CONF:=etc/udev/frugalware/udev.rules
+UDEV_CONF:=etc/udev/frugalware/*
 
 $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
 	-mkdir $(TARGET_DIR)/sys
-	install -D -m 0644 $(UDEV_DIR)/$(UDEV_CONF) \
-		$(TARGET_DIR)/etc/udev/rules.d/50-udev.rules
-	$(MAKE) CROSS=$(TARGET_CROSS) CC=$(TARGET_CC) LD=$(TARGET_CC) \
+	-mkdir $(TARGET_DIR)/etc/udev/rules.d
+	$(INSTALL) -D -m 0644 $(UDEV_DIR)/$(UDEV_CONF) \
+		$(TARGET_DIR)/etc/udev/rules.d
+	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) CC=$(TARGET_CC)  LD=$(TARGET_CC) \
 		DESTDIR=$(TARGET_DIR) \
 		CFLAGS="$(BR2_UDEV_CFLAGS)" \
 		LDFLAGS="-warn-common" \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) -C $(UDEV_DIR) install
 	$(INSTALL) -m 0755 -D package/udev/init-udev $(TARGET_DIR)/etc/init.d/S10udev
+	$(INSTALL) -m 0644 -D package/udev/udev.conf $(TARGET_DIR)/etc/udev
 
 udev: uclibc $(TARGET_DIR)/$(UDEV_TARGET_BINARY)
 
