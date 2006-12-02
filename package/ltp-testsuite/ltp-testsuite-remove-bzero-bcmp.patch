@@ -1,0 +1,65 @@
+diff -ur ltp-full-20061121/testcases/kernel/fs/fsx-linux/fsx-linux.c ltp-full-20061121-patched/testcases/kernel/fs/fsx-linux/fsx-linux.c
+--- ltp-full-20061121/testcases/kernel/fs/fsx-linux/fsx-linux.c	2006-11-21 14:31:29.000000000 -0600
++++ ltp-full-20061121-patched/testcases/kernel/fs/fsx-linux/fsx-linux.c	2006-12-02 00:35:42.070475329 -0600
+@@ -322,7 +322,7 @@
+ 	unsigned op = 0;
+ 	unsigned bad = 0;
+ 
+-	if (bcmp(good_buf + offset, temp_buf, size) != 0) {
++	if (memcmp(good_buf + offset, temp_buf, size) != 0) {
+ 		prt("READ BAD DATA: offset = 0x%x, size = 0x%x\n",
+ 		    offset, size);
+ 		prt("OFFSET\tGOOD\tBAD\tRANGE\n");
+diff -ur ltp-full-20061121/testcases/kernel/io/ltp-aiodio/fsx-linux.c ltp-full-20061121-patched/testcases/kernel/io/ltp-aiodio/fsx-linux.c
+--- ltp-full-20061121/testcases/kernel/io/ltp-aiodio/fsx-linux.c	2006-11-21 14:31:27.000000000 -0600
++++ ltp-full-20061121-patched/testcases/kernel/io/ltp-aiodio/fsx-linux.c	2006-12-02 00:36:09.496726421 -0600
+@@ -355,7 +355,7 @@
+ 	unsigned op = 0;
+ 	unsigned bad = 0;
+ 
+-	if (bcmp(good_buf + offset, temp_buf, size) != 0) {
++	if (memcmp(good_buf + offset, temp_buf, size) != 0) {
+ 		prt("READ BAD DATA: offset = 0x%x, size = 0x%x, fname = %s\n",
+ 		    offset, size, fname);
+ 		prt("OFFSET\tGOOD\tBAD\tRANGE\n");
+diff -ur ltp-full-20061121/testcases/kernel/syscalls/symlink/symlink01.c ltp-full-20061121-patched/testcases/kernel/syscalls/symlink/symlink01.c
+--- ltp-full-20061121/testcases/kernel/syscalls/symlink/symlink01.c	2006-11-21 14:31:28.000000000 -0600
++++ ltp-full-20061121-patched/testcases/kernel/syscalls/symlink/symlink01.c	2006-12-02 00:36:18.081430964 -0600
+@@ -904,7 +904,7 @@
+ 	   "stat(2) failed to return inode information for a regular object file");
+        return(0);
+     }
+-    else if (bcmp((char *)&statter, (char *)&asymlink, sizeof(statter)) != 0) {
++    else if (memcmp((char *)&statter, (char *)&asymlink, sizeof(statter)) != 0) {
+        TEST_RESULT=TFAIL;
+        sprintf(test_msg,
+ 	   "lstat(2) and stat(2) do not return same inode information for an object file");
+diff -ur ltp-full-20061121/testcases/network/nfs/fsx-linux/fsx-linux.c ltp-full-20061121-patched/testcases/network/nfs/fsx-linux/fsx-linux.c
+--- ltp-full-20061121/testcases/network/nfs/fsx-linux/fsx-linux.c	2006-11-21 14:31:24.000000000 -0600
++++ ltp-full-20061121-patched/testcases/network/nfs/fsx-linux/fsx-linux.c	2006-12-02 00:35:51.495248935 -0600
+@@ -325,7 +325,7 @@
+ 	unsigned op = 0;
+ 	unsigned bad = 0;
+ 
+-	if (bcmp(good_buf + offset, temp_buf, size) != 0) {
++	if (memcmp(good_buf + offset, temp_buf, size) != 0) {
+ 		prt("READ BAD DATA: offset = 0x%x, size = 0x%x\n",
+ 		    offset, size);
+ 		prt("OFFSET\tGOOD\tBAD\tRANGE\n");
+diff -ur ltp-full-20061121/testcases/network/nfsv4/locks/netsync.c ltp-full-20061121-patched/testcases/network/nfsv4/locks/netsync.c
+--- ltp-full-20061121/testcases/network/nfsv4/locks/netsync.c	2006-11-21 14:31:27.000000000 -0600
++++ ltp-full-20061121-patched/testcases/network/nfsv4/locks/netsync.c	2006-12-02 00:38:03.710097050 -0600
+@@ -57,11 +57,11 @@
+         perror ("socket");
+         exit(1);
+     }
+-    bzero(&local, sizeof(local));
++    memset(&local, 0, sizeof(local));
+     local.sin_family = AF_INET;
+     local.sin_port = htons(PORT);
+     local.sin_addr.s_addr = INADDR_ANY;
+-    bzero(&(local.sin_zero), 8);
++    memset(&(local.sin_zero), 0, 8);
+ 
+     if(bind(sock, (struct sockaddr *)&local, sizeof(struct sockaddr))== -1){
+         perror("bind"); 
