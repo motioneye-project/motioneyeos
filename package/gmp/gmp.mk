@@ -31,6 +31,8 @@ $(GMP_DIR)/.unpacked: $(DL_DIR)/$(GMP_SOURCE)
 $(GMP_DIR)/.configured: $(GMP_DIR)/.unpacked
 	(cd $(GMP_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CC_FOR_BUILD="$(HOSTCC)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_c_bigendian=$(GMP_BE) \
 		./configure \
 		--host=$(REAL_GNU_TARGET_NAME) \
