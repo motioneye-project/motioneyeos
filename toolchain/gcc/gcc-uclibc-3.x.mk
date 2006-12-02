@@ -335,8 +335,13 @@ endif
 ifeq ($(findstring 4.1.,$(GCC_VERSION)),4.1.)
 GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
 endif
-ifeq ($(findstring 4.2.,$(GCC_VERSION)),4.2.)
+ifeq ($(findstring 4.2,$(GCC_VERSION)),4.2)
+ifneq ($(GCC_SNAP_DATE),)
+REAL_GCC_VERSION:=`cat ${GCC_DIR}/gcc/BASE-VER`
+GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(REAL_GCC_VERSION)
+else
 GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
+endif
 endif
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
