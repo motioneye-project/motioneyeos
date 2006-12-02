@@ -39,4 +39,5 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	  Some people may wish to use their own modified BusyBox configuration
 	  file, and will specify their config file location with this option.
 
+	  The default is "package/busybox/busybox.config".
 	  Most people will just use the default BusyBox configuration file.
