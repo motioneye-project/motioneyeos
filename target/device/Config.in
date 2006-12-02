@@ -6,6 +6,7 @@ source "target/device/AMD/Config.in"
 source "target/device/Via/Config.in"
 source "target/device/Sharp/Config.in"
 source "target/device/jp/Config.in"
+source "target/device/x86/Config.in"
 
 # This must be last
 source "target/generic/Config.in"

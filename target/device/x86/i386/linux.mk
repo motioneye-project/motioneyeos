@@ -1,0 +1,126 @@
+#############################################################
+#
+# Linux kernel targets
+#
+# Note:  If you have any patches to apply, create the directory
+# sources/kernel-patches and put your patches in there and number
+# them in the order you wish to apply them...  i.e.
+#
+#   sources/kernel-patches/001-my-special-stuff.bz2
+#   sources/kernel-patches/003-gcc-Os.bz2
+#   sources/kernel-patches/004_no-warnings.bz2
+#   sources/kernel-patches/030-lowlatency-mini.bz2
+#   sources/kernel-patches/031-lowlatency-fixes-5.bz2
+#   sources/kernel-patches/099-shutup.bz2
+#   etc...
+#
+# these patches will all be applied by the patch-kernel.sh
+# script (which will also abort the build if it finds rejects)
+#  -Erik
+#
+#############################################################
+ifneq ($(filter $(TARGETS),linux),)
+
+LINUX_VERSION=$(LINUX_HEADERS_VERSION)
+# File name for the Linux kernel binary
+LINUX_KERNEL=linux-kernel-$(LINUX_VERSION)-$(KERNEL_ARCH).srec
+
+
+# Linux kernel configuration file
+LINUX_KCONFIG=$(X86_I386_PATH)/linux.config
+
+# kernel patches
+LINUX_PATCH_DIR=target/device/x86/i386/kernel-patches/
+
+LINUX_MAKE_FLAGS = $(TARGET_CONFIGURE_OPTS) ARCH=$(KERNEL_ARCH) PATH=$(TARGET_PATH) \
+	INSTALL_MOD_PATH=$(TARGET_DIR) \
+
+LINUX_FORMAT=vmlinux
+
+LINUX_BINLOC=$(LINUX_FORMAT)
+##LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
+##LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
+##LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.6
+# Used by pcmcia-cs and others
+LINUX_DIR=$(LINUX_HEADERS_UNPACK_DIR)
+
+
+#$(DL_DIR)/$(LINUX_SOURCE):
+#	-mkdir -p $(DL_DIR)
+#	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
+
+#$(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
+#	-mkdir -p $(TOOL_BUILD_DIR)
+#	-(cd $(TOOL_BUILD_DIR); ln -snf $(LINUX_DIR) linux)
+#	$(LINUX_HEADERS_CAT) $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+#ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))
+#	# Rename the dir from the downloaded version to the AFTER patch version
+#	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX_VERSION) $(BUILD_DIR)/linux-$(LINUX_VERSION)
+#endif
+#	[ -d $(LINUX_PATCH_DIR) && toolchain/patch-kernel.sh $(LINUX_DIR) $(LINUX_PATCH_DIR)
+#	touch $(LINUX_DIR)/.unpacked
+
+$(LINUX_KCONFIG):
+	@if [ ! -f "$(LINUX_KCONFIG)" ] ; then \
+		echo ""; \
+		echo "You should create a .config for your kernel"; \
+		echo "and install it as $(LINUX_KCONFIG)"; \
+		echo ""; \
+		sleep 5; \
+	fi;
+
+#$(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
+$(LINUX_DIR)/.configured:  $(LINUX_DIR)/.patched  $(LINUX_KCONFIG)
+	-cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
+	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) oldconfig
+	touch $(LINUX_DIR)/.configured
+
+linux-menuconfig: $(LINUX_DIR)/.patched
+	[ -f $(LINUX_DIR)/.config ] || cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
+	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) menuconfig
+	-[ -f $(LINUX_DIR)/.config ] && touch $(LINUX_DIR)/.configured
+
+$(LINUX_DIR)/.depend_done:  $(LINUX_DIR)/.patched
+	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) prepare
+	touch $(LINUX_DIR)/.depend_done
+
+$(LINUX_DIR)/$(LINUX_BINLOC): $(LINUX_DIR)/.depend_done
+	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) $(LINUX_FORMAT) bzImage
+	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) modules
+	[ -d $(TARGET_DIR)/boot/ ] || mkdir $(TARGET_DIR)/boot
+	cp -a $(LINUX_DIR)/arch/$(KERNEL_ARCH)/boot/bzImage $(LINUX_DIR)/System.map $(TARGET_DIR)/boot/
+
+$(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
+	$(KERNEL_CROSS)objcopy -O srec $(LINUX_DIR)/$(LINUX_BINLOC) $(LINUX_KERNEL)
+	touch -c $(LINUX_KERNEL)
+
+$(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL)
+	rm -rf $(TARGET_DIR)/lib/modules
+	rm -f $(TARGET_DIR)/sbin/cardmgr
+	$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) DEPMOD=`which true` \
+		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
+	(cd $(TARGET_DIR)/lib/modules; ln -s $(LINUX_VERSION)/kernel/drivers .)
+	$(TARGET_DEVICE_DEPMOD) \
+		-b $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/ \
+		-k $(LINUX_DIR)/vmlinux \
+		-F $(LINUX_DIR)/System.map \
+		> $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
+
+$(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
+	mkdir -p $(STAGING_DIR)/include
+	tar -ch -C $(LINUX_DIR)/include -f - linux | tar -xf - -C $(STAGING_DIR)/include/
+	tar -ch -C $(LINUX_DIR)/include -f - asm | tar -xf - -C $(STAGING_DIR)/include/
+
+linux: $(STAGING_DIR)/include/linux/version.h $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
+
+linux-source: $(DL_DIR)/$(LINUX_SOURCE)
+
+# This has been renamed so we do _NOT_ by default run this on 'make clean'
+linuxclean:
+	rm -f $(LINUX_KERNEL)
+	-$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX_DIR) clean
+
+linux-dirclean:
+	rm -rf $(LINUX_DIR)
+
+endif

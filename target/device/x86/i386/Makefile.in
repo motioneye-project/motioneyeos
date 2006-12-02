@@ -1,0 +1,10 @@
+X86_I386_PATH=target/device/x86/i386
+
+BR2_PACKAGE_BUSYBOX_CONFIG=$(X86_I386_PATH)/busybox.config
+UCLIBC_CONFIG_FILE=$(X86_I386_PATH)/uClibc.config.$(ARCH)
+
+#TARGET_SKELETON=$(X86_I386_PATH)/skel.tar.gz
+#TARGET_SKEL_DIR=$(X86_I386_PATH)/target_skeleton
+#TARGET_DEVICE_TABLE=$(X86_I386_PATH)/device_table.txt
+
+TARGETS+=linux

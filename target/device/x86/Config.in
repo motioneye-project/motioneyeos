@@ -1,0 +1,22 @@
+comment "Generic x86 Device Support"
+	depends BR2_i386
+
+config BR2_TARGET_X86_GENERIC
+	bool "Generic x86 support"
+	depends BR2_i386
+	default n
+	select BR2_PACKAGE_LINUX
+	help
+	  Generic x86 support.
+
+comment "Package support"
+	depends BR2_TARGET_AMD_ALCHEMY
+
+config BR2_PACKAGE_LINUX
+	bool "linux"
+	default n
+	depends BR2_TARGET_X86_GENERIC
+	help
+	  The Linux kernel.
+	  http://www.kernel.org/
+
