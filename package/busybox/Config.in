@@ -34,7 +34,8 @@ config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
 config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	depends BR2_PACKAGE_BUSYBOX
-	default "package/busybox/busybox.config"
+	default "package/busybox/busybox.config" if !BR2_i386
+	default "target/device/x86/i386/busybox.config" if BR2_i386
 	help
 	  Some people may wish to use their own modified BusyBox configuration
 	  file, and will specify their config file location with this option.
