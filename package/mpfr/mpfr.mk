@@ -3,8 +3,8 @@
 # mpfr
 #
 #############################################################
-MPFR_VERSION:=2.2.0
-MPFR_PATCH:=patches
+MPFR_VERSION:=2.2.1
+#MPFR_PATCH:=patches
 MPFR_SOURCE:=mpfr-$(MPFR_VERSION).tar.bz2
 MPFR_CAT:=$(BZCAT)
 MPFR_SITE:=http://www.mpfr.org/mpfr-current/
@@ -37,6 +37,7 @@ endif
 $(MPFR_DIR)/.configured: $(MPFR_DIR)/.unpacked
 	(cd $(MPFR_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_c_bigendian=$(MPFR_BE) \
 		./configure \
 		--host=$(REAL_GNU_TARGET_NAME) \
