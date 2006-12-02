@@ -28,7 +28,8 @@ CONFIG = package/config
 
 noconfig_targets := menuconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release tags    \
-	$(shell find . -name *_defconfig |sed 's/.*\///')
+
+#	$(shell find . -name *_defconfig |sed 's/.*\///')
 
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
