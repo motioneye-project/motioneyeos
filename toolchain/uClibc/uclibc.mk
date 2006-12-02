@@ -65,7 +65,7 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	touch $(UCLIBC_DIR)/.unpacked
 
 uclibc-configured: dependencies kernel-headers $(UCLIBC_DIR)/.configured
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.unpacked
+$(UCLIBC_DIR)/.prepared: $(UCLIBC_DIR)/.unpacked
 	cp $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
 	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' \
 		-e 's,# TARGET_$(UCLIBC_TARGET_ARCH) is not set,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
@@ -123,6 +123,9 @@ endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
+	touch $(UCLIBC_DIR)/.prepared
+
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.prepared
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
@@ -139,6 +142,16 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 		HOSTCC="$(HOSTCC)" \
 		all
 	touch -c $(UCLIBC_DIR)/lib/libc.a
+
+uclibc-menuconfig: $(UCLIBC_DIR)/.prepared
+	$(MAKE1) -C $(UCLIBC_DIR) \
+		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
+		DEVEL_PREFIX=/usr/ \
+		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
+		HOSTCC="$(HOSTCC)" \
+		menuconfig && \
+	touch $(UCLIBC_DIR)/.configured
+
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE1) -C $(UCLIBC_DIR) \
