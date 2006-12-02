@@ -3,8 +3,8 @@
 # iptables
 #
 #############################################################
-IPTABLES_VER:=1.3.5
-IPTABLES_SOURCE_URL:=ftp.netfilter.org/pub/iptables/
+IPTABLES_VER:=1.3.6-20061129
+IPTABLES_SOURCE_URL:=ftp.netfilter.org/pub/iptables/snapshot
 IPTABLES_SOURCE:=iptables-$(IPTABLES_VER).tar.bz2
 IPTABLES_CAT:=$(BZCAT)
 IPTABLES_BUILD_DIR:=$(BUILD_DIR)/iptables-$(IPTABLES_VER)
