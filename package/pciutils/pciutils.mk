@@ -29,7 +29,9 @@ $(PCIUTILS_DIR)/.unpacked: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURC
 	touch $(PCIUTILS_DIR)/.unpacked
 
 $(PCIUTILS_DIR)/.compiled: $(PCIUTILS_DIR)/.unpacked
-	$(MAKE1) CC=$(TARGET_CC) OPT="$(TARGET_CFLAGS)" -C $(PCIUTILS_DIR)
+	$(MAKE1) CC=$(TARGET_CC) OPT="$(TARGET_CFLAGS)" -C $(PCIUTILS_DIR) \
+		SHAREDIR="/usr/share/misc" \
+		PREFIX=/usr
 	touch $(PCIUTILS_DIR)/.compiled
 
 $(TARGET_DIR)/sbin/lspci: $(PCIUTILS_DIR)/.compiled
@@ -38,7 +40,7 @@ $(TARGET_DIR)/sbin/lspci: $(PCIUTILS_DIR)/.compiled
 $(TARGET_DIR)/sbin/setpci: $(PCIUTILS_DIR)/.compiled
 	install -c $(PCIUTILS_DIR)/setpci $(TARGET_DIR)/sbin/setpci
 
-$(TARGET_DIR)/usr/share/misc/pci.ids: $(PCIUTILS_DIR)/.compiled
+$(TARGET_DIR)/usr/share/misc/pci.ids: $(PCIUTILS_DIR)/.unpacked
 	install -Dc $(PCIUTILS_DIR)/pci.ids $(TARGET_DIR)/usr/share/misc/pci.ids
 
 pciutils: uclibc $(TARGET_DIR)/sbin/setpci $(TARGET_DIR)/sbin/lspci $(TARGET_DIR)/usr/share/misc/pci.ids
