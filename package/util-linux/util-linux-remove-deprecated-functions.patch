@@ -1,0 +1,49 @@
+diff -ur util-linux-2.12r/misc-utils/logger.c util-linux-2.12r-patched/misc-utils/logger.c
+--- util-linux-2.12r/misc-utils/logger.c	2004-09-06 16:13:49.000000000 -0500
++++ util-linux-2.12r-patched/misc-utils/logger.c	2006-12-04 19:52:24.068596984 -0600
+@@ -198,7 +198,7 @@
+ 			} else {
+ 				if (p != buf)
+ 					*p++ = ' ';
+-				bcopy(*argv++, p, len);
++				memcpy(p, *argv++, len);
+ 				*(p += len) = '\0';
+ 			}
+ 		}
+diff -ur util-linux-2.12r/misc-utils/whereis.c util-linux-2.12r-patched/misc-utils/whereis.c
+--- util-linux-2.12r/misc-utils/whereis.c	2001-03-15 04:09:58.000000000 -0600
++++ util-linux-2.12r-patched/misc-utils/whereis.c	2006-12-04 19:52:43.210100415 -0600
+@@ -323,14 +323,14 @@
+ 	char dirbuf[1024];
+ 	struct stat statbuf;
+ 
+-	dd = index(dir, '*');
++	dd = strchr(dir, '*');
+ 	if (!dd)
+ 		goto noglob;
+ 
+ 	l = strlen(dir);
+ 	if (l < sizeof(dirbuf)) { 	/* refuse excessively long names */
+ 		strcpy (dirbuf, dir);
+-		d = index(dirbuf, '*');
++		d = strchr(dirbuf, '*');
+ 		*d = 0;
+ 		dirp = opendir(dirbuf);
+ 		if (dirp == NULL)
+diff -ur util-linux-2.12r/mount/mount.c util-linux-2.12r-patched/mount/mount.c
+--- util-linux-2.12r/mount/mount.c	2004-12-21 16:00:36.000000000 -0600
++++ util-linux-2.12r-patched/mount/mount.c	2006-12-04 19:54:16.317414647 -0600
+@@ -488,11 +488,11 @@
+ 
+    /* Accept a comma-separated list of types, and try them one by one */
+    /* A list like "nonfs,.." indicates types not to use */
+-   if (*types && strncmp(*types, "no", 2) && index(*types,',')) {
++   if (*types && strncmp(*types, "no", 2) && strchr(*types,',')) {
+       char *t = strdup(*types);
+       char *p;
+ 
+-      while((p = index(t,',')) != NULL) {
++      while((p = strchr(t,',')) != NULL) {
+ 	 *p = 0;
+ 	 args.type = *types = t;
+ 	 if(do_mount_syscall (&args) == 0)

@@ -1,0 +1,21 @@
+diff -ur procps-3.2.5/sysctl.c procps-3.2.5-patched/sysctl.c
+--- procps-3.2.5/sysctl.c	2005-01-05 15:00:47.000000000 -0600
++++ procps-3.2.5-patched/sysctl.c	2006-12-04 19:51:36.272843000 -0600
+@@ -272,7 +272,7 @@
+       return 0;
+    } /* end if */
+ 
+-   equals = index(setting, '=');
++   equals = strchr(setting, '=');
+  
+    if (!equals) {
+       fprintf(stderr, ERR_NO_EQUALS, setting);
+@@ -498,7 +498,7 @@
+          if (NameOnly && Quiet)   // nonsense
+             return Usage(me);
+          SwitchesAllowed = false;
+-         if (WriteMode || index(*argv, '='))
++         if (WriteMode || strchr(*argv, '='))
+             ReturnCode = WriteSetting(*argv);
+          else
+             ReturnCode = ReadSetting(*argv);
