@@ -115,7 +115,7 @@ endif
 # fixed, so we need to actually have working C library header files prior to
 # the step or libgcc will not build...
 
-$(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
+$(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched uclibc-configured
 	mkdir -p $(GCC_BUILD_DIR1)
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) \
 		CC="$(HOSTCC)" \
