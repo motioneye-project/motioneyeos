@@ -68,7 +68,7 @@ config BR2_GCC_IS_SNAP
 
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
-	default "20060408"
+	default "20061121"
 	depends BR2_GCC_IS_SNAP
 	help
 	  Enter snapshot date to use for gcc.  Format is:
