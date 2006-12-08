@@ -1,0 +1,11 @@
+--- ltp-full-20061121/IDcheck.sh.orig	2006-12-07 22:31:29.000000000 -0700
++++ ltp-full-20061121/IDcheck.sh	2006-12-07 22:32:58.000000000 -0700
+@@ -85,7 +85,7 @@
+ fi
+ 
+ whoami | grep root > /dev/null
+-if [ $? == "0" ]; then
++if [ $? = "0" ]; then
+  I_AM_ROOT=1
+ fi
+ 
