@@ -1,0 +1,8 @@
+--- ltp-full-20061121/testcases/network/generate.sh.orig	2006-12-07 22:21:56.000000000 -0700
++++ ltp-full-20061121/testcases/network/generate.sh	2006-12-07 22:22:05.000000000 -0700
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ #
+ #   Copyright (c) International Business Machines  Corp., 2001
+ #
