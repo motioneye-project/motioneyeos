@@ -163,11 +163,11 @@ endif
 $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	rm -f $(LINUX_HEADERS_DIR)/include/asm
 	@if [ ! -f $(LINUX_HEADERS_DIR)/Makefile ] ; then \
-	    echo -e "VERSION = $(VERSION)\nPATCHLEVEL = $(PATCHLEVEL)\n" > \
+	    /bin/echo -e "VERSION = $(VERSION)\nPATCHLEVEL = $(PATCHLEVEL)\n" > \
 		    $(LINUX_HEADERS_DIR)/Makefile; \
-	    echo -e "SUBLEVEL = $(SUBLEVEL)\nEXTRAVERSION =\n" >> \
+	    /bin/echo -e "SUBLEVEL = $(SUBLEVEL)\nEXTRAVERSION =\n" >> \
 		    $(LINUX_HEADERS_DIR)/Makefile; \
-	    echo -e "KERNELRELEASE=\$$(VERSION).\$$(PATCHLEVEL).\$$(SUBLEVEL)\$$(EXTRAVERSION)" >> \
+	    /bin/echo -e "KERNELRELEASE=\$$(VERSION).\$$(PATCHLEVEL).\$$(SUBLEVEL)\$$(EXTRAVERSION)" >> \
 		    $(LINUX_HEADERS_DIR)/Makefile; \
 	fi;
 	@if [ "$(ARCH)" = "powerpc" ];then \

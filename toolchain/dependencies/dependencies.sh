@@ -35,7 +35,7 @@ XSED=$HOST_SED_DIR/bin/sed
 #############################################################
 if ! which which > /dev/null ; then
 	echo "which installed:		    FALSE"
-	echo -e "\n\nYou must install 'which' on your build machine\n";
+	/bin/echo -e "\n\nYou must install 'which' on your build machine\n";
 	exit 1;
 fi;
 echo "which installed:		    Ok"
@@ -49,13 +49,13 @@ echo "which installed:		    Ok"
 MAKE=$(which make)
 if [ -z "$MAKE" ] ; then
 	echo "make installed:		    FALSE"
-	echo -e "\n\nYou must install 'make' on your build machine\n";
+	/bin/echo -e "\n\nYou must install 'make' on your build machine\n";
 	exit 1;
 fi;
 MAKE_VERSION=$($MAKE --version 2>&1 | head -n1 | $XSED -e 's/^.* \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g')
 if [ -z "$MAKE_VERSION" ] ; then
 	echo "make installed:		    FALSE"
-	echo -e "\n\nYou must install 'make' on your build machine\n";
+	/bin/echo -e "\n\nYou must install 'make' on your build machine\n";
 	exit 1;
 fi;
 MAKE_MAJOR=$(echo $MAKE_VERSION | $XSED -e "s/\..*//g")
@@ -79,14 +79,14 @@ if [ -z "$COMPILER" ] ; then
 fi;
 if [ -z "$COMPILER" ] ; then
 	echo "C Compiler installed:		    FALSE"
-	echo -e "\n\nYou must install 'gcc' on your build machine\n";
+	/bin/echo -e "\n\nYou must install 'gcc' on your build machine\n";
 	exit 1;
 fi;
 
 COMPILER_VERSION=$($COMPILER --version 2>&1 | head -n1 | $XSED -e 's/^.*(.CC) \([0-9\.]\)/\1/g' -e "s/[-\ ].*//g")
 if [ -z "$COMPILER_VERSION" ] ; then
 	echo "gcc installed:		    FALSE"
-	echo -e "\n\nYou must install 'gcc' on your build machine\n";
+	/bin/echo -e "\n\nYou must install 'gcc' on your build machine\n";
 	exit 1;
 fi;
 COMPILER_MAJOR=$(echo $COMPILER_VERSION | $XSED -e "s/\..*//g")
@@ -107,7 +107,7 @@ echo "C compiler version '$COMPILER_VERSION':	    Ok"
 #############################################################
 if ! which bison > /dev/null ; then
 	echo "bison installed:		    FALSE"
-	echo -e "\n\nYou must install 'bison' on your build machine\n";
+	/bin/echo -e "\n\nYou must install 'bison' on your build machine\n";
 	exit 1;
 fi;
 echo "bison installed:		    Ok"
@@ -120,7 +120,7 @@ echo "bison installed:		    Ok"
 #############################################################
 if ! which flex > /dev/null ; then
 	echo "flex installed:		    FALSE"
-	echo -e "\n\nYou must install 'flex' on your build machine\n";
+	/bin/echo -e "\n\nYou must install 'flex' on your build machine\n";
 	exit 1;
 fi;
 echo "flex installed:			    Ok"
@@ -133,7 +133,7 @@ echo "flex installed:			    Ok"
 #############################################################
 if ! which msgfmt > /dev/null ; then \
 	echo "gettext installed:		    FALSE"
-	echo -e "\n\nYou must install 'gettext' on your build machine\n"; \
+	/bin/echo -e "\n\nYou must install 'gettext' on your build machine\n"; \
 	exit 1; \
 fi;
 echo "gettext installed:		    Ok"
