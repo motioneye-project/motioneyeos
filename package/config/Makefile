@@ -116,7 +116,7 @@ ncurses:
 		$(RM) lxtemp.c a.out; \
 	else \
 		$(RM) lxtemp.c; \
-		echo -e "\007" ;\
+		/bin/echo -e "\007" ;\
 		echo ">> Unable to find the Ncurses libraries." ;\
 		echo ">>" ;\
 		echo ">> You must have Ncurses installed in order" ;\

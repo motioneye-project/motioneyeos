@@ -24,7 +24,7 @@ $(ACPID_DIR)/acpid: $(ACPID_DIR)/.unpacked
 $(TARGET_DIR)/usr/sbin/acpid: $(ACPID_DIR)/acpid
 	cp -a $(ACPID_DIR)/acpid $(TARGET_DIR)/usr/sbin/acpid
 	mkdir -p $(TARGET_DIR)/etc/acpi/events
-	echo -e "event=button[ /]power\naction=/sbin/poweroff" > $(TARGET_DIR)/etc/acpi/events/powerbtn
+	/bin/echo -e "event=button[ /]power\naction=/sbin/poweroff" > $(TARGET_DIR)/etc/acpi/events/powerbtn
 	touch -c $(TARGET_DIR)/usr/sbin/acpid
 
 acpid: $(TARGET_DIR)/usr/sbin/acpid
