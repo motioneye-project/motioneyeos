@@ -6,7 +6,7 @@
 CRAMFS_DIR=$(BUILD_DIR)/cramfs-1.1
 CRAMFS_SOURCE=cramfs-1.1.tar.gz
 ifeq ($(strip $(subst ",,$(BR2_SOURCEFORGE_MIRROR))),unc)
-# " stupid syntax highlighting does not like unmatched quote from above line
+# "))
 # UNC does not seem to have cramfs
 CRAMFS_SITE=http://internap.dl.sourceforge.net/sourceforge/cramfs
 else
