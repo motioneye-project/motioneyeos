@@ -49,7 +49,7 @@ UDEV_CONF:=etc/udev/frugalware/*
 
 $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
 	-mkdir $(TARGET_DIR)/sys
-	-mkdir $(TARGET_DIR)/etc/udev/rules.d
+	-mkdir -p $(TARGET_DIR)/etc/udev/rules.d
 	$(INSTALL) -D -m 0644 $(UDEV_DIR)/$(UDEV_CONF) \
 		$(TARGET_DIR)/etc/udev/rules.d
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) CC=$(TARGET_CC)  LD=$(TARGET_CC) \
