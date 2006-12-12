@@ -5,17 +5,19 @@
 # the top level.
 
 GCC_VERSION:=$(strip $(subst ",, $(BR2_GCC_VERSION)))
-#"
+#"))
 TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
-#"
+#"))
 EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
-#"
+#"))
 ifeq ($(strip $(subst ",, $(BR2_GCC_IS_SNAP))),y)
+#"))
 GCC_SNAP_DATE:=$(strip $(subst ",, $(BR2_GCC_SNAP_DATE)))
+#"))
 else
 GCC_SNAP_DATE:=
 endif
-
+#")))
 
 ifeq ($(strip $(BR2_GCC_USE_SJLJ_EXCEPTIONS)),y)
 GCC_USE_SJLJ_EXCEPTIONS:=--enable-sjlj-exceptions
