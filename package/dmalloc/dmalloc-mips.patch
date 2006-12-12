@@ -1,0 +1,43 @@
+--- dmalloc/configure	2006-09-01 18:28:51.000000000 -0700
++++ dmalloc-mips/configure	2006-09-01 18:49:07.000000000 -0700
+@@ -6114,7 +6114,7 @@
+ echo $ECHO_N "checking return.h macros work... $ECHO_C" >&6
+ if test "$cross_compiling" = yes; then
+    cat >>confdefs.h <<\_ACEOF
+-#define RETURN_MACROS_WORK 0
++#define RETURN_MACROS_WORK 1
+ _ACEOF
+  echo "$as_me:$LINENO: result: no" >&5
+ echo "${ECHO_T}no" >&6
+--- dmalloc/return.h	2004-10-19 07:51:21.000000000 -0700
++++ dmalloc-mips/return.h	2006-09-08 21:52:43.000000000 -0700
+@@ -106,26 +106,16 @@
+ /*************************************/
+ 
+ /*
+- * For DEC Mips machines running Ultrix
++ * For Mips machines running Linux
+  */
+ #if __mips
+ 
+ /*
+- * I have no idea how to get inline assembly with the default cc.
+- * Anyone know how?
+- */
+-
+-#if 0
+-
+-/*
+  * NOTE: we assume here that file is global.
+  *
+- * $31 is the frame pointer.  $2 looks to be the return address but maybe
+- * not consistently.
++ * $31 is the return address.
+  */
+-#define GET_RET_ADDR(file)	asm("sw $2, file")
+-
+-#endif
++#define GET_RET_ADDR(file)	asm("sw $31, %0" : "=m" (file))
+ 
+ #endif /* __mips */
+ 
