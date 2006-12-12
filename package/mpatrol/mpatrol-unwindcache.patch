@@ -1,0 +1,208 @@
+Patch to improve MIPS call stack unwind performance by caching the results
+of code reading.
+by Dan Howell <dahowell@directv.com>
+
+diff -urN mpatrol-uclibc/src/stack.c mpatrol-unwindcache/src/stack.c
+--- mpatrol-uclibc/src/stack.c	2006-06-22 15:39:04.000000000 -0700
++++ mpatrol-unwindcache/src/stack.c	2006-06-22 15:42:20.000000000 -0700
+@@ -68,6 +68,7 @@
+ #define ucontext asm_ucontext
+ #include <asm/ucontext.h>
+ #undef ucontext
++#include "heap.h"
+ #endif /* ARCH */
+ #endif /* SYSTEM */
+ #endif /* TARGET */
+@@ -280,6 +281,136 @@
+ 
+ #if !MP_BUILTINSTACK_SUPPORT && !MP_LIBRARYSTACK_SUPPORT
+ #if TARGET == TARGET_UNIX && ARCH == ARCH_MIPS
++/* Set up a tree to cache the results of code searching to determine the
++   location of the return address for each code point encountered. */
++
++/* An unwind node belongs to a binary search tree of nodes, ordered by
++ * code address, and contains call stack unwinding details for a given
++ * code address. An internal index node stores details of a single memory
++ * block allocated for unwind node slots.
++ */
++typedef union unwindnode
++{
++    struct
++    {
++        treenode node;   /* internal tree node */
++        void *block;     /* pointer to block of memory */
++        size_t size;     /* size of block of memory */
++    }
++    index;
++    struct
++    {
++        treenode node;   /* tree node */
++        long p;          /* return address offset in the stack */
++        long m;          /* frame pointer offset in stack */
++        long s;          /* stack pointer offset from previous frame */
++        unsigned long a; /* flags */
++    }
++    data;
++}
++unwindnode;
++
++/* An unwindhead holds the table of address node slots as well as the
++ * internal list of memory blocks allocated for address node slots.
++ */
++typedef struct unwindhead
++{
++    heaphead heap;       /* pointer to heap */
++    slottable table;     /* table of address nodes */
++    treeroot itree;      /* internal list of memory blocks */
++    treeroot dtree;      /* tree for sorting */
++    size_t size;         /* memory used by internal blocks */
++    char init;           /* initialization flag */
++}
++unwindhead;
++
++static unwindhead unwindcache;
++
++/* Initialise the fields of an unwindhead so that there are no allocated,
++ * freed or free blocks.
++ */
++
++static
++void
++newunwindcache(void)
++{
++    struct { char x; unwindnode y; } z;
++    long n;
++
++    __mp_newheap(&unwindcache.heap);
++    /* Determine the minimum alignment for an unwind node on this
++     * system and force the alignment to be a power of two.  This
++     * information is used when initialising the slot table.
++     */
++    n = (char *) &z.y - &z.x;
++    __mp_newslots(&unwindcache.table, sizeof(unwindnode), __mp_poweroftwo(n));
++    __mp_newtree(&unwindcache.itree);
++    __mp_newtree(&unwindcache.dtree);
++    unwindcache.size = 0;
++    unwindcache.init = 1;
++}
++
++
++/* Forget all unwind information.
++ */
++
++static
++void
++deleteunwindcache(void)
++{
++    /* We don't need to explicitly free any memory as this is dealt with
++     * at a lower level by the heap manager.
++     */
++    __mp_deleteheap(&unwindcache.heap);
++    unwindcache.table.free = NULL;
++    unwindcache.table.size = 0;
++    __mp_newtree(&unwindcache.itree);
++    __mp_newtree(&unwindcache.dtree);
++    unwindcache.size = 0;
++    unwindcache.init = 0;
++}
++
++
++/* Allocate a new unwind node.
++ */
++
++static
++unwindnode *
++getunwindnode(void)
++{
++    unwindnode *n;
++    heapnode *p;
++
++    /* If we have no more allocation node slots left then we must allocate
++     * some more memory for them.  An extra MP_ALLOCFACTOR pages of memory
++     * should suffice.
++     */
++    if ((n = (unwindnode *) __mp_getslot(&unwindcache.table)) == NULL)
++    {
++        if ((p = __mp_heapalloc(&unwindcache.heap, unwindcache.heap.memory.page * MP_ALLOCFACTOR,
++              unwindcache.table.entalign, 1)) == NULL)
++            return NULL;
++        __mp_initslots(&unwindcache.table, p->block, p->size);
++        n = (unwindnode *) __mp_getslot(&unwindcache.table);
++        __mp_treeinsert(&unwindcache.itree, &n->index.node, (unsigned long) p->block);
++        n->index.block = p->block;
++        n->index.size = p->size;
++        unwindcache.size += p->size;
++        n = (unwindnode *) __mp_getslot(&unwindcache.table);
++    }
++    return n;
++}
++
++/* Search for the unwind node associated with a given address.
++ */
++static
++unwindnode *
++findunwindnode(unsigned long p)
++{
++    return (unwindnode *) __mp_search(unwindcache.dtree.root, p);
++}
++
++
+ /* Determine the stack pointer and return address of the previous stack frame
+  * by performing code reading.
+  */
+@@ -289,8 +420,9 @@
+ unwind(frameinfo *f)
+ {
+     long p, m, s;
+-    unsigned long a, i, q, t, b, r;
++    unsigned long a, i, q, t, b, r, k;
+     unsigned short l, u;
++    unwindnode *n = NULL;
+ 
+     s = -1;
+     p = m = 0;
+@@ -322,7 +454,23 @@
+ #endif
+     /* Save initial code-reading starting point.
+      */
+-    r = f->ra;
++    r = k = f->ra;
++    /* Create the cache if not yet created.
++     */
++    if (!unwindcache.init)
++    {
++        newunwindcache();
++        __mp_atexit(deleteunwindcache);
++    }
++    if ((n = findunwindnode(f->ra)) != NULL)
++    {
++        /* We've been here before, so get the cached information.
++         */
++        p = n->data.p;
++        m = n->data.m;
++        s = n->data.s;
++        a = n->data.a;
++    }
+     /* Search for the return address offset in the stack frame.
+      */
+     while (!((a & RA_OFFSET) && (a & SP_OFFSET)) && (f->ra < q))
+@@ -478,6 +626,19 @@
+         return 1;
+     }
+ #endif
++    if (n == NULL)
++    {
++        if ((n = getunwindnode()) != NULL)
++        {
++            /* Cache the information we just got in the tree.
++             */
++            n->data.p = p;
++            n->data.m = m;
++            n->data.s = s;
++            n->data.a = a;
++            __mp_treeinsert(&unwindcache.dtree, &n->data.node, k);
++        }
++    }
+     if (a & SP_IN_FP)
+         f->sp = f->fp;
+     if (m > 0)

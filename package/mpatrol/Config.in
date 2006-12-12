@@ -1,0 +1,10 @@
+config BR2_PACKAGE_MPATROL
+	bool "mpatrol"
+	default n
+	help
+	  A debugging tool that attempts to diagnose run-time errors that are
+	  caused by the wrong use of dynamically allocated memory. It acts as
+	  a malloc() debugger for debugging dynamic memory allocations, although
+	  it can also trace and profile calls to malloc() and free() too.
+
+	  http://www.cbmamiga.demon.co.uk/mpatrol/
