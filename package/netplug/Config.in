@@ -1,0 +1,8 @@
+config BR2_PACKAGE_NETPLUG
+	bool "netplug"
+	default n
+	help
+	  A Linux daemon that manages network interfaces in
+	  response to network cables being plugged in and out.
+
+	  http://www.red-bean.com/~bos/
