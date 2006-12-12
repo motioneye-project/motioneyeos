@@ -4,21 +4,24 @@
 #
 #############################################################
 
-ifndef UCLIBC_CONFIG_FILE
-UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc.config
-endif
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 # Be aware that this changes daily....
+UCLIBC_VER:=0.9.29
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
-UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
-#"))
+UCLIBC_SOURCE:=uClibc-snapshot.tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
+ifndef UCLIBC_CONFIG_FILE
+UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.29.config
+endif
 else
 UCLIBC_VER:=0.9.28
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-$(UCLIBC_VER)
 UCLIBC_SOURCE:=uClibc-$(UCLIBC_VER).tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
+ifndef UCLIBC_CONFIG_FILE
+UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.28.config
+endif
 endif
 UCLIBC_CAT:=$(BZCAT)
 
@@ -61,16 +64,20 @@ uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ \*.patch
+	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ \*$(UCLIBC_VER)\*.patch
 	touch $(UCLIBC_DIR)/.unpacked
 
-uclibc-configured: dependencies kernel-headers $(UCLIBC_DIR)/.configured
-$(UCLIBC_DIR)/.prepared: $(UCLIBC_DIR)/.unpacked
+# nothing to do -- some targets may wish to provide their own
+# and then use sed to hack up the default uClibc config...
+uclibc_config_file_prep::
+
+$(UCLIBC_DIR)/.prepared: $(UCLIBC_DIR)/.unpacked uclibc_config_file_prep
 	cp $(UCLIBC_CONFIG_FILE) $(UCLIBC_DIR)/.config
 	$(SED) 's,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX="$(TARGET_CROSS)",g' \
 		-e 's,# TARGET_$(UCLIBC_TARGET_ARCH) is not set,TARGET_$(UCLIBC_TARGET_ARCH)=y,g' \
 		-e 's,^TARGET_ARCH="none",TARGET_ARCH=\"$(UCLIBC_TARGET_ARCH)\",g' \
 		-e 's,^KERNEL_SOURCE=.*,KERNEL_SOURCE=\"$(LINUX_HEADERS_DIR)\",g' \
+		-e 's,^KERNEL_HEADERS=.*,KERNEL_HEADERS=\"$(LINUX_HEADERS_DIR)/include\",g' \
 		-e 's,^RUNTIME_PREFIX=.*,RUNTIME_PREFIX=\"/\",g' \
 		-e 's,^DEVEL_PREFIX=.*,DEVEL_PREFIX=\"/usr/\",g' \
 		-e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
@@ -123,15 +130,26 @@ endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
-	touch $(UCLIBC_DIR)/.prepared
-
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.prepared
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		HOSTCC="$(HOSTCC)" \
-		pregen install_dev && \
+		oldconfig
+	touch $(UCLIBC_DIR)/.prepared
+
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.prepared kernel-headers
+	set -x && $(MAKE1) -C $(UCLIBC_DIR) \
+		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
+		DEVEL_PREFIX=/usr/ \
+		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
+		HOSTCC="$(HOSTCC)" \
+		pregen install_dev
+	# Install the kernel headers to the first stage gcc include dir if necessary
+	if [ ! -f $(STAGING_DIR)/include/linux/version.h ] ; then \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
+	fi;
 	touch $(UCLIBC_DIR)/.configured
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
@@ -153,12 +171,17 @@ uclibc-menuconfig: $(UCLIBC_DIR)/.prepared
 	touch $(UCLIBC_DIR)/.configured
 
 
-$(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
+$(STAGING_DIR)/lib/libc.a: kernel-headers $(UCLIBC_DIR)/lib/libc.a
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX= \
 		DEVEL_PREFIX=$(STAGING_DIR)/ \
 		RUNTIME_PREFIX=$(STAGING_DIR)/ \
 		install_runtime install_dev
+	# Install the kernel headers to the staging dir if necessary
+	if [ ! -f $(STAGING_DIR)/include/linux/version.h ] ; then \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(STAGING_DIR)/include/ ; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(STAGING_DIR)/include/ ; \
+	fi;
 	# Build the host utils.  Need to add an install target...
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
 		PREFIX=$(STAGING_DIR) \
@@ -188,7 +211,8 @@ endif
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
 endif
 
-uclibc-configured: $(UCLIBC_DIR)/.configured
+uclibc-configured: dependencies $(UCLIBC_DIR)/.configured
+
 
 uclibc: $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/lib/libc.a \
 	$(UCLIBC_TARGETS)

@@ -3,11 +3,20 @@
 
 comment "uClibc Options"
 
-config BR2_UCLIBC_VERSION_SNAPSHOT
-	bool "Use a daily snapshot of uClibc?"
-	default y
+choice
+	prompt "uClibc C library Version"
+	default BR2_UCLIBC_VERSION_SNAPSHOT
 	help
- 	    Would you like to use a daily snapshot?
+	  Select the version of gcc you wish to use.
+
+	config BR2_UCLIBC_VERSION_0_9_28
+		bool "uClibc 0.9.28"
+
+	config BR2_UCLIBC_VERSION_SNAPSHOT
+		bool "daily snapshot"
+
+endchoice
+
 
 config BR2_USE_UCLIBC_SNAPSHOT
 	string "Date (yyyymmdd) of snapshot or 'snapshot' for latest"

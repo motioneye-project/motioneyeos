@@ -1,9 +1,34 @@
 ALCHEMY_DBAU1500_PATH=target/device/AMD/DBAu1500
 
 BR2_PACKAGE_BUSYBOX_CONFIG=$(ALCHEMY_DBAU1500_PATH)/busybox.config
-UCLIBC_CONFIG_FILE=$(ALCHEMY_DBAU1500_PATH)/uClibc.config.$(ARCH)
+UCLIBC_CONFIG_FILE=$(TOOL_BUILD_DIR)/uClibc.config.$(ARCH)
 
 TARGET_SKELETON=$(ALCHEMY_DBAU1500_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(ALCHEMY_DBAU1500_PATH)/device_table.txt
 
 TARGETS+=linux
+
+uclibc_config_file_prep::
+	cp toolchain/uClibc/uClibc-$(UCLIBC_VER).config $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# CONFIG_MIPS_ISA_1 is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# CONFIG_MIPS_ISA_2 is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# CONFIG_MIPS_ISA_3 is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# CONFIG_MIPS_ISA_4 is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "CONFIG_MIPS_ISA_MIPS32=y" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# CONFIG_MIPS_ISA_MIPS64 is not set" >> $(UCLIBC_CONFIG_FILE)
+ifeq ($(strip $(BR2_mips)),y)
+	/bin/echo "# ARCH_LITTLE_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "ARCH_BIG_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# ARCH_WANTS_LITTLE_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "ARCH_WANTS_BIG_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
+endif
+ifeq ($(strip $(BR2_mipsel)),y)
+	/bin/echo "ARCH_LITTLE_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# ARCH_BIG_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "ARCH_WANTS_LITTLE_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# ARCH_WANTS_BIG_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
+endif
+	/bin/echo "CONFIG_MIPS_O32_ABI=y" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# CONFIG_MIPS_N32_ABI is not set" >> $(UCLIBC_CONFIG_FILE)
+	/bin/echo "# CONFIG_MIPS_N64_ABI is not set" >> $(UCLIBC_CONFIG_FILE)
+
