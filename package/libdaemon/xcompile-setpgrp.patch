@@ -1,0 +1,11 @@
+--- libdaemon-0.10/configure.ac.cls	2005-11-24 05:38:53.000000000 -0800
++++ libdaemon-0.10/configure.ac	2006-09-25 08:16:33.000000000 -0700
+@@ -85,7 +85,7 @@
+ AC_FUNC_VPRINTF
+ AC_CHECK_FUNCS([select strerror dup2 memset strrchr])
+ AC_TYPE_MODE_T
+-AC_FUNC_SETPGRP
++dnl AC_FUNC_SETPGRP
+ AC_TYPE_SIGNAL
+ AC_TYPE_SIZE_T
+ 

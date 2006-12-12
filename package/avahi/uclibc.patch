@@ -1,0 +1,19 @@
+diff -urN avahi-0.6.14-orig/avahi-core/socket.c avahi-0.6.14/avahi-core/socket.c
+--- avahi-0.6.14-orig/avahi-core/socket.c	2006-08-31 10:18:03.000000000 -0700
++++ avahi-0.6.14/avahi-core/socket.c	2006-09-21 19:01:31.000000000 -0700
+@@ -394,13 +394,13 @@
+         avahi_log_warn("IPV6_UNICAST_HOPS failed: %s", strerror(errno));
+         goto fail;
+     }
+-    
++#ifdef IPV6_V6ONLY
+     yes = 1;
+     if (setsockopt(fd, IPPROTO_IPV6, IPV6_V6ONLY, &yes, sizeof(yes)) < 0) {
+         avahi_log_warn("IPV6_V6ONLY failed: %s", strerror(errno));
+         goto fail;
+     }
+-
++#endif
+     yes = 1;
+     if (setsockopt(fd, IPPROTO_IPV6, IPV6_MULTICAST_LOOP, &yes, sizeof(yes)) < 0) {
+         avahi_log_warn("IPV6_MULTICAST_LOOP failed: %s", strerror(errno));

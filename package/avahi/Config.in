@@ -1,0 +1,8 @@
+config BR2_PACKAGE_AVAHI
+	bool "avahi"
+	default n
+	help
+	  Avahi is a system which facilitates service 
+	  discovery on a local network. 
+
+	  http://www.avahi.org/
