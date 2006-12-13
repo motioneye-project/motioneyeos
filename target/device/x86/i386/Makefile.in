@@ -1,33 +1,5 @@
 X86_I386_PATH=target/device/x86/i386
 
 BR2_PACKAGE_BUSYBOX_CONFIG=$(X86_I386_PATH)/busybox.config
-UCLIBC_CONFIG_FILE=$(TOOL_BUILD_DIR)/uClibc.config.$(ARCH)
 
-#TARGET_SKELETON=$(X86_I386_PATH)/skel.tar.gz
-#TARGET_SKEL_DIR=$(X86_I386_PATH)/target_skeleton
-#TARGET_DEVICE_TABLE=$(X86_I386_PATH)/device_table.txt
-
-TARGETS+=linux
-
-uclibc_config_file_prep::
-	cp toolchain/uClibc/uClibc-$(UCLIBC_VER).config $(UCLIBC_CONFIG_FILE)
-	/bin/echo "ARCH_LITTLE_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# ARCH_BIG_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_GENERIC_386 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_386 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_486 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "CONFIG_586=y" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_586MMX is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_686 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_PENTIUMII is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_PENTIUMIII is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_PENTIUM4 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_K6 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_K7 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_ELAN is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_CRUSOE is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_WINCHIPC6 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_WINCHIP2 is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_CYRIXIII is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# CONFIG_NEHEMIAH is not set" >> $(UCLIBC_CONFIG_FILE)
-
+TARGETS+=linux26
