@@ -14,7 +14,7 @@ echo "Checking build system dependencies:"
 if test -n "$CC" ; then
 	echo "CC clean:						FALSE"
 	/bin/echo -e "\n\nYou must run 'unset CC' so buildroot can run with";
-	/bin/echo -e "a clean enviroment on your build machine\n";
+	/bin/echo -e "a clean environment on your build machine\n";
 	exit 1;
 fi;
 echo "CC clean:					Ok"
@@ -23,7 +23,7 @@ echo "CC clean:					Ok"
 if test -n "$CXX" ; then
 	echo "CXX clean:					FALSE"
 	/bin/echo -e "\n\nYou must run 'unset CXX' so buildroot can run with";
-	/bin/echo -e "a clean enviroment on your build machine\n";
+	/bin/echo -e "a clean environment on your build machine\n";
 	exit 1;
 fi;
 echo "CXX clean:					Ok"
@@ -32,7 +32,7 @@ echo "CXX clean:					Ok"
 if test -n "$CPP" ; then
 	echo "CPP clean:					FALSE"
 	/bin/echo -e "\n\nYou must run 'unset CPP' so buildroot can run with";
-	/bin/echo -e "a clean enviroment on your build machine\n";
+	/bin/echo -e "a clean environment on your build machine\n";
 	exit 1;
 fi;
 echo "CPP clean:					Ok"
@@ -41,7 +41,7 @@ echo "CPP clean:					Ok"
 if test -n "$CFLAGS" ; then
 	echo "CFLAGS clean:					FALSE"
 	/bin/echo -e "\n\nYou must run 'unset CFLAGS' so buildroot can run with";
-	/bin/echo -e "a clean enviroment on your build machine\n";
+	/bin/echo -e "a clean environment on your build machine\n";
 	exit 1;
 fi;
 echo "CFLAGS clean:					Ok"
@@ -50,7 +50,7 @@ echo "CFLAGS clean:					Ok"
 if test -n "$CXXFLAGS" ; then
 	echo "CXXFLAGS clean:					FALSE"
 	/bin/echo -e "\n\nYou must run 'unset CXXFLAGS' so buildroot can run with";
-	/bin/echo -e "a clean enviroment on your build machine\n";
+	/bin/echo -e "a clean environment on your build machine\n";
 	exit 1;
 fi;
 echo "CXXFLAGS clean:					Ok"
