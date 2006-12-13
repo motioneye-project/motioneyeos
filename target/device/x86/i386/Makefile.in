@@ -1,5 +1,3 @@
 X86_I386_PATH=target/device/x86/i386
 
-BR2_PACKAGE_BUSYBOX_CONFIG=$(X86_I386_PATH)/busybox.config
-
 TARGETS+=linux26
