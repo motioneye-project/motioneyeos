@@ -5,6 +5,56 @@
 echo ""
 echo "Checking build system dependencies:"
 
+
+#############################################################
+#
+# check build system 'environment'
+#
+#############################################################
+if test -n "$CC" ; then
+	echo "CC clean:					FALSE"
+	/bin/echo -e "\n\nYou must run 'unset CC' so buildroot can run with";
+	/bin/echo -e "a clean enviroment on your build machine\n";
+	exit 1;
+fi;
+echo "CC clean:					Ok"
+
+
+if test -n "$CXX" ; then
+	echo "CXX clean:				FALSE"
+	/bin/echo -e "\n\nYou must run 'unset CXX' so buildroot can run with";
+	/bin/echo -e "a clean enviroment on your build machine\n";
+	exit 1;
+fi;
+echo "CXX clean:					Ok"
+
+
+if test -n "$CPP" ; then
+	echo "CPP clean:				FALSE"
+	/bin/echo -e "\n\nYou must run 'unset CPP' so buildroot can run with";
+	/bin/echo -e "a clean enviroment on your build machine\n";
+	exit 1;
+fi;
+echo "CPP clean:					Ok"
+
+
+if test -n "$CXXFLAGS" ; then
+	echo "CXXFLAGS clean:				FALSE"
+	/bin/echo -e "\n\nYou must run 'unset CXXFLAGS' so buildroot can run with";
+	/bin/echo -e "a clean enviroment on your build machine\n";
+	exit 1;
+fi;
+echo "CXXFLAGS clean:					Ok"
+
+
+if test -n "$CXXFLAGS" ; then
+	echo "CXXFLAGS clean:				FALSE"
+	/bin/echo -e "\n\nYou must run 'unset CXXFLAGS' so buildroot can run with";
+	/bin/echo -e "a clean enviroment on your build machine\n";
+	exit 1;
+fi;
+echo "CXXFLAGS clean:					Ok"
+
 #############################################################
 #
 # check build system 'sed'
@@ -22,9 +72,9 @@ fi
 echo "HELLO" > .sedtest
 $SED -i -e "s/HELLO/GOODBYE/" .sedtest >/dev/null 2>&1
 if test $? != 0 ; then
-	echo "sed works:			    No, using buildroot version instead"
+	echo "sed works:				No, using buildroot version instead"
 else
-	echo "sed works:			    Ok"
+	echo "sed works:					Ok"
 fi
 XSED=$HOST_SED_DIR/bin/sed
 
@@ -38,7 +88,7 @@ if ! which which > /dev/null ; then
 	/bin/echo -e "\n\nYou must install 'which' on your build machine\n";
 	exit 1;
 fi;
-echo "which installed:		    Ok"
+echo "which installed:				Ok"
 
 
 #############################################################
@@ -64,7 +114,7 @@ if [ $MAKE_MAJOR -lt 3 -o $MAKE_MAJOR -eq 3 -a $MAKE_MINOR -lt 8 ] ; then
 	echo "You have make '$MAKE_VERSION' installed.  GNU make >=3.80 is required"
 	exit 1;
 fi;
-echo "GNU make version '$MAKE_VERSION':	    Ok"
+echo "GNU make version '$MAKE_VERSION':			Ok"
 
 
 
@@ -96,7 +146,7 @@ if [ $COMPILER_MAJOR -lt 3 -o $COMPILER_MAJOR -eq 2 -a $COMPILER_MINOR -lt 95 ] 
 	exit 1;
 fi;
 echo "C compiler '$COMPILER'"
-echo "C compiler version '$COMPILER_VERSION':	    Ok"
+echo "C compiler version '$COMPILER_VERSION':			Ok"
 
 
 
@@ -110,7 +160,7 @@ if ! which bison > /dev/null ; then
 	/bin/echo -e "\n\nYou must install 'bison' on your build machine\n";
 	exit 1;
 fi;
-echo "bison installed:		    Ok"
+echo "bison installed:				Ok"
 
 
 #############################################################
@@ -123,7 +173,7 @@ if ! which flex > /dev/null ; then
 	/bin/echo -e "\n\nYou must install 'flex' on your build machine\n";
 	exit 1;
 fi;
-echo "flex installed:			    Ok"
+echo "flex installed:					Ok"
 
 
 #############################################################
@@ -136,7 +186,7 @@ if ! which msgfmt > /dev/null ; then \
 	/bin/echo -e "\n\nYou must install 'gettext' on your build machine\n"; \
 	exit 1; \
 fi;
-echo "gettext installed:		    Ok"
+echo "gettext installed:				Ok"
 
 
 
@@ -147,6 +197,6 @@ echo "gettext installed:		    Ok"
 # All done
 #
 #############################################################
-echo "Build system dependencies:	    Ok"
+echo "Build system dependencies:			Ok"
 echo ""
 
