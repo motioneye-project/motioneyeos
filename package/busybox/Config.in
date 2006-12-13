@@ -9,14 +9,27 @@ config BR2_PACKAGE_BUSYBOX
 
 	  Most people will answer Y.
 
-config BR2_PACKAGE_BUSYBOX_SNAPSHOT
-	bool "Use the daily snapshot of BusyBox?"
-	depends BR2_PACKAGE_BUSYBOX
-	default n
+choice
+	prompt "BusyBox Version"
+	default BR2_BUSYBOX_VERSION_1_2_2_1
 	help
-	  Use the latest BusyBox daily snapshot instead of release.
+	  Select the version of BusyBox you wish to use.
 
-	  For fun, you should say Y.
+	config BR2_BUSYBOX_VERSION_1_0_1
+		bool "BusyBox 1.0.1"
+
+	config BR2_BUSYBOX_VERSION_1_1_3
+		bool "BusyBox 1.1.3"
+
+	config BR2_BUSYBOX_VERSION_1_2_2_1
+		bool "BusyBox 1.2.2.1"
+
+	config BR2_PACKAGE_BUSYBOX_SNAPSHOT
+		bool "daily snapshot"
+
+endchoice
+
+
 
 config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
 	bool "Install symlinks for BusyBox applets"
@@ -34,11 +47,12 @@ config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
 config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	depends BR2_PACKAGE_BUSYBOX
-	default "package/busybox/busybox.config" if !BR2_i386
 	default "target/device/x86/i386/busybox.config" if BR2_i386
+	default "package/busybox/busybox-1.0.1.config" if BR2_BUSYBOX_VERSION_1_0_1
+	default "package/busybox/busybox-1.1.3.config" if BR2_BUSYBOX_VERSION_1_1_3
+	default "package/busybox/busybox-1.2.2.1.config" if BR2_BUSYBOX_VERSION_1_2_2_1
 	help
 	  Some people may wish to use their own modified BusyBox configuration
 	  file, and will specify their config file location with this option.
 
-	  The default is "package/busybox/busybox.config".
 	  Most people will just use the default BusyBox configuration file.
