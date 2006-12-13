@@ -16,7 +16,8 @@ KERNEL_ARCH:=$(shell $(SHELL) -c "echo \"$(ARCH)\" | sed -e \"s/-.*//\" \
 	-e s/i.86/i386/ -e s/sun4u/sparc64/ \
 	-e s/arm.*/arm/ -e s/sa110/arm/ \
 	-e s/s390x/s390/ -e s/parisc64/parisc/ \
-	-e s/ppc.*/powerpc/ -e s/mips.*/mips/")
+	-e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
+	-e s/sh2.*/sh/ -e s/sh3.*/sh/ -e s/sh4.*/sh/")
 
 
 $(DL_DIR)/$(LINUX_HEADERS_SOURCE):
