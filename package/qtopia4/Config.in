@@ -1,0 +1,60 @@
+config BR2_PACKAGE_QTOPIA4
+	bool "qtopia4"
+	default n
+	select BR2_INSTALL_LIBSTDCPP
+	select BR2_PTHREADS_NATIVE
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	help
+	  Qtopia core 4.
+
+	  http://www.trolltech.com/
+
+config BR2_PACKAGE_QTOPIA4_DEBUG
+        bool "Compile with debug support"
+        default y 
+	depends BR2_PACKAGE_QTOPIA4
+        help
+
+config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
+        string "Qtopia Core 4 Commercial License Username"
+        default ""
+	depends BR2_PACKAGE_QTOPIA4
+        help
+            Commercial users can download their source directly by providing a username.
+
+
+config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
+        string "Qtopia Core 4 Commercial License Password"
+        default ""
+	depends BR2_PACKAGE_QTOPIA4
+        help
+            Commercial users can download their source directly by providing a password.
+
+config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
+        bool "Compatibility with Qt3"
+        default y 
+	depends BR2_PACKAGE_QTOPIA4
+        help
+	    Turns on support for older Qt3.
+
+config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
+        string "The embedded platform we are making Qtopia4 for"
+	default "arm"	if BR2_arm
+	default "arm"	if BR2_armeb
+	default "x86"	if BR2_i386
+	default "x86_64"	if BR2_x86_64
+	default "mips"	if BR2_mips
+	default "mips"	if BR2_mipsel
+# Not that I really believe these will work..
+	default "generic"	if BR2_alpha
+	default "generic"	if BR2_chris
+	default "generic"	if BR2_m68k
+	default "generic"	if BR2_nios2
+	default "generic"	if BR2_powerpc
+	default "generic"	if BR2_sh
+	default "generic"	if BR2_sh64
+	default "generic"	if BR2_sparc
+	depends BR2_PACKAGE_QTOPIA4
+        help
+	    The platform.
