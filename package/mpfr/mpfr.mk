@@ -59,7 +59,7 @@ $(MPFR_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/lib/$(GMP_BINARY)
 		--with-gmp=$(STAGING_DIR) \
 		$(DISABLE_NLS) \
 	);
-	touch $(MPFR_DIR)/.configured
+	touch $@
 
 $(MPFR_DIR)/.libs/$(MPFR_BINARY): $(MPFR_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(MPFR_DIR)
@@ -125,7 +125,7 @@ $(MPFR_HOST_DIR)/.configured: $(MPFR_DIR)/.unpacked libgmp-host
 		--with-gmp-build=$(GMP_HOST_DIR) \
 		$(DISABLE_NLS) \
 	) && \
-	touch $(MPFR_DIR)/.configured
+	touch $@
 
 $(MPFR_HOST_DIR)/.libs/$(MPFR_BINARY): $(MPFR_HOST_DIR)/.configured
 	$(MAKE) -C $(MPFR_HOST_DIR)
