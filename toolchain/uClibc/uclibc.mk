@@ -65,7 +65,7 @@ uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ \*$(UCLIBC_VER)\*.patch
+	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ uClibc-$(UCLIBC_VER)\*.patch
 	touch $(UCLIBC_DIR)/.unpacked
 
 # Some targets may wish to provide their own UCLIBC_CONFIG_FILE...
