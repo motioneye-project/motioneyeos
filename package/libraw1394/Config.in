@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBRAW1394
+	bool "libraw1394"
+	default n
+	help
+		Library for direct access to IEEE 1394 bus.
+
+		Through libraw1394/raw1394, applications can directly
+		send to and receive from other nodes without requiring
+		a kernel driver for the protocol in question.
+
+		http://www.linux1394.org/
