@@ -7,7 +7,7 @@ choice
 	prompt "uClibc C library Version"
 	default BR2_UCLIBC_VERSION_SNAPSHOT
 	help
-	  Select the version of gcc you wish to use.
+	  Select the version of uClibc you wish to use.
 
 	config BR2_UCLIBC_VERSION_0_9_28
 		bool "uClibc 0.9.28"

@@ -9,7 +9,8 @@ ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 # Be aware that this changes daily....
 UCLIBC_VER:=0.9.29
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
-UCLIBC_SOURCE:=uClibc-snapshot.tar.bz2
+UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
+#"))
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 ifndef UCLIBC_CONFIG_FILE
 UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.29.config
