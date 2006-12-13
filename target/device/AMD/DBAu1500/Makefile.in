@@ -8,7 +8,7 @@ TARGET_DEVICE_TABLE=$(ALCHEMY_DBAU1500_PATH)/device_table.txt
 
 TARGETS+=linux
 
-uclibc_config_file_prep::
+$(UCLIBC_DIR)/.xprep::
 	cp toolchain/uClibc/uClibc-$(UCLIBC_VER).config $(UCLIBC_CONFIG_FILE)
 	/bin/echo "# CONFIG_MIPS_ISA_1 is not set" >> $(UCLIBC_CONFIG_FILE)
 	/bin/echo "# CONFIG_MIPS_ISA_2 is not set" >> $(UCLIBC_CONFIG_FILE)
@@ -16,18 +16,6 @@ uclibc_config_file_prep::
 	/bin/echo "# CONFIG_MIPS_ISA_4 is not set" >> $(UCLIBC_CONFIG_FILE)
 	/bin/echo "CONFIG_MIPS_ISA_MIPS32=y" >> $(UCLIBC_CONFIG_FILE)
 	/bin/echo "# CONFIG_MIPS_ISA_MIPS64 is not set" >> $(UCLIBC_CONFIG_FILE)
-ifeq ($(strip $(BR2_mips)),y)
-	/bin/echo "# ARCH_LITTLE_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "ARCH_BIG_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# ARCH_WANTS_LITTLE_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "ARCH_WANTS_BIG_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
-endif
-ifeq ($(strip $(BR2_mipsel)),y)
-	/bin/echo "ARCH_LITTLE_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# ARCH_BIG_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "ARCH_WANTS_LITTLE_ENDIAN=y" >> $(UCLIBC_CONFIG_FILE)
-	/bin/echo "# ARCH_WANTS_BIG_ENDIAN is not set" >> $(UCLIBC_CONFIG_FILE)
-endif
 	/bin/echo "CONFIG_MIPS_O32_ABI=y" >> $(UCLIBC_CONFIG_FILE)
 	/bin/echo "# CONFIG_MIPS_N32_ABI is not set" >> $(UCLIBC_CONFIG_FILE)
 	/bin/echo "# CONFIG_MIPS_N64_ABI is not set" >> $(UCLIBC_CONFIG_FILE)
