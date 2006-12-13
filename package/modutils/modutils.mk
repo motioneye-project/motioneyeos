@@ -95,11 +95,12 @@ $(MODUTILS_DIR2)/$(MODUTILS_BINARY): $(MODUTILS_DIR2)/.configured
 	$(MAKE1) -C $(MODUTILS_DIR2)
 	touch -c $(MODUTILS_DIR2)/$(MODUTILS_BINARY)
 
-$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod: $(MODUTILS_DIR2)/$(MODUTILS_BINARY)
-	cp $(MODUTILS_DIR2)/$(MODUTILS_BINARY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod
-	touch -c $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod
+$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod: $(MODUTILS_DIR2)/$(MODUTILS_BINARY)
+	mkdir -p $(STAGING_DIR)/bin
+	cp $(MODUTILS_DIR2)/$(MODUTILS_BINARY) $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
+	touch -c $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
 
-cross-depmod: uclibc $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod
+cross-depmod: uclibc $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
 
 cross-depmod-source: $(DL_DIR)/$(MODUTILS_SOURCE)
 
