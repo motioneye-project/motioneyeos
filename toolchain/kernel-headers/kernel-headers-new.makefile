@@ -34,7 +34,9 @@ $(LINUX_HEADERS_UNPACK_DIR)/.patched: $(LINUX_HEADERS_UNPACK_DIR)/.unpacked
 
 $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_UNPACK_DIR)/.patched
 	(cd $(LINUX_HEADERS_UNPACK_DIR) ; \
-	 $(MAKE) ARCH=$(KERNEL_ARCH) INSTALL_HDR_PATH=$(LINUX_HEADERS_DIR) headers_install)
+	 $(MAKE) ARCH=$(KERNEL_ARCH) CC="$(HOSTCC)" \
+		INSTALL_HDR_PATH=$(LINUX_HEADERS_DIR) headers_install ; \
+	)
 	touch $(LINUX_HEADERS_DIR)/.configured
 
 endif
