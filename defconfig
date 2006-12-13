@@ -157,9 +157,12 @@ BR2_CROSS_TOOLCHAIN_TARGET_UTILS=y
 # The default minimal system
 #
 BR2_PACKAGE_BUSYBOX=y
+# BR2_BUSYBOX_VERSION_1_0_1 is not set
+# BR2_BUSYBOX_VERSION_1_1_3 is not set
+BR2_BUSYBOX_VERSION_1_2_2_1=y
 # BR2_PACKAGE_BUSYBOX_SNAPSHOT is not set
 BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS=y
-BR2_PACKAGE_BUSYBOX_CONFIG="package/busybox/busybox.config"
+BR2_PACKAGE_BUSYBOX_CONFIG="target/device/x86/i386/busybox.config"
 
 #
 # The minimum needed to build a uClibc development system
