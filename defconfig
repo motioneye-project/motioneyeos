@@ -125,13 +125,7 @@ BR2_CCACHE=y
 #
 # BR2_PACKAGE_GDB is not set
 # BR2_PACKAGE_GDB_SERVER is not set
-BR2_PACKAGE_GDB_HOST=y
-# BR2_GDB_VERSION_6_2_1 is not set
-# BR2_GDB_VERSION_6_3 is not set
-# BR2_GDB_VERSION_6_4 is not set
-BR2_GDB_VERSION_6_5=y
-# BR2_GDB_VERSION_SNAPSHOT is not set
-BR2_GDB_VERSION="6.5"
+# BR2_PACKAGE_GDB_HOST is not set
 
 #
 # elf2flt
