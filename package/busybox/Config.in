@@ -12,7 +12,7 @@ config BR2_PACKAGE_BUSYBOX
 config BR2_PACKAGE_BUSYBOX_SNAPSHOT
 	bool "Use the daily snapshot of BusyBox?"
 	depends BR2_PACKAGE_BUSYBOX
-	default y
+	default n
 	help
 	  Use the latest BusyBox daily snapshot instead of release.
 
