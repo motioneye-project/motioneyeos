@@ -29,7 +29,7 @@ $(LTT_DIR1)/.unpacked: $(DL_DIR)/$(LTT_SOURCE)
 	touch $(LTT_DIR1)/.unpacked
 
 # Build without GTK if not available
-LTT_WITHOUT_GTK:=$(shell which gtk-config >& /dev/null || echo "--without-gtk")
+LTT_WITHOUT_GTK:=$(shell which gtk-config > /dev/null 2>&1 || echo "--without-gtk")
 
 $(LTT_DIR1)/.configured: $(LTT_DIR1)/.unpacked
 	(cd $(LTT_DIR1); rm -rf config.cache; \
