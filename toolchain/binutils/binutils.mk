@@ -62,6 +62,8 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
+		--with-build-sysroot="$(TOOL_BUILD_DIR)/uClibc_dev/" \
+		--with-sysroot="$(TOOL_BUILD_DIR)/uClibc_dev/" \
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
 		--disable-werror \
@@ -77,7 +79,7 @@ $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 	$(MAKE) -C $(BINUTILS_DIR1) install
 
-binutils: dependencies $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
+binutils: dependencies uclibc-configured $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
 
 binutils-source: $(DL_DIR)/$(BINUTILS_SOURCE)
 
