@@ -36,6 +36,13 @@ $(LSOF_DIR)/.configured: $(LSOF_DIR)/.unpacked
 	touch $(LSOF_DIR)/.configured
 
 $(LSOF_DIR)/lsof_4.77_src/$(LSOF_BINARY): $(LSOF_DIR)/.configured
+ifeq ($(UCLIBC_HAS_WCHAR),)
+	$(SED) 's,^#define[ 	]*HASWIDECHAR.*,#undef HASWIDECHAR,' $(LSOF_DIR)/lsof_4.77_src/machine.h
+	$(SED) 's,^#define[ 	]*WIDECHARINCL.*,,' $(LSOF_DIR)/lsof_4.77_src/machine.h
+endif
+ifeq ($(UCLIBC_HAS_LOCALE),)
+	$(SED) 's,^#define[ 	]*HASSETLOCALE.*,#undef HASSETLOCALE,' $(LSOF_DIR)/lsof_4.77_src/machine.h
+endif
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS) $(BR2_LSOF_CFLAGS)" -C $(LSOF_DIR)/lsof_4.77_src
 
 $(TARGET_DIR)/$(LSOF_TARGET_BINARY): $(LSOF_DIR)/lsof_4.77_src/$(LSOF_BINARY)
