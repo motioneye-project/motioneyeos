@@ -28,7 +28,7 @@ $(LIBDAEMON_DIR)/.unpacked: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 	touch $(LIBDAEMON_DIR)/.unpacked
 
 $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
-	(cd $(AVAHI_DIR) && rm -rf config.cache && autoconf)
+	(cd $(LIBDAEMON_DIR) && rm -rf config.cache && autoconf)
 	( \
 		cd $(LIBDAEMON_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
