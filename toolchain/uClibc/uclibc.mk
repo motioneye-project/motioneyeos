@@ -126,23 +126,23 @@ else
 	$(SED) 's,^.*UCLIBC_HAS_LOCALE.*,UCLIBC_HAS_LOCALE=n,g' $(UCLIBC_DIR)/.config
 endif
 ifeq ("$(KERNEL_ARCH)","i386")
-	/bin/echo "# CONFIG_GENERIC_386 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_386 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_486 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_586 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_586MMX is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_686 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_PENTIUMII is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_PENTIUMIII is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_PENTIUM4 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_K6 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_K7 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_ELAN is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_CRUSOE is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_WINCHIPC6 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_WINCHIP2 is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_CYRIXIII is not set" >> $(UCLIBC_DIR)/.__config
-	/bin/echo "# CONFIG_NEHEMIAH is not set" >> $(UCLIBC_DIR)/.__config
+	/bin/echo "# CONFIG_GENERIC_386 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_386 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_486 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_586 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_586MMX is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_686 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_PENTIUMII is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_PENTIUMIII is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_PENTIUM4 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_K6 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_K7 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_ELAN is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_CRUSOE is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_WINCHIPC6 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_WINCHIP2 is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_CYRIXIII is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_NEHEMIAH is not set" >> $(UCLIBC_DIR)/.config
 ifeq ($(BR2_x86_i386),y)
 	$(SED) 's,# CONFIG_386 is not set,CONFIG_386=y,g' $(UCLIBC_DIR)/.config
 endif
