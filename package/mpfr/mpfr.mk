@@ -34,11 +34,12 @@ ifneq ($(MPFR_PATCH),)
 endif
 	touch $(MPFR_DIR)/.unpacked
 
-$(MPFR_DIR)/.configured: $(MPFR_DIR)/.unpacked
+$(MPFR_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/lib/$(GMP_BINARY)
 	(cd $(MPFR_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_c_bigendian=$(MPFR_BE) \
+		CXX="" \
 		./configure \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -55,6 +56,7 @@ $(MPFR_DIR)/.configured: $(MPFR_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
+		--with-gmp=$(STAGING_DIR) \
 		$(DISABLE_NLS) \
 	);
 	touch $(MPFR_DIR)/.configured
@@ -90,6 +92,7 @@ endif
 		$(TARGET_DIR)/lib/libmpfr.a
 
 libmpfr: uclibc libgmp $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION)
+libmpfr-stage: uclibc $(STAGING_DIR)/lib/$(MPFR_BINARY)
 
 libmpfr-clean:
 	rm -f $(TARGET_DIR)/lib/$(MPFR_BINARY)
@@ -97,6 +100,37 @@ libmpfr-clean:
 
 libmpfr-dirclean:
 	rm -rf $(MPFR_DIR)
+
+MPFR_HOST_DIR:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)
+$(MPFR_HOST_DIR)/.configured: $(MPFR_DIR)/.unpacked libgmp-host
+	[ -d $(MPFR_HOST_DIR) ] || mkdir $(MPFR_HOST_DIR)
+	(cd $(MPFR_HOST_DIR); \
+		CC="$(HOSTCC)" \
+		CXX="$(HOSTCXX)" \
+		$(MPFR_DIR)/configure \
+		--prefix=$(STAGING_DIR) \
+		--exec_prefix=$(STAGING_DIR) \
+		--libdir=$(STAGING_DIR)/lib \
+		--includedir=$(STAGING_DIR)/include \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--enable-shared \
+		--enable-static \
+		--with-gmp-build=$(GMP_HOST_DIR) \
+		$(DISABLE_NLS) \
+	) && \
+	touch $(MPFR_DIR)/.configured
+
+$(MPFR_HOST_DIR)/.libs/$(MPFR_BINARY): $(MPFR_HOST_DIR)/.configured
+	$(MAKE) -C $(MPFR_HOST_DIR)
+
+libmpfr-host: $(MPFR_HOST_DIR)/.libs/$(MPFR_BINARY)
 
 #############################################################
 #

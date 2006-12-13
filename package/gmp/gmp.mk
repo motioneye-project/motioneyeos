@@ -85,6 +85,7 @@ endif
 		$(TARGET_DIR)/lib/libgmp.a
 
 libgmp: uclibc $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION)
+libgmp-stage: uclibc $(STAGING_DIR)/lib/$(GMP_BINARY)
 
 libgmp-clean:
 	rm -f $(TARGET_DIR)/lib/$(GMP_BINARY)
@@ -92,6 +93,37 @@ libgmp-clean:
 
 libgmp-dirclean:
 	rm -rf $(GMP_DIR)
+
+GMP_HOST_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
+$(GMP_HOST_DIR)/.configured: $(GMP_DIR)/.unpacked
+	[ -d $(GMP_HOST_DIR) ] || mkdir $(GMP_HOST_DIR)
+	(cd $(GMP_HOST_DIR); \
+		CC_FOR_BUILD="$(HOSTCC)" \
+		CC="$(HOSTCC)" \
+		CFLAGS="$(HOST_CFLAGS)" \
+		$(GMP_DIR)/configure \
+		--prefix=$(STAGING_DIR) \
+		--exec_prefix=$(STAGING_DIR) \
+		--libdir=$(STAGING_DIR)/lib \
+		--includedir=$(STAGING_DIR)/include \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--enable-shared \
+		--enable-static \
+		$(DISABLE_NLS) \
+	) && \
+	touch $(GMP_HOST_DIR)/.configured
+
+$(GMP_HOST_DIR)/.libs/$(GMP_BINARY): $(GMP_HOST_DIR)/.configured
+	$(MAKE) -C $(GMP_HOST_DIR)
+
+libgmp-host: $(GMP_HOST_DIR)/.libs/$(GMP_BINARY)
 
 #############################################################
 #
