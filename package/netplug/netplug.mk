@@ -7,7 +7,7 @@ NETPLUG_VER=1.2.9
 NETPLUG_SOURCE=netplug-$(NETPLUG_VER).tar.bz2
 NETPLUG_SITE=http://www.red-bean.com/~bos/netplug
 NETPLUG_DIR=$(BUILD_DIR)/netplug-$(NETPLUG_VER)
-NETPLUG_CAT:=bzcat
+NETPLUG_CAT:=$(BZCAT)
 NETPLUG_BINARY:=netplugd
 NETPLUG_TARGET_BINARY:=sbin/netplugd
 

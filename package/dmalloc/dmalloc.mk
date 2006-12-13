@@ -7,7 +7,7 @@ DMALLOC_VER:=5.4.2
 DMALLOC_SOURCE:=dmalloc-$(DMALLOC_VER).tgz
 DMALLOC_SITE:=http://dmalloc.com/releases
 DMALLOC_DIR:=$(BUILD_DIR)/dmalloc-$(DMALLOC_VER)
-DMALLOC_CAT:=zcat
+DMALLOC_CAT:=$(ZCAT)
 DMALLOC_BINARY:=dmalloc
 DMALLOC_TARGET_BINARY:=usr/bin/dmalloc
 
