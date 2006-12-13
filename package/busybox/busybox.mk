@@ -4,17 +4,34 @@
 #
 #############################################################
 
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
-# Be aware that this changes daily....
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox
-BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
-else
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
+BUSYBOX_VER:=1.0.1
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
+BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
+BUSYBOX_SITE:=http://www.busybox.net/downloads
+endif
+
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_1_3)),y)
+BUSYBOX_VER:=1.1.3
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
+BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
+BUSYBOX_SITE:=http://www.busybox.net/downloads
+endif
+
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_2_2_1)),y)
 BUSYBOX_VER:=1.2.2.1
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
 BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
+
+ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
+# Be aware that this changes daily....
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox
+BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
+BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
+endif
+
 BUSYBOX_UNZIP=$(BZCAT)
 
 BUSYBOX_CONFIG_FILE=$(subst ",, $(strip $(BR2_PACKAGE_BUSYBOX_CONFIG)))
@@ -37,15 +54,28 @@ endif
 
 $(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)
 	cp $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
-	if [ -f $(BUSYBOX_DIR)/Rules.mak ]; then \
-		$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\
-		PREFIX=$(TARGET_DIR),;" $(BUSYBOX_DIR)/Rules.mak ; \
-	else \
-		$(SED) s,^CONFIG_PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
-			$(BUSYBOX_DIR)/.config ; \
-		$(SED) s,^PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
-			$(BUSYBOX_DIR)/.config ; \
-	fi
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
+	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\PREFIX=$(TARGET_DIR),;" \
+		$(BUSYBOX_DIR)/Rules.mak ;
+endif
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_1_3)),y)
+	$(SED) s,^CONFIG_PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
+		$(BUSYBOX_DIR)/.config ;
+	$(SED) s,^PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
+		$(BUSYBOX_DIR)/.config ;
+endif
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_2_2_1)),y)
+	$(SED) s,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
+		$(BUSYBOX_DIR)/.config ;
+	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
+		$(BUSYBOX_DIR)/.config ;
+endif
+ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
+	$(SED) s,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
+		$(BUSYBOX_DIR)/.config ;
+	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
+		$(BUSYBOX_DIR)/.config ;
+endif
 ifeq ($(BR2_LARGEFILE),y)
 	$(SED) "s/^.*CONFIG_LFS.*/CONFIG_LFS=y/;" $(BUSYBOX_DIR)/.config
 else
@@ -55,6 +85,7 @@ endif
 	yes "" | $(MAKE) CC=$(TARGET_CC) CROSS_COMPILE="$(TARGET_CROSS)" \
 		CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
 	touch $(BUSYBOX_DIR)/.configured
+
 
 $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) CROSS_COMPILE="$(TARGET_CROSS)" \
