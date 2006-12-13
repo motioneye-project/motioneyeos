@@ -101,6 +101,7 @@ BINUTILS_DIR2:=$(BUILD_DIR)/binutils-$(BINUTILS_VERSION)-target
 $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR2)
 	(cd $(BINUTILS_DIR2); \
+		CC_FOR_BUILD="$(HOSTCC)" \
 		PATH=$(TARGET_PATH) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		CFLAGS_FOR_BUILD="-O2 -g" \
