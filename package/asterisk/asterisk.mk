@@ -5,7 +5,7 @@
 ##############################################################
 ASTERISK_VERSION := 1.2.0-beta1
 ASTERISK_SOURCE := asterisk-$(ASTERISK_VERSION).tar.gz
-ASTERISK_SITE := ftp://ftp.digium.com/pub/asterisk
+ASTERISK_SITE := ftp://ftp.digium.com/pub/asterisk/old-releases
 ASTERISK_DIR := $(BUILD_DIR)/asterisk-$(ASTERISK_VERSION)
 ASTERISK_BINARY := asterisk
 ASTERISK_TARGET_BINARY := usr/sbin/asterisk
