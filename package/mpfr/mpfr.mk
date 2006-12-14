@@ -34,12 +34,15 @@ ifneq ($(MPFR_PATCH),)
 endif
 	touch $(MPFR_DIR)/.unpacked
 
+ifeq ($(BR2_INSTALL_LIBSTDCPP),)
+MPFR_CXX:=CXX=""
+endif
 $(MPFR_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/lib/$(GMP_BINARY)
 	(cd $(MPFR_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_c_bigendian=$(MPFR_BE) \
-		CXX="" \
+		$(MPFR_CXX) \
 		./configure \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
