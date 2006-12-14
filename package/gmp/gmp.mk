@@ -88,16 +88,17 @@ libgmp: uclibc $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION)
 libgmp-stage: uclibc $(STAGING_DIR)/lib/$(GMP_BINARY)
 
 libgmp-clean:
-	rm -f $(TARGET_DIR)/lib/$(GMP_BINARY)
+	rm -f $(TARGET_DIR)/lib/$(GMP_BINARY) $(TARGET_DIR)/lib/libgmp.so* \
+		$(TARGET_DIR)/usr/include/gmp.h
 	-$(MAKE) -C $(GMP_DIR) clean
 
 libgmp-dirclean:
 	rm -rf $(GMP_DIR)
 
-GMP_HOST_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
-$(GMP_HOST_DIR)/.configured: $(GMP_DIR)/.unpacked
-	[ -d $(GMP_HOST_DIR) ] || mkdir $(GMP_HOST_DIR)
-	(cd $(GMP_HOST_DIR); \
+GMP_DIR2:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
+$(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
+	[ -d $(GMP_DIR2) ] || mkdir $(GMP_DIR2)
+	(cd $(GMP_DIR2); \
 		CC_FOR_BUILD="$(HOSTCC)" \
 		CC="$(HOSTCC)" \
 		CFLAGS="$(HOST_CFLAGS)" \
@@ -117,13 +118,17 @@ $(GMP_HOST_DIR)/.configured: $(GMP_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		$(DISABLE_NLS) \
-	) && \
-	touch $(GMP_HOST_DIR)/.configured
+	);
+	touch $(GMP_DIR2)/.configured
 
-$(GMP_HOST_DIR)/.libs/$(GMP_BINARY): $(GMP_HOST_DIR)/.configured
-	$(MAKE) -C $(GMP_HOST_DIR)
+$(GMP_DIR2)/.libs/$(GMP_BINARY): $(GMP_DIR2)/.configured
+	$(MAKE) -C $(GMP_DIR2)
 
-libgmp-host: $(GMP_HOST_DIR)/.libs/$(GMP_BINARY)
+GMP_HOST_DIR:=$(TOOL_BUILD_DIR)/gmp
+$(GMP_HOST_DIR)/lib/$(GMP_BINARY): $(GMP_DIR2)/.libs/$(GMP_BINARY)
+	mkdir -p $(GMP_HOST_DIR)/lib $(GMP_HOST_DIR)/include
+	cp -a $(GMP_DIR2)/.libs/libgmp.* $(GMP_HOST_DIR)/lib
+	cp -a $(GMP_DIR2)/gmp.h $(GMP_HOST_DIR)/include
 
 #############################################################
 #

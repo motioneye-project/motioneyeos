@@ -95,16 +95,18 @@ libmpfr: uclibc libgmp $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION)
 libmpfr-stage: uclibc $(STAGING_DIR)/lib/$(MPFR_BINARY)
 
 libmpfr-clean:
-	rm -f $(TARGET_DIR)/lib/$(MPFR_BINARY)
+	rm -f $(TARGET_DIR)/lib/$(MPFR_BINARY) $(TARGET_DIR)/lib/libmpfr.so* \
+		$(TARGET_DIR)/usr/include/mpfr.h \
+		$(TARGET_DIR)/usr/include/mpf2mpfr.h
 	-$(MAKE) -C $(MPFR_DIR) clean
 
 libmpfr-dirclean:
 	rm -rf $(MPFR_DIR)
 
-MPFR_HOST_DIR:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)
-$(MPFR_HOST_DIR)/.configured: $(MPFR_DIR)/.unpacked libgmp-host
-	[ -d $(MPFR_HOST_DIR) ] || mkdir $(MPFR_HOST_DIR)
-	(cd $(MPFR_HOST_DIR); \
+MPFR_DIR2:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)
+$(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_BINARY)
+	[ -d $(MPFR_DIR2) ] || mkdir $(MPFR_DIR2)
+	(cd $(MPFR_DIR2); \
 		CC="$(HOSTCC)" \
 		CXX="$(HOSTCXX)" \
 		$(MPFR_DIR)/configure \
@@ -122,15 +124,19 @@ $(MPFR_HOST_DIR)/.configured: $(MPFR_DIR)/.unpacked libgmp-host
 		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
-		--with-gmp-build=$(GMP_HOST_DIR) \
+		--with-gmp-build=$(GMP_DIR2) \
 		$(DISABLE_NLS) \
-	) && \
+	);
 	touch $@
 
-$(MPFR_HOST_DIR)/.libs/$(MPFR_BINARY): $(MPFR_HOST_DIR)/.configured
-	$(MAKE) -C $(MPFR_HOST_DIR)
+$(MPFR_DIR2)/.libs/$(MPFR_BINARY): $(MPFR_DIR2)/.configured
+	$(MAKE) -C $(MPFR_DIR2)
 
-libmpfr-host: $(MPFR_HOST_DIR)/.libs/$(MPFR_BINARY)
+MPFR_HOST_DIR:=$(TOOL_BUILD_DIR)/mpfr
+$(MPFR_HOST_DIR)/lib/libmpfr.a: $(MPFR_DIR2)/.libs/$(MPFR_BINARY)
+	mkdir -p $(MPFR_HOST_DIR)/lib $(MPFR_HOST_DIR)/include
+	cp -a $(MPFR_DIR2)/.libs/libmpfr.* $(MPFR_HOST_DIR)/lib
+	cp -a $(MPFR_DIR)/mpfr.h $(MPFR_DIR)/mpf2mpfr.h $(MPFR_HOST_DIR)/include
 
 #############################################################
 #
