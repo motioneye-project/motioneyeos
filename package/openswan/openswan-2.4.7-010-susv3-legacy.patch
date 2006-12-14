@@ -1,0 +1,22 @@
+--- openswan-2.4.7.oorig/lib/libopenswan/alg_info.c	2006-10-06 18:47:38.000000000 +0200
++++ openswan-2.4.7/lib/libopenswan/alg_info.c	2006-12-14 14:27:29.000000000 +0100
+@@ -649,7 +649,7 @@ alg_info_esp_create_from_str (const char
+ 
+     if (!alg_info_esp) goto out;
+ 
+-    pfs_name=index (alg_str, ';');
++    pfs_name=strchr (alg_str, ';');
+ 
+     if (pfs_name) {
+ 	memcpy(esp_buf, alg_str, pfs_name-alg_str);
+--- openswan-2.4.7.oorig/programs/ikeping/ikeping.c	2005-07-08 04:56:38.000000000 +0200
++++ openswan-2.4.7/programs/ikeping/ikeping.c	2006-12-14 14:31:36.000000000 +0100
+@@ -315,7 +315,7 @@ main(int argc, char **argv)
+   natt=0;
+   listen_only=0;
+   noDNS=0;
+-  bzero(&laddr, sizeof(laddr));
++  memset(&laddr, 0, sizeof(laddr));
+ 
+   while((c = getopt_long(argc, argv, "hVnvsp:b:46E:w:", long_opts, 0))!=EOF) {
+       switch (c) {

@@ -24,10 +24,7 @@ $(OPENSWAN_DIR)/.unpacked: $(DL_DIR)/$(OPENSWAN_SOURCE)
 	toolchain/patch-kernel.sh $(OPENSWAN_DIR) package/openswan/ openswan\*.patch
 	touch $(OPENSWAN_DIR)/.unpacked
 
-$(OPENSWAN_DIR)/.configured: $(OPENSWAN_DIR)/.unpacked
-	touch  $(OPENSWAN_DIR)/.configured
-
-$(OPENSWAN_DIR)/$(OPENSWAN_BINARY): $(OPENSWAN_DIR)/.configured
+$(OPENSWAN_DIR)/$(OPENSWAN_BINARY): $(OPENSWAN_DIR)/.unpacked
 	@echo $(LINUX_KERNEL)
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) -C $(OPENSWAN_DIR) \
