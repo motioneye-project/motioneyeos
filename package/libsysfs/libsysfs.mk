@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBSYSFS_VER:=1.3.0
+LIBSYSFS_VER:=2.1.0
 LIBSYSFS_DIR:=$(BUILD_DIR)/sysfsutils-$(LIBSYSFS_VER)
 LIBSYSFS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/linux-diag
 LIBSYSFS_SOURCE:=sysfsutils-$(LIBSYSFS_VER).tar.gz
@@ -36,10 +36,14 @@ $(LIBSYSFS_DIR)/.unpacked: $(DL_DIR)/$(LIBSYSFS_SOURCE)
 	$(LIBSYSFS_CAT) $(DL_DIR)/$(LIBSYSFS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LIBSYSFS_DIR)/.unpacked
 
+ifeq ($(BR2_INSTALL_LIBSTDCPP),)
+LIBSYSFS_CXX:=CXX=""
+endif
 $(LIBSYSFS_DIR)/.configured: $(LIBSYSFS_DIR)/.unpacked
 	(cd $(LIBSYSFS_DIR); \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
+	$(LIBSYSFS_CXX) \
 	./configure \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
@@ -63,6 +67,7 @@ libsysfs: uclibc $(TARGET_DIR)/usr/lib/libsysfs.so
 
 libsysfs-clean:
 	-$(MAKE) -C $(LIBSYSFS_DIR) clean
+	rm -f $(TARGET_DIR)/usr/lib/libsysfs.so*
 
 libsysfs-dirclean:
 	rm -rf $(LIBSYSFS_DIR)
