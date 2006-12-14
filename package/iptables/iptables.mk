@@ -26,13 +26,13 @@ $(IPTABLES_BUILD_DIR)/.configured: $(IPTABLES_BUILD_DIR)/.unpacked
 
 $(IPTABLES_BUILD_DIR)/iptables: $(IPTABLES_BUILD_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) \
-	$(MAKE) -C $(IPTABLES_BUILD_DIR) \
+	$(MAKE1) -C $(IPTABLES_BUILD_DIR) \
 		KERNEL_DIR=$(LINUX_DIR) PREFIX=/usr \
 		CC=$(TARGET_CC) COPT_FLAGS="$(TARGET_CFLAGS)"
 
 $(TARGET_DIR)/usr/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	$(TARGET_CONFIGURE_OPTS) \
-	$(MAKE) -C $(IPTABLES_BUILD_DIR) \
+	$(MAKE1) -C $(IPTABLES_BUILD_DIR) \
 		KERNEL_DIR=$(LINUX_DIR) PREFIX=/usr \
 		CC=$(TARGET_CC) COPT_FLAGS="$(TARGET_CFLAGS)" \
 		DESTDIR=$(TARGET_DIR) install
@@ -45,8 +45,8 @@ iptables: $(TARGET_DIR)/usr/sbin/iptables
 iptables-source: $(DL_DIR)/$(IPTABLES_SOURCE)
 
 iptables-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(IPTABLES_BUILD_DIR) uninstall
-	-$(MAKE) -C $(IPTABLES_BUILD_DIR) clean
+	$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(IPTABLES_BUILD_DIR) uninstall
+	-$(MAKE1) -C $(IPTABLES_BUILD_DIR) clean
 
 iptables-dirclean:
 	rm -rf $(IPTABLES_BUILD_DIR)
