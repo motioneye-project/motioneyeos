@@ -20,11 +20,20 @@ $(DL_DIR)/$(MPG123_SOURCE):
 
 $(MPG123_DIR)/.unpacked:	$(DL_DIR)/$(MPG123_SOURCE)
 	$(MPG123_CAT) $(DL_DIR)/$(MPG123_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(MPG123_DIR) package/mpg123/ mpg123\*.patch
 	touch $(MPG123_DIR)/.unpacked
 
 $(MPG123_WORKDIR)/mpg123:	$(MPG123_DIR)/.unpacked
 	rm -f $@
-	$(MAKE) CC=$(TARGET_CC) -C $(MPG123_WORKDIR) linux
+ifeq ($(BR2_ARCH),"i386")
+	$(MAKE) CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" -C $(MPG123_WORKDIR) linux
+else
+ifeq ($(BR2_ENDIAN),"LITTLE")
+	$(MAKE) CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" -C $(MPG123_WORKDIR) linux-littleend
+else
+	$(MAKE) CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" -C $(MPG123_WORKDIR) linux-bigend
+endif
+endif
 
 $(MPG123_WORKDIR)/.installed: 	$(MPG123_WORKDIR)/mpg123
 	mkdir -p $(TARGET_DIR)/usr/bin
