@@ -19,12 +19,11 @@ KERNEL_ARCH:=$(shell $(SHELL) -c "echo \"$(ARCH)\" | sed -e \"s/-.*//\" \
 	-e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
 	-e s/sh2.*/sh/ -e s/sh3.*/sh/ -e s/sh4.*/sh/")
 
+include toolchain/kernel-headers/kernel-headers-new.makefile
+include toolchain/kernel-headers/kernel-headers-old.makefile
 
 $(DL_DIR)/$(LINUX_HEADERS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LINUX_HEADERS_SITE)/$(LINUX_HEADERS_SOURCE)
-
-include toolchain/kernel-headers/kernel-headers-new.makefile
-include toolchain/kernel-headers/kernel-headers-old.makefile
 
 kernel-headers: $(LINUX_HEADERS_DIR)/.configured
 
