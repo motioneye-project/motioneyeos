@@ -178,8 +178,10 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.config
 	if [ ! -f $(STAGING_DIR)/include/linux/version.h ] ; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
-		[ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] && \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
+		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] ; then \
+			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
+				$(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
+		fi; \
 	fi;
 	touch $(UCLIBC_DIR)/.configured
 
@@ -212,8 +214,10 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 	if [ ! -f $(STAGING_DIR)/include/linux/version.h ] ; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(STAGING_DIR)/include/ ; \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(STAGING_DIR)/include/ ; \
-		[ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] && \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic $(STAGING_DIR)/include/ ; \
+		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] ; then \
+			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
+				$(STAGING_DIR)/include/ ; \
+		fi; \
 	fi;
 	# Build the host utils.  Need to add an install target...
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
@@ -280,8 +284,10 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
 	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ] ; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(TARGET_DIR)/usr/include/ ; \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(TARGET_DIR)/usr/include/ ; \
-		[ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] && \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic $(TARGET_DIR)/usr/include/ ; \
+		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] ; then \
+			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
+				$(TARGET_DIR)/usr/include/ ; \
+		fi; \
 	fi;
 	touch -c $(TARGET_DIR)/usr/lib/libc.a
 
