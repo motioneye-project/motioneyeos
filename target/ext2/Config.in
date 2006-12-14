@@ -29,17 +29,40 @@ config BR2_TARGET_ROOTFS_EXT2_OUTPUT
 	depends on BR2_TARGET_ROOTFS_EXT2
 	default "$(IMAGE).ext2"
 
-config BR2_TARGET_ROOTFS_EXT2_GZ
-	bool "gzip the output file"
-	depends on 	BR2_TARGET_ROOTFS_EXT2
-	default n
+choice
+        prompt "Compression method"
+        default BR2_TARGET_ROOTFS_EXT2_NONE
+        depends on BR2_TARGET_ROOTFS_EXT2
+        help
+          Select compressor for ext2 filesystem of the root filesystem
+
+config BR2_TARGET_ROOTFS_EXT2_NONE
+        bool "no compression"
+        help
+         Do not compress the ext2 filesystem.
+
+config BR2_TARGET_ROOTFS_EXT2_GZIP
+        bool "gzip"
+        help
+         Do compress the ext2 filesystem with gzip.
+         Note that you either have to have gzip installed on your host
+         or select to build a gzip for your host. See the packages submenu.
+
+config BR2_TARGET_ROOTFS_EXT2_BZIP2
+        bool "bzip2"
+        help
+         Do compress the ext2 filesystem with bzip2.
+         Note that you either have to have bzip2 installed on your host
+         or select to build a bzip2 for your host. See the packages submenu.
 
 config BR2_TARGET_ROOTFS_EXT2_LZMA
-	bool "lzma the output file" 
-	depends on	BR2_TARGET_ROOTFS_EXT2 
-	select		BR2_PACKAGE_LZMA_HOST
-	default n
+        bool "lzma"
+        help
+         Do compress the ext2 filesystem with lzma.
+         Note that you either have to have lzma installed on your host
+         or select to build a lzma for your host. See the packages submenu.
 
+endchoice
 
 config BR2_TARGET_ROOTFS_EXT2_COPYTO
 	string "also copy the image to..."

@@ -59,16 +59,27 @@ EXT2_OPTS += -r $(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS))
 endif
 
 EXT2_BASE :=	$(subst ",,$(BR2_TARGET_ROOTFS_EXT2_OUTPUT))
-# " stupid syntax highlighting does not like unmatched quote from above line
+#")
 
-ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_GZ)),y)
-EXT2_TARGET := $(EXT2_BASE).gz
-else
 EXT2_TARGET := $(EXT2_BASE)
-endif
 
-ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_LZMA)),y)
-EXT2_TARGET := $(EXT2_BASE).lzma
+EXT2_ROOTFS_COMPRESSOR:=
+EXT2_ROOTFS_COMPRESSOR_EXT:=
+EXT2_ROOTFS_COMPRESSOR_PREREQ:=
+ifeq ($(BR2_TARGET_ROOTFS_EXT2_GZIP),y)
+EXT2_ROOTFS_COMPRESSOR:=gzip -9 -c
+EXT2_ROOTFS_COMPRESSOR_EXT:=gz
+#EXT2_ROOTFS_COMPRESSOR_PREREQ:= gzip-host
+endif
+ifeq ($(BR2_TARGET_ROOTFS_EXT2_BZIP2),y)
+EXT2_ROOTFS_COMPRESSOR:=bzip2 -9 -c
+EXT2_ROOTFS_COMPRESSOR_EXT:=bz2
+#EXT2_ROOTFS_COMPRESSOR_PREREQ:= bzip2-host
+endif
+ifeq ($(BR2_TARGET_ROOTFS_EXT2_LZMA),y)
+EXT2_ROOTFS_COMPRESSOR:=lzma -9 -c
+EXT2_ROOTFS_COMPRESSOR_EXT:=lzma
+EXT2_ROOTFS_COMPRESSOR_PREREQ:= lzma-host
 endif
 
 $(EXT2_BASE): host-fakeroot makedevs genext2fs
@@ -104,14 +115,13 @@ endif
 	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 
-$(EXT2_BASE).gz: $(EXT2_BASE)
-	@gzip --best -fv $(EXT2_BASE)
-
-$(EXT2_BASE).lzma: lzma-host $(EXT2_BASE)
-	@$(STAGING_DIR)/bin/lzma -vc $(EXT2_BASE) > $(EXT2_BASE).lzma
+ifneq ($(EXT2_ROOTFS_COMPRESSOR),)
+$(EXT2_TARGET).(EXT2_ROOTFS_COMPRESSOR_EXT): $(EXT2_ROOTFS_COMPRESSOR_PREREQ) $(EXT2_BASE)
+	$(EXT2_ROOTFS_COMPRESSOR) $(EXT2_TARGET) > $(EXT2_TARGET).$(EXT2_ROOTFS_COMPRESSOR_EXT)
+endif
 
 EXT2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_COPYTO)))
-# " stupid syntax highlighting does not like unmatched quote from above line
+# "))
 
 ext2root: $(EXT2_TARGET)
 	@ls -l $(EXT2_TARGET)
