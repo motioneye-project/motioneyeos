@@ -3,3 +3,13 @@ config BR2_PACKAGE_MICROPERL
 	default n
 	help
 	  Perl without operating-specific functions such as readdir.
+
+config BR2_PACKAGE_MICROPERL_MODULES
+	string "perl modules"
+	default ""
+	depends on BR2_PACKAGE_MICROPERL
+	help
+	  List of microperl modules to copy to the rootfs.
+	  E.g.
+	  warnings.pm warnings/register.pm strict.pm constant.pm vars.pm 
+	  Exporter.pm Exporter/Heavy.pm Carp.pm Getopt/Long.pm
