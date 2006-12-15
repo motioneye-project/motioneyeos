@@ -35,7 +35,6 @@ $(MICROPERL_DIR)/microperl: $(MICROPERL_DIR)/.configured
 	$(MAKE) -f Makefile.micro CC=$(TARGET_CC) \
 		OPTIMIZE="$(TARGET_CFLAGS)" -C $(MICROPERL_DIR)
 
-__perl_tgt_dir=$(TARGET_DIR)/$(MICROPERL_MODS_DIR)/$(dir $$i)
 $(TARGET_DIR)/usr/bin/microperl: $(MICROPERL_DIR)/microperl
 ifneq ($(MICROPERL_MODS),)
 	(cd $(MICROPERL_DIR) ; \
