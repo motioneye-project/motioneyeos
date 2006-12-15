@@ -26,9 +26,6 @@ endif
 endif
 UCLIBC_CAT:=$(BZCAT)
 
-UCLIBC_SITE_LOCALE:=http://www.uclibc.org/downloads
-UCLIBC_SOURCE_LOCALE:=uClibc-locale-030818.tgz
-
 UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
 		-e 's/i.86/i386/' \
 		-e 's/sparc.*/sparc/' \
@@ -63,7 +60,11 @@ endif
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
-ifneq ($(UCLIBC_HAS_LOCALE),)
+
+ifneq ($(BR2_ENABLE_LOCALE),)
+UCLIBC_SITE_LOCALE:=http://www.uclibc.org/downloads
+UCLIBC_SOURCE_LOCALE:=uClibc-locale-030818.tgz
+
 $(DL_DIR)/$(UCLIBC_SOURCE_LOCALE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE_LOCALE)/$(UCLIBC_SOURCE_LOCALE)
@@ -78,8 +79,8 @@ $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ uClibc-$(UCLIBC_VER)\*.patch
-ifneq ($(UCLIBC_HAS_LOCALE),)
-	cp -p $(DL_DIR)/$(UCLIBC_SOURCE_LOCALE) $(UCLIBC_DIR)/extra/locale/
+ifneq ($(BR2_ENABLE_LOCALE),)
+	cp -dpf $(DL_DIR)/$(UCLIBC_SOURCE_LOCALE) $(UCLIBC_DIR)/extra/locale/
 endif
 	touch $(UCLIBC_DIR)/.unpacked
 
