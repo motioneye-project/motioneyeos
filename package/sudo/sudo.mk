@@ -17,7 +17,6 @@ sudo-source: $(DL_DIR)/$(SUDO_SOURCE) $(SUDO_CONFIG_FILE)
 
 $(SUDO_DIR)/.unpacked: $(DL_DIR)/$(SUDO_SOURCE)
 	$(SUDO_UNZIP) $(DL_DIR)/$(SUDO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	# Allow sudo patches.
 	toolchain/patch-kernel.sh $(SUDO_DIR) package/sudo sudo\*.patch
 	touch $(SUDO_DIR)/.unpacked
 
@@ -60,7 +59,7 @@ $(TARGET_DIR)/usr/bin/sudo: $(SUDO_DIR)/sudo
 		> $(STAGING_DIR)/.fakeroot.sudo
 	touch -c $(TARGET_DIR)/usr/bin/sudo
 
-sudo: uclibc $(TARGET_DIR)/usr/bin/sudo
+sudo: uclibc host-fakeroot $(TARGET_DIR)/usr/bin/sudo
 
 sudo-clean:
 	rm -f $(TARGET_DIR)/usr/bin/sudo
