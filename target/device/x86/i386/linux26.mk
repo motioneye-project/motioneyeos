@@ -14,6 +14,7 @@ LINUX26_VERSION=2.6.19.1
 
 
 LINUX26_SOURCE=linux-$(DOWNLOAD_LINUX26_VERSION).tar.bz2
+LINUX26_BZCAT:=$(BZCAT)
 LINUX26_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.6
 
 #LINUX26_FORMAT=vmlinux
@@ -37,21 +38,6 @@ LINUX26_MAKE_FLAGS = $(TARGET_CONFIGURE_OPTS) ARCH=$(KERNEL_ARCH) \
 	PATH=$(TARGET_PATH) INSTALL_MOD_PATH=$(TARGET_DIR) \
 	CROSS_COMPILE=$(KERNEL_CROSS)
 
-
-
-
-$(DL_DIR)/$(LINUX26_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(LINUX26_SITE)/$(LINUX26_SOURCE)
-
-$(LINUX26_DIR)/.unpacked: $(DL_DIR)/$(LINUX26_SOURCE)
-	rm -rf $(LINUX26_DIR)
-	bzcat $(DL_DIR)/$(LINUX26_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-ifneq ($(DOWNLOAD_LINUX26_VERSION),$(LINUX26_VERSION))
-	# Rename the dir from the downloaded version to the AFTER patch version
-	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX26_VERSION) $(BUILD_DIR)/linux-$(LINUX26_VERSION)
-endif
-	touch $(LINUX26_DIR)/.unpacked
-
 $(LINUX26_KCONFIG):
 	@if [ ! -f "$(LINUX26_KCONFIG)" ] ; then \
 		echo ""; \
@@ -61,8 +47,21 @@ $(LINUX26_KCONFIG):
 		sleep 5; \
 	fi;
 
+ifneq ($(strip $(LINUX26_VERSION)),$(strip $(LINUX_HEADERS_VERSION)))
+$(DL_DIR)/$(LINUX26_SOURCE):
+	 $(WGET) -P $(DL_DIR) $(LINUX26_SITE)/$(LINUX26_SOURCE)
+
+$(LINUX26_DIR)/.unpacked: $(DL_DIR)/$(LINUX26_SOURCE)
+	rm -rf $(LINUX26_DIR)
+	$(LINUX26_BZCAT) $(DL_DIR)/$(LINUX26_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+ifneq ($(DOWNLOAD_LINUX26_VERSION),$(LINUX26_VERSION))
+	# Rename the dir from the downloaded version to the AFTER patch version
+	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX26_VERSION) $(BUILD_DIR)/linux-$(LINUX26_VERSION)
+endif
+	touch $(LINUX26_DIR)/.unpacked
+
 $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
-	#toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR)
+	toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR)
 	touch $(LINUX26_DIR)/.patched
 
 $(LINUX26_DIR)/.configured:  $(LINUX26_DIR)/.patched  $(LINUX26_KCONFIG)
@@ -70,10 +69,7 @@ $(LINUX26_DIR)/.configured:  $(LINUX26_DIR)/.patched  $(LINUX26_KCONFIG)
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) oldconfig
 	touch $(LINUX26_DIR)/.configured
 
-linux26-menuconfig: $(LINUX26_DIR)/.patched
-	[ -f $(LINUX26_DIR)/.config ] || cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
-	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
-	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
+endif # ($(LINUX26_VERSION),$(LINUX_HEADERS_VERSION))
 
 $(LINUX26_DIR)/.depend_done:  $(LINUX26_DIR)/.configured
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) prepare
@@ -98,6 +94,11 @@ $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_KERNEL)
 		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
 	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/build
 	touch -c $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep
+
+linux26-menuconfig: $(LINUX26_DIR)/.patched
+	[ -f $(LINUX26_DIR)/.config ] || cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
+	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
+	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
 
 linux26: cross-depmod26 $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep
 
