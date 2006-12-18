@@ -64,12 +64,12 @@ $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR)
 	touch $(LINUX26_DIR)/.patched
 
+endif # ($(LINUX26_VERSION),$(LINUX_HEADERS_VERSION))
+
 $(LINUX26_DIR)/.configured:  $(LINUX26_DIR)/.patched  $(LINUX26_KCONFIG)
 	-cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) oldconfig
 	touch $(LINUX26_DIR)/.configured
-
-endif # ($(LINUX26_VERSION),$(LINUX_HEADERS_VERSION))
 
 $(LINUX26_DIR)/.depend_done:  $(LINUX26_DIR)/.configured
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) prepare
