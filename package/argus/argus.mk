@@ -1,0 +1,92 @@
+#############################################################
+#
+# argus
+#
+#############################################################
+ARGUS_VER:=3.0.0.rc.34
+ARGUS_SOURCE:=argus_$(ARGUS_VER).orig.tar.gz
+ARGUS_PATCH:=argus_$(ARGUS_VER)-1.diff.gz
+ARGUS_SITE:=ftp://ftp.debian.org/debian/pool/main/a/argus/
+ARGUS_DIR:=$(BUILD_DIR)/argus-$(ARGUS_VER)
+ARGUS_CAT:=$(ZCAT)
+ARGUS_BINARY:=bin/argus
+ARGUS_TARGET_BINARY:=usr/sbin/argus
+
+ARGUS_CONFIG_OPTS:=
+ifneq ($(strip $(BR2_LARGEFILE)),y)
+ARGUS_CONFIG_OPTS += --disable-largefile
+endif
+
+ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=yes
+ifeq ($(BR2_i386),y)
+ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_x86_64),y)
+ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_m68k),y)
+ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_s390),y)
+ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_powerpc)$(BR2_ENDIAN),yBIG)
+ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+
+$(DL_DIR)/$(ARGUS_SOURCE):
+	$(WGET) -P $(DL_DIR) $(ARGUS_SITE)/$(ARGUS_SOURCE)
+
+$(DL_DIR)/$(ARGUS_PATCH):
+	$(WGET) -P $(DL_DIR) $(ARGUS_SITE)/$(ARGUS_PATCH)
+
+argus-source: $(DL_DIR)/$(ARGUS_SOURCE) $(DL_DIR)/$(ARGUS_PATCH)
+
+$(ARGUS_DIR)/.unpacked: $(DL_DIR)/$(ARGUS_SOURCE) $(DL_DIR)/$(ARGUS_PATCH)
+	$(ARGUS_CAT) $(DL_DIR)/$(ARGUS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(ARGUS_DIR) package/argus/ argus\*.patch
+ifneq ($(ARGUS_PATCH),)
+	(cd $(ARGUS_DIR) && $(ARGUS_CAT) $(DL_DIR)/$(ARGUS_PATCH) | patch -p1)
+	if [ -d $(ARGUS_DIR)/debian/patches ]; then \
+		toolchain/patch-kernel.sh $(ARGUS_DIR) $(ARGUS_DIR)/debian/patches \*.patch ; \
+	fi
+endif
+	touch $(ARGUS_DIR)/.unpacked
+
+$(ARGUS_DIR)/.configured: $(ARGUS_DIR)/.unpacked
+	(cd $(ARGUS_DIR); rm -rf config.cache; \
+		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		$(ARGUS_TRAP_CHECK) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		$(ARGUS_CONFIG_OPTS) \
+	);
+	touch $(ARGUS_DIR)/.configured
+
+$(ARGUS_DIR)/$(ARGUS_BINARY): $(ARGUS_DIR)/.configured
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(ARGUS_DIR)
+
+$(TARGET_DIR)/$(ARGUS_TARGET_BINARY): $(ARGUS_DIR)/$(ARGUS_BINARY)
+	cp -dpf $(ARGUS_DIR)/$(ARGUS_BINARY) $@
+	$(STRIP) $@
+
+argus: uclibc libpcap $(TARGET_DIR)/$(ARGUS_TARGET_BINARY)
+
+argus-clean:
+	-$(MAKE) -C $(ARGUS_DIR) clean
+	rm -f $(TARGET_DIR)/$(ARGUS_TARGET_BINARY)
+
+argus-dirclean:
+	rm -rf $(ARGUS_DIR)
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_ARGUS)),y)
+TARGETS+=argus
+endif
