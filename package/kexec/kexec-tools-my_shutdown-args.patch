@@ -1,0 +1,12 @@
+diff -rup kexec-tools-1.101.orig/kexec/kexec.c kexec-tools-1.101/kexec/kexec.c
+--- kexec-tools-1.101.orig/kexec/kexec.c	2006-12-20 18:40:26.000000000 +0100
++++ kexec-tools-1.101/kexec/kexec.c	2006-12-20 18:41:02.000000000 +0100
+@@ -629,7 +629,7 @@ int k_unload (unsigned long kexec_flags)
+  */
+ static int my_shutdown(void)
+ {
+-	char *args[8];
++	char *args[2];
+ 
+ 	args[0] = "reboot";
+ 	args[1] = NULL;
