@@ -38,7 +38,6 @@ ifneq ($(KEXEC_PATCH),)
 	(cd $(KEXEC_DIR) && $(KEXEC_CAT) $(DL_DIR)/$(KEXEC_PATCH) | patch -p1)
 	toolchain/patch-kernel.sh $(KEXEC_DIR) $(KEXEC_DIR)/debian/patches \*.patch
 endif
-
 	touch $(KEXEC_DIR)/.unpacked
 
 $(KEXEC_DIR)/.configured: $(KEXEC_DIR)/.unpacked
@@ -61,7 +60,7 @@ $(TARGET_DIR)/$(KEXEC_TARGET_BINARY): $(KEXEC_DIR)/$(KEXEC_BINARY)
 		$(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/kdump \
 		$(TARGET_DIR)/sbin/
 
-kexec: uclibc host-fakeroot $(TARGET_DIR)/$(KEXEC_TARGET_BINARY)
+kexec: uclibc $(TARGET_DIR)/$(KEXEC_TARGET_BINARY)
 
 kexec-clean:
 	-$(MAKE) -C $(KEXEC_DIR) clean
