@@ -58,7 +58,7 @@ $(NETSNMP_DIR)/.configured: $(NETSNMP_DIR)/.unpacked
 	touch $(NETSNMP_DIR)/.configured
 
 $(NETSNMP_DIR)/agent/snmpd: $(NETSNMP_DIR)/.configured
-	$(MAKE) -C $(NETSNMP_DIR)
+	$(MAKE1) -C $(NETSNMP_DIR)
 
 $(TARGET_DIR)/usr/sbin/snmpd: $(NETSNMP_DIR)/agent/snmpd
 	#$(MAKE) DESTDIR=$(TARGET_DIR) -C $(NETSNMP_DIR) install
@@ -97,7 +97,11 @@ netsnmp-headers: $(TARGET_DIR)/usr/include/net-snmp/net-snmp-config.h
 netsnmp-source: $(DL_DIR)/$(NETSNMP_SOURCE)
 
 netsnmp-clean: 
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETSNMP_DIR) uninstall
 	$(MAKE) -C $(NETSNMP_DIR) clean
+	rm -rf $(TARGET_DIR)/etc/snmp/{snmpd{,trapd},mib2c*}.conf \
+		$(TARGET_DIR)/etc/default/snmpd \
+		$(TARGET_DIR)/usr/include/net-snmp
 
 netsnmp-dirclean: 
 	rm -rf $(NETSNMP_DIR)
