@@ -10,7 +10,7 @@ MPFR_CAT:=$(BZCAT)
 MPFR_SITE:=http://www.mpfr.org/mpfr-current/
 MPFR_DIR:=$(BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_BINARY:=libmpfr.a
-MPFR_LIBVERSION:=1.0.0
+MPFR_LIBVERSION:=1.0.1
 
 ifeq ($(BR2_ENDIAN),"BIG")
 MPFR_BE:=yes
