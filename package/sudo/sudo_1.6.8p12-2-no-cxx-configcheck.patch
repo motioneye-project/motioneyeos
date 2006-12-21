@@ -1,0 +1,22 @@
+diff -u sudo-1.6.8p12.orig/configure sudo-1.6.8p12/configure
+--- sudo-1.6.8p12.orig/configure	2006-12-21 12:06:02.000000000 +0100
++++ sudo-1.6.8p12/configure	2006-12-21 12:12:06.000000000 +0100
+@@ -6072,7 +6072,8 @@
+ fi
+ 
+ done
+-
++if test -n "$CXX"
++then
+ ac_ext=cc
+ ac_cpp='$CXXCPP $CPPFLAGS'
+ ac_compile='$CXX -c $CXXFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+@@ -6654,7 +6655,7 @@
+ ac_link='$CXX -o conftest$ac_exeext $CXXFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ ac_compiler_gnu=$ac_cv_cxx_compiler_gnu
+ 
+-
++fi
+ ac_ext=f
+ ac_compile='$F77 -c $FFLAGS conftest.$ac_ext >&5'
+ ac_link='$F77 -o conftest$ac_exeext $FFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'

@@ -1,5 +1,5 @@
---- sudo-1.6.8p9.orig/sudoers.man.in
-+++ sudo-1.6.8p9/sudoers.man.in
+--- sudo-1.6.8p12.orig/sudoers.man.in
++++ sudo-1.6.8p12/sudoers.man.in
 @@ -759,7 +759,7 @@
  .IP "exempt_group" 12
  .IX Item "exempt_group"
@@ -9,8 +9,8 @@
  .IP "verifypw" 12
  .IX Item "verifypw"
  This option controls when a password will be required when a user runs
---- sudo-1.6.8p9.orig/sudo.man.in
-+++ sudo-1.6.8p9/sudo.man.in
+--- sudo-1.6.8p12.orig/sudo.man.in
++++ sudo-1.6.8p12/sudo.man.in
 @@ -185,8 +185,7 @@
  \&\fBsudo\fR determines who is an authorized user by consulting the file
  \&\fI@sysconfdir@/sudoers\fR.  By giving \fBsudo\fR the \fB\-v\fR flag a user
@@ -21,8 +21,59 @@
  \&\fIsudoers\fR).
  .PP
  If a user who is not listed in the \fIsudoers\fR file tries to run a
---- sudo-1.6.8p9.orig/env.c
-+++ sudo-1.6.8p9/env.c
+--- sudo-1.6.8p12.orig/parse.yacc
++++ sudo-1.6.8p12/parse.yacc
+@@ -120,6 +120,7 @@
+ 	} \
+ 	match[top].user   = UNSPEC; \
+ 	match[top].cmnd   = UNSPEC; \
++	match[top].cmndall= UNSPEC; \
+ 	match[top].host   = UNSPEC; \
+ 	match[top].runas  = UNSPEC; \
+ 	match[top].nopass = def_authenticate ? UNSPEC : TRUE; \
+@@ -135,6 +136,7 @@
+ 	} \
+ 	match[top].user   = match[top-1].user; \
+ 	match[top].cmnd   = match[top-1].cmnd; \
++	match[top].cmndall= match[top-1].cmndall; \
+ 	match[top].host   = match[top-1].host; \
+ 	match[top].runas  = match[top-1].runas; \
+ 	match[top].nopass = match[top-1].nopass; \
+@@ -675,6 +677,7 @@
+ 				}
+ 			    }
+ 
++			    SETMATCH(cmnd_all, TRUE);
+ 			    $$ = TRUE;
+ 			}
+ 		|	ALIAS {
+@@ -705,6 +708,7 @@
+ 				$$ = NOMATCH;
+ 			    }
+ 			    free($1);
++			    SETMATCH(cmnd_all, FALSE);
+ 			}
+ 		|	 COMMAND {
+ 			    if (printmatches == TRUE) {
+@@ -730,6 +734,7 @@
+ 			    free($1.cmnd);
+ 			    if ($1.args)
+ 				free($1.args);
++			    SETMATCH(cmnd_all, FALSE);
+ 			}
+ 		;
+ 
+--- sudo-1.6.8p12.orig/env.c
++++ sudo-1.6.8p12/env.c
+@@ -77,7 +77,7 @@
+ /*
+  * Prototypes
+  */
+-char **rebuild_env		__P((char **, int, int));
++char **rebuild_env		__P((char **, int, int, int));
+ char **zero_env			__P((char **));
+ static void insert_env		__P((char *, int));
+ static char *format_env		__P((char *, ...));
 @@ -89,6 +89,8 @@
  static const char *initial_badenv_table[] = {
      "IFS",
@@ -32,32 +83,90 @@
      "LOCALDOMAIN",
      "RES_OPTIONS",
      "HOSTALIASES",
-@@ -124,6 +126,23 @@
-     "TERMCAP",			/* XXX - only if it starts with '/' */
-     "ENV",
-     "BASH_ENV",
-+    "GLOBIGNORE",              /* bash, globbing patterns to ignore */
-+    "JAVA_TOOL_OPTIONS",       /* java, extra command line options */
-+    "PERLIO_DEBUG ",           /* perl, debugging output file */
-+    "PERLLIB",                 /* perl, search path for modules/includes */
-+    "PERL5LIB",                        /* perl 5, search path for modules/includes */
-+    "PERL5OPT",                        /* perl 5, extra command line options */
-+    "PERL5DB",                 /* perl 5, command used to load debugger */
-+    "FPATH",                   /* ksh, search path for functions */
-+    "NULLCMD",                 /* zsh, command for null file redirection */
-+    "READNULLCMD",             /* zsh, command for null file redirection */
-+    "ZDOTDIR",                 /* zsh, search path for dot files */
-+    "TMPPREFIX",               /* zsh, prefix for temporary files */
-+    "PYTHONHOME",              /* python, module search path */
-+    "PYTHONPATH",              /* python, search path */
-+    "PYTHONINSPECT",           /* python, allow inspection */
-+    "RUBYLIB",                 /* ruby, library load path */
-+    "RUBYOPT",                 /* ruby, extra command line options */
+@@ -140,6 +142,12 @@
+     "LC_*",
+     "LANG",
+     "LANGUAGE",
++    "TERM",
++    "HOME",
++    "LOGNAME",
++    "DISPLAY",
++    "XAUTHORITY",
++    "XAUTHORIZATION",
      NULL
  };
  
---- sudo-1.6.8p9.orig/sudoers.pod
-+++ sudo-1.6.8p9/sudoers.pod
+@@ -321,10 +329,11 @@
+  * Also adds sudo-specific variables (SUDO_*).
+  */
+ char **
+-rebuild_env(envp, sudo_mode, noexec)
++rebuild_env(envp, sudo_mode, noexec, noclean)
+     char **envp;
+     int sudo_mode;
+     int noexec;
++    int noclean;
+ {
+     char **ep, *cp, *ps1;
+     int okvar, iswild, didvar;
+@@ -429,7 +438,7 @@
+ 	 * env_check.
+ 	 */
+ 	for (ep = envp; *ep; ep++) {
+-	    okvar = 1;
++	    okvar = noclean;
+ 
+ 	    /* Skip variables with values beginning with () (bash functions) */
+ 	    if ((cp = strchr(*ep, '=')) != NULL) {
+@@ -438,6 +447,7 @@
+ 	    }
+ 
+ 	    /* Skip anything listed in env_delete. */
++#if 0
+ 	    for (cur = def_env_delete; cur && okvar; cur = cur->next) {
+ 		len = strlen(cur->value);
+ 		/* Deal with '*' wildcard */
+@@ -451,9 +461,10 @@
+ 		    okvar = 0;
+ 		}
+ 	    }
++#endif
+ 
+ 	    /* Check certain variables for '%' and '/' characters. */
+-	    for (cur = def_env_check; cur && okvar; cur = cur->next) {
++	    for (cur = def_env_check; cur; cur = cur->next) {
+ 		len = strlen(cur->value);
+ 		/* Deal with '*' wildcard */
+ 		if (cur->value[len - 1] == '*') {
+@@ -463,8 +474,24 @@
+ 		    iswild = 0;
+ 		if (strncmp(cur->value, *ep, len) == 0 &&
+ 		    (iswild || (*ep)[len] == '=') &&
+-		    strpbrk(*ep, "/%")) {
+-		    okvar = 0;
++		    strpbrk(*ep, "/%") == NULL) {
++		    okvar = 1;
++		}
++	    }
++
++	    /* keep variables in env_keep */
++	    for (cur = def_env_keep; cur; cur = cur->next) {
++		len = strlen(cur->value);
++		/* Deal with '*' wildcard */
++		if (cur->value[len - 1] == '*') {
++		    len--;
++		    iswild = 1;
++		} else
++		    iswild = 0;
++		if (strncmp(cur->value, *ep, len) == 0 &&
++		    (iswild || (*ep)[len] == '=')) {
++		    okvar = 1;
++		    break;
+ 		}
+ 	    }
+ 
+--- sudo-1.6.8p12.orig/sudoers.pod
++++ sudo-1.6.8p12/sudoers.pod
 @@ -93,7 +93,7 @@
  
   Cmnd_Alias ::= NAME '=' Cmnd_List
@@ -66,6 +175,15 @@
 + NAME ::= [A-Z]([a-z][A-Z][0-9]_)*
  
  Each I<alias> definition is of the form
+ 
+@@ -568,7 +568,7 @@
+ 
+ =item C<%%>
+ 
+-two consecutive C<%> characters are collaped into a single C<%> character
++two consecutive C<%> characters are collapsed into a single C<%> character
+ 
+ =back
  
 @@ -669,8 +669,8 @@
  
@@ -78,8 +196,19 @@
  
  =item verifypw
  
---- sudo-1.6.8p9.orig/config.guess
-+++ sudo-1.6.8p9/config.guess
+--- sudo-1.6.8p12.orig/ins_classic.h
++++ sudo-1.6.8p12/ins_classic.h
+@@ -32,7 +32,7 @@
+     "Where did you learn to type?",
+     "Are you on drugs?",
+     "My pet ferret can type better than you!",
+-    "You type like i drive.",
++    "You type like I drive.",
+     "Do you think like you type?",
+     "Your mind just hasn't been the same since the electro-shock, has it?",
+ 
+--- sudo-1.6.8p12.orig/config.guess
++++ sudo-1.6.8p12/config.guess
 @@ -1,11 +1,9 @@
  #! /bin/sh
  # Attempt to guess a canonical system name.
@@ -1407,8 +1536,8 @@
  
  If the version you run ($0) is already up to date, please
  send the following data and any information you think might be
---- sudo-1.6.8p9.orig/config.sub
-+++ sudo-1.6.8p9/config.sub
+--- sudo-1.6.8p12.orig/config.sub
++++ sudo-1.6.8p12/config.sub
 @@ -1,11 +1,9 @@
  #! /bin/sh
  # Configuration validation subroutine script.
@@ -1987,9 +2116,18 @@
  
  # Local variables:
  # eval: (add-hook 'write-file-hooks 'time-stamp)
---- sudo-1.6.8p9.orig/sudoers
-+++ sudo-1.6.8p9/sudoers
-@@ -5,6 +5,8 @@
+--- sudo-1.6.8p12.orig/sudoers
++++ sudo-1.6.8p12/sudoers
+@@ -1,10 +1,17 @@
+ # sudoers file.
+ #
+ # This file MUST be edited with the 'visudo' command as root.
++# 'visudo' edits the suoders file in a safe fashion. visudo
++# locks the sudoers file against multiple simultaneous edits,
++# provides basic sanity checks, and checks for syntax errors. If
++# the sudoers file is currently being edited you will receive a 
++# message to try again later.
+ #
  # See the sudoers man page for the details on how to write a sudoers file.
  #
  
@@ -1998,8 +2136,8 @@
  # Host alias specification
  
  # User alias specification
---- sudo-1.6.8p9.orig/debian/dirs
-+++ sudo-1.6.8p9/debian/dirs
+--- sudo-1.6.8p12.orig/debian/dirs
++++ sudo-1.6.8p12/debian/dirs
 @@ -0,0 +1,7 @@
 +etc/pam.d
 +usr/bin
@@ -2008,26 +2146,113 @@
 +usr/sbin
 +usr/share/doc/sudo/examples
 +usr/share/lintian/overrides
---- sudo-1.6.8p9.orig/debian/control
-+++ sudo-1.6.8p9/debian/control
-@@ -0,0 +1,15 @@
+--- sudo-1.6.8p12.orig/debian/docs
++++ sudo-1.6.8p12/debian/docs
+@@ -0,0 +1,9 @@
++debian/OPTIONS 
++BUGS 
++RUNSON 
++UPGRADE 
++PORTING
++TODO 
++HISTORY 
++README 
++TROUBLESHOOTING
+--- sudo-1.6.8p12.orig/debian/sudo-ldap.init.d
++++ sudo-1.6.8p12/debian/sudo-ldap.init.d
+@@ -0,0 +1,31 @@
++#! /bin/sh
++
++### BEGIN INIT INFO
++# Provides:          sudu
++# Required-Start:    $local_fs $remote_fs
++# Required-Stop:
++# Default-Start:     S 1 2 3 4 5
++# Default-Stop:      0 6
++### END INIT INFO
++
++N=/etc/init.d/sudo
++
++set -e
++
++case "$1" in
++  start)
++	# make sure privileges don't persist across reboots
++	if [ -d /var/run/sudo ]
++	then
++                find /var/run/sudo -type f -exec touch -t 198501010000 '{}' \;
++	fi
++	;;
++  stop|reload|restart|force-reload)
++	;;
++  *)
++	echo "Usage: $N {start|stop|restart|force-reload}" >&2
++	exit 1
++	;;
++esac
++
++exit 0
+--- sudo-1.6.8p12.orig/debian/control
++++ sudo-1.6.8p12/debian/control
+@@ -0,0 +1,32 @@
 +Source: sudo
 +Section: admin
 +Priority: optional
 +Maintainer: Bdale Garbee <bdale@gag.com>
-+Build-Depends: debhelper (>= 2.1.6), libpam0g-dev
-+Standards-Version: 3.6.1.0
++Build-Depends: debhelper (>= 5), libpam0g-dev, libldap2-dev
++Standards-Version: 3.6.2.1
 +
 +Package: sudo
 +Architecture: any
 +Depends: ${shlibs:Depends}, libpam-modules
++Conflicts: sudo-ldap
++Replaces: sudo-ldap
 +Description: Provide limited super user privileges to specific users
 + Sudo is a program designed to allow a sysadmin to give limited root
 + privileges to users and log root activity.  The basic philosophy is to give
 + as few privileges as possible but still allow people to get their work done.
++ .
++ This version is built with minimal shared library dependencies, use the
++ sudo-ldap package instead if you need LDAP support.
 +
---- sudo-1.6.8p9.orig/debian/prerm
-+++ sudo-1.6.8p9/debian/prerm
++Package: sudo-ldap
++Architecture: any
++Depends: ${shlibs:Depends}, libpam-modules
++Conflicts: sudo
++Replaces: sudo
++Provides: sudo
++Description: Provide limited super user privileges to specific users
++ Sudo is a program designed to allow a sysadmin to give limited root
++ privileges to users and log root activity.  The basic philosophy is to give
++ as few privileges as possible but still allow people to get their work done.
++ .
++ This version is built with LDAP support.
+--- sudo-1.6.8p12.orig/debian/sudo-ldap.postrm
++++ sudo-1.6.8p12/debian/sudo-ldap.postrm
+@@ -0,0 +1,21 @@
++#! /bin/sh
++
++set -e
++
++case "$1" in
++       purge)
++	rm -f /etc/sudoers
++        ;;
++
++       remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
++        ;;
++
++    *)
++        echo "postrm called with unknown argument \`$1'" >&2
++        exit 1
++
++esac
++
++#DEBHELPER#
++
++exit 0
+--- sudo-1.6.8p12.orig/debian/prerm
++++ sudo-1.6.8p12/debian/prerm
 @@ -0,0 +1,37 @@
 +#!/bin/sh
 +
@@ -2066,16 +2291,12 @@
 +        *)
 +                ;;
 +esac
---- sudo-1.6.8p9.orig/debian/rules
-+++ sudo-1.6.8p9/debian/rules
-@@ -0,0 +1,98 @@
+--- sudo-1.6.8p12.orig/debian/rules
++++ sudo-1.6.8p12/debian/rules
+@@ -0,0 +1,140 @@
 +#!/usr/bin/make -f
 +
-+# Comment this to turn off verbose mode.
 +export DH_VERBOSE=1
-+
-+# This is the debhelper compatibility version to use.
-+export DH_COMPAT=2
 +
 +CFLAGS = -O2 -Wall -Wno-comment
 +ifneq (,$(findstring debug,$(DEB_BUILD_OPTIONS)))
@@ -2083,11 +2304,13 @@
 +endif
 +export CFLAGS
 +
-+build: build-stamp
-+build-stamp:
++build: config-stamp
++config-stamp:
 +	dh_testdir
 +
-+	./configure --prefix=/usr -v \
++	# simple version
++	mkdir -p build-simple
++	cd build-simple && ../configure --prefix=/usr -v \
 +		--with-all-insults \
 +		--with-exempt=sudo --with-pam --with-fqdn \
 +		--with-logging=syslog --with-logfac=authpriv \
@@ -2098,16 +2321,36 @@
 +		--without-lecture \
 +		--with-secure-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
 +
-+	-$(MAKE)
++	# LDAP version
++	mkdir -p build-ldap
++	cd build-ldap && ../configure --prefix=/usr -v \
++		--with-all-insults \
++		--with-exempt=sudo --with-pam --with-ldap --with-fqdn \
++		--with-logging=syslog --with-logfac=authpriv \
++		--with-env-editor --with-editor=/usr/bin/editor \
++		--with-timeout=15 --with-password-timeout=0 \
++		--disable-root-mailer --disable-setresuid \
++		--with-sendmail=/usr/sbin/sendmail \
++		--with-ldap-conf-file=/etc/ldap/ldap.conf \
++		--with-secure-path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/X11R6/bin"
++
++	touch config-stamp
++
++build: build-stamp
++build-stamp: config-stamp
++	dh_testdir
++
++	-$(MAKE) -C build-simple
++	-$(MAKE) -C build-ldap
 +
 +	touch build-stamp
 +
 +clean:
 +	dh_testdir
 +	dh_testroot
-+	rm -f build-stamp
-+
-+	-$(MAKE) distclean || exit 0
++	rm -f config-stamp build-stamp
++	rm -rf build-simple build-ldap
++	rm -f config.cache
 +
 +	-test -r /usr/share/misc/config.sub && \
 +		cp -f /usr/share/misc/config.sub config.sub
@@ -2116,20 +2359,23 @@
 +
 +	dh_clean
 +
-+install: build
++install: build-stamp
 +	dh_testdir
 +	dh_testroot
 +	dh_clean -k
 +	dh_installdirs
 +
-+	install -o root -g root -m 4755 -s sudo debian/sudo/usr/bin/sudo
++	# simple version
++	install -o root -g root -m 4755 -s build-simple/sudo debian/sudo/usr/bin/sudo
 +	ln -sf sudo debian/sudo/usr/bin/sudoedit
-+	install -o root -g root -m 0755 -s visudo debian/sudo/usr/sbin/visudo
-+	install -o root -g root -m 0644 sudo.man \
++	install -o root -g root -m 0755 -s build-simple/visudo \
++		debian/sudo/usr/sbin/visudo
++	install -o root -g root -m 0644 build-simple/sudo.man \
 +		debian/sudo/usr/share/man/man8/sudo.8 
-+	install -o root -g root -m 0644 visudo.man \
++	ln -sf sudo.8 debian/sudo/usr/share/man/man8/sudoedit.8
++	install -o root -g root -m 0644 build-simple/visudo.man \
 +		debian/sudo/usr/share/man/man8/visudo.8 
-+	install -o root -g root -m 0644 sudoers.man \
++	install -o root -g root -m 0644 build-simple/sudoers.man \
 +		debian/sudo/usr/share/man/man5/sudoers.5 
 +	install -o root -g root -m 0644 sample.sudoers \
 +		debian/sudo/usr/share/doc/sudo/examples/sudoers
@@ -2139,26 +2385,47 @@
 +	install -o root -g root -m 0644 debian/sudo.lintian \
 +		debian/sudo/usr/share/lintian/overrides/sudo
 +
++	install -o root -g root -m 0644 debian/sudo_root.8 \
++		debian/sudo/usr/share/man/man8/sudo_root.8 
++
++	# LDAP version
++	install -o root -g root -m 4755 -s build-ldap/sudo debian/sudo-ldap/usr/bin/sudo
++	ln -sf sudo debian/sudo-ldap/usr/bin/sudoedit
++	install -o root -g root -m 0755 -s build-ldap/visudo debian/sudo-ldap/usr/sbin/visudo
++	install -o root -g root -m 0644 build-ldap/sudo.man \
++		debian/sudo-ldap/usr/share/man/man8/sudo.8 
++	ln -sf sudo.8 debian/sudo-ldap/usr/share/man/man8/sudoedit.8
++	install -o root -g root -m 0644 build-ldap/visudo.man \
++		debian/sudo-ldap/usr/share/man/man8/visudo.8 
++	install -o root -g root -m 0644 build-ldap/sudoers.man \
++		debian/sudo-ldap/usr/share/man/man5/sudoers.5 
++	install -o root -g root -m 0644 sample.sudoers \
++		debian/sudo-ldap/usr/share/doc/sudo-ldap/examples/sudoers
++	install -o root -g root -m 0644 debian/sudo.pam \
++		debian/sudo-ldap/etc/pam.d/sudo
++
++	install -o root -g root -m 0644 debian/sudo-ldap.lintian \
++		debian/sudo-ldap/usr/share/lintian/overrides/sudo-ldap
++
++	install -o root -g root -m 0644 debian/sudo_root.8 \
++		debian/sudo/usr/share/man/man8/sudo_root.8 
++
 +binary-indep: build install
 +
 +binary-arch: build install
 +	dh_testdir
 +	dh_testroot
-+	dh_installdocs debian/OPTIONS BUGS RUNSON UPGRADE PORTING \
-+		TODO HISTORY README TROUBLESHOOTING
-+	dh_installexamples
-+	dh_installmenu
-+	dh_installinit
-+	dh_installcron
++	dh_installdocs
++	dh_installexamples -A
++#	dh_installinit -psudo -psudo-ldap
 +	dh_installmanpages fnmatch.3
-+	dh_installinfo
++	dh_installinfo -A
 +	dh_installchangelogs CHANGES
-+	dh_link
 +	dh_strip
 +	dh_compress
 +	dh_fixperms
-+	chown root.root debian/sudo/usr/bin/sudo
-+	chmod 4755 debian/sudo/usr/bin/sudo
++	chown root.root debian/sudo/usr/bin/sudo debian/sudo-ldap/usr/bin/sudo
++	chmod 4755 debian/sudo/usr/bin/sudo debian/sudo-ldap/usr/bin/sudo
 +	dh_installdeb
 +	dh_shlibdeps
 +	dh_gencontrol
@@ -2167,39 +2434,151 @@
 +
 +binary: binary-indep binary-arch
 +.PHONY: build clean binary-indep binary-arch binary install
---- sudo-1.6.8p9.orig/debian/conffiles
-+++ sudo-1.6.8p9/debian/conffiles
-@@ -0,0 +1,2 @@
-+/etc/init.d/sudo
-+/etc/pam.d/sudo
---- sudo-1.6.8p9.orig/debian/changelog
-+++ sudo-1.6.8p9/debian/changelog
-@@ -0,0 +1,652 @@
-+sudo (1.6.8p9-2ubuntu2.3) breezy-security; urgency=low
+--- sudo-1.6.8p12.orig/debian/changelog
++++ sudo-1.6.8p12/debian/changelog
+@@ -0,0 +1,769 @@
++sudo (1.6.8p12-1ubuntu6) dapper; urgency=low
 +
-+  * env.c: Fix typo: PYTHONINSPEC -> PYTHONINSPECT.
++  * env.c: Preserve additional environment variables for non-almighty sudoers:
++    HOME, LOGNAME, DISPLAY, XAUTHORITY, XAUTHORIZATION. Closes: LP#44500
 +
-+ -- Martin Pitt <martin.pitt@ubuntu.com>  Mon,  9 Jan 2006 11:20:12 +0100
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 17 May 2006 09:29:15 +0200
 +
-+sudo (1.6.8p9-2ubuntu2.2) breezy-security; urgency=low
++sudo (1.6.8p12-1ubuntu5) dapper; urgency=low
 +
-+  * SECURITY UPDATE: Privilege escalation.
-+  * env.c: Filter out a whole lot of additional env variables that can lead to
-+    privilege escalation: GLOBIGNORE, JAVA_TOOL_OPTIONS, PERLIO_DEBUG,
-+    PERLLIB, PERL5LIB, PERL5OPT, PERL5DB, FPATH, NULLCMD, READNULLCMD,
-+    ZDOTDIR, TMPPREFIX, PYTHONHOME, PYTHONPATH, PYTHONINSPEC, RUBYLIB,
-+    RUBYOPT. List taken from Mandriva's security update.
-+  * CVE-2005-4158
++  * env.c: Unbreak the env_keep option. Closes: LP#31690
++  * sudoers: Add some explanatory text why it is a REALLY good idea to use
++    visudo. Closes: LP#11620
 +
-+ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu,  5 Jan 2006 15:25:45 +0000
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 28 Mar 2006 18:52:24 +0200
 +
-+sudo (1.6.8p9-2ubuntu2.1) breezy-security; urgency=low
++sudo (1.6.8p12-1ubuntu4) dapper; urgency=low
 +
-+  * SECURITY UPDATE: Potential privilege escalation.
-+  * env.c: Filter out the SHELLOPTS and PS4 variables.
-+  * CVE-2005-2959
++  * Remove the init script, it only cleans up /var/run which is a tmpfs.
 +
-+ -- Martin Pitt <martin.pitt@ubuntu.com>  Fri, 28 Oct 2005 14:46:19 -0400
++ -- Scott James Remnant <scott@ubuntu.com>  Wed, 22 Feb 2006 16:28:42 +0000
++
++sudo (1.6.8p12-1ubuntu3) dapper; urgency=low
++
++  * Add debian/sudo_root.8: Introduction about root handling in ubuntu with
++    sudo.
++  * debian/rules: Install that new manpage into sudo and sudo-ldap.
++
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed,  8 Feb 2006 17:01:50 +0100
++
++sudo (1.6.8p12-1ubuntu2) dapper; urgency=low
++
++  * sudo.c: If the user successfully authenticated and he is in the 'admin'
++    group, then create a stamp ~/.sudo_as_admin_successful. A future
++    /etc/profile will evaluate this flag to display a short help about how to
++    execute things as root.
++
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed, 18 Jan 2006 09:32:02 +0100
++
++sudo (1.6.8p12-1ubuntu1) dapper; urgency=low
++
++  * Resynchronise with Debian, clean up cruft from Ubuntu diff.
++  * debian/postinst: Do not set env_reset flag in newly created sudoers files;
++    it's incompatible with upgrades.
++  * Clean up environment variable handling to fix vulns like CVE-2005-4158 and
++    CVE-2006-0151 once and for all: Only keep known-good variables if user has
++    limited sudo privileges (blacklist -> whitelist) and keep them all for
++    users with unlimited command privileges (to not drive admins and
++    developers up the wall which actually need to pass env variables from time
++    to time).
++    - parse.h, parse.yacc:
++      + Add a new flag 'cmdall' to the matchstack, and a new macro 'cmnd_all'
++        to access it.
++      + In the "cmnd" grammar rule: Set cmdall to TRUE if command specifier is
++        'ALL', otherwise to FALSE.
++    - sudo.tab.cc: Re-yaccified to match changes to parse.yacc.
++    - sudo.h: Add new sudoers_lookup() return flag FLAG_CMND_ALL.
++    - parse.c, sudoers_lookup(): Set flag FLAG_CMND_ALL if cmnd_all matched.
++    - ldap.c:
++      + sudo_ldap_check_command(): Add return parameter all, set to true
++        if command specifier is 'ALL'.
++      + sudo_ldap_check(): Set flag FLAG_CMND_ALL if sudo_ldap_check_command()
++        returned all=1.
++    - env.c:
++      + Apply Martin Schulze's patch to switch from blacklist to whitelist
++        environment cleaning.
++      + Add parameter 'noclean' to rebuild_env(); if it is != 0, environment
++        variables are not cleaned.
++    - sudo.c: Call rebuild_env() with noclean=1 if FLAG_CMND_ALL is set.
++
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 17 Jan 2006 10:03:05 +0100
++
++sudo (1.6.8p12-1) unstable; urgency=low
++
++  * new upstream version, closes: #342948 (CVE-2005-4158)
++  * add env_reset to the sudoers file we create if none already exists,
++    as a further precaution in response to discussion about CVS-2005-4158
++  * split ldap support into a new sudo-ldap package.  I was trying to avoid
++    doing this, but the impact of going from 4 to 17 linked shlibs on the 
++    autobuilder chroots is sufficient motivation for me.
++    closes: #344034
++
++ -- Bdale Garbee <bdale@gag.com>  Wed, 28 Dec 2005 13:49:10 -0700
++
++sudo (1.6.8p9-4) unstable; urgency=low
++
++  * enable ldap support, deliver README.LDAP and sudoers2ldif, closes: #283231 
++  * merge patch from Martin Pitt / Ubuntu to be more robust about resetting
++    timestamps in the init.d script, closes: #330868
++  * add dependency header to init.d script, closes: #332849
++
++ -- Bdale Garbee <bdale@gag.com>  Sat, 10 Dec 2005 07:47:07 -0800
++
++sudo (1.6.8p9-3ubuntu4) dapper; urgency=low
++
++  * Revert addition of sudo -t, i. e. revert to version 1.6.8p9-3ubuntu1. As
++    per TB discussion, we will not use sudo for implementing
++    https://wiki.ubuntu.com/HideAdminToolsToUsers.
++
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Tue, 29 Nov 2005 23:27:42 +0100
++
++sudo (1.6.8p9-3ubuntu3) dapper; urgency=low
++
++  * sudo.c: Log failures even in test mode, to avoid the possibility of
++    silently poking around for interesting sudo privileges. This will generate
++    a lot of auth log clutter in the desktop case, but will not change sudo
++    semantics where it matters (on servers).
++
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Thu, 17 Nov 2005 10:35:04 +0100
++
++sudo (1.6.8p9-3ubuntu2) dapper; urgency=low
++
++  * Add option -t which only tests whether the given command can be executed
++    and does not require a password. This is required for the
++    https://wiki.ubuntu.com/HideAdminToolsToUsers spec.
++  * sudo.h: Add MODE_TESTONLY mode.
++  * sudo.c: Add -t parsing and do not actually run the command in test mode,
++    just return success or failure. Also, add the new option to the "usage"
++    output.
++  * sudo.pod: Document new -t option.
++  * Put patch into debian/ubuntu-patches/sudo.add-test-option.patch to have
++    it separate for future merges (requires a manual "make sudo.man.in" to
++    actually run pod2man).
++
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed,  9 Nov 2005 17:40:43 -0500
++
++sudo (1.6.8p9-3ubuntu1) dapper; urgency=low
++
++  * Resynchronise with Debian.
++
++ -- Martin Pitt <martin.pitt@ubuntu.com>  Wed,  9 Nov 2005 17:12:06 -0500
++
++sudo (1.6.8p9-3) unstable; urgency=high
++
++  * update debhelper compatibility level from 2 to 4
++  * add man page symlink for sudoedit
++  * Clean SHELLOPTS and PS4 from the environment before executing programs
++    with sudo permissions [env.c, CAN-2005-2959]
++  * fix typo in manpage pointed out by Moray Allen, closes: #285995
++  * fix paths in sample complex sudoers file, closes: #303542
++  * fix type in sudoers man page, closes: #311244
++
++ -- Bdale Garbee <bdale@gag.com>  Wed, 28 Sep 2005 01:18:04 -0600
 +
 +sudo (1.6.8p9-2ubuntu2) breezy; urgency=low
 +
@@ -2827,14 +3206,146 @@
 +
 +	* New upstream version
 +	* Minor changes to debian.rules
---- sudo-1.6.8p9.orig/debian/sudo.lintian
-+++ sudo-1.6.8p9/debian/sudo.lintian
-@@ -0,0 +1,3 @@
-+sudo: setuid-binary usr/bin/sudo 4755 root/root
-+sudo: postrm-contains-additional-updaterc.d-calls /etc/init.d/sudo
-+sudo: script-in-etc-init.d-not-registered-via-update-rc.d /etc/init.d/sudo
---- sudo-1.6.8p9.orig/debian/postinst
-+++ sudo-1.6.8p9/debian/postinst
+--- sudo-1.6.8p12.orig/debian/sudo_root.8
++++ sudo-1.6.8p12/debian/sudo_root.8
+@@ -0,0 +1,135 @@
++.TH sudo_root 8 "February 8, 2006"
++
++.SH NAME
++sudo_root \- How to run administrative commands
++
++.SH SYNOPSIS
++
++.B sudo
++.I command
++
++.B sudo \-i
++
++.SH INTRODUCTION
++
++By default, the password for the user "root" (the system
++administrator) is locked. This means you cannot login as root or use
++su. Instead, the installer will set up sudo to allow the user that is
++created during install to run all administrative commands.
++
++This means that in the terminal you can use sudo for commands that
++require root privileges. All programs in the menu will use a graphical
++sudo to prompt for a password. When sudo asks for a password, it needs
++.B your password, 
++this means that a root password is not needed.
++
++To run a command which requires root privileges in a terminal, simply
++prepend 
++.B sudo
++in front of it. To get an interactive root shell, use
++.B sudo \-i\fR.
++
++.SH ALLOWING OTHER USERS TO RUN SUDO
++
++By default, only the user who installed the system is permitted to run
++sudo. To add more administrators, i. e. users who can run sudo, you
++have to add these users to the group 'admin' by doing one of the
++following steps:
++
++.IP * 2
++In a shell, do
++
++.RS 4
++.B sudo adduser
++.I username
++.B admin
++.RE
++
++.IP * 2
++Use the graphical "Users & Groups" program in the "System settings"
++menu to add the new user to the
++.B admin
++group.
++
++.SH BENEFITS OF USING SUDO
++
++The benefits of leaving root disabled by default include the following:
++
++.IP * 2
++Users do not have to remember an extra password, which they are likely to forget.
++.IP * 2
++The installer is able to ask fewer questions.
++.IP * 2
++It avoids the "I can do anything" interactive login by default \- you
++will be prompted for a password before major changes can happen, which
++should make you think about the consequences of what you are doing.
++.IP * 2
++Sudo adds a log entry of the command(s) run (in \fB/var/log/auth.log\fR).
++.IP * 2
++Every attacker trying to brute\-force their way into your box will
++know it has an account named root and will try that first. What they
++do not know is what the usernames of your other users are.
++.IP * 2
++Allows easy transfer for admin rights, in a short term or long term
++period, by adding and removing users from the admin group, while not
++compromising the root account.
++.IP * 2
++sudo can be set up with a much more fine\-grained security policy.
++
++.SH DOWNSIDES OF USING SUDO
++
++Although for desktops the benefits of using sudo are great, there are
++possible issues which need to be noted:
++
++.IP * 2
++Redirecting the output of commands run with sudo can be confusing at
++first. For instance consider
++
++.RS 4
++.B sudo ls > /root/somefile
++.RE
++
++.RS 2
++will not work since it is the shell that tries to write to that file. You can use 
++.RE
++
++.RS 4
++.B ls | sudo tee /root/somefile
++.RE
++
++.RS 2
++to get the behaviour you want.
++.RE
++
++.IP * 2
++In a lot of office environments the ONLY local user on a system is
++root. All other users are imported using NSS techniques such as
++nss\-ldap. To setup a workstation, or fix it, in the case of a network
++failure where nss\-ldap is broken, root is required. This tends to
++leave the system unusable. An extra local user, or an enabled root
++password is needed here.
++
++.SH GOING BACK TO A TRADITIONAL ROOT ACCOUNT
++
++.B This is not recommended!
++
++To enable the root account (i.e. set a password) use:
++
++.RS 4
++.B sudo passwd root
++.RE
++
++Afterwards, edit
++.B /etc/sudoers
++and comment out the line
++
++.RS 4
++%admin  ALL=(ALL) ALL
++.RE
++
++to disable sudo access to members of the admin group.
++
++.SH SEE ALSO
++.BR sudo (8),
++.B https://wiki.ubuntu.com/RootSudo
++
+--- sudo-1.6.8p12.orig/debian/sudo-ldap.postinst
++++ sudo-1.6.8p12/debian/sudo-ldap.postinst
 @@ -0,0 +1,62 @@
 +#!/usr/bin/perl
 +
@@ -2853,10 +3364,10 @@
 +	  "# This file MUST be edited with the 'visudo' command as root.\n",
 +	  "#\n",
 +	  "# See the man page for details on how to write a sudoers file.\n",
-+	  "#\n\n# Host alias specification\n\n",
++	  "#\n\nDefaults\tenv_reset\n\n",
++	  "# Host alias specification\n\n",
 +	  "# User alias specification\n\n",
 +	  "# Cmnd alias specification\n\n",
-+	  "# Defaults\n\nDefaults\t!lecture,tty_tickets,!fqdn\n\n",
 +	  "# User privilege specification\nroot\tALL=(ALL) ALL\n";
 +	close SUDOERS;
 +
@@ -2869,7 +3380,7 @@
 +# must do a remove first to un-do the "bad" links created by previous version
 +system ('update-rc.d -f sudo remove >/dev/null 2>&1');
 +
-+system ('update-rc.d sudo start 75 S . >/dev/null');
++#system ('update-rc.d sudo start 75 S . >/dev/null');
 +
 +# make sure we have a sudo group
 +
@@ -2898,10 +3409,93 @@
 +system("groupadd -g $gid sudo");
 +
 +print "";
---- sudo-1.6.8p9.orig/debian/init.d
-+++ sudo-1.6.8p9/debian/init.d
-@@ -0,0 +1,23 @@
+--- sudo-1.6.8p12.orig/debian/sudo.lintian
++++ sudo-1.6.8p12/debian/sudo.lintian
+@@ -0,0 +1,3 @@
++sudo: setuid-binary usr/bin/sudo 4755 root/root
++sudo: postrm-contains-additional-updaterc.d-calls /etc/init.d/sudo
++sudo: script-in-etc-init.d-not-registered-via-update-rc.d /etc/init.d/sudo
+--- sudo-1.6.8p12.orig/debian/postinst
++++ sudo-1.6.8p12/debian/postinst
+@@ -0,0 +1,62 @@
++#!/usr/bin/perl
++
++# remove old link
++
++unlink ("/etc/alternatives/sudo") if ( -l "/etc/alternatives/sudo");
++
++# make sure we have a sudoers file
++if ( ! -f "/etc/sudoers") {
++
++	print "No /etc/sudoers found... creating one for you.\n";
++
++	open (SUDOERS, "> /etc/sudoers");
++	print SUDOERS "# /etc/sudoers\n",
++	  "#\n",
++	  "# This file MUST be edited with the 'visudo' command as root.\n",
++	  "#\n",
++	  "# See the man page for details on how to write a sudoers file.\n",
++	  "# Host alias specification\n\n",
++	  "# User alias specification\n\n",
++	  "# Cmnd alias specification\n\n",
++	  "# Defaults\n\nDefaults\t!lecture,tty_tickets,!fqdn\n\n",
++	  "# User privilege specification\nroot\tALL=(ALL) ALL\n";
++	close SUDOERS;
++
++}
++
++# make sure sudoers has the correct permissions and owner/group
++system ('chown root:root /etc/sudoers');
++system ('chmod 440 /etc/sudoers');
++
++# must do a remove first to un-do the "bad" links created by previous version
++system ('update-rc.d -f sudo remove >/dev/null 2>&1');
++
++#system ('update-rc.d sudo start 75 S . >/dev/null');
++
++# make sure we have a sudo group
++
++exit 0 if getgrnam("sudo"); # we're finished if there is a group sudo
++
++$gid = 27;                 # start searcg with gid 27
++setgrent;
++while (getgrgid($gid)) {
++	++$gid;
++}
++endgrent;
++
++if ($gid != 27) {
++	print "On Debian we normally use gid 27 for 'sudo'.\n";
++	$gname = getgrgid(27);
++	print "However, on your system gid 27 is group '$gname'.\n\n";
++	print "Would you like me to stop configuring sudo so that you can change this? [n] "; 
++	$ans = <STDIN>;
++        if ($ans =~ m/^[yY].*/) {
++		print "'dpkg --pending --configure' will restart the configuration.\n\n\n";
++		exit 1;
++	}
++}
++
++print "Creating group 'sudo' with gid = $gid\n";
++system("groupadd -g $gid sudo");
++
++print "";
+--- sudo-1.6.8p12.orig/debian/compat
++++ sudo-1.6.8p12/debian/compat
+@@ -0,0 +1 @@
++4
+--- sudo-1.6.8p12.orig/debian/init.d
++++ sudo-1.6.8p12/debian/init.d
+@@ -0,0 +1,31 @@
 +#! /bin/sh
++
++### BEGIN INIT INFO
++# Provides:          sudu
++# Required-Start:    $local_fs $remote_fs
++# Required-Stop:
++# Default-Start:     S 1 2 3 4 5
++# Default-Stop:      0 6
++### END INIT INFO
 +
 +N=/etc/init.d/sudo
 +
@@ -2924,19 +3518,63 @@
 +esac
 +
 +exit 0
---- sudo-1.6.8p9.orig/debian/postrm
-+++ sudo-1.6.8p9/debian/postrm
+--- sudo-1.6.8p12.orig/debian/sudo-ldap.lintian
++++ sudo-1.6.8p12/debian/sudo-ldap.lintian
+@@ -0,0 +1,3 @@
++sudo-ldap: setuid-binary usr/bin/sudo 4755 root/root
++sudo-ldap: postrm-contains-additional-updaterc.d-calls /etc/init.d/sudo-ldap
++sudo-ldap: script-in-etc-init.d-not-registered-via-update-rc.d /etc/init.d/sudo-ldap
+--- sudo-1.6.8p12.orig/debian/sudo-ldap.dirs
++++ sudo-1.6.8p12/debian/sudo-ldap.dirs
 @@ -0,0 +1,7 @@
-+#!/bin/sh
++etc/pam.d
++usr/bin
++usr/share/man/man8
++usr/share/man/man5
++usr/sbin
++usr/share/doc/sudo-ldap/examples
++usr/share/lintian/overrides
+--- sudo-1.6.8p12.orig/debian/sudo-ldap.docs
++++ sudo-1.6.8p12/debian/sudo-ldap.docs
+@@ -0,0 +1,11 @@
++debian/OPTIONS 
++BUGS 
++RUNSON 
++UPGRADE 
++PORTING
++TODO 
++HISTORY 
++README 
++README.LDAP 
++TROUBLESHOOTING
++sudoers2ldif
+--- sudo-1.6.8p12.orig/debian/postrm
++++ sudo-1.6.8p12/debian/postrm
+@@ -0,0 +1,21 @@
++#! /bin/sh
++
++set -e
 +
 +case "$1" in
-+    purge)
-+    	rm -f /etc/sudoers
-+    ;;
++       purge)
++	rm -f /etc/sudoers
++        ;;
++
++       remove|upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
++        ;;
++
++    *)
++        echo "postrm called with unknown argument \`$1'" >&2
++        exit 1
++
 +esac
---- sudo-1.6.8p9.orig/debian/OPTIONS
-+++ sudo-1.6.8p9/debian/OPTIONS
-@@ -0,0 +1,49 @@
++
++#DEBHELPER#
++
++exit 0
+--- sudo-1.6.8p12.orig/debian/OPTIONS
++++ sudo-1.6.8p12/debian/OPTIONS
+@@ -0,0 +1,61 @@
 +The following options were used to configure sudo for Debian GNU/Linux.
 +
 +  --with-exempt=sudo 
@@ -2948,6 +3586,10 @@
 +  --with-pam 
 +	
 +	Support for pluggable authentication modules.
++
++  --with-ldap
++
++	Support for LDAP authentication.
 +
 +  --with-fqdn 
 +
@@ -2986,8 +3628,16 @@
 +	Include all the insults in the binary, won't be enabled unless turned
 +	on in the sudoers file.
 +
---- sudo-1.6.8p9.orig/debian/copyright
-+++ sudo-1.6.8p9/debian/copyright
++  --with-sendmail=/usr/sbin/sendmail
++
++	Use Debian policy to know the location of sendmail instead of trying 
++	to detect it at build time.
++
++  --disable-setresuid
++
++	Linux 2.2 kernels don't support setresgid.
+--- sudo-1.6.8p12.orig/debian/copyright
++++ sudo-1.6.8p12/debian/copyright
 @@ -0,0 +1,72 @@
 +This is the Debian GNU/Linux prepackaged version of sudo.  sudo is
 +used to provide limited super user privileges to specific users.
@@ -3061,25 +3711,284 @@
 +   LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
 +   OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
 +   SUCH DAMAGE.
---- sudo-1.6.8p9.orig/debian/sudo.pam
-+++ sudo-1.6.8p9/debian/sudo.pam
+--- sudo-1.6.8p12.orig/debian/sudo.pam
++++ sudo-1.6.8p12/debian/sudo.pam
 @@ -0,0 +1,4 @@
 +#%PAM-1.0
 +
 +@include common-auth
 +@include common-account
---- sudo-1.6.8p9.orig/debian/source.lintian-overrides
-+++ sudo-1.6.8p9/debian/source.lintian-overrides
+--- sudo-1.6.8p12.orig/debian/source.lintian-overrides
++++ sudo-1.6.8p12/debian/source.lintian-overrides
 @@ -0,0 +1 @@
 +sudo source: maintainer-script-lacks-debhelper-token debian/postinst
---- sudo-1.6.8p9.orig/sample.sudoers
-+++ sudo-1.6.8p9/sample.sudoers
-@@ -36,7 +36,7 @@
+--- sudo-1.6.8p12.orig/sample.sudoers
++++ sudo-1.6.8p12/sample.sudoers
+@@ -35,16 +35,16 @@
+ # Cmnd alias specification
  ##
  Cmnd_Alias	DUMPS = /usr/sbin/dump, /usr/sbin/rdump, /usr/sbin/restore, \
- 			/usr/sbin/rrestore, /usr/bin/mt
+-			/usr/sbin/rrestore, /usr/bin/mt
 -Cmnd_Alias	KILL = /usr/bin/kill
++			/usr/sbin/rrestore, /bin/mt
 +Cmnd_Alias	KILL = /bin/kill
  Cmnd_Alias	PRINTING = /usr/sbin/lpc, /usr/bin/lprm
- Cmnd_Alias	SHUTDOWN = /usr/sbin/shutdown
- Cmnd_Alias	HALT = /usr/sbin/halt
+-Cmnd_Alias	SHUTDOWN = /usr/sbin/shutdown
+-Cmnd_Alias	HALT = /usr/sbin/halt
+-Cmnd_Alias	REBOOT = /usr/sbin/reboot
+-Cmnd_Alias	SHELLS = /sbin/sh, /usr/bin/sh, /usr/bin/csh, /usr/bin/ksh, \
+-			 /usr/local/bin/tcsh, /usr/bin/rsh, \
+-			 /usr/local/bin/zsh
+-Cmnd_Alias	SU = /usr/bin/su
++Cmnd_Alias	SHUTDOWN = /sbin/shutdown
++Cmnd_Alias	HALT = /sbin/halt
++Cmnd_Alias	REBOOT = /sbin/reboot
++Cmnd_Alias	SHELLS = /sbin/sh, /bin/sh, /bin/csh, /usr/bin/ksh, \
++			 /usr/bin/tcsh, /usr/bin/rsh, \
++			 /usr/bin/zsh
++Cmnd_Alias	SU = /bin/su
+ Cmnd_Alias	VIPW = /usr/sbin/vipw, /usr/bin/passwd, /usr/bin/chsh, \
+ 		       /usr/bin/chfn
+ 
+@@ -82,7 +82,7 @@
+ 		sudoedit /etc/printcap, /usr/oper/bin/
+ 
+ # joe may su only to operator
+-joe		ALL = /usr/bin/su operator
++joe		ALL = /bin/su operator
+ 
+ # pete may change passwords for anyone but root on the hp snakes
+ pete		HPPA = /usr/bin/passwd [A-z]*, !/usr/bin/passwd root
+@@ -96,13 +96,13 @@
+ 
+ # users in the secretaries netgroup need to help manage the printers
+ # as well as add and remove users
+-+secretaries	ALL = PRINTING, /usr/bin/adduser, /usr/bin/rmuser
+++secretaries	ALL = PRINTING, /usr/sbin/adduser, /usr/bin/rmuser
+ 
+ # fred can run commands as oracle or sybase without a password
+ fred		ALL = (DB) NOPASSWD: ALL
+ 
+ # on the alphas, john may su to anyone but root and flags are not allowed
+-john		ALPHA = /usr/bin/su [!-]*, !/usr/bin/su *root*
++john		ALPHA = /bin/su [!-]*, !/bin/su *root*
+ 
+ # jen can run anything on all machines except the ones
+ # in the "SERVERS" Host_Alias
+--- sudo-1.6.8p12.orig/sudo.tab.c
++++ sudo-1.6.8p12/sudo.tab.c
+@@ -138,6 +138,7 @@
+ 	} \
+ 	match[top].user   = UNSPEC; \
+ 	match[top].cmnd   = UNSPEC; \
++	match[top].cmndall= UNSPEC; \
+ 	match[top].host   = UNSPEC; \
+ 	match[top].runas  = UNSPEC; \
+ 	match[top].nopass = def_authenticate ? UNSPEC : TRUE; \
+@@ -153,6 +154,7 @@
+ 	} \
+ 	match[top].user   = match[top-1].user; \
+ 	match[top].cmnd   = match[top-1].cmnd; \
++	match[top].cmndall= match[top-1].cmndall; \
+ 	match[top].host   = match[top-1].host; \
+ 	match[top].runas  = match[top-1].runas; \
+ 	match[top].nopass = match[top-1].nopass; \
+@@ -1739,6 +1741,7 @@
+ 				}
+ 			    }
+ 
++			    SETMATCH(cmnd_all, TRUE);
+ 			    yyval.BOOLEAN = TRUE;
+ 			}
+ break;
+@@ -1769,6 +1772,7 @@
+ 					YYERROR;
+ 				    }
+ 				}
++				SETMATCH(cmnd_all, FALSE);
+ 				yyval.BOOLEAN = NOMATCH;
+ 			    }
+ 			    free(yyvsp[0].string);
+@@ -1800,6 +1804,7 @@
+ 			    free(yyvsp[0].command.cmnd);
+ 			    if (yyvsp[0].command.args)
+ 				free(yyvsp[0].command.args);
++			    SETMATCH(cmnd_all, FALSE);
+ 			}
+ break;
+ case 65:
+--- sudo-1.6.8p12.orig/ldap.c
++++ sudo-1.6.8p12/ldap.c
+@@ -256,9 +256,10 @@
+  * Walks through search result and returns true if we have a
+  * command match
+  */
+-int sudo_ldap_check_command(ld,entry)
++int sudo_ldap_check_command(ld,entry,all)
+   LDAP *ld;
+   LDAPMessage *entry;
++  int* all;
+ {
+   char **v=NULL;
+   char **p=NULL;
+@@ -267,6 +268,8 @@
+   int  ret=0;
+   int  foundbang;
+ 
++  *all=0;
++
+   if (!entry) return ret;
+ 
+   v=ldap_get_values(ld,entry,"sudoCommand");
+@@ -277,6 +280,7 @@
+ 
+     /* Match against ALL ? */
+     if (!strcasecmp(*p,"ALL")) {
++      *all=1;
+       ret=1;
+       if (ldap_conf.debug>1) printf(" MATCH!\n");
+       continue;
+@@ -711,6 +715,7 @@
+   /* flags */
+   int ldap_user_matches=0;
+   int ldap_host_matches=0;
++  int command_all=0;
+ 
+   if (!sudo_ldap_read_config())  return VALIDATE_ERROR;
+ 
+@@ -896,7 +901,7 @@
+           /* add matches for listing later */
+           sudo_ldap_add_match(ld,entry) &&
+           /* verify command match */
+-          sudo_ldap_check_command(ld,entry) &&
++          sudo_ldap_check_command(ld,entry,&command_all) &&
+           /* verify runas match */
+           sudo_ldap_check_runas(ld,entry)
+       )
+@@ -907,6 +912,7 @@
+         sudo_ldap_parse_options(ld,entry);
+         /* make sure we dont reenter loop */
+         ret=VALIDATE_OK;
++        if(command_all) SET(ret,FLAG_CMND_ALL);
+         /* break from inside for loop */
+         break;
+       }
+--- sudo-1.6.8p12.orig/sudo.c
++++ sudo-1.6.8p12/sudo.c
+@@ -106,10 +106,11 @@
+ static void set_loginclass		__P((struct passwd *));
+ static void usage			__P((int));
+ static void usage_excl			__P((int));
++static void create_admin_success_flag   __P((void));
+ static struct passwd *get_authpw	__P((void));
+ extern int sudo_edit			__P((int, char **));
+ extern void list_matches		__P((void));
+-extern char **rebuild_env		__P((char **, int, int));
++extern char **rebuild_env		__P((char **, int, int, int));
+ extern char **zero_env			__P((char **));
+ extern struct passwd *sudo_getpwnam	__P((const char *));
+ extern struct passwd *sudo_getpwuid	__P((uid_t));
+@@ -368,11 +369,15 @@
+ 
+     /* Build a new environment that avoids any nasty bits if we have a cmnd. */
+     if (ISSET(sudo_mode, MODE_RUN))
+-	new_environ = rebuild_env(envp, sudo_mode, ISSET(validated, FLAG_NOEXEC));
++	new_environ = rebuild_env(envp, sudo_mode, ISSET(validated, FLAG_NOEXEC), ISSET(validated, FLAG_CMND_ALL));
+     else
+ 	new_environ = envp;
+ 
+     if (ISSET(validated, VALIDATE_OK)) {
++	/* If the user is in the admin group, create a dotfile to signal that
++	 * sudo was executed successfully. */
++	create_admin_success_flag();
++
+ 	/* Finally tell the user if the command did not exist. */
+ 	if (cmnd_status == NOT_FOUND_DOT) {
+ 	    warnx("ignoring `%s' found in '.'\nUse `sudo ./%s' if this is the `%s' you wish to run.", user_cmnd, user_cmnd, user_cmnd);
+@@ -1156,3 +1161,46 @@
+     putchar('\n');
+     exit(exit_val);
+ }
++
++static void create_admin_success_flag(void)
++{
++    struct group* admin;
++    char** g;
++    int is_admin;
++    char flagfile[PATH_MAX];
++    int f;
++
++    if (!sudo_user.pw || !sudo_user.pw->pw_name || !sudo_user.pw->pw_dir)
++	return;
++
++    /* check whether the user is in the admin group */
++    admin = getgrnam("admin");
++    if (!admin || !admin->gr_mem)
++	return;
++    is_admin = 0;
++    for (g = admin->gr_mem; *g; ++g) {
++	if (!strcmp(*g, sudo_user.pw->pw_name)) {
++	    is_admin = 1;
++	    break;
++	}
++    }
++    if (!is_admin)
++	return;
++
++    /* build path to flag file */
++    snprintf(flagfile, sizeof(flagfile), "%s/.sudo_as_admin_successful",
++	    sudo_user.pw->pw_dir);
++    if (strlen(flagfile) >= sizeof(flagfile)-1)
++	return;
++
++    /* do nothing if the file already exists */
++    if (!access(flagfile, F_OK))
++	return;
++
++    /* create file */
++    f = open(flagfile, O_CREAT|O_WRONLY|O_EXCL, 0644);
++    if(f >= 0) {
++	fchown(f, sudo_user.pw->pw_uid, sudo_user.pw->pw_gid);
++	close(f);
++    }
++}
+--- sudo-1.6.8p12.orig/sudo.h
++++ sudo-1.6.8p12/sudo.h
+@@ -65,6 +65,7 @@
+ #define FLAG_NO_HOST		0x080
+ #define FLAG_NO_CHECK		0x100
+ #define FLAG_NOEXEC		0x200
++#define FLAG_CMND_ALL           0x400
+ 
+ /*
+  * Pseudo-boolean values
+--- sudo-1.6.8p12.orig/parse.c
++++ sudo-1.6.8p12/parse.c
+@@ -200,7 +200,8 @@
+ 		    set_perms(PERM_ROOT);
+ 		    return(VALIDATE_OK |
+ 			(no_passwd == TRUE ? FLAG_NOPASS : 0) |
+-			(no_execve == TRUE ? FLAG_NOEXEC : 0));
++			(no_execve == TRUE ? FLAG_NOEXEC : 0) |
++                        (cmnd_all == TRUE ? FLAG_CMND_ALL : 0));
+ 		} else if ((runas_matches == TRUE && cmnd_matches == FALSE) ||
+ 		    (runas_matches == FALSE && cmnd_matches == TRUE)) {
+ 		    /*
+--- sudo-1.6.8p12.orig/parse.h
++++ sudo-1.6.8p12/parse.h
+@@ -29,6 +29,7 @@
+ struct matchstack {
+ 	int user;
+ 	int cmnd;
++	int cmndall;
+ 	int host;
+ 	int runas;
+ 	int nopass;
+@@ -46,6 +47,7 @@
+ 
+ #define user_matches	(match[top-1].user)
+ #define cmnd_matches	(match[top-1].cmnd)
++#define cmnd_all	(match[top-1].cmndall)
+ #define host_matches	(match[top-1].host)
+ #define runas_matches	(match[top-1].runas)
+ #define no_passwd	(match[top-1].nopass)

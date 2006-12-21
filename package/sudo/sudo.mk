@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SUDO_VER:=1.6.8p9
+SUDO_VER:=1.6.8p12
 SUDO_SOURCE:=sudo-$(SUDO_VER).tar.gz
 SUDO_SITE:=http://www.courtesan.com/sudo/dist
 SUDO_DIR:=$(BUILD_DIR)/sudo-$(SUDO_VER)
@@ -24,6 +24,7 @@ $(SUDO_DIR)/.configured: $(SUDO_DIR)/.unpacked $(SUDO_CONFIG_FILE)
 	(cd $(SUDO_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -54,15 +55,17 @@ $(SUDO_DIR)/sudo: $(SUDO_DIR)/.configured
 	touch -c $(SUDO_DIR)/sudo
 
 $(TARGET_DIR)/usr/bin/sudo: $(SUDO_DIR)/sudo
-	# Use fakeroot to pretend to do 'make install' as root
-	echo "$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR="$(TARGET_DIR)" -C $(SUDO_DIR) install" \
-		> $(STAGING_DIR)/.fakeroot.sudo
+	$(INSTALL) -m 4555 -D $(SUDO_DIR)/sudo $(TARGET_DIR)/usr/bin/sudo
+	$(INSTALL) -m 0555 -D $(SUDO_DIR)/visudo $(TARGET_DIR)/usr/sbin/visudo
+	$(INSTALL) -m 0440 -D $(SUDO_DIR)/sudoers $(TARGET_DIR)/etc/sudoers
+	$(STRIP) $(TARGET_DIR)/usr/bin/sudo $(TARGET_DIR)/usr/sbin/visudo
 	touch -c $(TARGET_DIR)/usr/bin/sudo
 
-sudo: uclibc host-fakeroot $(TARGET_DIR)/usr/bin/sudo
+sudo: uclibc $(TARGET_DIR)/usr/bin/sudo
 
 sudo-clean:
-	rm -f $(TARGET_DIR)/usr/bin/sudo
+	rm -f $(TARGET_DIR)/usr/bin/sudo $(TARGET_DIR)/etc/sudoers \
+		$(TARGET_DIR)/usr/sbin/visudo
 	-$(MAKE) -C $(SUDO_DIR) clean
 
 sudo-dirclean:
