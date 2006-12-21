@@ -56,7 +56,7 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 
 $(LVM2_TARGET_SBINS): $(LVM2_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
-	$(MAKE) CC=$(TARGET_CC) -C $(LVM2_DIR) install prefix=$(STAGING_DIR) exec_prefix=$(STAGING_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR) install
 	for binary in $(LVM2_SBIN); do echo $$binary; cp -a $(STAGING_DIR)/sbin/$$binary $(TARGET_DIR)/sbin; done
 
 lvm2: uclibc dm $(LVM2_TARGET_SBINS)
