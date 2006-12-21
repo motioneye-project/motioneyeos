@@ -10,10 +10,6 @@ DB_SOURCE:=db-$(DB_VER).NC.tar.gz
 DB_DIR:=$(BUILD_DIR)/db-$(DB_VER).NC
 DB_SHARLIB:=libdb-$(DB_SO_VER).so
 
-ifneq ($(BR2_LARGEFILE),y)
-DB_LARGEFILE="--disable-largefile"
-endif
-
 $(DL_DIR)/$(DB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DB_SITE)/$(DB_SOURCE)
 
@@ -48,7 +44,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--disable-tcl \
 		--disable-compat185 \
 		--with-pic \
-                $(DB_LARGEFILE) \
+                $(DISABLE_LARGEFILE) \
 	);
 	$(SED) 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
 	touch $(DB_DIR)/.configured

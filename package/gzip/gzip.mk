@@ -12,10 +12,6 @@ GZIP_CAT:=$(ZCAT)
 GZIP_BINARY:=$(GZIP_DIR)/gzip
 GZIP_TARGET_BINARY:=$(TARGET_DIR)/bin/zmore
 
-ifneq ($(BR2_LARGEFILE),y)
-GZIP_LARGEFILE="--disable-largefile"
-endif
-
 $(DL_DIR)/$(GZIP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GZIP_SITE)/$(GZIP_SOURCE)
 
@@ -44,7 +40,7 @@ $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-		$(GZIP_LARGEFILE) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch $(GZIP_DIR)/.configured
 

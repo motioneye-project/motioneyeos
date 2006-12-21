@@ -12,11 +12,6 @@ ARGUS_CAT:=$(ZCAT)
 ARGUS_BINARY:=bin/argus
 ARGUS_TARGET_BINARY:=usr/sbin/argus
 
-ARGUS_CONFIG_OPTS:=
-ifneq ($(strip $(BR2_LARGEFILE)),y)
-ARGUS_CONFIG_OPTS += --disable-largefile
-endif
-
 ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=yes
 ifeq ($(BR2_i386),y)
 ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
@@ -63,7 +58,7 @@ $(ARGUS_DIR)/.configured: $(ARGUS_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		$(ARGUS_CONFIG_OPTS) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch $(ARGUS_DIR)/.configured
 

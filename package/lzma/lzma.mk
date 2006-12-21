@@ -12,9 +12,7 @@ LZMA_TARGET_DIR:=$(BUILD_DIR)/lzma-$(LZMA_VER)
 LZMA_CFLAGS:=$(TARGET_CFLAGS)
 ifeq ($(BR2_LARGEFILE),y)
 LZMA_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
-LZMA_LARGEFILE="--enable-largefile"
 else
-LZMA_LARGEFILE="--disable-largefile"
 endif
 
 $(DL_DIR)/$(LZMA_SOURCE):
@@ -75,7 +73,7 @@ $(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.source
 		--includedir=$(TARGET_DIR)/include \
 		--disable-debug \
 		$(DISABLE_NLS) \
-		$(LZMA_LARGEFILE) \
+		$(DISABLE_LARGEFILE) \
 	);
 	touch $(LZMA_TARGET_DIR)/.configured;
 
