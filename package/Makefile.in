@@ -16,11 +16,6 @@ TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xf
 #")
 
 
-
-
-ifneq ($(BR2_LARGEFILE),y)
-DISABLE_LARGEFILE= --disable-largefile
-endif
 TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 HOSTCC:=gcc
 HOSTCXX:=g++
@@ -101,4 +96,11 @@ else
 DISABLE_NLS:=--disable-nls
 endif
 
+ifneq ($(BR2_LARGEFILE),y)
+DISABLE_LARGEFILE= --disable-largefile
+endif
+
+ifeq ($(BR2_INSTALL_LIBSTDCPP),)
+TARGET_CONFIGURE_OPTS+=CXX=""
+endif
 
