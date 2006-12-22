@@ -4,7 +4,7 @@
 #
 #############################################################
 ###testing: DIALOG_VERSION:=1.0-20050116-1
-DIALOG_VERSION:=1.0-20050206
+DIALOG_VERSION:=1.0-20060221
 DIALOG_SOURCE:=dialog_$(DIALOG_VERSION).orig.tar.gz
 DIALOG_SITE:=http://ftp.debian.org/debian/pool/main/d/dialog
 DIALOG_DIR:=$(BUILD_DIR)/dialog-$(DIALOG_VERSION)
@@ -56,3 +56,11 @@ dialog-clean:
 dialog-dirclean:
 	rm -rf $(DIALOG_DIR)
 
+#############################################################
+#
+# Toplevel Makefile options
+#
+#############################################################
+ifeq ($(strip $(BR2_PACKAGE_DIALOG)),y)
+TARGETS+=dialog
+endif
