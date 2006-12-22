@@ -292,9 +292,14 @@ gcc-dirclean: gcc_initial-dirclean
 #############################################################
 GCC_BUILD_DIR3:=$(BUILD_DIR)/gcc-$(GCC_VERSION)-target
 
-$(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR2)/.installed
+$(GCC_BUILD_DIR3)/.prepared: $(GCC_BUILD_DIR2)/.installed $(TARGET_PREREQ)
 	mkdir -p $(GCC_BUILD_DIR3)
-	(cd $(GCC_BUILD_DIR3); PATH=$(TARGET_PATH) \
+	touch $@
+
+$(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
+	(cd $(GCC_BUILD_DIR3); rm -rf config.cache ; \
+		PATH=$(TARGET_PATH) \
+		CC_FOR_BUILD="$(HOSTCC)" \
 		$(GCC_DIR)/configure \
 		--prefix=/usr \
 		--build=$(GNU_HOST_NAME) \
