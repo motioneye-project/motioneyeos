@@ -1,1 +1,3 @@
+TARGET_DEVICE_DEPMOD:=target/device/x86/depmod.pl
+
 -include target/device/*/Makefile.in
