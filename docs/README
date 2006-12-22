@@ -13,5 +13,23 @@ You do not need to be root to build or run buildroot.  Have fun!
 
  -Erik
 
+More finegrained configuration:
+===============================
+
+You can specify a config-file for uClibc:
+$ make UCLIBC_CONFIG_FILE=/my/uClibc.config
+
+To use a non-standart host-compiler (if you do not have 'gcc'),
+make sure that the compiler is in your PATH and that the library paths are
+setup properly, if your compiler is built dynamically:
+$ make HOSTCC=gcc-4.3.orig HOSTCXX=gcc-4.3-mine
+
+Depending on your configuration, there are some targets you can use to
+use menuconfig of certain packages. This includes:
+$ make HOSTCC=gcc-4.3 linux26-menuconfig
+$ make HOSTCC=gcc-4.3 uclibc-menuconfig
+$ make HOSTCC=gcc-4.3 busybox-menuconfig
+
 Please feed suggestions, bug reports, insults, and bribes back to:
 	Erik Andersen <andersen@codepoet.org>
+or the buildroot mailing list.
