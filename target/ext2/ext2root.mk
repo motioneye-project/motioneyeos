@@ -54,7 +54,7 @@ ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_INODES)),0)
 EXT2_OPTS += -i $(strip $(BR2_TARGET_ROOTFS_EXT2_INODES))
 endif
 
-ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS)),0)
+ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS)),)
 EXT2_OPTS += -r $(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS))
 endif
 
