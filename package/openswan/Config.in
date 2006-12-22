@@ -7,3 +7,13 @@ config BR2_PACKAGE_OPENSWAN
 	  Openswan is an implementation of IPsec for Linux.
           http://openswan.org/
 
+config BR2_PACKAGE_OPENSWAN_DEBUGGING
+	bool "debugging support"
+	default n
+	depends on BR2_PACKAGE_OPENSWAN
+	help
+	  Enable debugging support.
+	  This is not needed if you know what you do but makes it quite
+	  hard to diagnose eventual problems.
+	  It is safe to say Yes here.
+
