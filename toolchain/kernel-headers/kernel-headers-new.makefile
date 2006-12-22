@@ -3,7 +3,6 @@
 # full kernel tarballs >= 2.6.19.1
 #
 #############################################################
-LINUX_HEADERS_IS_KERNEL=n
 
 ifeq ("$(DEFAULT_KERNEL_HEADERS)","2.6.19.1")
 VERSION:=2
