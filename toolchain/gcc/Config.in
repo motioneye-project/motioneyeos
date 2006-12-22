@@ -127,8 +127,16 @@ config BR2_INSTALL_OBJC
 	help
 	    Build/install Objective-C compiler and runtime?
 
+config BR2_INSTALL_FORTRAN
+	bool "Build/install Fortran compiler and runtime?"
+	default n
+	select BR2_PACKAGE_LIBMPFR
+	help
+	    Build/install Fortran compiler and runtime?
+
 config BR2_GCC_SHARED_LIBGCC
 	bool "Build/install a shared libgcc?"
 	default y
 	help
 	    Build/install a shared libgcc library
+

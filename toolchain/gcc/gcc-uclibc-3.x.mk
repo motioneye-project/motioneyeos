@@ -51,8 +51,17 @@ ifeq ($(BR2_INSTALL_OBJC),y)
 TARGET_LANGUAGES:=$(TARGET_LANGUAGES),objc
 endif
 
+TARGET_PREREQ =
+STAGING_PREREQ= $(STAGING_DIR)/lib/libc.a
+
 ifeq ($(BR2_INSTALL_FORTRAN),y)
 TARGET_LANGUAGES:=$(TARGET_LANGUAGES),fortran
+TARGET_PREREQ += $(TARGET_DIR)/lib/libmpfr.so
+STAGING_PREREQ+= $(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.a
+GCC_WITH_TARGET_GMP:=--with-gmp=$(STAGING_DIR)
+GCC_WITH_TARGET_MPFR:=--with-mpfr=$(STAGING_DIR)
+GCC_WITH_HOST_GMP=--with-gmp=$(GMP_HOST_DIR)
+GCC_WITH_HOST_MPFR=--with-mpfr=$(MPFR_HOST_DIR)
 endif
 
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
@@ -60,6 +69,11 @@ GCC_SHARED_LIBGCC:=--enable-shared
 else
 GCC_SHARED_LIBGCC:=--disable-shared
 endif
+
+ifneq ($(BR2_ENABLE_LOCALE),y)
+GCC_ENABLE_CLOCALE:=--disable-clocale
+endif
+
 
 #############################################################
 #
@@ -169,7 +183,7 @@ gcc_initial-dirclean:
 # guarantees.  mjn3
 
 GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
-$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/lib/libc.a
+$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_PREREQ)
 	mkdir -p $(GCC_BUILD_DIR2)
 	# Important!  Required for limits.h to be fixed.
 	ln -snf ../include $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/sys-include
@@ -184,6 +198,8 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_DIR)/lib/libc.a
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
+		$(GCC_WITH_HOST_GMP) \
+		$(GCC_WITH_HOST_MPFR) \
 		$(GCC_SHARED_LIBGCC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
@@ -311,6 +327,8 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		--enable-target-optspace \
 		--with-gnu-ld \
 		$(GCC_SHARED_LIBGCC) \
+		$(GCC_WITH_HOST_GMP) \
+		$(GCC_WITH_HOST_MPFR) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(MULTILIB) \
