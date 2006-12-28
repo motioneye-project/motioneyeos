@@ -1,0 +1,450 @@
+diff -dup gcc-4.2.orig/libstdc++-v3/acinclude.m4 gcc-4.2/libstdc++-v3/acinclude.m4
+--- gcc-4.2.orig/libstdc++-v3/acinclude.m4	2006-12-27 12:58:40.000000000 +0100
++++ gcc-4.2/libstdc++-v3/acinclude.m4	2006-12-27 13:38:30.000000000 +0100
+@@ -554,7 +554,7 @@ AC_DEFUN([GLIBCXX_CHECK_LFS], [
+       [glibcxx_cv_LFS=yes],
+       [glibcxx_cv_LFS=no])
+   ])
+-  if test $glibcxx_cv_LFS = yes; then
++  if test $glibcxx_cv_LFS = yes && test $enable_largefile = yes; then
+     AC_DEFINE(_GLIBCXX_USE_LFS, 1, [Define if LFS support is available.])
+   fi
+   AC_MSG_RESULT($glibcxx_cv_LFS)
+diff -dup gcc-4.2.orig/libstdc++-v3/configure.ac gcc-4.2/libstdc++-v3/configure.ac
+--- gcc-4.2.orig/libstdc++-v3/configure.ac	2006-12-27 12:58:40.000000000 +0100
++++ gcc-4.2/libstdc++-v3/configure.ac	2006-12-27 13:38:30.000000000 +0100
+@@ -96,6 +96,7 @@ GLIBCXX_ENABLE_HOSTED
+ GLIBCXX_ENABLE_SJLJ_EXCEPTIONS
+ GLIBCXX_ENABLE_PCH($is_hosted)
+ 
++AC_SYS_LARGEFILE
+ # Enable all the variable C++ runtime options.  
+ GLIBCXX_ENABLE_CSTDIO
+ GLIBCXX_ENABLE_CLOCALE
+diff -dup gcc-4.2.orig/libstdc++-v3/crossconfig.m4 gcc-4.2/libstdc++-v3/crossconfig.m4
+--- gcc-4.2.orig/libstdc++-v3/crossconfig.m4	2006-12-27 12:08:05.000000000 +0100
++++ gcc-4.2/libstdc++-v3/crossconfig.m4	2006-12-27 13:25:16.000000000 +0100
+@@ -162,7 +162,9 @@ case "${host}" in
+         # Don't enable LFS with uClinux
+         ;;
+       *)
++	if test x"$enable_lfs" = x"yes"; then
+         AC_DEFINE(_GLIBCXX_USE_LFS)
++	fi
+     esac
+ 
+     # For showmanyc_helper().
+diff -dup gcc-4.2.orig/libstdc++-v3/configure gcc-4.2/libstdc++-v3/configure
+--- gcc-4.2.orig/libstdc++-v3/configure	2006-12-27 12:58:40.000000000 +0100
++++ gcc-4.2/libstdc++-v3/configure	2006-12-27 13:38:30.000000000 +0100
+@@ -858,6 +858,7 @@ Optional Features:
+                           [default=auto]
+   --enable-libstdcxx-pch  build pre-compiled libstdc++ headers
+                           [default=$is_hosted]
++  --disable-largefile     omit support for large files
+   --enable-cstdio=PACKAGE use target-specific I/O package
+                           [default=stdio]
+   --enable-clocale[=MODEL]
+@@ -4740,7 +4741,7 @@ test x"$pic_mode" = xno && libtool_flags
+ case $host in
+ *-*-irix6*)
+   # Find out which ABI we are using.
+-  echo '#line 4743 "configure"' > conftest.$ac_ext
++  echo '#line 4744 "configure"' > conftest.$ac_ext
+   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
+   (eval $ac_compile) 2>&5
+   ac_status=$?
+@@ -5489,6 +5490,370 @@ echo "${ECHO_T}$enable_libstdcxx_pch" >&
+ 
+ 
+ 
++# Check whether --enable-largefile or --disable-largefile was given.
++if test "${enable_largefile+set}" = set; then
++  enableval="$enable_largefile"
++
++fi;
++if test "$enable_largefile" != no; then
++
++  echo "$as_me:$LINENO: checking for special C compiler options needed for large files" >&5
++echo $ECHO_N "checking for special C compiler options needed for large files... $ECHO_C" >&6
++if test "${ac_cv_sys_largefile_CC+set}" = set; then
++  echo $ECHO_N "(cached) $ECHO_C" >&6
++else
++  ac_cv_sys_largefile_CC=no
++     if test "$GCC" != yes; then
++       ac_save_CC=$CC
++       while :; do
++     	 # IRIX 6.2 and later do not support large files by default,
++     	 # so use the C compiler's -n32 option if that helps.
++	 cat >conftest.$ac_ext <<_ACEOF
++/* confdefs.h.  */
++_ACEOF
++cat confdefs.h >>conftest.$ac_ext
++cat >>conftest.$ac_ext <<_ACEOF
++/* end confdefs.h.  */
++#include <sys/types.h>
++ /* Check that off_t can represent 2**63 - 1 correctly.
++    We can't simply define LARGE_OFF_T to be 9223372036854775807,
++    since some C++ compilers masquerading as C compilers
++    incorrectly reject 9223372036854775807.  */
++#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
++  int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
++		       && LARGE_OFF_T % 2147483647 == 1)
++		      ? 1 : -1];
++int
++main ()
++{
++
++  ;
++  return 0;
++}
++_ACEOF
++     	 rm -f conftest.$ac_objext
++if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
++  (eval $ac_compile) 2>conftest.er1
++  ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); } &&
++	 { ac_try='test -z "$ac_c_werror_flag"
++			 || test ! -s conftest.err'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; } &&
++	 { ac_try='test -s conftest.$ac_objext'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; }; then
++  break
++else
++  echo "$as_me: failed program was:" >&5
++sed 's/^/| /' conftest.$ac_ext >&5
++
++fi
++rm -f conftest.err conftest.$ac_objext
++     	 CC="$CC -n32"
++     	 rm -f conftest.$ac_objext
++if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
++  (eval $ac_compile) 2>conftest.er1
++  ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); } &&
++	 { ac_try='test -z "$ac_c_werror_flag"
++			 || test ! -s conftest.err'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; } &&
++	 { ac_try='test -s conftest.$ac_objext'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; }; then
++  ac_cv_sys_largefile_CC=' -n32'; break
++else
++  echo "$as_me: failed program was:" >&5
++sed 's/^/| /' conftest.$ac_ext >&5
++
++fi
++rm -f conftest.err conftest.$ac_objext
++	 break
++       done
++       CC=$ac_save_CC
++       rm -f conftest.$ac_ext
++    fi
++fi
++echo "$as_me:$LINENO: result: $ac_cv_sys_largefile_CC" >&5
++echo "${ECHO_T}$ac_cv_sys_largefile_CC" >&6
++  if test "$ac_cv_sys_largefile_CC" != no; then
++    CC=$CC$ac_cv_sys_largefile_CC
++  fi
++
++  echo "$as_me:$LINENO: checking for _FILE_OFFSET_BITS value needed for large files" >&5
++echo $ECHO_N "checking for _FILE_OFFSET_BITS value needed for large files... $ECHO_C" >&6
++if test "${ac_cv_sys_file_offset_bits+set}" = set; then
++  echo $ECHO_N "(cached) $ECHO_C" >&6
++else
++  while :; do
++  ac_cv_sys_file_offset_bits=no
++  cat >conftest.$ac_ext <<_ACEOF
++/* confdefs.h.  */
++_ACEOF
++cat confdefs.h >>conftest.$ac_ext
++cat >>conftest.$ac_ext <<_ACEOF
++/* end confdefs.h.  */
++#include <sys/types.h>
++ /* Check that off_t can represent 2**63 - 1 correctly.
++    We can't simply define LARGE_OFF_T to be 9223372036854775807,
++    since some C++ compilers masquerading as C compilers
++    incorrectly reject 9223372036854775807.  */
++#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
++  int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
++		       && LARGE_OFF_T % 2147483647 == 1)
++		      ? 1 : -1];
++int
++main ()
++{
++
++  ;
++  return 0;
++}
++_ACEOF
++rm -f conftest.$ac_objext
++if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
++  (eval $ac_compile) 2>conftest.er1
++  ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); } &&
++	 { ac_try='test -z "$ac_c_werror_flag"
++			 || test ! -s conftest.err'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; } &&
++	 { ac_try='test -s conftest.$ac_objext'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; }; then
++  break
++else
++  echo "$as_me: failed program was:" >&5
++sed 's/^/| /' conftest.$ac_ext >&5
++
++fi
++rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
++  cat >conftest.$ac_ext <<_ACEOF
++/* confdefs.h.  */
++_ACEOF
++cat confdefs.h >>conftest.$ac_ext
++cat >>conftest.$ac_ext <<_ACEOF
++/* end confdefs.h.  */
++#define _FILE_OFFSET_BITS 64
++#include <sys/types.h>
++ /* Check that off_t can represent 2**63 - 1 correctly.
++    We can't simply define LARGE_OFF_T to be 9223372036854775807,
++    since some C++ compilers masquerading as C compilers
++    incorrectly reject 9223372036854775807.  */
++#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
++  int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
++		       && LARGE_OFF_T % 2147483647 == 1)
++		      ? 1 : -1];
++int
++main ()
++{
++
++  ;
++  return 0;
++}
++_ACEOF
++rm -f conftest.$ac_objext
++if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
++  (eval $ac_compile) 2>conftest.er1
++  ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); } &&
++	 { ac_try='test -z "$ac_c_werror_flag"
++			 || test ! -s conftest.err'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; } &&
++	 { ac_try='test -s conftest.$ac_objext'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; }; then
++  ac_cv_sys_file_offset_bits=64; break
++else
++  echo "$as_me: failed program was:" >&5
++sed 's/^/| /' conftest.$ac_ext >&5
++
++fi
++rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
++  break
++done
++fi
++echo "$as_me:$LINENO: result: $ac_cv_sys_file_offset_bits" >&5
++echo "${ECHO_T}$ac_cv_sys_file_offset_bits" >&6
++if test "$ac_cv_sys_file_offset_bits" != no; then
++
++cat >>confdefs.h <<_ACEOF
++#define _FILE_OFFSET_BITS $ac_cv_sys_file_offset_bits
++_ACEOF
++
++fi
++rm -f conftest*
++  echo "$as_me:$LINENO: checking for _LARGE_FILES value needed for large files" >&5
++echo $ECHO_N "checking for _LARGE_FILES value needed for large files... $ECHO_C" >&6
++if test "${ac_cv_sys_large_files+set}" = set; then
++  echo $ECHO_N "(cached) $ECHO_C" >&6
++else
++  while :; do
++  ac_cv_sys_large_files=no
++  cat >conftest.$ac_ext <<_ACEOF
++/* confdefs.h.  */
++_ACEOF
++cat confdefs.h >>conftest.$ac_ext
++cat >>conftest.$ac_ext <<_ACEOF
++/* end confdefs.h.  */
++#include <sys/types.h>
++ /* Check that off_t can represent 2**63 - 1 correctly.
++    We can't simply define LARGE_OFF_T to be 9223372036854775807,
++    since some C++ compilers masquerading as C compilers
++    incorrectly reject 9223372036854775807.  */
++#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
++  int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
++		       && LARGE_OFF_T % 2147483647 == 1)
++		      ? 1 : -1];
++int
++main ()
++{
++
++  ;
++  return 0;
++}
++_ACEOF
++rm -f conftest.$ac_objext
++if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
++  (eval $ac_compile) 2>conftest.er1
++  ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); } &&
++	 { ac_try='test -z "$ac_c_werror_flag"
++			 || test ! -s conftest.err'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; } &&
++	 { ac_try='test -s conftest.$ac_objext'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; }; then
++  break
++else
++  echo "$as_me: failed program was:" >&5
++sed 's/^/| /' conftest.$ac_ext >&5
++
++fi
++rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
++  cat >conftest.$ac_ext <<_ACEOF
++/* confdefs.h.  */
++_ACEOF
++cat confdefs.h >>conftest.$ac_ext
++cat >>conftest.$ac_ext <<_ACEOF
++/* end confdefs.h.  */
++#define _LARGE_FILES 1
++#include <sys/types.h>
++ /* Check that off_t can represent 2**63 - 1 correctly.
++    We can't simply define LARGE_OFF_T to be 9223372036854775807,
++    since some C++ compilers masquerading as C compilers
++    incorrectly reject 9223372036854775807.  */
++#define LARGE_OFF_T (((off_t) 1 << 62) - 1 + ((off_t) 1 << 62))
++  int off_t_is_large[(LARGE_OFF_T % 2147483629 == 721
++		       && LARGE_OFF_T % 2147483647 == 1)
++		      ? 1 : -1];
++int
++main ()
++{
++
++  ;
++  return 0;
++}
++_ACEOF
++rm -f conftest.$ac_objext
++if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
++  (eval $ac_compile) 2>conftest.er1
++  ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); } &&
++	 { ac_try='test -z "$ac_c_werror_flag"
++			 || test ! -s conftest.err'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; } &&
++	 { ac_try='test -s conftest.$ac_objext'
++  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
++  (eval $ac_try) 2>&5
++  ac_status=$?
++  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++  (exit $ac_status); }; }; then
++  ac_cv_sys_large_files=1; break
++else
++  echo "$as_me: failed program was:" >&5
++sed 's/^/| /' conftest.$ac_ext >&5
++
++fi
++rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
++  break
++done
++fi
++echo "$as_me:$LINENO: result: $ac_cv_sys_large_files" >&5
++echo "${ECHO_T}$ac_cv_sys_large_files" >&6
++if test "$ac_cv_sys_large_files" != no; then
++
++cat >>confdefs.h <<_ACEOF
++#define _LARGE_FILES $ac_cv_sys_large_files
++_ACEOF
++
++fi
++rm -f conftest*
++fi
++
+ # Enable all the variable C++ runtime options.
+ 
+   echo "$as_me:$LINENO: checking for underlying I/O to use" >&5
+@@ -30152,7 +30517,7 @@ rm -f conftest.err conftest.$ac_objext \
+ 
+ fi
+ 
+-  if test $glibcxx_cv_LFS = yes; then
++  if test $glibcxx_cv_LFS = yes && test $enable_largefile = yes; then
+ 
+ cat >>confdefs.h <<\_ACEOF
+ #define _GLIBCXX_USE_LFS 1
+@@ -99434,10 +99799,12 @@ _ACEOF
+         # Don't enable LFS with uClinux
+         ;;
+       *)
++	if test x"$enable_lfs" = x"yes"; then
+         cat >>confdefs.h <<\_ACEOF
+ #define _GLIBCXX_USE_LFS 1
+ _ACEOF
+ 
++	fi
+     esac
+ 
+     # For showmanyc_helper().
+
