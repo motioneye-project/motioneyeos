@@ -14,6 +14,8 @@ WHICH_TARGET_BINARY:=bin/which
 $(DL_DIR)/$(WHICH_SOURCE):
 	$(WGET) -P $(DL_DIR) $(WHICH_SITE)/$(WHICH_SOURCE)
 
+which-source: $(DL_DIR)/$(WHICH_SOURCE)
+
 $(WHICH_DIR)/.unpacked: $(DL_DIR)/$(WHICH_SOURCE)
 	$(WHICH_CAT) $(DL_DIR)/$(WHICH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(WHICH_DIR)/.unpacked

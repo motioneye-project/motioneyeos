@@ -16,6 +16,8 @@ DMRAID_TARGET_BINARY:=$(TARGET_DIR)/sbin/$(DMRAID_BINARY)
 $(DL_DIR)/$(DMRAID_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(DMRAID_SITE)/$(DMRAID_SOURCE)
 
+dmraid-source: $(DL_DIR)/$(DMRAID_SOURCE)
+
 $(DMRAID_DIR)/.unpacked: $(DL_DIR)/$(DMRAID_SOURCE)
 	$(DMRAID_CAT) $(DL_DIR)/$(DMRAID_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(DMRAID_DIR) package/dmraid \*.patch

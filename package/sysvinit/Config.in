@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SYSVINIT
 	bool "sysvinit"
 	default n
+	select BR2_PACKAGE_NCURSES
 	help
 	  /sbin/init - parent of all processes
 

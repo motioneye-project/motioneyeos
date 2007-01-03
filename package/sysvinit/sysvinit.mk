@@ -14,6 +14,8 @@ SYSVINIT_TARGET_BINARY:=bin/init
 $(DL_DIR)/$(SYSVINIT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SYSVINIT_SITE)/$(SYSVINIT_SOURCE)
 
+sysvinit-source: $(DL_DIR)/$(SYSVINIT_SOURCE)
+
 sysvinit-unpacked: $(SYSVINIT_DIR)/.unpacked
 $(SYSVINIT_DIR)/.unpacked: $(DL_DIR)/$(SYSVINIT_SOURCE)
 	$(SYSVINIT_CAT) $(DL_DIR)/$(SYSVINIT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

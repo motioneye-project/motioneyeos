@@ -40,6 +40,8 @@ $(DL_DIR)/$(DM_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DM_SITE)/$(DM_SOURCE) || \
 		$(WGET) -P $(DL_DIR) $(DM_SITE_OLD)/$(DM_SOURCE)
 
+dm-source: $(DL_DIR)/$(DM_SOURCE)
+
 $(DM_DIR)/.unpacked: $(DL_DIR)/$(DM_SOURCE)
 	$(DM_CAT) $(DL_DIR)/$(DM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(DM_DIR) package/dm/ \*.patch

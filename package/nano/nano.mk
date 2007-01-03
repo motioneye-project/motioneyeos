@@ -14,6 +14,8 @@ NANO_TARGET_BINARY:=bin/nano
 $(DL_DIR)/$(NANO_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NANO_SITE)/$(NANO_SOURCE)
 
+nano-source: $(DL_DIR)/$(NANO_SOURCE)
+
 $(NANO_DIR)/.unpacked: $(DL_DIR)/$(NANO_SOURCE)
 	$(NANO_CAT) $(DL_DIR)/$(NANO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(NANO_DIR)/.unpacked

@@ -36,6 +36,8 @@ LVM2_TARGET_SBINS=$(foreach lvm2sbin, $(LVM2_SBIN), $(TARGET_DIR)/sbin/$(lvm2sbi
 $(DL_DIR)/$(LVM2_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LVM2_SITE)/$(LVM2_SOURCE)
 
+lvm2-source: $(DL_DIR)/$(LVM2_SOURCE)
+
 $(LVM2_DIR)/.unpacked: $(DL_DIR)/$(LVM2_SOURCE)
 	$(LVM2_CAT) $(DL_DIR)/$(LVM2_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(LVM2_DIR)/.unpacked

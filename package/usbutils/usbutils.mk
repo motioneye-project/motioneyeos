@@ -14,6 +14,8 @@ USBUTILS_TARGET_BINARY:=usr/bin/lsusb
 $(DL_DIR)/$(USBUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(USBUTILS_SITE)/$(USBUTILS_SOURCE)
 
+usbutils-source: $(DL_DIR)/$(USBUTILS_SOURCE)
+
 usbutils-unpacked: $(USBUTILS_DIR)/.unpacked
 $(USBUTILS_DIR)/.unpacked: $(DL_DIR)/$(USBUTILS_SOURCE)
 	$(USBUTILS_CAT) $(DL_DIR)/$(USBUTILS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

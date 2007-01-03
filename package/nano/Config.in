@@ -1,6 +1,7 @@
 config BR2_PACKAGE_NANO
 	bool "nano"
 	default n
+	select BR2_PACKAGE_NCURSES
 	help
 	  A nice ncurses-based editor.  Started out as a clone of pico.  
 	  Great editor for new users.

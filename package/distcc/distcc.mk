@@ -14,6 +14,8 @@ DISTCC_TARGET_BINARY:=usr/bin/distcc
 $(DL_DIR)/$(DISTCC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DISTCC_SITE)/$(DISTCC_SOURCE)
 
+distcc-source: $(DL_DIR)/$(CVS_SOURCE)
+
 $(DISTCC_DIR)/.unpacked: $(DL_DIR)/$(DISTCC_SOURCE)
 	$(DISTCC_CAT) $(DL_DIR)/$(DISTCC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(DISTCC_DIR)/.unpacked

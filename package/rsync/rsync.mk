@@ -14,6 +14,8 @@ RSYNC_TARGET_BINARY:=usr/bin/rsync
 $(DL_DIR)/$(RSYNC_SOURCE):
 	$(WGET) -P $(DL_DIR) $(RSYNC_SITE)/$(RSYNC_SOURCE)
 
+rsync-source: $(DL_DIR)/$(RSYNC_SOURCE)
+
 $(RSYNC_DIR)/.unpacked: $(DL_DIR)/$(RSYNC_SOURCE)
 	$(RSYNC_CAT) $(DL_DIR)/$(RSYNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(RSYNC_DIR) package/rsync/ rsync\*.patch

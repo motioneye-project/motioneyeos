@@ -14,6 +14,8 @@ CVS_TARGET_BINARY:=usr/bin/cvs
 $(DL_DIR)/$(CVS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(CVS_SITE)/$(CVS_SOURCE)
 
+cvs-source: $(DL_DIR)/$(CVS_SOURCE)
+
 $(CVS_DIR)/.unpacked: $(DL_DIR)/$(CVS_SOURCE)
 	$(CVS_CAT) $(DL_DIR)/$(CVS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(CVS_DIR)/.unpacked

@@ -20,6 +20,8 @@ endif
 $(DL_DIR)/$(LIBUSB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBUSB_SITE)/$(LIBUSB_SOURCE)
 
+libusb-source: $(DL_DIR)/$(LIBUSB_SOURCE)
+
 libusb-unpacked: $(LIBUSB_DIR)/.unpacked
 $(LIBUSB_DIR)/.unpacked: $(DL_DIR)/$(LIBUSB_SOURCE)
 	$(LIBUSB_CAT) $(DL_DIR)/$(LIBUSB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

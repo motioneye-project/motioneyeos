@@ -16,6 +16,8 @@ THTTPD_WEB_DIR:=$(THTTPD_ROOT)/www
 $(DL_DIR)/$(THTTPD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(THTTPD_SITE)/$(THTTPD_SOURCE)
 
+thttpd-source: $(DL_DIR)/$(THTTPD_SOURCE)
+
 $(THTTPD_DIR)/.unpacked: $(DL_DIR)/$(THTTPD_SOURCE)
 	$(THTTPD_CAT) $(DL_DIR)/$(THTTPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(THTTPD_DIR)/.unpacked

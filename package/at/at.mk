@@ -13,6 +13,8 @@ AT_TARGET_BINARY:=usr/bin/at
 $(DL_DIR)/$(AT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(AT_SITE)/$(AT_SOURCE)
 
+at-source: $(DL_DIR)/$(AT_SOURCE)
+
 $(AT_DIR)/.unpacked: $(DL_DIR)/$(AT_SOURCE)
 	$(AT_CAT) $(DL_DIR)/$(AT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(AT_DIR) package/at/ at\*.patch
@@ -58,7 +60,6 @@ at-clean:
 
 at-dirclean:
 	rm -rf $(AT_DIR)
-
 #############################################################
 #
 # Toplevel Makefile options
