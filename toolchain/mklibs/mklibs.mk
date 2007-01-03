@@ -6,7 +6,7 @@
 MKLIBS_PROGRAM:=$(STAGING_DIR)/bin/mklibs.py
 
 $(MKLIBS_PROGRAM): toolchain/mklibs/mklibs.py
-	cp -a toolchain/mklibs/mklibs.py $@
+	cp -dpf toolchain/mklibs/mklibs.py $@
 
 mklibs-clean:
 	rm -f $(MKLIBS_PROGRAM)
