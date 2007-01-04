@@ -28,7 +28,7 @@ diff -dup gcc-4.2.orig/libstdc++-v3/crossconfig.m4 gcc-4.2/libstdc++-v3/crosscon
          # Don't enable LFS with uClinux
          ;;
        *)
-+	if test x"$enable_lfs" = x"yes"; then
++	if test x"$enable_largefile" = x"yes"; then
          AC_DEFINE(_GLIBCXX_USE_LFS)
 +	fi
      esac
@@ -438,7 +438,7 @@ diff -dup gcc-4.2.orig/libstdc++-v3/configure gcc-4.2/libstdc++-v3/configure
          # Don't enable LFS with uClinux
          ;;
        *)
-+	if test x"$enable_lfs" = x"yes"; then
++	if test x"$enable_largefile" = x"yes"; then
          cat >>confdefs.h <<\_ACEOF
  #define _GLIBCXX_USE_LFS 1
  _ACEOF
