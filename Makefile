@@ -101,7 +101,9 @@ $(TOOL_BUILD_DIR):
 $(STAGING_DIR):
 	@mkdir -p $(STAGING_DIR)/lib
 	@mkdir -p $(STAGING_DIR)/include
+	@mkdir -p $(STAGING_DIR)/usr
 	@mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)
+	@ln -snf ../lib $(STAGING_DIR)/usr/lib
 	@ln -snf ../lib $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib
 
 $(TARGET_DIR):
