@@ -41,13 +41,6 @@ XSERVER:=Xorg
 XORG_XSERVER:=$(XORG_DIR)/programs/Xserver/$(XSERVER)
 TARGET_XSERVER:=$(XORG_BINX)/$(XSERVER)
 
-# Check if we should use FreeType2.
-ifeq ($(BR2_PACKAGE_FREETYPE),y)
-HAS_FREETYPE2=YES
-else
-HAS_FREETYPE2=NO
-endif
-
 # figure out Xorg's idea of corresponding architecture name
 ifeq ($(BR2_alpha),y)
 XARCH=Alpha
@@ -84,7 +77,6 @@ $(XORG_DIR)/.configured: $(DL_DIR)/$(XORG_SOURCE)
 	$(XORG_CAT) $(DL_DIR)/$(XORG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(XORG_DIR) package/xorg/ \*.patch
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_HOST_DEF)
-	$(SED) 's:REPLACE_HAS_FREETYPE2:$(HAS_FREETYPE2):g' $(XORG_HOST_DEF)
 	$(SED) 's:REPLACE_GCCINC_DIR:$(shell $(TARGET_CROSS)gcc -print-file-name=include):g' $(XORG_CF)
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_CF)
 	$(SED) 's:REPLACE_ARCH:$(ARCH):g' $(XORG_CF)
@@ -106,8 +98,11 @@ $(XORG_XSERVER): $(XORG_DIR)/.configured
 
 $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 	-mkdir -p $(STAGING_DIR)$(TARGET_LIBX)
+	rm -f $(STAGING_DIR)$(TARGET_LIBX)/pkgconfig
+	ln -fs ../../../lib/pkgconfig $(STAGING_DIR)$(TARGET_LIBX)/pkgconfig
 	( cd $(XORG_DIR); $(MAKE) \
 		DESTDIR=$(STAGING_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	$(SED) 's,/usr/X11R6,$(STAGING_DIR)/usr/X11R6,' $(STAGING_DIR)/usr/X11R6/lib/pkgconfig/*.pc
 	touch -c $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
 
 $(TARGET_XSERVER): $(XORG_XSERVER)
@@ -149,7 +144,7 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
 	touch -c $(XORG_LIBX)/libX11.so.6.2
 
 
-xorg: zlib png $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 $(XORG_LIBX)/libX11.so.6.2
+xorg: zlib png pkgconfig freetype $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 $(XORG_LIBX)/libX11.so.6.2
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE)
 

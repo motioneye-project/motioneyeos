@@ -4,6 +4,8 @@ config BR2_PACKAGE_XORG
 	depends !BR2_PACKAGE_TINYX
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  The official X Window system and server.
 
