@@ -1,0 +1,11 @@
+--- glib-2.8.4/configure.in.orig	2006-06-05 13:34:08.000000000 +0100
++++ glib-2.8.4/configure.in	2006-06-05 13:34:36.000000000 +0100
+@@ -1106,7 +1106,7 @@
+   dnl No use for this on Win32
+   G_MODULE_LDFLAGS=
+ else
+-  G_MODULE_LDFLAGS=`(./libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
++  G_MODULE_LDFLAGS=`(./$host_alias-libtool --config; echo eval echo \\$export_dynamic_flag_spec) | sh`
+ fi
+ dnl G_MODULE_IMPL= don't reset, so cmd-line can override
+ G_MODULE_NEED_USCORE=0

@@ -1,0 +1,8 @@
+--- glib-2.6.5/gobject/glib-mkenums.in.orig	2006-06-15 21:28:23.436946024 -0600
++++ glib-2.6.5/gobject/glib-mkenums.in	2006-06-15 21:28:35.417124760 -0600
+@@ -1,4 +1,4 @@
+-#!@PERL_PATH@ -w
++#!@PERL_PATH@
+ 
+ # glib-mkenums.pl 
+ # Information about the current enumeration

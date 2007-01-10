@@ -1,0 +1,13 @@
+--- glib-2.12.3/glib/Makefile.am.orig	2006-05-09 18:44:49.000000000 -0600
++++ glib-2.12.3/glib/Makefile.am	2007-01-09 21:25:57.000000000 -0700
+@@ -201,8 +201,8 @@
+ 	gprintf.h
+ 
+ install-data-local: install-ms-lib install-def-file
+-	@if test -f $(glibincludedir)/glist.h ; then					\
+-	  echo "*** Old headers found in $(glibincludedir). You should remove the" ;	\
++	@if test -f $(DESTDIR)$(glibincludedir)/glist.h ; then					\
++	  echo "*** Old headers found in $(DESTDIR)$(glibincludedir). You should remove the" ;	\
+ 	  echo "*** contents of this directory and type 'make install' again." ;	\
+ 	  false ;									\
+         fi
