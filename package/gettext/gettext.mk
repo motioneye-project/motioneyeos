@@ -82,16 +82,10 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--prefix=$(STAGING_DIR) \
+		--exec_prefix=$(STAGING_DIR) \
+		--libdir=$(STAGING_DIR)/lib \
+		--includedir=$(STAGING_DIR)/include \
 		--disable-libasprintf \
 	);
 	touch $(GETTEXT_DIR)/.configured
@@ -101,19 +95,7 @@ $(GETTEXT_DIR)/$(GETTEXT_BINARY): $(GETTEXT_DIR)/.configured
 	touch -c $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 
 $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
-	$(MAKE) prefix=$(STAGING_DIR) \
-		exec_prefix=$(STAGING_DIR) \
-		bindir=$(STAGING_DIR)/bin \
-		sbindir=$(STAGING_DIR)/sbin \
-		libexecdir=$(STAGING_DIR)/usr/lib \
-		datadir=$(STAGING_DIR)/share \
-		sysconfdir=$(STAGING_DIR)/etc \
-		localstatedir=$(STAGING_DIR)/var \
-		libdir=$(STAGING_DIR)/usr/lib \
-		infodir=$(STAGING_DIR)/info \
-		mandir=$(STAGING_DIR)/man \
-		includedir=$(STAGING_DIR)/include \
-		-C $(GETTEXT_DIR) install;
+	$(MAKE) -C $(GETTEXT_DIR) install;
 
 gettext: uclibc $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 
