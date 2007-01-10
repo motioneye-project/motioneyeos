@@ -3,7 +3,7 @@
 # autoconf
 #
 #############################################################
-AUTOCONF_VER:=2.60
+AUTOCONF_VER:=2.61
 AUTOCONF_SOURCE:=autoconf-$(AUTOCONF_VER).tar.bz2
 AUTOCONF_SITE:=http://ftp.gnu.org/pub/gnu/autoconf
 AUTOCONF_CAT:=$(BZCAT)
