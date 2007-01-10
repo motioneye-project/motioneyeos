@@ -3,7 +3,7 @@
 # libglib2
 #
 #############################################################
-LIBGLIB2_VERSION:=2.12.3
+LIBGLIB2_VERSION:=2.12.6
 LIBGLIB2_SOURCE:=glib-$(LIBGLIB2_VERSION).tar.bz2
 LIBGLIB2_SITE:=http://ftp.gtk.org/pub/glib/2.12
 LIBGLIB2_CAT:=$(BZCAT)
@@ -131,7 +131,7 @@ $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY): $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BIN
 	    mandir=$(STAGING_DIR)/man \
 	    -C $(LIBGLIB2_DIR) install;
 
-$(TARGET_DIR)/lib/libglib-2.0.so.0.1200.3: $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY)
+$(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6: $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY)
 	cp -a $(STAGING_DIR)/lib/libglib-2.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libglib-2.0.so.0* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libgmodule-2.0.so $(TARGET_DIR)/lib/
@@ -141,9 +141,9 @@ $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.3: $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY)
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libglib-2.0.so.0.*
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgmodule-2.0.so.0.*
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgobject-2.0.so.0.*
-	touch -c $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.3
+	touch -c $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
 
-libglib2: uclibc gettext libintl $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.3
+libglib2: uclibc gettext libintl $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
 
 libglib2-clean:
 	rm -f $(TARGET_DIR)/lib/$(LIBGLIB2_BINARY)
