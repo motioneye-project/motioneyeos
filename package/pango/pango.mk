@@ -141,7 +141,7 @@ $(STAGING_DIR)/lib/$(PANGO_BINARY): $(PANGO_DIR)/pango/.libs/$(PANGO_BINARY)
 	    mandir=$(STAGING_DIR)/man \
 	    -C $(PANGO_DIR) install;
 
-$(TARGET_DIR)/lib/libpango-1.0.so.0.1300.5: $(STAGING_DIR)/lib/$(PANGO_BINARY)
+$(TARGET_DIR)/lib/libpango-1.0.so.0: $(STAGING_DIR)/lib/$(PANGO_BINARY)
 	cp -a $(STAGING_DIR)/lib/libpango-1.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libpango-1.0.so.0* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libpangox-1.0.so $(TARGET_DIR)/lib/
@@ -152,15 +152,15 @@ $(TARGET_DIR)/lib/libpango-1.0.so.0.1300.5: $(STAGING_DIR)/lib/$(PANGO_BINARY)
 	cp -a $(STAGING_DIR)/lib/libpangoxft-1.0.so.0* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libpangocairo-1.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libpangocairo-1.0.so.0* $(TARGET_DIR)/lib/
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libpango-2.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgpangox-2.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgoft2-2.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgoxft-2.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgocairo-2.0.so.0.*
-	touch -c $(TARGET_DIR)/lib/libpango-1.0.so.0.1300.5
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libpango-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgpangox-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgoft2-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgoxft-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgocairo-1.0.so.0.*
+	touch -c $(TARGET_DIR)/lib/libpango-1.0.so.0
 
 pango: uclibc gettext libintl pkgconfig libglib2 xorg cairo \
-	$(TARGET_DIR)/lib/libpango-1.0.so.0.1300.5
+	$(TARGET_DIR)/lib/libpango-1.0.so.0
 
 pango-clean:
 	rm -f $(TARGET_DIR)/lib/$(PANGO_BINARY)
