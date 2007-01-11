@@ -55,6 +55,7 @@ $(LIBPNG_DIR)/.configured: $(LIBPNG_DIR)/.unpacked
 		--libdir=$(STAGING_DIR)/lib \
 		--includedir=$(STAGING_DIR)/include \
 		--without-libpng-compat \
+		--without-x \
 	);
 	touch $(LIBPNG_DIR)/.configured
 
