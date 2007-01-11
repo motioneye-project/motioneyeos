@@ -46,6 +46,7 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 		--prefix=$(STAGING_DIR) \
 		--enable-shared \
 		--enable-static \
+		--without-x \
 	);
 	touch $(JPEG_DIR)/.configured
 
