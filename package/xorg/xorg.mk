@@ -12,7 +12,7 @@ XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap xinit/startx \
 	mkfontscale/mkfontscale mkfontdir/mkfontdir \
 	#xterm/xterm
 
-XORG_LIBS:= Xft fontconfig expat Xrender Xaw Xmu Xt \
+XORG_LIBS:= Xft fontconfig Xrender Xaw Xmu Xt \
 	SM ICE Xpm Xp Xext X11 Xmuu Xxf86misc
 
 
@@ -97,9 +97,8 @@ $(XORG_XSERVER): $(XORG_DIR)/.configured
 	touch -c $(XORG_XSERVER)
 
 $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
-	-mkdir -p $(STAGING_DIR)$(TARGET_LIBX)
-	rm -f $(STAGING_DIR)$(TARGET_LIBX)/pkgconfig
-	ln -fs ../../../lib/pkgconfig $(STAGING_DIR)$(TARGET_LIBX)/pkgconfig
+	-mkdir -p $(STAGING_DIR)/usr/X11R6
+	ln -fs ../../lib $(STAGING_DIR)$(TARGET_LIBX)
 	( cd $(XORG_DIR); $(MAKE) \
 		DESTDIR=$(STAGING_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
 	$(SED) 's,/usr/X11R6,$(STAGING_DIR)/usr/X11R6,' $(STAGING_DIR)/usr/X11R6/lib/pkgconfig/*.pc
@@ -144,7 +143,8 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
 	touch -c $(XORG_LIBX)/libX11.so.6.2
 
 
-xorg: zlib png pkgconfig freetype $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 $(XORG_LIBX)/libX11.so.6.2
+xorg: zlib png pkgconfig expat freetype \
+	$(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 $(XORG_LIBX)/libX11.so.6.2
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE)
 
