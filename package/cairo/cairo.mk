@@ -109,8 +109,8 @@ $(CAIRO_DIR)/.configured: $(CAIRO_DIR)/.unpacked
 		--with-x \
 		--x-includes=$(STAGING_DIR)/usr/X11R6/include \
 		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
-		--enable-ps=no \
-		--enable-pdf=no \
+		--enable-ps=yes \
+		--enable-pdf=yes \
 		--enable-svg=no \
 		--enable-png=yes \
 		--enable-freetype=yes \
