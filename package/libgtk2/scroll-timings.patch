@@ -1,0 +1,11 @@
+--- gtk+-2.10.0/gtk/gtkrange.c.orig	2006-07-05 12:41:39.000000000 +0200
++++ gtk+-2.10.0/gtk/gtkrange.c	2006-07-05 12:41:58.000000000 +0200
+@@ -39,7 +39,7 @@
+ #include "gtkalias.h"
+ 
+ #define SCROLL_DELAY_FACTOR 5    /* Scroll repeat multiplier */
+-#define UPDATE_DELAY        300  /* Delay for queued update */
++#define UPDATE_DELAY        1000  /* Delay for queued update */
+ 
+ enum {
+   PROP_0,

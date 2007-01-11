@@ -1,0 +1,10 @@
+--- gtk+-2.4.3/gtk/gtklabel.c~	2004-06-11 13:50:34.000000000 +0100
++++ gtk+-2.4.3/gtk/gtklabel.c	2004-07-05 13:33:57.000000000 +0100
+@@ -1623,6 +1623,7 @@
+ 
+   /* We have to clear the layout, fonts etc. may have changed */
+   gtk_label_clear_layout (label);
++  gtk_widget_queue_resize (GTK_WIDGET (label));
+ }
+ 
+ static void 

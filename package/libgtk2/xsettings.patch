@@ -1,0 +1,16 @@
+--- gtk+-2.4.4/gdk/x11/gdkevents-x11.c.old	Sun Aug 22 17:14:00 2004
++++ gtk+-2.4.4/gdk/x11/gdkevents-x11.c	Sun Aug 22 17:14:00 2004
+@@ -2827,10 +2827,9 @@
+ {
+   GdkScreenX11 *screen = data;
+   
+-  if (xsettings_client_process_event (screen->xsettings_client, (XEvent *)xevent))
+-    return GDK_FILTER_REMOVE;
+-  else
+-    return GDK_FILTER_CONTINUE;
++  xsettings_client_process_event (screen->xsettings_client, (XEvent *)xevent);
++
++  return GDK_FILTER_CONTINUE;
+ }
+ 
+ static void 

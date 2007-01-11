@@ -1,0 +1,2456 @@
+http://mail.gnome.org/archives/performance-list/2006-October/msg00063.html
+
+From: Xan Lópe
+To: ext Matt Hoosier
+Cc: performance-list gnome org
+Subject: Re: [patch] Remove pangocairo from Gtk+ 2.8.20
+Date: Mon, 30 Oct 2006 14:31:56 +0200
+Hi,
+
+I've upgraded your patch against GTK+ 2.10.6, and we are getting great
+performance figures compared to GTK+ 2.10.6 with pangocairo too
+(basically at the level of GTK+ 2.6.10 again). Right now I'm working on
+a python/cairo script to get some nice graphics from a torture test
+session with several GTK+s, hope to get it ready soon.
+
+Index: gtk+-2.10.6/configure.in
+===================================================================
+--- gtk+-2.10.6.orig/configure.in	2006-10-30 12:59:28.000000000 +0000
++++ gtk+-2.10.6/configure.in	2006-10-30 12:59:30.000000000 +0000
+@@ -1435,7 +1435,7 @@
+ if test "x$gdktarget" = "xwin32"; then
+ 	PANGO_PACKAGES="pangowin32 pangocairo"
+ else
+-	PANGO_PACKAGES="pango pangocairo"
++	PANGO_PACKAGES="pango pangocairo pangoxft"
+ fi
+ 
+ AC_MSG_CHECKING(Pango flags)
+Index: gtk+-2.10.6/gdk/gdkaliasdef.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/gdkaliasdef.c	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/gdkaliasdef.c	2006-10-30 12:59:30.000000000 +0000
+@@ -1799,9 +1799,6 @@
+ #undef gdk_pango_context_get 
+ extern __typeof (gdk_pango_context_get) gdk_pango_context_get __attribute((alias("IA__gdk_pango_context_get"), visibility("default")));
+ 
+-#undef gdk_pango_context_get_for_screen 
+-extern __typeof (gdk_pango_context_get_for_screen) gdk_pango_context_get_for_screen __attribute((alias("IA__gdk_pango_context_get_for_screen"), visibility("default")));
+-
+ #ifndef GDK_DISABLE_DEPRECATED
+ #undef gdk_pango_context_set_colormap 
+ extern __typeof (gdk_pango_context_set_colormap) gdk_pango_context_set_colormap __attribute((alias("IA__gdk_pango_context_set_colormap"), visibility("default")));
+@@ -1836,6 +1833,13 @@
+ 
+ #endif
+ #endif
++#if IN_HEADER(__GDK_PANGO_H__)
++#if IN_FILE(__GDK_PANGO_X11_C__)
++#undef gdk_pango_context_get_for_screen 
++extern __typeof (gdk_pango_context_get_for_screen) gdk_pango_context_get_for_screen __attribute((alias("IA__gdk_pango_context_get_for_screen"), visibility("default")));
++
++#endif
++#endif
+ #if IN_HEADER(__GDK_PIXBUF_H__)
+ #if IN_FILE(__GDK_PIXBUF_DRAWABLE_C__)
+ #undef gdk_pixbuf_get_from_drawable 
+Index: gtk+-2.10.6/gdk/gdkalias.h
+===================================================================
+--- gtk+-2.10.6.orig/gdk/gdkalias.h	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/gdkalias.h	2006-10-30 12:59:30.000000000 +0000
+@@ -1796,9 +1796,6 @@
+ extern __typeof (gdk_pango_context_get) IA__gdk_pango_context_get __attribute((visibility("hidden")));
+ #define gdk_pango_context_get IA__gdk_pango_context_get
+ 
+-extern __typeof (gdk_pango_context_get_for_screen) IA__gdk_pango_context_get_for_screen __attribute((visibility("hidden")));
+-#define gdk_pango_context_get_for_screen IA__gdk_pango_context_get_for_screen
+-
+ #ifndef GDK_DISABLE_DEPRECATED
+ extern __typeof (gdk_pango_context_set_colormap) IA__gdk_pango_context_set_colormap __attribute((visibility("hidden")));
+ #define gdk_pango_context_set_colormap IA__gdk_pango_context_set_colormap
+@@ -1833,6 +1830,13 @@
+ 
+ #endif
+ #endif
++#if IN_HEADER(__GDK_PANGO_H__)
++#if IN_FILE(__GDK_PANGO_X11_C__)
++extern __typeof (gdk_pango_context_get_for_screen) IA__gdk_pango_context_get_for_screen __attribute((visibility("hidden")));
++#define gdk_pango_context_get_for_screen IA__gdk_pango_context_get_for_screen
++
++#endif
++#endif
+ #if IN_HEADER(__GDK_PIXBUF_H__)
+ #if IN_FILE(__GDK_PIXBUF_DRAWABLE_C__)
+ extern __typeof (gdk_pixbuf_get_from_drawable) IA__gdk_pixbuf_get_from_drawable __attribute((visibility("hidden")));
+Index: gtk+-2.10.6/gdk/gdkdraw.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/gdkdraw.c	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/gdkdraw.c	2006-10-30 12:59:30.000000000 +0000
+@@ -909,9 +909,9 @@
+ {
+   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
+   g_return_if_fail (GDK_IS_GC (gc));
+-  
+-  real_draw_glyphs (drawable, gc, NULL, font,
+-		    x, y, glyphs);
++
++
++  GDK_DRAWABLE_GET_CLASS (drawable)->draw_glyphs (drawable, gc, font, x, y, glyphs);
+ }
+ 
+ /**
+@@ -949,8 +949,9 @@
+   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
+   g_return_if_fail (GDK_IS_GC (gc));
+ 
+-  real_draw_glyphs (drawable, gc, matrix, font,
+-		    x / PANGO_SCALE, y / PANGO_SCALE, glyphs);
++  if (GDK_DRAWABLE_GET_CLASS (drawable)->draw_glyphs_transformed)
++    GDK_DRAWABLE_GET_CLASS (drawable)->draw_glyphs_transformed (drawable, gc, matrix,
++								font, x, y, glyphs);
+ }
+ 
+ /**
+@@ -974,28 +975,12 @@
+ 		     GdkTrapezoid   *trapezoids,
+ 		     gint            n_trapezoids)
+ {
+-  cairo_t *cr;
+-  int i;
+-
+   g_return_if_fail (GDK_IS_DRAWABLE (drawable));
+   g_return_if_fail (GDK_IS_GC (gc));
+   g_return_if_fail (n_trapezoids == 0 || trapezoids != NULL);
+ 
+-  cr = gdk_cairo_create (drawable);
+-  _gdk_gc_update_context (gc, cr, NULL, NULL, TRUE);
+-  
+-  for (i = 0; i < n_trapezoids; i++)
+-    {
+-      cairo_move_to (cr, trapezoids[i].x11, trapezoids[i].y1);
+-      cairo_line_to (cr, trapezoids[i].x21, trapezoids[i].y1);
+-      cairo_line_to (cr, trapezoids[i].x22, trapezoids[i].y2);
+-      cairo_line_to (cr, trapezoids[i].x21, trapezoids[i].y2);
+-      cairo_close_path (cr);
+-    }
+-
+-  cairo_fill (cr);
+-
+-  cairo_destroy (cr);
++  GDK_DRAWABLE_GET_CLASS (drawable)->draw_trapezoids (drawable, gc,
++						      trapezoids, n_trapezoids);
+ }
+ 
+ /**
+Index: gtk+-2.10.6/gdk/gdkpango.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/gdkpango.c	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/gdkpango.c	2006-10-30 12:59:30.000000000 +0000
+@@ -50,19 +50,34 @@
+   GdkBitmap *stipple[MAX_RENDER_PART + 1];
+   gboolean embossed;
+ 
+-  cairo_t *cr;
+-  PangoRenderPart last_part;
++  /* When switching between the normal and shadow copies when
++   * drawing shadows we can get unexpected recursion into the
++   * drawing functions; the 'in_emboss' flag guards against that.
++   */
++  gboolean in_emboss;
+ 
+   /* Current target */
+   GdkDrawable *drawable;
+   GdkGC *base_gc;
+ 
+   gboolean gc_changed;
++    
++  /* Cached GC, derived from base_gc */
++  GdkGC *gc;
++  PangoColor gc_color;
++  gboolean gc_color_set;
++  GdkBitmap *gc_stipple;
++  
++  /* we accumulate trapezoids for the same PangoRenderPart */
++  GArray *trapezoids;
++  PangoRenderPart trapezoid_part;
+ };
+ 
+ static PangoAttrType gdk_pango_attr_stipple_type;
+ static PangoAttrType gdk_pango_attr_embossed_type;
+ 
++static void flush_trapezoids (GdkPangoRenderer *gdk_renderer);
++
+ enum {
+   PROP_0,
+   PROP_SCREEN
+@@ -77,6 +92,10 @@
+   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+   int i;
+ 
++  if (priv->gc)
++    g_object_unref (priv->gc);
++  if (priv->gc_stipple)
++    g_object_unref (priv->gc_stipple);
+   if (priv->base_gc)
+     g_object_unref (priv->base_gc);
+   if (priv->drawable)
+@@ -86,6 +105,8 @@
+     if (priv->stipple[i])
+       g_object_unref (priv->stipple[i]);
+ 
++  g_array_free (priv->trapezoids, TRUE);
++    
+   G_OBJECT_CLASS (gdk_pango_renderer_parent_class)->finalize (object);
+ }
+ 
+@@ -112,25 +133,6 @@
+   return object;
+ }
+ 
+-/* Adjusts matrix and color for the renderer to draw the secondary
+- * "shadow" copy for embossed text */
+-static void
+-emboss_context (cairo_t *cr)
+-{
+-  cairo_matrix_t tmp_matrix;
+-
+-  /* The gymnastics here to adjust the matrix are because we want
+-   * to offset by +1,+1 in device-space, not in user-space,
+-   * so we can't just draw the layout at x + 1, y + 1
+-   */
+-  cairo_get_matrix (cr, &tmp_matrix);
+-  tmp_matrix.x0 += 1.0;
+-  tmp_matrix.y0 += 1.0;
+-  cairo_set_matrix (cr, &tmp_matrix);
+-
+-  cairo_set_source_rgb (cr, 1.0, 1.0, 1.0);
+-}
+-
+ static inline gboolean
+ color_equal (PangoColor *c1, PangoColor *c2)
+ {
+@@ -146,74 +148,154 @@
+   return FALSE;
+ }
+ 
+-static cairo_t *
+-get_cairo_context (GdkPangoRenderer *gdk_renderer,
+-		   PangoRenderPart   part)
++/* Adjusts matrix and color for the renderer to draw the secondar
++ * "shadow" copy for embossed text */
++static void
++emboss_renderer (PangoRenderer   *renderer,
++		 PangoRenderPart  part,
++		 PangoMatrix    **save_matrix,
++		 PangoColor     **save_color)
++{
++  GdkPangoRendererPrivate *priv = GDK_PANGO_RENDERER(renderer)->priv;
++  static const PangoColor white = { 0xffff, 0xffff, 0xffff };
++  PangoMatrix tmp_matrix = PANGO_MATRIX_INIT;
++
++  priv->in_emboss = TRUE;
++  
++  *save_color = pango_renderer_get_color (renderer, part);
++  if (*save_color)
++    *save_color = pango_color_copy (*save_color);
++  
++  *save_matrix = renderer->matrix;
++  if (*save_matrix)
++    {
++      *save_matrix = pango_matrix_copy (*save_matrix);
++      tmp_matrix = **save_matrix;
++    }
++  
++  /* The gymnastics here to adjust the matrix are because we want
++   * to offset by +1,+1 in device-space, not in user-space,
++   * so we can't just draw the layout at x + 1, y + 1
++   */
++  tmp_matrix.x0 += 1;
++  tmp_matrix.y0 += 1;
++  
++  pango_renderer_set_matrix (renderer, &tmp_matrix);
++  pango_renderer_set_color (renderer, part, &white);
++}
++
++/* Restores from emboss_renderer() */
++static void
++unemboss_renderer (PangoRenderer   *renderer,
++		   PangoRenderPart  part,
++		   PangoMatrix    **save_matrix,
++		   PangoColor     **save_color)
++{
++  GdkPangoRendererPrivate *priv = GDK_PANGO_RENDERER(renderer)->priv;
++  pango_renderer_set_matrix (renderer, *save_matrix);
++  pango_renderer_set_color (renderer, part, *save_color);
++
++  if (*save_matrix)
++    pango_matrix_free (*save_matrix);
++  if (*save_color)
++    pango_color_free (*save_color);
++
++  priv->in_emboss = FALSE;
++}
++
++/* Gets the GC for drawing @part. This make involve copying the base GC
++ * for the renderer, in which case we keep a one-GC cache. */
++static GdkGC *
++get_gc (GdkPangoRenderer *gdk_renderer,
++	PangoRenderPart   part)
+ {
+   PangoRenderer *renderer = PANGO_RENDERER (gdk_renderer);
++  PangoColor *color;
++  GdkBitmap *stipple;
+   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+ 
+-  if (!priv->cr)
++  color = pango_renderer_get_color (renderer, part);
++
++  if (part <= MAX_RENDER_PART)
++    stipple = priv->stipple[part];
++  else
++    stipple = NULL;
++
++  if (!color && !stipple)	/* nothing override, use base_gc */
++    return priv->base_gc;
++  else
+     {
+-      const PangoMatrix *matrix;
++      gboolean new_stipple = FALSE;
++      gboolean new_color = FALSE;
+       
+-      priv->cr = gdk_cairo_create (priv->drawable);
++      if (stipple != priv->gc_stipple)
++	new_stipple = TRUE;
+ 
+-      matrix = pango_renderer_get_matrix (renderer);
+-      if (matrix)
++      if ((priv->gc_color_set && !color) ||
++	  (!priv->gc_color_set && color) ||
++	  priv->gc_color.red != color->red ||
++	  priv->gc_color.green != color->green ||
++	  priv->gc_color.blue != color->blue)
++	new_color = TRUE;
++      
++      if (!priv->gc)
+ 	{
+-	  cairo_matrix_t cairo_matrix;
+-	  
+-	  cairo_matrix_init (&cairo_matrix,
+-			     matrix->xx, matrix->yx,
+-			     matrix->xy, matrix->yy,
+-			     matrix->x0, matrix->y0);
+-	  cairo_set_matrix (priv->cr, &cairo_matrix);
++	  priv->gc = gdk_gc_new (priv->drawable);
++	  gdk_gc_copy (priv->gc, priv->base_gc);
++	}
++      else if (new_color && priv->gc_color_set && !color)
++	{
++	  /* We have to recopy the original GC onto the cached GC
++	   * to get the default color */
++	  new_stipple = TRUE;
++	  gdk_gc_copy (priv->gc, priv->base_gc);
++	}
++      else if (new_stipple && priv->gc_stipple && !stipple)
++	{
++	  /* Similarly, we need to make a new copy to restore to the
++	   * default stipple state (the caller may have set a stipple
++	   * on the GC, and even if not, gdk_gc_set_stipple (gc, NULL)
++	   * doesn't work currently to restore to the default X stipple) */
++	  new_color = TRUE;
++	  gdk_gc_copy (priv->gc, priv->base_gc);
+ 	}
+-    }
+-
+-  if (part != priv->last_part)
+-    {
+-      PangoColor *pango_color;
+-      GdkColor *color;
+-      GdkColor tmp_color;
+-      gboolean changed;
+ 
+-      pango_color = pango_renderer_get_color (renderer, part);
+-      
+-      if (priv->last_part != -1)
+-	changed = priv->gc_changed ||
+-	  priv->stipple[priv->last_part] != priv->stipple[part] ||
+-	  !color_equal (pango_color,
+-			pango_renderer_get_color (renderer, priv->last_part));
+-      else
+-	changed = TRUE;
+-      
+-      if (changed)
++      if (new_color)
+ 	{
+-	  if (pango_color)
++	  if (color)
+ 	    {
+-	      tmp_color.red = pango_color->red;
+-	      tmp_color.green = pango_color->green;
+-	      tmp_color.blue = pango_color->blue;
++	      GdkColor gdk_color;
++
++	      gdk_color.red = color->red;
++	      gdk_color.green = color->green;
++	      gdk_color.blue = color->blue;
+ 	      
+-	      color = &tmp_color;
++	      gdk_gc_set_rgb_fg_color (priv->gc, &gdk_color);
++
++	      priv->gc_color = *color;
++	      priv->gc_color_set = TRUE;
+ 	    }
+ 	  else
+-	    color = NULL;
++	    priv->gc_color_set = FALSE;
++	}
+ 
+-	  _gdk_gc_update_context (priv->base_gc,
+-				  priv->cr,
+-				  color,
+-				  priv->stipple[part],
+-				  priv->gc_changed);
++      if (new_stipple)
++	{
++	  if (priv->gc_stipple)
++	    g_object_unref (priv->gc_stipple);
++
++	  if (stipple)
++	    {
++	      gdk_gc_set_stipple (priv->gc, stipple);
++	      gdk_gc_set_fill (priv->gc, GDK_STIPPLED);
++	      priv->gc_stipple = g_object_ref (stipple);
++	    }
++	  else
++	    priv->gc_stipple = NULL;
+ 	}
+ 
+-      priv->last_part = part;
+-      priv->gc_changed = FALSE;
++      return priv->gc;
+     }
+-
+-  return priv->cr;
+ }
+ 
+ static void
+@@ -225,133 +307,78 @@
+ {
+   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
+   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+-  cairo_t *cr;
+ 
+-  cr = get_cairo_context (gdk_renderer, 
+-			  PANGO_RENDER_PART_FOREGROUND);
++  flush_trapezoids (gdk_renderer);
+ 
+-  if (priv->embossed)
++  if (!priv->in_emboss && priv->embossed)
+     {
+-      cairo_save (cr);
+-      emboss_context (cr);
+-      cairo_move_to (cr, (double)x / PANGO_SCALE, (double)y / PANGO_SCALE);
+-      pango_cairo_show_glyph_string (cr, font, glyphs);
+-      cairo_restore (cr);
+-    }
+-  
+-  cairo_move_to (cr, (double)x / PANGO_SCALE, (double)y / PANGO_SCALE);
+-  pango_cairo_show_glyph_string (cr, font, glyphs);
+-}
+-
+-/* Draws an error underline that looks like one of:
+- *              H       E                H
+- *     /\      /\      /\        /\      /\               -
+- *   A/  \    /  \    /  \     A/  \    /  \              |
+- *    \   \  /    \  /   /D     \   \  /    \             |
+- *     \   \/  C   \/   /        \   \/   C  \            | height = HEIGHT_SQUARES * square
+- *      \      /\  F   /          \  F   /\   \           | 
+- *       \    /  \    /            \    /  \   \G         |
+- *        \  /    \  /              \  /    \  /          |
+- *         \/      \/                \/      \/           -
+- *         B                         B       
+- *    |----|
+- *   unit_width = (HEIGHT_SQUARES - 1) * square
+- *
+- * The x, y, width, height passed in give the desired bounding box;
+- * x/width are adjusted to make the underline a integer number of units
+- * wide.
+- */
+-#define HEIGHT_SQUARES 2.5
++      PangoMatrix *save_matrix;
++      PangoColor *save_color;
+ 
+-/* Cut-and-pasted between here and pango/pango/pangocairo-render.c */
++      emboss_renderer (renderer, PANGO_RENDER_PART_FOREGROUND, &save_matrix, &save_color);
++      gdk_draw_glyphs_transformed (priv->drawable,
++				   get_gc (gdk_renderer, PANGO_RENDER_PART_FOREGROUND),
++				   renderer->matrix, font, x, y, glyphs);
++      unemboss_renderer (renderer, PANGO_RENDER_PART_FOREGROUND, &save_matrix, &save_color);
++    }
++
++  gdk_draw_glyphs_transformed (priv->drawable,
++			       get_gc (gdk_renderer, PANGO_RENDER_PART_FOREGROUND),
++			       renderer->matrix, font, x, y, glyphs);
++}
++
++/* Outputs any pending trapezoids, we do this when the part or
++ * part color changes, when we are about to draw text, etc. */
+ static void
+-draw_error_underline (cairo_t *cr,
+-		      double  x,
+-		      double  y,
+-		      double  width,
+-		      double  height)
+-{
+-  double square = height / HEIGHT_SQUARES;
+-  double unit_width = (HEIGHT_SQUARES - 1) * square;
+-  int width_units = (width + unit_width / 2) / unit_width;
+-  double y_top, y_bottom;
+-  int i;
++flush_trapezoids (GdkPangoRenderer *gdk_renderer)
++{
++  GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+ 
+-  x += (width - width_units * unit_width) / 2;
+-  width = width_units * unit_width;
++  if (!priv->trapezoids || priv->trapezoids->len == 0)
++    return;
+ 
+-  y_top = y;
+-  y_bottom = y + height;
+-  
+-  /* Bottom of squiggle */
+-  cairo_move_to (cr, x - square / 2, y_top + square / 2); /* A */
+-  for (i = 0; i < width_units; i += 2)
+-    {
+-      double x_middle = x + (i + 1) * unit_width;
+-      double x_right = x + (i + 2) * unit_width;
+-    
+-      cairo_line_to (cr, x_middle, y_bottom); /* B */
+-      
+-      if (i + 1 == width_units)
+-	/* Nothing */;
+-      else if (i + 2 == width_units)
+-	cairo_line_to (cr, x_right + square / 2, y_top + square / 2); /* D */
+-      else
+-	cairo_line_to (cr, x_right, y_top + square); /* C */
+-    }
+-  
+-  /* Top of squiggle */
+-  for (i -= 2; i >= 0; i -= 2)
+-    {
+-      double x_left = x + i * unit_width;
+-      double x_middle = x + (i + 1) * unit_width;
+-      double x_right = x + (i + 2) * unit_width;
+-      
+-      if (i + 1 == width_units)
+-	cairo_line_to (cr, x_middle + square / 2, y_bottom - square / 2); /* G */
+-      else {
+-	if (i + 2 == width_units)
+-	  cairo_line_to (cr, x_right, y_top); /* E */
+-	cairo_line_to (cr, x_middle, y_bottom - square); /* F */
+-      }
+-      
+-      cairo_line_to (cr, x_left, y_top);   /* H */
+-    }
++  gdk_draw_trapezoids (priv->drawable,
++		       get_gc (gdk_renderer, priv->trapezoid_part),
++		       (GdkTrapezoid *)priv->trapezoids->data,
++		       priv->trapezoids->len);
+ 
+-  cairo_close_path (cr);
+-  cairo_fill (cr);
++  g_array_set_size (priv->trapezoids, 0);
+ }
+ 
++/* Draws a single trapezoid ... we don't draw it immediately, but rather
++ * cache it to join together with other trapezoids that form part of the
++ * same logical shape */
+ static void
+-gdk_pango_renderer_draw_rectangle (PangoRenderer    *renderer,
+-				   PangoRenderPart   part,
+-				   int               x,
+-				   int               y,
+-				   int               width,
+-				   int               height)
++gdk_pango_renderer_draw_trapezoid (PangoRenderer   *renderer,
++				   PangoRenderPart  part,
++				   double           y1,
++				   double           x11,
++				   double           x21,
++				   double           y2,
++				   double           x12,
++				   double           x22)
+ {
+   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
+-  GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+-  cairo_t *cr;
+-  
+-  cr = get_cairo_context (gdk_renderer, part);
+-
+-  if (priv->embossed && part != PANGO_RENDER_PART_BACKGROUND)
+-    {
+-      cairo_save (cr);
+-      emboss_context (cr);
+-      cairo_rectangle (cr,
+-		       (double)x / PANGO_SCALE, (double)y / PANGO_SCALE,
+-		       (double)width / PANGO_SCALE, (double)height / PANGO_SCALE);
++  GdkTrapezoid trap;
+ 
+-      cairo_fill (cr);
+-      cairo_restore (cr);
+-    }
++  if (!gdk_renderer->priv->trapezoids)
++    gdk_renderer->priv->trapezoids = g_array_new (FALSE, FALSE,
++						  sizeof (GdkTrapezoid));
++  
++  if (gdk_renderer->priv->trapezoids->len > 0 &&
++      gdk_renderer->priv->trapezoid_part != part)
++    flush_trapezoids (gdk_renderer);
++  
++  gdk_renderer->priv->trapezoid_part = part;
++
++  trap.y1 = y1;
++  trap.x11 = x11 / 2;
++  trap.x21 = x21;
++  trap.y2 = y2;
++  trap.x12 = x12;
++  trap.x22 = x22;
+ 
+-  cairo_rectangle (cr,
+-		   (double)x / PANGO_SCALE, (double)y / PANGO_SCALE,
+-		   (double)width / PANGO_SCALE, (double)height / PANGO_SCALE);
+-  cairo_fill (cr);
++  g_array_append_val (gdk_renderer->priv->trapezoids, trap);
+ }
+ 
+ static void
+@@ -363,23 +390,51 @@
+ {
+   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
+   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+-  cairo_t *cr;
+-  
+-  cr = get_cairo_context (gdk_renderer, PANGO_RENDER_PART_UNDERLINE);
+-  
+-  if (priv->embossed)
++
++  if (!priv->in_emboss && priv->embossed)
+     {
+-      cairo_save (cr);
+-      emboss_context (cr);
+-      draw_error_underline (cr,
+-			    (double)x / PANGO_SCALE, (double)y / PANGO_SCALE,
+-			    (double)width / PANGO_SCALE, (double)height / PANGO_SCALE);
+-      cairo_restore (cr);
++      PangoMatrix *save_matrix;
++      PangoColor *save_color;
++
++      emboss_renderer (renderer, PANGO_RENDER_PART_UNDERLINE, &save_matrix, &save_color);
++      PANGO_RENDERER_CLASS (gdk_pango_renderer_parent_class)->draw_error_underline (renderer,
++										    x, y, width, height);
++      unemboss_renderer (renderer, PANGO_RENDER_PART_UNDERLINE, &save_matrix, &save_color);
+     }
+ 
+-  draw_error_underline (cr,
+-			(double)x / PANGO_SCALE, (double)y / PANGO_SCALE,
+-			(double)width / PANGO_SCALE, (double)height / PANGO_SCALE);
++  PANGO_RENDERER_CLASS (gdk_pango_renderer_parent_class)->draw_error_underline (renderer,
++										x, y, width, height);
++}
++
++/* We can't handle embossing at the level of trapezoids, because when an
++ * underline is split into multiple trapezoids, the normal and shadow
++ * trapezoids will be drawn mixed together. Instead, we have to emboss
++ * and entire rectangle or error underline
++ */
++static void
++gdk_pango_renderer_draw_rectangle (PangoRenderer    *renderer,
++				   PangoRenderPart   part,
++				   int               x,
++				   int               y,
++				   int               width,
++				   int               height)
++{
++  GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
++  GdkPangoRendererPrivate *priv = gdk_renderer->priv;
++
++  if (!priv->in_emboss && priv->embossed && part != PANGO_RENDER_PART_BACKGROUND)
++    {
++      PangoMatrix *save_matrix;
++      PangoColor *save_color;
++
++      emboss_renderer (renderer, part, &save_matrix, &save_color);
++      PANGO_RENDERER_CLASS (gdk_pango_renderer_parent_class)->draw_rectangle (renderer, part,
++									      x, y, width, height);
++      unemboss_renderer (renderer, part, &save_matrix, &save_color);
++    }
++
++  PANGO_RENDERER_CLASS (gdk_pango_renderer_parent_class)->draw_rectangle (renderer, part,
++									  x, y, width, height);
+ }
+ 
+ static void
+@@ -388,8 +443,8 @@
+ {
+   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
+ 
+-  if (gdk_renderer->priv->last_part == part)
+-    gdk_renderer->priv->last_part = (PangoRenderPart)-1;
++  if (part == gdk_renderer->priv->trapezoid_part)
++    flush_trapezoids (gdk_renderer);
+ }
+ 
+ static void
+@@ -410,13 +465,8 @@
+ {
+   GdkPangoRenderer *gdk_renderer = GDK_PANGO_RENDERER (renderer);
+   GdkPangoRendererPrivate *priv = gdk_renderer->priv;
+-
+-  if (priv->cr)
+-    {
+-      cairo_destroy (priv->cr);
+-      priv->cr = NULL;
+-    }
+-  priv->last_part = (PangoRenderPart)-1;
++    
++  flush_trapezoids (gdk_renderer);
+ }
+ 
+ static void
+@@ -515,7 +565,6 @@
+ 						GDK_TYPE_PANGO_RENDERER,
+ 						GdkPangoRendererPrivate);
+ 
+-  renderer->priv->last_part = (PangoRenderPart)-1;
+   renderer->priv->gc_changed = TRUE;
+ }
+ 
+@@ -527,6 +576,7 @@
+   PangoRendererClass *renderer_class = PANGO_RENDERER_CLASS (klass);
+   
+   renderer_class->draw_glyphs = gdk_pango_renderer_draw_glyphs;
++  renderer_class->draw_trapezoid = gdk_pango_renderer_draw_trapezoid;
+   renderer_class->draw_rectangle = gdk_pango_renderer_draw_rectangle;
+   renderer_class->draw_error_underline = gdk_pango_renderer_draw_error_underline;
+   renderer_class->part_changed = gdk_pango_renderer_part_changed;
+@@ -647,6 +697,8 @@
+ 
+   priv = gdk_renderer->priv;
+   
++  flush_trapezoids (gdk_renderer);
++    
+   if (priv->drawable != drawable)
+     {
+       if (priv->drawable)
+@@ -681,6 +733,8 @@
+ 
+   priv = gdk_renderer->priv;
+   
++  flush_trapezoids (gdk_renderer);
++    
+   if (priv->base_gc != gc)
+     {
+       if (priv->base_gc)
+@@ -689,6 +743,20 @@
+       if (priv->base_gc)
+ 	g_object_ref (priv->base_gc);
+ 
++      if (priv->gc)
++	{
++	  g_object_unref (priv->gc);
++	  priv->gc = NULL;
++	}
++        
++      priv->gc_color_set = FALSE;
++
++      if (priv->gc_stipple)
++	{
++	  g_object_unref (priv->gc_stipple);
++	  priv->gc_stipple = NULL;
++	}
++        
+       priv->gc_changed = TRUE;
+     }
+ }
+@@ -1414,50 +1482,5 @@
+   return gdk_pango_context_get_for_screen (gdk_screen_get_default ());
+ }
+ 
+-/**
+- * gdk_pango_context_get_for_screen:
+- * @screen: the #GdkScreen for which the context is to be created.
+- * 
+- * Creates a #PangoContext for @screen.
+- *
+- * The context must be freed when you're finished with it.
+- * 
+- * When using GTK+, normally you should use gtk_widget_get_pango_context()
+- * instead of this function, to get the appropriate context for
+- * the widget you intend to render text onto.
+- * 
+- * The newly created context will have the default font options
+- * (see #cairo_font_options_t) for the screen; if these options
+- * change it will not be updated. Using gtk_widget_get_pango_context()
+- * is more convenient if you want to keep a context around and track
+- * changes to the screen's font rendering settings.
+- * 
+- * Return value: a new #PangoContext for @screen
+- *
+- * Since: 2.2
+- **/
+-PangoContext *
+-gdk_pango_context_get_for_screen (GdkScreen *screen)
+-{
+-  PangoFontMap *fontmap;
+-  PangoContext *context;
+-  const cairo_font_options_t *options;
+-  double dpi;
+-  
+-  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
+-
+-  fontmap = pango_cairo_font_map_get_default ();
+-  
+-  context = pango_cairo_font_map_create_context (PANGO_CAIRO_FONT_MAP (fontmap));
+-
+-  options = gdk_screen_get_font_options (screen);
+-  pango_cairo_context_set_font_options (context, options);
+-
+-  dpi = gdk_screen_get_resolution (screen);
+-  pango_cairo_context_set_resolution (context, dpi);
+-
+-  return context;
+-}
+-
+ #define __GDK_PANGO_C__
+ #include "gdkaliasdef.c"
+Index: gtk+-2.10.6/gdk/gdk.symbols
+===================================================================
+--- gtk+-2.10.6.orig/gdk/gdk.symbols	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/gdk.symbols	2006-10-30 12:59:30.000000000 +0000
+@@ -861,7 +861,6 @@
+ gdk_pango_attr_embossed_new
+ gdk_pango_attr_stipple_new
+ gdk_pango_context_get
+-gdk_pango_context_get_for_screen
+ #ifndef GDK_DISABLE_DEPRECATED
+ gdk_pango_context_set_colormap
+ #endif
+@@ -877,6 +876,12 @@
+ #endif
+ #endif
+ 
++#if IN_HEADER(__GDK_PANGO_H__)
++#if IN_FILE(__GDK_PANGO_X11_C__)
++gdk_pango_context_get_for_screen
++#endif
++#endif
++
+ #if IN_HEADER(__GDK_PIXBUF_H__)
+ #if IN_FILE(__GDK_PIXBUF_DRAWABLE_C__)
+ gdk_pixbuf_get_from_drawable
+Index: gtk+-2.10.6/gdk/gdkwindow.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/gdkwindow.c	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/gdkwindow.c	2006-10-30 12:59:30.000000000 +0000
+@@ -1834,9 +1834,14 @@
+     }
+   else
+     {
+-      method->cr = cairo_create (paint->surface);
++      /*method->cr = cairo_create (paint->surface);
+ 
+-      gdk_cairo_set_source_color (method->cr, &private->bg_color);
++      gdk_cairo_set_source_color (method->cr, &private->bg_color);*/
++      GdkGC *gc = _gdk_drawable_get_scratch_gc (paint->pixmap, FALSE);
++
++      gdk_gc_set_foreground (gc, &(private->bg_color));
++      
++      method->gc = g_object_ref (gc);
+     }
+ }
+ 
+Index: gtk+-2.10.6/gdk/x11/gdkdisplay-x11.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkdisplay-x11.c	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkdisplay-x11.c	2006-10-30 12:59:30.000000000 +0000
+@@ -190,7 +190,8 @@
+   display_x11->leader_window_title_set = FALSE;
+ 
+   display_x11->have_render = GDK_UNKNOWN;
+-
++  display_x11->have_render_with_trapezoids = GDK_UNKNOWN;
++  
+ #ifdef HAVE_XFIXES
+   if (XFixesQueryExtension (display_x11->xdisplay, 
+ 			    &display_x11->xfixes_event_base, 
+Index: gtk+-2.10.6/gdk/x11/gdkdisplay-x11.h
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkdisplay-x11.h	2006-10-30 12:58:29.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkdisplay-x11.h	2006-10-30 12:59:30.000000000 +0000
+@@ -78,6 +78,7 @@
+   gboolean use_xshm;
+   gboolean have_shm_pixmaps;
+   GdkTristate have_render;
++  GdkTristate have_render_with_trapezoids;
+   gboolean have_xfixes;
+   gint xfixes_event_base;
+ 
+Index: gtk+-2.10.6/gdk/x11/gdkdrawable-x11.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkdrawable-x11.c	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkdrawable-x11.c	2006-10-30 12:59:30.000000000 +0000
+@@ -26,6 +26,8 @@
+ 
+ #include <config.h>
+ 
++#include <pango/pangoxft.h>
++
+ #include "gdkx.h"
+ #include "gdkregion-generic.h"
+ 
+@@ -106,7 +108,21 @@
+ 				    GdkGC          *gc,
+ 				    GdkPoint       *points,
+ 				    gint            npoints);
+-
++					
++static void gdk_x11_draw_glyphs             (GdkDrawable      *drawable,
++					     GdkGC            *gc,
++					     PangoFont        *font,
++					     gint              x,
++					     gint              y,
++					     PangoGlyphString *glyphs);
++static void gdk_x11_draw_glyphs_transformed (GdkDrawable      *drawable,
++					     GdkGC            *gc,
++					     PangoMatrix      *matrix,
++					     PangoFont        *font,
++					     gint              x,
++					     gint              y,
++					     PangoGlyphString *glyphs);
++						 
+ static void gdk_x11_draw_image     (GdkDrawable     *drawable,
+                                     GdkGC           *gc,
+                                     GdkImage        *image,
+@@ -129,6 +145,11 @@
+ 				    gint             x_dither,
+ 				    gint             y_dither);
+ 
++static void gdk_x11_draw_trapezoids (GdkDrawable     *drawable,
++				     GdkGC	     *gc,
++				     GdkTrapezoid    *trapezoids,
++				     gint             n_trapezoids);
++
+ static cairo_surface_t *gdk_x11_ref_cairo_surface (GdkDrawable *drawable);
+      
+ static void gdk_x11_set_colormap   (GdkDrawable    *drawable,
+@@ -163,8 +184,11 @@
+   drawable_class->draw_points = gdk_x11_draw_points;
+   drawable_class->draw_segments = gdk_x11_draw_segments;
+   drawable_class->draw_lines = gdk_x11_draw_lines;
++  drawable_class->draw_glyphs = gdk_x11_draw_glyphs;
++  drawable_class->draw_glyphs_transformed = gdk_x11_draw_glyphs_transformed;
+   drawable_class->draw_image = gdk_x11_draw_image;
+   drawable_class->draw_pixbuf = gdk_x11_draw_pixbuf;
++  drawable_class->draw_trapezoids = gdk_x11_draw_trapezoids;
+   
+   drawable_class->ref_cairo_surface = gdk_x11_ref_cairo_surface;
+ 
+@@ -327,6 +351,72 @@
+   return x11display->have_render == GDK_YES;
+ }
+ 
++gboolean
++_gdk_x11_have_render_with_trapezoids (GdkDisplay *display)
++{
++  Display *xdisplay = GDK_DISPLAY_XDISPLAY (display);
++  GdkDisplayX11 *x11display = GDK_DISPLAY_X11 (display);
++
++  if (x11display->have_render_with_trapezoids == GDK_UNKNOWN)
++    {
++      x11display->have_render_with_trapezoids = GDK_NO;
++      if (_gdk_x11_have_render (display))
++	{
++	  /*
++	   * Require protocol >= 0.4 for CompositeTrapezoids support.
++	   */
++	  int major_version, minor_version;
++	
++#define XRENDER_TETRAPEZOIDS_MAJOR 0
++#define XRENDER_TETRAPEZOIDS_MINOR 4
++	
++	  if (XRenderQueryVersion (xdisplay, &major_version,
++				   &minor_version))
++	    if ((major_version == XRENDER_TETRAPEZOIDS_MAJOR) &&
++		(minor_version >= XRENDER_TETRAPEZOIDS_MINOR))
++	      x11display->have_render_with_trapezoids = GDK_YES;
++	}
++    }
++
++  return x11display->have_render_with_trapezoids == GDK_YES;
++}
++
++static XftDraw *
++gdk_x11_drawable_get_xft_draw (GdkDrawable *drawable)
++{
++  GdkDrawableImplX11 *impl = GDK_DRAWABLE_IMPL_X11 (drawable);
++
++   if (impl->xft_draw == NULL)
++    {
++      GdkColormap *colormap = gdk_drawable_get_colormap (drawable);
++      
++      if (colormap)
++	{
++          GdkVisual *visual;
++
++          visual = gdk_colormap_get_visual (colormap);
++      
++          impl->xft_draw = XftDrawCreate (GDK_SCREEN_XDISPLAY (impl->screen), impl->xid,
++ 				          GDK_VISUAL_XVISUAL (visual), GDK_COLORMAP_XCOLORMAP (colormap));
++	}
++      else if (gdk_drawable_get_depth (drawable) == 1)
++	{
++	  impl->xft_draw = XftDrawCreateBitmap (GDK_SCREEN_XDISPLAY (impl->screen), impl->xid);
++	}
++      else
++        {
++	  g_warning ("Using Xft rendering requires the drawable argument to\n"
++		     "have a specified colormap. All windows have a colormap,\n"
++		     "however, pixmaps only have colormap by default if they\n"
++		     "were created with a non-NULL window argument. Otherwise\n"
++		     "a colormap must be set on them with gdk_drawable_set_colormap");
++	  return NULL;
++        }
++    }
++
++   return impl->xft_draw;
++}
++
+ static Picture
+ gdk_x11_drawable_get_picture (GdkDrawable *drawable)
+ {
+@@ -393,6 +483,57 @@
+     }
+ }
+ 
++static void
++gdk_x11_drawable_update_xft_clip (GdkDrawable *drawable,
++				   GdkGC       *gc)
++{
++  XftDraw *xft_draw = gdk_x11_drawable_get_xft_draw (drawable);
++  GdkRegion *clip_region = _gdk_gc_get_clip_region (gc);
++    
++  if (gc && clip_region)
++    {
++      GdkRegionBox *boxes = clip_region->rects;
++      gint n_boxes = clip_region->numRects;
++#if 0				/* Until XftDrawSetClipRectangles is there */
++      XRectangle *rects = g_new (XRectangle, n_boxes);
++      int i;
++
++      for (i=0; i < n_boxes; i++)
++	{
++	  rects[i].x = CLAMP (boxes[i].x1 + gc->clip_x_origin, G_MINSHORT, G_MAXSHORT);
++	  rects[i].y = CLAMP (boxes[i].y1 + gc->clip_y_origin, G_MINSHORT, G_MAXSHORT);
++	  rects[i].width = CLAMP (boxes[i].x2 + gc->clip_x_origin, G_MINSHORT, G_MAXSHORT) - rects[i].x;
++	  rects[i].height = CLAMP (boxes[i].y2 + gc->clip_y_origin, G_MINSHORT, G_MAXSHORT) - rects[i].y;
++	}
++      XftDrawSetClipRectangles (xft_draw, 0, 0, rects, n_boxes);
++
++      g_free (rects);
++#else
++      Region xregion = XCreateRegion ();
++      int i;
++ 
++      for (i=0; i < n_boxes; i++)
++ 	{
++ 	  XRectangle rect;
++ 	  
++ 	  rect.x = CLAMP (boxes[i].x1 + gc->clip_x_origin, G_MINSHORT, G_MAXSHORT);
++ 	  rect.y = CLAMP (boxes[i].y1 + gc->clip_y_origin, G_MINSHORT, G_MAXSHORT);
++ 	  rect.width = CLAMP (boxes[i].x2 + gc->clip_x_origin, G_MINSHORT, G_MAXSHORT) - rect.x;
++ 	  rect.height = CLAMP (boxes[i].y2 + gc->clip_y_origin, G_MINSHORT, G_MAXSHORT) - rect.y;
++	  
++ 	  XUnionRectWithRegion (&rect, xregion, xregion);
++ 	}
++      
++      XftDrawSetClip (xft_draw, xregion);
++      XDestroyRegion (xregion);
++#endif      
++    }
++  else
++    {
++      XftDrawSetClip (xft_draw, NULL);
++    }
++}
++
+ /*****************************************************
+  * X11 specific implementations of generic functions *
+  *****************************************************/
+@@ -780,6 +921,45 @@
+ }
+ 
+ static void
++gdk_x11_draw_glyphs (GdkDrawable      *drawable,
++		     GdkGC            *gc,
++		     PangoFont        *font,
++		     gint              x,
++		     gint              y,
++		     PangoGlyphString *glyphs)
++{
++  gdk_x11_draw_glyphs_transformed (drawable, gc, NULL,
++				   font,
++				   x * PANGO_SCALE,
++				   y * PANGO_SCALE,
++				   glyphs);
++}
++
++static void
++gdk_x11_draw_glyphs_transformed (GdkDrawable      *drawable,
++				 GdkGC            *gc,
++				 PangoMatrix      *matrix,
++				 PangoFont        *font,
++				 gint              x,
++				 gint              y,
++				 PangoGlyphString *glyphs)
++{
++  GdkDrawableImplX11 *impl;
++  PangoRenderer *renderer;
++
++  impl = GDK_DRAWABLE_IMPL_X11 (drawable);
++
++  g_return_if_fail (PANGO_XFT_IS_FONT (font));
++
++  renderer = _gdk_x11_renderer_get (drawable, gc);
++  if (matrix)
++    pango_renderer_set_matrix (renderer, matrix);
++  pango_renderer_draw_glyphs (renderer, font, glyphs, x, y);
++  if (matrix)
++    pango_renderer_set_matrix (renderer, NULL);
++}
++
++static void
+ gdk_x11_draw_image     (GdkDrawable     *drawable,
+                         GdkGC           *gc,
+                         GdkImage        *image,
+@@ -1444,6 +1624,47 @@
+ }
+ 
+ static void
++gdk_x11_draw_trapezoids (GdkDrawable  *drawable,
++			 GdkGC	      *gc,
++			 GdkTrapezoid *trapezoids,
++			 gint          n_trapezoids)
++{
++  GdkScreen *screen = GDK_DRAWABLE_IMPL_X11 (drawable)->screen;
++  GdkDisplay *display = gdk_screen_get_display (screen);
++  XTrapezoid *xtrapezoids;
++  gint i;
++
++  if (!_gdk_x11_have_render_with_trapezoids (display))
++    {
++      GdkDrawable *wrapper = GDK_DRAWABLE_IMPL_X11 (drawable)->wrapper;
++      GDK_DRAWABLE_CLASS (_gdk_drawable_impl_x11_parent_class)->draw_trapezoids (wrapper, gc,
++							  trapezoids, n_trapezoids);
++      return;
++    }
++
++  xtrapezoids = g_new (XTrapezoid, n_trapezoids);
++
++  for (i = 0; i < n_trapezoids; i++)
++    {
++      xtrapezoids[i].top = XDoubleToFixed (trapezoids[i].y1);
++      xtrapezoids[i].bottom = XDoubleToFixed (trapezoids[i].y2);
++      xtrapezoids[i].left.p1.x = XDoubleToFixed (trapezoids[i].x11);
++      xtrapezoids[i].left.p1.y = XDoubleToFixed (trapezoids[i].y1);
++      xtrapezoids[i].left.p2.x = XDoubleToFixed (trapezoids[i].x12);
++      xtrapezoids[i].left.p2.y = XDoubleToFixed (trapezoids[i].y2);
++      xtrapezoids[i].right.p1.x = XDoubleToFixed (trapezoids[i].x21);
++      xtrapezoids[i].right.p1.y = XDoubleToFixed (trapezoids[i].y1);
++      xtrapezoids[i].right.p2.x = XDoubleToFixed (trapezoids[i].x22);
++      xtrapezoids[i].right.p2.y = XDoubleToFixed (trapezoids[i].y2);
++    }
++
++  _gdk_x11_drawable_draw_xtrapezoids (drawable, gc,
++				      xtrapezoids, n_trapezoids);
++  
++  g_free (xtrapezoids);
++}
++
++static void
+ gdk_x11_cairo_surface_destroy (void *data)
+ {
+   GdkDrawableImplX11 *impl = data;
+@@ -1498,5 +1719,89 @@
+   return impl->cairo_surface;
+ }
+ 
++void
++_gdk_x11_drawable_draw_xtrapezoids (GdkDrawable      *drawable,
++				    GdkGC            *gc,
++				    XTrapezoid       *xtrapezoids,
++				    int               n_trapezoids)
++{
++  GdkScreen *screen = GDK_DRAWABLE_IMPL_X11 (drawable)->screen;
++  GdkDisplay *display = gdk_screen_get_display (screen);
++  GdkDisplayX11 *x11display = GDK_DISPLAY_X11 (display);
++   
++  XftDraw *draw;
++
++  if (!_gdk_x11_have_render_with_trapezoids (display))
++    {
++      /* This is the case of drawing the borders of the unknown glyph box
++       * without render on the display, we need to feed it back to
++       * fallback code. Not efficient, but doesn't matter.
++       */
++      GdkTrapezoid *trapezoids = g_new (GdkTrapezoid, n_trapezoids);
++      int i;
++
++      for (i = 0; i < n_trapezoids; i++)
++	{
++	  trapezoids[i].y1 = XFixedToDouble (xtrapezoids[i].top);
++	  trapezoids[i].y2 = XFixedToDouble (xtrapezoids[i].bottom);
++	  trapezoids[i].x11 = XFixedToDouble (xtrapezoids[i].left.p1.x);
++	  trapezoids[i].x12 = XFixedToDouble (xtrapezoids[i].left.p2.x);
++	  trapezoids[i].x21 = XFixedToDouble (xtrapezoids[i].right.p1.x);
++	  trapezoids[i].x22 = XFixedToDouble (xtrapezoids[i].right.p2.x);
++	}
++
++      gdk_x11_draw_trapezoids (drawable, gc, trapezoids, n_trapezoids);
++      g_free (trapezoids);
++
++      return;
++    }
++
++  gdk_x11_drawable_update_xft_clip (drawable, gc);
++  draw = gdk_x11_drawable_get_xft_draw (drawable);
++
++  if (!x11display->mask_format)
++    x11display->mask_format = XRenderFindStandardFormat (x11display->xdisplay,
++							 PictStandardA8);
++
++  XRenderCompositeTrapezoids (x11display->xdisplay, PictOpOver,
++			      _gdk_x11_gc_get_fg_picture (gc),
++			      XftDrawPicture (draw),
++			      x11display->mask_format,
++			      - gc->ts_x_origin, - gc->ts_y_origin,
++			      xtrapezoids, n_trapezoids);
++}
++
++void
++_gdk_x11_drawable_draw_xft_glyphs (GdkDrawable      *drawable,
++				   GdkGC            *gc,
++				   XftFont          *xft_font,
++				   XftGlyphSpec     *glyphs,
++				   gint              n_glyphs)
++{
++  GdkScreen *screen = GDK_DRAWABLE_IMPL_X11 (drawable)->screen;
++  GdkDisplay *display = gdk_screen_get_display (screen);
++  GdkDisplayX11 *x11display = GDK_DISPLAY_X11 (display);
++  XftDraw *draw;
++   
++  gdk_x11_drawable_update_xft_clip (drawable, gc);
++  draw = gdk_x11_drawable_get_xft_draw (drawable);
++
++  if (_gdk_x11_have_render (display))
++    {
++      XftGlyphSpecRender (x11display->xdisplay, PictOpOver,
++			  _gdk_x11_gc_get_fg_picture (gc),
++			  xft_font,
++			  XftDrawPicture (draw),
++			  - gc->ts_x_origin, - gc->ts_y_origin,
++			  glyphs, n_glyphs);
++    }
++  else
++    {
++      XftColor color;
++      
++      _gdk_gc_x11_get_fg_xft_color (gc, &color);
++      XftDrawGlyphSpec (draw, &color, xft_font, glyphs, n_glyphs);
++    }
++}
+ #define __GDK_DRAWABLE_X11_C__
+ #include "gdkaliasdef.c"
+Index: gtk+-2.10.6/gdk/x11/gdkdrawable-x11.h
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkdrawable-x11.h	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkdrawable-x11.h	2006-10-30 12:59:30.000000000 +0000
+@@ -33,6 +33,7 @@
+ 
+ #include <X11/Xlib.h>
+ #include <X11/extensions/Xrender.h>
++#include <X11/Xft/Xft.h>
+ 
+ G_BEGIN_DECLS
+ 
+@@ -68,6 +69,8 @@
+   Window xid;
+   GdkScreen *screen;
+ 
++  XftDraw *xft_draw;
++	
+   Picture picture;
+   cairo_surface_t *cairo_surface;
+ };
+@@ -92,7 +95,15 @@
+ /* Note that the following take GdkDrawableImplX11, not the wrapper drawable */
+ void _gdk_x11_drawable_finish           (GdkDrawable  *drawable);
+ void _gdk_x11_drawable_update_size      (GdkDrawable  *drawable);
+-
++void _gdk_x11_drawable_draw_xtrapezoids (GdkDrawable  *drawable,
++					 GdkGC        *gc,
++					 XTrapezoid   *xtrapezoids,
++					 int           n_trapezoids);
++void _gdk_x11_drawable_draw_xft_glyphs  (GdkDrawable  *drawable,
++					 GdkGC        *gc,
++					 XftFont      *xft_font,
++					 XftGlyphSpec *glyphs,
++					 gint          n_glyphs);
+ G_END_DECLS
+ 
+ #endif /* __GDK_DRAWABLE_X11_H__ */
+Index: gtk+-2.10.6/gdk/x11/gdkgc-x11.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkgc-x11.c	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkgc-x11.c	2006-10-30 12:59:30.000000000 +0000
+@@ -80,7 +80,10 @@
+ gdk_gc_x11_finalize (GObject *object)
+ {
+   GdkGCX11 *x11_gc = GDK_GC_X11 (object);
+-  
++
++  if (x11_gc->fg_picture != None)
++    XRenderFreePicture (GDK_GC_XDISPLAY (x11_gc), x11_gc->fg_picture);
++	
+   XFreeGC (GDK_GC_XDISPLAY (x11_gc), GDK_GC_XGC (x11_gc));
+ 
+   G_OBJECT_CLASS (_gdk_gc_x11_parent_class)->finalize (object);
+@@ -110,7 +113,7 @@
+ 
+   private->dirty_mask = 0;
+   private->have_clip_mask = FALSE;
+-    
++	
+   private->screen = GDK_DRAWABLE_IMPL_X11 (drawable)->screen;
+ 
+   private->depth = gdk_drawable_get_depth (drawable);
+@@ -339,6 +342,18 @@
+ }
+ 
+ static void
++clear_fg_picture (GdkGC *gc)
++{
++  GdkGCX11 *x11_gc = GDK_GC_X11 (gc);
++
++  if (x11_gc->fg_picture != None)
++    {
++      XRenderFreePicture (GDK_GC_XDISPLAY (x11_gc), x11_gc->fg_picture);
++      x11_gc->fg_picture = None;
++    }
++}
++
++static void
+ gdk_x11_gc_set_values (GdkGC           *gc,
+ 		       GdkGCValues     *values,
+ 		       GdkGCValuesMask  values_mask)
+@@ -367,6 +382,29 @@
+       x11_gc->have_clip_mask = values->clip_mask != NULL;
+     }
+ 
++  if (values_mask & GDK_GC_BACKGROUND)
++    {
++      if (_gdk_gc_get_fill (gc) == GDK_OPAQUE_STIPPLED)
++	    clear_fg_picture (gc);
++    }
++
++  if (values_mask & GDK_GC_FILL)
++    {
++      clear_fg_picture (gc);
++    }
++    
++  if (values_mask & GDK_GC_STIPPLE)
++    {
++      if (_gdk_gc_get_fill (gc) == GDK_STIPPLED || _gdk_gc_get_fill (gc) == GDK_OPAQUE_STIPPLED)
++        clear_fg_picture (gc);
++    }
++  
++  if (values_mask & GDK_GC_TILE)
++    {
++      if (_gdk_gc_get_fill (gc) == GDK_TILED)
++	clear_fg_picture (gc);
++    }
++    
+   gdk_x11_gc_values_to_xvalues (values, values_mask, &xvalues, &xvalues_mask);
+ 
+   XChangeGC (GDK_GC_XDISPLAY (gc),
+@@ -642,6 +680,8 @@
+   x11_dst_gc->dirty_mask = x11_src_gc->dirty_mask;
+   x11_dst_gc->have_clip_region = x11_src_gc->have_clip_region;
+   x11_dst_gc->have_clip_mask = x11_src_gc->have_clip_mask;
++    
++  clear_fg_picture (dst_gc);
+ }
+ 
+ /**
+@@ -701,5 +741,359 @@
+   return gc_x11->xgc;
+ }
+ 
++/* Various bits of the below are roughly cribbed from XFree86
++ * lib/Xft/xftdraw.c, Copyright 2000, Keith Packard
++ */
++
++static XRenderPictFormat *
++foreground_format (GdkGC *gc)
++{
++  XRenderPictFormat pf;
++
++  pf.type = PictTypeDirect;
++  pf.depth = 32;
++  pf.direct.redMask = 0xff;
++  pf.direct.greenMask = 0xff;
++  pf.direct.blueMask = 0xff;
++  pf.direct.alphaMask = 0xff;
++
++  return XRenderFindFormat (GDK_GC_XDISPLAY (gc),
++			    (PictFormatType |
++			     PictFormatDepth |
++			     PictFormatRedMask |
++			     PictFormatGreenMask |
++			     PictFormatBlueMask |
++			     PictFormatAlphaMask),
++			    &pf,
++			    0);
++}
++
++static Picture
++make_fg_tile_picture (GdkGC *gc)
++{
++  GdkGCX11 *x11_gc = GDK_GC_X11 (gc);
++  GdkVisual *visual = gdk_drawable_get_visual (_gdk_gc_get_tile (gc));
++  XRenderPictFormat *format = NULL;
++
++  if (visual)
++    {
++      format = XRenderFindVisualFormat (GDK_GC_XDISPLAY (gc),
++					GDK_VISUAL_XVISUAL (visual));
++    }
++  else if (x11_gc->depth == 1)
++    {
++      format = XRenderFindStandardFormat (GDK_GC_XDISPLAY (gc),
++					  PictStandardA1);
++    }
++
++  if (format)
++    {
++      XRenderPictureAttributes pa;
++      pa.repeat = True;
++
++      return XRenderCreatePicture (GDK_GC_XDISPLAY (gc), 
++				   GDK_PIXMAP_XID (_gdk_gc_get_tile (gc)),
++				   format,
++				   CPRepeat, &pa);
++    }
++
++  return None;
++}
++
++static Picture
++make_stipple_picture (GdkGC *gc)
++{
++  XRenderPictFormat *format = NULL;
++  XRenderPictureAttributes pa;
++  
++  format = XRenderFindStandardFormat (GDK_GC_XDISPLAY (gc),
++				      PictStandardA1);
++
++  pa.repeat = True;
++  return XRenderCreatePicture (GDK_GC_XDISPLAY (gc), 
++			       GDK_PIXMAP_XID (_gdk_gc_get_stipple (gc)),
++			       format,
++			       CPRepeat, &pa);
++}
++
++static Picture
++make_color_picture (GdkGC        *gc,
++		    XRenderColor *color)
++{
++  GdkGCX11 *x11_gc = GDK_GC_X11 (gc);
++  XRenderPictureAttributes pa;
++  XRenderPictFormat *pix_format = foreground_format (gc);
++  Pixmap pix;
++  Picture picture;
++  
++  if (!pix_format)
++    return None;
++  
++  pix = XCreatePixmap (GDK_GC_XDISPLAY (gc),
++		       GDK_SCREEN_XROOTWIN (x11_gc->screen),
++		       1, 1, pix_format->depth);
++  pa.repeat = True;
++  picture = XRenderCreatePicture (GDK_GC_XDISPLAY (gc),
++				  pix,
++				  pix_format,
++				  CPRepeat, &pa);
++  XFreePixmap (GDK_GC_XDISPLAY (gc), pix);
++  
++  XRenderFillRectangle (GDK_GC_XDISPLAY (gc), PictOpSrc, 
++			picture, color,
++			0, 0, 1, 1);
++
++  return picture;
++}
++
++static void
++get_bg_color (GdkGC        *gc,
++	      XRenderColor *render_color)
++{
++  GdkColormap *cmap;
++  
++  cmap = gdk_gc_get_colormap (gc);
++
++  if (cmap)
++    {
++      GdkColor color;
++      
++      gdk_colormap_query_color (cmap, _gdk_gc_get_bg_pixel (gc), &color);
++      
++      render_color->alpha = 0xffff;
++      render_color->red = color.red;
++      render_color->green = color.green;
++      render_color->blue = color.blue;
++    }
++  else				/* Not worth warning, just use black */
++    {
++      render_color->alpha = 0xffff;
++      render_color->red = 0;
++      render_color->green = 0;
++      render_color->blue = 0;
++    }
++}
++
++/**
++ * _gdk_x11_gc_get_fg_picture:
++ * @gc: a #GdkGC
++ * 
++ * Gets a Xrender Picture object suitable for being the source
++ * drawable for drawing with the foreground the graphics context.
++ * 
++ * Return value: a Picture, owned by the GC; this cannot be
++ *   used over subsequent modification of the GC.
++ **/
++Picture
++_gdk_x11_gc_get_fg_picture (GdkGC *gc)
++{
++  GdkGCX11 *x11_gc;
++  gboolean new = FALSE;
++  XftColor xftcolor;
++  GdkFill fill;
++  int width, height;
++  
++  g_return_val_if_fail (GDK_IS_GC_X11 (gc), None);
++
++  if (!_gdk_x11_have_render (GDK_GC_DISPLAY (gc)))
++    return None;
++
++  x11_gc = GDK_GC_X11 (gc);
++
++  fill = GDK_SOLID;
++  width = 1;
++  height = 1;
++  
++  switch (_gdk_gc_get_fill (gc))
++    {
++    case GDK_SOLID:
++      break;
++    case GDK_TILED:
++      if (_gdk_gc_get_tile (gc))
++	{
++	  if (!x11_gc->fg_picture)
++	    x11_gc->fg_picture = make_fg_tile_picture (gc);
++
++	  if (x11_gc->fg_picture != None)
++	    return x11_gc->fg_picture;
++	}
++      break;
++    case GDK_STIPPLED:
++    case GDK_OPAQUE_STIPPLED:
++      if (_gdk_gc_get_stipple (gc))
++	{
++	  gdk_drawable_get_size (_gdk_gc_get_stipple (gc), &width, &height);
++	  fill = _gdk_gc_get_fill (gc);
++	}
++      break;
++    }
++  
++  if (x11_gc->fg_picture == None)
++    {
++      XRenderPictureAttributes pa;
++      XRenderPictFormat *pix_format = foreground_format (gc);
++      Pixmap pix;
++
++      if (!pix_format)
++	return None;
++
++      pix = XCreatePixmap (GDK_GC_XDISPLAY (gc), 
++			   GDK_SCREEN_XROOTWIN (x11_gc->screen),
++			   width, height, pix_format->depth);
++      pa.repeat = True;
++      x11_gc->fg_picture = XRenderCreatePicture (GDK_GC_XDISPLAY (gc), 
++						 pix,
++						 pix_format,
++						 CPRepeat, &pa);
++      XFreePixmap (GDK_GC_XDISPLAY (gc), pix);
++      
++      new = TRUE;
++    }
++
++  _gdk_gc_x11_get_fg_xft_color (gc, &xftcolor);
++  
++  if (x11_gc->fg_picture_color.alpha != 0xffff ||
++      x11_gc->fg_picture_color.red != xftcolor.color.red ||
++      x11_gc->fg_picture_color.green != xftcolor.color.green ||
++      x11_gc->fg_picture_color.blue != xftcolor.color.blue)
++    {
++      x11_gc->fg_picture_color.alpha = 0xffff;
++      x11_gc->fg_picture_color.red = xftcolor.color.red;
++      x11_gc->fg_picture_color.green = xftcolor.color.green;
++      x11_gc->fg_picture_color.blue = xftcolor.color.blue;
++
++      new = TRUE;
++    }
++
++  switch (fill)
++    {
++    case GDK_SOLID:
++      XRenderFillRectangle (GDK_GC_XDISPLAY (gc), PictOpSrc, 
++			    x11_gc->fg_picture, &x11_gc->fg_picture_color,
++			    0, 0, width, height);
++      break;
++    case GDK_STIPPLED:
++      {
++	Picture stipple_picture = make_stipple_picture (gc);
++	
++	XRenderFillRectangle (GDK_GC_XDISPLAY (gc), PictOpSrc, 
++			      x11_gc->fg_picture, &x11_gc->fg_picture_color,
++			      0, 0, width, height);
++	XRenderComposite (GDK_GC_XDISPLAY (gc),
++			  PictOpInReverse,
++			  stipple_picture, None, x11_gc->fg_picture,
++			  0, 0, 0, 0, 0, 0, width, height);
++	
++	XRenderFreePicture (GDK_GC_XDISPLAY (x11_gc), stipple_picture);
++      }
++      break;
++    case GDK_OPAQUE_STIPPLED:
++      {
++	XRenderColor bg_color;
++
++	Picture stipple_picture = make_stipple_picture (gc);
++	Picture fg_picture = make_color_picture (gc, &x11_gc->fg_picture_color);
++
++	get_bg_color (gc, &bg_color);
++	
++	XRenderFillRectangle (GDK_GC_XDISPLAY (gc), PictOpSrc, 
++			      x11_gc->fg_picture, &bg_color,
++			      0, 0, width, height);
++	XRenderComposite (GDK_GC_XDISPLAY (gc),
++			  PictOpOver,
++			  fg_picture, stipple_picture, x11_gc->fg_picture,
++			  0, 0, 0, 0, 0, 0, width, height);
++
++	XRenderFreePicture (GDK_GC_XDISPLAY (x11_gc), stipple_picture);
++	XRenderFreePicture (GDK_GC_XDISPLAY (x11_gc), fg_picture);
++      }
++      break;
++    case GDK_TILED:
++      g_assert_not_reached ();	/* handled above */
++      break;
++    }
++
++  return x11_gc->fg_picture;
++}
++
++/**
++ * _gdk_gc_x11_get_fg_xft_color:
++ * @gc: a #GdkGC
++ * @xftcolor: location to store the color
++ * 
++ * Gets the foreground color of the GC as a XftColor.
++ **/
++void
++_gdk_gc_x11_get_fg_xft_color (GdkGC    *gc,
++			      XftColor *xftcolor)
++{
++  GdkGCX11 *x11_gc;
++  GdkColormap *cmap;
++  GdkColor color;
++  
++  g_return_if_fail (GDK_IS_GC_X11 (gc));
++
++  x11_gc = GDK_GC_X11 (gc);
++
++  cmap = gdk_gc_get_colormap (gc);
++
++  xftcolor->pixel = _gdk_gc_get_fg_pixel (gc);
++
++  if (cmap)
++    {
++      gdk_colormap_query_color (cmap, xftcolor->pixel, &color);
++      xftcolor->color.alpha = 0xffff;
++      xftcolor->color.red = color.red;
++      xftcolor->color.green = color.green;
++      xftcolor->color.blue = color.blue;
++    }
++  else if (x11_gc->depth == 1)
++    {
++      /* Drawing with Xft on a bitmap is a bit bizzare; it
++       * takes alpha >= 0x8000 to mean 'set to 1' and
++       * alpha < 0x8000 to mean 'set to 0'.
++       */
++      if (xftcolor->pixel)
++        {
++	  xftcolor->color.red = 0xffff;
++	  xftcolor->color.green = 0xffff;
++	  xftcolor->color.blue = 0xffff;
++	  xftcolor->color.alpha = 0xffff;
++	}
++      else
++        {
++	  xftcolor->color.red = 0;
++	  xftcolor->color.green = 0;
++	  xftcolor->color.blue = 0;
++	  xftcolor->color.alpha = 0;
++	}
++    }
++  else
++    {
++      g_warning ("Using Xft rendering requires the GC argument to have a\n"
++		 "specified colormap. If the GC was created for a drawable\n"
++		 "with a colormap, the colormap will be set on the GC\n"
++		 "automatically. Otherwise, a colormap must be set on it with"
++		 "gdk_gc_set_colormap");
++    }
++}
++
++void
++_gdk_windowing_gc_get_foreground (GdkGC    *gc,
++				  GdkColor *color)
++{
++  GdkColormap *cmap;
++  
++  g_return_if_fail (GDK_IS_GC_X11 (gc));
++
++  color->pixel = _gdk_gc_get_fg_pixel (gc);
++
++  cmap = gdk_gc_get_colormap (gc);
++
++  if (cmap)
++    gdk_colormap_query_color (cmap, _gdk_gc_get_fg_pixel (gc), color);
++  else
++    g_warning ("No colormap in _gdk_windowing_gc_get_foreground");
++}
+ #define __GDK_GC_X11_C__
+ #include "gdkaliasdef.c"
+Index: gtk+-2.10.6/gdk/x11/gdkprivate-x11.h
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkprivate-x11.h	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkprivate-x11.h	2006-10-30 12:59:30.000000000 +0000
+@@ -63,6 +63,9 @@
+   guint have_clip_region : 1;
+   guint have_clip_mask : 1;
+   guint depth : 8;
++    
++  Picture fg_picture;
++  XRenderColor fg_picture_color; 
+ };
+ 
+ struct _GdkGCX11Class
+@@ -102,6 +105,11 @@
+ GType _gdk_gc_x11_get_type (void);
+ 
+ gboolean _gdk_x11_have_render           (GdkDisplay *display);
++gboolean _gdk_x11_have_render_with_trapezoids (GdkDisplay *display);
++
++Picture  _gdk_x11_gc_get_fg_picture   (GdkGC      *gc);
++void     _gdk_gc_x11_get_fg_xft_color (GdkGC      *gc,
++				       XftColor   *xftcolor);
+ 
+ GdkGC *_gdk_x11_gc_new                  (GdkDrawable     *drawable,
+ 					 GdkGCValues     *values,
+Index: gtk+-2.10.6/gdk/x11/gdkwindow-x11.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkwindow-x11.c	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkwindow-x11.c	2006-10-30 12:59:30.000000000 +0000
+@@ -1114,7 +1114,8 @@
+ {
+   GdkWindowObject *private = (GdkWindowObject *)window;
+   GdkToplevelX11 *toplevel;
+-  
++  GdkDrawableImplX11 *draw_impl;
++	
+   g_return_if_fail (GDK_IS_WINDOW (window));
+ 
+   _gdk_selection_window_destroyed (window);
+@@ -1126,6 +1127,11 @@
+   if (toplevel)
+     gdk_toplevel_x11_free_contents (GDK_WINDOW_DISPLAY (window), toplevel);
+ 
++  draw_impl = GDK_DRAWABLE_IMPL_X11 (private->impl);
++    
++  if (draw_impl->xft_draw)
++    XftDrawDestroy (draw_impl->xft_draw);
++  
+   _gdk_x11_drawable_finish (private->impl);
+ 
+   if (!recursing && !foreign_destroy)
+Index: gtk+-2.10.6/gdk/x11/Makefile.am
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/Makefile.am	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/Makefile.am	2006-10-30 12:59:30.000000000 +0000
+@@ -37,6 +37,7 @@
+ 	gdkinput.c	   	\
+ 	gdkkeys-x11.c		\
+ 	gdkmain-x11.c	   	\
++	gdkpango-x11.c		\
+ 	gdkpixmap-x11.c	   	\
+ 	gdkpixmap-x11.h		\
+ 	gdkproperty-x11.c  	\
+Index: gtk+-2.10.6/gtk/gtkcalendar.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkcalendar.c	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gtk/gtkcalendar.c	2006-10-30 12:59:30.000000000 +0000
+@@ -1821,7 +1821,7 @@
+     }
+ }
+ 
+-
++
+ /****************************************
+  *              Repainting              *
+  ****************************************/
+@@ -1831,7 +1831,7 @@
+ {
+   GtkWidget *widget = GTK_WIDGET (calendar);
+   GtkCalendarPrivate *priv = GTK_CALENDAR_GET_PRIVATE (calendar);
+-  cairo_t *cr;
++  GdkGC *gc;
+   char buffer[255];
+   int x, y;
+   gint header_width;
+@@ -1849,7 +1849,7 @@
+   else
+     year_left = !priv->year_before;
+ 
+-  cr = gdk_cairo_create (priv->header_win);
++  gc = calendar->gc;
+   
+   header_width = widget->allocation.width - 2 * widget->style->xthickness;
+   
+@@ -1902,9 +1902,9 @@
+ 			  - (max_year_width - logical_rect.width)/2);
+   
+ 
+-  gdk_cairo_set_source_color (cr, HEADER_FG_COLOR (GTK_WIDGET (calendar)));
+-  cairo_move_to (cr, x, y);
+-  pango_cairo_show_layout (cr, layout);
++  gdk_gc_set_foreground (gc, HEADER_FG_COLOR (GTK_WIDGET (calendar)));
++  gdk_draw_layout (priv->header_win, gc, x, y, layout);
++  
+   
+   /* Draw month */
+   g_snprintf (buffer, sizeof (buffer), "%s", default_monthname[calendar->month]);
+@@ -1924,19 +1924,19 @@
+     else
+     x = 3 + priv->arrow_width + (max_month_width - logical_rect.width)/2;
+ 
+-  cairo_move_to (cr, x, y);
+-  pango_cairo_show_layout (cr, layout);
+-
++  gdk_draw_layout (priv->header_win, gc, x, y, layout);
++  
++  gdk_gc_set_foreground (gc, BACKGROUND_COLOR (GTK_WIDGET (calendar)));
++  
+   g_object_unref (layout);
+-  cairo_destroy (cr);
+ }
+ 
+ static void
+ calendar_paint_day_names (GtkCalendar *calendar)
+ {
+   GtkWidget *widget = GTK_WIDGET (calendar);
++  GdkGC *gc;
+   GtkCalendarPrivate *priv = GTK_CALENDAR_GET_PRIVATE (calendar);
+-  cairo_t *cr;
+   char buffer[255];
+   int day,i;
+   int day_width, cal_width;
+@@ -1946,8 +1946,7 @@
+   gint focus_padding;
+   gint focus_width;
+   
+-  cr = gdk_cairo_create (priv->day_name_win);
+-  
++  gc = calendar->gc;
+   gtk_widget_style_get (GTK_WIDGET (widget),
+ 			"focus-line-width", &focus_width,
+ 			"focus-padding", &focus_padding,
+@@ -1961,22 +1960,19 @@
+    * Draw rectangles as inverted background for the labels.
+    */
+ 
+-  gdk_cairo_set_source_color (cr, SELECTED_BG_COLOR (widget));
+-  cairo_rectangle (cr,
+-		   CALENDAR_MARGIN, CALENDAR_MARGIN,
+-		   cal_width-CALENDAR_MARGIN * 2,
+-		   priv->day_name_h - CALENDAR_MARGIN);
+-  cairo_fill (cr);
+-  
++  gdk_gc_set_foreground (gc, SELECTED_BG_COLOR (widget));
++  gdk_draw_rectangle (priv->day_name_win, gc, TRUE,
++		      CALENDAR_MARGIN, CALENDAR_MARGIN,
++		      cal_width-CALENDAR_MARGIN * 2,
++		      priv->day_name_h - CALENDAR_MARGIN);
++    
+   if (calendar->display_flags & GTK_CALENDAR_SHOW_WEEK_NUMBERS)
+-    {
+-      cairo_rectangle (cr, 
+-		       CALENDAR_MARGIN,
+-		       priv->day_name_h - CALENDAR_YSEP,
+-		       priv->week_width - CALENDAR_YSEP - CALENDAR_MARGIN,
+-		       CALENDAR_YSEP);
+-      cairo_fill (cr);
+-    }
++    gdk_draw_rectangle (priv->day_name_win, gc, TRUE,
++			CALENDAR_MARGIN,
++			priv->day_name_h - CALENDAR_YSEP,
++			priv->week_width - CALENDAR_YSEP - CALENDAR_MARGIN,
++			CALENDAR_YSEP);
++  
+   
+   /*
+    * Write the labels
+@@ -1984,7 +1980,7 @@
+ 
+   layout = gtk_widget_create_pango_layout (widget, NULL);
+ 
+-  gdk_cairo_set_source_color (cr, SELECTED_FG_COLOR (widget));
++  gdk_gc_set_foreground (gc, SELECTED_FG_COLOR (widget));
+   for (i = 0; i < 7; i++)
+     {
+       if (gtk_widget_get_direction (GTK_WIDGET (calendar)) == GTK_TEXT_DIR_RTL)
+@@ -1997,19 +1993,18 @@
+       pango_layout_set_text (layout, buffer, -1);
+       pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+ 
+-      cairo_move_to (cr, 
+-		     (CALENDAR_MARGIN +
+-		      + (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR ?
+-			 (priv->week_width + (priv->week_width ? CALENDAR_XSEP : 0))
+-			 : 0)
+-		      + day_wid_sep * i
+-		      + (day_width - logical_rect.width)/2),
+-		     CALENDAR_MARGIN + focus_width + focus_padding + logical_rect.y);
+-      pango_cairo_show_layout (cr, layout);
++      gdk_draw_layout (priv->day_name_win, gc, 
++		       (CALENDAR_MARGIN +
++			+ (gtk_widget_get_direction (widget) == GTK_TEXT_DIR_LTR ?
++			   (priv->week_width + (priv->week_width ? CALENDAR_XSEP : 0))
++			   : 0)
++			+ day_wid_sep * i
++			+ (day_width - logical_rect.width)/2),
++		       CALENDAR_MARGIN + focus_width + focus_padding + logical_rect.y,
++		       layout);
+     }
+   
+   g_object_unref (layout);
+-  cairo_destroy (cr);
+ }
+ 
+ static void
+@@ -2017,7 +2012,7 @@
+ {
+   GtkWidget *widget = GTK_WIDGET (calendar);
+   GtkCalendarPrivate *priv = GTK_CALENDAR_GET_PRIVATE (calendar);
+-  cairo_t *cr;
++  GdkGC *gc;
+   gint row, week = 0, year;
+   gint x_loc;
+   char buffer[32];
+@@ -2027,7 +2022,7 @@
+   gint focus_padding;
+   gint focus_width;
+   
+-  cr = gdk_cairo_create (priv->week_win);
++  gc = calendar->gc;
+   
+   gtk_widget_style_get (GTK_WIDGET (widget),
+ 			"focus-line-width", &focus_width,
+@@ -2038,20 +2033,20 @@
+    * Draw a rectangle as inverted background for the labels.
+    */
+ 
+-  gdk_cairo_set_source_color (cr, SELECTED_BG_COLOR (widget));
++  gdk_gc_set_foreground (gc, SELECTED_BG_COLOR (widget));
+   if (priv->day_name_win)
+-    cairo_rectangle (cr, 
+-		     CALENDAR_MARGIN,
+-		     0,
+-		     priv->week_width - CALENDAR_MARGIN,
+-		     priv->main_h - CALENDAR_MARGIN);
++    gdk_draw_rectangle (priv->week_win, gc, TRUE,
++			CALENDAR_MARGIN,
++			0,
++			priv->week_width - CALENDAR_MARGIN,
++			priv->main_h - CALENDAR_MARGIN);
+   else
+-    cairo_rectangle (cr,
+-		     CALENDAR_MARGIN,
+-		     CALENDAR_MARGIN,
+-		     priv->week_width - CALENDAR_MARGIN,
+-		     priv->main_h - 2 * CALENDAR_MARGIN);
+-  cairo_fill (cr);
++    gdk_draw_rectangle (priv->week_win, gc, TRUE,
++			CALENDAR_MARGIN,
++			CALENDAR_MARGIN,
++			priv->week_width - CALENDAR_MARGIN,
++			priv->main_h - 2 * CALENDAR_MARGIN);
++  
+   
+   /*
+    * Write the labels
+@@ -2059,7 +2054,7 @@
+   
+   layout = gtk_widget_create_pango_layout (widget, NULL);
+   
+-  gdk_cairo_set_source_color (cr, SELECTED_FG_COLOR (widget));
++  gdk_gc_set_foreground (gc, SELECTED_FG_COLOR (widget));
+   day_height = calendar_row_height (calendar);
+   for (row = 0; row < 6; row++)
+     {
+@@ -2095,12 +2090,10 @@
+ 	       - logical_rect.width
+ 	       - CALENDAR_XSEP - focus_padding - focus_width);
+ 
+-      cairo_move_to (cr, x_loc, y_loc);
+-      pango_cairo_show_layout (cr, layout);
++      gdk_draw_layout (priv->week_win, gc, x_loc, y_loc, layout);
+     }
+   
+   g_object_unref (layout);
+-  cairo_destroy (cr);
+ }
+ 
+ static void
+@@ -2149,7 +2142,7 @@
+ {
+   GtkWidget *widget = GTK_WIDGET (calendar);
+   GtkCalendarPrivate *priv = GTK_CALENDAR_GET_PRIVATE (calendar);
+-  cairo_t *cr;
++  GdkGC *gc;
+   GdkColor *text_color;
+   gchar buffer[32];
+   gint day;
+@@ -2162,7 +2155,7 @@
+   g_return_if_fail (row < 6);
+   g_return_if_fail (col < 7);
+ 
+-  cr = gdk_cairo_create (priv->main_win);
++  gc = calendar->gc;
+ 
+   day = calendar->day[row][col];
+ 
+@@ -2170,11 +2163,11 @@
+   
+   if (calendar->day_month[row][col] == MONTH_PREV)
+     {
+-      text_color = PREV_MONTH_COLOR (widget);
++      gdk_gc_set_foreground (gc, PREV_MONTH_COLOR (GTK_WIDGET (calendar)));
+     } 
+   else if (calendar->day_month[row][col] == MONTH_NEXT)
+     {
+-      text_color =  NEXT_MONTH_COLOR (widget);
++      gdk_gc_set_foreground (gc, NEXT_MONTH_COLOR (GTK_WIDGET (calendar)));
+     } 
+   else 
+     {
+@@ -2188,16 +2181,16 @@
+ #endif     
+       if (calendar->selected_day == day)
+ 	{
+-	  gdk_cairo_set_source_color (cr, SELECTED_BG_COLOR (widget));
+-	  gdk_cairo_rectangle (cr, &day_rect);
+-	  cairo_fill (cr);
++	  gdk_gc_set_foreground (gc, SELECTED_BG_COLOR (GTK_WIDGET (calendar)));
++	  gdk_draw_rectangle (priv->main_win, gc, TRUE, day_rect.x, day_rect.y,
++			      day_rect.width, day_rect.height);
+ 	}
+       if (calendar->selected_day == day)
+-	text_color = SELECTED_FG_COLOR (widget);
++	gdk_gc_set_foreground (gc, SELECTED_FG_COLOR (GTK_WIDGET (calendar)));
+       else if (calendar->marked_date[day-1])
+-	text_color = MARKED_COLOR (widget);
++	gdk_gc_set_foreground (gc, MARKED_COLOR	 (GTK_WIDGET (calendar)));
+       else
+-	text_color = NORMAL_DAY_COLOR (widget);
++	gdk_gc_set_foreground (gc, NORMAL_DAY_COLOR (GTK_WIDGET (calendar)));
+     }
+ 
+   /* Translators: this defines whether the day numbers should use
+@@ -2219,16 +2212,13 @@
+   x_loc -= logical_rect.width;
+   y_loc = day_rect.y + (day_rect.height - logical_rect.height) / 2;
+   
+-  gdk_cairo_set_source_color (cr, text_color);
+-  cairo_move_to (cr, x_loc, y_loc);
+-  pango_cairo_show_layout (cr, layout);
++  gdk_draw_layout (priv->main_win, gc,
++		   x_loc, y_loc, layout);
+     
+   if (calendar->marked_date[day-1]
+       && calendar->day_month[row][col] == MONTH_CURRENT)
+-    {
+-      cairo_move_to (cr, x_loc - 1, y_loc);
+-      pango_cairo_show_layout (cr, layout);
+-    }
++    gdk_draw_layout (priv->main_win, gc,
++		     x_loc-1, y_loc, layout);
+ 
+   if (GTK_WIDGET_HAS_FOCUS (calendar) 
+       && calendar->focus_row == row && calendar->focus_col == col)
+@@ -2253,7 +2243,6 @@
+     }
+ 
+   g_object_unref (layout);
+-  cairo_destroy (cr);
+ }
+ 
+ static void
+Index: gtk+-2.10.6/gtk/gtkentry.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkentry.c	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gtk/gtkentry.c	2006-10-30 12:59:30.000000000 +0000
+@@ -3333,7 +3333,6 @@
+   if (GTK_WIDGET_DRAWABLE (entry))
+     {
+       PangoLayout *layout = gtk_entry_ensure_layout (entry, TRUE);
+-      cairo_t *cr;
+       gint x, y;
+       gint start_pos, end_pos;
+       
+@@ -3341,56 +3340,60 @@
+       
+       get_layout_position (entry, &x, &y);
+ 
+-      cr = gdk_cairo_create (entry->text_area);
+-
+-      cairo_move_to (cr, x, y);
+-      gdk_cairo_set_source_color (cr, &widget->style->text [widget->state]);
+-      pango_cairo_show_layout (cr, layout);
+-
++      gdk_draw_layout (entry->text_area, widget->style->text_gc [widget->state],       
++                       x, y,
++		       layout);
++        
+       if (gtk_editable_get_selection_bounds (GTK_EDITABLE (entry), &start_pos, &end_pos))
+ 	{
+ 	  gint *ranges;
+ 	  gint n_ranges, i;
+           PangoRectangle logical_rect;
+-	  GdkColor *selection_color, *text_color;
++	  GdkGC *selection_gc, *text_gc;
+           GtkBorder inner_border;
+-
++          GdkRegion *clip_region;
++            
+ 	  pango_layout_get_pixel_extents (layout, NULL, &logical_rect);
+ 	  gtk_entry_get_pixel_ranges (entry, &ranges, &n_ranges);
+ 
+ 	  if (GTK_WIDGET_HAS_FOCUS (entry))
+ 	    {
+-	      selection_color = &widget->style->base [GTK_STATE_SELECTED];
+-	      text_color = &widget->style->text [GTK_STATE_SELECTED];
++	      selection_gc = widget->style->base_gc [GTK_STATE_SELECTED];
++	      text_gc = widget->style->text_gc [GTK_STATE_SELECTED];
+ 	    }
+ 	  else
+ 	    {
+-	      selection_color = &widget->style->base [GTK_STATE_ACTIVE];
+-	      text_color = &widget->style->text [GTK_STATE_ACTIVE];
++	      selection_gc = widget->style->base_gc [GTK_STATE_ACTIVE];
++	      text_gc = widget->style->text_gc [GTK_STATE_ACTIVE];
+ 	    }
+-
++          
++          clip_region = gdk_region_new ();
+           _gtk_entry_effective_inner_border (entry, &inner_border);
+ 
+ 	  for (i = 0; i < n_ranges; ++i)
+-	    cairo_rectangle (cr,
+-			     inner_border.left - entry->scroll_offset + ranges[2 * i],
+-			     y,
+-			     ranges[2 * i + 1],
+-			     logical_rect.height);
++	    {
++	      GdkRectangle rect;
+ 
+-	  cairo_clip (cr);
+-	  
+-	  gdk_cairo_set_source_color (cr, selection_color);
+-	  cairo_paint (cr);
++	      rect.x = inner_border.left - entry->scroll_offset + ranges[2 * i];
++	      rect.y = y;
++	      rect.width = ranges[2 * i + 1];
++	      rect.height = logical_rect.height;
++		
++	      gdk_draw_rectangle (entry->text_area, selection_gc, TRUE,
++				  rect.x, rect.y, rect.width, rect.height);
+ 
+-	  cairo_move_to (cr, x, y);
+-	  gdk_cairo_set_source_color (cr, text_color);
+-	  pango_cairo_show_layout (cr, layout);
++	      gdk_region_union_with_rect (clip_region, &rect);
++	    }
+ 	  
++	  gdk_gc_set_clip_region (text_gc, clip_region);
++	  gdk_draw_layout (entry->text_area, text_gc, 
++			   x, y,
++			   layout);
++	  gdk_gc_set_clip_region (text_gc, NULL);
++	  
++	  gdk_region_destroy (clip_region);
+ 	  g_free (ranges);
+ 	}
+-
+-      cairo_destroy (cr);
+     }
+ }
+ 
+Index: gtk+-2.10.6/gtk/gtkwidget.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkwidget.c	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gtk/gtkwidget.c	2006-10-30 12:59:30.000000000 +0000
+@@ -5445,7 +5445,8 @@
+       GdkScreen *screen;
+ 
+       update_pango_context (widget, context);
+-
++/* TODO: Figure out the proper way to handle this in a pangoxft setting
++        
+       screen = gtk_widget_get_screen_unchecked (widget);
+       if (screen)
+ 	{
+@@ -5453,7 +5454,7 @@
+ 					      gdk_screen_get_resolution (screen));
+ 	  pango_cairo_context_set_font_options (context,
+ 						gdk_screen_get_font_options (screen));
+-	}
++	}*/
+     }
+ }
+ 
+Index: gtk+-2.10.6/gdk/x11/gdkpango-x11.c
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkpango-x11.c	2006-10-30 12:59:30.000000000 +0000
+@@ -0,0 +1,174 @@
++/* GDK - The GIMP Drawing Kit
++ * Copyright (C) 2000 Red Hat, Inc. 
++ *
++ * This library is free software; you can redistribute it and/or
++ * modify it under the terms of the GNU Lesser General Public
++ * License as published by the Free Software Foundation; either
++ * version 2 of the License, or (at your option) any later version.
++ *
++ * This library is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	 See the GNU
++ * Lesser General Public License for more details.
++ *
++ * You should have received a copy of the GNU Lesser General Public
++ * License along with this library; if not, write to the
++ * Free Software Foundation, Inc., 59 Temple Place - Suite 330,
++ * Boston, MA 02111-1307, USA.
++ */
++
++#include <config.h>
++#include <stdlib.h>
++
++#include "gdkx.h"
++#include "gdkdisplay-x11.h"
++#include "gdkpango.h"
++#include <pango/pangoxft.h>
++#include <pango/pangoxft-render.h>
++#include "gdkalias.h"
++
++#include <math.h>
++
++typedef struct _GdkX11Renderer      GdkX11Renderer;
++typedef struct _GdkX11RendererClass GdkX11RendererClass;
++
++#define GDK_TYPE_X11_RENDERER            (_gdk_x11_renderer_get_type())
++#define GDK_X11_RENDERER(object)         (G_TYPE_CHECK_INSTANCE_CAST ((object), GDK_TYPE_X11_RENDERER, GdkX11Renderer))
++#define GDK_IS_X11_RENDERER(object)      (G_TYPE_CHECK_INSTANCE_TYPE ((object), GDK_TYPE_X11_RENDERER))
++#define GDK_X11_RENDERER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), GDK_TYPE_X11_RENDERER, GdkX11RendererClass))
++#define GDK_IS_X11_RENDERER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), GDK_TYPE_X11_RENDERER))
++#define GDK_X11_RENDERER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), GDK_TYPE_X11_RENDERER, GdkX11RendererClass))
++
++#define MAX_RENDER_PART  PANGO_RENDER_PART_STRIKETHROUGH
++
++struct _GdkX11Renderer
++{
++  PangoXftRenderer parent_instance;
++
++  XRenderPictFormat *mask_format;
++  
++  GdkDrawable *drawable;
++  GdkGC *gc;
++};
++
++struct _GdkX11RendererClass
++{
++  PangoXftRendererClass parent_class;
++};
++
++G_DEFINE_TYPE (GdkX11Renderer, _gdk_x11_renderer, PANGO_TYPE_XFT_RENDERER)
++
++static void
++gdk_x11_renderer_finalize (GObject *object)
++{
++  G_OBJECT_CLASS (_gdk_x11_renderer_parent_class)->finalize (object);
++}
++     
++static void
++gdk_x11_renderer_composite_trapezoids (PangoXftRenderer *xftrenderer,
++				       PangoRenderPart   part,
++				       XTrapezoid       *trapezoids,
++				       int               n_trapezoids)
++{
++  /* Because we only use this renderer for "draw_glyphs()" calls, we
++   * won't hit this code path much. However, it is hit for drawing
++   * the "unknown glyph" hex squares. We can safely ignore the part,
++   */
++  GdkX11Renderer *x11_renderer = GDK_X11_RENDERER (xftrenderer);
++
++  _gdk_x11_drawable_draw_xtrapezoids (x11_renderer->drawable,
++				      x11_renderer->gc,
++				      trapezoids, n_trapezoids);
++
++}
++
++static void
++gdk_x11_renderer_composite_glyphs (PangoXftRenderer *xftrenderer,
++				   XftFont          *xft_font,
++				   XftGlyphSpec     *glyphs,
++				   gint              n_glyphs)
++{
++  GdkX11Renderer *x11_renderer = GDK_X11_RENDERER (xftrenderer);
++
++  _gdk_x11_drawable_draw_xft_glyphs (x11_renderer->drawable,
++				     x11_renderer->gc,
++				     xft_font, glyphs, n_glyphs);
++}
++
++static void
++_gdk_x11_renderer_init (GdkX11Renderer *renderer)
++{
++}
++
++static void
++_gdk_x11_renderer_class_init (GdkX11RendererClass *klass)
++{
++  PangoXftRendererClass *xftrenderer_class = PANGO_XFT_RENDERER_CLASS (klass);
++  GObjectClass *object_class = G_OBJECT_CLASS (klass);
++  
++  xftrenderer_class->composite_glyphs = gdk_x11_renderer_composite_glyphs;
++  xftrenderer_class->composite_trapezoids = gdk_x11_renderer_composite_trapezoids;
++
++  object_class->finalize = gdk_x11_renderer_finalize;
++}
++
++PangoRenderer *
++_gdk_x11_renderer_get (GdkDrawable *drawable,
++		       GdkGC       *gc)
++{
++  GdkScreen *screen = GDK_DRAWABLE_IMPL_X11 (drawable)->screen;
++  GdkScreenX11 *screen_x11 = GDK_SCREEN_X11 (screen);
++  GdkX11Renderer *x11_renderer;
++
++  if (!screen_x11->renderer)
++    {
++      screen_x11->renderer = g_object_new (GDK_TYPE_X11_RENDERER,
++					   "display", GDK_SCREEN_XDISPLAY (screen),
++					   "screen",  GDK_SCREEN_XNUMBER (screen),
++					   NULL);
++    }
++
++  x11_renderer = GDK_X11_RENDERER (screen_x11->renderer);
++
++  x11_renderer->drawable = drawable;
++  x11_renderer->gc = gc;
++
++  return screen_x11->renderer;
++}
++
++/**
++ * gdk_pango_context_get_for_screen:
++ * @screen: the #GdkScreen for which the context is to be created.
++ * 
++ * Creates a #PangoContext for @screen.
++ *
++ * The context must be freed when you're finished with it.
++ * 
++ * When using GTK+, normally you should use gtk_widget_get_pango_context()
++ * instead of this function, to get the appropriate context for
++ * the widget you intend to render text onto.
++ * 
++ * Return value: a new #PangoContext for @screen
++ *
++ * Since: 2.2
++ **/
++PangoContext *
++gdk_pango_context_get_for_screen (GdkScreen *screen)
++{
++  PangoContext *context;
++  
++  g_return_val_if_fail (GDK_IS_SCREEN (screen), NULL);
++
++  if (screen->closed)
++    return NULL;
++  
++  context = pango_xft_get_context (GDK_SCREEN_XDISPLAY (screen),
++				   GDK_SCREEN_X11 (screen)->screen_num);
++  
++  g_object_set_data (G_OBJECT (context), "gdk-pango-screen", screen);
++  
++  return context;
++}
++
++#define __GDK_PANGO_X11_C__
++#include "gdkaliasdef.c"
+Index: gtk+-2.10.6/gdk/x11/gdkpixmap-x11.c
+===================================================================
+--- gtk+-2.10.6.orig/gdk/x11/gdkpixmap-x11.c	2006-10-30 12:58:30.000000000 +0000
++++ gtk+-2.10.6/gdk/x11/gdkpixmap-x11.c	2006-10-30 12:59:30.000000000 +0000
+@@ -119,6 +119,9 @@
+     {
+       GdkDrawableImplX11 *draw_impl = GDK_DRAWABLE_IMPL_X11 (impl);
+ 
++      if (draw_impl->xft_draw)
++       XftDrawDestroy (draw_impl->xft_draw);
++
+       _gdk_x11_drawable_finish (GDK_DRAWABLE (draw_impl));
+     }
+ 
+--- gtk+-2.10.6.orig/gtk/gtkcalendar.c.orig	2006-11-14 14:39:34.000000000 -0800
++++ gtk+-2.10.6/gtk/gtkcalendar.c	2006-11-14 14:37:34.000000000 -0800
+@@ -1495,6 +1495,10 @@ gtk_calendar_realize (GtkWidget *widget)
+ 			     BACKGROUND_COLOR ( GTK_WIDGET ( calendar)));
+   gdk_window_show (priv->main_win);
+   gdk_window_set_user_data (priv->main_win, widget);
++
++  /* Set widgets gc */
++  calendar->gc = gdk_gc_new (widget->window);
++
+   gdk_window_set_background (widget->window, BACKGROUND_COLOR (widget));
+   gdk_window_show (widget->window);
+   gdk_window_set_user_data (widget->window, widget);

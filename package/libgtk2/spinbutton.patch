@@ -1,0 +1,130 @@
+Index: gtk+-2.10.6/gtk/gtkspinbutton.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkspinbutton.c
++++ gtk+-2.10.6/gtk/gtkspinbutton.c
+@@ -682,7 +682,7 @@ gtk_spin_button_size_allocate (GtkWidget
+ 
+   spin = GTK_SPIN_BUTTON (widget);
+   arrow_size = spin_button_get_arrow_size (spin);
+-  panel_width = arrow_size + 2 * widget->style->xthickness;
++  panel_width = (2 * arrow_size) + 4 * widget->style->xthickness;
+   
+   widget->allocation = *allocation;
+   
+@@ -815,19 +815,16 @@ gtk_spin_button_draw_arrow (GtkSpinButto
+     {
+       width = spin_button_get_arrow_size (spin_button) + 2 * widget->style->xthickness;
+ 
++      y = widget->style->ythickness;
++      height = widget->requisition.height - (2 * y);
++
+       if (arrow_type == GTK_ARROW_UP)
+ 	{
+ 	  x = 0;
+-	  y = 0;
+-
+-	  height = widget->requisition.height / 2;
+ 	}
+       else
+ 	{
+-	  x = 0;
+-	  y = widget->requisition.height / 2;
+-
+-	  height = (widget->requisition.height + 1) / 2;
++	  x = width;
+ 	}
+ 
+       if (spin_button_at_limit (spin_button, arrow_type))
+@@ -857,32 +854,17 @@ gtk_spin_button_draw_arrow (GtkSpinButto
+ 	      shadow_type = GTK_SHADOW_OUT;
+ 	    }
+ 	}
+-      
++
+       gtk_paint_box (widget->style, spin_button->panel,
+ 		     state_type, shadow_type,
+ 		     NULL, widget,
+-		     (arrow_type == GTK_ARROW_UP)? "spinbutton_up" : "spinbutton_down",
++		     NULL,
+ 		     x, y, width, height);
+ 
+       height = widget->requisition.height;
+ 
+-      if (arrow_type == GTK_ARROW_DOWN)
+-	{
+-	  y = height / 2;
+-	  height = height - y - 2;
+-	}
+-      else
+-	{
+-	  y = 2;
+-	  height = height / 2 - 2;
+-	}
+-
+       width -= 3;
+-
+-      if (widget && gtk_widget_get_direction (widget) == GTK_TEXT_DIR_RTL)
+-	x = 2;
+-      else
+-	x = 1;
++      height -= 3;
+ 
+       w = width / 2;
+       w -= w % 2 - 1; /* force odd */
+@@ -1062,7 +1044,7 @@ gtk_spin_button_button_press (GtkWidget 
+ 	  if (GTK_ENTRY (widget)->editable)
+ 	    gtk_spin_button_update (spin);
+ 	  
+-	  if (event->y <= widget->requisition.height / 2)
++	  if (event->x <= (spin_button_get_arrow_size (spin) + widget->style->xthickness))
+ 	    {
+ 	      if (event->button == 1)
+ 		start_spinning (spin, GTK_ARROW_UP, spin->adjustment->step_increment);
+@@ -1097,44 +1079,11 @@ gtk_spin_button_button_release (GtkWidge
+ 
+   arrow_size = spin_button_get_arrow_size (spin);
+ 
+-  if (event->button == spin->button)
+-    {
+-      int click_child = spin->click_child;
++  gtk_spin_button_stop_spinning (spin);
+ 
+-      gtk_spin_button_stop_spinning (spin);
+-
+-      if (event->button == 3)
+-	{
+-	  if (event->y >= 0 && event->x >= 0 && 
+-	      event->y <= widget->requisition.height &&
+-	      event->x <= arrow_size + 2 * widget->style->xthickness)
+-	    {
+-	      if (click_child == GTK_ARROW_UP &&
+-		  event->y <= widget->requisition.height / 2)
+-		{
+-		  gdouble diff;
+-
+-		  diff = spin->adjustment->upper - spin->adjustment->value;
+-		  if (diff > EPSILON)
+-		    gtk_spin_button_real_spin (spin, diff);
+-		}
+-	      else if (click_child == GTK_ARROW_DOWN &&
+-		       event->y > widget->requisition.height / 2)
+-		{
+-		  gdouble diff;
+-
+-		  diff = spin->adjustment->value - spin->adjustment->lower;
+-		  if (diff > EPSILON)
+-		    gtk_spin_button_real_spin (spin, -diff);
+-		}
+-	    }
+-	}		  
+-      spin_button_redraw (spin);
++  spin_button_redraw (spin);
+ 
+-      return TRUE;
+-    }
+-  else
+-    return GTK_WIDGET_CLASS (gtk_spin_button_parent_class)->button_release_event (widget, event);
++  return TRUE;
+ }
+ 
+ static gint

@@ -1,0 +1,149 @@
+Index: gtk+-2.10.6/gtk/gtkarrow.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkarrow.c	2006-05-14 05:25:28.000000000 +0100
++++ gtk+-2.10.6/gtk/gtkarrow.c	2006-11-14 12:03:45.000000000 +0000
+@@ -31,7 +31,7 @@
+ #include "gtkintl.h"
+ #include "gtkalias.h"
+ 
+-#define MIN_ARROW_SIZE  15
++#define MIN_ARROW_SIZE  7
+ 
+ enum {
+   PROP_0,
+@@ -53,6 +53,8 @@
+ 				    guint            prop_id,
+ 				    GValue          *value,
+ 				    GParamSpec      *pspec);
++static void gtk_arrow_size_request (GtkWidget *arrow, 
++				    GtkRequisition *requisition);
+ 
+ 
+ G_DEFINE_TYPE (GtkArrow, gtk_arrow, GTK_TYPE_MISC)
+@@ -88,6 +90,7 @@
+                                                       GTK_PARAM_READWRITE));
+   
+   widget_class->expose_event = gtk_arrow_expose;
++  widget_class->size_request = gtk_arrow_size_request;
+ }
+ 
+ static void
+@@ -143,13 +146,18 @@
+ }
+ 
+ static void
++gtk_arrow_size_request (GtkWidget *arrow, 
++			GtkRequisition *requisition)
++{
++  requisition->width = MIN_ARROW_SIZE + GTK_MISC (arrow)->xpad * 2;
++  requisition->height = MIN_ARROW_SIZE + GTK_MISC (arrow)->ypad * 2;
++}
++
++static void
+ gtk_arrow_init (GtkArrow *arrow)
+ {
+   GTK_WIDGET_SET_FLAGS (arrow, GTK_NO_WINDOW);
+ 
+-  GTK_WIDGET (arrow)->requisition.width = MIN_ARROW_SIZE + GTK_MISC (arrow)->xpad * 2;
+-  GTK_WIDGET (arrow)->requisition.height = MIN_ARROW_SIZE + GTK_MISC (arrow)->ypad * 2;
+-
+   arrow->arrow_type = GTK_ARROW_RIGHT;
+   arrow->shadow_type = GTK_SHADOW_OUT;
+ }
+Index: gtk+-2.10.6/gtk/gtkentry.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkentry.c	2006-11-14 12:03:45.000000000 +0000
++++ gtk+-2.10.6/gtk/gtkentry.c	2006-11-14 12:07:02.000000000 +0000
+@@ -577,6 +577,18 @@
+ 						       0.0,
+ 						       GTK_PARAM_READWRITE));
+ 
++  // Added by gtk+-handhelds.patch
++  gtk_widget_class_install_style_property (widget_class,
++                                         g_param_spec_int ("min_width",
++                                         P_("Minimum width"),
++                                         P_("Minimum width of the entry field"),
++                                         0,
++                                         G_MAXINT,
++                                         MIN_ENTRY_WIDTH,
++                                         G_PARAM_READABLE));
++
++
++
+   /**
+    * GtkEntry:truncate-multiline:
+    *
+@@ -1286,7 +1298,7 @@
+ {
+   GtkEntry *entry = GTK_ENTRY (widget);
+   PangoFontMetrics *metrics;
+-  gint xborder, yborder;
++  gint xborder, yborder, min_width;
+   GtkBorder inner_border;
+   PangoContext *context;
+   
+@@ -1302,8 +1314,10 @@
+   _gtk_entry_get_borders (entry, &xborder, &yborder);
+   _gtk_entry_effective_inner_border (entry, &inner_border);
+ 
++  gtk_widget_style_get (widget, "min_width", &min_width, NULL);
++
+   if (entry->width_chars < 0)
+-    requisition->width = MIN_ENTRY_WIDTH + xborder * 2 + inner_border.left + inner_border.right;
++    requisition->width = min_width + xborder * 2 + inner_border.left + inner_border.right;
+   else
+     {
+       gint char_width = pango_font_metrics_get_approximate_char_width (metrics);
+Index: gtk+-2.10.6/gtk/gtkrange.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkrange.c	2006-11-14 12:03:44.000000000 +0000
++++ gtk+-2.10.6/gtk/gtkrange.c	2006-11-14 12:07:40.000000000 +0000
+@@ -197,6 +197,7 @@
+ static gboolean      gtk_range_key_press                (GtkWidget     *range,
+ 							 GdkEventKey   *event);
+ 
++static GdkAtom recognize_protocols_atom, atom_atom;
+ 
+ static guint signals[LAST_SIGNAL];
+ 
+@@ -213,6 +214,9 @@
+   object_class = (GtkObjectClass*) class;
+   widget_class = (GtkWidgetClass*) class;
+ 
++  recognize_protocols_atom = gdk_atom_intern ("RECOGNIZE_PROTOCOLS", FALSE);
++  atom_atom = gdk_atom_intern ("ATOM", FALSE);
++
+   gobject_class->set_property = gtk_range_set_property;
+   gobject_class->get_property = gtk_range_get_property;
+   gobject_class->finalize = gtk_range_finalize;
+@@ -1020,6 +1024,12 @@
+ 					&attributes, attributes_mask);
+   gdk_window_set_user_data (range->event_window, range);
+ 
++  gdk_property_change (range->event_window,
++		       recognize_protocols_atom,
++		       atom_atom,
++		       32, GDK_PROP_MODE_REPLACE,
++		       NULL, 0);
++
+   widget->style = gtk_style_attach (widget->style, widget->window);
+ }
+ 
+@@ -1569,7 +1579,7 @@
+ 
+   /* ignore presses when we're already doing something else. */
+   if (range->layout->grab_location != MOUSE_OUTSIDE)
+-    return FALSE;
++    return TRUE;
+ 
+   range->layout->mouse_x = event->x;
+   range->layout->mouse_y = event->y;
+@@ -1778,7 +1788,7 @@
+       return TRUE;
+     }
+ 
+-  return FALSE;
++  return TRUE;
+ }
+ 
+ /**

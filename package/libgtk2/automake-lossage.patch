@@ -1,0 +1,24 @@
+--- gtk+-2.4.1/docs/tutorial/Makefile.am~	2003-05-06 22:54:20.000000000 +0100
++++ gtk+-2.4.1/docs/tutorial/Makefile.am	2004-05-08 12:31:41.000000000 +0100
+@@ -52,21 +52,5 @@
+ 
+ dist-hook: html
+ 	cp -Rp $(srcdir)/html $(distdir)
+-else
+-html:
+-	echo "***"
+-	echo "*** Warning: Tutorial not built"
+-	echo "***"
+-
+-pdf:
+-	echo "***"
+-	echo "*** Warning: Tutorial not built"
+-	echo "***"
+-
+-dist-hook:
+-	echo "***"
+-	echo "*** Warning: Tutorial not built"
+-	echo "*** DISTRIBUTION IS INCOMPLETE"
+-	echo "***"
+ endif
+ 

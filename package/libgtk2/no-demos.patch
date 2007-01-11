@@ -1,0 +1,10 @@
+--- gtk+-2.10.1/Makefile.am.orig	2006-08-08 12:37:30.000000000 +0100
++++ gtk+-2.10.1/Makefile.am	2006-08-08 12:37:48.000000000 +0100
+@@ -1,6 +1,6 @@
+ ## Makefile.am for GTK+
+ 
+-SRC_SUBDIRS = gdk-pixbuf gdk gtk modules demos tests perf contrib
++SRC_SUBDIRS = gdk-pixbuf gdk gtk modules tests perf contrib
+ SUBDIRS = po po-properties $(SRC_SUBDIRS) docs m4macros
+ 
+ # require automake 1.4

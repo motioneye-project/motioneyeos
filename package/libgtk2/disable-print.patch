@@ -1,0 +1,50 @@
+--- gtk+-2.10.0/configure.in~	2006-07-05 18:11:44.000000000 +0200
++++ gtk+-2.10.0/configure.in	2006-07-05 18:11:44.000000000 +0200
+@@ -1539,26 +1539,27 @@
+ # Printing system checks
+ ################################################################
+ 
+-AC_PATH_PROG(CUPS_CONFIG, cups-config, no)
+-if test "x$CUPS_CONFIG" != "xno"; then
+-  CUPS_CFLAGS=`cups-config --cflags | sed 's/-O[0-9]*//' | sed 's/-m[^\t]*//g'`
+-  CUPS_LIBS=`cups-config --libs`
+-
+-  CUPS_API_VERSION=`cups-config --api-version`
+-  CUPS_API_MAJOR=`echo -n $CUPS_API_VERSION | awk -F. '{print $1}'`
+-  CUPS_API_MINOR=`echo -n $CUPS_API_VERSION | awk -F. '{print $2}'`
+-
+-  if test $CUPS_API_MAJOR -gt 1 -o \
+-          $CUPS_API_MAJOR -eq 1 -a $CUPS_API_MINOR -ge 2; then
+-    AC_DEFINE(HAVE_CUPS_API_1_2)
+-  fi
+-
+-  AC_SUBST(CUPS_API_MAJOR)
+-  AC_SUBST(CUPS_API_MINOR)
+-  AC_SUBST(CUPS_CFLAGS)
+-  AC_SUBST(CUPS_LIBS)
+-fi
+-AM_CONDITIONAL(HAVE_CUPS, test "x$CUPS_CONFIG" != "xno")
++#AC_PATH_PROG(CUPS_CONFIG, cups-config, no)
++#if test "x$CUPS_CONFIG" != "xno"; then
++#  CUPS_CFLAGS=`cups-config --cflags | sed 's/-O[0-9]*//' | sed 's/-m[^\t]*//g'`
++#  CUPS_LIBS=`cups-config --libs`
++#
++#  CUPS_API_VERSION=`cups-config --api-version`
++#  CUPS_API_MAJOR=`echo -n $CUPS_API_VERSION | awk -F. '{print $1}'`
++#  CUPS_API_MINOR=`echo -n $CUPS_API_VERSION | awk -F. '{print $2}'`
++#
++#  if test $CUPS_API_MAJOR -gt 1 -o \
++#          $CUPS_API_MAJOR -eq 1 -a $CUPS_API_MINOR -ge 2; then
++#   AC_DEFINE(HAVE_CUPS_API_1_2)
++# fi
++#
++#  AC_SUBST(CUPS_API_MAJOR)
++#  AC_SUBST(CUPS_API_MINOR)
++#  AC_SUBST(CUPS_CFLAGS)
++#  AC_SUBST(CUPS_LIBS)
++#fi
++#AM_CONDITIONAL(HAVE_CUPS, test "x$CUPS_CONFIG" != "xno")
++AM_CONDITIONAL(HAVE_CUPS,false)
+ 
+ gtk_save_cppflags="$CPPFLAGS"
+ CPPFLAGS="$CPPFLAGS $GTK_DEP_CFLAGS"

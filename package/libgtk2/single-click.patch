@@ -1,0 +1,56 @@
+Index: gtk+-2.10.6/gtk/gtkcalendar.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkcalendar.c
++++ gtk+-2.10.6/gtk/gtkcalendar.c
+@@ -2482,9 +2482,11 @@ calendar_main_button_press (GtkCalendar	
+ 	}
+ 
+       calendar_select_and_focus_day (calendar, day);
+-    }
++
++    // This change causes the calendar to disappear after choosing a day
++/*    }
+   else if (event->type == GDK_2BUTTON_PRESS)
+-    {
++    {*/
+       priv->in_drag = 0;
+       if (day_month == MONTH_CURRENT)
+ 	g_signal_emit (calendar,
+Index: gtk+-2.10.6/gtk/gtkfilesel.c
+===================================================================
+--- gtk+-2.10.6.orig/gtk/gtkfilesel.c
++++ gtk+-2.10.6/gtk/gtkfilesel.c
+@@ -2426,6 +2426,33 @@ gtk_file_selection_file_changed (GtkTree
+       if (fs->last_selected != NULL)
+ 	g_free (fs->last_selected);
+ 
++      // Single-click directory entry	
++  	  if (new_names->len == 1)
++  	    {
++  	      GtkTreeView *tree_view;
++  	      GtkTreeModel *model;
++  	      GtkTreePath *path;
++          GtkTreeIter iter;  
++          gboolean is_file;
++
++          tree_view = gtk_tree_selection_get_tree_view (selection);
++          
++          if (gtk_tree_selection_get_selected (selection, &model, &iter))
++            {
++              path = gtk_tree_model_get_path (model, &iter);              
++              gtk_tree_model_get (model, &iter, ISFILE_COLUMN, &is_file, -1);
++
++              if (!is_file)
++                {
++                  gtk_file_selection_dir_activate (tree_view, path, 
++                          gtk_tree_view_get_column (tree_view, DIR_COLUMN),
++                          user_data);
++                }
++                
++              gtk_tree_path_free (path);
++            }
++        }
++        
+       fs->last_selected = g_strdup (g_ptr_array_index (new_names, index));
+       filename = get_real_filename (fs->last_selected, FALSE);
+ 

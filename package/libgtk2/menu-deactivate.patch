@@ -1,0 +1,51 @@
+--- gtk+-2.10.0/gtk/gtkmenushell.c.orig	2006-07-05 17:17:34.000000000 +0200
++++ gtk+-2.10.0/gtk/gtkmenushell.c	2006-07-05 17:19:01.000000000 +0200
+@@ -42,7 +42,7 @@
+ #include "gtkintl.h"
+ #include "gtkalias.h"
+ 
+-#define MENU_SHELL_TIMEOUT   500
++#define MENU_SHELL_TIMEOUT   2000
+ 
+ #define PACK_DIRECTION(m)                                 \
+    (GTK_IS_MENU_BAR (m)                                   \
+@@ -203,6 +203,8 @@
+ 
+ G_DEFINE_TYPE (GtkMenuShell, gtk_menu_shell, GTK_TYPE_CONTAINER)
+ 
++static int last_crossing_time;
++
+ static void
+ gtk_menu_shell_class_init (GtkMenuShellClass *klass)
+ {
+@@ -517,6 +519,7 @@
+       gtk_grab_add (GTK_WIDGET (menu_shell));
+       menu_shell->have_grab = TRUE;
+       menu_shell->active = TRUE;
++      last_crossing_time = 0;
+     }
+ }
+ 
+@@ -669,6 +672,13 @@
+ 	  menu_shell->activate_time = 0;
+ 	  deactivate = FALSE;
+ 	}
++
++      if (last_crossing_time != 0
++	  && ((event->time - last_crossing_time) < 500))
++	{
++	  last_crossing_time = 0;
++	  deactivate = FALSE;
++	}
+       
+       if (deactivate)
+ 	{
+@@ -716,6 +726,8 @@
+     {
+       menu_item = gtk_get_event_widget ((GdkEvent*) event);
+ 
++      last_crossing_time = event->time;
++
+       if (!menu_item ||
+ 	  (GTK_IS_MENU_ITEM (menu_item) && 
+ 	   !_gtk_menu_item_is_selectable (menu_item)))

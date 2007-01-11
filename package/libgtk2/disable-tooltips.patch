@@ -1,0 +1,11 @@
+--- gtk+-2.4.3/gtk/gtktooltips.c.old	2004-07-04 18:52:04.000000000 +0100
++++ gtk+-2.4.3/gtk/gtktooltips.c	2004-07-04 18:52:08.000000000 +0100
+@@ -118,7 +118,7 @@
+   tooltips->tips_data_list = NULL;
+   
+   tooltips->delay = DEFAULT_DELAY;
+-  tooltips->enabled = TRUE;
++  tooltips->enabled = FALSE;
+   tooltips->timer_tag = 0;
+   tooltips->use_sticky_delay = FALSE;
+   tooltips->last_popdown.tv_sec = -1;

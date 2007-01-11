@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBGTK2
+	bool "libgtk2"
+	default n
+	select BR2_PACKAGE_ATK
+	select BR2_PACKAGE_PANGO
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_TIFF
+	select BR2_PACKAGE_PNG
+	depends BR2_PACKAGE_XORG
+	help
+	  The GTK+ version 2 graphical user interface library
+
+	  http://www.gtk.org/
