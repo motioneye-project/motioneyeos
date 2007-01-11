@@ -143,8 +143,12 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
 	touch -c $(XORG_LIBX)/libX11.so.6.2
 
 
+$(TARGET_DIR)/usr/bin/mcookie: package/xorg/mcookie.c
+	$(TARGET_CROSS)gcc -Wall -Os -s package/xorg/mcookie.c -o $(TARGET_DIR)/usr/bin/mcookie
+
 xorg: zlib png pkgconfig expat freetype \
-	$(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 $(XORG_LIBX)/libX11.so.6.2
+	$(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 \
+	$(XORG_LIBX)/libX11.so.6.2 $(TARGET_DIR)/usr/bin/mcookie
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE)
 
