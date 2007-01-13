@@ -1,0 +1,8 @@
+config BR2_PACKAGE_DASH
+	bool "dash"
+	default n
+	help
+	  The Debian/Linux port of the NetBSD version of
+	  ash (the Almquist SHell).
+
+	  http://gondor.apana.org.au/~herbert/dash
