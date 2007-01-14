@@ -18,17 +18,15 @@
 
 # old kernels don't use udev
 case $(uname -r) in
-2.6*|2.7*)	;;
-*)		exit 0;;
+    2.6*|2.7*)	;;
+    *)		exit 0;;
 esac
 
 # Check for missing binaries
-UDEV_BIN=/sbin/udev
+UDEV_BIN=/sbin/udevd
 test -x $UDEV_BIN || exit 5
 UDEVSTART_BIN=/sbin/udevstart
 test -x $UDEVSTART_BIN || exit 5
-UDEVD_BIN=/sbin/udevd
-test -x $UDEVD_BIN || exit 5
 
 # Check for config file and read it
 UDEV_CONFIG=/etc/udev/udev.conf
@@ -40,42 +38,44 @@ SYSFS_DIR=/sys
 
 case "$1" in
     start)
-	# mount sysfs if it's not yet mounted
-	if [ ! -d $SYSFS_DIR ]; then
-		echo "${0}: SYSFS_DIR \"$SYSFS_DIR\" not found"
-		exit 1
-	fi
-	grep -q "^sysfs $SYSFS_DIR" /proc/mounts ||
-		mount -t sysfs /sys /sys ||
-		exit 1
-
-	# mount $udev_root as ramfs if it's not yet mounted
-	# we know 2.6 kernels always support ramfs
-	if [ ! -d $udev_root ]; then
-		echo "${0}: udev_root \"$udev_root\" not found"
-		exit 1
-	fi
-	grep -q "^udev $udev_root" /proc/mounts ||
-		mount -t ramfs udev $udev_root ||
-		exit 1
-
-	# heck, go whole-hog:  use only new style hotplug
-	# echo $UDEV_BIN > /proc/sys/kernel/hotplug
-
-	# populate /dev (normally)
-	echo -n "Populating $udev_root using udev... "
-	$UDEVSTART_BIN || (echo "FAIL" && exit 1)
-	mkdir $udev_root/pts $udev_root/shm
-	# start daemon
-	$UDEVD_BIN --daemon || (echo "udevd FAIL" && exit 1)
-	echo "done"
-	mount -a
-	;;
-    stop)
-	# do nothing
-	;;
-    *)
-	echo "Usage: $0 {start|stop}"
+        # mount sysfs if it's not yet mounted
+        if [ ! -d $SYSFS_DIR ]; then
+	    echo "${0}: SYSFS_DIR \"$SYSFS_DIR\" not found"
+	    exit 1
+        fi
+        grep -q "^sysfs $SYSFS_DIR" /proc/mounts ||
+	mount -t sysfs /sys /sys ||
 	exit 1
-	;;
+
+        # mount $udev_root as ramfs if it's not yet mounted
+        # we know 2.6 kernels always support ramfs
+        if [ ! -d $udev_root ]; then
+	    echo "${0}: udev_root \"$udev_root\" not found"
+	    exit 1
+        fi
+        grep -q "^udev $udev_root" /proc/mounts ||
+	mount -t ramfs udev $udev_root ||
+	exit 1
+
+        mkdir $udev_root/pts $udev_root/shm
+
+        # populate /dev (normally)
+        echo -n "Populating $udev_root using udev: "
+        echo -e '\000\000\000\000' > /proc/sys/kernel/hotplug
+        $UDEV_BIN -d || (echo "FAIL" && exit 1)
+	$UDEVSTART_BIN || (echo "FAIL" && exit 1)
+        echo "done"
+        ;;
+    stop)
+        # Stop execution of events
+        udevcontrol stop_exec_queue
+        killall udevd
+        ;;
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+        ;;
 esac
+
+
+exit 0
