@@ -14,6 +14,8 @@ NFS_UTILS_TARGET_BINARY:=usr/sbin/rpc.nfsd
 $(DL_DIR)/$(NFS_UTILS_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(NFS_UTILS_SITE)/$(NFS_UTILS_SOURCE)
 
+nfs-utils-source: $(DL_DIR)/$(NFS_UTILS_SOURCE)
+
 $(NFS_UTILS_DIR)/.unpacked: $(DL_DIR)/$(NFS_UTILS_SOURCE)
 	$(NFS_UTILS_CAT) $(DL_DIR)/$(NFS_UTILS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(NFS_UTILS_DIR) package/nfs-utils/ nfs-utils*.patch

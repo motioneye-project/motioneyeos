@@ -14,6 +14,8 @@ LIBEVENT_TARGET_BINARY:=usr/lib/libevent.so
 $(DL_DIR)/$(LIBEVENT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBEVENT_SITE)/$(LIBEVENT_SOURCE)
 
+libevent-source: $(DL_DIR)/$(LIBEVENT_SOURCE)
+
 libevent-unpacked: $(LIBEVENT_DIR)/.unpacked
 $(LIBEVENT_DIR)/.unpacked: $(DL_DIR)/$(LIBEVENT_SOURCE)
 	$(LIBEVENT_CAT) $(DL_DIR)/$(LIBEVENT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

@@ -13,6 +13,8 @@ USBMOUNT_TARGET_BINARY:=sbin/usbmount
 $(DL_DIR)/$(USBMOUNT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(USBMOUNT_SITE)/$(USBMOUNT_SOURCE)
 
+usbmount-source: $(DL_DIR)/$(USBMOUNT_SOURCE)
+
 $(USBMOUNT_DIR)/.unpacked: $(DL_DIR)/$(USBMOUNT_SOURCE)
 	$(USBMOUNT_CAT) $(DL_DIR)/$(USBMOUNT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(USBMOUNT_DIR) package/usbmount \*.patch
