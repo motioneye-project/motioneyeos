@@ -1,0 +1,18 @@
+diff -ur nfs-utils-1.0.10/utils/rquotad/Makefile.in nfs-utils-1.0.10-patched/utils/rquotad/Makefile.in
+--- nfs-utils-1.0.10/utils/rquotad/Makefile.in	2006-08-07 01:43:46.000000000 -0500
++++ nfs-utils-1.0.10-patched/utils/rquotad/Makefile.in	2007-01-13 21:24:26.971232703 -0600
+@@ -653,14 +653,6 @@
+ $(RPCGEN):
+ 	make -C $(top_srcdir)/tools/rpcgen all
+ 
+-$(GENFILES_XDR): %_xdr.c: %.x $(RPCGEN)
+-	test -f $@ && rm -rf $@ || true
+-	$(RPCGEN) -c -o $@ $<
+-
+-$(GENFILES_H): %.h: %.x $(RPCGEN)
+-	test -f $@ && rm -rf $@ || true
+-	$(RPCGEN) -h -o $@ $<
+-
+ #######################################################################
+ # The following allows the current practice of having
+ # daemons renamed during the install to include RPCPREFIX
