@@ -1,0 +1,84 @@
+--- gtk+-2.10.7/gdk/Makefile.am.orig	2007-01-05 11:42:47.000000000 -0700
++++ gtk+-2.10.7/gdk/Makefile.am	2007-01-14 02:47:46.000000000 -0700
+@@ -26,7 +26,8 @@
+ 	-I$(top_builddir)/gdk		\
+ 	-I$(top_srcdir)/gdk-pixbuf 	\
+ 	-DGDK_PIXBUF_DISABLE_DEPRECATED \
+-	$(GTK_DEBUG_FLAGS) 		\
++	$(GTK_DEBUG_FLAGS)		\
++	$(GTK_DEP_CFLAGS)		\
+ 	$(GDK_DEP_CFLAGS)
+ 
+ gtarget=$(gdktarget)
+--- gtk+-2.10.7/gdk/Makefile.in.orig	2007-01-05 11:44:15.000000000 -0700
++++ gtk+-2.10.7/gdk/Makefile.in	2007-01-14 02:48:02.000000000 -0700
+@@ -323,7 +323,8 @@
+ 	-I$(top_builddir)/gdk		\
+ 	-I$(top_srcdir)/gdk-pixbuf 	\
+ 	-DGDK_PIXBUF_DISABLE_DEPRECATED \
+-	$(GTK_DEBUG_FLAGS) 		\
++	$(GTK_DEBUG_FLAGS)		\
++	$(GTK_DEP_CFLAGS)		\
+ 	$(GDK_DEP_CFLAGS)
+ 
+ 
+--- gtk+-2.10.6/gdk/x11/Makefile.am.orig	2007-01-14 01:56:44.000000000 -0700
++++ gtk+-2.10.6/gdk/x11/Makefile.am	2007-01-14 01:57:09.000000000 -0700
+@@ -9,7 +9,8 @@
+ 	-I$(top_srcdir)/gdk		\
+ 	-I$(top_builddir)/gdk		\
+ 	-DGDK_PIXBUF_DISABLE_DEPRECATED	\
+-	$(GTK_DEBUG_FLAGS) 		\
++	$(GTK_DEBUG_FLAGS)		\
++	$(GTK_DEP_CFLAGS)		\
+ 	$(GDK_DEP_CFLAGS)
+ 
+ LDADDS = $(GDK_DEP_LIBS)
+--- gtk+-2.10.7/gdk/x11/Makefile.in.orig	2007-01-14 02:40:58.000000000 -0700
++++ gtk+-2.10.7/gdk/x11/Makefile.in	2007-01-14 02:41:30.000000000 -0700
+@@ -305,7 +305,8 @@
+ 	-I$(top_srcdir)/gdk		\
+ 	-I$(top_builddir)/gdk		\
+ 	-DGDK_PIXBUF_DISABLE_DEPRECATED	\
+-	$(GTK_DEBUG_FLAGS) 		\
++	$(GTK_DEBUG_FLAGS)		\
++	$(GTK_DEP_CFLAGS)		\
+ 	$(GDK_DEP_CFLAGS)
+ 
+ 
+--- gtk+-2.10.7/gtk/Makefile.am.orig	2007-01-14 15:19:59.000000000 -0700
++++ gtk+-2.10.7/gtk/Makefile.am	2007-01-14 15:21:58.000000000 -0700
+@@ -36,6 +36,7 @@
+ 	-DGTK_FILE_SYSTEM_ENABLE_UNSUPPORTED		\
+ 	-DGTK_PRINT_BACKEND_ENABLE_UNSUPPORTED		\
+ 	$(GTK_DEBUG_FLAGS)				\
++	$(GDK_DEP_CFLAGS)				\
+ 	$(GTK_DEP_CFLAGS)				\
+ 	$(gtk_clipboard_dnd_c_sources_CFLAGS)
+ 
+@@ -106,6 +107,7 @@
+ libadd =								\
+ 	$(top_builddir)/gdk-pixbuf/libgdk_pixbuf-$(GTK_API_VERSION).la	\
+ 	$(top_builddir)/gdk/$(gdktargetlib)				\
++	$(GDK_DEP_LIBS)							\
+ 	$(GTK_DEP_LIBS)
+ 
+ if OS_UNIX
+--- gtk+-2.10.7/gtk/Makefile.in.orig	2007-01-14 15:20:06.000000000 -0700
++++ gtk+-2.10.7/gtk/Makefile.in	2007-01-14 15:21:46.000000000 -0700
+@@ -344,6 +344,7 @@
+ 	-DGTK_FILE_SYSTEM_ENABLE_UNSUPPORTED		\
+ 	-DGTK_PRINT_BACKEND_ENABLE_UNSUPPORTED		\
+ 	$(GTK_DEBUG_FLAGS)				\
++	$(GDK_DEP_CFLAGS)				\
+ 	$(GTK_DEP_CFLAGS)				\
+ 	$(gtk_clipboard_dnd_c_sources_CFLAGS)
+ 
+@@ -370,6 +371,7 @@
+ libadd = \
+ 	$(top_builddir)/gdk-pixbuf/libgdk_pixbuf-$(GTK_API_VERSION).la	\
+ 	$(top_builddir)/gdk/$(gdktargetlib)				\
++	$(GDK_DEP_LIBS)							\
+ 	$(GTK_DEP_LIBS)\
+ $(am__append_3)
+ 

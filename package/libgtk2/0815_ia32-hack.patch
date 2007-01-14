@@ -1,0 +1,123 @@
+--- gtk+-2.8.13/gdk-pixbuf/gdk-pixbuf-io.c~	2005-10-03 17:11:49.000000000 +0200
++++ gtk+-2.8.13/gdk-pixbuf/gdk-pixbuf-io.c	2006-03-01 20:33:36.524552192 +0100
+@@ -32,6 +32,7 @@
+ #ifdef HAVE_UNISTD_H
+ #include <unistd.h>
+ #endif
++#include <sys/utsname.h>
+ 
+ #include "gdk-pixbuf-private.h"
+ #include "gdk-pixbuf-io.h"
+@@ -276,8 +277,21 @@
+   gchar *result = g_strdup (g_getenv ("GDK_PIXBUF_MODULE_FILE"));
+ 
+   if (!result)
+-	  result = g_build_filename (GTK_SYSCONFDIR, "gtk-2.0", "gdk-pixbuf.loaders", NULL);
++#if defined(__linux__) && defined (__i386__)
++	{
++	  struct utsname uts;
+ 
++	  uname(&uts);
++	  result = g_build_filename (GTK_SYSCONFDIR, "gtk-2.0", "gdk-pixbuf.loaders.32", NULL);
++	  if (strcmp("x86_64", uts.machine) || access(result, R_OK))
++	    {
++	      g_free(result);
++	      result = g_build_filename (GTK_SYSCONFDIR, "gtk-2.0", "gdk-pixbuf.loaders", NULL);
++	    }
++	}
++#else
++	  result = g_build_filename (GTK_SYSCONFDIR, "gtk-2.0", "gdk-pixbuf.loaders", NULL);
++#endif
+   return result;
+ }
+ 
+--- gtk+-2.8.13/gtk/gtkprivate.h~	2005-03-22 03:14:55.000000000 +0100
++++ gtk+-2.8.13/gtk/gtkprivate.h	2006-03-01 19:51:42.510740384 +0100
+@@ -96,6 +96,13 @@
+ 
+ #endif /* G_OS_WIN32 */
+ 
++#if defined(__linux__) && defined (__i386__)
++const gchar *_gtk_get_libdir ();
++
++#undef GTK_LIBDIR
++#define GTK_LIBDIR _gtk_get_libdir ()
++#endif
++
+ gboolean _gtk_fnmatch (const char *pattern,
+ 		       const char *string,
+ 		       gboolean    no_leading_period);
+--- gtk+-2.8.13/gtk/gtkmain.c~	2005-12-06 17:14:30.000000000 +0100
++++ gtk+-2.8.13/gtk/gtkmain.c	2006-03-01 20:36:05.175953744 +0100
+@@ -42,6 +42,7 @@
+ #include <unistd.h>
+ #endif
+ #include <sys/types.h>		/* For uid_t, gid_t */
++#include <sys/utsname.h>
+ 
+ #ifdef G_OS_WIN32
+ #define STRICT
+@@ -336,6 +337,28 @@
+ 
+ #endif /* G_OS_WIN32 */
+ 
++#if defined(__linux__) && defined (__i386__)
++const gchar *
++_gtk_get_libdir (void)
++{
++  static char *gtk_libdir = NULL;
++  if (gtk_libdir == NULL)
++    {
++#if defined(__linux__) && defined (__i386__)
++      struct utsname uts;
++
++      uname(&uts);
++      if (!strcmp("x86_64", uts.machine)
++	  && !access("/usr/lib32/gtk-2.0", R_OK|X_OK))
++	gtk_libdir = "/usr/lib32";
++      else
++#endif
++      gtk_libdir = "/usr/lib";
++    }
++  return gtk_libdir;
++}
++#endif
++
+ static gboolean do_setlocale = TRUE;
+ 
+ /**
+--- gtk+-2.8.13/gtk/gtkrc.c~	2005-11-23 15:24:51.000000000 +0100
++++ gtk+-2.8.13/gtk/gtkrc.c	2006-03-01 20:33:25.952159440 +0100
+@@ -38,6 +38,10 @@
+ #include <string.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#ifdef HAVE_UNISTD_H
++#include <unistd.h>
++#endif
++#include <sys/utsname.h>
+ 
+ 
+ #include <glib.h>
+@@ -364,7 +368,21 @@
+       if (im_module_file)
+ 	result = g_strdup (im_module_file);
+       else
++#if defined(__linux__) && defined (__i386__)
++	{
++	  struct utsname uts;
++
++	  uname(&uts);
++	  result = g_build_filename (GTK_SYSCONFDIR, "gtk-2.0", "gtk.immodules.32", NULL);
++	  if (strcmp("x86_64", uts.machine) || access(result, R_OK))
++	    {
++	      g_free(result);
++	      result = g_build_filename (GTK_SYSCONFDIR, "gtk-2.0", "gtk.immodules", NULL);
++	    }
++	}
++#else
+ 	result = g_build_filename (GTK_SYSCONFDIR, "gtk-2.0", "gtk.immodules", NULL);
++#endif
+     }
+ 
+   return result;

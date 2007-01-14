@@ -1,0 +1,18 @@
+diff -Nur gtk+-2.4.9.orig/gdk-pixbuf/io-ico.c gtk+-2.4.9/gdk-pixbuf/io-ico.c
+--- gtk+-2.4.9.orig/gdk-pixbuf/io-ico.c	2004-08-25 18:52:18.000000000 +0200
++++ gtk+-2.4.9/gdk-pixbuf/io-ico.c	2004-09-15 00:40:17.000000000 +0200
+@@ -210,6 +210,14 @@
+ 	
+  	State->HeaderSize = 6 + IconCount*16;
+ 
++	if (State->HeaderSize < 0) {
++		g_set_error (error,
++			     GDK_PIXBUF_ERROR,
++			     GDK_PIXBUF_ERROR_CORRUPT_IMAGE,
++			     _("Invalid header in icon"));
++		return;
++	}
++
+  	if (State->HeaderSize>State->BytesInHeaderBuf) {
+  		guchar *tmp=g_try_realloc(State->HeaderBuf,State->HeaderSize);
+ 		if (!tmp) {

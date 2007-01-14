@@ -1,0 +1,35 @@
+# GTK+ Input Method Modules file
+# Automatically generated file, do not edit
+# Created by gtk-query-immodules-2.0 from gtk+-2.10.7
+#
+#
+"/lib/gtk-2.0/2.10.0/immodules/im-xim.so" 
+"xim" "X Input Method" "gtk20" "/usr/share/locale" "ko:ja:th:zh" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-am-et.so" 
+"am_et" "Amharic (EZ+)" "gtk20" "/usr/share/locale" "am" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-cedilla.so" 
+"cedilla" "Cedilla" "gtk20" "/usr/share/locale" "az:ca:co:fr:gv:oc:pt:sq:tr:wa" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-cyrillic-translit.so" 
+"cyrillic_translit" "Cyrillic (Transliterated)" "gtk20" "/usr/share/locale" "" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-inuktitut.so" 
+"inuktitut" "Inuktitut (Transliterated)" "gtk20" "/usr/share/locale" "iu" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-ipa.so" 
+"ipa" "IPA" "gtk20" "/usr/share/locale" "" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-thai.so" 
+"thai" "Thai-Lao" "gtk+" "/usr/share/locale" "lo:th" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-ti-er.so" 
+"ti_er" "Tigrigna-Eritrean (EZ+)" "gtk20" "/usr/share/locale" "ti" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-ti-et.so" 
+"ti_et" "Tigrigna-Ethiopian (EZ+)" "gtk20" "/usr/share/locale" "ti" 
+
+"/lib/gtk-2.0/2.10.0/immodules/im-viqr.so" 
+"viqr" "Vietnamese (VIQR)" "gtk20" "/usr/share/locale" "vi" 
+

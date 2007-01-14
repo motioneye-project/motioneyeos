@@ -1,0 +1,107 @@
+# GdkPixbuf Image Loader Modules file
+# Automatically generated file, do not edit
+# Created by gdk-pixbuf-query-loaders from gtk+-2.10.7
+#
+# LoaderDir = /lib/gtk-2.0/2.10.0/loaders
+#
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-png.so"
+"png" 5 "gtk20" "The PNG image format"
+"image/png" ""
+"png" ""
+"\211PNG\r\n\032\n" "" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-jpeg.so"
+"jpeg" 5 "gtk20" "The JPEG image format"
+"image/jpeg" ""
+"jpeg" "jpe" "jpg" ""
+"\377\330" "" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-gif.so"
+"gif" 4 "gtk20" "The GIF image format"
+"image/gif" ""
+"gif" ""
+"GIF8" "" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-ico.so"
+"ico" 5 "gtk20" "The ICO image format"
+"image/x-icon" ""
+"ico" "cur" ""
+"  \001   " "zz znz" 100
+"  \002   " "zz znz" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-ani.so"
+"ani" 4 "gtk20" "The ANI image format"
+"application/x-navi-animation" ""
+"ani" ""
+"RIFF    ACON" "    xxxx    " 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-ras.so"
+"ras" 4 "gtk20" "The Sun raster image format"
+"image/x-cmu-raster" "image/x-sun-raster" ""
+"ras" ""
+"Y\246j\225" "" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-xpm.so"
+"xpm" 4 "gtk20" "The XPM image format"
+"image/x-xpixmap" ""
+"xpm" ""
+"/* XPM */" "" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-tiff.so"
+"tiff" 1 "gtk20" "The TIFF image format"
+"image/tiff" ""
+"tiff" "tif" ""
+"MM *" "  z " 100
+"II* " "   z" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-pnm.so"
+"pnm" 4 "gtk20" "The PNM/PBM/PGM/PPM image format family"
+"image/x-portable-anymap" "image/x-portable-bitmap" "image/x-portable-graymap" "image/x-portable-pixmap" ""
+"pnm" "pbm" "pgm" "ppm" ""
+"P1" "" 100
+"P2" "" 100
+"P3" "" 100
+"P4" "" 100
+"P5" "" 100
+"P6" "" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-bmp.so"
+"bmp" 5 "gtk20" "The BMP image format"
+"image/bmp" "image/x-bmp" "image/x-MS-bmp" ""
+"bmp" ""
+"BM" "" 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-wbmp.so"
+"wbmp" 4 "gtk20" "The WBMP image format"
+"image/vnd.wap.wbmp" ""
+"wbmp" ""
+" " "z" 1
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-xbm.so"
+"xbm" 4 "gtk20" "The XBM image format"
+"image/x-xbitmap" ""
+"xbm" ""
+"#define " "" 100
+"/*" "" 50
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-tga.so"
+"tga" 4 "gtk20" "The Targa image format"
+"image/x-tga" ""
+"tga" "targa" ""
+" \001\001" "x  " 100
+" \001\t" "x  " 100
+"  \002" "xz " 99
+"  \003" "xz " 100
+"  \n" "xz " 100
+"  \013" "xz " 100
+
+"/lib/gtk-2.0/2.10.0/loaders/libpixbufloader-pcx.so"
+"pcx" 4 "gtk20" "The PCX image format"
+"image/x-pcx" ""
+"pcx" ""
+"\n \001" "" 100
+"\n\002\001" "" 100
+"\n\003\001" "" 100
+"\n\004\001" "" 100
+"\n\005\001" "" 100
+

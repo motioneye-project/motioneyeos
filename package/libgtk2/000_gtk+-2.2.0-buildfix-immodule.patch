@@ -1,0 +1,33 @@
+diff -ruN gtk+-2.2.0.orig/modules/input/Makefile.am gtk+-2.2.0/modules/input/Makefile.am
+--- gtk+-2.2.0.orig/modules/input/Makefile.am	2003-01-06 23:40:37.000000000 +0900
++++ gtk+-2.2.0/modules/input/Makefile.am	2003-01-06 23:46:35.000000000 +0900
+@@ -118,7 +118,12 @@
+ 	im-viqr.la
+ 
+ gtk.immodules: Makefile.am $(module_LTLIBRARIES)
+-	$(top_builddir)/gtk/gtk-query-immodules-2.0 $(module_LTLIBRARIES) > gtk.immodules
++	@if $(RUN_QUERY_IMMODULES_TEST) ; then \
++	  $(top_builddir)/gtk/gtk-query-immodules-2.0 $(module_LTLIBRARIES) > gtk.immodules ; \
++	else \
++	  touch $@ ; \
++	fi
++
+ 
+ CLEANFILES = gtk.immodules
+ 
+diff -ruN gtk+-2.2.0.orig/modules/input/Makefile.in gtk+-2.2.0/modules/input/Makefile.in
+--- gtk+-2.2.0.orig/modules/input/Makefile.in	2003-01-06 23:39:08.000000000 +0900
++++ gtk+-2.2.0/modules/input/Makefile.in	2003-01-06 23:46:44.000000000 +0900
+@@ -785,7 +785,11 @@
+ 	rm -f $(DESTDIR)$(sysconfdir)/gtk-2.0/gtk.immodules
+ 
+ gtk.immodules: Makefile.am $(module_LTLIBRARIES)
+-	$(top_builddir)/gtk/gtk-query-immodules-2.0 $(module_LTLIBRARIES) > gtk.immodules
++	@if $(RUN_QUERY_IMMODULES_TEST) ; then \
++	  $(top_builddir)/gtk/gtk-query-immodules-2.0 $(module_LTLIBRARIES) > gtk.immodules ; \
++	else \
++	  touch $@ ; \
++	fi
+ 
+ @CROSS_COMPILING_FALSE@all-local: gtk.immodules
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.

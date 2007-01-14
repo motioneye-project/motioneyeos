@@ -1,5 +1,24 @@
---- gtk+-2.10.7/gtk/Makefile.am.orig	2007-01-05 11:32:46.000000000 -0700
-+++ gtk+-2.10.7/gtk/Makefile.am	2007-01-11 01:03:52.000000000 -0700
+--- gtk/gtk/Makefile.in.orig	2007-01-14 02:29:46.000000000 -0700
++++ gtk/gtk/Makefile.in	2007-01-14 02:30:19.000000000 -0700
+@@ -2954,11 +2954,11 @@
+ 	done									\
+ 	&& touch stamp-icons
+ 
+-gtkbuiltincache.h: @REBUILD@ stamp-icons
+-	$(MAKE) $(AM_MAKEFLAGS) gtk-update-icon-cache$(EXEEXT)
+-	$(gtk_update_icon_cache_program) --force --ignore-theme-index		\
+-	   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
+-	mv gtkbuiltincache.h.tmp gtkbuiltincache.h
++#gtkbuiltincache.h: @REBUILD@ stamp-icons
++#	$(MAKE) $(AM_MAKEFLAGS) gtk-update-icon-cache$(EXEEXT)
++#	$(gtk_update_icon_cache_program) --force --ignore-theme-index		\
++#	   --source builtin_icons stock-icons > gtkbuiltincache.h.tmp &&        \
++#	mv gtkbuiltincache.h.tmp gtkbuiltincache.h
+ 
+ install-data-local:
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+--- gtk/gtk/Makefile.am.orig	2007-01-14 02:29:39.000000000 -0700
++++ gtk/gtk/Makefile.am	2007-01-14 02:30:06.000000000 -0700
 @@ -1123,11 +1123,11 @@
  	   ./gtk-update-icon-cache
  endif
