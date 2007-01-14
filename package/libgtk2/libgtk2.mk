@@ -88,7 +88,7 @@ $(LIBGTK2_DIR)/.configured: $(LIBGTK2_DIR)/.unpacked
 	# I dont yet understand why configure is not doing this right
 	# TODO: also remove 'odd-include-problem.patch' when this is fixed
 	$(SED) "s,^GDK_DEP_CFLAGS=.*,GDK_DEP_CFLAGS=\'-pthread -I$(STAGING_DIR)/include/glib-2.0 -I$(STAGING_DIR)/lib/glib-2.0/include -I$(STAGING_DIR)/include/pango-1.0 -I$(STAGING_DIR)/include/cairo\',g" $(LIBGTK2_DIR)/configure
-	$(SED) "s,^GDK_DEP_LIBS=.*,GDK_DEP_LIBS=\'-L/home/andersen/SVN/buildroot/build_i686/staging_dir/lib -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0 -lfontconfig -lXext -lXrender -lX11 -lXinerama -lXrandr -lXcursor -lXfixes -lXft -lm\',g" $(LIBGTK2_DIR)/configure
+	$(SED) "s,^GDK_DEP_LIBS=.*,GDK_DEP_LIBS=\'-L$(STAGING_DIR)/lib -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0 -lfontconfig -lXext -lXrender -lX11 -lXinerama -lXrandr -lXcursor -lXfixes -lXft -lm\',g" $(LIBGTK2_DIR)/configure
 	(cd $(LIBGTK2_DIR); rm -rf config.cache; \
 		$(LIBGTK2_BUILD_ENV) \
 		./configure \
