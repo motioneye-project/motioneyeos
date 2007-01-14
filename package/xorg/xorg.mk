@@ -105,6 +105,11 @@ $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 	ln -fs ../../lib $(STAGING_DIR)$(TARGET_LIBX)
 	( cd $(XORG_DIR); $(MAKE) \
 		DESTDIR=$(STAGING_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
+	cp package/xorg/x11.pc package/xorg/xext.pc \
+		package/xorg/xproto.pc package/xorg/kbproto.pc \
+		package/xorg/xau.pc package/xorg/xdmcp.pc \
+		package/xorg/xextproto.pc package/xorg/xrandr.pc \
+		package/xorg/xinerama.pc $(STAGING_DIR)/lib/pkgconfig
 	touch -c $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
 
 $(TARGET_XSERVER): $(XORG_XSERVER)

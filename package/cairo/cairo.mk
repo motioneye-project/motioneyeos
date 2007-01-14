@@ -126,8 +126,6 @@ $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY): $(CAIRO_DIR)/.configured
 $(STAGING_DIR)/lib/$(CAIRO_BINARY): $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(CAIRO_DIR) install;
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libcairo.la
-	$(SED) "s, x11 ,,g" $(STAGING_DIR)/lib/pkgconfig/cairo.pc
-	$(SED) "s, x11 ,,g" $(STAGING_DIR)/lib/pkgconfig/cairo-xlib.pc
 	touch -c $(STAGING_DIR)/lib/$(CAIRO_BINARY)
 
 $(TARGET_DIR)/lib/libcairo.so.2.9.3: $(STAGING_DIR)/lib/$(CAIRO_BINARY)

@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Xrandr
+Description: X RandR Library
+Version: 1.1.1
+Requires: xproto randrproto >= 1.1
+Requires.private: x11 xext xrender
+Cflags: -I${includedir}
+Libs: -L${libdir} -lXrandr
