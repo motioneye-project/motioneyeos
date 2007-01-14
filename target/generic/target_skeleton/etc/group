@@ -8,6 +8,8 @@ disk:x:6:
 wheel:x:10:root
 utmp:x:43:
 staff:x:50:
+haldaemon:x:68:
+dbus:x:81:
 nobody:x:99:
 nogroup:x:99:
 users:x:100:
