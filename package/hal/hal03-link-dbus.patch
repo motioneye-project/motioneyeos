@@ -1,0 +1,60 @@
+diff -urN hal-0.5.8/hald/linux/addons/Makefile.in hal-0.5.8-patched/hald/linux/addons/Makefile.in
+--- hal-0.5.8/hald/linux/addons/Makefile.in	2006-09-11 18:25:31.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/addons/Makefile.in	2006-11-16 10:08:30.000000000 -0600
+@@ -119,7 +119,7 @@
+ 	$(AM_CFLAGS) $(CFLAGS)
+ CCLD = $(CC)
+ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
++	$(AM_LDFLAGS) $(LDFLAGS) $(DBUS_LIBS) $(GLIB_LIBS) $(DBUS_GLIB_LIBS) -o $@
+ SOURCES = $(hald_addon_acpi_SOURCES) \
+ 	$(hald_addon_acpi_buttons_toshiba_SOURCES) \
+ 	$(hald_addon_cpufreq_SOURCES) $(hald_addon_hid_ups_SOURCES) \
+diff -urN hal-0.5.8/hald/linux/probing/Makefile.in hal-0.5.8-patched/hald/linux/probing/Makefile.in
+--- hal-0.5.8/hald/linux/probing/Makefile.in	2006-09-11 18:25:31.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/probing/Makefile.in	2006-11-16 10:08:30.000000000 -0600
+@@ -97,7 +97,7 @@
+ 	$(AM_CFLAGS) $(CFLAGS)
+ CCLD = $(CC)
+ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
++	$(AM_LDFLAGS) $(LDFLAGS) $(DBUS_LIBS) -o $@
+ SOURCES = $(hald_probe_hiddev_SOURCES) $(hald_probe_input_SOURCES) \
+ 	$(hald_probe_pc_floppy_SOURCES) $(hald_probe_printer_SOURCES) \
+ 	$(hald_probe_serial_SOURCES) $(hald_probe_smbios_SOURCES) \
+diff -urN hal-0.5.8/hald/Makefile.in hal-0.5.8-patched/hald/Makefile.in
+--- hal-0.5.8/hald/Makefile.in	2006-09-11 18:25:30.000000000 -0500
++++ hal-0.5.8-patched/hald/Makefile.in	2006-11-16 10:08:30.000000000 -0600
+@@ -71,7 +71,7 @@
+ 	$(AM_CFLAGS) $(CFLAGS)
+ CCLD = $(CC)
+ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
++	$(AM_LDFLAGS) $(LDFLAGS) $(DBUS_GLIB_LIBS) $(GLIB_LIBS) -o $@
+ SOURCES = $(hald_SOURCES)
+ DIST_SOURCES = $(hald_SOURCES)
+ RECURSIVE_TARGETS = all-recursive check-recursive dvi-recursive \
+diff -urN hal-0.5.8/hald-runner/Makefile.in hal-0.5.8-patched/hald-runner/Makefile.in
+--- hal-0.5.8/hald-runner/Makefile.in	2006-09-11 18:25:30.000000000 -0500
++++ hal-0.5.8-patched/hald-runner/Makefile.in	2006-11-16 10:09:06.000000000 -0600
+@@ -64,7 +64,7 @@
+ 	$(AM_CFLAGS) $(CFLAGS)
+ CCLD = $(CC)
+ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
++	$(AM_LDFLAGS) $(LDFLAGS) $(GLIB_LIBS) $(DBUS_GLIB_LIBS) -o $@
+ SOURCES = $(hald_runner_SOURCES)
+ DIST_SOURCES = $(hald_runner_SOURCES)
+ ETAGS = etags
+diff -urN hal-0.5.8/tools/Makefile.in hal-0.5.8-patched/tools/Makefile.in
+--- hal-0.5.8/tools/Makefile.in	2006-09-11 18:25:33.000000000 -0500
++++ hal-0.5.8-patched/tools/Makefile.in	2006-11-16 10:10:14.000000000 -0600
+@@ -133,7 +133,7 @@
+ 	$(AM_CFLAGS) $(CFLAGS)
+ CCLD = $(CC)
+ LINK = $(LIBTOOL) --tag=CC --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
+-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
++	$(AM_LDFLAGS) $(LDFLAGS) $(DBUS_LIBS) $(GLIB_LIBS) $(DBUS_GLIB_LIBS) -o $@
+ SOURCES = $(hal_device_SOURCES) $(hal_find_by_capability_SOURCES) \
+ 	$(hal_find_by_property_SOURCES) $(hal_get_property_SOURCES) \
+ 	$(hal_set_property_SOURCES) \

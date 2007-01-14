@@ -1,0 +1,10 @@
+diff -ur hal-0.5.8/configure hal-0.5.8-patched/configure
+--- hal-0.5.8/configure	2006-11-15 12:34:03.000000000 -0600
++++ hal-0.5.8-patched/configure	2006-11-15 12:33:36.000000000 -0600
+@@ -22014,7 +22014,7 @@
+ echo "$as_me:$LINENO: result: $ac_cv_lib_expat_XML_ParserCreate" >&5
+ echo "${ECHO_T}$ac_cv_lib_expat_XML_ParserCreate" >&6
+ if test $ac_cv_lib_expat_XML_ParserCreate = yes; then
+-  EXPAT_LIB="-lexpat"
++  EXPAT_LIB="\$(STAGING_DIR)/lib/libexpat.so"
+ fi

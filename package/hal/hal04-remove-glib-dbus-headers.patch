@@ -1,0 +1,275 @@
+diff -ur hal-0.5.8/hald/device_info.c hal-0.5.8-patched/hald/device_info.c
+--- hal-0.5.8/hald/device_info.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/device_info.c	2006-11-15 11:52:24.000000000 -0600
+@@ -33,8 +33,6 @@
+ #include <dirent.h>
+ #include <expat.h>
+ #include <assert.h>
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+ #include <math.h>
+ 
+ #include "hald.h"
+diff -ur hal-0.5.8/hald/dummy/osspec.c hal-0.5.8-patched/hald/dummy/osspec.c
+--- hal-0.5.8/hald/dummy/osspec.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/dummy/osspec.c	2006-11-15 11:52:24.000000000 -0600
+@@ -28,8 +28,6 @@
+ #endif
+ 
+ #include <glib.h>
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+ 
+ #include "../osspec.h"
+ #include "../logger.h"
+diff -ur hal-0.5.8/hald/hald.c hal-0.5.8-patched/hald/hald.c
+--- hal-0.5.8/hald/hald.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/hald.c	2006-11-15 11:52:24.000000000 -0600
+@@ -42,10 +42,6 @@
+ #include <grp.h>
+ #include <syslog.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+-#include <dbus/dbus-glib-lowlevel.h>
+-
+ /*#include "master_slave.h"*/
+ 
+ #include "logger.h"
+diff -ur hal-0.5.8/hald/hald_dbus.c hal-0.5.8-patched/hald/hald_dbus.c
+--- hal-0.5.8/hald/hald_dbus.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/hald_dbus.c	2006-11-15 11:52:24.000000000 -0600
+@@ -35,9 +35,6 @@
+ #include <stdint.h>
+ #include <sys/time.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib-lowlevel.h>
+-
+ #include "hald.h"
+ #include "hald_dbus.h"
+ #include "device.h"
+diff -ur hal-0.5.8/hald/hald_runner.c hal-0.5.8-patched/hald/hald_runner.c
+--- hal-0.5.8/hald/hald_runner.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/hald_runner.c	2006-11-15 11:52:24.000000000 -0600
+@@ -31,8 +31,6 @@
+ #include <stdio.h>
+ 
+ #include <glib.h>
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib-lowlevel.h>
+ 
+ #include "hald.h"
+ #include "util.h"
+diff -ur hal-0.5.8/hald/linux/addons/addon-cpufreq.h hal-0.5.8-patched/hald/linux/addons/addon-cpufreq.h
+--- hal-0.5.8/hald/linux/addons/addon-cpufreq.h	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/addons/addon-cpufreq.h	2006-11-15 11:52:24.000000000 -0600
+@@ -29,8 +29,6 @@
+ #include <config.h>
+ #endif
+ 
+-#include <dbus/dbus-glib.h>
+-#include <dbus/dbus-glib-lowlevel.h>
+ #include <glib.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+diff -ur hal-0.5.8/hald/linux/addons/addon-macbookpro-backlight.c hal-0.5.8-patched/hald/linux/addons/addon-macbookpro-backlight.c
+--- hal-0.5.8/hald/linux/addons/addon-macbookpro-backlight.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/addons/addon-macbookpro-backlight.c	2006-11-15 11:52:24.000000000 -0600
+@@ -37,8 +37,6 @@
+ #include <unistd.h> 
+ 
+ #include <glib/gmain.h>
+-#include <dbus/dbus-glib.h>
+-#include <dbus/dbus-glib-lowlevel.h>
+ 
+ #include "libhal/libhal.h"
+ #include "../../logger.h"
+diff -ur hal-0.5.8/hald/linux/addons/addon-usb-csr.c hal-0.5.8-patched/hald/linux/addons/addon-usb-csr.c
+--- hal-0.5.8/hald/linux/addons/addon-usb-csr.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/addons/addon-usb-csr.c	2006-11-15 11:52:24.000000000 -0600
+@@ -30,8 +30,6 @@
+ #include <usb.h>
+ 
+ #include <glib/gmain.h>
+-#include <dbus/dbus-glib.h>
+-#include <dbus/dbus-glib-lowlevel.h>
+ 
+ #include "libhal/libhal.h"
+ #include "../../logger.h"
+diff -ur hal-0.5.8/hald/linux/blockdev.c hal-0.5.8-patched/hald/linux/blockdev.c
+--- hal-0.5.8/hald/linux/blockdev.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/blockdev.c	2006-11-15 11:52:24.000000000 -0600
+@@ -37,9 +37,6 @@
+ #include <syslog.h>
+ #include <unistd.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+-
+ #include "../device_info.h"
+ #include "../hald.h"
+ #include "../hald_dbus.h"
+diff -ur hal-0.5.8/hald/linux/classdev.c hal-0.5.8-patched/hald/linux/classdev.c
+--- hal-0.5.8/hald/linux/classdev.c	2006-09-11 18:32:56.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/classdev.c	2006-11-15 11:52:24.000000000 -0600
+@@ -39,9 +39,6 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+-
+ #include "../device_info.h"
+ #include "../device_store.h"
+ #include "../hald.h"
+diff -ur hal-0.5.8/hald/linux/coldplug.c hal-0.5.8-patched/hald/linux/coldplug.c
+--- hal-0.5.8/hald/linux/coldplug.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/coldplug.c	2006-11-15 11:52:24.000000000 -0600
+@@ -33,9 +33,6 @@
+ #include <sys/stat.h>
+ #include <unistd.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+-
+ #include "../device_info.h"
+ #include "../hald.h"
+ #include "../logger.h"
+diff -ur hal-0.5.8/hald/linux/hotplug.c hal-0.5.8-patched/hald/linux/hotplug.c
+--- hal-0.5.8/hald/linux/hotplug.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/hotplug.c	2006-11-15 11:52:24.000000000 -0600
+@@ -32,9 +32,6 @@
+ #include <string.h>
+ #include <unistd.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+-
+ #include "../device_info.h"
+ #include "../hald.h"
+ #include "../logger.h"
+diff -ur hal-0.5.8/hald/linux/ids.c hal-0.5.8-patched/hald/linux/ids.c
+--- hal-0.5.8/hald/linux/ids.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/ids.c	2006-11-15 11:56:11.000000000 -0600
+@@ -33,7 +33,6 @@
+ #include <unistd.h>
+ 
+ #include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+ 
+ #include "../logger.h"
+ 
+diff -ur hal-0.5.8/hald/linux/osspec.c hal-0.5.8-patched/hald/linux/osspec.c
+--- hal-0.5.8/hald/linux/osspec.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/osspec.c	2006-11-15 11:52:24.000000000 -0600
+@@ -44,9 +44,6 @@
+ #include <sys/utsname.h>
+ #include <unistd.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+-
+ #include "../device_info.h"
+ #include "../hald.h"
+ #include "../hald_dbus.h"
+diff -ur hal-0.5.8/hald/linux/physdev.c hal-0.5.8-patched/hald/linux/physdev.c
+--- hal-0.5.8/hald/linux/physdev.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/linux/physdev.c	2006-11-15 11:52:24.000000000 -0600
+@@ -31,9 +31,6 @@
+ #include <stdint.h>
+ #include <unistd.h>
+ 
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+-
+ #include "../device_info.h"
+ #include "../hald.h"
+ #include "../logger.h"
+diff -ur hal-0.5.8/hald/util.c hal-0.5.8-patched/hald/util.c
+--- hal-0.5.8/hald/util.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald/util.c	2006-11-15 11:52:24.000000000 -0600
+@@ -42,8 +42,6 @@
+ #include <sys/file.h>
+ 
+ #include <glib.h>
+-#include <dbus/dbus.h>
+-#include <dbus/dbus-glib.h>
+ 
+ #include "osspec.h"
+ #include "logger.h"
+diff -ur hal-0.5.8/hald-runner/main.c hal-0.5.8-patched/hald-runner/main.c
+--- hal-0.5.8/hald-runner/main.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald-runner/main.c	2006-11-15 11:52:24.000000000 -0600
+@@ -24,8 +24,6 @@
+  **************************************************************************/
+ #include <stdio.h>
+ #include <stdlib.h>
+-#define DBUS_API_SUBJECT_TO_CHANGE 
+-#include <dbus/dbus-glib-lowlevel.h>
+ 
+ #include <glib.h>
+ #include "utils.h"
+diff -ur hal-0.5.8/hald-runner/runner.c hal-0.5.8-patched/hald-runner/runner.c
+--- hal-0.5.8/hald-runner/runner.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald-runner/runner.c	2006-11-15 11:56:42.000000000 -0600
+@@ -31,8 +31,7 @@
+ #include <signal.h>
+ #include <string.h>
+ 
+-#define DBUS_API_SUBJECT_TO_CHANGE 
+-#include <dbus/dbus-glib-lowlevel.h>
++#include <dbus/dbus.h>
+ 
+ #include <glib.h>
+ #include "utils.h"
+diff -ur hal-0.5.8/hald-runner/runner.h hal-0.5.8-patched/hald-runner/runner.h
+--- hal-0.5.8/hald-runner/runner.h	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald-runner/runner.h	2006-11-15 11:52:24.000000000 -0600
+@@ -25,9 +25,6 @@
+ #ifndef RUNNER_H
+ #define RUNNER_H
+ 
+-#define DBUS_API_SUBJECT_TO_CHANGE 
+-#include <dbus/dbus-glib-lowlevel.h>
+-
+ #include <glib.h>
+ 
+ typedef struct {
+diff -ur hal-0.5.8/hald-runner/utils.c hal-0.5.8-patched/hald-runner/utils.c
+--- hal-0.5.8/hald-runner/utils.c	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald-runner/utils.c	2006-11-15 11:52:24.000000000 -0600
+@@ -24,8 +24,6 @@
+  **************************************************************************/
+ #include <stdio.h>
+ #include <stdlib.h>
+-#define DBUS_API_SUBJECT_TO_CHANGE 
+-#include <dbus/dbus-glib-lowlevel.h>
+ #include <glib.h>
+ 
+ #include "utils.h"
+diff -ur hal-0.5.8/hald-runner/utils.h hal-0.5.8-patched/hald-runner/utils.h
+--- hal-0.5.8/hald-runner/utils.h	2006-09-11 16:56:39.000000000 -0500
++++ hal-0.5.8-patched/hald-runner/utils.h	2006-11-15 11:52:35.000000000 -0600
+@@ -25,8 +25,7 @@
+ #ifndef UTILS_H
+ #define UTILS_H
+ 
+-#define DBUS_API_SUBJECT_TO_CHANGE 
+-#include <dbus/dbus-glib-lowlevel.h>
++#include <dbus/dbus.h>
+ 
+ char **get_string_array(DBusMessageIter *iter, gchar *extra);
+ char **get_string_array_from_fd(int fd);
+diff -ur hal-0.5.8/tools/lshal.c hal-0.5.8-patched/tools/lshal.c
+--- hal-0.5.8/tools/lshal.c	2006-09-11 16:56:40.000000000 -0500
++++ hal-0.5.8-patched/tools/lshal.c	2006-11-15 11:52:24.000000000 -0600
+@@ -36,8 +36,6 @@
+ #include <getopt.h>
+ 
+ #include <glib.h>
+-#include <dbus/dbus-glib-lowlevel.h>
+-#include <dbus/dbus-glib.h>
+ #include <libhal.h>
+ 
+ #ifdef __SUNPRO_C

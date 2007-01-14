@@ -1,0 +1,13 @@
+diff -ur hal-0.5.8/libhal-storage/Makefile.in hal-0.5.8-patched/libhal-storage/Makefile.in
+--- hal-0.5.8/libhal-storage/Makefile.in	2006-09-11 18:25:32.000000000 -0500
++++ hal-0.5.8-patched/libhal-storage/Makefile.in	2007-01-14 17:17:28.628840792 -0600
+@@ -354,8 +354,7 @@
+ 	@list='$(lib_LTLIBRARIES)'; for p in $$list; do \
+ 	  if test -f $$p; then \
+ 	    f=$(am__strip_dir) \
+-	    echo " $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) '$$p' '$(DESTDIR)$(libdir)/$$f'"; \
+-	    $(LIBTOOL) --mode=install $(libLTLIBRARIES_INSTALL) $(INSTALL_STRIP_FLAG) "$$p" "$(DESTDIR)$(libdir)/$$f"; \
++	    cp -a "$$p" "$(DESTDIR)$(libdir)/$$f"; \
+ 	  else :; fi; \
+ 	done
+ 

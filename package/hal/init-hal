@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+# haldaemon:   HAL daemon
+#
+# chkconfig: 345 98 02
+# description:  This is a daemon for collecting and maintaing information \
+#               about hardware from several sources. \
+#               See http://www.freedesktop.org/Software/hal
+#
+# processname: hald
+# pidfile: /var/run/haldaemon.pid
+#
+
+# Sanity checks.
+[ -x /usr/sbin/hald ] || exit 0
+
+RETVAL=0
+
+start() {
+    echo -n "Starting HAL daemon: "
+    hald
+    RETVAL=$?
+    echo "done"
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/haldaemon
+}
+
+stop() {
+    echo -n "Stopping HAL daemon: "
+
+    killall hald
+    RETVAL=$?
+    echo "done"
+    if [ $RETVAL -eq 0 ]; then
+        rm -f /var/lock/subsys/haldaemon
+        rm -f /var/run/haldaemon.pid
+    fi
+}
+
+# See how we were called.
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart)
+        stop
+	sleep 3
+        start
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        ;;
+esac
+exit $RETVAL
