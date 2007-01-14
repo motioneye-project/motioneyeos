@@ -1,0 +1,181 @@
+config BR2_PACKAGE_SAMBA
+	bool "samba"
+	default n
+	help
+	  Provides print services to all manner of SMB/CIFS clients,
+	  including the numerous versions of Microsoft Windows
+	  operating systems.
+
+	  http://www.samba.org/
+
+	  NOTE: A complete Samba install takes close to 40MB of space,
+		so choose only the components you need.
+
+menu "Samba tools selection"
+	depends BR2_PACKAGE_SAMBA
+
+config BR2_PACKAGE_SAMBA_CIFS
+	bool "cifs"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Support CIFS
+
+config BR2_PACKAGE_SAMBA_EVENTLOGADM
+	bool "eventlogadm"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Write Eventlog records to a tdb or perform other eventlog functions
+
+config BR2_PACKAGE_SAMBA_NET
+	bool "net"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Distributed SMB/CIFS Server Management Utility
+
+config BR2_PACKAGE_SAMBA_NMBD
+	bool "nmbd"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  NetBIOS name server to provide NetBIOS over IP naming services
+	  to clients
+
+config BR2_PACKAGE_SAMBA_NMBLOOKUP
+	bool "nmblookup"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Query NetBIOS names and map them to IP addresses in a network
+	  using NetBIOS over TCP/IP queries
+
+config BR2_PACKAGE_SAMBA_NTLM_AUTH
+	bool "ntlm_auth"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Helper utility that authenticates users using NT/LM authentication
+
+config BR2_PACKAGE_SAMBA_PDBEDIT
+	bool "pdbedit"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Manage the SAM database (Database of Samba Users)
+
+config BR2_PACKAGE_SAMBA_PROFILES
+	bool "profiles"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Utility that reports and changes SIDs in Windows NT registry files
+
+config BR2_PACKAGE_SAMBA_RPCCLIENT
+	bool "rpcclient"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Tool for executing client side MS-RPC functions using RPC
+	  calls from a UNIX workstation.
+
+config BR2_PACKAGE_SAMBA_SMBCACLS
+	bool "smbcacls"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Set or get ACLs on an NT file or directory names
+
+config BR2_PACKAGE_SAMBA_SMBCLIENT
+	bool "smbclient"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  ftp-like client to access SMB/CIFS resources on servers
+
+config BR2_PACKAGE_SAMBA_SMBCONTROL
+	bool "smbcontrol"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Send messages to smbd, nmbd or winbindd processes
+
+config BR2_PACKAGE_SAMBA_SMBCQUOTAS
+	bool "smbcquotas"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Set or get QUOTAs of NTFS 5 shares
+
+config BR2_PACKAGE_SAMBA_SMBGET
+	bool "smbget"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  wget-like utility for download files over SMB
+
+config BR2_PACKAGE_SAMBA_SMBPASSWD
+	bool "smbpasswd"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Change a user's SMB passwd
+
+config BR2_PACKAGE_SAMBA_SMBSPOOL
+	bool "smbspool"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Send a print file to an SMB printer
+
+config BR2_PACKAGE_SAMBA_SMBSTATUS
+	bool "smbstatus"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Report on current Samba connections
+
+config BR2_PACKAGE_SAMBA_SMBTREE
+	bool "smbtree"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  A text based smb network browser
+
+config BR2_PACKAGE_SAMBA_SWAT
+	bool "swat"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Samba Web Administration Tool
+
+config BR2_PACKAGE_SAMBA_TDB
+	bool "tdb"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Tools to operate on the .tdb database files
+
+config BR2_PACKAGE_SAMBA_TESTPARM
+	bool "testparm"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Check an smb.conf configuration file for internal correctness
+
+config BR2_PACKAGE_SAMBA_WINBINDD
+	bool "winbindd"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Name Service Switch daemon for resolving names from NT servers
+
+config BR2_PACKAGE_SAMBA_WBINFO
+	bool "wbinfo"
+	default y
+	depends on BR2_PACKAGE_SAMBA_WINBINDD
+	help
+	  Query information from winbind daemon
+
+endmenu

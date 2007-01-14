@@ -1,0 +1,79 @@
+#!/bin/sh
+#
+# Stolen from RedHat FC5.
+#
+
+# Check that smb.conf exists.
+[ -f /etc/samba/smb.conf ] || exit 0
+
+# Make directories.
+mkdir -p /var/cache/samba
+mkdir -p /var/log/samba
+
+RETVAL=0
+
+start() {
+	echo -n "Starting SMB services: "
+	smbd -D
+	RETVAL=$?
+	echo "done"
+
+	echo -n "Starting NMB services: "
+	nmbd -D
+	RETVAL2=$?
+	echo "done"
+
+	[ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] && touch /var/lock/subsys/smb || \
+	   RETVAL=1
+	return $RETVAL
+}	
+
+stop() {
+	echo -n "Shutting down SMB services: "
+	kill -9 `pidof smbd`
+	RETVAL=$?
+	rm -f /var/run/smbd.pid
+	echo "done"
+
+	echo -n "Shutting down NMB services: "
+	kill -9 `pidof nmbd`
+	RETVAL2=$?
+	rm -f /var/run/nmbd.pid
+
+	[ $RETVAL -eq 0 -a $RETVAL2 -eq 0 ] && rm -f /var/lock/subsys/smb
+	echo "done"
+	return $RETVAL
+}	
+
+restart() {
+	stop
+	start
+}	
+
+reload() {
+        echo -n "Reloading smb.conf file: "
+	kill -HUP `pidof smbd`
+	RETVAL=$?
+	echo "done"
+	return $RETVAL
+}	
+
+case "$1" in
+  start)
+  	start
+	;;
+  stop)
+  	stop
+	;;
+  restart)
+  	restart
+	;;
+  reload)
+  	reload
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart|reload}"
+	exit 1
+esac
+
+exit $?

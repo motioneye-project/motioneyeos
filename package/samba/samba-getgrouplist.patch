@@ -1,0 +1,42 @@
+diff -ur samba-3.0.23c/source/configure.in samba-3.0.23c-patched/source/configure.in
+--- samba-3.0.23c/source/configure.in	2006-07-21 11:22:57.000000000 -0500
++++ samba-3.0.23c-patched/source/configure.in	2006-11-09 10:23:26.000000000 -0600
+@@ -1399,38 +1399,6 @@
+ AC_DEFINE(HAVE_PRCTL, 1, [Whether prctl is available]),[])
+ 
+ #
+-# 
+-#
+-case "$host_os" in
+-    *linux*)
+-       # glibc <= 2.3.2 has a broken getgrouplist
+-       AC_TRY_RUN([
+-#include <unistd.h>
+-#include <sys/utsname.h>
+-main() {
+-       /* glibc up to 2.3 has a broken getgrouplist */
+-#if defined(__GLIBC__) && defined(__GLIBC_MINOR__)
+-       int libc_major = __GLIBC__;
+-       int libc_minor = __GLIBC_MINOR__;
+-
+-       if (libc_major < 2)
+-              exit(1);
+-       if ((libc_major == 2) && (libc_minor <= 3))
+-              exit(1);
+-#endif
+-       exit(0);
+-}
+-], [linux_getgrouplist_ok=yes], [linux_getgrouplist_ok=no])
+-       if test x"$linux_getgrouplist_ok" = x"yes"; then
+-          AC_DEFINE(HAVE_GETGROUPLIST, 1, [Have good getgrouplist])
+-       fi
+-       ;;
+-    *)
+-       AC_CHECK_FUNCS(getgrouplist)
+-       ;;
+-esac
+-
+-#
+ # stat64 family may need <sys/stat.h> on some systems, notably ReliantUNIX
+ #
+ 
