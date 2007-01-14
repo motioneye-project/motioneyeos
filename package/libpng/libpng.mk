@@ -77,7 +77,7 @@ $(STAGING_DIR)/lib/libpng.so: $(LIBPNG_DIR)/.compiled
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
 		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
 		-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/include/libpng12\',g" \
-		"s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
+		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
 		$(STAGING_DIR)/usr/bin/libpng12-config
 	touch -c $(STAGING_DIR)/lib/libpng.so
 

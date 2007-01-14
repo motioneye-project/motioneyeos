@@ -52,7 +52,7 @@ $(STAGING_DIR)/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
 		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
 		-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/include\',g" \
-		"s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
+		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
 		$(STAGING_DIR)/usr/bin/freetype-config
 	touch -c $(STAGING_DIR)/lib/libfreetype.so
 
