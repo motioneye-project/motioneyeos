@@ -1,0 +1,81 @@
+#!/bin/sh
+#
+# nfs           This shell script takes care of starting and stopping
+#               the NFS services. Stolen from RedHat FC5.
+
+[ -x /usr/sbin/rpc.statd ] || exit 0
+[ -x /usr/sbin/rpc.nfsd ] || exit 0
+[ -x /usr/sbin/rpc.mountd ] || exit 0
+[ -x /usr/sbin/exportfs ] || exit 0
+
+# Don't fail if /etc/exports doesn't exist; create a bare-bones version and continue.
+[ -r /etc/exports ] || \
+    { touch /etc/exports && chmod u+rw,g+r,o+r /etc/exports ; } || \
+    { echo "/etc/exports does not exist" ; exit 0 ; }
+    
+# The /var/lib/nfs directory is actually on a tmpfs filesystem.
+mkdir -p /var/lib/nfs/sm
+mkdir -p /var/lib/nfs/sm.bak
+touch /var/lib/nfs/etab
+touch /var/lib/nfs/rmtab
+touch /var/lib/nfs/state
+touch /var/lib/nfs/xtab
+
+# See how we were called.
+case "$1" in
+  start)
+	# Start daemons.
+	echo -n "Starting NFS statd: "
+	rpc.statd
+	touch /var/lock/subsys/nfslock
+	echo "done"
+
+	echo -n "Starting NFS services: "
+	/usr/sbin/exportfs -r
+	rpc.statd
+	echo "done"
+
+	echo -n "Starting NFS daemon: "
+	rpc.nfsd 2
+	echo "done"
+
+	echo -n "Starting NFS mountd: "
+	rpc.mountd
+	echo "done"
+	touch /var/lock/subsys/nfs
+	;;
+  stop)
+	# Stop daemons.
+	echo -n "Shutting down NFS mountd: "
+	killall -q rpc.mountd
+	echo "done"
+
+	echo "Shutting down NFS daemon: "
+	kill -9 `pidof nfsd` 2>/dev/null
+	echo "done"
+
+	echo -n "Shutting down NFS services: "
+	/usr/sbin/exportfs -au
+	rm -f /var/lock/subsys/nfs
+	killall -q rpc.statd
+	echo "done"
+
+	echo -n "Stopping NFS statd: "
+	killall -q rpc.statd
+	echo "done"
+	rm -f /var/lock/subsys/nfslock
+	;;
+  restart)
+	stop
+	start
+	;;
+  reload)
+	/usr/sbin/exportfs -r
+	touch /var/lock/subsys/nfs
+	;;
+  *)
+	echo "Usage: nfs {start|stop|reload}"
+	exit 1
+esac
+
+exit 0
