@@ -1,0 +1,6 @@
+config BR2_PACKAGE_USBMOUNT
+	bool "usbmount"
+	default n
+	help
+	  The usbmount package automatically mounts USB mass storage devices
+	  when they are plugged in, and unmounts them when they are removed.
