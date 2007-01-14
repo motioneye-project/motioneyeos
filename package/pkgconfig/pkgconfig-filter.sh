@@ -17,11 +17,11 @@ if $CMD.real $* |
 	sed -e "s~\-L/~-L=/~g; s~\-I/~-I=/~g;" |
 	sed -e "s~\-L\=~-L$PKG_CONFIG_SYSROOT~g; s~\-I\=~-I$PKG_CONFIG_SYSROOT~g;"
 then
-	echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR" >&2
-	echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >&2
-	echo "OKAY" >&2;
+	#echo "PKG_CONFIG_LIBDIR=$PKG_CONFIG_LIBDIR" >&2
+	#echo "PKG_CONFIG_PATH=$PKG_CONFIG_PATH" >&2
+	#echo "OKAY" >&2;
 	exit 0;
 else
 	echo "pkg-config failed!" >&2
-	exit 1
+	exit $?
 fi
