@@ -138,15 +138,25 @@ $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6: $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY)
 	cp -a $(STAGING_DIR)/lib/libgmodule-2.0.so.0* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libgobject-2.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libgobject-2.0.so.0* $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/lib/libgthread-2.0.so $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/lib/libgthread-2.0.so.0* $(TARGET_DIR)/lib/
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libglib-2.0.so.0.*
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgmodule-2.0.so.0.*
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgobject-2.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgthread-2.0.so.0.*
 	touch -c $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
 
+ifeq ($(strip $(BR2_PACKAGE_LIBGLIB2_LOCAL)),y)
 libglib2: uclibc gettext libintl pkgconfig $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
+else
+libglib2: uclibc $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
+endif
 
 libglib2-clean:
-	rm -f $(TARGET_DIR)/lib/$(LIBGLIB2_BINARY)
+	rm -f $(TARGET_DIR)/usr/lib/libglib-2.0*
+	rm -f $(TARGET_DIR)/usr/lib/libgmodule-2.0*
+	rm -f $(TARGET_DIR)/usr/lib/libgobject-2.0*
+	rm -f $(TARGET_DIR)/usr/lib/libgthread-2.0*
 	-$(MAKE) -C $(LIBGLIB2_DIR) clean
 
 libglib2-dirclean:
