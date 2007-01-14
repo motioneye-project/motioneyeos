@@ -1,0 +1,47 @@
+#!/bin/sh 
+
+DAEMON=/usr/sbin/proftpd
+trap "" 1
+trap "" 15
+test -f $DAEMON || exit 0
+[ ! -d /var/run/proftpd ] && mkdir /var/run/proftpd
+[ ! -f /var/log/wtmp ] && touch /var/log/wtmp
+
+start() {
+	echo -n "Starting ProFTPD: "
+	$DAEMON
+	if [ $? != 0 ]; then
+		echo "FAILED"
+		exit 1
+	else
+		echo "done"
+	fi
+}
+
+stop() {
+	echo -n "Stopping ProFTPD: "
+	killall proftpd
+        echo "done"
+}
+
+case "$1" in
+    start)
+	start
+	;;
+
+    stop)
+	stop
+	;;
+
+    restart)
+    	stop
+    	start
+	;;
+
+    *)
+	echo "Usage: /etc/init.d/S50proftpd {start|stop|restart}"
+	exit 1
+	;;
+esac
+
+exit 0
