@@ -43,15 +43,18 @@ $(STAGING_DIR)/$(LIBEVENT_TARGET_BINARY): $(LIBEVENT_DIR)/$(LIBEVENT_BINARY)
 $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY): $(STAGING_DIR)/$(LIBEVENT_TARGET_BINARY)
 	make -C $(LIBEVENT_DIR) DESTDIR=$(TARGET_DIR) install
 	rm -f $(TARGET_DIR)/usr/lib/libevent*.la $(TARGET_DIR)/usr/include/ev*
+	rm -f $(TARGET_DIR)/usr/man/man3/ev*.3
+	rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/usr/man/man3
 
 libevent: uclibc $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY)
 
 libevent-clean:
-	rm -f $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY)*
 	-$(MAKE) -C $(LIBEVENT_DIR) clean
 
 libevent-dirclean:
 	rm -rf $(LIBEVENT_DIR)
+
 #############################################################
 #
 # Toplevel Makefile options
