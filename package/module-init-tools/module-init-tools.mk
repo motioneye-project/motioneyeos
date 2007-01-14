@@ -54,6 +54,8 @@ endif
 	STRIPPROG='$(STRIPPROG)' \
 	$(MAKE) prefix=$(TARGET_DIR) -C $(MODULE_INIT_TOOLS_DIR) install-exec
 	rm -Rf $(TARGET_DIR)/usr/man
+	rm -f $(TARGET_DIR)/sbin/generate-modprobe.conf
+	rm -f $(TARGET_DIR)/sbin/insmod.static
 	touch -c $(MODULE_INIT_TOOLS_TARGET_BINARY)
 
 module-init-tools: uclibc $(MODULE_INIT_TOOLS_TARGET_BINARY)
