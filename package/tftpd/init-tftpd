@@ -1,18 +1,6 @@
 #! /bin/sh
-#
-# Author:	Jaakko Niemi <liiwi@iki.fi>
-# Modified from skeleton file in sarge
 
-
-
-
-
-#Defaults for tftpd-hpa
-RUN_DAEMON="yes"
-OPTIONS="-l -s /var/lib/tftpboot"
-
-
-
+OPTIONS="-c -l -s /var/lib/tftpboot"
 
 set -e
 
@@ -23,46 +11,40 @@ DAEMON=/usr/sbin/$NAME
 PIDFILE=/var/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/S80tftpd-hpa
 
-# Gracefully exit if the package has been removed.
-test -x $DAEMON || exit 0
-
-
-if [ "$RUN_DAEMON" != "yes" ] ; then
-         echo "tftpd-hpa disabled in /etc/init.d/S80tftpd-hpa"
-	 exit 0
-fi
-
 #
 #	Function that starts the daemon/service.
 #
 d_start() {
-	start-stop-daemon --start --quiet --exec $DAEMON -- $OPTIONS
+	mkdir -p /var/lib/tftpboot
+	chmod 1777 /var/lib/tftpboot
+	$DAEMON $OPTIONS
 }
 
 #
 #	Function that stops the daemon/service.
 #
 d_stop() {
-	start-stop-daemon --stop --quiet --name $NAME
+	killall -q $NAME
 }
 
 #
 #	Function that sends a SIGHUP to the daemon/service.
 #
 d_reload() {
-	start-stop-daemon --stop --quiet --name $NAME --signal 1
+	d_start
+	d_stop
 }
 
 case "$1" in
   start)
-	echo -n "Starting $DESC: $NAME"
+	echo -n "Starting $DESC: "
 	d_start
-	echo "."
+	echo "done"
 	;;
   stop)
-	echo -n "Stopping $DESC: $NAME"
+	echo -n "Stopping $DESC: "
 	d_stop
-	echo "."
+	echo "done"
 	;;
   #reload)
 	#
@@ -83,11 +65,11 @@ case "$1" in
 	#	option to the "reload" entry above. If not, "force-reload" is
 	#	just the same as "restart".
 	#
-	echo -n "Restarting $DESC: $NAME"
+	echo -n "Restarting $DESC: "
 	d_stop
 	sleep 1
 	d_start
-	echo "."
+	echo "done"
 	;;
   *)
 	# echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2

@@ -25,12 +25,14 @@ $(PORTMAP_DIR)/$(PORTMAP_BINARY): $(PORTMAP_DIR)/.unpacked
 	$(MAKE) CC=$(TARGET_CC) O="$(TARGET_CFLAGS)" -C $(PORTMAP_DIR)
 
 $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY): $(PORTMAP_DIR)/$(PORTMAP_BINARY)
-	install -D $(PORTMAP_DIR)/$(PORTMAP_BINARY) $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
+	$(INSTALL) -D $(PORTMAP_DIR)/$(PORTMAP_BINARY) $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
+	$(INSTALL) -m 0755 -D package/portmap/init-portmap $(TARGET_DIR)/etc/init.d/S13portmap
 
 portmap: uclibc $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
 
 portmap-clean:
 	rm -f $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/etc/init.d/S13portmap
 	-$(MAKE) -C $(PORTMAP_DIR) clean
 
 portmap-dirclean:
