@@ -28,7 +28,7 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	#		bash_cv_have_mbstate_t=yes
 	(cd $(BASH_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_func_setvbuf_reversed=no \
 		./configure \
@@ -39,6 +39,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

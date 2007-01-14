@@ -34,6 +34,17 @@ $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--enable-threads \
 		--enable-shlib \
 	);
@@ -43,12 +54,7 @@ $(DMALLOC_DIR)/$(DMALLOC_BINARY): $(DMALLOC_DIR)/.configured
 	$(MAKE) -C $(DMALLOC_DIR)
 
 $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY): $(DMALLOC_DIR)/$(DMALLOC_BINARY)
-	$(MAKE)	prefix=$(STAGING_DIR)/usr \
-		exec_prefix=$(TARGET_DIR)/usr \
-		libdir=$(STAGING_DIR)/usr/lib \
-		shlibdir=$(TARGET_DIR)/usr/lib \
-		includedir=$(STAGING_DIR)/include \
-		-C $(DMALLOC_DIR) install
+	$(MAKE)	DESTDIR=$(STAGING_DIR) -C $(DMALLOC_DIR) install
 	(cd $(STAGING_DIR)/usr/lib; \
 		mv libdmalloc*.so $(TARGET_DIR)/usr/lib);
 	touch $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)

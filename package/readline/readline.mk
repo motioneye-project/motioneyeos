@@ -22,13 +22,24 @@ $(READLINE_DIR)/.unpacked: $(DL_DIR)/$(READLINE_SOURCE)
 
 $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
 	(cd $(READLINE_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 	);
 	touch $(READLINE_DIR)/.configured
 
@@ -43,30 +54,14 @@ $(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/.configured
 # Install to Staging area
 $(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
-        $(MAKE1) \
-            prefix=$(STAGING_DIR) \
-            exec_prefix=$(STAGING_DIR) \
-            bindir=$(STAGING_DIR)/bin \
-            sbindir=$(STAGING_DIR)/sbin \
-            libexecdir=$(STAGING_DIR)/lib \
-            datadir=$(STAGING_DIR)/usr/share \
-            sysconfdir=$(STAGING_DIR)/etc \
-            localstatedir=$(STAGING_DIR)/var \
-            libdir=$(STAGING_DIR)/lib \
-            infodir=$(STAGING_DIR)/info \
-            mandir=$(STAGING_DIR)/man \
-            includedir=$(STAGING_DIR)/include \
-            -C $(READLINE_DIR) install;
+	$(MAKE1) DESTDIR=$(STAGING_DIR) -C $(READLINE_DIR) install;
 	touch -c $(STAGING_DIR)/include/readline/readline.h
 
 
 # Install only run-time to Target directory
 $(TARGET_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
-	$(MAKE1) \
-            prefix=$(TARGET_DIR) \
-            libdir=$(TARGET_DIR)/lib \
-	-C $(READLINE_DIR) install-shared
+	$(MAKE1) DESTDIR=$(TARGET_DIR) -C $(READLINE_DIR) install-shared
 	touch -c $(TARGET_DIR)/include/readline/readline.h
 
 readline: $(STAGING_DIR)/include/readline/readline.h

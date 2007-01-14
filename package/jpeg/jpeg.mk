@@ -43,7 +43,18 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--without-x \
@@ -55,7 +66,7 @@ $(JPEG_DIR)/.libs/libjpeg.a: $(JPEG_DIR)/.configured
 	touch -c $(JPEG_DIR)/.libs/libjpeg.a
 
 $(STAGING_DIR)/lib/libjpeg.a: $(JPEG_DIR)/.libs/libjpeg.a
-	$(MAKE) -C $(JPEG_DIR) install-headers install-lib
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(JPEG_DIR) install-headers install-lib
 	rm $(STAGING_DIR)/lib/libjpeg.la
 	touch -c $(STAGING_DIR)/lib/libjpeg.a
 

@@ -22,7 +22,7 @@ $(WHICH_DIR)/.unpacked: $(DL_DIR)/$(WHICH_SOURCE)
 
 $(WHICH_DIR)/.configured: $(WHICH_DIR)/.unpacked
 	(cd $(WHICH_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

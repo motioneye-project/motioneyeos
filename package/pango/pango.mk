@@ -4,10 +4,9 @@
 #
 #############################################################
 PANGO_VERSION:=1.13.5
-#PANGO_VERSION:=1.14.8
+#PANGO_VERSION:=1.15.3
 PANGO_SOURCE:=pango-$(PANGO_VERSION).tar.bz2
-#PANGO_SITE:=ftp://ftp.gtk.org/pub/pango/1.14
-PANGO_SITE:=ftp://ftp.gtk.org/pub/pango/1.13
+PANGO_SITE:=http://ftp.gnome.org/pub/GNOME/sources/pango/1.13
 PANGO_CAT:=$(BZCAT)
 PANGO_DIR:=$(BUILD_DIR)/pango-$(PANGO_VERSION)
 PANGO_BINARY:=libpango-1.0.a
@@ -19,7 +18,6 @@ PANGO_BE:=no
 endif
 
 PANGO_BUILD_ENV=$(TARGET_CONFIGURE_OPTS) \
-		PKG_CONFIG=$(STAGING_DIR)/usr/bin/pkg-config \
 		ac_cv_c_bigendian=$(PANGO_BE) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
@@ -78,7 +76,7 @@ PANGO_BUILD_ENV=$(TARGET_CONFIGURE_OPTS) \
 		ac_use_included_regex=no \
 		gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
-		ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/bin/freetype-config
+		ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 
 $(DL_DIR)/$(PANGO_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(PANGO_SITE)/$(PANGO_SOURCE)
@@ -95,25 +93,26 @@ $(PANGO_DIR)/.configured: $(PANGO_DIR)/.unpacked
 	(cd $(PANGO_DIR); rm -rf config.cache; \
 		 $(PANGO_BUILD_ENV) \
 		./configure \
-		--host=$(REAL_GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/X11R6/include \
-		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
+		--x-includes=$(STAGING_DIR)/include \
+		--x-libraries=$(STAGING_DIR)/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \
@@ -125,21 +124,8 @@ $(PANGO_DIR)/pango/.libs/$(PANGO_BINARY): $(PANGO_DIR)/.configured
 	touch -c $(PANGO_DIR)/pango/.libs/$(PANGO_BINARY)
 
 $(STAGING_DIR)/lib/$(PANGO_BINARY): $(PANGO_DIR)/pango/.libs/$(PANGO_BINARY)
-	$(MAKE) prefix=$(STAGING_DIR) \
-	    exec_prefix=$(STAGING_DIR) \
-	    bindir=$(STAGING_DIR)/bin \
-	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/libexec \
-	    datadir=$(STAGING_DIR)/share \
-	    sysconfdir=$(STAGING_DIR)/etc \
-	    sharedstatedir=$(STAGING_DIR)/com \
-	    localstatedir=$(STAGING_DIR)/var \
-	    libdir=$(STAGING_DIR)/lib \
-	    includedir=$(STAGING_DIR)/include \
-	    oldincludedir=$(STAGING_DIR)/include \
-	    infodir=$(STAGING_DIR)/info \
-	    mandir=$(STAGING_DIR)/man \
-	    -C $(PANGO_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(PANGO_DIR) install;
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libpango.la
 
 $(TARGET_DIR)/lib/libpango-1.0.so.0: $(STAGING_DIR)/lib/$(PANGO_BINARY)
 	cp -a $(STAGING_DIR)/lib/libpango-1.0.so $(TARGET_DIR)/lib/

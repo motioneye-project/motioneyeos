@@ -48,6 +48,18 @@ $(LIBPCAP_DIR)/.configured: $(LIBPCAP_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--with-build-cc="$(HOSTCC)" \
 		--disable-yydebug \
 		--prefix=/usr \
@@ -56,19 +68,12 @@ $(LIBPCAP_DIR)/.configured: $(LIBPCAP_DIR)/.unpacked
 	touch $(LIBPCAP_DIR)/.configured
 
 $(LIBPCAP_DIR)/libpcap.a: $(LIBPCAP_DIR)/.configured
-	$(MAKE) \
-		CC="$(TARGET_CC)" \
+	$(MAKE) CC="$(TARGET_CC)" \
 		AR="$(TARGET_CROSS)ar" \
 		-C $(LIBPCAP_DIR)
 
 $(STAGING_DIR)/lib/libpcap.a: $(LIBPCAP_DIR)/libpcap.a
-	$(MAKE) \
-		-C $(LIBPCAP_DIR) \
-		prefix=$(STAGING_DIR) \
-		exec_prefix=$(STAGING_DIR) \
-		bindir=$(STAGING_DIR)/bin \
-		datadir=$(STAGING_DIR)/share \
-		install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBPCAP_DIR) install
 
 libpcap: uclibc zlib $(STAGING_DIR)/lib/libpcap.a
 

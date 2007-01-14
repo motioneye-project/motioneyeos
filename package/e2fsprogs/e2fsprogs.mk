@@ -39,6 +39,7 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/bin \
 		--sbindir=/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

@@ -18,13 +18,24 @@ $(LIBRAW1394_DIR)/.source: $(DL_DIR)/$(LIBRAW1394_SOURCE)
 
 $(LIBRAW1394_DIR)/.configured: $(LIBRAW1394_DIR)/.source
 	(cd $(LIBRAW1394_DIR); \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
-			--target=$(GNU_TARGET_NAME) \
-			--host=$(GNU_TARGET_NAME) \
-			--build=$(GNU_HOST_NAME) \
-			--prefix=$(STAGING_DIR) \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 	);
 	touch $(LIBRAW1394_DIR)/.configured;
 
@@ -33,7 +44,7 @@ $(LIBRAW1394_DIR)/.compiled: $(LIBRAW1394_DIR)/.configured
 	touch $(LIBRAW1394_DIR)/.compiled
 
 $(STAGING_DIR)/lib/libraw1394.so: $(LIBRAW1394_DIR)/.compiled
-	make -C $(LIBRAW1394_DIR)/src install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBRAW1394_DIR)/src install
 
 $(TARGET_DIR)/usr/lib/libraw1394.so: $(STAGING_DIR)/lib/libraw1394.so
 	cp -dpf $(STAGING_DIR)/lib/libraw1394.so* $(TARGET_DIR)/usr/lib/

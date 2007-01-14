@@ -23,7 +23,7 @@ $(USBUTILS_DIR)/.unpacked: $(DL_DIR)/$(USBUTILS_SOURCE)
 
 $(USBUTILS_DIR)/.configured: $(USBUTILS_DIR)/.unpacked
 	(cd $(USBUTILS_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS) -I$(TARGET_DIR)/usr/include" \
 		LDFLAGS="-L$(TARGET_DIR)/usr/lib" \
 		ac_cv_func_malloc_0_nonnull=yes \

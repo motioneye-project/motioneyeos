@@ -35,6 +35,7 @@ $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

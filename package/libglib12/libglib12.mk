@@ -31,18 +31,19 @@ $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		ac_cv_c_bigendian=$(LIBGLIB12_BE) \
 		./configure \
-		--host=$(REAL_GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
@@ -58,7 +59,7 @@ $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINAR
 	    exec_prefix=$(STAGING_DIR) \
 	    bindir=$(STAGING_DIR)/bin \
 	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/libexec \
+	    libexecdir=$(STAGING_DIR)/bin \
 	    datadir=$(STAGING_DIR)/share \
 	    sysconfdir=$(STAGING_DIR)/etc \
 	    sharedstatedir=$(STAGING_DIR)/com \

@@ -30,7 +30,6 @@ $(ATK_DIR)/.unpacked: $(DL_DIR)/$(ATK_SOURCE)
 $(ATK_DIR)/.configured: $(ATK_DIR)/.unpacked
 	(cd $(ATK_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		PKG_CONFIG=$(STAGING_DIR)/usr/bin/pkg-config \
 		ac_cv_c_bigendian=$(ATK_BE) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
@@ -90,18 +89,19 @@ $(ATK_DIR)/.configured: $(ATK_DIR)/.unpacked
 		gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
 		./configure \
+		--target=$(GNU_TARGET_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
@@ -120,21 +120,8 @@ $(ATK_DIR)/atk/.libs/$(ATK_BINARY): $(ATK_DIR)/.configured
 	touch -c $(ATK_DIR)/atk/.libs/$(ATK_BINARY)
 
 $(STAGING_DIR)/lib/$(ATK_BINARY): $(ATK_DIR)/atk/.libs/$(ATK_BINARY)
-	$(MAKE) prefix=$(STAGING_DIR) \
-	    exec_prefix=$(STAGING_DIR) \
-	    bindir=$(STAGING_DIR)/bin \
-	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/libexec \
-	    datadir=$(STAGING_DIR)/share \
-	    sysconfdir=$(STAGING_DIR)/etc \
-	    sharedstatedir=$(STAGING_DIR)/com \
-	    localstatedir=$(STAGING_DIR)/var \
-	    libdir=$(STAGING_DIR)/lib \
-	    includedir=$(STAGING_DIR)/include \
-	    oldincludedir=$(STAGING_DIR)/include \
-	    infodir=$(STAGING_DIR)/info \
-	    mandir=$(STAGING_DIR)/man \
-	    -C $(ATK_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(ATK_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libatk-1.0.la
 	touch -c $(STAGING_DIR)/lib/$(ATK_BINARY)
 
 $(TARGET_DIR)/lib/libatk-1.0.so.0: $(STAGING_DIR)/lib/$(ATK_BINARY)
@@ -143,7 +130,7 @@ $(TARGET_DIR)/lib/libatk-1.0.so.0: $(STAGING_DIR)/lib/$(ATK_BINARY)
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libatk-1.0.so.0.*
 	touch -c $(TARGET_DIR)/lib/libatk-1.0.so.0
 
-atk: libglib2 $(TARGET_DIR)/lib/libatk-1.0.so.0
+atk: libglib2 pkgconfig $(TARGET_DIR)/lib/libatk-1.0.so.0
 
 atk-clean:
 	rm -f $(TARGET_DIR)/lib/$(ATK_BINARY)

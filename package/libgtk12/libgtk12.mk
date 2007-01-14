@@ -27,18 +27,19 @@ $(LIBGTK12_DIR)/.configured: $(LIBGTK12_DIR)/.unpacked
 		GLIB_CONFIG=$(STAGING_DIR)/bin/glib-config \
 		ac_cv_func_mmap_fixed_mapped=yes \
 		./configure \
-		--host=$(REAL_GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
@@ -60,7 +61,7 @@ $(STAGING_DIR)/lib/$(LIBGTK12_BINARY): $(LIBGTK12_DIR)/gtk/.libs/$(LIBGTK12_BINA
 	    exec_prefix=$(STAGING_DIR) \
 	    bindir=$(STAGING_DIR)/bin \
 	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/libexec \
+	    libexecdir=$(STAGING_DIR)/bin \
 	    datadir=$(STAGING_DIR)/share \
 	    sysconfdir=$(STAGING_DIR)/etc \
 	    sharedstatedir=$(STAGING_DIR)/com \

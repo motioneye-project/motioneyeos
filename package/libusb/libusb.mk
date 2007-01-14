@@ -29,7 +29,7 @@ $(LIBUSB_DIR)/.unpacked: $(DL_DIR)/$(LIBUSB_SOURCE)
 
 $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
 	(cd $(LIBUSB_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_header_regex_h=no \
 		ac_cv_c_bigendian=$(LIBUSB_BE) \

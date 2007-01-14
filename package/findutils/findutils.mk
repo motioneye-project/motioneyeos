@@ -35,6 +35,7 @@ $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib/locate \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

@@ -36,6 +36,7 @@ $(BIND_DIR2)/Makefile: $(BIND_DIR2)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--libdir=/lib \
 		--includedir=/include \
@@ -78,9 +79,9 @@ $(TARGET_DIR)/lib/libdns.so: $(STAGING_DIR)/lib/libdns.so
 	cd $(STAGING_DIR)/lib; \
 	    cp -a libdns*so* libisc*so* libbind9*so* \
 	    liblwres*so* $(TARGET_DIR)/lib
-					
+
 bind-lib: $(STAGING_DIR)/lib/libdns.so $(TARGET_DIR)/lib/libdns.so
-				      
+
 bind: uclibc bind-bin bind-lib
 
 bind-clean:

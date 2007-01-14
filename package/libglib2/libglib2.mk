@@ -90,18 +90,19 @@ $(LIBGLIB2_DIR)/.configured: $(LIBGLIB2_DIR)/.unpacked
 		gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
 		./configure \
-		--host=$(REAL_GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
@@ -115,21 +116,11 @@ $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BINARY): $(LIBGLIB2_DIR)/.configured
 	touch -c $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BINARY)
 
 $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY): $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BINARY)
-	$(MAKE) prefix=$(STAGING_DIR) \
-	    exec_prefix=$(STAGING_DIR) \
-	    bindir=$(STAGING_DIR)/bin \
-	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/libexec \
-	    datadir=$(STAGING_DIR)/share \
-	    sysconfdir=$(STAGING_DIR)/etc \
-	    sharedstatedir=$(STAGING_DIR)/com \
-	    localstatedir=$(STAGING_DIR)/var \
-	    libdir=$(STAGING_DIR)/lib \
-	    includedir=$(STAGING_DIR)/include \
-	    oldincludedir=$(STAGING_DIR)/include \
-	    infodir=$(STAGING_DIR)/info \
-	    mandir=$(STAGING_DIR)/man \
-	    -C $(LIBGLIB2_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBGLIB2_DIR) install;
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libglib-2.0.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgmodule-2.0.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgobject-2.0.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgthread-2.0.la
 
 $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6: $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY)
 	cp -a $(STAGING_DIR)/lib/libglib-2.0.so $(TARGET_DIR)/lib/

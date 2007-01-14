@@ -25,7 +25,6 @@ $(LIBGTK2_DIR)/.unpacked: $(DL_DIR)/$(LIBGTK2_SOURCE)
 $(LIBGTK2_DIR)/.configured: $(LIBGTK2_DIR)/.unpacked
 	(cd $(LIBGTK2_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		PKG_CONFIG=$(STAGING_DIR)/usr/bin/pkg-config \
 		GLIB_CONFIG=$(STAGING_DIR)/bin/glib-config \
 		ac_cv_func_mmap_fixed_mapped=yes \
 		ac_cv_func_posix_getpwuid_r=yes \
@@ -87,18 +86,19 @@ $(LIBGTK2_DIR)/.configured: $(LIBGTK2_DIR)/.unpacked
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
 		ac_cv_path_CUPS_CONFIG=no \
 		./configure \
-		--host=$(REAL_GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
@@ -124,7 +124,7 @@ $(STAGING_DIR)/lib/$(LIBGTK2_BINARY): $(LIBGTK2_DIR)/gtk/.libs/$(LIBGTK2_BINARY)
 	    exec_prefix=$(STAGING_DIR) \
 	    bindir=$(STAGING_DIR)/bin \
 	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/libexec \
+	    libexecdir=$(STAGING_DIR)/bin \
 	    datadir=$(STAGING_DIR)/share \
 	    sysconfdir=$(STAGING_DIR)/etc \
 	    sharedstatedir=$(STAGING_DIR)/com \

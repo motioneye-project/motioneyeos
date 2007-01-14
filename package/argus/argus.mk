@@ -50,7 +50,7 @@ endif
 
 $(ARGUS_DIR)/.configured: $(ARGUS_DIR)/.unpacked
 	(cd $(ARGUS_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		$(ARGUS_TRAP_CHECK) \
 		./configure \

@@ -27,7 +27,18 @@ $(TIFF_DIR)/.configured: $(TIFF_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--disable-cxx \
@@ -44,7 +55,8 @@ $(TIFF_DIR)/libtiff/.libs/libtiff.a: $(TIFF_DIR)/.configured
 	touch -c $(TIFF_DIR)/libtiff/.libs/libtiff.a
 
 $(STAGING_DIR)/lib/libtiff.so.$(TIFF_VER): $(TIFF_DIR)/libtiff/.libs/libtiff.a
-	$(MAKE) -C $(TIFF_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(TIFF_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libtiff.la
 	touch -c $(STAGING_DIR)/lib/libtiff.so.$(TIFF_VER)
 
 $(TARGET_DIR)/lib/libtiff.so.$(TIFF_VER): $(STAGING_DIR)/lib/libtiff.so.$(TIFF_VER)

@@ -30,10 +30,12 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-gnu-ld \
@@ -53,20 +55,7 @@ $(DB_DIR)/build_unix/.libs/$(DB_SHARLIB): $(DB_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(DB_DIR)/build_unix
 
 $(STAGING_DIR)/lib/$(DB_SHARLIB): $(DB_DIR)/build_unix/.libs/$(DB_SHARLIB)
-	$(MAKE) \
-	    prefix=$(STAGING_DIR) \
-	    exec_prefix=$(STAGING_DIR) \
-	    bindir=$(STAGING_DIR)/bin \
-	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/lib \
-	    datadir=$(STAGING_DIR)/share \
-	    sysconfdir=$(STAGING_DIR)/etc \
-	    localstatedir=$(STAGING_DIR)/var \
-	    libdir=$(STAGING_DIR)/lib \
-	    infodir=$(STAGING_DIR)/info \
-	    mandir=$(STAGING_DIR)/man \
-	    includedir=$(STAGING_DIR)/include \
-	    -C $(DB_DIR)/build_unix install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DB_DIR)/build_unix install
 	chmod a-x $(STAGING_DIR)/lib/libdb*so*
 	rm -f $(STAGING_DIR)/bin/db_*
 	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/info \

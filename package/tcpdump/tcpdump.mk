@@ -32,23 +32,31 @@ $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--with-build-cc="$(HOSTCC)" \
-		--prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
 		--without-crypto \
 	)
 	$(SED) '/HAVE_PCAP_DEBUG/d' $(TCPDUMP_DIR)/config.h
 	touch $(TCPDUMP_DIR)/.configured
 
 $(TCPDUMP_DIR)/tcpdump: $(TCPDUMP_DIR)/.configured
-	$(MAKE) \
-		CC="$(TARGET_CC)" \
+	$(MAKE) CC="$(TARGET_CC)" \
 		LDFLAGS="-L$(STAGING_DIR)/lib" \
 		LIBS="-lpcap" \
 		INCLS="-I. -I$(STAGING_DIR)/include" \
 		-C $(TCPDUMP_DIR)
-	
+
 $(TARGET_DIR)/sbin/tcpdump: $(TCPDUMP_DIR)/tcpdump
 	cp -af $< $@
 

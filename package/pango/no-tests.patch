@@ -9,7 +9,7 @@
  ## Process this file with automake to create Makefile.in.
  
 -SUBDIRS= pango modules examples docs tools tests
-+SUBDIRS= pango modules examples docs tools 
++SUBDIRS= pango modules tools 
  
  EXTRA_DIST = 		\
  	pango.pc.in	\

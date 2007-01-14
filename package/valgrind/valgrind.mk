@@ -32,6 +32,7 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

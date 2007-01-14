@@ -41,13 +41,14 @@ $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libexecdir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--includedir=$(STAGING_DIR)/include \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--disable-lynx \
@@ -60,13 +61,7 @@ $(LIBDAEMON_DIR)/.compiled: $(LIBDAEMON_DIR)/.configured
 	touch $(LIBDAEMON_DIR)/.compiled
 
 $(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
-	$(MAKE) \
-		-C $(LIBDAEMON_DIR) \
-		prefix=$(STAGING_DIR) \
-		exec_prefix=$(STAGING_DIR) \
-		bindir=$(STAGING_DIR)/bin \
-		datadir=$(STAGING_DIR)/share \
-		install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBDAEMON_DIR) install
 	touch -c $(STAGING_DIR)/lib/libdaemon.a
 
 #$(TARGET_DIR)/usr/lib/libdaemon.a: $(STAGING_DIR)/lib/libdaemon.a

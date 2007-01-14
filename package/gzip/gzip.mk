@@ -33,6 +33,7 @@ $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
 		--exec-prefix=/ \
 		--bindir=/bin \
 		--sbindir=/bin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share/misc \

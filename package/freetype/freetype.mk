@@ -3,7 +3,7 @@
 # freetype
 #
 #############################################################
-FREETYPE_VERSION:=2.1.9
+FREETYPE_VERSION:=2.2.1
 FREETYPE_SOURCE:=freetype-$(FREETYPE_VERSION).tar.bz2
 FREETYPE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/freetype
 FREETYPE_CAT:=$(BZCAT)
@@ -22,26 +22,45 @@ $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
 	(cd $(FREETYPE_DIR); \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
+	CCexe="$(HOSTCC)" \
 	./configure \
-	--target=$(GNU_TARGET_NAME) \
-	--host=$(GNU_TARGET_NAME) \
-	--build=$(GNU_HOST_NAME) \
-	--prefix=$(STAGING_DIR) );
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+	);
 	touch $(FREETYPE_DIR)/.configured
 
 $(FREETYPE_DIR)/.compiled: $(FREETYPE_DIR)/.configured
-	$(MAKE) -C $(FREETYPE_DIR) 
+	$(MAKE) CCexe="$(HOSTCC)" -C $(FREETYPE_DIR)
 	touch $(FREETYPE_DIR)/.compiled
 
 $(STAGING_DIR)/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
-	$(MAKE) -C $(FREETYPE_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(FREETYPE_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libfreetype.la
+	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
+		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
+		-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/include\',g" \
+		"s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
+		$(STAGING_DIR)/usr/bin/freetype-config
 	touch -c $(STAGING_DIR)/lib/libfreetype.so
 
 $(TARGET_DIR)/lib/libfreetype.so: $(STAGING_DIR)/lib/libfreetype.so
 	cp -dpf $(STAGING_DIR)/lib/libfreetype.so* $(TARGET_DIR)/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libfreetype.so
 
-freetype: uclibc $(TARGET_DIR)/lib/libfreetype.so
+freetype: uclibc pkgconfig $(TARGET_DIR)/lib/libfreetype.so
 
 freetype-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FREETYPE_DIR) uninstall

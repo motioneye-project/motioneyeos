@@ -30,7 +30,6 @@ $(CAIRO_DIR)/.unpacked: $(DL_DIR)/$(CAIRO_SOURCE)
 $(CAIRO_DIR)/.configured: $(CAIRO_DIR)/.unpacked
 	(cd $(CAIRO_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		PKG_CONFIG=$(STAGING_DIR)/usr/bin/pkg-config \
 		ac_cv_c_bigendian=$(CAIRO_BE) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
@@ -90,25 +89,26 @@ $(CAIRO_DIR)/.configured: $(CAIRO_DIR)/.unpacked
 		gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
 		./configure \
-		--host=$(REAL_GNU_TARGET_NAME) \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/X11R6/include \
-		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
+		--x-includes=$(STAGING_DIR)/include \
+		--x-libraries=$(STAGING_DIR)/lib \
 		--enable-ps=yes \
 		--enable-pdf=yes \
 		--enable-svg=no \
@@ -124,21 +124,10 @@ $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY): $(CAIRO_DIR)/.configured
 	touch -c $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY)
 
 $(STAGING_DIR)/lib/$(CAIRO_BINARY): $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY)
-	$(MAKE) prefix=$(STAGING_DIR) \
-	    exec_prefix=$(STAGING_DIR) \
-	    bindir=$(STAGING_DIR)/bin \
-	    sbindir=$(STAGING_DIR)/sbin \
-	    libexecdir=$(STAGING_DIR)/libexec \
-	    datadir=$(STAGING_DIR)/share \
-	    sysconfdir=$(STAGING_DIR)/etc \
-	    sharedstatedir=$(STAGING_DIR)/com \
-	    localstatedir=$(STAGING_DIR)/var \
-	    libdir=$(STAGING_DIR)/lib \
-	    includedir=$(STAGING_DIR)/include \
-	    oldincludedir=$(STAGING_DIR)/include \
-	    infodir=$(STAGING_DIR)/info \
-	    mandir=$(STAGING_DIR)/man \
-	    -C $(CAIRO_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(CAIRO_DIR) install;
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libcairo.la
+	$(SED) "s, x11 ,,g" $(STAGING_DIR)/lib/pkgconfig/cairo.pc
+	$(SED) "s, x11 ,,g" $(STAGING_DIR)/lib/pkgconfig/cairo-xlib.pc
 	touch -c $(STAGING_DIR)/lib/$(CAIRO_BINARY)
 
 $(TARGET_DIR)/lib/libcairo.so.2.9.3: $(STAGING_DIR)/lib/$(CAIRO_BINARY)

@@ -12,7 +12,7 @@ XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap xinit/startx \
 	mkfontscale/mkfontscale mkfontdir/mkfontdir \
 	#xterm/xterm
 
-XORG_LIBS:= Xft fontconfig Xrender Xaw Xmu Xt \
+XORG_LIBS:= Xft Xrender Xaw Xmu Xt \
 	SM ICE Xpm Xp Xext X11 Xmuu Xxf86misc
 
 
@@ -73,9 +73,12 @@ endif
 $(DL_DIR)/$(XORG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(XORG_SITE)/$(XORG_SOURCE)
 
-$(XORG_DIR)/.configured: $(DL_DIR)/$(XORG_SOURCE)
+$(XORG_DIR)/.unpacked: $(DL_DIR)/$(XORG_SOURCE)
 	$(XORG_CAT) $(DL_DIR)/$(XORG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(XORG_DIR) package/xorg/ \*.patch
+	touch $(XORG_DIR)/.unpacked
+
+$(XORG_DIR)/.configured: $(XORG_DIR)/.unpacked
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_HOST_DEF)
 	$(SED) 's:REPLACE_GCCINC_DIR:$(shell $(TARGET_CROSS)gcc -print-file-name=include):g' $(XORG_CF)
 	$(SED) 's:REPLACE_STAGING_DIR:$(STAGING_DIR):g' $(XORG_CF)
@@ -98,10 +101,10 @@ $(XORG_XSERVER): $(XORG_DIR)/.configured
 
 $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 	-mkdir -p $(STAGING_DIR)/usr/X11R6
+	ln -fs ../../include $(STAGING_DIR)/usr/X11R6/include
 	ln -fs ../../lib $(STAGING_DIR)$(TARGET_LIBX)
 	( cd $(XORG_DIR); $(MAKE) \
 		DESTDIR=$(STAGING_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
-	$(SED) 's,/usr/X11R6,$(STAGING_DIR)/usr/X11R6,' $(STAGING_DIR)/usr/X11R6/lib/pkgconfig/*.pc
 	touch -c $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
 
 $(TARGET_XSERVER): $(XORG_XSERVER)
@@ -146,8 +149,7 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
 $(TARGET_DIR)/usr/bin/mcookie: package/xorg/mcookie.c
 	$(TARGET_CROSS)gcc -Wall -Os -s package/xorg/mcookie.c -o $(TARGET_DIR)/usr/bin/mcookie
 
-xorg: zlib png pkgconfig expat freetype \
-	$(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 \
+xorg: zlib png pkgconfig expat fontconfig $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 \
 	$(XORG_LIBX)/libX11.so.6.2 $(TARGET_DIR)/usr/bin/mcookie
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE)

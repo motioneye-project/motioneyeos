@@ -19,7 +19,7 @@ $(PSMISC_DIR)/.unpacked: $(DL_DIR)/$(PSMISC_SOURCE)
 
 $(PSMISC_DIR)/.configured: $(PSMISC_DIR)/.unpacked
 	(cd $(PSMISC_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

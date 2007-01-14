@@ -30,7 +30,17 @@ $(SQLITE_DIR)/.configured: $(SQLITE_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--disable-tcl \
@@ -44,7 +54,7 @@ $(SQLITE_DIR)/sqlite3: $(SQLITE_DIR)/.configured
 	$(MAKE) -C $(SQLITE_DIR)
 
 $(STAGING_DIR)/bin/sqlite3: $(SQLITE_DIR)/sqlite3
-	$(MAKE) prefix=$(STAGING_DIR) -C $(SQLITE_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SQLITE_DIR) install
 
 $(TARGET_DIR)/usr/bin/sqlite3: $(STAGING_DIR)/bin/sqlite3
 	cp -a $(STAGING_DIR)/bin/sqlite3 $(TARGET_DIR)/usr/bin

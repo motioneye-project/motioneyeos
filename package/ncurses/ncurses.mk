@@ -48,20 +48,22 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
+		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-terminfo-dirs=/usr/share/terminfo \
 		--with-default-terminfo-dir=/usr/share/terminfo \
-		--libdir=$(STAGING_DIR)/lib \
 		--with-shared --without-cxx --without-cxx-binding \
 		--without-ada --without-progs $(DISABLE_NLS) \
 		--without-profile --without-debug --disable-rpath \

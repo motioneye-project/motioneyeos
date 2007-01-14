@@ -29,13 +29,15 @@ $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
-		--bindir=$(STAGING_DIR)/usr/bin \
-		--sbindir=$(STAGING_DIR)/usr/sbin \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=$(STAGING_DIR)/man \
+		--includedir=/include \
+		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
 	);
@@ -46,8 +48,8 @@ $(EXPAT_DIR)/.libs/libexpat.a: $(EXPAT_DIR)/.configured
 	touch -c $(EXPAT_DIR)/.libs/libexpat.a
 
 $(STAGING_DIR)/lib/libexpat.so.1: $(EXPAT_DIR)/.libs/libexpat.a
-	$(MAKE) -C $(EXPAT_DIR) prefix=$(STAGING_DIR) \
-		exec_prefix=$(STAGING_DIR) mandir=$(STAGING_DIR)/man install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(EXPAT_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libexpat.la
 	touch -c $(STAGING_DIR)/lib/libexpat.so.1
 
 $(TARGET_DIR)/lib/libexpat.so.1: $(STAGING_DIR)/lib/libexpat.so.1
@@ -56,7 +58,7 @@ $(TARGET_DIR)/lib/libexpat.so.1: $(STAGING_DIR)/lib/libexpat.so.1
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libexpat.so.0.5.0
 	touch -c $(TARGET_DIR)/lib/libexpat.so.1
 
-expat: uclibc $(TARGET_DIR)/lib/libexpat.so.1
+expat: uclibc pkgconfig $(TARGET_DIR)/lib/libexpat.so.1
 
 expat-clean:
 	rm -f $(EXPAT_DIR)/.configured

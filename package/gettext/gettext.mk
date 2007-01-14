@@ -82,10 +82,18 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
-		--exec_prefix=$(STAGING_DIR) \
-		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/bin \
+		--sbindir=/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		--disable-libasprintf \
 	);
 	touch $(GETTEXT_DIR)/.configured
@@ -95,9 +103,17 @@ $(GETTEXT_DIR)/$(GETTEXT_BINARY): $(GETTEXT_DIR)/.configured
 	touch -c $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 
 $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
-	$(MAKE) -C $(GETTEXT_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(GETTEXT_DIR) install
+	$(SED) 's,/lib/,$(STAGING_DIR)/lib/,g' $(STAGING_DIR)/lib/libgettextlib.la
+	$(SED) 's,/lib/,$(STAGING_DIR)/lib/,g' $(STAGING_DIR)/lib/libgettextpo.la
+	$(SED) 's,/lib/,$(STAGING_DIR)/lib/,g' $(STAGING_DIR)/lib/libgettextsrc.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgettextlib.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgettextpo.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgettextsrc.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libintl.la
+	touch -c $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 
-gettext: uclibc $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
+gettext: uclibc pkgconfig $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 
 gettext-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) uninstall
@@ -114,17 +130,17 @@ gettext-dirclean:
 
 gettext-target: $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) install
-	chmod +x $(TARGET_DIR)/usr/lib/libintl.so.3.4.3 # identify as needing to be stipped
+	chmod +x $(TARGET_DIR)/lib/libintl.so.3.4.3 # identify as needing to be stipped
 	rm -rf  $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
 		$(TARGET_DIR)/usr/doc $(TARGET_DIR)/usr/share/aclocal \
 		$(TARGET_DIR)/usr/include/libintl.h
 	-rmdir $(TARGET_DIR)/usr/include
 
-libintl: $(TARGET_DIR)/usr/lib/libintl.so
+libintl: $(TARGET_DIR)/lib/libintl.so
 
-$(TARGET_DIR)/usr/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
-	cp -a $(STAGING_DIR)/usr/lib/libintl.so* $(TARGET_DIR)/usr/lib
+$(TARGET_DIR)/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
+	cp -a $(STAGING_DIR)/lib/libintl.so* $(TARGET_DIR)/lib
 	touch $@
 
 #############################################################

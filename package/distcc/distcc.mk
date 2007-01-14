@@ -22,7 +22,7 @@ $(DISTCC_DIR)/.unpacked: $(DL_DIR)/$(DISTCC_SOURCE)
 
 $(DISTCC_DIR)/.configured: $(DISTCC_DIR)/.unpacked
 	(cd $(DISTCC_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -31,6 +31,7 @@ $(DISTCC_DIR)/.configured: $(DISTCC_DIR)/.unpacked
 		--prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

@@ -27,21 +27,32 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 	ac_cv_header_linux_wm97xx_h=no \
 	ac_cv_header_linux_sisfb_h=no \
 	./configure \
-	--target=$(GNU_TARGET_NAME) \
-	--host=$(GNU_TARGET_NAME) \
-	--build=$(GNU_HOST_NAME) \
-	--prefix=/usr \
-	--with-gfxdrivers=cle266,unichrome \
-	--enable-jpeg \
-	--enable-png \
-	--enable-linux-input \
-	--enable-zlib \
-	--enable-freetype \
-	--enable-sysfs \
-	--disable-sdl \
-	--disable-video4linux \
-	--disable-video4linux2 \
-	--disable-fusion );
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/usr/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--with-gfxdrivers=cle266,unichrome \
+		--enable-jpeg \
+		--enable-png \
+		--enable-linux-input \
+		--enable-zlib \
+		--enable-freetype \
+		--enable-sysfs \
+		--disable-sdl \
+		--disable-video4linux \
+		--disable-video4linux2 \
+		--disable-fusion );
 	touch $(DIRECTFB_DIR)/.configured
 
 $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured
@@ -49,7 +60,7 @@ $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured
 	touch $(DIRECTFB_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libdirectfb.so: $(DIRECTFB_DIR)/.compiled
-	$(MAKE) -C $(DIRECTFB_DIR) install prefix=$(STAGING_DIR)/usr exec_prefix=$(STAGING_DIR)/usr
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DIRECTFB_DIR) install
 	touch -c $(STAGING_DIR)/lib/libdirectfb.so
 
 $(TARGET_DIR)/usr/lib/libdirectfb.so: $(STAGING_DIR)/usr/lib/libdirectfb.so

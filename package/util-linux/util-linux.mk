@@ -8,8 +8,8 @@ UTIL-LINUX_SOURCE:=util-linux-$(UTIL-LINUX_VER).tar.bz2
 UTIL-LINUX_SITE:=http://www.kernel.org/pub/linux/utils/util-linux
 UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-$(UTIL-LINUX_VER)
 UTIL-LINUX_CAT:=$(BZCAT)
-UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/mcookie
-UTIL-LINUX_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/mcookie
+UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/chkdupexe
+UTIL-LINUX_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/chkdupexe
 
 $(DL_DIR)/$(UTIL-LINUX_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UTIL-LINUX_SITE)/$(UTIL-LINUX_SOURCE)
@@ -32,6 +32,7 @@ $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

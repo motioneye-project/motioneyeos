@@ -33,6 +33,7 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
+		--libdir=/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \

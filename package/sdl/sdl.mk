@@ -23,14 +23,25 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS)" \
 	./configure \
-	--target=$(GNU_TARGET_NAME) \
-	--host=$(GNU_TARGET_NAME) \
-	--build=$(GNU_HOST_NAME) \
-	--prefix=$(STAGING_DIR)/usr \
-	--disable-arts \
-	--disable-esd \
-	--disable-nasm \
-	--disable-video-x11 );
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--disable-arts \
+		--disable-esd \
+		--disable-nasm \
+		--disable-video-x11 );
 	touch $(SDL_DIR)/.configured
 
 $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured
@@ -38,7 +49,7 @@ $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured
 	touch $(SDL_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
-	$(MAKE) -C $(SDL_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SDL_DIR) install;
 	touch -c $(STAGING_DIR)/usr/lib/libSDL.so
 
 $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so

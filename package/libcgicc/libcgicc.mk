@@ -27,7 +27,18 @@ $(LIBCGICC_DIR)/.configured: $(LIBCGICC_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=$(STAGING_DIR) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 	);
 	touch $(LIBCGICC_DIR)/.configured
 
@@ -36,7 +47,7 @@ $(LIBCGICC_DIR)/.compiled: $(LIBCGICC_DIR)/.configured
 	touch $(LIBCGICC_DIR)/.compiled
 
 $(STAGING_DIR)/lib/libcgicc.so: $(LIBCGICC_DIR)/.compiled
-	$(MAKE) -C $(LIBCGICC_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBCGICC_DIR) install
 	touch -c $(STAGING_DIR)/lib/libcgicc.so
 
 $(TARGET_DIR)/usr/lib/libcgicc.so: $(STAGING_DIR)/lib/libcgicc.so

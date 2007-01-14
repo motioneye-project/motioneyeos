@@ -26,8 +26,18 @@ $(LIBCGI_DIR)/.configured: $(LIBCGI_DIR)/.source
 			--target=$(GNU_TARGET_NAME) \
 			--host=$(GNU_TARGET_NAME) \
 			--build=$(GNU_HOST_NAME) \
-			--prefix=$(STAGING_DIR) \
+			--prefix=/usr \
+			--exec-prefix=/usr \
+			--bindir=/usr/bin \
+			--sbindir=/usr/sbin \
+			--libdir=/lib \
+			--libexecdir=/usr/lib \
 			--sysconfdir=/etc \
+			--datadir=/usr/share \
+			--localstatedir=/var \
+			--includedir=/include \
+			--mandir=/usr/man \
+			--infodir=/usr/info \
 	);
 	touch $(LIBCGI_DIR)/.configured;
 
@@ -35,7 +45,7 @@ $(LIBCGI_DIR)/$(LIBCGI_LIBRARY): $(LIBCGI_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBCGI_DIR)
 
 $(STAGING_DIR)/lib/libcgi.so: $(LIBCGI_DIR)/$(LIBCGI_LIBRARY)
-	$(MAKE) -C $(LIBCGI_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBCGI_DIR) install
 	touch -c $(STAGING_DIR)/lib/libcgi.so
 
 $(TARGET_DIR)/$(LIBCGI_TARGET_LIBRARY): $(STAGING_DIR)/lib/libcgi.so

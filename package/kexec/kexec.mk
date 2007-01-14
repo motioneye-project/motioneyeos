@@ -42,7 +42,7 @@ endif
 
 $(KEXEC_DIR)/.configured: $(KEXEC_DIR)/.unpacked
 	(cd $(KEXEC_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD="$(HOSTCC)" \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--host=$(GNU_TARGET_NAME) \

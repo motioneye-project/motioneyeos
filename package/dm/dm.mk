@@ -62,6 +62,17 @@ $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
@@ -72,8 +83,8 @@ $(DM_DIR)/$(DM_BINARY): dm-build
 $(DM_DIR)/$(DM_LIBRARY): dm-build
 
 $(DM_STAGING_BINARY) $(DM_STAGING_LIBRARY): $(DM_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(STAGING_DIR) -C $(DM_DIR)
-	$(MAKE) -C $(DM_DIR) install prefix=$(STAGING_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(DM_DIR)
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DM_DIR) install
 
 # Install dmsetup from staging to target
 $(DM_TARGET_BINARY): $(DM_STAGING_BINARY)

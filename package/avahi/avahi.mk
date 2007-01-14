@@ -34,7 +34,6 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LIBDAEMON_CFLAGS="-I$(STAGING_DIR)/include" \
 		LIBDAEMON_LIBS="-L$(STAGING_DIR)/lib -ldaemon" \
-		PKG_CONFIG_PATH="$(LIBDAEMON_DIR)" \
 		ac_cv_func_strtod=yes \
 		ac_fsusage_space=yes \
 		fu_cv_sys_stat_statfs2_bsize=yes \
@@ -90,19 +89,20 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked
 		ac_use_included_regex=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
+		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libexecdir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--includedir=$(STAGING_DIR)/include \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--disable-glib \
@@ -130,15 +130,7 @@ $(AVAHI_DIR)/.compiled: $(AVAHI_DIR)/.configured
 	touch $(AVAHI_DIR)/.compiled
 
 $(STAGING_DIR)/sbin/avahi-autoipd: $(AVAHI_DIR)/.compiled
-	$(MAKE) \
-		-C $(AVAHI_DIR)/avahi-autoipd \
-		prefix=$(STAGING_DIR) \
-		exec_prefix=$(STAGING_DIR) \
-		bindir=$(STAGING_DIR)/bin \
-		datadir=$(STAGING_DIR)/share \
-		sbindir=$(STAGING_DIR)/sbin \
-		sysconfdir=$(STAGING_DIR)/etc \
-		install
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(AVAHI_DIR)/avahi-autoipd install
 	touch -c $(STAGING_DIR)/sbin/avahi-autoipd
 
 $(TARGET_DIR)/usr/sbin/avahi-autoipd: $(STAGING_DIR)/sbin/avahi-autoipd

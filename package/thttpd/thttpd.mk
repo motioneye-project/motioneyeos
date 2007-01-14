@@ -24,7 +24,7 @@ $(THTTPD_DIR)/.unpacked: $(DL_DIR)/$(THTTPD_SOURCE)
 
 $(THTTPD_DIR)/.configured: $(THTTPD_DIR)/.unpacked
 	(cd $(THTTPD_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) CC_FOR_BUILD=$(HOSTCC) \
+		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
