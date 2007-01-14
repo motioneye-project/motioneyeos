@@ -1,0 +1,77 @@
+--- dbus-glib-0.70/tools/dbus-bus-introspect.xml.dontgenerate	2006-07-18 15:14:38.000000000 -0400
++++ dbus-glib-0.70/tools/dbus-bus-introspect.xml	2006-07-18 15:13:17.000000000 -0400
+@@ -0,0 +1,74 @@
++   <!DOCTYPE node PUBLIC "-//freedesktop//DTD D-BUS Object Introspection 1.0//EN"
++"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd">
++<node>
++  <interface name="org.freedesktop.DBus.Introspectable">
++    <method name="Introspect">
++      <arg name="data" direction="out" type="s"/>
++    </method>
++  </interface>
++  <interface name="org.freedesktop.DBus">
++    <method name="RequestName">
++      <arg direction="in" type="s"/>
++      <arg direction="in" type="u"/>
++      <arg direction="out" type="u"/>
++    </method>
++    <method name="ReleaseName">
++      <arg direction="in" type="s"/>
++      <arg direction="out" type="u"/>
++    </method>
++    <method name="StartServiceByName">
++      <arg direction="in" type="s"/>
++      <arg direction="in" type="u"/>
++      <arg direction="out" type="u"/>
++    </method>
++    <method name="Hello">
++      <arg direction="out" type="s"/>
++    </method>
++    <method name="NameHasOwner">
++      <arg direction="in" type="s"/>
++      <arg direction="out" type="b"/>
++    </method>
++    <method name="ListNames">
++      <arg direction="out" type="as"/>
++    </method>
++    <method name="AddMatch">
++      <arg direction="in" type="s"/>
++    </method>
++    <method name="RemoveMatch">
++      <arg direction="in" type="s"/>
++    </method>
++    <method name="GetNameOwner">
++      <arg direction="in" type="s"/>
++      <arg direction="out" type="s"/>
++    </method>
++    <method name="ListQueuedOwners">
++      <arg direction="in" type="s"/>
++      <arg direction="out" type="as"/>
++    </method>
++    <method name="GetConnectionUnixUser">
++      <arg direction="in" type="s"/>
++      <arg direction="out" type="u"/>
++    </method>
++    <method name="GetConnectionUnixProcessID">
++      <arg direction="in" type="s"/>
++      <arg direction="out" type="u"/>
++    </method>
++    <method name="GetConnectionSELinuxSecurityContext">
++      <arg direction="in" type="s"/>
++      <arg direction="out" type="ay"/>
++    </method>
++    <method name="ReloadConfig">
++    </method>
++    <signal name="NameOwnerChanged">
++      <arg type="s"/>
++      <arg type="s"/>
++      <arg type="s"/>
++    </signal>
++    <signal name="NameLost">
++      <arg type="s"/>
++    </signal>
++    <signal name="NameAcquired">
++      <arg type="s"/>
++    </signal>
++  </interface>
++</node>

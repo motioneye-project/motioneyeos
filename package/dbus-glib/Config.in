@@ -1,0 +1,9 @@
+config BR2_PACKAGE_DBUS_GLIB
+	bool "dbus-glib"
+	default n
+	depends on BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  GLib bindings for D-Bus.
+
+	  http://www.freedesktop.org/software/dbus

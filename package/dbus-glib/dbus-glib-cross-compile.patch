@@ -1,0 +1,129 @@
+diff -ur dbus-glib-0.72/configure.ac dbus-glib-0.72-patched/configure.ac
+--- dbus-glib-0.72/configure.ac	2006-10-25 15:53:55.000000000 -0500
++++ dbus-glib-0.72-patched/configure.ac	2006-11-15 14:15:09.000000000 -0600
+@@ -431,42 +431,6 @@
+ 
+ AC_CHECK_HEADERS(execinfo.h, [AC_CHECK_FUNCS(backtrace)])
+ 
+-AC_CACHE_CHECK([for posix getpwnam_r],
+-		ac_cv_func_posix_getpwnam_r,
+-		[AC_TRY_RUN([
+-#include <errno.h>
+-#include <pwd.h>
+-int main () { 
+-    char buffer[10000];
+-    struct passwd pwd, *pwptr = &pwd;
+-    int error;
+-    errno = 0;
+-    error = getpwnam_r ("", &pwd, buffer, 
+-                        sizeof (buffer), &pwptr);
+-   return (error < 0 && errno == ENOSYS) 
+-	   || error == ENOSYS; 
+-}               ],
+-	[ac_cv_func_posix_getpwnam_r=yes],
+-	[ac_cv_func_posix_getpwnam_r=no])])
+-if test "$ac_cv_func_posix_getpwnam_r" = yes; then
+-	AC_DEFINE(HAVE_POSIX_GETPWNAM_R,1,
+-		[Have POSIX function getpwnam_r])
+-else
+-	AC_CACHE_CHECK([for nonposix getpwnam_r],
+-		ac_cv_func_nonposix_getpwnam_r,
+-		[AC_TRY_LINK([#include <pwd.h>],
+-                      	[char buffer[10000];
+-                       	struct passwd pwd;
+-                       	getpwnam_r ("", &pwd, buffer, 
+-                               		sizeof (buffer));],
+-			[ac_cv_func_nonposix_getpwnam_r=yes],
+-			[ac_cv_func_nonposix_getpwnam_r=no])])
+-		if test "$ac_cv_func_nonposix_getpwnam_r" = yes; then
+-		AC_DEFINE(HAVE_NONPOSIX_GETPWNAM_R,1,
+-			[Have non-POSIX function getpwnam_r])
+-	fi
+-fi
+-
+ dnl check for socklen_t
+ AC_MSG_CHECKING(whether socklen_t is defined)
+ AC_TRY_COMPILE([
+@@ -532,49 +496,6 @@
+ 
+ #### Abstract sockets
+ 
+-AC_MSG_CHECKING(abstract socket namespace)
+-AC_LANG_PUSH(C)
+-AC_RUN_IFELSE([AC_LANG_PROGRAM(
+-[[
+-#include <sys/types.h>
+-#include <stdlib.h>
+-#include <string.h>
+-#include <stdio.h>
+-#include <sys/socket.h>
+-#include <sys/un.h>
+-#include <errno.h>
+-]],
+-[[
+-  int listen_fd;
+-  struct sockaddr_un addr;
+-  
+-  listen_fd = socket (PF_UNIX, SOCK_STREAM, 0);
+-  
+-  if (listen_fd < 0)
+-    {
+-      fprintf (stderr, "socket() failed: %s\n", strerror (errno));
+-      exit (1);
+-    }
+-
+-  memset (&addr, '\0', sizeof (addr));
+-  addr.sun_family = AF_UNIX;
+-  strcpy (addr.sun_path, "X/tmp/dbus-fake-socket-path-used-in-configure-test");
+-  addr.sun_path[0] = '\0'; /* this is what makes it abstract */
+-  
+-  if (bind (listen_fd, (struct sockaddr*) &addr, SUN_LEN (&addr)) < 0)
+-    {
+-       fprintf (stderr, "Abstract socket namespace bind() failed: %s\n", 
+-                strerror (errno));
+-       exit (1);
+-    }
+-  else 
+-    exit (0);
+-]])],
+-              [have_abstract_sockets=yes],
+-              [have_abstract_sockets=no])
+-AC_LANG_POP(C)
+-AC_MSG_RESULT($have_abstract_sockets)
+-
+ if test x$enable_abstract_sockets = xyes; then
+     if test x$have_abstract_sockets = xno; then
+ 	AC_MSG_ERROR([Abstract sockets explicitly required, and support not detected.])
+diff -ur dbus-glib-0.72/dbus/Makefile.in dbus-glib-0.72-patched/dbus/Makefile.in
+--- dbus-glib-0.72/dbus/Makefile.in	2006-10-25 16:14:31.000000000 -0500
++++ dbus-glib-0.72-patched/dbus/Makefile.in	2006-11-15 14:15:09.000000000 -0600
+@@ -303,7 +303,7 @@
+ target_cpu = @target_cpu@
+ target_os = @target_os@
+ target_vendor = @target_vendor@
+-SUBDIRS = . examples
++SUBDIRS = .
+ INCLUDES = \
+ 	-I$(top_srcdir)						\
+ 	-I$(top_builddir)					\
+@@ -371,7 +371,7 @@
+ 	dbus-glib-tool.h			\
+ 	dbus-glib-tool.c
+ 
+-dbus_binding_tool_LDADD = libdbus-gtool.la libdbus-glib-1.la $(DBUS_LIBS) $(DBUS_GLIB_LIBS) -lexpat
++dbus_binding_tool_LDADD = libdbus-gtool.la libdbus-glib-1.la $(DBUS_LIBS) $(DBUS_GLIB_LIBS) $(DBUS_BUS_LIBS)
+ EXTRA_DIST = dbus-gmarshal.list make-dbus-glib-error-switch.sh make-dbus-glib-error-enum.sh
+ @DBUS_BUILD_TESTS_TRUE@TESTS_ENVIRONMENT = DBUS_TEST_DATA=$(top_builddir)/test/data DBUS_TEST_HOMEDIR=$(top_builddir)/dbus
+ 
+diff -ur dbus-glib-0.72/Makefile.in dbus-glib-0.72-patched/Makefile.in
+--- dbus-glib-0.72/Makefile.in	2006-10-25 16:14:33.000000000 -0500
++++ dbus-glib-0.72-patched/Makefile.in	2006-11-15 14:15:28.000000000 -0600
+@@ -277,7 +277,7 @@
+ target_os = @target_os@
+ target_vendor = @target_vendor@
+ GLIB_PC = dbus-glib-1.pc
+-SUBDIRS = dbus tools test doc
++SUBDIRS = dbus
+ DIST_SUBDIRS = dbus tools test doc m4
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = $(GLIB_PC)
