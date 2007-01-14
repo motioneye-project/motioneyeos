@@ -125,7 +125,11 @@ $(PANGO_DIR)/pango/.libs/$(PANGO_BINARY): $(PANGO_DIR)/.configured
 
 $(STAGING_DIR)/lib/$(PANGO_BINARY): $(PANGO_DIR)/pango/.libs/$(PANGO_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(PANGO_DIR) install;
-	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libpango.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libpango-1.0.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libpangocairo-1.0.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libpangoft2-1.0.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libpangox-1.0.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libpangoxft-1.0.la
 
 $(TARGET_DIR)/lib/libpango-1.0.so.0: $(STAGING_DIR)/lib/$(PANGO_BINARY)
 	cp -a $(STAGING_DIR)/lib/libpango-1.0.so $(TARGET_DIR)/lib/
@@ -139,10 +143,15 @@ $(TARGET_DIR)/lib/libpango-1.0.so.0: $(STAGING_DIR)/lib/$(PANGO_BINARY)
 	cp -a $(STAGING_DIR)/lib/libpangocairo-1.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libpangocairo-1.0.so.0* $(TARGET_DIR)/lib/
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libpango-1.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgpangox-1.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgoft2-1.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgoxft-1.0.so.0.*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgocairo-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libpangox-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libpangoft2-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libpangoxft-1.0.so.0.*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libpangocairo-1.0.so.0.*
+	mkdir -p $(TARGET_DIR)/lib/pango/1.5.0/modules
+	cp -a $(STAGING_DIR)/lib/pango/1.5.0/modules/*.so $(TARGET_DIR)/lib/pango/1.5.0/modules/
+	mkdir -p $(TARGET_DIR)/etc/pango
+	cp package/pango/pango.modules $(TARGET_DIR)/etc/pango/
+	cp package/pango/pangox.aliases $(TARGET_DIR)/etc/pango/
 	touch -c $(TARGET_DIR)/lib/libpango-1.0.so.0
 
 pango: uclibc gettext libintl pkgconfig libglib2 xorg cairo \
