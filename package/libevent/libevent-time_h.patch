@@ -1,0 +1,11 @@
+diff -ur libevent-1.2/event.c libevent-1.2-patched/event.c
+--- libevent-1.2/event.c	2006-08-12 12:41:36.000000000 -0500
++++ libevent-1.2-patched/event.c	2007-01-13 23:33:05.340351152 -0600
+@@ -41,6 +41,7 @@
+ #else 
+ #include <sys/_time.h>
+ #endif
++#include <time.h>
+ #include <sys/queue.h>
+ #include <stdio.h>
+ #include <stdlib.h>

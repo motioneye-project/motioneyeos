@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBEVENT
+	bool "libevent"
+	default n
+	help
+	  Userspace library for handling asynchronous notifications
+
+	  http://monkey.org/~provos/
