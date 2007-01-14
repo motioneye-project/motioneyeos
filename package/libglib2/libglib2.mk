@@ -146,11 +146,7 @@ $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6: $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY)
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgthread-2.0.so.0.*
 	touch -c $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
 
-ifeq ($(strip $(BR2_PACKAGE_LIBGLIB2_LOCAL)),y)
 libglib2: uclibc gettext libintl pkgconfig $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
-else
-libglib2: uclibc $(TARGET_DIR)/lib/libglib-2.0.so.0.1200.6
-endif
 
 libglib2-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libglib-2.0*

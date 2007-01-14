@@ -1,16 +1,11 @@
 config BR2_PACKAGE_LIBGLIB2
 	bool "libglib2"
 	default n
+	select BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_GETTEXT
+	select BR2_PACKAGE_LIBINTL
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Low-level core library that forms the basis of GTK+ and GNOME.
 
 	  http://www.gtk.org/
-
-config BR2_PACKAGE_LIBGLIB2_LOCALE
-	bool "libglib2-locale"
-	default n
-	select BR2_ENABLE_LOCALE
-	select BR2_PACKAGE_LIBINTL
-	select BR2_PACKAGE_PKGCONFIG
-	help
-	  Enable locale support for Glib library.
