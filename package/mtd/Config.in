@@ -57,7 +57,7 @@ config BR2_PACKAGE_MTD_FLASH_INFO
 	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FLASH_LOCK
-	bool "flash_loco"
+	bool "flash_lock"
 	default y
 	depends on BR2_PACKAGE_MTD
 
@@ -68,6 +68,11 @@ config BR2_PACKAGE_MTD_FLASH_UNLOCK
 
 config BR2_PACKAGE_MTD_FLASHCP
 	bool "flashcp"
+	default y
+	depends on BR2_PACKAGE_MTD
+
+config BR2_PACKAGE_MTD_ERASE
+	bool "erase"
 	default y
 	depends on BR2_PACKAGE_MTD
 

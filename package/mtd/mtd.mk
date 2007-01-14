@@ -116,14 +116,21 @@ MTD_TARGETS_$(BR2_PACKAGE_MTD_DOC_LOADBIOS)		+= doc_loadbios
 MTD_BUILD_TARGETS := $(addprefix $(MTD_DIR)/util/, $(MTD_TARGETS_y))
 
 $(MTD_BUILD_TARGETS): $(MTD_DIR)/.unpacked
-	CFLAGS="-I$(LINUX_HEADERS_DIR)/include $(TARGET_CFLAGS)" \
-	$(MAKE)	CC=$(TARGET_CC) LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
+	$(MAKE)	CC=$(TARGET_CC) CFLAGS="-I$(LINUX_HEADERS_DIR)/include -I$(MTD_DIR)/include $(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)" LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
 
 MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
 
 $(MTD_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/util/%
+	mkdir -p $(TARGET_DIR)/usr/sbin
 	cp -f $< $@
 	$(STRIP) $@
+ifneq ($(BR2_PACKAGE_MTD_FLASHCP),)
+	-ln -sf flashcp $(TARGET_DIR)/usr/sbin/fcp
+endif
+ifneq ($(BR2_PACKAGE_MTD_ERASE),)
+	-ln -sf flash_erase $(TARGET_DIR)/usr/sbin/erase
+	-ln -sf flash_eraseall $(TARGET_DIR)/usr/sbin/eraseall
+endif
 
 mtd: zlib $(MTD_TARGETS)
 
@@ -131,6 +138,13 @@ mtd-source: $(DL_DIR)/$(MTD_SOURCE)
 
 mtd-clean:
 	-$(MAKE) -C $(MTD_DIR) clean
+ifneq ($(BR2_PACKAGE_MTD_FLASHCP),)
+	-rm -f $(MTD_TARGETS) $(TARGET_DIR)/usr/sbin/fcp
+endif
+ifneq ($(BR2_PACKAGE_MTD_ERASE),)
+	-rm -f $(MTD_TARGETS) $(TARGET_DIR)/usr/sbin/erase
+	-rm -f $(MTD_TARGETS) $(TARGET_DIR)/usr/sbin/eraseall
+endif
 
 mtd-dirclean:
 	rm -rf $(MTD_DIR)
