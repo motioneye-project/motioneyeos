@@ -1,0 +1,18 @@
+--- metacity-2.17.3/src/prefs.c.orig	2007-01-12 21:42:53.000000000 -0700
++++ metacity-2.17.3/src/prefs.c	2007-01-12 21:45:21.000000000 -0700
+@@ -2277,6 +2277,7 @@
+       key = g_strconcat (KEY_SCREEN_BINDINGS_PREFIX, "/",
+                          binding->name, NULL);
+       
++#ifdef HAVE_GCONF
+       gconf_client_set_string (gconf_client_get_default (),
+                                key, old_setting, &err);
+ 
+@@ -2287,6 +2288,7 @@
+           g_error_free (err);
+           err = NULL;
+         }
++#endif
+       
+       g_free (old_setting);
+       g_free (key);

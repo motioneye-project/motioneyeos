@@ -1,0 +1,20 @@
+--- metacity-2.17.3/Makefile.am.orig	2007-01-14 16:50:52.000000000 -0700
++++ metacity-2.17.3/Makefile.am	2007-01-14 16:51:46.000000000 -0700
+@@ -1,5 +1,5 @@
+ 
+-SUBDIRS=src po doc
++SUBDIRS=src
+ 
+ EXTRA_DIST=HACKING rationales.txt \
+ 	intltool-extract.in intltool-merge.in intltool-update.in
+--- metacity-2.17.3/Makefile.in.orig	2007-01-14 16:51:38.000000000 -0700
++++ metacity-2.17.3/Makefile.in	2007-01-14 16:51:58.000000000 -0700
+@@ -246,7 +246,7 @@
+ sharedstatedir = @sharedstatedir@
+ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+-SUBDIRS = src po doc
++SUBDIRS = src
+ EXTRA_DIST = HACKING rationales.txt \
+ 	intltool-extract.in intltool-merge.in intltool-update.in
+ 
