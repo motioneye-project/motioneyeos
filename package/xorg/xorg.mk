@@ -12,8 +12,8 @@ XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap xinit/startx \
 	mkfontscale/mkfontscale mkfontdir/mkfontdir \
 	#xterm/xterm
 
-XORG_LIBS:= Xft Xrender Xaw Xmu Xt \
-	SM ICE Xpm Xp Xext X11 Xmuu Xxf86misc
+XORG_LIBS:= Xft Xrender Xaw Xmu Xt Xcursor Xrandr Xi Xinerama Xfixes \
+	SM ICE Xpm Xp Xext X11 Xmuu Xxf86misc fontenc
 
 
 #############################################################
@@ -35,6 +35,13 @@ XORG_BINX:=$(TARGET_DIR)$(TARGET_BINX)
 XORG_LIBX:=$(TARGET_DIR)$(TARGET_LIBX)
 XORG_CF:=$(XORG_DIR)/config/cf/cross.def
 XORG_HOST_DEF:=$(XORG_DIR)/config/cf/host.def
+
+
+DEJAVU_VERSION=2.13
+DEJAVU_SOURCE=dejavu-ttf-$(DEJAVU_VERSION).tar.bz2
+DEJAVU_CAT:=$(BZCAT)
+DEJAVU_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/dejavu
+DEJAVU_DIR:=$(BUILD_DIR)/dejavu-ttf-$(DEJAVU_VERSION)
 
 # Install Xorg xserver
 XSERVER:=Xorg
@@ -126,15 +133,46 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	cp -LRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/
 	( cd $(XORG_DIR)/fonts ; $(MAKE) \
 		DESTDIR=$(TARGET_DIR) install XCURSORGEN=xcursorgen MKFONTSCALE=mkfontscale )
-	cp -LRf $(XORG_DIR)/fonts/bdf/misc/*.bdf $(XORG_LIBX)/X11/fonts/misc/
+	cp -LRf $(XORG_DIR)/fonts/bdf/misc/7x14.bdf $(XORG_LIBX)/X11/fonts/misc/
+	cp -LRf $(XORG_DIR)/fonts/bdf/misc/7x14-L1.bdf $(XORG_LIBX)/X11/fonts/misc/
+	cp -LRf $(XORG_DIR)/fonts/bdf/misc/7x14B.bdf $(XORG_LIBX)/X11/fonts/misc/
+	cp -LRf $(XORG_DIR)/fonts/bdf/misc/7x14B-L1.bdf $(XORG_LIBX)/X11/fonts/misc/
+	cp -LRf $(XORG_DIR)/fonts/bdf/misc/cursor.bdf $(XORG_LIBX)/X11/fonts/misc/
+	cp -f package/xorg/fonts.alias $(XORG_LIBX)/X11/fonts/misc/
 	( cd $(XORG_LIBX)/X11/fonts/misc/; mkfontdir )
 	(cd $(TARGET_DIR)/usr/bin; ln -snf $(TARGET_BINX) X11)
 	mkdir -p $(TARGET_DIR)/etc/X11/
-	cp package/xorg/xorg.conf $(TARGET_DIR)/etc/X11/
-	cp -a $(STAGING_DIR)$(TARGET_LIBX)/X11/rgb* $(XORG_LIBX)/X11/
+	cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/rgb* $(XORG_LIBX)/X11/
+	$(SED) "s,^sysclientrc=.*,sysclientrc=/etc/X11/Xsession,g" $(XORG_BINX)/startx
+	$(SED) "s,^sysserverrc=.*,sysserverrc=/etc/X11/Xserver,g" $(XORG_BINX)/startx
+	cp -LRf package/xorg/xorg.conf $(TARGET_DIR)/etc/X11/
+	cp -LRf package/xorg/Xsession $(TARGET_DIR)/etc/X11/
+	cp -LRf package/xorg/Xserver $(TARGET_DIR)/etc/X11/
 	touch -c $(TARGET_XSERVER)
 
-$(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
+$(DL_DIR)/$(DEJAVU_SOURCE):
+	$(WGET) -P $(DL_DIR) $(DEJAVU_SITE)/$(DEJAVU_SOURCE)
+
+$(DEJAVU_DIR)/.unpacked: $(DL_DIR)/$(DEJAVU_SOURCE)
+	$(DEJAVU_CAT) $(DL_DIR)/$(DEJAVU_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	touch $(DEJAVU_DIR)/.unpacked
+
+$(XORG_LIBX)/X11/fonts/ttf-dejavu/DejaVuSansMono.ttf: $(DEJAVU_DIR)/.unpacked
+	mkdir -p $(XORG_LIBX)/X11/fonts/ttf-dejavu
+	rm $(DEJAVU_DIR)/*Condensed*.ttf
+	rm $(DEJAVU_DIR)/*ExtraLight*.ttf
+	cp -LRf $(DEJAVU_DIR)/DejaVu*-Bold.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	cp -LRf $(DEJAVU_DIR)/DejaVu*-BoldOblique.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	cp -LRf $(DEJAVU_DIR)/DejaVu*-Oblique.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	cp -LRf $(DEJAVU_DIR)/DejaVuSans.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	cp -LRf $(DEJAVU_DIR)/DejaVuSansMono.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	cp -LRf $(DEJAVU_DIR)/DejaVuSerif.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	cp -LRf $(DEJAVU_DIR)/DejaVuSerif.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	cp package/xorg/fonts.cache-1 $(XORG_LIBX)/X11/fonts/ttf-dejavu/
+	( cd $(XORG_LIBX)/X11/fonts/ttf-dejavu/; mkfontdir )
+	touch -c $(XORG_LIBX)/X11/fonts/ttf-dejavu/DejaVuSansMono.ttf
+
+$(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER) $(XORG_LIBX)/X11/fonts/ttf-dejavu/DejaVuSansMono.ttf
 	-mkdir -p $(XORG_LIBX)
 	set -e; for dirs in $(XORG_LIBS) ; do \
 		file=`find $(XORG_LDIR)/$$dirs -type f -iname "*$$dirs.so*"` ; \
@@ -150,14 +188,13 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER)
 	fi;
 	touch -c $(XORG_LIBX)/libX11.so.6.2
 
-
 $(TARGET_DIR)/usr/bin/mcookie: package/xorg/mcookie.c
 	$(TARGET_CROSS)gcc -Wall -Os -s package/xorg/mcookie.c -o $(TARGET_DIR)/usr/bin/mcookie
 
 xorg: zlib png pkgconfig expat fontconfig $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 \
 	$(XORG_LIBX)/libX11.so.6.2 $(TARGET_DIR)/usr/bin/mcookie
 
-xorg-source: $(DL_DIR)/$(XORG_SOURCE)
+xorg-source: $(DL_DIR)/$(XORG_SOURCE) $(DL_DIR)/$(DEJAVU_SOURCE)
 
 xorg-clean:
 	-rm -rf $(TARGET_DIR)/usr/X11R6

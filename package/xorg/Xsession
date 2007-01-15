@@ -1,0 +1,5 @@
+#!/bin/sh
+export GDK_USE_XFT=1
+export LANG="en_US.UTF-8"
+export LC_ALL="en_US.UTF-8"
+/usr/bin/X11/rxvt -bg black -fg gray90
