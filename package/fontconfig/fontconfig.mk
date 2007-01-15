@@ -16,6 +16,8 @@ fontconfig-source: $(DL_DIR)/$(FONTCONFIG_SOURCE)
 
 $(FONTCONFIG_DIR)/.unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
 	$(FONTCONFIG_CAT) $(DL_DIR)/$(FONTCONFIG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(FONTCONFIG_DIR) package/fontconfig/ \*.patch*
+	$(CONFIG_UPDATE) $(FONTCONFIG_DIR)
 	touch $(FONTCONFIG_DIR)/.unpacked
 
 $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
@@ -54,6 +56,8 @@ $(STAGING_DIR)/lib/libfontconfig.so: $(FONTCONFIG_DIR)/.compiled
 
 $(TARGET_DIR)/lib/libfontconfig.so: $(STAGING_DIR)/lib/libfontconfig.so
 	cp -dpf $(STAGING_DIR)/lib/libfontconfig.so* $(TARGET_DIR)/lib/
+	mkdir -p $(TARGET_DIR)/etc/fonts
+	cp $(STAGING_DIR)/etc/fonts/fonts.conf $(TARGET_DIR)/etc/fonts/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libfontconfig.so
 
 fontconfig: uclibc freetype $(TARGET_DIR)/lib/libfontconfig.so

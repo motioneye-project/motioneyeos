@@ -1,5 +1,5 @@
---- fontconfig/builds/unix/ltmain.sh.orig	2006-04-20 08:27:27.000000000 -0600
-+++ fontconfig/builds/unix/ltmain.sh	2007-01-13 14:26:01.000000000 -0700
+--- fontconfig/ltmain.sh.orig	2006-04-20 08:27:27.000000000 -0600
++++ fontconfig/ltmain.sh	2007-01-13 14:26:01.000000000 -0700
 @@ -273,8 +273,9 @@
  	# line option must be used.
  	if test -z "$tagname"; then
