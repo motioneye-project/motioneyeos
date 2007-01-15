@@ -137,11 +137,13 @@ gettext-target: $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 		$(TARGET_DIR)/usr/include/libintl.h
 	-rmdir $(TARGET_DIR)/usr/include
 
-libintl: $(TARGET_DIR)/lib/libintl.so
-
 $(TARGET_DIR)/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
-	cp -a $(STAGING_DIR)/lib/libintl.so* $(TARGET_DIR)/lib
+	cp -a $(STAGING_DIR)/lib/libgettext*.so* $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/lib/libintl*.so* $(TARGET_DIR)/lib/
+	rm -f $(TARGET_DIR)/lib/libgettext*.so*.la $(TARGET_DIR)/lib/libintl*.so*.la
 	touch $@
+
+libintl: $(TARGET_DIR)/lib/libintl.so
 
 #############################################################
 #
@@ -152,5 +154,5 @@ ifeq ($(strip $(BR2_PACKAGE_LIBINTL)),y)
 TARGETS+=libintl
 endif
 ifeq ($(strip $(BR2_PACKAGE_GETTEXT)),y)
-TARGETS+=gettext-target
+TARGETS+=gettext
 endif
