@@ -6,12 +6,15 @@
 ifneq ($(filter $(TARGETS),linux26),)
 
 
+ifeq ($(LINUX_HEADERS_VERSION),)
 # Version of Linux to download and then apply patches to
 DOWNLOAD_LINUX26_VERSION=2.6.19.1
 # Version of Linux after applying any patches
 LINUX26_VERSION=2.6.19.1
-
-
+else
+DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+endif
 
 LINUX26_SOURCE=linux-$(DOWNLOAD_LINUX26_VERSION).tar.bz2
 LINUX26_BZCAT:=$(BZCAT)
