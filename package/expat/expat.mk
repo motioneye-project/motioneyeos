@@ -5,7 +5,6 @@
 #############################################################
 
 EXPAT_VERSION=2.0.0
-
 EXPAT_SOURCE=expat-$(EXPAT_VERSION).tar.gz
 EXPAT_CAT:=$(ZCAT)
 EXPAT_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/expat
