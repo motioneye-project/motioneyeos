@@ -59,6 +59,12 @@ $(TARGET_DIR)/lib/libfontconfig.so: $(STAGING_DIR)/lib/libfontconfig.so
 	mkdir -p $(TARGET_DIR)/etc/fonts
 	cp $(STAGING_DIR)/etc/fonts/fonts.conf $(TARGET_DIR)/etc/fonts/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libfontconfig.so
+	mkdir -p $(TARGET_DIR)/var/cache/fontconfig
+	mkdir -p $(TARGET_DIR)/usr/bin
+	cp -a $(STAGING_DIR)/usr/bin/fc-cache $(TARGET_DIR)/usr/bin/
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/fc-cache
+	cp -a $(STAGING_DIR)/usr/bin/fc-list $(TARGET_DIR)/usr/bin/
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/fc-list
 
 fontconfig: uclibc freetype $(TARGET_DIR)/lib/libfontconfig.so
 
