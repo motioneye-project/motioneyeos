@@ -8,6 +8,8 @@ FREETYPE_SOURCE:=freetype-$(FREETYPE_VERSION).tar.bz2
 FREETYPE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/freetype
 FREETYPE_CAT:=$(BZCAT)
 FREETYPE_DIR:=$(BUILD_DIR)/freetype-$(FREETYPE_VERSION)
+FREETYPE_DIR1:=$(TOOL_BUILD_DIR)/freetype-$(FREETYPE_VERSION)
+FREETYPE_HOST_DIR:=$(TOOL_BUILD_DIR)/freetype-$(FREETYPE_VERSION)-host
 
 $(DL_DIR)/$(FREETYPE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(FREETYPE_SITE)/$(FREETYPE_SOURCE)
@@ -18,11 +20,11 @@ $(FREETYPE_DIR)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
 	$(FREETYPE_CAT) $(DL_DIR)/$(FREETYPE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(FREETYPE_DIR)/.unpacked
 
+# freetype for the target
 $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
 	(cd $(FREETYPE_DIR); \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
-	CCexe="$(HOSTCC)" \
 	./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -59,6 +61,31 @@ $(STAGING_DIR)/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
 $(TARGET_DIR)/lib/libfreetype.so: $(STAGING_DIR)/lib/libfreetype.so
 	cp -dpf $(STAGING_DIR)/lib/libfreetype.so* $(TARGET_DIR)/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libfreetype.so
+
+# freetype for the host, needed for build-tools of fontconfig
+
+# great, it can't be built out of tree reliably
+$(FREETYPE_DIR1)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
+	$(FREETYPE_CAT) $(DL_DIR)/$(FREETYPE_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	touch $(FREETYPE_DIR1)/.unpacked
+
+$(FREETYPE_DIR1)/.configured: $(FREETYPE_DIR1)/.unpacked
+	(cd $(FREETYPE_DIR1); \
+	./configure \
+		CC="$(HOSTCC)" \
+		--prefix="$(FREETYPE_HOST_DIR)" \
+	);
+	touch $(FREETYPE_DIR1)/.configured
+
+$(FREETYPE_DIR1)/.compiled: $(FREETYPE_DIR1)/.configured
+	$(MAKE) CCexe="$(HOSTCC)" -C $(FREETYPE_DIR1)
+	touch $(FREETYPE_DIR1)/.compiled
+
+$(FREETYPE_HOST_DIR)/lib/libfreetype.so: $(FREETYPE_DIR1)/.configured
+	$(MAKE) -C $(FREETYPE_DIR1) install
+	touch -c $@
+
+host-freetype: $(FREETYPE_HOST_DIR)/lib/libfreetype.so
 
 freetype: uclibc pkgconfig $(TARGET_DIR)/lib/libfreetype.so
 
