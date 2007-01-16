@@ -36,6 +36,7 @@ endif
 	touch $(MPFR_DIR)/.unpacked
 
 $(MPFR_TARGET_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/lib/$(GMP_BINARY)
+	mkdir -p $(MPFR_TARGET_DIR)
 	(cd $(MPFR_TARGET_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
