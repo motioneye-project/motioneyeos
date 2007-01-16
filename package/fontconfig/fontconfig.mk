@@ -25,6 +25,7 @@ $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
 	CCexe="$(HOSTCC)" \
+	ac_cv_func_mmap_fixed_mapped=yes \
 	./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -42,6 +43,8 @@ $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
 		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		--with-freetype-config="$(STAGING_DIR)/usr/bin/freetype-config" \
+		--disable-docs \
 	);
 	touch $(FONTCONFIG_DIR)/.configured
 
