@@ -111,6 +111,9 @@ $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgettextpo.la
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgettextsrc.la
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libintl.la
+	rm -f $(STAGING_DIR)/bin/autopoint $(STAGING_DIR)/bin/envsubst
+	rm -f $(STAGING_DIR)/bin/gettext.sh $(STAGING_DIR)/bin/gettextize
+	rm -f $(STAGING_DIR)/bin/msg* $(STAGING_DIR)/bin/?gettext
 	touch -c $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 
 gettext: uclibc pkgconfig $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
@@ -130,7 +133,7 @@ gettext-dirclean:
 
 gettext-target: $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GETTEXT_DIR) install
-	chmod +x $(TARGET_DIR)/lib/libintl.so.3.4.3 # identify as needing to be stipped
+	chmod +x $(TARGET_DIR)/lib/libintl.so.3.4.3 # identify as needing to be stripped
 	rm -rf  $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
 		$(TARGET_DIR)/usr/doc $(TARGET_DIR)/usr/share/aclocal \
