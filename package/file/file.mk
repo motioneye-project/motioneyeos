@@ -91,8 +91,8 @@ $(TARGET_DIR)/$(FILE_TARGET_BINARY): $(FILE_DIR2)/$(FILE_BINARY)
 	-($(STRIP) $(TARGET_DIR)/usr/lib/libmagic.so.*.* > /dev/null 2>&1)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	mv $(TARGET_DIR)/usr/lib/libmagic.a $(STAGING_DIR)/lib
-	rm -f $(TARGET_DIR)/usr/lib/libmagic.la
+	mv $(TARGET_DIR)/lib/libmagic.a $(STAGING_DIR)/lib
+	rm -f $(TARGET_DIR)/lib/libmagic.la
 	mv $(TARGET_DIR)/usr/include/magic.h $(STAGING_DIR)/include
 
 file: zlib uclibc $(TARGET_DIR)/$(FILE_TARGET_BINARY)
