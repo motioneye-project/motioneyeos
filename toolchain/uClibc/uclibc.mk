@@ -97,11 +97,18 @@ $(UCLIBC_DIR)/.config: $(UCLIBC_DIR)/.unpacked $(UCLIBC_CONFIG_FILE)
 		-e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 ifeq ($(UCLIBC_TARGET_ARCH),arm)
-	$(SED) 's,^.*CONFIG_$(shell echo $(BR2_ARM_TYPE)).*,CONFIG_$(shell echo $(BR2_ARM_TYPE))=y,g' \
-	$(UCLIBC_DIR)/.config
-endif
+	$(SED) '/.*CONFIG_ARM.*/d' -e '/.*CONFIG_GENERIC_ARM.*/d' \
+		 $(UCLIBC_DIR)/.config
+	/bin/echo "CONFIG_$(shell echo $(BR2_ARM_TYPE))=y" >> \
+		$(UCLIBC_DIR)/.config
 ifeq ($(BR2_ARM_EABI),y)
-	$(SED) 's,# CONFIG_ARM_EABI is not set,CONFIG_ARM_EABI=y,g' $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_ARM_OABI is not set" >> $(UCLIBC_DIR)/.config
+	/bin/echo "CONFIG_ARM_EABI=y" >> $(UCLIBC_DIR)/.config
+endif
+ifeq ($(BR2_ARM_OABI),y)
+	/bin/echo "CONFIG_ARM_OABI=y" >> $(UCLIBC_DIR)/.config
+	/bin/echo "# CONFIG_ARM_EABI is not set" >> $(UCLIBC_DIR)/.config
+endif
 endif
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
 	$(SED) '/^# ARCH_$(UCLIBC_TARGET_ENDIAN)_ENDIAN /{s,# ,,;s, is not set,=y,g}' \
