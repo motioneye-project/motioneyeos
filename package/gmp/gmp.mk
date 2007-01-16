@@ -35,7 +35,7 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_c_bigendian=$(GMP_BE) \
-		./configure \
+		$(GMP_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
