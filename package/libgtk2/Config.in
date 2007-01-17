@@ -6,7 +6,7 @@ config BR2_PACKAGE_LIBGTK2
 	select BR2_PACKAGE_CAIRO
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_TIFF
-	select BR2_PACKAGE_PNG
+	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_XORG
 	help
 	  The GTK+ version 2 graphical user interface library
