@@ -29,7 +29,6 @@ $(RDESKTOP_DIR)/.configured: $(RDESKTOP_DIR)/.unpacked
 		--with-openssl=$(STAGING_DIR) \
 		--sysconfdir=/etc \
 	);
-	read
 	touch $(RDESKTOP_DIR)/.configured
 
 $(RDESKTOP_DIR)/rdesktop: $(RDESKTOP_DIR)/.configured
