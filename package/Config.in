@@ -253,8 +253,9 @@ comment "Window managers"
 source "package/microwin/Config.in"
 source "package/metacity/Config.in"
 comment "X applications"
-source "package/rxvt/Config.in"
 source "package/dillo/Config.in"
+source "package/rdesktop/Config.in"
+source "package/rxvt/Config.in"
 
 endif
 

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_RDESKTOP
+	bool "rdesktop"
+	select BR2_PACKAGE_XORG
+	select BR2_PACKAGE_OPENSSL
+	default n
+	help
+	  rdesktop is an open source client for Windows NT Terminal
+	  Server and Windows 2000/2003 Terminal Services, capable of
+	  natively speaking Remote Desktop Protocol (RDP) in order to
+	  present the user's NT desktop.
+
+	  http://rdesktop.sf.net/
