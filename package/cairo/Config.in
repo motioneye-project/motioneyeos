@@ -5,10 +5,10 @@ config BR2_PACKAGE_CAIRO
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_XORG
 	help
-	  Pango is a library for laying out and rendering of text, with an
-	  emphasis on internationalization. Pango can be used anywhere that
-	  text layout is needed, though most of the work on Pango so far has
-	  been done in the context of the GTK+ widget toolkit. Pango forms the
-	  core of text and font handling for GTK+-2.x.
+	  Cairo is a 2D graphics library with support for multiple
+	  output devices. Currently supported output targets include
+	  the X Window System, Win32, image buffers, and PostScript,
+	  PDF, and SVG file output. Experimental backends include
+	  OpenGL (through glitz), Quartz, and XCB.
 
-	  http://www.pango.org/
+	  http://cairographics.org/
