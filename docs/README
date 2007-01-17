@@ -13,6 +13,19 @@ You do not need to be root to build or run buildroot.  Have fun!
 
  -Erik
 
+Offline build:
+==============
+
+In order to do an offline-build (not connected to the net), fetch all
+selected source by issuing a
+$ make source
+
+before you disconnect.
+If your build-host is never connected, then you have to copy buildroot
+and your toplevel .config to a machine that has an internet-connection
+and issue "make source" there, then copy the content of your dl/ dir to
+the build-host.
+
 More finegrained configuration:
 ===============================
 
