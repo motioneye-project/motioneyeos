@@ -217,14 +217,13 @@ source "package/wireless-tools/Config.in"
 source "package/xfsprogs/Config.in"
 source "package/zlib/Config.in"
 
-config BR2_X_WINDOW_SYSTEM
+menuconfig BR2_X_WINDOW_SYSTEM
 	bool "X Window System"
 	default n
 	help
 	  Support for X and related packages
 
 if BR2_X_WINDOW_SYSTEM
-menu "X11"
 comment "X server"
 source "package/xorg/Config.in"
 source "package/tinyx/Config.in"
@@ -243,7 +242,7 @@ source "package/metacity/Config.in"
 comment "X applications"
 source "package/rxvt/Config.in"
 source "package/dillo/Config.in"
-endmenu
+
 endif
 
 endmenu
