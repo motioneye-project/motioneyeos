@@ -74,7 +74,7 @@ config BR2_sa1100
 	bool "sa1100"
 config BR2_xscale
 	bool "xscale"
-config BR2_IWMMXT
+config BR2_iwmmxt
 	bool "iwmmxt"
 endchoice
 
@@ -90,7 +90,7 @@ config BR2_ARM_TYPE
 	default ARM_SA110	if BR2_sa110
 	default ARM_SA1100	if BR2_sa1100
 	default ARM_XSCALE	if BR2_xscale
-	default ARM_IWMMXT	if BR2_IWMMXT
+	default ARM_IWMMXT	if BR2_iwmmxt
 	default GENERIC_ARM	if BR2_generic_arm
 
 choice
