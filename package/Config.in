@@ -136,8 +136,8 @@ source "package/smartmontools/Config.in"
 source "package/sqlite/Config.in"
 source "package/strace/Config.in"
 source "package/sudo/Config.in"
-source "package/sysklogd/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/sysklogd/Config.in"
 # busybox has init and the runit stuff
 source "package/sysvinit/Config.in"
 endif
