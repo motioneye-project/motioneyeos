@@ -53,11 +53,11 @@ $(SQLITE_DIR)/.configured: $(SQLITE_DIR)/.unpacked
 $(SQLITE_DIR)/sqlite3: $(SQLITE_DIR)/.configured
 	$(MAKE) -C $(SQLITE_DIR)
 
-$(STAGING_DIR)/bin/sqlite3: $(SQLITE_DIR)/sqlite3
+$(STAGING_DIR)/usr/bin/sqlite3: $(SQLITE_DIR)/sqlite3
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SQLITE_DIR) install
 
-$(TARGET_DIR)/usr/bin/sqlite3: $(STAGING_DIR)/bin/sqlite3
-	cp -a $(STAGING_DIR)/bin/sqlite3 $(TARGET_DIR)/usr/bin
+$(TARGET_DIR)/usr/bin/sqlite3: $(STAGING_DIR)/usr/bin/sqlite3
+	cp -a $(STAGING_DIR)/usr/bin/sqlite3 $(TARGET_DIR)/usr/bin
 	cp -a $(STAGING_DIR)/lib/libsqlite3.so* $(TARGET_DIR)/lib/
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libsqlite3.so*
 
