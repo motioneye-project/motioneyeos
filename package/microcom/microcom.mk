@@ -37,20 +37,22 @@ microcom-source: $(DL_DIR)/$(MICROCOM_SOURCE)
 $(MICROCOM_DIR)/.unpacked: $(DL_DIR)/$(MICROCOM_SOURCE)
 	mkdir -p $(MICROCOM_DIR)
 	$(ZCAT) $(DL_DIR)/$(MICROCOM_SOURCE) | tar -C $(MICROCOM_DIR) $(TAR_OPTIONS) -
-	touch $(MICROCOM_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(MICROCOM_DIR) package/microcom/ \*.patch
+	touch $@
 
 $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
-	$(SED) 's~gcc~${TARGET_CC}~' $(MICROCOM_DIR)/Makefile
-	touch $(MICROCOM_DIR)/.configured
+	$(SED) 's~gcc~$$(CC)~' -e 's~-O~$$(CFLAGS)~' $(MICROCOM_DIR)/Makefile
+	touch $@
 
 $(MICROCOM_DIR)/microcom: $(MICROCOM_DIR)/.configured
-	$(MAKE) -C $(MICROCOM_DIR)
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(MICROCOM_DIR)
 
 $(TARGET_DIR)/usr/bin/microcom: $(MICROCOM_DIR)/microcom
 	install -c $(MICROCOM_DIR)/microcom $(TARGET_DIR)/usr/bin/microcom
 
 microcom-clean: 
-	rm $(MICROCOM_DIR)/*.o
+	rm -f $(MICROCOM_DIR)/*.o $(MICROCOM_DIR)/microcom \
+		$(TARGET_DIR)/usr/bin/microcom
 
 microcom-dirclean: 
 	rm -rf $(MICROCOM_DIR) 
