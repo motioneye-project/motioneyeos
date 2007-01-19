@@ -34,8 +34,10 @@ endif
 
 BUSYBOX_UNZIP=$(BZCAT)
 
+ifndef BUSYBOX_CONFIG_FILE
 BUSYBOX_CONFIG_FILE=$(subst ",, $(strip $(BR2_PACKAGE_BUSYBOX_CONFIG)))
 #")
+endif
 
 $(DL_DIR)/$(BUSYBOX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(BUSYBOX_SITE)/$(BUSYBOX_SOURCE)
@@ -53,7 +55,7 @@ endif
 	touch $(BUSYBOX_DIR)/.unpacked
 
 $(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)
-	cp $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
+	cp -f $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
 	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\PREFIX=$(TARGET_DIR),;" \
 		$(BUSYBOX_DIR)/Rules.mak ;
@@ -111,6 +113,7 @@ busybox: uclibc $(TARGET_DIR)/bin/busybox
 
 busybox-menuconfig: busybox-source $(BUSYBOX_DIR)/.configured
 	$(MAKE) __TARGET_ARCH=$(ARCH) -C $(BUSYBOX_DIR) menuconfig
+	cp -f $(BUSYBOX_DIR)/.config $(BUSYBOX_CONFIG_FILE)
 
 busybox-clean:
 	rm -f $(TARGET_DIR)/bin/busybox
