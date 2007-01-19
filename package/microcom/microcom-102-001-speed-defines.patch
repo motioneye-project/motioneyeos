@@ -1,0 +1,34 @@
+diff -rdup microcom-1.02.orig/help.c microcom-1.02/help.c
+--- microcom-1.02.orig/help.c	2000-07-30 06:15:47.000000000 +0200
++++ microcom-1.02/help.c	2007-01-19 19:44:19.000000000 +0100
+@@ -273,12 +273,29 @@ static void help_set_speed(int fd, char 
+     B19200,
+     B38400,
+     B57600,
++#if defined B115200
+     B115200,
++#endif
++#if defined B230400
+     B230400,
++#endif
++#if defined B460800
+     B460800
++#endif
+   };
++#undef __STOPCHAR
++#if defined B115200
++#define __STOPCHAR 'h'
++#endif
++#if defined B230400
++#define __STOPCHAR 'i'
++#endif
++#if defined B460800
++#define __STOPCHAR 'j'
++#endif
+ 
+-  if (c < 'a' && c > 'j') {
++
++  if (c < 'a' && c > __STOPCHAR) {
+     if (c == '~') {
+       help_speed();
+       return;

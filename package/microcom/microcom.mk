@@ -45,7 +45,11 @@ $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
 	touch $@
 
 $(MICROCOM_DIR)/microcom: $(MICROCOM_DIR)/.configured
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(MICROCOM_DIR)
+	$(TARGET_CONFIGURE_OPTS) CFLAGS="$(TARGET_CFLAGS)" $(MAKE) -C $(MICROCOM_DIR)
+	#(cd $(MICROCOM_DIR) ; \
+	# $(TARGET_CC) $(TARGET_CFLAGS) --combine -fwhole-program -o $@ $(wildcard $(MICROCOM_DIR)/*.c); \
+	#)
+	$(STRIP) -s $@
 
 $(TARGET_DIR)/usr/bin/microcom: $(MICROCOM_DIR)/microcom
 	install -c $(MICROCOM_DIR)/microcom $(TARGET_DIR)/usr/bin/microcom

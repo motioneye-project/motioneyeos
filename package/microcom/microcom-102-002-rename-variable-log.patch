@@ -1,0 +1,78 @@
+diff -rdup microcom-1.02.speed/help.c microcom-1.02/help.c
+--- microcom-1.02.speed/help.c	2007-01-19 19:44:19.000000000 +0100
++++ microcom-1.02/help.c	2007-01-19 19:48:20.000000000 +0100
+@@ -23,7 +23,7 @@ extern int crnl_mapping; //0 - no mappin
+ extern int script; /* script active flag */
+ extern char scr_name[MAX_SCRIPT_NAME]; /* default name of the script */
+ extern char device[MAX_DEVICE_NAME]; /* serial device name */
+-extern int log; /* log active flag */
++extern int log_active; /* log active flag */
+ extern FILE* flog;   /* log file */
+ 
+ static int help_state = 0;
+@@ -85,7 +85,7 @@ static void help_escape(void) {
+ 
+   write(STDOUT_FILENO, str1, strlen(str1));
+ 
+-  if (log == 0)
++  if (log_active == 0)
+     write(STDOUT_FILENO, "  l - log on             \n", 26);
+   else
+     write(STDOUT_FILENO, "  l - log off            \n", 26);
+@@ -156,11 +156,11 @@ static void help_send_escape(int fd, cha
+   case 'q': /* quit help */
+     break;
+   case 'l': /* log on/off */
+-    log = (log == 0)? 1: 0;
+-    if (log) { /* open log file */
++    log_active = (log_active == 0)? 1: 0;
++    if (log_active) { /* open log file */
+       if ((flog = fopen("microcom.log", "a")) == (FILE *)0) {
+ 	write(STDOUT_FILENO, "Cannot open microcom.log \n", 26);
+-	log = 0;
++	log_active = 0;
+       }
+     }
+     else { /* cloase log file */
+diff -rdup microcom-1.02.speed/microcom.c microcom-1.02/microcom.c
+--- microcom-1.02.speed/microcom.c	2000-08-27 17:22:47.000000000 +0200
++++ microcom-1.02/microcom.c	2007-01-19 19:48:37.000000000 +0100
+@@ -25,7 +25,7 @@ int crnl_mapping; //0 - no mapping, 1 ma
+ int script = 0; /* script active flag */
+ char scr_name[MAX_SCRIPT_NAME] = "script.scr"; /* default name of the script */
+ char device[MAX_DEVICE_NAME]; /* serial device name */
+-int log = 0; /* log active flag */
++int log_active = 0; /* log active flag */
+ FILE* flog;   /* log file */
+ int  pf = 0;  /* port file descriptor */
+ struct termios pots; /* old port termios settings to restore */
+@@ -106,7 +106,7 @@ void main_usage(int exitcode, char *str,
+ /* restore original terminal settings on exit */
+ void cleanup_termios(int signal) {
+   /* cloase the log file first */
+-  if (log) {
++  if (log_active) {
+     fflush(flog);
+     fclose(flog);
+   }
+diff -rdup microcom-1.02.speed/mux.c microcom-1.02/mux.c
+--- microcom-1.02.speed/mux.c	2000-07-30 06:15:47.000000000 +0200
++++ microcom-1.02/mux.c	2007-01-19 19:48:48.000000000 +0100
+@@ -24,7 +24,7 @@
+ 
+ extern int script;
+ extern char scr_name[];
+-extern int log;
++extern int log_active;
+ extern FILE* flog;
+ 
+ void mux_clear_sflag(void) {
+@@ -71,7 +71,7 @@ void mux_loop(int pf) {
+       i = read(pf, buf, BUFSIZE);
+       if (i > 0) {
+ 	write(STDOUT_FILENO, buf, i);
+-	if (log)
++	if (log_active)
+ 	  fwrite(buf, 1, i, flog);
+ 	if (script) {
+ 	  i = script_process(S_DCE, buf, i);
