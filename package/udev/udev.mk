@@ -29,12 +29,9 @@ udev-source: $(DL_DIR)/$(UDEV_SOURCE)
 $(UDEV_DIR)/.unpacked: $(DL_DIR)/$(UDEV_SOURCE)
 	$(UDEV_CAT) $(DL_DIR)/$(UDEV_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(UDEV_DIR) package/udev \*.patch
-	touch $(UDEV_DIR)/.unpacked
+	touch $@
 
-$(UDEV_DIR)/.configured: $(UDEV_DIR)/.unpacked
-	touch $(UDEV_DIR)/.configured
-
-$(UDEV_DIR)/$(UDEV_BINARY): $(UDEV_DIR)/.configured
+$(UDEV_DIR)/$(UDEV_BINARY): $(UDEV_DIR)/.unpacked
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) CC=$(TARGET_CC) LD=$(TARGET_CC)\
 		CFLAGS="$(BR2_UDEV_CFLAGS)" \
 		USE_LOG=false USE_SELINUX=false \
