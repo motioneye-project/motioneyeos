@@ -644,13 +644,13 @@ config BR2_PACKAGE_FOO
 
     <p>Lines <a href="#line44">44-46</a> define a simple target to clean the software build
     by calling the <i>Makefiles</i> with the appropriate option.
-    The <code>clean</code> target should run <code>make clean</code>
+    The <code>-clean</code> target should run <code>make clean</code>
     on $(BUILD_DIR)/package-version and MUST uninstall all files of the
     package from $(STAGING_DIR) and from $(TARGET_DIR).</p>
 
     <p>Lines <a href="#line48">48-49</a> define a simple target to completely remove the
     directory in which the software was uncompressed, configured and
-    compiled. This target MUST completely rm $(BUILD_DIR)/package-version.</p>
+    compiled. The <code>-dirclean</code> target MUST completely rm $(BUILD_DIR)/package-version.</p>
 
     <p>Lines <a href="#line51">51-58</a> adds the target <code>foo</code> to the list
     of targets to be compiled by Buildroot by first checking if
