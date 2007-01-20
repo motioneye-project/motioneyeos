@@ -1,0 +1,498 @@
+Index: uClibc_trunk/libc/inet/rpc/rcmd.c
+===================================================================
+--- uClibc_trunk/libc/inet/rpc/rcmd.c	(revision 17397)
++++ uClibc_trunk/libc/inet/rpc/rcmd.c	(working copy)
+@@ -126,7 +126,7 @@ libc_hidden_proto(accept)
+ libc_hidden_proto(listen)
+ libc_hidden_proto(sigsetmask)
+ libc_hidden_proto(getc_unlocked)
+-libc_hidden_proto(__fgetc_unlocked)
++//libc_hidden_proto(fgetc_unlocked)
+ libc_hidden_proto(fopen)
+ libc_hidden_proto(fclose)
+ libc_hidden_proto(fprintf)
+Index: uClibc_trunk/libc/inet/rpc/ruserpass.c
+===================================================================
+--- uClibc_trunk/libc/inet/rpc/ruserpass.c	(revision 17397)
++++ uClibc_trunk/libc/inet/rpc/ruserpass.c	(working copy)
+@@ -63,7 +63,7 @@ libc_hidden_proto(fileno)
+ libc_hidden_proto(fopen)
+ libc_hidden_proto(fclose)
+ libc_hidden_proto(getc_unlocked)
+-libc_hidden_proto(__fgetc_unlocked)
++//libc_hidden_proto(__fgetc_unlocked)
+ 
+ #define _(X)  (X)
+ /* #include "ftp_var.h" */
+Index: uClibc_trunk/libc/pwd_grp/pwd_grp.c
+===================================================================
+--- uClibc_trunk/libc/pwd_grp/pwd_grp.c	(revision 17397)
++++ uClibc_trunk/libc/pwd_grp/pwd_grp.c	(working copy)
+@@ -43,11 +43,12 @@ libc_hidden_proto(strlen)
+ libc_hidden_proto(strtoul)
+ libc_hidden_proto(rewind)
+ libc_hidden_proto(fgets_unlocked)
+-libc_hidden_proto(__fputc_unlocked)
+ libc_hidden_proto(sprintf)
+ libc_hidden_proto(fopen)
+ libc_hidden_proto(fclose)
+ libc_hidden_proto(fprintf)
++#undef fputc_unlocked
++libc_hidden_proto(fputc_unlocked)
+ #ifdef __UCLIBC_HAS_XLOCALE__
+ libc_hidden_proto(__ctype_b_loc)
+ #elif __UCLIBC_HAS_CTYPE_TABLES__
+@@ -809,7 +810,7 @@ int putgrent(const struct group *__restr
+ 
+ 			do {
+ 				if (!*m) {
+-					if (__fputc_unlocked('\n', f) >= 0) {
++					if (fputc_unlocked('\n', f) >= 0) {
+ 						rv = 0;
+ 					}
+ 					break;
+@@ -875,7 +876,7 @@ int putspent(const struct spwd *p, FILE 
+ 		goto DO_UNLOCK;
+ 	}
+ 
+-	if (__fputc_unlocked('\n', stream) > 0) {
++	if (fputc_unlocked('\n', stream) > 0) {
+ 		rv = 0;
+ 	}
+ 
+Index: uClibc_trunk/libc/stdio/fgets.c
+===================================================================
+--- uClibc_trunk/libc/stdio/fgets.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/fgets.c	(working copy)
+@@ -10,8 +10,7 @@
+ libc_hidden_proto(fgets_unlocked)
+ 
+ #ifdef __DO_UNLOCKED
+-
+-libc_hidden_proto(__fgetc_unlocked)
++libc_hidden_proto(fgetc_unlocked)
+ 
+ char *fgets_unlocked(char *__restrict s, int n,
+ 					   register FILE * __restrict stream)
+@@ -38,7 +37,7 @@ char *fgets_unlocked(char *__restrict s,
+ 				break;
+ 			}
+ 		} else {
+-			if ((c = __fgetc_unlocked(stream)) == EOF) {
++			if ((c = fgetc_unlocked(stream)) == EOF) {
+ 				if (__FERROR_UNLOCKED(stream)) {
+ 					goto ERROR;
+ 				}
+Index: uClibc_trunk/libc/stdio/_scanf.c
+===================================================================
+--- uClibc_trunk/libc/stdio/_scanf.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/_scanf.c	(working copy)
+@@ -86,7 +86,8 @@ libc_hidden_proto(vfscanf)
+ libc_hidden_proto(vsscanf)
+ libc_hidden_proto(fclose)
+ libc_hidden_proto(getc_unlocked)
+-libc_hidden_proto(__fgetc_unlocked)
++#undef fgetc_unlocked
++libc_hidden_proto(fgetc_unlocked)
+ #ifdef __UCLIBC_HAS_WCHAR__
+ libc_hidden_proto(wcslen)
+ libc_hidden_proto(vfwscanf)
+@@ -506,7 +507,7 @@ enum {
+ 	FLAG_THOUSANDS	=	0x20,
+ 	FLAG_I18N		=	0x40,	/* only works for d, i, u */
+ 	FLAG_MALLOC     =   0x80,	/* only works for s, S, and [ (and l[)*/
+-};	  
++};
+ 
+ 
+ #define SPEC_RANGES		{ CONV_n, CONV_p, CONV_i, CONV_A, \
+@@ -1024,7 +1025,7 @@ static int scan_getwc(register struct sc
+ 		__set_errno(EILSEQ);		/* In case of incomplete conversion. */
+ 		sc->mb_fail = 1;
+ 	}
+-	
++
+  SUCCESS:
+ 	sc->width = width;			/* Restore width. */
+ 
+@@ -1366,7 +1367,7 @@ int VFSCANF (FILE *__restrict fp, const 
+ 
+ 			if (psfs.conv_num == CONV_percent) {
+ 				goto MATCH_CHAR;
+- 			}
++			}
+ 
+ 			if (psfs.conv_num == CONV_n) {
+ #ifdef __UCLIBC_MJN3_ONLY__
+@@ -1410,7 +1411,6 @@ int VFSCANF (FILE *__restrict fp, const 
+ 			{
+ 				b = (psfs.store ? ((unsigned char *) psfs.cur_ptr) : buf);
+ 				fail = 1;
+-			
+ 
+ 				if (psfs.conv_num == CONV_c) {
+ 					if (sc.width == INT_MAX) {
+@@ -1451,7 +1451,7 @@ int VFSCANF (FILE *__restrict fp, const 
+ 					if (*++fmt == '^') {
+ 						++fmt;
+ 						invert = 1;
+- 					}
++					}
+ 					memset(scanset, invert, sizeof(scanset));
+ 					invert = 1-invert;
+ 
+@@ -1519,7 +1519,7 @@ int VFSCANF (FILE *__restrict fp, const 
+ 
+ 				wb = (psfs.store ? ((wchar_t *) psfs.cur_ptr) : wbuf);
+ 				fail = 1;
+-			
++
+ 				if (psfs.conv_num == CONV_C) {
+ 					if (sc.width == INT_MAX) {
+ 						sc.width = 1;
+@@ -1796,7 +1796,6 @@ int attribute_hidden __psfs_do_numeric(p
+ 	unsigned char usflag, base;
+ 	unsigned char nonzero = 0;
+ 	unsigned char seendigit = 0;
+-	
+ 
+ #ifdef __UCLIBC_MJN3_ONLY__
+ #warning CONSIDER: What should be returned for an invalid conversion specifier?
+@@ -2210,7 +2209,7 @@ int attribute_hidden __psfs_do_numeric(p
+ 		assert(seendigit);
+ 		seendigit = 0;
+ 		nonzero = 0;
+-		
++
+ 		if (sc->cc == '0') {
+ 			seendigit = 1;
+ 			*b++ = '0';
+@@ -2226,7 +2225,7 @@ int attribute_hidden __psfs_do_numeric(p
+ 			}
+ 			__scan_getc(sc);
+ 		}
+-			
++
+ 		if (!seendigit) {		/* No digits.  Unrecoverable. */
+ 			goto DONE_DO_UNGET;
+ 		}
+Index: uClibc_trunk/libc/stdio/putwchar.c
+===================================================================
+--- uClibc_trunk/libc/stdio/putwchar.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/putwchar.c	(working copy)
+@@ -22,7 +22,8 @@ strong_alias(putwchar_unlocked,putwchar)
+ 
+ #elif defined __UCLIBC_HAS_THREADS__
+ 
+-libc_hidden_proto(__fputc_unlocked)
++#undef fputc_unlocked
++libc_hidden_proto(fputc_unlocked)
+ /* psm: should this be fputwc? */
+ libc_hidden_proto(fputc)
+ 
+Index: uClibc_trunk/libc/stdio/getchar.c
+===================================================================
+--- uClibc_trunk/libc/stdio/getchar.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/getchar.c	(working copy)
+@@ -7,7 +7,8 @@
+ 
+ #include "_stdio.h"
+ 
+-libc_hidden_proto(__fgetc_unlocked)
++#undef fgetc_unlocked
++libc_hidden_proto(fgetc_unlocked)
+ 
+ #undef getchar
+ #ifdef __DO_UNLOCKED
+Index: uClibc_trunk/libc/stdio/putchar.c
+===================================================================
+--- uClibc_trunk/libc/stdio/putchar.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/putchar.c	(working copy)
+@@ -7,7 +7,8 @@
+ 
+ #include "_stdio.h"
+ 
+-libc_hidden_proto(__fputc_unlocked)
++#undef fputc_unlocked
++libc_hidden_proto(fputc_unlocked)
+ 
+ #undef putchar
+ #ifdef __DO_UNLOCKED
+Index: uClibc_trunk/libc/stdio/fputc.c
+===================================================================
+--- uClibc_trunk/libc/stdio/fputc.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/fputc.c	(working copy)
+@@ -12,11 +12,11 @@
+ #undef putc
+ #undef putc_unlocked
+ 
+-libc_hidden_proto(__fputc_unlocked)
++libc_hidden_proto(fputc_unlocked)
+ 
+ #ifdef __DO_UNLOCKED
+ 
+-int __fputc_unlocked(int c, register FILE *stream)
++int fputc_unlocked(int c, register FILE *stream)
+ {
+ 	__STDIO_STREAM_VALIDATE(stream);
+ 
+@@ -70,20 +70,20 @@ int __fputc_unlocked(int c, register FIL
+  BAD:
+ 	return EOF;
+ }
+-libc_hidden_def(__fputc_unlocked)
+-
+-libc_hidden_proto(fputc_unlocked)
+-strong_alias(__fputc_unlocked,fputc_unlocked)
+ libc_hidden_def(fputc_unlocked)
+ 
++//libc_hidden_proto(fputc_unlocked)
++//strong_alias(__fputc_unlocked,fputc_unlocked)
++//libc_hidden_def(fputc_unlocked)
++
+ libc_hidden_proto(putc_unlocked)
+-strong_alias(__fputc_unlocked,putc_unlocked)
++strong_alias(fputc_unlocked,putc_unlocked)
+ libc_hidden_def(putc_unlocked)
+ #ifndef __UCLIBC_HAS_THREADS__
+-strong_alias(__fputc_unlocked,fputc)
++strong_alias(fputc_unlocked,fputc)
+ 
+ libc_hidden_proto(putc)
+-strong_alias(__fputc_unlocked,putc)
++strong_alias(fputc_unlocked,putc)
+ libc_hidden_def(putc)
+ #endif
+ 
+Index: uClibc_trunk/libc/stdio/getdelim.c
+===================================================================
+--- uClibc_trunk/libc/stdio/getdelim.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/getdelim.c	(working copy)
+@@ -11,8 +11,8 @@
+ #include "_stdio.h"
+ 
+ libc_hidden_proto(getdelim)
+-
+-libc_hidden_proto(__fgetc_unlocked)
++#undef fgetc_unlocked
++libc_hidden_proto(fgetc_unlocked)
+ 
+ /* Note: There is a defect in this function.  (size_t vs ssize_t). */
+ 
+Index: uClibc_trunk/libc/stdio/puts.c
+===================================================================
+--- uClibc_trunk/libc/stdio/puts.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/puts.c	(working copy)
+@@ -7,7 +7,8 @@
+ 
+ #include "_stdio.h"
+ 
+-libc_hidden_proto(__fputc_unlocked)
++#undef fputc_unlocked
++libc_hidden_proto(fputc_unlocked)
+ libc_hidden_proto(fputs_unlocked)
+ 
+ int puts(register const char * __restrict s)
+@@ -25,7 +26,7 @@ int puts(register const char * __restric
+ 	/* Note: Nonportable as fputs need only return nonnegative on success. */
+ 	if ((n = fputs_unlocked(s, stream)) != EOF) {
+ 		++n;
+-		if (__fputc_unlocked('\n', stream) == EOF) {
++		if (__FPUTC_UNLOCKED('\n', stream) == EOF) {
+ 			n = EOF;
+ 		}
+ 	}
+Index: uClibc_trunk/libc/stdio/old_vfprintf.c
+===================================================================
+--- uClibc_trunk/libc/stdio/old_vfprintf.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/old_vfprintf.c	(working copy)
+@@ -149,7 +149,8 @@ libc_hidden_proto(strlen)
+ libc_hidden_proto(strnlen)
+ libc_hidden_proto(memcpy)
+ libc_hidden_proto(putc_unlocked)
+-libc_hidden_proto(__fputc_unlocked)
++#undef fputc_unlocked
++libc_hidden_proto(fputc_unlocked)
+ libc_hidden_proto(__glibc_strerror_r)
+ 
+ /*  #undef __UCLIBC_HAS_FLOATS__ */
+Index: uClibc_trunk/libc/stdio/fgetc.c
+===================================================================
+--- uClibc_trunk/libc/stdio/fgetc.c	(revision 17397)
++++ uClibc_trunk/libc/stdio/fgetc.c	(working copy)
+@@ -13,13 +13,13 @@
+ #undef getc
+ #undef getc_unlocked
+ 
+-libc_hidden_proto(__fgetc_unlocked)
++libc_hidden_proto(fgetc_unlocked)
+ 
+ #ifdef __DO_UNLOCKED
+ 
+ libc_hidden_proto(fflush_unlocked)
+ 
+-int __fgetc_unlocked(FILE *stream)
++int fgetc_unlocked(FILE *stream)
+ {
+ 	__STDIO_STREAM_VALIDATE(stream);
+ 
+@@ -73,26 +73,22 @@ int __fgetc_unlocked(FILE *stream)
+ 
+ 	return EOF;
+ }
+-libc_hidden_def(__fgetc_unlocked)
+-
+-libc_hidden_proto(fgetc_unlocked)
+-strong_alias(__fgetc_unlocked,fgetc_unlocked)
+ libc_hidden_def(fgetc_unlocked)
+ 
+ //libc_hidden_proto(__getc_unlocked)
+-//strong_alias(__fgetc_unlocked,__getc_unlocked)
++//strong_alias(fgetc_unlocked,__getc_unlocked)
+ //libc_hidden_def(__getc_unlocked)
+ 
+ libc_hidden_proto(getc_unlocked)
+-strong_alias(__fgetc_unlocked,getc_unlocked)
++strong_alias(fgetc_unlocked,getc_unlocked)
+ libc_hidden_def(getc_unlocked)
+ 
+ #ifndef __UCLIBC_HAS_THREADS__
+ libc_hidden_proto(fgetc)
+-strong_alias(__fgetc_unlocked,fgetc)
++strong_alias(fgetc_unlocked,fgetc)
+ libc_hidden_def(fgetc)
+ 
+-strong_alias(__fgetc_unlocked,getc)
++strong_alias(fgetc_unlocked,getc)
+ #endif
+ 
+ #elif defined __UCLIBC_HAS_THREADS__
+Index: uClibc_trunk/libc/unistd/getpass.c
+===================================================================
+--- uClibc_trunk/libc/unistd/getpass.c	(revision 17397)
++++ uClibc_trunk/libc/unistd/getpass.c	(working copy)
+@@ -36,7 +36,8 @@ libc_hidden_proto(fgets)
+ libc_hidden_proto(fputs)
+ libc_hidden_proto(fputc)
+ libc_hidden_proto(putc)
+-libc_hidden_proto(__fputc_unlocked)
++#undef fputc_unlocked
++libc_hidden_proto(fputc_unlocked)
+ 
+ /* It is desirable to use this bit on systems that have it.
+    The only bit of terminal state we want to twiddle is echoing, which is
+Index: uClibc_trunk/libc/sysdeps/linux/common/bits/uClibc_stdio.h
+===================================================================
+--- uClibc_trunk/libc/sysdeps/linux/common/bits/uClibc_stdio.h	(revision 17397)
++++ uClibc_trunk/libc/sysdeps/linux/common/bits/uClibc_stdio.h	(working copy)
+@@ -381,32 +381,29 @@ extern void __stdio_init_mutex(__UCLIBC_
+ # define __FEOF(__stream)		__FEOF_UNLOCKED(__stream)
+ #endif
+ 
+-extern int __fgetc_unlocked(FILE *__stream);
+-extern int __fputc_unlocked(int __c, FILE *__stream);
+-
+-/* First define the default definitions.  They overriden below as necessary. */
+-#define __FGETC_UNLOCKED(__stream)		(__fgetc_unlocked)((__stream))
++/* First define the default definitions.
++ * They are overridden as necessary. */
++#define __FGETC_UNLOCKED(__stream)		(fgetc_unlocked)((__stream))
+ #define __FGETC(__stream)			(fgetc)((__stream))
+-#define __GETC_UNLOCKED_MACRO(__stream)		(__fgetc_unlocked)((__stream))
+-#define __GETC_UNLOCKED(__stream)		(__fgetc_unlocked)((__stream))
++#define __GETC_UNLOCKED_MACRO(__stream)		(fgetc_unlocked)((__stream))
++#define __GETC_UNLOCKED(__stream)		(fgetc_unlocked)((__stream))
+ #define __GETC(__stream)			(fgetc)((__stream))
+ 
+-#define __FPUTC_UNLOCKED(__c, __stream)		(__fputc_unlocked)((__c),(__stream))
++#define __FPUTC_UNLOCKED(__c, __stream)		(fputc_unlocked)((__c),(__stream))
+ #define __FPUTC(__c, __stream)			(fputc)((__c),(__stream))
+-#define __PUTC_UNLOCKED_MACRO(__c, __stream)	(__fputc_unlocked)((__c),(__stream))
+-#define __PUTC_UNLOCKED(__c, __stream)		(__fputc_unlocked)((__c),(__stream))
++#define __PUTC_UNLOCKED_MACRO(__c, __stream)	(fputc_unlocked)((__c),(__stream))
++#define __PUTC_UNLOCKED(__c, __stream)		(fputc_unlocked)((__c),(__stream))
+ #define __PUTC(__c, __stream)			(fputc)((__c),(__stream))
+ 
+ 
+ #ifdef __STDIO_GETC_MACRO
+-
+ extern FILE *__stdin;			/* For getchar() macro. */
+ 
+ # undef  __GETC_UNLOCKED_MACRO
+ # define __GETC_UNLOCKED_MACRO(__stream)				\
+ 		( ((__stream)->__bufpos < (__stream)->__bufgetc_u)	\
+ 		  ? (*(__stream)->__bufpos++)				\
+-		  : __fgetc_unlocked(__stream) )
++		  : fgetc_unlocked(__stream) )
+ 
+ # if 0
+ 	/* Classic macro approach.  getc{_unlocked} can have side effects. */
+@@ -452,20 +449,17 @@ extern FILE *__stdin;			/* For getchar()
+ #  endif
+ # endif
+ 
+-#else
+-
+ #endif /* __STDIO_GETC_MACRO */
+ 
+ 
+ #ifdef __STDIO_PUTC_MACRO
+-
+ extern FILE *__stdout;			/* For putchar() macro. */
+ 
+ # undef  __PUTC_UNLOCKED_MACRO
+ # define __PUTC_UNLOCKED_MACRO(__c, __stream)				\
+ 		( ((__stream)->__bufpos < (__stream)->__bufputc_u)	\
+ 		  ? (*(__stream)->__bufpos++) = (__c)			\
+-		  : __fputc_unlocked((__c),(__stream)) )
++		  : fputc_unlocked((__c),(__stream)) )
+ 
+ # if 0
+ 	/* Classic macro approach.  putc{_unlocked} can have side effects.*/
+@@ -488,7 +482,8 @@ extern FILE *__stdout;			/* For putchar(
+ 		}) )
+ 
+ #  undef  __PUTC_UNLOCKED
+-#  define __PUTC_UNLOCKED(__c, __stream)	__FPUTC_UNLOCKED((__c), (__stream))
++#  define __PUTC_UNLOCKED(__c, __stream)				\
++					__FPUTC_UNLOCKED((__c), (__stream))
+ 
+ #  ifdef __UCLIBC_HAS_THREADS__
+ #   undef  __FPUTC
+Index: uClibc_trunk/libc/misc/ttyent/getttyent.c
+===================================================================
+--- uClibc_trunk/libc/misc/ttyent/getttyent.c	(revision 17397)
++++ uClibc_trunk/libc/misc/ttyent/getttyent.c	(working copy)
+@@ -44,8 +44,10 @@ libc_hidden_proto(strncmp)
+ libc_hidden_proto(__fsetlocking)
+ libc_hidden_proto(rewind)
+ libc_hidden_proto(fgets_unlocked)
++#undef getc_unlocked
+ libc_hidden_proto(getc_unlocked)
+-libc_hidden_proto(__fgetc_unlocked)
++#undef fgetc_unlocked
++libc_hidden_proto(fgetc_unlocked)
+ libc_hidden_proto(fopen)
+ libc_hidden_proto(fclose)
+ libc_hidden_proto(abort)
+Index: uClibc_trunk/libc/misc/error/error.c
+===================================================================
+--- uClibc_trunk/libc/misc/error/error.c	(revision 17397)
++++ uClibc_trunk/libc/misc/error/error.c	(working copy)
+@@ -30,11 +30,14 @@ libc_hidden_proto(strcmp)
+ libc_hidden_proto(strerror)
+ libc_hidden_proto(fprintf)
+ libc_hidden_proto(exit)
++#undef putc
+ libc_hidden_proto(putc)
++libc_hidden_proto(fputc)
+ libc_hidden_proto(vfprintf)
+ libc_hidden_proto(fflush)
+-libc_hidden_proto(fputc)
+-libc_hidden_proto(__fputc_unlocked)
++#ifdef __UCLIBC_HAS_STDIO_PUTC_MACRO__
++libc_hidden_proto(fputc_unlocked)
++#endif
+ 
+ /* This variable is incremented each time `error' is called.  */
+ unsigned int error_message_count = 0;
