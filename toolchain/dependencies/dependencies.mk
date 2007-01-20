@@ -6,7 +6,7 @@
 ######################################################################
 
 dependencies: host-sed
-	@HOSTCC="$(firstword $(HOSTCC))" $(TOPDIR)/toolchain/dependencies/dependencies.sh
+	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" $(TOPDIR)/toolchain/dependencies/dependencies.sh
 
 dependencies-source:
 
