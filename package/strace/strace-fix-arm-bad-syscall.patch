@@ -1,0 +1,18 @@
+--- strace-4.5.12-orig/syscall.c	2005-06-08 21:45:28.000000000 +0100
++++ strace-4.5.12/syscall.c	2005-10-25 19:26:39.000000000 +0100
+@@ -1013,6 +1013,15 @@ struct tcb *tcp;
+ 		/*
+ 		 * Note: we only deal with only 32-bit CPUs here.
+ 		 */
++
++		if (!(tcp->flags & TCB_INSYSCALL) &&
++		    (tcp->flags & TCB_WAITEXECVE)) {
++			/* caught a fake syscall from the execve's exit */
++			tcp->flags &= ~TCB_WAITEXECVE;
++			return 0;
++		}
++ 
++
+ 		if (regs.ARM_cpsr & 0x20) {
+ 			/*
+ 			 * Get the Thumb-mode system call number
