@@ -22,7 +22,22 @@ $(DMALLOC_DIR)/.unpacked: $(DL_DIR)/$(DMALLOC_SOURCE)
 	$(SED) 's/^ac_cv_page_size=0$$/ac_cv_page_size=12/' $(DMALLOC_DIR)/configure
 	$(SED) 's/(ld -/($${LD-ld} -/' $(DMALLOC_DIR)/configure
 	$(SED) 's/'\''ld -/"$${LD-ld}"'\'' -/' $(DMALLOC_DIR)/configure
-	touch $(DMALLOC_DIR)/.unpacked
+	-$(SED) 's/ar cr/$$(AR) cr/' $(DMALLOC_DIR)/Makefile.in
+	touch $@
+
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
+DMALLOC_CONFIG_ARGS:=--enable-cxx
+else
+DMALLOC_CONFIG_ARGS:=--disable-cxx
+endif
+
+ifeq ($(BR2_PTHREADS_NONE),y)
+DMALLOC_CONFIG_ARGS+=--disable-threads
+else
+DMALLOC_CONFIG_ARGS+=--enable-threads
+endif
+
+
 
 $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 	(cd $(DMALLOC_DIR); rm -rf config.cache; \
@@ -45,19 +60,26 @@ $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--enable-threads \
 		--enable-shlib \
+		$(DMALLOC_CONFIG_ARGS) \
 	);
-	touch $(DMALLOC_DIR)/.configured
+	touch $@
 
 $(DMALLOC_DIR)/$(DMALLOC_BINARY): $(DMALLOC_DIR)/.configured
 	$(MAKE) -C $(DMALLOC_DIR)
 
 $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY): $(DMALLOC_DIR)/$(DMALLOC_BINARY)
-	$(MAKE)	DESTDIR=$(STAGING_DIR) -C $(DMALLOC_DIR) install
+	# both DESTDIR and PREFIX are ignored..
+	$(MAKE)	includedir="$(STAGING_DIR)/usr/include" \
+		bindir="$(STAGING_DIR)/usr/bin" \
+		libdir="$(STAGING_DIR)/usr/lib" \
+		shlibdir="$(STAGING_DIR)/usr/lib" \
+		includedir="$(STAGING_DIR)/usr/share/info/" \
+		-C $(DMALLOC_DIR) install
 	(cd $(STAGING_DIR)/usr/lib; \
 		mv libdmalloc*.so $(TARGET_DIR)/usr/lib);
-	touch $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
+	cp -dpf $(STAGING_DIR)/usr/bin/dmalloc $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
+	$(STRIP) -s $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
 
 dmalloc: uclibc $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
 
