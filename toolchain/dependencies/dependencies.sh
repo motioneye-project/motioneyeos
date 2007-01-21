@@ -101,6 +101,7 @@ if test $? != 0 ; then
 else
 	echo "sed works:					Ok"
 fi
+rm -f .sedtest
 XSED=$HOST_SED_DIR/bin/sed
 
 #############################################################
