@@ -30,10 +30,10 @@ $(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched
 		./configure \
 		--with-cxx=no \
 		$(DISABLE_NLS); \
-		make python Parser/pygen; \
+		$(MAKE) python Parser/pygen; \
 		mv python hostpython; \
 		mv Parser/pgen Parser/hostpgen; \
-		make distclean \
+		$(MAKE) distclean \
 	);
 	touch $(PYTHON_DIR)/.hostpython
 

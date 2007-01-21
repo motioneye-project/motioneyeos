@@ -23,7 +23,7 @@ $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
 
 $(MICROPERL_DIR)/.configured: $(MICROPERL_DIR)/.source
 	(cd $(MICROPERL_DIR) ; chmod u+w uconfig.h ; . ./uconfig.sh ; \
-	 make -f Makefile.micro regen_uconfig ; \
+	 $(MAKE) -f Makefile.micro regen_uconfig ; \
 	 $(SED) 's,PRIVLIB ".*,PRIVLIB "/$(MICROPERL_MODS_DIR)",' \
 		 -e 's,PRIVLIB_EXP ".*,PRIVLIB_EXP "$(MICROPERL_MODS_DIR)",' \
 		 -e 's,BIN ".*,BIN "/usr/bin",' \

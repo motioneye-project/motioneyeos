@@ -40,10 +40,10 @@ $(LIBEVENT_DIR)/$(LIBEVENT_BINARY): $(LIBEVENT_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(LIBEVENT_DIR)
 
 $(STAGING_DIR)/$(LIBEVENT_TARGET_BINARY): $(LIBEVENT_DIR)/$(LIBEVENT_BINARY)
-	make -C $(LIBEVENT_DIR) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(LIBEVENT_DIR) DESTDIR=$(STAGING_DIR) install
 
 $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY): $(STAGING_DIR)/$(LIBEVENT_TARGET_BINARY)
-	make -C $(LIBEVENT_DIR) DESTDIR=$(TARGET_DIR) install
+	$(MAKE) -C $(LIBEVENT_DIR) DESTDIR=$(TARGET_DIR) install
 	rm -f $(TARGET_DIR)/usr/lib/libevent*.la $(TARGET_DIR)/usr/include/ev*
 	rm -f $(TARGET_DIR)/usr/man/man3/ev*.3
 	rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/usr/man/man3

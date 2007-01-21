@@ -46,7 +46,7 @@ $(SYSLINUX_DIR)/isolinux.bin: $(SYSLINUX_DIR)/Makefile
 syslinux: $(SYSLINUX_DIR)/isolinux.bin
 
 syslinux-clean:
-	-make -C $(SYSLINUX_DIR) clean
+	-$(MAKE) -C $(SYSLINUX_DIR) clean
 
 syslinux-dirclean:
 	rm -rf $(SYSLINUX_DIR)

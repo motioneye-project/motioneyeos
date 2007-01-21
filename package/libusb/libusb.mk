@@ -47,7 +47,7 @@ $(LIBUSB_DIR)/$(LIBUSB_BINARY): $(LIBUSB_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(LIBUSB_DIR)
 
 $(TARGET_DIR)/$(LIBUSB_TARGET_BINARY): $(LIBUSB_DIR)/$(LIBUSB_BINARY)
-	make -C $(LIBUSB_DIR) DESTDIR=$(TARGET_DIR) install
+	$(MAKE) -C $(LIBUSB_DIR) DESTDIR=$(TARGET_DIR) install
 	rm -f $(TARGET_DIR)/usr/lib/libusb*.a $(TARGET_DIR)/usr/lib/libusb*.la
 
 libusb: uclibc $(TARGET_DIR)/$(LIBUSB_TARGET_BINARY)

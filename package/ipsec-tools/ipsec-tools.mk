@@ -137,8 +137,8 @@ ipsec-tools-source: $(DL_DIR)/$(IPSEC_TOOLS_SOURCE)
 ipsec-tools-uninstall:
 
 ipsec-tools-clean:
-	make -C $(IPSEC_TOOLS_DIR) DESTDIR=$(TARGET_DIR) uninstall
-	make -C $(IPSEC_TOOLS_DIR) clean
+	$(MAKE) -C $(IPSEC_TOOLS_DIR) DESTDIR=$(TARGET_DIR) uninstall
+	$(MAKE) -C $(IPSEC_TOOLS_DIR) clean
 ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_LIBS)), y)
 	-rm -f $(STAGING_DIR)/lib/libipsec.a
 	-rm -f $(STAGING_DIR)/lib/libipsec.la

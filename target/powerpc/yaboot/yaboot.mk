@@ -20,13 +20,13 @@ $(YABOOT_DIR)/Makefile: $(DL_DIR)/$(YABOOT_SOURCE)
 	touch -c $(YABOOT_DIR)/Makefile
 
 $(YABOOT_DIR)/second/yaboot: $(YABOOT_DIR)/Makefile
-	make -C $(YABOOT_DIR) CROSS=$(TARGET_CROSS)
+	$(MAKE) -C $(YABOOT_DIR) CROSS=$(TARGET_CROSS)
 	touch -c $(YABOOT_DIR)/second/yaboot
 
 yaboot: $(YABOOT_DIR)/second/yaboot
 
 yaboot-clean:
-	make -C $(YABOOT_DIR) clean
+	$(MAKE) -C $(YABOOT_DIR) clean
 
 yaboot-dirclean:
 	rm -rf $(YABOOT_DIR)
