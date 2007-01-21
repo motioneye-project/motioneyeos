@@ -1,0 +1,4 @@
+
+ifeq ($(strip $(BR2_PACKAGE_UCLIBC_TARGET_HEADERS)),y)
+TARGETS+=uclibc_target_headers
+endif

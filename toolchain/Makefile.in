@@ -16,3 +16,5 @@ OPTIMIZE_FOR_CPU=$(ARCH)
 
 # gcc has a bunch of needed stuff....
 include toolchain/gcc/Makefile.in
+
+include toolchain/uClibc/Makefile.in
