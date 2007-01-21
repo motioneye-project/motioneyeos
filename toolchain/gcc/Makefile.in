@@ -22,6 +22,7 @@ endif
 ifeq ($(strip $(BR2_GCC_USE_SJLJ_EXCEPTIONS)),y)
 GCC_USE_SJLJ_EXCEPTIONS:=--enable-sjlj-exceptions
 endif
+
 ifeq ($(BR2_SOFT_FLOAT),y)
 # gcc 3.4.x soft float configuration is different than previous versions.
 ifeq ($(findstring 3.4.,$(GCC_VERSION)),3.4.)
@@ -30,10 +31,7 @@ else
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
 endif
 # again... there must be a better way
-ifeq ($(findstring 4.0.,$(GCC_VERSION)),4.0.)
-SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
-endif
-ifeq ($(findstring 4.1.,$(GCC_VERSION)),4.1.)
+ifeq ($(findstring 4.,$(GCC_VERSION)),4.)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
 endif
 TARGET_SOFT_FLOAT:=-msoft-float
