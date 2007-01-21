@@ -58,15 +58,5 @@ config BR2_CROSS_TOOLCHAIN_TARGET_UTILS
 	  Answer Y if you want these apps (if built) copied into the cross toolchain
 	  dir under <arch>-linux-uclibc/target_utils/.
 
-# Might be worth experimenting with for gcc 3.4.x.
-#GCC_WITH_CPU:=
-#GCC_WITH_ARCH:=
-#GCC_WITH_TUNE:=
-
-#GCC_WITH_CPU:=--with-cpu=
-#GCC_WITH_ARCH:=--with-arch=
-#GCC_WITH_TUNE:=--with-tune=
-
-
 endmenu
 
