@@ -490,7 +490,7 @@ int main(int argc, char **argv)
 				full_name_inc = xmalloc(strlen(full_name) + 4);
 				for (i = start; i < count; i++) {
 					sprintf(full_name_inc, "%s%d", full_name, i);
-					rdev = (major << 8) + minor + (i * increment - start);
+					rdev = makedev(major, minor + (i * increment - start));
 					if (mknod(full_name_inc, mode, rdev) == -1) {
 						bb_perror_msg("line %d: Couldnt create node %s", linenum, full_name_inc);
 						ret = EXIT_FAILURE;
@@ -506,7 +506,7 @@ int main(int argc, char **argv)
 				}
 				free(full_name_inc);
 			} else {
-				rdev = (major << 8) + minor;
+				rdev = makedev(major, minor);
 				if (mknod(full_name, mode, rdev) == -1) {
 					bb_perror_msg("line %d: Couldnt create node %s", linenum, full_name);
 					ret = EXIT_FAILURE;
