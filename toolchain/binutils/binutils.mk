@@ -6,7 +6,7 @@
 BINUTILS_VERSION:=$(strip $(subst ",, $(BR2_BINUTILS_VERSION)))
 #"))
 
-EXTRA_BINUTILS_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_BINUTILS_CONFIG_OPTIONS)))
+EXTRA_BINUTILS_CONFIG_OPTIONS=$(strip $(subst ",, $(BR2_EXTRA_BINUTILS_CONFIG_OPTIONS)))
 #"))
 BINUTILS_SITE:=ftp://ftp.kernel.org/pub/linux/devel/binutils
 ifeq ($(BINUTILS_VERSION),2.17)
@@ -31,6 +31,23 @@ ifeq ($(BINUTILS_VERSION),2.15.97)
 BINUTILS_SITE:=ftp://sources.redhat.com/pub/binutils/snapshots/
 endif
 
+# We do not rely on the host's gmp/mpfr but use a known working one
+BINUTILS_HOST_PREREQ:= #nothing
+BINUTILS_TARGET_PREREQ:= #nothing
+ifeq ($(BR2_BINUTILS_VERSION_2_17_50_0_9),y)
+
+BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp.so \
+	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.so
+
+BINUTILS_TARGET_PREREQ:=$(TARGET_DIR)/lib/libgmp.so \
+	$(TARGET_DIR)/lib/libmpfr.so
+EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-gmp="$(GMP_HOST_DIR)"
+EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_HOST_DIR)"
+
+BINUTILS_TARGET_CONFIG_OPTIONS=--with-gmp="$(GMP_TARGET_DIR)"
+BINUTILS_TARGET_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_TARGET_DIR)"
+endif
+
 BINUTILS_SOURCE:=binutils-$(BINUTILS_VERSION).tar.bz2
 BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)
 BINUTILS_CAT:=$(BZCAT)
@@ -53,7 +70,7 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(BINUTILS_DIR) toolchain/binutils/$(BINUTILS_VERSION) \*.patch
 	touch $(BINUTILS_DIR)/.patched
 
-$(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
+$(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched $(BINUTILS_HOST_PREREQ)
 	mkdir -p $(BINUTILS_DIR1)
 	(cd $(BINUTILS_DIR1); \
 		CC="$(HOSTCC)" \
@@ -98,7 +115,7 @@ binutils-dirclean:
 #
 #############################################################
 BINUTILS_DIR2:=$(BUILD_DIR)/binutils-$(BINUTILS_VERSION)-target
-$(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
+$(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched $(BINUTILS_TARGET_PREREQ)
 	mkdir -p $(BINUTILS_DIR2)
 	(cd $(BINUTILS_DIR2); \
 		CC_FOR_BUILD="$(HOSTCC)" \
@@ -113,6 +130,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		--target=$(REAL_GNU_TARGET_NAME) \
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
+		$(BINUTILS_TARGET_CONFIG_OPTIONS) \
 		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) );
 	touch $(BINUTILS_DIR2)/.configured
@@ -131,7 +149,7 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	-$(STRIP) $(TARGET_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/* > /dev/null 2>&1
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* > /dev/null 2>&1
 
-binutils_target: $(GCC_DEPENDANCY) $(TARGET_DIR)/usr/bin/ld
+binutils_target: $(TARGET_DIR)/usr/bin/ld
 
 binutils_target-clean:
 	(cd $(TARGET_DIR)/usr/bin; \

@@ -31,38 +31,52 @@ GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=true
 
+
+ifeq ($(findstring 3.,$(GCC_VERSION)),3.)
+GCC_NO_MPFR:=y
+endif
+ifeq ($(findstring 4.0.,$(GCC_VERSION)),4.0.)
+GCC_NO_MPFR:=y
+endif
+#ifeq ($(findstring 4.1.,$(GCC_VERSION)),4.1.)
+#GCC_NO_MPFR:=y
+#endif
+
 #############################################################
 #
 # Setup some initial stuff
 #
 #############################################################
 
-TARGET_LANGUAGES:=c
+GCC_TARGET_LANGUAGES:=c
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
-TARGET_LANGUAGES:=$(TARGET_LANGUAGES),c++
+GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),c++
 endif
 
 ifeq ($(BR2_INSTALL_LIBGCJ),y)
-TARGET_LANGUAGES:=$(TARGET_LANGUAGES),java
+GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),java
 endif
 
 ifeq ($(BR2_INSTALL_OBJC),y)
-TARGET_LANGUAGES:=$(TARGET_LANGUAGES),objc
+GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),objc
 endif
 
-TARGET_PREREQ =
-STAGING_PREREQ= $(STAGING_DIR)/lib/libc.a
+GCC_TARGET_PREREQ =
+GCC_STAGING_PREREQ= $(STAGING_DIR)/lib/libc.a
 
-ifeq ($(BR2_INSTALL_FORTRAN),y)
-TARGET_LANGUAGES:=$(TARGET_LANGUAGES),fortran
-TARGET_PREREQ += $(TARGET_DIR)/lib/libmpfr.so
-STAGING_PREREQ+= $(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.a
-GCC_WITH_TARGET_GMP:=--with-gmp=$(STAGING_DIR)
-GCC_WITH_TARGET_MPFR:=--with-mpfr=$(STAGING_DIR)
+ifndef $(GCC_NO_MPFR)
 GCC_WITH_HOST_GMP=--with-gmp=$(GMP_HOST_DIR)
 GCC_WITH_HOST_MPFR=--with-mpfr=$(MPFR_HOST_DIR)
+
+ifeq ($(BR2_INSTALL_FORTRAN),y)
+GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),fortran
+#GCC_TARGET_PREREQ += $(TARGET_DIR)/lib/libmpfr.so $(TARGET_DIR)/lib/libgmp.so
+#GCC_STAGING_PREREQ+= $(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.so
+GCC_WITH_TARGET_GMP=--with-gmp="$(GMP_TARGET_DIR)"
+GCC_WITH_TARGET_MPFR=--with-mpfr="$(MPFR_TARGET_DIR)"
 endif
+endif # ifndef GCC_NO_MPFR
 
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 GCC_SHARED_LIBGCC:=--enable-shared
@@ -91,7 +105,7 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(GCC_DIR)
-	touch $(GCC_DIR)/.unpacked
+	touch $@
 
 gcc-patched: $(GCC_DIR)/.patched
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
@@ -123,7 +137,7 @@ endif
 	#toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc i386-gcc-soft-float.patch
 	#endif
 endif
-	touch $(GCC_DIR)/.patched
+	touch $@
 
 # The --without-headers option stopped working with gcc 3.0 and has never been
 # fixed, so we need to actually have working C library header files prior to
@@ -144,17 +158,19 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--enable-target-optspace \
 		--with-gnu-ld \
 		--disable-shared \
+		$(GCC_WITH_HOST_GMP) \
+		$(GCC_WITH_HOST_MPFR) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_CPU) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
 		$(EXTRA_GCC_CONFIG_OPTIONS));
-	touch $(GCC_BUILD_DIR1)/.configured
+	touch $@
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) all-gcc
-	touch $(GCC_BUILD_DIR1)/.compiled
+	touch $@
 
 $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-gcc: $(GCC_BUILD_DIR1)/.compiled
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) install-gcc
@@ -183,7 +199,7 @@ gcc_initial-dirclean:
 # guarantees.  mjn3
 
 GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
-$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_PREREQ)
+$(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 	mkdir -p $(GCC_BUILD_DIR2)
 	# Important!  Required for limits.h to be fixed.
 	ln -snf ../include $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/sys-include
@@ -194,7 +210,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_PREREQ)
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
-		--enable-languages=$(TARGET_LANGUAGES) \
+		--enable-languages=$(GCC_TARGET_LANGUAGES) \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
@@ -209,11 +225,11 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(STAGING_PREREQ)
 		$(GCC_USE_SJLJ_EXCEPTIONS) \
 		$(DISABLE_LARGEFILE) \
 		$(EXTRA_GCC_CONFIG_OPTIONS));
-	touch $(GCC_BUILD_DIR2)/.configured
+	touch $@
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) all
-	touch $(GCC_BUILD_DIR2)/.compiled
+	touch $@
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) install
@@ -267,24 +283,24 @@ endif
 	#
 	# Ok... that's enough of that.
 	#
-	touch $(GCC_BUILD_DIR2)/.installed
+	touch $@
 
 gcc-target-libs: $(GCC_BUILD_DIR2)/.installed
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 	# These are in /lib, so...
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
-	-cp -a $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
+	-cp -dpf $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
 endif
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
-	-cp -a $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
+	-cp -dpf $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
 endif
 ifeq ($(BR2_INSTALL_LIBGCJ),y)
-	-cp -a $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/lib/
-	-cp -a $(STAGING_DIR)/lib/lib-org-w3c-dom.so* $(TARGET_DIR)/lib/
-	-cp -a $(STAGING_DIR)/lib/lib-org-xml-sax.so* $(TARGET_DIR)/lib/
+	-cp -dpf $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/lib/
+	-cp -dpf $(STAGING_DIR)/lib/lib-org-w3c-dom.so* $(TARGET_DIR)/lib/
+	-cp -dpf $(STAGING_DIR)/lib/lib-org-xml-sax.so* $(TARGET_DIR)/lib/
 	-mkdir -p $(TARGET_DIR)/usr/lib/security
-	-cp -a $(STAGING_DIR)/usr/lib/security/libgcj.security $(TARGET_DIR)/usr/lib/security/
-	-cp -a $(STAGING_DIR)/usr/lib/security/classpath.security $(TARGET_DIR)/usr/lib/security/
+	-cp -dpf $(STAGING_DIR)/usr/lib/security/libgcj.security $(TARGET_DIR)/usr/lib/security/
+	-cp -dpf $(STAGING_DIR)/usr/lib/security/classpath.security $(TARGET_DIR)/usr/lib/security/
 endif
 
 gcc: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) uclibc \
@@ -309,7 +325,7 @@ gcc-dirclean: gcc_initial-dirclean
 #############################################################
 GCC_BUILD_DIR3:=$(BUILD_DIR)/gcc-$(GCC_VERSION)-target
 
-$(GCC_BUILD_DIR3)/.prepared: $(GCC_BUILD_DIR2)/.installed $(TARGET_PREREQ)
+$(GCC_BUILD_DIR3)/.prepared: $(GCC_BUILD_DIR2)/.installed $(GCC_TARGET_PREREQ)
 	mkdir -p $(GCC_BUILD_DIR3)
 	touch $@
 
@@ -317,19 +333,20 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 	(cd $(GCC_BUILD_DIR3); rm -rf config.cache ; \
 		PATH=$(TARGET_PATH) \
 		CC_FOR_BUILD="$(HOSTCC)" \
+		BOOT_CFLAGS="$(TARGET_CFLAGS)" \
 		$(GCC_DIR)/configure \
 		--prefix=/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
-		--enable-languages=$(TARGET_LANGUAGES) \
+		--enable-languages=$(GCC_TARGET_LANGUAGES) \
 		--with-gxx-include-dir=/usr/include/c++ \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
 		$(GCC_SHARED_LIBGCC) \
-		$(GCC_WITH_HOST_GMP) \
-		$(GCC_WITH_HOST_MPFR) \
+		$(GCC_WITH_TARGET_GMP) \
+		$(GCC_WITH_TARGET_MPFR) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(MULTILIB) \
@@ -338,12 +355,12 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		$(GCC_USE_SJLJ_EXCEPTIONS) \
 		$(DISABLE_LARGEFILE) \
 		$(EXTRA_GCC_CONFIG_OPTIONS));
-	touch $(GCC_BUILD_DIR3)/.configured
+	touch $@
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	PATH=$(TARGET_PATH) \
 	$(MAKE) $(TARGET_GCC_ARGS) -C $(GCC_BUILD_DIR3) all
-	touch $(GCC_BUILD_DIR3)/.compiled
+	touch $@
 
 #
 # gcc-lib dir changes names to gcc with 3.4.mumble
@@ -367,6 +384,9 @@ GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(REAL_GCC_VERSION)
 else
 GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
 endif
+GCC_WITH_ARCH=--with-arch=$(BR2_ARCH)
+GCC_WITH_TUNE=--with-tune=$(BR2_ARCH)
+GCC_WITH_CPU=--with-cpu=$(BR2_ARCH)
 endif
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled

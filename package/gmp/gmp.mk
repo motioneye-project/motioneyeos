@@ -9,7 +9,7 @@ GMP_SITE:=http://ftp.sunet.se/pub/gnu/gmp/
 GMP_CAT:=$(BZCAT)
 GMP_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_TARGET_DIR:=$(BUILD_DIR)/gmp-$(GMP_VERSION)
-GMP_BINARY:=libgmp.a
+GMP_BINARY:=libgmp.so
 GMP_LIBVERSION:=3.4.1
 
 ifeq ($(BR2_ENDIAN),"BIG")
@@ -27,7 +27,7 @@ $(GMP_DIR)/.unpacked: $(DL_DIR)/$(GMP_SOURCE)
 	$(GMP_CAT) $(DL_DIR)/$(GMP_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(GMP_DIR) package/gmp/ \*.patch
 	$(CONFIG_UPDATE) $(GMP_DIR)
-	touch $(GMP_DIR)/.unpacked
+	touch $@
 
 $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 	mkdir -p $(GMP_TARGET_DIR)
@@ -54,7 +54,7 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 		--enable-shared \
 		$(DISABLE_NLS) \
 	);
-	touch $(GMP_TARGET_DIR)/.configured
+	touch $@
 
 $(GMP_TARGET_DIR)/.libs/$(GMP_BINARY): $(GMP_TARGET_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GMP_TARGET_DIR)
@@ -76,18 +76,18 @@ $(STAGING_DIR)/lib/$(GMP_BINARY): $(GMP_TARGET_DIR)/.libs/$(GMP_BINARY)
 	    mandir=$(STAGING_DIR)/man \
             -C $(GMP_TARGET_DIR) install
 
-$(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION): $(STAGING_DIR)/lib/$(GMP_BINARY)
-	cp -a $(STAGING_DIR)/lib/libgmp.so* $(STAGING_DIR)/lib/libgmp.a \
+$(TARGET_DIR)/lib/libgmp.so $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION) $(TARGET_DIR)/lib/libgmp.a: $(STAGING_DIR)/lib/$(GMP_BINARY)
+	cp -dpf $(STAGING_DIR)/lib/libgmp.so* $(STAGING_DIR)/lib/libgmp.a \
 		 $(TARGET_DIR)/lib/
 ifeq ($(BR2_PACKAGE_LIBGMP_HEADERS),y)
 	test -d $(TARGET_DIR)/usr/include || mkdir -p $(TARGET_DIR)/usr/include
-	cp -a $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/usr/include/
 endif
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgmp.so* \
 		$(TARGET_DIR)/lib/libgmp.a
 
 libgmp: uclibc $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION)
-libgmp-stage: uclibc $(STAGING_DIR)/lib/$(GMP_BINARY)
+stage-libgmp: uclibc $(STAGING_DIR)/lib/$(GMP_BINARY)
 
 libgmp-clean:
 	rm -f $(TARGET_DIR)/lib/$(GMP_BINARY) $(TARGET_DIR)/lib/libgmp.so* \
@@ -113,7 +113,7 @@ $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 		--enable-static \
 		$(DISABLE_NLS) \
 	);
-	touch $(GMP_DIR2)/.configured
+	touch $@
 
 $(GMP_HOST_DIR)/lib/$(GMP_BINARY): $(GMP_DIR2)/.configured
 	$(MAKE) -C $(GMP_DIR2) install

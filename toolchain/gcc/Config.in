@@ -134,6 +134,10 @@ config BR2_INSTALL_FORTRAN
 	select BR2_PACKAGE_LIBMPFR
 	help
 	    Build/install Fortran compiler and runtime?
+	    Note that it is highly recommended NOT to use gfortran
+	    from gcc older than 4.2.0
+
+	    You have been warned..
 
 config BR2_GCC_SHARED_LIBGCC
 	bool "Build/install a shared libgcc?"
