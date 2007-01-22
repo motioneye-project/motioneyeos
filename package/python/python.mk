@@ -55,6 +55,8 @@ $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 $(PYTHON_DIR)/$(PYTHON_BINARY): $(PYTHON_DIR)/.configured
 	export PYTHON_DISABLE_SSL=1
 	$(MAKE) CC=$(TARGET_CC) -C $(PYTHON_DIR) DESTDIR=$(TARGET_DIR) \
+		PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/include \
+		PYTHON_MODULES_LIB=$(STAGING_DIR)/lib \
 		PYTHON_DISABLE_MODULES="readline pyexpat dbm gdbm bsddb _curses _curses_panel _tkinter" \
 		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
 
@@ -63,12 +65,15 @@ $(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
 	LD_LIBRARY_PATH=$(STAGING_DIR)/lib
 	$(MAKE) CC=$(TARGET_CC) -C $(PYTHON_DIR) install \
 		DESTDIR=$(TARGET_DIR) CROSS_COMPILE=yes \
+		PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/include \
+		PYTHON_MODULES_LIB=$(STAGING_DIR)/lib \
 		PYTHON_DISABLE_MODULES="readline pyexpat dbm gdbm bsddb _curses _curses_panel _tkinter" \
 		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
 	rm $(TARGET_DIR)/usr/bin/python?.?
 	rm $(TARGET_DIR)/usr/bin/idle
 	rm $(TARGET_DIR)/usr/bin/pydoc
-	find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -o -name '*.pyo' -exec rm {} \;
+	-find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -exec rm {} \;
+	-find $(TARGET_DIR)/usr/lib/ -name '*.pyo' -exec rm {} \;
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
 		$(TARGET_DIR)/usr/lib/python*/test

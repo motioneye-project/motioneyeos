@@ -1,8 +1,7 @@
-Ripped from OpenEmbedded
-
---- Python-2.4c1/Makefile.pre.in
-+++ Python-2.4c1/Makefile.pre.in
-@@ -162,6 +162,7 @@
+diff -rduNp Python-2.4.2.orig/Makefile.pre.in Python-2.4.2/Makefile.pre.in
+--- Python-2.4.2.orig/Makefile.pre.in	2005-03-29 01:23:01.000000000 +0200
++++ Python-2.4.2/Makefile.pre.in	2007-01-22 19:37:08.000000000 +0100
+@@ -162,6 +162,7 @@ UNICODE_OBJS=   @UNICODE_OBJS@
  
  PYTHON=		python$(EXE)
  BUILDPYTHON=	python$(BUILDEXE)
@@ -10,7 +9,7 @@ Ripped from OpenEmbedded
  
  # === Definitions added by makesetup ===
  
-@@ -188,7 +189,7 @@
+@@ -188,7 +189,7 @@ GRAMMAR_INPUT=	$(srcdir)/Grammar/Grammar
  ##########################################################################
  # Parser
  PGEN=		Parser/pgen$(EXE)
@@ -19,7 +18,7 @@ Ripped from OpenEmbedded
  POBJS=		\
  		Parser/acceler.o \
  		Parser/grammar1.o \
-@@ -320,8 +321,8 @@
+@@ -320,8 +321,8 @@ platform: $(BUILDPYTHON)
  # Build the shared modules
  sharedmods: $(BUILDPYTHON)
  	case $$MAKEFLAGS in \
@@ -30,7 +29,7 @@ Ripped from OpenEmbedded
  	esac
  
  # buildno should really depend on something like LIBRARY_SRC
-@@ -442,7 +443,7 @@
+@@ -442,7 +443,7 @@ Modules/ccpython.o: $(srcdir)/Modules/cc
  
  
  $(GRAMMAR_H) $(GRAMMAR_C): $(PGEN) $(GRAMMAR_INPUT)
@@ -39,7 +38,7 @@ Ripped from OpenEmbedded
  
  $(PGEN):	$(PGENOBJS)
  		$(CC) $(OPT) $(LDFLAGS) $(PGENOBJS) $(LIBS) -o $(PGEN)
-@@ -718,19 +719,19 @@
+@@ -719,19 +720,19 @@ libinstall:	$(BUILDPYTHON) $(srcdir)/Lib
  	done
  	$(INSTALL_DATA) $(srcdir)/LICENSE $(DESTDIR)$(LIBDEST)/LICENSE.txt
  	PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
@@ -63,7 +62,7 @@ Ripped from OpenEmbedded
  		-d $(LIBDEST)/site-packages -f \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
  
-@@ -825,7 +826,7 @@
+@@ -826,7 +827,7 @@ libainstall:	all
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall:
@@ -72,9 +71,10 @@ Ripped from OpenEmbedded
  	   	--prefix=$(prefix) \
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
---- Python-2.4c1/setup.py
-+++ Python-2.4c1/setup.py
-@@ -206,6 +206,7 @@
+diff -rduNp Python-2.4.2.orig/setup.py Python-2.4.2/setup.py
+--- Python-2.4.2.orig/setup.py	2005-03-09 23:27:24.000000000 +0100
++++ Python-2.4.2/setup.py	2007-01-22 19:37:08.000000000 +0100
+@@ -204,6 +204,7 @@ class PyBuildExt(build_ext):
          try:
              imp.load_dynamic(ext.name, ext_filename)
          except ImportError, why:
@@ -82,7 +82,7 @@ Ripped from OpenEmbedded
              self.announce('*** WARNING: renaming "%s" since importing it'
                            ' failed: %s' % (ext.name, why), level=3)
              assert not self.inplace
-@@ -239,8 +240,6 @@
+@@ -239,8 +240,6 @@ class PyBuildExt(build_ext):
  
      def detect_modules(self):
          # Ensure that /usr/local is always used
@@ -91,7 +91,7 @@ Ripped from OpenEmbedded
  
          # Add paths to popular package managers on OS X/darwin
          if sys.platform == "darwin":
-@@ -260,12 +260,6 @@
+@@ -251,12 +250,6 @@ class PyBuildExt(build_ext):
              add_dir_to_list(self.compiler.library_dirs, '/opt/local/lib')
              add_dir_to_list(self.compiler.include_dirs, '/opt/local/include')
  

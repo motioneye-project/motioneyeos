@@ -1,6 +1,7 @@
---- Python-2.3.2/Python/import.c	2003-10-08 12:29:03.166032656 +0100
-+++ import.c	2003-10-08 12:32:57.423420120 +0100
-@@ -808,8 +808,12 @@
+diff -rduNp Python-2.4.2-010/Python/import.c Python-2.4.2/Python/import.c
+--- Python-2.4.2-010/Python/import.c	2005-09-14 20:15:03.000000000 +0200
++++ Python-2.4.2/Python/import.c	2007-01-22 19:49:18.000000000 +0100
+@@ -822,8 +822,12 @@ static void
  write_compiled_module(PyCodeObject *co, char *cpathname, long mtime)
  {
  	FILE *fp;
