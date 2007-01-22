@@ -3,6 +3,8 @@ config BR2_PACKAGE_NFS_UTILS
 	default n
 	help
 	  The NFS Linux kernel server.
+	  Warning: We do not force largefile support on here on purpose.
+	  Enable it yourself if you want to access big exports!
 
 	  http://sourceforge.net/projects/nfs
 
