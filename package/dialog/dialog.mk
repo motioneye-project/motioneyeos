@@ -9,7 +9,7 @@ DIALOG_SOURCE:=dialog_$(DIALOG_VERSION).orig.tar.gz
 DIALOG_SITE:=http://ftp.debian.org/debian/pool/main/d/dialog
 DIALOG_DIR:=$(BUILD_DIR)/dialog-$(DIALOG_VERSION)
 # http://ftp.debian.org/debian/pool/main/d/dialog/dialog_1.0-20050306-1.diff.gz
-DIALOG_PATCH1:=dialog_$(DIALOG_VERSION)-1.diff.gz
+DIALOG_PATCH1:=dialog_$(DIALOG_VERSION)-2.diff.gz
 DIALOG_PATCH1_URL:=$(DIALOG_SITE)
 DIALOG_BINARY:=dialog
 DIALOG_TARGET_BINARY:=usr/bin/dialog
@@ -23,7 +23,7 @@ $(DL_DIR)/$(DIALOG_PATCH1):
 $(DIALOG_DIR)/.source: $(DL_DIR)/$(DIALOG_SOURCE) $(DL_DIR)/$(DIALOG_PATCH1)
 	$(ZCAT) $(DL_DIR)/$(DIALOG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(ZCAT) $(DL_DIR)/$(DIALOG_PATCH1) | patch -p1 -d $(DIALOG_DIR)
-	touch $(DIALOG_DIR)/.source
+	touch $@
 
 $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source
 	(cd $(DIALOG_DIR); \
@@ -36,7 +36,7 @@ $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source
 		--prefix=/usr \
 		--sysconfdir=/etc \
 	);
-	touch $(DIALOG_DIR)/.configured;
+	touch $@
 
 $(DIALOG_DIR)/$(DIALOG_BINARY): $(DIALOG_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(DIALOG_DIR)
