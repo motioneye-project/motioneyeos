@@ -18,7 +18,7 @@ at-source: $(DL_DIR)/$(AT_SOURCE)
 $(AT_DIR)/.unpacked: $(DL_DIR)/$(AT_SOURCE)
 	$(AT_CAT) $(DL_DIR)/$(AT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(AT_DIR) package/at/ at\*.patch
-	touch $(AT_DIR)/.unpacked
+	touch $@
 
 $(AT_DIR)/.configured: $(AT_DIR)/.unpacked
 	(cd $(AT_DIR); rm -rf config.cache; \
@@ -38,7 +38,7 @@ $(AT_DIR)/.configured: $(AT_DIR)/.unpacked
 		--with-daemon_username=at \
 		--with-daemon_groupname=at \
 	);
-	touch $(AT_DIR)/.configured
+	touch $@
 
 $(AT_DIR)/$(AT_BINARY): $(AT_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(AT_DIR)
