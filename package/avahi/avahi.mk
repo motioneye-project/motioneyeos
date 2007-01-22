@@ -129,11 +129,11 @@ $(AVAHI_DIR)/.compiled: $(AVAHI_DIR)/.configured
 	$(MAKE) -C $(AVAHI_DIR)
 	touch $(AVAHI_DIR)/.compiled
 
-$(STAGING_DIR)/sbin/avahi-autoipd: $(AVAHI_DIR)/.compiled
+$(STAGING_DIR)/usr/sbin/avahi-autoipd: $(AVAHI_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(AVAHI_DIR)/avahi-autoipd install
-	touch -c $(STAGING_DIR)/sbin/avahi-autoipd
+	touch -c $(STAGING_DIR)/usr/sbin/avahi-autoipd
 
-$(TARGET_DIR)/usr/sbin/avahi-autoipd: $(STAGING_DIR)/sbin/avahi-autoipd
+$(TARGET_DIR)/usr/sbin/avahi-autoipd: $(STAGING_DIR)/usr/sbin/avahi-autoipd
 	cp $^ $@
 	mkdir -p $(TARGET_DIR)/etc/avahi
 	mkdir -p $(TARGET_DIR)/var/lib
