@@ -44,12 +44,14 @@ $(FAKEROOT_DIR1)/.configured: $(FAKEROOT_SOURCE_DIR)/.unpacked
 
 $(FAKEROOT_DIR1)/faked: $(FAKEROOT_DIR1)/.configured
 	$(MAKE) -C $(FAKEROOT_DIR1)
+	touch -c $(FAKEROOT_DIR1)/faked
 
 $(STAGING_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR1)/faked
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(FAKEROOT_DIR1) install
 	$(SED) 's,^PREFIX=.*,PREFIX=$(STAGING_DIR)/usr,g' $(STAGING_DIR)/usr/bin/fakeroot
 	$(SED) 's,^BINDIR=.*,BINDIR=$(STAGING_DIR)/usr/bin,g' $(STAGING_DIR)/usr/bin/fakeroot
 	$(SED) 's,^PATHS=.*,PATHS=$(FAKEROOT_DIR1)/.libs:/lib:/usr/lib,g' $(STAGING_DIR)/usr/bin/fakeroot
+	touch -c $(STAGING_DIR)/usr/bin/fakeroot
 
 host-fakeroot: uclibc $(STAGING_DIR)/usr/bin/fakeroot
 
@@ -90,6 +92,7 @@ $(FAKEROOT_DIR2)/.configured: $(FAKEROOT_SOURCE_DIR)/.unpacked
 
 $(FAKEROOT_DIR2)/faked: $(FAKEROOT_DIR2)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(FAKEROOT_DIR2)
+	touch -c $(FAKEROOT_DIR2)/faked
 
 $(TARGET_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR2)/faked
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(FAKEROOT_DIR2) install
@@ -97,6 +100,7 @@ $(TARGET_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR2)/faked
 	-mv $(TARGET_DIR)/usr/bin/$(ARCH)-linux-fakeroot $(TARGET_DIR)/usr/bin/fakeroot
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	touch -c $(TARGET_DIR)/usr/bin/fakeroot
 
 fakeroot: uclibc $(TARGET_DIR)/usr/bin/fakeroot
 
