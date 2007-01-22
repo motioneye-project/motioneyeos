@@ -67,7 +67,7 @@ $(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
 #$(TARGET_DIR)/usr/lib/libdaemon.a: $(STAGING_DIR)/lib/libdaemon.a
 #	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libdaemon.a
 
-libdaemon: uclibc $(STAGING_DIR)/lib/libdaemon.a
+libdaemon: uclibc pkgconfig $(STAGING_DIR)/lib/libdaemon.a
 
 libdaemon-clean:
 	-$(MAKE) -C $(LIBDAEMON_DIR) clean
