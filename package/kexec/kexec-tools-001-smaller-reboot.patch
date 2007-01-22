@@ -1,0 +1,27 @@
+--- kexec-tools-1.101.orig/kexec/kexec.c	2006-09-20 04:39:38.000000000 +0200
++++ kexec-tools-1.101/kexec/kexec.c	2007-01-22 15:58:30.000000000 +0100
+@@ -630,19 +630,14 @@ int k_unload (unsigned long kexec_flags)
+  */
+ static int my_shutdown(void)
+ {
+-	char *args[8];
+-	int i = 0;
++	char *args[2];
+ 
+-	args[i++] = "shutdown";
+-	args[i++] = "-r";
+-	args[i++] = "now";
+-	args[i++] = NULL;
++	args[0] = "reboot";
++	args[1] = NULL;
+ 
+-	execv("/sbin/shutdown", args);
+-	execv("/etc/shutdown", args);
+-	execv("/bin/shutdown", args);
++	execv("/sbin/reboot", args);
+ 
+-	perror("shutdown");
++	perror("reboot");
+ 	return -1;
+ }
+ 

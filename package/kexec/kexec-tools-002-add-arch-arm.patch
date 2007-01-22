@@ -1,7 +1,7 @@
-diff -uNr kexec-tools-1.101.orig/configure kexec-tools-1.101/configure
---- kexec-tools-1.101.orig/configure	2005-02-16 13:37:44.000000000 +0100
-+++ kexec-tools-1.101/configure	2006-12-17 23:05:16.000000000 +0100
-@@ -1381,6 +1381,9 @@
+diff -rduNp kexec-tools-1.101.orig/configure kexec-tools-1.101/configure
+--- kexec-tools-1.101.orig/configure	2006-09-20 04:39:38.000000000 +0200
++++ kexec-tools-1.101/configure	2007-01-22 15:54:14.000000000 +0100
+@@ -1381,6 +1381,9 @@ case $host_cpu in
  	i?86 )
  		host_cpu="i386"
  		;;
@@ -11,7 +11,7 @@ diff -uNr kexec-tools-1.101.orig/configure kexec-tools-1.101/configure
  	powerpc )
  		host_cpu="ppc"
  		;;
-@@ -1389,7 +1392,7 @@
+@@ -1395,7 +1398,7 @@ case $host_cpu in
  		;;
  esac
  case $host_cpu in
@@ -20,9 +20,9 @@ diff -uNr kexec-tools-1.101.orig/configure kexec-tools-1.101/configure
  		;;
  	* )
  		{ { echo "$as_me:$LINENO: error:  unsupported architecture $host_cpu" >&5
-diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/Makefile kexec-tools-1.101/kexec/arch/arm/Makefile
+diff -rduNp kexec-tools-1.101.orig/kexec/arch/arm/Makefile kexec-tools-1.101/kexec/arch/arm/Makefile
 --- kexec-tools-1.101.orig/kexec/arch/arm/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/kexec/arch/arm/Makefile	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/kexec/arch/arm/Makefile	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,8 @@
 +#
 +# kexec arm (linux booting linux)
@@ -32,10 +32,9 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/Makefile kexec-tools-1.101/kexec
 +KEXEC_C_SRCS+= kexec/arch/arm/kexec-arm.c 
 +
 +KEXEC_S_SRCS+=
-
-diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/include/arch/options.h kexec-tools-1.101/kexec/arch/arm/include/arch/options.h
+diff -rduNp kexec-tools-1.101.orig/kexec/arch/arm/include/arch/options.h kexec-tools-1.101/kexec/arch/arm/include/arch/options.h
 --- kexec-tools-1.101.orig/kexec/arch/arm/include/arch/options.h	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/kexec/arch/arm/include/arch/options.h	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/kexec/arch/arm/include/arch/options.h	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,11 @@
 +#ifndef KEXEC_ARCH_ARM_OPTIONS_H
 +#define KEXEC_ARCH_ARM_OPTIONS_H
@@ -48,10 +47,10 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/include/arch/options.h kexec-too
 +#define KEXEC_ARCH_OPT_STR KEXEC_OPT_STR ""
 +
 +#endif /* KEXEC_ARCH_ARM_OPTIONS_H */
-diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.c kexec-tools-1.101/kexec/arch/arm/kexec-arm.c
+diff -rduNp kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.c kexec-tools-1.101/kexec/arch/arm/kexec-arm.c
 --- kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.c	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/kexec/arch/arm/kexec-arm.c	2006-12-17 23:05:16.000000000 +0100
-@@ -0,0 +1,133 @@
++++ kexec-tools-1.101/kexec/arch/arm/kexec-arm.c	2007-01-22 15:54:14.000000000 +0100
+@@ -0,0 +1,130 @@
 +/*
 + * kexec: Linux boots Linux
 + *
@@ -159,7 +158,7 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.c kexec-tools-1.101/ke
 +	return 0;
 +}
 +
-+int arch_compat_trampoline(struct kexec_info *info, unsigned long *flags)
++int arch_compat_trampoline(struct kexec_info *info)
 +{
 +	int result;
 +	struct utsname utsname;
@@ -169,11 +168,8 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.c kexec-tools-1.101/ke
 +			strerror(errno));
 +		return -1;
 +	}
-+	if (strncmp(utsname.machine, "arm",3) == 0)
++	if (strncmp(utsname.machine, "arm",3) != 0)
 +	{
-+		*flags |= KEXEC_ARCH_ARM;
-+	}
-+	else {
 +		fprintf(stderr, "Unsupported machine type: %s\n",
 +			utsname.machine);
 +		return -1;
@@ -185,9 +181,9 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.c kexec-tools-1.101/ke
 +{
 +}
 +
-diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.h kexec-tools-1.101/kexec/arch/arm/kexec-arm.h
+diff -rduNp kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.h kexec-tools-1.101/kexec/arch/arm/kexec-arm.h
 --- kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.h	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/kexec/arch/arm/kexec-arm.h	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/kexec/arch/arm/kexec-arm.h	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,9 @@
 +#ifndef KEXEC_ARM_H
 +#define KEXEC_ARM_H
@@ -198,9 +194,9 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.h kexec-tools-1.101/ke
 +void zImage_arm_usage(void);
 +
 +#endif /* KEXEC_ARM_H */
-diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-elf-rel-arm.c kexec-tools-1.101/kexec/arch/arm/kexec-elf-rel-arm.c
+diff -rduNp kexec-tools-1.101.orig/kexec/arch/arm/kexec-elf-rel-arm.c kexec-tools-1.101/kexec/arch/arm/kexec-elf-rel-arm.c
 --- kexec-tools-1.101.orig/kexec/arch/arm/kexec-elf-rel-arm.c	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/kexec/arch/arm/kexec-elf-rel-arm.c	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/kexec/arch/arm/kexec-elf-rel-arm.c	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,35 @@
 +#include <stdio.h>
 +#include <elf.h>
@@ -237,9 +233,9 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-elf-rel-arm.c kexec-tools-
 +		break;
 +	}
 +}
-diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-zImage-arm.c kexec-tools-1.101/kexec/arch/arm/kexec-zImage-arm.c
+diff -rduNp kexec-tools-1.101.orig/kexec/arch/arm/kexec-zImage-arm.c kexec-tools-1.101/kexec/arch/arm/kexec-zImage-arm.c
 --- kexec-tools-1.101.orig/kexec/arch/arm/kexec-zImage-arm.c	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/kexec/arch/arm/kexec-zImage-arm.c	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/kexec/arch/arm/kexec-zImage-arm.c	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,34 @@
 +#define _GNU_SOURCE
 +#include <stdio.h>
@@ -275,10 +271,10 @@ diff -uNr kexec-tools-1.101.orig/kexec/arch/arm/kexec-zImage-arm.c kexec-tools-1
 +	info->entry = (void*)base;
 +	return 0;
 +}
-diff -uNr kexec-tools-1.101.orig/kexec/kexec-syscall.h kexec-tools-1.101/kexec/kexec-syscall.h
---- kexec-tools-1.101.orig/kexec/kexec-syscall.h	2005-01-06 07:59:50.000000000 +0100
-+++ kexec-tools-1.101/kexec/kexec-syscall.h	2006-12-17 23:05:16.000000000 +0100
-@@ -37,6 +37,9 @@
+diff -rduNp kexec-tools-1.101.orig/kexec/kexec-syscall.h kexec-tools-1.101/kexec/kexec-syscall.h
+--- kexec-tools-1.101.orig/kexec/kexec-syscall.h	2006-09-20 04:39:38.000000000 +0200
++++ kexec-tools-1.101/kexec/kexec-syscall.h	2007-01-22 15:54:14.000000000 +0100
+@@ -43,6 +43,9 @@
  #ifdef __s390__
  #define __NR_kexec_load		277
  #endif
@@ -288,7 +284,7 @@ diff -uNr kexec-tools-1.101.orig/kexec/kexec-syscall.h kexec-tools-1.101/kexec/k
  #ifndef __NR_kexec_load
  #error Unknown processor architecture.  Needs a kexec_load syscall number.
  #endif
-@@ -67,6 +70,7 @@
+@@ -74,6 +77,7 @@ static inline long kexec_reboot(void)
  #define KEXEC_ARCH_PPC64   (21 << 16)
  #define KEXEC_ARCH_IA_64   (50 << 16)
  #define KEXEC_ARCH_S390    (22 << 16)
@@ -296,9 +292,9 @@ diff -uNr kexec-tools-1.101.orig/kexec/kexec-syscall.h kexec-tools-1.101/kexec/k
  
  #define KEXEC_MAX_SEGMENTS 16
  
-diff -uNr kexec-tools-1.101.orig/purgatory/arch/arm/Makefile kexec-tools-1.101/purgatory/arch/arm/Makefile
+diff -rduNp kexec-tools-1.101.orig/purgatory/arch/arm/Makefile kexec-tools-1.101/purgatory/arch/arm/Makefile
 --- kexec-tools-1.101.orig/purgatory/arch/arm/Makefile	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/purgatory/arch/arm/Makefile	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/purgatory/arch/arm/Makefile	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,7 @@
 +#
 +# Purgatory arm
@@ -307,9 +303,9 @@ diff -uNr kexec-tools-1.101.orig/purgatory/arch/arm/Makefile kexec-tools-1.101/p
 +PURGATORY_S_SRCS += 
 +PURGATORY_C_SRCS += 
 +
-diff -uNr kexec-tools-1.101.orig/purgatory/arch/arm/include/limits.h kexec-tools-1.101/purgatory/arch/arm/include/limits.h
+diff -rduNp kexec-tools-1.101.orig/purgatory/arch/arm/include/limits.h kexec-tools-1.101/purgatory/arch/arm/include/limits.h
 --- kexec-tools-1.101.orig/purgatory/arch/arm/include/limits.h	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/purgatory/arch/arm/include/limits.h	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/purgatory/arch/arm/include/limits.h	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,58 @@
 +#ifndef LIMITS_H
 +#define LIMITS_H	1
@@ -369,9 +365,9 @@ diff -uNr kexec-tools-1.101.orig/purgatory/arch/arm/include/limits.h kexec-tools
 +
 +
 +#endif /* LIMITS_H */
-diff -uNr kexec-tools-1.101.orig/purgatory/arch/arm/include/stdint.h kexec-tools-1.101/purgatory/arch/arm/include/stdint.h
+diff -rduNp kexec-tools-1.101.orig/purgatory/arch/arm/include/stdint.h kexec-tools-1.101/purgatory/arch/arm/include/stdint.h
 --- kexec-tools-1.101.orig/purgatory/arch/arm/include/stdint.h	1970-01-01 01:00:00.000000000 +0100
-+++ kexec-tools-1.101/purgatory/arch/arm/include/stdint.h	2006-12-17 23:05:16.000000000 +0100
++++ kexec-tools-1.101/purgatory/arch/arm/include/stdint.h	2007-01-22 15:54:14.000000000 +0100
 @@ -0,0 +1,16 @@
 +#ifndef STDINT_H
 +#define STDINT_H
@@ -389,78 +385,3 @@ diff -uNr kexec-tools-1.101.orig/purgatory/arch/arm/include/stdint.h kexec-tools
 +typedef signed long long   int64_t;
 +
 +#endif /* STDINT_H */
-diff -ur kexec-tools-1.101/kexec/arch/arm/kexec-arm.c kexec-tools-1.101.patched/kexec/arch/arm/kexec-arm.c
---- kexec-tools-1.101.orig/kexec/arch/arm/kexec-arm.c	2006-12-20 16:41:12.000000000 +0100
-+++ kexec-tools-1.101/kexec/arch/arm/kexec-arm.c	2006-12-20 16:40:19.000000000 +0100
-@@ -105,7 +105,7 @@
- 	return 0;
- }
- 
--int arch_compat_trampoline(struct kexec_info *info, unsigned long *flags)
-+int arch_compat_trampoline(struct kexec_info *info)
- {
- 	int result;
- 	struct utsname utsname;
-@@ -115,11 +115,8 @@
- 			strerror(errno));
- 		return -1;
- 	}
--	if (strncmp(utsname.machine, "arm",3) == 0)
-+	if (strncmp(utsname.machine, "arm",3) != 0)
- 	{
--		*flags |= KEXEC_ARCH_ARM;
--	}
--	else {
- 		fprintf(stderr, "Unsupported machine type: %s\n",
- 			utsname.machine);
- 		return -1;
-diff -ur kexec-tools-1.101/kexec/kexec.c kexec-tools-1.101.patched/kexec/kexec.c
---- kexec-tools-1.101.orig/kexec/kexec.c	2006-09-20 04:39:38.000000000 +0200
-+++ kexec-tools-1.101/kexec/kexec.c	2006-12-20 16:39:10.000000000 +0100
-@@ -532,8 +532,7 @@
- 		kernel_buf, kernel_size);
- #endif
- 
--	if (get_memory_ranges(&memory_range, &memory_ranges,
--		info.kexec_flags) < 0) {
-+	if (get_memory_ranges(&memory_range, &memory_ranges) < 0) {
- 		fprintf(stderr, "Could not get memory layout\n");
- 		return -1;
- 	}
-diff -ur kexec-tools-1.101/kexec/kexec.h kexec-tools-1.101.patched/kexec/kexec.h
---- kexec-tools-1.101.orig/kexec/kexec.h	2006-09-20 04:39:38.000000000 +0200
-+++ kexec-tools-1.101/kexec/kexec.h	2006-12-20 16:40:47.000000000 +0100
-@@ -119,8 +119,7 @@
- };
- 
- void usage(void);
--int get_memory_ranges(struct memory_range **range, int *ranges,
--						unsigned long kexec_flags);
-+int get_memory_ranges(struct memory_range **range, int *ranges);
- int valid_memory_range(unsigned long sstart, unsigned long send);
- int valid_memory_segment(struct kexec_segment *segment);
- void print_segments(FILE *file, struct kexec_info *info);
-diff -ur kexec-tools-1.101.orig/kexec/kexec.c kexec-tools-1.101/kexec/kexec.c
---- kexec-tools-1.101.orig/kexec/kexec.c	2006-12-20 17:04:59.000000000 +0100
-+++ kexec-tools-1.101/kexec/kexec.c	2006-12-20 17:05:33.000000000 +0100
-@@ -630,16 +630,11 @@
- static int my_shutdown(void)
- {
- 	char *args[8];
--	int i = 0;
- 
--	args[i++] = "shutdown";
--	args[i++] = "-r";
--	args[i++] = "now";
--	args[i++] = NULL;
--
--	execv("/sbin/shutdown", args);
--	execv("/etc/shutdown", args);
--	execv("/bin/shutdown", args);
-+	args[0] = "reboot";
-+	args[1] = NULL;
-+
-+	execv("/sbin/reboot", args);
- 
- 	perror("shutdown");
- 	return -1;
