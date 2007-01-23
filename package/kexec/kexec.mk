@@ -38,7 +38,7 @@ ifneq ($(KEXEC_PATCH),)
 	toolchain/patch-kernel.sh $(KEXEC_DIR) $(KEXEC_DIR)/debian/patches \*.patch
 endif
 	toolchain/patch-kernel.sh $(KEXEC_DIR) package/kexec/ kexec\*.dpatch
-	touch $(KEXEC_DIR)/.unpacked
+	touch $@
 
 $(KEXEC_DIR)/.configured: $(KEXEC_DIR)/.unpacked
 	(cd $(KEXEC_DIR); rm -rf config.cache; \
@@ -50,15 +50,17 @@ $(KEXEC_DIR)/.configured: $(KEXEC_DIR)/.unpacked
 		--prefix=/ \
 		$(KEXEC_CONFIG_OPTS) \
 	);
-	touch $(KEXEC_DIR)/.configured
+	touch $@
 
 $(KEXEC_DIR)/$(KEXEC_BINARY): $(KEXEC_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(KEXEC_DIR)
+	$(STRIP) -s $@
 
 $(TARGET_DIR)/$(KEXEC_TARGET_BINARY): $(KEXEC_DIR)/$(KEXEC_BINARY)
 	cp -dpf $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/$(KEXEC_BINARY) \
 		$(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/kdump \
 		$(TARGET_DIR)/sbin/
+	touch -c $@
 
 kexec: uclibc $(TARGET_DIR)/$(KEXEC_TARGET_BINARY)
 
