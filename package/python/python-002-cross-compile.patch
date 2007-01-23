@@ -1,26 +1,18 @@
-diff -rduNp Python-2.4.2-001/setup.py Python-2.4.2/setup.py
---- Python-2.4.2-001/setup.py	2007-01-22 19:37:08.000000000 +0100
-+++ Python-2.4.2/setup.py	2007-01-22 19:41:47.000000000 +0100
-@@ -20,6 +20,14 @@ disabled_module_list = []
- def add_dir_to_list(dirlist, dir):
-     """Add the directory 'dir' to the list 'dirlist' (at the front) if
-     1) 'dir' is not already in 'dirlist'
-+	modules_include_dirs = os.environ["PYTHON_MODULES_INCLUDE"].split()
-+except KeyError:
-+	modules_include_dirs = ['/usr/include']
-+try:
-+	modules_lib_dirs = os.environ["PYTHON_MODULES_LIB"].split()
-+except KeyError:
-+	modules_lib_dirs = ['/usr/lib']
-+try:
-     2) 'dir' actually exists, and is a directory."""
-     if dir is not None and os.path.isdir(dir) and dir not in dirlist:
-         dirlist.insert(0, dir)
-@@ -239,7 +247,10 @@ class PyBuildExt(build_ext):
+--- Python-2.4.2-001/setup.py	2007-01-23 16:18:37.000000000 +0100
++++ Python-2.4.2/setup.py	2007-01-23 16:26:43.000000000 +0100
+@@ -239,7 +239,18 @@
          return sys.platform
  
      def detect_modules(self):
 -        # Ensure that /usr/local is always used
++        try:
++            modules_include_dirs = os.environ["PYTHON_MODULES_INCLUDE"].split()
++        except KeyError:
++            modules_include_dirs = ['/usr/include']
++        try:
++            modules_lib_dirs = os.environ["PYTHON_MODULES_LIB"].split()
++        except KeyError:
++            modules_lib_dirs = ['/usr/lib']
 +        for dir in modules_include_dirs:
 +                add_dir_to_list(self.compiler.include_dirs, dir)
 +        for dir in modules_lib_dirs:
@@ -28,7 +20,7 @@ diff -rduNp Python-2.4.2-001/setup.py Python-2.4.2/setup.py
  
          # Add paths to popular package managers on OS X/darwin
          if sys.platform == "darwin":
-@@ -258,11 +269,8 @@ class PyBuildExt(build_ext):
+@@ -258,11 +269,8 @@
          # lib_dirs and inc_dirs are used to search for files;
          # if a file is found in one of those directories, it can
          # be assumed that no additional -I,-L directives are needed.

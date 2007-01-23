@@ -22,9 +22,9 @@ diff -rduNp Python-2.4.2-002/setup.py Python-2.4.2/setup.py
  
      def detect_modules(self):
 +        global disable_ssl
-         for dir in modules_include_dirs:
-                 add_dir_to_list(self.compiler.include_dirs, dir)
-         for dir in modules_lib_dirs:
+         try:
+             modules_include_dirs = os.environ["PYTHON_MODULES_INCLUDE"].split()
+         except KeyError:
 @@ -468,7 +476,8 @@ class PyBuildExt(build_ext):
                                       ] )
  

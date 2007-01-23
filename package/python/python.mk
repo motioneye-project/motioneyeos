@@ -11,6 +11,16 @@ PYTHON_CAT:=$(BZCAT)
 PYTHON_BINARY:=python
 PYTHON_TARGET_BINARY:=usr/bin/python
 
+#ifndef BR2_SUPPORT_IPv6
+#PYTHON_DISABLE_IPv6=--disable-ipv6
+#else
+#PYTHON_DISABLE_IPv6=--enable-ipv6
+#endif
+
+# these could use checks for some BR2_PACKAGE_foo,y
+BR2_PYTHON_DISABLED_MODULES=readline pyexpat dbm gdbm bsddb \
+	_curses _curses_panel _tkinter nis zipfile
+
 $(DL_DIR)/$(PYTHON_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(PYTHON_SITE)/$(PYTHON_SOURCE)
 
@@ -18,29 +28,29 @@ python-source: $(DL_DIR)/$(PYTHON_SOURCE)
 
 $(PYTHON_DIR)/.unpacked: $(DL_DIR)/$(PYTHON_SOURCE)
 	$(PYTHON_CAT) $(DL_DIR)/$(PYTHON_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(PYTHON_DIR)/.unpacked
+	touch $@
 
 $(PYTHON_DIR)/.patched: $(PYTHON_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(PYTHON_DIR) package/python/ python\*.patch
-	touch $(PYTHON_DIR)/.patched
+	touch $@
 
 $(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched
 	(cd $(PYTHON_DIR); rm -rf config.cache; \
-		OPT="-O1" \
+		CC="$(HOSTCC)" OPT="-O2" \
 		./configure \
 		--with-cxx=no \
-		$(DISABLE_NLS); \
-		$(MAKE) python Parser/pygen; \
-		mv python hostpython; \
-		mv Parser/pgen Parser/hostpgen; \
+		$(DISABLE_NLS) && \
+		$(MAKE) python Parser/pgen && \
+		mv python hostpython && \
+		mv Parser/pgen Parser/hostpgen && \
 		$(MAKE) distclean \
-	);
-	touch $(PYTHON_DIR)/.hostpython
+	) && \
+	touch $@
 
 $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 	(cd $(PYTHON_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		OPT="$(TARGET_OPTIMIZATION)" \
+		OPT="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -48,16 +58,17 @@ $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--with-cxx=no \
+		$(PYTHON_DISABLE_IPv6) \
 		$(DISABLE_NLS) \
 	);
-	touch $(PYTHON_DIR)/.configured
+	touch $@
 
 $(PYTHON_DIR)/$(PYTHON_BINARY): $(PYTHON_DIR)/.configured
 	export PYTHON_DISABLE_SSL=1
 	$(MAKE) CC=$(TARGET_CC) -C $(PYTHON_DIR) DESTDIR=$(TARGET_DIR) \
 		PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/include \
 		PYTHON_MODULES_LIB=$(STAGING_DIR)/lib \
-		PYTHON_DISABLE_MODULES="readline pyexpat dbm gdbm bsddb _curses _curses_panel _tkinter" \
+		PYTHON_DISABLE_MODULES="$(BR2_PYTHON_DISABLED_MODULES)" \
 		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
 
 $(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
@@ -67,13 +78,13 @@ $(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
 		DESTDIR=$(TARGET_DIR) CROSS_COMPILE=yes \
 		PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/include \
 		PYTHON_MODULES_LIB=$(STAGING_DIR)/lib \
-		PYTHON_DISABLE_MODULES="readline pyexpat dbm gdbm bsddb _curses _curses_panel _tkinter" \
-		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
-	rm $(TARGET_DIR)/usr/bin/python?.?
-	rm $(TARGET_DIR)/usr/bin/idle
-	rm $(TARGET_DIR)/usr/bin/pydoc
-	-find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -exec rm {} \;
-	-find $(TARGET_DIR)/usr/lib/ -name '*.pyo' -exec rm {} \;
+		PYTHON_DISABLE_MODULES="$(BR2_PYTHON_DISABLED_MODULES)" \
+		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen && \
+	rm $(TARGET_DIR)/usr/bin/python?.? && \
+	rm $(TARGET_DIR)/usr/bin/idle && \
+	rm $(TARGET_DIR)/usr/bin/pydoc && \
+	find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -exec rm {} \; && \
+	find $(TARGET_DIR)/usr/lib/ -name '*.pyo' -exec rm {} \; && \
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
 		$(TARGET_DIR)/usr/lib/python*/test
@@ -82,7 +93,7 @@ python: uclibc $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 
 python-clean:
 	-$(MAKE) -C $(PYTHON_DIR) distclean
-	rm $(PYTHON_DIR)/.configured
+	rm $(PYTHON_DIR)/.configured $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 
 python-dirclean:
 	rm -rf $(PYTHON_DIR)
