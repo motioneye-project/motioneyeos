@@ -67,7 +67,7 @@ $(ARGUS_DIR)/$(ARGUS_BINARY): $(ARGUS_DIR)/.configured
 
 $(TARGET_DIR)/$(ARGUS_TARGET_BINARY): $(ARGUS_DIR)/$(ARGUS_BINARY)
 	cp -dpf $(ARGUS_DIR)/$(ARGUS_BINARY) $@
-	$(STRIP) $@
+	$(STRIP) -s $@
 
 argus: uclibc libpcap $(TARGET_DIR)/$(ARGUS_TARGET_BINARY)
 
