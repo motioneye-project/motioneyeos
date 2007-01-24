@@ -82,6 +82,7 @@ $(STAGING_DIR)/lib/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY)
 	    infodir=$(STAGING_DIR)/info \
 	    mandir=$(STAGING_DIR)/man \
 	    -C $(MPFR_TARGET_DIR) install;
+	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libmpfr.{so*,a}
 
 $(TARGET_DIR)/lib/libmpfr.so $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION) $(TARGET_DIR)/lib/libmpfr.a: $(STAGING_DIR)/lib/$(MPFR_BINARY)
 	cp -dpf $(STAGING_DIR)/lib/libmpfr.so* $(STAGING_DIR)/lib/libmpfr.a \
@@ -90,8 +91,6 @@ ifeq ($(BR2_PACKAGE_LIBMPFR_HEADERS),y)
 	cp -dpf $(STAGING_DIR)/include/mpfr.h $(STAGING_DIR)/include/mpf2mpfr.h \
 		$(TARGET_DIR)/usr/include/
 endif
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libmpfr.so* \
-		$(TARGET_DIR)/lib/libmpfr.a
 
 libmpfr: uclibc $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION)
 stage-libmpfr: uclibc $(STAGING_DIR)/lib/$(MPFR_BINARY)

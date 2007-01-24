@@ -63,14 +63,14 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(BINUTILS_DIR)
-	touch $(BINUTILS_DIR)/.unpacked
+	touch $@
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply appropriate binutils patches.
 	toolchain/patch-kernel.sh $(BINUTILS_DIR) toolchain/binutils/$(BINUTILS_VERSION) \*.patch
-	touch $(BINUTILS_DIR)/.patched
+	touch $@
 
-$(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched $(BINUTILS_HOST_PREREQ)
+$(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
 	(cd $(BINUTILS_DIR1); \
 		CC="$(HOSTCC)" \
@@ -86,7 +86,7 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched $(BINUTILS_HOST_PREREQ)
 		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(EXTRA_BINUTILS_CONFIG_OPTIONS));
-	touch $(BINUTILS_DIR1)/.configured
+	touch $@
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 	$(MAKE) -C $(BINUTILS_DIR1) all
@@ -96,7 +96,7 @@ $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
 	$(MAKE) -C $(BINUTILS_DIR1) install
 
-binutils: dependencies uclibc-configured $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
+binutils: dependencies uclibc-configured $(BINUTILS_HOST_PREREQ) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
 
 binutils-source: $(DL_DIR)/$(BINUTILS_SOURCE)
 
@@ -115,7 +115,7 @@ binutils-dirclean:
 #
 #############################################################
 BINUTILS_DIR2:=$(BUILD_DIR)/binutils-$(BINUTILS_VERSION)-target
-$(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched $(BINUTILS_TARGET_PREREQ)
+$(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR2)
 	(cd $(BINUTILS_DIR2); \
 		CC_FOR_BUILD="$(HOSTCC)" \
@@ -133,7 +133,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched $(BINUTILS_TARGET_PREREQ)
 		$(BINUTILS_TARGET_CONFIG_OPTIONS) \
 		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) );
-	touch $(BINUTILS_DIR2)/.configured
+	touch $@
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
 	PATH=$(TARGET_PATH) \
@@ -149,7 +149,7 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	-$(STRIP) $(TARGET_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/* > /dev/null 2>&1
 	-$(STRIP) $(TARGET_DIR)/usr/bin/* > /dev/null 2>&1
 
-binutils_target: $(TARGET_DIR)/usr/bin/ld
+binutils_target: $(BINUTILS_TARGET_PREREQ) $(TARGET_DIR)/usr/bin/ld
 
 binutils_target-clean:
 	(cd $(TARGET_DIR)/usr/bin; \

@@ -75,6 +75,7 @@ $(STAGING_DIR)/lib/$(GMP_BINARY): $(GMP_TARGET_DIR)/.libs/$(GMP_BINARY)
 	    infodir=$(STAGING_DIR)/info \
 	    mandir=$(STAGING_DIR)/man \
             -C $(GMP_TARGET_DIR) install
+	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libgmp.{so*,a}
 
 $(TARGET_DIR)/lib/libgmp.so $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION) $(TARGET_DIR)/lib/libgmp.a: $(STAGING_DIR)/lib/$(GMP_BINARY)
 	cp -dpf $(STAGING_DIR)/lib/libgmp.so* $(STAGING_DIR)/lib/libgmp.a \
@@ -83,8 +84,6 @@ ifeq ($(BR2_PACKAGE_LIBGMP_HEADERS),y)
 	test -d $(TARGET_DIR)/usr/include || mkdir -p $(TARGET_DIR)/usr/include
 	cp -dpf $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/usr/include/
 endif
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgmp.so* \
-		$(TARGET_DIR)/lib/libgmp.a
 
 libgmp: uclibc $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION)
 stage-libgmp: uclibc $(STAGING_DIR)/lib/$(GMP_BINARY)
