@@ -219,7 +219,7 @@ Index: uClibc_trunk/libc/stdio/puts.c
  	if ((n = fputs_unlocked(s, stream)) != EOF) {
  		++n;
 -		if (__fputc_unlocked('\n', stream) == EOF) {
-+		if (__FPUTC_UNLOCKED('\n', stream) == EOF) {
++		if (fputc_unlocked('\n', stream) == EOF) {
  			n = EOF;
  		}
  	}
@@ -411,9 +411,9 @@ Index: uClibc_trunk/libc/misc/error/error.c
  libc_hidden_proto(fflush)
 -libc_hidden_proto(fputc)
 -libc_hidden_proto(__fputc_unlocked)
-+#ifdef __UCLIBC_HAS_STDIO_PUTC_MACRO__
++//#ifdef __UCLIBC_HAS_STDIO_PUTC_MACRO__
 +libc_hidden_proto(fputc_unlocked)
-+#endif
++//#endif
  
  /* This variable is incremented each time `error' is called.  */
  unsigned int error_message_count = 0;
