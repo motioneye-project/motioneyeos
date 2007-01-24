@@ -5,6 +5,26 @@ config BR2_TARGET_ROOTFS_JFFS2
 	help
 	  Build a jffs2 root filesystem
 
+config BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE
+	bool "Use default 4 kB pagesize"
+	depends on BR2_TARGET_ROOTFS_JFFS2
+	default y			
+
+config BR2_TARGET_ROOTFS_JFFS2_PAGESIZE
+	hex "Page Size (0x0 = Use default 4 kB)"
+	depends on !BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE
+	default 0x420
+	help
+	  Set to pagesize of memory (Dataflash is 0x210 or 0x420)
+
+config BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
+	bool	"Do not use Cleanmarker"
+	depends on !BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE
+	default y
+	help
+	  Do not use cleanmarkers if using NAND flash or Dataflash where
+	  the pagesize is not a power of 2
+
 config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	hex "Erase block size"
 	depends on BR2_TARGET_ROOTFS_JFFS2
@@ -19,7 +39,7 @@ config BR2_TARGET_ROOTFS_JFFS2_PADSIZE
 	depends on BR2_TARGET_ROOTFS_JFFS2_PAD
 	default 0x0
 	help
-		Set to 0x0 to pad to end of erase block.
+	  Set to 0x0 to pad to end of erase block.
 
 choice
 	prompt "Endianess"
@@ -50,6 +70,5 @@ config BR2_TARGET_ROOTFS_JFFS2_COPYTO
 	depends on 	BR2_TARGET_ROOTFS_JFFS2
 	default ""
 	help
-		Copies the resulting image to a secondary location.
-
+	  Copies the resulting image to a secondary location.
 

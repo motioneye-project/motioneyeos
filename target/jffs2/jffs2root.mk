@@ -14,20 +14,29 @@ JFFS2_OPTS += -p
 endif
 endif
 
-ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_SQUASH)),y)
+ifeq ($(BR2_TARGET_ROOTFS_JFFS2_SQUASH),y)
 JFFS2_OPTS += -q
 endif
 
-ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_LE)),y)
+ifeq ($(BR2_TARGET_ROOTFS_JFFS2_LE),y)
 JFFS2_OPTS += -l
 endif
 
-ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_BE)),y)
+ifeq ($(BR2_TARGET_ROOTFS_JFFS2_BE),y)
 JFFS2_OPTS += -b
 endif
 
-JFFS2_TARGET := $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT))
+ifneq ($(BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE),y)
+JFFS2_OPTS += -s $(BR2_TARGET_ROOTFS_JFFS2_PAGESIZE)
+ifeq ($(BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER),y)
+JFFS2_OPTS += -n
+endif
+endif
+
+JFFS2_TARGET := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT)))
+#"))
 JFFS2_DEVFILE = $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_DEVFILE)))
+#"))
 ifneq ($(JFFS2_DEVFILE),)
 JFFS2_OPTS += -D $(TARGET_DEVICE_TABLE)
 endif
@@ -62,7 +71,7 @@ $(JFFS2_TARGET): host-fakeroot makedevs mtd-host
 	@ls -l $(JFFS2_TARGET)
 
 JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))
-# " stupid syntax highlighting does not like unmatched quote from above line
+#"))
 
 jffs2root: $(JFFS2_TARGET)
 ifneq ($(JFFS2_COPYTO),)
