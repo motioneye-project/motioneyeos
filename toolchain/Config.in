@@ -36,10 +36,14 @@ config BR2_SOFT_FLOAT
 	help
 	  If your target CPU does not have a Floating Point Unit (FPU) or a
 	  kernel FPU emulator, but you still wish to support floating point
-	  functions, then everything will need to be compiled with soft floating
-	  point support (-msoft-float).
+	  functions, then everything will need to be compiled with soft
+	  floating point support (-msoft-float).
 
 	  Most people will answer N.
+
+#config BR2_SOFT_FLOAT_FP
+#	bool "Use softfp"
+#	default n
 
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"
@@ -51,12 +55,13 @@ config BR2_CROSS_TOOLCHAIN_TARGET_UTILS
 	bool "Include target utils in cross toolchain"
 	default y
 	help
-	  When using buildroot to build a deployable cross toolchain, it is handy
-	  to include certain target apps with that toolchain as a convenience.
+	  When using buildroot to build a deployable cross toolchain,
+	  it is handy to include certain target apps with that toolchain
+	  as a convenience.
 	  Examples include ldd, gdbserver, and strace.
 
-	  Answer Y if you want these apps (if built) copied into the cross toolchain
-	  dir under <arch>-linux-uclibc/target_utils/.
+	  Answer Y if you want these apps (if built) copied into the
+	  cross toolchain dir under <arch>-linux-uclibc/target_utils/.
 
 endmenu
 
