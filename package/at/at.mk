@@ -9,6 +9,7 @@ AT_SITE:=http://ftp.debian.org/debian/pool/main/a/at
 AT_DIR:=$(BUILD_DIR)/at-$(AT_VER)
 AT_CAT:=$(ZCAT)
 AT_TARGET_BINARY:=usr/bin/at
+AT_BINARY:=at
 
 $(DL_DIR)/$(AT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(AT_SITE)/$(AT_SOURCE)
