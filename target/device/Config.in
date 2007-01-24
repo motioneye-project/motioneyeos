@@ -1,11 +1,12 @@
 menu "Board Support Options"
 
-source "target/device/Soekris/Config.in"
-source "target/device/Hitachi/Config.in"
 source "target/device/AMD/Config.in"
-source "target/device/Via/Config.in"
-source "target/device/Sharp/Config.in"
+source "target/device/Atmel/Config.in"
+source "target/device/Hitachi/Config.in"
 source "target/device/jp/Config.in"
+source "target/device/Sharp/Config.in"
+source "target/device/Soekris/Config.in"
+source "target/device/Via/Config.in"
 source "target/device/x86/Config.in"
 
 # This must be last

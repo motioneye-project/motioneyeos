@@ -1,0 +1,5 @@
+menu "Atmel Target"
+
+comment "Add Atmel Target here"
+
+endmenu
