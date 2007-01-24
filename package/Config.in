@@ -139,6 +139,9 @@ source "package/links/Config.in"
 source "package/lrzsz/Config.in"
 source "package/mrouted/Config.in"
 source "package/nbd/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/netcat/Config.in"
+endif
 source "package/netkitbase/Config.in"
 source "package/netkittelnet/Config.in"
 source "package/netplug/Config.in"
