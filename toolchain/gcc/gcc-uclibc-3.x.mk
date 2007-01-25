@@ -384,9 +384,10 @@ GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(REAL_GCC_VERSION)
 else
 GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
 endif
-GCC_WITH_ARCH=--with-arch=$(BR2_ARCH)
-GCC_WITH_TUNE=--with-tune=$(BR2_ARCH)
-GCC_WITH_CPU=--with-cpu=$(BR2_ARCH)
+#XXX: FIXME: cleanup BR2_ARCH selection and establish BR2_CPU
+#GCC_WITH_ARCH=--with-arch=$(BR2_ARCH)
+#GCC_WITH_TUNE=--with-tune=$(BR2_ARCH)
+#GCC_WITH_CPU=--with-cpu=$(BR2_ARCH)
 endif
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
