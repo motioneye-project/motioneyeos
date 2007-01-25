@@ -10,10 +10,10 @@ ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
 XORG_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap xinit/startx \
 	xauth/xauth xinit/xinit xsetroot/xsetroot xset/xset \
 	mkfontscale/mkfontscale mkfontdir/mkfontdir \
-	#xterm/xterm
+	setxkbmap/setxkbmap #xterm/xterm
 
 XORG_LIBS:= Xft Xrender Xaw Xmu Xt Xcursor Xrandr Xi Xinerama Xfixes \
-	SM ICE Xpm Xp Xext X11 Xmuu Xxf86misc fontenc
+	SM ICE Xpm Xp Xext X11 Xmuu Xxf86misc fontenc xkbfile
 
 
 #############################################################
@@ -37,7 +37,7 @@ XORG_CF:=$(XORG_DIR)/config/cf/cross.def
 XORG_HOST_DEF:=$(XORG_DIR)/config/cf/host.def
 
 
-DEJAVU_VERSION=2.13
+DEJAVU_VERSION=2.14
 DEJAVU_SOURCE=dejavu-ttf-$(DEJAVU_VERSION).tar.bz2
 DEJAVU_CAT:=$(BZCAT)
 DEJAVU_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/dejavu
@@ -140,9 +140,22 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	cp -LRf $(XORG_DIR)/fonts/bdf/misc/cursor.bdf $(XORG_LIBX)/X11/fonts/misc/
 	cp -f package/xorg/fonts.alias $(XORG_LIBX)/X11/fonts/misc/
 	( cd $(XORG_LIBX)/X11/fonts/misc/; mkfontdir )
+	rm -rf $(XORG_LIBX)/X11/fonts/100dpi
+	rm -rf $(XORG_LIBX)/X11/fonts/75dpi
+	rm -rf $(XORG_LIBX)/X11/fonts/cyrillic
+	rm -rf $(XORG_LIBX)/X11/fonts/local
 	(cd $(TARGET_DIR)/usr/bin; ln -snf $(TARGET_BINX) X11)
+	cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/xkb $(XORG_LIBX)/X11/
+	mv $(XORG_LIBX)/X11/xkb/xkbcomp $(XORG_BINX)/
+	(cd $(XORG_LIBX)/X11/xkb; ln -s ../../../bin/xkbcomp)
+	rm -rf $(XORG_LIBX)/X11/xkb/compiled
+	(cd $(XORG_LIBX)/X11/xkb; ln -s /tmp compiled)
+	cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/icons $(XORG_LIBX)/X11/
+	-cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/locale $(XORG_LIBX)/X11/
+	cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/rgb.txt $(XORG_LIBX)/X11/
+	cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/XKeysymDB $(XORG_LIBX)/X11/
+	cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/XErrorDB $(XORG_LIBX)/X11/
 	mkdir -p $(TARGET_DIR)/etc/X11/
-	cp -LRf $(STAGING_DIR)$(TARGET_LIBX)/X11/rgb* $(XORG_LIBX)/X11/
 	$(SED) "s,^sysclientrc=.*,sysclientrc=/etc/X11/Xsession,g" $(XORG_BINX)/startx
 	$(SED) "s,^sysserverrc=.*,sysserverrc=/etc/X11/Xserver,g" $(XORG_BINX)/startx
 	cp -LRf package/xorg/xorg.conf $(TARGET_DIR)/etc/X11/
@@ -159,8 +172,8 @@ $(DEJAVU_DIR)/.unpacked: $(DL_DIR)/$(DEJAVU_SOURCE)
 
 $(XORG_LIBX)/X11/fonts/ttf-dejavu/DejaVuSansMono.ttf: $(DEJAVU_DIR)/.unpacked
 	mkdir -p $(XORG_LIBX)/X11/fonts/ttf-dejavu
-	rm $(DEJAVU_DIR)/*Condensed*.ttf
-	rm $(DEJAVU_DIR)/*ExtraLight*.ttf
+	rm -f $(DEJAVU_DIR)/*Condensed*.ttf
+	rm -f $(DEJAVU_DIR)/*ExtraLight*.ttf
 	cp -LRf $(DEJAVU_DIR)/DejaVu*-Bold.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
 	cp -LRf $(DEJAVU_DIR)/DejaVu*-BoldOblique.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
 	cp -LRf $(DEJAVU_DIR)/DejaVu*-Oblique.ttf $(XORG_LIBX)/X11/fonts/ttf-dejavu/
