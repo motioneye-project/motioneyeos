@@ -1,0 +1,5190 @@
+diff -urN uClibc-0.9.28.orig/include/elf.h uClibc-0.9.28/include/elf.h
+--- uClibc-0.9.28.orig/include/elf.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/include/elf.h	2006-04-28 00:14:35.000000000 -0600
+@@ -142,6 +142,7 @@
+ #define ELFOSABI_HPUX		1	/* HP-UX */
+ #define ELFOSABI_NETBSD		2	/* NetBSD.  */
+ #define ELFOSABI_LINUX		3	/* Linux.  */
++#define ELFOSABI_HURD		4	/* GNU/Hurd */
+ #define ELFOSABI_SOLARIS	6	/* Sun Solaris.  */
+ #define ELFOSABI_AIX		7	/* IBM AIX.  */
+ #define ELFOSABI_IRIX		8	/* SGI Irix.  */
+@@ -149,6 +150,9 @@
+ #define ELFOSABI_TRU64		10	/* Compaq TRU64 UNIX.  */
+ #define ELFOSABI_MODESTO	11	/* Novell Modesto.  */
+ #define ELFOSABI_OPENBSD	12	/* OpenBSD.  */
++#define ELFOSABI_OPENVMS	13	/* OpenVMS */
++#define ELFOSABI_NSK		14	/* Hewlett-Packard Non-Stop Kernel */
++#define ELFOSABI_AROS		15	/* Amiga Research OS */
+ #define ELFOSABI_ARM		97	/* ARM */
+ #define ELFOSABI_STANDALONE	255	/* Standalone (embedded) application */
+ 
+@@ -177,6 +181,7 @@
+ #define EM_386		 3		/* Intel 80386 */
+ #define EM_68K		 4		/* Motorola m68k family */
+ #define EM_88K		 5		/* Motorola m88k family */
++#define EM_486		 6		/* Intel 80486 *//* Reserved for future use */
+ #define EM_860		 7		/* Intel 80860 */
+ #define EM_MIPS		 8		/* MIPS R3000 big-endian */
+ #define EM_S370		 9		/* IBM System/370 */
+@@ -193,7 +198,8 @@
+ #define EM_V800		36		/* NEC V800 series */
+ #define EM_FR20		37		/* Fujitsu FR20 */
+ #define EM_RH32		38		/* TRW RH-32 */
+-#define EM_RCE		39		/* Motorola RCE */
++#define EM_MCORE	39		/* Motorola M*Core */ /* May also be taken by Fujitsu MMA */
++#define EM_RCE		39		/* Old name for MCore */
+ #define EM_ARM		40		/* ARM */
+ #define EM_FAKE_ALPHA	41		/* Digital Alpha */
+ #define EM_SH		42		/* Renesas SH */
+@@ -248,18 +254,105 @@
+ #define EM_OPENRISC	92		/* OpenRISC 32-bit embedded processor */
+ #define EM_ARC_A5	93		/* ARC Cores Tangent-A5 */
+ #define EM_XTENSA	94		/* Tensilica Xtensa Architecture */
++#define EM_IP2K		101		/* Ubicom IP2022 micro controller */
++#define EM_CR		103		/* National Semiconductor CompactRISC */
++#define EM_MSP430	105		/* TI msp430 micro controller */
++#define EM_BLACKFIN	106		/* Analog Devices Blackfin */
++#define EM_ALTERA_NIOS2	113	/* Altera Nios II soft-core processor */
++#define EM_CRX		114		/* National Semiconductor CRX */
+ #define EM_NUM		95
+ 
+-/* If it is necessary to assign new unofficial EM_* values, please
+-   pick large random numbers (0x8523, 0xa7f2, etc.) to minimize the
+-   chances of collision with official or non-GNU unofficial values.  */
++/* If it is necessary to assign new unofficial EM_* values, please pick large
++   random numbers (0x8523, 0xa7f2, etc.) to minimize the chances of collision
++   with official or non-GNU unofficial values.
+ 
+-/* Fujitsu FR-V.  */
++   NOTE: Do not just increment the most recent number by one.
++   Somebody else somewhere will do exactly the same thing, and you
++   will have a collision.  Instead, pick a random number.
++
++   Normally, each entity or maintainer responsible for a machine with an
++   unofficial e_machine number should eventually ask registry@caldera.com for
++   an officially blessed number to be added to the list above.  */
++
++/* picoJava */
++#define EM_PJ_OLD	99
++
++/* Cygnus PowerPC ELF backend.  Written in the absence of an ABI.  */
++#define EM_CYGNUS_POWERPC 0x9025
++
++/* Old version of Sparc v9, from before the ABI; this should be
++   removed shortly.  */
++#define EM_OLD_SPARCV9	11
++
++/* Old version of PowerPC, this should be removed shortly. */
++#define EM_PPC_OLD	17
++
++/* (Deprecated) Temporary number for the OpenRISC processor.  */
++#define EM_OR32		0x8472
++
++/* Renesas M32C and M16C.  */
++#define EM_M32C			0xFEB0
++
++/* Cygnus M32R ELF backend.  Written in the absence of an ABI.  */
++#define EM_CYGNUS_M32R	0x9041
++
++/* old S/390 backend magic number. Written in the absence of an ABI.  */
++#define EM_S390_OLD	0xa390
++
++/* D10V backend magic number.  Written in the absence of an ABI.  */
++#define EM_CYGNUS_D10V	0x7650
++
++/* D30V backend magic number.  Written in the absence of an ABI.  */
++#define EM_CYGNUS_D30V	0x7676
++
++/* V850 backend magic number.  Written in the absense of an ABI.  */
++#define EM_CYGNUS_V850	0x9080
++
++/* mn10200 and mn10300 backend magic numbers.
++   Written in the absense of an ABI.  */
++#define EM_CYGNUS_MN10200	0xdead
++#define EM_CYGNUS_MN10300	0xbeef
++
++/* FR30 magic number - no EABI available.  */
++#define EM_CYGNUS_FR30		0x3330
++
++/* AVR magic number
++   Written in the absense of an ABI.  */
++#define EM_AVR_OLD		0x1057
++
++/* OpenRISC magic number
++   Written in the absense of an ABI.  */
++#define EM_OPENRISC_OLD		0x3426
++
++/* DLX magic number
++   Written in the absense of an ABI.  */
++#define EM_DLX			0x5aa5
++
++#define EM_XSTORMY16		0xad45
++
++/* FRV magic number - no EABI available??.  */
+ #define EM_CYGNUS_FRV	0x5441
+ 
++/* Ubicom IP2xxx; no ABI */
++#define EM_IP2K_OLD		0x8217
++
++#define EM_MT                   0x2530  /* Morpho MT; no ABI */
++
++/* MSP430 magic number
++      Written in the absense everything.  */
++#define EM_MSP430_OLD		0x1059
++
++/* Vitesse IQ2000.  */
++#define EM_IQ2000		0xFEBA
++
++/* Old, unofficial value for Xtensa.  */
++#define EM_XTENSA_OLD		0xabc7
++
++/* Alpha backend magic number.  Written in the absence of an ABI.  */
+ #define EM_ALPHA	0x9026
+-#define EM_NIOS32	0xfebb		/* Altera Nios 32 */
+-#define EM_ALTERA_NIOS2  0x9ee5	/* Altera Nios II */
++
++/* NIOS magic number - no EABI available.  */
++#define EM_NIOS32	0xFEBB
+ 
+ /* V850 backend magic number.  Written in the absense of an ABI.  */
+ #define EM_CYGNUS_V850 0x9080
+@@ -2498,6 +2591,12 @@
+ #define R_390_NUM		61
+ 
+ 
++/* CRIS flags.  */
++#define EF_CRIS_VARIANT_MASK           0x0000000e
++#define EF_CRIS_VARIANT_ANY_V0_V10     0x00000000
++#define EF_CRIS_VARIANT_V32            0x00000002
++#define EF_CRIS_VARIANT_COMMON_V10_V32 0x00000004
++
+ /* CRIS relocations.  */
+ #define R_CRIS_NONE		0
+ #define R_CRIS_8		1
+@@ -2688,6 +2787,7 @@
+ #define R_V850_NUM		25
+ 
+ 
++/* Renesas H8/300 Relocations */
+ #define R_H8_NONE       0
+ #define R_H8_DIR32      1
+ #define R_H8_DIR32_28   2
+@@ -2731,8 +2831,7 @@
+ #define R_H8_DIR32A16  63
+ #define R_H8_ABS32     65
+ #define R_H8_ABS32A16 127
+-
+-/* Altera NIOS specific definitions.  */
++#define R_H8_NUM      128
+ 
+ /* NIOS relocations. */
+ #define R_NIOS_NONE				0
+diff -urN uClibc-0.9.28.orig/include/errno.h uClibc-0.9.28/include/errno.h
+--- uClibc-0.9.28.orig/include/errno.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/include/errno.h	2006-04-28 00:14:35.000000000 -0600
+@@ -43,9 +43,11 @@
+    variable.  This redeclaration using the macro still works, but it
+    will be a function declaration without a prototype and may trigger
+    a -Wstrict-prototypes warning.  */
++#ifndef __ASSEMBLER__
+ #ifndef	errno
+ extern int errno;
+ #endif
++#endif
+ 
+ #if 0 /*def __USE_GNU      uClibc note: not supported */
+ 
+diff -urN uClibc-0.9.28.orig/ldso/Makefile uClibc-0.9.28/ldso/Makefile
+--- uClibc-0.9.28.orig/ldso/Makefile	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/Makefile	2006-04-28 00:14:35.000000000 -0600
+@@ -37,15 +37,12 @@
+ 
+ LN_HEADERS      := $(patsubst %, include/%, elf.h)
+ LN_ARCH_HEADERS := $(patsubst %, include/%, dl-startup.h dl-syscalls.h dl-sysdep.h dl-debug.h)
+-HEADERS         := $(LN_HEADERS) $(LN_ARCH_HEADERS) include/dl-progname.h
++HEADERS         := $(LN_HEADERS) $(LN_ARCH_HEADERS)
+ headers: $(HEADERS)
+ $(LN_HEADERS):
+ 	$(LN) -fs $(TOPDIR)../$@ $@
+ $(LN_ARCH_HEADERS):
+ 	$(LN) -fs ../ldso/$(TARGET_ARCH)/$(patsubst include/%,%,$@) $@
+-include/dl-progname.h:
+-	echo '#include "$(TARGET_ARCH)/elfinterp.c"' \
+-		> include/dl-progname.h
+ 
+ clean:
+ 	set -e ; for d in $(DIRS) ; do $(MAKE) -C $$d $@ ; done
+diff -urN uClibc-0.9.28.orig/ldso/include/dl-defs.h uClibc-0.9.28/ldso/include/dl-defs.h
+--- uClibc-0.9.28.orig/ldso/include/dl-defs.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/dl-defs.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,6 +1,29 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ #ifndef _LD_DEFS_H
+ #define _LD_DEFS_H
+ 
++#define FLAG_ANY             -1
++#define FLAG_TYPE_MASK       0x00ff
++#define FLAG_LIBC4           0x0000
++#define FLAG_ELF             0x0001
++#define FLAG_ELF_LIBC5       0x0002
++#define FLAG_ELF_LIBC6       0x0003
++#define FLAG_ELF_UCLIBC      0x0004
++#define FLAG_REQUIRED_MASK   0xff00
++#define FLAG_SPARC_LIB64     0x0100
++#define FLAG_IA64_LIB64      0x0200
++#define FLAG_X8664_LIB64     0x0300
++#define FLAG_S390_LIB64      0x0400
++#define FLAG_POWERPC_LIB64   0x0500
++#define FLAG_MIPS64_LIBN32   0x0600
++#define FLAG_MIPS64_LIBN64   0x0700
++
+ #define LIB_ANY	     -1
+ #define LIB_DLL       0
+ #define LIB_ELF       1
+diff -urN uClibc-0.9.28.orig/ldso/include/dl-elf.h uClibc-0.9.28/ldso/include/dl-elf.h
+--- uClibc-0.9.28.orig/ldso/include/dl-elf.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/dl-elf.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,3 +1,10 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ #ifndef LINUXELF_H
+ #define LINUXELF_H
+ 
+diff -urN uClibc-0.9.28.orig/ldso/include/dl-hash.h uClibc-0.9.28/ldso/include/dl-hash.h
+--- uClibc-0.9.28.orig/ldso/include/dl-hash.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/dl-hash.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,3 +1,10 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ #ifndef _LD_HASH_H_
+ #define _LD_HASH_H_
+ 
+@@ -32,15 +39,15 @@
+   unsigned short usage_count;
+   unsigned short int init_flag;
+   unsigned long rtld_flags; /* RTLD_GLOBAL, RTLD_NOW etc. */
+-  Elf32_Word nbucket;
+-  Elf32_Word *elf_buckets;
++  Elf_Symndx nbucket;
++  Elf_Symndx *elf_buckets;
+   struct init_fini_list *init_fini;
+   struct init_fini_list *rtld_local; /* keep tack of RTLD_LOCAL libs in same group */
+   /*
+    * These are only used with ELF style shared libraries
+    */
+-  Elf32_Word nchain;
+-  Elf32_Word *chains;
++  Elf_Symndx nchain;
++  Elf_Symndx *chains;
+   unsigned long dynamic_info[DYNAMIC_SIZE];
+ 
+   unsigned long n_phent;
+@@ -49,6 +56,9 @@
+   ElfW(Addr) relro_addr;
+   size_t relro_size;
+ 
++  dev_t st_dev;      /* device */
++  ino_t st_ino;      /* inode */
++
+ #ifdef __powerpc__
+   /* this is used to store the address of relocation data words, so
+    * we don't have to calculate it every time, which requires a divide */
+@@ -66,7 +76,6 @@
+ extern struct elf_resolve * _dl_loaded_modules;
+ extern struct dyn_elf 	  * _dl_handles;
+ 
+-extern struct elf_resolve * _dl_check_hashed_files(const char * libname);
+ extern struct elf_resolve * _dl_add_elf_hash_table(const char * libname, 
+ 	char * loadaddr, unsigned long * dynamic_info, 
+ 	unsigned long dynamic_addr, unsigned long dynamic_size);
+diff -urN uClibc-0.9.28.orig/ldso/include/dl-string.h uClibc-0.9.28/ldso/include/dl-string.h
+--- uClibc-0.9.28.orig/ldso/include/dl-string.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/dl-string.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,9 +1,24 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ #ifndef _LINUX_STRING_H_
+ #define _LINUX_STRING_H_
+ 
+-#include <dl-sysdep.h> // for do_rem
++#include <dl-sysdep.h> /* for do_rem */
+ #include <features.h>
+ 
++/* provide some sane defaults */
++#ifndef do_rem
++# define do_rem(result, n, base) ((result) = (n) % (base))
++#endif
++#ifndef do_div_10
++# define do_div_10(result, remain) ((result) /= 10)
++#endif
++
+ static size_t _dl_strlen(const char * str);
+ static char *_dl_strcat(char *dst, const char *src);
+ static char * _dl_strcpy(char * dst,const char *src);
+@@ -26,8 +41,8 @@
+ static __always_inline size_t _dl_strlen(const char * str)
+ {
+ 	register const char *ptr = (char *) str-1;
+-
+-	while (*++ptr);
++	while (*++ptr)
++		;/* empty */
+ 	return (ptr - str);
+ }
+ 
+@@ -49,7 +64,8 @@
+ 	register char *ptr = dst;
+ 
+ 	dst--;src--;
+-	while ((*++dst = *++src) != 0);
++	while ((*++dst = *++src) != 0)
++		;/* empty */
+ 
+ 	return ptr;
+ }
+@@ -63,8 +79,7 @@
+ 		c2 = (unsigned char) *++s2;
+ 		if (c1 == '\0')
+ 			return c1 - c2;
+-	}
+-	while (c1 == c2);
++	} while (c1 == c2);
+ 
+ 	return c1 - c2;
+ }
+@@ -98,43 +113,41 @@
+ 	return 0;
+ }
+ 
+-static inline char * _dl_strrchr(const char *str, int c)
++static __always_inline char * _dl_strrchr(const char *str, int c)
+ {
+-    register char *prev = 0;
+-    register char *ptr = (char *) str-1;
++	register char *prev = 0;
++	register char *ptr = (char *) str-1;
+ 
+-    while (*++ptr != '\0') {
+-	if (*ptr == c)
+-	    prev = ptr;
+-    }
+-    if (c == '\0')
+-	return(ptr);
+-    return(prev);
++	while (*++ptr != '\0') {
++		if (*ptr == c)
++			prev = ptr;
++	}
++	if (c == '\0')
++		return(ptr);
++	return(prev);
+ }
+ 
+-static inline char * _dl_strstr(const char *s1, const char *s2)
++static __always_inline char * _dl_strstr(const char *s1, const char *s2)
+ {
+-    register const char *s = s1;
+-    register const char *p = s2;
++	register const char *s = s1;
++	register const char *p = s2;
+ 
+-    do {
+-        if (!*p) {
+-	    return (char *) s1;;
+-	}
+-	if (*p == *s) {
+-	    ++p;
+-	    ++s;
+-	} else {
+-	    p = s2;
+-	    if (!*s) {
+-	      return NULL;
+-	    }
+-	    s = ++s1;
+-	}
+-    } while (1);
++	do {
++		if (!*p)
++			return (char *) s1;;
++		if (*p == *s) {
++			++p;
++			++s;
++		} else {
++			p = s2;
++			if (!*s)
++				return NULL;
++			s = ++s1;
++		}
++	} while (1);
+ }
+ 
+-static inline void * _dl_memcpy(void * dst, const void * src, size_t len)
++static __always_inline void * _dl_memcpy(void * dst, const void * src, size_t len)
+ {
+ 	register char *a = dst-1;
+ 	register const char *b = src-1;
+@@ -163,27 +176,28 @@
+ /* Will generate smaller and faster code due to loop unrolling.*/
+ static __always_inline void * _dl_memset(void *to, int c, size_t n)
+ {
+-        unsigned long chunks;
+-        unsigned long *tmp_to;
++	unsigned long chunks;
++	unsigned long *tmp_to;
+ 	unsigned char *tmp_char;
+ 
+-        chunks = n / 4;
+-        tmp_to = to + n;
+-        c = c << 8 | c;
+-        c = c << 16 | c;
+-        if (!chunks)
+-                goto lessthan4;
+-        do {
+-                *--tmp_to = c;
+-        } while (--chunks);
+- lessthan4:
+-        n = n % 4;
+-        if (!n ) return to;
+-        tmp_char = (unsigned char *)tmp_to;
+-        do {
+-                *--tmp_char = c;
+-        } while (--n);
+-        return to;
++	chunks = n / 4;
++	tmp_to = to + n;
++	c = c << 8 | c;
++	c = c << 16 | c;
++	if (!chunks)
++		goto lessthan4;
++	do {
++		*--tmp_to = c;
++	} while (--chunks);
++lessthan4:
++	n = n % 4;
++	if (!n)
++		return to;
++	tmp_char = (unsigned char *)tmp_to;
++	do {
++		*--tmp_char = c;
++	} while (--n);
++	return to;
+ }
+ #else
+ static __always_inline void * _dl_memset(void * str,int c,size_t len)
+@@ -225,10 +239,10 @@
+ 	char *p = &local[22];
+ 	*--p = '\0';
+ 	do {
+-	    char temp;
+-	    do_rem(temp, i, 10);
+-	    *--p = '0' + temp;
+-	    i /= 10;
++		char temp;
++		do_rem(temp, i, 10);
++		*--p = '0' + temp;
++		do_div_10(i, temp);
+ 	} while (i > 0);
+ 	return p;
+ }
+@@ -242,9 +256,9 @@
+ 	do {
+ 		char temp = i & 0xf;
+ 		if (temp <= 0x09)
+-		    *--p = '0' + temp;
++			*--p = '0' + temp;
+ 		else
+-		    *--p = 'a' - 0x0a + temp;
++			*--p = 'a' - 0x0a + temp;
+ 		i >>= 4;
+ 	} while (i > 0);
+ 	*--p = 'x';
+@@ -270,8 +284,8 @@
+ 
+ /* On some arches constant strings are referenced through the GOT.
+  * This requires that load_addr must already be defined... */
+-#if defined(mc68000) || defined(__arm__) || defined(__mips__)	\
+-                     || defined(__sh__) ||  defined(__powerpc__)
++#if defined(mc68000)  || defined(__arm__) || defined(__thumb__) || \
++    defined(__mips__) || defined(__sh__)  || defined(__powerpc__)
+ # define CONSTANT_STRING_GOT_FIXUP(X) \
+ 	if ((X) < (const char *) load_addr) (X) += load_addr
+ # define NO_EARLY_SEND_STDERR
+@@ -318,7 +332,7 @@
+ 	do { \
+ 		do_rem(v, (X), 10); \
+ 		*--tmp2 = '0' + v; \
+-		(X) /= 10; \
++		do_div_10((X), v); \
+ 	} while ((X) > 0); \
+ 	_dl_write(2, tmp2, tmp1 - tmp2 + sizeof(tmp) - 1); \
+ }
+diff -urN uClibc-0.9.28.orig/ldso/include/dl-syscall.h uClibc-0.9.28/ldso/include/dl-syscall.h
+--- uClibc-0.9.28.orig/ldso/include/dl-syscall.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/dl-syscall.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,3 +1,10 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ #ifndef _LD_SYSCALL_H_
+ #define _LD_SYSCALL_H_
+ 
+@@ -12,9 +19,8 @@
+ #include <bits/kernel_stat.h>
+ #include <bits/kernel_types.h>
+ 
+-
+ /* _dl_open() parameters */
+-#define O_RDONLY        0x0000
++#define O_RDONLY	     00
+ #define O_WRONLY	     01
+ #define O_RDWR		     02
+ #define O_CREAT		   0100
+@@ -39,18 +45,6 @@
+ #define	S_IWRITE	0200	/* Write by owner.  */
+ #define	S_IEXEC		0100	/* Execute by owner.  */
+ 
+-/* Stuff for _dl_mmap */
+-#if 0
+-#define MAP_FAILED	((void *) -1)
+-#define _dl_mmap_check_error(X) (((void *)X) == MAP_FAILED)
+-#else
+-#ifndef _dl_MAX_ERRNO
+-#define _dl_MAX_ERRNO 4096
+-#endif
+-#define _dl_mmap_check_error(__res) \
+-	(((long)__res) < 0 && ((long)__res) >= -_dl_MAX_ERRNO)
+-#endif
+-
+ 
+ 
+ /* Here are the definitions for some syscalls that are used
+@@ -66,54 +60,125 @@
+ static inline _syscall1(int, _dl_close, int, fd);
+ 
+ #define __NR__dl_open __NR_open
+-static inline _syscall3(int, _dl_open, const char *, fn, int, flags, __kernel_mode_t, mode);
++static inline _syscall3(int, _dl_open, const char *, fn, int, flags,
++                        __kernel_mode_t, mode);
+ 
+ #define __NR__dl_write __NR_write
+ static inline _syscall3(unsigned long, _dl_write, int, fd,
+-	    const void *, buf, unsigned long, count);
++                        const void *, buf, unsigned long, count);
+ 
+ #define __NR__dl_read __NR_read
+ static inline _syscall3(unsigned long, _dl_read, int, fd,
+-	    const void *, buf, unsigned long, count);
++                        const void *, buf, unsigned long, count);
+ 
+ #define __NR__dl_mprotect __NR_mprotect
+-static inline _syscall3(int, _dl_mprotect, const void *, addr, unsigned long, len, int, prot);
++static inline _syscall3(int, _dl_mprotect, const void *, addr,
++                        unsigned long, len, int, prot);
+ 
+ #define __NR__dl_stat __NR_stat
+-static inline _syscall2(int, _dl_stat, const char *, file_name, struct stat *, buf);
++static inline _syscall2(int, _dl_stat, const char *, file_name,
++                        struct stat *, buf);
++
++#define __NR__dl_fstat __NR_fstat
++static inline _syscall2(int, _dl_fstat, int, fd, struct stat *, buf);
+ 
+ #define __NR__dl_munmap __NR_munmap
+ static inline _syscall2(int, _dl_munmap, void *, start, unsigned long, length);
+ 
++#ifdef __NR_getxuid
++# define __NR_getuid __NR_getxuid
++#endif
+ #define __NR__dl_getuid __NR_getuid
+ static inline _syscall0(uid_t, _dl_getuid);
+ 
++#ifndef __NR_geteuid
++# define __NR_geteuid __NR_getuid
++#endif
+ #define __NR__dl_geteuid __NR_geteuid
+ static inline _syscall0(uid_t, _dl_geteuid);
+ 
++#ifdef __NR_getxgid
++# define __NR_getgid __NR_getxgid
++#endif
+ #define __NR__dl_getgid __NR_getgid
+ static inline _syscall0(gid_t, _dl_getgid);
+ 
++#ifndef __NR_getegid
++# define __NR_getegid __NR_getgid
++#endif
+ #define __NR__dl_getegid __NR_getegid
+ static inline _syscall0(gid_t, _dl_getegid);
+ 
++#ifdef __NR_getxpid
++# define __NR_getpid __NR_getxpid
++#endif
+ #define __NR__dl_getpid __NR_getpid
+ static inline _syscall0(gid_t, _dl_getpid);
+ 
+ #define __NR__dl_readlink __NR_readlink
+-static inline _syscall3(int, _dl_readlink, const char *, path, char *, buf, size_t, bufsiz);
++static inline _syscall3(int, _dl_readlink, const char *, path, char *, buf,
++                        size_t, bufsiz);
+ 
+-#ifdef __NR_mmap
+-#ifdef MMAP_HAS_6_ARGS
+-#define __NR__dl_mmap __NR_mmap
+-static inline _syscall6(void *, _dl_mmap, void *, start, size_t, length,
+-		int, prot, int, flags, int, fd, off_t, offset);
++#ifdef __UCLIBC_HAS_SSP__
++# include <sys/time.h>
++# define __NR__dl_gettimeofday __NR_gettimeofday
++static inline _syscall2(int, _dl_gettimeofday, struct timeval *, tv,
++# ifdef __USE_BSD
++                        struct timezone *, tz);
++# else
++                        void *, tz);
++# endif
++#endif
++
++
++/* handle all the fun mmap intricacies */
++#if (defined(__UCLIBC_MMAP_HAS_6_ARGS__) && defined(__NR_mmap)) || !defined(__NR_mmap2)
++# define _dl_MAX_ERRNO 4096
++# define _dl_mmap_check_error(__res) \
++	(((long)__res) < 0 && ((long)__res) >= -_dl_MAX_ERRNO)
+ #else
+-#define __NR__dl_mmap_real __NR_mmap
+-static inline _syscall1(void *, _dl_mmap_real, unsigned long *, buffer);
++# define MAP_FAILED ((void *) -1)
++# define _dl_mmap_check_error(X) (((void *)X) == MAP_FAILED)
++#endif
++
++/* first try mmap(), syscall6() style */
++#if defined(__UCLIBC_MMAP_HAS_6_ARGS__) && defined(__NR_mmap)
++
++# define __NR__dl_mmap __NR_mmap
++static inline _syscall6(void *, _dl_mmap, void *, start, size_t, length,
++                        int, prot, int, flags, int, fd, off_t, offset);
++
++/* then try mmap2() */
++#elif defined(__NR_mmap2)
++
++# define __NR___syscall_mmap2       __NR_mmap2
++static inline _syscall6(__ptr_t, __syscall_mmap2, __ptr_t, addr, size_t, len,
++                        int, prot, int, flags, int, fd, off_t, offset);
++
++/* Some architectures always use 12 as page shift for mmap2() eventhough the
++ * real PAGE_SHIFT != 12.  Other architectures use the same value as
++ * PAGE_SHIFT...
++ */
++#ifndef MMAP2_PAGE_SHIFT
++# define MMAP2_PAGE_SHIFT 12
++#endif
+ 
+ static inline void * _dl_mmap(void * addr, unsigned long size, int prot,
+-		int flags, int fd, unsigned long offset)
++                              int flags, int fd, unsigned long offset)
++{
++	if (offset & ((1 << MMAP2_PAGE_SHIFT) - 1))
++		return MAP_FAILED;
++	return __syscall_mmap2(addr, size, prot, flags,
++	                       fd, (off_t) (offset >> MMAP2_PAGE_SHIFT));
++}
++
++/* finally, fall back to mmap(), syscall1() style */
++#elif defined(__NR_mmap)
++
++# define __NR__dl_mmap_real __NR_mmap
++static inline _syscall1(void *, _dl_mmap_real, unsigned long *, buffer);
++static inline void * _dl_mmap(void * addr, unsigned long size, int prot,
++                              int flags, int fd, unsigned long offset)
+ {
+ 	unsigned long buffer[6];
+ 
+@@ -125,24 +190,9 @@
+ 	buffer[5] = (unsigned long) offset;
+ 	return (void *) _dl_mmap_real(buffer);
+ }
+-#endif
+-#elif defined __NR_mmap2
+-#define __NR___syscall_mmap2       __NR_mmap2
+-static inline _syscall6(__ptr_t, __syscall_mmap2, __ptr_t, addr,
+-		size_t, len, int, prot, int, flags, int, fd, off_t, offset);
+-/*always 12, even on architectures where PAGE_SHIFT != 12 */
+-#define MMAP2_PAGE_SHIFT 12
+-static inline void * _dl_mmap(void * addr, unsigned long size, int prot,
+-		int flags, int fd, unsigned long offset)
+-{
+-    if (offset & ((1 << MMAP2_PAGE_SHIFT) - 1))
+-	return MAP_FAILED;
+-    return(__syscall_mmap2(addr, size, prot, flags,
+-		fd, (off_t) (offset >> MMAP2_PAGE_SHIFT)));
+-}
++
+ #else
+-#error "Your architecture doesn't seem to provide mmap() !?"
++# error "Your architecture doesn't seem to provide mmap() !?"
+ #endif
+ 
+ #endif /* _LD_SYSCALL_H_ */
+-
+diff -urN uClibc-0.9.28.orig/ldso/include/dlfcn.h uClibc-0.9.28/ldso/include/dlfcn.h
+--- uClibc-0.9.28.orig/ldso/include/dlfcn.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/dlfcn.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,3 +1,10 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ /* User functions for run-time dynamic loading.  libdl version */
+ #ifndef	_DLFCN_H
+ #define	_DLFCN_H 1
+diff -urN uClibc-0.9.28.orig/ldso/include/ldso.h uClibc-0.9.28/ldso/include/ldso.h
+--- uClibc-0.9.28.orig/ldso/include/ldso.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/ldso.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,3 +1,10 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ #ifndef _LDSO_H_
+ #define _LDSO_H_
+ 
+@@ -20,13 +27,15 @@
+ /* Pull in compiler and arch stuff */
+ #include <stdlib.h>
+ #include <stdarg.h>
++#include <bits/wordsize.h>
+ /* Pull in the arch specific type information */
+ #include <sys/types.h>
++/* Pull in the arch specific page size */
++#include <bits/uClibc_page.h>
++#define attribute_unused __attribute__ ((unused))
+ /* Pull in the ldso syscalls and string functions */
+ #include <dl-syscall.h>
+ #include <dl-string.h>
+-/* Pull in the arch specific page size */
+-#include <bits/uClibc_page.h>
+ /* Now the ldso specific headers */
+ #include <dl-elf.h>
+ #include <dl-hash.h>
+diff -urN uClibc-0.9.28.orig/ldso/include/unsecvars.h uClibc-0.9.28/ldso/include/unsecvars.h
+--- uClibc-0.9.28.orig/ldso/include/unsecvars.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/include/unsecvars.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,3 +1,10 @@
++/* vi: set sw=4 ts=4: */
++/*
++ * Copyright (C) 2000-2005 by Erik Andersen <andersen@codepoet.org>
++ *
++ * GNU Lesser General Public License version 2.1 or later.
++ */
++
+ /* 
+  * Environment variable to be removed for SUID programs.  The names are all
+  * stuffed in a single string which means they have to be terminated with a
+@@ -5,22 +12,21 @@
+  */
+ 
+ #define UNSECURE_ENVVARS \
+-	"LD_AOUT_PRELOAD\0" \
+-	"LD_AOUT_LIBRARY_PATH\0" \
+ 	"LD_PRELOAD\0" \
+ 	"LD_LIBRARY_PATH\0" \
+ 	"LD_DEBUG\0" \
+ 	"LD_DEBUG_OUTPUT\0" \
+ 	"LD_TRACE_LOADED_OBJECTS\0" \
+-	"HOSTALIASES\0" \
+-	"LOCALDOMAIN\0" \
+-	"RES_OPTIONS\0" \
+ 	"TMPDIR\0"
+ 
+ /* 
++ * LD_TRACE_LOADED_OBJECTS is not in glibc-2.3.5's unsecvars.h
++ * though used by ldd
++ *
+  * These environment variables are defined by glibc but ignored in
+  * uClibc, but may very well have an equivalent in uClibc.
+  *
+- * MALLOC_TRACE, RESOLV_HOST_CONF, TZDIR, GCONV_PATH, LD_USE_LOAD_BIAS,
+- * LD_PROFILE, LD_ORIGIN_PATH, LOCPATH, NLSPATH
++ * LD_ORIGIN_PATH, LD_PROFILE, LD_USE_LOAD_BIAS, LD_DYNAMIC_WEAK, LD_SHOW_AUXV,
++ * GCONV_PATH, GETCONF_DIR, HOSTALIASES, LOCALDOMAIN, LOCPATH, MALLOC_TRACE,
++ * NLSPATH, RESOLV_HOST_CONF, RES_OPTIONS, TZDIR
+  */
+diff -urN uClibc-0.9.28.orig/ldso/ldso/Makefile uClibc-0.9.28/ldso/ldso/Makefile
+--- uClibc-0.9.28.orig/ldso/ldso/Makefile	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/Makefile	2006-04-28 00:14:35.000000000 -0600
+@@ -42,7 +42,9 @@
+ endif
+ XXFLAGS+= -DUCLIBC_LDSO=\"$(UCLIBC_LDSO)\" $(XARCH_CFLAGS) $(CPU_CFLAGS) $(PICFLAG) \
+ 	-DUCLIBC_RUNTIME_PREFIX=\"$(RUNTIME_PREFIX)\" \
+-	-fno-builtin -nostdinc -D_LIBC -I$(TOPDIR)ldso/include -I. -I$(TOPDIR)include
++	-fno-builtin -nostdinc -D_LIBC \
++	-DLDSO_ELFINTERP=\"$(TARGET_ARCH)/elfinterp.c\" \
++	-I$(TOPDIR)ldso/ldso/$(TARGET_ARCH) -I$(TOPDIR)ldso/include -I$(TOPDIR)ldso/ldso -I$(TOPDIR)include
+ 
+ # BEWARE!!! At least mips* will die if -O0 is used!!!
+ XXFLAGS:=$(XXFLAGS:-O0=-O1)
+diff -urN uClibc-0.9.28.orig/ldso/ldso/arm/dl-startup.h uClibc-0.9.28/ldso/ldso/arm/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/arm/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/arm/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,10 +1,15 @@
+ /* vi: set sw=4 ts=4: */
+ /*
+  * Architecture specific code used by dl-startup.c
+- * Copyright (C) 2000-2004 by Erik Andersen <andersen@codepoet.org>
++ * Copyright (C) 2000-2006 Erik Andersen <andersen@uclibc.org>
++ *
++ * Licensed under the LGPL v2.1, see the file COPYING.LIB in this tarball.
+  */
+ 
+-asm(
++#include <features.h>
++
++#if !defined(__thumb__)
++__asm__(
+     "	.text\n"
+     "	.globl	_start\n"
+     "	.type	_start,%function\n"
+@@ -40,7 +45,78 @@
+ 	"	ldr	r0, .L_FINI_PROC\n"
+ 	"	ldr	r0, [sl, r0]\n"
+ 	"	@ jump to the user_s entry point\n"
++#if defined(__USE_BX__)
++	"	bx	r6\n"
++#else
++	"	mov	pc, r6\n"
++#endif
++	".L_GET_GOT:\n"
++	"	.word	_GLOBAL_OFFSET_TABLE_ - .L_GOT_GOT - 4\n"
++	".L_SKIP_ARGS:\n"
++	"	.word	_dl_skip_args(GOTOFF)\n"
++	".L_FINI_PROC:\n"
++	"	.word	_dl_fini(GOT)\n"
++	"\n\n"
++    "	.size	_start,.-_start\n"
++	".previous\n"
++);
++#else
++__asm__(
++    "	.text\n"
++    "	.arm\n"
++    "	.globl	_start\n"
++    "	.type	_start,%function\n"
++	"_start:\n"
++	"	@ dumb: can't persuade the linker to make the start address\n"
++	"	@ odd, so use an arm function and change to thumb (_dl_start\n"
++	"	@ is thumb)\n"
++	"	adr	r0, __dl_thumb_start+1\n"
++	"	bx	r0\n"
++	"\n\n"
++    "	.thumb\n"
++    "	.globl	__dl_thumb_start\n"
++    "	.thumb_func\n"
++    "	.type	__dl_thumb_start,%function\n"
++	"__dl_thumb_start:\n"
++	"	@ at start time, all the args are on the stack\n"
++	"	mov	r0, sp\n"
++	"	bl	_dl_start\n"
++	"	@ returns user entry point in r0\n"
++	"	mov	r6, r0\n"
++	"	@ we are PIC code, so get global offset table\n"
++	"	ldr	r7, .L_GET_GOT\n"
++	".L_GOT_GOT:\n"
++	"	add	r7, pc\n"
++	"	@ See if we were run as a command with the executable file\n"
++	"	@ name as an extra leading argument.\n"
++	"	ldr	r4, .L_SKIP_ARGS\n"
++	"	ldr	r4, [r7, r4]\n"
++	"	@ get the original arg count\n"
++	"	ldr	r1, [sp]\n"
++	"	@ subtract _dl_skip_args from it\n"
++	"	sub	r1, r1, r4\n"
++	"	@ adjust the stack pointer to skip them\n"
++	"	lsl	r4, r4, #2\n"
++	"	add	sp, r4\n"
++	"	@ get the argv address\n"
++	"	add	r2, sp, #4\n"
++	"	@ store the new argc in the new stack location\n"
++	"	str	r1, [sp]\n"
++	"	@ compute envp\n"
++	"	lsl	r3, r1, #2\n"
++	"	add	r3, r3, r2\n"
++	"	add	r3, #4\n"
++	"\n\n"
++	"	@ load the finalizer function\n"
++	"	ldr	r0, .L_FINI_PROC\n"
++	"	ldr	r0, [r7, r0]\n"
++	"	@ jump to the user_s entry point\n"
++#if defined(__USE_BX__)
++	"	bx	r6\n"
++#else
+ 	"	mov	pc, r6\n"
++#endif
++	"\n\n"
+ 	".L_GET_GOT:\n"
+ 	"	.word	_GLOBAL_OFFSET_TABLE_ - .L_GOT_GOT - 4\n"
+ 	".L_SKIP_ARGS:\n"
+@@ -51,6 +127,7 @@
+     "	.size	_start,.-_start\n"
+ 	".previous\n"
+ );
++#endif
+ 
+ 
+ /* Get a pointer to the argv array.  On many platforms this can be just
+@@ -115,9 +192,3 @@
+ 			_dl_exit(1);
+ 	}
+ }
+-
+-
+-/* Transfer control to the user's application, once the dynamic loader is
+- * done.  This routine has to exit the current function, then call the
+- * _dl_elf_main function.  */
+-#define START()   return _dl_elf_main;
+diff -urN uClibc-0.9.28.orig/ldso/ldso/arm/dl-syscalls.h uClibc-0.9.28/ldso/ldso/arm/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/arm/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/arm/dl-syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,6 +1,7 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+ 
+diff -urN uClibc-0.9.28.orig/ldso/ldso/arm/dl-sysdep.h uClibc-0.9.28/ldso/ldso/arm/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/arm/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/arm/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -43,6 +43,7 @@
+ 	return m;
+ }
+ #define do_rem(result, n, base) ((result) = arm_modulus(n, base))
++#define do_div_10(result, remain) ((result) = (((result) - (remain)) / 2) * -(-1ul / 5ul))
+ 
+ /* Here we define the magic numbers that this dynamic loader should accept */
+ #define MAGIC1 EM_ARM
+@@ -85,7 +86,25 @@
+ 	extern void __dl_start asm ("_dl_start");
+ 	Elf32_Addr got_addr = (Elf32_Addr) &__dl_start;
+ 	Elf32_Addr pcrel_addr;
++#if !defined __thumb__
+ 	asm ("adr %0, _dl_start" : "=r" (pcrel_addr));
++#else
++	int tmp;
++	/* The above adr will not work on thumb because it
++	 * is negative.  The only safe way is to temporarily
++	 * swap to arm.
++	 */
++	asm(   ".align	2\n"
++	"	bx	pc\n"
++	"	nop	\n"
++	"	.arm	\n"
++	"	adr	%0, _dl_start\n"
++	"	.align	2\n"
++	"	orr	%1, pc, #1\n"
++	"	bx	%1\n"
++	"	.force_thumb\n"
++	: "=r" (pcrel_addr), "=&r" (tmp));
++#endif
+ 	return pcrel_addr - got_addr;
+ }
+ 
+diff -urN uClibc-0.9.28.orig/ldso/ldso/arm/elfinterp.c uClibc-0.9.28/ldso/ldso/arm/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/arm/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/arm/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -38,6 +38,8 @@
+    a more than adequate job of explaining everything required to get this
+    working. */
+ 
++#include "ldso.h"
++
+ extern int _dl_linux_resolve(void);
+ 
+ unsigned long _dl_linux_resolver(struct elf_resolve *tpnt, int reloc_entry)
+@@ -63,7 +65,6 @@
+ 	strtab = (char *) tpnt->dynamic_info[DT_STRTAB];
+ 	symname = strtab + symtab[symtab_index].st_name;
+ 
+-
+ 	if (unlikely(reloc_type != R_ARM_JUMP_SLOT)) {
+ 		_dl_dprintf(2, "%s: Incorrect relocation type in jump relocations\n",
+ 			_dl_progname);
+diff -urN uClibc-0.9.28.orig/ldso/ldso/cris/dl-startup.h uClibc-0.9.28/ldso/ldso/cris/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/cris/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/cris/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -4,22 +4,43 @@
+ 
+ /* This code fixes the stack pointer so that the dynamic linker
+  * can find argc, argv and auxvt (Auxillary Vector Table).  */
++#ifdef __arch_v32
++
++asm(""					\
++"	.text\n"			\
++"	.globl _start\n"		\
++"	.type _start,@function\n"	\
++"_start:\n"				\
++"	move.d	$sp,$r10\n"		\
++"	lapc	_dl_start,$r9\n"	\
++"	jsr	$r9\n"			\
++"	nop\n"				\
++"	moveq	0,$r8\n"		\
++"	jump	$r10\n"			\
++"	move	$r8,$srp\n"		\
++"	.size _start,.-_start\n"	\
++"	.previous\n"			\
++);
++
++#else
++
+ asm(""					\
+ "	.text\n"			\
+ "	.globl _start\n"		\
+ "	.type _start,@function\n"	\
+ "_start:\n"				\
+-"	move.d $sp,$r10\n"		\
+-"	move.d $pc,$r9\n"		\
+-"	add.d _dl_start - ., $r9\n"	\
+-"	jsr $r9\n"			\
+-"	moveq 0,$r8\n"			\
+-"	move $r8,$srp\n"		\
+-"	jump $r10\n"			\
++"	move.d	$sp,$r10\n"		\
++"	move.d	$pc,$r9\n"		\
++"	add.d	_dl_start - ., $r9\n"	\
++"	jsr	$r9\n"			\
++"	moveq	0,$r8\n"		\
++"	move	$r8,$srp\n"		\
++"	jump	$r10\n"			\
+ "	.size _start,.-_start\n"	\
+ "	.previous\n"			\
+ );
+ 
++#endif /* __arch_v32 */
+ 
+ /* Get a pointer to the argv array.  On many platforms this can be just
+  * the address if the first argument, on other platforms we need to
+@@ -58,8 +79,3 @@
+ 			break;
+ 	}
+ }
+-
+-/* Transfer control to the user's application, once the dynamic loader is
+- * done.  This routine has to exit the current function, then call the
+- * _dl_elf_main function.  */
+-#define START()     return _dl_elf_main
+diff -urN uClibc-0.9.28.orig/ldso/ldso/cris/dl-syscalls.h uClibc-0.9.28/ldso/ldso/cris/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/cris/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/cris/dl-syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,5 +1,6 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+diff -urN uClibc-0.9.28.orig/ldso/ldso/cris/dl-sysdep.h uClibc-0.9.28/ldso/ldso/cris/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/cris/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/cris/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -18,8 +18,6 @@
+ struct elf_resolve;
+ extern unsigned long _dl_linux_resolver(struct elf_resolve *tpnt, int reloc_entry);
+ 
+-#define do_rem(result, n, base) ((result) = (n) % (base))
+-
+ /* 8192 bytes alignment */
+ #define PAGE_ALIGN 0xffffe000
+ #define ADDR_ALIGN 0x1fff
+@@ -68,8 +66,32 @@
+ {
+ 	Elf32_Addr gotaddr_diff;
+ 
++#ifdef __arch_v32
++	extern char ___CRISv32_dummy[] __asm__ ("_dl_start");
++
++	__asm__ ("addo.w _dl_start:GOT16,$r0,$acr\n\t"
++	         "lapc _dl_start,%0\n\t"
++	         "sub.d [$acr],%0"
++	         /* For v32, we need to force GCC to have R0 loaded with
++	            _GLOBAL_OFFSET_TABLE_ at this point, which might not
++	            otherwise have happened in the caller.  (For v10, it's
++	            loaded for non-global variables too, so we don't need
++	            anything special there.)  We accomplish this by faking the
++	            address of a global variable (as seen by GCC) as input to
++	            the asm; that address calculation goes through the GOT.
++	            Use of this function happens before we've filled in the
++	            GOT, so the address itself will not be correctly
++	            calculated, therefore we don't use any symbol whose
++	            address may be re-used later on.  Let's just reuse the
++	            _dl_start symbol, faking it as a global by renaming it as
++	            another variable through an asm.  */
++	         : "=r" (gotaddr_diff)
++	         : "g" (___CRISv32_dummy)
++	         : "acr");
++#else
+ 	__asm__ ("sub.d [$r0+_dl_start:GOT16],$r0,%0\n\t"
+ 	         "add.d _dl_start:GOTOFF,%0" : "=r" (gotaddr_diff));
++#endif
+ 	return gotaddr_diff;
+ }
+ 
+diff -urN uClibc-0.9.28.orig/ldso/ldso/cris/resolve.S uClibc-0.9.28/ldso/ldso/cris/resolve.S
+--- uClibc-0.9.28.orig/ldso/ldso/cris/resolve.S	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/cris/resolve.S	2006-04-28 00:14:35.000000000 -0600
+@@ -17,33 +17,73 @@
+ .globl _dl_linux_resolve
+ .type _dl_linux_resolve,@function
+ 
++#ifdef __arch_v32
++
++_dl_linux_resolve:
++	subq	4,$sp
++	move.d	$r0,[$sp]
++	subq	4,$sp
++	move.d	$r13,[$sp]
++	subq	4,$sp
++	move.d	$r12,[$sp]
++	subq	4,$sp
++	move.d	$r11,[$sp]
++	subq	4,$sp
++	addoq	5*4,$sp,$acr
++	move.d	$r10,[$sp]
++	subq	4,$sp
++	move	$mof,$r10
++	move.d	$r9,[$sp]
++	subq	4,$sp
++	move.d	[$acr],$r11
++	move	$srp,[$sp]
++	lapc	_GLOBAL_OFFSET_TABLE_,$r0
++	move.d	_dl_linux_resolver:PLTG,$r9
++	add.d	$r0,$r9
++	jsr	$r9
++	nop
++	move.d	$r10,$acr
++	move	[$sp+],$srp
++	move.d	[$sp+],$r9
++	move.d	[$sp+],$r10
++	move.d	[$sp+],$r11
++	move.d	[$sp+],$r12
++	move.d	[$sp+],$r13
++	move.d	[$sp+],$r0
++	jump	$acr
++	addq	4,$sp
++
++#else
++
+ _dl_linux_resolve:
+-	push $r13
+-	push $r12
+-	push $r11
+-	push $r10
+-	push $r9
+-	push $r0
+-	push $srp
+-	move.d [$sp+7*4],$r11
+-	move $mof,$r10
++	push	$r13
++	push	$r12
++	push	$r11
++	push	$r10
++	push	$r9
++	push	$r0
++	push	$srp
++	move.d	[$sp+7*4],$r11
++	move	$mof,$r10
+ #ifdef __PIC__
+-	move.d $pc,$r0
+-	sub.d .:GOTOFF,$r0
+-	move.d _dl_linux_resolver:PLTG,$r9
+-	add.d $r0,$r9
+-	jsr $r9
++	move.d	$pc,$r0
++	sub.d	.:GOTOFF,$r0
++	move.d	_dl_linux_resolver:PLTG,$r9
++	add.d	$r0,$r9
++	jsr	$r9
+ #else
+-	jsr _dl_linux_resolver
++	jsr	_dl_linux_resolver
+ #endif
+-	move.d $r10,[$sp+7*4]
+-	pop $srp
+-	pop $r0
+-	pop $r9
+-	pop $r10
+-	pop $r11
+-	pop $r12
+-	pop $r13
+-	jump [$sp+]
++	move.d	$r10,[$sp+7*4]
++	pop	$srp
++	pop	$r0
++	pop	$r9
++	pop	$r10
++	pop	$r11
++	pop	$r12
++	pop	$r13
++	jump	[$sp+]
++
++#endif /* __arch_v32 */
+ 
+ 	.size _dl_linux_resolve, . - _dl_linux_resolve
+diff -urN uClibc-0.9.28.orig/ldso/ldso/dl-elf.c uClibc-0.9.28/ldso/ldso/dl-elf.c
+--- uClibc-0.9.28.orig/ldso/ldso/dl-elf.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/dl-elf.c	2006-05-02 13:50:58.000000000 -0600
+@@ -3,7 +3,7 @@
+  * This file contains the helper routines to load an ELF shared
+  * library into memory and add the symbol table info to the chain.
+  *
+- * Copyright (C) 2000-2004 by Erik Andersen <andersen@codepoet.org>
++ * Copyright (C) 2000-2006 by Erik Andersen <andersen@codepoet.org>
+  * Copyright (c) 1994-2000 Eric Youngdale, Peter MacDonald,
+  *				David Engel, Hongjiu Lu and Mitch D'Souza
+  *
+@@ -60,8 +60,8 @@
+ 	_dl_cache_addr = (caddr_t) _dl_mmap(0, _dl_cache_size, PROT_READ, MAP_SHARED, fd, 0);
+ 	_dl_close(fd);
+ 	if (_dl_mmap_check_error(_dl_cache_addr)) {
+-		_dl_dprintf(2, "%s: can't map cache '%s'\n",
+-				_dl_progname, LDSO_CACHE);
++		_dl_dprintf(2, "%s:%i: can't map '%s'\n",
++				_dl_progname, __LINE__, LDSO_CACHE);
+ 		return -1;
+ 	}
+ 
+@@ -115,7 +115,7 @@
+ #endif
+ 
+ 
+-void 
++void
+ _dl_protect_relro (struct elf_resolve *l)
+ {
+ 	ElfW(Addr) start = ((l->loadaddr + l->relro_addr)
+@@ -136,27 +136,41 @@
+ search_for_named_library(const char *name, int secure, const char *path_list,
+ 	struct dyn_elf **rpnt)
+ {
+-	char *path, *path_n;
+-	char mylibname[2050];
++	char *path, *path_n, *mylibname;
+ 	struct elf_resolve *tpnt;
+-	int done = 0;
++	int done;
+ 
+ 	if (path_list==NULL)
+ 		return NULL;
+ 
+-	/* We need a writable copy of this string */
+-	path = _dl_strdup(path_list);
+-	if (!path) {
++	/* We need a writable copy of this string, but we don't
++	 * need this allocated permanently since we don't want
++	 * to leak memory, so use alloca to put path on the stack */
++	done = _dl_strlen(path_list);
++	path = alloca(done + 1);
++
++	/* another bit of local storage */
++	mylibname = alloca(2050);
++
++	/* gcc inlines alloca using a single instruction adjusting
++	 * the stack pointer and no stack overflow check and thus
++	 * no NULL error return.  No point leaving in dead code... */
++#if 0
++	if (!path || !mylibname) {
+ 		_dl_dprintf(2, "Out of memory!\n");
+ 		_dl_exit(0);
+ 	}
++#endif
++
++	_dl_memcpy(path, path_list, done+1);
+ 
+ 	/* Unlike ldd.c, don't bother to eliminate double //s */
+ 
+ 	/* Replace colons with zeros in path_list */
+ 	/* : at the beginning or end of path maps to CWD */
+ 	/* :: anywhere maps CWD */
+-	/* "" maps to CWD */ 
++	/* "" maps to CWD */
++	done = 0;
+ 	path_n = path;
+ 	do {
+ 		if (*path == 0) {
+@@ -180,71 +194,6 @@
+ 	return NULL;
+ }
+ 
+-/* Check if the named library is already loaded... */
+-struct elf_resolve *_dl_check_if_named_library_is_loaded(const char *full_libname,
+-		int trace_loaded_objects)
+-{
+-	const char *pnt, *pnt1;
+-	struct elf_resolve *tpnt1;
+-	const char *libname, *libname2;
+-	static const char libc[] = "libc.so.";
+-	static const char aborted_wrong_lib[] = "%s: aborted attempt to load %s!\n";
+-
+-	pnt = libname = full_libname;
+-
+-	_dl_if_debug_dprint("Checking if '%s' is already loaded\n", full_libname);
+-	/* quick hack to ensure mylibname buffer doesn't overflow.  don't
+-	   allow full_libname or any directory to be longer than 1024. */
+-	if (_dl_strlen(full_libname) > 1024)
+-		return NULL;
+-
+-	/* Skip over any initial initial './' and '/' stuff to
+-	 * get the short form libname with no path garbage */
+-	pnt1 = _dl_strrchr(pnt, '/');
+-	if (pnt1) {
+-		libname = pnt1 + 1;
+-	}
+-
+-	/* Make sure they are not trying to load the wrong C library!
+-	 * This sometimes happens esp with shared libraries when the
+-	 * library path is somehow wrong! */
+-#define isdigit(c)  (c >= '0' && c <= '9')
+-	if ((_dl_strncmp(libname, libc, 8) == 0) &&  _dl_strlen(libname) >=8 &&
+-			isdigit(libname[8]))
+-	{
+-		/* Abort attempts to load glibc, libc5, etc */
+-		if ( libname[8]!='0') {
+-			if (!trace_loaded_objects) {
+-				_dl_dprintf(2, aborted_wrong_lib, libname, _dl_progname);
+-				_dl_exit(1);
+-			}
+-			return NULL;
+-		}
+-	}
+-
+-	/* Critical step!  Weed out duplicates early to avoid
+-	 * function aliasing, which wastes memory, and causes
+-	 * really bad things to happen with weaks and globals. */
+-	for (tpnt1 = _dl_loaded_modules; tpnt1; tpnt1 = tpnt1->next) {
+-
+-		/* Skip over any initial initial './' and '/' stuff to
+-		 * get the short form libname with no path garbage */
+-		libname2 = tpnt1->libname;
+-		pnt1 = _dl_strrchr(libname2, '/');
+-		if (pnt1) {
+-			libname2 = pnt1 + 1;
+-		}
+-
+-		if (_dl_strcmp(libname2, libname) == 0) {
+-			/* Well, that was certainly easy */
+-			return tpnt1;
+-		}
+-	}
+-
+-	return NULL;
+-}
+-
+-
+ /* Used to return error codes back to dlopen et. al.  */
+ unsigned long _dl_error_number;
+ unsigned long _dl_internal_error_number;
+@@ -271,14 +220,6 @@
+ 		libname = pnt + 1;
+ 	}
+ 
+-	/* Critical step!  Weed out duplicates early to avoid
+-	 * function aliasing, which wastes memory, and causes
+-	 * really bad things to happen with weaks and globals. */
+-	if ((tpnt1=_dl_check_if_named_library_is_loaded(libname, trace_loaded_objects))!=NULL) {
+-		tpnt1->usage_count++;
+-		return tpnt1;
+-	}
+-
+ 	_dl_if_debug_dprint("\tfind library='%s'; searching\n", libname);
+ 	/* If the filename has any '/', try it straight and leave it at that.
+ 	   For IBCS2 compatibility under linux, we substitute the string
+@@ -290,7 +231,6 @@
+ 		if (tpnt1) {
+ 			return tpnt1;
+ 		}
+-		//goto goof;
+ 	}
+ 
+ 	/*
+@@ -411,56 +351,45 @@
+ 	int i, flags, piclib, infile;
+ 	ElfW(Addr) relro_addr = 0;
+ 	size_t relro_size = 0;
+-
+-	/* If this file is already loaded, skip this step */
+-	tpnt = _dl_check_hashed_files(libname);
+-	if (tpnt) {
+-		if (*rpnt) {
+-			(*rpnt)->next = (struct dyn_elf *) _dl_malloc(sizeof(struct dyn_elf));
+-			_dl_memset((*rpnt)->next, 0, sizeof(struct dyn_elf));
+-			(*rpnt)->next->prev = (*rpnt);
+-			*rpnt = (*rpnt)->next;
+-			(*rpnt)->dyn = tpnt;
+-			tpnt->symbol_scope = _dl_symbol_tables;
+-		}
+-		tpnt->usage_count++;
+-		tpnt->libtype = elf_lib;
+-		_dl_if_debug_dprint("file='%s';  already loaded\n", libname);
+-		return tpnt;
+-	}
+-
+-	/* If we are in secure mode (i.e. a setu/gid binary using LD_PRELOAD),
+-	   we don't load the library if it isn't setuid. */
+-
+-	if (secure) {
+-		struct stat st;
+-
+-		if (_dl_stat(libname, &st) || !(st.st_mode & S_ISUID))
+-			return NULL;
+-	}
++	struct stat st;
+ 
+ 	libaddr = 0;
+ 	infile = _dl_open(libname, O_RDONLY, 0);
+ 	if (infile < 0) {
+-#if 0
+-		/*
+-		 * NO!  When we open shared libraries we may search several paths.
+-		 * it is inappropriate to generate an error here.
+-		 */
+-		_dl_dprintf(2, "%s: can't open '%s'\n", _dl_progname, libname);
+-#endif
+ 		_dl_internal_error_number = LD_ERROR_NOFILE;
+ 		return NULL;
+ 	}
+ 
++	if (_dl_fstat(infile, &st) < 0) {
++		_dl_internal_error_number = LD_ERROR_NOFILE;
++		_dl_close(infile);
++		return NULL;
++	}
++	/* If we are in secure mode (i.e. a setu/gid binary using LD_PRELOAD),
++	   we don't load the library if it isn't setuid. */
++	if (secure)
++		if (!(st.st_mode & S_ISUID)) {
++			_dl_close(infile);
++			return NULL;
++		}
++
++	/* Check if file is already loaded */
++	for (tpnt = _dl_loaded_modules; tpnt; tpnt = tpnt->next) {
++		if(tpnt->st_dev == st.st_dev && tpnt->st_ino == st.st_ino) {
++			/* Already loaded */
++			tpnt->usage_count++;
++			_dl_close(infile);
++			return tpnt;
++		}
++	}
+ 	header = _dl_mmap((void *) 0, _dl_pagesize, PROT_READ | PROT_WRITE,
+ 			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	if (_dl_mmap_check_error(header)) {
+-		_dl_dprintf(2, "%s: can't map '%s'\n", _dl_progname, libname);
++		_dl_dprintf(2, "%s:%i: can't map '%s'\n", _dl_progname, __LINE__, libname);
+ 		_dl_internal_error_number = LD_ERROR_MMAP_FAILED;
+ 		_dl_close(infile);
+ 		return NULL;
+-	};
++	}
+ 
+ 	_dl_read(infile, header, _dl_pagesize);
+ 	epnt = (ElfW(Ehdr) *) (intptr_t) header;
+@@ -475,7 +404,7 @@
+ 		_dl_close(infile);
+ 		_dl_munmap(header, _dl_pagesize);
+ 		return NULL;
+-	};
++	}
+ 
+ 	if ((epnt->e_type != ET_DYN) || (epnt->e_machine != MAGIC1
+ #ifdef MAGIC2
+@@ -490,7 +419,7 @@
+ 		_dl_close(infile);
+ 		_dl_munmap(header, _dl_pagesize);
+ 		return NULL;
+-	};
++	}
+ 
+ 	ppnt = (ElfW(Phdr) *)(intptr_t) & header[epnt->e_phoff];
+ 
+@@ -502,7 +431,7 @@
+ 				_dl_dprintf(2, "%s: '%s' has more than one dynamic section\n",
+ 						_dl_progname, libname);
+ 			dynamic_addr = ppnt->p_vaddr;
+-		};
++		}
+ 
+ 		if (ppnt->p_type == PT_LOAD) {
+ 			/* See if this is a PIC library. */
+@@ -518,7 +447,7 @@
+ 			}
+ 		}
+ 		ppnt++;
+-	};
++	}
+ 
+ 	maxvma = (maxvma + ADDR_ALIGN) & ~ADDR_ALIGN;
+ 	minvma = minvma & ~0xffffU;
+@@ -530,12 +459,12 @@
+ 	status = (char *) _dl_mmap((char *) (piclib ? 0 : minvma),
+ 			maxvma - minvma, PROT_NONE, flags | MAP_ANONYMOUS, -1, 0);
+ 	if (_dl_mmap_check_error(status)) {
+-		_dl_dprintf(2, "%s: can't map %s\n", _dl_progname, libname);
++		_dl_dprintf(2, "%s:%i: can't map '%s'\n", _dl_progname, __LINE__, libname);
+ 		_dl_internal_error_number = LD_ERROR_MMAP_FAILED;
+ 		_dl_close(infile);
+ 		_dl_munmap(header, _dl_pagesize);
+ 		return NULL;
+-	};
++	}
+ 	libaddr = (unsigned long) status;
+ 	flags |= MAP_FIXED;
+ 
+@@ -567,14 +496,14 @@
+ 						ppnt->p_offset & OFFS_ALIGN);
+ 
+ 				if (_dl_mmap_check_error(status)) {
+-					_dl_dprintf(2, "%s: can't map '%s'\n",
+-							_dl_progname, libname);
++					_dl_dprintf(2, "%s:%i: can't map '%s'\n",
++							_dl_progname, __LINE__, libname);
+ 					_dl_internal_error_number = LD_ERROR_MMAP_FAILED;
+ 					_dl_munmap((char *) libaddr, maxvma - minvma);
+ 					_dl_close(infile);
+ 					_dl_munmap(header, _dl_pagesize);
+ 					return NULL;
+-				};
++				}
+ 
+ 				/* Pad the last page with zeroes. */
+ 				cpnt = (char *) (status + (ppnt->p_vaddr & ADDR_ALIGN) +
+@@ -601,21 +530,21 @@
+ 						ppnt->p_filesz, LXFLAGS(ppnt->p_flags), flags,
+ 						infile, ppnt->p_offset & OFFS_ALIGN);
+ 			if (_dl_mmap_check_error(status)) {
+-				_dl_dprintf(2, "%s: can't map '%s'\n", _dl_progname, libname);
++				_dl_dprintf(2, "%s:%i: can't map '%s'\n", _dl_progname, __LINE__, libname);
+ 				_dl_internal_error_number = LD_ERROR_MMAP_FAILED;
+ 				_dl_munmap((char *) libaddr, maxvma - minvma);
+ 				_dl_close(infile);
+ 				_dl_munmap(header, _dl_pagesize);
+ 				return NULL;
+-			};
++			}
+ 
+ 			/* if(libaddr == 0 && piclib) {
+ 			   libaddr = (unsigned long) status;
+ 			   flags |= MAP_FIXED;
+-			   }; */
+-		};
++			   } */
++		}
+ 		ppnt++;
+-	};
++	}
+ 	_dl_close(infile);
+ 
+ 	/* For a non-PIC library, the addresses are all absolute */
+@@ -665,6 +594,8 @@
+ 			dynamic_addr, 0);
+ 	tpnt->relro_addr = relro_addr;
+ 	tpnt->relro_size = relro_size;
++	tpnt->st_dev = st.st_dev;
++	tpnt->st_ino = st.st_ino;
+ 	tpnt->ppnt = (ElfW(Phdr) *)(intptr_t) (tpnt->loadaddr + epnt->e_phoff);
+ 	tpnt->n_phent = epnt->e_phnum;
+ 
+@@ -693,7 +624,7 @@
+ 	if (lpnt) {
+ 		lpnt = (unsigned long *) (dynamic_info[DT_PLTGOT]);
+ 		INIT_GOT(lpnt, tpnt);
+-	};
++	}
+ 
+ 	_dl_if_debug_dprint("\n\tfile='%s';  generating link map\n", libname);
+ 	_dl_if_debug_dprint("\t\tdynamic: %x  base: %x\n", dynamic_addr, libaddr);
+@@ -714,10 +645,12 @@
+ 	ElfW(Addr) reloc_addr;
+ 
+ 	if (rpnt->next)
+-		goof += _dl_fixup(rpnt->next, now_flag);
++		goof = _dl_fixup(rpnt->next, now_flag);
++	if (goof)
++		return goof;
+ 	tpnt = rpnt->dyn;
+ 
+-	if(!(tpnt->init_flag & RELOCS_DONE)) 
++	if(!(tpnt->init_flag & RELOCS_DONE))
+ 		_dl_if_debug_dprint("relocation processing: %s\n", tpnt->libname);
+ 
+ 	if (unlikely(tpnt->dynamic_info[UNSUPPORTED_RELOC_TYPE])) {
+@@ -735,7 +668,6 @@
+ #endif
+ 	if (tpnt->dynamic_info[DT_RELOC_TABLE_ADDR] &&
+ 	    !(tpnt->init_flag & RELOCS_DONE)) {
+-		tpnt->init_flag |= RELOCS_DONE;
+ 		reloc_addr = tpnt->dynamic_info[DT_RELOC_TABLE_ADDR];
+ 		relative_count = tpnt->dynamic_info[DT_RELCONT_IDX];
+ 		if (relative_count) { /* Optimize the XX_RELATIVE relocations if possible */
+@@ -746,14 +678,14 @@
+ 		goof += _dl_parse_relocation_information(rpnt,
+ 				reloc_addr,
+ 				reloc_size);
++		tpnt->init_flag |= RELOCS_DONE;
+ 	}
+ 	if (tpnt->dynamic_info[DT_BIND_NOW])
+ 		now_flag = RTLD_NOW;
+ 	if (tpnt->dynamic_info[DT_JMPREL] &&
+ 	    (!(tpnt->init_flag & JMP_RELOCS_DONE) ||
+ 	     (now_flag && !(tpnt->rtld_flags & now_flag)))) {
+-		tpnt->rtld_flags |= now_flag; 
+-		tpnt->init_flag |= JMP_RELOCS_DONE;
++		tpnt->rtld_flags |= now_flag;
+ 		if (!(tpnt->rtld_flags & RTLD_NOW)) {
+ 			_dl_parse_lazy_relocation_information(rpnt,
+ 					tpnt->dynamic_info[DT_JMPREL],
+@@ -763,6 +695,7 @@
+ 					tpnt->dynamic_info[DT_JMPREL],
+ 					tpnt->dynamic_info[DT_PLTRELSZ]);
+ 		}
++		tpnt->init_flag |= JMP_RELOCS_DONE;
+ 	}
+ 	return goof;
+ }
+@@ -770,11 +703,18 @@
+ /* Minimal printf which handles only %s, %d, and %x */
+ void _dl_dprintf(int fd, const char *fmt, ...)
+ {
+-	long num;
++#if __WORDSIZE > 32
++	long int num;
++#else
++	int num;
++#endif
+ 	va_list args;
+ 	char *start, *ptr, *string;
+ 	static char *buf;
+ 
++	if (!fmt)
++		return;
++
+ 	buf = _dl_mmap((void *) 0, _dl_pagesize, PROT_READ | PROT_WRITE,
+ 			MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+ 	if (_dl_mmap_check_error(buf)) {
+@@ -784,9 +724,6 @@
+ 
+ 	start = ptr = buf;
+ 
+-	if (!fmt)
+-		return;
+-
+ 	if (_dl_strlen(fmt) >= (_dl_pagesize - 1)) {
+ 		_dl_write(fd, "overflow\n", 11);
+ 		_dl_exit(20);
+@@ -818,8 +755,11 @@
+ 				case 'd':
+ 					{
+ 						char tmp[22];
+-						num = va_arg(args, long);
+-
++#if __WORDSIZE > 32
++						num = va_arg(args, long int);
++#else
++						num = va_arg(args, int);
++#endif
+ 						string = _dl_simple_ltoa(tmp, num);
+ 						_dl_write(fd, string, _dl_strlen(string));
+ 						break;
+@@ -828,8 +768,11 @@
+ 				case 'X':
+ 					{
+ 						char tmp[22];
+-						num = va_arg(args, long);
+-
++#if __WORDSIZE > 32
++						num = va_arg(args, long int);
++#else
++						num = va_arg(args, int);
++#endif
+ 						string = _dl_simple_ltoahex(tmp, num);
+ 						_dl_write(fd, string, _dl_strlen(string));
+ 						break;
+@@ -864,8 +807,10 @@
+ {
+ 	__dl_parse_dynamic_info(dpnt, dynamic_info, debug_addr, load_off);
+ }
++
++/* we want this in ldso.so and libdl.a but nowhere else */
+ #ifdef __USE_GNU
+-#if ! defined LIBDL || (! defined PIC && ! defined __PIC__)
++#if ! defined SHARED || (! defined PIC && ! defined __PIC__)
+ int
+ __dl_iterate_phdr (int (*callback) (struct dl_phdr_info *info, size_t size, void *data), void *data)
+ {
+@@ -884,6 +829,6 @@
+ 	}
+ 	return ret;
+ }
+-strong_alias(__dl_iterate_phdr, dl_iterate_phdr);
++strong_alias(__dl_iterate_phdr, dl_iterate_phdr)
+ #endif
+ #endif
+diff -urN uClibc-0.9.28.orig/ldso/ldso/dl-hash.c uClibc-0.9.28/ldso/ldso/dl-hash.c
+--- uClibc-0.9.28.orig/ldso/ldso/dl-hash.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/dl-hash.c	2006-04-28 00:14:35.000000000 -0600
+@@ -57,7 +57,7 @@
+ /* This is the hash function that is used by the ELF linker to generate the
+  * hash table that each executable and library is required to have.  We need
+  * it to decode the hash table.  */
+-static inline Elf32_Word _dl_elf_hash(const char *name)
++static inline Elf_Symndx _dl_elf_hash(const char *name)
+ {
+ 	unsigned long hash=0;
+ 	unsigned long tmp;
+@@ -77,21 +77,6 @@
+ 	return hash;
+ }
+ 
+-/* Check to see if a library has already been added to the hash chain.  */
+-struct elf_resolve *_dl_check_hashed_files(const char *libname)
+-{
+-	struct elf_resolve *tpnt;
+-	int len = _dl_strlen(libname);
+-
+-	for (tpnt = _dl_loaded_modules; tpnt; tpnt = tpnt->next) {
+-		if (_dl_strncmp(tpnt->libname, libname, len) == 0 &&
+-		    (tpnt->libname[len] == '\0' || tpnt->libname[len] == '.'))
+-			return tpnt;
+-	}
+-
+-	return NULL;
+-}
+-
+ /*
+  * We call this function when we have just read an ELF library or executable.
+  * We add the relevant info to the symbol chain, so that we can resolve all
+@@ -99,9 +84,10 @@
+  */
+ struct elf_resolve *_dl_add_elf_hash_table(const char *libname,
+ 	char *loadaddr, unsigned long *dynamic_info, unsigned long dynamic_addr,
++	//attribute_unused
+ 	unsigned long dynamic_size)
+ {
+-	Elf32_Word *hash_addr;
++	Elf_Symndx *hash_addr;
+ 	struct elf_resolve *tpnt;
+ 	int i;
+ 
+@@ -125,7 +111,7 @@
+ 	tpnt->libtype = loaded_file;
+ 
+ 	if (dynamic_info[DT_HASH] != 0) {
+-		hash_addr = (Elf32_Word*)dynamic_info[DT_HASH];
++		hash_addr = (Elf_Symndx*)dynamic_info[DT_HASH];
+ 		tpnt->nbucket = *hash_addr++;
+ 		tpnt->nchain = *hash_addr++;
+ 		tpnt->elf_buckets = hash_addr;
+diff -urN uClibc-0.9.28.orig/ldso/ldso/dl-startup.c uClibc-0.9.28/ldso/ldso/dl-startup.c
+--- uClibc-0.9.28.orig/ldso/ldso/dl-startup.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/dl-startup.c	2006-04-28 00:14:35.000000000 -0600
+@@ -98,7 +98,7 @@
+ int (*_dl_elf_main) (int, char **, char **);
+ 
+ static void* __rtld_stack_end; /* Points to argc on stack, e.g *((long *)__rtld_stackend) == argc */
+-strong_alias(__rtld_stack_end, __libc_stack_end); /* Exported version of __rtld_stack_end */
++strong_alias(__rtld_stack_end, __libc_stack_end) /* Exported version of __rtld_stack_end */
+ 
+ /* When we enter this piece of code, the program stack looks like this:
+ 	argc            argument counter (integer)
+@@ -307,5 +307,11 @@
+ 	SEND_STDERR_DEBUG("transfering control to application @ ");
+ 	_dl_elf_main = (int (*)(int, char **, char **)) auxvt[AT_ENTRY].a_un.a_val;
+ 	SEND_ADDRESS_STDERR_DEBUG(_dl_elf_main, 1);
++
++#ifndef START
++	return _dl_elf_main;
++#else
++#warning You need to update your arch ldso code
+ 	START();
++#endif
+ }
+diff -urN uClibc-0.9.28.orig/ldso/ldso/frv/dl-syscalls.h uClibc-0.9.28/ldso/ldso/frv/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/frv/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/frv/dl-syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -20,9 +20,10 @@
+ 
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+ #include <sys/mman.h>
+ 
+ /* The code below is extracted from libc/sysdeps/linux/frv/_mmap.c */
+diff -urN uClibc-0.9.28.orig/ldso/ldso/frv/dl-sysdep.h uClibc-0.9.28/ldso/ldso/frv/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/frv/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/frv/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -65,8 +65,6 @@
+ 
+ extern int _dl_linux_resolve(void) __attribute__((__visibility__("hidden")));
+ 
+-#define do_rem(result, n, base) ((result) = (n) % (base))
+-
+ /* 16KiB page alignment.  Should perhaps be made dynamic using
+    getpagesize(), based on AT_PAGESZ from auxvt?  */
+ #define PAGE_ALIGN 0xffffc000
+diff -urN uClibc-0.9.28.orig/ldso/ldso/frv/elfinterp.c uClibc-0.9.28/ldso/ldso/frv/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/frv/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/frv/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -24,7 +24,7 @@
+ the Free Software Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139,
+ USA.  */
+ 
+-#include <sys/cdefs.h>	    /* __attribute_used__ */
++#include <features.h>
+ 
+ /* Program to load an ELF binary on a linux system, and run it.
+    References to symbols in sharable libraries can be resolved by either
+@@ -37,7 +37,7 @@
+    a more than adequate job of explaining everything required to get this
+    working. */
+ 
+-struct funcdesc_value volatile *__attribute__((__visibility__("hidden")))
++struct funcdesc_value volatile attribute_hidden *
+ _dl_linux_resolver (struct elf_resolve *tpnt, int reloc_entry)
+ {
+ 	int reloc_type;
+diff -urN uClibc-0.9.28.orig/ldso/ldso/i386/dl-startup.h uClibc-0.9.28/ldso/ldso/i386/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/i386/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/i386/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -3,7 +3,7 @@
+  * Architecture specific code used by dl-startup.c
+  * Copyright (C) 2000-2004 by Erik Andersen <andersen@codepoet.org>
+  */
+-asm(
++__asm__ (
+     "	.text\n"
+     "	.align 16\n"
+     "	.globl	_start\n"
+@@ -41,9 +41,9 @@
+ #define GET_ARGV(ARGVP, ARGS) ARGVP = (((unsigned long*) & ARGS)+1)
+ 
+ /* Handle relocation of the symbols in the dynamic loader. */
+-static inline
++static __always_inline
+ void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, unsigned long *reloc_addr,
+-	unsigned long symbol_addr, unsigned long load_addr, Elf32_Sym *symtab)
++	unsigned long symbol_addr, unsigned long load_addr, attribute_unused Elf32_Sym *symtab)
+ {
+ 	switch (ELF32_R_TYPE(rpnt->r_info))
+ 	{
+@@ -64,8 +64,3 @@
+ 			_dl_exit(1);
+ 	}
+ }
+-
+-/* Transfer control to the user's application, once the dynamic loader is
+- * done.  This routine has to exit the current function, then call the
+- * _dl_elf_main function.  */
+-#define START() return _dl_elf_main
+diff -urN uClibc-0.9.28.orig/ldso/ldso/i386/dl-syscalls.h uClibc-0.9.28/ldso/ldso/i386/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/i386/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/i386/dl-syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,5 +1,6 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+diff -urN uClibc-0.9.28.orig/ldso/ldso/i386/dl-sysdep.h uClibc-0.9.28/ldso/ldso/i386/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/i386/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/i386/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -25,8 +25,6 @@
+ struct elf_resolve;
+ extern unsigned long _dl_linux_resolver(struct elf_resolve * tpnt, int reloc_entry);
+ 
+-#define do_rem(result, n, base) ((result) = (n) % (base))
+-
+ /* 4096 bytes alignment */
+ #define PAGE_ALIGN 0xfffff000
+ #define ADDR_ALIGN 0xfff
+@@ -44,16 +42,18 @@
+ /* Return the link-time address of _DYNAMIC.  Conveniently, this is the
+    first element of the GOT.  This must be inlined in a function which
+    uses global data.  */
+-static inline Elf32_Addr __attribute__ ((unused))
++static inline Elf32_Addr elf_machine_dynamic (void) attribute_unused;
++static inline Elf32_Addr
+ elf_machine_dynamic (void)
+ {
+-	register Elf32_Addr *got asm ("%ebx");
++	register Elf32_Addr *got __asm__ ("%ebx");
+ 	return *got;
+ }
+ 
+ 
+ /* Return the run-time load address of the shared object.  */
+-static inline Elf32_Addr __attribute__ ((unused))
++static inline Elf32_Addr elf_machine_load_address (void) attribute_unused;
++static inline Elf32_Addr
+ elf_machine_load_address (void)
+ {
+ 	/* It doesn't matter what variable this is, the reference never makes
+@@ -61,7 +61,7 @@
+ 	   via the GOT to make sure the compiler initialized %ebx in time.  */
+ 	extern int _dl_errno;
+ 	Elf32_Addr addr;
+-	asm ("leal _dl_start@GOTOFF(%%ebx), %0\n"
++	__asm__ ("leal _dl_start@GOTOFF(%%ebx), %0\n"
+ 	     "subl _dl_start@GOT(%%ebx), %0"
+ 	     : "=r" (addr) : "m" (_dl_errno) : "cc");
+ 	return addr;
+diff -urN uClibc-0.9.28.orig/ldso/ldso/i386/elfinterp.c uClibc-0.9.28/ldso/ldso/i386/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/i386/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/i386/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -67,12 +67,6 @@
+ 	strtab = (char *)tpnt->dynamic_info[DT_STRTAB];
+ 	symname = strtab + symtab[symtab_index].st_name;
+ 
+-	if (unlikely(reloc_type != R_386_JMP_SLOT)) {
+-		_dl_dprintf(2, "%s: Incorrect relocation type in jump relocations\n",
+-		            _dl_progname);
+-		_dl_exit(1);
+-	}
+-
+ 	/* Address of the jump instruction to fix up. */
+ 	instr_addr = ((unsigned long)this_reloc->r_offset +
+ 		      (unsigned long)tpnt->loadaddr);
+@@ -81,7 +75,7 @@
+ 	/* Get the address of the GOT entry. */
+ 	new_addr = _dl_find_hash(symname, tpnt->symbol_scope, tpnt, ELF_RTYPE_CLASS_PLT);
+ 	if (unlikely(!new_addr)) {
+-		_dl_dprintf(2, "%s: Can't resolve symbol '%s'\n", _dl_progname, symname);
++		_dl_dprintf(2, "%s: can't resolve symbol '%s' in lib '%s'.\n", _dl_progname, symname, tpnt->libname);
+ 		_dl_exit(1);
+ 	}
+ 
+@@ -147,15 +141,15 @@
+ 			int reloc_type = ELF32_R_TYPE(rpnt->r_info);
+ 
+ #if defined (__SUPPORT_LD_DEBUG__)
+-			_dl_dprintf(2, "can't handle reloc type %s\n",
+-				    _dl_reltypes(reloc_type));
++			_dl_dprintf(2, "can't handle reloc type '%s' in lib '%s'\n",
++				    _dl_reltypes(reloc_type), tpnt->libname);
+ #else
+-			_dl_dprintf(2, "can't handle reloc type %x\n",
+-				    reloc_type);
++			_dl_dprintf(2, "can't handle reloc type %x in lib '%s'\n",
++				    reloc_type, tpnt->libname);
+ #endif
+-			_dl_exit(-res);
++			return res;
+ 		} else if (unlikely(res > 0)) {
+-			_dl_dprintf(2, "can't resolve symbol\n");
++			_dl_dprintf(2, "can't resolve symbol in lib '%s'.\n", tpnt->libname);
+ 			return res;
+ 		}
+ 	}
+@@ -191,10 +185,8 @@
+ 		 * might have been intentional.  We should not be linking local
+ 		 * symbols here, so all bases should be covered.
+ 		 */
+-		if (unlikely(!symbol_addr && ELF32_ST_BIND(symtab[symtab_index].st_info) != STB_WEAK)) {
+-			_dl_dprintf(2, "%s: can't resolve symbol '%s'\n", _dl_progname, symname);
+-			_dl_exit(1);
+-		};
++		if (unlikely(!symbol_addr && ELF32_ST_BIND(symtab[symtab_index].st_info) != STB_WEAK))
++			return 1;
+ 	}
+ 
+ #if defined (__SUPPORT_LD_DEBUG__)
+@@ -233,7 +225,7 @@
+ 			}
+ 			break;
+ 		default:
+-			return -1;	/* Calls _dl_exit(1). */
++			return -1;
+ 	}
+ 
+ #if defined (__SUPPORT_LD_DEBUG__)
+@@ -273,7 +265,7 @@
+ 			*reloc_addr += (unsigned long)tpnt->loadaddr;
+ 			break;
+ 		default:
+-			return -1;	/* Calls _dl_exit(1). */
++			return -1;
+ 	}
+ 
+ #if defined (__SUPPORT_LD_DEBUG__)
+diff -urN uClibc-0.9.28.orig/ldso/ldso/ldso.c uClibc-0.9.28/ldso/ldso/ldso.c
+--- uClibc-0.9.28.orig/ldso/ldso/ldso.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/ldso.c	2006-05-02 13:55:54.000000000 -0600
+@@ -39,7 +39,7 @@
+ #define ALLOW_ZERO_PLTGOT
+ 
+ /* Pull in the value of _dl_progname */
+-#include "dl-progname.h"
++#include LDSO_ELFINTERP
+ 
+ /* Global variables used within the shared library loader */
+ char *_dl_library_path         = 0;	/* Where we look for libraries */
+@@ -74,7 +74,8 @@
+  * can set an internal breakpoint on it, so that we are notified when the
+  * address mapping is changed in some way.
+  */
+-void _dl_debug_state(void)
++void _dl_debug_state(void);
++void _dl_debug_state()
+ {
+ }
+ 
+@@ -82,9 +83,78 @@
+ static unsigned char *_dl_mmap_zero   = 0;	/* Also used by _dl_malloc */
+ 
+ static struct elf_resolve **init_fini_list;
+-static int nlist; /* # items in init_fini_list */
++static unsigned int nlist; /* # items in init_fini_list */
+ extern void _start(void);
+ 
++#ifdef __UCLIBC_HAS_SSP__
++#ifndef __UCLIBC_HAS_SSP_COMPAT__
++#define __UCLIBC_HAS_SSP_COMPAT__ 1
++#endif
++# include <dl-osinfo.h>
++uintptr_t stack_chk_guard;
++# ifndef THREAD_SET_STACK_GUARD
++/* Only exported for architectures that don't store the stack guard canary
++ * in local thread area.  */
++uintptr_t __stack_chk_guard attribute_relro;
++#  ifdef __UCLIBC_HAS_SSP_COMPAT__
++strong_alias(__stack_chk_guard,__guard)
++#  endif
++# elif __UCLIBC_HAS_SSP_COMPAT__
++uintptr_t __guard attribute_relro;
++# endif
++#endif
++
++static void _dl_run_array_forward(unsigned long array, unsigned long size,
++				  ElfW(Addr) loadaddr)
++{
++	if (array != 0) {
++		unsigned int j;
++		unsigned int jm;
++		ElfW(Addr) *addrs;
++		jm = size / sizeof (ElfW(Addr));
++		addrs = (ElfW(Addr) *) (array + loadaddr);
++		for (j = 0; j < jm; ++j) {
++			void (*dl_elf_func) (void);
++			dl_elf_func = (void (*)(void)) (intptr_t) addrs[j];
++			(*dl_elf_func) ();
++		}
++	}
++}
++
++void _dl_run_init_array(struct elf_resolve *tpnt);
++void _dl_run_init_array(struct elf_resolve *tpnt)
++{
++	_dl_run_array_forward(tpnt->dynamic_info[DT_INIT_ARRAY],
++			      tpnt->dynamic_info[DT_INIT_ARRAYSZ],
++			      tpnt->loadaddr);
++}
++
++void _dl_app_init_array(void);
++void _dl_app_init_array(void)
++{
++	_dl_run_init_array(_dl_loaded_modules);
++}
++
++void _dl_run_fini_array(struct elf_resolve *tpnt);
++void _dl_run_fini_array(struct elf_resolve *tpnt)
++{
++	if (tpnt->dynamic_info[DT_FINI_ARRAY]) {
++		ElfW(Addr) *array = (ElfW(Addr) *) (tpnt->loadaddr + tpnt->dynamic_info[DT_FINI_ARRAY]);
++		unsigned int i = (tpnt->dynamic_info[DT_FINI_ARRAYSZ] / sizeof(ElfW(Addr)));
++		while (i-- > 0) {
++			void (*dl_elf_func) (void);
++			dl_elf_func = (void (*)(void)) (intptr_t) array[i];
++			(*dl_elf_func) ();
++		}
++	}
++}
++
++void _dl_app_fini_array(void);
++void _dl_app_fini_array(void)
++{
++	_dl_run_fini_array(_dl_loaded_modules);
++}
++
+ static void __attribute__ ((destructor)) __attribute_used__ _dl_fini(void)
+ {
+ 	int i;
+@@ -95,6 +165,7 @@
+ 		if (tpnt->init_flag & FINI_FUNCS_CALLED)
+ 			continue;
+ 		tpnt->init_flag |= FINI_FUNCS_CALLED;
++		_dl_run_fini_array(tpnt);
+ 		if (tpnt->dynamic_info[DT_FINI]) {
+ 			void (*dl_elf_func) (void);
+ 
+@@ -112,7 +183,8 @@
+ 	ElfW(Phdr) *ppnt;
+ 	ElfW(Dyn) *dpnt;
+ 	char *lpntstr;
+-	int i, goof = 0, unlazy = 0, trace_loaded_objects = 0;
++	unsigned int i;
++	int unlazy = 0, trace_loaded_objects = 0;
+ 	struct dyn_elf *rpnt;
+ 	struct elf_resolve *tcurr;
+ 	struct elf_resolve *tpnt1;
+@@ -128,6 +200,7 @@
+ 	 * setup so we can use _dl_dprintf() to print debug noise
+ 	 * instead of the SEND_STDERR macros used in dl-startup.c */
+ 
++	_dl_memset(app_tpnt, 0x00, sizeof(*app_tpnt));
+ 
+ 	/* Store the page size for later use */
+ 	_dl_pagesize = (auxvt[AT_PAGESZ].a_un.a_val) ? (size_t) auxvt[AT_PAGESZ].a_un.a_val : PAGE_SIZE;
+@@ -168,8 +241,8 @@
+ 	 * Note that for SUID programs we ignore the settings in
+ 	 * LD_LIBRARY_PATH.
+ 	 */
+-	if ((auxvt[AT_UID].a_un.a_val == -1 && _dl_suid_ok()) ||
+-	    (auxvt[AT_UID].a_un.a_val != -1 &&
++	if ((auxvt[AT_UID].a_un.a_val == (size_t)-1 && _dl_suid_ok()) ||
++	    (auxvt[AT_UID].a_un.a_val != (size_t)-1 &&
+ 	     auxvt[AT_UID].a_un.a_val == auxvt[AT_EUID].a_un.a_val &&
+ 	     auxvt[AT_GID].a_un.a_val == auxvt[AT_EGID].a_un.a_val)) {
+ 		_dl_secure = 0;
+@@ -196,6 +269,20 @@
+ 		unlazy = RTLD_NOW;
+ 	}
+ 
++	/* sjhill: your TLS init should go before this */
++#ifdef __UCLIBC_HAS_SSP__
++	/* Set up the stack checker's canary.  */
++	stack_chk_guard = _dl_setup_stack_chk_guard ();
++# ifdef THREAD_SET_STACK_GUARD
++	THREAD_SET_STACK_GUARD (stack_chk_guard);
++#  ifdef __UCLIBC_HAS_SSP_COMPAT__
++	__guard = stack_chk_guard;
++#  endif
++# else
++	__stack_chk_guard = stack_chk_guard;
++# endif
++#endif
++
+ 	/* At this point we are now free to examine the user application,
+ 	 * and figure out which libraries are supposed to be called.  Until
+ 	 * we have this list, we will not be completely ready for dynamic
+@@ -206,12 +293,12 @@
+ 	 * different from what the ELF header says for ET_DYN/PIE executables.
+ 	 */
+ 	{
+-		int i;
+-		ElfW(Phdr) *ppnt = (ElfW(Phdr) *) auxvt[AT_PHDR].a_un.a_val;
++		unsigned int idx;
++		ElfW(Phdr) *phdr = (ElfW(Phdr) *) auxvt[AT_PHDR].a_un.a_val;
+ 
+-		for (i = 0; i < auxvt[AT_PHNUM].a_un.a_val; i++, ppnt++)
+-			if (ppnt->p_type == PT_PHDR) {
+-				app_tpnt->loadaddr = (ElfW(Addr)) (auxvt[AT_PHDR].a_un.a_val - ppnt->p_vaddr);
++		for (idx = 0; idx < auxvt[AT_PHNUM].a_un.a_val; idx++, phdr++)
++			if (phdr->p_type == PT_PHDR) {
++				app_tpnt->loadaddr = (ElfW(Addr)) (auxvt[AT_PHDR].a_un.a_val - phdr->p_vaddr);
+ 				break;
+ 			}
+ 
+@@ -459,8 +546,8 @@
+ 					     PROT_READ | PROT_WRITE, MAP_PRIVATE, fd, 0);
+ 		_dl_close(fd);
+ 		if (preload == (caddr_t) -1) {
+-			_dl_dprintf(_dl_debug_file, "%s: can't map file '%s'\n",
+-				    _dl_progname, LDSO_PRELOAD);
++			_dl_dprintf(_dl_debug_file, "%s:%i: can't map '%s'\n",
++				    _dl_progname, __LINE__, LDSO_PRELOAD);
+ 			break;
+ 		}
+ 
+@@ -528,15 +615,15 @@
+ 
+ 	nlist = 0;
+ 	for (tcurr = _dl_loaded_modules; tcurr; tcurr = tcurr->next) {
+-		ElfW(Dyn) *dpnt;
++		ElfW(Dyn) *this_dpnt;
+ 
+ 		nlist++;
+-		for (dpnt = (ElfW(Dyn) *) tcurr->dynamic_addr; dpnt->d_tag; dpnt++) {
+-			if (dpnt->d_tag == DT_NEEDED) {
++		for (this_dpnt = (ElfW(Dyn) *) tcurr->dynamic_addr; this_dpnt->d_tag; this_dpnt++) {
++			if (this_dpnt->d_tag == DT_NEEDED) {
+ 				char *name;
+ 				struct init_fini_list *tmp;
+ 
+-				lpntstr = (char*) (tcurr->dynamic_info[DT_STRTAB] + dpnt->d_un.d_val);
++				lpntstr = (char*) (tcurr->dynamic_info[DT_STRTAB] + this_dpnt->d_un.d_val);
+ 				name = _dl_get_last_path_component(lpntstr);
+ 				if (_dl_strcmp(name, UCLIBC_LDSO) == 0)
+ 					continue;
+@@ -633,7 +720,7 @@
+ 		ElfW(Ehdr) *epnt = (ElfW(Ehdr) *) auxvt[AT_BASE].a_un.a_val;
+ 		ElfW(Phdr) *myppnt = (ElfW(Phdr) *) (load_addr + epnt->e_phoff);
+ 		int j;
+-		
++
+ 		tpnt = _dl_add_elf_hash_table(tpnt->libname, (char *)load_addr,
+ 					      tpnt->dynamic_info,
+ 					      (unsigned long)tpnt->dynamic_addr,
+@@ -703,16 +790,14 @@
+ 	 * order so that COPY directives work correctly.
+ 	 */
+ 	if (_dl_symbol_tables)
+-		goof += _dl_fixup(_dl_symbol_tables, unlazy);
++		if (_dl_fixup(_dl_symbol_tables, unlazy))
++			_dl_exit(-1);
+ 
+ 	for (tpnt = _dl_loaded_modules; tpnt; tpnt = tpnt->next) {
+ 		if (tpnt->relro_size)
+ 			_dl_protect_relro (tpnt);
+ 	}
+ 
+-
+-
+-
+ 	/* OK, at this point things are pretty much ready to run.  Now we need
+ 	 * to touch up a few items that are required, and then we can let the
+ 	 * user application have at it.  Note that the dynamic linker itself
+@@ -746,6 +831,14 @@
+ 	/* Notify the debugger we have added some objects. */
+ 	_dl_debug_addr->r_state = RT_ADD;
+ 	_dl_debug_state();
++
++	/* Run pre-initialization functions for the executable.  */
++	_dl_run_array_forward(_dl_loaded_modules->dynamic_info[DT_PREINIT_ARRAY],
++			      _dl_loaded_modules->dynamic_info[DT_PREINIT_ARRAYSZ],
++			      _dl_loaded_modules->loadaddr);
++
++	/* Run initialization functions for loaded objects.  For the
++	   main executable, they will be run from __uClibc_main.  */
+ 	for (i = nlist; i; --i) {
+ 		tpnt = init_fini_list[i-1];
+ 		tpnt->init_fini = NULL; /* Clear, since alloca was used */
+@@ -762,17 +855,9 @@
+ 
+ 			(*dl_elf_func) ();
+ 		}
+-	}
+-#ifdef _DL_FINI_CRT_COMPAT
+-	/* arches that have moved their ldso FINI handling should skip this part */
+-	{
+-		int (*_dl_atexit) (void *) = (int (*)(void *)) (intptr_t) _dl_find_hash("atexit",
+-				_dl_symbol_tables, NULL, ELF_RTYPE_CLASS_PLT);
+ 
+-		if (_dl_atexit)
+-			(*_dl_atexit) (_dl_fini);
++		_dl_run_init_array(tpnt);
+ 	}
+-#endif
+ 
+ 	/* Find the real malloc function and make ldso functions use that from now on */
+ 	 _dl_malloc_function = (void* (*)(size_t)) (intptr_t) _dl_find_hash("malloc",
+diff -urN uClibc-0.9.28.orig/ldso/ldso/m68k/dl-startup.h uClibc-0.9.28/ldso/ldso/m68k/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/m68k/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/m68k/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -4,23 +4,48 @@
+  * Copyright (C) 2005 by Erik Andersen <andersen@codepoet.org>
+  */
+ 
+-asm(
+-    "	.text\n"
+-    "	.globl	_start\n"
+-    "	.type	_start,@function\n"
+-    "_start:\n"
+-    "	.set	_start,_dl_start\n"
+-    "	.size	_start,.-_start\n"
+-    "	.previous\n"
+-);
++asm ("\
++	.text\n\
++	.globl _start\n\
++	.type _start,@function\n\
++_start:\n\
++	move.l %sp, -(%sp)\n\
++	jbsr _dl_start\n\
++	addq.l #4, %sp\n\
++	/* FALLTHRU */\n\
++\n\
++	.globl _dl_start_user\n\
++.type _dl_start_user,@function\n\
++_dl_start_user:\n\
++	# Save the user entry point address in %a4.\n\
++	move.l %d0, %a4\n\
++	# See if we were run as a command with the executable file\n\
++	# name as an extra leading argument.\n\
++	move.l _dl_skip_args(%pc), %d0\n\
++	# Pop the original argument count\n\
++	move.l (%sp)+, %d1\n\
++	# Subtract _dl_skip_args from it.\n\
++	sub.l %d0, %d1\n\
++	# Adjust the stack pointer to skip _dl_skip_args words.\n\
++	lea (%sp, %d0*4), %sp\n\
++	# Push back the modified argument count.\n\
++	move.l %d1, -(%sp)\n\
++	# Pass our finalizer function to the user in %a1.\n\
++	lea _dl_fini(%pc), %a1\n\
++	# Initialize %fp with the stack pointer.\n\
++	move.l %sp, %fp\n\
++	# Jump to the user's entry point.\n\
++	jmp (%a4)\n\
++	.size _dl_start_user, . - _dl_start_user\n\
++	.previous");
+ 
+ /* Get a pointer to the argv array.  On many platforms this can be just
+  * the address if the first argument, on other platforms we need to
+  * do something a little more subtle here.  */
+-#define GET_ARGV(ARGVP, ARGS) ARGVP = ((unsigned int *) & ARGS)
++#define GET_ARGV(ARGVP, ARGS) ARGVP = (((unsigned long *) ARGS) + 1)
+ 
+ /* Handle relocation of the symbols in the dynamic loader. */
+-static inline
++static __always_inline
+ void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, unsigned long *reloc_addr,
+ 	unsigned long symbol_addr, unsigned long load_addr, Elf32_Sym *symtab)
+ {
+@@ -59,12 +84,3 @@
+ 			_dl_exit (1);
+ 	}
+ }
+-
+-/* Transfer control to the user's application, once the dynamic loader is
+- * done.  This routine has to exit the current function, then call the
+- * _dl_elf_main function.  */
+-#define START() \
+-	__asm__ volatile ( \
+-		"unlk %%a6\n\t" \
+-		"jmp %0@" \
+-		: : "a" (_dl_elf_main));
+diff -urN uClibc-0.9.28.orig/ldso/ldso/m68k/dl-syscalls.h uClibc-0.9.28/ldso/ldso/m68k/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/m68k/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/m68k/dl-syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,5 +1,6 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+diff -urN uClibc-0.9.28.orig/ldso/ldso/m68k/dl-sysdep.h uClibc-0.9.28/ldso/ldso/m68k/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/m68k/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/m68k/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -25,10 +25,6 @@
+ struct elf_resolve;
+ extern unsigned int _dl_linux_resolver (struct elf_resolve *, int);
+ 
+-/* Define this because we do not want to call .udiv in the library.
+-   Not needed for m68k.  */
+-#define do_rem(result, n, base)  ((result) = (n) % (base))
+-
+ /* 4096 bytes alignment */
+ #define PAGE_ALIGN 0xfffff000
+ #define ADDR_ALIGN 0xfff
+diff -urN uClibc-0.9.28.orig/ldso/ldso/m68k/elfinterp.c uClibc-0.9.28/ldso/ldso/m68k/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/m68k/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/m68k/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -40,6 +40,8 @@
+    a more than adequate job of explaining everything required to get this
+    working. */
+ 
++#include "ldso.h"
++
+ extern int _dl_linux_resolve(void);
+ 
+ unsigned int
+@@ -48,20 +50,20 @@
+ 	int reloc_type;
+ 	ELF_RELOC *this_reloc;
+ 	char *strtab;
+-	Elf32_Sym *symtab;
++	ElfW(Sym) *symtab;
+ 	int symtab_index;
+-	ELF_RELOC *rel_addr;
++	char *rel_addr;
+ 	char *new_addr;
+ 	char **got_addr;
+-	unsigned int instr_addr;
++	ElfW(Addr) instr_addr;
+ 	char *symname;
+ 
+-	rel_addr = (ELF_RELOC *)tpnt->dynamic_info[DT_JMPREL];
+-	this_reloc = (ELF_RELOC *)(intptr_t)(rel_addr + reloc_entry);
+-	reloc_type = ELF32_R_TYPE(this_reloc->r_info);
+-	symtab_index = ELF32_R_SYM(this_reloc->r_info);
++	rel_addr = (char *)tpnt->dynamic_info[DT_JMPREL];
++	this_reloc = (ELF_RELOC *)(rel_addr + reloc_entry);
++	reloc_type = ELF_R_TYPE(this_reloc->r_info);
++	symtab_index = ELF_R_SYM(this_reloc->r_info);
+ 
+-	symtab = (Elf32_Sym *)(intptr_t)tpnt->dynamic_info[DT_SYMTAB];
++	symtab = (ElfW(Sym) *)tpnt->dynamic_info[DT_SYMTAB];
+ 	strtab = (char *)tpnt->dynamic_info[DT_STRTAB];
+ 	symname = strtab + symtab[symtab_index].st_name;
+ 
+@@ -72,7 +74,7 @@
+ 	}
+ 
+ 	/* Address of the jump instruction to fix up. */
+-	instr_addr = ((int)this_reloc->r_offset + (int)tpnt->loadaddr);
++	instr_addr = (this_reloc->r_offset + tpnt->loadaddr);
+ 	got_addr = (char **)instr_addr;
+ 
+ 	/* Get the address of the GOT entry. */
+@@ -88,159 +90,237 @@
+ 			_dl_dprintf(_dl_debug_file, "\nresolve function: %s", symname);
+ 			if (_dl_debug_detail)
+ 				_dl_dprintf(_dl_debug_file,
+-				            "\n\tpatched: %x ==> %x @ %x",
++				            "\tpatched: %x ==> %x @ %x\n",
+ 				            *got_addr, new_addr, got_addr);
+ 		}
+ 	}
+-	if (!_dl_debug_nofixups) {
+-		*got_addr = new_addr;
+-	}
+-#else
+-	*got_addr = new_addr;
++	if (!_dl_debug_nofixups)
+ #endif
++		*got_addr = new_addr;
+ 
+-  return (unsigned int)new_addr;
++	return (unsigned int)new_addr;
+ }
+ 
+-void
+-_dl_parse_lazy_relocation_information(struct dyn_elf *arg_rpnt,
+-	unsigned long rel_addr, unsigned long rel_size)
++static int
++_dl_parse(struct elf_resolve *tpnt, struct dyn_elf *scope,
++	  unsigned long rel_addr, unsigned long rel_size,
++	  int (*reloc_fnc)(struct elf_resolve *tpnt, struct dyn_elf *scope,
++			   ELF_RELOC *rpnt, ElfW(Sym) *symtab, char *strtab))
+ {
+-	int i;
++	unsigned int i;
+ 	char *strtab;
+-	int reloc_type;
++	ElfW(Sym) *symtab;
++	ELF_RELOC *rpnt;
+ 	int symtab_index;
+-	Elf32_Sym *symtab;
+-	Elf32_Rela *rpnt;
+-	unsigned int *reloc_addr;
+-	struct elf_resolve *tpnt = arg_rpnt->dyn;
+-
+-	/* Now parse the relocation information.  */
+-	rpnt = (Elf32_Rela *)rel_addr;
+-	rel_size = rel_size / sizeof (Elf32_Rela);
+ 
+-	symtab = (Elf32_Sym *)tpnt->dynamic_info[DT_SYMTAB];
++	/* Parse the relocation information. */
++	rpnt = (ELF_RELOC *)rel_addr;
++	rel_size /= sizeof(ELF_RELOC);
++
++	symtab = (ElfW(Sym) *)tpnt->dynamic_info[DT_SYMTAB];
+ 	strtab = (char *)tpnt->dynamic_info[DT_STRTAB];
+ 
+ 	for (i = 0; i < rel_size; i++, rpnt++) {
+-		reloc_addr = (int *) (tpnt->loadaddr + (int) rpnt->r_offset);
+-		reloc_type = ELF32_R_TYPE (rpnt->r_info);
+-		symtab_index = ELF32_R_SYM (rpnt->r_info);
++		int res;
+ 
+-		switch (reloc_type)
+-		{
+-		case R_68K_NONE:
+-			break;
+-		case R_68K_JMP_SLOT:
+-			*reloc_addr += (unsigned int) tpnt->loadaddr;
+-		break;
+-		default:
+-			_dl_dprintf (2, "%s: (LAZY) can't handle reloc type ", _dl_progname);
++		symtab_index = ELF_R_SYM(rpnt->r_info);
++
++		debug_sym(symtab, strtab, symtab_index);
++		debug_reloc(symtab, strtab, rpnt);
++
++		res = reloc_fnc(tpnt, scope, rpnt, symtab, strtab);
++
++		if (res == 0)
++			continue;
++
++		_dl_dprintf(2, "\n%s: ", _dl_progname);
++
++		if (symtab_index)
++			_dl_dprintf(2, "symbol '%s': ",
++				    strtab + symtab[symtab_index].st_name);
++
++		if (unlikely(res < 0)) {
++			int reloc_type = ELF_R_TYPE(rpnt->r_info);
++
++			_dl_dprintf(2, "can't handle reloc type "
+ #if defined (__SUPPORT_LD_DEBUG__)
+-			_dl_dprintf (2, "%s ", _dl_reltypes_tab[reloc_type]);
++				    "%s\n", _dl_reltypes(reloc_type));
++#else
++				    "%x\n", reloc_type);
+ #endif
+-			if (symtab_index)
+-				_dl_dprintf (2, "'%s'", strtab + symtab[symtab_index].st_name);
+-			_dl_dprintf (2, "\n");
+-			_dl_exit (1);
++			_dl_exit(-res);
++		} else if (unlikely(res > 0)) {
++			_dl_dprintf(2, "can't resolve symbol\n");
++			return res;
+ 		}
+ 	}
++
++	return 0;
+ }
+ 
+-int
+-_dl_parse_relocation_information(struct dyn_elf *arg_rpnt,
+-	unsigned long rel_addr, unsigned long rel_size)
++static int
++_dl_do_reloc(struct elf_resolve *tpnt, struct dyn_elf *scope,
++	     ELF_RELOC *rpnt, ElfW(Sym) *symtab, char *strtab)
+ {
+-	int i;
+-	char *strtab;
+ 	int reloc_type;
+-	int goof = 0;
+-	Elf32_Sym *symtab;
+-	Elf32_Rela *rpnt;
+-	unsigned int *reloc_addr;
+-	unsigned int symbol_addr;
+ 	int symtab_index;
+-	struct elf_resolve *tpnt = arg_rpnt->dyn;
+-	/* Now parse the relocation information */
++	char *symname;
++	ElfW(Sym) *sym;
++	ElfW(Addr) *reloc_addr;
++	ElfW(Addr) symbol_addr;
++#if defined (__SUPPORT_LD_DEBUG__)
++	ElfW(Addr) old_val;
++#endif
+ 
+-	rpnt = (Elf32_Rela *)rel_addr;
+-	rel_size = rel_size / sizeof (Elf32_Rela);
++	reloc_addr = (ElfW(Addr)*)(tpnt->loadaddr + (unsigned long)rpnt->r_offset);
++	reloc_type = ELF_R_TYPE(rpnt->r_info);
++	symtab_index = ELF_R_SYM(rpnt->r_info);
++	sym = &symtab[symtab_index];
++	symbol_addr = 0;
++	symname = strtab + sym->st_name;
++
++	if (symtab_index) {
++		symbol_addr = (ElfW(Addr))_dl_find_hash(symname, scope, tpnt,
++							    elf_machine_type_class(reloc_type));
++		/*
++		 * We want to allow undefined references to weak symbols - this
++		 * might have been intentional.  We should not be linking local
++		 * symbols here, so all bases should be covered.
++		 */
++		if (unlikely(!symbol_addr && ELF_ST_BIND(sym->st_info) != STB_WEAK)) {
++			_dl_dprintf(2, "%s: can't resolve symbol '%s'\n", _dl_progname, symname);
++			_dl_exit(1);
++		};
++	}
+ 
+-	symtab = (Elf32_Sym *)tpnt->dynamic_info[DT_SYMTAB];
+-	strtab = (char *)tpnt->dynamic_info[DT_STRTAB];
++#if defined (__SUPPORT_LD_DEBUG__)
++	old_val = *reloc_addr;
++#endif
+ 
+-	for (i = 0; i < rel_size; i++, rpnt++) {
+-		reloc_addr = (int *) (tpnt->loadaddr + (int) rpnt->r_offset);
+-		reloc_type = ELF32_R_TYPE (rpnt->r_info);
+-		symtab_index = ELF32_R_SYM (rpnt->r_info);
+-		symbol_addr = 0;
+-		if (symtab_index) {
+-			symbol_addr = (unsigned int)
+-			_dl_find_hash (strtab + symtab[symtab_index].st_name,
+-			               tpnt->symbol_scope, tpnt,
+-			               elf_machine_type_class(reloc_type));
+-
+-			/* We want to allow undefined references to weak symbols -
+-			   this might have been intentional.  We should not be
+-			   linking local symbols here, so all bases should be
+-			   covered.  */
+-			if (!symbol_addr
+-			    && ELF32_ST_BIND (symtab[symtab_index].st_info) != STB_WEAK)
+-			{
+-				_dl_dprintf (2, "%s: can't resolve symbol '%s'\n",
+-				             _dl_progname, strtab + symtab[symtab_index].st_name);
+-				_dl_exit (1);
+-			}
+-		}
+-		switch (reloc_type)
+-		{
+-			case R_68K_NONE:
+-				break;
+-			case R_68K_8:
+-				*(char *) reloc_addr = symbol_addr + rpnt->r_addend;
+-				break;
+-			case R_68K_16:
+-				*(short *) reloc_addr = symbol_addr + rpnt->r_addend;
+-				break;
+-			case R_68K_32:
+-				*reloc_addr = symbol_addr + rpnt->r_addend;
+-				break;
+-			case R_68K_PC8:
+-				*(char *) reloc_addr = (symbol_addr + rpnt->r_addend
+-				                       - (unsigned int) reloc_addr);
+-				break;
+-			case R_68K_PC16:
+-				*(short *) reloc_addr = (symbol_addr + rpnt->r_addend
+-				                        - (unsigned int) reloc_addr);
+-				break;
+-			case R_68K_PC32:
+-				*reloc_addr = (symbol_addr + rpnt->r_addend
+-				              - (unsigned int) reloc_addr);
+-				break;
+-			case R_68K_GLOB_DAT:
+-			case R_68K_JMP_SLOT:
+-				*reloc_addr = symbol_addr;
+-				break;
+-			case R_68K_RELATIVE:
+-				*reloc_addr = ((unsigned int) tpnt->loadaddr
+-				              /* Compatibility kludge.  */
+-				              + (rpnt->r_addend ? : *reloc_addr));
+-				break;
+-			case R_68K_COPY:
++	switch (reloc_type) {
++		case R_68K_NONE:
++			break;
++		case R_68K_8:
++			*(char *) reloc_addr = symbol_addr + rpnt->r_addend;
++			break;
++		case R_68K_16:
++			*(short *) reloc_addr = symbol_addr + rpnt->r_addend;
++			break;
++		case R_68K_32:
++			*reloc_addr = symbol_addr + rpnt->r_addend;
++			break;
++		case R_68K_PC8:
++			*(char *) reloc_addr = (symbol_addr + rpnt->r_addend
++			                       - (unsigned int) reloc_addr);
++			break;
++		case R_68K_PC16:
++			*(short *) reloc_addr = (symbol_addr + rpnt->r_addend
++			                        - (unsigned int) reloc_addr);
++			break;
++		case R_68K_PC32:
++			*reloc_addr = (symbol_addr + rpnt->r_addend
++			              - (unsigned int) reloc_addr);
++			break;
++		case R_68K_GLOB_DAT:
++		case R_68K_JMP_SLOT:
++			*reloc_addr = symbol_addr + rpnt->r_addend;
++			break;
++		/* handled by elf_machine_relative()
++		case R_68K_RELATIVE:
++			*reloc_addr = ((unsigned int) tpnt->loadaddr
++			              / * Compatibility kludge.  * /
++			              + (rpnt->r_addend ? : *reloc_addr));
++		*/
++			break;
++		case R_68K_COPY:
++			if (symbol_addr) {
++#if defined (__SUPPORT_LD_DEBUG__)
++				if (_dl_debug_move)
++					_dl_dprintf(_dl_debug_file,
++						    "\t%s move %d bytes from %x to %x\n",
++						    symname, sym->st_size,
++						    symbol_addr, reloc_addr);
++#endif
+ 				_dl_memcpy ((void *) reloc_addr,
+ 				            (void *) symbol_addr,
+-				            symtab[symtab_index].st_size);
+-				break;
+-			default:
+-				_dl_dprintf (2, "%s: can't handle reloc type ", _dl_progname);
+-#if defined (__SUPPORT_LD_DEBUG__)
+-				_dl_dprintf (2, "%s ", _dl_reltypes_tab[reloc_type]);
+-#endif
+-				if (symtab_index)
+-					_dl_dprintf (2, "'%s'", strtab + symtab[symtab_index].st_name);
+-				_dl_dprintf (2, "\n");
+-				_dl_exit (1);
+-		}
++				            sym->st_size);
++			} else
++				_dl_dprintf(_dl_debug_file, "no symbol_addr to copy !?\n");
++			break;
++
++		default:
++			return -1;	/* Calls _dl_exit(1). */
++	}
++
++#if defined (__SUPPORT_LD_DEBUG__)
++	if (_dl_debug_reloc && _dl_debug_detail)
++		_dl_dprintf(_dl_debug_file, "\tpatched: %x ==> %x @ %x\n",
++			    old_val, *reloc_addr, reloc_addr);
++#endif
++
++	return 0;
++}
++
++#undef LAZY_RELOC_WORKS
++#ifdef LAZY_RELOC_WORKS
++static int
++_dl_do_lazy_reloc(struct elf_resolve *tpnt, struct dyn_elf *scope,
++		  ELF_RELOC *rpnt, ElfW(Sym) *symtab, char *strtab)
++{
++	int reloc_type;
++	int symtab_index;
++	ElfW(Addr) *reloc_addr;
++#if defined (__SUPPORT_LD_DEBUG__)
++	ElfW(Addr) old_val;
++#endif
++
++	(void)scope;
++	symtab_index = ELF_R_SYM(rpnt->r_info);
++	(void)strtab;
++
++	reloc_addr = (ElfW(Addr)*)(tpnt->loadaddr + rpnt->r_offset);
++	reloc_type = ELF_R_TYPE(rpnt->r_info);
++
++#if defined (__SUPPORT_LD_DEBUG__)
++	old_val = *reloc_addr;
++#endif
++
++	switch (reloc_type) {
++		case R_68K_NONE:
++			break;
++		case R_68K_JMP_SLOT:
++			*reloc_addr += (unsigned int) tpnt->loadaddr;
++			break;
++		default:
++			_dl_exit(1);
+ 	}
+-	return goof;
++
++#if defined (__SUPPORT_LD_DEBUG__)
++	if (_dl_debug_reloc && _dl_debug_detail)
++		_dl_dprintf(_dl_debug_file, "\tpatched_lazy: %x ==> %x @ %x\n",
++			    old_val, *reloc_addr, reloc_addr);
++#endif
++
++	return 0;
++}
++#endif
++
++void
++_dl_parse_lazy_relocation_information(struct dyn_elf *rpnt,
++				      unsigned long rel_addr,
++				      unsigned long rel_size)
++{
++#ifdef LAZY_RELOC_WORKS
++	(void)_dl_parse(rpnt->dyn, NULL, rel_addr, rel_size, _dl_do_lazy_reloc);
++#else
++	_dl_parse_relocation_information(rpnt, rel_addr, rel_size);
++#endif
++}
++
++int
++_dl_parse_relocation_information(struct dyn_elf *rpnt,
++				 unsigned long rel_addr,
++				 unsigned long rel_size)
++{
++	return _dl_parse(rpnt->dyn, rpnt->dyn->symbol_scope, rel_addr, rel_size, _dl_do_reloc);
+ }
+diff -urN uClibc-0.9.28.orig/ldso/ldso/m68k/resolve.S uClibc-0.9.28/ldso/ldso/m68k/resolve.S
+--- uClibc-0.9.28.orig/ldso/ldso/m68k/resolve.S	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/m68k/resolve.S	2006-04-28 00:14:35.000000000 -0600
+@@ -8,14 +8,16 @@
+ .globl _dl_linux_resolve
+ 	.type	_dl_linux_resolve,@function
+ _dl_linux_resolve:
+-	moveml	%a0/%a1,%sp@-
+-#ifdef __PIC__
+-	bsrl	_dl_linux_resolver@PLTPC
+-#else
+-	jbsr	_dl_linux_resolver
+-#endif
+-	moveml	%sp@+,%a0/%a1
+-	addql 	#8,%sp
+-	jmp	@(%d0)
+-.LFE2:
+-	.size _dl_linux_resolve,.LFE2-_dl_linux_resolve
++	# Save %a0 (struct return address) and %a1.
++	move.l %a0, -(%sp)
++	move.l %a1, -(%sp)
++	# Call the real address resolver.
++	jbsr _dl_linux_resolver
++	# Restore register %a0 and %a1.
++	move.l (%sp)+, %a1
++	move.l (%sp)+, %a0
++	# Pop parameters
++	addq.l #8, %sp
++	# Call real function.
++	jmp (%d0)
++.size _dl_linux_resolve,.-_dl_linux_resolve
+diff -urN uClibc-0.9.28.orig/ldso/ldso/mips/dl-startup.h uClibc-0.9.28/ldso/ldso/mips/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/mips/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/mips/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -136,13 +136,3 @@
+ 		SEND_STDERR("Aiieeee!");					\
+ 		_dl_exit(1);							\
+ 	}
+-
+-
+-/*
+- * Transfer control to the user's application, once the dynamic loader
+- * is done.  This routine has to exit the current function, then
+- * call the _dl_elf_main function. For MIPS, we do it in assembly
+- * because the stack doesn't get properly restored otherwise. Got look
+- * at boot1_arch.h
+- */
+-#define START() return _dl_elf_main
+diff -urN uClibc-0.9.28.orig/ldso/ldso/mips/dl-syscalls.h uClibc-0.9.28/ldso/ldso/mips/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/mips/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/mips/dl-syscalls.h	2006-05-02 13:39:25.000000000 -0600
+@@ -1,7 +1,8 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#define __UCLIBC_MMAP_HAS_6_ARGS__
++
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+-
+-#define MMAP_HAS_6_ARGS
+diff -urN uClibc-0.9.28.orig/ldso/ldso/mips/dl-sysdep.h uClibc-0.9.28/ldso/ldso/mips/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/mips/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/mips/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -30,7 +30,7 @@
+ /* Initialization sequence for the application/library GOT.  */
+ #define INIT_GOT(GOT_BASE,MODULE)						\
+ do {										\
+-	unsigned long i;							\
++	unsigned long idx;							\
+ 										\
+ 	/* Check if this is the dynamic linker itself */			\
+ 	if (MODULE->libtype == program_interpreter)				\
+@@ -41,9 +41,9 @@
+ 	GOT_BASE[1] = (unsigned long) MODULE;					\
+ 										\
+ 	/* Add load address displacement to all local GOT entries */		\
+-	i = 2;									\
+-	while (i < MODULE->dynamic_info[DT_MIPS_LOCAL_GOTNO_IDX])		\
+-		GOT_BASE[i++] += (unsigned long) MODULE->loadaddr;		\
++	idx = 2;									\
++	while (idx < MODULE->dynamic_info[DT_MIPS_LOCAL_GOTNO_IDX])		\
++		GOT_BASE[idx++] += (unsigned long) MODULE->loadaddr;		\
+ 										\
+ } while (0)
+ 
+@@ -63,8 +63,6 @@
+ struct elf_resolve;
+ void _dl_perform_mips_global_got_relocations(struct elf_resolve *tpnt, int lazy);
+ 
+-#define do_rem(result, n, base) ((result) = (n) % (base))
+-
+ /* 4096 bytes alignment */
+ #define PAGE_ALIGN 0xfffff000
+ #define ADDR_ALIGN 0xfff
+diff -urN uClibc-0.9.28.orig/ldso/ldso/mips/elfinterp.c uClibc-0.9.28/ldso/ldso/mips/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/mips/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/mips/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -27,6 +27,8 @@
+  * SUCH DAMAGE.
+  */
+ 
++#include "ldso.h"
++
+ extern int _dl_runtime_resolve(void);
+ 
+ #define OFFSET_GP_GOT 0x7ff0
+@@ -146,7 +148,6 @@
+ 			break;
+ 		default:
+ 			{
+-				int reloc_type = ELF32_R_TYPE(rpnt->r_info);
+ 				_dl_dprintf(2, "\n%s: ",_dl_progname);
+ 
+ 				if (symtab_index)
+diff -urN uClibc-0.9.28.orig/ldso/ldso/powerpc/dl-startup.h uClibc-0.9.28/ldso/ldso/powerpc/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/powerpc/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/powerpc/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -42,8 +42,10 @@
+     "	bne	2b\n"
+     "	addi	6,6,4\n"
+ #endif
+-    /* Pass a termination function pointer (in this case _dl_fini) in r7.  */
+-    "	lwz	7,_dl_fini@got(31)\n"
++    /* Pass a termination function pointer (in this case _dl_fini) in r3. */
++    /* Paulus promized he would keep r3 zero in the exec ABI. */
++    "	lwz	3,_dl_fini@got(31)\n"
++    "	mr	7,3\n"		/* Pass _dl_fini in r7 to maintain compat */
+     "	bctr\n" /* Jump to entry point */
+     "	.size	_start,.-_start\n"
+     "	.previous\n"
+@@ -78,9 +80,3 @@
+ 		_dl_exit(100+ELF32_R_TYPE((RELP)->r_info));\
+ 	}						\
+ 	}
+-/*
+- * Transfer control to the user's application, once the dynamic loader
+- * is done.  This routine has to exit the current function, then
+- * call the _dl_elf_main function.
+- */
+-#define START()	    return _dl_elf_main
+diff -urN uClibc-0.9.28.orig/ldso/ldso/powerpc/dl-syscalls.h uClibc-0.9.28/ldso/ldso/powerpc/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/powerpc/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/powerpc/dl-syscalls.h	2006-05-02 13:39:14.000000000 -0600
+@@ -1,251 +1,8 @@
+-/*
+- * This file contains the system call macros and syscall 
+- * numbers used by the shared library loader.
+- */
+-
+-#define MMAP_HAS_6_ARGS
+-
+-#define __NR_exit		  1
+-#define __NR_read		  3
+-#define __NR_write		  4
+-#define __NR_open		  5
+-#define __NR_close		  6
+-#define __NR_getpid		 20
+-#define __NR_getuid		 24
+-#define __NR_geteuid		 49
+-#define __NR_getgid		 47
+-#define __NR_getegid		 50
+-#define __NR_readlink		 85
+-#define __NR_mmap		 90
+-#define __NR_munmap		 91
+-#define __NR_stat		106
+-#define __NR_mprotect		125
+-
+-
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
+-extern int _dl_errno;
+-
+-/* Here are the macros which define how this platform makes
+- * system calls.  This particular variant does _not_ set 
+- * errno (note how it is disabled in __syscall_return) since
+- * these will get called before the errno symbol is dynamicly 
+- * linked. */
+-
+-#undef __syscall_return
+-#define __syscall_return(type) \
+-	return (__sc_err & 0x10000000 ? _dl_errno = __sc_ret, __sc_ret = -1 : 0), \
+-	       (type) __sc_ret
+-
+-#undef __syscall_clobbers
+-#define __syscall_clobbers \
+-	"r9", "r10", "r11", "r12"
+-	//"r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12"
+-
+-#undef _syscall0
+-#define _syscall0(type,name)						\
+-type name(void)								\
+-{									\
+-	unsigned long __sc_ret, __sc_err;				\
+-	{								\
+-		register unsigned long __sc_0 __asm__ ("r0");		\
+-		register unsigned long __sc_3 __asm__ ("r3");		\
+-									\
+-		__sc_0 = __NR_##name;					\
+-		__asm__ __volatile__					\
+-			("sc           \n\t"				\
+-			 "mfcr %1      "				\
+-			: "=&r" (__sc_3), "=&r" (__sc_0)		\
+-			: "0"   (__sc_3), "1"   (__sc_0)		\
+-			: "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12" ); \
+-		__sc_ret = __sc_3;					\
+-		__sc_err = __sc_0;					\
+-	}								\
+-	__syscall_return (type);					\
+-}
+-
+-#undef _syscall1
+-#define _syscall1(type,name,type1,arg1)					\
+-type name(type1 arg1)							\
+-{									\
+-	unsigned long __sc_ret, __sc_err;				\
+-	{								\
+-		register unsigned long __sc_0 __asm__ ("r0");		\
+-		register unsigned long __sc_3 __asm__ ("r3");		\
+-									\
+-		__sc_3 = (unsigned long) (arg1);			\
+-		__sc_0 = __NR_##name;					\
+-		__asm__ __volatile__					\
+-			("sc           \n\t"				\
+-			 "mfcr %1      "				\
+-			: "=&r" (__sc_3), "=&r" (__sc_0)		\
+-			: "0"   (__sc_3), "1"   (__sc_0)		\
+-			: "r4", "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12" ); \
+-		__sc_ret = __sc_3;					\
+-		__sc_err = __sc_0;					\
+-	}								\
+-	__syscall_return (type);					\
+-}
+-
+-#undef _syscall2
+-#define _syscall2(type,name,type1,arg1,type2,arg2)			\
+-type name(type1 arg1, type2 arg2)					\
+-{									\
+-	unsigned long __sc_ret, __sc_err;				\
+-	{								\
+-		register unsigned long __sc_0 __asm__ ("r0");		\
+-		register unsigned long __sc_3 __asm__ ("r3");		\
+-		register unsigned long __sc_4 __asm__ ("r4");		\
+-									\
+-		__sc_3 = (unsigned long) (arg1);			\
+-		__sc_4 = (unsigned long) (arg2);			\
+-		__sc_0 = __NR_##name;					\
+-		__asm__ __volatile__					\
+-			("sc           \n\t"				\
+-			 "mfcr %1      "				\
+-			: "=&r" (__sc_3), "=&r" (__sc_0)		\
+-			: "0"   (__sc_3), "1"   (__sc_0),		\
+-			  "r"   (__sc_4)				\
+-			: "r5", "r6", "r7", "r8", "r9", "r10", "r11", "r12" ); \
+-		__sc_ret = __sc_3;					\
+-		__sc_err = __sc_0;					\
+-	}								\
+-	__syscall_return (type);					\
+-}
+-
+-#undef _syscall3
+-#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3)		\
+-type name(type1 arg1, type2 arg2, type3 arg3)				\
+-{									\
+-	unsigned long __sc_ret, __sc_err;				\
+-	{								\
+-		register unsigned long __sc_0 __asm__ ("r0");		\
+-		register unsigned long __sc_3 __asm__ ("r3");		\
+-		register unsigned long __sc_4 __asm__ ("r4");		\
+-		register unsigned long __sc_5 __asm__ ("r5");		\
+-									\
+-		__sc_3 = (unsigned long) (arg1);			\
+-		__sc_4 = (unsigned long) (arg2);			\
+-		__sc_5 = (unsigned long) (arg3);			\
+-		__sc_0 = __NR_##name;					\
+-		__asm__ __volatile__					\
+-			("sc           \n\t"				\
+-			 "mfcr %1      "				\
+-			: "=&r" (__sc_3), "=&r" (__sc_0)		\
+-			: "0"   (__sc_3), "1"   (__sc_0),		\
+-			  "r"   (__sc_4),				\
+-			  "r"   (__sc_5)				\
+-			: "r6", "r7", "r8", "r9", "r10", "r11", "r12" ); \
+-		__sc_ret = __sc_3;					\
+-		__sc_err = __sc_0;					\
+-	}								\
+-	__syscall_return (type);					\
+-}
+-
+-#undef _syscall4
+-#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4) \
+-type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4)		\
+-{									\
+-	unsigned long __sc_ret, __sc_err;				\
+-	{								\
+-		register unsigned long __sc_0 __asm__ ("r0");		\
+-		register unsigned long __sc_3 __asm__ ("r3");		\
+-		register unsigned long __sc_4 __asm__ ("r4");		\
+-		register unsigned long __sc_5 __asm__ ("r5");		\
+-		register unsigned long __sc_6 __asm__ ("r6");		\
+-									\
+-		__sc_3 = (unsigned long) (arg1);			\
+-		__sc_4 = (unsigned long) (arg2);			\
+-		__sc_5 = (unsigned long) (arg3);			\
+-		__sc_6 = (unsigned long) (arg4);			\
+-		__sc_0 = __NR_##name;					\
+-		__asm__ __volatile__					\
+-			("sc           \n\t"				\
+-			 "mfcr %1      "				\
+-			: "=&r" (__sc_3), "=&r" (__sc_0)		\
+-			: "0"   (__sc_3), "1"   (__sc_0),		\
+-			  "r"   (__sc_4),				\
+-			  "r"   (__sc_5),				\
+-			  "r"   (__sc_6)				\
+-			: "r7", "r8", "r9", "r10", "r11", "r12" );	\
+-		__sc_ret = __sc_3;					\
+-		__sc_err = __sc_0;					\
+-	}								\
+-	__syscall_return (type);					\
+-}
+-
+-#undef _syscall5
+-#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5) \
+-type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5)	\
+-{									\
+-	unsigned long __sc_ret, __sc_err;				\
+-	{								\
+-		register unsigned long __sc_0 __asm__ ("r0");		\
+-		register unsigned long __sc_3 __asm__ ("r3");		\
+-		register unsigned long __sc_4 __asm__ ("r4");		\
+-		register unsigned long __sc_5 __asm__ ("r5");		\
+-		register unsigned long __sc_6 __asm__ ("r6");		\
+-		register unsigned long __sc_7 __asm__ ("r7");		\
+-									\
+-		__sc_3 = (unsigned long) (arg1);			\
+-		__sc_4 = (unsigned long) (arg2);			\
+-		__sc_5 = (unsigned long) (arg3);			\
+-		__sc_6 = (unsigned long) (arg4);			\
+-		__sc_7 = (unsigned long) (arg5);			\
+-		__sc_0 = __NR_##name;					\
+-		__asm__ __volatile__					\
+-			("sc           \n\t"				\
+-			 "mfcr %1      "				\
+-			: "=&r" (__sc_3), "=&r" (__sc_0)		\
+-			: "0"   (__sc_3), "1"   (__sc_0),		\
+-			  "r"   (__sc_4),				\
+-			  "r"   (__sc_5),				\
+-			  "r"   (__sc_6),				\
+-			  "r"   (__sc_7)				\
+-			: "r8", "r9", "r10", "r11", "r12" );		\
+-		__sc_ret = __sc_3;					\
+-		__sc_err = __sc_0;					\
+-	}								\
+-	__syscall_return (type);					\
+-}
+-
+-
+-#undef _syscall6
+-#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5,type6,arg6) \
+-type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6)	\
+-{									\
+-	unsigned long __sc_ret, __sc_err;				\
+-	{								\
+-		register unsigned long __sc_0 __asm__ ("r0");		\
+-		register unsigned long __sc_3 __asm__ ("r3");		\
+-		register unsigned long __sc_4 __asm__ ("r4");		\
+-		register unsigned long __sc_5 __asm__ ("r5");		\
+-		register unsigned long __sc_6 __asm__ ("r6");		\
+-		register unsigned long __sc_7 __asm__ ("r7");		\
+-		register unsigned long __sc_8 __asm__ ("r8");		\
+-									\
+-		__sc_3 = (unsigned long) (arg1);			\
+-		__sc_4 = (unsigned long) (arg2);			\
+-		__sc_5 = (unsigned long) (arg3);			\
+-		__sc_6 = (unsigned long) (arg4);			\
+-		__sc_7 = (unsigned long) (arg5);			\
+-		__sc_8 = (unsigned long) (arg6);			\
+-		__sc_0 = __NR_##name;					\
+-		__asm__ __volatile__					\
+-			("sc           \n\t"				\
+-			 "mfcr %1      "				\
+-			: "=&r" (__sc_3), "=&r" (__sc_0)		\
+-			: "0"   (__sc_3), "1"   (__sc_0),		\
+-			  "r"   (__sc_4),				\
+-			  "r"   (__sc_5),				\
+-			  "r"   (__sc_6),				\
+-			  "r"   (__sc_7),				\
+-			  "r"   (__sc_8)				\
+-			: "r9", "r10", "r11", "r12" );			\
+-		__sc_ret = __sc_3;					\
+-		__sc_err = __sc_0;					\
+-	}								\
+-	__syscall_return (type);					\
+-}
+-
++#define __UCLIBC_MMAP_HAS_6_ARGS__
+ 
++#include "sys/syscall.h"
++extern int _dl_errno;
++#undef __set_errno
++#define __set_errno(X) {(_dl_errno) = (X);}
+diff -urN uClibc-0.9.28.orig/ldso/ldso/powerpc/dl-sysdep.h uClibc-0.9.28/ldso/ldso/powerpc/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/powerpc/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/powerpc/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -67,9 +67,6 @@
+ extern unsigned long _dl_linux_resolver(struct elf_resolve * tpnt, int reloc_entry);
+ void _dl_init_got(unsigned long *lpnt,struct elf_resolve *tpnt);
+ 
+-
+-#define do_rem(result, n, base) ((result) = (n) % (base))
+-
+ /* 4096 bytes alignment */
+ #define PAGE_ALIGN 0xfffff000
+ #define ADDR_ALIGN 0xfff
+diff -urN uClibc-0.9.28.orig/ldso/ldso/powerpc/elfinterp.c uClibc-0.9.28/ldso/ldso/powerpc/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/powerpc/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/powerpc/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -29,6 +29,8 @@
+  * SUCH DAMAGE.
+  */
+ 
++#include "ldso.h"
++
+ extern int _dl_linux_resolve(void);
+ 
+ void _dl_init_got(unsigned long *plt,struct elf_resolve *tpnt)
+@@ -138,7 +140,7 @@
+ 	finaladdr = (Elf32_Addr) _dl_find_hash(symname,
+ 			tpnt->symbol_scope, tpnt, ELF_RTYPE_CLASS_PLT);
+ 	if (unlikely(!finaladdr)) {
+-		_dl_dprintf(2, "%s: can't resolve symbol '%s'\n", _dl_progname, symname);
++		_dl_dprintf(2, "%s: can't resolve symbol '%s' in lib '%s'.\n", _dl_progname, symname, tpnt->libname);
+ 		_dl_exit(1);
+ 	};
+ 	finaladdr += this_reloc->r_addend;
+@@ -379,15 +381,15 @@
+ 		{
+ 		        int reloc_type = ELF32_R_TYPE(rpnt->r_info);
+ #if defined (__SUPPORT_LD_DEBUG__)
+-			_dl_dprintf(2, "can't handle reloc type %s\n ", _dl_reltypes(reloc_type));
++			_dl_dprintf(2, "can't handle reloc type '%s' in lib '%s'\n", _dl_reltypes(reloc_type), tpnt->libname);
+ #else
+-			_dl_dprintf(2, "can't handle reloc type %x\n", reloc_type);
++			_dl_dprintf(2, "can't handle reloc type %x in lib '%s'\n", reloc_type, tpnt->libname);
+ #endif
+-			_dl_exit(-res);
++			return res;
+ 		}
+ 		if (unlikely(res >0))
+ 		{
+-			_dl_dprintf(2, "can't resolve symbol\n");
++			_dl_dprintf(2, "can't resolve symbol in lib '%s'.\n", tpnt->libname);
+ 			return res;
+ 		}
+ 	  }
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh/dl-startup.h uClibc-0.9.28/ldso/ldso/sh/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/sh/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -55,11 +55,3 @@
+ 	default:						\
+ 		_dl_exit(1);					\
+ 	}
+-
+-
+-/*
+- * Transfer control to the user's application, once the dynamic loader
+- * is done.  This routine has to exit the current function, then
+- * call the _dl_elf_main function.
+- */
+-#define START()   return _dl_elf_main;
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh/dl-syscalls.h uClibc-0.9.28/ldso/ldso/sh/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/sh/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh/dl-syscalls.h	2006-05-02 13:39:28.000000000 -0600
+@@ -1,7 +1,8 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#define __UCLIBC_MMAP_HAS_6_ARGS__
++
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+-
+-#define MMAP_HAS_6_ARGS
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh/dl-sysdep.h uClibc-0.9.28/ldso/ldso/sh/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/sh/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -25,7 +25,7 @@
+ struct elf_resolve;
+ extern unsigned long _dl_linux_resolver(struct elf_resolve * tpnt, int reloc_entry);
+ 
+-static __inline__ unsigned int
++static inline unsigned int
+ _dl_urem(unsigned int n, unsigned int base)
+ {
+   int res;
+@@ -104,7 +104,7 @@
+ elf_machine_dynamic (void)
+ {
+ 	register Elf32_Addr *got;
+-	asm ("mov r12,%0" :"=r" (got));
++	__asm__ ("mov r12,%0" :"=r" (got));
+ 	return *got;
+ }
+ 
+@@ -113,7 +113,7 @@
+ elf_machine_load_address (void)
+ {
+ 	Elf32_Addr addr;
+-	asm ("mov.l 1f,r0\n\
++	__asm__ ("mov.l 1f,r0\n\
+         mov.l 3f,r2\n\
+         add r12,r2\n\
+         mov.l @(r0,r12),r0\n\
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh/elfinterp.c uClibc-0.9.28/ldso/ldso/sh/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/sh/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -39,6 +39,8 @@
+    a more than adequate job of explaining everything required to get this
+    working. */
+ 
++#include "ldso.h"
++
+ extern int _dl_linux_resolve(void);
+ 
+ unsigned long _dl_linux_resolver(struct elf_resolve *tpnt, int reloc_entry)
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh64/dl-startup.h uClibc-0.9.28/ldso/ldso/sh64/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/sh64/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh64/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -115,12 +115,3 @@
+ 	default:							\
+ 		_dl_exit(1);						\
+ 	}
+-
+-/*
+- * Transfer control to the user's application, once the dynamic loader
+- * is done.  This routine has to exit the current function, then
+- * call the _dl_elf_main function.
+- */
+-
+-#define START()   return _dl_elf_main;
+-
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh64/dl-syscalls.h uClibc-0.9.28/ldso/ldso/sh64/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/sh64/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh64/dl-syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,8 +1,9 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+ 
+ #undef __syscall_return
+ #define __syscall_return(type, res)					\
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh64/dl-sysdep.h uClibc-0.9.28/ldso/ldso/sh64/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/sh64/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh64/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -25,8 +25,6 @@
+ struct elf_resolve;
+ extern unsigned long _dl_linux_resolver(struct elf_resolve * tpnt, int reloc_entry);
+ 
+-#define do_rem(result, n, base) ((result) = (n) % (base))
+-
+ /* 4096 bytes alignment */
+ #define PAGE_ALIGN 0xfffff000
+ #define ADDR_ALIGN 0xfff
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sh64/elfinterp.c uClibc-0.9.28/ldso/ldso/sh64/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/sh64/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sh64/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -41,6 +41,8 @@
+    a more than adequate job of explaining everything required to get this
+    working. */
+ 
++#include "ldso.h"
++
+ extern int _dl_linux_resolve(void);
+ 
+ unsigned long _dl_linux_resolver(struct elf_resolve *tpnt, int reloc_entry)
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sparc/dl-startup.h uClibc-0.9.28/ldso/ldso/sparc/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/sparc/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sparc/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -3,15 +3,46 @@
+  * needed for this architecture.  See arm/boot1_arch.h for an example of what
+  * can be done.
+  */
+-asm(
+-	"	.text\n"
+-	"	.global _start\n"
+-	"	.type   _start,%function\n"
+-	"_start:\n"
+-	"	.set _start,_dl_start\n"
+-	"	.size _start,.-_start\n"
+-	"	.previous\n"
+-);
++
++asm ("\
++	.text\n\
++	.global _start\n\
++	.type   _start,%function\n\
++	.align 32\n\
++_start:\n\
++	/* Allocate space for functions to drop their arguments. */\n\
++	sub	%sp, 6*4, %sp\n\
++	/* Pass pointer to argument block to _dl_start. */\n\
++	call _dl_start\n\
++	add    %sp, 22*4, %o0\n\
++	/* FALTHRU */\n\
++	.globl  _dl_start_user\n\
++	.type   _dl_start_user, @function\n\
++_dl_start_user:\n\
++  /* Load the PIC register.  */\n\
++1:	call    2f\n\
++	sethi  %hi(_GLOBAL_OFFSET_TABLE_-(1b-.)), %l7\n\
++2:	or  %l7, %lo(_GLOBAL_OFFSET_TABLE_-(1b-.)), %l7\n\
++	add %l7, %o7, %l7\n\
++  /* Save the user entry point address in %l0 */\n\
++	mov %o0, %l0\n\
++  /* See if we were run as a command with the executable file name as an\n\
++	 extra leading argument.  If so, adjust the contents of the stack.  */\n\
++	sethi   %hi(_dl_skip_args), %g2\n\
++	or  %g2, %lo(_dl_skip_args), %g2\n\
++	ld  [%l7+%g2], %i0\n\
++	ld  [%i0], %i0\n\
++	tst %i0\n\
++  /* Pass our finalizer function to the user in %g1.  */\n\
++	sethi	%hi(_dl_fini), %g1\n\
++	or	%g1, %lo(_dl_fini), %g1\n\
++	ld	[%l7+%g1], %g1\n\
++  /* Jump to the user's entry point and deallocate the extra stack we got.  */\n\
++	jmp %l0\n\
++	 add    %sp, 6*4, %sp\n\
++	.size   _dl_start_user, . - _dl_start_user\n\
++	.previous\n\
++");
+ 
+ /*
+  * Get a pointer to the argv array.  On many platforms this can be just
+@@ -19,17 +50,15 @@
+  * do something a little more subtle here.  We assume that argc is stored
+  * at the word just below the argvp that we return here.
+  */
+-#define GET_ARGV(ARGVP, ARGS) __asm__("\tadd %%fp,68,%0\n" : "=r" (ARGVP));
++#define GET_ARGV(ARGVP, ARGS) ARGVP = (((unsigned long *) ARGS) + 1)
+ 
+ /*
+  * Here is a macro to perform a relocation.  This is only used when
+  * bootstrapping the dynamic loader.
+  */
+ #define PERFORM_BOOTSTRAP_RELOC(RELP,REL,SYMBOL,LOAD,SYMTAB) \
+-	switch(ELF32_R_TYPE((RELP)->r_info)) { \
++switch(ELF_R_TYPE((RELP)->r_info)) { \
+ 	case R_SPARC_32: \
+-		*REL = SYMBOL + (RELP)->r_addend; \
+-		break; \
+ 	case R_SPARC_GLOB_DAT: \
+ 		*REL = SYMBOL + (RELP)->r_addend; \
+ 		break; \
+@@ -38,7 +67,6 @@
+ 		REL[2] = 0x81c06000 | (SYMBOL & 0x3ff); \
+ 		break; \
+ 	case R_SPARC_NONE: \
+-		break; \
+ 	case R_SPARC_WDISP30: \
+ 		break; \
+ 	case R_SPARC_RELATIVE: \
+@@ -46,18 +74,4 @@
+ 		break; \
+ 	default: \
+ 		_dl_exit(1); \
+-	}
+-
+-/*
+- * Transfer control to the user's application, once the dynamic loader
+- * is done.  The crt calls atexit with $g1 if not null, so we need to
+- * ensure that it contains NULL.
+- */
+-
+-#define START() \
+-	__asm__ volatile ( \
+-		"add %%g0,%%g0,%%g1\n\t" \
+-		"jmpl %0, %%o7\n\t"	\
+-		"restore %%g0,%%g0,%%g0\n\t" \
+-		: /*"=r" (status) */ : \
+-		"r" (_dl_elf_main): "g1", "o0", "o1")
++}
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sparc/dl-syscalls.h uClibc-0.9.28/ldso/ldso/sparc/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/sparc/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sparc/dl-syscalls.h	2006-05-02 13:39:21.000000000 -0600
+@@ -1,187 +1,8 @@
+-/*
+- * This file contains the system call macros and syscall 
+- * numbers used by the shared library loader.
+- *
+- * NOTE: This should be integrated/moved to 
+- *       sysdeps/linux/sparc/bits/syscalls.h at some point ...
+- */
+-
+-#define MMAP_HAS_6_ARGS
+-
+-#define __NR_exit		  1
+-#define __NR_read		  3
+-#define __NR_write		  4
+-#define __NR_open		  5
+-#define __NR_close		  6
+-#define __NR_getpid		 20
+-#define __NR_getuid		 24
+-#define __NR_getgid		 47
+-#define __NR_geteuid		 49
+-#define __NR_getegid		 50
+-#define __NR_readlink		 58
+-#define __NR_mmap		 71
+-#define __NR_munmap		 73
+-#define __NR_stat		 38
+-#define __NR_mprotect		 74
+-
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#define __UCLIBC_MMAP_HAS_6_ARGS__
++
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-
+-/* Here are the macros which define how this platform makes
+- * system calls.  This particular variant does _not_ set 
+- * errno (note how _dl_errno is used in __syscall_return) since
+- * these will get called before the errno symbol is dynamicly 
+- * linked. */
+-
+-#define __syscall_return(type, res) \
+-do { \
+-	if (res < -255 || res >= 0) \
+-		return (type) res; \
+-	__set_errno(-res); \
+-	res = -1; \
+-	return (type) res; \
+-} while (0)
+-
+-#define _syscall0(type,name) \
+-type name(void) \
+-{ \
+-	long __res; \
+-	register long __g1 __asm__ ("g1") = __NR_##name; \
+-	__asm__ __volatile__ ( \
+-		"t 0x10\n\t" \
+-		"bcc 1f\n\t" \
+-		"mov %%o0, %0\n\t" \
+-		"sub %%g0, %%o0, %0\n\t" \
+-		"1:\n\t" \
+-		: "=r" (__res)\
+-		: "r" (__g1) \
+-		: "o0", "cc"); \
+-	__syscall_return(type, __res); \
+-}
+-
+-#define _syscall1(type,name,type1,arg1) \
+-type name(type1 arg1) \
+-{ \
+-	long __res; \
+-	register long __g1 __asm__ ("g1") = __NR_##name; \
+-	register long __o0 __asm__ ("o0") = (long)(arg1); \
+-	__asm__ __volatile__ ( \
+-		"t 0x10\n\t" \
+-		"bcc 1f\n\t" \
+-		"mov %%o0, %0\n\t" \
+-		"sub %%g0, %%o0, %0\n\t" \
+-		"1:\n\t" \
+-		: "=r" (__res), "=&r" (__o0) \
+-		: "1" (__o0), "r" (__g1) \
+-		: "cc"); \
+-	__syscall_return(type, __res); \
+-}
+-
+-#define _syscall2(type,name,type1,arg1,type2,arg2) \
+-type name(type1 arg1,type2 arg2) \
+-{ \
+-	long __res; \
+-	register long __g1 __asm__ ("g1") = __NR_##name; \
+-	register long __o0 __asm__ ("o0") = (long)(arg1); \
+-	register long __o1 __asm__ ("o1") = (long)(arg2); \
+-	__asm__ __volatile__ ( \
+-		"t 0x10\n\t" \
+-		"bcc 1f\n\t" \
+-		"mov %%o0, %0\n\t" \
+-		"sub %%g0, %%o0, %0\n\t" \
+-		"1:\n\t" \
+-		: "=r" (__res), "=&r" (__o0) \
+-		: "1" (__o0), "r" (__o1), "r" (__g1) \
+-		: "cc"); \
+-	__syscall_return(type, __res); \
+-}
+-
+-#define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3) \
+-type name(type1 arg1,type2 arg2,type3 arg3) \
+-{ \
+-	long __res; \
+-	register long __g1 __asm__ ("g1") = __NR_##name; \
+-	register long __o0 __asm__ ("o0") = (long)(arg1); \
+-	register long __o1 __asm__ ("o1") = (long)(arg2); \
+-	register long __o2 __asm__ ("o2") = (long)(arg3); \
+-	__asm__ __volatile__ ( \
+-		"t 0x10\n\t" \
+-		"bcc 1f\n\t" \
+-		"mov %%o0, %0\n\t" \
+-		"sub %%g0, %%o0, %0\n\t" \
+-		"1:\n\t" \
+-		: "=r" (__res), "=&r" (__o0) \
+-		: "1" (__o0), "r" (__o1), "r" (__o2), "r" (__g1) \
+-		: "cc"); \
+-	__syscall_return(type, __res); \
+-}
+-
+-#define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4) \
+-type name (type1 arg1, type2 arg2, type3 arg3, type4 arg4) \
+-{ \
+-	long __res; \
+-	register long __g1 __asm__ ("g1") = __NR_##name; \
+-	register long __o0 __asm__ ("o0") = (long)(arg1); \
+-	register long __o1 __asm__ ("o1") = (long)(arg2); \
+-	register long __o2 __asm__ ("o2") = (long)(arg3); \
+-	register long __o3 __asm__ ("o3") = (long)(arg4); \
+-	__asm__ __volatile__ ( \
+-		"t 0x10\n\t" \
+-		"bcc 1f\n\t" \
+-		"mov %%o0, %0\n\t" \
+-		"sub %%g0, %%o0, %0\n\t" \
+-		"1:\n\t" \
+-		: "=r" (__res), "=&r" (__o0) \
+-		: "1" (__o0), "r" (__o1), "r" (__o2), "r" (__o3), "r" (__g1) \
+-		: "cc"); \
+-	__syscall_return(type, __res); \
+-} 
+-
+-#define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, \
+-	  type5,arg5) \
+-type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5) \
+-{ \
+-	long __res; \
+-	register long __g1 __asm__ ("g1") = __NR_##name; \
+-	register long __o0 __asm__ ("o0") = (long)(arg1); \
+-	register long __o1 __asm__ ("o1") = (long)(arg2); \
+-	register long __o2 __asm__ ("o2") = (long)(arg3); \
+-	register long __o3 __asm__ ("o3") = (long)(arg4); \
+-	register long __o4 __asm__ ("o4") = (long)(arg5); \
+-	__asm__ __volatile__ ( \
+-		"t 0x10\n\t" \
+-		"bcc 1f\n\t" \
+-		"mov %%o0, %0\n\t" \
+-		"sub %%g0, %%o0, %0\n\t" \
+-		"1:\n\t" \
+-		: "=r" (__res), "=&r" (__o0) \
+-		: "1" (__o0), "r" (__o1), "r" (__o2), "r" (__o3), "r" (__o4), "r" (__g1) \
+-		: "cc"); \
+-	__syscall_return(type, __res); \
+-}
+-
+-#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, \
+-	  type5,arg5,type6,arg6) \
+-type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5,type6 arg6) \
+-{ \
+-	long __res; \
+-	register long __g1 __asm__ ("g1") = __NR_##name; \
+-	register long __o0 __asm__ ("o0") = (long)(arg1); \
+-	register long __o1 __asm__ ("o1") = (long)(arg2); \
+-	register long __o2 __asm__ ("o2") = (long)(arg3); \
+-	register long __o3 __asm__ ("o3") = (long)(arg4); \
+-	register long __o4 __asm__ ("o4") = (long)(arg5); \
+-	register long __o5 __asm__ ("o5") = (long)(arg6); \
+-	__asm__ __volatile__ ( \
+-		"t 0x10\n\t" \
+-		"bcc 1f\n\t" \
+-		"mov %%o0, %0\n\t" \
+-		"sub %%g0, %%o0, %0\n\t" \
+-		"1:\n\t" \
+-		: "=r" (__res), "=&r" (__o0) \
+-		: "1" (__o0), "r" (__o1), "r" (__o2), "r" (__o3), "r" (__o4), "r" (__o5), "r" (__g1) \
+-		: "cc"); \
+-	__syscall_return(type, __res); \
+-}
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sparc/dl-sysdep.h uClibc-0.9.28/ldso/ldso/sparc/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/sparc/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sparc/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -1,9 +1,9 @@
+-
++/* vi: set sw=4 ts=4: */
+ /*
+  * Various assmbly language/system dependent  hacks that are required
+  * so that we can minimize the amount of platform specific code.
++ * Copyright (C) 2000-2004 by Erik Andersen <andersen@codepoet.org>
+  */
+-#define LINUXBIN
+ 
+ /* Define this if the system uses RELOCA.  */
+ #define ELF_USES_RELOCA
+@@ -31,19 +31,14 @@
+ #undef  MAGIC2
+ 
+ /* Used for error messages */
+-#define ELF_TARGET "Sparc"
++#define ELF_TARGET "sparc"
+ 
+-#ifndef COMPILE_ASM
+-extern unsigned int _dl_linux_resolver(unsigned int reloc_entry,
+-					unsigned int * i);
+-#endif
++struct elf_resolve;
++unsigned long _dl_linux_resolver(struct elf_resolve * tpnt, int reloc_entry);
+ 
+ /*
+  * Define this if you want a dynamic loader that works on Solaris.
+  */
+-#ifndef __linux__
+-#define SOLARIS_COMPATIBLE
+-#endif
+ 
+ #ifndef COMPILE_ASM
+ /* Cheap modulo implementation, taken from arm/ld_sysdep.h. */
+@@ -87,13 +82,6 @@
+ #define do_rem(result, n, base) ((result) = sparc_mod(n, base))
+ #endif
+ 
+-/*
+- * dbx wants the binder to have a specific name.  Mustn't disappoint it.
+- */
+-#ifdef SOLARIS_COMPATIBLE
+-#define _dl_linux_resolve _elf_rtbndr
+-#endif
+-
+ /* 4096 bytes alignment */
+ /* ...but 8192 is required for mmap() on sparc64 kernel */
+ #define PAGE_ALIGN 0xffffe000
+@@ -160,7 +148,7 @@
+ elf_machine_relative (Elf32_Addr load_off, const Elf32_Addr rel_addr,
+ 		      Elf32_Word relative_count)
+ {
+-	 Elf32_Rela * rpnt = (void *)rel_addr;
++	Elf32_Rela * rpnt = (void *)rel_addr;
+ 	--rpnt;
+ 	do {
+ 		Elf32_Addr *const reloc_addr = (void *) (load_off + (++rpnt)->r_offset);
+diff -urN uClibc-0.9.28.orig/ldso/ldso/sparc/elfinterp.c uClibc-0.9.28/ldso/ldso/sparc/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/sparc/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/sparc/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -33,236 +33,340 @@
+ an ELF sharable library or a linux style of shared library. */
+ 
+ /* Disclaimer:  I have never seen any AT&T source code for SVr4, nor have
+-   I ever taken any courses on internals.  This program was developed using
+-   information available through the book "UNIX SYSTEM V RELEASE 4,
+-   Programmers guide: Ansi C and Programming Support Tools", which did
+-   a more than adequate job of explaining everything required to get this
+-   working. */
++	 I ever taken any courses on internals.  This program was developed using
++	 information available through the book "UNIX SYSTEM V RELEASE 4,
++	 Programmers guide: Ansi C and Programming Support Tools", which did
++	 a more than adequate job of explaining everything required to get this
++	 working. */
++
++/* Some SPARC opcodes we need to use for self-modifying code.  */
++#define OPCODE_NOP	0x01000000 /* nop */
++#define OPCODE_CALL	0x40000000 /* call ?; add PC-rel word address */
++#define OPCODE_SETHI_G1	0x03000000 /* sethi ?, %g1; add value>>10 */
++#define OPCODE_JMP_G1	0x81c06000 /* jmp %g1+?; add lo 10 bits of value */
++#define OPCODE_SAVE_SP	0x9de3bfa8 /* save %sp, -(16+6)*4, %sp */
++#define OPCODE_BA	0x30800000 /* b,a ?; add PC-rel word address */
+ 
+ extern int _dl_linux_resolve(void);
+ 
+-unsigned int _dl_linux_resolver(unsigned int reloc_entry, unsigned int * plt)
++unsigned long
++_dl_linux_resolver(struct elf_resolve *tpnt, int reloc_entry)
+ {
+-  int reloc_type;
+-  Elf32_Rela * this_reloc;
+-  char * strtab;
+-  Elf32_Sym * symtab;
+-  Elf32_Rela * rel_addr;
+-  struct elf_resolve * tpnt;
+-  int symtab_index;
+-  char * new_addr;
+-  char ** got_addr;
+-  unsigned int instr_addr;
+-  tpnt = (struct elf_resolve *) plt[2];
+-
+-  rel_addr = (Elf32_Rela *)tpnt->dynamic_info[DT_JMPREL];
+-
+-  /*
+-   * Generate the correct relocation index into the .rela.plt section.
+-   */
+-  reloc_entry = (reloc_entry >> 10) - 0xc;
+-
+-  this_reloc = (Elf32_Rela *) ((char *) rel_addr + reloc_entry);
+-
+-  reloc_type = ELF32_R_TYPE(this_reloc->r_info);
+-  symtab_index = ELF32_R_SYM(this_reloc->r_info);
+-
+-  symtab =  (Elf32_Sym *)tpnt->dynamic_info[DT_SYMTAB];
+-  strtab = (char *)tpnt->dynamic_info[DT_STRTAB];
+-
+-#ifdef __SUPPORT_LD_DEBUG__
+-  if (_dl_debug_symbols) {
+-  _dl_dprintf(2, "tpnt = %x\n", tpnt);
+-  _dl_dprintf(2, "reloc = %x\n", this_reloc);
+-  _dl_dprintf(2, "symtab = %x\n", symtab);
+-  _dl_dprintf(2, "strtab = %x\n", strtab);
+-  }
+-#endif
+-
+-
+-  if (unlikely(reloc_type != R_SPARC_JMP_SLOT)) {
+-    _dl_dprintf(2, "%s: incorrect relocation type in jump relocations (%d)\n",
+-		  _dl_progname, reloc_type);
+-    _dl_exit(30);
+-  };
+-
+-  /* Address of jump instruction to fix up */
+-  instr_addr  = ((int)this_reloc->r_offset  + (int)tpnt->loadaddr);
+-  got_addr = (char **) instr_addr;
+-
+-#ifdef __SUPPORT_LD_DEBUG__
+-  if (_dl_debug_symbols) {
+-  _dl_dprintf(2, "symtab_index %x\n", symtab_index);
+-
+-	  _dl_dprintf(2, "Resolving symbol %s\n",
+-			  strtab + symtab[symtab_index].st_name);
+-  }
+-#endif
+-
+-  /* Get the address of the GOT entry */
+-  new_addr = _dl_find_hash(strtab + symtab[symtab_index].st_name,
+-  			tpnt->symbol_scope, tpnt, ELF_RTYPE_CLASS_PLT);
+-  if(unlikely(!new_addr)) {
+-    _dl_dprintf(2, "%s: can't resolve symbol '%s'\n",
+-	       _dl_progname, strtab + symtab[symtab_index].st_name);
+-    _dl_exit(31);
+-  };
++	int reloc_type;
++	ELF_RELOC *this_reloc;
++	char *strtab;
++	ElfW(Sym) *symtab;
++	int symtab_index;
++	char *rel_addr;
++	char *new_addr;
++	char **got_addr;
++	ElfW(Addr) instr_addr;
++	char *symname;
++
++	rel_addr = (char *)tpnt->dynamic_info[DT_JMPREL];
++	/*
++	 * Generate the correct relocation index into the .rela.plt section.
++	 */
++	reloc_entry = (reloc_entry >> 10) - 0xc;
++
++	this_reloc = (ELF_RELOC *)(rel_addr + reloc_entry);
++	reloc_type = ELF_R_TYPE(this_reloc->r_info);
++	symtab_index = ELF_R_SYM(this_reloc->r_info);
++
++	symtab = (ElfW(Sym) *)tpnt->dynamic_info[DT_SYMTAB];
++	strtab = (char *)tpnt->dynamic_info[DT_STRTAB];
++	symname = strtab + symtab[symtab_index].st_name;
++
++	if (unlikely(reloc_type != R_SPARC_JMP_SLOT)) {
++		_dl_dprintf(2, "%s: Incorrect relocation type in jump relocations\n",
++			          _dl_progname);
++		_dl_exit(1);
++	}
++
++	/* Address of the jump instruction to fix up. */
++	instr_addr = (this_reloc->r_offset + tpnt->loadaddr);
++	got_addr = (char **)instr_addr;
++
++	/* Get the address of the GOT entry */
++	new_addr = _dl_find_hash(symname, tpnt->symbol_scope, tpnt, ELF_RTYPE_CLASS_PLT);
++	if (unlikely(!new_addr)) {
++		_dl_dprintf(2, "%s: Can't resolve symbol '%s'\n", _dl_progname, symname);
++		_dl_exit(1);
++	}
+ 
+ #if defined (__SUPPORT_LD_DEBUG__)
+-	if ((unsigned long) got_addr < 0x40000000)
+-	{
+-		if (_dl_debug_bindings)
+-		{
+-			_dl_dprintf(_dl_debug_file, "\nresolve function: %s",
+-					strtab + symtab[symtab_index].st_name);
+-			if(_dl_debug_detail) _dl_dprintf(_dl_debug_file,
+-					"\tpatch %x ==> %x @ %x", *got_addr, new_addr, got_addr);
++	if ((unsigned long)got_addr < 0x40000000) {
++		if (_dl_debug_bindings) {
++			_dl_dprintf(_dl_debug_file, "\nresolve function: %s", symname);
++			if (_dl_debug_detail)
++				_dl_dprintf(_dl_debug_file,
++				            "\tpatched: %x ==> %x @ %x\n",
++				            *got_addr, new_addr, got_addr);
+ 		}
+ 	}
+-	if (!_dl_debug_nofixups) {
++	if (!_dl_debug_nofixups)
++#endif
++	{
+ 		got_addr[1] = (char *) (0x03000000 | (((unsigned int) new_addr >> 10) & 0x3fffff));
+ 		got_addr[2] = (char *) (0x81c06000 | ((unsigned int) new_addr & 0x3ff));
+ 	}
++
++	return (unsigned long)new_addr;
++}
++
++static int
++_dl_parse(struct elf_resolve *tpnt, struct dyn_elf *scope,
++		unsigned long rel_addr, unsigned long rel_size,
++		int (*reloc_fnc)(struct elf_resolve *tpnt, struct dyn_elf *scope,
++			   ELF_RELOC *rpnt, ElfW(Sym) *symtab, char *strtab))
++{
++	unsigned int i;
++	char *strtab;
++	ElfW(Sym) *symtab;
++	ELF_RELOC *rpnt;
++	int symtab_index;
++
++	/* Parse the relocation information. */
++	rpnt = (ELF_RELOC *)rel_addr;
++	rel_size /= sizeof(ELF_RELOC);
++
++	symtab = (ElfW(Sym) *)tpnt->dynamic_info[DT_SYMTAB];
++	strtab = (char *)tpnt->dynamic_info[DT_STRTAB];
++
++	for (i = 0; i < rel_size; i++, rpnt++) {
++		int res;
++
++		symtab_index = ELF_R_SYM(rpnt->r_info);
++
++		debug_sym(symtab, strtab, symtab_index);
++		debug_reloc(symtab, strtab, rpnt);
++
++		res = reloc_fnc(tpnt, scope, rpnt, symtab, strtab);
++
++		if (res == 0)
++			continue;
++
++		_dl_dprintf(2, "\n%s: ", _dl_progname);
++
++		if (symtab_index)
++			_dl_dprintf(2, "symbol '%s': ",
++				    strtab + symtab[symtab_index].st_name);
++
++		if (unlikely(res < 0)) {
++			int reloc_type = ELF_R_TYPE(rpnt->r_info);
++
++			_dl_dprintf(2, "can't handle reloc type "
++#if defined (__SUPPORT_LD_DEBUG__)
++				    "%s\n", _dl_reltypes(reloc_type));
+ #else
+-	got_addr[1] = (char *) (0x03000000 | (((unsigned int) new_addr >> 10) & 0x3fffff));
+-	got_addr[2] = (char *) (0x81c06000 | ((unsigned int) new_addr & 0x3ff));
++				    "%x\n", reloc_type);
+ #endif
++			_dl_exit(-res);
++		} else if (unlikely(res > 0)) {
++			_dl_dprintf(2, "can't resolve symbol\n");
++			return res;
++		}
++	}
++
++	return 0;
++}
+ 
+-	_dl_dprintf(2, "Address = %x\n",new_addr);
+-	_dl_exit(32);
++static int
++_dl_do_reloc(struct elf_resolve *tpnt, struct dyn_elf *scope,
++			 ELF_RELOC *rpnt, ElfW(Sym) *symtab, char *strtab)
++{
++	int reloc_type;
++	int symtab_index;
++	char *symname;
++	ElfW(Sym) *sym;
++	ElfW(Addr) *reloc_addr;
++	ElfW(Addr) symbol_addr;
++#if defined (__SUPPORT_LD_DEBUG__)
++	ElfW(Addr) old_val;
++#endif
++
++	reloc_addr = (ElfW(Addr)*)(tpnt->loadaddr + (unsigned long)rpnt->r_offset);
++	reloc_type = ELF_R_TYPE(rpnt->r_info);
++	symtab_index = ELF_R_SYM(rpnt->r_info);
++	sym = &symtab[symtab_index];
++	symbol_addr = 0;
++	symname = strtab + sym->st_name;
++
++	if (symtab_index) {
++		symbol_addr = (ElfW(Addr))_dl_find_hash(symname, scope, tpnt,
++							    elf_machine_type_class(reloc_type));
++		/*
++		 * We want to allow undefined references to weak symbols - this
++		 * might have been intentional.  We should not be linking local
++		 * symbols here, so all bases should be covered.
++		 */
++		if (unlikely(!symbol_addr && ELF_ST_BIND(sym->st_info) != STB_WEAK)) {
++			_dl_dprintf(2, "%s: can't resolve symbol '%s'\n", _dl_progname, symname);
++			_dl_exit(1);
++		}
++	}
++
++#if defined (__SUPPORT_LD_DEBUG__)
++	old_val = *reloc_addr;
++#endif
+ 
+-  return (unsigned int) new_addr;
++	symbol_addr += rpnt->r_addend;	/* Assume copy relocs have zero addend.  */
++
++	switch (reloc_type) {
++		case R_SPARC_NONE:
++			break;
++
++#if 0 /* these dont really seem to be useful */
++		case R_SPARC_8:
++			*(char *) reloc_addr = symbol_addr;
++			break;
++		case R_SPARC_16:
++			*(short *) reloc_addr = symbol_addr;
++			break;
++		case R_SPARC_DISP8:
++			*(char *) reloc_addr = (symbol_addr) - (Elf32_Addr) reloc_addr;
++			break;
++		case R_SPARC_DISP16:
++			*(short *) reloc_addr = (symbol_addr) - (Elf32_Addr) reloc_addr;
++			break;
++#endif
++
++		case R_SPARC_DISP32:
++			*reloc_addr = symbol_addr - (unsigned int) reloc_addr;
++			break;
++
++		case R_SPARC_LO10:
++			if (!symbol_addr)
++				symbol_addr = tpnt->loadaddr + rpnt->r_addend;
++			else
++				symbol_addr += rpnt->r_addend;
++			*reloc_addr = (*reloc_addr & ~0x3ff)|(symbol_addr & 0x3ff);
++			break;
++
++		case R_SPARC_GLOB_DAT:
++		case R_SPARC_32:
++			*reloc_addr = symbol_addr;
++			break;
++
++		case R_SPARC_JMP_SLOT:
++/*
++value = symbol_addr;
++value += reloc->r_addend;
++disp = value - reloc_addr;
++reloc_addr[1] = OPCODE_JMP_G1 | (value & 0x3ff);
++reloc_addr[0] = OPCODE_SETHI_G1 | (value >> 10);
++			reloc_addr[1] = OPCODE_JMP_G1 | ((symbol_addr-(Elf32_Addr)reloc_addr) & 0x3ff);
++			reloc_addr[0] = OPCODE_SETHI_G1 | ((symbol_addr-(Elf32_Addr)reloc_addr) >> 10);
++*/
++			reloc_addr[1] = 0x03000000 | ((symbol_addr >> 10) & 0x3fffff);
++			reloc_addr[2] = 0x81c06000 | (symbol_addr & 0x3ff);
++			break;
++
++		case R_SPARC_RELATIVE:
++			*reloc_addr += tpnt->loadaddr + rpnt->r_addend;
++			break;
++
++		case R_SPARC_WDISP30:
++			*reloc_addr = (*reloc_addr & 0xc0000000)|
++			         ((symbol_addr - (unsigned int) reloc_addr) >> 2);
++			break;
++
++		case R_SPARC_HI22:
++			if (!symbol_addr)
++				symbol_addr = tpnt->loadaddr + rpnt->r_addend;
++			else
++				symbol_addr += rpnt->r_addend;
++			*reloc_addr = (*reloc_addr & 0xffc00000) | (symbol_addr >> 10);
++			break;
++
++		case R_SPARC_COPY:
++			if (symbol_addr) {
++#if defined (__SUPPORT_LD_DEBUG__)
++				if (_dl_debug_move)
++					_dl_dprintf(_dl_debug_file,
++						    "\t%s move %d bytes from %x to %x\n",
++						    symname, sym->st_size,
++						    symbol_addr, reloc_addr);
++#endif
++
++				_dl_memcpy((char *)reloc_addr,
++					   (char *)symbol_addr,
++					   sym->st_size);
++			} else
++				_dl_dprintf(_dl_debug_file, "no symbol_addr to copy !?\n");
++			break;
++		default:
++			return -1;	/* Calls _dl_exit(1). */
++	}
++
++#if defined (__SUPPORT_LD_DEBUG__)
++	if (_dl_debug_reloc && _dl_debug_detail)
++		_dl_dprintf(_dl_debug_file, "\tpatched: %x ==> %x @ %x\n",
++			    old_val, *reloc_addr, reloc_addr);
++#endif
++
++	return 0;
++}
++
++#undef __SPARC_LAZY_RELOC_WORKS
++#ifdef __SPARC_LAZY_RELOC_WORKS
++static int
++_dl_do_lazy_reloc(struct elf_resolve *tpnt, struct dyn_elf *scope,
++		  ELF_RELOC *rpnt, ElfW(Sym) *symtab, char *strtab)
++{
++	int reloc_type;
++	int symtab_index;
++	ElfW(Addr) *reloc_addr;
++#if defined (__SUPPORT_LD_DEBUG__)
++	ElfW(Addr) old_val;
++#endif
++
++	(void)scope;
++	symtab_index = ELF_R_SYM(rpnt->r_info);
++	(void)strtab;
++
++	reloc_addr = (ElfW(Addr)*)(tpnt->loadaddr + rpnt->r_offset);
++	reloc_type = ELF_R_TYPE(rpnt->r_info);
++
++#if defined (__SUPPORT_LD_DEBUG__)
++	old_val = *reloc_addr;
++#endif
++
++	switch (reloc_type) {
++		case R_SPARC_NONE:
++			break;
++		case R_SPARC_JMP_SLOT:
++			break;
++		default:
++			_dl_exit(1);
++	}
++
++#if defined (__SUPPORT_LD_DEBUG__)
++	if (_dl_debug_reloc && _dl_debug_detail)
++		_dl_dprintf(_dl_debug_file, "\tpatched_lazy: %x ==> %x @ %x\n",
++			    old_val, *reloc_addr, reloc_addr);
++#endif
++
++	return 0;
+ }
++#endif
+ 
+-void _dl_parse_lazy_relocation_information(struct dyn_elf *arg_rpnt,
+-	unsigned long rel_addr, unsigned long rel_size)
+-{
+-  int i;
+-  char * strtab;
+-  int reloc_type;
+-  int symtab_index;
+-  Elf32_Sym * symtab;
+-  Elf32_Rela * rpnt;
+-  unsigned int * reloc_addr;
+-  struct elf_resolve * tpnt = arg_rpnt->dyn;
+-
+-  /* Now parse the relocation information */
+-  rpnt = (Elf32_Rela *)rel_addr;
+-
+-  symtab =  (Elf32_Sym *)tpnt->dynamic_info[DT_SYMTAB];
+-  strtab = ( char *)tpnt->dynamic_info[DT_STRTAB];
+-
+-  for(i=0; i< rel_size; i += sizeof(Elf32_Rela), rpnt++){
+-    reloc_addr = (int *) (tpnt->loadaddr + (int)rpnt->r_offset);
+-    reloc_type = ELF32_R_TYPE(rpnt->r_info);
+-    symtab_index = ELF32_R_SYM(rpnt->r_info);
+-
+-    switch(reloc_type){
+-    case R_SPARC_NONE:
+-      break;
+-    case R_SPARC_JMP_SLOT:
+-      break;
+-    default:
+-      _dl_dprintf(2, "%s: (LAZY) can't handle reloc type ", _dl_progname);
+-#if defined (__SUPPORT_LD_DEBUG__)
+-      _dl_dprintf(2, "%s ", _dl_reltypes_tab[reloc_type]);
+-#endif
+-      if(symtab_index) _dl_dprintf(2, "'%s'\n",
+-				  strtab + symtab[symtab_index].st_name);
+-      _dl_exit(33);
+-    };
+-  };
+-}
+-
+-int _dl_parse_relocation_information(struct dyn_elf *arg_rpnt,
+-	unsigned long rel_addr, unsigned long rel_size)
+-{
+-  int i;
+-  char * strtab;
+-  int reloc_type;
+-  int goof = 0;
+-  Elf32_Sym * symtab;
+-  Elf32_Rela * rpnt;
+-  unsigned int * reloc_addr;
+-  unsigned int symbol_addr;
+-  int symtab_index;
+-  struct elf_resolve * tpnt = arg_rpnt->dyn;
+-  /* Now parse the relocation information */
+-
+-  rpnt = (Elf32_Rela *)rel_addr;
+-
+-  symtab =  (Elf32_Sym *)tpnt->dynamic_info[DT_SYMTAB];
+-  strtab = ( char *)tpnt->dynamic_info[DT_STRTAB];
+-
+-  for(i=0; i< rel_size; i+= sizeof(Elf32_Rela), rpnt++){
+-    reloc_addr = (int *) (tpnt->loadaddr + (int)rpnt->r_offset);
+-    reloc_type = ELF32_R_TYPE(rpnt->r_info);
+-    symtab_index = ELF32_R_SYM(rpnt->r_info);
+-    symbol_addr = 0;
+-
+-    if(symtab_index) {
+-
+-      symbol_addr = (unsigned int)
+-	_dl_find_hash(strtab + symtab[symtab_index].st_name,
+-		      tpnt->symbol_scope, tpnt, elf_machine_type_class(reloc_type));
+-
+-      if(!symbol_addr &&
+-	 ELF32_ST_BIND(symtab [symtab_index].st_info) != STB_WEAK) {
+-			_dl_dprintf (2, "%s: can't resolve symbol '%s'\n",
+-				     _dl_progname, strtab + symtab[symtab_index].st_name);
+-			_dl_exit (1);
+-      };
+-    };
+-    switch(reloc_type){
+-    case R_SPARC_NONE:
+-	break;
+-    case R_SPARC_32:
+-      *reloc_addr = symbol_addr + rpnt->r_addend;
+-      break;
+-    case R_SPARC_DISP32:
+-      *reloc_addr = symbol_addr + rpnt->r_addend - (unsigned int) reloc_addr;
+-      break;
+-    case R_SPARC_GLOB_DAT:
+-      *reloc_addr = symbol_addr + rpnt->r_addend;
+-      break;
+-    case R_SPARC_JMP_SLOT:
+-      reloc_addr[1] = 0x03000000 | ((symbol_addr >> 10) & 0x3fffff);
+-      reloc_addr[2] = 0x81c06000 | (symbol_addr & 0x3ff);
+-      break;
+-    case R_SPARC_RELATIVE:
+-      *reloc_addr += (unsigned int) tpnt->loadaddr + rpnt->r_addend;
+-      break;
+-    case R_SPARC_HI22:
+-      if (!symbol_addr)
+-        symbol_addr = tpnt->loadaddr + rpnt->r_addend;
+-      else
+-	symbol_addr += rpnt->r_addend;
+-      *reloc_addr = (*reloc_addr & 0xffc00000)|(symbol_addr >> 10);
+-      break;
+-    case R_SPARC_LO10:
+-      if (!symbol_addr)
+-        symbol_addr = tpnt->loadaddr + rpnt->r_addend;
+-      else
+-	symbol_addr += rpnt->r_addend;
+-      *reloc_addr = (*reloc_addr & ~0x3ff)|(symbol_addr & 0x3ff);
+-      break;
+-    case R_SPARC_WDISP30:
+-      *reloc_addr = (*reloc_addr & 0xc0000000)|
+-	((symbol_addr - (unsigned int) reloc_addr) >> 2);
+-      break;
+-    case R_SPARC_COPY:
+-      _dl_memcpy((void *) reloc_addr, (void *) symbol_addr, symtab[symtab_index].st_size);
+-      break;
+-    default:
+-      _dl_dprintf(2, "%s: can't handle reloc type ", _dl_progname);
+-#if defined (__SUPPORT_LD_DEBUG__)
+-      _dl_dprintf(2, "%s ", _dl_reltypes_tab[reloc_type]);
+-#endif
+-      if (symtab_index)
+-	_dl_dprintf(2, "'%s'\n", strtab + symtab[symtab_index].st_name);
+-      _dl_exit(34);
+-    };
++void
++_dl_parse_lazy_relocation_information(struct dyn_elf *rpnt,
++				      unsigned long rel_addr,
++				      unsigned long rel_size)
++{
++#ifdef __SPARC_LAZY_RELOC_WORKS
++	(void)_dl_parse(rpnt->dyn, NULL, rel_addr, rel_size, _dl_do_lazy_reloc);
++#else
++	_dl_parse_relocation_information(rpnt, rel_addr, rel_size);
++#endif
++}
+ 
+-  };
+-  return goof;
++int
++_dl_parse_relocation_information(struct dyn_elf *rpnt,
++				 unsigned long rel_addr,
++				 unsigned long rel_size)
++{
++	return _dl_parse(rpnt->dyn, rpnt->dyn->symbol_scope, rel_addr, rel_size, _dl_do_reloc);
+ }
+diff -urN uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-debug.h uClibc-0.9.28/ldso/ldso/x86_64/dl-debug.h
+--- uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-debug.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/x86_64/dl-debug.h	2006-04-28 00:14:35.000000000 -0600
+@@ -30,7 +30,10 @@
+  */
+ 
+ static const char *_dl_reltypes_tab[] = {
+-	[0] "R_X86_64_NONE",     "R_X86_64_64",       "R_X86_64_PC32",     "R_X86_64_GOT32",
+-	[4] "R_X86_64_PLT32",    "R_X86_64_COPY",     "R_X86_64_GLOB_DAT", "R_X86_64_JUMP_SLOT",
+-	[8] "R_X86_64_RELATIVE", "R_X86_64_GOTPCREL", "R_X86_64_32"
++	[ 0] "R_X86_64_NONE",     "R_X86_64_64",       "R_X86_64_PC32",     "R_X86_64_GOT32",
++	[ 4] "R_X86_64_PLT32",    "R_X86_64_COPY",     "R_X86_64_GLOB_DAT", "R_X86_64_JUMP_SLOT",
++	[ 8] "R_X86_64_RELATIVE", "R_X86_64_GOTPCREL", "R_X86_64_32",       "R_X86_64_32S",
++	[12] "R_X86_64_16",       "R_X86_64_PC16",     "R_X86_64_8",        "R_X86_64_PC8",
++	[16] "R_X86_64_DTPMOD64", "R_X86_64_DTPOFF64", "R_X86_64_TPOFF64",  "R_X86_64_TLSGD",
++	[20] "R_X86_64_TLSLD",    "R_X86_64_DTPOFF32", "R_X86_64_GOTTPOFF", "R_X86_64_TPOFF32"
+ };
+diff -urN uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-startup.h uClibc-0.9.28/ldso/ldso/x86_64/dl-startup.h
+--- uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-startup.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/x86_64/dl-startup.h	2006-04-28 00:14:35.000000000 -0600
+@@ -6,7 +6,7 @@
+  *
+  * Parts taken from glibc/sysdeps/x86_64/dl-machine.h
+  */
+-asm(
++__asm__ (
+ 	"	.text\n"
+ 	"	.align 16\n"
+ 	"	.global _start\n"
+@@ -42,10 +42,10 @@
+ 
+ /* Handle relocation of the symbols in the dynamic loader. */
+ static __always_inline
+-void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, unsigned long *reloc_addr,
+-	unsigned long symbol_addr, unsigned long load_addr, Elf64_Sym *sym)
++void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, ElfW(Addr) *reloc_addr,
++	ElfW(Addr) symbol_addr, ElfW(Addr) load_addr, ElfW(Sym) *sym)
+ {
+-	switch (ELF64_R_TYPE(rpnt->r_info)) {
++	switch (ELF_R_TYPE(rpnt->r_info)) {
+ 		case R_X86_64_GLOB_DAT:
+ 		case R_X86_64_JUMP_SLOT:
+ 			*reloc_addr = symbol_addr + rpnt->r_addend;
+@@ -63,8 +63,3 @@
+ 			_dl_exit(1);
+ 	}
+ }
+-
+-/* Transfer control to the user's application, once the dynamic loader is
+- * done.  This routine has to exit the current function, then call the
+- * _dl_elf_main function.  */
+-#define START() return _dl_elf_main
+diff -urN uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-syscalls.h uClibc-0.9.28/ldso/ldso/x86_64/dl-syscalls.h
+--- uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/x86_64/dl-syscalls.h	2006-05-02 13:39:17.000000000 -0600
+@@ -1,7 +1,8 @@
+ /* We can't use the real errno in ldso, since it has not yet
+  * been dynamicly linked in yet. */
++#define __UCLIBC_MMAP_HAS_6_ARGS__
++
++#include "sys/syscall.h"
+ extern int _dl_errno;
++#undef __set_errno
+ #define __set_errno(X) {(_dl_errno) = (X);}
+-#include "sys/syscall.h"
+-
+-#define MMAP_HAS_6_ARGS
+diff -urN uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-sysdep.h uClibc-0.9.28/ldso/ldso/x86_64/dl-sysdep.h
+--- uClibc-0.9.28.orig/ldso/ldso/x86_64/dl-sysdep.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/x86_64/dl-sysdep.h	2006-04-28 00:14:35.000000000 -0600
+@@ -41,8 +41,6 @@
+ struct elf_resolve;
+ extern unsigned long _dl_linux_resolver(struct elf_resolve * tpnt, int reloc_entry);
+ 
+-#define do_rem(result, n, base) ((result) = (n) % (base))
+-
+ /* 4096 bytes alignment */
+ #define PAGE_ALIGN 0xfffff000
+ #define ADDR_ALIGN 0xfff
+@@ -90,7 +88,7 @@
+      and compare it with the current value that we can get via
+      an RIP relative addressing mode.  */
+ 
+-  asm ("movq 1f(%%rip), %1\n"
++  __asm__ ("movq 1f(%%rip), %1\n"
+        "0:\tleaq _dl_start(%%rip), %0\n\t"
+        "subq %1, %0\n\t"
+        ".section\t.data\n"
+diff -urN uClibc-0.9.28.orig/ldso/ldso/x86_64/elfinterp.c uClibc-0.9.28/ldso/ldso/x86_64/elfinterp.c
+--- uClibc-0.9.28.orig/ldso/ldso/x86_64/elfinterp.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/ldso/x86_64/elfinterp.c	2006-04-28 00:14:35.000000000 -0600
+@@ -165,6 +165,7 @@
+ 	int reloc_type;
+ 	int symtab_index;
+ 	char *symname;
++	ElfW(Sym) *sym;
+ 	ElfW(Addr) *reloc_addr;
+ 	ElfW(Addr) symbol_addr;
+ #if defined (__SUPPORT_LD_DEBUG__)
+@@ -174,8 +175,9 @@
+ 	reloc_addr = (ElfW(Addr)*)(tpnt->loadaddr + (unsigned long)rpnt->r_offset);
+ 	reloc_type = ELF_R_TYPE(rpnt->r_info);
+ 	symtab_index = ELF_R_SYM(rpnt->r_info);
++	sym = &symtab[symtab_index];
+ 	symbol_addr = 0;
+-	symname = strtab + symtab[symtab_index].st_name;
++	symname = strtab + sym->st_name;
+ 
+ 	if (symtab_index) {
+ 		symbol_addr = (ElfW(Addr))_dl_find_hash(symname, scope, tpnt,
+@@ -185,7 +187,7 @@
+ 		 * might have been intentional.  We should not be linking local
+ 		 * symbols here, so all bases should be covered.
+ 		 */
+-		if (unlikely(!symbol_addr && ELF_ST_BIND(symtab[symtab_index].st_info) != STB_WEAK)) {
++		if (unlikely(!symbol_addr && ELF_ST_BIND(sym->st_info) != STB_WEAK)) {
+ 			_dl_dprintf(2, "%s: can't resolve symbol '%s'\n", _dl_progname, symname);
+ 			_dl_exit(1);
+ 		};
+@@ -209,7 +211,7 @@
+ 
+ 		case R_X86_64_GLOB_DAT:
+ 		case R_X86_64_JUMP_SLOT:
+-			*reloc_addr = symbol_addr;
++			*reloc_addr = symbol_addr + rpnt->r_addend;
+ 			break;
+ 
+ 		/* handled by elf_machine_relative()
+@@ -217,33 +219,33 @@
+ 			*reloc_addr = map->l_addr + rpnt->r_addend;
+ 			break;
+ 		*/
+-#if 0
+ 		case R_X86_64_DTPMOD64:
++			*reloc_addr = 1;
+ 			break;
+ 		case R_X86_64_DTPOFF64:
+-			*reloc_addr = symbol_addr + rpnt->r_addend;
++			*reloc_addr = sym->st_value + rpnt->r_addend;
+ 			break;
+ 		case R_X86_64_TPOFF64:
+-			*reloc_addr = symbol_addr + rpnt->r_addend;
++			*reloc_addr = sym->st_value + rpnt->r_addend - symbol_addr;
+ 			break;
+ 		case R_X86_64_32:
+-			*reloc_addr = symbol_addr + rpnt->r_addend;
++			*(unsigned int *) reloc_addr = symbol_addr + rpnt->r_addend;
++			/* XXX: should check for overflow eh ? */
+ 			break;
+ 
+-#endif
+ 		case R_X86_64_COPY:
+ 			if (symbol_addr) {
+ #if defined (__SUPPORT_LD_DEBUG__)
+ 				if (_dl_debug_move)
+ 					_dl_dprintf(_dl_debug_file,
+ 						    "\t%s move %d bytes from %x to %x\n",
+-						    symname, symtab[symtab_index].st_size,
++						    symname, sym->st_size,
+ 						    symbol_addr, reloc_addr);
+ #endif
+ 
+ 				_dl_memcpy((char *)reloc_addr,
+ 					   (char *)symbol_addr,
+-					   symtab[symtab_index].st_size);
++					   sym->st_size);
+ 			} else
+ 				_dl_dprintf(_dl_debug_file, "no symbol_addr to copy !?\n");
+ 			break;
+@@ -261,7 +263,6 @@
+ 	return 0;
+ }
+ 
+-#if 0
+ static int
+ _dl_do_lazy_reloc(struct elf_resolve *tpnt, struct dyn_elf *scope,
+ 		  ELF_RELOC *rpnt, ElfW(Sym) *symtab, char *strtab)
+@@ -288,7 +289,7 @@
+ 		case R_X86_64_NONE:
+ 			break;
+ 		case R_X86_64_JUMP_SLOT:
+-			*reloc_addr = tpnt->loadaddr + symtab[symtab_index].st_value;
++			*reloc_addr += (unsigned long)tpnt->loadaddr;
+ 			break;
+ 		default:
+ 			_dl_exit(1);
+@@ -302,17 +303,13 @@
+ 
+ 	return 0;
+ }
+-#endif
+ 
+ void
+ _dl_parse_lazy_relocation_information(struct dyn_elf *rpnt,
+ 				      unsigned long rel_addr,
+ 				      unsigned long rel_size)
+ {
+-	_dl_parse_relocation_information(rpnt, rel_addr, rel_size);
+-/*	jump slot isnt working
+ 	(void)_dl_parse(rpnt->dyn, NULL, rel_addr, rel_size, _dl_do_lazy_reloc);
+-*/
+ }
+ 
+ int
+diff -urN uClibc-0.9.28.orig/ldso/ldso/x86_64/resolve.S uClibc-0.9.28/ldso/ldso/x86_64/resolve.S
+--- uClibc-0.9.28.orig/ldso/ldso/x86_64/resolve.S	1969-12-31 17:00:00.000000000 -0700
++++ uClibc-0.9.28/ldso/ldso/x86_64/resolve.S	2006-04-28 00:14:35.000000000 -0600
+@@ -0,0 +1,63 @@
++/*
++ * This function is _not_ called directly.  It is jumped to (so no return
++ * address is on the stack) when attempting to use a symbol that has not yet
++ * been resolved.  The first time a jump symbol (such as a function call inside
++ * a shared library) is used (before it gets resolved) it will jump here to
++ * _dl_linux_resolve.  When we get called the stack looks like this:
++ *	reloc_entry
++ *	tpnt
++ *
++ * This function saves all the registers, puts a copy of reloc_entry and tpnt
++ * on the stack (as function arguments) then make the function call
++ * _dl_linux_resolver(tpnt, reloc_entry).  _dl_linux_resolver() figures out
++ * where the jump symbol is _really_ supposed to have jumped to and returns
++ * that to us.  Once we have that, we overwrite tpnt with this fixed up
++ * address. We then clean up after ourselves, put all the registers back how we
++ * found them, then we jump to where the fixed up address, which is where the
++ * jump symbol that got us here really wanted to jump to in the first place.
++ * found them, then we jump to the fixed up address, which is where the jump
++ * symbol that got us here really wanted to jump to in the first place.
++ *  -Erik Andersen
++ */
++
++/* more info taken from glibc/sysdeps/x86_64/dl-trampoline.S */
++
++.text
++
++.global _dl_linux_resolve
++.type   _dl_linux_resolve,%function
++.align 16
++
++_dl_linux_resolve:
++	subq $56,%rsp
++	/* Preserve registers otherwise clobbered. */
++	movq %rax,   (%rsp)
++	movq %rcx,  8(%rsp)
++	movq %rdx, 16(%rsp)
++	movq %rsi, 24(%rsp)
++	movq %rdi, 32(%rsp)
++	movq %r8,  40(%rsp)
++	movq %r9,  48(%rsp)
++
++	movq 64(%rsp), %rsi  /* Copy args pushed by PLT in register. */
++	movq %rsi, %r11      /* Multiply by 24 */
++	addq %r11, %rsi
++	addq %r11, %rsi
++	shlq $3, %rsi
++	movq 56(%rsp), %rdi  /* %rdi: link_map, %rsi: reloc_offset */
++	call _dl_linux_resolver       /* Call resolver. */
++	movq %rax, %r11      /* Save return value */
++
++	/* Get register content back. */
++	movq 48(%rsp), %r9
++	movq 40(%rsp), %r8
++	movq 32(%rsp), %rdi
++	movq 24(%rsp), %rsi
++	movq 16(%rsp), %rdx
++	movq  8(%rsp), %rcx
++	movq   (%rsp), %rax
++
++	addq $72, %rsp       /* Adjust stack(PLT did 2 pushes) */
++	jmp *%r11            /* Jump to function address. */
++
++.size _dl_linux_resolve,.-_dl_linux_resolve
+diff -urN uClibc-0.9.28.orig/ldso/libdl/Makefile uClibc-0.9.28/ldso/libdl/Makefile
+--- uClibc-0.9.28.orig/ldso/libdl/Makefile	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/libdl/Makefile	2006-04-28 00:14:35.000000000 -0600
+@@ -29,12 +29,14 @@
+ endif
+ XXFLAGS+= $(XARCH_CFLAGS) $(CPU_CFLAGS) \
+ 	-DUCLIBC_RUNTIME_PREFIX=\"$(RUNTIME_PREFIX)\" \
+-	-fno-builtin -nostdinc -D_LIBC -I$(TOPDIR)ldso/include -I$(TOPDIR)ldso/ldso -I. -I$(TOPDIR)include
++	-fno-builtin -nostdinc -D_LIBC \
++	-DLDSO_ELFINTERP=\"$(TARGET_ARCH)/elfinterp.c\" \
++	-I$(TOPDIR)ldso/ldso/$(TARGET_ARCH) -I$(TOPDIR)ldso/include -I$(TOPDIR)ldso/ldso -I$(TOPDIR)include
+ 
+ XXFLAGS+=-isystem $(shell $(CC) -print-file-name=include)
+ XXFLAGS_NOPIC:=$(XXFLAGS)
+ ifeq ($(DOPIC),y)
+-    XXFLAGS += $(PICFLAG) -D__LIBDL_SHARED__
++    XXFLAGS += $(PICFLAG) -DSHARED
+ endif
+ ifeq ($(strip $(SUPPORT_LD_DEBUG)),y)
+ XXFLAGS+=-D__SUPPORT_LD_DEBUG__
+diff -urN uClibc-0.9.28.orig/ldso/libdl/libdl.c uClibc-0.9.28/ldso/libdl/libdl.c
+--- uClibc-0.9.28.orig/ldso/libdl/libdl.c	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/ldso/libdl/libdl.c	2006-04-28 00:14:35.000000000 -0600
+@@ -3,7 +3,7 @@
+  * Program to load an ELF binary on a linux system, and run it
+  * after resolving ELF shared library symbols
+  *
+- * Copyright (C) 2000-2004 by Erik Andersen <andersen@codepoet.org>
++ * Copyright (C) 2000-2006 by Erik Andersen <andersen@uclibc.org>
+  * Copyright (c) 1994-2000 Eric Youngdale, Peter MacDonald,
+  *				David Engel, Hongjiu Lu and Mitch D'Souza
+  *
+@@ -30,12 +30,12 @@
+  */
+ 
+ 
+-#define _GNU_SOURCE
++#define _GNU_SOURCE
+ #include <ldso.h>
+ #include <stdio.h>
+ 
+ 
+-#if defined (__LIBDL_SHARED__)
++#ifdef SHARED
+ 
+ /* When libdl is loaded as a shared library, we need to load in
+  * and use a pile of symbols from ldso... */
+@@ -52,6 +51,8 @@
+ extern struct r_debug *_dl_debug_addr;
+ extern unsigned long _dl_error_number;
+ extern void *(*_dl_malloc_function)(size_t);
++extern void _dl_run_init_array(struct elf_resolve *);
++extern void _dl_run_fini_array(struct elf_resolve *);
+ #ifdef __LDSO_CACHE_SUPPORT__
+ int _dl_map_cache(void);
+ int _dl_unmap_cache(void);
+@@ -64,7 +65,7 @@
+ #endif
+ 
+ 
+-#else /* __LIBDL_SHARED__ */
++#else /* SHARED */
+ 
+ /* When libdl is linked as a static library, we need to replace all
+  * the symbols that otherwise would have been loaded in from ldso... */
+@@ -81,11 +82,11 @@
+ struct r_debug *_dl_debug_addr = NULL;
+ #define _dl_malloc malloc
+ #include "../ldso/dl-debug.c"
+-#include "dl-progname.h"
++#include LDSO_ELFINTERP
+ #include "../ldso/dl-hash.c"
+ #define _dl_trace_loaded_objects    0
+ #include "../ldso/dl-elf.c"
+-#endif /* __LIBDL_SHARED__ */
++#endif /* SHARED */
+ 
+ #ifdef __SUPPORT_LD_DEBUG__
+ # define _dl_if_debug_print(fmt, args...) \
+@@ -126,7 +127,8 @@
+ 	"Unable to resolve symbol"
+ };
+ 
+-void __attribute__ ((destructor)) dl_cleanup(void)
++void dl_cleanup(void) __attribute__ ((destructor));
++void dl_cleanup(void)
+ {
+ 	struct dyn_elf *d;
+ 	for (d = _dl_handles; d; d = d->next_handle) {
+@@ -138,13 +140,12 @@
+ {
+ 	struct elf_resolve *tpnt, *tfrom;
+ 	struct dyn_elf *dyn_chain, *rpnt = NULL, *dyn_ptr, *relro_ptr, *handle;
+-	struct dyn_elf *dpnt;
+ 	ElfW(Addr) from;
+ 	struct elf_resolve *tpnt1;
+ 	void (*dl_brk) (void);
+ 	int now_flag;
+ 	struct init_fini_list *tmp, *runp, *runp2, *dep_list;
+-	int nlist, i;
++	unsigned int nlist, i;
+ 	struct elf_resolve **init_fini_list;
+ 
+ 	/* A bit of sanity checking... */
+@@ -169,12 +170,15 @@
+ 	 * the application.  Thus this may go away at some time
+ 	 * in the future.
+ 	 */
+-	tfrom = NULL;
+-	for (dpnt = _dl_symbol_tables; dpnt; dpnt = dpnt->next) {
+-		tpnt = dpnt->dyn;
+-		if (tpnt->loadaddr < from
+-				&& (tfrom == NULL || tfrom->loadaddr < tpnt->loadaddr))
+-			tfrom = tpnt;
++	{
++		struct dyn_elf *dpnt;
++		tfrom = NULL;
++		for (dpnt = _dl_symbol_tables; dpnt; dpnt = dpnt->next) {
++			tpnt = dpnt->dyn;
++			if (tpnt->loadaddr < from
++					&& (tfrom == NULL || tfrom->loadaddr < tpnt->loadaddr))
++				tfrom = tpnt;
++		}
+ 	}
+ 	for(rpnt = _dl_symbol_tables; rpnt && rpnt->next; rpnt=rpnt->next);
+ 
+@@ -233,11 +237,8 @@
+ 		runp->tpnt->init_fini = NULL; /* clear any previous dependcies */
+ 		for (dpnt = (ElfW(Dyn) *) runp->tpnt->dynamic_addr; dpnt->d_tag; dpnt++) {
+ 			if (dpnt->d_tag == DT_NEEDED) {
+-				char *name;
+-
+ 				lpntstr = (char*) (runp->tpnt->dynamic_info[DT_STRTAB] +
+ 						dpnt->d_un.d_val);
+-				name = _dl_get_last_path_component(lpntstr);
+ 				_dl_if_debug_print("Trying to load '%s', needed by '%s'\n",
+ 						lpntstr, runp->tpnt->libname);
+ 				tpnt1 = _dl_load_shared_library(0, &rpnt, runp->tpnt, lpntstr, 0);
+@@ -297,14 +298,14 @@
+ 	}
+ 	/* Sort the INIT/FINI list in dependency order. */
+ 	for (runp2 = dep_list; runp2; runp2 = runp2->next) {
+-		int j, k;
++		unsigned int j, k;
+ 		for (j = 0; init_fini_list[j] != runp2->tpnt; ++j)
+ 			/* Empty */;
+ 		for (k = j + 1; k < nlist; ++k) {
+-			struct init_fini_list *runp = init_fini_list[k]->init_fini;
++			struct init_fini_list *ele = init_fini_list[k]->init_fini;
+ 
+-			for (; runp; runp = runp->next) {
+-				if (runp->tpnt == runp2->tpnt) {
++			for (; ele; ele = ele->next) {
++				if (ele->tpnt == runp2->tpnt) {
+ 					struct elf_resolve *here = init_fini_list[k];
+ 					_dl_if_debug_print("Move %s from pos %d to %d in INIT/FINI list.\n", here->libname, k, j);
+ 					for (i = (k - j); i; --i)
+@@ -367,7 +368,7 @@
+ 		}
+ 	}
+ 
+-#if defined (__LIBDL_SHARED__)
++#ifdef SHARED
+ 	/* Run the ctors and setup the dtors */
+ 	for (i = nlist; i; --i) {
+ 		tpnt = init_fini_list[i-1];
+@@ -384,8 +385,11 @@
+ 				(*dl_elf_func) ();
+ 			}
+ 		}
++
++		_dl_run_init_array(tpnt);
+ 	}
+-#endif
++#endif /* SHARED */
++
+ 	_dl_unmap_cache();
+ 	return (void *) dyn_chain;
+ 
+@@ -450,9 +454,16 @@
+ 	return ret;
+ }
+ 
++#if 0
++void *dlvsym(void *vhandle, const char *name, const char *version)
++{
++	return dlsym(vhandle, name);
++}
++#endif
++
+ static int do_dlclose(void *vhandle, int need_fini)
+ {
+-	struct dyn_elf *rpnt, *rpnt1;
++	struct dyn_elf *rpnt, *rpnt1, *rpnt1_tmp;
+ 	struct init_fini_list *runp, *tmp;
+ 	ElfW(Phdr) *ppnt;
+ 	struct elf_resolve *tpnt, *run_tpnt;
+@@ -460,7 +471,7 @@
+ 	void (*dl_brk) (void);
+ 	struct dyn_elf *handle;
+ 	unsigned int end;
+-	int i = 0, j;
++	unsigned int i, j;
+ 
+ 	handle = (struct dyn_elf *) vhandle;
+ 	if (handle == _dl_symbol_tables)
+@@ -491,13 +502,21 @@
+ 	for (j = 0; j < handle->init_fini.nlist; ++j) {
+ 		tpnt = handle->init_fini.init_fini[j];
+ 		if (--tpnt->usage_count == 0) {
+-			if (tpnt->dynamic_info[DT_FINI] && need_fini &&
++			if ((tpnt->dynamic_info[DT_FINI]
++			     || tpnt->dynamic_info[DT_FINI_ARRAY])
++			    && need_fini &&
+ 			    !(tpnt->init_flag & FINI_FUNCS_CALLED)) {
+ 				tpnt->init_flag |= FINI_FUNCS_CALLED;
+-				dl_elf_fini = (int (*)(void)) (tpnt->loadaddr + tpnt->dynamic_info[DT_FINI]);
+-				_dl_if_debug_print("running dtors for library %s at '%p'\n",
+-						tpnt->libname, dl_elf_fini);
+-				(*dl_elf_fini) ();
++#ifdef SHARED
++				_dl_run_fini_array(tpnt);
++#endif
++
++				if (tpnt->dynamic_info[DT_FINI]) {
++					dl_elf_fini = (int (*)(void)) (tpnt->loadaddr + tpnt->dynamic_info[DT_FINI]);
++					_dl_if_debug_print("running dtors for library %s at '%p'\n",
++							tpnt->libname, dl_elf_fini);
++					(*dl_elf_fini) ();
++				}
+ 			}
+ 
+ 			_dl_if_debug_print("unmapping: %s\n", tpnt->libname);
+@@ -541,8 +560,9 @@
+ 					for (rpnt1 = _dl_symbol_tables; rpnt1->next; rpnt1 = rpnt1->next) {
+ 						if (rpnt1->next->dyn == tpnt) {
+ 							_dl_if_debug_print("removing symbol_tables: %s\n", tpnt->libname);
++							rpnt1_tmp = rpnt1->next->next;
+ 							free(rpnt1->next);
+-							rpnt1->next = rpnt1->next->next;
++							rpnt1->next = rpnt1_tmp;
+ 							if (rpnt1->next)
+ 								rpnt1->next->prev = rpnt1;
+ 							break;
+@@ -588,8 +608,9 @@
+ }
+ 
+ /*
+- * Dump information to stderrr about the current loaded modules
++ * Dump information to stderr about the current loaded modules
+  */
++#if 1
+ static char *type[] = { "Lib", "Exe", "Int", "Mod" };
+ 
+ int dlinfo(void)
+@@ -660,16 +681,14 @@
+ 	{
+ 		char *strtab;
+ 		ElfW(Sym) *symtab;
+-		int hn, si;
+-		int sf;
+-		int sn = 0;
++		unsigned int hn, si, sn, sf;
+ 		ElfW(Addr) sa;
+ 
+ 		sa = 0;
+ 		symtab = (ElfW(Sym) *) (pelf->dynamic_info[DT_SYMTAB]);
+ 		strtab = (char *) (pelf->dynamic_info[DT_STRTAB]);
+ 
+-		sf = 0;
++		sf = sn = 0;
+ 		for (hn = 0; hn < pelf->nbucket; hn++) {
+ 			for (si = pelf->elf_buckets[hn]; si; si = pelf->chains[si]) {
+ 				ElfW(Addr) symbol_addr;
+@@ -696,3 +715,4 @@
+ 		return 1;
+ 	}
+ }
++#endif
+diff -urN uClibc-0.9.28.orig/libc/sysdeps/linux/i386/bits/syscalls.h uClibc-0.9.28/libc/sysdeps/linux/i386/bits/syscalls.h
+--- uClibc-0.9.28.orig/libc/sysdeps/linux/i386/bits/syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/libc/sysdeps/linux/i386/bits/syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -4,17 +4,15 @@
+ # error "Never use <bits/syscalls.h> directly; include <sys/syscall.h> instead."
+ #endif
+ 
++#include <errno.h>
++
+ /* This includes the `__NR_<name>' syscall numbers taken from the Linux kernel
+  * header files.  It also defines the traditional `SYS_<name>' macros for older
+  * programs.  */
+ #include <bits/sysnum.h>
+ 
+-#ifndef __set_errno
+-# define __set_errno(val) (*__errno_location ()) = (val)
+-#endif
+-
+ /*
+-   Some of the sneaky macros in the code were taken from 
++   Some of the sneaky macros in the code were taken from
+    glibc-2.2.5/sysdeps/unix/sysv/linux/i386/sysdep.h
+ */
+ 
+@@ -22,7 +20,8 @@
+ 
+ /* We need some help from the assembler to generate optimal code.  We
+    define some macros here which later will be used.  */
+-asm (".L__X'%ebx = 1\n\t"
++
++__asm__ (".L__X'%ebx = 1\n\t"
+      ".L__X'%ecx = 2\n\t"
+      ".L__X'%edx = 2\n\t"
+      ".L__X'%eax = 3\n\t"
+@@ -56,7 +55,6 @@
+      ".endif\n\t"
+      ".endm\n\t");
+ 
+-
+ #undef _syscall0
+ #define _syscall0(type,name) \
+ type name(void) \
+@@ -90,7 +88,7 @@
+ type name (type1 arg1, type2 arg2, type3 arg3, type4 arg4) \
+ { \
+ return (type) (INLINE_SYSCALL(name, 4, arg1, arg2, arg3, arg4)); \
+-} 
++}
+ 
+ #undef _syscall5
+ #define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, \
+@@ -100,10 +98,18 @@
+ return (type) (INLINE_SYSCALL(name, 5, arg1, arg2, arg3, arg4, arg5)); \
+ }
+ 
++#undef _syscall6
++#define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4, \
++	  type5,arg5,type6,arg6) \
++type name (type1 arg1,type2 arg2,type3 arg3,type4 arg4,type5 arg5, type6 arg6) \
++{ \
++return (type) (INLINE_SYSCALL(name, 6, arg1, arg2, arg3, arg4, arg5, arg6)); \
++}
++
+ #define INLINE_SYSCALL(name, nr, args...) \
+   ({									      \
+     unsigned int resultvar;						      \
+-    asm volatile (							      \
++    __asm__ __volatile__ (							      \
+     LOADARGS_##nr							      \
+     "movl %1, %%eax\n\t"						      \
+     "int $0x80\n\t"							      \
+@@ -125,6 +131,7 @@
+ #define LOADARGS_3	LOADARGS_1
+ #define LOADARGS_4	LOADARGS_1
+ #define LOADARGS_5	LOADARGS_1
++#define LOADARGS_6	LOADARGS_1 "push %%ebp ; movl %7, %%ebp\n\t"
+ 
+ #define RESTOREARGS_0
+ #define RESTOREARGS_1 \
+@@ -133,6 +140,7 @@
+ #define RESTOREARGS_3	RESTOREARGS_1
+ #define RESTOREARGS_4	RESTOREARGS_1
+ #define RESTOREARGS_5	RESTOREARGS_1
++#define RESTOREARGS_6	"pop %%ebp\n\t" RESTOREARGS_1
+ 
+ #define ASMFMT_0()
+ #define ASMFMT_1(arg1) \
+@@ -145,7 +153,8 @@
+ 	, "aD" (arg1), "c" (arg2), "d" (arg3), "S" (arg4)
+ #define ASMFMT_5(arg1, arg2, arg3, arg4, arg5) \
+ 	, "a" (arg1), "c" (arg2), "d" (arg3), "S" (arg4), "D" (arg5)
+-
++#define ASMFMT_6(arg1, arg2, arg3, arg4, arg5, arg6) \
++	, "a" (arg1), "c" (arg2), "d" (arg3), "S" (arg4), "D" (arg5), "m" (arg6)
+ 
+ #endif /* __ASSEMBLER__ */
+ #endif /* _BITS_SYSCALLS_H */
+diff -urN uClibc-0.9.28.orig/libc/sysdeps/linux/powerpc/bits/syscalls.h uClibc-0.9.28/libc/sysdeps/linux/powerpc/bits/syscalls.h
+--- uClibc-0.9.28.orig/libc/sysdeps/linux/powerpc/bits/syscalls.h	2006-05-02 10:47:27.000000000 -0600
++++ uClibc-0.9.28/libc/sysdeps/linux/powerpc/bits/syscalls.h	2006-04-28 00:14:35.000000000 -0600
+@@ -5,67 +5,164 @@
+ # error "Never use <bits/syscalls.h> directly; include <sys/syscall.h> instead."
+ #endif
+ 
++#include <errno.h>
++
+ /* This includes the `__NR_<name>' syscall numbers taken from the Linux kernel
+  * header files.  It also defines the traditional `SYS_<name>' macros for older
+  * programs.  */
+ #include <bits/sysnum.h>
+ 
+-
+-#define __STRINGIFY(s) __STRINGIFY2 (s)
+-#define __STRINGIFY2(s) #s
+-
+-#undef JUMPTARGET
+-#ifdef __PIC__
+-#define __MAKE_SYSCALL	__STRINGIFY(__uClibc_syscall@plt)
++/* Define a macro which expands inline into the wrapper code for a system
++   call. This use is for internal calls that do not need to handle errors
++   normally. It will never touch errno.
++   On powerpc a system call basically clobbers the same registers like a
++   function call, with the exception of LR (which is needed for the
++   "sc; bnslr+" sequence) and CR (where only CR0.SO is clobbered to signal
++   an error return status).  */
++
++# undef INLINE_SYSCALL
++#if 1
++# define INLINE_SYSCALL(name, nr, args...)				\
++  ({									\
++    INTERNAL_SYSCALL_DECL (sc_err);					\
++    long int sc_ret = INTERNAL_SYSCALL (name, sc_err, nr, args);	\
++    if (INTERNAL_SYSCALL_ERROR_P (sc_ret, sc_err))			\
++      {									\
++	__set_errno (INTERNAL_SYSCALL_ERRNO (sc_ret, sc_err));		\
++	sc_ret = -1L;							\
++      }									\
++    sc_ret;								\
++  })
+ #else
+-#define __MAKE_SYSCALL	__STRINGIFY(__uClibc_syscall)
++# define INLINE_SYSCALL(name, nr, args...)				\
++  ({									\
++    INTERNAL_SYSCALL_DECL (sc_err);					\
++    long int sc_ret = INTERNAL_SYSCALL (name, sc_err, nr, args);	\
++    if (INTERNAL_SYSCALL_ERROR_P (sc_ret, sc_err))			\
++      {									\
++	sc_ret = __syscall_error(INTERNAL_SYSCALL_ERRNO (sc_ret, sc_err));\
++      }									\
++    sc_ret;								\
++  })
+ #endif
+ 
+-#define unified_syscall_body(name)			\
+-	__asm__ (					\
+-	".section \".text\"\n\t"			\
+-	".align 2\n\t"					\
+-	".globl " __STRINGIFY(name) "\n\t"		\
+-	".type " __STRINGIFY(name) ",@function\n\t"	\
+-	#name":\tli 0," __STRINGIFY(__NR_##name) "\n\t"	\
+-	"b " __MAKE_SYSCALL "\n\t"		\
+-	".size\t" __STRINGIFY(name) ",.""-" __STRINGIFY(name) "\n"	\
+-	)
++/* Define a macro which expands inline into the wrapper code for a system
++   call. This use is for internal calls that do not need to handle errors
++   normally. It will never touch errno.
++   On powerpc a system call basically clobbers the same registers like a
++   function call, with the exception of LR (which is needed for the
++   "sc; bnslr+" sequence) and CR (where only CR0.SO is clobbered to signal
++   an error return status).  */
++
++# undef INTERNAL_SYSCALL_DECL
++# define INTERNAL_SYSCALL_DECL(err) long int err
++
++# undef INTERNAL_SYSCALL
++# define INTERNAL_SYSCALL_NCS(name, err, nr, args...)			\
++  ({									\
++    register long int r0  __asm__ ("r0");				\
++    register long int r3  __asm__ ("r3");				\
++    register long int r4  __asm__ ("r4");				\
++    register long int r5  __asm__ ("r5");				\
++    register long int r6  __asm__ ("r6");				\
++    register long int r7  __asm__ ("r7");				\
++    register long int r8  __asm__ ("r8");				\
++    register long int r9  __asm__ ("r9");				\
++    register long int r10 __asm__ ("r10");				\
++    register long int r11 __asm__ ("r11");				\
++    register long int r12 __asm__ ("r12");				\
++    LOADARGS_##nr(name, args);						\
++    __asm__ __volatile__						\
++      ("sc   \n\t"							\
++       "mfcr %0"							\
++       : "=&r" (r0),							\
++	 "=&r" (r3), "=&r" (r4), "=&r" (r5),  "=&r" (r6),  "=&r" (r7),	\
++	 "=&r" (r8), "=&r" (r9), "=&r" (r10), "=&r" (r11), "=&r" (r12)	\
++       : ASM_INPUT_##nr							\
++       : "cr0", "ctr", "memory");					\
++    err = r0;								\
++    (int) r3;								\
++  })
++# define INTERNAL_SYSCALL(name, err, nr, args...) \
++  INTERNAL_SYSCALL_NCS (__NR_##name, err, nr, ##args)
++
++# undef INTERNAL_SYSCALL_ERROR_P
++# define INTERNAL_SYSCALL_ERROR_P(val, err) \
++  ((void) (val), __builtin_expect ((err) & (1 << 28), 0))
++
++# undef INTERNAL_SYSCALL_ERRNO
++# define INTERNAL_SYSCALL_ERRNO(val, err)     (val)
++
++# define LOADARGS_0(name, dummy) \
++	r0 = (long int)name
++# define LOADARGS_1(name, __arg1) \
++	LOADARGS_0(name, 0); \
++	r3 = (long int)__arg1
++# define LOADARGS_2(name, __arg1, __arg2) \
++	LOADARGS_1(name, __arg1); \
++	r4 = (long int)__arg2
++# define LOADARGS_3(name, __arg1, __arg2, __arg3) \
++	LOADARGS_2(name, __arg1, __arg2); \
++	r5 = (long int)__arg3
++# define LOADARGS_4(name, __arg1, __arg2, __arg3, __arg4) \
++	LOADARGS_3(name, __arg1, __arg2, __arg3); \
++	r6 = (long int)__arg4
++# define LOADARGS_5(name, __arg1, __arg2, __arg3, __arg4, __arg5) \
++	LOADARGS_4(name, __arg1, __arg2, __arg3, __arg4); \
++	r7 = (long int)__arg5
++# define LOADARGS_6(name, __arg1, __arg2, __arg3, __arg4, __arg5, __arg6) \
++	LOADARGS_5(name, __arg1, __arg2, __arg3, __arg4, __arg5); \
++	r8 = (long int)__arg6
++
++# define ASM_INPUT_0 "0" (r0)
++# define ASM_INPUT_1 ASM_INPUT_0, "1" (r3)
++# define ASM_INPUT_2 ASM_INPUT_1, "2" (r4)
++# define ASM_INPUT_3 ASM_INPUT_2, "3" (r5)
++# define ASM_INPUT_4 ASM_INPUT_3, "4" (r6)
++# define ASM_INPUT_5 ASM_INPUT_4, "5" (r7)
++# define ASM_INPUT_6 ASM_INPUT_5, "6" (r8)
+ 
+ #undef _syscall0
+-#define _syscall0(type,name)				\
+-type name(void);					\
+-unified_syscall_body(name)
++#define _syscall0(type,name) \
++type name(void){ \
++  return (type) INLINE_SYSCALL(name, 0); \
++}
+ 
+ #undef _syscall1
+ #define _syscall1(type,name,type1,arg1) \
+-type name(type1 arg1);  \
+-unified_syscall_body(name)
++type name(type1 arg1){  \
++  return (type) INLINE_SYSCALL(name, 1, arg1); \
++}
+ 
+ #undef _syscall2
+ #define _syscall2(type,name,type1,arg1,type2,arg2) \
+-type name(type1 arg1, type2 arg2);      \
+-unified_syscall_body(name)
++type name(type1 arg1, type2 arg2){      \
++  return (type) INLINE_SYSCALL(name, 2, arg1, arg2); \
++}
+ 
+ #undef _syscall3
+ #define _syscall3(type,name,type1,arg1,type2,arg2,type3,arg3) \
+-type name(type1 arg1, type2 arg2, type3 arg3);  \
+-unified_syscall_body(name)
++type name(type1 arg1, type2 arg2, type3 arg3){  \
++  return (type) INLINE_SYSCALL(name, 3, arg1, arg2, arg3); \
++}
+ 
+ #undef _syscall4
+ #define _syscall4(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4) \
+-type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4);      \
+-unified_syscall_body(name)
++type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4){      \
++  return (type) INLINE_SYSCALL(name, 4, arg1, arg2, arg3, arg4); \
++}
+ 
+ #undef _syscall5
+ #define _syscall5(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5) \
+-type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5);  \
+-unified_syscall_body(name)
++type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5){  \
++  return (type) INLINE_SYSCALL(name, 5, arg1, arg2, arg3, arg4, arg5); \
++}
+ 
+ #undef _syscall6
+ #define _syscall6(type,name,type1,arg1,type2,arg2,type3,arg3,type4,arg4,type5,arg5,type6,arg6) \
+-type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6);      \
+-unified_syscall_body(name)
++type name(type1 arg1, type2 arg2, type3 arg3, type4 arg4, type5 arg5, type6 arg6){      \
++  return (type) INLINE_SYSCALL(name, 6, arg1, arg2, arg3, arg4, arg5, arg6); \
++}
+ 
+ #endif /* _BITS_SYSCALLS_H */
+ 

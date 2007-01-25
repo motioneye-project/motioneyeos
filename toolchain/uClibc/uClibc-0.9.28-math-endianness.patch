@@ -1,0 +1,247 @@
+Index: uclibc/libm/fp_private.h
+===================================================================
+--- uclibc/libm/fp_private.h	(revision 12879)
++++ uclibc/libm/fp_private.h	(working copy)
+@@ -70,10 +70,11 @@
+ *******************************************************************************/
+ 
+ #include <stdint.h>
++#include <endian.h>
+ 
+ typedef struct                   /*      Hex representation of a double.      */
+       {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+       uint32_t high;
+       uint32_t low;
+ #else
+Index: uclibc/libm/powerpc/s_ceil.c
+===================================================================
+--- uclibc/libm/powerpc/s_ceil.c	(revision 12879)
++++ uclibc/libm/powerpc/s_ceil.c	(working copy)
+@@ -21,13 +21,15 @@
+ *                                                                              *
+ *******************************************************************************/
+ 
++#include <endian.h>
++
+ static const double        twoTo52  = 4503599627370496.0;
+ static const unsigned long signMask = 0x80000000ul;
+ 
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+ 	unsigned long int hi;
+ 	unsigned long int lo;
+ #else
+Index: uclibc/libm/powerpc/s_ldexp.c
+===================================================================
+--- uclibc/libm/powerpc/s_ldexp.c	(revision 12879)
++++ uclibc/libm/powerpc/s_ldexp.c	(working copy)
+@@ -21,11 +21,12 @@
+ 
+ #include <limits.h>
+ #include <math.h>
++#include <endian.h>
+ 
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+         unsigned long int hi;
+         unsigned long int lo;
+ #else
+Index: uclibc/libm/powerpc/s_rint.c
+===================================================================
+--- uclibc/libm/powerpc/s_rint.c	(revision 12879)
++++ uclibc/libm/powerpc/s_rint.c	(working copy)
+@@ -46,13 +46,14 @@
+ 
+ #include <limits.h>
+ #include <math.h>
++#include <endian.h>
+ 
+ #define      SET_INVALID      0x01000000UL
+ 
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+         unsigned long int hi;
+         unsigned long int lo;
+ #else
+Index: uclibc/libm/powerpc/s_floor.c
+===================================================================
+--- uclibc/libm/powerpc/s_floor.c	(revision 12879)
++++ uclibc/libm/powerpc/s_floor.c	(working copy)
+@@ -21,13 +21,15 @@
+ *                                                                              *
+ *******************************************************************************/
+ 
++#include <endian.h>
++
+ static const double        twoTo52  = 4503599627370496.0;
+ static const unsigned long signMask = 0x80000000ul;
+ 
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+ 	unsigned long int hi;
+ 	unsigned long int lo;
+ #else
+Index: uclibc/libm/powerpc/s_logb.c
+===================================================================
+--- uclibc/libm/powerpc/s_logb.c	(revision 12879)
++++ uclibc/libm/powerpc/s_logb.c	(working copy)
+@@ -32,10 +32,12 @@
+ *     Standard 754.                                                            *
+ *******************************************************************************/
+ 
++#include <endian.h>
++
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+         unsigned long int hi;
+         unsigned long int lo;
+ #else
+Index: uclibc/libm/powerpc/s_frexp.c
+===================================================================
+--- uclibc/libm/powerpc/s_frexp.c	(revision 12879)
++++ uclibc/libm/powerpc/s_frexp.c	(working copy)
+@@ -21,13 +21,14 @@
+ 
+ #include <limits.h>
+ #include <math.h>
++#include <endian.h>
+ 
+ static const double two54 =  1.80143985094819840000e+16; /* 0x43500000, 0x00000000 */
+ 
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+         unsigned long int hi;
+         unsigned long int lo;
+ #else
+Index: uclibc/libm/powerpc/s_modf.c
+===================================================================
+--- uclibc/libm/powerpc/s_modf.c	(revision 12879)
++++ uclibc/libm/powerpc/s_modf.c	(working copy)
+@@ -45,13 +45,14 @@
+ 
+ #include <limits.h>
+ #include <math.h>
++#include <endian.h>
+ 
+ #define      SET_INVALID      0x01000000UL
+ 
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+         unsigned long int hi;
+         unsigned long int lo;
+ #else
+Index: uclibc/libm/powerpc/w_scalb.c
+===================================================================
+--- uclibc/libm/powerpc/w_scalb.c	(revision 12879)
++++ uclibc/libm/powerpc/w_scalb.c	(working copy)
+@@ -19,10 +19,12 @@
+ **
+ ***********************************************************************/
+ 
++#include <endian.h>
++
+ typedef union
+       {
+       struct {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+         unsigned long int hi;
+         unsigned long int lo;
+ #else
+Index: uclibc/libc/string/sh64/strcpy.S
+===================================================================
+--- uclibc/libc/string/sh64/strcpy.S	(revision 12879)
++++ uclibc/libc/string/sh64/strcpy.S	(working copy)
+@@ -6,7 +6,9 @@
+ !
+ ! SH5 code Copyright 2002 SuperH Ltd.
+ 
+-#ifdef __LITTLE_ENDIAN__
++#include <endian.h>
++
++#if __BYTE_ORDER == __LITTLE_ENDIAN
+ #define SHHI shlld
+ #define SHLO shlrd
+ #else
+@@ -67,7 +69,7 @@
+ 	add r5, r63, r4
+ 	addi r0, 8, r0
+ shortstring:
+-#ifndef __LITTLE_ENDIAN__
++#if __BYTE_ORDER != __LITTLE_ENDIAN
+ 	pta/l shortstring2,tr1
+ 	byterev r4,r4
+ #endif
+Index: uclibc/libc/string/sh64/memset.S
+===================================================================
+--- uclibc/libc/string/sh64/memset.S	(revision 12879)
++++ uclibc/libc/string/sh64/memset.S	(working copy)
+@@ -9,7 +9,9 @@
+ ! Copyright 2002 SuperH Ltd.
+ !
+ 
+-#ifdef __LITTLE_ENDIAN__
++#include <endian.h>
++
++#if __BYTE_ORDER == __LITTLE_ENDIAN
+ #define SHHI shlld
+ #define SHLO shlrd
+ #else
+Index: uclibc/libc/sysdeps/linux/sh/bits/kernel_stat.h
+===================================================================
+--- uclibc/libc/sysdeps/linux/sh/bits/kernel_stat.h	(revision 12879)
++++ uclibc/libc/sysdeps/linux/sh/bits/kernel_stat.h	(working copy)
+@@ -30,10 +30,10 @@
+ };
+ 
+ struct kernel_stat64 {
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+ 	unsigned char   __pad0b[6];
+ 	unsigned short	st_dev;
+-#elif defined(__LITTLE_ENDIAN__)
++#elif (__BYTE_ORDER == __LITTLE_ENDIAN)
+ 	unsigned short	st_dev;
+ 	unsigned char	__pad0b[6];
+ #else
+@@ -48,7 +48,7 @@
+ 	unsigned long	st_uid;
+ 	unsigned long	st_gid;
+ 
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+ 	unsigned char	__pad3b[6];
+ 	unsigned short	st_rdev;
+ #else /* Must be little */
+@@ -60,7 +60,7 @@
+ 	long long	st_size;
+ 	unsigned long	st_blksize;
+ 
+-#if defined(__BIG_ENDIAN__)
++#if (__BYTE_ORDER == __BIG_ENDIAN)
+ 	unsigned long	__pad4;		/* Future possible st_blocks hi bits */
+ 	unsigned long	st_blocks;	/* Number 512-byte blocks allocated. */
+ #else /* Must be little */
