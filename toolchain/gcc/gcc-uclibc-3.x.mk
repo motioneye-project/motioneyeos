@@ -333,7 +333,8 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 	(cd $(GCC_BUILD_DIR3); rm -rf config.cache ; \
 		PATH=$(TARGET_PATH) \
 		CC_FOR_BUILD="$(HOSTCC)" \
-		BOOT_CFLAGS="$(TARGET_CFLAGS)" \
+		CFLAGS_FOR_BUILD="-g -O2" \
+		$(TARGET_GCC_FLAGS) \
 		$(GCC_DIR)/configure \
 		--prefix=/usr \
 		--build=$(GNU_HOST_NAME) \
@@ -342,7 +343,6 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		--enable-languages=$(GCC_TARGET_LANGUAGES) \
 		--with-gxx-include-dir=/usr/include/c++ \
 		--disable-__cxa_atexit \
-		--enable-target-optspace \
 		--with-gnu-ld \
 		$(GCC_SHARED_LIBGCC) \
 		$(GCC_WITH_TARGET_GMP) \
@@ -354,12 +354,13 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		$(GCC_WITH_CPU) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
 		$(GCC_USE_SJLJ_EXCEPTIONS) \
 		$(DISABLE_LARGEFILE) \
-		$(EXTRA_GCC_CONFIG_OPTIONS));
+		$(EXTRA_GCC_CONFIG_OPTIONS) \
+		$(EXTRA_TARGET_GCC_CONFIG_OPTIONS));
 	touch $@
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
 	PATH=$(TARGET_PATH) \
-	$(MAKE) $(TARGET_GCC_ARGS) -C $(GCC_BUILD_DIR3) all
+	$(MAKE) -C $(GCC_BUILD_DIR3) all
 	touch $@
 
 #

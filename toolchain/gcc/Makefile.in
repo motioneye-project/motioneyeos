@@ -30,17 +30,29 @@ SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
 else
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
 endif
+
 # again... there must be a better way
 ifeq ($(findstring 4.,$(GCC_VERSION)),4.)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
+ifeq ($(BR2_SOFT_FLOAT_FP),y)
+TARGET_SOFT_FLOAT:=-mfloat-abi=softfp
+else # no fp at all
+TARGET_SOFT_FLOAT:=-mfloat-abi=soft
 endif
+else # not gcc-4.x
 TARGET_SOFT_FLOAT:=-msoft-float
+endif
 ARCH_FPU_SUFFIX:=_nofpu
-else
+else # no softfloat support
 SOFT_FLOAT_CONFIG_OPTION:=
 TARGET_SOFT_FLOAT:=
 ARCH_FPU_SUFFIX:=
 endif
+
+TARGET_GCC_FLAGS= CFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
+	CXXFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
+	CFLAGS="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
+	BOOT_CFLAGS="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)"
 
 ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
 TARGETS+=gcc_target
