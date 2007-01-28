@@ -14,7 +14,11 @@
 
 LINKER="$0.real"            # the original renamed-linker
 ELF2FLT="`expr $0 : '\(.*\)ld'`elf2flt"
+NM="`expr $0 : '\(.*\)ld'`nm"
 TOOLDIR="`dirname $0`"      # let gcc find the tools for us
+OBJCOPY="`expr $0 : '\(.*\)ld'`objcopy"
+[ -f "$OBJCOPY" ] || OBJCOPY="$TOOLDIR/../../bin/@target_alias@-objcopy"
+OBJDUMP="`expr $OBJCOPY : '\(.*\)objcopy'`objdump"
 LDSCRIPTPATH="@binutils_ldscript_dir@"	# and the scripts
 SHARED_ID=""
 NEWLDSCRIPT=""
@@ -92,10 +96,11 @@ then
 		ARG1="$ARG1 $FINAL_ONLY"
 		NEWLDSCRIPT=`mktemp /tmp/flt-XXXXXX`
 		SEDOP=" -e s/^R_RODAT// -e /^W_RODAT/d"
+		OBJCOPYOP=""
 		if [ "$MOVDAT" ]
 		then
 			$LINKER -r -d -o "$OFILE.elf2flt" $ARG1  || exit $?
-			if [ "`@target_alias@-objdump -h "$OFILE.elf2flt" | \
+			if [ "`$OBJDUMP -h "$OFILE.elf2flt" | \
 					egrep -A1 '[.]rodata' | grep RELOC`" ]
 			then
 				echo "warning: .rodata section contains relocations"
@@ -117,6 +122,7 @@ then
 				# Non application modules enter via main not _start
 				#    SEDOP="$SEDOP -e 's/ENTRY (_start)/ENTRY (main)/'"
 				SEDOP="$SEDOP -e s/\\(ENTRY.\\)(_start)/\1(lib_main)/"
+				OBJCOPYOP="--localize-hidden --weaken"
 			fi
 
 			# Provide the magic parameter that defines the library data segment pointer offset
@@ -125,6 +131,12 @@ then
 			    *)     GOT_OFFSET="_current_shared_library_a5_offset_";;
 			esac
 			ARG1="$ARG1 -defsym $GOT_OFFSET=`expr ${SHARED_ID} '*' -4 - 4`"
+		fi
+		if [ "@emit_relocs@" = "yes" ]
+		then
+			SEDOP="$SEDOP -e s/^SINGLE_LINK://"
+		else
+			SEDOP="$SEDOP -e /^SINGLE_LINK:/d"
 		fi
 		
 		# provide a default linker script, we usually need one
@@ -143,23 +155,56 @@ then
 			LDSCRIPT="$NEWLDSCRIPT"
 		fi
 
-		if [ "@got_check@" = "no" ]
+		if [ "@emit_relocs@" = "yes" ]
 		then
-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -d -o "$OFILE.elf" $ARG1         ||exit $?
-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" $ARG1                ||exit $?
+		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -q -o "$OFILE.gdb" $ARG1             ||exit $?
+		 RFILE="$OFILE.gdb"
+		 FLTFLAGS="$FLTFLAGS -a"
 		else
-		 $LINKER $EMUL -r -d -o "$OFILE.elf2flt" $ARG1                          ||exit $?
-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -o "$OFILE.elf" "$OFILE.elf2flt" ||exit $?
-		 $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" "$OFILE.elf2flt"     ||exit $?
-		 rm -f "$OFILE.elf2flt"
+		 if [ "@got_check@" = "no" ]
+		 then
+		  $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -d -o "$OFILE.elf" $ARG1         ||exit $?
+		  $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" $ARG1                ||exit $?
+		 else
+		  $LINKER $EMUL -r -d -o "$OFILE.elf2flt" $ARG1                          ||exit $?
+		  $LINKER $EMUL $SDIRS -T $LDSCRIPT -Ur -o "$OFILE.elf" "$OFILE.elf2flt" ||exit $?
+		  $LINKER $EMUL $SDIRS -T $LDSCRIPT -o "$OFILE.gdb" "$OFILE.elf2flt"     ||exit $?
+		  rm -f "$OFILE.elf2flt"
+		 fi
+		 RFILE="$OFILE.elf"
 		fi
-		if grep _GLOBAL_OFFSET_TABLE_ "$OFILE.gdb" > /dev/null 
+		if $NM "$OFILE.gdb" | grep _GLOBAL_OFFSET_TABLE_ > /dev/null 
 		then
-			$ELF2FLT $FLTFLAGS -o "$OFILE" -p "$OFILE.gdb" "$OFILE.elf" || exit $?
+			$ELF2FLT $FLTFLAGS -o "$OFILE" -p "$OFILE.gdb" "$RFILE" || exit $?
 		else
-			$ELF2FLT $FLTFLAGS -o "$OFILE" -r "$OFILE.elf" || exit $?
+			$ELF2FLT $FLTFLAGS -o "$OFILE" -r "$RFILE" || exit $?
 		fi
-		rm -f "$OFILE.elf"  # not needed for any reason
+		if [ "$OBJCOPYOP" ]
+		then
+		 if $OBJCOPY $OBJCOPYOP --help > /dev/null 2>&1
+		 then
+		  $OBJCOPY $OBJCOPYOP "$OFILE.gdb" ||exit $?
+		 else
+		  case " $OBJCOPYOP " in
+		  *" --localize-hidden "*)
+		    SYMS=`mktemp /tmp/flt-XXXXXX`
+		    $OBJDUMP --syms "$OFILE.gdb" > "$SYMS" ||exit $?
+		    sed -n 's/.*\(\.hidden\|\.internal\) \(.*\)/-L \2/p' < "$SYMS" > "$SYMS.hidden" ||exit $?
+		    if [ -s "$SYMS.hidden" ]
+		    then
+		     xargs ${VERBOSE:+-t} $OBJCOPY "$OFILE.gdb" < "$SYMS.hidden" ||exit $?
+		    fi
+		    rm -f "$SYMS" "$SYMS.hidden"
+		    ;;
+		  esac
+		  case " $OBJCOPYOP " in
+		  *" --weaken "*)
+		    $OBJCOPY --weaken "$OFILE.gdb" ||exit $?
+		    ;;
+		  esac
+		 fi
+		fi
+		[ "$RFILE" = "$OFILE.gdb" ] || rm -f "$RFILE"  # not needed for any reason
 		rm -f "$NEWLDSCRIPT"
 		exit 0
 	fi

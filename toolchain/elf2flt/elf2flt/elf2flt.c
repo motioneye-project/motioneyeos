@@ -6,6 +6,8 @@
  * ELF format file handling. Extended relocation support for all of
  * text and data.
  *
+ * (c) 2006  Support the -a (use_resolved) option for TARGET_arm.
+ *           Shaun Jackman <sjackman@gmail.com>
  * (c) 2004, Nios II support, Wentao Xu <wentao@microtronix.com>
  * (c) 2003, H8 support, ktrace <davidm@snapgear.com>
  * (c) 2003-2004, MicroBlaze support, John Williams <jwilliams@itee.uq.edu.au>
@@ -44,8 +46,10 @@
 #include <time.h>
 #ifndef WIN32
 #include <netinet/in.h> /* Consts and structs defined by the internet system */
+#define	BINARY_FILE_OPTS
 #else
 #include <winsock2.h>
+#define	BINARY_FILE_OPTS "b"
 #endif
 
 /* from $(INSTALLDIR)/include       */
@@ -306,119 +310,6 @@ add_com_to_bss(asymbol **symbol_table, long number_of_symbols, long bss_len)
 }  
 
 #ifdef TARGET_bfin
-/* stack to handle "arithmetic" relocations */
-#define RELOC_STACK_SIZE 100
-static bfd_vma reloc_stack[RELOC_STACK_SIZE];
-static unsigned int reloc_stack_tos = 0;
-static char sym_section_name[80];
-static asection *stack_sym_section = 0;
-
-static void
-reloc_stack_set_section(asection *section, const char *sym_section_name_in)
-{
-    /* TODO : we can add checks to make sure we do not
-       add different section names to the same arithmetic
-       expression.  */
-    strcpy(sym_section_name, sym_section_name_in);
-    stack_sym_section = section;
-}
-
-static const char *
-reloc_stack_get_section_name()
-{
-    return sym_section_name;
-}
-static asection *reloc_stack_get_section()
-{
-    return stack_sym_section;
-}
-
-#define is_reloc_stack_empty() ((reloc_stack_tos > 0)?0:1)
-
-static void
-reloc_stack_push(bfd_vma value)
-{
-  reloc_stack[reloc_stack_tos++] = value;
-}
-
-static bfd_vma
-reloc_stack_pop()
-{
-  return reloc_stack[--reloc_stack_tos];
-}
-
-static bfd_vma
-reloc_stack_operate(unsigned int oper)
-{
-    bfd_vma value;
-    switch(oper){
-    case 0xE2 :
-	value = reloc_stack[reloc_stack_tos - 2] + reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xE3 :
-	value = reloc_stack[reloc_stack_tos - 2] - reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xE4 :
-	value = reloc_stack[reloc_stack_tos - 2] * reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xE5 :
-	value = reloc_stack[reloc_stack_tos - 2] / reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xE6 :
-	value = reloc_stack[reloc_stack_tos - 2] % reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xE7 :
-	value = reloc_stack[reloc_stack_tos - 2] << reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xE8 :
-	value = reloc_stack[reloc_stack_tos - 2] >> reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xE9 :
-	value = reloc_stack[reloc_stack_tos - 2] & reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xEA :
-	value = reloc_stack[reloc_stack_tos - 2] | reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xEB :
-	value = reloc_stack[reloc_stack_tos - 2] ^ reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xEC :
-	value = reloc_stack[reloc_stack_tos - 2] && reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xED :
-	value = reloc_stack[reloc_stack_tos - 2] || reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 2;
-	break;
-    case 0xEF :
-	value = -reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos --;
-	break;
-    case 0xF0 :
-	value = ~reloc_stack[reloc_stack_tos - 1];
-	reloc_stack_tos -= 1;
-	break;
-    default :
-	fprintf(stderr, "bfin relocation : Internal bug\n");
-	return 0;
-    }
-
-    // now push the new value back on stack
-    reloc_stack_push(value);
-
-    return value;
-}
-
 /* FUNCTION : weak_und_symbol
    ABSTRACT : return true if symbol is weak and undefined.
 */
@@ -534,7 +425,7 @@ dump_symbols(symbols, number_of_symbols);
    * Also note that both the relocatable and absolute versions have this
    * terminator even though the relocatable one doesn't have the GOT!
    */
-  if (pic_with_got) {
+  if (pic_with_got && !use_resolved) {
     unsigned long *lp = (unsigned long *)data;
     /* Should call ntohl(*lp) here but is isn't going to matter */
     while (*lp != 0xffffffff) lp++;
@@ -682,16 +573,6 @@ dump_symbols(symbols, number_of_symbols);
 #endif /* USE_V850_RELOCS */
 
 			q = *p;
-#ifdef TARGET_bfin
-			if ((q->sym_ptr_ptr && *q->sym_ptr_ptr) &&
-			     (!is_reloc_stack_empty() && strstr((*(q->sym_ptr_ptr))->name, "operator"))){
-				/* must be an arith reloc ... get the value from the stack */
-				sym_name = (*(q->sym_ptr_ptr))->name;
-				sym_section = reloc_stack_get_section();
-				section_name = reloc_stack_get_section_name();
-			}
-			else
-#endif
 			if (q->sym_ptr_ptr && *q->sym_ptr_ptr) {
 				sym_name = (*(q->sym_ptr_ptr))->name;
 				sym_section = (*(q->sym_ptr_ptr))->section;
@@ -705,7 +586,7 @@ dump_symbols(symbols, number_of_symbols);
 			/* Adjust the address to account for the GOT table which wasn't
 			 * present in the relative file link.
 			 */
-			if (pic_with_got)
+			if (pic_with_got && !use_resolved)
 			  q->address += got_size;
 #endif
 
@@ -793,7 +674,7 @@ dump_symbols(symbols, number_of_symbols);
 								+ lo;
 						}
 					} else
-						goto bad_v850_reloc_err;
+						goto bad_resolved_reloc;
 					break;
 
 				case R_V850_LO16:
@@ -807,16 +688,37 @@ dump_symbols(symbols, number_of_symbols);
 					    && (p[-1]->addend == p[0]->addend))
 						break; /* not an error */
 					else
-						goto bad_v850_reloc_err;
+						goto bad_resolved_reloc;
 
 				case R_V850_HI16:
-				bad_v850_reloc_err:
-					printf("ERROR: reloc type %s unsupported in this context\n",
-					       q->howto->name);
-					bad_relocs++;
+					goto bad_resolved_reloc;
+				default:
+					goto good_32bit_resolved_reloc;
+#elif defined(TARGET_arm)
+				case R_ARM_ABS32:
+					relocation_needed = 1;
 					break;
-#endif /* TARGET_V850 */
-
+				case R_ARM_REL32:
+				case R_ARM_THM_PC11:
+				case R_ARM_THM_PC22:
+					relocation_needed = 0;
+					break;
+				default:
+					goto bad_resolved_reloc;
+#elif defined(TARGET_m68k)
+				case R_68K_32:
+					goto good_32bit_resolved_reloc;
+				case R_68K_PC32:
+				case R_68K_PC16:
+					/* The linker has already resolved
+					   PC relocs for us.  In PIC links,
+					   the symbol must be in the data
+					   segment.  */
+				case R_68K_NONE:
+					continue;
+				default:
+					goto bad_resolved_reloc;
+#else
 				default:
 					/* The default is to assume that the
 					   relocation is relative and has
@@ -825,6 +727,9 @@ dump_symbols(symbols, number_of_symbols);
 					   give an error by default, and
 					   require `safe' relocations to be
 					   enumberated explicitly?).  */
+					goto good_32bit_resolve_reloc;
+#endif
+				good_32bit_resolved_reloc:
 					if (bfd_big_endian (abs_bfd))
 						sym_addr =
 							(r_mem[0] << 24)
@@ -838,12 +743,19 @@ dump_symbols(symbols, number_of_symbols);
 							+ (r_mem[2] << 16)
 							+ (r_mem[3] << 24);
 					relocation_needed = 1;
+					break;
+
+				bad_resolved_reloc:
+					printf("ERROR: reloc type %s unsupported in this context\n",
+					       q->howto->name);
+					bad_relocs++;
+					break;
 				}
 			} else {
 				/* Calculate the sym address ourselves.  */
 				sym_reloc_size = bfd_get_reloc_size(q->howto);
 
-#if !defined(TARGET_h8300) && !defined(TARGET_e1) && !defined(TARGET_bfin)
+#if !defined(TARGET_h8300) && !defined(TARGET_e1) && !defined(TARGET_bfin) && !defined(TARGET_m68k)
 				if (sym_reloc_size != 4) {
 					printf("ERROR: bad reloc type %d size=%d for symbol=%s\n",
 							(*p)->howto->type, sym_reloc_size, sym_name);
@@ -861,6 +773,7 @@ dump_symbols(symbols, number_of_symbols);
 					sym_vma = bfd_section_vma(abs_bfd, sym_section);
 					sym_addr += sym_vma + q->addend;
 					break;
+				case R_68K_PC16:
 				case R_68K_PC32:
 					sym_vma = 0;
 					sym_addr += sym_vma + q->addend;
@@ -1278,14 +1191,12 @@ NIOS2_RELOC_ERR:
 				  sym_addr -= q->address; // make it PC relative 
 				  // implicitly assumes code section and symbol section are same
 				  break;
-				
+				case R_got:
+				    /* Ignore these.  */
+				    break;
+
 				case R_rimm16:
-				    if (is_reloc_stack_empty ())
-				    {
-					sym_addr += q->addend;
-				    } else {
-					sym_addr = reloc_stack_pop ();
-				    }
+				    sym_addr += q->addend;
 				    if(weak_und_symbol(sym_section->name, (*(q->sym_ptr_ptr))))
 					continue;
 				    if(0xFFFF0000 & sym_addr){
@@ -1315,11 +1226,8 @@ NIOS2_RELOC_ERR:
 				    else
 					hi_lo = FLAT_RELOC_PART_HI;
 				
-				    if (is_reloc_stack_empty ())
-					sym_addr += q->addend;
-				    else
-					sym_addr = reloc_stack_pop ();
-				    
+				    sym_addr += q->addend;
+
 				    flat_relocs = (uint32_t *)
 					(realloc (flat_relocs, (flat_reloc_count + 2) * sizeof (uint32_t)));
 				    reloc_count_incr = 1;
@@ -1356,10 +1264,8 @@ NIOS2_RELOC_ERR:
 				    break;
 				}
 				case R_byte4_data:
-				    if (is_reloc_stack_empty ())
-					sym_addr += q->addend;
-				    else
-					sym_addr = reloc_stack_pop ();
+				    sym_addr += q->addend;
+
 				    if (weak_und_symbol (sym_section->name, *q->sym_ptr_ptr))
 					continue;
 
@@ -1374,22 +1280,6 @@ NIOS2_RELOC_ERR:
 
 				    flat_reloc_count++;
 				    break;
-
-				case 0xE0: 
-				   /* push */
-				  sym_addr += q->addend;
-				  reloc_stack_push(sym_addr);
-				  reloc_stack_set_section(sym_section, section_name);
-				  break;
-
-				case 0xE1:
-				  /* const */
-				  reloc_stack_push(q->addend);
-				break;
-
-				case 0xE2 ... 0xF2:
-				  reloc_stack_operate((*p)->howto->type);
-				  break;
 
 #endif //TARGET_bfin
 
@@ -1622,17 +1512,20 @@ DIS29_RELOCATION:
 
 				tmp.l = *(unsigned long *)r_mem;
 				hl = tmp.c[i0] | (tmp.c[i1] << 8) | (tmp.c[i2] << 16);
-				if (((*p)->howto->type != R_ARM_PC24) &&
-				    ((*p)->howto->type != R_ARM_PLT32))
+				if (use_resolved ||
+					(((*p)->howto->type != R_ARM_PC24) &&
+					((*p)->howto->type != R_ARM_PLT32)))
 					hl |= (tmp.c[i3] << 24);
 				else if (tmp.c[i2] & 0x80)
 					hl |= 0xff000000; /* sign extend */
-				hl += sym_addr;
+				if (!use_resolved)
+					hl += sym_addr;
 				tmp.c[i0] = hl & 0xff;
 				tmp.c[i1] = (hl >> 8) & 0xff;
 				tmp.c[i2] = (hl >> 16) & 0xff;
-				if (((*p)->howto->type != R_ARM_PC24) &&
-				    ((*p)->howto->type != R_ARM_PLT32))
+				if (use_resolved ||
+					(((*p)->howto->type != R_ARM_PC24) &&
+					((*p)->howto->type != R_ARM_PLT32)))
 					tmp.c[i3] = (hl >> 24) & 0xff;
 				if ((*p)->howto->type == R_ARM_ABS32)
 					*(unsigned long *)r_mem = htonl(hl);
@@ -1733,6 +1626,18 @@ DIS29_RELOCATION:
 					/* do nothing */
 					break;
 #endif /* TARGET_nios2 */
+
+#if defined(TARGET_m68k)
+				case R_68K_PC16:
+					if (sym_addr < -0x8000 || sym_addr > 0x7fff) {
+						fprintf (stderr, "Relocation overflow for R_68K_PC16 relocation against %s\n", sym_name);
+						bad_relocs++;
+					} else {
+						r_mem[0] = (sym_addr >>  8) & 0xff;
+						r_mem[1] =  sym_addr        & 0xff;
+					}
+					break;
+#endif
 
 				default:
 					/* The alignment of the build host
@@ -1867,7 +1772,7 @@ static void write_zeroes (unsigned long num, FILE *stream)
   if (num > 0) {
     /* It'd be nice if we could just use fseek, but that doesn't seem to
        work for stdio output files.  */
-    bzero(zeroes, 1024);
+    memset(zeroes, 0x00, 1024);
     while (num > sizeof(zeroes)) {
       fwrite(zeroes, sizeof(zeroes), 1, stream);
       num -= sizeof(zeroes);
@@ -2157,7 +2062,7 @@ int main(int argc, char *argv[])
 	  | (compress ? (compress == 2 ? FLAT_FLAG_GZDATA : FLAT_FLAG_GZIP) : 0)
 	  );
   hdr.build_date = htonl((unsigned long)time(NULL));
-  bzero(hdr.filler, sizeof(hdr.filler));
+  memset(hdr.filler, 0x00, sizeof(hdr.filler));
 
   for (i=0; i<reloc_len; i++) reloc[i] = htonl(reloc[i]);
 
@@ -2194,7 +2099,7 @@ int main(int argc, char *argv[])
 				pclose(gf); \
 			else \
 				fclose(gf); \
-		if (!(gf = popen(cmd, "wb"))) { \
+		if (!(gf = popen(cmd, "w" BINARY_FILE_OPTS))) { \
 			fprintf(stderr, "Can't run cmd %s\n", cmd); \
 			exit(4); \
 		} \

@@ -25,6 +25,7 @@ SECTIONS {
 W_RODAT		*(.rodata)
 W_RODAT		*(.rodata1)
 W_RODAT		*(.rodata.*)
+W_RODAT		*(.gnu.linkonce.r*)
 
 		/* This is special code area at the end of the normal
 		   text section.  It contains a small lookup table at
@@ -53,7 +54,7 @@ W_RODAT		*(.rodata.*)
 R_RODAT		*(.rodata)
 R_RODAT		*(.rodata1)
 R_RODAT		*(.rodata.*)
-		*(.gnu.linkonce.r*)
+R_RODAT		*(.gnu.linkonce.r*)
 		*(.data)
 		*(.data1)
 		*(.data.*)
@@ -90,14 +91,47 @@ R_RODAT		*(.rodata.*)
 		. = ALIGN(4) ;
 		__CTOR_LIST__ = .;
 		LONG((__CTOR_END__ - __CTOR_LIST__) / 4 - 2)
-		*(.ctors)
+SINGLE_LINK:	/* gcc uses crtbegin.o to find the start of
+SINGLE_LINK:	   the constructors, so we make sure it is
+SINGLE_LINK:	   first.  Because this is a wildcard, it
+SINGLE_LINK:	   doesn't matter if the user does not
+SINGLE_LINK:	   actually link against crtbegin.o; the
+SINGLE_LINK:	   linker won't look for a file to match a
+SINGLE_LINK:	   wildcard.  The wildcard also means that it
+SINGLE_LINK:	   doesn't matter which directory crtbegin.o
+SINGLE_LINK:	   is in.  */
+SINGLE_LINK:	KEEP (*crtbegin*.o(.ctors))
+SINGLE_LINK:	/* We don't want to include the .ctor section from
+SINGLE_LINK:	   from the crtend.o file until after the sorted ctors.
+SINGLE_LINK:	   The .ctor section from the crtend file contains the
+SINGLE_LINK:	   end of ctors marker and it must be last */
+SINGLE_LINK:	KEEP (*(EXCLUDE_FILE (*crtend*.o ) .ctors))
+SINGLE_LINK:	KEEP (*(SORT(.ctors.*)))
+		KEEP (*(.ctors))
 		LONG(0)
 		__CTOR_END__ = .;
 		__DTOR_LIST__ = .;
 		LONG((__DTOR_END__ - __DTOR_LIST__) / 4 - 2)
-		*(.dtors)
+SINGLE_LINK:	KEEP (*crtbegin*.o(.dtors))
+SINGLE_LINK:	KEEP (*(EXCLUDE_FILE (*crtend*.o ) .dtors))
+SINGLE_LINK:	KEEP (*(SORT(.dtors.*)))
+		KEEP (*(.dtors))
 		LONG(0)
 		__DTOR_END__ = .;
+
+		PROVIDE (__preinit_array_start = .);
+		KEEP (*(.preinit_array))
+		PROVIDE (__preinit_array_end = .);
+
+		PROVIDE (__init_array_start = .);
+		KEEP (*(SORT(.init_array.*)))
+		KEEP (*(.init_array))
+		PROVIDE (__init_array_end = .);
+
+		PROVIDE (__fini_array_start = .);
+		KEEP (*(.fini_array))
+		KEEP (*(SORT(.fini_array.*)))
+		PROVIDE (__fini_array_end = .);
 
 		. = ALIGN(0x10) ; 
 		_edata = . ;

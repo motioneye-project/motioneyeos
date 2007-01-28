@@ -66,10 +66,10 @@ install:
 	$(INSTALL) -d $(bindir)
 	$(INSTALL) -d $(target_bindir)
 	$(INSTALL) -d $(target_libdir)
-	$(INSTALL) -s -m 755 $(PROG_FLTHDR) $(bindir)/$(TARGET)-$(PROG_FLTHDR)
-	$(INSTALL) -s -m 755 $(PROG_FLTHDR) $(target_bindir)/$(PROG_FLTHDR)
-	$(INSTALL) -s -m 755 $(PROG_ELF2FLT) $(bindir)/$(TARGET)-$(PROG_ELF2FLT)
-	$(INSTALL) -s -m 755 $(PROG_ELF2FLT) $(target_bindir)/$(PROG_ELF2FLT)
+	$(INSTALL) -m 755 $(PROG_FLTHDR) $(bindir)/$(TARGET)-$(PROG_FLTHDR)
+	$(INSTALL) -m 755 $(PROG_FLTHDR) $(target_bindir)/$(PROG_FLTHDR)
+	$(INSTALL) -m 755 $(PROG_ELF2FLT) $(bindir)/$(TARGET)-$(PROG_ELF2FLT)
+	$(INSTALL) -m 755 $(PROG_ELF2FLT) $(target_bindir)/$(PROG_ELF2FLT)
 	[ -f $(bindir)/$(TARGET)-ld.real$(EXEEXT) ] || \
 		mv $(bindir)/$(TARGET)-ld$(EXEEXT) $(bindir)/$(TARGET)-ld.real$(EXEEXT)
 	[ -f $(target_bindir)/ld.real$(EXEEXT) ] || \
