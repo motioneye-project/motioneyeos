@@ -55,5 +55,19 @@ TARGET_GCC_FLAGS= CFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
 	BOOT_CFLAGS="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)"
 
 ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
+# pull in config opts from the user
+EXTRA_TARGET_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS)))
+#"))
+
+ifeq ($(BR2_PREFER_IMA),y)
+# >= 4.2
+ifeq ($(findstring 4.2,$(GCC_VERSION)),4.2)
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--enable-intermodule
+endif
+ifeq ($(findstring 4.3,$(GCC_VERSION)),4.3)
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--enable-intermodule
+endif
+endif # BR2_PREFER_IMA=y
+
 TARGETS+=gcc_target
 endif

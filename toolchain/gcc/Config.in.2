@@ -5,3 +5,11 @@ config BR2_PACKAGE_GCC_TARGET
 	help
 	  If you want the target system to be able to run 
 	  binutils/gcc and compile native code, say Y here.
+
+config BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS
+	string "Additional target gcc options"
+	default ""
+	help
+	  Any additional target gcc options you may want to include....
+	  Including, but not limited to --disable-checking etc.
+	  Refer to */configure in your gcc sources.

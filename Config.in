@@ -10,7 +10,7 @@ choice
 	prompt "Target Architecture"
 	default BR2_i386
 	help
-	  Stuff
+	  Select the target architecture family to build for.
 
 config BR2_alpha
 	bool "alpha"
@@ -52,6 +52,9 @@ choice
 	prompt "Target Architecture Variant"
 	depends BR2_arm || BR2_armeb
 	default BR2_generic_arm
+	help
+	  Specific CPU variant to use
+
 config BR2_generic_arm
 	bool "generic_arm"
 config BR2_arm610
@@ -97,6 +100,9 @@ choice
 	prompt "Target ABI"
 	depends BR2_arm || BR2_armeb
 	default BR2_ARM_OABI
+	help
+	  Application Binary Interface to use
+
 config BR2_ARM_OABI
 	bool "OABI"
 config BR2_ARM_EABI
@@ -107,6 +113,9 @@ choice
 	prompt "Target Architecture Variant"
 	depends BR2_sh
 	default BR2_sh4
+	help
+	  Specific CPU variant to use
+
 config BR2_sh2a_nofpueb
 	bool "sh2a_nofpueb"
 config BR2_sh2eb
@@ -129,6 +138,9 @@ choice
 	prompt "Target Architecture Variant"
 	depends BR2_i386
 	default BR2_x86_i686
+	help
+	  Specific CPU variant to use
+
 config BR2_x86_i386
 	bool "i386"
 config BR2_x86_i486
@@ -221,54 +233,54 @@ config BR2_SOURCEFORGE_MIRROR
 	string "Sourceforge mirror site"
 	default "easynews"
 	help
-	    Sourceforge has a system of mirror sites.  Some sites may be closer
-	    to your location, and sometimes mirror sites go down and are no longer
-	    available.  This option allows you to select your preferred Sourceforge
-	    mirror site.
+	  Sourceforge has a system of mirror sites.  Some sites may be closer
+	  to your location, and sometimes mirror sites go down and are no longer
+	  available.  This option allows you to select your preferred Sourceforge
+	  mirror site.
 
-	    The list of mirrors is available here:
-	    http://prdownloads.sourceforge.net/index-sf.html?download
+	  The list of mirrors is available here:
+	  http://prdownloads.sourceforge.net/index-sf.html?download
 
 config BR2_STAGING_DIR
 	string "Toolchain and header file location?"
 	default "$(BUILD_DIR)/staging_dir"
 	help
-	    This is the location where the toolchain will be installed.  The
-	    toolchain will not work if it is moved from this location.
-	    Therefore, if you wish to package up a uClibc toolchain, it is
-	    important that is is set to the final location where the toolchain
-	    will be used.
+	  This is the location where the toolchain will be installed.  The
+	  toolchain will not work if it is moved from this location.
+	  Therefore, if you wish to package up a uClibc toolchain, it is
+	  important that is is set to the final location where the toolchain
+	  will be used.
 
-	    Most people will leave this set to the default value of
-	    "$(BUILD_DIR)/staging_dir".
+	  Most people will leave this set to the default value of
+	  "$(BUILD_DIR)/staging_dir".
 
 config BR2_TOPDIR_PREFIX
 	string "Custom build dir prefix"
 	default ""
 	help
-	    Add a custom string to the beginning of the build directories.
+	  Add a custom string to the beginning of the build directories.
 
-	    build_ARCH -> [PREFIX]_build_ARCH
-	    toolchain_build_ARCH -> [PREFIX]_toolchain_build_ARCH
+	  build_ARCH -> [PREFIX]_build_ARCH
+	  toolchain_build_ARCH -> [PREFIX]_toolchain_build_ARCH
 
 config BR2_TOPDIR_SUFFIX
 	string "Custom build dir suffix"
 	default ""
 	help
-	    Add a custom string to the end of the build directories.
+	  Add a custom string to the end of the build directories.
 
-	    build_ARCH -> build_ARCH_[SUFFIX]
-	    toolchain_build_ARCH -> toolchain_build_ARCH_[SUFFIX] 
+	  build_ARCH -> build_ARCH_[SUFFIX]
+	  toolchain_build_ARCH -> toolchain_build_ARCH_[SUFFIX] 
 
 config BR2_GNU_BUILD_SUFFIX
 	string "GNU build hostname suffix"
 	default "pc-linux-gnu"
 	help
-	    The string used to pass to configure scripts via the
-	    --build= option.  Just specify the suffix here, the leading
-	    arch will be filled in automatically.
+	  The string used to pass to configure scripts via the
+	  --build= option.  Just specify the suffix here, the leading
+	  arch will be filled in automatically.
 
-	    Here's some copy and paste build host options for you:
+	  Here's some copy and paste build host options for you:
 	      linux:   pc-linux-gnu
 	      cygwin:  pc-cygwin
 	      os x:    apple-darwin7 / apple-darwin8
@@ -278,15 +290,15 @@ config BR2_GNU_TARGET_SUFFIX
 	default "linux-uclibcgnueabi" if BR2_ARM_EABI
 	default "linux-uclibc"
 	help
-	    The string used to pass to configure scripts via the
-	    --target= option.  Just specify the suffix here, the leading
-	    arch will be filled in automatically.
+	  The string used to pass to configure scripts via the
+	  --target= option.  Just specify the suffix here, the leading
+	  arch will be filled in automatically.
 
-	    Most users will want to stick with the default setting, though
-	    other users (most notably ARM EABI) like to add on to this in
-	    order to stay in line with gcc conventions.
+	  Most users will want to stick with the default setting, though
+	  other users (most notably ARM EABI) like to add on to this in
+	  order to stay in line with gcc conventions.
 
-	    Default options are:
+	  Default options are:
 	      linux-uclibcgnueabi for ARM EABI
 	      linux-uclibc for the rest
 
@@ -294,7 +306,20 @@ config BR2_JLEVEL
 	int "Number of jobs to run simultaneously"
 	default "1"
 	help
-	    Number of jobs to run simultaneously
+	  Number of jobs to run simultaneously
+
+config BR2_PREFER_IMA
+	bool "prefer IMA compiles"
+	default n
+	help
+	  Where possible, compile package with Inter Module Analysis.
+	  This potentially uses alot of system resources on your compile
+	  host with the benefit of creating smaller binaries for the target.
+
+	  If unsure, say No.
+
+	  WARNING: This is highly experimental at the moment.
+
 
 endmenu
 
