@@ -75,7 +75,7 @@ readline-clean:
 readline-dirclean:
 	rm -rf $(READLINE_DIR)
 
-readline-source:  $(DL_DIR)/$(READLINE_SOURCE)   $(READLINE_DIR)/.unpacked
+readline-source:  $(DL_DIR)/$(READLINE_SOURCE)
 
 ifeq ($(strip $(BR2_READLINE)),y)
 TARGETS+=readline
