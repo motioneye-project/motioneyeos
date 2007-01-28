@@ -67,7 +67,6 @@ include .config.cmd
 # in the .config file.
 include toolchain/*/*.mk
 include package/*/*.mk
-include target/*/*.mk
 
 # target stuff is last so it can override anything else
 include target/Makefile.in

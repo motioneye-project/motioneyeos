@@ -1,5 +1,8 @@
+# make sure to put everything that is board-specific before the tarroot targets
 include target/generic/Makefile.in
 include target/device/Makefile.in
 include target/x86/Makefile.in
 include target/arm/Makefile.in
 include target/powerpc/Makefile.in
+# and finally build the filesystems/tarballs
+include target/*/*.mk
