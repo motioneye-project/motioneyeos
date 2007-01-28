@@ -75,6 +75,10 @@ choice
 		depends !BR2_nios2
 		bool "binutils 2.17.50.0.9"
 
+	config BR2_BINUTILS_VERSION_2_17_50_0_10
+		depends !BR2_nios2
+		bool "binutils 2.17.50.0.10"
+
 endchoice
 
 config BR2_BINUTILS_VERSION
@@ -96,6 +100,7 @@ config BR2_BINUTILS_VERSION
 	default "2.17.50.0.7"     if BR2_BINUTILS_VERSION_2_17_50_0_7
 	default "2.17.50.0.8"     if BR2_BINUTILS_VERSION_2_17_50_0_8
 	default "2.17.50.0.9"     if BR2_BINUTILS_VERSION_2_17_50_0_9
+	default "2.17.50.0.10"    if BR2_BINUTILS_VERSION_2_17_50_0_10
 
 config BR2_EXTRA_BINUTILS_CONFIG_OPTIONS
 	string "Additional binutils options"
