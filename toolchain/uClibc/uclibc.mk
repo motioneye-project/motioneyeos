@@ -16,7 +16,12 @@ ifndef UCLIBC_CONFIG_FILE
 UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.29.config
 endif
 else
+ifeq ($(BR2_UCLIBC_VERSION_0_9_28_1),y)
+UCLIBC_VER:=0.9.28.1
+endif
+ifeq ($(BR2_UCLIBC_VERSION_0_9_28),y)
 UCLIBC_VER:=0.9.28
+endif
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-$(UCLIBC_VER)
 UCLIBC_SOURCE:=uClibc-$(UCLIBC_VER).tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
@@ -24,6 +29,7 @@ ifndef UCLIBC_CONFIG_FILE
 UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.28.config
 endif
 endif
+
 UCLIBC_CAT:=$(BZCAT)
 
 UCLIBC_TARGET_ARCH:=$(shell echo $(ARCH) | sed -e s'/-.*//' \
@@ -78,7 +84,7 @@ uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ uClibc-$(UCLIBC_VER)\*.patch
+	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ uClibc-$(UCLIBC_VER)-\*.patch
 ifneq ($(BR2_ENABLE_LOCALE),)
 	cp -dpf $(DL_DIR)/$(UCLIBC_SOURCE_LOCALE) $(UCLIBC_DIR)/extra/locale/
 endif
@@ -120,13 +126,18 @@ ifneq ($(UCLIBC_TARGET_ENDIAN),)
 		$(UCLIBC_DIR)/.config
 endif
 ifeq ($(BR2_LARGEFILE),y)
-	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=y,g' $(UCLIBC_DIR)/.config
+	$(SED) 's,.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=y,g' $(UCLIBC_DIR)/.config
 else
-	$(SED) 's,^.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=n,g' $(UCLIBC_DIR)/.config
+	$(SED) 's,.*UCLIBC_HAS_LFS.*,UCLIBC_HAS_LFS=n,g' $(UCLIBC_DIR)/.config
 endif
 	$(SED) 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
 ifeq ($(BR2_SOFT_FLOAT),y)
-	$(SED) 's,.*UCLIBC_HAS_FPU.*,UCLIBC_HAS_FPU=n\nHAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
+	$(SED) 's,.*UCLIBC_HAS_FPU.*,UCLIBC_HAS_FPU=n,g' \
+		-e 's,.*HAS_FPU.*,HAS_FPU=y,g' \
+		-e 's,.*UCLIBC_HAS_FLOATS.*,UCLIBC_HAS_FLOATS=y,g' \
+		-e 's,.*DO_C99_MATH.*,DO_C99_MATH=y,g' \
+		$(UCLIBC_DIR)/.config
+	#$(SED) 's,.*UCLIBC_HAS_FPU.*,UCLIBC_HAS_FPU=n\nHAS_FPU=n\nUCLIBC_HAS_FLOATS=y\nUCLIBC_HAS_SOFT_FLOAT=y,g' $(UCLIBC_DIR)/.config
 else
 	$(SED) 's,.*UCLIBC_HAS_FPU.*,UCLIBC_HAS_FPU=y\nHAS_FPU=y\nUCLIBC_HAS_FLOATS=y\n,g' $(UCLIBC_DIR)/.config
 endif
