@@ -14,27 +14,33 @@ BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
 endif
 ifeq ($(BINUTILS_VERSION),2.16)
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
+BINUTILS_NO_MPFR:=y
 endif
 ifeq ($(BINUTILS_VERSION),2.16.1)
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
+BINUTILS_NO_MPFR:=y
 endif
 ifeq ($(BINUTILS_VERSION),2.15)
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
+BINUTILS_NO_MPFR:=y
 endif
 ifeq ($(BINUTILS_VERSION),2.14)
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
+BINUTILS_NO_MPFR:=y
 endif
 ifeq ($(BINUTILS_VERSION),2.13)
 BINUTILS_SITE:=ftp://ftp.gnu.org/gnu/binutils/
+BINUTILS_NO_MPFR:=y
 endif
 ifeq ($(BINUTILS_VERSION),2.15.97)
 BINUTILS_SITE:=ftp://sources.redhat.com/pub/binutils/snapshots/
+BINUTILS_NO_MPFR:=y
 endif
 
 # We do not rely on the host's gmp/mpfr but use a known working one
-BINUTILS_HOST_PREREQ:= #nothing
-BINUTILS_TARGET_PREREQ:= #nothing
-ifeq ($(BR2_BINUTILS_VERSION_2_17_50_0_9),y)
+BINUTILS_HOST_PREREQ:=
+BINUTILS_TARGET_PREREQ:=
+ifndef BINUTILS_NO_MPFR
 
 BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp.so \
 	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.so
