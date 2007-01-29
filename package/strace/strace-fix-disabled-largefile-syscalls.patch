@@ -1,0 +1,21 @@
+--- strace-4.5.15.orig/syscall.c	2007-01-29 17:23:38.000000000 +0100
++++ strace-4.5.15/syscall.c	2007-01-29 18:02:17.000000000 +0100
+@@ -125,6 +125,18 @@
+ #define TP TRACE_PROCESS
+ #define TS TRACE_SIGNAL
+ 
++#ifndef HAVE_STATFS64
++/*
++ * Ugly hacks for systems that do not have LFS
++ */
++
++#define sys_truncate64  sys_truncate
++#define sys_ftruncate64 sys_ftruncate
++#define sys_getdents64  sys_getdents
++#define sys_statfs64    sys_statfs
++#define sys_fstatfs64   sys_fstatfs
++#endif
++
+ static const struct sysent sysent0[] = {
+ #include "syscallent.h"
+ };
