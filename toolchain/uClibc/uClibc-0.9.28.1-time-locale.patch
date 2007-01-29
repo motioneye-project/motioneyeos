@@ -1,0 +1,15 @@
+Index: libc/misc/time/time.c
+===================================================================
+--- a/libc/misc/time/time.c	(revision 17534)
++++ b/libc/misc/time/time.c	(revision 17647)
+@@ -158,7 +158,9 @@
+ #endif
+ 
+ #if defined (L_tzset) || defined (L_localtime_r) || defined(L_strftime) || \
+-    defined(L__time_mktime) || defined(L__time_mktime_tzi)
++	 defined(L__time_mktime) || defined(L__time_mktime_tzi) || \
++	 ((defined(L_strftime) || defined(L_strftime_l)) && \
++	  defined(__UCLIBC_HAS_XLOCALE__))
+ 
+ void _time_tzset (int);
+ 
