@@ -3,7 +3,7 @@
 # automake
 #
 #############################################################
-AUTOMAKE_VER:=1.9.6
+AUTOMAKE_VER:=1.10
 AUTOMAKE_SOURCE:=automake-$(AUTOMAKE_VER).tar.bz2
 AUTOMAKE_SITE:=http://ftp.gnu.org/pub/gnu/automake
 AUTOMAKE_CAT:=$(BZCAT)
@@ -18,7 +18,7 @@ automake-source: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 
 $(AUTOMAKE_DIR)/.unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 	$(AUTOMAKE_CAT) $(DL_DIR)/$(AUTOMAKE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(AUTOMAKE_DIR)/.unpacked
+	touch $@
 
 $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
 	(cd $(AUTOMAKE_DIR); rm -rf config.cache; \
@@ -41,7 +41,7 @@ $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
-	touch $(AUTOMAKE_DIR)/.configured
+	touch $@
 
 $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY): $(AUTOMAKE_DIR)/.configured
 	$(MAKE) -C $(AUTOMAKE_DIR)
