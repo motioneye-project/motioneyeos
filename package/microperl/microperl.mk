@@ -16,7 +16,7 @@ MICROPERL_MODS=$(subst ",,$(BR2_PACKAGE_MICROPERL_MODULES))
 ifeq ($(BR2_PACKAGE_AUTOMAKE),y)
 MICROPERL_MODS+=File/Basename.pm Errno.pm Config.pm IO/File.pm Symbol.pm \
 	SelectSaver.pm IO/Seekable.pm IO/Handle.pm IO.pm XSLoader.pm \
-	DynaLoader.pm AutoLoader.pm
+	DynaLoader.pm AutoLoader.pm Carp/Heavy.pm
 endif
 $(DL_DIR)/$(MICROPERL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MICROPERL_SITE)/$(MICROPERL_SOURCE)
