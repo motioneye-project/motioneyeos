@@ -18,6 +18,7 @@ automake-source: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 
 $(AUTOMAKE_DIR)/.unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 	$(AUTOMAKE_CAT) $(DL_DIR)/$(AUTOMAKE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(AUTOMAKE_DIR)
 	touch $@
 
 $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
@@ -61,7 +62,7 @@ $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY): $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY)
 	    infodir=$(TARGET_DIR)/usr/info \
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
-	    -C $(AUTOMAKE_DIR) install;
+	    -C $(AUTOMAKE_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	touch -c $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY)
