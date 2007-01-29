@@ -8,9 +8,9 @@ ifneq ($(filter $(TARGETS),linux26),)
 
 ifeq ($(LINUX_HEADERS_VERSION),)
 # Version of Linux to download and then apply patches to
-DOWNLOAD_LINUX26_VERSION=2.6.19.1
+DOWNLOAD_LINUX26_VERSION=2.6.19.2
 # Version of Linux after applying any patches
-LINUX26_VERSION=2.6.19.1
+LINUX26_VERSION=2.6.19.2
 else
 DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
 LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
@@ -23,10 +23,11 @@ LINUX26_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.6
 #LINUX26_FORMAT=vmlinux
 #LINUX26_BINLOC=$(LINUX26_FORMAT)
 LINUX26_FORMAT=bzImage
-LINUX26_BINLOC=arch/i386/boot/$(LINUX26_FORMAT)
+LINUX26_BINLOC=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
 
 # Linux kernel configuration file
-LINUX26_KCONFIG=$(X86_I386_PATH)/linux26.config
+# Has to be set by the target/device
+# LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
 
 # File name for the Linux kernel binary
 LINUX26_KERNEL=linux-kernel-$(LINUX26_VERSION)-$(KERNEL_ARCH)
@@ -35,7 +36,7 @@ LINUX26_KERNEL=linux-kernel-$(LINUX26_VERSION)-$(KERNEL_ARCH)
 LINUX26_DIR=$(BUILD_DIR)/linux-$(LINUX26_VERSION)
 
 # kernel patches
-LINUX26_PATCH_DIR=target/device/x86/i386/kernel-patches/
+LINUX26_PATCH_DIR=$(BR2_BOARD_PATH)/kernel-patches/
 
 LINUX26_MAKE_FLAGS = $(TARGET_CONFIGURE_OPTS) ARCH=$(KERNEL_ARCH) \
 	PATH=$(TARGET_PATH) INSTALL_MOD_PATH=$(TARGET_DIR) \

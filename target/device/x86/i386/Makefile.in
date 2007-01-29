@@ -1,3 +1,7 @@
-X86_I386_PATH=target/device/x86/i386
+BR2_BOARD_PATH:=target/device/x86/i386
+
+ifndef LINUX26_KCONFIG
+LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
+endif
 
 TARGETS+=linux26

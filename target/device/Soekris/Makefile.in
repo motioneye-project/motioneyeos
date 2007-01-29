@@ -17,9 +17,9 @@ UCLIBC_CONFIG_FILE:=$(SOEKRIS_NET4801_PATH)/uClibc.config
 BR2_PACKAGE_BUSYBOX_CONFIG:=$(SOEKRIS_NET4801_PATH)/busybox.config
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
-TARGETS+=linux
-include $(SOEKRIS_NET4801_PATH)/linux.mk
+TARGETS+=linux26
 include target/device/Soekris/soekris_gpio/soekris_gpio.mk
+LINUX26_KCONFIG=$(SOEKRIS_NET4801_PATH)/linux26.config
 endif
 
 endif
