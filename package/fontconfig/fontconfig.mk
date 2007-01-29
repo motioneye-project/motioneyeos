@@ -24,7 +24,7 @@ $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
 	(cd $(FONTCONFIG_DIR); \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
-	CCexe="$(HOSTCC)" \
+	BUILD_CFLAGS="-O2 -I$(FREETYPE_HOST_DIR)/include/freetype2 -I$(FREETYPE_HOST_DIR)/include" \
 	ac_cv_func_mmap_fixed_mapped=yes \
 	./configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -49,7 +49,7 @@ $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
 	touch $(FONTCONFIG_DIR)/.configured
 
 $(FONTCONFIG_DIR)/.compiled: $(FONTCONFIG_DIR)/.configured
-	$(MAKE) CCexe="$(HOSTCC)" -C $(FONTCONFIG_DIR)
+	$(MAKE) -C $(FONTCONFIG_DIR)
 	touch $(FONTCONFIG_DIR)/.compiled
 
 $(STAGING_DIR)/lib/libfontconfig.so: $(FONTCONFIG_DIR)/.compiled
@@ -69,7 +69,7 @@ $(TARGET_DIR)/lib/libfontconfig.so: $(STAGING_DIR)/lib/libfontconfig.so
 	cp -a $(STAGING_DIR)/usr/bin/fc-list $(TARGET_DIR)/usr/bin/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/fc-list
 
-fontconfig: uclibc freetype $(TARGET_DIR)/lib/libfontconfig.so
+fontconfig: uclibc freetype host-freetype $(TARGET_DIR)/lib/libfontconfig.so
 
 fontconfig-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FONTCONFIG_DIR) uninstall
