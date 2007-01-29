@@ -18,7 +18,7 @@ autoconf-source: $(DL_DIR)/$(AUTOCONF_SOURCE)
 
 $(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 	$(AUTOCONF_CAT) $(DL_DIR)/$(AUTOCONF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(AUTOCONF_DIR)/.unpacked
+	touch $@
 
 $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
 	(cd $(AUTOCONF_DIR); rm -rf config.cache; \
@@ -40,10 +40,10 @@ $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
-	touch $(AUTOCONF_DIR)/.configured
+	touch $@
 
 $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(AUTOCONF_DIR)
+	$(MAKE1) -C $(AUTOCONF_DIR)
 
 $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
 	$(MAKE) \
