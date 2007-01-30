@@ -25,6 +25,13 @@ BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_0)),y)
+BUSYBOX_VER:=1.4.0
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
+BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
+BUSYBOX_SITE:=http://www.busybox.net/downloads
+endif
+
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
@@ -51,7 +58,7 @@ ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
 	$(SED) "/#include.*busybox\.h/a#define CONFIG_SYSLOGD" $(BUSYBOX_DIR)/init/init.c
 endif
 	# Allow busybox patches.
-	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox\*.patch
+	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BUSYBOX_VER)\*.patch
 	touch $(BUSYBOX_DIR)/.unpacked
 
 $(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)

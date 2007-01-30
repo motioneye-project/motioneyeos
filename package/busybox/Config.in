@@ -24,6 +24,9 @@ choice
 	config BR2_BUSYBOX_VERSION_1_2_2_1
 		bool "BusyBox 1.2.2.1"
 
+	config BR2_BUSYBOX_VERSION_1_4_0
+		bool "BusyBox 1.4.0"
+
 	config BR2_PACKAGE_BUSYBOX_SNAPSHOT
 		bool "daily snapshot"
 
@@ -51,6 +54,7 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	default "package/busybox/busybox-1.0.1.config" if BR2_BUSYBOX_VERSION_1_0_1
 	default "package/busybox/busybox-1.1.3.config" if BR2_BUSYBOX_VERSION_1_1_3
 	default "package/busybox/busybox-1.2.2.1.config" if BR2_BUSYBOX_VERSION_1_2_2_1
+	default "package/busybox/busybox-1.4.0.config" if BR2_BUSYBOX_VERSION_1_4_0
 	help
 	  Some people may wish to use their own modified BusyBox configuration
 	  file, and will specify their config file location with this option.
