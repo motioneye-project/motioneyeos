@@ -64,7 +64,6 @@ UCLIBC_NOT_TARGET_ENDIAN:=LITTLE
 endif
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
-	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE)/$(UCLIBC_SOURCE)
 
 ifneq ($(BR2_ENABLE_LOCALE),)
@@ -72,7 +71,6 @@ UCLIBC_SITE_LOCALE:=http://www.uclibc.org/downloads
 UCLIBC_SOURCE_LOCALE:=uClibc-locale-030818.tgz
 
 $(DL_DIR)/$(UCLIBC_SOURCE_LOCALE):
-	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(UCLIBC_SITE_LOCALE)/$(UCLIBC_SOURCE_LOCALE)
 
 UCLIBC_LOCALE_DATA:=$(DL_DIR)/$(UCLIBC_SOURCE_LOCALE)
@@ -82,7 +80,6 @@ endif
 
 uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
-	mkdir -p $(TOOL_BUILD_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ uClibc-$(UCLIBC_VER)-\*.patch
 ifneq ($(BR2_ENABLE_LOCALE),)
@@ -103,9 +100,9 @@ $(UCLIBC_DIR)/.config: $(UCLIBC_DIR)/.unpacked $(UCLIBC_CONFIG_FILE)
 		-e 's,^SHARED_LIB_LOADER_PREFIX=.*,SHARED_LIB_LOADER_PREFIX=\"/lib\",g' \
 		$(UCLIBC_DIR)/.config
 ifeq ($(UCLIBC_TARGET_ARCH),arm)
-	$(SED) '/.*CONFIG_ARM.*/d' -e '/.*CONFIG_GENERIC_ARM.*/d' \
+	$(SED) 's/^\(CONFIG_[^_]*[_]*ARM[^=]*\)=.*/# \1 is not set/g' \
 		 $(UCLIBC_DIR)/.config
-	/bin/echo "CONFIG_$(shell echo $(BR2_ARM_TYPE))=y" >> \
+	/bin/echo "CONFIG_$(BR2_ARM_TYPE)=y" >> \
 		$(UCLIBC_DIR)/.config
 ifeq ($(BR2_ARM_EABI),y)
 	/bin/echo "# CONFIG_ARM_OABI is not set" >> $(UCLIBC_DIR)/.config
