@@ -1,5 +1,8 @@
-MAKE1=make
-MAKE=make -j$(BR2_JLEVEL)
+ifndef MAKE
+MAKE=make
+endif
+MAKE1:=$(MAKE) MAKE="$(firstword $(MAKE)) -j1"
+MAKE:=$(MAKE) -j$(BR2_JLEVEL)
 
 # Strip off the annoying quoting
 ARCH:=$(strip $(subst ",, $(BR2_ARCH)))
