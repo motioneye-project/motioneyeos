@@ -88,14 +88,8 @@ dirs: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR)
 # dependencies anywhere else
 #
 #############################################################
-$(DL_DIR):
-	@mkdir -p $(DL_DIR)
-
-$(BUILD_DIR):
-	@mkdir -p $(BUILD_DIR)
-
-$(TOOL_BUILD_DIR):
-	@mkdir -p $(TOOL_BUILD_DIR)
+$(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR):
+	@mkdir -p $@
 
 $(STAGING_DIR):
 	@mkdir -p $(STAGING_DIR)/lib

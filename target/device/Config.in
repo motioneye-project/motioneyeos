@@ -1,5 +1,20 @@
 menu "Board Support Options"
 
+config BR2_TARGET_GENERIC
+	bool "linux kernel"
+	default n
+	select BR2_PACKAGE_LINUX
+	help
+	  Architecture or board dependant linux kernel.
+
+config BR2_PACKAGE_LINUX
+	bool "linux"
+	default n
+	depends BR2_TARGET_GENERIC
+	help
+	  The Linux kernel.
+	  http://www.kernel.org/
+
 source "target/device/AMD/Config.in"
 source "target/device/Atmel/Config.in"
 source "target/device/Hitachi/Config.in"
