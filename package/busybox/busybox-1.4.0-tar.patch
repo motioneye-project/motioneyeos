@@ -1,0 +1,117 @@
+--- busybox-1.4.0/archival/tar.c	Fri Jan 19 22:23:02 2007
++++ busybox-1.4.0-tar/archival/tar.c	Wed Jan 24 21:32:00 2007
+@@ -23,10 +23,10 @@
+  * Licensed under GPLv2 or later, see file LICENSE in this tarball for details.
+  */
+ 
+-#include "busybox.h"
+-#include "unarchive.h"
+ #include <fnmatch.h>
+ #include <getopt.h>
++#include "busybox.h"
++#include "unarchive.h"
+ 
+ #if ENABLE_FEATURE_TAR_CREATE
+ 
+@@ -37,6 +37,7 @@
+ /* POSIX tar Header Block, from POSIX 1003.1-1990  */
+ #define NAME_SIZE      100
+ #define NAME_SIZE_STR "100"
++typedef struct TarHeader TarHeader;
+ struct TarHeader {		  /* byte offset */
+ 	char name[NAME_SIZE];     /*   0-99 */
+ 	char mode[8];             /* 100-107 */
+@@ -56,7 +57,6 @@
+ 	char prefix[155];         /* 345-499 */
+ 	char padding[12];         /* 500-512 (pad to exactly the TAR_BLOCK_SIZE) */
+ };
+-typedef struct TarHeader TarHeader;
+ 
+ /*
+ ** writeTarFile(), writeFileToTarball(), and writeTarHeader() are
+@@ -73,6 +73,7 @@
+ };
+ 
+ /* Some info to be carried along when creating a new tarball */
++typedef struct TarBallInfo TarBallInfo;
+ struct TarBallInfo {
+ 	int tarFd;				/* Open-for-write file descriptor
+ 							   for the tarball */
+@@ -85,7 +86,6 @@
+ 	HardLinkInfo *hlInfoHead;	/* Hard Link Tracking Information */
+ 	HardLinkInfo *hlInfo;	/* Hard Link Info for the current file */
+ };
+-typedef struct TarBallInfo TarBallInfo;
+ 
+ /* A nice enum with all the possible tar file content types */
+ enum TarFileType {
+@@ -348,7 +348,7 @@
+ 	return TRUE;
+ }
+ 
+-# if ENABLE_FEATURE_TAR_FROM
++#if ENABLE_FEATURE_TAR_FROM
+ static int exclude_file(const llist_t *excluded_files, const char *file)
+ {
+ 	while (excluded_files) {
+@@ -371,12 +371,12 @@
+ 
+ 	return 0;
+ }
+-# else
++#else
+ #define exclude_file(excluded_files, file) 0
+-# endif
++#endif
+ 
+ static int writeFileToTarball(const char *fileName, struct stat *statbuf,
+-			void *userData, int depth)
++			void *userData, int depth ATTRIBUTE_UNUSED)
+ {
+ 	struct TarBallInfo *tbInfo = (struct TarBallInfo *) userData;
+ 	const char *header_name;
+@@ -509,14 +509,14 @@
+ 		if (pipe(gzipDataPipe) < 0 || pipe(gzipStatusPipe) < 0)
+ 			bb_perror_msg_and_die("pipe");
+ 
+-		signal(SIGPIPE, SIG_IGN);	/* we only want EPIPE on errors */
++		signal(SIGPIPE, SIG_IGN); /* we only want EPIPE on errors */
+ 
+-# if __GNUC__
++#if defined(__GNUC__) && __GNUC__
+ 		/* Avoid vfork clobbering */
+ 		(void) &include;
+ 		(void) &errorFlag;
+ 		(void) &zip_exec;
+-# endif
++#endif
+ 
+ 		gzipPid = vfork();
+ 
+@@ -600,7 +600,7 @@
+ int writeTarFile(const int tar_fd, const int verboseFlag,
+ 	const unsigned long dereferenceFlag, const llist_t *include,
+ 	const llist_t *exclude, const int gzip);
+-#endif	/* tar_create */
++#endif /* FEATURE_TAR_CREATE */
+ 
+ #if ENABLE_FEATURE_TAR_FROM
+ static llist_t *append_file_list_to_list(llist_t *list)
+@@ -628,7 +628,7 @@
+ 	return newlist;
+ }
+ #else
+-#define append_file_list_to_list(x)	0
++#define append_file_list_to_list(x) 0
+ #endif
+ 
+ #if ENABLE_FEATURE_TAR_COMPRESS
+@@ -653,7 +653,7 @@
+ 	return EXIT_FAILURE;
+ }
+ #else
+-#define get_header_tar_Z	0
++#define get_header_tar_Z NULL
+ #endif
+ 
+ #ifdef CHECK_FOR_CHILD_EXITCODE

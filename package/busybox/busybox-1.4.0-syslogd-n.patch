@@ -1,0 +1,65 @@
+--- busybox-1.4.0/libbb/vdprintf.c	Fri Jan 19 22:23:06 2007
++++ busybox-1.4.0-syslogd-n/libbb/vdprintf.c	Tue Jan 23 21:50:54 2007
+@@ -7,11 +7,7 @@
+  * Licensed under GPLv2 or later, see file LICENSE in this tarball for details.
+  */
+ 
+-#include <stdio.h>
+-#include <unistd.h>
+ #include "libbb.h"
+-
+-
+ 
+ #if defined(__GLIBC__) && __GLIBC__ < 2
+ int vdprintf(int d, const char *format, va_list ap)
+--- busybox-1.4.0/libbb/xfuncs.c	Fri Jan 19 22:23:06 2007
++++ busybox-1.4.0-syslogd-n/libbb/xfuncs.c	Tue Jan 23 21:47:27 2007
+@@ -81,13 +81,14 @@
+ 	t = (char*) s;
+ 	while (m) {
+ 		if (!*t) break;
+-		m--; t++;
++		m--;
++		t++;
+ 	}
+-	n = n - m;
++	n -= m;
+ 	t = xmalloc(n + 1);
+ 	t[n] = '\0';
+ 
+-	return memcpy(t,s,n);
++	return memcpy(t, s, n);
+ }
+ 
+ // Die if we can't open a file and return a FILE * to it.
+--- busybox-1.4.0/libbb/xreadlink.c	Fri Jan 19 22:23:06 2007
++++ busybox-1.4.0-syslogd-n/libbb/xreadlink.c	Tue Jan 23 22:35:45 2007
+@@ -36,7 +36,7 @@
+ 
+ char *xmalloc_realpath(const char *path)
+ {
+-#ifdef __GLIBC__
++#if defined(__GLIBC__) && !defined(__UCLIBC__)
+ 	/* glibc provides a non-standard extension */
+ 	return realpath(path, NULL);
+ #else
+--- busybox-1.4.0/sysklogd/syslogd.c	Fri Jan 19 22:23:02 2007
++++ busybox-1.4.0-syslogd-n/sysklogd/syslogd.c	Wed Jan 24 21:52:07 2007
+@@ -569,7 +569,7 @@
+ 	//if (option_mask32 & OPT_locallog) // -L
+ #endif
+ #if ENABLE_FEATURE_IPC_SYSLOG
+-	if ((option_mask32 & OPT_circularlog) && opt_C) // -C
++	if (opt_C) // -Cn
+ 		shm_size = xatoul_range(opt_C, 4, INT_MAX/1024) * 1024;
+ #endif
+ 
+@@ -588,7 +588,7 @@
+ #ifdef BB_NOMMU
+ 		vfork_daemon_rexec(0, 1, argc, argv, "-n");
+ #else
+-		xdaemon(0, 1);
++		bb_daemonize();
+ #endif
+ 	}
+ 	umask(0);
