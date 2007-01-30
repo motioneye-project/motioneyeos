@@ -1,3 +1,5 @@
 ifeq ($(strip $(BR2_TARGET_GENERIC)),y)
+ifeq ($(strip $(BR2_i386)),y)
 include target/device/x86/i386/Makefile.in
+endif
 endif
