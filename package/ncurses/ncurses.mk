@@ -65,7 +65,8 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		--with-terminfo-dirs=/usr/share/terminfo \
 		--with-default-terminfo-dir=/usr/share/terminfo \
 		--with-shared --without-cxx --without-cxx-binding \
-		--without-ada --without-progs $(DISABLE_NLS) \
+		--without-ada --without-progs --disable-big-core \
+		$(DISABLE_NLS) $(DISABLE_LARGEFILE) \
 		--without-profile --without-debug --disable-rpath \
 		--enable-echo --enable-const --enable-overwrite \
 		--enable-broken_linker \
@@ -114,7 +115,7 @@ $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER): $(STAGING_DIR)/lib/libncurses.a
 	touch -c $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
 
 $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
-	mkdir -p $(TARGET_DIR)/usr/include
+	-mkdir -p $(TARGET_DIR)/usr/include
 	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/ncurses.h
 	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
