@@ -5,4 +5,3 @@ LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
 endif
 LINUX26_FORMAT=bzImage
 
-TARGETS+=linux26
