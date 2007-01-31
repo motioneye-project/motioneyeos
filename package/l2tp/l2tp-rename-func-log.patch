@@ -1,0 +1,2902 @@
+diff -rdup l2tpd-0.70-pre20031121.oorig/aaa.c l2tpd-0.70-pre20031121/aaa.c
+--- l2tpd-0.70-pre20031121.oorig/aaa.c	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/aaa.c	2006-12-28 16:41:59.000000000 +0100
+@@ -144,7 +144,7 @@ int get_secret (char *us, char *them, ch
+     f = fopen (gconfig.authfile, "r");
+     if (!f)
+     {
+-        log (LOG_WARN, "%s : Unable to open '%s' for authentication\n",
++        do_log (LOG_WARN, "%s : Unable to open '%s' for authentication\n",
+              __FUNCTION__, gconfig.authfile);
+         return 0;
+     }
+@@ -168,7 +168,7 @@ int get_secret (char *us, char *them, ch
+         /* us */
+         if (!*u)
+         {
+-            log (LOG_WARN,
++            do_log (LOG_WARN,
+                  "%s: Invalid authentication info (no us), line %d\n",
+                  __FUNCTION__, num);
+             continue;
+@@ -182,7 +182,7 @@ int get_secret (char *us, char *them, ch
+         /* them */
+         if (!*t)
+         {
+-            log (LOG_WARN,
++            do_log (LOG_WARN,
+                  "%s: Invalid authentication info (nothem), line %d\n",
+                  __FUNCTION__, num);
+             continue;
+@@ -195,7 +195,7 @@ int get_secret (char *us, char *them, ch
+             s++;
+         if (!*s)
+         {
+-            log (LOG_WARN,
++            do_log (LOG_WARN,
+                  "%s: Invalid authentication info (no secret), line %d\n",
+                  __FUNCTION__, num);
+             continue;
+@@ -204,7 +204,7 @@ int get_secret (char *us, char *them, ch
+             (!strcasecmp (t, them) || !strcasecmp (t, "*")))
+         {
+ #ifdef DEBUG_AUTH
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: we are '%s', they are '%s', secret is '%s'\n",
+                  __FUNCTION__, u, t, s);
+ #endif
+@@ -223,12 +223,12 @@ int handle_challenge (struct tunnel *t, 
+     char *them;
+     if (!t->lns && !t->lac)
+     {
+-        log (LOG_DEBUG, "%s: No LNS or LAC to handle challenge!\n",
++        do_log (LOG_DEBUG, "%s: No LNS or LAC to handle challenge!\n",
+              __FUNCTION__);
+         return -1;
+     }
+ #ifdef DEBUG_AUTH
+-    log (LOG_DEBUG, "%s: making response for tunnel: %d\n", __FUNCTION__,
++    do_log (LOG_DEBUG, "%s: making response for tunnel: %d\n", __FUNCTION__,
+          t->ourtid);
+ #endif
+     if (t->lns)
+@@ -255,19 +255,19 @@ int handle_challenge (struct tunnel *t, 
+     }
+     if (!get_secret (us, them, chal->secret, sizeof (chal->secret)))
+     {
+-        log (LOG_DEBUG, "%s: no secret found for us='%s' and them='%s'\n",
++        do_log (LOG_DEBUG, "%s: no secret found for us='%s' and them='%s'\n",
+              __FUNCTION__, us, them);
+         return -1;
+     }
+ 
+ #if DEBUG_AUTH
+-    log (LOG_DEBUG, "*%s: Here comes the chal->ss:\n", __FUNCTION__);
++    do_log (LOG_DEBUG, "*%s: Here comes the chal->ss:\n", __FUNCTION__);
+     bufferDump (&chal->ss, 1);
+ 
+-    log (LOG_DEBUG, "%s: Here comes the secret\n", __FUNCTION__);
++    do_log (LOG_DEBUG, "%s: Here comes the secret\n", __FUNCTION__);
+     bufferDump (chal->secret, strlen (chal->secret));
+ 
+-    log (LOG_DEBUG, "%s: Here comes the challenge\n", __FUNCTION__);
++    do_log (LOG_DEBUG, "%s: Here comes the challenge\n", __FUNCTION__);
+     bufferDump (chal->challenge, strlen (chal->challenge));
+ #endif
+ 
+@@ -278,7 +278,7 @@ int handle_challenge (struct tunnel *t, 
+     MD5Update (&chal->md5, chal->challenge, strlen(chal->challenge));
+     MD5Final (chal->response, &chal->md5);
+ #ifdef DEBUG_AUTH
+-    log (LOG_DEBUG, "response is %X%X%X%X to '%s' and %X%X%X%X, %d\n",
++    do_log (LOG_DEBUG, "response is %X%X%X%X to '%s' and %X%X%X%X, %d\n",
+          *((int *) &chal->response[0]),
+          *((int *) &chal->response[4]),
+          *((int *) &chal->response[8]),
+@@ -321,7 +321,7 @@ struct lns *get_lns (struct tunnel *t)
+                 (ntohl (t->peer.sin_addr.s_addr) <= ntohl (ipr->end)))
+             {
+ #ifdef DEBUG_AAA
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "get_lns: Rule %s to %s, sense %s matched %s\n",
+                      IPADDY (ipr->start), IPADDY (ipr->end),
+                      (ipr->sense ? "allow" : "deny"), IPADDY (t->addr));
+@@ -349,14 +349,14 @@ struct lns *get_lns (struct tunnel *t)
+ void print_md5 (void *md5)
+ {
+     int *i = (int *) md5;
+-    log (LOG_DEBUG, "%X%X%X%X\n", i[0], i[1], i[2], i[3], i[4]);
++    do_log (LOG_DEBUG, "%X%X%X%X\n", i[0], i[1], i[2], i[3], i[4]);
+ }
+ 
+ inline void print_challenge (struct challenge *chal)
+ {
+-    log (LOG_DEBUG, "vector: ");
++    do_log (LOG_DEBUG, "vector: ");
+     print_md5 (chal->vector);
+-    log (LOG_DEBUG, "secret: %s\n", chal->secret);
++    do_log (LOG_DEBUG, "secret: %s\n", chal->secret);
+ }
+ #endif
+ void encrypt_avp (struct buffer *buf, _u16 len, struct tunnel *t)
+@@ -405,9 +405,9 @@ void encrypt_avp (struct buffer *buf, _u
+     while (ptr < end)
+     {
+ #if DEBUG_HIDDEN
+-        log (LOG_DEBUG, "%s: The digest to be XOR'ed\n", __FUNCTION__);
++        do_log (LOG_DEBUG, "%s: The digest to be XOR'ed\n", __FUNCTION__);
+         bufferDump (digest, MD_SIG_SIZE);
+-        log (LOG_DEBUG, "%s: The plaintext to be XOR'ed\n", __FUNCTION__);
++        do_log (LOG_DEBUG, "%s: The plaintext to be XOR'ed\n", __FUNCTION__);
+         bufferDump (ptr, MD_SIG_SIZE);
+ #endif
+         for (cnt = 0; cnt < MD_SIG_SIZE; cnt++, ptr++)
+@@ -415,7 +415,7 @@ void encrypt_avp (struct buffer *buf, _u
+             *ptr = *ptr ^ digest[cnt];
+         }
+ #if DEBUG_HIDDEN
+-        log (LOG_DEBUG, "%s: The result of XOR\n", __FUNCTION__);
++        do_log (LOG_DEBUG, "%s: The result of XOR\n", __FUNCTION__);
+         bufferDump (previous_segment, MD_SIG_SIZE);
+ #endif
+         if (ptr < end)
+@@ -449,7 +449,7 @@ int decrypt_avp (char *buf, struct tunne
+     end = buf + olen;
+     if (!t->chal_us.vector)
+     {
+-        log (LOG_DEBUG,
++        do_log (LOG_DEBUG,
+              "decrypt_avp: Hidden bit set, but no random vector specified!\n");
+         return -EINVAL;
+     }
+@@ -464,9 +464,9 @@ int decrypt_avp (char *buf, struct tunne
+     MD5Update (&t->chal_us.md5, t->chal_us.vector, t->chal_us.vector_len);
+     MD5Final (digest, &t->chal_us.md5);
+ #ifdef DEBUG_HIDDEN
+-    log (LOG_DEBUG, "attribute is %d and challenge is: ", attr);
++    do_log (LOG_DEBUG, "attribute is %d and challenge is: ", attr);
+     print_challenge (&t->chal_us);
+-    log (LOG_DEBUG, "md5 is: ");
++    do_log (LOG_DEBUG, "md5 is: ");
+     print_md5 (digest);
+ #endif
+     while (ptr < end)
+@@ -498,7 +498,7 @@ int decrypt_avp (char *buf, struct tunne
+     len = ntohs (new_hdr->attr) + sizeof (struct avp_hdr);
+     if (len > olen - 2)
+     {
+-        log (LOG_DEBUG,
++        do_log (LOG_DEBUG,
+              "decrypt_avp: Decrypted length is too long (%d > %d)\n", len,
+              olen - 2);
+         return -EINVAL;
+diff -rdup l2tpd-0.70-pre20031121.oorig/avp.c l2tpd-0.70-pre20031121/avp.c
+--- l2tpd-0.70-pre20031121.oorig/avp.c	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/avp.c	2006-12-28 16:41:59.000000000 +0100
+@@ -156,7 +156,7 @@ int validate_msgtype_avp(int attr,  stru
+         if ((c != t->self) && (c->msgtype < Hello))
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: attempting to negotiate tunnel inside a call!\n",
+                      __func__);
+             return -EINVAL;
+@@ -173,7 +173,7 @@ int validate_msgtype_avp(int attr,  stru
+                  */
+ 
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate SCCRQ with state != 0\n",
+                          __func__);
+                 return -EINVAL;
+@@ -183,7 +183,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (t->state != SCCRQ)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate SCCRP with state != SCCRQ!\n",
+                          __func__);
+                 return -EINVAL;
+@@ -193,7 +193,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (t->state != SCCRP)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate SCCCN with state != SCCRP!\n",
+                          __func__);
+                 return -EINVAL;
+@@ -203,7 +203,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (t->state != SCCCN)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate ICRQ when state != SCCCN\n",
+                          __func__);
+                 return -EINVAL;
+@@ -211,7 +211,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (c != t->self)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate ICRQ on a call!\n",
+                          __func__);
+                 return -EINVAL;
+@@ -221,7 +221,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (t->state != SCCCN)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate ICRP on tunnel!=SCCCN\n",
+                          __func__);
+                 return -EINVAL;
+@@ -229,7 +229,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (c->state != ICRQ)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate ICRP when state != ICRQ\n",
+                          __func__);
+                 return -EINVAL;
+@@ -239,7 +239,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (c->state != ICRP)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate ICCN when state != ICRP\n",
+                          __func__);
+                 return -EINVAL;
+@@ -249,7 +249,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (c->state != ICCN)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate SLI when state != ICCN\n",
+                          __func__);
+                 return -EINVAL;
+@@ -259,7 +259,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (t->state != SCCCN)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate OCRP on tunnel!=SCCCN\n",
+                          __func__);
+                 return -EINVAL;
+@@ -267,7 +267,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (c->state != OCRQ)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate OCRP when state != OCRQ\n",
+                          __func__);
+                 return -EINVAL;
+@@ -278,7 +278,7 @@ int validate_msgtype_avp(int attr,  stru
+             if (c->state != OCRQ)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: attempting to negotiate OCCN when state != OCRQ\n",
+                          __func__);
+                 return -EINVAL;
+@@ -289,7 +289,7 @@ int validate_msgtype_avp(int attr,  stru
+         case Hello:
+             break;
+         default:
+-            log (LOG_WARN, "%s: unknown messages type %d\n",
++            do_log (LOG_WARN, "%s: unknown messages type %d\n",
+                  __func__, get16(p));
+             return -EINVAL;
+         }
+@@ -332,7 +332,7 @@ int ignore_avp (struct tunnel *t, struct
+      *
+      */
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s : Ignoring AVP\n", __func__);
++    	do_log (LOG_DEBUG, "%s : Ignoring AVP\n", __func__);
+     return 0;
+ }
+ 
+@@ -347,22 +347,22 @@ int message_type_avp (struct tunnel *t, 
+ 
+     if ((c->msgtype > MAX_MSG) || (!msgtypes[c->msgtype]))
+     {
+-        log (LOG_DEBUG, "%s: unknown message type %d\n", __func__,
++        do_log (LOG_DEBUG, "%s: unknown message type %d\n", __func__,
+              c->msgtype);
+         return -EINVAL;
+     }
+     if (debug_avp)
+-        log (LOG_DEBUG, "%s: message type %d (%s)\n", __func__,
++        do_log (LOG_DEBUG, "%s: message type %d (%s)\n", __func__,
+              c->msgtype, msgtypes[c->msgtype]);
+     if (c->msgtype == ICRQ)
+     {
+         struct call *tmp;
+         if (debug_avp)
+-        	log (LOG_DEBUG, "%s: new incoming call\n", __func__);
++        	do_log (LOG_DEBUG, "%s: new incoming call\n", __func__);
+         tmp = new_call (t);
+         if (!tmp)
+         {
+-            log (LOG_WARN, "%s: unable to create new call\n", __func__);
++            do_log (LOG_WARN, "%s: unable to create new call\n", __func__);
+             return -EINVAL;
+         }
+         tmp->next = t->call_head;
+@@ -384,7 +384,7 @@ int rand_vector_avp (struct tunnel *t, s
+ 	u_int8_t *p = data + sizeof(struct avp_hdr);
+ 	int datalen = avplen - sizeof(struct avp_hdr);
+     if (debug_avp)
+-        log (LOG_DEBUG, "%s: random vector len %d\n", __func__, datalen);
++        do_log (LOG_DEBUG, "%s: random vector len %d\n", __func__, datalen);
+     t->chal_us.vector = (unsigned char *)p;
+     t->chal_us.vector_len = datalen;
+     return 0;
+@@ -394,7 +394,7 @@ int rand_vector_avp (struct tunnel *t, s
+ int seq_reqd_avp (struct tunnel *t, struct call *c, void *data, int datalen)
+ {
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer requires sequencing.\n", __func__);
++    	do_log (LOG_DEBUG, "%s: peer requires sequencing.\n", __func__);
+     c->seq_reqd = -1;
+     return 0;
+ }
+@@ -411,7 +411,7 @@ int result_code_avp (struct tunnel *t, s
+     if ((c->msgtype == StopCCN) && ((result > 7) || (result < 1)))
+     {
+         if (DEBUG)
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: (StopCCN) result code out of range ! (1 < %d < 7)\n",
+                  __func__, result);
+         return 0;
+@@ -420,7 +420,7 @@ int result_code_avp (struct tunnel *t, s
+     if ((c->msgtype == CDN) && ((result > 11) || (result < 1)))
+     {
+         if (DEBUG)
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: (CDN) result code out of range !(1 < %d < 11)\n",
+                  __func__, result);
+         return 0;
+@@ -435,14 +435,14 @@ int result_code_avp (struct tunnel *t, s
+     {
+         if(c->msgtype == StopCCN)
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: peer closing for reason %d (%s), error = %d (%s)\n",
+                  __func__, result, stopccn_result_codes[result], error,
+                  c->errormsg);
+         }
+         else
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: peer closing for reason %d (%s), error = %d (%s)\n",
+                  __func__, result, cdn_result_codes[result], error,
+                  c->errormsg);
+@@ -458,7 +458,7 @@ int protocol_version_avp (struct tunnel 
+ 	u_int8_t *p = data + sizeof(struct avp_hdr);
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer is using version %d, revision %d.\n", 
++    	do_log (LOG_DEBUG, "%s: peer is using version %d, revision %d.\n", 
+ 			 __func__,*p, *(p+1));
+     return 0;
+ }
+@@ -471,7 +471,7 @@ int framing_caps_avp (struct tunnel *t, 
+     u_int16_t caps = get16(p + 2);
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: supported peer frames:%s %s\n", __func__,
++    	do_log (LOG_DEBUG, "%s: supported peer frames:%s %s\n", __func__,
+              caps & ASYNC_FRAMING ? "async" : "",
+              caps & SYNC_FRAMING ? "sync" : "");
+ 
+@@ -487,7 +487,7 @@ int bearer_caps_avp (struct tunnel *t, s
+     u_int16_t caps = get16(p + 2);
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: supported peer bearers:%s %s\n",
++    	do_log (LOG_DEBUG, "%s: supported peer bearers:%s %s\n",
+               __func__,
+               caps & ANALOG_BEARER ? "analog" : "",
+               caps & DIGITAL_BEARER ? "digital" : "");
+@@ -504,7 +504,7 @@ int firmware_rev_avp (struct tunnel *t, 
+ 
+     t->firmware = get16(p);
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer reports firmware version %d (0x%.4X)\n",
++    	do_log (LOG_DEBUG, "%s: peer reports firmware version %d (0x%.4X)\n",
+               __func__, t->firmware, t->firmware);
+     return 0;
+ }
+@@ -517,7 +517,7 @@ int bearer_type_avp (struct tunnel *t, s
+ 
+ 	t->call_head->bearer = get16(p + 2);
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer bears: %s\n", __func__,
++    	do_log (LOG_DEBUG, "%s: peer bears: %s\n", __func__,
+              (t->call_head->bearer & ANALOG_BEARER) ? "analog" : "digital");
+     return 0;
+ }
+@@ -529,7 +529,7 @@ int frame_type_avp (struct tunnel *t, st
+ 
+ 	c->frame = get16(p + 2);
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer uses:%s frames\n", __func__,
++    	do_log (LOG_DEBUG, "%s: peer uses:%s frames\n", __func__,
+              (c->frame & ASYNC_FRAMING) ? "async" : "sync");
+     return 0;
+ }
+@@ -544,7 +544,7 @@ int hostname_avp (struct tunnel *t, stru
+ 	t->hostname[datalen] = '\0';
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer reports hostname '%s'\n", __func__,
++    	do_log (LOG_DEBUG, "%s: peer reports hostname '%s'\n", __func__,
+              t->hostname);
+ 
+     return 0;
+@@ -561,7 +561,7 @@ int calling_number_avp (struct tunnel *t
+ 	t->call_head->dialing[datalen] = '\0';
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer reports dialing number '%s'\n", __func__,
++    	do_log (LOG_DEBUG, "%s: peer reports dialing number '%s'\n", __func__,
+              t->call_head->dialing);
+ 
+     return 0;
+@@ -578,7 +578,7 @@ int called_number_avp (struct tunnel *t,
+ 	t->call_head->dialed[datalen] = '\0';
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer reports dialed number '%s'\n", __func__,
++    	do_log (LOG_DEBUG, "%s: peer reports dialed number '%s'\n", __func__,
+              t->call_head->dialed);
+ 
+     return 0;
+@@ -595,7 +595,7 @@ int sub_address_avp (struct tunnel *t, s
+ 	t->call_head->subaddy[datalen] = '\0';
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer reports subaddress '%s'\n", __func__,
++    	do_log (LOG_DEBUG, "%s: peer reports subaddress '%s'\n", __func__,
+              t->call_head->subaddy);
+     return 0;
+ }
+@@ -610,7 +610,7 @@ int vendor_avp (struct tunnel *t, struct
+ 	t->vendor[datalen] = '\0';
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer reports vendor '%s'\n", __func__, t->vendor);
++    	do_log (LOG_DEBUG, "%s: peer reports vendor '%s'\n", __func__, t->vendor);
+     return 0;
+ }
+ 
+@@ -627,7 +627,7 @@ int challenge_avp (struct tunnel *t, str
+     t->chal_us.state = STATE_CHALLENGED;
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: challenge avp found\n", __func__);
++    	do_log (LOG_DEBUG, "%s: challenge avp found\n", __func__);
+ 
+     return 0;
+ }
+@@ -639,7 +639,7 @@ int chalresp_avp (struct tunnel *t, stru
+ 
+     memcpy(t->chal_them.reply, p, MD_SIG_SIZE);
+     if(debug_avp)
+-    	log(LOG_DEBUG, "%s: Challenge reply found\n", __func__);
++    	do_log(LOG_DEBUG, "%s: Challenge reply found\n", __func__);
+     return 0;
+ }
+ 
+@@ -655,7 +655,7 @@ int assigned_tunnel_avp (struct tunnel *
+     else
+         t->tid = id;
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: using peer's tunnel %d\n", __func__, id);
++    	do_log (LOG_DEBUG, "%s: using peer's tunnel %d\n", __func__, id);
+     return 0;
+ }
+ 
+@@ -678,7 +678,7 @@ int assigned_session_avp (struct tunnel 
+ 	};
+ 
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: assigned session id: %d\n", __func__, id);
++    	do_log (LOG_DEBUG, "%s: assigned session id: %d\n", __func__, id);
+     return 0;
+ }
+ 
+@@ -690,7 +690,7 @@ int packet_delay_avp (struct tunnel *t, 
+ 
+     c->ppd = get16(p);
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: peer's delay is %d 1/10's of a second\n", __func__,
++    	do_log (LOG_DEBUG, "%s: peer's delay is %d 1/10's of a second\n", __func__,
+              c->ppd);
+     return 0;
+ }
+@@ -705,7 +705,7 @@ int call_serno_avp (struct tunnel *t, st
+ 
+     t->call_head->serno = get32(p);
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: serial number is %d\n", __func__, 
++    	do_log (LOG_DEBUG, "%s: serial number is %d\n", __func__, 
+ 			 t->call_head->serno);
+     return 0;
+ }
+@@ -717,7 +717,7 @@ int rx_speed_avp (struct tunnel *t, stru
+ 
+     c->rxspeed = get32(p);
+     if(debug_avp)
+-    	log(LOG_DEBUG, "%s: receive baud rate is %d\n", __func__, c->rxspeed);
++    	do_log(LOG_DEBUG, "%s: receive baud rate is %d\n", __func__, c->rxspeed);
+     return 0;
+ }
+ 
+@@ -728,7 +728,7 @@ int tx_speed_avp (struct tunnel *t, stru
+ 
+     c->txspeed = get32(p);
+     if (debug_avp)
+-    	log (LOG_DEBUG, "%s: transmit baud rate is %d\n", 
++    	do_log (LOG_DEBUG, "%s: transmit baud rate is %d\n", 
+ 			 __func__, c->txspeed);
+     return 0;
+ }
+@@ -741,7 +741,7 @@ int call_physchan_avp (struct tunnel *t,
+ 
+     t->call_head->physchan = get32(p);
+     if (debug_avp)
+-    	log(LOG_DEBUG, "%s: physical channel is %d\n", __func__,
++    	do_log(LOG_DEBUG, "%s: physical channel is %d\n", __func__,
+ 			t->call_head->physchan);
+     return 0;
+ }
+@@ -756,7 +756,7 @@ int receive_window_size_avp (struct tunn
+ /*	if (c->rws >= 0)
+ 		c->fbit = FBIT; */
+     if (debug_avp)
+-		log (LOG_DEBUG, "%s: peer wants RWS of %d.  Will use flow control.\n",
++		do_log (LOG_DEBUG, "%s: peer wants RWS of %d.  Will use flow control.\n",
+              __func__, t->rws);
+     return 0;
+ }
+@@ -781,11 +781,11 @@ int handle_avps (struct buffer *buf, str
+     avp = (struct avp_hdr *) data;
+ 
+     if (debug_avp)
+-        log (LOG_DEBUG, "%s: handling avp's for tunnel %d, call %d\n",
++        do_log (LOG_DEBUG, "%s: handling avp's for tunnel %d, call %d\n",
+              __func__, t->ourtid, c->ourcid);
+ 
+ 	if(len < 6) {
+-    	log (LOG_WARN, "%s: packet too small\n", __func__);
++    	do_log (LOG_WARN, "%s: packet too small\n", __func__);
+         set_error(c, ERROR_LENGTH, "Invalid message length");
+         return -EINVAL;
+ 	}
+@@ -800,7 +800,7 @@ int handle_avps (struct buffer *buf, str
+         {
+             if (AMBIT(rlen))
+             {
+-                log (LOG_WARN,
++                do_log (LOG_WARN,
+                      "%s:  unhandeled mandatory attribute %d.  Closing %s.\n", 
+                      __func__, attr, (c != t->self) ? "call" : "tunnel");
+                 set_error (c, VENDOR_ERROR, 
+@@ -810,7 +810,7 @@ int handle_avps (struct buffer *buf, str
+             else
+             {
+                 if (DEBUG)
+-                    log (LOG_WARN,
++                    do_log (LOG_WARN,
+                          "%s: handeled attribute %d.\n",
+                          __func__, attr);
+                 goto next;
+@@ -818,7 +818,7 @@ int handle_avps (struct buffer *buf, str
+         }
+         if (ALENGTH (rlen) > len)
+         {
+-            log (LOG_WARN,
++            do_log (LOG_WARN,
+                  "%s: AVP reported length > remaining packet length\n",
+                  __func__);
+             set_error (c, ERROR_LENGTH, "Invalid AVP length");
+@@ -826,7 +826,7 @@ int handle_avps (struct buffer *buf, str
+         }
+ 		if (ALENGTH (rlen) < sizeof (struct avp_hdr))
+         {
+-            log (LOG_WARN, "%s: AVP reported length too small (%d).\n",
++            do_log (LOG_WARN, "%s: AVP reported length too small (%d).\n",
+                  __func__, ALENGTH (rlen));
+             set_error (c, ERROR_LENGTH, "AVP too small");
+             return -EINVAL;
+@@ -835,7 +835,7 @@ int handle_avps (struct buffer *buf, str
+ 			if((avps[attr].flags & AVP_F_FIXLEN) ?  
+ 			   (ALENGTH(rlen) - sizeof(struct avp_hdr)) != avps[attr].sz :
+ 			   (ALENGTH(rlen) - sizeof(struct avp_hdr)) > avps[attr].sz) {
+-				log (LOG_DEBUG, "%s: %s avp size mismatch  (%d %s %d)\n", 
++				do_log (LOG_DEBUG, "%s: %s avp size mismatch  (%d %s %d)\n", 
+ 					__func__,
+ 					avps[attr].description, 
+ 					(avps[attr].flags & AVP_F_FIXLEN) ? "!=" : "<", 
+@@ -846,14 +846,14 @@ int handle_avps (struct buffer *buf, str
+ 		}
+         if (attr && firstavp)
+         {
+-            log (LOG_WARN, "%s: First AVP was not message type.\n",
++            do_log (LOG_WARN, "%s: First AVP was not message type.\n",
+                  __func__);
+             set_error (c, VENDOR_ERROR, "First AVP must be message type");
+             return -EINVAL;
+         }
+         if (AZBITS (rlen))
+         {
+-            log (LOG_WARN, "%s: %sAVP has reserved bits set.\n", __func__,
++            do_log (LOG_WARN, "%s: %sAVP has reserved bits set.\n", __func__,
+                  AMBIT (rlen) ? "Mandatory " : "");
+             if (AMBIT (rlen))
+             {
+@@ -866,7 +866,7 @@ int handle_avps (struct buffer *buf, str
+ 		/* decryption */
+         if (AHBIT (rlen))
+         {
+-            log (LOG_DEBUG, "%s: Hidden bit set on AVP.\n", __func__);
++            do_log (LOG_DEBUG, "%s: Hidden bit set on AVP.\n", __func__);
+             /* We want to rewrite the AVP as an unhidden AVP
+                and then pass it along as normal.  Remeber how
+                long the AVP was in the first place though! */
+@@ -874,7 +874,7 @@ int handle_avps (struct buffer *buf, str
+             if (decrypt_avp (data, t))
+             {
+                 if (debug_avp)
+-                    log (LOG_WARN, "%s: Unable to handle hidden %sAVP\n:",
++                    do_log (LOG_WARN, "%s: Unable to handle hidden %sAVP\n:",
+                          __func__,
+                          (AMBIT (rlen) ? "mandatory " : ""));
+                 if (AMBIT (rlen))
+@@ -899,7 +899,7 @@ int handle_avps (struct buffer *buf, str
+ 			if(avps[attr].validate(attr, t, c, avp, ALENGTH (rlen))) {
+ 				 if (AMBIT (rlen))
+                 {
+-                    log (LOG_WARN,
++                    do_log (LOG_WARN,
+                          "%s: verification of AVP %d (%s) failed.\n",
+                          __func__, attr,
+                          avps[attr].description);
+@@ -909,7 +909,7 @@ int handle_avps (struct buffer *buf, str
+                 else
+                 {
+                     if (DEBUG)
+-                        log (LOG_DEBUG,
++                        do_log (LOG_DEBUG,
+                              "%s: Bad exit status handling attribute %d (%s).\n",
+                              __func__, attr,
+                              avps[attr].description);
+@@ -924,7 +924,7 @@ int handle_avps (struct buffer *buf, str
+             {
+                 if (AMBIT (rlen))
+                 {
+-                    log (LOG_WARN,
++                    do_log (LOG_WARN,
+                          "%s: Bad exit status handling mandatory attribute %d (%s).\n",
+                          __func__, attr,
+                          avps[attr].description);
+@@ -934,7 +934,7 @@ int handle_avps (struct buffer *buf, str
+                 else
+                 {
+                     if (DEBUG)
+-                        log (LOG_DEBUG,
++                        do_log (LOG_DEBUG,
+                              "%s: Bad exit status handling attribute %d (%s).\n",
+                              __func__, attr,
+                              avps[attr].description);
+@@ -945,7 +945,7 @@ int handle_avps (struct buffer *buf, str
+         {
+             if (AMBIT (rlen))
+             {
+-                log (LOG_WARN,
++                do_log (LOG_WARN,
+                      "%s:  No handler for mandatory attribute %d (%s).  Closing %s.\n",
+                      __func__, attr, 
+ 					 avps[attr].description,
+@@ -958,7 +958,7 @@ int handle_avps (struct buffer *buf, str
+             else
+             {
+                 if (DEBUG)
+-                    log (LOG_WARN, "%s:  no handler for atribute %d (%s).\n",
++                    do_log (LOG_WARN, "%s:  no handler for atribute %d (%s).\n",
+                          __func__, attr,
+                          avps[attr].description);
+             }
+@@ -980,7 +980,7 @@ int handle_avps (struct buffer *buf, str
+     }
+     if (len != 0)
+     {
+-        log (LOG_WARN, "%s: negative overall packet length\n", __func__);
++        do_log (LOG_WARN, "%s: negative overall packet length\n", __func__);
+         return -EINVAL;
+     }
+ 
+diff -rdup l2tpd-0.70-pre20031121.oorig/avpsend.c l2tpd-0.70-pre20031121/avpsend.c
+--- l2tpd-0.70-pre20031121.oorig/avpsend.c	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/avpsend.c	2006-12-28 16:41:59.000000000 +0100
+@@ -29,7 +29,7 @@ static int add_avp(struct buffer *buf, u
+ 	u_int8_t *p = buf->start + buf->len;
+ 
+ 	if(avpid > AVP_MAX  || !avps[avpid].flags) {
+-		log(LOG_DEBUG, "%s: invalid avp id %d\n", __func__, avpid);
++		do_log(LOG_DEBUG, "%s: invalid avp id %d\n", __func__, avpid);
+ 		return 1;
+ 	}
+ 
+diff -rdup l2tpd-0.70-pre20031121.oorig/call.c l2tpd-0.70-pre20031121/call.c
+--- l2tpd-0.70-pre20031121.oorig/call.c	2004-07-08 22:47:52.000000000 +0200
++++ l2tpd-0.70-pre20031121/call.c	2006-12-28 16:41:59.000000000 +0100
+@@ -138,11 +138,11 @@ int read_packet (struct buffer *buf, int
+                 return 0;
+             }
+             errors++;
+-            log (LOG_DEBUG, "%s: Error %d (%s)\n", __FUNCTION__, errno,
++            do_log (LOG_DEBUG, "%s: Error %d (%s)\n", __FUNCTION__, errno,
+                  strerror (errno));
+             if (errors > 10)
+             {
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Too many errors.  Declaring call dead.\n",
+                      __FUNCTION__);
+                 return -errno;
+@@ -154,7 +154,7 @@ int read_packet (struct buffer *buf, int
+         case PPP_FLAG:
+             if (escape)
+             {
+-                log (LOG_DEBUG, "%s: got an escaped PPP_FLAG\n",
++                do_log (LOG_DEBUG, "%s: got an escaped PPP_FLAG\n",
+                      __FUNCTION__);
+                 return -EINVAL;
+             }
+@@ -190,12 +190,12 @@ int read_packet (struct buffer *buf, int
+                 buf->len++;
+                 break;
+             };
+-            log (LOG_WARN, "%s: read overrun\n", __FUNCTION__);
++            do_log (LOG_WARN, "%s: read overrun\n", __FUNCTION__);
+             return -EINVAL;
+         }
+     }
+     /* I should never get here */
+-    log (LOG_WARN, "%s: You should not see this message.  If you do, please " \
++    do_log (LOG_WARN, "%s: You should not see this message.  If you do, please " \
+ 		       "enter a bug report at http://www.l2tpd.org", __FUNCTION__);
+     return -EINVAL;
+ }
+@@ -207,7 +207,7 @@ void call_close (struct call *c)
+     struct call *tmp, *tmp2;
+     if (!c || !c->container)
+     {
+-        log (LOG_DEBUG, "%s: called on null call or containerless call\n",
++        do_log (LOG_DEBUG, "%s: called on null call or containerless call\n",
+              __FUNCTION__);
+         return;
+     }
+@@ -231,7 +231,7 @@ void call_close (struct call *c)
+                 || ((struct tunnel *) se->data == c->container))
+             {
+ #ifdef DEBUG_CLOSE
+-                log (LOG_DEBUG, "%s: Descheduling event\n", __FUNCTION__);
++                do_log (LOG_DEBUG, "%s: Descheduling event\n", __FUNCTION__);
+ #endif
+                 if (ose)
+                 {
+@@ -262,7 +262,7 @@ void call_close (struct call *c)
+             /* Really close this tunnel, as our
+                StopCCN has been ack'd */
+ #ifdef DEBUG_CLOSE
+-            log (LOG_DEBUG, "%s: Actually closing tunnel %d\n", __FUNCTION__,
++            do_log (LOG_DEBUG, "%s: Actually closing tunnel %d\n", __FUNCTION__,
+                  c->container->ourtid);
+ #endif
+ #ifdef USE_KERNEL
+@@ -298,7 +298,7 @@ void call_close (struct call *c)
+         if (packet_dump)
+             do_packet_dump (buf);
+ #ifdef DEBUG_CLOSE
+-        log (LOG_DEBUG, "%s: enqueing close message for tunnel\n",
++        do_log (LOG_DEBUG, "%s: enqueing close message for tunnel\n",
+              __FUNCTION__);
+ #endif
+         control_xmit (buf);
+@@ -315,7 +315,7 @@ void call_close (struct call *c)
+             call_close (tmp);
+             tmp = tmp2;
+         }
+-        log (LOG_LOG,
++        do_log (LOG_LOG,
+              "%s : Connection %d closed to %s, port %d (%s)\n", __FUNCTION__,
+              c->container->tid,
+              IPADDY (c->container->peer.sin_addr),
+@@ -335,7 +335,7 @@ void call_close (struct call *c)
+         if (c->closing)
+         {
+ #ifdef DEBUG_CLOSE
+-            log (LOG_DEBUG, "%s: Actually closing call %d\n", __FUNCTION__,
++            do_log (LOG_DEBUG, "%s: Actually closing call %d\n", __FUNCTION__,
+                  c->ourcid);
+ #endif
+             destroy_call (c);
+@@ -375,11 +375,11 @@ void call_close (struct call *c)
+         if (packet_dump)
+             do_packet_dump (buf);
+ #ifdef DEBUG_CLOSE
+-        log (LOG_DEBUG, "%s: enqueuing close message for call %d\n",
++        do_log (LOG_DEBUG, "%s: enqueuing close message for call %d\n",
+              __FUNCTION__, c->ourcid);
+ #endif
+         control_xmit (buf);
+-        log (LOG_LOG, "%s: Call %d to %s disconnected\n", __FUNCTION__,
++        do_log (LOG_LOG, "%s: Call %d to %s disconnected\n", __FUNCTION__,
+              c->ourcid, IPADDY (c->container->peer.sin_addr));
+     }
+     /*
+@@ -463,7 +463,7 @@ void destroy_call (struct call *c)
+             c->lac->active)
+         {
+ #ifdef DEBUG_MAGIC
+-            log (LOG_LOG, "%s: Will redial in %d seconds\n", __FUNCTION__,
++            do_log (LOG_LOG, "%s: Will redial in %d seconds\n", __FUNCTION__,
+                  c->lac->rtimeout);
+ #endif
+             tv.tv_sec = c->lac->rtimeout;
+@@ -519,7 +519,7 @@ struct call *new_call (struct tunnel *pa
+             temp = (int *)entropy_buf;
+             tmp->ourcid = *temp & 0xFFFF;
+ #ifdef DEBUG_ENTROPY
+-            log(LOG_DEBUG, "ourcid = %u, entropy_buf = %hx\n", tmp->ourcid, *temp);
++            do_log(LOG_DEBUG, "ourcid = %u, entropy_buf = %hx\n", tmp->ourcid, *temp);
+ #endif
+         }
+ #else
+@@ -608,7 +608,7 @@ struct call *get_call (int tunnel, int c
+                             return sc;
+                         sc = sc->next;
+                     }
+-                    log (LOG_DEBUG, "%s: can't find call %d in tunnel %d\n",
++                    do_log (LOG_DEBUG, "%s: can't find call %d in tunnel %d\n",
+                          __FUNCTION__, call, tunnel);
+                     return NULL;
+                 }
+@@ -619,7 +619,7 @@ struct call *get_call (int tunnel, int c
+             }
+             st = st->next;
+         }
+-        log (LOG_DEBUG, "%s:can't find tunnel %d\n", __FUNCTION__, tunnel);
++        do_log (LOG_DEBUG, "%s:can't find tunnel %d\n", __FUNCTION__, tunnel);
+         return NULL;
+     }
+     else
+@@ -632,7 +632,7 @@ struct call *get_call (int tunnel, int c
+ 
+         if (call)
+         {
+-            log (LOG_WARN,
++            do_log (LOG_WARN,
+                  "%s: call ID specified, but no tunnel ID specified.  tossing.\n",
+                  __FUNCTION__);
+             return NULL;
+@@ -643,13 +643,13 @@ struct call *get_call (int tunnel, int c
+          */
+         if (debug_tunnel)
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: allocating new tunnel for host %s, port %d.\n",
+                  __FUNCTION__, IPADDY (addr), ntohs (port));
+         }
+         if (!(st = new_tunnel ()))
+         {
+-            log (LOG_WARN,
++            do_log (LOG_WARN,
+                  "%s: unable to allocate new tunnel for host %s, port %d.\n",
+                  __FUNCTION__, IPADDY (addr), ntohs (port));
+             return NULL;
+diff -rdup l2tpd-0.70-pre20031121.oorig/control.c l2tpd-0.70-pre20031121/control.c
+--- l2tpd-0.70-pre20031121.oorig/control.c	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/control.c	2006-12-28 16:41:59.000000000 +0100
+@@ -138,14 +138,14 @@ void hello (void *tun)
+     if (packet_dump)
+         do_packet_dump (buf);
+ #ifdef DEBUG_HELLO
+-    log (LOG_DEBUG, "%s: sending Hello on %d\n", __FUNCTION__, t->ourtid);
++    do_log (LOG_DEBUG, "%s: sending Hello on %d\n", __FUNCTION__, t->ourtid);
+ #endif
+     control_xmit (buf);
+     /*
+      * Schedule another Hello in a little bit.
+      */
+ #ifdef DEBUG_HELLO
+-    log (LOG_DEBUG, "%s: scheduling another Hello on %d\n", __FUNCTION__,
++    do_log (LOG_DEBUG, "%s: scheduling another Hello on %d\n", __FUNCTION__,
+          t->ourtid);
+ #endif
+     t->hello = schedule (tv, hello, (void *) t);
+@@ -157,7 +157,7 @@ void control_zlb (struct buffer *buf, st
+     add_control_hdr (t, c, buf);
+     t->control_seq_num--;
+ #ifdef DEBUG_ZLB
+-    log (LOG_DEBUG, "%s: sending control ZLB on tunnel %d\n", __FUNCTION__,
++    do_log (LOG_DEBUG, "%s: sending control ZLB on tunnel %d\n", __FUNCTION__,
+          t->tid);
+ #endif
+     udp_xmit (buf);
+@@ -187,12 +187,12 @@ int control_finish (struct tunnel *t, st
+     char dummy_buf[128] = "/var/l2tp/"; /* jz: needed to read /etc/ppp/var.options - just kick it if you dont like */
+     if (c->msgtype < 0)
+     {
+-        log (LOG_DEBUG, "%s: Whoa...  non-ZLB with no message type!\n",
++        do_log (LOG_DEBUG, "%s: Whoa...  non-ZLB with no message type!\n",
+              __FUNCTION__);
+         return -EINVAL;
+     }
+     if (debug_state)
+-        log (LOG_DEBUG,
++        do_log (LOG_DEBUG,
+              "%s: message type is %s(%d).  Tunnel is %d, call is %d.\n",
+              __FUNCTION__, msgtypes[c->msgtype], c->msgtype, t->tid, c->cid);
+     switch (c->msgtype)
+@@ -247,7 +247,7 @@ int control_finish (struct tunnel *t, st
+             if (packet_dump)
+                 do_packet_dump (buf);
+             if (debug_state)
+-                log (LOG_DEBUG, "%s: control_finish: sending SCCRQ\n",
++                do_log (LOG_DEBUG, "%s: control_finish: sending SCCRQ\n",
+                      __FUNCTION__);
+             control_xmit (buf);
+         }
+@@ -289,7 +289,7 @@ int control_finish (struct tunnel *t, st
+                 if (packet_dump)
+                     do_packet_dump (buf);
+                 if (debug_state)
+-                    log (LOG_DEBUG, "%s: sending ICRQ\n", __FUNCTION__);
++                    do_log (LOG_DEBUG, "%s: sending ICRQ\n", __FUNCTION__);
+                 control_xmit (buf);
+             }
+             else
+@@ -342,7 +342,7 @@ int control_finish (struct tunnel *t, st
+         if (t->tid <= 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer did not specify assigned tunnel ID.  Closing.\n",
+                      __FUNCTION__);
+             set_error (c, VENDOR_ERROR, "Specify your assigned tunnel ID");
+@@ -351,7 +351,7 @@ int control_finish (struct tunnel *t, st
+         if (!(t->lns = get_lns (t)))
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Denied connection to unauthorized peer %s\n",
+                      __FUNCTION__, IPADDY (t->peer.sin_addr));
+             set_error (c, VENDOR_ERROR, "No Authorization");
+@@ -362,7 +362,7 @@ int control_finish (struct tunnel *t, st
+         if (t->fc < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer did not specify framing capability.  Closing.\n",
+                      __FUNCTION__);
+             set_error (c, VENDOR_ERROR, "Specify framing capability");
+@@ -374,7 +374,7 @@ int control_finish (struct tunnel *t, st
+          * We shouldn't be requiring a bearer capabilities avp to be present in 
+          * SCCRQ and SCCRP as they aren't required
+          if (t->bc < 0 ) {
+-         if (DEBUG) log(LOG_DEBUG,
++         if (DEBUG) do_log(LOG_DEBUG,
+          "%s: Peer did not specify bearer capability.  Closing.\n",__FUNCTION__);
+          set_error(c, VENDOR_ERROR, "Specify bearer capability");
+          return -EINVAL;
+@@ -382,7 +382,7 @@ int control_finish (struct tunnel *t, st
+         if ((!strlen (t->hostname)) && ((t->chal_us.state) || ((t->lns->challenge))))
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer did not specify hostname.  Closing.\n",
+                      __FUNCTION__);
+             set_error (c, VENDOR_ERROR, "Specify your hostname");
+@@ -401,7 +401,7 @@ int control_finish (struct tunnel *t, st
+                  * But it is legitimate for two different remote systems
+                  * to use the same tid
+                  */
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer requested tunnel %d twice, ignoring second one.\n",
+                      __FUNCTION__, t->tid);
+                 c->needclose = 0;
+@@ -438,7 +438,7 @@ int control_finish (struct tunnel *t, st
+             t->chal_them.challenge = malloc(MD_SIG_SIZE);
+             if (!(t->chal_them.challenge))
+             {
+-                log (LOG_WARN, "%s: malloc failed\n", __FUNCTION__);
++                do_log (LOG_WARN, "%s: malloc failed\n", __FUNCTION__);
+                 set_error (c, VENDOR_ERROR, "malloc failed");
+                 toss (buf);
+                 return -EINVAL;
+@@ -448,7 +448,7 @@ int control_finish (struct tunnel *t, st
+             if (handle_challenge (t, &t->chal_them))
+             {
+                 /* We already know what to expect back */
+-                log (LOG_WARN, "%s: No secret for '%s'\n", __FUNCTION__,
++                do_log (LOG_WARN, "%s: No secret for '%s'\n", __FUNCTION__,
+                      t->hostname);
+                 set_error (c, VENDOR_ERROR, "No secret on our side");
+                 toss (buf);
+@@ -461,7 +461,7 @@ int control_finish (struct tunnel *t, st
+             do_packet_dump (buf);
+         c->cnu = 0;
+         if (debug_state)
+-            log (LOG_DEBUG, "%s: sending SCCRP\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s: sending SCCRP\n", __FUNCTION__);
+         control_xmit (buf);
+         break;
+     case SCCRP:
+@@ -472,7 +472,7 @@ int control_finish (struct tunnel *t, st
+         if (t->fc < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer did not specify framing capability.  Closing.\n",
+                      __FUNCTION__);
+             set_error (c, VENDOR_ERROR, "Specify framing capability");
+@@ -484,7 +484,7 @@ int control_finish (struct tunnel *t, st
+          * We shouldn't be requiring a bearer capabilities avp to be present in 
+          * SCCRQ and SCCRP as they aren't required
+          if (t->bc < 0 ) {
+-         if (DEBUG) log(LOG_DEBUG,
++         if (DEBUG) do_log(LOG_DEBUG,
+          "%s: Peer did not specify bearer capability.  Closing.\n",__FUNCTION__);
+          set_error(c, VENDOR_ERROR, "Specify bearer capability");
+          return -EINVAL;
+@@ -492,7 +492,7 @@ int control_finish (struct tunnel *t, st
+         if ((!strlen (t->hostname)) && ((t->chal_them.state) || ((t->chal_us.state))))
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer did not specify hostname.  Closing.\n",
+                      __FUNCTION__);
+             set_error (c, VENDOR_ERROR, "Specify your hostname");
+@@ -501,7 +501,7 @@ int control_finish (struct tunnel *t, st
+         if (t->tid <= 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer did not specify assigned tunnel ID.  Closing.\n",
+                      __FUNCTION__);
+             set_error (c, VENDOR_ERROR, "Specify your assigned tunnel ID");
+@@ -513,7 +513,7 @@ int control_finish (struct tunnel *t, st
+             if (handle_challenge (t, &t->chal_them))
+             {
+                 set_error (c, VENDOR_ERROR, "No secret key on our side");
+-                log (LOG_WARN, "%s: No secret key for authenticating '%s'\n",
++                do_log (LOG_WARN, "%s: No secret key for authenticating '%s'\n",
+                      __FUNCTION__, t->hostname);
+                 return -EINVAL;
+             }
+@@ -522,7 +522,7 @@ int control_finish (struct tunnel *t, st
+             {
+                 set_error (c, VENDOR_ERROR,
+                            "Invalid challenge authentication");
+-                log (LOG_DEBUG, "%s: Invalid authentication for host '%s'\n",
++                do_log (LOG_DEBUG, "%s: Invalid authentication for host '%s'\n",
+                      __FUNCTION__, t->hostname);
+                 return -EINVAL;
+             }
+@@ -532,7 +532,7 @@ int control_finish (struct tunnel *t, st
+             t->chal_us.ss = SCCCN;
+             if (handle_challenge (t, &t->chal_us))
+             {
+-                log (LOG_WARN, "%s: No secret for authenticating to '%s'\n",
++                do_log (LOG_WARN, "%s: No secret for authenticating to '%s'\n",
+                      __FUNCTION__, t->hostname);
+                 set_error (c, VENDOR_ERROR, "No secret key on our end");
+                 return -EINVAL;
+@@ -563,17 +563,17 @@ int control_finish (struct tunnel *t, st
+             do_packet_dump (buf);
+         c->cnu = 0;
+         if (debug_state)
+-            log (LOG_DEBUG, "%s: sending SCCCN\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s: sending SCCCN\n", __FUNCTION__);
+         control_xmit (buf);
+         /* Schedule a HELLO */
+         tv.tv_sec = HELLO_DELAY;
+         tv.tv_usec = 0;
+ #ifdef DEBUG_HELLO
+-        log (LOG_DEBUG, "%s: scheduling initial HELLO on %d\n", __FUNCTION__,
++        do_log (LOG_DEBUG, "%s: scheduling initial HELLO on %d\n", __FUNCTION__,
+              t->ourtid);
+ #endif
+         t->hello = schedule (tv, hello, (void *) t);
+-        log (LOG_LOG,
++        do_log (LOG_LOG,
+              "%s: Connection established to %s, %d.  Local: %d, Remote: %d.\n",
+              __FUNCTION__, IPADDY (t->peer.sin_addr),
+              ntohs (t->peer.sin_port), t->ourtid, t->tid);
+@@ -592,7 +592,7 @@ int control_finish (struct tunnel *t, st
+             {
+                 set_error (c, VENDOR_ERROR,
+                            "Invalid challenge authentication");
+-                log (LOG_DEBUG, "%s: Invalid authentication for host '%s'\n",
++                do_log (LOG_DEBUG, "%s: Invalid authentication for host '%s'\n",
+                      __FUNCTION__, t->hostname);
+                 return -EINVAL;
+             }
+@@ -608,7 +608,7 @@ int control_finish (struct tunnel *t, st
+         }
+ #endif
+         t->state = SCCCN;
+-        log (LOG_LOG,
++        do_log (LOG_LOG,
+              "%s: Connection established to %s, %d.  Local: %d, Remote: %d.  LNS session is '%s'\n",
+              __FUNCTION__, IPADDY (t->peer.sin_addr),
+              ntohs (t->peer.sin_port), t->ourtid, t->tid, t->lns->entname);
+@@ -616,7 +616,7 @@ int control_finish (struct tunnel *t, st
+         tv.tv_sec = HELLO_DELAY;
+         tv.tv_usec = 0;
+ #ifdef DEBUG_HELLO
+-        log (LOG_DEBUG, "%s: scheduling initial HELLO on %d\n", __FUNCTION__,
++        do_log (LOG_DEBUG, "%s: scheduling initial HELLO on %d\n", __FUNCTION__,
+              t->ourtid);
+ #endif
+         t->hello = schedule (tv, hello, (void *) t);
+@@ -625,7 +625,7 @@ int control_finish (struct tunnel *t, st
+         if (t->qtid < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to disconnect without specifying tunnel ID\n",
+                      __FUNCTION__);
+             return -EINVAL;
+@@ -633,7 +633,7 @@ int control_finish (struct tunnel *t, st
+         if ((t->qtid != t->tid) && (t->tid > 0))
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to disconnect with invalid TID (%d != %d)\n",
+                      __FUNCTION__, t->qtid, t->tid);
+             return -EINVAL;
+@@ -644,12 +644,12 @@ int control_finish (struct tunnel *t, st
+         if (t->self->result < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to disconnect without specifying result code.\n",
+                      __FUNCTION__);
+             return -EINVAL;
+         }
+-        log (LOG_LOG,
++        do_log (LOG_LOG,
+              "%s: Connection closed to %s, port %d (%s), Local: %d, Remote: %d\n",
+              __FUNCTION__, IPADDY (t->peer.sin_addr),
+              ntohs (t->peer.sin_port), t->self->errormsg, t->ourtid, t->tid);
+@@ -670,7 +670,7 @@ int control_finish (struct tunnel *t, st
+         if (p->cid < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to initiate call without call ID\n",
+                      __FUNCTION__);
+             /* Here it doesn't make sense to use the needclose flag because 
+@@ -685,7 +685,7 @@ int control_finish (struct tunnel *t, st
+             {
+                 /* This can happen if we get a duplicate
+                    ICRQ or if they don't get our ack packet */
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer requested call %d twice, ignoring second one.\n",
+                      __FUNCTION__, p->cid);
+                 p->needclose = 0;
+@@ -701,7 +701,7 @@ int control_finish (struct tunnel *t, st
+          * isn't a big deal, but it would be nice to have *some* sort of check
+          * for it and perhaps just log it and go on.  */
+ /*    JLM	if (p->serno<1) {
+-			if (DEBUG) log(LOG_DEBUG,
++			if (DEBUG) do_log(LOG_DEBUG,
+ 			"%s: Peer did not specify serial number when initiating call\n", __FUNCTION__);
+ 			call_close(p);
+ 			return -EINVAL;
+@@ -713,7 +713,7 @@ int control_finish (struct tunnel *t, st
+         {
+             set_error (p, ERROR_NORES, "No available IP address");
+             call_close (p);
+-            log (LOG_DEBUG, "%s: Out of IP addresses on tunnel %d!\n",
++            do_log (LOG_DEBUG, "%s: Out of IP addresses on tunnel %d!\n",
+                  __FUNCTION__, t->tid);
+             return -EINVAL;
+         }
+@@ -745,14 +745,14 @@ int control_finish (struct tunnel *t, st
+             do_packet_dump (buf);
+         p->cnu = 0;
+         if (debug_state)
+-            log (LOG_DEBUG, "%s: Sending ICRP\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s: Sending ICRP\n", __FUNCTION__);
+         control_xmit (buf);
+         break;
+     case ICRP:
+         if (c->cid < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to negotiate ICRP without specifying call ID\n",
+                      __FUNCTION__);
+             c->needclose = -1;
+@@ -800,8 +800,8 @@ int control_finish (struct tunnel *t, st
+         }
+ #endif
+         if (debug_state)
+-            log (LOG_DEBUG, "%s: Sending ICCN\n", __FUNCTION__);
+-        log (LOG_LOG,
++            do_log (LOG_DEBUG, "%s: Sending ICCN\n", __FUNCTION__);
++        do_log (LOG_LOG,
+              "%s: Call established with %s, Local: %d, Remote: %d, Serial: %d\n",
+              __FUNCTION__, IPADDY (t->peer.sin_addr), c->ourcid, c->cid,
+              c->serno);
+@@ -860,21 +860,21 @@ int control_finish (struct tunnel *t, st
+     case ICCN:
+         if (c == t->self)
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: Peer attempted ICCN on the actual tunnel, not the call",
+                  __FUNCTION__);
+             return -EINVAL;
+         }
+         if (c->txspeed < 1)
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: Peer did not specify transmit speed\n", __FUNCTION__);
+             c->needclose = -1;
+             return -EINVAL;
+         };
+         if (c->frame < 1)
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: Peer did not specify framing type\n", __FUNCTION__);
+             c->needclose = -1;
+             return -EINVAL;
+@@ -938,7 +938,7 @@ int control_finish (struct tunnel *t, st
+         }
+         start_pppd (c, po);
+         opt_destroy (po);
+-        log (LOG_LOG,
++        do_log (LOG_LOG,
+              "%s: Call established with %s, Local: %d, Remote: %d, Serial: %d\n",
+              __FUNCTION__, IPADDY (t->peer.sin_addr), c->ourcid, c->cid,
+              c->serno);
+@@ -996,7 +996,7 @@ int control_finish (struct tunnel *t, st
+         };
+         start_pppd (c, po);
+ 
+-        log (LOG_LOG, "parameters: Local: %d , Remote: %d , Serial: %d , Pid: %d , Tunnelid: %d , Phoneid: %s\n", c->ourcid, c->cid, c->serno, c->pppd, t->ourtid, c->dial_no); /*  jz: just show some information */
++        do_log (LOG_LOG, "parameters: Local: %d , Remote: %d , Serial: %d , Pid: %d , Tunnelid: %d , Phoneid: %s\n", c->ourcid, c->cid, c->serno, c->pppd, t->ourtid, c->dial_no); /*  jz: just show some information */
+ 
+         opt_destroy (po);
+         if (c->lac)
+@@ -1008,7 +1008,7 @@ int control_finish (struct tunnel *t, st
+         if (c->qcid < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to disconnect without specifying call ID\n",
+                      __FUNCTION__);
+             return -EINVAL;
+@@ -1021,7 +1021,7 @@ int control_finish (struct tunnel *t, st
+             if (!p)
+             {
+                 if (DEBUG)
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: Unable to determine call to be disconnected.\n",
+                          __FUNCTION__);
+                 return -EINVAL;
+@@ -1032,7 +1032,7 @@ int control_finish (struct tunnel *t, st
+         if ((c->qcid != p->cid) && p->cid > 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to disconnect with invalid CID (%d != %d)\n",
+                      __FUNCTION__, c->qcid, c->cid);
+             return -EINVAL;
+@@ -1041,12 +1041,12 @@ int control_finish (struct tunnel *t, st
+         if (c->result < 0)
+         {
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Peer tried to disconnect without specifying result code.\n",
+                      __FUNCTION__);
+             return -EINVAL;
+         }
+-        log (LOG_LOG,
++        do_log (LOG_LOG,
+              "%s: Connection closed to %s, serial %d (%s)\n", __FUNCTION__,
+              IPADDY (t->peer.sin_addr), c->serno, c->errormsg);
+         c->needclose = 0;
+@@ -1057,7 +1057,7 @@ int control_finish (struct tunnel *t, st
+     case SLI:
+         break;
+     default:
+-        log (LOG_DEBUG,
++        do_log (LOG_DEBUG,
+              "%s: Don't know how to finish a message of type %d\n",
+              __FUNCTION__, c->msgtype);
+         set_error (c, VENDOR_ERROR, "Unimplemented message %d\n", c->msgtype);
+@@ -1078,7 +1078,7 @@ inline int check_control (const struct b
+     {
+         if (DEBUG)
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: Received too small of packet\n", __FUNCTION__);
+         }
+         return -EINVAL;
+@@ -1088,7 +1088,7 @@ inline int check_control (const struct b
+     {
+         if (DEBUG)
+         {
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: Reported and actual sizes differ (%d != %d)\n",
+                  __FUNCTION__, h->length, buf->len);
+         }
+@@ -1098,13 +1098,13 @@ inline int check_control (const struct b
+      * FIXME: H-bit handling goes here
+      */
+ #ifdef DEBUG_CONTROL
+-    log (LOG_DEBUG, "%s: control, cid = %d, Ns = %d, Nr = %d\n", __FUNCTION__,
++    do_log (LOG_DEBUG, "%s: control, cid = %d, Ns = %d, Nr = %d\n", __FUNCTION__,
+          c->cid, h->Ns, h->Nr);
+ #endif
+     if (h->Ns != t->control_rec_seq_num)
+     {
+         if (DEBUG)
+-            log (LOG_DEBUG,
++            do_log (LOG_DEBUG,
+                  "%s: Received out of order control packet on tunnel %d (got %d, expected %d)\n",
+                  __FUNCTION__, t->tid, h->Ns, t->control_rec_seq_num);
+         if (((h->Ns < t->control_rec_seq_num) && 
+@@ -1119,7 +1119,7 @@ inline int check_control (const struct b
+              */
+ #ifdef DEBUG_ZLB
+             if (DEBUG)
+-                log (LOG_DEBUG, "%s: Sending an updated ZLB in reponse\n",
++                do_log (LOG_DEBUG, "%s: Sending an updated ZLB in reponse\n",
+                      __FUNCTION__);
+ #endif
+             zlb = new_outgoing (t);
+@@ -1153,7 +1153,7 @@ inline int check_control (const struct b
+         {
+             if (DEBUG)
+             {
+-                log (LOG_DEBUG, "%s: Control bit not set\n", __FUNCTION__);
++                do_log (LOG_DEBUG, "%s: Control bit not set\n", __FUNCTION__);
+             }
+             return -EINVAL;
+         }
+@@ -1161,7 +1161,7 @@ inline int check_control (const struct b
+         {
+             if (DEBUG)
+             {
+-                log (LOG_DEBUG, "%s: Length bit not set\n", __FUNCTION__);
++                do_log (LOG_DEBUG, "%s: Length bit not set\n", __FUNCTION__);
+             }
+             return -EINVAL;
+         }
+@@ -1169,7 +1169,7 @@ inline int check_control (const struct b
+         {
+             if (DEBUG)
+             {
+-                log (LOG_DEBUG, "%s: Flow bit not set\n", __FUNCTION__);
++                do_log (LOG_DEBUG, "%s: Flow bit not set\n", __FUNCTION__);
+             }
+             return -EINVAL;
+         }
+@@ -1179,17 +1179,17 @@ inline int check_control (const struct b
+             {
+                 if (CVER (h->ver) == VER_PPTP)
+                 {
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: PPTP packet received\n", __FUNCTION__);
+                 }
+                 else if (CVER (h->ver) < VER_L2TP)
+                 {
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: L2F packet received\n", __FUNCTION__);
+                 }
+                 else
+                 {
+-                    log (LOG_DEBUG,
++                    do_log (LOG_DEBUG,
+                          "%s: Unknown version received\n", __FUNCTION__);
+                 }
+             }
+@@ -1215,7 +1215,7 @@ inline int check_payload (struct buffer 
+     {
+         if (DEBUG)
+         {
+-            log (LOG_DEBUG, "%s: Aempted to send payload on tunnel\n",
++            do_log (LOG_DEBUG, "%s: Aempted to send payload on tunnel\n",
+                  __FUNCTION__);
+         }
+         return -EINVAL;
+@@ -1226,7 +1226,7 @@ inline int check_payload (struct buffer 
+            no matter what.  we'll look more later */
+         if (DEBUG)
+         {
+-            log (LOG_DEBUG, "%s:Recieved to small of packet\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s:Recieved to small of packet\n", __FUNCTION__);
+         }
+         return -EINVAL;
+     }
+@@ -1237,7 +1237,7 @@ inline int check_payload (struct buffer 
+         {
+             if (DEBUG)
+             {
+-                log (LOG_DEBUG, "%s Control bit set\n", __FUNCTION__);
++                do_log (LOG_DEBUG, "%s Control bit set\n", __FUNCTION__);
+             }
+             return -EINVAL;
+         }
+@@ -1247,7 +1247,7 @@ inline int check_payload (struct buffer 
+         {
+ /*			if (!c->fbit && !c->ourfbit) {
+ 				if (DEBUG)
+-					log(LOG_DEBUG,"%s: flow bit set, but no RWS negotiated.\n",__FUNCTION__);
++					do_log(LOG_DEBUG,"%s: flow bit set, but no RWS negotiated.\n",__FUNCTION__);
+ 				return -EINVAL;
+ 			} */
+             ehlen += 4;         /* Should have Ns and Nr too */
+@@ -1255,7 +1255,7 @@ inline int check_payload (struct buffer 
+ /*		if (!PFBIT(h->ver)) {
+ 			if (c->fbit || c->ourfbit) {
+ 				if (DEBUG)
+-					log(LOG_DEBUG, "%s: no flow bit, but RWS was negotiated.\n",__FUNCTION__);
++					do_log(LOG_DEBUG, "%s: no flow bit, but RWS was negotiated.\n",__FUNCTION__);
+ 				return -EINVAL;;
+ 			}
+ 		} */
+@@ -1269,17 +1269,17 @@ inline int check_payload (struct buffer 
+             {
+                 if (PVER (h->ver) == VER_PPTP)
+                 {
+-                    log (LOG_DEBUG, "%s: PPTP packet received\n",
++                    do_log (LOG_DEBUG, "%s: PPTP packet received\n",
+                          __FUNCTION__);
+                 }
+                 else if (CVER (h->ver) < VER_L2TP)
+                 {
+-                    log (LOG_DEBUG, "%s: L2F packet received\n",
++                    do_log (LOG_DEBUG, "%s: L2F packet received\n",
+                          __FUNCTION__);
+                 }
+                 else
+                 {
+-                    log (LOG_DEBUG, "%s: Unknown version received\n",
++                    do_log (LOG_DEBUG, "%s: Unknown version received\n",
+                          __FUNCTION__);
+                 }
+             }
+@@ -1289,7 +1289,7 @@ inline int check_payload (struct buffer 
+         {
+             if (DEBUG)
+             {
+-                log (LOG_DEBUG, "%s payload too small (%d < %d)\n",
++                do_log (LOG_DEBUG, "%s payload too small (%d < %d)\n",
+                      __FUNCTION__, buf->len, ehlen);
+             }
+             return -EINVAL;
+@@ -1298,7 +1298,7 @@ inline int check_payload (struct buffer 
+         {
+             if (DEBUG)
+             {
+-                log (LOG_DEBUG, "%s: size mismatch (%d != %d)\n",
++                do_log (LOG_DEBUG, "%s: size mismatch (%d != %d)\n",
+                      __FUNCTION__, buf->len, h->length);
+             }
+             return -EINVAL;
+@@ -1336,7 +1336,7 @@ inline int expand_payload (struct buffer
+         new_hdr = (struct payload_hdr *) (buf->start - ehlen);
+         if ((void *) new_hdr < (void *) buf->rstart)
+         {
+-            log (LOG_WARN, "%s: not enough space to decompress frame\n",
++            do_log (LOG_WARN, "%s: not enough space to decompress frame\n",
+                  __FUNCTION__);
+             return -EINVAL;
+ 
+@@ -1388,16 +1388,16 @@ inline int expand_payload (struct buffer
+      */
+ /*  JLM	if (PRBIT(new_hdr->ver)) {
+ 		if (c->pSr > new_hdr->Ns) {
+-			log(LOG_DEBUG, "%s: R-bit set with Ns < pSr!\n",__FUNCTION__);
++			do_log(LOG_DEBUG, "%s: R-bit set with Ns < pSr!\n",__FUNCTION__);
+ 			return -EINVAL;
+ 		}
+ #ifdef DEBUG_FLOW
+-		log(LOG_DEBUG, "%s: R-bit set on packet %d\n",__FUNCTION__,new_hdr->Ns);
++		do_log(LOG_DEBUG, "%s: R-bit set on packet %d\n",__FUNCTION__,new_hdr->Ns);
+ #endif
+ 		c->pSr=new_hdr->Ns;
+ 	} */
+ #ifdef DEBUG_PAYLOAD
+-    log (LOG_DEBUG, "%s: payload, cid = %d, Ns = %d, Nr = %d\n", __FUNCTION__,
++    do_log (LOG_DEBUG, "%s: payload, cid = %d, Ns = %d, Nr = %d\n", __FUNCTION__,
+          c->cid, new_hdr->Ns, new_hdr->Nr);
+ #endif
+     if (new_hdr->Ns != c->data_seq_num)
+@@ -1410,7 +1410,7 @@ inline int expand_payload (struct buffer
+         {
+ #ifdef DEBUG_FLOW
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Already seen this packet before (%d < %d)\n",
+                      __FUNCTION__, new_hdr->Ns, c->pSr);
+ #endif
+@@ -1421,7 +1421,7 @@ inline int expand_payload (struct buffer
+             /* FIXME: I should buffer for out of order packets */
+ #ifdef DEBUG_FLOW
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Oops, lost a packet or two (%d != %d).  continuing...\n",
+                      __FUNCTION__, new_hdr->Ns, c->pSr);
+ #endif
+@@ -1431,7 +1431,7 @@ inline int expand_payload (struct buffer
+         {
+ #ifdef DEBUG_FLOW
+             if (DEBUG)
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Received out of order payload packet (%d != %d)\n",
+                      __FUNCTION__, new_hdr->Ns, c->pSr);
+ #endif
+@@ -1464,13 +1464,13 @@ void send_zlb (void *data)
+     c = (struct call *) data;
+     if (!c)
+     {
+-        log (LOG_WARN, "%s: called on NULL call\n", __FUNCTION__);
++        do_log (LOG_WARN, "%s: called on NULL call\n", __FUNCTION__);
+         return;
+     }
+     t = c->container;
+     if (!t)
+     {
+-        log (LOG_WARN, "%s: called on call with NULL container\n",
++        do_log (LOG_WARN, "%s: called on call with NULL container\n",
+              __FUNCTION__);
+         return;
+     }
+@@ -1481,7 +1481,7 @@ void send_zlb (void *data)
+     c->data_seq_num--;                   /* We don't increment on ZLB's */
+     c->zlb_xmit = NULL;
+ #ifdef DEBUG_ZLB
+-    log (LOG_DEBUG, "%s: sending payload ZLB\n", __FUNCTION__);
++    do_log (LOG_DEBUG, "%s: sending payload ZLB\n", __FUNCTION__);
+ #endif
+     udp_xmit (buf);
+     toss (buf);
+@@ -1503,7 +1503,7 @@ inline int write_packet (struct buffer *
+     if (c->fd < 0)
+     {
+         if (DEBUG)
+-            log (LOG_DEBUG, "%s: tty is not open yet.\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s: tty is not open yet.\n", __FUNCTION__);
+         return -EIO;
+     }
+     /*
+@@ -1530,7 +1530,7 @@ inline int write_packet (struct buffer *
+         }
+         else if (err == 0)
+         {
+-            log (LOG_WARN, "%s: wrote no bytes of async packet\n",
++            do_log (LOG_WARN, "%s: wrote no bytes of async packet\n",
+                  __FUNCTION__);
+             return -EINVAL;
+         }
+@@ -1542,19 +1542,19 @@ inline int write_packet (struct buffer *
+             }
+             else
+             {
+-                log (LOG_WARN, "%s: async write failed: %s\n", __FUNCTION__,
++                do_log (LOG_WARN, "%s: async write failed: %s\n", __FUNCTION__,
+                      strerror (errno));
+             }
+         }
+         else if (err < buf->len)
+         {
+-            log (LOG_WARN, "%s: short write (%d of %d bytes)\n", __FUNCTION__,
++            do_log (LOG_WARN, "%s: short write (%d of %d bytes)\n", __FUNCTION__,
+                  err, buf->len);
+             return -EINVAL;
+         }
+         else if (err > buf->len)
+         {
+-            log (LOG_WARN, "%s: write returned LONGER than buffer length?\n",
++            do_log (LOG_WARN, "%s: write returned LONGER than buffer length?\n",
+                  __FUNCTION__);
+             return -EINVAL;
+         }
+@@ -1575,7 +1575,7 @@ inline int write_packet (struct buffer *
+ 		// 1 for a possible escape, 1 for the value and 1 to end the PPP stream.
+ 		if(pos >= (sizeof(wbuf) - 4)) {
+ 			if(DEBUG)
+-				log(LOG_CRIT, "%s: rx packet is too big after PPP encoding (size %u, max is %u)\n", 
++				do_log(LOG_CRIT, "%s: rx packet is too big after PPP encoding (size %u, max is %u)\n", 
+ 						        __FUNCTION__, buf->len, MAX_RECV_SIZE);
+ 			return -EINVAL;
+ 		}
+@@ -1599,7 +1599,7 @@ inline int write_packet (struct buffer *
+                * everything ended normally
+              */
+             if (DEBUG)
+-                log (LOG_WARN, "%s: %s(%d)\n", __FUNCTION__, strerror (errno),
++                do_log (LOG_WARN, "%s: %s(%d)\n", __FUNCTION__, strerror (errno),
+                      errno);
+             c->needclose = -1;
+             c->fd = -1;
+@@ -1633,7 +1633,7 @@ void handle_special (struct buffer *buf,
+         {
+             /* If it's a ZLB, we ignore it */
+             if (debug_tunnel)
+-                log (LOG_DEBUG, "%s: ZLB for closed call\n", __FUNCTION__);
++                do_log (LOG_DEBUG, "%s: ZLB for closed call\n", __FUNCTION__);
+             c->cid = 0;
+             return;
+         }
+@@ -1649,7 +1649,7 @@ void handle_special (struct buffer *buf,
+     {
+         c->cid = 0;
+         if (debug_tunnel)
+-            log (LOG_DEBUG, "%s: invalid control packet\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s: invalid control packet\n", __FUNCTION__);
+     }
+ }
+ 
+@@ -1667,7 +1667,7 @@ inline int handle_packet (struct buffer 
+             if (buf->len == sizeof (struct control_hdr))
+             {
+ #ifdef DEBUG_ZLB
+-                log (LOG_DEBUG, "%s: control ZLB received\n", __FUNCTION__);
++                do_log (LOG_DEBUG, "%s: control ZLB received\n", __FUNCTION__);
+ #endif
+                 t->control_rec_seq_num--;
+                 c->cnu = 0;
+@@ -1676,7 +1676,7 @@ inline int handle_packet (struct buffer 
+                     if (c->container->cLr >= c->closeSs)
+                     {
+ #ifdef DEBUG_ZLB
+-                        log (LOG_DEBUG, "%s: ZLB for closing message found\n",
++                        do_log (LOG_DEBUG, "%s: ZLB for closing message found\n",
+                              __FUNCTION__);
+ #endif
+                         c->needclose = 0;
+@@ -1692,13 +1692,13 @@ inline int handle_packet (struct buffer 
+             else
+             {
+                 if (debug_tunnel)
+-                    log (LOG_DEBUG, "%s: bad AVP handling!\n", __FUNCTION__);
++                    do_log (LOG_DEBUG, "%s: bad AVP handling!\n", __FUNCTION__);
+                 return -EINVAL;
+             }
+         }
+         else
+         {
+-            log (LOG_DEBUG, "%s: bad control packet!\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s: bad control packet!\n", __FUNCTION__);
+             return -EINVAL;
+         }
+     }
+@@ -1713,11 +1713,11 @@ inline int handle_packet (struct buffer 
+ /*					if (c->throttle) {
+ 						if (c->pSs > c->pLr + c->rws) {
+ #ifdef DEBUG_FLOW
+-							log(LOG_DEBUG, "%s: not yet dethrottling call\n",__FUNCTION__);
++							do_log(LOG_DEBUG, "%s: not yet dethrottling call\n",__FUNCTION__);
+ #endif
+ 						} else {
+ #ifdef DEBUG_FLOW
+-							log(LOG_DEBUG, "%s: dethrottling call\n",__FUNCTION__);
++							do_log(LOG_DEBUG, "%s: dethrottling call\n",__FUNCTION__);
+ #endif
+ 							if (c->dethrottle) deschedule(c->dethrottle);
+ 							c->dethrottle=NULL;
+@@ -1739,7 +1739,7 @@ inline int handle_packet (struct buffer 
+ 						We've received enough to fill our receive window.  At
+ 						this point, we should immediately send a ZLB!
+ #ifdef DEBUG_ZLB
+-							log(LOG_DEBUG, "%s: Sending immediate ZLB!\n",__FUNCTION__);
++							do_log(LOG_DEBUG, "%s: Sending immediate ZLB!\n",__FUNCTION__);
+ #endif
+ 							if (c->zlb_xmit) {
+ 							Deschedule any existing zlb_xmit's
+@@ -1756,7 +1756,7 @@ inline int handle_packet (struct buffer 
+ 							if (c->zlb_xmit)
+ 								deschedule(c->zlb_xmit);
+ #ifdef DEBUG_ZLB
+-							log(LOG_DEBUG, "%s: scheduling ZLB\n",__FUNCTION__);
++							do_log(LOG_DEBUG, "%s: scheduling ZLB\n",__FUNCTION__);
+ #endif
+ 							c->zlb_xmit = schedule(tv, &send_zlb, (void *)c);
+ 						}
+@@ -1766,17 +1766,17 @@ inline int handle_packet (struct buffer 
+                 else if (buf->len == sizeof (struct payload_hdr))
+                 {
+ #ifdef DEBUG_ZLB
+-                    log (LOG_DEBUG, "%s: payload ZLB received\n",
++                    do_log (LOG_DEBUG, "%s: payload ZLB received\n",
+                          __FUNCTION__);
+ #endif
+ /*					if (c->throttle) {
+ 						if (c->pSs > c->pLr + c->rws) {
+ #ifdef DEBUG_FLOW
+-							log(LOG_DEBUG, "%s: not yet dethrottling call\n",__FUNCTION__);
++							do_log(LOG_DEBUG, "%s: not yet dethrottling call\n",__FUNCTION__);
+ #endif
+ 						} else {
+ #ifdef DEBUG_FLOW
+-							log(LOG_DEBUG, "%s: dethrottling call\n",__FUNCTION__);
++							do_log(LOG_DEBUG, "%s: dethrottling call\n",__FUNCTION__);
+ #endif
+ 							if (c->dethrottle)
+ 								deschedule(c->dethrottle);
+@@ -1789,21 +1789,21 @@ inline int handle_packet (struct buffer 
+                 }
+                 else
+                 {
+-                    log (LOG_DEBUG, "%s: payload too small!\n", __FUNCTION__);
++                    do_log (LOG_DEBUG, "%s: payload too small!\n", __FUNCTION__);
+                     return -EINVAL;
+                 }
+             }
+             else
+             {
+                 if (debug_tunnel)
+-                    log (LOG_DEBUG, "%s: unable to expand payload!\n",
++                    do_log (LOG_DEBUG, "%s: unable to expand payload!\n",
+                          __FUNCTION__);
+                 return -EINVAL;
+             }
+         }
+         else
+         {
+-            log (LOG_DEBUG, "%s: invalid payload packet!\n", __FUNCTION__);
++            do_log (LOG_DEBUG, "%s: invalid payload packet!\n", __FUNCTION__);
+             return -EINVAL;
+         }
+     }
+diff -rdup l2tpd-0.70-pre20031121.oorig/file.c l2tpd-0.70-pre20031121/file.c
+--- l2tpd-0.70-pre20031121.oorig/file.c	2004-07-08 22:47:52.000000000 +0200
++++ l2tpd-0.70-pre20031121/file.c	2006-12-28 16:41:59.000000000 +0100
+@@ -59,7 +59,7 @@ int init_config ()
+         }
+         else
+         {
+-            log (LOG_CRIT, "%s: Unable to open config file %s or %s\n",
++            do_log (LOG_CRIT, "%s: Unable to open config file %s or %s\n",
+                  __FUNCTION__, gconfig.configfile, gconfig.altconfigfile);
+             return -1;
+         }
+@@ -77,7 +77,7 @@ struct lns *new_lns ()
+     tmp = (struct lns *) malloc (sizeof (struct lns));
+     if (!tmp)
+     {
+-        log (LOG_CRIT, "%s: Unable to allocate memory for new LNS\n",
++        do_log (LOG_CRIT, "%s: Unable to allocate memory for new LNS\n",
+              __FUNCTION__);
+         return NULL;
+     }
+@@ -121,7 +121,7 @@ struct lac *new_lac ()
+     tmp = (struct lac *) malloc (sizeof (struct lac));
+     if (!tmp)
+     {
+-        log (LOG_CRIT, "%s: Unable to allocate memory for lac entry!\n",
++        do_log (LOG_CRIT, "%s: Unable to allocate memory for lac entry!\n",
+              __FUNCTION__);
+         return NULL;
+     }
+@@ -174,7 +174,7 @@ int set_boolean (char *word, char *value
+ {
+     int val;
+ #ifdef DEBUG_FILE
+-    log (LOG_DEBUG, "set_%s: %s  flag to '%s'\n", word, word, value);
++    do_log (LOG_DEBUG, "set_%s: %s  flag to '%s'\n", word, word, value);
+ #endif /* ; */
+     if ((val = yesno (value)) < 0)
+     {
+@@ -190,7 +190,7 @@ int set_int (char *word, char *value, in
+ {
+     int val;
+ #ifdef DEBUG_FILE
+-    log (LOG_DEBUG, "set_%s: %s  flag to '%s'\n", word, word, value);
++    do_log (LOG_DEBUG, "set_%s: %s  flag to '%s'\n", word, word, value);
+ #endif /* ; */
+     if ((val = atoi (value)) < 0)
+     {
+@@ -204,7 +204,7 @@ int set_int (char *word, char *value, in
+ int set_string (char *word, char *value, char *ptr, int len)
+ {
+ #ifdef DEBUG_FILE
+-    log (LOG_DEBUG, "set_%s: %s  flag to '%s'\n", word, word, value);
++    do_log (LOG_DEBUG, "set_%s: %s  flag to '%s'\n", word, word, value);
+ #endif /* ; */
+     strncpy (ptr, value, len);
+     return 0;
+@@ -216,7 +216,7 @@ int set_port (char *word, char *value, i
+     {
+     case CONTEXT_GLOBAL:
+ #ifdef DEBUG_FILE
+-        log (LOG_DEBUG, "set_port: Setting global port number to %s\n",
++        do_log (LOG_DEBUG, "set_port: Setting global port number to %s\n",
+              value);
+ #endif
+         set_int (word, value, &(((struct global *) item)->port));
+@@ -241,7 +241,7 @@ int set_rtimeout (char *word, char *valu
+     {
+     case CONTEXT_LAC:
+ #ifdef DEBUG_FILE
+-        log (LOG_DEBUG, "set_rtimeout: Setting redial timeout to %s\n",
++        do_log (LOG_DEBUG, "set_rtimeout: Setting redial timeout to %s\n",
+              value);
+ #endif
+         set_int (word, value, &(((struct lac *) item)->rtimeout));
+@@ -311,7 +311,7 @@ int set_rmax (char *word, char *value, i
+     {
+     case CONTEXT_LAC:
+ #ifdef DEBUG_FILE
+-        log (LOG_DEBUG, "set_rmax: Setting max redials to %s\n", value);
++        do_log (LOG_DEBUG, "set_rmax: Setting max redials to %s\n", value);
+ #endif
+         set_int (word, value, &(((struct lac *) item)->rmax));
+         break;
+@@ -335,7 +335,7 @@ int set_authfile (char *word, char *valu
+     {
+     case CONTEXT_GLOBAL:
+ #ifdef DEBUG_FILE
+-        log (LOG_DEBUG, "set_authfile: Setting global auth file to '%s'\n",
++        do_log (LOG_DEBUG, "set_authfile: Setting global auth file to '%s'\n",
+              value);
+ #endif /* ; */
+         strncpy (((struct global *) item)->authfile, value,
+@@ -766,7 +766,7 @@ int set_iprange (char *word, char *value
+     if (!lns->range)
+         return -1;
+ #ifdef DEBUG_FILE
+-    log (LOG_DEBUG, "range start = %x, end = %x, sense=%ud\n",
++    do_log (LOG_DEBUG, "range start = %x, end = %x, sense=%ud\n",
+          ntohl (ipr->start), ntohl (ipr->end), ipr->sense);
+ #endif
+     return 0;
+@@ -788,7 +788,7 @@ int set_lac (char *word, char *value, in
+     if (!lns->lacs)
+         return -1;
+ #ifdef DEBUG_FILE
+-    log (LOG_DEBUG, "lac start = %x, end = %x, sense=%ud\n",
++    do_log (LOG_DEBUG, "lac start = %x, end = %x, sense=%ud\n",
+          ntohl (ipr->start), ntohl (ipr->end), ipr->sense);
+ #endif
+     return 0;
+@@ -830,7 +830,7 @@ int set_listenaddr (char *word, char *va
+     {
+     case CONTEXT_GLOBAL:
+ #ifdef DEBUG_FILE
+-        log (LOG_DEBUG, "set_listenaddr: Setting listen address to %s\n",
++        do_log (LOG_DEBUG, "set_listenaddr: Setting listen address to %s\n",
+              value);
+ #endif
+         if (set_ip (word, value, &(((struct global *) item)->listenaddr)))
+@@ -890,7 +890,7 @@ int set_lns (char *word, char *value, in
+     {
+     case CONTEXT_LAC:
+ #ifdef DEBUG_FILE
+-        log (LOG_DEBUG, "set_lns: setting LNS to '%s'\n", value);
++        do_log (LOG_DEBUG, "set_lns: setting LNS to '%s'\n", value);
+ #endif
+         l = (struct lac *) item;
+         d = strchr (value, ':');
+@@ -934,7 +934,7 @@ int set_lns (char *word, char *value, in
+ 
+ int set_rand_sys ()
+ {
+-    log(LOG_WARN, "The \"rand()\" function call is not a very good source"
++    do_log(LOG_WARN, "The \"rand()\" function call is not a very good source"
+             "of randomness\n");
+    rand_source = RAND_SYS;
+     return 0;
+@@ -948,7 +948,7 @@ int set_rand_dev ()
+ 
+ int set_rand_egd (char *value)
+ {
+-    log(LOG_WARN, "%s: not yet implemented!\n", __FUNCTION__);
++    do_log(LOG_WARN, "%s: not yet implemented!\n", __FUNCTION__);
+     rand_source = RAND_EGD;
+     return -1;
+ }
+@@ -976,7 +976,7 @@ int set_rand_source (char *word, char *v
+  
+     if (context != CONTEXT_GLOBAL)
+     {
+-        log(LOG_WARN, "%s: %s not valid in context %d\n",
++        do_log(LOG_WARN, "%s: %s not valid in context %d\n",
+                 __FUNCTION__, word, context);
+         return -1;
+     }
+@@ -1000,7 +1000,7 @@ int set_rand_source (char *word, char *v
+     }
+     else
+     {
+-        log(LOG_WARN, "%s: %s is not a valid randomness source\n",
++        do_log(LOG_WARN, "%s: %s is not a valid randomness source\n",
+                 __FUNCTION__, value);
+         return -1;
+ 
+@@ -1046,7 +1046,7 @@ int parse_config (FILE * f)
+             /* We've got a context description */
+             if (!(t = strchr (s, ']')))
+             {
+-                log (LOG_CRIT, "parse_config: line %d: No closing bracket\n",
++                do_log (LOG_CRIT, "parse_config: line %d: No closing bracket\n",
+                      linenum);
+                 return -1;
+             }
+@@ -1066,7 +1066,7 @@ int parse_config (FILE * f)
+             {
+                 context = CONTEXT_GLOBAL;
+ #ifdef DEBUG_FILE
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "parse_config: global context descriptor %s\n",
+                      d ? d : "");
+ #endif
+@@ -1111,7 +1111,7 @@ int parse_config (FILE * f)
+                     strncpy (((struct lns *) data)->entname,
+                              d, sizeof (((struct lns *) data)->entname));
+ #ifdef DEBUG_FILE
+-                log (LOG_DEBUG, "parse_config: lns context descriptor %s\n",
++                do_log (LOG_DEBUG, "parse_config: lns context descriptor %s\n",
+                      d ? d : "");
+ #endif
+             }
+@@ -1154,13 +1154,13 @@ int parse_config (FILE * f)
+                     strncpy (((struct lac *) data)->entname,
+                              d, sizeof (((struct lac *) data)->entname));
+ #ifdef DEBUG_FILE
+-                log (LOG_DEBUG, "parse_config: lac context descriptor %s\n",
++                do_log (LOG_DEBUG, "parse_config: lac context descriptor %s\n",
+                      d ? d : "");
+ #endif
+             }
+             else
+             {
+-                log (LOG_WARN,
++                do_log (LOG_WARN,
+                      "parse_config: line %d: unknown context '%s'\n", linenum,
+                      s);
+                 return -1;
+@@ -1170,14 +1170,14 @@ int parse_config (FILE * f)
+         {
+             if (!context)
+             {
+-                log (LOG_WARN,
++                do_log (LOG_WARN,
+                      "parse_config: line %d: data '%s' occurs with no context\n",
+                      linenum, s);
+                 return -1;
+             }
+             if (!(t = strchr (s, '=')))
+             {
+-                log (LOG_WARN, "parse_config: line %d: no '=' in data\n",
++                do_log (LOG_WARN, "parse_config: line %d: no '=' in data\n",
+                      linenum);
+                 return -1;
+             }
+@@ -1191,7 +1191,7 @@ int parse_config (FILE * f)
+             while (*t && (*t < 33))
+                 t++;
+ #ifdef DEBUG_FILE
+-            log (LOG_DEBUG, "parse_config: field is %s, value is %s\n", s, t);
++            do_log (LOG_DEBUG, "parse_config: field is %s, value is %s\n", s, t);
+ #endif
+             /* Okay, bit twidling is done.  Let's handle this */
+             for (kw = words; kw->keyword; kw++)
+@@ -1200,7 +1200,7 @@ int parse_config (FILE * f)
+                 {
+                     if (kw->handler (s, t, context | def, data))
+                     {
+-                        log (LOG_WARN, "parse_config: line %d: %s", linenum,
++                        do_log (LOG_WARN, "parse_config: line %d: %s", linenum,
+                              filerr);
+                         return -1;
+                     }
+@@ -1209,7 +1209,7 @@ int parse_config (FILE * f)
+             }
+             if (!kw->keyword)
+             {
+-                log (LOG_CRIT, "parse_config: line %d: Unknown field '%s'\n",
++                do_log (LOG_CRIT, "parse_config: line %d: Unknown field '%s'\n",
+                      linenum, s);
+                 return -1;
+             }
+diff -rdup l2tpd-0.70-pre20031121.oorig/l2tpd.c l2tpd-0.70-pre20031121/l2tpd.c
+--- l2tpd-0.70-pre20031121.oorig/l2tpd.c	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/l2tpd.c	2006-12-28 16:41:59.000000000 +0100
+@@ -71,8 +71,8 @@ void show_status (void)
+     struct lac *tlac;
+     struct host *h;
+     int s = 0;
+-    log (LOG_WARN, "====== l2tpd statistics ========\n");
+-    log (LOG_WARN, " Scheduler entries:\n");
++    do_log (LOG_WARN, "====== l2tpd statistics ========\n");
++    do_log (LOG_WARN, " Scheduler entries:\n");
+     se = events;
+     while (se)
+     {
+@@ -82,32 +82,32 @@ void show_status (void)
+         c = (struct call *) se->data;
+         if (se->func == &hello)
+         {
+-            log (LOG_WARN, "%d: HELLO to %d\n", s, t->tid);
++            do_log (LOG_WARN, "%d: HELLO to %d\n", s, t->tid);
+         }
+         else if (se->func == &magic_lac_dial)
+         {
+-            log (LOG_WARN, "%d: Magic dial on %s\n", s, tlac->entname);
++            do_log (LOG_WARN, "%d: Magic dial on %s\n", s, tlac->entname);
+         }
+         else if (se->func == &send_zlb)
+         {
+-            log (LOG_WARN, "%d: Send payload ZLB on call %d:%d\n", s,
++            do_log (LOG_WARN, "%d: Send payload ZLB on call %d:%d\n", s,
+                      c->container->tid, c->cid);
+         }
+         else if (se->func == &dethrottle)
+         {
+-            log (LOG_WARN, "%d: Dethrottle call %d:%d\n", s, c->container->tid,
++            do_log (LOG_WARN, "%d: Dethrottle call %d:%d\n", s, c->container->tid,
+                      c->cid);
+         }
+         else
+-            log (LOG_WARN, "%d: Unknown event\n", s);
++            do_log (LOG_WARN, "%d: Unknown event\n", s);
+         se = se->next;
+     };
+-    log (LOG_WARN, "Total Events scheduled: %d\n", s);
+-    log (LOG_WARN, "Number of tunnels open: %d\n", tunnels.count);
++    do_log (LOG_WARN, "Total Events scheduled: %d\n", s);
++    do_log (LOG_WARN, "Number of tunnels open: %d\n", tunnels.count);
+     t = tunnels.head;
+     while (t)
+     {
+-        log (LOG_WARN, "Tunnel %s, ID = %d (local), %d (remote) to %s:%d\n"
++        do_log (LOG_WARN, "Tunnel %s, ID = %d (local), %d (remote) to %s:%d\n"
+                  "   control_seq_num = %d, control_rec_seq_num = %d,\n"
+                  "   cLr = %d\n",
+                  (t->lac ? t->lac->entname : (t->lns ? t->lns->entname : "")),
+@@ -117,7 +117,7 @@ void show_status (void)
+         c = t->call_head;
+         while (c)
+         {
+-            log (LOG_WARN, 
++            do_log (LOG_WARN, 
+                      "Call %s, ID = %d (local), %d (remote), serno = %u,\n"
+                      "      data_seq_num = %d, data_rec_seq_num = %d,\n"
+                      "      pLr = %d, tx = %u bytes (%u), rx= %u bytes (%u)\n",
+@@ -129,34 +129,34 @@ void show_status (void)
+         }
+         t = t->next;
+     }
+-    log (LOG_WARN, "==========Config File===========\n");
++    do_log (LOG_WARN, "==========Config File===========\n");
+     tlns = lnslist;
+     while (tlns)
+     {
+-        log (LOG_WARN, "LNS entry %s\n",
++        do_log (LOG_WARN, "LNS entry %s\n",
+                  tlns->entname[0] ? tlns->entname : "(unnamed)");
+         tlns = tlns->next;
+     };
+     tlac = laclist;
+     while (tlac)
+     {
+-        log (LOG_WARN, "LAC entry %s, LNS is/are:",
++        do_log (LOG_WARN, "LAC entry %s, LNS is/are:",
+                  tlac->entname[0] ? tlac->entname : "(unnamed)");
+         h = tlac->lns;
+         if (h)
+         {
+             while (h)
+             {
+-                log (LOG_WARN, " %s", h->hostname);
++                do_log (LOG_WARN, " %s", h->hostname);
+                 h = h->next;
+             }
+         }
+         else
+-            log (LOG_WARN, " [none]");
+-        log (LOG_WARN, "\n");
++            do_log (LOG_WARN, " [none]");
++        do_log (LOG_WARN, "\n");
+         tlac = tlac->next;
+     };
+-    log (LOG_WARN, "================================\n");
++    do_log (LOG_WARN, "================================\n");
+ }
+ 
+ void null_handler(int sig)
+@@ -206,17 +206,17 @@ void child_handler (int signal)
+                 {
+                     if ( WIFEXITED( status ) )
+                     {
+-                        log (LOG_DEBUG, "%s : pppd exited for call %d with code %d\n", __FUNCTION__,
++                        do_log (LOG_DEBUG, "%s : pppd exited for call %d with code %d\n", __FUNCTION__,
+                          c->cid, WEXITSTATUS( status ) );
+                     }
+                     else if( WIFSIGNALED( status ) )
+                     {
+-                        log (LOG_DEBUG, "%s : pppd terminated for call %d by signal %d\n", __FUNCTION__,
++                        do_log (LOG_DEBUG, "%s : pppd terminated for call %d by signal %d\n", __FUNCTION__,
+                          c->cid, WTERMSIG( status ) );
+                     }
+                     else
+                     {
+-                        log (LOG_DEBUG, "%s : pppd exited for call %d for unknown reason\n", __FUNCTION__,
++                        do_log (LOG_DEBUG, "%s : pppd exited for call %d for unknown reason\n", __FUNCTION__,
+                          c->cid );
+                     }
+                     c->needclose = -1;
+@@ -245,7 +245,7 @@ void death_handler (int signal)
+      */
+     struct tunnel *st, *st2;
+     int sec;
+-    log (LOG_CRIT, "%s: Fatal signal %d received\n", __FUNCTION__, signal);
++    do_log (LOG_CRIT, "%s: Fatal signal %d received\n", __FUNCTION__, signal);
+     st = tunnels.head;
+     while (st)
+     {
+@@ -300,12 +300,12 @@ int start_pppd (struct call *c, struct p
+     stropt[pos] = NULL;
+     if (c->pppd > 0)
+     {
+-        log (LOG_WARN, "%s: PPP already started on call!\n", __FUNCTION__);
++        do_log (LOG_WARN, "%s: PPP already started on call!\n", __FUNCTION__);
+         return -EINVAL;
+     }
+     if (c->fd > -1)
+     {
+-        log (LOG_WARN, "%s: file descriptor already assigned!\n",
++        do_log (LOG_WARN, "%s: file descriptor already assigned!\n",
+              __FUNCTION__);
+         return -EINVAL;
+     }
+@@ -326,7 +326,7 @@ int start_pppd (struct call *c, struct p
+ #endif
+         if ((c->fd = getPtyMaster (&a, &b)) < 0)
+         {
+-            log (LOG_WARN, "%s: unable to allocate pty, abandoning!\n",
++            do_log (LOG_WARN, "%s: unable to allocate pty, abandoning!\n",
+                  __FUNCTION__);
+             return -EINVAL;
+         }
+@@ -342,7 +342,7 @@ int start_pppd (struct call *c, struct p
+         snprintf (tty, sizeof (tty), "/dev/tty%c%c", a, b);
+         fd2 = open (tty, O_RDWR);
+ 		if(!fd2)
+-			log(LOG_WARN, "unable to open tty %s", tty);
++			do_log(LOG_WARN, "unable to open tty %s", tty);
+ 
+ 		/* XXX JEF: CHECK ME */
+ 		stropt[pos++] = strdup(tty);
+@@ -353,17 +353,17 @@ int start_pppd (struct call *c, struct p
+ #endif
+     str = stropt[0];
+ #ifdef DEBUG_PPPD
+-    log (LOG_DEBUG, "%s: I'm running:  ", __FUNCTION__);
++    do_log (LOG_DEBUG, "%s: I'm running:  ", __FUNCTION__);
+     for (x = 0; stropt[x]; x++)
+     {
+-        log (LOG_DEBUG, "\"%s\" ", stropt[x]);
++        do_log (LOG_DEBUG, "\"%s\" ", stropt[x]);
+     };
+-    log (LOG_DEBUG, "\n");
++    do_log (LOG_DEBUG, "\n");
+ #endif
+     c->pppd = fork ();
+     if (c->pppd < 0)
+     {
+-        log (LOG_WARN, "%s: unable to fork(), abandoning!\n", __FUNCTION__);
++        do_log (LOG_WARN, "%s: unable to fork(), abandoning!\n", __FUNCTION__);
+         return -EINVAL;
+     }
+     else if (!c->pppd)
+@@ -380,7 +380,7 @@ int start_pppd (struct call *c, struct p
+         if (fd2 < 0)
+ #endif
+         {
+-            log (LOG_WARN, "%s: Unable to open %s to launch pppd!\n",
++            do_log (LOG_WARN, "%s: Unable to open %s to launch pppd!\n",
+                  __FUNCTION__, tty);
+             exit (1);
+         }
+@@ -412,7 +412,7 @@ int start_pppd (struct call *c, struct p
+             setenv( "CALLER_ID", c->dialing, 1 );
+         }
+         execv (PPPD, stropt);
+-        log (LOG_WARN, "%s: Exec of %s failed!\n", __FUNCTION__, PPPD);
++        do_log (LOG_WARN, "%s: Exec of %s failed!\n", __FUNCTION__, PPPD);
+         exit (1);
+     };
+     close (fd2);
+@@ -481,14 +481,14 @@ void destroy_tunnel (struct tunnel *t)
+             }
+             else
+             {
+-                log (LOG_WARN,
++                do_log (LOG_WARN,
+                      "%s: unable to locate tunnel in tunnel list\n",
+                      __FUNCTION__);
+             }
+         }
+         else
+         {
+-            log (LOG_WARN, "%s: tunnel list is empty!\n", __FUNCTION__);
++            do_log (LOG_WARN, "%s: tunnel list is empty!\n", __FUNCTION__);
+         }
+     }
+     if (t->lac)
+@@ -497,7 +497,7 @@ void destroy_tunnel (struct tunnel *t)
+         if (t->lac->redial && (t->lac->rtimeout > 0) && !t->lac->rsched &&
+             t->lac->active)
+         {
+-            log (LOG_LOG, "%s: Will redial in %d seconds\n", __FUNCTION__,
++            do_log (LOG_LOG, "%s: Will redial in %d seconds\n", __FUNCTION__,
+                  t->lac->rtimeout);
+             tv.tv_sec = t->lac->rtimeout;
+             tv.tv_usec = 0;
+@@ -527,7 +527,7 @@ struct tunnel *l2tp_call (char *host, in
+     hp = gethostbyname (host);
+     if (!hp)
+     {
+-        log (LOG_WARN, "%s: gethostbyname() failed for %s.\n", __FUNCTION__,
++        do_log (LOG_WARN, "%s: gethostbyname() failed for %s.\n", __FUNCTION__,
+              host);
+         return NULL;
+     }
+@@ -540,7 +540,7 @@ struct tunnel *l2tp_call (char *host, in
+     tmp = get_call (0, 0, addr, port);
+     if (!tmp)
+     {
+-        log (LOG_WARN, "%s: Unable to create tunnel to %s.\n", __FUNCTION__,
++        do_log (LOG_WARN, "%s: Unable to create tunnel to %s.\n", __FUNCTION__,
+              host);
+         return NULL;
+     }
+@@ -556,7 +556,7 @@ struct tunnel *l2tp_call (char *host, in
+     /*
+      * Since our state is 0, we will establish a tunnel now
+      */
+-    log (LOG_LOG, "%s:Connecting to host %s, port %d\n", __FUNCTION__, host,
++    do_log (LOG_LOG, "%s:Connecting to host %s, port %d\n", __FUNCTION__, host,
+          ntohs (port));
+     control_finish (tmp->container, tmp);
+     return tmp->container;
+@@ -568,7 +568,7 @@ void magic_lac_tunnel (void *data)
+     lac = (struct lac *) data;
+     if (!lac)
+     {
+-        log (LOG_WARN, "%s: magic_lac_tunnel: called on NULL lac!\n",
++        do_log (LOG_WARN, "%s: magic_lac_tunnel: called on NULL lac!\n",
+              __FUNCTION__);
+         return;
+     }
+@@ -585,7 +585,7 @@ void magic_lac_tunnel (void *data)
+     }
+     else
+     {
+-        log (LOG_WARN, "%s: Unable to find hostname to dial for '%s'\n",
++        do_log (LOG_WARN, "%s: Unable to find hostname to dial for '%s'\n",
+              __FUNCTION__, lac->entname);
+         return;
+     }
+@@ -602,7 +602,7 @@ struct call *lac_call (int tid, struct l
+             tmp = new_call (t);
+             if (!tmp)
+             {
+-                log (LOG_WARN, "%s: unable to create new call\n",
++                do_log (LOG_WARN, "%s: unable to create new call\n",
+                      __FUNCTION__);
+                 return NULL;
+             }
+@@ -614,14 +614,14 @@ struct call *lac_call (int tid, struct l
+             tmp->lns = lns;
+             if (lac)
+                 lac->c = tmp;
+-            log (LOG_LOG, "%s: Calling on tunnel %d\n", __FUNCTION__, tid);
++            do_log (LOG_LOG, "%s: Calling on tunnel %d\n", __FUNCTION__, tid);
+             strcpy (tmp->dial_no, dial_no_tmp); /*  jz: copy dialnumber to tmp->dial_no  */
+             control_finish (t, tmp);
+             return tmp;
+         }
+         t = t->next;
+     };
+-    log (LOG_DEBUG, "%s: No such tunnel %d to generate call.\n", __FUNCTION__,
++    do_log (LOG_DEBUG, "%s: No such tunnel %d to generate call.\n", __FUNCTION__,
+          tid);
+     return NULL;
+ }
+@@ -633,25 +633,25 @@ void magic_lac_dial (void *data)
+ 
+     if (!lac)
+     {
+-        log (LOG_WARN, "%s : called on NULL lac!\n", __FUNCTION__);
++        do_log (LOG_WARN, "%s : called on NULL lac!\n", __FUNCTION__);
+         return;
+     }
+ 	if (!lac->active)
+     {
+-        log (LOG_DEBUG, "%s: LAC %s not active", __FUNCTION__, lac->entname);
++        do_log (LOG_DEBUG, "%s: LAC %s not active", __FUNCTION__, lac->entname);
+         return;
+     }
+     lac->rsched = NULL;
+     lac->rtries++;
+     if (lac->rmax && (lac->rtries > lac->rmax))
+     {
+-        log (LOG_LOG, "%s: maximum retries exceeded.\n", __FUNCTION__);
++        do_log (LOG_LOG, "%s: maximum retries exceeded.\n", __FUNCTION__);
+         return;
+     }
+     if (!lac->t)
+     {
+ #ifdef DEGUG_MAGIC
+-        log (LOG_DEBUG, "%s : tunnel not up!  Connecting!\n", __FUNCTION__);
++        do_log (LOG_DEBUG, "%s : tunnel not up!  Connecting!\n", __FUNCTION__);
+ #endif
+         magic_lac_tunnel (lac);
+         return;
+@@ -670,7 +670,7 @@ void lac_hangup (int cid)
+         {
+             if (tmp->ourcid == cid)
+             {
+-                log (LOG_LOG,
++                do_log (LOG_LOG,
+                      "%s :Hanging up call %d, Local: %d, Remote: %d\n",
+                      __FUNCTION__, tmp->serno, tmp->ourcid, tmp->cid);
+                 strcpy (tmp->errormsg, "Goodbye!");
+@@ -682,7 +682,7 @@ void lac_hangup (int cid)
+         }
+         t = t->next;
+     };
+-    log (LOG_DEBUG, "%s : No such call %d to hang up.\n", __FUNCTION__, cid);
++    do_log (LOG_DEBUG, "%s : No such call %d to hang up.\n", __FUNCTION__, cid);
+     return;
+ }
+ 
+@@ -693,7 +693,7 @@ void lac_disconnect (int tid)
+     {
+         if (t->ourtid == tid)
+         {
+-            log (LOG_LOG,
++            do_log (LOG_LOG,
+                  "%s: Disconnecting from %s, Local: %d, Remote: %d\n",
+                  __FUNCTION__, IPADDY (t->peer.sin_addr), t->ourtid, t->tid);
+             t->self->needclose = -1;
+@@ -703,7 +703,7 @@ void lac_disconnect (int tid)
+         }
+         t = t->next;
+     };
+-    log (LOG_DEBUG, "%s: No such tunnel %d to hang up.\n", __FUNCTION__, tid);
++    do_log (LOG_DEBUG, "%s: No such tunnel %d to hang up.\n", __FUNCTION__, tid);
+     return;
+ }
+ 
+@@ -736,7 +736,7 @@ struct tunnel *new_tunnel ()
+             temp = (int *)entropy_buf;
+             tmp->ourtid = *temp & 0xFFFF;
+ #ifdef DEBUG_ENTROPY
+-            log(LOG_DEBUG, "ourtid = %u, entropy_buf = %hx\n", tmp->ourtid, *temp);
++            do_log(LOG_DEBUG, "ourtid = %u, entropy_buf = %hx\n", tmp->ourtid, *temp);
+ #endif
+         }
+ #else
+@@ -797,7 +797,7 @@ void do_control ()
+             if (buf[cnt - 1] == '\n')
+                 buf[--cnt] = 0;
+ #ifdef DEBUG_CONTROL
+-            log (LOG_DEBUG, "%s: Got message \"%s\" (%d bytes long)\n",
++            do_log (LOG_DEBUG, "%s: Got message \"%s\" (%d bytes long)\n",
+                  __FUNCTION__, buf, cnt);
+ #endif
+             switch (buf[0])
+@@ -808,7 +808,7 @@ void do_control ()
+ 					goto out;
+ 				host++;
+ #ifdef DEBUG_CONTROL
+-                log (LOG_DEBUG, "%s: Attempting to tunnel to %s\n",
++                do_log (LOG_DEBUG, "%s: Attempting to tunnel to %s\n",
+                      __FUNCTION__, host);
+ #endif
+                 l2tp_call (host, UDP_LISTEN_PORT, NULL, NULL);
+@@ -840,7 +840,7 @@ void do_control ()
+                         if (!lac->c)
+                             magic_lac_dial (lac);
+                         else
+-                            log (LOG_DEBUG,
++                            do_log (LOG_DEBUG,
+                                  "%s: Session '%s' already active!\n",
+                                  __FUNCTION__, lac->entname);
+                         break;
+@@ -852,12 +852,12 @@ void do_control ()
+                 tunl = atoi (tunstr);
+                 if (!tunl)
+                 {
+-                    log (LOG_DEBUG, "%s: No such tunnel '%s'\n", __FUNCTION__,
++                    do_log (LOG_DEBUG, "%s: No such tunnel '%s'\n", __FUNCTION__,
+                          tunstr);
+                     break;
+                 }
+ #ifdef DEBUG_CONTROL
+-                log (LOG_DEBUG, "%s: Attempting to call on tunnel %d\n",
++                do_log (LOG_DEBUG, "%s: Attempting to call on tunnel %d\n",
+                      __FUNCTION__, tunl);
+ #endif
+                 lac_call (tunl, NULL, NULL);
+@@ -870,7 +870,7 @@ void do_control ()
+ 
+                 call = atoi (callstr);
+ #ifdef DEBUG_CONTROL
+-                log (LOG_DEBUG, "%s: Attempting to call %d\n", __FUNCTION__,
++                do_log (LOG_DEBUG, "%s: Attempting to call %d\n", __FUNCTION__,
+                      call);
+ #endif
+                 lac_hangup (call);
+@@ -891,7 +891,7 @@ void do_control ()
+                         if (lac->t)
+                             lac_disconnect (lac->t->ourtid);
+                         else
+-                            log (LOG_DEBUG, "%s: Session '%s' not up\n",
++                            do_log (LOG_DEBUG, "%s: Session '%s' not up\n",
+                                  __FUNCTION__, lac->entname);
+                         break;
+                     }
+@@ -902,12 +902,12 @@ void do_control ()
+                 tunl = atoi (tunstr);
+                 if (!tunl)
+                 {
+-                    log (LOG_DEBUG, "%s: No such tunnel '%s'\n", __FUNCTION__,
++                    do_log (LOG_DEBUG, "%s: No such tunnel '%s'\n", __FUNCTION__,
+                          tunstr);
+                     break;
+                 }
+ #ifdef DEBUG_CONTROL
+-                log (LOG_DEBUG, "%s: Attempting to disconnect tunnel %d\n",
++                do_log (LOG_DEBUG, "%s: Attempting to disconnect tunnel %d\n",
+                      __FUNCTION__, tunl);
+ #endif
+                 lac_disconnect (tunl);
+@@ -916,7 +916,7 @@ void do_control ()
+                 show_status ();
+                 break;
+             default:
+-                log (LOG_DEBUG, "%s: Unknown command %c\n", __FUNCTION__,
++                do_log (LOG_DEBUG, "%s: Unknown command %c\n", __FUNCTION__,
+                      buf[0]);
+             }
+         }
+@@ -990,7 +990,7 @@ void daemonize() {
+     char buf[STRLEN];
+ 
+     if((pid = fork()) < 0) {
+-        log(LOG_LOG, "%s: Unable to fork ()\n",__FUNCTION__);
++        do_log(LOG_LOG, "%s: Unable to fork ()\n",__FUNCTION__);
+         close(server_socket);
+         exit(1);
+     }
+@@ -1016,7 +1016,7 @@ void daemonize() {
+ 
+ 		/* if pid is read and process exist exit */
+         if(pid && !kill(pid, 0)) {
+-            log(LOG_LOG, "%s: There's already a l2tpd server running.\n",
++            do_log(LOG_LOG, "%s: There's already a l2tpd server running.\n",
+                     __FUNCTION__);
+             close(server_socket);
+             exit(1);
+@@ -1035,7 +1035,7 @@ void daemonize() {
+ 		close (i);
+ 	}
+ 	else {
+-		log(LOG_LOG, "%s: could not write pid file %s error %d",
++		do_log(LOG_LOG, "%s: could not write pid file %s error %d",
+ 				__FUNCTION__, gconfig.pidfile, i);
+ 		close(server_socket);
+ 		exit(1);
+@@ -1054,12 +1054,12 @@ void init (int argc,char *argv[])
+     init_addr ();
+     if (init_config ())
+     {
+-        log (LOG_CRIT, "%s: Unable to load config file\n", __FUNCTION__);
++        do_log (LOG_CRIT, "%s: Unable to load config file\n", __FUNCTION__);
+         exit (1);
+     }
+     if (uname (&uts))
+     {
+-        log (LOG_CRIT, "%s : Unable to determine host system\n",
++        do_log (LOG_CRIT, "%s : Unable to determine host system\n",
+              __FUNCTION__);
+         exit (1);
+     }
+@@ -1078,14 +1078,14 @@ void init (int argc,char *argv[])
+     control_fd = open (CONTROL_PIPE, O_RDONLY | O_NONBLOCK, 0600);
+     if (control_fd < 0)
+     {
+-        log (LOG_CRIT, "%s: Unable to open " CONTROL_PIPE " for reading.",
++        do_log (LOG_CRIT, "%s: Unable to open " CONTROL_PIPE " for reading.",
+              __FUNCTION__);
+         exit (1);
+     }
+-    log (LOG_LOG, "l2tpd version " SERVER_VERSION " started on %s PID:%d\n",
++    do_log (LOG_LOG, "l2tpd version " SERVER_VERSION " started on %s PID:%d\n",
+          hostname, getpid ());
+     listenaddr.s_addr = gconfig.listenaddr;
+-    log (LOG_LOG, "%s version %s on a %s, listening on IP address %s, port %d\n", uts.sysname,
++    do_log (LOG_LOG, "%s version %s on a %s, listening on IP address %s, port %d\n", uts.sysname,
+        uts.release, uts.machine, inet_ntoa(listenaddr), gconfig.port);
+     lac = laclist;
+     while (lac)
+@@ -1093,7 +1093,7 @@ void init (int argc,char *argv[])
+         if (lac->autodial)
+         {
+ #ifdef DEBUG_MAGIC
+-            log (LOG_DEBUG, "%s: Autodialing '%s'\n", __FUNCTION__,
++            do_log (LOG_DEBUG, "%s: Autodialing '%s'\n", __FUNCTION__,
+                  lac->entname[0] ? lac->entname : "(unnamed)");
+ #endif
+             lac->active = -1;
+diff -rdup l2tpd-0.70-pre20031121.oorig/misc.c l2tpd-0.70-pre20031121/misc.c
+--- l2tpd-0.70-pre20031121.oorig/misc.c	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/misc.c	2006-12-28 16:41:59.000000000 +0100
+@@ -32,7 +32,7 @@
+ #include "l2tp.h"
+ 
+ 
+-void log (int level, const char *fmt, ...)
++void do_log (int level, const char *fmt, ...)
+ {
+     char buf[256];
+     va_list args;
+@@ -101,7 +101,7 @@ void bufferDump (char *buf, int buflen)
+             c++;                /* again two characters to display ONE byte */
+         }
+         *c = '\0';
+-        log (LOG_WARN, "%s: buflen=%d, buffer[%d]: *%s*\n", __FUNCTION__,
++        do_log (LOG_WARN, "%s: buflen=%d, buffer[%d]: *%s*\n", __FUNCTION__,
+              buflen, i, line);
+     }
+ 
+@@ -117,7 +117,7 @@ void bufferDump (char *buf, int buflen)
+     if (c != line)
+     {
+         *c = '\0';
+-        log (LOG_WARN, "%s:             buffer[%d]: *%s*\n", __FUNCTION__, i,
++        do_log (LOG_WARN, "%s:             buffer[%d]: *%s*\n", __FUNCTION__, i,
+              line);
+     }
+ }
+@@ -201,7 +201,7 @@ struct ppp_opts *add_opt (struct ppp_opt
+     new = (struct ppp_opts *) malloc (sizeof (struct ppp_opts));
+     if (!new)
+     {
+-        log (LOG_WARN,
++        do_log (LOG_WARN,
+              "%s : Unable to allocate ppp option memory.  Expect a crash\n",
+              __FUNCTION__);
+         return NULL;
+@@ -267,7 +267,7 @@ int get_dev_entropy(char *buf, int count
+     if (devrandom == -1)
+     {
+ #ifdef DEBUG_ENTROPY
+-        log(LOG_WARN, "%s: couldn't open /dev/urandom,"
++        do_log(LOG_WARN, "%s: couldn't open /dev/urandom,"
+                       "falling back to rand()\n",
+                       __FUNCTION__);
+ #endif
+@@ -290,13 +290,13 @@ int get_entropy (char *buf, int count)
+     }
+     else if (rand_source == RAND_EGD)
+     {
+-        log(LOG_WARN, "%s: EGD Randomness source not yet implemented\n",
++        do_log(LOG_WARN, "%s: EGD Randomness source not yet implemented\n",
+                 __FUNCTION__);
+         return -1;
+     }
+     else
+     {
+-        log(LOG_WARN, "%s: Invalid Randomness source specified (%d)\n",
++        do_log(LOG_WARN, "%s: Invalid Randomness source specified (%d)\n",
+                 __FUNCTION__, rand_source);
+         return -1;
+     }
+diff -rdup l2tpd-0.70-pre20031121.oorig/misc.h l2tpd-0.70-pre20031121/misc.h
+--- l2tpd-0.70-pre20031121.oorig/misc.h	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/misc.h	2006-12-28 16:42:01.000000000 +0100
+@@ -66,7 +66,7 @@ struct ppp_opts
+ #define halt() printf("Halted.\n") ; for(;;)
+ 
+ extern char hostname[];
+-extern void log (int level, const char *fmt, ...);
++extern void do_log (int level, const char *fmt, ...);
+ extern struct buffer *new_buf (int);
+ extern void udppush_handler (int);
+ extern int addfcs (struct buffer *buf);
+diff -rdup l2tpd-0.70-pre20031121.oorig/network.c l2tpd-0.70-pre20031121/network.c
+--- l2tpd-0.70-pre20031121.oorig/network.c	2006-12-28 16:30:10.000000000 +0100
++++ l2tpd-0.70-pre20031121/network.c	2006-12-28 16:41:59.000000000 +0100
+@@ -52,7 +52,7 @@ int init_network (void)
+     server.sin_port = htons (gconfig.port);
+     if ((server_socket = socket (PF_INET, SOCK_DGRAM, 0)) < 0)
+     {
+-        log (LOG_CRIT, "%s: Unable to allocate socket. Terminating.\n",
++        do_log (LOG_CRIT, "%s: Unable to allocate socket. Terminating.\n",
+              __FUNCTION__);
+         return -EINVAL;
+     };
+@@ -61,37 +61,37 @@ int init_network (void)
+     if (bind (server_socket, (struct sockaddr *) &server, sizeof (server)))
+     {
+         close (server_socket);
+-        log (LOG_CRIT, "%s: Unable to bind socket. Terminating.\n",
++        do_log (LOG_CRIT, "%s: Unable to bind socket. Terminating.\n",
+              __FUNCTION__);
+         return -EINVAL;
+     };
+     if (getsockname (server_socket, (struct sockaddr *) &server, &length))
+     {
+-        log (LOG_CRIT, "%s: Unable to read socket name.Terminating.\n",
++        do_log (LOG_CRIT, "%s: Unable to read socket name.Terminating.\n",
+              __FUNCTION__);
+         return -EINVAL;
+     }
+ #ifdef USE_KERNEL
+     if (gconfig.forceuserspace)
+     {
+-        log (LOG_LOG, "Not looking for kernel support.\n");
++        do_log (LOG_LOG, "Not looking for kernel support.\n");
+         kernel_support = 0;
+     }
+     else
+     {
+         if (ioctl (server_socket, SIOCSETL2TP, NULL) < 0)
+         {
+-            log (LOG_LOG, "L2TP kernel support not detected.\n");
++            do_log (LOG_LOG, "L2TP kernel support not detected.\n");
+             kernel_support = 0;
+         }
+         else
+         {
+-            log (LOG_LOG, "Using l2tp kernel support.\n");
++            do_log (LOG_LOG, "Using l2tp kernel support.\n");
+             kernel_support = -1;
+         }
+     }
+ #else
+-    log (LOG_LOG, "This binary does not support kernel L2TP.\n");
++    do_log (LOG_LOG, "This binary does not support kernel L2TP.\n");
+ #endif
+     arg = fcntl (server_socket, F_GETFL);
+     arg |= O_NONBLOCK;
+@@ -154,11 +154,11 @@ void dethrottle (void *call)
+ /*	struct call *c = (struct call *)call; */
+ /*	if (c->throttle) {
+ #ifdef DEBUG_FLOW
+-		log(LOG_DEBUG, "%s: dethrottling call %d, and setting R-bit\n",__FUNCTION__,c->ourcid); 
++		do_log(LOG_DEBUG, "%s: dethrottling call %d, and setting R-bit\n",__FUNCTION__,c->ourcid); 
+ #endif 		c->rbit = RBIT;
+ 		c->throttle = 0;
+ 	} else {
+-		log(LOG_DEBUG, "%s:  call %d already dethrottled?\n",__FUNCTION__,c->ourcid); 	
++		do_log(LOG_DEBUG, "%s:  call %d already dethrottled?\n",__FUNCTION__,c->ourcid); 	
+ 	} */
+ }
+ 
+@@ -170,7 +170,7 @@ void control_xmit (void *b)
+     int ns;
+     if (!buf)
+     {
+-        log (LOG_WARN, "%s: called on NULL buffer!\n", __FUNCTION__);
++        do_log (LOG_WARN, "%s: called on NULL buffer!\n", __FUNCTION__);
+         return;
+     }
+ 
+@@ -182,7 +182,7 @@ void control_xmit (void *b)
+         if (ns < t->cLr)
+         {
+ #ifdef DEBUG_CONTROL_XMIT
+-            log (LOG_DEBUG, "%s: Tossing packet %d\n", __FUNCTION__, ns);
++            do_log (LOG_DEBUG, "%s: Tossing packet %d\n", __FUNCTION__, ns);
+ #endif
+             /* Okay, it's been received.  Let's toss it now */
+             toss (buf);
+@@ -199,7 +199,7 @@ void control_xmit (void *b)
+         {
+             if (t->self->needclose)
+             {
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Unable to deliver closing message for tunnel %d. Destroying anyway.\n",
+                      __FUNCTION__, t->ourtid);
+                 t->self->needclose = 0;
+@@ -207,7 +207,7 @@ void control_xmit (void *b)
+             }
+             else
+             {
+-                log (LOG_DEBUG,
++                do_log (LOG_DEBUG,
+                      "%s: Maximum retries exceeded for tunnel %d.  Closing.\n",
+                      __FUNCTION__, t->ourtid);
+                 strcpy (t->self->errormsg, "Timeout");
+@@ -226,7 +226,7 @@ void control_xmit (void *b)
+         tv.tv_usec = 0;
+         schedule (tv, control_xmit, buf);
+ #ifdef DEBUG_CONTROL_XMIT
+-        log (LOG_DEBUG, "%s: Scheduling and transmitting packet %d\n",
++        do_log (LOG_DEBUG, "%s: Scheduling and transmitting packet %d\n",
+              __FUNCTION__, ns);
+ #endif
+         udp_xmit (buf);
+@@ -289,7 +289,7 @@ int build_fdset (fd_set *readfds)
+ 		if (tun->self->needclose ^ tun->self->closing)
+ 		{
+ 			if (debug_tunnel)
+-				log (LOG_DEBUG, "%s: closing down tunnel %d\n",
++				do_log (LOG_DEBUG, "%s: closing down tunnel %d\n",
+ 						__FUNCTION__, tun->ourtid);
+ 			call_close (tun->self);
+ 			/* Reset the while loop
+@@ -357,13 +357,13 @@ void network_thread ()
+                 if (recvsize < 0)
+                 {
+                     if (errno != EAGAIN)
+-                        log (LOG_WARN,
++                        do_log (LOG_WARN,
+                              "%s: recvfrom returned error %d (%s)\n",
+                              __FUNCTION__, errno, strerror (errno));
+                 }
+                 else
+                 {
+-                    log (LOG_WARN, "%s: received too small a packet\n",
++                    do_log (LOG_WARN, "%s: received too small a packet\n",
+                          __FUNCTION__);
+                 }
+             }
+@@ -372,7 +372,7 @@ void network_thread ()
+                 buf->len = recvsize;
+                 if (debug_network)
+                 {
+-                    log (LOG_DEBUG, "%s: recv packet from %s, size = %d," \
++                    do_log (LOG_DEBUG, "%s: recv packet from %s, size = %d," \
+ 									"tunnel = %d, call = %d\n", __func__, 
+ 									inet_ntoa (from.sin_addr), recvsize, 
+ 									tunnel, call);
+@@ -401,13 +401,13 @@ void network_thread ()
+                          * to ack receiving the packet.
+                          */
+                         if (debug_tunnel)
+-                            log (LOG_DEBUG,
++                            do_log (LOG_DEBUG,
+                                  "%s: no such call %d on tunnel %d.  Sending special ZLB\n",
+                                  __FUNCTION__);
+                         handle_special (buf, c, call);
+                     }
+                     else
+-                        log (LOG_DEBUG,
++                        do_log (LOG_DEBUG,
+                              "%s: unable to find call or tunnel to handle packet.  call = %d, tunnel = %d Dumping.\n",
+                              __FUNCTION__, call, tunnel);
+ 
+@@ -420,7 +420,7 @@ void network_thread ()
+                     if (handle_packet (buf, c->container, c))
+                     {
+                         if (debug_tunnel)
+-                            log (LOG_DEBUG, "%s: bad packet\n", __FUNCTION__);
++                            do_log (LOG_DEBUG, "%s: bad packet\n", __FUNCTION__);
+                     };
+                     if (c->cnu)
+                     {
+@@ -444,12 +444,12 @@ void network_thread ()
+                     int result;
+                     recycle_payload (buf, sc->container->peer);
+ #ifdef DEBUG_FLOW_MORE
+-                    log (LOG_DEBUG, "%s: rws = %d, pSs = %d, pLr = %d\n",
++                    do_log (LOG_DEBUG, "%s: rws = %d, pSs = %d, pLr = %d\n",
+                          __FUNCTION__, sc->rws, sc->pSs, sc->pLr);
+ #endif
+ /*					if ((sc->rws>0) && (sc->pSs > sc->pLr + sc->rws) && !sc->rbit) {
+ #ifdef DEBUG_FLOW
+-						log(LOG_DEBUG, "%s: throttling payload (call = %d, tunnel = %d, Lr = %d, Ss = %d, rws = %d)!\n",__FUNCTION__,
++						do_log(LOG_DEBUG, "%s: throttling payload (call = %d, tunnel = %d, Lr = %d, Ss = %d, rws = %d)!\n",__FUNCTION__,
+ 								 sc->cid, sc->container->tid, sc->pLr, sc->pSs, sc->rws); 
+ #endif
+ 						sc->throttle = -1;
+@@ -485,7 +485,7 @@ void network_thread ()
+                     }
+                     if (result != 0)
+                     {
+-                        log (LOG_WARN,
++                        do_log (LOG_WARN,
+                              "%s: tossing read packet, error = %s (%d).  Closing call.\n",
+                              __FUNCTION__, strerror (-result), -result);
+                         strcpy (sc->errormsg, strerror (-result));
+diff -rdup l2tpd-0.70-pre20031121.oorig/pty.c l2tpd-0.70-pre20031121/pty.c
+--- l2tpd-0.70-pre20031121.oorig/pty.c	2004-07-08 22:47:52.000000000 +0200
++++ l2tpd-0.70-pre20031121/pty.c	2006-12-28 16:41:59.000000000 +0100
+@@ -59,6 +59,6 @@ int getPtyMaster (char *tty10, char *tty
+             }
+         }
+     }
+-    log (LOG_CRIT, "%s: No more free pseudo-tty's\n", __FUNCTION__);
++    do_log (LOG_CRIT, "%s: No more free pseudo-tty's\n", __FUNCTION__);
+     return -1;
+ }
+diff -rdup l2tpd-0.70-pre20031121.oorig/scheduler.c l2tpd-0.70-pre20031121/scheduler.c
+--- l2tpd-0.70-pre20031121.oorig/scheduler.c	2004-07-08 22:47:52.000000000 +0200
++++ l2tpd-0.70-pre20031121/scheduler.c	2006-12-28 16:41:59.000000000 +0100
+@@ -58,7 +58,7 @@ void alarm_handler (int signal)
+     if (cnt != 1)
+     {
+         /* Whoa, we got called from within ourselves! */
+-        log (LOG_DEBUG, "%s : Whoa... cnt = %d\n", __FUNCTION__, cnt);
++        do_log (LOG_DEBUG, "%s : Whoa... cnt = %d\n", __FUNCTION__, cnt);
+         return;
+     }
+     while (events)
+@@ -91,7 +91,7 @@ void alarm_handler (int signal)
+         }
+         if ((then.tv_sec <= 0) && (then.tv_usec <= 0))
+         {
+-            log (LOG_WARN, "%s: Whoa...  Scheduling for <=0 time???\n",
++            do_log (LOG_WARN, "%s: Whoa...  Scheduling for <=0 time???\n",
+                  __FUNCTION__);
+         }
+         else

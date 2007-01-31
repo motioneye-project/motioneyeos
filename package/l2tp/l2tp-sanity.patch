@@ -1,0 +1,49 @@
+diff -rdup l2tpd-0.70-pre20031121.oorig/avp.c l2tpd-0.70-pre20031121/avp.c
+--- l2tpd-0.70-pre20031121.oorig/avp.c	2006-12-28 16:00:26.000000000 +0100
++++ l2tpd-0.70-pre20031121/avp.c	2006-12-28 16:06:43.000000000 +0100
+@@ -146,6 +146,7 @@ int validate_msgtype_avp(int attr,  stru
+ 	u_int8_t *p = data + sizeof(struct avp_hdr);
+ 	c->msgtype = get16(p);
+ 
++#ifdef SANITY
+     if (t->sanity)
+     {
+         /*
+@@ -293,6 +294,7 @@ int validate_msgtype_avp(int attr,  stru
+             return -EINVAL;
+         }
+     }
++#endif
+ 	return 0;
+ }
+ 
+@@ -301,7 +303,7 @@ int validate_gen_avp(int attr,  struct t
+ 					 void *data, int datalen) {
+ 	(void)data; (void)datalen;
+ 	int i = 0, found = 0;
+-
++#ifdef SANITY
+     if(t->sanity) {
+ 		for(i = 0; i < 8; i++) {
+ 			if(c->msgtype == avps[attr].allowed_states[i])
+@@ -310,6 +312,7 @@ int validate_gen_avp(int attr,  struct t
+ 		if(!found) 
+ 			return -EINVAL;
+ 	}
++#endif
+ 	return 0;
+ }
+ 
+diff -rdup l2tpd-0.70-pre20031121.oorig/l2tpd.c l2tpd-0.70-pre20031121/l2tpd.c
+--- l2tpd-0.70-pre20031121.oorig/l2tpd.c	2006-12-28 16:00:26.000000000 +0100
++++ l2tpd-0.70-pre20031121/l2tpd.c	2006-12-28 16:04:15.000000000 +0100
+@@ -748,7 +748,9 @@ struct tunnel *new_tunnel ()
+     tmp->peer.sin_family = AF_INET;
+     tmp->peer.sin_port = 0;
+     bzero (&(tmp->peer.sin_addr), sizeof (tmp->peer.sin_addr));
++#ifdef SANITY
+     tmp->sanity = -1;
++#endif
+     tmp->qtid = -1;
+     tmp->ourfc = ASYNC_FRAMING | SYNC_FRAMING;
+     tmp->ourbc = 0;

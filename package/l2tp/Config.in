@@ -1,0 +1,8 @@
+config BR2_PACKAGE_L2TP
+	bool "l2tp"
+	default n
+	help
+	  Layer 2 Tunnelling Protocol (RFC2661).
+
+	  http://sourceforge.net/projects/l2tpd/
+

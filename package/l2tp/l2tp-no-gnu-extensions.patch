@@ -1,0 +1,33 @@
+--- l2tpd-0.70-pre20031121.oorig/avpsend.c	2006-12-28 16:00:26.000000000 +0100
++++ l2tpd-0.70-pre20031121/avpsend.c	2006-12-28 16:21:06.000000000 +0100
+@@ -98,19 +98,26 @@ int add_hostname_avp(struct buffer *buf,
+ 	int sz = 0;
+ 	if(t->lac && t->lac->hostname[0]) {
+ 		strncpy(n,t->lac->hostname, sizeof(n));
+-		sz = strnlen(t->lac->hostname, sizeof(t->lac->hostname));
++		sz = strlen(t->lac->hostname);
++		if (sz > sizeof(t->lac->hostname))
++			sz = sizeof(t->lac->hostname);
+ 	}
+ 	else if(t->lns && t->lns->hostname[0]) {
+ 		strncpy(n,t->lns->hostname, sizeof(n));
+-		sz = strnlen(t->lns->hostname, sizeof(t->lns->hostname));
++		sz = strlen(t->lns->hostname);
++		if (sz > sizeof(t->lns->hostname))
++			sz = sizeof(t->lns->hostname);
+ 	}
+ 	else {
+ 		if(gethostname(n, STRLEN)) {
+ 			strcpy(n,"eriwan");
+ 			sz = 6;
+ 		}
+-		else
+-			sz = strnlen(n, sizeof(n));
++		else {
++			sz = strlen(n);
++			if (sz > sizeof(n))
++				sz = sizeof(n);
++		}
+ 	}
+ 	if(add_avp(buf, HOSTNAME_AVP, n, sz, 1))
+ 		return 1;

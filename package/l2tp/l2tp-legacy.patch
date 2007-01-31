@@ -1,0 +1,14 @@
+--- l2tpd-0.70-pre20031121.oorig/osport.h	2004-07-08 22:47:52.000000000 +0200
++++ l2tpd-0.70-pre20031121/osport.h	2006-12-28 15:32:50.000000000 +0100
+@@ -37,4 +37,11 @@
+ 
+ #endif /* defined(SOLARIS) */
+ 
++#if defined __UCLIBC__ && !defined UCLIBC_SUSV3_LEGACY_MACROS
++# define index(x, y)        strchr(x, y)
++# define bcopy(S1, S2, LEN) ((void)memmove(S2, S1, LEN))
++# define bzero(S1, LEN)     ((void)memset(S1,  0, LEN))
++# define bcmp(S1,S2,LEN)    ((memcmp(S2, S1, LEN)==0)?0:1)
++#endif /* defined __UCLIBC__ && !defined UCLIBC_SUSV3_LEGACY_MACROS */
++
+ #endif /* _OSPORT_H_ */
