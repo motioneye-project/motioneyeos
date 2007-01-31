@@ -58,8 +58,12 @@ ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
 	$(SED) "/#include.*busybox\.h/a#define CONFIG_SYSLOGD" $(BUSYBOX_DIR)/init/init.c
 endif
 	# Allow busybox patches.
-	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BUSYBOX_VER)\*.patch
-	touch $(BUSYBOX_DIR)/.unpacked
+ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
+	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox.\*.patch
+else
+	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BUSYBOX_VER)-\*.patch
+endif
+	touch $@
 
 $(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)
 	cp -f $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
@@ -95,7 +99,7 @@ else
 endif
 	yes "" | $(MAKE) CC=$(TARGET_CC) CROSS_COMPILE="$(TARGET_CROSS)" \
 		CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
-	touch $(BUSYBOX_DIR)/.configured
+	touch $@
 
 
 $(BUSYBOX_DIR)/busybox: $(BUSYBOX_DIR)/.configured
