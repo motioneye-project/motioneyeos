@@ -32,7 +32,6 @@ source "package/tar/Config.in"
 endif
 
 comment "Other development stuff"
-source "toolchain/uClibc/Config.in.2"
 source "package/autoconf/Config.in"
 source "package/automake/Config.in"
 source "package/bison/Config.in"

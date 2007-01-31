@@ -323,32 +323,6 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
 	fi;
 	touch -c $(TARGET_DIR)/usr/lib/libc.a
 
-$(TARGET_DIR)/usr/include/libc-internal.h: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
-	$(MAKE1) -C $(UCLIBC_DIR) \
-		PREFIX=$(TARGET_DIR) \
-		DEVEL_PREFIX=/usr/ \
-		RUNTIME_PREFIX=/ \
-		install_headers
-	# Install the kernel headers to the target dir if necessary
-	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ] ; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(TARGET_DIR)/usr/include/ ; \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(TARGET_DIR)/usr/include/ ; \
-		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] ; then \
-			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
-				$(TARGET_DIR)/usr/include/ ; \
-		fi; \
-	fi;
-
-ifeq ($(BR2_PACKAGE_UCLIBC_TARGET_HEADERS),y)
-uclibc_target_headers: $(TARGET_DIR)/usr/include/libc-internal.h
-uclibc_target_headers-clean:
-	rm -rf $(TARGET_DIR)/usr/include
-uclibc_target_headers-dirclean:
-	rm -rf $(TARGET_DIR)/usr/include
-else
-uclibc_target_headers: ;
-endif
-
 uclibc_target: gcc uclibc $(TARGET_DIR)/usr/lib/libc.a $(TARGET_DIR)/usr/bin/ldd
 
 uclibc_target-clean:
