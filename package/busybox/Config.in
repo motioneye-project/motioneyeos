@@ -50,7 +50,7 @@ config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
 config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	depends BR2_PACKAGE_BUSYBOX
-	default "target/device/x86/i386/busybox.config" if BR2_i386
+	default "target/device/x86/i386/busybox.config" if BR2_i386 && BR2_PACKAGE_BUSYBOX_SNAPSHOT
 	default "package/busybox/busybox-1.0.1.config" if BR2_BUSYBOX_VERSION_1_0_1
 	default "package/busybox/busybox-1.1.3.config" if BR2_BUSYBOX_VERSION_1_1_3
 	default "package/busybox/busybox-1.2.2.1.config" if BR2_BUSYBOX_VERSION_1_2_2_1
