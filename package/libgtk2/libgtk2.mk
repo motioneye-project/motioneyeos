@@ -3,7 +3,7 @@
 # libgtk2.0
 #
 #############################################################
-LIBGTK2_VERSION:=2.10.7
+LIBGTK2_VERSION:=2.10.9
 LIBGTK2_SOURCE:=gtk+-$(LIBGTK2_VERSION).tar.bz2
 LIBGTK2_SITE:=ftp://ftp.gtk.org/pub/gtk/v2.10
 LIBGTK2_CAT:=$(BZCAT)
