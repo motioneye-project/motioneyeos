@@ -3,7 +3,7 @@
 # libglib2
 #
 #############################################################
-LIBGLIB2_VERSION:=2.12.6
+LIBGLIB2_VERSION:=2.12.9
 LIBGLIB2_SOURCE:=glib-$(LIBGLIB2_VERSION).tar.bz2
 LIBGLIB2_SITE:=http://ftp.gtk.org/pub/glib/2.12
 LIBGLIB2_CAT:=$(BZCAT)
