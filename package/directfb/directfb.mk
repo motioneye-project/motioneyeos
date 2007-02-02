@@ -5,7 +5,7 @@
 #############################################################
 DIRECTFB_VERSION:=0.9.25.1
 DIRECTFB_SOURCE:=DirectFB-$(DIRECTFB_VERSION).tar.gz
-DIRECTFB_SITE:=http://www.directfb.org/downloads/Core
+DIRECTFB_SITE:=http://www.directfb.org/downloads/Old
 DIRECTFB_CAT:=$(ZCAT)
 DIRECTFB_DIR:=$(BUILD_DIR)/DirectFB-$(DIRECTFB_VERSION)
 
