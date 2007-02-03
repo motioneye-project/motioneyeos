@@ -4,7 +4,7 @@
 #
 #############################################################
 FLEX_VERSION:=2.5.33
-FLEX_PATCH_VERSION:=10
+FLEX_PATCH_VERSION:=11
 FLEX_SOURCE:=flex_$(FLEX_VERSION).orig.tar.gz
 FLEX_PATCH:=flex_$(FLEX_VERSION)-$(FLEX_PATCH_VERSION).diff.gz
 FLEX_SITE:=http://ftp.debian.org/debian/pool/main/f/flex
