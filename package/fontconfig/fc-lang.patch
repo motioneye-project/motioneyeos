@@ -1,0 +1,51 @@
+--- /tmp/Makefile.am	2006-04-25 15:47:49.313035880 +0200
++++ fontconfig-2.3.94/fc-lang/Makefile.am	2006-04-25 15:48:22.807943880 +0200
+@@ -31,6 +31,7 @@
+ TMPL=fclang.tmpl.h
+ STMPL=${top_srcdir}/fc-lang/fclang.tmpl.h
+ TARG=fclang.h
++FC_LANG=./fc-lang
+ 
+ noinst_PROGRAMS=fc-lang
+ 
+@@ -44,6 +45,6 @@
+ 
+ $(TARG):$(ORTH) fc-lang${EXEEXT} $(STMPL)
+ 	rm -f $(TARG)
+-	./fc-lang${EXEEXT} -d ${srcdir} $(ORTH) < $(STMPL) > $(TARG)
++	$(FC_LANG)${EXEEXT} -d ${srcdir} $(ORTH) < $(STMPL) > $(TARG)
+ 
+ CLEANFILES=$(TARG)
+--- fontconfig-2.4.2/fc-lang/fc-lang.orig.c	2007-02-03 13:39:49.000000000 -0700
++++ fontconfig-2.4.2/fc-lang/fc-lang.c	2007-02-03 13:46:08.000000000 -0700
+@@ -116,6 +116,20 @@
+     return f;
+ }
+ 
++char* trim(char *s)
++{
++	int len = strlen(s);
++
++	/* nuke trailing whitespace */
++	while (len > 0 && (isspace(s[len - 1]) || s[len - 1]=='\n'))
++		s[--len] = '\0';
++
++	/* skip leading whitespace */
++	s += strspn(s, " \n\r\t\v");
++
++	return s;
++}
++
+ /*
+  * build a single charset from a source file
+  *
+@@ -142,8 +156,7 @@
+             if (!file)
+                 fatal (line, lineno, 
+                        "invalid syntax, expected: include filename");
+-	    while (isspace(*file))
+-		file++;
++	    file = trim(file);
+ 	    f = scanopen (file);
+ 	    if (!f)
+ 		fatal (file, 0, "can't open");
