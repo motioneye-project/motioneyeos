@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-RXVT_VERSION:=2.6.4
+RXVT_VERSION:=2.7.5
 RXVT_SOURCE:=rxvt-$(RXVT_VERSION).tar.gz
 RXVT_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/rxvt
 RXVT_CAT:=$(ZCAT)
@@ -52,7 +52,6 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
 		--disable-resources \
 		--disable-memset \
-		--enable-xgetdefault \
 	);
 	touch $(RXVT_DIR)/.configured
 
