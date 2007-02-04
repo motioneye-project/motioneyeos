@@ -5,7 +5,7 @@ config BR2_PACKAGE_MICROPERL
 	  Perl without operating-specific functions such as readdir.
 
 config BR2_PACKAGE_MICROPERL_MODULES
-	string "perl modules"
+	string "microperl modules"
 	default ""
 	depends on BR2_PACKAGE_MICROPERL
 	help
