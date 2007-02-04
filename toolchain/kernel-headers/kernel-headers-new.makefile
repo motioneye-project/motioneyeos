@@ -24,18 +24,18 @@ ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
 	rm -rf $(LINUX_HEADERS_DIR)
 	$(LINUX_HEADERS_CAT) $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LINUX_HEADERS_UNPACK_DIR)/.unpacked
+	touch $@
 
 $(LINUX_HEADERS_UNPACK_DIR)/.patched: $(LINUX_HEADERS_UNPACK_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) toolchain/kernel-headers \
 		linux-$(LINUX_HEADERS_VERSION)-\*.patch{,.gz,.bz2}
-	touch $(LINUX_HEADERS_UNPACK_DIR)/.patched
+	touch $@
 
 $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_UNPACK_DIR)/.patched
 	(cd $(LINUX_HEADERS_UNPACK_DIR) ; \
 	 $(MAKE) ARCH=$(KERNEL_ARCH) CC="$(HOSTCC)" \
 		INSTALL_HDR_PATH=$(LINUX_HEADERS_DIR) headers_install ; \
 	)
-	touch $(LINUX_HEADERS_DIR)/.configured
+	touch $@
 
 endif
