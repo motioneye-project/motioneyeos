@@ -292,7 +292,7 @@ endif
 	#
 	touch $@
 
-gcc-target-libs: $(GCC_BUILD_DIR2)/.installed
+$(GCC_BUILD_DIR2)/.libs_installed: $(GCC_BUILD_DIR2)/.installed
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 	# These are in /lib, so...
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
@@ -311,7 +311,8 @@ ifeq ($(BR2_INSTALL_LIBGCJ),y)
 endif
 
 gcc: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) uclibc \
-	$(GCC_BUILD_DIR2)/.installed gcc-target-libs $(GCC_TARGETS)
+	$(GCC_BUILD_DIR2)/.installed $(GCC_BUILD_DIR2)/.libs_installed \
+	$(GCC_TARGETS)
 
 gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 

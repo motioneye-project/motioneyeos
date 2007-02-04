@@ -27,7 +27,7 @@ GRUB_PATCH_SITE:=http://ftp.debian.org/debian/pool/main/g/grub
 GRUB_CAT:=$(ZCAT)
 GRUB_DIR:=$(BUILD_DIR)/grub-0.97
 GRUB_BINARY:=grub/grub
-GRUB_TARGET_BINARY:=bin/grub
+GRUB_TARGET_BINARY:=sbin/grub
 GRUB_SPLASHIMAGE=$(TOPDIR)/target/x86/grub/splash.xpm.gz
 
 
@@ -93,21 +93,22 @@ $(GRUB_DIR)/.configured: $(GRUB_DIR)/.unpacked
 		--disable-auto-linux-mem-opt \
 		$(GRUB_CONFIG-y) \
 	);
-	touch  $@
+	touch $@
 
 $(GRUB_DIR)/$(GRUB_BINARY): $(GRUB_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GRUB_DIR)
 
-grub-target_binary: $(GRUB_DIR)/$(GRUB_BINARY)
-	cp $(GRUB_DIR)/$(GRUB_BINARY) $(TARGET_DIR)/sbin/
+$(GRUB_DIR)/.installed: $(GRUB_DIR)/$(GRUB_BINARY)
+	cp $(GRUB_DIR)/$(GRUB_BINARY) $(TARGET_DIR)/$(GRUB_TARGET_BINARY)
 	test -d $(TARGET_DIR)/boot/grub || mkdir -p $(TARGET_DIR)/boot/grub
 	cp $(GRUB_DIR)/stage1/stage1 $(GRUB_DIR)/stage2/*1_5 $(GRUB_DIR)/stage2/stage2 $(TARGET_DIR)/boot/grub/
 ifeq ($(BR2_TARGET_GRUB_SPLASH),y)
 	test -f $(TARGET_DIR)/boot/grub/$(GRUB_SPLASHIMAGE) || \
 		cp $(GRUB_SPLASHIMAGE) $(TARGET_DIR)/boot/grub/
 endif
+	touch $@
 
-grub: grub-target_binary
+grub: uclibc $(GRUB_DIR)/.installed
 
 grub-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GRUB_DIR) uninstall

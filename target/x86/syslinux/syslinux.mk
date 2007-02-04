@@ -34,14 +34,16 @@ SYSLINUX_BIN=$(SYSLINUX_DIR2)/mtools/syslinux
 $(DL_DIR)/$(SYSLINUX_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(SYSLINUX_SITE)/$(SYSLINUX_SOURCE)
 
+syslinux-source: $(DL_DIR)/$(SYSLINUX_SOURCE)
+
 $(SYSLINUX_DIR)/Makefile: $(DL_DIR)/$(SYSLINUX_SOURCE) $(SYSLINUX_PATCH)
 	$(SYSLINUX_CAT) $(DL_DIR)/$(SYSLINUX_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(SYSLINUX_DIR) target/x86/syslinux/ \*.patch
-	touch -c $(SYSLINUX_DIR)/Makefile
+	touch -c $@
 
 $(SYSLINUX_DIR)/isolinux.bin: $(SYSLINUX_DIR)/Makefile
 	$(MAKE) -C $(SYSLINUX_DIR)
-	touch -c $(SYSLINUX_DIR)/isolinux.bin
+	touch -c $@
 
 syslinux: $(SYSLINUX_DIR)/isolinux.bin
 

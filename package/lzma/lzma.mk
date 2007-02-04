@@ -12,8 +12,8 @@ LZMA_TARGET_DIR:=$(BUILD_DIR)/lzma-$(LZMA_VER)
 LZMA_CFLAGS:=$(TARGET_CFLAGS)
 ifeq ($(BR2_LARGEFILE),y)
 LZMA_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
-else
 endif
+LZMA_TARGET_BINARY:=bin/lzma
 
 $(DL_DIR)/$(LZMA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LZMA_SITE)/$(LZMA_SOURCE)
@@ -81,14 +81,14 @@ $(LZMA_TARGET_DIR)/src/lzma/lzma: $(LZMA_TARGET_DIR)/.configured
 	$(MAKE) -C $(LZMA_TARGET_DIR) all
 	touch -c $@
 
-$(TARGET_DIR)/usr/bin/lzma: $(LZMA_TARGET_DIR)/src/lzma/lzma
-	-cp -dpf $(LZMA_TARGET_DIR)/src/lzma/lzma $(TARGET_DIR)/bin/;
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/bin/lzma
-	touch -c $(TARGET_DIR)/bin/lzma
+$(TARGET_DIR)/$(LZMA_TARGET_BINARY): $(LZMA_TARGET_DIR)/src/lzma/lzma
+	cp -dpf $(LZMA_TARGET_DIR)/src/lzma/lzma $@
+	-$(STRIP) --strip-unneeded $@
+	touch -c $@
 
-#lzma-headers: $(TARGET_DIR)/bin/lzma
+#lzma-headers: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
 
-lzma-target: uclibc $(TARGET_DIR)/usr/bin/lzma
+lzma-target: uclibc $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
 
 lzma-source: $(DL_DIR)/$(LZMA_SOURCE)
 
