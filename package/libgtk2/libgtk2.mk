@@ -150,7 +150,7 @@ $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0: $(STAGING_DIR)/lib/$(LIBGTK2_BINARY)
 	cp package/libgtk2/gtk.immodules $(TARGET_DIR)/etc/gtk-2.0
 	touch -c $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0
 
-libgtk2: uclibc png jpeg tiff xorg libglib2 \
+libgtk2: uclibc png jpeg tiff $(XSERVER) libglib2 \
 	cairo pango atk $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0
 
 libgtk2-clean:

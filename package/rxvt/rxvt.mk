@@ -63,12 +63,7 @@ $(TARGET_DIR)/usr/X11R6/bin/rxvt: $(RXVT_BINARY)
 	cp -f $(RXVT_BINARY) $(TARGET_DIR)/usr/X11R6/bin
 	(cd $(TARGET_DIR)/usr/X11R6/bin; ln -fs rxvt xterm)
 
-ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
-rxvt: tinyx $(TARGET_DIR)/usr/X11R6/bin/rxvt
-endif
-ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
-rxvt: xorg $(TARGET_DIR)/usr/X11R6/bin/rxvt
-endif
+rxvt: $(XSERVER) $(TARGET_DIR)/usr/X11R6/bin/rxvt
 
 rxvt-clean:
 	rm -f $(TARGET_DIR)/usr/X11R6/bin/rxvt

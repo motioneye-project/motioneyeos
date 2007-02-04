@@ -138,7 +138,7 @@ $(TARGET_DIR)/lib/*metacity*.so: $(STAGING_DIR)/lib/*metacity*.so
 	(cd $(TARGET_DIR)/usr/share/themes; rm -rf Atlanta; ln -s Clearlooks Atlanta)
 	cp -a package/metacity/Xsession $(TARGET_DIR)/etc/X11/
 
-metacity: uclibc zlib xorg libgtk2 $(TARGET_DIR)/lib/*metacity*.so
+metacity: uclibc zlib $(XSERVER) libgtk2 $(TARGET_DIR)/lib/*metacity*.so
 
 metacity-clean:
 	-$(MAKE) -C $(METACITY_DIR) clean

@@ -44,9 +44,9 @@ DEJAVU_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/deja
 DEJAVU_DIR:=$(BUILD_DIR)/dejavu-ttf-$(DEJAVU_VERSION)
 
 # Install Xorg xserver
-XSERVER:=Xorg
-XORG_XSERVER:=$(XORG_DIR)/programs/Xserver/$(XSERVER)
-TARGET_XSERVER:=$(XORG_BINX)/$(XSERVER)
+XSERVER_BINARY:=Xorg
+XORG_XSERVER:=$(XORG_DIR)/programs/Xserver/$(XSERVER_BINARY)
+TARGET_XSERVER:=$(XORG_BINX)/$(XSERVER_BINARY)
 
 # figure out Xorg's idea of corresponding architecture name
 ifeq ($(BR2_alpha),y)
@@ -127,7 +127,7 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 		$(STRIP) $(XORG_PROGS)/$$file || /bin/true ; \
 	done
 	cp $(XORG_XSERVER) $(TARGET_XSERVER)
-	(cd $(XORG_BINX); ln -snf $(XSERVER) X)
+	(cd $(XORG_BINX); ln -snf $(XSERVER_BINARY) X)
 	$(STRIP) $(TARGET_XSERVER)
 	mkdir -p $(XORG_LIBX)/modules
 	cp -LRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/

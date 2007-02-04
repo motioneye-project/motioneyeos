@@ -85,7 +85,7 @@ $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1: $(STAGING_DIR)/lib/$(LIBGTK12_BINARY)
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgdk-1.2.so.0.9.1
 	touch -c $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1
 
-libgtk12: uclibc libglib12 xorg $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1
+libgtk12: uclibc libglib12 $(XSERVER) $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1
 
 libgtk12-clean:
 	rm -f $(TARGET_DIR)/lib/libgtk* $(TARGET_DIR)/lib/libgdk*

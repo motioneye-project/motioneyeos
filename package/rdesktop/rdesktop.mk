@@ -38,7 +38,7 @@ $(RDESKTOP_DIR)/.installed: $(RDESKTOP_DIR)/rdesktop
 	cp $(RDESKTOP_DIR)/rdesktop $(TARGET_DIR)/usr/bin
 	touch $(RDESKTOP_DIR)/.installed
 
-rdesktop: uclibc xorg openssl $(RDESKTOP_DIR)/.installed
+rdesktop: uclibc openssl $(XSERVER) $(RDESKTOP_DIR)/.installed
 
 rdesktop-source: $(DL_DIR)/$(RDESKTOP_SOURCE)
 

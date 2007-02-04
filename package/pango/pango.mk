@@ -154,7 +154,7 @@ $(TARGET_DIR)/lib/libpango-1.0.so.0: $(STAGING_DIR)/lib/$(PANGO_BINARY)
 	cp package/pango/pangox.aliases $(TARGET_DIR)/etc/pango/
 	touch -c $(TARGET_DIR)/lib/libpango-1.0.so.0
 
-pango: uclibc gettext libintl pkgconfig libglib2 xorg cairo \
+pango: uclibc gettext libintl pkgconfig libglib2 $(XSERVER) cairo \
 	$(TARGET_DIR)/lib/libpango-1.0.so.0
 
 pango-clean:

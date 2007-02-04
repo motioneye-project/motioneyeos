@@ -111,3 +111,16 @@ ifeq ($(BR2_INSTALL_LIBSTDCPP),)
 TARGET_CONFIGURE_OPTS+=CXX=""
 endif
 
+# X Windowing system
+
+XSERVER:=
+ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
+XSERVER+=tinyx
+endif
+ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
+XSERVER+=xorg
+endif
+ifeq ($(strip $(BR2_PACKAGE_XGGI)),y)
+XSERVER+=xggi
+endif
+

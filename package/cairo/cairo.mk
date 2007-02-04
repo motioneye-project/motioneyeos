@@ -134,7 +134,7 @@ $(TARGET_DIR)/lib/libcairo.so.2.9.3: $(STAGING_DIR)/lib/$(CAIRO_BINARY)
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libcairo.so.2.*
 	touch -c $(TARGET_DIR)/lib/libcairo.so.2.9.3
 
-cairo: uclibc gettext libintl pkgconfig libglib2 xorg $(TARGET_DIR)/lib/libcairo.so.2.9.3
+cairo: uclibc gettext libintl pkgconfig libglib2 $(XSERVER) $(TARGET_DIR)/lib/libcairo.so.2.9.3
 
 cairo-clean:
 	rm -f $(TARGET_DIR)/lib/$(CAIRO_BINARY)

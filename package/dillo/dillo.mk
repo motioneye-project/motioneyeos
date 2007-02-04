@@ -38,7 +38,7 @@ $(DILLO_DIR)/.installed: $(DILLO_DIR)/src/dillo
 	$(MAKE) -C $(DILLO_DIR) DESTDIR=$(TARGET_DIR) install
 	touch $(DILLO_DIR)/.installed
 
-dillo:	uclibc xorg libglib12 libgtk12 jpeg libpng $(DILLO_DIR)/.installed
+dillo:	uclibc $(XSERVER) libglib12 libgtk12 jpeg libpng $(DILLO_DIR)/.installed
 
 dillo-source: $(DL_DIR)/$(DILLO_SOURCE)
 
