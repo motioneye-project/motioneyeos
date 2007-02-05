@@ -1,0 +1,13 @@
+Index: uClibc/libc/inet/resolv.c
+===================================================================
+--- uClibc/libc/inet/resolv.c	(revision 17775)
++++ uClibc/libc/inet/resolv.c	(working copy)
+@@ -1689,7 +1689,7 @@
+ int gethostent_r(struct hostent *result_buf, char *buf, size_t buflen,
+ 	struct hostent **result, int *h_errnop)
+ {
+-    int ret;
++    int ret = HOST_NOT_FOUND;
+ 
+     __UCLIBC_MUTEX_LOCK(mylock);
+     if (__gethostent_fp == NULL) {
