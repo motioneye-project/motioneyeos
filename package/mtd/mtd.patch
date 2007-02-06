@@ -15,7 +15,7 @@ diff -ur mtd-20050122.orig/util/flash_eraseall.c mtd-20050122.orig-patched/util/
  					printf ("\nSkipping bad block at 0x%08x\n", erase.start);
  				continue;
 -			} else if (ret == -EOPNOTSUPP) {
-+			} else if (errno == -EOPNOTSUPP) {
++			} else if (errno == EOPNOTSUPP) {
  				fprintf(stderr, "%s: %s: Bad block check not available\n", exe_name, mtd_device);
  				bbtest = 0;
  			} else if (ret < 0) {
