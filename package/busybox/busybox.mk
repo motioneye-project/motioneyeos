@@ -6,37 +6,22 @@
 
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
 BUSYBOX_VER:=1.01
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
-BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_1_3)),y)
 BUSYBOX_VER:=1.1.3
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
-BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_2_2_1)),y)
 BUSYBOX_VER:=1.2.2.1
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
-BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_0)),y)
 BUSYBOX_VER:=1.4.0
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
-BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_1)),y)
 BUSYBOX_VER:=1.4.1
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
-BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
-BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
@@ -44,6 +29,10 @@ ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
 BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
+else
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
+BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
+BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
 BUSYBOX_UNZIP=$(BZCAT)
