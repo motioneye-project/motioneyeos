@@ -1,0 +1,24 @@
+diff -ur hal-0.5.8/hald/Makefile.in hal-0.5.8-patched/hald/Makefile.in
+--- hal-0.5.8/hald/Makefile.in	2006-09-11 18:25:30.000000000 -0500
++++ hal-0.5.8-patched/hald/Makefile.in	2007-01-17 08:54:04.000000000 -0600
+@@ -336,7 +336,7 @@
+ 	osspec.h							\
+ 	property.h			property.c			
+ 
+-hald_LDADD = @GLIB_LIBS@ @DBUS_LIBS@ -lm @EXPAT_LIB@ $(top_builddir)/hald/$(HALD_BACKEND)/libhald_$(HALD_BACKEND).la
++hald_LDADD = @GLIB_LIBS@ @DBUS_LIBS@ -lm @EXPAT_LIB@ @INTLLIBS@ $(top_builddir)/hald/$(HALD_BACKEND)/libhald_$(HALD_BACKEND).la
+ 
+ #### Init scripts fun
+ SCRIPT_IN_FILES = haldaemon.in
+diff -ur hal-0.5.8/hald-runner/Makefile.in hal-0.5.8-patched/hald-runner/Makefile.in
+--- hal-0.5.8/hald-runner/Makefile.in	2006-09-11 18:25:30.000000000 -0500
++++ hal-0.5.8-patched/hald-runner/Makefile.in	2007-01-17 08:54:18.000000000 -0600
+@@ -303,7 +303,7 @@
+ 	@DBUS_CFLAGS@ @GLIB_CFLAGS@
+ 
+ hald_runner_SOURCES = main.c runner.c runner.h utils.h utils.c
+-hald_runner_LDADD = @GLIB_LIBS@ @DBUS_LIBS@
++hald_runner_LDADD = @GLIB_LIBS@ @DBUS_LIBS@ @INTLLIBS@
+ all: all-am
+ 
+ .SUFFIXES:

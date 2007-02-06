@@ -1,0 +1,12 @@
+diff -ur dbus-glib-0.72/dbus/Makefile.in dbus-glib-0.72-patched/dbus/Makefile.in
+--- dbus-glib-0.72/dbus/Makefile.in	2006-10-25 16:14:31.000000000 -0500
++++ dbus-glib-0.72-patched/dbus/Makefile.in	2007-01-17 08:37:22.000000000 -0600
+@@ -493,7 +493,7 @@
+ 	done
+ dbus-binding-tool$(EXEEXT): $(dbus_binding_tool_OBJECTS) $(dbus_binding_tool_DEPENDENCIES) 
+ 	@rm -f dbus-binding-tool$(EXEEXT)
+-	$(LINK) $(dbus_binding_tool_LDFLAGS) $(dbus_binding_tool_OBJECTS) $(dbus_binding_tool_LDADD) $(LIBS)
++	$(LINK) $(dbus_binding_tool_LDFLAGS) $(dbus_binding_tool_OBJECTS) $(dbus_binding_tool_LDADD) $(LIBS) $(INTLLIBS)
+ dbus-glib-test$(EXEEXT): $(dbus_glib_test_OBJECTS) $(dbus_glib_test_DEPENDENCIES) 
+ 	@rm -f dbus-glib-test$(EXEEXT)
+ 	$(LINK) $(dbus_glib_test_LDFLAGS) $(dbus_glib_test_OBJECTS) $(dbus_glib_test_LDADD) $(LIBS)
