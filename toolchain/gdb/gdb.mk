@@ -3,8 +3,13 @@
 # gdb
 #
 ######################################################################
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
 #"))
+else
+GDB_VERSION:=$(strip $(subst ",, $(BR2_EXT_GDB_VERSION)))
+#"))
+endif
 
 ifeq ($(GDB_VERSION),snapshot)
 # Be aware that this changes daily....
@@ -70,7 +75,8 @@ $(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_TARGET_DIR); \
 		gdb_cv_func_sigsetjmp=yes \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS_FOR_TARGET="$(TARGET_CFLAGS)" \
+		CFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_LDFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS) $(TARGET_LDFLAGS)" \
 		$(GDB_TARGET_CONFIGURE_VARS) \
 		$(GDB_DIR)/configure \
 		--build=$(GNU_HOST_NAME) \
@@ -94,7 +100,7 @@ $(GDB_TARGET_DIR)/gdb/gdb: $(GDB_TARGET_DIR)/.configured
 	$(STRIP) $(GDB_TARGET_DIR)/gdb/gdb
 
 $(TARGET_DIR)/usr/bin/gdb: $(GDB_TARGET_DIR)/gdb/gdb
-	install -c $(GDB_TARGET_DIR)/gdb/gdb $(TARGET_DIR)/usr/bin/gdb
+	install -c -D $(GDB_TARGET_DIR)/gdb/gdb $(TARGET_DIR)/usr/bin/gdb
 
 gdb_target: ncurses $(TARGET_DIR)/usr/bin/gdb
 
@@ -153,7 +159,7 @@ ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
 	install -c $(GDB_SERVER_DIR)/gdbserver \
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/gdbserver
 endif
-	install -c $(GDB_SERVER_DIR)/gdbserver $(TARGET_DIR)/usr/bin/gdbserver
+	install -c -D $(GDB_SERVER_DIR)/gdbserver $(TARGET_DIR)/usr/bin/gdbserver
 
 gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
 
