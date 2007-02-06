@@ -5,7 +5,7 @@
 #############################################################
 
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
-BUSYBOX_VER:=1.0.1
+BUSYBOX_VER:=1.01
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
 BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
