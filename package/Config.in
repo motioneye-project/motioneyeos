@@ -209,6 +209,7 @@ source "package/mtd/Config.in"
 source "package/pciutils/Config.in"
 source "package/pcmcia/Config.in"
 source "package/raidtools/Config.in"
+source "package/setserial/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 # busybox has fdisk
 source "package/sfdisk/Config.in"
