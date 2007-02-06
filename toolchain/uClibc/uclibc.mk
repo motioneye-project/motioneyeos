@@ -335,7 +335,8 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/lib/libc.a
 uclibc_target: gcc uclibc $(TARGET_DIR)/usr/lib/libc.a $(TARGET_DIR)/usr/bin/ldd
 
 uclibc_target-clean:
-	rm -rf $(TARGET_DIR)/usr/include
+	rm -rf $(TARGET_DIR)/usr/include \
+		$(TARGET_DIR)/usr/lib/libc.a $(TARGET_DIR)/usr/bin/ldd
 
 uclibc_target-dirclean:
 	rm -rf $(TARGET_DIR)/usr/include
