@@ -44,7 +44,11 @@ ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 # along with the packages to build for the target.
 #
 ##############################################################
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 TARGETS:=uclibc-configured binutils gcc uclibc-target-utils
+else
+TARGETS:=uclibc
+endif
 include toolchain/Makefile.in
 include package/Makefile.in
 

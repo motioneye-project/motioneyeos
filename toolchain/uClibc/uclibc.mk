@@ -4,6 +4,7 @@
 #
 #############################################################
 
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 # Be aware that this changes daily....
@@ -339,3 +340,4 @@ uclibc_target-clean:
 uclibc_target-dirclean:
 	rm -rf $(TARGET_DIR)/usr/include
 
+endif

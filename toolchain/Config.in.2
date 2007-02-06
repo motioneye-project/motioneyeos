@@ -1,0 +1,66 @@
+#
+
+menu "Toolchain Options"
+	depends on BR2_TOOLCHAIN_BUILDROOT
+
+source "toolchain/kernel-headers/Config.in"
+source "toolchain/uClibc/Config.in"
+source "toolchain/binutils/Config.in"
+source "toolchain/gcc/Config.in"
+source "toolchain/ccache/Config.in"
+source "toolchain/gdb/Config.in"
+source "toolchain/elf2flt/Config.in"
+source "toolchain/mklibs/Config.in"
+
+comment "Common Toolchain Options"
+
+source "toolchain/sstrip/Config.in"
+
+config BR2_ENABLE_MULTILIB
+	bool "Enable multilib support?"
+	default n
+	help
+	    If you want multilib enabled, enable this...
+
+config BR2_LARGEFILE
+	bool "Enable large file (files > 2 GB) support?"
+	depends on !BR2_cris
+	default y
+	help
+	    Enable large file (files > 2 GB) support
+
+config BR2_SOFT_FLOAT
+	bool "Use software floating point by default"
+	default n
+	depends on BR2_arm || BR2_armeb || BR2_mips || BR2_mipsel || BR2_powerpc
+	help
+	  If your target CPU does not have a Floating Point Unit (FPU) or a
+	  kernel FPU emulator, but you still wish to support floating point
+	  functions, then everything will need to be compiled with soft
+	  floating point support (-msoft-float).
+
+	  Most people will answer N.
+
+#config BR2_SOFT_FLOAT_FP
+#	bool "Use softfp"
+#	default n
+
+config BR2_TARGET_OPTIMIZATION
+	string "Target Optimizations"
+	default "-Os -pipe"
+	help
+	  Optimizations to use when building for the target host.
+
+config BR2_CROSS_TOOLCHAIN_TARGET_UTILS
+	bool "Include target utils in cross toolchain"
+	default y
+	help
+	  When using buildroot to build a deployable cross toolchain,
+	  it is handy to include certain target apps with that toolchain
+	  as a convenience.
+	  Examples include ldd, gdbserver, and strace.
+
+	  Answer Y if you want these apps (if built) copied into the
+	  cross toolchain dir under <arch>-linux-uclibc/target_utils/.
+
+endmenu

@@ -7,4 +7,7 @@ include target/powerpc/Makefile.in
 # and finally build the filesystems/tarballs
 include target/*/*.mk
 # kernel rules
+ifeq ($(BR2_PACKAGE_LINUX),y)
+TARGETS+=linux26
+endif
 include target/linux*.mk
