@@ -32,6 +32,13 @@ BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_1)),y)
+BUSYBOX_VER:=1.4.1
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
+BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
+BUSYBOX_SITE:=http://www.busybox.net/downloads
+endif
+
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
@@ -81,6 +88,11 @@ ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_2_2_1)),y)
 	$(SED) s,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
 		$(BUSYBOX_DIR)/.config ;
 	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
+		$(BUSYBOX_DIR)/.config ;
+endif
+# either 1.4.0 or 1.4.1
+ifneq ($(strip $(BR2_BUSYBOX_VERSION_1_4_0))$(strip $(BR2_BUSYBOX_VERSION_1_4_1)),)
+	$(SED) s,^PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
 		$(BUSYBOX_DIR)/.config ;
 endif
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
