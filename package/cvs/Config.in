@@ -5,4 +5,11 @@ config BR2_PACKAGE_CVS
 	help
 	  Concurrent Versions System - source code revision control tools.
 
-	  http://www.cvshome.org/
+	  http://www.nongnu.org/cvs/
+
+config BR2_PACKAGE_CVS_SERVER
+	bool "server support"
+	default n
+	depends on BR2_PACKAGE_CVS
+	help
+	  Enable cvs server code
