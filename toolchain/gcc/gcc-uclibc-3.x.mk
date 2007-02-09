@@ -72,7 +72,7 @@ endif
 GCC_TARGET_PREREQ =
 GCC_STAGING_PREREQ= $(STAGING_DIR)/lib/libc.a
 
-ifndef $(GCC_NO_MPFR)
+ifndef GCC_NO_MPFR
 GCC_WITH_HOST_GMP=--with-gmp=$(GMP_HOST_DIR)
 GCC_WITH_HOST_MPFR=--with-mpfr=$(MPFR_HOST_DIR)
 

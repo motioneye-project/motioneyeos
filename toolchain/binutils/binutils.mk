@@ -40,8 +40,15 @@ endif
 # We do not rely on the host's gmp/mpfr but use a known working one
 BINUTILS_HOST_PREREQ:=
 BINUTILS_TARGET_PREREQ:=
-ifndef BINUTILS_NO_MPFR
 
+ifeq ($(findstring 3.,$(GCC_VERSION)),3.)
+BINUTILS_NO_MPFR:=y
+endif
+ifeq ($(findstring 4.0,$(GCC_VERSION)),4.0)
+BINUTILS_NO_MPFR:=y
+endif
+
+ifndef BINUTILS_NO_MPFR
 BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp.so \
 	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.so
 
