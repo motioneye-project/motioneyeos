@@ -46,6 +46,12 @@ if test -n "$CFLAGS" ; then
 fi;
 echo "CFLAGS clean:					Ok"
 
+if test -n "$INCLUDES" ; then
+	echo "INCLUDES clean:					FALSE"
+	/bin/echo -e "WARNING: INCLUDES contains:\n\t'$INCLUDES'"
+else
+	echo "INCLUDES clean:				Ok"
+fi
 
 if test -n "$CXXFLAGS" ; then
 	echo "CXXFLAGS clean:					FALSE"
