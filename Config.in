@@ -362,10 +362,10 @@ config BR2_PREFER_IMA
 	  WARNING: This is highly experimental at the moment.
 
 config BR2_DEPRECATED
-	bool "Show packages that are depretated or obsolete"
+	bool "Show packages that are deprecated or obsolete"
 	default n
 	help
-	  This option hides outdated/obsoleted versions of packages.
+	  This option hides outdated/obsolete versions of packages.
 
 endmenu
 
