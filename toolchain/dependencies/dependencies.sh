@@ -1,5 +1,5 @@
 #!/bin/sh
-
+# vi: set sw=4 ts=4:
 #set -x
 
 echo ""
@@ -175,6 +175,33 @@ echo "C compiler '$COMPILER'"
 echo "C compiler version '$COMPILER_VERSION':			Ok"
 
 
+# check for host CXX
+CXXCOMPILER=$(which $HOSTCXX)
+if [ -z "$CXXCOMPILER" ] ; then
+	CXXCOMPILER=$(which c++)
+fi
+if [ -z "$CXXCOMPILER" ] ; then
+	echo "C++ Compiler installed:		    FALSE"
+	/bin/echo -e "\nYou may have to install 'g++' on your build machine\n"
+	#exit 1
+fi
+if [ ! -z "$CXXCOMPILER" ] ; then
+	CXXCOMPILER_VERSION=$($CXXCOMPILER --version 2>&1 | head -n1 | $XSED -e 's/^.*(.CC) \([0-9\.]\)/\1/g' -e "s/[-\ ].*//g")
+	if [ -z "$CXXCOMPILER_VERSION" ] ; then
+		echo "c++ installed:		    FALSE"
+		/bin/echo -e "\nYou may have to install 'g++' on your build machine\n"
+		#exit 1
+	fi
+
+	CXXCOMPILER_MAJOR=$(echo $CXXCOMPILER_VERSION | $XSED -e "s/\..*//g")
+	CXXCOMPILER_MINOR=$(echo $CXXCOMPILER_VERSION | $XSED -e "s/^$CXXCOMPILER_MAJOR\.//g" -e "s/\..*//g")
+	if [ $CXXCOMPILER_MAJOR -lt 3 -o $CXXCOMPILER_MAJOR -eq 2 -a $CXXCOMPILER_MINOR -lt 95 ] ; then
+		echo "You have g++ '$CXXCOMPILER_VERSION' installed.  g++ >= 2.95 is required"
+		exit 1
+	fi
+	echo "C++ compiler '$CXXCOMPILER'"
+	echo "C++ compiler version '$CXXCOMPILER_VERSION':			Ok"
+fi
 
 #############################################################
 #
