@@ -13,15 +13,15 @@ choice
 	  the kernel you intend to use on your target system.
 
 	config BR2_KERNEL_HEADERS_2_4_25
-		depends !BR2_nios2
+		depends !BR2_nios2 && BR2_DEPRECATED
 		bool "Linux 2.4.25 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_4_27
-		depends !BR2_nios2
+		depends !BR2_nios2 && BR2_DEPRECATED
 		bool "Linux 2.4.27 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_4_29
-		depends !BR2_nios2
+		depends !BR2_nios2 && BR2_DEPRECATED
 		bool "Linux 2.4.29 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_4_31
@@ -29,14 +29,20 @@ choice
 		bool "Linux 2.4.31 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_9
+		depends BR2_DEPRECATED
 		bool "Linux 2.6.9 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_11
+		depends BR2_DEPRECATED
 		bool "Linux 2.6.11 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_12
 		depends !BR2_nios2
 		bool "Linux 2.6.12 kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_19_2
+		depends !BR2_nios2 && BR2_DEPRECATED
+		bool "Linux 2.6.19.2 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_20
 		depends !BR2_nios2
@@ -53,4 +59,5 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.6.9"     if BR2_KERNEL_HEADERS_2_6_9
 	default "2.6.11"    if BR2_KERNEL_HEADERS_2_6_11
 	default "2.6.12"    if BR2_KERNEL_HEADERS_2_6_12
+	default "2.6.19.2"  if BR2_KERNEL_HEADERS_2_6_19_2
 	default "2.6.20"    if BR2_KERNEL_HEADERS_2_6_20
