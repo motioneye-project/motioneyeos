@@ -8,6 +8,7 @@ config BR2_PACKAGE_LINUX
 	  http://www.kernel.org/
 
 source "target/device/AMD/Config.in"
+source "target/device/Arm/Config.in"
 source "target/device/Atmel/Config.in"
 source "target/device/Hitachi/Config.in"
 source "target/device/jp/Config.in"

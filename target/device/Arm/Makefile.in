@@ -1,0 +1,14 @@
+ifeq ($(BR2_TARGET_ARM_INTEGRATOR_926),y)
+LINUX26_KCONFIG:=target/device/Arm/linux26.integrator926.config
+TARGETS+=linux26
+
+ifndef UCLIBC_CONFIG_FILE
+UCLIBC_CONFIG_FILE:=target/device/Arm/uClibc.integrator926.config
+endif
+
+# pin some settings
+BR2_ARM_EABI:=y
+BR2_GNU_TARGET_SUFFIX:="linux-uclibcgnueabi"
+BR2_DEFAULT_KERNEL_HEADERS:="2.6.20"
+endif
+
