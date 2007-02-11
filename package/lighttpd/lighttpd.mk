@@ -3,7 +3,7 @@
 # lighttpd
 #
 #############################################################
-LIGHTTPD_VER:=1.4.3
+LIGHTTPD_VER:=1.4.13
 LIGHTTPD_SOURCE:=lighttpd-$(LIGHTTPD_VER).tar.gz
 LIGHTTPD_SITE:=http://www.lighttpd.net/download
 LIGHTTPD_DIR:=$(BUILD_DIR)/lighttpd-$(LIGHTTPD_VER)
