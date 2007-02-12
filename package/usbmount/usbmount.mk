@@ -3,10 +3,11 @@
 # usbmount
 #
 #############################################################
-USBMOUNT_SOURCE:=usbmount_0.0.14.tar.gz
+USBMOUNT_VERSION=0.0.14.1
+USBMOUNT_SOURCE:=usbmount_$(USBMOUNT_VERSION).tar.gz
 USBMOUNT_SITE:=http://usbmount.alioth.debian.org/package/
 USBMOUNT_CAT:=$(ZCAT)
-USBMOUNT_DIR:=$(BUILD_DIR)/usbmount-0.0.14
+USBMOUNT_DIR:=$(BUILD_DIR)/usbmount-$(USBMOUNT_VERSION)
 USBMOUNT_BINARY:=usbmount
 USBMOUNT_TARGET_BINARY:=sbin/usbmount
 
@@ -18,7 +19,7 @@ usbmount-source: $(DL_DIR)/$(USBMOUNT_SOURCE)
 $(USBMOUNT_DIR)/.unpacked: $(DL_DIR)/$(USBMOUNT_SOURCE)
 	$(USBMOUNT_CAT) $(DL_DIR)/$(USBMOUNT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(USBMOUNT_DIR) package/usbmount \*.patch
-	touch $(USBMOUNT_DIR)/.unpacked
+	touch $@
 
 $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY): $(USBMOUNT_DIR)/.unpacked
 	$(INSTALL) -m 0755 -D $(USBMOUNT_DIR)/usbmount $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)
