@@ -1,3 +1,8 @@
 TARGET_DEVICE_DEPMOD:=target/device/x86/depmod.pl
 
 -include target/device/*/Makefile.in
+
+ifeq ($(BR2_PACKAGE_LINUX),y)
+TARGETS+=linux26
+endif
+
