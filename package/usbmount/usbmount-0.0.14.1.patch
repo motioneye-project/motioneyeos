@@ -1,0 +1,64 @@
+diff -ru usbmount-0.0.14.1/usbmount usbmount-patched/usbmount
+--- usbmount-0.0.14.1/usbmount	2007-01-27 12:22:14.000000000 +0100
++++ usbmount-patched/usbmount	2007-02-07 12:47:16.000000000 +0100
+@@ -11,7 +11,14 @@
+ # but WITHOUT ANY WARRANTY, to the extent permitted by law; without
+ # even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ # PARTICULAR PURPOSE.
++
++#
++# Changed to support config of logfile and vol_id and creating locks
++# without the use of lockfile-create all for embedded use.
++# Joshua D Henderson <jdhende1@rockwellcollins.com>
++# Patch touched by Alexander Rigbo <alexander.rigbo@acgnystrom.se>
+ #
++
+ set -e
+ exec > /dev/null 2>&1
+ 
+@@ -20,7 +27,7 @@
+ log()
+ {
+     if test $1 != debug || expr "$VERBOSE" : "[yY]" > /dev/null; then
+-	logger -p user.$1 -t "usbmount[$$]" -- "$2"
++	echo "usbmount[$$] -- $2" >> $LOGFILE
+     fi
+ }
+ 
+@@ -57,11 +64,11 @@
+ if test "$1" = add; then
+ 
+     # Acquire lock.
+-    log debug "trying to acquire lock /var/run/usbmount/.mount.lock"
+-    lockfile-create --retry 3 /var/run/usbmount/.mount || \
+-	{ log err "cannot acquire lock /var/run/usbmount/.mount.lock"; exit 1; }
+-    trap '( lockfile-remove /var/run/usbmount/.mount )' 0
+-    log debug "acquired lock /var/run/usbmount/.mount.lock"
++#    log debug "trying to acquire lock /var/run/usbmount/.mount.lock"
++#    lockfile-create --retry 3 /var/run/usbmount/.mount || \
++#	{ log err "cannot acquire lock /var/run/usbmount/.mount.lock"; exit 1; }
++#    trap '( lockfile-remove /var/run/usbmount/.mount )' 0
++#    log debug "acquired lock /var/run/usbmount/.mount.lock"
+ 
+     # Try to read from the device.  Some devices need a few seconds
+     # initialization time before they can be accessed.  Give up after
+diff -ru usbmount-0.0.14.1/usbmount.conf usbmount-patched/usbmount.conf
+--- usbmount-0.0.14.1/usbmount.conf	2005-04-08 16:05:10.000000000 +0200
++++ usbmount-patched/usbmount.conf	2007-02-07 12:44:39.000000000 +0100
+@@ -17,7 +17,7 @@
+ # sure all data is written to the medium before you remove it (e.g. run the #
+ # "sync" command in a terminal window).  Otherwise, you *WILL* lose data!   #
+ #############################################################################
+-FILESYSTEMS="ext2 ext3"
++FILESYSTEMS="ext2 ext3 msdos vfat"
+ 
+ # Mount options: Options passed to the mount command with the -o flag.
+ # WARNING!  Removing "sync" from the options is a very bad idea and
+@@ -35,3 +35,7 @@
+ # If set to "yes", more information will be logged via the syslog
+ # facility.
+ VERBOSE="no"
++
++# Location of the log file when verbose is Yes
++LOGFILE="/var/log/usbmount.log"
++
