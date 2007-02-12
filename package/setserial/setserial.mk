@@ -27,7 +27,7 @@ endif
 	touch $@
 
 ifeq ($(BR2_PREFER_IMA),y)
-SETSERIAL_CFLAGS=--combine -fwhole-program
+SETSERIAL_CFLAGS=--combine $(CFLAGS_WHOLE_PROGRAM)
 endif
 
 $(SETSERIAL_DIR)/.configured: $(SETSERIAL_DIR)/.unpacked

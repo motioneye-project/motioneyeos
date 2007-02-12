@@ -38,6 +38,13 @@ endif
 
 ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 
+# cc-option
+# Usage: cflags-y += $(call cc-option, -march=winchip-c6, -march=i586)
+# sets -march=winchip-c6 if supported else falls back to -march=i586
+# without checking the latter.
+cc-option = $(shell if $(TARGET_CC) $(TARGET_CFLAGS) $(1) -S -o /dev/null -xc /dev/null \
+	> /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi ;)
+
 #############################################################
 #
 # The list of stuff to build for the target toolchain

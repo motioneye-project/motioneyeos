@@ -1,0 +1,11 @@
+--- gcc-4.0.4.orig/gcc/Makefile.in	2007-02-12 11:35:43.000000000 +0100
++++ gcc-4.0.4/gcc/Makefile.in	2007-02-12 11:38:04.000000000 +0100
+@@ -2202,7 +2202,7 @@ mips-tdump.o : mips-tdump.c $(CONFIG_H) 
+ # FIXME: writing proper dependencies for this is a *LOT* of work.
+ libbackend.o : $(OBJS-common:.o=.c) $(out_file) \
+   insn-config.h insn-flags.h insn-codes.h insn-constants.h \
+-  insn-attr.h
++  insn-attr.h gcov-iov.h
+ 	$(CC) $(ALL_CFLAGS) $(ALL_CPPFLAGS) \
+ 	  -DTARGET_NAME=\"$(target_noncanonical)\" \
+ 	  -DLOCALEDIR=\"$(localedir)\" \

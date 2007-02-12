@@ -14,5 +14,8 @@ endif
 # FIXME -- this is temporary
 OPTIMIZE_FOR_CPU=$(ARCH)
 
+# late binding check to see if the target cc supports -fwhole-program
+CFLAGS_WHOLE_PROGRAM = $(call cc-option,-fwhole-program,)
+
 # gcc has a bunch of needed stuff....
 include toolchain/gcc/Makefile.in
