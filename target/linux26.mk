@@ -111,7 +111,7 @@ $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_KERNEL)
 	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/build
 	touch -c $@
 
-linux26-menuconfig: $(LINUX26_DIR)/.patched
+linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
 	[ -f $(LINUX26_DIR)/.config ] || cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
 	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
