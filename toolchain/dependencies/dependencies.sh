@@ -248,7 +248,12 @@ fi;
 echo "gettext installed:				Ok"
 
 
-
+if ! which makeinfo > /dev/null ; then \
+	echo "makeinfo installed:		    FALSE"
+	/bin/echo -e "\n\nMost likely some packages will fail to build their documentation"
+	/bin/echo -e "Either install 'makeinfo' on your host or fix the respective packages"
+fi
+echo "makeinfo installed:				Ok"
 
 
 #############################################################
