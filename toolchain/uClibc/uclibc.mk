@@ -262,7 +262,7 @@ uclibc-menuconfig: $(UCLIBC_DIR)/.config host-sed
 		HOSTCC="$(HOSTCC)" \
 		menuconfig && \
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE) && \
-	touch $(UCLIBC_DIR)/.configured
+	touch $(UCLIBC_DIR)/.config
 
 
 $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
