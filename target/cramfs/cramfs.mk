@@ -72,9 +72,11 @@ cramfsroot: host-fakeroot makedevs cramfs
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
 	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
+ifneq ($(TARGET_DEVICE_TABLE),)
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
+endif
 	# Use fakeroot so mkcramfs believes the previous fakery
 	echo "$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) " \
 		"$(TARGET_DIR) $(CRAMFS_TARGET)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))

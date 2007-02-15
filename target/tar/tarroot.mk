@@ -32,9 +32,11 @@ tarroot: host-fakeroot makedevs
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+ifneq ($(TARGET_DEVICE_TABLE),)
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+endif
 	# Use fakeroot so tar believes the previous fakery
 	echo "tar -c$(TAR_OPTS)f $(TAR_TARGET) -C $(TARGET_DIR) ." \
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))

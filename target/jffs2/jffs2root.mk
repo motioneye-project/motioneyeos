@@ -37,7 +37,7 @@ JFFS2_TARGET := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT)))
 #"))
 JFFS2_DEVFILE = $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_DEVFILE)))
 #"))
-ifneq ($(JFFS2_DEVFILE),)
+ifneq ($(JFFS2_DEVFILE)$(TARGET_DEVICE_TABLE),)
 JFFS2_OPTS += -D $(TARGET_DEVICE_TABLE)
 endif
 
@@ -59,9 +59,11 @@ $(JFFS2_TARGET): host-fakeroot makedevs mtd-host
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
+ifneq ($(TARGET_DEVICE_TABLE),)
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
+endif
 	# Use fakeroot so mkfs.jffs2 believes the previous fakery
 	echo "$(MKFS_JFFS2) $(JFFS2_OPTS) -d $(BUILD_DIR)/root -o $(JFFS2_TARGET)" \
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
