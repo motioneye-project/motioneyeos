@@ -40,6 +40,11 @@ LINUX26_KERNEL=linux-kernel-$(LINUX26_VERSION)-$(KERNEL_ARCH)
 # Version of Linux AFTER patches
 LINUX26_DIR=$(BUILD_DIR)/linux-$(LINUX26_VERSION)
 
+# for packages that need it
+LINUX_VERSION=$(LINUX_VERSION)
+LINUX_DIR=$(LINUX26_DIR)
+LINUX_KERNEL=$(LINUX26_KERNEL)
+
 # kernel patches
 LINUX26_PATCH_DIR=$(BR2_BOARD_PATH)/kernel-patches/
 
