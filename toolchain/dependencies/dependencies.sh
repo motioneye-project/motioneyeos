@@ -251,7 +251,8 @@ echo "gettext installed:				Ok"
 if ! which makeinfo > /dev/null ; then \
 	echo "makeinfo installed:		    FALSE"
 	/bin/echo -e "\n\nMost likely some packages will fail to build their documentation"
-	/bin/echo -e "Either install 'makeinfo' on your host or fix the respective packages"
+	echo "Either install 'makeinfo' on your host or fix the respective packages."
+	echo "Makeinfo can usually be found in the texinfo package for your host."
 else
 	echo "makeinfo installed:				Ok"
 fi
