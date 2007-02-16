@@ -4,6 +4,6 @@ TARGET_DEVICE_TABLE=target/generic/device_table.txt
 
 ifeq ($(BR2_PACKAGE_BUSYBOX_SKELETON),y)
 TARGET_SKELETON=target/generic/target_busybox_skeleton
-TARGET_DEVICE_TABLE=
+TARGET_DEVICE_TABLE=target/generic/mini_device_table.txt
 endif
 

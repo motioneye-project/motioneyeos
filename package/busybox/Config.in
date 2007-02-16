@@ -74,3 +74,11 @@ config BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 	  Do not show packages in menuconfig that are potentially provided
 	  by busybox.
 
+config BR2_PACKAGE_BUSYBOX_SKELETON
+	bool "use minimal target skeleton"
+	depends on BR2_PACKAGE_BUSYBOX
+	depends on !BR2_BUSYBOX_VERSION_1_0_1
+	help
+	  Use a minimal target skeleton. Make sure to select mdev
+	  which is used to populate /dev/.
+

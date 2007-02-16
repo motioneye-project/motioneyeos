@@ -5,4 +5,5 @@
 proc		/proc	       proc     defaults	  0	 0
 devpts		/dev/pts       devpts   defaults,gid=5,mode=620	  0	 0
 tmpfs           /tmp           tmpfs    defaults          0      0
-
+configfs	/config	       configfs defaults	  0	 0
+sysfs		/sys	       sysfs    defaults	  0	 0
