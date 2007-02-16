@@ -23,6 +23,10 @@ $(DL_DIR)/$(DHCP_SOURCE):
 
 dhcp-source: $(DL_DIR)/$(DHCP_SOURCE)
 
+dhcp_server-source: dhcp-source
+dhcp_relay-source: dhcp-source
+dhcp_client-source: dhcp-source
+
 $(DHCP_DIR)/.unpacked: $(DL_DIR)/$(DHCP_SOURCE)
 	$(DHCP_CAT) $(DL_DIR)/$(DHCP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(DHCP_DIR) package/dhcp/ dhcp\*.patch
