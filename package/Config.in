@@ -297,7 +297,9 @@ menuconfig BR2_COMPRESSOR_SUPPORT
 	  Support for compressors and decompressors like lzo, lzma, bzip2
 
 if BR2_COMPRESSOR_SUPPORT
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/gzip/Config.in"
+endif
 source "package/lzo/Config.in"
 source "package/lzma/Config.in"
 source "package/zlib/Config.in"
