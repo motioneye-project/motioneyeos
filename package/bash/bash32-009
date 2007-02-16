@@ -1,0 +1,61 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-009
+
+Bug-Reported-by:	James.M.Botte@lowes.com
+Bug-Reference-ID:	<BA9FF90F7E5B424998F98EDA9F1F94BE01FA9853@msexchdb01.lowes.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2006-12/msg00000.html
+
+Bug-Description:
+
+When using its built-in replacement for snprintf/asprintf, bash does not
+treat the %x, %X, and %o format specifiers as unsigned numbers.
+
+Patch:
+
+*** bash-3.2-patched/lib/sh/snprintf.c	Mon Nov 13 08:58:52 2006
+--- bash-3.2/lib/sh/snprintf.c	Wed Dec  6 11:15:04 2006
+***************
+*** 669,673 ****
+  
+    sd = d;	/* signed for ' ' padding in base 10 */
+!   flags = (*p->pf == 'u' || *p->pf == 'U') ? FL_UNSIGNED : 0;
+    if (*p->pf == 'X')
+      flags |= FL_HEXUPPER;
+--- 674,679 ----
+  
+    sd = d;	/* signed for ' ' padding in base 10 */
+!   flags = 0;
+!   flags = (*p->pf == 'x' || *p->pf == 'X' || *p->pf == 'o' || *p->pf == 'u' || *p->pf == 'U') ? FL_UNSIGNED : 0;
+    if (*p->pf == 'X')
+      flags |= FL_HEXUPPER;
+***************
+*** 739,743 ****
+  
+    sd = d;	/* signed for ' ' padding in base 10 */
+!   flags = (*p->pf == 'u' || *p->pf == 'U') ? FL_UNSIGNED : 0;
+    if (*p->pf == 'X')
+      flags |= FL_HEXUPPER;
+--- 745,749 ----
+  
+    sd = d;	/* signed for ' ' padding in base 10 */
+!   flags = (*p->pf == 'x' || *p->pf == 'X' || *p->pf == 'o' || *p->pf == 'u' || *p->pf == 'U') ? FL_UNSIGNED : 0;
+    if (*p->pf == 'X')
+      flags |= FL_HEXUPPER;
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 9
+  
+  #endif /* _PATCHLEVEL_H_ */

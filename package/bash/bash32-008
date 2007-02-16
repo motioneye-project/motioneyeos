@@ -1,0 +1,48 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-008
+
+Bug-Reported-by:	Linda Walsh <bash@tlinx.org>
+Bug-Reference-ID:	<456041FD.8000605@tlinx.org>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2006-11/msg00040.html
+
+Bug-Description:
+
+When checking pathnames from the command hash table (e.g., when the `checkhash'
+shell option is enabled), a bug causes bash to delete and re-lookup each
+command.
+
+Patch:
+
+*** bash-3.2-patched/findcmd.c	Wed Aug 17 16:49:54 2005
+--- bash-3.2/findcmd.c	Fri Nov 24 10:48:37 2006
+***************
+*** 309,313 ****
+      {
+        st = file_status (hashed_file);
+!       if ((st ^ (FS_EXISTS | FS_EXECABLE)) != 0)
+  	{
+  	  phash_remove (pathname);
+--- 309,313 ----
+      {
+        st = file_status (hashed_file);
+!       if ((st & (FS_EXISTS|FS_EXECABLE)) != (FS_EXISTS|FS_EXECABLE))
+  	{
+  	  phash_remove (pathname);
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -3,7 +3,7 @@
 # bash
 #
 #############################################################
-BASH_VER:=3.1
+BASH_VER:=3.2
 BASH_SOURCE:=bash-$(BASH_VER).tar.gz
 BASH_SITE:=http://ftp.gnu.org/pub/gnu/bash
 BASH_CAT:=$(ZCAT)
@@ -23,7 +23,8 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	# This is broken when -lintl is added to LIBS
 	$(SED) 's,LIBS_FOR_BUILD =.*,LIBS_FOR_BUILD =,g' \
 		$(BASH_DIR)/builtins/Makefile.in
-	touch $(BASH_DIR)/.unpacked
+	$(CONFIG_UPDATE) $(BASH_DIR)
+	touch $@
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	#		bash_cv_have_mbstate_t=yes
@@ -52,10 +53,10 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		--enable-alias \
 		--without-bash-malloc \
 	);
-	touch $(BASH_DIR)/.configured
+	touch $@
 
 $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
-	$(MAKE1) CC=$(TARGET_CC) CC_FOR_BUILD="$(HOSTCC)" -C $(BASH_DIR)
+	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD="$(HOSTCC)" -C $(BASH_DIR)
 
 $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) install

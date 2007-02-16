@@ -1,0 +1,55 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-007
+
+Bug-Reported-by:	jidanni@jidanni.org
+Bug-Reference-ID:	<E1Gkg12-00017D-Fm@jidanni.org>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2006-11/msg00039.html
+
+Bug-Description:
+
+When removing the current or previous job from the jobs list, bash incorrectly
+resets the current job under some circumstances.
+
+Patch:
+
+*** bash-3.2-patched/jobs.c	Sat Jul 29 16:40:48 2006
+--- bash-3.2/jobs.c	Fri Nov 24 14:50:01 2006
+***************
+*** 985,990 ****
+    if (temp == 0)
+      return;
+-   if (job_index == js.j_current || job_index == js.j_previous)
+-     reset_current ();
+  
+    if ((dflags & DEL_NOBGPID) == 0)
+--- 985,988 ----
+***************
+*** 1029,1032 ****
+--- 1027,1033 ----
+    else if (jobs[js.j_firstj] == 0 || jobs[js.j_lastj] == 0)
+      reset_job_indices ();
++ 
++   if (job_index == js.j_current || job_index == js.j_previous)
++     reset_current ();
+  }
+
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 6
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
+
+  

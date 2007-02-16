@@ -1,0 +1,223 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-005
+
+Bug-Reported-by:	Stuart Shelton <stuart@openobjects.com>
+Bug-Reference-ID:	<453F7CC8.6030907@openobjects.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2006-10/msg00127.html
+
+Bug-Description:
+
+A missing extern declaration for `asprintf' caused `double' arguments to be
+passed as `0', leading to incorrect results.  Additionally, a bug in the
+replacement asprintf/snprintf function caused an infinite loop when passed
+0 arguments to the floating point conversions under some circumstances.
+
+Patch:
+
+*** bash-3.2/builtins/printf.def	Mon Sep 18 08:48:42 2006
+--- bash-3.2/builtins/printf.def	Tue Oct 31 08:19:44 2006
+***************
+*** 49,54 ****
+--- 49,60 ----
+  #  define INT_MIN		(-2147483647-1)
+  #endif
+  
++ #if defined (PREFER_STDARG)
++ #  include <stdarg.h>
++ #else
++ #  include <varargs.h>
++ #endif
++ 
+  #include <stdio.h>
+  #include <chartypes.h>
+  
+***************
+*** 151,156 ****
+--- 157,166 ----
+  #define SKIP1 "#'-+ 0"
+  #define LENMODS "hjlLtz"
+  
++ #ifndef HAVE_ASPRINTF
++ extern int asprintf __P((char **, const char *, ...)) __attribute__((__format__ (printf, 2, 3)));
++ #endif
++ 
+  static void printf_erange __P((char *));
+  static int printstr __P((char *, char *, int, int, int));
+  static int tescape __P((char *, char *, int *));
+
+
+*** bash-3.2/lib/sh/snprintf.c	Thu Apr  6 09:48:40 2006
+--- bash-3.2/lib/sh/snprintf.c	Sat Oct 28 00:00:13 2006
+***************
+*** 471,476 ****
+--- 476,483 ----
+  	  10^x ~= r
+   * log_10(200) = 2;
+   * log_10(250) = 2;
++  *
++  * NOTE: do not call this with r == 0 -- an infinite loop results.
+   */
+  static int
+  log_10(r)
+***************
+*** 576,583 ****
+      { 
+        integral_part[0] = '0';
+        integral_part[1] = '\0';
+!       fraction_part[0] = '0';
+!       fraction_part[1] = '\0';
+        if (fract)
+  	*fract = fraction_part;
+        return integral_part;
+--- 583,593 ----
+      { 
+        integral_part[0] = '0';
+        integral_part[1] = '\0';
+!       /* The fractional part has to take the precision into account */
+!       for (ch = 0; ch < precision-1; ch++)
+!  	fraction_part[ch] = '0';
+!       fraction_part[ch] = '0';
+!       fraction_part[ch+1] = '\0';
+        if (fract)
+  	*fract = fraction_part;
+        return integral_part;
+***************
+*** 805,810 ****
+--- 815,821 ----
+        PUT_CHAR(*tmp, p);
+        tmp++;
+      }
++ 
+    PAD_LEFT(p);
+  }
+  
+***************
+*** 972,982 ****
+    if ((p->flags & PF_THOUSANDS) && grouping && (t = groupnum (tmp)))
+      tmp = t;
+  
+    /* calculate the padding. 1 for the dot */
+    p->width = p->width -
+  	    ((d > 0. && p->justify == RIGHT) ? 1:0) -
+  	    ((p->flags & PF_SPACE) ? 1:0) -
+! 	    strlen(tmp) - p->precision - 1;
+    PAD_RIGHT(p);  
+    PUT_PLUS(d, p, 0.);
+    PUT_SPACE(d, p, 0.);
+--- 983,1003 ----
+    if ((p->flags & PF_THOUSANDS) && grouping && (t = groupnum (tmp)))
+      tmp = t;
+  
++   if ((*p->pf == 'g' || *p->pf == 'G') && (p->flags & PF_ALTFORM) == 0)
++     {
++       /* smash the trailing zeros unless altform */
++       for (i = strlen(tmp2) - 1; i >= 0 && tmp2[i] == '0'; i--)
++         tmp2[i] = '\0'; 
++       if (tmp2[0] == '\0')
++ 	p->precision = 0;
++     }
++ 
+    /* calculate the padding. 1 for the dot */
+    p->width = p->width -
+  	    ((d > 0. && p->justify == RIGHT) ? 1:0) -
+  	    ((p->flags & PF_SPACE) ? 1:0) -
+! 	    strlen(tmp) - p->precision -
+! 	    ((p->precision != 0 || (p->flags & PF_ALTFORM)) ? 1 : 0);	/* radix char */
+    PAD_RIGHT(p);  
+    PUT_PLUS(d, p, 0.);
+    PUT_SPACE(d, p, 0.);
+***************
+*** 991,1001 ****
+    if (p->precision != 0 || (p->flags & PF_ALTFORM))
+      PUT_CHAR(decpoint, p);  /* put the '.' */
+  
+-   if ((*p->pf == 'g' || *p->pf == 'G') && (p->flags & PF_ALTFORM) == 0)
+-     /* smash the trailing zeros unless altform */
+-     for (i = strlen(tmp2) - 1; i >= 0 && tmp2[i] == '0'; i--)
+-       tmp2[i] = '\0'; 
+- 
+    for (; *tmp2; tmp2++)
+      PUT_CHAR(*tmp2, p); /* the fraction */
+    
+--- 1012,1017 ----
+***************
+*** 1011,1024 ****
+    char *tmp, *tmp2;
+    int j, i;
+  
+!   if (chkinfnan(p, d, 1) || chkinfnan(p, d, 2))
+      return;	/* already printed nan or inf */
+  
+    GETLOCALEDATA(decpoint, thoussep, grouping);
+    DEF_PREC(p);
+!   j = log_10(d);
+!   d = d / pow_10(j);  /* get the Mantissa */
+!   d = ROUND(d, p);		  
+    tmp = dtoa(d, p->precision, &tmp2);
+  
+    /* 1 for unit, 1 for the '.', 1 for 'e|E',
+--- 1027,1045 ----
+    char *tmp, *tmp2;
+    int j, i;
+  
+!   if (d != 0 && (chkinfnan(p, d, 1) || chkinfnan(p, d, 2)))
+      return;	/* already printed nan or inf */
+  
+    GETLOCALEDATA(decpoint, thoussep, grouping);
+    DEF_PREC(p);
+!   if (d == 0.)
+!     j = 0;
+!   else
+!     {
+!       j = log_10(d);
+!       d = d / pow_10(j);  /* get the Mantissa */
+!       d = ROUND(d, p);		  
+!     }
+    tmp = dtoa(d, p->precision, &tmp2);
+  
+    /* 1 for unit, 1 for the '.', 1 for 'e|E',
+***************
+*** 1076,1081 ****
+--- 1097,1103 ----
+         PUT_CHAR(*tmp, p);
+         tmp++;
+       }
++ 
+     PAD_LEFT(p);
+  }
+  #endif
+***************
+*** 1358,1364 ****
+  		STAR_ARGS(data);
+  		DEF_PREC(data);
+  		d = GETDOUBLE(data);
+! 		i = log_10(d);
+  		/*
+  		 * for '%g|%G' ANSI: use f if exponent
+  		 * is in the range or [-4,p] exclusively
+--- 1380,1386 ----
+  		STAR_ARGS(data);
+  		DEF_PREC(data);
+  		d = GETDOUBLE(data);
+! 		i = (d != 0.) ? log_10(d) : -1;
+  		/*
+  		 * for '%g|%G' ANSI: use f if exponent
+  		 * is in the range or [-4,p] exclusively
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 4
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 5
+  
+  #endif /* _PATCHLEVEL_H_ */

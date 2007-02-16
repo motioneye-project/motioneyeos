@@ -1,0 +1,48 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-002
+
+Bug-Reported-by:	Jim Gifford <jim@jg555.com>
+Bug-Reference-ID:	<12j2pc3aq35mb04@corp.supernews.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2006-10/msg00082.html
+
+Bug-Description:
+
+An incorrect encoding specification in the Content-Type header causes msgfmt
+to fail, which causes `make install' to fail.
+
+Patch:
+
+*** bash-3.2/po/ru.po        Tue Jan 10 17:51:03 2006
+--- bash-3.2/po/ru.po    Mon Oct 16 15:13:23 2006
+***************
+*** 13,17 ****
+  "Language-Team: Russian <ru@li.org>\n"
+  "MIME-Version: 1.0\n"
+! "Content-Type: text/plain; charset=UTF-8\n"
+  "Content-Transfer-Encoding: 8bit\n"
+  "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+--- 13,17 ----
+  "Language-Team: Russian <ru@li.org>\n"
+  "MIME-Version: 1.0\n"
+! "Content-Type: text/plain; charset=KOI8-R\n"
+  "Content-Transfer-Encoding: 8bit\n"
+  "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 1
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 2
+  
+  #endif /* _PATCHLEVEL_H_ */

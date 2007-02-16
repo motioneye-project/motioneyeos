@@ -1,0 +1,96 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-004
+
+Bug-Reported-by:	Stuart Shelton <srcshelton@gmail.com>
+Bug-Reference-ID:	<619141e40610261203y6cda5aa6i23cb24c7aeba996e@mail.gmail.com>
+Bug-Reference-URL:	
+
+Bug-Description:
+
+A bug in the parameter pattern substitution implementation treated a pattern
+whose first character was `/' (after expansion) as specifying global
+replacement.
+
+Patch:
+
+*** bash-3.2/subst.c	Tue Sep 19 08:35:09 2006
+--- bash-3.2/subst.c	Thu Oct 26 09:17:50 2006
+***************
+*** 5707,5712 ****
+--- 5707,5717 ----
+    vtype &= ~VT_STARSUB;
+  
+    mflags = 0;
++   if (patsub && *patsub == '/')
++     {
++       mflags |= MATCH_GLOBREP;
++       patsub++;
++     }
+  
+    /* Malloc this because expand_string_if_necessary or one of the expansion
+       functions in its call chain may free it on a substitution error. */
+***************
+*** 5741,5753 ****
+      }
+  
+    /* ksh93 doesn't allow the match specifier to be a part of the expanded
+!      pattern.  This is an extension. */
+    p = pat;
+!   if (pat && pat[0] == '/')
+!     {
+!       mflags |= MATCH_GLOBREP|MATCH_ANY;
+!       p++;
+!     }
+    else if (pat && pat[0] == '#')
+      {
+        mflags |= MATCH_BEG;
+--- 5746,5757 ----
+      }
+  
+    /* ksh93 doesn't allow the match specifier to be a part of the expanded
+!      pattern.  This is an extension.  Make sure we don't anchor the pattern
+!      at the beginning or end of the string if we're doing global replacement,
+!      though. */
+    p = pat;
+!   if (mflags & MATCH_GLOBREP)
+!     mflags |= MATCH_ANY;
+    else if (pat && pat[0] == '#')
+      {
+        mflags |= MATCH_BEG;
+*** bash-3.2/tests/new-exp.right	Thu Aug 10 12:00:00 2006
+--- bash-3.2/tests/new-exp.right	Sun Oct 29 16:03:36 2006
+***************
+*** 430,436 ****
+  Case06---1---A B C::---
+  Case07---3---A:B:C---
+  Case08---3---A:B:C---
+! ./new-exp.tests: line 506: /${$(($#-1))}: bad substitution
+  argv[1] = <a>
+  argv[2] = <b>
+  argv[3] = <c>
+--- 430,436 ----
+  Case06---1---A B C::---
+  Case07---3---A:B:C---
+  Case08---3---A:B:C---
+! ./new-exp.tests: line 506: ${$(($#-1))}: bad substitution
+  argv[1] = <a>
+  argv[2] = <b>
+  argv[3] = <c>
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 3
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 4
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -1,0 +1,147 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-003
+
+Bug-Reported-by:	John Gatewood Ham <zappaman@buraphalinux.org>
+Bug-Reference-ID:	<Pine.LNX.4.64.0610121334140.15558@www.buraphalinux.org>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2006-10/msg00045.html
+
+Bug-Description:
+
+When using the conditional command's `=~' operator to match regular
+expressions, the parser did not skip over shell metacharacters in the
+regular expression, leading to syntax errors.
+
+Patch:
+
+*** bash-3.2-patched/parse.y	Tue Oct 17 11:45:20 2006
+--- bash-3.2/parse.y	Sat Oct 14 14:56:16 2006
+***************
+*** 1029,1034 ****
+--- 1029,1035 ----
+  #define PST_CMDTOKEN	0x1000		/* command token OK - unused */
+  #define PST_COMPASSIGN	0x2000		/* parsing x=(...) compound assignment */
+  #define PST_ASSIGNOK	0x4000		/* assignment statement ok in this context */
++ #define PST_REGEXP	0x8000		/* parsing an ERE/BRE as a single word */
+  
+  /* Initial size to allocate for tokens, and the
+     amount to grow them by. */
+***************
+*** 2591,2596 ****
+--- 2592,2600 ----
+        return (character);
+      }
+  
++   if (parser_state & PST_REGEXP)
++     goto tokword;
++ 
+    /* Shell meta-characters. */
+    if MBTEST(shellmeta (character) && ((parser_state & PST_DBLPAREN) == 0))
+      {
+***************
+*** 2698,2703 ****
+--- 2702,2708 ----
+    if MBTEST(character == '-' && (last_read_token == LESS_AND || last_read_token == GREATER_AND))
+      return (character);
+  
++ tokword:
+    /* Okay, if we got this far, we have to read a word.  Read one,
+       and then check it against the known ones. */
+    result = read_token_word (character);
+***************
+*** 3202,3209 ****
+        if (tok == WORD && test_binop (yylval.word->word))
+  	op = yylval.word;
+  #if defined (COND_REGEXP)
+!       else if (tok == WORD && STREQ (yylval.word->word,"=~"))
+! 	op = yylval.word;
+  #endif
+        else if (tok == '<' || tok == '>')
+  	op = make_word_from_token (tok);  /* ( */
+--- 3207,3217 ----
+        if (tok == WORD && test_binop (yylval.word->word))
+  	op = yylval.word;
+  #if defined (COND_REGEXP)
+!       else if (tok == WORD && STREQ (yylval.word->word, "=~"))
+! 	{
+! 	  op = yylval.word;
+! 	  parser_state |= PST_REGEXP;
+! 	}
+  #endif
+        else if (tok == '<' || tok == '>')
+  	op = make_word_from_token (tok);  /* ( */
+***************
+*** 3234,3239 ****
+--- 3242,3248 ----
+  
+        /* rhs */
+        tok = read_token (READ);
++       parser_state &= ~PST_REGEXP;
+        if (tok == WORD)
+  	{
+  	  tright = make_cond_node (COND_TERM, yylval.word, (COND_COM *)NULL, (COND_COM *)NULL);
+***************
+*** 3419,3427 ****
+  	  goto next_character;
+  	}
+  
+  #ifdef EXTENDED_GLOB
+        /* Parse a ksh-style extended pattern matching specification. */
+!       if (extended_glob && PATTERN_CHAR (character))
+  	{
+  	  peek_char = shell_getc (1);
+  	  if MBTEST(peek_char == '(')		/* ) */
+--- 3428,3461 ----
+  	  goto next_character;
+  	}
+  
++ #ifdef COND_REGEXP
++       /* When parsing a regexp as a single word inside a conditional command,
++ 	 we need to special-case characters special to both the shell and
++ 	 regular expressions.  Right now, that is only '(' and '|'. */ /*)*/
++       if MBTEST((parser_state & PST_REGEXP) && (character == '(' || character == '|'))		/*)*/
++         {
++           if (character == '|')
++             goto got_character;
++ 
++ 	  push_delimiter (dstack, character);
++ 	  ttok = parse_matched_pair (cd, '(', ')', &ttoklen, 0);
++ 	  pop_delimiter (dstack);
++ 	  if (ttok == &matched_pair_error)
++ 	    return -1;		/* Bail immediately. */
++ 	  RESIZE_MALLOCED_BUFFER (token, token_index, ttoklen + 2,
++ 				  token_buffer_size, TOKEN_DEFAULT_GROW_SIZE);
++ 	  token[token_index++] = character;
++ 	  strcpy (token + token_index, ttok);
++ 	  token_index += ttoklen;
++ 	  FREE (ttok);
++ 	  dollar_present = all_digit_token = 0;
++ 	  goto next_character;
++         }
++ #endif /* COND_REGEXP */
++ 
+  #ifdef EXTENDED_GLOB
+        /* Parse a ksh-style extended pattern matching specification. */
+!       if MBTEST(extended_glob && PATTERN_CHAR (character))
+  	{
+  	  peek_char = shell_getc (1);
+  	  if MBTEST(peek_char == '(')		/* ) */
+
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 2
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 3
+  
+  #endif /* _PATCHLEVEL_H_ */
+
