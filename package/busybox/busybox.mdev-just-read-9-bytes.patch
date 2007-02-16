@@ -1,0 +1,13 @@
+Index: busybox/util-linux/mdev.c
+===================================================================
+--- busybox/util-linux/mdev.c	(revision 17891)
++++ busybox/util-linux/mdev.c	(working copy)
+@@ -39,7 +39,7 @@
+ 
+ 	if (!delete) {
+ 		strcat(path, "/dev");
+-		len = open_read_close(path, temp + 1, 64);
++		len = open_read_close(path, temp + 1, 9);
+ 		*temp++ = 0;
+ 		if (len < 1) return;
+ 	}
