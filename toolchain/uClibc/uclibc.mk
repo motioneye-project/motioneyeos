@@ -142,7 +142,7 @@ endif
 	$(SED) 's,.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=y,g' $(UCLIBC_DIR)/.config
 ifeq ($(BR2_SOFT_FLOAT),y)
 	$(SED) 's,.*UCLIBC_HAS_FPU.*,UCLIBC_HAS_FPU=n,g' \
-		-e 's,.*[^_]HAS_FPU.*,HAS_FPU=n,g' \
+		-e 's,^[^_]*HAS_FPU.*,HAS_FPU=n,g' \
 		-e 's,.*UCLIBC_HAS_FLOATS.*,UCLIBC_HAS_FLOATS=y,g' \
 		-e 's,.*DO_C99_MATH.*,DO_C99_MATH=y,g' \
 		$(UCLIBC_DIR)/.config
