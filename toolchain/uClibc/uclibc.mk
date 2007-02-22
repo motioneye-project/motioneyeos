@@ -17,6 +17,9 @@ ifndef UCLIBC_CONFIG_FILE
 UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.29.config
 endif
 else
+ifeq ($(BR2_UCLIBC_VERSION_0_9_28_2),y)
+UCLIBC_VER:=0.9.28.2
+endif
 ifeq ($(BR2_UCLIBC_VERSION_0_9_28_1),y)
 UCLIBC_VER:=0.9.28.1
 endif
