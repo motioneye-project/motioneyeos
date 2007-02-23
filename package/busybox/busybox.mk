@@ -63,13 +63,13 @@ endif
 
 $(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)
 	cp -f $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
+	$(SED) s,^CONFIG_PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
+		$(BUSYBOX_DIR)/.config ;
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
 	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\PREFIX=$(TARGET_DIR),;" \
 		$(BUSYBOX_DIR)/Rules.mak ;
 endif
 ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_1_3)),y)
-	$(SED) s,^CONFIG_PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
-		$(BUSYBOX_DIR)/.config ;
 	$(SED) s,^PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
 		$(BUSYBOX_DIR)/.config ;
 endif
@@ -79,14 +79,7 @@ ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_2_2_1)),y)
 	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
 		$(BUSYBOX_DIR)/.config ;
 endif
-# either 1.4.0 or 1.4.1
-ifneq ($(strip $(BR2_BUSYBOX_VERSION_1_4_0))$(strip $(BR2_BUSYBOX_VERSION_1_4_1)),)
-	$(SED) s,^PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
-		$(BUSYBOX_DIR)/.config ;
-endif
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
-	$(SED) s,^CONFIG_PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
-		$(BUSYBOX_DIR)/.config ;
 	$(SED) s,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
 		$(BUSYBOX_DIR)/.config ;
 	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
