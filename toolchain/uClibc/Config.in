@@ -13,12 +13,8 @@ choice
 		depends BR2_DEPRECATED
 		bool "uClibc 0.9.28"
 
-	config BR2_UCLIBC_VERSION_0_9_28_1
-		depends BR2_DEPRECATED
-		bool "uClibc 0.9.28.1"
-
-	config BR2_UCLIBC_VERSION_0_9_28_2
-		bool "uClibc 0.9.28.2"
+	config BR2_UCLIBC_VERSION_0_9_28_3
+		bool "uClibc 0.9.28.3"
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
