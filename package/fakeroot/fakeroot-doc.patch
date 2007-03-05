@@ -9,9 +9,9 @@
  libcommunicate_la_SOURCES = communicate.c
 --- fakeroot/Makefile.in.orig	2006-04-19 11:50:43.000000000 -0600
 +++ fakeroot/Makefile.in	2006-04-19 11:51:21.000000000 -0600
-@@ -214,7 +214,7 @@
- target_os = @target_os@
- target_vendor = @target_vendor@
+@@ -230,7 +230,7 @@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
  AUTOMAKE_OPTIONS = foreign
 -SUBDIRS = scripts doc test
 +SUBDIRS = scripts test
