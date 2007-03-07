@@ -19,6 +19,7 @@ gawk-source: $(DL_DIR)/$(GAWK_SOURCE)
 $(GAWK_DIR)/.unpacked: $(DL_DIR)/$(GAWK_SOURCE)
 	$(GAWK_CAT) $(DL_DIR)/$(GAWK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(GAWK_DIR) package/gawk gawk\*.patch
+	$(CONFIG_UPDATE) $(GAWK_DIR)
 	touch $(GAWK_DIR)/.unpacked
 
 $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked

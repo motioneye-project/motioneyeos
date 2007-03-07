@@ -29,6 +29,7 @@ ifneq ($(FLEX_PATCH),)
 		toolchain/patch-kernel.sh $(FLEX_DIR) $(FLEX_DIR)/debian/patches \*.patch ; \
 	fi
 endif
+	$(CONFIG_UPDATE) $(FLEX_DIR)
 	touch $@
 
 $(FLEX_DIR)/.configured: $(FLEX_DIR)/.unpacked

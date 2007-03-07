@@ -54,6 +54,7 @@ file-unpacked: $(FILE_SOURCE_DIR)/.unpacked
 $(FILE_SOURCE_DIR)/.unpacked: $(DL_DIR)/$(FILE_SOURCE)
 	$(FILE_CAT) $(DL_DIR)/$(FILE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(FILE_SOURCE_DIR) package/file/ file\*.patch
+	$(CONFIG_UPDATE) $(FILE_SOURCE_DIR)
 	touch $(FILE_SOURCE_DIR)/.unpacked
 
 $(FILE_DIR2)/.configured: $(FILE_SOURCE_DIR)/.unpacked

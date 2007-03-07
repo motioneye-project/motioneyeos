@@ -23,7 +23,7 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	# This is broken when -lintl is added to LIBS
 	$(SED) 's,LIBS_FOR_BUILD =.*,LIBS_FOR_BUILD =,g' \
 		$(BASH_DIR)/builtins/Makefile.in
-	$(CONFIG_UPDATE) $(BASH_DIR)
+	$(CONFIG_UPDATE) $(BASH_DIR)/support
 	touch $@
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
