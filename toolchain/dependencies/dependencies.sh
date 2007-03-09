@@ -88,30 +88,6 @@ fi;
 
 #############################################################
 #
-# check build system 'sed'
-#
-#############################################################
-if test -x /usr/bin/sed ; then
-	SED="/usr/bin/sed"
-else
-	if test -x /bin/sed ; then
-		SED="/bin/sed"
-	else
-		SED="sed"
-	fi
-fi
-echo "HELLO" > .sedtest
-$SED -i -e "s/HELLO/GOODBYE/" .sedtest >/dev/null 2>&1
-if test $? != 0 ; then
-	echo "sed works:				No, using buildroot version instead"
-else
-	echo "sed works:					Ok"
-fi
-rm -f .sedtest
-XSED=$HOST_SED_DIR/bin/sed
-
-#############################################################
-#
 # check build system 'which'
 #
 #############################################################
@@ -121,6 +97,25 @@ if ! which which > /dev/null ; then
 	exit 1;
 fi;
 echo "which installed:				Ok"
+
+
+
+#############################################################
+#
+# check build system 'sed'
+#
+#############################################################
+SED=$(toolchain/dependencies/check-host-sed.sh)
+
+if [ -z "$SED" ] ; then
+	XSED=$HOST_SED_DIR/bin/sed
+	echo "sed works:					No, using buildroot version instead"
+else
+	XSED=$SED
+	echo "sed works:					Ok ($SED)"
+fi
+
+
 
 
 #############################################################
