@@ -212,13 +212,13 @@ config BR2_SVN
 
 config BR2_ZCAT
 	string "zcat command"
-	default "zcat"
+	default "gzip -d -c"
 	help
 	  Command to be used to extract a gzip'ed file to stdout.
 	  zcat is identical to gunzip -c except that the former may
 	  not be available on your system.
-	  Default is "zcat"
-	  Other possible values include "gunzip -c" or "gzip -d -c".
+	  Default is "gzip -d -c"
+	  Other possible values include "gunzip -c" or "zcat".
 
 config BR2_BZCAT
 	string "bzcat command"
