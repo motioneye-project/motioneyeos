@@ -1,0 +1,29 @@
+diff -Nru sed-4.1.5.orig/configure sed-4.1.5/configure
+--- sed-4.1.5.orig/configure	2006-02-03 11:24:40.000000000 +0200
++++ sed-4.1.5/configure	2007-02-23 14:03:55.000000000 +0200
+@@ -10147,8 +10147,6 @@
+     LINGUAS="${LINGUAS-%UNSET%}"
+ 
+ 
+-  install_sh="$install_sh"
+-
+ _ACEOF
+ 
+ 
+@@ -11265,14 +11263,10 @@
+       esac
+     done ;;
+     gettext-fix )
+-  sed -e '/^mkinstalldirs *=/a\' \
+-      -e "install_sh=$install_sh" \
+-      -e 's/^mkinstalldirs *=.*/mkinstalldirs=$(MKINSTALLDIRS)/' \
++  sed -e 's/^mkinstalldirs *=.*/mkinstalldirs=$(MKINSTALLDIRS)/' \
+       intl/Makefile > intl/Makefile.tmp
+   mv intl/Makefile.tmp intl/Makefile
+-  sed -e '/^mkinstalldirs *=/a\' \
+-      -e "install_sh=$install_sh" \
+-      -e 's/^mkinstalldirs *=.*/mkinstalldirs=$(MKINSTALLDIRS)/' \
++  sed -e 's/^mkinstalldirs *=.*/mkinstalldirs=$(MKINSTALLDIRS)/' \
+       po/Makefile > po/Makefile.tmp
+   mv po/Makefile.tmp po/Makefile ;;
+   esac
