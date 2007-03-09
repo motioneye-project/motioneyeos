@@ -41,6 +41,7 @@
 /config		d	755	0	0	-	-	-	-	-
 /proc		d	755	0	0	-	-	-	-	-
 /home/default	d	2755	1000	1000	-	-	-	-	-
+/root		d	750	0	0	-	-	-	-	-
 #<name>					<type>	<mode>	<uid>	<gid>	<major>	<minor>	<start>	<inc>	<count>
 /bin/busybox				f	4755	0	0	-	-	-	-	-
 /etc/shadow				f	600	0	0	-	-	-	-	-
