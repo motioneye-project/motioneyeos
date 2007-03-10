@@ -42,7 +42,7 @@ $(SED_DIR1)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 $(SED_DIR1)/.configured: $(SED_DIR1)/.unpacked
 	(cd $(SED_DIR1); rm -rf config.cache; \
 		./configure \
-		--prefix=$(HOST_SED_DIR) \
+		--prefix=/usr \
 	);
 	touch $(SED_DIR1)/.configured
 
