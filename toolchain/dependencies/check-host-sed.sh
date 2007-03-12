@@ -19,7 +19,7 @@ do
 	elif test -e ".sedtest-e" ; then
 		rm -f ".sedtest-e"
 		SED=""
-	elif [ -z "${RESULT}" ] || [ "${RESULT}" != "GOODBYE"] > /dev/null ;
+	elif [ "x$RESULT" = "x" ] || [ "$RESULT" != "GOODBYE" ] > /dev/null ;
 	then
 		SED=""
 	fi
