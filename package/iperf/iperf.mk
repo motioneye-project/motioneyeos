@@ -22,6 +22,7 @@ $(IPERF_DIR)/.configured: $(IPERF_DIR)/.unpacked
 	(	cd $(IPERF_DIR); rm -rf config.cache;  \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_func_malloc_0_nonnull=yes \
 		./configure \
 		--with-gnu-ld \

@@ -26,6 +26,7 @@ $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 	(cd $(GAWK_DIR); rm -rf config.cache; autoconf; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_func_getpgrp_void=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

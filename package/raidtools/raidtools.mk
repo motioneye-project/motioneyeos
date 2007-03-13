@@ -22,6 +22,8 @@ $(RAIDTOOLS2_DIR)/.unpacked: $(DL_DIR)/$(RAIDTOOLS2_SOURCE)
 $(RAIDTOOLS2_DIR)/.configured: $(RAIDTOOLS2_DIR)/.unpacked
 	(cd $(RAIDTOOLS2_DIR); rm -rf config.cache; \
                 $(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
                 ./configure \
                 --target=$(GNU_TARGET_NAME) \
                 --host=$(GNU_TARGET_NAME) \

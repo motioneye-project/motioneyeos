@@ -32,6 +32,7 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked
 		cd $(AVAHI_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		LIBDAEMON_CFLAGS="-I$(STAGING_DIR)/include" \
 		LIBDAEMON_LIBS="-L$(STAGING_DIR)/lib -ldaemon" \
 		ac_cv_func_strtod=yes \

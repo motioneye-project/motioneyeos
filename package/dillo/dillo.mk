@@ -20,6 +20,8 @@ $(DILLO_DIR)/.unpacked: $(DL_DIR)/$(DILLO_SOURCE)
 $(DILLO_DIR)/.configured: $(DILLO_DIR)/.unpacked
 	(cd $(DILLO_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

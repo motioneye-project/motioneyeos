@@ -29,6 +29,7 @@ $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 	(cd $(BOA_WORKDIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		CPPFLAGS="$(SED_CFLAGS)" \
 		$(BOA_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \

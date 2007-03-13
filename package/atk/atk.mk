@@ -30,6 +30,8 @@ $(ATK_DIR)/.unpacked: $(DL_DIR)/$(ATK_SOURCE)
 $(ATK_DIR)/.configured: $(ATK_DIR)/.unpacked
 	(cd $(ATK_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_c_bigendian=$(ATK_BE) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \

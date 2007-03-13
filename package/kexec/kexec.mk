@@ -44,6 +44,7 @@ $(KEXEC_DIR)/.configured: $(KEXEC_DIR)/.unpacked
 	(cd $(KEXEC_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

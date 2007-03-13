@@ -25,6 +25,7 @@ $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.source
 	(cd $(ZLIB_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(ZLIB_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)"
 		./configure \
 		--shared \
 		--prefix=/usr \

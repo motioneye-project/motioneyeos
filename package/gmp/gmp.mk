@@ -34,6 +34,7 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 	(cd $(GMP_TARGET_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_c_bigendian=$(GMP_BE) \
 		$(GMP_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \

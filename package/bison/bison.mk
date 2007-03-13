@@ -25,6 +25,7 @@ $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 	(cd $(BISON_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		gt_cv_func_gnugettext2_libintl=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

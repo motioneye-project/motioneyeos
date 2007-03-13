@@ -24,6 +24,8 @@ $(LIBGTK12_DIR)/.unpacked: $(DL_DIR)/$(LIBGTK12_SOURCE)
 $(LIBGTK12_DIR)/.configured: $(LIBGTK12_DIR)/.unpacked
 	(cd $(LIBGTK12_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		GLIB_CONFIG=$(STAGING_DIR)/bin/glib-config \
 		ac_cv_func_mmap_fixed_mapped=yes \
 		./configure \

@@ -43,7 +43,7 @@ $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 	(cd $(DMALLOC_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="-g $(TARGET_CFLAGS)" \
-		LDFLAGS="-g" \
+		LDFLAGS="-g $(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

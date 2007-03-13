@@ -21,6 +21,7 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		LD=$(TARGET_CROSS)gcc \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

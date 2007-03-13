@@ -62,6 +62,7 @@ $(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.source
 	(cd $(LZMA_TARGET_DIR); rm -f config.cache ;\
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS) $(LZMA_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_func_malloc_0_nonnull=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

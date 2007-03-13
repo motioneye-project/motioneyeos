@@ -11,6 +11,8 @@ GTK2_ENGINES_DIR:=$(BUILD_DIR)/gtk-engines-$(GTK2_ENGINES_VERSION)
 GTK2_ENGINES_BINARY:=libclearlooks.so
 
 GTK2_ENGINES_BUILD_ENV=$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_func_mmap_fixed_mapped=yes \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \

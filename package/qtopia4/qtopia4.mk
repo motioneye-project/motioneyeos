@@ -121,6 +121,7 @@ $(QTOPIA4_TARGET_DIR)/.configured: $(QTOPIA4_TARGET_DIR)/.unpacked
 	(cd $(QTOPIA4_TARGET_DIR); rm -rf config.cache; \
 		PATH=$(TARGET_PATH) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		CXXFLAGS="$(TARGET_CXXFLAGS)" \
 		QPEHOME=/usr \
 		QPEDIR=/usr \

@@ -25,6 +25,8 @@ $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE)
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	(cd $(NEWT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS) $(NEWT_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -45,7 +47,7 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	touch $(NEWT_DIR)/.configured;
 
 $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION): $(NEWT_DIR)/.configured
-	$(MAKE) CFLAGS="$(NEWT_CFLAGS)" CC=$(TARGET_CC) -C  $(NEWT_DIR)
+	$(MAKE) CFLAGS="$(TARGET_CFLAGS) $(NEWT_CFLAGS)" CC=$(TARGET_CC) -C  $(NEWT_DIR)
 	touch -c $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
 
 $(STAGING_DIR)/lib/libnewt.a: $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)

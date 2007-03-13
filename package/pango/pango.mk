@@ -18,6 +18,8 @@ PANGO_BE:=no
 endif
 
 PANGO_BUILD_ENV=$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_c_bigendian=$(PANGO_BE) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \

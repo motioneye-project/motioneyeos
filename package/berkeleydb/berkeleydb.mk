@@ -22,6 +22,8 @@ $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
 $(DB_DIR)/.configured: $(DB_DIR)/.dist
 	(cd $(DB_DIR)/build_unix; rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		../dist/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

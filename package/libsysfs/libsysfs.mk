@@ -40,6 +40,7 @@ $(LIBSYSFS_DIR)/.configured: $(LIBSYSFS_DIR)/.unpacked
 	(cd $(LIBSYSFS_DIR); \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
+	LDFLAGS="$(TARGET_LDFLAGS)" \
 	./configure \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \

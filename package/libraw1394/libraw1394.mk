@@ -20,6 +20,7 @@ $(LIBRAW1394_DIR)/.configured: $(LIBRAW1394_DIR)/.source
 	(cd $(LIBRAW1394_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

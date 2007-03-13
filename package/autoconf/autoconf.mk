@@ -24,6 +24,7 @@ $(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
 	(cd $(AUTOCONF_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) EMACS="no" \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

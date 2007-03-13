@@ -29,6 +29,8 @@ $(LTRACE_DIR)/.source: $(DL_DIR)/$(LTRACE_SOURCE) $(DL_DIR)/$(LTRACE_SOURCE2)
 $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.source
 	(cd $(LTRACE_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

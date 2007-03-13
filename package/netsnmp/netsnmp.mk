@@ -29,6 +29,8 @@ $(NETSNMP_DIR)/.configured: $(NETSNMP_DIR)/.unpacked
 	(cd $(NETSNMP_DIR); autoconf; \
 		ac_cv_CAN_USE_SYSCTL=no \
 		PATH=$(TARGET_PATH) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--with-cc=$(TARGET_CROSS)gcc \
 		--with-ar=$(TARGET_CROSS)ar \

@@ -24,6 +24,8 @@ $(LIBELF_DIR)/.source: $(DL_DIR)/$(LIBELF_SOURCE)
 $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.source
 	(cd $(LIBELF_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

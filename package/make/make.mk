@@ -25,6 +25,7 @@ $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 	(cd $(GNUMAKE_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		make_cv_sys_gnu_glob=no \
 		GLOBINC='-I$(GNUMAKE_DIR)/glob' \
 		GLOBLIB=glob/libglob.a \

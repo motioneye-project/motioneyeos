@@ -29,6 +29,7 @@ $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source
 	(cd $(DIALOG_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

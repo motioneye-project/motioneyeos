@@ -26,6 +26,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		./autogen.sh; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		samba_cv_HAVE_GETTIMEOFDAY_TZ=yes \
 		samba_cv_USE_SETREUID=yes \
 		./configure \

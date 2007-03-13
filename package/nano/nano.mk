@@ -24,6 +24,7 @@ $(NANO_DIR)/.configured: $(NANO_DIR)/.unpacked
 	(cd $(NANO_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_header_regex_h=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

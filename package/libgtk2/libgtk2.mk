@@ -11,6 +11,8 @@ LIBGTK2_DIR:=$(BUILD_DIR)/gtk+-$(LIBGTK2_VERSION)
 LIBGTK2_BINARY:=libgtk-x11-2.0.a
 
 LIBGTK2_BUILD_ENV=$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_func_mmap_fixed_mapped=yes \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \

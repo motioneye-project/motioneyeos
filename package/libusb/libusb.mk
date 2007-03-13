@@ -31,6 +31,7 @@ $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
 	(cd $(LIBUSB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_header_regex_h=no \
 		ac_cv_c_bigendian=$(LIBUSB_BE) \
 		./configure \

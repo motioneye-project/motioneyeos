@@ -37,6 +37,7 @@ $(METACITY_DIR)/.configured: $(METACITY_DIR)/.unpacked
 	(cd $(METACITY_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		PKG_CONFIG=$(STAGING_DIR)/usr/bin/pkg-config \
 		GLIB_CONFIG=$(STAGING_DIR)/bin/glib-config \

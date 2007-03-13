@@ -24,6 +24,7 @@ $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
 	(cd $(FONTCONFIG_DIR); \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
+	LDFLAGS="$(TARGET_LDFLAGS)" \
 	BUILD_CFLAGS="-O2 -I$(FREETYPE_HOST_DIR)/include/freetype2 -I$(FREETYPE_HOST_DIR)/include" \
 	ac_cv_func_mmap_fixed_mapped=yes \
 	./configure \

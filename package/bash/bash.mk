@@ -31,6 +31,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	(cd $(BASH_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_func_setvbuf_reversed=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
