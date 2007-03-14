@@ -60,4 +60,4 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.6.11"    if BR2_KERNEL_HEADERS_2_6_11
 	default "2.6.12"    if BR2_KERNEL_HEADERS_2_6_12
 	default "2.6.19.2"  if BR2_KERNEL_HEADERS_2_6_19_2
-	default "2.6.20"    if BR2_KERNEL_HEADERS_2_6_20
+	default "2.6.20.3"  if BR2_KERNEL_HEADERS_2_6_20
