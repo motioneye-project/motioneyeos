@@ -17,7 +17,7 @@ endif
 #HOST_SED_DIR:=$(STAGING_DIR)
 HOST_SED_DIR:=$(TOOL_BUILD_DIR)
 SED:=$(HOST_SED_DIR)/bin/sed -i -e
-HOST_SED_TARGET=$(shell package/sed/sedcheck.sh)
+HOST_SED_BINARY=$(shell package/sed/sedcheck.sh)
 HOST_SED_IF_ANY=$(shell toolchain/dependencies/check-host-sed.sh)
 
 $(DL_DIR)/$(SED_SOURCE):
@@ -63,15 +63,15 @@ build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 		    $(HOST_SED_DIR)/usr/man $(HOST_SED_DIR)/usr/share/doc; fi
 
 use-sed-host-binary:
-	@if [ ! -e "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)" ] ; then \
+	if [ ! -e "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)" ] ; then \
 		mkdir -p "$(HOST_SED_DIR)/bin"; \
 		rm -f "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
 		ln -sf "$(HOST_SED_IF_ANY)" "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
 	fi
 
-host-sed: $(HOST_SED_TARGET)
+host-sed: $(HOST_SED_BINARY)
 
-ifeq ($(HOST_SED_TARGET),build-sed-host-binary)
+ifeq ($(HOST_SED_BINARY),build-sed-host-binary)
 host-sed-clean:
 	$(MAKE) DESTDIR=$(HOST_SED_DIR) -C $(SED_DIR1) uninstall
 	-$(MAKE) -C $(SED_DIR1) clean

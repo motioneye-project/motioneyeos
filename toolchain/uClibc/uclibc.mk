@@ -254,7 +254,7 @@ $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
 		all
 	touch -c $(UCLIBC_DIR)/lib/libc.a
 
-uclibc-menuconfig: $(UCLIBC_DIR)/.config host-sed
+uclibc-menuconfig: host-sed $(UCLIBC_DIR)/.config
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
