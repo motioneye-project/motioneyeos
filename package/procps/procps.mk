@@ -17,6 +17,7 @@ $(PROCPS_DIR)/.source: $(DL_DIR)/$(PROCPS_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(PROCPS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(PROCPS_DIR) package/procps/ procps\*.patch
 	$(SED) '/^CFLAGS/s:-O2:$(TARGET_CFLAGS):' $(PROCPS_DIR)/Makefile
+	$(SED) '/^LDFLAGS/s:$$:$(TARGET_LDFLAGS):' $(PROCPS_DIR)/Makefile
 	touch $(PROCPS_DIR)/.source
 
 $(PROCPS_DIR)/$(PROCPS_BINARY): $(PROCPS_DIR)/.source

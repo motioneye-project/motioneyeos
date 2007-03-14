@@ -23,8 +23,6 @@ $(PKGCONFIG_DIR)/.unpacked: $(DL_DIR)/$(PKGCONFIG_SOURCE)
 
 $(PKGCONFIG_DIR)/.configured: $(PKGCONFIG_DIR)/.unpacked
 	(cd $(PKGCONFIG_DIR); rm -rf config.cache; \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--prefix=/usr \
 		--exec-prefix=/usr \

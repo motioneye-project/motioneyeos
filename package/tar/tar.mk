@@ -25,7 +25,7 @@ $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 	(cd $(GNUTAR_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)"
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_func_chown_works=yes \
 		gl_cv_func_chown_follows_symlink=yes \
 		./configure \
