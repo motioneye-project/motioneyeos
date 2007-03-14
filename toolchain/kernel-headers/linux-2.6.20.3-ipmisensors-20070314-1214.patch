@@ -1,0 +1,6103 @@
+diff -rduNp linux-2.6.20.3.orig/drivers/char/ipmi/ipmi_msghandler.c linux-2.6.20.3/drivers/char/ipmi/ipmi_msghandler.c
+--- linux-2.6.20.3.orig/drivers/char/ipmi/ipmi_msghandler.c	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/drivers/char/ipmi/ipmi_msghandler.c	2007-03-14 14:23:02.000000000 +0100
+@@ -1954,6 +1954,24 @@ static void remove_proc_entries(ipmi_smi
+ #endif /* CONFIG_PROC_FS */
+ }
+ 
++/*
++ * Retrieves the bmc_device struct for a given ipmi interface number (or NULL if none).
++ */
++struct device *ipmi_get_bmcdevice(int if_num)
++{
++	ipmi_smi_t intf;
++	mutex_lock(&ipmi_interfaces_mutex);
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		if (intf->intf_num == if_num){
++			mutex_unlock(&ipmi_interfaces_mutex);
++			return &intf->bmc->dev->dev;
++		}
++	}
++	mutex_unlock(&ipmi_interfaces_mutex);
++
++	return NULL;
++}
++
+ static int __find_bmc_guid(struct device *dev, void *data)
+ {
+ 	unsigned char *id = data;
+@@ -4183,3 +4201,4 @@ EXPORT_SYMBOL(ipmi_get_my_LUN);
+ EXPORT_SYMBOL(ipmi_smi_add_proc_entry);
+ EXPORT_SYMBOL(ipmi_user_set_run_to_completion);
+ EXPORT_SYMBOL(ipmi_free_recv_msg);
++EXPORT_SYMBOL(ipmi_get_bmcdevice);
+diff -rduNp linux-2.6.20.3.orig/drivers/char/ipmi/ipmi_msghandler.c.orig linux-2.6.20.3/drivers/char/ipmi/ipmi_msghandler.c.orig
+--- linux-2.6.20.3.orig/drivers/char/ipmi/ipmi_msghandler.c.orig	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.20.3/drivers/char/ipmi/ipmi_msghandler.c.orig	2007-03-14 14:22:33.000000000 +0100
+@@ -0,0 +1,4185 @@
++/*
++ * ipmi_msghandler.c
++ *
++ * Incoming and outgoing message routing for an IPMI interface.
++ *
++ * Author: MontaVista Software, Inc.
++ *         Corey Minyard <minyard@mvista.com>
++ *         source@mvista.com
++ *
++ * Copyright 2002 MontaVista Software Inc.
++ *
++ *  This program is free software; you can redistribute it and/or modify it
++ *  under the terms of the GNU General Public License as published by the
++ *  Free Software Foundation; either version 2 of the License, or (at your
++ *  option) any later version.
++ *
++ *
++ *  THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESS OR IMPLIED
++ *  WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
++ *  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
++ *  IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
++ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
++ *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS
++ *  OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
++ *  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR
++ *  TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE
++ *  USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *  You should have received a copy of the GNU General Public License along
++ *  with this program; if not, write to the Free Software Foundation, Inc.,
++ *  675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/module.h>
++#include <linux/errno.h>
++#include <asm/system.h>
++#include <linux/sched.h>
++#include <linux/poll.h>
++#include <linux/spinlock.h>
++#include <linux/mutex.h>
++#include <linux/slab.h>
++#include <linux/ipmi.h>
++#include <linux/ipmi_smi.h>
++#include <linux/notifier.h>
++#include <linux/init.h>
++#include <linux/proc_fs.h>
++#include <linux/rcupdate.h>
++
++#define PFX "IPMI message handler: "
++
++#define IPMI_DRIVER_VERSION "39.1"
++
++static struct ipmi_recv_msg *ipmi_alloc_recv_msg(void);
++static int ipmi_init_msghandler(void);
++
++static int initialized;
++
++#ifdef CONFIG_PROC_FS
++static struct proc_dir_entry *proc_ipmi_root;
++#endif /* CONFIG_PROC_FS */
++
++/* Remain in auto-maintenance mode for this amount of time (in ms). */
++#define IPMI_MAINTENANCE_MODE_TIMEOUT 30000
++
++#define MAX_EVENTS_IN_QUEUE	25
++
++/* Don't let a message sit in a queue forever, always time it with at lest
++   the max message timer.  This is in milliseconds. */
++#define MAX_MSG_TIMEOUT		60000
++
++
++/*
++ * The main "user" data structure.
++ */
++struct ipmi_user
++{
++	struct list_head link;
++
++	/* Set to "0" when the user is destroyed. */
++	int valid;
++
++	struct kref refcount;
++
++	/* The upper layer that handles receive messages. */
++	struct ipmi_user_hndl *handler;
++	void             *handler_data;
++
++	/* The interface this user is bound to. */
++	ipmi_smi_t intf;
++
++	/* Does this interface receive IPMI events? */
++	int gets_events;
++};
++
++struct cmd_rcvr
++{
++	struct list_head link;
++
++	ipmi_user_t   user;
++	unsigned char netfn;
++	unsigned char cmd;
++	unsigned int  chans;
++
++	/*
++	 * This is used to form a linked lised during mass deletion.
++	 * Since this is in an RCU list, we cannot use the link above
++	 * or change any data until the RCU period completes.  So we
++	 * use this next variable during mass deletion so we can have
++	 * a list and don't have to wait and restart the search on
++	 * every individual deletion of a command. */
++	struct cmd_rcvr *next;
++};
++
++struct seq_table
++{
++	unsigned int         inuse : 1;
++	unsigned int         broadcast : 1;
++
++	unsigned long        timeout;
++	unsigned long        orig_timeout;
++	unsigned int         retries_left;
++
++	/* To verify on an incoming send message response that this is
++           the message that the response is for, we keep a sequence id
++           and increment it every time we send a message. */
++	long                 seqid;
++
++	/* This is held so we can properly respond to the message on a
++           timeout, and it is used to hold the temporary data for
++           retransmission, too. */
++	struct ipmi_recv_msg *recv_msg;
++};
++
++/* Store the information in a msgid (long) to allow us to find a
++   sequence table entry from the msgid. */
++#define STORE_SEQ_IN_MSGID(seq, seqid) (((seq&0xff)<<26) | (seqid&0x3ffffff))
++
++#define GET_SEQ_FROM_MSGID(msgid, seq, seqid) \
++	do {								\
++		seq = ((msgid >> 26) & 0x3f);				\
++		seqid = (msgid & 0x3fffff);				\
++        } while (0)
++
++#define NEXT_SEQID(seqid) (((seqid) + 1) & 0x3fffff)
++
++struct ipmi_channel
++{
++	unsigned char medium;
++	unsigned char protocol;
++
++	/* My slave address.  This is initialized to IPMI_BMC_SLAVE_ADDR,
++	   but may be changed by the user. */
++	unsigned char address;
++
++	/* My LUN.  This should generally stay the SMS LUN, but just in
++	   case... */
++	unsigned char lun;
++};
++
++#ifdef CONFIG_PROC_FS
++struct ipmi_proc_entry
++{
++	char                   *name;
++	struct ipmi_proc_entry *next;
++};
++#endif
++
++struct bmc_device
++{
++	struct platform_device *dev;
++	struct ipmi_device_id  id;
++	unsigned char          guid[16];
++	int                    guid_set;
++
++	struct kref	       refcount;
++
++	/* bmc device attributes */
++	struct device_attribute device_id_attr;
++	struct device_attribute provides_dev_sdrs_attr;
++	struct device_attribute revision_attr;
++	struct device_attribute firmware_rev_attr;
++	struct device_attribute version_attr;
++	struct device_attribute add_dev_support_attr;
++	struct device_attribute manufacturer_id_attr;
++	struct device_attribute product_id_attr;
++	struct device_attribute guid_attr;
++	struct device_attribute aux_firmware_rev_attr;
++};
++
++#define IPMI_IPMB_NUM_SEQ	64
++#define IPMI_MAX_CHANNELS       16
++struct ipmi_smi
++{
++	/* What interface number are we? */
++	int intf_num;
++
++	struct kref refcount;
++
++	/* Used for a list of interfaces. */
++	struct list_head link;
++
++	/* The list of upper layers that are using me.  seq_lock
++	 * protects this. */
++	struct list_head users;
++
++	/* Information to supply to users. */
++	unsigned char ipmi_version_major;
++	unsigned char ipmi_version_minor;
++
++	/* Used for wake ups at startup. */
++	wait_queue_head_t waitq;
++
++	struct bmc_device *bmc;
++	char *my_dev_name;
++	char *sysfs_name;
++
++	/* This is the lower-layer's sender routine.  Note that you
++	 * must either be holding the ipmi_interfaces_mutex or be in
++	 * an umpreemptible region to use this.  You must fetch the
++	 * value into a local variable and make sure it is not NULL. */
++	struct ipmi_smi_handlers *handlers;
++	void                     *send_info;
++
++#ifdef CONFIG_PROC_FS
++	/* A list of proc entries for this interface.  This does not
++	   need a lock, only one thread creates it and only one thread
++	   destroys it. */
++	spinlock_t             proc_entry_lock;
++	struct ipmi_proc_entry *proc_entries;
++#endif
++
++	/* Driver-model device for the system interface. */
++	struct device          *si_dev;
++
++	/* A table of sequence numbers for this interface.  We use the
++           sequence numbers for IPMB messages that go out of the
++           interface to match them up with their responses.  A routine
++           is called periodically to time the items in this list. */
++	spinlock_t       seq_lock;
++	struct seq_table seq_table[IPMI_IPMB_NUM_SEQ];
++	int curr_seq;
++
++	/* Messages that were delayed for some reason (out of memory,
++           for instance), will go in here to be processed later in a
++           periodic timer interrupt. */
++	spinlock_t       waiting_msgs_lock;
++	struct list_head waiting_msgs;
++
++	/* The list of command receivers that are registered for commands
++	   on this interface. */
++	struct mutex     cmd_rcvrs_mutex;
++	struct list_head cmd_rcvrs;
++
++	/* Events that were queues because no one was there to receive
++           them. */
++	spinlock_t       events_lock; /* For dealing with event stuff. */
++	struct list_head waiting_events;
++	unsigned int     waiting_events_count; /* How many events in queue? */
++	int              delivering_events;
++
++	/* The event receiver for my BMC, only really used at panic
++	   shutdown as a place to store this. */
++	unsigned char event_receiver;
++	unsigned char event_receiver_lun;
++	unsigned char local_sel_device;
++	unsigned char local_event_generator;
++
++	/* For handling of maintenance mode. */
++	int maintenance_mode;
++	int maintenance_mode_enable;
++	int auto_maintenance_timeout;
++	spinlock_t maintenance_mode_lock; /* Used in a timer... */
++
++	/* A cheap hack, if this is non-null and a message to an
++	   interface comes in with a NULL user, call this routine with
++	   it.  Note that the message will still be freed by the
++	   caller.  This only works on the system interface. */
++	void (*null_user_handler)(ipmi_smi_t intf, struct ipmi_recv_msg *msg);
++
++	/* When we are scanning the channels for an SMI, this will
++	   tell which channel we are scanning. */
++	int curr_channel;
++
++	/* Channel information */
++	struct ipmi_channel channels[IPMI_MAX_CHANNELS];
++
++	/* Proc FS stuff. */
++	struct proc_dir_entry *proc_dir;
++	char                  proc_dir_name[10];
++
++	spinlock_t   counter_lock; /* For making counters atomic. */
++
++	/* Commands we got that were invalid. */
++	unsigned int sent_invalid_commands;
++
++	/* Commands we sent to the MC. */
++	unsigned int sent_local_commands;
++	/* Responses from the MC that were delivered to a user. */
++	unsigned int handled_local_responses;
++	/* Responses from the MC that were not delivered to a user. */
++	unsigned int unhandled_local_responses;
++
++	/* Commands we sent out to the IPMB bus. */
++	unsigned int sent_ipmb_commands;
++	/* Commands sent on the IPMB that had errors on the SEND CMD */
++	unsigned int sent_ipmb_command_errs;
++	/* Each retransmit increments this count. */
++	unsigned int retransmitted_ipmb_commands;
++	/* When a message times out (runs out of retransmits) this is
++           incremented. */
++	unsigned int timed_out_ipmb_commands;
++
++	/* This is like above, but for broadcasts.  Broadcasts are
++           *not* included in the above count (they are expected to
++           time out). */
++	unsigned int timed_out_ipmb_broadcasts;
++
++	/* Responses I have sent to the IPMB bus. */
++	unsigned int sent_ipmb_responses;
++
++	/* The response was delivered to the user. */
++	unsigned int handled_ipmb_responses;
++	/* The response had invalid data in it. */
++	unsigned int invalid_ipmb_responses;
++	/* The response didn't have anyone waiting for it. */
++	unsigned int unhandled_ipmb_responses;
++
++	/* Commands we sent out to the IPMB bus. */
++	unsigned int sent_lan_commands;
++	/* Commands sent on the IPMB that had errors on the SEND CMD */
++	unsigned int sent_lan_command_errs;
++	/* Each retransmit increments this count. */
++	unsigned int retransmitted_lan_commands;
++	/* When a message times out (runs out of retransmits) this is
++           incremented. */
++	unsigned int timed_out_lan_commands;
++
++	/* Responses I have sent to the IPMB bus. */
++	unsigned int sent_lan_responses;
++
++	/* The response was delivered to the user. */
++	unsigned int handled_lan_responses;
++	/* The response had invalid data in it. */
++	unsigned int invalid_lan_responses;
++	/* The response didn't have anyone waiting for it. */
++	unsigned int unhandled_lan_responses;
++
++	/* The command was delivered to the user. */
++	unsigned int handled_commands;
++	/* The command had invalid data in it. */
++	unsigned int invalid_commands;
++	/* The command didn't have anyone waiting for it. */
++	unsigned int unhandled_commands;
++
++	/* Invalid data in an event. */
++	unsigned int invalid_events;
++	/* Events that were received with the proper format. */
++	unsigned int events;
++};
++#define to_si_intf_from_dev(device) container_of(device, struct ipmi_smi, dev)
++
++/**
++ * The driver model view of the IPMI messaging driver.
++ */
++static struct device_driver ipmidriver = {
++	.name = "ipmi",
++	.bus = &platform_bus_type
++};
++static DEFINE_MUTEX(ipmidriver_mutex);
++
++static struct list_head ipmi_interfaces = LIST_HEAD_INIT(ipmi_interfaces);
++static DEFINE_MUTEX(ipmi_interfaces_mutex);
++
++/* List of watchers that want to know when smi's are added and
++   deleted. */
++static struct list_head smi_watchers = LIST_HEAD_INIT(smi_watchers);
++static DEFINE_MUTEX(smi_watchers_mutex);
++
++
++static void free_recv_msg_list(struct list_head *q)
++{
++	struct ipmi_recv_msg *msg, *msg2;
++
++	list_for_each_entry_safe(msg, msg2, q, link) {
++		list_del(&msg->link);
++		ipmi_free_recv_msg(msg);
++	}
++}
++
++static void free_smi_msg_list(struct list_head *q)
++{
++	struct ipmi_smi_msg *msg, *msg2;
++
++	list_for_each_entry_safe(msg, msg2, q, link) {
++		list_del(&msg->link);
++		ipmi_free_smi_msg(msg);
++	}
++}
++
++static void clean_up_interface_data(ipmi_smi_t intf)
++{
++	int              i;
++	struct cmd_rcvr  *rcvr, *rcvr2;
++	struct list_head list;
++
++	free_smi_msg_list(&intf->waiting_msgs);
++	free_recv_msg_list(&intf->waiting_events);
++
++	/* Wholesale remove all the entries from the list in the
++	 * interface and wait for RCU to know that none are in use. */
++	mutex_lock(&intf->cmd_rcvrs_mutex);
++	list_add_rcu(&list, &intf->cmd_rcvrs);
++	list_del_rcu(&intf->cmd_rcvrs);
++	mutex_unlock(&intf->cmd_rcvrs_mutex);
++	synchronize_rcu();
++
++	list_for_each_entry_safe(rcvr, rcvr2, &list, link)
++		kfree(rcvr);
++
++	for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++) {
++		if ((intf->seq_table[i].inuse)
++		    && (intf->seq_table[i].recv_msg))
++		{
++			ipmi_free_recv_msg(intf->seq_table[i].recv_msg);
++		}
++	}
++}
++
++static void intf_free(struct kref *ref)
++{
++	ipmi_smi_t intf = container_of(ref, struct ipmi_smi, refcount);
++
++	clean_up_interface_data(intf);
++	kfree(intf);
++}
++
++struct watcher_entry {
++	int              intf_num;
++	ipmi_smi_t       intf;
++	struct list_head link;
++};
++
++int ipmi_smi_watcher_register(struct ipmi_smi_watcher *watcher)
++{
++	ipmi_smi_t intf;
++	struct list_head to_deliver = LIST_HEAD_INIT(to_deliver);
++	struct watcher_entry *e, *e2;
++
++	mutex_lock(&smi_watchers_mutex);
++
++	mutex_lock(&ipmi_interfaces_mutex);
++
++	/* Build a list of things to deliver. */
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		if (intf->intf_num == -1)
++			continue;
++		e = kmalloc(sizeof(*e), GFP_KERNEL);
++		if (!e)
++			goto out_err;
++		kref_get(&intf->refcount);
++		e->intf = intf;
++		e->intf_num = intf->intf_num;
++		list_add_tail(&e->link, &to_deliver);
++	}
++
++	/* We will succeed, so add it to the list. */
++	list_add(&watcher->link, &smi_watchers);
++
++	mutex_unlock(&ipmi_interfaces_mutex);
++
++	list_for_each_entry_safe(e, e2, &to_deliver, link) {
++		list_del(&e->link);
++		watcher->new_smi(e->intf_num, e->intf->si_dev);
++		kref_put(&e->intf->refcount, intf_free);
++		kfree(e);
++	}
++
++	mutex_unlock(&smi_watchers_mutex);
++
++	return 0;
++
++ out_err:
++	mutex_unlock(&ipmi_interfaces_mutex);
++	mutex_unlock(&smi_watchers_mutex);
++	list_for_each_entry_safe(e, e2, &to_deliver, link) {
++		list_del(&e->link);
++		kref_put(&e->intf->refcount, intf_free);
++		kfree(e);
++	}
++	return -ENOMEM;
++}
++
++int ipmi_smi_watcher_unregister(struct ipmi_smi_watcher *watcher)
++{
++	mutex_lock(&smi_watchers_mutex);
++	list_del(&(watcher->link));
++	mutex_unlock(&smi_watchers_mutex);
++	return 0;
++}
++
++/*
++ * Must be called with smi_watchers_mutex held.
++ */
++static void
++call_smi_watchers(int i, struct device *dev)
++{
++	struct ipmi_smi_watcher *w;
++
++	list_for_each_entry(w, &smi_watchers, link) {
++		if (try_module_get(w->owner)) {
++			w->new_smi(i, dev);
++			module_put(w->owner);
++		}
++	}
++}
++
++static int
++ipmi_addr_equal(struct ipmi_addr *addr1, struct ipmi_addr *addr2)
++{
++	if (addr1->addr_type != addr2->addr_type)
++		return 0;
++
++	if (addr1->channel != addr2->channel)
++		return 0;
++
++	if (addr1->addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE) {
++		struct ipmi_system_interface_addr *smi_addr1
++		    = (struct ipmi_system_interface_addr *) addr1;
++		struct ipmi_system_interface_addr *smi_addr2
++		    = (struct ipmi_system_interface_addr *) addr2;
++		return (smi_addr1->lun == smi_addr2->lun);
++	}
++
++	if ((addr1->addr_type == IPMI_IPMB_ADDR_TYPE)
++	    || (addr1->addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE))
++	{
++		struct ipmi_ipmb_addr *ipmb_addr1
++		    = (struct ipmi_ipmb_addr *) addr1;
++		struct ipmi_ipmb_addr *ipmb_addr2
++		    = (struct ipmi_ipmb_addr *) addr2;
++
++		return ((ipmb_addr1->slave_addr == ipmb_addr2->slave_addr)
++			&& (ipmb_addr1->lun == ipmb_addr2->lun));
++	}
++
++	if (addr1->addr_type == IPMI_LAN_ADDR_TYPE) {
++		struct ipmi_lan_addr *lan_addr1
++			= (struct ipmi_lan_addr *) addr1;
++		struct ipmi_lan_addr *lan_addr2
++		    = (struct ipmi_lan_addr *) addr2;
++
++		return ((lan_addr1->remote_SWID == lan_addr2->remote_SWID)
++			&& (lan_addr1->local_SWID == lan_addr2->local_SWID)
++			&& (lan_addr1->session_handle
++			    == lan_addr2->session_handle)
++			&& (lan_addr1->lun == lan_addr2->lun));
++	}
++
++	return 1;
++}
++
++int ipmi_validate_addr(struct ipmi_addr *addr, int len)
++{
++	if (len < sizeof(struct ipmi_system_interface_addr)) {
++		return -EINVAL;
++	}
++
++	if (addr->addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE) {
++		if (addr->channel != IPMI_BMC_CHANNEL)
++			return -EINVAL;
++		return 0;
++	}
++
++	if ((addr->channel == IPMI_BMC_CHANNEL)
++	    || (addr->channel >= IPMI_MAX_CHANNELS)
++	    || (addr->channel < 0))
++		return -EINVAL;
++
++	if ((addr->addr_type == IPMI_IPMB_ADDR_TYPE)
++	    || (addr->addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE))
++	{
++		if (len < sizeof(struct ipmi_ipmb_addr)) {
++			return -EINVAL;
++		}
++		return 0;
++	}
++
++	if (addr->addr_type == IPMI_LAN_ADDR_TYPE) {
++		if (len < sizeof(struct ipmi_lan_addr)) {
++			return -EINVAL;
++		}
++		return 0;
++	}
++
++	return -EINVAL;
++}
++
++unsigned int ipmi_addr_length(int addr_type)
++{
++	if (addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
++		return sizeof(struct ipmi_system_interface_addr);
++
++	if ((addr_type == IPMI_IPMB_ADDR_TYPE)
++	    || (addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE))
++	{
++		return sizeof(struct ipmi_ipmb_addr);
++	}
++
++	if (addr_type == IPMI_LAN_ADDR_TYPE)
++		return sizeof(struct ipmi_lan_addr);
++
++	return 0;
++}
++
++static void deliver_response(struct ipmi_recv_msg *msg)
++{
++	if (!msg->user) {
++		ipmi_smi_t    intf = msg->user_msg_data;
++		unsigned long flags;
++
++		/* Special handling for NULL users. */
++		if (intf->null_user_handler) {
++			intf->null_user_handler(intf, msg);
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->handled_local_responses++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++		} else {
++			/* No handler, so give up. */
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->unhandled_local_responses++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++		}
++		ipmi_free_recv_msg(msg);
++	} else {
++		ipmi_user_t user = msg->user;
++		user->handler->ipmi_recv_hndl(msg, user->handler_data);
++	}
++}
++
++static void
++deliver_err_response(struct ipmi_recv_msg *msg, int err)
++{
++	msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
++	msg->msg_data[0] = err;
++	msg->msg.netfn |= 1; /* Convert to a response. */
++	msg->msg.data_len = 1;
++	msg->msg.data = msg->msg_data;
++	deliver_response(msg);
++}
++
++/* Find the next sequence number not being used and add the given
++   message with the given timeout to the sequence table.  This must be
++   called with the interface's seq_lock held. */
++static int intf_next_seq(ipmi_smi_t           intf,
++			 struct ipmi_recv_msg *recv_msg,
++			 unsigned long        timeout,
++			 int                  retries,
++			 int                  broadcast,
++			 unsigned char        *seq,
++			 long                 *seqid)
++{
++	int          rv = 0;
++	unsigned int i;
++
++	for (i = intf->curr_seq;
++	     (i+1)%IPMI_IPMB_NUM_SEQ != intf->curr_seq;
++	     i = (i+1)%IPMI_IPMB_NUM_SEQ)
++	{
++		if (!intf->seq_table[i].inuse)
++			break;
++	}
++
++	if (!intf->seq_table[i].inuse) {
++		intf->seq_table[i].recv_msg = recv_msg;
++
++		/* Start with the maximum timeout, when the send response
++		   comes in we will start the real timer. */
++		intf->seq_table[i].timeout = MAX_MSG_TIMEOUT;
++		intf->seq_table[i].orig_timeout = timeout;
++		intf->seq_table[i].retries_left = retries;
++		intf->seq_table[i].broadcast = broadcast;
++		intf->seq_table[i].inuse = 1;
++		intf->seq_table[i].seqid = NEXT_SEQID(intf->seq_table[i].seqid);
++		*seq = i;
++		*seqid = intf->seq_table[i].seqid;
++		intf->curr_seq = (i+1)%IPMI_IPMB_NUM_SEQ;
++	} else {
++		rv = -EAGAIN;
++	}
++	
++	return rv;
++}
++
++/* Return the receive message for the given sequence number and
++   release the sequence number so it can be reused.  Some other data
++   is passed in to be sure the message matches up correctly (to help
++   guard against message coming in after their timeout and the
++   sequence number being reused). */
++static int intf_find_seq(ipmi_smi_t           intf,
++			 unsigned char        seq,
++			 short                channel,
++			 unsigned char        cmd,
++			 unsigned char        netfn,
++			 struct ipmi_addr     *addr,
++			 struct ipmi_recv_msg **recv_msg)
++{
++	int           rv = -ENODEV;
++	unsigned long flags;
++
++	if (seq >= IPMI_IPMB_NUM_SEQ)
++		return -EINVAL;
++
++	spin_lock_irqsave(&(intf->seq_lock), flags);
++	if (intf->seq_table[seq].inuse) {
++		struct ipmi_recv_msg *msg = intf->seq_table[seq].recv_msg;
++
++		if ((msg->addr.channel == channel)
++		    && (msg->msg.cmd == cmd)
++		    && (msg->msg.netfn == netfn)
++		    && (ipmi_addr_equal(addr, &(msg->addr))))
++		{
++			*recv_msg = msg;
++			intf->seq_table[seq].inuse = 0;
++			rv = 0;
++		}
++	}
++	spin_unlock_irqrestore(&(intf->seq_lock), flags);
++
++	return rv;
++}
++
++
++/* Start the timer for a specific sequence table entry. */
++static int intf_start_seq_timer(ipmi_smi_t intf,
++				long       msgid)
++{
++	int           rv = -ENODEV;
++	unsigned long flags;
++	unsigned char seq;
++	unsigned long seqid;
++
++
++	GET_SEQ_FROM_MSGID(msgid, seq, seqid);
++
++	spin_lock_irqsave(&(intf->seq_lock), flags);
++	/* We do this verification because the user can be deleted
++           while a message is outstanding. */
++	if ((intf->seq_table[seq].inuse)
++	    && (intf->seq_table[seq].seqid == seqid))
++	{
++		struct seq_table *ent = &(intf->seq_table[seq]);
++		ent->timeout = ent->orig_timeout;
++		rv = 0;
++	}
++	spin_unlock_irqrestore(&(intf->seq_lock), flags);
++
++	return rv;
++}
++
++/* Got an error for the send message for a specific sequence number. */
++static int intf_err_seq(ipmi_smi_t   intf,
++			long         msgid,
++			unsigned int err)
++{
++	int                  rv = -ENODEV;
++	unsigned long        flags;
++	unsigned char        seq;
++	unsigned long        seqid;
++	struct ipmi_recv_msg *msg = NULL;
++
++
++	GET_SEQ_FROM_MSGID(msgid, seq, seqid);
++
++	spin_lock_irqsave(&(intf->seq_lock), flags);
++	/* We do this verification because the user can be deleted
++           while a message is outstanding. */
++	if ((intf->seq_table[seq].inuse)
++	    && (intf->seq_table[seq].seqid == seqid))
++	{
++		struct seq_table *ent = &(intf->seq_table[seq]);
++
++		ent->inuse = 0;
++		msg = ent->recv_msg;
++		rv = 0;
++	}
++	spin_unlock_irqrestore(&(intf->seq_lock), flags);
++
++	if (msg)
++		deliver_err_response(msg, err);
++
++	return rv;
++}
++
++
++int ipmi_create_user(unsigned int          if_num,
++		     struct ipmi_user_hndl *handler,
++		     void                  *handler_data,
++		     ipmi_user_t           *user)
++{
++	unsigned long flags;
++	ipmi_user_t   new_user;
++	int           rv = 0;
++	ipmi_smi_t    intf;
++
++	/* There is no module usecount here, because it's not
++           required.  Since this can only be used by and called from
++           other modules, they will implicitly use this module, and
++           thus this can't be removed unless the other modules are
++           removed. */
++
++	if (handler == NULL)
++		return -EINVAL;
++
++	/* Make sure the driver is actually initialized, this handles
++	   problems with initialization order. */
++	if (!initialized) {
++		rv = ipmi_init_msghandler();
++		if (rv)
++			return rv;
++
++		/* The init code doesn't return an error if it was turned
++		   off, but it won't initialize.  Check that. */
++		if (!initialized)
++			return -ENODEV;
++	}
++
++	new_user = kmalloc(sizeof(*new_user), GFP_KERNEL);
++	if (!new_user)
++		return -ENOMEM;
++
++	mutex_lock(&ipmi_interfaces_mutex);
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		if (intf->intf_num == if_num)
++			goto found;
++	}
++	/* Not found, return an error */
++	rv = -EINVAL;
++	goto out_kfree;
++
++ found:
++	/* Note that each existing user holds a refcount to the interface. */
++	kref_get(&intf->refcount);
++
++	kref_init(&new_user->refcount);
++	new_user->handler = handler;
++	new_user->handler_data = handler_data;
++	new_user->intf = intf;
++	new_user->gets_events = 0;
++
++	if (!try_module_get(intf->handlers->owner)) {
++		rv = -ENODEV;
++		goto out_kref;
++	}
++
++	if (intf->handlers->inc_usecount) {
++		rv = intf->handlers->inc_usecount(intf->send_info);
++		if (rv) {
++			module_put(intf->handlers->owner);
++			goto out_kref;
++		}
++	}
++
++	/* Hold the lock so intf->handlers is guaranteed to be good
++	 * until now */
++	mutex_unlock(&ipmi_interfaces_mutex);
++
++	new_user->valid = 1;
++	spin_lock_irqsave(&intf->seq_lock, flags);
++	list_add_rcu(&new_user->link, &intf->users);
++	spin_unlock_irqrestore(&intf->seq_lock, flags);
++	*user = new_user;
++	return 0;
++
++out_kref:
++	kref_put(&intf->refcount, intf_free);
++out_kfree:
++	mutex_unlock(&ipmi_interfaces_mutex);
++	kfree(new_user);
++	return rv;
++}
++
++static void free_user(struct kref *ref)
++{
++	ipmi_user_t user = container_of(ref, struct ipmi_user, refcount);
++	kfree(user);
++}
++
++int ipmi_destroy_user(ipmi_user_t user)
++{
++	ipmi_smi_t       intf = user->intf;
++	int              i;
++	unsigned long    flags;
++	struct cmd_rcvr  *rcvr;
++	struct cmd_rcvr  *rcvrs = NULL;
++
++	user->valid = 0;
++
++	/* Remove the user from the interface's sequence table. */
++	spin_lock_irqsave(&intf->seq_lock, flags);
++	list_del_rcu(&user->link);
++
++	for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++) {
++		if (intf->seq_table[i].inuse
++		    && (intf->seq_table[i].recv_msg->user == user))
++		{
++			intf->seq_table[i].inuse = 0;
++			ipmi_free_recv_msg(intf->seq_table[i].recv_msg);
++		}
++	}
++	spin_unlock_irqrestore(&intf->seq_lock, flags);
++
++	/*
++	 * Remove the user from the command receiver's table.  First
++	 * we build a list of everything (not using the standard link,
++	 * since other things may be using it till we do
++	 * synchronize_rcu()) then free everything in that list.
++	 */
++	mutex_lock(&intf->cmd_rcvrs_mutex);
++	list_for_each_entry_rcu(rcvr, &intf->cmd_rcvrs, link) {
++		if (rcvr->user == user) {
++			list_del_rcu(&rcvr->link);
++			rcvr->next = rcvrs;
++			rcvrs = rcvr;
++		}
++	}
++	mutex_unlock(&intf->cmd_rcvrs_mutex);
++	synchronize_rcu();
++	while (rcvrs) {
++		rcvr = rcvrs;
++		rcvrs = rcvr->next;
++		kfree(rcvr);
++	}
++
++	mutex_lock(&ipmi_interfaces_mutex);
++	if (intf->handlers) {
++		module_put(intf->handlers->owner);
++		if (intf->handlers->dec_usecount)
++			intf->handlers->dec_usecount(intf->send_info);
++	}
++	mutex_unlock(&ipmi_interfaces_mutex);
++
++	kref_put(&intf->refcount, intf_free);
++
++	kref_put(&user->refcount, free_user);
++
++	return 0;
++}
++
++void ipmi_get_version(ipmi_user_t   user,
++		      unsigned char *major,
++		      unsigned char *minor)
++{
++	*major = user->intf->ipmi_version_major;
++	*minor = user->intf->ipmi_version_minor;
++}
++
++int ipmi_set_my_address(ipmi_user_t   user,
++			unsigned int  channel,
++			unsigned char address)
++{
++	if (channel >= IPMI_MAX_CHANNELS)
++		return -EINVAL;
++	user->intf->channels[channel].address = address;
++	return 0;
++}
++
++int ipmi_get_my_address(ipmi_user_t   user,
++			unsigned int  channel,
++			unsigned char *address)
++{
++	if (channel >= IPMI_MAX_CHANNELS)
++		return -EINVAL;
++	*address = user->intf->channels[channel].address;
++	return 0;
++}
++
++int ipmi_set_my_LUN(ipmi_user_t   user,
++		    unsigned int  channel,
++		    unsigned char LUN)
++{
++	if (channel >= IPMI_MAX_CHANNELS)
++		return -EINVAL;
++	user->intf->channels[channel].lun = LUN & 0x3;
++	return 0;
++}
++
++int ipmi_get_my_LUN(ipmi_user_t   user,
++		    unsigned int  channel,
++		    unsigned char *address)
++{
++	if (channel >= IPMI_MAX_CHANNELS)
++		return -EINVAL;
++	*address = user->intf->channels[channel].lun;
++	return 0;
++}
++
++int ipmi_get_maintenance_mode(ipmi_user_t user)
++{
++	int           mode;
++	unsigned long flags;
++
++	spin_lock_irqsave(&user->intf->maintenance_mode_lock, flags);
++	mode = user->intf->maintenance_mode;
++	spin_unlock_irqrestore(&user->intf->maintenance_mode_lock, flags);
++
++	return mode;
++}
++EXPORT_SYMBOL(ipmi_get_maintenance_mode);
++
++static void maintenance_mode_update(ipmi_smi_t intf)
++{
++	if (intf->handlers->set_maintenance_mode)
++		intf->handlers->set_maintenance_mode(
++			intf->send_info, intf->maintenance_mode_enable);
++}
++
++int ipmi_set_maintenance_mode(ipmi_user_t user, int mode)
++{
++	int           rv = 0;
++	unsigned long flags;
++	ipmi_smi_t    intf = user->intf;
++
++	spin_lock_irqsave(&intf->maintenance_mode_lock, flags);
++	if (intf->maintenance_mode != mode) {
++		switch (mode) {
++		case IPMI_MAINTENANCE_MODE_AUTO:
++			intf->maintenance_mode = mode;
++			intf->maintenance_mode_enable
++				= (intf->auto_maintenance_timeout > 0);
++			break;
++
++		case IPMI_MAINTENANCE_MODE_OFF:
++			intf->maintenance_mode = mode;
++			intf->maintenance_mode_enable = 0;
++			break;
++
++		case IPMI_MAINTENANCE_MODE_ON:
++			intf->maintenance_mode = mode;
++			intf->maintenance_mode_enable = 1;
++			break;
++
++		default:
++			rv = -EINVAL;
++			goto out_unlock;
++		}
++
++		maintenance_mode_update(intf);
++	}
++ out_unlock:
++	spin_unlock_irqrestore(&intf->maintenance_mode_lock, flags);
++
++	return rv;
++}
++EXPORT_SYMBOL(ipmi_set_maintenance_mode);
++
++int ipmi_set_gets_events(ipmi_user_t user, int val)
++{
++	unsigned long        flags;
++	ipmi_smi_t           intf = user->intf;
++	struct ipmi_recv_msg *msg, *msg2;
++	struct list_head     msgs;
++
++	INIT_LIST_HEAD(&msgs);
++
++	spin_lock_irqsave(&intf->events_lock, flags);
++	user->gets_events = val;
++
++	if (intf->delivering_events)
++		/*
++		 * Another thread is delivering events for this, so
++		 * let it handle any new events.
++		 */
++		goto out;
++
++	/* Deliver any queued events. */
++	while (user->gets_events && !list_empty(&intf->waiting_events)) {
++		list_for_each_entry_safe(msg, msg2, &intf->waiting_events, link)
++			list_move_tail(&msg->link, &msgs);
++		intf->waiting_events_count = 0;
++
++		intf->delivering_events = 1;
++		spin_unlock_irqrestore(&intf->events_lock, flags);
++
++		list_for_each_entry_safe(msg, msg2, &msgs, link) {
++			msg->user = user;
++			kref_get(&user->refcount);
++			deliver_response(msg);
++		}
++
++		spin_lock_irqsave(&intf->events_lock, flags);
++		intf->delivering_events = 0;
++	}
++
++ out:
++	spin_unlock_irqrestore(&intf->events_lock, flags);
++
++	return 0;
++}
++
++static struct cmd_rcvr *find_cmd_rcvr(ipmi_smi_t    intf,
++				      unsigned char netfn,
++				      unsigned char cmd,
++				      unsigned char chan)
++{
++	struct cmd_rcvr *rcvr;
++
++	list_for_each_entry_rcu(rcvr, &intf->cmd_rcvrs, link) {
++		if ((rcvr->netfn == netfn) && (rcvr->cmd == cmd)
++					&& (rcvr->chans & (1 << chan)))
++			return rcvr;
++	}
++	return NULL;
++}
++
++static int is_cmd_rcvr_exclusive(ipmi_smi_t    intf,
++				 unsigned char netfn,
++				 unsigned char cmd,
++				 unsigned int  chans)
++{
++	struct cmd_rcvr *rcvr;
++
++	list_for_each_entry_rcu(rcvr, &intf->cmd_rcvrs, link) {
++		if ((rcvr->netfn == netfn) && (rcvr->cmd == cmd)
++					&& (rcvr->chans & chans))
++			return 0;
++	}
++	return 1;
++}
++
++int ipmi_register_for_cmd(ipmi_user_t   user,
++			  unsigned char netfn,
++			  unsigned char cmd,
++			  unsigned int  chans)
++{
++	ipmi_smi_t      intf = user->intf;
++	struct cmd_rcvr *rcvr;
++	int             rv = 0;
++
++
++	rcvr = kmalloc(sizeof(*rcvr), GFP_KERNEL);
++	if (!rcvr)
++		return -ENOMEM;
++	rcvr->cmd = cmd;
++	rcvr->netfn = netfn;
++	rcvr->chans = chans;
++	rcvr->user = user;
++
++	mutex_lock(&intf->cmd_rcvrs_mutex);
++	/* Make sure the command/netfn is not already registered. */
++	if (!is_cmd_rcvr_exclusive(intf, netfn, cmd, chans)) {
++		rv = -EBUSY;
++		goto out_unlock;
++	}
++
++	list_add_rcu(&rcvr->link, &intf->cmd_rcvrs);
++
++ out_unlock:
++	mutex_unlock(&intf->cmd_rcvrs_mutex);
++	if (rv)
++		kfree(rcvr);
++
++	return rv;
++}
++
++int ipmi_unregister_for_cmd(ipmi_user_t   user,
++			    unsigned char netfn,
++			    unsigned char cmd,
++			    unsigned int  chans)
++{
++	ipmi_smi_t      intf = user->intf;
++	struct cmd_rcvr *rcvr;
++	struct cmd_rcvr *rcvrs = NULL;
++	int i, rv = -ENOENT;
++
++	mutex_lock(&intf->cmd_rcvrs_mutex);
++	for (i = 0; i < IPMI_NUM_CHANNELS; i++) {
++		if (((1 << i) & chans) == 0)
++			continue;
++		rcvr = find_cmd_rcvr(intf, netfn, cmd, i);
++		if (rcvr == NULL)
++			continue;
++		if (rcvr->user == user) {
++			rv = 0;
++			rcvr->chans &= ~chans;
++			if (rcvr->chans == 0) {
++				list_del_rcu(&rcvr->link);
++				rcvr->next = rcvrs;
++				rcvrs = rcvr;
++			}
++		}
++	}
++	mutex_unlock(&intf->cmd_rcvrs_mutex);
++	synchronize_rcu();
++	while (rcvrs) {
++		rcvr = rcvrs;
++		rcvrs = rcvr->next;
++		kfree(rcvr);
++	}
++	return rv;
++}
++
++void ipmi_user_set_run_to_completion(ipmi_user_t user, int val)
++{
++	ipmi_smi_t intf = user->intf;
++	if (intf->handlers)
++		intf->handlers->set_run_to_completion(intf->send_info, val);
++}
++
++static unsigned char
++ipmb_checksum(unsigned char *data, int size)
++{
++	unsigned char csum = 0;
++	
++	for (; size > 0; size--, data++)
++		csum += *data;
++
++	return -csum;
++}
++
++static inline void format_ipmb_msg(struct ipmi_smi_msg   *smi_msg,
++				   struct kernel_ipmi_msg *msg,
++				   struct ipmi_ipmb_addr *ipmb_addr,
++				   long                  msgid,
++				   unsigned char         ipmb_seq,
++				   int                   broadcast,
++				   unsigned char         source_address,
++				   unsigned char         source_lun)
++{
++	int i = broadcast;
++
++	/* Format the IPMB header data. */
++	smi_msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
++	smi_msg->data[1] = IPMI_SEND_MSG_CMD;
++	smi_msg->data[2] = ipmb_addr->channel;
++	if (broadcast)
++		smi_msg->data[3] = 0;
++	smi_msg->data[i+3] = ipmb_addr->slave_addr;
++	smi_msg->data[i+4] = (msg->netfn << 2) | (ipmb_addr->lun & 0x3);
++	smi_msg->data[i+5] = ipmb_checksum(&(smi_msg->data[i+3]), 2);
++	smi_msg->data[i+6] = source_address;
++	smi_msg->data[i+7] = (ipmb_seq << 2) | source_lun;
++	smi_msg->data[i+8] = msg->cmd;
++
++	/* Now tack on the data to the message. */
++	if (msg->data_len > 0)
++		memcpy(&(smi_msg->data[i+9]), msg->data,
++		       msg->data_len);
++	smi_msg->data_size = msg->data_len + 9;
++
++	/* Now calculate the checksum and tack it on. */
++	smi_msg->data[i+smi_msg->data_size]
++		= ipmb_checksum(&(smi_msg->data[i+6]),
++				smi_msg->data_size-6);
++
++	/* Add on the checksum size and the offset from the
++	   broadcast. */
++	smi_msg->data_size += 1 + i;
++
++	smi_msg->msgid = msgid;
++}
++
++static inline void format_lan_msg(struct ipmi_smi_msg   *smi_msg,
++				  struct kernel_ipmi_msg *msg,
++				  struct ipmi_lan_addr  *lan_addr,
++				  long                  msgid,
++				  unsigned char         ipmb_seq,
++				  unsigned char         source_lun)
++{
++	/* Format the IPMB header data. */
++	smi_msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
++	smi_msg->data[1] = IPMI_SEND_MSG_CMD;
++	smi_msg->data[2] = lan_addr->channel;
++	smi_msg->data[3] = lan_addr->session_handle;
++	smi_msg->data[4] = lan_addr->remote_SWID;
++	smi_msg->data[5] = (msg->netfn << 2) | (lan_addr->lun & 0x3);
++	smi_msg->data[6] = ipmb_checksum(&(smi_msg->data[4]), 2);
++	smi_msg->data[7] = lan_addr->local_SWID;
++	smi_msg->data[8] = (ipmb_seq << 2) | source_lun;
++	smi_msg->data[9] = msg->cmd;
++
++	/* Now tack on the data to the message. */
++	if (msg->data_len > 0)
++		memcpy(&(smi_msg->data[10]), msg->data,
++		       msg->data_len);
++	smi_msg->data_size = msg->data_len + 10;
++
++	/* Now calculate the checksum and tack it on. */
++	smi_msg->data[smi_msg->data_size]
++		= ipmb_checksum(&(smi_msg->data[7]),
++				smi_msg->data_size-7);
++
++	/* Add on the checksum size and the offset from the
++	   broadcast. */
++	smi_msg->data_size += 1;
++
++	smi_msg->msgid = msgid;
++}
++
++/* Separate from ipmi_request so that the user does not have to be
++   supplied in certain circumstances (mainly at panic time).  If
++   messages are supplied, they will be freed, even if an error
++   occurs. */
++static int i_ipmi_request(ipmi_user_t          user,
++			  ipmi_smi_t           intf,
++			  struct ipmi_addr     *addr,
++			  long                 msgid,
++			  struct kernel_ipmi_msg *msg,
++			  void                 *user_msg_data,
++			  void                 *supplied_smi,
++			  struct ipmi_recv_msg *supplied_recv,
++			  int                  priority,
++			  unsigned char        source_address,
++			  unsigned char        source_lun,
++			  int                  retries,
++			  unsigned int         retry_time_ms)
++{
++	int                      rv = 0;
++	struct ipmi_smi_msg      *smi_msg;
++	struct ipmi_recv_msg     *recv_msg;
++	unsigned long            flags;
++	struct ipmi_smi_handlers *handlers;
++
++
++	if (supplied_recv) {
++		recv_msg = supplied_recv;
++	} else {
++		recv_msg = ipmi_alloc_recv_msg();
++		if (recv_msg == NULL) {
++			return -ENOMEM;
++		}
++	}
++	recv_msg->user_msg_data = user_msg_data;
++
++	if (supplied_smi) {
++		smi_msg = (struct ipmi_smi_msg *) supplied_smi;
++	} else {
++		smi_msg = ipmi_alloc_smi_msg();
++		if (smi_msg == NULL) {
++			ipmi_free_recv_msg(recv_msg);
++			return -ENOMEM;
++		}
++	}
++
++	rcu_read_lock();
++	handlers = intf->handlers;
++	if (!handlers) {
++		rv = -ENODEV;
++		goto out_err;
++	}
++
++	recv_msg->user = user;
++	if (user)
++		kref_get(&user->refcount);
++	recv_msg->msgid = msgid;
++	/* Store the message to send in the receive message so timeout
++	   responses can get the proper response data. */
++	recv_msg->msg = *msg;
++
++	if (addr->addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE) {
++		struct ipmi_system_interface_addr *smi_addr;
++
++		if (msg->netfn & 1) {
++			/* Responses are not allowed to the SMI. */
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		smi_addr = (struct ipmi_system_interface_addr *) addr;
++		if (smi_addr->lun > 3) {
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		memcpy(&recv_msg->addr, smi_addr, sizeof(*smi_addr));
++
++		if ((msg->netfn == IPMI_NETFN_APP_REQUEST)
++		    && ((msg->cmd == IPMI_SEND_MSG_CMD)
++			|| (msg->cmd == IPMI_GET_MSG_CMD)
++			|| (msg->cmd == IPMI_READ_EVENT_MSG_BUFFER_CMD)))
++		{
++			/* We don't let the user do these, since we manage
++			   the sequence numbers. */
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		if (((msg->netfn == IPMI_NETFN_APP_REQUEST)
++		      && ((msg->cmd == IPMI_COLD_RESET_CMD)
++			  || (msg->cmd == IPMI_WARM_RESET_CMD)))
++		     || (msg->netfn == IPMI_NETFN_FIRMWARE_REQUEST))
++		{
++			spin_lock_irqsave(&intf->maintenance_mode_lock, flags);
++			intf->auto_maintenance_timeout
++				= IPMI_MAINTENANCE_MODE_TIMEOUT;
++			if (!intf->maintenance_mode
++			    && !intf->maintenance_mode_enable)
++			{
++				intf->maintenance_mode_enable = 1;
++				maintenance_mode_update(intf);
++			}
++			spin_unlock_irqrestore(&intf->maintenance_mode_lock,
++					       flags);
++		}
++
++		if ((msg->data_len + 2) > IPMI_MAX_MSG_LENGTH) {
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EMSGSIZE;
++			goto out_err;
++		}
++
++		smi_msg->data[0] = (msg->netfn << 2) | (smi_addr->lun & 0x3);
++		smi_msg->data[1] = msg->cmd;
++		smi_msg->msgid = msgid;
++		smi_msg->user_data = recv_msg;
++		if (msg->data_len > 0)
++			memcpy(&(smi_msg->data[2]), msg->data, msg->data_len);
++		smi_msg->data_size = msg->data_len + 2;
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->sent_local_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++	} else if ((addr->addr_type == IPMI_IPMB_ADDR_TYPE)
++		   || (addr->addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE))
++	{
++		struct ipmi_ipmb_addr *ipmb_addr;
++		unsigned char         ipmb_seq;
++		long                  seqid;
++		int                   broadcast = 0;
++
++		if (addr->channel >= IPMI_MAX_CHANNELS) {
++		        spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		if (intf->channels[addr->channel].medium
++		    != IPMI_CHANNEL_MEDIUM_IPMB)
++		{
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		if (retries < 0) {
++		    if (addr->addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE)
++			retries = 0; /* Don't retry broadcasts. */
++		    else
++			retries = 4;
++		}
++		if (addr->addr_type == IPMI_IPMB_BROADCAST_ADDR_TYPE) {
++		    /* Broadcasts add a zero at the beginning of the
++		       message, but otherwise is the same as an IPMB
++		       address. */
++		    addr->addr_type = IPMI_IPMB_ADDR_TYPE;
++		    broadcast = 1;
++		}
++
++
++		/* Default to 1 second retries. */
++		if (retry_time_ms == 0)
++		    retry_time_ms = 1000;
++
++		/* 9 for the header and 1 for the checksum, plus
++                   possibly one for the broadcast. */
++		if ((msg->data_len + 10 + broadcast) > IPMI_MAX_MSG_LENGTH) {
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EMSGSIZE;
++			goto out_err;
++		}
++
++		ipmb_addr = (struct ipmi_ipmb_addr *) addr;
++		if (ipmb_addr->lun > 3) {
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		memcpy(&recv_msg->addr, ipmb_addr, sizeof(*ipmb_addr));
++
++		if (recv_msg->msg.netfn & 0x1) {
++			/* It's a response, so use the user's sequence
++                           from msgid. */
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_ipmb_responses++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			format_ipmb_msg(smi_msg, msg, ipmb_addr, msgid,
++					msgid, broadcast,
++					source_address, source_lun);
++
++			/* Save the receive message so we can use it
++			   to deliver the response. */
++			smi_msg->user_data = recv_msg;
++		} else {
++			/* It's a command, so get a sequence for it. */
++
++			spin_lock_irqsave(&(intf->seq_lock), flags);
++
++			spin_lock(&intf->counter_lock);
++			intf->sent_ipmb_commands++;
++			spin_unlock(&intf->counter_lock);
++
++			/* Create a sequence number with a 1 second
++                           timeout and 4 retries. */
++			rv = intf_next_seq(intf,
++					   recv_msg,
++					   retry_time_ms,
++					   retries,
++					   broadcast,
++					   &ipmb_seq,
++					   &seqid);
++			if (rv) {
++				/* We have used up all the sequence numbers,
++				   probably, so abort. */
++				spin_unlock_irqrestore(&(intf->seq_lock),
++						       flags);
++				goto out_err;
++			}
++
++			/* Store the sequence number in the message,
++                           so that when the send message response
++                           comes back we can start the timer. */
++			format_ipmb_msg(smi_msg, msg, ipmb_addr,
++					STORE_SEQ_IN_MSGID(ipmb_seq, seqid),
++					ipmb_seq, broadcast,
++					source_address, source_lun);
++
++			/* Copy the message into the recv message data, so we
++			   can retransmit it later if necessary. */
++			memcpy(recv_msg->msg_data, smi_msg->data,
++			       smi_msg->data_size);
++			recv_msg->msg.data = recv_msg->msg_data;
++			recv_msg->msg.data_len = smi_msg->data_size;
++
++			/* We don't unlock until here, because we need
++                           to copy the completed message into the
++                           recv_msg before we release the lock.
++                           Otherwise, race conditions may bite us.  I
++                           know that's pretty paranoid, but I prefer
++                           to be correct. */
++			spin_unlock_irqrestore(&(intf->seq_lock), flags);
++		}
++	} else if (addr->addr_type == IPMI_LAN_ADDR_TYPE) {
++		struct ipmi_lan_addr  *lan_addr;
++		unsigned char         ipmb_seq;
++		long                  seqid;
++
++		if (addr->channel >= IPMI_MAX_CHANNELS) {
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		if ((intf->channels[addr->channel].medium
++		    != IPMI_CHANNEL_MEDIUM_8023LAN)
++		    && (intf->channels[addr->channel].medium
++			!= IPMI_CHANNEL_MEDIUM_ASYNC))
++		{
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		retries = 4;
++
++		/* Default to 1 second retries. */
++		if (retry_time_ms == 0)
++		    retry_time_ms = 1000;
++
++		/* 11 for the header and 1 for the checksum. */
++		if ((msg->data_len + 12) > IPMI_MAX_MSG_LENGTH) {
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EMSGSIZE;
++			goto out_err;
++		}
++
++		lan_addr = (struct ipmi_lan_addr *) addr;
++		if (lan_addr->lun > 3) {
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_invalid_commands++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			rv = -EINVAL;
++			goto out_err;
++		}
++
++		memcpy(&recv_msg->addr, lan_addr, sizeof(*lan_addr));
++
++		if (recv_msg->msg.netfn & 0x1) {
++			/* It's a response, so use the user's sequence
++                           from msgid. */
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			intf->sent_lan_responses++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			format_lan_msg(smi_msg, msg, lan_addr, msgid,
++				       msgid, source_lun);
++
++			/* Save the receive message so we can use it
++			   to deliver the response. */
++			smi_msg->user_data = recv_msg;
++		} else {
++			/* It's a command, so get a sequence for it. */
++
++			spin_lock_irqsave(&(intf->seq_lock), flags);
++
++			spin_lock(&intf->counter_lock);
++			intf->sent_lan_commands++;
++			spin_unlock(&intf->counter_lock);
++
++			/* Create a sequence number with a 1 second
++                           timeout and 4 retries. */
++			rv = intf_next_seq(intf,
++					   recv_msg,
++					   retry_time_ms,
++					   retries,
++					   0,
++					   &ipmb_seq,
++					   &seqid);
++			if (rv) {
++				/* We have used up all the sequence numbers,
++				   probably, so abort. */
++				spin_unlock_irqrestore(&(intf->seq_lock),
++						       flags);
++				goto out_err;
++			}
++
++			/* Store the sequence number in the message,
++                           so that when the send message response
++                           comes back we can start the timer. */
++			format_lan_msg(smi_msg, msg, lan_addr,
++				       STORE_SEQ_IN_MSGID(ipmb_seq, seqid),
++				       ipmb_seq, source_lun);
++
++			/* Copy the message into the recv message data, so we
++			   can retransmit it later if necessary. */
++			memcpy(recv_msg->msg_data, smi_msg->data,
++			       smi_msg->data_size);
++			recv_msg->msg.data = recv_msg->msg_data;
++			recv_msg->msg.data_len = smi_msg->data_size;
++
++			/* We don't unlock until here, because we need
++                           to copy the completed message into the
++                           recv_msg before we release the lock.
++                           Otherwise, race conditions may bite us.  I
++                           know that's pretty paranoid, but I prefer
++                           to be correct. */
++			spin_unlock_irqrestore(&(intf->seq_lock), flags);
++		}
++	} else {
++	    /* Unknown address type. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->sent_invalid_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		rv = -EINVAL;
++		goto out_err;
++	}
++
++#ifdef DEBUG_MSGING
++	{
++		int m;
++		for (m = 0; m < smi_msg->data_size; m++)
++			printk(" %2.2x", smi_msg->data[m]);
++		printk("\n");
++	}
++#endif
++
++	handlers->sender(intf->send_info, smi_msg, priority);
++	rcu_read_unlock();
++
++	return 0;
++
++ out_err:
++	rcu_read_unlock();
++	ipmi_free_smi_msg(smi_msg);
++	ipmi_free_recv_msg(recv_msg);
++	return rv;
++}
++
++static int check_addr(ipmi_smi_t       intf,
++		      struct ipmi_addr *addr,
++		      unsigned char    *saddr,
++		      unsigned char    *lun)
++{
++	if (addr->channel >= IPMI_MAX_CHANNELS)
++		return -EINVAL;
++	*lun = intf->channels[addr->channel].lun;
++	*saddr = intf->channels[addr->channel].address;
++	return 0;
++}
++
++int ipmi_request_settime(ipmi_user_t      user,
++			 struct ipmi_addr *addr,
++			 long             msgid,
++			 struct kernel_ipmi_msg  *msg,
++			 void             *user_msg_data,
++			 int              priority,
++			 int              retries,
++			 unsigned int     retry_time_ms)
++{
++	unsigned char saddr, lun;
++	int           rv;
++
++	if (!user)
++		return -EINVAL;
++	rv = check_addr(user->intf, addr, &saddr, &lun);
++	if (rv)
++		return rv;
++	return i_ipmi_request(user,
++			      user->intf,
++			      addr,
++			      msgid,
++			      msg,
++			      user_msg_data,
++			      NULL, NULL,
++			      priority,
++			      saddr,
++			      lun,
++			      retries,
++			      retry_time_ms);
++}
++
++int ipmi_request_supply_msgs(ipmi_user_t          user,
++			     struct ipmi_addr     *addr,
++			     long                 msgid,
++			     struct kernel_ipmi_msg *msg,
++			     void                 *user_msg_data,
++			     void                 *supplied_smi,
++			     struct ipmi_recv_msg *supplied_recv,
++			     int                  priority)
++{
++	unsigned char saddr, lun;
++	int           rv;
++
++	if (!user)
++		return -EINVAL;
++	rv = check_addr(user->intf, addr, &saddr, &lun);
++	if (rv)
++		return rv;
++	return i_ipmi_request(user,
++			      user->intf,
++			      addr,
++			      msgid,
++			      msg,
++			      user_msg_data,
++			      supplied_smi,
++			      supplied_recv,
++			      priority,
++			      saddr,
++			      lun,
++			      -1, 0);
++}
++
++#ifdef CONFIG_PROC_FS
++static int ipmb_file_read_proc(char *page, char **start, off_t off,
++			       int count, int *eof, void *data)
++{
++	char       *out = (char *) page;
++	ipmi_smi_t intf = data;
++	int        i;
++	int        rv = 0;
++
++	for (i = 0; i < IPMI_MAX_CHANNELS; i++)
++		rv += sprintf(out+rv, "%x ", intf->channels[i].address);
++	out[rv-1] = '\n'; /* Replace the final space with a newline */
++	out[rv] = '\0';
++	rv++;
++	return rv;
++}
++
++static int version_file_read_proc(char *page, char **start, off_t off,
++				  int count, int *eof, void *data)
++{
++	char       *out = (char *) page;
++	ipmi_smi_t intf = data;
++
++	return sprintf(out, "%d.%d\n",
++		       ipmi_version_major(&intf->bmc->id),
++		       ipmi_version_minor(&intf->bmc->id));
++}
++
++static int stat_file_read_proc(char *page, char **start, off_t off,
++			       int count, int *eof, void *data)
++{
++	char       *out = (char *) page;
++	ipmi_smi_t intf = data;
++
++	out += sprintf(out, "sent_invalid_commands:       %d\n",
++		       intf->sent_invalid_commands);
++	out += sprintf(out, "sent_local_commands:         %d\n",
++		       intf->sent_local_commands);
++	out += sprintf(out, "handled_local_responses:     %d\n",
++		       intf->handled_local_responses);
++	out += sprintf(out, "unhandled_local_responses:   %d\n",
++		       intf->unhandled_local_responses);
++	out += sprintf(out, "sent_ipmb_commands:          %d\n",
++		       intf->sent_ipmb_commands);
++	out += sprintf(out, "sent_ipmb_command_errs:      %d\n",
++		       intf->sent_ipmb_command_errs);
++	out += sprintf(out, "retransmitted_ipmb_commands: %d\n",
++		       intf->retransmitted_ipmb_commands);
++	out += sprintf(out, "timed_out_ipmb_commands:     %d\n",
++		       intf->timed_out_ipmb_commands);
++	out += sprintf(out, "timed_out_ipmb_broadcasts:   %d\n",
++		       intf->timed_out_ipmb_broadcasts);
++	out += sprintf(out, "sent_ipmb_responses:         %d\n",
++		       intf->sent_ipmb_responses);
++	out += sprintf(out, "handled_ipmb_responses:      %d\n",
++		       intf->handled_ipmb_responses);
++	out += sprintf(out, "invalid_ipmb_responses:      %d\n",
++		       intf->invalid_ipmb_responses);
++	out += sprintf(out, "unhandled_ipmb_responses:    %d\n",
++		       intf->unhandled_ipmb_responses);
++	out += sprintf(out, "sent_lan_commands:           %d\n",
++		       intf->sent_lan_commands);
++	out += sprintf(out, "sent_lan_command_errs:       %d\n",
++		       intf->sent_lan_command_errs);
++	out += sprintf(out, "retransmitted_lan_commands:  %d\n",
++		       intf->retransmitted_lan_commands);
++	out += sprintf(out, "timed_out_lan_commands:      %d\n",
++		       intf->timed_out_lan_commands);
++	out += sprintf(out, "sent_lan_responses:          %d\n",
++		       intf->sent_lan_responses);
++	out += sprintf(out, "handled_lan_responses:       %d\n",
++		       intf->handled_lan_responses);
++	out += sprintf(out, "invalid_lan_responses:       %d\n",
++		       intf->invalid_lan_responses);
++	out += sprintf(out, "unhandled_lan_responses:     %d\n",
++		       intf->unhandled_lan_responses);
++	out += sprintf(out, "handled_commands:            %d\n",
++		       intf->handled_commands);
++	out += sprintf(out, "invalid_commands:            %d\n",
++		       intf->invalid_commands);
++	out += sprintf(out, "unhandled_commands:          %d\n",
++		       intf->unhandled_commands);
++	out += sprintf(out, "invalid_events:              %d\n",
++		       intf->invalid_events);
++	out += sprintf(out, "events:                      %d\n",
++		       intf->events);
++
++	return (out - ((char *) page));
++}
++#endif /* CONFIG_PROC_FS */
++
++int ipmi_smi_add_proc_entry(ipmi_smi_t smi, char *name,
++			    read_proc_t *read_proc, write_proc_t *write_proc,
++			    void *data, struct module *owner)
++{
++	int                    rv = 0;
++#ifdef CONFIG_PROC_FS
++	struct proc_dir_entry  *file;
++	struct ipmi_proc_entry *entry;
++
++	/* Create a list element. */
++	entry = kmalloc(sizeof(*entry), GFP_KERNEL);
++	if (!entry)
++		return -ENOMEM;
++	entry->name = kmalloc(strlen(name)+1, GFP_KERNEL);
++	if (!entry->name) {
++		kfree(entry);
++		return -ENOMEM;
++	}
++	strcpy(entry->name, name);
++
++	file = create_proc_entry(name, 0, smi->proc_dir);
++	if (!file) {
++		kfree(entry->name);
++		kfree(entry);
++		rv = -ENOMEM;
++	} else {
++		file->nlink = 1;
++		file->data = data;
++		file->read_proc = read_proc;
++		file->write_proc = write_proc;
++		file->owner = owner;
++
++		spin_lock(&smi->proc_entry_lock);
++		/* Stick it on the list. */
++		entry->next = smi->proc_entries;
++		smi->proc_entries = entry;
++		spin_unlock(&smi->proc_entry_lock);
++	}
++#endif /* CONFIG_PROC_FS */
++
++	return rv;
++}
++
++static int add_proc_entries(ipmi_smi_t smi, int num)
++{
++	int rv = 0;
++
++#ifdef CONFIG_PROC_FS
++	sprintf(smi->proc_dir_name, "%d", num);
++	smi->proc_dir = proc_mkdir(smi->proc_dir_name, proc_ipmi_root);
++	if (!smi->proc_dir)
++		rv = -ENOMEM;
++	else {
++		smi->proc_dir->owner = THIS_MODULE;
++	}
++
++	if (rv == 0)
++		rv = ipmi_smi_add_proc_entry(smi, "stats",
++					     stat_file_read_proc, NULL,
++					     smi, THIS_MODULE);
++
++	if (rv == 0)
++		rv = ipmi_smi_add_proc_entry(smi, "ipmb",
++					     ipmb_file_read_proc, NULL,
++					     smi, THIS_MODULE);
++
++	if (rv == 0)
++		rv = ipmi_smi_add_proc_entry(smi, "version",
++					     version_file_read_proc, NULL,
++					     smi, THIS_MODULE);
++#endif /* CONFIG_PROC_FS */
++
++	return rv;
++}
++
++static void remove_proc_entries(ipmi_smi_t smi)
++{
++#ifdef CONFIG_PROC_FS
++	struct ipmi_proc_entry *entry;
++
++	spin_lock(&smi->proc_entry_lock);
++	while (smi->proc_entries) {
++		entry = smi->proc_entries;
++		smi->proc_entries = entry->next;
++
++		remove_proc_entry(entry->name, smi->proc_dir);
++		kfree(entry->name);
++		kfree(entry);
++	}
++	spin_unlock(&smi->proc_entry_lock);
++	remove_proc_entry(smi->proc_dir_name, proc_ipmi_root);
++#endif /* CONFIG_PROC_FS */
++}
++
++static int __find_bmc_guid(struct device *dev, void *data)
++{
++	unsigned char *id = data;
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++	return memcmp(bmc->guid, id, 16) == 0;
++}
++
++static struct bmc_device *ipmi_find_bmc_guid(struct device_driver *drv,
++					     unsigned char *guid)
++{
++	struct device *dev;
++
++	dev = driver_find_device(drv, NULL, guid, __find_bmc_guid);
++	if (dev)
++		return dev_get_drvdata(dev);
++	else
++		return NULL;
++}
++
++struct prod_dev_id {
++	unsigned int  product_id;
++	unsigned char device_id;
++};
++
++static int __find_bmc_prod_dev_id(struct device *dev, void *data)
++{
++	struct prod_dev_id *id = data;
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return (bmc->id.product_id == id->product_id
++		&& bmc->id.device_id == id->device_id);
++}
++
++static struct bmc_device *ipmi_find_bmc_prod_dev_id(
++	struct device_driver *drv,
++	unsigned int product_id, unsigned char device_id)
++{
++	struct prod_dev_id id = {
++		.product_id = product_id,
++		.device_id = device_id,
++	};
++	struct device *dev;
++
++	dev = driver_find_device(drv, NULL, &id, __find_bmc_prod_dev_id);
++	if (dev)
++		return dev_get_drvdata(dev);
++	else
++		return NULL;
++}
++
++static ssize_t device_id_show(struct device *dev,
++			      struct device_attribute *attr,
++			      char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 10, "%u\n", bmc->id.device_id);
++}
++
++static ssize_t provides_dev_sdrs_show(struct device *dev,
++				      struct device_attribute *attr,
++				      char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 10, "%u\n",
++			(bmc->id.device_revision & 0x80) >> 7);
++}
++
++static ssize_t revision_show(struct device *dev, struct device_attribute *attr,
++			     char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 20, "%u\n",
++			bmc->id.device_revision & 0x0F);
++}
++
++static ssize_t firmware_rev_show(struct device *dev,
++				 struct device_attribute *attr,
++				 char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 20, "%u.%x\n", bmc->id.firmware_revision_1,
++			bmc->id.firmware_revision_2);
++}
++
++static ssize_t ipmi_version_show(struct device *dev,
++				 struct device_attribute *attr,
++				 char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 20, "%u.%u\n",
++			ipmi_version_major(&bmc->id),
++			ipmi_version_minor(&bmc->id));
++}
++
++static ssize_t add_dev_support_show(struct device *dev,
++				    struct device_attribute *attr,
++				    char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 10, "0x%02x\n",
++			bmc->id.additional_device_support);
++}
++
++static ssize_t manufacturer_id_show(struct device *dev,
++				    struct device_attribute *attr,
++				    char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 20, "0x%6.6x\n", bmc->id.manufacturer_id);
++}
++
++static ssize_t product_id_show(struct device *dev,
++			       struct device_attribute *attr,
++			       char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 10, "0x%4.4x\n", bmc->id.product_id);
++}
++
++static ssize_t aux_firmware_rev_show(struct device *dev,
++				     struct device_attribute *attr,
++				     char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 21, "0x%02x 0x%02x 0x%02x 0x%02x\n",
++			bmc->id.aux_firmware_revision[3],
++			bmc->id.aux_firmware_revision[2],
++			bmc->id.aux_firmware_revision[1],
++			bmc->id.aux_firmware_revision[0]);
++}
++
++static ssize_t guid_show(struct device *dev, struct device_attribute *attr,
++			 char *buf)
++{
++	struct bmc_device *bmc = dev_get_drvdata(dev);
++
++	return snprintf(buf, 100, "%Lx%Lx\n",
++			(long long) bmc->guid[0],
++			(long long) bmc->guid[8]);
++}
++
++static void remove_files(struct bmc_device *bmc)
++{
++	if (!bmc->dev)
++		return;
++
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->device_id_attr);
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->provides_dev_sdrs_attr);
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->revision_attr);
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->firmware_rev_attr);
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->version_attr);
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->add_dev_support_attr);
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->manufacturer_id_attr);
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->product_id_attr);
++
++	if (bmc->id.aux_firmware_revision_set)
++		device_remove_file(&bmc->dev->dev,
++				   &bmc->aux_firmware_rev_attr);
++	if (bmc->guid_set)
++		device_remove_file(&bmc->dev->dev,
++				   &bmc->guid_attr);
++}
++
++static void
++cleanup_bmc_device(struct kref *ref)
++{
++	struct bmc_device *bmc;
++
++	bmc = container_of(ref, struct bmc_device, refcount);
++
++	remove_files(bmc);
++	platform_device_unregister(bmc->dev);
++	kfree(bmc);
++}
++
++static void ipmi_bmc_unregister(ipmi_smi_t intf)
++{
++	struct bmc_device *bmc = intf->bmc;
++
++	if (intf->sysfs_name) {
++		sysfs_remove_link(&intf->si_dev->kobj, intf->sysfs_name);
++		kfree(intf->sysfs_name);
++		intf->sysfs_name = NULL;
++	}
++	if (intf->my_dev_name) {
++		sysfs_remove_link(&bmc->dev->dev.kobj, intf->my_dev_name);
++		kfree(intf->my_dev_name);
++		intf->my_dev_name = NULL;
++	}
++
++	mutex_lock(&ipmidriver_mutex);
++	kref_put(&bmc->refcount, cleanup_bmc_device);
++	intf->bmc = NULL;
++	mutex_unlock(&ipmidriver_mutex);
++}
++
++static int create_files(struct bmc_device *bmc)
++{
++	int err;
++
++	bmc->device_id_attr.attr.name = "device_id";
++	bmc->device_id_attr.attr.owner = THIS_MODULE;
++	bmc->device_id_attr.attr.mode = S_IRUGO;
++	bmc->device_id_attr.show = device_id_show;
++
++	bmc->provides_dev_sdrs_attr.attr.name = "provides_device_sdrs";
++	bmc->provides_dev_sdrs_attr.attr.owner = THIS_MODULE;
++	bmc->provides_dev_sdrs_attr.attr.mode = S_IRUGO;
++	bmc->provides_dev_sdrs_attr.show = provides_dev_sdrs_show;
++
++	bmc->revision_attr.attr.name = "revision";
++	bmc->revision_attr.attr.owner = THIS_MODULE;
++	bmc->revision_attr.attr.mode = S_IRUGO;
++	bmc->revision_attr.show = revision_show;
++
++	bmc->firmware_rev_attr.attr.name = "firmware_revision";
++	bmc->firmware_rev_attr.attr.owner = THIS_MODULE;
++	bmc->firmware_rev_attr.attr.mode = S_IRUGO;
++	bmc->firmware_rev_attr.show = firmware_rev_show;
++
++	bmc->version_attr.attr.name = "ipmi_version";
++	bmc->version_attr.attr.owner = THIS_MODULE;
++	bmc->version_attr.attr.mode = S_IRUGO;
++	bmc->version_attr.show = ipmi_version_show;
++
++	bmc->add_dev_support_attr.attr.name = "additional_device_support";
++	bmc->add_dev_support_attr.attr.owner = THIS_MODULE;
++	bmc->add_dev_support_attr.attr.mode = S_IRUGO;
++	bmc->add_dev_support_attr.show = add_dev_support_show;
++
++	bmc->manufacturer_id_attr.attr.name = "manufacturer_id";
++	bmc->manufacturer_id_attr.attr.owner = THIS_MODULE;
++	bmc->manufacturer_id_attr.attr.mode = S_IRUGO;
++	bmc->manufacturer_id_attr.show = manufacturer_id_show;
++
++	bmc->product_id_attr.attr.name = "product_id";
++	bmc->product_id_attr.attr.owner = THIS_MODULE;
++	bmc->product_id_attr.attr.mode = S_IRUGO;
++	bmc->product_id_attr.show = product_id_show;
++
++	bmc->guid_attr.attr.name = "guid";
++	bmc->guid_attr.attr.owner = THIS_MODULE;
++	bmc->guid_attr.attr.mode = S_IRUGO;
++	bmc->guid_attr.show = guid_show;
++
++	bmc->aux_firmware_rev_attr.attr.name = "aux_firmware_revision";
++	bmc->aux_firmware_rev_attr.attr.owner = THIS_MODULE;
++	bmc->aux_firmware_rev_attr.attr.mode = S_IRUGO;
++	bmc->aux_firmware_rev_attr.show = aux_firmware_rev_show;
++
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->device_id_attr);
++	if (err) goto out;
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->provides_dev_sdrs_attr);
++	if (err) goto out_devid;
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->revision_attr);
++	if (err) goto out_sdrs;
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->firmware_rev_attr);
++	if (err) goto out_rev;
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->version_attr);
++	if (err) goto out_firm;
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->add_dev_support_attr);
++	if (err) goto out_version;
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->manufacturer_id_attr);
++	if (err) goto out_add_dev;
++	err = device_create_file(&bmc->dev->dev,
++			   &bmc->product_id_attr);
++	if (err) goto out_manu;
++	if (bmc->id.aux_firmware_revision_set) {
++		err = device_create_file(&bmc->dev->dev,
++				   &bmc->aux_firmware_rev_attr);
++		if (err) goto out_prod_id;
++	}
++	if (bmc->guid_set) {
++		err = device_create_file(&bmc->dev->dev,
++				   &bmc->guid_attr);
++		if (err) goto out_aux_firm;
++	}
++
++	return 0;
++
++out_aux_firm:
++	if (bmc->id.aux_firmware_revision_set)
++		device_remove_file(&bmc->dev->dev,
++				   &bmc->aux_firmware_rev_attr);
++out_prod_id:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->product_id_attr);
++out_manu:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->manufacturer_id_attr);
++out_add_dev:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->add_dev_support_attr);
++out_version:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->version_attr);
++out_firm:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->firmware_rev_attr);
++out_rev:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->revision_attr);
++out_sdrs:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->provides_dev_sdrs_attr);
++out_devid:
++	device_remove_file(&bmc->dev->dev,
++			   &bmc->device_id_attr);
++out:
++	return err;
++}
++
++static int ipmi_bmc_register(ipmi_smi_t intf, int ifnum,
++			     const char *sysfs_name)
++{
++	int               rv;
++	struct bmc_device *bmc = intf->bmc;
++	struct bmc_device *old_bmc;
++	int               size;
++	char              dummy[1];
++
++	mutex_lock(&ipmidriver_mutex);
++
++	/*
++	 * Try to find if there is an bmc_device struct
++	 * representing the interfaced BMC already
++	 */
++	if (bmc->guid_set)
++		old_bmc = ipmi_find_bmc_guid(&ipmidriver, bmc->guid);
++	else
++		old_bmc = ipmi_find_bmc_prod_dev_id(&ipmidriver,
++						    bmc->id.product_id,
++						    bmc->id.device_id);
++
++	/*
++	 * If there is already an bmc_device, free the new one,
++	 * otherwise register the new BMC device
++	 */
++	if (old_bmc) {
++		kfree(bmc);
++		intf->bmc = old_bmc;
++		bmc = old_bmc;
++
++		kref_get(&bmc->refcount);
++		mutex_unlock(&ipmidriver_mutex);
++
++		printk(KERN_INFO
++		       "ipmi: interfacing existing BMC (man_id: 0x%6.6x,"
++		       " prod_id: 0x%4.4x, dev_id: 0x%2.2x)\n",
++		       bmc->id.manufacturer_id,
++		       bmc->id.product_id,
++		       bmc->id.device_id);
++	} else {
++		char name[14];
++		unsigned char orig_dev_id = bmc->id.device_id;
++		int warn_printed = 0;
++
++		snprintf(name, sizeof(name),
++			 "ipmi_bmc.%4.4x", bmc->id.product_id);
++
++		while (ipmi_find_bmc_prod_dev_id(&ipmidriver,
++						 bmc->id.product_id,
++						 bmc->id.device_id)) {
++			if (!warn_printed) {
++				printk(KERN_WARNING PFX
++				       "This machine has two different BMCs"
++				       " with the same product id and device"
++				       " id.  This is an error in the"
++				       " firmware, but incrementing the"
++				       " device id to work around the problem."
++				       " Prod ID = 0x%x, Dev ID = 0x%x\n",
++				       bmc->id.product_id, bmc->id.device_id);
++				warn_printed = 1;
++			}
++			bmc->id.device_id++; /* Wraps at 255 */
++			if (bmc->id.device_id == orig_dev_id) {
++				printk(KERN_ERR PFX
++				       "Out of device ids!\n");
++				break;
++			}
++		}
++
++		bmc->dev = platform_device_alloc(name, bmc->id.device_id);
++		if (!bmc->dev) {
++			mutex_unlock(&ipmidriver_mutex);
++			printk(KERN_ERR
++			       "ipmi_msghandler:"
++			       " Unable to allocate platform device\n");
++			return -ENOMEM;
++		}
++		bmc->dev->dev.driver = &ipmidriver;
++		dev_set_drvdata(&bmc->dev->dev, bmc);
++		kref_init(&bmc->refcount);
++
++		rv = platform_device_add(bmc->dev);
++		mutex_unlock(&ipmidriver_mutex);
++		if (rv) {
++			platform_device_put(bmc->dev);
++			bmc->dev = NULL;
++			printk(KERN_ERR
++			       "ipmi_msghandler:"
++			       " Unable to register bmc device: %d\n",
++			       rv);
++			/* Don't go to out_err, you can only do that if
++			   the device is registered already. */
++			return rv;
++		}
++
++		rv = create_files(bmc);
++		if (rv) {
++			mutex_lock(&ipmidriver_mutex);
++			platform_device_unregister(bmc->dev);
++			mutex_unlock(&ipmidriver_mutex);
++
++			return rv;
++		}
++
++		printk(KERN_INFO
++		       "ipmi: Found new BMC (man_id: 0x%6.6x, "
++		       " prod_id: 0x%4.4x, dev_id: 0x%2.2x)\n",
++		       bmc->id.manufacturer_id,
++		       bmc->id.product_id,
++		       bmc->id.device_id);
++	}
++
++	/*
++	 * create symlink from system interface device to bmc device
++	 * and back.
++	 */
++	intf->sysfs_name = kstrdup(sysfs_name, GFP_KERNEL);
++	if (!intf->sysfs_name) {
++		rv = -ENOMEM;
++		printk(KERN_ERR
++		       "ipmi_msghandler: allocate link to BMC: %d\n",
++		       rv);
++		goto out_err;
++	}
++
++	rv = sysfs_create_link(&intf->si_dev->kobj,
++			       &bmc->dev->dev.kobj, intf->sysfs_name);
++	if (rv) {
++		kfree(intf->sysfs_name);
++		intf->sysfs_name = NULL;
++		printk(KERN_ERR
++		       "ipmi_msghandler: Unable to create bmc symlink: %d\n",
++		       rv);
++		goto out_err;
++	}
++
++	size = snprintf(dummy, 0, "ipmi%d", ifnum);
++	intf->my_dev_name = kmalloc(size+1, GFP_KERNEL);
++	if (!intf->my_dev_name) {
++		kfree(intf->sysfs_name);
++		intf->sysfs_name = NULL;
++		rv = -ENOMEM;
++		printk(KERN_ERR
++		       "ipmi_msghandler: allocate link from BMC: %d\n",
++		       rv);
++		goto out_err;
++	}
++	snprintf(intf->my_dev_name, size+1, "ipmi%d", ifnum);
++
++	rv = sysfs_create_link(&bmc->dev->dev.kobj, &intf->si_dev->kobj,
++			       intf->my_dev_name);
++	if (rv) {
++		kfree(intf->sysfs_name);
++		intf->sysfs_name = NULL;
++		kfree(intf->my_dev_name);
++		intf->my_dev_name = NULL;
++		printk(KERN_ERR
++		       "ipmi_msghandler:"
++		       " Unable to create symlink to bmc: %d\n",
++		       rv);
++		goto out_err;
++	}
++
++	return 0;
++
++out_err:
++	ipmi_bmc_unregister(intf);
++	return rv;
++}
++
++static int
++send_guid_cmd(ipmi_smi_t intf, int chan)
++{
++	struct kernel_ipmi_msg            msg;
++	struct ipmi_system_interface_addr si;
++
++	si.addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
++	si.channel = IPMI_BMC_CHANNEL;
++	si.lun = 0;
++
++	msg.netfn = IPMI_NETFN_APP_REQUEST;
++	msg.cmd = IPMI_GET_DEVICE_GUID_CMD;
++	msg.data = NULL;
++	msg.data_len = 0;
++	return i_ipmi_request(NULL,
++			      intf,
++			      (struct ipmi_addr *) &si,
++			      0,
++			      &msg,
++			      intf,
++			      NULL,
++			      NULL,
++			      0,
++			      intf->channels[0].address,
++			      intf->channels[0].lun,
++			      -1, 0);
++}
++
++static void
++guid_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
++{
++	if ((msg->addr.addr_type != IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
++	    || (msg->msg.netfn != IPMI_NETFN_APP_RESPONSE)
++	    || (msg->msg.cmd != IPMI_GET_DEVICE_GUID_CMD))
++		/* Not for me */
++		return;
++
++	if (msg->msg.data[0] != 0) {
++		/* Error from getting the GUID, the BMC doesn't have one. */
++		intf->bmc->guid_set = 0;
++		goto out;
++	}
++
++	if (msg->msg.data_len < 17) {
++		intf->bmc->guid_set = 0;
++		printk(KERN_WARNING PFX
++		       "guid_handler: The GUID response from the BMC was too"
++		       " short, it was %d but should have been 17.  Assuming"
++		       " GUID is not available.\n",
++		       msg->msg.data_len);
++		goto out;
++	}
++
++	memcpy(intf->bmc->guid, msg->msg.data, 16);
++	intf->bmc->guid_set = 1;
++ out:
++	wake_up(&intf->waitq);
++}
++
++static void
++get_guid(ipmi_smi_t intf)
++{
++	int rv;
++
++	intf->bmc->guid_set = 0x2;
++	intf->null_user_handler = guid_handler;
++	rv = send_guid_cmd(intf, 0);
++	if (rv)
++		/* Send failed, no GUID available. */
++		intf->bmc->guid_set = 0;
++	wait_event(intf->waitq, intf->bmc->guid_set != 2);
++	intf->null_user_handler = NULL;
++}
++
++static int
++send_channel_info_cmd(ipmi_smi_t intf, int chan)
++{
++	struct kernel_ipmi_msg            msg;
++	unsigned char                     data[1];
++	struct ipmi_system_interface_addr si;
++
++	si.addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
++	si.channel = IPMI_BMC_CHANNEL;
++	si.lun = 0;
++
++	msg.netfn = IPMI_NETFN_APP_REQUEST;
++	msg.cmd = IPMI_GET_CHANNEL_INFO_CMD;
++	msg.data = data;
++	msg.data_len = 1;
++	data[0] = chan;
++	return i_ipmi_request(NULL,
++			      intf,
++			      (struct ipmi_addr *) &si,
++			      0,
++			      &msg,
++			      intf,
++			      NULL,
++			      NULL,
++			      0,
++			      intf->channels[0].address,
++			      intf->channels[0].lun,
++			      -1, 0);
++}
++
++static void
++channel_handler(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
++{
++	int rv = 0;
++	int chan;
++
++	if ((msg->addr.addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
++	    && (msg->msg.netfn == IPMI_NETFN_APP_RESPONSE)
++	    && (msg->msg.cmd == IPMI_GET_CHANNEL_INFO_CMD))
++	{
++		/* It's the one we want */
++		if (msg->msg.data[0] != 0) {
++			/* Got an error from the channel, just go on. */
++
++			if (msg->msg.data[0] == IPMI_INVALID_COMMAND_ERR) {
++				/* If the MC does not support this
++				   command, that is legal.  We just
++				   assume it has one IPMB at channel
++				   zero. */
++				intf->channels[0].medium
++					= IPMI_CHANNEL_MEDIUM_IPMB;
++				intf->channels[0].protocol
++					= IPMI_CHANNEL_PROTOCOL_IPMB;
++				rv = -ENOSYS;
++
++				intf->curr_channel = IPMI_MAX_CHANNELS;
++				wake_up(&intf->waitq);
++				goto out;
++			}
++			goto next_channel;
++		}
++		if (msg->msg.data_len < 4) {
++			/* Message not big enough, just go on. */
++			goto next_channel;
++		}
++		chan = intf->curr_channel;
++		intf->channels[chan].medium = msg->msg.data[2] & 0x7f;
++		intf->channels[chan].protocol = msg->msg.data[3] & 0x1f;
++
++	next_channel:
++		intf->curr_channel++;
++		if (intf->curr_channel >= IPMI_MAX_CHANNELS)
++			wake_up(&intf->waitq);
++		else
++			rv = send_channel_info_cmd(intf, intf->curr_channel);
++
++		if (rv) {
++			/* Got an error somehow, just give up. */
++			intf->curr_channel = IPMI_MAX_CHANNELS;
++			wake_up(&intf->waitq);
++
++			printk(KERN_WARNING PFX
++			       "Error sending channel information: %d\n",
++			       rv);
++		}
++	}
++ out:
++	return;
++}
++
++int ipmi_register_smi(struct ipmi_smi_handlers *handlers,
++		      void		       *send_info,
++		      struct ipmi_device_id    *device_id,
++		      struct device            *si_dev,
++		      const char               *sysfs_name,
++		      unsigned char            slave_addr)
++{
++	int              i, j;
++	int              rv;
++	ipmi_smi_t       intf;
++	ipmi_smi_t       tintf;
++	struct list_head *link;
++
++	/* Make sure the driver is actually initialized, this handles
++	   problems with initialization order. */
++	if (!initialized) {
++		rv = ipmi_init_msghandler();
++		if (rv)
++			return rv;
++		/* The init code doesn't return an error if it was turned
++		   off, but it won't initialize.  Check that. */
++		if (!initialized)
++			return -ENODEV;
++	}
++
++	intf = kmalloc(sizeof(*intf), GFP_KERNEL);
++	if (!intf)
++		return -ENOMEM;
++	memset(intf, 0, sizeof(*intf));
++
++	intf->ipmi_version_major = ipmi_version_major(device_id);
++	intf->ipmi_version_minor = ipmi_version_minor(device_id);
++
++	intf->bmc = kzalloc(sizeof(*intf->bmc), GFP_KERNEL);
++	if (!intf->bmc) {
++		kfree(intf);
++		return -ENOMEM;
++	}
++	intf->intf_num = -1; /* Mark it invalid for now. */
++	kref_init(&intf->refcount);
++	intf->bmc->id = *device_id;
++	intf->si_dev = si_dev;
++	for (j = 0; j < IPMI_MAX_CHANNELS; j++) {
++		intf->channels[j].address = IPMI_BMC_SLAVE_ADDR;
++		intf->channels[j].lun = 2;
++	}
++	if (slave_addr != 0)
++		intf->channels[0].address = slave_addr;
++	INIT_LIST_HEAD(&intf->users);
++	intf->handlers = handlers;
++	intf->send_info = send_info;
++	spin_lock_init(&intf->seq_lock);
++	for (j = 0; j < IPMI_IPMB_NUM_SEQ; j++) {
++		intf->seq_table[j].inuse = 0;
++		intf->seq_table[j].seqid = 0;
++	}
++	intf->curr_seq = 0;
++#ifdef CONFIG_PROC_FS
++	spin_lock_init(&intf->proc_entry_lock);
++#endif
++	spin_lock_init(&intf->waiting_msgs_lock);
++	INIT_LIST_HEAD(&intf->waiting_msgs);
++	spin_lock_init(&intf->events_lock);
++	INIT_LIST_HEAD(&intf->waiting_events);
++	intf->waiting_events_count = 0;
++	mutex_init(&intf->cmd_rcvrs_mutex);
++	spin_lock_init(&intf->maintenance_mode_lock);
++	INIT_LIST_HEAD(&intf->cmd_rcvrs);
++	init_waitqueue_head(&intf->waitq);
++
++	spin_lock_init(&intf->counter_lock);
++	intf->proc_dir = NULL;
++
++	mutex_lock(&smi_watchers_mutex);
++	mutex_lock(&ipmi_interfaces_mutex);
++	/* Look for a hole in the numbers. */
++	i = 0;
++	link = &ipmi_interfaces;
++	list_for_each_entry_rcu(tintf, &ipmi_interfaces, link) {
++		if (tintf->intf_num != i) {
++			link = &tintf->link;
++			break;
++		}
++		i++;
++	}
++	/* Add the new interface in numeric order. */
++	if (i == 0)
++		list_add_rcu(&intf->link, &ipmi_interfaces);
++	else
++		list_add_tail_rcu(&intf->link, link);
++
++	rv = handlers->start_processing(send_info, intf);
++	if (rv)
++		goto out;
++
++	get_guid(intf);
++
++	if ((intf->ipmi_version_major > 1)
++	    || ((intf->ipmi_version_major == 1)
++		&& (intf->ipmi_version_minor >= 5)))
++	{
++		/* Start scanning the channels to see what is
++		   available. */
++		intf->null_user_handler = channel_handler;
++		intf->curr_channel = 0;
++		rv = send_channel_info_cmd(intf, 0);
++		if (rv)
++			goto out;
++
++		/* Wait for the channel info to be read. */
++		wait_event(intf->waitq,
++			   intf->curr_channel >= IPMI_MAX_CHANNELS);
++		intf->null_user_handler = NULL;
++	} else {
++		/* Assume a single IPMB channel at zero. */
++		intf->channels[0].medium = IPMI_CHANNEL_MEDIUM_IPMB;
++		intf->channels[0].protocol = IPMI_CHANNEL_PROTOCOL_IPMB;
++	}
++
++	if (rv == 0)
++		rv = add_proc_entries(intf, i);
++
++	rv = ipmi_bmc_register(intf, i, sysfs_name);
++
++ out:
++	if (rv) {
++		if (intf->proc_dir)
++			remove_proc_entries(intf);
++		intf->handlers = NULL;
++		list_del_rcu(&intf->link);
++		mutex_unlock(&ipmi_interfaces_mutex);
++		mutex_unlock(&smi_watchers_mutex);
++		synchronize_rcu();
++		kref_put(&intf->refcount, intf_free);
++	} else {
++		/* After this point the interface is legal to use. */
++		intf->intf_num = i;
++		mutex_unlock(&ipmi_interfaces_mutex);
++		call_smi_watchers(i, intf->si_dev);
++		mutex_unlock(&smi_watchers_mutex);
++	}
++
++	return rv;
++}
++
++static void cleanup_smi_msgs(ipmi_smi_t intf)
++{
++	int              i;
++	struct seq_table *ent;
++
++	/* No need for locks, the interface is down. */
++	for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++) {
++		ent = &(intf->seq_table[i]);
++		if (!ent->inuse)
++			continue;
++		deliver_err_response(ent->recv_msg, IPMI_ERR_UNSPECIFIED);
++	}
++}
++
++int ipmi_unregister_smi(ipmi_smi_t intf)
++{
++	struct ipmi_smi_watcher *w;
++	int    intf_num = intf->intf_num;
++
++	ipmi_bmc_unregister(intf);
++
++	mutex_lock(&smi_watchers_mutex);
++	mutex_lock(&ipmi_interfaces_mutex);
++	intf->intf_num = -1;
++	intf->handlers = NULL;
++	list_del_rcu(&intf->link);
++	mutex_unlock(&ipmi_interfaces_mutex);
++	synchronize_rcu();
++
++	cleanup_smi_msgs(intf);
++
++	remove_proc_entries(intf);
++
++	/* Call all the watcher interfaces to tell them that
++	   an interface is gone. */
++	list_for_each_entry(w, &smi_watchers, link)
++		w->smi_gone(intf_num);
++	mutex_unlock(&smi_watchers_mutex);
++
++	kref_put(&intf->refcount, intf_free);
++	return 0;
++}
++
++static int handle_ipmb_get_msg_rsp(ipmi_smi_t          intf,
++				   struct ipmi_smi_msg *msg)
++{
++	struct ipmi_ipmb_addr ipmb_addr;
++	struct ipmi_recv_msg  *recv_msg;
++	unsigned long         flags;
++
++	
++	/* This is 11, not 10, because the response must contain a
++	 * completion code. */
++	if (msg->rsp_size < 11) {
++		/* Message not big enough, just ignore it. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->invalid_ipmb_responses++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		return 0;
++	}
++
++	if (msg->rsp[2] != 0) {
++		/* An error getting the response, just ignore it. */
++		return 0;
++	}
++
++	ipmb_addr.addr_type = IPMI_IPMB_ADDR_TYPE;
++	ipmb_addr.slave_addr = msg->rsp[6];
++	ipmb_addr.channel = msg->rsp[3] & 0x0f;
++	ipmb_addr.lun = msg->rsp[7] & 3;
++
++	/* It's a response from a remote entity.  Look up the sequence
++	   number and handle the response. */
++	if (intf_find_seq(intf,
++			  msg->rsp[7] >> 2,
++			  msg->rsp[3] & 0x0f,
++			  msg->rsp[8],
++			  (msg->rsp[4] >> 2) & (~1),
++			  (struct ipmi_addr *) &(ipmb_addr),
++			  &recv_msg))
++	{
++		/* We were unable to find the sequence number,
++		   so just nuke the message. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->unhandled_ipmb_responses++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		return 0;
++	}
++
++	memcpy(recv_msg->msg_data,
++	       &(msg->rsp[9]),
++	       msg->rsp_size - 9);
++	/* THe other fields matched, so no need to set them, except
++           for netfn, which needs to be the response that was
++           returned, not the request value. */
++	recv_msg->msg.netfn = msg->rsp[4] >> 2;
++	recv_msg->msg.data = recv_msg->msg_data;
++	recv_msg->msg.data_len = msg->rsp_size - 10;
++	recv_msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
++	spin_lock_irqsave(&intf->counter_lock, flags);
++	intf->handled_ipmb_responses++;
++	spin_unlock_irqrestore(&intf->counter_lock, flags);
++	deliver_response(recv_msg);
++
++	return 0;
++}
++
++static int handle_ipmb_get_msg_cmd(ipmi_smi_t          intf,
++				   struct ipmi_smi_msg *msg)
++{
++	struct cmd_rcvr          *rcvr;
++	int                      rv = 0;
++	unsigned char            netfn;
++	unsigned char            cmd;
++	unsigned char            chan;
++	ipmi_user_t              user = NULL;
++	struct ipmi_ipmb_addr    *ipmb_addr;
++	struct ipmi_recv_msg     *recv_msg;
++	unsigned long            flags;
++	struct ipmi_smi_handlers *handlers;
++
++	if (msg->rsp_size < 10) {
++		/* Message not big enough, just ignore it. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->invalid_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		return 0;
++	}
++
++	if (msg->rsp[2] != 0) {
++		/* An error getting the response, just ignore it. */
++		return 0;
++	}
++
++	netfn = msg->rsp[4] >> 2;
++	cmd = msg->rsp[8];
++	chan = msg->rsp[3] & 0xf;
++
++	rcu_read_lock();
++	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
++	if (rcvr) {
++		user = rcvr->user;
++		kref_get(&user->refcount);
++	} else
++		user = NULL;
++	rcu_read_unlock();
++
++	if (user == NULL) {
++		/* We didn't find a user, deliver an error response. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->unhandled_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++
++		msg->data[0] = (IPMI_NETFN_APP_REQUEST << 2);
++		msg->data[1] = IPMI_SEND_MSG_CMD;
++		msg->data[2] = msg->rsp[3];
++		msg->data[3] = msg->rsp[6];
++                msg->data[4] = ((netfn + 1) << 2) | (msg->rsp[7] & 0x3);
++		msg->data[5] = ipmb_checksum(&(msg->data[3]), 2);
++		msg->data[6] = intf->channels[msg->rsp[3] & 0xf].address;
++                /* rqseq/lun */
++                msg->data[7] = (msg->rsp[7] & 0xfc) | (msg->rsp[4] & 0x3);
++		msg->data[8] = msg->rsp[8]; /* cmd */
++		msg->data[9] = IPMI_INVALID_CMD_COMPLETION_CODE;
++		msg->data[10] = ipmb_checksum(&(msg->data[6]), 4);
++		msg->data_size = 11;
++
++#ifdef DEBUG_MSGING
++	{
++		int m;
++		printk("Invalid command:");
++		for (m = 0; m < msg->data_size; m++)
++			printk(" %2.2x", msg->data[m]);
++		printk("\n");
++	}
++#endif
++		rcu_read_lock();
++		handlers = intf->handlers;
++		if (handlers) {
++			handlers->sender(intf->send_info, msg, 0);
++			/* We used the message, so return the value
++			   that causes it to not be freed or
++			   queued. */
++			rv = -1;
++		}
++		rcu_read_unlock();
++	} else {
++		/* Deliver the message to the user. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->handled_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++
++		recv_msg = ipmi_alloc_recv_msg();
++		if (!recv_msg) {
++			/* We couldn't allocate memory for the
++                           message, so requeue it for handling
++                           later. */
++			rv = 1;
++			kref_put(&user->refcount, free_user);
++		} else {
++			/* Extract the source address from the data. */
++			ipmb_addr = (struct ipmi_ipmb_addr *) &recv_msg->addr;
++			ipmb_addr->addr_type = IPMI_IPMB_ADDR_TYPE;
++			ipmb_addr->slave_addr = msg->rsp[6];
++			ipmb_addr->lun = msg->rsp[7] & 3;
++			ipmb_addr->channel = msg->rsp[3] & 0xf;
++
++			/* Extract the rest of the message information
++			   from the IPMB header.*/
++			recv_msg->user = user;
++			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
++			recv_msg->msgid = msg->rsp[7] >> 2;
++			recv_msg->msg.netfn = msg->rsp[4] >> 2;
++			recv_msg->msg.cmd = msg->rsp[8];
++			recv_msg->msg.data = recv_msg->msg_data;
++
++			/* We chop off 10, not 9 bytes because the checksum
++			   at the end also needs to be removed. */
++			recv_msg->msg.data_len = msg->rsp_size - 10;
++			memcpy(recv_msg->msg_data,
++			       &(msg->rsp[9]),
++			       msg->rsp_size - 10);
++			deliver_response(recv_msg);
++		}
++	}
++
++	return rv;
++}
++
++static int handle_lan_get_msg_rsp(ipmi_smi_t          intf,
++				  struct ipmi_smi_msg *msg)
++{
++	struct ipmi_lan_addr  lan_addr;
++	struct ipmi_recv_msg  *recv_msg;
++	unsigned long         flags;
++
++
++	/* This is 13, not 12, because the response must contain a
++	 * completion code. */
++	if (msg->rsp_size < 13) {
++		/* Message not big enough, just ignore it. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->invalid_lan_responses++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		return 0;
++	}
++
++	if (msg->rsp[2] != 0) {
++		/* An error getting the response, just ignore it. */
++		return 0;
++	}
++
++	lan_addr.addr_type = IPMI_LAN_ADDR_TYPE;
++	lan_addr.session_handle = msg->rsp[4];
++	lan_addr.remote_SWID = msg->rsp[8];
++	lan_addr.local_SWID = msg->rsp[5];
++	lan_addr.channel = msg->rsp[3] & 0x0f;
++	lan_addr.privilege = msg->rsp[3] >> 4;
++	lan_addr.lun = msg->rsp[9] & 3;
++
++	/* It's a response from a remote entity.  Look up the sequence
++	   number and handle the response. */
++	if (intf_find_seq(intf,
++			  msg->rsp[9] >> 2,
++			  msg->rsp[3] & 0x0f,
++			  msg->rsp[10],
++			  (msg->rsp[6] >> 2) & (~1),
++			  (struct ipmi_addr *) &(lan_addr),
++			  &recv_msg))
++	{
++		/* We were unable to find the sequence number,
++		   so just nuke the message. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->unhandled_lan_responses++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		return 0;
++	}
++
++	memcpy(recv_msg->msg_data,
++	       &(msg->rsp[11]),
++	       msg->rsp_size - 11);
++	/* The other fields matched, so no need to set them, except
++           for netfn, which needs to be the response that was
++           returned, not the request value. */
++	recv_msg->msg.netfn = msg->rsp[6] >> 2;
++	recv_msg->msg.data = recv_msg->msg_data;
++	recv_msg->msg.data_len = msg->rsp_size - 12;
++	recv_msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
++	spin_lock_irqsave(&intf->counter_lock, flags);
++	intf->handled_lan_responses++;
++	spin_unlock_irqrestore(&intf->counter_lock, flags);
++	deliver_response(recv_msg);
++
++	return 0;
++}
++
++static int handle_lan_get_msg_cmd(ipmi_smi_t          intf,
++				  struct ipmi_smi_msg *msg)
++{
++	struct cmd_rcvr          *rcvr;
++	int                      rv = 0;
++	unsigned char            netfn;
++	unsigned char            cmd;
++	unsigned char            chan;
++	ipmi_user_t              user = NULL;
++	struct ipmi_lan_addr     *lan_addr;
++	struct ipmi_recv_msg     *recv_msg;
++	unsigned long            flags;
++
++	if (msg->rsp_size < 12) {
++		/* Message not big enough, just ignore it. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->invalid_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		return 0;
++	}
++
++	if (msg->rsp[2] != 0) {
++		/* An error getting the response, just ignore it. */
++		return 0;
++	}
++
++	netfn = msg->rsp[6] >> 2;
++	cmd = msg->rsp[10];
++	chan = msg->rsp[3] & 0xf;
++
++	rcu_read_lock();
++	rcvr = find_cmd_rcvr(intf, netfn, cmd, chan);
++	if (rcvr) {
++		user = rcvr->user;
++		kref_get(&user->refcount);
++	} else
++		user = NULL;
++	rcu_read_unlock();
++
++	if (user == NULL) {
++		/* We didn't find a user, just give up. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->unhandled_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++
++		rv = 0; /* Don't do anything with these messages, just
++			   allow them to be freed. */
++	} else {
++		/* Deliver the message to the user. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->handled_commands++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++
++		recv_msg = ipmi_alloc_recv_msg();
++		if (!recv_msg) {
++			/* We couldn't allocate memory for the
++                           message, so requeue it for handling
++                           later. */
++			rv = 1;
++			kref_put(&user->refcount, free_user);
++		} else {
++			/* Extract the source address from the data. */
++			lan_addr = (struct ipmi_lan_addr *) &recv_msg->addr;
++			lan_addr->addr_type = IPMI_LAN_ADDR_TYPE;
++			lan_addr->session_handle = msg->rsp[4];
++			lan_addr->remote_SWID = msg->rsp[8];
++			lan_addr->local_SWID = msg->rsp[5];
++			lan_addr->lun = msg->rsp[9] & 3;
++			lan_addr->channel = msg->rsp[3] & 0xf;
++			lan_addr->privilege = msg->rsp[3] >> 4;
++
++			/* Extract the rest of the message information
++			   from the IPMB header.*/
++			recv_msg->user = user;
++			recv_msg->recv_type = IPMI_CMD_RECV_TYPE;
++			recv_msg->msgid = msg->rsp[9] >> 2;
++			recv_msg->msg.netfn = msg->rsp[6] >> 2;
++			recv_msg->msg.cmd = msg->rsp[10];
++			recv_msg->msg.data = recv_msg->msg_data;
++
++			/* We chop off 12, not 11 bytes because the checksum
++			   at the end also needs to be removed. */
++			recv_msg->msg.data_len = msg->rsp_size - 12;
++			memcpy(recv_msg->msg_data,
++			       &(msg->rsp[11]),
++			       msg->rsp_size - 12);
++			deliver_response(recv_msg);
++		}
++	}
++
++	return rv;
++}
++
++static void copy_event_into_recv_msg(struct ipmi_recv_msg *recv_msg,
++				     struct ipmi_smi_msg  *msg)
++{
++	struct ipmi_system_interface_addr *smi_addr;
++	
++	recv_msg->msgid = 0;
++	smi_addr = (struct ipmi_system_interface_addr *) &(recv_msg->addr);
++	smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
++	smi_addr->channel = IPMI_BMC_CHANNEL;
++	smi_addr->lun = msg->rsp[0] & 3;
++	recv_msg->recv_type = IPMI_ASYNC_EVENT_RECV_TYPE;
++	recv_msg->msg.netfn = msg->rsp[0] >> 2;
++	recv_msg->msg.cmd = msg->rsp[1];
++	memcpy(recv_msg->msg_data, &(msg->rsp[3]), msg->rsp_size - 3);
++	recv_msg->msg.data = recv_msg->msg_data;
++	recv_msg->msg.data_len = msg->rsp_size - 3;
++}
++
++static int handle_read_event_rsp(ipmi_smi_t          intf,
++				 struct ipmi_smi_msg *msg)
++{
++	struct ipmi_recv_msg *recv_msg, *recv_msg2;
++	struct list_head     msgs;
++	ipmi_user_t          user;
++	int                  rv = 0;
++	int                  deliver_count = 0;
++	unsigned long        flags;
++
++	if (msg->rsp_size < 19) {
++		/* Message is too small to be an IPMB event. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->invalid_events++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		return 0;
++	}
++
++	if (msg->rsp[2] != 0) {
++		/* An error getting the event, just ignore it. */
++		return 0;
++	}
++
++	INIT_LIST_HEAD(&msgs);
++
++	spin_lock_irqsave(&intf->events_lock, flags);
++
++	spin_lock(&intf->counter_lock);
++	intf->events++;
++	spin_unlock(&intf->counter_lock);
++
++	/* Allocate and fill in one message for every user that is getting
++	   events. */
++	rcu_read_lock();
++	list_for_each_entry_rcu(user, &intf->users, link) {
++		if (!user->gets_events)
++			continue;
++
++		recv_msg = ipmi_alloc_recv_msg();
++		if (!recv_msg) {
++			rcu_read_unlock();
++			list_for_each_entry_safe(recv_msg, recv_msg2, &msgs,
++						 link) {
++				list_del(&recv_msg->link);
++				ipmi_free_recv_msg(recv_msg);
++			}
++			/* We couldn't allocate memory for the
++                           message, so requeue it for handling
++                           later. */
++			rv = 1;
++			goto out;
++		}
++
++		deliver_count++;
++
++		copy_event_into_recv_msg(recv_msg, msg);
++		recv_msg->user = user;
++		kref_get(&user->refcount);
++		list_add_tail(&(recv_msg->link), &msgs);
++	}
++	rcu_read_unlock();
++
++	if (deliver_count) {
++		/* Now deliver all the messages. */
++		list_for_each_entry_safe(recv_msg, recv_msg2, &msgs, link) {
++			list_del(&recv_msg->link);
++			deliver_response(recv_msg);
++		}
++	} else if (intf->waiting_events_count < MAX_EVENTS_IN_QUEUE) {
++		/* No one to receive the message, put it in queue if there's
++		   not already too many things in the queue. */
++		recv_msg = ipmi_alloc_recv_msg();
++		if (!recv_msg) {
++			/* We couldn't allocate memory for the
++                           message, so requeue it for handling
++                           later. */
++			rv = 1;
++			goto out;
++		}
++
++		copy_event_into_recv_msg(recv_msg, msg);
++		list_add_tail(&(recv_msg->link), &(intf->waiting_events));
++		intf->waiting_events_count++;
++	} else {
++		/* There's too many things in the queue, discard this
++		   message. */
++		printk(KERN_WARNING PFX "Event queue full, discarding an"
++		       " incoming event\n");
++	}
++
++ out:
++	spin_unlock_irqrestore(&(intf->events_lock), flags);
++
++	return rv;
++}
++
++static int handle_bmc_rsp(ipmi_smi_t          intf,
++			  struct ipmi_smi_msg *msg)
++{
++	struct ipmi_recv_msg *recv_msg;
++	unsigned long        flags;
++	struct ipmi_user     *user;
++
++	recv_msg = (struct ipmi_recv_msg *) msg->user_data;
++	if (recv_msg == NULL)
++	{
++		printk(KERN_WARNING"IPMI message received with no owner. This\n"
++			"could be because of a malformed message, or\n"
++			"because of a hardware error.  Contact your\n"
++			"hardware vender for assistance\n");
++		return 0;
++	}
++
++	user = recv_msg->user;
++	/* Make sure the user still exists. */
++	if (user && !user->valid) {
++		/* The user for the message went away, so give up. */
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->unhandled_local_responses++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		ipmi_free_recv_msg(recv_msg);
++	} else {
++		struct ipmi_system_interface_addr *smi_addr;
++
++		spin_lock_irqsave(&intf->counter_lock, flags);
++		intf->handled_local_responses++;
++		spin_unlock_irqrestore(&intf->counter_lock, flags);
++		recv_msg->recv_type = IPMI_RESPONSE_RECV_TYPE;
++		recv_msg->msgid = msg->msgid;
++		smi_addr = ((struct ipmi_system_interface_addr *)
++			    &(recv_msg->addr));
++		smi_addr->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
++		smi_addr->channel = IPMI_BMC_CHANNEL;
++		smi_addr->lun = msg->rsp[0] & 3;
++		recv_msg->msg.netfn = msg->rsp[0] >> 2;
++		recv_msg->msg.cmd = msg->rsp[1];
++		memcpy(recv_msg->msg_data,
++		       &(msg->rsp[2]),
++		       msg->rsp_size - 2);
++		recv_msg->msg.data = recv_msg->msg_data;
++		recv_msg->msg.data_len = msg->rsp_size - 2;
++		deliver_response(recv_msg);
++	}
++
++	return 0;
++}
++
++/* Handle a new message.  Return 1 if the message should be requeued,
++   0 if the message should be freed, or -1 if the message should not
++   be freed or requeued. */
++static int handle_new_recv_msg(ipmi_smi_t          intf,
++			       struct ipmi_smi_msg *msg)
++{
++	int requeue;
++	int chan;
++
++#ifdef DEBUG_MSGING
++	int m;
++	printk("Recv:");
++	for (m = 0; m < msg->rsp_size; m++)
++		printk(" %2.2x", msg->rsp[m]);
++	printk("\n");
++#endif
++	if (msg->rsp_size < 2) {
++		/* Message is too small to be correct. */
++		printk(KERN_WARNING PFX "BMC returned to small a message"
++		       " for netfn %x cmd %x, got %d bytes\n",
++		       (msg->data[0] >> 2) | 1, msg->data[1], msg->rsp_size);
++
++		/* Generate an error response for the message. */
++		msg->rsp[0] = msg->data[0] | (1 << 2);
++		msg->rsp[1] = msg->data[1];
++		msg->rsp[2] = IPMI_ERR_UNSPECIFIED;
++		msg->rsp_size = 3;
++	} else if (((msg->rsp[0] >> 2) != ((msg->data[0] >> 2) | 1))/* Netfn */
++		   || (msg->rsp[1] != msg->data[1]))		  /* Command */
++	{
++		/* The response is not even marginally correct. */
++		printk(KERN_WARNING PFX "BMC returned incorrect response,"
++		       " expected netfn %x cmd %x, got netfn %x cmd %x\n",
++		       (msg->data[0] >> 2) | 1, msg->data[1],
++		       msg->rsp[0] >> 2, msg->rsp[1]);
++
++		/* Generate an error response for the message. */
++		msg->rsp[0] = msg->data[0] | (1 << 2);
++		msg->rsp[1] = msg->data[1];
++		msg->rsp[2] = IPMI_ERR_UNSPECIFIED;
++		msg->rsp_size = 3;
++	}
++
++	if ((msg->rsp[0] == ((IPMI_NETFN_APP_REQUEST|1) << 2))
++	    && (msg->rsp[1] == IPMI_SEND_MSG_CMD)
++	    && (msg->user_data != NULL))
++	{
++		/* It's a response to a response we sent.  For this we
++		   deliver a send message response to the user. */
++		struct ipmi_recv_msg     *recv_msg = msg->user_data;
++
++		requeue = 0;
++		if (msg->rsp_size < 2)
++			/* Message is too small to be correct. */
++			goto out;
++
++		chan = msg->data[2] & 0x0f;
++		if (chan >= IPMI_MAX_CHANNELS)
++			/* Invalid channel number */
++			goto out;
++
++		if (!recv_msg)
++			goto out;
++
++		/* Make sure the user still exists. */
++		if (!recv_msg->user || !recv_msg->user->valid)
++			goto out;
++
++		recv_msg->recv_type = IPMI_RESPONSE_RESPONSE_TYPE;
++		recv_msg->msg.data = recv_msg->msg_data;
++		recv_msg->msg.data_len = 1;
++		recv_msg->msg_data[0] = msg->rsp[2];
++		deliver_response(recv_msg);
++	} else if ((msg->rsp[0] == ((IPMI_NETFN_APP_REQUEST|1) << 2))
++		   && (msg->rsp[1] == IPMI_GET_MSG_CMD))
++	{
++		/* It's from the receive queue. */
++		chan = msg->rsp[3] & 0xf;
++		if (chan >= IPMI_MAX_CHANNELS) {
++			/* Invalid channel number */
++			requeue = 0;
++			goto out;
++		}
++
++		switch (intf->channels[chan].medium) {
++		case IPMI_CHANNEL_MEDIUM_IPMB:
++			if (msg->rsp[4] & 0x04) {
++				/* It's a response, so find the
++				   requesting message and send it up. */
++				requeue = handle_ipmb_get_msg_rsp(intf, msg);
++			} else {
++				/* It's a command to the SMS from some other
++				   entity.  Handle that. */
++				requeue = handle_ipmb_get_msg_cmd(intf, msg);
++			}
++			break;
++
++		case IPMI_CHANNEL_MEDIUM_8023LAN:
++		case IPMI_CHANNEL_MEDIUM_ASYNC:
++			if (msg->rsp[6] & 0x04) {
++				/* It's a response, so find the
++				   requesting message and send it up. */
++				requeue = handle_lan_get_msg_rsp(intf, msg);
++			} else {
++				/* It's a command to the SMS from some other
++				   entity.  Handle that. */
++				requeue = handle_lan_get_msg_cmd(intf, msg);
++			}
++			break;
++
++		default:
++			/* We don't handle the channel type, so just
++			 * free the message. */
++			requeue = 0;
++		}
++
++	} else if ((msg->rsp[0] == ((IPMI_NETFN_APP_REQUEST|1) << 2))
++		   && (msg->rsp[1] == IPMI_READ_EVENT_MSG_BUFFER_CMD))
++	{
++		/* It's an asyncronous event. */
++		requeue = handle_read_event_rsp(intf, msg);
++	} else {
++		/* It's a response from the local BMC. */
++		requeue = handle_bmc_rsp(intf, msg);
++	}
++
++ out:
++	return requeue;
++}
++
++/* Handle a new message from the lower layer. */
++void ipmi_smi_msg_received(ipmi_smi_t          intf,
++			   struct ipmi_smi_msg *msg)
++{
++	unsigned long flags;
++	int           rv;
++
++
++	if ((msg->data_size >= 2)
++	    && (msg->data[0] == (IPMI_NETFN_APP_REQUEST << 2))
++	    && (msg->data[1] == IPMI_SEND_MSG_CMD)
++	    && (msg->user_data == NULL))
++	{
++		/* This is the local response to a command send, start
++                   the timer for these.  The user_data will not be
++                   NULL if this is a response send, and we will let
++                   response sends just go through. */
++
++		/* Check for errors, if we get certain errors (ones
++                   that mean basically we can try again later), we
++                   ignore them and start the timer.  Otherwise we
++                   report the error immediately. */
++		if ((msg->rsp_size >= 3) && (msg->rsp[2] != 0)
++		    && (msg->rsp[2] != IPMI_NODE_BUSY_ERR)
++		    && (msg->rsp[2] != IPMI_LOST_ARBITRATION_ERR)
++		    && (msg->rsp[2] != IPMI_BUS_ERR)
++		    && (msg->rsp[2] != IPMI_NAK_ON_WRITE_ERR))
++		{
++			int chan = msg->rsp[3] & 0xf;
++
++			/* Got an error sending the message, handle it. */
++			spin_lock_irqsave(&intf->counter_lock, flags);
++			if (chan >= IPMI_MAX_CHANNELS)
++				; /* This shouldn't happen */
++			else if ((intf->channels[chan].medium
++				  == IPMI_CHANNEL_MEDIUM_8023LAN)
++				 || (intf->channels[chan].medium
++				     == IPMI_CHANNEL_MEDIUM_ASYNC))
++				intf->sent_lan_command_errs++;
++			else
++				intf->sent_ipmb_command_errs++;
++			spin_unlock_irqrestore(&intf->counter_lock, flags);
++			intf_err_seq(intf, msg->msgid, msg->rsp[2]);
++		} else {
++			/* The message was sent, start the timer. */
++			intf_start_seq_timer(intf, msg->msgid);
++		}
++
++		ipmi_free_smi_msg(msg);
++		goto out;
++	}
++
++	/* To preserve message order, if the list is not empty, we
++           tack this message onto the end of the list. */
++	spin_lock_irqsave(&intf->waiting_msgs_lock, flags);
++	if (!list_empty(&intf->waiting_msgs)) {
++		list_add_tail(&msg->link, &intf->waiting_msgs);
++		spin_unlock_irqrestore(&intf->waiting_msgs_lock, flags);
++		goto out;
++	}
++	spin_unlock_irqrestore(&intf->waiting_msgs_lock, flags);
++		
++	rv = handle_new_recv_msg(intf, msg);
++	if (rv > 0) {
++		/* Could not handle the message now, just add it to a
++                   list to handle later. */
++		spin_lock_irqsave(&intf->waiting_msgs_lock, flags);
++		list_add_tail(&msg->link, &intf->waiting_msgs);
++		spin_unlock_irqrestore(&intf->waiting_msgs_lock, flags);
++	} else if (rv == 0) {
++		ipmi_free_smi_msg(msg);
++	}
++
++ out:
++	return;
++}
++
++void ipmi_smi_watchdog_pretimeout(ipmi_smi_t intf)
++{
++	ipmi_user_t user;
++
++	rcu_read_lock();
++	list_for_each_entry_rcu(user, &intf->users, link) {
++		if (!user->handler->ipmi_watchdog_pretimeout)
++			continue;
++
++		user->handler->ipmi_watchdog_pretimeout(user->handler_data);
++	}
++	rcu_read_unlock();
++}
++
++
++static struct ipmi_smi_msg *
++smi_from_recv_msg(ipmi_smi_t intf, struct ipmi_recv_msg *recv_msg,
++		  unsigned char seq, long seqid)
++{
++	struct ipmi_smi_msg *smi_msg = ipmi_alloc_smi_msg();
++	if (!smi_msg)
++		/* If we can't allocate the message, then just return, we
++		   get 4 retries, so this should be ok. */
++		return NULL;
++
++	memcpy(smi_msg->data, recv_msg->msg.data, recv_msg->msg.data_len);
++	smi_msg->data_size = recv_msg->msg.data_len;
++	smi_msg->msgid = STORE_SEQ_IN_MSGID(seq, seqid);
++		
++#ifdef DEBUG_MSGING
++	{
++		int m;
++		printk("Resend: ");
++		for (m = 0; m < smi_msg->data_size; m++)
++			printk(" %2.2x", smi_msg->data[m]);
++		printk("\n");
++	}
++#endif
++	return smi_msg;
++}
++
++static void check_msg_timeout(ipmi_smi_t intf, struct seq_table *ent,
++			      struct list_head *timeouts, long timeout_period,
++			      int slot, unsigned long *flags)
++{
++	struct ipmi_recv_msg     *msg;
++	struct ipmi_smi_handlers *handlers;
++
++	if (intf->intf_num == -1)
++		return;
++
++	if (!ent->inuse)
++		return;
++
++	ent->timeout -= timeout_period;
++	if (ent->timeout > 0)
++		return;
++
++	if (ent->retries_left == 0) {
++		/* The message has used all its retries. */
++		ent->inuse = 0;
++		msg = ent->recv_msg;
++		list_add_tail(&msg->link, timeouts);
++		spin_lock(&intf->counter_lock);
++		if (ent->broadcast)
++			intf->timed_out_ipmb_broadcasts++;
++		else if (ent->recv_msg->addr.addr_type == IPMI_LAN_ADDR_TYPE)
++			intf->timed_out_lan_commands++;
++		else
++			intf->timed_out_ipmb_commands++;
++		spin_unlock(&intf->counter_lock);
++	} else {
++		struct ipmi_smi_msg *smi_msg;
++		/* More retries, send again. */
++
++		/* Start with the max timer, set to normal
++		   timer after the message is sent. */
++		ent->timeout = MAX_MSG_TIMEOUT;
++		ent->retries_left--;
++		spin_lock(&intf->counter_lock);
++		if (ent->recv_msg->addr.addr_type == IPMI_LAN_ADDR_TYPE)
++			intf->retransmitted_lan_commands++;
++		else
++			intf->retransmitted_ipmb_commands++;
++		spin_unlock(&intf->counter_lock);
++
++		smi_msg = smi_from_recv_msg(intf, ent->recv_msg, slot,
++					    ent->seqid);
++		if (!smi_msg)
++			return;
++
++		spin_unlock_irqrestore(&intf->seq_lock, *flags);
++
++		/* Send the new message.  We send with a zero
++		 * priority.  It timed out, I doubt time is
++		 * that critical now, and high priority
++		 * messages are really only for messages to the
++		 * local MC, which don't get resent. */
++		handlers = intf->handlers;
++		if (handlers)
++			intf->handlers->sender(intf->send_info,
++					       smi_msg, 0);
++		else
++			ipmi_free_smi_msg(smi_msg);
++
++		spin_lock_irqsave(&intf->seq_lock, *flags);
++	}
++}
++
++static void ipmi_timeout_handler(long timeout_period)
++{
++	ipmi_smi_t           intf;
++	struct list_head     timeouts;
++	struct ipmi_recv_msg *msg, *msg2;
++	struct ipmi_smi_msg  *smi_msg, *smi_msg2;
++	unsigned long        flags;
++	int                  i;
++
++	rcu_read_lock();
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		/* See if any waiting messages need to be processed. */
++		spin_lock_irqsave(&intf->waiting_msgs_lock, flags);
++		list_for_each_entry_safe(smi_msg, smi_msg2,
++					 &intf->waiting_msgs, link) {
++			if (!handle_new_recv_msg(intf, smi_msg)) {
++				list_del(&smi_msg->link);
++				ipmi_free_smi_msg(smi_msg);
++			} else {
++				/* To preserve message order, quit if we
++				   can't handle a message. */
++				break;
++			}
++		}
++		spin_unlock_irqrestore(&intf->waiting_msgs_lock, flags);
++
++		/* Go through the seq table and find any messages that
++		   have timed out, putting them in the timeouts
++		   list. */
++		INIT_LIST_HEAD(&timeouts);
++		spin_lock_irqsave(&intf->seq_lock, flags);
++		for (i = 0; i < IPMI_IPMB_NUM_SEQ; i++)
++			check_msg_timeout(intf, &(intf->seq_table[i]),
++					  &timeouts, timeout_period, i,
++					  &flags);
++		spin_unlock_irqrestore(&intf->seq_lock, flags);
++
++		list_for_each_entry_safe(msg, msg2, &timeouts, link)
++			deliver_err_response(msg, IPMI_TIMEOUT_COMPLETION_CODE);
++
++		/*
++		 * Maintenance mode handling.  Check the timeout
++		 * optimistically before we claim the lock.  It may
++		 * mean a timeout gets missed occasionally, but that
++		 * only means the timeout gets extended by one period
++		 * in that case.  No big deal, and it avoids the lock
++		 * most of the time.
++		 */
++		if (intf->auto_maintenance_timeout > 0) {
++			spin_lock_irqsave(&intf->maintenance_mode_lock, flags);
++			if (intf->auto_maintenance_timeout > 0) {
++				intf->auto_maintenance_timeout
++					-= timeout_period;
++				if (!intf->maintenance_mode
++				    && (intf->auto_maintenance_timeout <= 0))
++				{
++					intf->maintenance_mode_enable = 0;
++					maintenance_mode_update(intf);
++				}
++			}
++			spin_unlock_irqrestore(&intf->maintenance_mode_lock,
++					       flags);
++		}
++	}
++	rcu_read_unlock();
++}
++
++static void ipmi_request_event(void)
++{
++	ipmi_smi_t               intf;
++	struct ipmi_smi_handlers *handlers;
++
++	rcu_read_lock();
++	/* Called from the timer, no need to check if handlers is
++	 * valid. */
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		/* No event requests when in maintenance mode. */
++		if (intf->maintenance_mode_enable)
++			continue;
++
++		handlers = intf->handlers;
++		if (handlers)
++			handlers->request_events(intf->send_info);
++	}
++	rcu_read_unlock();
++}
++
++static struct timer_list ipmi_timer;
++
++/* Call every ~100 ms. */
++#define IPMI_TIMEOUT_TIME	100
++
++/* How many jiffies does it take to get to the timeout time. */
++#define IPMI_TIMEOUT_JIFFIES	((IPMI_TIMEOUT_TIME * HZ) / 1000)
++
++/* Request events from the queue every second (this is the number of
++   IPMI_TIMEOUT_TIMES between event requests).  Hopefully, in the
++   future, IPMI will add a way to know immediately if an event is in
++   the queue and this silliness can go away. */
++#define IPMI_REQUEST_EV_TIME	(1000 / (IPMI_TIMEOUT_TIME))
++
++static atomic_t stop_operation;
++static unsigned int ticks_to_req_ev = IPMI_REQUEST_EV_TIME;
++
++static void ipmi_timeout(unsigned long data)
++{
++	if (atomic_read(&stop_operation))
++		return;
++
++	ticks_to_req_ev--;
++	if (ticks_to_req_ev == 0) {
++		ipmi_request_event();
++		ticks_to_req_ev = IPMI_REQUEST_EV_TIME;
++	}
++
++	ipmi_timeout_handler(IPMI_TIMEOUT_TIME);
++
++	mod_timer(&ipmi_timer, jiffies + IPMI_TIMEOUT_JIFFIES);
++}
++
++
++static atomic_t smi_msg_inuse_count = ATOMIC_INIT(0);
++static atomic_t recv_msg_inuse_count = ATOMIC_INIT(0);
++
++/* FIXME - convert these to slabs. */
++static void free_smi_msg(struct ipmi_smi_msg *msg)
++{
++	atomic_dec(&smi_msg_inuse_count);
++	kfree(msg);
++}
++
++struct ipmi_smi_msg *ipmi_alloc_smi_msg(void)
++{
++	struct ipmi_smi_msg *rv;
++	rv = kmalloc(sizeof(struct ipmi_smi_msg), GFP_ATOMIC);
++	if (rv) {
++		rv->done = free_smi_msg;
++		rv->user_data = NULL;
++		atomic_inc(&smi_msg_inuse_count);
++	}
++	return rv;
++}
++
++static void free_recv_msg(struct ipmi_recv_msg *msg)
++{
++	atomic_dec(&recv_msg_inuse_count);
++	kfree(msg);
++}
++
++struct ipmi_recv_msg *ipmi_alloc_recv_msg(void)
++{
++	struct ipmi_recv_msg *rv;
++
++	rv = kmalloc(sizeof(struct ipmi_recv_msg), GFP_ATOMIC);
++	if (rv) {
++		rv->user = NULL;
++		rv->done = free_recv_msg;
++		atomic_inc(&recv_msg_inuse_count);
++	}
++	return rv;
++}
++
++void ipmi_free_recv_msg(struct ipmi_recv_msg *msg)
++{
++	if (msg->user)
++		kref_put(&msg->user->refcount, free_user);
++	msg->done(msg);
++}
++
++#ifdef CONFIG_IPMI_PANIC_EVENT
++
++static void dummy_smi_done_handler(struct ipmi_smi_msg *msg)
++{
++}
++
++static void dummy_recv_done_handler(struct ipmi_recv_msg *msg)
++{
++}
++
++#ifdef CONFIG_IPMI_PANIC_STRING
++static void event_receiver_fetcher(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
++{
++	if ((msg->addr.addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
++	    && (msg->msg.netfn == IPMI_NETFN_SENSOR_EVENT_RESPONSE)
++	    && (msg->msg.cmd == IPMI_GET_EVENT_RECEIVER_CMD)
++	    && (msg->msg.data[0] == IPMI_CC_NO_ERROR))
++	{
++		/* A get event receiver command, save it. */
++		intf->event_receiver = msg->msg.data[1];
++		intf->event_receiver_lun = msg->msg.data[2] & 0x3;
++	}
++}
++
++static void device_id_fetcher(ipmi_smi_t intf, struct ipmi_recv_msg *msg)
++{
++	if ((msg->addr.addr_type == IPMI_SYSTEM_INTERFACE_ADDR_TYPE)
++	    && (msg->msg.netfn == IPMI_NETFN_APP_RESPONSE)
++	    && (msg->msg.cmd == IPMI_GET_DEVICE_ID_CMD)
++	    && (msg->msg.data[0] == IPMI_CC_NO_ERROR))
++	{
++		/* A get device id command, save if we are an event
++		   receiver or generator. */
++		intf->local_sel_device = (msg->msg.data[6] >> 2) & 1;
++		intf->local_event_generator = (msg->msg.data[6] >> 5) & 1;
++	}
++}
++#endif
++
++static void send_panic_events(char *str)
++{
++	struct kernel_ipmi_msg            msg;
++	ipmi_smi_t                        intf;
++	unsigned char                     data[16];
++	struct ipmi_system_interface_addr *si;
++	struct ipmi_addr                  addr;
++	struct ipmi_smi_msg               smi_msg;
++	struct ipmi_recv_msg              recv_msg;
++
++	si = (struct ipmi_system_interface_addr *) &addr;
++	si->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
++	si->channel = IPMI_BMC_CHANNEL;
++	si->lun = 0;
++
++	/* Fill in an event telling that we have failed. */
++	msg.netfn = 0x04; /* Sensor or Event. */
++	msg.cmd = 2; /* Platform event command. */
++	msg.data = data;
++	msg.data_len = 8;
++	data[0] = 0x41; /* Kernel generator ID, IPMI table 5-4 */
++	data[1] = 0x03; /* This is for IPMI 1.0. */
++	data[2] = 0x20; /* OS Critical Stop, IPMI table 36-3 */
++	data[4] = 0x6f; /* Sensor specific, IPMI table 36-1 */
++	data[5] = 0xa1; /* Runtime stop OEM bytes 2 & 3. */
++
++	/* Put a few breadcrumbs in.  Hopefully later we can add more things
++	   to make the panic events more useful. */
++	if (str) {
++		data[3] = str[0];
++		data[6] = str[1];
++		data[7] = str[2];
++	}
++
++	smi_msg.done = dummy_smi_done_handler;
++	recv_msg.done = dummy_recv_done_handler;
++
++	/* For every registered interface, send the event. */
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		if (!intf->handlers)
++			/* Interface is not ready. */
++			continue;
++
++		/* Send the event announcing the panic. */
++		intf->handlers->set_run_to_completion(intf->send_info, 1);
++		i_ipmi_request(NULL,
++			       intf,
++			       &addr,
++			       0,
++			       &msg,
++			       intf,
++			       &smi_msg,
++			       &recv_msg,
++			       0,
++			       intf->channels[0].address,
++			       intf->channels[0].lun,
++			       0, 1); /* Don't retry, and don't wait. */
++	}
++
++#ifdef CONFIG_IPMI_PANIC_STRING
++	/* On every interface, dump a bunch of OEM event holding the
++	   string. */
++	if (!str) 
++		return;
++
++	/* For every registered interface, send the event. */
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		char                  *p = str;
++		struct ipmi_ipmb_addr *ipmb;
++		int                   j;
++
++		if (intf->intf_num == -1)
++			/* Interface was not ready yet. */
++			continue;
++
++		/* First job here is to figure out where to send the
++		   OEM events.  There's no way in IPMI to send OEM
++		   events using an event send command, so we have to
++		   find the SEL to put them in and stick them in
++		   there. */
++
++		/* Get capabilities from the get device id. */
++		intf->local_sel_device = 0;
++		intf->local_event_generator = 0;
++		intf->event_receiver = 0;
++
++		/* Request the device info from the local MC. */
++		msg.netfn = IPMI_NETFN_APP_REQUEST;
++		msg.cmd = IPMI_GET_DEVICE_ID_CMD;
++		msg.data = NULL;
++		msg.data_len = 0;
++		intf->null_user_handler = device_id_fetcher;
++		i_ipmi_request(NULL,
++			       intf,
++			       &addr,
++			       0,
++			       &msg,
++			       intf,
++			       &smi_msg,
++			       &recv_msg,
++			       0,
++			       intf->channels[0].address,
++			       intf->channels[0].lun,
++			       0, 1); /* Don't retry, and don't wait. */
++
++		if (intf->local_event_generator) {
++			/* Request the event receiver from the local MC. */
++			msg.netfn = IPMI_NETFN_SENSOR_EVENT_REQUEST;
++			msg.cmd = IPMI_GET_EVENT_RECEIVER_CMD;
++			msg.data = NULL;
++			msg.data_len = 0;
++			intf->null_user_handler = event_receiver_fetcher;
++			i_ipmi_request(NULL,
++				       intf,
++				       &addr,
++				       0,
++				       &msg,
++				       intf,
++				       &smi_msg,
++				       &recv_msg,
++				       0,
++				       intf->channels[0].address,
++				       intf->channels[0].lun,
++				       0, 1); /* no retry, and no wait. */
++		}
++		intf->null_user_handler = NULL;
++
++		/* Validate the event receiver.  The low bit must not
++		   be 1 (it must be a valid IPMB address), it cannot
++		   be zero, and it must not be my address. */
++                if (((intf->event_receiver & 1) == 0)
++		    && (intf->event_receiver != 0)
++		    && (intf->event_receiver != intf->channels[0].address))
++		{
++			/* The event receiver is valid, send an IPMB
++			   message. */
++			ipmb = (struct ipmi_ipmb_addr *) &addr;
++			ipmb->addr_type = IPMI_IPMB_ADDR_TYPE;
++			ipmb->channel = 0; /* FIXME - is this right? */
++			ipmb->lun = intf->event_receiver_lun;
++			ipmb->slave_addr = intf->event_receiver;
++		} else if (intf->local_sel_device) {
++			/* The event receiver was not valid (or was
++			   me), but I am an SEL device, just dump it
++			   in my SEL. */
++			si = (struct ipmi_system_interface_addr *) &addr;
++			si->addr_type = IPMI_SYSTEM_INTERFACE_ADDR_TYPE;
++			si->channel = IPMI_BMC_CHANNEL;
++			si->lun = 0;
++		} else
++			continue; /* No where to send the event. */
++
++		
++		msg.netfn = IPMI_NETFN_STORAGE_REQUEST; /* Storage. */
++		msg.cmd = IPMI_ADD_SEL_ENTRY_CMD;
++		msg.data = data;
++		msg.data_len = 16;
++
++		j = 0;
++		while (*p) {
++			int size = strlen(p);
++
++			if (size > 11)
++				size = 11;
++			data[0] = 0;
++			data[1] = 0;
++			data[2] = 0xf0; /* OEM event without timestamp. */
++			data[3] = intf->channels[0].address;
++			data[4] = j++; /* sequence # */
++			/* Always give 11 bytes, so strncpy will fill
++			   it with zeroes for me. */
++			strncpy(data+5, p, 11);
++			p += size;
++
++			i_ipmi_request(NULL,
++				       intf,
++				       &addr,
++				       0,
++				       &msg,
++				       intf,
++				       &smi_msg,
++				       &recv_msg,
++				       0,
++				       intf->channels[0].address,
++				       intf->channels[0].lun,
++				       0, 1); /* no retry, and no wait. */
++		}
++	}	
++#endif /* CONFIG_IPMI_PANIC_STRING */
++}
++#endif /* CONFIG_IPMI_PANIC_EVENT */
++
++static int has_panicked;
++
++static int panic_event(struct notifier_block *this,
++		       unsigned long         event,
++                       void                  *ptr)
++{
++	ipmi_smi_t intf;
++
++	if (has_panicked)
++		return NOTIFY_DONE;
++	has_panicked = 1;
++
++	/* For every registered interface, set it to run to completion. */
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		if (!intf->handlers)
++			/* Interface is not ready. */
++			continue;
++
++		intf->handlers->set_run_to_completion(intf->send_info, 1);
++	}
++
++#ifdef CONFIG_IPMI_PANIC_EVENT
++	send_panic_events(ptr);
++#endif
++
++	return NOTIFY_DONE;
++}
++
++static struct notifier_block panic_block = {
++	.notifier_call	= panic_event,
++	.next		= NULL,
++	.priority	= 200	/* priority: INT_MAX >= x >= 0 */
++};
++
++static int ipmi_init_msghandler(void)
++{
++	int rv;
++
++	if (initialized)
++		return 0;
++
++	rv = driver_register(&ipmidriver);
++	if (rv) {
++		printk(KERN_ERR PFX "Could not register IPMI driver\n");
++		return rv;
++	}
++
++	printk(KERN_INFO "ipmi message handler version "
++	       IPMI_DRIVER_VERSION "\n");
++
++#ifdef CONFIG_PROC_FS
++	proc_ipmi_root = proc_mkdir("ipmi", NULL);
++	if (!proc_ipmi_root) {
++	    printk(KERN_ERR PFX "Unable to create IPMI proc dir");
++	    return -ENOMEM;
++	}
++
++	proc_ipmi_root->owner = THIS_MODULE;
++#endif /* CONFIG_PROC_FS */
++
++	setup_timer(&ipmi_timer, ipmi_timeout, 0);
++	mod_timer(&ipmi_timer, jiffies + IPMI_TIMEOUT_JIFFIES);
++
++	atomic_notifier_chain_register(&panic_notifier_list, &panic_block);
++
++	initialized = 1;
++
++	return 0;
++}
++
++static __init int ipmi_init_msghandler_mod(void)
++{
++	ipmi_init_msghandler();
++	return 0;
++}
++
++static __exit void cleanup_ipmi(void)
++{
++	int count;
++
++	if (!initialized)
++		return;
++
++	atomic_notifier_chain_unregister(&panic_notifier_list, &panic_block);
++
++	/* This can't be called if any interfaces exist, so no worry about
++	   shutting down the interfaces. */
++
++	/* Tell the timer to stop, then wait for it to stop.  This avoids
++	   problems with race conditions removing the timer here. */
++	atomic_inc(&stop_operation);
++	del_timer_sync(&ipmi_timer);
++
++#ifdef CONFIG_PROC_FS
++	remove_proc_entry(proc_ipmi_root->name, &proc_root);
++#endif /* CONFIG_PROC_FS */
++
++	driver_unregister(&ipmidriver);
++
++	initialized = 0;
++
++	/* Check for buffer leaks. */
++	count = atomic_read(&smi_msg_inuse_count);
++	if (count != 0)
++		printk(KERN_WARNING PFX "SMI message count %d at exit\n",
++		       count);
++	count = atomic_read(&recv_msg_inuse_count);
++	if (count != 0)
++		printk(KERN_WARNING PFX "recv message count %d at exit\n",
++		       count);
++}
++module_exit(cleanup_ipmi);
++
++module_init(ipmi_init_msghandler_mod);
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Corey Minyard <minyard@mvista.com>");
++MODULE_DESCRIPTION("Incoming and outgoing message routing for an IPMI interface.");
++MODULE_VERSION(IPMI_DRIVER_VERSION);
++
++EXPORT_SYMBOL(ipmi_create_user);
++EXPORT_SYMBOL(ipmi_destroy_user);
++EXPORT_SYMBOL(ipmi_get_version);
++EXPORT_SYMBOL(ipmi_request_settime);
++EXPORT_SYMBOL(ipmi_request_supply_msgs);
++EXPORT_SYMBOL(ipmi_register_smi);
++EXPORT_SYMBOL(ipmi_unregister_smi);
++EXPORT_SYMBOL(ipmi_register_for_cmd);
++EXPORT_SYMBOL(ipmi_unregister_for_cmd);
++EXPORT_SYMBOL(ipmi_smi_msg_received);
++EXPORT_SYMBOL(ipmi_smi_watchdog_pretimeout);
++EXPORT_SYMBOL(ipmi_alloc_smi_msg);
++EXPORT_SYMBOL(ipmi_addr_length);
++EXPORT_SYMBOL(ipmi_validate_addr);
++EXPORT_SYMBOL(ipmi_set_gets_events);
++EXPORT_SYMBOL(ipmi_smi_watcher_register);
++EXPORT_SYMBOL(ipmi_smi_watcher_unregister);
++EXPORT_SYMBOL(ipmi_set_my_address);
++EXPORT_SYMBOL(ipmi_get_my_address);
++EXPORT_SYMBOL(ipmi_set_my_LUN);
++EXPORT_SYMBOL(ipmi_get_my_LUN);
++EXPORT_SYMBOL(ipmi_smi_add_proc_entry);
++EXPORT_SYMBOL(ipmi_user_set_run_to_completion);
++EXPORT_SYMBOL(ipmi_free_recv_msg);
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/Kconfig linux-2.6.20.3/drivers/hwmon/Kconfig
+--- linux-2.6.20.3.orig/drivers/hwmon/Kconfig	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/Kconfig	2007-03-14 14:23:02.000000000 +0100
+@@ -218,6 +218,16 @@ config SENSORS_GL520SM
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called gl520sm.
+ 
++config SENSORS_IPMI
++	tristate "IPMI Hardware Monitoring Support"
++	depends on HWMON && IPMI_HANDLER && EXPERIMENTAL
++	help
++	  If you say yes here you get support for sensors monitored by
++	  an IPMI baseboard management controller (BMC).
++
++	  This driver can also be built as a module.  If so, the module
++	  will be called ipmisensors.
++
+ config SENSORS_IT87
+ 	tristate "ITE IT87xx and compatibles"
+ 	depends on HWMON && I2C
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/Makefile linux-2.6.20.3/drivers/hwmon/Makefile
+--- linux-2.6.20.3.orig/drivers/hwmon/Makefile	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/Makefile	2007-03-14 14:23:02.000000000 +0100
+@@ -28,6 +28,7 @@ obj-$(CONFIG_SENSORS_FSCPOS)	+= fscpos.o
+ obj-$(CONFIG_SENSORS_GL518SM)	+= gl518sm.o
+ obj-$(CONFIG_SENSORS_GL520SM)	+= gl520sm.o
+ obj-$(CONFIG_SENSORS_HDAPS)	+= hdaps.o
++obj-$(CONFIG_SENSORS_IPMI)	+= ipmisensors.o
+ obj-$(CONFIG_SENSORS_IT87)	+= it87.o
+ obj-$(CONFIG_SENSORS_K8TEMP)	+= k8temp.o
+ obj-$(CONFIG_SENSORS_LM63)	+= lm63.o
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.c linux-2.6.20.3/drivers/hwmon/ipmisensors.c
+--- linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/ipmisensors.c	2007-03-14 14:44:42.000000000 +0100
+@@ -0,0 +1,1552 @@
++/*
++ *  ipmisensors.c -	lm-sensors/hwmon interface to IPMI sensors. 
++ *
++ *  Copyright (C) 2004-2006 Yani Ioannou <yani.ioannou@gmail.com>
++ *
++ *  Adapted from bmcsensors (lm-sensors for linux 2.4) 
++ *  bmcsensors (C) Mark D. Studebaker <mdsxyz123@yahoo.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *  
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *  
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/param.h>
++#include <linux/hwmon.h>
++#include <linux/list.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/hwmon.h>
++
++#include "ipmisensors.h"
++
++/****** Function Prototypes ******/
++static void ipmisensors_send_message(struct ipmisensors_bmc_data *bmc,
++				     long msgid, struct kernel_ipmi_msg *msg);
++static void ipmisensors_reserve_sdr(struct ipmisensors_bmc_data *bmc);
++static void ipmisensors_get_sdr(struct ipmisensors_bmc_data *bmc, u16 res_id,
++				u16 record, u8 offset);
++static void ipmisensors_set_sensor_threshold(struct ipmisensors_bmc_data *bmc,
++					     u8 number, int value,
++					     int lim_index);
++static void ipmisensors_get_reading(struct ipmisensors_bmc_data *bmc,
++				    struct sdrdata *sdr);
++static void ipmisensors_msg_handler(struct ipmi_recv_msg *msg,
++				    void *user_msg_data);
++static int ipmisensors_intf_registered(int ipmi_intf);
++static int ipmisensors_bmc_registered(struct device *bmc);
++static void ipmisensors_register_bmc(int ipmi_intf, struct ipmi_addr *address);
++static void ipmisensors_unregister_bmc(int ipmi_intf);
++static void ipmisensors_unregister_bmc_all(void);
++static void ipmisensors_new_smi(int if_num, struct device *dev);
++static void ipmisensors_smi_gone(int if_num);
++static void ipmisensors_update_bmc(struct work_struct *);
++static void ipmisensors_cleanup(void);
++
++/****** Static Vars ******/
++
++/* set when module is being removed */
++static int cleanup = 0;
++
++/* ipmisensors driver data */
++static struct ipmisensors_data driver_data = {
++	.driver_name = "bmc",
++	.bmc_data = LIST_HEAD_INIT(driver_data.bmc_data),
++	.interfaces = 0,
++	.smi_watcher = {
++			.owner = THIS_MODULE,
++			.new_smi = ipmisensors_new_smi,
++			.smi_gone = ipmisensors_smi_gone,
++			},
++	.ipmi_hndlrs = {
++			.ipmi_recv_hndl = ipmisensors_msg_handler,
++			},
++};
++
++/* sensor refresh workqueue */
++static struct workqueue_struct *ipmisensors_workqueue;
++
++/****** SDR List Functions ******/
++/**
++ * Creates a new sdrdata struct, or returns NULL if insufficient memory.
++ */
++static struct sdrdata *ipmisensors_new_sdr(void)
++{
++	struct sdrdata *sdr;
++
++	sdr = kmem_cache_alloc(driver_data.sdrdata_cache, GFP_ATOMIC);
++	if (sdr) {
++		memset(sdr, 0, sizeof(struct sdrdata));
++	} else {
++		printk(KERN_ERR
++		       "ipmisensors: Couldn't allocate memory for new SDR\n");
++	}
++
++	return sdr;
++}
++
++/**
++ * Adds the given sdrdata struct to the given bmc's SDR list.
++ *
++ * @bmc: the bmc to send the message to.
++ */
++static inline void ipmisensors_add_sdr(struct ipmisensors_bmc_data *bmc,
++				       struct sdrdata *sdr)
++{
++	list_add(&sdr->list, &bmc->sdrs);
++	printk(KERN_DEBUG
++	       "ipmisensors: SDR %d: type 0x%02x (%s)\n",
++	       bmc->sdr_count, sdr->stype, sdr->id);
++	bmc->sdr_count++;
++}
++
++/**
++ * Cleanup the sdr list for the given BMC.
++ * 
++ * @bmc: the bmc to send the message to.
++ */
++static void ipmisensors_sdr_cleanup(struct ipmisensors_bmc_data *bmc)
++{
++	struct sdrdata *cursor, *next;
++
++	/* find and free each sdr data struct */
++	list_for_each_entry_safe(cursor, next, &bmc->sdrs, list) {
++		device_remove_file(bmc->dev, &cursor->attr.dev_attr);
++		device_remove_file(bmc->dev, &cursor->attr_min.dev_attr);
++		device_remove_file(bmc->dev, &cursor->attr_max.dev_attr);
++		device_remove_file(bmc->dev, &cursor->attr_label.dev_attr);
++
++		kfree(cursor->attr_name);
++		kfree(cursor->attr_max_name);
++		kfree(cursor->attr_min_name);
++		kfree(cursor->attr_label_name);
++
++		list_del(&cursor->list);
++		kmem_cache_free(driver_data.sdrdata_cache, cursor);
++	}
++}
++
++/* worker function for workqueue ipmisensors_workqueue */
++static void ipmisensors_update_bmc(struct work_struct *work)
++{
++	struct ipmisensors_bmc_data *bmc = container_of(work, struct ipmisensors_bmc_data, update_work.work);
++
++	/* don't start an update cycle if one already in progress */
++	if (bmc->state != STATE_READING) {
++		struct sdrdata *cursor, *next;
++		bmc->state = STATE_READING;
++		printk(KERN_DEBUG "ipmisensors: starting update\n");
++
++		/* init semaphore to 1 for update cycle */
++		sema_init(&bmc->update_semaphore, 1);
++
++		/* update each sdr reading */
++		list_for_each_entry_safe(cursor, next, &bmc->sdrs, list) {
++			ipmisensors_get_reading(bmc, cursor);
++		}
++	}
++
++	/* wait for readings (need timeout?) */
++	down_interruptible(&bmc->update_semaphore);
++
++	printk(KERN_DEBUG "ipmisensors: update complete\n");
++
++	bmc->state = STATE_DONE;
++
++	/* if the module isn't cleaning up, schedule another update */
++	if (!cleanup)
++		queue_delayed_work(ipmisensors_workqueue, &bmc->update_work,
++				   bmc->update_period * HZ);
++}
++
++/****** IPMI Message Sending ******/
++
++/**
++ * Send a message to the IPMI BMC
++ *
++ * @bmc: the bmc to send the message to.
++ * @msgid: the message id to use.
++ * @msg: the ipmi message structure.
++ */
++static void ipmisensors_send_message(struct ipmisensors_bmc_data *bmc,
++				     long msgid, struct kernel_ipmi_msg *msg)
++{
++	if (msg->data == NULL)
++		printk(KERN_DEBUG "ipmisensors: Send 0x%x\n", msg->cmd);
++	else
++		printk(KERN_DEBUG "ipmisensors: Send 0x%x 0x%x 0x%x\n",
++		       msg->cmd, msg->data[0], msg->data[1]);
++
++	/* This should be ipmi_request, but Corey had to remove
++	 * that due to it being unused at the moment, as soon as 
++	 * this makes it into the kernel we should request it be re-instated.
++	 */
++	ipmi_request_settime(bmc->user, &bmc->address, msgid, msg, bmc, 0,
++			     -1, 0);
++}
++
++/**
++ * Compose and send a "reserve SDR" message
++ *
++ * @bmc: the bmc to send the message to.
++ */
++static void ipmisensors_reserve_sdr(struct ipmisensors_bmc_data *bmc)
++{
++	bmc->tx_message.netfn = IPMI_NETFN_STORAGE_REQUEST;
++	bmc->tx_message.cmd = IPMI_RESERVE_SDR;
++	bmc->tx_message.data_len = 0;
++	bmc->tx_message.data = NULL;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++}
++
++/**
++ * Componse and send a "get SDR" message
++ *
++ * @bmc: the bmc to send the message to.
++ * @res_id:
++ * @record:
++ * @offset:
++ */
++static void ipmisensors_get_sdr(struct ipmisensors_bmc_data *bmc, u16 res_id,
++				u16 record, u8 offset)
++{
++	printk(KERN_DEBUG "ipmisensors: Get SDR 0x%x 0x%x 0x%x\n",
++	       res_id, record, offset);
++	bmc->tx_message.netfn = IPMI_NETFN_STORAGE_REQUEST;
++	bmc->tx_message.cmd = IPMI_GET_SDR;
++	bmc->tx_message.data_len = 6;
++	bmc->tx_message.data = bmc->tx_msg_data;
++	bmc->tx_msg_data[0] = res_id & 0xff;
++	bmc->tx_msg_data[1] = res_id >> 8;
++	bmc->tx_msg_data[2] = record & 0xff;
++	bmc->tx_msg_data[3] = record >> 8;
++	bmc->tx_msg_data[4] = offset;
++	bmc->tx_msg_data[5] = bmc->ipmi_sdr_partial_size;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++}
++
++/**
++ * Compose and send a "set sensor threshold" message
++ *
++ * @bmc: the bmc to send the message to.
++ * @id: the ipmi id number of the sensor.
++ * @value: the new value for the threshold.
++ * @lim_index: the index in the lim[] array for which this value applies.
++ */
++static void ipmisensors_set_sensor_threshold(struct ipmisensors_bmc_data *bmc,
++					     u8 number, int value,
++					     int lim_index)
++{
++	int i;
++
++	printk(KERN_DEBUG "ipmisensors: Set SDR Threshold %d %d %d\n",
++	       number, value, lim_index);
++	bmc->tx_message.netfn = IPMI_NETFN_STORAGE_REQUEST;
++	bmc->tx_message.cmd = IPMI_SET_SENSOR_THRESHOLD;
++	bmc->tx_message.data_len = 8;
++	bmc->tx_message.data = bmc->tx_msg_data;
++	bmc->tx_msg_data[0] = number & 0xff;
++	bmc->tx_msg_data[1] = 0x01 << lim_index;
++
++	if (lim_index > 5 || lim_index < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Error - ipmisensors_set_sensor_threshold given invalid lim_index\n");
++		return;
++	}
++
++	for (i = 2; i < 8; i++)
++		bmc->tx_msg_data[i] = 0x00;
++
++	bmc->tx_msg_data[lim_index] = value && 0xff;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++}
++
++/**
++ * Compose and send a "get sensor reading" message for the given sdr.
++ *
++ * @bmc: the bmc to send the message to.
++ * @sdr: the sdr of the sensor to get the reading for.
++ */
++static void ipmisensors_get_reading(struct ipmisensors_bmc_data *bmc,
++				    struct sdrdata *sdr)
++{
++	bmc->tx_message.netfn = IPMI_NETFN_SENSOR_EVENT_REQUEST;
++	bmc->tx_message.cmd = IPMI_GET_SENSOR_STATE_READING;
++	bmc->tx_message.data_len = 1;
++	bmc->tx_message.data = bmc->tx_msg_data;
++	bmc->tx_msg_data[0] = sdr->number;
++	bmc->current_sdr = sdr;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++	down_interruptible(&bmc->update_semaphore);
++}
++
++/****** IPMI Message Receiving ******/
++
++/**
++ * Process an sensor reading response message.
++ *
++ * @bmc: the bmc the message is from
++ * @msg: the IPMI SDR response message
++ */
++static void ipmisensors_rcv_reading_msg(struct ipmisensors_bmc_data *bmc,
++					struct kernel_ipmi_msg *msg)
++{
++	struct sdrdata *sdr = bmc->current_sdr;
++
++	if (sdr == NULL) {
++		printk(KERN_ERR
++		       "ipmisensors: Error ipmisensors_rcv_reading with NULL sdr\n");
++		return;
++	}
++
++	sdr->reading = msg->data[1];
++	sdr->status = msg->data[2];
++	sdr->thresholds = msg->data[3];
++
++	printk(KERN_DEBUG "ipmisensors: sensor %d (type %d) reading %d\n",
++	       sdr->number, sdr->stype, msg->data[1]);
++
++	up(&bmc->update_semaphore);
++}
++
++/** 
++ * Unpack based on string type, convert to normal, null terminate.
++ */
++static void ipmisensors_sprintf(u8 * to, u8 * from, u8 type, u8 length)
++{
++	static const u8 *bcdplus = "0123456789 -.:,_";
++	int i;
++
++	switch (type) {
++	case 0:		/* unicode */
++		for (i = 0; i < length; i++)
++			*to++ = (*from++ & 0x7f);
++		*to = 0;
++		break;
++	case 1:		/* BCD Plus */
++		for (i = 0; i < length; i++)
++			*to++ = bcdplus[*from++ & 0x0f];
++		*to = 0;
++		break;
++	case 2:		/* packed ascii *//* if not a mult. of 3 this will run over */
++		for (i = 0; i < length; i += 3) {
++			*to++ = *from & 0x3f;
++			*to++ = *from >> 6 | ((*(from+1) & 0xf)  << 2);
++			from++;
++			*to++ = *from >> 4 | ((*(from+1) & 0x3)  << 4);
++			from++;
++			*to++ = (*from++ >> 2) & 0x3f;
++		}
++		*to = 0;
++		break;
++	case 3:		/* normal */
++		if (length > 1)
++			memcpy(to, from, length);
++		to[length] = 0;
++		break;
++	}
++}
++
++/* IPMI V1.5 Section 30 */
++static const int exps[] =
++    { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000 };
++
++/* Return 0 for fan, 2 for temp, 3 for voltage
++   We could make it variable based on the accuracy (= log10(m * 10**k2));
++   this would work for /proc output, however libsensors resolution
++   is statically set in lib/chips.c */
++static int decplaces(struct sdrdata *sd)
++{
++	switch (sd->stype) {
++	case STYPE_TEMP:
++		return 2;
++	case STYPE_CURR:
++	case STYPE_VOLT:
++		return 3;
++	case STYPE_FAN:
++	default:
++		return 0;
++	}
++}
++
++/* convert a raw value to a reading. IMPI V1.5 Section 30 */
++static long conv_val(int value, struct sdrdata *sd)
++{
++	u8 k1, k2;
++	long r;
++
++	r = value * sd->m;
++	k1 = sd->k & 0x0f;
++	k2 = sd->k >> 4;
++	if (k1 < 8)
++		r += sd->b * exps[k1];
++	else
++		r += sd->b / exps[16 - k1];
++	r *= exps[decplaces(sd)];
++	if (k2 < 8) {
++		if (sd->linear != 7)
++			r *= exps[k2];
++		else
++			/* this will always truncate to 0: r = 1 / (exps[k2] * r); */
++			r = 0;
++	} else {
++		if (sd->linear != 7)
++			r /= exps[16 - k2];
++		else {
++			if (r != 0)
++				/* 1 / x * 10 ** (-m) == 10 ** m / x */
++				r = exps[16 - k2] / r;
++			else
++				r = 0;
++		}
++	}
++
++	return r;
++}
++
++static const char *threshold_text[] = {
++	"upper non-recoverable threshold",
++	"upper critical threshold",
++	"upper non-critical threshold",
++	"lower non-recoverable threshold",
++	"lower critical threshold",
++	"lower non-critical threshold",
++	"positive-going hysteresis",
++	"negative-going hysteresis"	/* unused */
++};
++
++/* select two out of the 8 possible readable thresholds, and place indexes into the limits
++   array into lim1 and lim2. Set writable flags */
++static void ipmisensors_select_thresholds(struct sdrdata *sd)
++{
++	u8 capab = sd->capab;
++	u16 mask = sd->thresh_mask;
++	int tmp;
++
++	sd->lim1 = -1;
++	sd->lim2 = -1;
++	sd->lim1_write = 0;
++	sd->lim2_write = 0;
++
++	if (((capab & 0x0c) == 0x04) ||	/* readable thresholds ? */
++	    ((capab & 0x0c) == 0x08)) {
++		/* select upper threshold */
++		if (mask & 0x10) {	/* upper crit */
++			sd->lim1 = 1;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x1000))
++				sd->lim1_write = 1;
++		} else if (mask & 0x20) {	/* upper non-recov */
++			sd->lim1 = 0;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x2000))
++				sd->lim1_write = 1;
++		} else if (mask & 0x08) {	/* upper non-crit */
++			sd->lim1 = 2;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0800))
++				sd->lim1_write = 1;
++		}
++
++		/* select lower threshold */
++		if ((((capab & 0x30) == 0x10) ||	/* readable ? */
++		     ((capab & 0x30) == 0x20)) &&	/* pos hyst */
++		    sd->stype == STYPE_TEMP)
++			sd->lim2 = 6;
++		else if (mask & 0x02) {	/* lower crit */
++			sd->lim2 = 4;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0200))
++				sd->lim2_write = 1;
++		} else if (mask & 0x04) {	/* lower non-recov */
++			sd->lim2 = 3;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0400))
++				sd->lim2_write = 1;
++		} else if (mask & 0x01) {	/* lower non-crit */
++			sd->lim2 = 5;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0100))
++				sd->lim2_write = 1;
++		}
++	}
++
++	/* swap lim1/lim2 if m < 0 or function is 1/x (but not both!) */
++	if ((sd->m < 0 && sd->linear != 7) || (sd->m >= 0 && sd->linear == 7)) {
++		tmp = sd->lim1;
++		sd->lim1 = sd->lim2;
++		sd->lim2 = tmp;
++	}
++
++	if (sd->lim1 >= 0)
++		printk(KERN_INFO "ipmisensors: using %s for upper limit\n",
++		       threshold_text[sd->lim1]);
++	else
++		printk(KERN_DEBUG "ipmisensors: no readable upper limit\n");
++
++	if (sd->lim2 >= 0)
++		printk(KERN_INFO "ipmisensors: using %s for lower limit\n",
++		       threshold_text[sd->lim2]);
++	else
++		printk(KERN_DEBUG "ipmisensors: no readable lower limit\n");
++}
++
++/************* sysfs callback functions *********/
++static ssize_t show_update_period(struct device *dev,
++				     struct device_attribute *attr, char *buf)
++{
++	struct ipmisensors_bmc_device_attribute *aattr =
++	    to_ipmisensors_bmc_dev_attr(attr);
++
++	return snprintf(buf, 20, "%d\n", aattr->bmc->update_period);
++}
++
++static ssize_t store_update_period(struct device *dev,
++				      struct device_attribute *attr,
++				      const char *buf, size_t count)
++{
++	struct ipmisensors_bmc_device_attribute *aattr =
++	    to_ipmisensors_bmc_dev_attr(attr);
++
++	aattr->bmc->update_period = simple_strtoul(buf, NULL, 10);;
++	return count;
++};
++
++static ssize_t show_sensor(struct device *dev, struct device_attribute *attr,
++			   char *buf)
++{
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++	return snprintf(buf, 20, "%ld\n",
++			conv_val(sattr->sdr->reading, sattr->sdr));
++}
++
++static ssize_t show_sensor_max(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	long max = 0;
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++
++	if (sattr->sdr->lim1 >= 0)
++		max = conv_val(sattr->sdr->limits[sattr->sdr->lim1],
++			       sattr->sdr);
++	return snprintf(buf, 20, "%ld\n", max);
++}
++
++static ssize_t show_sensor_min(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	long min = 0;
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++
++	if (sattr->sdr->lim2 >= 0)
++		min = conv_val(sattr->sdr->limits[sattr->sdr->lim2],
++			       sattr->sdr);
++	return snprintf(buf, 20, "%ld\n", min);
++};
++
++static ssize_t show_sensor_label(struct device *dev,
++				 struct device_attribute *attr, char *buf)
++{
++	u8 label[SDR_MAX_UNPACKED_ID_LENGTH];
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++
++	ipmisensors_sprintf(label, sattr->sdr->id, sattr->sdr->string_type,
++			    sattr->sdr->id_length);
++	return snprintf(buf, 20, "%s\n", label);
++};
++
++static ssize_t store_sensor_max(struct device *dev,
++				struct device_attribute *attr, const char *buf,
++				size_t count)
++{
++	long val = simple_strtoul(buf, NULL, 10);
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++	printk(KERN_DEBUG "ipmisensors: set max on sensor #%d to %ld",
++	       sattr->sdr->number, val);
++	ipmisensors_set_sensor_threshold(sattr->sdr->bmc, sattr->sdr->number,
++					 val, sattr->sdr->lim1);
++	return count;
++};
++
++static ssize_t store_sensor_min(struct device *dev,
++				struct device_attribute *attr, const char *buf,
++				size_t count)
++{
++	long val = simple_strtoul(buf, NULL, 10);
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++	printk(KERN_DEBUG "ipmisensors: set min on sensor #%d to %ld",
++	       sattr->sdr->number, val);
++	ipmisensors_set_sensor_threshold(sattr->sdr->bmc, sattr->sdr->number,
++					 val, sattr->sdr->lim2);
++	return count;
++};
++
++static ssize_t show_alarms(struct device *dev, struct device_attribute *attr,
++			   char *buf)
++{
++	struct ipmisensors_bmc_device_attribute *aattr =
++	    to_ipmisensors_bmc_dev_attr(attr);
++	return snprintf(buf, 20, "%d\n", aattr->bmc->alarms);
++};
++
++static ssize_t show_name(struct device *dev, struct device_attribute *attr,
++			   char *buf)
++{
++	return snprintf(buf, 20, "%s\n", driver_data.driver_name);
++};
++
++/* work function to build the sysfs entries using the ipmi sdrs */
++static void ipmisensors_build_sysfs(struct work_struct *work)
++{
++	int temps = 0, volts = 0, currs = 0, fans = 0;
++	struct sdrdata *cursor, *next;
++	struct ipmisensors_bmc_data *bmc = container_of(work, struct ipmisensors_bmc_data, sysfs_work);
++
++	/* find and create entries for each sdr data struct */
++	list_for_each_entry_safe(cursor, next, &bmc->sdrs, list) {
++		u8 id[SDR_MAX_UNPACKED_ID_LENGTH];
++
++		cursor->attr_name =
++		    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++				    GFP_KERNEL);
++		cursor->attr_max_name =
++		    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++				    GFP_KERNEL);
++		cursor->attr_min_name =
++		    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++				    GFP_KERNEL);
++
++		if (cursor->id_length > 0) {
++			cursor->attr_label_name =
++			    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++					    GFP_KERNEL);
++
++			if (cursor->attr_label_name == NULL) {
++				printk(KERN_INFO
++				       "ipmisensors: Out of memory (kmalloc failed)");
++				kfree(cursor->attr_name);
++				kfree(cursor->attr_max_name);
++				kfree(cursor->attr_min_name);
++				return;
++			}
++		}
++
++		if (cursor->attr_name == NULL || cursor->attr_max_name == NULL
++		    || cursor->attr_min_name == NULL
++		    || cursor->attr_label_name == NULL) {
++			printk(KERN_INFO
++			       "ipmisensors: Out of memory (kmalloc failed)");
++			kfree(cursor->attr_name);
++			kfree(cursor->attr_max_name);
++			kfree(cursor->attr_min_name);
++			kfree(cursor->attr_label_name);
++			return;
++		}
++
++		switch (cursor->stype) {
++		case (STYPE_TEMP):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "temp%d_input", ++temps);
++			/* create min, max attributes */
++			snprintf(cursor->attr_max_name, MAX_FILENAME_LENGTH,
++				 "temp%d_max", temps);
++			snprintf(cursor->attr_min_name, MAX_FILENAME_LENGTH,
++				 "temp%d_min", temps);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "temp%d_label", temps);
++			break;
++		case (STYPE_VOLT):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "in%d_input", ++volts);
++			/* create min, max attributes */
++			snprintf(cursor->attr_max_name, MAX_FILENAME_LENGTH,
++				 "in%d_max", volts);
++			snprintf(cursor->attr_min_name, MAX_FILENAME_LENGTH,
++				 "in%d_min", volts);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "in%d_label", volts);
++			break;
++		case (STYPE_CURR):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "curr%d_input", ++currs);
++			/* create min, max attributes */
++			sprintf(cursor->attr_max_name, "curr%d_max", currs);
++			sprintf(cursor->attr_min_name, "curr%d_min", currs);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "curr%d_label", currs);
++			break;
++		case (STYPE_FAN):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "fan%d_input", ++fans);
++			/* create min, max attributes */
++			sprintf(cursor->attr_max_name, "fan%d_max", fans);
++			sprintf(cursor->attr_min_name, "fan%d_min", fans);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "fan%d_label", fans);
++			break;
++		default:
++			printk(KERN_INFO "ipmisensors: unkown sensor type\n");
++			continue;
++		}
++
++		cursor->attr.dev_attr.attr.name = cursor->attr_name;
++		cursor->attr.dev_attr.attr.mode = S_IRUGO;
++		cursor->attr.dev_attr.attr.owner = THIS_MODULE;
++		cursor->attr.dev_attr.show = show_sensor;
++		cursor->attr.dev_attr.store = NULL;
++		cursor->attr.sdr = cursor;
++
++		cursor->attr_min.dev_attr.attr.name = cursor->attr_min_name;
++		cursor->attr_min.dev_attr.attr.owner = THIS_MODULE;
++		cursor->attr_min.dev_attr.show = show_sensor_min;
++		cursor->attr_min.sdr = cursor;
++
++		if (cursor->lim2_write) {
++			printk(KERN_INFO
++			       "ipmisensors: You have a writable sensor threshold! Send me an e-mail at <yani.ioannou@gmail.com>.\n");
++			cursor->attr_min.dev_attr.store = store_sensor_min;
++			cursor->attr_min.dev_attr.attr.mode = S_IWUSR | S_IRUGO;
++		} else {
++			cursor->attr_min.dev_attr.store = NULL;
++			cursor->attr_min.dev_attr.attr.mode = S_IRUGO;
++		}
++
++		cursor->attr_max.dev_attr.attr.name = cursor->attr_max_name;
++		cursor->attr_max.dev_attr.attr.owner = THIS_MODULE;
++		cursor->attr_max.dev_attr.show = show_sensor_max;
++		cursor->attr_max.sdr = cursor;
++
++		if (cursor->lim1_write) {
++			printk(KERN_INFO
++			       "ipmisensors: You have a writable sensor threshold! Send me an e-mail at <yani.ioannou@gmail.com>.\n");
++			cursor->attr_max.dev_attr.store = store_sensor_max;
++			cursor->attr_max.dev_attr.attr.mode = S_IWUSR | S_IRUGO;
++		} else {
++			cursor->attr_max.dev_attr.store = NULL;
++			cursor->attr_max.dev_attr.attr.mode = S_IRUGO;
++		}
++
++		if (cursor->id_length > 0) {
++			cursor->attr_label.dev_attr.attr.name =
++			    cursor->attr_label_name;
++			cursor->attr_label.dev_attr.attr.mode = S_IRUGO;
++			cursor->attr_label.dev_attr.attr.owner = THIS_MODULE;
++			cursor->attr_label.dev_attr.show = show_sensor_label;
++			cursor->attr_label.dev_attr.store = NULL;
++			cursor->attr_label.sdr = cursor;
++		}
++
++		printk(KERN_INFO
++		       "ipmisensors: registering sensor %d: (type 0x%.2x) "
++		       "(fmt=%d; m=%d; b=%d; k1=%d; k2=%d; cap=0x%.2x; mask=0x%.4x)\n",
++		       cursor->number, cursor->stype, cursor->format, cursor->m,
++		       cursor->b, cursor->k & 0xf, cursor->k >> 4,
++		       cursor->capab, cursor->thresh_mask);
++
++		if (cursor->id_length > 0) {
++			ipmisensors_sprintf(id, cursor->id, cursor->string_type,
++					    cursor->id_length);
++			switch (cursor->stype) {
++			case (STYPE_TEMP):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label temp%d \"%s\"\n",
++				       temps, id);
++				break;
++			case (STYPE_VOLT):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label in%d \"%s\"\n",
++				       volts, id);
++				break;
++			case (STYPE_CURR):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label curr%d \"%s\"\n",
++				       currs, id);
++				break;
++			case (STYPE_FAN):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label fan%d \"%s\"\n",
++				       fans, id);
++				break;
++			}
++		}
++
++		ipmisensors_select_thresholds(cursor);
++
++		if (cursor->linear != 0 && cursor->linear != 7) {
++			printk(KERN_INFO
++			       "ipmisensors: sensor %d: nonlinear function 0x%.2x unsupported, expect bad results\n",
++			       cursor->number, cursor->linear);
++		}
++
++		if ((cursor->format & 0x03) == 0x02) {
++			printk(KERN_INFO
++			       "ipmisensors: sensor %d: 1's complement format unsupported, expect bad results\n",
++			       cursor->number);
++		} else if ((cursor->format & 0x03) == 0x03) {
++			printk(KERN_INFO
++			       "ipmisensors: sensor %d: threshold sensor only, no readings available",
++			       cursor->number);
++		}
++
++		if (cursor->lim1_write || cursor->lim2_write)
++			cursor->attr.dev_attr.attr.mode = 0644;
++		else
++			cursor->attr.dev_attr.attr.mode = 0444;
++
++		if (device_create_file(bmc->dev, &cursor->attr.dev_attr) < 0
++		    || device_create_file(bmc->dev,
++					  &cursor->attr_min.dev_attr) < 0
++		    || device_create_file(bmc->dev,
++					  &cursor->attr_max.dev_attr) < 0
++		    || (cursor->id_length >
++			0 ? device_create_file(bmc->dev,
++					       &cursor->attr_label.dev_attr) <
++			0 : 0)
++		    ) {
++			printk(KERN_INFO
++			       "ipmisensors: sysfs file creation failed for SDR %d (%s).\n",
++			       cursor->number, cursor->id);
++			kfree(cursor->attr_name);
++			kfree(cursor->attr_max_name);
++			kfree(cursor->attr_min_name);
++			kfree(cursor->attr_label_name);
++			return;
++		}
++	}
++
++	bmc->alarms_attr.dev_attr.attr.name = "alarms";
++	bmc->alarms_attr.dev_attr.attr.mode = S_IRUGO;
++	bmc->alarms_attr.dev_attr.attr.owner = THIS_MODULE;
++	bmc->alarms_attr.dev_attr.show = show_alarms;
++	bmc->alarms_attr.dev_attr.store = NULL;
++	bmc->alarms_attr.bmc = bmc;
++
++	if (device_create_file(bmc->dev, &bmc->alarms_attr.dev_attr) < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Failed to create sysfs entry 'alarms'");
++		return;
++	}
++
++	bmc->name_attr.attr.name = "name";
++	bmc->name_attr.attr.mode = S_IRUGO;
++	bmc->name_attr.attr.owner = THIS_MODULE;
++	bmc->name_attr.show = show_name;
++
++	if (device_create_file(bmc->dev, &bmc->name_attr) < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Failed to create sysfs entry 'name'");
++		return;
++	}
++
++	bmc->update_attr.dev_attr.attr.name = "update_period";
++	bmc->update_attr.dev_attr.attr.mode = S_IWUSR | S_IRUGO;
++	bmc->update_attr.dev_attr.attr.owner = THIS_MODULE;
++	bmc->update_attr.dev_attr.show = show_update_period;
++	bmc->update_attr.dev_attr.store = store_update_period;
++	bmc->update_attr.bmc = bmc;
++
++	if (device_create_file(bmc->dev, &bmc->update_attr.dev_attr) < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Failed to create sysfs entry 'update_period'");
++		return;
++	}
++
++	printk(KERN_INFO
++	       "ipmisensors: registered %d temp, %d volt, %d current, %d fan sensors\n",
++	       temps, volts, currs, fans);
++
++	/* This completes the initialization. We can now kickoff the 
++	 * periodic update of the bmc sensor's values by scheduling 
++	 * the first work.
++	 */
++	queue_work(ipmisensors_workqueue, &bmc->update_work.work);
++
++}
++
++/**
++ * Process an SDR response message, save the SDRs we like in the sdr
++ * list for the given BMC.
++ *
++ * @bmc: the bmc the message is from
++ * @msg: the IPMI SDR response message
++ */
++static void ipmisensors_rcv_sdr_msg(struct ipmisensors_bmc_data *bmc,
++				    struct kernel_ipmi_msg *msg)
++{
++	u16 record;
++	int type;
++	int stype;
++	int id_length;
++	int i;
++	int ipmi_ver = 0;
++	unsigned char *data;
++	u8 id[SDR_MAX_UNPACKED_ID_LENGTH];
++	struct sdrdata *sdr;
++
++	if (msg->data[0] != 0) {
++		/* cut request in half and try again */
++		bmc->ipmi_sdr_partial_size /= 2;
++		if (bmc->ipmi_sdr_partial_size < 8) {
++			printk(KERN_INFO
++			       "ipmisensors: IPMI buffers too small, giving up\n");
++			bmc->state = STATE_DONE;
++			return;
++		}
++		printk(KERN_DEBUG
++		       "ipmisensors: Reducing SDR request size to %d\n",
++		       bmc->ipmi_sdr_partial_size);
++
++		ipmisensors_get_sdr(bmc, 0, 0, 0);
++		bmc->state = STATE_SDR;
++		return;
++	}
++	if (bmc->ipmi_sdr_partial_size < IPMI_SDR_SIZE) {
++		if (bmc->rx_msg_data_offset == 0) {
++			memcpy(bmc->rx_msg_data, msg->data,
++			       bmc->ipmi_sdr_partial_size + 3);
++			bmc->rx_msg_data_offset =
++			    bmc->ipmi_sdr_partial_size + 3;
++		} else {
++			memcpy(bmc->rx_msg_data + bmc->rx_msg_data_offset,
++			       msg->data + 3, bmc->ipmi_sdr_partial_size);
++			bmc->rx_msg_data_offset += bmc->ipmi_sdr_partial_size;
++		}
++		if (bmc->rx_msg_data_offset > bmc->rx_msg_data[7] + 7) {
++			/* got last chunk */
++			bmc->rx_msg_data_offset = 0;
++			data = bmc->rx_msg_data;
++		} else {
++			/* get more */
++			record =
++			    (bmc->rx_msg_data[4] << 8) | bmc->rx_msg_data[3];
++			ipmisensors_get_sdr(bmc, bmc->resid, record,
++					    bmc->rx_msg_data_offset - 3);
++			bmc->state = STATE_SDR;
++			return;
++		}
++	} else {
++		/* got it in one chunk */
++		data = msg->data;
++	}
++
++	bmc->nextrecord = (data[2] << 8) | data[1];
++
++	/* If the ipmi version is 0.9 we have to remap some things. 
++	 * Yes this is very ugly, but we aren't the ones who 
++	 * implemented an incomplete spec! 
++	 */
++	ipmi_ver = data[5];
++
++	type = data[6];
++	/* known SDR type */
++	if (type == 1 || type == 2) {
++		stype = data[(ipmi_ver == 0x90 ? 16 : 15)];
++		/* known sensor type */
++		if (stype <= STYPE_MAX) {
++			if (data[(ipmi_ver == 0x90 ? 17 : 16)] != 0x01) {
++				if (type == 1)
++					ipmisensors_sprintf(id, &data[51],
++							    data[50] >> 6,
++							    data[50] & 0x1f);
++				else
++					ipmisensors_sprintf(id,
++							    &data[(ipmi_ver ==
++								   0x90 ? 30 :
++								   35)],
++							    data[(ipmi_ver ==
++								  0x90 ? 29 :
++								  34)] >> 6,
++							    data[(ipmi_ver ==
++								  0x90 ? 29 :
++								  34)] & 0x1f);
++				printk(KERN_INFO
++				       "ipmisensors: skipping non-threshold sensor \"%s\"\n",
++				       id);
++			} else {
++				/* add entry to sdrd table */
++				sdr = ipmisensors_new_sdr();
++				if (!sdr) {
++					printk(KERN_ERR
++					       "ipmisensors: could not allocate memory for new SDR");
++					return;
++				}
++				sdr->bmc = bmc;
++				sdr->stype = stype;
++				sdr->number = data[10];
++				sdr->capab = data[(ipmi_ver == 0x90 ? 15 : 14)];
++				sdr->thresh_mask =
++				    (((u16) data[(ipmi_ver == 0x90 ? 21 : 22)])
++				     << 8) | data[21];
++				if (type == 1) {
++					sdr->format =
++					    data[(ipmi_ver ==
++						  0x90 ? 22 : 24)] >> 6;
++					sdr->linear =
++					    data[(ipmi_ver ==
++						  0x90 ? 25 : 26)] & 0x7f;
++					sdr->m =
++					    data[(ipmi_ver == 0x90 ? 26 : 27)];
++					sdr->m |= ((u16)
++						   (data
++						    [(ipmi_ver ==
++						      0x90 ? 27 : 28)]
++						    & 0xc0)) << 2;
++					if (sdr->m & 0x0200) {
++						/* sign extend */
++						sdr->m |= 0xfc00;
++					}
++					sdr->b =
++					    data[(ipmi_ver == 0x90 ? 28 : 29)];
++					sdr->b |= ((u16)
++						   (data
++						    [(ipmi_ver ==
++						      0x90 ? 29 : 30)]
++						    & 0xc0)) << 2;
++					if (sdr->b & 0x0200) {
++						/* sign extend */
++						sdr->b |= 0xfc00;
++					}
++					sdr->k =
++					    data[(ipmi_ver == 0x90 ? 31 : 32)];
++					sdr->nominal =
++					    data[(ipmi_ver == 0x90 ? 33 : 34)];
++					for (i = 0; i < SDR_LIMITS; i++) {
++						/* assume readable */
++						sdr->limits[i] =
++						    data[(ipmi_ver ==
++							  0x90 ? 40 : 39) + i];
++					}
++					sdr->string_type = data[50] >> 6;
++					id_length = data[50] & 0x1f;
++					memcpy(sdr->id, &data[51], id_length);
++					sdr->id_length = id_length;
++				} else {
++					sdr->m = 1;
++					sdr->b = 0;
++					sdr->k = 0;
++					sdr->string_type =
++					    data[(ipmi_ver ==
++						  0x90 ? 29 : 34)] >> 6;
++					id_length = data[34] & 0x1f;
++					if (id_length > 0) {
++						memcpy(sdr->id,
++						       &data[(ipmi_ver ==
++							      0x90 ? 30 : 35)],
++						       id_length);
++					}
++					sdr->id_length = id_length;
++					/* limits?? */
++					if (ipmi_ver == 0x90) {
++						memcpy(sdr->id,
++						       &data[30], id_length);
++						sdr->id_length = id_length;
++					}
++				}
++				ipmisensors_add_sdr(bmc, sdr);
++			}
++		}
++		/* peek at the other SDR types */
++	} else if (type == 0x10 || type == 0x11 || type == 0x12) {
++		ipmisensors_sprintf(id, data + 19, data[18] >> 6,
++				    data[18] & 0x1f);
++		if (type == 0x10) {
++			printk(KERN_INFO
++			       "ipmisensors: Generic Device acc=0x%x; slv=0x%x; lun=0x%x; type=0x%x; \"%s\"\n",
++			       data[8], data[9], data[10], data[13], id);
++		} else if (type == 0x11) {
++			printk(KERN_INFO
++			       "ipmisensors: FRU Device acc=0x%x; slv=0x%x; log=0x%x; ch=0x%x; type=0x%x; \"%s\"\n",
++			       data[8], data[9], data[10], data[11], data[13],
++			       id);
++		} else {
++			printk(KERN_INFO
++			       "ipmisensors: Mgmt Ctllr Device slv=0x%x; \"%s\"\n",
++			       data[8], id);
++		}
++	} else if (type == 0x14) {
++		printk(KERN_INFO
++		       "ipmisensors: Message Channel Info Records:\n");
++		for (i = 0; i < 8; i++) {
++			printk(KERN_INFO "ipmisensors: Channel %d info 0x%x\n",
++			       i, data[9 + i]);
++		}
++	} else {
++		printk(KERN_INFO "ipmisensors: Skipping SDR type 0x%x\n", type);
++	}
++	if (ipmi_ver != 0x90) {
++		if (bmc->nextrecord >= 6224) {
++			/*YJ stop sensor scan on poweredge 1750 */
++			bmc->nextrecord = 0xffff;
++		}
++	}
++
++	if (bmc->nextrecord == 0xFFFF) {
++		if (bmc->sdr_count == 0) {
++			printk(KERN_INFO
++			       "ipmisensors: No recognized sensors found.\n");
++			bmc->state = STATE_DONE;
++		} else {
++			printk(KERN_INFO "ipmisensors: all sensors detected\n");
++			bmc->state = STATE_SYSTABLE;
++
++			/* Schedule sysfs build/registration work */
++			INIT_WORK(&bmc->sysfs_work, ipmisensors_build_sysfs);
++			queue_work(ipmisensors_workqueue, &bmc->sysfs_work);
++		}
++	} else {
++		ipmisensors_get_sdr(bmc, 0, bmc->nextrecord, 0);
++		bmc->state = STATE_SDR;
++	}
++}
++
++/**
++ * Process incoming messages based on internal state
++ *
++ * @bmc: the bmc the message is from.
++ * @msg: the ipmi message to process.
++ */
++static void ipmisensors_rcv_msg(struct ipmisensors_bmc_data *bmc,
++				struct kernel_ipmi_msg *msg)
++{
++	switch (bmc->state) {
++	case STATE_INIT:
++	case STATE_RESERVE:
++		bmc->resid = (((u16) msg->data[2]) << 8) | msg->data[1];
++
++		printk(KERN_DEBUG "ipmisensors: Got first resid 0x%.4x\n",
++		       bmc->resid);
++
++		ipmisensors_get_sdr(bmc, 0, 0, 0);
++		bmc->state = STATE_SDR;
++		break;
++
++	case STATE_SDR:
++	case STATE_SDRPARTIAL:
++		ipmisensors_rcv_sdr_msg(bmc, msg);
++		break;
++
++	case STATE_READING:
++		ipmisensors_rcv_reading_msg(bmc, msg);
++		break;
++
++	case STATE_UNCANCEL:
++		bmc->resid = (((u16) msg->data[2]) << 8) | msg->data[1];
++
++		printk(KERN_DEBUG "ipmisensors: Got new resid 0x%.4x\n",
++		       bmc->resid);
++
++		bmc->rx_msg_data_offset = 0;
++		ipmisensors_get_sdr(bmc, 0, bmc->nextrecord, 0);
++		bmc->state = STATE_SDR;
++		break;
++
++	case STATE_DONE:
++	case STATE_SYSTABLE:
++		break;
++	default:
++		bmc->state = STATE_INIT;
++	}
++}
++
++/**
++ * Callback to handle a received IPMI message from a given BMC.
++ *
++ * @msg: the received message.
++ * @handler_data: a pointer to the particular bmc ipmisensors_bmc_data struct.
++ */
++static void ipmisensors_msg_handler(struct ipmi_recv_msg *msg,
++				    void *user_msg_data)
++{
++	struct ipmisensors_bmc_data *bmc =
++	    (struct ipmisensors_bmc_data *)user_msg_data;
++
++	if (msg->msg.data[0] != 0)
++		printk(KERN_WARNING
++		       "ipmisensors: Error 0x%x on cmd 0x%x/0x%x\n",
++		       msg->msg.data[0], msg->msg.netfn, msg->msg.cmd);
++
++	if (bmc != NULL && ipmisensors_intf_registered(bmc->interface_id)) {
++		if (bmc->state == STATE_SDR &&
++		    msg->msg.data[0] == IPMI_INVALID_RESERVATION_ID) {
++			/* reservation cancelled, get new resid */
++			if (++bmc->errorcount > 275) {
++				printk(KERN_ERR
++				       "ipmisensors: Too many reservations cancelled, giving up\n");
++				bmc->state = STATE_DONE;
++			} else {
++				printk(KERN_DEBUG
++				       "ipmisensors: resid 0x%04x cancelled, getting new one\n",
++				       bmc->resid);
++
++				ipmisensors_reserve_sdr(bmc);
++				bmc->state = STATE_UNCANCEL;
++			}
++		} else if (msg->msg.data[0] != IPMI_CC_NO_ERROR &&
++			   msg->msg.data[0] != IPMI_ERR_RETURNING_REQ_BYTES &&
++			   msg->msg.data[0] != IPMI_ERR_PROVIDING_RESPONSE) {
++			printk(KERN_ERR
++			       "ipmisensors: Error 0x%x on cmd 0x%x/0x%x; state = %d; probably fatal.\n",
++			       msg->msg.data[0], msg->msg.netfn & 0xfe,
++			       msg->msg.cmd, bmc->state);
++		} else {
++			printk(KERN_DEBUG "ipmisensors: received message\n");
++			ipmisensors_rcv_msg(bmc, &msg->msg);
++		}
++
++	} else {
++		printk(KERN_WARNING
++		       "ipmisensors: Response for non-registered BMC\n");
++		if (bmc != NULL)
++			printk(KERN_DEBUG "ipmisensors: BMC ID: %d\n",
++			       bmc->interface_id);
++		else
++			printk(KERN_DEBUG "ipmisensors: BMC NULL!\n");
++	}
++
++	ipmi_free_recv_msg(msg);
++}
++
++/****** IPMI Interface Initialization ******/
++
++/**
++ * Return true if the given ipmi interface has been registered.
++ * 
++ * @ipmi_intf: The IPMI interface number.
++ */
++static int ipmisensors_intf_registered(int ipmi_intf)
++{
++	int found = 0;
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		if (cursor->interface_id == ipmi_intf) {
++			found++;
++		}
++	}
++
++	return found;
++}
++
++/**
++ * Return true if the given BMC has been registered.
++ * 
++ * @bmc: The BMC device.
++ */
++static int ipmisensors_bmc_registered(struct device *bmc)
++{
++	int found = 0;
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		if (cursor->dev == bmc) {
++			found++;
++		}
++	}
++
++	return found;
++}
++
++/**
++ * Register new IPMI BMC interface. Interface indpendent callback created
++ * for flexibility in adding new types of interface callbacks in future.
++ * 
++ * @ipmi_intf: The IPMI interface number.
++ */
++static void ipmisensors_register_bmc(int ipmi_intf, struct ipmi_addr *address)
++{
++	int error;
++
++	/* allocate a new ipmisensors_bmc_data struct */
++
++	struct ipmisensors_bmc_data *bmc = (struct ipmisensors_bmc_data *)
++	    kmalloc(sizeof(struct ipmisensors_bmc_data), GFP_KERNEL);
++
++	/* initialize members */
++	INIT_LIST_HEAD(&bmc->sdrs);
++	bmc->interface_id = ipmi_intf;
++
++	bmc->address = *address;
++
++	bmc->sdr_count = 0;
++	bmc->msgid = 0;
++	bmc->ipmi_sdr_partial_size = IPMI_CHUNK_SIZE;
++	bmc->state = STATE_INIT;
++	bmc->errorcount = 0;
++	bmc->rx_msg_data_offset = 0;
++	bmc->dev = ipmi_get_bmcdevice(ipmi_intf);
++
++	/* default to 3 second min update interval */
++	bmc->update_period = 3;
++
++	if (bmc->dev == NULL) {
++		printk(KERN_ERR
++		       "ipmisensors: Error, couldn't get BMC device for interface %d\n",
++		       bmc->interface_id);
++		kfree(bmc);
++		return;
++	}
++
++	/* Create IPMI messaging interface user */
++	error = ipmi_create_user(bmc->interface_id, &driver_data.ipmi_hndlrs, 
++				bmc, &bmc->user);
++	if (error < 0) {
++		printk(KERN_ERR
++		       "ipmisensors: Error, unable to register user with ipmi interface %d\n",
++		       bmc->interface_id);
++		kfree(bmc);
++		return;
++	}
++
++	/* Register the BMC as a HWMON class device */
++	bmc->class_dev = hwmon_device_register(bmc->dev);
++
++	if (IS_ERR(bmc->class_dev)) {
++		printk(KERN_ERR
++		       "ipmisensors: Error, unable to register hwmon class device for interface %d\n",
++		       bmc->interface_id);
++		kfree(bmc);
++		return;
++	}
++
++	/* Register the BMC in the driver */
++	if (ipmisensors_bmc_registered(bmc->dev)) {
++		printk(KERN_ERR
++		       "ipmisensors: BMC on interface %d already registered\n",
++		       bmc->interface_id);
++		hwmon_device_unregister(bmc->class_dev);
++		kfree(bmc);
++		return;
++	}
++
++	ipmi_get_version(bmc->user, &bmc->ipmi_version_major,
++			 &bmc->ipmi_version_minor);
++
++	/* finally add the new bmc data to the bmc data list */
++	list_add_tail(&bmc->list, &driver_data.bmc_data);
++	driver_data.interfaces++;
++
++	printk(KERN_INFO
++	       "ipmisensors: Registered IPMI %d.%d BMC over interface %d\n",
++	       bmc->ipmi_version_major,
++	       bmc->ipmi_version_minor, bmc->interface_id);
++
++	/* Send a reserve SDR command to the bmc */
++	ipmisensors_reserve_sdr(bmc);
++
++	/* initialize the bmc's update work struct */
++	INIT_DELAYED_WORK(&bmc->update_work, ipmisensors_update_bmc);
++}
++
++/**
++ * Callback for when an IPMI BMC is gone. Interface indpendent callback created
++ * for flexibility in adding new types of interface callbacks in future.
++ * 
++ * @ipmi_intf: The IPMI interface number.
++ */
++static void ipmisensors_unregister_bmc(int ipmi_intf)
++{
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		if (cursor->interface_id == ipmi_intf) {
++			list_del(&cursor->list);
++			printk(KERN_DEBUG
++			       "ipmisensors: cancelling queued work\n");
++			/* cancel update work queued for this bmc */
++			cancel_delayed_work(&cursor->update_work);
++			printk(KERN_DEBUG
++			       "ipmisensors: waiting for update to finish\n");
++			/* wait for readings to finish */
++			while (cursor->state != STATE_DONE) ;
++
++			device_remove_file(cursor->dev,
++					   &cursor->alarms_attr.dev_attr);
++			device_remove_file(cursor->dev,
++					   &cursor->update_attr.dev_attr);
++			hwmon_device_unregister(cursor->class_dev);
++			ipmisensors_sdr_cleanup(cursor);
++			ipmi_destroy_user(cursor->user);
++
++			printk(KERN_INFO
++			       "ipmisensors: Unegistered IPMI interface %d\n",
++			       cursor->interface_id);
++
++			kfree(cursor);
++			driver_data.interfaces--;
++		}
++	}
++
++}
++
++/**
++ * Unregister all registered bmcs.
++ */
++static void ipmisensors_unregister_bmc_all(void)
++{
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		list_del(&cursor->list);
++
++		/* cancel update work queued for this bmc */
++		printk(KERN_DEBUG "ipmisensors: cancelling queued work\n");
++		cancel_delayed_work(&cursor->update_work);
++
++		printk(KERN_DEBUG
++		       "ipmisensors: waiting for update to finish\n");
++		/* wait for readings to finish */
++		while (cursor->state != STATE_DONE) ;
++
++		device_remove_file(cursor->dev, &cursor->alarms_attr.dev_attr);
++		device_remove_file(cursor->dev, &cursor->update_attr.dev_attr);
++		hwmon_device_unregister(cursor->class_dev);
++		ipmisensors_sdr_cleanup(cursor);
++		ipmi_destroy_user(cursor->user);
++
++		printk(KERN_INFO
++		       "ipmisensors: Unegistered IPMI interface %d\n",
++		       cursor->interface_id);
++
++		kfree(cursor);
++	}
++
++	driver_data.interfaces = 0;
++}
++
++/**
++ * Callback for when a new IPMI SMI type interface is found.
++ *
++ * @if_num: The IPMI interface number.
++ */
++static void ipmisensors_new_smi(int if_num, struct device *dev)
++{
++	struct ipmi_addr smi_address = {
++		IPMI_SYSTEM_INTERFACE_ADDR_TYPE,
++		IPMI_BMC_CHANNEL,
++		{0},
++	};
++
++	/* calls the generic new interface function */
++	ipmisensors_register_bmc(if_num, &smi_address);
++}
++
++/**
++ * Callback for when an exisiting IPMI SMI type interface is gone.
++ *
++ * @if_num: The IPMI interface number.
++ */
++static void ipmisensors_smi_gone(int if_num)
++{
++	if (driver_data.interfaces > 0) {
++		ipmisensors_unregister_bmc(if_num);
++	}
++}
++
++/**
++ * Initialize the module.
++ */
++static int __init ipmisensors_init(void)
++{
++	int error;
++	printk(KERN_INFO "ipmisensors - IPMI BMC sensors interface\n");
++
++	/* init cache managers */
++	driver_data.sdrdata_cache =
++	    kmem_cache_create("ipmisensors_sdrdata", sizeof(struct sdrdata), 0,
++			      0, NULL, NULL);
++	driver_data.sysfsattr_cache =
++	    kmem_cache_create("ipmisensors_sysfsattr",
++			      sizeof(struct ipmisensors_device_attribute), 0, 0,
++			      NULL, NULL);
++
++	if (!driver_data.sdrdata_cache || !driver_data.sysfsattr_cache) {
++		if (driver_data.sdrdata_cache)
++			kmem_cache_destroy(driver_data.sdrdata_cache);
++		if (driver_data.sysfsattr_cache)
++			kmem_cache_destroy(driver_data.sysfsattr_cache);
++		return -ENOMEM;
++	}
++
++	/* register IPMI interface callback(s) */
++	error = ipmi_smi_watcher_register(&driver_data.smi_watcher);
++	if (error) {
++		printk(KERN_WARNING
++		       "ipmisensors: can't register smi watcher\n");
++		return error;
++	}
++
++	/* create work queue, keep it simple, single-threaded */
++	ipmisensors_workqueue =
++	    create_singlethread_workqueue("ipmisensors_workqueue");
++
++	return 0;
++}
++
++/**
++ * Cleanup
++ */
++static void ipmisensors_cleanup(void)
++{
++	/* start cleanup */
++	cleanup = 1;
++
++	/* unregister bmcs */
++	printk(KERN_DEBUG "ipmisensors: unregister bmcs\n");
++	ipmi_smi_watcher_unregister(&driver_data.smi_watcher);
++	ipmisensors_unregister_bmc_all();
++
++	/* flush & destroy work queue */
++	printk(KERN_DEBUG "ipmisensors: destroy workqueue\n");
++	flush_workqueue(ipmisensors_workqueue);
++	destroy_workqueue(ipmisensors_workqueue);
++
++	/* remove cache managers */
++	if (driver_data.sdrdata_cache)
++		kmem_cache_destroy(driver_data.sdrdata_cache);
++	if (driver_data.sysfsattr_cache)
++		kmem_cache_destroy(driver_data.sysfsattr_cache);
++}
++
++/**
++ * Cleanup and exit the module
++ */
++static void __exit ipmisensors_exit(void)
++{
++	ipmisensors_cleanup();
++	printk(KERN_DEBUG "ipmisensors: cleanup finished\n");
++}
++
++MODULE_AUTHOR("Yani Ioannou <yani.ioannou@gmail.com>");
++MODULE_DESCRIPTION("IPMI BMC sensors");
++MODULE_LICENSE("GPL");
++
++module_init(ipmisensors_init);
++module_exit(ipmisensors_exit);
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.h linux-2.6.20.3/drivers/hwmon/ipmisensors.h
+--- linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/ipmisensors.h	2007-03-14 14:41:23.000000000 +0100
+@@ -0,0 +1,240 @@
++/*
++ *  ipmisensors.h -	lm_sensors interface to IPMI sensors. 
++ *
++ *  Copyright (C) 2004-2006 Yani Ioannou <yani.ioannou@gmail.com>
++ *
++ *  Adapted from bmcsensors (lm-sensors for linux 2.4) 
++ *  bmcsensors (C) Mark D. Studebaker <mdsxyz123@yahoo.com>
++ *  
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *  
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *  
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/ipmi.h>
++#include <linux/list.h>
++#include <linux/slab.h>
++#include <linux/workqueue.h>
++
++/* SDR defs */
++#define STYPE_TEMP			0x01
++#define STYPE_VOLT			0x02
++#define STYPE_CURR			0x03
++#define STYPE_FAN			0x04
++
++#define SDR_LIMITS 			8
++#define SDR_MAX_ID_LENGTH 		16
++#define SDR_MAX_UNPACKED_ID_LENGTH 	((SDR_MAX_ID_LENGTH * 4 / 3) + 2)
++
++/* the last sensor type we are interested in */
++#define STYPE_MAX			4
++
++#define IPMI_SDR_SIZE			67
++#define IPMI_CHUNK_SIZE 		16
++
++#define MAX_FILENAME_LENGTH		30
++
++struct ipmisensors_device_attribute {
++	struct device_attribute dev_attr;
++	struct sdrdata *sdr;
++};
++#define to_ipmisensors_dev_attr(_dev_attr) \
++	container_of(_dev_attr, struct ipmisensors_device_attribute, dev_attr)
++
++#define IPMISENSORS_DEVICE_ATTR(_name,_mode,_show,_store,_index)	\
++struct ipmisensors_attribute sensor_dev_attr_##_name = {	\
++	.dev_attr =	__ATTR(_name,_mode,_show,_store),	\
++	.index =	_index,					\
++}
++
++struct ipmisensors_bmc_device_attribute {
++	struct device_attribute dev_attr;
++	struct ipmisensors_bmc_data *bmc;
++};
++#define to_ipmisensors_bmc_dev_attr(_dev_attr) \
++	container_of(_dev_attr, struct ipmisensors_bmc_device_attribute, dev_attr)
++
++/**
++ * &struct_sdrdata stores the IPMI Sensor Data Record (SDR) data, as recieved from the BMC, along with the corresponding sysfs attributes
++ */
++struct sdrdata {
++	struct list_head list;
++	/* retrieved from SDR, not expected to change */
++	/* Sensor Type Code */
++	u8 stype;
++	u8 number;
++	/* Sensor Capability Code */
++	u8 capab;
++	u16 thresh_mask;
++	u8 format;
++	u8 linear;
++	s16 m;
++	s16 b;
++	u8 k;
++	u8 nominal;
++	u8 limits[SDR_LIMITS];
++	/* index into limits for reported upper and lower limit */
++	int lim1, lim2;
++	u8 lim1_write, lim2_write;
++	u8 string_type;
++	u8 id_length;
++	u8 id[SDR_MAX_ID_LENGTH];
++	/* retrieved from reading */
++	u8 reading;
++	u8 status;
++	u8 thresholds;
++	/* sensor's bmc */
++	struct ipmisensors_bmc_data *bmc;
++	/* sysfs entries */
++	struct ipmisensors_device_attribute attr;
++	char *attr_name;
++	struct ipmisensors_device_attribute attr_min;
++	char *attr_min_name;
++	struct ipmisensors_device_attribute attr_max;
++	char *attr_max_name;
++	struct ipmisensors_device_attribute attr_label;
++	char *attr_label_name;
++
++};
++
++/**
++ * &struct_ipmisensors_data stores the data for the ipmisensors driver.
++ */
++struct ipmisensors_data {
++	/* Driver struct */
++	char *driver_name;
++	
++	/* Linked list of ipmisensors_bmc_data structs, one for each BMC */
++	struct list_head bmc_data;
++
++	/* Number of ipmi interfaces (and hence ipmisensors_data structs). */
++	int interfaces;
++
++	/* IPMI kernel interface - SMI watcher */
++	struct ipmi_smi_watcher smi_watcher;
++
++	/* IPMI kernel interface - user handlers */
++	struct ipmi_user_hndl ipmi_hndlrs;
++
++	/* Cache manager for sdrdata cache */
++	struct kmem_cache *sdrdata_cache;
++
++	/* Cache manager for ipmi_sensor_device_attribute cache */
++	struct kmem_cache *sysfsattr_cache;
++};
++
++/**
++ * &states: enumeration of state codes for a bmc specific ipmisensors
++ */
++enum states {
++	STATE_INIT,
++	STATE_RESERVE,
++	STATE_SDR,
++	STATE_SDRPARTIAL,
++	STATE_READING,
++	STATE_UNCANCEL,
++	STATE_SYSTABLE,
++	STATE_DONE
++};
++
++/**
++ * &struct_ipmisensors_bmc_data stores the data for a particular IPMI BMC.
++ */
++struct ipmisensors_bmc_data {
++	struct list_head list;
++
++	/* The IPMI interface number */
++	int interface_id;
++
++	/* The IPMI address */
++	struct ipmi_addr address;
++
++	/* List of sdrdata structs (sdrs) recieved from the BMC */
++	struct list_head sdrs;
++
++	/* Count of the number of sdrs stored in the sdr list */
++	int sdr_count;
++
++	/* next message id */
++	int msgid;
++
++	/* The ipmi interface 'user' used to access this particular bmc */
++	ipmi_user_t user;
++
++	/* BMC IPMI Version (major) */
++	unsigned char ipmi_version_major;
++
++	/* BMC IPMI Version (minor) */
++	unsigned char ipmi_version_minor;
++
++	/* The size of the SDR request message */
++	int ipmi_sdr_partial_size;
++
++	/* transmit message buffer */
++	struct kernel_ipmi_msg tx_message;
++
++	/* ipmi transmited data buffer */
++	unsigned char tx_msg_data[IPMI_MAX_MSG_LENGTH + 50];	/* why the +50 in bmcsensors? */
++
++	/* ipmi recieved data buffer */
++	unsigned char rx_msg_data[IPMI_MAX_MSG_LENGTH + 50];
++
++	/* current recieve buffer offset */
++	int rx_msg_data_offset;
++
++	/* The id of then next SDR record to read during update cycle */
++	u16 nextrecord;
++
++	/* BMC SDR Reservation ID */
++	u16 resid;
++
++	/* Alarm status */
++	u8 alarms;
++
++	/* The cumalative error count for this bmc */
++	int errorcount;
++
++	/* The current state of this bmc w.r.t. ipmisensors (see enum states) */
++	int state;
++
++	/* The current sdr for which a reading is pending */
++	struct sdrdata *current_sdr;
++
++	/* The BMC's device struct */
++	struct device *dev;
++
++	/* hwmon class device */
++	struct class_device *class_dev;
++
++	/* hwmon device name */
++	struct device_attribute name_attr;
++
++	/* alarms attribute */
++	struct ipmisensors_bmc_device_attribute alarms_attr;
++
++	/* update_period attribute */
++	struct ipmisensors_bmc_device_attribute update_attr;
++
++	/* lower bound on time between updates (in seconds) */
++	unsigned int update_period;
++
++	/* semaphore used to do a headcount of the SDR readings we are waiting
++	 * on in a given bmc update */
++	struct semaphore update_semaphore;
++
++	/* bmc's work struct for updating sensors */
++	struct delayed_work update_work;
++
++	/* bmc's work struct for building the sysfs workqueue */
++	struct work_struct sysfs_work;
++};
+diff -rduNp linux-2.6.20.3.orig/include/linux/ipmi.h linux-2.6.20.3/include/linux/ipmi.h
+--- linux-2.6.20.3.orig/include/linux/ipmi.h	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/include/linux/ipmi.h	2007-03-14 14:23:02.000000000 +0100
+@@ -300,6 +300,9 @@ int ipmi_create_user(unsigned int       
+    safe, too. */
+ int ipmi_destroy_user(ipmi_user_t user);
+ 
++/* Get the IPMI BMC's device struct */
++struct device *ipmi_get_bmcdevice(int ipmi_intf);
++
+ /* Get the IPMI version of the BMC we are talking to. */
+ void ipmi_get_version(ipmi_user_t   user,
+ 		      unsigned char *major,
+diff -rduNp linux-2.6.20.3.orig/include/linux/ipmi_msgdefs.h linux-2.6.20.3/include/linux/ipmi_msgdefs.h
+--- linux-2.6.20.3.orig/include/linux/ipmi_msgdefs.h	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/include/linux/ipmi_msgdefs.h	2007-03-14 14:23:02.000000000 +0100
+@@ -45,6 +45,7 @@
+ 
+ #define IPMI_NETFN_APP_REQUEST			0x06
+ #define IPMI_NETFN_APP_RESPONSE			0x07
++#define IPMI_GET_DEVICE_GUID_CMD           0x08
+ #define IPMI_GET_DEVICE_ID_CMD		0x01
+ #define IPMI_COLD_RESET_CMD		0x02
+ #define IPMI_WARM_RESET_CMD		0x03
+@@ -57,6 +58,11 @@
+ #define IPMI_GET_BMC_GLOBAL_ENABLES_CMD	0x2f
+ #define IPMI_READ_EVENT_MSG_BUFFER_CMD	0x35
+ #define IPMI_GET_CHANNEL_INFO_CMD	0x42
++#define IPMI_RESERVE_SDR		0x22
++#define IPMI_GET_SDR			0x23
++#define IPMI_GET_SENSOR_STATE_READING		0x2D
++#define IPMI_SET_SENSOR_HYSTERESIS		0x24
++#define IPMI_SET_SENSOR_THRESHOLD		0x26
+ 
+ #define IPMI_NETFN_STORAGE_REQUEST		0x0a
+ #define IPMI_NETFN_STORAGE_RESPONSE		0x0b
+@@ -79,10 +85,13 @@
+ #define IPMI_NODE_BUSY_ERR		0xc0
+ #define IPMI_INVALID_COMMAND_ERR	0xc1
+ #define IPMI_TIMEOUT_ERR		0xc3
++#define IPMI_INVALID_RESERVATION_ID	0xc5
+ #define IPMI_ERR_MSG_TRUNCATED		0xc6
+ #define IPMI_REQ_LEN_INVALID_ERR	0xc7
+ #define IPMI_REQ_LEN_EXCEEDED_ERR	0xc8
+ #define IPMI_NOT_IN_MY_STATE_ERR	0xd5	/* IPMI 2.0 */
++#define IPMI_ERR_RETURNING_REQ_BYTES	0xca
++#define IPMI_ERR_PROVIDING_RESPONSE	0xce
+ #define IPMI_LOST_ARBITRATION_ERR	0x81
+ #define IPMI_BUS_ERR			0x82
+ #define IPMI_NAK_ON_WRITE_ERR		0x83
