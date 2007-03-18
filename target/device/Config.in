@@ -7,6 +7,10 @@ config BR2_PACKAGE_LINUX
 	  The Linux kernel.
 	  http://www.kernel.org/
 
+	  Note: Requires kernel-headers >= 2.6.19 since the other
+	        kernel headers are just that (headers) and not full
+		kernels. This is a feature.
+
 source "target/device/AMD/Config.in"
 source "target/device/Arm/Config.in"
 source "target/device/Atmel/Config.in"
