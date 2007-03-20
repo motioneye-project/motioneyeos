@@ -14,6 +14,8 @@ READLINE_TARGET_BINARY:=lib/$(READLINE_BINARY)
 $(DL_DIR)/$(READLINE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(READLINE_SITE)/$(READLINE_SOURCE)
 
+readline-source:  $(DL_DIR)/$(READLINE_SOURCE)
+
 $(READLINE_DIR)/.unpacked: $(DL_DIR)/$(READLINE_SOURCE)
 	mkdir -p $(READLINE_DIR)
 	tar -C $(BUILD_DIR) -zxf $(DL_DIR)/$(READLINE_SOURCE)
@@ -22,6 +24,7 @@ $(READLINE_DIR)/.unpacked: $(DL_DIR)/$(READLINE_SOURCE)
 
 $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
 	(cd $(READLINE_DIR); rm -rf config.cache; \
+		bash_cv_func_sigsetjmp=yes \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
@@ -59,15 +62,14 @@ $(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 	touch -c $(STAGING_DIR)/include/readline/readline.h
 
 
-# Install only run-time to Target directory
+# Install to Target directory
 $(TARGET_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
-	$(MAKE1) DESTDIR=$(TARGET_DIR) -C $(READLINE_DIR) install-shared
+	$(MAKE1) DESTDIR=$(TARGET_DIR) -C $(READLINE_DIR) install-shared \
+		uninstall-doc
 	touch -c $(TARGET_DIR)/include/readline/readline.h
 
 readline: $(STAGING_DIR)/include/readline/readline.h
-
-readline-target: $(TARGET_DIR)/include/readline/readline.h
 
 readline-clean:
 	$(MAKE) -C $(READLINE_DIR) uninstall
@@ -76,7 +78,10 @@ readline-clean:
 readline-dirclean:
 	rm -rf $(READLINE_DIR)
 
-readline-source:  $(DL_DIR)/$(READLINE_SOURCE)
+readline-target: $(TARGET_DIR)/include/readline/readline.h
+
+readline-target-clean:
+	$(MAKE1) DESTDIR=$(TARGET_DIR) -C $(READLINE_DIR) uninstall
 
 ifeq ($(strip $(BR2_READLINE)),y)
 TARGETS+=readline
