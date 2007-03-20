@@ -24,6 +24,11 @@ ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_1)),y)
 BUSYBOX_VER:=1.4.1
 endif
 
+ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_2)),y)
+BUSYBOX_VER:=1.4.2
+endif
+
+
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(BUILD_DIR)/busybox
