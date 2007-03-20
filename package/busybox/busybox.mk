@@ -4,30 +4,6 @@
 #
 #############################################################
 
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
-BUSYBOX_VER:=1.01
-endif
-
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_1_3)),y)
-BUSYBOX_VER:=1.1.3
-endif
-
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_2_2_1)),y)
-BUSYBOX_VER:=1.2.2.1
-endif
-
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_0)),y)
-BUSYBOX_VER:=1.4.0
-endif
-
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_1)),y)
-BUSYBOX_VER:=1.4.1
-endif
-
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_4_2)),y)
-BUSYBOX_VER:=1.4.2
-endif
-
 
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
 # Be aware that this changes daily....
@@ -35,8 +11,8 @@ BUSYBOX_DIR:=$(BUILD_DIR)/busybox
 BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 else
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VER)
-BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VER).tar.bz2
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BR2_BUSYBOX_VERSION)
+BUSYBOX_SOURCE:=busybox-$(BR2_BUSYBOX_VERSION).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
@@ -62,7 +38,7 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
 	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox.\*.patch
 else
-	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BUSYBOX_VER)-\*.patch
+	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BR2_BUSYBOX_VERSION)-\*.patch
 endif
 	touch $@
 
