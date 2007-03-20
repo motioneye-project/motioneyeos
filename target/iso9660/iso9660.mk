@@ -65,7 +65,7 @@ $(ISO9660_TARGET): host-fakeroot $(EXT2_TARGET) grub mkisofs
 	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(ISO9660_TARGET))
 	touch $(STAGING_DIR)/.fakeroot.00000
 	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(ISO9660_TARGET))
-	echo "chown -R root:root $(ISO9660_TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(ISO9660_TARGET))
+	echo "chown -R 0:0 $(ISO9660_TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(ISO9660_TARGET))
 	# Use fakeroot so mkisofs believes the previous fakery
 	echo "$(MKISOFS_TARGET) -R -b boot/grub/stage2_eltorito -no-emul-boot " \
 		"-boot-load-size 4 -boot-info-table -o $(ISO9660_TARGET) $(ISO9660_TARGET_DIR)" \

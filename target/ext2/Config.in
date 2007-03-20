@@ -15,7 +15,7 @@ config BR2_TARGET_ROOTFS_EXT2_INODES
 	default	0
 
 config BR2_TARGET_ROOTFS_EXT2_RESBLKS
-	int "reserved blocks"
+	int "reserved blocks percentage"
 	depends on BR2_TARGET_ROOTFS_EXT2
 	default 0
 
