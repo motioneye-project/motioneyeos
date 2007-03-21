@@ -4,7 +4,7 @@
 
 echo ""
 echo "Checking build system dependencies:"
-
+export LC_ALL=C
 
 #############################################################
 #
@@ -150,7 +150,7 @@ echo "GNU make version '$MAKE_VERSION':			Ok"
 # check build system 'gcc'
 #
 #############################################################
-COMPILER=$(which $HOSTCC)
+COMPILER=$(which $HOSTCC 2> /dev/null)
 if [ -z "$COMPILER" ] ; then
 	COMPILER=$(which cc)
 fi;
@@ -177,7 +177,7 @@ echo "C compiler version '$COMPILER_VERSION':			Ok"
 
 
 # check for host CXX
-CXXCOMPILER=$(which $HOSTCXX)
+CXXCOMPILER=$(which $HOSTCXX 2> /dev/null)
 if [ -z "$CXXCOMPILER" ] ; then
 	CXXCOMPILER=$(which c++)
 fi
