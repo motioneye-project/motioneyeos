@@ -45,10 +45,14 @@ $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
 	touch $@
 
 $(MICROCOM_DIR)/microcom: $(MICROCOM_DIR)/.configured
+ifeq ($(BR2_PREFER_IMA),y)
+	(cd $(MICROCOM_DIR) ; \
+	 $(TARGET_CC) $(TARGET_CFLAGS) $(CFLAGS_COMBINE) \
+	 	$(CFLAGS_WHOLE_PROGRAM) -o $@ $(wildcard $(MICROCOM_DIR)/*.c); \
+	)
+else
 	$(TARGET_CONFIGURE_OPTS) CFLAGS="$(TARGET_CFLAGS)" $(MAKE) -C $(MICROCOM_DIR)
-	#(cd $(MICROCOM_DIR) ; \
-	# $(TARGET_CC) $(TARGET_CFLAGS) --combine -fwhole-program -o $@ $(wildcard $(MICROCOM_DIR)/*.c); \
-	#)
+endif
 	$(STRIP) -s $@
 
 $(TARGET_DIR)/usr/bin/microcom: $(MICROCOM_DIR)/microcom
