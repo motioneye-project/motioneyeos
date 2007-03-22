@@ -8,6 +8,7 @@ ifneq ($(filter $(TARGETS),linux26),)
 
 ifeq ($(LINUX_HEADERS_VERSION),)
 # Version of Linux to download and then apply patches to
+# XXX: andersee, i do not understand why we need this (BF)
 DOWNLOAD_LINUX26_VERSION=2.6.19.2
 # Version of Linux after applying any patches
 LINUX26_VERSION=2.6.19.2
@@ -70,7 +71,7 @@ $(LINUX26_DIR)/.unpacked: $(DL_DIR)/$(LINUX26_SOURCE)
 	$(LINUX26_BZCAT) $(DL_DIR)/$(LINUX26_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(DOWNLOAD_LINUX26_VERSION),$(LINUX26_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version
-	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX26_VERSION) $(BUILD_DIR)/linux-$(LINUX26_VERSION)
+	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX26_VERSION) $(LINUX26_DIR)
 endif
 	touch $@
 
