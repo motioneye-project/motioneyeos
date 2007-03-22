@@ -285,6 +285,12 @@ $(STAGING_DIR)/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
 		PREFIX=$(STAGING_DIR) \
 		HOSTCC="$(HOSTCC)" \
 		hostutils
+	install -c $(UCLIBC_DIR)/utils/ldd.host $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ldd
+	(cd $(STAGING_DIR)/bin; ln -s ../$(REAL_GNU_TARGET_NAME)/bin/ldd $(GNU_TARGET_NAME)-ldd)
+	(cd $(STAGING_DIR)/bin; ln -s ../$(REAL_GNU_TARGET_NAME)/bin/ldd $(REAL_GNU_TARGET_NAME)-ldd)
+	install -c $(UCLIBC_DIR)/utils/ldconfig.host $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ldconfig
+	(cd $(STAGING_DIR)/bin; ln -s ../$(REAL_GNU_TARGET_NAME)/bin/ldconfig $(GNU_TARGET_NAME)-ldconfig)
+	(cd $(STAGING_DIR)/bin; ln -s ../$(REAL_GNU_TARGET_NAME)/bin/ldconfig $(REAL_GNU_TARGET_NAME)-ldconfig)
 	touch -c $(STAGING_DIR)/lib/libc.a
 
 ifneq ($(TARGET_DIR),)
