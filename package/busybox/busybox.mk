@@ -109,7 +109,7 @@ endif
 
 busybox: uclibc $(TARGET_DIR)/bin/busybox
 
-busybox-menuconfig: host-sed busybox-source $(BUSYBOX_DIR)/.configured
+busybox-menuconfig: host-sed $(BUILD_DIR) busybox-source $(BUSYBOX_DIR)/.configured
 	$(MAKE) __TARGET_ARCH=$(ARCH) -C $(BUSYBOX_DIR) menuconfig
 	cp -f $(BUSYBOX_DIR)/.config $(BUSYBOX_CONFIG_FILE)
 
