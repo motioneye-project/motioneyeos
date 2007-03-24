@@ -11,8 +11,10 @@ BUSYBOX_DIR:=$(BUILD_DIR)/busybox
 BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 else
-BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BR2_BUSYBOX_VERSION)
-BUSYBOX_SOURCE:=busybox-$(BR2_BUSYBOX_VERSION).tar.bz2
+BUSYBOX_VERSION=$(strip $(subst ",, $(BR2_BUSYBOX_VERSION)))
+#"))
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VERSION)
+BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
 
@@ -38,7 +40,7 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
 	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox.\*.patch
 else
-	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BR2_BUSYBOX_VERSION)-\*.patch
+	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BUSYBOX_VERSION)-\*.patch
 endif
 	touch $@
 
