@@ -4,7 +4,7 @@ comment "Binutils Options"
 
 choice
 	prompt "Binutils Version"
-	default BR2_BINUTILS_VERSION_2_16_91_0_7
+	default BR2_BINUTILS_VERSION_2_17
 	help
 	  Select the version of binutils you wish to use.
 
@@ -80,6 +80,9 @@ choice
 		depends !BR2_nios2
 		bool "binutils 2.17.50.0.10"
 
+	config BR2_BINUTILS_VERSION_2_17_50_0_14
+		depends !BR2_nios2
+		bool "binutils 2.17.50.0.14"
 endchoice
 
 config BR2_BINUTILS_VERSION
@@ -102,6 +105,7 @@ config BR2_BINUTILS_VERSION
 	default "2.17.50.0.8"     if BR2_BINUTILS_VERSION_2_17_50_0_8
 	default "2.17.50.0.9"     if BR2_BINUTILS_VERSION_2_17_50_0_9
 	default "2.17.50.0.10"    if BR2_BINUTILS_VERSION_2_17_50_0_10
+	default "2.17.50.0.14"    if BR2_BINUTILS_VERSION_2_17_50_0_14
 
 config BR2_EXTRA_BINUTILS_CONFIG_OPTIONS
 	string "Additional binutils options"
