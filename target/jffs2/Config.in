@@ -32,6 +32,11 @@ config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	depends on BR2_TARGET_ROOTFS_JFFS2
 	default 0x20000
 
+config BR2_JFFS2_TARGET_SREC
+	bool "RootFS in SREC file formet"
+	depends on BR2_TARGET_ROOTFS_JFFS2
+	default n
+
 config BR2_TARGET_ROOTFS_JFFS2_PAD
 	bool "Pad output"
 	depends on BR2_TARGET_ROOTFS_JFFS2
