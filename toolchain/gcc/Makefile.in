@@ -25,14 +25,14 @@ endif
 
 ifeq ($(BR2_SOFT_FLOAT),y)
 # gcc 3.4.x soft float configuration is different than previous versions.
-ifeq ($(findstring 3.4.,$(GCC_VERSION)),3.4.)
+ifeq ($(findstring x3.4.,x$(GCC_VERSION)),x3.4.)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
 else
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
 endif
 
 # again... there must be a better way
-ifeq ($(findstring 4.,$(GCC_VERSION)),4.)
+ifeq ($(findstring x4.,x$(GCC_VERSION)),x4.)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
 ifeq ($(BR2_SOFT_FLOAT_FP),y)
 TARGET_SOFT_FLOAT:=-mfloat-abi=softfp
@@ -61,7 +61,7 @@ EXTRA_TARGET_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_TARGET_GCC_CONF
 
 ifeq ($(BR2_PREFER_IMA),y)
 # >= 4.x
-ifneq ($(findstring 3.,$(GCC_VERSION)),3.)
+ifneq ($(findstring x3.,x$(GCC_VERSION)),x3.)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--enable-intermodule
 endif
 endif # BR2_PREFER_IMA=y
