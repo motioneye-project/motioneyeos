@@ -5,7 +5,7 @@
 #############################################################
 SAMBA_VER:=3.0.23d
 SAMBA_SOURCE:=samba-$(SAMBA_VER).tar.gz
-SAMBA_SITE:=ftp://us1.samba.org/pub/samba/
+SAMBA_SITE:=ftp://us4.samba.org/pub/samba/old-versions/
 SAMBA_DIR:=$(BUILD_DIR)/samba-$(SAMBA_VER)/source
 SAMBA_CAT:=$(ZCAT)
 SAMBA_BINARY:=bin/smbd
