@@ -1,0 +1,13 @@
+--- busybox-1.5.0/procps/ps.c	Thu Mar 22 22:21:37 2007
++++ busybox-1.5.0-ps/procps/ps.c	Wed Mar 28 23:57:34 2007
+@@ -262,7 +262,9 @@
+ 		parse_o(default_o);
+ 	post_process();
+ 
+-	terminal_width = INT_MAX;
++	/* Was INT_MAX, but some libc's go belly up with printf("%.*s")
++	 * and such large widths */
++	terminal_width = 30000;
+ 	if (isatty(1)) {
+ 		get_terminal_width_height(1, &terminal_width, NULL);
+ 		terminal_width--;

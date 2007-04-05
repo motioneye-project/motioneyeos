@@ -1,0 +1,14 @@
+--- busybox-1.5.0/miscutils/hdparm.c	Thu Mar 22 22:21:34 2007
++++ busybox-1.5.0-hdparm/miscutils/hdparm.c	Sat Mar 31 12:23:07 2007
+@@ -1569,9 +1569,9 @@
+ 	if (set_mult) {
+ 		print_flag(get_mult, "multcount", mult);
+ #ifdef HDIO_DRIVE_CMD
+-		bb_ioctl(fd, HDIO_SET_MULTCOUNT, &mult, "HDIO_SET_MULTCOUNT");
++		bb_ioctl(fd, HDIO_SET_MULTCOUNT, (void *)mult, "HDIO_SET_MULTCOUNT");
+ #else
+-		force_operation |= (!bb_ioctl(fd, HDIO_SET_MULTCOUNT, &mult, "HDIO_SET_MULTCOUNT"));
++		force_operation |= (!bb_ioctl(fd, HDIO_SET_MULTCOUNT, (void *)mult, "HDIO_SET_MULTCOUNT"));
+ #endif
+ 	}
+ 	if (set_readonly) {
