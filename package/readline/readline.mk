@@ -63,7 +63,7 @@ $(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 
 # Install to Target directory
 $(TARGET_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/$(READLINE_BINARY)
-	# make sure we don't end up with lib{readline,hostory}...old
+	# make sure we don't end up with lib{readline,history}...old
 	$(MAKE1) DESTDIR=$(TARGET_DIR) includedir=/usr/include \
 		-C $(READLINE_DIR) uninstall
 	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
