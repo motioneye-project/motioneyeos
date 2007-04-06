@@ -28,6 +28,7 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.unpacked
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		libelf_cv_working_memmove=yes \
+		mr_cv_target_elf=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -35,25 +36,32 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.unpacked
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		$(DISABLE_NLS) \
-		--disable-shared \
+		--enable-shared \
 	);
 	touch $@
 
-$(LIBELF_DIR)/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/.configured
+$(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBELF_DIR)
 
-$(STAGING_DIR)/usr/lib/libelf.a: $(LIBELF_DIR)/libelf.so.$(LIBELF_VER)
+$(STAGING_DIR)/usr/lib/libelf.a: $(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VER)
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
 		instroot=$(STAGING_DIR) -C $(LIBELF_DIR) install
 
+ifeq ($(BR2_PACKAGE_LIBELF_HEADERS),y)
 $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER): $(STAGING_DIR)/usr/lib/libelf.a
+	$(INSTALL) $(STAGING_DIR)/usr/lib/libelf* $(@D)
+	cp -dpR $(STAGING_DIR)/usr/include/{gelf.h,libelf*} $(TARGET_DIR)/usr/include/
+	$(STRIP) $@
 
 libelf: uclibc $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER)
-
+else
+libelf: uclibc $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VER)
+endif
 libelf-source: $(DL_DIR)/$(LIBELF_SOURCE)
 
 libelf-clean:
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LIBELF_DIR) uninstall
+	$(MAKE) instroot=$(STAGING_DIR) -C $(LIBELF_DIR) uninstall
 	-$(MAKE) -C $(LIBELF_DIR) clean
 
 libelf-dirclean:

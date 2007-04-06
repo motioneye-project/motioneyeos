@@ -7,3 +7,11 @@ config BR2_PACKAGE_LIBELF
 	  library.
 
 	  http://www.stud.uni-hannover.de/~michael/software/
+
+config BR2_PACKAGE_LIBELF_HEADERS
+	bool "headers on the target"
+	default n
+	depends on BR2_PACKAGE_LIBELF
+	help
+	  Whether to copy the lib and the headers to the
+	  target system.
