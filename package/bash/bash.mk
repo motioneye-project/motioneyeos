@@ -23,6 +23,8 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	# This is broken when -lintl is added to LIBS
 	$(SED) 's,LIBS_FOR_BUILD =.*,LIBS_FOR_BUILD =,g' \
 		$(BASH_DIR)/builtins/Makefile.in
+	# using target's LDFLAGS as LDFLAGS_FOR_BUILD is b0rked
+	-$(SED) '/^LDFLAGS_FOR_BUILD/d' $(BASH_DIR)/{,*/{,*/}}Makefile.in
 	$(CONFIG_UPDATE) $(BASH_DIR)/support
 	touch $@
 
@@ -32,6 +34,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
+		CCFLAGS_FOR_BUILD="$(HOST_CFLAGS)" \
 		ac_cv_func_setvbuf_reversed=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
