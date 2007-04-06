@@ -119,7 +119,7 @@ $(TARGET_DIR):
 	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
 	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
 
-source: $(TARGETS_SOURCE)
+source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 #############################################################
 #

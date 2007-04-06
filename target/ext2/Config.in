@@ -1,6 +1,7 @@
 config BR2_TARGET_ROOTFS_EXT2
 	bool "ext2 root filesystem"
 	default y
+	select BR2_HOST_FAKEROUTE
 	help
 	  Build an ext2 root filesystem
 

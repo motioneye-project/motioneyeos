@@ -122,3 +122,7 @@ fakeroot-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_FAKEROOT)),y)
 TARGETS+=fakeroot
 endif
+
+ifeq ($(strip $(BR2_HOST_FAKEROUTE)),y)
+HOST_SOURCE+=fakeroot-source
+endif
