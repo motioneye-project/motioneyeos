@@ -4,7 +4,7 @@ comment "Gcc Options"
 
 choice
 	prompt "GCC compiler Version"
-	default BR2_GCC_VERSION_3_4_6
+	default BR2_GCC_VERSION_4_1_2
 	help
 	  Select the version of gcc you wish to use.
 

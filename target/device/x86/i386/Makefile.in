@@ -1,7 +1,17 @@
 BR2_BOARD_PATH:=target/device/x86/i386
 
+ifeq ($(strip $(BR2_PACKAGE_LINUX_KCONFIG)),)
 ifndef LINUX26_KCONFIG
 LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
 endif
-LINUX26_FORMAT=bzImage
+else
+LINUX26_KCONFIG=$(strip $(BR2_PACKAGE_LINUX_KCONFIG))
+endif
 
+ifeq ($(strip $(BR2_PACKAGE_LINUX_FORMAT)),)
+ifndef LINUX26_FORMAT
+LINUX26_FORMAT=bzImage
+endif
+else
+LINUX26_FORMAT=$(strip $(BR2_PACKAGE_LINUX_FORMAT))
+endif
