@@ -17,6 +17,8 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+
 ifeq ($(GCC_SNAP_DATE),)
 GCC_OFFICIAL_VER:=$(GCC_VERSION)
 GCC_SITE:=http://ftp.gnu.org/gnu/gcc/gcc-$(GCC_VERSION)
@@ -443,3 +445,5 @@ gcc_target-clean:
 
 gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
+
+endif
