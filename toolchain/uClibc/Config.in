@@ -40,6 +40,9 @@ choice
 	default BR2_PTHREADS_OLD
 	help
 	  Select the version of libpthreads you want to use.
+	  Not all thread variants work with all versions of uClibc,
+	  the "linuxthreads (stable/old)" may be a working fallback
+	  if you need threading at all.
 
 	config BR2_PTHREADS_NONE
 		bool "none"
