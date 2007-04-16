@@ -34,10 +34,11 @@ libsysfs-source: $(DL_DIR)/$(LIBSYSFS_SOURCE)
 
 $(LIBSYSFS_DIR)/.unpacked: $(DL_DIR)/$(LIBSYSFS_SOURCE)
 	$(LIBSYSFS_CAT) $(DL_DIR)/$(LIBSYSFS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LIBSYSFS_DIR)/.unpacked
+	$(CONFIG_UPDATE) $(@D)
+	touch $@
 
 $(LIBSYSFS_DIR)/.configured: $(LIBSYSFS_DIR)/.unpacked
-	(cd $(LIBSYSFS_DIR); \
+	(cd $(LIBSYSFS_DIR); rm -rf config.cache ; \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
@@ -45,25 +46,28 @@ $(LIBSYSFS_DIR)/.configured: $(LIBSYSFS_DIR)/.unpacked
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
-	--prefix=/ );
-	touch $(LIBSYSFS_DIR)/.configured
+	--prefix=/usr \
+	--sysconfdir=/etc \
+	);
+	touch $@
 
 $(LIBSYSFS_DIR)/.compiled: $(LIBSYSFS_DIR)/.configured
 	$(MAKE) -C $(LIBSYSFS_DIR)
-	touch $(LIBSYSFS_DIR)/.compiled
+	touch $@
 
-$(STAGING_DIR)/lib/libsysfs.so: $(LIBSYSFS_DIR)/.compiled
+$(STAGING_DIR)/usr/lib/libsysfs.so: $(LIBSYSFS_DIR)/.compiled
 	$(MAKE) -C $(LIBSYSFS_DIR) DESTDIR=$(STAGING_DIR) install
-	touch -c $(STAGING_DIR)/lib/libsysfs.so
+	touch -c $@
 
-$(TARGET_DIR)/usr/lib/libsysfs.so: $(STAGING_DIR)/lib/libsysfs.so
-	cp -dpf $(STAGING_DIR)/lib/libsysfs.so* $(TARGET_DIR)/usr/lib/
+$(TARGET_DIR)/usr/lib/libsysfs.so: $(STAGING_DIR)/usr/lib/libsysfs.so
+	cp -dpf $(STAGING_DIR)/usr/lib/libsysfs.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libsysfs.so
 
 libsysfs: uclibc $(TARGET_DIR)/usr/lib/libsysfs.so
 
 libsysfs-clean:
 	-$(MAKE) -C $(LIBSYSFS_DIR) clean
+	-$(MAKE) -C $(LIBSYSFS_DIR) DESTDIR=$(STAGING_DIR) uninstall
 	rm -f $(TARGET_DIR)/usr/lib/libsysfs.so*
 
 libsysfs-dirclean:

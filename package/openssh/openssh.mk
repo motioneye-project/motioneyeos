@@ -14,10 +14,11 @@ $(DL_DIR)/$(OPENSSH_SOURCE):
 $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(OPENSSH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(OPENSSH_DIR) package/openssh/ openssh\*.patch
-	touch $(OPENSSH_DIR)/.unpacked
+	$(CONFIG_UPDATE) $(@D)
+	touch $@
 
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
-	(cd $(OPENSSH_DIR); rm -rf config.cache; autoconf; \
+	(cd $(OPENSSH_DIR); rm -rf config.cache; autoconf ; \
 		$(TARGET_CONFIGURE_OPTS) \
 		LD=$(TARGET_CROSS)gcc \
 		CFLAGS="$(TARGET_CFLAGS)" \
@@ -37,14 +38,14 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--includedir=$(STAGING_DIR)/include \
+		--includedir=$(STAGING_DIR)/usr/include \
 		--disable-lastlog --disable-utmp \
 		--disable-utmpx --disable-wtmp --disable-wtmpx \
 		--without-x \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch $(OPENSSH_DIR)/.configured
+	touch $@
 
 $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSH_DIR)
@@ -73,6 +74,7 @@ openssh-source: $(DL_DIR)/$(OPENSSH_SOURCE)
 
 openssh-clean: 
 	$(MAKE) -C $(OPENSSH_DIR) clean
+	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) uninstall
 
 openssh-dirclean: 
 	rm -rf $(OPENSSH_DIR)

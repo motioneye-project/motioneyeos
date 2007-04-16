@@ -32,16 +32,16 @@ NCURSES_CAT:=$(ZCAT)
 $(DL_DIR)/$(NCURSES_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NCURSES_SITE)/$(NCURSES_SOURCE)
 
-$(NCURSES_DIR)/.dist: $(DL_DIR)/$(NCURSES_SOURCE)
+$(NCURSES_DIR)/.patched: $(DL_DIR)/$(NCURSES_SOURCE)
 	$(NCURSES_CAT) $(DL_DIR)/$(NCURSES_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	#use the local tic and not whatever the build system was going to find.
 	$(SED) 's~\$$srcdir/shlib tic\$$suffix~/usr/bin/tic~' \
 		$(NCURSES_DIR)/misc/run_tic.in
 	toolchain/patch-kernel.sh $(NCURSES_DIR) package/ncurses/ ncurses\*.patch
 	$(CONFIG_UPDATE) $(NCURSES_DIR)
-	touch $(NCURSES_DIR)/.dist
+	touch $@
 
-$(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
+$(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.patched
 	(cd $(NCURSES_DIR); rm -rf config.cache; \
 		BUILD_CC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -72,7 +72,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.dist
 		--enable-echo --enable-const --enable-overwrite \
 		--enable-broken_linker \
 	);
-	touch $(NCURSES_DIR)/.configured
+	touch $@
 
 $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER): $(NCURSES_DIR)/.configured
 	$(MAKE1) DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \
@@ -80,7 +80,7 @@ $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER): $(NCURSES_DIR)/.configured
 
 $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER)
 	$(MAKE1) \
-	    prefix=$(STAGING_DIR) \
+	    prefix=$(STAGING_DIR)/usr/ \
 	    exec_prefix=$(STAGING_DIR) \
 	    bindir=$(STAGING_DIR)/bin \
 	    sbindir=$(STAGING_DIR)/sbin \
@@ -89,14 +89,14 @@ $(STAGING_DIR)/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER)
 	    sysconfdir=$(STAGING_DIR)/etc \
 	    localstatedir=$(STAGING_DIR)/var \
 	    libdir=$(STAGING_DIR)/lib \
-	    infodir=$(STAGING_DIR)/info \
-	    mandir=$(STAGING_DIR)/man \
-	    includedir=$(STAGING_DIR)/include \
-	    gxx_include_dir=$(STAGING_DIR)/include/c++ \
+	    infodir=$(STAGING_DIR)/usr/info \
+	    mandir=$(STAGING_DIR)/usr/man \
+	    includedir=$(STAGING_DIR)/usr/include \
+	    gxx_include_dir=$(STAGING_DIR)/usr/include/c++ \
 	    ticdir=$(STAGING_DIR)/usr/share/terminfo \
-	    -C $(NCURSES_DIR) install;
-	    chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
-	    touch -c $(STAGING_DIR)/lib/libncurses.a
+	    -C $(NCURSES_DIR) install
+	chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
+	touch -c $@
 
 $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER): $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
@@ -112,8 +112,8 @@ $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER): $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/a/ansi $(TARGET_DIR)/usr/share/terminfo/a
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/l
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/l/linux $(TARGET_DIR)/usr/share/terminfo/l
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
-	touch -c $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
+	-$(STRIP) --strip-unneeded $@
+	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	-mkdir -p $(TARGET_DIR)/usr/include
@@ -124,14 +124,15 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.a $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/usr/lib/terminfo
-	(cd $(TARGET_DIR)/usr/lib; ln -fs ../share/terminfo)
-	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libcurses.a)
-	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.a libtermcap.a)
+	(cd $(TARGET_DIR)/usr/lib; ln -fs ../share/terminfo ; \
+	 ln -fs libncurses.a libcurses.a ; \
+	 ln -fs libncurses.a libtermcap.a ; \
+	)
 	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
 	rm -f $(TARGET_DIR)/lib/libncurses.so
 	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libncurses.so.$(NCURSES_VER) libncurses.so)
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
-	touch -c $(TARGET_DIR)/usr/lib/libncurses.a
+	touch -c $@
 
 ncurses: $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
 
@@ -147,6 +148,7 @@ ncurses-clean:
 
 ncurses-dirclean:
 	rm -rf $(NCURSES_DIR)
+
 #############################################################
 #
 # Toplevel Makefile options

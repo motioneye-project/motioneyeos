@@ -41,14 +41,14 @@ $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
 	touch $@
 
 $(READLINE_DIR)/$(READLINE_BINARY): $(READLINE_DIR)/.configured
-	$(MAKE)  -C $(READLINE_DIR)
+	$(MAKE) -C $(READLINE_DIR)
 	touch -c $@
 
 $(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/.configured
@@ -56,7 +56,7 @@ $(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/.configured
 	touch -c $@
 
 # Install to Staging area
-$(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
+$(STAGING_DIR)/usr/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
 	$(MAKE1) DESTDIR=$(STAGING_DIR) -C $(READLINE_DIR) install
 	touch -c $@
@@ -64,16 +64,15 @@ $(STAGING_DIR)/include/readline/readline.h: $(READLINE_DIR)/$(READLINE_BINARY)
 # Install to Target directory
 $(TARGET_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/$(READLINE_BINARY)
 	# make sure we don't end up with lib{readline,history}...old
-	$(MAKE1) DESTDIR=$(TARGET_DIR) includedir=/usr/include \
-		-C $(READLINE_DIR) uninstall
+	$(MAKE1) DESTDIR=$(TARGET_DIR) -C $(READLINE_DIR) uninstall
 	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
-	$(MAKE1) DESTDIR=$(TARGET_DIR) includedir=/usr/include \
+	$(MAKE1) DESTDIR=$(TARGET_DIR) \
 		-C $(READLINE_DIR) install-shared uninstall-doc
 
-readline: $(STAGING_DIR)/include/readline/readline.h
+readline: $(STAGING_DIR)/usr/include/readline/readline.h
 
 readline-clean:
-	$(MAKE) -C $(READLINE_DIR) uninstall
+	$(MAKE) -C $(READLINE_DIR) DESTDIR=$(STAGING_DIR) uninstall
 	-$(MAKE) -C $(READLINE_DIR) clean
 
 readline-dirclean:
@@ -82,8 +81,7 @@ readline-dirclean:
 readline-target: $(TARGET_DIR)/$(READLINE_TARGET_BINARY)
 
 readline-target-clean:
-	$(MAKE1) DESTDIR=$(TARGET_DIR) includedir=/usr/include \
-		-C $(READLINE_DIR) uninstall
+	$(MAKE1) DESTDIR=$(TARGET_DIR) -C $(READLINE_DIR) uninstall
 
 ifeq ($(strip $(BR2_READLINE)),y)
 TARGETS+=readline

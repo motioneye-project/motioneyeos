@@ -65,6 +65,7 @@ $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
 $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) install
 	rm -f $(TARGET_DIR)/bin/bash*
+	-mkdir $(TARGET_DIR)/bin
 	mv $(TARGET_DIR)/usr/bin/bash* $(TARGET_DIR)/bin/
 	(cd $(TARGET_DIR)/bin; /bin/ln -fs bash sh)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \

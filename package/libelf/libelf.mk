@@ -43,7 +43,7 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.unpacked
 $(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBELF_DIR)
 
-$(STAGING_DIR)/usr/lib/libelf.a: $(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VER)
+$(STAGING_DIR)/usr/lib/libelf.a $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VER)
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
 		instroot=$(STAGING_DIR) -C $(LIBELF_DIR) install
 
