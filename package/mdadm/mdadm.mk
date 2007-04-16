@@ -3,7 +3,7 @@
 # mdadm
 #
 #############################################################
-MDADM_VERSION:=2.4.1
+MDADM_VERSION:=2.6.1
 MDADM_SOURCE:=mdadm-$(MDADM_VERSION).tar.bz2
 MDADM_CAT:=$(BZCAT)
 MDADM_SITE:=http://www.kernel.org/pub/linux/utils/raid/mdadm
