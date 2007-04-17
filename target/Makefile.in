@@ -1,3 +1,8 @@
+BR2_PACKAGE_LINUX_FORMAT:=$(strip $(subst ",,$(BR2_PACKAGE_LINUX_FORMAT)))
+#"))
+BR2_PACKAGE_LINUX_KCONFIG:=$(strip $(subst ",,$(BR2_PACKAGE_LINUX_KCONFIG)))
+#"))
+
 # make sure to put everything that is board-specific before the tarroot targets
 include target/generic/Makefile.in
 
