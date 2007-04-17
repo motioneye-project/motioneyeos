@@ -4,9 +4,10 @@
 #
 #############################################################
 SETSERIAL_VERSION:=2.17
-SETSERIAL_SOURCE:=setserial_$(SETSERIAL_VERSION).orig.tar.gz
+SETSERIAL_PATCH_VERSION:=-44
+#SETSERIAL_PATCH_FILE:=
+SETSERIAL_SOURCE:=setserial_$(SETSERIAL_VERSION)$(SETSERIAL_PATCH_VERSION).tar.gz
 SETSERIAL_SITE:=http://ftp.debian.org/debian/pool/main/s/setserial/
-SETSERIAL_PATCH_FILE:=setserial_$(SETSERIAL_VERSION)-43.diff.gz
 SETSERIAL_DIR:=$(BUILD_DIR)/setserial-$(SETSERIAL_VERSION)
 SETSERIAL_BINARY:=setserial
 SETSERIAL_TARGET_BINARY:=usr/bin/setserial
@@ -32,6 +33,7 @@ ifneq ($(SETSERIAL_PATCH_FILE),)
 		toolchain/patch-kernel.sh $(SETSERIAL_DIR) $(SETSERIAL_DIR)/debian/patches \*.patch ; \
 	fi
 endif
+	touch $(SETSERIAL_DIR)/gorhack.h
 	touch $@
 
 ifeq ($(BR2_PREFER_IMA),y)
