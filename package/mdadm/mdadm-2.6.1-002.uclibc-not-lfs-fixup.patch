@@ -1,0 +1,13 @@
+diff -rdup mdadm-2.6.1-001/mdadm.h mdadm-2.6.1/mdadm.h
+--- mdadm-2.6.1-001/mdadm.h	2007-04-17 17:41:04.000000000 +0200
++++ mdadm-2.6.1/mdadm.h	2007-04-17 17:38:43.000000000 +0200
+@@ -388,6 +388,9 @@ struct stat64;
+ #  undef HAVE_FTW
+ #  undef HAVE_NFTW
+ # endif
++# ifndef __UCLIBC_HAS_LFS__
++#  define lseek64 lseek
++# endif
+ #endif
+ 
+ #ifdef __dietlibc__
