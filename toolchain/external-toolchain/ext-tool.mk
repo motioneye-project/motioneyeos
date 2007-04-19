@@ -18,7 +18,7 @@ copy_toolchain_lib_root =									\
 	fi;											\
 												\
 	LIB="$(strip $1)";									\
-	for FILE in `find $${LIB_DIR} -type l -name "$${LIB}*" -maxdepth 1`; do			\
+	for FILE in `find $${LIB_DIR} -maxdepth 1 -type l -name "$${LIB}*"`; do			\
 		LIB=`basename $${FILE}`;							\
 		while test \! -z "$${LIB}"; do							\
 			echo "copy_toolchain_lib_root lib=$${LIB} dst=$${DST}";			\
