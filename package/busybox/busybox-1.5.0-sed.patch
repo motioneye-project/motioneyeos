@@ -1,0 +1,11 @@
+--- busybox-1.5.0/editors/sed.c	Thu Mar 22 22:21:38 2007
++++ busybox-1.5.0-sed/editors/sed.c	Fri Apr 13 22:10:24 2007
+@@ -481,7 +481,7 @@
+ 	if (bbg.add_cmd_line) {
+ 		char *tp = xasprintf("%s\n%s", bbg.add_cmd_line, cmdstr);
+ 		free(bbg.add_cmd_line);
+-		bbg.add_cmd_line = tp;
++		cmdstr = bbg.add_cmd_line = tp;
+ 	}
+ 
+ 	/* If this line ends with backslash, request next line. */
