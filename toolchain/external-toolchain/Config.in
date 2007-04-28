@@ -27,9 +27,9 @@ config BR2_TOOLCHAIN_EXTERNAL_STRIP
 	help
 	  Strip shared libraries copied from the external toolchain.
 
-source "toolchain/gdb/Config.in.2"
-
 comment "Common Toolchain Options"
+
+source "toolchain/gdb/Config.in.2"
 
 config BR2_TOOLCHAIN_EXTERNAL_PATH
 	string "External toolchain path"
@@ -43,6 +43,29 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	help
 	  This the the external toolchain prefix. For example:
 	    armeb-unknown-linux-gnu, mipsel-unknown-linux-gnu, etc.
+
+choice
+	prompt "Thread library implementation"
+	default BR2_EXT_PTHREADS_OLD
+	help
+	  Select the version of libpthreads used in the external toolchain.
+
+	config BR2_EXT_PTHREADS_NONE
+		bool
+		prompt "none"
+
+	config BR2_EXT_PTHREADS
+		bool
+		prompt "linuxthreads"
+
+	config BR2_EXT_PTHREADS_OLD
+		bool
+		prompt "linuxthreads (stable/old)"
+
+	config BR2_EXT_PTHREADS_NATIVE
+		bool
+		prompt "Native POSIX Threading (NPTL)"
+endchoice
 
 config BR2_LARGEFILE
 	bool "Enable large file (files > 2 GB) support?"
