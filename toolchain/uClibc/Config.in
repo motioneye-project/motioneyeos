@@ -63,4 +63,3 @@ config BR2_PTHREAD_DEBUG
 	default n
 	help
 	  Build the thread library with debugging enabled.
-
