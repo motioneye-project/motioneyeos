@@ -4,7 +4,7 @@ config BR2_TARGET_ROOTFS_ISO9660
 	depends on BR2_i386
 	select BR2_TARGET_ROOTFS_EXT2
 	select BR2_TARGET_GRUB
-	select BR2_HOST_FAKEROUTE
+	select BR2_HOST_FAKEROOT
 	help
 	  Build a bootable iso9660 image
 

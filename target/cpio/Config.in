@@ -1,7 +1,7 @@
 config BR2_TARGET_ROOTFS_CPIO
 	bool "cpio the root filesystem"
 	default n
-	select BR2_HOST_FAKEROUTE
+	select BR2_HOST_FAKEROOT
 	help
 	  Build a cpio archive of the root filesystem
 

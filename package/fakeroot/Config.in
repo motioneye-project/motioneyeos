@@ -7,6 +7,6 @@ config BR2_PACKAGE_FAKEROOT
 	  http://joostje.op.het.net/fakeroot/
 
 # dummy for fakeroot-source
-config BR2_HOST_FAKEROUTE
+config BR2_HOST_FAKEROOT
 	bool
 	default n

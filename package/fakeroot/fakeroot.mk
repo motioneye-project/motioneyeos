@@ -123,6 +123,6 @@ ifeq ($(strip $(BR2_PACKAGE_FAKEROOT)),y)
 TARGETS+=fakeroot
 endif
 
-ifeq ($(strip $(BR2_HOST_FAKEROUTE)),y)
+ifeq ($(strip $(BR2_HOST_FAKEROOT)),y)
 HOST_SOURCE+=fakeroot-source
 endif
