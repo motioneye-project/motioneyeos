@@ -1,0 +1,16 @@
+--- curl-7.12.0/configure.ac.orig	2004-05-25 23:43:39.000000000 +0200
++++ curl-7.12.0/configure.ac		2004-07-26 15:12:03.029071072 +0200
+@@ -742,5 +742,5 @@
+     dnl check the given spot right away!
+     EXTRA_SSL=$OPT_SSL
+-    LDFLAGS="$LDFLAGS -L$EXTRA_SSL/lib$libsuff"
++    #LDFLAGS="$LDFLAGS -L$EXTRA_SSL/lib$libsuff"
+     CPPFLAGS="$CPPFLAGS -I$EXTRA_SSL/include/openssl -I$EXTRA_SSL/include"
+     ;;
+@@ -750,5 +750,5 @@
+      HAVECRYPTO="yes"
+      ],[
+-     LDFLAGS="$CLEANLDFLAGS -L$EXTRA_SSL/lib$libsuff"
++     LDFLAGS="$CLEANLDFLAGS"
+      CPPFLAGS="$CLEANCPPFLAGS -I$EXTRA_SSL/include/openssl -I$EXTRA_SSL/include"
+      AC_CHECK_LIB(crypto, CRYPTO_add_lock,[

@@ -1,0 +1,16 @@
+diff -ur liblockfile-1.06.1/Makefile.in liblockfile-1.06.1-patched/Makefile.in
+--- liblockfile-1.06.1/Makefile.in	2001-03-16 22:08:33.000000000 -0600
++++ liblockfile-1.06.1-patched/Makefile.in	2007-04-11 07:18:38.000000000 -0500
+@@ -60,11 +60,7 @@
+ 
+ install_common:
+ 		install -m 644 lockfile.h maillock.h $(ROOT)$(includedir)
+-		if [ "$(MAILGROUP)" != "" ]; then\
+-		  install -g $(MAILGROUP) -m 2755 dotlockfile $(ROOT)$(bindir);\
+-		else \
+-		  install -g root -m 755 dotlockfile $(ROOT)$(bindir); \
+-		fi
++		install -m 2755 dotlockfile $(ROOT)$(bindir);\
+ 		install -m 644 *.1 $(ROOT)$(mandir)/man1
+ 		install -m 644 *.3 $(ROOT)$(mandir)/man3
+ 

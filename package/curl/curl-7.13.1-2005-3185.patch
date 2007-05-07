@@ -1,0 +1,16 @@
+--- curl-7.13.1/lib/http_ntlm.c.2005-3185	2005-02-22 13:10:30.000000000 +0100
++++ curl-7.13.1/lib/http_ntlm.c	2005-10-19 15:18:42.165859528 +0200
+@@ -534,6 +534,13 @@
+     size=64;
+     ntlmbuf[62]=ntlmbuf[63]=0;
+ 
++    /* Make sure that the user and domain strings fit in the target buffer
++         before we copy them there. */
++    if(size + userlen + domlen >= sizeof(ntlmbuf)) {
++      failf(conn->data, "user + domain name too big");
++      return CURLE_OUT_OF_MEMORY;
++    }
++
+     memcpy(&ntlmbuf[size], domain, domlen);
+     size += domlen;
+ 
