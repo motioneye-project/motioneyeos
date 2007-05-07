@@ -9,7 +9,7 @@ USBUTILS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/l
 USBUTILS_DIR:=$(BUILD_DIR)/usbutils-$(USBUTILS_VER)
 USBUTILS_CAT:=$(ZCAT)
 USBUTILS_BINARY:=lsusb
-USBUTILS_TARGET_BINARY:=usr/bin/lsusb
+USBUTILS_TARGET_BINARY:=usr/sbin/lsusb
 
 $(DL_DIR)/$(USBUTILS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(USBUTILS_SITE)/$(USBUTILS_SOURCE)
@@ -46,6 +46,8 @@ usbutils: uclibc libusb $(TARGET_DIR)/$(USBUTILS_TARGET_BINARY)
 
 usbutils-clean:
 	rm -f $(TARGET_DIR)/$(USBUTILS_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/usr/share/usb.ids
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
 	-$(MAKE) -C $(USBUTILS_DIR) clean
 
 usbutils-dirclean:
