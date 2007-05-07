@@ -58,13 +58,15 @@ $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY): $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY)
 	    set -x; \
 	    rm -f $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); \
 	    cp -a $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); fi ;
-	$(INSTALL) -D -m 0755 package/tftpd/init-tftpd $(TARGET_DIR)/etc/init.d/S80tftpd-hpa
+	@if [ ! -f $(TARGET_DIR)/etc/init.d/S80tftpd-hpa ] ; then \
+		$(INSTALL) -m 0755 -D package/tftpd/init-tftpd $(TARGET_DIR)/etc/init.d/S80tftpd-hpa; \
+	fi;
 
 tftpd: uclibc $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY)
 
 tftpd-clean:
-	rm -rf $(TARGET_DIR)/etc/init.d/S80tftpd-hpa
-	rm -rf $(TARGET_DIR)/usr/sbin/in.tftpd
+	rm -f $(TARGET_DIR)/etc/init.d/S80tftpd-hpa
+	rm -f $(TARGET_DIR)/usr/sbin/in.tftpd
 	-$(MAKE) -C $(TFTP_HPA_DIR) clean
 
 tftpd-dirclean:
