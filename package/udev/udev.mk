@@ -84,13 +84,35 @@ udev-volume_id-dirclean:
 	-$(MAKE) EXTRAS="extras/volume_id" -C $(UDEV_DIR) clean
 endif
 
-udev-clean:
+ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
+$(TARGET_DIR)/lib/udev/scsi_id: $(STAGING_DIR)/usr/lib/libvolume_id.so.0.72.0
+	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
+		USE_LOG=false USE_SELINUX=false \
+		udevdir=$(UDEV_ROOT) EXTRAS="extras/scsi_id" -C $(UDEV_DIR)
+	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/scsi_id/scsi_id $(TARGET_DIR)/lib/udev/scsi_id
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/udev/scsi_id
+	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
+		USE_LOG=false USE_SELINUX=false \
+		udevdir=$(UDEV_ROOT) EXTRAS="extras/usb_id" -C $(UDEV_DIR)
+	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/usb_id/usb_id $(TARGET_DIR)/lib/udev/usb_id
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/udev/usb_id
+
+udev-scsi_id: udev $(TARGET_DIR)/lib/udev/scsi_id
+
+udev-scsi_id-clean:
+	rm -f $(TARGET_DIR)/lib/udev/scsi_id
+
+udev-scsi_id-dirclean:
+	-$(MAKE) EXTRAS="extras/scsi_id" -C $(UDEV_DIR) clean
+endif
+
+udev-clean: udev-volume_id-clean udev-scsi_id-clean
 	rm -f $(TARGET_DIR)/etc/init.d/S10udev $(TARGET_DIR)/sbin/udev*
 	rm -f $(TARGET_DIR)/usr/sbin/udevmonitor $(TARGET_DIR)/usr/bin/udev*
 	rmdir $(TARGET_DIR)/sys
 	-$(MAKE) -C $(UDEV_DIR) clean
 
-udev-dirclean:
+udev-dirclean: udev-volume_id-dirclean udev-scsi_id-dirclean
 	rm -rf $(UDEV_DIR)
 
 #############################################################
@@ -104,4 +126,8 @@ endif
 
 ifeq ($(strip $(BR2_PACKAGE_UDEV_VOLUME_ID)),y)
 TARGETS+=udev-volume_id
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
+TARGETS+=udev-scsi_id
 endif

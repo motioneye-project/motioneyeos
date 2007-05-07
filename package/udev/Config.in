@@ -24,4 +24,11 @@ config BR2_PACKAGE_UDEV_VOLUME_ID
         help
           Build and install volume identification library.
 
+config BR2_PACKAGE_UDEV_SCSI_ID
+        bool "udev-scsi_id"
+        default n
+        depends on BR2_PACKAGE_UDEV
+        help
+          Build and install SCSI disk identification library.
+
 endmenu
