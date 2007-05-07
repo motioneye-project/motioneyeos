@@ -103,6 +103,7 @@ $(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR):
 	@mkdir -p $@
 
 $(STAGING_DIR):
+	@mkdir -p $(STAGING_DIR)/bin
 	@mkdir -p $(STAGING_DIR)/lib
 	@mkdir -p $(STAGING_DIR)/include
 	@mkdir -p $(STAGING_DIR)/usr
