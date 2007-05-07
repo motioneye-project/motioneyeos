@@ -21,9 +21,7 @@ touch /var/lib/nfs/rmtab
 touch /var/lib/nfs/state
 touch /var/lib/nfs/xtab
 
-# See how we were called.
-case "$1" in
-  start)
+start() {
 	# Start daemons.
 	echo -n "Starting NFS statd: "
 	rpc.statd
@@ -43,8 +41,9 @@ case "$1" in
 	rpc.mountd
 	echo "done"
 	touch /var/lock/subsys/nfs
-	;;
-  stop)
+}
+
+stop() {
 	# Stop daemons.
 	echo -n "Shutting down NFS mountd: "
 	killall -q rpc.mountd
@@ -64,6 +63,15 @@ case "$1" in
 	killall -q rpc.statd
 	echo "done"
 	rm -f /var/lock/subsys/nfslock
+}
+
+# See how we were called.
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
 	;;
   restart)
 	stop
