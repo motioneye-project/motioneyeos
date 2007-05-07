@@ -38,13 +38,11 @@ $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY): $(NETKITBASE_DIR)/$(NETKITBASE_BINARY
 	# Only install a few selected items...
 	mkdir -p $(TARGET_DIR)/usr/sbin
 	cp $(NETKITBASE_DIR)/$(NETKITBASE_BINARY) $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
-	#rm -f $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
-	mkdir -p $(TARGET_DIR)/etc
-	cp $(NETKITBASE_DIR)/etc.sample/inetd.conf $(TARGET_DIR)/etc/
-	$(SED) "s/^\([a-z]\)/#\1/;" $(TARGET_DIR)/etc/inetd.conf
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(NETKITBASE_DIR) install
-	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	@if [ ! -f $(TARGET_DIR)/etc/inetd.conf ] ; then \
+		mkdir -p $(TARGET_DIR)/etc; \
+		cp $(NETKITBASE_DIR)/etc.sample/inetd.conf $(TARGET_DIR)/etc/; \
+		$(SED) "s/^\([a-z]\)/#\1/;" $(TARGET_DIR)/etc/inetd.conf; \
+	fi;
 	touch -c $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
 
 netkitbase: uclibc $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
