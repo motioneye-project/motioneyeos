@@ -78,6 +78,16 @@ ifeq ($(BR2_PACKAGE_BUSYBOX_SKELETON),y)
 	# force mdev on
 	$(SED) "s/^.*CONFIG_MDEV.*/CONFIG_MDEV=y/" $(BUSYBOX_DIR)/.config
 endif
+ifeq ($(BR2_PACKAGE_NETKITBASE),y)
+	# disable usage of inetd if netkit-base package is selected
+	$(SED) "s/^.*CONFIG_INETD.*/CONFIG_INETD=n/;" $(BUSYBOX_DIR)/.config
+	@echo "WARNING!! CONFIG_INETD option disabled!"
+endif
+ifeq ($(BR2_PACKAGE_NETKITTELNET),y)
+	# disable usage of telnetd if netkit-telnetd package is selected
+	$(SED) "s/^.*CONFIG_TELNETD.*/CONFIG_TELNETD=n/;" $(BUSYBOX_DIR)/.config
+	@echo "WARNING!! CONFIG_TELNETD option disabled!"
+endif
 	yes "" | $(MAKE) CC=$(TARGET_CC) CROSS_COMPILE="$(TARGET_CROSS)" \
 		CROSS="$(TARGET_CROSS)" -C $(BUSYBOX_DIR) oldconfig
 	touch $@
