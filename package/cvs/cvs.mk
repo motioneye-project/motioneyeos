@@ -5,7 +5,7 @@
 #############################################################
 CVS_VER:=1.12.13
 CVS_SOURCE:=cvs_$(CVS_VER).orig.tar.gz
-CVS_PATCH:=cvs_$(CVS_VER)-7.diff.gz
+CVS_PATCH:=cvs_$(CVS_VER)-8.diff.gz
 CVS_SITE:=http://ftp.debian.org/debian/pool/main/c/cvs/
 CVS_DIR:=$(BUILD_DIR)/cvs-$(CVS_VER)
 CVS_CAT:=$(ZCAT)
@@ -25,12 +25,14 @@ endif
 $(DL_DIR)/$(CVS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(CVS_SITE)/$(CVS_SOURCE)
 
-$(DL_DIR)/$(CVS_PATCH):
+ifneq ($(CVS_PATCH),)
+CVS_PATCH_FILE=$(DL_DIR)/$(CVS_PATCH)
+$(CVS_PATCH_FILE):
 	$(WGET) -P $(DL_DIR) $(CVS_SITE)/$(CVS_PATCH)
+endif
+cvs-source: $(DL_DIR)/$(CVS_SOURCE) $(CVS_PATCH_FILE)
 
-cvs-source: $(DL_DIR)/$(CVS_SOURCE) $(DL_DIR)/$(CVS_PATCH)
-
-$(CVS_DIR)/.unpacked: $(DL_DIR)/$(CVS_SOURCE) $(DL_DIR)/$(CVS_PATCH)
+$(CVS_DIR)/.unpacked: $(DL_DIR)/$(CVS_SOURCE) $(CVS_PATCH_FILE)
 	-mkdir $(CVS_DIR)
 	$(CVS_CAT) $(DL_DIR)/$(CVS_SOURCE) | tar -C $(CVS_DIR) $(TAR_OPTIONS) -
 	$(BZCAT) $(CVS_DIR)/cvs-$(CVS_VER)/cvs-$(CVS_VER).tar.bz2 | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -47,7 +49,7 @@ ifneq ($(CVS_PATCH),)
 		toolchain/patch-kernel.sh $(CVS_DIR) $(CVS_DIR)/debian/patches \* ; \
 	fi
 endif
-	touch $(CVS_DIR)/.unpacked
+	touch $@
 
 $(CVS_DIR)/.configured: $(CVS_DIR)/.unpacked
 	(cd $(CVS_DIR); rm -rf config.cache; \
