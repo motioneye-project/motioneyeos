@@ -8,7 +8,7 @@ DASH_SOURCE:=dash_$(DASH_VER).orig.tar.gz
 DASH_SITE:=http://ftp.debian.org/debian/pool/main/d/dash
 DASH_CAT:=$(ZCAT)
 DASH_DIR:=$(BUILD_DIR)/dash-$(DASH_VER)
-DASH_PATCH1:=dash_$(DASH_VER)-6.diff.gz
+DASH_PATCH1:=dash_$(DASH_VER)-7.diff.gz
 DASH_BINARY:=src/dash
 DASH_TARGET_BINARY:=bin/dash
 
