@@ -10,7 +10,7 @@
 # either version 2.1 of the License, or (at your option) any 
 # later version.
 
-AVAHI_VER:=0.6.14
+AVAHI_VER:=0.6.18
 AVAHI_DIR:=$(BUILD_DIR)/avahi-$(AVAHI_VER)
 AVAHI_SITE:=http://www.avahi.org/download/
 AVAHI_SOURCE:=avahi-$(AVAHI_VER).tar.gz
