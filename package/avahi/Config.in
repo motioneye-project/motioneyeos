@@ -2,7 +2,30 @@ config BR2_PACKAGE_AVAHI
 	bool "avahi"
 	default n
 	help
-	  Avahi is a system which facilitates service 
-	  discovery on a local network. 
+	  Avahi is a system which facilitates service
+	  discovery on a local network.
 
 	  http://www.avahi.org/
+
+config BR2_PACKAGE_AVAHI_AUTOIPD
+	bool "  IPv4LL network address configuration daemon"
+	default y
+	depends on BR2_PACKAGE_AVAHI
+	help
+	  Avahi-autoipd implements IPv4LL, "Dynamic Configuration of
+	  IPv4 Link-Local Addresses" (IETF RFC3927), a protocol for
+	  automatic IP address configuration from the link-local
+	  169.254.0.0/16 range without the need for a central server.
+	  It is primarily intended to be used in ad-hoc networks which
+	  lack a DHCP server.
+
+config BR2_PACKAGE_AVAHI_DAEMON
+	bool "  mDNS/DNS-SD daemon"
+	default n
+	depends on BR2_PACKAGE_AVAHI
+	select BR2_PACKAGE_EXPAT
+	help
+	  The Avahi mDNS/DNS-SD daemon implementing Apple's ZeroConf
+	  architecture (also known as "Rendezvous" or "Bonjour").
+	  The daemon registers local IP addresses and services using
+	  mDNS/DNS-SD.
