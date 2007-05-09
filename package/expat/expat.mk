@@ -56,7 +56,7 @@ $(STAGING_DIR)/lib/libexpat.so.1: $(EXPAT_DIR)/.libs/libexpat.a
 $(TARGET_DIR)/lib/libexpat.so.1: $(STAGING_DIR)/lib/libexpat.so.1
 	cp -dpf $(STAGING_DIR)/lib/libexpat.so* $(TARGET_DIR)/lib/
 	#cp -dpf $(STAGING_DIR)/usr/bin/xmlwf $(TARGET_DIR)/bin/xmlwf
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libexpat.so.0.5.0
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libexpat.so*
 	touch -c $(TARGET_DIR)/lib/libexpat.so.1
 
 expat: uclibc pkgconfig $(TARGET_DIR)/lib/libexpat.so.1
