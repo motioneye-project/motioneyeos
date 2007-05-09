@@ -26,7 +26,7 @@ $(PORTMAP_DIR)/$(PORTMAP_BINARY): $(PORTMAP_DIR)/.unpacked
 
 $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY): $(PORTMAP_DIR)/$(PORTMAP_BINARY)
 	$(INSTALL) -D $(PORTMAP_DIR)/$(PORTMAP_BINARY) $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
-	$(INSTALL) -m 0755 -D package/portmap/init-portmap $(TARGET_DIR)/etc/init.d/S13portmap
+	$(INSTALL) -m 0755 -D package/portmap/S13portmap $(TARGET_DIR)/etc/init.d
 
 portmap: uclibc $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
 

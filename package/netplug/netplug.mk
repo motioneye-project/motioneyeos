@@ -28,7 +28,7 @@ $(NETPLUG_DIR)/$(NETPLUG_BINARY): $(NETPLUG_DIR)/.unpacked
 $(TARGET_DIR)/$(NETPLUG_TARGET_BINARY): $(NETPLUG_DIR)/$(NETPLUG_BINARY)
 	$(INSTALL) -m 644 -D $(NETPLUG_DIR)/etc/netplugd.conf $(TARGET_DIR)/etc/netplug/netplugd.conf
 	$(INSTALL) -m 755 -D package/netplug/netplug-script $(TARGET_DIR)/etc/netplug.d/netplug
-	$(INSTALL) -m 755 -D package/netplug/init-netplug $(TARGET_DIR)/etc/init.d/S29netplug
+	$(INSTALL) -m 755 -D package/netplug/S29netplug $(TARGET_DIR)/etc/init.d
 	$(INSTALL) -m 755 -D $(NETPLUG_DIR)/$(NETPLUG_BINARY) $(TARGET_DIR)/$(NETPLUG_TARGET_BINARY)
 	touch -c $(TARGET_DIR)/$(NETPLUG_TARGET_BINARY)
 

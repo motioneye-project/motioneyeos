@@ -64,7 +64,7 @@ $(STAGING_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
 	echo "$(MAKE) prefix=$(TARGET_DIR)/usr statedir=$(TARGET_DIR)/var/lib/nfs CC=$(TARGET_CC) -C $(NFS_UTILS_DIR) install" > $@
 	echo "rm -f $(TARGET_DIR)/usr/bin/event_rpcgen.py $(TARGET_DIR)/usr/sbin/nhfs* $(TARGET_DIR)/usr/sbin/nfsstat $(TARGET_DIR)/usr/sbin/showmount" >> $@
 	echo "rm -rf $(TARGET_DIR)/usr/share/man" >> $@
-	echo "$(INSTALL) -m 0755 -D package/nfs-utils/init-nfs $(TARGET_DIR)/etc/init.d/S60nfs" >> $@
+	echo "$(INSTALL) -m 0755 -D package/nfs-utils/S60nfs $(TARGET_DIR)/etc/init.d" >> $@
 	echo -n "for file in $(NFS_UTILS_TARGETS_) ; do rm -f $(TARGET_DIR)/" >> $@
 	echo -n "\$$" >> $@
 	echo "file; done" >> $@

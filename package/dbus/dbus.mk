@@ -65,7 +65,7 @@ $(TARGET_DIR)/$(DBUS_TARGET_BINARY): $(STAGING_DIR)/usr/lib/libdbus-1.so
 	rm -f $(TARGET_DIR)/usr/lib/libdbus-1.so
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libdbus-1.so.3.2.0
 	$(MAKE) DESTDIR=$(TARGET_DIR) initddir=/etc/init.d -C $(DBUS_DIR)/bus install
-	$(INSTALL) -m 0755 -D package/dbus/init-dbus $(TARGET_DIR)/etc/init.d/S97messagebus
+	$(INSTALL) -m 0755 -D package/dbus/S97messagebus $(TARGET_DIR)/etc/init.d
 	rm -f $(TARGET_DIR)/etc/init.d/messagebus
 	rm -rf $(TARGET_DIR)/usr/man
 	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share

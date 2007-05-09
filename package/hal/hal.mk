@@ -74,7 +74,7 @@ $(TARGET_DIR)/$(HAL_TARGET_BINARY): $(HAL_DIR)/hald/hald
 	rm -rf $(TARGET_DIR)/usr/lib/libhal*.la
 	rm -rf $(TARGET_DIR)/usr/lib/hal
 	rm -rf $(TARGET_DIR)/etc/PolicyKit
-	$(INSTALL) -m 0755 -D package/hal/init-hal $(TARGET_DIR)/etc/init.d/S98haldaemon
+	$(INSTALL) -m 0755 -D package/hal/S98haldaemon $(TARGET_DIR)/etc/init.d
 	rm -rf $(TARGET_DIR)/etc/rc.d
 	for file in hald-addon-acpi* hald-addon-cpufreq		\
 		    hald-addon-keyboard hald-addon-pmu		\

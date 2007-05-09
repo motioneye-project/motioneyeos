@@ -98,7 +98,7 @@ $(TARGET_DIR)/usr/bin/tracedaemon: $(LTT_DIR2)/$(LTT_TARGET_BINARY)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) \
 		-C $(LTT_DIR2)/Daemon install
 	$(STRIP) $(TARGET_DIR)/usr/bin/tracedaemon > /dev/null 2>&1
-	$(INSTALL) -D -m 0755 package/ltt/init-tracer $(TARGET_DIR)/etc/init.d/S27tracer
+	$(INSTALL) -D -m 0755 package/ltt/S27tracer $(TARGET_DIR)/etc/init.d
 
 ltt-tracedaemon: uclibc $(TARGET_DIR)/usr/bin/tracedaemon
 

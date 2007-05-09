@@ -56,7 +56,7 @@ $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY): $(PROFTPD_DIR)/$(PROFTPD_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/proftpd.conf ] ; then \
 		$(INSTALL) -m 0644 -D $(PROFTPD_DIR)/sample-configurations/basic.conf $(TARGET_DIR)/etc/proftpd.conf; \
 	fi;
-	$(INSTALL) -m 0755 -D package/proftpd/init-proftpd $(TARGET_DIR)/etc/init.d/S50proftpd
+	$(INSTALL) -m 0755 -D package/proftpd/S50proftpd $(TARGET_DIR)/etc/init.d
 
 proftpd: uclibc $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)
 

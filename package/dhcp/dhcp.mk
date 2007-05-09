@@ -43,7 +43,7 @@ $(DHCP_DIR)/$(DHCP_RELAY_BINARY): $(DHCP_DIR)/.configured
 $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	(cd $(TARGET_DIR)/var/lib; ln -snf /tmp dhcp)
 	$(INSTALL) -m 0755 -D $(DHCP_DIR)/$(DHCP_SERVER_BINARY) $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY)
-	$(INSTALL) -m 0755 -D package/dhcp/init-server $(TARGET_DIR)/etc/init.d/S80dhcp-server
+	$(INSTALL) -m 0755 -D package/dhcp/S80dhcp-server $(TARGET_DIR)/etc/init.d
 	$(INSTALL) -m 0644 -D package/dhcp/dhcpd.conf $(TARGET_DIR)/etc/dhcp/dhcpd.conf
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
@@ -51,7 +51,7 @@ $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	(cd $(TARGET_DIR)/var/lib; ln -snf /tmp dhcp)
 	$(INSTALL) -m 0755 -D $(DHCP_DIR)/$(DHCP_RELAY_BINARY) $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY)
-	$(INSTALL) -m 0755 -D package/dhcp/init-relay $(TARGET_DIR)/etc/init.d/S80dhcp-relay
+	$(INSTALL) -m 0755 -D package/dhcp/S80dhcp-relay $(TARGET_DIR)/etc/init.d
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
