@@ -239,6 +239,7 @@ menuconfig BR2_AUDIO_SUPPORT
 
 if BR2_AUDIO_SUPPORT
 source "package/asterisk/Config.in"
+source "package/libid3tag/Config.in"
 source "package/libmad/Config.in"
 source "package/libsndfile/Config.in"
 source "package/mpg123/Config.in"
