@@ -1,7 +1,6 @@
-Index: uClibc/libc/sysdeps/linux/common/sched_getaffinity.c
-===================================================================
---- uClibc/libc/sysdeps/linux/common/sched_getaffinity.c	(revision 17880)
-+++ uClibc/libc/sysdeps/linux/common/sched_getaffinity.c	(working copy)
+diff -ur uClibc-0.9.29/libc/sysdeps/linux/common/sched_getaffinity.c uClibc-0.9.29-patched/libc/sysdeps/linux/common/sched_getaffinity.c
+--- uClibc-0.9.29/libc/sysdeps/linux/common/sched_getaffinity.c	2007-02-12 16:52:32.000000000 -0600
++++ uClibc-0.9.29-patched/libc/sysdeps/linux/common/sched_getaffinity.c	2007-05-09 18:05:09.397411811 -0500
 @@ -29,6 +29,7 @@
  #include <sys/param.h>
  #include <sys/types.h>
@@ -26,10 +25,9 @@ Index: uClibc/libc/sysdeps/linux/common/sched_getaffinity.c
  #endif
 +
 +#endif
-Index: uClibc/libc/sysdeps/linux/common/sched_setaffinity.c
-===================================================================
---- uClibc/libc/sysdeps/linux/common/sched_setaffinity.c	(revision 17880)
-+++ uClibc/libc/sysdeps/linux/common/sched_setaffinity.c	(working copy)
+diff -ur uClibc-0.9.29/libc/sysdeps/linux/common/sched_setaffinity.c uClibc-0.9.29-patched/libc/sysdeps/linux/common/sched_setaffinity.c
+--- uClibc-0.9.29/libc/sysdeps/linux/common/sched_setaffinity.c	2007-02-12 16:52:32.000000000 -0600
++++ uClibc-0.9.29-patched/libc/sysdeps/linux/common/sched_setaffinity.c	2007-05-09 18:05:09.397411811 -0500
 @@ -31,6 +31,7 @@
  #include <sys/types.h>
  #include <alloca.h>
@@ -50,6 +48,6 @@ Index: uClibc/libc/sysdeps/linux/common/sched_setaffinity.c
 +	return -1;
 +}
 +*/
- #endif
- #endif
 +#endif
+ #endif
+ #endif
