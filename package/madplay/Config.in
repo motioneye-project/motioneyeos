@@ -1,0 +1,12 @@
+config BR2_PACKAGE_MADPLAY
+	bool "madplay"
+	default n
+	select BR2_PACKAGE_LIBMAD
+	select BR2_PACKAGE_LIBID3TAG
+	help
+	  MAD is a high-quality fixed-point MPEG audio decoder with
+	  24-bit output. The implementation is entirely new, based on
+	  the ISO/IEC standards, and performs especially well on systems
+	  without native floating-point support.
+
+	  http://www.underbit.com/products/mad/
