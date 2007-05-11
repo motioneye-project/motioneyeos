@@ -3,7 +3,7 @@ SEDLIST="/usr/bin/sed /bin/sed sed gnused gsed"
 for SED in $SEDLIST
 do
 	if ! test -x $SED ; then
-		SED=$(which $SED)
+		SED=$(which $SED 2> /dev/null)
 		if ! test -x "$SED" > /dev/null ; then
 			SED=""
 			continue

@@ -123,7 +123,7 @@ fi
 # check build system 'make'
 #
 #############################################################
-MAKE=$(which make)
+MAKE=$(which make 2> /dev/null)
 if [ -z "$MAKE" ] ; then
 	echo "make installed:		    FALSE"
 	/bin/echo -e "\n\nYou must install 'make' on your build machine\n";
@@ -152,7 +152,7 @@ echo "GNU make version '$MAKE_VERSION':			Ok"
 #############################################################
 COMPILER=$(which $HOSTCC 2> /dev/null)
 if [ -z "$COMPILER" ] ; then
-	COMPILER=$(which cc)
+	COMPILER=$(which cc 2> /dev/null)
 fi;
 if [ -z "$COMPILER" ] ; then
 	echo "C Compiler installed:		    FALSE"
@@ -179,7 +179,7 @@ echo "C compiler version '$COMPILER_VERSION':			Ok"
 # check for host CXX
 CXXCOMPILER=$(which $HOSTCXX 2> /dev/null)
 if [ -z "$CXXCOMPILER" ] ; then
-	CXXCOMPILER=$(which c++)
+	CXXCOMPILER=$(which c++ 2> /dev/null)
 fi
 if [ -z "$CXXCOMPILER" ] ; then
 	echo "C++ Compiler installed:		    FALSE"
