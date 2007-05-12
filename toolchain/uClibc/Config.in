@@ -14,7 +14,11 @@ choice
 		bool "uClibc 0.9.28"
 
 	config BR2_UCLIBC_VERSION_0_9_28_3
+		depends BR2_DEPRECATED
 		bool "uClibc 0.9.28.3"
+
+	config BR2_UCLIBC_VERSION_0_9_29
+		bool "uClibc 0.9.29"
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
@@ -28,6 +32,19 @@ config BR2_USE_UCLIBC_SNAPSHOT
 	depends on BR2_UCLIBC_VERSION_SNAPSHOT
 	help
 	    Use latest snapshot or one from a specific date?
+
+config BR2_UCLIBC_CONFIG
+	string "uClibc configuration file to use?"
+	default "toolchain/uClibc/uClibc-0.9.28.config" if BR2_UCLIBC_VERSION_0_9_28
+	default "toolchain/uClibc/uClibc-0.9.28.config" if BR2_UCLIBC_VERSION_0_9_28_3
+	default "toolchain/uClibc/uClibc-0.9.29.config" if BR2_UCLIBC_VERSION_0_9_29
+	default "toolchain/uClibc/uClibc-0.9.29.config" if BR2_UCLIBC_VERSION_0_9_30
+	default "toolchain/uClibc/uClibc-0.9.29.config" if BR2_UCLIBC_VERSION_SNAPSHOT
+	help
+	  Some people may wish to use their own modified uClibc configuration
+	  file and will specify their config file location with this option.
+	  See also docs/README in this package.
+	  If unsure, use the default.
 
 config BR2_ENABLE_LOCALE
 	bool "Enable locale/gettext/i18n support?"

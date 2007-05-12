@@ -6,6 +6,13 @@
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 
+# specifying UCLIBC_CONFIG_FILE on the command-line overrides the .config
+# setting.
+ifndef UCLIBC_CONFIG_FILE
+UCLIBC_CONFIG_FILE=$(subst ",, $(strip $(BR2_UCLIBC_CONFIG)))
+#")
+endif
+
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 # Be aware that this changes daily....
 UCLIBC_VER:=0.9.29
@@ -13,22 +20,21 @@ UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
 UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
 #"))
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
-ifndef UCLIBC_CONFIG_FILE
-UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.29.config
-endif
 else
+# releases
+ifeq ($(BR2_UCLIBC_VERSION_0_9_29),y)
+UCLIBC_VER:=0.9.29
+endif
 ifeq ($(BR2_UCLIBC_VERSION_0_9_28_3),y)
 UCLIBC_VER:=0.9.28.3
 endif
 ifeq ($(BR2_UCLIBC_VERSION_0_9_28),y)
 UCLIBC_VER:=0.9.28
 endif
+
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-$(UCLIBC_VER)
 UCLIBC_SOURCE:=uClibc-$(UCLIBC_VER).tar.bz2
 UCLIBC_SITE:=http://www.uclibc.org/downloads
-ifndef UCLIBC_CONFIG_FILE
-UCLIBC_CONFIG_FILE=toolchain/uClibc/uClibc-0.9.28.config
-endif
 endif
 
 UCLIBC_CAT:=$(BZCAT)
