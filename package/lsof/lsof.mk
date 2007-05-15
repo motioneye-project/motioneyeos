@@ -3,10 +3,11 @@
 # lsof
 #
 #############################################################
-LSOF_SOURCE:=lsof_4.77.tar.bz2
+LSOF_VERSION:=4.78
+LSOF_SOURCE:=lsof_$(LSOF_VERSION).tar.bz2
 LSOF_SITE:=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
 LSOF_CAT:=$(BZCAT)
-LSOF_DIR:=$(BUILD_DIR)/lsof_4.77
+LSOF_DIR:=$(BUILD_DIR)/lsof_$(LSOF_VERSION)
 LSOF_BINARY:=lsof
 LSOF_TARGET_BINARY:=bin/lsof
 
@@ -27,33 +28,33 @@ lsof-unpacked: $(LSOF_DIR)/.unpacked
 
 $(LSOF_DIR)/.unpacked: $(DL_DIR)/$(LSOF_SOURCE)
 	$(LSOF_CAT) $(DL_DIR)/$(LSOF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	(cd $(LSOF_DIR);tar xf lsof_4.77_src.tar;rm -f lsof_4.77_src.tar)
+	(cd $(LSOF_DIR);tar xf lsof_$(LSOF_VERSION)_src.tar;rm -f lsof_$(LSOF_VERSION)_src.tar)
 	toolchain/patch-kernel.sh $(LSOF_DIR) package/lsof/ \*.patch
 	touch $(LSOF_DIR)/.unpacked
 
 $(LSOF_DIR)/.configured: $(LSOF_DIR)/.unpacked
-	(cd $(LSOF_DIR)/lsof_4.77_src; echo n | $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS) $(BR2_LSOF_CFLAGS)" ./Configure linux)
+	(cd $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src; echo n | $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS) $(BR2_LSOF_CFLAGS)" ./Configure linux)
 	touch $(LSOF_DIR)/.configured
 
-$(LSOF_DIR)/lsof_4.77_src/$(LSOF_BINARY): $(LSOF_DIR)/.configured
+$(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/$(LSOF_BINARY): $(LSOF_DIR)/.configured
 ifeq ($(UCLIBC_HAS_WCHAR),)
-	$(SED) 's,^#define[ 	]*HASWIDECHAR.*,#undef HASWIDECHAR,' $(LSOF_DIR)/lsof_4.77_src/machine.h
-	$(SED) 's,^#define[ 	]*WIDECHARINCL.*,,' $(LSOF_DIR)/lsof_4.77_src/machine.h
+	$(SED) 's,^#define[ 	]*HASWIDECHAR.*,#undef HASWIDECHAR,' $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/machine.h
+	$(SED) 's,^#define[ 	]*WIDECHARINCL.*,,' $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/machine.h
 endif
 ifeq ($(UCLIBC_HAS_LOCALE),)
-	$(SED) 's,^#define[ 	]*HASSETLOCALE.*,#undef HASSETLOCALE,' $(LSOF_DIR)/lsof_4.77_src/machine.h
+	$(SED) 's,^#define[ 	]*HASSETLOCALE.*,#undef HASSETLOCALE,' $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/machine.h
 endif
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS) $(BR2_LSOF_CFLAGS)" -C $(LSOF_DIR)/lsof_4.77_src
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) DEBUG="$(TARGET_CFLAGS) $(BR2_LSOF_CFLAGS)" -C $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src
 
-$(TARGET_DIR)/$(LSOF_TARGET_BINARY): $(LSOF_DIR)/lsof_4.77_src/$(LSOF_BINARY)
-	cp $(LSOF_DIR)/lsof_4.77_src/$(LSOF_BINARY) $@
+$(TARGET_DIR)/$(LSOF_TARGET_BINARY): $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/$(LSOF_BINARY)
+	cp $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/$(LSOF_BINARY) $@
 	$(STRIP) $@
 
 lsof: uclibc $(TARGET_DIR)/$(LSOF_TARGET_BINARY)
 
 lsof-clean:
 	-rm -f $(TARGET_DIR)/$(LSOF_TARGET_BINARY)
-	-$(MAKE) -C $(LSOF_DIR)/lsof_4.77_src clean
+	-$(MAKE) -C $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src clean
 
 lsof-dirclean:
 	rm -rf $(LSOF_DIR)

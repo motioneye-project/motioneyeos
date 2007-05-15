@@ -1,6 +1,6 @@
 diff -ru lsof_4.77.orig/lsof_4.77_src/dialects/linux/dlsof.h lsof_4.77/lsof_4.77_src/dialects/linux/dlsof.h
 --- lsof_4.77.orig/lsof_4.77_src/dialects/linux/dlsof.h	2006-03-28 00:57:14.000000000 +0200
-+++ lsof_4.77/lsof_4.77_src/dialects/linux/dlsof.h	2006-11-29 14:03:07.000000000 +0100
++++ lsof_4.77/lsof_4.78_src/dialects/linux/dlsof.h	2006-11-29 14:03:07.000000000 +0100
 @@ -49,7 +49,7 @@
  #include <unistd.h>
  #include <netinet/in.h>

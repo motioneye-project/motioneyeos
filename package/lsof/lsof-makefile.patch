@@ -1,6 +1,6 @@
 diff -ru lsof_4.77.orig/lsof_4.77_src/lib/Makefile.skel lsof_4.77/lsof_4.77_src/lib/Makefile.skel
 --- lsof_4.77.orig/lsof_4.77_src/lib/Makefile.skel	2001-02-13 03:12:22.000000000 +0100
-+++ lsof_4.77/lsof_4.77_src/lib/Makefile.skel	2006-11-29 13:51:44.000000000 +0100
++++ lsof_4.77/lsof_4.78_src/lib/Makefile.skel	2006-11-29 13:51:44.000000000 +0100
 @@ -21,8 +21,8 @@
  all:	${LIB}
  
