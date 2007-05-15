@@ -21,7 +21,7 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBPCAP_VER:=0.9.4
+LIBPCAP_VER:=0.9.5
 LIBPCAP_DIR:=$(BUILD_DIR)/libpcap-$(LIBPCAP_VER)
 LIBPCAP_SITE:=http://www.tcpdump.org/release
 LIBPCAP_SOURCE:=libpcap-$(LIBPCAP_VER).tar.gz
@@ -35,7 +35,7 @@ libpcap-source: $(DL_DIR)/$(LIBPCAP_SOURCE)
 $(LIBPCAP_DIR)/.unpacked: $(DL_DIR)/$(LIBPCAP_SOURCE)
 	$(LIBPCAP_CAT) $(DL_DIR)/$(LIBPCAP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBPCAP_DIR) package/libpcap/ *.patch
-	touch $(LIBPCAP_DIR)/.unpacked
+	touch $@
 
 $(LIBPCAP_DIR)/.configured: $(LIBPCAP_DIR)/.unpacked
 	( \
@@ -66,7 +66,7 @@ $(LIBPCAP_DIR)/.configured: $(LIBPCAP_DIR)/.unpacked
 		--prefix=/usr \
 		--with-pcap=linux \
 	)
-	touch $(LIBPCAP_DIR)/.configured
+	touch $@
 
 $(LIBPCAP_DIR)/libpcap.a: $(LIBPCAP_DIR)/.configured
 	$(MAKE) CC="$(TARGET_CC)" \

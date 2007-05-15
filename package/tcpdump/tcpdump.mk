@@ -6,7 +6,7 @@
 # Copyright (C) 2001-2003 by Erik Andersen <andersen@codepoet.org>
 # Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
 
-TCPDUMP_VER:=3.9.4
+TCPDUMP_VER:=3.9.5
 TCPDUMP_DIR:=$(BUILD_DIR)/tcpdump-$(TCPDUMP_VER)
 TCPDUMP_SITE:=http://www.tcpdump.org/release
 TCPDUMP_SOURCE:=tcpdump-$(TCPDUMP_VER).tar.gz
@@ -19,7 +19,8 @@ tcpdump-source: $(DL_DIR)/$(TCPDUMP_SOURCE)
 
 $(TCPDUMP_DIR)/.unpacked: $(DL_DIR)/$(TCPDUMP_SOURCE)
 	$(TCPDUMP_CAT) $(DL_DIR)/$(TCPDUMP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(TCPDUMP_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(TCPDUMP_DIR) package/tcpdump tcpdump*\.patch
+	touch $@
 
 $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 	( \
@@ -47,9 +48,10 @@ $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 		--infodir=/usr/info \
 		--with-build-cc="$(HOSTCC)" \
 		--without-crypto \
+		--disable-smb \
 	)
 	$(SED) '/HAVE_PCAP_DEBUG/d' $(TCPDUMP_DIR)/config.h
-	touch $(TCPDUMP_DIR)/.configured
+	touch $@
 
 $(TCPDUMP_DIR)/tcpdump: $(TCPDUMP_DIR)/.configured
 	$(MAKE) CC="$(TARGET_CC)" \
@@ -59,7 +61,8 @@ $(TCPDUMP_DIR)/tcpdump: $(TCPDUMP_DIR)/.configured
 		-C $(TCPDUMP_DIR)
 
 $(TARGET_DIR)/sbin/tcpdump: $(TCPDUMP_DIR)/tcpdump
-	cp -af $< $@
+	cp -f $< $@
+	$(STRIP) -s $@
 
 tcpdump: uclibc zlib libpcap $(TARGET_DIR)/sbin/tcpdump
 

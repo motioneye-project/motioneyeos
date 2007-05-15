@@ -1,0 +1,30 @@
+--- tcpdump-3.9.5.oorig/tcpdump-stdinc.h	2006-06-23 04:07:27.000000000 +0200
++++ tcpdump-3.9.5/tcpdump-stdinc.h	2007-05-14 10:26:25.000000000 +0200
+@@ -149,15 +149,15 @@ typedef char* caddr_t;
+   #undef htonl
+   #undef htons
+ 
+-  extern __inline__ unsigned long __ntohl (unsigned long x);
+-  extern __inline__ unsigned short __ntohs (unsigned short x);
++  static __inline__ unsigned long __ntohl (unsigned long x);
++  static __inline__ unsigned short __ntohs (unsigned short x);
+ 
+   #define ntohl(x)  __ntohl(x)
+   #define ntohs(x)  __ntohs(x)
+   #define htonl(x)  __ntohl(x)
+   #define htons(x)  __ntohs(x)
+ 
+-  extern __inline__ unsigned long __ntohl (unsigned long x)
++  static __inline__ unsigned long __ntohl (unsigned long x)
+   {
+     __asm__ ("xchgb %b0, %h0\n\t"   /* swap lower bytes  */
+              "rorl  $16, %0\n\t"    /* swap words        */
+@@ -166,7 +166,7 @@ typedef char* caddr_t;
+     return (x);
+   }
+ 
+-  extern __inline__ unsigned short __ntohs (unsigned short x)
++  static __inline__ unsigned short __ntohs (unsigned short x)
+   {
+     __asm__ ("xchgb %b0, %h0"       /* swap bytes */
+             : "=q" (x) : "0" (x));
