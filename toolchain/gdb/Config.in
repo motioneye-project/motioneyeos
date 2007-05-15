@@ -39,6 +39,9 @@ choice
 	config BR2_GDB_VERSION_6_5
 		bool "gdb 6.5"
 
+	config BR2_GDB_VERSION_6_6
+		bool "gdb 6.6"
+
 	config BR2_GDB_VERSION_SNAPSHOT
 		bool "gdb snapshot"
 
@@ -50,4 +53,5 @@ config BR2_GDB_VERSION
 	default "6.3"      if BR2_GDB_VERSION_6_3
 	default "6.4"      if BR2_GDB_VERSION_6_4
 	default "6.5"      if BR2_GDB_VERSION_6_5
+	default "6.6"      if BR2_GDB_VERSION_6_6
 	default "snapshot" if BR2_GDB_VERSION_SNAPSHOT
