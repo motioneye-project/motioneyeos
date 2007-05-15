@@ -135,6 +135,7 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 		--disable-pygtk \
 		--disable-mono \
 		--disable-monodoc \
+		--disable-stack-protector \
 		--with-distro=none \
 		--with-avahi-user=default \
 		--with-avahi-group=default \
