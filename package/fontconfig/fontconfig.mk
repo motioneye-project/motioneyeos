@@ -17,6 +17,15 @@ fontconfig-source: $(DL_DIR)/$(FONTCONFIG_SOURCE)
 $(FONTCONFIG_DIR)/.unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
 	$(FONTCONFIG_CAT) $(DL_DIR)/$(FONTCONFIG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(FONTCONFIG_DIR) package/fontconfig/ \*.patch*
+# use freetype-host for host tools
+	FREETYPE_CFLAGS="$(shell $(FREETYPE_HOST_DIR)/bin/freetype-config --cflags)"; \
+	FREETYPE_LIBS="$(shell $(FREETYPE_HOST_DIR)/bin/freetype-config --libs)"; \
+	for dir in fc-case fc-glyphname fc-lang fc-arch; \
+	do \
+		$(SED) "s~^FREETYPE_CFLAGS =.*~FREETYPE_CFLAGS = $$FREETYPE_CFLAGS~" \
+		    -e "s~^FREETYPE_LIBS =.*~FREETYPE_LIBS = $$FREETYPE_LIBS~" \
+			$(FONTCONFIG_DIR)/$$dir/Makefile.in; \
+	done
 	$(CONFIG_UPDATE) $(FONTCONFIG_DIR)
 	touch $(FONTCONFIG_DIR)/.unpacked
 
