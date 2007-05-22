@@ -1,8 +1,8 @@
 config BR2_PACKAGE_LIBGTK12
 	bool "libgtk12"
 	default n
-	depends BR2_PACKAGE_LIBGLIB12
-	depends BR2_PACKAGE_XORG
+	select BR2_PACKAGE_LIBGLIB12
+	select BR2_PACKAGE_XORG
 	help
 	  The GTK+ graphical user interface library
 
