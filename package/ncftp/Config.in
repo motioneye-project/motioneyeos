@@ -1,0 +1,20 @@
+config BR2_PACKAGE_NCFTP
+	bool "ncftp"
+	default n
+	help
+	  NcFTP Client (also known as just NcFTP) is a set of FREE application
+	  programs implementing the File Transfer Protocol (FTP).
+
+	  http://www.ncftp.com/ncftp/
+
+config BR2_PACKAGE_NCFTP_UTILS
+	bool "install utils (ncftpput, ncftpget, ncftpls)"
+	default n
+	depends on BR2_PACKAGE_NCFTP
+	help
+	  This will also install:
+	  - NcFTPGet - command-line utility program
+	  - NcFTPPut - command-line utility program
+	  - NcFTPLs - command-line utility program
+	  - NcFTPBatch - background FTP program for individual users
+	  - NcFTPSpooler - background batch FTP service for systems
