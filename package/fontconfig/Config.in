@@ -1,6 +1,7 @@
 config BR2_PACKAGE_FONTCONFIG
 	bool "fontconfig"
 	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_EXPAT
 	default n
 	help
 
