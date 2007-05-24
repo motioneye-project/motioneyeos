@@ -296,7 +296,7 @@ ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 endif
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 	-cp -dpf $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/lib/
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libstc++.so*
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libstdc++.so*
 endif
 ifeq ($(BR2_INSTALL_LIBGCJ),y)
 	-cp -dpf $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/lib/
