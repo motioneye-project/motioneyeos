@@ -18,6 +18,14 @@ else
 GMP_BE:=no
 endif
 
+# this is a workaround for a bug in GMP, please see 
+# http://gmplib.org/list-archives/gmp-devel/2006-April/000618.html
+ifeq ($(EXEEXT),.exe)
+GMP_CPP_FLAGS:=-DDLL_EXPORT
+else
+GMP_CPP_FLAGS:=
+endif
+
 $(DL_DIR)/$(GMP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GMP_SITE)/$(GMP_SOURCE)
 
@@ -35,6 +43,7 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
+		CPPFLAGS="$(GMP_CPP_FLAGS)" \
 		ac_cv_c_bigendian=$(GMP_BE) \
 		$(GMP_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -52,7 +61,7 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--enable-shared \
+		$(PREFERRED_LIB_FLAGS) \
 		$(DISABLE_NLS) \
 	);
 	touch $@
@@ -105,12 +114,12 @@ $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 		CC_FOR_BUILD="$(HOSTCC)" \
 		CC="$(HOSTCC)" \
 		CFLAGS="$(HOST_CFLAGS)" \
+		CPPFLAGS="$(GMP_CPP_FLAGS)" \
 		$(GMP_DIR)/configure \
 		--prefix="$(GMP_HOST_DIR)" \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
-		--enable-shared \
-		--enable-static \
+		$(PREFERRED_LIB_FLAGS) \
 		$(DISABLE_NLS) \
 	);
 	touch $@

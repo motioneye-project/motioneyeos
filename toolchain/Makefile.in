@@ -10,6 +10,12 @@ else
 MULTILIB:=--disable-multilib
 endif
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+PREFERRED_LIB_FLAGS:=--enable-static --disable-shared
+else
+PREFERRED_LIB_FLAGS:=--disable-static --enable-shared
+endif
+
 
 # FIXME -- this is temporary
 OPTIMIZE_FOR_CPU=$(ARCH)

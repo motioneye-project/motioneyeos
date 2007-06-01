@@ -373,6 +373,19 @@ config BR2_DEPRECATED
 	help
 	  This option hides outdated/obsolete versions of packages.
 
+config BR2_PREFER_STATIC_LIB
+	bool "prefer static libraries"
+	default n
+	help
+	  Where possible, use static libraries.
+	  This increases your code size a lot and should only be
+	  used with a good reason why not use the default, which
+	  is dynamic libraries.
+
+	  If unsure, say No.
+
+	  WARNING: This is highly experimental at the moment.
+
 endmenu
 
 source "toolchain/Config.in"

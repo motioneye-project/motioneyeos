@@ -66,7 +66,32 @@ include package/Makefile.in
 #
 #############################################################
 
+ifneq (,$(findstring linux,$(BR2_GNU_BUILD_SUFFIX)))
+EXEEXT:=
+LIBEXT:=.a
+SHREXT:=.so
+endif
+ifneq (,$(findstring apple,$(BR2_GNU_BUILD_SUFFIX)))
+EXEEXT:=.pear
+LIBEXT:=.dunno
+SHREXT:=.dylib
+endif
+ifneq (,$(findstring cygwin,$(BR2_GNU_BUILD_SUFFIX)))
+EXEEXT:=.exe
+LIBEXT:=.lib
+SHREXT:=.dll
+endif
+ifneq (,$(findstring mingw,$(BR2_GNU_BUILD_SUFFIX)))
+EXEEXT:=.exe
+LIBEXT:=.lib
+SHREXT:=.dll
+endif
 
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+LIBTGTEXT=$(LIBEXT)
+else
+LIBTGTEXT=$(SHREXT)
+endif
 
 all:   world
 
