@@ -11,7 +11,8 @@ MPFR_CAT:=$(BZCAT)
 MPFR_SITE:=http://www.mpfr.org/mpfr-current/
 MPFR_DIR:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_TARGET_DIR:=$(BUILD_DIR)/mpfr-$(MPFR_VERSION)
-MPFR_BINARY:=libmpfr.so
+MPFR_BINARY:=libmpfr$(LIBTGTEXT)
+MPFR_HOST_BINARY:=libmpfr$(HOST_LIBEXT)
 MPFR_LIBVERSION:=1.0.1
 
 ifeq ($(BR2_ENDIAN),"BIG")
@@ -102,18 +103,17 @@ $(STAGING_DIR)/lib/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY)
 	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libmpfr.{so*,a}
 
 $(TARGET_DIR)/lib/libmpfr.so $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION) $(TARGET_DIR)/lib/libmpfr.a: $(STAGING_DIR)/lib/$(MPFR_BINARY)
-	cp -dpf $(STAGING_DIR)/lib/libmpfr.so* $(STAGING_DIR)/lib/libmpfr.a \
-		$(TARGET_DIR)/lib/
+	cp -dpf $(STAGING_DIR)/lib/libmpfr$(LIBTGTEXT) $(TARGET_DIR)/lib/
 ifeq ($(BR2_PACKAGE_LIBMPFR_HEADERS),y)
 	cp -dpf $(STAGING_DIR)/include/mpfr.h $(STAGING_DIR)/include/mpf2mpfr.h \
 		$(TARGET_DIR)/usr/include/
 endif
 
-libmpfr: uclibc $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION)
+libmpfr: uclibc $(TARGET_DIR)/lib/libmpfr$(LIBTGTEXT)
 stage-libmpfr: uclibc $(STAGING_DIR)/lib/$(MPFR_BINARY)
 
 libmpfr-clean:
-	rm -f $(TARGET_DIR)/lib/$(MPFR_BINARY) $(TARGET_DIR)/lib/libmpfr.so* \
+	rm -f $(TARGET_DIR)/lib/libmpfr.* \
 		$(TARGET_DIR)/usr/include/mpfr.h \
 		$(TARGET_DIR)/usr/include/mpf2mpfr.h
 	-$(MAKE) -C $(MPFR_TARGET_DIR) clean
@@ -123,7 +123,7 @@ libmpfr-dirclean:
 
 MPFR_DIR2:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)-host
 MPFR_HOST_DIR:=$(TOOL_BUILD_DIR)/mpfr
-$(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_BINARY)
+$(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_HOST_BINARY)
 	mkdir -p $(MPFR_DIR2)
 	(cd $(MPFR_DIR2); \
 		CC="$(HOSTCC)" CC_FOR_BUILD="$(HOSTCC)" \
@@ -140,10 +140,10 @@ $(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_BINARY
 	);
 	touch $@
 
-$(MPFR_HOST_DIR)/lib/$(MPFR_BINARY): $(MPFR_DIR2)/.configured
+$(MPFR_HOST_DIR)/lib/$(MPFR_HOST_BINARY): $(MPFR_DIR2)/.configured
 	$(MAKE) -C $(MPFR_DIR2) install
 
-host-libmpfr: $(MPFR_HOST_DIR)/lib/$(MPFR_BINARY)
+host-libmpfr: $(MPFR_HOST_DIR)/lib/$(MPFR_HOST_BINARY)
 host-libmpfr-clean:
 	rm -rf $(MPFR_HOST_DIR)
 	-$(MAKE) -C $(MPFR_DIR2) clean

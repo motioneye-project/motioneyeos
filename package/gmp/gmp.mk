@@ -9,7 +9,8 @@ GMP_SITE:=http://ftp.sunet.se/pub/gnu/gmp/
 GMP_CAT:=$(BZCAT)
 GMP_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_TARGET_DIR:=$(BUILD_DIR)/gmp-$(GMP_VERSION)
-GMP_BINARY:=libgmp.so
+GMP_BINARY:=libgmp$(LIBTGTEXT)
+GMP_HOST_BINARY:=libgmp$(HOST_LIBEXT)
 GMP_LIBVERSION:=3.4.1
 
 ifeq ($(BR2_ENDIAN),"BIG")
@@ -20,7 +21,7 @@ endif
 
 # this is a workaround for a bug in GMP, please see 
 # http://gmplib.org/list-archives/gmp-devel/2006-April/000618.html
-ifeq ($(EXEEXT),.exe)
+ifeq ($(HOST_EXEEXT),.exe)
 GMP_CPP_FLAGS:=-DDLL_EXPORT
 else
 GMP_CPP_FLAGS:=
@@ -88,19 +89,17 @@ $(STAGING_DIR)/lib/$(GMP_BINARY): $(GMP_TARGET_DIR)/.libs/$(GMP_BINARY)
 	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libgmp.{so*,a}
 
 $(TARGET_DIR)/lib/libgmp.so $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION) $(TARGET_DIR)/lib/libgmp.a: $(STAGING_DIR)/lib/$(GMP_BINARY)
-	cp -dpf $(STAGING_DIR)/lib/libgmp.so* $(STAGING_DIR)/lib/libgmp.a \
-		 $(TARGET_DIR)/lib/
+	cp -dpf $(STAGING_DIR)/lib/libgmp$(LIBTGTEXT) $(TARGET_DIR)/lib/
 ifeq ($(BR2_PACKAGE_LIBGMP_HEADERS),y)
 	test -d $(TARGET_DIR)/usr/include || mkdir -p $(TARGET_DIR)/usr/include
 	cp -dpf $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/usr/include/
 endif
 
-libgmp: uclibc $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION)
+libgmp: uclibc $(TARGET_DIR)/lib/libgmp$(LIBTGTEXT)
 stage-libgmp: uclibc $(STAGING_DIR)/lib/$(GMP_BINARY)
 
 libgmp-clean:
-	rm -f $(TARGET_DIR)/lib/$(GMP_BINARY) $(TARGET_DIR)/lib/libgmp.so* \
-		$(TARGET_DIR)/usr/include/gmp.h
+	rm -f $(TARGET_DIR)/lib/libgmp.* $(TARGET_DIR)/usr/include/gmp.h
 	-$(MAKE) -C $(GMP_TARGET_DIR) clean
 
 libgmp-dirclean:
@@ -124,10 +123,10 @@ $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 	);
 	touch $@
 
-$(GMP_HOST_DIR)/lib/$(GMP_BINARY): $(GMP_DIR2)/.configured
+$(GMP_HOST_DIR)/lib/$(GMP_HOST_BINARY): $(GMP_DIR2)/.configured
 	$(MAKE) -C $(GMP_DIR2) install
 
-host-libgmp: $(GMP_HOST_DIR)/lib/$(GMP_BINARY)
+host-libgmp: $(GMP_HOST_DIR)/lib/$(GMP_HOST_BINARY)
 host-libgmp-clean:
 	rm -rf $(GMP_HOST_DIR)
 	-$(MAKE) -C $(GMP_DIR2) clean

@@ -48,36 +48,36 @@ cc-option = $(shell if $(TARGET_CC) $(TARGET_CFLAGS) $(1) -S -o /dev/null -xc /d
 
 #############################################################
 #
-# Setup the proper filename extensions for the target
+# Setup the proper filename extensions for the host
 #
 ##############################################################
 ifneq ($(findstring linux,$(BR2_GNU_BUILD_SUFFIX)),)
-EXEEXT:=
-LIBEXT:=.a
-SHREXT:=.so
+HOST_EXEEXT:=
+HOST_LIBEXT:=.a
+HOST_SHREXT:=.so
 endif
 ifneq ($(findstring apple,$(BR2_GNU_BUILD_SUFFIX)),)
-EXEEXT:=
-LIBEXT:=.a
-SHREXT:=.dylib
+HOST_EXEEXT:=
+HOST_LIBEXT:=.a
+HOST_SHREXT:=.dylib
 endif
 ifneq ($(findstring cygwin,$(BR2_GNU_BUILD_SUFFIX)),)
-EXEEXT:=.exe
-LIBEXT:=.lib
-SHREXT:=.dll
+HOST_EXEEXT:=.exe
+HOST_LIBEXT:=.lib
+HOST_SHREXT:=.dll
 endif
 ifneq ($(findstring mingw,$(BR2_GNU_BUILD_SUFFIX)),)
-EXEEXT:=.exe
-LIBEXT:=.lib
-SHREXT:=.dll
+HOST_EXEEXT:=.exe
+HOST_LIBEXT:=.lib
+HOST_SHREXT:=.dll
 endif
 
+# The preferred type of libs we build for the target
 ifeq ($(BR2_PREFER_STATIC_LIB),y)
-LIBTGTEXT=$(LIBEXT)
+LIBTGTEXT=.a
 else
-LIBTGTEXT=$(SHREXT)
+LIBTGTEXT=.so
 endif
-
 
 
 #############################################################

@@ -49,11 +49,11 @@ BINUTILS_NO_MPFR:=y
 endif
 
 ifndef BINUTILS_NO_MPFR
-BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp.so \
-	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.so
+BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp$(HOST_LIBEXT) \
+	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr$(HOST_LIBEXT)
 
-BINUTILS_TARGET_PREREQ:=$(TARGET_DIR)/lib/libgmp.so \
-	$(TARGET_DIR)/lib/libmpfr.so
+BINUTILS_TARGET_PREREQ:=$(TARGET_DIR)/lib/libgmp$(LIBTGTEXT) \
+	$(TARGET_DIR)/lib/libmpfr$(LIBTGTEXT)
 EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-gmp="$(GMP_HOST_DIR)"
 EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_HOST_DIR)"
 
