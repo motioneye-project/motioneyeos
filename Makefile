@@ -45,6 +45,41 @@ ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 cc-option = $(shell if $(TARGET_CC) $(TARGET_CFLAGS) $(1) -S -o /dev/null -xc /dev/null \
 	> /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi ;)
 
+
+#############################################################
+#
+# Setup the proper filename extensions for the target
+#
+##############################################################
+ifneq ($(findstring linux,$(BR2_GNU_BUILD_SUFFIX)),)
+EXEEXT:=
+LIBEXT:=.a
+SHREXT:=.so
+endif
+ifneq ($(findstring apple,$(BR2_GNU_BUILD_SUFFIX)),)
+EXEEXT:=
+LIBEXT:=.a
+SHREXT:=.dylib
+endif
+ifneq ($(findstring cygwin,$(BR2_GNU_BUILD_SUFFIX)),)
+EXEEXT:=.exe
+LIBEXT:=.lib
+SHREXT:=.dll
+endif
+ifneq ($(findstring mingw,$(BR2_GNU_BUILD_SUFFIX)),)
+EXEEXT:=.exe
+LIBEXT:=.lib
+SHREXT:=.dll
+endif
+
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+LIBTGTEXT=$(LIBEXT)
+else
+LIBTGTEXT=$(SHREXT)
+endif
+
+
+
 #############################################################
 #
 # The list of stuff to build for the target toolchain
@@ -65,33 +100,6 @@ include package/Makefile.in
 # what you are doing.
 #
 #############################################################
-
-ifneq (,$(findstring linux,$(BR2_GNU_BUILD_SUFFIX)))
-EXEEXT:=
-LIBEXT:=.a
-SHREXT:=.so
-endif
-ifneq (,$(findstring apple,$(BR2_GNU_BUILD_SUFFIX)))
-EXEEXT:=
-LIBEXT:=.a
-SHREXT:=.dylib
-endif
-ifneq (,$(findstring cygwin,$(BR2_GNU_BUILD_SUFFIX)))
-EXEEXT:=.exe
-LIBEXT:=.lib
-SHREXT:=.dll
-endif
-ifneq (,$(findstring mingw,$(BR2_GNU_BUILD_SUFFIX)))
-EXEEXT:=.exe
-LIBEXT:=.lib
-SHREXT:=.dll
-endif
-
-ifeq ($(BR2_PREFER_STATIC_LIB),y)
-LIBTGTEXT=$(LIBEXT)
-else
-LIBTGTEXT=$(SHREXT)
-endif
 
 all:   world
 
