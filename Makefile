@@ -72,8 +72,8 @@ LIBEXT:=.a
 SHREXT:=.so
 endif
 ifneq (,$(findstring apple,$(BR2_GNU_BUILD_SUFFIX)))
-EXEEXT:=.pear
-LIBEXT:=.dunno
+EXEEXT:=
+LIBEXT:=.a
 SHREXT:=.dylib
 endif
 ifneq (,$(findstring cygwin,$(BR2_GNU_BUILD_SUFFIX)))
