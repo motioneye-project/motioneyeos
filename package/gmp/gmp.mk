@@ -123,7 +123,7 @@ $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 	);
 	touch $@
 
-$(GMP_HOST_DIR)/lib/libgmp$(HOST_LIBEXT)/lib/libgmp$(HOST_SHREXT): $(GMP_DIR2)/.configured
+$(GMP_HOST_DIR)/lib/libgmp$(HOST_LIBEXT) $(GMP_HOST_DIR)/lib/libgmp$(HOST_SHREXT) $(GMP_HOST_DIR)/lib/libgmp$(HOST_SHREXT).(GMP_LIBVERSION): $(GMP_DIR2)/.configured
 	$(MAKE) -C $(GMP_DIR2) install
 
 host-libgmp: $(GMP_HOST_DIR)/lib/$(GMP_HOST_BINARY)
