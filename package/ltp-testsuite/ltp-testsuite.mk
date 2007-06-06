@@ -28,14 +28,15 @@ $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
 ltp-testsuite-source: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 
 $(LTP_TESTSUITE_DIR)/Makefile: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
+	-mkdir -p $(LTP_TESTSUITE_ROOT)
 	$(LTP_TESTSUITE_CAT) $(DL_DIR)/$(LTP_TESTSUITE_SOURCE) | tar -C $(LTP_TESTSUITE_ROOT) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LTP_TESTSUITE_DIR) package/ltp-testsuite/ $(LTP_PATCHES)
-	touch -c $(LTP_TESTSUITE_DIR)/Makefile
+	touch -c $@
 
 $(LTP_TESTSUITE_DIR)/.compiled: $(LTP_TESTSUITE_DIR)/Makefile
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) \
 		-C $(LTP_TESTSUITE_DIR) all
-	touch $(LTP_TESTSUITE_DIR)/.compiled
+	touch $@
 
 sjh: $(LTP_TESTSUITE_DIR)/Makefile
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) \
@@ -46,7 +47,7 @@ $(LTP_TESTSUITE_DIR)/.installed: $(LTP_TESTSUITE_DIR)/.compiled
 	echo "$(MAKE1) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) " \
 			"-C $(LTP_TESTSUITE_DIR) install" \
 			> $(STAGING_DIR)/.fakeroot.ltp
-	touch $(LTP_TESTSUITE_DIR)/.installed
+	touch $@
 
 ltp-testsuite: uclibc host-fakeroot $(LTP_TESTSUITE_DIR)/.installed
 
