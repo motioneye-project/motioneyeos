@@ -22,7 +22,7 @@ config BR2_PACKAGE_GDB_HOST
 
 choice
 	prompt "GDB debugger Version"
-	default BR2_GDB_VERSION_6_3
+	default BR2_GDB_VERSION_6_6
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_HOST
 	help
 	  Select the version of gdb you wish to use.

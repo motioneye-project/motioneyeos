@@ -86,7 +86,7 @@ $(STAGING_DIR)/lib/$(GMP_BINARY): $(GMP_TARGET_DIR)/.libs/$(GMP_BINARY)
 	    infodir=$(STAGING_DIR)/info \
 	    mandir=$(STAGING_DIR)/man \
             -C $(GMP_TARGET_DIR) install
-	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libgmp.{so*,a}
+	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libgmp$(LIBTGTEXT)*
 
 $(TARGET_DIR)/lib/libgmp.so $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION) $(TARGET_DIR)/lib/libgmp.a: $(STAGING_DIR)/lib/$(GMP_BINARY)
 	cp -dpf $(STAGING_DIR)/lib/libgmp$(LIBTGTEXT) $(TARGET_DIR)/lib/

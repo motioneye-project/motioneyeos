@@ -36,13 +36,17 @@ GCC_STRIP_HOST_BINARIES:=true
 
 ifeq ($(findstring 3.,$(GCC_VERSION)),3.)
 GCC_NO_MPFR:=y
-endif
+else
+ifneq ($(BR2_INSTALL_FORTRAN),y)
+# fortran needs gmp and mpfr
 ifeq ($(findstring 4.0.,$(GCC_VERSION)),4.0.)
 GCC_NO_MPFR:=y
 endif
-#ifeq ($(findstring 4.1.,$(GCC_VERSION)),4.1.)
-#GCC_NO_MPFR:=y
-#endif
+ifeq ($(findstring 4.1.,$(GCC_VERSION)),4.1.)
+GCC_NO_MPFR:=y
+endif
+endif
+endif
 
 #############################################################
 #

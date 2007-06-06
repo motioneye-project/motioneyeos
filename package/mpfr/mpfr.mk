@@ -100,7 +100,7 @@ $(STAGING_DIR)/lib/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY)
 	    infodir=$(STAGING_DIR)/info \
 	    mandir=$(STAGING_DIR)/man \
 	    -C $(MPFR_TARGET_DIR) install;
-	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libmpfr.{so*,a}
+	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libmpfr$(LIBTGTEXT)*
 
 $(TARGET_DIR)/lib/libmpfr.so $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION) $(TARGET_DIR)/lib/libmpfr.a: $(STAGING_DIR)/lib/$(MPFR_BINARY)
 	cp -dpf $(STAGING_DIR)/lib/libmpfr$(LIBTGTEXT) $(TARGET_DIR)/lib/
