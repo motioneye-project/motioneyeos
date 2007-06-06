@@ -89,7 +89,7 @@ $(STAGING_DIR)/lib/$(GMP_BINARY): $(GMP_TARGET_DIR)/.libs/$(GMP_BINARY)
 	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libgmp$(LIBTGTEXT)*
 
 $(TARGET_DIR)/lib/libgmp.so $(TARGET_DIR)/lib/libgmp.so.$(GMP_LIBVERSION) $(TARGET_DIR)/lib/libgmp.a: $(STAGING_DIR)/lib/$(GMP_BINARY)
-	cp -dpf $(STAGING_DIR)/lib/libgmp$(LIBTGTEXT) $(TARGET_DIR)/lib/
+	cp -dpf $(STAGING_DIR)/lib/libgmp$(LIBTGTEXT)* $(TARGET_DIR)/lib/
 ifeq ($(BR2_PACKAGE_LIBGMP_HEADERS),y)
 	test -d $(TARGET_DIR)/usr/include || mkdir -p $(TARGET_DIR)/usr/include
 	cp -dpf $(STAGING_DIR)/include/gmp.h $(TARGET_DIR)/usr/include/

@@ -103,7 +103,7 @@ $(STAGING_DIR)/lib/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY)
 	$(STRIP) --strip-unneeded $(STAGING_DIR)/lib/libmpfr$(LIBTGTEXT)*
 
 $(TARGET_DIR)/lib/libmpfr.so $(TARGET_DIR)/lib/libmpfr.so.$(MPFR_LIBVERSION) $(TARGET_DIR)/lib/libmpfr.a: $(STAGING_DIR)/lib/$(MPFR_BINARY)
-	cp -dpf $(STAGING_DIR)/lib/libmpfr$(LIBTGTEXT) $(TARGET_DIR)/lib/
+	cp -dpf $(STAGING_DIR)/lib/libmpfr$(LIBTGTEXT)* $(TARGET_DIR)/lib/
 ifeq ($(BR2_PACKAGE_LIBMPFR_HEADERS),y)
 	cp -dpf $(STAGING_DIR)/include/mpfr.h $(STAGING_DIR)/include/mpf2mpfr.h \
 		$(TARGET_DIR)/usr/include/
