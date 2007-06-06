@@ -103,7 +103,7 @@ $(LINUX26_KERNEL): $(LINUX26_DIR)/.depend_done
 	cp -dpf $(LINUX26_DIR)/$(LINUX26_BINLOC) $(LINUX26_KERNEL)
 	touch -c $@
 
-$(TARGET_DIR)/boot/$(LINUX26_BINLOC): $(LINUX26_KERNEL)
+$(TARGET_DIR)/boot/$(LINUX26_FORMAT): $(LINUX26_KERNEL)
 	[ -d $(TARGET_DIR)/boot/ ] || mkdir $(TARGET_DIR)/boot
 	cp -a $(LINUX26_DIR)/$(LINUX26_BINLOC) $(LINUX26_DIR)/System.map $(TARGET_DIR)/boot/
 	touch -c $@
@@ -122,7 +122,7 @@ linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
 	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
 
-linux26: cross-depmod26 $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep $(TARGET_DIR)/boot/$(LINUX26_BINLOC)
+linux26: cross-depmod26 $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep $(TARGET_DIR)/boot/$(LINUX26_FORMAT)
 
 linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
