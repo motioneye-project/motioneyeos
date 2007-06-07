@@ -28,6 +28,7 @@ CONFIG = package/config
 
 noconfig_targets := menuconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release tags    \
+	source-check
 
 #	$(shell find . -name *_defconfig |sed 's/.*\///')
 
@@ -156,6 +157,13 @@ $(TARGET_DIR):
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
+.config.check: dependencies
+	$(SED) '/BR2_WGET/s/\"$$/ --spider\"/g' .config
+	touch $@
+
+_source-check: .config.check
+	$(MAKE) source
+
 #############################################################
 #
 # Cleanup and misc junk
@@ -214,9 +222,9 @@ randconfig: $(CONFIG)/conf
 	@$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
 
 allyesconfig: $(CONFIG)/conf
-	#@$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+	cp $(CONFIG_DEFCONFIG) .config
+	@$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
 	#sed -i -e "s/^CONFIG_DEBUG.*/# CONFIG_DEBUG is not set/" .config
-	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
 
 allnoconfig: $(CONFIG)/conf
 	@$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
@@ -227,6 +235,10 @@ defconfig: $(CONFIG)/conf
 %_defconfig: $(CONFIG)/conf
 	cp $(shell find . -name $@) .config
 	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+
+# check if download URLs are outdated 
+source-check: allyesconfig
+	$(MAKE) _source-check
 
 #############################################################
 #
