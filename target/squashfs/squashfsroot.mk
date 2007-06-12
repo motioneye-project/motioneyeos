@@ -35,24 +35,10 @@ squashfs-dirclean:
 # Build the squashfs root filesystem image
 #
 #############################################################
+ifeq ($(BR2_ENDIAN),"BIG")
+SQUASHFS_ENDIANNESS=-be
+else
 SQUASHFS_ENDIANNESS=-le
-ifeq ($(strip $(BR2_armeb)),y)
-SQUASHFS_ENDIANNESS=-be
-endif
-ifeq ($(strip $(BR2_mips)),y)
-SQUASHFS_ENDIANNESS=-be
-endif
-ifeq ($(strip $(BR2_powerpc)),y)
-SQUASHFS_ENDIANNESS=-be
-endif
-ifeq ($(strip $(BR2_sh3eb)),y)
-SQUASHFS_ENDIANNESS=-be
-endif
-ifeq ($(strip $(BR2_sh4eb)),y)
-SQUASHFS_ENDIANNESS=-be
-endif
-ifeq ($(strip $(BR2_sparc)),y)
-SQUASHFS_ENDIANNESS=-be
 endif
 
 SQUASHFS_TARGET:=$(IMAGE).squashfs

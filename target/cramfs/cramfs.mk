@@ -39,24 +39,10 @@ cramfs-dirclean:
 # Build the cramfs root filesystem image
 #
 #############################################################
+ifeq ($(BR2_ENDIAN),"BIG")
+CRAMFS_ENDIANNESS=-b
+else
 CRAMFS_ENDIANNESS=-l
-ifeq ($(strip $(BR2_armeb)),y)
-CRAMFS_ENDIANNESS=-b
-endif
-ifeq ($(strip $(BR2_mips)),y)
-CRAMFS_ENDIANNESS=-b
-endif
-ifeq ($(strip $(BR2_powerpc)),y)
-CRAMFS_ENDIANNESS=-b
-endif
-ifeq ($(strip $(BR2_sh3eb)),y)
-CRAMFS_ENDIANNESS=-b
-endif
-ifeq ($(strip $(BR2_sh4eb)),y)
-CRAMFS_ENDIANNESS=-b
-endif
-ifeq ($(strip $(BR2_sparc)),y)
-CRAMFS_ENDIANNESS=-b
 endif
 
 CRAMFS_TARGET=$(IMAGE).cramfs
