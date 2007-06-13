@@ -240,6 +240,7 @@ menuconfig BR2_AUDIO_SUPPORT
 
 if BR2_AUDIO_SUPPORT
 source "package/asterisk/Config.in"
+source "package/aumix/Config.in"
 source "package/libid3tag/Config.in"
 source "package/libmad/Config.in"
 source "package/libsndfile/Config.in"
