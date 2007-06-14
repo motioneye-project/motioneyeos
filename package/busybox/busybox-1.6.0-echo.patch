@@ -1,0 +1,11 @@
+--- busybox-1.6.0/coreutils/echo.c	Fri Jun  1 13:48:34 2007
++++ busybox-1.6.0-echo/coreutils/echo.c	Wed Jun  6 09:49:18 2007
+@@ -33,7 +33,7 @@
+ 		eflag = '\\',
+ 		nflag = 1,  /* 1 -- print '\n' */
+ 	};
+-	++argv;
++	arg = ++argv;
+ #else
+ 	const char *p;
+ 	char nflag = 1;
