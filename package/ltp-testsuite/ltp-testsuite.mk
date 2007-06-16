@@ -16,9 +16,12 @@ LTP_TESTSUITE_DIR:=$(LTP_TESTSUITE_ROOT)/ltp-full-$(LTP_TESTSUITE_VERSION)
 #
 LTP_PATCHES:=$(subst package/ltp-testsuite/,,				 \
 	     $(wildcard package/ltp-testsuite/*.patch))
+
 ifneq ($(BR2_PTHREADS_NATIVE),y)
+  ifneq ($(BR2_EXT_PTHREADS_NATIVE),y)
 LTP_PATCHES:=$(filter-out ltp-testsuite-enable-openposix-for-nptl.patch, \
 	     $(LTP_PATCHES))
+  endif
 endif
 
 
