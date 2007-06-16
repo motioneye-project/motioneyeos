@@ -91,6 +91,7 @@ $(EXT2_BASE): host-fakeroot makedevs genext2fs
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
+	@rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))

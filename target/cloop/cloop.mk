@@ -77,6 +77,7 @@ clooproot: cloop check-tools $(IMAGE).cramfs ### cramfsroot
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
+	@rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
 	### $(CLOOP_DIR)/create_compressed_fs -q -D target/default/device_table.txt $(TARGET_DIR) $(IMAGE).cloop
 	## mkisofs -r $(TARGET_DIR) | $(CLOOP_DIR)/create_compressed_fs - 65536 > $(IMAGE).cloop
 	sudo /sbin/losetup -d /dev/loop1
