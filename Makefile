@@ -46,6 +46,13 @@ ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 cc-option = $(shell if $(TARGET_CC) $(TARGET_CFLAGS) $(1) -S -o /dev/null -xc /dev/null \
 	> /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi ;)
 
+#############################################################
+#
+# Hide troublesome environment variables from sub processes
+#
+#############################################################
+unexport CROSS_COMPILE
+unexport ARCH
 
 #############################################################
 #
