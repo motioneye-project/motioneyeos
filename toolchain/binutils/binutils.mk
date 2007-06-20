@@ -52,8 +52,9 @@ ifndef BINUTILS_NO_MPFR
 BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp$(HOST_SHREXT) \
 	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr$(HOST_SHREXT)
 
-BINUTILS_TARGET_PREREQ:=$(TARGET_DIR)/lib/libgmp$(LIBTGTEXT) \
-	$(TARGET_DIR)/lib/libmpfr$(LIBTGTEXT)
+BINUTILS_TARGET_PREREQ:=$(TARGET_DIR)/usr/lib/libgmp$(LIBTGTEXT) \
+	$(TARGET_DIR)/usr/lib/libmpfr$(LIBTGTEXT)
+
 EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-gmp="$(GMP_HOST_DIR)"
 EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_HOST_DIR)"
 
@@ -74,6 +75,7 @@ $(DL_DIR)/$(BINUTILS_SOURCE):
 binutils-unpacked: $(BINUTILS_DIR)/.unpacked
 $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
+	rm -rf $(BINUTILS_DIR)
 	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(BINUTILS_DIR)
 	touch $@
@@ -85,15 +87,15 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
-	(cd $(BINUTILS_DIR1); \
-		CC="$(HOSTCC)" \
+	(cd $(BINUTILS_DIR1); rm -rf config.cache ; \
+		$(HOST_CONFIGURE_OPTS) \
 		$(BINUTILS_DIR)/configure \
-		--prefix=$(STAGING_DIR) \
+		--prefix=$(BR2_SYSROOT_PREFIX)/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
-		--with-build-sysroot="$(TOOL_BUILD_DIR)/uClibc_dev/" \
-		--with-sysroot="$(TOOL_BUILD_DIR)/uClibc_dev/" \
+		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
+		$(BR2_CONFIGURE_STAGING_SYSROOT) \
 		$(DISABLE_NLS) \
 		$(MULTILIB) \
 		--disable-werror \
@@ -106,15 +108,20 @@ $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 
 # Make install will put gettext data in staging_dir/share/locale.
 # Unfortunatey, it isn't configureable.
-$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld: $(BINUTILS_DIR1)/binutils/objdump
-	$(MAKE) -C $(BINUTILS_DIR1) install
+$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-ld: $(BINUTILS_DIR1)/binutils/objdump
+	$(MAKE) -C $(BINUTILS_DIR1) $(BR2_SYSROOT_STAGING_DESTDIR) install
+	#	tooldir=/usr build_tooldir=/usr install
+	#rm -f $(STAGING_DIR)/usr/bin/{ar,as,ld,nm,objdump,ranlib,strip}
 
-binutils: dependencies uclibc-configured $(BINUTILS_HOST_PREREQ) $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/ld
+binutils: dependencies uclibc-configured $(BINUTILS_HOST_PREREQ) $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-ld
 
 binutils-source: $(DL_DIR)/$(BINUTILS_SOURCE)
 
 binutils-clean:
-	rm -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
+	rm -rf $(STAGING_DIR)/usr/bin/*{ar,as,ld,nm,objdump,ranlib,strip} \
+		$(STAGING_DIR)/usr/lib/{libiberty*,ldscripts}
+	-$(MAKE) -C $(BINUTILS_DIR1) DESTDIR=$(STAGING_DIR) \
+	 	tooldir=/usr build_tooldir=/usr uninstall
 	-$(MAKE) -C $(BINUTILS_DIR1) clean
 
 binutils-dirclean:
@@ -130,11 +137,8 @@ binutils-dirclean:
 BINUTILS_DIR2:=$(BUILD_DIR)/binutils-$(BINUTILS_VERSION)-target
 $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR2)
-	(cd $(BINUTILS_DIR2); \
-		CC_FOR_BUILD="$(HOSTCC)" \
-		PATH=$(TARGET_PATH) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		CFLAGS_FOR_BUILD="-O2 -g" \
+	(cd $(BINUTILS_DIR2); rm -rf config.cache ; \
+		$(TARGET_CONFIGURE_OPTS) \
 		$(BINUTILS_DIR)/configure \
 		--prefix=/usr \
 		--exec-prefix=/usr \
@@ -149,8 +153,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	touch $@
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured
-	PATH=$(TARGET_PATH) \
-	$(MAKE) -C $(BINUTILS_DIR2) all
+	PATH=$(TARGET_PATH) $(MAKE) -C $(BINUTILS_DIR2) all
 
 $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 	PATH=$(TARGET_PATH) \

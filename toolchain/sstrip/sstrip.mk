@@ -12,13 +12,13 @@ SSTRIP_SOURCE_FILE:=$(TOPDIR)/toolchain/sstrip/sstrip.c
 #
 ######################################################################
 
-SSTRIP_HOST:=$(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-sstrip
+SSTRIP_HOST:=$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-sstrip
 
 $(SSTRIP_HOST): $(SSTRIP_SOURCE_FILE)
 	ln -snf ../../bin/$(REAL_GNU_TARGET_NAME)-sstrip \
-		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/sstrip
+		$(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/sstrip
 	ln -snf $(REAL_GNU_TARGET_NAME)-sstrip \
-		$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-sstrip
+		$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-sstrip
 	$(HOSTCC) $(SSTRIP_SOURCE_FILE) -o $(SSTRIP_HOST)
 
 sstrip_host: $(SSTRIP_HOST)
@@ -27,8 +27,8 @@ sstrip_host-source: $(SSTRIP_SOURCE_FILE)
 
 sstrip_host-clean:
 	rm -f $(SSTRIP_HOST)
-	rm -f $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin/sstrip
-	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-sstrip
+	rm -f $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/sstrip
+	rm -f $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-sstrip
 
 sstrip_host-dirclean:
 	true

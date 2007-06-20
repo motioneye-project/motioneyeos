@@ -3,7 +3,7 @@
 # mdadm
 #
 #############################################################
-MDADM_VERSION:=2.6.1
+MDADM_VERSION:=2.6.2
 MDADM_SOURCE:=mdadm_$(MDADM_VERSION).orig.tar.gz
 MDADM_PATCH:=mdadm_$(MDADM_VERSION)-1.diff.gz
 MDADM_CAT:=$(ZCAT)
