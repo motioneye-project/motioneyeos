@@ -19,7 +19,7 @@ libevent-source: $(DL_DIR)/$(LIBEVENT_SOURCE)
 libevent-unpacked: $(LIBEVENT_DIR)/.unpacked
 $(LIBEVENT_DIR)/.unpacked: $(DL_DIR)/$(LIBEVENT_SOURCE)
 	$(LIBEVENT_CAT) $(DL_DIR)/$(LIBEVENT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LIBEVENT_DIR) package/libevent/ *.patch
+	toolchain/patch-kernel.sh $(LIBEVENT_DIR) package/libevent/ \*.patch
 	touch $(LIBEVENT_DIR)/.unpacked
 
 $(LIBEVENT_DIR)/.configured: $(LIBEVENT_DIR)/.unpacked
