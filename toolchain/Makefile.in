@@ -10,6 +10,13 @@ else
 MULTILIB:=--disable-multilib
 endif
 
+ifeq ($(BR2_ENABLE_OPENMP),y)
+OPENMP:=--enable-openmp
+else
+OPENMP:=--disable-openmp
+endif
+
+
 ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 BR2_SYSROOT_PREFIX=# nothing, straight into /usr
 BR2_SYSROOT_STAGING_DESTDIR=DESTDIR=$(STAGING_DIR)/
