@@ -20,7 +20,7 @@ libevent-unpacked: $(LIBEVENT_DIR)/.unpacked
 $(LIBEVENT_DIR)/.unpacked: $(DL_DIR)/$(LIBEVENT_SOURCE)
 	$(LIBEVENT_CAT) $(DL_DIR)/$(LIBEVENT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBEVENT_DIR) package/libevent/ \*.patch
-	touch $(LIBEVENT_DIR)/.unpacked
+	touch $@
 
 $(LIBEVENT_DIR)/.configured: $(LIBEVENT_DIR)/.unpacked
 	(cd $(LIBEVENT_DIR); rm -rf config.cache; \
@@ -35,7 +35,7 @@ $(LIBEVENT_DIR)/.configured: $(LIBEVENT_DIR)/.unpacked
 		--disable-static \
 		--with-gnu-ld \
 	);
-	touch $(LIBEVENT_DIR)/.configured
+	touch $@
 
 $(LIBEVENT_DIR)/$(LIBEVENT_BINARY): $(LIBEVENT_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(LIBEVENT_DIR)
