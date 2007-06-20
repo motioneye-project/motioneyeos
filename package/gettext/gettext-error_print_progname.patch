@@ -1,11 +1,13 @@
-diff -ur gettext-0.14.6/gettext-tools/lib/error.h gettext-0.14.6-patched/gettext-tools/lib/error.h
---- gettext-0.14.6/gettext-tools/lib/error.h	2005-05-20 16:03:42.000000000 -0500
-+++ gettext-0.14.6-patched/gettext-tools/lib/error.h	2007-01-13 20:57:24.422168053 -0600
-@@ -50,7 +50,7 @@
+--- gettext-0.16.1.oorig/gettext-tools/gnulib-lib/error.h	2006-11-27 18:14:50.000000000 +0100
++++ gettext-0.16.1/gettext-tools/gnulib-lib/error.h	2007-06-20 13:29:32.000000000 +0200
+@@ -50,7 +50,10 @@ extern void error_at_line (int __status,
  /* If NULL, error will flush stdout, then print on stderr the program
     name, a colon and a space.  Otherwise, error will call this
     function without parameters instead.  */
 -extern DLL_VARIABLE void (*error_print_progname) (void);
++#ifndef __UCLIBC__
++extern DLL_VARIABLE
++#endif
 +void (*error_print_progname) (void);
  
  /* This variable is incremented each time `error' is called.  */

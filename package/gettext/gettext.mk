@@ -3,7 +3,7 @@
 # gettext
 #
 #############################################################
-GETTEXT_VER:=0.14.6
+GETTEXT_VER:=0.16.1
 GETTEXT_SOURCE:=gettext-$(GETTEXT_VER).tar.gz
 GETTEXT_SITE:=http://ftp.gnu.org/pub/gnu/gettext
 GETTEXT_DIR:=$(BUILD_DIR)/gettext-$(GETTEXT_VER)
@@ -19,7 +19,7 @@ gettext-source: $(DL_DIR)/$(GETTEXT_SOURCE)
 $(GETTEXT_DIR)/.unpacked: $(DL_DIR)/$(GETTEXT_SOURCE)
 	$(GETTEXT_CAT) $(DL_DIR)/$(GETTEXT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(GETTEXT_DIR) package/gettext/ gettext\*.patch
-	touch $(GETTEXT_DIR)/.unpacked
+	touch $@
 
 ifeq ($(strip $(BR2_TOOLCHAIN_EXTERNAL)),y)
 IGNORE_EXTERNAL_GETTEXT:=--with-included-gettext
@@ -101,8 +101,9 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		--infodir=/usr/info \
 		--disable-libasprintf \
 		$(IGNORE_EXTERNAL_GETTEXT) \
+		$(OPENMP) \
 	);
-	touch $(GETTEXT_DIR)/.configured
+	touch $@
 
 $(GETTEXT_DIR)/$(GETTEXT_BINARY): $(GETTEXT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GETTEXT_DIR)
@@ -120,7 +121,7 @@ $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 	rm -f $(STAGING_DIR)/bin/autopoint $(STAGING_DIR)/bin/envsubst
 	rm -f $(STAGING_DIR)/bin/gettext.sh $(STAGING_DIR)/bin/gettextize
 	rm -f $(STAGING_DIR)/bin/msg* $(STAGING_DIR)/bin/?gettext
-	touch -c $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
+	touch -c $@
 
 gettext: uclibc pkgconfig $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 
