@@ -21,8 +21,8 @@ coreutils-source: $(DL_DIR)/$(COREUTILS_SOURCE)
 
 $(COREUTILS_DIR)/.unpacked: $(DL_DIR)/$(COREUTILS_SOURCE)
 	$(COREUTILS_CAT) $(DL_DIR)/$(COREUTILS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(COREUTILS_DIR) package/coreutils/ coreutils*.patch
-	touch $(COREUTILS_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(COREUTILS_DIR) package/coreutils/ coreutils\*.patch
+	touch $@
 
 $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 	(cd $(COREUTILS_DIR); rm -rf config.cache; \
@@ -110,7 +110,7 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 	# This is undefined when crosscompiling...
 	$(SED) 's,.*HAVE_PROC_UPTIME.*,#define HAVE_PROC_UPTIME 1,g' \
 		$(COREUTILS_DIR)/config.h
-	touch $(COREUTILS_DIR)/.configured
+	touch $@
 
 $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured
 	$(MAKE) -C $(COREUTILS_DIR)

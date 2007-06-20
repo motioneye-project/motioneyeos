@@ -18,7 +18,7 @@ usbmount-source: $(DL_DIR)/$(USBMOUNT_SOURCE)
 
 $(USBMOUNT_DIR)/.unpacked: $(DL_DIR)/$(USBMOUNT_SOURCE)
 	$(USBMOUNT_CAT) $(DL_DIR)/$(USBMOUNT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(USBMOUNT_DIR) package/usbmount usbmount-$(USBMOUNT_VERSION)*.patch
+	toolchain/patch-kernel.sh $(USBMOUNT_DIR) package/usbmount usbmount-$(USBMOUNT_VERSION)\*.patch
 	touch $@
 
 $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY): $(USBMOUNT_DIR)/.unpacked
@@ -26,6 +26,7 @@ $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY): $(USBMOUNT_DIR)/.unpacked
 	@if [ ! -f $(TARGET_DIR)/etc/usbmount/usbmount.conf ] ; then \
                 $(INSTALL) -m 0644 -D $(USBMOUNT_DIR)/usbmount.conf $(TARGET_DIR)/etc/usbmount/usbmount.conf; \
         fi;
+	touch -c $@
 
 usbmount: uclibc $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)
 

@@ -19,8 +19,8 @@ sysvinit-source: $(DL_DIR)/$(SYSVINIT_SOURCE)
 sysvinit-unpacked: $(SYSVINIT_DIR)/.unpacked
 $(SYSVINIT_DIR)/.unpacked: $(DL_DIR)/$(SYSVINIT_SOURCE)
 	$(SYSVINIT_CAT) $(DL_DIR)/$(SYSVINIT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(SYSVINIT_DIR) package/sysvinit/ sysvinit-*.patch
-	touch $(SYSVINIT_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(SYSVINIT_DIR) package/sysvinit/ sysvinit-\*.patch
+	touch $@
 
 $(SYSVINIT_DIR)/$(SYSVINIT_BINARY): $(SYSVINIT_DIR)/.unpacked
 	CFLAGS="$(TARGET_CFLAGS)" $(MAKE) CC=$(TARGET_CC) -C $(SYSVINIT_DIR)/src

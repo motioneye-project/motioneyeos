@@ -25,7 +25,7 @@ $(ED_DIR)/.unpacked: $(DL_DIR)/$(ED_SOURCE) $(DL_DIR)/$(ED_PATCH)
 	if [ -d $(ED_DIR)/debian/patches ]; then \
 		toolchain/patch-kernel.sh $(ED_DIR) $(ED_DIR)/debian/patches \*.patch ; \
 	fi
-	toolchain/patch-kernel.sh $(ED_DIR) package/ed/ ed-*.patch
+	toolchain/patch-kernel.sh $(ED_DIR) package/ed/ ed-\*.patch
 	touch $@
 
 $(ED_DIR)/.configured: $(ED_DIR)/.unpacked

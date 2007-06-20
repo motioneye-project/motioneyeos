@@ -17,8 +17,8 @@ liblockfile-source: $(DL_DIR)/$(LIBLOCKFILE_SOURCE)
 
 $(LIBLOCKFILE_DIR)/.unpacked: $(DL_DIR)/$(LIBLOCKFILE_SOURCE)
 	$(LIBLOCKFILE_CAT) $(DL_DIR)/$(LIBLOCKFILE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LIBLOCKFILE_DIR) package/liblockfile/ *.patch
-	touch $(LIBLOCKFILE_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(LIBLOCKFILE_DIR) package/liblockfile/ \*.patch
+	touch $@
 
 $(LIBLOCKFILE_DIR)/.configured: $(LIBLOCKFILE_DIR)/.unpacked
 	(cd $(LIBLOCKFILE_DIR); rm -rf config.cache; \
@@ -31,13 +31,13 @@ $(LIBLOCKFILE_DIR)/.configured: $(LIBLOCKFILE_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--enable-shared \
 	);
-	touch $(LIBLOCKFILE_DIR)/.configured
+	touch $@
 
 $(STAGING_DIR)/lib/$(LIBLOCKFILE_BINARY): $(LIBLOCKFILE_DIR)/.configured
 	mkdir -p $(STAGING_DIR)/man/man1 $(STAGING_DIR)/man/man3
 	$(MAKE) -C $(LIBLOCKFILE_DIR) prefix= ROOT=$(STAGING_DIR) install
 	ln -sf $(LIBLOCKFILE_BINARY) $(STAGING_DIR)/lib/liblockfile.so.1
-	cp -a $(LIBLOCKFILE_DIR)/liblockfile.a $(STAGING_DIR)/lib
+	cp -dpf $(LIBLOCKFILE_DIR)/liblockfile.a $(STAGING_DIR)/lib
 
 $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY): $(STAGING_DIR)/lib/$(LIBLOCKFILE_BINARY)
 	-mkdir -p $(TARGET_DIR)/usr/lib
