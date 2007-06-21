@@ -44,9 +44,9 @@ $(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--with-ssl-headers=$(STAGING_DIR)/include/openssl \
-		--with-lzo-headers=$(STAGING_DIR)/include \
-		--with-lzo-lib=$(STAGING_DIR)/lib \
+		--with-ssl-headers=$(STAGING_DIR)/usr/include/openssl \
+		--with-lzo-headers=$(STAGING_DIR)/usr/include \
+		--with-lzo-lib=$(STAGING_DIR)/usr/lib \
 	);
 	touch $(VTUN_DIR)/.configured
 
