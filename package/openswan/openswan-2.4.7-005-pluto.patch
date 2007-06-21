@@ -31,19 +31,6 @@ diff -urp openswan-2.4.7.orig/programs/pluto/connections.c openswan-2.4.7/progra
      if (isanyaddr(&b->our_client) || isanyaddr(&b->peer_client))
      {
  	cannot_oppo(NULL, b, "impossible IP address");
-@@ -3069,10 +3070,11 @@ initiate_opportunistic_body(struct find_
- 		    }
- #endif
- 		    c->gw_info->key->last_tried_time = now();
-+#ifdef DEBUG
- 		    openswan_log("initiate on demand from %s:%d to %s:%d proto=%d state: %s because: %s"
- 				 , ours, ourport, his, hisport, b->transport_proto
- 				 , oppo_step_name[b->step], b->want);
--
-+#endif
- 		    ipsecdoi_initiate(b->whackfd, c, c->policy, 1
- 				      , SOS_NOBODY, pcim_local_crypto);
- 		    b->whackfd = NULL_FD;	/* protect from close */
 @@ -4465,6 +4467,7 @@ show_connections_status(void)
  		      , c->dpd_delay, c->dpd_timeout);
  	}

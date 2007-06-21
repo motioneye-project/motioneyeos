@@ -1,0 +1,156 @@
+diff -rduNp linux-2.6.21.5.openswan28/net/ipsec/ipsec_alg_cryptoapi.c linux-2.6.21.5/net/ipsec/ipsec_alg_cryptoapi.c
+--- linux-2.6.21.5.openswan28/net/ipsec/ipsec_alg_cryptoapi.c	2007-06-21 10:44:07.000000000 +0200
++++ linux-2.6.21.5/net/ipsec/ipsec_alg_cryptoapi.c	2007-06-21 23:34:05.000000000 +0200
+@@ -197,7 +197,7 @@ static struct ipsec_alg_capi_cipher alg_
+  */
+ int setup_cipher(const char *ciphername)
+ {
+-	return crypto_alg_available(ciphername, 0);
++	return crypto_has_alg(ciphername, 0, CRYPTO_ALG_ASYNC);
+ }
+ 
+ /*
+@@ -272,7 +272,7 @@ static __u8 *
+ _capi_new_key (struct ipsec_alg_enc *alg, const __u8 *key, size_t keylen)
+ {
+ 	struct ipsec_alg_capi_cipher *cptr;
+-	struct crypto_tfm *tfm=NULL;
++	struct crypto_cipher *tfm=NULL;
+ 
+ 	cptr = alg->ixt_common.ixt_data;
+ 	if (!cptr) {
+@@ -289,7 +289,7 @@ _capi_new_key (struct ipsec_alg_enc *alg
+ 	/*	
+ 	 *	alloc tfm
+ 	 */
+-	tfm = crypto_alloc_tfm(cptr->ciphername, CRYPTO_TFM_MODE_CBC);
++	tfm = crypto_alloc_cipher(cptr->ciphername, 0, CRYPTO_ALG_ASYNC);
+ 	if (!tfm) {
+ 		printk(KERN_ERR "_capi_new_key(): "
+ 				"NULL tfm for \"%s\" cryptoapi (\"%s\") algo\n" 
+@@ -300,7 +300,7 @@ _capi_new_key (struct ipsec_alg_enc *alg
+ 		printk(KERN_ERR "_capi_new_key(): "
+ 				"failed new_key() for \"%s\" cryptoapi algo (keylen=%d)\n" 
+ 			, alg->ixt_common.ixt_name, keylen);
+-		crypto_free_tfm(tfm);
++		crypto_free_cipher(tfm);
+ 		tfm=NULL;
+ 	}
+ err:
+@@ -317,23 +317,26 @@ err:
+ static int 
+ _capi_cbc_encrypt(struct ipsec_alg_enc *alg, __u8 * key_e, __u8 * in, int ilen, const __u8 * iv, int encrypt) {
+ 	int error =0;
+-	struct crypto_tfm *tfm=(struct crypto_tfm *)key_e;
++	struct crypto_blkcipher *tfm=(struct crypto_blkcipher *)key_e;
++	struct blkcipher_desc desc;
+ 	struct scatterlist sg = { 
+ 		.page = virt_to_page(in),
+ 		.offset = (unsigned long)(in) % PAGE_SIZE,
+ 		.length=ilen,
+ 	};
++	desc.tfm = tfm;
++	desc.flags = 0;
+ 	if (debug_crypto > 1)
+ 		printk(KERN_DEBUG "klips_debug:_capi_cbc_encrypt:"
+ 				"key_e=%p "
+ 				"in=%p out=%p ilen=%d iv=%p encrypt=%d\n"
+ 				, key_e
+ 				, in, in, ilen, iv, encrypt);
+-	crypto_cipher_set_iv(tfm, iv, crypto_tfm_alg_ivsize(tfm));
++	crypto_blkcipher_set_iv(tfm, iv, crypto_blkcipher_ivsize(tfm));
+ 	if (encrypt)
+-		error = crypto_cipher_encrypt (tfm, &sg, &sg, ilen);
++		error = crypto_blkcipher_encrypt (&desc, &sg, &sg, ilen);
+ 	else
+-		error = crypto_cipher_decrypt (tfm, &sg, &sg, ilen);
++		error = crypto_blkcipher_decrypt (&desc, &sg, &sg, ilen);
+ 	if (debug_crypto > 1)
+ 		printk(KERN_DEBUG "klips_debug:_capi_cbc_encrypt:"
+ 				"error=%d\n"
+@@ -370,8 +373,9 @@ setup_cipher_list (struct ipsec_alg_capi
+ 		 * 	use a local ci to avoid touching cptr->ci,
+ 		 * 	if register ipsec_alg success then bind cipher
+ 		 */
+-		if(cptr->alg.ixt_common.ixt_support.ias_name == NULL) {
+-		  cptr->alg.ixt_common.ixt_support.ias_name = cptr->ciphername;
++		if (cptr->alg.ixt_common.ixt_support.ias_name == NULL) {
++printk(KERN_DEBUG "klips_debug: ias_name was nil\n");
++//		  cptr->alg.ixt_common.ixt_support.ias_name = cptr->ciphername;
+ 		}
+ 
+ 		if( setup_cipher(cptr->ciphername) ) {
+diff -rduNp linux-2.6.21.5.openswan28/net/ipsec/sysctl_net_ipsec.c linux-2.6.21.5/net/ipsec/sysctl_net_ipsec.c
+--- linux-2.6.21.5.openswan28/net/ipsec/sysctl_net_ipsec.c	2007-06-21 10:44:07.000000000 +0200
++++ linux-2.6.21.5/net/ipsec/sysctl_net_ipsec.c	2007-06-21 22:33:51.000000000 +0200
+@@ -74,45 +74,45 @@ enum {
+ static ctl_table ipsec_table[] = {
+ #ifdef CONFIG_KLIPS_DEBUG
+ 	{ NET_IPSEC_DEBUG_AH, "debug_ah", &debug_ah,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_ESP, "debug_esp", &debug_esp,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_TUNNEL, "debug_tunnel", &debug_tunnel,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_EROUTE, "debug_eroute", &debug_eroute,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_SPI, "debug_spi", &debug_spi,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_RADIJ, "debug_radij", &debug_radij,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_NETLINK, "debug_netlink", &debug_netlink,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_XFORM, "debug_xform", &debug_xform,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_RCV, "debug_rcv", &debug_rcv,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_PFKEY, "debug_pfkey", &debug_pfkey,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_DEBUG_VERBOSE, "debug_verbose",&sysctl_ipsec_debug_verbose,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ #ifdef CONFIG_KLIPS_IPCOMP
+ 	{ NET_IPSEC_DEBUG_IPCOMP, "debug_ipcomp", &sysctl_ipsec_debug_ipcomp,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ #endif /* CONFIG_KLIPS_IPCOMP */
+ 
+ #ifdef CONFIG_KLIPS_REGRESS
+ 	{ NET_IPSEC_REGRESS_PFKEY_LOSSAGE, "pfkey_lossage",
+ 	  &sysctl_ipsec_regress_pfkey_lossage,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},
++	  sizeof(int), 0644,  &proc_dointvec},
+ #endif /* CONFIG_KLIPS_REGRESS */
+ 
+ #endif /* CONFIG_KLIPS_DEBUG */
+ 	{ NET_IPSEC_ICMP, "icmp", &sysctl_ipsec_icmp,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_INBOUND_POLICY_CHECK, "inbound_policy_check", &sysctl_ipsec_inbound_policy_check,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644,  &proc_dointvec},
+ 	{ NET_IPSEC_TOS, "tos", &sysctl_ipsec_tos,
+-	  sizeof(int), 0644, NULL, &proc_dointvec},    
++	  sizeof(int), 0644, &proc_dointvec},
+ 	{0}
+ };
+ 
+@@ -130,7 +130,7 @@ static struct ctl_table_header *ipsec_ta
+ 
+ int ipsec_sysctl_register(void)
+ {
+-        ipsec_table_header = register_sysctl_table(ipsec_root_table, 0);
++        ipsec_table_header = register_sysctl_table(ipsec_root_table);
+         if (!ipsec_table_header) {
+                 return -ENOMEM;
+ 	}

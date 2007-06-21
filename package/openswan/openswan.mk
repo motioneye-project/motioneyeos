@@ -6,7 +6,7 @@
 # to enable that within busybox
 #
 #############################################################
-OPENSWAN_VERSION:=2.4.7
+OPENSWAN_VERSION:=2.4.8
 OPENSWAN_SOURCE:=openswan-$(OPENSWAN_VERSION).tar.gz
 OPENSWAN_SITE:=http://www.openswan.org/download/
 OPENSWAN_DIR:=$(BUILD_DIR)/openswan-$(OPENSWAN_VERSION)
