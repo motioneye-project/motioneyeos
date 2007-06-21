@@ -48,7 +48,7 @@ $(STAGING_DIR)/$(PKGCONFIG_TARGET_BINARY): $(PKGCONFIG_DIR)/$(PKGCONFIG_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(PKGCONFIG_DIR) install
 	mv $(STAGING_DIR)/usr/bin/pkg-config $(STAGING_DIR)/usr/bin/pkg-config.real
 	cp package/pkgconfig/pkgconfig-filter.sh $(STAGING_DIR)/usr/bin/pkg-config
-	mkdir -p $(STAGING_DIR)/lib/pkgconfig
+	mkdir -p $(STAGING_DIR)/usr/lib/pkgconfig
 	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
 		$(STAGING_DIR)/usr/man $(STAGING_DIR)/usr/share/doc
 
