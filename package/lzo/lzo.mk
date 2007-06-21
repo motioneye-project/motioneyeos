@@ -22,7 +22,7 @@ lzo-source: $(DL_DIR)/$(LZO_SOURCE)
 $(LZO_DIR)/.unpacked: $(DL_DIR)/$(LZO_SOURCE)
 	$(LZO_CAT) $(DL_DIR)/$(LZO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LZO_DIR) package/lzo/ lzo\*.patch
-	touch $(LZO_DIR)/.unpacked
+	touch $@
 
 LZO_CONFIG_SHARED:=--disable-shared
 #LZO_CONFIG_SHARED:=--enable-shared
@@ -36,21 +36,21 @@ $(LZO_DIR)/.configured: $(LZO_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/ \
-		--includedir=/include \
-		--libdir=/lib \
+		--prefix=/usr \
+		--includedir=/usr/include \
+		--libdir=/usr/lib \
 		$(LZO_CONFIG_SHARED) \
 	);
-	touch $(LZO_DIR)/.configured
+	touch $@
 
 $(LZO_DIR)/src/liblzo.la: $(LZO_DIR)/.configured
 	$(MAKE) -C $(LZO_DIR)
 
-$(STAGING_DIR)/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
+$(STAGING_DIR)/usr/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
 	$(MAKE) CC="$(TARGET_CC)" DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) install
-	touch -c $(STAGING_DIR)/lib/liblzo.a
+	touch -c $@
 
-lzo: uclibc $(STAGING_DIR)/lib/liblzo.a
+lzo: uclibc $(STAGING_DIR)/usr/lib/liblzo.a
 
 lzo-clean:
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) uninstall
