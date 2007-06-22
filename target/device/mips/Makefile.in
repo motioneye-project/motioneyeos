@@ -1,0 +1,22 @@
+BR2_BOARD_PATH:=target/device/mips
+
+ifeq ($(strip $(BR2_PACKAGE_LINUX_KCONFIG)),)
+ifndef LINUX26_KCONFIG
+LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
+endif
+else
+LINUX26_KCONFIG=$(strip $(BR2_PACKAGE_LINUX_KCONFIG))
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_LINUX_FORMAT)),)
+ifndef LINUX26_FORMAT
+LINUX26_FORMAT=vmlinux
+endif
+else
+LINUX26_FORMAT=$(strip $(BR2_PACKAGE_LINUX_FORMAT))
+endif
+
+ifndef LINUX26_BINLOC
+# mips32 has the vmlinux in the toplevel kernel build-tree.
+LINUX26_BINLOC=$(LINUX26_FORMAT)
+endif

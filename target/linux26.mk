@@ -29,7 +29,11 @@ LINUX26_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.6
 ifndef LINUX26_FORMAT
 LINUX26_FORMAT=zImage
 endif
+# Has to be set by the target/device
+ifndef LINUX26_BINLOC
+# default:
 LINUX26_BINLOC=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
+endif
 
 # Linux kernel configuration file
 # Has to be set by the target/device
@@ -107,7 +111,7 @@ $(LINUX26_KERNEL): $(LINUX26_DIR)/.depend_done
 
 $(TARGET_DIR)/boot/$(LINUX26_FORMAT): $(LINUX26_KERNEL)
 	[ -d $(TARGET_DIR)/boot/ ] || mkdir $(TARGET_DIR)/boot
-	cp -a $(LINUX26_DIR)/$(LINUX26_BINLOC) $(LINUX26_DIR)/System.map $(TARGET_DIR)/boot/
+	cp -dpf $(LINUX26_DIR)/$(LINUX26_BINLOC) $(LINUX26_DIR)/System.map $(TARGET_DIR)/boot/
 	touch -c $@
 
 $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_KERNEL)
@@ -130,7 +134,7 @@ linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linux26clean:
-	rm -f $(LINUX26_KERNEL)
+	rm -f $(LINUX26_KERNEL) $(LINUX26_DIR)/.configured
 	-$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX26_DIR) clean
 
 linux26-dirclean:
