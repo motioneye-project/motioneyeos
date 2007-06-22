@@ -1,3 +1,4 @@
+ifneq ($(findstring y,$(BR2_mips)$(BR2_mipsel)),)
 BR2_BOARD_PATH:=target/device/mips
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX_KCONFIG)),)
@@ -19,4 +20,5 @@ endif
 ifndef LINUX26_BINLOC
 # mips32 has the vmlinux in the toplevel kernel build-tree.
 LINUX26_BINLOC=$(LINUX26_FORMAT)
+endif
 endif
