@@ -3,7 +3,7 @@
 # hdparm
 #
 #############################################################
-HDPARM_VERSION:=6.7
+HDPARM_VERSION:=7.6
 HDPARM_SOURCE:=hdparm-$(HDPARM_VERSION).tar.gz
 HDPARM_SITE:=http://www.ibiblio.org/pub/Linux/system/hardware/
 HDPARM_CAT:=$(ZCAT)
