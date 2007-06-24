@@ -278,7 +278,7 @@ uclibc-menuconfig: host-sed $(UCLIBC_DIR)/.config
 
 
 $(STAGING_DIR)/usr/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
-ifeq ($(findstring y,$(BR2_GCC_VERSION_3_3_5)$(BR2_GCC_VERSION_3_3_6)$(BR2_GCC_VERSION_3_4_2)$(BR2_GCC_VERSION_3_4_3)$(BR2_GCC_VERSION_3_4_4)$(BR2_GCC_VERSION_3_4_5)$(BR2_GCC_VERSION_3_4_6)),y)
+ifneq ($(BR2_TOOLCHAIN_SYSROOT),y)
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX= \
 		DEVEL_PREFIX=$(STAGING_DIR)/ \
