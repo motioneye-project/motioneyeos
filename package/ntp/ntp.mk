@@ -57,6 +57,7 @@ $(NTP_DIR)/$(NTP_BINARY): $(NTP_DIR)/.configured
 $(TARGET_DIR)/$(NTP_TARGET_BINARY): $(NTP_DIR)/$(NTP_BINARY)
 	install -m 755 $(NTP_DIR)/ntpd/ntpd $(TARGET_DIR)/usr/sbin/ntpd
 	install -m 755 $(NTP_DIR)/$(NTP_BINARY) $(TARGET_DIR)/$(NTP_TARGET_BINARY)
+	install -m 755 package/ntp/ntp.sysvinit $(TARGET_DIR)/etc/init.d/S49ntp
 
 ntp: uclibc $(TARGET_DIR)/$(NTP_TARGET_BINARY)
 
