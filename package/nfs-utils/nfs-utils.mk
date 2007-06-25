@@ -43,13 +43,13 @@ $(NFS_UTILS_DIR)/.configured: $(NFS_UTILS_DIR)/.unpacked
 		--prefix=/usr \
 		--disable-nfsv4 \
 		--disable-gss \
-	);
+	)
 	touch $@
 
 $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY): $(NFS_UTILS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD="$(HOSTCC)" \
 		RPCGEN=/usr/bin/rpcgen -C $(NFS_UTILS_DIR)
-	touch -c $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
+	touch -c $@
 
 NFS_UTILS_TARGETS_  :=
 NFS_UTILS_TARGETS_y :=	usr/sbin/exportfs usr/sbin/rpc.mountd	\
@@ -61,17 +61,17 @@ NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD)	+= usr/sbin/rpc.rquotad
 
 $(STAGING_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
 	# Use fakeroot to pretend to do 'make install' as root
-	echo "$(MAKE) prefix=$(TARGET_DIR)/usr statedir=$(TARGET_DIR)/var/lib/nfs CC=$(TARGET_CC) -C $(NFS_UTILS_DIR) install" > $@
-	echo "rm -f $(TARGET_DIR)/usr/bin/event_rpcgen.py $(TARGET_DIR)/usr/sbin/nhfs* $(TARGET_DIR)/usr/sbin/nfsstat $(TARGET_DIR)/usr/sbin/showmount" >> $@
-	echo "rm -rf $(TARGET_DIR)/usr/share/man" >> $@
-	echo "$(INSTALL) -m 0755 package/nfs-utils/S60nfs $(TARGET_DIR)/etc/init.d" >> $@
-	echo -n "for file in $(NFS_UTILS_TARGETS_) ; do rm -f $(TARGET_DIR)/" >> $@
+	echo '$(MAKE) prefix=$(TARGET_DIR)/usr statedir=$(TARGET_DIR)/var/lib/nfs $(TARGET_CONFIGURE_OPTS) -C $(NFS_UTILS_DIR) install' > $@
+	echo 'rm -f $(TARGET_DIR)/usr/bin/event_rpcgen.py $(TARGET_DIR)/usr/sbin/nhfs* $(TARGET_DIR)/usr/sbin/nfsstat $(TARGET_DIR)/usr/sbin/showmount' >> $@
+	echo 'rm -rf $(TARGET_DIR)/usr/share/man' >> $@
+	echo '$(INSTALL) -m 0755 package/nfs-utils/S60nfs $(TARGET_DIR)/etc/init.d' >> $@
+	echo -n 'for file in $(NFS_UTILS_TARGETS_) ; do rm -f $(TARGET_DIR)/' >> $@
 	echo -n "\$$" >> $@
 	echo "file; done" >> $@
-	echo "rm -rf $(TARGET_DIR)/var/lib/nfs" >> $@
+	echo 'rm -rf $(TARGET_DIR)/var/lib/nfs' >> $@
 
 $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY): $(STAGING_DIR)/.fakeroot.nfs-utils
-	touch -c $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY)
+	touch -c $@
 
 nfs-utils: uclibc host-fakeroot $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY)
 
