@@ -50,6 +50,7 @@ $(STAGING_DIR)/usr/lib/libz.so.$(ZLIB_VER): $(ZLIB_DIR)/libz.so.$(ZLIB_VER)
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libz.so.$(ZLIB_VER): $(STAGING_DIR)/usr/lib/libz.so.$(ZLIB_VER)
+	mkdir -p $(TARGET_DIR)/usr/lib
 	cp -dpf $(STAGING_DIR)/usr/lib/libz.so* $(TARGET_DIR)/usr/lib
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libz.so*
 	touch -c $@
@@ -71,7 +72,11 @@ zlib-source: $(DL_DIR)/$(ZLIB_SOURCE)
 
 zlib-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libz.so* \
-		$(TARGET_DIR)/usr/include/z{lib,conf}.h
+		$(TARGET_DIR)/usr/include/zlib.h \
+		$(TARGET_DIR)/usr/include/zconf.h \
+		$(STAGING_DIR)/usr/include/zlib.h \
+		$(STAGING_DIR)/usr/include/zconf.h \
+		$(STAGING_DIR)/usr/lib/libz.*
 	-$(MAKE) -C $(ZLIB_DIR) clean
 
 zlib-dirclean:
