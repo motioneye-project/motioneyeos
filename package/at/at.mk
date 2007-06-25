@@ -48,10 +48,10 @@ $(AT_DIR)/$(AT_BINARY): $(AT_DIR)/.configured
 
 $(TARGET_DIR)/$(AT_TARGET_BINARY): $(AT_DIR)/$(AT_BINARY)
 	# Use fakeroot to pretend to do 'make install' as root
-	echo "$(MAKE) DAEMON_USERNAME=root DAEMON_GROUPNAME=root " \
-		"$(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(AT_DIR) install" \
+	echo '$(MAKE) DAEMON_USERNAME=root DAEMON_GROUPNAME=root ' \
+		'$(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(AT_DIR) install' \
 		> $(STAGING_DIR)/.fakeroot.at
-	echo "rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/doc/at" >> $(STAGING_DIR)/.fakeroot.at
+	echo 'rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/doc/at' >> $(STAGING_DIR)/.fakeroot.at
 	$(INSTALL) -m 0755 -D $(AT_DIR)/debian/rc $(TARGET_DIR)/etc/init.d/S99at
 	touch -c $(TARGET_DIR)/$(AT_TARGET_BINARY)
 
