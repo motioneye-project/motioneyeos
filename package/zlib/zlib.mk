@@ -55,11 +55,11 @@ $(TARGET_DIR)/usr/lib/libz.so.$(ZLIB_VER): $(STAGING_DIR)/usr/lib/libz.so.$(ZLIB
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libz.a: $(STAGING_DIR)/usr/lib/libz.so.$(ZLIB_VER)
-	mkdir -p $(TARGET_DIR)/usr/include
+	mkdir -p $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/lib
 	cp -dpf $(STAGING_DIR)/usr/include/zlib.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/usr/include/zconf.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/usr/lib/libz.a $(TARGET_DIR)/usr/lib/
-	rm -f $(TARGET_DIR)/lib/libz.so
+	rm -f $(TARGET_DIR)/lib/libz.so $(TARGET_DIR)/usr/lib/libz.so
 	ln -sf libz.so.$(ZLIB_VER) $(TARGET_DIR)/usr/lib/libz.so
 	touch -c $@
 
