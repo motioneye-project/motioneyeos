@@ -1,0 +1,207 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-010
+
+Bug-Reported-by:	Ryan Waldron <rew@erebor.com>
+Bug-Reference-ID:	<20070119065603.546D011E9C@kansas.erebor.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2007-01/msg00059.html
+
+Bug-Description:
+
+The glibc implementation of regcomp/regexec does not allow backslashes to
+escape "ordinary" pattern characters when matching.  Bash used backslashes
+to quote all characters when the pattern argument to the [[ special
+command's =~ operator was quoted.  This caused the match to fail on Linux
+and other systems using GNU libc.
+
+Patch:
+
+*** ../bash-3.2.9/pathexp.h	Sat Feb 19 17:23:18 2005
+--- pathexp.h	Wed Jan 31 22:53:16 2007
+***************
+*** 1,5 ****
+  /* pathexp.h -- The shell interface to the globbing library. */
+  
+! /* Copyright (C) 1987-2005 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+--- 1,5 ----
+  /* pathexp.h -- The shell interface to the globbing library. */
+  
+! /* Copyright (C) 1987-2007 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 33,36 ****
+--- 33,37 ----
+  #define QGLOB_CVTNULL	0x01	/* convert QUOTED_NULL strings to '\0' */
+  #define QGLOB_FILENAME	0x02	/* do correct quoting for matching filenames */
++ #define QGLOB_REGEXP	0x04	/* quote an ERE for regcomp/regexec */
+  
+  #if defined (EXTENDED_GLOB)
+*** ../bash-3.2.9/pathexp.c	Mon May  6 13:43:05 2002
+--- pathexp.c	Mon Feb 26 16:59:23 2007
+***************
+*** 1,5 ****
+  /* pathexp.c -- The shell interface to the globbing library. */
+  
+! /* Copyright (C) 1995-2002 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+--- 1,5 ----
+  /* pathexp.c -- The shell interface to the globbing library. */
+  
+! /* Copyright (C) 1995-2007 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 111,114 ****
+--- 111,141 ----
+  }
+  
++ /* Return 1 if C is a character that is `special' in a POSIX ERE and needs to
++    be quoted to match itself. */
++ static inline int
++ ere_char (c)
++      int c;
++ {
++   switch (c)
++     {
++     case '.':
++     case '[':
++     case '\\':
++     case '(':
++     case ')':
++     case '*':
++     case '+':
++     case '?':
++     case '{':
++     case '|':
++     case '^':
++     case '$':
++       return 1;
++     default: 
++       return 0;
++     }
++   return (0);
++ }
++ 
+  /* PATHNAME can contain characters prefixed by CTLESC; this indicates
+     that the character is to be quoted.  We quote it here in the style
+***************
+*** 143,146 ****
+--- 170,175 ----
+  	  if ((qflags & QGLOB_FILENAME) && pathname[i+1] == '/')
+  	    continue;
++ 	  if ((qflags & QGLOB_REGEXP) && ere_char (pathname[i+1]) == 0)
++ 	    continue;
+  	  temp[j++] = '\\';
+  	  i++;
+*** ../bash-3.2.9/subst.c	Tue Nov  7 16:14:41 2006
+--- subst.c	Wed Jan 31 23:09:58 2007
+***************
+*** 5,9 ****
+       beauty, but, hey, you're alright.'' */
+  
+! /* Copyright (C) 1987-2006 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+--- 5,9 ----
+       beauty, but, hey, you're alright.'' */
+  
+! /* Copyright (C) 1987-2007 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 2647,2655 ****
+  /* This needs better error handling. */
+  /* Expand W for use as an argument to a unary or binary operator in a
+!    [[...]] expression.  If SPECIAL is nonzero, this is the rhs argument
+     to the != or == operator, and should be treated as a pattern.  In
+!    this case, we quote the string specially for the globbing code.  The
+!    caller is responsible for removing the backslashes if the unquoted
+!    words is needed later. */   
+  char *
+  cond_expand_word (w, special)
+--- 2647,2656 ----
+  /* This needs better error handling. */
+  /* Expand W for use as an argument to a unary or binary operator in a
+!    [[...]] expression.  If SPECIAL is 1, this is the rhs argument
+     to the != or == operator, and should be treated as a pattern.  In
+!    this case, we quote the string specially for the globbing code.  If
+!    SPECIAL is 2, this is an rhs argument for the =~ operator, and should
+!    be quoted appropriately for regcomp/regexec.  The caller is responsible
+!    for removing the backslashes if the unquoted word is needed later. */   
+  char *
+  cond_expand_word (w, special)
+***************
+*** 2659,2662 ****
+--- 2660,2664 ----
+    char *r, *p;
+    WORD_LIST *l;
++   int qflags;
+  
+    if (w->word == 0 || w->word[0] == '\0')
+***************
+*** 2673,2678 ****
+        else
+  	{
+  	  p = string_list (l);
+! 	  r = quote_string_for_globbing (p, QGLOB_CVTNULL);
+  	  free (p);
+  	}
+--- 2675,2683 ----
+        else
+  	{
++ 	  qflags = QGLOB_CVTNULL;
++ 	  if (special == 2)
++ 	    qflags |= QGLOB_REGEXP;
+  	  p = string_list (l);
+! 	  r = quote_string_for_globbing (p, qflags);
+  	  free (p);
+  	}
+*** ../bash-3.2.9/execute_cmd.c	Sat Aug 26 00:23:17 2006
+--- execute_cmd.c	Wed Jan 31 23:12:06 2007
+***************
+*** 1,5 ****
+  /* execute_cmd.c -- Execute a COMMAND structure. */
+  
+! /* Copyright (C) 1987-2005 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+--- 1,5 ----
+  /* execute_cmd.c -- Execute a COMMAND structure. */
+  
+! /* Copyright (C) 1987-2007 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 2547,2551 ****
+        if (arg1 == 0)
+  	arg1 = nullstr;
+!       arg2 = cond_expand_word (cond->right->op, patmatch||rmatch);
+        if (arg2 == 0)
+  	arg2 = nullstr;
+--- 2547,2551 ----
+        if (arg1 == 0)
+  	arg1 = nullstr;
+!       arg2 = cond_expand_word (cond->right->op, rmatch ? 2 : (patmatch ? 1 : 0));
+        if (arg2 == 0)
+  	arg2 = nullstr;
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 9
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 10
+  
+  #endif /* _PATCHLEVEL_H_ */

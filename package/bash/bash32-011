@@ -1,0 +1,138 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-011
+
+Bug-Reported-by: Petr Sumbera <Petr.Sumbera@Sun.COM>
+Bug-Reference-ID: <45AF5F4B.1020800@sun.com>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2007-01/msg00049.html
+
+Bug-Description:
+
+Under certain circumstances (loopback mounts), the bash getcwd does not
+return correct results.  This patch allows the use of the Solaris libc
+getcwd even though it doesn't dynamically allocate memory.
+
+Run `touch configure' to make sure make doesn't try to run autoconf.
+Then run configure with whatever options you like.
+
+Patch:
+
+*** ../bash-3.2-patched/configure.in	Tue Sep 26 11:05:45 2006
+--- configure.in	Wed Jan 31 09:48:00 2007
+***************
+*** 6,10 ****
+  dnl Process this file with autoconf to produce a configure script.
+  
+! # Copyright (C) 1987-2006 Free Software Foundation, Inc.
+  
+  # This program is free software; you can redistribute it and/or modify
+--- 6,10 ----
+  dnl Process this file with autoconf to produce a configure script.
+  
+! # Copyright (C) 1987-2007 Free Software Foundation, Inc.
+  
+  # This program is free software; you can redistribute it and/or modify
+***************
+*** 992,996 ****
+  sco3.2*)	LOCAL_CFLAGS=-DMUST_UNBLOCK_CHLD ;;
+  sunos4*)	LOCAL_CFLAGS=-DSunOS4 ;;
+! solaris2.5*)	LOCAL_CFLAGS=-DSunOS5 ;;
+  lynxos*)	LOCAL_CFLAGS=-DRECYCLES_PIDS ;;
+  linux*)		LOCAL_LDFLAGS=-rdynamic		 # allow dynamic loading
+--- 992,997 ----
+  sco3.2*)	LOCAL_CFLAGS=-DMUST_UNBLOCK_CHLD ;;
+  sunos4*)	LOCAL_CFLAGS=-DSunOS4 ;;
+! solaris2.5*)	LOCAL_CFLAGS="-DSunOS5 -DSOLARIS" ;;
+! solaris2*)	LOCAL_CFLAGS=-DSOLARIS ;;
+  lynxos*)	LOCAL_CFLAGS=-DRECYCLES_PIDS ;;
+  linux*)		LOCAL_LDFLAGS=-rdynamic		 # allow dynamic loading
+*** ../bash-3.2-patched/config-bot.h	Tue Sep 12 16:43:04 2006
+--- config-bot.h	Tue Mar  6 10:41:31 2007
+***************
+*** 2,6 ****
+  /* modify settings or make new ones based on what autoconf tells us. */
+  
+! /* Copyright (C) 1989-2002 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+--- 2,6 ----
+  /* modify settings or make new ones based on what autoconf tells us. */
+  
+! /* Copyright (C) 1989-2007 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 71,77 ****
+  #endif
+  
+! /* If we have a getcwd(3), but it calls popen(), #undef HAVE_GETCWD so
+!    the replacement in getcwd.c will be built. */
+! #if defined (HAVE_GETCWD) && defined (GETCWD_BROKEN)
+  #  undef HAVE_GETCWD
+  #endif
+--- 71,79 ----
+  #endif
+  
+! /* If we have a getcwd(3), but one that does not dynamically allocate memory,
+!    #undef HAVE_GETCWD so the replacement in getcwd.c will be built.  We do
+!    not do this on Solaris, because their implementation of loopback mounts
+!    breaks the traditional file system assumptions that getcwd uses. */
+! #if defined (HAVE_GETCWD) && defined (GETCWD_BROKEN) && !defined (SOLARIS)
+  #  undef HAVE_GETCWD
+  #endif
+*** ../bash-3.2-patched/builtins/common.c	Thu Jul 27 09:39:51 2006
+--- builtins/common.c	Tue Mar  6 10:43:27 2007
+***************
+*** 1,3 ****
+! /* Copyright (C) 1987-2005 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+--- 1,3 ----
+! /* Copyright (C) 1987-2007 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 476,480 ****
+--- 476,484 ----
+    if (the_current_working_directory == 0)
+      {
++ #if defined (GETCWD_BROKEN)
++       the_current_working_directory = getcwd (0, PATH_MAX);
++ #else
+        the_current_working_directory = getcwd (0, 0);
++ #endif
+        if (the_current_working_directory == 0)
+  	{
+*** ../bash-3.2-patched/configure	Tue Sep 26 11:06:01 2006
+--- configure	Tue Mar  6 10:59:20 2007
+***************
+*** 27317,27321 ****
+  sco3.2*)	LOCAL_CFLAGS=-DMUST_UNBLOCK_CHLD ;;
+  sunos4*)	LOCAL_CFLAGS=-DSunOS4 ;;
+! solaris2.5*)	LOCAL_CFLAGS=-DSunOS5 ;;
+  lynxos*)	LOCAL_CFLAGS=-DRECYCLES_PIDS ;;
+  linux*)		LOCAL_LDFLAGS=-rdynamic		 # allow dynamic loading
+--- 27317,27322 ----
+  sco3.2*)	LOCAL_CFLAGS=-DMUST_UNBLOCK_CHLD ;;
+  sunos4*)	LOCAL_CFLAGS=-DSunOS4 ;;
+! solaris2.5*)	LOCAL_CFLAGS="-DSunOS5 -DSOLARIS" ;;
+! solaris2*)	LOCAL_CFLAGS=-DSOLARIS ;;
+  lynxos*)	LOCAL_CFLAGS=-DRECYCLES_PIDS ;;
+  linux*)		LOCAL_LDFLAGS=-rdynamic		 # allow dynamic loading
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 10
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */

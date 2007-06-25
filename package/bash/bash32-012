@@ -1,0 +1,96 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-012
+
+Bug-Reported-by: John Wyman <JohnWyman@celink.com>
+Bug-Reference-ID: <5E7DEFC094C35044B87FAE761D9F0EE20143A3B7@exchange2k.celink.com>
+Bug-Reference-URL: 
+
+Bug-Description:
+
+Some systems (AIX 4.x) don't implement the PRI_xxx macros correctly,
+causing syntax errors when attempting to compile bash on those systems.
+This patch adds support for the PRI_MACROS_BROKEN define.
+
+You will need to re-run `configure' after applying the patch.  Run
+`touch configure' so make doesn't try to run autoconf.
+
+Patch:
+
+*** ../bash-3.2.11/config.h.in	Tue Sep 12 16:00:54 2006
+--- config.h.in	Tue Mar  6 11:17:55 2007
+***************
+*** 1,5 ****
+  /* config.h -- Configuration file for bash. */
+  
+! /* Copyright (C) 1987-2006 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+--- 1,5 ----
+  /* config.h -- Configuration file for bash. */
+  
+! /* Copyright (C) 1987-2007 Free Software Foundation, Inc.
+  
+     This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 414,417 ****
+--- 414,419 ----
+  #undef HAVE_DECL_STRTOLD
+  
++ #undef PRI_MACROS_BROKEN
++ 
+  #undef STRTOLD_BROKEN
+  
+***************
+*** 1007,1010 ****
+--- 1009,1015 ----
+  #undef HAVE_DCGETTEXT
+  
++ /* Define if you have the `localeconv' function. */
++ #undef HAVE_LOCALECONV
++ 
+  /* Define if your system has a working `malloc' function. */
+  /* #undef HAVE_MALLOC */
+*** ../bash-3.2.11/builtins/printf.def	Mon Nov 13 08:58:52 2006
+--- builtins/printf.def	Sun Feb  4 13:58:59 2007
+***************
+*** 2,6 ****
+  It implements the builtin "printf" in Bash.
+  
+! Copyright (C) 1997-2005 Free Software Foundation, Inc.
+  
+  This file is part of GNU Bash, the Bourne Again SHell.
+--- 2,6 ----
+  It implements the builtin "printf" in Bash.
+  
+! Copyright (C) 1997-2007 Free Software Foundation, Inc.
+  
+  This file is part of GNU Bash, the Bourne Again SHell.
+***************
+*** 71,74 ****
+--- 71,78 ----
+  #include "common.h"
+  
++ #if defined (PRI_MACROS_BROKEN)
++ #  undef PRIdMAX
++ #endif
++ 
+  #if !defined (PRIdMAX)
+  #  if HAVE_LONG_LONG
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 12
+  
+  #endif /* _PATCHLEVEL_H_ */

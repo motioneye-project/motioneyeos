@@ -1,0 +1,52 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-016
+
+Bug-Reported-by: Peter Volkov <torre_cremata@mail.ru>
+Bug-Reference-ID: <1171795523.8021.18.camel@localhost>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2007-02/msg00054.html
+
+Bug-Description:
+
+When moving the cursor, bash sometimes misplaces the cursor when the prompt
+contains two or more multibyte characters.  The particular circumstance that
+uncovered the problem was having the (multibyte) current directory name in
+the prompt string.
+
+Patch:
+
+*** ../bash-3.2/lib/readline/display.c	Fri Jan 19 13:34:50 2007
+--- lib/readline/display.c	Sat Mar 10 17:25:44 2007
+***************
+*** 1745,1749 ****
+      {
+        dpos = _rl_col_width (data, 0, new);
+!       if (dpos > prompt_last_invisible)		/* XXX - don't use woff here */
+  	{
+  	  dpos -= woff;
+--- 1745,1752 ----
+      {
+        dpos = _rl_col_width (data, 0, new);
+!       /* Use NEW when comparing against the last invisible character in the
+! 	 prompt string, since they're both buffer indices and DPOS is a
+! 	 desired display position. */
+!       if (new > prompt_last_invisible)		/* XXX - don't use woff here */
+  	{
+  	  dpos -= woff;
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 15
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 16
+  
+  #endif /* _PATCHLEVEL_H_ */

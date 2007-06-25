@@ -1,0 +1,307 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-014
+
+Bug-Reported-by: Brett Stahlman <brettstahlman@comcast.net>
+Bug-Reference-ID: <000701c72d29$a227e0e0$5ec7cf47@computerroom>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2006-12/msg00065.html
+
+Bug-Description:
+
+Bash mishandles word splitting under certain circumstances when IFS is
+null (IFS=).  Constructs affected include ${param/pat/sub} and others
+when expanding arrays (array[@]).
+
+Patch:
+
+*** ../bash-3.2-patched/array.c	Wed Jun  1 16:39:22 2005
+--- array.c	Mon Jan 15 22:58:00 2007
+***************
+*** 121,125 ****
+  }
+  
+- #ifdef INCLUDE_UNUSED
+  /*
+   * Make and return a new array composed of the elements in array A from
+--- 121,124 ----
+***************
+*** 142,146 ****
+  		n = array_create_element (element_index(p), element_value(p));
+  		ADD_BEFORE(a->head, n);
+! 		mi = element_index(ae);
+  	}
+  	a->num_elements = i;
+--- 141,145 ----
+  		n = array_create_element (element_index(p), element_value(p));
+  		ADD_BEFORE(a->head, n);
+! 		mi = element_index(n);
+  	}
+  	a->num_elements = i;
+***************
+*** 148,152 ****
+  	return a;
+  }
+- #endif
+  
+  /*
+--- 147,150 ----
+***************
+*** 301,304 ****
+--- 299,319 ----
+  }
+  
++ ARRAY	*
++ array_quote_escapes(array)
++ ARRAY	*array;
++ {
++ 	ARRAY_ELEMENT	*a;
++ 	char	*t;
++ 
++ 	if (array == 0 || array_head(array) == 0 || array_empty(array))
++ 		return (ARRAY *)NULL;
++ 	for (a = element_forw(array->head); a != array->head; a = element_forw(a)) {
++ 		t = quote_escapes (a->value);
++ 		FREE(a->value);
++ 		a->value = t;
++ 	}
++ 	return array;
++ }
++ 
+  /*
+   * Return a string whose elements are the members of array A beginning at
+***************
+*** 312,318 ****
+  int	starsub, quoted;
+  {
+  	ARRAY_ELEMENT	*h, *p;
+  	arrayind_t	i;
+! 	char		*ifs, sep[2];
+  
+  	p = a ? array_head (a) : 0;
+--- 327,334 ----
+  int	starsub, quoted;
+  {
++ 	ARRAY		*a2;
+  	ARRAY_ELEMENT	*h, *p;
+  	arrayind_t	i;
+! 	char		*ifs, sep[2], *t;
+  
+  	p = a ? array_head (a) : 0;
+***************
+*** 337,340 ****
+--- 353,363 ----
+  		;
+  
++ 	a2 = array_slice(a, h, p);
++ 
++ 	if (quoted & (Q_DOUBLE_QUOTES|Q_HERE_DOCUMENT))
++ 		array_quote(a2);
++ 	else
++ 		array_quote_escapes(a2);
++ 
+  	if (starsub && (quoted & (Q_DOUBLE_QUOTES|Q_HERE_DOCUMENT))) {
+  		ifs = getifs();
+***************
+*** 344,348 ****
+  	sep[1] = '\0';
+  
+! 	return (array_to_string_internal (h, p, sep, quoted));
+  }
+  
+--- 367,374 ----
+  	sep[1] = '\0';
+  
+! 	t = array_to_string (a2, sep, 0);
+! 	array_dispose(a2);
+! 
+! 	return t;
+  }
+  
+***************
+*** 368,372 ****
+  
+  	if (mflags & MATCH_QUOTED)
+! 		array_quote (a2);
+  	if (mflags & MATCH_STARSUB) {
+  		ifs = getifs();
+--- 394,400 ----
+  
+  	if (mflags & MATCH_QUOTED)
+! 		array_quote(a2);
+! 	else
+! 		array_quote_escapes(a2);
+  	if (mflags & MATCH_STARSUB) {
+  		ifs = getifs();
+*** ../bash-3.2-patched/array.h	Sun Jun  1 15:50:30 2003
+--- array.h	Mon Jan 15 22:35:35 2007
+***************
+*** 56,59 ****
+--- 56,60 ----
+  extern int	array_shift_element __P((ARRAY *, char *));
+  extern ARRAY	*array_quote __P((ARRAY *));
++ extern ARRAY	*array_quote_escapes __P((ARRAY *));
+  
+  extern char	*array_subrange __P((ARRAY *, arrayind_t, arrayind_t, int, int));
+*** ../bash-3.2-patched/subst.c	Fri Mar  2 16:20:50 2007
+--- subst.c	Tue Mar  6 11:40:55 2007
+***************
+*** 1888,1892 ****
+--- 1889,1899 ----
+  #endif
+  
++   /* XXX -- why call quote_list if ifs == 0?  we can get away without doing
++      it now that quote_escapes quotes spaces */
++ #if 0
+    tlist = ((quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES)) || (ifs && *ifs == 0))
++ #else
++   tlist = (quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES))
++ #endif
+  		? quote_list (list)
+  		: list_quote_escapes (list);
+***************
+*** 2922,2926 ****
+  /* Quote escape characters in string s, but no other characters.  This is
+     used to protect CTLESC and CTLNUL in variable values from the rest of
+!    the word expansion process after the variable is expanded. */
+  char *
+  quote_escapes (string)
+--- 2935,2944 ----
+  /* Quote escape characters in string s, but no other characters.  This is
+     used to protect CTLESC and CTLNUL in variable values from the rest of
+!    the word expansion process after the variable is expanded.  If IFS is
+!    null, we quote spaces as well, just in case we split on spaces later
+!    (in the case of unquoted $@, we will eventually attempt to split the
+!    entire word on spaces).  Corresponding code exists in dequote_escapes.
+!    Even if we don't end up splitting on spaces, quoting spaces is not a
+!    problem. */
+  char *
+  quote_escapes (string)
+***************
+*** 2930,2933 ****
+--- 2948,2952 ----
+    size_t slen;
+    char *result, *send;
++   int quote_spaces;
+    DECLARE_MBSTATE; 
+  
+***************
+*** 2935,2938 ****
+--- 2954,2958 ----
+    send = string + slen;
+  
++   quote_spaces = (ifs_value && *ifs_value == 0);
+    t = result = (char *)xmalloc ((slen * 2) + 1);
+    s = string;
+***************
+*** 2940,2944 ****
+    while (*s)
+      {
+!       if (*s == CTLESC || *s == CTLNUL)
+  	*t++ = CTLESC;
+        COPY_CHAR_P (t, s, send);
+--- 2960,2964 ----
+    while (*s)
+      {
+!       if (*s == CTLESC || *s == CTLNUL || (quote_spaces && *s == ' '))
+  	*t++ = CTLESC;
+        COPY_CHAR_P (t, s, send);
+***************
+*** 2982,2985 ****
+--- 3002,3006 ----
+    size_t slen;
+    char *result, *send;
++   int quote_spaces;
+    DECLARE_MBSTATE;
+  
+***************
+*** 2996,3002 ****
+      return (strcpy (result, s));
+  
+    while (*s)
+      {
+!       if (*s == CTLESC && (s[1] == CTLESC || s[1] == CTLNUL))
+  	{
+  	  s++;
+--- 3017,3024 ----
+      return (strcpy (result, s));
+  
++   quote_spaces = (ifs_value && *ifs_value == 0);
+    while (*s)
+      {
+!       if (*s == CTLESC && (s[1] == CTLESC || s[1] == CTLNUL || (quote_spaces && s[1] == ' ')))
+  	{
+  	  s++;
+***************
+*** 4462,4466 ****
+        RESIZE_MALLOCED_BUFFER (istring, istring_index, 2, istring_size, DEFAULT_ARRAY_SIZE);
+  
+!       if ((quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES)) || c == CTLESC || c == CTLNUL)
+  	istring[istring_index++] = CTLESC;
+  
+--- 4498,4510 ----
+        RESIZE_MALLOCED_BUFFER (istring, istring_index, 2, istring_size, DEFAULT_ARRAY_SIZE);
+  
+!       /* This is essentially quote_string inline */
+!       if ((quoted & (Q_HERE_DOCUMENT|Q_DOUBLE_QUOTES)) /* || c == CTLESC || c == CTLNUL */)
+! 	istring[istring_index++] = CTLESC;
+!       /* Escape CTLESC and CTLNUL in the output to protect those characters
+! 	 from the rest of the word expansions (word splitting and globbing.)
+! 	 This is essentially quote_escapes inline. */
+!       else if (c == CTLESC)
+! 	istring[istring_index++] = CTLESC;
+!       else if (c == CTLNUL || (c == ' ' && (ifs_value && *ifs_value == 0)))
+  	istring[istring_index++] = CTLESC;
+  
+***************
+*** 5552,5555 ****
+--- 5610,5616 ----
+  	 rely on array_subrange to understand how to deal with them). */
+        tt = array_subrange (array_cell (v), e1, e2, starsub, quoted);
++ #if 0
++       /* array_subrange now calls array_quote_escapes as appropriate, so the
++ 	 caller no longer needs to. */
+        if ((quoted & (Q_DOUBLE_QUOTES|Q_HERE_DOCUMENT)) == 0)
+  	{
+***************
+*** 5558,5561 ****
+--- 5619,5623 ----
+  	}
+        else
++ #endif
+  	temp = tt;
+        break;
+***************
+*** 5808,5811 ****
+--- 5870,5876 ----
+      case VT_ARRAYVAR:
+        temp = array_patsub (array_cell (v), p, rep, mflags);
++ #if 0
++       /* Don't need to do this anymore; array_patsub calls array_quote_escapes
++ 	 as appropriate before adding the space separators. */
+        if (temp && (mflags & MATCH_QUOTED) == 0)
+  	{
+***************
+*** 5814,5817 ****
+--- 5879,5883 ----
+  	  temp = tt;
+  	}
++ #endif
+        break;
+  #endif
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 13
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 14
+  
+  #endif /* _PATCHLEVEL_H_ */
