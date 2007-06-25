@@ -249,7 +249,7 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	fi
 	# Strip the host binaries
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
-	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/bin/*
+	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/*
 endif
 	# Make sure we have 'cc'.
 	if [ ! -e $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ] ; then \
@@ -320,8 +320,8 @@ gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 gcc-clean:
 	rm -rf $(GCC_BUILD_DIR2)
 	for prog in cpp gcc gcc-[0-9]* protoize unprotoize gcov gccbug cc; do \
-	    rm -f $(STAGING_DIR)/bin/$(REAL_GNU_TARGET_NAME)-$$prog \
-	    rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-$$prog; \
+	    rm -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-$$prog \
+	    rm -f $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-$$prog; \
 	done
 
 gcc-dirclean: gcc_initial-dirclean
