@@ -19,7 +19,7 @@ and other systems using GNU libc.
 Patch:
 
 *** ../bash-3.2.9/pathexp.h	Sat Feb 19 17:23:18 2005
---- pathexp.h	Wed Jan 31 22:53:16 2007
+--- bash-3.2/pathexp.h	Wed Jan 31 22:53:16 2007
 ***************
 *** 1,5 ****
   /* pathexp.h -- The shell interface to the globbing library. */
@@ -42,7 +42,7 @@ Patch:
   
   #if defined (EXTENDED_GLOB)
 *** ../bash-3.2.9/pathexp.c	Mon May  6 13:43:05 2002
---- pathexp.c	Mon Feb 26 16:59:23 2007
+--- bash-3.2/pathexp.c	Mon Feb 26 16:59:23 2007
 ***************
 *** 1,5 ****
   /* pathexp.c -- The shell interface to the globbing library. */
@@ -100,7 +100,7 @@ Patch:
   	  temp[j++] = '\\';
   	  i++;
 *** ../bash-3.2.9/subst.c	Tue Nov  7 16:14:41 2006
---- subst.c	Wed Jan 31 23:09:58 2007
+--- bash-3.2/subst.c	Wed Jan 31 23:09:58 2007
 ***************
 *** 5,9 ****
        beauty, but, hey, you're alright.'' */
@@ -163,7 +163,7 @@ Patch:
   	  free (p);
   	}
 *** ../bash-3.2.9/execute_cmd.c	Sat Aug 26 00:23:17 2006
---- execute_cmd.c	Wed Jan 31 23:12:06 2007
+--- bash-3.2/execute_cmd.c	Wed Jan 31 23:12:06 2007
 ***************
 *** 1,5 ****
   /* execute_cmd.c -- Execute a COMMAND structure. */
@@ -191,7 +191,7 @@ Patch:
         if (arg2 == 0)
   	arg2 = nullstr;
 *** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

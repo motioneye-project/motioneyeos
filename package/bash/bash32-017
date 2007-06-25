@@ -17,7 +17,7 @@ invisible characters.
 Patch:
 
 *** ../bash-3.2.16/lib/readline/display.c	Fri Apr 20 13:30:16 2007
---- lib/readline/display.c	Fri Apr 20 15:17:01 2007
+--- bash-3.2/lib/readline/display.c	Fri Apr 20 15:17:01 2007
 ***************
 *** 1599,1604 ****
   	  if (temp > 0)
@@ -69,7 +69,7 @@ Patch:
   	    }
   	  lendiff = (oe - old) - (ne - new);
 *** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

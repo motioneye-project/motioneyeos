@@ -18,7 +18,7 @@ the prompt string.
 Patch:
 
 *** ../bash-3.2/lib/readline/display.c	Fri Jan 19 13:34:50 2007
---- lib/readline/display.c	Sat Mar 10 17:25:44 2007
+--- bash-3.2/lib/readline/display.c	Sat Mar 10 17:25:44 2007
 ***************
 *** 1745,1749 ****
       {
@@ -36,7 +36,7 @@ Patch:
   	{
   	  dpos -= woff;
 *** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

@@ -17,7 +17,7 @@ can cause the shell to hang and litters the file system.
 Patch:
 
 *** ../bash-3.2-patched/execute_cmd.c	Fri Mar  2 16:20:50 2007
---- execute_cmd.c	Wed Jan 31 23:12:06 2007
+--- bash-3.2/execute_cmd.c	Wed Jan 31 23:12:06 2007
 ***************
 *** 3051,3054 ****
 --- 3051,3059 ----
@@ -31,7 +31,7 @@ Patch:
     execute_disk_command (words, simple_command->redirects, command_line,
   			pipe_in, pipe_out, async, fds_to_close,
 *** ../bash-3.2-patched/subst.c	Fri Mar  2 16:20:50 2007
---- subst.c	Tue Mar  6 11:40:55 2007
+--- bash-3.2/subst.c	Tue Mar  6 11:40:55 2007
 ***************
 *** 4129,4132 ****
 --- 4151,4160 ----
@@ -69,7 +69,7 @@ Patch:
         exit (rc);
       }
 *** ../bash-3.2-patched/subst.h	Tue Sep 19 08:34:41 2006
---- subst.h	Wed Jan 10 09:46:47 2007
+--- bash-3.2/subst.h	Wed Jan 10 09:46:47 2007
 ***************
 *** 223,226 ****
 --- 223,227 ----
@@ -79,7 +79,7 @@ Patch:
   extern void unlink_fifo_list __P((void));
 
 *** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

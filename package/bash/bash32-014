@@ -17,7 +17,7 @@ when expanding arrays (array[@]).
 Patch:
 
 *** ../bash-3.2-patched/array.c	Wed Jun  1 16:39:22 2005
---- array.c	Mon Jan 15 22:58:00 2007
+--- bash-3.2/array.c	Mon Jan 15 22:58:00 2007
 ***************
 *** 121,125 ****
   }
@@ -135,7 +135,7 @@ Patch:
   	if (mflags & MATCH_STARSUB) {
   		ifs = getifs();
 *** ../bash-3.2-patched/array.h	Sun Jun  1 15:50:30 2003
---- array.h	Mon Jan 15 22:35:35 2007
+--- bash-3.2/array.h	Mon Jan 15 22:35:35 2007
 ***************
 *** 56,59 ****
 --- 56,60 ----
@@ -145,7 +145,7 @@ Patch:
   
   extern char	*array_subrange __P((ARRAY *, arrayind_t, arrayind_t, int, int));
 *** ../bash-3.2-patched/subst.c	Fri Mar  2 16:20:50 2007
---- subst.c	Tue Mar  6 11:40:55 2007
+--- bash-3.2/subst.c	Tue Mar  6 11:40:55 2007
 ***************
 *** 1888,1892 ****
 --- 1889,1899 ----
@@ -291,7 +291,7 @@ Patch:
         break;
   #endif
 *** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

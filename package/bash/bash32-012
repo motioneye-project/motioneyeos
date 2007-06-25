@@ -20,7 +20,7 @@ You will need to re-run `configure' after applying the patch.  Run
 Patch:
 
 *** ../bash-3.2.11/config.h.in	Tue Sep 12 16:00:54 2006
---- config.h.in	Tue Mar  6 11:17:55 2007
+--- bash-3.2/config.h.in	Tue Mar  6 11:17:55 2007
 ***************
 *** 1,5 ****
   /* config.h -- Configuration file for bash. */
@@ -54,7 +54,7 @@ Patch:
   /* Define if your system has a working `malloc' function. */
   /* #undef HAVE_MALLOC */
 *** ../bash-3.2.11/builtins/printf.def	Mon Nov 13 08:58:52 2006
---- builtins/printf.def	Sun Feb  4 13:58:59 2007
+--- bash-3.2/builtins/printf.def	Sun Feb  4 13:58:59 2007
 ***************
 *** 2,6 ****
   It implements the builtin "printf" in Bash.
@@ -80,7 +80,7 @@ Patch:
   #if !defined (PRIdMAX)
   #  if HAVE_LONG_LONG
 *** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */
