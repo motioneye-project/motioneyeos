@@ -16,13 +16,12 @@ sdl-source: $(DL_DIR)/$(SDL_SOURCE)
 
 $(SDL_DIR)/.unpacked: $(DL_DIR)/$(SDL_SOURCE)
 	$(SDL_CAT) $(DL_DIR)/$(SDL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(SDL_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(SDL_DIR) package/sdl sdl\*.patch
+	touch $@
 
 $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
-	(cd $(SDL_DIR); \
+	(cd $(SDL_DIR); rm -rf config.cache ; \
 	$(TARGET_CONFIGURE_OPTS) \
-	CFLAGS="$(TARGET_CFLAGS)" \
-	LDFLAGS="$(TARGET_LDFLAGS)" \
 	./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -43,15 +42,15 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 		--disable-esd \
 		--disable-nasm \
 		--disable-video-x11 );
-	touch $(SDL_DIR)/.configured
+	touch $@
 
 $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured
 	$(MAKE) -C $(SDL_DIR) 
-	touch $(SDL_DIR)/.compiled
+	touch $@
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SDL_DIR) install;
-	touch -c $(STAGING_DIR)/usr/lib/libSDL.so
+	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libSDL*.so* $(TARGET_DIR)/usr/lib/
