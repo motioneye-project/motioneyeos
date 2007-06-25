@@ -4,11 +4,14 @@
 #
 #############################################################
 
-EXPAT_VERSION=2.0.0
+EXPAT_VERSION=2.0.1
 EXPAT_SOURCE=expat-$(EXPAT_VERSION).tar.gz
 EXPAT_CAT:=$(ZCAT)
 EXPAT_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/expat
 EXPAT_DIR:=$(BUILD_DIR)/expat-$(EXPAT_VERSION)
+
+EXPAT_BINARY:=.libs/libexpat.a
+EXPAT_TARGET_BINARY:=usr/lib/libexpat.so.1
 
 $(DL_DIR)/$(EXPAT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(EXPAT_SITE)/$(EXPAT_SOURCE)
@@ -17,13 +20,12 @@ expat-source: $(DL_DIR)/$(EXPAT_SOURCE)
 
 $(EXPAT_DIR)/.unpacked: $(DL_DIR)/$(EXPAT_SOURCE)
 	$(EXPAT_CAT) $(DL_DIR)/$(EXPAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(EXPAT_DIR)/.unpacked
+	$(CONFIG_UPDATE) $(EXPAT_DIR)
+	touch $@
 
 $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 	(cd $(EXPAT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -42,29 +44,29 @@ $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 		--infodir=/usr/info \
 		--enable-shared \
 	);
-	touch  $(EXPAT_DIR)/.configured
+	touch $@
 
-$(EXPAT_DIR)/.libs/libexpat.a: $(EXPAT_DIR)/.configured
+$(EXPAT_DIR)/$(EXPAT_BINARY): $(EXPAT_DIR)/.configured
 	$(MAKE) -C $(EXPAT_DIR) all
-	touch -c $(EXPAT_DIR)/.libs/libexpat.a
+	touch -c $@
 
-$(STAGING_DIR)/lib/libexpat.so.1: $(EXPAT_DIR)/.libs/libexpat.a
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(EXPAT_DIR) install
-	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libexpat.la
-	touch -c $(STAGING_DIR)/lib/libexpat.so.1
+$(STAGING_DIR)/$(EXPAT_TARGET_BINARY): $(EXPAT_DIR)/$(EXPAT_BINARY)
+	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(EXPAT_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libexpat.la
+	touch -c $@
 
-$(TARGET_DIR)/lib/libexpat.so.1: $(STAGING_DIR)/lib/libexpat.so.1
-	cp -dpf $(STAGING_DIR)/lib/libexpat.so* $(TARGET_DIR)/lib/
-	#cp -dpf $(STAGING_DIR)/usr/bin/xmlwf $(TARGET_DIR)/bin/xmlwf
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libexpat.so*
-	touch -c $(TARGET_DIR)/lib/libexpat.so.1
+$(TARGET_DIR)/$(EXPAT_TARGET_BINARY): $(STAGING_DIR)/$(EXPAT_TARGET_BINARY)
+	cp -dpf $(STAGING_DIR)/usr/lib/libexpat.so* $(TARGET_DIR)/usr/lib/
+	#cp -dpf $(STAGING_DIR)/usr/bin/xmlwf $(TARGET_DIR)/usr/bin/xmlwf
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libexpat.so*
+	touch -c $@
 
-expat: uclibc pkgconfig $(TARGET_DIR)/lib/libexpat.so.1
+expat: uclibc pkgconfig $(TARGET_DIR)/$(EXPAT_TARGET_BINARY)
 
 expat-clean:
 	rm -f $(EXPAT_DIR)/.configured
-	rm -f $(STAGING_DIR)/lib/libexpat.* $(TARGET_DIR)/lib/libexpat.*
-	#rm -f $(STAGING_DIR)/usr/bin/xmlwf  $(TARGET_DIR)/bin/xmlwf
+	rm -f $(STAGING_DIR)/usr/lib/libexpat.* $(TARGET_DIR)/usr/lib/libexpat.*
+	#rm -f $(STAGING_DIR)/usr/bin/xmlwf  $(TARGET_DIR)/usr/bin/xmlwf
 	-$(MAKE) -C $(EXPAT_DIR) clean
 
 #############################################################
