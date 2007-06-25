@@ -1,0 +1,24 @@
+diff -u binutils-2.17.50.0.17.oorig/configure binutils-2.17.50.0.17/configure
+--- binutils-2.17.50.0.17.oorig/configure	2007-06-18 19:29:28.000000000 +0200
++++ binutils-2.17.50.0.17/configure	2007-06-25 09:58:36.000000000 +0200
+@@ -2224,7 +2224,7 @@
+   arm-*-elf* | strongarm-*-elf* | xscale-*-elf* | arm*-*-eabi* )
+     noconfigdirs="$noconfigdirs target-libffi target-qthreads"
+     ;;
+-  arm*-*-linux-gnueabi)
++  arm*-*-linux-gnueabi | arm*-*-linux-uclibcgnueabi)
+     noconfigdirs="$noconfigdirs target-libffi target-qthreads"
+     noconfigdirs="$noconfigdirs target-libjava target-libobjc"
+     ;;
+diff -u binutils-2.17.50.0.17.oorig/configure.ac binutils-2.17.50.0.17/configure.ac
+--- binutils-2.17.50.0.17.oorig/configure.ac	2007-06-18 19:29:28.000000000 +0200
++++ binutils-2.17.50.0.17/configure.ac	2007-06-25 09:58:36.000000000 +0200
+@@ -513,7 +513,7 @@
+   arm-*-elf* | strongarm-*-elf* | xscale-*-elf* | arm*-*-eabi* )
+     noconfigdirs="$noconfigdirs target-libffi target-qthreads"
+     ;;
+-  arm*-*-linux-gnueabi)
++  arm*-*-linux-gnueabi | arm*-*-linux-uclibcgnueabi)
+     noconfigdirs="$noconfigdirs target-libffi target-qthreads"
+     noconfigdirs="$noconfigdirs target-libjava target-libobjc"
+     ;;
