@@ -30,7 +30,8 @@ ifneq ($(MDADM_PATCH),)
 	  toolchain/patch-kernel.sh $(MDADM_DIR) $(MDADM_DIR)/debian/patches \*patch ; \
 	fi
 endif
-	toolchain/patch-kernel.sh $(MDADM_DIR) package/mdadm mdadm-$(MDADM_VERSION)\*.patch
+	#toolchain/patch-kernel.sh $(MDADM_DIR) package/mdadm mdadm-$(MDADM_VERSION)\*.patch
+	toolchain/patch-kernel.sh $(MDADM_DIR) package/mdadm mdadm-\*.patch
 	touch $@
 
 $(MDADM_DIR)/$(MDADM_BINARY): $(MDADM_DIR)/.unpacked

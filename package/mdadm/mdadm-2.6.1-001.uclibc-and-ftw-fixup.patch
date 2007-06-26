@@ -10,15 +10,4 @@ diff -rdup mdadm-2.6.1.orig/mdadm.h mdadm-2.6.1/mdadm.h
  # include <features.h>
  # ifndef  __UCLIBC_HAS_FTW__
  #  undef HAVE_FTW
-diff -rdup mdadm-2.6.1.orig/util.c mdadm-2.6.1/util.c
---- mdadm-2.6.1.orig/util.c	2006-12-19 03:35:27.000000000 +0100
-+++ mdadm-2.6.1/util.c	2007-04-16 21:05:56.000000000 +0200
-@@ -468,7 +468,7 @@ int nftw(const char *path, int (*han)(co
- 	return ftw(path, add_dev_1, nopenfd);
- }
- #else
--int add_dev(const char *name, const struct stat *stb, int flag, struct FTW *s)
-+int add_dev_1(const char *name, const struct stat *stb, int flag, struct FTW *s)
- {
- 	return 0;
- }
+
