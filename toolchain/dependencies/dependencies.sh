@@ -61,6 +61,28 @@ if test -n "$CXXFLAGS" ; then
 fi;
 echo "CXXFLAGS clean:					Ok"
 
+if test -n "$GREP_OPTIONS" ; then
+        echo "GREP_OPTIONS clean:                               FALSE"
+        /bin/echo -e "\n\nYou must run 'unset GREP_OPTIONS' so buildroot can run with";
+        /bin/echo -e "a clean environment on your build machine\n";
+        exit 1;
+fi;
+
+if test -n "$CROSS_COMPILE" ; then
+        echo "CROSS_COMPILE clean:                               FALSE"
+        /bin/echo -e "\n\nYou must run 'unset CROSS_COMPILE' so buildroot can run with";
+        /bin/echo -e "a clean environment on your build machine\n";
+        exit 1;
+fi;
+
+if test -n "$ARCH" ; then
+        echo "ARCH clean:                               FALSE"
+        /bin/echo -e "\n\nYou must run 'unset ARCH' so buildroot can run with";
+        /bin/echo -e "a clean environment on your build machine\n";
+        exit 1;
+fi;
+
+
 echo "WORKS" | grep "WORKS" >/dev/null 2>&1
 if test $? != 0 ; then
 	echo "grep works:				FALSE"
