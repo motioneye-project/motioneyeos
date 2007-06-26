@@ -34,11 +34,19 @@ ifeq ($(BR2_x86_64),y)
 TARGET_CFLAGS+=-fPIC -DPIC
 endif # PIC for dynamic objects on x86_64
 endif
+
+ifeq ($(BR2_SOFT_FLOAT),y)
+TARGET_CFLAGS+=-msoft-float
+endif
+
+
 # else it's an external toolchain
+#########################################################################
 else
 TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) -I$(STAGING_DIR)/include -I$(STAGING_DIR)/usr/include -I$(TOOLCHAIN_EXTERNAL_PATH)/$(TOOLCHAIN_EXTERNAL_PREFIX)/include
 TARGET_LDFLAGS=-L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib
 endif
+#########################################################################
 
 ifndef HOSTAR
 HOSTAR:=ar
