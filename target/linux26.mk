@@ -24,6 +24,25 @@ LINUX26_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.6
 #LINUX26_FORMAT=vmlinux
 #LINUX26_BINLOC=$(LINUX26_FORMAT)
 
+# Linux kernel configuration file
+# Has to be set by the target/device
+# If it is not set by the target/device, then pick the one from .config
+# LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
+ifndef LINUX26_KCONFIG
+ifneq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_KCONFIG))),)
+LINUX26_KCONFIG=$(strip $(subst ",,$(BR2_PACKAGE_LINUX_KCONFIG)))
+#"))
+#"))
+endif
+endif
+ifndef LINUX26_FORMAT
+ifneq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_FORMAT))),)
+LINUX26_FORMAT=$(strip $(subst ",,$(BR2_PACKAGE_LINUX_FORMAT)))
+#"))
+#"))
+endif
+endif
+
 # Has to be set by the target/device
 # LINUX26_FORMAT=bzImage
 ifndef LINUX26_FORMAT
@@ -34,10 +53,6 @@ ifndef LINUX26_BINLOC
 # default:
 LINUX26_BINLOC=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
 endif
-
-# Linux kernel configuration file
-# Has to be set by the target/device
-# LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
 
 # File name for the Linux kernel binary
 LINUX26_KERNEL=linux-kernel-$(LINUX26_VERSION)-$(KERNEL_ARCH)
@@ -52,10 +67,10 @@ LINUX_KERNEL=$(LINUX26_KERNEL)
 
 # kernel patches
 LINUX26_PATCH_DIR=$(BR2_BOARD_PATH)/kernel-patches/
-
+__LINUX26_NO_PIC=-fPIC -fpic -DPIC
 LINUX26_MAKE_FLAGS = HOSTCC="$(HOSTCC)" HOSTCFLAGS=$(HOSTCFLAGS) \
 	ARCH=$(KERNEL_ARCH) \
-	CFLAGS_KERNEL="$(TARGET_CFLAGS)" \
+	CFLAGS_KERNEL="$(filter-out $(__LINUX26_NO_PIC),$(TARGET_CFLAGS))" \
 	INSTALL_MOD_PATH=$(TARGET_DIR) \
 	CROSS_COMPILE=$(KERNEL_CROSS)
 
