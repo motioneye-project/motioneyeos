@@ -198,6 +198,10 @@ ifneq ($(BR2_LARGEFILE),y)
 DISABLE_LARGEFILE= --disable-largefile
 endif
 
+ifneq ($(BR2_INET_IPV6),y)
+DISABLE_IPV6= --disable-ipv6
+endif
+
 ifeq ($(BR2_INSTALL_LIBSTDCPP),)
 TARGET_CONFIGURE_OPTS+=CXX=""
 endif
