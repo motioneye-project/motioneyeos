@@ -3,7 +3,7 @@
 # ntp
 #
 #############################################################
-NTP_VERSION:=4.2.0
+NTP_VERSION:=4.2.4
 NTP_SOURCE:=ntp-$(NTP_VERSION).tar.gz
 NTP_SITE:=http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2
 NTP_DIR:=$(BUILD_DIR)/ntp-$(NTP_VERSION)
@@ -16,18 +16,19 @@ $(DL_DIR)/$(NTP_SOURCE):
 
 ntp-source: $(DL_DIR)/$(NTP_SOURCE)
 
-$(NTP_DIR)/.unpacked: $(DL_DIR)/$(NTP_SOURCE)
+$(NTP_DIR)/.patched: $(DL_DIR)/$(NTP_SOURCE)
 	$(NTP_CAT) $(DL_DIR)/$(NTP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(NTP_DIR) package/ntp/ ntp\*.patch
 	$(SED) "s,^#if.*__GLIBC__.*_BSD_SOURCE.*$$,#if 0," \
 		$(NTP_DIR)/ntpd/refclock_pcf.c;
-	touch $(NTP_DIR)/.unpacked
+	$(SED) '/[[:space:](]index[[:space:]]*(/s/[[:space:]]*index[[:space:]]*(/ strchr(/g' $(NTP_DIR)/libisc/*.c $(NTP_DIR)/arlib/sample.c
+	$(SED) '/[[:space:](]rindex[[:space:]]*(/s/[[:space:]]*rindex[[:space:]]*(/ strrchr(/g' $(NTP_DIR)/ntpd/*.c
+	#$(SED) 's/\(^#[[:space:]]*include[[:space:]]*<sys\/var.h>\)/\/\/ \1/' $(NTP_DIR)/util/tickadj.c
+	touch $@
 
-$(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
+$(NTP_DIR)/.configured: $(NTP_DIR)/.patched
 	(cd $(NTP_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		ac_cv_lib_md5_MD5Init=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
@@ -45,11 +46,13 @@ $(NTP_DIR)/.configured: $(NTP_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
+		$(DISABLE_IPV6) \
 		--with-shared \
 		--program-transform-name=s,,, \
 		--without-crypto \
+		--enable-tickadj=no \
 	);
-	touch $(NTP_DIR)/.configured
+	touch $@
 
 $(NTP_DIR)/$(NTP_BINARY): $(NTP_DIR)/.configured
 	$(MAKE) -C $(NTP_DIR)
@@ -57,14 +60,18 @@ $(NTP_DIR)/$(NTP_BINARY): $(NTP_DIR)/.configured
 $(TARGET_DIR)/$(NTP_TARGET_BINARY): $(NTP_DIR)/$(NTP_BINARY)
 	install -m 755 $(NTP_DIR)/ntpd/ntpd $(TARGET_DIR)/usr/sbin/ntpd
 	install -m 755 $(NTP_DIR)/$(NTP_BINARY) $(TARGET_DIR)/$(NTP_TARGET_BINARY)
+ifeq ($(BR2_PACKAGE_NTP_SNTP),y)
+	install -m 755 $(NTP_DIR)/sntp/sntp $(TARGET_DIR)/usr/bin/sntp
+endif
 	install -m 755 package/ntp/ntp.sysvinit $(TARGET_DIR)/etc/init.d/S49ntp
 
 ntp: uclibc $(TARGET_DIR)/$(NTP_TARGET_BINARY)
 
 ntp-clean:
-	rm -f $(TARGET_DIR)/usr/sbin/ntpd
-	rm -f $(TARGET_DIR)/$(NTP_TARGET_BINARY)
-	-$(MAKE) -C $(NTP_DIR) clean
+	rm -f $(TARGET_DIR)/usr/sbin/ntpd $(TARGET_DIR)/usr/bin/sntp \
+		$(TARGET_DIR)/etc/init.d/S49ntp \
+		$(TARGET_DIR)/$(NTP_TARGET_BINARY)
+	-$(MAKE) -C $(NTP_DIR) clean 
 
 ntp-dirclean:
 	rm -rf $(NTP_DIR)

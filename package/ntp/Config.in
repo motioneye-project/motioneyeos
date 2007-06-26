@@ -6,3 +6,10 @@ config BR2_PACKAGE_NTP
 	  Provides things like ntpd, ntpdate, ntpq, etc...
 
 	  http://www.ntp.org/
+
+config BR2_PACKAGE_NTP_SNTP
+	bool "sntp"
+	default n
+	depends BR2_PACKAGE_NTP
+	help
+	  Simple network time protocol program
