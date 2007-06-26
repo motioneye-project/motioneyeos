@@ -42,18 +42,16 @@ else
 IPSEC_TOOLS_CONFIG_FLAGS+=	--disable-stats
 endif
 
-# At first check, if uClibc supports IPv6
-ifeq ($(shell grep -qs '__UCLIBC_HAS_IPV6__ 1' \
-	$(STAGING_DIR)/include/bits/uClibc_config.h && echo IPV6), IPV6)
+ifeq ($(BR2_INET_IPV6),y)
 
 ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_IPV6)), y)
 IPSEC_TOOLS_CONFIG_FLAGS+=	--enable-ipv6
 else
-IPSEC_TOOLS_CONFIG_FLAGS+=	--disable-ipv6
+IPSEC_TOOLS_CONFIG_FLAGS+=	$(DISABLE_IPV6)
 endif
 
 else # ignore user's choice if it doesn't
-IPSEC_TOOLS_CONFIG_FLAGS+=	--disable-ipv6
+IPSEC_TOOLS_CONFIG_FLAGS+=	$(DISABLE_IPV6)
 endif
 
 ifneq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_READLINE)), y)

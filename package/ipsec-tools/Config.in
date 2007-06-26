@@ -44,7 +44,7 @@ config BR2_PACKAGE_IPSEC_TOOLS_STATS
 
 config BR2_PACKAGE_IPSEC_TOOLS_IPV6
 	default y
-	depends on BR2_PACKAGE_IPSEC_TOOLS
+	depends on BR2_PACKAGE_IPSEC_TOOLS && BR2_INET_IPV6
 	bool "Enable IPv6 support"
 	help
 		This option has no effect if uClibc has been compiled without

@@ -29,7 +29,7 @@ $(IPERF_DIR)/.configured: $(IPERF_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--disable-ipv6 \
+		$(DISABLE_IPV6) \
 		--disable-dependency-tracking \
 		--disable-web100 \
 		--prefix=/usr \

@@ -45,7 +45,7 @@ $(BIND_DIR2)/Makefile: $(BIND_DIR2)/.unpacked
 		--localstatedir=/var \
 		--without-openssl \
 		--with-randomdev=/dev/random \
-		--enable-ipv6 \
+		$(DISABLE_IPV6) \
 		--with-libtool \
 		--with-pic \
 	);

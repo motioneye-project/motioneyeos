@@ -11,12 +11,6 @@ PYTHON_CAT:=$(BZCAT)
 PYTHON_BINARY:=python
 PYTHON_TARGET_BINARY:=usr/bin/python
 
-#ifndef BR2_SUPPORT_IPv6
-#PYTHON_DISABLE_IPv6=--disable-ipv6
-#else
-#PYTHON_DISABLE_IPv6=--enable-ipv6
-#endif
-
 # these could use checks for some BR2_PACKAGE_foo,y
 BR2_PYTHON_DISABLED_MODULES=readline pyexpat dbm gdbm bsddb \
 	_curses _curses_panel _tkinter nis zipfile
@@ -58,7 +52,7 @@ $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--with-cxx=no \
-		$(PYTHON_DISABLE_IPv6) \
+		$(DISABLE_IPV6) \
 		$(DISABLE_NLS) \
 	);
 	touch $@
