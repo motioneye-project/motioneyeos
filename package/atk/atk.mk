@@ -10,12 +10,6 @@ ATK_CAT:=$(BZCAT)
 ATK_DIR:=$(BUILD_DIR)/atk-$(ATK_VERSION)
 ATK_BINARY:=libatk-1.0.a
 
-ifeq ($(BR2_ENDIAN),"BIG")
-ATK_BE:=yes
-else
-ATK_BE:=no
-endif
-
 $(DL_DIR)/$(ATK_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(ATK_SITE)/$(ATK_SOURCE)
 
@@ -30,9 +24,7 @@ $(ATK_DIR)/.unpacked: $(DL_DIR)/$(ATK_SOURCE)
 $(ATK_DIR)/.configured: $(ATK_DIR)/.unpacked
 	(cd $(ATK_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		ac_cv_c_bigendian=$(ATK_BE) \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
 		glib_cv_uscore=no \

@@ -40,8 +40,7 @@ $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 	(cd $(RXVT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		rxvt_cv_ptys=GLIBC \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

@@ -10,12 +10,6 @@ LIBUSB_DIR:=$(BUILD_DIR)/libusb-$(LIBUSB_VER)
 LIBUSB_CAT:=$(ZCAT)
 LIBUSB_BINARY:=usr/lib/libusb.so
 
-ifeq ($(BR2_ENDIAN),"BIG")
-LIBUSB_BE:=yes
-else
-LIBUSB_BE:=no
-endif
-
 $(DL_DIR)/$(LIBUSB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBUSB_SITE)/$(LIBUSB_SOURCE)
 
@@ -29,10 +23,8 @@ $(LIBUSB_DIR)/.unpacked: $(DL_DIR)/$(LIBUSB_SOURCE)
 $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
 	(cd $(LIBUSB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_header_regex_h=no \
-		ac_cv_c_bigendian=$(LIBUSB_BE) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

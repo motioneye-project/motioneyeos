@@ -23,9 +23,8 @@ $(DBUS_DIR)/.unpacked: $(DL_DIR)/$(DBUS_SOURCE)
 $(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked
 	(cd $(DBUS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_have_abstract_sockets=yes \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

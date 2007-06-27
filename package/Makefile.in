@@ -207,9 +207,17 @@ ifeq ($(BR2_powerpc)$(BR2_ENDIAN),yBIG)
 BR2_AC_CV_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
 endif
 
+ifeq ($(BR2_ENDIAN),"BIG")
+BR2_AC_CV_C_BIGENDIAN=ac_cv_c_bigendian=yes
+else
+BR2_AC_CV_C_BIGENDIAN=ac_cv_c_bigendian=no
+endif
+
 TARGET_CONFIGURE_ARGS= \
 	$(BR2_AC_CV_TRAP_CHECK) \
-
+	ac_cv_func_mmap_fixed_mapped=yes \
+	ac_cv_func_memcmp_working=yes \
+	$(BR2_AC_CV_C_BIGENDIAN)
 
 #######################################################################
 

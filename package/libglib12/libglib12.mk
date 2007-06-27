@@ -9,12 +9,6 @@ LIBGLIB12_CAT:=$(ZCAT)
 LIBGLIB12_DIR:=$(BUILD_DIR)/glib-1.2.10
 LIBGLIB12_BINARY:=libglib.a
 
-ifeq ($(BR2_ENDIAN),"BIG")
-LIBGLIB12_BE:=yes
-else
-LIBGLIB12_BE:=no
-endif
-
 $(DL_DIR)/$(LIBGLIB12_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LIBGLIB12_SITE)/$(LIBGLIB12_SOURCE)
 
@@ -29,9 +23,7 @@ $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 	(cd $(LIBGLIB12_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		ac_cv_c_bigendian=$(LIBGLIB12_BE) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

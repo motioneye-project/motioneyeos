@@ -40,9 +40,7 @@ $(LIBPNG_DIR)/.unpacked: $(DL_DIR)/$(LIBPNG_SOURCE)
 $(LIBPNG_DIR)/.configured: $(LIBPNG_DIR)/.unpacked
 	(cd $(LIBPNG_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		ac_cv_func_memcmp_working=yes \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_have_decl_malloc=yes \
 		gl_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_malloc_0_nonnull=yes \

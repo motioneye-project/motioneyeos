@@ -30,8 +30,7 @@ LZO_CONFIG_SHARED:=--disable-shared
 $(LZO_DIR)/.configured: $(LZO_DIR)/.unpacked
 	(cd $(LZO_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

@@ -23,10 +23,9 @@ $(FREETYPE_DIR)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
 # freetype for the target
 $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
 	(cd $(FREETYPE_DIR); \
-	$(TARGET_CONFIGURE_OPTS) \
-	CFLAGS="$(TARGET_CFLAGS) " \
-	LDFLAGS="$(TARGET_LDFLAGS)" \
-	./configure \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
+		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

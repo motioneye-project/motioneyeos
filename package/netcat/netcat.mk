@@ -24,8 +24,7 @@ $(NETCAT_DIR)/.unpacked: $(DL_DIR)/$(NETCAT_SOURCE)
 $(NETCAT_DIR)/.configured: $(NETCAT_DIR)/.unpacked
 	(cd $(NETCAT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

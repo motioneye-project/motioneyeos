@@ -29,6 +29,7 @@ $(NTP_DIR)/.patched: $(DL_DIR)/$(NTP_SOURCE)
 $(NTP_DIR)/.configured: $(NTP_DIR)/.patched
 	(cd $(NTP_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_lib_md5_MD5Init=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

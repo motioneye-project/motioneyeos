@@ -54,8 +54,7 @@ endif
 $(CVS_DIR)/.configured: $(CVS_DIR)/.unpacked
 	(cd $(CVS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		cvs_cv_func_printf_ptr=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

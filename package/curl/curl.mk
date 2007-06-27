@@ -26,6 +26,7 @@ $(CURL_DIR)/.configured: $(CURL_DIR)/.unpacked
 		libtoolize --force; \
 		./reconf; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

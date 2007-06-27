@@ -33,7 +33,10 @@ $(DHCP_DIR)/.unpacked: $(DL_DIR)/$(DHCP_SOURCE)
 	touch $(DHCP_DIR)/.unpacked
 
 $(DHCP_DIR)/.configured: $(DHCP_DIR)/.unpacked
-	(cd $(DHCP_DIR); $(TARGET_CONFIGURE_OPTS) ./configure );
+	(cd $(DHCP_DIR); \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
+		./configure );
 	touch $(DHCP_DIR)/.configured
 
 $(DHCP_DIR)/$(DHCP_RELAY_BINARY): $(DHCP_DIR)/.configured

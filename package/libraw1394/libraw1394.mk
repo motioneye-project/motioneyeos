@@ -19,6 +19,7 @@ $(LIBRAW1394_DIR)/.unpacked: $(DL_DIR)/$(LIBRAW1394_SOURCE)
 $(LIBRAW1394_DIR)/.configured: $(LIBRAW1394_DIR)/.unpacked
 	(cd $(LIBRAW1394_DIR); rm -rf config.cache ; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

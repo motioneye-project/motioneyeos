@@ -24,8 +24,7 @@ $(STUNNEL_DIR)/.unpacked: $(DL_DIR)/$(STUNNEL_SOURCE)
 $(STUNNEL_DIR)/.configured: $(STUNNEL_DIR)/.unpacked
 	(cd $(STUNNEL_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_file___dev_ptmx_=yes \
 		ac_cv_file___dev_ptc_=no \
 		./configure \

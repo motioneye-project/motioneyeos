@@ -13,12 +13,6 @@ GMP_BINARY:=libgmp$(LIBTGTEXT)
 GMP_HOST_BINARY:=libgmp$(HOST_SHREXT)
 GMP_LIBVERSION:=3.4.1
 
-ifeq ($(BR2_ENDIAN),"BIG")
-GMP_BE:=yes
-else
-GMP_BE:=no
-endif
-
 # this is a workaround for a bug in GMP, please see 
 # http://gmplib.org/list-archives/gmp-devel/2006-April/000618.html
 ifeq ($(HOST_EXEEXT),.exe)
@@ -40,8 +34,8 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 	mkdir -p $(GMP_TARGET_DIR)
 	(cd $(GMP_TARGET_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		$(GMP_CPP_FLAGS) \
-		ac_cv_c_bigendian=$(GMP_BE) \
 		$(GMP_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

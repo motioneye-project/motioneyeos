@@ -26,8 +26,7 @@ $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
 	(cd $(READLINE_DIR); rm -rf config.cache; \
 		bash_cv_func_sigsetjmp=yes \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

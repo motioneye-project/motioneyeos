@@ -10,12 +10,6 @@ CAIRO_CAT:=$(ZCAT)
 CAIRO_DIR:=$(BUILD_DIR)/cairo-$(CAIRO_VERSION)
 CAIRO_BINARY:=libcairo.a
 
-ifeq ($(BR2_ENDIAN),"BIG")
-CAIRO_BE:=yes
-else
-CAIRO_BE:=no
-endif
-
 $(DL_DIR)/$(CAIRO_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(CAIRO_SITE)/$(CAIRO_SOURCE)
 
@@ -30,9 +24,7 @@ $(CAIRO_DIR)/.unpacked: $(DL_DIR)/$(CAIRO_SOURCE)
 $(CAIRO_DIR)/.configured: $(CAIRO_DIR)/.unpacked
 	(cd $(CAIRO_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		ac_cv_c_bigendian=$(CAIRO_BE) \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
 		glib_cv_uscore=no \

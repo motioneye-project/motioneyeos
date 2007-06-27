@@ -20,6 +20,7 @@ $(SQLITE_DIR)/.unpacked: $(DL_DIR)/$(SQLITE_SOURCE)
 $(SQLITE_DIR)/.configured: $(SQLITE_DIR)/.unpacked
 	(cd $(SQLITE_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		config_BUILD_CC="$(HOSTCC)" \
 		config_TARGET_CFLAGS="$(TARGET_CFLAGS)" \
 		config_TARGET_CC="$(TARGET_CC)" \

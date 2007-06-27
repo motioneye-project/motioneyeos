@@ -49,8 +49,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.patched
 	(cd $(NCURSES_DIR); rm -rf config.cache; \
 		BUILD_CC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \

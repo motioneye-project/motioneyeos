@@ -30,8 +30,7 @@ $(MODUTILS_DIR1)/.source: $(DL_DIR)/$(MODUTILS_SOURCE)
 $(MODUTILS_DIR1)/.configured: $(MODUTILS_DIR1)/.source
 	(cd $(MODUTILS_DIR1); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		INSTALL=$(MODUTILS_DIR1)/install-sh \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

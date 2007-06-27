@@ -25,8 +25,7 @@ $(LIBELF_DIR)/.unpacked: $(DL_DIR)/$(LIBELF_SOURCE)
 $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.unpacked
 	(cd $(LIBELF_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		libelf_cv_working_memmove=yes \
 		mr_cv_target_elf=yes \
 		./configure \

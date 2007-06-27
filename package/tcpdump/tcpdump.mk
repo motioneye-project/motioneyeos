@@ -28,8 +28,7 @@ $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 		ac_cv_linux_vers=$(BR2_DEFAULT_KERNEL_HEADERS) \
 		BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

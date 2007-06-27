@@ -26,7 +26,7 @@ $(NCFTP_DIR)/.source: $(DL_DIR)/$(NCFTP_SOURCE)
 $(NCFTP_DIR)/.configured: $(NCFTP_DIR)/.source
 	(cd $(NCFTP_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

@@ -26,6 +26,7 @@ $(EXPAT_DIR)/.unpacked: $(DL_DIR)/$(EXPAT_SOURCE)
 $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 	(cd $(EXPAT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

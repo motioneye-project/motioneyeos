@@ -19,8 +19,7 @@ $(TCL_DIR)/.source: $(DL_DIR)/$(TCL_SOURCE)
 $(TCL_DIR)/.configured: $(TCL_DIR)/.source
 	(cd $(TCL_DIR)/unix; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

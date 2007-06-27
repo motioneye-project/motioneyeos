@@ -26,8 +26,7 @@ $(DMRAID_DIR)/.unpacked: $(DL_DIR)/$(DMRAID_SOURCE)
 $(DMRAID_DIR)/.configured: $(DMRAID_DIR)/.unpacked
 	(cd $(DMRAID_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

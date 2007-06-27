@@ -45,11 +45,9 @@ $(AVAHI_DIR)/.unpacked: $(DL_DIR)/$(AVAHI_SOURCE)
 
 $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 	(cd $(AVAHI_DIR) && rm -rf config.cache && autoconf)
-	( \
-		cd $(AVAHI_DIR) && \
+	(cd $(AVAHI_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		LIBDAEMON_CFLAGS="-I$(STAGING_DIR)/include" \
 		LIBDAEMON_LIBS="-L$(STAGING_DIR)/lib -ldaemon" \
 		ac_cv_func_strtod=yes \

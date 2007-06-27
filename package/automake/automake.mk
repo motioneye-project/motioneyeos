@@ -24,8 +24,7 @@ $(AUTOMAKE_DIR)/.unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_DIR)/.unpacked
 	(cd $(AUTOMAKE_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		WANT_AUTOCONF=2.5 \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

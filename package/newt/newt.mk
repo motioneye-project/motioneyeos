@@ -25,8 +25,8 @@ $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE)
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	(cd $(NEWT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS) $(NEWT_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

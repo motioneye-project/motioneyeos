@@ -69,8 +69,7 @@ $(LTT_DIR2)/.unpacked: $(DL_DIR)/$(LTT_SOURCE)
 $(LTT_DIR2)/.configured: $(LTT_DIR2)/.unpacked
 	(cd $(LTT_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

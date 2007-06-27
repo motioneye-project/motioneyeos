@@ -10,12 +10,6 @@ LIBGLIB2_CAT:=$(BZCAT)
 LIBGLIB2_DIR:=$(BUILD_DIR)/glib-$(LIBGLIB2_VERSION)
 LIBGLIB2_BINARY:=libglib-2.0.a
 
-ifeq ($(BR2_ENDIAN),"BIG")
-LIBGLIB2_BE:=yes
-else
-LIBGLIB2_BE:=no
-endif
-
 $(DL_DIR)/$(LIBGLIB2_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LIBGLIB2_SITE)/$(LIBGLIB2_SOURCE)
 
@@ -31,9 +25,7 @@ $(LIBGLIB2_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB2_SOURCE)
 $(LIBGLIB2_DIR)/.configured: $(LIBGLIB2_DIR)/.unpacked
 	(cd $(LIBGLIB2_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		ac_cv_c_bigendian=$(LIBGLIB2_BE) \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
 		glib_cv_uscore=no \

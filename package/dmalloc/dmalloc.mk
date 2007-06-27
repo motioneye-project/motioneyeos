@@ -42,6 +42,7 @@ endif
 $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 	(cd $(DMALLOC_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="-g $(TARGET_CFLAGS)" \
 		LDFLAGS="-g $(TARGET_LDFLAGS)" \
 		./configure \

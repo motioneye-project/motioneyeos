@@ -44,6 +44,7 @@ $(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched
 $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 	(cd $(PYTHON_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		OPT="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

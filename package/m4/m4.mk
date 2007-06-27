@@ -29,8 +29,7 @@ $(M4_DIR)/.unpacked: $(DL_DIR)/$(M4_SOURCE)
 $(M4_DIR)/.configured: $(M4_DIR)/.unpacked
 	(cd $(M4_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		gl_cv_func_gettimeofday_clobber=no \
 		$(gl_cv_func_re_compile_pattern_working) \
 		./configure \

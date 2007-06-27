@@ -15,12 +15,6 @@ MPFR_BINARY:=libmpfr$(LIBTGTEXT)
 MPFR_HOST_BINARY:=libmpfr$(HOST_SHREXT)
 MPFR_LIBVERSION:=1.0.1
 
-ifeq ($(BR2_ENDIAN),"BIG")
-MPFR_BE:=yes
-else
-MPFR_BE:=no
-endif
-
 # No patch
 ifeq ($(MPFR_PATCH),)
 $(DL_DIR)/$(MPFR_SOURCE):
@@ -56,7 +50,7 @@ $(MPFR_TARGET_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/usr/lib/$(G
 	mkdir -p $(MPFR_TARGET_DIR)
 	(cd $(MPFR_TARGET_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		ac_cv_c_bigendian=$(MPFR_BE) \
+		$(TARGET_CONFIGURE_ARGS) \
 		$(MPFR_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

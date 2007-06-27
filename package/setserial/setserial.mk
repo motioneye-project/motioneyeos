@@ -43,8 +43,8 @@ endif
 $(SETSERIAL_DIR)/.configured: $(SETSERIAL_DIR)/.unpacked
 	(cd $(SETSERIAL_DIR); rm -rf config.cache ; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS) $(SETSERIAL_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

@@ -20,8 +20,7 @@ $(LESS_DIR)/.source: $(DL_DIR)/$(LESS_SOURCE)
 $(LESS_DIR)/.configured: $(LESS_DIR)/.source
 	(cd $(LESS_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

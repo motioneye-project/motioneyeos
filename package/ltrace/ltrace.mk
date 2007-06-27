@@ -39,10 +39,9 @@ endif
 	touch $@
 
 $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.patched
-	(cd $(LTRACE_DIR); \
+	(cd $(LTRACE_DIR); rm -rf config.cache ; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

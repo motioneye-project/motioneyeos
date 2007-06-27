@@ -32,8 +32,8 @@ $(HAL_DIR)/.unpacked: $(DL_DIR)/$(HAL_SOURCE)
 $(HAL_DIR)/.configured: $(HAL_DIR)/.unpacked /usr/bin/pkg-config
 	(cd $(HAL_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/lib/glib-2.0/include" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		GLIB_CFLAGS="$(GLIB_CFLAGS)" \
 		GLIB_LIBS="$(GLIB_LIBS)" \
 		DBUS_CFLAGS="-I$(STAGING_DIR)/usr/include/dbus-1.0 -I$(STAGING_DIR)/usr/lib/dbus-1.0/include" \

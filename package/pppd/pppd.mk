@@ -31,8 +31,7 @@ $(PPPD_DIR)/.unpacked: $(DL_DIR)/$(PPPD_SOURCE)
 $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 	(cd $(PPPD_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

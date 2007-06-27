@@ -96,8 +96,7 @@ $(SED_DIR2)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 	(cd $(SED_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		CPPFLAGS="$(SED_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

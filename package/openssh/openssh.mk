@@ -20,9 +20,7 @@ $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 	(cd $(OPENSSH_DIR); rm -rf config.cache; autoconf ; \
 		$(TARGET_CONFIGURE_OPTS) \
-		LD=$(TARGET_CROSS)gcc \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

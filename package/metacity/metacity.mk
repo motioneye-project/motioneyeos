@@ -36,12 +36,10 @@ $(METACITY_DIR)/.unpacked: $(DL_DIR)/$(METACITY_SOURCE) $(DL_DIR)/$(METACITY_SOU
 $(METACITY_DIR)/.configured: $(METACITY_DIR)/.unpacked
 	(cd $(METACITY_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		PKG_CONFIG=$(STAGING_DIR)/usr/bin/pkg-config \
 		GLIB_CONFIG=$(STAGING_DIR)/bin/glib-config \
-		ac_cv_func_mmap_fixed_mapped=yes \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
 		glib_cv_uscore=no \

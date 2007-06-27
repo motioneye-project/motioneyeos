@@ -22,6 +22,7 @@ $(OPENNTPD_DIR)/.source: $(DL_DIR)/$(OPENNTPD_SOURCE)
 $(OPENNTPD_DIR)/.configured: $(OPENNTPD_DIR)/.source
 	(cd $(OPENNTPD_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

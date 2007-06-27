@@ -11,16 +11,9 @@ PANGO_CAT:=$(BZCAT)
 PANGO_DIR:=$(BUILD_DIR)/pango-$(PANGO_VERSION)
 PANGO_BINARY:=libpango-1.0.a
 
-ifeq ($(BR2_ENDIAN),"BIG")
-PANGO_BE:=yes
-else
-PANGO_BE:=no
-endif
-
-PANGO_BUILD_ENV=$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		ac_cv_c_bigendian=$(PANGO_BE) \
+PANGO_BUILD_ENV= \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
 		glib_cv_uscore=no \

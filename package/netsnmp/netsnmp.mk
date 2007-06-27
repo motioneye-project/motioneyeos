@@ -35,6 +35,7 @@ $(NETSNMP_DIR)/.configured: $(NETSNMP_DIR)/.unpacked
 	(cd $(NETSNMP_DIR); autoconf; \
 		ac_cv_CAN_USE_SYSCTL=no \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--with-cc=$(TARGET_CROSS)gcc \
 		--with-ar=$(TARGET_CROSS)ar \

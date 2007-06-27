@@ -20,8 +20,7 @@ $(NBD_DIR)/.unpacked: $(DL_DIR)/$(NBD_SOURCE)
 $(NBD_DIR)/.configured: $(NBD_DIR)/.unpacked
 	(cd $(NBD_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		CC=$(TARGET_CC) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

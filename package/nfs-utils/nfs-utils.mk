@@ -33,8 +33,8 @@ $(NFS_UTILS_DIR)/.unpacked: $(DL_DIR)/$(NFS_UTILS_SOURCE)
 $(NFS_UTILS_DIR)/.configured: $(NFS_UTILS_DIR)/.unpacked
 	(cd $(NFS_UTILS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS) $(BR2_NFS_UTILS_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		knfsd_cv_bsd_signals=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

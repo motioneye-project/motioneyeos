@@ -26,8 +26,7 @@ $(SMARTMONTOOLS_DIR)/.unpacked: $(DL_DIR)/$(SMARTMONTOOLS_SOURCE)
 $(SMARTMONTOOLS_DIR)/.configured: $(SMARTMONTOOLS_DIR)/.unpacked
 	(cd $(SMARTMONTOOLS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

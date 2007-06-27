@@ -137,8 +137,7 @@ $(QTE_QTE_DIR)/.configured: $(QTE_QTE_DIR)/.unpacked $(QTE_TMAKE_DIR)/.unpacked 
 	cp $(QTE_QTOPIA_DIR)/src/qt/qconfig-qpe.h $(QTE_QTE_DIR)/src/tools/
 	(cd $(@D); export QTDIR=`pwd`; export TMAKEPATH=$(QTE_TMAKE_DIR)/lib/qws/linux-x86-g++; export PATH=$(STAGING_DIR)/bin:$$QTDIR/bin:$$PATH; export LD_LIBRARY_PATH=$$QTDIR/lib:$$LD_LIBRARY_PATH; echo 'yes' | \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		$(QTE_QTE_CONFIGURE) -qconfig qpe -keypad-mode -qvfb -depths 4,8,16,32 -xplatform $(BR2_QTE_CROSS_PLATFORM) \
 	);

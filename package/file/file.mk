@@ -61,8 +61,7 @@ $(FILE_DIR2)/.configured: $(FILE_SOURCE_DIR)/.unpacked
 	mkdir -p $(FILE_DIR2)
 	(cd $(FILE_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(TARGET_CONFIGURE_ARGS) \
 		$(FILE_SOURCE_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

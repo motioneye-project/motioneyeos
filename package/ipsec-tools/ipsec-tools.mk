@@ -69,7 +69,8 @@ $(IPSEC_TOOLS_DIR)/.patched: $(DL_DIR)/$(IPSEC_TOOLS_SOURCE)
 
 $(IPSEC_TOOLS_DIR)/.configured: $(IPSEC_TOOLS_DIR)/.patched
 	( cd $(IPSEC_TOOLS_DIR); rm -rf config.cache ; \
-	  $(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 	  ./configure \
 	  --target=$(GNU_TARGET_NAME) \
 	  --host=$(GNU_TARGET_NAME) \
