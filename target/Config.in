@@ -14,6 +14,7 @@ source "target/iso9660/Config.in"
 comment "bootloader for target device"
 
 source "target/x86/grub/Config.in"
+#source "target/x86/grub2/Config.in"
 source "target/x86/syslinux/Config.in"
 source "target/powerpc/yaboot/Config.in"
 

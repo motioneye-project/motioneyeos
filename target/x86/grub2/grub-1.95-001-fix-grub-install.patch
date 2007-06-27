@@ -1,0 +1,23 @@
+? config.status.lineno
+? fix-grub-install.diff
+? genkernsyms.sh
+? gensymlist.sh
+? grub-mkimage.d
+? grub_script.tab.c
+? grub_script.tab.h
+? kernel_elf_symlist.c
+Index: util/powerpc/ieee1275/grub-install.in
+===================================================================
+RCS file: /cvsroot/grub/grub2/util/powerpc/ieee1275/grub-install.in,v
+retrieving revision 1.5
+diff -u -r1.5 grub-install.in
+--- grub-1.95/util/powerpc/ieee1275/grub-install.in	28 May 2006 23:01:43 -0000	1.5
++++ grub-1.95/util/powerpc/ieee1275/grub-install.in	4 Mar 2007 19:05:47 -0000
+@@ -23,6 +23,7 @@
+ # Initialize some variables.
+ prefix=@prefix@
+ exec_prefix=@exec_prefix@
++bindir=@bindir@
+ sbindir=@sbindir@
+ libdir=@libdir@
+ PACKAGE_NAME=@PACKAGE_NAME@
