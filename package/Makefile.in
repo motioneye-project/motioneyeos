@@ -186,7 +186,32 @@ HOST_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		STRIP_FOR_TARGET=$(TARGET_CROSS)strip \
 		OBJCOPY_FOR_TARGET=$(TARGET_CROSS)objcopy
 
+#######################################################################
+# settings we need to pass to configure
 
+# does unaligned access trap?
+BR2_AC_CV_TRAP_CHECK=ac_cv_lbl_unaligned_fail=yes
+ifeq ($(BR2_i386),y)
+BR2_AC_CV_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_x86_64),y)
+BR2_AC_CV_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_m68k),y)
+BR2_AC_CV_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_s390),y)
+BR2_AC_CV_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+ifeq ($(BR2_powerpc)$(BR2_ENDIAN),yBIG)
+BR2_AC_CV_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
+endif
+
+TARGET_CONFIGURE_ARGS= \
+	$(BR2_AC_CV_TRAP_CHECK) \
+
+
+#######################################################################
 
 ifeq ($(BR2_ENABLE_LOCALE),y)
 DISABLE_NLS:=
@@ -205,6 +230,7 @@ endif
 ifeq ($(BR2_INSTALL_LIBSTDCPP),)
 TARGET_CONFIGURE_OPTS+=CXX=""
 endif
+
 
 
 # X Windowing system

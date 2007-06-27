@@ -12,23 +12,6 @@ ARGUS_CAT:=$(ZCAT)
 ARGUS_BINARY:=bin/argus
 ARGUS_TARGET_BINARY:=usr/sbin/argus
 
-ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=yes
-ifeq ($(BR2_i386),y)
-ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
-endif
-ifeq ($(BR2_x86_64),y)
-ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
-endif
-ifeq ($(BR2_m68k),y)
-ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
-endif
-ifeq ($(BR2_s390),y)
-ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
-endif
-ifeq ($(BR2_powerpc)$(BR2_ENDIAN),yBIG)
-ARGUS_TRAP_CHECK=ac_cv_lbl_unaligned_fail=no
-endif
-
 $(DL_DIR)/$(ARGUS_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ARGUS_SITE)/$(ARGUS_SOURCE)
 
@@ -46,14 +29,14 @@ ifneq ($(ARGUS_PATCH),)
 		toolchain/patch-kernel.sh $(ARGUS_DIR) $(ARGUS_DIR)/debian/patches \*.patch ; \
 	fi
 endif
-	touch $(ARGUS_DIR)/.unpacked
+	touch $@
 
 $(ARGUS_DIR)/.configured: $(ARGUS_DIR)/.unpacked
 	(cd $(ARGUS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
-		$(ARGUS_TRAP_CHECK) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -61,7 +44,7 @@ $(ARGUS_DIR)/.configured: $(ARGUS_DIR)/.unpacked
 		--prefix=/usr \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch $(ARGUS_DIR)/.configured
+	touch $@
 
 $(ARGUS_DIR)/$(ARGUS_BINARY): $(ARGUS_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(ARGUS_DIR)
