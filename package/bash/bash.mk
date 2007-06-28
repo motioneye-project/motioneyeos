@@ -59,7 +59,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	touch $@
 
 $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD="$(HOSTCC)" -C $(BASH_DIR)
+	$(MAKE1) CC=$(TARGET_CC) CC_FOR_BUILD="$(HOSTCC)" -C $(BASH_DIR)
 
 $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) install
@@ -79,7 +79,8 @@ bash: ncurses uclibc $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 endif
 
 bash-clean:
-	$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) uninstall
+	-$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) uninstall
+	rm -f $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 	-$(MAKE1) -C $(BASH_DIR) clean
 
 bash-dirclean:

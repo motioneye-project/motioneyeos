@@ -57,7 +57,8 @@ $(TARGET_DIR)/$(AT_TARGET_BINARY): $(AT_DIR)/$(AT_BINARY)
 at: uclibc host-fakeroot $(TARGET_DIR)/$(AT_TARGET_BINARY)
 
 at-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(AT_DIR) uninstall
+	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(AT_DIR) uninstall
+	rm -f $(TARGET_DIR)/$(AT_TARGET_BINARY) $(TARGET_DIR)/etc/init.d/S99at
 	-$(MAKE) -C $(AT_DIR) clean
 
 at-dirclean:

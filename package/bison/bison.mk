@@ -58,7 +58,8 @@ $(TARGET_DIR)/$(BISON_TARGET_BINARY): $(BISON_DIR)/$(BISON_BINARY)
 bison: uclibc $(TARGET_DIR)/$(BISON_TARGET_BINARY)
 
 bison-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BISON_DIR) uninstall
+	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BISON_DIR) uninstall
+	rm -f $(TARGET_DIR)/$(BISON_TARGET_BINARY)
 	-$(MAKE) -C $(BISON_DIR) clean
 
 bison-dirclean:
