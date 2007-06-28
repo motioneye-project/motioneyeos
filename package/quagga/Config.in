@@ -1,0 +1,113 @@
+config BR2_PACKAGE_QUAGGA
+	bool
+	default n
+
+comment "quagga suite"
+
+config BR2_PACKAGE_QUAGGA_ZEBRA
+	bool "quagga zebra"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+config BR2_PACKAGE_QUAGGA_BGPD
+	bool "quagga bgpd"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+config BR2_PACKAGE_QUAGGA_RIPD
+	bool "quagga ripd"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+config BR2_PACKAGE_QUAGGA_RIPNGD
+	bool "quagga ripngd"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+config BR2_PACKAGE_QUAGGA_OSPFD
+	bool "quagga ospfd"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+config BR2_PACKAGE_QUAGGA_OSPF6D
+	bool "quagga ospf6d"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	depends BR2_INET_IPV6
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+config BR2_PACKAGE_QUAGGA_WATCHQUAGGA
+	bool "quagga watchquagga"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+config BR2_PACKAGE_QUAGGA_ISISD
+	bool "isisd"
+	default n
+	select BR2_PACKAGE_QUAGGA
+	help
+	  routing software suite, providing implementations of
+	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
+
+	  http://www.quagga.net/
+
+if BR2_PACKAGE_QUAGGA
+comment "common options for quagga suite"
+config BR2_PACKAGE_QUAGGA_BGP_ANNOUNCE
+	bool "BGP route announcement"
+	default n
+
+config BR2_PACKAGE_QUAGGA_NETLINK
+	bool "quagga: use linux netlink interface"
+	default y
+
+config BR2_PACKAGE_QUAGGA_SNMP
+	bool "quagga: SNMP support"
+	default n
+
+config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
+	bool "quagga: TCP/IP socket connection between zebra and proto daemon"
+	default n
+
+config BR2_PACKAGE_QUAGGA_OPAGUE_LSA
+	bool "quagga: OSPF Opaque-LSA with OSPFAPI support (RFC2370)"
+	default n
+
+config BR2_PACKAGE_QUAGGA_CONFIGURE
+	string "quagga: extra configure options"
+	default ""
+endif
