@@ -7,25 +7,38 @@ AUTOCONF_VER:=2.61
 AUTOCONF_SOURCE:=autoconf-$(AUTOCONF_VER).tar.bz2
 AUTOCONF_SITE:=http://ftp.gnu.org/pub/gnu/autoconf
 AUTOCONF_CAT:=$(BZCAT)
+AUTOCONF_SRC_DIR:=$(TOOL_BUILD_DIR)/autoconf-$(AUTOCONF_VER)
 AUTOCONF_DIR:=$(BUILD_DIR)/autoconf-$(AUTOCONF_VER)
+AUTOCONF_HOST_DIR:=$(TOOL_BUILD_DIR)/autoconf-$(AUTOCONF_VER)-host
 AUTOCONF_BINARY:=autoconf
 AUTOCONF_TARGET_BINARY:=usr/bin/autoconf
+AUTOCONF:=$(STAGING_DIR)/usr/bin/autoconf
+
+# variables used by other packages
+AUTORECONF = $(HOST_CONFIGURE_OPTS) ACLOCAL="$(ACLOCAL)" autoreconf -v -f -i -I "$(ACLOCAL_DIR)"
 
 $(DL_DIR)/$(AUTOCONF_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(AUTOCONF_SITE)/$(AUTOCONF_SOURCE)
 
 autoconf-source: $(DL_DIR)/$(AUTOCONF_SOURCE)
 
-$(AUTOCONF_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
-	$(AUTOCONF_CAT) $(DL_DIR)/$(AUTOCONF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+$(AUTOCONF_SRC_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
+	$(AUTOCONF_CAT) $(DL_DIR)/$(AUTOCONF_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(AUTOCONF_DIR)/.configured: $(AUTOCONF_DIR)/.unpacked
+#############################################################
+#
+# autoconf for the host
+#
+#############################################################
+
+$(AUTOCONF_DIR)/.configured: $(AUTOCONF_SRC_DIR)/.unpacked
+	mkdir -p $(AUTOCONF_DIR)
 	(cd $(AUTOCONF_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		EMACS="no" \
-		./configure \
+		$(AUTOCONF_SRC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -63,6 +76,7 @@ $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
 	    -C $(AUTOCONF_DIR) install;
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	touch -c $@
 
 autoconf: uclibc $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY)
 
@@ -72,6 +86,40 @@ autoconf-clean:
 
 autoconf-dirclean:
 	rm -rf $(AUTOCONF_DIR)
+
+#############################################################
+#
+# autoconf for the host
+#
+#############################################################
+
+$(AUTOCONF_HOST_DIR)/.configured: $(AUTOCONF_SRC_DIR)/.unpacked
+	mkdir -p $(AUTOCONF_HOST_DIR)
+	(cd $(AUTOCONF_HOST_DIR); rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
+		EMACS="no" \
+		$(AUTOCONF_SRC_DIR)/configure \
+		--prefix=$(STAGING_DIR)/usr \
+	);
+	touch $@
+
+$(AUTOCONF_HOST_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_HOST_DIR)/.configured
+	$(MAKE1) -C $(AUTOCONF_HOST_DIR)
+
+$(AUTOCONF): $(AUTOCONF_HOST_DIR)/bin/$(AUTOCONF_BINARY)
+	$(MAKE) -C $(AUTOCONF_HOST_DIR) install;
+
+host-autoconf: m4-host host-libtool $(AUTOCONF)
+
+host-autoconf-clean:
+	$(MAKE) CC=$(HOST_CC) -C $(AUTOCONF_HOST_DIR) uninstall
+	-$(MAKE) -C $(AUTOCONF_HOST_DIR) clean
+
+host-autoconf-dirclean:
+	rm -rf $(AUTOCONF_HOST_DIR)
+
 
 #############################################################
 #

@@ -7,7 +7,9 @@ LIBTOOL_VER:=1.5.22
 LIBTOOL_SOURCE:=libtool-$(LIBTOOL_VER).tar.gz
 LIBTOOL_SITE:=http://ftp.gnu.org/pub/gnu/libtool
 LIBTOOL_CAT:=$(ZCAT)
+LIBTOOL_SRC_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VER)
 LIBTOOL_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VER)
+LIBTOOL_HOST_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VER)-host
 LIBTOOL_BINARY:=libtool
 LIBTOOL_TARGET_BINARY:=usr/bin/libtool
 
@@ -16,15 +18,22 @@ $(DL_DIR)/$(LIBTOOL_SOURCE):
 
 libtool-source: $(DL_DIR)/$(LIBTOOL_SOURCE)
 
-$(LIBTOOL_DIR)/.unpacked: $(DL_DIR)/$(LIBTOOL_SOURCE)
-	$(LIBTOOL_CAT) $(DL_DIR)/$(LIBTOOL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LIBTOOL_DIR)/.unpacked
+$(LIBTOOL_SRC_DIR)/.unpacked: $(DL_DIR)/$(LIBTOOL_SOURCE)
+	$(LIBTOOL_CAT) $(DL_DIR)/$(LIBTOOL_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	touch $@
 
-$(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked
+#############################################################
+#
+# libtool for the target
+#
+#############################################################
+
+$(LIBTOOL_DIR)/.configured: $(LIBTOOL_SRC_DIR)/.unpacked
+	mkdir -p $(LIBTOOL_DIR)
 	(cd $(LIBTOOL_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		$(LIBTOOL_SRC_DIR)/configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -41,11 +50,11 @@ $(LIBTOOL_DIR)/.configured: $(LIBTOOL_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	);
-	touch $(LIBTOOL_DIR)/.configured
+	touch $@
 
 $(LIBTOOL_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBTOOL_DIR)
-	touch -c $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
+	touch -c $@
 
 $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
 	$(MAKE) \
@@ -67,6 +76,7 @@ $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
 	$(SED) "s,^LD.*,LD=\"/usr/bin/ld\"," $(TARGET_DIR)/usr/bin/libtool
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	touch -c $@
 
 libtool: uclibc $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY)
 
@@ -81,6 +91,43 @@ libtool-cross-clean:
 
 libtool-dirclean:
 	rm -rf $(LIBTOOL_DIR)
+
+#############################################################
+#
+# libtool for the host
+#
+#############################################################
+
+$(LIBTOOL_HOST_DIR)/.configured: $(LIBTOOL_SRC_DIR)/.unpacked
+	mkdir -p $(LIBTOOL_HOST_DIR)
+	(cd $(LIBTOOL_HOST_DIR); rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
+		$(LIBTOOL_SRC_DIR)/configure \
+		--prefix=$(STAGING_DIR)/usr \
+		$(DISABLE_NLS) \
+	);
+	touch $@
+
+$(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_HOST_DIR)/.configured
+	$(MAKE) -C $(LIBTOOL_HOST_DIR)
+	touch -c $@
+
+$(STAGING_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY)
+	$(MAKE) -C $(LIBTOOL_HOST_DIR) install
+	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
+		$(STAGING_DIR)/usr/man $(STAGING_DIR)/usr/share/doc
+	touch -c $@
+
+host-libtool: $(STAGING_DIR)/$(LIBTOOL_TARGET_BINARY)
+
+host-libtool-clean:
+	$(MAKE) -C $(LIBTOOL_HOST_DIR) uninstall
+	-$(MAKE) -C $(LIBTOOL_HOST_DIR) clean
+
+host-libtool-dirclean:
+	rm -rf $(LIBTOOL_HOST_DIR)
 
 #############################################################
 #
