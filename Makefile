@@ -37,6 +37,58 @@ ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(TOPDIR).config
 endif
 
+# To put more focus on warnings, be less verbose as default
+# Use 'make V=1' to see the full commands
+ifdef V
+  ifeq ("$(origin V)", "command line")
+    KBUILD_VERBOSE = $(V)
+  endif
+endif
+ifndef KBUILD_VERBOSE
+  KBUILD_VERBOSE = 0
+endif
+
+ifeq ($(KBUILD_VERBOSE),1)
+  quiet =
+  Q =
+else
+  quiet=quiet_
+  Q = @
+endif
+
+CONFIG_SHELL := $(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+	else if [ -x /bin/bash ]; then echo /bin/bash; \
+	else echo sh; fi ; fi)
+
+export CONFIG_SHELL quiet Q KBUILD_VERBOSE
+
+ifndef HOSTAR
+HOSTAR:=ar
+endif
+ifndef HOSTAS
+HOSTAS:=as
+endif
+ifndef HOSTCC
+HOSTCC:=gcc
+else
+endif
+ifndef HOSTCXX
+HOSTCXX:=g++
+endif
+ifndef HOSTLD
+HOSTLD:=ld
+endif
+HOSTAR:=$(shell $(CONFIG_SHELL) which $(HOSTAR) || type -p $(HOSTAR) || echo ar)
+HOSTAS:=$(shell $(CONFIG_SHELL) which $(HOSTAS) || type -p $(HOSTAS) || echo as)
+HOSTCC:=$(shell $(CONFIG_SHELL) which $(HOSTCC) || type -p $(HOSTCC) || echo gcc)
+HOSTCXX:=$(shell $(CONFIG_SHELL) which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
+HOSTLD:=$(shell $(CONFIG_SHELL) which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
+ifndef CFLAGS_FOR_BUILD
+CFLAGS_FOR_BUILD:="-g -O2"
+endif
+export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
+
+
 ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 
 # cc-option
@@ -212,12 +264,14 @@ all: menuconfig
 # ---------------------------------------------------------------------------
 
 $(CONFIG)/conf:
-	$(MAKE) -C $(CONFIG) conf
+	$(MAKE) CC="$(HOSTCC)" CFLAGS=$(CFLAGS_FOR_BUILD) MAKECMDGOALS="$(MAKECMDGOALS)" \
+		-C $(CONFIG) conf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
 $(CONFIG)/mconf:
-	$(MAKE) -C $(CONFIG) ncurses conf mconf
+	$(MAKE) CC="$(HOSTCC)" CFLAGS=$(CFLAGS_FOR_BUILD) MAKECMDGOALS="$(MAKECMDGOALS)" \
+		-C $(CONFIG) conf mconf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi

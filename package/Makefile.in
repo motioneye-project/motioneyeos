@@ -48,30 +48,6 @@ TARGET_LDFLAGS=-L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib
 endif
 #########################################################################
 
-ifndef HOSTAR
-HOSTAR:=ar
-endif
-ifndef HOSTAS
-HOSTAS:=as
-endif
-ifndef HOSTCC
-HOSTCC:=gcc
-endif
-ifndef HOSTCXX
-HOSTCXX:=g++
-endif
-ifndef HOSTLD
-HOSTLD:=ld
-endif
-HOSTAR:=$(shell which $(HOSTAR) || type -p $(HOSTAR) || echo ar)
-HOSTAS:=$(shell which $(HOSTAS) || type -p $(HOSTAS) || echo as)
-HOSTCC:=$(shell which $(HOSTCC) || type -p $(HOSTCC) || echo gcc)
-HOSTCXX:=$(shell which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
-HOSTLD:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
-ifndef CFLAGS_FOR_BUILD
-CFLAGS_FOR_BUILD:="-g -O2"
-endif
-
 
 BASE_DIR:=$(shell pwd)
 
