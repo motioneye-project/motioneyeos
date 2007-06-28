@@ -652,3 +652,16 @@
  
  #if YYDEBUG
  	if (getenv("ZCONF_DEBUG"))
+Index: confdata.c
+===================================================================
+--- kconfig/confdata.c	(revision 18967)
++++ /Buildroot/confdata.c	(working copy)
+@@ -21,7 +21,7 @@ static void conf_warning(const char *fmt
+ static const char *conf_filename;
+ static int conf_lineno, conf_warnings, conf_unsaved;
+ 
+-const char conf_defname[] = "extra/Configs/defconfigs/$ARCH";
++const char conf_defname[] = ".defconfig";
+ 
+ static void conf_warning(const char *fmt, ...)
+ {

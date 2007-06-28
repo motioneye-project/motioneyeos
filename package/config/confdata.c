@@ -21,7 +21,7 @@ static void conf_warning(const char *fmt, ...)
 static const char *conf_filename;
 static int conf_lineno, conf_warnings, conf_unsaved;
 
-const char conf_defname[] = "extra/Configs/defconfigs/$ARCH";
+const char conf_defname[] = ".defconfig";
 
 static void conf_warning(const char *fmt, ...)
 {
