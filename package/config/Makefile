@@ -5,7 +5,7 @@ top_builddir=../../
 srctree := .
 
 include Makefile.kconfig
-
+HOSTCFLAGS+=-Dinline="" -include foo.h
 -include .depend
 .depend: $(wildcard *.h *.c)
 	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) -MM *.c > .depend 2>/dev/null || :

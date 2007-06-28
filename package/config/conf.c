@@ -542,7 +542,7 @@ int main(int ac, char **av)
 		exit(1);
 	}
 	conf_parse(name);
-	//zconfdump(stdout);
+	/*zconfdump(stdout);*/
 	switch (input_mode) {
 	case set_default:
 		if (!defconfig_file)

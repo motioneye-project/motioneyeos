@@ -7,6 +7,8 @@ To update:
 	mv Makefile Makefile.kconfig
 	patch -p1 < ../config/kconfig-to-buildroot.patch
 	cp ../config/README.buildroot2 .
+	cp ../config/foo.h .
+	cp ../config/Makefile .
 	cd ..
 	rm -rf config
 	mv config.new config

@@ -65,7 +65,7 @@ enum symbol_type {
 
 enum {
 	S_DEF_USER,		/* main user value */
-	S_DEF_AUTO,
+	S_DEF_AUTO
 };
 
 struct symbol {
@@ -139,7 +139,7 @@ struct menu {
 	struct property *prompt;
 	struct expr *dep;
 	unsigned int flags;
-	//char *help;
+	/*char *help; */
 	struct file *file;
 	int lineno;
 	void *data;
