@@ -1,0 +1,22 @@
+--- uClibc-0.9.29/libc/sysdeps/linux/arm/mmap.c	2007-03-08 19:00:42.000000000 +0100
++++ uClibc/libc/sysdeps/linux/arm/mmap.c	2007-05-16 12:53:23.000000000 +0200
+@@ -39,9 +39,17 @@
+ {
+   /* check if offset is page aligned */
+     if (offset & ((1 << MMAP2_PAGE_SHIFT) - 1))
++    {
++        __set_errno(EINVAL);
+         return MAP_FAILED;
+-  return (__ptr_t) _mmap (addr, len, prot, flags,
+-						  fd,(off_t) (offset >> MMAP2_PAGE_SHIFT));
++    }
++#ifdef __USE_FILE_OFFSET64
++    return (__ptr_t) _mmap (addr, len, prot, flags,
++                            fd, ((__u_quad_t) offset >> MMAP2_PAGE_SHIFT));
++#else
++    return (__ptr_t) _mmap (addr, len, prot, flags,
++                            fd, ((__u_long) offset >> MMAP2_PAGE_SHIFT));
++#endif
+ }
+ #elif defined (__NR_mmap)
+ # define __NR__mmap __NR_mmap
