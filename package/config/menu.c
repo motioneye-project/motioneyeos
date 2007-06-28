@@ -61,10 +61,11 @@ void menu_end_entry(void)
 {
 }
 
-void menu_add_menu(void)
+struct menu *menu_add_menu(void)
 {
-	current_menu = current_entry;
+	menu_end_entry();
 	last_entry_ptr = &current_entry->list;
+	return current_menu = current_entry;
 }
 
 void menu_end_menu(void)
@@ -113,7 +114,7 @@ void menu_set_type(int type)
 		sym->type = type;
 		return;
 	}
-	menu_warn(current_entry, "type of '%s' redefined from '%s' to '%s'\n",
+	menu_warn(current_entry, "type of '%s' redefined from '%s' to '%s'",
 	    sym->name ? sym->name : "<choice>",
 	    sym_type_name(sym->type), sym_type_name(type));
 }
@@ -123,22 +124,27 @@ struct property *menu_add_prop(enum prop_type type, char *prompt, struct expr *e
 	struct property *prop = prop_alloc(type, current_entry->sym);
 
 	prop->menu = current_entry;
-	prop->text = prompt;
 	prop->expr = expr;
 	prop->visible.expr = menu_check_dep(dep);
 
 	if (prompt) {
+		if (isspace(*prompt)) {
+			prop_warn(prop, "leading whitespace ignored");
+			while (isspace(*prompt))
+				prompt++;
+		}
 		if (current_entry->prompt)
-			menu_warn(current_entry, "prompt redefined\n");
+			prop_warn(prop, "prompt redefined");
 		current_entry->prompt = prop;
 	}
+	prop->text = prompt;
 
 	return prop;
 }
 
-void menu_add_prompt(enum prop_type type, char *prompt, struct expr *dep)
+struct property *menu_add_prompt(enum prop_type type, char *prompt, struct expr *dep)
 {
-	menu_add_prop(type, prompt, NULL, dep);
+	return menu_add_prop(type, prompt, NULL, dep);
 }
 
 void menu_add_expr(enum prop_type type, struct expr *expr, struct expr *dep)
@@ -149,6 +155,30 @@ void menu_add_expr(enum prop_type type, struct expr *expr, struct expr *dep)
 void menu_add_symbol(enum prop_type type, struct symbol *sym, struct expr *dep)
 {
 	menu_add_prop(type, NULL, expr_alloc_symbol(sym), dep);
+}
+
+void menu_add_option(int token, char *arg)
+{
+	struct property *prop;
+
+	switch (token) {
+	case T_OPT_MODULES:
+		prop = prop_alloc(P_DEFAULT, modules_sym);
+		prop->expr = expr_alloc_symbol(current_entry->sym);
+		break;
+	case T_OPT_DEFCONFIG_LIST:
+		if (!sym_defconfig_list)
+			sym_defconfig_list = current_entry->sym;
+		else if (sym_defconfig_list != current_entry->sym)
+			zconf_error("trying to redefine defconfig symbol");
+		break;
+	}
+}
+
+static int menu_range_valid_sym(struct symbol *sym, struct symbol *sym2)
+{
+	return sym2->type == S_INT || sym2->type == S_HEX ||
+	       (sym2->type == S_UNKNOWN && sym_string_valid(sym, sym2->name));
 }
 
 void sym_check_prop(struct symbol *sym)
@@ -185,8 +215,8 @@ void sym_check_prop(struct symbol *sym)
 			if (sym->type != S_INT && sym->type != S_HEX)
 				prop_warn(prop, "range is only allowed "
 				                "for int or hex symbols");
-			if (!sym_string_valid(sym, prop->expr->left.sym->name) ||
-			    !sym_string_valid(sym, prop->expr->right.sym->name))
+			if (!menu_range_valid_sym(sym, prop->expr->left.sym) ||
+			    !menu_range_valid_sym(sym, prop->expr->right.sym))
 				prop_warn(prop, "range is invalid");
 			break;
 		default:
@@ -318,11 +348,10 @@ void menu_finalize(struct menu *parent)
 
 	if (sym && !(sym->flags & SYMBOL_WARNED)) {
 		if (sym->type == S_UNKNOWN)
-			menu_warn(parent, "config symbol defined "
-			    "without type\n");
+			menu_warn(parent, "config symbol defined without type");
 
 		if (sym_is_choice(sym) && !parent->prompt)
-			menu_warn(parent, "choice must have a prompt\n");
+			menu_warn(parent, "choice must have a prompt");
 
 		/* Check properties connected to this symbol */
 		sym_check_prop(sym);
@@ -365,9 +394,9 @@ bool menu_is_visible(struct menu *menu)
 const char *menu_get_prompt(struct menu *menu)
 {
 	if (menu->prompt)
-		return menu->prompt->text;
+		return _(menu->prompt->text);
 	else if (menu->sym)
-		return menu->sym->name;
+		return _(menu->sym->name);
 	return NULL;
 }
 
