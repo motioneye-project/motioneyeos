@@ -27,15 +27,15 @@ $(FONTCONFIG_DIR)/.unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
 			$(FONTCONFIG_DIR)/$$dir/Makefile.in; \
 	done
 	$(CONFIG_UPDATE) $(FONTCONFIG_DIR)
-	touch $(FONTCONFIG_DIR)/.unpacked
+	touch $@
 
 $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
-	(cd $(FONTCONFIG_DIR); \
+	(cd $(FONTCONFIG_DIR); rm -rf config.cache ; \
+		$(AUTORECONF) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-	BUILD_CFLAGS="-O2 -I$(FREETYPE_HOST_DIR)/include/freetype2 -I$(FREETYPE_HOST_DIR)/include" \
-	ac_cv_func_mmap_fixed_mapped=yes \
-	./configure \
+		CFLAGS_FOR_BUILD="-I$(FREETYPE_HOST_DIR)/include/freetype2 -I$(FREETYPE_HOST_DIR)/include" \
+		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -44,41 +44,42 @@ $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-freetype-config="$(STAGING_DIR)/usr/bin/freetype-config" \
 		--disable-docs \
-	);
-	touch $(FONTCONFIG_DIR)/.configured
+	)
+	touch $@
 
 $(FONTCONFIG_DIR)/.compiled: $(FONTCONFIG_DIR)/.configured
 	$(MAKE) -C $(FONTCONFIG_DIR)
-	touch $(FONTCONFIG_DIR)/.compiled
+	touch $@
 
-$(STAGING_DIR)/lib/libfontconfig.so: $(FONTCONFIG_DIR)/.compiled
+$(STAGING_DIR)/usr/lib/libfontconfig.so: $(FONTCONFIG_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(FONTCONFIG_DIR) install
-	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libfontconfig.la
-	touch -c $(STAGING_DIR)/lib/libfontconfig.so
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libfontconfig.la
+	touch -c $@
 
-$(TARGET_DIR)/lib/libfontconfig.so: $(STAGING_DIR)/lib/libfontconfig.so
-	cp -dpf $(STAGING_DIR)/lib/libfontconfig.so* $(TARGET_DIR)/lib/
+$(TARGET_DIR)/usr/lib/libfontconfig.so: $(STAGING_DIR)/usr/lib/libfontconfig.so
+	cp -dpf $(STAGING_DIR)/usr/lib/libfontconfig.so* $(TARGET_DIR)/usr/lib/
 	mkdir -p $(TARGET_DIR)/etc/fonts
 	cp $(STAGING_DIR)/etc/fonts/fonts.conf $(TARGET_DIR)/etc/fonts/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libfontconfig.so
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libfontconfig.so
 	mkdir -p $(TARGET_DIR)/var/cache/fontconfig
 	mkdir -p $(TARGET_DIR)/usr/bin
 	cp -a $(STAGING_DIR)/usr/bin/fc-cache $(TARGET_DIR)/usr/bin/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/fc-cache
 	cp -a $(STAGING_DIR)/usr/bin/fc-list $(TARGET_DIR)/usr/bin/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/fc-list
+	touch -c $@
 
-fontconfig: uclibc freetype host-freetype expat $(TARGET_DIR)/lib/libfontconfig.so
+fontconfig: uclibc freetype host-freetype expat $(TARGET_DIR)/usr/lib/libfontconfig.so
 
 fontconfig-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FONTCONFIG_DIR) uninstall
