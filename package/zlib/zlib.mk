@@ -6,7 +6,7 @@
 ZLIB_VER:=1.2.3
 ZLIB_SOURCE:=zlib-$(ZLIB_VER).tar.bz2
 ZLIB_CAT:=$(BZCAT)
-ZLIB_SITE:=http://www.zlib.net/
+ZLIB_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
 ZLIB_DIR:=$(BUILD_DIR)/zlib-$(ZLIB_VER)
 ZLIB_CFLAGS:=$(TARGET_CFLAGS) -fPIC
 ifeq ($(BR2_LARGEFILE),y)
@@ -33,7 +33,7 @@ $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.patched
 		--exec-prefix=$(STAGING_DIR)/usr/bin \
 		--libdir=$(STAGING_DIR)/usr/lib \
 		--includedir=$(STAGING_DIR)/usr/include \
-	);
+	)
 	touch $@
 
 $(ZLIB_DIR)/libz.so.$(ZLIB_VER): $(ZLIB_DIR)/.configured
