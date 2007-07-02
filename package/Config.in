@@ -175,9 +175,10 @@ source "package/thttpd/Config.in"
 endif
 source "package/tn5250/Config.in"
 source "package/ttcp/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
-source "package/udhcp/Config.in"
-endif
+#if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+# ATTENTION! This was merged into busybox! 
+#source "package/udhcp/Config.in"
+#endif
 source "package/vtun/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/wget/Config.in"
