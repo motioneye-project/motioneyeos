@@ -177,15 +177,6 @@
  				break;
  			}
  		}
-@@ -655,6 +649,8 @@ int conf_write_autoconf(void)
- 	time_t now;
- 	int i, l;
- 
-+	return 0;
-+
- 	sym_clear_all_valid();
- 
- 	file_write_dep("include/config/auto.conf.cmd");
 @@ -672,22 +668,19 @@ int conf_write_autoconf(void)
  		return 1;
  	}
@@ -665,3 +656,14 @@ Index: confdata.c
  
  static void conf_warning(const char *fmt, ...)
  {
+--- kconfig/config/confdata.c	2007-07-02 16:07:19.000000000 +0200
++++ Buildroot/config/confdata.c	2007-07-02 16:05:21.000000000 +0200
+@@ -651,7 +651,7 @@ int conf_write_autoconf(void)
+ 
+ 	sym_clear_all_valid();
+ 
+-	file_write_dep("include/config/auto.conf.cmd");
++	file_write_dep(".config.cmd");
+ 
+ 	if (conf_split_config())
+ 		return 1;

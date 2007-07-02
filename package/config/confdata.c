@@ -649,11 +649,9 @@ int conf_write_autoconf(void)
 	time_t now;
 	int i, l;
 
-	return 0;
-
 	sym_clear_all_valid();
 
-	file_write_dep("include/config/auto.conf.cmd");
+	file_write_dep(".config.cmd");
 
 	if (conf_split_config())
 		return 1;
