@@ -46,9 +46,14 @@ choice
 
 	config BR2_BUSYBOX_VERSION_1_5_1
 		bool "BusyBox 1.5.1"
+		depends on BR2_DEPRECATED
 
 	config BR2_BUSYBOX_VERSION_1_6_0
 		bool "BusyBox 1.6.0"
+		depends on BR2_DEPRECATED
+
+	config BR2_BUSYBOX_VERSION_1_6_1
+		bool "BusyBox 1.6.1"
 
 	config BR2_PACKAGE_BUSYBOX_SNAPSHOT
 		bool "daily snapshot"
