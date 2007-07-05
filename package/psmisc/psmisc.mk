@@ -27,6 +27,7 @@ $(PSMISC_DIR)/.configured: $(PSMISC_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
 		$(DISABLE_NLS) \
+		$(DISABLE_IPV6) \
 	);
 	touch $(PSMISC_DIR)/.configured
 
