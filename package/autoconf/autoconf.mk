@@ -111,7 +111,7 @@ $(AUTOCONF_HOST_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_HOST_DIR)/.configured
 $(AUTOCONF): $(AUTOCONF_HOST_DIR)/bin/$(AUTOCONF_BINARY)
 	$(MAKE) -C $(AUTOCONF_HOST_DIR) install;
 
-host-autoconf: m4-host host-libtool $(AUTOCONF)
+host-autoconf: host-m4 host-libtool $(AUTOCONF)
 
 host-autoconf-clean:
 	$(MAKE) CC=$(HOST_CC) -C $(AUTOCONF_HOST_DIR) uninstall
