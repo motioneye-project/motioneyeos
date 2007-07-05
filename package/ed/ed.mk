@@ -3,28 +3,19 @@
 # ed
 #
 #############################################################
-ED_SOURCE:=ed_0.2.orig.tar.gz
-ED_PATCH:=ed_0.2-20.diff.gz
-ED_SITE:=http://ftp.debian.org/debian/pool/main/e/ed
-ED_CAT:=$(ZCAT)
-ED_DIR:=$(BUILD_DIR)/ed-0.2
+ED_VERSION:=0.6
+ED_SOURCE:=ed-$(ED_VERSION).tar.bz2
+ED_SITE:=http://ftp.gnu.org/gnu/ed/
+ED_CAT:=$(BZCAT)
+ED_DIR:=$(BUILD_DIR)/ed-$(ED_VERSION)
 ED_BINARY:=ed
 ED_TARGET_BINARY:=bin/ed
 
 $(DL_DIR)/$(ED_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(ED_SITE)/$(ED_SOURCE)
 
-$(DL_DIR)/$(ED_PATCH):
-	 $(WGET) -P $(DL_DIR) $(ED_SITE)/$(ED_PATCH)
-
-ed-source: $(DL_DIR)/$(ED_SOURCE) $(DL_DIR)/$(ED_PATCH)
-
 $(ED_DIR)/.unpacked: $(DL_DIR)/$(ED_SOURCE) $(DL_DIR)/$(ED_PATCH)
 	$(ED_CAT) $(DL_DIR)/$(ED_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(ED_DIR) $(DL_DIR) $(ED_PATCH)
-	if [ -d $(ED_DIR)/debian/patches ]; then \
-		toolchain/patch-kernel.sh $(ED_DIR) $(ED_DIR)/debian/patches \*.patch ; \
-	fi
 	toolchain/patch-kernel.sh $(ED_DIR) package/ed/ ed-\*.patch
 	touch $@
 
