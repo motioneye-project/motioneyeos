@@ -1,0 +1,26 @@
+diff -u procps-3.2.5/Makefile procps-3.2.5-patched/Makefile
+--- procps-3.2.5/Makefile	2005-01-25 22:55:26.000000000 -0600
++++ procps-3.2.5-patched/Makefile	2007-07-05 23:09:24.251423681 -0500
+@@ -70,9 +70,7 @@
+ CURSES := -lncurses
+ 
+ # Preprocessor flags.
+-PKG_CPPFLAGS := -D_GNU_SOURCE -I proc
+-CPPFLAGS     := -I/usr/include/ncurses
+-ALL_CPPFLAGS := $(PKG_CPPFLAGS) $(CPPFLAGS)
++ALL_CPPFLAGS := -D_GNU_SOURCE -I proc
+ 
+ # Left out -Wconversion due to noise in glibc headers.
+ # Left out -Wunreachable-code and -Wdisabled-optimization
+@@ -91,11 +89,9 @@
+   -Wstrict-prototypes -Wmissing-prototypes
+ # Note that some stuff below is conditional on CFLAGS containing
+ # an option that starts with "-g". (-g, -g2, -g3, -ggdb, etc.)
+-CFLAGS       := -O2 -s
+ ALL_CFLAGS   := $(PKG_CFLAGS) $(CFLAGS)
+ 
+ PKG_LDFLAGS  := -Wl,-warn-common
+-LDFLAGS      :=
+ ALL_LDFLAGS  := $(PKG_LDFLAGS) $(LDFLAGS)
+ 
+ ############ Add some extra flags if gcc allows

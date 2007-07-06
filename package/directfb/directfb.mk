@@ -23,8 +23,6 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 	(cd $(DIRECTFB_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-	CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include" \
-	LDFLAGS="$(TARGET_LDFLAGS)" \
 	ac_cv_header_linux_wm97xx_h=no \
 	ac_cv_header_linux_sisfb_h=no \
 	ac_cv_header_asm_page_h=no \

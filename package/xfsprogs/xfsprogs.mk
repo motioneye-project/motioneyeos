@@ -35,8 +35,8 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 	(cd $(XFSPROGS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		CPPFLAGS=-I$(E2FSPROGS_DIR)/lib \
-		LDFLAGS="$(TARGET_LDFLAGS) -L$(E2FSPROGS_DIR)/lib" \
+		CPPFLAGS="-I$(E2FSPROGS_DIR)/lib" \
+		LDFLAGS="-L$(E2FSPROGS_DIR)/lib" \
 		LIBTOOL=$(LIBTOOL_DIR)/libtool \
 		INSTALL_USER=$(shell whoami) \
 		INSTALL_GROUP=$(shell groups | cut -d" " -f1) \
@@ -52,8 +52,8 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 	touch $(XFSPROGS_DIR)/.configured
 
 $(XFSPROGS_DIR)/$(XFSPROGS_BINARY): $(XFSPROGS_DIR)/.configured
-	$(MAKE1) PATH=$(TARGET_PATH) CPPFLAGS=-I$(E2FSPROGS_DIR)/lib \
-		LDFLAGS="$(TARGET_LDFLAGS) -L$(E2FSPROGS_DIR)/lib" -C $(XFSPROGS_DIR)
+	$(MAKE1) PATH=$(TARGET_PATH) CPPFLAGS="-I$(E2FSPROGS_DIR)/lib" \
+		LDFLAGS="-L$(E2FSPROGS_DIR)/lib" -C $(XFSPROGS_DIR)
 ifeq ($(XFSPROGS_CONFIG_SHARED),--enable-shared)
 	( \
 		cd $(XFSPROGS_DIR) ; \
