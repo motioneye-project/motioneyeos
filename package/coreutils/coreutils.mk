@@ -3,7 +3,7 @@
 # coreutils
 #
 #############################################################
-COREUTILS_VER:=5.96
+COREUTILS_VER:=6.9
 COREUTILS_SOURCE:=coreutils-$(COREUTILS_VER).tar.bz2
 #COREUTILS_SITE:=ftp://alpha.gnu.org/gnu/coreutils/
 COREUTILS_SITE:=http://ftp.gnu.org/pub/gnu/coreutils
@@ -102,13 +102,6 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		--disable-rpath \
 		--disable-dependency-tracking \
 	);
-	#Fix up the max number of open files per process, which apparently 
-	# is not set when cross compiling
-	$(SED) 's,.*UTILS_OPEN_MAX.*,#define UTILS_OPEN_MAX 1019,g' \
-		$(COREUTILS_DIR)/config.h
-	# This is undefined when crosscompiling...
-	$(SED) 's,.*HAVE_PROC_UPTIME.*,#define HAVE_PROC_UPTIME 1,g' \
-		$(COREUTILS_DIR)/config.h
 	touch $@
 
 $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured
