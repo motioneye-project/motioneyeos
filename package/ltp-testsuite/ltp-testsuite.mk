@@ -11,19 +11,21 @@ LTP_TESTSUITE_ROOT:=$(TARGET_DIR)/root
 LTP_TESTSUITE_DIR:=$(LTP_TESTSUITE_ROOT)/ltp-full-$(LTP_TESTSUITE_VERSION)
 
 #
-# We enable Open POSIX Testsuite if Native POSIX Threads Library (NPTL)
-# is selected. Otherwise, we filter out the patch for it.
+# Enable patches based upon different toolchain configuration options.
 #
-LTP_PATCHES:=$(subst package/ltp-testsuite/,,				 \
-	     $(wildcard package/ltp-testsuite/*.patch))
+LTP_PATCHES:=ltp-testsuite-generate-needs-bash.patch	\
+	     ltp-testsuite-sh-is-not-C-code.patch	\
+	     ltp-testsuite.patch
 
-ifneq ($(BR2_PTHREADS_NATIVE),y)
-  ifneq ($(BR2_EXT_PTHREADS_NATIVE),y)
-LTP_PATCHES:=$(filter-out ltp-testsuite-enable-openposix-for-nptl.patch, \
-	     $(LTP_PATCHES))
-  endif
+ifeq ($(BR2_PTHREADS_NATIVE),y)
+LTP_PATCHES+=ltp-testsuite-enable-openposix-for-nptl.patch
 endif
-
+ifeq ($(BR2_EXT_PTHREADS_NATIVE),y)
+LTP_PATCHES+=ltp-testsuite-enable-openposix-for-nptl.patch
+endif
+ifneq ($(BR2_INET_IPV6),y)
+LTP_PATCHES+=ltp-testsuite-disable-ipv6-tests.patch
+endif
 
 $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LTP_TESTSUITE_SITE)/$(LTP_TESTSUITE_SOURCE)
@@ -40,10 +42,6 @@ $(LTP_TESTSUITE_DIR)/.compiled: $(LTP_TESTSUITE_DIR)/Makefile
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) \
 		-C $(LTP_TESTSUITE_DIR) all
 	touch $@
-
-sjh: $(LTP_TESTSUITE_DIR)/Makefile
-	$(MAKE1) $(TARGET_CONFIGURE_OPTS) CROSS_COMPILER=$(TARGET_CROSS) \
-		-C $(LTP_TESTSUITE_DIR) all
 
 $(LTP_TESTSUITE_DIR)/.installed: $(LTP_TESTSUITE_DIR)/.compiled
 	# Use fakeroot to pretend to do 'make install' as root

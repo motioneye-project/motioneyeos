@@ -1,0 +1,123 @@
+diff -ur ltp-full-20070228/testcases/network/sctp/func_tests/Makefile ltp-full-20070228-patched/testcases/network/sctp/func_tests/Makefile
+--- ltp-full-20070228/testcases/network/sctp/func_tests/Makefile	2007-02-28 22:40:32.000000000 -0600
++++ ltp-full-20070228-patched/testcases/network/sctp/func_tests/Makefile	2007-07-05 22:40:08.524219814 -0500
+@@ -26,8 +26,6 @@
+ 
+ LOADLIBES += $(LIBS) -lltp -lsctputil -lsctp -lpthread
+ 
+-V6FLAGS = -DTEST_V6=1 $(CFLAGS)
+-
+ SRCS = $(wildcard *.c)
+ 
+ V4_TARGETS = test_1_to_1_accept_close test_1_to_1_addrs test_1_to_1_connect \
+@@ -42,11 +40,7 @@
+              test_sctp_sendrecvmsg test_sockopt test_tcp_style \
+              test_timetolive test_1_to_1_connectx test_connectx
+ 
+-V6_TARGETS = test_basic_v6 test_fragments_v6 test_getname_v6 \
+-             test_inaddr_any_v6 test_peeloff_v6 test_sctp_sendrecvmsg_v6 \
+-             test_sockopt_v6 test_tcp_style_v6 test_timetolive_v6
+-
+-all: $(V4_TARGETS) $(V6_TARGETS)
++all: $(V4_TARGETS)
+ 
+ test_1_to_1_accept_close: test_1_to_1_accept_close.c
+ test_1_to_1_addrs: test_1_to_1_addrs.c
+@@ -68,47 +62,19 @@
+ test_assoc_shutdown: test_assoc_shutdown.c
+ test_autoclose: test_autoclose.c
+ test_basic: test_basic.c
+-test_basic_v6: test_basic_v6.o
+ test_connect: test_connect.c
+ test_fragments: test_fragments.c
+-test_fragments_v6: test_fragments_v6.o
+ test_getname: test_getname.c
+-test_getname_v6: test_getname_v6.o
+ test_inaddr_any: test_inaddr_any.c
+-test_inaddr_any_v6: test_inaddr_any_v6.o
+ test_peeloff: test_peeloff.c
+-test_peeloff_v6: test_peeloff_v6.o
+ test_recvmsg: test_recvmsg.c
+ test_sctp_sendrecvmsg: test_sctp_sendrecvmsg.c
+-test_sctp_sendrecvmsg_v6: test_sctp_sendrecvmsg_v6.o
+ test_sockopt: test_sockopt.c
+-test_sockopt_v6: test_sockopt_v6.o
+ test_tcp_style: test_tcp_style.c
+-test_tcp_style_v6: test_tcp_style_v6.o
+ test_timetolive: test_timetolive.c
+-test_timetolive_v6: test_timetolive_v6.o
+ test_1_to_1_connectx: test_1_to_1_connectx.c
+ test_connectx: test_connectx.c
+ 
+-test_basic_v6.o: test_basic.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_fragments_v6.o: test_fragments.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_getname_v6.o: test_getname.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_inaddr_any_v6.o: test_inaddr_any.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_peeloff_v6.o: test_peeloff.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_sctp_sendrecvmsg_v6.o: test_sctp_sendrecvmsg.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_sockopt_v6.o: test_sockopt.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_tcp_style_v6.o: test_tcp_style.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-test_timetolive_v6.o: test_timetolive.c
+-	$(CC) -c $(V6FLAGS) -o $@ $^
+-
+ v4test: ${V4_TARGETS}
+ 	@for a in $^;                           \
+ 	do                                      \
+@@ -123,26 +89,9 @@
+ 		fi;                             \
+ 	done
+ 
+-v6test: ${V6_TARGETS}
+-	@for a in $^;                           \
+-	do                                      \
+-		echo "./$$a";                   \
+-		if ./$$a;                       \
+-		then                            \
+-			echo "$$a passes";      \
+-			echo "";                \
+-		else                            \
+-			echo "$$a fails";       \
+-			exit 1;                 \
+-		fi;                             \
+-	done
+-
+ install:
+ 	ln -f $(V4_TARGETS) ../../../bin
+-	ln -f $(V6_TARGETS) ../../../bin
+ 
+ clean:
+ 	rm -f $(V4_TARGETS)
+-	rm -f $(V6_TARGETS)
+-	rm -f ../../../bin/$(V6_TARGETS)
+ 	rm -f *.o
+diff -ur ltp-full-20070228/testcases/network/stress/ns-tools/Makefile ltp-full-20070228-patched/testcases/network/stress/ns-tools/Makefile
+--- ltp-full-20070228/testcases/network/stress/ns-tools/Makefile	2007-02-28 22:40:31.000000000 -0600
++++ ltp-full-20070228-patched/testcases/network/stress/ns-tools/Makefile	2007-07-05 22:39:27.593059603 -0500
+@@ -10,9 +10,8 @@
+ 	ns-echoclient
+ 
+ BINS=ns-tcpserver ns-tcpclient ns-udpserver ns-udpclient \
+-     ns-icmpv4_sender ns-icmpv6_sender \
++     ns-icmpv4_sender \
+      ns-udpsender \
+-     ns-icmp_redirector \
+      ns-mcast_receiver ns-igmp_querier \
+      ns-mcast_join 
+ 
+diff -ur ltp-full-20070228/tools/Makefile ltp-full-20070228-patched/tools/Makefile
+--- ltp-full-20070228/tools/Makefile	2007-02-28 22:40:41.000000000 -0600
++++ ltp-full-20070228-patched/tools/Makefile	2007-07-05 22:39:27.593059603 -0500
+@@ -1,4 +1,4 @@
+-SUBDIRS = apicmds genload netpipe-2.4 netpipe-2.4-ipv6 #top-LTP
++SUBDIRS = apicmds genload netpipe-2.4 #top-LTP
+ 
+ CFLAGS+= -Wall -I../include
+ LOADLIBES+= -L../lib -lltp
