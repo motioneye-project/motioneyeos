@@ -8,7 +8,7 @@ config BR2_PACKAGE_AVAHI
 	  http://www.avahi.org/
 
 config BR2_PACKAGE_AVAHI_AUTOIPD
-	bool "  IPv4LL network address configuration daemon"
+	bool "IPv4LL network address configuration daemon"
 	default y
 	depends on BR2_PACKAGE_AVAHI
 	help
@@ -20,7 +20,7 @@ config BR2_PACKAGE_AVAHI_AUTOIPD
 	  lack a DHCP server.
 
 config BR2_PACKAGE_AVAHI_DAEMON
-	bool "  mDNS/DNS-SD daemon"
+	bool "mDNS/DNS-SD daemon"
 	default n
 	depends on BR2_PACKAGE_AVAHI
 	select BR2_PACKAGE_EXPAT

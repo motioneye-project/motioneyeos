@@ -7,7 +7,7 @@ config BR2_PACKAGE_DROPBEAR
 	  http://matt.ucc.asn.au/dropbear/dropbear.html
 
 config BR2_PACKAGE_DROPBEAR_URANDOM
-	bool "  Use /dev/urandom (low entropy systems only)?"
+	bool "Use /dev/urandom (low entropy systems only)?"
 	default n
 	depends on BR2_PACKAGE_DROPBEAR
 	help

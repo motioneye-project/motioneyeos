@@ -13,7 +13,7 @@ config BR2_TOOLCHAIN_BUILDROOT
 
 config BR2_TOOLCHAIN_EXTERNAL
 	bool
-	prompt " External toolchain"
+	prompt "External toolchain"
 endchoice
 
 source "toolchain/Config.in.2"
