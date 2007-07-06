@@ -49,7 +49,7 @@ ifndef KBUILD_VERBOSE
 endif
 
 ifeq ($(KBUILD_VERBOSE),1)
-  quiet =
+  quiet=
   Q =
 else
   quiet=quiet_
