@@ -247,17 +247,13 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 		mv "$(STAGING_DIR)/lib64/"* "$(STAGING_DIR)/lib/" ; \
 		rmdir "$(STAGING_DIR)/lib64" ; \
 	fi
+	# Move gcc bug reporting script out of path of real executables
+	mv -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gccbug \
+		$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-gccbug
 	# Strip the host binaries
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
-	if [ -e $(STAGING_DIR)/usr/bin/*-gccbug ] ; then \
-		mkdir -p "$(STAGING_DIR)/tmp" ; \
-		mv $(STAGING_DIR)/usr/bin/*-gccbug  $(STAGING_DIR)/tmp ; \
-		-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/* ; \
-		mv $(STAGING_DIR)/tmp/*-gccbug $(STAGING_DIR)/usr/bin ; \
-		rmdir "$(STAGING_DIR)/tmp" ; \
-	else \
-		-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/* ; \
-	fi
+	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-*
+	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/faked
 endif
 	# Make sure we have 'cc'.
 	if [ ! -e $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ] ; then \
