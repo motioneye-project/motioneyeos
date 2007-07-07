@@ -3,7 +3,7 @@
 # findutils
 #
 #############################################################
-FINDUTILS_VER:=4.2.27
+FINDUTILS_VER:=4.2.31
 FINDUTILS_SOURCE:=findutils-$(FINDUTILS_VER).tar.gz
 #FINDUTILS_SITE:=ftp://alpha.gnu.org/gnu/findutils
 FINDUTILS_SITE:=http://ftp.gnu.org/pub/gnu/findutils/
