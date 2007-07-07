@@ -94,8 +94,7 @@ $(TARGET_DIR)/$(FILE_TARGET_BINARY): $(FILE_DIR2)/$(FILE_BINARY)
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	mv $(TARGET_DIR)/lib/libmagic.a $(STAGING_DIR)/lib
 	rm -f $(TARGET_DIR)/lib/libmagic.la
-	mkdir -p $(STAGING_DIR)/include
-	mv $(TARGET_DIR)/usr/include/magic.h $(STAGING_DIR)/include
+	mv $(TARGET_DIR)/usr/include/magic.h $(STAGING_DIR)/usr/include
 
 file: zlib uclibc $(TARGET_DIR)/$(FILE_TARGET_BINARY)
 
