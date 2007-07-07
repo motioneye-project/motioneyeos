@@ -15,6 +15,10 @@ M4_TARGET_BINARY:=usr/bin/m4
 ifeq ($(UCLIBC_HAS_REGEX),y)
 gl_cv_func_re_compile_pattern_working=gl_cv_func_re_compile_pattern_working=yes
 endif
+ifneq ($(UCLIBC_HAS_WCHAR),y)
+gt_cv_c_wchar_t=gt_cv_c_wchar_t=no
+gl_cv_absolute_wchar_h=gl_cv_absolute_wchar_h=__fpending.h
+endif
 
 $(DL_DIR)/$(M4_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(M4_SITE)/$(M4_SOURCE)
@@ -33,6 +37,8 @@ $(M4_DIR)/.configured: $(M4_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		gl_cv_func_gettimeofday_clobber=no \
 		$(gl_cv_func_re_compile_pattern_working) \
+		$(gt_cv_c_wchar_t) \
+		$(gl_cv_absolute_wchar_h) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
