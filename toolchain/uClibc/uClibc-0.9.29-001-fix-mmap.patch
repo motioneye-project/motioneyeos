@@ -1,7 +1,5 @@
-Index: test/mmap/mmap2.c
-===================================================================
---- test/mmap/mmap2.c	(revision 0)
-+++ test/mmap/mmap2.c	(revision 18616)
+--- uClibc-0.9.29.oorig/test/mmap/mmap2.c	(revision 0)
++++ uClibc-0.9.29/test/mmap/mmap2.c	(revision 18616)
 @@ -0,0 +1,41 @@
 +/* When trying to map /dev/mem with offset 0xFFFFF000 on the ARM platform, mmap
 + * returns -EOVERFLOW.
@@ -44,10 +42,8 @@ Index: test/mmap/mmap2.c
 +    close(fd);
 +    return 0;
 +}
-Index: libc/sysdeps/linux/arm/mmap.c
-===================================================================
---- libc/sysdeps/linux/arm/mmap.c	(revision 18615)
-+++ libc/sysdeps/linux/arm/mmap.c	(revision 18616)
+--- uClibc-0.9.29.oorig/libc/sysdeps/linux/arm/mmap.c	(revision 18615)
++++ uClibc-0.9.29/libc/sysdeps/linux/arm/mmap.c	(revision 18616)
 @@ -27,7 +27,6 @@ __ptr_t mmap(__ptr_t addr, size_t len, i
  
  #elif defined  (__NR_mmap2)
@@ -75,10 +71,8 @@ Index: libc/sysdeps/linux/arm/mmap.c
  }
  #elif defined (__NR_mmap)
  # define __NR__mmap __NR_mmap
-Index: libc/sysdeps/linux/common/mmap64.c
-===================================================================
---- libc/sysdeps/linux/common/mmap64.c	(revision 18615)
-+++ libc/sysdeps/linux/common/mmap64.c	(revision 18616)
+--- uClibc-0.9.29.oorig/libc/sysdeps/linux/common/mmap64.c	(revision 18615)
++++ uClibc-0.9.29/libc/sysdeps/linux/common/mmap64.c	(revision 18616)
 @@ -58,8 +58,13 @@ __ptr_t mmap64(__ptr_t addr, size_t len,
  		__set_errno(EINVAL);
  		return MAP_FAILED;
