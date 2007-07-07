@@ -249,7 +249,15 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	fi
 	# Strip the host binaries
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
-	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/*
+	if [ -e $(STAGING_DIR)/usr/bin/*-gccbug ] ; then \
+		mkdir -p "$(STAGING_DIR)/tmp" ; \
+		mv $(STAGING_DIR)/usr/bin/*-gccbug  $(STAGING_DIR)/tmp ; \
+		-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/* ; \
+		mv $(STAGING_DIR)/tmp/*-gccbug $(STAGING_DIR)/usr/bin ; \
+		rmdir "$(STAGING_DIR)/tmp" ; \
+	else \
+		-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/* ; \
+	fi
 endif
 	# Make sure we have 'cc'.
 	if [ ! -e $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ] ; then \
