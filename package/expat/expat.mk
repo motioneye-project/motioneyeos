@@ -19,7 +19,8 @@ $(DL_DIR)/$(EXPAT_SOURCE):
 expat-source: $(DL_DIR)/$(EXPAT_SOURCE)
 
 $(EXPAT_DIR)/.unpacked: $(DL_DIR)/$(EXPAT_SOURCE)
-	$(EXPAT_CAT) $(DL_DIR)/$(EXPAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(EXPAT_CAT) $(DL_DIR)/$(EXPAT_SOURCE) | \
+		tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(EXPAT_DIR)
 	touch $@
 
@@ -40,7 +41,7 @@ $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
@@ -53,7 +54,8 @@ $(EXPAT_DIR)/$(EXPAT_BINARY): $(EXPAT_DIR)/.configured
 
 $(STAGING_DIR)/$(EXPAT_TARGET_BINARY): $(EXPAT_DIR)/$(EXPAT_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(EXPAT_DIR) install
-	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libexpat.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
+		$(STAGING_DIR)/usr/lib/libexpat.la
 	touch -c $@
 
 $(TARGET_DIR)/$(EXPAT_TARGET_BINARY): $(STAGING_DIR)/$(EXPAT_TARGET_BINARY)
@@ -66,9 +68,13 @@ expat: uclibc pkgconfig $(TARGET_DIR)/$(EXPAT_TARGET_BINARY)
 
 expat-clean:
 	rm -f $(EXPAT_DIR)/.configured
-	rm -f $(STAGING_DIR)/usr/lib/libexpat.* $(TARGET_DIR)/usr/lib/libexpat.*
+	rm -f $(STAGING_DIR)/usr/lib/libexpat.* \
+		$(TARGET_DIR)/usr/lib/libexpat.*
 	#rm -f $(STAGING_DIR)/usr/bin/xmlwf  $(TARGET_DIR)/usr/bin/xmlwf
 	-$(MAKE) -C $(EXPAT_DIR) clean
+
+expat-dirclean:
+	rm -rf $(EXPAT_DIR)
 
 #############################################################
 #
