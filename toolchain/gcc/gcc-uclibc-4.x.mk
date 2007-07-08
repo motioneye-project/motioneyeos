@@ -48,7 +48,13 @@ endif
 #
 #############################################################
 
+GCC_TARGET_PREREQ =
+GCC_STAGING_PREREQ= $(STAGING_DIR)/usr/lib/libc.a
+
 GCC_TARGET_LANGUAGES:=c
+
+GCC_TARGET_PREREQ += $(wildcard $(BASE_DIR)/include/config/br2/install/libstdcpp* $(BASE_DIR)/include/config/br2/install/libgcj* $(BASE_DIR)/include/config/br2/install/objc* $(BASE_DIR)/include/config/br2/install/fortran*)
+GCC_STAGING_PREREQ+= $(wildcard $(BASE_DIR)/include/config/br2/install/libstdcpp* $(BASE_DIR)/include/config/br2/install/libgcj* $(BASE_DIR)/include/config/br2/install/objc* $(BASE_DIR)/include/config/br2/install/fortran*)
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),c++
@@ -61,9 +67,6 @@ endif
 ifeq ($(BR2_INSTALL_OBJC),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),objc
 endif
-
-GCC_TARGET_PREREQ =
-GCC_STAGING_PREREQ= $(STAGING_DIR)/usr/lib/libc.a
 
 ifndef GCC_NO_MPFR
 GCC_WITH_HOST_GMP=--with-gmp=$(GMP_HOST_DIR)
