@@ -53,8 +53,9 @@ GCC_STAGING_PREREQ= $(STAGING_DIR)/usr/lib/libc.a
 
 GCC_TARGET_LANGUAGES:=c
 
-GCC_TARGET_PREREQ += $(wildcard $(BASE_DIR)/include/config/br2/install/libstdcpp* $(BASE_DIR)/include/config/br2/install/libgcj* $(BASE_DIR)/include/config/br2/install/objc* $(BASE_DIR)/include/config/br2/install/fortran*)
-GCC_STAGING_PREREQ+= $(wildcard $(BASE_DIR)/include/config/br2/install/libstdcpp* $(BASE_DIR)/include/config/br2/install/libgcj* $(BASE_DIR)/include/config/br2/install/objc* $(BASE_DIR)/include/config/br2/install/fortran*)
+GCC_COMMON_PREREQ= $(wildcard $(BASE_DIR)/include/config/br2/install/libstdcpp* $(BASE_DIR)/include/config/br2/install/libgcj* $(BASE_DIR)/include/config/br2/install/objc* $(BASE_DIR)/include/config/br2/install/fortran* $(BASE_DIR)/include/config/br2/prefer/ima* $(BASE_DIR)/include/config/br2/toolchain/sysroot* $(BASE_DIR)/include/config/br2/use/sjlj/exceptions* $(BASE_DIR)/include/config/br2/gcc/shared/libgcc*)
+GCC_TARGET_PREREQ += $(GCC_COMMON_PREREQ) $(wildcard $(BASE_DIR)/include/config/br2/extra/target/gcc/config/options*)
+GCC_STAGING_PREREQ+= $(GCC_COMMON_PREREQ) $(wildcard $(BASE_DIR)/include/config/br2/extra/gcc/config/options*)
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),c++
