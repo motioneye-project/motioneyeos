@@ -84,7 +84,7 @@ HOSTCC:=$(shell $(CONFIG_SHELL) which $(HOSTCC) || type -p $(HOSTCC) || echo gcc
 HOSTCXX:=$(shell $(CONFIG_SHELL) which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
 HOSTLD:=$(shell $(CONFIG_SHELL) which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
 ifndef CFLAGS_FOR_BUILD
-CFLAGS_FOR_BUILD:="-g -O2"
+CFLAGS_FOR_BUILD:=-g -O2
 endif
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
 
@@ -264,40 +264,61 @@ all: menuconfig
 # ---------------------------------------------------------------------------
 
 $(CONFIG)/conf:
-	$(MAKE) CC="$(HOSTCC)" CFLAGS=$(CFLAGS_FOR_BUILD) MAKECMDGOALS="$(MAKECMDGOALS)" \
+	$(MAKE) CC="$(HOSTCC)" HOSTCFLAGS="$(CFLAGS_FOR_BUILD)" MAKECMDGOALS="$(MAKECMDGOALS)" \
 		-C $(CONFIG) conf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
 $(CONFIG)/mconf:
-	$(MAKE) CC="$(HOSTCC)" CFLAGS=$(CFLAGS_FOR_BUILD) MAKECMDGOALS="$(MAKECMDGOALS)" \
+	$(MAKE) CC="$(HOSTCC)" HOSTCFLAGS="$(CFLAGS_FOR_BUILD)" MAKECMDGOALS="$(MAKECMDGOALS)" \
 		-C $(CONFIG) conf mconf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
 
 menuconfig: $(CONFIG)/mconf
-	@$(CONFIG)/mconf $(CONFIG_CONFIG_IN)
+	@-mkdir -p include/config
+	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
+		KCONFIG_AUTOHEADER=include/autoconf.h \
+		$(CONFIG)/mconf $(CONFIG_CONFIG_IN)
 
 config: $(CONFIG)/conf
-	@$(CONFIG)/conf $(CONFIG_CONFIG_IN)
+	@-mkdir -p include/config
+	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
+		KCONFIG_AUTOHEADER=include/autoconf.h \
+		$(CONFIG)/conf $(CONFIG_CONFIG_IN)
 
 oldconfig: $(CONFIG)/conf
-	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+	@-mkdir -p include/config
+	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
+		KCONFIG_AUTOHEADER=include/autoconf.h \
+		$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
 
 randconfig: $(CONFIG)/conf
-	@$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
+	@-mkdir -p include/config
+	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
+		KCONFIG_AUTOHEADER=include/autoconf.h \
+		$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
 
 allyesconfig: $(CONFIG)/conf
-	cp $(CONFIG_DEFCONFIG) .config
-	@$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+	cat $(CONFIG_DEFCONFIG) > .config
+	@-mkdir -p include/config
+	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
+		KCONFIG_AUTOHEADER=include/autoconf.h \
+		$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
 	#sed -i -e "s/^CONFIG_DEBUG.*/# CONFIG_DEBUG is not set/" .config
 
 allnoconfig: $(CONFIG)/conf
-	@$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
+	@-mkdir -p include/config
+	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
+		KCONFIG_AUTOHEADER=include/autoconf.h \
+		$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
 
 defconfig: $(CONFIG)/conf
-	@$(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
+	@-mkdir -p include/config
+	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
+		KCONFIG_AUTOHEADER=include/autoconf.h \
+		$(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
 
 # check if download URLs are outdated 
 source-check: allyesconfig

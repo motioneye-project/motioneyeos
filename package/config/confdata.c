@@ -11,6 +11,7 @@
 #include <string.h>
 #include <time.h>
 #include <unistd.h>
+#include <libgen.h>
 
 #define LKC_DIRECT_LINK
 #include "lkc.h"
@@ -529,7 +530,7 @@ int conf_write(const char *name)
 
 int conf_split_config(void)
 {
-	char *name, path[128];
+	char *name, path[128], *opwd, *dir, *_name;
 	char *s, *d, c;
 	struct symbol *sym;
 	struct stat sb;
@@ -540,8 +541,20 @@ int conf_split_config(void)
 		name = "include/config/auto.conf";
 	conf_read_simple(name, S_DEF_AUTO);
 
-	if (chdir("include/config"))
+	opwd = malloc(256);
+	_name = strdup(name);
+	if (opwd == NULL || _name == NULL)
 		return 1;
+	opwd = getcwd(opwd, 256);
+	dir = dirname(_name);
+	if (dir == NULL) {
+		res = 1;
+		goto err;
+	}
+	if (chdir(dir)) {
+		res = 1;
+		goto err;
+	}
 
 	res = 0;
 	for_all_symbols(i, sym) {
@@ -634,9 +647,11 @@ int conf_split_config(void)
 		close(fd);
 	}
 out:
-	if (chdir("../.."))
-		return 1;
-
+	if (chdir(opwd))
+		res = 1;
+err:
+	free(opwd);
+	free(_name);
 	return res;
 }
 
