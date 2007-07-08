@@ -54,7 +54,7 @@ ifeq ($(strip $(BR2_TARGET_ROOTFS_ISO9660_SQUASH)),y)
 ISO9660_OPTS+=-U
 endif
 
-$(ISO9660_TARGET): host-fakeroot $(EXT2_TARGET) grub mkisofs
+$(ISO9660_TARGET): host-fakeroot $(LINUX_KERNEL) $(EXT2_TARGET) grub mkisofs
 	mkdir -p $(ISO9660_TARGET_DIR)
 	mkdir -p $(ISO9660_TARGET_DIR)/boot/grub
 	cp $(GRUB_DIR)/stage2/stage2_eltorito $(ISO9660_TARGET_DIR)/boot/grub/
