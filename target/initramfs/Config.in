@@ -1,0 +1,16 @@
+config BR2_TARGET_ROOTFS_INITRAMFS
+	bool "initramfs for initial ramdisk of linux kernel"
+	default n
+	help
+	  Build a file which is usable for the gen_init_cpio tool
+	  at linux kernel build. 
+	  This file is normally called initramfs_list and can be
+	  generated with gen_initramfs_list.sh script from the root
+	  directory structure. 
+	  The file is then used in the kernel build process to generate
+	  the cpio filesystem for the initial ramdisk. Make sure that
+	  you configure this file in kernel build configuration.
+	  The location in the kernel build configuration menu is
+	  Device Drivers -> Block devices -> Initramfs source file(s).
+	  The configuration variable is CONFIG_INITRAMFS_SOURCE
+
