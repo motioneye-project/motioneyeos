@@ -646,7 +646,7 @@
 Index: confdata.c
 ===================================================================
 --- kconfig/confdata.c	(revision 18967)
-+++ /Buildroot/confdata.c	(working copy)
++++ Buildroot/confdata.c	(working copy)
 @@ -21,7 +21,7 @@ static void conf_warning(const char *fmt
  static const char *conf_filename;
  static int conf_lineno, conf_warnings, conf_unsaved;
@@ -667,9 +667,8 @@ Index: confdata.c
  
  	if (conf_split_config())
  		return 1;
-diff -rdup x/config/confdata.c package/config/confdata.c
---- x/config/confdata.c	2007-07-07 11:13:12.000000000 +0200
-+++ package/config/confdata.c	2007-07-08 01:30:44.000000000 +0200
+--- kconfig/config/confdata.c	2007-07-07 11:13:12.000000000 +0200
++++ Buildroot/config/confdata.c	2007-07-08 01:30:44.000000000 +0200
 @@ -11,6 +11,7 @@
  #include <string.h>
  #include <time.h>
