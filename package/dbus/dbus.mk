@@ -3,7 +3,7 @@
 # dbus
 #
 #############################################################
-DBUS_VER:=1.0.0
+DBUS_VER:=1.1.1
 DBUS_SOURCE:=dbus-$(DBUS_VER).tar.gz
 DBUS_SITE:=http://dbus.freedesktop.org/releases/dbus/
 DBUS_DIR:=$(BUILD_DIR)/dbus-$(DBUS_VER)
@@ -18,7 +18,7 @@ dbus-source: $(DL_DIR)/$(DBUS_SOURCE)
 
 $(DBUS_DIR)/.unpacked: $(DL_DIR)/$(DBUS_SOURCE)
 	$(DBUS_CAT) $(DL_DIR)/$(DBUS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(DBUS_DIR)/.unpacked
+	touch $@
 
 $(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked
 	(cd $(DBUS_DIR); rm -rf config.cache; \
@@ -48,10 +48,10 @@ $(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid \
 	);
-	touch  $(DBUS_DIR)/.configured
+	touch $@
 
 $(DBUS_DIR)/$(DBUS_BINARY): $(DBUS_DIR)/.configured
-	$(MAKE) DBUS_BUS_LIBS="$(STAGING_DIR)/lib/libexpat.so" -C $(DBUS_DIR) all
+	$(MAKE) DBUS_BUS_LIBS="$(STAGING_DIR)/usr/lib/libexpat.so" -C $(DBUS_DIR) all
 
 $(STAGING_DIR)/usr/lib/libdbus-1.so: $(DBUS_DIR)/$(DBUS_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DBUS_DIR)/dbus install
@@ -59,15 +59,15 @@ $(STAGING_DIR)/usr/lib/libdbus-1.so: $(DBUS_DIR)/$(DBUS_BINARY)
 $(TARGET_DIR)/$(DBUS_TARGET_BINARY): $(STAGING_DIR)/usr/lib/libdbus-1.so
 	-mkdir $(TARGET_DIR)/var/run/dbus
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(DBUS_DIR)/dbus install
-	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/lib/dbus-1.0
-	rm -f $(TARGET_DIR)/usr/lib/libdbus-1.la
-	rm -f $(TARGET_DIR)/usr/lib/libdbus-1.so
+	rm -rf $(TARGET_DIR)/usr/lib/dbus-1.0
+	rm -f $(TARGET_DIR)/usr/lib/libdbus-1.la \
+		$(TARGET_DIR)/usr/lib/libdbus-1.so
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libdbus-1.so.3.2.0
 	$(MAKE) DESTDIR=$(TARGET_DIR) initddir=/etc/init.d -C $(DBUS_DIR)/bus install
 	$(INSTALL) -m 0755 -D package/dbus/S97messagebus $(TARGET_DIR)/etc/init.d
 	rm -f $(TARGET_DIR)/etc/init.d/messagebus
 	rm -rf $(TARGET_DIR)/usr/man
-	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
+	-rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
 	rm -rf $(TARGET_DIR)/etc/rc.d
 
 dbus: uclibc expat $(TARGET_DIR)/$(DBUS_TARGET_BINARY)
