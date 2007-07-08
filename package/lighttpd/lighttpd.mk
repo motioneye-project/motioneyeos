@@ -12,10 +12,6 @@ LIGHTTPD_CAT:=$(ZCAT)
 LIGHTTPD_BINARY:=src/lighttpd
 LIGHTTPD_TARGET_BINARY:=usr/sbin/lighttpd
 
-ifneq ($(BR2_LARGEFILE),y)
-LIGHTTPD_LFS:=--disable-lfs
-endif
-
 $(DL_DIR)/$(LIGHTTPD_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LIGHTTPD_SITE)/$(LIGHTTPD_SOURCE)
 ifneq ($(LIGHTTPD_PATCH),)
