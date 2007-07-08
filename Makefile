@@ -28,7 +28,7 @@ CONFIG = package/config
 
 noconfig_targets := menuconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release tags    \
-	source-check
+	source-check help
 
 #	$(shell find . -name *_defconfig |sed 's/.*\///')
 
@@ -342,8 +342,24 @@ endif # ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 	cp $(shell find ./target/ -name $@) .config
 	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
 
+help:
+	@echo 'Cleaning:'
+	@echo '  clean                  - delete temporary files created by build'
+	@echo '  distclean              - delete all non-source files (including .config)'
+	@echo
+	@echo 'Build:'
+	@echo '  all                    - make world'
+	@echo
+	@echo 'Configuration:'
+	@echo '  menuconfig             - interactive curses-based configurator'
+	@echo '  oldconfig              - resolve any unresolved symbols in .config'
+	@echo
+	@echo 'Miscellaneous:'
+	@echo '  source                 - download all sources needed for offline-build'
+	@echo '  source-check           - check all packages for valid download URLS'
+	@echo
 
 .PHONY: dummy subdirs release distclean clean config oldconfig \
-	menuconfig tags check test depend defconfig
+	menuconfig tags check test depend defconfig help
 
 
