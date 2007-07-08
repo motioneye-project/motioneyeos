@@ -101,7 +101,7 @@ $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
 	touch $@
 endif # ($(LINUX26_VERSION),$(LINUX_HEADERS_VERSION))
 
-$(LINUX26_DIR)/.configured:  $(LINUX26_DIR)/.patched  $(LINUX26_KCONFIG)
+$(LINUX26_DIR)/.configured:  $(LINUX26_DIR)/.patched  $(LINUX26_KCONFIG) $(INITRAMFS_TARGET)
 	cp -dpf $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
 	$(SED) '/CONFIG_AEABI/d' $(LINUX26_DIR)/.config
 ifeq ($(BR2_ARM_EABI),y)
@@ -110,6 +110,14 @@ ifeq ($(BR2_ARM_EABI),y)
 	echo "# CONFIG_OABI_COMPAT is not set" >> $(LINUX26_DIR)/.config
 else
 	echo "# CONFIG_AEABI is not set" >> $(LINUX26_DIR)/.config
+endif
+ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
+	$(SED) '/CONFIG_INITRAMFS_SOURCE/d' $(LINUX26_DIR)/.config
+	echo "CONFIG_INITRAMFS_SOURCE=\"$(INITRAMFS_TARGET)\"" >> \
+		$(LINUX26_DIR)/.config
+	$(SED) '/INITRAMFS_ROOT_.ID/d' $(LINUX26_DIR)/.config
+	echo "INITRAMFS_ROOT_UID=\"0\"" >> $(LINUX26_DIR)/.config
+	echo "INITRAMFS_ROOT_GID=\"0\"" >> $(LINUX26_DIR)/.config
 endif
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) oldconfig
 	touch $@
