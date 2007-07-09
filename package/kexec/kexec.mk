@@ -53,7 +53,7 @@ $(KEXEC_DIR)/.configured: $(KEXEC_DIR)/.unpacked
 	touch $@
 
 $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/$(KEXEC_BINARY): $(KEXEC_DIR)/.configured
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(KEXEC_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(KEXEC_DIR)
 	touch -c $@
 
 $(TARGET_DIR)/$(KEXEC_TARGET_BINARY): $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/$(KEXEC_BINARY)

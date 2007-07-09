@@ -161,7 +161,7 @@ endif
 	touch $(QTOPIA4_TARGET_DIR)/.configured
 
 $(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VER): $(QTOPIA4_TARGET_DIR)/.configured
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) \
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		-C $(QTOPIA4_TARGET_DIR) sub-src
 
 $(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VER): $(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VER)

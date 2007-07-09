@@ -51,7 +51,7 @@ ifeq ($(BR2_PREFER_IMA),y)
 	 	$(CFLAGS_WHOLE_PROGRAM) -o $@ $(wildcard $(MICROCOM_DIR)/*.c); \
 	)
 else
-	$(TARGET_CONFIGURE_OPTS) CFLAGS="$(TARGET_CFLAGS)" $(MAKE) -C $(MICROCOM_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(MICROCOM_DIR)
 endif
 	$(STRIP) -s $@
 

@@ -85,7 +85,7 @@ $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 	rm -f $(TINYX_BINX)/Xfbdev
 	#make World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=<cross compiler dir>";
 	#( cd $(TINYX_DIR) ; $(MAKE) World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=$(STAGING_DIR)/bin" )
-	#( cd $(TINYX_DIR) ; $(TARGET_CONFIGURE_OPTS) $(MAKE) World )
+	#( cd $(TINYX_DIR) ; $(MAKE) $(TARGET_CONFIGURE_OPTS) World )
 	#
 	#mv $(TINYX_DIR)/Makefile $(TINYX_DIR)/Makefile.xxxx
 	#echo "AS=$(TARGET_CROSS)as" > $(TINYX_DIR)/Makefile

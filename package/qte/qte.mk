@@ -222,18 +222,18 @@ $(QTE_QTE_DIR)/src-mt.mk: $(QTE_QTE_DIR)/.configured
 
 $(QTE_QTE_LIB): $(QTE_QTE_DIR)/src-mt.mk
 	export QTDIR=$(QTE_QTE_DIR); export QPEDIR=$(QTE_QTOPIA_DIR); export PATH=$(STAGING_DIR)/bin:$$QTDIR/bin:$$PATH; \
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) $(TARGET_CC) -C $(QTE_QTE_DIR) src-mt
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) $(TARGET_CC) DESTDIR=$(TARGET_DIR)/lib -C $(QTE_QTE_DIR) src-mt
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(TARGET_CC) -C $(QTE_QTE_DIR) src-mt
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR)/lib -C $(QTE_QTE_DIR) src-mt
 	# ... and make sure it actually built... grrr... make deep-deep-deep makefile recursion for this habit
 	test -f $@
 
 $(QTE_QTOPIA_FILE): $(QTE_QTOPIA_DIR)/.configured
 	export QTDIR=$(QTE_QT3_DIR); export QPEDIR=$(QTE_QTOPIA_DIR); export PATH=$(STAGING_DIR)/bin:$$QTDIR/bin:$$PATH; \
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(QTE_QTOPIA_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(QTE_QTOPIA_DIR)
 
 $(QTE_QTOPIA_IFILE): $(QTE_QTOPIA_FILE)
 	export QTDIR=$(QTE_QT3_DIR); export QPEDIR=$(QTE_QTOPIA_DIR); export PATH=$(STAGING_DIR)/bin:$$QTDIR/bin:$$PATH; \
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) CC=$(TARGET_CC) -C $(QTE_QTOPIA_DIR) install PREFIX=$(TARGET_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(QTE_QTOPIA_DIR) install PREFIX=$(TARGET_DIR)
 
 
 qte:: $(QTE_QTE_LIB)

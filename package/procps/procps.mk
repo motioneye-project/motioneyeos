@@ -22,7 +22,7 @@ $(PROCPS_DIR)/$(PROCPS_BINARY): $(PROCPS_DIR)/.source
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(PROCPS_DIR)
 
 $(TARGET_DIR)/$(PROCPS_TARGET_BINARY): $(PROCPS_DIR)/$(PROCPS_BINARY)
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) DESTDIR=$(TARGET_DIR) \
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) \
 		install='install -D' -C $(PROCPS_DIR) lib64=/lib \
 		ldconfig='/bin/true' install
 	rm -Rf $(TARGET_DIR)/usr/share/man

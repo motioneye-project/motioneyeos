@@ -115,7 +115,10 @@ MTD_TARGETS_$(BR2_PACKAGE_MTD_DOC_LOADBIOS)		+= doc_loadbios
 MTD_BUILD_TARGETS := $(addprefix $(MTD_DIR)/util/, $(MTD_TARGETS_y))
 
 $(MTD_BUILD_TARGETS): $(MTD_DIR)/.unpacked
-	$(TARGET_CONFIGURE_OPTS) $(MAKE)	CFLAGS="-I$(MTD_DIR)/include -I$(LINUX_HEADERS_DIR)/include" LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
+	$(MAKE)	$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS+="-I$(MTD_DIR)/include" \
+		CFLAGS+="-I$(LINUX_HEADERS_DIR)/include" \
+		LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
 
 MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
 
