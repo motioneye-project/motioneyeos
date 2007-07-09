@@ -264,14 +264,17 @@ all: menuconfig
 # configuration
 # ---------------------------------------------------------------------------
 
+HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
+export HOSTCFLAGS
+
 $(CONFIG)/conf:
-	$(MAKE) CC="$(HOSTCC)" HOSTCFLAGS="$(CFLAGS_FOR_BUILD)" MAKECMDGOALS="$(MAKECMDGOALS)" \
+	$(MAKE) CC="$(HOSTCC)" MAKECMDGOALS="$(MAKECMDGOALS)" \
 		-C $(CONFIG) conf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
 $(CONFIG)/mconf:
-	$(MAKE) CC="$(HOSTCC)" HOSTCFLAGS="$(CFLAGS_FOR_BUILD)" MAKECMDGOALS="$(MAKECMDGOALS)" \
+	$(MAKE) CC="$(HOSTCC)" MAKECMDGOALS="$(MAKECMDGOALS)" \
 		-C $(CONFIG) conf mconf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
