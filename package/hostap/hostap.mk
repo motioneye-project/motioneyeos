@@ -9,7 +9,7 @@ HOSTAP_SITE=http://hostap.epitest.fi/releases
 HOSTAP_DIR=$(BUILD_DIR)/hostapd-$(HOSTAP_VERSION)
 
 $(DL_DIR)/$(HOSTAP_SOURCE):
-	$(WGET_NOSPIDERS) -P $(DL_DIR) $(HOSTAP_SITE)/$(HOSTAP_SOURCE)
+	$(WGET) -P $(DL_DIR) $(HOSTAP_SITE)/$(HOSTAP_SOURCE)
 
 hostap-source: $(DL_DIR)/$(HOSTAP_SOURCE)
 
