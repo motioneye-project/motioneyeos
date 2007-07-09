@@ -3,12 +3,13 @@
 # hostap
 #
 #############################################################
-HOSTAP_SOURCE_URL=http://hostap.epitest.fi/cgi-bin/viewcvs.cgi/hostap/hostap.tar.gz?tarball=1
-HOSTAP_SOURCE=hostap.tar.gz
-HOSTAP_DIR=$(BUILD_DIR)/hostap-snapshot
+HOSTAP_VERSION=0.5.8
+HOSTAP_SOURCE=hostapd-$(HOSTAP_VERSION).tar.gz
+HOSTAP_SITE=http://hostap.epitest.fi/releases
+HOSTAP_DIR=$(BUILD_DIR)/hostapd-$(HOSTAP_VERSION)
 
 $(DL_DIR)/$(HOSTAP_SOURCE):
-	$(WGET) -P $(DL_DIR) $(HOSTAP_SOURCE_URL) -O $(DL_DIR)/$(HOSTAP_SOURCE)
+	$(WGET_NOSPIDERS) -P $(DL_DIR) $(HOSTAP_SITE)/$(HOSTAP_SOURCE)
 
 hostap-source: $(DL_DIR)/$(HOSTAP_SOURCE)
 
