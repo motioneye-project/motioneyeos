@@ -7,3 +7,5 @@
 [ $1 = -s ] && echo iainfo2
 [ $1 = -v ] && echo 3.0
 [ $1 = -p ] && echo "Pentium III(TM)-ISA/PCI"
+
+exit 0

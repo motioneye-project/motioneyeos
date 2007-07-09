@@ -1,3 +1,171 @@
+2007-06-28  Ben Elliston  <bje@gnu.org>
+
+	From M R Swami Reddy <MR.Swami.Reddy@nsc.com>:
+	* config.sub: Rename cr16c to cr16.
+
+2007-05-17  Ben Elliston  <bje@gnu.org>
+
+	From Luke Mewburn <luke@mewburn.net>:
+	* config.guess (i86xen:SunOS:5.*:*): New.
+	* testsuite/config-guess.data: Add test case.
+
+2007-04-29  Ben Elliston  <bje@gnu.org>
+
+	From Pedro Alves <pedro_alves@portugalmail.pt>:
+	* config.sub (mingw32ce): New.
+	* testsuite/config-sub.data: Add test cases.
+
+2007-03-06  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (*:Interix*:[3456]*): Consolidate all machine
+	possibilities into a single entry with a case statement that
+	examines ${UNAME_MACHINE}. Suggested by <jerker.back@telia.com>.
+
+2007-01-18  Ben Elliston  <bje@gnu.org>
+
+	* testsuite/config-sub.data: Add MeP test cases.
+
+	From Dave Brolley  <brolley@redhat.com>
+	2001-03-19  Ben Elliston  <bje@redhat.com>
+
+	* config.sub (mep, mep-*): Add.
+
+2007-01-15  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (SX-8R:SUPER-UX:*:*): New.
+	* testsuite/config-guess.data: Add a test case.
+
+2007-01-04  Ben Elliston  <bje@gnu.org>
+
+	From Alexander Boettcher <alex@kaffe.org> via Dalibor Topic:
+	* config.sub: Recognise -drops*.
+	* testsuite/config-sub.data: Add a test.
+
+2006-12-22  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (i*:MINGW:*:*): Rename from this ..
+	(*:MINGW:*:*): .. to this.
+	* testsuite/config-guess.data: Add test cases.
+
+2006-12-08  Bob Wilson  <bob.wilson@acm.org>
+
+	* config.guess (xtensa:Linux:*:*): New.
+	* testsuite/config-guess.data: Add test case.
+	* testsuite/config-sub.data: Add xtensa-elf and xtensa-linux.
+
+2006-12-08  Kazu Hirata  <kazu@codesourcery.com>
+	    Ben Elliston  <bje@gnu.org>
+
+	* config.sub: Recognize fido and fido-*.
+	* testsuite/config-sub.data: Add test cases.
+
+2006-11-30  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (SX-7:SUPER-UX:*:*): New.
+	* testsuite/config-guess.data: Add test case.
+
+2006-11-15  Ben Elliston  <bje@gnu.org>
+
+	From Josselin Mouette <joss@debian.org>:
+	* config.guess (SX-8:SUPER-UX:*:*): New.
+	* testsuite/config-guess.data: Add test case.
+
+2006-11-08  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (authenticamd:Interix*:[3456]*): Another AMD64.
+	* testsuite/config-guess.data: Add test case.
+
+2006-11-07  Steve Woodford  <scw@NetBSD.org>
+	    Ben Elliston  <bje@gnu.org>
+
+	* config.guess (*:NetBSD:*:*): Handle sh5el arch.
+	* config.sub (sh5el): New basic_machine.
+	* testsuite/config-sub.data: Add test cases.
+
+2006-09-20  Ben Elliston  <bje@gnu.org>
+
+	* config.sub (score, score-*): New.
+	* testsuite/config-sub.data: Add test cases.
+
+2006-08-14  Thiemo Seufer  <ths@mips.com>
+	    Nigel Stephens  <nigel@mips.com>
+	    David Ung  <davidu@mips.com>
+
+	* config.sub (sde): New.
+	* testsuite/config-sub.data: Add test cases.
+
+2006-08-14  Vijay K. Munjal <vijaykumarm1@KPITCummins.com>
+
+	* config.sub (xc16x, xc16x-*): New.
+	* testsuite/config-sub.data: Add test cases.
+
+2006-07-02  Masaki MURANAKA  <monaka@monami-software.com>
+
+	* config.sub (toppers-*): New.
+	* testsuite/config-sub.data: Add test case.
+
+2006-07-02  Ben Elliston  <bje@gnu.org>
+
+	* config.guess (macppc:MirBSD:*:*): Fix typo.
+	* testsuite/config-guess.data: Add test case.
+
+2006-07-02  Ben Elliston  <bje@gnu.org>
+
+	* config.guess: Handle Interix 6.
+	* testsuite/config-guess.data: Add test case.
+
+2006-06-06  Ben Elliston  <bje@gnu.org>
+
+	From H??vard Skinnemoen <hskinnemoen@atmel.com>:
+	* config.guess (avr32*:Linux:*:*): New.
+	* config.sub (avr32, avr32-*): Likewise.
+	* testsuite/config-guess.data: Add test case.
+	* testsuite/config-sub.data: Likewise.
+
+2006-05-13  Ben Elliston  <bje@gnu.org>
+
+	* config.sub: Specify -elf as the default OS for spu.
+	(c4x-* | tic4x-*): Tidy formatting.
+	* testsuite/config-sub.data: Update tests.
+
+2006-05-13  Bruno Haible  <bruno@clisp.org>
+
+	* config.guess: Change support for Sun C/C++ 5.9 on Linux/x86 to
+	use compiler-specific predefines other than __sun.
+
+2006-05-12  Ben Elliston  <bje@gnu.org>
+
+	* config.sub (spu): New.
+	* testsuite/config-sub.data: Add test case.
+
+2006-05-12  Ben Elliston  <bje@gnu.org>
+
+	* config.sub (m32c, m32c-*): Fold into the standard case.
+
+2006-04-26  Bruno Haible  <bruno@clisp.org>
+	    Ben Elliston  <bje@gnu.org>
+
+	* config.guess (amd64:FreeBSD:*:*) Detect as x86_64.
+	* testsuite/config-guess.data: Add test case.
+
+2006-03-13  Ben Elliston  <bje@gnu.org>
+
+	Revert these patches at Earnie Boyd's request:
+
+	* testsuite/config-guess.data: Tweak MSYS_NT-5.1 test.
+
+	* config.guess: Handle i*:MSYS_NT-*:*:* for MSYS/Mingw.
+	* testsuite/config-guess.data: Add test case.
+
+2006-03-07  Mike Frysinger  <vapier@gentoo.org>
+
+        * config.sub (sheb, sheb-*): Handle these in addition to shbe.
+        * testsuite/config-sub.data: Add test case.
+
+2006-03-06  Ben Elliston  <bje@gnu.org>
+
+	* uname: Exit with exit code 0.
+
 2006-02-27  David S. Miller  <davem@sunset.davemloft.net>
 	    Ben Elliston  <bje@gnu.org>
 

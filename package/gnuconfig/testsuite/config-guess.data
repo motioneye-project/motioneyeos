@@ -19,5 +19,16 @@ i586	ignored			rdos		ignored	i586-pc-rdos
 pc98	7.0			FreeBSD		ignored	i386-unknown-freebsd7.0
 i586	1.0			SolidBSD	ignored	i586-unknown-solidbsd1.0
 i686	5.4-1-686		GNU/kFreeBSD	ignored	i686-unknown-kfreebsd5.4-gnu
-i686	1.0.10(0.46/3/2)	MSYS_NT-5.1	ignored	i686-pc-mingw32
 EM64T	5.2			Interix		ignored	x86_64-unknown-interix5.2
+amd64	5.2			FreeBSD		ignored	x86_64-unknown-freebsd5.2
+avr32	2.6.15			Linux		ignored	avr32-unknown-linux-gnu
+x86	6.0			Interix		ignored	i586-pc-interix6.0
+macppc	1.0			MirBSD		ignored	powerpc-unknown-mirbsd1.0
+authenticamd	6.0		Interix		ignored	x86_64-unknown-interix6.0
+SX-8	1.0			SUPER-UX	ignored	sx8-nec-superux1.0
+SX-7	1.0			SUPER-UX	ignored	sx7-nec-superux1.0
+xtensa	2.6.15			Linux		ignored	xtensa-unknown-linux-gnu
+x86_64	1.0			MINGW		ignored	x86_64-pc-mingw32
+i386	1.0			MINGW		ignored	i386-pc-mingw32
+SX-8R	1.0			SUPER-UX	ignored	sx8r-nec-superux1.0
+ix86xen	5.6			SunOS		ignored	i386-pc-solaris2.6

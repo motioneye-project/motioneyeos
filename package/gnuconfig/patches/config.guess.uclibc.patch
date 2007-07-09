@@ -1,11 +1,11 @@
 Index: config.guess
 ===================================================================
 RCS file: /cvsroot/config/config/config.guess,v
-retrieving revision 1.349
-diff -u -p -r1.349 config.guess
---- config.guess	26 Feb 2006 23:11:20 -0000	1.349
-+++ config.guess	2 Mar 2006 06:15:33 -0000
-@@ -139,6 +139,23 @@ UNAME_RELEASE=`(uname -r) 2>/dev/null` |
+retrieving revision 1.366
+diff -u -r1.366 config.guess
+--- config.guess	17 May 2007 06:28:53 -0000	1.366
++++ config.guess	9 Jul 2007 17:32:18 -0000
+@@ -139,6 +139,23 @@
  UNAME_SYSTEM=`(uname -s) 2>/dev/null`  || UNAME_SYSTEM=unknown
  UNAME_VERSION=`(uname -v) 2>/dev/null` || UNAME_VERSION=unknown
  
@@ -29,10 +29,14 @@ diff -u -p -r1.349 config.guess
  # Note: order is significant - the case branches are not exclusive.
  
  case "${UNAME_MACHINE}:${UNAME_SYSTEM}:${UNAME_RELEASE}:${UNAME_VERSION}" in
-@@ -830,25 +847,25 @@ EOF
+@@ -833,28 +850,28 @@
  	echo ${UNAME_MACHINE}-pc-minix
  	exit ;;
      arm*:Linux:*:*)
+-	echo ${UNAME_MACHINE}-unknown-linux-gnu
++	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
+ 	exit ;;
+     avr32*:Linux:*:*)
 -	echo ${UNAME_MACHINE}-unknown-linux-gnu
 +	echo ${UNAME_MACHINE}-unknown-linux-${LIBC}
  	exit ;;
@@ -62,7 +66,7 @@ diff -u -p -r1.349 config.guess
  	exit ;;
      mips:Linux:*:*)
  	eval $set_cc_for_build
-@@ -871,7 +888,7 @@ EOF
+@@ -877,7 +894,7 @@
  		s: ::g
  		p
  	    }'`"
@@ -71,7 +75,7 @@ diff -u -p -r1.349 config.guess
  	;;
      mips64:Linux:*:*)
  	eval $set_cc_for_build
-@@ -894,16 +911,16 @@ EOF
+@@ -900,16 +917,16 @@
  		s: ::g
  		p
  	    }'`"
@@ -92,7 +96,7 @@ diff -u -p -r1.349 config.guess
  	exit ;;
      alpha:Linux:*:*)
  	case `sed -n '/^cpu model/s/^.*: \(.*\)/\1/p' < /proc/cpuinfo` in
-@@ -916,37 +933,37 @@ EOF
+@@ -922,40 +939,40 @@
  	  EV68*) UNAME_MACHINE=alphaev68 ;;
          esac
  	objdump --private-headers /bin/sh | grep ld.so.1 >/dev/null
@@ -139,9 +143,13 @@ diff -u -p -r1.349 config.guess
 -	echo x86_64-unknown-linux-gnu
 +	echo x86_64-unknown-linux-${LIBC}
  	exit ;;
+     xtensa:Linux:*:*)
+-    	echo xtensa-unknown-linux-gnu
++    	echo xtensa-unknown-linux-${LIBC}
+ 	exit ;;
      i*86:Linux:*:*)
  	# The BFD linker knows what the default object file format is, so
-@@ -961,20 +978,22 @@ EOF
+@@ -970,20 +987,22 @@
  				    p'`
          case "$ld_supported_targets" in
  	  elf32-i386)
