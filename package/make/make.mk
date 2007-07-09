@@ -3,10 +3,10 @@
 # make
 #
 #############################################################
-GNUMAKE_VER:=3.81
-GNUMAKE_SOURCE:=make-$(GNUMAKE_VER).tar.bz2
+GNUMAKE_VERSION:=3.81
+GNUMAKE_SOURCE:=make-$(GNUMAKE_VERSION).tar.bz2
 GNUMAKE_SITE:=http://ftp.gnu.org/pub/gnu/make
-GNUMAKE_DIR:=$(BUILD_DIR)/make-$(GNUMAKE_VER)
+GNUMAKE_DIR:=$(BUILD_DIR)/make-$(GNUMAKE_VERSION)
 GNUMAKE_CAT:=$(BZCAT)
 GNUMAKE_BINARY:=make
 GNUMAKE_TARGET_BINARY:=usr/bin/make
@@ -19,7 +19,7 @@ make-source: $(DL_DIR)/$(GNUMAKE_SOURCE)
 $(GNUMAKE_DIR)/.unpacked: $(DL_DIR)/$(GNUMAKE_SOURCE)
 	$(GNUMAKE_CAT) $(DL_DIR)/$(GNUMAKE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(GNUMAKE_DIR)/config
-	touch $(GNUMAKE_DIR)/.unpacked
+	touch $@
 
 $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 	(cd $(GNUMAKE_DIR); rm -rf config.cache; \
@@ -46,7 +46,7 @@ $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch $(GNUMAKE_DIR)/.configured
+	touch $@
 
 $(GNUMAKE_DIR)/$(GNUMAKE_BINARY): $(GNUMAKE_DIR)/.configured
 	$(MAKE) -C $(GNUMAKE_DIR)
