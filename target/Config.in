@@ -21,4 +21,5 @@ source "target/powerpc/yaboot/Config.in"
 
 endmenu
 
+source "target/linux/Config.in"
 source "target/device/Config.in"
