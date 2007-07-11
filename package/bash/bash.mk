@@ -3,11 +3,11 @@
 # bash
 #
 #############################################################
-BASH_VER:=3.2
-BASH_SOURCE:=bash-$(BASH_VER).tar.gz
+BASH_VERSION:=3.2
+BASH_SOURCE:=bash-$(BASH_VERSION).tar.gz
 BASH_SITE:=http://ftp.gnu.org/pub/gnu/bash
 BASH_CAT:=$(ZCAT)
-BASH_DIR:=$(BUILD_DIR)/bash-$(BASH_VER)
+BASH_DIR:=$(BUILD_DIR)/bash-$(BASH_VERSION)
 BASH_BINARY:=bash
 BASH_TARGET_BINARY:=bin/bash
 
