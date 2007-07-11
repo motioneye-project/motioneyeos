@@ -3,9 +3,10 @@
 # netkittelnet
 #
 #############################################################
-NETKITTELNET_SOURCE:=netkit-telnet-0.17.tar.gz
+NETKITTELNET_VERSION:=0.17
+NETKITTELNET_SOURCE:=netkit-telnet-$(NETKITTELNET_VERSION).tar.gz
 NETKITTELNET_SITE:=ftp://ftp.uk.linux.org/pub/linux/Networking/netkit/
-NETKITTELNET_DIR:=$(BUILD_DIR)/netkit-telnet-0.17
+NETKITTELNET_DIR:=$(BUILD_DIR)/netkit-telnet-$(NETKITTELNET_VERSION)
 NETKITTELNET_CAT:=$(ZCAT)
 NETKITTELNET_BINARY:=telnetd/telnetd
 NETKITTELNET_TARGET_BINARY:=usr/sbin/telnetd

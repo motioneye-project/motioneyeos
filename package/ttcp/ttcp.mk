@@ -4,9 +4,10 @@
 #
 #############################################################
 #
+TTCP_VERSION:=
 TTCP_SOURCE_URL=http://ftp.sunet.se/pub/network/monitoring/ttcp
-TTCP_SOURCE=ttcp.c
-TTCP_BUILD_DIR=$(BUILD_DIR)/ttcp
+TTCP_SOURCE=ttcp$(TTCP_VERSION).c
+TTCP_BUILD_DIR=$(BUILD_DIR)/ttcp$(TTCP_VERSION)
 
 $(DL_DIR)/$(TTCP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(TTCP_SOURCE_URL)/$(TTCP_SOURCE) 

@@ -23,10 +23,10 @@
 # USA
 
 # TARGETS
-NCURSES_VER:=5.6
+NCURSES_VERSION:=5.6
 NCURSES_SITE:=http://ftp.gnu.org/pub/gnu/ncurses
-NCURSES_DIR:=$(BUILD_DIR)/ncurses-$(NCURSES_VER)
-NCURSES_SOURCE:=ncurses-$(NCURSES_VER).tar.gz
+NCURSES_DIR:=$(BUILD_DIR)/ncurses-$(NCURSES_VERSION)
+NCURSES_SOURCE:=ncurses-$(NCURSES_VERSION).tar.gz
 NCURSES_CAT:=$(ZCAT)
 
 ifneq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_HEADERS)),y)
@@ -78,11 +78,11 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.patched
 	);
 	touch $@
 
-$(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER): $(NCURSES_DIR)/.configured
+$(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/.configured
 	$(MAKE1) DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \
 		libs panel menu form headers
 
-$(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VER): $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VER)
+$(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 	$(MAKE1) \
 	    prefix=$(STAGING_DIR)/usr/ \
 	    exec_prefix=$(STAGING_DIR) \
@@ -102,7 +102,7 @@ $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VER): $(NCURSES_DIR)/lib/libncurses.s
 	chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
 	touch -c $@
 
-$(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER): $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VER)
+$(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
 	-cp -dpf $(STAGING_DIR)/usr/lib/terminfo $(TARGET_DIR)/usr/lib/
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/x
@@ -134,11 +134,11 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	)
 	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
 	rm -f $(TARGET_DIR)/lib/libncurses.so
-	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libncurses.so.$(NCURSES_VER) libncurses.so)
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
+	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libncurses.so.$(NCURSES_VERSION) libncurses.so)
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 	touch -c $@
 
-ncurses: $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VER)
+ncurses: $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 
 ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
 

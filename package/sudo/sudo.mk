@@ -4,10 +4,10 @@
 #
 #############################################################
 
-SUDO_VER:=1.6.8p12
-SUDO_SOURCE:=sudo-$(SUDO_VER).tar.gz
+SUDO_VERSION:=1.6.8p12
+SUDO_SOURCE:=sudo-$(SUDO_VERSION).tar.gz
 SUDO_SITE:=http://www.courtesan.com/sudo/dist
-SUDO_DIR:=$(BUILD_DIR)/sudo-$(SUDO_VER)
+SUDO_DIR:=$(BUILD_DIR)/sudo-$(SUDO_VERSION)
 SUDO_UNZIP:=$(ZCAT)
 
 $(DL_DIR)/$(SUDO_SOURCE):

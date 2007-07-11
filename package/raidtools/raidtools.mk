@@ -3,9 +3,10 @@
 # raidtools2
 #
 #############################################################
-RAIDTOOLS2_SOURCE:=raidtools2-1.00.3.tar.gz
+RAIDTOOLS2_VERSION:=1.00.3
+RAIDTOOLS2_SOURCE:=raidtools2-$(RAIDTOOLS2_VERSION).tar.gz
 RAIDTOOLS2_SITE:=
-RAIDTOOLS2_DIR:=$(BUILD_DIR)/raidtools2-1.00.3
+RAIDTOOLS2_DIR:=$(BUILD_DIR)/raidtools2-$(RAIDTOOLS2_VERSION)
 RAIDTOOLS2_CAT:=$(ZCAT)
 RAIDTOOLS2_BINARY:=mkraid
 RAIDTOOLS2_TARGET_BINARY:=sbin/mkraid

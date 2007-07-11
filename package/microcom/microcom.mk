@@ -25,9 +25,10 @@
 
 # TARGETS
 # http://microcom.port5.com/m102.tar.gz
+MICROCOM_VERSION:=1.02
 MICROCOM_SITE:=http://microcom.port5.com/
 MICROCOM_SOURCE:=m102.tar.gz
-MICROCOM_DIR:=$(BUILD_DIR)/microcom-1.02
+MICROCOM_DIR:=$(BUILD_DIR)/microcom-$(MICROCOM_VERSION)
 
 $(DL_DIR)/$(MICROCOM_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MICROCOM_SITE)/$(MICROCOM_SOURCE)

@@ -3,11 +3,11 @@
 # bind
 #
 #############################################################
-BIND_VER:=9.3.2
-BIND_SOURCE:=bind-$(BIND_VER).tar.gz
-BIND_SITE:=ftp://ftp.isc.org/isc/bind9/$(BIND_VER)
-BIND_DIR1:=$(TOOL_BUILD_DIR)/bind-$(BIND_VER)
-BIND_DIR2:=$(BUILD_DIR)/bind-$(BIND_VER)
+BIND_VERSION:=9.3.2
+BIND_SOURCE:=bind-$(BIND_VERSION).tar.gz
+BIND_SITE:=ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
+BIND_DIR1:=$(TOOL_BUILD_DIR)/bind-$(BIND_VERSION)
+BIND_DIR2:=$(BUILD_DIR)/bind-$(BIND_VERSION)
 BIND_CAT:=$(ZCAT)
 BIND_BINARY:=bin/named/named
 BIND_TARGET_BINARY:=usr/sbin/named

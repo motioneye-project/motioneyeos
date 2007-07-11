@@ -2,13 +2,14 @@
 #
 # wipe
 #
-# http://abaababa.ouvaton.org/wipe/wipe-0.20.tar.gz
+# http://abaababa.ouvaton.org/wipe/wipe-$(WIPE_VERSION).tar.gz
 #############################################################
-WIPE_SOURCE:=wipe-0.20.tar.gz
+WIPE_VERSION:=0.20
+WIPE_SOURCE:=wipe-$(WIPE_VERSION).tar.gz
 #WIPE_PATCH:=wipe_0.2-19.diff.gz
 WIPE_SITE:=http://abaababa.ouvaton.org/wipe
 WIPE_CAT:=$(ZCAT)
-WIPE_DIR:=$(BUILD_DIR)/wipe-0.20
+WIPE_DIR:=$(BUILD_DIR)/wipe-$(WIPE_VERSION)
 WIPE_BINARY:=wipe
 WIPE_TARGET_BINARY:=bin/wipe
 

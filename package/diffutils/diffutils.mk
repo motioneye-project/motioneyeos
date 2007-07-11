@@ -3,12 +3,12 @@
 # diffutils
 #
 #############################################################
-DIFFUTILS_VER=2.8.7
-DIFFUTILS_SOURCE:=diffutils-$(DIFFUTILS_VER).tar.gz
+DIFFUTILS_VERSION=2.8.7
+DIFFUTILS_SOURCE:=diffutils-$(DIFFUTILS_VERSION).tar.gz
 #DIFFUTILS_SITE:=ftp://alpha.gnu.org/gnu/diffutils/
 DIFFUTILS_SITE:=http://mirrors.ircam.fr/pub/gnu/alpha/gnu/diffutils
 DIFFUTILS_CAT:=$(ZCAT)
-DIFFUTILS_DIR:=$(BUILD_DIR)/diffutils-$(DIFFUTILS_VER)
+DIFFUTILS_DIR:=$(BUILD_DIR)/diffutils-$(DIFFUTILS_VERSION)
 DIFFUTILS_BINARY:=src/diff
 DIFFUTILS_TARGET_BINARY:=usr/bin/diff
 

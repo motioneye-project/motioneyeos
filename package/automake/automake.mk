@@ -3,13 +3,13 @@
 # automake
 #
 #############################################################
-AUTOMAKE_VER:=1.10
-AUTOMAKE_SOURCE:=automake-$(AUTOMAKE_VER).tar.bz2
+AUTOMAKE_VERSION:=1.10
+AUTOMAKE_SOURCE:=automake-$(AUTOMAKE_VERSION).tar.bz2
 AUTOMAKE_SITE:=http://ftp.gnu.org/pub/gnu/automake
 AUTOMAKE_CAT:=$(BZCAT)
-AUTOMAKE_SRC_DIR:=$(TOOL_BUILD_DIR)/automake-$(AUTOMAKE_VER)
-AUTOMAKE_DIR:=$(BUILD_DIR)/automake-$(AUTOMAKE_VER)
-AUTOMAKE_HOST_DIR:=$(TOOL_BUILD_DIR)/automake-$(AUTOMAKE_VER)-host
+AUTOMAKE_SRC_DIR:=$(TOOL_BUILD_DIR)/automake-$(AUTOMAKE_VERSION)
+AUTOMAKE_DIR:=$(BUILD_DIR)/automake-$(AUTOMAKE_VERSION)
+AUTOMAKE_HOST_DIR:=$(TOOL_BUILD_DIR)/automake-$(AUTOMAKE_VERSION)-host
 AUTOMAKE_BINARY:=automake
 AUTOMAKE_TARGET_BINARY:=usr/bin/automake
 AUTOMAKE:=$(STAGING_DIR)/usr/bin/automake

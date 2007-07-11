@@ -3,10 +3,10 @@
 # smartmontools
 #
 #############################################################
-SMARTMONTOOLS_VER:=5.33
-SMARTMONTOOLS_SOURCE:=smartmontools-$(SMARTMONTOOLS_VER).tar.gz
+SMARTMONTOOLS_VERSION:=5.33
+SMARTMONTOOLS_SOURCE:=smartmontools-$(SMARTMONTOOLS_VERSION).tar.gz
 SMARTMONTOOLS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/smartmontools
-SMARTMONTOOLS_DIR:=$(BUILD_DIR)/smartmontools-$(SMARTMONTOOLS_VER)
+SMARTMONTOOLS_DIR:=$(BUILD_DIR)/smartmontools-$(SMARTMONTOOLS_VERSION)
 SMARTMONTOOLS_CAT:=$(ZCAT)
 SMARTMONTOOLS_BINARY:=smartctl
 SMARTMONTOOLS_BINARY2:=smartd

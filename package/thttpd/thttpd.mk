@@ -3,10 +3,10 @@
 # thttpd
 #
 #############################################################
-THTTPD_VER:=2.25b
-THTTPD_SOURCE:=thttpd-$(THTTPD_VER).tar.gz
+THTTPD_VERSION:=2.25b
+THTTPD_SOURCE:=thttpd-$(THTTPD_VERSION).tar.gz
 THTTPD_SITE:=http://www.acme.com/software/thttpd/
-THTTPD_DIR:=$(BUILD_DIR)/thttpd-$(THTTPD_VER)
+THTTPD_DIR:=$(BUILD_DIR)/thttpd-$(THTTPD_VERSION)
 THTTPD_CAT:=$(ZCAT)
 THTTPD_BINARY:=thttpd
 THTTPD_TARGET_BINARY:=sbin/thttpd

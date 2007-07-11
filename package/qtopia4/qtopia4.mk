@@ -15,7 +15,7 @@
 #
 ######################################################################
 
-QTOPIA4_VER:=4.2.2
+QTOPIA4_VERSION:=4.2.2
 QTOPIA4_CAT:=$(ZCAT)
 
 BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME)))
@@ -27,18 +27,18 @@ BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPI
 ifneq ($(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME),)
 
 QTOPIA4_SITE:=http://$(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME):$(BR2_QTOPIA4_COMMERCIAL_PASSWORD)@dist.trolltech.com/$(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME)
-QTOPIA4_SOURCE:=qtopia-core-commercial-src-$(QTOPIA4_VER).tar.gz
-QTOPIA4_TARGET_DIR:=$(BUILD_DIR)/qtopia-core-commercial-src-$(QTOPIA4_VER)
-QTOPIA4_HOST_DIR:=$(TOOL_BUILD_DIR)/qtopia-core-commercial-src-$(QTOPIA4_VER)
+QTOPIA4_SOURCE:=qtopia-core-commercial-src-$(QTOPIA4_VERSION).tar.gz
+QTOPIA4_TARGET_DIR:=$(BUILD_DIR)/qtopia-core-commercial-src-$(QTOPIA4_VERSION)
+QTOPIA4_HOST_DIR:=$(TOOL_BUILD_DIR)/qtopia-core-commercial-src-$(QTOPIA4_VERSION)
 
 else
 
 # Good, good, we are free:
 
 QTOPIA4_SITE=ftp://ftp.trolltech.com/qt/source/
-QTOPIA4_SOURCE:=qtopia-core-opensource-src-$(QTOPIA4_VER).tar.gz
-QTOPIA4_TARGET_DIR:=$(BUILD_DIR)/qtopia-core-opensource-src-$(QTOPIA4_VER)
-QTOPIA4_HOST_DIR:=$(TOOL_BUILD_DIR)/qtopia-core-opensource-src-$(QTOPIA4_VER)
+QTOPIA4_SOURCE:=qtopia-core-opensource-src-$(QTOPIA4_VERSION).tar.gz
+QTOPIA4_TARGET_DIR:=$(BUILD_DIR)/qtopia-core-opensource-src-$(QTOPIA4_VERSION)
+QTOPIA4_HOST_DIR:=$(TOOL_BUILD_DIR)/qtopia-core-opensource-src-$(QTOPIA4_VERSION)
 
 endif
 
@@ -160,18 +160,18 @@ endif
 	);
 	touch $(QTOPIA4_TARGET_DIR)/.configured
 
-$(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VER): $(QTOPIA4_TARGET_DIR)/.configured
+$(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_TARGET_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		-C $(QTOPIA4_TARGET_DIR) sub-src
 
-$(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VER): $(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VER)
+$(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		INSTALL_ROOT=$(STAGING_DIR) \
 		-C $(QTOPIA4_TARGET_DIR) \
 		sub-src-install_subtargets-ordered \
 		install_qmake install_mkspecs
 
-$(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VER): $(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VER)
+$(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION)
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
 	touch $(TARGET_DIR)/usr/lib/fonts/fontdir
 	cp -a $(STAGING_DIR)/usr/lib/fonts/helvetica*.qpf $(TARGET_DIR)/usr/lib/fonts
@@ -182,7 +182,7 @@ $(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VER): $(STAGING_DIR)/usr/lib/libQtC
 	-rm $(TARGET_DIR)/usr/lib/*Sql*
 	# Nor Svg
 	-rm $(TARGET_DIR)/usr/lib/*Svg*
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/*.so.$(QTOPIA4_VER)
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/*.so.$(QTOPIA4_VERSION)
 
 #################################
 #
@@ -245,17 +245,17 @@ endif
 	);
 	touch $(QTOPIA4_HOST_DIR)/.configured
 
-$(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VER): $(QTOPIA4_HOST_DIR)/.configured
+$(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_HOST_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) \
 		-C $(QTOPIA4_HOST_DIR)
 
-$(QTOPIA4_STAGING_DIR)/lib/libQtCore.so.$(QTOPIA4_VER): $(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VER)
+$(QTOPIA4_STAGING_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		-C $(QTOPIA4_HOST_DIR) install
 
 qtopia4: uclibc zlib $(QTOPIA4_TSLIB_DEP) \
-		$(QTOPIA4_STAGING_DIR)/lib/libQtCore.so.$(QTOPIA4_VER) \
-		$(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VER)
+		$(QTOPIA4_STAGING_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION) \
+		$(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION)
 
 qtopia4-clean:
 	-$(MAKE) -C $(QTOPIA4_HOST_DIR) clean

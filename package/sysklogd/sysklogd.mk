@@ -3,10 +3,10 @@
 # sysklogd
 #
 #############################################################
-SYSKLOGD_VER:=1.4.1
-SYSKLOGD_SOURCE:=sysklogd-$(SYSKLOGD_VER).tar.gz
+SYSKLOGD_VERSION:=1.4.1
+SYSKLOGD_SOURCE:=sysklogd-$(SYSKLOGD_VERSION).tar.gz
 SYSKLOGD_SITE:=http://www.infodrom.org/projects/sysklogd/download
-SYSKLOGD_DIR:=$(BUILD_DIR)/sysklogd-$(SYSKLOGD_VER)
+SYSKLOGD_DIR:=$(BUILD_DIR)/sysklogd-$(SYSKLOGD_VERSION)
 SYSKLOGD_SYSLOGD_BINARY:=syslogd
 SYSKLOGD_KLOGD_BINARY:=klogd
 SYSKLOGD_BINARY:=$(SYSKLOGD_KLOGD_BINARY)

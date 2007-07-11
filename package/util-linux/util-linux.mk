@@ -3,10 +3,10 @@
 # util-linux
 #
 #############################################################
-UTIL-LINUX_VER:=2.12r
-UTIL-LINUX_SOURCE:=util-linux-$(UTIL-LINUX_VER).tar.bz2
+UTIL-LINUX_VERSION:=2.12r
+UTIL-LINUX_SOURCE:=util-linux-$(UTIL-LINUX_VERSION).tar.bz2
 UTIL-LINUX_SITE:=http://www.kernel.org/pub/linux/utils/util-linux
-UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-$(UTIL-LINUX_VER)
+UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-$(UTIL-LINUX_VERSION)
 UTIL-LINUX_CAT:=$(BZCAT)
 UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/chkdupexe
 UTIL-LINUX_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/chkdupexe

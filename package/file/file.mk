@@ -3,12 +3,12 @@
 # file
 #
 #############################################################
-FILE_VER:=4.21
-FILE_SOURCE:=file-$(FILE_VER).tar.gz
+FILE_VERSION:=4.21
+FILE_SOURCE:=file-$(FILE_VERSION).tar.gz
 FILE_SITE:=ftp://ftp.astron.com/pub/file
-FILE_SOURCE_DIR:=$(BUILD_DIR)/file-$(FILE_VER)
-FILE_DIR1:=$(TOOL_BUILD_DIR)/file-$(FILE_VER)-host
-FILE_DIR2:=$(BUILD_DIR)/file-$(FILE_VER)-target
+FILE_SOURCE_DIR:=$(BUILD_DIR)/file-$(FILE_VERSION)
+FILE_DIR1:=$(TOOL_BUILD_DIR)/file-$(FILE_VERSION)-host
+FILE_DIR2:=$(BUILD_DIR)/file-$(FILE_VERSION)-target
 FILE_CAT:=$(ZCAT)
 FILE_BINARY:=src/file
 FILE_TARGET_BINARY:=usr/bin/file

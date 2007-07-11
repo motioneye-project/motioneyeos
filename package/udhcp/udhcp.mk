@@ -20,10 +20,10 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
-
-UDHCP_SOURCE:=udhcp-0.9.8.tar.gz
+UDHCP_VERSION:=0.9.8
+UDHCP_SOURCE:=udhcp-$(UDHCP_VERSION).tar.gz
 UDHCP_SITE:=http://udhcp.busybox.net/downloads/
-UDHCP_DIR:=$(BUILD_DIR)/udhcp-0.9.8
+UDHCP_DIR:=$(BUILD_DIR)/udhcp-$(UDHCP_VERSION)
 
 $(DL_DIR)/$(UDHCP_SOURCE):
 	$(WGET) -P $(DL_DIR) $(UDHCP_SITE)/$(UDHCP_SOURCE)

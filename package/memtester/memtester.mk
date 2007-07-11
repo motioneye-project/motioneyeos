@@ -3,10 +3,10 @@
 # memtester
 #
 #############################################################
-MEMTESTER_VER:=4.0.6
-MEMTESTER_SOURCE:=memtester-$(MEMTESTER_VER).tar.gz
+MEMTESTER_VERSION:=4.0.6
+MEMTESTER_SOURCE:=memtester-$(MEMTESTER_VERSION).tar.gz
 MEMTESTER_SITE:=http://pyropus.ca/software/memtester/old-versions/
-MEMTESTER_DIR:=$(BUILD_DIR)/memtester-$(MEMTESTER_VER)
+MEMTESTER_DIR:=$(BUILD_DIR)/memtester-$(MEMTESTER_VERSION)
 MEMTESTER_BINARY:=memtester
 MEMTESTER_TARGET_BINARY:=usr/bin/memtester
 

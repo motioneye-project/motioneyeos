@@ -21,10 +21,10 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
 
-LIBPNG_VER:=1.2.16
-LIBPNG_DIR:=$(BUILD_DIR)/libpng-$(LIBPNG_VER)
+LIBPNG_VERSION:=1.2.16
+LIBPNG_DIR:=$(BUILD_DIR)/libpng-$(LIBPNG_VERSION)
 LIBPNG_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
-LIBPNG_SOURCE:=libpng-$(LIBPNG_VER).tar.bz2
+LIBPNG_SOURCE:=libpng-$(LIBPNG_VERSION).tar.bz2
 LIBPNG_CAT:=$(BZCAT)
 
 $(DL_DIR)/$(LIBPNG_SOURCE):

@@ -3,10 +3,11 @@
 # slang
 #
 #############################################################
-SLANG_SOURCE=slang-1.4.5-mini.tar.bz2
+SLANG_VERSION:=1.4.5
+SLANG_SOURCE=slang-$(SLANG_VERSION)-mini.tar.bz2
 SLANG_CAT:=$(BZCAT)
 SLANG_SITE:=http://www.uclibc.org/
-SLANG_DIR=$(BUILD_DIR)/slang-1.4.5-mini
+SLANG_DIR=$(BUILD_DIR)/slang-$(SLANG_VERSION)-mini
 ifeq ($(BR2_LARGEFILE),y)
 SLANG_CFLAGS=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif

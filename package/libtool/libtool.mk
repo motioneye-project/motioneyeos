@@ -3,13 +3,13 @@
 # libtool
 #
 #############################################################
-LIBTOOL_VER:=1.5.22
-LIBTOOL_SOURCE:=libtool-$(LIBTOOL_VER).tar.gz
+LIBTOOL_VERSION:=1.5.22
+LIBTOOL_SOURCE:=libtool-$(LIBTOOL_VERSION).tar.gz
 LIBTOOL_SITE:=http://ftp.gnu.org/pub/gnu/libtool
 LIBTOOL_CAT:=$(ZCAT)
-LIBTOOL_SRC_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VER)
-LIBTOOL_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VER)
-LIBTOOL_HOST_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VER)-host
+LIBTOOL_SRC_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VERSION)
+LIBTOOL_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VERSION)
+LIBTOOL_HOST_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VERSION)-host
 LIBTOOL_BINARY:=libtool
 LIBTOOL_TARGET_BINARY:=usr/bin/libtool
 

@@ -3,11 +3,11 @@
 # iproute2
 #
 #############################################################
-IPROUTE2_VER:=2.6.18
+IPROUTE2_VERSION:=2.6.18
 IPROUTE2_STAMP:=061002
-IPROUTE2_SOURCE:=iproute2-$(IPROUTE2_VER)-$(IPROUTE2_STAMP).tar.gz
+IPROUTE2_SOURCE:=iproute2-$(IPROUTE2_VERSION)-$(IPROUTE2_STAMP).tar.gz
 IPROUTE2_SITE:=http://developer.osdl.org/dev/iproute2/download/
-IPROUTE2_DIR:=$(BUILD_DIR)/iproute2-$(IPROUTE2_VER)-$(IPROUTE2_STAMP)
+IPROUTE2_DIR:=$(BUILD_DIR)/iproute2-$(IPROUTE2_VERSION)-$(IPROUTE2_STAMP)
 IPROUTE2_CAT:=$(ZCAT)
 IPROUTE2_BINARY:=tc/tc
 IPROUTE2_TARGET_BINARY:=sbin/tc

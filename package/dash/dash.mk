@@ -3,12 +3,12 @@
 # dash
 #
 #############################################################
-DASH_VER:=0.5.3
-DASH_SOURCE:=dash_$(DASH_VER).orig.tar.gz
+DASH_VERSION:=0.5.3
+DASH_SOURCE:=dash_$(DASH_VERSION).orig.tar.gz
 DASH_SITE:=http://ftp.debian.org/debian/pool/main/d/dash
 DASH_CAT:=$(ZCAT)
-DASH_DIR:=$(BUILD_DIR)/dash-$(DASH_VER)
-DASH_PATCH1:=dash_$(DASH_VER)-7.diff.gz
+DASH_DIR:=$(BUILD_DIR)/dash-$(DASH_VERSION)
+DASH_PATCH1:=dash_$(DASH_VERSION)-7.diff.gz
 DASH_BINARY:=src/dash
 DASH_TARGET_BINARY:=bin/dash
 

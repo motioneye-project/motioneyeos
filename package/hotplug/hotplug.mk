@@ -3,9 +3,10 @@
 # hotplug support
 #
 #############################################################
-HOTPLUG_SOURCE=package/hotplug/diethotplug-0.5.tar
+HOTPLUG_VERSION:=0.5
+HOTPLUG_SOURCE=package/hotplug/diethotplug-$(HOTPLUG_VERSION).tar
 HOTPLUG_SITE=http://www.kernel.org/pub/linux/utils/kernel/hotplug/
-HOTPLUG_DIR=$(BUILD_DIR)/diethotplug-0.5
+HOTPLUG_DIR=$(BUILD_DIR)/diethotplug-$(HOTPLUG_VERSION)
 HOTPLUG_CAT=cat
 
 $(HOTPLUG_DIR): $(HOTPLUG_SOURCE)

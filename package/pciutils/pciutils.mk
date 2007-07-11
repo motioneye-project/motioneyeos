@@ -3,11 +3,11 @@
 # pciutils
 #
 #############################################################
-PCIUTILS_VER:=2.1.11
-PCIUTILS_SOURCE:=pciutils-$(PCIUTILS_VER).tar.gz
+PCIUTILS_VERSION:=2.1.11
+PCIUTILS_SOURCE:=pciutils-$(PCIUTILS_VERSION).tar.gz
 PCIUTILS_CAT:=$(ZCAT)
 PCIUTILS_SITE:=ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci
-PCIUTILS_DIR:=$(BUILD_DIR)/pciutils-$(PCIUTILS_VER)
+PCIUTILS_DIR:=$(BUILD_DIR)/pciutils-$(PCIUTILS_VERSION)
 
 # Yet more targets...
 PCIIDS_SITE:=http://pciids.sourceforge.net/

@@ -3,10 +3,10 @@
 # openssh
 #
 #############################################################
-
+OPENSSH_VERSION:=3.9p1
 OPENSSH_SITE:=ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
-OPENSSH_DIR:=$(BUILD_DIR)/openssh-3.9p1
-OPENSSH_SOURCE:=openssh-3.9p1.tar.gz
+OPENSSH_DIR:=$(BUILD_DIR)/openssh-$(OPENSSH_VERSION)
+OPENSSH_SOURCE:=openssh-$(OPENSSH_VERSION).tar.gz
 
 $(DL_DIR)/$(OPENSSH_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSH_SITE)/$(OPENSSH_SOURCE)

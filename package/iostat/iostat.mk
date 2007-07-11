@@ -3,10 +3,10 @@
 # iostat
 #
 #############################################################
-IOSTAT_VER:=2.2
-IOSTAT_SOURCE:=iostat-$(IOSTAT_VER).tar.gz
+IOSTAT_VERSION:=2.2
+IOSTAT_SOURCE:=iostat-$(IOSTAT_VERSION).tar.gz
 IOSTAT_SITE:=http://linux.inet.hr/files
-IOSTAT_DIR:=$(BUILD_DIR)/iostat-$(IOSTAT_VER)
+IOSTAT_DIR:=$(BUILD_DIR)/iostat-$(IOSTAT_VERSION)
 IOSTAT_BINARY:=iostat
 IOSTAT_TARGET_BINARY:=usr/bin/iostat
 

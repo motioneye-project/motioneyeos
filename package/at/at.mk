@@ -3,10 +3,10 @@
 # at
 #
 #############################################################
-AT_VER:=3.1.10
-AT_SOURCE:=at_$(AT_VER).tar.gz
+AT_VERSION:=3.1.10
+AT_SOURCE:=at_$(AT_VERSION).tar.gz
 AT_SITE:=http://ftp.debian.org/debian/pool/main/a/at
-AT_DIR:=$(BUILD_DIR)/at-$(AT_VER)
+AT_DIR:=$(BUILD_DIR)/at-$(AT_VERSION)
 AT_CAT:=$(ZCAT)
 AT_TARGET_BINARY:=usr/bin/at
 AT_BINARY:=at

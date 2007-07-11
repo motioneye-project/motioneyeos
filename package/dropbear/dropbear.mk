@@ -3,10 +3,10 @@
 # dropbear
 #
 #############################################################
-DROPBEAR_VER:=0.49
-DROPBEAR_SOURCE:=dropbear-$(DROPBEAR_VER).tar.gz
+DROPBEAR_VERSION:=0.49
+DROPBEAR_SOURCE:=dropbear-$(DROPBEAR_VERSION).tar.gz
 DROPBEAR_SITE:=http://matt.ucc.asn.au/dropbear/releases/
-DROPBEAR_DIR:=$(BUILD_DIR)/dropbear-$(DROPBEAR_VER)
+DROPBEAR_DIR:=$(BUILD_DIR)/dropbear-$(DROPBEAR_VERSION)
 DROPBEAR_CAT:=$(ZCAT)
 DROPBEAR_BINARY:=dropbearmulti
 DROPBEAR_TARGET_BINARY:=usr/sbin/dropbear

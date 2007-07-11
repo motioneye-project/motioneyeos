@@ -3,10 +3,10 @@
 # quagga suite
 #
 #############################################################
-QUAGGA_VER:=0.99.7
-QUAGGA_SOURCE:=quagga-$(QUAGGA_VER).tar.gz
+QUAGGA_VERSION:=0.99.7
+QUAGGA_SOURCE:=quagga-$(QUAGGA_VERSION).tar.gz
 QUAGGA_SITE:=http://www.quagga.net/download
-QUAGGA_DIR:=$(BUILD_DIR)/quagga-$(QUAGGA_VER)
+QUAGGA_DIR:=$(BUILD_DIR)/quagga-$(QUAGGA_VERSION)
 QUAGGA_CAT:=$(ZCAT)
 
 QUAGGA_CONFIGURE:=

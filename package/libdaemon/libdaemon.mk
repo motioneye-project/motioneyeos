@@ -11,10 +11,10 @@
 # either version 2.1 of the License, or (at your option) any 
 # later version.
 
-LIBDAEMON_VER:=0.10
-LIBDAEMON_DIR:=$(BUILD_DIR)/libdaemon-$(LIBDAEMON_VER)
+LIBDAEMON_VERSION:=0.10
+LIBDAEMON_DIR:=$(BUILD_DIR)/libdaemon-$(LIBDAEMON_VERSION)
 LIBDAEMON_SITE:=http://0pointer.de/lennart/projects/libdaemon/
-LIBDAEMON_SOURCE:=libdaemon-$(LIBDAEMON_VER).tar.gz
+LIBDAEMON_SOURCE:=libdaemon-$(LIBDAEMON_VERSION).tar.gz
 LIBDAEMON_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(LIBDAEMON_SOURCE):

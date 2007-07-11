@@ -6,9 +6,10 @@
 # to enable that within busybox
 #
 #############################################################
-VTUN_SOURCE:=vtun-2.6.tar.gz
+VTUN_VERSION:=2.6
+VTUN_SOURCE:=vtun-$(VTUN_VERSION).tar.gz
 VTUN_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/vtun/
-VTUN_DIR:=$(BUILD_DIR)/vtun-2.6
+VTUN_DIR:=$(BUILD_DIR)/vtun-$(VTUN_VERSION)
 VTUN_CAT:=$(ZCAT)
 VTUN_BINARY:=vtund
 VTUN_TARGET_BINARY:=usr/sbin/vtund

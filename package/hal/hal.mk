@@ -3,10 +3,10 @@
 # hal
 #
 #############################################################
-HAL_VER:=0.5.8
-HAL_SOURCE:=hal-$(HAL_VER).tar.gz
+HAL_VERSION:=0.5.8
+HAL_SOURCE:=hal-$(HAL_VERSION).tar.gz
 HAL_SITE:=http://people.freedesktop.org/~david/dist/
-HAL_DIR:=$(BUILD_DIR)/hal-$(HAL_VER)
+HAL_DIR:=$(BUILD_DIR)/hal-$(HAL_VERSION)
 HAL_CAT:=$(ZCAT)
 HAL_BINARY:=hald/hald
 HAL_TARGET_BINARY:=usr/sbin/hald

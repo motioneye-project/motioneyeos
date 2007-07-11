@@ -3,10 +3,10 @@
 # tftpd
 #
 #############################################################
-TFTP_HPA_VER:=0.40
-TFTP_HPA_SOURCE:=tftp-hpa-$(TFTP_HPA_VER).tar.bz2
+TFTP_HPA_VERSION:=0.40
+TFTP_HPA_SOURCE:=tftp-hpa-$(TFTP_HPA_VERSION).tar.bz2
 TFTP_HPA_SITE:=http://www.kernel.org/pub/software/network/tftp/
-TFTP_HPA_DIR:=$(BUILD_DIR)/tftp-hpa-$(TFTP_HPA_VER)
+TFTP_HPA_DIR:=$(BUILD_DIR)/tftp-hpa-$(TFTP_HPA_VERSION)
 TFTP_HPA_CAT:=$(BZCAT)
 TFTP_HPA_BINARY:=tftpd/tftpd
 TFTP_HPA_TARGET_BINARY:=usr/sbin/in.tftpd

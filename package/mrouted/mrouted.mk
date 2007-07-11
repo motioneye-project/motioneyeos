@@ -4,9 +4,10 @@
 #
 #
 #############################################################
-MROUTED_SOURCE:=mrouted_3.9-beta3.orig.tar.gz
+MROUTED_VERSION:=3.9-beta3.orig
+MROUTED_SOURCE:=mrouted_$(MROUTED_VERSION).tar.gz
 MROUTED_SITE:=http://ftp.debian.org/debian/pool/non-free/m/mrouted
-MROUTED_DIR:=$(BUILD_DIR)/mrouted-3.9-beta3.orig
+MROUTED_DIR:=$(BUILD_DIR)/mrouted-$(MROUTED_VERSION)
 MROUTED_CAT:=$(ZCAT)
 MROUTED_PATCH:=mrouted_3.9-beta3-1.1.diff.gz
 MROUTED_BINARY:=mrouted

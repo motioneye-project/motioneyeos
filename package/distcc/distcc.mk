@@ -3,11 +3,11 @@
 # distcc
 #
 #############################################################
-DISTCC_VER:=2.18.3
-DISTCC_SOURCE:=distcc-$(DISTCC_VER).tar.bz2
+DISTCC_VERSION:=2.18.3
+DISTCC_SOURCE:=distcc-$(DISTCC_VERSION).tar.bz2
 DISTCC_CAT:=$(BZCAT)
 DISTCC_SITE:=http://distcc.samba.org/ftp/distcc/
-DISTCC_DIR:=$(BUILD_DIR)/distcc-$(DISTCC_VER)
+DISTCC_DIR:=$(BUILD_DIR)/distcc-$(DISTCC_VERSION)
 DISTCC_BINARY:=distcc
 DISTCC_TARGET_BINARY:=usr/bin/distcc
 

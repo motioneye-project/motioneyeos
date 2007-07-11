@@ -3,12 +3,12 @@
 # sed
 #
 #############################################################
-SED_VER:=4.1.5
-SED_SOURCE:=sed-$(SED_VER).tar.gz
+SED_VERSION:=4.1.5
+SED_SOURCE:=sed-$(SED_VERSION).tar.gz
 SED_SITE:=http://ftp.gnu.org/pub/gnu/sed
 SED_CAT:=$(ZCAT)
-SED_DIR1:=$(TOOL_BUILD_DIR)/sed-$(SED_VER)
-SED_DIR2:=$(BUILD_DIR)/sed-$(SED_VER)
+SED_DIR1:=$(TOOL_BUILD_DIR)/sed-$(SED_VERSION)
+SED_DIR2:=$(BUILD_DIR)/sed-$(SED_VERSION)
 SED_BINARY:=sed/sed
 SED_TARGET_BINARY:=bin/sed
 ifeq ($(strip $(BR2_LARGEFILE)),y)

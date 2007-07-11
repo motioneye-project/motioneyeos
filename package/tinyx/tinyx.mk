@@ -45,11 +45,11 @@ TINYX_LIBS:=ICE X11 Xext Xpm
 #
 # Where resources are found.
 #
-
-TINYX_DIR:=$(BUILD_DIR)/xc-011010
+TINYX_VERSION:=011010
+TINYX_DIR:=$(BUILD_DIR)/xc-$(TINYX_VERSION)
 TINYX_LDIR:=$(TINYX_DIR)/lib
 TINYX_PROGS:=$(TINYX_DIR)/programs
-TINYX_SOURCE:=xc-011010.tar.bz2
+TINYX_SOURCE:=xc-$(TINYX_VERSION).tar.bz2
 TINYX_SITE:= http://intimate.handhelds.org/jacques/
 TINYX_CF:=$(TINYX_DIR)/config/cf
 #

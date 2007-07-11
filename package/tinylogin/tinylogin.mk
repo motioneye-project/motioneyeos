@@ -4,6 +4,7 @@
 #
 #############################################################
 # Enable this to use the tinylogin daily snapshot
+TINYLOGIN_VERSION:=1.4
 USE_TINYLOGIN_SNAPSHOT=true
 
 ifeq ($(USE_TINYLOGIN_SNAPSHOT),true)
@@ -12,8 +13,8 @@ TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin
 TINYLOGIN_SOURCE:=tinylogin-snapshot.tar.bz2
 TINYLOGIN_SITE:=http://tinylogin.busybox.net/downloads/snapshots
 else
-TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin-1.4
-TINYLOGIN_SOURCE:=tinylogin-1.4.tar.bz2
+TINYLOGIN_DIR:=$(BUILD_DIR)/tinylogin-$(TINYLOGIN_VERSION)
+TINYLOGIN_SOURCE:=tinylogin-$(TINYLOGIN_VERSION).tar.bz2
 TINYLOGIN_SITE:=http://tinylogin.busybox.net/downloads
 endif
 TINYLOGIN_CAT:=$(BZCAT)

@@ -5,11 +5,11 @@
 #############################################################
 
 # TARGETS
-OPENSSL_VER:=0.9.7e
+OPENSSL_VERSION:=0.9.7e
 OPENSSL_SITE:=http://www.openssl.org/source
-OPENSSL_SOURCE:=openssl-$(OPENSSL_VER).tar.gz
+OPENSSL_SOURCE:=openssl-$(OPENSSL_VERSION).tar.gz
 OPENSSL_CAT:=$(ZCAT)
-OPENSSL_DIR:=$(BUILD_DIR)/openssl-$(OPENSSL_VER)
+OPENSSL_DIR:=$(BUILD_DIR)/openssl-$(OPENSSL_VERSION)
 
 OPENSSL_TARGET_ARCH:=
 ifeq ($(BR2_i386),y)

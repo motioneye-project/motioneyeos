@@ -3,10 +3,10 @@
 # usbutils
 #
 #############################################################
-USBUTILS_VER:=0.72
-USBUTILS_SOURCE:=usbutils-$(USBUTILS_VER).tar.gz
+USBUTILS_VERSION:=0.72
+USBUTILS_SOURCE:=usbutils-$(USBUTILS_VERSION).tar.gz
 USBUTILS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/linux-usb/
-USBUTILS_DIR:=$(BUILD_DIR)/usbutils-$(USBUTILS_VER)
+USBUTILS_DIR:=$(BUILD_DIR)/usbutils-$(USBUTILS_VERSION)
 USBUTILS_CAT:=$(ZCAT)
 USBUTILS_BINARY:=lsusb
 USBUTILS_TARGET_BINARY:=usr/sbin/lsusb

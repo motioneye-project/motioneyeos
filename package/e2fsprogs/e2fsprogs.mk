@@ -3,10 +3,10 @@
 # e2fsprogs
 #
 #############################################################
-E2FSPROGS_VER:=1.39
-E2FSPROGS_SOURCE=e2fsprogs-$(E2FSPROGS_VER).tar.gz
+E2FSPROGS_VERSION:=1.39
+E2FSPROGS_SOURCE=e2fsprogs-$(E2FSPROGS_VERSION).tar.gz
 E2FSPROGS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/e2fsprogs
-E2FSPROGS_DIR=$(BUILD_DIR)/e2fsprogs-$(E2FSPROGS_VER)
+E2FSPROGS_DIR=$(BUILD_DIR)/e2fsprogs-$(E2FSPROGS_VERSION)
 E2FSPROGS_CAT:=$(ZCAT)
 E2FSPROGS_BINARY:=misc/mke2fs
 E2FSPROGS_TARGET_BINARY:=sbin/mke2fs

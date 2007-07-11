@@ -4,10 +4,10 @@
 #
 #############################################################
 
-IPSEC_TOOLS_VER:=0.6.7
-IPSEC_TOOLS_SOURCE:=ipsec-tools-$(IPSEC_TOOLS_VER).tar.bz2
+IPSEC_TOOLS_VERSION:=0.6.7
+IPSEC_TOOLS_SOURCE:=ipsec-tools-$(IPSEC_TOOLS_VERSION).tar.bz2
 IPSEC_TOOLS_CAT:=$(BZCAT)
-IPSEC_TOOLS_DIR:=$(BUILD_DIR)/ipsec-tools-$(IPSEC_TOOLS_VER)
+IPSEC_TOOLS_DIR:=$(BUILD_DIR)/ipsec-tools-$(IPSEC_TOOLS_VERSION)
 
 IPSEC_TOOLS_BINARY_SETKEY:=src/setkey/setkey
 IPSEC_TOOLS_BINARY_RACOON:=src/racoon/racoon
@@ -63,7 +63,7 @@ $(DL_DIR)/$(IPSEC_TOOLS_SOURCE):
 
 $(IPSEC_TOOLS_DIR)/.patched: $(DL_DIR)/$(IPSEC_TOOLS_SOURCE)
 	$(IPSEC_TOOLS_CAT) $(DL_DIR)/$(IPSEC_TOOLS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(IPSEC_TOOLS_DIR) package/ipsec-tools ipsec-tools-$(IPSEC_TOOLS_VER)\*.patch
+	toolchain/patch-kernel.sh $(IPSEC_TOOLS_DIR) package/ipsec-tools ipsec-tools-$(IPSEC_TOOLS_VERSION)\*.patch
 	$(CONFIG_UPDATE) $(IPSEC_TOOLS_DIR)
 	touch $@
 

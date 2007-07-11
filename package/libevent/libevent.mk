@@ -3,10 +3,10 @@
 # libevent
 #
 #############################################################
-LIBEVENT_VER:=1.2
-LIBEVENT_SOURCE:=libevent-$(LIBEVENT_VER).tar.gz
+LIBEVENT_VERSION:=1.2
+LIBEVENT_SOURCE:=libevent-$(LIBEVENT_VERSION).tar.gz
 LIBEVENT_SITE:=http://monkey.org/~provos/
-LIBEVENT_DIR:=$(BUILD_DIR)/libevent-$(LIBEVENT_VER)
+LIBEVENT_DIR:=$(BUILD_DIR)/libevent-$(LIBEVENT_VERSION)
 LIBEVENT_CAT:=$(ZCAT)
 LIBEVENT_BINARY:=libevent.la
 LIBEVENT_TARGET_BINARY:=usr/lib/libevent.so

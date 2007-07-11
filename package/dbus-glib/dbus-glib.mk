@@ -3,10 +3,10 @@
 # dbus-glib
 #
 #############################################################
-DBUS_GLIB_VER:=0.72
-DBUS_GLIB_SOURCE:=dbus-glib-$(DBUS_GLIB_VER).tar.gz
+DBUS_GLIB_VERSION:=0.72
+DBUS_GLIB_SOURCE:=dbus-glib-$(DBUS_GLIB_VERSION).tar.gz
 DBUS_GLIB_SITE:=http://dbus.freedesktop.org/releases/dbus-glib/
-DBUS_GLIB_DIR:=$(BUILD_DIR)/dbus-glib-$(DBUS_GLIB_VER)
+DBUS_GLIB_DIR:=$(BUILD_DIR)/dbus-glib-$(DBUS_GLIB_VERSION)
 DBUS_GLIB_CAT:=$(ZCAT)
 DBUS_GLIB_BINARY:=dbus/.libs/dbus-binding-tool
 DBUS_GLIB_TARGET_BINARY:=usr/bin/dbus-binding-tool

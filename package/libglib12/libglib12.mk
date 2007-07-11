@@ -3,10 +3,11 @@
 # libglib1.2
 #
 #############################################################
-LIBGLIB12_SOURCE:=glib-1.2.10.tar.gz
+LIBGLIB12_VERSION:=1.2.10
+LIBGLIB12_SOURCE:=glib-$(LIBGLIB12_VERSION).tar.gz
 LIBGLIB12_SITE:=http://ftp.gtk.org/pub/gtk/v1.2
 LIBGLIB12_CAT:=$(ZCAT)
-LIBGLIB12_DIR:=$(BUILD_DIR)/glib-1.2.10
+LIBGLIB12_DIR:=$(BUILD_DIR)/glib-$(LIBGLIB12_VERSION)
 LIBGLIB12_BINARY:=libglib.a
 
 $(DL_DIR)/$(LIBGLIB12_SOURCE):

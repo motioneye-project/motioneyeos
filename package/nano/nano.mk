@@ -3,10 +3,10 @@
 # nano
 #
 #############################################################
-NANO_VER:=1.3.12
-NANO_SOURCE:=nano-$(NANO_VER).tar.gz
+NANO_VERSION:=1.3.12
+NANO_SOURCE:=nano-$(NANO_VERSION).tar.gz
 NANO_SITE:=http://www.nano-editor.org/dist/v1.3/
-NANO_DIR:=$(BUILD_DIR)/nano-$(NANO_VER)
+NANO_DIR:=$(BUILD_DIR)/nano-$(NANO_VERSION)
 NANO_CAT:=$(ZCAT)
 NANO_BINARY:=src/nano
 NANO_TARGET_BINARY:=bin/nano

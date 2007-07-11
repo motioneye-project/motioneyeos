@@ -6,10 +6,10 @@
 # Copyright (C) 2001-2003 by Erik Andersen <andersen@codepoet.org>
 # Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
 
-TCPDUMP_VER:=3.9.5
-TCPDUMP_DIR:=$(BUILD_DIR)/tcpdump-$(TCPDUMP_VER)
+TCPDUMP_VERSION:=3.9.5
+TCPDUMP_DIR:=$(BUILD_DIR)/tcpdump-$(TCPDUMP_VERSION)
 TCPDUMP_SITE:=http://www.tcpdump.org/release
-TCPDUMP_SOURCE:=tcpdump-$(TCPDUMP_VER).tar.gz
+TCPDUMP_SOURCE:=tcpdump-$(TCPDUMP_VERSION).tar.gz
 TCPDUMP_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(TCPDUMP_SOURCE):

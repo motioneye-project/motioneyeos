@@ -3,11 +3,11 @@
 # dhcp
 #
 #############################################################
-DHCP_VER:=3.0.5
-DHCP_SOURCE:=dhcp-$(DHCP_VER).tar.gz
+DHCP_VERSION:=3.0.5
+DHCP_SOURCE:=dhcp-$(DHCP_VERSION).tar.gz
 DHCP_SITE:=ftp://ftp.isc.org/isc/dhcp
 DHCP_CAT:=$(ZCAT)
-DHCP_DIR:=$(BUILD_DIR)/dhcp-$(DHCP_VER)
+DHCP_DIR:=$(BUILD_DIR)/dhcp-$(DHCP_VERSION)
 DHCP_SERVER_BINARY:=work.linux-2.2/server/dhcpd
 DHCP_RELAY_BINARY:=work.linux-2.2/relay/dhcrelay
 DHCP_CLIENT_BINARY:=work.linux-2.2/client/dhclient

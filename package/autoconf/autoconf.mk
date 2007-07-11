@@ -3,13 +3,13 @@
 # autoconf
 #
 #############################################################
-AUTOCONF_VER:=2.61
-AUTOCONF_SOURCE:=autoconf-$(AUTOCONF_VER).tar.bz2
+AUTOCONF_VERSION:=2.61
+AUTOCONF_SOURCE:=autoconf-$(AUTOCONF_VERSION).tar.bz2
 AUTOCONF_SITE:=http://ftp.gnu.org/pub/gnu/autoconf
 AUTOCONF_CAT:=$(BZCAT)
-AUTOCONF_SRC_DIR:=$(TOOL_BUILD_DIR)/autoconf-$(AUTOCONF_VER)
-AUTOCONF_DIR:=$(BUILD_DIR)/autoconf-$(AUTOCONF_VER)
-AUTOCONF_HOST_DIR:=$(TOOL_BUILD_DIR)/autoconf-$(AUTOCONF_VER)-host
+AUTOCONF_SRC_DIR:=$(TOOL_BUILD_DIR)/autoconf-$(AUTOCONF_VERSION)
+AUTOCONF_DIR:=$(BUILD_DIR)/autoconf-$(AUTOCONF_VERSION)
+AUTOCONF_HOST_DIR:=$(TOOL_BUILD_DIR)/autoconf-$(AUTOCONF_VERSION)-host
 AUTOCONF_BINARY:=autoconf
 AUTOCONF_TARGET_BINARY:=usr/bin/autoconf
 AUTOCONF:=$(STAGING_DIR)/usr/bin/autoconf

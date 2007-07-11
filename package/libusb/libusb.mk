@@ -3,10 +3,10 @@
 # libusb
 #
 #############################################################
-LIBUSB_VER:=0.1.12
-LIBUSB_SOURCE:=libusb-$(LIBUSB_VER).tar.gz
+LIBUSB_VERSION:=0.1.12
+LIBUSB_SOURCE:=libusb-$(LIBUSB_VERSION).tar.gz
 LIBUSB_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libusb/
-LIBUSB_DIR:=$(BUILD_DIR)/libusb-$(LIBUSB_VER)
+LIBUSB_DIR:=$(BUILD_DIR)/libusb-$(LIBUSB_VERSION)
 LIBUSB_CAT:=$(ZCAT)
 LIBUSB_BINARY:=usr/lib/libusb.so
 

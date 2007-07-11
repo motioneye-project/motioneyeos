@@ -3,9 +3,10 @@
 # ruby
 #
 #############################################################
-RUBY_SOURCE:=ruby-1.8.2.tar.gz
+RUBY_VERSION:=1.8.2
+RUBY_SOURCE:=ruby-$(RUBY_VERSION).tar.gz
 RUBY_SITE:=ftp://ftp.ruby-lang.org/pub/ruby/1.8
-RUBY_DIR:=$(BUILD_DIR)/ruby-1.8.2
+RUBY_DIR:=$(BUILD_DIR)/ruby-$(RUBY_VERSION)
 RUBY_CAT:=$(ZCAT)
 RUBY_BINARY:=ruby
 RUBY_TARGET_BINARY:=usr/bin/ruby

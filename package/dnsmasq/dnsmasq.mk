@@ -7,10 +7,10 @@
 DNSMASQ_SITE=http://thekelleys.org.uk/dnsmasq
 ifeq ($(filter $(TARGETS),dnsmasq1),)
 DNSMASQ_UPVER=2.22
-DNSMASQ_VER=dnsmasq2
+DNSMASQ_VERSION=dnsmasq2
 else
 DNSMASQ_UPVER=1.18
-DNSMASQ_VER=dnsmasq1
+DNSMASQ_VERSION=dnsmasq1
 endif
 DNSMASQ_SOURCE=dnsmasq-$(DNSMASQ_UPVER).tar.gz
 DNSMASQ_DIR=$(BUILD_DIR)/dnsmasq-$(DNSMASQ_UPVER)
@@ -23,7 +23,7 @@ $(DL_DIR)/$(DNSMASQ_SOURCE):
 $(DNSMASQ_DIR)/.source: $(DL_DIR)/$(DNSMASQ_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(DNSMASQ_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(DNSMASQ_DIR) package/dnsmasq/ \
-		$(DNSMASQ_VER)\*.patch
+		$(DNSMASQ_VERSION)\*.patch
 	touch $(DNSMASQ_DIR)/.source
 
 $(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY): $(DNSMASQ_DIR)/.source

@@ -3,11 +3,11 @@
 # uemacs
 #
 #############################################################
-UEMACS_VER:=4.0.15-lt
-UEMACS_SOURCE:=em-$(UEMACS_VER).tar.bz2
+UEMACS_VERSION:=4.0.15-lt
+UEMACS_SOURCE:=em-$(UEMACS_VERSION).tar.bz2
 UEMACS_CAT:=$(BZCAT)
 UEMACS_SITE:=ftp://ftp.kernel.org/pub/software/editors/uemacs/
-UEMACS_DIR:=$(BUILD_DIR)/em-$(UEMACS_VER)
+UEMACS_DIR:=$(BUILD_DIR)/em-$(UEMACS_VERSION)
 UEMACS_BINARY:=em
 UEMACS_TARGET_BINARY:=usr/bin/emacs
 

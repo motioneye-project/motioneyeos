@@ -3,10 +3,10 @@
 # build GNU readline
 #
 #############################################################
-READLINE_VER:=5.1
+READLINE_VERSION:=5.1
 READLINE_SITE:=ftp://ftp.cwru.edu/pub/bash
-READLINE_SOURCE:=readline-$(READLINE_VER).tar.gz
-READLINE_DIR:=$(BUILD_DIR)/readline-$(READLINE_VER)
+READLINE_SOURCE:=readline-$(READLINE_VERSION).tar.gz
+READLINE_DIR:=$(BUILD_DIR)/readline-$(READLINE_VERSION)
 READLINE_CAT:=$(ZCAT)
 READLINE_BINARY:=libhistory.a
 READLINE_TARGET_BINARY:=lib/$(READLINE_BINARY)

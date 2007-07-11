@@ -3,10 +3,11 @@
 # sfdisk support
 #
 #############################################################
-SFDISK_SOURCE=sfdisk.tar.bz2
+SFDISK_VERSION:=
+SFDISK_SOURCE=sfdisk$(SFDISK_VERSION).tar.bz2
 SFDISK_CAT:=$(BZCAT)
 SFDISK_SITE:=http://www.uclibc.org/
-SFDISK_DIR=$(BUILD_DIR)/sfdisk
+SFDISK_DIR=$(BUILD_DIR)/sfdisk$(SFDISK_VERSION)
 
 $(DL_DIR)/$(SFDISK_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SFDISK_SITE)/$(SFDISK_SOURCE)

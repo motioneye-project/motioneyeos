@@ -3,10 +3,10 @@
 # libelf
 #
 #############################################################
-LIBELF_VER=0.8.9
-LIBELF_SOURCE=libelf-$(LIBELF_VER).tar.gz
+LIBELF_VERSION=0.8.9
+LIBELF_SOURCE=libelf-$(LIBELF_VERSION).tar.gz
 LIBELF_SITE=http://www.mr511.de/software/
-LIBELF_DIR=$(BUILD_DIR)/libelf-$(LIBELF_VER)
+LIBELF_DIR=$(BUILD_DIR)/libelf-$(LIBELF_VERSION)
 
 LIBELF_ARCH:=$(ARCH)
 ifeq ("$(strip $(ARCH))","armeb")
@@ -39,22 +39,22 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.unpacked
 	);
 	touch $@
 
-$(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/.configured
+$(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VERSION): $(LIBELF_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBELF_DIR)
 
-$(STAGING_DIR)/usr/lib/libelf.a $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VER): $(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VER)
+$(STAGING_DIR)/usr/lib/libelf.a $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION): $(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VERSION)
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
 		instroot=$(STAGING_DIR) -C $(LIBELF_DIR) install
 
 ifeq ($(BR2_PACKAGE_LIBELF_HEADERS),y)
-$(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER): $(STAGING_DIR)/usr/lib/libelf.a
+$(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION): $(STAGING_DIR)/usr/lib/libelf.a
 	$(INSTALL) $(STAGING_DIR)/usr/lib/libelf* $(@D)
 	cp -dpR $(STAGING_DIR)/usr/include/{gelf.h,libelf*} $(TARGET_DIR)/usr/include/
 	$(STRIP) $@
 
-libelf: uclibc $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VER)
+libelf: uclibc $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION)
 else
-libelf: uclibc $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VER)
+libelf: uclibc $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION)
 endif
 libelf-source: $(DL_DIR)/$(LIBELF_SOURCE)
 

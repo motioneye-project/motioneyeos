@@ -5,12 +5,12 @@
 #############################################################
 
 # Seems to be broken -- topbar icons and such are misplaced etc
-#METACITY_VER:=2.17.5
+#METACITY_VERSION:=2.17.5
 
-METACITY_VER:=2.16.3
-METACITY_SOURCE:=metacity-$(METACITY_VER).tar.bz2
+METACITY_VERSION:=2.16.3
+METACITY_SOURCE:=metacity-$(METACITY_VERSION).tar.bz2
 METACITY_SITE:=http://ftp.gnome.org/pub/gnome/sources/metacity/2.16
-METACITY_DIR:=$(BUILD_DIR)/metacity-$(METACITY_VER)
+METACITY_DIR:=$(BUILD_DIR)/metacity-$(METACITY_VERSION)
 METACITY_CAT:=$(BZCAT)
 
 METACITY_SOURCE2:=MCity-Clearlooks2.tar.gz

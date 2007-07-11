@@ -3,11 +3,11 @@
 # strace
 #
 #############################################################
-STRACE_VER:=4.5.15
-STRACE_SOURCE:=strace-$(STRACE_VER).tar.bz2
+STRACE_VERSION:=4.5.15
+STRACE_SOURCE:=strace-$(STRACE_VERSION).tar.bz2
 STRACE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/strace
 STRACE_CAT:=$(BZCAT)
-STRACE_DIR:=$(BUILD_DIR)/strace-$(STRACE_VER)
+STRACE_DIR:=$(BUILD_DIR)/strace-$(STRACE_VERSION)
 
 BR2_STRACE_CFLAGS:=
 ifeq ($(BR2_LARGEFILE),)

@@ -3,9 +3,10 @@
 # grep
 #
 #############################################################
-GNUGREP_SOURCE:=grep_2.5.1.ds1.orig.tar.gz
+GNUGREP_VERSION:=2.5.1
+GNUGREP_SOURCE:=grep_$(GNUGREP_VERSION).ds1.orig.tar.gz
 GNUGREP_SITE:=http://ftp.debian.org/debian/pool/main/g/grep/
-GNUGREP_DIR:=$(BUILD_DIR)/grep-2.5.1
+GNUGREP_DIR:=$(BUILD_DIR)/grep-$(GNUGREP_VERSION)
 GNUGREP_CAT:=$(ZCAT)
 GNUGREP_BINARY:=src/grep
 GNUGREP_TARGET_BINARY:=bin/grep
@@ -19,7 +20,7 @@ $(GNUGREP_DIR)/.unpacked: $(DL_DIR)/$(GNUGREP_SOURCE)
 	rm -rf $(GNUGREP_DIR).xxx
 	$(GNUGREP_CAT) $(DL_DIR)/$(GNUGREP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	mv $(GNUGREP_DIR) $(GNUGREP_DIR).xxx
-	$(GNUGREP_CAT) $(GNUGREP_DIR).xxx/grep_2.5.1.tar.gz | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(GNUGREP_CAT) $(GNUGREP_DIR).xxx/grep_$(GNUGREP_VERSION).tar.gz | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	rm -rf $(GNUGREP_DIR).xxx
 	touch $(GNUGREP_DIR)/.unpacked
 

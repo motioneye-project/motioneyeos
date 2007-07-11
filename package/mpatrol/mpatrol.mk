@@ -3,8 +3,8 @@
 # mpatrol
 #
 #############################################################
-MPATROL_VER:=1.4.8
-MPATROL_SOURCE:=mpatrol_$(MPATROL_VER).tar.gz
+MPATROL_VERSION:=1.4.8
+MPATROL_SOURCE:=mpatrol_$(MPATROL_VERSION).tar.gz
 MPATROL_SITE:=http://www.cbmamiga.demon.co.uk/mpatrol/files
 MPATROL_DIR:=$(BUILD_DIR)/mpatrol
 MPATROL_CAT:=$(ZCAT)
