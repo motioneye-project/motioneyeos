@@ -5,8 +5,8 @@
 #############################################################
 ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
 # Be aware that this changes daily....
-TODAY:=$(shell date -u +%Y%m%d)
-MTD_DL_SOURCE:=mtd-snapshot-$(TODAY).tar.bz2
+
+MTD_DL_SOURCE:=mtd-snapshot-$(DATE).tar.bz2
 MTD_CAT:=$(BZCAT)
 MTD_SOURCE:=mtd-snapshot.tar.bz2
 MTD_SITE:=ftp://ftp.uk.linux.org/pub/people/dwmw2/mtd/cvs

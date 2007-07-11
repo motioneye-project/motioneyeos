@@ -25,6 +25,7 @@ TOPDIR=./
 CONFIG_CONFIG_IN = Config.in
 CONFIG_DEFCONFIG = .defconfig
 CONFIG = package/config
+DATE:=$(shell date -u +%Y%m%d)
 
 noconfig_targets := menuconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release tags    \
