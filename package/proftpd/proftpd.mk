@@ -3,10 +3,10 @@
 # proftpd
 #
 #############################################################
-PROFTPD_VER:=1.3.0a
-PROFTPD_SOURCE:=proftpd-$(PROFTPD_VER).tar.bz2
+PROFTPD_VERSION:=1.3.0a
+PROFTPD_SOURCE:=proftpd-$(PROFTPD_VERSION).tar.bz2
 PROFTPD_SITE:=ftp://ftp.proftpd.org/distrib/source/
-PROFTPD_DIR:=$(BUILD_DIR)/proftpd-$(PROFTPD_VER)
+PROFTPD_DIR:=$(BUILD_DIR)/proftpd-$(PROFTPD_VERSION)
 PROFTPD_CAT:=bzcat
 PROFTPD_BINARY:=proftpd
 PROFTPD_TARGET_BINARY:=usr/sbin/proftpd
