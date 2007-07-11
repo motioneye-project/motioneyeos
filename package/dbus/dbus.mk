@@ -3,10 +3,10 @@
 # dbus
 #
 #############################################################
-DBUS_VER:=1.1.1
-DBUS_SOURCE:=dbus-$(DBUS_VER).tar.gz
+DBUS_VERSION:=1.1.1
+DBUS_SOURCE:=dbus-$(DBUS_VERSION).tar.gz
 DBUS_SITE:=http://dbus.freedesktop.org/releases/dbus/
-DBUS_DIR:=$(BUILD_DIR)/dbus-$(DBUS_VER)
+DBUS_DIR:=$(BUILD_DIR)/dbus-$(DBUS_VERSION)
 DBUS_CAT:=$(ZCAT)
 DBUS_BINARY:=bus/dbus-daemon
 DBUS_TARGET_BINARY:=usr/bin/dbus-daemon
