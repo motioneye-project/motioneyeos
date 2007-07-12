@@ -19,9 +19,16 @@ finally, you must send me an ssh version 2 DSA key with 1024 bits (the default)
 or more.  If you do not currently have an ssh version 2 DSA key, you can
 generate a key using the command<pre>ssh-keygen -t dsa</pre>  This will
 create the files <pre>/home/&lt;USERNAME&gt;/ssh/id_dsa
-/home/&lt;USERNAME&gt;/.ssh/id_dsa.pub</pre>  You must then send the content
-of 'id_dsa.pub' to me so I can setup your account.  The content of 'id_dsa'
-should of course be kept secret.
+/home/&lt;USERNAME&gt;/.ssh/id_dsa.pub</pre>  
+It is recommended that you generate a key with a "passphrase" for security reasons.
+
+<p>
+Make the file known to the system by running
+
+<pre>ssh-add ~/.ssh/id_dsa</pre>
+
+You must then send the content of 'id_dsa.pub' to me so I can setup your account.  
+The content of 'id_dsa' should of course be kept secret.
 
 <p>
 
