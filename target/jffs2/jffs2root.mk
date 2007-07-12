@@ -66,7 +66,7 @@ ifneq ($(TARGET_DEVICE_TABLE),)
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 endif
 	# Use fakeroot so mkfs.jffs2 believes the previous fakery
-	echo "$(MKFS_JFFS2) $(JFFS2_OPTS) -d $(BUILD_DIR)/root -o $(JFFS2_TARGET)" \
+	echo "$(MKFS_JFFS2) $(JFFS2_OPTS) -d $(TARGET_DIR) -o $(JFFS2_TARGET)" \
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))

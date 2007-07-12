@@ -6,6 +6,8 @@ config BR2_HAVE_DOT_CONFIG
 	bool
 	default y
 
+source "project/Config.in"
+
 choice
 	prompt "Target Architecture"
 	default BR2_i386

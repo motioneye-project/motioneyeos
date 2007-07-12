@@ -15,6 +15,7 @@ CLOOP_DIR=$(BUILD_DIR)/cloop-$(CLOOP_VERSION)
 CLOOP_SOURCE=cloop_$(CLOOP_VERSION)-5.tar.gz
 CLOOP_SITE=http://developer.linuxtag.net/knoppix/sources
 
+CLOOP_TARGET:=$(IMAGE).cloop
 ### Note: not used yet! ck
 ### $(DL_DIR)/$(CLOOP_PATCH1):
 ### 	$(WGET) -P $(DL_DIR) $(CLOOP_PATCH1_URL)/$(CLOOP_PATCH1)
@@ -78,19 +79,19 @@ clooproot: cloop check-tools $(IMAGE).cramfs ### cramfsroot
 	@rm -rf $(TARGET_DIR)/usr/share/man
 	@rm -rf $(TARGET_DIR)/usr/info
 	@rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
-	### $(CLOOP_DIR)/create_compressed_fs -q -D target/default/device_table.txt $(TARGET_DIR) $(IMAGE).cloop
-	## mkisofs -r $(TARGET_DIR) | $(CLOOP_DIR)/create_compressed_fs - 65536 > $(IMAGE).cloop
+	### $(CLOOP_DIR)/create_compressed_fs -q -D target/default/device_table.txt $(TARGET_DIR) $(CLOOP_TARGET)
+	## mkisofs -r $(TARGET_DIR) | $(CLOOP_DIR)/create_compressed_fs - 65536 > $(CLOOP_TARGET)
 	sudo /sbin/losetup -d /dev/loop1
 	sudo /sbin/losetup /dev/loop1 $(IMAGE).cramfs
 	sudo mkdir -p /mnt/compressed
 	sudo mount -o ro -t cramfs /dev/loop1 /mnt/compressed
-	mkisofs -r /mnt/compressed | $(CLOOP_DIR)/create_compressed_fs - 65536 > $(IMAGE).cloop
+	mkisofs -r /mnt/compressed | $(CLOOP_DIR)/create_compressed_fs - 65536 > $(CLOOP_TARGET)
 	- symlinks -r /mnt/compressed
 	sudo umount /mnt/compressed
 	@echo "Mounting a compressed image:"
 	@echo " sudo mkdir -p /mnt/compressed"
 	@echo " sudo /sbin/insmod cloop"
-	@echo " sudo /sbin/losetup /dev/cloop1 $(IMAGE).cloop"
+	@echo " sudo /sbin/losetup /dev/cloop1 $(CLOOP_TARGET)"
 	@echo " sudo mount -o ro -t iso9660 /dev/cloop1 /mnt/compressed"
 
 clooproot-source: cloop-source

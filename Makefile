@@ -155,6 +155,12 @@ TARGETS:=uclibc-configured binutils gcc uclibc-target-utils
 else
 TARGETS:=uclibc
 endif
+
+PROJECT:=$(strip $(subst ",, $(BR2_PROJECT)))
+HOSTNAME:=$(strip $(subst ",, $(BR2_HOSTNAME)))
+BANNER:=$(strip $(subst ",, $(BR2_BANNER)))
+
+
 include toolchain/Makefile.in
 include package/Makefile.in
 
@@ -183,12 +189,14 @@ TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 
-world: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) $(TARGETS)
-dirs: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR)
+world: $(DL_DIR) $(BUILD_DIR) $(PROJECT_BUILD_DIR) \
+	$(BINARIES_DIR) $(STAGING_DIR) $(TARGET_DIR) bsp $(TARGETS)
+dirs: $(DL_DIR) $(BUILD_DIR) $(PROJECT_BUILD_DIR) $(STAGING_DIR)
 
-.PHONY: all world dirs clean dirclean distclean source $(TARGETS) \
+.PHONY: all world dirs clean dirclean distclean source bsp $(TARGETS) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
-	$(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR) $(STAGING_DIR)
+	$(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR) $(STAGING_DIR) \
+	$(PROJECT_BUILD_DIR) $(BINARIES_DIR)
 
 #############################################################
 #
@@ -196,7 +204,8 @@ dirs: $(DL_DIR) $(BUILD_DIR) $(STAGING_DIR)
 # dependencies anywhere else
 #
 #############################################################
-$(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR):
+$(DL_DIR) $(BUILD_DIR) $(TOOL_BUILD_DIR) \
+	$(PROJECT_BUILD_DIR) $(BINARIES_DIR) :
 	@mkdir -p $@
 
 $(STAGING_DIR):
@@ -220,6 +229,16 @@ $(TARGET_DIR):
 	touch $(STAGING_DIR)/.fakeroot.00000
 	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
 	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
+
+bsp:	$(TARGET_DIR)/etc/issue	$(TARGET_DIR)/etc/hostname
+
+$(TARGET_DIR)/etc/issue:	$(TARGET_DIR) .config
+	echo ""			>  $(TARGET_DIR)/etc/issue
+	echo "" 		>> $(TARGET_DIR)/etc/issue
+	echo "$(BANNER)"	>> $(TARGET_DIR)/etc/issue
+
+$(TARGET_DIR)/etc/hostname:	$(TARGET_DIR) .config
+	echo "$(HOSTNAME)" > $(TARGET_DIR)/etc/hostname
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
@@ -245,12 +264,13 @@ distclean:
 ifeq ($(DL_DIR),$(BASE_DIR)/dl)
 	rm -rf $(DL_DIR)
 endif
-	rm -rf $(BUILD_DIR) $(LINUX_KERNEL) $(IMAGE) $(BASE_DIR)/include \
+	rm -rf $(BUILD_DIR) $(PROJECT_BUILD_DIR)  $(BINARIES_DIR) \
+	$(LINUX_KERNEL) $(IMAGE) $(BASE_DIR)/include \
 		.config.cmd
 	$(MAKE) -C $(CONFIG) clean
 
 sourceball:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(PROJECT_BUILD_DIR)  $(BINARIES_DIR)
 	set -e; \
 	cd ..; \
 	rm -f buildroot.tar.bz2; \
