@@ -1,5 +1,5 @@
 menuconfig BR2_TARGET_ATMEL
-	bool "Atmel Target"
+	bool "Atmel Device Support"
 	depends on BR2_arm || BR2_avr32
 	default n
 

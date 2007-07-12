@@ -1,3 +1,9 @@
+menuconfig	BR2_TARGET_ARM
+	bool "ARM Ltd. Device Support"
+	depends BR2_arm
+	default n
+
+if BR2_TARGET_ARM
 comment "Arm based Device Support"
 	depends BR2_arm
 
@@ -14,3 +20,4 @@ config BR2_TARGET_ARM_INTEGRATOR_926
 	  An ARM integrator 926 board for use with qemu.
 	  This one has an MMU.
 
+endif
