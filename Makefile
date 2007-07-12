@@ -156,9 +156,9 @@ else
 TARGETS:=uclibc
 endif
 
-PROJECT:=$(strip $(subst ",, $(BR2_PROJECT)))
-HOSTNAME:=$(strip $(subst ",, $(BR2_HOSTNAME)))
-BANNER:=$(strip $(subst ",, $(BR2_BANNER)))
+PROJECT:=$(strip $(subst ",,$(BR2_PROJECT)))
+TARGET_HOSTNAME:=$(strip $(subst ",,$(BR2_HOSTNAME)))
+BANNER:=$(strip $(subst ",,$(BR2_BANNER)))
 
 
 include toolchain/Makefile.in
@@ -238,7 +238,7 @@ $(TARGET_DIR)/etc/issue:	$(TARGET_DIR) .config
 	echo "$(BANNER)"	>> $(TARGET_DIR)/etc/issue
 
 $(TARGET_DIR)/etc/hostname:	$(TARGET_DIR) .config
-	echo "$(HOSTNAME)" > $(TARGET_DIR)/etc/hostname
+	echo "$(TARGET_HOSTNAME)" > $(TARGET_DIR)/etc/hostname
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
