@@ -156,9 +156,12 @@ else
 TARGETS:=uclibc
 endif
 
-PROJECT:=$(strip $(subst ",,$(BR2_PROJECT)))  # "))
-TARGET_HOSTNAME:=$(strip $(subst ",,$(BR2_HOSTNAME))) # " ))
-BANNER:=$(strip $(subst ",,$(BR2_BANNER))) # " ))
+PROJECT:=$(strip $(subst ",,$(BR2_PROJECT)))
+#"))
+TARGET_HOSTNAME:=$(strip $(subst ",,$(BR2_HOSTNAME)))
+#"))
+BANNER:=$(strip $(subst ",,$(BR2_BANNER)))
+#"))
 
 
 include toolchain/Makefile.in
