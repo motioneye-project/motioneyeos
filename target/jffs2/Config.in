@@ -6,32 +6,55 @@ config BR2_TARGET_ROOTFS_JFFS2
 	help
 	  Build a jffs2 root filesystem
 
-config BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE
-	bool "Use default 4 kB pagesize"
+
+choice
+	prompt "Memory Type"
+	default BR2_TARGET_ROOTFS_JFFS2_FLASH
 	depends on BR2_TARGET_ROOTFS_JFFS2
-	default y			
+
+config BR2_TARGET_ROOTFS_JFFS2_FLASH
+	bool "Parallel flash with 4 kB pagesize"
+	depends on BR2_TARGET_ROOTFS_JFFS2
+
+config BR2_TARGET_ROOTFS_JFFS2_DATAFLASH
+	bool "AT45 dataflash with 1056 byte pagesize"
+	depends on BR2_TARGET_ROOTFS_JFFS2
+	select BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
+
+endchoice
+
 
 config BR2_TARGET_ROOTFS_JFFS2_PAGESIZE
-	hex "Page Size (0x0 = Use default 4 kB)"
-	depends on BR2_TARGET_ROOTFS_JFFS2
-	depends on !BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE
+	hex "Page Size"
+	depends on BR2_TARGET_ROOTFS_JFFS2_FLASH
+	default 0x1000
+	help
+	  Set to pagesize of memory (Dataflash is 0x210 or 0x420)
+
+config BR2_TARGET_ROOTFS_JFFS2_PAGESIZE
+	hex "Page Size"
+	depends on BR2_TARGET_ROOTFS_JFFS2_DATAFLASH
 	default 0x420
 	help
 	  Set to pagesize of memory (Dataflash is 0x210 or 0x420)
 
-config BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
-	bool	"Do not use Cleanmarker"
-	depends on BR2_TARGET_ROOTFS_JFFS2
-	depends on !BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE
-	default y
-	help
-	  Do not use cleanmarkers if using NAND flash or Dataflash where
-	  the pagesize is not a power of 2
+config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
+	hex "Erase block size"
+	depends on BR2_TARGET_ROOTFS_JFFS2_FLASH
+	default 0x20000
 
 config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	hex "Erase block size"
+	depends on BR2_TARGET_ROOTFS_JFFS2_DATAFLASH
+	default 0x2100
+
+config BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
+	bool	"Do not use Cleanmarker"
 	depends on BR2_TARGET_ROOTFS_JFFS2
-	default 0x20000
+	default n
+	help
+	  Do not use cleanmarkers if using NAND flash or Dataflash where
+	  the pagesize is not a power of 2
 
 config BR2_JFFS2_TARGET_SREC
 	bool "RootFS in SREC file formet"
