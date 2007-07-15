@@ -95,7 +95,7 @@ $(PCMCIA_DIR)/.modules.dep: $(BUSYBOX_DIR)/.configured $(TARGET_DIR)/lib/modules
 		> $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
 	touch $(PCMCIA_DIR)/.modules.dep
 
-pcmcia: uclibc linux $(TARGET_DIR)/sbin/cardmgr $(PCMCIA_DIR)/.modules.dep
+pcmcia: uclibc linux26 $(TARGET_DIR)/sbin/cardmgr $(PCMCIA_DIR)/.modules.dep
 
 pcmcia-clean:
 	rm -f $(TARGET_DIR)/sbin/cardmgr
