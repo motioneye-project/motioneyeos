@@ -53,11 +53,11 @@ $(GZIP_TARGET_BINARY): $(GZIP_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/bin; \
-	ln -snf gzip gunzip; \
-	ln -snf gzip zcat; \
-	ln -snf zdiff zcmp; \
-	ln -snf zgrep zegrep; \
-	ln -snf zgrep zfgrep;)
+	$(HOSTLN) -snf gzip gunzip; \
+	$(HOSTLN) -snf gzip zcat; \
+	$(HOSTLN) -snf zdiff zcmp; \
+	$(HOSTLN) -snf zgrep zegrep; \
+	$(HOSTLN) -snf zgrep zfgrep;)
 
 gzip: uclibc $(GZIP_TARGET_BINARY)
 

@@ -79,11 +79,15 @@ endif
 ifndef HOSTLD
 HOSTLD:=ld
 endif
+ifndef HOSTLN
+HOSTLN:=ln
+endif
 HOSTAR :=$(shell $(CONFIG_SHELL) -c "which $(HOSTAR)"  || type -p $(HOSTAR)  || echo ar)
 HOSTAS :=$(shell $(CONFIG_SHELL) -c "which $(HOSTAS)"  || type -p $(HOSTAS)  || echo as)
 HOSTCC :=$(shell $(CONFIG_SHELL) -c "which $(HOSTCC)"  || type -p $(HOSTCC)  || echo gcc)
 HOSTCXX:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCXX)" || type -p $(HOSTCXX) || echo g++)
 HOSTLD :=$(shell $(CONFIG_SHELL) -c "which $(HOSTLD)"  || type -p $(HOSTLD)  || echo ld)
+HOSTLN :=$(shell $(CONFIG_SHELL) -c "which $(HOSTLN)"  || type -p $(HOSTLN)  || echo ln)
 ifndef CFLAGS_FOR_BUILD
 CFLAGS_FOR_BUILD:=-g -O2
 endif
