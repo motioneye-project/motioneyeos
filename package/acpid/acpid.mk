@@ -3,9 +3,9 @@
 # acpid
 #
 #############################################################
-ACPID_VERSION:=1.0.4-1
+ACPID_VERSION:=1.0.4
 ACPID_DIR=$(BUILD_DIR)/acpid-$(ACPID_VERSION)
-ACPID_SOURCE=acpid_$(ACPID_VERSION).tar.gz
+ACPID_SOURCE=acpid_$(ACPID_VERSION)-1.tar.gz
 ACPID_SITE=http://ftp.debian.org/debian/pool/main/a/acpid
 
 $(DL_DIR)/$(ACPID_SOURCE):
