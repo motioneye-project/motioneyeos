@@ -9,7 +9,7 @@ OPENNTPD_SITE:=ftp://ftp.openbsd.org/pub/OpenBSD/OpenNTPD
 OPENNTPD_DIR:=$(BUILD_DIR)/openntpd-$(OPENNTPD_VERSION)
 OPENNTPD_CAT:=$(ZCAT)
 OPENNTPD_BINARY:=ntpd
-OPENNTPD_TARGET_BINARY:=usr/sbin/foo
+OPENNTPD_TARGET_BINARY:=usr/sbin/ntpd
 
 $(DL_DIR)/$(OPENNTPD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENNTPD_SITE)/$(OPENNTPD_SOURCE)
@@ -48,9 +48,10 @@ $(OPENNTPD_DIR)/$(OPENNTPD_BINARY): $(OPENNTPD_DIR)/.configured
 	$(STRIP) -s $@
 
 $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY): $(OPENNTPD_DIR)/$(OPENNTPD_BINARY)
+	rm -f $(TARGET_DIR)/etc/ntpd.conf
 	$(MAKE) DESTDIR=$(TARGET_DIR) STRIP_OPT="" -C $(OPENNTPD_DIR) install
-	-$(STRIP) $(TARGET_DIR)/usr/sbin/ntpd
-	cp $(OPENNTPD_DIR)/ntpd.conf $(TARGET_DIR)/etc
+	-$(STRIP) $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
+	cp -af $(OPENNTPD_DIR)/ntpd.conf $(TARGET_DIR)/etc/ntpd.conf
 	rm -Rf $(TARGET_DIR)/usr/man
 
 ntpd: uclibc $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
