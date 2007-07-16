@@ -8,7 +8,8 @@ LIBCGI_SOURCE:=libcgi-$(LIBCGI_VERSION).tar.gz
 LIBCGI_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libcgi
 LIBCGI_DIR:=$(BUILD_DIR)/libcgi-$(LIBCGI_VERSION)
 LIBCGI_LIBRARY:=src/libcgi.so
-LIBCGI_TARGET_LIBRARY:=usr/lib/libcgi.so
+LIBCGI_DESTDIR:=usr/lib
+LIBCGI_TARGET_LIBRARY=$(LIBCGI_DESTDIR)/libcgi.so
 
 $(DL_DIR)/$(LIBCGI_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIBCGI_SITE)/$(LIBCGI_SOURCE)
@@ -31,7 +32,7 @@ $(LIBCGI_DIR)/.configured: $(LIBCGI_DIR)/.source
 			--bindir=/usr/bin \
 			--sbindir=/usr/sbin \
 			--libdir=/lib \
-			--libexecdir=/usr/lib \
+			--libexecdir=/$(LIBCGI_DESTDIR) \
 			--sysconfdir=/etc \
 			--datadir=/usr/share \
 			--localstatedir=/var \
@@ -44,19 +45,19 @@ $(LIBCGI_DIR)/.configured: $(LIBCGI_DIR)/.source
 $(LIBCGI_DIR)/$(LIBCGI_LIBRARY): $(LIBCGI_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBCGI_DIR)
 
-$(STAGING_DIR)/usr/lib/libcgi.so: $(LIBCGI_DIR)/$(LIBCGI_LIBRARY)
+$(STAGING_DIR)/$(LIBCGI_TARGET_LIBRARY): $(LIBCGI_DIR)/$(LIBCGI_LIBRARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBCGI_DIR) install
-	touch -c $(STAGING_DIR)/usr/lib/libcgi.so
+	touch -c $@
 
 $(TARGET_DIR)/$(LIBCGI_TARGET_LIBRARY): $(STAGING_DIR)/$(LIBCGI_TARGET_LIBRARY)
-	cp -dpf $(STAGING_DIR)/$(LIBCGI_TARGET_LIBRARY)* $(TARGET_DIR)/usr/lib/
+	cp -dpf $<* $(TARGET_DIR)/$(LIBCGI_DESTDIR)
 
 libcgi: uclibc $(TARGET_DIR)/$(LIBCGI_TARGET_LIBRARY)
 
 libcgi-source: $(DL_DIR)/$(LIBCGI_SOURCE)
 
 libcgi-clean:
-	rm $(TARGET_DIR)/usr/lib/libcgi.so*
+	rm -f $(TARGET_DIR)/$(LIBCGI_TARGET_LIBRARY)*
 	-$(MAKE) -C $(LIBCGI_DIR) clean
 
 libcgi-dirclean:
@@ -71,4 +72,3 @@ libcgi-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_LIBCGI)),y)
 TARGETS+=libcgi
 endif
-
