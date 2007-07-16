@@ -35,11 +35,11 @@ $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
 	);
 	touch $(LIBUSB_DIR)/.configured
 
-$(STAGING_DIR)/$(LIBUSB_BINARY): $(LIBUSB_DIR)/.configured
+$(STAGING_DIR)/lib/libusb.so: $(LIBUSB_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBUSB_DIR)
 	$(MAKE) -C $(LIBUSB_DIR) DESTDIR=$(STAGING_DIR) install
 
-$(TARGET_DIR)/$(LIBUSB_BINARY): $(STAGING_DIR)/$(LIBUSB_BINARY)
+$(TARGET_DIR)/$(LIBUSB_BINARY): $(STAGING_DIR)/lib/libusb.so
 	-mkdir -p $(TARGET_DIR)/usr/lib
 	cp -a $(STAGING_DIR)/lib/libusb* $(TARGET_DIR)/usr/lib
 	rm -f $(TARGET_DIR)/usr/lib/*.a $(TARGET_DIR)/usr/lib/*.la
@@ -56,6 +56,9 @@ libusb-clean:
 
 libusb-dirclean:
 	rm -rf $(LIBUSB_DIR)
+
+.PHONY:	libusb
+
 #############################################################
 #
 # Toplevel Makefile options
