@@ -11,6 +11,12 @@ GETTEXT_CAT:=$(ZCAT)
 GETTEXT_BINARY:=gettext-runtime/src/gettext
 GETTEXT_TARGET_BINARY:=usr/bin/gettext
 
+ifeq ($(strip $(BR2_PACKAGE_GETTEXT_STATIC)),y)
+LIBINTL_TARGET_BINARY:=usr/lib/libintl.a
+else
+LIBINTL_TARGET_BINARY:=usr/lib/libintl.so
+endif
+
 $(DL_DIR)/$(GETTEXT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GETTEXT_SITE)/$(GETTEXT_SOURCE)
 
@@ -91,6 +97,7 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--disable-libasprintf \
+		--enable-shared \
 		$(IGNORE_EXTERNAL_GETTEXT) \
 		$(OPENMP) \
 	);
@@ -144,7 +151,12 @@ $(TARGET_DIR)/usr/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 	rm -f $(TARGET_DIR)/usr/lib/libgettext*.so*.la $(TARGET_DIR)/usr/lib/libintl*.so*.la
 	touch -c $@
 
-libintl: $(TARGET_DIR)/usr/lib/libintl.so
+$(TARGET_DIR)/usr/lib/libintl.a: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
+	cp -dpf $(STAGING_DIR)/usr/lib/libgettext*.a $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/usr/lib/libintl*.a 	$(TARGET_DIR)/usr/lib/
+	touch -c $@
+
+libintl: $(TARGET_DIR)/$(LIBINTL_TARGET_BINARY)
 
 #############################################################
 #
