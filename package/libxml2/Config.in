@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBXML2
+	bool "libxml2"
+	default n
+	help
+	  XML C Parser
+	  Requires WCHAR
+
+	  ftp://xmlsoft.org/libxml2
