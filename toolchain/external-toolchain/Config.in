@@ -74,6 +74,18 @@ config BR2_LARGEFILE
 	help
 	  Enable large file (files > 2 GB) support
 
+config BR2_INET_IPV6
+	bool "Enable IPv6"
+	default n
+	help
+	    Enable IPv6.
+
+config BR2_INET_RPC
+	bool "Enable RPC"
+	default n
+	help
+	    Enable RPC. RPC support is needed for nfs.
+
 config BR2_SOFT_FLOAT
 	bool "Use software floating point by default"
 	default n
