@@ -1,8 +1,13 @@
-ifndef MAKE
-MAKE=make
+ifndef	MAKE
+MAKE:=make
 endif
-MAKE1:=$(MAKE) MAKE="$(firstword $(MAKE)) -j1"
-MAKE:=$(MAKE) -j$(BR2_JLEVEL)
+ifndef HOSTMAKE
+HOSTMAKE=$(MAKE)
+endif
+HOSTMAKE :=$(shell $(CONFIG_SHELL) -c "which $(HOSTMAKE)"  || type -p $(HOSTMAKE)  || echo make)
+
+MAKE1:=$(HOSTMAKE) MAKE="$(firstword $(HOSTMAKE)) -j1"
+MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
 
 # Strip off the annoying quoting
 ARCH:=$(strip $(subst ",, $(BR2_ARCH)))
