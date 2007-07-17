@@ -20,14 +20,15 @@ $(LOCKFILE_PROGS_DIR)/.unpacked: $(DL_DIR)/$(LOCKFILE_PROGS_SOURCE)
 	touch $(LOCKFILE_PROGS_DIR)/.unpacked
 
 $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY): $(LOCKFILE_PROGS_DIR)/.unpacked
-	$(MAKE) CC="$(TARGET_CC) $(TARGET_CFLAGS)" -C $(LOCKFILE_PROGS_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) LDFLAGS="$(TARGET_LDFLAGS)"	\
+		-C $(LOCKFILE_PROGS_DIR)
 	cp -a $(LOCKFILE_PROGS_DIR)/bin/lockfile* $(TARGET_DIR)/usr/bin
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY)
 
 lockfile-progs: uclibc liblockfile $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY)
 
 lockfile-progs-clean:
-	rm -f $(TARGET_DIR)/usr/bin/lockfile*Z
+	rm -f $(TARGET_DIR)/usr/bin/lockfile-*
 	$(MAKE) -C $(LOCKFILE_PROGS_DIR) clean
 
 lockfile-progs-dirclean:
