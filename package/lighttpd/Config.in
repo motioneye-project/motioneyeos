@@ -1,13 +1,21 @@
 config BR2_PACKAGE_LIGHTTPD
 	bool "lighttpd"
 	default n
-	select BR2_PACKAGE_OPENSSL
 	help
 	  lighttpd a secure, fast, compliant and very flexible web-server
-	  which has been optimized for high-performance environments. It has a very
-	  low memory footprint compared to other webservers and takes care of cpu-load.
-	  Its advanced feature-set (FastCGI, CGI, Auth, Output-Compression,
-	  URL-Rewriting and many more) make lighttpd the perfect webserver-software
-	  for every server that is suffering load problems.
+	  which has been optimized for high-performance environments. It
+	  has a very low memory footprint compared to other webservers and
+	  takes care of cpu-load. Its advanced feature-set (FastCGI, CGI,
+	  Auth, Output-Compression, URL-Rewriting and many more) make
+	  lighttpd the perfect webserver-software for every server that
+	  is suffering load problems.
 		 
 	  http://www.lighttpd.net/
+
+config BR2_PACKAGE_LIGHTTPD_OPENSSL
+	bool "lighttpd-openssl"
+	default y
+	depends on BR2_PACKAGE_LIGHTTPD
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Enable OpenSSL support for libghttpd.
