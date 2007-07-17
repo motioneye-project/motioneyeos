@@ -1,0 +1,5 @@
+ifeq ($(strip$(BOARD_NAME)),at91rm9200df)
+LINUX_BOARD_NAME=at91rm9200ek
+endif
+
+

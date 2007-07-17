@@ -1,0 +1,79 @@
+# *******************************************************************
+ifeq ($(strip $(BR2_TARGET_ATMEL)),y)
+ATMEL_PATH:=target/device/Atmel
+
+BOARD_NAME:=$(strip  $(subst ",, $(BR2_BOARD_NAME)))
+BOARD_PATH:=$(strip  $(subst ",, $(BR2_BOARD_PATH)))
+
+ATMEL_TARGET:=$(ATMEL_PATH)/root
+TARGET_SKELETON:=$(ATMEL_TARGET)/target_skeleton
+TARGET_DEVICE_TABLE:=$(ATMEL_TARGET)/device_table.txt
+TARGET_SKELETON_LINKS:=$(ATMEL_TARGET)/skel.tar.gz
+
+TARGET_ATMEL_COPYTO:=$(strip  $(subst ",, $(BR2_TARGET_ATMEL_COPYTO)))
+
+# These are set by Config.in
+DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
+LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_LINUX26_VERSION)))
+LINUX26_RC_PATCH:=$(strip  $(subst ",, $(BR2_LINUX26_RC_PATCH)))
+LINUX_BSP_PATCH:=$(strip  $(subst ",, $(BR2_LINUX_BSP_ATMEL_PATCH)))
+
+# These are set by "new" Config.in
+LINUX26_KCONFIG:=$(strip  $(subst ",, $(BR2_BOARD_PATH)/$(BOARD_NAME)-linux-$(DOWNLOAD_LINUX26_VERSION).config))
+
+# This should be part of target/linux/Makefile.in
+LINUX26_BUILD_DIR:=$(PROJECT_BUILD_DIR)
+
+LINUX26_BINLOC=$(LINUX26_FORMAT)
+#LINUX26_BINLOC:=$(BINARIES_DIR)/$(LINUX26_KERNEL)
+
+LINUX26_COPYTO:=/tftpboot
+
+LINUX26_PATCH_DIR:=target/device/Atmel/Linux/kernel-patches-$(DOWNLOAD_LINUX26_VERSION)
+
+# The board specific Makefile.in can redefine BOARD_NAME's
+LINUX_BOARD_NAME:=$(BOARD_NAME)
+UBOOT_BOARD_NAME:=$(BOARD_NAME)
+DFB_BOARD_NAME:=$(BOARD_NAME)
+
+BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox-1.6.0.config
+
+
+# Update things in board specific makefiles
+include target/device/Atmel/*/Makefile.in
+
+# Needs to be AFTER board specific Makefiles
+
+UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
+UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
+
+ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
+#include $(ATMEL_PATH)/Linux/linux.mk
+endif
+
+ifeq ($(strip $(BR2_TARGET_UBOOT)),y)
+include $(ATMEL_PATH)/u-boot/u-boot.mk
+endif
+
+ifeq ($(strip $(BR2_TARGET_DATAFLASHBOOT)),y)
+include $(ATMEL_PATH)/DataFlashBoot/DataflashBoot.mk
+endif
+
+ifeq ($(strip $(BR2_TARGET_AT91BOOTSTRAP)),y)
+include $(ATMEL_PATH)/at91bootstrap/at91bootstrap.mk
+endif
+
+
+testa:
+	echo	boardname=$(BOARD_NAME)
+	echo 	boardpath=$(BR2_BOARD_PATH)
+	echo 	BR2_MAJOR_MINOR=$(BR2_LINUX_MAJOR_VERSION)$(BR2_LINUX_MINOR_VERSION)
+	echo 	MAJOR_MINOR=$(LINUX_MAJOR_VER)$(LINUX_MINOR_VER)
+	echo	DOWNLOAD_LINUX_VERSION=$(DOWNLOAD_LINUX26_VERSION)
+	echo	LINUX_SOURCE=$(LINUX_SOURCE)
+	echo	$(TESTA)
+	echo	$(TESTA2)
+	echo	$(TARGETS)
+
+#TARGETS+=testa
+endif

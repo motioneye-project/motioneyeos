@@ -1,0 +1,23 @@
+config BR2_TARGET_DATAFLASHBOOT
+       depends on BR2_TARGET_AT91RM9200 || BR2_TARGET_AT91SAM9261 || BR2_TARGET_AT91SAM9261S
+	bool "Build Dataflashboot for selected chip"
+
+choice
+	prompt "Target Architecture"
+	default BR2_TARGET_DATAFLASHBOOT_AT91RM9200
+	depends on BR2_TARGET_DATAFLASHBOOT
+	help
+	  Select Chip for which Dataflash boot should be built
+	  Currently only AT91RM9200 Supported
+
+config BR2_TARGET_DATAFLASHBOOT_AT91RM9200
+       depends on BR2_TARGET_AT91RM9200
+	bool "AT91RM9200"
+config BR2_TARGET_DATAFLASHBOOT_AT91SAM9261
+       depends on BR2_TARGET_AT91SAM9261
+	bool "AT91SAM9261"
+config BR2_TARGET_DATAFLASHBOOT_AT91SAM9261S
+       depends on BR2_TARGET_AT91SAM9261S
+	bool "AT91SAM9261S"
+
+endchoice

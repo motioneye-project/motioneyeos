@@ -1,0 +1,71 @@
+diff -urN target_skeleton_atmel/etc/group target_skeleton/etc/group
+--- target_skeleton_atmel/etc/group	2006-11-01 21:24:48.000000000 +0100
++++ target_skeleton/etc/group	2007-04-05 12:37:05.000000000 +0200
+@@ -8,6 +8,8 @@
+ wheel:x:10:root
+ utmp:x:43:
+ staff:x:50:
++haldaemon:x:68:
++dbus:x:81:
+ nobody:x:99:
+ nogroup:x:99:
+ users:x:100:
+diff -urN target_skeleton_atmel/etc/inittab target_skeleton/etc/inittab
+--- target_skeleton_atmel/etc/inittab	2006-11-01 21:24:48.000000000 +0100
++++ target_skeleton/etc/inittab	2007-04-05 12:37:05.000000000 +0200
+@@ -24,17 +24,17 @@
+ ::sysinit:/etc/init.d/rcS
+ 
+ # Set up a couple of getty's
+-#tty1::respawn:/sbin/getty 38400 tty1
+-#tty2::respawn:/sbin/getty 38400 tty2
++tty1::respawn:/sbin/getty 38400 tty1
++tty2::respawn:/sbin/getty 38400 tty2
+ 
+ # Put a getty on the serial port
+-ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
++#ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
+ 
+ # Logging junk
+ null::sysinit:/bin/touch /var/log/messages
+ null::respawn:/sbin/syslogd -n -m 0
+ null::respawn:/sbin/klogd -n
+-#tty3::respawn:/usr/bin/tail -f /var/log/messages
++tty3::respawn:/usr/bin/tail -f /var/log/messages
+ 
+ # Stuff to do for the 3-finger salute
+ ::ctrlaltdel:/sbin/reboot
+diff -urN target_skeleton_atmel/etc/passwd target_skeleton/etc/passwd
+--- target_skeleton_atmel/etc/passwd	2006-11-01 21:24:48.000000000 +0100
++++ target_skeleton/etc/passwd	2007-04-05 12:37:05.000000000 +0200
+@@ -8,6 +8,8 @@
+ www-data:x:33:33:www-data:/var/www:/bin/sh
+ backup:x:34:34:backup:/var/backups:/bin/sh
+ operator:x:37:37:Operator:/var:/bin/sh
+-sshd:x:103:99:Operator:/var:/bin/sh
++haldaemon:x:68:68:hald:/:/bin/sh
++dbus:x:81:81:dbus:/var/run/dbus:/bin/sh
+ nobody:x:99:99:nobody:/home:/bin/sh
++sshd:x:103:99:Operator:/var:/bin/sh
+ default:x:1000:1000:Default non-root user:/home/default:/bin/sh
+Filerna target_skeleton_atmel/etc/random-seed och target_skeleton/etc/random-seed skiljer
+diff -urN target_skeleton_atmel/etc/resolv.conf target_skeleton/etc/resolv.conf
+--- target_skeleton_atmel/etc/resolv.conf	2006-11-01 21:24:48.000000000 +0100
++++ target_skeleton/etc/resolv.conf	1970-01-01 01:00:00.000000000 +0100
+@@ -1,2 +0,0 @@
+-domain dev.null
+-nameserver 127.0.0.1
+diff -urN target_skeleton_atmel/root/.bashrc target_skeleton/root/.bashrc
+--- target_skeleton_atmel/root/.bashrc	2006-11-01 21:24:49.000000000 +0100
++++ target_skeleton/root/.bashrc	2007-04-05 12:37:04.000000000 +0200
+@@ -37,8 +37,8 @@
+     alias ps1='ps faxo "%U %t %p %a" '
+     alias af='ps af'
+     alias cls='clear'
+-    alias ll='/bin/ls -laFh'
+-    alias ls='/bin/ls -F'
++    alias ll='/bin/ls --color=tty -laFh'
++    alias ls='/bin/ls --color=tty -F'
+     alias df='df -h'
+     alias indent='indent -bad -bap -bbo -nbc -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -cp33 -cs -d0 -di1 -nfc1 -nfca -hnl -i4 -ip0 -l75 -lp -npcs -npsl -nsc -nsob -nss -ts4 '
+     #alias bc='bc -l'

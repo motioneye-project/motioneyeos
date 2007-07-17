@@ -1,9 +1,69 @@
 menuconfig BR2_TARGET_ATMEL
 	bool "Atmel Device Support"
 	depends on BR2_arm || BR2_avr32
-	default n
+	default n	
 
 if BR2_TARGET_ATMEL
-comment "Add Atmel Target here"
+
+source "target/device/Atmel/AT91_Config.in"
+source "target/device/Atmel/AVR32_Config.in"
+
+config BR2_BOARD_NAME
+	string
+	default	"at91rm9200df"		if	BR2_TARGET_AT91RM9200DF
+	default	"at91rm9200se"		if	BR2_TARGET_AT91RM9200SE
+	default	"at91rm9200ek"		if	BR2_TARGET_AT91RM9200EK
+	default	"at91rm9200dk"		if	BR2_TARGET_AT91RM9200DK
+	default	"at91sam9260ek"		if	BR2_TARGET_AT91SAM9260EK
+	default	"at91sam9260dfc"	if	BR2_TARGET_AT91SAM9260DFC
+	default	"at91sam9261ek"		if	BR2_TARGET_AT91SAM9261EK
+	default	"at91sam9262ek"		if	BR2_TARGET_AT91SAM9262EK
+	default	"at91sam9263ek"		if	BR2_TARGET_AT91SAM9263EK
+	default	"at91sam9xeek"		if	BR2_TARGET_AT91SAM9XEEK
+	default	"atstk1002"		if	BR2_TARGET_STK1002
+	default	"avr32_com"		if	BR2_TARGET_AVR32_COM
+	default	"avr32_ngw"		if	BR2_TARGET_AVR32_GATEWAY
+
+config BR2_TARGET_AT91_ADVANCED_INFO
+	bool "Remove work in progress"
+	depends BR2_TARGET_AT91
+	default y
+	help
+	  Atmel AT91 ARM based systems
+
+comment "Package support"
+	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
+
+
+menu "Secondary locations"
+	    
+config BR2_AT91_LINUXPATCH_SITE
+	string "AT91 Linux Patch mirror site"
+	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
+	default "http://maxim.org.za/AT91RM9200/2.6"
+	help
+	    Main download location for AT91 Linux stuff
+
+config BR2_TARGET_ATMEL_COPYTO
+	string "also copy the image to..."
+	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
+	default "/tftpboot"
+	help
+	  Copies the resulting image to a secondary location.
+
+config BR2_BOARD_PATH
+	string "Atmel board repository"
+	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
+	default "target/device/Atmel/$(BR2_BOARD_NAME)"
+	help
+	  Top directory of Atmel board configurations
+
+endmenu
+
+source "target/device/Atmel/u-boot/Config.in"
+
+source "target/device/Atmel/DataFlashBoot/Config.in"
+
+source "target/device/Atmel/at91bootstrap/Config.in"
 
 endif

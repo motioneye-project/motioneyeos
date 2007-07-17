@@ -1,0 +1,43 @@
+config BR2_TARGET_UBOOT
+	bool "Das U-Boot Boot Monitor"
+	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
+	default n
+	help
+	  Build "Das U-Boot" Boot Monitor
+
+config BR2_TARGET_UBOOT_SERVERIP
+	string "server ip"
+	depends on BR2_TARGET_UBOOT
+	default "10.175.196.221"
+	help
+	  TFTP server ip address
+
+config BR2_TARGET_UBOOT_IPADDR
+	string "ip address"
+	depends on BR2_TARGET_UBOOT
+	default "10.175.196.18"
+	help
+	  TFTP server ip address
+
+config BR2_TARGET_UBOOT_GATEWAY
+	string "gateway ip"
+	depends on BR2_TARGET_UBOOT
+	default "10.175.196.1"
+	help
+	  Gateway ip address
+
+config BR2_TARGET_UBOOT_NETMASK
+	string "netmask"
+	depends on BR2_TARGET_UBOOT
+	default "255.255.255.0"
+	help
+	  Network Mask
+
+config BR2_TARGET_UBOOT_ETHADDR
+	string "Ethernet address"
+	depends on BR2_TARGET_UBOOT
+	default "04:25:fe:ed:00:18"
+	help
+	  Target ip address, this should be changed for production units
+
+

@@ -1,0 +1,215 @@
+diff -urN target_skeleton_atmel/etc/fstab target_busybox_skeleton/etc/fstab
+--- target_skeleton_atmel/etc/fstab	2006-11-01 21:24:48.000000000 +0100
++++ target_busybox_skeleton/etc/fstab	2007-04-05 12:37:04.000000000 +0200
+@@ -5,4 +5,5 @@
+ proc		/proc	       proc     defaults	  0	 0
+ devpts		/dev/pts       devpts   defaults,gid=5,mode=620	  0	 0
+ tmpfs           /tmp           tmpfs    defaults          0      0
+-
++configfs	/config	       configfs defaults	  0	 0
++sysfs		/sys	       sysfs    defaults	  0	 0
+diff -urN target_skeleton_atmel/etc/group target_busybox_skeleton/etc/group
+--- target_skeleton_atmel/etc/group	2006-11-01 21:24:48.000000000 +0100
++++ target_busybox_skeleton/etc/group	2007-04-05 12:37:04.000000000 +0200
+@@ -8,6 +8,8 @@
+ wheel:x:10:root
+ utmp:x:43:
+ staff:x:50:
++haldaemon:x:68:
++dbus:x:81:
+ nobody:x:99:
+ nogroup:x:99:
+ users:x:100:
+diff -urN target_skeleton_atmel/etc/inittab target_busybox_skeleton/etc/inittab
+--- target_skeleton_atmel/etc/inittab	2006-11-01 21:24:48.000000000 +0100
++++ target_busybox_skeleton/etc/inittab	2007-04-05 12:37:04.000000000 +0200
+@@ -14,27 +14,33 @@
+ # process   == program to run
+ 
+ # Startup the system
+-null::sysinit:/bin/mount -o remount,rw /
+-null::sysinit:/bin/mount -t proc proc /proc
+-null::sysinit:/bin/mount -a
+-null::sysinit:/bin/hostname -F /etc/hostname
+-null::sysinit:/sbin/ifconfig lo 127.0.0.1 up
+-null::sysinit:/sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
++::sysinit:/bin/mount -t proc none /proc
++::sysinit:/bin/mount -t sysfs none /sys
++::sysinit:/bin/mount -t tmpfs -o size=64k,mode=0755 none /dev
++::sysinit:/bin/mkdir /dev/pts
++::sysinit:/bin/mount -t devpts devpts /dev/pts
++::sysinit:/bin/echo /sbin/mdev > /proc/sys/kernel/hotplug
++::sysinit:/sbin/mdev -s
++::sysinit:/bin/mount -o remount,rw /
++::sysinit:/bin/mount -a
++::sysinit:/bin/hostname -F /etc/hostname
++::sysinit:/sbin/ifconfig lo 127.0.0.1 up
++::sysinit:/sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
+ # now run any rc scripts
+ ::sysinit:/etc/init.d/rcS
+ 
+ # Set up a couple of getty's
+-#tty1::respawn:/sbin/getty 38400 tty1
+-#tty2::respawn:/sbin/getty 38400 tty2
++tty1::respawn:/sbin/getty 38400 tty1
++tty2::respawn:/sbin/getty 38400 tty2
+ 
+ # Put a getty on the serial port
+-ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
++#ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
+ 
+ # Logging junk
+ null::sysinit:/bin/touch /var/log/messages
+-null::respawn:/sbin/syslogd -n -m 0
++null::respawn:/sbin/syslogd -n
+ null::respawn:/sbin/klogd -n
+-#tty3::respawn:/usr/bin/tail -f /var/log/messages
++tty3::respawn:/usr/bin/tail -f /var/log/messages
+ 
+ # Stuff to do for the 3-finger salute
+ ::ctrlaltdel:/sbin/reboot
+diff -urN target_skeleton_atmel/etc/passwd target_busybox_skeleton/etc/passwd
+--- target_skeleton_atmel/etc/passwd	2006-11-01 21:24:48.000000000 +0100
++++ target_busybox_skeleton/etc/passwd	2007-04-05 12:37:04.000000000 +0200
+@@ -8,6 +8,8 @@
+ www-data:x:33:33:www-data:/var/www:/bin/sh
+ backup:x:34:34:backup:/var/backups:/bin/sh
+ operator:x:37:37:Operator:/var:/bin/sh
+-sshd:x:103:99:Operator:/var:/bin/sh
++haldaemon:x:68:68:hald:/:/bin/sh
++dbus:x:81:81:dbus:/var/run/dbus:/bin/sh
+ nobody:x:99:99:nobody:/home:/bin/sh
++sshd:x:103:99:Operator:/var:/bin/sh
+ default:x:1000:1000:Default non-root user:/home/default:/bin/sh
+Filerna target_skeleton_atmel/etc/random-seed och target_busybox_skeleton/etc/random-seed skiljer
+diff -urN target_skeleton_atmel/etc/resolv.conf target_busybox_skeleton/etc/resolv.conf
+--- target_skeleton_atmel/etc/resolv.conf	2006-11-01 21:24:48.000000000 +0100
++++ target_busybox_skeleton/etc/resolv.conf	1970-01-01 01:00:00.000000000 +0100
+@@ -1,2 +0,0 @@
+-domain dev.null
+-nameserver 127.0.0.1
+diff -urN target_skeleton_atmel/root/.bash_logout target_busybox_skeleton/root/.bash_logout
+--- target_skeleton_atmel/root/.bash_logout	2006-11-01 21:24:49.000000000 +0100
++++ target_busybox_skeleton/root/.bash_logout	1970-01-01 01:00:00.000000000 +0100
+@@ -1,7 +0,0 @@
+-# ~/.bash_logout: executed by bash(1) when login shell exits.
+-
+-# when leaving the console clear the screen to increase privacy
+-
+-case "`tty`" in
+-    /dev/tty[0-9]*) clear
+-esac
+diff -urN target_skeleton_atmel/root/.bash_profile target_busybox_skeleton/root/.bash_profile
+--- target_skeleton_atmel/root/.bash_profile	2006-11-01 21:24:49.000000000 +0100
++++ target_busybox_skeleton/root/.bash_profile	1970-01-01 01:00:00.000000000 +0100
+@@ -1,15 +0,0 @@
+-# .bash_profile
+-
+-export PATH=\
+-/bin:\
+-/sbin:\
+-/usr/bin:\
+-/usr/sbin:\
+-/usr/bin/X11:\
+-/usr/local/bin
+-
+-umask 022
+-
+-if [ -f ~/.bashrc ]; then
+-    source ~/.bashrc
+-fi
+diff -urN target_skeleton_atmel/root/.bashrc target_busybox_skeleton/root/.bashrc
+--- target_skeleton_atmel/root/.bashrc	2006-11-01 21:24:49.000000000 +0100
++++ target_busybox_skeleton/root/.bashrc	1970-01-01 01:00:00.000000000 +0100
+@@ -1,48 +0,0 @@
+-# ~/.bashrc: executed by bash(1) for non-login interactive shells.
+-
+-export PATH=\
+-/bin:\
+-/sbin:\
+-/usr/bin:\
+-/usr/sbin:\
+-/usr/bin/X11:\
+-/usr/local/bin
+-
+-# If running interactively, then:
+-if [ "$PS1" ]; then
+-
+-    if [ "$BASH" ]; then
+-	export PS1="[\u@\h \W]\\$ "
+-    else
+-      if [ "`id -u`" -eq 0 ]; then 
+-	export PS1='# '
+-      else
+-	export PS1='$ '
+-      fi
+-    fi
+-
+-    export USER=`id -un`
+-    export LOGNAME=$USER
+-    export HOSTNAME=`/bin/hostname`
+-    export HISTSIZE=1000
+-    export HISTFILESIZE=1000
+-    export PAGER='/bin/more '
+-    export EDITOR='/bin/vi'
+-    export INPUTRC=/etc/inputrc
+-    export DMALLOC_OPTIONS=debug=0x34f47d83,inter=100,log=logfile
+-    export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.gz=01;31:*.bz2=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.jpg=01;35:*.jpeg=01;35:*.png=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.mpg=01;35:*.mpeg=01;35:*.avi=01;35:*.fli=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:';
+-
+-    ### Some aliases
+-    alias ps2='ps facux '
+-    alias ps1='ps faxo "%U %t %p %a" '
+-    alias af='ps af'
+-    alias cls='clear'
+-    alias ll='/bin/ls -laFh'
+-    alias ls='/bin/ls -F'
+-    alias df='df -h'
+-    alias indent='indent -bad -bap -bbo -nbc -br -brs -c33 -cd33 -ncdb -ce -ci4 -cli0 -cp33 -cs -d0 -di1 -nfc1 -nfca -hnl -i4 -ip0 -l75 -lp -npcs -npsl -nsc -nsob -nss -ts4 '
+-    #alias bc='bc -l'
+-    alias minicom='minicom -c on'
+-    alias calc='calc -Cd '
+-    alias bc='calc -Cd '
+-fi;
+diff -urN target_skeleton_atmel/usr/share/udhcpc/default.script target_busybox_skeleton/usr/share/udhcpc/default.script
+--- target_skeleton_atmel/usr/share/udhcpc/default.script	2006-11-01 21:24:49.000000000 +0100
++++ target_busybox_skeleton/usr/share/udhcpc/default.script	1970-01-01 01:00:00.000000000 +0100
+@@ -1,39 +0,0 @@
+-#!/bin/sh
+-
+-# udhcpc script edited by Tim Riker <Tim@Rikers.org>
+-
+-[ -z "$1" ] && echo "Error: should be called from udhcpc" && exit 1
+-
+-RESOLV_CONF="/etc/resolv.conf"
+-[ -n "$broadcast" ] && BROADCAST="broadcast $broadcast"
+-[ -n "$subnet" ] && NETMASK="netmask $subnet"
+-
+-case "$1" in
+-	deconfig)
+-		/sbin/ifconfig $interface 0.0.0.0
+-		;;
+-
+-	renew|bound)
+-		/sbin/ifconfig $interface $ip $BROADCAST $NETMASK
+-
+-		if [ -n "$router" ] ; then
+-			echo "deleting routers"
+-			while route del default gw 0.0.0.0 dev $interface ; do
+-				:
+-			done
+-
+-			for i in $router ; do
+-				route add default gw $i dev $interface
+-			done
+-		fi
+-
+-		echo -n > $RESOLV_CONF
+-		[ -n "$domain" ] && echo search $domain >> $RESOLV_CONF
+-		for i in $dns ; do
+-			echo adding dns $i
+-			echo nameserver $i >> $RESOLV_CONF
+-		done
+-		;;
+-esac
+-
+-exit 0
