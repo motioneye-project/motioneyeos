@@ -61,6 +61,13 @@ thttpd: uclibc $(TARGET_DIR)/$(THTTPD_TARGET_BINARY)
 
 thttpd-clean:
 	rm -f $(TARGET_DIR)/$(THTTPD_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/sbin/httpd_wrapper
+	rm -f $(TARGET_DIR)/sbin/thttpd_wrapper
+	rm -rf $(TARGET_DIR)/var/www
+	rm -f $(TARGET_DIR)/etc/init.d/S90thttpd
+	rm -f $(TARGET_DIR)/bin/htpasswd
+	rm -f $(TARGET_DIR)/bin/makeweb
+	rm -f $(TARGET_DIR)/bin/syslogtocern
 	-$(MAKE) -C $(THTTPD_DIR) clean
 
 thttpd-dirclean:
