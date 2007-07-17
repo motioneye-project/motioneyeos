@@ -62,12 +62,15 @@ build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 	    rm -rf $(HOST_SED_DIR)/share/locale $(HOST_SED_DIR)/usr/info \
 		    $(HOST_SED_DIR)/usr/man $(HOST_SED_DIR)/usr/share/doc; fi
 
-use-sed-host-binary:
+$(HOST_SED_DIR)/$(SED_TARGET_BINARY):
 	if [ ! -e "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)" ] ; then \
 		mkdir -p "$(HOST_SED_DIR)/bin"; \
 		rm -f "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
 		ln -sf "$(HOST_SED_IF_ANY)" "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
 	fi
+
+
+use-sed-host-binary:	$(HOST_SED_DIR)/$(SED_TARGET_BINARY)
 
 host-sed: $(HOST_SED_BINARY)
 
@@ -113,6 +116,8 @@ $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		--include=$(STAGING_DIR)/include \
+		--include=$(STAGING_DIR)/usr/include \
 		$(DISABLE_NLS) \
 	);
 	touch $(SED_DIR2)/.configured
@@ -151,4 +156,4 @@ sed-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_SED)),y)
 TARGETS+=sed
 endif
-.PHONY: sed host-sed
+.PHONY: sed host-sed use-sed-host-binary
