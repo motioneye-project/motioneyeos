@@ -9,12 +9,10 @@ SYSVINIT_SITE:=ftp://ftp.cistron.nl/pub/people/miquels/software
 SYSVINIT_DIR:=$(BUILD_DIR)/sysvinit-$(SYSVINIT_VERSION)
 SYSVINIT_CAT:=$(ZCAT)
 SYSVINIT_BINARY:=src/init
-SYSVINIT_TARGET_BINARY:=bin/init
+SYSVINIT_TARGET_BINARY:=sbin/init
 
 $(DL_DIR)/$(SYSVINIT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SYSVINIT_SITE)/$(SYSVINIT_SOURCE)
-
-sysvinit-source: $(DL_DIR)/$(SYSVINIT_SOURCE)
 
 sysvinit-unpacked: $(SYSVINIT_DIR)/.unpacked
 $(SYSVINIT_DIR)/.unpacked: $(DL_DIR)/$(SYSVINIT_SOURCE)
@@ -31,6 +29,8 @@ $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY): $(SYSVINIT_DIR)/$(SYSVINIT_BINARY)
 	done
 
 sysvinit: uclibc ncurses $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY)
+
+sysvinit-source: $(DL_DIR)/$(SYSVINIT_SOURCE)
 
 sysvinit-clean:
 	for x in halt init shutdown ; do \
