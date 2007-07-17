@@ -14,7 +14,7 @@ ED_TARGET_BINARY:=bin/ed
 $(DL_DIR)/$(ED_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(ED_SITE)/$(ED_SOURCE)
 
-$(ED_DIR)/.unpacked: $(DL_DIR)/$(ED_SOURCE) $(DL_DIR)/$(ED_PATCH)
+$(ED_DIR)/.unpacked: $(DL_DIR)/$(ED_SOURCE)
 	$(ED_CAT) $(DL_DIR)/$(ED_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(ED_DIR) package/ed/ ed-\*.patch
 	touch $@
