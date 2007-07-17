@@ -1,0 +1,80 @@
+diff -ur tinyhttpd-0.1.0/httpd.c tinyhttpd-0.1.0-patched/httpd.c
+--- tinyhttpd-0.1.0/httpd.c	2001-04-21 19:13:13.000000000 -0500
++++ tinyhttpd-0.1.0-patched/httpd.c	2007-07-02 09:19:27.000000000 -0500
+@@ -4,14 +4,6 @@
+  * CSE 4344 (Network concepts), Prof. Zeigler
+  * University of Texas at Arlington
+  */
+-/* This program compiles for Sparc Solaris 2.6.
+- * To compile for Linux:
+- *  1) Comment out the #include <pthread.h> line.
+- *  2) Comment out the line that defines the variable newthread.
+- *  3) Comment out the two lines that run pthread_create().
+- *  4) Uncomment the line that runs accept_request().
+- *  5) Remove -lsocket from the Makefile.
+- */
+ #include <stdio.h>
+ #include <sys/socket.h>
+ #include <sys/types.h>
+@@ -22,7 +14,6 @@
+ #include <strings.h>
+ #include <string.h>
+ #include <sys/stat.h>
+-#include <pthread.h>
+ #include <sys/wait.h>
+ #include <stdlib.h>
+ 
+@@ -30,7 +21,6 @@
+ 
+ #define SERVER_STRING "Server: jdbhttpd/0.1.0\r\n"
+ 
+-void accept_request(int);
+ void bad_request(int);
+ void cat(int, FILE *);
+ void cannot_execute(int);
+@@ -102,7 +92,7 @@
+   }
+  }
+ 
+- sprintf(path, "htdocs%s", url);
++ sprintf(path, "/var/www%s", url);
+  if (path[strlen(path) - 1] == '/')
+   strcat(path, "index.html");
+  if (stat(path, &st) == -1) {
+@@ -475,11 +465,10 @@
+ int main(void)
+ {
+  int server_sock = -1;
+- u_short port = 0;
++ u_short port = 80;
+  int client_sock = -1;
+  struct sockaddr_in client_name;
+  int client_name_len = sizeof(client_name);
+- pthread_t newthread;
+ 
+  server_sock = startup(&port);
+  printf("httpd running on port %d\n", port);
+@@ -491,9 +480,7 @@
+                        &client_name_len);
+   if (client_sock == -1)
+    error_die("accept");
+- /* accept_request(client_sock); */
+- if (pthread_create(&newthread , NULL, accept_request, client_sock) != 0)
+-   perror("pthread_create");
++  accept_request(client_sock);
+  }
+ 
+  close(server_sock);
+diff -ur tinyhttpd-0.1.0/Makefile tinyhttpd-0.1.0-patched/Makefile
+--- tinyhttpd-0.1.0/Makefile	2001-04-21 17:03:39.000000000 -0500
++++ tinyhttpd-0.1.0-patched/Makefile	2007-07-02 10:29:41.000000000 -0500
+@@ -1,7 +1,7 @@
+ all: httpd
+ 
+ httpd: httpd.c
+-	gcc -W -Wall -lsocket -lpthread -o httpd httpd.c
++	$(CC) $(CFLAGS) $(LDFLAGS) -W -Wall -lpthread -o httpd httpd.c
+ 
+ clean:
+-	rm httpd
++	rm -f httpd
