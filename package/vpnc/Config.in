@@ -1,0 +1,14 @@
+config BR2_PACKAGE_VPNC
+	bool "vpnc"
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_LIBGPG_ERROR
+	default n
+	help
+	  Client for Cisco VPN concentrator
+	  3000 Series VPN Concentrator
+	  IOS Routers
+	  PIX/ASA Zecurity Appliances
+	  Juniper/Netscreen
+
+	  http://www.unix-ag.uni-kl.de/~massar/vpnc
+
