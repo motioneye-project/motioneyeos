@@ -118,6 +118,7 @@ $(MTD_BUILD_TARGETS): $(MTD_DIR)/.unpacked
 	$(MAKE)	$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS+="-I$(MTD_DIR)/include" \
 		CFLAGS+="-I$(LINUX_HEADERS_DIR)/include" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
 		LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
 
 MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
