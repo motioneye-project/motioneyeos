@@ -46,11 +46,20 @@ $(TARGET_DIR)/usr/lib/libxml2.so: $(STAGING_DIR)/usr/lib/libxml2.so
 $(TARGET_DIR)/usr/lib/libxml2.a: $(STAGING_DIR)/usr/lib/libxml2.so
 	mkdir -p $(TARGET_DIR)/usr/include
 	cp -dpf $(STAGING_DIR)/usr/lib/libxml2.*a $(TARGET_DIR)/usr/lib/
-#	cp -dpf $(STAGING_DIR)/usr/include/mad.h $(TARGET_DIR)/usr/include/
+#	cp -dpf $(STAGING_DIR)/usr/include/libxml $(TARGET_DIR)/usr/include/
 
-libxml2:	uclibc $(TARGET_DIR)/usr/lib/libxml2.so
+libxml2:	uclibc $(TARGET_DIR)/usr/lib/libxml2.so libxml2-headers
 
-libxml2-headers: $(TARGET_DIR)/usr/lib/libxml2.a
+$(STAGING_DIR)/usr/include/libxml:	$(TARGET_DIR)/usr/lib/libxml2.a
+	cp -af $(LIBXML2_DIR)/include/libxml $(STAGING_DIR)/usr/include/libxml2
+
+$(TARGET_DIR)/usr/include:	libxml2-headers
+	cp -af $(LIBXML2_DIR)/include/libxml $(TARGET_DIR)/usr/include/libxml2
+
+
+libxml2-headers:	$(STAGING_DIR)/usr/include/libxml2
+
+libxml2-target-headers: $(TARGET_DIR)/usr/include/libxml2
 
 libxml2-source: $(DL_DIR)/$(LIBXML2_SOURCE)
 
@@ -64,6 +73,8 @@ libxml2-clean:
 
 libxml2-dirclean:
 	rm -rf $(LIBXML2_DIR)
+
+.PHONY:	libxml2-headers libxml2-target-headers
 #############################################################
 #
 # Toplevel Makefile options
@@ -73,5 +84,5 @@ ifeq ($(strip $(BR2_PACKAGE_LIBXML2)),y)
 TARGETS+=libxml2
 endif
 ifeq ($(strip $(BR2_PACKAGE_LIBXML2_TARGET_HEADERS)),y)
-TARGETS+=libxml2-headers
+TARGETS+=libxml2-target-headers
 endif
