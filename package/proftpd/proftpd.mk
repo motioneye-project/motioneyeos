@@ -11,6 +11,10 @@ PROFTPD_CAT:=bzcat
 PROFTPD_BINARY:=proftpd
 PROFTPD_TARGET_BINARY:=usr/sbin/proftpd
 
+ifeq ($(BR2_INET_IPV6),y)
+ENABLE_IPV6:=--enable-ipv6
+endif
+
 $(DL_DIR)/$(PROFTPD_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(PROFTPD_SITE)/$(PROFTPD_SOURCE)
 
@@ -40,6 +44,7 @@ $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
 		--disable-dso \
 		--enable-shadow \
 		$(DISABLE_LARGEFILE) \
+		$(ENABLE_IPV6) \
 		--with-gnu-ld \
 	);
 	touch $(PROFTPD_DIR)/.configured
