@@ -2,6 +2,7 @@ config BR2_PACKAGE_DBUS
 	bool "dbus"
 	default n
 	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_LIBXML2
 	help
 	  The D-Bus message bus system.
 
