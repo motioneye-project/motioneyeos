@@ -1,0 +1,43 @@
+diff -ur samba-3.0.25a/source/configure.in samba-3.0.25a-patched/source/configure.in
+--- samba-3.0.25a/source/configure.in	2007-06-19 11:40:49.000000000 -0500
++++ samba-3.0.25a-patched/source/configure.in	2007-06-19 11:45:04.000000000 -0500
+@@ -511,37 +511,8 @@
+    AC_DEFINE(HAVE_VOLATILE, 1, [Whether the C compiler understands volatile])
+ fi
+ 
+-############################################
+-# check if the compiler can handle negative enum values
+-# and don't truncate the values to INT_MAX
+-# a runtime test is needed here
+-AC_SUBST(PIDL_ARGS)
+-AC_CACHE_CHECK([that the C compiler understands negative enum values],SMB_BUILD_CC_NEGATIVE_ENUM_VALUES, [
+-    AC_TRY_RUN(
+-[
+-	#include <stdio.h>
+-	enum negative_values { NEGATIVE_VALUE = 0xFFFFFFFF };
+-	int main(void) {
+-		enum negative_values v1 = NEGATIVE_VALUE;
+-		unsigned v2 = NEGATIVE_VALUE;
+-
+-		if (v1 != 0xFFFFFFFF) {
+-			printf("%u != 0xFFFFFFFF\n", v1);
+-			return 1;
+-		}
+-		if (v2 != 0xFFFFFFFF) {
+-			printf("%u != 0xFFFFFFFF\n", v2);
+-			return 1;
+-		}
+-
+-		return 0;
+-	}
+-],
+-	SMB_BUILD_CC_NEGATIVE_ENUM_VALUES=yes,SMB_BUILD_CC_NEGATIVE_ENUM_VALUES=no)])
+-if test x"$SMB_BUILD_CC_NEGATIVE_ENUM_VALUES" != x"yes"; then
+-	AC_MSG_WARN([using --unit-enums for pidl])
+-	PIDL_ARGS="$PIDL_ARGS --uint-enums"
+-fi
++# Just hard code this for cross compile cases
++PIDL_ARGS="$PIDL_ARGS --uint-enums"
+ 
+ dnl Figure out the flags to support named structure initializers
+ 

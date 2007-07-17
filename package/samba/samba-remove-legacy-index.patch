@@ -1,7 +1,7 @@
-diff -ur samba-3.0.23d/source/registry/reg_perfcount.c samba-3.0.23d-patched/source/registry/reg_perfcount.c
---- samba-3.0.23d/source/registry/reg_perfcount.c	2006-07-10 11:27:54.000000000 -0500
-+++ samba-3.0.23d-patched/source/registry/reg_perfcount.c	2007-01-20 23:12:23.456180669 -0600
-@@ -614,15 +614,15 @@
+diff -ur samba-3.0.25a/source/registry/reg_perfcount.c samba-3.0.25a-patched/source/registry/reg_perfcount.c
+--- samba-3.0.25a/source/registry/reg_perfcount.c	2007-02-28 22:55:05.000000000 -0600
++++ samba-3.0.25a-patched/source/registry/reg_perfcount.c	2007-06-19 11:40:01.000000000 -0500
+@@ -615,14 +615,14 @@
  	obj = NULL;
  	memset(buf, 0, PERFCOUNT_MAX_LEN);
  	memcpy(buf, data.dptr, data.dsize);
@@ -13,8 +13,7 @@ diff -ur samba-3.0.23d/source/registry/reg_perfcount.c samba-3.0.23d-patched/sou
  		return False;
  	start = begin+1;
  
- 	while(start < end)
- 	{
+ 	while(start < end) {
 -		stop = index(start, ',');
 +		stop = strchr(start, ',');
  		if(stop == NULL)

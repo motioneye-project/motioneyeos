@@ -3,9 +3,9 @@
 # samba
 #
 #############################################################
-SAMBA_VERSION:=3.0.23d
+SAMBA_VERSION:=3.0.25b
 SAMBA_SOURCE:=samba-$(SAMBA_VERSION).tar.gz
-SAMBA_SITE:=ftp://us4.samba.org/pub/samba/old-versions/
+SAMBA_SITE:=ftp://us4.samba.org/pub/samba/
 SAMBA_DIR:=$(BUILD_DIR)/samba-$(SAMBA_VERSION)/source
 SAMBA_CAT:=$(ZCAT)
 SAMBA_BINARY:=bin/smbd
@@ -28,6 +28,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		samba_cv_HAVE_GETTIMEOFDAY_TZ=yes \
 		samba_cv_USE_SETREUID=yes \
+		samba_cv_HAVE_KERNEL_OPLOCKS_LINUX=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -38,6 +39,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		--with-logfilebase=/var/log/samba \
 		--with-configdir=/etc/samba \
 		--without-ldap \
+		--without-libaddns \
 		--with-included-popt \
 		--with-included-iniparser \
 		--disable-cups \
@@ -90,6 +92,10 @@ $(TARGET_DIR)/$(SAMBA_TARGET_BINARY): $(SAMBA_DIR)/$(SAMBA_BINARY)
 		-C $(SAMBA_DIR) installservers installbin installcifsmount
 	for file in $(SAMBA_TARGETS_) ; do \
 		rm -f $(TARGET_DIR)/$$file; \
+	done
+	$(STRIP) --strip-unneeded $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
+	for file in $(SAMBA_TARGETS_y) ; do \
+		$(STRIP) --strip-unneeded $(TARGET_DIR)/$$file; \
 	done
 	$(INSTALL) -m 0755 package/samba/S91smb $(TARGET_DIR)/etc/init.d
 	@if [ ! -f $(TARGET_DIR)/etc/samba/smb.conf ] ; then \

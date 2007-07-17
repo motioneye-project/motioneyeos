@@ -1,11 +1,11 @@
-diff -ur samba-3.0.23c/source/configure.in samba-3.0.23c-patched/source/configure.in
---- samba-3.0.23c/source/configure.in	2006-07-21 11:22:57.000000000 -0500
-+++ samba-3.0.23c-patched/source/configure.in	2006-11-09 10:23:26.000000000 -0600
-@@ -1399,38 +1399,6 @@
+diff -ur samba-3.0.25a/source/configure.in samba-3.0.25a-patched/source/configure.in
+--- samba-3.0.25a/source/configure.in	2007-05-23 10:29:20.000000000 -0500
++++ samba-3.0.25a-patched/source/configure.in	2007-06-19 11:38:21.000000000 -0500
+@@ -1370,38 +1370,6 @@
  AC_DEFINE(HAVE_PRCTL, 1, [Whether prctl is available]),[])
  
  #
--# 
+-#
 -#
 -case "$host_os" in
 -    *linux*)
