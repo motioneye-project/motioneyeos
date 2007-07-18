@@ -131,12 +131,7 @@ $(LINUX26_KERNEL): $(LINUX26_DIR)/.depend_done
 	cp -dpf $(LINUX26_DIR)/$(LINUX26_BINLOC) $(LINUX26_KERNEL)
 	touch -c $@
 
-$(TARGET_DIR)/boot/$(LINUX26_FORMAT): $(LINUX26_KERNEL)
-	[ -d $(TARGET_DIR)/boot/ ] || mkdir $(TARGET_DIR)/boot
-	cp -dpf $(LINUX26_DIR)/$(LINUX26_BINLOC) $(LINUX26_DIR)/System.map $(TARGET_DIR)/boot/
-	touch -c $@
-
-linux26-modules $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_DIR)/.depend_done
+$(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_DIR)/.configured
 	rm -rf $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)
 	rm -f $(TARGET_DIR)/sbin/cardmgr
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) modules
@@ -145,6 +140,7 @@ linux26-modules $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINU
 		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
 	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/build
 	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/source
+	$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX_HEADERS_VERSION)
 	touch -c $@
 
 linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
@@ -152,7 +148,12 @@ linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
 	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
 
-linux26: cross-depmod26 $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep $(INITRAMFS_TARGET) $(TARGET_DIR)/boot/$(LINUX26_FORMAT)
+linux26: $(INITRAMFS_TARGET) $(LINUX26_KERNEL)
+
+$(LINUX26_DIR)/.modules_installed: $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep
+	touch $@
+
+linux26-modules: cross-depmod26 $(LINUX26_DIR)/.modules_installed
 
 linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 

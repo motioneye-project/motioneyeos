@@ -13,6 +13,8 @@ INITRAMFS_TARGET:= #nothing
 endif
 
 $(INITRAMFS_TARGET) initramfs: host-fakeroot makedevs
+	rm -f $(TARGET_DIR)/init
+	ln -s sbin/init $(TARGET_DIR)/init
 	-find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
 	rm -rf $(TARGET_DIR)/usr/man
 	rm -rf $(TARGET_DIR)/usr/info

@@ -34,6 +34,7 @@ distclean: clean
 	$(Q)rm -f $(lxdialog) $(conf-objs) $(mconf-objs) $(kxgettext-objs) \
 		$(hostprogs-y) $(qconf-cxxobjs) $(qconf-objs) $(gconf-objs) \
 		mconf .depend
+	$(Q)rm -rf buildroot-config
 
 FORCE:
 .PHONY: FORCE clean distclean

@@ -187,6 +187,9 @@ include .config.cmd
 # each selected package to TARGETS if that package was selected
 # in the .config file.
 include toolchain/*/*.mk
+ifeq ($(BR2_PACKAGE_LINUX),y)
+TARGETS+=linux26-modules
+endif
 include package/*/*.mk
 
 # target stuff is last so it can override anything else
@@ -309,47 +312,47 @@ $(CONFIG)/mconf:
 	fi
 
 menuconfig: $(CONFIG)/mconf
-	@-mkdir -p include/config
-	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
-		KCONFIG_AUTOHEADER=include/autoconf.h \
+	@-mkdir -p $(CONFIG)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/mconf $(CONFIG_CONFIG_IN)
 
 config: $(CONFIG)/conf
-	@-mkdir -p include/config
-	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
-		KCONFIG_AUTOHEADER=include/autoconf.h \
+	@-mkdir -p $(CONFIG)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf $(CONFIG_CONFIG_IN)
 
 oldconfig: $(CONFIG)/conf
-	@-mkdir -p include/config
-	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
-		KCONFIG_AUTOHEADER=include/autoconf.h \
+	@-mkdir -p $(CONFIG)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
 
 randconfig: $(CONFIG)/conf
-	@-mkdir -p include/config
-	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
-		KCONFIG_AUTOHEADER=include/autoconf.h \
+	@-mkdir -p $(CONFIG)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
 
 allyesconfig: $(CONFIG)/conf
 	cat $(CONFIG_DEFCONFIG) > .config
-	@-mkdir -p include/config
-	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
-		KCONFIG_AUTOHEADER=include/autoconf.h \
+	@-mkdir -p $(CONFIG)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
 	#sed -i -e "s/^CONFIG_DEBUG.*/# CONFIG_DEBUG is not set/" .config
 
 allnoconfig: $(CONFIG)/conf
-	@-mkdir -p include/config
-	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
-		KCONFIG_AUTOHEADER=include/autoconf.h \
+	@-mkdir -p $(CONFIG)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
 
 defconfig: $(CONFIG)/conf
-	@-mkdir -p include/config
-	@KCONFIG_AUTOCONFIG=include/config/auto.conf \
-		KCONFIG_AUTOHEADER=include/autoconf.h \
+	@-mkdir -p $(CONFIG)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
 
 # check if download URLs are outdated 
