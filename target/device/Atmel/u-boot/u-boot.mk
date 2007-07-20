@@ -82,7 +82,7 @@ $(MKIMAGE_BINLOC): $(UBOOT_BUILD_DIR)/.configured
 		-C $(UBOOT_DIR)	tools
 	touch $(MKIMAGE_BINLOC)
 
-$(UBOOT_BUILD_DIR)/u-boot.bin:	$(UBOOT_BUILD_DIR)/.configured $(UBOOT_BUILD_DIR)/.customized
+$(UBOOT_BUILD_DIR)/u-boot.bin:	$(UBOOT_BUILD_DIR)/.configured $(UBOOT_CUSTOM)
 	echo TARGET_CROSS=$(TARGET_CROSS)
 	$(MAKE) O=$(UBOOT_BUILD_DIR)		\
 		CROSS_COMPILE=$(TARGET_CROSS)	\
@@ -102,30 +102,30 @@ $(BINARIES_DIR)/$(UBOOT_BIN):	$(UBOOT_BUILD_DIR)/u-boot.bin
 
 uboot-bin:	$(BINARIES_DIR)/$(UBOOT_BIN)	/tftpboot/$(UBOOT_BIN)
 
-$(UBOOT_BUILD_DIR)/.customized:	.config	$(UBOOT_BUILD_DIR)/.configured
-	echo	"/* Automatically generated file, do not edit */"		>  $(UBOOT_CUSTOM)
+$(UBOOT_CUSTOM).test:	.config	$(UBOOT_BUILD_DIR)/.configured
+	echo	"/* Automatically generated file, do not edit */"		>  $(UBOOT_CUSTOM).test
 ifneq	($(TARGET_HOSTNAME),)
-	echo	"#if defined(CONFIG_HOSTNAME)"					>> $(UBOOT_CUSTOM)
-	echo	"#undef	 CONFIG_HOSTNAME"					>> $(UBOOT_CUSTOM)
-	echo	"#define CONFIG_HOSTNAME		$(TARGET_HOSTNAME)"	>> $(UBOOT_CUSTOM)
-	echo	"#endif"							>> $(UBOOT_CUSTOM)
+	echo	"#if defined(CONFIG_HOSTNAME)"					>> $(UBOOT_CUSTOM).test
+	echo	"#undef	 CONFIG_HOSTNAME"					>> $(UBOOT_CUSTOM).test
+	echo	"#define CONFIG_HOSTNAME		$(TARGET_HOSTNAME)"	>> $(UBOOT_CUSTOM).test
+	echo	"#endif"							>> $(UBOOT_CUSTOM).test
 endif
 ifneq	($(TARGET_UBOOT_IPADDR),)
-	echo	"#define CONFIG_IPADDR		$(TARGET_UBOOT_IPADDR)"		>> $(UBOOT_CUSTOM)
+	echo	"#define CONFIG_IPADDR		$(TARGET_UBOOT_IPADDR)"		>> $(UBOOT_CUSTOM).test
 endif
 ifneq	($(TARGET_UBOOT_SERVERIP),)
-	echo	"#define CONFIG_SERVERIP		$(TARGET_UBOOT_SERVERIP)"	>> $(UBOOT_CUSTOM)
+	echo	"#define CONFIG_SERVERIP	$(TARGET_UBOOT_SERVERIP)"	>> $(UBOOT_CUSTOM).test
 endif
 ifneq	($(TARGET_UBOOT_GATEWAY),)
-	echo	"#define CONFIG_GATEWAYIP	$(TARGET_UBOOT_GATEWAY)"	>> $(UBOOT_CUSTOM)
+	echo	"#define CONFIG_GATEWAYIP	$(TARGET_UBOOT_GATEWAY)"	>> $(UBOOT_CUSTOM).test
 endif
 ifneq	($(TARGET_UBOOT_NETMASK),)
-	echo	"#define CONFIG_NETMASK		$(TARGET_UBOOT_NETMASK)"	>> $(UBOOT_CUSTOM)
+	echo	"#define CONFIG_NETMASK		$(TARGET_UBOOT_NETMASK)"	>> $(UBOOT_CUSTOM).test
 endif
 ifneq	($(TARGET_UBOOT_ETHADDR),)
-	echo	"#define CONFIG_ETHADDR		$(TARGET_UBOOT_ETHADDR)"	>> $(UBOOT_CUSTOM)
+	echo	"#define CONFIG_ETHADDR		$(TARGET_UBOOT_ETHADDR)"	>> $(UBOOT_CUSTOM).test
 endif
-	touch	$(UBOOT_BUILD_DIR)/.customized
+	diff -q $(UBOOT_CUSTOM).test $(UBOOT_CUSTOM) || cp -af $(UBOOT_CUSTOM).test $(UBOOT_CUSTOM)
 
 $(UBOOT_SCR):	.config
 ifneq	($(TARGET_UBOOT_IPADDR),)
