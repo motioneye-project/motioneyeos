@@ -19,7 +19,7 @@ LINUX26_RC_PATCH:=$(strip  $(subst ",, $(BR2_LINUX26_RC_PATCH)))
 LINUX_BSP_PATCH:=$(strip  $(subst ",, $(BR2_LINUX_BSP_ATMEL_PATCH)))
 
 # These are set by "new" Config.in
-LINUX26_KCONFIG:=$(strip  $(subst ",, $(BR2_BOARD_PATH)/$(BOARD_NAME)-linux-$(DOWNLOAD_LINUX26_VERSION).config))
+LINUX26_KCONFIG:=$(BOARD_PATH)/$(BOARD_NAME)-linux-$(LINUX26_VERSION).config
 
 # This should be part of target/linux/Makefile.in
 LINUX26_BUILD_DIR:=$(PROJECT_BUILD_DIR)
