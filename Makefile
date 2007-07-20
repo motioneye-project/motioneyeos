@@ -252,12 +252,8 @@ $(TARGET_DIR)/etc/hostname:	$(TARGET_DIR) .config
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
-.config.check: dependencies
-	$(SED) '/BR2_WGET/s/\"$$/ --spider\"/g' .config
-	touch $@
-
-_source-check: .config.check
-	$(MAKE) source
+_source-check: 
+	$(MAKE) SPIDER=--spider source
 
 #############################################################
 #

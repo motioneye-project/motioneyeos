@@ -12,7 +12,7 @@ MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
 # Strip off the annoying quoting
 ARCH:=$(strip $(subst ",, $(BR2_ARCH)))
 #"))
-WGET:=$(strip $(subst ",, $(BR2_WGET)))
+WGET:=$(strip $(subst ",, $(BR2_WGET))) $(SPIDER)
 #"))
 SVN:=$(strip $(subst ",, $(BR2_SVN)))
 #"))
