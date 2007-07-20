@@ -19,15 +19,17 @@ hdparm-source: $(DL_DIR)/$(HDPARM_SOURCE)
 hdparm-unpacked: $(HDPARM_DIR)/.unpacked
 $(HDPARM_DIR)/.unpacked: $(DL_DIR)/$(HDPARM_SOURCE)
 	$(HDPARM_CAT) $(DL_DIR)/$(HDPARM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(HDPARM_DIR) package/hdparm hdparm.patch
 	touch $(HDPARM_DIR)/.unpacked
 
 $(HDPARM_DIR)/.configured: $(HDPARM_DIR)/.unpacked
 	touch $(HDPARM_DIR)/.configured
 
 $(HDPARM_DIR)/$(HDPARM_BINARY): $(HDPARM_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(HDPARM_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(HDPARM_DIR)
 
 $(TARGET_DIR)/$(HDPARM_TARGET_BINARY): $(HDPARM_DIR)/$(HDPARM_BINARY)
+	rm -f $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
 	cp -a $(HDPARM_DIR)/$(HDPARM_BINARY) $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
 
 hdparm: uclibc $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)

@@ -1,0 +1,12 @@
+diff -ur hdparm-7.6/Makefile hdparm-7.6-patched/Makefile
+--- hdparm-7.6/Makefile	2007-06-07 12:39:24.000000000 -0500
++++ hdparm-7.6-patched/Makefile	2007-07-19 12:11:03.000000000 -0500
+@@ -28,7 +28,7 @@
+ 
+ hdparm: hdparm.h $(OBJS)
+ 	$(CC) $(LDFLAGS) -o hdparm $(OBJS)
+-	strip hdparm
++	$(STRIP) hdparm
+  
+ install: all hdparm.8
+ 	if [ ! -z $(DESTDIR) ]; then $(INSTALL_DIR) $(DESTDIR) ; fi
