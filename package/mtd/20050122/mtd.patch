@@ -1,0 +1,45 @@
+diff -ur mtd-20050122.orig/util/flash_eraseall.c mtd-20050122.orig-patched/util/flash_eraseall.c
+--- mtd-20050122.orig/util/flash_eraseall.c	2004-12-09 17:00:52.000000000 -0600
++++ mtd-20050122.orig-patched/util/flash_eraseall.c	2007-01-13 22:56:51.864233154 -0600
+@@ -54,7 +54,7 @@
+ static void display_help (void);
+ static void display_version (void);
+ static struct jffs2_unknown_node cleanmarker;
+-static int target_endian = __BYTE_ORDER;
++int target_endian = __BYTE_ORDER;
+ 
+ int main (int argc, char *argv[])
+ {
+@@ -134,7 +134,7 @@
+ 				if (!quiet)
+ 					printf ("\nSkipping bad block at 0x%08x\n", erase.start);
+ 				continue;
+-			} else if (ret == -EOPNOTSUPP) {
++			} else if (errno == EOPNOTSUPP) {
+ 				fprintf(stderr, "%s: %s: Bad block check not available\n", exe_name, mtd_device);
+ 				bbtest = 0;
+ 			} else if (ret < 0) {
+diff -ur mtd-20050122.orig/util/mkfs.jffs2.c mtd-20050122.orig-patched/util/mkfs.jffs2.c
+--- mtd-20050122.orig/util/mkfs.jffs2.c	2004-11-26 17:00:13.000000000 -0600
++++ mtd-20050122.orig-patched/util/mkfs.jffs2.c	2007-01-13 22:55:53.627687214 -0600
+@@ -101,7 +101,7 @@
+ static int squash_uids = 0;
+ static int squash_perms = 0;
+ static int fake_times = 0;
+-static int target_endian = __BYTE_ORDER;
++int target_endian = __BYTE_ORDER;
+ static const char *const app_name = "mkfs.jffs2";
+ static const char *const memory_exhausted = "memory exhausted";
+ 
+diff -ur mtd-20050122.orig/util/sumtool.c mtd-20050122.orig-patched/util/sumtool.c
+--- mtd-20050122.orig/util/sumtool.c	2005-01-05 17:00:16.000000000 -0600
++++ mtd-20050122.orig-patched/util/sumtool.c	2007-01-13 22:56:05.528616125 -0600
+@@ -68,7 +68,7 @@
+ static int cleanmarker_size = sizeof(cleanmarker);
+ static const char *short_options = "o:i:e:hvVblnc:p";
+ static int erase_block_size = 65536;
+-static int target_endian = __BYTE_ORDER;
++int target_endian = __BYTE_ORDER;
+ static int out_fd = -1;
+ static int in_fd = -1;
+ 

@@ -1,0 +1,19 @@
+diff -urN mtd-20061007.orig-0rig/mkfs.jffs2.c mtd-20061007.orig/mkfs.jffs2.c
+--- mtd-20061007.orig-0rig/mkfs.jffs2.c	2006-10-07 17:33:37.000000000 +0200
++++ mtd-20061007.orig/mkfs.jffs2.c	2007-04-09 02:16:06.000000000 +0200
+@@ -240,6 +242,15 @@
+ {
+ 	struct filesystem_entry *e = dir;
+ 
++	if((strlen(fullname) == 1) && (fullname[0] == '/')) {
++		/* Looking for "root" */
++		if(e != NULL) {
++			if((strlen(e->fullname) == 1) && (e->fullname[0] == '/')) {
++				return (e);
++			}
++		} 
++	}
++
+ 	if (S_ISDIR(dir->sb.st_mode)) {
+ 		e = dir->files;
+ 	}

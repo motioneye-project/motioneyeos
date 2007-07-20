@@ -5,14 +5,22 @@ config BR2_PACKAGE_MTD
 	help
 	  Build mtd/jffs utilities
 
+config BR2_PACKAGE_MTD_EXPERIMENTAL
+	bool "Use experimental MTD (20061007)"
+	depends on BR2_PACKAGE_MTD
+	depends on BR2_TARGET_ATMEL
+	default n
+	help
+	  Build mtd/jffs utilities with Dataflash support
+
+
 menu "MTD package selection"
 	depends on BR2_PACKAGE_MTD
-
+	depends on !BR2_PACKAGE_MTD_EXPERIMENTAL
 choice
 	prompt "Source package selection"
 	depends on BR2_PACKAGE_MTD
 	default BR2_PACKAGE_MTD_ORIG
-
 
 config BR2_PACKAGE_MTD_ORIG
 	bool "Default source"
@@ -28,7 +36,7 @@ config BR2_PACKAGE_MTD_SNAPSHOT
 endchoice
 
 config BR2_PACKAGE_MTD_ORIG_STRING
-	string "MTD package name"
+	string "MTD package"
 	depends on BR2_PACKAGE_MTD_ORIG
 	default "mtd_20050122.orig.tar.gz"
 	help
@@ -37,6 +45,13 @@ config BR2_PACKAGE_MTD_ORIG_STRING
 	  Default is mtd_20050122.orig.tar.gz
 
 endmenu
+
+config BR2_PACKAGE_MTD_ORIG_STRING
+	string
+	depends on BR2_PACKAGE_MTD_EXPERIMENTAL
+	default "mtd_20061007.orig.tar.gz"
+	help
+	  Default is mtd_20061007.orig.tar.gz
 
 menu "MTD tools selection"
 	depends BR2_PACKAGE_MTD
@@ -85,6 +100,13 @@ config BR2_PACKAGE_MTD_JFFS3DUMP
 	bool "jffs3dump"
 	default y
 	depends on BR2_PACKAGE_MTD
+	depends on !BR2_PACKAGE_MTD_EXPERIMENTAL
+
+config BR2_PACKAGE_MTD_JFFS3DUMP
+	bool "jffs3dump (Don't check this since it is broken)"
+	default n
+	depends on BR2_PACKAGE_MTD
+	depends on !BR2_PACKAGE_MTD_EXPERIMENTAL
 
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
@@ -147,3 +169,4 @@ config BR2_PACKAGE_MTD_DOC_LOADBIOS
 	depends on BR2_PACKAGE_MTD
 
 endmenu
+

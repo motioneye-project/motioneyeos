@@ -1,0 +1,93 @@
+diff -urN mtd-20061007.orig/Makefile mtd-20061007.orig.patch/Makefile
+--- mtd-20061007.orig/Makefile	2006-10-07 16:33:37.000000000 +0100
++++ mtd-20061007.orig.patch/Makefile	2007-01-09 14:06:22.000000000 +0000
+@@ -9,12 +9,10 @@
+ #CROSS=arm-linux-
+ CC := $(CROSS)gcc
+ CFLAGS := -I./include -O2 -Wall
++BUILDDIR := .
+ 
+-ifeq ($(origin CROSS),undefined)
+-  BUILDDIR := .
+-else
+-# Remove the trailing slash to make the directory name
+-  BUILDDIR := $(CROSS:-=)
++ifeq ($(WITHOUT_XATTR), 1)
++  CFLAGS += -DWITHOUT_XATTR
+ endif
+ 
+ RAWTARGETS = ftl_format flash_erase flash_eraseall nanddump doc_loadbios \
+diff -urN mtd-20061007.orig/mkfs.jffs2.c mtd-20061007.orig.patch/mkfs.jffs2.c
+--- mtd-20061007.orig/mkfs.jffs2.c	2006-10-07 16:33:37.000000000 +0100
++++ mtd-20061007.orig.patch/mkfs.jffs2.c	2007-01-09 11:18:33.000000000 +0000
+@@ -64,8 +64,10 @@
+ #include <ctype.h>
+ #include <time.h>
+ #include <getopt.h>
+-#include <sys/xattr.h>
+-#include <sys/acl.h>
++#ifndef WITHOUT_XATTR
++  #include <sys/xattr.h>
++  #include <sys/acl.h>
++#endif
+ #include <byteswap.h>
+ #define crc32 __complete_crap
+ #include <zlib.h>
+@@ -1030,6 +1032,7 @@
+ 	padword();
+ }
+ 
++#ifndef WITHOUT_XATTR
+ typedef struct xattr_entry {
+ 	struct xattr_entry *next;
+ 	uint32_t xid;
+@@ -1258,6 +1261,9 @@
+ 		padword();
+ 	}
+ }
++#else /* WITHOUT_XATTR */
++#define write_xattr_entry(x)
++#endif
+ 
+ static void recursive_populate_directory(struct filesystem_entry *dir)
+ {
+@@ -1416,9 +1422,11 @@
+ 	{"test-compression", 0, NULL, 't'},
+ 	{"compressor-priority", 1, NULL, 'y'},
+ 	{"incremental", 1, NULL, 'i'},
++#ifndef WITHOUT_XATTR
+ 	{"with-xattr", 0, NULL, 1000 },
+ 	{"with-selinux", 0, NULL, 1001 },
+ 	{"with-posix-acl", 0, NULL, 1002 },
++#endif
+ 	{NULL, 0, NULL, 0}
+ };
+ 
+@@ -1451,9 +1459,11 @@
+ 	"  -q, --squash            Squash permissions and owners making all files be owned by root\n"
+ 	"  -U, --squash-uids       Squash owners making all files be owned by root\n"
+ 	"  -P, --squash-perms      Squash permissions on all files\n"
++#ifndef WITHOUT_XATTR
+ 	"      --with-xattr        stuff all xattr entries into image\n"
+ 	"      --with-selinux      stuff only SELinux Labels into jffs2 image\n"
+ 	"      --with-posix-acl    stuff only POSIX ACL entries into jffs2 image\n"
++#endif
+ 	"  -h, --help              Display this help text\n"
+ 	"  -v, --verbose           Verbose operation\n"
+ 	"  -V, --version           Display version information\n"
+@@ -1772,6 +1782,7 @@
+ 					perror_msg_and_die("cannot open (incremental) file");
+ 				}
+ 				break;
++#ifndef WITHOUT_XATTR
+ 			case 1000:	/* --with-xattr  */
+ 				enable_xattr |= (1 << JFFS2_XPREFIX_USER)
+ 						| (1 << JFFS2_XPREFIX_SECURITY)
+@@ -1786,6 +1797,7 @@
+ 				enable_xattr |= (1 << JFFS2_XPREFIX_ACL_ACCESS)
+ 						| (1 << JFFS2_XPREFIX_ACL_DEFAULT);
+ 				break;
++#endif
+ 		}
+ 	}
+ 	if (out_fd == -1) {
