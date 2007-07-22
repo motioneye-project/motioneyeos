@@ -1,6 +1,4 @@
 # *******************************************************************
-ATMEL_MIRROR:=$(strip  $(subst ",, $(BR2_ATMEL_MIRROR)))
-#"))
 
 ifeq ($(strip $(BR2_TARGET_ATMEL)),y)
 ATMEL_PATH:=target/device/Atmel
