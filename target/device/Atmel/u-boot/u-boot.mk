@@ -12,7 +12,6 @@ UBOOT_DIR:=$(BUILD_DIR)/u-boot-$(UBOOT_VERSION)
 UBOOT_BUILD_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(UBOOT_VERSION)
 UBOOT_SOURCE:=u-boot-$(UBOOT_VERSION).tar.bz2
 #UBOOT_SOURCE:=u-boot-1.1.5-atmel.tar.bz2
-ATMEL_MIRROR:=$(strip  $(subst ",, $(BR2_ATMEL_MIRROR)))
 #UBOOT_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/u-boot
 UBOOT_SITE:=$(ATMEL_MIRROR)/Source
 UBOOT_PATCH_SITE:=$(ATMEL_MIRROR)/Source
@@ -30,10 +29,15 @@ UBOOT_ATMEL_BMP:=$(UBOOT_PATCHES)/atmel.bmp
 
 UBOOT_SCR=$(BINARIES_DIR)/autoscript
 TARGET_UBOOT_IPADDR:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_IPADDR)))
+#"))
 TARGET_UBOOT_SERVERIP:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP)))
+#"))
 TARGET_UBOOT_GATEWAY:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_GATEWAY)))
+#"))
 TARGET_UBOOT_NETMASK:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_NETMASK)))
+#"))
 TARGET_UBOOT_ETHADDR:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR)))
+#"))
 UBOOT_CUSTOM:=$(UBOOT_DIR)/include/custom.h
 
 $(DL_DIR)/$(UBOOT_SOURCE):
