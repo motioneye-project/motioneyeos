@@ -1,5 +1,6 @@
 config BR2_PACKAGE_AVAHI
 	bool "avahi"
+	depends on BR2_PACKAGE_LIBDAEMON
 	default n
 	help
 	  Avahi is a system which facilitates service
