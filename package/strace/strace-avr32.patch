@@ -1,0 +1,2101 @@
+diff --git a/Makefile.am b/Makefile.am
+index a9972fe..8e4ecac 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -29,6 +29,7 @@ EXTRA_DIST = $(man_MANS) errnoent.sh signalent.sh syscallent.sh ioctlsort.c \
+ 	     linux/alpha/errnoent.h linux/alpha/ioctlent.h \
+ 	     linux/alpha/signalent.h linux/alpha/syscallent.h \
+ 	     linux/arm/syscallent.h \
++	     linux/avr32/syscallent.h \
+ 	     linux/hppa/errnoent.h linux/hppa/ioctlent.h \
+ 	     linux/hppa/signalent.h linux/hppa/syscallent.h \
+ 	     linux/ia64/syscallent.h linux/ia64/errnoent.h \
+diff --git a/Makefile.in b/Makefile.in
+index bb0f8b1..d8e618b 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -121,6 +121,7 @@ EGREP = @EGREP@
+ EXEEXT = @EXEEXT@
+ FREEBSD_FALSE = @FREEBSD_FALSE@
+ FREEBSD_TRUE = @FREEBSD_TRUE@
++GREP = @GREP@
+ I386_FALSE = @I386_FALSE@
+ I386_TRUE = @I386_TRUE@
+ INSTALL_DATA = @INSTALL_DATA@
+@@ -158,7 +159,6 @@ WARNFLAGS = @WARNFLAGS@
+ X86_64_FALSE = @X86_64_FALSE@
+ X86_64_TRUE = @X86_64_TRUE@
+ ac_ct_CC = @ac_ct_CC@
+-ac_ct_STRIP = @ac_ct_STRIP@
+ am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
+ am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
+ am__include = @am__include@
+@@ -174,24 +174,31 @@ build_cpu = @build_cpu@
+ build_os = @build_os@
+ build_vendor = @build_vendor@
+ datadir = @datadir@
++datarootdir = @datarootdir@
++docdir = @docdir@
++dvidir = @dvidir@
+ exec_prefix = @exec_prefix@
+ host = @host@
+ host_alias = @host_alias@
+ host_cpu = @host_cpu@
+ host_os = @host_os@
+ host_vendor = @host_vendor@
++htmldir = @htmldir@
+ includedir = @includedir@
+ infodir = @infodir@
+ install_sh = @install_sh@
+ libdir = @libdir@
+ libexecdir = @libexecdir@
++localedir = @localedir@
+ localstatedir = @localstatedir@
+ mandir = @mandir@
+ mkdir_p = @mkdir_p@
+ oldincludedir = @oldincludedir@
+ opsys = @opsys@
++pdfdir = @pdfdir@
+ prefix = @prefix@
+ program_transform_name = @program_transform_name@
++psdir = @psdir@
+ sbindir = @sbindir@
+ sharedstatedir = @sharedstatedir@
+ sysconfdir = @sysconfdir@
+@@ -222,6 +229,7 @@ EXTRA_DIST = $(man_MANS) errnoent.sh signalent.sh syscallent.sh ioctlsort.c \
+ 	     linux/alpha/errnoent.h linux/alpha/ioctlent.h \
+ 	     linux/alpha/signalent.h linux/alpha/syscallent.h \
+ 	     linux/arm/syscallent.h \
++	     linux/avr32/syscallent.h \
+ 	     linux/hppa/errnoent.h linux/hppa/ioctlent.h \
+ 	     linux/hppa/signalent.h linux/hppa/syscallent.h \
+ 	     linux/ia64/syscallent.h linux/ia64/errnoent.h \
+@@ -522,7 +530,7 @@ distdir: $(DISTFILES)
+ 	esac
+ 	$(am__remove_distdir)
+ 	mkdir $(distdir)
+-	$(mkdir_p) $(distdir)/debian $(distdir)/freebsd $(distdir)/freebsd/i386 $(distdir)/linux $(distdir)/linux/alpha $(distdir)/linux/arm $(distdir)/linux/hppa $(distdir)/linux/ia64 $(distdir)/linux/m68k $(distdir)/linux/mips $(distdir)/linux/powerpc $(distdir)/linux/s390 $(distdir)/linux/s390x $(distdir)/linux/sh $(distdir)/linux/sh64 $(distdir)/linux/sparc $(distdir)/linux/sparc64 $(distdir)/linux/x86_64 $(distdir)/sunos4 $(distdir)/svr4
++	$(mkdir_p) $(distdir)/debian $(distdir)/freebsd $(distdir)/freebsd/i386 $(distdir)/linux $(distdir)/linux/alpha $(distdir)/linux/arm $(distdir)/linux/avr32 $(distdir)/linux/hppa $(distdir)/linux/ia64 $(distdir)/linux/m68k $(distdir)/linux/mips $(distdir)/linux/powerpc $(distdir)/linux/s390 $(distdir)/linux/s390x $(distdir)/linux/sh $(distdir)/linux/sh64 $(distdir)/linux/sparc $(distdir)/linux/sparc64 $(distdir)/linux/x86_64 $(distdir)/sunos4 $(distdir)/svr4
+ 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
+ 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
+ 	list='$(DISTFILES)'; for file in $$list; do \
+diff --git a/config.h.in b/config.h.in
+index a2aeb2e..5778dc8 100644
+--- a/config.h.in
++++ b/config.h.in
+@@ -6,6 +6,9 @@
+ /* Define for the ARM architecture. */
+ #undef ARM
+ 
++/* Define for the AVR32 architecture. */
++#undef AVR32
++
+ /* Define for the FreeBSD operating system. */
+ #undef FREEBSD
+ 
+diff --git a/configure.ac b/configure.ac
+index 49a9b20..87695b8 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -103,6 +103,10 @@ x86?64*)
+ 	arch=x86_64
+ 	AC_DEFINE([X86_64], 1, [Define for the AMD x86-64 architecture.])
+ 	;;
++avr32*)
++	arch=avr32
++	AC_DEFINE([AVR32], 1, [Define for the AVR32 architecture.])
++	;;
+ *)
+ 	AC_MSG_RESULT([NO!])
+ 	AC_MSG_ERROR([architecture $host_cpu is not supported by strace])
+diff --git a/defs.h b/defs.h
+index 486fac5..1818e8c 100644
+--- a/defs.h
++++ b/defs.h
+@@ -94,6 +94,9 @@
+ #  if defined(X86_64)
+ #     define LINUX_X86_64
+ #  endif
++#  if defined(AVR32)
++#     define LINUX_AVR32
++#  endif
+ #endif
+ 
+ #if defined(SVR4) || defined(FREEBSD)
+@@ -120,7 +123,7 @@
+ #include <sys/pioctl.h>
+ #endif /* FREEBSD */
+ #else /* !USE_PROCFS */
+-#if (defined(LINUXSPARC) || defined (LINUX_X86_64)) && defined(__GLIBC__)
++#if (defined(LINUXSPARC) || defined (LINUX_X86_64) || defined (LINUX_AVR32)) && defined(__GLIBC__)
+ #include <sys/ptrace.h>
+ #else
+ /* Work around awkward prototype in ptrace.h. */
+@@ -327,7 +330,7 @@ struct tcb {
+ #define TCB_FOLLOWFORK	00400	/* Process should have forks followed */
+ #define TCB_REPRINT	01000	/* We should reprint this syscall on exit */
+ #ifdef LINUX
+-# if defined(ALPHA) || defined(SPARC) || defined(SPARC64) || defined(POWERPC) || defined(IA64) || defined(HPPA) || defined(SH) || defined(SH64) || defined(S390) || defined(S390X) || defined(ARM)
++# if defined(ALPHA) || defined(SPARC) || defined(SPARC64) || defined(POWERPC) || defined(IA64) || defined(HPPA) || defined(SH) || defined(SH64) || defined(S390) || defined(S390X) || defined(ARM) || defined(AVR32)
+ #  define TCB_WAITEXECVE 02000	/* ignore SIGTRAP after exceve */
+ # endif
+ # define TCB_CLONE_DETACHED 04000 /* CLONE_DETACHED set in creating syscall */
+diff --git a/linux/avr32/ioctlent.h b/linux/avr32/ioctlent.h
+new file mode 100644
+index 0000000..0f0a63d
+--- /dev/null
++++ b/linux/avr32/ioctlent.h
+@@ -0,0 +1,1268 @@
++{"linux/fs.h", "FIBMAP", 0x1},
++{"linux/fs.h", "FIGETBSZ", 0x2},
++{"linux/fd.h", "FDCLRPRM", 0x241},
++{"linux/fd.h", "FDMSGON", 0x245},
++{"linux/fd.h", "FDMSGOFF", 0x246},
++{"linux/fd.h", "FDFMTBEG", 0x247},
++{"linux/fd.h", "FDFMTEND", 0x249},
++{"linux/fd.h", "FDSETEMSGTRESH", 0x24a},
++{"linux/fd.h", "FDFLUSH", 0x24b},
++{"linux/fd.h", "FDRESET", 0x254},
++{"linux/fd.h", "FDWERRORCLR", 0x256},
++{"linux/fd.h", "FDRAWCMD", 0x258},
++{"linux/fd.h", "FDTWADDLE", 0x259},
++{"linux/fd.h", "FDEJECT", 0x25a},
++{"linux/wireless.h", "IW_POWER_ALL_R", 0x300},
++{"linux/in6.h", "IPV6_PRIORITY_RESERVED1", 0x300},
++{"linux/apm_bios.h", "APM_DEVICE_PARALLEL", 0x300},
++{"linux/hdreg.h", "HDIO_GETGEO", 0x301},
++{"linux/ps2esdi.h", "HDIO_GETGEO", 0x301},
++{"linux/hdreg.h", "HDIO_GET_UNMASKINTR", 0x302},
++{"linux/hdreg.h", "HDIO_GET_MULTCOUNT", 0x304},
++{"linux/hdreg.h", "HDIO_GET_QDMA", 0x305},
++{"linux/hdreg.h", "HDIO_SET_XFER", 0x306},
++{"linux/hdreg.h", "HDIO_OBSOLETE_IDENTITY", 0x307},
++{"linux/hdreg.h", "HDIO_GET_KEEPSETTINGS", 0x308},
++{"linux/hdreg.h", "HDIO_GET_32BIT", 0x309},
++{"linux/hdreg.h", "HDIO_GET_NOWERR", 0x30a},
++{"linux/hdreg.h", "HDIO_GET_DMA", 0x30b},
++{"linux/hdreg.h", "HDIO_GET_NICE", 0x30c},
++{"linux/hdreg.h", "HDIO_GET_IDENTITY", 0x30d},
++{"linux/hdreg.h", "HDIO_GET_WCACHE", 0x30e},
++{"linux/hdreg.h", "HDIO_GET_ACOUSTIC", 0x30f},
++{"linux/hdreg.h", "HDIO_GET_ADDRESS", 0x310},
++{"linux/hdreg.h", "HDIO_GET_BUSSTATE", 0x31a},
++{"linux/hdreg.h", "HDIO_TRISTATE_HWIF", 0x31b},
++{"linux/hdreg.h", "HDIO_DRIVE_RESET", 0x31c},
++{"linux/hdreg.h", "HDIO_DRIVE_TASKFILE", 0x31d},
++{"linux/hdreg.h", "HDIO_DRIVE_TASK", 0x31e},
++{"linux/hdreg.h", "HDIO_DRIVE_CMD", 0x31f},
++{"linux/hdreg.h", "HDIO_SET_MULTCOUNT", 0x321},
++{"linux/hdreg.h", "HDIO_SET_UNMASKINTR", 0x322},
++{"linux/hdreg.h", "HDIO_SET_KEEPSETTINGS", 0x323},
++{"linux/hdreg.h", "HDIO_SET_32BIT", 0x324},
++{"linux/hdreg.h", "HDIO_SET_NOWERR", 0x325},
++{"linux/hdreg.h", "HDIO_SET_DMA", 0x326},
++{"linux/hdreg.h", "HDIO_SET_PIO_MODE", 0x327},
++{"linux/hdreg.h", "HDIO_SCAN_HWIF", 0x328},
++{"linux/hdreg.h", "HDIO_SET_NICE", 0x329},
++{"linux/hdreg.h", "HDIO_UNREGISTER_HWIF", 0x32a},
++{"linux/hdreg.h", "HDIO_SET_WCACHE", 0x32b},
++{"linux/hdreg.h", "HDIO_SET_ACOUSTIC", 0x32c},
++{"linux/hdreg.h", "HDIO_SET_BUSSTATE", 0x32d},
++{"linux/hdreg.h", "HDIO_SET_QDMA", 0x32e},
++{"linux/hdreg.h", "HDIO_SET_ADDRESS", 0x32f},
++{"linux/zorro_ids.h", "ZORRO_MANUF_CARDCO_1", 0x3ec},
++{"linux/zorro_ids.h", "ZORRO_MANUF_A_SQUARED", 0x3ed},
++{"linux/zorro_ids.h", "ZORRO_MANUF_COMSPEC_COMMUNICATIONS", 0x3ee},
++{"linux/zorro_ids.h", "ZORRO_MANUF_ANAKIN_RESEARCH", 0x3f1},
++{"linux/zorro_ids.h", "ZORRO_MANUF_MICROBOTICS", 0x3f2},
++{"linux/zorro_ids.h", "ZORRO_MANUF_ACCESS_ASSOCIATES_ALEGRA", 0x3f4},
++{"linux/zorro_ids.h", "ZORRO_MANUF_EXPANSION_TECHNOLOGIES", 0x3f6},
++{"linux/zorro_ids.h", "ZORRO_MANUF_ASDG", 0x3ff},
++{"linux/apm_bios.h", "APM_DEVICE_PCMCIA", 0x600},
++{"linux/ixjuser.h", "MIXER_PORT_CD_L", 0x600},
++{"linux/in6.h", "IPV6_PRIORITY_INTERACTIVE", 0x600},
++{"linux/lp.h", "LPCHAR", 0x601},
++{"linux/lp.h", "LPTIME", 0x602},
++{"linux/lp.h", "LPABORT", 0x604},
++{"linux/lp.h", "LPSETIRQ", 0x605},
++{"linux/lp.h", "LPGETIRQ", 0x606},
++{"linux/lp.h", "LPWAIT", 0x608},
++{"linux/lp.h", "LPCAREFUL", 0x609},
++{"linux/lp.h", "LPABORTOPEN", 0x60a},
++{"linux/lp.h", "LPGETSTATUS", 0x60b},
++{"linux/lp.h", "LPRESET", 0x60c},
++{"linux/lp.h", "LPGETSTATS", 0x60d},
++{"linux/lp.h", "LPGETFLAGS", 0x60e},
++{"linux/lp.h", "LPSETTIMEOUT", 0x60f},
++{"linux/som.h", "SOM_LIB_RELOC", 0x619},
++{"linux/zorro_ids.h", "ZORRO_MANUF_GREAT_VALLEY_PRODUCTS_1", 0x6e1},
++{"linux/fs.h", "BLKROSET", 0x125d},
++{"linux/fs.h", "BLKROGET", 0x125e},
++{"linux/fs.h", "BLKRRPART", 0x125f},
++{"linux/fs.h", "BLKGETSIZE", 0x1260},
++{"linux/fs.h", "BLKFLSBUF", 0x1261},
++{"linux/fs.h", "BLKRASET", 0x1262},
++{"linux/fs.h", "BLKRAGET", 0x1263},
++{"linux/fs.h", "BLKFRASET", 0x1264},
++{"linux/fs.h", "BLKFRAGET", 0x1265},
++{"linux/fs.h", "BLKSECTSET", 0x1266},
++{"linux/fs.h", "BLKSECTGET", 0x1267},
++{"linux/fs.h", "BLKSSZGET", 0x1268},
++{"linux/blkpg.h", "BLKPG", 0x1269},
++{"linux/fs.h", "BLKTRACESTART", 0x1274},
++{"linux/fs.h", "BLKTRACESTOP", 0x1275},
++{"linux/fs.h", "BLKTRACETEARDOWN", 0x1276},
++{"linux/zorro_ids.h", "ZORRO_MANUF_APOLLO_2", 0x2200},
++{"scsi/sg.h", "SG_SET_TIMEOUT", 0x2201},
++{"scsi/sg.h", "SG_GET_TIMEOUT", 0x2202},
++{"scsi/sg.h", "SG_EMULATED_HOST", 0x2203},
++{"scsi/sg.h", "SG_SET_TRANSFORM", 0x2204},
++{"scsi/sg.h", "SG_GET_TRANSFORM", 0x2205},
++{"linux/zorro_ids.h", "ZORRO_MANUF_APOLLO_3", 0x2222},
++{"scsi/sg.h", "SG_GET_COMMAND_Q", 0x2270},
++{"scsi/sg.h", "SG_SET_COMMAND_Q", 0x2271},
++{"scsi/sg.h", "SG_GET_RESERVED_SIZE", 0x2272},
++{"scsi/sg.h", "SG_SET_RESERVED_SIZE", 0x2275},
++{"scsi/sg.h", "SG_GET_SCSI_ID", 0x2276},
++{"scsi/sg.h", "SG_SET_FORCE_LOW_DMA", 0x2279},
++{"scsi/sg.h", "SG_GET_LOW_DMA", 0x227a},
++{"scsi/sg.h", "SG_SET_FORCE_PACK_ID", 0x227b},
++{"scsi/sg.h", "SG_GET_PACK_ID", 0x227c},
++{"scsi/sg.h", "SG_GET_NUM_WAITING", 0x227d},
++{"scsi/sg.h", "SG_SET_DEBUG", 0x227e},
++{"scsi/sg.h", "SG_GET_SG_TABLESIZE", 0x227f},
++{"scsi/sg.h", "SG_GET_VERSION_NUM", 0x2282},
++{"scsi/sg.h", "SG_NEXT_CMD_LEN", 0x2283},
++{"scsi/sg.h", "SG_SCSI_RESET", 0x2284},
++{"scsi/sg.h", "SG_IO", 0x2285},
++{"scsi/sg.h", "SG_GET_REQUEST_TABLE", 0x2286},
++{"scsi/sg.h", "SG_SET_KEEP_ORPHAN", 0x2287},
++{"scsi/sg.h", "SG_GET_KEEP_ORPHAN", 0x2288},
++{"linux/apm_bios.h", "APM_IOC_STANDBY", 0x4101},
++{"linux/agpgart.h", "AGPIOC_ACQUIRE", 0x4101},
++{"linux/apm_bios.h", "APM_IOC_SUSPEND", 0x4102},
++{"linux/agpgart.h", "AGPIOC_RELEASE", 0x4102},
++{"linux/pmu.h", "PMU_IOC_SLEEP", 0x4200},
++{"linux/cciss_ioctl.h", "CCISS_REVALIDVOLS", 0x420a},
++{"linux/cciss_ioctl.h", "CCISS_DEREGDISK", 0x420c},
++{"linux/cciss_ioctl.h", "CCISS_REGNEWD", 0x420e},
++{"linux/cciss_ioctl.h", "CCISS_RESCANDISK", 0x4210},
++{"linux/fb.h", "FBIOGET_VSCREENINFO", 0x4600},
++{"linux/fb.h", "FBIOPUT_VSCREENINFO", 0x4601},
++{"linux/ps2esdi.h", "CMD_READ", 0x4601},
++{"linux/fb.h", "FBIOGET_FSCREENINFO", 0x4602},
++{"linux/ps2esdi.h", "CMD_WRITE", 0x4602},
++{"linux/fb.h", "FBIOGETCMAP", 0x4604},
++{"linux/fb.h", "FBIOPUTCMAP", 0x4605},
++{"linux/fb.h", "FBIOPAN_DISPLAY", 0x4606},
++{"linux/fb.h", "FBIOGET_CON2FBMAP", 0x460f},
++{"linux/fb.h", "FBIOPUT_CON2FBMAP", 0x4610},
++{"linux/fb.h", "FBIOBLANK", 0x4611},
++{"linux/fb.h", "FBIO_ALLOC", 0x4613},
++{"linux/fb.h", "FBIO_FREE", 0x4614},
++{"linux/fb.h", "FBIOGET_GLYPH", 0x4615},
++{"linux/fb.h", "FBIOGET_HWCINFO", 0x4616},
++{"linux/fb.h", "FBIOPUT_MODEINFO", 0x4617},
++{"linux/fb.h", "FBIOGET_DISPINFO", 0x4618},
++{"linux/arcfb.h", "FBIO_WAITEVENT", 0x4688},
++{"linux/hiddev.h", "HIDIOCAPPLICATION", 0x4802},
++{"linux/hiddev.h", "HIDIOCINITREPORT", 0x4805},
++{"linux/isdn.h", "IIOCNETAIF", 0x4901},
++{"linux/isdn.h", "IIOCNETDIF", 0x4902},
++{"linux/isdn.h", "IIOCNETSCF", 0x4903},
++{"linux/isdn.h", "IIOCNETGCF", 0x4904},
++{"linux/isdn.h", "IIOCNETANM", 0x4905},
++{"linux/isdn.h", "IIOCNETDNM", 0x4906},
++{"linux/isdn.h", "IIOCNETGNM", 0x4907},
++{"linux/isdn.h", "IIOCGETSET", 0x4908},
++{"linux/isdn.h", "IIOCSETSET", 0x4909},
++{"linux/isdn.h", "IIOCSETVER", 0x490a},
++{"linux/isdn.h", "IIOCNETHUP", 0x490b},
++{"linux/isdn.h", "IIOCSETGST", 0x490c},
++{"linux/isdn.h", "IIOCSETBRJ", 0x490d},
++{"linux/isdn.h", "IIOCSIGPRF", 0x490e},
++{"linux/isdn.h", "IIOCGETPRF", 0x490f},
++{"linux/isdn.h", "IIOCSETPRF", 0x4910},
++{"linux/isdn.h", "IIOCGETMAP", 0x4911},
++{"linux/isdn.h", "IIOCSETMAP", 0x4912},
++{"linux/isdn.h", "IIOCNETASL", 0x4913},
++{"linux/isdn.h", "IIOCNETDIL", 0x4914},
++{"linux/isdn.h", "IIOCGETCPS", 0x4915},
++{"linux/isdn.h", "IIOCGETDVR", 0x4916},
++{"linux/isdn.h", "IIOCNETLCR", 0x4917},
++{"linux/isdn.h", "IIOCNETDWRSET", 0x4918},
++{"linux/isdn.h", "IIOCNETALN", 0x4920},
++{"linux/isdn.h", "IIOCNETDLN", 0x4921},
++{"linux/isdn.h", "IIOCNETGPN", 0x4922},
++{"linux/isdn.h", "IIOCDBGVAR", 0x497f},
++{"linux/isdn.h", "IIOCDRVCTL", 0x4980},
++{"linux/kd.h", "KIOCSOUND", 0x4b2f},
++{"linux/kd.h", "KDMKTONE", 0x4b30},
++{"linux/kd.h", "KDGETLED", 0x4b31},
++{"linux/kd.h", "KDSETLED", 0x4b32},
++{"linux/kd.h", "KDGKBTYPE", 0x4b33},
++{"linux/kd.h", "KDADDIO", 0x4b34},
++{"linux/kd.h", "KDDELIO", 0x4b35},
++{"linux/kd.h", "KDENABIO", 0x4b36},
++{"linux/kd.h", "KDDISABIO", 0x4b37},
++{"linux/kd.h", "KDSETMODE", 0x4b3a},
++{"linux/kd.h", "KDGETMODE", 0x4b3b},
++{"linux/kd.h", "KDMAPDISP", 0x4b3c},
++{"linux/kd.h", "KDUNMAPDISP", 0x4b3d},
++{"linux/kd.h", "GIO_SCRNMAP", 0x4b40},
++{"linux/kd.h", "PIO_SCRNMAP", 0x4b41},
++{"linux/kd.h", "KDGKBMODE", 0x4b44},
++{"linux/kd.h", "KDSKBMODE", 0x4b45},
++{"linux/kd.h", "KDGKBENT", 0x4b46},
++{"linux/kd.h", "KDSKBENT", 0x4b47},
++{"linux/kd.h", "KDGKBSENT", 0x4b48},
++{"linux/kd.h", "KDSKBSENT", 0x4b49},
++{"linux/kd.h", "KDGKBDIACR", 0x4b4a},
++{"linux/kd.h", "KDSKBDIACR", 0x4b4b},
++{"linux/kd.h", "KDGETKEYCODE", 0x4b4c},
++{"linux/kd.h", "KDSETKEYCODE", 0x4b4d},
++{"linux/kd.h", "KDSIGACCEPT", 0x4b4e},
++{"linux/kd.h", "KDKBDREP", 0x4b52},
++{"linux/kd.h", "GIO_FONT", 0x4b60},
++{"linux/kd.h", "PIO_FONT", 0x4b61},
++{"linux/kd.h", "KDGKBMETA", 0x4b62},
++{"linux/kd.h", "KDSKBMETA", 0x4b63},
++{"linux/kd.h", "KDGKBLED", 0x4b64},
++{"linux/kd.h", "KDSKBLED", 0x4b65},
++{"linux/kd.h", "GIO_UNIMAP", 0x4b66},
++{"linux/kd.h", "PIO_UNIMAP", 0x4b67},
++{"linux/kd.h", "PIO_UNIMAPCLR", 0x4b68},
++{"linux/kd.h", "GIO_UNISCRNMAP", 0x4b69},
++{"linux/kd.h", "PIO_UNISCRNMAP", 0x4b6a},
++{"linux/kd.h", "GIO_FONTX", 0x4b6b},
++{"linux/kd.h", "PIO_FONTX", 0x4b6c},
++{"linux/kd.h", "PIO_FONTRESET", 0x4b6d},
++{"linux/kd.h", "GIO_CMAP", 0x4b70},
++{"linux/kd.h", "PIO_CMAP", 0x4b71},
++{"linux/kd.h", "KDFONTOP", 0x4b72},
++{"linux/loop.h", "LOOP_SET_FD", 0x4c00},
++{"linux/loop.h", "LOOP_CLR_FD", 0x4c01},
++{"linux/loop.h", "LOOP_SET_STATUS", 0x4c02},
++{"linux/loop.h", "LOOP_GET_STATUS", 0x4c03},
++{"linux/loop.h", "LOOP_SET_STATUS64", 0x4c04},
++{"linux/loop.h", "LOOP_GET_STATUS64", 0x4c05},
++{"linux/loop.h", "LOOP_CHANGE_FD", 0x4c06},
++{"mtd/mtd-abi.h", "MTDFILEMODE", 0x4d13},
++{"linux/random.h", "RNDZAPENTCNT", 0x5204},
++{"linux/random.h", "RNDCLEARPOOL", 0x5206},
++{"linux/cdrom.h", "CDROMPAUSE", 0x5301},
++{"linux/n_r3964.h", "R3964_ENABLE_SIGNALS", 0x5301},
++{"linux/n_r3964.h", "R3964_SETPRIORITY", 0x5302},
++{"linux/cdrom.h", "CDROMRESUME", 0x5302},
++{"linux/n_r3964.h", "R3964_USE_BCC", 0x5303},
++{"linux/cdrom.h", "CDROMPLAYMSF", 0x5303},
++{"linux/n_r3964.h", "R3964_READ_TELEGRAM", 0x5304},
++{"linux/cdrom.h", "CDROMPLAYTRKIND", 0x5304},
++{"linux/cdrom.h", "CDROMREADTOCHDR", 0x5305},
++{"linux/cdrom.h", "CDROMREADTOCENTRY", 0x5306},
++{"linux/cdrom.h", "CDROMSTOP", 0x5307},
++{"linux/cdrom.h", "CDROMSTART", 0x5308},
++{"linux/cdrom.h", "CDROMEJECT", 0x5309},
++{"linux/cdrom.h", "CDROMVOLCTRL", 0x530a},
++{"linux/cdrom.h", "CDROMSUBCHNL", 0x530b},
++{"linux/cdrom.h", "CDROMREADMODE2", 0x530c},
++{"linux/cdrom.h", "CDROMREADMODE1", 0x530d},
++{"linux/cdrom.h", "CDROMREADAUDIO", 0x530e},
++{"linux/cdrom.h", "CDROMEJECT_SW", 0x530f},
++{"linux/cdrom.h", "CDROMMULTISESSION", 0x5310},
++{"linux/cdrom.h", "CDROM_GET_MCN", 0x5311},
++{"linux/cdrom.h", "CDROMRESET", 0x5312},
++{"linux/cdrom.h", "CDROMVOLREAD", 0x5313},
++{"linux/cdrom.h", "CDROMREADRAW", 0x5314},
++{"linux/cdrom.h", "CDROMREADCOOKED", 0x5315},
++{"linux/cdrom.h", "CDROMSEEK", 0x5316},
++{"linux/cdrom.h", "CDROMPLAYBLK", 0x5317},
++{"linux/cdrom.h", "CDROMREADALL", 0x5318},
++{"linux/cdrom.h", "CDROMCLOSETRAY", 0x5319},
++{"linux/cdrom.h", "CDROMGETSPINDOWN", 0x531d},
++{"linux/cdrom.h", "CDROMSETSPINDOWN", 0x531e},
++{"linux/cdrom.h", "CDROM_SET_OPTIONS", 0x5320},
++{"linux/cdrom.h", "CDROM_CLEAR_OPTIONS", 0x5321},
++{"linux/cdrom.h", "CDROM_SELECT_SPEED", 0x5322},
++{"linux/cdrom.h", "CDROM_SELECT_DISC", 0x5323},
++{"linux/cdrom.h", "CDROM_MEDIA_CHANGED", 0x5325},
++{"linux/cdrom.h", "CDROM_DRIVE_STATUS", 0x5326},
++{"linux/cdrom.h", "CDROM_DISC_STATUS", 0x5327},
++{"linux/cdrom.h", "CDROM_CHANGER_NSLOTS", 0x5328},
++{"linux/cdrom.h", "CDROM_LOCKDOOR", 0x5329},
++{"linux/cdrom.h", "CDROM_DEBUG", 0x5330},
++{"linux/cdrom.h", "CDROM_GET_CAPABILITY", 0x5331},
++{"scsi/scsi_ioctl.h", "SCSI_IOCTL_DOORLOCK", 0x5380},
++{"scsi/scsi_ioctl.h", "SCSI_IOCTL_DOORUNLOCK", 0x5381},
++{"linux/cdrom.h", "CDROMAUDIOBUFSIZ", 0x5382},
++{"scsi/scsi.h", "SCSI_IOCTL_GET_IDLUN", 0x5382},
++{"scsi/scsi.h", "SCSI_IOCTL_TAGGED_ENABLE", 0x5383},
++{"scsi/scsi.h", "SCSI_IOCTL_TAGGED_DISABLE", 0x5384},
++{"scsi/scsi.h", "SCSI_IOCTL_PROBE_HOST", 0x5385},
++{"scsi/scsi.h", "SCSI_IOCTL_GET_BUS_NUMBER", 0x5386},
++{"linux/cdrom.h", "DVD_READ_STRUCT", 0x5390},
++{"linux/cdrom.h", "DVD_WRITE_STRUCT", 0x5391},
++{"linux/cdrom.h", "DVD_AUTH", 0x5392},
++{"linux/cdrom.h", "CDROM_SEND_PACKET", 0x5393},
++{"linux/cdrom.h", "CDROM_NEXT_WRITABLE", 0x5394},
++{"linux/cdrom.h", "CDROM_LAST_WRITTEN", 0x5395},
++{"asm/ioctls.h", "TCGETS", 0x5401},
++{"asm/ioctls.h", "TCSETS", 0x5402},
++{"asm/ioctls.h", "TCSETSW", 0x5403},
++{"asm/ioctls.h", "TCSETSF", 0x5404},
++{"asm/ioctls.h", "TCGETA", 0x5405},
++{"asm/ioctls.h", "TCSETA", 0x5406},
++{"asm/ioctls.h", "TCSETAW", 0x5407},
++{"asm/ioctls.h", "TCSETAF", 0x5408},
++{"asm/ioctls.h", "TCSBRK", 0x5409},
++{"asm/ioctls.h", "TCXONC", 0x540a},
++{"asm/ioctls.h", "TCFLSH", 0x540b},
++{"asm/ioctls.h", "TIOCEXCL", 0x540c},
++{"asm/ioctls.h", "TIOCNXCL", 0x540d},
++{"asm/ioctls.h", "TIOCSCTTY", 0x540e},
++{"asm/ioctls.h", "TIOCGPGRP", 0x540f},
++{"asm/ioctls.h", "TIOCSPGRP", 0x5410},
++{"asm/ioctls.h", "TIOCOUTQ", 0x5411},
++{"asm/ioctls.h", "TIOCSTI", 0x5412},
++{"asm/ioctls.h", "TIOCGWINSZ", 0x5413},
++{"asm/ioctls.h", "TIOCSWINSZ", 0x5414},
++{"asm/ioctls.h", "TIOCMGET", 0x5415},
++{"asm/ioctls.h", "TIOCMBIS", 0x5416},
++{"asm/ioctls.h", "TIOCMBIC", 0x5417},
++{"asm/ioctls.h", "TIOCMSET", 0x5418},
++{"asm/ioctls.h", "TIOCGSOFTCAR", 0x5419},
++{"asm/ioctls.h", "TIOCSSOFTCAR", 0x541a},
++{"asm/ioctls.h", "FIONREAD", 0x541b},
++{"asm/ioctls.h", "TIOCLINUX", 0x541c},
++{"asm/ioctls.h", "TIOCCONS", 0x541d},
++{"asm/ioctls.h", "TIOCGSERIAL", 0x541e},
++{"asm/ioctls.h", "TIOCSSERIAL", 0x541f},
++{"asm/ioctls.h", "TIOCPKT", 0x5420},
++{"asm/ioctls.h", "FIONBIO", 0x5421},
++{"asm/ioctls.h", "TIOCNOTTY", 0x5422},
++{"asm/ioctls.h", "TIOCSETD", 0x5423},
++{"asm/ioctls.h", "TIOCGETD", 0x5424},
++{"asm/ioctls.h", "TCSBRKP", 0x5425},
++{"asm/ioctls.h", "TIOCSBRK", 0x5427},
++{"asm/ioctls.h", "TIOCCBRK", 0x5428},
++{"asm/ioctls.h", "TIOCGSID", 0x5429},
++{"asm/ioctls.h", "FIONCLEX", 0x5450},
++{"asm/ioctls.h", "FIOCLEX", 0x5451},
++{"asm/ioctls.h", "FIOASYNC", 0x5452},
++{"asm/ioctls.h", "TIOCSERCONFIG", 0x5453},
++{"asm/ioctls.h", "TIOCSERGWILD", 0x5454},
++{"asm/ioctls.h", "TIOCSERSWILD", 0x5455},
++{"asm/ioctls.h", "TIOCGLCKTRMIOS", 0x5456},
++{"asm/ioctls.h", "TIOCSLCKTRMIOS", 0x5457},
++{"asm/ioctls.h", "TIOCSERGSTRUCT", 0x5458},
++{"asm/ioctls.h", "TIOCSERGETLSR", 0x5459},
++{"asm/ioctls.h", "TIOCSERGETMULTI", 0x545a},
++{"asm/ioctls.h", "TIOCSERSETMULTI", 0x545b},
++{"asm/ioctls.h", "TIOCMIWAIT", 0x545c},
++{"asm/ioctls.h", "TIOCGICOUNT", 0x545d},
++{"asm/ioctls.h", "TIOCGHAYESESP", 0x545e},
++{"asm/ioctls.h", "TIOCSHAYESESP", 0x545f},
++{"asm/ioctls.h", "FIOQSIZE", 0x5460},
++{"linux/uinput.h", "UI_DEV_CREATE", 0x5501},
++{"linux/uinput.h", "UI_DEV_DESTROY", 0x5502},
++{"linux/vt.h", "VT_OPENQRY", 0x5600},
++{"linux/vt.h", "VT_GETMODE", 0x5601},
++{"linux/videodev2.h", "VIDIOC_RESERVED", 0x5601},
++{"linux/vt.h", "VT_SETMODE", 0x5602},
++{"linux/vt.h", "VT_GETSTATE", 0x5603},
++{"linux/vt.h", "VT_SENDSIG", 0x5604},
++{"linux/vt.h", "VT_RELDISP", 0x5605},
++{"linux/vt.h", "VT_ACTIVATE", 0x5606},
++{"linux/vt.h", "VT_WAITACTIVE", 0x5607},
++{"linux/vt.h", "VT_DISALLOCATE", 0x5608},
++{"linux/vt.h", "VT_RESIZE", 0x5609},
++{"linux/vt.h", "VT_RESIZEX", 0x560a},
++{"linux/vt.h", "VT_LOCKSWITCH", 0x560b},
++{"linux/vt.h", "VT_UNLOCKSWITCH", 0x560c},
++{"linux/vt.h", "VT_GETHIFONTMASK", 0x560d},
++{"linux/videodev2.h", "VIDIOC_LOG_STATUS", 0x5646},
++{"linux/sonet.h", "SONET_SETFRAMING", 0x6115},
++{"linux/atm_nicstar.h", "NS_ADJBUFLEV", 0x6163},
++{"linux/atm_tcp.h", "SIOCSIFATMTCP", 0x6180},
++{"linux/atm_tcp.h", "ATMTCP_CREATE", 0x618e},
++{"linux/atm_tcp.h", "ATMTCP_REMOVE", 0x618f},
++{"linux/atmlec.h", "ATMLEC_CTRL", 0x61d0},
++{"linux/atmlec.h", "ATMLEC_DATA", 0x61d1},
++{"linux/atmlec.h", "ATMLEC_MCAST", 0x61d2},
++{"linux/atmmpc.h", "ATMMPC_CTRL", 0x61d8},
++{"linux/atmmpc.h", "ATMMPC_DATA", 0x61d9},
++{"linux/atmclip.h", "SIOCMKCLIP", 0x61e0},
++{"linux/atmarp.h", "ATMARPD_CTRL", 0x61e1},
++{"linux/atmarp.h", "ATMARP_MKIP", 0x61e2},
++{"linux/atmarp.h", "ATMARP_SETENTRY", 0x61e3},
++{"linux/atmarp.h", "ATMARP_ENCAP", 0x61e5},
++{"linux/atmsvc.h", "ATMSIGD_CTRL", 0x61f0},
++{"linux/cm4000_cs.h", "CM_IOCSRDR", 0x6303},
++{"linux/cm4000_cs.h", "CM_IOCARDOFF", 0x6304},
++{"linux/chio.h", "CHIOINITELEM", 0x6311},
++{"linux/comstats.h", "COM_GETPORTSTATS", 0x631e},
++{"linux/comstats.h", "COM_CLRPORTSTATS", 0x631f},
++{"linux/comstats.h", "COM_GETBRDSTATS", 0x6320},
++{"linux/comstats.h", "COM_READPORT", 0x6328},
++{"linux/comstats.h", "COM_READBOARD", 0x6329},
++{"linux/comstats.h", "COM_READPANEL", 0x632a},
++{"linux/video_decoder.h", "DECODER_DUMP", 0x64c0},
++{"linux/hpet.h", "HPET_IE_ON", 0x6801},
++{"linux/hpet.h", "HPET_IE_OFF", 0x6802},
++{"linux/hpet.h", "HPET_EPI", 0x6804},
++{"linux/hpet.h", "HPET_DPI", 0x6805},
++{"linux/mmtimer.h", "MMTIMER_GETOFFSET", 0x6d00},
++{"linux/synclink.h", "MGSL_IOCSTXIDLE", 0x6d02},
++{"linux/synclink.h", "MGSL_IOCGTXIDLE", 0x6d03},
++{"linux/synclink.h", "MGSL_IOCTXENABLE", 0x6d04},
++{"linux/mmtimer.h", "MMTIMER_GETBITS", 0x6d04},
++{"linux/synclink.h", "MGSL_IOCRXENABLE", 0x6d05},
++{"linux/mmtimer.h", "MMTIMER_MMAPAVAIL", 0x6d06},
++{"linux/synclink.h", "MGSL_IOCTXABORT", 0x6d06},
++{"linux/synclink.h", "MGSL_IOCGSTATS", 0x6d07},
++{"linux/synclink.h", "MGSL_IOCLOOPTXDONE", 0x6d09},
++{"linux/synclink.h", "MGSL_IOCSIF", 0x6d0a},
++{"linux/synclink.h", "MGSL_IOCGIF", 0x6d0b},
++{"linux/synclink.h", "MGSL_IOCCLRMODCOUNT", 0x6d0f},
++{"linux/ncp_fs.h", "NCP_IOC_CONN_LOGGED_IN", 0x6e03},
++{"linux/rtc.h", "RTC_AIE_ON", 0x7001},
++{"linux/rtc.h", "RTC_AIE_OFF", 0x7002},
++{"linux/rtc.h", "RTC_UIE_ON", 0x7003},
++{"linux/rtc.h", "RTC_UIE_OFF", 0x7004},
++{"linux/rtc.h", "RTC_PIE_ON", 0x7005},
++{"linux/rtc.h", "RTC_PIE_OFF", 0x7006},
++{"linux/rtc.h", "RTC_WIE_ON", 0x700f},
++{"linux/rtc.h", "RTC_WIE_OFF", 0x7010},
++{"linux/nvram.h", "NVRAM_INIT", 0x7040},
++{"linux/nvram.h", "NVRAM_SETCKS", 0x7041},
++{"linux/ppdev.h", "PPCLAIM", 0x708b},
++{"linux/ppdev.h", "PPRELEASE", 0x708c},
++{"linux/ppdev.h", "PPYIELD", 0x708d},
++{"linux/ppdev.h", "PPEXCL", 0x708f},
++{"linux/telephony.h", "PHONE_CAPABILITIES", 0x7180},
++{"linux/telephony.h", "PHONE_RING", 0x7183},
++{"linux/telephony.h", "PHONE_HOOKSTATE", 0x7184},
++{"linux/telephony.h", "OLD_PHONE_RING_START", 0x7187},
++{"linux/telephony.h", "PHONE_RING_STOP", 0x7188},
++{"linux/telephony.h", "PHONE_REC_START", 0x718a},
++{"linux/telephony.h", "PHONE_REC_STOP", 0x718b},
++{"linux/telephony.h", "PHONE_REC_LEVEL", 0x718f},
++{"linux/telephony.h", "PHONE_PLAY_START", 0x7191},
++{"linux/telephony.h", "PHONE_PLAY_STOP", 0x7192},
++{"linux/telephony.h", "PHONE_PLAY_LEVEL", 0x7195},
++{"linux/telephony.h", "PHONE_GET_TONE_ON_TIME", 0x719e},
++{"linux/telephony.h", "PHONE_GET_TONE_OFF_TIME", 0x719f},
++{"linux/telephony.h", "PHONE_GET_TONE_STATE", 0x71a0},
++{"linux/telephony.h", "PHONE_BUSY", 0x71a1},
++{"linux/telephony.h", "PHONE_RINGBACK", 0x71a2},
++{"linux/telephony.h", "PHONE_DIALTONE", 0x71a3},
++{"linux/telephony.h", "PHONE_CPT_STOP", 0x71a4},
++{"linux/telephony.h", "PHONE_PSTN_GET_STATE", 0x71a5},
++{"linux/telephony.h", "PHONE_PSTN_LINETEST", 0x71a8},
++{"linux/ixjuser.h", "IXJCTL_DSP_RESET", 0x71c0},
++{"linux/ixjuser.h", "IXJCTL_DSP_IDLE", 0x71c5},
++{"linux/ixjuser.h", "IXJCTL_TESTRAM", 0x71c6},
++{"linux/ixjuser.h", "IXJCTL_AEC_STOP", 0x71cc},
++{"linux/ixjuser.h", "IXJCTL_AEC_GET_LEVEL", 0x71cd},
++{"linux/ixjuser.h", "IXJCTL_PSTN_LINETEST", 0x71d3},
++{"linux/ixjuser.h", "IXJCTL_PLAY_CID", 0x71d7},
++{"linux/ixjuser.h", "IXJCTL_DRYBUFFER_CLEAR", 0x71e7},
++{"linux/cdk.h", "STL_BINTR", 0x7314},
++{"linux/cdk.h", "STL_BSTART", 0x7315},
++{"linux/cdk.h", "STL_BSTOP", 0x7316},
++{"linux/cdk.h", "STL_BRESET", 0x7317},
++{"linux/cdk.h", "STL_GETPFLAG", 0x7350},
++{"linux/cdk.h", "STL_SETPFLAG", 0x7351},
++{"linux/if_ppp.h", "PPPIOCDISCONN", 0x7439},
++{"linux/if_ppp.h", "PPPIOCXFERUNIT", 0x744e},
++{"linux/meye.h", "MEYEIOC_STILLCAPT", 0x76c4},
++{"linux/videotext.h", "VTXIOCPUTPAGE", 0x8108},
++{"linux/videotext.h", "VTXIOCSETDISP", 0x8109},
++{"linux/videotext.h", "VTXIOCPUTSTAT", 0x810a},
++{"linux/videotext.h", "VTXIOCCLRCACHE", 0x810b},
++{"asm/sockios.h", "FIOSETOWN", 0x8901},
++{"asm/sockios.h", "SIOCSPGRP", 0x8902},
++{"asm/sockios.h", "FIOGETOWN", 0x8903},
++{"asm/sockios.h", "SIOCGPGRP", 0x8904},
++{"asm/sockios.h", "SIOCATMARK", 0x8905},
++{"asm/sockios.h", "SIOCGSTAMP", 0x8906},
++{"linux/sockios.h", "SIOCADDRT", 0x890b},
++{"linux/sockios.h", "SIOCDELRT", 0x890c},
++{"linux/sockios.h", "SIOCRTMSG", 0x890d},
++{"linux/sockios.h", "SIOCGIFNAME", 0x8910},
++{"linux/sockios.h", "SIOCSIFLINK", 0x8911},
++{"linux/sockios.h", "SIOCGIFCONF", 0x8912},
++{"linux/sockios.h", "SIOCGIFFLAGS", 0x8913},
++{"linux/sockios.h", "SIOCSIFFLAGS", 0x8914},
++{"linux/sockios.h", "SIOCGIFADDR", 0x8915},
++{"linux/sockios.h", "SIOCSIFADDR", 0x8916},
++{"linux/sockios.h", "SIOCGIFDSTADDR", 0x8917},
++{"linux/sockios.h", "SIOCSIFDSTADDR", 0x8918},
++{"linux/sockios.h", "SIOCGIFBRDADDR", 0x8919},
++{"linux/sockios.h", "SIOCSIFBRDADDR", 0x891a},
++{"linux/sockios.h", "SIOCGIFNETMASK", 0x891b},
++{"linux/sockios.h", "SIOCSIFNETMASK", 0x891c},
++{"linux/sockios.h", "SIOCGIFMETRIC", 0x891d},
++{"linux/sockios.h", "SIOCSIFMETRIC", 0x891e},
++{"linux/sockios.h", "SIOCGIFMEM", 0x891f},
++{"linux/sockios.h", "SIOCSIFMEM", 0x8920},
++{"linux/sockios.h", "SIOCGIFMTU", 0x8921},
++{"linux/sockios.h", "SIOCSIFMTU", 0x8922},
++{"linux/sockios.h", "SIOCSIFNAME", 0x8923},
++{"linux/sockios.h", "SIOCSIFHWADDR", 0x8924},
++{"linux/sockios.h", "SIOCGIFENCAP", 0x8925},
++{"linux/sockios.h", "SIOCSIFENCAP", 0x8926},
++{"linux/sockios.h", "SIOCGIFHWADDR", 0x8927},
++{"linux/sockios.h", "SIOCGIFSLAVE", 0x8929},
++{"linux/sockios.h", "SIOCSIFSLAVE", 0x8930},
++{"linux/sockios.h", "SIOCADDMULTI", 0x8931},
++{"linux/sockios.h", "SIOCDELMULTI", 0x8932},
++{"linux/sockios.h", "SIOCGIFINDEX", 0x8933},
++{"linux/sockios.h", "SIOCSIFPFLAGS", 0x8934},
++{"linux/sockios.h", "SIOCGIFPFLAGS", 0x8935},
++{"linux/sockios.h", "SIOCDIFADDR", 0x8936},
++{"linux/sockios.h", "SIOCSIFHWBROADCAST", 0x8937},
++{"linux/sockios.h", "SIOCGIFCOUNT", 0x8938},
++{"linux/sockios.h", "SIOCGIFBR", 0x8940},
++{"linux/sockios.h", "SIOCSIFBR", 0x8941},
++{"linux/sockios.h", "SIOCGIFTXQLEN", 0x8942},
++{"linux/sockios.h", "SIOCSIFTXQLEN", 0x8943},
++{"linux/sockios.h", "SIOCGIFDIVERT", 0x8944},
++{"linux/sockios.h", "SIOCSIFDIVERT", 0x8945},
++{"linux/sockios.h", "SIOCETHTOOL", 0x8946},
++{"linux/sockios.h", "SIOCGMIIPHY", 0x8947},
++{"linux/sockios.h", "SIOCGMIIREG", 0x8948},
++{"linux/sockios.h", "SIOCSMIIREG", 0x8949},
++{"linux/sockios.h", "SIOCWANDEV", 0x894a},
++{"linux/sockios.h", "SIOCDARP", 0x8953},
++{"linux/sockios.h", "SIOCGARP", 0x8954},
++{"linux/sockios.h", "SIOCSARP", 0x8955},
++{"linux/sockios.h", "SIOCDRARP", 0x8960},
++{"linux/sockios.h", "SIOCGRARP", 0x8961},
++{"linux/sockios.h", "SIOCSRARP", 0x8962},
++{"linux/sockios.h", "SIOCGIFMAP", 0x8970},
++{"linux/sockios.h", "SIOCSIFMAP", 0x8971},
++{"linux/sockios.h", "SIOCADDDLCI", 0x8980},
++{"linux/sockios.h", "SIOCDELDLCI", 0x8981},
++{"linux/sockios.h", "SIOCGIFVLAN", 0x8982},
++{"linux/sockios.h", "SIOCSIFVLAN", 0x8983},
++{"linux/sockios.h", "SIOCBONDENSLAVE", 0x8990},
++{"linux/sockios.h", "SIOCBONDRELEASE", 0x8991},
++{"linux/sockios.h", "SIOCBONDSETHWADDR", 0x8992},
++{"linux/sockios.h", "SIOCBONDSLAVEINFOQUERY", 0x8993},
++{"linux/sockios.h", "SIOCBONDINFOQUERY", 0x8994},
++{"linux/sockios.h", "SIOCBONDCHANGEACTIVE", 0x8995},
++{"linux/sockios.h", "SIOCBRADDBR", 0x89a0},
++{"linux/sockios.h", "SIOCBRDELBR", 0x89a1},
++{"linux/sockios.h", "SIOCBRADDIF", 0x89a2},
++{"linux/sockios.h", "SIOCBRDELIF", 0x89a3},
++{"linux/sockios.h", "SIOCPROTOPRIVATE", 0x89e0},
++{"linux/sockios.h", "SIOCDEVPRIVATE", 0x89f0},
++{"linux/auto_fs.h", "AUTOFS_IOC_READY", 0x9360},
++{"linux/auto_fs.h", "AUTOFS_IOC_FAIL", 0x9361},
++{"linux/auto_fs.h", "AUTOFS_IOC_CATATONIC", 0x9362},
++{"linux/nbd.h", "NBD_SET_SOCK", 0xab00},
++{"linux/nbd.h", "NBD_SET_BLKSIZE", 0xab01},
++{"linux/nbd.h", "NBD_SET_SIZE", 0xab02},
++{"linux/nbd.h", "NBD_DO_IT", 0xab03},
++{"linux/nbd.h", "NBD_CLEAR_SOCK", 0xab04},
++{"linux/nbd.h", "NBD_CLEAR_QUE", 0xab05},
++{"linux/nbd.h", "NBD_PRINT_DEBUG", 0xab06},
++{"linux/nbd.h", "NBD_SET_SIZE_BLOCKS", 0xab07},
++{"linux/nbd.h", "NBD_DISCONNECT", 0xab08},
++{"linux/raw.h", "RAW_SETBIND", 0xac00},
++{"linux/raw.h", "RAW_GETBIND", 0xac01},
++{"linux/if_pppox.h", "PPPOEIOCDFWD", 0xb101},
++{"linux/cyclades.h", "CYGETMON", 0x435901},
++{"linux/cyclades.h", "CYGETTHRESH", 0x435902},
++{"linux/cyclades.h", "CYSETTHRESH", 0x435903},
++{"linux/cyclades.h", "CYGETDEFTHRESH", 0x435904},
++{"linux/cyclades.h", "CYSETDEFTHRESH", 0x435905},
++{"linux/cyclades.h", "CYGETTIMEOUT", 0x435906},
++{"linux/cyclades.h", "CYSETTIMEOUT", 0x435907},
++{"linux/cyclades.h", "CYGETDEFTIMEOUT", 0x435908},
++{"linux/cyclades.h", "CYSETDEFTIMEOUT", 0x435909},
++{"linux/cyclades.h", "CYSETRFLOW", 0x43590a},
++{"linux/cyclades.h", "CYGETRFLOW", 0x43590b},
++{"linux/cyclades.h", "CYSETRTSDTR_INV", 0x43590c},
++{"linux/cyclades.h", "CYGETRTSDTR_INV", 0x43590d},
++{"linux/cyclades.h", "CYZSETPOLLCYCLE", 0x43590e},
++{"linux/cyclades.h", "CYZGETPOLLCYCLE", 0x43590f},
++{"linux/cyclades.h", "CYGETCD1400VER", 0x435910},
++{"linux/cyclades.h", "CYGETCARDINFO", 0x435911},
++{"linux/cyclades.h", "CYSETWAIT", 0x435912},
++{"linux/cyclades.h", "CYGETWAIT", 0x435913},
++{"linux/videodev2.h", "VIDIOC_S_PRIORITY", 0x40015644},
++{"linux/ppdev.h", "PPWCONTROL", 0x40017084},
++{"linux/ppdev.h", "PPWDATA", 0x40017086},
++{"linux/ppdev.h", "PPWCTLONIRQ", 0x40017092},
++{"linux/telephony.h", "PHONE_MAXRINGS", 0x40017185},
++{"linux/telephony.h", "PHONE_PLAY_TONE", 0x4001719b},
++{"linux/sonypi.h", "SONYPI_IOCSBRT", 0x40017600},
++{"linux/sonypi.h", "SONYPI_IOCSBLUE", 0x40017609},
++{"linux/sonypi.h", "SONYPI_IOCSFAN", 0x4001760b},
++{"linux/atmdev.h", "ATM_SETBACKEND", 0x400261f2},
++{"linux/atmdev.h", "ATM_NEWBACKENDIF", 0x400261f3},
++{"linux/ncp_fs.h", "NCP_IOC_GETMOUNTUID", 0x40026e02},
++{"linux/ppdev.h", "PPFCONTROL", 0x4002708e},
++{"linux/telephony.h", "PHONE_RING_CADENCE", 0x40027186},
++{"linux/fs.h", "BLKBSZSET", 0x40041271},
++{"linux/radeonfb.h", "FBIO_RADEON_SET_MIRROR", 0x40044004},
++{"linux/agpgart.h", "AGPIOC_SETUP", 0x40044103},
++{"linux/agpgart.h", "AGPIOC_RESERVE", 0x40044104},
++{"linux/agpgart.h", "AGPIOC_PROTECT", 0x40044105},
++{"linux/agpgart.h", "AGPIOC_DEALLOCATE", 0x40044107},
++{"linux/agpgart.h", "AGPIOC_BIND", 0x40044108},
++{"linux/agpgart.h", "AGPIOC_UNBIND", 0x40044109},
++{"linux/pmu.h", "PMU_IOC_SET_BACKLIGHT", 0x40044202},
++{"linux/cciss_ioctl.h", "CCISS_REGNEWDISK", 0x4004420d},
++{"linux/input.h", "EVIOCRMFF", 0x40044581},
++{"linux/input.h", "EVIOCGRAB", 0x40044590},
++{"linux/matroxfb.h", "FBIO_WAITFORVSYNC", 0x40044620},
++{"linux/hiddev.h", "HIDIOCSFLAG", 0x4004480f},
++{"mtd/mtd-abi.h", "OTPGETREGIONCOUNT", 0x40044d0e},
++{"linux/ticable.h", "IOCTL_TIUSB_TIMEOUT", 0x40044e20},
++{"linux/ticable.h", "IOCTL_TIUSB_RESET_DEVICE", 0x40044e21},
++{"linux/ticable.h", "IOCTL_TIUSB_RESET_PIPES", 0x40044e22},
++{"linux/random.h", "RNDADDTOENTCNT", 0x40045201},
++{"asm/ioctls.h", "TIOCSPTLCK", 0x40045431},
++{"linux/if_tun.h", "TUNSETNOCSUM", 0x400454c8},
++{"linux/if_tun.h", "TUNSETDEBUG", 0x400454c9},
++{"linux/if_tun.h", "TUNSETIFF", 0x400454ca},
++{"linux/if_tun.h", "TUNSETPERSIST", 0x400454cb},
++{"linux/if_tun.h", "TUNSETOWNER", 0x400454cc},
++{"linux/if_tun.h", "TUNSETLINK", 0x400454cd},
++{"linux/uinput.h", "UI_SET_EVBIT", 0x40045564},
++{"linux/uinput.h", "UI_SET_KEYBIT", 0x40045565},
++{"linux/uinput.h", "UI_SET_RELBIT", 0x40045566},
++{"linux/uinput.h", "UI_SET_ABSBIT", 0x40045567},
++{"linux/uinput.h", "UI_SET_MSCBIT", 0x40045568},
++{"linux/uinput.h", "UI_SET_LEDBIT", 0x40045569},
++{"linux/uinput.h", "UI_SET_SNDBIT", 0x4004556a},
++{"linux/uinput.h", "UI_SET_FFBIT", 0x4004556b},
++{"linux/uinput.h", "UI_SET_PHYS", 0x4004556c},
++{"linux/uinput.h", "UI_SET_SWBIT", 0x4004556d},
++{"linux/videodev2.h", "VIDIOC_OVERLAY", 0x4004560e},
++{"linux/videodev2.h", "VIDIOC_STREAMON", 0x40045612},
++{"linux/videodev2.h", "VIDIOC_STREAMOFF", 0x40045613},
++{"linux/atmdev.h", "ATM_SETSC", 0x400461f1},
++{"linux/atmdev.h", "ATM_DROPPARTY", 0x400461f5},
++{"linux/cm4000_cs.h", "CM_IOCSPTS", 0x40046302},
++{"linux/chio.h", "CHIOSPICKER", 0x40046305},
++{"linux/cm4000_cs.h", "CM_IOSDBGLVL", 0x400463fa},
++{"linux/video_decoder.h", "DECODER_SET_NORM", 0x40046403},
++{"linux/video_decoder.h", "DECODER_SET_INPUT", 0x40046404},
++{"linux/video_decoder.h", "DECODER_SET_OUTPUT", 0x40046405},
++{"linux/video_decoder.h", "DECODER_ENABLE_OUTPUT", 0x40046406},
++{"linux/video_decoder.h", "DECODER_SET_GPIO", 0x40046408},
++{"linux/video_decoder.h", "DECODER_SET_VBI_BYPASS", 0x4004640a},
++{"linux/video_encoder.h", "ENCODER_SET_NORM", 0x40046502},
++{"linux/video_encoder.h", "ENCODER_SET_INPUT", 0x40046503},
++{"linux/video_encoder.h", "ENCODER_SET_OUTPUT", 0x40046504},
++{"linux/video_encoder.h", "ENCODER_ENABLE_OUTPUT", 0x40046505},
++{"linux/ext3_fs.h", "EXT3_IOC_SETFLAGS", 0x40046602},
++{"linux/ext2_fs.h", "EXT2_IOC_SETFLAGS", 0x40046602},
++{"linux/iflags.h", "IFLAGS_SET_IOC", 0x40046602},
++{"linux/ext3_fs.h", "EXT3_IOC_SETVERSION", 0x40046604},
++{"linux/ext3_fs.h", "EXT3_IOC_SETRSVSZ", 0x40046606},
++{"linux/ext3_fs.h", "EXT3_IOC_GROUP_EXTEND", 0x40046607},
++{"linux/hpet.h", "HPET_IRQFREQ", 0x40046806},
++{"linux/ncp_fs.h", "NCP_IOC_GETMOUNTUID2", 0x40046e02},
++{"linux/ncp_fs.h", "NCP_IOC_SET_SIGN_WANTED", 0x40046e06},
++{"linux/ncp_fs.h", "NCP_IOC_GETDENTRYTTL", 0x40046e0c},
++{"linux/matroxfb.h", "MATROXFB_SET_OUTPUT_CONNECTION", 0x40046ef8},
++{"linux/matroxfb.h", "MATROXFB_SET_OUTPUT_MODE", 0x40046efa},
++{"linux/rtc.h", "RTC_IRQP_SET", 0x4004700c},
++{"linux/rtc.h", "RTC_EPOCH_SET", 0x4004700e},
++{"linux/ppdev.h", "PPSETMODE", 0x40047080},
++{"linux/ppdev.h", "PPDATADIR", 0x40047090},
++{"linux/ppdev.h", "PPNEGOT", 0x40047091},
++{"linux/ppdev.h", "PPSETPHASE", 0x40047094},
++{"linux/ppdev.h", "PPSETFLAGS", 0x4004709b},
++{"linux/ticable.h", "IOCTL_TISER_DELAY", 0x400470a0},
++{"linux/ticable.h", "IOCTL_TISER_TIMEOUT", 0x400470a1},
++{"linux/ticable.h", "IOCTL_TIPAR_DELAY", 0x400470a8},
++{"linux/ticable.h", "IOCTL_TIPAR_TIMEOUT", 0x400470a9},
++{"linux/serio.h", "SPIOCSTYPE", 0x40047101},
++{"linux/telephony.h", "PHONE_CAPABILITIES_CHECK", 0x40047182},
++{"linux/telephony.h", "PHONE_RING_START", 0x40047187},
++{"linux/telephony.h", "PHONE_REC_CODEC", 0x40047189},
++{"linux/telephony.h", "PHONE_REC_DEPTH", 0x4004718c},
++{"linux/telephony.h", "PHONE_FRAME", 0x4004718d},
++{"linux/telephony.h", "PHONE_REC_VOLUME", 0x4004718e},
++{"linux/telephony.h", "PHONE_PLAY_CODEC", 0x40047190},
++{"linux/telephony.h", "PHONE_PLAY_DEPTH", 0x40047193},
++{"linux/telephony.h", "PHONE_PLAY_VOLUME", 0x40047194},
++{"linux/telephony.h", "PHONE_DTMF_OOB", 0x40047199},
++{"linux/telephony.h", "PHONE_SET_TONE_ON_TIME", 0x4004719c},
++{"linux/telephony.h", "PHONE_SET_TONE_OFF_TIME", 0x4004719d},
++{"linux/telephony.h", "PHONE_PSTN_SET_STATE", 0x400471a4},
++{"linux/telephony.h", "PHONE_WINK_DURATION", 0x400471a6},
++{"linux/telephony.h", "PHONE_VAD", 0x400471a9},
++{"linux/telephony.h", "PHONE_WINK", 0x400471aa},
++{"linux/ixjuser.h", "IXJCTL_SET_FILTER", 0x400471c7},
++{"linux/ixjuser.h", "IXJCTL_GET_FILTER_HIST", 0x400471c8},
++{"linux/ixjuser.h", "IXJCTL_INIT_TONE", 0x400471c9},
++{"linux/ixjuser.h", "IXJCTL_TONE_CADENCE", 0x400471ca},
++{"linux/ixjuser.h", "IXJCTL_AEC_START", 0x400471cb},
++{"linux/ixjuser.h", "IXJCTL_SET_LED", 0x400471ce},
++{"linux/ixjuser.h", "IXJCTL_MIXER", 0x400471cf},
++{"linux/ixjuser.h", "IXJCTL_DAA_COEFF_SET", 0x400471d0},
++{"linux/ixjuser.h", "IXJCTL_PORT", 0x400471d1},
++{"linux/ixjuser.h", "IXJCTL_DAA_AGAIN", 0x400471d2},
++{"linux/ixjuser.h", "IXJCTL_POTS_PSTN", 0x400471d5},
++{"linux/ixjuser.h", "IXJCTL_FILTER_CADENCE", 0x400471d6},
++{"linux/ixjuser.h", "IXJCTL_CIDCW", 0x400471d9},
++{"linux/telephony.h", "PHONE_REC_VOLUME_LINEAR", 0x400471db},
++{"linux/telephony.h", "PHONE_PLAY_VOLUME_LINEAR", 0x400471dc},
++{"linux/ixjuser.h", "IXJCTL_SET_FILTER_RAW", 0x400471dd},
++{"linux/ixjuser.h", "IXJCTL_HZ", 0x400471e0},
++{"linux/ixjuser.h", "IXJCTL_RATE", 0x400471e1},
++{"linux/ixjuser.h", "IXJCTL_DTMF_PRESCALE", 0x400471e8},
++{"linux/ixjuser.h", "IXJCTL_SIGCTL", 0x400471e9},
++{"linux/ixjuser.h", "IXJCTL_SC_RXG", 0x400471ea},
++{"linux/ixjuser.h", "IXJCTL_SC_TXG", 0x400471eb},
++{"linux/ixjuser.h", "IXJCTL_INTERCOM_START", 0x400471fd},
++{"linux/ixjuser.h", "IXJCTL_INTERCOM_STOP", 0x400471fe},
++{"linux/msdos_fs.h", "FAT_IOCTL_SET_ATTRIBUTES", 0x40047211},
++{"linux/if_ppp.h", "PPPIOCATTCHAN", 0x40047438},
++{"linux/if_ppp.h", "PPPIOCCONNECT", 0x4004743a},
++{"linux/if_ppp.h", "PPPIOCSMRRU", 0x4004743b},
++{"linux/if_ppp.h", "PPPIOCDETACH", 0x4004743c},
++{"linux/if_ppp.h", "PPPIOCATTACH", 0x4004743d},
++{"linux/if_ppp.h", "PPPIOCSDEBUG", 0x40047440},
++{"linux/if_ppp.h", "PPPIOCSMAXCID", 0x40047451},
++{"linux/if_ppp.h", "PPPIOCSMRU", 0x40047452},
++{"linux/if_ppp.h", "PPPIOCSRASYNCMAP", 0x40047454},
++{"linux/if_ppp.h", "PPPIOCSASYNCMAP", 0x40047457},
++{"linux/if_ppp.h", "PPPIOCSFLAGS", 0x40047459},
++{"linux/isdn_ppp.h", "PPPIOCBUNDLE", 0x40047481},
++{"linux/isdn_ppp.h", "PPPIOCSMPFLAGS", 0x40047483},
++{"linux/isdn_ppp.h", "PPPIOCSMPMTU", 0x40047484},
++{"linux/isdn_ppp.h", "PPPIOCSMPMRU", 0x40047485},
++{"linux/isdn_ppp.h", "PPPIOCSCOMPRESSOR", 0x40047487},
++{"linux/ext2_fs.h", "EXT2_IOC_SETVERSION", 0x40047602},
++{"linux/ext3_fs.h", "EXT3_IOC_SETVERSION_OLD", 0x40047602},
++{"linux/videodev.h", "VIDIOCCAPTURE", 0x40047608},
++{"linux/videodev.h", "VIDIOCSFREQ", 0x4004760f},
++{"linux/videodev.h", "VIDIOCSYNC", 0x40047612},
++{"linux/videodev.h", "VIDIOCSWRITEMODE", 0x40047619},
++{"linux/meye.h", "MEYEIOC_QBUF_CAPT", 0x400476c2},
++{"linux/videotext.h", "VTXIOCSETVIRT", 0x4004810c},
++{"linux/dn.h", "OSIOCSNETADDR", 0x400489e0},
++{"linux/dn.h", "SIOCSNETADDR", 0x400489e0},
++{"linux/auto_fs4.h", "AUTOFS_IOC_EXPIRE_MULTI", 0x40049366},
++{"linux/if_pppox.h", "PPPOEIOCSFWD", 0x4004b100},
++{"linux/gigaset_dev.h", "GIGASET_BRKCHARS", 0x40064702},
++{"linux/meye.h", "MEYEIOC_S_PARAMS", 0x400676c1},
++{"linux/cciss_ioctl.h", "CCISS_SETINTINFO", 0x40084203},
++{"linux/input.h", "EVIOCSREP", 0x40084503},
++{"linux/input.h", "EVIOCSKEYCODE", 0x40084504},
++{"mtd/mtd-abi.h", "MEMERASE", 0x40084d02},
++{"mtd/mtd-abi.h", "MEMLOCK", 0x40084d05},
++{"mtd/mtd-abi.h", "MEMUNLOCK", 0x40084d06},
++{"mtd/mtd-abi.h", "MEMGETBADBLOCK", 0x40084d0b},
++{"mtd/mtd-abi.h", "MEMSETBADBLOCK", 0x40084d0c},
++{"linux/random.h", "RNDADDENTROPY", 0x40085203},
++{"linux/videodev2.h", "VIDIOC_S_STD", 0x40085618},
++{"linux/videodev2.h", "VIDIOC_S_CTRL_OLD", 0x4008561c},
++{"linux/atmdev.h", "ATM_GETNAMES", 0x40086183},
++{"linux/atmdev.h", "ATM_ADDPARTY", 0x400861f4},
++{"linux/chio.h", "CHIOGSTATUS", 0x40086308},
++{"linux/video_decoder.h", "DECODER_INIT", 0x40086409},
++{"linux/mtio.h", "MTIOCTOP", 0x40086d01},
++{"linux/ppdev.h", "PPSETTIME", 0x40087096},
++{"linux/if_ppp.h", "PPPIOCSACTIVE", 0x40087446},
++{"linux/if_ppp.h", "PPPIOCSPASS", 0x40087447},
++{"linux/if_ppp.h", "PPPIOCSNPMODE", 0x4008744b},
++{"linux/fd.h", "FDFMTTRK", 0x400c0248},
++{"linux/capi.h", "CAPI_REGISTER", 0x400c4301},
++{"linux/hiddev.h", "HIDIOCGREPORT", 0x400c4807},
++{"linux/hiddev.h", "HIDIOCSREPORT", 0x400c4808},
++{"mtd/mtd-abi.h", "OTPGETREGIONINFO", 0x400c4d0f},
++{"linux/uinput.h", "UI_END_FF_ERASE", 0x400c55cb},
++{"linux/ite_gpio.h", "ITE_GPIO_OUT", 0x400c5a01},
++{"linux/ite_gpio.h", "ITE_GPIO_INT_CTRL", 0x400c5a02},
++{"linux/ite_gpio.h", "ITE_GPIO_IN_STATUS", 0x400c5a03},
++{"linux/ite_gpio.h", "ITE_GPIO_OUT_STATUS", 0x400c5a04},
++{"linux/ite_gpio.h", "ITE_GPIO_GEN_CTRL", 0x400c5a05},
++{"linux/ite_gpio.h", "ITE_GPIO_INT_WAIT", 0x400c5a06},
++{"linux/atm_idt77105.h", "IDT77105_GETSTAT", 0x400c6132},
++{"linux/atm_idt77105.h", "IDT77105_GETSTATZ", 0x400c6133},
++{"linux/atmdev.h", "ATM_GETSTAT", 0x400c6150},
++{"linux/atmdev.h", "ATM_GETSTATZ", 0x400c6151},
++{"linux/atmdev.h", "ATM_GETLOOP", 0x400c6152},
++{"linux/atmdev.h", "ATM_SETLOOP", 0x400c6153},
++{"linux/atmdev.h", "ATM_QUERYLOOP", 0x400c6154},
++{"linux/atm_eni.h", "ENI_MEMDUMP", 0x400c6160},
++{"linux/atm_he.h", "HE_GET_REG", 0x400c6160},
++{"linux/atm_zatm.h", "ZATM_GETPOOL", 0x400c6161},
++{"linux/atm_zatm.h", "ZATM_GETPOOLZ", 0x400c6162},
++{"linux/atm_nicstar.h", "NS_SETBUFLEV", 0x400c6162},
++{"linux/atm_zatm.h", "ZATM_SETPOOL", 0x400c6163},
++{"linux/atm_eni.h", "ENI_SETMULT", 0x400c6167},
++{"linux/atmdev.h", "ATM_GETLINKRATE", 0x400c6181},
++{"linux/atmdev.h", "ATM_GETTYPE", 0x400c6184},
++{"linux/atmdev.h", "ATM_GETESI", 0x400c6185},
++{"linux/atmdev.h", "ATM_GETADDR", 0x400c6186},
++{"linux/atmdev.h", "ATM_RSTADDR", 0x400c6187},
++{"linux/atmdev.h", "ATM_ADDADDR", 0x400c6188},
++{"linux/atmdev.h", "ATM_DELADDR", 0x400c6189},
++{"linux/atmdev.h", "ATM_GETCIRANGE", 0x400c618a},
++{"linux/atmdev.h", "ATM_SETCIRANGE", 0x400c618b},
++{"linux/atmdev.h", "ATM_SETESI", 0x400c618c},
++{"linux/atmdev.h", "ATM_SETESIF", 0x400c618d},
++{"linux/atmdev.h", "ATM_ADDLECSADDR", 0x400c618e},
++{"linux/atmdev.h", "ATM_DELLECSADDR", 0x400c618f},
++{"linux/atmdev.h", "ATM_GETLECSADDR", 0x400c6190},
++{"linux/chio.h", "CHIOPOSITION", 0x400c6303},
++{"linux/i2o-dev.h", "I2OEVTREG", 0x400c690a},
++{"linux/ncp_fs.h", "NCP_IOC_GETROOT", 0x400c6e08},
++{"linux/if_ppp.h", "PPPIOCSCOMPRESS", 0x400c744d},
++{"linux/videodev.h", "VIDIOCSPLAYMODE", 0x400c7618},
++{"linux/video_decoder.h", "DECODER_SET_PICTURE", 0x400e6407},
++{"linux/videodev.h", "VIDIOCSPICT", 0x400e7607},
++{"linux/cciss_ioctl.h", "CCISS_SETNODENAME", 0x40104205},
++{"linux/synclink.h", "MGSL_IOCSGPIO", 0x40106d10},
++{"linux/videodev.h", "VIDIOCMCAPTURE", 0x40107613},
++{"linux/fd.h", "FDSETMAXERRS", 0x4014024c},
++{"linux/videodev2.h", "VIDIOC_S_CROP", 0x4014563c},
++{"linux/chio.h", "CHIOMOVE", 0x40146301},
++{"linux/videodev.h", "VIDIOCSFBUF", 0x4014760c},
++{"linux/videodev.h", "VIDIOCSCAPTURE", 0x40147617},
++{"linux/hiddev.h", "HIDIOCSUSAGE", 0x4018480c},
++{"linux/hiddev.h", "HIDIOCGCOLLECTIONINDEX", 0x40184810},
++{"linux/ext3_fs.h", "EXT3_IOC_GROUP_ADD", 0x40186608},
++{"linux/videodev.h", "VIDIOCSMICROCODE", 0x4018761b},
++{"linux/fd.h", "FDSETPRM", 0x401c0242},
++{"linux/fd.h", "FDDEFPRM", 0x401c0243},
++{"linux/atmbr2684.h", "BR2684_SETFILT", 0x401c6190},
++{"linux/chio.h", "CHIOEXCHANGE", 0x401c6302},
++{"linux/rtc.h", "RTC_PLL_SET", 0x401c7012},
++{"linux/synclink.h", "MGSL_IOCSPARAMS", 0x40206d00},
++{"linux/if_ppp.h", "PPPIOCSXASYNCMAP", 0x4020744f},
++{"linux/videodev.h", "VIDIOCSWIN", 0x4020760a},
++{"linux/videodev.h", "VIDIOCSVBIFMT", 0x4020761d},
++{"linux/videotext.h", "VTXIOCCLRPAGE", 0x40208102},
++{"linux/videotext.h", "VTXIOCCLRFOUND", 0x40208103},
++{"linux/videotext.h", "VTXIOCPAGEREQ", 0x40208104},
++{"linux/videotext.h", "VTXIOCGETSTAT", 0x40208105},
++{"linux/videotext.h", "VTXIOCGETPAGE", 0x40208106},
++{"linux/videotext.h", "VTXIOCSTOPDAU", 0x40208107},
++{"linux/joystick.h", "JSIOCSCORR", 0x40246a21},
++{"linux/rtc.h", "RTC_ALM_SET", 0x40247007},
++{"linux/rtc.h", "RTC_SET_TIME", 0x4024700a},
++{"linux/rtc.h", "RTC_WKALM_SET", 0x4028700f},
++{"linux/smb_fs.h", "SMB_IOC_NEWCONN", 0x40287502},
++{"linux/videodev.h", "VIDIOCSAUDIO", 0x40287611},
++{"linux/videodev2.h", "VIDIOC_S_FBUF", 0x402c560b},
++{"linux/videodev2.h", "VIDIOC_S_FREQUENCY", 0x402c5639},
++{"linux/chio.h", "CHIOSVOLTAG", 0x40306312},
++{"linux/videodev.h", "VIDIOCSCHAN", 0x40307603},
++{"linux/uinput.h", "UI_END_FF_UPLOAD", 0x403455c9},
++{"linux/videodev2.h", "VIDIOC_S_AUDIO", 0x40345622},
++{"linux/videodev2.h", "VIDIOC_S_AUDOUT", 0x40345632},
++{"linux/videodev.h", "VIDIOCSTUNER", 0x40347605},
++{"linux/joystick.h", "JSIOCSAXMAP", 0x40406a31},
++{"linux/videodev2.h", "VIDIOC_S_MODULATOR", 0x40445637},
++{"linux/videodev2.h", "VIDIOC_S_TUNER", 0x4054561e},
++{"linux/fd.h", "FDSETDRVPRM", 0x40580290},
++{"linux/chio.h", "CHIOGELEM", 0x406c6310},
++{"linux/videodev2.h", "VIDIOC_S_JPEGCOMP", 0x408c563e},
++{"mtd/mtd-abi.h", "MEMSETOOBSEL", 0x40c84d09},
++{"linux/videodev2.h", "VIDIOC_S_PARM_OLD", 0x40cc5616},
++{"linux/joystick.h", "JSIOCSBTNMAP", 0x42006a33},
++{"linux/hiddev.h", "HIDIOCSUSAGES", 0x501c4814},
++{"linux/videodev2.h", "VIDIOC_G_PRIORITY", 0x80015643},
++{"linux/joystick.h", "JSIOCGAXES", 0x80016a11},
++{"linux/joystick.h", "JSIOCGBUTTONS", 0x80016a12},
++{"linux/ppdev.h", "PPRSTATUS", 0x80017081},
++{"linux/ppdev.h", "PPRCONTROL", 0x80017083},
++{"linux/ppdev.h", "PPRDATA", 0x80017085},
++{"linux/sonypi.h", "SONYPI_IOCGBRT", 0x80017600},
++{"linux/sonypi.h", "SONYPI_IOCGBATFLAGS", 0x80017607},
++{"linux/sonypi.h", "SONYPI_IOCGBLUE", 0x80017608},
++{"linux/sonypi.h", "SONYPI_IOCGFAN", 0x8001760a},
++{"linux/sonypi.h", "SONYPI_IOCGTEMP", 0x8001760c},
++{"linux/capi.h", "CAPI_GET_ERRCODE", 0x80024321},
++{"linux/capi.h", "CAPI_INSTALLED", 0x80024322},
++{"linux/ipmi.h", "IPMICTL_REGISTER_FOR_CMD", 0x8002690e},
++{"linux/ipmi.h", "IPMICTL_UNREGISTER_FOR_CMD", 0x8002690f},
++{"linux/smb_fs.h", "SMB_IOC_GETMOUNTUID", 0x80027501},
++{"linux/sonypi.h", "SONYPI_IOCGBAT1CAP", 0x80027602},
++{"linux/sonypi.h", "SONYPI_IOCGBAT1REM", 0x80027603},
++{"linux/sonypi.h", "SONYPI_IOCGBAT2CAP", 0x80027604},
++{"linux/sonypi.h", "SONYPI_IOCGBAT2REM", 0x80027605},
++{"linux/fs.h", "BLKBSZGET", 0x80041270},
++{"linux/fs.h", "BLKGETSIZE64", 0x80041272},
++{"linux/radeonfb.h", "FBIO_RADEON_GET_MIRROR", 0x80044003},
++{"linux/agpgart.h", "AGPIOC_INFO", 0x80044100},
++{"linux/pmu.h", "PMU_IOC_GET_BACKLIGHT", 0x80044201},
++{"linux/pmu.h", "PMU_IOC_GET_MODEL", 0x80044203},
++{"linux/pmu.h", "PMU_IOC_HAS_ADB", 0x80044204},
++{"linux/pmu.h", "PMU_IOC_CAN_SLEEP", 0x80044205},
++{"linux/pmu.h", "PMU_IOC_GRAB_BACKLIGHT", 0x80044206},
++{"linux/cciss_ioctl.h", "CCISS_GETHEARTBEAT", 0x80044206},
++{"linux/cciss_ioctl.h", "CCISS_GETBUSTYPES", 0x80044207},
++{"linux/cciss_ioctl.h", "CCISS_GETFIRMVER", 0x80044208},
++{"linux/cciss_ioctl.h", "CCISS_GETDRIVVER", 0x80044209},
++{"linux/capi.h", "CAPI_GET_FLAGS", 0x80044323},
++{"linux/capi.h", "CAPI_SET_FLAGS", 0x80044324},
++{"linux/capi.h", "CAPI_CLR_FLAGS", 0x80044325},
++{"linux/capi.h", "CAPI_NCCI_OPENCOUNT", 0x80044326},
++{"linux/capi.h", "CAPI_NCCI_GETUNIT", 0x80044327},
++{"linux/input.h", "EVIOCGVERSION", 0x80044501},
++{"linux/input.h", "EVIOCGEFFECTS", 0x80044584},
++{"linux/arcfb.h", "FBIO_GETCONTROL2", 0x80044689},
++{"linux/hiddev.h", "HIDIOCGVERSION", 0x80044801},
++{"linux/hiddev.h", "HIDIOCGFLAG", 0x8004480e},
++{"linux/soundcard.h", "SOUND_MIXER_READ_VOLUME", 0x80044d00},
++{"linux/soundcard.h", "SOUND_MIXER_READ_BASS", 0x80044d01},
++{"linux/soundcard.h", "SOUND_MIXER_READ_TREBLE", 0x80044d02},
++{"linux/soundcard.h", "SOUND_MIXER_READ_SYNTH", 0x80044d03},
++{"linux/soundcard.h", "SOUND_MIXER_READ_PCM", 0x80044d04},
++{"linux/soundcard.h", "SOUND_MIXER_READ_SPEAKER", 0x80044d05},
++{"linux/soundcard.h", "SOUND_MIXER_READ_LINE", 0x80044d06},
++{"linux/soundcard.h", "SOUND_MIXER_READ_MIC", 0x80044d07},
++{"mtd/mtd-abi.h", "MEMGETREGIONCOUNT", 0x80044d07},
++{"linux/soundcard.h", "SOUND_MIXER_READ_CD", 0x80044d08},
++{"linux/soundcard.h", "SOUND_MIXER_READ_IMIX", 0x80044d09},
++{"linux/soundcard.h", "SOUND_MIXER_READ_ALTPCM", 0x80044d0a},
++{"linux/soundcard.h", "SOUND_MIXER_READ_RECLEV", 0x80044d0b},
++{"linux/soundcard.h", "SOUND_MIXER_READ_IGAIN", 0x80044d0c},
++{"linux/soundcard.h", "SOUND_MIXER_READ_OGAIN", 0x80044d0d},
++{"mtd/mtd-abi.h", "OTPSELECT", 0x80044d0d},
++{"linux/soundcard.h", "SOUND_MIXER_READ_LINE1", 0x80044d0e},
++{"linux/soundcard.h", "SOUND_MIXER_READ_LINE2", 0x80044d0f},
++{"linux/soundcard.h", "SOUND_MIXER_READ_LINE3", 0x80044d10},
++{"linux/soundcard.h", "SOUND_MIXER_READ_LOUD", 0x80044d1f},
++{"linux/soundcard.h", "SOUND_MIXER_READ_ENHANCE", 0x80044d1f},
++{"linux/soundcard.h", "SOUND_MIXER_READ_MUTE", 0x80044d1f},
++{"linux/soundcard.h", "SOUND_MIXER_READ_STEREODEVS", 0x80044dfb},
++{"linux/soundcard.h", "SOUND_MIXER_READ_CAPS", 0x80044dfc},
++{"linux/soundcard.h", "SOUND_MIXER_READ_RECMASK", 0x80044dfd},
++{"linux/soundcard.h", "SOUND_MIXER_READ_DEVMASK", 0x80044dfe},
++{"linux/soundcard.h", "SOUND_MIXER_READ_RECSRC", 0x80044dff},
++{"linux/ticable.h", "IOCTL_TIUSB_GET_MAXPS", 0x80044e23},
++{"linux/ticable.h", "IOCTL_TIUSB_GET_DEVID", 0x80044e24},
++{"linux/random.h", "RNDGETENTCNT", 0x80045200},
++{"asm/ioctls.h", "TIOCGPTN", 0x80045430},
++{"linux/videodev2.h", "VIDIOC_G_INPUT", 0x80045626},
++{"linux/videodev2.h", "VIDIOC_G_OUTPUT", 0x8004562e},
++{"linux/watchdog.h", "WDIOC_GETSTATUS", 0x80045701},
++{"linux/watchdog.h", "WDIOC_GETBOOTSTATUS", 0x80045702},
++{"linux/watchdog.h", "WDIOC_GETTEMP", 0x80045703},
++{"linux/watchdog.h", "WDIOC_SETOPTIONS", 0x80045704},
++{"linux/watchdog.h", "WDIOC_KEEPALIVE", 0x80045705},
++{"linux/watchdog.h", "WDIOC_GETTIMEOUT", 0x80045707},
++{"linux/watchdog.h", "WDIOC_GETPRETIMEOUT", 0x80045709},
++{"linux/watchdog.h", "WDIOC_GETTIMELEFT", 0x8004570a},
++{"linux/sonet.h", "SONET_GETDIAG", 0x80046114},
++{"linux/sonet.h", "SONET_GETFRAMING", 0x80046116},
++{"linux/cm4000_cs.h", "CM_IOCGSTATUS", 0x80046300},
++{"linux/chio.h", "CHIOGPICKER", 0x80046304},
++{"linux/video_decoder.h", "DECODER_GET_STATUS", 0x80046402},
++{"linux/iflags.h", "IFLAGS_GET_IOC", 0x80046601},
++{"linux/ext3_fs.h", "EXT3_IOC_GETFLAGS", 0x80046601},
++{"linux/ext2_fs.h", "EXT2_IOC_GETFLAGS", 0x80046601},
++{"linux/ext3_fs.h", "EXT3_IOC_GETVERSION", 0x80046603},
++{"linux/ext3_fs.h", "EXT3_IOC_GETRSVSZ", 0x80046605},
++{"linux/ext3_fs.h", "EXT3_IOC_WAIT_FOR_READONLY", 0x80046663},
++{"linux/i2o-dev.h", "I2OVALIDATE", 0x80046908},
++{"linux/ipmi.h", "IPMICTL_SET_GETS_EVENTS_CMD", 0x80046910},
++{"linux/ipmi.h", "IPMICTL_SET_MY_ADDRESS_CMD", 0x80046911},
++{"linux/ipmi.h", "IPMICTL_GET_MY_ADDRESS_CMD", 0x80046912},
++{"linux/ipmi.h", "IPMICTL_SET_MY_LUN_CMD", 0x80046913},
++{"linux/ipmi.h", "IPMICTL_GET_MY_LUN_CMD", 0x80046914},
++{"linux/ipmi.h", "IPMICTL_SET_MY_CHANNEL_ADDRESS_CMD", 0x80046918},
++{"linux/ipmi.h", "IPMICTL_GET_MY_CHANNEL_ADDRESS_CMD", 0x80046919},
++{"linux/ipmi.h", "IPMICTL_SET_MY_CHANNEL_LUN_CMD", 0x8004691a},
++{"linux/ipmi.h", "IPMICTL_GET_MY_CHANNEL_LUN_CMD", 0x8004691b},
++{"linux/i8k.h", "I8K_BIOS_VERSION", 0x80046980},
++{"linux/i8k.h", "I8K_MACHINE_ID", 0x80046981},
++{"linux/i8k.h", "I8K_POWER_STATUS", 0x80046982},
++{"linux/i8k.h", "I8K_FN_STATUS", 0x80046983},
++{"linux/i8k.h", "I8K_GET_TEMP", 0x80046984},
++{"linux/joystick.h", "JSIOCGVERSION", 0x80046a01},
++{"linux/udf_fs_i.h", "UDF_GETEASIZE", 0x80046c40},
++{"linux/udf_fs_i.h", "UDF_GETEABLOCK", 0x80046c41},
++{"linux/udf_fs_i.h", "UDF_GETVOLIDENT", 0x80046c42},
++{"linux/mmtimer.h", "MMTIMER_GETRES", 0x80046d01},
++{"linux/mmtimer.h", "MMTIMER_GETFREQ", 0x80046d02},
++{"linux/mtio.h", "MTIOCPOS", 0x80046d03},
++{"linux/mmtimer.h", "MMTIMER_GETCOUNTER", 0x80046d09},
++{"linux/zftape.h", "MTIOC_ZFTAPE_GETBLKSZ", 0x80046d68},
++{"linux/ncp_fs.h", "NCP_IOC_SIGN_WANTED", 0x80046e06},
++{"linux/ncp_fs.h", "NCP_IOC_SETDENTRYTTL", 0x80046e0c},
++{"linux/matroxfb.h", "MATROXFB_GET_OUTPUT_CONNECTION", 0x80046ef8},
++{"linux/matroxfb.h", "MATROXFB_GET_AVAILABLE_OUTPUTS", 0x80046ef9},
++{"linux/matroxfb.h", "MATROXFB_GET_ALL_OUTPUTS", 0x80046efb},
++{"linux/rtc.h", "RTC_IRQP_READ", 0x8004700b},
++{"linux/rtc.h", "RTC_EPOCH_READ", 0x8004700d},
++{"linux/ppdev.h", "PPCLRIRQ", 0x80047093},
++{"linux/ppdev.h", "PPGETMODES", 0x80047097},
++{"linux/ppdev.h", "PPGETMODE", 0x80047098},
++{"linux/ppdev.h", "PPGETPHASE", 0x80047099},
++{"linux/ppdev.h", "PPGETFLAGS", 0x8004709a},
++{"linux/telephony.h", "PHONE_CAPABILITIES_LIST", 0x80047181},
++{"linux/telephony.h", "PHONE_DTMF_READY", 0x80047196},
++{"linux/telephony.h", "PHONE_GET_DTMF", 0x80047197},
++{"linux/telephony.h", "PHONE_GET_DTMF_ASCII", 0x80047198},
++{"linux/telephony.h", "PHONE_EXCEPTION", 0x8004719a},
++{"linux/ixjuser.h", "IXJCTL_CARDTYPE", 0x800471c1},
++{"linux/ixjuser.h", "IXJCTL_SERIAL", 0x800471c2},
++{"linux/ixjuser.h", "IXJCTL_DSP_TYPE", 0x800471c3},
++{"linux/ixjuser.h", "IXJCTL_DSP_VERSION", 0x800471c4},
++{"linux/ixjuser.h", "IXJCTL_CID", 0x800471d4},
++{"linux/ixjuser.h", "IXJCTL_VMWI", 0x800471d8},
++{"linux/ixjuser.h", "IXJCTL_VERSION", 0x800471da},
++{"linux/ixjuser.h", "IXJCTL_FRAMES_READ", 0x800471e2},
++{"linux/ixjuser.h", "IXJCTL_FRAMES_WRITTEN", 0x800471e3},
++{"linux/ixjuser.h", "IXJCTL_READ_WAIT", 0x800471e4},
++{"linux/ixjuser.h", "IXJCTL_WRITE_WAIT", 0x800471e5},
++{"linux/ixjuser.h", "IXJCTL_DRYBUFFER_READ", 0x800471e6},
++{"linux/msdos_fs.h", "FAT_IOCTL_GET_ATTRIBUTES", 0x80047210},
++{"linux/if_ppp.h", "PPPIOCGCHAN", 0x80047437},
++{"linux/if_ppp.h", "PPPIOCGDEBUG", 0x80047441},
++{"linux/if_ppp.h", "PPPIOCGMRU", 0x80047453},
++{"linux/if_ppp.h", "PPPIOCGRASYNCMAP", 0x80047455},
++{"linux/if_ppp.h", "PPPIOCGUNIT", 0x80047456},
++{"linux/if_ppp.h", "PPPIOCGASYNCMAP", 0x80047458},
++{"linux/if_ppp.h", "PPPIOCGFLAGS", 0x8004745a},
++{"linux/isdn_ppp.h", "PPPIOCGMPFLAGS", 0x80047482},
++{"linux/smb_fs.h", "SMB_IOC_GETMOUNTUID32", 0x80047503},
++{"linux/ext2_fs.h", "EXT2_IOC_GETVERSION", 0x80047601},
++{"linux/ext3_fs.h", "EXT3_IOC_GETVERSION_OLD", 0x80047601},
++{"linux/videodev.h", "VIDIOCGFREQ", 0x8004760e},
++{"linux/meye.h", "MEYEIOC_STILLJCAPT", 0x800476c5},
++{"linux/dn.h", "SIOCGNETADDR", 0x800489e1},
++{"linux/dn.h", "OSIOCGNETADDR", 0x800489e1},
++{"linux/auto_fs.h", "AUTOFS_IOC_PROTOVER", 0x80049363},
++{"linux/auto_fs4.h", "AUTOFS_IOC_PROTOSUBVER", 0x80049367},
++{"linux/auto_fs4.h", "AUTOFS_IOC_ASKREGHOST", 0x80049368},
++{"linux/auto_fs4.h", "AUTOFS_IOC_TOGGLEREGHOST", 0x80049369},
++{"linux/auto_fs4.h", "AUTOFS_IOC_ASKUMOUNT", 0x80049370},
++{"linux/sonet.h", "SONET_GETFRSENSE", 0x80066117},
++{"linux/meye.h", "MEYEIOC_G_PARAMS", 0x800676c0},
++{"linux/cciss_ioctl.h", "CCISS_GETPCIINFO", 0x80084201},
++{"linux/cciss_ioctl.h", "CCISS_GETINTINFO", 0x80084202},
++{"linux/input.h", "EVIOCGID", 0x80084502},
++{"linux/input.h", "EVIOCGREP", 0x80084503},
++{"linux/input.h", "EVIOCGKEYCODE", 0x80084504},
++{"linux/random.h", "RNDGETPOOL", 0x80085202},
++{"linux/videodev2.h", "VIDIOC_G_STD", 0x80085617},
++{"linux/videodev2.h", "VIDIOC_QUERYSTD", 0x8008563f},
++{"linux/i2o-dev.h", "I2OPASSTHRU", 0x8008690c},
++{"linux/i2o-dev.h", "I2OPASSTHRU32", 0x8008690c},
++{"linux/ipmi.h", "IPMICTL_SET_TIMING_PARMS_CMD", 0x80086916},
++{"linux/ipmi.h", "IPMICTL_GET_TIMING_PARMS_CMD", 0x80086917},
++{"linux/mtio.h", "MTIOCGETSIZE", 0x80086d09},
++{"linux/ncp_fs.h", "NCP_IOC_SETPRIVATEDATA", 0x80086e0a},
++{"linux/ppdev.h", "PPGETTIME", 0x80087095},
++{"linux/if_ppp.h", "PPPIOCGIDLE", 0x8008743f},
++{"linux/cciss_ioctl.h", "CCISS_GETLUNINFO", 0x800c4211},
++{"mtd/mtd-abi.h", "OTPLOCK", 0x800c4d10},
++{"linux/video_decoder.h", "DECODER_GET_CAPABILITIES", 0x800c6401},
++{"linux/video_encoder.h", "ENCODER_GET_CAPABILITIES", 0x800c6501},
++{"linux/hpet.h", "HPET_INFO", 0x800c6803},
++{"linux/ncp_fs.h", "NCP_IOC_NCPREQUEST", 0x800c6e01},
++{"linux/ncp_fs.h", "NCP_IOC_SETROOT", 0x800c6e08},
++{"linux/ncp_fs.h", "NCP_IOC_SETOBJECTNAME", 0x800c6e09},
++{"linux/videodev.h", "VIDIOCKEY", 0x800c760d},
++{"linux/videodev.h", "VIDIOCGPICT", 0x800e7606},
++{"linux/fd.h", "FDGETDRVTYP", 0x8010020f},
++{"linux/cciss_ioctl.h", "CCISS_GETNODENAME", 0x80104204},
++{"mtd/mtd-abi.h", "ECCGETSTATS", 0x80104d12},
++{"linux/synclink.h", "MGSL_IOCGGPIO", 0x80106d11},
++{"linux/isdn_ppp.h", "PPPIOCGIFNAME", 0x80107488},
++{"linux/videotext.h", "VTXIOCGETINFO", 0x80108101},
++{"linux/fd.h", "FDGETMAXERRS", 0x8014020e},
++{"linux/chio.h", "CHIOGPARAMS", 0x80146306},
++{"linux/ipmi.h", "IPMICTL_SEND_COMMAND", 0x8014690d},
++{"linux/mtio.h", "MTIOCVOLINFO", 0x80146d08},
++{"linux/ncp_fs.h", "NCP_IOC_LOCKUNLOCK", 0x80146e07},
++{"linux/videodev.h", "VIDIOCGFBUF", 0x8014760b},
++{"linux/videodev.h", "VIDIOCGUNIT", 0x80147615},
++{"linux/videodev.h", "VIDIOCGCAPTURE", 0x80147616},
++{"linux/fd.h", "FDWERRORGET", 0x80180217},
++{"linux/ncp_fs.h", "NCP_IOC_SIGN_INIT", 0x80186e05},
++{"linux/fd.h", "FDGETPRM", 0x801c0204},
++{"linux/hiddev.h", "HIDIOCGDEVINFO", 0x801c4803},
++{"linux/ipmi.h", "IPMICTL_SEND_COMMAND_SETTIME", 0x801c6915},
++{"linux/mtio.h", "MTIOCGET", 0x801c6d02},
++{"linux/rtc.h", "RTC_PLL_GET", 0x801c7011},
++{"linux/fd.h", "FDGETFDCSTAT", 0x80200215},
++{"linux/fb.h", "FBIOGET_VBLANK", 0x80204612},
++{"mtd/mtd-abi.h", "MEMGETINFO", 0x80204d01},
++{"linux/i2o-dev.h", "I2OGETIOPS", 0x80206900},
++{"linux/synclink.h", "MGSL_IOCGPARAMS", 0x80206d01},
++{"linux/if_ppp.h", "PPPIOCGXASYNCMAP", 0x80207450},
++{"linux/isdn_ppp.h", "PPPIOCGCOMPRESSORS", 0x80207486},
++{"linux/videodev.h", "VIDIOCGWIN", 0x80207609},
++{"linux/videodev.h", "VIDIOCGVBIFMT", 0x8020761c},
++{"linux/sonet.h", "SONET_GETSTAT", 0x80246110},
++{"linux/sonet.h", "SONET_GETSTATZ", 0x80246111},
++{"linux/joystick.h", "JSIOCGCORR", 0x80246a22},
++{"linux/rtc.h", "RTC_ALM_READ", 0x80247008},
++{"linux/rtc.h", "RTC_RD_TIME", 0x80247009},
++{"linux/watchdog.h", "WDIOC_GETSUPPORT", 0x80285700},
++{"linux/rtc.h", "RTC_WKALM_RD", 0x80287010},
++{"linux/videodev.h", "VIDIOCGAUDIO", 0x80287610},
++{"linux/ncp_fs.h", "NCP_IOC_SETCHARSETS", 0x802a6e0b},
++{"linux/videodev2.h", "VIDIOC_G_FBUF", 0x802c560a},
++{"linux/videodev2.h", "VIDIOC_CROPCAP_OLD", 0x802c563a},
++{"linux/fd.h", "FDGETDRVSTAT", 0x80340212},
++{"linux/fd.h", "FDPOLLDRVSTAT", 0x80340213},
++{"linux/videodev2.h", "VIDIOC_G_AUDIO", 0x80345621},
++{"linux/videodev2.h", "VIDIOC_G_AUDOUT", 0x80345631},
++{"linux/videodev.h", "VIDIOCGCAP", 0x803c7601},
++{"linux/joystick.h", "JSIOCGAXMAP", 0x80406a32},
++{"linux/fd.h", "FDGETDRVPRM", 0x80580211},
++{"linux/videodev2.h", "VIDIOC_QUERYCAP", 0x80685600},
++{"linux/i2o-dev.h", "I2OEVTGET", 0x8068690b},
++{"linux/chio.h", "CHIOGVPARAMS", 0x80706313},
++{"linux/videodev2.h", "VIDIOC_G_SLICED_VBI_CAP", 0x80745645},
++{"linux/videodev.h", "VIDIOCGMBUF", 0x80887614},
++{"linux/videodev2.h", "VIDIOC_G_JPEGCOMP", 0x808c563d},
++{"mtd/mtd-abi.h", "MEMGETOOBSEL", 0x80c84d0a},
++{"linux/hiddev.h", "HIDIOCGSTRING", 0x81044804},
++{"linux/auto_fs.h", "AUTOFS_IOC_EXPIRE", 0x810c9365},
++{"linux/videodev.h", "VIDIOCGPLAYINFO", 0x8118761a},
++{"mtd/mtd-abi.h", "ECCGETLAYOUT", 0x81484d11},
++{"linux/joystick.h", "JSIOCGBTNMAP", 0x82006a34},
++{"linux/msdos_fs.h", "VFAT_IOCTL_READDIR_BOTH", 0x82187201},
++{"linux/msdos_fs.h", "VFAT_IOCTL_READDIR_SHORT", 0x82187202},
++{"linux/agpgart.h", "AGPIOC_ALLOCATE", 0xc0044106},
++{"linux/capi.h", "CAPI_GET_MANUFACTURER", 0xc0044306},
++{"linux/capi.h", "CAPI_GET_SERIAL", 0xc0044308},
++{"linux/gigaset_dev.h", "GIGASET_REDIR", 0xc0044700},
++{"linux/gigaset_dev.h", "GIGASET_CONFIG", 0xc0044701},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_VOLUME", 0xc0044d00},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_BASS", 0xc0044d01},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_TREBLE", 0xc0044d02},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_SYNTH", 0xc0044d03},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_PCM", 0xc0044d04},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_SPEAKER", 0xc0044d05},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_LINE", 0xc0044d06},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_MIC", 0xc0044d07},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_CD", 0xc0044d08},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_IMIX", 0xc0044d09},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_ALTPCM", 0xc0044d0a},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_RECLEV", 0xc0044d0b},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_IGAIN", 0xc0044d0c},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_OGAIN", 0xc0044d0d},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_LINE1", 0xc0044d0e},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_LINE2", 0xc0044d0f},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_LINE3", 0xc0044d10},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_ENHANCE", 0xc0044d1f},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_LOUD", 0xc0044d1f},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_MUTE", 0xc0044d1f},
++{"linux/soundcard.h", "SOUND_MIXER_WRITE_RECSRC", 0xc0044dff},
++{"linux/videodev2.h", "VIDIOC_OVERLAY_OLD", 0xc004560e},
++{"linux/videodev2.h", "VIDIOC_S_INPUT", 0xc0045627},
++{"linux/videodev2.h", "VIDIOC_S_OUTPUT", 0xc004562f},
++{"linux/watchdog.h", "WDIOC_SETTIMEOUT", 0xc0045706},
++{"linux/watchdog.h", "WDIOC_SETPRETIMEOUT", 0xc0045708},
++{"linux/sonet.h", "SONET_SETDIAG", 0xc0046112},
++{"linux/sonet.h", "SONET_CLRDIAG", 0xc0046113},
++{"linux/cm4000_cs.h", "CM_IOCGATR", 0xc0046301},
++{"linux/coda.h", "CIOC_KERNEL_VERSION", 0xc004630a},
++{"linux/i8k.h", "I8K_GET_SPEED", 0xc0046985},
++{"linux/i8k.h", "I8K_GET_FAN", 0xc0046986},
++{"linux/i8k.h", "I8K_SET_FAN", 0xc0046987},
++{"linux/udf_fs_i.h", "UDF_RELOCATE_BLOCKS", 0xc0046c43},
++{"linux/synclink.h", "MGSL_IOCWAITEVENT", 0xc0046d08},
++{"linux/matroxfb.h", "MATROXFB_GET_OUTPUT_MODE", 0xc0046efa},
++{"linux/telephony.h", "PHONE_QUERY_CODEC", 0xc00471a7},
++{"linux/if_ppp.h", "PPPIOCNEWUNIT", 0xc004743e},
++{"linux/toshiba.h", "TOSH_SMM", 0xc0047490},
++{"linux/meye.h", "MEYEIOC_SYNC", 0xc00476c3},
++{"linux/auto_fs.h", "AUTOFS_IOC_SETTIMEOUT", 0xc0049364},
++{"linux/capi.h", "CAPI_MANUFACTURER_CMD", 0xc0084320},
++{"linux/videodev2.h", "VIDIOC_G_CTRL", 0xc008561b},
++{"linux/videodev2.h", "VIDIOC_S_CTRL", 0xc008561c},
++{"linux/ncp_fs.h", "NCP_IOC_GETPRIVATEDATA", 0xc0086e0a},
++{"linux/if_ppp.h", "PPPIOCGNPMODE", 0xc008744c},
++{"linux/hiddev.h", "HIDIOCGREPORTINFO", 0xc00c4809},
++{"mtd/mtd-abi.h", "MEMWRITEOOB", 0xc00c4d03},
++{"mtd/mtd-abi.h", "MEMREADOOB", 0xc00c4d04},
++{"linux/uinput.h", "UI_BEGIN_FF_ERASE", 0xc00c55ca},
++{"linux/ite_gpio.h", "ITE_GPIO_IN", 0xc00c5a00},
++{"linux/atm_nicstar.h", "NS_GETPSTAT", 0xc00c6161},
++{"linux/i2o-dev.h", "I2OHRTGET", 0xc00c6901},
++{"linux/i2o-dev.h", "I2OLCTGET", 0xc00c6902},
++{"linux/mtio.h", "MTIOCFTFORMAT", 0xc00c6d0a},
++{"linux/ncp_fs.h", "NCP_IOC_GETOBJECTNAME", 0xc00c6e09},
++{"linux/capi.h", "CAPI_GET_VERSION", 0xc0104307},
++{"linux/gigaset_dev.h", "GIGASET_VERSION", 0xc0104703},
++{"linux/hiddev.h", "HIDIOCGCOLLECTIONINFO", 0xc0104811},
++{"mtd/mtd-abi.h", "MEMGETREGIONINFO", 0xc0104d08},
++{"linux/videodev2.h", "VIDIOC_REQBUFS", 0xc0105608},
++{"linux/mtio.h", "MTIOCRDFTSEG", 0xc0106d06},
++{"linux/mtio.h", "MTIOCWRFTSEG", 0xc0106d07},
++{"linux/synclink.h", "MGSL_IOCWAITGPIO", 0xc0106d12},
++{"linux/videodev2.h", "VIDIOC_G_CROP", 0xc014563b},
++{"linux/hiddev.h", "HIDIOCGUSAGE", 0xc018480b},
++{"linux/hiddev.h", "HIDIOCGUCODE", 0xc018480d},
++{"linux/videodev2.h", "VIDIOC_G_EXT_CTRLS", 0xc0185647},
++{"linux/videodev2.h", "VIDIOC_S_EXT_CTRLS", 0xc0185648},
++{"linux/videodev2.h", "VIDIOC_TRY_EXT_CTRLS", 0xc0185649},
++{"linux/pktcdvd.h", "PACKET_CTRL_CMD", 0xc0185801},
++{"linux/i2o-dev.h", "I2OPARMSET", 0xc0186903},
++{"linux/i2o-dev.h", "I2OPARMGET", 0xc0186904},
++{"linux/ipmi.h", "IPMICTL_RECEIVE_MSG_TRUNC", 0xc018690b},
++{"linux/ipmi.h", "IPMICTL_RECEIVE_MSG", 0xc018690c},
++{"linux/i2o-dev.h", "I2OSWDL", 0xc01c6905},
++{"linux/i2o-dev.h", "I2OSWUL", 0xc01c6906},
++{"linux/i2o-dev.h", "I2OSWDEL", 0xc01c6907},
++{"linux/i2o-dev.h", "I2OHTML", 0xc01c6909},
++{"linux/mtio.h", "MTIOCFTCMD", 0xc0206d0b},
++{"linux/ncp_fs.h", "NCP_IOC_GET_FS_INFO_V2", 0xc0246e04},
++{"linux/ncp_fs.h", "NCP_IOC_GET_FS_INFO", 0xc0286e04},
++{"linux/ncp_fs.h", "NCP_IOC_GETCHARSETS", 0xc02a6e0b},
++{"linux/videodev2.h", "VIDIOC_QUERYMENU", 0xc02c5625},
++{"linux/videodev2.h", "VIDIOC_G_FREQUENCY", 0xc02c5638},
++{"linux/videodev2.h", "VIDIOC_CROPCAP", 0xc02c563a},
++{"linux/videodev.h", "VIDIOCGCHAN", 0xc0307602},
++{"linux/uinput.h", "UI_BEGIN_FF_UPLOAD", 0xc03455c8},
++{"linux/videodev2.h", "VIDIOC_G_AUDIO_OLD", 0xc0345621},
++{"linux/videodev2.h", "VIDIOC_G_AUDOUT_OLD", 0xc0345631},
++{"linux/videodev2.h", "VIDIOC_ENUMAUDIO", 0xc0345641},
++{"linux/videodev2.h", "VIDIOC_ENUMAUDOUT", 0xc0345642},
++{"linux/videodev.h", "VIDIOCGTUNER", 0xc0347604},
++{"linux/hiddev.h", "HIDIOCGFIELDINFO", 0xc038480a},
++{"linux/capi.h", "CAPI_GET_PROFILE", 0xc0404309},
++{"linux/videodev2.h", "VIDIOC_ENUM_FMT", 0xc0405602},
++{"linux/videodev2.h", "VIDIOC_ENUMSTD", 0xc0405619},
++{"linux/videodev2.h", "VIDIOC_QUERYBUF", 0xc0445609},
++{"linux/videodev2.h", "VIDIOC_QBUF", 0xc044560f},
++{"linux/videodev2.h", "VIDIOC_DQBUF", 0xc0445611},
++{"linux/videodev2.h", "VIDIOC_QUERYCTRL", 0xc0445624},
++{"linux/videodev2.h", "VIDIOC_G_MODULATOR", 0xc0445636},
++{"linux/fb.h", "FBIO_CURSOR", 0xc0484608},
++{"linux/videodev2.h", "VIDIOC_ENUMOUTPUT", 0xc0485630},
++{"linux/videodev2.h", "VIDIOC_ENUMINPUT", 0xc04c561a},
++{"linux/cciss_ioctl.h", "CCISS_PASSTHRU", 0xc054420b},
++{"linux/videodev2.h", "VIDIOC_G_TUNER", 0xc054561d},
++{"linux/cciss_ioctl.h", "CCISS_BIG_PASSTHRU", 0xc0584212},
++{"linux/isdn_ppp.h", "PPPIOCGCALLINFO", 0xc0887480},
++{"linux/videodev2.h", "VIDIOC_G_FMT", 0xc0cc5604},
++{"linux/videodev2.h", "VIDIOC_S_FMT", 0xc0cc5605},
++{"linux/videodev2.h", "VIDIOC_G_PARM", 0xc0cc5615},
++{"linux/videodev2.h", "VIDIOC_S_PARM", 0xc0cc5616},
++{"linux/videodev2.h", "VIDIOC_TRY_FMT", 0xc0cc5640},
++{"linux/dm-ioctl.h", "DM_VERSION", 0xc134fd00},
++{"linux/dm-ioctl.h", "DM_VERSION_32", 0xc134fd00},
++{"linux/dm-ioctl.h", "DM_REMOVE_ALL_32", 0xc134fd01},
++{"linux/dm-ioctl.h", "DM_REMOVE_ALL", 0xc134fd01},
++{"linux/dm-ioctl.h", "DM_LIST_DEVICES_32", 0xc134fd02},
++{"linux/dm-ioctl.h", "DM_LIST_DEVICES", 0xc134fd02},
++{"linux/dm-ioctl.h", "DM_DEV_CREATE_32", 0xc134fd03},
++{"linux/dm-ioctl.h", "DM_DEV_CREATE", 0xc134fd03},
++{"linux/dm-ioctl.h", "DM_DEV_REMOVE", 0xc134fd04},
++{"linux/dm-ioctl.h", "DM_DEV_REMOVE_32", 0xc134fd04},
++{"linux/dm-ioctl.h", "DM_DEV_RENAME_32", 0xc134fd05},
++{"linux/dm-ioctl.h", "DM_DEV_RENAME", 0xc134fd05},
++{"linux/dm-ioctl.h", "DM_DEV_SUSPEND_32", 0xc134fd06},
++{"linux/dm-ioctl.h", "DM_DEV_SUSPEND", 0xc134fd06},
++{"linux/dm-ioctl.h", "DM_DEV_STATUS", 0xc134fd07},
++{"linux/dm-ioctl.h", "DM_DEV_STATUS_32", 0xc134fd07},
++{"linux/dm-ioctl.h", "DM_DEV_WAIT", 0xc134fd08},
++{"linux/dm-ioctl.h", "DM_DEV_WAIT_32", 0xc134fd08},
++{"linux/dm-ioctl.h", "DM_TABLE_LOAD", 0xc134fd09},
++{"linux/dm-ioctl.h", "DM_TABLE_LOAD_32", 0xc134fd09},
++{"linux/dm-ioctl.h", "DM_TABLE_CLEAR_32", 0xc134fd0a},
++{"linux/dm-ioctl.h", "DM_TABLE_CLEAR", 0xc134fd0a},
++{"linux/dm-ioctl.h", "DM_TABLE_DEPS_32", 0xc134fd0b},
++{"linux/dm-ioctl.h", "DM_TABLE_DEPS", 0xc134fd0b},
++{"linux/dm-ioctl.h", "DM_TABLE_STATUS", 0xc134fd0c},
++{"linux/dm-ioctl.h", "DM_TABLE_STATUS_32", 0xc134fd0c},
++{"linux/dm-ioctl.h", "DM_LIST_VERSIONS", 0xc134fd0d},
++{"linux/dm-ioctl.h", "DM_LIST_VERSIONS_32", 0xc134fd0d},
++{"linux/dm-ioctl.h", "DM_TARGET_MSG", 0xc134fd0e},
++{"linux/dm-ioctl.h", "DM_TARGET_MSG_32", 0xc134fd0e},
++{"linux/dm-ioctl.h", "DM_DEV_SET_GEOMETRY_32", 0xc134fd0f},
++{"linux/dm-ioctl.h", "DM_DEV_SET_GEOMETRY", 0xc134fd0f},
++{"linux/hiddev.h", "HIDIOCGUSAGES", 0xd01c4813},
+diff --git a/linux/avr32/ioctlent.sh b/linux/avr32/ioctlent.sh
+new file mode 100644
+index 0000000..8e1b448
+--- /dev/null
++++ b/linux/avr32/ioctlent.sh
+@@ -0,0 +1,124 @@
++#!/bin/sh
++# Copyright (c) 1993, 1994, 1995 Rick Sladkey <jrs@world.std.com>
++# All rights reserved.
++#
++# Copyright (c) 1995, 1996 Michael Elizabeth Chastain <mec@duracef.shout.net>
++# All rights reserved.
++#
++# Redistribution and use in source and binary forms, with or without
++# modification, are permitted provided that the following conditions
++# are met:
++# 1. Redistributions of source code must retain the above copyright
++#    notice, this list of conditions and the following disclaimer.
++# 2. Redistributions in binary form must reproduce the above copyright
++#    notice, this list of conditions and the following disclaimer in the
++#    documentation and/or other materials provided with the distribution.
++# 3. The name of the author may not be used to endorse or promote products
++#    derived from this software without specific prior written permission.
++#
++# THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
++# IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++# OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
++# IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
++# INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++# NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++# DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++# THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++# THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++
++# Files to find.
++file_find='asm/*.h linux/*.h scsi/*.h mtd/*.h'
++
++# Files to stop.
++file_stop='asm/byteorder.h linux/config.h linux/elf-em.h linux/pci_ids.h linux/xd.h linux/reiserfs_fs.h linux/usbdevice_fs.h'
++
++# Defs to find.
++# Work on the kernel source to convert all to df_iowr.
++# Don't know how to find low-numbered ioctls in linux/mc146818rtc.h.
++df_name='^[	 ]*#[	 ]*define[	 ]+[A-Z_][A-Z0-9_]*[	 ]+'
++df_iowr='_IO|_IOR|_IOW|_IOWR'
++df_NNNN='0[Xx](03|06|22|46|4B|4C|53|54|56|89|90)[0-9A-Fa-f][0-9A-Fa-f]'
++df_4359='0[Xx]4359[0-9A-Fa-f][0-9A-Fa-f]'	# linux/cyclades.h
++df_470N='470[0-9]'				# linux/fs.h        (only in 1.2.13)
++df_smix='MIXER_READ|MIXER_WRITE'		# linux/soundcard.h
++df_12NN='12[3-4][0-9]'				# linux/umsdos_fs.h (only in 1.2.13)
++df_tail='([()	 ]|$)'
++def_find="$df_name($df_iowr|$df_NNNN|$df_4359|$df_470N|$df_smix|$df_12NN)$df_tail"
++
++# Defs to stop.
++ds_tail='_MAGIC|_PATCH'
++ds_fdmp='FD(DEF|GET|SET)MEDIAPRM'		# linux/fd.h aliases (only in 1.2.13)
++ds_mtio='MTIOC(GET|SET)CONFIG'			# linux/mtio.h needs config (only in 1.2.13)
++ds_soundcard='_SIO(RW?|W)?'
++def_stop="$ds_tail|$ds_fdmp|$ds_mtio|$ds_soundcard"
++
++# Validate arg count.
++if [ $# -ne 1 ]
++then
++	echo "usage: $0 include-directory" >&2
++	exit 1
++fi
++
++# Grep through the files.
++(
++	# Construct list: find files minus stop files.
++	cd $1 || exit
++	file_list=`(ls $file_find $file_stop $file_stop 2>/dev/null) | sort | uniq -u`
++
++	# Grep matching #define lines.
++	# Transform to C structure form.
++	# Filter out stop list.
++	egrep "$def_find" $file_list |
++		sed -n -e 's/^\(.*\):#[	 ]*define[	 ]*\([A-Z_][A-Z0-9_]*\).*$/	{ "\1",	"\2",	\2	},/p' |
++		egrep -v "$def_stop"
++) > ioctlent.tmp
++
++# Generate the output file.
++echo '/* This file is automatically generated by ioctlent.sh */'
++echo
++echo '#include <sys/types.h>'
++echo '#include <sys/socket.h>'
++echo '#include <stdint.h>'
++echo
++echo '/* Needed for <linux/baycom.h> */'
++echo '#define BAYCOM_DEBUG'
++echo
++echo '/* Needed for <linux/dm-ioctl.h> */'
++echo '#define CONFIG_COMPAT'
++echo
++echo '/* Needed for <linux/ext3_fs.h> */'
++echo '#define CONFIG_JBD_DEBUG'
++echo
++echo '/* Needed for <linux/lp.h> */'
++echo '#define LP_STATS'
++echo
++echo '/* Needed for <linux/videodev2.h> */'
++echo '#define __OLD_VIDIOC_'
++echo
++echo '/* Needed for <linux/zftape.h> */'
++echo '#define ZFT_OBSOLETE'
++echo
++echo '/* Needed for <linux/auto_fs.h> */'
++echo '#include <linux/limits.h>'
++echo
++echo '/* Needed for <linux/cyclades.h> */'
++echo '#include <linux/termios.h>'
++#echo '#include <linux/tqueue.h>'
++echo
++echo '/* Needed for <linux/if_ppp.h> */'
++echo '#include <linux/ppp_defs.h>'
++echo '#include <linux/filter.h>'
++echo
++echo '/* Needed for <linux/msdos_fs.h> */'
++echo '#include <linux/dirent.h>'
++echo
++awk '{ print "#include <" substr($2, 2, length($2) - 3) ">" }' ioctlent.tmp | sort -u
++echo
++echo 'struct ioctlent ioctlent [] ='
++echo '{'
++cat ioctlent.tmp
++echo '};'
++
++# Clean up.
++rm -f ioctlent.tmp
+diff --git a/linux/avr32/syscallent.h b/linux/avr32/syscallent.h
+new file mode 100644
+index 0000000..702d28f
+--- /dev/null
++++ b/linux/avr32/syscallent.h
+@@ -0,0 +1,307 @@
++/*
++ * Copyright (c) 2004-2006 Atmel Corporation
++ * All rights reserved.
++ *
++ * Redistribution and use in source and binary forms, with or without
++ * modification, are permitted provided that the following conditions
++ * are met:
++ * 1. Redistributions of source code must retain the above copyright
++ *    notice, this list of conditions and the following disclaimer.
++ * 2. Redistributions in binary form must reproduce the above copyright
++ *    notice, this list of conditions and the following disclaimer in the
++ *    documentation and/or other materials provided with the distribution.
++ * 3. The name of the author may not be used to endorse or promote products
++ *    derived from this software without specific prior written permission.
++ *
++ * THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR
++ * IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
++ * OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
++ * IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT,
++ * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT
++ * NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
++ * DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
++ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
++ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
++ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
++ *
++ *	$Id$
++ */
++
++	{ 0,	0,	sys_setup,		"setup"		}, /* 0 */
++	{ 1,	TP,	sys_exit,		"_exit"		}, /* 1 */
++	{ 0,	TP,	sys_fork,		"fork"		}, /* 2 */
++	{ 3,	0,	sys_read,		"read"		}, /* 3 */
++	{ 3,	0,	sys_write,		"write"		}, /* 4 */
++	{ 3,	TF,	sys_open,		"open"		}, /* 5 */
++	{ 1,	0,	sys_close,		"close"		}, /* 6 */
++	{ 1,	0,	sys_umask,		"umask"		}, /* 7 */
++	{ 2,	TF,	sys_creat,		"creat"		}, /* 8 */
++	{ 2,	TF,	sys_link,		"link"		}, /* 9 */
++	{ 1,	TF,	sys_unlink,		"unlink"	}, /* 10 */
++	{ 3,	TF|TP,	sys_execve,		"execve"	}, /* 11 */
++	{ 1,	TF,	sys_chdir,		"chdir"		}, /* 12 */
++	{ 1,	0,	sys_time,		"time"		}, /* 13 */
++	{ 3,	TF,	sys_mknod,		"mknod"		}, /* 14 */
++	{ 2,	TF,	sys_chmod,		"chmod"		}, /* 15 */
++	{ 3,	TF,	sys_chown,		"chown"		}, /* 16 */
++	{ 3,	TF,	sys_chown,		"lchown"	}, /* 17 */
++	{ 3,	0,	sys_lseek,		"lseek"		}, /* 18 */
++	{ 5,	0,	sys_llseek,		"_llseek"	}, /* 19 */
++	{ 0,	0,	sys_getpid,		"getpid"	}, /* 20 */
++	{ 5,	TF,	sys_mount,		"mount"		}, /* 21 */
++	{ 2,	TF,	sys_umount,		"umount"	}, /* 22 */
++	{ 1,	0,	sys_setuid,		"setuid"	}, /* 23 */
++	{ 0,	0,	sys_getuid,		"getuid"	}, /* 24 */
++	{ 1,	0,	sys_stime,		"stime"		}, /* 25 */
++	{ 4,	0,	sys_ptrace,		"ptrace"	}, /* 26 */
++	{ 1,	0,	sys_alarm,		"alarm"		}, /* 27 */
++	{ 0,	TS,	sys_pause,		"pause"		}, /* 28 */
++	{ 2,	TF,	sys_utime,		"utime"		}, /* 29 */
++	{ 2,	TF,	sys_stat,		"stat"		}, /* 30 */
++	{ 2,	0,	sys_fstat,		"fstat"		}, /* 31 */
++	{ 2,	TF,	sys_lstat,		"lstat"		}, /* 32 */
++	{ 2,	TF,	sys_access,		"access"	}, /* 33 */
++	{ 1,	TF,	sys_chroot,		"chroot"	}, /* 34 */
++	{ 0,	0,	sys_sync,		"sync"		}, /* 35 */
++	{ 1,	0,	sys_fsync,		"fsync"		}, /* 36 */
++	{ 2,	TS,	sys_kill,		"kill"		}, /* 37 */
++	{ 2,	TF,	sys_rename,		"rename"	}, /* 38 */
++	{ 2,	TF,	sys_mkdir,		"mkdir"		}, /* 39 */
++	{ 1,	TF,	sys_rmdir,		"rmdir"		}, /* 40 */
++	{ 1,	0,	sys_dup,		"dup"		}, /* 41 */
++	{ 1,	0,	sys_pipe,		"pipe"		}, /* 42 */
++	{ 1,	0,	sys_times,		"times"		}, /* 43 */
++	{ 5,	TP,	sys_clone,		"clone"		}, /* 44 */
++	{ 1,	0,	sys_brk,		"brk"		}, /* 45 */
++	{ 1,	0,	sys_setgid,		"setgid"	}, /* 46 */
++	{ 0,	0,	sys_getgid,		"getgid"	}, /* 47 */
++	{ 2,	TF,	sys_getcwd,		"getcwd"	}, /* 48 */
++	{ 0,	0,	sys_geteuid,		"geteuid"	}, /* 49 */
++	{ 0,	0,	sys_getegid,		"getegid"	}, /* 50 */
++	{ 1,	TF,	sys_acct,		"acct"		}, /* 51 */
++	{ 1,	0,	sys_setfsuid,		"setfsuid"	}, /* 52 */
++	{ 1,	0,	sys_setfsgid,		"setfsgid"	}, /* 53 */
++	{ 3,	0,	sys_ioctl,		"ioctl"		}, /* 54 */
++	{ 3,	0,	sys_fcntl,		"fcntl"		}, /* 55 */
++	{ 2,	0,	sys_setpgid,		"setpgid"	}, /* 56 */
++	{ 4,	0,	sys_mremap,		"mremap"	}, /* 57 */
++	{ 3,	0,	sys_setresuid,		"setresuid"	}, /* 58 */
++	{ 3,	0,	sys_getresuid,		"getresuid"	}, /* 59 */
++	{ 2,	0,	sys_setreuid,		"setreuid"	}, /* 60 */
++	{ 2,	0,	sys_setregid,		"setregid"	}, /* 61 */
++	{ 2,	0,	sys_ustat,		"ustat"		}, /* 62 */
++	{ 2,	0,	sys_dup2,		"dup2"		}, /* 63 */
++	{ 0,	0,	sys_getppid,		"getppid"	}, /* 64 */
++	{ 0,	0,	sys_getpgrp,		"getpgrp"	}, /* 65 */
++	{ 0,	0,	sys_setsid,		"setsid"	}, /* 66 */
++	{ 4,	TS,	sys_rt_sigaction,	"rt_sigaction"  }, /* 67 */
++	{ 1,	TS,	printargs,		"rt_sigreturn"	}, /* 68 */
++	{ 4,	TS,	sys_rt_sigprocmask,	"rt_sigprocmask"}, /* 69 */
++	{ 2,	TS,	sys_rt_sigpending,	"rt_sigpending"	}, /* 70 */
++	{ 4,	TS,	sys_rt_sigtimedwait,	"rt_sigtimedwait"}, /* 71 */
++	{ 3,	TS,	sys_rt_sigqueueinfo,    "rt_sigqueueinfo"}, /* 72 */
++	{ 2,	TS,	sys_rt_sigsuspend,	"rt_sigsuspend"	}, /* 73 */
++	{ 2,	0,	sys_sethostname,	"sethostname"	}, /* 74 */
++	{ 2,	0,	sys_setrlimit,		"setrlimit"	}, /* 75 */
++	{ 2,	0,	sys_getrlimit,		"old_getrlimit"	}, /* 76 */
++	{ 2,	0,	sys_getrusage,		"getrusage"	}, /* 77 */
++	{ 2,	0,	sys_gettimeofday,	"gettimeofday"	}, /* 78 */
++	{ 2,	0,	sys_settimeofday,	"settimeofday"	}, /* 79 */
++	{ 2,	0,	sys_getgroups,		"getgroups"	}, /* 80 */
++	{ 2,	0,	sys_setgroups,		"setgroups"	}, /* 81 */
++	{ 5,	0,	sys_select,		"select"	}, /* 82 */
++	{ 2,	TF,	sys_symlink,		"symlink"	}, /* 83 */
++	{ 1,	0,	sys_fchdir,		"fchdir"	}, /* 84 */
++	{ 3,	TF,	sys_readlink,		"readlink"	}, /* 85 */
++	{ 5,	TF,	sys_pread,		"pread"		}, /* 86 */
++	{ 5,	TF,	sys_pwrite,		"pwrite"	}, /* 87 */
++	{ 1,	TF,	sys_swapon,		"swapon"	}, /* 88 */
++	{ 3,	0,	sys_reboot,		"reboot"	}, /* 89 */
++	{ 6,	0,	sys_mmap,		"mmap"		}, /* 90 */
++	{ 2,	0,	sys_munmap,		"munmap"	}, /* 91 */
++	{ 2,	TF,	sys_truncate,		"truncate"	}, /* 92 */
++	{ 2,	0,	sys_ftruncate,		"ftruncate"	}, /* 93 */
++	{ 2,	0,	sys_fchmod,		"fchmod"	}, /* 94 */
++	{ 3,	0,	sys_fchown,		"fchown"	}, /* 95 */
++	{ 2,	0,	sys_getpriority,	"getpriority"	}, /* 96 */
++	{ 3,	0,	sys_setpriority,	"setpriority"	}, /* 97 */
++	{ 4,	TP,	sys_wait4,		"wait4"		}, /* 98 */
++	{ 2,	TF,	sys_statfs,		"statfs"	}, /* 99 */
++	{ 2,	0,	sys_fstatfs,		"fstatfs"	}, /* 100 */
++	{ 0,	0,	sys_vhangup,		"vhangup"	}, /* 101 */
++	{ 2,	TS,	sys_sigaltstack,	"sigaltstack"	}, /* 102 */
++	{ 3,	0,	sys_syslog,		"syslog"	}, /* 103 */
++	{ 3,	0,	sys_setitimer,		"setitimer"	}, /* 104 */
++	{ 2,	0,	sys_getitimer,		"getitimer"	}, /* 105 */
++	{ 1,	0,	sys_swapoff,		"swapoff"	}, /* 106 */
++	{ 1,	0,	sys_sysinfo,		"sysinfo"	}, /* 107 */
++	{ 6,	0,	sys_ipc,		"ipc"		}, /* 108 */
++	{ 4,	TF,	sys_sendfile,		"sendfile"	}, /* 109 */
++	{ 2,	0,	sys_setdomainname,	"setdomainname"	}, /* 110 */
++	{ 1,	0,	sys_uname,		"uname"		}, /* 111 */
++	{ 1,	0,	sys_adjtimex,		"adjtimex"	}, /* 112 */
++	{ 3,	0,	sys_mprotect,		"mprotect"	}, /* 113 */
++	{ 0,	TP,	sys_vfork,		"vfork"		}, /* 114 */
++	{ 2,	0,	sys_init_module,	"init_module"	}, /* 115 */
++	{ 1,	0,	sys_delete_module,	"delete_module"	}, /* 116 */
++	{ 4,	0,	sys_quotactl,		"quotactl"	}, /* 117 */
++	{ 1,	0,	sys_getpgid,		"getpgid"	}, /* 118 */
++	{ 0,	0,	sys_bdflush,		"bdflush"	}, /* 119 */
++	{ 3,	0,	sys_sysfs,		"sysfs"		}, /* 120 */
++	{ 1,	0,	sys_personality,	"personality"	}, /* 121 */
++	{ 5,	0,	sys_afs_syscall,	"afs_syscall"	}, /* 122 */
++	{ 3,	0,	sys_getdents,		"getdents"	}, /* 123 */
++	{ 2,	0,	sys_flock,		"flock"		}, /* 124 */
++	{ 3,	0,	sys_msync,		"msync"		}, /* 125 */
++	{ 3,	0,	sys_readv,		"readv"		}, /* 126 */
++	{ 3,	0,	sys_writev,		"writev"	}, /* 127 */
++	{ 1,	0,	sys_getsid,		"getsid"	}, /* 128 */
++	{ 1,	0,	sys_fdatasync,		"fdatasync"	}, /* 129 */
++	{ 1,	0,	sys_sysctl,		"_sysctl"	}, /* 130 */
++	{ 2,	0,	sys_mlock,		"mlock"		}, /* 131 */
++	{ 2,	0,	sys_munlock,		"munlock"	}, /* 132 */
++	{ 2,	0,	sys_mlockall,		"mlockall"	}, /* 133 */
++	{ 0,	0,	sys_munlockall,		"munlockall"	}, /* 134 */
++	{ 0,	0,	sys_sched_setparam,	"sched_setparam"}, /* 135 */
++	{ 2,	0,	sys_sched_getparam,	"sched_getparam"}, /* 136 */
++	{ 3,	0,	sys_sched_setscheduler,	"sched_setscheduler"}, /* 137 */
++	{ 1,	0,	sys_sched_getscheduler,	"sched_getscheduler"}, /* 138 */
++	{ 0,	0,	sys_sched_yield,	"sched_yield"}, /* 139 */
++	{ 1,	0,	sys_sched_get_priority_max,"sched_get_priority_max"}, /* 140 */
++	{ 1,	0,	sys_sched_get_priority_min,"sched_get_priority_min"}, /* 141 */
++	{ 2,	0,	sys_sched_rr_get_interval,"sched_rr_get_interval"}, /* 142 */
++	{ 2,	0,	sys_nanosleep,		"nanosleep"	}, /* 143 */
++	{ 3,	0,	sys_poll,		"poll"		}, /* 144 */
++	{ 3,	0,	printargs,		"nfsservctl"	}, /* 145 */
++	{ 3,	0,	sys_setresgid,		"setresgid"	}, /* 146 */
++	{ 3,	0,	sys_getresgid,		"getresgid"	}, /* 147 */
++	{ 5,	0,	sys_prctl,		"prctl"		}, /* 148 */
++	{ 3,	TN,	sys_socket,		"socket"	}, /* 149 */
++	{ 3,	TN,	sys_bind,		"bind"		}, /* 150 */
++	{ 3,	TN,	sys_connect,		"connect"	}, /* 151 */
++	{ 2,	TN,	sys_listen,		"listen"	}, /* 152 */
++	{ 3,	TN,	sys_accept,		"accept"	}, /* 153 */
++	{ 3,	TN,	sys_getsockname,	"getsockname"	}, /* 154 */
++	{ 3,	TN,	sys_getpeername,	"getpeername"	}, /* 155 */
++	{ 4,	TN,	sys_socketpair,		"socketpair"	}, /* 156 */
++	{ 4,	TN,	sys_send,		"send"		}, /* 157 */
++	{ 4,	TN,	sys_recv,		"recv"		}, /* 158 */
++	{ 6,	TN,	sys_sendto,		"sendto"	}, /* 159 */
++	{ 6,	TN,	sys_recvfrom,		"recvfrom"	}, /* 160 */
++	{ 2,	TN,	sys_shutdown,		"shutdown"	}, /* 161 */
++	{ 5,	TN,	sys_setsockopt,		"setsockopt"	}, /* 162 */
++	{ 5,	TN,	sys_getsockopt,		"getsockopt"	}, /* 163 */
++	{ 3,	TN,	sys_sendmsg,		"sendmsg"	}, /* 164 */
++	{ 3,	TN,	sys_recvmsg,		"recvmsg"	}, /* 165 */
++	{ 3,	TF,	sys_truncate64,		"truncate64"	}, /* 166 */
++	{ 3,	TF,	sys_ftruncate64,	"ftruncate64"	}, /* 167 */
++	{ 2,	TF,	sys_stat64,		"stat64"	}, /* 168 */
++	{ 2,	TF,	sys_lstat64,		"lstat64"	}, /* 169 */
++	{ 2,	TF,	sys_fstat64,		"fstat64"	}, /* 170 */
++	{ 2,	TF,	sys_pivotroot,		"pivot_root"	}, /* 171 */
++	{ 3,	0,	printargs,		"mincore"	}, /* 172 */
++	{ 3,	0,	sys_madvise,		"madvise"	}, /* 173 */
++	{ 4,	0,	sys_getdents64,		"getdents64"	}, /* 174 */
++	{ 3,	0,	sys_fcntl,		"fcntl64"	}, /* 175 */
++	{ 0,	0,	printargs,		"gettid"	}, /* 176 */
++	{ 4,	0,	sys_readahead,		"readahead"	}, /* 177 */
++	{ 5,	TF,	sys_setxattr,		"setxattr"	}, /* 178 */
++	{ 5,	TF,	sys_setxattr,		"lsetxattr"	}, /* 179 */
++	{ 5,	0,	sys_fsetxattr,		"fsetxattr"	}, /* 180 */
++	{ 4,	TF,	sys_getxattr,		"getxattr"	}, /* 181 */
++	{ 4,	TF,	sys_getxattr,		"lgetxattr"	}, /* 182 */
++	{ 4,	0,	sys_fgetxattr,		"fgetxattr"	}, /* 183 */
++	{ 3,	TF,	sys_listxattr,		"listxattr"	}, /* 184 */
++	{ 3,	TF,	sys_listxattr,		"llistxattr"	}, /* 185 */
++	{ 3,	0,	sys_flistxattr,		"flistxattr"	}, /* 186 */
++	{ 2,	TF,	sys_removexattr,	"removexattr"	}, /* 187 */
++	{ 2,	TF,	sys_removexattr,	"lremovexattr"	}, /* 188 */
++	{ 2,	0,	sys_fremovexattr,	"fremovexattr"	}, /* 189 */
++	{ 2,	TS,	sys_kill,		"tkill"		}, /* 190 */
++	{ 4,	TF,	sys_sendfile64,		"sendfile64"	}, /* 191 */
++	{ 5,	0,	sys_futex,		"futex"		}, /* 192 */
++	{ 3,	0,	sys_sched_setaffinity,	"sched_setaffinity" },/* 193 */
++	{ 3,	0,	sys_sched_getaffinity,	"sched_getaffinity" },/* 194 */
++	{ 2,	0,	sys_capget,		"capget"	}, /* 195 */
++	{ 2,	0,	sys_capset,		"capset"	}, /* 196 */
++	{ 2,	0,	sys_io_setup,		"io_setup"	}, /* 197 */
++	{ 1,	0,	sys_io_destroy,		"io_destroy"	}, /* 198 */
++	{ 5,	0,	sys_io_getevents,	"io_getevents"	}, /* 199 */
++	{ 3,	0,	sys_io_submit,		"io_submit"	}, /* 200 */
++	{ 3,	0,	sys_io_cancel,		"io_cancel"	}, /* 201 */
++	{ 6,	0,	sys_fadvise64,		"fadvise64"	}, /* 202 */
++	{ 1,	TP,	sys_exit,		"exit_group"	}, /* 203 */
++	{ 4,	0,	printargs,		"lookup_dcookie"}, /* 204 */
++	{ 1,	0,	sys_epoll_create,	"epoll_create"	}, /* 205 */
++	{ 4,	0,	sys_epoll_ctl,		"epoll_ctl"	}, /* 206 */
++	{ 4,	0,	sys_epoll_wait,		"epoll_wait"	}, /* 207 */
++	{ 5,	0,	sys_remap_file_pages,	"remap_file_pages"}, /* 208 */
++	{ 1,	0,	printargs,		"set_tid_address"}, /* 209 */
++	{ 3,	0,	sys_timer_create,	"timer_create"	}, /* 210 */
++	{ 4,	0,	sys_timer_settime,	"timer_settime"	}, /* 211 */
++	{ 2,	0,	sys_timer_gettime,	"timer_gettime"	}, /* 212 */
++	{ 1,	0,	sys_timer_getoverrun,	"timer_getoverrun"}, /* 213 */
++	{ 1,	0,	sys_timer_delete,	"timer_delete"	}, /* 214 */
++	{ 2,	0,	sys_clock_settime,	"clock_settime"	}, /* 215 */
++	{ 2,	0,	sys_clock_gettime,	"clock_gettime"	}, /* 216 */
++	{ 2,	0,	sys_clock_getres,	"clock_getres"	}, /* 217 */
++	{ 4,	0,	sys_clock_nanosleep,	"clock_nanosleep"}, /* 218 */
++	{ 3,	TF,	sys_statfs64,		"statfs64"	}, /* 219 */
++	{ 3,	0,	sys_fstatfs64,		"fstatfs64"	}, /* 220 */
++	{ 3,	TS,	sys_tgkill,		"tgkill"	}, /* 221 */
++	{ 5,	0,	printargs,		"SYS_222"	}, /* 222 */
++	{ 2,	TF,	sys_utimes,		"utimes"	}, /* 223 */
++	{ 6,	0,	sys_fadvise64_64,	"fadvise64_64"	}, /* 224 */
++	{ 3,	0,	printargs,		"cacheflush"	}, /* 225 */
++	{ 0,	0,	printargs,		"vserver"	}, /* 226 */
++	{ 4,	0,	sys_mq_open,		"mq_open"	}, /* 227 */
++	{ 1,	0,	sys_mq_unlink,		"mq_unlink"	}, /* 228 */
++	{ 5,	0,	sys_mq_timedsend,	"mq_timedsend"	}, /* 229 */
++	{ 5,	0,	sys_mq_timedreceive,	"mq_timedreceive" }, /* 230 */
++	{ 2,	0,	sys_mq_notify,		"mq_notify"	}, /* 231 */
++	{ 3,	0,	sys_mq_getsetattr,	"mq_getsetattr" }, /* 232 */
++	{ 4,	0,	printargs,		"kexec_load"	}, /* 233 */
++	{ 1,	0,	sys_waitid,		"waitid"	}, /* 234 */
++	{ 5,	0,	printargs,		"add_key"	}, /* 235 */
++	{ 4,	0,	printargs,		"request_key"	}, /* 236 */
++	{ 5,	0,	printargs,		"keyctl"	}, /* 237 */
++	{ 3,	0,	printargs,		"ioprio_set"	}, /* 238 */
++	{ 2,	0,	printargs,		"ioprio_get"	}, /* 239 */
++	{ 1,	0,	printargs,		"inotify_init"	}, /* 240 */
++	{ 3,	0,	sys_inotify_add_watch,	"inotify_add_watch" }, /* 241 */
++	{ 2,	0,	sys_inotify_rm_watch,	"inotify_rm_watch" }, /* 242 */
++	{ 4,	0,	sys_openat,		"openat"	}, /* 243 */
++	{ 3,	0,	sys_mkdirat,		"mkdirat"	}, /* 244 */
++	{ 4,	0,	sys_mknodat,		"mknodat"	}, /* 245 */
++	{ 5,	0,	sys_fchownat,		"fchownat"	}, /* 246 */
++	{ 3,	0,	sys_futimesat,		"futimesat"	}, /* 247 */
++	{ 4,	0,	printargs,		"fstatat64"	}, /* 248 */
++	{ 3,	0,	sys_unlinkat,		"unlinkat"	}, /* 249 */
++	{ 4,	0,	sys_renameat,		"renameat"	}, /* 250 */
++	{ 5,	0,	sys_linkat,		"linkat"	}, /* 251 */
++	{ 3,	0,	sys_symlinkat,		"symlinkat"	}, /* 252 */
++	{ 4,	0,	sys_readlinkat,		"readlinkat"	}, /* 253 */
++	{ 3,	0,	sys_fchmodat,		"fchmodat"	}, /* 254 */
++	{ 3,	0,	sys_faccessat,		"faccessat"	}, /* 255 */
++	{ 6,	0,	sys_pselect6,		"pselect6"	}, /* 256 */
++	{ 5,	0,	sys_ppoll,		"ppoll"		}, /* 257 */
++	{ 1,	0,	sys_unshare,		"unshare"	}, /* 258 */
++	{ 2,	0,	printargs,		"set_robust_list" }, /* 259 */
++	{ 3,	0,	printargs,		"get_robust_list" }, /* 260 */
++	{ 6,	0,	printargs,		"splice"	}, /* 261 */
++	{ 4,	0,	printargs,		"sync_file_range" }, /* 262 */
++	{ 4,	0,	printargs,		"tee"		}, /* 263 */
++	{ 4,	0,	printargs,		"vmsplice"	}, /* 264 */
++	{ 6,	0,	printargs,		"sys_epoll_pwait" }, /* 265 */
++	{ 2,	TI,	sys_msgget,		"msgget"	}, /* 266 */
++	{ 4,	TI,	sys_msgsnd,		"msgsnd"	}, /* 267 */
++	{ 5,	TI,	sys_msgrcv,		"msgrcv"	}, /* 268 */
++	{ 3,	TI,	sys_msgctl,		"msgctl"	}, /* 269 */
++	{ 3,	TI,	sys_semget,		"semget"	}, /* 270 */
++	{ 3,	TI,	sys_semop,		"semop"		}, /* 271 */
++	{ 4,	TI,	sys_semctl,		"semctl"	}, /* 272 */
++	{ 4,	TI,	sys_semtimedop,		"semtimedop"	}, /* 273 */
++	{ 3,	TI,	sys_shmat,		"shmat"		}, /* 274 */
++	{ 3,	TI,	sys_shmget,		"shmget"	}, /* 275 */
++	{ 1,	TI,	sys_shmdt,		"shmdt"		}, /* 276 */
++	{ 3,	TI,	sys_shmctl,		"shmctl"	}, /* 277 */
+diff --git a/process.c b/process.c
+index 96e3676..dd11a0a 100644
+--- a/process.c
++++ b/process.c
+@@ -714,6 +714,10 @@ int new;
+ 		return -1;
+ 
+        return 0;
++#elif defined(AVR32)
++       if (ptrace(PTRACE_POKEUSER, tcp->pid, (char*)(REG_R8), new) < 0)
++	       return -1;
++       return 0;
+ #else
+ #warning Do not know how to handle change_syscall for this architecture
+ #endif /* architecture */
+@@ -794,6 +798,28 @@ setarg(tcp, argnum)
+ 		if (errno)
+ 			return -1;
+         }
++#elif defined(AVR32)
++	{
++		errno = 0;
++		if (argnum == 0)
++			ptrace(PTRACE_POKEUSER, tcp->pid,
++			       (char *)(REG_R12_ORIG),
++			       tcp->u_arg[argnum]);
++		else if (argnum < 4)
++			/* r11 .. r9 */
++			ptrace(PTRACE_POKEUSER, tcp->pid,
++			       (char *)(REG_R12 - 4 * argnum),
++			       tcp->u_arg[argnum]);
++		else if (argnum < 6)
++			/* r6 .. r5 */
++			ptrace(PTRACE_POKEUSER, tcp->pid,
++			       (char *)(REG_R10 - 4 * argnum),
++			       tcp->u_arg[argnum]);
++		else
++			return -E2BIG;
++		if (errno)
++			return -1;
++	}
+ #else
+ # warning Sorry, setargs not implemented for this architecture.
+ #endif
+@@ -2882,8 +2908,27 @@ const struct xlat struct_user_offsets[] = {
+ 	{ uoff(regs.ARM_pc),	"pc"					},
+ 	{ uoff(regs.ARM_cpsr),	"cpsr"					},
+ #endif
+-
+-#if !defined(S390) && !defined(S390X) && !defined(MIPS) && !defined(SPARC64)
++#ifdef AVR32
++	{ uoff(regs.sr),	"sr"					},
++	{ uoff(regs.pc),	"pc"					},
++	{ uoff(regs.lr),	"lr"					},
++	{ uoff(regs.sp),	"sp"					},
++	{ uoff(regs.r12),	"r12"					},
++	{ uoff(regs.r11),	"r11"					},
++	{ uoff(regs.r10),	"r10"					},
++	{ uoff(regs.r9),	"r9"					},
++	{ uoff(regs.r8),	"r8"					},
++	{ uoff(regs.r7),	"r7"					},
++	{ uoff(regs.r6),	"r6"					},
++	{ uoff(regs.r5),	"r5"					},
++	{ uoff(regs.r4),	"r4"					},
++	{ uoff(regs.r3),	"r3"					},
++	{ uoff(regs.r2),	"r2"					},
++	{ uoff(regs.r1),	"r1"					},
++	{ uoff(regs.r0),	"r0"					},
++	{ uoff(regs.r12_orig),	"orig_r12"				},
++#endif
++#if !defined(S390) && !defined(S390X) && !defined(MIPS) && !defined(SPARC64) && !defined(AVR32)
+ 	{ uoff(u_fpvalid),	"offsetof(struct user, u_fpvalid)"	},
+ #endif
+ #if  defined(I386) || defined(X86_64)
+@@ -2899,20 +2944,20 @@ const struct xlat struct_user_offsets[] = {
+ #if !defined(SPARC64)
+ 	{ uoff(start_code),	"offsetof(struct user, start_code)"	},
+ #endif
+-#ifdef SH64
++#if defined(SH64) || defined(AVR32)
+ 	{ uoff(start_data),	"offsetof(struct user, start_data)"	},
+ #endif
+ #if !defined(SPARC64)
+ 	{ uoff(start_stack),	"offsetof(struct user, start_stack)"	},
+ #endif
+ 	{ uoff(signal),		"offsetof(struct user, signal)"		},
+-#if !defined(S390) && !defined(S390X) && !defined(MIPS) && !defined(SH) && !defined(SH64) && !defined(SPARC64)
++#if !defined(S390) && !defined(S390X) && !defined(MIPS) && !defined(SH) && !defined(SH64) && !defined(SPARC64) && !defined(AVR32)
+ 	{ uoff(reserved),	"offsetof(struct user, reserved)"	},
+ #endif
+ #if !defined(SPARC64)
+ 	{ uoff(u_ar0),		"offsetof(struct user, u_ar0)"		},
+ #endif
+-#if !defined(ARM) && !defined(MIPS) && !defined(S390) && !defined(S390X) && !defined(SPARC64)
++#if !defined(ARM) && !defined(MIPS) && !defined(S390) && !defined(S390X) && !defined(SPARC64) && !defined(AVR32)
+ 	{ uoff(u_fpstate),	"offsetof(struct user, u_fpstate)"	},
+ #endif
+ 	{ uoff(magic),		"offsetof(struct user, magic)"		},
+diff --git a/syscall.c b/syscall.c
+index ade4f0d..9c26ecb 100644
+--- a/syscall.c
++++ b/syscall.c
+@@ -809,6 +809,8 @@ internal_syscall(struct tcb *tcp)
+        static long r9;
+ #elif defined(X86_64)
+        static long rax;
++#elif defined(AVR32)
++       static struct pt_regs regs;
+ #endif
+ #endif /* LINUX */
+ #ifdef FREEBSD
+@@ -1264,7 +1266,26 @@ struct tcb *tcp;
+ 			return 0;
+ 		}
+ 	}
+-#endif /* SH64 */
++#elif defined(AVR32)
++	/*
++	 * Read complete register set in one go.
++	 */
++	if (ptrace(PTRACE_GETREGS, pid, NULL, &regs) < 0)
++		return -1;
++
++	/*
++	 * We only need to grab the syscall number on syscall entry.
++	 */
++	if (!(tcp->flags & TCB_INSYSCALL)) {
++		scno = regs.r8;
++
++		/* Check if we return from execve. */
++		if (tcp->flags & TCB_WAITEXECVE) {
++			tcp->flags &= ~TCB_WAITEXECVE;
++			return 0;
++		}
++	}
++#endif /* AVR32 */
+ #endif /* LINUX */
+ #ifdef SUNOS4
+ 	if (upeek(pid, uoff(u_arg[7]), &scno) < 0)
+@@ -1623,6 +1644,17 @@ struct tcb *tcp;
+                         tcp->u_rval = r9;
+ 	                u_error = 0;
+                 }
++#else
++#ifdef AVR32
++		if (regs.r12 && (unsigned) -regs.r12 < nerrnos) {
++			tcp->u_rval = -1;
++			u_error = -regs.r12;
++		}
++		else {
++			tcp->u_rval = regs.r12;
++			u_error = 0;
++		}
++#endif /* AVR32 */
+ #endif /* SH64 */
+ #endif /* SH */
+ #endif /* HPPA */
+@@ -1848,6 +1880,12 @@ force_result(tcp, error, rval)
+         r9 = error ? -error : rval;
+ 	if (ptrace(PTRACE_POKEUSER, tcp->pid, (char*)REG_GENERAL(9), r9) < 0)
+ 		return -1;
++#else
++#ifdef AVR32
++	regs.r12 = error ? -error : rval;
++	if (ptrace(PTRACE_POKEUSER, tcp->pid, (char*)REG_R12, regs.r12) < 0)
++		return -1;
++#endif /* AVR32 */
+ #endif /* SH64 */
+ #endif /* SH */
+ #endif /* HPPA */
+@@ -2120,6 +2158,14 @@ struct tcb *tcp;
+ 				return -1;
+ 		}
+ 	}
++#elif defined(AVR32)
++	tcp->u_nargs = sysent[tcp->scno].nargs;
++	tcp->u_arg[0] = regs.r12;
++	tcp->u_arg[1] = regs.r11;
++	tcp->u_arg[2] = regs.r10;
++	tcp->u_arg[3] = regs.r9;
++	tcp->u_arg[4] = regs.r5;
++	tcp->u_arg[5] = regs.r3;
+ #else /* Other architecture (like i386) (32bits specific) */
+ 	{
+ 		int i;
+@@ -2382,7 +2428,7 @@ trace_syscall(struct tcb *tcp)
+ 
+ 	switch (known_scno(tcp)) {
+ #ifdef LINUX
+-#if !defined (ALPHA) && !defined(SPARC) && !defined(SPARC64) && !defined(MIPS) && !defined(HPPA)
++#if !defined (ALPHA) && !defined(SPARC) && !defined(SPARC64) && !defined(MIPS) && !defined(HPPA) && !defined(AVR32)
+ 	case SYS_socketcall:
+ 		decode_subcall(tcp, SYS_socket_subcall,
+ 			SYS_socket_nsubcalls, deref_style);
+@@ -2391,7 +2437,7 @@ trace_syscall(struct tcb *tcp)
+ 		decode_subcall(tcp, SYS_ipc_subcall,
+ 			SYS_ipc_nsubcalls, shift_style);
+ 		break;
+-#endif /* !ALPHA && !MIPS && !SPARC && !SPARC64 && !HPPA */
++#endif /* !ALPHA && !MIPS && !SPARC && !SPARC64 && !HPPA && !AVR32 */
+ #if defined (SPARC) || defined (SPARC64)
+ 	case SYS_socketcall:
+ 		sparc_socket_decode (tcp);
+diff --git a/util.c b/util.c
+index 6359110..5cb1f50 100644
+--- a/util.c
++++ b/util.c
+@@ -1069,6 +1069,9 @@ struct tcb *tcp;
+ #elif defined(SH64)
+        if (upeek(tcp->pid, REG_PC ,&pc) < 0)
+                return -1;
++#elif defined(AVR32)
++       if (upeek(tcp->pid, REG_PC, &pc) < 0)
++	       return -1;
+ #endif
+ 	return pc;
+ #endif /* LINUX */
+@@ -1217,6 +1220,14 @@ struct tcb *tcp;
+ 		return;
+ 	}
+ 	tprintf("[%08lx] ", pc);
++#elif defined(AVR32)
++	long pc;
++
++	if (upeek(tcp->pid, REG_PC, &pc) < 0) {
++		tprintf("[????????] ");
++		return;
++	}
++	tprintf("[%08lx] ", pc);
+ #endif /* !architecture */
+ #endif /* LINUX */
+ 
+@@ -1398,6 +1409,9 @@ typedef struct regs arg_setup_state;
+ #  define arg0_offset   (REG_OFFSET+16)
+ #  define arg1_offset   (REG_OFFSET+24)
+ #  define restore_arg0(tcp, state, val) 0
++# elif defined (AVR32)
++#  define arg0_offset	(REG_R12)
++#  define arg1_offset	(REG_R11)
+ # else
+ #  define arg0_offset	0
+ #  define arg1_offset	4

@@ -44,7 +44,7 @@
 @@ -2404,14 +2404,18 @@
  	switch (known_scno(tcp)) {
  #ifdef LINUX
- #if !defined (ALPHA) && !defined(SPARC) && !defined(SPARC64) && !defined(MIPS) && !defined(HPPA)
+ #if !defined (ALPHA) && !defined(SPARC) && !defined(SPARC64) && !defined(MIPS) && !defined(HPPA) && !defined(AVR32)
 +#ifdef __NR_socketcall
  	case SYS_socketcall:
  		decode_subcall(tcp, SYS_socket_subcall,
@@ -57,6 +57,6 @@
  			SYS_ipc_nsubcalls, shift_style);
  		break;
 +#endif
- #endif /* !ALPHA && !MIPS && !SPARC && !SPARC64 && !HPPA */
+ #endif /* !ALPHA && !MIPS && !SPARC && !SPARC64 && !HPPA && !AVR32 */
  #if defined (SPARC) || defined (SPARC64)
  	case SYS_socketcall:
