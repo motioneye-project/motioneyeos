@@ -19,7 +19,8 @@ samba-source: $(DL_DIR)/$(SAMBA_SOURCE)
 $(SAMBA_DIR)/.unpacked: $(DL_DIR)/$(SAMBA_SOURCE)
 	$(SAMBA_CAT) $(DL_DIR)/$(SAMBA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh `dirname $(SAMBA_DIR)` package/samba/ samba\*.patch
-	touch $(SAMBA_DIR)/.unpacked
+	$(CONFIG_UPDATE) $(SAMBA_DIR)
+	touch $@
 
 $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 	(cd $(SAMBA_DIR); rm -rf config.cache; \
@@ -45,7 +46,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		--disable-cups \
 		--disable-static \
 	);
-	touch $(SAMBA_DIR)/.configured
+	touch $@
 
 $(SAMBA_DIR)/$(SAMBA_BINARY): $(SAMBA_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(SAMBA_DIR)
