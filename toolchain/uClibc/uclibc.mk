@@ -345,7 +345,7 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/usr/lib/libc.a
 		install_runtime
 	touch -c $@
 
-$(TARGET_DIR)/usr/bin/ldd:
+$(TARGET_DIR)/usr/bin/ldd: gcc
 	$(MAKE1) -C $(UCLIBC_DIR) CC=$(TARGET_CROSS)gcc \
 		CPP=$(TARGET_CROSS)cpp LD=$(TARGET_CROSS)ld \
 		PREFIX=$(TARGET_DIR) utils install_utils
