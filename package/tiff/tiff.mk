@@ -18,6 +18,7 @@ $(TIFF_DIR)/.unpacked: $(DL_DIR)/$(TIFF_SOURCE)
 	$(TIFF_CAT) $(DL_DIR)/$(TIFF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(TIFF_DIR) package/tiff/ tiff\*.patch
 	$(CONFIG_UPDATE) $(TIFF_DIR)
+	$(CONFIG_UPDATE) $(TIFF_DIR)/config
 	touch $(TIFF_DIR)/.unpacked
 
 $(TIFF_DIR)/.configured: $(TIFF_DIR)/.unpacked
