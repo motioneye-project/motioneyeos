@@ -1,0 +1,8 @@
+config BR2_PACKAGE_ALSA_LIB
+	bool "alsa-lib"
+	default n
+	help
+	  The Advanced Linux Sound Architecture (ALSA) provides audio and MIDI
+	  functionality to the Linux operating system.
+
+	  http://www.alsa-project.org/

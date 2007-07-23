@@ -246,6 +246,7 @@ menuconfig BR2_AUDIO_SUPPORT
 	  Support for audio libraries and applications
 
 if BR2_AUDIO_SUPPORT
+source "package/alsa-lib/Config.in"
 source "package/asterisk/Config.in"
 source "package/aumix/Config.in"
 source "package/libid3tag/Config.in"
