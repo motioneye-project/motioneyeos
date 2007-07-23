@@ -34,6 +34,22 @@ TARGET_CFLAGS+= $(BR2_SYSROOT) $(BR2_ISYSROOT)
 #TARGET_LDFLAGS=-Wl,$(BR2_SYSROOT)
 endif
 
+CC_TARGET_TUNE_:=$(strip $(subst ",,BR2_GCC_TARGET_TUNE))
+#"))
+CC_TARGET_ARCH_:=$(strip $(subst ",,BR2_GCC_TARGET_ARCH))
+#"))
+CC_TARGET_ABI_:=$(strip $(subst ",,BR2_GCC_TARGET_ABI))
+#"))
+ifneq ($(CC_TARGET_TUNE_),)
+TARGET_CFLAGS+=-mtune=$(CC_TARGET_TUNE_)
+endif
+ifneq ($(CC_TARGET_ARCH_),)
+TARGET_CFLAGS+=-march=$(CC_TARGET_ARCH_)
+endif
+ifneq ($(CC_TARGET_ABI_),)
+TARGET_CFLAGS+=-mabi=$(CC_TARGET_ABI_)
+endif
+
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
 ifeq ($(BR2_x86_64),y)
 TARGET_CFLAGS+=-fPIC -DPIC
