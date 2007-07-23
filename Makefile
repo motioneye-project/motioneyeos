@@ -155,10 +155,12 @@ PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 #
 ##############################################################
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-TARGETS:=uclibc-configured binutils gcc uclibc-target-utils
+BASE_TARGETS:=uclibc-configured binutils gcc uclibc-target-utils
 else
-TARGETS:=uclibc
+BASE_TARGETS:=uclibc
 endif
+TARGETS:=
+
 
 PROJECT:=$(strip $(subst ",,$(BR2_PROJECT)))
 #"))
@@ -166,7 +168,6 @@ TARGET_HOSTNAME:=$(strip $(subst ",,$(BR2_HOSTNAME)))
 #"))
 BANNER:=$(strip $(subst ",,$(BR2_BANNER)))
 #"))
-
 
 include toolchain/Makefile.in
 include package/Makefile.in
@@ -186,10 +187,17 @@ include .config.cmd
 # We also need the various per-package makefiles, which also add
 # each selected package to TARGETS if that package was selected
 # in the .config file.
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+# avoid pulling in external toolchain which is broken for toplvl parallel builds
+include $(filter-out $(wildcard toolchain/external-toolchain/*),$(wildcard toolchain/*/*.mk))
+else
 include toolchain/*/*.mk
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX),y)
 TARGETS+=linux26-modules
 endif
+
 include package/*/*.mk
 
 # target stuff is last so it can override anything else
@@ -198,6 +206,9 @@ include target/Makefile.in
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
+
+# all targets depend on the crosscompiler and it's prerequisites
+$(TARGETS): $(BASE_TARGETS)
 
 world: $(DL_DIR) $(BUILD_DIR) $(PROJECT_BUILD_DIR) \
 	$(BINARIES_DIR) $(STAGING_DIR) $(TARGET_DIR) bsp $(TARGETS)
