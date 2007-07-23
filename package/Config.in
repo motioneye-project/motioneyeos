@@ -247,6 +247,7 @@ menuconfig BR2_AUDIO_SUPPORT
 
 if BR2_AUDIO_SUPPORT
 source "package/alsa-lib/Config.in"
+source "package/alsa-utils/Config.in"
 source "package/asterisk/Config.in"
 source "package/aumix/Config.in"
 source "package/libid3tag/Config.in"
@@ -254,6 +255,16 @@ source "package/libmad/Config.in"
 source "package/libsndfile/Config.in"
 source "package/madplay/Config.in"
 source "package/mpg123/Config.in"
+endif
+
+menuconfig BR2_VIDEO_SUPPORT
+	bool "Video libraries and applications"
+	default y
+	help
+	  Support for video libraries and applications
+
+if BR2_VIDEO_SUPPORT
+source "package/mplayer/Config.in"
 endif
 
 menuconfig BR2_GRAPHIC_SUPPORT
