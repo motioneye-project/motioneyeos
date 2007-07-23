@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBUNGIF
+	bool "libungif"
+	default n
+	help
+	  libungif is a library for handling the uncompressed GIF image format.
+
+	  http://sourceforge.net/projects/libungif
