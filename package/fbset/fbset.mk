@@ -17,20 +17,19 @@ $(DL_DIR)/$(FBSET_SOURCE):
 $(FBSET_DIR)/.unpacked: $(DL_DIR)/$(FBSET_SOURCE)
 	$(FBSET_CAT) $(DL_DIR)/$(FBSET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(FBSET_DIR) package/fbset/ fbset-$(FBSET_VERSION)\*.patch\*
-	@touch $@
+	touch $@
 
 $(FBSET_DIR)/$(FBSET_BINARY): $(FBSET_DIR)/.unpacked
 	($(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
+	 $(TARGET_CONFIGURE_ARGS) \
 		$(MAKE) -C $(FBSET_DIR) CC=$(TARGET_CC) \
 	);
-	@touch -c $@
+	touch -c $@
 
 $(TARGET_DIR)/$(FBSET_TARGET_BINARY): $(FBSET_DIR)/$(FBSET_BINARY)
 	$(INSTALL) -m 755 $(FBSET_DIR)/$(FBSET_BINARY) $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
-	@touch -c $@
+	touch -c $@
 
 fbset: linux26 uclibc $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
 
