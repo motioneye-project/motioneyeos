@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MPLAYER
+	bool "mplayer"
+	default n
+	select BR2_PACKAGE_LIBMAD
+	help
+	  MPlayer is a movie player which runs on many systems and supports
+	  many different file formats.
+
+	  http://www.mplayerhq.hu/
