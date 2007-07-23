@@ -128,10 +128,10 @@ choice
 	depends BR2_avr32
 config BR2_ap7000
 	bool "AP7000"
-config BR2_ap7010
-	bool "AP7010"
-config BR2_ap7020
-	bool "AP7020"
+config BR2_ap7001
+	bool "AP7001"
+config BR2_ap7002
+	bool "AP7002"
 endchoice
 
 
