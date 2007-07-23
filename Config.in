@@ -687,6 +687,12 @@ config BR2_DEPRECATED
 	help
 	  This option hides outdated/obsolete versions of packages.
 
+config BR2_USE_WCHAR
+	bool "Show packages that are require WCHAR support"
+	default y
+	help
+	  This option hides packages which cannot be built without WCHAR.
+
 config BR2_PREFER_STATIC_LIB
 	bool "prefer static libraries"
 	default n
