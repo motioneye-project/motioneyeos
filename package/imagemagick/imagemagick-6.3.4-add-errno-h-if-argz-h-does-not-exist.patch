@@ -1,0 +1,11 @@
+--- ImageMagick-6.3.4.old/configure	2007-05-12 05:49:25.000000000 +0200
++++ ImageMagick-6.3.4.new/configure	2007-05-21 16:53:32.000000000 +0200
+@@ -9484,6 +9484,8 @@ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
+ #if HAVE_ARGZ_H
+ #  include <argz.h>
++#else
++#  include <errno.h>
+ #endif
+ 
+ typedef error_t ac__type_new_;

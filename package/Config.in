@@ -289,6 +289,7 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS || BR2_avr32
 source "package/fbv/Config.in"
 source "package/fbset/Config.in"
 endif
+source "package/imagemagick/Config.in"
 source "package/jpeg/Config.in"
 source "package/libpng/Config.in"
 source "package/libungif/Config.in"
