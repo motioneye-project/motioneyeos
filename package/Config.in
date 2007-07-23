@@ -285,16 +285,17 @@ source "package/dialog/Config.in"
 
 comment "graphic libraries"
 source "package/directfb/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS || BR2_avr32
-source "package/fbv/Config.in"
-source "package/fbset/Config.in"
-endif
 source "package/imagemagick/Config.in"
 source "package/jpeg/Config.in"
 source "package/libpng/Config.in"
 source "package/libungif/Config.in"
 source "package/sdl/Config.in"
 source "package/tiff/Config.in"
+
+comment "busybox graphic applications" 
+comment "--> (May be broken in busybox)"
+source "package/fbv/Config.in"
+source "package/fbset/Config.in"
 
 comment "other GUIs"
 source "package/qte/Config.in"
