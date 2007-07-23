@@ -1,0 +1,52 @@
+diff -rdup linux-2.6.20.oorig/include/openswan/ipsec_sa.h linux-2.6.20/include/openswan/ipsec_sa.h
+--- linux-2.6.20.oorig/include/openswan/ipsec_sa.h	2007-02-15 12:30:41.000000000 +0100
++++ linux-2.6.20/include/openswan/ipsec_sa.h	2007-02-15 13:32:07.000000000 +0100
+@@ -99,10 +99,10 @@ typedef unsigned short int IPsecRefTable
+ #define IPSEC_SA_REF_SUBTABLE_NUM_ENTRIES (1 << IPSEC_SA_REF_SUBTABLE_IDX_WIDTH)
+ 
+ #ifdef CONFIG_NETFILTER
+-#define IPSEC_SA_REF_HOST_FIELD(x) ((struct sk_buff*)(x))->nfmark
++#define IPSEC_SA_REF_HOST_FIELD(x) ((struct sk_buff*)(x))->mark
+ #define IPSEC_SA_REF_HOST_FIELD_TYPE typeof(IPSEC_SA_REF_HOST_FIELD(NULL))
+ #else /* CONFIG_NETFILTER */
+-/* just make it work for now, it doesn't matter, since there is no nfmark */
++/* just make it work for now, it doesn't matter, since there is no mark */
+ #define IPSEC_SA_REF_HOST_FIELD_TYPE unsigned long
+ #endif /* CONFIG_NETFILTER */
+ #define IPSEC_SA_REF_HOST_FIELD_WIDTH (8 * sizeof(IPSEC_SA_REF_HOST_FIELD_TYPE))
+diff -rdup linux-2.6.20.oorig/net/ipsec/ipsec_rcv.c linux-2.6.20/net/ipsec/ipsec_rcv.c
+--- linux-2.6.20.oorig/net/ipsec/ipsec_rcv.c	2007-02-15 12:30:41.000000000 +0100
++++ linux-2.6.20/net/ipsec/ipsec_rcv.c	2007-02-15 13:33:32.000000000 +0100
+@@ -748,13 +748,13 @@ ipsec_rcv_decap_once(struct ipsec_rcv_st
+ 
+ #ifdef CONFIG_NETFILTER
+ 	if(proto == IPPROTO_ESP || proto == IPPROTO_AH) {
+-		skb->nfmark = (skb->nfmark & (~(IPsecSAref2NFmark(IPSEC_SA_REF_MASK))))
++		skb->mark = (skb->mark & (~(IPsecSAref2NFmark(IPSEC_SA_REF_MASK))))
+ 			| IPsecSAref2NFmark(IPsecSA2SAref(irs->ipsp));
+ 		KLIPS_PRINT(debug_rcv & DB_RX_PKTRX,
+ 			    "klips_debug:ipsec_rcv: "
+-			    "%s SA sets skb->nfmark=0x%x.\n",
++			    "%s SA sets skb->mark=0x%x.\n",
+ 			    proto == IPPROTO_ESP ? "ESP" : "AH",
+-			    (unsigned)skb->nfmark);
++			    (unsigned)skb->mark);
+ 	}
+ #endif /* CONFIG_NETFILTER */
+ 
+@@ -1102,12 +1102,12 @@ int ipsec_rcv_decap(struct ipsec_rcv_sta
+ 			goto rcvleave;
+ 		}
+ #ifdef CONFIG_NETFILTER
+-		skb->nfmark = (skb->nfmark & (~(IPsecSAref2NFmark(IPSEC_SA_REF_TABLE_MASK))))
++		skb->mark = (skb->mark & (~(IPsecSAref2NFmark(IPSEC_SA_REF_TABLE_MASK))))
+ 			| IPsecSAref2NFmark(IPsecSA2SAref(ipsp));
+ 		KLIPS_PRINT(debug_rcv & DB_RX_PKTRX,
+ 			    "klips_debug:ipsec_rcv: "
+-			    "IPIP SA sets skb->nfmark=0x%x.\n",
+-			    (unsigned)skb->nfmark);
++			    "IPIP SA sets skb->mark=0x%x.\n",
++			    (unsigned)skb->mark);
+ #endif /* CONFIG_NETFILTER */
+ 	}
+ 
