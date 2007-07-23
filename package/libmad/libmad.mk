@@ -15,7 +15,8 @@ $(DL_DIR)/$(LIBMAD_SOURCE):
 
 $(LIBMAD_DIR)/.unpacked: $(DL_DIR)/$(LIBMAD_SOURCE)
 	$(LIBMAD_CAT) $(DL_DIR)/$(LIBMAD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LIBMAD_DIR)/.unpacked
+	$(CONFIG_UPDATE) $(LIBMAD_DIR)
+	touch $@
 
 $(LIBMAD_DIR)/.configured: $(LIBMAD_DIR)/.unpacked
 	(cd $(LIBMAD_DIR); rm -rf config.cache; \
@@ -29,11 +30,12 @@ $(LIBMAD_DIR)/.configured: $(LIBMAD_DIR)/.unpacked
 		--sysconfdir=/etc \
 		$(DISABLE_NLS) \
 	);
-	touch $(LIBMAD_DIR)/.configured
+	touch $@
 
 $(LIBMAD_DIR)/libmad.la: $(LIBMAD_DIR)/.configured
 	rm -f $@
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBMAD_DIR)
+	@touch -c $@
 
 $(STAGING_DIR)/usr/lib/libmad.so: $(LIBMAD_DIR)/libmad.la
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBMAD_DIR) install
@@ -41,6 +43,7 @@ $(STAGING_DIR)/usr/lib/libmad.so: $(LIBMAD_DIR)/libmad.la
 $(TARGET_DIR)/usr/lib/libmad.so: $(STAGING_DIR)/usr/lib/libmad.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libmad.so* $(TARGET_DIR)/usr/lib/
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libmad.so*
+	@touch -c $@
 
 $(TARGET_DIR)/usr/lib/libmad.a: $(STAGING_DIR)/usr/lib/libmad.so
 	mkdir -p $(TARGET_DIR)/usr/include
