@@ -22,7 +22,7 @@ $(FBV_DIR)/.unpacked: $(DL_DIR)/$(FBV_SOURCE)
 $(FBV_DIR)/.configured: $(FBV_DIR)/.unpacked
 	(cd $(FBV_DIR); \
 		($(TARGET_CONFIGURE_OPTS) \
-		($(TARGET_CONFIGURE_ARGS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--prefix=/usr \
 		--cc=$(TARGET_CC) \
