@@ -1,0 +1,84 @@
+diff -X ../excl -rdup fontconfig-2.4.2.orig/configure.in fontconfig-2.4.2/configure.in
+--- fontconfig-2.4.2.orig/configure.in	2006-12-03 00:24:39.000000000 +0100
++++ fontconfig-2.4.2/configure.in	2007-01-16 17:54:48.000000000 +0100
+@@ -97,6 +97,10 @@ AM_CONDITIONAL(CROSS_COMPILING, test $cr
+ 
+ dnl ==========================================================================
+ 
++if test "x$BUILD_CFLAGS" = "x"; then
++	BUILD_CFLAGS="-O2 "
++fi
++AC_SUBST(BUILD_CFLAGS)
+ # Setup for compiling build tools (fc-glyphname, etc)
+ AC_MSG_CHECKING([for a C compiler for build tools])
+ if test $cross_compiling = yes; then
+diff -X ../excl -rdup fontconfig-2.4.2.orig/doc/Makefile.am fontconfig-2.4.2/doc/Makefile.am
+--- fontconfig-2.4.2.orig/doc/Makefile.am	2006-12-02 23:14:42.000000000 +0100
++++ fontconfig-2.4.2/doc/Makefile.am	2007-01-16 17:47:17.000000000 +0100
+@@ -22,8 +22,9 @@
+ # PERFORMANCE OF THIS SOFTWARE.
+ 
+ CC = @CC_FOR_BUILD@
++BUILD_CFLAGS = @BUILD_CFLAGS@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(BUILD_CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+ 
+ DOC_SRC = $(srcdir)
+ DOC_MODULE = fontconfig
+diff -X ../excl -rdup fontconfig-2.4.2.orig/fc-arch/Makefile.am fontconfig-2.4.2/fc-arch/Makefile.am
+--- fontconfig-2.4.2.orig/fc-arch/Makefile.am	2006-09-05 11:05:07.000000000 +0200
++++ fontconfig-2.4.2/fc-arch/Makefile.am	2007-01-16 17:48:11.000000000 +0100
+@@ -23,8 +23,9 @@
+ #
+ 
+ CC = @CC_FOR_BUILD@
++BUILD_CFLAGS = @BUILD_CFLAGS@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(BUILD_CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(FREETYPE_CFLAGS) $(WARN_CFLAGS)
+ 
+diff -X ../excl -rdup fontconfig-2.4.2.orig/fc-case/Makefile.am fontconfig-2.4.2/fc-case/Makefile.am
+--- fontconfig-2.4.2.orig/fc-case/Makefile.am	2006-09-05 11:04:31.000000000 +0200
++++ fontconfig-2.4.2/fc-case/Makefile.am	2007-01-16 17:48:03.000000000 +0100
+@@ -23,8 +23,9 @@
+ #
+ 
+ CC = @CC_FOR_BUILD@
++BUILD_CFLAGS = @BUILD_CFLAGS@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(BUILD_CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(FREETYPE_CFLAGS) $(WARN_CFLAGS)
+ 
+diff -X ../excl -rdup fontconfig-2.4.2.orig/fc-glyphname/Makefile.am fontconfig-2.4.2/fc-glyphname/Makefile.am
+--- fontconfig-2.4.2.orig/fc-glyphname/Makefile.am	2006-09-05 11:04:47.000000000 +0200
++++ fontconfig-2.4.2/fc-glyphname/Makefile.am	2007-01-16 17:47:37.000000000 +0100
+@@ -23,8 +23,9 @@
+ #
+ 
+ CC = @CC_FOR_BUILD@
++BUILD_CFLAGS = @BUILD_CFLAGS@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(BUILD_CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(FREETYPE_CFLAGS) $(WARN_CFLAGS)
+ 
+diff -X ../excl -rdup fontconfig-2.4.2.orig/fc-lang/Makefile.am fontconfig-2.4.2/fc-lang/Makefile.am
+--- fontconfig-2.4.2.orig/fc-lang/Makefile.am	2006-09-05 11:03:45.000000000 +0200
++++ fontconfig-2.4.2/fc-lang/Makefile.am	2007-01-16 17:47:49.000000000 +0100
+@@ -23,8 +23,9 @@
+ #
+ 
+ CC = @CC_FOR_BUILD@
++BUILD_CFLAGS = @BUILD_CFLAGS@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(BUILD_CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(FREETYPE_CFLAGS) $(WARN_CFLAGS)
+ 
