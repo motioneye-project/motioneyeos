@@ -1,0 +1,32 @@
+diff -upr a/fb_display.c b/fb_display.c
+--- a/fb_display.c	2007-06-01 16:52:45.000000000 +0200
++++ b/fb_display.c	2007-06-01 16:51:43.000000000 +0200
+@@ -307,7 +307,7 @@ void* convertRGB2FB(int fh, unsigned cha
+ {
+     unsigned long i;
+     void *fbbuff = NULL;
+-	u_int8_t  *c_fbbuff;
++    u_int8_t  *c_fbbuff;
+     u_int16_t *s_fbbuff;
+     u_int32_t *i_fbbuff;
+ 
+@@ -335,6 +335,16 @@ void* convertRGB2FB(int fh, unsigned cha
+ 	    fbbuff = (void *) s_fbbuff;
+ 	    break;
+ 	case 24:
++	    *cpp = 3;
++	    c_fbbuff = (unsigned char *) malloc(count * 3 * sizeof(unsigned char));
++	    for(i = 0; i < (3 * count); i += 3) {
++		/* Big endian framebuffer. */
++		c_fbbuff[i] = rgbbuff[i+2];
++		c_fbbuff[i+1] = rgbbuff[i+1];
++		c_fbbuff[i+2] = rgbbuff[i];
++	    }
++	    fbbuff = (void *) c_fbbuff;
++	    break;
+ 	case 32:
+ 	    *cpp = 4;
+ 	    i_fbbuff = (unsigned int *) malloc(count * sizeof(unsigned int));
+Only in build_avr32/fbv-1.0b-modified: .fb_display.c.swp
+Binary files build_avr32/fbv-1.0b/fb_display.o and build_avr32/fbv-1.0b-modified/fb_display.o differ
+Binary files build_avr32/fbv-1.0b/fbv and build_avr32/fbv-1.0b-modified/fbv differ

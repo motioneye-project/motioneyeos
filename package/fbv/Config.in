@@ -1,0 +1,12 @@
+config BR2_PACKAGE_FBV
+	bool "fbv"
+	default n
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBUNGIF
+	help
+	  fbv is a very simple graphic file viewer for the framebuffer console,
+	  capable of displaying GIF, JPEG, PNG and BMP files using libungif,
+	  libjpeg and libpng.
+
+	  http://freshmeat.net/projects/fbv/
