@@ -236,15 +236,15 @@ $(QTE_QTOPIA_IFILE): $(QTE_QTOPIA_FILE)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(QTE_QTOPIA_DIR) install PREFIX=$(TARGET_DIR)
 
 
-qte:: $(QTE_QTE_LIB)
+qte: $(QTE_QTE_LIB)
 
 ifeq ($(strip $(BR2_PACKAGE_QTE_QTOPIA)),y)
-qte:: $(QTE_QTOPIA_IFILE)
+qte: $(QTE_QTOPIA_IFILE)
 endif
 
 # kinda no-op right now, these are built anyhow
 ifeq ($(strip $(BR2_PACKAGE_QTE_QVFB)),y)
-qte:: $(QTE_QTE_DIR)/$(QTE_UIC_BINARY) $(QTE_QTE_DIR)/$(QTE_QVFB_BINARY)
+qte: $(QTE_QTE_DIR)/$(QTE_UIC_BINARY) $(QTE_QTE_DIR)/$(QTE_QVFB_BINARY)
 endif
 
 qte-clean:
