@@ -40,7 +40,7 @@ $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked
 	touch $(PCMCIA_DIR)/.patched
 
 $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
-	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX_SOURCE_DIR) --noprompt \
+	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX26_DIR) --noprompt \
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
 		--sysv --kcc=$(KERNEL_CROSS)gcc --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
@@ -88,11 +88,11 @@ $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
 
 # use busybox depmod.pl so we need the sources unpacked
 $(PCMCIA_DIR)/.modules.dep: $(BUSYBOX_DIR)/.configured $(TARGET_DIR)/lib/modules
-	[ -d $(TARGET_DIR)/lib/modules/$(LINUX_VERSION) ] && \
+	[ -d $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION) ] && \
 	$(BUSYBOX_DIR)/examples/depmod.pl \
-		-b $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/ \
-		-F $(LINUX_DIR)/System.map \
-		> $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
+		-b $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/ \
+		-F $(LINUX26_DIR)/System.map \
+		> $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep
 	touch $(PCMCIA_DIR)/.modules.dep
 
 pcmcia: uclibc linux26 $(TARGET_DIR)/sbin/cardmgr $(PCMCIA_DIR)/.modules.dep
