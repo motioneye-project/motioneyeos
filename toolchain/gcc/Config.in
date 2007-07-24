@@ -4,7 +4,7 @@ comment "Gcc Options"
 
 choice
 	prompt "GCC compiler Version"
-	default BR2_GCC_VERSION_4_2_0
+	default BR2_GCC_VERSION_4_2_1
 	help
 	  Select the version of gcc you wish to use.
 
@@ -71,6 +71,10 @@ choice
 		depends !BR2_nios2
 		bool "gcc 4.2.0"
 
+	config BR2_GCC_VERSION_4_2_1
+		depends !BR2_nios2
+		bool "gcc 4.2.1"
+
 #	config BR2_GCC_VERSION_4_3
 #		depends !BR2_nios2
 #		select BR2_GCC_IS_SNAP
@@ -108,6 +112,7 @@ config BR2_GCC_VERSION
 	default "4.1.1"     if BR2_GCC_VERSION_4_1_1
 	default "4.1.2"     if BR2_GCC_VERSION_4_1_2
 	default "4.2.0"     if BR2_GCC_VERSION_4_2_0
+	default "4.2.1"     if BR2_GCC_VERSION_4_2_1
 	default "4.3"       if BR2_GCC_VERSION_4_3
 
 config BR2_TOOLCHAIN_SYSROOT
@@ -142,8 +147,8 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 config BR2_INSTALL_LIBSTDCPP
 	bool "Build/install c++ compiler and libstdc++?"
 	default n
-	# huh? why so? select BR2_LARGEFILE
-	select BR2_LARGEFILE if !BR2_GCC_VERSION_4_2_0 && !BR2_GCC_VERSION_4_3
+	# >= 4.2.0 work fine without LARGEFILE
+	select BR2_LARGEFILE if BR2_GCC_VERSION_3_3_5 || BR2_GCC_VERSION_3_3_6 || BR2_GCC_VERSION_3_4_2 || BR2_GCC_VERSION_3_4_3 || BR2_GCC_VERSION_3_4_4 || BR2_GCC_VERSION_3_4_5 || BR2_GCC_VERSION_3_4_6 || BR2_GCC_VERSION_4_0_0 || BR2_GCC_VERSION_4_0_1 || BR2_GCC_VERSION_4_0_2 || BR2_GCC_VERSION_4_0_3 || BR2_GCC_VERSION_4_0_4 || BR2_GCC_VERSION_4_1_0 || BR2_GCC_VERSION_4_1_1 || BR2_GCC_VERSION_4_1_2
 	help
 	  Build/install c++ compiler and libstdc++?
 
