@@ -303,10 +303,30 @@ source "package/qtopia4/Config.in"
 
 #source "package/microwin/Config.in"
 
-comment "X Window System server"
+choice
+prompt "X Window System server"
+	default BR2_PACKAGE_XSERVER_none
+	help
+	  Xserver to use.
+	  For more information about the X protocol see
+	  http://www.x.org
+
+config BR2_PACKAGE_XSERVER_none
+	bool "none"
+config BR2_PACKAGE_XSERVER_xorg
+	bool "xorg"
+config BR2_PACKAGE_XSERVER_tinyx
+	bool "tinyx"
+endchoice
+if BR2_PACKAGE_XSERVER_xorg
 source "package/xorg/Config.in"
+endif
+if BR2_PACKAGE_XSERVER_tinyx
 source "package/tinyx/Config.in"
+endif
+
 comment "X libraries and helper libraries"
+#XXX: maybe some of these should depend on !BR2_PACKAGE_XSERVER_none
 source "package/atk/Config.in"
 source "package/cairo/Config.in"
 source "package/pango/Config.in"

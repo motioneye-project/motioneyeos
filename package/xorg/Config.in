@@ -1,7 +1,6 @@
 config BR2_PACKAGE_XORG
 	bool "X.org X Window System"
-	default n
-	depends !BR2_PACKAGE_TINYX
+	default y if BR2_PACKAGE_XSERVER_xorg
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_EXPAT
