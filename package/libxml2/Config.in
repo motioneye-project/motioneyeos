@@ -6,3 +6,13 @@ config BR2_PACKAGE_LIBXML2
 	  Requires WCHAR
 
 	  ftp://xmlsoft.org/libxml2
+
+config BR2_PACKAGE_LIBXML2_TARGET_HEADERS
+	bool "libxml2 target headers"
+	default n
+	help
+	  XML C Parser
+	  Requires WCHAR
+
+	  ftp://xmlsoft.org/libxml2
+

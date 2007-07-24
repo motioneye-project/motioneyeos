@@ -53,11 +53,11 @@ libxml2:	uclibc $(TARGET_DIR)/usr/lib/libxml2.so libxml2-headers
 $(STAGING_DIR)/usr/include/libxml:	$(TARGET_DIR)/usr/lib/libxml2.a
 	cp -af $(LIBXML2_DIR)/include/libxml $(STAGING_DIR)/usr/include/libxml2
 
-$(TARGET_DIR)/usr/include:	libxml2-headers
+$(TARGET_DIR)/usr/include/libxml2:	libxml2-headers
 	cp -af $(LIBXML2_DIR)/include/libxml $(TARGET_DIR)/usr/include/libxml2
 
 
-libxml2-headers:	$(STAGING_DIR)/usr/include/libxml2
+libxml2-headers:	$(STAGING_DIR)/usr/include/libxml
 
 libxml2-target-headers: $(TARGET_DIR)/usr/include/libxml2
 
