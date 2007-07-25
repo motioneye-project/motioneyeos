@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SDL
 	bool "SDL"
 	default n
+	select BR2_PACKAGE_DIRECTFB
 	help
 
 	  http://www.libsdl.org/
