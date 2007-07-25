@@ -1,0 +1,28 @@
+diff -urN tn5250-0.16.4-0rig/src/common.h tn5250-0.16.4/src/common.h
+--- tn5250-0.16.4-0rig/src/common.h	1970-01-01 01:00:00.000000000 +0100
++++ tn5250-0.16.4/src/common.h	2007-07-25 15:33:37.000000000 +0200
+@@ -0,0 +1,2 @@
++#define	TRUE	1
++#define	FALSE	0
+diff -urN tn5250-0.16.4-0rig/src/host3270.c tn5250-0.16.4/src/host3270.c
+--- tn5250-0.16.4-0rig/src/host3270.c	2002-03-20 09:50:36.000000000 +0100
++++ tn5250-0.16.4/src/host3270.c	2007-07-25 15:34:25.000000000 +0200
+@@ -20,6 +20,7 @@
+  * 
+  */
+ 
++#include "common.h"
+ #include "tn5250-private.h"
+ #include "host3270.h"
+ #include "codes3270.h"
+diff -urN tn5250-0.16.4-0rig/src/host5250.c tn5250-0.16.4/src/host5250.c
+--- tn5250-0.16.4-0rig/src/host5250.c	2002-03-20 09:50:36.000000000 +0100
++++ tn5250-0.16.4/src/host5250.c	2007-07-25 15:33:10.000000000 +0200
+@@ -19,6 +19,7 @@
+  * Boston, MA 02111-1307 USA
+  */
+ 
++#include "common.h"
+ #include "tn5250-private.h"
+ #include "host5250.h"
+ 
