@@ -18,8 +18,16 @@ TARGET_ATMEL_COPYTO:=$(strip  $(subst ",, $(BR2_TARGET_ATMEL_COPYTO)))
 # These are set by Config.in
 DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
 #"))
+ifeq ($(DOWNLOAD_LINUX26_VERSION),)
+DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+endif
+
 LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_LINUX26_VERSION)))
 #"))
+ifeq ($(LINUX26_VERSION),)
+LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+endif
+
 LINUX26_RC_PATCH:=$(strip  $(subst ",, $(BR2_LINUX26_RC_PATCH)))
 #"))
 LINUX_BSP_PATCH:=$(strip  $(subst ",, $(BR2_LINUX_BSP_ATMEL_PATCH)))
@@ -55,7 +63,7 @@ UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
 UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
-#include $(ATMEL_PATH)/Linux/linux.mk
+include $(ATMEL_PATH)/Linux/linux.mk
 endif
 
 ifeq ($(strip $(BR2_TARGET_UBOOT)),y)
