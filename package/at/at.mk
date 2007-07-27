@@ -9,7 +9,7 @@ AT_SITE:=http://ftp.debian.org/debian/pool/main/a/at
 AT_DIR:=$(BUILD_DIR)/at-$(AT_VERSION)
 AT_CAT:=$(ZCAT)
 AT_TARGET_SCRIPT:=etc/init.d/S99at
-AT_BINARY:=.at
+AT_BINARY:=at
 
 $(DL_DIR)/$(AT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(AT_SITE)/$(AT_SOURCE)
@@ -62,6 +62,8 @@ at-clean:
 
 at-dirclean:
 	rm -rf $(AT_DIR)
+
+.PHONY:	at
 #############################################################
 #
 # Toplevel Makefile options
