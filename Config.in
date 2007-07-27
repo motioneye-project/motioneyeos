@@ -398,8 +398,8 @@ config BR2_GCC_TARGET_TUNE
 	default pca56		if BR2_alpha_21164pc
 	default ev6		if BR2_alpha_21264
 	default ev67		if BR2_alpha_21264a
-	default itanium		if BR2_ia64_itanium1
-	default itanium2	if BR2_ia64_itanium2
+#	default itanium		if BR2_ia64_itanium1
+#	default itanium2	if BR2_ia64_itanium2
 	default 68000		if BR2_m68k_68000
 	default 68010		if BR2_m68k_68010
 	default 68020		if BR2_m68k_68020
