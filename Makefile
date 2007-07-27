@@ -320,9 +320,11 @@ $(CONFIG)/mconf:
 
 menuconfig: $(CONFIG)/mconf
 	@-mkdir -p $(CONFIG)/buildroot-config
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+	@if ! KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/mconf $(CONFIG_CONFIG_IN)
+		$(CONFIG)/mconf $(CONFIG_CONFIG_IN); then \
+		test -f .config.cmd || rm -f .config; \
+	fi
 
 config: $(CONFIG)/conf
 	@-mkdir -p $(CONFIG)/buildroot-config

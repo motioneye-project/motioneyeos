@@ -120,6 +120,9 @@ hostprogs-y := conf qconf gconf kxgettext
 ifeq ($(MAKECMDGOALS),menuconfig)
 	hostprogs-y += mconf
 endif
+ifeq ($(findstring mconf,$(MAKECMDGOALS)),mconf)
+	hostprogs-y += mconf
+endif
 
 ifeq ($(MAKECMDGOALS),xconfig)
 	qconf-target := 1
