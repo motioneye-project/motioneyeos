@@ -34,9 +34,10 @@ kexec-source: $(DL_DIR)/$(KEXEC_SOURCE) $(DL_DIR)/$(KEXEC_PATCH)
 $(KEXEC_DIR)/.unpacked: $(DL_DIR)/$(KEXEC_SOURCE) $(DL_DIR)/$(KEXEC_PATCH)
 	$(KEXEC_CAT) $(DL_DIR)/$(KEXEC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(KEXEC_PATCH),)
-	(cd $(KEXEC_DIR) && $(KEXEC_CAT) $(DL_DIR)/$(KEXEC_PATCH) | patch -p1)
-	package/kexec/kexec-patch.sh $(KEXEC_DIR) $(KEXEC_DIR)/debian/patches 00list
-#	toolchain/patch-kernel.sh $(KEXEC_DIR) $(KEXEC_DIR)/debian/patches \*.patch
+	(cd $(KEXEC_DIR) && $(KEXEC_CAT) $(DL_DIR)/$(KEXEC_PATCH) | patch -p1;	\
+	for f in `cat debian/patches/00list` ; do	\
+		cat debian/patches/$$f | patch -p2 ; 	\
+	done)
 endif
 	toolchain/patch-kernel.sh $(KEXEC_DIR) package/kexec/ kexec\*.patch
 	touch $@
