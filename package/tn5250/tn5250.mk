@@ -37,7 +37,7 @@ $(TN5250_DIR)/.configured: $(TN5250_DIR)/.dist
 	touch $(TN5250_DIR)/.configured
 
 $(TN5250_DIR)/src/tn5250: $(TN5250_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(TN5250_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(TN5250_DIR)
 
 $(TARGET_DIR)/usr/bin/tn5250: $(TN5250_DIR)/src/tn5250
 	install -c $(TN5250_DIR)/src/tn5250 $(TARGET_DIR)/usr/bin/tn5250
