@@ -109,6 +109,10 @@ cross-depmod26-clean:
 cross-depmod26-dirclean:
 	rm -rf $(MODULE_INIT_TOOLS_DIR2)
 
+ifeq ($(strip $(CONFIG_BR2_PACKAGE_LINUX)),y)
+HOST_SOURCE+=module-init-tools-source
+endif
+
 #############################################################
 #
 ## Toplevel Makefile options
