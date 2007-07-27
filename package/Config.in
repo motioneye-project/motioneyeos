@@ -257,16 +257,6 @@ source "package/madplay/Config.in"
 source "package/mpg123/Config.in"
 endif
 
-menuconfig BR2_VIDEO_SUPPORT
-	bool "Video libraries and applications"
-	default y
-	help
-	  Support for video libraries and applications
-
-if BR2_VIDEO_SUPPORT
-source "package/mplayer/Config.in"
-endif
-
 menuconfig BR2_GRAPHIC_SUPPORT
 	bool "Graphic libraries and applications (graphic/text)"
 	default y
@@ -344,6 +334,8 @@ source "package/dillo/Config.in"
 source "package/rdesktop/Config.in"
 source "package/rxvt/Config.in"
 
+comment "Video libraries/codecs and applications"
+source "package/mplayer/Config.in"
 endif
 
 menuconfig BR2_COMPRESSOR_SUPPORT
