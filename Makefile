@@ -306,14 +306,12 @@ HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
 $(CONFIG)/conf:
-	$(MAKE) CC="$(HOSTCC)" MAKECMDGOALS="$(MAKECMDGOALS)" \
-		-C $(CONFIG) conf
+	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
 $(CONFIG)/mconf:
-	$(MAKE) CC="$(HOSTCC)" MAKECMDGOALS="$(MAKECMDGOALS)" \
-		-C $(CONFIG) conf mconf
+	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf mconf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
