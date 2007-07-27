@@ -359,7 +359,7 @@ endif
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
 endif
 
-uclibc-configured: dependencies kernel-headers $(UCLIBC_DIR)/.configured
+uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
 
 
 uclibc: $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)

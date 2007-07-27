@@ -213,7 +213,7 @@ $(TARGETS): $(BASE_TARGETS)
 dirs: $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(BINARIES_DIR) $(PROJECT_BUILD_DIR)
 $(BASE_TARGETS): dirs
-world: dirs target-host-info $(TARGETS)
+world: dependencies dirs target-host-info $(TARGETS)
 
 
 .PHONY: all world dirs clean dirclean distclean source target-host-info \
