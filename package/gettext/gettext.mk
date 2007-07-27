@@ -90,7 +90,6 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no \
 		gl_cv_c_restrict=no \
-		LD=$(TARGET_CROSS)gcc \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
