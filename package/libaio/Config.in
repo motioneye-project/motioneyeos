@@ -1,0 +1,5 @@
+config BR2_PACKAGE_LIBAIO
+	bool "libaio"
+	default n
+	help
+	  Library for doing asynchronous I/O
