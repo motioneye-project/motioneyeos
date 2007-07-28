@@ -6,3 +6,8 @@ config BR2_PACKAGE_MPG123
 	  MPEG 1.0/2.0 layers 1, 2 and 3.
 
 	  http://www.mpg123.de/
+
+config BR2_PACKAGE_MPG123_ALSA
+	bool
+	default y
+	depends on BR2_PACKAGE_ALSA_LIB
