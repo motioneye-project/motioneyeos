@@ -22,6 +22,7 @@ proftpd-source: $(DL_DIR)/$(PROFTPD_SOURCE)
 
 $(PROFTPD_DIR)/.unpacked: $(DL_DIR)/$(PROFTPD_SOURCE)
 	$(PROFTPD_CAT) $(DL_DIR)/$(PROFTPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(PROFTPD_DIR)
 	touch $(PROFTPD_DIR)/.unpacked
 
 $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
