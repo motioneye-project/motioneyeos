@@ -36,7 +36,7 @@ $(LIBID3TAG_DIR)/.configured: $(LIBID3TAG_DIR)/.unpacked
 	touch $@
 
 $(LIBID3TAG_DIR)/src/.libs/$(LIBID3TAG_BIN): $(LIBID3TAG_DIR)/.configured
-       $(MAKE) -C $(LIBID3TAG_DIR)
+	$(MAKE) -C $(LIBID3TAG_DIR)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBID3TAG_DIR) install
 
 $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN): $(LIBID3TAG_DIR)/src/.libs/$(LIBID3TAG_BIN)
@@ -44,8 +44,8 @@ $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN): $(LIBID3TAG_DIR)/src/.libs/$(LIBID3TAG_B
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libid3tag.la
 
 $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN): $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN)
-       cp -dpf  $(STAGING_DIR)/usr/lib/libid3tag.so*  $(TARGET_DIR)/usr/lib/
-       -$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libid3tag.so*
+	cp -dpf  $(STAGING_DIR)/usr/lib/libid3tag.so*  $(TARGET_DIR)/usr/lib/
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libid3tag.so*
 
 libid3tag: uclibc libmad $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN)
 
