@@ -1,0 +1,14 @@
+config BR2_PACKAGE_GADGETFS_TEST
+	bool "gadgetfs-test"
+	default n
+	help
+	  Test program for gadgetfs from linux-usb.org
+
+config BR2_PACKAGE_GADGETFS_TEST_USE_AIO
+	bool "use asynchronous i/o"
+	default n
+	depends on BR2_PACKAGE_GADGETFS_TEST
+	select BR2_PACKAGE_LIBAIO
+	help
+	  Select this to have gadgetfs-test do asynchronous I/O using
+	  the libaio library.

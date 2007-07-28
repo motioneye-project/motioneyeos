@@ -206,6 +206,7 @@ source "package/dbus-glib/Config.in"
 source "package/dm/Config.in"
 source "package/dmraid/Config.in"
 source "package/e2fsprogs/Config.in"
+source "package/gadgetfs-test/Config.in"
 source "package/hal/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/hdparm/Config.in"
