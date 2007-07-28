@@ -24,28 +24,28 @@ $(RAIDTOOLS2_DIR)/.configured: $(RAIDTOOLS2_DIR)/.unpacked
 	(cd $(RAIDTOOLS2_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-                ./configure \
-                --target=$(GNU_TARGET_NAME) \
-                --host=$(GNU_TARGET_NAME) \
-                --build=$(GNU_HOST_NAME) \
-                --prefix=/usr \
-                --exec-prefix=/usr \
-                --bindir=/usr/bin \
-                --sbindir=/usr/sbin \
+	        ./configure \
+	        --target=$(GNU_TARGET_NAME) \
+	        --host=$(GNU_TARGET_NAME) \
+	        --build=$(GNU_HOST_NAME) \
+	        --prefix=/usr \
+	        --exec-prefix=/usr \
+	        --bindir=/usr/bin \
+	        --sbindir=/usr/sbin \
 		--libdir=/lib \
-                --libexecdir=/usr/lib \
-                --sysconfdir=/etc \
-                --datadir=/usr/share/misc \
-                --localstatedir=/var \
-                --mandir=/usr/man \
-                --infodir=/usr/info \
+	        --libexecdir=/usr/lib \
+	        --sysconfdir=/etc \
+	        --datadir=/usr/share/misc \
+	        --localstatedir=/var \
+	        --mandir=/usr/man \
+	        --infodir=/usr/info \
 		$(DISABLE_NLS) \
-                --enable-fsect-man5 \
-        );
+	        --enable-fsect-man5 \
+	);
 	touch $(RAIDTOOLS2_DIR)/.configured
 
 $(RAIDTOOLS2_DIR)/$(RAIDTOOLS2_BINARY): $(RAIDTOOLS2_DIR)/.configured
-        $(MAKE) CC=$(TARGET_CC) -C $(RAIDTOOLS2_DIR)
+	$(MAKE) CC=$(TARGET_CC) -C $(RAIDTOOLS2_DIR)
 
 $(TARGET_DIR)/$(RAIDTOOLS2_TARGET_BINARY): $(RAIDTOOLS2_DIR)/$(RAIDTOOLS2_BINARY)
 	$(MAKE) ROOTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(RAIDTOOLS2_DIR) install

@@ -33,9 +33,9 @@ procps-source: $(DL_DIR)/$(PROCPS_SOURCE)
 
 procps-clean:
 	for bin in uptime tload free w \
-	           top vmstat watch skill \
-	           snice kill sysctl pmap \
-	           pgrep pkill slabtop ; do \
+		   top vmstat watch skill \
+		   snice kill sysctl pmap \
+		   pgrep pkill slabtop ; do \
 		rm -f $(TARGET_DIR)/usr/bin/$${bin} ; \
 	done
 	rm -f $(TARGET_DIR)/lib/libproc*

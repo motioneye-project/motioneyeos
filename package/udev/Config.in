@@ -7,28 +7,28 @@ config BR2_PACKAGE_UDEV
 	  ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
 
 config BR2_PACKAGE_UDEV_UTILS
-        bool "udev-utils"
-        default n
-        depends on BR2_PACKAGE_UDEV
-        help
-          Adds the udevmonitor, udevinfo, and udevtest binaries
+	bool "udev-utils"
+	default n
+	depends on BR2_PACKAGE_UDEV
+	help
+	  Adds the udevmonitor, udevinfo, and udevtest binaries
 	  to your filesystem.
 
 menu "Extra udev tools"
-        depends BR2_PACKAGE_UDEV
+	depends BR2_PACKAGE_UDEV
 
 config BR2_PACKAGE_UDEV_VOLUME_ID
-        bool "udev-libvolume_id"
-        default n
-        depends on BR2_PACKAGE_UDEV
-        help
-          Build and install volume identification library.
+	bool "udev-libvolume_id"
+	default n
+	depends on BR2_PACKAGE_UDEV
+	help
+	  Build and install volume identification library.
 
 config BR2_PACKAGE_UDEV_SCSI_ID
-        bool "udev-scsi_id"
-        default n
-        depends on BR2_PACKAGE_UDEV
-        help
-          Build and install SCSI disk identification library.
+	bool "udev-scsi_id"
+	default n
+	depends on BR2_PACKAGE_UDEV
+	help
+	  Build and install SCSI disk identification library.
 
 endmenu

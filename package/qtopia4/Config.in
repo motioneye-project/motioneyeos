@@ -11,10 +11,10 @@ config BR2_PACKAGE_QTOPIA4
 	  http://www.trolltech.com/
 
 config BR2_PACKAGE_QTOPIA4_DEBUG
-        bool "Compile with debug support"
-        default y
+	bool "Compile with debug support"
+	default y
 	depends BR2_PACKAGE_QTOPIA4
-        help
+	help
 
 choice
 	prompt "Qtopia 4 Core license type"
@@ -45,37 +45,37 @@ config BR2_PACKAGE_QTOPIA4_GPL_LICENSE_APPROVED
 
 
 config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
-        string "Qtopia Core 4 Commercial License Username"
-        default ""
+	string "Qtopia Core 4 Commercial License Username"
+	default ""
 	depends BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
-        help
-            Commercial users can download their source directly by providing a username.
+	help
+	    Commercial users can download their source directly by providing a username.
 
 
 config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
-        string "Qtopia Core 4 Commercial License Password"
-        default ""
+	string "Qtopia Core 4 Commercial License Password"
+	default ""
 	depends BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
-        help
-            Commercial users can download their source directly by providing a password.
+	help
+	    Commercial users can download their source directly by providing a password.
 
 config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
-        bool "Compatibility with Qt3"
-        default y
+	bool "Compatibility with Qt3"
+	default y
 	depends BR2_PACKAGE_QTOPIA4
-        help
+	help
 	    Turns on support for older Qt3.
 
 config BR2_PACKAGE_QTOPIA4_DEPTHS
-        string "color depths to support"
-        default "-depths 8"
+	string "color depths to support"
+	default "-depths 8"
 	depends BR2_PACKAGE_QTOPIA4
-        help
+	help
 	    Which color depths to support for the library. Default is "-depths
 	    8". Is specified by a comma separated list, i.e. -depths 24,16,8.
 
 config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
-        string "The embedded platform we are making Qtopia4 for"
+	string "The embedded platform we are making Qtopia4 for"
 	default "arm"	if BR2_arm
 	default "arm"	if BR2_armeb
 	default "x86"	if BR2_i386
@@ -92,5 +92,5 @@ config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	default "generic"	if BR2_sh64
 	default "generic"	if BR2_sparc
 	depends BR2_PACKAGE_QTOPIA4
-        help
+	help
 	    The platform.
