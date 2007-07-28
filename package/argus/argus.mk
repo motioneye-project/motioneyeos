@@ -45,7 +45,7 @@ $(ARGUS_DIR)/.configured: $(ARGUS_DIR)/.unpacked
 	touch $@
 
 $(ARGUS_DIR)/$(ARGUS_BINARY): $(ARGUS_DIR)/.configured
-	$(MAKE) -C $(ARGUS_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(ARGUS_DIR)
 
 $(TARGET_DIR)/$(ARGUS_TARGET_BINARY): $(ARGUS_DIR)/$(ARGUS_BINARY)
 	cp -dpf $(ARGUS_DIR)/$(ARGUS_BINARY) $@
