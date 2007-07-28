@@ -49,7 +49,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 	touch $@
 
 $(SAMBA_DIR)/$(SAMBA_BINARY): $(SAMBA_DIR)/.configured
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(SAMBA_DIR)
+	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(SAMBA_DIR)
 
 SAMBA_TARGETS_ :=
 SAMBA_TARGETS_y :=
