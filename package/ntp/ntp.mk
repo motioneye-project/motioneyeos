@@ -24,6 +24,8 @@ $(NTP_DIR)/.patched: $(DL_DIR)/$(NTP_SOURCE)
 	$(SED) '/[[:space:](]index[[:space:]]*(/s/[[:space:]]*index[[:space:]]*(/ strchr(/g' $(NTP_DIR)/libisc/*.c $(NTP_DIR)/arlib/sample.c
 	$(SED) '/[[:space:](]rindex[[:space:]]*(/s/[[:space:]]*rindex[[:space:]]*(/ strrchr(/g' $(NTP_DIR)/ntpd/*.c
 	#$(SED) 's/\(^#[[:space:]]*include[[:space:]]*<sys\/var.h>\)/\/\/ \1/' $(NTP_DIR)/util/tickadj.c
+	$(CONFIG_UPDATE) $(NTP_DIR)
+	$(CONFIG_UPDATE) $(NTP_DIR)/sntp
 	touch $@
 
 $(NTP_DIR)/.configured: $(NTP_DIR)/.patched
