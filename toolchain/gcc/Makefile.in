@@ -10,6 +10,12 @@ TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
 #"))
 EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
 #"))
+
+# AVR32 GCC configuration
+ifeq ($(strip $(BR2_GCC_AVR32_CONFIGURATION)),y)
+EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap
+endif
+
 ifeq ($(strip $(subst ",, $(BR2_GCC_IS_SNAP))),y)
 #"))
 GCC_SNAP_DATE:=$(strip $(subst ",, $(BR2_GCC_SNAP_DATE)))
@@ -78,6 +84,11 @@ ifneq ($(findstring x3.,x$(GCC_VERSION)),x3.)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--enable-intermodule
 endif
 endif # BR2_PREFER_IMA=y
+
+# AVR32 target GCC configuration
+ifeq ($(strip $(BR2_GCC_TARGET_AVR32_CONFIGURATION)),y)
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libmudflap
+endif
 
 TARGETS+=gcc_target
 endif
