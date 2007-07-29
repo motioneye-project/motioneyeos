@@ -1,7 +1,7 @@
 menuconfig BR2_TARGET_ATMEL
 	bool "Atmel Device Support"
 	depends on BR2_arm || BR2_avr32
-	default n	
+	default n
 
 if BR2_TARGET_ATMEL
 
@@ -20,9 +20,8 @@ config BR2_BOARD_NAME
 	default	"at91sam9262ek"		if	BR2_TARGET_AT91SAM9262EK
 	default	"at91sam9263ek"		if	BR2_TARGET_AT91SAM9263EK
 	default	"at91sam9xeek"		if	BR2_TARGET_AT91SAM9XEEK
-	default	"atstk1002"		if	BR2_TARGET_STK1002
-	default	"avr32_com"		if	BR2_TARGET_AVR32_COM
-	default	"avr32_ngw"		if	BR2_TARGET_AVR32_GATEWAY
+	default	"atstk1002"		if	BR2_TARGET_AVR32_ATSTK1002
+	default	"atngw100"		if	BR2_TARGET_AVR32_ATNGW100
 
 config BR2_TARGET_AT91_ADVANCED_INFO
 	bool "Remove work in progress"
@@ -36,10 +35,10 @@ comment "Package support"
 
 
 menu "Secondary locations"
-	    
+
 config BR2_AT91_LINUXPATCH_SITE
 	string "AT91 Linux Patch mirror site"
-	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
+	depends on BR2_TARGET_AT91
 	default "http://maxim.org.za/AT91RM9200/2.6"
 	help
 	    Main download location for AT91 Linux stuff
