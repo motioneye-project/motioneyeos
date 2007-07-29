@@ -8,6 +8,8 @@
 #
 #############################################################
 UBOOT_VERSION:=1.2.0-atmel
+ATMEL_MIRROR:=$(strip  $(subst ",, $(BR2_ATMEL_MIRROR)))
+#"))
 UBOOT_DIR:=$(BUILD_DIR)/u-boot-$(UBOOT_VERSION)
 UBOOT_BUILD_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(UBOOT_VERSION)
 UBOOT_SOURCE:=u-boot-$(UBOOT_VERSION).tar.bz2
@@ -41,10 +43,10 @@ TARGET_UBOOT_ETHADDR:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR)))
 UBOOT_CUSTOM:=$(UBOOT_DIR)/include/custom.h
 
 $(DL_DIR)/$(UBOOT_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(UBOOT_SITE)/$(UBOOT_SOURCE)
+	$(WGET) -P $(DL_DIR) $(UBOOT_SITE)/$(UBOOT_SOURCE)
 
 $(DL_DIR)/$(UBOOT_PATCH_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(UBOOT_PATCH_SITE)/$(UBOOT_PATCH_SOURCE)
+	$(WGET) -P $(DL_DIR) $(UBOOT_PATCH_SITE)/$(UBOOT_PATCH_SOURCE)
 
 $(UBOOT_DIR)/.unpacked: $(DL_DIR)/$(UBOOT_SOURCE)
 	mkdir -p   $(BUILD_DIR)
