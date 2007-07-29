@@ -29,21 +29,26 @@ choice
 
 	config BR2_GDB_VERSION_6_2_1
 		bool "gdb 6.2.1"
+		depends on !BR2_avr32
 
 	config BR2_GDB_VERSION_6_3
 		bool "gdb 6.3"
+		depends on !BR2_avr32
 
 	config BR2_GDB_VERSION_6_4
 		bool "gdb 6.4"
 
 	config BR2_GDB_VERSION_6_5
 		bool "gdb 6.5"
+		depends on !BR2_avr32
 
 	config BR2_GDB_VERSION_6_6
 		bool "gdb 6.6"
+		depends on !BR2_avr32
 
 	config BR2_GDB_VERSION_SNAPSHOT
 		bool "gdb snapshot"
+		depends on !BR2_avr32
 
 endchoice
 
