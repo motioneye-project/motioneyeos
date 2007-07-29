@@ -1,0 +1,11 @@
+#!/bin/sh
+
+IFDOWN=/sbin/ifdown
+
+echo -n "Stopping networking:"
+if ${IFDOWN} -a; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi

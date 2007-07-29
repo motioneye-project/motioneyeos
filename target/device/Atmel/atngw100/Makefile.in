@@ -1,0 +1,12 @@
+ATNGW100_PATH=target/device/Atmel/atngw100
+
+#BR2_PACKAGE_BUSYBOX_CONFIG=$(ATNGW100_PATH)/busybox.config
+#UCLIBC_CONFIG_FILE=target/device/Atmel/uClibc.config.$(ARCH)
+
+TARGET_SKELETON=$(ATNGW100_PATH)/target_skeleton
+TARGET_DEVICE_TABLE=$(ATNGW100_PATH)/device_table.txt
+
+ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
+#LINUX26_FORMAT=uImage
+#LINUX26_KCONFIG=$(ATNGW100_PATH)/linux26.config
+endif

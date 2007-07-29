@@ -1,0 +1,6 @@
+# servers to check.   (Separate multiple servers with spaces.)
+NTPSERVERS="pool.ntp.org"
+#
+# additional options for ntpdate
+#NTPOPTIONS="-v"
+NTPOPTIONS="-u"

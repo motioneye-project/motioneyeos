@@ -1,0 +1,24 @@
+#!/bin/sh
+
+SYSLOGD=/sbin/syslogd
+
+echo -n "Starting syslogd:"
+if [ ! -x "${SYSLOGD}" ]; then
+	echo " missing"
+	exit 1
+fi
+
+if ${SYSLOGD} > /dev/null 2> /dev/null; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi
+
+echo -n "Log messages to syslog:"
+if echo 4 4 1 7 > /proc/sys/kernel/printk 2> /dev/null; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi

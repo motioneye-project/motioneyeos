@@ -1,0 +1,11 @@
+#!/bin/sh
+
+MOUNT=/bin/mount
+
+echo -n "Mounting local filesystems:"
+if ${MOUNT} -a > /dev/null 2> /dev/null; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi

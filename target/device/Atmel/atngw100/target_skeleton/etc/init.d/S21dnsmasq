@@ -1,0 +1,18 @@
+#!/bin/sh
+
+DNSMASQ=/usr/sbin/dnsmasq
+
+echo -n "Starting dnsmasq: "
+if [ ! -x "${DNSMASQ}" ]; then
+	echo "missing"
+	exit 1
+fi
+
+if ${DNSMASQ}; then
+	echo "done"
+else
+	echo "failed"
+	exit 1
+fi
+
+exit 0
