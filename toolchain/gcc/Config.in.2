@@ -5,9 +5,20 @@ config BR2_PACKAGE_GCC_TARGET
 	  If you want the target system to be able to run 
 	  binutils/gcc and compile native code, say Y here.
 
+config BR2_GCC_TARGET_AVR32_CONFIGURATION
+	bool "Enable default AVR32 GCC configuration"
+	default y
+	depends BR2_avr32 && BR2_PACKAGE_GCC_TARGET
+	help
+	  For the AVR32 platform there is some configuration which are not
+	  supported.
+
+	  Currently this will add "--disable-libmudflap" to configure.
+
 config BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS
 	string "Additional target gcc options"
 	default ""
+	depends BR2_PACKAGE_GCC_TARGET
 	help
 	  Any additional target gcc options you may want to include....
 	  Including, but not limited to --disable-checking etc.
