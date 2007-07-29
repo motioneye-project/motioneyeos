@@ -1,0 +1,19 @@
+#!/bin/sh
+
+PROGRAM=/usr/sbin/alsactl
+
+# Exit silently if alsa-utils isn't installed
+[ -x ${PROGRAM} ] || exit 0
+
+echo -n "Restoring mixer state:"
+if [ ! -f /etc/asound.state ]; then
+	echo " missing"
+	exit 1
+fi
+
+if ${PROGRAM} restore > /dev/null 2> /dev/null; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi

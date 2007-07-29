@@ -1,0 +1,16 @@
+#!/bin/sh
+
+HTTPD=/usr/sbin/httpd
+
+echo -n "Starting httpd:"
+if [ ! -x "${HTTPD}" ]; then
+	echo " missing"
+	exit 1
+fi
+
+if ${HTTPD} -h /www > /dev/null 2> /dev/null; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+KLOGD=/sbin/klogd
+
+echo -n "Starting klogd:"
+if [ ! -x "${KLOGD}" ]; then
+	echo " missing"
+	exit 1
+fi
+
+if ${KLOGD} > /dev/null 2> /dev/null; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi

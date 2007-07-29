@@ -1,0 +1,5 @@
+mode "320x240-68"
+    # D: 6.891 MHz, H: 17.852 kHz, V: 68.400 Hz
+    geometry 320 240 320 240 24
+    timings 145116 17 33 10 10 16 1
+endmode

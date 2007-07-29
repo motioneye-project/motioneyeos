@@ -1,0 +1,16 @@
+#!/bin/sh
+
+TELNETD=/usr/sbin/telnetd
+
+echo -n "Starting telnetd:"
+if [ ! -x "${TELNETD}" ]; then
+	echo " missing"
+	exit 1
+fi
+
+if ${TELNETD} -l /bin/ash > /dev/null 2> /dev/null; then
+	echo " done"
+else
+	echo " failed"
+	exit 1
+fi
