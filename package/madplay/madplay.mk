@@ -29,6 +29,7 @@ $(MADPLAY_DIR)/.unpacked: $(DL_DIR)/$(MADPLAY_SOURCE)
 
 $(MADPLAY_DIR)/.configured: $(MADPLAY_DIR)/.unpacked
 	(cd $(MADPLAY_DIR); rm -rf config.cache; \
+		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS) $(BR2_MADPLAY_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \

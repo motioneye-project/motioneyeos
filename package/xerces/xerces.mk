@@ -22,6 +22,7 @@ $(XERCES_DIR)/.unpacked: $(DL_DIR)/$(XERCES_SOURCE)
 
 $(XERCES_DIR)/.configured: $(XERCES_DIR)/.unpacked
 	(cd $(XERCES_DIR)/src/xercesc; rm -rf config.cache; \
+		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		XERCESCROOT=$(XERCES_DIR) \
 		./runConfigure -plinux -minmem \

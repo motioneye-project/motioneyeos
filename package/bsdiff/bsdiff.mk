@@ -20,6 +20,7 @@ $(BSDIFF_DIR)/.source: $(DL_DIR)/$(BSDIFF_SOURCE)
 
 $(BSDIFF_DIR)/$(BSDIFF_BINARY): $(BSDIFF_DIR)/.source
 	(cd $(BSDIFF_DIR) ; \
+		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CC) -L $(STAGING_DIR)/lib -lbz2 \
 			$(TARGET_CFLAGS) bsdiff.c -o bsdiff ; \

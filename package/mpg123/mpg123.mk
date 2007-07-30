@@ -29,6 +29,7 @@ $(MPG123_DIR)/.unpacked:	$(DL_DIR)/$(MPG123_SOURCE)
 
 $(MPG123_DIR)/.configured: $(MPG123_DIR)/.unpacked
 	(cd $(MPG123_DIR); rm -rf config.cache; \
+		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
