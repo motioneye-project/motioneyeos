@@ -252,7 +252,6 @@ endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
-	
 	touch $@
 
 $(UCLIBC_DIR)/.oldconfig:	$(UCLIBC_DIR)/.config
@@ -374,7 +373,7 @@ endif
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
 endif
 
-uclibc-configured: dependencies kernel-headers $(UCLIBC_DIR)/.configured
+uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
 
 uclibc-config:	$(UCLIBC_DIR)/.config
 
