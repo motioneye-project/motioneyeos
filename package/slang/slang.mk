@@ -21,20 +21,19 @@ $(SLANG_DIR): $(DL_DIR)/$(SLANG_SOURCE)
 
 $(SLANG_DIR)/libslang.so: $(SLANG_DIR)
 	$(MAKE1) CFLAGS="-Os -g $(SLANG_CFLAGS)" CC=$(TARGET_CC) -C $(SLANG_DIR)
-	touch -c $(SLANG_DIR)/libslang.so;
 
 $(STAGING_DIR)/lib/libslang.so.1: $(SLANG_DIR)/libslang.so
-	cp -a $(SLANG_DIR)/libslang.a $(STAGING_DIR)/lib;
-	cp -a $(SLANG_DIR)/libslang.so $(STAGING_DIR)/lib;
-	cp -a $(SLANG_DIR)/slang.h $(STAGING_DIR)/include;
-	cp -a $(SLANG_DIR)/slcurses.h $(STAGING_DIR)/include;
-	(cd $(STAGING_DIR)/lib; ln -fs libslang.so libslang.so.1);
-	touch -c $(STAGING_DIR)/lib/libslang.so.1
+	cp -dpf $(SLANG_DIR)/libslang.a $(STAGING_DIR)/lib
+	cp -dpf $(SLANG_DIR)/libslang.so $(STAGING_DIR)/lib
+	cp -dpf $(SLANG_DIR)/slang.h $(STAGING_DIR)/usr/include
+	cp -dpf $(SLANG_DIR)/slcurses.h $(STAGING_DIR)/usr/include
+	(cd $(STAGING_DIR)/lib; ln -fs libslang.so libslang.so.1)
+	touch -c $@
 
 $(TARGET_DIR)/lib/libslang.so.1: $(STAGING_DIR)/lib/libslang.so.1
-	cp -a $(STAGING_DIR)/lib/libslang.so* $(TARGET_DIR)/lib;
+	cp -dpf $(STAGING_DIR)/lib/libslang.so* $(TARGET_DIR)/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libslang.so*
-	touch -c $(TARGET_DIR)/lib/libslang.so.1
+	touch -c $@
 
 slang: uclibc $(STAGING_DIR)/lib/libslang.so.1 $(TARGET_DIR)/lib/libslang.so.1
 
