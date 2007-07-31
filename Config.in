@@ -652,10 +652,35 @@ config BR2_DEPRECATED
 	  This option hides outdated/obsolete versions of packages.
 
 config BR2_USE_WCHAR
-	bool "Show packages that are require WCHAR support"
+	bool "Show packages that require WCHAR support"
 	default y
 	help
 	  This option hides packages which cannot be built without WCHAR.
+
+choice
+	prompt "strip"
+	default BR2_STRIP_strip
+	help
+	  Select whether to strip binaries and libraries for the target
+	  or not.
+	  strip   is the normal strip command
+	  sstrip  is a strip that discards more than the normal strip
+	  none    do not strip (only for debugging!)
+
+config BR2_STRIP_strip
+	bool "strip"
+	help
+	  strip   is the normal strip command
+config BR2_STRIP_sstrip
+	bool "sstrip"
+	select BR2_PACKAGE_SSTRIP_HOST
+	help
+	  sstrip  is a strip that discards more than the normal strip
+config BR2_STRIP_none
+	bool "none"
+	help
+	  none    do not strip (only for debugging!)
+endchoice
 
 config BR2_PREFER_STATIC_LIB
 	bool "prefer static libraries"

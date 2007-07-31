@@ -131,9 +131,16 @@ endif
 TARGET_CC=$(TARGET_CROSS)gcc
 TARGET_CXX=$(TARGET_CROSS)g++
 TARGET_RANLIB=$(TARGET_CROSS)ranlib
-STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
 INSTALL=/usr/bin/install
-
+ifeq ($(BR2_STRIP_strip),y)
+STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
+endif
+ifeq ($(BR2_STRIP_sstrip),y)
+STRIP=$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-sstrip
+endif
+ifeq ($(BR2_STRIP_none),y)
+STRIP=true -Not_stripping
+endif
 
 HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/sparc.*/sparc/' \
