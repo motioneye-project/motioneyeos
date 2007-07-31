@@ -11,7 +11,10 @@ config BR2_TOOLCHAIN_NORMAL
 	bool
 	prompt "Use default sources for toolchain"
 	help
-	  FIXME: Bug Ulf to provide a helptext
+	  Download vanilla binutils, gcc, uclibc and gdb from their 
+	  main download locations, and apply patches from the
+	  "toolchain/<package>" directores.
+	  I.E: Do not download a prepatched vendor source suite.
 
 config BR2_TOOLCHAIN_ATMEL_AVR32
 	bool
