@@ -20,6 +20,7 @@ UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
 UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
 #"))
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
+UCLIBC_PATCH_DIR:=toolchain/uClibc/
 else
 # releases
 ifeq ($(BR2_UCLIBC_VERSION_0_9_29),y)

@@ -17,6 +17,7 @@ GDB_SITE:=ftp://sources.redhat.com/pub/gdb/snapshots/current
 GDB_SOURCE:=gdb.tar.bz2
 GDB_CAT:=$(BZCAT)
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
+GDB_PATCH_DIR:=toolchain/gdb/$(GDB_VERSION)
 else
 
 ifeq	($(BR2_TOOLCHAIN_NORMAL),y)
