@@ -238,7 +238,7 @@ ifneq ($(BR2_INET_IPV6),y)
 DISABLE_IPV6= --disable-ipv6
 endif
 
-ifeq ($(BR2_INSTALL_LIBSTDCPP),)
+ifneq ($(BR2_GCC_CROSS_CXX),y)
 TARGET_CONFIGURE_OPTS+=CXX=""
 endif
 
