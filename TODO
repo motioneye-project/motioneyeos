@@ -1,0 +1,8 @@
+miscellaneous TODO items that may be worth thinking about and that could
+be discussed on the mailing-list and/or implemented.
+
+
+- think about using a common --config-cache for configure
+  Should take care of expanding TARGET_CONFIGURE_ARGS for cross compiles
+  to working presets.
+
