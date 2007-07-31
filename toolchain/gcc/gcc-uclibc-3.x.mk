@@ -31,8 +31,31 @@ GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
 GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VER)
 endif
 
+
+# redefine if using an external prepatched gcc source
+ifeq	($(BR2_TOOLCHAIN_NORMAL),)
+GCC_SITE:=$(VENDOR_SITE)
+GCC_OFFICIAL_VER:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
+endif
+
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)
+
+ifeq	($(BR2_TOOLCHAIN_NORMAL),y)
+ifeq ($(GCC_SNAP_DATE),)
+GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
+else
+ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),)
+GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VER)
+else
+GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
+endif
+endif
+else
+GCC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gcc-$(GCC_OFFICIAL_VER)
+endif
+
+
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=true
 
@@ -109,7 +132,7 @@ $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
 
-gcc-unpacked: $(GCC_DIR)/.unpacked
+gcc-unpacked: $(GCC_DIR)/.patched
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
@@ -119,16 +142,7 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 gcc-patched: $(GCC_DIR)/.patched
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-ifeq ($(GCC_SNAP_DATE),)
-	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
-else
-ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),)
-	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_OFFICIAL_VER) \*.patch
-else
-	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) \*.patch
-endif
-endif
-
+	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.
 	# However, we still need a patch for arm.  There's a similar patch for gcc 3.3.x

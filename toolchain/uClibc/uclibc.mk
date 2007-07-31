@@ -33,13 +33,21 @@ UCLIBC_VER:=0.9.28
 endif
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 
-ifeq	($(BR2_avr32),y)
-VENDOR_SUFFIX:=-avr32
-UCLIBC_SITE:=$(BR2_ATMEL_MIRROR)/Source
+ifeq	($(BR2_TOOLCHAIN_NORMAL),)
+UCLIBC_SITE:=$(VENDOR_SITE)
 endif
 
-UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-$(UCLIBC_VER)$(VENDOR_SUFFIX)
-UCLIBC_SOURCE:=uClibc-$(UCLIBC_VER)$(VENDOR_SUFFIX).tar.bz2
+UCLIBC_OFFICIAL_VERSION:=$(UCLIBC_VER)$(VENDOR_SUFFIX)$(VENDOR_UCLIBC_RELEASE)
+
+
+ifeq	($(BR2_TOOLCHAIN_NORMAL),y)
+UCLIBC_PATCH_DIR:=toolchain/uClibc/
+else
+UCLIBC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
+endif
+
+UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
+UCLIBC_SOURCE:=uClibc-$(UCLIBC_OFFICIAL_VERSION).tar.bz2
 endif
 
 UCLIBC_CAT:=$(BZCAT)
@@ -93,13 +101,13 @@ endif
 
 uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 $(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
-	[ -d $(TOOL_BUILD_DIR) ] || $(INSTALL) -d $(TOOL_BUILD_DIR)
+	mkdir -p $(TOOL_BUILD_DIR)
 	rm -rf $(UCLIBC_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
-	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ uClibc-$(UCLIBC_VER)$(VENDOR_SUFFIX)-\*.patch
+	toolchain/patch-kernel.sh $(UCLIBC_DIR) $(UCLIBC_PATCH_DIR) uClibc-$(UCLIBC_OFFICIAL_VERSION)-\*.patch
 else
-	toolchain/patch-kernel.sh $(UCLIBC_DIR) toolchain/uClibc/ uClibc.\*.patch
+	toolchain/patch-kernel.sh $(UCLIBC_DIR) $(UCLIBC_PATCH_DIR) uClibc.\*.patch
 endif
 ifneq ($(BR2_ENABLE_LOCALE),)
 	cp -dpf $(DL_DIR)/$(UCLIBC_SOURCE_LOCALE) $(UCLIBC_DIR)/extra/locale/

@@ -62,8 +62,20 @@ BINUTILS_TARGET_CONFIG_OPTIONS=--with-gmp="$(GMP_TARGET_DIR)"
 BINUTILS_TARGET_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_TARGET_DIR)"
 endif
 
-BINUTILS_SOURCE:=binutils-$(BINUTILS_VERSION).tar.bz2
-BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)
+ifeq	($(BR2_TOOLCHAIN_NORMAL),)
+BINUTILS_SITE:=$(VENDOR_SITE)
+endif
+
+BINUTILS_OFFICIAL_VERSION:=$(BINUTILS_VERSION)$(VENDOR_SUFFIX)$(VENDOR_BINUTILS_RELEASE)
+
+ifeq	($(BR2_TOOLCHAIN_NORMAL),y)
+BINUTILS_PATCH_DIR:=toolchain/binutils/$(BINUTILS_VERSION)
+else
+BINUTILS_PATCH_DIR:=$(VENDOR_PATCH_DIR)/binutils-$(BINUTILS_OFFICIAL_VERSION)
+endif
+
+BINUTILS_SOURCE:=binutils-$(BINUTILS_OFFICIAL_VERSION).tar.bz2
+BINUTILS_DIR:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_OFFICIAL_VERSION)
 BINUTILS_CAT:=$(BZCAT)
 
 BINUTILS_DIR1:=$(TOOL_BUILD_DIR)/binutils-$(BINUTILS_VERSION)-build
@@ -72,7 +84,7 @@ $(DL_DIR)/$(BINUTILS_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(BINUTILS_SITE)/$(BINUTILS_SOURCE)
 
-binutils-unpacked: $(BINUTILS_DIR)/.unpacked
+binutils-unpacked: $(BINUTILS_DIR)/.patched
 $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	rm -rf $(BINUTILS_DIR)
@@ -82,7 +94,7 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply appropriate binutils patches.
-	toolchain/patch-kernel.sh $(BINUTILS_DIR) toolchain/binutils/$(BINUTILS_VERSION) \*.patch
+	toolchain/patch-kernel.sh $(BINUTILS_DIR) $(BINUTILS_PATCH_DIR) \*.patch
 	touch $@
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched

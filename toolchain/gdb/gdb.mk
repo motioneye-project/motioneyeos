@@ -18,11 +18,25 @@ GDB_SOURCE:=gdb.tar.bz2
 GDB_CAT:=$(BZCAT)
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
 else
+
+ifeq	($(BR2_TOOLCHAIN_NORMAL),y)
 GDB_SITE:=http://ftp.gnu.org/gnu/gdb
-GDB_SOURCE:=gdb-$(GDB_VERSION).tar.bz2
+else
+GDB_SITE:=$(VENDOR_SITE)
+endif
+
+GDB_OFFICIAL_VERSION:=$(GDB_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GDB_RELEASE)
+
+GDB_SOURCE:=gdb-$(GDB_OFFICIAL_VERSION).tar.bz2
 GDB_CAT:=$(BZCAT)
 
-GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
+ifeq	($(BR2_TOOLCHAIN_NORMAL),y)
+GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
+else
+GDB_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
+endif
+
+GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
 
 # NOTE: This option should not be used with gdb versions 6.4 and above.
 ifeq ($(GDB_VERSION),6.2.1)
@@ -39,13 +53,14 @@ $(DL_DIR)/$(GDB_SOURCE):
 
 gdb-unpacked: $(GDB_DIR)/.unpacked
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
+	mkdir -p $(TOOL_BUILD_DIR)
 	$(GDB_CAT) $(DL_DIR)/$(GDB_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 ifeq ($(GDB_VERSION),snapshot)
 	GDB_REAL_DIR=$(shell \
 		tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1)
 	ln -sf $(TOOL_BUILD_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
 endif
-	toolchain/patch-kernel.sh $(GDB_DIR) toolchain/gdb/$(GDB_VERSION) \*.patch
+	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch
 	$(CONFIG_UPDATE) $(GDB_DIR)
 	touch $@
 
