@@ -46,7 +46,7 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 	touch $@
 
 $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(OPENSSH_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(OPENSSH_DIR)
 	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/scp
 	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/sftp
 	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/sftp-server
