@@ -9,8 +9,8 @@ MODUTILS_CAT:=$(BZCAT)
 MODUTILS_SITE=http://ftp.kernel.org/pub/linux/utils/kernel/modutils/v2.4/
 MODUTILS_DIR1=$(BUILD_DIR)/modutils-$(MODUTILS_VERSION)
 MODUTILS_DIR2=$(TOOL_BUILD_DIR)/modutils-$(MODUTILS_VERSION)
-MODUTILS_BINARY=depmod/depmod
-MODUTILS_TARGET_BINARY=$(TARGET_DIR)/sbin/$(MODUTILS_BINARY)
+MODUTILS_BINARY=depmod
+MODUTILS_TARGET_BINARY=sbin/$(MODUTILS_BINARY)
 
 STRIPPROG=$(STRIP)
 
@@ -40,19 +40,30 @@ $(MODUTILS_DIR1)/.configured: $(MODUTILS_DIR1)/.source
 		--prefix=/ \
 		--sysconfdir=/etc \
 	);
-	touch $(MODUTILS_DIR1)/.configured;
+	touch $(MODUTILS_DIR1)/.configured
 
-$(MODUTILS_DIR1)/$(MODUTILS_BINARY): $(MODUTILS_DIR1)/.configured
+$(MODUTILS_DIR1)/.build: $(MODUTILS_DIR1)/.configured
 	$(MAKE1) CC=$(TARGET_CC) -C $(MODUTILS_DIR1)
-	touch -c $(MODUTILS_DIR1)/$(MODUTILS_BINARY)
+	touch $@
 
-$(TARGET_DIR)/$(MODUTILS_TARGET_BINARY): $(MODUTILS_DIR1)/$(MODUTILS_BINARY)
+$(STAGING_DIR)/$(MODUTILS_TARGET_BINARY): $(MODUTILS_DIR1)/.build
 	STRIPPROG='$(STRIPPROG)' \
-	$(MAKE) prefix=$(TARGET_DIR) -C $(MODUTILS_DIR1) install-bin
-	rm -Rf $(TARGET_DIR)/usr/man
-	touch -c $(TARGET_DIR)/$(MODUTILS_TARGET_BINARY)
+	$(MAKE) prefix=$(STAGING_DIR) -C $(MODUTILS_DIR1) install-bin
+	touch -c $@
 
-modutils: uclibc $(TARGET_DIR)/$(MODUTILS_TARGET_BINARY)
+$(TARGET_DIR)/sbin/rmmod:	$(STAGING_DIR)/$(MODUTILS_TARGET_BINARY)
+	cp -dpf $(STAGING_DIR)/sbin/depmod	$(TARGET_DIR)/sbin/depmod
+	cp -dpf $(STAGING_DIR)/sbin/insmod	$(TARGET_DIR)/sbin/insmod
+	cp -dpf $(STAGING_DIR)/sbin/modinfo	$(TARGET_DIR)/sbin/modinfo
+	ln -s	insmod $(TARGET_DIR)/sbin/kallsyms
+	ln -s	insmod $(TARGET_DIR)/sbin/ksyms
+	ln -s	insmod $(TARGET_DIR)/sbin/lsmod
+	ln -s	insmod $(TARGET_DIR)/sbin/modprobe
+	ln -s	insmod $(TARGET_DIR)/sbin/rmmod
+
+
+
+modutils: uclibc $(TARGET_DIR)/sbin/rmmod
 
 modutils-source: $(DL_DIR)/$(MODUTILS_SOURCE)
 
@@ -63,6 +74,15 @@ modutils-clean:
 modutils-dirclean:
 	rm -rf $(MODUTILS_DIR1)
 
+modutils-target-clean:
+	rm -f $(TARGET_DIR)/sbin/depmod
+	rm -f $(TARGET_DIR)/sbin/insmod
+	rm -f $(TARGET_DIR)/sbin/modinfo
+	rm -f $(TARGET_DIR)/sbin/kallsyms
+	rm -f $(TARGET_DIR)/sbin/ksyms
+	rm -f $(TARGET_DIR)/sbin/lsmod
+	rm -f $(TARGET_DIR)/sbin/modprobe
+	rm -f $(TARGET_DIR)/sbin/rmmod
 
 #############################################################
 #
