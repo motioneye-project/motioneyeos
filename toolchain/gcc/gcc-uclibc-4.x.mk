@@ -75,9 +75,30 @@ GCC_STAGING_PREREQ= $(STAGING_DIR)/usr/lib/libc.a
 
 GCC_TARGET_LANGUAGES:=c
 
-GCC_COMMON_PREREQ= $(wildcard $(BASE_DIR)/include/config/br2/install/libstdcpp* $(BASE_DIR)/include/config/br2/install/libgcj* $(BASE_DIR)/include/config/br2/install/objc* $(BASE_DIR)/include/config/br2/install/fortran* $(BASE_DIR)/include/config/br2/prefer/ima* $(BASE_DIR)/include/config/br2/toolchain/sysroot* $(BASE_DIR)/include/config/br2/use/sjlj/exceptions* $(BASE_DIR)/include/config/br2/gcc/shared/libgcc*)
-GCC_TARGET_PREREQ += $(GCC_COMMON_PREREQ) $(wildcard $(BASE_DIR)/include/config/br2/extra/target/gcc/config/options*)
-GCC_STAGING_PREREQ+= $(GCC_COMMON_PREREQ) $(wildcard $(BASE_DIR)/include/config/br2/extra/gcc/config/options*)
+GCC_CROSS_LANGUAGES:=c
+ifeq ($(BR2_GCC_CROSS_CXX),y)
+GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),c++
+endif
+ifeq ($(BR2_GCC_CROSS_FORTRAN),y)
+GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),fortran
+endif
+ifeq ($(BR2_GCC_CROSS_OBJC),y)
+GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),objc
+endif
+
+GCC_COMMON_PREREQ= $(wildcard $(BR2_DEPENDS_DIR)/br2/install/libstdcpp*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/install/libgcj*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/install/objc*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/install/fortran*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/prefer/ima*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/toolchain/sysroot*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/use/sjlj/exceptions*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/gcc/shared/libgcc*)
+GCC_TARGET_PREREQ += $(GCC_COMMON_PREREQ) \
+$(wildcard $(BR2_DEPENDS_DIR)/br2/extra/target/gcc/config/options*)
+GCC_STAGING_PREREQ+= $(GCC_COMMON_PREREQ) \
+$(wildcard $(BR2_DEPENDS_DIR)/br2/extra/gcc/config/options*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/gcc/cross/*)
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),c++
@@ -232,7 +253,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
-		--enable-languages=$(GCC_TARGET_LANGUAGES) \
+		--enable-languages=$(GCC_CROSS_LANGUAGES) \
 		$(BR2_CONFIGURE_STAGING_SYSROOT) \
 		$(BR2_CONFIGURE_BUILD_TOOLS) \
 		--disable-__cxa_atexit \

@@ -156,6 +156,18 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	help
 	  Any additional gcc configure options you may want to include....
 
+config BR2_GCC_CROSS_CXX
+	bool "C++ cross-compiler support"
+	default n
+	help
+	  Build a C++ cross-compiler
+
+config BR2_GCC_CROSS_FORTRAN
+	bool "Fortran cross-compiler support"
+	default n
+	help
+	  Build a Fortran cross-compiler
+
 config BR2_INSTALL_LIBSTDCPP
 	bool "Build/install c++ compiler and libstdc++?"
 	default n
