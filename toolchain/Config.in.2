@@ -41,6 +41,12 @@ config BR2_INET_RPC
 	help
 	    Enable RPC. RPC support is needed for nfs.
 
+config BR2_USE_WCHAR
+	bool "Enable WCHAR support"
+	default n
+	help
+	  Enable WCHAR. WCHAR support is needed for several packages
+
 config BR2_SOFT_FLOAT
 	bool "Use software floating point by default"
 	default n
