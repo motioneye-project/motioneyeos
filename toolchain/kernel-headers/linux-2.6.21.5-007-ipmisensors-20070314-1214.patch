@@ -1,0 +1,1914 @@
+diff -rduNp linux-2.6.20.3.orig/drivers/char/ipmi/ipmi_msghandler.c linux-2.6.20.3/drivers/char/ipmi/ipmi_msghandler.c
+--- linux-2.6.20.3.orig/drivers/char/ipmi/ipmi_msghandler.c	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/drivers/char/ipmi/ipmi_msghandler.c	2007-03-14 14:23:02.000000000 +0100
+@@ -1954,6 +1954,24 @@ static void remove_proc_entries(ipmi_smi
+ #endif /* CONFIG_PROC_FS */
+ }
+ 
++/*
++ * Retrieves the bmc_device struct for a given ipmi interface number (or NULL if none).
++ */
++struct device *ipmi_get_bmcdevice(int if_num)
++{
++	ipmi_smi_t intf;
++	mutex_lock(&ipmi_interfaces_mutex);
++	list_for_each_entry_rcu(intf, &ipmi_interfaces, link) {
++		if (intf->intf_num == if_num){
++			mutex_unlock(&ipmi_interfaces_mutex);
++			return &intf->bmc->dev->dev;
++		}
++	}
++	mutex_unlock(&ipmi_interfaces_mutex);
++
++	return NULL;
++}
++
+ static int __find_bmc_guid(struct device *dev, void *data)
+ {
+ 	unsigned char *id = data;
+@@ -4183,3 +4201,4 @@ EXPORT_SYMBOL(ipmi_get_my_LUN);
+ EXPORT_SYMBOL(ipmi_smi_add_proc_entry);
+ EXPORT_SYMBOL(ipmi_user_set_run_to_completion);
+ EXPORT_SYMBOL(ipmi_free_recv_msg);
++EXPORT_SYMBOL(ipmi_get_bmcdevice);
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/Kconfig linux-2.6.20.3/drivers/hwmon/Kconfig
+--- linux-2.6.20.3.orig/drivers/hwmon/Kconfig	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/Kconfig	2007-03-14 14:23:02.000000000 +0100
+@@ -218,6 +218,16 @@ config SENSORS_GL520SM
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called gl520sm.
+ 
++config SENSORS_IPMI
++	tristate "IPMI Hardware Monitoring Support"
++	depends on HWMON && IPMI_HANDLER && EXPERIMENTAL
++	help
++	  If you say yes here you get support for sensors monitored by
++	  an IPMI baseboard management controller (BMC).
++
++	  This driver can also be built as a module.  If so, the module
++	  will be called ipmisensors.
++
+ config SENSORS_IT87
+ 	tristate "ITE IT87xx and compatibles"
+ 	depends on HWMON && I2C
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/Makefile linux-2.6.20.3/drivers/hwmon/Makefile
+--- linux-2.6.20.3.orig/drivers/hwmon/Makefile	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/Makefile	2007-03-14 14:23:02.000000000 +0100
+@@ -28,6 +28,7 @@ obj-$(CONFIG_SENSORS_FSCPOS)	+= fscpos.o
+ obj-$(CONFIG_SENSORS_GL518SM)	+= gl518sm.o
+ obj-$(CONFIG_SENSORS_GL520SM)	+= gl520sm.o
+ obj-$(CONFIG_SENSORS_HDAPS)	+= hdaps.o
++obj-$(CONFIG_SENSORS_IPMI)	+= ipmisensors.o
+ obj-$(CONFIG_SENSORS_IT87)	+= it87.o
+ obj-$(CONFIG_SENSORS_K8TEMP)	+= k8temp.o
+ obj-$(CONFIG_SENSORS_LM63)	+= lm63.o
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.c linux-2.6.20.3/drivers/hwmon/ipmisensors.c
+--- linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/ipmisensors.c	2007-03-14 14:44:42.000000000 +0100
+@@ -0,0 +1,1552 @@
++/*
++ *  ipmisensors.c -	lm-sensors/hwmon interface to IPMI sensors. 
++ *
++ *  Copyright (C) 2004-2006 Yani Ioannou <yani.ioannou@gmail.com>
++ *
++ *  Adapted from bmcsensors (lm-sensors for linux 2.4) 
++ *  bmcsensors (C) Mark D. Studebaker <mdsxyz123@yahoo.com>
++ *
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *  
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *  
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/init.h>
++#include <linux/module.h>
++#include <linux/param.h>
++#include <linux/hwmon.h>
++#include <linux/list.h>
++#include <linux/slab.h>
++#include <linux/device.h>
++#include <linux/hwmon.h>
++
++#include "ipmisensors.h"
++
++/****** Function Prototypes ******/
++static void ipmisensors_send_message(struct ipmisensors_bmc_data *bmc,
++				     long msgid, struct kernel_ipmi_msg *msg);
++static void ipmisensors_reserve_sdr(struct ipmisensors_bmc_data *bmc);
++static void ipmisensors_get_sdr(struct ipmisensors_bmc_data *bmc, u16 res_id,
++				u16 record, u8 offset);
++static void ipmisensors_set_sensor_threshold(struct ipmisensors_bmc_data *bmc,
++					     u8 number, int value,
++					     int lim_index);
++static void ipmisensors_get_reading(struct ipmisensors_bmc_data *bmc,
++				    struct sdrdata *sdr);
++static void ipmisensors_msg_handler(struct ipmi_recv_msg *msg,
++				    void *user_msg_data);
++static int ipmisensors_intf_registered(int ipmi_intf);
++static int ipmisensors_bmc_registered(struct device *bmc);
++static void ipmisensors_register_bmc(int ipmi_intf, struct ipmi_addr *address);
++static void ipmisensors_unregister_bmc(int ipmi_intf);
++static void ipmisensors_unregister_bmc_all(void);
++static void ipmisensors_new_smi(int if_num, struct device *dev);
++static void ipmisensors_smi_gone(int if_num);
++static void ipmisensors_update_bmc(struct work_struct *);
++static void ipmisensors_cleanup(void);
++
++/****** Static Vars ******/
++
++/* set when module is being removed */
++static int cleanup = 0;
++
++/* ipmisensors driver data */
++static struct ipmisensors_data driver_data = {
++	.driver_name = "bmc",
++	.bmc_data = LIST_HEAD_INIT(driver_data.bmc_data),
++	.interfaces = 0,
++	.smi_watcher = {
++			.owner = THIS_MODULE,
++			.new_smi = ipmisensors_new_smi,
++			.smi_gone = ipmisensors_smi_gone,
++			},
++	.ipmi_hndlrs = {
++			.ipmi_recv_hndl = ipmisensors_msg_handler,
++			},
++};
++
++/* sensor refresh workqueue */
++static struct workqueue_struct *ipmisensors_workqueue;
++
++/****** SDR List Functions ******/
++/**
++ * Creates a new sdrdata struct, or returns NULL if insufficient memory.
++ */
++static struct sdrdata *ipmisensors_new_sdr(void)
++{
++	struct sdrdata *sdr;
++
++	sdr = kmem_cache_alloc(driver_data.sdrdata_cache, GFP_ATOMIC);
++	if (sdr) {
++		memset(sdr, 0, sizeof(struct sdrdata));
++	} else {
++		printk(KERN_ERR
++		       "ipmisensors: Couldn't allocate memory for new SDR\n");
++	}
++
++	return sdr;
++}
++
++/**
++ * Adds the given sdrdata struct to the given bmc's SDR list.
++ *
++ * @bmc: the bmc to send the message to.
++ */
++static inline void ipmisensors_add_sdr(struct ipmisensors_bmc_data *bmc,
++				       struct sdrdata *sdr)
++{
++	list_add(&sdr->list, &bmc->sdrs);
++	printk(KERN_DEBUG
++	       "ipmisensors: SDR %d: type 0x%02x (%s)\n",
++	       bmc->sdr_count, sdr->stype, sdr->id);
++	bmc->sdr_count++;
++}
++
++/**
++ * Cleanup the sdr list for the given BMC.
++ * 
++ * @bmc: the bmc to send the message to.
++ */
++static void ipmisensors_sdr_cleanup(struct ipmisensors_bmc_data *bmc)
++{
++	struct sdrdata *cursor, *next;
++
++	/* find and free each sdr data struct */
++	list_for_each_entry_safe(cursor, next, &bmc->sdrs, list) {
++		device_remove_file(bmc->dev, &cursor->attr.dev_attr);
++		device_remove_file(bmc->dev, &cursor->attr_min.dev_attr);
++		device_remove_file(bmc->dev, &cursor->attr_max.dev_attr);
++		device_remove_file(bmc->dev, &cursor->attr_label.dev_attr);
++
++		kfree(cursor->attr_name);
++		kfree(cursor->attr_max_name);
++		kfree(cursor->attr_min_name);
++		kfree(cursor->attr_label_name);
++
++		list_del(&cursor->list);
++		kmem_cache_free(driver_data.sdrdata_cache, cursor);
++	}
++}
++
++/* worker function for workqueue ipmisensors_workqueue */
++static void ipmisensors_update_bmc(struct work_struct *work)
++{
++	struct ipmisensors_bmc_data *bmc = container_of(work, struct ipmisensors_bmc_data, update_work.work);
++
++	/* don't start an update cycle if one already in progress */
++	if (bmc->state != STATE_READING) {
++		struct sdrdata *cursor, *next;
++		bmc->state = STATE_READING;
++		printk(KERN_DEBUG "ipmisensors: starting update\n");
++
++		/* init semaphore to 1 for update cycle */
++		sema_init(&bmc->update_semaphore, 1);
++
++		/* update each sdr reading */
++		list_for_each_entry_safe(cursor, next, &bmc->sdrs, list) {
++			ipmisensors_get_reading(bmc, cursor);
++		}
++	}
++
++	/* wait for readings (need timeout?) */
++	down_interruptible(&bmc->update_semaphore);
++
++	printk(KERN_DEBUG "ipmisensors: update complete\n");
++
++	bmc->state = STATE_DONE;
++
++	/* if the module isn't cleaning up, schedule another update */
++	if (!cleanup)
++		queue_delayed_work(ipmisensors_workqueue, &bmc->update_work,
++				   bmc->update_period * HZ);
++}
++
++/****** IPMI Message Sending ******/
++
++/**
++ * Send a message to the IPMI BMC
++ *
++ * @bmc: the bmc to send the message to.
++ * @msgid: the message id to use.
++ * @msg: the ipmi message structure.
++ */
++static void ipmisensors_send_message(struct ipmisensors_bmc_data *bmc,
++				     long msgid, struct kernel_ipmi_msg *msg)
++{
++	if (msg->data == NULL)
++		printk(KERN_DEBUG "ipmisensors: Send 0x%x\n", msg->cmd);
++	else
++		printk(KERN_DEBUG "ipmisensors: Send 0x%x 0x%x 0x%x\n",
++		       msg->cmd, msg->data[0], msg->data[1]);
++
++	/* This should be ipmi_request, but Corey had to remove
++	 * that due to it being unused at the moment, as soon as 
++	 * this makes it into the kernel we should request it be re-instated.
++	 */
++	ipmi_request_settime(bmc->user, &bmc->address, msgid, msg, bmc, 0,
++			     -1, 0);
++}
++
++/**
++ * Compose and send a "reserve SDR" message
++ *
++ * @bmc: the bmc to send the message to.
++ */
++static void ipmisensors_reserve_sdr(struct ipmisensors_bmc_data *bmc)
++{
++	bmc->tx_message.netfn = IPMI_NETFN_STORAGE_REQUEST;
++	bmc->tx_message.cmd = IPMI_RESERVE_SDR;
++	bmc->tx_message.data_len = 0;
++	bmc->tx_message.data = NULL;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++}
++
++/**
++ * Componse and send a "get SDR" message
++ *
++ * @bmc: the bmc to send the message to.
++ * @res_id:
++ * @record:
++ * @offset:
++ */
++static void ipmisensors_get_sdr(struct ipmisensors_bmc_data *bmc, u16 res_id,
++				u16 record, u8 offset)
++{
++	printk(KERN_DEBUG "ipmisensors: Get SDR 0x%x 0x%x 0x%x\n",
++	       res_id, record, offset);
++	bmc->tx_message.netfn = IPMI_NETFN_STORAGE_REQUEST;
++	bmc->tx_message.cmd = IPMI_GET_SDR;
++	bmc->tx_message.data_len = 6;
++	bmc->tx_message.data = bmc->tx_msg_data;
++	bmc->tx_msg_data[0] = res_id & 0xff;
++	bmc->tx_msg_data[1] = res_id >> 8;
++	bmc->tx_msg_data[2] = record & 0xff;
++	bmc->tx_msg_data[3] = record >> 8;
++	bmc->tx_msg_data[4] = offset;
++	bmc->tx_msg_data[5] = bmc->ipmi_sdr_partial_size;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++}
++
++/**
++ * Compose and send a "set sensor threshold" message
++ *
++ * @bmc: the bmc to send the message to.
++ * @id: the ipmi id number of the sensor.
++ * @value: the new value for the threshold.
++ * @lim_index: the index in the lim[] array for which this value applies.
++ */
++static void ipmisensors_set_sensor_threshold(struct ipmisensors_bmc_data *bmc,
++					     u8 number, int value,
++					     int lim_index)
++{
++	int i;
++
++	printk(KERN_DEBUG "ipmisensors: Set SDR Threshold %d %d %d\n",
++	       number, value, lim_index);
++	bmc->tx_message.netfn = IPMI_NETFN_STORAGE_REQUEST;
++	bmc->tx_message.cmd = IPMI_SET_SENSOR_THRESHOLD;
++	bmc->tx_message.data_len = 8;
++	bmc->tx_message.data = bmc->tx_msg_data;
++	bmc->tx_msg_data[0] = number & 0xff;
++	bmc->tx_msg_data[1] = 0x01 << lim_index;
++
++	if (lim_index > 5 || lim_index < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Error - ipmisensors_set_sensor_threshold given invalid lim_index\n");
++		return;
++	}
++
++	for (i = 2; i < 8; i++)
++		bmc->tx_msg_data[i] = 0x00;
++
++	bmc->tx_msg_data[lim_index] = value && 0xff;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++}
++
++/**
++ * Compose and send a "get sensor reading" message for the given sdr.
++ *
++ * @bmc: the bmc to send the message to.
++ * @sdr: the sdr of the sensor to get the reading for.
++ */
++static void ipmisensors_get_reading(struct ipmisensors_bmc_data *bmc,
++				    struct sdrdata *sdr)
++{
++	bmc->tx_message.netfn = IPMI_NETFN_SENSOR_EVENT_REQUEST;
++	bmc->tx_message.cmd = IPMI_GET_SENSOR_STATE_READING;
++	bmc->tx_message.data_len = 1;
++	bmc->tx_message.data = bmc->tx_msg_data;
++	bmc->tx_msg_data[0] = sdr->number;
++	bmc->current_sdr = sdr;
++
++	ipmisensors_send_message(bmc, bmc->msgid++, &bmc->tx_message);
++	down_interruptible(&bmc->update_semaphore);
++}
++
++/****** IPMI Message Receiving ******/
++
++/**
++ * Process an sensor reading response message.
++ *
++ * @bmc: the bmc the message is from
++ * @msg: the IPMI SDR response message
++ */
++static void ipmisensors_rcv_reading_msg(struct ipmisensors_bmc_data *bmc,
++					struct kernel_ipmi_msg *msg)
++{
++	struct sdrdata *sdr = bmc->current_sdr;
++
++	if (sdr == NULL) {
++		printk(KERN_ERR
++		       "ipmisensors: Error ipmisensors_rcv_reading with NULL sdr\n");
++		return;
++	}
++
++	sdr->reading = msg->data[1];
++	sdr->status = msg->data[2];
++	sdr->thresholds = msg->data[3];
++
++	printk(KERN_DEBUG "ipmisensors: sensor %d (type %d) reading %d\n",
++	       sdr->number, sdr->stype, msg->data[1]);
++
++	up(&bmc->update_semaphore);
++}
++
++/** 
++ * Unpack based on string type, convert to normal, null terminate.
++ */
++static void ipmisensors_sprintf(u8 * to, u8 * from, u8 type, u8 length)
++{
++	static const u8 *bcdplus = "0123456789 -.:,_";
++	int i;
++
++	switch (type) {
++	case 0:		/* unicode */
++		for (i = 0; i < length; i++)
++			*to++ = (*from++ & 0x7f);
++		*to = 0;
++		break;
++	case 1:		/* BCD Plus */
++		for (i = 0; i < length; i++)
++			*to++ = bcdplus[*from++ & 0x0f];
++		*to = 0;
++		break;
++	case 2:		/* packed ascii *//* if not a mult. of 3 this will run over */
++		for (i = 0; i < length; i += 3) {
++			*to++ = *from & 0x3f;
++			*to++ = *from >> 6 | ((*(from+1) & 0xf)  << 2);
++			from++;
++			*to++ = *from >> 4 | ((*(from+1) & 0x3)  << 4);
++			from++;
++			*to++ = (*from++ >> 2) & 0x3f;
++		}
++		*to = 0;
++		break;
++	case 3:		/* normal */
++		if (length > 1)
++			memcpy(to, from, length);
++		to[length] = 0;
++		break;
++	}
++}
++
++/* IPMI V1.5 Section 30 */
++static const int exps[] =
++    { 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000 };
++
++/* Return 0 for fan, 2 for temp, 3 for voltage
++   We could make it variable based on the accuracy (= log10(m * 10**k2));
++   this would work for /proc output, however libsensors resolution
++   is statically set in lib/chips.c */
++static int decplaces(struct sdrdata *sd)
++{
++	switch (sd->stype) {
++	case STYPE_TEMP:
++		return 2;
++	case STYPE_CURR:
++	case STYPE_VOLT:
++		return 3;
++	case STYPE_FAN:
++	default:
++		return 0;
++	}
++}
++
++/* convert a raw value to a reading. IMPI V1.5 Section 30 */
++static long conv_val(int value, struct sdrdata *sd)
++{
++	u8 k1, k2;
++	long r;
++
++	r = value * sd->m;
++	k1 = sd->k & 0x0f;
++	k2 = sd->k >> 4;
++	if (k1 < 8)
++		r += sd->b * exps[k1];
++	else
++		r += sd->b / exps[16 - k1];
++	r *= exps[decplaces(sd)];
++	if (k2 < 8) {
++		if (sd->linear != 7)
++			r *= exps[k2];
++		else
++			/* this will always truncate to 0: r = 1 / (exps[k2] * r); */
++			r = 0;
++	} else {
++		if (sd->linear != 7)
++			r /= exps[16 - k2];
++		else {
++			if (r != 0)
++				/* 1 / x * 10 ** (-m) == 10 ** m / x */
++				r = exps[16 - k2] / r;
++			else
++				r = 0;
++		}
++	}
++
++	return r;
++}
++
++static const char *threshold_text[] = {
++	"upper non-recoverable threshold",
++	"upper critical threshold",
++	"upper non-critical threshold",
++	"lower non-recoverable threshold",
++	"lower critical threshold",
++	"lower non-critical threshold",
++	"positive-going hysteresis",
++	"negative-going hysteresis"	/* unused */
++};
++
++/* select two out of the 8 possible readable thresholds, and place indexes into the limits
++   array into lim1 and lim2. Set writable flags */
++static void ipmisensors_select_thresholds(struct sdrdata *sd)
++{
++	u8 capab = sd->capab;
++	u16 mask = sd->thresh_mask;
++	int tmp;
++
++	sd->lim1 = -1;
++	sd->lim2 = -1;
++	sd->lim1_write = 0;
++	sd->lim2_write = 0;
++
++	if (((capab & 0x0c) == 0x04) ||	/* readable thresholds ? */
++	    ((capab & 0x0c) == 0x08)) {
++		/* select upper threshold */
++		if (mask & 0x10) {	/* upper crit */
++			sd->lim1 = 1;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x1000))
++				sd->lim1_write = 1;
++		} else if (mask & 0x20) {	/* upper non-recov */
++			sd->lim1 = 0;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x2000))
++				sd->lim1_write = 1;
++		} else if (mask & 0x08) {	/* upper non-crit */
++			sd->lim1 = 2;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0800))
++				sd->lim1_write = 1;
++		}
++
++		/* select lower threshold */
++		if ((((capab & 0x30) == 0x10) ||	/* readable ? */
++		     ((capab & 0x30) == 0x20)) &&	/* pos hyst */
++		    sd->stype == STYPE_TEMP)
++			sd->lim2 = 6;
++		else if (mask & 0x02) {	/* lower crit */
++			sd->lim2 = 4;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0200))
++				sd->lim2_write = 1;
++		} else if (mask & 0x04) {	/* lower non-recov */
++			sd->lim2 = 3;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0400))
++				sd->lim2_write = 1;
++		} else if (mask & 0x01) {	/* lower non-crit */
++			sd->lim2 = 5;
++			if ((capab & 0x0c) == 0x08 && (mask & 0x0100))
++				sd->lim2_write = 1;
++		}
++	}
++
++	/* swap lim1/lim2 if m < 0 or function is 1/x (but not both!) */
++	if ((sd->m < 0 && sd->linear != 7) || (sd->m >= 0 && sd->linear == 7)) {
++		tmp = sd->lim1;
++		sd->lim1 = sd->lim2;
++		sd->lim2 = tmp;
++	}
++
++	if (sd->lim1 >= 0)
++		printk(KERN_INFO "ipmisensors: using %s for upper limit\n",
++		       threshold_text[sd->lim1]);
++	else
++		printk(KERN_DEBUG "ipmisensors: no readable upper limit\n");
++
++	if (sd->lim2 >= 0)
++		printk(KERN_INFO "ipmisensors: using %s for lower limit\n",
++		       threshold_text[sd->lim2]);
++	else
++		printk(KERN_DEBUG "ipmisensors: no readable lower limit\n");
++}
++
++/************* sysfs callback functions *********/
++static ssize_t show_update_period(struct device *dev,
++				     struct device_attribute *attr, char *buf)
++{
++	struct ipmisensors_bmc_device_attribute *aattr =
++	    to_ipmisensors_bmc_dev_attr(attr);
++
++	return snprintf(buf, 20, "%d\n", aattr->bmc->update_period);
++}
++
++static ssize_t store_update_period(struct device *dev,
++				      struct device_attribute *attr,
++				      const char *buf, size_t count)
++{
++	struct ipmisensors_bmc_device_attribute *aattr =
++	    to_ipmisensors_bmc_dev_attr(attr);
++
++	aattr->bmc->update_period = simple_strtoul(buf, NULL, 10);;
++	return count;
++};
++
++static ssize_t show_sensor(struct device *dev, struct device_attribute *attr,
++			   char *buf)
++{
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++	return snprintf(buf, 20, "%ld\n",
++			conv_val(sattr->sdr->reading, sattr->sdr));
++}
++
++static ssize_t show_sensor_max(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	long max = 0;
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++
++	if (sattr->sdr->lim1 >= 0)
++		max = conv_val(sattr->sdr->limits[sattr->sdr->lim1],
++			       sattr->sdr);
++	return snprintf(buf, 20, "%ld\n", max);
++}
++
++static ssize_t show_sensor_min(struct device *dev,
++			       struct device_attribute *attr, char *buf)
++{
++	long min = 0;
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++
++	if (sattr->sdr->lim2 >= 0)
++		min = conv_val(sattr->sdr->limits[sattr->sdr->lim2],
++			       sattr->sdr);
++	return snprintf(buf, 20, "%ld\n", min);
++};
++
++static ssize_t show_sensor_label(struct device *dev,
++				 struct device_attribute *attr, char *buf)
++{
++	u8 label[SDR_MAX_UNPACKED_ID_LENGTH];
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++
++	ipmisensors_sprintf(label, sattr->sdr->id, sattr->sdr->string_type,
++			    sattr->sdr->id_length);
++	return snprintf(buf, 20, "%s\n", label);
++};
++
++static ssize_t store_sensor_max(struct device *dev,
++				struct device_attribute *attr, const char *buf,
++				size_t count)
++{
++	long val = simple_strtoul(buf, NULL, 10);
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++	printk(KERN_DEBUG "ipmisensors: set max on sensor #%d to %ld",
++	       sattr->sdr->number, val);
++	ipmisensors_set_sensor_threshold(sattr->sdr->bmc, sattr->sdr->number,
++					 val, sattr->sdr->lim1);
++	return count;
++};
++
++static ssize_t store_sensor_min(struct device *dev,
++				struct device_attribute *attr, const char *buf,
++				size_t count)
++{
++	long val = simple_strtoul(buf, NULL, 10);
++	struct ipmisensors_device_attribute *sattr =
++	    to_ipmisensors_dev_attr(attr);
++	printk(KERN_DEBUG "ipmisensors: set min on sensor #%d to %ld",
++	       sattr->sdr->number, val);
++	ipmisensors_set_sensor_threshold(sattr->sdr->bmc, sattr->sdr->number,
++					 val, sattr->sdr->lim2);
++	return count;
++};
++
++static ssize_t show_alarms(struct device *dev, struct device_attribute *attr,
++			   char *buf)
++{
++	struct ipmisensors_bmc_device_attribute *aattr =
++	    to_ipmisensors_bmc_dev_attr(attr);
++	return snprintf(buf, 20, "%d\n", aattr->bmc->alarms);
++};
++
++static ssize_t show_name(struct device *dev, struct device_attribute *attr,
++			   char *buf)
++{
++	return snprintf(buf, 20, "%s\n", driver_data.driver_name);
++};
++
++/* work function to build the sysfs entries using the ipmi sdrs */
++static void ipmisensors_build_sysfs(struct work_struct *work)
++{
++	int temps = 0, volts = 0, currs = 0, fans = 0;
++	struct sdrdata *cursor, *next;
++	struct ipmisensors_bmc_data *bmc = container_of(work, struct ipmisensors_bmc_data, sysfs_work);
++
++	/* find and create entries for each sdr data struct */
++	list_for_each_entry_safe(cursor, next, &bmc->sdrs, list) {
++		u8 id[SDR_MAX_UNPACKED_ID_LENGTH];
++
++		cursor->attr_name =
++		    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++				    GFP_KERNEL);
++		cursor->attr_max_name =
++		    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++				    GFP_KERNEL);
++		cursor->attr_min_name =
++		    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++				    GFP_KERNEL);
++
++		if (cursor->id_length > 0) {
++			cursor->attr_label_name =
++			    (char *)kmalloc(sizeof(char) * MAX_FILENAME_LENGTH,
++					    GFP_KERNEL);
++
++			if (cursor->attr_label_name == NULL) {
++				printk(KERN_INFO
++				       "ipmisensors: Out of memory (kmalloc failed)");
++				kfree(cursor->attr_name);
++				kfree(cursor->attr_max_name);
++				kfree(cursor->attr_min_name);
++				return;
++			}
++		}
++
++		if (cursor->attr_name == NULL || cursor->attr_max_name == NULL
++		    || cursor->attr_min_name == NULL
++		    || cursor->attr_label_name == NULL) {
++			printk(KERN_INFO
++			       "ipmisensors: Out of memory (kmalloc failed)");
++			kfree(cursor->attr_name);
++			kfree(cursor->attr_max_name);
++			kfree(cursor->attr_min_name);
++			kfree(cursor->attr_label_name);
++			return;
++		}
++
++		switch (cursor->stype) {
++		case (STYPE_TEMP):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "temp%d_input", ++temps);
++			/* create min, max attributes */
++			snprintf(cursor->attr_max_name, MAX_FILENAME_LENGTH,
++				 "temp%d_max", temps);
++			snprintf(cursor->attr_min_name, MAX_FILENAME_LENGTH,
++				 "temp%d_min", temps);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "temp%d_label", temps);
++			break;
++		case (STYPE_VOLT):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "in%d_input", ++volts);
++			/* create min, max attributes */
++			snprintf(cursor->attr_max_name, MAX_FILENAME_LENGTH,
++				 "in%d_max", volts);
++			snprintf(cursor->attr_min_name, MAX_FILENAME_LENGTH,
++				 "in%d_min", volts);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "in%d_label", volts);
++			break;
++		case (STYPE_CURR):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "curr%d_input", ++currs);
++			/* create min, max attributes */
++			sprintf(cursor->attr_max_name, "curr%d_max", currs);
++			sprintf(cursor->attr_min_name, "curr%d_min", currs);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "curr%d_label", currs);
++			break;
++		case (STYPE_FAN):
++			/* create the name of the sensor */
++			snprintf(cursor->attr_name, MAX_FILENAME_LENGTH,
++				 "fan%d_input", ++fans);
++			/* create min, max attributes */
++			sprintf(cursor->attr_max_name, "fan%d_max", fans);
++			sprintf(cursor->attr_min_name, "fan%d_min", fans);
++			/* create the label of the sensor */
++			snprintf(cursor->attr_label_name, MAX_FILENAME_LENGTH,
++				 "fan%d_label", fans);
++			break;
++		default:
++			printk(KERN_INFO "ipmisensors: unkown sensor type\n");
++			continue;
++		}
++
++		cursor->attr.dev_attr.attr.name = cursor->attr_name;
++		cursor->attr.dev_attr.attr.mode = S_IRUGO;
++		cursor->attr.dev_attr.attr.owner = THIS_MODULE;
++		cursor->attr.dev_attr.show = show_sensor;
++		cursor->attr.dev_attr.store = NULL;
++		cursor->attr.sdr = cursor;
++
++		cursor->attr_min.dev_attr.attr.name = cursor->attr_min_name;
++		cursor->attr_min.dev_attr.attr.owner = THIS_MODULE;
++		cursor->attr_min.dev_attr.show = show_sensor_min;
++		cursor->attr_min.sdr = cursor;
++
++		if (cursor->lim2_write) {
++			printk(KERN_INFO
++			       "ipmisensors: You have a writable sensor threshold! Send me an e-mail at <yani.ioannou@gmail.com>.\n");
++			cursor->attr_min.dev_attr.store = store_sensor_min;
++			cursor->attr_min.dev_attr.attr.mode = S_IWUSR | S_IRUGO;
++		} else {
++			cursor->attr_min.dev_attr.store = NULL;
++			cursor->attr_min.dev_attr.attr.mode = S_IRUGO;
++		}
++
++		cursor->attr_max.dev_attr.attr.name = cursor->attr_max_name;
++		cursor->attr_max.dev_attr.attr.owner = THIS_MODULE;
++		cursor->attr_max.dev_attr.show = show_sensor_max;
++		cursor->attr_max.sdr = cursor;
++
++		if (cursor->lim1_write) {
++			printk(KERN_INFO
++			       "ipmisensors: You have a writable sensor threshold! Send me an e-mail at <yani.ioannou@gmail.com>.\n");
++			cursor->attr_max.dev_attr.store = store_sensor_max;
++			cursor->attr_max.dev_attr.attr.mode = S_IWUSR | S_IRUGO;
++		} else {
++			cursor->attr_max.dev_attr.store = NULL;
++			cursor->attr_max.dev_attr.attr.mode = S_IRUGO;
++		}
++
++		if (cursor->id_length > 0) {
++			cursor->attr_label.dev_attr.attr.name =
++			    cursor->attr_label_name;
++			cursor->attr_label.dev_attr.attr.mode = S_IRUGO;
++			cursor->attr_label.dev_attr.attr.owner = THIS_MODULE;
++			cursor->attr_label.dev_attr.show = show_sensor_label;
++			cursor->attr_label.dev_attr.store = NULL;
++			cursor->attr_label.sdr = cursor;
++		}
++
++		printk(KERN_INFO
++		       "ipmisensors: registering sensor %d: (type 0x%.2x) "
++		       "(fmt=%d; m=%d; b=%d; k1=%d; k2=%d; cap=0x%.2x; mask=0x%.4x)\n",
++		       cursor->number, cursor->stype, cursor->format, cursor->m,
++		       cursor->b, cursor->k & 0xf, cursor->k >> 4,
++		       cursor->capab, cursor->thresh_mask);
++
++		if (cursor->id_length > 0) {
++			ipmisensors_sprintf(id, cursor->id, cursor->string_type,
++					    cursor->id_length);
++			switch (cursor->stype) {
++			case (STYPE_TEMP):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label temp%d \"%s\"\n",
++				       temps, id);
++				break;
++			case (STYPE_VOLT):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label in%d \"%s\"\n",
++				       volts, id);
++				break;
++			case (STYPE_CURR):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label curr%d \"%s\"\n",
++				       currs, id);
++				break;
++			case (STYPE_FAN):
++				printk(KERN_INFO
++				       "ipmisensors: sensors.conf: label fan%d \"%s\"\n",
++				       fans, id);
++				break;
++			}
++		}
++
++		ipmisensors_select_thresholds(cursor);
++
++		if (cursor->linear != 0 && cursor->linear != 7) {
++			printk(KERN_INFO
++			       "ipmisensors: sensor %d: nonlinear function 0x%.2x unsupported, expect bad results\n",
++			       cursor->number, cursor->linear);
++		}
++
++		if ((cursor->format & 0x03) == 0x02) {
++			printk(KERN_INFO
++			       "ipmisensors: sensor %d: 1's complement format unsupported, expect bad results\n",
++			       cursor->number);
++		} else if ((cursor->format & 0x03) == 0x03) {
++			printk(KERN_INFO
++			       "ipmisensors: sensor %d: threshold sensor only, no readings available",
++			       cursor->number);
++		}
++
++		if (cursor->lim1_write || cursor->lim2_write)
++			cursor->attr.dev_attr.attr.mode = 0644;
++		else
++			cursor->attr.dev_attr.attr.mode = 0444;
++
++		if (device_create_file(bmc->dev, &cursor->attr.dev_attr) < 0
++		    || device_create_file(bmc->dev,
++					  &cursor->attr_min.dev_attr) < 0
++		    || device_create_file(bmc->dev,
++					  &cursor->attr_max.dev_attr) < 0
++		    || (cursor->id_length >
++			0 ? device_create_file(bmc->dev,
++					       &cursor->attr_label.dev_attr) <
++			0 : 0)
++		    ) {
++			printk(KERN_INFO
++			       "ipmisensors: sysfs file creation failed for SDR %d (%s).\n",
++			       cursor->number, cursor->id);
++			kfree(cursor->attr_name);
++			kfree(cursor->attr_max_name);
++			kfree(cursor->attr_min_name);
++			kfree(cursor->attr_label_name);
++			return;
++		}
++	}
++
++	bmc->alarms_attr.dev_attr.attr.name = "alarms";
++	bmc->alarms_attr.dev_attr.attr.mode = S_IRUGO;
++	bmc->alarms_attr.dev_attr.attr.owner = THIS_MODULE;
++	bmc->alarms_attr.dev_attr.show = show_alarms;
++	bmc->alarms_attr.dev_attr.store = NULL;
++	bmc->alarms_attr.bmc = bmc;
++
++	if (device_create_file(bmc->dev, &bmc->alarms_attr.dev_attr) < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Failed to create sysfs entry 'alarms'");
++		return;
++	}
++
++	bmc->name_attr.attr.name = "name";
++	bmc->name_attr.attr.mode = S_IRUGO;
++	bmc->name_attr.attr.owner = THIS_MODULE;
++	bmc->name_attr.show = show_name;
++
++	if (device_create_file(bmc->dev, &bmc->name_attr) < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Failed to create sysfs entry 'name'");
++		return;
++	}
++
++	bmc->update_attr.dev_attr.attr.name = "update_period";
++	bmc->update_attr.dev_attr.attr.mode = S_IWUSR | S_IRUGO;
++	bmc->update_attr.dev_attr.attr.owner = THIS_MODULE;
++	bmc->update_attr.dev_attr.show = show_update_period;
++	bmc->update_attr.dev_attr.store = store_update_period;
++	bmc->update_attr.bmc = bmc;
++
++	if (device_create_file(bmc->dev, &bmc->update_attr.dev_attr) < 0) {
++		printk(KERN_INFO
++		       "ipmisensors: Failed to create sysfs entry 'update_period'");
++		return;
++	}
++
++	printk(KERN_INFO
++	       "ipmisensors: registered %d temp, %d volt, %d current, %d fan sensors\n",
++	       temps, volts, currs, fans);
++
++	/* This completes the initialization. We can now kickoff the 
++	 * periodic update of the bmc sensor's values by scheduling 
++	 * the first work.
++	 */
++	queue_work(ipmisensors_workqueue, &bmc->update_work.work);
++
++}
++
++/**
++ * Process an SDR response message, save the SDRs we like in the sdr
++ * list for the given BMC.
++ *
++ * @bmc: the bmc the message is from
++ * @msg: the IPMI SDR response message
++ */
++static void ipmisensors_rcv_sdr_msg(struct ipmisensors_bmc_data *bmc,
++				    struct kernel_ipmi_msg *msg)
++{
++	u16 record;
++	int type;
++	int stype;
++	int id_length;
++	int i;
++	int ipmi_ver = 0;
++	unsigned char *data;
++	u8 id[SDR_MAX_UNPACKED_ID_LENGTH];
++	struct sdrdata *sdr;
++
++	if (msg->data[0] != 0) {
++		/* cut request in half and try again */
++		bmc->ipmi_sdr_partial_size /= 2;
++		if (bmc->ipmi_sdr_partial_size < 8) {
++			printk(KERN_INFO
++			       "ipmisensors: IPMI buffers too small, giving up\n");
++			bmc->state = STATE_DONE;
++			return;
++		}
++		printk(KERN_DEBUG
++		       "ipmisensors: Reducing SDR request size to %d\n",
++		       bmc->ipmi_sdr_partial_size);
++
++		ipmisensors_get_sdr(bmc, 0, 0, 0);
++		bmc->state = STATE_SDR;
++		return;
++	}
++	if (bmc->ipmi_sdr_partial_size < IPMI_SDR_SIZE) {
++		if (bmc->rx_msg_data_offset == 0) {
++			memcpy(bmc->rx_msg_data, msg->data,
++			       bmc->ipmi_sdr_partial_size + 3);
++			bmc->rx_msg_data_offset =
++			    bmc->ipmi_sdr_partial_size + 3;
++		} else {
++			memcpy(bmc->rx_msg_data + bmc->rx_msg_data_offset,
++			       msg->data + 3, bmc->ipmi_sdr_partial_size);
++			bmc->rx_msg_data_offset += bmc->ipmi_sdr_partial_size;
++		}
++		if (bmc->rx_msg_data_offset > bmc->rx_msg_data[7] + 7) {
++			/* got last chunk */
++			bmc->rx_msg_data_offset = 0;
++			data = bmc->rx_msg_data;
++		} else {
++			/* get more */
++			record =
++			    (bmc->rx_msg_data[4] << 8) | bmc->rx_msg_data[3];
++			ipmisensors_get_sdr(bmc, bmc->resid, record,
++					    bmc->rx_msg_data_offset - 3);
++			bmc->state = STATE_SDR;
++			return;
++		}
++	} else {
++		/* got it in one chunk */
++		data = msg->data;
++	}
++
++	bmc->nextrecord = (data[2] << 8) | data[1];
++
++	/* If the ipmi version is 0.9 we have to remap some things. 
++	 * Yes this is very ugly, but we aren't the ones who 
++	 * implemented an incomplete spec! 
++	 */
++	ipmi_ver = data[5];
++
++	type = data[6];
++	/* known SDR type */
++	if (type == 1 || type == 2) {
++		stype = data[(ipmi_ver == 0x90 ? 16 : 15)];
++		/* known sensor type */
++		if (stype <= STYPE_MAX) {
++			if (data[(ipmi_ver == 0x90 ? 17 : 16)] != 0x01) {
++				if (type == 1)
++					ipmisensors_sprintf(id, &data[51],
++							    data[50] >> 6,
++							    data[50] & 0x1f);
++				else
++					ipmisensors_sprintf(id,
++							    &data[(ipmi_ver ==
++								   0x90 ? 30 :
++								   35)],
++							    data[(ipmi_ver ==
++								  0x90 ? 29 :
++								  34)] >> 6,
++							    data[(ipmi_ver ==
++								  0x90 ? 29 :
++								  34)] & 0x1f);
++				printk(KERN_INFO
++				       "ipmisensors: skipping non-threshold sensor \"%s\"\n",
++				       id);
++			} else {
++				/* add entry to sdrd table */
++				sdr = ipmisensors_new_sdr();
++				if (!sdr) {
++					printk(KERN_ERR
++					       "ipmisensors: could not allocate memory for new SDR");
++					return;
++				}
++				sdr->bmc = bmc;
++				sdr->stype = stype;
++				sdr->number = data[10];
++				sdr->capab = data[(ipmi_ver == 0x90 ? 15 : 14)];
++				sdr->thresh_mask =
++				    (((u16) data[(ipmi_ver == 0x90 ? 21 : 22)])
++				     << 8) | data[21];
++				if (type == 1) {
++					sdr->format =
++					    data[(ipmi_ver ==
++						  0x90 ? 22 : 24)] >> 6;
++					sdr->linear =
++					    data[(ipmi_ver ==
++						  0x90 ? 25 : 26)] & 0x7f;
++					sdr->m =
++					    data[(ipmi_ver == 0x90 ? 26 : 27)];
++					sdr->m |= ((u16)
++						   (data
++						    [(ipmi_ver ==
++						      0x90 ? 27 : 28)]
++						    & 0xc0)) << 2;
++					if (sdr->m & 0x0200) {
++						/* sign extend */
++						sdr->m |= 0xfc00;
++					}
++					sdr->b =
++					    data[(ipmi_ver == 0x90 ? 28 : 29)];
++					sdr->b |= ((u16)
++						   (data
++						    [(ipmi_ver ==
++						      0x90 ? 29 : 30)]
++						    & 0xc0)) << 2;
++					if (sdr->b & 0x0200) {
++						/* sign extend */
++						sdr->b |= 0xfc00;
++					}
++					sdr->k =
++					    data[(ipmi_ver == 0x90 ? 31 : 32)];
++					sdr->nominal =
++					    data[(ipmi_ver == 0x90 ? 33 : 34)];
++					for (i = 0; i < SDR_LIMITS; i++) {
++						/* assume readable */
++						sdr->limits[i] =
++						    data[(ipmi_ver ==
++							  0x90 ? 40 : 39) + i];
++					}
++					sdr->string_type = data[50] >> 6;
++					id_length = data[50] & 0x1f;
++					memcpy(sdr->id, &data[51], id_length);
++					sdr->id_length = id_length;
++				} else {
++					sdr->m = 1;
++					sdr->b = 0;
++					sdr->k = 0;
++					sdr->string_type =
++					    data[(ipmi_ver ==
++						  0x90 ? 29 : 34)] >> 6;
++					id_length = data[34] & 0x1f;
++					if (id_length > 0) {
++						memcpy(sdr->id,
++						       &data[(ipmi_ver ==
++							      0x90 ? 30 : 35)],
++						       id_length);
++					}
++					sdr->id_length = id_length;
++					/* limits?? */
++					if (ipmi_ver == 0x90) {
++						memcpy(sdr->id,
++						       &data[30], id_length);
++						sdr->id_length = id_length;
++					}
++				}
++				ipmisensors_add_sdr(bmc, sdr);
++			}
++		}
++		/* peek at the other SDR types */
++	} else if (type == 0x10 || type == 0x11 || type == 0x12) {
++		ipmisensors_sprintf(id, data + 19, data[18] >> 6,
++				    data[18] & 0x1f);
++		if (type == 0x10) {
++			printk(KERN_INFO
++			       "ipmisensors: Generic Device acc=0x%x; slv=0x%x; lun=0x%x; type=0x%x; \"%s\"\n",
++			       data[8], data[9], data[10], data[13], id);
++		} else if (type == 0x11) {
++			printk(KERN_INFO
++			       "ipmisensors: FRU Device acc=0x%x; slv=0x%x; log=0x%x; ch=0x%x; type=0x%x; \"%s\"\n",
++			       data[8], data[9], data[10], data[11], data[13],
++			       id);
++		} else {
++			printk(KERN_INFO
++			       "ipmisensors: Mgmt Ctllr Device slv=0x%x; \"%s\"\n",
++			       data[8], id);
++		}
++	} else if (type == 0x14) {
++		printk(KERN_INFO
++		       "ipmisensors: Message Channel Info Records:\n");
++		for (i = 0; i < 8; i++) {
++			printk(KERN_INFO "ipmisensors: Channel %d info 0x%x\n",
++			       i, data[9 + i]);
++		}
++	} else {
++		printk(KERN_INFO "ipmisensors: Skipping SDR type 0x%x\n", type);
++	}
++	if (ipmi_ver != 0x90) {
++		if (bmc->nextrecord >= 6224) {
++			/*YJ stop sensor scan on poweredge 1750 */
++			bmc->nextrecord = 0xffff;
++		}
++	}
++
++	if (bmc->nextrecord == 0xFFFF) {
++		if (bmc->sdr_count == 0) {
++			printk(KERN_INFO
++			       "ipmisensors: No recognized sensors found.\n");
++			bmc->state = STATE_DONE;
++		} else {
++			printk(KERN_INFO "ipmisensors: all sensors detected\n");
++			bmc->state = STATE_SYSTABLE;
++
++			/* Schedule sysfs build/registration work */
++			INIT_WORK(&bmc->sysfs_work, ipmisensors_build_sysfs);
++			queue_work(ipmisensors_workqueue, &bmc->sysfs_work);
++		}
++	} else {
++		ipmisensors_get_sdr(bmc, 0, bmc->nextrecord, 0);
++		bmc->state = STATE_SDR;
++	}
++}
++
++/**
++ * Process incoming messages based on internal state
++ *
++ * @bmc: the bmc the message is from.
++ * @msg: the ipmi message to process.
++ */
++static void ipmisensors_rcv_msg(struct ipmisensors_bmc_data *bmc,
++				struct kernel_ipmi_msg *msg)
++{
++	switch (bmc->state) {
++	case STATE_INIT:
++	case STATE_RESERVE:
++		bmc->resid = (((u16) msg->data[2]) << 8) | msg->data[1];
++
++		printk(KERN_DEBUG "ipmisensors: Got first resid 0x%.4x\n",
++		       bmc->resid);
++
++		ipmisensors_get_sdr(bmc, 0, 0, 0);
++		bmc->state = STATE_SDR;
++		break;
++
++	case STATE_SDR:
++	case STATE_SDRPARTIAL:
++		ipmisensors_rcv_sdr_msg(bmc, msg);
++		break;
++
++	case STATE_READING:
++		ipmisensors_rcv_reading_msg(bmc, msg);
++		break;
++
++	case STATE_UNCANCEL:
++		bmc->resid = (((u16) msg->data[2]) << 8) | msg->data[1];
++
++		printk(KERN_DEBUG "ipmisensors: Got new resid 0x%.4x\n",
++		       bmc->resid);
++
++		bmc->rx_msg_data_offset = 0;
++		ipmisensors_get_sdr(bmc, 0, bmc->nextrecord, 0);
++		bmc->state = STATE_SDR;
++		break;
++
++	case STATE_DONE:
++	case STATE_SYSTABLE:
++		break;
++	default:
++		bmc->state = STATE_INIT;
++	}
++}
++
++/**
++ * Callback to handle a received IPMI message from a given BMC.
++ *
++ * @msg: the received message.
++ * @handler_data: a pointer to the particular bmc ipmisensors_bmc_data struct.
++ */
++static void ipmisensors_msg_handler(struct ipmi_recv_msg *msg,
++				    void *user_msg_data)
++{
++	struct ipmisensors_bmc_data *bmc =
++	    (struct ipmisensors_bmc_data *)user_msg_data;
++
++	if (msg->msg.data[0] != 0)
++		printk(KERN_WARNING
++		       "ipmisensors: Error 0x%x on cmd 0x%x/0x%x\n",
++		       msg->msg.data[0], msg->msg.netfn, msg->msg.cmd);
++
++	if (bmc != NULL && ipmisensors_intf_registered(bmc->interface_id)) {
++		if (bmc->state == STATE_SDR &&
++		    msg->msg.data[0] == IPMI_INVALID_RESERVATION_ID) {
++			/* reservation cancelled, get new resid */
++			if (++bmc->errorcount > 275) {
++				printk(KERN_ERR
++				       "ipmisensors: Too many reservations cancelled, giving up\n");
++				bmc->state = STATE_DONE;
++			} else {
++				printk(KERN_DEBUG
++				       "ipmisensors: resid 0x%04x cancelled, getting new one\n",
++				       bmc->resid);
++
++				ipmisensors_reserve_sdr(bmc);
++				bmc->state = STATE_UNCANCEL;
++			}
++		} else if (msg->msg.data[0] != IPMI_CC_NO_ERROR &&
++			   msg->msg.data[0] != IPMI_ERR_RETURNING_REQ_BYTES &&
++			   msg->msg.data[0] != IPMI_ERR_PROVIDING_RESPONSE) {
++			printk(KERN_ERR
++			       "ipmisensors: Error 0x%x on cmd 0x%x/0x%x; state = %d; probably fatal.\n",
++			       msg->msg.data[0], msg->msg.netfn & 0xfe,
++			       msg->msg.cmd, bmc->state);
++		} else {
++			printk(KERN_DEBUG "ipmisensors: received message\n");
++			ipmisensors_rcv_msg(bmc, &msg->msg);
++		}
++
++	} else {
++		printk(KERN_WARNING
++		       "ipmisensors: Response for non-registered BMC\n");
++		if (bmc != NULL)
++			printk(KERN_DEBUG "ipmisensors: BMC ID: %d\n",
++			       bmc->interface_id);
++		else
++			printk(KERN_DEBUG "ipmisensors: BMC NULL!\n");
++	}
++
++	ipmi_free_recv_msg(msg);
++}
++
++/****** IPMI Interface Initialization ******/
++
++/**
++ * Return true if the given ipmi interface has been registered.
++ * 
++ * @ipmi_intf: The IPMI interface number.
++ */
++static int ipmisensors_intf_registered(int ipmi_intf)
++{
++	int found = 0;
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		if (cursor->interface_id == ipmi_intf) {
++			found++;
++		}
++	}
++
++	return found;
++}
++
++/**
++ * Return true if the given BMC has been registered.
++ * 
++ * @bmc: The BMC device.
++ */
++static int ipmisensors_bmc_registered(struct device *bmc)
++{
++	int found = 0;
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		if (cursor->dev == bmc) {
++			found++;
++		}
++	}
++
++	return found;
++}
++
++/**
++ * Register new IPMI BMC interface. Interface indpendent callback created
++ * for flexibility in adding new types of interface callbacks in future.
++ * 
++ * @ipmi_intf: The IPMI interface number.
++ */
++static void ipmisensors_register_bmc(int ipmi_intf, struct ipmi_addr *address)
++{
++	int error;
++
++	/* allocate a new ipmisensors_bmc_data struct */
++
++	struct ipmisensors_bmc_data *bmc = (struct ipmisensors_bmc_data *)
++	    kmalloc(sizeof(struct ipmisensors_bmc_data), GFP_KERNEL);
++
++	/* initialize members */
++	INIT_LIST_HEAD(&bmc->sdrs);
++	bmc->interface_id = ipmi_intf;
++
++	bmc->address = *address;
++
++	bmc->sdr_count = 0;
++	bmc->msgid = 0;
++	bmc->ipmi_sdr_partial_size = IPMI_CHUNK_SIZE;
++	bmc->state = STATE_INIT;
++	bmc->errorcount = 0;
++	bmc->rx_msg_data_offset = 0;
++	bmc->dev = ipmi_get_bmcdevice(ipmi_intf);
++
++	/* default to 3 second min update interval */
++	bmc->update_period = 3;
++
++	if (bmc->dev == NULL) {
++		printk(KERN_ERR
++		       "ipmisensors: Error, couldn't get BMC device for interface %d\n",
++		       bmc->interface_id);
++		kfree(bmc);
++		return;
++	}
++
++	/* Create IPMI messaging interface user */
++	error = ipmi_create_user(bmc->interface_id, &driver_data.ipmi_hndlrs, 
++				bmc, &bmc->user);
++	if (error < 0) {
++		printk(KERN_ERR
++		       "ipmisensors: Error, unable to register user with ipmi interface %d\n",
++		       bmc->interface_id);
++		kfree(bmc);
++		return;
++	}
++
++	/* Register the BMC as a HWMON class device */
++	bmc->class_dev = hwmon_device_register(bmc->dev);
++
++	if (IS_ERR(bmc->class_dev)) {
++		printk(KERN_ERR
++		       "ipmisensors: Error, unable to register hwmon class device for interface %d\n",
++		       bmc->interface_id);
++		kfree(bmc);
++		return;
++	}
++
++	/* Register the BMC in the driver */
++	if (ipmisensors_bmc_registered(bmc->dev)) {
++		printk(KERN_ERR
++		       "ipmisensors: BMC on interface %d already registered\n",
++		       bmc->interface_id);
++		hwmon_device_unregister(bmc->class_dev);
++		kfree(bmc);
++		return;
++	}
++
++	ipmi_get_version(bmc->user, &bmc->ipmi_version_major,
++			 &bmc->ipmi_version_minor);
++
++	/* finally add the new bmc data to the bmc data list */
++	list_add_tail(&bmc->list, &driver_data.bmc_data);
++	driver_data.interfaces++;
++
++	printk(KERN_INFO
++	       "ipmisensors: Registered IPMI %d.%d BMC over interface %d\n",
++	       bmc->ipmi_version_major,
++	       bmc->ipmi_version_minor, bmc->interface_id);
++
++	/* Send a reserve SDR command to the bmc */
++	ipmisensors_reserve_sdr(bmc);
++
++	/* initialize the bmc's update work struct */
++	INIT_DELAYED_WORK(&bmc->update_work, ipmisensors_update_bmc);
++}
++
++/**
++ * Callback for when an IPMI BMC is gone. Interface indpendent callback created
++ * for flexibility in adding new types of interface callbacks in future.
++ * 
++ * @ipmi_intf: The IPMI interface number.
++ */
++static void ipmisensors_unregister_bmc(int ipmi_intf)
++{
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		if (cursor->interface_id == ipmi_intf) {
++			list_del(&cursor->list);
++			printk(KERN_DEBUG
++			       "ipmisensors: cancelling queued work\n");
++			/* cancel update work queued for this bmc */
++			cancel_delayed_work(&cursor->update_work);
++			printk(KERN_DEBUG
++			       "ipmisensors: waiting for update to finish\n");
++			/* wait for readings to finish */
++			while (cursor->state != STATE_DONE) ;
++
++			device_remove_file(cursor->dev,
++					   &cursor->alarms_attr.dev_attr);
++			device_remove_file(cursor->dev,
++					   &cursor->update_attr.dev_attr);
++			hwmon_device_unregister(cursor->class_dev);
++			ipmisensors_sdr_cleanup(cursor);
++			ipmi_destroy_user(cursor->user);
++
++			printk(KERN_INFO
++			       "ipmisensors: Unegistered IPMI interface %d\n",
++			       cursor->interface_id);
++
++			kfree(cursor);
++			driver_data.interfaces--;
++		}
++	}
++
++}
++
++/**
++ * Unregister all registered bmcs.
++ */
++static void ipmisensors_unregister_bmc_all(void)
++{
++	struct ipmisensors_bmc_data *cursor, *next;
++
++	/* find and free the ipmisensors_bmc_data struct */
++	list_for_each_entry_safe(cursor, next, &driver_data.bmc_data, list) {
++		list_del(&cursor->list);
++
++		/* cancel update work queued for this bmc */
++		printk(KERN_DEBUG "ipmisensors: cancelling queued work\n");
++		cancel_delayed_work(&cursor->update_work);
++
++		printk(KERN_DEBUG
++		       "ipmisensors: waiting for update to finish\n");
++		/* wait for readings to finish */
++		while (cursor->state != STATE_DONE) ;
++
++		device_remove_file(cursor->dev, &cursor->alarms_attr.dev_attr);
++		device_remove_file(cursor->dev, &cursor->update_attr.dev_attr);
++		hwmon_device_unregister(cursor->class_dev);
++		ipmisensors_sdr_cleanup(cursor);
++		ipmi_destroy_user(cursor->user);
++
++		printk(KERN_INFO
++		       "ipmisensors: Unegistered IPMI interface %d\n",
++		       cursor->interface_id);
++
++		kfree(cursor);
++	}
++
++	driver_data.interfaces = 0;
++}
++
++/**
++ * Callback for when a new IPMI SMI type interface is found.
++ *
++ * @if_num: The IPMI interface number.
++ */
++static void ipmisensors_new_smi(int if_num, struct device *dev)
++{
++	struct ipmi_addr smi_address = {
++		IPMI_SYSTEM_INTERFACE_ADDR_TYPE,
++		IPMI_BMC_CHANNEL,
++		{0},
++	};
++
++	/* calls the generic new interface function */
++	ipmisensors_register_bmc(if_num, &smi_address);
++}
++
++/**
++ * Callback for when an exisiting IPMI SMI type interface is gone.
++ *
++ * @if_num: The IPMI interface number.
++ */
++static void ipmisensors_smi_gone(int if_num)
++{
++	if (driver_data.interfaces > 0) {
++		ipmisensors_unregister_bmc(if_num);
++	}
++}
++
++/**
++ * Initialize the module.
++ */
++static int __init ipmisensors_init(void)
++{
++	int error;
++	printk(KERN_INFO "ipmisensors - IPMI BMC sensors interface\n");
++
++	/* init cache managers */
++	driver_data.sdrdata_cache =
++	    kmem_cache_create("ipmisensors_sdrdata", sizeof(struct sdrdata), 0,
++			      0, NULL, NULL);
++	driver_data.sysfsattr_cache =
++	    kmem_cache_create("ipmisensors_sysfsattr",
++			      sizeof(struct ipmisensors_device_attribute), 0, 0,
++			      NULL, NULL);
++
++	if (!driver_data.sdrdata_cache || !driver_data.sysfsattr_cache) {
++		if (driver_data.sdrdata_cache)
++			kmem_cache_destroy(driver_data.sdrdata_cache);
++		if (driver_data.sysfsattr_cache)
++			kmem_cache_destroy(driver_data.sysfsattr_cache);
++		return -ENOMEM;
++	}
++
++	/* register IPMI interface callback(s) */
++	error = ipmi_smi_watcher_register(&driver_data.smi_watcher);
++	if (error) {
++		printk(KERN_WARNING
++		       "ipmisensors: can't register smi watcher\n");
++		return error;
++	}
++
++	/* create work queue, keep it simple, single-threaded */
++	ipmisensors_workqueue =
++	    create_singlethread_workqueue("ipmisensors_workqueue");
++
++	return 0;
++}
++
++/**
++ * Cleanup
++ */
++static void ipmisensors_cleanup(void)
++{
++	/* start cleanup */
++	cleanup = 1;
++
++	/* unregister bmcs */
++	printk(KERN_DEBUG "ipmisensors: unregister bmcs\n");
++	ipmi_smi_watcher_unregister(&driver_data.smi_watcher);
++	ipmisensors_unregister_bmc_all();
++
++	/* flush & destroy work queue */
++	printk(KERN_DEBUG "ipmisensors: destroy workqueue\n");
++	flush_workqueue(ipmisensors_workqueue);
++	destroy_workqueue(ipmisensors_workqueue);
++
++	/* remove cache managers */
++	if (driver_data.sdrdata_cache)
++		kmem_cache_destroy(driver_data.sdrdata_cache);
++	if (driver_data.sysfsattr_cache)
++		kmem_cache_destroy(driver_data.sysfsattr_cache);
++}
++
++/**
++ * Cleanup and exit the module
++ */
++static void __exit ipmisensors_exit(void)
++{
++	ipmisensors_cleanup();
++	printk(KERN_DEBUG "ipmisensors: cleanup finished\n");
++}
++
++MODULE_AUTHOR("Yani Ioannou <yani.ioannou@gmail.com>");
++MODULE_DESCRIPTION("IPMI BMC sensors");
++MODULE_LICENSE("GPL");
++
++module_init(ipmisensors_init);
++module_exit(ipmisensors_exit);
+diff -rduNp linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.h linux-2.6.20.3/drivers/hwmon/ipmisensors.h
+--- linux-2.6.20.3.orig/drivers/hwmon/ipmisensors.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.20.3/drivers/hwmon/ipmisensors.h	2007-03-14 14:41:23.000000000 +0100
+@@ -0,0 +1,240 @@
++/*
++ *  ipmisensors.h -	lm_sensors interface to IPMI sensors. 
++ *
++ *  Copyright (C) 2004-2006 Yani Ioannou <yani.ioannou@gmail.com>
++ *
++ *  Adapted from bmcsensors (lm-sensors for linux 2.4) 
++ *  bmcsensors (C) Mark D. Studebaker <mdsxyz123@yahoo.com>
++ *  
++ *  This program is free software; you can redistribute it and/or modify
++ *  it under the terms of the GNU General Public License as published by
++ *  the Free Software Foundation; either version 2 of the License, or
++ *  (at your option) any later version.
++ *  
++ *  This program is distributed in the hope that it will be useful,
++ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
++ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ *  GNU General Public License for more details.
++ *  
++ *  You should have received a copy of the GNU General Public License
++ *  along with this program; if not, write to the Free Software
++ *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/ipmi.h>
++#include <linux/list.h>
++#include <linux/slab.h>
++#include <linux/workqueue.h>
++
++/* SDR defs */
++#define STYPE_TEMP			0x01
++#define STYPE_VOLT			0x02
++#define STYPE_CURR			0x03
++#define STYPE_FAN			0x04
++
++#define SDR_LIMITS 			8
++#define SDR_MAX_ID_LENGTH 		16
++#define SDR_MAX_UNPACKED_ID_LENGTH 	((SDR_MAX_ID_LENGTH * 4 / 3) + 2)
++
++/* the last sensor type we are interested in */
++#define STYPE_MAX			4
++
++#define IPMI_SDR_SIZE			67
++#define IPMI_CHUNK_SIZE 		16
++
++#define MAX_FILENAME_LENGTH		30
++
++struct ipmisensors_device_attribute {
++	struct device_attribute dev_attr;
++	struct sdrdata *sdr;
++};
++#define to_ipmisensors_dev_attr(_dev_attr) \
++	container_of(_dev_attr, struct ipmisensors_device_attribute, dev_attr)
++
++#define IPMISENSORS_DEVICE_ATTR(_name,_mode,_show,_store,_index)	\
++struct ipmisensors_attribute sensor_dev_attr_##_name = {	\
++	.dev_attr =	__ATTR(_name,_mode,_show,_store),	\
++	.index =	_index,					\
++}
++
++struct ipmisensors_bmc_device_attribute {
++	struct device_attribute dev_attr;
++	struct ipmisensors_bmc_data *bmc;
++};
++#define to_ipmisensors_bmc_dev_attr(_dev_attr) \
++	container_of(_dev_attr, struct ipmisensors_bmc_device_attribute, dev_attr)
++
++/**
++ * &struct_sdrdata stores the IPMI Sensor Data Record (SDR) data, as recieved from the BMC, along with the corresponding sysfs attributes
++ */
++struct sdrdata {
++	struct list_head list;
++	/* retrieved from SDR, not expected to change */
++	/* Sensor Type Code */
++	u8 stype;
++	u8 number;
++	/* Sensor Capability Code */
++	u8 capab;
++	u16 thresh_mask;
++	u8 format;
++	u8 linear;
++	s16 m;
++	s16 b;
++	u8 k;
++	u8 nominal;
++	u8 limits[SDR_LIMITS];
++	/* index into limits for reported upper and lower limit */
++	int lim1, lim2;
++	u8 lim1_write, lim2_write;
++	u8 string_type;
++	u8 id_length;
++	u8 id[SDR_MAX_ID_LENGTH];
++	/* retrieved from reading */
++	u8 reading;
++	u8 status;
++	u8 thresholds;
++	/* sensor's bmc */
++	struct ipmisensors_bmc_data *bmc;
++	/* sysfs entries */
++	struct ipmisensors_device_attribute attr;
++	char *attr_name;
++	struct ipmisensors_device_attribute attr_min;
++	char *attr_min_name;
++	struct ipmisensors_device_attribute attr_max;
++	char *attr_max_name;
++	struct ipmisensors_device_attribute attr_label;
++	char *attr_label_name;
++
++};
++
++/**
++ * &struct_ipmisensors_data stores the data for the ipmisensors driver.
++ */
++struct ipmisensors_data {
++	/* Driver struct */
++	char *driver_name;
++	
++	/* Linked list of ipmisensors_bmc_data structs, one for each BMC */
++	struct list_head bmc_data;
++
++	/* Number of ipmi interfaces (and hence ipmisensors_data structs). */
++	int interfaces;
++
++	/* IPMI kernel interface - SMI watcher */
++	struct ipmi_smi_watcher smi_watcher;
++
++	/* IPMI kernel interface - user handlers */
++	struct ipmi_user_hndl ipmi_hndlrs;
++
++	/* Cache manager for sdrdata cache */
++	struct kmem_cache *sdrdata_cache;
++
++	/* Cache manager for ipmi_sensor_device_attribute cache */
++	struct kmem_cache *sysfsattr_cache;
++};
++
++/**
++ * &states: enumeration of state codes for a bmc specific ipmisensors
++ */
++enum states {
++	STATE_INIT,
++	STATE_RESERVE,
++	STATE_SDR,
++	STATE_SDRPARTIAL,
++	STATE_READING,
++	STATE_UNCANCEL,
++	STATE_SYSTABLE,
++	STATE_DONE
++};
++
++/**
++ * &struct_ipmisensors_bmc_data stores the data for a particular IPMI BMC.
++ */
++struct ipmisensors_bmc_data {
++	struct list_head list;
++
++	/* The IPMI interface number */
++	int interface_id;
++
++	/* The IPMI address */
++	struct ipmi_addr address;
++
++	/* List of sdrdata structs (sdrs) recieved from the BMC */
++	struct list_head sdrs;
++
++	/* Count of the number of sdrs stored in the sdr list */
++	int sdr_count;
++
++	/* next message id */
++	int msgid;
++
++	/* The ipmi interface 'user' used to access this particular bmc */
++	ipmi_user_t user;
++
++	/* BMC IPMI Version (major) */
++	unsigned char ipmi_version_major;
++
++	/* BMC IPMI Version (minor) */
++	unsigned char ipmi_version_minor;
++
++	/* The size of the SDR request message */
++	int ipmi_sdr_partial_size;
++
++	/* transmit message buffer */
++	struct kernel_ipmi_msg tx_message;
++
++	/* ipmi transmited data buffer */
++	unsigned char tx_msg_data[IPMI_MAX_MSG_LENGTH + 50];	/* why the +50 in bmcsensors? */
++
++	/* ipmi recieved data buffer */
++	unsigned char rx_msg_data[IPMI_MAX_MSG_LENGTH + 50];
++
++	/* current recieve buffer offset */
++	int rx_msg_data_offset;
++
++	/* The id of then next SDR record to read during update cycle */
++	u16 nextrecord;
++
++	/* BMC SDR Reservation ID */
++	u16 resid;
++
++	/* Alarm status */
++	u8 alarms;
++
++	/* The cumalative error count for this bmc */
++	int errorcount;
++
++	/* The current state of this bmc w.r.t. ipmisensors (see enum states) */
++	int state;
++
++	/* The current sdr for which a reading is pending */
++	struct sdrdata *current_sdr;
++
++	/* The BMC's device struct */
++	struct device *dev;
++
++	/* hwmon class device */
++	struct class_device *class_dev;
++
++	/* hwmon device name */
++	struct device_attribute name_attr;
++
++	/* alarms attribute */
++	struct ipmisensors_bmc_device_attribute alarms_attr;
++
++	/* update_period attribute */
++	struct ipmisensors_bmc_device_attribute update_attr;
++
++	/* lower bound on time between updates (in seconds) */
++	unsigned int update_period;
++
++	/* semaphore used to do a headcount of the SDR readings we are waiting
++	 * on in a given bmc update */
++	struct semaphore update_semaphore;
++
++	/* bmc's work struct for updating sensors */
++	struct delayed_work update_work;
++
++	/* bmc's work struct for building the sysfs workqueue */
++	struct work_struct sysfs_work;
++};
+diff -rduNp linux-2.6.20.3.orig/include/linux/ipmi.h linux-2.6.20.3/include/linux/ipmi.h
+--- linux-2.6.20.3.orig/include/linux/ipmi.h	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/include/linux/ipmi.h	2007-03-14 14:23:02.000000000 +0100
+@@ -300,6 +300,9 @@ int ipmi_create_user(unsigned int       
+    safe, too. */
+ int ipmi_destroy_user(ipmi_user_t user);
+ 
++/* Get the IPMI BMC's device struct */
++struct device *ipmi_get_bmcdevice(int ipmi_intf);
++
+ /* Get the IPMI version of the BMC we are talking to. */
+ void ipmi_get_version(ipmi_user_t   user,
+ 		      unsigned char *major,
+diff -rduNp linux-2.6.20.3.orig/include/linux/ipmi_msgdefs.h linux-2.6.20.3/include/linux/ipmi_msgdefs.h
+--- linux-2.6.20.3.orig/include/linux/ipmi_msgdefs.h	2007-03-13 19:27:08.000000000 +0100
++++ linux-2.6.20.3/include/linux/ipmi_msgdefs.h	2007-03-14 14:23:02.000000000 +0100
+@@ -45,6 +45,7 @@
+ 
+ #define IPMI_NETFN_APP_REQUEST			0x06
+ #define IPMI_NETFN_APP_RESPONSE			0x07
++#define IPMI_GET_DEVICE_GUID_CMD           0x08
+ #define IPMI_GET_DEVICE_ID_CMD		0x01
+ #define IPMI_COLD_RESET_CMD		0x02
+ #define IPMI_WARM_RESET_CMD		0x03
+@@ -57,6 +58,11 @@
+ #define IPMI_GET_BMC_GLOBAL_ENABLES_CMD	0x2f
+ #define IPMI_READ_EVENT_MSG_BUFFER_CMD	0x35
+ #define IPMI_GET_CHANNEL_INFO_CMD	0x42
++#define IPMI_RESERVE_SDR		0x22
++#define IPMI_GET_SDR			0x23
++#define IPMI_GET_SENSOR_STATE_READING		0x2D
++#define IPMI_SET_SENSOR_HYSTERESIS		0x24
++#define IPMI_SET_SENSOR_THRESHOLD		0x26
+ 
+ #define IPMI_NETFN_STORAGE_REQUEST		0x0a
+ #define IPMI_NETFN_STORAGE_RESPONSE		0x0b
+@@ -79,10 +85,13 @@
+ #define IPMI_NODE_BUSY_ERR		0xc0
+ #define IPMI_INVALID_COMMAND_ERR	0xc1
+ #define IPMI_TIMEOUT_ERR		0xc3
++#define IPMI_INVALID_RESERVATION_ID	0xc5
+ #define IPMI_ERR_MSG_TRUNCATED		0xc6
+ #define IPMI_REQ_LEN_INVALID_ERR	0xc7
+ #define IPMI_REQ_LEN_EXCEEDED_ERR	0xc8
+ #define IPMI_NOT_IN_MY_STATE_ERR	0xd5	/* IPMI 2.0 */
++#define IPMI_ERR_RETURNING_REQ_BYTES	0xca
++#define IPMI_ERR_PROVIDING_RESPONSE	0xce
+ #define IPMI_LOST_ARBITRATION_ERR	0x81
+ #define IPMI_BUS_ERR			0x82
+ #define IPMI_NAK_ON_WRITE_ERR		0x83
