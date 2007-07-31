@@ -24,19 +24,19 @@ $(DL_DIR)/$(LZMA_SOURCE):
 #
 ######################################################################
 
-$(LZMA_HOST_DIR)/.source: $(DL_DIR)/$(LZMA_SOURCE)
+$(LZMA_HOST_DIR)/.unpacked: $(DL_DIR)/$(LZMA_SOURCE)
 	$(LZMA_CAT) $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LZMA_HOST_DIR) package/lzma/ lzma\*.patch
-	touch $(LZMA_HOST_DIR)/.source
+	touch $@
 
-$(LZMA_HOST_DIR)/.configured: $(LZMA_HOST_DIR)/.source
+$(LZMA_HOST_DIR)/.configured: $(LZMA_HOST_DIR)/.unpacked
 	(cd $(LZMA_HOST_DIR); rm -f config.cache ;\
 		CC="$(HOSTCC)" \
 		CXX="$(HOSTCXX)" \
 		./configure \
 		--prefix=/ \
 	);
-	touch $(LZMA_HOST_DIR)/.configured;
+	touch $@
 
 $(LZMA_HOST_DIR)/src/lzma/lzma: $(LZMA_HOST_DIR)/.configured
 	$(MAKE) -C $(LZMA_HOST_DIR) all
@@ -45,20 +45,24 @@ $(LZMA_HOST_DIR)/src/lzma/lzma: $(LZMA_HOST_DIR)/.configured
 $(STAGING_DIR)/bin/lzma: $(LZMA_HOST_DIR)/src/lzma/lzma
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LZMA_HOST_DIR) install
 
-lzma-host: uclibc $(STAGING_DIR)/bin/lzma
-
+lzma-host: $(STAGING_DIR)/bin/lzma
+lzma-host-clean:
+	rm -f $(STAGING_DIR)/bin/lzma
+	-$(MAKE) -C $(LZMA_HOST_DIR) clean
+lzma-host-dirclean:
+	rm -rf $(LZMA_HOST_DIR)
 ######################################################################
 #
 # lzma target
 #
 ######################################################################
 
-$(LZMA_TARGET_DIR)/.source: $(DL_DIR)/$(LZMA_SOURCE)
+$(LZMA_TARGET_DIR)/.unpacked: $(DL_DIR)/$(LZMA_SOURCE)
 	$(LZMA_CAT) $(DL_DIR)/$(LZMA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LZMA_TARGET_DIR) package/lzma/ lzma\*.patch
-	touch $(LZMA_TARGET_DIR)/.source
+	touch $@
 
-$(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.source
+$(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.unpacked
 	(cd $(LZMA_TARGET_DIR); rm -f config.cache ;\
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -76,7 +80,7 @@ $(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.source
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	);
-	touch $(LZMA_TARGET_DIR)/.configured;
+	touch $@
 
 $(LZMA_TARGET_DIR)/src/lzma/lzma: $(LZMA_TARGET_DIR)/.configured
 	$(MAKE) -C $(LZMA_TARGET_DIR) all
@@ -107,6 +111,7 @@ lzma-dirclean:
 #############################################################
 ifeq ($(strip $(BR2_PACKAGE_LZMA_HOST)),y)
 TARGETS+=lzma-host
+HOST_SOURCE+=lzma-source
 endif
 
 ifeq ($(strip $(BR2_PACKAGE_LZMA_TARGET)),y)

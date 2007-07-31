@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LZMA_TARGET
 	bool "Install lzma for the target system"
 	default n
+	select BR2_GCC_CROSS_CXX
 	help
 	  lzma utils on the target
 
