@@ -147,8 +147,9 @@ LIBTGTEXT=.so
 endif
 PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 
+BR2_DEPENDS_DIR=$(BASE_DIR)/package/config/buildroot-config/
 
-#############################################################
+##############################################################
 #
 # The list of stuff to build for the target toolchain
 # along with the packages to build for the target.
