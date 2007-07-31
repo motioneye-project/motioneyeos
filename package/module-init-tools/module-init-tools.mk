@@ -20,6 +20,7 @@ $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE):
 $(MODULE_INIT_TOOLS_DIR)/.unpacked: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
 	$(MODULE_INIT_TOOLS_CAT) $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(MODULE_INIT_TOOLS_DIR) package/module-init-tools \*.patch
+	$(CONFIG_UPDATE) $(MODULE_INIT_TOOLS_DIR)
 	touch $(MODULE_INIT_TOOLS_DIR)/.unpacked
 
 $(MODULE_INIT_TOOLS_DIR)/.configured: $(MODULE_INIT_TOOLS_DIR)/.unpacked
@@ -76,6 +77,7 @@ module-init-tools-dirclean:
 $(MODULE_INIT_TOOLS_DIR2)/.source: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
 	$(MODULE_INIT_TOOLS_CAT) $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(MODULE_INIT_TOOLS_DIR2) package/module-init-tools \*.patch
+	$(CONFIG_UPDATE) $(MODULE_INIT_TOOLS_DIR2)
 	touch $(MODULE_INIT_TOOLS_DIR2)/.source
 
 $(MODULE_INIT_TOOLS_DIR2)/.configured: $(MODULE_INIT_TOOLS_DIR2)/.source
