@@ -10,6 +10,8 @@ choice
 config BR2_TOOLCHAIN_NORMAL
 	bool
 	prompt "Use default sources for toolchain"
+	help
+	  FIXME: Bug Ulf to provide a helptext
 
 config BR2_TOOLCHAIN_ATMEL_AVR32
 	bool
@@ -24,28 +26,28 @@ endchoice
 
 config BR2_VENDOR_SITE
 	string
-	default $(BR2_ATMEL_MIRROR)			if BR2_TOOLCHAIN_ATMEL_AVR32
+	default $(BR2_ATMEL_MIRROR) if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_SUFFIX
 	string
-	default "-avr32"				if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-avr32" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_BINUTILS_RELEASE
 	string
-	default "-2.0"					if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_GCC_RELEASE
 	string
-	default "-2.0"					if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_UCLIBC_RELEASE
 	string
-	default "-2.0"					if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_GDB_RELEASE
 	string
-	default "-2.0"					if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_PATCH_DIR
 	string
-	default "target/device/Atmel/toolchain/avr32"	if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "target/device/Atmel/toolchain/avr32" if BR2_TOOLCHAIN_ATMEL_AVR32
