@@ -97,7 +97,7 @@ $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 	#echo "RANLIB=$(TARGET_CROSS)ranlib" >> $(TINYX_DIR)/Makefile
 	#echo "OBJCOPY=$(TARGET_CROSS)objcopy" >> $(TINYX_DIR)/Makefile
 	#cat $(TINYX_DIR)/Makefile.xxxx >> $(TINYX_DIR)/Makefile
-	( cd $(TINYX_DIR) ; $(MAKE) World )
+	( cd $(TINYX_DIR) ; $(MAKE) $(TARGET_CONFIGURE_OPTS) World )
 
 #
 # Install x-includes and x-libraries in $(STAGING_DIR)/usr/X11R6/
