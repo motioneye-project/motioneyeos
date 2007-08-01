@@ -140,16 +140,6 @@ config BR2_GCC_USE_SJLJ_EXCEPTIONS
 	  proper stack unwinding during exception handling.  Most people
 	  can leave this set to n.
 
-config BR2_GCC_AVR32_CONFIGURATION
-	bool "Enable default AVR32 GCC configuration"
-	default y
-	depends BR2_avr32
-	help
-	  For the AVR32 platform there is some configuration which are not
-	  supported.
-
-	  Currently this will add "--disable-libmudflap" to configure.
-
 config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	string "Additional gcc options"
 	default ""

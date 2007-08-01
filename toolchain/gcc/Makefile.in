@@ -12,7 +12,7 @@ EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
 #"))
 
 # AVR32 GCC configuration
-ifeq ($(strip $(BR2_GCC_AVR32_CONFIGURATION)),y)
+ifeq ($(strip $(BR2_avr32)),y)
 EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap
 endif
 
@@ -86,7 +86,7 @@ endif
 endif # BR2_PREFER_IMA=y
 
 # AVR32 target GCC configuration
-ifeq ($(strip $(BR2_GCC_TARGET_AVR32_CONFIGURATION)),y)
+ifeq ($(strip $(BR2_avr32)),y)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libmudflap
 endif
 
