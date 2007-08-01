@@ -14,6 +14,8 @@ FBV_TARGET_BINARY:=usr/bin/$(FBV_BINARY)
 $(DL_DIR)/$(FBV_SOURCE):
 	$(WGET) -P $(DL_DIR) $(FBV_SITE)/$(FBV_SOURCE)
 
+fbv-source: $(DL_DIR)/$(FBV_SOURCE)
+
 $(FBV_DIR)/.unpacked: $(DL_DIR)/$(FBV_SOURCE)
 	$(FBV_CAT) $(DL_DIR)/$(FBV_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(FBV_DIR) package/fbv/ fbv-$(FBV_VERSION)\*.patch\*
@@ -21,7 +23,7 @@ $(FBV_DIR)/.unpacked: $(DL_DIR)/$(FBV_SOURCE)
 
 $(FBV_DIR)/.configured: $(FBV_DIR)/.unpacked
 	(cd $(FBV_DIR); \
-		($(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--prefix=/usr \
@@ -31,7 +33,7 @@ $(FBV_DIR)/.configured: $(FBV_DIR)/.unpacked
 	touch $@
 
 $(FBV_DIR)/$(FBV_BINARY): $(FBV_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(FBV_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(FBV_DIR)
 
 $(TARGET_DIR)/$(FBV_TARGET_BINARY): $(FBV_DIR)/$(FBV_BINARY)
 	install -D $(FBV_DIR)/$(FBV_BINARY) $(TARGET_DIR)/$(FBV_TARGET_BINARY)
