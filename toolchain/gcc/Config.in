@@ -155,6 +155,7 @@ config BR2_GCC_CROSS_CXX
 config BR2_GCC_CROSS_FORTRAN
 	bool "Fortran cross-compiler support"
 	default n
+	depends on !BR2_avr32
 	help
 	  Build a Fortran cross-compiler
 
