@@ -1,6 +1,6 @@
 To build and use the buildroot stuff, do the following:
 
-1) run 'make'
+1) run 'make menuconfig'
 2) select the packages you wish to compile
 3) run 'make'
 4) wait while it compiles
