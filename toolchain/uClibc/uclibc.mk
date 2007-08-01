@@ -382,16 +382,15 @@ endif
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
 endif
 
-uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
+uclibc: $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
+
+uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 
 uclibc-config:	$(UCLIBC_DIR)/.config
 
 uclibc-oldconfig:	$(UCLIBC_DIR)/.oldconfig
 
-
-uclibc: $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
-
-uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
+uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
 
