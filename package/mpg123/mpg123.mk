@@ -56,9 +56,7 @@ $(TARGET_DIR)/$(MPG123_TARGET_BIN): $(MPG123_DIR)/$(MPG123_BIN)
 mpg123:	uclibc $(MPG123_ALSA_DEP) $(TARGET_DIR)/$(MPG123_TARGET_BIN)
 
 mpg123-clean:
-	@if [ -d $(MPG123_DIR)/Makefile ] ; then \
-		$(MAKE) -C $(MPG123_DIR) clean ; \
-	fi;
+	-$(MAKE) -C $(MPG123_DIR) clean
 
 mpg123-dirclean:
 	rm -rf $(MPG123_DIR) $(MPG123_DIR)
