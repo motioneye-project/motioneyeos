@@ -62,7 +62,7 @@ $(LIBPNG_DIR)/.compiled: $(LIBPNG_DIR)/.configured
 	$(MAKE) -C $(LIBPNG_DIR)
 	touch $@
 
-$(STAGING_DIR)/lib/libpng.so: $(LIBPNG_DIR)/.compiled
+$(STAGING_DIR)/usr/lib/libpng.so: $(LIBPNG_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBPNG_DIR) install;
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libpng12.la
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" \
@@ -72,9 +72,9 @@ $(STAGING_DIR)/lib/libpng.so: $(LIBPNG_DIR)/.compiled
 		$(STAGING_DIR)/usr/bin/libpng12-config
 	touch -c $@
 
-$(TARGET_DIR)/usr/lib/libpng.so: $(STAGING_DIR)/lib/libpng.so
+$(TARGET_DIR)/usr/lib/libpng.so: $(STAGING_DIR)/usr/lib/libpng.so
 	cp -dpf $(STAGING_DIR)/lib/libpng*.so* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libpng.so
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libpng*
 
 png libpng: uclibc zlib pkgconfig $(TARGET_DIR)/usr/lib/libpng.so
 
