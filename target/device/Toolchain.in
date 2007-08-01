@@ -10,6 +10,7 @@ choice
 config BR2_TOOLCHAIN_NORMAL
 	bool
 	prompt "Use default sources for toolchain"
+	depends on !BR2_avr32
 	help
 	  Download vanilla binutils, gcc, uclibc and gdb from their 
 	  main download locations, and apply patches from the
