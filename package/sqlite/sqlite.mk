@@ -4,10 +4,10 @@
 #
 #############################################################
 
-SQLITE_VERSION=3.3.17
-SQLITE_SOURCE=sqlite-$(SQLITE_VERSION).tar.gz
-SQLITE_SITE=http://www.sqlite.org
-SQLITE_DIR=$(BUILD_DIR)/sqlite-$(SQLITE_VERSION)
+SQLITE_VERSION:=3.4.1
+SQLITE_SOURCE:=sqlite-$(SQLITE_VERSION).tar.gz
+SQLITE_SITE:=http://www.sqlite.org
+SQLITE_DIR:=$(BUILD_DIR)/sqlite-$(SQLITE_VERSION)
 SQLITE_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(SQLITE_SOURCE):
