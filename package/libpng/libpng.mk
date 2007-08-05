@@ -73,7 +73,7 @@ $(STAGING_DIR)/usr/lib/libpng.so: $(LIBPNG_DIR)/.compiled
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libpng.so: $(STAGING_DIR)/usr/lib/libpng.so
-	cp -dpf $(STAGING_DIR)/lib/libpng*.so* $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/usr/lib/libpng*.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libpng*
 
 png libpng: uclibc zlib pkgconfig $(TARGET_DIR)/usr/lib/libpng.so
