@@ -4,9 +4,9 @@
 #
 #############################################################
 TIFF_VERSION:=3.8.2
+TIFF_SOURCE:=tiff_$(TIFF_VERSION).orig.tar.gz
+TIFF_SITE:=http://ftp.debian.org/pool/main/t/tiff/
 TIFF_DIR:=$(BUILD_DIR)/tiff-$(TIFF_VERSION)
-TIFF_SITE:=ftp://ftp.remotesensing.org/libtiff
-TIFF_SOURCE:=tiff-$(TIFF_VERSION).tar.gz
 TIFF_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(TIFF_SOURCE):
