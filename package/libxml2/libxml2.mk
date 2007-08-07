@@ -26,8 +26,23 @@ $(LIBXML2_DIR)/.configured: $(LIBXML2_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
+		--includedir=/usr/include \
+		--with-gnu-ld \
 		--enable-shared \
+		--enable-static \
+		--enable-ipv6=no \
+		--without-debugging \
+		--without-python \
+		--without-threads \
 		$(DISABLE_NLS) \
 	);
 	touch $(LIBXML2_DIR)/.configured
@@ -38,6 +53,10 @@ $(LIBXML2_DIR)/libxml2.la: $(LIBXML2_DIR)/.configured
 
 $(STAGING_DIR)/usr/lib/libxml2.so: $(LIBXML2_DIR)/libxml2.la
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBXML2_DIR) install
+	rm -f $(STAGING_DIR)/usr/lib/libxml2.la
+	$(SED) 's:prefix=/usr:prefix=$(STAGING_DIR)/usr:' \
+		-e 's:includedir=/usr/include:includedir=$(STAGING_DIR)/usr/include:' \
+		$(STAGING_DIR)/usr/bin/xml2-config
 
 $(TARGET_DIR)/usr/lib/libxml2.so: $(STAGING_DIR)/usr/lib/libxml2.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libxml2.so* $(TARGET_DIR)/usr/lib/
