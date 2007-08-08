@@ -131,6 +131,7 @@ endif
 TARGET_CC=$(TARGET_CROSS)gcc
 TARGET_CXX=$(TARGET_CROSS)g++
 TARGET_RANLIB=$(TARGET_CROSS)ranlib
+TARGET_LDCONFIG=$(TARGET_CROSS)ldconfig
 INSTALL=/usr/bin/install
 ifeq ($(BR2_STRIP_strip),y)
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
