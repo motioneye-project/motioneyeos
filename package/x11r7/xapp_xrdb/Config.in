@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XRDB
+	bool "xrdb"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXMU
+	help
+	  xrdb 1.0.2
+	  X server resource database utility

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXTRAP
+	bool "libXTrap"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_TRAPPROTO
+	help
+	  libXTrap 1.0.0
+	  X.Org XTrap library

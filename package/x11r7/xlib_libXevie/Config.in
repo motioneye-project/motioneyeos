@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXEVIE
+	bool "libXevie"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_EVIEEXT
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXevie 1.0.2
+	  X.Org Xevie library

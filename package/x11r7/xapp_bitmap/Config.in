@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XAPP_BITMAP
+	bool "bitmap"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXMU
+	select BR2_PACKAGE_XDATA_XBITMAPS
+	help
+	  bitmap 1.0.2
+	  X.Org bitmap application

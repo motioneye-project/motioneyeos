@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XDBEDIZZY
+	bool "xdbedizzy"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXP
+	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
+	help
+	  xdbedizzy 1.0.2
+	  X.Org xdbedizzy application

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_XF86BIGFONTPROTO
+	bool "xf86bigfontproto"
+	default n
+	help
+	  xf86bigfontproto 1.1.2
+	  X.Org XF86BigFont protocol headers

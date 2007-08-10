@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXDAMAGE
+	bool "libXdamage"
+	default n
+	select BR2_PACKAGE_XPROTO_DAMAGEPROTO
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXdamage 1.0.4
+	  X.Org Xdamage library

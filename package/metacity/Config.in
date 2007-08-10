@@ -1,7 +1,7 @@
 config BR2_PACKAGE_METACITY
 	bool "metacity"
-	select BR2_PACKAGE_XORG
 	select BR2_PACKAGE_LIBGTK2
+	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
 	default n
 	help
 	  Metacity is a window manager for the X Window System.

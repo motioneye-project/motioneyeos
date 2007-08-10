@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XAPP_PROXYMNGR
+	bool "proxymngr"
+	default n
+	select BR2_PACKAGE_XLIB_LIBICE
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XPROTO_XPROXYMANAGEMENTPROTOCOL
+	help
+	  proxymngr 1.0.1
+	  proxy manager service

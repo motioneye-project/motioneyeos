@@ -1,0 +1,8 @@
+config BR2_UPDATE_CONFIG
+	bool "update config.sub and config.guess"
+	default n
+	help
+		This just exists to easily update the config.sub / config.guess
+		files in packages to the latest version (since many bundled ones
+		don't support the latest possible targets)
+

@@ -1,0 +1,8 @@
+--- util-macros-1.1.5/xorg-macros.m4.in.orig	2007-06-10 11:34:17.000000000 +0200
++++ util-macros-1.1.5/xorg-macros.m4.in	2007-06-10 11:34:20.000000000 +0200
+@@ -423,3 +423,5 @@
+ AM_CONDITIONAL(MAKE_LINT_LIB, [test x$make_lint_lib != xno])
+ 
+ ]) # XORG_LINT_LIBRARY
++
++AC_SUBST(STAGING_DIR)

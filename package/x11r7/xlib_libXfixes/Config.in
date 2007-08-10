@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXFIXES
+	bool "libXfixes"
+	default n
+	select BR2_PACKAGE_XPROTO_FIXESPROTO
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_XEXTPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXfixes 4.0.3
+	  X.Org Xfixes library

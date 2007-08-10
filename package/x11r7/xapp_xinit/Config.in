@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XINIT
+	bool "xinit"
+	default n
+	select BR2_PACKAGE_XAPP_XAUTH
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  xinit 1.0.3
+	  X Window System initializer

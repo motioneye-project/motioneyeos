@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_MKFONTSCALE
+	bool "mkfontscale"
+	default n
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBFONTENC
+	help
+	  mkfontscale 1.0.3
+	  create an index of scalable font files for X

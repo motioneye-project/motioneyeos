@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XCURSORGEN
+	bool "xcursorgen"
+	default n
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	help
+	  xcursorgen 1.0.1
+	  create an X cursor file from a collection of PNG images

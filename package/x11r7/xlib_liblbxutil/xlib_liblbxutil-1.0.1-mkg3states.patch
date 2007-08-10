@@ -1,0 +1,37 @@
+--- liblbxutil-1.0.1/configure.ac.orig	2007-06-08 21:57:50.000000000 +0200
++++ liblbxutil-1.0.1/configure.ac	2007-06-08 21:58:06.000000000 +0200
+@@ -49,6 +49,15 @@
+ 
+ XORG_RELEASE_VERSION
+ 
++AC_MSG_CHECKING([for CC_FOR_BUILD])
++if test x$host != x$build ; then
++    CC_FOR_BUILD=${CC_FOR_BUILD-gcc}
++else
++    CC_FOR_BUILD=${CC}
++fi
++AC_MSG_RESULT([$CC_FOR_BUILD])
++AC_SUBST(CC_FOR_BUILD)
++
+ AC_OUTPUT([Makefile
+ 	   src/Makefile
+ 	   lbxutil.pc])
+--- liblbxutil-1.0.1/src/Makefile.am.orig	2007-06-08 21:57:50.000000000 +0200
++++ liblbxutil-1.0.1/src/Makefile.am	2007-06-08 22:00:24.000000000 +0200
+@@ -5,6 +5,16 @@
+ mkg3states_SOURCES =				\
+ 	$(srcdir)/image/mkg3states.c
+ 
++COMPILE = $(CC_FOR_BUILD) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
++	$(AM_CPPFLAGS) $(CPPFLAGS_FOR_BUILD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD)
++LINK = $(CC_FOR_BUILD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
++
++$(srcdir)/mkg3states.o:
++	$(COMPILE) -c $< -o $@
++
++$(srcdir)/mkg3states: $(srcdir)/mkg3states.o
++	$(LINK) $< -o $@
++
+ liblbxutil_la_SOURCES =				\
+ 	$(srcdir)/lbx_zlib/reqstats.h		\
+ 	$(srcdir)/lbx_zlib/lbx_zlib_io.c	\

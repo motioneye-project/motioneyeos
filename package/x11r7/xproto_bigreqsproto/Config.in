@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_BIGREQSPROTO
+	bool "bigreqsproto"
+	default n
+	help
+	  bigreqsproto 1.0.2
+	  X.Org BigReqs protocol headers

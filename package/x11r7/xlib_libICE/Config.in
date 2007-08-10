@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XLIB_LIBICE
+	bool "libICE"
+	default n
+	select BR2_PACKAGE_XLIB_XTRANS
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libICE 1.0.3
+	  X.Org ICE library

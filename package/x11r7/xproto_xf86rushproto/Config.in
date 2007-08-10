@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_XF86RUSHPROTO
+	bool "xf86rushproto"
+	default n
+	help
+	  xf86rushproto 1.1.2
+	  X.Org XF86Rush protocol headers

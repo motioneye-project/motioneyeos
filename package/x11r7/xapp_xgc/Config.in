@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XAPP_XGC
+	bool "xgc"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXAW
+	help
+	  xgc 1.0.1
+	  X graphics demo

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XFINDPROXY
+	bool "xfindproxy"
+	default n
+	select BR2_PACKAGE_XLIB_LIBICE
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXT
+	help
+	  xfindproxy 1.0.1
+	  X.Org xfindproxy application

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XLIB_LIBXEXT
+	bool "libXext"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_XEXTPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXext 1.0.2
+	  X.Org Xext library

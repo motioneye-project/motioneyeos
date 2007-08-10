@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XAPP_XCLIPBOARD
+	bool "xclipboard"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXAW
+	help
+	  xclipboard 1.0.1
+	  interchange between cut buffer and selection

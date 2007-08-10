@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XAPP_XFD
+	bool "xfd"
+	default n
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXFT
+	help
+	  xfd 1.0.1
+	  X.Org xfd application

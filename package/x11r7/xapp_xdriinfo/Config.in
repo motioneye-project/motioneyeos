@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XDRIINFO
+	bool "xdriinfo"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_GLPROTO
+	select BR2_PACKAGE_MESA3D
+	help
+	  xdriinfo 1.0.1
+	  query configuration information of DRI drivers

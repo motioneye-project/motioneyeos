@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XPLSPRINTERS
+	bool "xplsprinters"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXP
+	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
+	help
+	  xplsprinters 1.0.1
+	  shows a list of Xprint printers and it's attributes

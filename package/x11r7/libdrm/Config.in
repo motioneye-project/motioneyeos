@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBDRM
+	bool "libdrm"
+	default n
+	help
+		Direct Rendering Manager
+		
+		http://dri.freedesktop.org/
+

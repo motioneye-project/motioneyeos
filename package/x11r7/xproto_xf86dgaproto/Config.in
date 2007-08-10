@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_XF86DGAPROTO
+	bool "xf86dgaproto"
+	default n
+	help
+	  xf86dgaproto 2.0.2
+	  X.Org XF86DGA protocol headers

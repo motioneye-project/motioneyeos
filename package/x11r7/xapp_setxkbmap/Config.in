@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_SETXKBMAP
+	bool "setxkbmap"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXKBFILE
+	help
+	  setxkbmap 1.0.3
+	  Controls the keyboard layout of a running X server.

@@ -1,0 +1,363 @@
+################################################################################
+#
+# Makefile.autotools.in --
+#
+# Implicit and Generated Rules for easily creating autotools-compatible 
+# buildroot packages
+#
+## Example minimal makefile for a package named 'foo'
+# 
+# | FOO_VERSION = 1.0
+# | FOO_SOURCE = foo-$(FOO_VERSION).tar.gz
+# | FOO_SITE = http://www.libfoo.org/dist
+# | $(eval $(call AUTOTARGETS,foo))
+# 
+## The following targets can be called from the shell:
+#
+# foo, foo-source, foo-patch, foo-configure, foo-build, foo-install,
+# foo-install-target, foo-install-staging, foo-uninstall, foo-clean, 
+# foo-dirclean
+#
+## The following variables which can be (re)defined in the package makefile:
+#
+# FOO_VERSION [mandatory]
+#	version string of the package
+# FOO_SOURCE [default foo-$(FOO_VERSION).tar.gz]
+#	file name of the package source
+# FOO_SITE [default sourceforge project "foo"]
+#	URL under wich $(FOO_SOURCE) can be found
+# FOO_DEPENDANCIES [default empty]
+#	list of (package) targets that must be built before foo
+# FOO_AUTORECONF [YES/NO, default NO]
+#	run <autoreconf> before <configure>
+# FOO_CONF_ENV [default empty]
+#	environment passed to the <configure> script
+# FOO_CONF_OPT [default empty]
+#	arguments passed to the <configure> script
+# FOO_MAKE_ENV [default empty]
+#	environment passed to all calls to <make> in the package source 
+#	directory
+# FOO_MAKE_OPT [default empty]
+#	arguments passed to <make> while building
+# FOO_INSTALL_STAGING [YES/NO, default NO]
+#	install the package to the staging directory
+# FOO_INSTALL_TARGET [YES/NO, default YES]
+#	install the package to the target directory
+# FOO_INSTALL_STAGING_OPT [default DESTDIR=$(STAGING_DIR)/usr install]
+#	arguments passed to <make> while installing to the staging directory
+# FOO_INSTALL_TARGET_OPT [default DESTDIR=$(STAGING_DIR)/usr install-exec]
+#	arguments passed to <make> while installing to the target directory
+# FOO_CLEAN_OPT [default clean]
+#	arguments passed to <make> while installing to the staging directory
+# FOO_UNINSTALL_STAGING_OPT  [default DESTDIR=$(STAGING_DIR)/usr uninstall]
+#	arguments passed to <make> while uninstalling from the staging 
+#	directory
+# FOO_UNINSTALL_TARGET_OPT [default DESTDIR=$(STAGING_DIR)/usr uninstall]
+#	arguments passed to <make> while uninstalling from the target 
+#	directory
+# FOO_SUBDIR [default empty]
+#	relative path in the package source from which to run configure and
+#	make
+#
+## The following variables contain hook target names;
+## by default they do nothing, they can be overriden in package makefiles
+#
+# FOO_HOOK_POST_BUILD, FOO_HOOK_POST_INSTALL
+#
+## The following variables contain targets that can be overriden
+#
+# FOO_TARGET_INSTALL_TARGET FOO_TARGET_INSTALL_STAGING FOO_TARGET_BUILD
+# FOO_TARGET_CONFIGURE FOO_TARGET_PATCH FOO_TARGET_EXTRACT FOO_TARGET_SOURCE
+# FOO_TARGET_UNINSTALL FOO_TARGET_CLEAN FOO_TARGET_DIRCLEAN
+#
+# E.g. if your package has a no <configure> script you can place the following 
+# in your package makefile:
+#
+# | $(FOO_TARGET_INSTALL):
+# | 	touch $@
+# 
+## The following variables are defined automatically and can be used in
+## overriden targets:
+#
+# PKG
+#	is always the current package name ("foo" in the example)
+# FOO_DIR
+#	the directory in which the package source is extracted.
+#	the base name will always be foo-$(FOO_VERSION), no matter what the
+#	archive name or the directory-in-archive name are.
+# MESSAGE
+#	macro that outputs a pretty message to stdout, e.g. use
+#	$(call MESSAGE,"Hello World")
+# 	in a target.
+#
+# Caveats:
+# - the 'eval' line (final line in the example) must be placed
+#   after all variable settings, but before all target re-definition
+#   (including hooks)
+################################################################################
+
+# UPPERCASE Macro -- transform its argument to uppercase and replace dots and 
+# hyphens to underscores
+UPPERCASE = $(shell echo $(1) | tr "a-z.-" "A-Z__")
+
+# Define extrators for different archive suffixes
+INFLATE.bz2 = $(BZCAT)
+INFLATE.gz  = $(ZCAT)
+INFLATE.tbz = $(BZCAT)
+INFLATE.tgz = $(ZCAT)
+INFLATE.tar = cat
+
+# MESSAGE Macro -- display a message in bold type
+MESSAGE = @echo $(TERM_BOLD) ; \
+	echo ">>> $($(PKG)_NAME) $($(PKG)_VERSION) $(1)$(shell tput rmso)" ; \
+	echo $(TERM_RESET)
+TERM_BOLD = $(shell tput bold)
+TERM_RESET = $(shell tput rmso)
+
+# Utility programs used to build packages
+TAR ?= tar
+#ACLOCAL_STAGING_DIR ?= $(STAGING_DIR)/usr/share/aclocal
+#ACLOCAL ?= aclocal -I $(ACLOCAL_STAGING_DIR)
+#AUTORECONF ?= autoreconf -v -i -f -I $(ACLOCAL_STAGING_DIR)
+#	ACLOCAL="$(ACLOCAL)" 
+
+
+################################################################################
+# Implicit targets -- produce a stamp file for each step of a package build
+################################################################################
+
+# Retrieve and unpack the archive
+$(BUILD_DIR)/%/.stamp_downloaded:
+	$(call MESSAGE,"Downloading")
+	test -e $(DL_DIR)/$($(PKG)_SOURCE) || $(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
+	mkdir -p $(@D)
+	touch $@
+
+# Retrieve and unpack the archive
+$(BUILD_DIR)/%/.stamp_extracted:
+	$(call MESSAGE,"Extracting")
+	mkdir -p $(@D)
+	$(INFLATE$(suffix $($(PKG)_SOURCE))) $(DL_DIR)/$($(PKG)_SOURCE) | \
+	$(TAR) --strip-components=1 -C $(@D) $(TAR_OPTIONS) -
+	touch $@
+
+# Patch
+$(BUILD_DIR)/%/.stamp_patched: NAMEVER = $($(PKG)_NAME)-$($(PKG)_VERSION)
+$(BUILD_DIR)/%/.stamp_patched:
+	$(call MESSAGE,"Patching")
+	(if test -d package/$($(PKG)_NAME) ; then \
+	  if test "$(wildcard package/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
+	    toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
+	  else \
+	    toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME) $($(PKG)_NAME)\*.patch || exit 1 ; \
+	    if test -d package/$($(PKG)_NAME)/$(NAMEVER) ; then \
+	      toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME)/$(NAMEVER) \*.patch || exit 1 ; \
+	    fi; \
+	  fi; \
+	fi)
+ifeq ($(strip $(BR2_UPDATE_CONFIG)),y)
+	@(for file in config.guess config.sub; do \
+		for i in $$(find $(@D) -name $$file); do \
+			cp package/gnuconfig/$$file $$i; \
+		done;\
+	done)
+endif
+	touch $@
+
+# Running autoreconf
+$(BUILD_DIR)/%/.stamp_autoconfigured:
+	$(call MESSAGE,"Running autoreconf")
+	cd $(@D)/$($(PKG)_SUBDIR) && $(AUTORECONF)
+	touch $@
+
+# Configuring
+$(BUILD_DIR)/%/.stamp_configured:
+	$(call MESSAGE,"Configuring")
+	if test "$($(PKG)_AUTORECONF)" = "YES" ; then \
+		cd $(@D)/$($(PKG)_SUBDIR) && \
+		$(AUTORECONF) ; \
+	fi
+	cd $(@D)/$($(PKG)_SUBDIR) && \
+	rm -f config.cache && \
+	$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		CXXFLAGS="$(TARGET_CXXFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$($(PKG)_CONF_ENV) \
+		./configure \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--sysconfdir=/etc \
+		$($(PKG)_CONF_OPT)
+	touch $@;
+
+# Build
+$(BUILD_DIR)/%/.stamp_built:
+	$(call MESSAGE,"Building")
+	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_MAKE_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	touch $@
+
+# Install to staging dir
+$(BUILD_DIR)/%/.stamp_staging_installed:
+	$(call MESSAGE,'Installing to host (staging directory)')
+	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_INSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+#	toolchain/replace.sh $(STAGING_DIR)/usr/lib ".*\.la" "\(['= ]\)/usr" "\\1$(STAGING_DIR)/usr"
+	for i in $$(find $(STAGING_DIR)/usr/lib/ -name "*.la") ; do \
+		cp $$i $$i~ ; \
+		$(SED) "s:\(['= ]\)/usr:\\1$(STAGING_DIR)/usr:" $$i ; \
+	done
+	touch $@
+
+# Install to target dir
+$(BUILD_DIR)/%/.stamp_target_installed:
+	$(call MESSAGE,"Installing to target")
+	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_INSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	for d in man include info share/info ; do \
+		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d ; \
+	done
+	find $(TARGET_DIR) -name '*.a' -o -name '*.la' -delete
+	touch $@
+
+$(BUILD_DIR)/%/.stamp_cleaned:
+	$(call MESSAGE,"Cleaning up")
+	-$($(PKG)_MAKE_ENV) $(MAKE)  $($(PKG)_CLEAN_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+
+$(BUILD_DIR)/%/.stamp_uninstalled:
+	$(call MESSAGE,"Uninstalling")
+	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_UNINSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_UNINSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+
+$(BUILD_DIR)/%/.stamp_dircleaned:
+	rm -Rf $(@D)
+
+
+################################################################################
+# AUTOTARGETS -- the target generator macro; define a set of human-readable 
+# make targets, stamps, and default per-package variables.
+# Argument 1 is the (lowercase) package name.
+################################################################################
+
+define AUTOTARGETS
+$(call AUTOTARGETS_INNER,$(1),$(call UPPERCASE,$(1)))
+endef
+      
+# AUTOTARGETS_INNER -- does the job for AUTOTARGETS; argument 1 is the
+# lowercase package name, argument 2 the uppercase package name
+define AUTOTARGETS_INNER
+
+# define package-specific variables to default values
+$(2)_NAME			=  $(1)
+$(2)_VERSION			?= undefined
+$(2)_DIR			=  $$(BUILD_DIR)/$(1)-$$($(2)_VERSION)
+$(2)_SOURCE			?= $(1)-$$($(2)_VERSION).tar.gz
+$(2)_SITE			?= \
+	http://$$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/$(1)
+$(2)_DEPENDANCIES		?=
+$(2)_AUTORECONF			?= NO
+$(2)_CONF_ENV			?=
+$(2)_CONF_OPT			?=
+$(2)_MAKE_ENV			?= 
+$(2)_MAKE_OPT			?=
+$(2)_INSTALL_STAGING		?= NO
+$(2)_INSTALL_TARGET		?= YES
+$(2)_INSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) install
+$(2)_INSTALL_TARGET_OPT		?= DESTDIR=$$(TARGET_DIR)  install-exec
+$(2)_CLEAN_OPT			?= clean
+$(2)_UNINSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) uninstall
+$(2)_UNINSTALL_TARGET_OPT	?= DESTDIR=$$(TARGET_DIR)  uninstall
+$(2)_SUBDIR			?=
+
+
+# define sub-target stamps
+$(2)_TARGET_INSTALL_TARGET =	$$($(2)_DIR)/.stamp_target_installed
+$(2)_TARGET_INSTALL_STAGING =	$$($(2)_DIR)/.stamp_staging_installed
+$(2)_TARGET_BUILD =		$$($(2)_DIR)/.stamp_built
+$(2)_TARGET_CONFIGURE =		$$($(2)_DIR)/.stamp_configured
+$(2)_TARGET_AUTORECONF =	$$($(2)_DIR)/.stamp_autoconfigured
+$(2)_TARGET_PATCH =		$$($(2)_DIR)/.stamp_patched
+$(2)_TARGET_EXTRACT =		$$($(2)_DIR)/.stamp_extracted
+$(2)_TARGET_SOURCE =		$$($(2)_DIR)/.stamp_downloaded
+$(2)_TARGET_UNINSTALL =		$$($(2)_DIR)/.stamp_uninstalled
+$(2)_TARGET_CLEAN =		$$($(2)_DIR)/.stamp_cleaned
+$(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
+
+$(2)_HOOK_POST_BUILD =		$$($(2)_DIR)/.stamp_hook_post_build
+$(2)_HOOK_POST_INSTALL =	$$($(2)_DIR)/.stamp_hook_post_install
+
+# human-friendly targets and target sequencing
+$(1): 			$(1)-install
+$(1)-install: 		$(1)-install-staging $(1)-install-target \
+			$$($(2)_HOOK_POST_INSTALL)
+			
+ifeq ($$($(2)_INSTALL_TARGET),YES)
+$(1)-install-target:	$(1)-build $$($(2)_TARGET_INSTALL_TARGET)
+else
+$(1)-install-target:
+endif
+
+ifeq ($$($(2)_INSTALL_STAGING),YES)
+$(1)-install-staging:	$(1)-build $$($(2)_TARGET_INSTALL_STAGING)
+else
+$(1)-install-staging:
+endif
+
+$(1)-build:		$(1)-configure $$($(2)_TARGET_BUILD) \
+			$$($(2)_HOOK_POST_BUILD)
+
+$(1)-configure:		$(1)-autoreconf $$($(2)_TARGET_CONFIGURE)
+
+ifeq ($$($(2)_AUTORECONF),YES)
+$(1)-autoreconf:	$(1)-patch $$($(2)_TARGET_AUTORECONF)
+$(2)_DEPENDANCIES += host-automake host-autoconf host-libtool
+else
+$(1)-autoreconf:	$(1)-patch
+endif
+
+$(1)-patch:		$(1)-extract $$($(2)_TARGET_PATCH)
+
+$(1)-extract:		$(1)-depends $$($(2)_TARGET_EXTRACT)
+
+$(1)-depends:		$(1)-source $$($(2)_DEPENDANCIES)
+
+$(1)-source:		$$($(2)_TARGET_SOURCE)
+
+# non-build targets
+$(1)-uninstall: 	$(1)-configure $$($(2)_TARGET_UNINSTALL)
+
+$(1)-clean:		$$($(2)_TARGET_CLEAN)
+
+$(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
+
+# define the PKG variable for all targets, containing the
+# uppercase package variable prefix
+$$($(2)_TARGET_INSTALL_TARGET):		PKG=$(2)
+$$($(2)_TARGET_INSTALL_STAGING):	PKG=$(2)
+$$($(2)_TARGET_BUILD):			PKG=$(2)
+$$($(2)_TARGET_CONFIGURE):		PKG=$(2)
+$$($(2)_TARGET_AUTORECONF):		PKG=$(2)
+$$($(2)_TARGET_PATCH):			PKG=$(2)
+$$($(2)_TARGET_EXTRACT):		PKG=$(2)
+$$($(2)_TARGET_SOURCE):			PKG=$(2)
+$$($(2)_TARGET_UNINSTALL):		PKG=$(2)
+$$($(2)_TARGET_CLEAN):			PKG=$(2)
+$$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
+$$($(2)_HOOK_POST_BUILD):		PKG=$(2)
+$$($(2)_HOOK_POST_INSTALL):		PKG=$(2)
+
+# define hook targets
+# default hook behaviour: do nothing
+$$($(2)_HOOK_POST_BUILD):
+$$($(2)_HOOK_POST_INSTALL):
+
+# add package to the general list if targets if requested by the buildroot
+# configuration
+ifeq ($$(BR2_PACKAGE_$(2)),y)
+TARGETS += $(1)
+endif
+endef
+
+# :mode=makefile:
+

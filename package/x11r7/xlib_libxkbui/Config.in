@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XLIB_LIBXKBUI
+	bool "libxkbui"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXKBFILE
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XPROTO_KBPROTO
+	help
+	  libxkbui 1.0.2
+	  X.Org xkbui library

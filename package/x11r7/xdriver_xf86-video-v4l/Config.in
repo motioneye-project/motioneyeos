@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XDRIVER_XF86_VIDEO_V4L
+	bool "xf86-video-v4l"
+	default n
+	select BR2_PACKAGE_XSERVER_XORG_SERVER
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_VIDEOPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  xf86-video-v4l 0.1.1
+	  video4linux driver

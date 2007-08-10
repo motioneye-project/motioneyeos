@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XKBUTILS
+	bool "xkbutils"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXKBFILE
+	help
+	  xkbutils 1.0.1
+	  X.Org xkbutils application

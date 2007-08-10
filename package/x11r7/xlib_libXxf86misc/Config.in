@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXXF86MISC
+	bool "libXxf86misc"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_XF86MISCPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXxf86misc 1.0.1
+	  X.Org Xxf86misc library

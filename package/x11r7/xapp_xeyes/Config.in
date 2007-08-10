@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XAPP_XEYES
+	bool "xeyes"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXMU
+	select BR2_PACKAGE_XLIB_LIBXT
+	help
+	  xeyes 1.0.1
+	  X.Org xeyes application

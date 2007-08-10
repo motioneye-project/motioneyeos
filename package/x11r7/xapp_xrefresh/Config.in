@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XAPP_XREFRESH
+	bool "xrefresh"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  xrefresh 1.0.2
+	  refresh all or part of an X screen

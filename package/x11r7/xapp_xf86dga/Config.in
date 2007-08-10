@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XF86DGA
+	bool "xf86dga"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXXF86DGA
+	help
+	  xf86dga 1.0.2
+	  test program for the XFree86-DGA extension

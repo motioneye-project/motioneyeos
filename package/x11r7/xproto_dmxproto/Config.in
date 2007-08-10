@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_DMXPROTO
+	bool "dmxproto"
+	default n
+	help
+	  dmxproto 2.2.2
+	  X.Org DMX protocol headers

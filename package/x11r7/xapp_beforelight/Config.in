@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XAPP_BEFORELIGHT
+	bool "beforelight"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXSCRNSAVER
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXT
+	help
+	  beforelight 1.0.2
+	  screen saver

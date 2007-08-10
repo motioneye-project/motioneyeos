@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XKBCOMP
+	bool "xkbcomp"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXKBFILE
+	help
+	  xkbcomp 1.0.3
+	  compile XKB keyboard description

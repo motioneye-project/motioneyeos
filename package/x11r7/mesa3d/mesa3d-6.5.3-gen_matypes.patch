@@ -1,0 +1,11 @@
+--- Mesa-6.5.3/src/mesa/x86/Makefile.orig	2007-06-09 06:23:46.000000000 +0200
++++ Mesa-6.5.3/src/mesa/x86/Makefile	2007-06-09 06:24:53.000000000 +0200
+@@ -21,7 +21,7 @@
+ 
+ 
+ gen_matypes: gen_matypes.c
+-	$(CC) $(INCLUDE_DIRS) $(CFLAGS) gen_matypes.c -o gen_matypes
++	$(CC_FOR_BUILD) $(INCLUDE_DIRS) $(CFLAGS_FOR_BUILD) gen_matypes.c -o gen_matypes
+ 
+ # need some special rules here, unfortunately
+ matypes.h: ../main/mtypes.h ../tnl/t_context.h gen_matypes

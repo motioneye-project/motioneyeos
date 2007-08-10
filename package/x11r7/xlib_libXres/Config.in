@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXRES
+	bool "libXres"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_RESOURCEPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXres 1.0.3
+	  X.Org XRes library

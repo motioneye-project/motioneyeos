@@ -1,0 +1,11 @@
+--- xauth-1.0.2/configure.ac.orig	2007-06-06 22:33:44.000000000 +0200
++++ xauth-1.0.2/configure.ac	2007-06-06 22:33:57.000000000 +0200
+@@ -40,7 +40,7 @@
+ AC_CHECK_HEADERS([net/errno.h])
+ 
+ # Checks for pkg-config packages
+-PKG_CHECK_MODULES(XAUTH, x11 xau xext xmuu)
++PKG_CHECK_MODULES(XAUTH, x11 xau xext xmuu xcb)
+ AC_SUBST(XAUTH_CFLAGS)
+ AC_SUBST(XAUTH_LIBS)
+ 

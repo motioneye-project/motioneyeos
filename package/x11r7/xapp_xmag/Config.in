@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XAPP_XMAG
+	bool "xmag"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXAW
+	help
+	  xmag 1.0.1
+	  X.Org xmag application

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_XLIB_LIBXT
+	bool "libXt"
+	default n
+	select BR2_PACKAGE_XLIB_LIBSM
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_KBPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	select BR2_PACKAGE_XCB_PROTO
+	select BR2_PACKAGE_LIBXCB
+	help
+	  libXt 1.0.4
+	  X.Org Xt library

@@ -1,0 +1,15 @@
+--- util-macros-1.1.5/xorg-macros.m4.in.orig	2007-06-08 22:23:00.000000000 +0200
++++ util-macros-1.1.5/xorg-macros.m4.in	2007-06-08 22:26:41.000000000 +0200
+@@ -194,7 +194,11 @@
+ XORG_SGML_PATH=$prefix/share/sgml
+ HAVE_DEFS_ENT=
+ 
+-AC_CHECK_FILE([$XORG_SGML_PATH/X11/defs.ent], [HAVE_DEFS_ENT=yes])
++if test "$cross_compiling" = no; then
++   AC_CHECK_FILE([$XORG_SGML_PATH/X11/defs.ent], [HAVE_DEFS_ENT=yes])
++else
++   HAVE_DEFS_ENT=no
++fi
+ 
+ AC_PATH_PROG(LINUXDOC, linuxdoc)
+ AC_PATH_PROG(PS2PDF, ps2pdf)

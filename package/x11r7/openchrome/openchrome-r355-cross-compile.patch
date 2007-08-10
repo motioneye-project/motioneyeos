@@ -1,0 +1,35 @@
+--- openchrome-r355/configure.ac.orig	2007-06-10 15:07:43.000000000 +0200
++++ openchrome-r355/configure.ac	2007-06-10 15:11:16.000000000 +0200
+@@ -69,12 +69,18 @@
+ AC_HEADER_STDC
+ 
+ if test "$DRI" != no; then
++	if test "$cross_compiling" = "no" ; then
+         AC_CHECK_FILE([${sdkdir}/dri.h],
+                       [have_dri_h="yes"], [have_dri_h="no"])
+         AC_CHECK_FILE([${sdkdir}/sarea.h],
+                       [have_sarea_h="yes"], [have_sarea_h="no"])
+         AC_CHECK_FILE([${sdkdir}/dristruct.h],
+                       [have_dristruct_h="yes"], [have_dristruct_h="no"])
++	else
++		have_dri_h="yes"
++		have_sarea_h="yes"
++		have_dristruct_h="yes"
++	fi
+ fi
+ 
+ AC_MSG_CHECKING([whether to include DRI support])
+@@ -113,8 +119,12 @@
+ 
+ AM_CONDITIONAL(XVMC, test x$XVMC = xyes)
+ 
+-AC_CHECK_FILE([${sdkdir}/xf86Module.h],
++if test "$cross_compiling" = "no" ; then
++	AC_CHECK_FILE([${sdkdir}/xf86Module.h],
+               [have_xf86Module_h="yes"], [have_xf86Module_h="no"])
++else
++	have_xf86Module_h="yes"
++fi
+ 
+ # Check the ABI_VIDEODRV_VERSION
+ SAVE_CPPFLAGS="$CPPFLAGS"

@@ -3,3 +3,7 @@ config BR2_PACKAGE_TINYX
 	default y if BR2_PACKAGE_XSERVER_tinyx
 	help
 	  A tiny X server.  Also known as 'Xfbdev' and 'kdrive'.
+
+comment "tinyx X Window System disabled"
+	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
+

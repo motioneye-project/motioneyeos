@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_MICROTOUCH
+	bool "xf86-input-microtouch"
+	default n
+	select BR2_PACKAGE_XSERVER_XORG_SERVER
+	select BR2_PACKAGE_XPROTO_INPUTPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  xf86-input-microtouch 1.1.0
+	  MicroTouch input driver

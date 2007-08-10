@@ -204,7 +204,7 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER) $(XORG_LIBX)/X11/fonts/ttf-dejavu/
 $(TARGET_DIR)/usr/bin/mcookie: package/xorg/mcookie.c
 	$(TARGET_CROSS)gcc -Wall -Os -s package/xorg/mcookie.c -o $(TARGET_DIR)/usr/bin/mcookie
 
-xorg: zlib png pkgconfig expat fontconfig $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 \
+xorg: zlib png pkgconfig expat fontconfig libdrm $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2 \
 	$(XORG_LIBX)/libX11.so.6.2 $(TARGET_DIR)/usr/bin/mcookie
 
 xorg-source: $(DL_DIR)/$(XORG_SOURCE) $(DL_DIR)/$(DEJAVU_SOURCE)

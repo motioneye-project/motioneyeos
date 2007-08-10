@@ -4,9 +4,9 @@ config BR2_PACKAGE_DILLO
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBGLIB12
 	select BR2_PACKAGE_LIBGTK12
-	select BR2_PACKAGE_XORG
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LIBPNG
+	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
 	help
 	  Dillo is a small GTK+ based web browser written in C.
 

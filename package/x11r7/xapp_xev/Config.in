@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XAPP_XEV
+	bool "xev"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  xev 1.0.1
+	  print contents of X events

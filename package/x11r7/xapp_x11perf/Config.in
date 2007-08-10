@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_X11PERF
+	bool "x11perf"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXMU
+	select BR2_PACKAGE_XLIB_LIBXFT
+	help
+	  x11perf 1.4.1
+	  summarize x11perf results

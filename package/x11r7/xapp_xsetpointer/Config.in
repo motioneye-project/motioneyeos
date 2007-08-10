@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XSETPOINTER
+	bool "xsetpointer"
+	default n
+	select BR2_PACKAGE_XPROTO_INPUTPROTO
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXI
+	help
+	  xsetpointer 1.0.0
+	  set an X Input device as the main pointer

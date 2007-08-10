@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XAPP_MKFONTDIR
+	bool "mkfontdir"
+	default n
+	select BR2_PACKAGE_XAPP_MKFONTSCALE
+	help
+	  mkfontdir 1.0.2
+	  create an index of X font files in a directory

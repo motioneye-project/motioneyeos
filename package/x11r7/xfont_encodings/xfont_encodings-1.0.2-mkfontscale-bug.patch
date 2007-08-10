@@ -1,0 +1,21 @@
+--- encodings-1.0.2/large/Makefile.am.orig	2007-06-08 16:28:01.000000000 +0200
++++ encodings-1.0.2/large/Makefile.am	2007-06-08 16:28:15.000000000 +0200
+@@ -37,6 +37,6 @@
+ 	@GZIP@ -c < $< > $@
+ 
+ encodings.dir: $(DATA_FILES)
+-	@MKFONTSCALE@ -b -s -l -n -r -p $(encodingsdir) -e . .
++	$(MKFONTSCALE) -b -s -l -n -r -p $(encodingsdir) -e . .
+ 
+ encodings_DATA = $(DATA_FILES) encodings.dir
+--- encodings-1.0.2/Makefile.am.orig	2007-06-08 16:28:36.000000000 +0200
++++ encodings-1.0.2/Makefile.am	2007-06-08 16:28:43.000000000 +0200
+@@ -56,7 +56,7 @@
+ 	@GZIP@ -c < $< > $@
+ 
+ encodings.dir: $(DATA_FILES)
+-	@MKFONTSCALE@ -b -s -l -n -r -p $(encodingsdir) -e . -e large .
++	$(MKFONTSCALE) -b -s -l -n -r -p $(encodingsdir) -e . -e large .
+ 
+ encodings_DATA = $(DATA_FILES) encodings.dir
+ 

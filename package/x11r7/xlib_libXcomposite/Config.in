@@ -1,0 +1,11 @@
+config BR2_PACKAGE_XLIB_LIBXCOMPOSITE
+	bool "libXcomposite"
+	default n
+	select BR2_PACKAGE_XPROTO_COMPOSITEPROTO
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXcomposite 0.3.1
+	  X.Org Xcomposite library

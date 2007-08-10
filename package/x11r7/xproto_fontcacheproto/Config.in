@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_FONTCACHEPROTO
+	bool "fontcacheproto"
+	default n
+	help
+	  fontcacheproto 0.1.2
+	  X.Org Fontcache protocol headers

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XLIB_LIBXPRINTAPPUTIL
+	bool "libXprintAppUtil"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXP
+	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
+	help
+	  libXprintAppUtil 1.0.1
+	  X.Org XprintAppUtil library

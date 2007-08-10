@@ -306,11 +306,16 @@ prompt "X Window System server"
 
 config BR2_PACKAGE_XSERVER_none
 	bool "none"
+config BR2_PACKAGE_XSERVER_x11r7
+	bool "x11r7"
 config BR2_PACKAGE_XSERVER_xorg
 	bool "xorg"
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
 endchoice
+if BR2_PACKAGE_XSERVER_x11r7
+source "package/x11r7/Config.in"
+endif
 if BR2_PACKAGE_XSERVER_xorg
 source "package/xorg/Config.in"
 endif

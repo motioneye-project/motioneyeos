@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XAPP_XMAN
+        bool "xapp_xman"
+        default n
+        help
+	  Manual page display program for the X Window System
+

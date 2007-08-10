@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXXF86VM
+	bool "libXxf86vm"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_XF86VIDMODEPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXxf86vm 1.0.1
+	  X.Org Xxf86vm library

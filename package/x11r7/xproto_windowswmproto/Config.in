@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XPROTO_WINDOWSWMPROTO
+	bool "windowswmproto"
+	default n
+	help
+	  windowswmproto 1.0.3
+	  No description available

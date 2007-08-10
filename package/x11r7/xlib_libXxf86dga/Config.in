@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXXF86DGA
+	bool "libXxf86dga"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_XF86DGAPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXxf86dga 1.0.1
+	  X.Org Xxf86dga library

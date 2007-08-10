@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XPROP
+	bool "xprop"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXMU
+	help
+	  xprop 1.0.2
+	  property displayer for X

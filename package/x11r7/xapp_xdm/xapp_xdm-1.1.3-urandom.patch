@@ -1,0 +1,15 @@
+--- xdm-1.1.3/configure.ac.orig	2007-06-10 15:34:10.000000000 +0200
++++ xdm-1.1.3/configure.ac	2007-06-10 15:38:33.000000000 +0200
+@@ -152,8 +152,12 @@
+ 	RANDOM_DEVICE="$withval", RANDOM_DEVICE="try")
+ 
+ if test x$RANDOM_DEVICE = xyes -o x$RANDOM_DEVICE = xtry ; then
++	if test "$cross_compiling" = "no" ; then
+ 	AC_CHECK_FILE([/dev/urandom], [RANDOM_DEVICE=/dev/urandom],
+ 		AC_CHECK_FILE([/dev/random], [RANDOM_DEVICE=/dev/random]))
++	else
++		RANDOM_DEVICE=/dev/urandom
++	fi
+ 	if test x$RANDOM_DEVICE = xyes ; then
+ 		AC_MSG_ERROR(["random device support requested, but no random device was found."])		
+ 	else 

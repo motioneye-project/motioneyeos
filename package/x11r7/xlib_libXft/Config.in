@@ -1,0 +1,12 @@
+config BR2_PACKAGE_XLIB_LIBXFT
+	bool "libXft"
+	default n
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXft 2.1.12
+	  X.Org Xft library

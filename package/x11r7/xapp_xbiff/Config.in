@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XBIFF
+	bool "xbiff"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XDATA_XBITMAPS
+	help
+	  xbiff 1.0.1
+	  mailbox flag for X

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XAPP_XPHELLOWORLD
+	bool "xphelloworld"
+	default n
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXPRINTAPPUTIL
+	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
+	select BR2_PACKAGE_XLIB_LIBXT
+	help
+	  xphelloworld 1.0.1
+	  X.Org xphelloworld application

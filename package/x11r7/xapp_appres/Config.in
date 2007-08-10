@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_APPRES
+	bool "appres"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXT
+	help
+	  appres 1.0.1
+	  list X application resource database

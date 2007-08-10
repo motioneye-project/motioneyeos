@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XLIB_LIBXCURSOR
+	bool "libXcursor"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXcursor 1.1.8
+	  X.Org Xcursor library

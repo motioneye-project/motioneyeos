@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XLIB_LIBDMX
+	bool "libdmx"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XPROTO_DMXPROTO
+	help
+	  libdmx 1.0.2
+	  X.Org dmx library

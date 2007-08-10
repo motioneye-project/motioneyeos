@@ -522,6 +522,8 @@ config BR2_GCC_TARGET_ABI
 
 menu "Build options"
 
+source package/gnuconfig/Config.in
+
 config BR2_WGET
 	string "Wget command"
 	default "wget --passive-ftp -nd"

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_XLIB_LIBXRANDR
+	bool "libXrandr"
+	default n
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XPROTO_RENDERPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  libXrandr 1.1.2
+	  X.Org Xrandr library

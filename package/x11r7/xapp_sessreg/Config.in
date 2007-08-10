@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_SESSREG
+	bool "sessreg"
+	default n
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  sessreg 1.0.2
+	  manage utmp/wtmp entries for non-init clients
