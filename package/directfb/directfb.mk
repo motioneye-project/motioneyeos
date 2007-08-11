@@ -60,8 +60,8 @@ $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured
 	touch $(DIRECTFB_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libdirectfb.so: $(DIRECTFB_DIR)/.compiled
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DIRECTFB_DIR) install
-	touch -c $(STAGING_DIR)/lib/libdirectfb.so
+	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(DIRECTFB_DIR) install
+	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libdirectfb.so: $(STAGING_DIR)/usr/lib/libdirectfb.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libdirect* $(STAGING_DIR)/usr/lib/libfusion* $(TARGET_DIR)/usr/lib/
