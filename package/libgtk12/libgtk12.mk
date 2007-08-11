@@ -40,7 +40,7 @@ $(LIBGTK12_DIR)/.configured: $(LIBGTK12_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
@@ -68,7 +68,7 @@ $(STAGING_DIR)/lib/$(LIBGTK12_BINARY): $(LIBGTK12_DIR)/gtk/.libs/$(LIBGTK12_BINA
 	    sharedstatedir=$(STAGING_DIR)/com \
 	    localstatedir=$(STAGING_DIR)/var \
 	    libdir=$(STAGING_DIR)/lib \
-	    includedir=$(STAGING_DIR)/include \
+	    includedir=$(STAGING_DIR)/usr/include \
 	    oldincludedir=$(STAGING_DIR)/include \
 	    infodir=$(STAGING_DIR)/info \
 	    mandir=$(STAGING_DIR)/man \

@@ -22,7 +22,6 @@ $(XERCES_DIR)/.unpacked: $(DL_DIR)/$(XERCES_SOURCE)
 
 $(XERCES_DIR)/.configured: $(XERCES_DIR)/.unpacked
 	(cd $(XERCES_DIR)/src/xercesc; rm -rf config.cache; \
-		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		XERCESCROOT=$(XERCES_DIR) \
 		./runConfigure -plinux -minmem \
@@ -47,7 +46,7 @@ $(TARGET_DIR)/usr/$(XERCES_BINARY): $(STAGING_DIR)/$(XERCES_BINARY)
 xerces: uclibc $(TARGET_DIR)/usr/$(XERCES_BINARY)
 
 xerces-clean:
-	rm -rf $(STAGING_DIR)/include/xercesc
+	rm -rf $(STAGING_DIR)/usr/include/xercesc
 	rm -f $(STAGING_DIR)/lib/libxerces*
 	rm -f $(TARGET_DIR)/usr/lib/libxerces*
 	-$(MAKE) -C $(XERCES_DIR) clean

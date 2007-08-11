@@ -48,7 +48,7 @@ libusb: uclibc $(TARGET_DIR)/$(LIBUSB_BINARY)
 
 libusb-clean:
 	rm -f $(STAGING_DIR)/bin/libusb-config
-	rm -f $(STAGING_DIR)/includes/usb*.h
+	rm -f $(STAGING_DIR)/usr/includes/usb*.h
 	rm -f $(STAGING_DIR)/lib/libusb*
 	rm -rf $(STAGING_DIR)/lib/pkgconfig
 	rm -f $(TARGET_DIR)/usr/lib/libusb*

@@ -62,22 +62,22 @@ $(TARGET_DIR)/$(MPATROL_TARGET_BINARY): $(MPATROL_BUILD_DIR)/$(MPATROL_BINARY)
 		ln -sf libpthread.so.0 $(TARGET_DIR)/lib/libpthread.so; fi
 	(cd $(MPATROL_DIR); \
 		cp -dpf bin/mp* bin/hexwords $(TARGET_DIR)/usr/bin; \
-		cp -dpf src/mp*.h $(STAGING_DIR)/include; \
-		mkdir -p $(STAGING_DIR)/include/mpatrol; \
-		cp -dpf tools/*.h $(STAGING_DIR)/include/mpatrol)
+		cp -dpf src/mp*.h $(STAGING_DIR)/usr/include; \
+		mkdir -p $(STAGING_DIR)/usr/include/mpatrol; \
+		cp -dpf tools/*.h $(STAGING_DIR)/usr/include/mpatrol)
 	touch $(TARGET_DIR)/$(MPATROL_TARGET_BINARY)
 
 mpatrol: uclibc $(MPATROL_SYMBOL_DEPS) $(TARGET_DIR)/$(MPATROL_TARGET_BINARY)
 
-mpatrol-clean: 
+mpatrol-clean:
 	(cd $(TARGET_DIR)/usr/lib; rm -f libmpatrol* libmpalloc*)
 	(cd $(TARGET_DIR)/usr/bin; \
 		rm -f mpatrol mprof mptrace mleak mpsym mpedit hexwords)
-	(cd $(STAGING_DIR)/include; \
+	(cd $(STAGING_DIR)/usr/include; \
 		rm -rf mpatrol.h mpalloc.h mpdebug.h mpatrol)
 	$(MAKE) -C $(MPATROL_DIR)/build/unix clobber
 
-mpatrol-dirclean: 
+mpatrol-dirclean:
 	rm -rf $(MPATROL_DIR)
 
 

@@ -27,17 +27,18 @@ $(VPNC_DIR)/.configured: $(VPNC_DIR)/.unpacked
 
 $(VPNC_BINARY): $(VPNC_DIR)/.configured
 	rm -f $@
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) INCLUDE=$(STAGING_DIR)/include	CC=$(TARGET_CC) -C $(VPNC_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) INCLUDE=$(STAGING_DIR)/usr/include \
+		CC=$(TARGET_CC) -C $(VPNC_DIR)
 
 $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
-	$(MAKE) $(TARGET_CONFIGURE_OPTS)	\
-		DESTDIR=$(TARGET_DIR)		\
-		BINDIR=/usr/local/bin		\
-		SBINDIR=/usr/local/sbin		\
-		ETCDIR=/etc/vpnc		\
-		MANDIR=/usr/local/share/man	\
-		VERSION=$(VPNC_VERSION)		\
-		INCLUDE=$(STAGING_DIR)/include		\
+	$(MAKE) $(TARGET_CONFIGURE_OPTS)		\
+		DESTDIR=$(TARGET_DIR)			\
+		BINDIR=/usr/local/bin			\
+		SBINDIR=/usr/local/sbin			\
+		ETCDIR=/etc/vpnc			\
+		MANDIR=/usr/local/share/man		\
+		VERSION=$(VPNC_VERSION)			\
+		INCLUDE=$(STAGING_DIR)/usr/include	\
 		LDFLAGS="-g -lgcrypt -lgpg-error"	\
 		-C $(VPNC_DIR) install
 	$(STRIP) --strip-unneeded $(VPNC_TARGET_BINARY)
@@ -46,7 +47,7 @@ $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
 
 
 
-vpnc:	uclibc $(VPNC_TARGET_BINARY) 
+vpnc:	uclibc $(VPNC_TARGET_BINARY)
 
 vpnc-source: $(DL_DIR)/$(VPNC_SOURCE)
 

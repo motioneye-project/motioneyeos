@@ -48,8 +48,8 @@ liblockfile: uclibc $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
 liblockfile-clean:
 	rm -f $(TARGET_DIR)/usr/lib/liblockfile.so*
 	rm -f $(STAGING_DIR)/lib/liblockfile*
-	rm -f $(STAGING_DIR)/include/lockfile.h
-	rm -f $(STAGING_DIR)/include/mailfile.h
+	rm -f $(STAGING_DIR)/usr/include/lockfile.h
+	rm -f $(STAGING_DIR)/usr/include/mailfile.h
 	rm -rf $(STAGING_DIR)/man
 	$(MAKE) -C $(LIBLOCKFILE_DIR) clean
 

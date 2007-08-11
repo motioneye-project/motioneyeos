@@ -40,16 +40,16 @@ $(TIFF_DIR)/.configured: $(TIFF_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--disable-cxx \
 		--without-x \
-		--with-jpeg-include-dir=$(STAGING_DIR)/include \
+		--with-jpeg-include-dir=$(STAGING_DIR)/usr/include \
 		--with-jpeg-lib-dir=$(STAGING_DIR)/lib \
-		--with-zlib-include-dir=$(STAGING_DIR)/include \
+		--with-zlib-include-dir=$(STAGING_DIR)/usr/include \
 		--with-zlib-lib-dir=$(STAGING_DIR)/lib \
 	);
 	touch $(TIFF_DIR)/.configured

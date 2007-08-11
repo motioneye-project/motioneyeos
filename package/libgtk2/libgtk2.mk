@@ -88,7 +88,7 @@ $(LIBGTK2_DIR)/.configured: $(LIBGTK2_DIR)/.unpacked
 	# The following is an truely evil hack!
 	# I dont yet understand why configure is not doing this right
 	# TODO: also remove 'odd-include-problem.patch' when this is fixed
-	$(SED) "s,^GDK_DEP_CFLAGS=.*,GDK_DEP_CFLAGS=\'-pthread -I$(STAGING_DIR)/include/glib-2.0 -I$(STAGING_DIR)/lib/glib-2.0/include -I$(STAGING_DIR)/include/pango-1.0 -I$(STAGING_DIR)/include/cairo\',g" $(LIBGTK2_DIR)/configure
+	$(SED) "s,^GDK_DEP_CFLAGS=.*,GDK_DEP_CFLAGS=\'-pthread -I$(STAGING_DIR)/usr/include/glib-2.0 -I$(STAGING_DIR)/lib/glib-2.0/include -I$(STAGING_DIR)/usr/include/pango-1.0 -I$(STAGING_DIR)/usr/include/cairo\',g" $(LIBGTK2_DIR)/configure
 	$(SED) "s,^GDK_DEP_LIBS=.*,GDK_DEP_LIBS=\'-L$(STAGING_DIR)/lib -lpangocairo-1.0 -lpango-1.0 -lcairo -lgobject-2.0 -lgmodule-2.0 -ldl -lglib-2.0 -lfontconfig -lXext -lXrender -lX11 -lXinerama -lXrandr -lXcursor -lXfixes -lXft -lm\',g" $(LIBGTK2_DIR)/configure
 	(cd $(LIBGTK2_DIR); rm -rf config.cache; \
 		$(LIBGTK2_BUILD_ENV) \
@@ -105,13 +105,13 @@ $(LIBGTK2_DIR)/.configured: $(LIBGTK2_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/include \
+		--x-includes=$(STAGING_DIR)/usr/include \
 		--x-libraries=$(STAGING_DIR)/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \

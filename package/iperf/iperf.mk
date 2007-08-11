@@ -42,7 +42,7 @@ $(IPERF_DIR)/.configured: $(IPERF_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--includedir=$(STAGING_DIR)/include \
+		--includedir=$(STAGING_DIR)/usr/include \
 	);
 	touch $(IPERF_DIR)/.configured
 

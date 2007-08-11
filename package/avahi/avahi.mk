@@ -4,10 +4,10 @@
 #
 #############################################################
 #
-# This program is free software; you can redistribute it 
-# and/or modify it under the terms of the GNU Lesser General 
-# Public License as published by the Free Software Foundation; 
-# either version 2.1 of the License, or (at your option) any 
+# This program is free software; you can redistribute it
+# and/or modify it under the terms of the GNU Lesser General
+# Public License as published by the Free Software Foundation;
+# either version 2.1 of the License, or (at your option) any
 # later version.
 
 AVAHI_VERSION:=0.6.19
@@ -48,7 +48,7 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 	(cd $(AVAHI_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		LIBDAEMON_CFLAGS="-I$(STAGING_DIR)/include" \
+		LIBDAEMON_CFLAGS="-I$(STAGING_DIR)/usr/include" \
 		LIBDAEMON_LIBS="-L$(STAGING_DIR)/lib -ldaemon" \
 		ac_cv_func_strtod=yes \
 		ac_fsusage_space=yes \
@@ -116,7 +116,7 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \

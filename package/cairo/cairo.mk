@@ -95,13 +95,13 @@ $(CAIRO_DIR)/.configured: $(CAIRO_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/include \
+		--x-includes=$(STAGING_DIR)/usr/include \
 		--x-libraries=$(STAGING_DIR)/lib \
 		--enable-ps=yes \
 		--enable-pdf=yes \

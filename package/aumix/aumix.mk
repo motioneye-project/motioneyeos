@@ -28,7 +28,7 @@ $(AUMIX_DIR)/.configured: $(AUMIX_DIR)/.unpacked
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--libdir=$(STAGING_DIR)/lib \
-		--includedir=$(STAGING_DIR)/include \
+		--includedir=$(STAGING_DIR)/usr/include \
 		--without-gtk \
 		--without-gtk1 \
 		--without-alsa \

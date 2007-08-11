@@ -98,11 +98,11 @@ $(LINUX_KERNEL): $(LINUX_DIR)/$(LINUX_BINLOC)
 	touch -c $(LINUX_KERNEL)
 
 $(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
-	mkdir -p $(STAGING_DIR)/include
-	tar -ch -C $(LINUX_DIR)/include -f - linux | tar -xf - -C $(STAGING_DIR)/include/
-	tar -ch -C $(LINUX_DIR)/include -f - asm | tar -xf - -C $(STAGING_DIR)/include/
+	mkdir -p $(STAGING_DIR)/usr/include
+	tar -ch -C $(LINUX_DIR)/include -f - linux | tar -xf - -C $(STAGING_DIR)/usr/include/
+	tar -ch -C $(LINUX_DIR)/include -f - asm | tar -xf - -C $(STAGING_DIR)/usr/include/
 
-linux: $(STAGING_DIR)/include/linux/version.h $(LINUX_KERNEL)
+linux: $(STAGING_DIR)/usr/include/linux/version.h $(LINUX_KERNEL)
 
 linux-source: $(DL_DIR)/$(LINUX_SOURCE)
 

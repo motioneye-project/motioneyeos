@@ -36,7 +36,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-gnu-ld \
@@ -47,7 +47,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--disable-tcl \
 		--disable-compat185 \
 		--with-pic \
-	        $(DISABLE_LARGEFILE) \
+		$(DISABLE_LARGEFILE) \
 	);
 	$(SED) 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
 	touch $(DB_DIR)/.configured
@@ -70,7 +70,7 @@ $(TARGET_DIR)/lib/$(DB_SHARLIB): $(STAGING_DIR)/lib/$(DB_SHARLIB)
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libdb*so*
 
 $(TARGET_DIR)/usr/lib/libdb.a: $(STAGING_DIR)/lib/libdb-$(DB_SO_VERSION).a
-	cp -dpf $(STAGING_DIR)/include/db.h $(TARGET_DIR)/usr/include/
+	cp -dpf $(STAGING_DIR)/usr/include/db.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/lib/libdb*.a $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/lib/libdb*.la $(TARGET_DIR)/usr/lib/
 	touch -c $(TARGET_DIR)/usr/lib/libdb.a

@@ -63,7 +63,7 @@ $(STAGING_DIR)/usr/lib/libvolume_id.so.0.72.0:
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) EXTRAS="extras/volume_id" -C $(UDEV_DIR)
-	$(INSTALL) -m 0644 -D $(UDEV_DIR)/extras/volume_id/lib/libvolume_id.h $(STAGING_DIR)/include/libvolume_id.h
+	$(INSTALL) -m 0644 -D $(UDEV_DIR)/extras/volume_id/lib/libvolume_id.h $(STAGING_DIR)/usr/include/libvolume_id.h
 	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/volume_id/lib/libvolume_id.so.0.72.0 $(STAGING_DIR)/usr/lib/libvolume_id.so.0.72.0
 	-ln -sf libvolume_id.so.0.72.0 $(STAGING_DIR)/usr/lib/libvolume_id.so.0
 	-ln -sf libvolume_id.so.0 $(STAGING_DIR)/usr/lib/libvolume_id.so
@@ -77,7 +77,7 @@ $(TARGET_DIR)/lib/udev/vol_id: $(STAGING_DIR)/usr/lib/libvolume_id.so.0.72.0
 udev-volume_id: udev $(TARGET_DIR)/lib/udev/vol_id
 
 udev-volume_id-clean:
-	rm -f $(STAGING_DIR)/include/libvolume_id.h
+	rm -f $(STAGING_DIR)/usr/include/libvolume_id.h
 	rm -f $(STAGING_DIR)/usr/lib/libvolume_id.so*
 	rm -f $(TARGET_DIR)/usr/lib/libvolume_id.so.0*
 	rm -f $(TARGET_DIR)/lib/udev/vol_id

@@ -15,7 +15,7 @@ $(HOTPLUG_DIR): $(HOTPLUG_SOURCE)
 
 $(HOTPLUG_DIR)/hotplug: $(HOTPLUG_DIR)
 	$(MAKE) CROSS=$(TARGET_CROSS) DEBUG=false KLIBC=false \
-	    KERNEL_INCLUDE_DIR=$(STAGING_DIR)/include \
+	    KERNEL_INCLUDE_DIR=$(STAGING_DIR)/usr/include \
 	    TARGET_DIR=$(TARGET_DIR) -C $(HOTPLUG_DIR);
 	$(STRIP) $(HOTPLUG_DIR)/hotplug;
 	touch -c $(HOTPLUG_DIR)/hotplug

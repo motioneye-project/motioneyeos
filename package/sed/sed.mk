@@ -116,7 +116,6 @@ $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--include=$(STAGING_DIR)/include \
 		--include=$(STAGING_DIR)/usr/include \
 		$(DISABLE_NLS) \
 	);

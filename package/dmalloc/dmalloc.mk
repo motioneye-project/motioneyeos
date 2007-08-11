@@ -58,7 +58,7 @@ $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shlib \
@@ -84,14 +84,14 @@ $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY): $(DMALLOC_DIR)/$(DMALLOC_BINARY)
 
 dmalloc: uclibc $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
 
-dmalloc-clean: 
+dmalloc-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libdmalloc*
 	rm -f $(STAGING_DIR)/usr/lib/libdmalloc*
-	rm -f $(STAGING_DIR)/include/dmalloc.h
+	rm -f $(STAGING_DIR)/usr/include/dmalloc.h
 	rm -f $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
 	$(MAKE) -C $(DMALLOC_DIR) clean
 
-dmalloc-dirclean: 
+dmalloc-dirclean:
 	rm -rf $(DMALLOC_DIR)
 
 

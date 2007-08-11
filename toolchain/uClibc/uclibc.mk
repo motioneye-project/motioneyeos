@@ -280,13 +280,13 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.oldconfig
 		HOSTCC="$(HOSTCC)" \
 		pregen install_dev
 	# Install the kernel headers to the first stage gcc include dir if necessary
-ifeq ($(LINUX_HEADERS_IS_KERNEL),y)	
+ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 	if [ ! -f $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/linux/version.h ] ; \
 	then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
 	fi
 else
-	if [ ! -f $(STAGING_DIR)/include/linux/version.h ] ; then \
+	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ] ; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
 		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ] ; then \
@@ -332,7 +332,7 @@ else
 		install_runtime install_dev
 endif
 	# Install the kernel headers to the staging dir if necessary
-ifeq ($(LINUX_HEADERS_IS_KERNEL),y)	
+ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ] ; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* $(STAGING_DIR)/usr/include/ ; \
 	fi
@@ -417,7 +417,7 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/usr/lib/libc.a
 		RUNTIME_PREFIX=/ \
 		install_dev
 	# Install the kernel headers to the target dir if necessary
-ifeq ($(LINUX_HEADERS_IS_KERNEL),y)	
+ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ] ; \
 	then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* $(TARGET_DIR)/usr/include/ ; \

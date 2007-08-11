@@ -63,7 +63,7 @@ curl-clean:
 	rm -f $(TARGET_DIR)/usr/bin/curl
 	rm -f $(STAGING_DIR)/bin/curl*
 	rm -f $(STAGING_DIR)/lib/libcurl.so*
-	rm -rf $(STAGING_DIR)/include/curl
+	rm -rf $(STAGING_DIR)/usr/include/curl
 	-$(MAKE) -C $(CURL_DIR) clean
 
 curl-dirclean:

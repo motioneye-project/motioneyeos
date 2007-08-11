@@ -11,7 +11,7 @@ HAL_CAT:=$(ZCAT)
 HAL_BINARY:=hald/hald
 HAL_TARGET_BINARY:=usr/sbin/hald
 
-GLIB_CFLAGS:=-I$(STAGING_DIR)/include/glib-2.0 \
+GLIB_CFLAGS:=-I$(STAGING_DIR)/usr/include/glib-2.0 \
 	     -I$(STAGING_DIR)/lib/glib/include
 GLIB_LIBS:=$(STAGING_DIR)/lib/libglib-2.0.so	\
 	   $(STAGING_DIR)/lib/libgmodule-2.0.so \
@@ -69,6 +69,7 @@ $(TARGET_DIR)/$(HAL_TARGET_BINARY): $(HAL_DIR)/hald/hald
 	rm -rf $(TARGET_DIR)/usr/share/gtk-doc
 	rm -rf $(TARGET_DIR)/usr/share/hal/device-manager
 	rm -rf $(TARGET_DIR)/usr/lib/pkgconfig
+	# remove _everything_ in $(TARGET_DIR)/usr/include?
 	rm -rf $(TARGET_DIR)/usr/include
 	rm -rf $(TARGET_DIR)/usr/lib/libhal*.so
 	rm -rf $(TARGET_DIR)/usr/lib/libhal*.la

@@ -31,7 +31,7 @@ $(TARGET_DIR)/$(ASTERISK_TARGET_BINARY): $(ASTERISK_DIR)/$(ASTERISK_BINARY)
 	$(STRIP) $(TARGET_DIR)/usr/sbin/streamplayer
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/asterisk/modules/*.so
 	$(INSTALL) -m 755 $(ASTERISK_DIR)/contrib/init.d/rc.debian.asterisk $(TARGET_DIR)/etc/init.d/S60asterisk
-	mv $(TARGET_DIR)/usr/include/asterisk $(STAGING_DIR)/include/
+	mv $(TARGET_DIR)/usr/include/asterisk $(STAGING_DIR)/usr/include/
 	rm -Rf $(TARGET_DIR)/usr/share/man
 	rm -f $(TARGET_DIR)/usr/sbin/safe_asterisk
 	rm -f $(TARGET_DIR)/usr/sbin/autosupport
@@ -43,7 +43,7 @@ asterisk: uclibc ncurses zlib openssl mpg123 $(TARGET_DIR)/$(ASTERISK_TARGET_BIN
 asterisk-source: $(DL_DIR)/$(ASTERISK_SOURCE)
 
 asterisk-clean:
-	rm -Rf $(STAGING_DIR)/include/asterisk
+	rm -Rf $(STAGING_DIR)/usr/include/asterisk
 	rm -Rf $(TARGET_DIR)/etc/asterisk
 	rm -Rf $(TARGET_DIR)/usr/lib/asterisk
 	rm -Rf $(TARGET_DIR)/var/lib/asterisk

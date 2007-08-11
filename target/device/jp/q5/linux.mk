@@ -109,12 +109,12 @@ $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep: $(LINUX_KERNEL) cross-de
 		DEPMOD=$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-depmod \
 		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
 
-$(STAGING_DIR)/include/linux/version.h: $(LINUX_DIR)/.configured
-	mkdir -p $(STAGING_DIR)/include
-	tar -ch -C $(LINUX_DIR)/include -f - linux | tar -xf - -C $(STAGING_DIR)/include/
-	tar -ch -C $(LINUX_DIR)/include -f - asm | tar -xf - -C $(STAGING_DIR)/include/
+$(STAGING_DIR)/usr/include/linux/version.h: $(LINUX_DIR)/.configured
+	mkdir -p $(STAGING_DIR)/usr/include
+	tar -ch -C $(LINUX_DIR)/include -f - linux | tar -xf - -C $(STAGING_DIR)/usr/include/
+	tar -ch -C $(LINUX_DIR)/include -f - asm | tar -xf - -C $(STAGING_DIR)/usr/include/
 
-linux: $(STAGING_DIR)/include/linux/version.h $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
+linux: $(STAGING_DIR)/usr/include/linux/version.h $(TARGET_DIR)/lib/modules/$(LINUX_VERSION)/modules.dep
 
 linux-source: $(DL_DIR)/$(LINUX_SOURCE)
 

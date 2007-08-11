@@ -100,13 +100,13 @@ $(PANGO_DIR)/.configured: $(PANGO_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/include \
+		--x-includes=$(STAGING_DIR)/usr/include \
 		--x-libraries=$(STAGING_DIR)/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \

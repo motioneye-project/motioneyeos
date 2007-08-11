@@ -38,7 +38,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		--host-cc=$(HOSTCC) \
 		--cc=$(TARGET_CC) \
 		--as=$(TARGET_CROSS)as \
-		--with-extraincdir=$(STAGING_DIR)/include \
+		--with-extraincdir=$(STAGING_DIR)/usr/include \
 		--with-extralibdir=$(STAGING_DIR)/lib \
 		--enable-mad \
 		--enable-fbdev \

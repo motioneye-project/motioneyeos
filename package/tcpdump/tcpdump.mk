@@ -1,6 +1,6 @@
 #############################################################
 #
-# tcpdump 
+# tcpdump
 #
 #############################################################
 # Copyright (C) 2001-2003 by Erik Andersen <andersen@codepoet.org>
@@ -42,7 +42,7 @@ $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-build-cc="$(HOSTCC)" \
@@ -56,7 +56,7 @@ $(TCPDUMP_DIR)/tcpdump: $(TCPDUMP_DIR)/.configured
 	$(MAKE) CC="$(TARGET_CC)" \
 		LDFLAGS="-L$(STAGING_DIR)/lib" \
 		LIBS="-lpcap" \
-		INCLS="-I. -I$(STAGING_DIR)/include" \
+		INCLS="-I. -I$(STAGING_DIR)/usr/include" \
 		-C $(TCPDUMP_DIR)
 
 $(TARGET_DIR)/sbin/tcpdump: $(TCPDUMP_DIR)/tcpdump

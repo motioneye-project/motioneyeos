@@ -38,7 +38,7 @@ $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	);
@@ -53,7 +53,7 @@ $(STAGING_DIR)/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libfreetype.la
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
 		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
-		-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/include\',g" \
+		-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" \
 		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
 		$(STAGING_DIR)/usr/bin/freetype-config
 	touch -c $(STAGING_DIR)/lib/libfreetype.so

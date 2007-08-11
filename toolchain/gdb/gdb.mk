@@ -157,7 +157,7 @@ $(GDB_SERVER_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--includedir=$(STAGING_DIR)/include \
+		--includedir=$(STAGING_DIR)/usr/include \
 		$(DISABLE_NLS) \
 		--without-uiout $(DISABLE_GDBMI) \
 		--disable-tui --disable-gdbtk --without-x \
