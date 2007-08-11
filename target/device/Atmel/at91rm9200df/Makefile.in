@@ -1,10 +1,10 @@
-ifeq ($(strip$(BOARD_NAME)),at91rm9200df)
+ifeq ($(BOARD_NAME),at91rm9200df)
 LINUX_BOARD_NAME=at91rm9200ek
 BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox-1.6.0.config
 endif
 
 
-ifeq ($(strip$(BOARD_NAME)),at91rm9200ek)
+ifeq ($(BOARD_NAME),at91rm9200ek)
 BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox-1.6.0.config
 endif
 
