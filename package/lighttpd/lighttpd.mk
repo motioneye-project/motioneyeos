@@ -3,7 +3,7 @@
 # lighttpd
 #
 #############################################################
-LIGHTTPD_VERSION:=1.4.15
+LIGHTTPD_VERSION:=1.4.16
 LIGHTTPD_SOURCE:=lighttpd_$(LIGHTTPD_VERSION).orig.tar.gz
 LIGHTTPD_PATCH:=lighttpd_$(LIGHTTPD_VERSION)-1.diff.gz
 LIGHTTPD_SITE:=http://ftp.debian.org/debian/pool/main/l/lighttpd
@@ -73,7 +73,7 @@ $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY): $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/lighttpd/lighttpd.conf ] ; then \
 		$(INSTALL) -m 0644 -D $(LIGHTTPD_DIR)/doc/lighttpd.conf $(TARGET_DIR)/etc/lighttpd/lighttpd.conf; \
 	fi;
-	$(INSTALL) -m 0755 -D $(LIGHTTPD_DIR)/openwrt/S51lighttpd  $(TARGET_DIR)/etc/init.d/S99lighttpd
+	$(INSTALL) -m 0755 -D package/lighttpd/rc.lighttpd $(TARGET_DIR)/etc/init.d/S99lighttpd
 
 ifeq ($(strip $(BR2_PACKAGE_LIGHTTPD_OPENSSL)),y)
 lighttpd: uclibc openssl $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY)
