@@ -5,7 +5,7 @@
 #############################################################
 
 # TARGETS
-OPENSSL_VERSION:=0.9.7e
+OPENSSL_VERSION:=0.9.7m
 OPENSSL_SITE:=http://www.openssl.org/source
 OPENSSL_SOURCE:=openssl-$(OPENSSL_VERSION).tar.gz
 OPENSSL_CAT:=$(ZCAT)
@@ -45,7 +45,7 @@ $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 	PATH=$(TARGET_PATH) \
 	./Configure linux-$(OPENSSL_TARGET_ARCH) --prefix=/ \
 		--openssldir=/usr/lib/ssl -L$(STAGING_DIR)/lib -ldl \
-		-I$(STAGING_DIR)/usr/include $(OPENSSL_OPTS) no-threads \
+		-I$(STAGING_DIR)/usr/include $(OPENSSL_OPTS) threads \
 		shared no-idea no-mdc2 no-rc5)
 
 $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
