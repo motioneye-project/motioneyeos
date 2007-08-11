@@ -64,6 +64,7 @@ case "$1" in
         echo -e '\000\000\000\000' > /proc/sys/kernel/hotplug
         $UDEV_BIN -d || (echo "FAIL" && exit 1)
 	$UDEVSTART_BIN || (echo "FAIL" && exit 1)
+	mount -t devpts /dev/pts /dev/pts || (echo "FAIL" && exit 1)
         echo "done"
         ;;
     stop)

@@ -3,7 +3,7 @@
 # udev
 #
 #############################################################
-UDEV_VERSION:=101
+UDEV_VERSION:=114
 UDEV_SOURCE:=udev-$(UDEV_VERSION).tar.bz2
 UDEV_SITE:=ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
 UDEV_CAT:=$(BZCAT)
@@ -46,6 +46,9 @@ $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) -C $(UDEV_DIR) install
 	$(INSTALL) -m 0755 package/udev/S10udev $(TARGET_DIR)/etc/init.d
+	$(INSTALL) -m 0644 $(UDEV_DIR)/etc/udev/frugalware/* $(TARGET_DIR)/etc/udev/rules.d
+	( grep udev_root $(TARGET_DIR)/etc/udev/udev.conf > /dev/null 2>&1 || echo 'udev_root=/dev' >> $(TARGET_DIR)/etc/udev/udev.conf )
+	install -m 0755 -D $(UDEV_DIR)/udevstart $(TARGET_DIR)/sbin/udevstart
 	rm -rf $(TARGET_DIR)/usr/share/man
 ifneq ($(strip $(BR2_PACKAGE_UDEV_UTILS)),y)
 	rm -f $(TARGET_DIR)/usr/sbin/udevmonitor
@@ -82,6 +85,9 @@ udev-volume_id-clean:
 
 udev-volume_id-dirclean:
 	-$(MAKE) EXTRAS="extras/volume_id" -C $(UDEV_DIR) clean
+
+UDEV_CLEAN_DEPS+=udev-volume_id-clean
+UDEV_DIRCLEAN_DEPS+=udev-volume_id-dirclean
 endif
 
 ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
@@ -104,15 +110,18 @@ udev-scsi_id-clean:
 
 udev-scsi_id-dirclean:
 	-$(MAKE) EXTRAS="extras/scsi_id" -C $(UDEV_DIR) clean
+
+UDEV_CLEAN_DEPS+=udev-scsi_id-clean
+UDEV_DIRCLEAN_DEPS+=udev-scsi_id-dirclean
 endif
 
-udev-clean: udev-volume_id-clean udev-scsi_id-clean
+udev-clean: $(UDEV_CLEAN_DEPS)
 	rm -f $(TARGET_DIR)/etc/init.d/S10udev $(TARGET_DIR)/sbin/udev*
 	rm -f $(TARGET_DIR)/usr/sbin/udevmonitor $(TARGET_DIR)/usr/bin/udev*
 	rmdir $(TARGET_DIR)/sys
 	-$(MAKE) -C $(UDEV_DIR) clean
 
-udev-dirclean: udev-volume_id-dirclean udev-scsi_id-dirclean
+udev-dirclean: $(UDEV_DIRCLEAN_DEPS)
 	rm -rf $(UDEV_DIR)
 
 #############################################################
