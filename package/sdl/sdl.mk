@@ -17,6 +17,7 @@ sdl-source: $(DL_DIR)/$(SDL_SOURCE)
 $(SDL_DIR)/.unpacked: $(DL_DIR)/$(SDL_SOURCE)
 	$(SDL_CAT) $(DL_DIR)/$(SDL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(SDL_DIR) package/sdl sdl\*.patch
+	$(CONFIG_UPDATE) $(SDL_DIR)/build-scripts
 	touch $@
 
 $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
@@ -46,7 +47,7 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 	touch $@
 
 $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured
-	$(MAKE) -C $(SDL_DIR) 
+	$(MAKE1) -C $(SDL_DIR) 
 	touch $@
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
