@@ -14,7 +14,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xserver_xorg-server/Config.in
 	endmenu
 	menu "X11R7 Libraries"
-		source package/x11r7/libdrm/Config.in
 		source package/x11r7/libxcb/Config.in
 		source package/x11r7/mesa3d/Config.in
 		source package/x11r7/pthread-stubs/Config.in
