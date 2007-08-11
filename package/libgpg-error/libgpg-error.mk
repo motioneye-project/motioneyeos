@@ -17,6 +17,7 @@ $(DL_DIR)/$(LIBGPG_ERROR_SOURCE):
 $(LIBGPG_ERROR_DIR)/.source: $(DL_DIR)/$(LIBGPG_ERROR_SOURCE)
 	$(BZCAT) $(DL_DIR)/$(LIBGPG_ERROR_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBGPG_ERROR_DIR) package/libgpg-error/ libgpg-error\*.patch
+	$(CONFIG_UPDATE) $(LIBGPG_ERROR_DIR)
 	touch $(LIBGPG_ERROR_DIR)/.source
 
 $(LIBGPG_ERROR_DIR)/.configured: $(LIBGPG_ERROR_DIR)/.source

@@ -17,6 +17,7 @@ $(DL_DIR)/$(LIBGCRYPT_SOURCE):
 $(LIBGCRYPT_DIR)/.source: $(DL_DIR)/$(LIBGCRYPT_SOURCE)
 	$(BZCAT) $(DL_DIR)/$(LIBGCRYPT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBGCRYPT_DIR) package/libgcrypt/ libgcrypt\*.patch
+	$(CONFIG_UPDATE) $(LIBGCRYPT_DIR)
 	touch $@
 
 $(LIBGCRYPT_DIR)/.configured: $(LIBGCRYPT_DIR)/.source

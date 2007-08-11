@@ -16,6 +16,7 @@ $(DL_DIR)/$(IPERF_SOURCE):
 $(IPERF_DIR)/.unpacked: $(DL_DIR)/$(IPERF_SOURCE)
 	$(IPERF_CAT) $(DL_DIR)/$(IPERF_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(IPERF_DIR) package/iperf/ iperf\*.patch
+	$(CONFIG_UPDATE) $(IPERF_DIR)
 	touch $(IPERF_DIR)/.unpacked
 
 $(IPERF_DIR)/.configured: $(IPERF_DIR)/.unpacked
