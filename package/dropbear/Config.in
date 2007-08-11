@@ -5,17 +5,3 @@ config BR2_PACKAGE_DROPBEAR
 	  A small SSH 2 server designed for small memory environments.
 
 	  http://matt.ucc.asn.au/dropbear/dropbear.html
-
-config BR2_PACKAGE_DROPBEAR_URANDOM
-	bool "Use /dev/urandom (low entropy systems only)?"
-	default n
-	depends on BR2_PACKAGE_DROPBEAR
-	help
-	  By default, dropbear uses the much more secure /dev/random.  If you
-	  are using a system lacking usable entropy sources, this could cause
-	  the dropbear ssh daemon to block forever waiting for entropy that
-	  will never arrive.  By making dropbear use /dev/urandom, you can
-	  prevent Dropbear from blocking while waiting on the random device.
-	  This could however significantly reduce the security of your ssh
-	  connections.  Make sure you know what you are doing if you enable
-	  this option -- most people should answer N.
