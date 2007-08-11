@@ -48,27 +48,27 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 
 $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION): $(NEWT_DIR)/.configured
 	$(MAKE) CFLAGS="$(TARGET_CFLAGS) $(NEWT_CFLAGS)" CC=$(TARGET_CC) -C  $(NEWT_DIR)
-	touch -c $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
+	touch -c $@
 
-$(STAGING_DIR)/lib/libnewt.a: $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
-	cp -a $(NEWT_DIR)/libnewt.a $(STAGING_DIR)/lib;
-	cp -a $(NEWT_DIR)/newt.h $(STAGING_DIR)/include;
-	cp -a $(NEWT_DIR)/libnewt.so* $(STAGING_DIR)/lib;
-	(cd $(STAGING_DIR)/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so);
-	(cd $(STAGING_DIR)/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so.0.51);
-	touch -c $(STAGING_DIR)/lib/libnewt.a
+$(STAGING_DIR)/usr/lib/libnewt.a: $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
+	cp -a $(NEWT_DIR)/libnewt.a $(STAGING_DIR)/usr/lib/;
+	cp -a $(NEWT_DIR)/newt.h $(STAGING_DIR)/usr/include/;
+	cp -a $(NEWT_DIR)/libnewt.so* $(STAGING_DIR)/usr/lib/;
+	(cd $(STAGING_DIR)/usr/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so);
+	(cd $(STAGING_DIR)/usr/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so.0.51);
+	touch -c $@
 
-$(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION): $(STAGING_DIR)/lib/libnewt.a
-	cp -a $(STAGING_DIR)/lib/libnewt.so* $(TARGET_DIR)/lib;
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libnewt.so*
-	touch -c $(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION)
+$(TARGET_DIR)/usr/lib/libnewt.so.$(NEWT_VERSION): $(STAGING_DIR)/usr/lib/libnewt.a
+	cp -a $(STAGING_DIR)/usr/lib/libnewt.so* $(TARGET_DIR)/usr/lib/;
+	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libnewt.so*
+	touch -c $@
 
-newt: uclibc slang $(TARGET_DIR)/lib/libnewt.so.$(NEWT_VERSION)
+newt: uclibc slang $(TARGET_DIR)/usr/lib/libnewt.so.$(NEWT_VERSION)
 
 newt-source: $(DL_DIR)/$(NEWT_SOURCE)
 
 newt-clean:
-	rm -f $(TARGET_DIR)/lib/libnewt.so*
+	rm -f $(TARGET_DIR)/usr/lib/libnewt.so*
 	-$(MAKE) -C $(NEWT_DIR) clean
 
 newt-dirclean: slang-dirclean
