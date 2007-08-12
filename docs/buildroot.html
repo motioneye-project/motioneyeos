@@ -15,7 +15,8 @@
       <h1>Buildroot</h1>
     </div>
 
-    <p><a href="http://buildroot.uclibc.org/">Buildroot</a> usage and documentation by Thomas Petazzoni. Contributions from
+    <p><a href="http://buildroot.uclibc.org/">Buildroot</a>
+    usage and documentation by Thomas Petazzoni. Contributions from
     Karsten Kruse, Ned Ludd, Martin Herren and others. </p>
 
     <p><small>$LastChangedDate$</small></p>
@@ -471,7 +472,7 @@ mips-linux-gcc -o foo foo.c
 </pre>
 
     <p><b>Important</b> : do not try to move a gcc-3.x toolchain to an other
-    directory, it won't work. There are some hard-coded paths in the
+    directory, it won't work. There are some hardcoded paths in the
     <i>gcc</i> configuration. If the default toolchain directory
     doesn't suit your needs, please refer to the <a
     href="#toolchain_standalone">Using the uClibc toolchain outside of
@@ -487,7 +488,7 @@ mips-linux-gcc -o foo foo.c
     <code>build_ARCH/staging_dir/</code>. But sometimes, it may be useful to
     install it somewhere else, so that it can be used to compile other programs
     or by other users. Moving the <code>build_ARCH/staging_dir/</code>
-    directory elsewhere is <b>not possible if using gcc-3.x</b>, because they 
+    directory elsewhere is <b>not possible if using gcc-3.x</b>, because there
     are some hardcoded paths in the toolchain configuration. This works, thanks 
     to sysroot support, with current, stable gcc-4.x toolchains, of course. </p>
 
