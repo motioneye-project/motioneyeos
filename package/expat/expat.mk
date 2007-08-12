@@ -34,16 +34,16 @@ $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
+		--bindir=/bin \
+		--sbindir=/sbin \
 		--libdir=/lib \
-		--libexecdir=/usr/lib \
+		--libexecdir=/lib \
 		--sysconfdir=/etc \
-		--datadir=/usr/share \
+		--datadir=/share \
 		--localstatedir=/var \
-		--includedir=/usr/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--includedir=/include \
+		--mandir=/man \
+		--infodir=/info \
 		--enable-shared \
 	);
 	touch $@
