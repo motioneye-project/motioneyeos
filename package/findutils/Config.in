@@ -1,6 +1,7 @@
 config BR2_PACKAGE_FINDUTILS
 	bool "findutils"
 	default n
+	depends on BR2_USE_WCHAR
 	help
 	  Basic directory searching utilities.  Provides the 
 	  common 'find', 'xargs', 'locate', and 'updatedb' binaries.

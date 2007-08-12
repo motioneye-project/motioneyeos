@@ -1,6 +1,7 @@
 config BR2_PACKAGE_COREUTILS
 	bool "coreutils"
 	default n
+	depends on BR2_USE_WCHAR
 	help
 	  All of the basic file/text/shell utilities.  These are the 
 	  core utilities which are expected to exist on every system.  
