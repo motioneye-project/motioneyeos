@@ -6,6 +6,16 @@ config BR2_PACKAGE_DIRECTFB
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_LIBSYSFS
 	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_TSLIB
 	help
+	  http://www.directfb.org/
 
-	http://www.directfb.org/
+
+config BR2_PACKAGE_DIRECTFB_MULTI
+	bool "directfb multi application"
+	default n
+	depends on BR2_PACKAGE_DIRECTFB
+	select BR2_PACKAGE_LINUX_FUSION
+	help
+	  Enable use of multiple concurrent DirectFB applications
+	  http://www.directfb.org/
