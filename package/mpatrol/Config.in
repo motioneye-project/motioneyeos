@@ -1,6 +1,8 @@
 config BR2_PACKAGE_MPATROL
 	bool "mpatrol"
 	default n
+	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GCC_TARGET || BR2_PACKAGE_LIBELF
+
 	help
 	  A debugging tool that attempts to diagnose run-time errors that are
 	  caused by the wrong use of dynamically allocated memory. It acts as
