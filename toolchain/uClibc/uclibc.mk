@@ -34,14 +34,14 @@ UCLIBC_VER:=0.9.28
 endif
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 
-ifeq	($(BR2_TOOLCHAIN_NORMAL),)
+ifeq ($(BR2_TOOLCHAIN_NORMAL),)
 UCLIBC_SITE:=$(VENDOR_SITE)
 endif
 
 UCLIBC_OFFICIAL_VERSION:=$(UCLIBC_VER)$(VENDOR_SUFFIX)$(VENDOR_UCLIBC_RELEASE)
 
 
-ifeq	($(BR2_TOOLCHAIN_NORMAL),y)
+ifeq ($(BR2_TOOLCHAIN_NORMAL),y)
 UCLIBC_PATCH_DIR:=toolchain/uClibc/
 else
 UCLIBC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
@@ -53,7 +53,8 @@ endif
 
 UCLIBC_CAT:=$(BZCAT)
 
-UCLIBC_TARGET_ARCH:=$(shell $(SHELL) -c "echo $(ARCH) | sed -e s'/-.*//' \
+UCLIBC_TARGET_ARCH:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
+		-e 's/-.*//' \
 		-e 's/i.86/i386/' \
 		-e 's/sparc.*/sparc/' \
 		-e 's/arm.*/arm/g' \
@@ -139,6 +140,11 @@ endif
 ifeq ($(BR2_ARM_OABI),y)
 	/bin/echo "CONFIG_ARM_OABI=y" >> $(UCLIBC_DIR)/.config
 	/bin/echo "# CONFIG_ARM_EABI is not set" >> $(UCLIBC_DIR)/.config
+endif
+ifeq ($(BR2_generic_arm),y)
+	$(SED) 's,^.*CONFIG_GENERIC_ARM.*,CONFIG_GENERIC_ARM=y,g' $(UCLIBC_DIR)/.config
+else
+	$(SED) 's,^.*CONFIG_GENERIC_ARM.*,# CONFIG_GENERIC_ARM is not set,g' $(UCLIBC_DIR)/.config
 endif
 endif
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
@@ -261,9 +267,6 @@ endif
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/lib
-	touch $@
-
-$(UCLIBC_DIR)/.oldconfig:	$(UCLIBC_DIR)/.config
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
@@ -272,7 +275,7 @@ $(UCLIBC_DIR)/.oldconfig:	$(UCLIBC_DIR)/.config
 		oldconfig
 	touch $@
 
-$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.oldconfig
+$(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.config
 	set -x && $(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
@@ -387,8 +390,6 @@ uclibc: $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/usr/li
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 
 uclibc-config:	$(UCLIBC_DIR)/.config
-
-uclibc-oldconfig:	$(UCLIBC_DIR)/.oldconfig
 
 uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
 
