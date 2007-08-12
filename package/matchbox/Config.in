@@ -1,0 +1,44 @@
+config BR2_PACKAGE_MATCHBOX
+	bool "MatchBox Window Manager"
+	default n
+	select BR2_PACKAGE_X11SERVER
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_X11R7_LIBXDAMAGE
+	select BR2_PACKAGE_X11R7_LIBXCURSOR
+	help
+
+	  http://projects.o-hand.com/matchbox
+
+config BR2_PACKAGE_MATCHBOX_SNOTIFY
+	bool "Enable Matchbox Startup Notification"
+	depends BR2_PACKAGE_MATCHBOX
+	select BR2_PACKAGE_X11R7_LIBXSM
+	default n
+	help
+
+	  Compiles http://www.freedesktop.org/Software/startup-notification and its support in MatchBox
+
+config BR2_PACKAGE_MATCHBOX_PANEL
+	bool "Matchbox Panel"
+	depends BR2_PACKAGE_MATCHBOX
+	default n
+	help
+
+	  A flexible always present 'window bar' for holding application launchers"
+
+config BR2_PACKAGE_MATCHBOX_DESKTOP
+	bool "Matchbox Desktop"
+	depends BR2_PACKAGE_MATCHBOX
+	default n
+	help
+
+	  A PDA style application launcher or 'item browser'.
+
+config BR2_PACKAGE_MATCHBOX_KEYBOARD
+	bool "Metchbox Virtual Keyboard"
+	depends BR2_PACKAGE_MATCHBOX
+	select BR2_PACKAGE_X11R7_LIBXTST
+	default n
+	help
+
+	  Virtual Keyboard (developement version from CVS)

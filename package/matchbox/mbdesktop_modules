@@ -1,0 +1,9 @@
+# This file lists the 'plug-ins' with any arguments to be loaded by
+# matchbox-desktop. 
+#
+# It can be overridden on a per-user basis by copying this file to ~/.matchbox/
+# and editing. 
+
+/usr/lib/tasks.so
+/usr/lib/dotdesktop.so
+# /usr/lib/simplefilebrowser.so /
