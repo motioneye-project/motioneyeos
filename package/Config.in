@@ -279,6 +279,7 @@ source "package/dialog/Config.in"
 
 comment "graphic libraries"
 source "package/directfb/Config.in"
+source "package/fusion/Config.in"
 source "package/imagemagick/Config.in"
 source "package/jpeg/Config.in"
 source "package/libpng/Config.in"

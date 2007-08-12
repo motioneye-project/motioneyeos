@@ -1,0 +1,6265 @@
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/call.c linux-2.6.22.1/drivers/char/fusion/call.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/call.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/call.c	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,478 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <linux/sched.h>
++
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++#include "fusionee.h"
++#include "list.h"
++#include "call.h"
++
++typedef struct {
++     FusionLink        link;
++
++     Fusionee         *caller;
++
++     int               ret_val;
++
++     bool              executed;
++
++     wait_queue_head_t wait;
++} FusionCallExecution;
++
++typedef struct {
++     FusionLink         link;
++
++     struct semaphore   lock;
++
++     int                id;        /* call id */
++
++     int                pid;       /* owner pid */
++     int                fusion_id; /* owner fusion id */
++
++     void              *handler;
++     void              *ctx;
++
++     FusionLink          *executions;      /* prepending! */
++     FusionLink          *last;            /* points to the last item of executions */
++
++     int                count;    /* number of calls ever made */
++} FusionCall;
++
++/******************************************************************************/
++
++static int  lookup_call (FusionDev *dev, int id, FusionCall **ret_call);
++static int  lock_call   (FusionDev *dev, int id, FusionCall **ret_call);
++static void unlock_call (FusionCall *call);
++
++static FusionCallExecution *add_execution       (FusionCall          *call,
++                                                 Fusionee            *caller,
++                                                 FusionCallExecute   *execute);
++static void                 remove_execution    (FusionCall          *call,
++                                                 FusionCallExecution *execution);
++static void                 free_all_executions (FusionCall          *call);
++
++/******************************************************************************/
++
++static int
++fusion_call_read_proc (char *buf, char **start, off_t offset,
++                       int len, int *eof, void *private)
++{
++     FusionLink *l, *e;
++     FusionDev  *dev     = private;
++     int         written = 0;
++
++     if (down_interruptible (&dev->call.lock))
++          return -EINTR;
++
++     fusion_list_foreach (l, dev->call.list) {
++          bool        idle = true;
++          FusionCall *call = (FusionCall*) l;
++
++          if (call->executions)
++               idle = ((FusionCallExecution*) call->executions)->executed;
++
++          written += sprintf(buf+written,
++                             "(%5d) 0x%08x (%d calls) %s",
++                             call->pid, call->id, call->count,
++                             idle ? "idle" : "executing");
++
++          fusion_list_foreach (e, call->executions) {
++               FusionCallExecution *exec = (FusionCallExecution *) e;
++
++               written += sprintf(buf+written, "  [0x%08lx]", exec->caller ? fusionee_id( exec->caller ) : 0);
++          }
++
++          written += sprintf(buf+written, "\n");
++
++          if (written < offset) {
++               offset -= written;
++               written = 0;
++          }
++
++          if (written >= len)
++               break;
++     }
++
++     up (&dev->call.lock);
++
++     *start = buf + offset;
++     written -= offset;
++     if (written > len) {
++          *eof = 0;
++          return len;
++     }
++
++     *eof = 1;
++     return(written<0) ? 0 : written;
++}
++
++int
++fusion_call_init (FusionDev *dev)
++{
++     create_proc_read_entry("calls", 0, dev->proc_dir,
++                            fusion_call_read_proc, dev);
++
++     init_MUTEX(&dev->call.lock);
++
++     return 0;
++}
++
++void
++fusion_call_deinit (FusionDev *dev)
++{
++     FusionLink *l;
++
++     down (&dev->call.lock);
++
++     remove_proc_entry ("calls", dev->proc_dir);
++
++     l = dev->call.list;
++     while (l) {
++          FusionLink *next = l->next;
++          FusionCall *call = (FusionCall *) l;
++
++          free_all_executions (call);
++
++          kfree (call);
++
++          l = next;
++     }
++
++     up (&dev->call.lock);
++}
++
++/******************************************************************************/
++
++int
++fusion_call_new (FusionDev *dev, int fusion_id, FusionCallNew *call_new)
++{
++     FusionCall *call;
++
++     call = kmalloc (sizeof(FusionCall), GFP_KERNEL);
++     if (!call)
++          return -ENOMEM;
++
++     memset (call, 0, sizeof(FusionCall));
++
++     if (down_interruptible (&dev->call.lock)) {
++          kfree (call);
++          return -EINTR;
++     }
++
++     call->id        = dev->call.ids++;
++     call->pid       = current->pid;
++     call->fusion_id = fusion_id;
++     call->handler   = call_new->handler;
++     call->ctx       = call_new->ctx;
++
++     init_MUTEX (&call->lock);
++
++     fusion_list_prepend (&dev->call.list, &call->link);
++
++     up (&dev->call.lock);
++
++     call_new->call_id = call->id;
++
++     return 0;
++}
++
++int
++fusion_call_execute (FusionDev *dev, Fusionee *fusionee, FusionCallExecute *execute)
++{
++     int                  ret;
++     FusionCall          *call;
++     FusionCallExecution *execution;
++     FusionCallMessage    message;
++
++     ret = lock_call (dev, execute->call_id, &call);
++     if (ret)
++          return ret;
++
++     execution = add_execution (call, fusionee, execute);
++     if (!execution) {
++          unlock_call (call);
++          return -ENOMEM;
++     }
++
++     /* Send call message. */
++     message.handler  = call->handler;
++     message.ctx      = call->ctx;
++
++     message.caller   = fusionee ? fusionee_id( fusionee ) : 0;
++
++     message.call_arg = execute->call_arg;
++     message.call_ptr = execute->call_ptr;
++
++     ret = fusionee_send_message (dev, fusionee, call->fusion_id, FMT_CALL,
++                                  call->id, sizeof(message), &message);
++     if (ret) {
++          remove_execution (call, execution);
++          kfree (execution);
++          unlock_call (call);
++          return ret;
++     }
++
++     call->count++;
++
++     if (fusionee && !(execute->flags & FCEF_ONEWAY)) {
++          /* TODO: implement timeout */
++          fusion_sleep_on (&execution->wait, &call->lock, 0);
++
++          ret = lock_call (dev, execute->call_id, &call);
++          if (ret)
++               return ret == -EINVAL ? -EIDRM : ret;
++
++          if (signal_pending(current)) {
++               execution->caller = 0;
++               unlock_call (call);
++               return -EINTR;
++          }
++
++          execute->ret_val = execution->ret_val;
++
++          remove_execution (call, execution);
++
++          kfree (execution);
++     }
++
++     unlock_call (call);
++
++     return 0;
++}
++
++int
++fusion_call_return (FusionDev *dev, int fusion_id, FusionCallReturn *call_ret)
++{
++     int         ret;
++     FusionLink *l;
++     FusionCall *call;
++
++     ret = lock_call (dev, call_ret->call_id, &call);
++     if (ret)
++          return ret;
++
++     l = call->last;
++     while (l) {
++          FusionCallExecution *execution = (FusionCallExecution*) l;
++
++          if (execution->executed) {
++               l = l->prev;
++               continue;
++          }
++
++          if (execution->caller) {
++               execution->ret_val  = call_ret->val;
++               execution->executed = true;
++
++               wake_up_interruptible_all (&execution->wait);
++          }
++          else {
++               remove_execution (call, execution);
++
++               kfree (execution);
++          }
++
++          unlock_call (call);
++
++          return 0;
++     }
++
++     unlock_call (call);
++
++     return -EIO;
++}
++
++int
++fusion_call_destroy (FusionDev *dev, int fusion_id, int call_id)
++{
++     int         ret;
++     FusionCall *call;
++
++     ret = lookup_call (dev, call_id, &call);
++     if (ret)
++          return ret;
++
++     if (call->fusion_id != fusion_id) {
++          up (&dev->call.lock);
++          return -EIO;
++     }
++
++     if (down_interruptible (&call->lock)) {
++          up (&dev->call.lock);
++          return -EINTR;
++     }
++
++     fusion_list_remove (&dev->call.list, &call->link);
++
++     free_all_executions (call);
++
++     up (&dev->call.lock);
++
++     up (&call->lock);
++
++     kfree (call);
++
++     return 0;
++}
++
++void
++fusion_call_destroy_all (FusionDev *dev, int fusion_id)
++{
++     FusionLink *l;
++
++     down (&dev->call.lock);
++
++     l = dev->call.list;
++
++     while (l) {
++          FusionLink *next = l->next;
++          FusionCall *call = (FusionCall *) l;
++
++          down (&call->lock);
++
++          if (call->fusion_id == fusion_id) {
++               free_all_executions (call);
++
++               fusion_list_remove (&dev->call.list, &call->link);
++
++               up (&call->lock);
++
++               kfree (call);
++          }
++          else
++               up (&call->lock);
++
++          l = next;
++     }
++
++     up (&dev->call.lock);
++}
++
++/******************************************************************************/
++
++static int
++lookup_call (FusionDev *dev, int id, FusionCall **ret_call)
++{
++     FusionLink *l;
++
++     if (down_interruptible (&dev->call.lock))
++          return -EINTR;
++
++     fusion_list_foreach (l, dev->call.list) {
++          FusionCall *call = (FusionCall *) l;
++
++          if (call->id == id) {
++               *ret_call = call;
++               return 0;
++          }
++     }
++
++     up (&dev->call.lock);
++
++     return -EINVAL;
++}
++
++static int
++lock_call (FusionDev *dev, int id, FusionCall **ret_call)
++{
++     int         ret;
++     FusionCall *call;
++
++     ret = lookup_call (dev, id, &call);
++     if (ret)
++          return ret;
++
++     if (call) {
++          fusion_list_move_to_front (&dev->call.list, &call->link);
++
++          if (down_interruptible (&call->lock)) {
++               up (&dev->call.lock);
++               return -EINTR;
++          }
++
++          up (&dev->call.lock);
++     }
++
++     *ret_call = call;
++
++     return 0;
++}
++
++static void
++unlock_call (FusionCall *call)
++{
++     up (&call->lock);
++}
++
++static FusionCallExecution *
++add_execution (FusionCall        *call,
++               Fusionee          *caller,
++               FusionCallExecute *execute)
++{
++     FusionCallExecution *execution;
++
++     /* Allocate execution. */
++     execution = kmalloc (sizeof(FusionCallExecution), GFP_KERNEL);
++     if (!execution)
++          return NULL;
++
++     /* Initialize execution. */
++     memset (execution, 0, sizeof(FusionCallExecution));
++
++     execution->caller = caller;
++
++     init_waitqueue_head (&execution->wait);
++
++     /* Add execution. */
++     fusion_list_prepend (&call->executions, &execution->link);
++
++     if (!call->last)
++          call->last = &execution->link;
++
++     return execution;
++}
++
++static void
++remove_execution (FusionCall          *call,
++                  FusionCallExecution *execution)
++{
++     if (call->last == &execution->link)
++          call->last = execution->link.prev;
++
++     fusion_list_remove (&call->executions, &execution->link);
++}
++
++static void
++free_all_executions (FusionCall *call)
++{
++     while (call->last) {
++          FusionCallExecution *execution = (FusionCallExecution *) call->last;
++
++          remove_execution (call, execution);
++
++          wake_up_interruptible_all (&execution->wait);
++
++          kfree (execution);
++     }
++}
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/call.h linux-2.6.22.1/drivers/char/fusion/call.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/call.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/call.h	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,52 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++ 
++#ifndef __FUSION__CALL_H__
++#define __FUSION__CALL_H__
++
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++
++/* module init/cleanup */
++
++int  fusion_call_init   (FusionDev *dev);
++void fusion_call_deinit (FusionDev *dev);
++
++
++/* public API */
++
++int fusion_call_new     (FusionDev         *dev,
++                         int                fusion_id,
++                         FusionCallNew     *call);
++
++int fusion_call_execute (FusionDev         *dev,
++                         Fusionee          *fusionee, /* NULL if call is from kernel */
++                         FusionCallExecute *execute);
++
++int fusion_call_return  (FusionDev         *dev,
++                         int                fusion_id,
++                         FusionCallReturn  *call_ret);
++
++int fusion_call_destroy (FusionDev         *dev,
++                         int                fusion_id,
++                         int                call_id);
++
++
++/* internal functions */
++
++void fusion_call_destroy_all (FusionDev *dev,
++                              int        fusion_id);
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/.cvsignore linux-2.6.22.1/drivers/char/fusion/.cvsignore
+--- linux-2.6.22.1-0rig/drivers/char/fusion/.cvsignore	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/.cvsignore	2005-10-29 07:11:10.000000000 +0200
+@@ -0,0 +1,6 @@
++*.o.flags
++*.cmd
++Makefile
++fusion.ko
++fusion.mod.c
++.tmp_versions
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/entries.c linux-2.6.22.1/drivers/char/fusion/entries.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/entries.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/entries.c	2007-03-08 14:02:04.000000000 +0100
+@@ -0,0 +1,438 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <linux/sched.h>
++#include <linux/time.h>
++#include <linux/version.h>
++
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++#include "entries.h"
++
++
++void
++fusion_entries_init( FusionEntries    *entries,
++                     FusionEntryClass *class,
++                     void             *ctx )
++{
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( class != NULL );
++     FUSION_ASSERT( class->object_size >= sizeof(FusionEntry) );
++
++     memset( entries, 0, sizeof(FusionEntries) );
++
++     entries->class = class;
++     entries->ctx   = ctx;
++
++     init_MUTEX( &entries->lock );
++}
++
++void
++fusion_entries_deinit( FusionEntries *entries )
++{
++     FusionLink       *tmp;
++     FusionEntry      *entry;
++     FusionEntryClass *class;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( entries->class != NULL );
++
++     class = entries->class;
++
++     down( &entries->lock );
++
++     fusion_list_foreach_safe (entry, tmp, entries->list) {
++          if (class->Destroy)
++               class->Destroy( entry, entries->ctx );
++
++          kfree( entry );
++     }
++
++     up( &entries->lock );
++}
++
++int
++fusion_entries_read_proc(char *buf, char **start, off_t offset,
++                         int len, int *eof, void *private)
++{
++     FusionEntry      *entry;
++     FusionEntryClass *class;
++     FusionEntries    *entries = private;
++     int               written = 0;
++     struct timeval    now;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( entries->class != NULL );
++
++     class = entries->class;
++
++     if (!class->Print)
++          return -ENOTSUPP;
++
++     if (down_interruptible (&entries->lock))
++          return -EINTR;
++
++     do_gettimeofday( &now );
++
++     fusion_list_foreach (entry, entries->list) {
++          if (entry->last_lock.tv_sec) {
++               int diff = ((now.tv_sec  - entry->last_lock.tv_sec) * 1000 +
++                           (now.tv_usec - entry->last_lock.tv_usec) / 1000);
++
++               if (diff < 1000) {
++                    written += sprintf( buf + written, "%3d  ms  ", diff );
++               }
++               else if (diff < 1000000) {
++                    written += sprintf( buf + written, "%3d.%d s  ",
++                                        diff / 1000, (diff % 1000) / 100 );
++               }
++               else {
++                    diff = ( now.tv_sec  - entry->last_lock.tv_sec +
++                            (now.tv_usec - entry->last_lock.tv_usec) / 1000000);
++
++                    written += sprintf( buf + written, "%3d.%d h  ",
++                                        diff / 3600, (diff % 3600) / 360 );
++               }
++          }
++          else
++               written += sprintf( buf + written, "  -.-    " );
++
++
++          written += sprintf( buf + written, "(%5d) 0x%08x  ", entry->pid, entry->id );
++
++          written += sprintf( buf + written, "%-24s  ", entry->name[0] ? entry->name : "" );
++
++          written += class->Print( entry, entries->ctx, buf + written );
++
++          if (written < offset) {
++               offset -= written;
++               written = 0;
++          }
++
++          if (written >= len)
++               break;
++     }
++
++     up (&entries->lock);
++
++     *start = buf + offset;
++     written -= offset;
++     if (written > len) {
++          *eof = 0;
++          return len;
++     }
++
++     *eof = 1;
++
++     return (written<0) ? 0 : written;
++}
++
++int
++fusion_entry_create( FusionEntries *entries,
++                     int           *ret_id,
++                     void          *create_ctx )
++{
++     int               ret;
++     FusionEntry      *entry;
++     FusionEntryClass *class;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( entries->class != NULL );
++     FUSION_ASSERT( ret_id != NULL );
++
++     class = entries->class;
++
++     entry = kmalloc( class->object_size, GFP_KERNEL );
++     if (!entry)
++          return -ENOMEM;
++
++     memset( entry, 0, class->object_size );
++
++     if (down_interruptible( &entries->lock )) {
++          kfree( entry );
++          return -EINTR;
++     }
++
++     entry->entries = entries;
++     entry->id      = entries->ids++;
++     entry->pid     = current->pid;
++
++     init_MUTEX( &entry->lock );
++
++     init_waitqueue_head( &entry->wait );
++
++     if (class->Init) {
++          ret = class->Init( entry, entries->ctx, create_ctx );
++          if (ret) {
++               up( &entries->lock );
++               kfree( entry );
++               return ret;
++          }
++     }
++
++     fusion_list_prepend( &entries->list, &entry->link );
++
++     up( &entries->lock );
++
++     *ret_id = entry->id;
++
++     return 0;
++}
++
++int
++fusion_entry_destroy( FusionEntries  *entries,
++                      int             id )
++{
++     FusionEntry      *entry;
++     FusionEntryClass *class;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( entries->class != NULL );
++
++     class = entries->class;
++
++     /* Lock entries. */
++     if (down_interruptible( &entries->lock ))
++          return -EINTR;
++
++     /* Lookup the entry. */
++     fusion_list_foreach (entry, entries->list) {
++          if (entry->id == id)
++               break;
++     }
++
++     /* Check if no entry was found. */
++     if (!entry) {
++          up( &entries->lock );
++          return -EINVAL;
++     }
++
++     /* Lock the entry. */
++     if (down_interruptible( &entry->lock )) {
++          up( &entries->lock );
++          return -EINTR;
++     }
++
++     /* Destroy it now. */
++     fusion_entry_destroy_locked( entries, entry );
++
++     /* Unlock entries. */
++     up( &entries->lock );
++
++     return 0;
++}
++
++void
++fusion_entry_destroy_locked( FusionEntries  *entries,
++                             FusionEntry    *entry )
++{
++     FusionEntryClass *class;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( entries->class != NULL );
++
++     class = entries->class;
++
++     /* Remove the entry from the list. */
++     fusion_list_remove( &entries->list, &entry->link );
++
++     /* Wake up any waiting process. */
++     wake_up_interruptible_all( &entry->wait );
++
++     /* Call the destroy function. */
++     if (class->Destroy)
++          class->Destroy( entry, entries->ctx );
++
++     /* Unlock the entry. */
++     up( &entry->lock );
++
++     /* Deallocate the entry. */
++     kfree( entry );
++}
++
++int
++fusion_entry_set_info( FusionEntries         *entries,
++                       const FusionEntryInfo *info )
++{
++     int          ret;
++     FusionEntry *entry;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( info != NULL );
++
++     ret = fusion_entry_lock( entries, info->id, false, &entry );
++     if (ret)
++          return ret;
++
++     snprintf( entry->name, FUSION_ENTRY_INFO_NAME_LENGTH, info->name );
++
++     fusion_entry_unlock( entry );
++
++     return 0;
++}
++
++int
++fusion_entry_get_info( FusionEntries   *entries,
++                       FusionEntryInfo *info )
++{
++     int          ret;
++     FusionEntry *entry;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( info != NULL );
++
++     ret = fusion_entry_lock( entries, info->id, false, &entry );
++     if (ret)
++          return ret;
++
++     snprintf( info->name, FUSION_ENTRY_INFO_NAME_LENGTH, entry->name );
++
++     fusion_entry_unlock( entry );
++
++     return 0;
++}
++
++int
++fusion_entry_lock( FusionEntries  *entries,
++                   int             id,
++                   bool            keep_entries_lock,
++                   FusionEntry   **ret_entry )
++{
++     FusionEntry *entry;
++
++     FUSION_ASSERT( entries != NULL );
++     FUSION_ASSERT( ret_entry != NULL );
++
++     /* Lock entries. */
++     if (down_interruptible( &entries->lock ))
++          return -EINTR;
++
++     /* Lookup the entry. */
++     fusion_list_foreach (entry, entries->list) {
++          if (entry->id == id)
++               break;
++     }
++
++     /* Check if no entry was found. */
++     if (!entry) {
++          up( &entries->lock );
++          return -EINVAL;
++     }
++
++     FUSION_ASSUME( entry->lock_pid != current->pid );
++
++     /* Move the entry to the front of all entries. */
++     fusion_list_move_to_front( &entries->list, &entry->link );
++
++     /* Lock the entry. */
++     if (down_interruptible( &entry->lock )) {
++          up( &entries->lock );
++          return -EINTR;
++     }
++
++     /* Mark as locked. */
++     entry->lock_pid = current->pid;
++
++     /* Keep timestamp, but use the slightly
++        inexact version to avoid performance impacts. */
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 0) && defined _STRUCT_TIMESPEC
++     entry->last_lock.tv_sec = xtime.tv_sec;
++     entry->last_lock.tv_usec = xtime.tv_nsec / 1000;
++#else
++     entry->last_lock = xtime;
++#endif
++
++     /* Unlock entries. */
++     if (!keep_entries_lock)
++          up( &entries->lock );
++
++     /* Return the locked entry. */
++     *ret_entry = entry;
++
++     return 0;
++}
++
++void
++fusion_entry_unlock( FusionEntry *entry )
++{
++     FUSION_ASSERT( entry != NULL );
++     FUSION_ASSUME( entry->lock_pid == current->pid );
++
++     entry->lock_pid = 0;
++
++     /* Unlock the entry. */
++     up( &entry->lock );
++}
++
++int
++fusion_entry_wait( FusionEntry *entry, long *timeout )
++{
++     int            ret;
++     int            id;
++     FusionEntries *entries;
++     FusionEntry   *entry2;
++
++     FUSION_ASSERT( entry != NULL );
++     FUSION_ASSERT( entry->entries != NULL );
++     FUSION_ASSUME( entry->lock_pid == current->pid );
++
++     id      = entry->id;
++     entries = entry->entries;
++
++     entry->waiters++;
++
++     entry->lock_pid = 0;
++     fusion_sleep_on( &entry->wait, &entry->lock, timeout );
++
++     entry->waiters--;
++
++     if (signal_pending(current))
++          return -EINTR;
++
++     if (timeout && !*timeout)
++          return -ETIMEDOUT;
++
++     ret = fusion_entry_lock( entries, id, false, &entry2 );
++     switch (ret) {
++          case -EINVAL:
++               return -EIDRM;
++
++          case 0:
++               if (entry != entry2)
++                    BUG();
++     }
++
++     return ret;
++}
++
++void
++fusion_entry_notify( FusionEntry *entry, bool all )
++{
++     FUSION_ASSERT( entry != NULL );
++     FUSION_ASSUME( entry->lock_pid == current->pid );
++
++     if (all)
++          wake_up_interruptible_all( &entry->wait );
++     else
++          wake_up_interruptible( &entry->wait );
++}
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/entries.h linux-2.6.22.1/drivers/char/fusion/entries.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/entries.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/entries.h	2006-09-03 13:50:55.000000000 +0200
+@@ -0,0 +1,179 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifndef __FUSION__ENTRIES_H__
++#define __FUSION__ENTRIES_H__
++
++#include "types.h"
++#include "list.h"
++
++
++typedef struct __FD_FusionEntry FusionEntry;
++
++
++typedef const struct {
++     int object_size;
++
++     int  (*Init)   ( FusionEntry *entry, void *ctx, void *create_ctx );
++     void (*Destroy)( FusionEntry *entry, void *ctx );
++     int  (*Print)  ( FusionEntry *entry, void *ctx, char *buf );
++} FusionEntryClass;
++
++
++typedef struct {
++     FusionEntryClass  *class;
++     void              *ctx;
++
++     FusionLink        *list;
++     int                ids;
++     struct semaphore   lock;
++} FusionEntries;
++
++
++struct __FD_FusionEntry {
++     FusionLink         link;
++
++     FusionEntries     *entries;
++
++     int                id;
++     pid_t              pid;
++
++     pid_t              lock_pid;
++
++     struct semaphore   lock;
++     wait_queue_head_t  wait;
++     int                waiters;
++
++     struct timeval     last_lock;
++
++     char               name[FUSION_ENTRY_INFO_NAME_LENGTH];
++};
++
++
++/* Entries Init & DeInit */
++
++void fusion_entries_init  ( FusionEntries    *entries,
++                            FusionEntryClass *class,
++                            void             *ctx );
++
++void fusion_entries_deinit( FusionEntries    *entries );
++
++
++/* '/proc' support */
++
++int  fusion_entries_read_proc( char *buf, char **start, off_t offset,
++                               int len, int *eof, void *private );
++
++
++/* Create & Destroy */
++
++int  fusion_entry_create        ( FusionEntries  *entries,
++                                  int            *ret_id,
++                                  void           *create_ctx );
++
++int  fusion_entry_destroy       ( FusionEntries  *entries,
++                                  int             id );
++
++void fusion_entry_destroy_locked( FusionEntries  *entries,
++                                  FusionEntry    *entry );
++
++/* Information */
++
++int  fusion_entry_set_info( FusionEntries          *entries,
++                            const FusionEntryInfo  *info );
++
++int  fusion_entry_get_info( FusionEntries          *entries,
++                            FusionEntryInfo        *info );
++
++
++/* Lock & Unlock */
++
++int  fusion_entry_lock    ( FusionEntries    *entries,
++                            int               id,
++                            bool              keep_entries_lock,
++                            FusionEntry     **ret_entry );
++
++void fusion_entry_unlock  ( FusionEntry      *entry );
++
++
++/** Wait & Notify **/
++
++/*
++ * Wait for the entry to be notified with an optional timeout.
++ *
++ * The entry
++ *   (1) has to be locked prior to calling this function.
++ *   (2) is temporarily unlocked while being waited for.
++ *
++ * If this function returns an error, the entry is not locked again!
++ *
++ * Possible errors are:
++ *   -EIDRM      Entry has been removed while being waited for.
++ *   -ETIMEDOUT  Timeout occured.
++ *   -EINTR      A signal has been received.
++ */
++int  fusion_entry_wait    ( FusionEntry      *entry,
++                            long             *timeout );
++
++/*
++ * Wake up one or all processes waiting for the entry to be notified.
++ *
++ * The entry has to be locked prior to calling this function.
++ */
++void fusion_entry_notify  ( FusionEntry      *entry,
++                            bool              all );
++
++
++#define FUSION_ENTRY_CLASS( Type, name, init_func, destroy_func, print_func )   \
++                                                                                \
++     static FusionEntryClass name##_class = {                                   \
++          .object_size = sizeof(Type),                                          \
++          .Init        = init_func,                                             \
++          .Destroy     = destroy_func,                                          \
++          .Print       = print_func                                             \
++     };                                                                         \
++                                                                                \
++     static inline int fusion_##name##_lock( FusionEntries  *entries,           \
++                                             int             id,                \
++                                             bool            keep,              \
++                                             Type          **ret_##name )       \
++     {                                                                          \
++          int          ret;                                                     \
++          FusionEntry *entry;                                                   \
++                                                                                \
++          ret = fusion_entry_lock( entries, id, keep, &entry );                 \
++                                                                                \
++          if (!ret)                                                             \
++               *ret_##name = (Type *) entry;                                    \
++                                                                                \
++          return ret;                                                           \
++     }                                                                          \
++                                                                                \
++     static inline void fusion_##name##_unlock( Type *name )                    \
++     {                                                                          \
++          fusion_entry_unlock( (FusionEntry*) name );                           \
++     }                                                                          \
++                                                                                \
++     static inline int fusion_##name##_wait( Type *name, long *timeout )        \
++     {                                                                          \
++          return fusion_entry_wait( (FusionEntry*) name, timeout );             \
++     }                                                                          \
++                                                                                \
++     static inline void fusion_##name##_notify( Type *name, bool all )          \
++     {                                                                          \
++          fusion_entry_notify( (FusionEntry*) name, all );                      \
++     }
++
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/fifo.c linux-2.6.22.1/drivers/char/fusion/fifo.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/fifo.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/fifo.c	2003-06-16 19:47:03.000000000 +0200
+@@ -0,0 +1,53 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/types.h>
++
++#include "fifo.h"
++
++void
++fusion_fifo_put (FusionFifo *fifo, FusionLink *link)
++{
++     link->prev = fifo->last;
++     link->next = NULL;
++
++     if (fifo->last)
++          fifo->last->next = link;
++     else
++          fifo->first = link;
++
++     fifo->last = link;
++
++     fifo->count++;
++}
++
++FusionLink *
++fusion_fifo_get (FusionFifo *fifo)
++{
++     FusionLink *first = fifo->first;
++
++     if (!first)
++          return NULL;
++
++     fifo->first = first->next;
++
++     if (fifo->last == first)
++          fifo->last = NULL;
++     else
++          fifo->first->prev = NULL;
++
++     fifo->count--;
++
++     return first;
++}
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/fifo.h linux-2.6.22.1/drivers/char/fusion/fifo.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/fifo.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/fifo.h	2003-06-16 19:47:03.000000000 +0200
+@@ -0,0 +1,36 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifndef __FUSION__FIFO_H__
++#define __FUSION__FIFO_H__
++
++#include "types.h"
++#include "list.h"
++
++typedef struct {
++     FusionLink *first;
++     FusionLink *last;
++
++     int         count;
++} FusionFifo;
++
++void        fusion_fifo_put   (FusionFifo *fifo,
++                               FusionLink *link);
++
++FusionLink *fusion_fifo_get   (FusionFifo *fifo);
++
++int         fusion_fifo_count (FusionFifo *fifo);
++
++#endif /* __FUSION__LIST_H__ */
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/fusiondev.c linux-2.6.22.1/drivers/char/fusion/fusiondev.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/fusiondev.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/fusiondev.c	2007-03-08 14:02:47.000000000 +0100
+@@ -0,0 +1,1187 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/version.h>
++#include <linux/module.h>
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/fs.h>
++#include <linux/slab.h>
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
++#include <linux/devfs_fs_kernel.h>
++#endif
++#if LINUX_VERSION_CODE > KERNEL_VERSION(2, 6, 19)
++#include <linux/page-flags.h>
++#include <linux/mm.h>
++#endif
++
++#include <linux/proc_fs.h>
++#include <linux/poll.h>
++#include <linux/init.h>
++#include <asm/io.h>
++#include <asm/uaccess.h>
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 2)
++#include <linux/device.h>
++#endif
++
++#include <linux/fusion.h>
++
++#include "call.h"
++#include "fusiondev.h"
++#include "fusionee.h"
++#include "property.h"
++#include "reactor.h"
++#include "ref.h"
++#include "skirmish.h"
++#include "shmpool.h"
++
++#if 0
++#define DEBUG(x...)  printk (KERN_DEBUG "Fusion: " x)
++#else
++#define DEBUG(x...)  do {} while (0)
++#endif
++
++#ifndef FUSION_MAJOR
++#define FUSION_MAJOR 252
++#endif
++
++MODULE_LICENSE("GPL");
++MODULE_AUTHOR("Denis Oliver Kropp <dok@directfb.org>");
++
++struct proc_dir_entry *proc_fusion_dir;
++
++#define NUM_MINORS 8
++
++static FusionDev  *fusion_devs[NUM_MINORS] = { 0 };
++static DECLARE_MUTEX(devs_lock);
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 0)
++static devfs_handle_t devfs_handles[NUM_MINORS];
++static inline unsigned iminor(struct inode *inode)
++{
++        return MINOR(inode->i_rdev);
++}
++#endif
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 2)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 13)
++static struct class *fusion_class;
++#else
++static struct class_simple *fusion_class;
++#endif
++#endif
++
++/******************************************************************************/
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 0)
++void
++fusion_sleep_on(wait_queue_head_t *q, struct semaphore *lock, signed long *timeout)
++{
++     DEFINE_WAIT(wait);
++
++     prepare_to_wait( q, &wait, TASK_INTERRUPTIBLE );
++
++     up( lock );
++
++     if (timeout)
++          *timeout = schedule_timeout(*timeout);
++     else
++          schedule();
++
++     finish_wait( q, &wait );
++}
++#else
++void
++fusion_sleep_on(wait_queue_head_t *q, struct semaphore *lock, signed long *timeout)
++{
++     wait_queue_t wait;
++
++     init_waitqueue_entry (&wait, current);
++
++     current->state = TASK_INTERRUPTIBLE;
++
++     write_lock (&q->lock);
++     __add_wait_queue (q, &wait);
++     write_unlock (&q->lock);
++
++     up (lock);
++
++     if (timeout)
++          *timeout = schedule_timeout(*timeout);
++     else
++          schedule();
++
++     write_lock (&q->lock);
++     __remove_wait_queue (q, &wait);
++     write_unlock (&q->lock);
++}
++#endif
++
++/******************************************************************************/
++
++static int
++fusiondev_stat_read_proc(char *buf, char **start, off_t offset,
++                         int len, int *eof, void *private)
++{
++     FusionDev *dev     = private;
++     int        written = 0;
++
++     written += snprintf( buf, len,
++                          "lease/purchase   cede      attach     detach      "
++                          "ref up   ref down  prevail/swoop dismiss\n" );
++     if (written < offset) {
++          offset -= written;
++          written = 0;
++     }
++
++     if (written < len) {
++          written += snprintf( buf+written, len - written,
++                               "%10d %10d  %10d %10d  %10d %10d  %10d %10d\n",
++                               dev->stat.property_lease_purchase,
++                               dev->stat.property_cede,
++                               dev->stat.reactor_attach,
++                               dev->stat.reactor_detach,
++                               dev->stat.ref_up,
++                               dev->stat.ref_down,
++                               dev->stat.skirmish_prevail_swoop,
++                               dev->stat.skirmish_dismiss );
++          if (written < offset) {
++               offset -= written;
++               written = 0;
++          }
++     }
++
++     *start = buf + offset;
++     written -= offset;
++     if (written > len) {
++          *eof = 0;
++          return len;
++     }
++
++     *eof = 1;
++     return(written<0) ? 0 : written;
++}
++
++/******************************************************************************/
++
++static int
++fusiondev_init (FusionDev *dev)
++{
++     int ret;
++
++     init_MUTEX( &dev->enter_lock );
++     init_waitqueue_head( &dev->enter_wait );
++
++     ret = fusionee_init (dev);
++     if (ret)
++          goto error_fusionee;
++
++     ret = fusion_ref_init (dev);
++     if (ret)
++          goto error_ref;
++
++     ret = fusion_skirmish_init (dev);
++     if (ret)
++          goto error_skirmish;
++
++     ret = fusion_property_init (dev);
++     if (ret)
++          goto error_property;
++
++     ret = fusion_reactor_init (dev);
++     if (ret)
++          goto error_reactor;
++
++     ret = fusion_shmpool_init (dev);
++     if (ret)
++          goto error_shmpool;
++
++     ret = fusion_call_init (dev);
++     if (ret)
++          goto error_call;
++
++     create_proc_read_entry( "stat", 0, dev->proc_dir,
++                             fusiondev_stat_read_proc, dev );
++
++     return 0;
++
++
++error_call:
++     fusion_shmpool_deinit (dev);
++
++error_shmpool:
++     fusion_reactor_deinit (dev);
++
++error_reactor:
++     fusion_property_deinit (dev);
++
++error_property:
++     fusion_skirmish_deinit (dev);
++
++error_skirmish:
++     fusion_ref_deinit (dev);
++
++error_ref:
++     fusionee_deinit (dev);
++
++error_fusionee:
++     return ret;
++}
++
++static void
++fusiondev_deinit (FusionDev *dev)
++{
++     remove_proc_entry ("stat", dev->proc_dir);
++
++     fusion_call_deinit (dev);
++     fusion_shmpool_deinit (dev);
++     fusion_reactor_deinit (dev);
++     fusion_property_deinit (dev);
++     fusion_skirmish_deinit (dev);
++     fusion_ref_deinit (dev);
++     fusionee_deinit (dev);
++
++     if (dev->shared_area) {
++          ClearPageReserved( virt_to_page(dev->shared_area) );
++          free_page( dev->shared_area );
++     }
++}
++
++/******************************************************************************/
++
++static int
++fusion_open (struct inode *inode, struct file *file)
++{
++     int       ret;
++     Fusionee *fusionee;
++     int       minor = iminor(inode);
++
++     DEBUG( "fusion_open( %p, %d )\n", file, atomic_read(&file->f_count) );
++
++     if (down_interruptible (&devs_lock))
++          return -EINTR;
++
++     if (!fusion_devs[minor]) {
++          char buf[4];
++
++          fusion_devs[minor] = kmalloc (sizeof(FusionDev), GFP_KERNEL);
++          if (!fusion_devs[minor]) {
++               up (&devs_lock);
++               return -ENOMEM;
++          }
++
++          memset (fusion_devs[minor], 0, sizeof(FusionDev));
++
++          snprintf (buf, 4, "%d", minor);
++
++          fusion_devs[minor]->proc_dir = proc_mkdir (buf, proc_fusion_dir);
++          fusion_devs[minor]->index    = minor;
++
++          ret = fusiondev_init (fusion_devs[minor]);
++          if (ret) {
++               remove_proc_entry (buf, proc_fusion_dir);
++
++               kfree (fusion_devs[minor]);
++               fusion_devs[minor] = NULL;
++
++               up (&devs_lock);
++
++               return ret;
++          }
++     }
++     else if (file->f_flags & O_EXCL) {
++          if (fusion_devs[minor]->fusionee.last_id) {
++               up (&devs_lock);
++               return -EBUSY;
++          }
++     }
++
++     ret = fusionee_new (fusion_devs[minor], !!(file->f_flags & O_APPEND), &fusionee);
++     if (ret) {
++          if (!fusion_devs[minor]->refs) {
++               fusiondev_deinit (fusion_devs[minor]);
++
++               remove_proc_entry (fusion_devs[minor]->proc_dir->name,
++                                  proc_fusion_dir);
++
++               kfree (fusion_devs[minor]);
++               fusion_devs[minor] = NULL;
++          }
++
++          up (&devs_lock);
++
++          return ret;
++     }
++
++     fusion_devs[minor]->refs++;
++
++     up (&devs_lock);
++
++
++     file->private_data = fusionee;
++
++     return 0;
++}
++
++static int
++fusion_release (struct inode *inode, struct file *file)
++{
++     int       minor    = iminor(inode);
++     Fusionee *fusionee = file->private_data;
++
++     DEBUG( "fusion_release( %p, %d )\n", file, atomic_read(&file->f_count) );
++
++     fusionee_destroy (fusion_devs[minor], fusionee);
++
++     down (&devs_lock);
++
++     if (! --fusion_devs[minor]->refs) {
++          fusiondev_deinit (fusion_devs[minor]);
++
++          remove_proc_entry (fusion_devs[minor]->proc_dir->name,
++                             proc_fusion_dir);
++
++          kfree (fusion_devs[minor]);
++          fusion_devs[minor] = NULL;
++     }
++
++     up (&devs_lock);
++
++     return 0;
++}
++
++static int
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 18)
++fusion_flush (struct file *file, fl_owner_t id)
++#else
++fusion_flush (struct file *file)
++#endif
++{
++     Fusionee  *fusionee = file->private_data;
++     FusionDev *dev      = fusion_devs[iminor(file->f_dentry->d_inode)];
++
++     (void) fusionee;
++
++     DEBUG( "fusion_flush( %p, %d, 0x%08x %d )\n", file, atomic_read(&file->f_count), fusionee_id(fusionee), current->pid );
++
++     if (current->flags & PF_EXITING)
++          fusion_skirmish_dismiss_all_from_pid (dev, current->pid);
++
++     return 0;
++}
++
++static ssize_t
++fusion_read (struct file *file, char *buf, size_t count, loff_t *ppos)
++{
++     Fusionee  *fusionee = file->private_data;
++     FusionDev *dev      = fusion_devs[iminor(file->f_dentry->d_inode)];
++
++     DEBUG( "fusion_read( %p, %d, %d )\n", file, atomic_read(&file->f_count), count );
++
++     return fusionee_get_messages (dev, fusionee, buf, count,
++                                   !(file->f_flags & O_NONBLOCK));
++}
++
++static unsigned int
++fusion_poll (struct file *file, poll_table * wait)
++{
++     Fusionee  *fusionee = file->private_data;
++     FusionDev *dev      = fusion_devs[iminor(file->f_dentry->d_inode)];
++
++     DEBUG( "fusion_poll( %p, %d )\n", file, atomic_read(&file->f_count) );
++
++     return fusionee_poll (dev, fusionee, file, wait);
++}
++
++static int
++lounge_ioctl (struct file *file, FusionDev *dev, Fusionee *fusionee,
++              unsigned int cmd, unsigned long arg)
++{
++     int             ret;
++     FusionEnter     enter;
++     FusionKill      kill;
++     FusionEntryInfo info;
++     FusionFork      fork = {0};
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_ENTER):
++               if (copy_from_user (&enter, (FusionEnter*) arg, sizeof(enter)))
++                    return -EFAULT;
++
++               ret = fusionee_enter( dev, &enter, fusionee );
++               if (ret)
++                    return ret;
++
++               if (copy_to_user ((FusionEnter*) arg, &enter, sizeof(enter)))
++                    return -EFAULT;
++
++               return 0;
++
++          case _IOC_NR(FUSION_UNBLOCK):
++               if (fusionee_id( fusionee ) != FUSION_ID_MASTER)
++                    return -EPERM;
++
++               if (down_interruptible( &dev->enter_lock ))
++                    return -EINTR;
++
++               dev->enter_ok = 1;
++
++               wake_up_interruptible_all( &dev->enter_wait );
++
++               up( &dev->enter_lock );
++
++               return 0;
++
++          case _IOC_NR(FUSION_KILL):
++               if (copy_from_user (&kill, (FusionKill*) arg, sizeof(kill)))
++                    return -EFAULT;
++
++               return fusionee_kill (dev, fusionee,
++                                     kill.fusion_id, kill.signal, kill.timeout_ms);
++
++          case _IOC_NR(FUSION_ENTRY_SET_INFO):
++               if (copy_from_user (&info, (FusionEntryInfo*) arg, sizeof(info)))
++                    return -EFAULT;
++
++               switch (info.type) {
++                    case FT_SKIRMISH:
++                         return fusion_entry_set_info (&dev->skirmish, &info);
++
++                    case FT_PROPERTY:
++                         return fusion_entry_set_info (&dev->properties, &info);
++
++                    case FT_REACTOR:
++                         return fusion_entry_set_info (&dev->reactor, &info);
++
++                    case FT_REF:
++                         return fusion_entry_set_info (&dev->ref, &info);
++
++                    case FT_SHMPOOL:
++                         return fusion_entry_set_info (&dev->shmpool, &info);
++
++                    default:
++                         return -ENOSYS;
++               }
++
++          case _IOC_NR(FUSION_ENTRY_GET_INFO):
++               if (copy_from_user (&info, (FusionEntryInfo*) arg, sizeof(info)))
++                    return -EFAULT;
++
++               switch (info.type) {
++                    case FT_SKIRMISH:
++                         ret = fusion_entry_get_info (&dev->skirmish, &info);
++                         break;
++
++                    case FT_PROPERTY:
++                         ret = fusion_entry_get_info (&dev->properties, &info);
++                         break;
++
++                    case FT_REACTOR:
++                         ret = fusion_entry_get_info (&dev->reactor, &info);
++                         break;
++
++                    case FT_REF:
++                         ret = fusion_entry_get_info (&dev->ref, &info);
++                         break;
++
++                    case FT_SHMPOOL:
++                         ret = fusion_entry_get_info (&dev->shmpool, &info);
++                         break;
++
++                    default:
++                         return -ENOSYS;
++               }
++
++               if (ret)
++                    return ret;
++
++               if (copy_to_user ((FusionEntryInfo*) arg, &info, sizeof(info)))
++                    return -EFAULT;
++
++               return 0;
++
++          case _IOC_NR(FUSION_FORK):
++               if (copy_from_user( &fork, (FusionFork*) arg, sizeof(fork) ))
++                    return -EFAULT;
++
++               ret = fusionee_fork( dev, &fork, fusionee );
++               if (ret)
++                    return ret;
++
++               if (copy_to_user( (FusionFork*) arg, &fork, sizeof(fork) ))
++                    return -EFAULT;
++
++               return 0;
++     }
++
++     return -ENOSYS;
++}
++
++static int
++messaging_ioctl (FusionDev *dev, Fusionee *fusionee,
++                 unsigned int cmd, unsigned long arg)
++{
++     FusionSendMessage send;
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_SEND_MESSAGE):
++               if (copy_from_user (&send, (FusionSendMessage*) arg, sizeof(send)))
++                    return -EFAULT;
++
++               if (send.msg_size <= 0)
++                    return -EINVAL;
++
++               /* message data > 64k should be stored in shared memory */
++               if (send.msg_size > 0x10000)
++                    return -EMSGSIZE;
++
++               return fusionee_send_message (dev, fusionee, send.fusion_id, FMT_SEND,
++                                             send.msg_id, send.msg_size, send.msg_data);
++     }
++
++     return -ENOSYS;
++}
++
++static int
++call_ioctl (FusionDev *dev, Fusionee *fusionee,
++            unsigned int cmd, unsigned long arg)
++{
++     int               id;
++     int               ret;
++     FusionCallNew     call;
++     FusionCallExecute execute;
++     FusionCallReturn  call_ret;
++     FusionID          fusion_id = fusionee_id( fusionee );
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_CALL_NEW):
++               if (copy_from_user (&call, (FusionCallNew*) arg, sizeof(call)))
++                    return -EFAULT;
++
++               ret = fusion_call_new (dev, fusion_id, &call);
++               if (ret)
++                    return ret;
++
++               if (put_user (call.call_id, (int*) arg)) {
++                    fusion_call_destroy (dev, fusion_id, call.call_id);
++                    return -EFAULT;
++               }
++               return 0;
++
++          case _IOC_NR(FUSION_CALL_EXECUTE):
++               if (copy_from_user (&execute, (FusionCallExecute*) arg, sizeof(execute)))
++                    return -EFAULT;
++
++               ret = fusion_call_execute (dev, fusionee, &execute);
++               if (ret)
++                    return ret;
++
++               if (put_user (execute.ret_val, (int*) arg))
++                    return -EFAULT;
++               return 0;
++
++          case _IOC_NR(FUSION_CALL_RETURN):
++               if (copy_from_user (&call_ret, (FusionCallReturn*) arg, sizeof(call_ret)))
++                    return -EFAULT;
++
++               return fusion_call_return (dev, fusion_id, &call_ret);
++
++          case _IOC_NR(FUSION_CALL_DESTROY):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_call_destroy (dev, fusion_id, id);
++     }
++
++     return -ENOSYS;
++}
++
++static int
++ref_ioctl (FusionDev *dev, Fusionee *fusionee,
++           unsigned int cmd, unsigned long arg)
++{
++     int              id;
++     int              ret;
++     int              refs;
++     FusionRefWatch   watch;
++     FusionRefInherit inherit;
++     FusionID         fusion_id = fusionee_id( fusionee );
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_REF_NEW):
++               ret = fusion_ref_new (dev, &id);
++               if (ret)
++                    return ret;
++
++               if (put_user (id, (int*) arg)) {
++                    fusion_ref_destroy (dev, id);
++                    return -EFAULT;
++               }
++               return 0;
++
++          case _IOC_NR(FUSION_REF_UP):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_up (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_REF_UP_GLOBAL):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_up (dev, id, 0);
++
++          case _IOC_NR(FUSION_REF_DOWN):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_down (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_REF_DOWN_GLOBAL):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_down (dev, id, 0);
++
++          case _IOC_NR(FUSION_REF_ZERO_LOCK):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_zero_lock (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_REF_ZERO_TRYLOCK):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_zero_trylock (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_REF_UNLOCK):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_zero_unlock (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_REF_STAT):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               ret = fusion_ref_stat (dev, id, &refs);
++               if (ret)
++                    return ret;
++
++               return refs;
++
++          case _IOC_NR(FUSION_REF_WATCH):
++               if (copy_from_user (&watch, (FusionRefWatch*) arg, sizeof(watch)))
++                    return -EFAULT;
++
++               return fusion_ref_watch (dev, watch.id, watch.call_id, watch.call_arg);
++
++          case _IOC_NR(FUSION_REF_INHERIT):
++               if (copy_from_user (&inherit, (FusionRefInherit*) arg, sizeof(inherit)))
++                    return -EFAULT;
++
++               return fusion_ref_inherit (dev, inherit.id, inherit.from);
++
++          case _IOC_NR(FUSION_REF_DESTROY):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_ref_destroy (dev, id);
++     }
++
++     return -ENOSYS;
++}
++
++static int
++skirmish_ioctl (FusionDev *dev, Fusionee *fusionee,
++                unsigned int cmd, unsigned long arg)
++{
++     int      id;
++     int      ret;
++     int      lock_count;
++     FusionID fusion_id = fusionee_id( fusionee );
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_SKIRMISH_NEW):
++               ret = fusion_skirmish_new (dev, &id);
++               if (ret)
++                    return ret;
++
++               if (put_user (id, (int*) arg)) {
++                    fusion_skirmish_destroy (dev, id);
++                    return -EFAULT;
++               }
++               return 0;
++
++          case _IOC_NR(FUSION_SKIRMISH_PREVAIL):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_skirmish_prevail (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_SKIRMISH_SWOOP):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_skirmish_swoop (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_SKIRMISH_DISMISS):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_skirmish_dismiss (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_SKIRMISH_DESTROY):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_skirmish_destroy (dev, id);
++
++          case _IOC_NR(FUSION_SKIRMISH_LOCK_COUNT):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               ret = fusion_skirmish_lock_count (dev, id, fusion_id, &lock_count);
++               if (put_user(lock_count, ((int*)arg)+1))
++                    return -EFAULT;
++
++               return ret;
++     }
++
++     return -ENOSYS;
++}
++
++static int
++property_ioctl (FusionDev *dev, Fusionee *fusionee,
++                unsigned int cmd, unsigned long arg)
++{
++     int      id;
++     int      ret;
++     FusionID fusion_id = fusionee_id( fusionee );
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_PROPERTY_NEW):
++               ret = fusion_property_new (dev, &id);
++               if (ret)
++                    return ret;
++
++               if (put_user (id, (int*) arg)) {
++                    fusion_property_destroy (dev, id);
++                    return -EFAULT;
++               }
++               return 0;
++
++          case _IOC_NR(FUSION_PROPERTY_LEASE):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_property_lease (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_PROPERTY_PURCHASE):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_property_purchase (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_PROPERTY_CEDE):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_property_cede (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_PROPERTY_HOLDUP):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_property_holdup (dev, id, fusionee);
++
++          case _IOC_NR(FUSION_PROPERTY_DESTROY):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_property_destroy (dev, id);
++     }
++
++     return -ENOSYS;
++}
++
++static int
++reactor_ioctl (FusionDev *dev, Fusionee *fusionee,
++               unsigned int cmd, unsigned long arg)
++{
++     int                   id;
++     int                   ret;
++     FusionReactorDispatch dispatch;
++     FusionID              fusion_id = fusionee_id( fusionee );
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_REACTOR_NEW):
++               ret = fusion_reactor_new (dev, &id);
++               if (ret)
++                    return ret;
++
++               if (put_user (id, (int*) arg)) {
++                    fusion_reactor_destroy (dev, id);
++                    return -EFAULT;
++               }
++               return 0;
++
++          case _IOC_NR(FUSION_REACTOR_ATTACH):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_reactor_attach (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_REACTOR_DETACH):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_reactor_detach (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_REACTOR_DISPATCH):
++               if (copy_from_user (&dispatch,
++                                   (FusionReactorDispatch*) arg, sizeof(dispatch)))
++                    return -EFAULT;
++
++               if (dispatch.msg_size <= 0)
++                    return -EINVAL;
++
++               /* message data > 64k should be stored in shared memory */
++               if (dispatch.msg_size > 0x10000)
++                    return -EMSGSIZE;
++
++               return fusion_reactor_dispatch (dev, dispatch.reactor_id,
++                                               dispatch.self ? NULL : fusionee,
++                                               dispatch.msg_size, dispatch.msg_data);
++
++          case _IOC_NR(FUSION_REACTOR_DESTROY):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_reactor_destroy (dev, id);
++     }
++
++     return -ENOSYS;
++}
++
++static int
++shmpool_ioctl (FusionDev *dev, Fusionee *fusionee,
++               unsigned int cmd, unsigned long arg)
++{
++     int                   id;
++     int                   ret;
++     FusionSHMPoolNew      pool;
++     FusionSHMPoolAttach   attach;
++     FusionSHMPoolDispatch dispatch;
++     FusionID              fusion_id = fusionee_id( fusionee );
++
++     switch (_IOC_NR(cmd)) {
++          case _IOC_NR(FUSION_SHMPOOL_NEW):
++               if (copy_from_user (&pool, (FusionSHMPoolNew*) arg, sizeof(pool)))
++                    return -EFAULT;
++
++               ret = fusion_shmpool_new (dev, &pool);
++               if (ret)
++                    return ret;
++
++               if (copy_to_user ((FusionSHMPoolNew*) arg, &pool, sizeof(pool))) {
++                    fusion_shmpool_destroy (dev, pool.pool_id);
++                    return -EFAULT;
++               }
++
++               return 0;
++
++          case _IOC_NR(FUSION_SHMPOOL_ATTACH):
++               if (copy_from_user (&attach,
++                                   (FusionSHMPoolAttach*) arg, sizeof(attach)))
++                    return -EFAULT;
++
++               ret = fusion_shmpool_attach (dev, &attach, fusion_id);
++               if (ret)
++                    return ret;
++
++               if (copy_to_user ((FusionSHMPoolAttach*) arg, &attach, sizeof(attach))) {
++                    fusion_shmpool_detach (dev, attach.pool_id, fusion_id);
++                    return -EFAULT;
++               }
++
++               return 0;
++
++          case _IOC_NR(FUSION_SHMPOOL_DETACH):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_shmpool_detach (dev, id, fusion_id);
++
++          case _IOC_NR(FUSION_SHMPOOL_DISPATCH):
++               if (copy_from_user (&dispatch,
++                                   (FusionSHMPoolDispatch*) arg, sizeof(dispatch)))
++                    return -EFAULT;
++
++               return fusion_shmpool_dispatch (dev, &dispatch, fusionee);
++
++          case _IOC_NR(FUSION_SHMPOOL_DESTROY):
++               if (get_user (id, (int*) arg))
++                    return -EFAULT;
++
++               return fusion_shmpool_destroy (dev, id);
++     }
++
++     return -ENOSYS;
++}
++
++static int
++fusion_ioctl (struct inode *inode, struct file *file,
++              unsigned int cmd, unsigned long arg)
++{
++     Fusionee  *fusionee = file->private_data;
++     FusionDev *dev      = fusion_devs[iminor(inode)];
++
++     DEBUG( "fusion_ioctl (0x%08x)\n", cmd );
++
++     switch (_IOC_TYPE(cmd)) {
++          case FT_LOUNGE:
++               return lounge_ioctl( file, dev, fusionee, cmd, arg );
++
++          case FT_MESSAGING:
++               return messaging_ioctl( dev, fusionee, cmd, arg );
++
++          case FT_CALL:
++               return call_ioctl( dev, fusionee, cmd, arg );
++
++          case FT_REF:
++               return ref_ioctl( dev, fusionee, cmd, arg );
++
++          case FT_SKIRMISH:
++               return skirmish_ioctl( dev, fusionee, cmd, arg );
++
++          case FT_PROPERTY:
++               return property_ioctl( dev, fusionee, cmd, arg );
++
++          case FT_REACTOR:
++               return reactor_ioctl( dev, fusionee, cmd, arg );
++
++          case FT_SHMPOOL:
++               return shmpool_ioctl( dev, fusionee, cmd, arg );
++     }
++
++     return -ENOSYS;
++}
++
++static int
++fusion_mmap( struct file           *file,
++             struct vm_area_struct *vma )
++{
++     Fusionee     *fusionee = file->private_data;
++     FusionDev    *dev      = fusion_devs[iminor(file->f_dentry->d_inode)];
++     unsigned int  size;
++
++     if (vma->vm_pgoff != 0)
++          return -EINVAL;
++
++     size = vma->vm_end - vma->vm_start;
++     if (!size || size > PAGE_SIZE)
++          return -EINVAL;
++
++     if (!dev->shared_area) {
++          if (fusionee_id( fusionee ) != FUSION_ID_MASTER)
++               return -EPERM;
++
++          dev->shared_area = get_zeroed_page( GFP_KERNEL );
++          if (!dev->shared_area)
++               return -ENOMEM;
++
++          SetPageReserved( virt_to_page(dev->shared_area) );
++     }
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 0)
++     return remap_pfn_range( vma, vma->vm_start,
++                             virt_to_phys((void*)dev->shared_area) >> PAGE_SHIFT,
++                             PAGE_SIZE, vma->vm_page_prot );
++#else
++     return io_remap_page_range( vma->vm_start,
++                                 virt_to_phys((void*)dev->shared_area),
++                                 PAGE_SIZE, vma->vm_page_prot );
++#endif
++}
++
++static struct file_operations fusion_fops = {
++     .owner   = THIS_MODULE,
++     .open    = fusion_open,
++     .flush   = fusion_flush,
++     .release = fusion_release,
++     .read    = fusion_read,
++     .poll    = fusion_poll,
++     .ioctl   = fusion_ioctl,
++     .mmap    = fusion_mmap
++};
++
++/******************************************************************************/
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 0)
++static int __init
++register_devices(void)
++{
++     int  i;
++
++     if (register_chrdev (FUSION_MAJOR, "fusion", &fusion_fops)) {
++          printk (KERN_ERR "fusion: unable to get major %d\n", FUSION_MAJOR);
++          return -EIO;
++     }
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 2)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 13)
++     fusion_class = class_create (THIS_MODULE, "fusion");
++#else
++     fusion_class = class_simple_create (THIS_MODULE, "fusion");
++#endif
++     if (IS_ERR(fusion_class)) {
++          unregister_chrdev (FUSION_MAJOR, "fusion");
++          return PTR_ERR(fusion_class);
++     }
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
++     devfs_mk_dir("fusion");
++#endif
++
++     for (i=0; i<NUM_MINORS; i++) {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 15)
++          class_device_create (fusion_class,
++                               NULL,
++                               MKDEV(FUSION_MAJOR, i),
++                               NULL, "fusion%d", i);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 13)
++          class_device_create (fusion_class,
++                               MKDEV(FUSION_MAJOR, i),
++                               NULL, "fusion%d", i);
++#elif LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 2)
++          class_simple_device_add (fusion_class,
++                                   MKDEV(FUSION_MAJOR, i),
++                                   NULL, "fusion%d", i);
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
++          devfs_mk_cdev (MKDEV(FUSION_MAJOR, i),
++                         S_IFCHR | S_IRUSR | S_IWUSR,
++                         "fusion/%d", i);
++#endif
++     }
++
++     return 0;
++}
++#else
++static int __init
++register_devices(void)
++{
++     int  i;
++     char buf[16];
++
++     if (devfs_register_chrdev (FUSION_MAJOR, "fusion", &fusion_fops)) {
++          printk (KERN_ERR "fusion: unable to get major %d\n", FUSION_MAJOR);
++          return -EIO;
++     }
++
++     for (i=0; i<NUM_MINORS; i++) {
++          snprintf (buf, 16, "fusion/%d", i);
++
++          devfs_handles[i] = devfs_register (NULL, buf, DEVFS_FL_DEFAULT,
++                                             FUSION_MAJOR, i,
++                                             S_IFCHR | S_IRUSR | S_IWUSR,
++                                             &fusion_fops, NULL);
++     }
++
++     return 0;
++}
++#endif
++
++int __init
++fusion_init(void)
++{
++     int ret;
++
++     ret = register_devices();
++     if (ret)
++          return ret;
++
++     proc_fusion_dir = proc_mkdir ("fusion", NULL);
++
++     return 0;
++}
++
++/******************************************************************************/
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 0)
++static void __exit
++deregister_devices(void)
++{
++     int i;
++
++     unregister_chrdev (FUSION_MAJOR, "fusion");
++
++     for (i=0; i<NUM_MINORS; i++) {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 2)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 13)
++          class_device_destroy (fusion_class, MKDEV(FUSION_MAJOR, i));
++#else
++          class_simple_device_remove (MKDEV(FUSION_MAJOR, i));
++#endif
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
++          devfs_remove ("fusion/%d", i);
++#endif
++     }
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 2)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 13)
++     class_destroy (fusion_class);
++#else
++     class_simple_destroy (fusion_class);
++#endif
++#endif
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(2, 6, 18)
++     devfs_remove ("fusion");
++#endif
++}
++#else
++static void __exit
++deregister_devices(void)
++{
++     int i;
++
++     devfs_unregister_chrdev (FUSION_MAJOR, "fusion");
++
++     for (i=0; i<NUM_MINORS; i++)
++          devfs_unregister (devfs_handles[i]);
++}
++#endif
++
++void __exit
++fusion_exit(void)
++{
++     deregister_devices();
++
++     remove_proc_entry ("fusion", NULL);
++}
++
++module_init(fusion_init);
++module_exit(fusion_exit);
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/fusiondev.h linux-2.6.22.1/drivers/char/fusion/fusiondev.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/fusiondev.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/fusiondev.h	2006-08-04 18:28:01.000000000 +0200
+@@ -0,0 +1,83 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifndef __FUSIONDEV_H__
++#define __FUSIONDEV_H__
++
++#include <linux/proc_fs.h>
++
++#include "entries.h"
++#include "list.h"
++
++#define FUSION_ASSERT(exp)    if (!(exp)) BUG()
++#define FUSION_ASSUME(exp)    if (!(exp)) printk( KERN_ERR "fusiondev: assumption '" #exp "' failed!\n" )
++
++typedef struct {
++     int                    refs;
++     int                    index;
++
++     struct semaphore       enter_lock;
++     int                    enter_ok;
++     wait_queue_head_t      enter_wait;
++
++     unsigned long          shared_area;
++
++     struct proc_dir_entry *proc_dir;
++
++     struct {
++          int property_lease_purchase;
++          int property_cede;
++
++          int reactor_attach;
++          int reactor_detach;
++
++          int ref_up;
++          int ref_down;
++
++          int skirmish_prevail_swoop;
++          int skirmish_dismiss;
++
++          int shmpool_attach;
++          int shmpool_detach;
++     } stat;
++
++     struct {
++          int                ids;
++          FusionLink        *list;
++          struct semaphore   lock;
++     } call;
++
++     struct {
++          int                last_id;
++          FusionLink        *list;
++          struct semaphore   lock;
++          wait_queue_head_t  wait;
++     } fusionee;
++
++     FusionEntries  properties;
++     FusionEntries  reactor;
++     FusionEntries  ref;
++     FusionEntries  shmpool;
++     FusionEntries  skirmish;
++} FusionDev;
++
++/*
++ * Special version of interruptible_sleep_on() that unlocks the mutex
++ * after adding the entry to the queue (just before schedule).
++ */
++void fusion_sleep_on (wait_queue_head_t *q,
++                      struct semaphore  *lock,
++                      signed long       *timeout_ms);
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/fusionee.c linux-2.6.22.1/drivers/char/fusion/fusionee.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/fusionee.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/fusionee.c	2007-01-29 00:31:00.000000000 +0100
+@@ -0,0 +1,584 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <asm/uaccess.h>
++
++#include <linux/fusion.h>
++
++#include "call.h"
++#include "fifo.h"
++#include "list.h"
++#include "fusiondev.h"
++#include "fusionee.h"
++#include "property.h"
++#include "reactor.h"
++#include "ref.h"
++#include "skirmish.h"
++#include "shmpool.h"
++
++#if 0
++#define DEBUG(x...)  printk (KERN_DEBUG "Fusion: " x)
++#else
++#define DEBUG(x...)  do {} while (0)
++#endif
++
++struct __Fusion_Fusionee {
++     FusionLink        link;
++
++     struct semaphore  lock;
++
++     FusionID          id;
++     int               pid;
++
++     FusionFifo        messages;
++
++     int               rcv_total;  /* Total number of messages received. */
++     int               snd_total;  /* Total number of messages sent. */
++
++     wait_queue_head_t wait;
++
++     bool              force_slave;
++};
++
++typedef struct {
++     FusionLink         link;
++
++     FusionMessageType  type;
++     FusionID           id;
++     int                size;
++     void              *data;
++} Message;
++
++/******************************************************************************/
++
++static int  lookup_fusionee (FusionDev *dev, FusionID id, Fusionee **ret_fusionee);
++static int  lock_fusionee   (FusionDev *dev, FusionID id, Fusionee **ret_fusionee);
++static void unlock_fusionee (Fusionee *fusionee);
++
++/******************************************************************************/
++
++static int
++fusionees_read_proc(char *buf, char **start, off_t offset,
++                    int len, int *eof, void *private)
++{
++     FusionLink *l;
++     FusionDev  *dev     = private;
++     int         written = 0;
++
++     if (down_interruptible (&dev->fusionee.lock))
++          return -EINTR;
++
++     fusion_list_foreach (l, dev->fusionee.list) {
++          Fusionee *fusionee = (Fusionee*) l;
++
++          written += sprintf(buf+written, "(%5d) 0x%08lx (%4d messages waiting, %7d received, %7d sent)\n",
++                             fusionee->pid, fusionee->id, fusionee->messages.count, fusionee->rcv_total, fusionee->snd_total);
++          if (written < offset) {
++               offset -= written;
++               written = 0;
++          }
++
++          if (written >= len)
++               break;
++     }
++
++     up (&dev->fusionee.lock);
++
++     *start = buf + offset;
++     written -= offset;
++     if (written > len) {
++          *eof = 0;
++          return len;
++     }
++
++     *eof = 1;
++     return(written<0) ? 0 : written;
++}
++
++int
++fusionee_init (FusionDev *dev)
++{
++     init_waitqueue_head (&dev->fusionee.wait);
++
++     init_MUTEX (&dev->fusionee.lock);
++
++     create_proc_read_entry("fusionees", 0, dev->proc_dir,
++                            fusionees_read_proc, dev);
++
++     return 0;
++}
++
++void
++fusionee_deinit (FusionDev *dev)
++{
++     FusionLink *l;
++
++     down (&dev->fusionee.lock);
++
++     remove_proc_entry ("fusionees", dev->proc_dir);
++
++     l = dev->fusionee.list;
++     while (l) {
++          FusionLink *next     = l->next;
++          Fusionee   *fusionee = (Fusionee *) l;
++
++          while (fusionee->messages.count) {
++               Message *message = (Message*) fusion_fifo_get (&fusionee->messages);
++
++               kfree (message);
++          }
++
++          kfree (fusionee);
++
++          l = next;
++     }
++
++     up (&dev->fusionee.lock);
++}
++
++/******************************************************************************/
++
++int
++fusionee_new( FusionDev  *dev,
++              bool        force_slave,
++              Fusionee  **ret_fusionee )
++{
++     Fusionee *fusionee;
++
++     fusionee = kmalloc (sizeof(Fusionee), GFP_KERNEL);
++     if (!fusionee)
++          return -ENOMEM;
++
++     memset (fusionee, 0, sizeof(Fusionee));
++
++     if (down_interruptible (&dev->fusionee.lock)) {
++          kfree (fusionee);
++          return -EINTR;
++     }
++
++     fusionee->pid         = current->pid;
++     fusionee->force_slave = force_slave;
++
++     init_MUTEX (&fusionee->lock);
++
++     init_waitqueue_head (&fusionee->wait);
++
++     fusion_list_prepend (&dev->fusionee.list, &fusionee->link);
++
++     up (&dev->fusionee.lock);
++
++     *ret_fusionee = fusionee;
++
++     return 0;
++}
++
++int
++fusionee_enter( FusionDev   *dev,
++                FusionEnter *enter,
++                Fusionee    *fusionee )
++{
++     if (enter->api.major != FUSION_API_MAJOR || enter->api.minor > FUSION_API_MINOR)
++          return -ENOPROTOOPT;
++
++     if (down_interruptible( &dev->enter_lock ))
++          return -EINTR;
++
++     if (dev->fusionee.last_id || fusionee->force_slave) {
++          while (!dev->enter_ok) {
++               fusion_sleep_on( &dev->enter_wait, &dev->enter_lock, NULL );
++
++               if (signal_pending(current))
++                    return -EINTR;
++
++               if (down_interruptible( &dev->enter_lock ))
++                    return -EINTR;
++          }
++
++          FUSION_ASSERT( dev->fusionee.last_id != 0 );
++     }
++
++     fusionee->id = ++dev->fusionee.last_id;
++
++     up( &dev->enter_lock );
++
++     enter->fusion_id = fusionee->id;
++
++     return 0;
++}
++
++int
++fusionee_fork( FusionDev  *dev,
++               FusionFork *fork,
++               Fusionee   *fusionee )
++{
++     int ret;
++
++     ret = fusion_shmpool_fork_all( dev, fusionee->id, fork->fusion_id );
++     if (ret)
++          return ret;
++
++     ret = fusion_reactor_fork_all( dev, fusionee->id, fork->fusion_id );
++     if (ret)
++          return ret;
++
++     ret = fusion_ref_fork_all_local( dev, fusionee->id, fork->fusion_id );
++     if (ret)
++          return ret;
++
++     fork->fusion_id = fusionee->id;
++
++     return 0;
++}
++
++int
++fusionee_send_message (FusionDev         *dev,
++                       Fusionee          *sender,
++                       FusionID           recipient,
++                       FusionMessageType  msg_type,
++                       int                msg_id,
++                       int                msg_size,
++                       const void        *msg_data)
++{
++     int       ret;
++     Message  *message;
++     Fusionee *fusionee;
++
++     DEBUG( "fusionee_send_message (%d -> %d, type %d, id %d, size %d)\n",
++            fusionee->id, recipient, msg_type, msg_id, msg_size );
++
++     ret = lookup_fusionee (dev, recipient, &fusionee);
++     if (ret)
++          return ret;
++
++     if (down_interruptible (&fusionee->lock)) {
++          up (&dev->fusionee.lock);
++          return -EINTR;
++     }
++
++     if (sender && sender != fusionee) {
++          if (down_interruptible (&sender->lock)) {
++               unlock_fusionee (fusionee);
++               up (&dev->fusionee.lock);
++               return -EINTR;
++          }
++     }
++
++     up (&dev->fusionee.lock);
++
++
++     message = kmalloc (sizeof(Message) + msg_size, GFP_KERNEL);
++     if (!message) {
++          if (sender && sender != fusionee)
++               unlock_fusionee (sender);
++          unlock_fusionee (fusionee);
++          return -ENOMEM;
++     }
++
++     message->data = message + 1;
++
++     if (msg_type == FMT_CALL || msg_type == FMT_SHMPOOL)
++          memcpy (message->data, msg_data, msg_size);
++     else if (copy_from_user (message->data, msg_data, msg_size)) {
++          kfree (message);
++          if (sender && sender != fusionee)
++               unlock_fusionee (sender);
++          unlock_fusionee (fusionee);
++          return -EFAULT;
++     }
++
++     message->type = msg_type;
++     message->id   = msg_id;
++     message->size = msg_size;
++
++     fusion_fifo_put (&fusionee->messages, &message->link);
++
++     fusionee->rcv_total++;
++     if (sender)
++          sender->snd_total++;
++
++     wake_up_interruptible_all (&fusionee->wait);
++
++     if (sender && sender != fusionee)
++          unlock_fusionee (sender);
++
++     unlock_fusionee (fusionee);
++
++     return 0;
++}
++
++int
++fusionee_get_messages (FusionDev *dev,
++                       Fusionee  *fusionee,
++                       void      *buf,
++                       int        buf_size,
++                       bool       block)
++{
++     int written = 0;
++
++     if (down_interruptible (&fusionee->lock))
++          return -EINTR;
++
++     while (!fusionee->messages.count) {
++          if (!block) {
++               unlock_fusionee (fusionee);
++               return -EAGAIN;
++          }
++
++          fusion_sleep_on (&fusionee->wait, &fusionee->lock, 0);
++
++          if (signal_pending(current))
++               return -EINTR;
++
++          if (down_interruptible (&fusionee->lock))
++               return -EINTR;
++     }
++
++     while (fusionee->messages.count) {
++          FusionReadMessage  header;
++          Message           *message = (Message*) fusionee->messages.first;
++          int                bytes   = message->size + sizeof(header);
++
++          if (bytes > buf_size) {
++               if (!written) {
++                    unlock_fusionee (fusionee);
++                    return -EMSGSIZE;
++               }
++
++               break;
++          }
++
++          header.msg_type = message->type;
++          header.msg_id   = message->id;
++          header.msg_size = message->size;
++
++          if (copy_to_user (buf, &header, sizeof(header)) ||
++              copy_to_user (buf + sizeof(header), message->data, message->size)) {
++               unlock_fusionee (fusionee);
++               return -EFAULT;
++          }
++
++          written  += bytes;
++          buf      += bytes;
++          buf_size -= bytes;
++
++          fusion_fifo_get (&fusionee->messages);
++
++          kfree (message);
++     }
++
++     unlock_fusionee (fusionee);
++
++     return written;
++}
++
++unsigned int
++fusionee_poll (FusionDev   *dev,
++               Fusionee    *fusionee,
++               struct file *file,
++               poll_table  *wait)
++{
++     int      ret;
++     FusionID id = fusionee->id;
++
++     poll_wait (file, &fusionee->wait, wait);
++
++
++     ret = lock_fusionee (dev, id, &fusionee);
++     if (ret)
++          return POLLERR;
++
++     if (fusionee->messages.count) {
++          unlock_fusionee (fusionee);
++
++          return POLLIN | POLLRDNORM;
++     }
++
++     unlock_fusionee (fusionee);
++
++     return 0;
++}
++
++int
++fusionee_kill (FusionDev *dev,
++               Fusionee  *fusionee,
++               FusionID   target,
++               int        signal,
++               int        timeout_ms)
++{
++     long timeout = -1;
++
++     while (true) {
++          FusionLink *l;
++          int         killed = 0;
++
++          if (down_interruptible (&dev->fusionee.lock))
++               return -EINTR;
++
++          fusion_list_foreach (l, dev->fusionee.list) {
++               Fusionee *f = (Fusionee*) l;
++
++               if (f != fusionee && (!target || target == f->id)) {
++                    kill_proc (f->pid, signal, 0);
++                    killed++;
++               }
++          }
++
++          if (!killed || timeout_ms < 0) {
++               up (&dev->fusionee.lock);
++               break;
++          }
++
++          if (timeout_ms) {
++               switch (timeout) {
++                    case 0:  /* timed out */
++                         up (&dev->fusionee.lock);
++                         return -ETIMEDOUT;
++
++                    case -1: /* setup timeout */
++                         timeout = (timeout_ms * HZ + 500) / 1000;
++                         if (!timeout)
++                              timeout = 1;
++
++                         /* fall through */
++
++                    default:
++                         fusion_sleep_on (&dev->fusionee.wait,
++                                          &dev->fusionee.lock, &timeout);
++                         break;
++               }
++          }
++          else
++               fusion_sleep_on (&dev->fusionee.wait, &dev->fusionee.lock, NULL);
++
++          if (signal_pending(current))
++               return -EINTR;
++     }
++
++     return 0;
++}
++
++void
++fusionee_destroy (FusionDev *dev,
++                  Fusionee  *fusionee)
++{
++     /* Lock list. */
++     down (&dev->fusionee.lock);
++
++     /* Lock fusionee. */
++     down (&fusionee->lock);
++
++     /* Remove from list. */
++     fusion_list_remove (&dev->fusionee.list, &fusionee->link);
++
++     /* Wake up waiting killer. */
++     wake_up_interruptible_all (&dev->fusionee.wait);
++
++     /* Unlock list. */
++     up (&dev->fusionee.lock);
++
++
++     /* Release locks, references, ... */
++     fusion_call_destroy_all (dev, fusionee->id);
++     fusion_skirmish_dismiss_all (dev, fusionee->id);
++     fusion_reactor_detach_all (dev, fusionee->id);
++     fusion_property_cede_all (dev, fusionee->id);
++     fusion_ref_clear_all_local (dev, fusionee->id);
++     fusion_shmpool_detach_all (dev, fusionee->id);
++
++     /* Free all pending messages. */
++     while (fusionee->messages.count) {
++          Message *message = (Message*) fusion_fifo_get (&fusionee->messages);
++
++          kfree (message);
++     }
++
++     /* Unlock fusionee. */
++     up (&fusionee->lock);
++
++
++     /* Free fusionee data. */
++     kfree (fusionee);
++}
++
++FusionID
++fusionee_id( const Fusionee *fusionee )
++{
++     return fusionee->id;
++}
++
++/******************************************************************************/
++
++static int
++lookup_fusionee (FusionDev *dev,
++                 FusionID   id,
++                 Fusionee **ret_fusionee)
++{
++     FusionLink *l;
++
++     if (down_interruptible (&dev->fusionee.lock))
++          return -EINTR;
++
++     fusion_list_foreach (l, dev->fusionee.list) {
++          Fusionee *fusionee = (Fusionee *) l;
++
++          if (fusionee->id == id) {
++               *ret_fusionee = fusionee;
++               return 0;
++          }
++     }
++
++     up (&dev->fusionee.lock);
++
++     return -EINVAL;
++}
++
++static int
++lock_fusionee (FusionDev *dev,
++               FusionID   id,
++               Fusionee **ret_fusionee)
++{
++     int       ret;
++     Fusionee *fusionee;
++
++     ret = lookup_fusionee (dev, id, &fusionee);
++     if (ret)
++          return ret;
++
++     fusion_list_move_to_front (&dev->fusionee.list, &fusionee->link);
++
++     if (down_interruptible (&fusionee->lock)) {
++          up (&dev->fusionee.lock);
++          return -EINTR;
++     }
++
++     up (&dev->fusionee.lock);
++
++     *ret_fusionee = fusionee;
++
++     return 0;
++}
++
++static void
++unlock_fusionee (Fusionee *fusionee)
++{
++     up (&fusionee->lock);
++}
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/fusionee.h linux-2.6.22.1/drivers/char/fusion/fusionee.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/fusionee.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/fusionee.h	2007-01-23 22:19:25.000000000 +0100
+@@ -0,0 +1,75 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++ 
++#ifndef __FUSIONEE_H__
++#define __FUSIONEE_H__
++
++#include <linux/poll.h>
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++#include "types.h"
++
++/* module init/cleanup */
++
++int  fusionee_init   (FusionDev *dev);
++void fusionee_deinit (FusionDev *dev);
++
++
++/* internal functions */
++
++int fusionee_new           (FusionDev         *dev,
++                            bool               force_slave,
++                            Fusionee         **ret_fusionee);
++
++int fusionee_enter         (FusionDev         *dev,
++                            FusionEnter       *enter,
++                            Fusionee          *fusionee);
++
++int fusionee_fork          (FusionDev         *dev,
++                            FusionFork        *fork,
++                            Fusionee          *fusionee);
++
++int fusionee_send_message  (FusionDev         *dev,
++                            Fusionee          *fusionee,
++                            FusionID           recipient,
++                            FusionMessageType  msg_type,
++                            int                msg_id,
++                            int                msg_size,
++                            const void        *msg_data);
++
++int fusionee_get_messages  (FusionDev         *dev,
++                            Fusionee          *fusionee,
++                            void              *buf,
++                            int                buf_size,
++                            bool               block);
++
++unsigned
++int fusionee_poll          (FusionDev         *dev,
++                            Fusionee          *fusionee,
++                            struct file       *file,
++                            poll_table        *wait);
++
++int fusionee_kill          (FusionDev         *dev,
++                            Fusionee          *fusionee,
++                            FusionID           target,
++                            int                signal,
++                            int                timeout_ms);
++
++void fusionee_destroy      (FusionDev         *dev,
++                            Fusionee          *fusionee);
++
++FusionID fusionee_id( const Fusionee *fusionee );
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/Kconfig linux-2.6.22.1/drivers/char/fusion/Kconfig
+--- linux-2.6.22.1-0rig/drivers/char/fusion/Kconfig	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/Kconfig	2007-08-12 19:33:38.000000000 +0200
+@@ -0,0 +1,8 @@
++config FUSION_DEVICE
++	tristate "Fusion device for DirectFB"
++	default m
++	---help---
++	  The fusion device is a software device allowing the DirectFB
++	  (Direct Frame Buffer) to support multiple applications
++	  It is safe to say N unless you need to run several DirectFB
++	  applications concurrently.
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/list.c linux-2.6.22.1/drivers/char/fusion/list.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/list.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/list.c	2003-06-16 19:47:03.000000000 +0200
+@@ -0,0 +1,62 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#include <linux/types.h>
++
++#include "list.h"
++
++void
++fusion_list_prepend (FusionLink **list, FusionLink *link)
++{
++     link->prev = NULL;
++     link->next = *list;
++
++     if (*list)
++          (*list)->prev = link;
++
++     *list = link;
++}
++
++void
++fusion_list_remove (FusionLink **list, FusionLink *link)
++{
++     if (link->prev)
++          link->prev->next = link->next;
++     else
++          *list = link->next;
++
++     if (link->next)
++          link->next->prev = link->prev;
++
++     link->next = link->prev = NULL;
++}
++
++void
++fusion_list_move_to_front (FusionLink **list, FusionLink *link)
++{
++     if (*list == link)
++          return;
++
++     link->prev->next = link->next;
++
++     if (link->next)
++          link->next->prev = link->prev;
++
++     link->prev = NULL;
++     link->next = *list;
++
++     (*list)->prev = link;
++
++     *list = link;
++}
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/list.h linux-2.6.22.1/drivers/char/fusion/list.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/list.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/list.h	2004-08-17 19:24:36.000000000 +0200
+@@ -0,0 +1,39 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifndef __FUSION__LIST_H__
++#define __FUSION__LIST_H__
++
++typedef struct _FusionLink {
++     struct _FusionLink *next;
++     struct _FusionLink *prev;
++} FusionLink;
++
++void fusion_list_prepend       (FusionLink **list, FusionLink *link);
++void fusion_list_remove        (FusionLink **list, FusionLink *link);
++void fusion_list_move_to_front (FusionLink **list, FusionLink *link);
++
++
++#define fusion_list_foreach(elem, list)                     \
++     for (elem = (void*)(list);                             \
++          elem;                                             \
++          elem = (void*)(((FusionLink*)(elem))->next))
++
++#define fusion_list_foreach_safe(elem, temp, list)                                             \
++     for (elem = (void*)(list), temp = ((elem) ? (void*)(((FusionLink*)(elem))->next) : NULL); \
++          elem;                                                                                \
++          elem = (void*)(temp), temp = ((elem) ? (void*)(((FusionLink*)(elem))->next) : NULL))
++
++#endif /* __FUSION__LIST_H__ */
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/Makefile linux-2.6.22.1/drivers/char/fusion/Makefile
+--- linux-2.6.22.1-0rig/drivers/char/fusion/Makefile	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/Makefile	2005-10-29 02:38:05.000000000 +0200
+@@ -0,0 +1,3 @@
++obj-$(CONFIG_FUSION_DEVICE) += fusion.o
++
++fusion-y := call.o entries.o fifo.o fusiondev.o fusionee.o list.o property.o reactor.o ref.o skirmish.o shmpool.o
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/property.c linux-2.6.22.1/drivers/char/fusion/property.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/property.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/property.c	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,340 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <linux/sched.h>
++
++#ifndef yield
++#define yield schedule
++#endif
++
++#include <linux/fusion.h>
++
++#include "entries.h"
++#include "fusiondev.h"
++#include "fusionee.h"
++#include "list.h"
++#include "property.h"
++
++typedef enum {
++     FUSION_PROPERTY_AVAILABLE = 0,
++     FUSION_PROPERTY_LEASED,
++     FUSION_PROPERTY_PURCHASED
++} FusionPropertyState;
++
++typedef struct {
++     FusionEntry         entry;
++
++     FusionPropertyState state;
++     int                 fusion_id; /* non-zero if leased/purchased */
++     unsigned long       purchase_stamp;
++     int                 lock_pid;
++     int                 count;    /* lock counter */
++} FusionProperty;
++
++static int
++fusion_property_print( FusionEntry *entry,
++                       void        *ctx,
++                       char        *buf )
++{
++     FusionProperty *property = (FusionProperty*) entry;
++
++     if (property->state != FUSION_PROPERTY_AVAILABLE) {
++          return sprintf( buf, "%s by 0x%08x (%d) %dx\n",
++                          property->state == FUSION_PROPERTY_LEASED ? "leased" : "purchased",
++                          property->fusion_id, property->lock_pid, property->count );
++     }
++
++     return sprintf( buf, "\n" );
++}
++
++FUSION_ENTRY_CLASS( FusionProperty, property, NULL, NULL, fusion_property_print )
++
++/******************************************************************************/
++
++int
++fusion_property_init( FusionDev *dev )
++{
++     fusion_entries_init( &dev->properties, &property_class, dev );
++
++     create_proc_read_entry( "properties", 0, dev->proc_dir,
++                             fusion_entries_read_proc, &dev->properties );
++
++     return 0;
++}
++
++void
++fusion_property_deinit( FusionDev *dev )
++{
++     remove_proc_entry( "properties", dev->proc_dir );
++
++     fusion_entries_deinit( &dev->properties );
++}
++
++/******************************************************************************/
++
++int
++fusion_property_new( FusionDev *dev, int *ret_id )
++{
++     return fusion_entry_create( &dev->properties, ret_id, NULL );
++}
++
++int
++fusion_property_lease( FusionDev *dev, int id, int fusion_id )
++{
++     int             ret;
++     FusionProperty *property;
++     long            timeout = -1;
++
++     dev->stat.property_lease_purchase++;
++
++     ret = fusion_property_lock( &dev->properties, id, false, &property );
++     if (ret)
++          return ret;
++
++     while (true) {
++          switch (property->state) {
++               case FUSION_PROPERTY_AVAILABLE:
++                    property->state     = FUSION_PROPERTY_LEASED;
++                    property->fusion_id = fusion_id;
++                    property->lock_pid  = current->pid;
++                    property->count     = 1;
++
++                    fusion_property_unlock( property );
++                    return 0;
++
++               case FUSION_PROPERTY_LEASED:
++                    if (property->lock_pid == current->pid) {
++                         property->count++;
++
++                         fusion_property_unlock( property );
++                         return 0;
++                    }
++
++                    ret = fusion_property_wait( property, NULL );
++                    if (ret)
++                         return ret;
++
++                    break;
++
++               case FUSION_PROPERTY_PURCHASED:
++                    if (property->lock_pid == current->pid) {
++                         fusion_property_unlock( property );
++                         return -EIO;
++                    }
++
++                    if (timeout == -1) {
++                         if (jiffies - property->purchase_stamp > HZ / 10) {
++                              fusion_property_unlock( property );
++                              return -EAGAIN;
++                         }
++
++                         timeout = HZ / 10;
++                    }
++
++                    ret = fusion_property_wait( property, &timeout );
++                    if (ret)
++                         return ret;
++
++                    break;
++
++               default:
++                    BUG();
++          }
++     }
++
++     BUG();
++
++     /* won't reach this */
++     return -1;
++}
++
++int
++fusion_property_purchase( FusionDev *dev, int id, int fusion_id )
++{
++     int             ret;
++     FusionProperty *property;
++     signed long     timeout = -1;
++
++     dev->stat.property_lease_purchase++;
++
++     ret = fusion_property_lock( &dev->properties, id, false, &property );
++     if (ret)
++          return ret;
++
++     while (true) {
++          switch (property->state) {
++               case FUSION_PROPERTY_AVAILABLE:
++                    property->state          = FUSION_PROPERTY_PURCHASED;
++                    property->fusion_id      = fusion_id;
++                    property->purchase_stamp = jiffies;
++                    property->lock_pid       = current->pid;
++                    property->count          = 1;
++
++                    fusion_property_notify( property, true );
++
++                    fusion_property_unlock( property );
++                    return 0;
++
++               case FUSION_PROPERTY_LEASED:
++                    if (property->lock_pid == current->pid) {
++                         fusion_property_unlock( property );
++                         return -EIO;
++                    }
++
++                    ret = fusion_property_wait( property, NULL );
++                    if (ret)
++                         return ret;
++
++                    break;
++
++               case FUSION_PROPERTY_PURCHASED:
++                    if (property->lock_pid == current->pid) {
++                         property->count++;
++
++                         fusion_property_unlock( property );
++                         return 0;
++                    }
++
++                    if (timeout == -1) {
++                         if (jiffies - property->purchase_stamp > HZ) {
++                              fusion_property_unlock( property );
++                              return -EAGAIN;
++                         }
++
++                         timeout = HZ;
++                    }
++
++                    ret = fusion_property_wait( property, &timeout );
++                    if (ret)
++                         return ret;
++
++                    break;
++
++               default:
++                    BUG();
++          }
++     }
++
++     BUG();
++
++     /* won't reach this */
++     return -1;
++}
++
++int
++fusion_property_cede( FusionDev *dev, int id, int fusion_id )
++{
++     int             ret;
++     FusionProperty *property;
++     bool            purchased;
++
++     dev->stat.property_cede++;
++
++     ret = fusion_property_lock( &dev->properties, id, false, &property );
++     if (ret)
++          return ret;
++
++     if (property->lock_pid != current->pid) {
++          fusion_property_unlock( property );
++          return -EIO;
++     }
++
++     if (--property->count) {
++          fusion_property_unlock( property );
++          return 0;
++     }
++
++     purchased = (property->state == FUSION_PROPERTY_PURCHASED);
++
++     property->state     = FUSION_PROPERTY_AVAILABLE;
++     property->fusion_id = 0;
++     property->lock_pid  = 0;
++
++     fusion_property_notify( property, true );
++
++     fusion_property_unlock( property );
++
++     if (purchased)
++          yield();
++
++     return 0;
++}
++
++int
++fusion_property_holdup( FusionDev *dev, int id, Fusionee *fusionee )
++{
++     int             ret;
++     FusionProperty *property;
++     FusionID        fusion_id = fusionee_id( fusionee );
++
++     if (fusion_id > 1)
++          return -EPERM;
++
++     ret = fusion_property_lock( &dev->properties, id, false, &property );
++     if (ret)
++          return ret;
++
++     if (property->state == FUSION_PROPERTY_PURCHASED) {
++          if (property->fusion_id == fusion_id) {
++               fusion_property_unlock( property );
++               return -EIO;
++          }
++
++          fusionee_kill( dev, fusionee, property->fusion_id, SIGKILL, -1 );
++     }
++
++     fusion_property_unlock( property );
++
++     return 0;
++}
++
++int
++fusion_property_destroy( FusionDev *dev, int id )
++{
++     return fusion_entry_destroy( &dev->properties, id );
++}
++
++void
++fusion_property_cede_all( FusionDev *dev, int fusion_id )
++{
++     FusionLink *l;
++
++     down( &dev->properties.lock );
++
++     fusion_list_foreach (l, dev->properties.list) {
++          FusionProperty *property = (FusionProperty *) l;
++
++          down( &property->entry.lock );
++
++          if (property->fusion_id == fusion_id) {
++               property->state     = FUSION_PROPERTY_AVAILABLE;
++               property->fusion_id = 0;
++               property->lock_pid  = 0;
++
++               wake_up_interruptible_all (&property->entry.wait);
++          }
++
++          up( &property->entry.lock );
++     }
++
++     up( &dev->properties.lock );
++}
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/property.h linux-2.6.22.1/drivers/char/fusion/property.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/property.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/property.h	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,58 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifndef __FUSION__PROPERTY_H__
++#define __FUSION__PROPERTY_H__
++
++#include "fusiondev.h"
++#include "types.h"
++
++
++/* module init/cleanup */
++
++int  fusion_property_init   (FusionDev *dev);
++void fusion_property_deinit (FusionDev *dev);
++
++
++/* public API */
++
++int fusion_property_new      (FusionDev *dev,
++                              int       *ret_id);
++
++int fusion_property_lease    (FusionDev *dev,
++                              int        id,
++                              int        fusion_id);
++
++int fusion_property_purchase (FusionDev *dev,
++                              int        id,
++                              int        fusion_id);
++
++int fusion_property_cede     (FusionDev *dev,
++                              int        id,
++                              int        fusion_id);
++
++int fusion_property_holdup   (FusionDev *dev,
++                              int        id,
++                              Fusionee  *fusionee);
++
++int fusion_property_destroy  (FusionDev *dev,
++                              int        id);
++
++
++/* internal functions */
++
++void fusion_property_cede_all (FusionDev *dev,
++                               int        fusion_id);
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/reactor.c linux-2.6.22.1/drivers/char/fusion/reactor.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/reactor.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/reactor.c	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,367 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <linux/sched.h>
++
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++#include "fusionee.h"
++#include "list.h"
++#include "reactor.h"
++
++typedef struct {
++     FusionLink         link;
++
++     int                fusion_id;
++
++     int                count;     /* number of attach calls */
++} ReactorNode;
++
++typedef struct {
++     FusionEntry        entry;
++
++     FusionLink        *nodes;
++
++     int                dispatch_count;
++
++     bool               destroyed;
++} FusionReactor;
++
++/******************************************************************************/
++
++static int  fork_node     ( FusionReactor *reactor,
++                            FusionID       fusion_id,
++                            FusionID       from_id );
++
++static void free_all_nodes( FusionReactor *reactor );
++
++/******************************************************************************/
++
++static inline ReactorNode *
++get_node (FusionReactor *reactor,
++          FusionID       fusion_id)
++{
++     ReactorNode *node;
++
++     fusion_list_foreach (node, reactor->nodes) {
++          if (node->fusion_id == fusion_id)
++               return node;
++     }
++
++     return NULL;
++}
++
++/******************************************************************************/
++
++static void
++fusion_reactor_destruct( FusionEntry *entry,
++                         void        *ctx )
++{
++     FusionReactor *reactor = (FusionReactor*) entry;
++
++     free_all_nodes( reactor );
++}
++
++static int
++fusion_reactor_print( FusionEntry *entry,
++                      void        *ctx,
++                      char        *buf )
++{
++     int            num     = 0;
++     FusionReactor *reactor = (FusionReactor*) entry;
++     FusionLink    *node    = reactor->nodes;
++
++     fusion_list_foreach (node, reactor->nodes) {
++          num++;
++     }
++
++     return sprintf( buf, "%5dx dispatch, %d nodes%s\n", reactor->dispatch_count, num,
++                     reactor->destroyed ? "  DESTROYED" : "" );
++}
++
++
++FUSION_ENTRY_CLASS( FusionReactor, reactor, NULL,
++                    fusion_reactor_destruct, fusion_reactor_print )
++
++/******************************************************************************/
++
++int
++fusion_reactor_init (FusionDev *dev)
++{
++     fusion_entries_init( &dev->reactor, &reactor_class, dev );
++
++     create_proc_read_entry( "reactors", 0, dev->proc_dir,
++                             fusion_entries_read_proc, &dev->reactor );
++
++     return 0;
++}
++
++void
++fusion_reactor_deinit (FusionDev *dev)
++{
++     remove_proc_entry ("reactors", dev->proc_dir);
++
++     fusion_entries_deinit( &dev->reactor );
++}
++
++/******************************************************************************/
++
++int
++fusion_reactor_new (FusionDev *dev, int *ret_id)
++{
++     return fusion_entry_create( &dev->reactor, ret_id, NULL );
++}
++
++int
++fusion_reactor_attach (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int            ret;
++     ReactorNode   *node;
++     FusionReactor *reactor;
++
++     ret = fusion_reactor_lock( &dev->reactor, id, false, &reactor );
++     if (ret)
++          return ret;
++
++     if (reactor->destroyed) {
++          fusion_reactor_unlock( reactor );
++          return -EIDRM;
++     }
++
++     dev->stat.reactor_attach++;
++
++     node = get_node (reactor, fusion_id);
++     if (!node) {
++          node = kmalloc (sizeof(ReactorNode), GFP_KERNEL);
++          if (!node) {
++               fusion_reactor_unlock( reactor );
++               return -ENOMEM;
++          }
++
++          node->fusion_id = fusion_id;
++          node->count     = 1;
++
++          fusion_list_prepend (&reactor->nodes, &node->link);
++     }
++     else
++          node->count++;
++
++     fusion_reactor_unlock( reactor );
++
++     return 0;
++}
++
++int
++fusion_reactor_detach (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int            ret;
++     ReactorNode   *node;
++     FusionReactor *reactor;
++
++     ret = fusion_reactor_lock( &dev->reactor, id, true, &reactor );
++     if (ret)
++          return ret;
++
++     dev->stat.reactor_detach++;
++
++     node = get_node (reactor, fusion_id);
++     if (!node) {
++          fusion_reactor_unlock( reactor );
++          up( &dev->reactor.lock );
++          return -EIO;
++     }
++
++     if (! --node->count) {
++          fusion_list_remove (&reactor->nodes, &node->link);
++          kfree (node);
++     }
++
++     if (reactor->destroyed && !reactor->nodes)
++          fusion_entry_destroy_locked( &dev->reactor, &reactor->entry );
++     else
++          fusion_reactor_unlock( reactor );
++
++     up( &dev->reactor.lock );
++
++     return 0;
++}
++
++int
++fusion_reactor_dispatch (FusionDev *dev, int id, Fusionee *fusionee,
++                         int msg_size, const void *msg_data)
++{
++     int            ret;
++     FusionLink    *l;
++     FusionReactor *reactor;
++     FusionID       fusion_id = fusionee ? fusionee_id( fusionee ) : 0;
++
++     ret = fusion_reactor_lock( &dev->reactor, id, false, &reactor );
++     if (ret)
++          return ret;
++
++     if (reactor->destroyed) {
++          fusion_reactor_unlock( reactor );
++          return -EIDRM;
++     }
++
++     reactor->dispatch_count++;
++
++     fusion_list_foreach (l, reactor->nodes) {
++          ReactorNode *node = (ReactorNode *) l;
++
++          if (node->fusion_id == fusion_id)
++               continue;
++
++          fusionee_send_message (dev, fusionee, node->fusion_id, FMT_REACTOR,
++                                 reactor->entry.id, msg_size, msg_data);
++     }
++
++     fusion_reactor_unlock( reactor );
++
++     return 0;
++}
++
++int
++fusion_reactor_destroy (FusionDev *dev, int id)
++{
++     int            ret;
++     FusionReactor *reactor;
++
++     ret = fusion_reactor_lock( &dev->reactor, id, true, &reactor );
++     if (ret)
++          return ret;
++
++     if (reactor->destroyed) {
++          fusion_reactor_unlock( reactor );
++          up( &dev->reactor.lock );
++          return -EIDRM;
++     }
++
++     reactor->destroyed = true;
++
++     if (!reactor->nodes)
++          fusion_entry_destroy_locked( &dev->reactor, &reactor->entry );
++     else
++          fusion_reactor_unlock( reactor );
++
++     up( &dev->reactor.lock );
++
++     return 0;
++}
++
++void
++fusion_reactor_detach_all (FusionDev *dev, FusionID fusion_id)
++{
++     FusionLink *l, *n;
++
++     down (&dev->reactor.lock);
++
++     fusion_list_foreach_safe (l, n, dev->reactor.list) {
++          ReactorNode   *node;
++          FusionReactor *reactor = (FusionReactor *) l;
++
++          down (&reactor->entry.lock);
++
++          fusion_list_foreach (node, reactor->nodes) {
++               if (node->fusion_id == fusion_id) {
++                    fusion_list_remove (&reactor->nodes, &node->link);
++                    kfree (node);
++                    break;
++               }
++          }
++
++          if (reactor->destroyed && !reactor->nodes)
++               fusion_entry_destroy_locked( &dev->reactor, &reactor->entry );
++          else
++               up (&reactor->entry.lock);
++     }
++
++     up (&dev->reactor.lock);
++}
++
++int
++fusion_reactor_fork_all (FusionDev *dev, FusionID fusion_id, FusionID from_id)
++{
++     FusionLink *l;
++     int         ret = 0;
++
++     down (&dev->reactor.lock);
++
++     fusion_list_foreach (l, dev->reactor.list) {
++          FusionReactor *reactor = (FusionReactor *) l;
++
++          ret = fork_node (reactor, fusion_id, from_id);
++          if (ret)
++               break;
++     }
++
++     up (&dev->reactor.lock);
++
++     return ret;
++}
++
++/******************************************************************************/
++
++static int
++fork_node (FusionReactor *reactor, FusionID fusion_id, FusionID from_id)
++{
++     ReactorNode *node;
++
++     down (&reactor->entry.lock);
++
++     fusion_list_foreach (node, reactor->nodes) {
++          if (node->fusion_id == from_id) {
++               ReactorNode *new_node;
++
++               new_node = kmalloc (sizeof(ReactorNode), GFP_KERNEL);
++               if (!new_node) {
++                    up (&reactor->entry.lock);
++                    return -ENOMEM;
++               }
++
++               new_node->fusion_id = fusion_id;
++               new_node->count     = node->count;
++
++               fusion_list_prepend (&reactor->nodes, &new_node->link);
++
++               break;
++          }
++     }
++
++     up (&reactor->entry.lock);
++
++     return 0;
++}
++
++static void
++free_all_nodes (FusionReactor *reactor)
++
++{
++     FusionLink  *n;
++     ReactorNode *node;
++
++     fusion_list_foreach_safe (node, n, reactor->nodes) {
++          kfree (node);
++     }
++
++     reactor->nodes = NULL;
++}
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/reactor.h linux-2.6.22.1/drivers/char/fusion/reactor.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/reactor.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/reactor.h	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,59 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++ 
++#ifndef __FUSION__REACTOR_H__
++#define __FUSION__REACTOR_H__
++
++#include "fusiondev.h"
++#include "types.h"
++
++
++/* module init/cleanup */
++
++int  fusion_reactor_init   (FusionDev *dev);
++void fusion_reactor_deinit (FusionDev *dev);
++
++
++/* public API */
++
++int fusion_reactor_new      (FusionDev  *dev,
++                             int        *id);
++
++int fusion_reactor_attach   (FusionDev  *dev,
++                             int         id,
++                             FusionID    fusion_id);
++
++int fusion_reactor_detach   (FusionDev  *dev,
++                             int         id,
++                             FusionID    fusion_id);
++
++int fusion_reactor_dispatch (FusionDev  *dev,
++                             int         id,
++                             Fusionee   *fusionee,
++                             int         msg_size,
++                             const void *msg_data);
++
++int fusion_reactor_destroy  (FusionDev  *dev,
++                             int         id);
++
++
++/* internal functions */
++
++void fusion_reactor_detach_all (FusionDev *dev,
++                                FusionID   fusion_id);
++
++int  fusion_reactor_fork_all   (FusionDev *dev,
++                                FusionID   fusion_id,
++                                FusionID   from_id);
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/ref.c linux-2.6.22.1/drivers/char/fusion/ref.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/ref.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/ref.c	2007-01-06 14:09:45.000000000 +0100
+@@ -0,0 +1,680 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <linux/sched.h>
++
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++#include "list.h"
++#include "call.h"
++#include "ref.h"
++
++typedef struct __Fusion_FusionRef FusionRef;
++
++typedef struct {
++     FusionLink     link;
++     FusionID       fusion_id;
++     int            refs;
++} LocalRef;
++
++typedef struct {
++     FusionLink     link;
++     FusionRef     *ref;
++} Inheritor;
++
++struct __Fusion_FusionRef {
++     FusionEntry    entry;
++
++     int            global;
++     int            local;
++
++     int            locked;    /* non-zero fusion id of lock owner */
++
++     bool           watched;   /* true if watch has been installed */
++     int            call_id;   /* id of call registered with a watch */
++     int            call_arg;  /* optional call parameter */
++
++     FusionRef     *inherited;
++     FusionLink    *inheritors;
++
++     FusionLink    *local_refs;
++};
++
++/**********************************************************************************************************************/
++
++static int  add_local       ( FusionRef *ref, FusionID fusion_id, int add );
++static void clear_local     ( FusionDev *dev, FusionRef *ref, FusionID fusion_id );
++static int  fork_local      ( FusionDev *dev, FusionRef *ref, FusionID fusion_id, FusionID from_id );
++static void free_all_local  ( FusionRef *ref );
++
++static int  propagate_local ( FusionDev *dev, FusionRef *ref, int diff );
++
++static void notify_ref      ( FusionDev *dev, FusionRef *ref );
++
++static int  add_inheritor   ( FusionRef *ref, FusionRef *from );
++static void remove_inheritor( FusionRef *ref, FusionRef *from );
++static void drop_inheritors ( FusionDev *dev, FusionRef *ref );
++
++/**********************************************************************************************************************/
++
++static void
++fusion_ref_destruct( FusionEntry *entry,
++                     void        *ctx )
++{
++     FusionRef *ref = (FusionRef*) entry;
++     FusionDev *dev = (FusionDev*) ctx;
++
++     drop_inheritors( dev, ref );
++
++     if (ref->inherited)
++          remove_inheritor( ref, ref->inherited );
++
++     free_all_local( ref );
++}
++
++static int
++fusion_ref_print( FusionEntry *entry,
++                  void        *ctx,
++                  char        *buf )
++{
++     FusionRef *ref = (FusionRef*) entry;
++
++     if (ref->locked)
++          return sprintf( buf, "%2d %2d (locked by %d)\n", ref->global, ref->local, ref->locked );
++
++     return sprintf( buf, "%2d %2d\n", ref->global, ref->local );
++}
++
++FUSION_ENTRY_CLASS( FusionRef, ref, NULL,
++                    fusion_ref_destruct, fusion_ref_print );
++
++/**********************************************************************************************************************/
++
++int
++fusion_ref_init( FusionDev *dev )
++{
++     fusion_entries_init( &dev->ref, &ref_class, dev );
++
++     create_proc_read_entry( "refs", 0, dev->proc_dir, fusion_entries_read_proc, &dev->ref );
++
++     return 0;
++}
++
++void
++fusion_ref_deinit( FusionDev *dev )
++{
++     remove_proc_entry( "refs", dev->proc_dir );
++
++     fusion_entries_deinit( &dev->ref );
++}
++
++/**********************************************************************************************************************/
++
++int
++fusion_ref_new( FusionDev *dev, int *ret_id )
++{
++     return fusion_entry_create( &dev->ref, ret_id, NULL );
++}
++
++int
++fusion_ref_up (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int        ret;
++     FusionRef *ref;
++
++     ret = fusion_ref_lock( &dev->ref, id, true, &ref );
++     if (ret)
++          return ret;
++
++     dev->stat.ref_up++;
++
++     if (ref->locked) {
++          ret = -EAGAIN;
++          goto out;
++     }
++
++     if (fusion_id) {
++          ret = add_local (ref, fusion_id, 1);
++          if (ret)
++               goto out;
++
++          ret = propagate_local( dev, ref, 1 );
++     }
++     else
++          ref->global++;
++
++
++out:
++     fusion_ref_unlock( ref );
++     up( &dev->ref.lock );
++
++     return ret;
++}
++
++int
++fusion_ref_down (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int        ret;
++     FusionRef *ref;
++
++     ret = fusion_ref_lock( &dev->ref, id, true, &ref );
++     if (ret)
++          return ret;
++
++     dev->stat.ref_down++;
++
++     if (ref->locked) {
++          ret = -EAGAIN;
++          goto out;
++     }
++
++     if (fusion_id) {
++          ret = -EIO;
++          if (!ref->local)
++               goto out;
++
++          ret = add_local (ref, fusion_id, -1);
++          if (ret)
++               goto out;
++
++          ret = propagate_local( dev, ref, -1 );
++     }
++     else {
++          if (!ref->global) {
++               ret = -EIO;
++               goto out;
++          }
++
++          ref->global--;
++
++          if (ref->local + ref->global == 0)
++               notify_ref (dev, ref);
++     }
++
++
++out:
++     fusion_ref_unlock( ref );
++     up( &dev->ref.lock );
++
++     return ret;
++}
++
++int
++fusion_ref_zero_lock (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int        ret;
++     FusionRef *ref;
++
++     ret = fusion_ref_lock( &dev->ref, id, false, &ref );
++     if (ret)
++          return ret;
++
++     while (true) {
++          if (ref->watched) {
++               fusion_ref_unlock( ref );
++               return -EACCES;
++          }
++
++          if (ref->locked) {
++               fusion_ref_unlock( ref );
++               return ref->locked == fusion_id ? -EIO : -EAGAIN;
++          }
++
++          if (ref->global || ref->local) {
++               ret = fusion_ref_wait( ref, NULL );
++               if (ret)
++                    return ret;
++          }
++          else
++               break;
++     }
++
++     ref->locked = fusion_id;
++
++     fusion_ref_unlock( ref );
++
++     return 0;
++}
++
++int
++fusion_ref_zero_trylock (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int        ret;
++     FusionRef *ref;
++
++     ret = fusion_ref_lock( &dev->ref, id, false, &ref );
++     if (ret)
++          return ret;
++
++     if (ref->locked) {
++          fusion_ref_unlock( ref );
++          return ref->locked == fusion_id ? -EIO : -EAGAIN;
++     }
++
++     if (ref->global || ref->local)
++          ret = -ETOOMANYREFS;
++     else
++          ref->locked = fusion_id;
++
++     fusion_ref_unlock( ref );
++
++     return ret;
++}
++
++int
++fusion_ref_zero_unlock (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int        ret;
++     FusionRef *ref;
++
++     ret = fusion_ref_lock( &dev->ref, id, false, &ref );
++     if (ret)
++          return ret;
++
++     if (ref->locked != fusion_id) {
++          fusion_ref_unlock( ref );
++          return -EIO;
++     }
++
++     ref->locked = 0;
++
++     fusion_ref_unlock( ref );
++
++     return 0;
++}
++
++int
++fusion_ref_stat (FusionDev *dev, int id, int *refs)
++{
++     int        ret;
++     FusionRef *ref;
++
++     ret = fusion_ref_lock( &dev->ref, id, false, &ref );
++     if (ret)
++          return ret;
++
++     *refs = ref->global + ref->local;
++
++     fusion_ref_unlock( ref );
++
++     return 0;
++}
++
++int
++fusion_ref_watch (FusionDev      *dev,
++                  int             id,
++                  int             call_id,
++                  int             call_arg)
++{
++     int        ret;
++     FusionRef *ref;
++
++     ret = fusion_ref_lock( &dev->ref, id, false, &ref );
++     if (ret)
++          return ret;
++
++     if (ref->entry.pid != current->pid) {
++          fusion_ref_unlock( ref );
++          return -EACCES;
++     }
++
++     if (ref->global + ref->local == 0) {
++          fusion_ref_unlock( ref );
++          return -EIO;
++     }
++
++     if (ref->watched) {
++          fusion_ref_unlock( ref );
++          return -EBUSY;
++     }
++
++     ref->watched  = true;
++     ref->call_id  = call_id;
++     ref->call_arg = call_arg;
++
++     fusion_ref_notify( ref, true );
++
++     fusion_ref_unlock( ref );
++
++     return 0;
++}
++
++int
++fusion_ref_inherit (FusionDev *dev,
++                    int        id,
++                    int        from_id)
++{
++     int        ret;
++     FusionRef *ref;
++     FusionRef *from = NULL;
++
++     ret = fusion_ref_lock( &dev->ref, id, true, &ref );
++     if (ret)
++          return ret;
++
++     ret = -EBUSY;
++     if (ref->inherited)
++          goto out;
++
++     ret = -EINVAL;
++     fusion_list_foreach (from, dev->ref.list) {
++          if (from->entry.id == from_id) {
++               if (down_interruptible( &from->entry.lock )) {
++                    ret  = -EINTR;
++                    from = NULL;
++               }
++
++               break;
++          }
++     }
++     if (!from)
++          goto out;
++
++     ret = add_inheritor( ref, from );
++     if (ret)
++          goto out;
++
++     ret = propagate_local( dev, ref, from->local );
++     if (ret)
++          goto out;
++
++     ref->inherited = from;
++
++out:
++     if (from)
++          up( &from->entry.lock );
++
++     fusion_ref_unlock( ref );
++     up ( &dev->ref.lock );
++
++     return ret;
++}
++
++int
++fusion_ref_destroy (FusionDev *dev, int id)
++{
++     return fusion_entry_destroy( &dev->ref, id );
++}
++
++void
++fusion_ref_clear_all_local( FusionDev *dev, FusionID fusion_id )
++{
++     FusionRef *ref;
++
++     down( &dev->ref.lock );
++
++     fusion_list_foreach (ref, dev->ref.list)
++          clear_local( dev, ref, fusion_id );
++
++     up( &dev->ref.lock );
++}
++
++int
++fusion_ref_fork_all_local( FusionDev *dev, FusionID fusion_id, FusionID from_id )
++{
++     FusionRef *ref;
++     int        ret = 0;
++
++     down( &dev->ref.lock );
++
++     fusion_list_foreach (ref, dev->ref.list) {
++          ret = fork_local( dev, ref, fusion_id, from_id );
++          if (ret)
++               break;
++     }
++
++     up( &dev->ref.lock );
++
++     return ret;
++}
++
++/**********************************************************************************************************************/
++
++static int
++add_local (FusionRef *ref, FusionID fusion_id, int add)
++{
++     FusionLink *l;
++     LocalRef   *local;
++
++     fusion_list_foreach (l, ref->local_refs) {
++          local = (LocalRef *) l;
++
++          if (local->fusion_id == fusion_id) {
++               fusion_list_move_to_front( &ref->local_refs, l );
++
++               if (local->refs + add < 0)
++                    return -EIO;
++
++               local->refs += add;
++               return 0;
++          }
++     }
++
++     /* Can only create local node if value is positive. */
++     if (add <= 0)
++          return -EIO;
++
++     local = kmalloc (sizeof(LocalRef), GFP_KERNEL);
++     if (!local)
++          return -ENOMEM;
++
++     local->fusion_id = fusion_id;
++     local->refs      = add;
++
++     fusion_list_prepend (&ref->local_refs, &local->link);
++
++     return 0;
++}
++
++static void
++clear_local (FusionDev *dev, FusionRef *ref, FusionID fusion_id)
++{
++     FusionLink *l;
++
++     down (&ref->entry.lock);
++
++     if (ref->locked == fusion_id) {
++          ref->locked = 0;
++          wake_up_interruptible_all (&ref->entry.wait);
++     }
++
++     fusion_list_foreach (l, ref->local_refs) {
++          LocalRef *local = (LocalRef *) l;
++
++          if (local->fusion_id == fusion_id) {
++               if (local->refs)
++                    propagate_local( dev, ref, - local->refs );
++
++               fusion_list_remove( &ref->local_refs, l );
++
++               kfree (l);
++               break;
++          }
++     }
++
++     up (&ref->entry.lock);
++}
++
++static int
++fork_local (FusionDev *dev, FusionRef *ref, FusionID fusion_id, FusionID from_id)
++{
++     FusionLink *l;
++     int         ret = 0;
++
++     down (&ref->entry.lock);
++
++     fusion_list_foreach (l, ref->local_refs) {
++          LocalRef *local = (LocalRef *) l;
++
++          if (local->fusion_id == from_id) {
++               if (local->refs) {
++                    LocalRef *new_local;
++
++                    new_local = kmalloc (sizeof(LocalRef), GFP_KERNEL);
++                    if (!new_local) {
++                         ret = -ENOMEM;
++                         break;
++                    }
++
++                    new_local->fusion_id = fusion_id;
++                    new_local->refs      = local->refs;
++
++                    fusion_list_prepend( &ref->local_refs, &new_local->link );
++
++                    propagate_local( dev, ref, local->refs );
++               }
++               break;
++          }
++     }
++
++     up (&ref->entry.lock);
++
++     return ret;
++}
++
++static void
++free_all_local (FusionRef *ref)
++{
++     FusionLink *l = ref->local_refs;
++
++     while (l) {
++          FusionLink *next = l->next;
++
++          kfree (l);
++
++          l = next;
++     }
++
++     ref->local_refs = NULL;
++}
++
++static void
++notify_ref (FusionDev *dev, FusionRef *ref)
++{
++     if (ref->watched) {
++          FusionCallExecute execute;
++
++          execute.call_id  = ref->call_id;
++          execute.call_arg = ref->call_arg;
++          execute.call_ptr = NULL;
++
++          fusion_call_execute (dev, 0, &execute);
++     }
++     else
++          wake_up_interruptible_all (&ref->entry.wait);
++}
++
++static int
++propagate_local( FusionDev *dev, FusionRef *ref, int diff )
++{
++     FusionLink *l;
++
++     /* Recurse into inheritors. */
++     fusion_list_foreach (l, ref->inheritors) {
++          FusionRef *inheritor = ((Inheritor*) l)->ref;
++
++          if (down_interruptible( &inheritor->entry.lock )) {
++               printk( KERN_ERR "fusion_ref: propagate_local() interrupted!\n" );
++               //return -EINTR;
++          }
++
++          propagate_local( dev, inheritor, diff );
++
++          up( &inheritor->entry.lock );
++     }
++
++     /* Apply difference. */
++     ref->local += diff;
++
++     /* Notify zero count. */
++     if (ref->local + ref->global == 0)
++          notify_ref( dev, ref );
++
++     return 0;
++}
++
++static int
++add_inheritor(FusionRef *ref, FusionRef *from)
++{
++     Inheritor *inheritor;
++
++     inheritor = kmalloc (sizeof(Inheritor), GFP_KERNEL);
++     if (!inheritor)
++          return -ENOMEM;
++
++     inheritor->ref = ref;
++
++     fusion_list_prepend( &from->inheritors, &inheritor->link );
++
++     return 0;
++}
++
++static void
++remove_inheritor(FusionRef *ref, FusionRef *from)
++{
++     FusionLink *l;
++
++     down( &from->entry.lock );
++
++     fusion_list_foreach (l, from->inheritors) {
++          Inheritor *inheritor = (Inheritor*) l;
++
++          if (inheritor->ref == ref) {
++               fusion_list_remove( &from->inheritors, &inheritor->link );
++
++               kfree( l );
++               break;
++          }
++     }
++
++     up( &from->entry.lock );
++}
++
++static void
++drop_inheritors( FusionDev *dev, FusionRef *ref )
++{
++     FusionLink *l = ref->inheritors;
++
++     while (l) {
++          FusionLink *next      = l->next;
++          FusionRef  *inheritor = ((Inheritor*) l)->ref;
++
++          if (down_interruptible( &inheritor->entry.lock )) {
++               printk( KERN_ERR "fusion_ref: drop_inheritors() interrupted!\n" );
++               //return;
++          }
++
++          propagate_local( dev, inheritor, - ref->local );
++
++          inheritor->inherited = NULL;
++
++          up( &inheritor->entry.lock );
++
++
++          kfree (l);
++
++          l = next;
++     }
++
++     ref->inheritors = NULL;
++}
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/ref.h linux-2.6.22.1/drivers/char/fusion/ref.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/ref.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/ref.h	2006-08-14 11:16:54.000000000 +0200
+@@ -0,0 +1,79 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifndef __FUSION__REF_H__
++#define __FUSION__REF_H__
++
++#include "fusiondev.h"
++#include "types.h"
++
++
++/* module init/cleanup */
++
++int  fusion_ref_init   (FusionDev *dev);
++void fusion_ref_deinit (FusionDev *dev);
++
++
++/* public API */
++
++int fusion_ref_new          (FusionDev      *dev,
++                             int            *id);
++
++int fusion_ref_up           (FusionDev      *dev,
++                             int             id,
++                             FusionID        fusion_id);
++
++int fusion_ref_down         (FusionDev      *dev,
++                             int             id,
++                             FusionID        fusion_id);
++
++int fusion_ref_zero_lock    (FusionDev      *dev,
++                             int             id,
++                             FusionID        fusion_id);
++
++int fusion_ref_zero_trylock (FusionDev      *dev,
++                             int             id,
++                             FusionID        fusion_id);
++
++int fusion_ref_zero_unlock  (FusionDev      *dev,
++                             int             id,
++                             FusionID        fusion_id);
++
++int fusion_ref_stat         (FusionDev      *dev,
++                             int             id,
++                             int            *refs);
++
++int fusion_ref_watch        (FusionDev      *dev,
++                             int             id,
++                             int             call_id,
++                             int             call_arg);
++
++int fusion_ref_inherit      (FusionDev      *dev,
++                             int             id,
++                             int             from);
++
++int fusion_ref_destroy      (FusionDev      *dev,
++                             int             id);
++
++
++/* internal functions */
++
++void fusion_ref_clear_all_local (FusionDev *dev,
++                                 FusionID   fusion_id);
++
++int  fusion_ref_fork_all_local  (FusionDev *dev,
++                                 FusionID   fusion_id,
++                                 FusionID   from_id);
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/shmpool.c linux-2.6.22.1/drivers/char/fusion/shmpool.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/shmpool.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/shmpool.c	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,444 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <linux/sched.h>
++
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++#include "fusionee.h"
++#include "list.h"
++#include "shmpool.h"
++
++
++#define SHM_BASE    0x20010000     /* virtual base address */
++#define SHM_SIZE    0x1FFEF000     /* size of virtual address space */
++
++
++typedef struct {
++     FusionLink         link;
++     unsigned long      next_base;
++} AddrEntry;
++
++
++typedef struct {
++     FusionLink         link;
++
++     FusionID           fusion_id;
++
++     int                count;     /* number of attach calls */
++} SHMPoolNode;
++
++typedef struct {
++     FusionEntry        entry;
++
++     int                max_size;
++
++     void              *addr_base;
++     int                size;
++
++     AddrEntry         *addr_entry;
++
++     FusionLink        *nodes;
++
++     int                dispatch_count;
++} FusionSHMPool;
++
++/******************************************************************************/
++
++static SHMPoolNode *get_node      ( FusionSHMPool *shmpool,
++                                    FusionID       fusion_id );
++
++static void         remove_node   ( FusionSHMPool *shmpool,
++                                    FusionID       fusion_id );
++
++static int          fork_node     ( FusionSHMPool *shmpool,
++                                    FusionID       fusion_id,
++                                    FusionID       from_id );
++
++static void         free_all_nodes( FusionSHMPool *shmpool );
++
++/******************************************************************************/
++
++
++static DECLARE_MUTEX (addr_lock);
++static FusionLink    *addr_entries;
++static unsigned long  addr_base = SHM_BASE;
++
++/******************************************************************************/
++
++static AddrEntry *
++add_addr_entry( unsigned long next_base )
++{
++     AddrEntry *entry = kmalloc( sizeof(AddrEntry), GFP_KERNEL );
++
++     entry->next_base = next_base;
++
++     fusion_list_prepend( &addr_entries, &entry->link );
++
++     return entry;
++}
++
++/******************************************************************************/
++
++static int
++fusion_shmpool_construct( FusionEntry *entry,
++                          void        *ctx,
++                          void        *create_ctx )
++{
++     FusionSHMPool    *shmpool = (FusionSHMPool*) entry;
++     FusionSHMPoolNew *poolnew = create_ctx;
++
++     down( &addr_lock );
++
++     if (addr_base + poolnew->max_size >= SHM_BASE + SHM_SIZE) {
++          up( &addr_lock );
++          printk( KERN_WARNING "%s: virtual address space exhausted! (FIXME)\n", __FUNCTION__ );
++          return -ENOSPC;
++     }
++
++     shmpool->max_size  = poolnew->max_size;
++     shmpool->addr_base = poolnew->addr_base = (void*) addr_base;
++
++     addr_base += PAGE_ALIGN(poolnew->max_size) + PAGE_SIZE; /* fence page */
++
++     shmpool->addr_entry = add_addr_entry( addr_base );
++
++     up( &addr_lock );
++
++     return 0;
++}
++
++static void
++fusion_shmpool_destruct( FusionEntry *entry,
++                         void        *ctx )
++{
++     AddrEntry     *addr_entry;
++     FusionSHMPool *shmpool = (FusionSHMPool*) entry;
++
++     free_all_nodes( shmpool );
++
++
++     down( &addr_lock );
++
++     fusion_list_remove( &addr_entries, &shmpool->addr_entry->link );
++
++
++     /*
++      * free trailing address space
++      */
++
++     addr_base = SHM_BASE;
++
++     fusion_list_foreach (addr_entry, addr_entries) {
++          if (addr_entry->next_base > addr_base)
++               addr_base = addr_entry->next_base;
++     }
++
++     up( &addr_lock );
++}
++
++static int
++fusion_shmpool_print( FusionEntry *entry,
++                      void        *ctx,
++                      char        *buf )
++{
++     int            num     = 0;
++     FusionSHMPool *shmpool = (FusionSHMPool*) entry;
++     FusionLink    *node    = shmpool->nodes;
++
++     fusion_list_foreach (node, shmpool->nodes) {
++          num++;
++     }
++
++     return sprintf( buf, "0x%p [0x%x] - 0x%x, %dx dispatch, %d nodes\n",
++                     shmpool->addr_base, shmpool->max_size, shmpool->size,
++                     shmpool->dispatch_count, num );
++}
++
++
++FUSION_ENTRY_CLASS( FusionSHMPool, shmpool, fusion_shmpool_construct,
++                    fusion_shmpool_destruct, fusion_shmpool_print )
++
++/******************************************************************************/
++
++int
++fusion_shmpool_init (FusionDev *dev)
++{
++     fusion_entries_init( &dev->shmpool, &shmpool_class, dev );
++
++     create_proc_read_entry( "shmpools", 0, dev->proc_dir,
++                             fusion_entries_read_proc, &dev->shmpool );
++
++     return 0;
++}
++
++void
++fusion_shmpool_deinit (FusionDev *dev)
++{
++     remove_proc_entry ("shmpools", dev->proc_dir);
++
++     fusion_entries_deinit( &dev->shmpool );
++}
++
++/******************************************************************************/
++
++int
++fusion_shmpool_new (FusionDev        *dev,
++                    FusionSHMPoolNew *pool)
++{
++     if (pool->max_size <= 0)
++          return -EINVAL;
++
++     return fusion_entry_create( &dev->shmpool, &pool->pool_id, pool );
++}
++
++int
++fusion_shmpool_attach (FusionDev           *dev,
++                       FusionSHMPoolAttach *attach,
++                       FusionID             fusion_id)
++{
++     int            ret;
++     SHMPoolNode   *node;
++     FusionSHMPool *shmpool;
++
++     ret = fusion_shmpool_lock( &dev->shmpool, attach->pool_id, false, &shmpool );
++     if (ret)
++          return ret;
++
++     dev->stat.shmpool_attach++;
++
++     node = get_node (shmpool, fusion_id);
++     if (!node) {
++          node = kmalloc (sizeof(SHMPoolNode), GFP_KERNEL);
++          if (!node) {
++               fusion_shmpool_unlock( shmpool );
++               return -ENOMEM;
++          }
++
++          node->fusion_id = fusion_id;
++          node->count     = 1;
++
++          fusion_list_prepend (&shmpool->nodes, &node->link);
++     }
++     else
++          node->count++;
++
++     attach->addr_base = shmpool->addr_base;
++     attach->size      = shmpool->size;
++
++     fusion_shmpool_unlock( shmpool );
++
++     return 0;
++}
++
++int
++fusion_shmpool_detach (FusionDev *dev, int id, FusionID fusion_id)
++{
++     int            ret;
++     SHMPoolNode   *node;
++     FusionSHMPool *shmpool;
++
++     ret = fusion_shmpool_lock( &dev->shmpool, id, false, &shmpool );
++     if (ret)
++          return ret;
++
++     dev->stat.shmpool_detach++;
++
++     node = get_node (shmpool, fusion_id);
++     if (!node) {
++          fusion_shmpool_unlock( shmpool );
++          return -EIO;
++     }
++
++     if (! --node->count) {
++          fusion_list_remove (&shmpool->nodes, &node->link);
++          kfree (node);
++     }
++
++     fusion_shmpool_unlock( shmpool );
++
++     return 0;
++}
++
++int
++fusion_shmpool_dispatch( FusionDev             *dev,
++                         FusionSHMPoolDispatch *dispatch,
++                         Fusionee              *fusionee )
++{
++     int                   ret;
++     FusionLink           *l;
++     FusionSHMPool        *shmpool;
++     FusionSHMPoolMessage  message;
++     FusionID              fusion_id = fusionee_id( fusionee );
++
++     if (dispatch->size <= 0)
++          return -EINVAL;
++
++     ret = fusion_shmpool_lock( &dev->shmpool, dispatch->pool_id, false, &shmpool );
++     if (ret)
++          return ret;
++
++     message.type = FSMT_REMAP;
++     message.size = dispatch->size;
++
++     shmpool->dispatch_count++;
++
++     shmpool->size = dispatch->size;
++
++     fusion_list_foreach (l, shmpool->nodes) {
++          SHMPoolNode *node = (SHMPoolNode *) l;
++
++          if (node->fusion_id == fusion_id)
++               continue;
++
++          fusionee_send_message (dev, fusionee, node->fusion_id, FMT_SHMPOOL,
++                                 shmpool->entry.id, sizeof(message), &message);
++     }
++
++     fusion_shmpool_unlock( shmpool );
++
++     return 0;
++}
++
++int
++fusion_shmpool_destroy (FusionDev *dev, int id)
++{
++     return fusion_entry_destroy( &dev->shmpool, id );
++}
++
++void
++fusion_shmpool_detach_all (FusionDev *dev, FusionID fusion_id)
++{
++     FusionLink *l;
++
++     down (&dev->shmpool.lock);
++
++     fusion_list_foreach (l, dev->shmpool.list) {
++          FusionSHMPool *shmpool = (FusionSHMPool *) l;
++
++          remove_node (shmpool, fusion_id);
++     }
++
++     up (&dev->shmpool.lock);
++}
++
++int
++fusion_shmpool_fork_all( FusionDev *dev,
++                         FusionID   fusion_id,
++                         FusionID   from_id )
++{
++     FusionLink *l;
++     int         ret = 0;
++
++     down (&dev->shmpool.lock);
++
++     fusion_list_foreach (l, dev->shmpool.list) {
++          FusionSHMPool *shmpool = (FusionSHMPool *) l;
++
++          ret = fork_node( shmpool, fusion_id, from_id );
++          if (ret)
++               break;
++     }
++
++     up (&dev->shmpool.lock);
++
++     return ret;
++}
++
++/******************************************************************************/
++
++static SHMPoolNode *
++get_node (FusionSHMPool *shmpool,
++          FusionID       fusion_id)
++{
++     SHMPoolNode *node;
++
++     fusion_list_foreach (node, shmpool->nodes) {
++          if (node->fusion_id == fusion_id)
++               return node;
++     }
++
++     return NULL;
++}
++
++static void
++remove_node (FusionSHMPool *shmpool, FusionID fusion_id)
++{
++     SHMPoolNode *node;
++
++     down (&shmpool->entry.lock);
++
++     fusion_list_foreach (node, shmpool->nodes) {
++          if (node->fusion_id == fusion_id) {
++               fusion_list_remove (&shmpool->nodes, &node->link);
++               break;
++          }
++     }
++
++     up (&shmpool->entry.lock);
++}
++
++static int
++fork_node (FusionSHMPool *shmpool, FusionID fusion_id, FusionID from_id)
++{
++     int          ret = 0;
++     SHMPoolNode *node;
++
++     down (&shmpool->entry.lock);
++
++     fusion_list_foreach (node, shmpool->nodes) {
++          if (node->fusion_id == from_id) {
++               SHMPoolNode *new_node;
++
++               new_node = kmalloc (sizeof(SHMPoolNode), GFP_KERNEL);
++               if (!new_node) {
++                    ret = -ENOMEM;
++                    break;
++               }
++
++               new_node->fusion_id = fusion_id;
++               new_node->count     = node->count;
++
++               fusion_list_prepend (&shmpool->nodes, &new_node->link);
++
++               break;
++          }
++     }
++
++     up (&shmpool->entry.lock);
++
++     return ret;
++}
++
++static void
++free_all_nodes (FusionSHMPool *shmpool)
++
++{
++     FusionLink  *n;
++     SHMPoolNode *node;
++
++     fusion_list_foreach_safe (node, n, shmpool->nodes) {
++          kfree (node);
++     }
++
++     shmpool->nodes = NULL;
++}
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/shmpool.h linux-2.6.22.1/drivers/char/fusion/shmpool.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/shmpool.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/shmpool.h	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,59 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++ 
++#ifndef __FUSION__SHMPOOL_H__
++#define __FUSION__SHMPOOL_H__
++
++#include "fusiondev.h"
++#include "types.h"
++
++
++/* module init/cleanup */
++
++int  fusion_shmpool_init   (FusionDev *dev);
++void fusion_shmpool_deinit (FusionDev *dev);
++
++
++/* public API */
++
++int fusion_shmpool_new      (FusionDev             *dev,
++                             FusionSHMPoolNew      *pool);
++
++int fusion_shmpool_attach   (FusionDev             *dev,
++                             FusionSHMPoolAttach   *attach,
++                             FusionID               fusion_id);
++
++int fusion_shmpool_detach   (FusionDev             *dev,
++                             int                    id,
++                             FusionID               fusion_id);
++
++int fusion_shmpool_dispatch (FusionDev             *dev,
++                             FusionSHMPoolDispatch *dispatch,
++                             Fusionee              *fusionee );
++
++int fusion_shmpool_destroy  (FusionDev             *dev,
++                             int                    id);
++
++
++/* internal functions */
++
++void fusion_shmpool_detach_all (FusionDev *dev,
++                                FusionID   fusion_id);
++
++int  fusion_shmpool_fork_all   (FusionDev *dev,
++                                FusionID   fusion_id,
++                                FusionID   from_id);
++
++#endif
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/skirmish.c linux-2.6.22.1/drivers/char/fusion/skirmish.c
+--- linux-2.6.22.1-0rig/drivers/char/fusion/skirmish.c	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/skirmish.c	2007-01-06 14:09:45.000000000 +0100
+@@ -0,0 +1,397 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifdef HAVE_LINUX_CONFIG_H
++#include <linux/config.h>
++#endif
++#include <linux/types.h>
++#include <linux/kernel.h>
++#include <linux/slab.h>
++#include <linux/smp_lock.h>
++#include <linux/sched.h>
++
++#include <linux/fusion.h>
++
++#include "fusiondev.h"
++#include "fusionee.h"
++#include "list.h"
++#include "skirmish.h"
++
++
++#define MAX_PRE_ACQUISITIONS  32
++
++
++typedef struct __FUSION_FusionSkirmish FusionSkirmish;
++
++struct __FUSION_FusionSkirmish {
++     FusionEntry entry;
++
++     int         lock_fid;  /* non-zero if locked */
++     int         lock_pid;
++     int         lock_count;
++
++     int         lock_total;
++
++#ifdef FUSION_DEBUG_SKIRMISH_DEADLOCK
++     int         pre_acquis[MAX_PRE_ACQUISITIONS];
++
++     bool        outer;
++#endif
++};
++
++static int
++fusion_skirmish_print( FusionEntry *entry,
++                       void        *ctx,
++                       char        *buf )
++{
++     int             written  = 0;
++     FusionSkirmish *skirmish = (FusionSkirmish*) entry;
++
++#ifdef FUSION_DEBUG_SKIRMISH_DEADLOCK
++     int             i, n;
++
++
++     for (i=0, n=0; i<MAX_PRE_ACQUISITIONS; i++) {
++          if (skirmish->pre_acquis[i]) {
++               n++;
++          }
++     }
++
++     written += sprintf( buf + written, "[%2d]%s", n, skirmish->outer ? "." : " " );
++
++     for (i=0, n=0; i<MAX_PRE_ACQUISITIONS; i++) {
++          if (skirmish->pre_acquis[i]) {
++               written += sprintf( buf + written, "%s%02x", n ? "," : "", skirmish->pre_acquis[i] - 1 );
++
++               n++;
++          }
++     }
++#endif
++
++     if (skirmish->lock_fid) {
++          if (skirmish->entry.waiters)
++               return sprintf( buf + written, " - %dx [0x%08x] (%d)  %d WAITING\n",
++                               skirmish->lock_count, skirmish->lock_fid,
++                               skirmish->lock_pid, skirmish->entry.waiters ) + written;
++          else
++               return sprintf( buf + written, " - %dx [0x%08x] (%d)\n",
++                               skirmish->lock_count, skirmish->lock_fid,
++                               skirmish->lock_pid ) + written;
++     }
++
++     return sprintf( buf + written, "\n" ) + written;
++}
++
++FUSION_ENTRY_CLASS( FusionSkirmish, skirmish, NULL, NULL, fusion_skirmish_print )
++
++/******************************************************************************/
++
++int
++fusion_skirmish_init (FusionDev *dev)
++{
++     fusion_entries_init( &dev->skirmish, &skirmish_class, dev );
++
++     create_proc_read_entry( "skirmishs", 0, dev->proc_dir,
++                             fusion_entries_read_proc, &dev->skirmish );
++
++     return 0;
++}
++
++void
++fusion_skirmish_deinit (FusionDev *dev)
++{
++     remove_proc_entry ("skirmishs", dev->proc_dir);
++
++     fusion_entries_deinit( &dev->skirmish );
++}
++
++/******************************************************************************/
++
++int
++fusion_skirmish_new (FusionDev *dev, int *ret_id)
++{
++     return fusion_entry_create( &dev->skirmish, ret_id, NULL );
++}
++
++int
++fusion_skirmish_prevail (FusionDev *dev, int id, int fusion_id)
++{
++     int             ret;
++     FusionSkirmish *skirmish;
++#ifdef FUSION_DEBUG_SKIRMISH_DEADLOCK
++     FusionSkirmish *s;
++     int             i;
++     bool            outer = true;
++#endif
++
++     dev->stat.skirmish_prevail_swoop++;
++
++     ret = fusion_skirmish_lock( &dev->skirmish, id, true, &skirmish );
++     if (ret)
++          return ret;
++
++     if (skirmish->lock_pid == current->pid) {
++          skirmish->lock_count++;
++          skirmish->lock_total++;
++          fusion_skirmish_unlock( skirmish );
++          up( &dev->skirmish.lock );
++          return 0;
++     }
++
++#ifdef FUSION_DEBUG_SKIRMISH_DEADLOCK
++     /* look in currently acquired skirmishs for this one being
++        a pre-acquisition, indicating a potential deadlock */
++     fusion_list_foreach (s, dev->skirmish.list) {
++          if (s->lock_pid != current->pid)
++               continue;
++
++          outer = false;
++
++          for (i=0; i<MAX_PRE_ACQUISITIONS; i++) {
++               if (s->pre_acquis[i] == id + 1) {
++                    printk( KERN_DEBUG "FusionSkirmish: Potential deadlock "
++                            "between locked 0x%x and to be locked 0x%x in world %d!\n",
++                            s->entry.id, skirmish->entry.id, dev->index );
++               }
++          }
++     }
++
++     if (outer)
++          skirmish->outer = true;
++
++     /* remember all previously acquired skirmishs being pre-acquisitions for
++        this one, to detect potential deadlocks due to a lock order twist */
++     fusion_list_foreach (s, dev->skirmish.list) {
++          int free = -1;
++
++          if (s->lock_pid != current->pid)
++               continue;
++
++          for (i=0; i<MAX_PRE_ACQUISITIONS; i++) {
++               if (skirmish->pre_acquis[i]) {
++                    if (skirmish->pre_acquis[i] == s->entry.id + 1) {
++                         break;
++                    }
++               }
++               else
++                    free = i;
++          }
++
++          /* not found? */
++          if (i == MAX_PRE_ACQUISITIONS) {
++               if (free != -1) {
++                    skirmish->pre_acquis[free] = s->entry.id + 1;
++               }
++               else {
++                    printk( KERN_DEBUG "FusionSkirmish: Too many pre-acquisitions to remember.\n" );
++
++                    printk( KERN_DEBUG " [ '%s' ] <- ", skirmish->entry.name );
++
++                    for (i=0; i<MAX_PRE_ACQUISITIONS; i++)
++                         printk( "0x%03x ", skirmish->pre_acquis[i] - 1 );
++
++                    printk( "\n" );
++               }
++          }
++     }
++#endif
++
++     up( &dev->skirmish.lock );
++
++     while (skirmish->lock_pid) {
++          ret = fusion_skirmish_wait( skirmish, NULL );
++          if (ret)
++               return ret;
++     }
++
++     skirmish->lock_fid   = fusion_id;
++     skirmish->lock_pid   = current->pid;
++     skirmish->lock_count = 1;
++
++     skirmish->lock_total++;
++
++     fusion_skirmish_unlock( skirmish );
++
++     return 0;
++}
++
++int
++fusion_skirmish_swoop (FusionDev *dev, int id, int fusion_id)
++{
++     int             ret;
++     FusionSkirmish *skirmish;
++
++     ret = fusion_skirmish_lock( &dev->skirmish, id, false, &skirmish );
++     if (ret)
++          return ret;
++
++     dev->stat.skirmish_prevail_swoop++;
++
++     if (skirmish->lock_fid) {
++          if (skirmish->lock_pid == current->pid) {
++               skirmish->lock_count++;
++               skirmish->lock_total++;
++               fusion_skirmish_unlock( skirmish );
++               return 0;
++          }
++
++          fusion_skirmish_unlock( skirmish );
++
++          return -EAGAIN;
++     }
++
++     skirmish->lock_fid   = fusion_id;
++     skirmish->lock_pid   = current->pid;
++     skirmish->lock_count = 1;
++
++     skirmish->lock_total++;
++
++     fusion_skirmish_unlock( skirmish );
++
++     return 0;
++}
++
++int
++fusion_skirmish_lock_count (FusionDev *dev, int id, int fusion_id, int *ret_lock_count)
++{
++     int             ret;
++     FusionSkirmish *skirmish;
++
++     ret = fusion_skirmish_lock( &dev->skirmish, id, false, &skirmish );
++     if (ret)
++          return ret;
++
++     if (skirmish->lock_fid == fusion_id &&
++         skirmish->lock_pid == current->pid)
++     {
++          *ret_lock_count = skirmish->lock_count;
++     }
++     else
++     {
++          *ret_lock_count = 0; 
++     }
++
++     fusion_skirmish_unlock( skirmish );
++
++     return 0;
++}
++
++int
++fusion_skirmish_dismiss (FusionDev *dev, int id, int fusion_id)
++{
++     int             ret;
++     FusionSkirmish *skirmish;
++
++     ret = fusion_skirmish_lock( &dev->skirmish, id, false, &skirmish );
++     if (ret)
++          return ret;
++
++     dev->stat.skirmish_dismiss++;
++
++     if (skirmish->lock_pid != current->pid) {
++          fusion_skirmish_unlock( skirmish );
++          return -EIO;
++     }
++
++     if (--skirmish->lock_count == 0) {
++          skirmish->lock_fid = 0;
++          skirmish->lock_pid = 0;
++
++          fusion_skirmish_notify( skirmish, true );
++     }
++
++     fusion_skirmish_unlock( skirmish );
++
++     return 0;
++}
++
++int
++fusion_skirmish_destroy (FusionDev *dev, int id)
++{
++#ifdef FUSION_DEBUG_SKIRMISH_DEADLOCK
++     int             i;
++     FusionSkirmish *s;
++
++     /* Lock entries. */
++     if (down_interruptible( &dev->skirmish.lock ))
++          return -EINTR;
++
++     /* remove from all pre-acquisition lists */
++     fusion_list_foreach (s, dev->skirmish.list) {
++          for (i=0; i<MAX_PRE_ACQUISITIONS; i++) {
++               if (s->pre_acquis[i] == id + 1)
++                    s->pre_acquis[i] = 0;
++          }
++     }
++
++     up( &dev->skirmish.lock );
++
++     /* FIXME: gap? */
++#endif
++
++     return fusion_entry_destroy( &dev->skirmish, id );
++}
++
++void
++fusion_skirmish_dismiss_all (FusionDev *dev, int fusion_id)
++{
++     FusionLink *l;
++
++     down (&dev->skirmish.lock);
++
++     fusion_list_foreach (l, dev->skirmish.list) {
++          FusionSkirmish *skirmish = (FusionSkirmish *) l;
++
++          down (&skirmish->entry.lock);
++
++          if (skirmish->lock_fid == fusion_id) {
++               skirmish->lock_fid   = 0;
++               skirmish->lock_pid   = 0;
++               skirmish->lock_count = 0;
++
++               wake_up_interruptible_all (&skirmish->entry.wait);
++          }
++
++          up (&skirmish->entry.lock);
++     }
++
++     up (&dev->skirmish.lock);
++}
++
++void
++fusion_skirmish_dismiss_all_from_pid (FusionDev *dev, int pid)
++{
++     FusionLink *l;
++
++     down (&dev->skirmish.lock);
++
++     fusion_list_foreach (l, dev->skirmish.list) {
++          FusionSkirmish *skirmish = (FusionSkirmish *) l;
++
++          down (&skirmish->entry.lock);
++
++          if (skirmish->lock_pid == pid) {
++               skirmish->lock_fid   = 0;
++               skirmish->lock_pid   = 0;
++               skirmish->lock_count = 0;
++
++               wake_up_interruptible_all (&skirmish->entry.wait);
++          }
++
++          up (&skirmish->entry.lock);
++     }
++
++     up (&dev->skirmish.lock);
++}
++
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/skirmish.h linux-2.6.22.1/drivers/char/fusion/skirmish.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/skirmish.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/skirmish.h	2006-06-30 10:54:55.000000000 +0200
+@@ -0,0 +1,62 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002-2003  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++
++#ifndef __FUSION__SKIRMISH_H__
++#define __FUSION__SKIRMISH_H__
++
++#include "fusiondev.h"
++#include "types.h"
++
++
++/* module init/cleanup */
++
++int  fusion_skirmish_init   (FusionDev *dev);
++void fusion_skirmish_deinit (FusionDev *dev);
++
++
++/* public API */
++
++int fusion_skirmish_new     (FusionDev *dev,
++                             int       *id);
++
++int fusion_skirmish_prevail (FusionDev *dev,
++                             int        id,
++                             int        fusion_id);
++
++int fusion_skirmish_swoop   (FusionDev *dev,
++                             int        id,
++                             int        fusion_id);
++
++int fusion_skirmish_lock_count (FusionDev *dev,
++                                int     id,
++                                int     fusion_id,
++                                int    *ret_lock_count);
++
++int fusion_skirmish_dismiss (FusionDev *dev,
++                             int        id,
++                             int        fusion_id);
++
++int fusion_skirmish_destroy (FusionDev *dev,
++                             int        id);
++
++
++/* internal functions */
++
++void fusion_skirmish_dismiss_all (FusionDev *dev,
++                                  int        fusion_id);
++
++void fusion_skirmish_dismiss_all_from_pid (FusionDev *dev,
++                                           int        pid);
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/fusion/types.h linux-2.6.22.1/drivers/char/fusion/types.h
+--- linux-2.6.22.1-0rig/drivers/char/fusion/types.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/drivers/char/fusion/types.h	2007-01-20 05:03:01.000000000 +0100
+@@ -0,0 +1,29 @@
++/*
++ *	Fusion Kernel Module
++ *
++ *	(c) Copyright 2002  Convergence GmbH
++ *
++ *      Written by Denis Oliver Kropp <dok@directfb.org>
++ *
++ *
++ *	This program is free software; you can redistribute it and/or
++ *	modify it under the terms of the GNU General Public License
++ *	as published by the Free Software Foundation; either version
++ *	2 of the License, or (at your option) any later version.
++ */
++ 
++#ifndef __FUSION__TYPES_H__
++#define __FUSION__TYPES_H__
++
++#include <linux/version.h>
++
++#if LINUX_VERSION_CODE <= KERNEL_VERSION(2, 6, 18)
++typedef enum {
++  false = 0,
++  true  = !false
++} bool;
++#endif
++
++typedef struct __Fusion_Fusionee Fusionee;
++
++#endif
+diff -urN linux-2.6.22.1-0rig/drivers/char/Kconfig linux-2.6.22.1/drivers/char/Kconfig
+--- linux-2.6.22.1-0rig/drivers/char/Kconfig	2007-07-10 20:56:30.000000000 +0200
++++ linux-2.6.22.1/drivers/char/Kconfig	2007-08-12 19:30:42.000000000 +0200
+@@ -484,6 +484,8 @@
+ 	  All modern Linux systems use the Unix98 ptys.  Say Y unless
+ 	  you're on an embedded system and want to conserve memory.
+ 
++source "drivers/char/fusion/Kconfig"
++
+ config LEGACY_PTYS
+ 	bool "Legacy (BSD) PTY support"
+ 	default y
+diff -urN linux-2.6.22.1-0rig/drivers/char/Makefile linux-2.6.22.1/drivers/char/Makefile
+--- linux-2.6.22.1-0rig/drivers/char/Makefile	2007-07-10 20:56:30.000000000 +0200
++++ linux-2.6.22.1/drivers/char/Makefile	2007-08-12 19:45:20.000000000 +0200
+@@ -100,6 +100,7 @@
+ obj-$(CONFIG_DRM)		+= drm/
+ obj-$(CONFIG_PCMCIA)		+= pcmcia/
+ obj-$(CONFIG_IPMI_HANDLER)	+= ipmi/
++obj-$(CONFIG_FUSION_DEVICE)	+= fusion/
+ 
+ obj-$(CONFIG_HANGCHECK_TIMER)	+= hangcheck-timer.o
+ obj-$(CONFIG_TCG_TPM)		+= tpm/
+diff -urN linux-2.6.22.1-0rig/include/linux/fusion.h linux-2.6.22.1/include/linux/fusion.h
+--- linux-2.6.22.1-0rig/include/linux/fusion.h	1970-01-01 01:00:00.000000000 +0100
++++ linux-2.6.22.1/include/linux/fusion.h	2007-01-29 01:43:50.000000000 +0100
+@@ -0,0 +1,277 @@
++#ifndef __LINUX__FUSION_H__
++#define __LINUX__FUSION_H__
++
++#include <asm/ioctl.h>
++
++/*
++ * Fusion Kernel Device API Version
++ */
++#define FUSION_API_MAJOR      3         /* Increased if backward compatibility is dropped. */
++#define FUSION_API_MINOR      2         /* Increased if new features are added. */
++
++/*
++ * The Fusion ID is a unique identifier for one process consisting of threads.
++ */
++typedef unsigned long FusionID;
++
++#define FUSION_ID_MASTER      1         /* This is the fusion id of the master (first process). */
++
++/*
++ * Entering a world
++ */
++typedef struct {
++     struct {
++          int            major;         /* Must be set to FUSION_API_MAJOR before entering. */
++          int            minor;         /* Must be set to FUSION_API_MINOR before entering. */
++     } api;
++
++     FusionID            fusion_id;     /* Returns the fusion id of the entering process. */
++} FusionEnter;
++
++/*
++ * Forking in world
++ */
++typedef struct {
++     FusionID            fusion_id;     /* Returns the fusion id of the new (forked) fusionee. */
++} FusionFork;
++
++/*
++ * Sending a message
++ */
++typedef struct {
++     FusionID            fusion_id;     /* recipient */
++
++     int                 msg_id;        /* optional message identifier */
++     int                 msg_size;      /* message size, must be greater than zero */
++     const void         *msg_data;      /* message data, must not be NULL */
++} FusionSendMessage;
++
++/*
++ * Receiving a message
++ */
++typedef enum {
++     FMT_SEND,                          /* msg_id is an optional custom id */
++     FMT_CALL,                          /* msg_id is the call id */
++     FMT_REACTOR,                       /* msg_id is the reactor id */
++     FMT_SHMPOOL                        /* msg_id is the pool id */
++} FusionMessageType;
++
++typedef struct {
++     FusionMessageType   msg_type;      /* type (origin) of message */
++
++     int                 msg_id;        /* message id (custom id or call/reactor/pool id) */
++     int                 msg_size;      /* size of the following message data */
++
++     /* message data follows */
++} FusionReadMessage;
++
++/*
++ * Dispatching a message via a reactor
++ */
++typedef struct {
++     int                 reactor_id;
++     int                 self;
++
++     int                 msg_size;      /* message size, must be greater than zero */
++     const void         *msg_data;      /* message data, must not be NULL */
++} FusionReactorDispatch;
++
++/*
++ * Calling (synchronous RPC)
++ */
++typedef struct {
++     int                 call_id;       /* new call id returned */
++
++     void               *handler;       /* function pointer of handler to install */
++     void               *ctx;           /* optional handler context */
++} FusionCallNew;
++
++typedef enum {
++     FCEF_NONE   = 0x00000000,
++     FCEF_ONEWAY = 0x00000001,
++     FCEF_ALL    = 0x00000001
++} FusionCallExecFlags;
++
++typedef struct {
++     int                 ret_val;       /* return value of the call */
++
++     int                 call_id;       /* id of the requested call, each call has a fixed owner */
++
++     int                 call_arg;      /* optional int argument */
++     void               *call_ptr;      /* optional pointer argument (shared memory) */
++
++     FusionCallExecFlags flags;         /* execution flags */
++} FusionCallExecute;
++
++typedef struct {
++     int                 call_id;       /* id of currently executing call */
++
++     int                 val;           /* value to return */
++} FusionCallReturn;
++
++typedef struct {
++     void               *handler;       /* function pointer of handler to call */
++     void               *ctx;           /* optional handler context */
++
++     int                 caller;        /* fusion id of the caller or zero if called from Fusion */
++     int                 call_arg;      /* optional call parameter */
++     void               *call_ptr;      /* optional call parameter */
++} FusionCallMessage;
++
++/*
++ * Watching a reference
++ *
++ * This information is needed to have a specific call being executed if the
++ * reference count reaches zero. Currently one watch per reference is allowed.
++ *
++ * The call is made by Fusion and therefor has a caller id of zero.
++ *
++ */
++typedef struct {
++     int                 id;            /* id of the reference to watch */
++
++     int                 call_id;       /* id of the call to execute */
++     int                 call_arg;      /* optional call parameter, e.g. the id of a user
++                                           space resource associated with that reference */
++} FusionRefWatch;
++
++/*
++ * Inheriting local count from other reference
++ */
++typedef struct {
++     int                 id;            /* own reference id */
++     int                 from;          /* id of the reference to inherit from */
++} FusionRefInherit;
++
++/*
++ * Killing other fusionees (experimental)
++ */
++typedef struct {
++     FusionID            fusion_id;     /* fusionee to kill, zero means all but ourself */
++     int                 signal;        /* signal to be delivered, e.g. SIGTERM */
++     int                 timeout_ms;    /* -1 means no timeout, 0 means infinite, otherwise the
++                                           max. time to wait until the fusionee(s) terminated */
++} FusionKill;
++
++
++/*
++ * Shared memory pools
++ */
++typedef struct {
++     int                 max_size;      /* Maximum size that this pool will be allowed to grow to. */
++
++     int                 pool_id;       /* Returns the new pool id. */
++     void               *addr_base;     /* Returns the base of the reserved virtual memory address space. */
++} FusionSHMPoolNew;
++
++typedef struct {
++     int                 pool_id;       /* The id of the pool to attach to. */
++
++     void               *addr_base;     /* Returns the base of the reserved virtual memory address space. */
++     int                 size;          /* Returns the current size of the pool. */
++} FusionSHMPoolAttach;
++
++typedef struct {
++     int                 pool_id;       /* The id of the pool to notify. */
++
++     int                 size;          /* New size of the pool. */
++} FusionSHMPoolDispatch;
++
++typedef enum {
++     FSMT_REMAP,                        /* Remap the pool due to a change of its size. */
++     FSMT_UNMAP                         /* Unmap the pool due to its destruction. */
++} FusionSHMPoolMessageType;
++
++typedef struct {
++     FusionSHMPoolMessageType type;     /* Type of the message. */
++
++     int                      size;     /* New size of the pool, if type is FSMT_REMAP. */
++} FusionSHMPoolMessage;
++
++
++/*
++ * Fusion types
++ */
++typedef enum {
++     FT_LOUNGE,
++     FT_MESSAGING,
++     FT_CALL,
++     FT_REF,
++     FT_SKIRMISH,
++     FT_PROPERTY,
++     FT_REACTOR,
++     FT_SHMPOOL
++} FusionType;
++
++
++/*
++ * Set attributes like 'name' for an entry of the specified type.
++ */
++#define FUSION_ENTRY_INFO_NAME_LENGTH   24
++
++typedef struct {
++     FusionType          type;
++     int                 id;
++
++     char                name[FUSION_ENTRY_INFO_NAME_LENGTH];
++} FusionEntryInfo;
++
++
++
++#define FUSION_ENTER               _IOR(FT_LOUNGE,    0x00, FusionEnter)
++#define FUSION_UNBLOCK             _IO (FT_LOUNGE,    0x01)
++#define FUSION_KILL                _IOW(FT_LOUNGE,    0x02, FusionKill)
++
++#define FUSION_ENTRY_SET_INFO      _IOW(FT_LOUNGE,    0x03, FusionEntryInfo)
++#define FUSION_ENTRY_GET_INFO      _IOW(FT_LOUNGE,    0x04, FusionEntryInfo)
++
++#define FUSION_FORK                _IOW(FT_LOUNGE,    0x05, FusionFork)
++
++#define FUSION_SEND_MESSAGE        _IOW(FT_MESSAGING, 0x00, FusionSendMessage)
++
++#define FUSION_CALL_NEW            _IOW(FT_CALL,      0x00, FusionCallNew)
++#define FUSION_CALL_EXECUTE        _IOW(FT_CALL,      0x01, FusionCallExecute)
++#define FUSION_CALL_RETURN         _IOW(FT_CALL,      0x02, FusionCallReturn)
++#define FUSION_CALL_DESTROY        _IOW(FT_CALL,      0x03, int)
++
++#define FUSION_REF_NEW             _IOW(FT_REF,       0x00, int)
++#define FUSION_REF_UP              _IOW(FT_REF,       0x01, int)
++#define FUSION_REF_UP_GLOBAL       _IOW(FT_REF,       0x02, int)
++#define FUSION_REF_DOWN            _IOW(FT_REF,       0x03, int)
++#define FUSION_REF_DOWN_GLOBAL     _IOW(FT_REF,       0x04, int)
++#define FUSION_REF_ZERO_LOCK       _IOW(FT_REF,       0x05, int)
++#define FUSION_REF_ZERO_TRYLOCK    _IOW(FT_REF,       0x06, int)
++#define FUSION_REF_UNLOCK          _IOW(FT_REF,       0x07, int)
++#define FUSION_REF_STAT            _IOW(FT_REF,       0x08, int)
++#define FUSION_REF_WATCH           _IOW(FT_REF,       0x09, FusionRefWatch)
++#define FUSION_REF_INHERIT         _IOW(FT_REF,       0x0A, FusionRefInherit)
++#define FUSION_REF_DESTROY         _IOW(FT_REF,       0x0B, int)
++
++#define FUSION_SKIRMISH_NEW        _IOW(FT_SKIRMISH,  0x00, int)
++#define FUSION_SKIRMISH_PREVAIL    _IOW(FT_SKIRMISH,  0x01, int)
++#define FUSION_SKIRMISH_SWOOP      _IOW(FT_SKIRMISH,  0x02, int)
++#define FUSION_SKIRMISH_DISMISS    _IOW(FT_SKIRMISH,  0x03, int)
++#define FUSION_SKIRMISH_DESTROY    _IOW(FT_SKIRMISH,  0x04, int)
++#define FUSION_SKIRMISH_LOCK_COUNT _IOW(FT_SKIRMISH,  0x05, int)
++
++#define FUSION_PROPERTY_NEW        _IOW(FT_PROPERTY,  0x00, int)
++#define FUSION_PROPERTY_LEASE      _IOW(FT_PROPERTY,  0x01, int)
++#define FUSION_PROPERTY_PURCHASE   _IOW(FT_PROPERTY,  0x02, int)
++#define FUSION_PROPERTY_CEDE       _IOW(FT_PROPERTY,  0x03, int)
++#define FUSION_PROPERTY_HOLDUP     _IOW(FT_PROPERTY,  0x04, int)
++#define FUSION_PROPERTY_DESTROY    _IOW(FT_PROPERTY,  0x05, int)
++
++#define FUSION_REACTOR_NEW         _IOW(FT_REACTOR,   0x00, int)
++#define FUSION_REACTOR_ATTACH      _IOW(FT_REACTOR,   0x01, int)
++#define FUSION_REACTOR_DETACH      _IOW(FT_REACTOR,   0x02, int)
++#define FUSION_REACTOR_DISPATCH    _IOW(FT_REACTOR,   0x03, FusionReactorDispatch)
++#define FUSION_REACTOR_DESTROY     _IOW(FT_REACTOR,   0x04, int)
++
++#define FUSION_SHMPOOL_NEW         _IOW(FT_SHMPOOL,   0x00, FusionSHMPoolNew)
++#define FUSION_SHMPOOL_ATTACH      _IOW(FT_SHMPOOL,   0x01, FusionSHMPoolAttach)
++#define FUSION_SHMPOOL_DETACH      _IOW(FT_SHMPOOL,   0x02, int)
++#define FUSION_SHMPOOL_DISPATCH    _IOW(FT_SHMPOOL,   0x03, FusionSHMPoolDispatch)
++#define FUSION_SHMPOOL_DESTROY     _IOW(FT_SHMPOOL,   0x04, int)
++
++#endif
++
