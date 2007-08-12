@@ -64,7 +64,7 @@ grep-target_binary: $(GNUGREP_DIR)/$(GNUGREP_BINARY)
 	    cp -a $(GNUGREP_DIR)/src/grep $(GNUGREP_DIR)/src/egrep \
 		$(GNUGREP_DIR)/src/fgrep $(TARGET_DIR)/bin/; fi
 
-grep: uclibc grep-target_binary
+grep: uclibc gettext libintl grep-target_binary
 
 grep-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GNUGREP_DIR) uninstall
