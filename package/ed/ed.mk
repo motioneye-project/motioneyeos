@@ -29,7 +29,6 @@ $(ED_DIR)/.configured: $(ED_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
-		$(DISABLE_NLS) \
 	);
 	touch $@
 
