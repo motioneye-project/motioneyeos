@@ -43,20 +43,21 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-gfxdrivers=cle266,unichrome \
+		--enable-shared \
 		--enable-jpeg \
 		--enable-png \
 		--enable-linux-input \
 		--enable-zlib \
 		--enable-freetype \
-		--enable-sysfs \
-		--disable-sdl \
+		--disable-sysfs \
+		--enable-sdl \
 		--disable-video4linux \
 		--disable-video4linux2 \
 		--disable-fusion );
 	touch $(DIRECTFB_DIR)/.configured
 
 $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured
-	$(MAKE) -C $(DIRECTFB_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(DIRECTFB_DIR)
 	touch $(DIRECTFB_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libdirectfb.so: $(DIRECTFB_DIR)/.compiled
