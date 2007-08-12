@@ -44,6 +44,8 @@ $(LZMA_HOST_DIR)/src/lzma/lzma: $(LZMA_HOST_DIR)/.configured
 
 $(STAGING_DIR)/bin/lzma: $(LZMA_HOST_DIR)/src/lzma/lzma
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LZMA_HOST_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
+		$(STAGING_DIR)/lib/liblzmadec.la
 
 lzma-host: $(STAGING_DIR)/bin/lzma
 lzma-host-clean:
