@@ -10,7 +10,7 @@ config BR2_PACKAGE_GETTEXT
 
 config BR2_PACKAGE_GETTEXT_STATIC
 	bool "Use libgettext.a instead of libgettext.so.*"
-	default y
+	default n
 	depends on BR2_PACKAGE_GETTEXT
 	depends on BR2_arm
 	help
