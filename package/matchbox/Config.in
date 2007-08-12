@@ -1,10 +1,10 @@
 config BR2_PACKAGE_MATCHBOX
 	bool "MatchBox Window Manager"
 	default n
-	select BR2_PACKAGE_X11SERVER
+	select BR2_PACKAGE_XSERVER_XORG_SERVER
 	select BR2_PACKAGE_FONTCONFIG
-	select BR2_PACKAGE_X11R7_LIBXDAMAGE
-	select BR2_PACKAGE_X11R7_LIBXCURSOR
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
 	help
 
 	  http://projects.o-hand.com/matchbox
@@ -12,7 +12,7 @@ config BR2_PACKAGE_MATCHBOX
 config BR2_PACKAGE_MATCHBOX_SNOTIFY
 	bool "Enable Matchbox Startup Notification"
 	depends BR2_PACKAGE_MATCHBOX
-	select BR2_PACKAGE_X11R7_LIBXSM
+	select BR2_PACKAGE_XAPP_XSM
 	default n
 	help
 
@@ -37,7 +37,7 @@ config BR2_PACKAGE_MATCHBOX_DESKTOP
 config BR2_PACKAGE_MATCHBOX_KEYBOARD
 	bool "Metchbox Virtual Keyboard"
 	depends BR2_PACKAGE_MATCHBOX
-	select BR2_PACKAGE_X11R7_LIBXTST
+	select BR2_PACKAGE_XLIB_LIBXTST
 	default n
 	help
 
