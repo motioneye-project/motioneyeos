@@ -73,6 +73,18 @@ $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured
 
 $(STAGING_DIR)/usr/lib/libdirectfb.so: $(DIRECTFB_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(DIRECTFB_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
+		$(STAGING_DIR)/usr/lib/libdirectfb.la
+	$(SED) "s,/lib/libfusion.la,$(STAGING_DIR)/usr/lib/libfusion.la,g" \
+		$(STAGING_DIR)/usr/lib/libdirectfb.la
+	$(SED) "s,/lib/libdirect.la,$(STAGING_DIR)/usr/lib/libdirect.la,g" \
+		$(STAGING_DIR)/usr/lib/libdirectfb.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
+		$(STAGING_DIR)/usr/lib/libdirect.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
+		$(STAGING_DIR)/usr/lib/libfusion.la
+	$(SED) "s,/lib/libdirect.la,$(STAGING_DIR)/usr/lib/libdirect.la,g" \
+		$(STAGING_DIR)/usr/lib/libfusion.la
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libdirectfb.so: $(STAGING_DIR)/usr/lib/libdirectfb.so
