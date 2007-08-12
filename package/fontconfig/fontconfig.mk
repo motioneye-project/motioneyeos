@@ -53,6 +53,9 @@ $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-freetype-config="$(STAGING_DIR)/usr/bin/freetype-config" \
+		--with-expat="$(STAGING_DIR)/usr/lib" \
+		--with-expat-lib=$(STAGING_DIR)/usr/lib \
+		--with-expat-includes=$(STAGING_DIR)/usr/include \
 		--disable-docs \
 	)
 	touch $@
