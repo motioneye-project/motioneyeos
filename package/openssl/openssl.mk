@@ -44,9 +44,11 @@ $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
 	CFLAGS="-DOPENSSL_NO_KRB5 -DOPENSSL_NO_IDEA -DOPENSSL_NO_MDC2 -DOPENSSL_NO_RC5 $(TARGET_CFLAGS)" \
 	PATH=$(TARGET_PATH) \
 	./Configure linux-$(OPENSSL_TARGET_ARCH) --prefix=/ \
-		--openssldir=/usr/lib/ssl -L$(STAGING_DIR)/lib -ldl \
+		--openssldir=/lib/ssl -L$(STAGING_DIR)/lib -ldl \
 		-I$(STAGING_DIR)/usr/include $(OPENSSL_OPTS) threads \
 		shared no-idea no-mdc2 no-rc5)
+
+# --openssldir=/usr/lib/ssl results in files in /usr/usr/lib...
 
 $(OPENSSL_DIR)/apps/openssl: $(OPENSSL_DIR)/Makefile
 	$(MAKE1) CC=$(TARGET_CC) -C $(OPENSSL_DIR) all build-shared
