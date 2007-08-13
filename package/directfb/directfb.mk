@@ -13,8 +13,10 @@ DIRECTFB_DIR:=$(BUILD_DIR)/DirectFB-$(DIRECTFB_VERSION)
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_MULTI),y)
 DIRECTFB_MULTI:=--enable-multi
+DIRECTFB_FUSION:=linux-fusion
 else
 DIRECTFB_MULTI:=
+DIRECTFB_FUSION:=
 endif
 
 $(DL_DIR)/$(DIRECTFB_SOURCE):
@@ -95,7 +97,8 @@ $(TARGET_DIR)/usr/lib/libdirectfb.so: $(STAGING_DIR)/usr/lib/libdirectfb.so
 		$(TARGET_DIR)/usr/lib/libdirect.so \
 		$(TARGET_DIR)/usr/lib/libfusion.so
 
-directfb: uclibc jpeg libpng freetype libsysfs tslib $(TARGET_DIR)/usr/lib/libdirectfb.so
+directfb: uclibc jpeg libpng freetype libsysfs tslib $(DIRECTFB_FUSION) \
+		$(TARGET_DIR)/usr/lib/libdirectfb.so
 
 directfb-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(DIRECTFB_DIR) uninstall
