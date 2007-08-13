@@ -1,8 +1,8 @@
 config BR2_PACKAGE_TINYX
 	bool "tinyx"
 	default y if BR2_PACKAGE_XSERVER_tinyx
-	depends on BR2_USE_WCHAR
-	depends on BR2_ENABLE_LOCALE
+	select BR2_USE_WCHAR
+	select BR2_ENABLE_LOCALE
 	help
 	  A tiny X server.  Also known as 'Xfbdev' and 'kdrive'.
 
