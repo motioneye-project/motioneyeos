@@ -1,0 +1,6 @@
+PROJECT:=$(strip $(subst ",,$(BR2_PROJECT)))
+#"))
+TARGET_HOSTNAME:=$(strip $(subst ",,$(BR2_HOSTNAME)))
+#"))
+BANNER:=$(strip $(subst ",,$(BR2_BANNER)))
+#"))

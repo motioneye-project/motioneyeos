@@ -162,14 +162,7 @@ BASE_TARGETS:=uclibc
 endif
 TARGETS:=
 
-
-PROJECT:=$(strip $(subst ",,$(BR2_PROJECT)))
-#"))
-TARGET_HOSTNAME:=$(strip $(subst ",,$(BR2_HOSTNAME)))
-#"))
-BANNER:=$(strip $(subst ",,$(BR2_BANNER)))
-#"))
-
+include project/Makefile.in
 include toolchain/Makefile.in
 include package/Makefile.in
 
@@ -184,6 +177,8 @@ all:   world
 
 # In this section, we need .config
 include .config.cmd
+
+include project/*.mk
 
 # We also need the various per-package makefiles, which also add
 # each selected package to TARGETS if that package was selected
@@ -213,11 +208,13 @@ $(TARGETS): $(BASE_TARGETS)
 
 dirs: $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(BINARIES_DIR) $(PROJECT_BUILD_DIR)
+
 $(BASE_TARGETS): dirs
+
 world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS)
 
 
-.PHONY: all world dirs clean dirclean distclean source target-host-info \
+.PHONY: all world dirs clean dirclean distclean source \
 	$(BASE_TARGETS) $(TARGETS) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
 	$(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
@@ -258,17 +255,6 @@ $(PROJECT_BUILD_DIR)/.root:	 $(TARGET_DIR)
 	fi;
 	touch	$@
 
-target-host-info: $(TARGET_DIR)/etc/issue $(TARGET_DIR)/etc/hostname
-
-$(TARGET_DIR)/etc/issue:	.config
-	mkdir -p $(TARGET_DIR)/etc
-	echo ""			>  $(TARGET_DIR)/etc/issue
-	echo "" 		>> $(TARGET_DIR)/etc/issue
-	echo "$(BANNER)"	>> $(TARGET_DIR)/etc/issue
-
-$(TARGET_DIR)/etc/hostname:	.config
-	mkdir -p $(TARGET_DIR)/etc
-	echo "$(TARGET_HOSTNAME)" > $(TARGET_DIR)/etc/hostname
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
