@@ -315,8 +315,6 @@ config BR2_PACKAGE_XSERVER_xorg
 	bool "xorg"
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
-	depends on BR2_USE_WCHAR
-	depends on BR2_ENABLE_LOCALE
 endchoice
 if BR2_PACKAGE_XSERVER_x11r7
 source "package/x11r7/Config.in"
