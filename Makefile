@@ -230,7 +230,7 @@ world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS)
 #
 #############################################################
 $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) \
-	$(PROJECT_BUILD_DIR) $(BINARIES_DIR):
+	$(PROJECT_BUILD_DIR) $(BINARIES_DIR) $(TARGET_DIR):
 	@mkdir -p $@
 
 $(STAGING_DIR):
@@ -246,23 +246,28 @@ else
 endif
 	@mkdir -p $(STAGING_DIR)/usr/include
 
-$(TARGET_DIR): $(STAGING_DIR)
-	mkdir -p $(TARGET_DIR)
-	if [ -d "$(TARGET_SKELETON)" ] ; then \
-		cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
+$(PROJECT_BUILD_DIR)/.root:	 $(TARGET_DIR)
+	if ! [ -d "$(TARGET_DIR)/bin" ] ; then \
+		@echo "Rebuilding TARGET_DIR" ; \
+		if [ -d "$(TARGET_SKELETON)" ] ; then \
+			cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
+		fi; \
+		touch $(STAGING_DIR)/.fakeroot.00000 ; \
+		-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf ; \
+		-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf ; \
 	fi;
-	touch $(STAGING_DIR)/.fakeroot.00000
-	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
-	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
+	touch	$@
 
-target-host-info: dirs $(TARGET_DIR)/etc/issue $(TARGET_DIR)/etc/hostname
+target-host-info: $(TARGET_DIR)/etc/issue $(TARGET_DIR)/etc/hostname
 
-$(TARGET_DIR)/etc/issue:	$(TARGET_DIR) .config
+$(TARGET_DIR)/etc/issue:	.config
+	mkdir -p $(TARGET_DIR)/etc
 	echo ""			>  $(TARGET_DIR)/etc/issue
 	echo "" 		>> $(TARGET_DIR)/etc/issue
 	echo "$(BANNER)"	>> $(TARGET_DIR)/etc/issue
 
-$(TARGET_DIR)/etc/hostname:	$(TARGET_DIR) .config
+$(TARGET_DIR)/etc/hostname:	.config
+	mkdir -p $(TARGET_DIR)/etc
 	echo "$(TARGET_HOSTNAME)" > $(TARGET_DIR)/etc/hostname
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
