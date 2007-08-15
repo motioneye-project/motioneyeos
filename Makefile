@@ -199,6 +199,8 @@ include package/*/*.mk
 # target stuff is last so it can override anything else
 include target/Makefile.in
 
+TARGETS+=erase-fakeroots
+
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
@@ -255,6 +257,8 @@ $(PROJECT_BUILD_DIR)/.root:	 $(TARGET_DIR)
 	fi;
 	touch	$@
 
+erase-fakeroots:
+	rm -f $(STAGING_DIR)/.fakeroot*
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
