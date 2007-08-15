@@ -112,6 +112,12 @@ config BR2_TARGET_AT91SAM9260EK
 	help
 	  The Atmel AT91SAM9260 Development Board
 
+config BR2_TARGET_AT91SAM9260PF
+	bool "Atmel AT91SAM9260 running from parallel flash"
+	depends BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9260A || BR2_TARGET_AT91SAM9XE
+	help
+	  Generic support for the Atmel AT91SAM9260 running from parallel flash
+
 config BR2_TARGET_AT91SAM9261EK
 	bool "Atmel AT91SAM9261EK"
 	depends BR2_TARGET_AT91SAM9261 || BR2_TARGET_AT91SAM9261S

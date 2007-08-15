@@ -1,6 +1,7 @@
 config BR2_TARGET_UBOOT
 	bool "Das U-Boot Boot Monitor"
 	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
+	depends on !BR2_TARGET_AT91SAM9260PF
 	default n
 	help
 	  Build "Das U-Boot" Boot Monitor
