@@ -1,0 +1,223 @@
+diff -urN at91bootstrap-2.3/board/at91sam9260ek/dataflash/at91sam9260ek.h at91bootstrap-2.3.1/board/at91sam9260ek/dataflash/at91sam9260ek.h
+--- at91bootstrap-2.3/board/at91sam9260ek/dataflash/at91sam9260ek.h	2007-04-22 13:42:03.000000000 +0200
++++ at91bootstrap-2.3.1/board/at91sam9260ek/dataflash/at91sam9260ek.h	2007-08-14 15:33:06.000000000 +0200
+@@ -74,12 +74,21 @@
+ /* BootStrap Settings                                                  */
+ /*                                                                     */
+ /* ******************************************************************* */
++#define MACH_TYPE       	0x44B		/* AT91SAM9260-EK */
+ 
+-#define IMG_ADDRESS 		0x8400			/* Image Address in DataFlash */
+-#define	IMG_SIZE		0x30000			/* Image Size in DataFlash    */
++#define IMG_ADDRESS 		0x8400		/* Image Address in DataFlash */
+ 
+-#define MACH_TYPE       	0x44B       		/* AT91SAM9260-EK */
+-#define JUMP_ADDR		0x23F00000		/* Final Jump Address 	      */
++#if	defined(IMG_SIZE)
++#warning			"IMG_SIZE redefined"
++#else
++#define	IMG_SIZE		0x32000		/* Image Size in DataFlash    */
++#endif
++
++#if	defined(JUMP_ADDR)
++#warning			"JUMP_ADDR redefined"
++#else
++#define JUMP_ADDR		0x23F00000	/* Final Jump Address 	      */
++#endif
+ 
+ /* ******************************************************************* */
+ /* Application Settings                                                */
+diff -urN at91bootstrap-2.3/board/at91sam9260ek/dataflashcard/at91sam9260ek.h at91bootstrap-2.3.1/board/at91sam9260ek/dataflashcard/at91sam9260ek.h
+--- at91bootstrap-2.3/board/at91sam9260ek/dataflashcard/at91sam9260ek.h	2007-04-22 13:42:15.000000000 +0200
++++ at91bootstrap-2.3.1/board/at91sam9260ek/dataflashcard/at91sam9260ek.h	2007-08-14 15:31:04.000000000 +0200
+@@ -74,12 +74,21 @@
+ /* BootStrap Settings                                                  */
+ /*                                                                     */
+ /* ******************************************************************* */
++#define MACH_TYPE       	0x44B		/* AT91SAM9260-EK */
+ 
+-#define IMG_ADDRESS 		0x8400			/* Image Address in DataFlash */
+-#define	IMG_SIZE		0x30000			/* Image Size in DataFlash    */
++#define IMG_ADDRESS 		0x8400		/* Image Address in DataFlash */
+ 
+-#define MACH_TYPE       	0x44B       		/* AT91SAM9260-EK */
+-#define JUMP_ADDR		0x23F00000		/* Final Jump Address 	      */
++#if	defined(IMG_SIZE)
++#warning			"IMG_SIZE redefined"
++#else
++#define	IMG_SIZE		0x32000		/* Image Size in DataFlash    */
++#endif
++
++#if	defined(JUMP_ADDR)
++#warning			"JUMP_ADDR redefined"
++#else
++#define JUMP_ADDR		0x23F00000	/* Final Jump Address 	      */
++#endif
+ 
+ /* ******************************************************************* */
+ /* Application Settings                                                */
+diff -urN at91bootstrap-2.3/board/at91sam9260ek/nandflash/at91sam9260ek.h at91bootstrap-2.3.1/board/at91sam9260ek/nandflash/at91sam9260ek.h
+--- at91bootstrap-2.3/board/at91sam9260ek/nandflash/at91sam9260ek.h	2007-04-22 13:54:38.000000000 +0200
++++ at91bootstrap-2.3.1/board/at91sam9260ek/nandflash/at91sam9260ek.h	2007-08-14 15:28:19.000000000 +0200
+@@ -116,11 +116,21 @@
+ /* BootStrap Settings                                                  */
+ /*                                                                     */
+ /* ******************************************************************* */
++#define MACH_TYPE      		0x44B       	/* AT91SAM9260-EK */
++
+ #define IMG_ADDRESS 		0x20000		/* Image Address in NandFlash */
++
++#if	defined(IMG_SIZE)
++#warning			"IMG_SIZE redefined"
++#else
+ #define	IMG_SIZE		0x30000		/* Image Size in NandFlash    */
++#endif
+ 
+-#define MACH_TYPE       0x44B       /* AT91SAM9260-EK */
++#if	defined(JUMP_ADDR)
++#warning			"JUMP_ADDR redefined"
++#else
+ #define JUMP_ADDR		0x23F00000	/* Final Jump Address 	      */
++#endif
+ 
+ /* ******************************************************************* */
+ /* Application Settings                                                */
+diff -urN at91bootstrap-2.3/board/at91sam9261ek/dataflash/at91sam9261ek.h at91bootstrap-2.3.1/board/at91sam9261ek/dataflash/at91sam9261ek.h
+--- at91bootstrap-2.3/board/at91sam9261ek/dataflash/at91sam9261ek.h	2007-04-22 13:54:21.000000000 +0200
++++ at91bootstrap-2.3.1/board/at91sam9261ek/dataflash/at91sam9261ek.h	2007-08-14 15:29:35.000000000 +0200
+@@ -94,12 +94,21 @@
+ /* BootStrap Settings                                                  */
+ /*                                                                     */
+ /* ******************************************************************* */
++#define MACH_TYPE       	0x350		/* AT91SAM9261-EK */
+ 
+-#define IMG_ADDRESS 		0x8400			/* Image Address in DataFlash */
+-#define	IMG_SIZE		0x32000			/* Image Size in DataFlash    */
++#define IMG_ADDRESS 		0x8400		/* Image Address in DataFlash */
+ 
+-#define MACH_TYPE       0x350       /* AT91SAM9261-EK */
+-#define JUMP_ADDR		0x23F00000		/* Final Jump Address 	      */
++#if	defined(IMG_SIZE)
++#warning			"IMG_SIZE redefined"
++#else
++#define	IMG_SIZE		0x32000		/* Image Size in DataFlash    */
++#endif
++
++#if	defined(JUMP_ADDR)
++#warning			"JUMP_ADDR redefined"
++#else
++#define JUMP_ADDR		0x23F00000	/* Final Jump Address 	      */
++#endif
+ 
+ /* ******************************************************************* */
+ /* Application Settings                                                */
+diff -urN at91bootstrap-2.3/board/at91sam9261ek/nandflash/at91sam9261ek.h at91bootstrap-2.3.1/board/at91sam9261ek/nandflash/at91sam9261ek.h
+--- at91bootstrap-2.3/board/at91sam9261ek/nandflash/at91sam9261ek.h	2007-04-22 13:54:09.000000000 +0200
++++ at91bootstrap-2.3.1/board/at91sam9261ek/nandflash/at91sam9261ek.h	2007-08-14 15:26:21.000000000 +0200
+@@ -137,11 +137,21 @@
+ /* BootStrap Settings                                                  */
+ /*                                                                     */
+ /* ******************************************************************* */
++#define MACH_TYPE       	0x350       	/* AT91SAM9261-EK */
++
+ #define IMG_ADDRESS 		0x20000		/* Image Address in NandFlash */
++
++#if	defined(IMG_SIZE)
++#warning			"IMG_SIZE redefined"
++#else
+ #define	IMG_SIZE		0x30000		/* Image Size in NandFlash    */
++#endif
+ 
+-#define MACH_TYPE       	0x350       	/* AT91SAM9261-EK */
++#if	defined(JUMP_ADDR)
++#warning			"JUMP_ADDR redefined"
++#else
+ #define JUMP_ADDR		0x23F00000	/* Final Jump Address 	      */
++#endif
+ 
+ /* ******************************************************************* */
+ /* Application Settings                                                */
+diff -urN at91bootstrap-2.3/board/at91sam9263ek/dataflash/at91sam9263ek.h at91bootstrap-2.3.1/board/at91sam9263ek/dataflash/at91sam9263ek.h
+--- at91bootstrap-2.3/board/at91sam9263ek/dataflash/at91sam9263ek.h	2007-04-22 13:53:52.000000000 +0200
++++ at91bootstrap-2.3.1/board/at91sam9263ek/dataflash/at91sam9263ek.h	2007-08-14 15:29:05.000000000 +0200
+@@ -94,12 +94,21 @@
+ /* BootStrap Settings                                                  */
+ /*                                                                     */
+ /* ******************************************************************* */
++#define MACH_TYPE       	0x4B2       	/* AT91SAM9263-EK */
+ 
+-#define IMG_ADDRESS 			0x8400			/* Image Address in DataFlash */
+-#define	IMG_SIZE			0x32000			/* Image Size in DataFlash    */
++#define IMG_ADDRESS 		0x8400		/* Image Address in DataFlash */
+ 
+-#define MACH_TYPE       		0x4B2       		/* AT91SAM9263-EK */
+-#define JUMP_ADDR			0x23F00000		/* Final Jump Address 	      */
++#if	defined(IMG_SIZE)
++#warning			"IMG_SIZE redefined"
++#else
++#define	IMG_SIZE		0x32000		/* Image Size in DataFlash    */
++#endif
++
++#if	defined(JUMP_ADDR)
++#warning			"JUMP_ADDR redefined"
++#else
++#define JUMP_ADDR		0x23F00000	/* Final Jump Address 	      */
++#endif
+ 
+ /* ******************************************************************* */
+ /* Application Settings                                                */
+diff -urN at91bootstrap-2.3/Makefile at91bootstrap-2.3.1/Makefile
+--- at91bootstrap-2.3/Makefile	2007-04-22 13:47:48.000000000 +0200
++++ at91bootstrap-2.3.1/Makefile	2007-08-14 16:14:14.000000000 +0200
+@@ -8,7 +8,7 @@
+ 
+ TOPDIR	:=	$(CURDIR)
+ 
+-VERSION:=2.3
++VERSION:=2.3.1
+ 
+ include	.config
+ 
+@@ -63,7 +63,8 @@
+ CPPFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET)		\
+ 	-I$(INCL) -Iinclude				\
+ 	-DTOP_OF_MEM=$(TOP_OF_MEMORY) 			\
+-	-D$(SPI_MODE) -D$(SPI_BOOT) -DSPI_CLK=$(SPI_CLK)
++	-D$(SPI_MODE) -D$(SPI_BOOT) -DSPI_CLK=$(SPI_CLK) \
++	$(AT91_CUSTOM_FLAGS)
+ 
+ ASFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -Iinclude -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+@@ -141,9 +142,6 @@
+ toolchain:	../buildroot/.config
+ 	make -C ../buildroot
+ 
+-tarball:
+-	./tarball.sh
+-
+ #	echo $PCK 1  $(PCK) 2  ${PCK} 3 $$PCK 4  $$(PCK) 5  $${PCK}  )
+ 	
+ #	cd .. ; tar -cvf `basename $$(TOPDIR)`.tar `basename $$(TOPDIR)` ; bzip2 `basename $$(TOPDIR)`.tar )
+@@ -177,4 +175,4 @@
+ 	tar --force-local -cvf $$F.tar $$F; \
+ 	rm -f $$F.tar.bz2 ; \
+ 	bzip2 $$F.tar ; \
+-	mv -f $$F.tar.bz2 /usr/local/install/downloads
++	cp -f $$F.tar.bz2 /usr/local/install/downloads
+diff -urN at91bootstrap-2.3/tarball.sh at91bootstrap-2.3.1/tarball.sh
+--- at91bootstrap-2.3/tarball.sh	2007-03-25 17:09:37.000000000 +0200
++++ at91bootstrap-2.3.1/tarball.sh	1970-01-01 01:00:00.000000000 +0100
+@@ -1,13 +0,0 @@
+-#!/bin/bash
+-TOPDIR=`pwd`
+-DATE=`date +%F`
+-PACKAGE=`basename ${TOPDIR}`
+-TARBALL=${PACKAGE}-${DATE}
+-
+-
+-make clean
+-cd ..
+-tar -cvf ${PACKAGE}.tar ${PACKAGE}
+-mv	${PACKAGE}.tar	${TARBALL}.tar
+-rm -f  ${TARBALL}.tar.bz2
+-bzip2 ${TARBALL}.tar
