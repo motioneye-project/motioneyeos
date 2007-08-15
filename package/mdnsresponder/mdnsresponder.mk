@@ -26,7 +26,7 @@ $(MDNSRESPONDER_DIR)/.configured: $(MDNSRESPONDER_DIR)/.unpacked
 	touch $(MDNSRESPONDER_DIR)/.configured
 
 $(MDNSRESPONDER_DIR)/.built: $(MDNSRESPONDER_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) os="linux" LD="$(TARGET_CC) -shared" LOCALBASE="/usr" -C $(MDNSRESPONDER_DIR)/mDNSPosix
+	$(MAKE1) CC=$(TARGET_CC) os="linux" LD="$(TARGET_CC) -shared" LOCALBASE="/usr" -C $(MDNSRESPONDER_DIR)/mDNSPosix
 	touch $(MDNSRESPONDER_DIR)/.built
 
 $(STAGING_DIR)/usr/lib/libdns_sd.so: $(MDNSRESPONDER_DIR)/.built
@@ -64,7 +64,7 @@ mdnsresponder-source: $(DL_DIR)/$(MDNSRESPONDER_SOURCE)
 
 mdnsresponder-clean:
 	rm -f $(MDNSRESPONDER_DIR)/.configured $(MDNSRESPONDER_DIR)/.built $(MDNSRESPONDER_DIR)/.staged
-	-$(MAKE) os=linux -C $(MDNSRESPONDER_DIR)/mDNSPosix clean
+	-$(MAKE1) os=linux -C $(MDNSRESPONDER_DIR)/mDNSPosix clean
 	rm -f $(TARGET_DIR)/usr/sbin/dnsextd
 	rm -f $(TARGET_DIR)/usr/sbin/mDNSResponderPosix
 	rm -f $(TARGET_DIR)/usr/sbin/mDNSNetMonitor
