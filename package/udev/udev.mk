@@ -4,8 +4,10 @@
 #
 #############################################################
 UDEV_VERSION:=114
-UDEV_VOLUME_ID_VERSION:=0.79.0
-
+UDEV_VOLUME_ID_CURRENT:=0
+UDEV_VOLUME_ID_AGE:=79
+UDEV_VOLUME_ID_REVISION:=0
+UDEV_VOLUME_ID_VERSION:=$(UDEV_VOLUME_ID_CURRENT).$(UDEV_VOLUME_ID_AGE).$(UDEV_VOLUME_ID_REVISION)
 UDEV_SOURCE:=udev-$(UDEV_VERSION).tar.bz2
 UDEV_SITE:=ftp://ftp.kernel.org/pub/linux/utils/kernel/hotplug/
 UDEV_CAT:=$(BZCAT)
@@ -39,11 +41,14 @@ $(UDEV_DIR)/$(UDEV_BINARY): $(UDEV_DIR)/.unpacked
 
 $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
 	-mkdir -p $(TARGET_DIR)/sys
-	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) DESTDIR=$(TARGET_DIR) \
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
+		DESTDIR=$(TARGET_DIR) \
 		CFLAGS="$(BR2_UDEV_CFLAGS)" \
 		LDFLAGS="-warn-common" \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) -C $(UDEV_DIR) install
+
+$(UDEV_DIR)/.target_install:	$(UDEV_DIR)/$(UDEV_BINARY)
 	$(INSTALL) -m 0755 package/udev/S10udev $(TARGET_DIR)/etc/init.d
 	$(INSTALL) -m 0644 $(UDEV_DIR)/etc/udev/frugalware/* $(TARGET_DIR)/etc/udev/rules.d
 	( grep udev_root $(TARGET_DIR)/etc/udev/udev.conf > /dev/null 2>&1 || echo 'udev_root=/dev' >> $(TARGET_DIR)/etc/udev/udev.conf )
@@ -54,27 +59,29 @@ ifneq ($(strip $(BR2_PACKAGE_UDEV_UTILS)),y)
 	rm -f $(TARGET_DIR)/usr/bin/udevinfo
 	rm -f $(TARGET_DIR)/usr/bin/udevtest
 endif
+	touch $@
 
 #####################################################################
 .PHONY:	udev-source udev udev-clean udev-dirclean
 
-udev: uclibc $(TARGET_DIR)/$(UDEV_TARGET_BINARY)
+udev: uclibc $(TARGET_DIR)/$(UDEV_TARGET_BINARY) $(UDEV_DIR)/.target_install
 
 udev-source: $(DL_DIR)/$(UDEV_SOURCE)
 
 udev-clean: $(UDEV_CLEAN_DEPS)
 	rm -f $(TARGET_DIR)/etc/init.d/S10udev $(TARGET_DIR)/sbin/udev*
 	rm -f $(TARGET_DIR)/usr/sbin/udevmonitor $(TARGET_DIR)/usr/bin/udev*
-	rmdir $(TARGET_DIR)/sys
+	rm -fr $(TARGET_DIR)/sys
 	-$(MAKE) -C $(UDEV_DIR) clean
+
 
 udev-dirclean: $(UDEV_DIRCLEAN_DEPS)
 	rm -rf $(UDEV_DIR)
 
 #####################################################################
-.PHONY:	 udev-volume_id udev-volume_id-clean
-
 ifeq ($(strip $(BR2_PACKAGE_UDEV_VOLUME_ID)),y)
+.PHONY:	 udev-volume_id udev-volume_id-clean udev-volume_id-dirclean
+
 $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION):
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
 		USE_LOG=false USE_SELINUX=false \
@@ -82,19 +89,28 @@ $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION):
 	$(INSTALL) -m 0644 -D $(UDEV_DIR)/extras/volume_id/lib/libvolume_id.h $(STAGING_DIR)/usr/include/libvolume_id.h
 	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/volume_id/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
 	-ln -sf libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(STAGING_DIR)/usr/lib/libvolume_id.so.0
-	-ln -sf libvolume_id.so.0 $(STAGING_DIR)/usr/lib/libvolume_id.so
+	-ln -sf libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(STAGING_DIR)/usr/lib/libvolume_id.so
 
-$(TARGET_DIR)/lib/udev/vol_id: $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
-	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/volume_id/vol_id $(TARGET_DIR)/lib/udev/vol_id
+$(STAGING_DIR)/usr/lib/libvolume_id.la:	$(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
+	$(INSTALL) -m 0755 -D package/udev/libvolume_id.la.tmpl		$(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's/REPLACE_CURRENT/$(UDEV_VOLUME_ID_CURRENT)/g'		$(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's/REPLACE_AGE/$(UDEV_VOLUME_ID_AGE)/g'			$(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's/REPLACE_REVISION/$(UDEV_VOLUME_ID_REVISION)/g'	$(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's,REPLACE_LIB_DIR,$(STAGING_DIR)/usr/lib,g'		$(STAGING_DIR)/usr/lib/libvolume_id.la
+
+$(TARGET_DIR)/lib/udev/vol_id: $(STAGING_DIR)/usr/lib/libvolume_id.la
 	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/volume_id/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(TARGET_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
 	-ln -sf libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(TARGET_DIR)/usr/lib/libvolume_id.so.0
+	-ln -sf libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(TARGET_DIR)/usr/lib/libvolume_id.so
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
+	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/volume_id/vol_id $(TARGET_DIR)/lib/udev/vol_id
 
-udev-volume_id: udev $(TARGET_DIR)/lib/udev/vol_id udev-volume_id-dirclean
+udev-volume_id: udev $(TARGET_DIR)/lib/udev/vol_id
 
 udev-volume_id-clean:
 	rm -f $(STAGING_DIR)/usr/include/libvolume_id.h
 	rm -f $(STAGING_DIR)/usr/lib/libvolume_id.so*
+	rm -f $(STAGING_DIR)/usr/lib/libvolume_id.la
 	rm -f $(TARGET_DIR)/usr/lib/libvolume_id.so.0*
 	rm -f $(TARGET_DIR)/lib/udev/vol_id
 	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/lib/udev
@@ -107,25 +123,29 @@ UDEV_DIRCLEAN_DEPS+=udev-volume_id-dirclean
 endif
 
 #####################################################################
+ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
 .PHONY:	udev-scsi_id udev-scsi_id-clean udev-scsi_id-dirclean
 
-ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
 $(TARGET_DIR)/lib/udev/scsi_id: $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) EXTRAS="extras/scsi_id" -C $(UDEV_DIR)
 	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/scsi_id/scsi_id $(TARGET_DIR)/lib/udev/scsi_id
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/udev/scsi_id
+
+$(TARGET_DIR)/lib/udev/usb_id: $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) EXTRAS="extras/usb_id" -C $(UDEV_DIR)
 	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/usb_id/usb_id $(TARGET_DIR)/lib/udev/usb_id
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/udev/usb_id
 
-udev-scsi_id: udev $(TARGET_DIR)/lib/udev/scsi_id
+udev-scsi_id: udev $(TARGET_DIR)/lib/udev/scsi_id $(TARGET_DIR)/lib/udev/usb_id
 
 udev-scsi_id-clean:
 	rm -f $(TARGET_DIR)/lib/udev/scsi_id
+	rm -f $(TARGET_DIR)/lib/udev/usb_id
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/lib/udev
 
 udev-scsi_id-dirclean:
 	-$(MAKE) EXTRAS="extras/scsi_id" -C $(UDEV_DIR) clean
