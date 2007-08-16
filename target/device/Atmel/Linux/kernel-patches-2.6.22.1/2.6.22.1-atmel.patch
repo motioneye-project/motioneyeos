@@ -6887,10 +6887,10 @@ diff -urN linux-2.6.22.1-0rig/drivers/leds/Makefile linux-2.6.22.1/drivers/leds/
  obj-$(CONFIG_LEDS_WRAP)			+= leds-wrap.o
  obj-$(CONFIG_LEDS_H1940)		+= leds-h1940.o
  obj-$(CONFIG_LEDS_COBALT)		+= leds-cobalt.o
+ obj-$(CONFIG_LEDS_GPIO)			+= leds-gpio.o
 +obj-$(CONFIG_LEDS_AT91)			+= leds-at91.o
  
  # LED Triggers
- obj-$(CONFIG_LEDS_TRIGGER_TIMER)	+= ledtrig-timer.o
 diff -urN linux-2.6.22.1-0rig/drivers/mmc/host/at91_mci.c linux-2.6.22.1/drivers/mmc/host/at91_mci.c
 --- linux-2.6.22.1-0rig/drivers/mmc/host/at91_mci.c	2007-07-10 20:56:30.000000000 +0200
 +++ linux-2.6.22.1/drivers/mmc/host/at91_mci.c	2007-07-17 23:48:54.000000000 +0200
@@ -7784,6 +7784,7 @@ diff -urN linux-2.6.22.1-0rig/drivers/serial/atmel_serial.c linux-2.6.22.1/drive
  	struct uart_port	uart;		/* uart */
  	struct clk		*clk;		/* uart clock */
  	unsigned short		suspended;	/* is port suspended? */
+	int			break_active;	/* break being received */
 +
 +	short			use_dma_rx;	/* enable PDC receiver */
 +	short			pdc_rx_idx;	/* current PDC RX buffer */
@@ -7800,7 +7801,6 @@ diff -urN linux-2.6.22.1-0rig/drivers/serial/atmel_serial.c linux-2.6.22.1/drive
 +
  #ifdef SUPPORT_SYSRQ
  static struct console atmel_console;
- #endif
 @@ -205,7 +230,12 @@
  {
  	struct atmel_uart_port *atmel_port = (struct atmel_uart_port *) port;
