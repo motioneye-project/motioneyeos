@@ -48,11 +48,20 @@ $(STAGING_DIR)/bin/lzma: $(LZMA_HOST_DIR)/src/lzma/lzma
 		$(STAGING_DIR)/lib/liblzmadec.la
 
 lzma-host: $(STAGING_DIR)/bin/lzma
+
 lzma-host-clean:
 	rm -f $(STAGING_DIR)/bin/lzma
 	-$(MAKE) -C $(LZMA_HOST_DIR) clean
 lzma-host-dirclean:
 	rm -rf $(LZMA_HOST_DIR)
+
+/usr/local/bin/lzma:	lzma_host
+	sudo 	$(MAKE) DESTDIR=/usr/local -C $(LZMA_HOST_DIR) install
+	sudo	$(SED) "s,^libdir=.*,libdir=\'/usr/local/lib\',g" \
+		/usr/local/lib/liblzmadec.la
+
+lzma-host-install:	/usr/local/bin/lzma
+
 ######################################################################
 #
 # lzma target
