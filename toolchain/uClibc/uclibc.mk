@@ -230,9 +230,9 @@ else
 	$(SED) 's,^.*UCLIBC_HAS_WCHAR.*,UCLIBC_HAS_WCHAR=n,g' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(BR2_UCLIBC_PROGRAM_INVOCATION),y)
-	echo "UCLIBC_HAS_PROGRAM_INVOCATION_NAME=y" >> $(UCLIBC_DIR)/.oldconfig
+	$(SED) 's,^.*UCLIBC_HAS_PROGRAM_INVOCATION_NAME.*,UCLIBC_HAS_PROGRAM_INVOCATION_NAME=y,g' $(UCLIBC_DIR)/.oldconfig
 else
-	echo "# UCLIBC_HAS_PROGRAM_INVOCATION_NAME is not set" >> $(UCLIBC_DIR)/.oldconfig
+	$(SED) 's,^.*UCLIBC_HAS_PROGRAM_INVOCATION_NAME.*,UCLIBC_HAS_PROGRAM_INVOCATION_NAME=n,g' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ("$(KERNEL_ARCH)","i386")
 	/bin/echo "# CONFIG_GENERIC_386 is not set" >> $(UCLIBC_DIR)/.oldconfig
