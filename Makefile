@@ -246,7 +246,7 @@ endif
 	@mkdir -p $(STAGING_DIR)/usr/include
 
 $(PROJECT_BUILD_DIR)/.root:
-	mkdir	$(TARGET_DIR)
+	mkdir	-p $(TARGET_DIR)
 	if ! [ -d "$(TARGET_DIR)/bin" ] ; then \
 		if [ -d "$(TARGET_SKELETON)" ] ; then \
 			cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
