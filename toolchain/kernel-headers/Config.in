@@ -58,6 +58,14 @@ choice
 
 endchoice
 
+config BR2_KERNEL_HEADERS_LZMA
+	bool "use lzma initramfs kernel patches"
+	default n
+	help
+	  Apply patches which allow for lzma compressed
+	  initramfs filesystems.  This requires the lzma
+	  program in your development environment.
+
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
 	default "2.4.25"    if BR2_KERNEL_HEADERS_2_4_25
