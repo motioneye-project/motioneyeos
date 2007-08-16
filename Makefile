@@ -229,7 +229,7 @@ world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS)
 #
 #############################################################
 $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) \
-	$(PROJECT_BUILD_DIR) $(BINARIES_DIR) $(TARGET_DIR):
+	$(PROJECT_BUILD_DIR) $(BINARIES_DIR):
 	@mkdir -p $@
 
 $(STAGING_DIR):
@@ -245,9 +245,9 @@ else
 endif
 	@mkdir -p $(STAGING_DIR)/usr/include
 
-$(PROJECT_BUILD_DIR)/.root:	 $(TARGET_DIR)
+$(PROJECT_BUILD_DIR)/.root:
+	mkdir	$(TARGET_DIR)
 	if ! [ -d "$(TARGET_DIR)/bin" ] ; then \
-		@echo "Rebuilding TARGET_DIR" ; \
 		if [ -d "$(TARGET_SKELETON)" ] ; then \
 			cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
 		fi; \
@@ -256,6 +256,8 @@ $(PROJECT_BUILD_DIR)/.root:	 $(TARGET_DIR)
 		-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf ; \
 	fi;
 	touch	$@
+
+$(TARGET_DIR):	$(PROJECT_BUILD_DIR)/.root
 
 erase-fakeroots:
 	rm -f $(STAGING_DIR)/.fakeroot*
