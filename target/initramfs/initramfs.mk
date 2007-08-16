@@ -20,19 +20,19 @@ $(INITRAMFS_TARGET) initramfs: host-fakeroot makedevs
 	rm -rf $(TARGET_DIR)/usr/info
 	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
-	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
-	echo "chown -R 0:0 $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+	touch $(PROJECT_BUILD_DIR)/.fakeroot.00000
+	cat $(PROJECT_BUILD_DIR)/.fakeroot* > $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+	echo "chown -R 0:0 $(TARGET_DIR)" >> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 	# Use fakeroot so gen_initramfs_list.sh  believes the previous fakery
 	echo "$(CONFIG_SHELL) target/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(TARGET_DIR) > $(INITRAMFS_TARGET)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
-	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
-	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
-	-rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+	chmod a+x $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
+	-rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 
 initramfs-source:
 

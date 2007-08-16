@@ -96,14 +96,14 @@ $(EXT2_BASE): host-fakeroot makedevs genext2fs
 		true
 	-$(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null
 	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
-	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
-	echo "chown -R 0:0 $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	touch $(PROJECT_BUILD_DIR)/.fakeroot.00000
+	cat $(PROJECT_BUILD_DIR)/.fakeroot* > $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	echo "chown -R 0:0 $(TARGET_DIR)" >> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 ifneq ($(TARGET_DEVICE_TABLE),)
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 endif
 	# Use fakeroot so genext2fs believes the previous fakery
 ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
@@ -115,14 +115,14 @@ ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 	set -x; \
 	echo "$(GENEXT2_DIR)/genext2fs -b $$GENEXT2_SIZE " \
 		"-N $$GENEXT2_INODES -d $(TARGET_DIR) " \
-		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 else
 	echo "$(GENEXT2_DIR)/genext2fs -d $(TARGET_DIR) " \
-		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+		"$(EXT2_OPTS) $(EXT2_BASE)" >> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 endif
-	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
-	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
-	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	chmod a+x $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	$(STAGING_DIR)/usr/bin/fakeroot -- $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
+	-@rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(EXT2_TARGET))
 
 ifneq ($(EXT2_ROOTFS_COMPRESSOR),)
 $(EXT2_BASE).$(EXT2_ROOTFS_COMPRESSOR_EXT): $(EXT2_ROOTFS_COMPRESSOR_PREREQ) $(EXT2_BASE)

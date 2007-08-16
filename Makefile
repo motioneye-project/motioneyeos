@@ -260,7 +260,7 @@ $(PROJECT_BUILD_DIR)/.root:
 $(TARGET_DIR):	$(PROJECT_BUILD_DIR)/.root
 
 erase-fakeroots:
-	rm -f $(STAGING_DIR)/.fakeroot*
+	rm -f $(PROJECT_BUILD_DIR)/.fakeroot*
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 

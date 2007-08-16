@@ -49,8 +49,8 @@ $(TARGET_DIR)/$(AT_TARGET_SCRIPT): $(AT_DIR)/$(AT_BINARY)
 	# Use fakeroot to pretend to do 'make install' as root
 	echo '$(MAKE) DAEMON_USERNAME=root DAEMON_GROUPNAME=root ' \
 		'$(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(AT_DIR) install' \
-		> $(STAGING_DIR)/.fakeroot.at
-	echo 'rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/doc/at' >> $(STAGING_DIR)/.fakeroot.at
+		> $(PROJECT_BUILD_DIR)/.fakeroot.at
+	echo 'rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/doc/at' >> $(PROJECT_BUILD_DIR)/.fakeroot.at
 	$(INSTALL) -m 0755 -D $(AT_DIR)/debian/rc $(TARGET_DIR)/$(AT_TARGET_SCRIPT)
 
 at: uclibc host-fakeroot $(TARGET_DIR)/$(AT_TARGET_SCRIPT)

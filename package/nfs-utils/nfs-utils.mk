@@ -59,7 +59,7 @@ NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPCDEBUG)	+= usr/sbin/rpcdebug
 NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_LOCKD)	+= usr/sbin/rpc.lockd
 NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD)	+= usr/sbin/rpc.rquotad
 
-$(STAGING_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
+$(PROJECT_BUILD_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
 	# Use fakeroot to pretend to do 'make install' as root
 	echo '$(MAKE) prefix=$(TARGET_DIR)/usr statedir=$(TARGET_DIR)/var/lib/nfs $(TARGET_CONFIGURE_OPTS) -C $(NFS_UTILS_DIR) install' > $@
 	echo 'rm -f $(TARGET_DIR)/usr/bin/event_rpcgen.py $(TARGET_DIR)/usr/sbin/nhfs* $(TARGET_DIR)/usr/sbin/nfsstat $(TARGET_DIR)/usr/sbin/showmount' >> $@
@@ -70,7 +70,7 @@ $(STAGING_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
 	echo "file; done" >> $@
 	echo 'rm -rf $(TARGET_DIR)/var/lib/nfs' >> $@
 
-$(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY): $(STAGING_DIR)/.fakeroot.nfs-utils
+$(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY): $(PROJECT_BUILD_DIR)/.fakeroot.nfs-utils
 	touch -c $@
 
 nfs-utils: uclibc host-fakeroot $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY)
@@ -81,7 +81,7 @@ nfs-utils-clean:
 		rm -f $(TARGET_DIR)/$$file; \
 	done
 	-$(MAKE) -C $(NFS_UTILS_DIR) clean
-	rm -f $(STAGING_DIR)/.fakeroot.nfs-utils
+	rm -f $(PROJECT_BUILD_DIR)/.fakeroot.nfs-utils
 
 nfs-utils-dirclean:
 	rm -rf $(NFS_UTILS_DIR)
