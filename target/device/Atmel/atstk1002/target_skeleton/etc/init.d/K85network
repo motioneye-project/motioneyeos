@@ -2,10 +2,10 @@
 
 IFDOWN=/sbin/ifdown
 
-echo -n "Stopping networking:"
+echo -n "Stopping networking: "
 if ${IFDOWN} -a; then
-	echo " done"
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	exit 1
 fi

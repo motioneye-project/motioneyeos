@@ -7,7 +7,7 @@ state.at73c213_0 {
 		iface MIXER
 		name 'Master Playback Volume'
 		value.0 21
-		value.1 20
+		value.1 21
 	}
 	control.2 {
 		comment.access 'read write'

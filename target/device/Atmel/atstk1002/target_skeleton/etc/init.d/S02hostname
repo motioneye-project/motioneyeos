@@ -2,7 +2,7 @@
 
 PROGRAM=/bin/hostname
 
-echo -n "Setting hostname:"
+echo -n "Setting hostname: "
 [ -x ${PROGRAM} ] || (echo " missing"; exit 0)
 
 if [ -f /etc/hostname ]; then
@@ -12,10 +12,10 @@ else
 fi
 
 start() {
-	if ${PROGRAM} "${HOST}" > /dev/null 2> /dev/null; then
-		echo " '${HOST}'"
+	if ${PROGRAM} "${HOST}"; then
+		echo "'${HOST}'"
 	else
-		echo " failed"
+		echo "failed"
 		exit 1
 	fi
 }

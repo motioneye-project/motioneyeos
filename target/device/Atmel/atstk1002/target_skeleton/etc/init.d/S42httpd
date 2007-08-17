@@ -2,15 +2,15 @@
 
 HTTPD=/usr/sbin/httpd
 
-echo -n "Starting httpd:"
+echo -n "Starting httpd: "
 if [ ! -x "${HTTPD}" ]; then
-	echo " missing"
+	echo "missing"
 	exit 1
 fi
 
-if ${HTTPD} -h /www > /dev/null 2> /dev/null; then
-	echo " done"
+if ${HTTPD} -h /www; then
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	exit 1
 fi

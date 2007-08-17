@@ -2,23 +2,23 @@
 
 SYSLOGD=/sbin/syslogd
 
-echo -n "Starting syslogd:"
+echo -n "Starting syslogd: "
 if [ ! -x "${SYSLOGD}" ]; then
-	echo " missing"
+	echo "missing"
 	exit 1
 fi
 
-if ${SYSLOGD} > /dev/null 2> /dev/null; then
-	echo " done"
+if ${SYSLOGD}; then
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	exit 1
 fi
 
-echo -n "Log messages to syslog:"
-if echo 4 4 1 7 > /proc/sys/kernel/printk 2> /dev/null; then
-	echo " done"
+echo -n "Log messages to syslog: "
+if echo 4 4 1 7 > /proc/sys/kernel/printk; then
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	exit 1
 fi

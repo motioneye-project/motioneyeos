@@ -2,10 +2,10 @@
 
 IFUP=/sbin/ifup
 
-echo -n "Network interfaces:"
-if ${IFUP} -a > /dev/null 2> /dev/null; then
-	echo " done"
+echo -n "Network interfaces: "
+if ${IFUP} -a; then
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	exit 1
 fi
