@@ -2,15 +2,15 @@
 
 INETD=/usr/sbin/inetd
 
-echo -n "Starting inted:"
+echo -n "Starting inted: "
 if [ ! -x "${INETD}" ]; then
-	echo " missing"
+	echo "missing"
 	exit 1
 fi
 
-if ${INETD} > /dev/null 2> /dev/null; then
-	echo " done"
+if ${INETD}; then
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	exit 1
 fi

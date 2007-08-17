@@ -5,22 +5,22 @@ NTPDATE=/usr/bin/ntpdate
 if [ -f /etc/default/ntpdate ]; then
     . /etc/default/ntpdate
 else
-	echo " missing /etc/default/ntpdate"
+	echo "WARNING: missing /etc/default/ntpdate"
 	exit 1
 fi
 
-echo -n "Starting ntpdate:"
+echo -n "Starting ntpdate: "
 if [ ! -x ${NTPDATE} ]; then
-	echo " missing"
+	echo "missing"
 	echo -n "  WARNING: could not syncronize clock, "
 	echo "edit NTPSERVERS in /etc/default/ntpdate."
 	exit 1
 fi
 
-if ${NTPDATE} $NTPOPTIONS $NTPSERVERS > /dev/null 2> /dev/null; then
-	echo " done"
+if ${NTPDATE} $NTPOPTIONS $NTPSERVERS; then
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	echo -n "  WARNING: could not syncronize clock, "
 	echo "edit NTPSERVERS in /etc/default/ntpdate."
 	exit 1

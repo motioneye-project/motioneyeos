@@ -1,8 +1,8 @@
 #! /bin/sh
 
-echo -n "Setting up mdev:"
+echo -n "Setting up mdev: "
 set -e
-trap 'echo " failed"' EXIT
+trap 'echo "failed"' EXIT
 /bin/ln -s /proc/self/fd /dev/fd
 /bin/ln -s /proc/self/fd/0 /dev/stdin
 /bin/ln -s /proc/self/fd/1 /dev/stdout
@@ -11,4 +11,4 @@ trap 'echo " failed"' EXIT
 /bin/echo /sbin/mdev > /proc/sys/kernel/hotplug
 /sbin/mdev -s
 trap - EXIT
-echo " done"
+echo "done"

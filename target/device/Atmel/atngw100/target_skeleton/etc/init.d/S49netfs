@@ -2,10 +2,10 @@
 
 MOUNT=/bin/mount
 
-echo -n "Mounting remote filesystems:"
-if ${MOUNT} -t nfs -a > /dev/null 2> /dev/null; then
-	echo " done"
+echo -n "Mounting remote filesystems: "
+if ${MOUNT} -t nfs -a; then
+	echo "done"
 else
-	echo " failed"
+	echo "failed"
 	exit 1
 fi

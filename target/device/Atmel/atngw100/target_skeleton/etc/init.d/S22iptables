@@ -2,7 +2,7 @@
 
 IPTABLES=`which iptables`
 
-echo "Enable NAT: "
+echo "Enable NAT:"
 echo -n "  IPv4 forwarding: "
 if echo 1 > /proc/sys/net/ipv4/ip_forward; then
 	echo "done"
@@ -17,7 +17,7 @@ if [ ! -x "${IPTABLES}" ]; then
 	exit 1
 fi
 
-if ${IPTABLES} -t nat -A POSTROUTING -o eth0 -j MASQUERADE > /dev/null 2> /dev/null; then
+if ${IPTABLES} -t nat -A POSTROUTING -o eth0 -j MASQUERADE; then
 	echo "done"
 else
 	echo "failed"
@@ -25,7 +25,7 @@ else
 fi
 
 echo -n "  iptables incoming trafic: "
-if ${IPTABLES} -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT > /dev/null 2> /dev/null; then
+if ${IPTABLES} -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT; then
 	echo "done"
 else
 	echo "failed"
@@ -33,7 +33,7 @@ else
 fi
 
 echo -n "  iptables outgoung trafic: "
-if ${IPTABLES} -A FORWARD -i eth1 -o eth0 -j ACCEPT > /dev/null 2> /dev/null; then
+if ${IPTABLES} -A FORWARD -i eth1 -o eth0 -j ACCEPT; then
 	echo "done"
 else
 	echo "failed"
