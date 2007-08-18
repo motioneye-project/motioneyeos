@@ -20,7 +20,8 @@ include target/*/*.mk
 
 ifeq	($(strip $(subst ",,$(BR2_PACKAGE_LINUX_EXPERIMENTAL_CONFIG))),y)
 #"))
-include	target/linux-experimental/Makefile.in
+include	target/linux/Makefile.in
+#include	target/linux-experimental/Makefile.in
 else
 include	target/linux/Makefile.in
 endif

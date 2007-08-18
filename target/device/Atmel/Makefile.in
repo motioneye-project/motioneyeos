@@ -44,7 +44,17 @@ LINUX26_BINLOC=$(LINUX26_FORMAT)
 
 LINUX26_COPYTO:=/tftpboot
 
-LINUX26_PATCH_DIR:=target/device/Atmel/Linux/kernel-patches-$(DOWNLOAD_LINUX26_VERSION)
+# Patch during kernel header build
+ifeq ($(BR2_avr32),y)
+LINUX26_KERNEL_PATCH_DIR:=target/device/Atmel/arch-avr32/kernel-patches-$(DOWNLOAD_LINUX26_VERSION)
+endif
+
+# Patch during kernel build
+ifeq ($(BR2_arm),y)
+#LINUX26_PATCH_DIR:=target/device/Atmel/arch-at91/kernel-patches-$(DOWNLOAD_LINUX26_VERSION)
+LINUX26_KERNEL_PATCH_DIR:=target/device/Atmel/arch-at91/kernel-patches-$(DOWNLOAD_LINUX26_VERSION)
+endif
+
 
 # The board specific Makefile.in can redefine BOARD_NAME's
 LINUX_BOARD_NAME:=$(BOARD_NAME)
@@ -64,7 +74,7 @@ UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
 UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
-include $(ATMEL_PATH)/Linux/linux.mk
+include $(ATMEL_PATH)/linux/linux.mk
 endif
 
 ifeq ($(strip $(BR2_TARGET_UBOOT)),y)
