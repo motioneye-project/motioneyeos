@@ -30,7 +30,7 @@ endchoice
 
 config BR2_VENDOR_SITE
 	string
-	default $(BR2_ATMEL_MIRROR) if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "$(BR2_ATMEL_MIRROR)/Source" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_SUFFIX
 	string
