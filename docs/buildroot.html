@@ -779,6 +779,28 @@ mips-linux-gcc -o foo foo.c
     toolchain and the target filesystem with exactly the same
     versions. </p>
 
+    <p>If you maintain several buildroot trees, it might be better to have
+    a shared download location. This can be accessed by creating a symbolic link
+    from the <code>dl</code> directory to the shared download location. </p>
+
+    <p>I.E:</p>
+
+<pre>
+ln -s &lt;shared download location&gt; dl
+</pre>
+
+    <p>Another way of accessing a shared download location is to
+    create the <code>BUILDROOT_DL_DIR</code> environment variable.
+    If this is set, then the value of DL_DIR in the project is
+    overridden. The following line should be added to 
+    <code>&quot;~/.bashrc&quot;</code>. <p>
+
+<pre>
+export BUILDROOT_DL_DIR &lt;shared download location&gt;
+</pre>
+
+
+
     <h2><a name="add_software" id="add_software"></a>Extending Buildroot with
     more software</h2>
 
