@@ -1,6 +1,6 @@
 #############################################################
 #
-# libpcap 
+# libpcap
 #
 #############################################################
 # Copyright (C) 2001-2003 by Erik Andersen <andersen@codepoet.org>
@@ -48,20 +48,10 @@ $(LIBPCAP_DIR)/.configured: $(LIBPCAP_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libdir=/usr/lib \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/usr/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--with-build-cc="$(HOSTCC)" \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		--disable-yydebug \
-		--prefix=/usr \
 		--with-pcap=linux \
 		$(DISABLE_IPV6) \
 	)
@@ -76,8 +66,9 @@ $(STAGING_DIR)/usr/lib/libpcap.a: $(LIBPCAP_DIR)/libpcap.a
 libpcap: uclibc zlib $(STAGING_DIR)/usr/lib/libpcap.a
 
 libpcap-clean:
-	rm -f $(STAGING_DIR)/usr/include/pcap*.h \
-		$(STAGING_DIR)/usr/lib/libpcap.a
+	rm -f $(addprefix $(STAGING_DIR)/usr/,include/pcap*.h \
+					      lib/libpcap.a \
+					      share/man/man?/pcap.*)
 	-$(MAKE) -C $(LIBPCAP_DIR) clean
 
 libpcap-dirclean:
