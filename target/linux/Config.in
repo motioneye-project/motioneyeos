@@ -191,14 +191,7 @@ menu	"Patches"
 	depends on BR2_PACKAGE_LINUX
 
 config BR2_LINUX_BSP_PATCH
-	string	"Additional Atmel patch to apply"
-	default "linux-2.6.20.4-atmel.patch.bz2"	if	BR2_TARGET_AVR32 
-	default "linux-2.6.20.4-atmel.patch.bz2"	if	BR2_TARGET_AT91
-	
-
-config BR2_LINUX_BSP_PATCH
-	string	"Additional patch to apply"
-	depends on ! (BR2_TARGET_AVR32 || BR2_TARGET_AT91)
+	string	"Additional patch to apply (supply full path)"
 	default ""
 
 endmenu
