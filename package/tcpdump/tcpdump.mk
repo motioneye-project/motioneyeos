@@ -34,18 +34,8 @@ $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libdir=/lib \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--includedir=/usr/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--with-build-cc="$(HOSTCC)" \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		--without-crypto \
 		--disable-smb \
 	)
@@ -54,19 +44,19 @@ $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 
 $(TCPDUMP_DIR)/tcpdump: $(TCPDUMP_DIR)/.configured
 	$(MAKE) CC="$(TARGET_CC)" \
-		LDFLAGS="-L$(STAGING_DIR)/lib" \
+		LDFLAGS="-L$(STAGING_DIR)/usr/lib" \
 		LIBS="-lpcap" \
 		INCLS="-I. -I$(STAGING_DIR)/usr/include" \
 		-C $(TCPDUMP_DIR)
 
-$(TARGET_DIR)/sbin/tcpdump: $(TCPDUMP_DIR)/tcpdump
+$(TARGET_DIR)/usr/sbin/tcpdump: $(TCPDUMP_DIR)/tcpdump
 	cp -f $< $@
-	$(STRIP) -s $@
+	$(STRIP) $@
 
-tcpdump: uclibc zlib libpcap $(TARGET_DIR)/sbin/tcpdump
+tcpdump: uclibc zlib libpcap $(TARGET_DIR)/usr/sbin/tcpdump
 
 tcpdump-clean:
-	rm -f $(TARGET_DIR)/sbin/tcpdump
+	rm -f $(TARGET_DIR)/usr/sbin/tcpdump
 	-$(MAKE) -C $(TCPDUMP_DIR) clean
 
 tcpdump-dirclean:
