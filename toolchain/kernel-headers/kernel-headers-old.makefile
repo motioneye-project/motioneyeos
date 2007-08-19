@@ -107,6 +107,7 @@ endif
 ifeq ($(LINUX_HEADERS_IS_KERNEL),n)
 
 $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
+	@echo "Using old sanitized kernel-headers"
 	rm -rf $(LINUX_HEADERS_DIR)
 	$(LINUX_HEADERS_CAT) $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(LINUX_HEADERS_UNPACK_DIR),$(LINUX_HEADERS_DIR))

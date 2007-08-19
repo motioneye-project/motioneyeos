@@ -2,11 +2,11 @@
 # ignored if you are building your own kernel or using the system kernel.
 #
 
-comment "Kernel Header Options"
+menu "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
-	default BR2_KERNEL_HEADERS_2_6_21
+	default BR2_KERNEL_HEADERS_2_6_22
 	help
 	  Select the version of kernel header files you wish to use.
 	  You must select the correct set of header files to match
@@ -58,9 +58,20 @@ choice
 
 endchoice
 
+config BR2_KERNEL_HEADERS_IPMI
+	bool "use ipmi kernel patches"
+	default n
+	depends BR2_KERNEL_HEADERS_2_6_20 || BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
+	help
+	  Apply patches which allow for lzma compressed
+	  initramfs filesystems.  This requires the lzma
+	  program in your development environment.
+
+
 config BR2_KERNEL_HEADERS_LZMA
 	bool "use lzma initramfs kernel patches"
 	default n
+	depends BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
 	help
 	  Apply patches which allow for lzma compressed
 	  initramfs filesystems.  This requires the lzma
@@ -68,6 +79,8 @@ config BR2_KERNEL_HEADERS_LZMA
 
 config BR2_KERNEL_HEADERS_LZMA_INSTALL
 	bool "Install lzma in /usr/local/bin (Requires system password) for sudo"
+	depends on BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
+	depends on BR2_KERNEL_HEADERS_LZMA
 	default n
 	help
 	  Install the lzma package in the /usr/local/bin directory
@@ -76,6 +89,14 @@ config BR2_KERNEL_HEADERS_LZMA_INSTALL
 	  this option. If you do not have lzma installed the only way
 	  to complete the linux build, ifl you apply the lzma patches
 	  is to have '$(STAGING_DIR)/usr/bin' in your path.
+
+config BR2_KERNEL_HEADERS_PATCH_DIR
+	bool "Add additional headers from $(KERNEL_HEADERS_PATCH_DIR)"
+	default n
+	depends BR2_KERNEL_HEADERS_2_6_20 || BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
+	help
+	  Apply additonal kernel patches defined by KERNEL_HEADERS_PATCH_DIR
+	  in your board directory.
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
@@ -90,3 +111,5 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.6.20.4"  if BR2_KERNEL_HEADERS_2_6_20
 	default "2.6.21.5"  if BR2_KERNEL_HEADERS_2_6_21
 	default "2.6.22.1"  if BR2_KERNEL_HEADERS_2_6_22
+
+endmenu

@@ -51,6 +51,7 @@ endif
 ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 
 $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
+	@echo "*** Using kernel-headers generated from kernel source"
 	rm -rf $(LINUX_HEADERS_DIR)
 	[ -d $(BUILD_DIR) ] || $(INSTALL) -d $(BUILD_DIR)
 	$(LINUX_HEADERS_CAT) $(DL_DIR)/$(LINUX_HEADERS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -63,9 +64,9 @@ ifeq ($(BR2_KERNEL_HEADERS_LZMA),y)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) toolchain/kernel-headers/lzma \
 		linux-$(LINUX_HEADERS_VERSION)-\*.patch{,.gz,.bz2}
 endif
-ifneq ($(LINUX26_HEADERS_PATCH_DIR),)
-	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) $(LINUX26_HEADERS_PATCH_DIR) \
-		linux-$(LINUX_HEADERS_VERSION)-\*.patch{,.gz,.bz2}
+ifeq ($(BR2_KERNEL_HEADERS_PATCH_DIR),y)
+	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) $(KERNEL_HEADERS_PATCH_DIR) \
+		\*.patch{,.gz,.bz2}
 endif
 ifeq ($(BR2_PACKAGE_OPENSWAN),y)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) package/openswan \
