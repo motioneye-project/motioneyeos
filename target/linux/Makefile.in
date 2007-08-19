@@ -107,7 +107,7 @@ endif
 	touch $@
 
 $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
-	toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR)
+	toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR) \*.patch
 	touch $@
 endif # ($(LINUX26_VERSION),$(LINUX_HEADERS_VERSION))
 
