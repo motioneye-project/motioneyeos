@@ -24,6 +24,13 @@ config BR2_PACKAGE_PHP_CGI
           cgi interface for php
           you must have at least cli or cgi selected.
 
+config BR2_PACKAGE_PHP_FASTCGI
+        bool "fastcgi"
+        depends on BR2_PACKAGE_PHP_CGI
+        default y
+        help
+          fast cgi interface for php
+
 config BR2_PACKAGE_PHP_OPENSSL
         bool "openssl support"
         depends on BR2_PACKAGE_PHP && BR2_PACKAGE_OPENSSL
