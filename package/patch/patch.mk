@@ -18,6 +18,7 @@ patch-source: $(DL_DIR)/$(GNUPATCH_SOURCE)
 
 $(GNUPATCH_DIR)/.unpacked: $(DL_DIR)/$(GNUPATCH_SOURCE)
 	$(GNUPATCH_CAT) $(DL_DIR)/$(GNUPATCH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(GNUPATCH_DIR)
 	touch $(GNUPATCH_DIR)/.unpacked
 
 $(GNUPATCH_DIR)/.configured: $(GNUPATCH_DIR)/.unpacked
@@ -54,8 +55,7 @@ $(TARGET_DIR)/$(GNUPATCH_TARGET_BINARY): $(GNUPATCH_DIR)/$(GNUPATCH_BINARY)
 patch: uclibc $(TARGET_DIR)/$(GNUPATCH_TARGET_BINARY)
 
 patch-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GNUPATCH_DIR) uninstall
-	-$(MAKE) -C $(GNUPATCH_DIR) clean
+	rm -f $(TARGET_DIR)/$(GNUPATCH_TARGET_BINARY)
 
 patch-dirclean:
 	rm -rf $(GNUPATCH_DIR)
