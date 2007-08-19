@@ -18,6 +18,7 @@ distcc-source: $(DL_DIR)/$(CVS_SOURCE)
 
 $(DISTCC_DIR)/.unpacked: $(DL_DIR)/$(DISTCC_SOURCE)
 	$(DISTCC_CAT) $(DL_DIR)/$(DISTCC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(DISTCC_DIR)
 	touch $(DISTCC_DIR)/.unpacked
 
 $(DISTCC_DIR)/.configured: $(DISTCC_DIR)/.unpacked
