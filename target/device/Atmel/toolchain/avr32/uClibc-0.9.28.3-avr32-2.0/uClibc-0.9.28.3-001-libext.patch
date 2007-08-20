@@ -1,0 +1,13 @@
+diff -urN uClibc-0.9.28.3-0rig/Makefile uClibc-0.9.28.3/Makefile
+--- uClibc-0.9.28.3-0rig/Makefile	2007-07-29 08:20:33.000000000 +0200
++++ uClibc-0.9.28.3/Makefile	2007-08-20 07:02:53.000000000 +0200
+@@ -157,7 +157,8 @@
+ install_dev:
+ 	$(INSTALL) -d $(PREFIX)$(DEVEL_PREFIX)lib
+ 	$(INSTALL) -d $(PREFIX)$(DEVEL_PREFIX)include
+-	-$(INSTALL) -m 644 lib/*.[ao] $(PREFIX)$(DEVEL_PREFIX)lib/
++	-$(INSTALL) -m 644 lib/*.a $(PREFIX)$(DEVEL_PREFIX)lib/
++	-$(INSTALL) -m 644 lib/*.so* $(PREFIX)$(DEVEL_PREFIX)lib/
+ 	if [ "$(KERNEL_SOURCE)" = "$(DEVEL_PREFIX)" ] ; then \
+ 		extra_exclude="--exclude include/linux --exclude include/asm'*'" ; \
+ 	else \
