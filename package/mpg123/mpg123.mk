@@ -21,7 +21,7 @@ endif
 $(DL_DIR)/$(MPG123_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MPG123_SITE)/$(MPG123_SOURCE)
 
-$(MPG123_DIR)/.unpacked:	$(DL_DIR)/$(MPG123_SOURCE)
+$(MPG123_DIR)/.unpacked: $(DL_DIR)/$(MPG123_SOURCE)
 	$(MPG123_CAT) $(DL_DIR)/$(MPG123_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(MPG123_DIR) package/mpg123/ mpg123\*.patch
 	$(CONFIG_UPDATE) $(MPG123_DIR)/build
@@ -53,7 +53,7 @@ $(TARGET_DIR)/$(MPG123_TARGET_BIN): $(MPG123_DIR)/$(MPG123_BIN)
 	$(INSTALL) -D $(MPG123_DIR)/src/$(MPG123_BIN) $(TARGET_DIR)/$(MPG123_TARGET_BIN)
 	$(STRIP) --strip-unneeded $(TARGET_DIR)/$(MPG123_TARGET_BIN)
 
-mpg123:	uclibc $(MPG123_ALSA_DEP) $(TARGET_DIR)/$(MPG123_TARGET_BIN)
+mpg123: uclibc $(MPG123_ALSA_DEP) $(TARGET_DIR)/$(MPG123_TARGET_BIN)
 
 mpg123-clean:
 	-$(MAKE) -C $(MPG123_DIR) clean

@@ -109,7 +109,7 @@ $(TARGET_DIR)/$(DIFFUTILS_TARGET_BINARY): $(DIFFUTILS_DIR)/$(DIFFUTILS_BINARY)
 
 diffutils: uclibc $(TARGET_DIR)/$(DIFFUTILS_TARGET_BINARY)
 
-diff-utils-unpacked:	$(DIFFUTILS_DIR)/.unpacked
+diff-utils-unpacked: $(DIFFUTILS_DIR)/.unpacked
 
 diffutils-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(DIFFUTILS_DIR) uninstall

@@ -20,7 +20,7 @@ SOCAT_WORKDIR=$(SOCAT_DIR)
 $(DL_DIR)/$(SOCAT_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SOCAT_SITE)/$(SOCAT_SOURCE)
 
-$(SOCAT_DIR)/.unpacked:	$(DL_DIR)/$(SOCAT_SOURCE)
+$(SOCAT_DIR)/.unpacked: $(DL_DIR)/$(SOCAT_SOURCE)
 	$(SOCAT_CAT) $(DL_DIR)/$(SOCAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(SOCAT_DIR)/.unpacked
 
@@ -50,7 +50,7 @@ $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked
 	$(SED) 's/#define HAVE_TERMIOS_ISPEED 1/#undef HAVE_TERMIOS_ISPEED/g' config.h; \
 	);
 	
-$(SOCAT_WORKDIR)/socat:	$(SOCAT_WORKDIR)/Makefile
+$(SOCAT_WORKDIR)/socat: $(SOCAT_WORKDIR)/Makefile
 	rm -f $@
 	$(MAKE) -C $(SOCAT_WORKDIR)
 
@@ -59,7 +59,7 @@ $(SOCAT_WORKDIR)/.installed: $(SOCAT_WORKDIR)/socat
 	$(MAKE) -C $(SOCAT_WORKDIR) install prefix=$(TARGET_DIR)/usr DESTDIR=$(TARGET_DIR)
 	touch $@
 
-socat:	uclibc $(SOCAT_WORKDIR)/.installed
+socat: uclibc $(SOCAT_WORKDIR)/.installed
 
 socat-source: $(DL_DIR)/$(SOCAT_SOURCE)
 

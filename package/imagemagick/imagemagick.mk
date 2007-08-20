@@ -76,7 +76,7 @@ $(IMAGEMAGICK_LIB): $(STAGING_DIR)/usr/lib/libMagick.a
 	-$(STRIP) --strip-unneeded $(IMAGEMAGICK_LIB)*
 	touch -c $@
 
-$(IMAGEMAGICK_DIR)/.libinstall:	$(IMAGEMAGICK_LIB)
+$(IMAGEMAGICK_DIR)/.libinstall: $(IMAGEMAGICK_LIB)
 	libtool	--finish $(TARGET_DIR)/usr/lib/ImageMagick-6.3.5/modules-Q16/coders
 	libtool	--finish $(TARGET_DIR)/usr/lib/ImageMagick-6.3.5/modules-Q16/filters
 	touch	$@
@@ -122,7 +122,7 @@ $(TARGET_DIR)/usr/bin/montage: $(IMAGEMAGICK_LIB)
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/montage
 	touch	$@
 
-$(TARGET_DIR)/usr/bin/convert:	$(IMAGEMAGICK_LIB)
+$(TARGET_DIR)/usr/bin/convert: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-convert $(TARGET_DIR)/usr/bin/convert
 	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/convert
 	touch	$@

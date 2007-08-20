@@ -65,7 +65,7 @@ libgcrypt-clean:
 libgcrypt-dirclean:
 	rm -rf $(LIBGCRYPT_DIR)
 
-.PHONY:	libgcrypt
+.PHONY: libgcrypt
 #############################################################
 #
 # Toplevel Makefile options

@@ -21,7 +21,7 @@ customize: $(BUILD_DIR)/.customize
 customize-clean:
 	rm -f $(BUILD_DIR)/.customize
 
-.PHONY:	customize
+.PHONY: customize
 #############################################################
 #
 # Toplevel Makefile options

@@ -55,12 +55,12 @@ lzma-host-clean:
 lzma-host-dirclean:
 	rm -rf $(LZMA_HOST_DIR)
 
-/usr/local/bin/lzma:	lzma_host
+/usr/local/bin/lzma: lzma_host
 	sudo 	$(MAKE) DESTDIR=/usr/local -C $(LZMA_HOST_DIR) install
 	sudo	$(SED) "s,^libdir=.*,libdir=\'/usr/local/lib\',g" \
 		/usr/local/lib/liblzmadec.la
 
-lzma-host-install:	/usr/local/bin/lzma
+lzma-host-install: /usr/local/bin/lzma
 
 ######################################################################
 #

@@ -63,7 +63,7 @@ libcgi-clean:
 libcgi-dirclean:
 	rm -rf $(LIBCGI_DIR)
 
-.PHONY:	libcgi
+.PHONY: libcgi
 #############################################################
 #
 # Toplevel Makefile options

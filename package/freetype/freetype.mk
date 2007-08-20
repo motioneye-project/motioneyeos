@@ -90,13 +90,13 @@ $(FREETYPE_HOST_DIR)/lib/libfreetype.so: $(FREETYPE_DIR1)/.configured
 	$(MAKE) -C $(FREETYPE_DIR1) install
 	touch -c $@
 
-.PHONY:	freetype freetype-source freetype-links freetype-clean freetype-dirclean
+.PHONY: freetype freetype-source freetype-links freetype-clean freetype-dirclean
 
 freetype: uclibc pkgconfig $(TARGET_DIR)/lib/libfreetype.so freetype-links
 
 freetype-source: $(DL_DIR)/$(FREETYPE_SOURCE)
 
-freetype-links:	$(STAGING_DIR)/usr/include/freetype $(STAGING_DIR)/include/freetype
+freetype-links: $(STAGING_DIR)/usr/include/freetype $(STAGING_DIR)/include/freetype
 
 freetype-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FREETYPE_DIR) uninstall
@@ -105,7 +105,7 @@ freetype-clean:
 freetype-dirclean:
 	rm -rf $(FREETYPE_DIR)
 
-.PHONY:	host-freetype
+.PHONY: host-freetype
 
 host-freetype: $(FREETYPE_HOST_DIR)/lib/libfreetype.so
 

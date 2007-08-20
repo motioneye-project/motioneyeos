@@ -48,7 +48,7 @@ $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) -C $(UDEV_DIR) install
 
-$(UDEV_DIR)/.target_install:	$(UDEV_DIR)/$(UDEV_BINARY)
+$(UDEV_DIR)/.target_install: $(UDEV_DIR)/$(UDEV_BINARY)
 	$(INSTALL) -m 0755 package/udev/S10udev $(TARGET_DIR)/etc/init.d
 	$(INSTALL) -m 0644 $(UDEV_DIR)/etc/udev/frugalware/* $(TARGET_DIR)/etc/udev/rules.d
 	( grep udev_root $(TARGET_DIR)/etc/udev/udev.conf > /dev/null 2>&1 || echo 'udev_root=/dev' >> $(TARGET_DIR)/etc/udev/udev.conf )
@@ -62,7 +62,7 @@ endif
 	touch $@
 
 #####################################################################
-.PHONY:	udev-source udev udev-clean udev-dirclean
+.PHONY: udev-source udev udev-clean udev-dirclean
 
 udev: uclibc $(TARGET_DIR)/$(UDEV_TARGET_BINARY) $(UDEV_DIR)/.target_install
 
@@ -80,7 +80,7 @@ udev-dirclean: $(UDEV_DIRCLEAN_DEPS)
 
 #####################################################################
 ifeq ($(strip $(BR2_PACKAGE_UDEV_VOLUME_ID)),y)
-.PHONY:	 udev-volume_id udev-volume_id-clean udev-volume_id-dirclean
+.PHONY: udev-volume_id udev-volume_id-clean udev-volume_id-dirclean
 
 $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION):
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
@@ -91,7 +91,7 @@ $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION):
 	-ln -sf libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(STAGING_DIR)/usr/lib/libvolume_id.so.0
 	-ln -sf libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(STAGING_DIR)/usr/lib/libvolume_id.so
 
-$(STAGING_DIR)/usr/lib/libvolume_id.la:	$(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
+$(STAGING_DIR)/usr/lib/libvolume_id.la: $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
 	$(INSTALL) -m 0755 -D package/udev/libvolume_id.la.tmpl		$(STAGING_DIR)/usr/lib/libvolume_id.la
 	$(SED) 's/REPLACE_CURRENT/$(UDEV_VOLUME_ID_CURRENT)/g'		$(STAGING_DIR)/usr/lib/libvolume_id.la
 	$(SED) 's/REPLACE_AGE/$(UDEV_VOLUME_ID_AGE)/g'			$(STAGING_DIR)/usr/lib/libvolume_id.la
@@ -124,7 +124,7 @@ endif
 
 #####################################################################
 ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
-.PHONY:	udev-scsi_id udev-scsi_id-clean udev-scsi_id-dirclean
+.PHONY: udev-scsi_id udev-scsi_id-clean udev-scsi_id-dirclean
 
 $(TARGET_DIR)/lib/udev/scsi_id: $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
 	$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \

@@ -37,7 +37,7 @@ $(ETHTOOL_DIR)/.installed: $(ETHTOOL_DIR)/ethtool
 	cp $(ETHTOOL_DIR)/ethtool $(TARGET_DIR)/usr/sbin
 	touch $@
 
-ethtool:	uclibc $(ETHTOOL_DIR)/.installed
+ethtool: uclibc $(ETHTOOL_DIR)/.installed
 
 ethtool-source: $(DL_DIR)/$(ETHTOOL_SOURCE)
 

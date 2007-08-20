@@ -64,7 +64,7 @@ libgpg-error-clean:
 libgpg-error-dirclean:
 	rm -rf $(LIBGPG_ERROR_DIR)
 
-.PHONY:	libgpg-error
+.PHONY: libgpg-error
 #############################################################
 #
 # Toplevel Makefile options

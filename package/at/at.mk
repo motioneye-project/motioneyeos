@@ -63,7 +63,7 @@ at-clean:
 at-dirclean:
 	rm -rf $(AT_DIR)
 
-.PHONY:	at
+.PHONY: at
 #############################################################
 #
 # Toplevel Makefile options

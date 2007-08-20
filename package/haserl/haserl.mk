@@ -37,7 +37,7 @@ $(HASERL_DIR)/.installed: $(HASERL_DIR)/src/haserl
 	cp $(HASERL_DIR)/src/haserl $(TARGET_DIR)/usr/bin
 	touch $@
 
-haserl:	uclibc $(HASERL_DIR)/.installed
+haserl: uclibc $(HASERL_DIR)/.installed
 
 haserl-source: $(DL_DIR)/$(HASERL_SOURCE)
 

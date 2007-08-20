@@ -47,7 +47,7 @@ $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
 
 
 
-vpnc:	uclibc $(VPNC_TARGET_BINARY)
+vpnc: uclibc $(VPNC_TARGET_BINARY)
 
 vpnc-source: $(DL_DIR)/$(VPNC_SOURCE)
 

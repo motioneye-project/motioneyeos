@@ -51,7 +51,7 @@ $(STAGING_DIR)/$(MODUTILS_TARGET_BINARY): $(MODUTILS_DIR1)/.build
 	$(MAKE) prefix=$(STAGING_DIR) -C $(MODUTILS_DIR1) install-bin
 	touch -c $@
 
-$(TARGET_DIR)/sbin/rmmod:	$(STAGING_DIR)/$(MODUTILS_TARGET_BINARY)
+$(TARGET_DIR)/sbin/rmmod: $(STAGING_DIR)/$(MODUTILS_TARGET_BINARY)
 	cp -dpf $(STAGING_DIR)/sbin/depmod	$(TARGET_DIR)/sbin/depmod
 	cp -dpf $(STAGING_DIR)/sbin/insmod	$(TARGET_DIR)/sbin/insmod
 	cp -dpf $(STAGING_DIR)/sbin/modinfo	$(TARGET_DIR)/sbin/modinfo

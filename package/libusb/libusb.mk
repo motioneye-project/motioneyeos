@@ -57,7 +57,7 @@ libusb-clean:
 libusb-dirclean:
 	rm -rf $(LIBUSB_DIR)
 
-.PHONY:	libusb
+.PHONY: libusb
 
 #############################################################
 #

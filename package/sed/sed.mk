@@ -71,7 +71,7 @@ $(HOST_SED_DIR)/$(SED_TARGET_BINARY):
 
 .PHONY: sed host-sed use-sed-host-binary
 
-use-sed-host-binary:	$(HOST_SED_DIR)/$(SED_TARGET_BINARY)
+use-sed-host-binary: $(HOST_SED_DIR)/$(SED_TARGET_BINARY)
 
 host-sed: $(HOST_SED_BINARY)
 

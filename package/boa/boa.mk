@@ -18,7 +18,7 @@ BOA_WORKDIR=$(BUILD_DIR)/boa_workdir
 $(DL_DIR)/$(BOA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(BOA_SITE)/$(BOA_SOURCE)
 
-$(BOA_DIR)/.unpacked:	$(DL_DIR)/$(BOA_SOURCE)
+$(BOA_DIR)/.unpacked: $(DL_DIR)/$(BOA_SOURCE)
 	$(BOA_CAT) $(DL_DIR)/$(BOA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $(BOA_DIR)/.unpacked
 
@@ -48,7 +48,7 @@ $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 	);
 	touch $(BOA_WORKDIR)/Makefile
 
-$(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer:	$(BOA_WORKDIR)/Makefile
+$(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer: $(BOA_WORKDIR)/Makefile
 	rm -f $@
 	$(MAKE) -C $(BOA_WORKDIR)
 
@@ -63,7 +63,7 @@ $(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer
 	$(STRIP) --strip-all $(TARGET_DIR)/usr/sbin/boa $(TARGET_DIR)/usr/lib/boa/boa_indexer
 	touch $(BOA_WORKDIR)/.installed
 
-boa:	uclibc $(BOA_WORKDIR)/.installed
+boa: uclibc $(BOA_WORKDIR)/.installed
 
 boa-source: $(DL_DIR)/$(BOA_SOURCE)
 
