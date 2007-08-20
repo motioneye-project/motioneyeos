@@ -15,3 +15,5 @@ endif
 else
 LINUX26_FORMAT=$(strip $(BR2_PACKAGE_LINUX_FORMAT))
 endif
+
+KERNEL_HEADERS_PATCH_DIR:=$(BR2_BOARD_PATH)/kernel-header-patches
