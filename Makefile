@@ -37,7 +37,7 @@ noconfig_targets := menuconfig config oldconfig randconfig \
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(TOPDIR).config
 endif
-ifneq	($(BUILDROOT_DL_DIR),)
+ifneq ($(BUILDROOT_DL_DIR),)
 BR2_DL_DIR:=$(BUILDROOT_DL_DIR)
 endif
 
