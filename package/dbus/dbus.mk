@@ -57,14 +57,14 @@ $(STAGING_DIR)/usr/lib/libdbus-1.so: $(DBUS_DIR)/$(DBUS_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DBUS_DIR)/dbus install
 
 $(TARGET_DIR)/$(DBUS_TARGET_BINARY): $(STAGING_DIR)/usr/lib/libdbus-1.so
-	-mkdir $(TARGET_DIR)/var/run/dbus
+	-mkdir $(TARGET_DIR)/var/run/dbus $(TARGET_DIR)/etc/init.d
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(DBUS_DIR)/dbus install
 	rm -rf $(TARGET_DIR)/usr/lib/dbus-1.0
 	rm -f $(TARGET_DIR)/usr/lib/libdbus-1.la \
 		$(TARGET_DIR)/usr/lib/libdbus-1.so
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdbus-1.so.3.2.0
 	$(MAKE) DESTDIR=$(TARGET_DIR) initddir=/etc/init.d -C $(DBUS_DIR)/bus install
-	$(INSTALL) -m 0755 -D package/dbus/S97messagebus $(TARGET_DIR)/etc/init.d
+	$(INSTALL) -m 0755 package/dbus/S97messagebus $(TARGET_DIR)/etc/init.d
 	rm -f $(TARGET_DIR)/etc/init.d/messagebus
 	rm -rf $(TARGET_DIR)/usr/man
 	-rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
