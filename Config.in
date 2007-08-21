@@ -586,8 +586,6 @@ config BR2_GCC_TARGET_ABI
 
 menu "Build options"
 
-source package/gnuconfig/Config.in
-
 config BR2_WGET
 	string "Wget command"
 	default "wget --passive-ftp -nd"
@@ -755,6 +753,24 @@ config BR2_PREFER_STATIC_LIB
 	  the target filesystem.
 
 	  WARNING: This is highly experimental at the moment.
+
+config BR2_HAVE_MANPAGES
+	bool "manpages on the target"
+	default n
+	help
+	  Leave the manpages on the target.
+	  If you say n here, your target will not contain any
+	  manpage.
+
+config BR2_HAVE_INFOPAGES
+	bool "infopages on the target"
+	default n
+	help
+	  Leave the infopages on the target.
+	  If you say n here, your target will not contain any
+	  infopage.
+
+source package/gnuconfig/Config.in
 
 endmenu
 
