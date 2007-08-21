@@ -34,7 +34,7 @@ sed-source: $(DL_DIR)/$(SED_SOURCE)
 #############################################################
 $(SED_DIR1)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
-	mkdir -p $(HOST_SED_DIR)/bin;
+	mkdir -p $(HOST_SED_DIR)/bin
 	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(SED_DIR1) package/sed/ configure.patch
 	touch $(SED_DIR1)/.unpacked
