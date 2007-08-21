@@ -31,7 +31,7 @@ $(USBUTILS_DIR)/.configured: $(USBUTILS_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-	);
+	)
 	touch $(USBUTILS_DIR)/.configured
 
 $(USBUTILS_DIR)/$(USBUTILS_BINARY): $(USBUTILS_DIR)/.configured

@@ -91,7 +91,7 @@ $(PHP_DIR)/.configured: $(PHP_DIR)/.unpacked
 		$(PHP_CLI) \
 		$(PHP_CGI) \
 		$(PHP_ZLIB) \
-	);
+	)
 	touch $(PHP_DIR)/.configured
 
 $(PHP_DIR)/.built: $(PHP_DIR)/.configured

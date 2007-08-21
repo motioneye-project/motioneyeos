@@ -96,7 +96,7 @@ $(DIFFUTILS_DIR)/.configured: $(DIFFUTILS_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(DIFFUTILS_DIR)/.configured
 
 $(DIFFUTILS_DIR)/$(DIFFUTILS_BINARY): $(DIFFUTILS_DIR)/.configured

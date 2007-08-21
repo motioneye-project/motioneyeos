@@ -46,7 +46,7 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 		--disable-arts \
 		--disable-esd \
 		--disable-nasm \
-		--disable-video-x11 );
+		--disable-video-x11 )
 	touch $@
 
 $(STAGING_DIR)/include/directfb:
@@ -60,7 +60,7 @@ $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(STAGING_DIR)/include/directfb
 	touch $@
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
-	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR) install
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so

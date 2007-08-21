@@ -41,7 +41,7 @@ $(LIBGCRYPT_DIR)/.configured: $(LIBGCRYPT_DIR)/.source
 			--includedir=/usr/include \
 			--mandir=/usr/man \
 			--infodir=/usr/info \
-	);
+	)
 	touch $@
 
 $(LIBGCRYPT_DIR)/$(LIBGCRYPT_LIBRARY): $(LIBGCRYPT_DIR)/.configured

@@ -30,7 +30,7 @@ $(NETCAT_DIR)/.configured: $(NETCAT_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
-	);
+	)
 	touch $@
 
 

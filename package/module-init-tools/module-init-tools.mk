@@ -35,8 +35,8 @@ $(MODULE_INIT_TOOLS_DIR)/.configured: $(MODULE_INIT_TOOLS_DIR)/.unpacked
 		--prefix=/ \
 		--sysconfdir=/etc \
 		--program-transform-name='' \
-	);
-	touch $(MODULE_INIT_TOOLS_DIR)/.configured;
+	)
+	touch $(MODULE_INIT_TOOLS_DIR)/.configured
 
 $(MODULE_INIT_TOOLS_DIR)/$(MODULE_INIT_TOOLS_BINARY): $(MODULE_INIT_TOOLS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(MODULE_INIT_TOOLS_DIR)
@@ -89,8 +89,8 @@ $(MODULE_INIT_TOOLS_DIR2)/.configured: $(MODULE_INIT_TOOLS_DIR2)/.source
 		--build=$(GNU_HOST_NAME) \
 		--sysconfdir=/etc \
 		--program-transform-name='' \
-	);
-	touch $(MODULE_INIT_TOOLS_DIR2)/.configured;
+	)
+	touch $(MODULE_INIT_TOOLS_DIR2)/.configured
 
 $(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY): $(MODULE_INIT_TOOLS_DIR2)/.configured
 	$(MAKE) -C $(MODULE_INIT_TOOLS_DIR2)

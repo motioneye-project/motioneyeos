@@ -112,7 +112,7 @@ $(METACITY_DIR)/.configured: $(METACITY_DIR)/.unpacked
 		--disable-sm \
 		--disable-nls \
 		--disable-startup-notification \
-	);
+	)
 	touch $(METACITY_DIR)/.configured
 
 $(METACITY_DIR)/.compiled: $(METACITY_DIR)/.configured
@@ -120,7 +120,7 @@ $(METACITY_DIR)/.compiled: $(METACITY_DIR)/.configured
 	touch $(METACITY_DIR)/.compiled
 
 $(STAGING_DIR)/lib/*metacity*.so: $(METACITY_DIR)/.compiled
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(METACITY_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(METACITY_DIR) install
 	touch -c $(STAGING_DIR)/lib/*metacity*.so
 
 $(TARGET_DIR)/lib/*metacity*.so: $(STAGING_DIR)/lib/*metacity*.so

@@ -100,7 +100,7 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		--enable-shared \
 		$(IGNORE_EXTERNAL_GETTEXT) \
 		$(OPENMP) \
-	);
+	)
 	touch $@
 
 $(GETTEXT_DIR)/$(GETTEXT_BINARY): $(GETTEXT_DIR)/.configured

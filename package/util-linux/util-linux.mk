@@ -42,7 +42,7 @@ $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		ARCH=$(ARCH) \
-	);
+	)
 	$(SED) "s,^INSTALLSUID=.*,INSTALLSUID=\\$$\(INSTALL\) -m \\$$\(BINMODE\)," \
 		$(UTIL-LINUX_DIR)/MCONFIG
 	$(SED) "s,^USE_TTY_GROUP=.*,USE_TTY_GROUP=no," $(UTIL-LINUX_DIR)/MCONFIG

@@ -41,7 +41,7 @@ $(RAIDTOOLS2_DIR)/.configured: $(RAIDTOOLS2_DIR)/.unpacked
 	        --infodir=/usr/info \
 		$(DISABLE_NLS) \
 	        --enable-fsect-man5 \
-	);
+	)
 	touch $(RAIDTOOLS2_DIR)/.configured
 
 $(RAIDTOOLS2_DIR)/$(RAIDTOOLS2_BINARY): $(RAIDTOOLS2_DIR)/.configured

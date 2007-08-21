@@ -56,7 +56,7 @@ $(HAL_DIR)/.configured: $(HAL_DIR)/.unpacked /usr/bin/pkg-config
 		--disable-static \
 		--disable-acpi-acpid \
 		--disable-acpi-proc \
-	);
+	)
 	touch  $(HAL_DIR)/.configured
 
 $(HAL_DIR)/hald/hald: $(HAL_DIR)/.configured

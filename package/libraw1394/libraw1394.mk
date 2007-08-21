@@ -36,7 +36,7 @@ $(LIBRAW1394_DIR)/.configured: $(LIBRAW1394_DIR)/.unpacked
 		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $@
 
 $(LIBRAW1394_DIR)/.compiled: $(LIBRAW1394_DIR)/.configured

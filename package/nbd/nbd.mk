@@ -27,7 +27,7 @@ $(NBD_DIR)/.configured: $(NBD_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-	);
+	)
 	touch $(NBD_DIR)/.configured
 
 $(NBD_DIR)/nbd-client: $(NBD_DIR)/.configured
@@ -44,7 +44,7 @@ nbd-source: $(DL_DIR)/$(NBD_SOURCE)
 nbd-clean:
 	@if [ -d $(NBD_DIR)/Makefile ] ; then \
 		$(MAKE) -C $(NBD_DIR) clean ; \
-	fi;
+	fi
 
 nbd-dirclean:
 	rm -rf $(NBD_DIR)

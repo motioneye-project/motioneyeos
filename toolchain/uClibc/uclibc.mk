@@ -302,7 +302,7 @@ else
 			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
 				$(TOOL_BUILD_DIR)/uClibc_dev/usr/include/ ; \
 		fi; \
-	fi;
+	fi
 endif
 	touch $@
 
@@ -354,7 +354,7 @@ else
 			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
 				$(STAGING_DIR)/usr/include/ ; \
 		fi; \
-	fi;
+	fi
 endif
 	# Build the host utils.  Need to add an install target...
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
@@ -439,7 +439,7 @@ else
 			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
 				$(TARGET_DIR)/usr/include/ ; \
 		fi; \
-	fi;
+	fi
 endif
 	touch -c $@
 

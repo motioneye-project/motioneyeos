@@ -62,7 +62,7 @@ $(NETSNMP_DIR)/.configured: $(NETSNMP_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $(NETSNMP_DIR)/.configured
 
 $(NETSNMP_DIR)/agent/snmpd: $(NETSNMP_DIR)/.configured
@@ -77,7 +77,7 @@ $(TARGET_DIR)/usr/sbin/snmpd: $(NETSNMP_DIR)/agent/snmpd
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(STAGING_DIR)/usr/include/net-snmp \
 	    ucdincludedir=$(STAGING_DIR)/usr/include/ucd-snmp \
-	    -C $(NETSNMP_DIR) install;
+	    -C $(NETSNMP_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Copy the .conf files.

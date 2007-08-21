@@ -206,7 +206,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		$(MULTILIB) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_ABI) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
-		$(EXTRA_GCC_CONFIG_OPTIONS));
+		$(EXTRA_GCC_CONFIG_OPTIONS))
 	touch $@
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
@@ -269,7 +269,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		$(GCC_WITH_ABI) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
 		$(GCC_USE_SJLJ_EXCEPTIONS) \
 		$(DISABLE_LARGEFILE) \
-		$(EXTRA_GCC_CONFIG_OPTIONS));
+		$(EXTRA_GCC_CONFIG_OPTIONS))
 	touch $@
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
@@ -298,10 +298,10 @@ endif
 	if [ ! -e $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ] ; then \
 		ln -snf $(REAL_GNU_TARGET_NAME)-gcc \
 			$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ; \
-	fi;
+	fi
 	if [ ! -e $(STAGING_DIR)/usr/bin/cc ] ; then \
 		ln -snf gcc $(STAGING_DIR)/usr/bin/cc ; \
-	fi;
+	fi
 	# Set up the symlinks to enable lying about target name.
 	set -e; \
 	(cd $(STAGING_DIR); \
@@ -311,7 +311,7 @@ endif
 			ln -snf $${app} \
 			$(GNU_TARGET_NAME)$${app##$(REAL_GNU_TARGET_NAME)}; \
 		done; \
-	);
+	)
 	#
 	# Now for the ugly 3.3.x soft float hack...
 	#
@@ -321,12 +321,12 @@ ifeq ($(findstring 3.3.,$(GCC_VERSION)),3.3.)
 	if [ ! -f toolchain/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float ] ; then \
 		echo soft float configured but no specs file for this arch ; \
 		/bin/false ; \
-	fi;
+	fi
 	# Replace specs file with one that defaults to soft float mode.
 	if [ ! -f $(STAGING_DIR)/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs ] ; then \
 		echo staging dir specs file is missing ; \
 		/bin/false ; \
-	fi;
+	fi
 	cp toolchain/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float $(STAGING_DIR)/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
 endif
 endif
@@ -406,7 +406,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		$(GCC_USE_SJLJ_EXCEPTIONS) \
 		$(DISABLE_LARGEFILE) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
-		$(EXTRA_TARGET_GCC_CONFIG_OPTIONS));
+		$(EXTRA_TARGET_GCC_CONFIG_OPTIONS))
 	touch $@
 
 $(GCC_BUILD_DIR3)/.compiled: $(GCC_BUILD_DIR3)/.configured
@@ -475,7 +475,7 @@ endif
 	# Make sure we have 'cc'.
 	if [ ! -e $(TARGET_DIR)/usr/bin/cc ] ; then \
 		ln -snf gcc $(TARGET_DIR)/usr/bin/cc ; \
-	fi;
+	fi
 	# These are in /lib, so...
 	#rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
 	touch -c $@

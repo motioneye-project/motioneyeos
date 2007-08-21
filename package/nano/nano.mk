@@ -31,7 +31,7 @@ $(NANO_DIR)/.configured: $(NANO_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
 		--enable-tiny \
-	);
+	)
 	touch $(NANO_DIR)/.configured
 
 $(NANO_DIR)/$(NANO_BINARY): $(NANO_DIR)/.configured

@@ -47,7 +47,7 @@ $(LIBSYSFS_DIR)/.configured: $(LIBSYSFS_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-	);
+	)
 	touch $@
 
 $(LIBSYSFS_DIR)/.compiled: $(LIBSYSFS_DIR)/.configured

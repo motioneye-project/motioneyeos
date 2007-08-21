@@ -29,7 +29,7 @@ $(FBV_DIR)/.configured: $(FBV_DIR)/.unpacked
 		--prefix=/usr \
 		--cc=$(TARGET_CC) \
 		--libs="-lz -lm" \
-	);
+	)
 	touch $@
 
 $(FBV_DIR)/$(FBV_BINARY): $(FBV_DIR)/.configured

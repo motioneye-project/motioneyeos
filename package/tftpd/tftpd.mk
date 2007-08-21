@@ -42,7 +42,7 @@ $(TFTP_HPA_DIR)/.configured: $(TFTP_HPA_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_LARGEFILE) \
 		--without-tcpwrappers \
-	);
+	)
 	touch $(TFTP_HPA_DIR)/.configured
 
 $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY): $(TFTP_HPA_DIR)/.configured
@@ -51,15 +51,15 @@ $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY): $(TFTP_HPA_DIR)/.configured
 # This stuff is needed to work around GNU make deficiencies
 $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY): $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY)
 	@if [ -L $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY) ] ; then \
-		rm -f $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); fi;
+		rm -f $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); fi
 	@if [ ! -f $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) -o $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY) \
 	-ot $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) ] ; then \
 	    set -x; \
 	    rm -f $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); \
-	    cp -a $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); fi ;
+	    cp -a $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); fi 
 	@if [ ! -f $(TARGET_DIR)/etc/init.d/S80tftpd-hpa ] ; then \
 		$(INSTALL) -m 0755 package/tftpd/S80tftpd-hpa $(TARGET_DIR)/etc/init.d; \
-	fi;
+	fi
 
 tftpd: uclibc $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY)
 

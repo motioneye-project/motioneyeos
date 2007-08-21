@@ -54,7 +54,7 @@ $(FLEX_DIR)/.configured: $(FLEX_DIR)/.unpacked
 		--includedir=$(TARGET_DIR)/usr/include \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(FLEX_DIR)/$(FLEX_BINARY): $(FLEX_DIR)/.configured

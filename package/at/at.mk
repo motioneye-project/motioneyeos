@@ -38,7 +38,7 @@ $(AT_DIR)/.configured: $(AT_DIR)/.unpacked
 		--with-atspool=/var/lib/atspool \
 		--with-daemon_username=at \
 		--with-daemon_groupname=at \
-	);
+	)
 	touch $@
 
 $(AT_DIR)/$(AT_BINARY): $(AT_DIR)/.configured

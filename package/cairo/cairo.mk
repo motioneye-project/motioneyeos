@@ -110,7 +110,7 @@ $(CAIRO_DIR)/.configured: $(CAIRO_DIR)/.unpacked
 		--enable-freetype=yes \
 		--enable-xlib=yes \
 		--enable-xlib-xrender=yes \
-	);
+	)
 	touch $(CAIRO_DIR)/.configured
 
 $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY): $(CAIRO_DIR)/.configured
@@ -118,7 +118,7 @@ $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY): $(CAIRO_DIR)/.configured
 	touch -c $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY)
 
 $(STAGING_DIR)/lib/$(CAIRO_BINARY): $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY)
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(CAIRO_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(CAIRO_DIR) install
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libcairo.la
 	touch -c $(STAGING_DIR)/lib/$(CAIRO_BINARY)
 

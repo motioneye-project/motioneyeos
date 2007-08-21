@@ -106,7 +106,7 @@ $(ATK_DIR)/.configured: $(ATK_DIR)/.unpacked
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \
-	);
+	)
 	touch $(ATK_DIR)/.configured
 
 $(ATK_DIR)/atk/.libs/$(ATK_BINARY): $(ATK_DIR)/.configured

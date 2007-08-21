@@ -64,7 +64,7 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 		--disable-sdl \
 		--disable-video4linux \
 		--disable-video4linux2 \
-		--enable-fusion );
+		--enable-fusion )
 	touch $(DIRECTFB_DIR)/.configured
 
 $(DIRECTFB_DIR)/.compiled: $(DIRECTFB_DIR)/.configured

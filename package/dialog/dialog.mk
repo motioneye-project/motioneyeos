@@ -27,7 +27,7 @@ $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-	);
+	)
 	touch $@
 
 $(DIALOG_DIR)/$(DIALOG_BINARY): $(DIALOG_DIR)/.configured

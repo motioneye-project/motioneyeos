@@ -39,7 +39,7 @@ $(LIBDRM_DIR)/.configured: $(LIBDRM_DIR)/.unpacked
 		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $(LIBDRM_DIR)/.configured
 
 $(LIBDRM_DIR)/.compiled: $(LIBDRM_DIR)/.configured

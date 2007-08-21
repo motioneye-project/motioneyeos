@@ -42,7 +42,7 @@ $(MADPLAY_DIR)/.configured: $(MADPLAY_DIR)/.unpacked
 		$(MADPLAY_USE_ALSA) \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(MADPLAY_DIR)/$(MADPLAY_BIN): $(MADPLAY_DIR)/.configured

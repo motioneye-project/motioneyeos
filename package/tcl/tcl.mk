@@ -30,8 +30,8 @@ $(TCL_DIR)/.configured: $(TCL_DIR)/.source
 		--disable-symbols \
 		--disable-langinfo \
 		--disable-framework \
-	);
-	touch $(TCL_DIR)/.configured;
+	)
+	touch $(TCL_DIR)/.configured
 
 $(TCL_DIR)/unix/libtcl8.4.so: $(TCL_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(TCL_DIR)/unix

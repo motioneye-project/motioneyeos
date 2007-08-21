@@ -35,7 +35,7 @@ $(AUMIX_DIR)/.configured: $(AUMIX_DIR)/.unpacked
 		--without-gpm \
 		--without-sysmouse \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $(AUMIX_DIR)/.configured
 
 $(AUMIX_DIR)/src/aumix: $(AUMIX_DIR)/.configured

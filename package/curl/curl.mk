@@ -32,7 +32,7 @@ $(CURL_DIR)/.configured: $(CURL_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=$(STAGING_DIR) \
-	);
+	)
 	touch $(CURL_DIR)/.configured
 
 $(CURL_DIR)/src/.libs/$(CURL_BINARY): $(CURL_DIR)/.configured

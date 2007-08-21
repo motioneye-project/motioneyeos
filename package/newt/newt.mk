@@ -20,7 +20,7 @@ $(DL_DIR)/$(NEWT_SOURCE):
 
 $(NEWT_DIR)/.source: $(DL_DIR)/$(NEWT_SOURCE)
 	$(NEWT_CAT) $(DL_DIR)/$(NEWT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(NEWT_DIR)/.source;
+	touch $(NEWT_DIR)/.source
 
 $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 	(cd $(NEWT_DIR); rm -rf config.cache; \
@@ -43,23 +43,23 @@ $(NEWT_DIR)/.configured: $(NEWT_DIR)/.source
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-	);
-	touch $(NEWT_DIR)/.configured;
+	)
+	touch $(NEWT_DIR)/.configured
 
 $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION): $(NEWT_DIR)/.configured
 	$(MAKE) CFLAGS="$(TARGET_CFLAGS) $(NEWT_CFLAGS)" CC=$(TARGET_CC) -C  $(NEWT_DIR)
 	touch -c $@
 
 $(STAGING_DIR)/usr/lib/libnewt.a: $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
-	cp -a $(NEWT_DIR)/libnewt.a $(STAGING_DIR)/usr/lib/;
-	cp -a $(NEWT_DIR)/newt.h $(STAGING_DIR)/usr/include/;
-	cp -a $(NEWT_DIR)/libnewt.so* $(STAGING_DIR)/usr/lib/;
-	(cd $(STAGING_DIR)/usr/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so);
-	(cd $(STAGING_DIR)/usr/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so.0.51);
+	cp -a $(NEWT_DIR)/libnewt.a $(STAGING_DIR)/usr/lib/
+	cp -a $(NEWT_DIR)/newt.h $(STAGING_DIR)/usr/include/
+	cp -a $(NEWT_DIR)/libnewt.so* $(STAGING_DIR)/usr/lib/
+	(cd $(STAGING_DIR)/usr/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so)
+	(cd $(STAGING_DIR)/usr/lib; ln -fs libnewt.so.$(NEWT_VERSION) libnewt.so.0.51)
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libnewt.so.$(NEWT_VERSION): $(STAGING_DIR)/usr/lib/libnewt.a
-	cp -a $(STAGING_DIR)/usr/lib/libnewt.so* $(TARGET_DIR)/usr/lib/;
+	cp -a $(STAGING_DIR)/usr/lib/libnewt.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libnewt.so*
 	touch -c $@
 

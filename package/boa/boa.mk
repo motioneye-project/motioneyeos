@@ -45,7 +45,7 @@ $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $(BOA_WORKDIR)/Makefile
 
 $(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer: $(BOA_WORKDIR)/Makefile
@@ -70,7 +70,7 @@ boa-source: $(DL_DIR)/$(BOA_SOURCE)
 boa-clean:
 	@if [ -d $(BOA_WORKDIR)/Makefile ] ; then \
 		$(MAKE) -C $(BOA_WORKDIR) clean ; \
-	fi;
+	fi
 
 boa-dirclean:
 	rm -rf $(BOA_DIR) $(BOA_WORKDIR)

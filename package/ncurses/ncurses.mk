@@ -75,7 +75,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.patched
 		--enable-echo --enable-const --enable-overwrite \
 		--enable-broken_linker \
 		$(NCURSES_WANT_STATIC) \
-	);
+	)
 	touch $@
 
 $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/.configured

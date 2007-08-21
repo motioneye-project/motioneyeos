@@ -56,7 +56,7 @@ $(IMAGEMAGICK_DIR)/.configured: $(IMAGEMAGICK_DIR)/.unpacked
 		--without-fpx \
 		--without-freetype \
 		--without-x \
-	);
+	)
 	touch $@
 
 $(IMAGEMAGICK_DIR)/.compiled: $(IMAGEMAGICK_DIR)/.configured

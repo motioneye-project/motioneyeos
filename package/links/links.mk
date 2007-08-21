@@ -37,7 +37,7 @@ $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $(LINKS_DIR)/.configured
 
 $(LINKS_DIR)/links: $(LINKS_DIR)/.configured

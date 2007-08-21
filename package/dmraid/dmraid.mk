@@ -35,7 +35,7 @@ $(DMRAID_DIR)/.configured: $(DMRAID_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
-	);
+	)
 	touch $(DMRAID_DIR)/.configured
 
 $(DMRAID_DIR)/tools/$(DMRAID_BINARY): $(DMRAID_DIR)/.configured

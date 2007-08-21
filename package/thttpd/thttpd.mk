@@ -31,7 +31,7 @@ $(THTTPD_DIR)/.configured: $(THTTPD_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=$(THTTPD_ROOT) \
-	);
+	)
 	touch $(THTTPD_DIR)/.configured
 
 $(THTTPD_DIR)/$(THTTPD_BINARY): $(THTTPD_DIR)/.configured

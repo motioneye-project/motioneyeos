@@ -39,7 +39,7 @@ $(FAKEROOT_DIR1)/.configured: $(FAKEROOT_SOURCE_DIR)/.unpacked
 		$(FAKEROOT_SOURCE_DIR)/configure \
 		--prefix=/usr \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(FAKEROOT_DIR1)/faked: $(FAKEROOT_DIR1)/.configured
@@ -90,7 +90,7 @@ $(FAKEROOT_DIR2)/.configured: $(FAKEROOT_SOURCE_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(FAKEROOT_DIR2)/faked: $(FAKEROOT_DIR2)/.configured

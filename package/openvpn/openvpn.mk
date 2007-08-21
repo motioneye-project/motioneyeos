@@ -54,7 +54,7 @@ $(OPENVPN_DIR)/.configured: $(OPENVPN_DIR)/.unpacked
 		--program-prefix="" \
 		--enable-small \
 		$(THREAD_MODEL) \
-	);
+	)
 	touch $(OPENVPN_DIR)/.configured
 
 $(OPENVPN_DIR)/$(OPENVPN_BINARY): $(OPENVPN_DIR)/.configured

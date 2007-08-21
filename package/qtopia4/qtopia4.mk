@@ -168,7 +168,7 @@ endif
 		$(QTOPIA4_LARGEFILE) \
 		$(QTOPIA4_ENDIAN) \
 		$(QTOPIA4_APPROVE_GPL_LICENSE) \
-	);
+	)
 	touch $(QTOPIA4_TARGET_DIR)/.configured
 
 $(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_TARGET_DIR)/.configured
@@ -254,7 +254,7 @@ endif
 		$(QTOPIA4_LARGEFILE) \
 		$(QTOPIA4_ENDIAN) \
 		$(QTOPIA4_APPROVE_GPL_LICENSE) \
-	);
+	)
 	touch $(QTOPIA4_HOST_DIR)/.configured
 
 $(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_HOST_DIR)/.configured

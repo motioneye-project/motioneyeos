@@ -39,7 +39,7 @@ $(BRIDGE_BUILD_DIR)/.configured: $(BRIDGE_BUILD_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		--with-linux-headers=$(LINUX_HEADERS_DIR) \
-	);
+	)
 	touch $(BRIDGE_BUILD_DIR)/.configured
 
 $(BRIDGE_BUILD_DIR)/brctl/brctl: $(BRIDGE_BUILD_DIR)/.configured

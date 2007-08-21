@@ -116,7 +116,7 @@ $(LIBGTK2_DIR)/.configured: $(LIBGTK2_DIR)/.unpacked
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \
-	);
+	)
 	touch $(LIBGTK2_DIR)/.configured
 
 $(LIBGTK2_DIR)/gtk/.libs/$(LIBGTK2_BINARY): $(LIBGTK2_DIR)/.configured
@@ -124,7 +124,7 @@ $(LIBGTK2_DIR)/gtk/.libs/$(LIBGTK2_BINARY): $(LIBGTK2_DIR)/.configured
 	touch -c $(LIBGTK2_DIR)/gtk/.libs/$(LIBGTK2_BINARY)
 
 $(STAGING_DIR)/lib/$(LIBGTK2_BINARY): $(LIBGTK2_DIR)/gtk/.libs/$(LIBGTK2_BINARY)
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBGTK2_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBGTK2_DIR) install
 	touch -c $(STAGING_DIR)/lib/$(LIBGTK2_BINARY)
 
 $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0: $(STAGING_DIR)/lib/$(LIBGTK2_BINARY)

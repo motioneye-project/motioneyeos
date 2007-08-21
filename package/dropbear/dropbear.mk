@@ -37,7 +37,7 @@ $(DROPBEAR_DIR)/.configured: $(DROPBEAR_DIR)/.unpacked
 		--localstatedir=/var \
 		$(DISABLE_NLS) \
 		--with-shared \
-	);
+	)
 	touch $@
 
 $(DROPBEAR_DIR)/$(DROPBEAR_BINARY): $(DROPBEAR_DIR)/.configured

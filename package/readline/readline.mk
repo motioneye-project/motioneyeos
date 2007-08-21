@@ -45,7 +45,7 @@ $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
 		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $@
 
 $(READLINE_DIR)/$(READLINE_BINARY): $(READLINE_DIR)/.configured

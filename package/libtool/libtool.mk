@@ -49,7 +49,7 @@ $(LIBTOOL_DIR)/.configured: $(LIBTOOL_SRC_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(LIBTOOL_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_DIR)/.configured
@@ -70,7 +70,7 @@ $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
 	    infodir=$(TARGET_DIR)/usr/info \
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
-	    -C $(LIBTOOL_DIR) install;
+	    -C $(LIBTOOL_DIR) install
 	$(STRIP) $(TARGET_DIR)//usr/lib/libltdl.so.*.*.* > /dev/null 2>&1
 	$(SED) "s,^CC.*,CC=\"/usr/bin/gcc\"," $(TARGET_DIR)/usr/bin/libtool
 	$(SED) "s,^LD.*,LD=\"/usr/bin/ld\"," $(TARGET_DIR)/usr/bin/libtool
@@ -107,7 +107,7 @@ $(LIBTOOL_HOST_DIR)/.configured: $(LIBTOOL_SRC_DIR)/.unpacked
 		$(LIBTOOL_SRC_DIR)/configure \
 		--prefix=$(STAGING_DIR)/usr \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_HOST_DIR)/.configured

@@ -39,7 +39,7 @@ $(MODUTILS_DIR1)/.configured: $(MODUTILS_DIR1)/.source
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
 		--sysconfdir=/etc \
-	);
+	)
 	touch $(MODUTILS_DIR1)/.configured
 
 $(MODUTILS_DIR1)/.build: $(MODUTILS_DIR1)/.configured
@@ -110,8 +110,8 @@ $(MODUTILS_DIR2)/.configured: $(MODUTILS_DIR2)/.source
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
 		--sysconfdir=/etc \
-	);
-	touch $(MODUTILS_DIR2)/.configured;
+	)
+	touch $(MODUTILS_DIR2)/.configured
 
 $(MODUTILS_DIR2)/$(MODUTILS_BINARY): $(MODUTILS_DIR2)/.configured
 	$(MAKE1) -C $(MODUTILS_DIR2)

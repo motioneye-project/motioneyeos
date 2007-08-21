@@ -122,7 +122,7 @@ $(GTK2_ENGINES_DIR)/.configured: $(GTK2_ENGINES_DIR)/.unpacked
 		--disable-development \
 		--disable-paranoia \
 		--disable-deprecated \
-	);
+	)
 	touch $(GTK2_ENGINES_DIR)/.configured
 
 $(GTK2_ENGINES_DIR)/gtk/.libs/$(GTK2_ENGINES_BINARY): $(GTK2_ENGINES_DIR)/.configured
@@ -130,7 +130,7 @@ $(GTK2_ENGINES_DIR)/gtk/.libs/$(GTK2_ENGINES_BINARY): $(GTK2_ENGINES_DIR)/.confi
 	touch -c $(GTK2_ENGINES_DIR)/gtk/.libs/$(GTK2_ENGINES_BINARY)
 
 $(STAGING_DIR)/lib/$(GTK2_ENGINES_BINARY): $(GTK2_ENGINES_DIR)/gtk/.libs/$(GTK2_ENGINES_BINARY)
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(GTK2_ENGINES_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(GTK2_ENGINES_DIR) install
 	touch -c $(STAGING_DIR)/lib/$(GTK2_ENGINES_BINARY)
 
 $(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines/$(GTK2_ENGINES_BINARY): $(STAGING_DIR)/lib/$(GTK2_ENGINES_BINARY)
@@ -145,7 +145,7 @@ $(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines/$(GTK2_ENGINES_BINARY): $(STAGING_DIR)/
 gtk2-engines: libgtk2 $(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines/$(GTK2_ENGINES_BINARY)
 
 gtk2-engines-clean:
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(GTK2_ENGINES_DIR) uninstall;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(GTK2_ENGINES_DIR) uninstall
 	-$(MAKE) -C $(GTK2_ENGINES_DIR) clean
 
 gtk2-engines-dirclean:

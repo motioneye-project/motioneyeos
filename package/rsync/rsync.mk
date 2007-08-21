@@ -31,7 +31,7 @@ $(RSYNC_DIR)/.configured: $(RSYNC_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--with-included-popt \
-	);
+	)
 	touch $(RSYNC_DIR)/.configured
 
 $(RSYNC_DIR)/$(RSYNC_BINARY): $(RSYNC_DIR)/.configured

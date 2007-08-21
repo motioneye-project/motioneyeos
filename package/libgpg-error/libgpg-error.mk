@@ -40,8 +40,8 @@ $(LIBGPG_ERROR_DIR)/.configured: $(LIBGPG_ERROR_DIR)/.source
 			--includedir=/include \
 			--mandir=/usr/man \
 			--infodir=/usr/info \
-	);
-	touch $(LIBGPG_ERROR_DIR)/.configured;
+	)
+	touch $(LIBGPG_ERROR_DIR)/.configured
 
 $(LIBGPG_ERROR_DIR)/$(LIBGPG_ERROR_LIBRARY): $(LIBGPG_ERROR_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBGPG_ERROR_DIR)

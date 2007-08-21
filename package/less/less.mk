@@ -27,8 +27,8 @@ $(LESS_DIR)/.configured: $(LESS_DIR)/.source
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-	);
-	touch $(LESS_DIR)/.configured;
+	)
+	touch $(LESS_DIR)/.configured
 
 $(LESS_DIR)/$(LESS_BINARY): $(LESS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LESS_DIR)

@@ -55,7 +55,7 @@ $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $@
 
 $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY): $(AUTOMAKE_DIR)/.configured
@@ -105,7 +105,7 @@ $(AUTOMAKE_HOST_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked
 		WANT_AUTOCONF=2.5 \
 		$(AUTOMAKE_SRC_DIR)/configure \
 		--prefix=$(STAGING_DIR)/usr \
-	);
+	)
 	touch $@
 
 $(AUTOMAKE_HOST_DIR)/$(AUTOMAKE_BINARY): $(AUTOMAKE_HOST_DIR)/.configured

@@ -51,7 +51,7 @@ $(KEXEC_DIR)/.configured: $(KEXEC_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
 		$(KEXEC_CONFIG_OPTS) \
-	);
+	)
 	touch $@
 
 $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/$(KEXEC_BINARY): $(KEXEC_DIR)/.configured

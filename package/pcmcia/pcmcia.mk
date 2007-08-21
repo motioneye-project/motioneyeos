@@ -61,16 +61,16 @@ $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
 	touch -c $(PCMCIA_DIR)/cardmgr/cardmgr
 
 $(TARGET_DIR)/sbin/cardmgr: $(PCMCIA_DIR)/cardmgr/cardmgr
-	rm -rf $(TARGET_DIR)/etc/pcmcia;
+	rm -rf $(TARGET_DIR)/etc/pcmcia
 	$(MAKE) -i -C $(PCMCIA_DIR) install
-	rm -rf $(TARGET_DIR)/usr/man;
-	rm -rf $(TARGET_DIR)/usr/share/man;
-	rm -rf $(TARGET_DIR)/usr/X11R6/man;
-	rm -rf $(TARGET_DIR)/etc/rc.d;
-	rm -rf $(TARGET_DIR)/etc/rc?.d;
-	rm -f $(TARGET_DIR)/etc/init.d/pcmcia*;
+	rm -rf $(TARGET_DIR)/usr/man
+	rm -rf $(TARGET_DIR)/usr/share/man
+	rm -rf $(TARGET_DIR)/usr/X11R6/man
+	rm -rf $(TARGET_DIR)/etc/rc.d
+	rm -rf $(TARGET_DIR)/etc/rc?.d
+	rm -f $(TARGET_DIR)/etc/init.d/pcmcia*
 	rm -f $(TARGET_DIR)/sbin/dump_cis $(TARGET_DIR)/sbin/pack_cis
-	rm -f $(TARGET_DIR)/usr/share/pnp.ids $(TARGET_DIR)/sbin/lspnp $(TARGET_DIR)/sbin/setpnp;
+	rm -f $(TARGET_DIR)/usr/share/pnp.ids $(TARGET_DIR)/sbin/lspnp $(TARGET_DIR)/sbin/setpnp
 	rm -f $(TARGET_DIR)/sbin/pcinitrd
 	rm -f $(TARGET_DIR)/sbin/probe
 	rm -f $(TARGET_DIR)/sbin/ide_info

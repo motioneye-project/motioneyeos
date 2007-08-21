@@ -45,7 +45,7 @@ $(DBUS_GLIB_DIR)/.configured: $(DBUS_GLIB_DIR)/.unpacked /usr/bin/pkg-config
 		--disable-xml-docs \
 		--disable-doxygen-docs \
 		--enable-asserts=yes \
-	);
+	)
 	touch  $(DBUS_GLIB_DIR)/.configured
 
 $(DBUS_GLIB_DIR)/$(DBUS_GLIB_BINARY): $(DBUS_GLIB_DIR)/.configured

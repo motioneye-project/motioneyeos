@@ -42,7 +42,7 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 		--without-x \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured

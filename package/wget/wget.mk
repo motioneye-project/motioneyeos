@@ -32,7 +32,7 @@ $(WGET_DIR)/.configured: $(WGET_DIR)/.unpacked
 		--disable-ipv6 \
 		$(DISABLE_NLS) \
 		--without-ssl \
-	);
+	)
 	touch $(WGET_DIR)/.configured
 
 $(WGET_DIR)/$(WGET_BINARY): $(WGET_DIR)/.configured

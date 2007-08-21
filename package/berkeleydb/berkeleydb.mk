@@ -48,7 +48,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 		--disable-compat185 \
 		--with-pic \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	$(SED) 's/\.lo/.o/g' $(DB_DIR)/build_unix/Makefile
 	touch $(DB_DIR)/.configured
 

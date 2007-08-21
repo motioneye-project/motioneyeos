@@ -48,7 +48,7 @@ $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $(PPPD_DIR)/.configured
 
 $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured

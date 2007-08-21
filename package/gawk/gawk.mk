@@ -44,7 +44,7 @@ $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(GAWK_DIR)/.configured
 
 $(GAWK_DIR)/$(GAWK_BINARY): $(GAWK_DIR)/.configured

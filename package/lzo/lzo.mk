@@ -40,7 +40,7 @@ $(LZO_DIR)/.configured: $(LZO_DIR)/.unpacked
 		--includedir=/usr/include \
 		--libdir=/usr/lib \
 		$(LZO_CONFIG_SHARED) \
-	);
+	)
 	touch $@
 
 $(LZO_DIR)/src/liblzo.la: $(LZO_DIR)/.configured

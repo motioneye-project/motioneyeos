@@ -33,7 +33,7 @@ $(LIBEVENT_DIR)/.configured: $(LIBEVENT_DIR)/.unpacked
 		--prefix=/usr \
 		--disable-static \
 		--with-gnu-ld \
-	);
+	)
 	touch $@
 
 $(LIBEVENT_DIR)/$(LIBEVENT_BINARY): $(LIBEVENT_DIR)/.configured

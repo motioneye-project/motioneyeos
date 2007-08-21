@@ -58,7 +58,7 @@ $(LIGHTTPD_DIR)/.configured: $(LIGHTTPD_DIR)/.unpacked
 		--program-prefix="" \
 		$(DISABLE_IPV6) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY): $(LIGHTTPD_DIR)/.configured
@@ -72,7 +72,7 @@ $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY): $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY)
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/lighttpd/lighttpd.conf ] ; then \
 		$(INSTALL) -m 0644 -D $(LIGHTTPD_DIR)/doc/lighttpd.conf $(TARGET_DIR)/etc/lighttpd/lighttpd.conf; \
-	fi;
+	fi
 	$(INSTALL) -m 0755 -D package/lighttpd/rc.lighttpd $(TARGET_DIR)/etc/init.d/S99lighttpd
 
 ifeq ($(strip $(BR2_PACKAGE_LIGHTTPD_OPENSSL)),y)

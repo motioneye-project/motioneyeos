@@ -47,7 +47,7 @@ $(STUNNEL_DIR)/.configured: $(STUNNEL_DIR)/.unpacked
 		--with-ssl=$(STAGING_DIR) \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(STUNNEL_DIR)/.configured
 
 $(STUNNEL_DIR)/src/stunnel: $(STUNNEL_DIR)/.configured

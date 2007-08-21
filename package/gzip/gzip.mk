@@ -42,7 +42,7 @@ $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(GZIP_DIR)/.configured
 
 $(GZIP_BINARY): $(GZIP_DIR)/.configured

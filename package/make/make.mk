@@ -45,7 +45,7 @@ $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(GNUMAKE_DIR)/$(GNUMAKE_BINARY): $(GNUMAKE_DIR)/.configured

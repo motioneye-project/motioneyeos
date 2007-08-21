@@ -42,7 +42,7 @@ $(DISTCC_DIR)/.configured: $(DISTCC_DIR)/.unpacked
 		--with-included-popt \
 		--without-gtk \
 		--without-gnome \
-	);
+	)
 	touch $(DISTCC_DIR)/.configured
 
 $(DISTCC_DIR)/$(DISTCC_BINARY): $(DISTCC_DIR)/.configured

@@ -112,7 +112,7 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		$(MULTILIB) \
 		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
-		$(EXTRA_BINUTILS_CONFIG_OPTIONS));
+		$(EXTRA_BINUTILS_CONFIG_OPTIONS))
 	touch $@
 
 $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
@@ -161,7 +161,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		$(MULTILIB) \
 		$(BINUTILS_TARGET_CONFIG_OPTIONS) \
 		--disable-werror \
-		$(SOFT_FLOAT_CONFIG_OPTION) );
+		$(SOFT_FLOAT_CONFIG_OPTION) )
 	touch $@
 
 $(BINUTILS_DIR2)/binutils/objdump: $(BINUTILS_DIR2)/.configured

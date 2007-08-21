@@ -34,7 +34,7 @@ $(MICROWIN_DIR)/.prepared: $(MICROWIN_DIR)/.unpacked
 
 $(MICROWIN_DIR)/.configured: $(MICROWIN_DIR)/.prepared
 	(cd $(MICROWIN_DIR); \
-	);
+	)
 	touch $(MICROWIN_DIR)/.configured
 
 $(MICROWIN_BINARY): $(MICROWIN_DIR)/.configured

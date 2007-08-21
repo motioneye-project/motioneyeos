@@ -48,7 +48,7 @@ $(SQLITE_DIR)/.configured: $(SQLITE_DIR)/.unpacked
 		--enable-tempstore \
 		--enable-threadsafe \
 		--enable-releasemode \
-	);
+	)
 	touch $(SQLITE_DIR)/.configured
 
 $(SQLITE_DIR)/sqlite3: $(SQLITE_DIR)/.configured
@@ -69,7 +69,7 @@ sqlite-source: $(DL_DIR)/$(SQLITE_SOURCE)
 sqlite-clean:
 	@if [ -d $(SQLITE_DIR)/Makefile ] ; then \
 		$(MAKE) -C $(SQLITE_DIR) clean ; \
-	fi;
+	fi
 
 sqlite-dirclean:
 	rm -rf $(SQLITE_DIR)

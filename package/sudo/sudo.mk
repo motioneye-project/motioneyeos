@@ -47,7 +47,7 @@ $(SUDO_DIR)/.configured: $(SUDO_DIR)/.unpacked $(SUDO_CONFIG_FILE)
 		--without-interfaces \
 		--disable-authentication \
 		$(SUDO_EXTRA_CONFIG) \
-	);
+	)
 
 	touch $(SUDO_DIR)/.configured
 

@@ -43,7 +43,7 @@ $(DASH_DIR)/.configured: $(DASH_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $(DASH_DIR)/.configured
 
 $(DASH_DIR)/$(DASH_BINARY): $(DASH_DIR)/.configured

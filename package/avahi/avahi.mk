@@ -6,7 +6,7 @@
 #
 # This program is free software; you can redistribute it
 # and/or modify it under the terms of the GNU Lesser General
-# Public License as published by the Free Software Foundation;
+# Public License as published by the Free Software Foundation
 # either version 2.1 of the License, or (at your option) any
 # later version.
 
@@ -139,7 +139,7 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 		--with-avahi-group=default \
 		--with-autoipd-user=default \
 		--with-autoipd-group=default \
-	);
+	)
 	touch $@
 
 $(AVAHI_DIR)/.compiled: $(AVAHI_DIR)/.configured

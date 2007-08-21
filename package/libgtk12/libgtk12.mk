@@ -50,7 +50,7 @@ $(LIBGTK12_DIR)/.configured: $(LIBGTK12_DIR)/.unpacked
 		--disable-glibtest \
 		--disable-xim \
 		--enable-shared \
-	);
+	)
 	touch $(LIBGTK12_DIR)/.configured
 
 $(LIBGTK12_DIR)/gtk/.libs/$(LIBGTK12_BINARY): $(LIBGTK12_DIR)/.configured
@@ -72,7 +72,7 @@ $(STAGING_DIR)/lib/$(LIBGTK12_BINARY): $(LIBGTK12_DIR)/gtk/.libs/$(LIBGTK12_BINA
 	    oldincludedir=$(STAGING_DIR)/include \
 	    infodir=$(STAGING_DIR)/info \
 	    mandir=$(STAGING_DIR)/man \
-	    -C $(LIBGTK12_DIR) install;
+	    -C $(LIBGTK12_DIR) install
 	touch -c $(STAGING_DIR)/lib/$(LIBGTK12_BINARY)
 
 $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1: $(STAGING_DIR)/lib/$(LIBGTK12_BINARY)

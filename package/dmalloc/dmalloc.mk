@@ -63,7 +63,7 @@ $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 		--infodir=/usr/info \
 		--enable-shlib \
 		$(DMALLOC_CONFIG_ARGS) \
-	);
+	)
 	touch $@
 
 $(DMALLOC_DIR)/$(DMALLOC_BINARY): $(DMALLOC_DIR)/.configured
@@ -78,7 +78,7 @@ $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY): $(DMALLOC_DIR)/$(DMALLOC_BINARY)
 		includedir="$(STAGING_DIR)/usr/share/info/" \
 		-C $(DMALLOC_DIR) install
 	(cd $(STAGING_DIR)/usr/lib; \
-		mv libdmalloc*.so $(TARGET_DIR)/usr/lib);
+		mv libdmalloc*.so $(TARGET_DIR)/usr/lib)
 	cp -dpf $(STAGING_DIR)/usr/bin/dmalloc $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
 	$(STRIP) $(STRIP_STRIP_ALL) $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
 

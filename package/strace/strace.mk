@@ -49,7 +49,7 @@ $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(STRACE_DIR)/.configured
 
 $(STRACE_DIR)/strace: $(STRACE_DIR)/.configured

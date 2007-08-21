@@ -39,8 +39,8 @@ $(LIBCGI_DIR)/.configured: $(LIBCGI_DIR)/.source
 			--includedir=/include \
 			--mandir=/usr/man \
 			--infodir=/usr/info \
-	);
-	touch $(LIBCGI_DIR)/.configured;
+	)
+	touch $(LIBCGI_DIR)/.configured
 
 $(LIBCGI_DIR)/$(LIBCGI_LIBRARY): $(LIBCGI_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBCGI_DIR)

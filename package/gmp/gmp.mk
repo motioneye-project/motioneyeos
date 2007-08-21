@@ -43,7 +43,7 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 		--prefix=/usr \
 		$(PREFERRED_LIB_FLAGS) \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(GMP_TARGET_DIR)/.libs/$(GMP_BINARY): $(GMP_TARGET_DIR)/.configured
@@ -86,7 +86,7 @@ $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(GMP_HOST_DIR)/lib/libgmp$(HOST_LIBEXT) $(GMP_HOST_DIR)/lib/libgmp$(HOST_SHREXT) $(GMP_HOST_DIR)/lib/libgmp$(HOST_SHREXT).(GMP_LIBVERSION): $(GMP_DIR2)/.configured

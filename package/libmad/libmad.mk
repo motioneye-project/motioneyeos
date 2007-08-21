@@ -32,7 +32,7 @@ $(LIBMAD_DIR)/.configured: $(LIBMAD_DIR)/.unpacked
 		--disable-debugging \
 		--enable-speed \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(LIBMAD_DIR)/libmad.la: $(LIBMAD_DIR)/.configured
@@ -60,7 +60,7 @@ libmad-source: $(DL_DIR)/$(LIBMAD_SOURCE)
 libmad-clean:
 	@if [ -d $(LIBMAD_DIR)/Makefile ] ; then \
 		$(MAKE) -C $(LIBMAD_DIR) clean ; \
-	fi;
+	fi
 	rm -f $(STAGING_DIR)/usr/lib/libmad.*
 	rm -f $(STAGING_DIR)/usr/include/mad.h
 	rm -f $(TARGET_DIR)/usr/lib/libmad.*

@@ -51,7 +51,7 @@ $(TIFF_DIR)/.configured: $(TIFF_DIR)/.unpacked
 		--with-jpeg-lib-dir=$(STAGING_DIR)/lib \
 		--with-zlib-include-dir=$(STAGING_DIR)/usr/include \
 		--with-zlib-lib-dir=$(STAGING_DIR)/lib \
-	);
+	)
 	touch $(TIFF_DIR)/.configured
 
 $(TIFF_DIR)/libtiff/.libs/libtiff.a: $(TIFF_DIR)/.configured

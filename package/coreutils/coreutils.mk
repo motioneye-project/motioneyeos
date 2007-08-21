@@ -101,7 +101,7 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		--disable-rpath \
 		--disable-dependency-tracking \
-	);
+	)
 	touch $@
 
 $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured

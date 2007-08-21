@@ -43,7 +43,7 @@ $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 		--infodir=/usr/info \
 		--enable-shared \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $(LIBGLIB12_DIR)/.configured
 
 $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.configured
@@ -64,7 +64,7 @@ $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINAR
 	    oldincludedir=$(STAGING_DIR)/include \
 	    infodir=$(STAGING_DIR)/info \
 	    mandir=$(STAGING_DIR)/man \
-	    -C $(LIBGLIB12_DIR) install;
+	    -C $(LIBGLIB12_DIR) install
 
 $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10: $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY)
 	cp -dpf $(STAGING_DIR)/lib/libglib.so $(TARGET_DIR)/lib/

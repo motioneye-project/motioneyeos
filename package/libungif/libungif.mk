@@ -37,7 +37,7 @@ $(LIBUNGIF_DIR)/.configured: $(LIBUNGIF_DIR)/.unpacked
 		--enable-static \
 		--prefix=/usr \
 		--without-x \
-	);
+	)
 	touch $@
 
 $(LIBUNGIF_DIR)/lib/.libs/libungif.a: $(LIBUNGIF_DIR)/.configured

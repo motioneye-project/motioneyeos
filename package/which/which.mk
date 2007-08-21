@@ -29,7 +29,7 @@ $(WHICH_DIR)/.configured: $(WHICH_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/ \
-	);
+	)
 	touch $(WHICH_DIR)/.configured
 
 $(WHICH_DIR)/$(WHICH_BINARY): $(WHICH_DIR)/.configured

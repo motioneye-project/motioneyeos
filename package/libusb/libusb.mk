@@ -42,7 +42,7 @@ $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
 		--prefix=/ \
 		--disable-debug \
 		--disable-build-docs \
-	);
+	)
 	touch $@
 
 $(STAGING_DIR)/lib/libusb.so: $(LIBUSB_DIR)/.configured

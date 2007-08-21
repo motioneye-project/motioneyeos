@@ -41,7 +41,7 @@ $(ARGUS_DIR)/.configured: $(ARGUS_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(ARGUS_DIR)/$(ARGUS_BINARY): $(ARGUS_DIR)/.configured

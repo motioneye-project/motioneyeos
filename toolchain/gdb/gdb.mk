@@ -105,7 +105,7 @@ $(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--disable-sim --enable-gdbserver \
 		--without-included-gettext \
 		--disable-werror \
-	);
+	)
 ifeq ($(BR2_ENABLE_LOCALE),y)
 	-$(SED) "s,^INTL *=.*,INTL = -lintl,g;" $(GDB_DIR)/gdb/Makefile
 endif
@@ -162,7 +162,7 @@ $(GDB_SERVER_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--without-uiout $(DISABLE_GDBMI) \
 		--disable-tui --disable-gdbtk --without-x \
 		--without-included-gettext \
-	);
+	)
 	touch $@
 
 $(GDB_SERVER_DIR)/gdbserver: $(GDB_SERVER_DIR)/.configured
@@ -208,7 +208,7 @@ $(GDB_HOST_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--disable-tui --disable-gdbtk --without-x \
 		--without-included-gettext \
 		--enable-threads \
-	);
+	)
 	touch $@
 
 $(GDB_HOST_DIR)/gdb/gdb: $(GDB_HOST_DIR)/.configured

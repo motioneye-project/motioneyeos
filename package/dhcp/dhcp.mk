@@ -36,7 +36,7 @@ $(DHCP_DIR)/.configured: $(DHCP_DIR)/.unpacked
 	(cd $(DHCP_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure );
+		./configure )
 	touch $(DHCP_DIR)/.configured
 
 $(DHCP_DIR)/$(DHCP_RELAY_BINARY): $(DHCP_DIR)/.configured

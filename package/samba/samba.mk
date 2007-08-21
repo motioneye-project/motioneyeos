@@ -45,7 +45,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		--with-included-iniparser \
 		--disable-cups \
 		--disable-static \
-	);
+	)
 	touch $@
 
 $(SAMBA_DIR)/$(SAMBA_BINARY): $(SAMBA_DIR)/.configured
@@ -101,7 +101,7 @@ $(TARGET_DIR)/$(SAMBA_TARGET_BINARY): $(SAMBA_DIR)/$(SAMBA_BINARY)
 	$(INSTALL) -m 0755 package/samba/S91smb $(TARGET_DIR)/etc/init.d
 	@if [ ! -f $(TARGET_DIR)/etc/samba/smb.conf ] ; then \
 		$(INSTALL) -m 0755 -D package/samba/simple.conf $(TARGET_DIR)/etc/samba/smb.conf; \
-	fi;
+	fi
 	rm -rf $(TARGET_DIR)/var/cache/samba
 	rm -rf $(TARGET_DIR)/var/lib/samba
 

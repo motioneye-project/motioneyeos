@@ -40,7 +40,7 @@ $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
 		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $(FREETYPE_DIR)/.configured
 
 $(FREETYPE_DIR)/.compiled: $(FREETYPE_DIR)/.configured
@@ -79,7 +79,7 @@ $(FREETYPE_DIR1)/.configured: $(FREETYPE_DIR1)/.unpacked
 	./configure \
 		CC="$(HOSTCC)" \
 		--prefix="$(FREETYPE_HOST_DIR)" \
-	);
+	)
 	touch $(FREETYPE_DIR1)/.configured
 
 $(FREETYPE_DIR1)/.compiled: $(FREETYPE_DIR1)/.configured

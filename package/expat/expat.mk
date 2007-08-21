@@ -45,7 +45,7 @@ $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 		--mandir=/man \
 		--infodir=/info \
 		--enable-shared \
-	);
+	)
 	touch $@
 
 $(EXPAT_DIR)/$(EXPAT_BINARY): $(EXPAT_DIR)/.configured

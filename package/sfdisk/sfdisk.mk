@@ -22,11 +22,11 @@ $(SFDISK_DIR)/sfdisk: $(SFDISK_DIR)/.patched
 	$(MAKE) \
 		CROSS=$(TARGET_CROSS) DEBUG=false OPTIMIZATION="$(TARGET_CFLAGS)" \
 		-C $(SFDISK_DIR)
-	-$(STRIP) $(SFDISK_DIR)/sfdisk;
+	-$(STRIP) $(SFDISK_DIR)/sfdisk
 	touch -c $(SFDISK_DIR)/sfdisk
 
 $(TARGET_DIR)/sbin/sfdisk: $(SFDISK_DIR)/sfdisk
-	cp $(SFDISK_DIR)/sfdisk $(TARGET_DIR)/sbin/sfdisk;
+	cp $(SFDISK_DIR)/sfdisk $(TARGET_DIR)/sbin/sfdisk
 	touch -c $(TARGET_DIR)/sbin/sfdisk
 
 sfdisk: uclibc $(TARGET_DIR)/sbin/sfdisk

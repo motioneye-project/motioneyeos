@@ -44,7 +44,7 @@ $(FINDUTILS_DIR)/.configured: $(FINDUTILS_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(FINDUTILS_DIR)/.configured
 
 $(FINDUTILS_DIR)/$(FINDUTILS_BINARY): $(FINDUTILS_DIR)/.configured
@@ -53,14 +53,14 @@ $(FINDUTILS_DIR)/$(FINDUTILS_BINARY): $(FINDUTILS_DIR)/.configured
 # This stuff is needed to work around GNU make deficiencies
 findutils-target_binary: $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
 	@if [ -L $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) ] ; then \
-		rm -f $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY); fi;
+		rm -f $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY); fi
 	@if [ ! -f $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) -o $(TARGET_DIR)/$(FINDUTILS_TARGET_BINARY) \
 	-ot $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) ] ; then \
 	    set -x; \
 	    $(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) install; \
 	    $(STRIP) $(TARGET_DIR)/usr/lib/locate/* > /dev/null 2>&1; \
 	    rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; fi;
+		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; fi
 
 findutils: uclibc findutils-target_binary
 

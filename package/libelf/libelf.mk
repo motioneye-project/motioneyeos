@@ -36,7 +36,7 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.unpacked
 		--sysconfdir=/etc \
 		$(DISABLE_NLS) \
 		--enable-shared \
-	);
+	)
 	touch $@
 
 $(LIBELF_DIR)/lib/libelf.so.$(LIBELF_VERSION): $(LIBELF_DIR)/.configured

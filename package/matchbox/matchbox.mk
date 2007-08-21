@@ -235,7 +235,7 @@ $(MATCHBOX_LIB_DIR)/.configured: $(MATCHBOX_LIB_DIR)/.unpacked
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_LIB_OPTS) \
-	);
+	)
 	touch $(MATCHBOX_LIB_DIR)/.configured
 
 $(MATCHBOX_SNOTIFY_DIR)/.configured: $(MATCHBOX_SNOTIFY_DIR)/.unpacked
@@ -258,7 +258,7 @@ $(MATCHBOX_SNOTIFY_DIR)/.configured: $(MATCHBOX_SNOTIFY_DIR)/.unpacked
 	--with-x \
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
-	);
+	)
 	touch $(MATCHBOX_SNOTIFY_DIR)/.configured
 
 $(MATCHBOX_WM_DIR)/.configured: $(MATCHBOX_WM_DIR)/.unpacked
@@ -285,7 +285,7 @@ $(MATCHBOX_WM_DIR)/.configured: $(MATCHBOX_WM_DIR)/.unpacked
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_WM_OPTS) \
 	$(MATCHBOX_SNOTIFY_OPTS) \
-	);
+	)
 	touch $(MATCHBOX_WM_DIR)/.configured
 
 $(MATCHBOX_SM_DIR)/.configured: $(MATCHBOX_SM_DIR)/.unpacked
@@ -311,7 +311,7 @@ $(MATCHBOX_SM_DIR)/.configured: $(MATCHBOX_SM_DIR)/.unpacked
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_SNOTIFY_OPTS) \
-	);
+	)
 	touch $(MATCHBOX_SM_DIR)/.configured
 
 $(MATCHBOX_CN_DIR)/.configured: $(MATCHBOX_CN_DIR)/.unpacked
@@ -336,7 +336,7 @@ $(MATCHBOX_CN_DIR)/.configured: $(MATCHBOX_CN_DIR)/.unpacked
 	--with-x \
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
-	);
+	)
 	touch $(MATCHBOX_CN_DIR)/.configured
 
 $(MATCHBOX_PL_DIR)/.configured: $(MATCHBOX_PL_DIR)/.unpacked
@@ -362,7 +362,7 @@ $(MATCHBOX_PL_DIR)/.configured: $(MATCHBOX_PL_DIR)/.unpacked
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_SNOTIFY_OPTS) \
-	);
+	)
 	touch $(MATCHBOX_PL_DIR)/.configured
 
 $(MATCHBOX_DP_DIR)/.configured: $(MATCHBOX_DP_DIR)/.unpacked
@@ -388,7 +388,7 @@ $(MATCHBOX_DP_DIR)/.configured: $(MATCHBOX_DP_DIR)/.unpacked
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_SNOTIFY_OPTS) \
-	);
+	)
 	touch $(MATCHBOX_DP_DIR)/.configured
 
 $(MATCHBOX_FK_DIR)/.configured: $(MATCHBOX_FK_DIR)/.unpacked
@@ -413,7 +413,7 @@ $(MATCHBOX_FK_DIR)/.configured: $(MATCHBOX_FK_DIR)/.unpacked
 	--with-x \
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
-	);
+	)
 	$(SED) 's:^SUBDIRS = fakekey src tests.*:SUBDIRS = fakekey src:g' $(MATCHBOX_FK_DIR)/Makefile
 	touch $(MATCHBOX_FK_DIR)/.configured
 
@@ -439,7 +439,7 @@ $(MATCHBOX_KB_DIR)/.configured: $(MATCHBOX_KB_DIR)/.unpacked
 	--with-x \
 	--x-includes=$(STAGING_DIR)/usr/include \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
-	);
+	)
 	touch $(MATCHBOX_KB_DIR)/.configured
 
 $(MATCHBOX_LIB_DIR)/.compiled: $(MATCHBOX_LIB_DIR)/.configured

@@ -44,7 +44,7 @@ $(TSLIB_DIR)/.configured: $(TSLIB_DIR)/.patched
 	--disable-mk712 \
 	--disable-arctic2 \
 	--enable-input \
-	);
+	)
 	$(SED) 's:rpl\_malloc:malloc:g' $(TSLIB_DIR)/config.h
 	touch  $(TSLIB_DIR)/.configured
 

@@ -47,7 +47,7 @@ $(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked
 		--with-ssl-headers=$(STAGING_DIR)/usr/include/openssl \
 		--with-lzo-headers=$(STAGING_DIR)/usr/include \
 		--with-lzo-lib=$(STAGING_DIR)/usr/lib \
-	);
+	)
 	touch $(VTUN_DIR)/.configured
 
 $(VTUN_DIR)/$(VTUN_BINARY): $(VTUN_DIR)/.configured

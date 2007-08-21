@@ -46,7 +46,7 @@ $(M4_DIR)/.configured: $(M4_DIR)/.unpacked
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(M4_DIR)/src/$(M4_BINARY): $(M4_DIR)/.configured
@@ -66,7 +66,7 @@ $(TARGET_DIR)/$(M4_TARGET_BINARY): $(M4_DIR)/src/$(M4_BINARY)
 	    infodir=$(TARGET_DIR)/usr/info \
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
-	    -C $(M4_DIR) install;
+	    -C $(M4_DIR) install
 	$(STRIP) $(TARGET_DIR)/$(M4_TARGET_BINARY) > /dev/null 2>&1
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
@@ -103,14 +103,14 @@ $(M4_HOST_DIR)/.configured: $(M4_HOST_DIR)/.unpacked
 		./configure \
 		--prefix=$(STAGING_DIR)/usr \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(M4_HOST_DIR)/src/$(M4_BINARY): $(M4_HOST_DIR)/.configured
 	$(MAKE) -C $(M4_HOST_DIR)
 
 $(STAGING_DIR)/$(M4_TARGET_BINARY): $(M4_HOST_DIR)/src/$(M4_BINARY)
-	$(MAKE) -C $(M4_HOST_DIR) install;
+	$(MAKE) -C $(M4_HOST_DIR) install
 
 host-m4: uclibc $(STAGING_DIR)/$(M4_TARGET_BINARY)
 

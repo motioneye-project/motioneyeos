@@ -42,7 +42,7 @@ $(GNUPATCH_DIR)/.configured: $(GNUPATCH_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(GNUPATCH_DIR)/.configured
 
 $(GNUPATCH_DIR)/$(GNUPATCH_BINARY): $(GNUPATCH_DIR)/.configured

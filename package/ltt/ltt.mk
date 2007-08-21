@@ -36,7 +36,7 @@ $(LTT_DIR1)/.configured: $(LTT_DIR1)/.unpacked
 		./configure \
 		--prefix=$(TOOL_BUILD_DIR) \
 		$(LTT_WITHOUT_GTK) \
-	);
+	)
 	touch $(LTT_DIR1)/.configured
 
 $(LTT_DIR1)/$(LTT_BINARY): $(LTT_DIR1)/.configured
@@ -84,7 +84,7 @@ $(LTT_DIR2)/.configured: $(LTT_DIR2)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $(LTT_DIR2)/.configured
 
 $(LTT_DIR2)/$(LTT_TARGET_BINARY): $(LTT_DIR2)/.configured

@@ -43,7 +43,7 @@ $(MPG123_DIR)/.configured: $(MPG123_DIR)/.unpacked
 		$(MPG123_USE_ALSA) \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(MPG123_DIR)/$(MPG123_BIN): $(MPG123_DIR)/.configured

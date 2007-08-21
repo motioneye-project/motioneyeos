@@ -33,7 +33,7 @@ $(NCFTP_DIR)/.configured: $(NCFTP_DIR)/.source
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-	);
+	)
 	touch $@
 
 $(NCFTP_DIR)/bin/%: $(NCFTP_DIR)/.configured

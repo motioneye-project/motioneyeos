@@ -55,7 +55,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		--with-curses \
 		--enable-alias \
 		--without-bash-malloc \
-	);
+	)
 	touch $@
 
 $(BASH_DIR)/$(BASH_BINARY): $(BASH_DIR)/.configured

@@ -42,7 +42,7 @@ $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
-	);
+	)
 	echo 'all install:' > $(BISON_DIR)/examples/Makefile
 	touch $(BISON_DIR)/.configured
 

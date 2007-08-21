@@ -148,7 +148,7 @@ $(QUAGGA_DIR)/.configured: $(QUAGGA_DIR)/.unpacked
 		$(DISABLE_IPV6) \
 		$(QUAGGA_CONFIGURE) \
 		--program-transform-name='' \
-	);
+	)
 	touch $@
 
 $(QUAGGA_BINARY): $(QUAGGA_DIR)/.configured

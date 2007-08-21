@@ -55,7 +55,7 @@ $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		--disable-timesync \
-	);
+	)
 	$(SED) "s/-lnsl//;" $(LRZSZ_DIR)/src/Makefile
 	$(SED) "s~\(#define ENABLE_SYSLOG.*\)~/* \1 */~;" $(LRZSZ_DIR)/config.h
 	touch $(LRZSZ_DIR)/.configured

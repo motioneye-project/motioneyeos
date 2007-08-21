@@ -140,7 +140,7 @@ $(QTE_QTE_DIR)/.configured: $(QTE_QTE_DIR)/.unpacked $(QTE_TMAKE_DIR)/.unpacked 
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		$(QTE_QTE_CONFIGURE) -qconfig qpe -keypad-mode -qvfb -depths 4,8,16,32 -xplatform $(BR2_QTE_CROSS_PLATFORM) \
-	);
+	)
 	touch $@
 
 ifneq ($(BR2_QTE_C_QTE_VERSION),$(BR2_QTE_C_QT3_VERSION))
@@ -150,7 +150,7 @@ $(QTE_QT3_DIR)/.configured: $(QTE_QT3_DIR)/.unpacked $(QTE_TMAKE_DIR)/.unpacked
 		CC_FOR_BUILD="$(HOSTCC)" \
 		./configure \
 		-fast $(QTE_QT3_CONFIGURE) \
-	);
+	)
 	touch $@
 endif
 
@@ -159,7 +159,7 @@ $(QTE_QVFB_DIR)/.configured: $(QTE_QVFB_DIR)/.unpacked $(QTE_TMAKE_DIR)/.unpacke
 		$(TARGET_CONFIGURE_OPTS) \
 		./configure \
 		$(QTE_QVFB_CONFIGURE) \
-	);
+	)
 	touch $@
 
 # --edition {other}
@@ -174,7 +174,7 @@ $(QTE_QTOPIA_DIR)/.configured: $(QTE_QTOPIA_DIR)/.unpacked $(QTE_TMAKE_DIR)/.unp
 		./configure \
 		$(QTE_QTOPIA_CONFIGURE) --edition phone -no-qtopiadesktop -dqt $(QTE_QT3_DIR) -arch generic -displaysize 160-240 -languages en_US \
 		-platform linux-g++ -qvfb -xplatform $(BR2_QTE_CROSS_PLATFORM) \
-	);
+	)
 	touch $@
 
 # there is no build for tmake, only unpack
@@ -201,7 +201,7 @@ $(QTE_QT3_DIR)/.make: $(QTE_QT3_DIR)/.unpacked
 	$(MAKE) -C $(QTE_QT3_DIR)/tools/linguist/lupdate \
 	$(MAKE) -C $(QTE_QT3_DIR)/tools/designer/uilib \
 	$(MAKE) -C $(QTE_QT3_DIR)/tools/designer/uic
-	);
+	)
 	touch $@
 endif
 

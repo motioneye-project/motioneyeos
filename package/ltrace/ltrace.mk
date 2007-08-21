@@ -49,7 +49,7 @@ $(LTRACE_DIR)/.configured: $(LTRACE_DIR)/.patched
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(LTRACE_DIR)/$(LTRACE_BINARY): $(LTRACE_DIR)/.configured

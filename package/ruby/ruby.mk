@@ -19,7 +19,7 @@ ruby-source: $(DL_DIR)/$(RUBY_SOURCE)
 $(RUBY_DIR)/.unpacked: $(DL_DIR)/$(RUBY_SOURCE)
 	$(RUBY_CAT) $(DL_DIR)/$(RUBY_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(RUBY_DIR) package/ruby/ ruby-*.patch
-	(cd $(RUBY_DIR); autoreconf);
+	(cd $(RUBY_DIR); autoreconf)
 	touch $(RUBY_DIR)/.unpacked
 
 $(RUBY_DIR)/.configured: $(RUBY_DIR)/.unpacked
@@ -43,7 +43,7 @@ $(RUBY_DIR)/.configured: $(RUBY_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(RUBY_DIR)/.configured
 
 $(RUBY_DIR)/$(RUBY_BINARY): $(RUBY_DIR)/.configured

@@ -47,7 +47,7 @@ $(BIND_DIR2)/Makefile: $(BIND_DIR2)/.unpacked
 		$(DISABLE_IPV6) \
 		--with-libtool \
 		--with-pic \
-	);
+	)
 
 $(BIND_DIR2)/$(BIND_BINARY): $(BIND_DIR2)/Makefile
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -j1 -C $(BIND_DIR2)

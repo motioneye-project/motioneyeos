@@ -29,7 +29,7 @@ $(LIBSNDFILE_DIR)/.configured: $(LIBSNDFILE_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-	);
+	)
 	touch $@
 
 $(LIBSNDFILE_DIR)/$(LIBSNDFILE_BINARY): $(LIBSNDFILE_DIR)/.configured

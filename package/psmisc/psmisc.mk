@@ -28,7 +28,7 @@ $(PSMISC_DIR)/.configured: $(PSMISC_DIR)/.unpacked
 		--prefix=/ \
 		$(DISABLE_NLS) \
 		$(DISABLE_IPV6) \
-	);
+	)
 	touch $(PSMISC_DIR)/.configured
 
 $(PSMISC_DIR)/$(PSMISC_BINARY): $(PSMISC_DIR)/.configured

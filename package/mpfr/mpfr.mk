@@ -59,7 +59,7 @@ $(MPFR_TARGET_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/usr/lib/$(G
 		$(PREFERRED_LIB_FLAGS) \
 		--with-gmp=$(GMP_TARGET_DIR) \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.configured
@@ -67,7 +67,7 @@ $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.configured
 	$(MAKE) -C $(MPFR_TARGET_DIR)
 
 $(STAGING_DIR)/usr/lib/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY)
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(MPFR_TARGET_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(MPFR_TARGET_DIR) install
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(STAGING_DIR)/usr/lib/libmpfr$(LIBTGTEXT)*
 
 $(TARGET_DIR)/usr/lib/libmpfr.so $(TARGET_DIR)/usr/lib/libmpfr.so.$(MPFR_LIBVERSION) $(TARGET_DIR)/usr/lib/libmpfr.a: $(STAGING_DIR)/usr/lib/$(MPFR_BINARY)
@@ -104,7 +104,7 @@ $(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_HOST_B
 		--enable-static \
 		--with-gmp=$(GMP_HOST_DIR) \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(MPFR_HOST_DIR)/lib/libmpfr$(HOST_LIBEXT) $(MPFR_HOST_DIR)/lib/libmpfr$(HOST_SHREXT) $(MPFR_HOST_DIR)/lib/libmpfr$(HOST_SHREXT).$(MPFR_LIBVERSION): $(MPFR_DIR2)/.configured

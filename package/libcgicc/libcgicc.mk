@@ -39,7 +39,7 @@ $(LIBCGICC_DIR)/.configured: $(LIBCGICC_DIR)/.unpacked
 		--includedir=/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $(LIBCGICC_DIR)/.configured
 
 $(LIBCGICC_DIR)/.compiled: $(LIBCGICC_DIR)/.configured

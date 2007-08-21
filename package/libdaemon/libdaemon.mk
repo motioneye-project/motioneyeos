@@ -58,7 +58,7 @@ $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		--disable-lynx \
 		--disable-shared \
-	);
+	)
 	touch $(LIBDAEMON_DIR)/.configured
 
 $(LIBDAEMON_DIR)/.compiled: $(LIBDAEMON_DIR)/.configured

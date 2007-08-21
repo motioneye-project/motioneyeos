@@ -30,7 +30,7 @@ $(FILE_DIR1)/.configured: $(FILE_SOURCE_DIR)/.unpacked
 		CC="$(HOSTCC)" \
 		$(FILE_SOURCE_DIR)/configure \
 		--prefix=$(FILE_DIR1)/install \
-	);
+	)
 	touch $(FILE_DIR1)/.configured
 
 $(TOOL_BUILD_DIR)/bin/file: $(FILE_DIR1)/.configured
@@ -81,7 +81,7 @@ $(FILE_DIR2)/.configured: $(FILE_SOURCE_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		--enable-static \
 		--disable-fsect-man5 \
-	);
+	)
 	touch $(FILE_DIR2)/.configured
 
 $(FILE_DIR2)/$(FILE_BINARY): $(FILE_DIR2)/.configured $(TOOL_BUILD_DIR)/bin/file

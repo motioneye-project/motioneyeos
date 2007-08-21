@@ -44,7 +44,7 @@ $(SMARTMONTOOLS_DIR)/.configured: $(SMARTMONTOOLS_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(SMARTMONTOOLS_DIR)/.configured
 
 $(SMARTMONTOOLS_DIR)/$(SMARTMONTOOLS_BINARY): $(SMARTMONTOOLS_DIR)/.configured

@@ -29,7 +29,7 @@ $(DILLO_DIR)/.configured: $(DILLO_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--program-transform-name='' \
 		--disable-dlgui \
-	);
+	)
 	touch $(DILLO_DIR)/.configured
 
 $(DILLO_DIR)/src/dillo: $(DILLO_DIR)/.configured
@@ -46,7 +46,7 @@ dillo-source: $(DL_DIR)/$(DILLO_SOURCE)
 dillo-clean:
 	@if [ -d $(DILLO_DIR)/Makefile ] ; then \
 		$(MAKE) -C $(DILLO_DIR) clean ; \
-	fi;
+	fi
 
 dillo-dirclean:
 	rm -rf $(DILLO_DIR)

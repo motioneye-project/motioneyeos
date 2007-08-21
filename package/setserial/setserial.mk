@@ -51,7 +51,7 @@ $(SETSERIAL_DIR)/.configured: $(SETSERIAL_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-	);
+	)
 	touch $@
 
 $(SETSERIAL_DIR)/$(SETSERIAL_BINARY): $(SETSERIAL_DIR)/.configured

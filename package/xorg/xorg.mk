@@ -199,7 +199,7 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER) $(XORG_LIBX)/X11/fonts/ttf-dejavu/
 	touch $(TARGET_DIR)/etc/ld.so.conf
 	if [ "`grep -c '$(TARGET_LIBX)' $(TARGET_DIR)/etc/ld.so.conf`" = "0" ] ; then \
 		echo "$(TARGET_LIBX)" >> $(TARGET_DIR)/etc/ld.so.conf; \
-	fi;
+	fi
 	touch -c $(XORG_LIBX)/libX11.so.6.2
 
 $(TARGET_DIR)/usr/bin/mcookie: package/xorg/mcookie.c

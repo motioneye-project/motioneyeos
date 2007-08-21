@@ -54,7 +54,7 @@ vpnc-source: $(DL_DIR)/$(VPNC_SOURCE)
 vpnc-clean:
 	@if [ -d $(VPNC_DIR)/Makefile ] ; then \
 		$(MAKE) -C $(VPNC_DIR) clean ; \
-	fi;
+	fi
 	rm -f $(STAGING_DIR)/usr/bin/vpnc
 
 vpnc-dirclean:

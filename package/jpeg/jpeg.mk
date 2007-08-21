@@ -60,7 +60,7 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--without-x \
-	);
+	)
 	touch $(JPEG_DIR)/.configured
 
 $(JPEG_DIR)/.libs/libjpeg.a: $(JPEG_DIR)/.configured

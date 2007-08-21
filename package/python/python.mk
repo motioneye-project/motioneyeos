@@ -55,7 +55,7 @@ $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 		--with-cxx=no \
 		$(DISABLE_IPV6) \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(PYTHON_DIR)/$(PYTHON_BINARY): $(PYTHON_DIR)/.configured

@@ -53,7 +53,7 @@ $(AUTOCONF_DIR)/.configured: $(AUTOCONF_SRC_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-	);
+	)
 	touch $@
 
 $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_DIR)/.configured
@@ -73,7 +73,7 @@ $(TARGET_DIR)/$(AUTOCONF_TARGET_BINARY): $(AUTOCONF_DIR)/bin/$(AUTOCONF_BINARY)
 	    infodir=$(TARGET_DIR)/usr/info \
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
-	    -C $(AUTOCONF_DIR) install;
+	    -C $(AUTOCONF_DIR) install
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	touch -c $@
@@ -102,14 +102,14 @@ $(AUTOCONF_HOST_DIR)/.configured: $(AUTOCONF_SRC_DIR)/.unpacked
 		EMACS="no" \
 		$(AUTOCONF_SRC_DIR)/configure \
 		--prefix=$(STAGING_DIR)/usr \
-	);
+	)
 	touch $@
 
 $(AUTOCONF_HOST_DIR)/bin/$(AUTOCONF_BINARY): $(AUTOCONF_HOST_DIR)/.configured
 	$(MAKE1) -C $(AUTOCONF_HOST_DIR)
 
 $(AUTOCONF): $(AUTOCONF_HOST_DIR)/bin/$(AUTOCONF_BINARY)
-	$(MAKE) -C $(AUTOCONF_HOST_DIR) install;
+	$(MAKE) -C $(AUTOCONF_HOST_DIR) install
 
 host-autoconf: host-m4 host-libtool $(AUTOCONF)
 

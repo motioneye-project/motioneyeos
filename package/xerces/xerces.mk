@@ -27,7 +27,7 @@ $(XERCES_DIR)/.configured: $(XERCES_DIR)/.unpacked
 		./runConfigure -plinux -minmem \
 		-nsocket -tnative -rpthread \
 		-c$(TARGET_CC) -x$(TARGET_CXX) \
-	);
+	)
 	touch $(XERCES_DIR)/.configured
 
 $(XERCES_DIR)/$(XERCES_BINARY): $(XERCES_DIR)/.configured

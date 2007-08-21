@@ -43,7 +43,7 @@ $(IPERF_DIR)/.configured: $(IPERF_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--includedir=$(STAGING_DIR)/usr/include \
-	);
+	)
 	touch $(IPERF_DIR)/.configured
 
 $(IPERF_DIR)/src/iperf: $(IPERF_DIR)/.configured
@@ -60,7 +60,7 @@ iperf-source: $(DL_DIR)/$(IPERF_SOURCE)
 iperf-clean:
 	@if [ -d $(IPERF_KDIR)/Makefile ] ; then \
 		$(MAKE) -C $(IPERF_DIR) clean ; \
-	fi;
+	fi
 
 iperf-dirclean:
 	rm -rf $(IPERF_DIR)

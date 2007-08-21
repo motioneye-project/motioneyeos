@@ -58,7 +58,7 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
-	);
+	)
 	touch $(LVM2_DIR)/.configured
 
 $(LVM2_TARGET_SBINS): $(LVM2_DIR)/.configured

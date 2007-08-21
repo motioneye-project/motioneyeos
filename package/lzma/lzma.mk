@@ -41,7 +41,7 @@ $(LZMA_HOST_DIR)/.configured: $(LZMA_HOST_DIR)/.unpacked
 		CXX="$(HOSTCXX)" \
 		./configure \
 		--prefix=/ \
-	);
+	)
 	touch $@
 
 $(LZMA_HOST_DIR)/src/lzma/lzma: $(LZMA_HOST_DIR)/.configured
@@ -105,7 +105,7 @@ $(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.unpacked
 		--disable-debug \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(LZMA_TARGET_DIR)/src/lzma/lzma: $(LZMA_TARGET_DIR)/.configured

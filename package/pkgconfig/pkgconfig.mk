@@ -38,7 +38,7 @@ $(PKGCONFIG_DIR)/.configured: $(PKGCONFIG_DIR)/.unpacked
 		--with-pc-path="$(STAGING_DIR)/lib/pkgconfig:$(STAGING_DIR)/usr/lib/pkgconfig" \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $(PKGCONFIG_DIR)/.configured
 
 $(PKGCONFIG_DIR)/$(PKGCONFIG_BINARY): $(PKGCONFIG_DIR)/.configured

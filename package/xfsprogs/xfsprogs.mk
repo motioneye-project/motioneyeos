@@ -48,7 +48,7 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 		--exec-prefix=/ \
 		--libdir=/usr/lib \
 		$(XFSPROGS_CONFIG_SHARED) \
-	);
+	)
 	touch $(XFSPROGS_DIR)/.configured
 
 $(XFSPROGS_DIR)/$(XFSPROGS_BINARY): $(XFSPROGS_DIR)/.configured

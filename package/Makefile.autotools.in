@@ -59,7 +59,7 @@
 #	relative path in the package source from which to run configure and
 #	make
 #
-## The following variables contain hook target names;
+## The following variables contain hook target names
 ## by default they do nothing, they can be overriden in package makefiles
 #
 # FOO_HOOK_POST_BUILD, FOO_HOOK_POST_INSTALL
@@ -192,7 +192,7 @@ $(BUILD_DIR)/%/.stamp_configured:
 		--exec-prefix=/usr \
 		--sysconfdir=/etc \
 		$($(PKG)_CONF_OPT)
-	touch $@;
+	touch $@
 
 # Build
 $(BUILD_DIR)/%/.stamp_built:

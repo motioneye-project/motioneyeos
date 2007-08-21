@@ -77,7 +77,7 @@ $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
-	);
+	)
 	touch $(DM_DIR)/.configured
 
 $(DM_DIR)/$(DM_BINARY): dm-build

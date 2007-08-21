@@ -43,7 +43,7 @@ $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY): $(NETKITBASE_DIR)/$(NETKITBASE_BINARY
 		mkdir -p $(TARGET_DIR)/etc; \
 		cp $(NETKITBASE_DIR)/etc.sample/inetd.conf $(TARGET_DIR)/etc/; \
 		$(SED) "s/^\([a-z]\)/#\1/;" $(TARGET_DIR)/etc/inetd.conf; \
-	fi;
+	fi
 	touch -c $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)
 
 netkitbase: uclibc $(TARGET_DIR)/$(NETKITBASE_TARGET_BINARY)

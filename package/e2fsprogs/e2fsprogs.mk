@@ -53,7 +53,7 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--disable-e2initrd-helper \
 		--without-catgets $(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
-	);
+	)
 	touch $@
 
 $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY): $(E2FSPROGS_DIR)/.configured

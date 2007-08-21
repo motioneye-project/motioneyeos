@@ -64,7 +64,7 @@ $(CVS_DIR)/.configured: $(CVS_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		$(DISABLE_NLS) \
 		$(CVS_CONFIGURE_ARGS) \
-	);
+	)
 	touch $@
 
 $(CVS_DIR)/$(CVS_BINARY): $(CVS_DIR)/.configured

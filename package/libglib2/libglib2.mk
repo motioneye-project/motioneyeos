@@ -102,7 +102,7 @@ $(LIBGLIB2_DIR)/.configured: $(LIBGLIB2_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $(LIBGLIB2_DIR)/.configured
 
 $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BINARY): $(LIBGLIB2_DIR)/.configured
@@ -110,7 +110,7 @@ $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BINARY): $(LIBGLIB2_DIR)/.configured
 	touch -c $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BINARY)
 
 $(STAGING_DIR)/lib/$(LIBGLIB2_BINARY): $(LIBGLIB2_DIR)/glib/.libs/$(LIBGLIB2_BINARY)
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBGLIB2_DIR) install;
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBGLIB2_DIR) install
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libglib-2.0.la
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgmodule-2.0.la
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libgobject-2.0.la

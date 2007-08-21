@@ -48,7 +48,7 @@ $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked
 		--disable-termios \
 		$(DISABLE_NLS); \
 	$(SED) 's/#define HAVE_TERMIOS_ISPEED 1/#undef HAVE_TERMIOS_ISPEED/g' config.h; \
-	);
+	)
 	
 $(SOCAT_WORKDIR)/socat: $(SOCAT_WORKDIR)/Makefile
 	rm -f $@
@@ -66,7 +66,7 @@ socat-source: $(DL_DIR)/$(SOCAT_SOURCE)
 socat-clean:
 	@if [ -d $(SOCAT_WORKDIR)/Makefile ] ; then \
 		$(MAKE) -C $(SOCAT_WORKDIR) clean ; \
-	fi;
+	fi
 
 socat-dirclean:
 	rm -rf $(SOCAT_DIR) $(SOCAT_WORKDIR)

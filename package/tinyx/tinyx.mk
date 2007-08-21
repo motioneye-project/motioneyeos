@@ -83,7 +83,7 @@ $(TINYX_DIR)/.configure: $(DL_DIR)/$(TINYX_SOURCE)
 #
 $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 	rm -f $(TINYX_BINX)/Xfbdev
-	#make World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=<cross compiler dir>";
+	#make World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=<cross compiler dir>"
 	#( cd $(TINYX_DIR) ; $(MAKE) World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=$(STAGING_DIR)/bin" )
 	#( cd $(TINYX_DIR) ; $(MAKE) $(TARGET_CONFIGURE_OPTS) World )
 	#

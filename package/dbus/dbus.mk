@@ -47,7 +47,7 @@ $(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked
 		--without-xml \
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid \
-	);
+	)
 	touch $@
 
 $(DBUS_DIR)/$(DBUS_BINARY): $(DBUS_DIR)/.configured

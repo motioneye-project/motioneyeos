@@ -44,7 +44,7 @@ $(LIBXML2_DIR)/.configured: $(LIBXML2_DIR)/.unpacked
 		--without-python \
 		--without-threads \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $(LIBXML2_DIR)/.configured
 
 $(STAGING_DIR)/usr/lib/libxml2.so: $(LIBXML2_DIR)/.configured
@@ -81,7 +81,7 @@ libxml2-source: $(DL_DIR)/$(LIBXML2_SOURCE)
 libxml2-clean:
 	@if [ -d $(LIBXML2_DIR)/Makefile ] ; then \
 		$(MAKE) -C $(LIBXML2_DIR) clean ; \
-	fi;
+	fi
 	rm -f $(STAGING_DIR)/usr/lib/libxml2.*
 	rm -f $(TARGET_DIR)/usr/lib/libxml2.*
 

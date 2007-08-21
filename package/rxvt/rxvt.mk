@@ -53,7 +53,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
 		--disable-resources \
 		--disable-memset \
-	);
+	)
 	touch $(RXVT_DIR)/.configured
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured

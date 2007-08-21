@@ -47,7 +47,7 @@ $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
 		$(DISABLE_LARGEFILE) \
 		$(ENABLE_IPV6) \
 		--with-gnu-ld \
-	);
+	)
 	touch $(PROFTPD_DIR)/.configured
 
 $(PROFTPD_DIR)/$(PROFTPD_BINARY): $(PROFTPD_DIR)/.configured
@@ -60,7 +60,7 @@ $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY): $(PROFTPD_DIR)/$(PROFTPD_BINARY)
 		$(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/proftpd.conf ] ; then \
 		$(INSTALL) -m 0644 -D $(PROFTPD_DIR)/sample-configurations/basic.conf $(TARGET_DIR)/etc/proftpd.conf; \
-	fi;
+	fi
 	$(INSTALL) -m 0755 package/proftpd/S50proftpd $(TARGET_DIR)/etc/init.d
 
 proftpd: uclibc $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)

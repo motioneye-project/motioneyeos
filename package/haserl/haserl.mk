@@ -27,7 +27,7 @@ $(HASERL_DIR)/.configured: $(HASERL_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
-	);
+	)
 	touch $@
 
 $(HASERL_DIR)/src/haserl: $(HASERL_DIR)/.configured
