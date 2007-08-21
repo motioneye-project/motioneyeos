@@ -95,12 +95,6 @@ endif
 # All non-configurable packages should be built in BUILD_DIR
 BUILD_DIR:=$(BASE_DIR)/$(TOPDIR_PREFIX)build_$(ARCH)$(ARCH_FPU_SUFFIX)$(TOPDIR_SUFFIX)
 
-# All configurable packages (like Busybox,Linux etc) should be built in PROJECT_BUILD_DIR
-PROJECT_BUILD_DIR:=$(BASE_DIR)/$(TOPDIR_PREFIX)project_build_$(ARCH)$(ARCH_FPU_SUFFIX)$(TOPDIR_SUFFIX)/$(PROJECT)
-BINARIES_DIR:=$(BASE_DIR)/binaries/$(PROJECT)
-TARGET_DIR:=$(PROJECT_BUILD_DIR)/root
-
-
 GNU_TARGET_SUFFIX:=-$(strip $(subst ",, $(BR2_GNU_TARGET_SUFFIX)))
 #"))
 
