@@ -15,7 +15,7 @@ $(DL_DIR)/$(SQUASHFS_SOURCE):
 $(SQUASHFS_DIR)/.unpacked: $(DL_DIR)/$(SQUASHFS_SOURCE) #$(SQUASHFS_PATCH)
 	$(SQUASHFS_CAT) $(DL_DIR)/$(SQUASHFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(SQUASHFS_DIR) target/squashfs/ squashfs\*.patch
-	touch $(SQUASHFS_DIR)/.unpacked
+	touch $@
 
 $(SQUASHFS_DIR)/squashfs-tools/mksquashfs: $(SQUASHFS_DIR)/.unpacked
 	$(MAKE) -C $(SQUASHFS_DIR)/squashfs-tools;

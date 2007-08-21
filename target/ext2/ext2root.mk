@@ -14,7 +14,7 @@ $(DL_DIR)/$(GENEXT2_SOURCE):
 $(GENEXT2_DIR)/.unpacked: $(DL_DIR)/$(GENEXT2_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(GENEXT2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(GENEXT2_DIR) target/ext2/ genext2fs\*.patch
-	touch $(GENEXT2_DIR)/.unpacked
+	touch $@
 
 $(GENEXT2_DIR)/.configured: $(GENEXT2_DIR)/.unpacked
 	chmod a+x $(GENEXT2_DIR)/configure
@@ -23,12 +23,12 @@ $(GENEXT2_DIR)/.configured: $(GENEXT2_DIR)/.unpacked
 		CC="$(HOSTCC)" \
 		--prefix=$(STAGING_DIR) \
 	);
-	touch  $(GENEXT2_DIR)/.configured
+	touch $@
 
 $(GENEXT2_DIR)/genext2fs: $(GENEXT2_DIR)/.configured
 	$(MAKE) CFLAGS="-Wall -O2 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
-		-D_FILE_OFFSET_BITS=64" -C $(GENEXT2_DIR);
-	touch -c $(GENEXT2_DIR)/genext2fs
+		-D_FILE_OFFSET_BITS=64" -C $(GENEXT2_DIR)
+	touch -c $@
 
 genext2fs: $(GENEXT2_DIR)/genext2fs
 

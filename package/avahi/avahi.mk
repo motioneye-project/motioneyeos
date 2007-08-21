@@ -41,7 +41,7 @@ avahi-source: $(DL_DIR)/$(AVAHI_SOURCE)
 $(AVAHI_DIR)/.unpacked: $(DL_DIR)/$(AVAHI_SOURCE)
 	$(AVAHI_CAT) $(DL_DIR)/$(AVAHI_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(AVAHI_DIR) package/avahi/ \*.patch
-	touch $(AVAHI_DIR)/.unpacked
+	touch $@
 
 $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 	(cd $(AVAHI_DIR) && rm -rf config.cache && autoconf)
@@ -140,11 +140,11 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 		--with-autoipd-user=default \
 		--with-autoipd-group=default \
 	);
-	touch $(AVAHI_DIR)/.configured
+	touch $@
 
 $(AVAHI_DIR)/.compiled: $(AVAHI_DIR)/.configured
 	$(MAKE) -C $(AVAHI_DIR)
-	touch $(AVAHI_DIR)/.compiled
+	touch $@
 
 $(STAGING_DIR)/usr/sbin/avahi-autoipd: $(AVAHI_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(AVAHI_DIR)/avahi-autoipd install

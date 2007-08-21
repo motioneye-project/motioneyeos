@@ -18,20 +18,20 @@ CLOOP_SITE=http://developer.linuxtag.net/knoppix/sources
 CLOOP_TARGET:=$(IMAGE).cloop
 ### Note: not used yet! ck
 ### $(DL_DIR)/$(CLOOP_PATCH1):
-### 	$(WGET) -P $(DL_DIR) $(CLOOP_PATCH1_URL)/$(CLOOP_PATCH1)
+###	$(WGET) -P $(DL_DIR) $(CLOOP_PATCH1_URL)/$(CLOOP_PATCH1)
 
 $(DL_DIR)/$(CLOOP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(CLOOP_SITE)/$(CLOOP_SOURCE)
 
 $(CLOOP_DIR)/.unpacked: $(DL_DIR)/$(CLOOP_SOURCE) ### $(DL_DIR)/$(CLOOP_PATCH1)
 	$(ZCAT) $(DL_DIR)/$(CLOOP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	touch $(CLOOP_DIR)/.unpacked
+	touch $@
 ###		$(ZCAT) $(DL_DIR)/$(CLOOP_PATCH1) | patch -p1 -d $(CLOOP_DIR)
 ###		toolchain/patch-kernel.sh $(CLOOP_DIR) target/cloop/ cloop*.patch
 
 $(CLOOP_DIR)/create_compressed_fs: $(CLOOP_DIR)/.unpacked
 	$(MAKE) CFLAGS="-Wall -O2 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DUSE_ERROR_SILENT" -C $(CLOOP_DIR) \
-		APPSONLY=yes -j1 
+		APPSONLY=yes -j1
 
 cloop: $(CLOOP_DIR)/create_compressed_fs
 
@@ -51,7 +51,7 @@ cloop-dirclean:
 
 $(CLOOP_DIR)/cloop.o: $(CLOOP_DIR)/create_compressed_fs
 	$(MAKE) CFLAGS="-Wall -O2 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DUSE_ERROR_SILENT" -C $(CLOOP_DIR) -j1
- 
+
 cloop-module: $(CLOOP_DIR)/cloop.o
 
 #############################################################
@@ -62,13 +62,13 @@ cloop-module: $(CLOOP_DIR)/cloop.o
 # required:
 # mkisofs 2.01a34-unofficial-iconv from http://users.utu.fi/jahhein/mkisofs/
 # optional:
-# symlinks: scan/change symbolic links - v1.2 - by Mark Lord 
+# symlinks: scan/change symbolic links - v1.2 - by Mark Lord
 #           from ftp://ftp.ibiblio.org/pub/Linux/utils/file/
 #
 #############################################################
 
 ### Note: target/default/device_table.txt is not yet supported! ck
-# the quickfix is to use sudo to mount the previous created cramroot 
+# the quickfix is to use sudo to mount the previous created cramroot
 check-tools:
 	which mkisofs
 	- which symlinks
@@ -119,4 +119,3 @@ clooproot-dirclean:
 # 1448 -rw-r--r--    1 claus users 1482752 Mar 13 16:52 root_fs_powerpc.cramfs
 # 1840 -rw-r--r--    1 claus users 1883408 Mar 13 13:14 root_fs_powerpc.jffs2
 #############################################################
-

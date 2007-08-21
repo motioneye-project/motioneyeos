@@ -13,7 +13,7 @@ GMP_BINARY:=libgmp$(LIBTGTEXT)
 GMP_HOST_BINARY:=libgmp$(HOST_SHREXT)
 GMP_LIBVERSION:=3.4.1
 
-# this is a workaround for a bug in GMP, please see 
+# this is a workaround for a bug in GMP, please see
 # http://gmplib.org/list-archives/gmp-devel/2006-April/000618.html
 ifeq ($(HOST_EXEEXT),.exe)
 GMP_CPP_FLAGS:=CPPFLAGS=-DDLL_EXPORT

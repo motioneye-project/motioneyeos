@@ -22,7 +22,7 @@ $(CRAMFS_DIR): $(DL_DIR)/$(CRAMFS_SOURCE)
 
 $(CRAMFS_DIR)/mkcramfs: $(CRAMFS_DIR)
 	$(MAKE) CFLAGS="-Wall -O2 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64" -C $(CRAMFS_DIR);
-	touch -c $(CRAMFS_DIR)/mkcramfs
+	touch -c $@
 
 cramfs: $(CRAMFS_DIR)/mkcramfs
 
