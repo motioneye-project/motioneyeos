@@ -121,6 +121,12 @@ ifeq ($(BR2_ARM_EABI),y)
 else
 	echo "# CONFIG_AEABI is not set" >> $(LINUX26_DIR)/.config
 endif
+	$(SED) '/CONFIG_IPV6/d' $(LINUX26_DIR)/.config
+ifeq ($(BR2_INET_IPV6),y)
+	echo "CONFIG_IPV6=y" >> $(LINUX26_DIR)/.config
+else
+	echo "# CONFIG_IPV6 is not set" >> $(LINUX26_DIR)/.config
+endif
 ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
 	$(SED) '/CONFIG_INITRAMFS_SOURCE/d' $(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_SOURCE=\"$(INITRAMFS_TARGET)\"" >> \
