@@ -73,6 +73,8 @@ UCLIBC_TARGET_ENDIAN:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
 		-e 's/arm/LITTLE/' \
 		-e 's/mipsel/LITTLE/' \
 		-e 's/mips/BIG/' \
+		-e 's/sh[234]eb/BIG/' \
+		-e 's/sh[234]/LITTLE/' \
 ")
 
 ifneq ($(UCLIBC_TARGET_ENDIAN),LITTLE)
