@@ -5,7 +5,11 @@
 #
 ######################################################################
 
-dependencies: host-sed host-lzma
+ifeq ($(BR2_STRIP_sstrip),y)
+# XXX: this is a little bit ugly, yep.
+MAYBE_SSTRIP_HOST:=sstrip_host
+endif
+dependencies: host-sed host-lzma $(MAYBE_SSTRIP_HOST)
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		HOST_SED_DIR="$(HOST_SED_DIR)" \
 		$(TOPDIR)/toolchain/dependencies/dependencies.sh
