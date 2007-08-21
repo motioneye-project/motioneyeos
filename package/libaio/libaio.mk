@@ -28,7 +28,7 @@ $(STAGING_DIR)/usr/lib/libaio.so: $(LIBAIO_DIR)/src/libaio.so.$(LIBAIO_SOVER)
 
 $(TARGET_DIR)/usr/lib/libaio.so: $(STAGING_DIR)/usr/lib/libaio.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libaio.so* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libaio.so
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libaio.so
 
 libaio: uclibc $(TARGET_DIR)/usr/lib/libaio.so
 

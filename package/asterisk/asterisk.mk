@@ -29,7 +29,7 @@ $(TARGET_DIR)/$(ASTERISK_TARGET_BINARY): $(ASTERISK_DIR)/$(ASTERISK_BINARY)
 	$(STRIP) $(TARGET_DIR)/usr/sbin/asterisk
 	$(STRIP) $(TARGET_DIR)/usr/sbin/stereorize
 	$(STRIP) $(TARGET_DIR)/usr/sbin/streamplayer
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/asterisk/modules/*.so
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/asterisk/modules/*.so
 	$(INSTALL) -m 755 $(ASTERISK_DIR)/contrib/init.d/rc.debian.asterisk $(TARGET_DIR)/etc/init.d/S60asterisk
 	mv $(TARGET_DIR)/usr/include/asterisk $(STAGING_DIR)/usr/include/
 	rm -Rf $(TARGET_DIR)/usr/share/man

@@ -193,7 +193,7 @@ $(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(STAGING_DIR)/usr/lib/li
 	-rm $(TARGET_DIR)/usr/lib/*Sql*
 	# Nor Svg
 	-rm $(TARGET_DIR)/usr/lib/*Svg*
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/*.so.$(QTOPIA4_VERSION)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/*.so.$(QTOPIA4_VERSION)
 
 #################################
 #

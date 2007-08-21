@@ -40,7 +40,7 @@ $(MDADM_DIR)/$(MDADM_BINARY): $(MDADM_DIR)/.unpacked
 $(TARGET_DIR)/$(MDADM_TARGET_BINARY): $(MDADM_DIR)/$(MDADM_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(MDADM_DIR) install
 	rm -Rf $(TARGET_DIR)/usr/share/man
-	$(STRIP) -s $@
+	$(STRIP) $(STRIP_STRIP_ALL) $@
 
 mdadm: uclibc $(TARGET_DIR)/$(MDADM_TARGET_BINARY)
 

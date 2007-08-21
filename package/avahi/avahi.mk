@@ -159,7 +159,7 @@ $(TARGET_DIR)/usr/sbin/avahi-autoipd: $(STAGING_DIR)/usr/sbin/avahi-autoipd
 	cp -af $(BASE_DIR)/package/avahi/busybox-udhcpc-default.script $(TARGET_DIR)/usr/share/udhcpc/default.script
 	cp -af $(BASE_DIR)/package/avahi/S05avahi-setup.sh $(TARGET_DIR)/etc/init.d/
 	chmod 0755 $(TARGET_DIR)/usr/share/udhcpc/default.script
-	$(STRIP) --strip-unneeded $@
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $@
 
 $(STAGING_DIR)/usr/lib/libavahi-common.so: $(AVAHI_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(AVAHI_DIR)/avahi-common install
@@ -178,8 +178,8 @@ $(TARGET_DIR)/usr/sbin/avahi-daemon: $(STAGING_DIR)/usr/sbin/avahi-daemon
 	cp -dpf $(STAGING_DIR)/lib/libavahi-*.so* $(TARGET_DIR)/usr/lib/
 	mkdir -p $(TARGET_DIR)/etc/avahi/services
 	cp -af $(BASE_DIR)/package/avahi/S50avahi-daemon $(TARGET_DIR)/etc/init.d/
-	$(STRIP) --strip-unneeded $@
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libavahi-*.so*
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $@
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libavahi-*.so*
 
 avahi: uclibc busybox libdaemon $(AVAHI_TARGETS)
 

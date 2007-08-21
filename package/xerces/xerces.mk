@@ -40,8 +40,8 @@ $(STAGING_DIR)/$(XERCES_BINARY): $(XERCES_DIR)/$(XERCES_BINARY)
 $(TARGET_DIR)/usr/$(XERCES_BINARY): $(STAGING_DIR)/$(XERCES_BINARY)
 	cp -a $(STAGING_DIR)/lib/libxerces-c.so* $(TARGET_DIR)/usr/lib
 	cp -a $(STAGING_DIR)/lib/libxerces-depdom.so* $(TARGET_DIR)/usr/lib
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libxerces-c.so.27.0
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libxerces-depdom.so.27.0
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libxerces-c.so.27.0
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libxerces-depdom.so.27.0
 
 xerces: uclibc $(TARGET_DIR)/usr/$(XERCES_BINARY)
 

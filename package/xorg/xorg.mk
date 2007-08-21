@@ -190,7 +190,7 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER) $(XORG_LIBX)/X11/fonts/ttf-dejavu/
 	-mkdir -p $(XORG_LIBX)
 	set -e; for dirs in $(XORG_LIBS) ; do \
 		file=`find $(XORG_LDIR)/$$dirs -type f -iname "*$$dirs.so*"` ; \
-		$(STRIP) --strip-unneeded $$file ; \
+		$(STRIP) $(STRIP_STRIP_UNNEEDED) $$file ; \
 		cp -f $$file $(XORG_LIBX) ; \
 		file=`find $(XORG_LDIR)/$$dirs -type l -iname "*$$dirs.so*"` ; \
 		cp -pRf $$file $(XORG_LIBX) ; \

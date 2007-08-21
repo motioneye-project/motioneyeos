@@ -561,58 +561,58 @@ $(STAGING_DIR)/usr/bin/$(MATCHBOX_KB_BIN): $(MATCHBOX_KB_DIR)/.compiled
 
 $(TARGET_DIR)/usr/lib/libmb.so: $(STAGING_DIR)/usr/lib/libmb.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libmb.so* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libmb.so
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libmb.so
 
 $(TARGET_DIR)/usr/lib/$(MATCHBOX_SNOTIFY_BIN): $(STAGING_DIR)/usr/lib/$(MATCHBOX_SNOTIFY_BIN)
 	cp -dpf $(STAGING_DIR)/usr/lib/$(MATCHBOX_SNOTIFY_BIN)* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/$(MATCHBOX_SNOTIFY_BIN)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/$(MATCHBOX_SNOTIFY_BIN)
 
 $(TARGET_DIR)/usr/bin/$(MATCHBOX_WM_BIN): $(STAGING_DIR)/usr/bin/$(MATCHBOX_WM_BIN)
 	cp -dpf $(STAGING_DIR)/usr/bin/$(MATCHBOX_WM_BIN) $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/$(MATCHBOX_WM_BIN)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(MATCHBOX_WM_BIN)
 	cp -dpf $(STAGING_DIR)/usr/bin/matchbox-remote $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/matchbox-remote
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/matchbox-remote
 	cp -af $(STAGING_DIR)/etc/matchbox/ $(TARGET_DIR)/etc/
 	cp -af $(STAGING_DIR)/usr/share/matchbox $(TARGET_DIR)/usr/share/
 
 $(TARGET_DIR)/usr/bin/$(MATCHBOX_SM_BIN): $(STAGING_DIR)/usr/bin/$(MATCHBOX_SM_BIN)
 	cp -dpf $(STAGING_DIR)/usr/bin/$(MATCHBOX_SM_BIN) $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/$(MATCHBOX_SM_BIN)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(MATCHBOX_SM_BIN)
 	mkdir -p $(TARGET_DIR)/usr/share/matchbox/pixmaps/
 	cp -af $(STAGING_DIR)/usr/share/matchbox/pixmaps/hourglass-*.png $(TARGET_DIR)/usr/share/matchbox/pixmaps/
 
 $(TARGET_DIR)/usr/bin/matchbox-session: $(STAGING_DIR)/usr/bin/matchbox-session
 	cp -dpf $(STAGING_DIR)/usr/bin/matchbox-session $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/matchbox-session
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/matchbox-session
 	cp -af $(STAGING_DIR)/etc/matchbox/ $(TARGET_DIR)/etc/
 	cp -af $(STAGING_DIR)/usr/share/matchbox $(TARGET_DIR)/usr/share/
 
 $(TARGET_DIR)/usr/bin/$(MATCHBOX_PL_BIN): $(STAGING_DIR)/usr/bin/$(MATCHBOX_PL_BIN)
 	cp -dpf $(STAGING_DIR)/usr/bin/$(MATCHBOX_PL_BIN) $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/$(MATCHBOX_PL_BIN)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(MATCHBOX_PL_BIN)
 	cp -dpf $(STAGING_DIR)/usr/bin/mb-applet-* $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/mb-applet-*
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/mb-applet-*
 	cp -af $(STAGING_DIR)/usr/share/matchbox/* $(TARGET_DIR)/usr/share/matchbox/
 
 $(TARGET_DIR)/usr/bin/$(MATCHBOX_DP_BIN): $(STAGING_DIR)/usr/bin/$(MATCHBOX_DP_BIN)
 	cp -dpf $(STAGING_DIR)/usr/bin/$(MATCHBOX_DP_BIN) $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/$(MATCHBOX_DP_BIN)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(MATCHBOX_DP_BIN)
 	cp -dpf $(STAGING_DIR)/usr/lib/dotdesktop.so $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/dotdesktop.so
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/dotdesktop.so
 	cp -dpf $(STAGING_DIR)/usr/lib/simplefilebrowser.so $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/simplefilebrowser.so
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/simplefilebrowser.so
 	cp -dpf $(STAGING_DIR)/usr/lib/tasks.so $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/tasks.so
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/tasks.so
 	cp -af $(STAGING_DIR)/usr/share/matchbox/* $(TARGET_DIR)/usr/share/matchbox/
 	cp -f ./package/matchbox/mbdesktop_modules $(TARGET_DIR)/etc/matchbox/
 
 $(TARGET_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so: $(STAGING_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so
 	cp -dpf $(STAGING_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so
 
 $(TARGET_DIR)/usr/bin/$(MATCHBOX_KB_BIN): $(STAGING_DIR)/usr/bin/$(MATCHBOX_KB_BIN)
 	cp -dpf $(STAGING_DIR)/usr/bin/$(MATCHBOX_KB_BIN) $(TARGET_DIR)/usr/bin/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/$(MATCHBOX_KB_BIN)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(MATCHBOX_KB_BIN)
 	mkdir -p $(TARGET_DIR)/usr/share/matchbox/pixmaps/
 	cp -dpf $(STAGING_DIR)/usr/share/matchbox/pixmaps/matchbox-keyboard.png $(TARGET_DIR)/usr/share/matchbox/pixmaps/
 	cp -af $(STAGING_DIR)/usr/share/matchbox/matchbox-keyboard $(TARGET_DIR)/usr/share/matchbox/

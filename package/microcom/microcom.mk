@@ -54,7 +54,7 @@ ifeq ($(BR2_PREFER_IMA),y)
 else
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(MICROCOM_DIR)
 endif
-	$(STRIP) -s $@
+	$(STRIP) $(STRIP_STRIP_ALL) $@
 
 $(TARGET_DIR)/usr/bin/microcom: $(MICROCOM_DIR)/microcom
 	install -c $(MICROCOM_DIR)/microcom $(TARGET_DIR)/usr/bin/microcom

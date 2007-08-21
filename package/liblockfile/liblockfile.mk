@@ -41,7 +41,7 @@ $(STAGING_DIR)/lib/$(LIBLOCKFILE_BINARY): $(LIBLOCKFILE_DIR)/.configured
 $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY): $(STAGING_DIR)/lib/$(LIBLOCKFILE_BINARY)
 	-mkdir -p $(TARGET_DIR)/usr/lib
 	cp -a $(STAGING_DIR)/lib/liblockfile.so* $(TARGET_DIR)/usr/lib
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
 
 liblockfile: uclibc $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
 

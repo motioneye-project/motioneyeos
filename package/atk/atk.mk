@@ -121,7 +121,7 @@ $(STAGING_DIR)/lib/$(ATK_BINARY): $(ATK_DIR)/atk/.libs/$(ATK_BINARY)
 $(TARGET_DIR)/lib/libatk-1.0.so.0: $(STAGING_DIR)/lib/$(ATK_BINARY)
 	cp -a $(STAGING_DIR)/lib/libatk-1.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libatk-1.0.so.0* $(TARGET_DIR)/lib/
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libatk-1.0.so.0.*
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libatk-1.0.so.0.*
 	touch -c $(TARGET_DIR)/lib/libatk-1.0.so.0
 
 atk: libglib2 pkgconfig $(TARGET_DIR)/lib/libatk-1.0.so.0

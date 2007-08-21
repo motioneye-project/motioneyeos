@@ -50,7 +50,7 @@ $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY): $(DROPBEAR_DIR)/$(DROPBEAR_BINARY)
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/usr/bin
 	$(INSTALL) -m 755 $(DROPBEAR_DIR)/$(DROPBEAR_BINARY) \
 		$(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY)
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY)
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY)
 	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/scp
 	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/ssh
 	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/dbclient

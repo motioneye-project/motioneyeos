@@ -44,7 +44,7 @@ $(STAGING_DIR)/usr/lib/libmad.so: $(LIBMAD_DIR)/libmad.la
 
 $(TARGET_DIR)/usr/lib/libmad.so: $(STAGING_DIR)/usr/lib/libmad.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libmad.so* $(TARGET_DIR)/usr/lib/
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libmad*
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libmad*
 
 $(TARGET_DIR)/usr/lib/libmad.a: $(STAGING_DIR)/usr/lib/libmad.so
 	mkdir -p $(TARGET_DIR)/usr/include

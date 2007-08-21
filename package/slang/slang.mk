@@ -32,7 +32,7 @@ $(STAGING_DIR)/lib/libslang.so.1: $(SLANG_DIR)/libslang.so
 
 $(TARGET_DIR)/lib/libslang.so.1: $(STAGING_DIR)/lib/libslang.so.1
 	cp -dpf $(STAGING_DIR)/lib/libslang.so* $(TARGET_DIR)/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libslang.so*
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libslang.so*
 
 slang: uclibc $(STAGING_DIR)/lib/libslang.so.1 $(TARGET_DIR)/lib/libslang.so.1
 

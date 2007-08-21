@@ -65,7 +65,7 @@ $(STAGING_DIR)/lib/libtiff.so.$(TIFF_VERSION): $(TIFF_DIR)/libtiff/.libs/libtiff
 
 $(TARGET_DIR)/lib/libtiff.so.$(TIFF_VERSION): $(STAGING_DIR)/lib/libtiff.so.$(TIFF_VERSION)
 	cp -dpf $(STAGING_DIR)/lib/libtiff.so* $(TARGET_DIR)/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libtiff.so.$(TIFF_VERSION)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libtiff.so.$(TIFF_VERSION)
 
 tiff: uclibc zlib jpeg $(TARGET_DIR)/lib/libtiff.so.$(TIFF_VERSION)
 

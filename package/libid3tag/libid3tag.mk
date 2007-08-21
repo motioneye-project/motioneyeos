@@ -45,7 +45,7 @@ $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN): $(LIBID3TAG_DIR)/src/.libs/$(LIBID3TAG_B
 
 $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN): $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN)
 	cp -dpf  $(STAGING_DIR)/usr/lib/libid3tag.so*  $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libid3tag.so*
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libid3tag.so*
 
 libid3tag: uclibc libmad $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN)
 

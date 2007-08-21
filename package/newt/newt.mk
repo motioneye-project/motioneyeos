@@ -60,7 +60,7 @@ $(STAGING_DIR)/usr/lib/libnewt.a: $(NEWT_DIR)/libnewt.so.$(NEWT_VERSION)
 
 $(TARGET_DIR)/usr/lib/libnewt.so.$(NEWT_VERSION): $(STAGING_DIR)/usr/lib/libnewt.a
 	cp -a $(STAGING_DIR)/usr/lib/libnewt.so* $(TARGET_DIR)/usr/lib/;
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libnewt.so*
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libnewt.so*
 	touch -c $@
 
 newt: uclibc slang $(TARGET_DIR)/usr/lib/libnewt.so.$(NEWT_VERSION)

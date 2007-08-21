@@ -105,12 +105,12 @@ $(PHP_DIR)/.staged: $(PHP_DIR)/.built
 $(TARGET_DIR)/usr/bin/php: $(PHP_DIR)/.staged
 	cp -dpf $(STAGING_DIR)/usr/bin/php $(TARGET_DIR)/usr/bin/php
 	chmod 755 $(TARGET_DIR)/usr/bin/php
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/php
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/php
 
 $(TARGET_DIR)/usr/bin/php-cgi: $(PHP_DIR)/.staged
 	cp -dpf $(STAGING_DIR)/usr/bin/php-cgi $(TARGET_DIR)/usr/bin/php-cgi
 	chmod 755 $(TARGET_DIR)/usr/bin/php-cgi
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/bin/php-cgi
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/php-cgi
 
 $(TARGET_DIR)/etc/php.ini: $(PHP_DIR)/.staged
 	cp $(PHP_DIR)/php.ini-dist $(TARGET_DIR)/etc/php.ini

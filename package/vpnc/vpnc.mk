@@ -41,7 +41,7 @@ $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
 		INCLUDE=$(STAGING_DIR)/usr/include	\
 		LDFLAGS="-g -lgcrypt -lgpg-error"	\
 		-C $(VPNC_DIR) install
-	$(STRIP) --strip-unneeded $(VPNC_TARGET_BINARY)
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(VPNC_TARGET_BINARY)
 
 #		CFLAGS+="-W -Wall -O3 -Wmissing-declarations -Wwrite-strings -g -DVERSION=\"$(VPNC_VERSION)\" -c"	\
 

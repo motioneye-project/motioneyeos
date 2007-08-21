@@ -47,17 +47,17 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 
 $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(OPENSSH_DIR)
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/scp
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/sftp
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/sftp-server
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/ssh
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/ssh-add
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/ssh-agent
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/ssh-keygen
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/ssh-keyscan
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/ssh-keysign
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/ssh-rand-helper
-	-$(STRIP) --strip-unneeded $(OPENSSH_DIR)/sshd
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/scp
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/sftp
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/sftp-server
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/ssh
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/ssh-add
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/ssh-agent
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/ssh-keygen
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/ssh-keyscan
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/ssh-keysign
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/ssh-rand-helper
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/sshd
 
 $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
 	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install

@@ -58,7 +58,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(RXVT_DIR)
-	$(STRIP) -x $(RXVT_BINARY)
+	$(STRIP) $(STRIP_DISCARD_ALL) $(RXVT_BINARY)
 
 $(TARGET_DIR)/usr/X11R6/bin/rxvt: $(RXVT_BINARY)
 	cp -f $(RXVT_BINARY) $(TARGET_DIR)/usr/X11R6/bin

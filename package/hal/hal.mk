@@ -86,7 +86,7 @@ $(TARGET_DIR)/$(HAL_TARGET_BINARY): $(HAL_DIR)/hald/hald
 		    hald-probe-hiddev hald-addon-hid-ups; do	\
 		rm -f $(TARGET_DIR)/usr/libexec/$$file;		\
 	done
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libhal*
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libhal*
 
 hal: uclibc dbus-glib hwdata udev-volume_id $(TARGET_DIR)/$(HAL_TARGET_BINARY)
 

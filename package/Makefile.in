@@ -138,9 +138,19 @@ TARGET_LDCONFIG=$(TARGET_CROSS)ldconfig
 INSTALL=/usr/bin/install
 ifeq ($(BR2_STRIP_strip),y)
 STRIP=$(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
+STRIP_DISCARD_ALL:=--discard-all
+STRIP_STRIP_UNNEEDED:=--strip-unneeded
+STRIP_STRIP_ALL:=--strip-all 
+REMOVE_SECTION_COMMENT:=--remove-section=.comment
+REMOVE_SECTION_NOTE:=--remove-section=.note
 endif
 ifeq ($(BR2_STRIP_sstrip),y)
 STRIP=$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-sstrip
+STRIP_DISCARD_ALL:=
+STRIP_STRIP_UNNEEDED:=
+STRIP_STRIP_ALL:=
+REMOVE_SECTION_COMMENT:=
+REMOVE_SECTION_NOTE:=
 endif
 ifeq ($(BR2_STRIP_none),y)
 STRIP=true -Not_stripping

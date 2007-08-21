@@ -132,8 +132,8 @@ $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0: $(STAGING_DIR)/lib/$(LIBGTK2_BINARY)
 	cp -a $(STAGING_DIR)/lib/libgtk-x11-2.0.so.0* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libgdk*-2.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libgdk*-2.0.so.0* $(TARGET_DIR)/lib/
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0*
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgdk*-2.0.so.0*
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0*
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgdk*-2.0.so.0*
 	mkdir -p $(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines
 	cp -a  $(STAGING_DIR)/lib/gtk-2.0/2.10.0/engines/*.so \
 		$(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines/

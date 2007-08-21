@@ -68,8 +68,8 @@ $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY): $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LIGHTTPD_DIR) install
 	@rm -rf $(TARGET_DIR)/usr/share/man $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/lib/lighttpd/*.la
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/lighttpd/*.so
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY)
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/lighttpd/*.so
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/lighttpd/lighttpd.conf ] ; then \
 		$(INSTALL) -m 0644 -D $(LIGHTTPD_DIR)/doc/lighttpd.conf $(TARGET_DIR)/etc/lighttpd/lighttpd.conf; \
 	fi;

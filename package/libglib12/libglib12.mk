@@ -73,8 +73,8 @@ $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10: $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY)
 	cp -dpf $(STAGING_DIR)/lib/libgmodule.so $(TARGET_DIR)/lib/
 	cp -dpf $(STAGING_DIR)/lib/libgmodule-1.2.so.0 $(TARGET_DIR)/lib/
 	cp -dpf $(STAGING_DIR)/lib/libgmodule-1.2.so.0.0.10 $(TARGET_DIR)/lib/
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10
-	$(STRIP) --strip-unneeded $(TARGET_DIR)/lib/libgmodule-1.2.so.0.0.10
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10
+	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgmodule-1.2.so.0.0.10
 
 libglib12: uclibc $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10
 
