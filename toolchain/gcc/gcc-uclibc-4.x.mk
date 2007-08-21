@@ -333,6 +333,7 @@ endif
 	#
 	# Ok... that's enough of that.
 	#
+	-mkdir -p $(TARGET_DIR)/usr/lib $(TARGET_DIR)/usr/sbin
 	touch $@
 
 $(GCC_BUILD_DIR2)/.libs_installed: $(GCC_BUILD_DIR2)/.installed
@@ -342,7 +343,7 @@ ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 	-cp -dpf $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* $(TARGET_DIR)/lib/
 endif
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
-	-cp -dpf $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib/libstdc++.so* $(TARGET_DIR)/lib/
+	-cp -dpf $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib/libstdc++.so* $(TARGET_DIR)/usr/lib/
 endif
 ifeq ($(BR2_INSTALL_LIBGCJ),y)
 	-cp -dpf $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/lib/

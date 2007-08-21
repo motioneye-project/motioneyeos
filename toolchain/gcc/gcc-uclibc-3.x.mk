@@ -309,6 +309,7 @@ endif
 	#
 	# Ok... that's enough of that.
 	#
+	-mkdir -p $(TARGET_DIR)/usr/lib $(TARGET_DIR)/usr/sbin
 	touch $@
 
 $(GCC_BUILD_DIR2)/.libs_installed: $(GCC_BUILD_DIR2)/.installed
