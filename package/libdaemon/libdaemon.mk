@@ -12,9 +12,10 @@
 # later version.
 
 LIBDAEMON_VERSION:=0.10
-LIBDAEMON_DIR:=$(BUILD_DIR)/libdaemon-$(LIBDAEMON_VERSION)
+LIBDAEMON_NAME:=libdaemon-$(LIBDAEMON_VERSION)
+LIBDAEMON_DIR:=$(BUILD_DIR)/$(LIBDAEMON_NAME)
 LIBDAEMON_SITE:=http://0pointer.de/lennart/projects/libdaemon/
-LIBDAEMON_SOURCE:=libdaemon-$(LIBDAEMON_VERSION).tar.gz
+LIBDAEMON_SOURCE:=$(LIBDAEMON_NAME).tar.gz
 LIBDAEMON_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(LIBDAEMON_SOURCE):
@@ -25,6 +26,10 @@ libdaemon-source: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 $(LIBDAEMON_DIR)/.unpacked: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 	$(LIBDAEMON_CAT) $(DL_DIR)/$(LIBDAEMON_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBDAEMON_DIR) package/libdaemon/ \*.patch
+	mkdir	-p $(PROJECT_BUILD_DIR)/patches
+	bzcat package/libdaemon/$(LIBDAEMON_NAME).patch.bz2 \
+		> $(PROJECT_BUILD_DIR)/patches/$(LIBDAEMON_NAME).patch
+	toolchain/patch-kernel.sh $(LIBDAEMON_DIR) $(PROJECT_BUILD_DIR)/patches/ $(LIBDAEMON_NAME)\*.patch
 	$(CONFIG_UPDATE) $(LIBDAEMON_DIR)
 	touch $(LIBDAEMON_DIR)/.unpacked
 
@@ -57,7 +62,7 @@ $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 	touch $(LIBDAEMON_DIR)/.configured
 
 $(LIBDAEMON_DIR)/.compiled: $(LIBDAEMON_DIR)/.configured
-	$(MAKE) -C $(LIBDAEMON_DIR)
+	$(MAKE) LIBTOOL=$(LIBDAEMON_DIR)/libtool -C $(LIBDAEMON_DIR)
 	touch $(LIBDAEMON_DIR)/.compiled
 
 $(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
@@ -65,15 +70,25 @@ $(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
 	touch -c $(STAGING_DIR)/lib/libdaemon.a
 
 #$(TARGET_DIR)/usr/lib/libdaemon.a: $(STAGING_DIR)/lib/libdaemon.a
-#	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libdaemon.a
+#	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdaemon.a
 
 libdaemon: uclibc pkgconfig $(STAGING_DIR)/lib/libdaemon.a
+
+libdaemon-unpacked: $(LIBDAEMON_DIR)/.unpacked
 
 libdaemon-clean:
 	-$(MAKE) -C $(LIBDAEMON_DIR) clean
 
+libdaemon-patch-prep: libdaemon-dirclean libdaemon-unpacked
+	cp -af $(LIBDAEMON_DIR) $(LIBDAEMON_DIR)-0rig
+
+libdaemon-patch: 
+	(cd $(BUILD_DIR); \
+	diff -urN $(LIBDAEMON_NAME)-0rig $(LIBDAEMON_NAME) > ../../$(LIBDAEMON_NAME)-$(DATE).patch || echo)
+
 libdaemon-dirclean:
 	rm -rf $(LIBDAEMON_DIR)
+	rm -rf $(LIBDAEMON_DIR)-0rig
 
 #############################################################
 #
