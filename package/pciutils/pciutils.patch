@@ -1,5 +1,5 @@
---- pciutils-2.1.11/lib/configure
-+++ pciutils-2.1.11/lib/configure
+--- pciutils-2.2.6/lib/configure
++++ pciutils-2.2.6/lib/configure
 @@ -12,7 +12,7 @@
  echo_n "Configuring libpci for your system..."
  sharedir=${1:-/usr/share}
@@ -9,68 +9,4 @@
  rel=`uname -r`
  if [ "$sys" = "AIX" -a -x /usr/bin/oslevel -a -x /usr/sbin/lsattr ]
  then
-@@ -25,7 +25,6 @@
- echo " $sys/$cpu $rel"
- 
- c=config.h
--echo >$c "#define ARCH_`echo $cpu | tr 'a-z' 'A-Z'`"
- echo >>$c "#define OS_`echo $sys | tr 'a-z' 'A-Z'`"
- 
- echo_n "Looking for access methods..."
-@@ -40,17 +39,6 @@
- 						ok=1
- 						;;
- 		esac
--		case $cpu in
--				i386)		echo_n " i386-ports"
--						echo >>$c '#define HAVE_PM_INTEL_CONF'
--						ok=1
--						;;
--				alpha|ia64)	echo >>$c '#define HAVE_64BIT_ADDRESS'
--						;;
--				sparc|sparc64)	echo >>$c '#define HAVE_64BIT_ADDRESS'
--						echo >>$c '#define HAVE_LONG_ADDRESS'
--						;;
--		esac
- 		;;
- 	FreeBSD)
- 		echo_n " fbsd-device"
---- pciutils-2.1.11/Makefile
-+++ pciutils-2.1.11/Makefile
-@@ -18,16 +18,6 @@
- DIRINSTALL=install -d
- PCILIB=libpci.a
- 
--ifeq ($(shell uname),NetBSD)
--PCILIB=libpciutils.a
--LDFLAGS+=-lpci
--else
--ifeq ($(shell uname),AIX)
--CFLAGS=-g
--INSTALL=installbsd
--DIRINSTALL=mkdir -p
--endif
--endif
- 
- export
- 
---- pciutils-2.1.11/lspci.c
-+++ pciutils-2.1.11/lspci.c
-@@ -51,7 +51,7 @@
- 
- /* Format strings used for IRQ numbers and memory addresses */
- 
--#ifdef ARCH_SPARC64
-+#ifdef __sparc64__
- #define IRQ_FORMAT "%08x"
- #else
- #define IRQ_FORMAT "%d"
-@@ -67,7 +67,7 @@
- #define ADDR_FORMAT "%08lx"
- #endif
- 
--#ifdef ARCH_SPARC64
-+#ifdef __sparc64__
- #define IO_FORMAT "%016Lx"
- #elif defined(HAVE_LONG_ADDRESS)
- #define IO_FORMAT "%04Lx"
+
