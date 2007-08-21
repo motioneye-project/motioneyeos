@@ -150,8 +150,6 @@ LIBTGTEXT=.so
 endif
 PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 
-BR2_DEPENDS_DIR=$(BASE_DIR)/package/config/buildroot-config/
-
 ##############################################################
 #
 # The list of stuff to build for the target toolchain
@@ -165,7 +163,11 @@ BASE_TARGETS:=uclibc
 endif
 TARGETS:=
 
+# setup uor pathes
 include project/Makefile.in
+
+BR2_DEPENDS_DIR=$(PROJECT_BUILD_DIR)/buildroot-config
+
 include toolchain/Makefile.in
 include package/Makefile.in
 
@@ -211,7 +213,12 @@ TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 # all targets depend on the crosscompiler and it's prerequisites
 $(TARGETS): $(BASE_TARGETS)
 
+$(BR2_DEPENDS_DIR): .config
+	rm -rf $@
+	cp -dpRf $(CONFIG)/buildroot-config $@
+
 dirs: $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
+	$(BR2_DEPENDS_DIR) \
 	$(BINARIES_DIR) $(PROJECT_BUILD_DIR)
 
 $(BASE_TARGETS): dirs
@@ -223,6 +230,7 @@ world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS)
 	$(BASE_TARGETS) $(TARGETS) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
 	$(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
+	$(BR2_DEPENDS_DIR) \
 	$(BINARIES_DIR) $(PROJECT_BUILD_DIR)
 
 #############################################################
@@ -260,7 +268,7 @@ $(PROJECT_BUILD_DIR)/.root:
 	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
 	touch $@
 
-$(TARGET_DIR):	$(PROJECT_BUILD_DIR)/.root
+$(TARGET_DIR): $(PROJECT_BUILD_DIR)/.root
 
 erase-fakeroots:
 	rm -f $(PROJECT_BUILD_DIR)/.fakeroot*
@@ -310,11 +318,13 @@ HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
 $(CONFIG)/conf:
+	@mkdir -p $(CONFIG)/buildroot-config
 	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
 $(CONFIG)/mconf:
+	@mkdir -p $(CONFIG)/buildroot-config
 	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf mconf
 	-@if [ ! -f .config ] ; then \
 		cp $(CONFIG_DEFCONFIG) .config; \

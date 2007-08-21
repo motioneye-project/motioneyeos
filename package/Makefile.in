@@ -9,20 +9,6 @@ HOSTMAKE :=$(shell $(CONFIG_SHELL) -c "which $(HOSTMAKE)"  || type -p $(HOSTMAKE
 MAKE1:=$(HOSTMAKE) MAKE="$(firstword $(HOSTMAKE)) -j1"
 MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
 
-# Strip off the annoying quoting
-ARCH:=$(strip $(subst ",, $(BR2_ARCH)))
-#"))
-WGET:=$(strip $(subst ",, $(BR2_WGET))) $(SPIDER)
-#"))
-SVN:=$(strip $(subst ",, $(BR2_SVN)))
-#"))
-ZCAT:=$(strip $(subst ",, $(BR2_ZCAT)))
-#"))
-BZCAT:=$(strip $(subst ",, $(BR2_BZCAT)))
-#"))
-TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xf
-#")
-
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 TARGET_CFLAGS=$(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING) \
@@ -72,34 +58,6 @@ endif
 #########################################################################
 
 
-BASE_DIR:=$(shell pwd)
-
-TOPDIR_PREFIX:=$(strip $(subst ",, $(BR2_TOPDIR_PREFIX)))_
-#"))
-TOPDIR_SUFFIX:=_$(strip $(subst ",, $(BR2_TOPDIR_SUFFIX)))
-#"))
-ifeq ($(TOPDIR_PREFIX),_)
-TOPDIR_PREFIX:=
-endif
-ifeq ($(TOPDIR_SUFFIX),_)
-TOPDIR_SUFFIX:=
-endif
-
-DL_DIR=$(strip $(subst ",, $(BR2_DL_DIR)))
-#"))
-ifeq ($(DL_DIR),)
-DL_DIR:=$(BASE_DIR)/dl
-endif
-#PATCH_DIR=$(BASE_DIR)/sources/patches
-
-# All non-configurable packages should be built in BUILD_DIR
-BUILD_DIR:=$(BASE_DIR)/$(TOPDIR_PREFIX)build_$(ARCH)$(ARCH_FPU_SUFFIX)$(TOPDIR_SUFFIX)
-
-GNU_TARGET_SUFFIX:=-$(strip $(subst ",, $(BR2_GNU_TARGET_SUFFIX)))
-#"))
-
-STAGING_DIR:=$(strip $(subst ",, $(BR2_STAGING_DIR)))
-#"))
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 TOOL_BUILD_DIR=$(BASE_DIR)/$(TOPDIR_PREFIX)toolchain_build_$(ARCH)$(ARCH_FPU_SUFFIX)$(TOPDIR_SUFFIX)
 
