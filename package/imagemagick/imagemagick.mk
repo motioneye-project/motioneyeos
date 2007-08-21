@@ -77,58 +77,58 @@ $(IMAGEMAGICK_LIB): $(STAGING_DIR)/usr/lib/libMagick.a
 	touch -c $@
 
 $(IMAGEMAGICK_DIR)/.libinstall: $(IMAGEMAGICK_LIB)
-	libtool	--finish $(TARGET_DIR)/usr/lib/ImageMagick-6.3.5/modules-Q16/coders
-	libtool	--finish $(TARGET_DIR)/usr/lib/ImageMagick-6.3.5/modules-Q16/filters
-	touch	$@
+	libtool --finish $(TARGET_DIR)/usr/lib/ImageMagick-6.3.5/modules-Q16/coders
+	libtool --finish $(TARGET_DIR)/usr/lib/ImageMagick-6.3.5/modules-Q16/filters
+	touch $@
 
 $(TARGET_DIR)/usr/bin/animate: $(IMAGEMAGICK_LIB)
 	ls -l $(IMAGEMAGICK_LIB) >> datefile
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-animate $(TARGET_DIR)/usr/bin/animate
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/animate
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/compare: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-compare $(TARGET_DIR)/usr/bin/compare
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/compare
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/composite: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-composite $(TARGET_DIR)/usr/bin/composite
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/composite
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/conjure: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-conjure $(TARGET_DIR)/usr/bin/conjure
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/conjure
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/display: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-display $(TARGET_DIR)/usr/bin/display
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/display
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/import: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-import $(TARGET_DIR)/usr/bin/import
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/import
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/mogrify: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-mogrify $(TARGET_DIR)/usr/bin/mogrify
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/mogrify
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/montage: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-montage $(TARGET_DIR)/usr/bin/montage
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/montage
-	touch	$@
+	touch $@
 
 $(TARGET_DIR)/usr/bin/convert: $(IMAGEMAGICK_LIB)
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-convert $(TARGET_DIR)/usr/bin/convert
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/convert
-	touch	$@
+	touch $@
 
 imagemagick: uclibc jpeg tiff $(IMAGEMAGICK_LIB) \
-		$(IMAGEMAGICK_DIR)/.libinstall	\
+		$(IMAGEMAGICK_DIR)/.libinstall \
 		$(IMAGEMAGICK_TARGET_BINARIES)
 
 imagemagick-clean:

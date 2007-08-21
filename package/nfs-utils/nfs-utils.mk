@@ -52,7 +52,7 @@ $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY): $(NFS_UTILS_DIR)/.configured
 	touch -c $@
 
 NFS_UTILS_TARGETS_  :=
-NFS_UTILS_TARGETS_y :=	usr/sbin/exportfs usr/sbin/rpc.mountd	\
+NFS_UTILS_TARGETS_y :=	usr/sbin/exportfs usr/sbin/rpc.mountd \
 			usr/sbin/rpc.nfsd usr/sbin/rpc.statd
 
 NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPCDEBUG)	+= usr/sbin/rpcdebug

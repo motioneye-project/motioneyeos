@@ -30,26 +30,26 @@ GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VER)
 endif
 
 # redefine if using an external prepatched gcc source
-ifeq	($(BR2_TOOLCHAIN_NORMAL),)
+ifeq ($(BR2_TOOLCHAIN_NORMAL),)
 GCC_SITE:=$(VENDOR_SITE)
 GCC_OFFICIAL_VER:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
 endif
 
 # define patch location
-ifeq	($(BR2_TOOLCHAIN_NORMAL),y)	# Normal toolchain
-ifeq ($(GCC_SNAP_DATE),)		# Not a snapshot
+ifeq ($(BR2_TOOLCHAIN_NORMAL),y) # Normal toolchain
+ifeq ($(GCC_SNAP_DATE),) # Not a snapshot
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-else					# Is a snapshot
-ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),)	# Snapshot patch?
+else # Is a snapshot
+ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),) # Snapshot patch?
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VER)
-else					# Normal patch to snapshot
+else # Normal patch to snapshot
 # Use the normal location, if the dedicated location does not exist
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-endif					# Snapshot patch
-endif					# Not a snapshot
-else					# Prepatched toolchain
+endif # Snapshot patch
+endif # Not a snapshot
+else # Prepatched toolchain
 GCC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gcc-$(GCC_OFFICIAL_VER)
-endif					# Normal toolchain
+endif # Normal toolchain
 
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)

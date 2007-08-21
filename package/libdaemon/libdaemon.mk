@@ -26,7 +26,7 @@ libdaemon-source: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 $(LIBDAEMON_DIR)/.unpacked: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 	$(LIBDAEMON_CAT) $(DL_DIR)/$(LIBDAEMON_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBDAEMON_DIR) package/libdaemon/ \*.patch
-	mkdir	-p $(PROJECT_BUILD_DIR)/patches
+	mkdir -p $(PROJECT_BUILD_DIR)/patches
 	$(BZCAT) package/libdaemon/$(LIBDAEMON_NAME).patch.bz2 \
 		> $(PROJECT_BUILD_DIR)/patches/$(LIBDAEMON_NAME).patch
 	toolchain/patch-kernel.sh $(LIBDAEMON_DIR) $(PROJECT_BUILD_DIR)/patches/ $(LIBDAEMON_NAME)\*.patch

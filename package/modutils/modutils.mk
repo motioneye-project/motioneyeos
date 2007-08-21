@@ -52,16 +52,14 @@ $(STAGING_DIR)/$(MODUTILS_TARGET_BINARY): $(MODUTILS_DIR1)/.build
 	touch -c $@
 
 $(TARGET_DIR)/sbin/rmmod: $(STAGING_DIR)/$(MODUTILS_TARGET_BINARY)
-	cp -dpf $(STAGING_DIR)/sbin/depmod	$(TARGET_DIR)/sbin/depmod
-	cp -dpf $(STAGING_DIR)/sbin/insmod	$(TARGET_DIR)/sbin/insmod
-	cp -dpf $(STAGING_DIR)/sbin/modinfo	$(TARGET_DIR)/sbin/modinfo
-	ln -s	insmod $(TARGET_DIR)/sbin/kallsyms
-	ln -s	insmod $(TARGET_DIR)/sbin/ksyms
-	ln -s	insmod $(TARGET_DIR)/sbin/lsmod
-	ln -s	insmod $(TARGET_DIR)/sbin/modprobe
-	ln -s	insmod $(TARGET_DIR)/sbin/rmmod
-
-
+	cp -dpf $(STAGING_DIR)/sbin/depmod $(TARGET_DIR)/sbin/depmod
+	cp -dpf $(STAGING_DIR)/sbin/insmod $(TARGET_DIR)/sbin/insmod
+	cp -dpf $(STAGING_DIR)/sbin/modinfo $(TARGET_DIR)/sbin/modinfo
+	ln -s insmod $(TARGET_DIR)/sbin/kallsyms
+	ln -s insmod $(TARGET_DIR)/sbin/ksyms
+	ln -s insmod $(TARGET_DIR)/sbin/lsmod
+	ln -s insmod $(TARGET_DIR)/sbin/modprobe
+	ln -s insmod $(TARGET_DIR)/sbin/rmmod
 
 modutils: uclibc $(TARGET_DIR)/sbin/rmmod
 

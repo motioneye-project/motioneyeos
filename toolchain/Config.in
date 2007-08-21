@@ -1,4 +1,4 @@
-menu	"Toolchain type"
+menu "Toolchain type"
 choice
 	prompt "Toolchain type"
 	default BR2_TOOLCHAIN_BUILDROOT
