@@ -46,6 +46,7 @@ CFLAGS_WHOLE_PROGRAM = $(call cc-option,-fwhole-program,)
 CFLAGS_COMBINE = $(call cc-option,--combine,)
 
 # define values for prepatched source trees for toolchains
+#XXX: ulf, what about moving this to project/* ? (BF)
 VENDOR_SITE:=$(strip $(subst ",,$(BR2_VENDOR_SITE)))
 #"))
 VENDOR_SUFFIX:=$(strip $(subst ",,$(BR2_VENDOR_SUFFIX)))
