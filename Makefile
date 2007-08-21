@@ -250,14 +250,14 @@ endif
 
 $(PROJECT_BUILD_DIR)/.root:
 	mkdir -p $(TARGET_DIR)
-	if ! [ -d "$(TARGET_DIR)/bin" ] ; then \
-		if [ -d "$(TARGET_SKELETON)" ] ; then \
-			cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
+	if ! [ -d "$(TARGET_DIR)/bin" ]; then \
+		if [ -d "$(TARGET_SKELETON)" ]; then \
+			cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/ ; \
 		fi; \
 		touch $(STAGING_DIR)/.fakeroot.00000 ; \
-		-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf ; \
-		-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf ; \
-	fi;
+	fi
+	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
+	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
 	touch $@
 
 $(TARGET_DIR):	$(PROJECT_BUILD_DIR)/.root
