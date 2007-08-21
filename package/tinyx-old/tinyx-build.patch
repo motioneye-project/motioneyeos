@@ -1,0 +1,11 @@
+--- xc-011010/programs/xfs/os/config.c.orig	2001-07-31 18:45:05.000000000 -0600
++++ xc-011010/programs/xfs/os/config.c	2005-05-12 15:51:35.000000000 -0600
+@@ -661,6 +661,8 @@
+     val = config_parse_int (val, &ret, &scan);
+     if (ret == -1)
+ 	return val;
++#ifdef SNFFORMAT
+     SnfSetFormat (bit, byte, glyph, scan);
++#endif
+     return val;
+ }

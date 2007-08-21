@@ -324,6 +324,7 @@ source "package/xorg/Config.in"
 endif
 if BR2_PACKAGE_XSERVER_tinyx
 source "package/tinyx/Config.in"
+source "package/tinyx-old/Config.in"
 endif
 
 comment "X libraries and helper libraries"

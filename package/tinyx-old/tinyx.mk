@@ -23,8 +23,8 @@
 
 
 ifneq ($(strip $(BR2_PACKAGE_XORG)),y)
-ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
 ifeq ($(strip $(BR2_PACKAGE_TINYX_OLD)),y)
+
 #############################################################
 # You may want to change these.
 #############################################################
@@ -45,11 +45,11 @@ TINYX_LIBS:=ICE X11 Xext Xpm
 #
 # Where resources are found.
 #
-TINYX_VERSION:=011010
-TINYX_DIR:=$(BUILD_DIR)/xc-$(TINYX_VERSION)
+
+TINYX_DIR:=$(BUILD_DIR)/xc-011010
 TINYX_LDIR:=$(TINYX_DIR)/lib
 TINYX_PROGS:=$(TINYX_DIR)/programs
-TINYX_SOURCE:=xc-$(TINYX_VERSION).tar.bz2
+TINYX_SOURCE:=xc-011010.tar.bz2
 TINYX_SITE:= http://intimate.handhelds.org/jacques/
 TINYX_CF:=$(TINYX_DIR)/config/cf
 #
@@ -85,7 +85,7 @@ $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 	rm -f $(TINYX_BINX)/Xfbdev
 	#make World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=<cross compiler dir>";
 	#( cd $(TINYX_DIR) ; $(MAKE) World CROSSCOMPILEFLAGS="CROSSCOMPILEDIR=$(STAGING_DIR)/bin" )
-	#( cd $(TINYX_DIR) ; $(MAKE) $(TARGET_CONFIGURE_OPTS) World )
+	#( cd $(TINYX_DIR) ; $(TARGET_CONFIGURE_OPTS) $(MAKE) World )
 	#
 	#mv $(TINYX_DIR)/Makefile $(TINYX_DIR)/Makefile.xxxx
 	#echo "AS=$(TARGET_CROSS)as" > $(TINYX_DIR)/Makefile
@@ -97,7 +97,7 @@ $(TINYX_XFBDEV): $(TINYX_DIR)/.configure
 	#echo "RANLIB=$(TARGET_CROSS)ranlib" >> $(TINYX_DIR)/Makefile
 	#echo "OBJCOPY=$(TARGET_CROSS)objcopy" >> $(TINYX_DIR)/Makefile
 	#cat $(TINYX_DIR)/Makefile.xxxx >> $(TINYX_DIR)/Makefile
-	( cd $(TINYX_DIR) ; $(MAKE) $(TARGET_CONFIGURE_OPTS) World )
+	( cd $(TINYX_DIR) ; $(MAKE) World )
 
 #
 # Install x-includes and x-libraries in $(STAGING_DIR)/usr/X11R6/
@@ -152,6 +152,5 @@ tinyx-dirclean:
 #
 #############################################################
 TARGETS+=tinyx
-endif
 endif
 endif
