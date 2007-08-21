@@ -108,7 +108,7 @@ $(XORG_XSERVER): $(XORG_DIR)/.configured
 	touch -c $(XORG_XSERVER)
 
 $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
-	-mkdir -p $(STAGING_DIR)/usr/X11R6
+	mkdir -p $(STAGING_DIR)/usr/X11R6
 	ln -fs ../../include $(STAGING_DIR)/usr/X11R6/include
 	ln -fs ../../lib $(STAGING_DIR)$(TARGET_LIBX)
 	( cd $(XORG_DIR); $(MAKE) \
@@ -121,7 +121,7 @@ $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2: $(XORG_XSERVER)
 	touch -c $(STAGING_DIR)$(TARGET_LIBX)/libX11.so.6.2
 
 $(TARGET_XSERVER): $(XORG_XSERVER)
-	-mkdir -p $(XORG_BINX)
+	mkdir -p $(XORG_BINX)
 	for file in $(XORG_APPS) ; do \
 		cp -f $(XORG_DIR)/programs/$$file $(XORG_BINX) ; \
 		chmod a+x $(XORG_PROGS)/$$file ; \
@@ -187,7 +187,7 @@ $(XORG_LIBX)/X11/fonts/ttf-dejavu/DejaVuSansMono.ttf: $(DEJAVU_DIR)/.unpacked
 	touch -c $(XORG_LIBX)/X11/fonts/ttf-dejavu/DejaVuSansMono.ttf
 
 $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER) $(XORG_LIBX)/X11/fonts/ttf-dejavu/DejaVuSansMono.ttf
-	-mkdir -p $(XORG_LIBX)
+	mkdir -p $(XORG_LIBX)
 	set -e; for dirs in $(XORG_LIBS) ; do \
 		file=`find $(XORG_LDIR)/$$dirs -type f -iname "*$$dirs.so*"` ; \
 		$(STRIP) $(STRIP_STRIP_UNNEEDED) $$file ; \

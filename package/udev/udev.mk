@@ -40,7 +40,7 @@ $(UDEV_DIR)/$(UDEV_BINARY): $(UDEV_DIR)/.unpacked
 	touch -c $@
 
 $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
-	-mkdir -p $(TARGET_DIR)/sys
+	mkdir -p $(TARGET_DIR)/sys
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		DESTDIR=$(TARGET_DIR) \
 		CFLAGS="$(BR2_UDEV_CFLAGS)" \

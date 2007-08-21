@@ -167,7 +167,7 @@ endif
 # the step or libgcc will not build...
 
 $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
-	-mkdir -p $(GCC_BUILD_DIR1)
+	mkdir -p $(GCC_BUILD_DIR1)
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) \
 		CC="$(HOSTCC)" \
 		$(GCC_DIR)/configure \
@@ -223,7 +223,7 @@ gcc_initial-dirclean:
 comma:=,
 GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
-	-mkdir -p $(GCC_BUILD_DIR2)
+	mkdir -p $(GCC_BUILD_DIR2)
 	# Important!  Required for limits.h to be fixed.
 	ln -snf ../include $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/sys-include
 	#-rmdir $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib
@@ -327,7 +327,7 @@ ifeq ($(BR2_INSTALL_LIBGCJ),y)
 	-cp -dpf $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/usr/lib/
 	-cp -dpf $(STAGING_DIR)/lib/lib-org-w3c-dom.so* $(TARGET_DIR)/usr/lib/
 	-cp -dpf $(STAGING_DIR)/lib/lib-org-xml-sax.so* $(TARGET_DIR)/usr/lib/
-	-mkdir -p $(TARGET_DIR)/usr/lib/security
+	mkdir -p $(TARGET_DIR)/usr/lib/security
 	-cp -dpf $(STAGING_DIR)/usr/lib/security/libgcj.security $(TARGET_DIR)/usr/lib/security/
 	-cp -dpf $(STAGING_DIR)/usr/lib/security/classpath.security $(TARGET_DIR)/usr/lib/security/
 endif

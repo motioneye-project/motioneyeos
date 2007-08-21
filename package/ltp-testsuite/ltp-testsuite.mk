@@ -33,7 +33,7 @@ $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
 ltp-testsuite-source: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 
 $(LTP_TESTSUITE_DIR)/Makefile: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
-	-mkdir -p $(LTP_TESTSUITE_ROOT)
+	mkdir -p $(LTP_TESTSUITE_ROOT)
 	$(LTP_TESTSUITE_CAT) $(DL_DIR)/$(LTP_TESTSUITE_SOURCE) | tar -C $(LTP_TESTSUITE_ROOT) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LTP_TESTSUITE_DIR) package/ltp-testsuite/ $(LTP_PATCHES)
 	touch -c $@

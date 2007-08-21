@@ -55,11 +55,11 @@ LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.4
 LINUX_SOURCE_DIR=$(LINUX_DIR)
 
 $(DL_DIR)/$(LINUX_SOURCE):
-	-mkdir -p $(DL_DIR)
+	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(LINUX_SITE)/$(LINUX_SOURCE)
 
 $(LINUX_DIR)/.unpacked: $(DL_DIR)/$(LINUX_SOURCE)
-	-mkdir -p $(TOOL_BUILD_DIR)
+	mkdir -p $(TOOL_BUILD_DIR)
 	-(cd $(TOOL_BUILD_DIR); ln -snf $(LINUX_DIR) linux)
 	$(LINUX_CAT) $(DL_DIR)/$(LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(DOWNLOAD_LINUX_VERSION),$(LINUX_VERSION))

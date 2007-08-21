@@ -40,7 +40,7 @@ $(STAGING_DIR)/lib/libusb.so: $(LIBUSB_DIR)/.configured
 	$(MAKE) -C $(LIBUSB_DIR) DESTDIR=$(STAGING_DIR) install
 
 $(TARGET_DIR)/$(LIBUSB_BINARY): $(STAGING_DIR)/lib/libusb.so
-	-mkdir -p $(TARGET_DIR)/usr/lib
+	mkdir -p $(TARGET_DIR)/usr/lib
 	cp -a $(STAGING_DIR)/lib/libusb* $(TARGET_DIR)/usr/lib
 	rm -f $(TARGET_DIR)/usr/lib/*.a $(TARGET_DIR)/usr/lib/*.la
 

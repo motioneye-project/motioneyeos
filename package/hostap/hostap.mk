@@ -31,9 +31,9 @@ $(HOSTAP_DIR)/utils/hostap_crypt_conf: $(HOSTAP_DIR)/.configured
 $(TARGET_DIR)//usr/bin/hostap_crypt_conf: $(HOSTAP_DIR)/utils/hostap_crypt_conf
 	# Make the dir
 	-rm -rf $(HOSTAP_TARGET_MODULE_DIR)
-	-mkdir -p $(HOSTAP_TARGET_MODULE_DIR)
+	mkdir -p $(HOSTAP_TARGET_MODULE_DIR)
 	# Copy the pcmcia-cs conf file
-	-mkdir -p $(TARGET_DIR)/etc/pcmcia
+	mkdir -p $(TARGET_DIR)/etc/pcmcia
 	cp -af $(HOSTAP_DIR)/driver/etc/hostap_cs.conf $(TARGET_DIR)/etc/pcmcia/
 	# Copy The Utils
 	cp -af $(HOSTAP_DIR)/utils/hostap_crypt_conf $(TARGET_DIR)/usr/bin/
