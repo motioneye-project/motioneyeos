@@ -5,7 +5,7 @@
 #
 ######################################################################
 
-dependencies: host-sed
+dependencies: host-sed host-lzma
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		HOST_SED_DIR="$(HOST_SED_DIR)" \
 		$(TOPDIR)/toolchain/dependencies/dependencies.sh

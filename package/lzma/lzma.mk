@@ -15,6 +15,12 @@ LZMA_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 LZMA_TARGET_BINARY:=bin/lzma
 
+# lzma binary for use on the host
+LZMA=$(TOOL_BUILD_DIR)/bin/lzma
+HOST_LZMA_BINARY=$(shell $(CONFIG_SHELL) package/lzma/lzmacheck.sh)
+HOST_LZMA_IF_ANY=$(shell $(CONFIG_SHELL) toolchain/dependencies/check-host-lzma.sh)
+
+
 $(DL_DIR)/$(LZMA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LZMA_SITE)/$(LZMA_SOURCE)
 
@@ -47,6 +53,20 @@ $(STAGING_DIR)/bin/lzma: $(LZMA_HOST_DIR)/src/lzma/lzma
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
 		$(STAGING_DIR)/lib/liblzmadec.la
 
+.PHONY: lzma-host use-lzma-host-binary
+use-lzma-host-binary:
+	if [ ! -f "$(TOOL_BUILD_DIR)/bin/lzma" ] ; then \
+		[ -d $(TOOL_BUILD_DIR)/bin ] || mkdir $(TOOL_BUILD_DIR)/bin ; \
+		ln -sf "$(HOST_LZMA_IF_ANY)" "$(TOOL_BUILD_DIR)/bin/lzma" ; \
+	fi
+
+build-lzma-host-binary: $(LZMA_HOST_DIR)/src/lzma/lzma
+	-rm -f $(TOOL_BUILD_DIR)/bin/lzma
+	[ -d $(TOOL_BUILD_DIR)/bin ] || mkdir $(TOOL_BUILD_DIR)/bin
+	cp -pf $(LZMA_HOST_DIR)/src/lzma/lzma $(TOOL_BUILD_DIR)/bin/lzma
+
+host-lzma: $(HOST_LZMA_BINARY)
+
 lzma-host: $(STAGING_DIR)/bin/lzma
 
 lzma-host-clean:
@@ -54,11 +74,6 @@ lzma-host-clean:
 	-$(MAKE) -C $(LZMA_HOST_DIR) clean
 lzma-host-dirclean:
 	rm -rf $(LZMA_HOST_DIR)
-
-/usr/local/bin/lzma: lzma_host
-	sudo 	$(MAKE) DESTDIR=/usr/local -C $(LZMA_HOST_DIR) install
-	sudo	$(SED) "s,^libdir=.*,libdir=\'/usr/local/lib\',g" \
-		/usr/local/lib/liblzmadec.la
 
 lzma-host-install: /usr/local/bin/lzma
 
