@@ -629,6 +629,8 @@ config BR2_DL_DIR
 	default "$(BASE_DIR)/dl"
 	help
 	  Directory to store all the source files that we need to fetch.
+	  If the Linux shell environment has defined the BUILDROOT_DL_DIR
+	  environment variable, then this overrides this configuration item.
 
 source	"target/device/Mirrors.in"
 	  
