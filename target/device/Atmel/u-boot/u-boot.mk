@@ -17,7 +17,7 @@ UBOOT_SOURCE:=u-boot-$(UBOOT_VERSION).tar.bz2
 #UBOOT_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/u-boot
 UBOOT_SITE:=$(ATMEL_MIRROR)/Source
 UBOOT_PATCH_SITE:=$(ATMEL_MIRROR)/Source
-UBOOT_CAT:=bzcat
+UBOOT_CAT:=$(BZCAT)
 UBOOT_PATCH_SOURCE:=u-boot-1.2.0-atmel-patch.tar.bz2
 
 MKIMAGE_BINLOC:=$(UBOOT_BUILD_DIR)/tools/mkimage
