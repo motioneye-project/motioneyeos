@@ -74,10 +74,25 @@ config BR2_PACKAGE_QTOPIA4_DEPTHS
 	    Which color depths to support for the library. Default is "-depths
 	    8". Is specified by a comma separated list, i.e. -depths 24,16,8.
 
+config BR2_PACKAGE_QTOPIA4_GIF
+	bool "Enable GIF support"
+	default n
+	depends BR2_PACKAGE_QTOPIA4
+	help
+	  This compiles and installs the plugin for GIF reading support.
+
+config BR2_PACKAGE_QTOPIA4_LIBMNG
+	bool "Enable libmng support"
+	default n
+	depends BR2_PACKAGE_QTOPIA4
+	help
+	  This compiles and installs the plugin for MNG support.
+
 config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	string "The embedded platform we are making Qtopia4 for"
 	default "arm"	if BR2_arm
 	default "arm"	if BR2_armeb
+	default "avr32"	if BR2_avr32
 	default "x86"	if BR2_i386
 	default "x86_64"	if BR2_x86_64
 	default "mips"	if BR2_mips
