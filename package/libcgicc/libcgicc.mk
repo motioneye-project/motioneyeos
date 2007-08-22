@@ -60,7 +60,7 @@ libcgicc-clean:
 
 libcgicc-dirclean:
 	rm -rf $(LIBCGICC_DIR)
-	
+
 #############################################################
 #
 # Toplevel Makefile options

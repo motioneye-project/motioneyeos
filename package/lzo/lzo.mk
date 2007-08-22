@@ -3,7 +3,7 @@
 # lzo
 #
 # Note: this builds only a static library, it does not provide
-#       anything to be installed into the target system.
+# anything to be installed into the target system.
 #
 #############################################################
 LZO_VERSION:=1.08

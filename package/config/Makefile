@@ -11,10 +11,10 @@ include Makefile.kconfig
 	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) -MM *.c > .depend 2>/dev/null || :
 
 __hostprogs := $(sort $(hostprogs-y) $(hostprogs-m))
-host-csingle    := $(foreach m,$(__hostprogs),$(if $($(m)-objs),,$(m)))
+host-csingle := $(foreach m,$(__hostprogs),$(if $($(m)-objs),,$(m)))
 host-cmulti := $(foreach m,$(__hostprogs),\
            $(if $($(m)-cxxobjs),,$(if $($(m)-objs),$(m))))
-host-cobjs  := $(sort $(foreach m,$(__hostprogs),$($(m)-objs)))
+host-cobjs := $(sort $(foreach m,$(__hostprogs),$($(m)-objs)))
 
 $(host-csingle): %: %.c
 	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) $(HOSTCFLAGS_$@) $(HOST_LOADLIBES) $< -o $@

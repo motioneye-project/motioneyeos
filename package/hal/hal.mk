@@ -57,7 +57,7 @@ $(HAL_DIR)/.configured: $(HAL_DIR)/.unpacked /usr/bin/pkg-config
 		--disable-acpi-acpid \
 		--disable-acpi-proc \
 	)
-	touch  $(HAL_DIR)/.configured
+	touch $(HAL_DIR)/.configured
 
 $(HAL_DIR)/hald/hald: $(HAL_DIR)/.configured
 	$(MAKE) STAGING_DIR="$(STAGING_DIR)" DESTDIR="$(TARGET_DIR)" DBUS_GLIB_LIBS="$(DBUS_GLIB_LIBS)" -C $(HAL_DIR)

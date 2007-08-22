@@ -25,7 +25,7 @@ bind-source: $(DL_DIR)/$(BIND_SOURCE)
 $(BIND_DIR2)/.unpacked: $(DL_DIR)/$(BIND_SOURCE)
 	$(BIND_CAT) $(DL_DIR)/$(BIND_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(BIND_DIR2) package/bind/ bind\*.patch
-	touch  $(BIND_DIR2)/.unpacked
+	touch $(BIND_DIR2)/.unpacked
 
 $(BIND_DIR2)/Makefile: $(BIND_DIR2)/.unpacked
 	(cd $(BIND_DIR2); rm -rf config.cache; \

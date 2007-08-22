@@ -54,7 +54,7 @@ $(READLINE_DIR)/$(READLINE_BINARY): $(READLINE_DIR)/.configured
 	touch -c $@
 
 $(STAGING_DIR)/$(READLINE_TARGET_BINARY): $(READLINE_DIR)/.configured
-	$(MAKE) -C $(READLINE_DIR)  install
+	$(MAKE) -C $(READLINE_DIR) install
 	touch -c $@
 
 # Install to Staging area

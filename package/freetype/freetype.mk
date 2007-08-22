@@ -48,10 +48,10 @@ $(FREETYPE_DIR)/.compiled: $(FREETYPE_DIR)/.configured
 	touch $(FREETYPE_DIR)/.compiled
 
 $(STAGING_DIR)/usr/include/freetype:
-	ln -sf ./freetype2/freetype  $(STAGING_DIR)/usr/include/freetype
+	ln -sf ./freetype2/freetype $(STAGING_DIR)/usr/include/freetype
 
 $(STAGING_DIR)/include/freetype:
-	ln -sf ../usr/include/freetype2/freetype  $(STAGING_DIR)/include/freetype
+	ln -sf ../usr/include/freetype2/freetype $(STAGING_DIR)/include/freetype
 
 $(STAGING_DIR)/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(FREETYPE_DIR) install

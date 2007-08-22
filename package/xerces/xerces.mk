@@ -17,7 +17,7 @@ xerces-source: $(DL_DIR)/$(XERCES_SOURCE)
 
 $(XERCES_DIR)/.unpacked: $(DL_DIR)/$(XERCES_SOURCE)
 	$(XERCES_CAT) $(DL_DIR)/$(XERCES_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-#	toolchain/patch-kernel.sh $(XERCES_DIR) package/xerces/ \*.patch*
+# toolchain/patch-kernel.sh $(XERCES_DIR) package/xerces/ \*.patch*
 	touch $(XERCES_DIR)/.unpacked
 
 $(XERCES_DIR)/.configured: $(XERCES_DIR)/.unpacked
@@ -34,7 +34,7 @@ $(XERCES_DIR)/$(XERCES_BINARY): $(XERCES_DIR)/.configured
 	$(MAKE) XERCESCROOT=$(XERCES_DIR) -C $(XERCES_DIR)/src/xercesc
 
 $(STAGING_DIR)/$(XERCES_BINARY): $(XERCES_DIR)/$(XERCES_BINARY)
-	$(MAKE) XERCESCROOT=$(XERCES_DIR) PREFIX=$(STAGING_DIR)	\
+	$(MAKE) XERCESCROOT=$(XERCES_DIR) PREFIX=$(STAGING_DIR) \
 		-C $(XERCES_DIR)/src/xercesc install
 
 $(TARGET_DIR)/usr/$(XERCES_BINARY): $(STAGING_DIR)/$(XERCES_BINARY)

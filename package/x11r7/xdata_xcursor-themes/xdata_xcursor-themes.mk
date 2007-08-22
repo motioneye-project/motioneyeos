@@ -29,7 +29,7 @@ $(XDATA_XCURSOR_THEMES_DIR)/.configured: $(XDATA_XCURSOR_THEMES_DIR)/.patched
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		STAGING_DIR=$(STAGING_DIR) \
-		 \
+ \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -40,24 +40,24 @@ $(XDATA_XCURSOR_THEMES_DIR)/.configured: $(XDATA_XCURSOR_THEMES_DIR)/.patched
 		--disable-static \
 		--disable-IPv6 \
 		$(DISABLE_NLS) \
-		 \
+ \
 	)
 	touch $@
 
 $(XDATA_XCURSOR_THEMES_DIR)/.built: $(XDATA_XCURSOR_THEMES_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) CXX=$(TARGET_CC)  -C $(XDATA_XCURSOR_THEMES_DIR)
+	$(MAKE) CC=$(TARGET_CC) CXX=$(TARGET_CC) -C $(XDATA_XCURSOR_THEMES_DIR)
 	touch $@
 
 $(XDATA_XCURSOR_THEMES_DIR)/.installed: $(XDATA_XCURSOR_THEMES_DIR)/.built
-	$(MAKE) prefix=$(TARGET_DIR)/usr    -C $(XDATA_XCURSOR_THEMES_DIR) install-exec
-	$(MAKE) prefix=$(STAGING_DIR)/usr  -C $(XDATA_XCURSOR_THEMES_DIR) install
+	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) install-exec
+	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) install
 	toolchain/replace.sh $(STAGING_DIR)/usr/lib ".*\.la" "\(['= ]\)/usr" "\\1$(STAGING_DIR)/usr"
 	find $(TARGET_DIR)/usr -name '*.la' -print -delete
 	touch $@
 
 xdata_xcursor-themes-clean:
-	$(MAKE) prefix=$(STAGING_DIR)/usr  -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
-	$(MAKE) prefix=$(TARGET_DIR)/usr    -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
+	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
+	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
 	-$(MAKE) -C $(XDATA_XCURSOR_THEMES_DIR) clean
 	-rm $(XDATA_XCURSOR_THEMES_DIR)/.installed
 	-rm $(XDATA_XCURSOR_THEMES_DIR)/.built
@@ -65,11 +65,11 @@ xdata_xcursor-themes-clean:
 xdata_xcursor-themes-dirclean:
 	rm -rf $(XDATA_XCURSOR_THEMES_DIR)
 
-xdata_xcursor-themes-depends:   
-xdata_xcursor-themes-source:    $(XDATA_XCURSOR_THEMES_DIR)/.extracted
-xdata_xcursor-themes-patch:     $(XDATA_XCURSOR_THEMES_DIR)/.patched
+xdata_xcursor-themes-depends:
+xdata_xcursor-themes-source: $(XDATA_XCURSOR_THEMES_DIR)/.extracted
+xdata_xcursor-themes-patch: $(XDATA_XCURSOR_THEMES_DIR)/.patched
 xdata_xcursor-themes-configure: $(XDATA_XCURSOR_THEMES_DIR)/.configured
-xdata_xcursor-themes-build:     $(XDATA_XCURSOR_THEMES_DIR)/.built
+xdata_xcursor-themes-build: $(XDATA_XCURSOR_THEMES_DIR)/.built
 
 xdata_xcursor-themes: xdata_xcursor-themes-depends $(XDATA_XCURSOR_THEMES_DIR)/.installed
 

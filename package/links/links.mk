@@ -47,11 +47,11 @@ $(LINKS_DIR)/links: $(LINKS_DIR)/.configured
 $(TARGET_DIR)/usr/bin/links: $(LINKS_DIR)/links
 	install -c $(LINKS_DIR)/links $(TARGET_DIR)/usr/bin/links
 
-links-clean: 
+links-clean:
 	$(MAKE) -C $(LINKS_DIR) clean
 
-links-dirclean: 
-	rm -rf $(LINKS_DIR) 
+links-dirclean:
+	rm -rf $(LINKS_DIR)
 
 links: uclibc $(TARGET_DIR)/usr/bin/links
 

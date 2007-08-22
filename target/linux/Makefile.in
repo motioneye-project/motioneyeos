@@ -83,7 +83,7 @@ $(LINUX26_KCONFIG):
 		echo "and install it as $(LINUX26_KCONFIG)"; \
 		echo ""; \
 		sleep 5; \
-	fi;
+	fi
 
 ifneq ($(strip $(LINUX26_VERSION)),$(strip $(LINUX_HEADERS_VERSION)))
 $(DL_DIR)/$(LINUX26_SOURCE):

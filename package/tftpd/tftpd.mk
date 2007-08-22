@@ -56,7 +56,7 @@ $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY): $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY)
 	-ot $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) ]; then \
 	    set -x; \
 	    rm -f $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); \
-	    cp -a $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); fi 
+	    cp -a $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY) $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY); fi
 	@if [ ! -f $(TARGET_DIR)/etc/init.d/S80tftpd-hpa ]; then \
 		$(INSTALL) -m 0755 package/tftpd/S80tftpd-hpa $(TARGET_DIR)/etc/init.d; \
 	fi

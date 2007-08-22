@@ -2,21 +2,21 @@
 #
 # Linux kernel targets
 #
-# Note:  If you have any patches to apply, create the directory
+# Note: If you have any patches to apply, create the directory
 # sources/kernel-patches and put your patches in there and number
-# them in the order you wish to apply them...  i.e.
+# them in the order you wish to apply them... i.e.
 #
-#   sources/kernel-patches/001-my-special-stuff.bz2
-#   sources/kernel-patches/003-gcc-Os.bz2
-#   sources/kernel-patches/004_no-warnings.bz2
-#   sources/kernel-patches/030-lowlatency-mini.bz2
-#   sources/kernel-patches/031-lowlatency-fixes-5.bz2
-#   sources/kernel-patches/099-shutup.bz2
-#   etc...
+# sources/kernel-patches/001-my-special-stuff.bz2
+# sources/kernel-patches/003-gcc-Os.bz2
+# sources/kernel-patches/004_no-warnings.bz2
+# sources/kernel-patches/030-lowlatency-mini.bz2
+# sources/kernel-patches/031-lowlatency-fixes-5.bz2
+# sources/kernel-patches/099-shutup.bz2
+# etc...
 #
 # these patches will all be applied by the patch-kernel.sh
 # script (which will also abort the build if it finds rejects)
-#  -Erik
+# -Erik
 #
 #############################################################
 ifneq ($(filter $(TARGETS),linux),)
@@ -71,13 +71,13 @@ $(LINUX_KCONFIG):
 		$(MAKE) menuconfig; \
 	fi
 
-$(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
+$(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured: $(LINUX_DIR)/.unpacked $(LINUX_KCONFIG)
 	$(SED) "s,^CROSS_COMPILE.*,CROSS_COMPILE=$(KERNEL_CROSS),g;" $(LINUX_DIR)/Makefile
 	-cp $(LINUX_KCONFIG) $(LINUX_DIR)/.config
 	$(MAKE) -C $(LINUX_DIR) oldconfig include/linux/version.h
 	touch $(LINUX_DIR)/.configured
 
-$(LINUX_DIR)/.depend_done:  $(LINUX_DIR)/.configured
+$(LINUX_DIR)/.depend_done: $(LINUX_DIR)/.configured
 	$(MAKE) -C $(LINUX_DIR) dep
 	touch $(LINUX_DIR)/.depend_done
 

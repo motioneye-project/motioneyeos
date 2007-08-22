@@ -10,6 +10,6 @@ XLIB_LIBXPM_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXPM_AUTORECONF = YES
 XLIB_LIBXPM_INSTALL_STAGING = YES
 XLIB_LIBXPM_DEPENDANCIES = xlib_libX11 xlib_libXext xlib_libXt xproto_xproto
-XLIB_LIBXPM_CONF_OPT =  --enable-shared --disable-static
+XLIB_LIBXPM_CONF_OPT = --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,xlib_libXpm))

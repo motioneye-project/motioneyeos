@@ -1,14 +1,14 @@
 #############################################################
 #
 # u-boot mkimage to build to target u-boot filesystems and
-# 
-# u-boot.bin - the boot loader for the target - which needs soft float, so 
-#              we won't make it.
+#
+# u-boot.bin - the boot loader for the target - which needs soft float, so
+# we won't make it.
 #
 #
 #############################################################
 UBOOT_VERSION:=1.2.0-atmel
-ATMEL_MIRROR:=$(strip  $(subst ",, $(BR2_ATMEL_MIRROR)))
+ATMEL_MIRROR:=$(strip $(subst ",, $(BR2_ATMEL_MIRROR)))
 #"))
 UBOOT_DIR:=$(BUILD_DIR)/u-boot-$(UBOOT_VERSION)
 UBOOT_BUILD_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(UBOOT_VERSION)
@@ -30,15 +30,15 @@ UBOOT_PATCHES:=$(PROJECT_BUILD_DIR)/u-boot-patches
 UBOOT_ATMEL_BMP:=$(UBOOT_PATCHES)/atmel.bmp
 
 UBOOT_SCR=$(BINARIES_DIR)/autoscript
-TARGET_UBOOT_IPADDR:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_IPADDR)))
+TARGET_UBOOT_IPADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_IPADDR)))
 #"))
-TARGET_UBOOT_SERVERIP:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP)))
+TARGET_UBOOT_SERVERIP:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP)))
 #"))
-TARGET_UBOOT_GATEWAY:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_GATEWAY)))
+TARGET_UBOOT_GATEWAY:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_GATEWAY)))
 #"))
-TARGET_UBOOT_NETMASK:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_NETMASK)))
+TARGET_UBOOT_NETMASK:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_NETMASK)))
 #"))
-TARGET_UBOOT_ETHADDR:=$(strip  $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR)))
+TARGET_UBOOT_ETHADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR)))
 #"))
 UBOOT_CUSTOM:=$(UBOOT_DIR)/include/custom.h
 
@@ -61,9 +61,9 @@ $(UBOOT_PATCHES)/.unpacked: $(DL_DIR)/$(UBOOT_PATCH_SOURCE)
 $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE): $(UBOOT_DIR)/.unpacked $(UBOOT_PATCHES)/.unpacked
 	toolchain/patch-kernel.sh $(UBOOT_DIR) $(UBOOT_PATCHES) *.patch
 	touch $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE)
-#	cp $(UBOOT_CONFIG_FILE) $(UBOOT_DIR)/include/configs/.
-#	cp $(UBOOT_PATCHES)/cmd_defenv.c $(UBOOT_DIR)/common/.
-#	cp $(UBOOT_ATMEL_BMP) $(UBOOT_DIR)/tools/logos/.
+# cp $(UBOOT_CONFIG_FILE) $(UBOOT_DIR)/include/configs/.
+# cp $(UBOOT_PATCHES)/cmd_defenv.c $(UBOOT_DIR)/common/.
+# cp $(UBOOT_ATMEL_BMP) $(UBOOT_DIR)/tools/logos/.
 
 $(UBOOT_BUILD_DIR)/.configured: $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE)
 ifneq ($(strip $(UBOOT_CONFIG_FILE)),)
@@ -76,7 +76,7 @@ endif
 		$(UBOOT_CONFIG)
 	$(SED) 's/ $$(SREC) $$(BIN)//' $(UBOOT_DIR)/examples/Makefile
 	touch $(UBOOT_BUILD_DIR)/.configured
-#	$(MAKE) O=$(UBOOT_BUILD_DIR) -C $(UBOOT_DIR)
+# $(MAKE) O=$(UBOOT_BUILD_DIR) -C $(UBOOT_DIR)
 
 $(MKIMAGE_BINLOC): $(UBOOT_BUILD_DIR)/.configured
 	$(MAKE) \
@@ -167,17 +167,17 @@ endif
 
 $(UBOOT_SCR).$(PROJECT): $(UBOOT_SCR) $(MKIMAGE)
 	$(MKIMAGE) -A arm \
-				-O linux	\
-				-T script	\
-				-C none		\
-				-a 0 		\
-				-e 0		\
+				-O linux \
+				-T script \
+				-C none \
+				-a 0 \
+				-e 0 \
 				-n "autoscr config" \
-				-d $(UBOOT_SCR)	\
+				-d $(UBOOT_SCR) \
 				$(UBOOT_SCR).$(PROJECT)
 	cp $(UBOOT_SCR).$(PROJECT) /tftpboot
 
-$(MKIMAGE): $(MKIMAGE_BINLOC) 
+$(MKIMAGE): $(MKIMAGE_BINLOC)
 	cp -f $(MKIMAGE_BINLOC) $(MKIMAGE)
 
 uboot: $(MKIMAGE) uboot-bin $(UBOOT_SCR).$(PROJECT)
@@ -191,7 +191,7 @@ uboot-clean:
 	rm -fr $(UBOOT_DIR)
 	rm -f $(UBOOT_SCR)
 	rm -f $(UBOOT_SCR).$(PROJECT)
-#	-$(MAKE) -C $(UBOOT_DIR)/uboot-tools clean
+# -$(MAKE) -C $(UBOOT_DIR)/uboot-tools clean
 
 uboot-dirclean: uboot-clean
 	rm -rf $(UBOOT_DIR)

@@ -23,7 +23,7 @@ OBJEXT = @OBJEXT@
 HOST = @host_alias@
 
 ifneq (,$(findstring mingw32,$(HOST)))
-   LIBS :=  $(LIBS) -lws2_32
+   LIBS := $(LIBS) -lws2_32
 endif
 
 # force link order under cygwin to avoid getopts / libiberty clash
@@ -36,7 +36,7 @@ CCFLAGS = $(CFLAGS) $(DEFS) $(INCLUDES)
 LDFILE= elf2flt.ld
 ifeq ($(strip $(CPU)),e1)
 SRC_LDFILE= $(CPU)-elf2flt.ld
-else 
+else
 SRC_LDFILE= elf2flt.ld
 endif
 

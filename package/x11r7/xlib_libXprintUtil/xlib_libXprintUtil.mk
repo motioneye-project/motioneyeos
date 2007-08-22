@@ -10,6 +10,6 @@ XLIB_LIBXPRINTUTIL_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXPRINTUTIL_AUTORECONF = YES
 XLIB_LIBXPRINTUTIL_INSTALL_STAGING = YES
 XLIB_LIBXPRINTUTIL_DEPENDANCIES = xlib_libX11 xlib_libXp xlib_libXt xproto_printproto
-XLIB_LIBXPRINTUTIL_CONF_OPT =  --enable-shared --disable-static
+XLIB_LIBXPRINTUTIL_CONF_OPT = --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,xlib_libXprintUtil))

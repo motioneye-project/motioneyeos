@@ -58,7 +58,7 @@ tar-target_binary: $(GNUTAR_DIR)/$(GNUTAR_BINARY)
 	-ot $(GNUTAR_DIR)/$(GNUTAR_BINARY) ]; then \
 	    set -x; \
 	    rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
-	    cp -a $(GNUTAR_DIR)/$(GNUTAR_BINARY) $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi 
+	    cp -a $(GNUTAR_DIR)/$(GNUTAR_BINARY) $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi
 
 tar: uclibc tar-target_binary
 

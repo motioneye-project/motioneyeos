@@ -10,6 +10,6 @@ XLIB_LIBFONTENC_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBFONTENC_AUTORECONF = YES
 XLIB_LIBFONTENC_INSTALL_STAGING = YES
 XLIB_LIBFONTENC_DEPENDANCIES = xproto_xproto
-XLIB_LIBFONTENC_CONF_OPT =  --enable-shared --disable-static
+XLIB_LIBFONTENC_CONF_OPT = --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,xlib_libfontenc))

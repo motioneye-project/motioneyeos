@@ -70,7 +70,7 @@ expat-clean:
 	rm -f $(EXPAT_DIR)/.configured
 	rm -f $(STAGING_DIR)/usr/lib/libexpat.* \
 		$(TARGET_DIR)/usr/lib/libexpat.*
-	#rm -f $(STAGING_DIR)/usr/bin/xmlwf  $(TARGET_DIR)/usr/bin/xmlwf
+	#rm -f $(STAGING_DIR)/usr/bin/xmlwf $(TARGET_DIR)/usr/bin/xmlwf
 	-$(MAKE) -C $(EXPAT_DIR) clean
 
 expat-dirclean:

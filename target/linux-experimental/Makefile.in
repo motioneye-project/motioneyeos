@@ -9,13 +9,13 @@ ifneq ($(filter $(TARGETS),linux26),)
 ifeq ($(LINUX_HEADERS_VERSION),)
 # Version of Linux to download and then apply patches to
 # XXX: andersee, i do not understand why we need this (BF)
-DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
+DOWNLOAD_LINUX26_VERSION:=$(strip $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
 # "))
-LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_LINUX26_VERSION)))
+LINUX26_VERSION:=$(strip $(subst ",, $(BR2_LINUX26_VERSION)))
 # "))
-LINUX26_RC_PATCH:=$(strip  $(subst ",, $(BR2_LINUX26_RC_PATCH)))
+LINUX26_RC_PATCH:=$(strip $(subst ",, $(BR2_LINUX26_RC_PATCH)))
 # "))
-LINUX_BSP_PATCH:=$(strip  $(subst ",, $(BR2_LINUX_BSP_ATMEL_PATCH)))
+LINUX_BSP_PATCH:=$(strip $(subst ",, $(BR2_LINUX_BSP_ATMEL_PATCH)))
 # " ))
 MKIMAGE:=$(BUILD_DIR)/mkimage
 
@@ -26,13 +26,13 @@ endif
 LINUX26_VERSION=$(DOWNLOAD_LINUX26_VERSION)
 
 
-else	# ---------------------------------------------------
+else # ---------------------------------------------------
 
 # Define DOWNLOAD_LINUX26_VERSION unless defined
 ifeq ($(strip $(BR2_DOWNLOAD_LINUX26_VERSION)),)
 DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
 else
-DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
+DOWNLOAD_LINUX26_VERSION:=$(strip $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
 # "))
 endif
 
@@ -41,15 +41,15 @@ endif
 ifeq ($(strip $(BR2_LINUX26_VERSION)),)
 LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
 else
-LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_LINUX26_VERSION)))
+LINUX26_VERSION:=$(strip $(subst ",, $(BR2_LINUX26_VERSION)))
 # "))
 endif
 
-endif	# ---------------------------------------------------
+endif # ---------------------------------------------------
 
 # Handle case when we want to build using an "rc" patch
 # Example: to build 2.6.21-rc1 you need to:
-# *  Download linux-2.6.20
+# * Download linux-2.6.20
 # * Apply patch-2.6.21-rc1
 
 LINUX26_SOURCE:=linux-$(DOWNLOAD_LINUX26_VERSION).tar.bz2
@@ -57,7 +57,7 @@ LINUX26_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.6
 LINUX26_BZCAT:=$(BZCAT)
 
 # Linux kernel binary
-LINUX26_FORMAT:=$(strip  $(subst ",, $(BR2_LINUX26_FORMAT)))
+LINUX26_FORMAT:=$(strip $(subst ",, $(BR2_LINUX26_FORMAT)))
 # " ))
 
 # Linux kernel configuration file
@@ -102,11 +102,11 @@ LINUX_DIR=$(LINUX26_DIR)
 LINUX_KERNEL=$(LINUX26_KERNEL)
 
 # kernel patches
-ifeq ($(strip  $(subst ",, $(LINUX26_PATCH_DIR))),)
+ifeq ($(strip $(subst ",, $(LINUX26_PATCH_DIR))),)
 # ")))
 LINUX26_PATCH_DIR:=$(BR2_BOARD_PATH)/kernel-patches/
 endif
-PATCH_DIR=$(strip  $(subst ",, $(LINUX26_PATCH_DIR)))
+PATCH_DIR=$(strip $(subst ",, $(LINUX26_PATCH_DIR)))
 # " ))
 
 LINUX26_MAKE_FLAGS = $(TARGET_CONFIGURE_OPTS) ARCH=$(KERNEL_ARCH) \
@@ -120,24 +120,24 @@ $(LINUX26_KCONFIG):
 		echo "and install it as $(LINUX26_KCONFIG)"; \
 		echo ""; \
 		sleep 5; \
-	fi;
+	fi
 
 # Check if we have a release candidate.
-#	This makes life complex
-#	To build linux-2.6.21-rc2 you need to:
-#	* Download linux.2.6.20.tar.bz2
-#	* Download patch-2.6.21-rc2.bz2
-#	I:E you have to download the *previous* major version
- 
-ifneq	($(LINUX26_RC_PATCH),)
+# This makes life complex
+# To build linux-2.6.21-rc2 you need to:
+# * Download linux.2.6.20.tar.bz2
+# * Download patch-2.6.21-rc2.bz2
+# I:E you have to download the *previous* major version
+
+ifneq ($(LINUX26_RC_PATCH),)
 # We have a "release candidate"
 LINUX26_RC_PATCH_SOURCE:=$(PROJECT_BUILD_DIR)/linux-patch/$(LINUX26_RC_PATCH)
 
 # Create rule to download the patch
 $(LINUX26_RC_PATCH_SOURCE):
 	mkdir -p $(PROJECT_BUILD_DIR)/linux-patch/
-	$(WGET) -P $(PROJECT_BUILD_DIR)/linux-patch  $(LINUX26_SITE)/$(LINUX26_RC_PATCH)
-#	$(LINUX26_BZCAT) $(PROJECT_BUILD_DIR)/linux-patch/$(LINUX26_RC_PATCH).bz2
+	$(WGET) -P $(PROJECT_BUILD_DIR)/linux-patch $(LINUX26_SITE)/$(LINUX26_RC_PATCH)
+# $(LINUX26_BZCAT) $(PROJECT_BUILD_DIR)/linux-patch/$(LINUX26_RC_PATCH).bz2
 else
 # We have a vanilla style linux kernel
 LINUX26_RC_PATCH_SOURCE:=
@@ -155,7 +155,7 @@ ifneq ($(DOWNLOAD_LINUX26_VERSION),$(LINUX26_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version
 	mv -f $(LINUX26_BUILD_DIR)/linux-$(DOWNLOAD_LINUX26_VERSION) $(LINUX26_DIR)
 endif
-ifneq	($(LINUX26_RC_PATCH),)
+ifneq ($(LINUX26_RC_PATCH),)
 	-(cd $(LINUX26_DIR); $(LINUX26_BZCAT) $(LINUX26_RC_PATCH_SOURCE) | patch -p1)
 endif
 	-(cd $(TOOL_BUILD_DIR); ln -snf $(LINUX26_DIR) linux)
@@ -168,7 +168,7 @@ $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR)
 	touch $@
 
-$(LINUX26_DIR)/.configured:  $(LINUX26_DIR)/.patched  $(LINUX26_KCONFIG)
+$(LINUX26_DIR)/.configured: $(LINUX26_DIR)/.patched $(LINUX26_KCONFIG)
 	-ls -l $(LINUX26_DIR)/.patched
 	-ls -l $(LINUX26_KCONFIG)
 	-ls -l $(LINUX26_DIR)/.configured
@@ -194,7 +194,7 @@ endif
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) oldconfig include/linux/version.h
 	touch $@
 
-$(LINUX26_DIR)/.depend_done:  $(LINUX26_DIR)/.configured
+$(LINUX26_DIR)/.depend_done: $(LINUX26_DIR)/.configured
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) prepare
 	touch $@
 
@@ -211,8 +211,8 @@ $(LINUX26_DIR)/vmlinux: $(LINUX26_DIR)/.depend_done $(STAGING_DIR)/include/linux
 
 
 #-----------------------------------------------------------------------------------
-#	Rule can be enabled by setting
-#	LINUX26_TARGET:= $(TARGET_DIR)/boot/$(LINUX26_BINLOC)
+# Rule can be enabled by setting
+# LINUX26_TARGET:= $(TARGET_DIR)/boot/$(LINUX26_BINLOC)
 #
 $(TARGET_DIR)/boot/$(LINUX26_FORMAT): $(LINUX26_DIR)/$(LINUX26_FORMAT)
 	[ -d $(TARGET_DIR)/boot/ ] || mkdir $(TARGET_DIR)/boot
@@ -220,33 +220,33 @@ $(TARGET_DIR)/boot/$(LINUX26_FORMAT): $(LINUX26_DIR)/$(LINUX26_FORMAT)
 	touch -c $@
 
 #-----------------------------------------------------------------------------------
-#	Rule can be enabled by setting
-#	LINUX26_TARGET:= $(BINARIES_DIR)/$(LINUX26_KERNEL)
-#	LINUX26_FORMAT:= vmlinux
+# Rule can be enabled by setting
+# LINUX26_TARGET:= $(BINARIES_DIR)/$(LINUX26_KERNEL)
+# LINUX26_FORMAT:= vmlinux
 
-$(BINARIES_DIR)/$(LINUX26_KERNEL):	$(LINUX26_DIR)/uImage
+$(BINARIES_DIR)/$(LINUX26_KERNEL): $(LINUX26_DIR)/uImage
 	cp -dpf $(LINUX26_DIR)/uImage $(BINARIES_DIR)/$(LINUX26_KERNEL)
 	cp -dpf $(LINUX26_DIR)/uImage /tftpboot/$(LINUX26_KERNEL)
-	mkdir	-p $(TARGET_DIR)/boot/
+	mkdir -p $(TARGET_DIR)/boot/
 	cp -dpf $(LINUX26_DIR)/.config $(TARGET_DIR)/boot/$(BOARD_NAME)-linux-$(LINUX26_VERSION).config
-	cp -dpf .config	$(TARGET_DIR)/boot/$(BOARD_NAME)-buildroot.config
-	cp -dpf $(BUSYBOX_DIR)/.config	$(TARGET_DIR)/boot/busybox.config
+	cp -dpf .config $(TARGET_DIR)/boot/$(BOARD_NAME)-buildroot.config
+	cp -dpf $(BUSYBOX_DIR)/.config $(TARGET_DIR)/boot/busybox.config
 
 $(PROJECT_BUILD_DIR)/linux.bin: $(LINUX26_DIR)/vmlinux
 	${KERNEL_CROSS}objcopy -O binary -S $(LINUX26_DIR)/vmlinux $(PROJECT_BUILD_DIR)/linux.bin
 
-$(LINUX26_DIR)/uImage:	$(LINUX26_DIR)/arch/$(ARCH)/boot/uImage
-	cp	-dpf $(LINUX26_DIR)/arch/$(ARCH)/boot/uImage	$(LINUX26_DIR)/uImage
-	
+$(LINUX26_DIR)/uImage: $(LINUX26_DIR)/arch/$(ARCH)/boot/uImage
+	cp -dpf $(LINUX26_DIR)/arch/$(ARCH)/boot/uImage $(LINUX26_DIR)/uImage
 
-$(PROJECT_BUILD_DIR)/xxxx:	$(PROJECT_BUILD_DIR)/linux.bin $(MKIMAGE)
+
+$(PROJECT_BUILD_DIR)/xxxx: $(PROJECT_BUILD_DIR)/linux.bin $(MKIMAGE)
 	gzip -v9 -c $(PROJECT_BUILD_DIR)/linux.bin > $(PROJECT_BUILD_DIR)/linux.bin.gz
-	$(MKIMAGE)	-A $(ARCH)		\
-				-O linux	\
-				-C gzip 	\
-				-a 0x20008000	\
-				-e 0x20008000	\
-				-d $(PROJECT_BUILD_DIR)/linux.bin.gz	\
+	$(MKIMAGE) -A $(ARCH) \
+				-O linux \
+				-C gzip \
+				-a 0x20008000 \
+				-e 0x20008000 \
+				-d $(PROJECT_BUILD_DIR)/linux.bin.gz \
 				$(LINUX26_DIR)/uImage
 	rm -f $(PROJECT_BUILD_DIR)/linux.bin.gz
 #-----------------------------------------------------------------------------------
@@ -296,23 +296,23 @@ linux26-dirclean:
 	rm -rf $(LINUX26_DIR)
 
 linux-update:
-	cp -dpf $(LINUX26_DIR)/.config	$(LINUX26_KCONFIG)
+	cp -dpf $(LINUX26_DIR)/.config $(LINUX26_KCONFIG)
 
 linux-test:
-	@echo	"LINUX_HEADERS_VERSION" $(LINUX_HEADERS_VERSION)
-	@echo	"BR2_PACKAGE_LINUX" $(BR2_PACKAGE_LINUX)
-	@echo	"BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION" $(BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION)
-	@echo	"BR2_CUSTOM_LINUX26_VERSION" $(BR2_CUSTOM_LINUX26_VERSION)
-	@echo	"BR2_CUSTOM_LINUX26_RC_PATCH" $(BR2_CUSTOM_LINUX26_RC_PATCH)
-	@echo	"BR2_LINUX_BSP_PATCH" $(BR2_LINUX_BSP_PATCH)
-	@echo	"BR2_DOWNLOAD_LINUX26_VERSION" $(BR2_DOWNLOAD_LINUX26_VERSION)
-	@echo	"BR2_LINUX26_VERSION" $(BR2_LINUX26_VERSION)
-	@echo	"LINUX26_VERSION" $(LINUX26_VERSION)
-	@echo	"BR2_LINUX26_RC_PATCH" $(BR2_LINUX26_RC_PATCH)
-	@echo	"BR2_PACKAGE_LINUX26_KCONFIG" $(BR2_PACKAGE_LINUX_KCONFIG)
-	@echo	"LINUX26_KCONFIG" $(LINUX26_KCONFIG)
-	@echo	"BR2_LINUX_BIN_CUSTOM" $(BR2_LINUX_BIN_CUSTOM)
-	@echo	"BR2_PACKAGE_LINUX_FORMAT" $(BR2_PACKAGE_LINUX_FORMAT)
-	@echo	"BR2_LINUX_IN_ROOTFS" $(BR2_LINUX_IN_ROOTFS)
-	@echo	"BR2_LINUX_2_6_22_1" $(BR2_LINUX_2_6_22_1)
+	@echo "LINUX_HEADERS_VERSION" $(LINUX_HEADERS_VERSION)
+	@echo "BR2_PACKAGE_LINUX" $(BR2_PACKAGE_LINUX)
+	@echo "BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION" $(BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION)
+	@echo "BR2_CUSTOM_LINUX26_VERSION" $(BR2_CUSTOM_LINUX26_VERSION)
+	@echo "BR2_CUSTOM_LINUX26_RC_PATCH" $(BR2_CUSTOM_LINUX26_RC_PATCH)
+	@echo "BR2_LINUX_BSP_PATCH" $(BR2_LINUX_BSP_PATCH)
+	@echo "BR2_DOWNLOAD_LINUX26_VERSION" $(BR2_DOWNLOAD_LINUX26_VERSION)
+	@echo "BR2_LINUX26_VERSION" $(BR2_LINUX26_VERSION)
+	@echo "LINUX26_VERSION" $(LINUX26_VERSION)
+	@echo "BR2_LINUX26_RC_PATCH" $(BR2_LINUX26_RC_PATCH)
+	@echo "BR2_PACKAGE_LINUX26_KCONFIG" $(BR2_PACKAGE_LINUX_KCONFIG)
+	@echo "LINUX26_KCONFIG" $(LINUX26_KCONFIG)
+	@echo "BR2_LINUX_BIN_CUSTOM" $(BR2_LINUX_BIN_CUSTOM)
+	@echo "BR2_PACKAGE_LINUX_FORMAT" $(BR2_PACKAGE_LINUX_FORMAT)
+	@echo "BR2_LINUX_IN_ROOTFS" $(BR2_LINUX_IN_ROOTFS)
+	@echo "BR2_LINUX_2_6_22_1" $(BR2_LINUX_2_6_22_1)
 

@@ -63,7 +63,7 @@ $(LIGHTTPD_DIR)/.configured: $(LIGHTTPD_DIR)/.unpacked
 
 $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY): $(LIGHTTPD_DIR)/.configured
 	$(MAKE) -C $(LIGHTTPD_DIR)
-    
+   
 $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY): $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LIGHTTPD_DIR) install
 	@rm -rf $(TARGET_DIR)/usr/share/man $(TARGET_DIR)/usr/man

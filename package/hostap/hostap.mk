@@ -20,7 +20,7 @@ $(HOSTAP_DIR)/.unpacked: $(DL_DIR)/$(HOSTAP_SOURCE)
 
 $(HOSTAP_DIR)/.configured: $(HOSTAP_DIR)/.unpacked
 	#$(SED) "s,/.*#define PRISM2_DOWNLOAD_SUPPORT.*/,#define PRISM2_DOWNLOAD_SUPPORT,g" \
-	#	$(HOSTAP_DIR)/driver/modules/hostap_config.h
+	# $(HOSTAP_DIR)/driver/modules/hostap_config.h
 	touch $(HOSTAP_DIR)/.configured
 
 $(HOSTAP_DIR)/utils/hostap_crypt_conf: $(HOSTAP_DIR)/.configured

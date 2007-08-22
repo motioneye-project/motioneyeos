@@ -29,7 +29,7 @@ $(XAPP_XMAN_DIR)/.configured: $(XAPP_XMAN_DIR)/.patched
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		STAGING_DIR=$(STAGING_DIR) \
-		 \
+ \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -40,24 +40,24 @@ $(XAPP_XMAN_DIR)/.configured: $(XAPP_XMAN_DIR)/.patched
 		--disable-static \
 		--disable-IPv6 \
 		$(DISABLE_NLS) \
-		 \
+ \
 	)
 	touch $@
 
 $(XAPP_XMAN_DIR)/.built: $(XAPP_XMAN_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) CXX=$(TARGET_CC)  -C $(XAPP_XMAN_DIR)
+	$(MAKE) CC=$(TARGET_CC) CXX=$(TARGET_CC) -C $(XAPP_XMAN_DIR)
 	touch $@
 
 $(XAPP_XMAN_DIR)/.installed: $(XAPP_XMAN_DIR)/.built
-	$(MAKE) prefix=$(TARGET_DIR)/usr    -C $(XAPP_XMAN_DIR) install-exec
-	$(MAKE) prefix=$(STAGING_DIR)/usr  -C $(XAPP_XMAN_DIR) install
+	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(XAPP_XMAN_DIR) install-exec
+	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(XAPP_XMAN_DIR) install
 	toolchain/replace.sh $(STAGING_DIR)/usr/lib ".*\.la" "\(['= ]\)/usr" "\\1$(STAGING_DIR)/usr"
 	find $(TARGET_DIR)/usr -name '*.la' -print -delete
 	touch $@
 
 xapp_xman-clean:
-	$(MAKE) prefix=$(STAGING_DIR)/usr  -C $(XAPP_XMAN_DIR) uninstall
-	$(MAKE) prefix=$(TARGET_DIR)/usr    -C $(XAPP_XMAN_DIR) uninstall
+	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(XAPP_XMAN_DIR) uninstall
+	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(XAPP_XMAN_DIR) uninstall
 	-$(MAKE) -C $(XAPP_XMAN_DIR) clean
 	-rm $(XAPP_XMAN_DIR)/.installed
 	-rm $(XAPP_XMAN_DIR)/.built
@@ -65,11 +65,11 @@ xapp_xman-clean:
 xapp_xman-dirclean:
 	rm -rf $(XAPP_XMAN_DIR)
 
-xapp_xman-depends:   xlib_libXprintUtil xlib_libXprintUtil
-xapp_xman-source:    $(XAPP_XMAN_DIR)/.extracted
-xapp_xman-patch:     $(XAPP_XMAN_DIR)/.patched
+xapp_xman-depends: xlib_libXprintUtil xlib_libXprintUtil
+xapp_xman-source: $(XAPP_XMAN_DIR)/.extracted
+xapp_xman-patch: $(XAPP_XMAN_DIR)/.patched
 xapp_xman-configure: $(XAPP_XMAN_DIR)/.configured
-xapp_xman-build:     $(XAPP_XMAN_DIR)/.built
+xapp_xman-build: $(XAPP_XMAN_DIR)/.built
 
 xapp_xman: xapp_xman-depends $(XAPP_XMAN_DIR)/.installed
 

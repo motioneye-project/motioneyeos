@@ -51,13 +51,13 @@ $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY): $(NFS_UTILS_DIR)/.configured
 		RPCGEN=/usr/bin/rpcgen -C $(NFS_UTILS_DIR)
 	touch -c $@
 
-NFS_UTILS_TARGETS_  :=
-NFS_UTILS_TARGETS_y :=	usr/sbin/exportfs usr/sbin/rpc.mountd \
+NFS_UTILS_TARGETS_ :=
+NFS_UTILS_TARGETS_y := usr/sbin/exportfs usr/sbin/rpc.mountd \
 			usr/sbin/rpc.nfsd usr/sbin/rpc.statd
 
-NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPCDEBUG)	+= usr/sbin/rpcdebug
-NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_LOCKD)	+= usr/sbin/rpc.lockd
-NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD)	+= usr/sbin/rpc.rquotad
+NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPCDEBUG) += usr/sbin/rpcdebug
+NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_LOCKD) += usr/sbin/rpc.lockd
+NFS_UTILS_TARGETS_$(BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD) += usr/sbin/rpc.rquotad
 
 $(PROJECT_BUILD_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
 	# Use fakeroot to pretend to do 'make install' as root

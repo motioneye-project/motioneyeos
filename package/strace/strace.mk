@@ -64,14 +64,14 @@ ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/strace
 endif
 
-strace: uclibc $(TARGET_DIR)/usr/bin/strace 
+strace: uclibc $(TARGET_DIR)/usr/bin/strace
 
-strace-clean: 
+strace-clean:
 	rm -f $(TARGET_DIR)/usr/bin/strace
 	$(MAKE) -C $(STRACE_DIR) clean
 
-strace-dirclean: 
-	rm -rf $(STRACE_DIR) 
+strace-dirclean:
+	rm -rf $(STRACE_DIR)
 
 
 #############################################################

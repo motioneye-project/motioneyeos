@@ -64,7 +64,7 @@ $(STAGING_DIR)/lib/$(DB_SHARLIB): $(DB_DIR)/build_unix/.libs/$(DB_SHARLIB)
 
 $(TARGET_DIR)/lib/$(DB_SHARLIB): $(STAGING_DIR)/lib/$(DB_SHARLIB)
 	rm -rf $(TARGET_DIR)/lib/libdb*
-	cp -a $(STAGING_DIR)/lib/libdb*so*  $(TARGET_DIR)/lib/
+	cp -a $(STAGING_DIR)/lib/libdb*so* $(TARGET_DIR)/lib/
 	rm -f $(TARGET_DIR)/lib/libdb.so $(TARGET_DIR)/lib/libdb.la $(TARGET_DIR)/lib/libdb.a
 	(cd $(TARGET_DIR)/usr/lib; ln -fs /lib/$(DB_SHARLIB) libdb.so)
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libdb*so*

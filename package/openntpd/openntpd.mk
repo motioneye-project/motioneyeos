@@ -40,12 +40,12 @@ $(OPENNTPD_DIR)/$(OPENNTPD_BINARY): $(OPENNTPD_DIR)/.configured
 	#(cd $(OPENNTPD_DIR); \
 	# $(YACC) parse.y; \
 	# $(TARGET_CC) $(TARGET_CFLAGS) $(CFLAGS_COMBINE) \
-	# 	$(CFLAGS_WHOLE_PROGRAM) -I$(OPENNTPD_DIR) \
-	#	-D__dead="__attribute((__noreturn__))" -DHAVE_INTXX_T=1 \
-	#	-include defines.h \
-	#	-o $@ \
-	#	ntpd.c buffer.c log.c imsg.c ntp.c ntp_msg.c y.tab.c config.c \
-	#	server.c client.c sensors.c util.c; \
+	# $(CFLAGS_WHOLE_PROGRAM) -I$(OPENNTPD_DIR) \
+	# -D__dead="__attribute((__noreturn__))" -DHAVE_INTXX_T=1 \
+	# -include defines.h \
+	# -o $@ \
+	# ntpd.c buffer.c log.c imsg.c ntp.c ntp_msg.c y.tab.c config.c \
+	# server.c client.c sensors.c util.c; \
 	#)
 	$(STRIP) $@
 

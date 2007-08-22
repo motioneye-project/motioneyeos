@@ -76,12 +76,12 @@ $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7: $(STAGING_DIR)/usr/lib/libcrypto.a
 	mkdir -p $(TARGET_DIR)/usr/lib
 	cp -fa $(STAGING_DIR)/usr/lib/libcrypto.so* $(TARGET_DIR)/usr/lib/
 	cp -fa $(STAGING_DIR)/usr/lib/libssl.so* $(TARGET_DIR)/usr/lib/
-	#cp -fa $(STAGING_DIR)/bin/openssl  $(TARGET_DIR)/bin/
+	#cp -fa $(STAGING_DIR)/bin/openssl $(TARGET_DIR)/bin/
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libssl.so.0.9.7
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7
 
 $(TARGET_DIR)/usr/lib/libssl.a: $(STAGING_DIR)/usr/lib/libcrypto.a
-	mkdir -p $(TARGET_DIR)/usr/include 
+	mkdir -p $(TARGET_DIR)/usr/include
 	cp -a $(STAGING_DIR)/usr/include/openssl $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/usr/lib/libssl.a $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/usr/lib/libcrypto.a $(TARGET_DIR)/usr/lib/
@@ -93,14 +93,14 @@ openssl: uclibc $(TARGET_DIR)/usr/lib/libcrypto.so.0.9.7
 
 openssl-source: $(DL_DIR)/$(OPENSSL_SOURCE)
 
-openssl-clean: 
+openssl-clean:
 	$(MAKE) -C $(OPENSSL_DIR) clean
-	rm -f $(STAGING_DIR)/usr/bin/openssl  $(TARGET_DIR)/usr/bin/openssl
+	rm -f $(STAGING_DIR)/usr/bin/openssl $(TARGET_DIR)/usr/bin/openssl
 	rm -f $(STAGING_DIR)/usr/lib/libcrypto.so* $(TARGET_DIR)/usr/lib/libcrypto.so*
 	rm -f $(STAGING_DIR)/usr/lib/libssl.so* $(TARGET_DIR)/usr/lib/libssl.so*
 	rm -rf $(STAGING_DIR)/usr/include/openssl $(TARGET_DIR)/usr/include/openssl
 
-openssl-dirclean: 
+openssl-dirclean:
 	rm -rf $(OPENSSL_DIR)
 #############################################################
 #

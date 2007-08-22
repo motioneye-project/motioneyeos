@@ -10,6 +10,6 @@ XLIB_LIBICE_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBICE_AUTORECONF = YES
 XLIB_LIBICE_INSTALL_STAGING = YES
 XLIB_LIBICE_DEPENDANCIES = xlib_xtrans xproto_xproto
-XLIB_LIBICE_CONF_OPT =  --enable-shared --disable-static
+XLIB_LIBICE_CONF_OPT = --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,xlib_libICE))

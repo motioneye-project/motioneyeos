@@ -135,7 +135,7 @@ $(STAGING_DIR)/lib/$(GTK2_ENGINES_BINARY): $(GTK2_ENGINES_DIR)/gtk/.libs/$(GTK2_
 
 $(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines/$(GTK2_ENGINES_BINARY): $(STAGING_DIR)/lib/$(GTK2_ENGINES_BINARY)
 	mkdir -p $(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines
-	cp -a  $(STAGING_DIR)/lib/gtk-2.0/2.10.0/engines/*.so \
+	cp -a $(STAGING_DIR)/lib/gtk-2.0/2.10.0/engines/*.so \
 		$(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines/
 	mkdir -p $(TARGET_DIR)/usr/usr/share/themes
 	cp -a $(STAGING_DIR)/usr/share/themes/Clearlooks \

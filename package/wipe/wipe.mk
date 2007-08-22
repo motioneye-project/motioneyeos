@@ -29,11 +29,11 @@ $(WIPE_DIR)/.unpacked: $(DL_DIR)/$(WIPE_SOURCE) $(DL_DIR)/$(WIPE_PATCH)
 	touch $(WIPE_DIR)/.unpacked
 
 $(WIPE_DIR)/.configured: $(WIPE_DIR)/.unpacked
-	touch  $@
+	touch $@
 
 $(WIPE_DIR)/$(WIPE_BINARY): $(WIPE_DIR)/.configured
 	rm -f $(WIPE_DIR)/$(WIPE_BINARY)
-	$(MAKE) CC=$(TARGET_CC) -C $(WIPE_DIR)  generic
+	$(MAKE) CC=$(TARGET_CC) -C $(WIPE_DIR) generic
 
 $(TARGET_DIR)/$(WIPE_TARGET_BINARY): $(WIPE_DIR)/$(WIPE_BINARY)
 	cp -a $(WIPE_DIR)/$(WIPE_BINARY) $(TARGET_DIR)/$(WIPE_TARGET_BINARY)

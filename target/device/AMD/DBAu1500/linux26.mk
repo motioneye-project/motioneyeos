@@ -63,7 +63,7 @@ $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
 	#toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR)
 	touch $(LINUX26_DIR)/.patched
 
-$(LINUX26_DIR)/.configured:  $(LINUX26_DIR)/.patched  $(LINUX26_KCONFIG)
+$(LINUX26_DIR)/.configured: $(LINUX26_DIR)/.patched $(LINUX26_KCONFIG)
 	-cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) oldconfig
 	touch $(LINUX26_DIR)/.configured
@@ -73,7 +73,7 @@ linux26-menuconfig: $(LINUX26_DIR)/.patched
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
 	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
 
-$(LINUX26_DIR)/.depend_done:  $(LINUX26_DIR)/.configured
+$(LINUX26_DIR)/.depend_done: $(LINUX26_DIR)/.configured
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) prepare
 	touch $(LINUX26_DIR)/.depend_done
 

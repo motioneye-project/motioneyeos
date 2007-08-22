@@ -13,8 +13,8 @@ LTP_TESTSUITE_DIR:=$(LTP_TESTSUITE_ROOT)/ltp-full-$(LTP_TESTSUITE_VERSION)
 #
 # Enable patches based upon different toolchain configuration options.
 #
-LTP_PATCHES:=ltp-testsuite-generate-needs-bash.patch	\
-	     ltp-testsuite-sh-is-not-C-code.patch	\
+LTP_PATCHES:=ltp-testsuite-generate-needs-bash.patch \
+	     ltp-testsuite-sh-is-not-C-code.patch \
 	     ltp-testsuite.patch
 
 ifeq ($(BR2_PTHREADS_NATIVE),y)

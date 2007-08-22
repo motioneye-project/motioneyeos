@@ -145,9 +145,9 @@ $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.
-	# However, we still need a patch for arm.  There's a similar patch for gcc 3.3.x
+	# However, we still need a patch for arm. There's a similar patch for gcc 3.3.x
 	# which needs to be integrated so we can kill of libfloat for good, except for
-	# anyone (?) who might still be using gcc 2.95.  mjn3
+	# anyone (?) who might still be using gcc 2.95. mjn3
 ifeq ($(BR2_SOFT_FLOAT),y)
 ifeq ("$(strip $(ARCH))","arm")
 	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
@@ -210,21 +210,21 @@ gcc_initial-dirclean:
 
 #############################################################
 #
-# second pass compiler build.  Build the compiler targeting
+# second pass compiler build. Build the compiler targeting
 # the newly built shared uClibc library.
 #
 #############################################################
 #
 # Sigh... I had to rework things because using --with-gxx-include-dir
-# causes issues with include dir search order for g++.  This seems to
+# causes issues with include dir search order for g++. This seems to
 # have something to do with "path translations" and possibly doesn't
-# affect gcc-target.  However, I haven't tested gcc-target yet so no
-# guarantees.  mjn3
+# affect gcc-target. However, I haven't tested gcc-target yet so no
+# guarantees. mjn3
 comma:=,
 GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 	mkdir -p $(GCC_BUILD_DIR2)
-	# Important!  Required for limits.h to be fixed.
+	# Important! Required for limits.h to be fixed.
 	ln -snf ../include $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/sys-include
 	#-rmdir $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib
 	#ln -snf ../lib/ $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib
@@ -444,7 +444,7 @@ endif
 	#
 	rm -f $(TARGET_DIR)/usr/lib/*.la*
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	# $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Work around problem of missing syslimits.h
 	if [ ! -f $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/syslimits.h ]; then \
 		echo "warning: working around missing syslimits.h"; \

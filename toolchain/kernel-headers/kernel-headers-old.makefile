@@ -1,8 +1,8 @@
 #############################################################
 #
-# Setup the kernel headers.  I include a generic package of
+# Setup the kernel headers. I include a generic package of
 # kernel headers here, so you shouldn't need to include your
-# own.  Be aware these kernel headers _will_ get blown away
+# own. Be aware these kernel headers _will_ get blown away
 # by a 'make clean' so don't put anything sacred in here...
 #
 #############################################################
@@ -133,7 +133,7 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 		    $(LINUX_HEADERS_DIR)/Makefile; \
 	    /bin/echo -e "KERNELRELEASE=\$$(VERSION).\$$(PATCHLEVEL).\$$(SUBLEVEL)\$$(EXTRAVERSION)" >> \
 		    $(LINUX_HEADERS_DIR)/Makefile; \
-	fi;
+	fi
 	@if [ "$(ARCH)" = "powerpc" ];then \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-ppc$(NOMMU) asm;) \
 	elif [ "$(ARCH)" = "mips" ];then \
@@ -177,7 +177,7 @@ $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_DIR)/.patched
 	else \
 	    (cd $(LINUX_HEADERS_DIR)/include; ln -fs asm-$(ARCH)$(NOMMU) asm;) \
 	fi
-	touch $(LINUX_HEADERS_DIR)/include/linux/autoconf.h;
+	touch $(LINUX_HEADERS_DIR)/include/linux/autoconf.h
 	touch $(LINUX_HEADERS_DIR)/.configured
 
 endif

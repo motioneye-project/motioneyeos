@@ -20,7 +20,7 @@ $(IPERF_DIR)/.unpacked: $(DL_DIR)/$(IPERF_SOURCE)
 	touch $(IPERF_DIR)/.unpacked
 
 $(IPERF_DIR)/.configured: $(IPERF_DIR)/.unpacked
-	(cd $(IPERF_DIR); rm -rf config.cache;  \
+	(cd $(IPERF_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_malloc_0_nonnull=yes \

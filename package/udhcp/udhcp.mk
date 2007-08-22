@@ -36,11 +36,11 @@ $(UDHCP_DIR)/.unpacked: $(DL_DIR)/$(UDHCP_SOURCE)
 	toolchain/patch-kernel.sh $(UDHCP_DIR) package/udhcp/ udhcp\*.patch
 	touch $(UDHCP_DIR)/.unpacked
 
-#$(UDHCP_DIR)/.unpacked: 
-#	(cd $(BUILD_DIR); \
-#	CVS_PASSFILE=$(CVS_PASSFILE) \
-#	cvs -z3 -d:pserver:anonymous@busybox.net:/var/cvs co udhcp )
-#	touch $(UDHCP_DIR)/.unpacked
+#$(UDHCP_DIR)/.unpacked:
+# (cd $(BUILD_DIR); \
+# CVS_PASSFILE=$(CVS_PASSFILE) \
+# cvs -z3 -d:pserver:anonymous@busybox.net:/var/cvs co udhcp )
+# touch $(UDHCP_DIR)/.unpacked
 
 $(UDHCP_DIR)/udhcpc: $(UDHCP_DIR)/.unpacked
 	$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(UDHCP_DIR)

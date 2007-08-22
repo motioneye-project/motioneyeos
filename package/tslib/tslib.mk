@@ -46,10 +46,10 @@ $(TSLIB_DIR)/.configured: $(TSLIB_DIR)/.patched
 	--enable-input \
 	)
 	$(SED) 's:rpl\_malloc:malloc:g' $(TSLIB_DIR)/config.h
-	touch  $(TSLIB_DIR)/.configured
+	touch $(TSLIB_DIR)/.configured
 
 $(TSLIB_DIR)/.compiled: $(TSLIB_DIR)/.configured
-	$(MAKE) -C $(TSLIB_DIR) 
+	$(MAKE) -C $(TSLIB_DIR)
 	touch $(TSLIB_DIR)/.compiled
 
 $(STAGING_DIR)/usr/lib/libts.so: $(TSLIB_DIR)/.compiled
@@ -85,7 +85,7 @@ tslib: uclibc $(TARGET_DIR)/usr/lib/libts.so
 
 tslib-build: uclibc $(TSLIB_DIR)/.configured
 	rm -f $(TSLIB_DIR)/.compiled
-	$(MAKE) -C $(TSLIB_DIR) 
+	$(MAKE) -C $(TSLIB_DIR)
 	touch $(TSLIB_DIR)/.compiled
 
 tslib-clean:

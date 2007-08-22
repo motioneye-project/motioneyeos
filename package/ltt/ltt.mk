@@ -49,11 +49,11 @@ $(TOOL_BUILD_DIR)/bin/tracevisualizer: $(LTT_DIR1)/$(LTT_BINARY)
 
 host-ltt-tracevisualizer: $(TOOL_BUILD_DIR)/bin/tracevisualizer
 
-host-ltt-clean: 
+host-ltt-clean:
 	$(MAKE) -C $(LTT_DIR1) clean
 
-host-ltt-dirclean: 
-	rm -rf $(LTT_DIR1) 
+host-ltt-dirclean:
+	rm -rf $(LTT_DIR1)
 
 
 #############################################################
@@ -101,12 +101,12 @@ $(TARGET_DIR)/usr/bin/tracedaemon: $(LTT_DIR2)/$(LTT_TARGET_BINARY)
 
 ltt-tracedaemon: uclibc $(TARGET_DIR)/usr/bin/tracedaemon
 
-ltt-clean: 
+ltt-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LTT_DIR2) uninstall
 	-$(MAKE) -C $(LTT_DIR2) clean
 
-ltt-dirclean: 
-	rm -rf $(LTT_DIR2) 
+ltt-dirclean:
+	rm -rf $(LTT_DIR2)
 
 
 ltt: host-ltt-tracevisualizer ltt-tracedaemon

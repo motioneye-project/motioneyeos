@@ -74,7 +74,7 @@ ntp-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/ntpd $(TARGET_DIR)/usr/bin/sntp \
 		$(TARGET_DIR)/etc/init.d/S49ntp \
 		$(TARGET_DIR)/$(NTP_TARGET_BINARY)
-	-$(MAKE) -C $(NTP_DIR) clean 
+	-$(MAKE) -C $(NTP_DIR) clean
 
 ntp-dirclean:
 	rm -rf $(NTP_DIR)

@@ -29,7 +29,7 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	touch $@
 
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
-	#		bash_cv_have_mbstate_t=yes
+	# bash_cv_have_mbstate_t=yes
 	(cd $(BASH_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \

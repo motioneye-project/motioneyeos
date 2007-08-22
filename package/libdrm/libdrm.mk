@@ -50,10 +50,10 @@ $(STAGING_DIR)/lib/libdrm.so: $(LIBDRM_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBDRM_DIR) install
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libdrm.la
 	#$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
-	#	-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
-	#	-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/include\',g" \
-	#	-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
-	#	$(STAGING_DIR)/usr/bin/libdrm-config
+	# -e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
+	# -e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/include\',g" \
+	# -e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
+	# $(STAGING_DIR)/usr/bin/libdrm-config
 	touch -c $(STAGING_DIR)/lib/libdrm.so
 
 $(TARGET_DIR)/lib/libdrm.so: $(STAGING_DIR)/lib/libdrm.so

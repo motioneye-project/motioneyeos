@@ -53,10 +53,10 @@ $(STAGING_DIR)/include/directfb:
 	ln -s ../usr/include/directfb $(STAGING_DIR)/include/directfb
 
 $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(STAGING_DIR)/include/directfb
-	$(MAKE1) $(TARGET_CONFIGURE_OPTS)	\
+	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
 		INCLUDE="-I./include -I$(STAGING_DIR)/usr/include/directfb" \
 		LDFLAGS=-L$(STAGING_DIR)/usr \
-		DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR) 
+		DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR)
 	touch $@
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled

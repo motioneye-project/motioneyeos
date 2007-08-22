@@ -73,7 +73,7 @@ endif
 util-linux-source: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
 
 util-linux-clean:
-	#There is no working 'uninstall' target.  Just skip it... 
+	#There is no working 'uninstall' target. Just skip it...
 	#$(MAKE) DESTDIR=$(TARGET_DIR) -C $(UTIL-LINUX_DIR) uninstall
 	-$(MAKE) -C $(UTIL-LINUX_DIR) clean
 

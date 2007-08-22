@@ -268,7 +268,7 @@ ifeq ($(BR2_x86_i686),y)
 endif
 endif
 
-$(UCLIBC_DIR)/.config:	$(UCLIBC_DIR)/.oldconfig
+$(UCLIBC_DIR)/.config: $(UCLIBC_DIR)/.oldconfig
 	cp -f $(UCLIBC_DIR)/.oldconfig $(UCLIBC_DIR)/.config
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/include
 	mkdir -p $(TOOL_BUILD_DIR)/uClibc_dev/usr/lib
@@ -356,7 +356,7 @@ else
 		fi; \
 	fi
 endif
-	# Build the host utils.  Need to add an install target...
+	# Build the host utils. Need to add an install target...
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
 		PREFIX=$(STAGING_DIR) \
 		HOSTCC="$(HOSTCC)" \

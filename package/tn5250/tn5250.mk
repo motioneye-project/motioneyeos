@@ -5,7 +5,7 @@ TN5250_SOURCE:=tn5250-$(TN5250_VERSION).tar.gz
 TN5250_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(TN5250_SOURCE):
-	$(WGET) -P $(DL_DIR) $(TN5250_SITE)/$(TN5250_SOURCE) 
+	$(WGET) -P $(DL_DIR) $(TN5250_SITE)/$(TN5250_SOURCE)
 
 $(TN5250_DIR)/.dist: $(DL_DIR)/$(TN5250_SOURCE)
 	$(TN5250_CAT) $(DL_DIR)/$(TN5250_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -46,11 +46,11 @@ tn5250: uclibc slang $(TARGET_DIR)/usr/bin/tn5250
 
 tn5250-source: $(DL_DIR)/$(TN5250_SOURCE)
 
-tn5250-clean: 
+tn5250-clean:
 	$(MAKE) -C $(TN5250_DIR) clean
 
-tn5250-dirclean: 
-	rm -rf $(TN5250_DIR) 
+tn5250-dirclean:
+	rm -rf $(TN5250_DIR)
 
 
 

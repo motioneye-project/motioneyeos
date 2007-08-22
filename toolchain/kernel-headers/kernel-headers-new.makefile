@@ -50,7 +50,7 @@ endif
 
 ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 # Need to redefine KERNEL_HEADERS_PATCH_DIR if you want
-# board specific kernel headers 
+# board specific kernel headers
 KERNEL_HEADERS_PATCH_DIR:=toolchain/kernel-headers/empty
 
 $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)

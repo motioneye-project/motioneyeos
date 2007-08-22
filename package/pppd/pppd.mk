@@ -62,8 +62,8 @@ $(TARGET_DIR)/$(PPPD_TARGET_BINARY): $(PPPD_DIR)/$(PPPD_BINARY)
 pppd: uclibc $(TARGET_DIR)/$(PPPD_TARGET_BINARY)
 
 pppd-clean:
-	rm -f  $(TARGET_DIR)/usr/sbin/pppd
-	rm -f  $(TARGET_DIR)/usr/sbin/chat
+	rm -f $(TARGET_DIR)/usr/sbin/pppd
+	rm -f $(TARGET_DIR)/usr/sbin/chat
 	rm -rf $(TARGET_DIR)/etc/ppp
 	$(MAKE) DESTDIR=$(TARGET_DIR)/usr CC=$(TARGET_CC) -C $(PPPD_DIR) uninstall
 	-$(MAKE) -C $(PPPD_DIR) clean

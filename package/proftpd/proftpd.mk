@@ -51,12 +51,12 @@ $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
 	touch $@
 
 $(PROFTPD_DIR)/$(PROFTPD_BINARY): $(PROFTPD_DIR)/.configured
-	$(MAKE) CC="$(HOSTCC)" CFLAGS="" LDFLAGS=""	\
+	$(MAKE) CC="$(HOSTCC)" CFLAGS="" LDFLAGS="" \
 		-C $(PROFTPD_DIR)/lib/libcap _makenames
 	$(MAKE) -C $(PROFTPD_DIR)
 
 $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY): $(PROFTPD_DIR)/$(PROFTPD_BINARY)
-	cp -dpf $(PROFTPD_DIR)/$(PROFTPD_BINARY)	\
+	cp -dpf $(PROFTPD_DIR)/$(PROFTPD_BINARY) \
 		$(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/proftpd.conf ]; then \
 		$(INSTALL) -m 0644 -D $(PROFTPD_DIR)/sample-configurations/basic.conf $(TARGET_DIR)/etc/proftpd.conf; \

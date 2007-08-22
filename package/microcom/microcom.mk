@@ -59,14 +59,14 @@ endif
 $(TARGET_DIR)/usr/bin/microcom: $(MICROCOM_DIR)/microcom
 	install -c $(MICROCOM_DIR)/microcom $(TARGET_DIR)/usr/bin/microcom
 
-microcom-clean: 
+microcom-clean:
 	rm -f $(MICROCOM_DIR)/*.o $(MICROCOM_DIR)/microcom \
 		$(TARGET_DIR)/usr/bin/microcom
 
-microcom-dirclean: 
-	rm -rf $(MICROCOM_DIR) 
+microcom-dirclean:
+	rm -rf $(MICROCOM_DIR)
 
-microcom: uclibc $(TARGET_DIR)/usr/bin/microcom 
+microcom: uclibc $(TARGET_DIR)/usr/bin/microcom
 
 #############################################################
 #

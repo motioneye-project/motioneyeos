@@ -5,10 +5,10 @@
 #############################################################
 # Copyright 2003-2005 Lennart Poettering <mzqnrzba@0pointer.de>
 #
-# This library is free software; you can redistribute it 
-# and/or modify it under the terms of the GNU Lesser General 
-# Public License as published by the Free Software Foundation; 
-# either version 2.1 of the License, or (at your option) any 
+# This library is free software; you can redistribute it
+# and/or modify it under the terms of the GNU Lesser General
+# Public License as published by the Free Software Foundation
+# either version 2.1 of the License, or (at your option) any
 # later version.
 
 LIBDAEMON_VERSION:=0.10
@@ -70,7 +70,7 @@ $(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
 	touch -c $(STAGING_DIR)/lib/libdaemon.a
 
 #$(TARGET_DIR)/usr/lib/libdaemon.a: $(STAGING_DIR)/lib/libdaemon.a
-#	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdaemon.a
+# -$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdaemon.a
 
 libdaemon: uclibc pkgconfig $(STAGING_DIR)/lib/libdaemon.a
 
@@ -82,7 +82,7 @@ libdaemon-clean:
 libdaemon-patch-prep: libdaemon-dirclean libdaemon-unpacked
 	cp -af $(LIBDAEMON_DIR) $(LIBDAEMON_DIR)-0rig
 
-libdaemon-patch: 
+libdaemon-patch:
 	(cd $(BUILD_DIR); \
 	diff -urN $(LIBDAEMON_NAME)-0rig $(LIBDAEMON_NAME) > ../../$(LIBDAEMON_NAME)-$(DATE).patch || echo)
 

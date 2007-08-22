@@ -66,7 +66,7 @@ ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 	[ -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++ ] && \
 		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++ $(STAGING_DIR)/usr/bin-ccache/
 	[ -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++ ] && \
-		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++  $(STAGING_DIR)/usr/bin-ccache/
+		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++ $(STAGING_DIR)/usr/bin-ccache/
 	(cd $(STAGING_DIR)/usr/bin; \
 		ln -fs ccache $(GNU_TARGET_NAME)-c++; \
 		ln -fs ccache $(GNU_TARGET_NAME)-g++;\
@@ -80,10 +80,10 @@ endif
 ccache: gcc $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
 
 ccache-clean:
-	rm -rf  $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-cc
-	rm -rf  $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-gcc
-	rm -rf  $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc
-	rm -rf  $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
+	rm -rf $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-cc
+	rm -rf $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-gcc
+	rm -rf $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc
+	rm -rf $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
 	if [ -f $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-gcc ]; then \
 		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/usr/bin/; \
 		(cd $(STAGING_DIR)/usr/bin; \
@@ -97,9 +97,9 @@ ccache-clean:
 	fi
 	if [ -f $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-g++ ]; then \
 		rm -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++; \
-		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-g++  $(STAGING_DIR)/usr/bin/; \
+		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-g++ $(STAGING_DIR)/usr/bin/; \
 	fi
-	rm -rf  $(STAGING_DIR)/usr/bin-ccache/*
+	rm -rf $(STAGING_DIR)/usr/bin-ccache/*
 	(cd $(STAGING_DIR)/usr/bin; \
 		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-c++; \
 		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-g++;\

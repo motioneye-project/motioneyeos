@@ -15,7 +15,7 @@ KEXEC_TARGET_BINARY:=sbin/kexec
 KEXEC_CONFIG_OPTS:=
 KEXEC_DEPS_y:=
 
-KEXEC_DEPS_$(KEXEC_PACKAGE_KEXEC)	+= zlib
+KEXEC_DEPS_$(KEXEC_PACKAGE_KEXEC) += zlib
 
 ifeq ($(strip $(BR2_PACKAGE_KEXEC_ZLIB)),y)
 KEXEC_CONFIG_OPTS += --with-zlib
@@ -34,9 +34,9 @@ kexec-source: $(DL_DIR)/$(KEXEC_SOURCE) $(DL_DIR)/$(KEXEC_PATCH)
 $(KEXEC_DIR)/.unpacked: $(DL_DIR)/$(KEXEC_SOURCE) $(DL_DIR)/$(KEXEC_PATCH)
 	$(KEXEC_CAT) $(DL_DIR)/$(KEXEC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(KEXEC_PATCH),)
-	(cd $(KEXEC_DIR) && $(KEXEC_CAT) $(DL_DIR)/$(KEXEC_PATCH) | patch -p1;	\
-	for f in `cat debian/patches/00list`; do	\
-		cat debian/patches/$$f | patch -p2; 	\
+	(cd $(KEXEC_DIR) && $(KEXEC_CAT) $(DL_DIR)/$(KEXEC_PATCH) | patch -p1; \
+	for f in `cat debian/patches/00list`; do \
+		cat debian/patches/$$f | patch -p2; \
 	done)
 endif
 	toolchain/patch-kernel.sh $(KEXEC_DIR) package/kexec/ kexec\*.patch

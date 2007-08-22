@@ -1,7 +1,7 @@
 #############################################################
 #
 # Make a initramfs_list file to be used by gen_init_cpio
-# gen_init_cpio is part of the 2.6 linux kernels to build an 
+# gen_init_cpio is part of the 2.6 linux kernels to build an
 # initial ramdisk filesystem based on cpio
 #
 #############################################################
@@ -31,7 +31,7 @@ endif
 	# Use fakeroot to pretend to create all needed device nodes
 	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
 		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
-	# Use fakeroot so gen_initramfs_list.sh  believes the previous fakery
+	# Use fakeroot so gen_initramfs_list.sh believes the previous fakery
 	echo "$(CONFIG_SHELL) target/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(TARGET_DIR) > $(INITRAMFS_TARGET)" \
 		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 	chmod a+x $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))

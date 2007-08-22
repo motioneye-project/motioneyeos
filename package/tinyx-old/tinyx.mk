@@ -31,8 +31,8 @@ ifeq ($(strip $(BR2_PACKAGE_TINYX_OLD)),y)
 
 TINYX_APPS:=xlsfonts/xlsfonts xmodmap/xmodmap
 #xset/xset xdpyinfo/xdpyinfo xsetroot/xsetroot \
-#	xrdb/xrdb xrandr/xrandr \
-#	xhost/xhost xauth/xauth oclock/oclock xeyes/xeyes
+# xrdb/xrdb xrandr/xrandr \
+# xhost/xhost xauth/xauth oclock/oclock xeyes/xeyes
 #
 
 TINYX_LIBS:=ICE X11 Xext Xpm

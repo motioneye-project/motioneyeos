@@ -135,16 +135,16 @@ $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0: $(STAGING_DIR)/lib/$(LIBGTK2_BINARY)
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgtk-x11-2.0.so.0*
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgdk*-2.0.so.0*
 	mkdir -p $(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines
-	cp -a  $(STAGING_DIR)/lib/gtk-2.0/2.10.0/engines/*.so \
+	cp -a $(STAGING_DIR)/lib/gtk-2.0/2.10.0/engines/*.so \
 		$(TARGET_DIR)/lib/gtk-2.0/2.10.0/engines/
 	mkdir -p $(TARGET_DIR)/lib/gtk-2.0/2.10.0/printbackends
-	cp -a  $(STAGING_DIR)/lib/gtk-2.0/2.10.0/printbackends/*.so \
+	cp -a $(STAGING_DIR)/lib/gtk-2.0/2.10.0/printbackends/*.so \
 		$(TARGET_DIR)/lib/gtk-2.0/2.10.0/printbackends/
 	mkdir -p $(TARGET_DIR)/lib/gtk-2.0/2.10.0/immodules
-	cp -a  $(STAGING_DIR)/lib/gtk-2.0/2.10.0/immodules/*.so \
+	cp -a $(STAGING_DIR)/lib/gtk-2.0/2.10.0/immodules/*.so \
 		$(TARGET_DIR)/lib/gtk-2.0/2.10.0/immodules/
 	mkdir -p $(TARGET_DIR)/lib/gtk-2.0/2.10.0/loaders
-	cp -a  $(STAGING_DIR)/lib/gtk-2.0/2.10.0/loaders/*.so \
+	cp -a $(STAGING_DIR)/lib/gtk-2.0/2.10.0/loaders/*.so \
 		$(TARGET_DIR)/lib/gtk-2.0/2.10.0/loaders/
 	mkdir -p $(TARGET_DIR)/etc/gtk-2.0
 	cp package/libgtk2/gdk-pixbuf.loaders $(TARGET_DIR)/etc/gtk-2.0
