@@ -5,11 +5,15 @@
 #
 ######################################################################
 
+DEPENDENCIES_HOST_PREREQ:=
 ifeq ($(BR2_STRIP_sstrip),y)
-# XXX: this is a little bit ugly, yep.
-MAYBE_SSTRIP_HOST:=sstrip_host
+DEPENDENCIES_HOST_PREREQ+=sstrip_host
 endif
-dependencies: host-sed host-lzma $(MAYBE_SSTRIP_HOST)
+ifneq ($(findstring y,$(BR2_KERNEL_HEADERS_LZMA)),)
+DEPENDENCIES_HOST_PREREQ+=host-lzma
+endif
+
+dependencies: host-sed $(DEPENDENCIES_HOST_PREREQ)
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		HOST_SED_DIR="$(HOST_SED_DIR)" \
 		$(TOPDIR)/toolchain/dependencies/dependencies.sh

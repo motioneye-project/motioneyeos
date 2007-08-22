@@ -59,14 +59,6 @@ ifndef	LINUX26_KERNEL
 LINUX26_KERNEL=$(BINARIES_DIR)/linux-kernel-$(LINUX26_VERSION)-$(KERNEL_ARCH)
 endif
 
-ifeq ($(BR2_KERNEL_HEADERS_LZMA),y)
-ifeq ($(BR2_KERNEL_HEADERS_LZMA_INSTALL),y)
-DEPEND_ON_HOST_LZMA:=lzma-host-install
-else
-DEPEND_ON_HOST_LZMA:=lzma-host
-endif
-endif
-
 # Version of Linux AFTER patches
 LINUX26_DIR=$(BUILD_DIR)/linux-$(LINUX26_VERSION)
 
@@ -165,7 +157,7 @@ linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
 	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
 
-linux26: $(DEPEND_ON_HOST_LZMA) $(INITRAMFS_TARGET) $(LINUX26_KERNEL)
+linux26: $(INITRAMFS_TARGET) $(LINUX26_KERNEL)
 
 $(LINUX26_DIR)/.modules_installed: $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep
 	touch $@
