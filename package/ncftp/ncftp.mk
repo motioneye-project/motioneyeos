@@ -20,7 +20,7 @@ $(DL_DIR)/$(NCFTP_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NCFTP_SITE)/$(NCFTP_SOURCE)
 
 $(NCFTP_DIR)/.source: $(DL_DIR)/$(NCFTP_SOURCE)
-	bzcat $(DL_DIR)/$(NCFTP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(BZCAT) $(DL_DIR)/$(NCFTP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 
 $(NCFTP_DIR)/.configured: $(NCFTP_DIR)/.source

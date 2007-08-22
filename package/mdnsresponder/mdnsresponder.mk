@@ -7,7 +7,7 @@ MDNSRESPONDER_VERSION:=107.6
 MDNSRESPONDER_SOURCE:=mDNSResponder-$(MDNSRESPONDER_VERSION).tar.gz
 MDNSRESPONDER_SITE:=http://www.opensource.apple.com/darwinsource/tarballs/other/$(MDNSRESPONDER_SOURCE)
 MDNSRESPONDER_DIR:=$(BUILD_DIR)/mDNSResponder-$(MDNSRESPONDER_VERSION)
-MDNSRESPONDER_CAT:=zcat
+MDNSRESPONDER_CAT:=$(ZCAT)
 MDNSRESPONDER_INSTDEPS:=
 
 ifeq ($(BR2_PACKAGE_MDNSRESPONDER_UTILS),y)
@@ -19,15 +19,15 @@ $(DL_DIR)/$(MDNSRESPONDER_SOURCE):
 
 $(MDNSRESPONDER_DIR)/.unpacked: $(DL_DIR)/$(MDNSRESPONDER_SOURCE)
 	$(MDNSRESPONDER_CAT) $(DL_DIR)/$(MDNSRESPONDER_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(MDNSRESPONDER_DIR)/.unpacked
+	touch $@
 
 $(MDNSRESPONDER_DIR)/.configured: $(MDNSRESPONDER_DIR)/.unpacked
 	$(SED) 's:OPTIONALTARG = nss_mdns::' $(MDNSRESPONDER_DIR)/mDNSPosix/Makefile
-	touch $(MDNSRESPONDER_DIR)/.configured
+	touch $@
 
 $(MDNSRESPONDER_DIR)/.built: $(MDNSRESPONDER_DIR)/.configured
 	$(MAKE1) CC=$(TARGET_CC) os="linux" LD="$(TARGET_CC) -shared" LOCALBASE="/usr" -C $(MDNSRESPONDER_DIR)/mDNSPosix
-	touch $(MDNSRESPONDER_DIR)/.built
+	touch $@
 
 $(STAGING_DIR)/usr/lib/libdns_sd.so: $(MDNSRESPONDER_DIR)/.built
 	# lib
@@ -65,19 +65,19 @@ mdnsresponder-source: $(DL_DIR)/$(MDNSRESPONDER_SOURCE)
 mdnsresponder-clean:
 	rm -f $(MDNSRESPONDER_DIR)/.configured $(MDNSRESPONDER_DIR)/.built $(MDNSRESPONDER_DIR)/.staged
 	-$(MAKE1) os=linux -C $(MDNSRESPONDER_DIR)/mDNSPosix clean
-	rm -f $(TARGET_DIR)/usr/sbin/dnsextd
-	rm -f $(TARGET_DIR)/usr/sbin/mDNSResponderPosix
-	rm -f $(TARGET_DIR)/usr/sbin/mDNSNetMonitor
-	rm -f $(TARGET_DIR)/usr/sbin/mdnsd
-	rm -f $(TARGET_DIR)/usr/bin/dns-sd
-	rm -f $(TARGET_DIR)/usr/bin/mDNSProxyResponderPosix
-	rm -f $(TARGET_DIR)/usr/bin/mDNSIdentify
-	rm -f $(TARGET_DIR)/usr/bin/mDNSClientPosix
-	rm -f $(TARGET_DIR)/usr/lib/libdns_sd.so*
-	rm -f $(STAGING_DIR)/usr/lib/libdns_sd.so*
-	rm -f $(STAGING_DIR)/usr/include/dns_sd.h
-	rm -f $(TARGET_DIR)/etc/mDNSResponderPosix.conf
-	rm -f $(TARGET_DIR)/etc/init.d/S80mdnsresponder
+	rm -f $(TARGET_DIR)/usr/sbin/dnsextd \
+		$(TARGET_DIR)/usr/sbin/mDNSResponderPosix \
+		$(TARGET_DIR)/usr/sbin/mDNSNetMonitor \
+		$(TARGET_DIR)/usr/sbin/mdnsd \
+		$(TARGET_DIR)/usr/bin/dns-sd \
+		$(TARGET_DIR)/usr/bin/mDNSProxyResponderPosix \
+		$(TARGET_DIR)/usr/bin/mDNSIdentify \
+		$(TARGET_DIR)/usr/bin/mDNSClientPosix \
+		$(TARGET_DIR)/usr/lib/libdns_sd.so* \
+		$(STAGING_DIR)/usr/lib/libdns_sd.so* \
+		$(STAGING_DIR)/usr/include/dns_sd.h \
+		$(TARGET_DIR)/etc/mDNSResponderPosix.conf \
+		$(TARGET_DIR)/etc/init.d/S80mdnsresponder
 
 mdnsresponder-dirclean:
 	rm -rf $(MDNSRESPONDER_DIR)

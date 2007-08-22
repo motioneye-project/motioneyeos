@@ -7,7 +7,7 @@ PROFTPD_VERSION:=1.3.0a
 PROFTPD_SOURCE:=proftpd-$(PROFTPD_VERSION).tar.bz2
 PROFTPD_SITE:=ftp://ftp.proftpd.org/distrib/source/
 PROFTPD_DIR:=$(BUILD_DIR)/proftpd-$(PROFTPD_VERSION)
-PROFTPD_CAT:=bzcat
+PROFTPD_CAT:=$(BZCAT)
 PROFTPD_BINARY:=proftpd
 PROFTPD_TARGET_BINARY:=usr/sbin/proftpd
 
@@ -23,7 +23,7 @@ proftpd-source: $(DL_DIR)/$(PROFTPD_SOURCE)
 $(PROFTPD_DIR)/.unpacked: $(DL_DIR)/$(PROFTPD_SOURCE)
 	$(PROFTPD_CAT) $(DL_DIR)/$(PROFTPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(PROFTPD_DIR)
-	touch $(PROFTPD_DIR)/.unpacked
+	touch $@
 
 $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
 	(cd $(PROFTPD_DIR); rm -rf config.cache; \
@@ -48,7 +48,7 @@ $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
 		$(ENABLE_IPV6) \
 		--with-gnu-ld \
 	)
-	touch $(PROFTPD_DIR)/.configured
+	touch $@
 
 $(PROFTPD_DIR)/$(PROFTPD_BINARY): $(PROFTPD_DIR)/.configured
 	$(MAKE) CC="$(HOSTCC)" CFLAGS="" LDFLAGS=""	\
@@ -56,7 +56,7 @@ $(PROFTPD_DIR)/$(PROFTPD_BINARY): $(PROFTPD_DIR)/.configured
 	$(MAKE) -C $(PROFTPD_DIR)
 
 $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY): $(PROFTPD_DIR)/$(PROFTPD_BINARY)
-	cp -a $(PROFTPD_DIR)/$(PROFTPD_BINARY)	\
+	cp -dpf $(PROFTPD_DIR)/$(PROFTPD_BINARY)	\
 		$(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/proftpd.conf ]; then \
 		$(INSTALL) -m 0644 -D $(PROFTPD_DIR)/sample-configurations/basic.conf $(TARGET_DIR)/etc/proftpd.conf; \
