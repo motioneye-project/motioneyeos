@@ -7,7 +7,7 @@ MTD_SOURCE=mtd_20061007.orig.tar.gz
 MTD_SITE=http://ftp.debian.org/debian/pool/main/m/mtd
 MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_orig
 MTD_DIR:=$(BUILD_DIR)/mtd_orig
-MTD_CAT:=zcat
+MTD_CAT:=$(ZCAT)
 MTD_DATE:=20061007
 
 #############################################################
@@ -22,7 +22,7 @@ $(DL_DIR)/$(MTD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	mv $(TOOL_BUILD_DIR)/$(shell tar tzf $(DL_DIR)/$(MTD_SOURCE) | head -n 1 \
 		| xargs basename) $(MTD_HOST_DIR)
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
@@ -49,7 +49,7 @@ mtd-host-dirclean:
 #
 #############################################################
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	mv $(BUILD_DIR)/$(shell tar tzf $(DL_DIR)/$(MTD_SOURCE) \
 		| head -n 1 | xargs basename) $(MTD_DIR)
 	toolchain/patch-kernel.sh $(MTD_DIR) \
