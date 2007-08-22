@@ -82,9 +82,11 @@ endif
 	touch $@
 
 $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_UNPACK_DIR)/.patched
-	(cd $(LINUX_HEADERS_UNPACK_DIR) ; \
-	 $(MAKE) ARCH=$(KERNEL_ARCH) CC="$(HOSTCC)" \
-		INSTALL_HDR_PATH=$(LINUX_HEADERS_DIR) headers_install ; \
+	(cd $(LINUX_HEADERS_UNPACK_DIR); \
+	 $(MAKE) ARCH=$(KERNEL_ARCH) \
+	 	HOSTCC="$(HOSTCC)" HOSTCFLAGS="$(HOSTCFLAGS)" \
+		HOSTCXX="$(HOSTCXX)" \
+		INSTALL_HDR_PATH=$(LINUX_HEADERS_DIR) headers_install; \
 	)
 	touch $@
 
