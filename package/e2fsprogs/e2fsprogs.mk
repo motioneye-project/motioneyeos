@@ -30,6 +30,7 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 	(cd $(E2FSPROGS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -54,16 +55,19 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--without-catgets $(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
+	# do away with hiding the commands
+	find $(E2FSPROGS_DIR) -name Makefile \
+		| xargs $(SED) '/^[[:space:]]*@/s/@/$$\(Q\)/'
 	touch $@
 
 $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY): $(E2FSPROGS_DIR)/.configured
-	$(MAKE1) PATH=$(TARGET_PATH) -C $(E2FSPROGS_DIR)
+	$(MAKE1) -C $(E2FSPROGS_DIR)
 	( \
 		cd $(E2FSPROGS_DIR)/misc; \
 		$(STRIP) $(E2FSPROGS_MISC_STRIP); \
 	)
-	$(STRIP) $(E2FSPROGS_DIR)/lib/lib*.so.*.*
-	touch -c $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
+	#$(STRIP) $(E2FSPROGS_DIR)/lib/lib*.so.*.*
+	touch -c $@
 
 $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY): $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
 	$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(TARGET_DIR) -C $(E2FSPROGS_DIR) install
@@ -77,7 +81,7 @@ $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY): $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
 	ln -sf e2label ${TARGET_DIR}/sbin/findfs
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
-	touch -c $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY)
+	touch -c $@
 
 e2fsprogs: uclibc $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY)
 
