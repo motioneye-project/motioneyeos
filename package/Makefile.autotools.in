@@ -176,7 +176,6 @@ $(BUILD_DIR)/%/.stamp_autoconfigured:
 $(BUILD_DIR)/%/.stamp_configured:
 	$(call MESSAGE,"Configuring")
 	$(Q)if test "$($(PKG)_AUTORECONF)" = "YES" ; then \
-		$(call MESSAGE,"Running autoreconf")
 		cd $(@D)/$($(PKG)_SUBDIR) && \
 		$(AUTORECONF) ; \
 	fi
