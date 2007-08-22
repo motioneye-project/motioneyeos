@@ -1,4 +1,4 @@
-menu	"Atmel Mirrors"
+menu "Atmel Mirrors"
 
 config BR2_ATMEL_MIRROR
 	string "Atmel AVR32/AT91 download site"
