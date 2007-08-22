@@ -19,7 +19,7 @@ bash-source: $(DL_DIR)/$(BASH_SOURCE)
 bash-unpacked: $(BASH_DIR)/.unpacked
 $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	$(BASH_CAT) $(DL_DIR)/$(BASH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(BASH_DIR) package/bash/ bash??-*
+	toolchain/patch-kernel.sh $(BASH_DIR) package/bash/ bash??-\*
 	# This is broken when -lintl is added to LIBS
 	$(SED) 's,LIBS_FOR_BUILD =.*,LIBS_FOR_BUILD =,g' \
 		$(BASH_DIR)/builtins/Makefile.in
