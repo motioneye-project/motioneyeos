@@ -63,10 +63,7 @@ config BR2_KERNEL_HEADERS_IPMI
 	default n
 	depends BR2_KERNEL_HEADERS_2_6_20 || BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
 	help
-	  Apply patches which allow for lzma compressed
-	  initramfs filesystems.  This requires the lzma
-	  program in your development environment.
-
+	  Apply patches which add IPMI sensor support.
 
 config BR2_KERNEL_HEADERS_LZMA
 	bool "use lzma initramfs kernel patches"
