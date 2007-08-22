@@ -28,17 +28,17 @@ $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
 $(MICROPERL_DIR)/.configured: $(MICROPERL_DIR)/.source
 ifeq ($(BR2_PACKAGE_AUTOMAKE),y)
 	# we need to build a perl for the host just for Errno.pm
-	(cd $(MICROPERL_DIR) ; ./Configure -de ; \
-	 $(MAKE) CC="$(HOSTCC)" ; \
-	 $(SHELL) ext/util/make_ext nonxs Errno MAKE="$(firstword $(MAKE))" ; \
+	(cd $(MICROPERL_DIR); ./Configure -de; \
+	 $(MAKE) CC="$(HOSTCC)"; \
+	 $(SHELL) ext/util/make_ext nonxs Errno MAKE="$(firstword $(MAKE))"; \
 	)
 endif
-	(cd $(MICROPERL_DIR) ; chmod u+w uconfig.h ; . ./uconfig.sh ; \
-	 $(MAKE) -f Makefile.micro regen_uconfig ; \
+	(cd $(MICROPERL_DIR); chmod u+w uconfig.h; . ./uconfig.sh; \
+	 $(MAKE) -f Makefile.micro regen_uconfig; \
 	 $(SED) 's,PRIVLIB ".*,PRIVLIB "/$(MICROPERL_MODS_DIR)",' \
 		 -e 's,PRIVLIB_EXP ".*,PRIVLIB_EXP "$(MICROPERL_MODS_DIR)",' \
 		 -e 's,BIN ".*,BIN "/usr/bin",' \
-		 ./uconfig.h ; \
+		 ./uconfig.h; \
 	)
 	touch $@
 
@@ -46,24 +46,24 @@ $(MICROPERL_DIR)/microperl: $(MICROPERL_DIR)/.configured
 	$(MAKE) -f Makefile.micro CC=$(TARGET_CC) \
 		OPTIMIZE="$(TARGET_CFLAGS)" -C $(MICROPERL_DIR)
 ifeq ($(BR2_PACKAGE_AUTOMAKE),y)
-	#(cd $(@D) ; \
-	# CONFIG=uconfig.h $(SHELL) ext/util/make_ext nonxs Errno MAKE="$(firstword $(MAKE))" ; \
+	#(cd $(@D); \
+	# CONFIG=uconfig.h $(SHELL) ext/util/make_ext nonxs Errno MAKE="$(firstword $(MAKE))"; \
 	#)
 endif
 
 $(TARGET_DIR)/usr/bin/microperl: $(MICROPERL_DIR)/microperl
 ifneq ($(MICROPERL_MODS),)
-	(cd $(MICROPERL_DIR) ; \
-	 for i in $(patsubst %,$(TARGET_DIR)/$(MICROPERL_MODS_DIR)/%,$(dir $(MICROPERL_MODS))) ; do \
-		[ -d $$i ] || mkdir -p $$i ; \
-	 done ; \
-	 for i in $(MICROPERL_MODS) ; do \
-	 cp -dpf lib/$$i $(TARGET_DIR)/$(MICROPERL_MODS_DIR)/$$i ; \
+	(cd $(MICROPERL_DIR); \
+	 for i in $(patsubst %,$(TARGET_DIR)/$(MICROPERL_MODS_DIR)/%,$(dir $(MICROPERL_MODS))); do \
+		[ -d $$i ] || mkdir -p $$i; \
+	 done; \
+	 for i in $(MICROPERL_MODS); do \
+	 cp -dpf lib/$$i $(TARGET_DIR)/$(MICROPERL_MODS_DIR)/$$i; \
 	 done; \
 	)
 endif
 	cp -dpf $(MICROPERL_DIR)/microperl $(TARGET_DIR)/usr/bin/microperl
-	(cd $(TARGET_DIR)/usr/bin ; rm -f perl ; ln -s microperl perl ;)
+	(cd $(TARGET_DIR)/usr/bin; rm -f perl; ln -s microperl perl;)
 
 microperl: uclibc $(TARGET_DIR)/usr/bin/microperl
 

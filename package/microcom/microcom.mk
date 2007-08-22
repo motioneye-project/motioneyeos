@@ -47,7 +47,7 @@ $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
 
 $(MICROCOM_DIR)/microcom: $(MICROCOM_DIR)/.configured
 ifeq ($(BR2_PREFER_IMA),y)
-	(cd $(MICROCOM_DIR) ; \
+	(cd $(MICROCOM_DIR); \
 	 $(TARGET_CC) $(TARGET_CFLAGS) $(CFLAGS_COMBINE) \
 	 	$(CFLAGS_WHOLE_PROGRAM) -o $@ $(wildcard $(MICROCOM_DIR)/*.c); \
 	)

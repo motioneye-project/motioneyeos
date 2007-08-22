@@ -58,7 +58,7 @@ $(TARGET_DIR)/$(MPATROL_TARGET_BINARY): $(MPATROL_BUILD_DIR)/$(MPATROL_BINARY)
 	(cd $(MPATROL_BUILD_DIR); \
 		cp -dpf lib*.so* $(TARGET_DIR)/usr/lib; \
 		cp -dpf mpatrol mprof mptrace mleak $(TARGET_DIR)/usr/bin)
-	if [ ! -e $(TARGET_DIR)/lib/libpthread.so ] ; then \
+	if [ ! -e $(TARGET_DIR)/lib/libpthread.so ]; then \
 		ln -sf libpthread.so.0 $(TARGET_DIR)/lib/libpthread.so; fi
 	(cd $(MPATROL_DIR); \
 		cp -dpf bin/mp* bin/hexwords $(TARGET_DIR)/usr/bin; \

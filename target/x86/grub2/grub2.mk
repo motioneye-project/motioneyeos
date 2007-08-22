@@ -94,7 +94,7 @@ $(GRUB2_DIR)/.configured: $(GRUB2_DIR)/.unpacked
 		--disable-auto-linux-mem-opt \
 		$(DISABLE_LARGEFILE) \
 		$(GRUB2_CONFIG-y) \
-	);
+	)
 	touch $@
 
 $(GRUB2_DIR)/$(GRUB2_BINARY): $(GRUB2_DIR)/.configured

@@ -52,8 +52,8 @@ vpnc: uclibc $(VPNC_TARGET_BINARY)
 vpnc-source: $(DL_DIR)/$(VPNC_SOURCE)
 
 vpnc-clean:
-	@if [ -d $(VPNC_DIR)/Makefile ] ; then \
-		$(MAKE) -C $(VPNC_DIR) clean ; \
+	@if [ -d $(VPNC_DIR)/Makefile ]; then \
+		$(MAKE) -C $(VPNC_DIR) clean; \
 	fi
 	rm -f $(STAGING_DIR)/usr/bin/vpnc
 

@@ -23,7 +23,7 @@ $(DHCPDUMP_DIR)/.unpacked: $(DL_DIR)/$(DHCPDUMP_SOURCE)
 
 $(DHCPDUMP_DIR)/.configured: $(DHCPDUMP_DIR)/.unpacked
 	( \
-		cd $(DHCPDUMP_DIR) ; \
+		cd $(DHCPDUMP_DIR); \
 		BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \

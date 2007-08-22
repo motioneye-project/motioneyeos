@@ -44,8 +44,8 @@ dillo: uclibc $(XSERVER) libglib12 libgtk12 jpeg libpng $(DILLO_DIR)/.installed
 dillo-source: $(DL_DIR)/$(DILLO_SOURCE)
 
 dillo-clean:
-	@if [ -d $(DILLO_DIR)/Makefile ] ; then \
-		$(MAKE) -C $(DILLO_DIR) clean ; \
+	@if [ -d $(DILLO_DIR)/Makefile ]; then \
+		$(MAKE) -C $(DILLO_DIR) clean; \
 	fi
 
 dillo-dirclean:

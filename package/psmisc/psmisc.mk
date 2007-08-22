@@ -43,8 +43,8 @@ psmisc: uclibc ncurses $(TARGET_DIR)/$(PSMISC_TARGET_BINARY)
 psmisc-source: $(DL_DIR)/$(PSMISC_SOURCE)
 
 psmisc-clean:
-	for bin in fuser killall pstree oldfuser pstree.x11 ; do \
-		rm -f $(TARGET_DIR)/bin/$${bin} ; \
+	for bin in fuser killall pstree oldfuser pstree.x11; do \
+		rm -f $(TARGET_DIR)/bin/$${bin}; \
 	done
 
 psmisc-dirclean:

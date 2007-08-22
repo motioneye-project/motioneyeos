@@ -68,7 +68,7 @@ $(IPSEC_TOOLS_DIR)/.patched: $(DL_DIR)/$(IPSEC_TOOLS_SOURCE)
 	touch $@
 
 $(IPSEC_TOOLS_DIR)/.configured: $(IPSEC_TOOLS_DIR)/.patched
-	( cd $(IPSEC_TOOLS_DIR); rm -rf config.cache ; \
+	( cd $(IPSEC_TOOLS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 	  ./configure \
@@ -84,12 +84,12 @@ $(IPSEC_TOOLS_DIR)/.configured: $(IPSEC_TOOLS_DIR)/.patched
 	  $(IPSEC_TOOLS_CONFIG_FLAGS) \
 	); 
 	# simpler than patching that cruft..
-	(echo '#undef bzero' ; \
-	 echo '#define bzero(a, b) memset((a), 0, (b))' ; \
-	 echo '#undef bcopy' ; \
-	 echo '#define bcopy(src, dest, len) memmove(dest, src, len)' ; \
-	 echo '#undef index' ; \
-	 echo '#define index(a, b) strchr(a, b)' ; \
+	(echo '#undef bzero'; \
+	 echo '#define bzero(a, b) memset((a), 0, (b))'; \
+	 echo '#undef bcopy'; \
+	 echo '#define bcopy(src, dest, len) memmove(dest, src, len)'; \
+	 echo '#undef index'; \
+	 echo '#define index(a, b) strchr(a, b)'; \
 	) >> $(IPSEC_TOOLS_DIR)/config.h
 	touch $@
 

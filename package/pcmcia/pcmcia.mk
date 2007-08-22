@@ -40,7 +40,7 @@ $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked
 	touch $(PCMCIA_DIR)/.patched
 
 $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
-	( cd $(PCMCIA_DIR) ; ./Configure --kernel=$(LINUX26_DIR) --noprompt \
+	( cd $(PCMCIA_DIR); ./Configure --kernel=$(LINUX26_DIR) --noprompt \
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
 		--sysv --kcc=$(KERNEL_CROSS)gcc --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
@@ -51,10 +51,10 @@ $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 
 $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
 	$(MAKE) -C $(PCMCIA_DIR) -i all
-	-A=`find $(PCMCIA_DIR) -type f -perm +111` ; \
+	-A=`find $(PCMCIA_DIR) -type f -perm +111`; \
 	for fo in $$A; do \
 		file $$fo | grep "ELF" | grep "executable" > /dev/null 2>&1; \
-		if [ $$? = 0 ] ; then \
+		if [ $$? = 0 ]; then \
 			$(STRIP) $$fo; \
 		fi; \
 	done

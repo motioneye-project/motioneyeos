@@ -36,7 +36,7 @@ $(LZMA_HOST_DIR)/.unpacked: $(DL_DIR)/$(LZMA_SOURCE)
 	touch $@
 
 $(LZMA_HOST_DIR)/.configured: $(LZMA_HOST_DIR)/.unpacked
-	(cd $(LZMA_HOST_DIR); rm -f config.cache ;\
+	(cd $(LZMA_HOST_DIR); rm -f config.cache;\
 		CC="$(HOSTCC)" \
 		CXX="$(HOSTCXX)" \
 		./configure \
@@ -55,9 +55,9 @@ $(STAGING_DIR)/bin/lzma: $(LZMA_HOST_DIR)/src/lzma/lzma
 
 .PHONY: lzma-host use-lzma-host-binary
 use-lzma-host-binary:
-	if [ ! -f "$(TOOL_BUILD_DIR)/bin/lzma" ] ; then \
-		[ -d $(TOOL_BUILD_DIR)/bin ] || mkdir $(TOOL_BUILD_DIR)/bin ; \
-		ln -sf "$(HOST_LZMA_IF_ANY)" "$(TOOL_BUILD_DIR)/bin/lzma" ; \
+	if [ ! -f "$(TOOL_BUILD_DIR)/bin/lzma" ]; then \
+		[ -d $(TOOL_BUILD_DIR)/bin ] || mkdir $(TOOL_BUILD_DIR)/bin; \
+		ln -sf "$(HOST_LZMA_IF_ANY)" "$(TOOL_BUILD_DIR)/bin/lzma"; \
 	fi
 
 build-lzma-host-binary: $(LZMA_HOST_DIR)/src/lzma/lzma
@@ -89,7 +89,7 @@ $(LZMA_TARGET_DIR)/.unpacked: $(DL_DIR)/$(LZMA_SOURCE)
 	touch $@
 
 $(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.unpacked
-	(cd $(LZMA_TARGET_DIR); rm -f config.cache ;\
+	(cd $(LZMA_TARGET_DIR); rm -f config.cache;\
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS) $(LZMA_CFLAGS)" \

@@ -23,7 +23,7 @@ $(ZLIB_DIR)/.patched: $(DL_DIR)/$(ZLIB_SOURCE)
 	touch $@
 
 $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.patched
-	(cd $(ZLIB_DIR); rm -rf config.cache ; \
+	(cd $(ZLIB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(ZLIB_CFLAGS)" \

@@ -27,7 +27,7 @@ $(MDADM_DIR)/.unpacked: $(DL_DIR)/$(MDADM_SOURCE)
 ifneq ($(MDADM_PATCH),)
 	(cd $(MDADM_DIR) && $(MDADM_CAT) $(MDADM_PATCH_FILE) | patch -p1)
 	if [ -d $(MDADM_DIR)/debian/patches ]; then \
-	  toolchain/patch-kernel.sh $(MDADM_DIR) $(MDADM_DIR)/debian/patches \*patch ; \
+	  toolchain/patch-kernel.sh $(MDADM_DIR) $(MDADM_DIR)/debian/patches \*patch; \
 	fi
 endif
 	#toolchain/patch-kernel.sh $(MDADM_DIR) package/mdadm mdadm-$(MDADM_VERSION)\*.patch

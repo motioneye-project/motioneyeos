@@ -68,8 +68,8 @@ boa: uclibc $(BOA_WORKDIR)/.installed
 boa-source: $(DL_DIR)/$(BOA_SOURCE)
 
 boa-clean:
-	@if [ -d $(BOA_WORKDIR)/Makefile ] ; then \
-		$(MAKE) -C $(BOA_WORKDIR) clean ; \
+	@if [ -d $(BOA_WORKDIR)/Makefile ]; then \
+		$(MAKE) -C $(BOA_WORKDIR) clean; \
 	fi
 
 boa-dirclean:

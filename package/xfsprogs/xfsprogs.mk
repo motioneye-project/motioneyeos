@@ -56,15 +56,15 @@ $(XFSPROGS_DIR)/$(XFSPROGS_BINARY): $(XFSPROGS_DIR)/.configured
 		LDFLAGS="-L$(E2FSPROGS_DIR)/lib" -C $(XFSPROGS_DIR)
 ifeq ($(XFSPROGS_CONFIG_SHARED),--enable-shared)
 	( \
-		cd $(XFSPROGS_DIR) ; \
-		$(STRIP) $(XFSPROGS_STRIP) ; \
+		cd $(XFSPROGS_DIR); \
+		$(STRIP) $(XFSPROGS_STRIP); \
 		$(STRIP) $(join $(dir $(XFSPROGS_STRIP_LIBDEP)), \
 				$(addprefix .libs/,$(notdir $(XFSPROGS_STRIP_LIBDEP)))) \
 	)
 	$(STRIP) $(XFSPROGS_DIR)/lib*/.libs/lib*.so.*.*
 else
 	( \
-		cd $(XFSPROGS_DIR) ; \
+		cd $(XFSPROGS_DIR); \
 		$(STRIP) $(XFSPROGS_STRIP) $(XFSPROGS_STRIP_LIBDEP) \
 	)
 	$(STRIP) $(XFSPROGS_DIR)/lib*/lib*.so.*.*

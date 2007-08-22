@@ -24,7 +24,7 @@ $(SDL_DIR)/.unpacked: $(DL_DIR)/$(SDL_SOURCE)
 	touch $@
 
 $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
-	(cd $(SDL_DIR); rm -rf config.cache ; \
+	(cd $(SDL_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

@@ -23,7 +23,7 @@ $(MESA3D_DIR)/.extracted: $(DL_DIR)/$(MESA3D_SOURCE)
 	touch $@
 
 $(MESA3D_DIR)/.configured: $(MESA3D_DIR)/.extracted
-	( export $(TARGET_CONFIGURE_OPTS) ; \
+	( export $(TARGET_CONFIGURE_OPTS); \
 		echo "DRI_DIRS = $(MESA_DRIVERS)" && \
 		echo "OPT_FLAGS = $(TARGET_CFLAGS)" && \
 		echo "CC = $(TARGET_CC)" && \
@@ -39,7 +39,7 @@ $(MESA3D_DIR)/.configured: $(MESA3D_DIR)/.extracted
 
 $(MESA3D_DIR)/.built: BR2_JLEVEL=1
 $(MESA3D_DIR)/.built: $(MESA3D_DIR)/.configured
-	gccinc=$$($(TARGET_CC) -print-search-dirs | grep '^install:' | sed 's@^install: @@')include ; \
+	gccinc=$$($(TARGET_CC) -print-search-dirs | grep '^install:' | sed 's@^install: @@')include; \
 	rm -f $(MESA3D_DIR)/config/current
 	env $(MESA_BUILD_ENV) $(MAKE) \
 		MKDEP="makedepend -I$$gccinc" \

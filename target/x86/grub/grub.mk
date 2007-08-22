@@ -92,7 +92,7 @@ $(GRUB_DIR)/.configured: $(GRUB_DIR)/.unpacked
 		--infodir=/usr/info \
 		--disable-auto-linux-mem-opt \
 		$(GRUB_CONFIG-y) \
-	);
+	)
 	touch $@
 
 $(GRUB_DIR)/$(GRUB_BINARY): $(GRUB_DIR)/.configured

@@ -60,15 +60,15 @@ $(STAGING_DIR)/usr/lib/libcrypto.a: $(OPENSSL_DIR)/apps/openssl
 	$(MAKE) CC=$(TARGET_CC) INSTALL_PREFIX=$(STAGING_DIR)/usr -C $(OPENSSL_DIR) install
 	cp -fa $(OPENSSL_DIR)/libcrypto.so* $(STAGING_DIR)/usr/lib/
 	chmod a-x $(STAGING_DIR)/usr/lib/libcrypto.so.0.9.7
-	(cd $(STAGING_DIR)/usr/lib ; \
-	 ln -fs libcrypto.so.0.9.7 libcrypto.so ; \
-	 ln -fs libcrypto.so.0.9.7 libcrypto.so.0 ; \
+	(cd $(STAGING_DIR)/usr/lib; \
+	 ln -fs libcrypto.so.0.9.7 libcrypto.so; \
+	 ln -fs libcrypto.so.0.9.7 libcrypto.so.0; \
 	)
 	cp -fa $(OPENSSL_DIR)/libssl.so* $(STAGING_DIR)/usr/lib/
 	chmod a-x $(STAGING_DIR)/usr/lib/libssl.so.0.9.7
-	(cd $(STAGING_DIR)/usr/lib ; \
-	 ln -fs libssl.so.0.9.7 libssl.so ; \
-	 ln -fs libssl.so.0.9.7 libssl.so.0 ; \
+	(cd $(STAGING_DIR)/usr/lib; \
+	 ln -fs libssl.so.0.9.7 libssl.so; \
+	 ln -fs libssl.so.0.9.7 libssl.so.0; \
 	)
 	touch -c $@
 

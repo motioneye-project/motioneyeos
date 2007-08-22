@@ -91,15 +91,15 @@ $(TARGET_DIR)/$(SAMBA_TARGET_BINARY): $(SAMBA_DIR)/$(SAMBA_BINARY)
 		CONFIGDIR="${TARGET_DIR}/etc/samba" \
 		VARDIR="${TARGET_DIR}/var/log/samba" \
 		-C $(SAMBA_DIR) installservers installbin installcifsmount
-	for file in $(SAMBA_TARGETS_) ; do \
+	for file in $(SAMBA_TARGETS_); do \
 		rm -f $(TARGET_DIR)/$$file; \
 	done
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
-	for file in $(SAMBA_TARGETS_y) ; do \
+	for file in $(SAMBA_TARGETS_y); do \
 		$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$$file; \
 	done
 	$(INSTALL) -m 0755 package/samba/S91smb $(TARGET_DIR)/etc/init.d
-	@if [ ! -f $(TARGET_DIR)/etc/samba/smb.conf ] ; then \
+	@if [ ! -f $(TARGET_DIR)/etc/samba/smb.conf ]; then \
 		$(INSTALL) -m 0755 -D package/samba/simple.conf $(TARGET_DIR)/etc/samba/smb.conf; \
 	fi
 	rm -rf $(TARGET_DIR)/var/cache/samba
@@ -109,7 +109,7 @@ samba: uclibc $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
 
 samba-clean:
 	rm -f $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
-	for file in $(SAMBA_TARGETS_y) ; do \
+	for file in $(SAMBA_TARGETS_y); do \
 		rm -f $(TARGET_DIR)/$$file; \
 	done
 	rm -f $(TARGET_DIR)/etc/init.d/S91smb

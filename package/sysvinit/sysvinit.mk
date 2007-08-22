@@ -24,8 +24,8 @@ $(SYSVINIT_DIR)/$(SYSVINIT_BINARY): $(SYSVINIT_DIR)/.unpacked
 	CFLAGS="$(TARGET_CFLAGS)" $(MAKE) CC=$(TARGET_CC) -C $(SYSVINIT_DIR)/src
 
 $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY): $(SYSVINIT_DIR)/$(SYSVINIT_BINARY)
-	for x in halt init shutdown ; do \
-		install -D $(SYSVINIT_DIR)/src/$$x $(TARGET_DIR)/sbin/$$x || exit 1 ; \
+	for x in halt init shutdown; do \
+		install -D $(SYSVINIT_DIR)/src/$$x $(TARGET_DIR)/sbin/$$x || exit 1; \
 	done
 
 sysvinit: uclibc ncurses $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY)
@@ -33,8 +33,8 @@ sysvinit: uclibc ncurses $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY)
 sysvinit-source: $(DL_DIR)/$(SYSVINIT_SOURCE)
 
 sysvinit-clean:
-	for x in halt init shutdown ; do \
-		rm -f $(TARGET_DIR)/sbin/$$x || exit 1 ; \
+	for x in halt init shutdown; do \
+		rm -f $(TARGET_DIR)/sbin/$$x || exit 1; \
 	done
 	-$(MAKE) -C $(SYSVINIT_DIR) clean
 

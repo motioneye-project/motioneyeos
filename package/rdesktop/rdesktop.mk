@@ -44,8 +44,8 @@ rdesktop: uclibc openssl $(XSERVER) $(RDESKTOP_DIR)/.installed
 rdesktop-source: $(DL_DIR)/$(RDESKTOP_SOURCE)
 
 rdesktop-clean:
-	@if [ -d $(RDESKTOP_DIR)/Makefile ] ; then \
-		$(MAKE) -C $(RDESKTOP_DIR) clean ; \
+	@if [ -d $(RDESKTOP_DIR)/Makefile ]; then \
+		$(MAKE) -C $(RDESKTOP_DIR) clean; \
 	fi
 
 rdesktop-dirclean:

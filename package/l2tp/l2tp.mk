@@ -26,7 +26,7 @@ $(L2TP_DIR)/.unpacked: $(DL_DIR)/$(L2TP_SOURCE) $(DL_DIR)/$(L2TP_PATCH)
 ifneq ($(L2TP_PATCH),)
 	(cd $(L2TP_DIR) && $(L2TP_CAT) $(DL_DIR)/$(L2TP_PATCH) | patch -p1)
 	if [ -d $(L2TP_DIR)/debian/patches ]; then \
-		toolchain/patch-kernel.sh $(L2TP_DIR) $(L2TP_DIR)/debian/patches \*.patch ; \
+		toolchain/patch-kernel.sh $(L2TP_DIR) $(L2TP_DIR)/debian/patches \*.patch; \
 	fi
 endif
 	toolchain/patch-kernel.sh $(L2TP_DIR) package/l2tp/ l2tp\*.patch

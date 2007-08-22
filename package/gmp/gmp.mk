@@ -76,7 +76,7 @@ GMP_DIR2:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)-host
 GMP_HOST_DIR:=$(TOOL_BUILD_DIR)/gmp
 $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 	mkdir -p $(GMP_DIR2)
-	(cd $(GMP_DIR2); rm -rf config.cache ; \
+	(cd $(GMP_DIR2); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		$(GMP_CPP_FLAGS) \
 		$(GMP_DIR)/configure \

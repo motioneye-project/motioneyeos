@@ -61,7 +61,7 @@ endif
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_KCONFIG):
-	@if [ ! -f "$(LINUX_KCONFIG)" ] ; then \
+	@if [ ! -f "$(LINUX_KCONFIG)" ]; then \
 		echo ""; \
 		echo "You should create a .config for your kernel"; \
 		echo "and install it as $(LINUX_KCONFIG)"; \
@@ -69,7 +69,7 @@ $(LINUX_KCONFIG):
 		sleep 5; \
 		cd $(LINUX_DIR); \
 		$(MAKE) menuconfig; \
-	fi;
+	fi
 
 $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
 	$(SED) "s,^CROSS_COMPILE.*,CROSS_COMPILE=$(KERNEL_CROSS),g;" $(LINUX_DIR)/Makefile

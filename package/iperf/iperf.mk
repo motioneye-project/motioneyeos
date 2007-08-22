@@ -58,8 +58,8 @@ iperf: $(TARGET_DIR)/usr/bin/iperf
 iperf-source: $(DL_DIR)/$(IPERF_SOURCE)
 
 iperf-clean:
-	@if [ -d $(IPERF_KDIR)/Makefile ] ; then \
-		$(MAKE) -C $(IPERF_DIR) clean ; \
+	@if [ -d $(IPERF_KDIR)/Makefile ]; then \
+		$(MAKE) -C $(IPERF_DIR) clean; \
 	fi
 
 iperf-dirclean:

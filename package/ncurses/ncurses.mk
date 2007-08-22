@@ -130,9 +130,9 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.a $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/usr/lib/terminfo
-	(cd $(TARGET_DIR)/usr/lib; ln -fs ../share/terminfo ; \
-	 ln -fs libncurses.a libcurses.a ; \
-	 ln -fs libncurses.a libtermcap.a ; \
+	(cd $(TARGET_DIR)/usr/lib; ln -fs ../share/terminfo; \
+	 ln -fs libncurses.a libcurses.a; \
+	 ln -fs libncurses.a libtermcap.a; \
 	)
 	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
 	rm -f $(TARGET_DIR)/lib/libncurses.so

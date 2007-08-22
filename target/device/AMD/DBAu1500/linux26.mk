@@ -51,13 +51,13 @@ endif
 	touch $(LINUX26_DIR)/.unpacked
 
 $(LINUX26_KCONFIG):
-	@if [ ! -f "$(LINUX26_KCONFIG)" ] ; then \
+	@if [ ! -f "$(LINUX26_KCONFIG)" ]; then \
 		echo ""; \
 		echo "You should create a .config for your kernel"; \
 		echo "and install it as $(LINUX26_KCONFIG)"; \
 		echo ""; \
 		sleep 5; \
-	fi;
+	fi
 
 $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
 	#toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR)

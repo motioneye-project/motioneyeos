@@ -109,10 +109,10 @@ $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY): $(PORTAGE_DIR)/.compiled
 	$(dodir) $(PORTAGE_TARGET_DIR)/usr/sbin
 	$(dosym) newins $(PORTAGE_TARGET_DIR)/bin/donewins
 	for sbin in pkgmerge ebuild ebuild.sh etc-update dispatch-conf \
-		archive-conf fixpackages env-update regenworld emerge-webrsync ; do \
+		archive-conf fixpackages env-update regenworld emerge-webrsync; do \
 		$(dosym) ../lib/portage/bin/$${sbin} $(TARGET_DIR)/usr/sbin/$${sbin}; \
 	done
-	for bin in xpak repoman tbz2tool portageq g-cpan.pl quickpkg emerge ; do \
+	for bin in xpak repoman tbz2tool portageq g-cpan.pl quickpkg emerge; do \
 		$(dosym) ../lib/portage/bin/$${bin} $(TARGET_DIR)/usr/bin/$${bin}; \
 	done
 $(TARGET_DIR)/$(SANDBOX_TARGET_BINARY): $(SANDBOX_DIR)/.compiled
@@ -127,10 +127,10 @@ portage-clean:
 	rm -rf $(PORTAGE_TARGET_DIR)
 
 	for sbin in pkgmerge ebuild ebuild.sh etc-update dispatch-conf \
-		archive-conf fixpackages env-update regenworld emerge-webrsync ; do \
+		archive-conf fixpackages env-update regenworld emerge-webrsync; do \
 		rm -f $(TARGET_DIR)/usr/sbin/$${sbin}; \
 	done
-	for bin in xpak repoman tbz2tool portageq g-cpan.pl quickpkg emerge ; do \
+	for bin in xpak repoman tbz2tool portageq g-cpan.pl quickpkg emerge; do \
 		rm -f $(TARGET_DIR)/usr/bin/$${bin}; \
 	done
 sandbox-clean:

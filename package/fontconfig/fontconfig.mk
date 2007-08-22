@@ -30,7 +30,7 @@ $(FONTCONFIG_DIR)/.unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
 	touch $@
 
 $(FONTCONFIG_DIR)/.configured: $(FONTCONFIG_DIR)/.unpacked
-	(cd $(FONTCONFIG_DIR); rm -rf config.cache ; \
+	(cd $(FONTCONFIG_DIR); rm -rf config.cache; \
 		$(AUTORECONF) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \

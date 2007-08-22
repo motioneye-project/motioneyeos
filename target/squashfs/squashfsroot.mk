@@ -18,7 +18,7 @@ $(SQUASHFS_DIR)/.unpacked: $(DL_DIR)/$(SQUASHFS_SOURCE) #$(SQUASHFS_PATCH)
 	touch $@
 
 $(SQUASHFS_DIR)/squashfs-tools/mksquashfs: $(SQUASHFS_DIR)/.unpacked
-	$(MAKE) -C $(SQUASHFS_DIR)/squashfs-tools;
+	$(MAKE) -C $(SQUASHFS_DIR)/squashfs-tools
 
 squashfs: $(SQUASHFS_DIR)/squashfs-tools/mksquashfs
 
@@ -44,7 +44,7 @@ endif
 SQUASHFS_TARGET:=$(IMAGE).squashfs
 
 squashfsroot: host-fakeroot makedevs squashfs
-	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true;
+	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIP) 2>/dev/null || true
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	@rm -rf $(TARGET_DIR)/usr/man
 endif

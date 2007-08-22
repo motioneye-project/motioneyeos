@@ -42,7 +42,7 @@ endif
 	toolchain/patch-kernel.sh $(MPFR_DIR) package/mpfr/ \*.patch
 	$(CONFIG_UPDATE) $(MPFR_DIR)
 ifneq ($(MPFR_PATCH),)
-	( cd $(MPFR_DIR) ; patch -p1 < $(DL_DIR)/$(MPFR_PATCH_FILE) ; )
+	( cd $(MPFR_DIR); patch -p1 < $(DL_DIR)/$(MPFR_PATCH_FILE); )
 endif
 	touch $@
 

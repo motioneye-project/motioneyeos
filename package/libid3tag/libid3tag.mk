@@ -52,8 +52,8 @@ libid3tag: uclibc libmad $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN)
 libid3tag-source: $(DL_DIR)/$(LIBID3TAG_SOURCE)
 
 libid3tag-clean:
-	@if [ -d $(LIBID3TAG_DIR)/Makefile ] ; then \
-		$(MAKE) -C $(LIBID3TAG_DIR) clean ; \
+	@if [ -d $(LIBID3TAG_DIR)/Makefile ]; then \
+		$(MAKE) -C $(LIBID3TAG_DIR) clean; \
 	fi
 	rm -f $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN)
 	rm -f $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN)

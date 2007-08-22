@@ -79,8 +79,8 @@ libxml2-target-headers: $(TARGET_DIR)/usr/include/libxml2 $(TARGET_DIR)/usr/lib/
 libxml2-source: $(DL_DIR)/$(LIBXML2_SOURCE)
 
 libxml2-clean:
-	@if [ -d $(LIBXML2_DIR)/Makefile ] ; then \
-		$(MAKE) -C $(LIBXML2_DIR) clean ; \
+	@if [ -d $(LIBXML2_DIR)/Makefile ]; then \
+		$(MAKE) -C $(LIBXML2_DIR) clean; \
 	fi
 	rm -f $(STAGING_DIR)/usr/lib/libxml2.*
 	rm -f $(TARGET_DIR)/usr/lib/libxml2.*

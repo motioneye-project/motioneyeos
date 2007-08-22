@@ -60,10 +60,10 @@ $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY): $(ALSA_UTILS_DIR)/$(ALSA_UTILS_BINARY
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(ALSA_UTILS_DIR) install
 	mkdir -p $(TARGET_DIR)/usr/bin
 	mkdir -p $(TARGET_DIR)/usr/sbin
-	for file in $(ALSA_UTILS_TARGETS_y) ; do \
+	for file in $(ALSA_UTILS_TARGETS_y); do \
 		cp -dpf $(STAGING_DIR)/$$file $(TARGET_DIR)/$$file; \
 	done
-	if [ -x "$(TARGET_DIR)/usr/bin/speaker-test" ] ; then \
+	if [ -x "$(TARGET_DIR)/usr/bin/speaker-test" ]; then \
 		mkdir -p $(TARGET_DIR)/usr/share/alsa/speaker-test; \
 		mkdir -p $(TARGET_DIR)/usr/share/sounds/alsa; \
 		cp -rdpf $(STAGING_DIR)/usr/share/alsa/speaker-test/* $(TARGET_DIR)/usr/share/alsa/speaker-test/; \
@@ -74,10 +74,10 @@ $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY): $(ALSA_UTILS_DIR)/$(ALSA_UTILS_BINARY
 alsa-utils: uclibc alsa-lib ncurses $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY)
 
 alsa-utils-clean:
-	for file in $(ALSA_UTILS_TARGETS_y) ; do \
+	for file in $(ALSA_UTILS_TARGETS_y); do \
 		rm -f $(TARGET_DIR)/$$file; \
 	done
-	for file in $(ALSA_UTILS_TARGETS_) ; do \
+	for file in $(ALSA_UTILS_TARGETS_); do \
 		rm -f $(TARGET_DIR)/$$file; \
 	done
 	-$(MAKE) -C $(ALSA_UTILS_DIR) clean

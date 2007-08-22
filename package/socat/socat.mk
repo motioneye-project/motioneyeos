@@ -64,8 +64,8 @@ socat: uclibc $(SOCAT_WORKDIR)/.installed
 socat-source: $(DL_DIR)/$(SOCAT_SOURCE)
 
 socat-clean:
-	@if [ -d $(SOCAT_WORKDIR)/Makefile ] ; then \
-		$(MAKE) -C $(SOCAT_WORKDIR) clean ; \
+	@if [ -d $(SOCAT_WORKDIR)/Makefile ]; then \
+		$(MAKE) -C $(SOCAT_WORKDIR) clean; \
 	fi
 
 socat-dirclean:

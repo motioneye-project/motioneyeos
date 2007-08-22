@@ -59,8 +59,8 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY): $(E2FSPROGS_DIR)/.configured
 	$(MAKE1) PATH=$(TARGET_PATH) -C $(E2FSPROGS_DIR)
 	( \
-		cd $(E2FSPROGS_DIR)/misc ; \
-		$(STRIP) $(E2FSPROGS_MISC_STRIP) ; \
+		cd $(E2FSPROGS_DIR)/misc; \
+		$(STRIP) $(E2FSPROGS_MISC_STRIP); \
 	)
 	$(STRIP) $(E2FSPROGS_DIR)/lib/lib*.so.*.*
 	touch -c $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)

@@ -228,7 +228,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 	ln -snf ../include $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/sys-include
 	#-rmdir $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib
 	#ln -snf ../lib/ $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib
-	(cd $(GCC_BUILD_DIR2); rm -rf config.cache ; \
+	(cd $(GCC_BUILD_DIR2); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		LDFLAGS_FOR_TARGET="$(patsubst %,LDFLAGS+=-Wl$(comma)%,$(TARGET_LDFLAGS)) -L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib" \
 		$(GCC_DIR)/configure \
@@ -259,31 +259,31 @@ $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR2) install
-	if [ -d "$(STAGING_DIR)/usr/lib64" ] ; then \
-		if [ ! -e "$(STAGING_DIR)/usr/lib" ] ; then \
-			mkdir "$(STAGING_DIR)/usr/lib" ; \
-		fi ; \
-		mv "$(STAGING_DIR)/usr/lib64/"* "$(STAGING_DIR)/usr/lib/" ; \
-		rmdir "$(STAGING_DIR)/usr/lib64" ; \
+	if [ -d "$(STAGING_DIR)/usr/lib64" ]; then \
+		if [ ! -e "$(STAGING_DIR)/usr/lib" ]; then \
+			mkdir "$(STAGING_DIR)/usr/lib"; \
+		fi; \
+		mv "$(STAGING_DIR)/usr/lib64/"* "$(STAGING_DIR)/usr/lib/"; \
+		rmdir "$(STAGING_DIR)/usr/lib64"; \
 	fi
 	# Strip the host binaries
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
 	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/*
 endif
 	# Make sure we have 'cc'.
-	if [ ! -e $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ] ; then \
+	if [ ! -e $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ]; then \
 		ln -snf $(REAL_GNU_TARGET_NAME)-gcc \
-			$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ; \
+			$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc; \
 	fi
-	if [ ! -e $(STAGING_DIR)/usr/bin/gcc ] ; then \
-		ln -snf gcc $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc ; \
+	if [ ! -e $(STAGING_DIR)/usr/bin/gcc ]; then \
+		ln -snf gcc $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc; \
 	fi
 	# Set up the symlinks to enable lying about target name.
 	set -e; \
 	(cd $(STAGING_DIR)/usr; \
 		ln -snf $(REAL_GNU_TARGET_NAME) $(GNU_TARGET_NAME); \
 		cd bin; \
-		for app in $(REAL_GNU_TARGET_NAME)-* ; do \
+		for app in $(REAL_GNU_TARGET_NAME)-*; do \
 			ln -snf $${app} \
 		   	$(GNU_TARGET_NAME)$${app##$(REAL_GNU_TARGET_NAME)}; \
 		done; \
@@ -294,14 +294,14 @@ endif
 ifeq ($(BR2_SOFT_FLOAT),y)
 ifeq ($(findstring 3.3.,$(GCC_VERSION)),3.3.)
 	# Make sure we have a soft float specs file for this arch
-	if [ ! -f toolchain/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float ] ; then \
-		echo soft float configured but no specs file for this arch ; \
-		/bin/false ; \
+	if [ ! -f toolchain/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float ]; then \
+		echo soft float configured but no specs file for this arch; \
+		/bin/false; \
 	fi
 	# Replace specs file with one that defaults to soft float mode.
-	if [ ! -f $(STAGING_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs ] ; then \
-		echo staging dir specs file is missing ; \
-		/bin/false ; \
+	if [ ! -f $(STAGING_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs ]; then \
+		echo staging dir specs file is missing; \
+		/bin/false; \
 	fi
 	cp toolchain/gcc/$(GCC_VERSION)/specs-$(ARCH)-soft-float $(STAGING_DIR)/usr/lib/gcc-lib/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)/specs
 endif
@@ -361,7 +361,7 @@ $(GCC_BUILD_DIR3)/.prepared: $(GCC_BUILD_DIR2)/.libs_installed $(GCC_TARGET_PRER
 	touch $@
 
 $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
-	(cd $(GCC_BUILD_DIR3); rm -rf config.cache ; \
+	(cd $(GCC_BUILD_DIR3); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS_FOR_BUILD="-g -O2 $(HOST_CFLAGS)" \
 		$(TARGET_GCC_FLAGS) \
@@ -446,14 +446,14 @@ endif
 	#rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 	#	$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	# Work around problem of missing syslimits.h
-	if [ ! -f $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/syslimits.h ] ; then \
-		echo "warning: working around missing syslimits.h" ; \
+	if [ ! -f $(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/syslimits.h ]; then \
+		echo "warning: working around missing syslimits.h"; \
 		cp -f $(STAGING_DIR)/usr/$(GCC_LIB_SUBDIR)/include/syslimits.h \
-			$(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/ ; \
+			$(TARGET_DIR)/usr/$(GCC_LIB_SUBDIR)/include/; \
 	fi
 	# Make sure we have 'cc'.
-	if [ ! -e $(TARGET_DIR)/usr/bin/cc ] ; then \
-		ln -snf gcc $(TARGET_DIR)/usr/bin/cc ; \
+	if [ ! -e $(TARGET_DIR)/usr/bin/cc ]; then \
+		ln -snf gcc $(TARGET_DIR)/usr/bin/cc; \
 	fi
 	# These are in /lib, so...
 	#rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*

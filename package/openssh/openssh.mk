@@ -18,7 +18,7 @@ $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 	touch $@
 
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
-	(cd $(OPENSSH_DIR); rm -rf config.cache; autoconf ; \
+	(cd $(OPENSSH_DIR); rm -rf config.cache; autoconf; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

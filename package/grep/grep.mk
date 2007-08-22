@@ -55,10 +55,10 @@ $(GNUGREP_DIR)/$(GNUGREP_BINARY): $(GNUGREP_DIR)/.configured
 
 # This stuff is needed to work around GNU make deficiencies
 grep-target_binary: $(GNUGREP_DIR)/$(GNUGREP_BINARY)
-	@if [ -L $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY) ] ; then \
+	@if [ -L $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY) ]; then \
 		rm -f $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY); fi
 	@if [ ! -f $(GNUGREP_DIR)/$(GNUGREP_BINARY) -o $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY) -ot \
-	$(GNUGREP_DIR)/$(GNUGREP_BINARY) ] ; then \
+	$(GNUGREP_DIR)/$(GNUGREP_BINARY) ]; then \
 	    set -x; \
 	    rm -f $(TARGET_DIR)/bin/grep $(TARGET_DIR)/bin/egrep $(TARGET_DIR)/bin/fgrep; \
 	    cp -a $(GNUGREP_DIR)/src/grep $(GNUGREP_DIR)/src/egrep \

@@ -42,11 +42,11 @@ $(CVS_DIR)/.unpacked: $(DL_DIR)/$(CVS_SOURCE) $(CVS_PATCH_FILE)
 ifneq ($(CVS_PATCH),)
 	toolchain/patch-kernel.sh $(CVS_DIR) $(DL_DIR) $(CVS_PATCH)
 	if [ -d $(CVS_DIR)/debian/patches ]; then \
-		(cd $(CVS_DIR)/debian/patches && for i in * ; \
-		 do $(SED) 's,^\+\+\+ .*cvs-$(CVS_VERSION)/,+++ cvs-$(CVS_VERSION)/,' $$i ; \
-		 done ; \
-		) ; \
-		toolchain/patch-kernel.sh $(CVS_DIR) $(CVS_DIR)/debian/patches \* ; \
+		(cd $(CVS_DIR)/debian/patches && for i in *; \
+		 do $(SED) 's,^\+\+\+ .*cvs-$(CVS_VERSION)/,+++ cvs-$(CVS_VERSION)/,' $$i; \
+		 done; \
+		); \
+		toolchain/patch-kernel.sh $(CVS_DIR) $(CVS_DIR)/debian/patches \*; \
 	fi
 endif
 	touch $@

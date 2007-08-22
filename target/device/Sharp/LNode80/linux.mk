@@ -71,13 +71,13 @@ endif
 	touch $(LINUX_DIR)/.unpacked
 
 $(LINUX_KCONFIG):
-	@if [ ! -f "$(LINUX_KCONFIG)" ] ; then \
+	@if [ ! -f "$(LINUX_KCONFIG)" ]; then \
 		echo ""; \
 		echo "You should create a .config for your kernel"; \
 		echo "and install it as $(LINUX_KCONFIG)"; \
 		echo ""; \
 		sleep 5; \
-	fi;
+	fi
 
 $(LINUX_DIR)/.configured $(BUILD_DIR)/linux/.configured:  $(LINUX_DIR)/.unpacked  $(LINUX_KCONFIG)
 	$(SED) "s,^ARCH.*,ARCH=$(LINUX_KARCH),g;" $(LINUX_DIR)/Makefile

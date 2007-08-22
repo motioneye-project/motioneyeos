@@ -30,10 +30,10 @@ copy_toolchain_lib_root =									\
 				cp $${LIB_DIR}/$${LIB} $(TARGET_DIR)$${DST}/$${LIB};	\
 				case "$${STRIP}" in						\
 				(0 | n | no)							\
-					;;							\
+;;							\
 				(*)								\
 					$(TARGET_CROSS)strip "$(TARGET_DIR)$${DST}/$${LIB}";		\
-					;;							\
+;;							\
 				esac;								\
 			else									\
 				exit -1;							\
@@ -51,6 +51,6 @@ $(TARGET_DIR)/lib/$(strip $(subst ",, $(BR2_TOOLCHAIN_EXTERNAL_LIB_C))):
 	mkdir -p $(TARGET_DIR)/lib
 	@$(call copy_toolchain_lib_root, $(strip $(subst ",, $(BR2_TOOLCHAIN_EXTERNAL_LIB_C))), /lib, $(BR2_TOOLCHAIN_EXTERNAL_STRIP))
 #")))
-	for libs in $(strip $(subst ",, $(BR2_TOOLCHAIN_EXTERNAL_LIBS))) ; do \
-		$(call copy_toolchain_lib_root, $$libs, /lib, $(BR2_TOOLCHAIN_EXTERNAL_STRIP)) ; \
+	for libs in $(strip $(subst ",, $(BR2_TOOLCHAIN_EXTERNAL_LIBS))); do \
+		$(call copy_toolchain_lib_root, $$libs, /lib, $(BR2_TOOLCHAIN_EXTERNAL_STRIP)); \
 	done

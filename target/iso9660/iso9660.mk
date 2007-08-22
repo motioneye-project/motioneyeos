@@ -21,7 +21,7 @@ $(MKISOFS_DIR)/.unpacked: $(DL_DIR)/$(MKISOFS_SOURCE)
 
 $(MKISOFS_DIR)/.configured: $(MKISOFS_DIR)/.unpacked
 	(cd $(MKISOFS_DIR); rm -rf config.cache; \
-	);
+	)
 	touch  $(MKISOFS_DIR)/.configured
 
 $(MKISOFS_TARGET): $(MKISOFS_DIR)/.configured

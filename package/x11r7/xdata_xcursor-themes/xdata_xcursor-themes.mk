@@ -41,7 +41,7 @@ $(XDATA_XCURSOR_THEMES_DIR)/.configured: $(XDATA_XCURSOR_THEMES_DIR)/.patched
 		--disable-IPv6 \
 		$(DISABLE_NLS) \
 		 \
-	);
+	)
 	touch $@
 
 $(XDATA_XCURSOR_THEMES_DIR)/.built: $(XDATA_XCURSOR_THEMES_DIR)/.configured

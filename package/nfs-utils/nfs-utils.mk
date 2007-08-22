@@ -65,7 +65,7 @@ $(PROJECT_BUILD_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
 	echo 'rm -f $(TARGET_DIR)/usr/bin/event_rpcgen.py $(TARGET_DIR)/usr/sbin/nhfs* $(TARGET_DIR)/usr/sbin/nfsstat $(TARGET_DIR)/usr/sbin/showmount' >> $@
 	echo 'rm -rf $(TARGET_DIR)/usr/share/man' >> $@
 	echo '$(INSTALL) -m 0755 package/nfs-utils/S60nfs $(TARGET_DIR)/etc/init.d' >> $@
-	echo -n 'for file in $(NFS_UTILS_TARGETS_) ; do rm -f $(TARGET_DIR)/' >> $@
+	echo -n 'for file in $(NFS_UTILS_TARGETS_); do rm -f $(TARGET_DIR)/' >> $@
 	echo -n "\$$" >> $@
 	echo "file; done" >> $@
 	echo 'rm -rf $(TARGET_DIR)/var/lib/nfs' >> $@
@@ -77,7 +77,7 @@ nfs-utils: uclibc host-fakeroot $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY)
 
 nfs-utils-clean:
 	rm -f $(TARGET_DIR)/etc/init.d/S60nfs
-	for file in $(NFS_UTILS_TARGETS_y) ; do \
+	for file in $(NFS_UTILS_TARGETS_y); do \
 		rm -f $(TARGET_DIR)/$$file; \
 	done
 	-$(MAKE) -C $(NFS_UTILS_DIR) clean

@@ -41,7 +41,7 @@ $(XAPP_XMAN_DIR)/.configured: $(XAPP_XMAN_DIR)/.patched
 		--disable-IPv6 \
 		$(DISABLE_NLS) \
 		 \
-	);
+	)
 	touch $@
 
 $(XAPP_XMAN_DIR)/.built: $(XAPP_XMAN_DIR)/.configured

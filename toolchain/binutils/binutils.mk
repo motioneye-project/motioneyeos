@@ -99,7 +99,7 @@ $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
-	(cd $(BINUTILS_DIR1); rm -rf config.cache ; \
+	(cd $(BINUTILS_DIR1); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		$(BINUTILS_DIR)/configure \
 		--prefix=$(BR2_SYSROOT_PREFIX)/usr \
@@ -149,7 +149,7 @@ binutils-dirclean:
 BINUTILS_DIR2:=$(BUILD_DIR)/binutils-$(BINUTILS_VERSION)-target
 $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR2)
-	(cd $(BINUTILS_DIR2); rm -rf config.cache ; \
+	(cd $(BINUTILS_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(BINUTILS_DIR)/configure \
 		--prefix=/usr \
