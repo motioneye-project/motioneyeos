@@ -1,4 +1,4 @@
-ifndef	MAKE
+ifndef MAKE
 MAKE:=make
 endif
 ifndef HOSTMAKE

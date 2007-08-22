@@ -44,7 +44,7 @@ LINUX26_BINLOC=$(LINUX26_FORMAT)
 
 LINUX26_COPYTO:=/tftpboot
 
-ifeq	($(DEFAULT_KERNEL_HEADERS),2.6.22.1)
+ifeq ($(DEFAULT_KERNEL_HEADERS),2.6.22.1)
 KERNEL_HEADERS_PATCH_DIR:=target/device/Atmel/linux/kernel-patches-$(DOWNLOAD_LINUX26_VERSION)
 else
 # Patch during kernel header build

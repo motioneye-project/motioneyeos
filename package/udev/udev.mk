@@ -92,11 +92,11 @@ $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION):
 	-ln -sf libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(STAGING_DIR)/usr/lib/libvolume_id.so
 
 $(STAGING_DIR)/usr/lib/libvolume_id.la: $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
-	$(INSTALL) -m 0755 -D package/udev/libvolume_id.la.tmpl		$(STAGING_DIR)/usr/lib/libvolume_id.la
-	$(SED) 's/REPLACE_CURRENT/$(UDEV_VOLUME_ID_CURRENT)/g'		$(STAGING_DIR)/usr/lib/libvolume_id.la
-	$(SED) 's/REPLACE_AGE/$(UDEV_VOLUME_ID_AGE)/g'			$(STAGING_DIR)/usr/lib/libvolume_id.la
-	$(SED) 's/REPLACE_REVISION/$(UDEV_VOLUME_ID_REVISION)/g'	$(STAGING_DIR)/usr/lib/libvolume_id.la
-	$(SED) 's,REPLACE_LIB_DIR,$(STAGING_DIR)/usr/lib,g'		$(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(INSTALL) -m 0755 -D package/udev/libvolume_id.la.tmpl $(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's/REPLACE_CURRENT/$(UDEV_VOLUME_ID_CURRENT)/g' $(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's/REPLACE_AGE/$(UDEV_VOLUME_ID_AGE)/g' $(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's/REPLACE_REVISION/$(UDEV_VOLUME_ID_REVISION)/g' $(STAGING_DIR)/usr/lib/libvolume_id.la
+	$(SED) 's,REPLACE_LIB_DIR,$(STAGING_DIR)/usr/lib,g' $(STAGING_DIR)/usr/lib/libvolume_id.la
 
 $(TARGET_DIR)/lib/udev/vol_id: $(STAGING_DIR)/usr/lib/libvolume_id.la
 	$(INSTALL) -m 0755 -D $(UDEV_DIR)/extras/volume_id/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION) $(TARGET_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
