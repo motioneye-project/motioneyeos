@@ -18,7 +18,7 @@ ruby-source: $(DL_DIR)/$(RUBY_SOURCE)
 
 $(RUBY_DIR)/.unpacked: $(DL_DIR)/$(RUBY_SOURCE)
 	$(RUBY_CAT) $(DL_DIR)/$(RUBY_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(RUBY_DIR) package/ruby/ ruby-*.patch
+	toolchain/patch-kernel.sh $(RUBY_DIR) package/ruby/ ruby-\*.patch
 	(cd $(RUBY_DIR); autoreconf)
 	touch $(RUBY_DIR)/.unpacked
 

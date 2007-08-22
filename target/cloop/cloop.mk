@@ -27,7 +27,7 @@ $(CLOOP_DIR)/.unpacked: $(DL_DIR)/$(CLOOP_SOURCE) ### $(DL_DIR)/$(CLOOP_PATCH1)
 	$(ZCAT) $(DL_DIR)/$(CLOOP_SOURCE) | tar -C $(BUILD_DIR) -xvf -
 	touch $@
 ###		$(ZCAT) $(DL_DIR)/$(CLOOP_PATCH1) | patch -p1 -d $(CLOOP_DIR)
-###		toolchain/patch-kernel.sh $(CLOOP_DIR) target/cloop/ cloop*.patch
+###		toolchain/patch-kernel.sh $(CLOOP_DIR) target/cloop/ cloop\*.patch
 
 $(CLOOP_DIR)/create_compressed_fs: $(CLOOP_DIR)/.unpacked
 	$(MAKE) CFLAGS="-Wall -O2 -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DUSE_ERROR_SILENT" -C $(CLOOP_DIR) \
