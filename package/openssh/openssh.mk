@@ -3,10 +3,10 @@
 # openssh
 #
 #############################################################
-OPENSSH_VERSION:=3.9p1
-OPENSSH_SITE:=ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
-OPENSSH_DIR:=$(BUILD_DIR)/openssh-$(OPENSSH_VERSION)
-OPENSSH_SOURCE:=openssh-$(OPENSSH_VERSION).tar.gz
+OPENSSH_VERSION=4.6p1
+OPENSSH_SITE=ftp://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
+OPENSSH_DIR=$(BUILD_DIR)/openssh-$(OPENSSH_VERSION)
+OPENSSH_SOURCE=openssh-$(OPENSSH_VERSION).tar.gz
 
 $(DL_DIR)/$(OPENSSH_SOURCE):
 	$(WGET) -P $(DL_DIR) $(OPENSSH_SITE)/$(OPENSSH_SOURCE)
@@ -18,9 +18,10 @@ $(OPENSSH_DIR)/.unpacked: $(DL_DIR)/$(OPENSSH_SOURCE)
 	touch $@
 
 $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
-	(cd $(OPENSSH_DIR); rm -rf config.cache; autoconf; \
+	(cd $(OPENSSH_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
+		LD=$(TARGET_CROSS)gcc \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -40,13 +41,14 @@ $(OPENSSH_DIR)/.configured: $(OPENSSH_DIR)/.unpacked
 		--disable-lastlog --disable-utmp \
 		--disable-utmpx --disable-wtmp --disable-wtmpx \
 		--without-x \
+		--disable-strip \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
 	touch $@
 
 $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(OPENSSH_DIR)
+	$(MAKE) -C $(OPENSSH_DIR)
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/scp
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/sftp
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/sftp-server
@@ -60,9 +62,9 @@ $(OPENSSH_DIR)/ssh: $(OPENSSH_DIR)/.configured
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(OPENSSH_DIR)/sshd
 
 $(TARGET_DIR)/usr/bin/ssh: $(OPENSSH_DIR)/ssh
-	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
-	mkdir -p $(TARGET_DIR)/etc/init.d/
-	cp $(OPENSSH_DIR)/S50sshd $(TARGET_DIR)/etc/init.d/
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) install
+	mkdir -p $(TARGET_DIR)/etc/init.d
+	cp package/openssh/S50sshd $(TARGET_DIR)/etc/init.d/
 	chmod a+x $(TARGET_DIR)/etc/init.d/S50sshd
 	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 

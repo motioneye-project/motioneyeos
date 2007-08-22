@@ -1,0 +1,21 @@
+diff -rdup openssh-4.6p1.oorig/openbsd-compat/port-tun.c openssh-4.6p1/openbsd-compat/port-tun.c
+--- openssh-4.6p1.oorig/openbsd-compat/port-tun.c	2006-09-02 07:32:40.000000000 +0200
++++ openssh-4.6p1/openbsd-compat/port-tun.c	2007-06-28 16:08:42.000000000 +0200
+@@ -66,7 +66,7 @@ sys_tun_open(int tun, int mode)
+ 		return (-1);
+ 	}
+ 
+-	bzero(&ifr, sizeof(ifr));	
++	memset(&ifr, 0, sizeof(ifr));
+ 
+ 	if (mode == SSH_TUNMODE_ETHERNET) {
+ 		ifr.ifr_flags = IFF_TAP;
+@@ -212,7 +212,7 @@ sys_tun_infilter(struct Channel *c, char
+ 	if (len <= 0 || len > (int)(sizeof(rbuf) - sizeof(*af)))
+ 		return (-1);
+ 	ptr = (char *)&rbuf[0];
+-	bcopy(buf, ptr + sizeof(u_int32_t), len);
++	memmove(ptr + sizeof(u_int32_t), buf, len);
+ 	len += sizeof(u_int32_t);
+ 	af = (u_int32_t *)ptr;
+ 
