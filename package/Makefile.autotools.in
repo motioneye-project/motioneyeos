@@ -181,10 +181,8 @@ $(BUILD_DIR)/%/.stamp_configured:
 	cd $(@D)/$($(PKG)_SUBDIR) && \
 	rm -f config.cache && \
 	$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		CXXFLAGS="$(TARGET_CXXFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		$($(PKG)_CONF_ENV) \
+	$(TARGET_CONFIGURE_ARGS) \
+	$($(PKG)_CONF_ENV) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
