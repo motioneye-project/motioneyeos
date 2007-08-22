@@ -98,7 +98,7 @@
 
 # UPPERCASE Macro -- transform its argument to uppercase and replace dots and 
 # hyphens to underscores
-UPPERCASE = echo $(1) | tr "a-z.-" "A-Z__"
+UPPERCASE = $(shell echo $(1) | tr "a-z.-" "A-Z__")
 
 # Define extrators for different archive suffixes
 INFLATE.bz2 = $(BZCAT)
