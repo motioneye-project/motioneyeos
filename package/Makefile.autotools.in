@@ -139,7 +139,7 @@ $(BUILD_DIR)/%/.stamp_extracted:
 	$(call MESSAGE,"Extracting")
 	$(Q)mkdir -p $(@D)
 	$(Q)$(INFLATE$(suffix $($(PKG)_SOURCE))) $(DL_DIR)/$($(PKG)_SOURCE) | \
-	$(Q)$(TAR) --strip-components=1 -C $(@D) $(TAR_OPTIONS) -
+	$(TAR) --strip-components=1 -C $(@D) $(TAR_OPTIONS) -
 	$(Q)touch $@
 
 # Patch

@@ -8,6 +8,6 @@ XAPP_XMODMAP_VERSION = 1.0.2
 XAPP_XMODMAP_SOURCE = xmodmap-$(XAPP_XMODMAP_VERSION).tar.bz2
 XAPP_XMODMAP_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMODMAP_AUTORECONF = YES
-XAPP_XMODMAP_DEPENDANCIES = xlib_libX11
+XAPP_XMODMAP_DEPENDENCIES = xlib_libX11
 
 $(eval $(call AUTOTARGETS,xapp_xmodmap))
