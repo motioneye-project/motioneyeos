@@ -37,5 +37,6 @@ kernel-headers-clean: clean
 
 kernel-headers-dirclean:
 	rm -rf $(LINUX_HEADERS_DIR)
+	rm -rf $(LINUX_HEADERS_UNPACK_DIR)
 
 .PHONY: kernel-headers
