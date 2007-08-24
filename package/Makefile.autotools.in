@@ -310,7 +310,7 @@ else
 $(1)-install-staging:
 endif
 
-$(1)-build:		$(if $$($(2)_SKIP_CONFIGURE),$(1)-patch,$(1)-configure)\
+$(1)-build:		$(1)-configure \
 			$$($(2)_TARGET_BUILD) \
 			$$($(2)_HOOK_POST_BUILD)
 
