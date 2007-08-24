@@ -1,0 +1,24 @@
+diff -rdup pptp-linux-1.7.0/pptp_callmgr.c pptp-linux-1.7.0.orig/pptp_callmgr.c
+--- pptp-linux-1.7.0/pptp_callmgr.c	2005-07-28 03:15:11.000000000 +0200
++++ pptp-linux-1.7.0.orig/pptp_callmgr.c	2007-08-24 09:20:39.000000000 +0200
+@@ -314,7 +314,7 @@ int open_inetsock(struct in_addr inetadd
+         return s;
+     }
+     if (localbind.s_addr != INADDR_NONE) {
+-        bzero(&src, sizeof(src));
++        memset(&src, 0, sizeof(src));
+         src.sin_family = AF_INET;
+         src.sin_addr   = localbind;
+         if (bind(s, (struct sockaddr *) &src, sizeof(src)) != 0) {
+diff -rdup pptp-linux-1.7.0/pptp_gre.c pptp-linux-1.7.0.orig/pptp_gre.c
+--- pptp-linux-1.7.0/pptp_gre.c	2005-07-28 03:15:11.000000000 +0200
++++ pptp-linux-1.7.0.orig/pptp_gre.c	2007-08-24 09:20:56.000000000 +0200
+@@ -81,7 +81,7 @@ int pptp_gre_bind(struct in_addr inetadd
+     int s = socket(AF_INET, SOCK_RAW, PPTP_PROTO);
+     if (s < 0) { warn("socket: %s", strerror(errno)); return -1; }
+     if (localbind.s_addr != INADDR_NONE) {
+-        bzero(&loc_addr, sizeof(loc_addr));
++        memset(&loc_addr, 0, sizeof(loc_addr));
+         loc_addr.sin_family = AF_INET;
+         loc_addr.sin_addr   = localbind;
+         if (bind(s, (struct sockaddr *) &loc_addr, sizeof(loc_addr)) != 0) {
