@@ -55,6 +55,9 @@ choice
 	config BR2_BUSYBOX_VERSION_1_6_1
 		bool "BusyBox 1.6.1"
 
+	config BR2_BUSYBOX_VERSION_1_7_0
+		bool "BusyBox 1.7.0"
+
 	config BR2_PACKAGE_BUSYBOX_SNAPSHOT
 		bool "daily snapshot"
 
@@ -72,6 +75,7 @@ config BR2_BUSYBOX_VERSION
 	default "1.5.1"		if BR2_BUSYBOX_VERSION_1_5_1
 	default "1.6.0"		if BR2_BUSYBOX_VERSION_1_6_0
 	default "1.6.1"		if BR2_BUSYBOX_VERSION_1_6_1
+	default "1.7.0"		if BR2_BUSYBOX_VERSION_1_7_0
 
 
 config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
@@ -101,6 +105,7 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	default "package/busybox/busybox-1.5.0.config" if BR2_BUSYBOX_VERSION_1_5_1
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_6_0
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_6_1
+	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_0
 	help
 	  Some people may wish to use their own modified BusyBox configuration
 	  file, and will specify their config file location with this option.
@@ -123,3 +128,8 @@ config BR2_PACKAGE_BUSYBOX_SKELETON
 	  Use a minimal target skeleton. Make sure to select mdev
 	  which is used to populate /dev/.
 
+#config BR2_PACKAGE_BUSYBOX_INITRAMFS
+#	bool "initramfs perusing busybox"
+#	depends on BR2_PACKAGE_BUSYBOX
+#	help
+#	  Build small initramfs perusing busybox.
