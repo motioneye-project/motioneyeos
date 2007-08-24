@@ -591,8 +591,12 @@ config BR2_WGET
 	default "wget --passive-ftp -nd"
 
 config BR2_SVN
-	string "Subversion (svn) checkout command"
+	string "Subversion (svn) command to download source tree"
 	default "svn co"
+
+config BR2_GIT
+	string "Git command to download source tree"
+	default "git clone"
 
 config BR2_ZCAT
 	string "zcat command"
@@ -731,11 +735,13 @@ config BR2_STRIP_strip
 	bool "strip"
 	help
 	  strip   is the normal strip command
+
 config BR2_STRIP_sstrip
 	bool "sstrip"
 	select BR2_PACKAGE_SSTRIP_HOST
 	help
 	  sstrip  is a strip that discards more than the normal strip
+
 config BR2_STRIP_none
 	bool "none"
 	help
