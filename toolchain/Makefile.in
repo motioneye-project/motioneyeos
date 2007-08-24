@@ -45,22 +45,5 @@ CFLAGS_WHOLE_PROGRAM = $(call cc-option,-fwhole-program,)
 # gcc-3.4 would need -combine, I only support 4.2, which correctly uses '--'
 CFLAGS_COMBINE = $(call cc-option,--combine,)
 
-# define values for prepatched source trees for toolchains
-#XXX: ulf, what about moving this to project/* ? (BF)
-VENDOR_SITE:=$(strip $(subst ",,$(BR2_VENDOR_SITE)))
-#"))
-VENDOR_SUFFIX:=$(strip $(subst ",,$(BR2_VENDOR_SUFFIX)))
-#"))
-VENDOR_BINUTILS_RELEASE:=$(strip $(subst ",,$(BR2_VENDOR_BINUTILS_RELEASE)))
-#"))
-VENDOR_GCC_RELEASE:=$(strip $(subst ",,$(BR2_VENDOR_GCC_RELEASE)))
-#"))
-VENDOR_UCLIBC_RELEASE:=$(strip $(subst ",,$(BR2_VENDOR_UCLIBC_RELEASE)))
-#"))
-VENDOR_GDB_RELEASE:=$(strip $(subst ",,$(BR2_VENDOR_GDB_RELEASE)))
-#"))
-VENDOR_PATCH_DIR:=$(strip $(subst ",,$(BR2_VENDOR_PATCH_DIR)))
-#"))
-
 # gcc has a bunch of needed stuff....
 include toolchain/gcc/Makefile.in
