@@ -56,7 +56,7 @@ endif
 ifneq ($(BR2_HAVE_INFOPAGES),y)
 	@rm -rf $(TARGET_DIR)/usr/info
 endif
-	$(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null
+	$(if $(TARGET_LDCONFIG),test -x $(TARGET_LDCONFIG) && $(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null)
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
 	touch $(PROJECT_BUILD_DIR)/.fakeroot.00000
