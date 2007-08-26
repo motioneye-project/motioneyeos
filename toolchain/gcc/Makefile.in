@@ -74,8 +74,16 @@ TARGET_GCC_FLAGS= CFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
 	BOOT_CFLAGS="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)"
 
 ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
-# pull in config opts from the user
-EXTRA_TARGET_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS)))
+EXTRA_TARGET_GCC_CONFIG_OPTIONS:=
+
+# AVR32 target GCC configuration
+ifeq ($(strip $(BR2_avr32)),y)
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libmudflap
+endif
+
+
+# and finally pull in config opts from the user
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=$(strip $(subst ",, $(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS)))
 #"))
 
 ifeq ($(BR2_PREFER_IMA),y)
@@ -84,11 +92,6 @@ ifneq ($(findstring x3.,x$(GCC_VERSION)),x3.)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--enable-intermodule
 endif
 endif # BR2_PREFER_IMA=y
-
-# AVR32 target GCC configuration
-ifeq ($(strip $(BR2_avr32)),y)
-EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libmudflap
-endif
 
 TARGETS+=gcc_target
 endif
