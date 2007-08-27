@@ -414,6 +414,8 @@ help:
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  source-check           - check all packages for valid download URLs'
 	@echo
+	@echo 'See docs/REAME and docs/buildroot.html for further details'
+	@echo
 
 .PHONY: dummy subdirs release distclean clean config oldconfig \
 	menuconfig tags check test depend defconfig help
