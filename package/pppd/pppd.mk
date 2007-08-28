@@ -26,7 +26,7 @@ $(PPPD_DIR)/.unpacked: $(DL_DIR)/$(PPPD_SOURCE)
 	$(SED) 's,(INSTALL) -s,(INSTALL),' $(PPPD_DIR)/pppd/plugins/*/Makefile.linux
 	$(SED) 's/ -o root//' $(PPPD_DIR)/*/Makefile.linux
 	$(SED) 's/ -g daemon//' $(PPPD_DIR)/*/Makefile.linux
-	touch $(PPPD_DIR)/.unpacked
+	touch $@
 
 $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 	(cd $(PPPD_DIR); rm -rf config.cache; \
@@ -49,7 +49,7 @@ $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 		--infodir=/usr/info \
 		$(DISABLE_NLS) \
 	)
-	touch $(PPPD_DIR)/.configured
+	touch $@
 
 $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) COPTS="$(TARGET_CFLAGS)" -C $(PPPD_DIR)
@@ -65,7 +65,6 @@ pppd-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/pppd
 	rm -f $(TARGET_DIR)/usr/sbin/chat
 	rm -rf $(TARGET_DIR)/etc/ppp
-	$(MAKE) DESTDIR=$(TARGET_DIR)/usr CC=$(TARGET_CC) -C $(PPPD_DIR) uninstall
 	-$(MAKE) -C $(PPPD_DIR) clean
 
 pppd-dirclean:
