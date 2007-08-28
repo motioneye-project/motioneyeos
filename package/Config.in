@@ -318,6 +318,14 @@ config BR2_PACKAGE_XSERVER_xorg
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
 endchoice
+
+config BR2_X11_PREFIX
+	string
+	default "/usr/X11R6"	if BR2_PACKAGE_XSERVER_xorg || BR2_PACKAGE_XSERVER_tinyx
+	default "/usr"		if !BR2_PACKAGE_XSERVER_xorg && !BR2_PACKAGE_XSERVER_tinyx
+	help
+	  X11 apps root location
+
 if BR2_PACKAGE_XSERVER_x11r7
 source "package/x11r7/Config.in"
 endif

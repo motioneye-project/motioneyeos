@@ -241,5 +241,8 @@ ifeq ($(strip $(BR2_PACKAGE_XGGI)),y)
 XSERVER+=xggi
 endif
 
+X11_PREFIX:=$(strip $(subst ",, $(BR2_X11_PREFIX)))
+#"))
+
 include package/Makefile.autotools.in
 
