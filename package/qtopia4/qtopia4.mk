@@ -15,7 +15,7 @@
 #
 ######################################################################
 
-QTOPIA4_VERSION:=4.2.2
+QTOPIA4_VERSION:=4.3.1
 QTOPIA4_CAT:=$(ZCAT)
 
 BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME)))
@@ -169,8 +169,6 @@ endif
 		$(QTOPIA4_TARGET_DIR)/$(QTOPIA4_QCONFIG_FILE_LOCATION)
 	(cd $(QTOPIA4_TARGET_DIR); rm -rf config.cache; \
 		PATH=$(TARGET_PATH) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		CXXFLAGS="$(TARGET_CXXFLAGS)" \
 		QPEHOME=/usr \
 		QPEDIR=/usr \
 		./configure \
@@ -181,6 +179,7 @@ endif
 		$(QTOPIA4_QCONFIG_COMMAND) \
 		$(QTOPIA4_DEBUG) \
 		$(QTOPIA4_DEPTHS) \
+		-no-stl \
 		-no-cups \
 		-no-nis \
 		-no-freetype \
@@ -205,8 +204,8 @@ endif
 		-sysconfdir /etc/qt4 \
 		-examplesdir /usr/share/qt4/examples \
 		-demosdir /usr/share/qt4/demos \
-		-nomake examples \
 		-fast \
+		-nomake examples \
 		-no-rpath \
 		$(QTOPIA4_QT3SUPPORT) \
 		$(QTOPIA4_TSLIB) \
@@ -230,13 +229,13 @@ $(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_TARGET_DIR)/lib
 	if [ -d $(QTOPIA4_TARGET_DIR)/plugins/imageformats ]; then \
 		mkdir -p $(TARGET_DIR)/usr/lib/qt4/plugins; \
 		cp -dpfr $(QTOPIA4_TARGET_DIR)/plugins/imageformats $(TARGET_DIR)/usr/lib/qt4/plugins; \
-		$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/qt4/plugins/imageformats/*; \
+		$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/qt4/plugins/imageformats/*; \
 	fi
 	# Remove Sql libraries, not needed
 	-rm $(TARGET_DIR)/usr/lib/libQtSql*
 	# Remove Svg libraries, not needed
 	-rm $(TARGET_DIR)/usr/lib/libQtSvg*
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libQt*.so.$(QTOPIA4_VERSION)
+	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.$(QTOPIA4_VERSION)
 
 #################################
 #
@@ -265,8 +264,6 @@ endif
 		$(QTOPIA4_HOST_DIR)/$(QTOPIA4_QCONFIG_FILE_LOCATION)
 	(cd $(QTOPIA4_HOST_DIR); rm -rf config.cache; \
 		PATH=$(TARGET_PATH) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		CXXFLAGS="$(TARGET_CXXFLAGS)" \
 		QPEHOME=/usr \
 		QPEDIR=/usr \
 		./configure \
@@ -277,6 +274,7 @@ endif
 		$(QTOPIA4_QCONFIG_COMMAND) \
 		$(QTOPIA4_DEBUG) \
 		$(QTOPIA4_DEPTHS) \
+		-no-stl \
 		-no-cups \
 		-no-nis \
 		-no-freetype \
@@ -301,8 +299,8 @@ endif
 		-sysconfdir $(STAGING_DIR)/etc/qt4 \
 		-examplesdir $(STAGING_DIR)/usr/share/qt4/examples \
 		-demosdir $(STAGING_DIR)/usr/share/qt4/demos \
-		-nomake examples \
 		-fast \
+		-nomake examples \
 		-no-rpath \
 		$(QTOPIA4_QT3SUPPORT) \
 		$(QTOPIA4_TSLIB) \
@@ -317,6 +315,9 @@ $(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_HOST_DIR)/.co
 
 $(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION)
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(QTOPIA4_HOST_DIR) install
+	# For some reason make install misses copying this file.
+	# cp -dpf $(QTOPIA4_HOST_DIR)/src/corelib/arch/qatomic_avr32.h $(STAGING_DIR)/include/qt4/QtCore/
+	# Try other patch first.
 
 qtopia4: uclibc zlib $(QTOPIA4_DEP_LIBS) \
 		$(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION) \
