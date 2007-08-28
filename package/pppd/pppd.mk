@@ -64,6 +64,8 @@ pppd: uclibc $(TARGET_DIR)/$(PPPD_TARGET_BINARY)
 pppd-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/pppd
 	rm -f $(TARGET_DIR)/usr/sbin/chat
+	rm -f $(TARGET_DIR)/usr/sbin/pppstatus
+	rm -f $(TARGET_DIR)/usr/sbin/pppdump
 	rm -rf $(TARGET_DIR)/etc/ppp
 	-$(MAKE) -C $(PPPD_DIR) clean
 
