@@ -54,15 +54,6 @@ diff -urN uClibc-0.9.29-0rig/include/features.h uClibc-0.9.29/include/features.h
     ... code requiring gcc 2.8 or later ...
     #endif
     Note - they won't work for gcc1 or glibc1, since the _MINOR macros
-@@ -297,7 +297,7 @@
- /* uClibc does not support _FORTIFY_SOURCE */
- #undef _FORTIFY_SOURCE
- #if defined _FORTIFY_SOURCE && _FORTIFY_SOURCE > 0 \
--    && __GNUC_PREREQ (4, 1) && defined __OPTIMIZE__ && __OPTIMIZE__ > 0
-+    && __GNUC_PREREQ(4, 1) && defined __OPTIMIZE__ && __OPTIMIZE__ > 0
- # if _FORTIFY_SOURCE > 1
- #  define __USE_FORTIFY_LEVEL 2
- # else
 @@ -366,7 +366,7 @@
  #endif	/* !ASSEMBLER */
  
