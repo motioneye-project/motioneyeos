@@ -59,7 +59,7 @@ $(UBOOT_PATCHES)/.unpacked: $(DL_DIR)/$(UBOOT_PATCH_SOURCE)
 	touch $@
 
 $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE): $(UBOOT_DIR)/.unpacked $(UBOOT_PATCHES)/.unpacked
-	toolchain/patch-kernel.sh $(UBOOT_DIR) $(UBOOT_PATCHES) *.patch
+	toolchain/patch-kernel.sh $(UBOOT_DIR) $(UBOOT_PATCHES) \*.patch
 	touch $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE)
 # cp $(UBOOT_CONFIG_FILE) $(UBOOT_DIR)/include/configs/.
 # cp $(UBOOT_PATCHES)/cmd_defenv.c $(UBOOT_DIR)/common/.
