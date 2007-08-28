@@ -1,10 +1,15 @@
 #############################################################
 #
 # hostap
+# 
+# Note! Host AP driver was added into the main kernel tree in Linux v2.6.14. 
+# The version in the kernel tree should be used instead of this external hostap-driver package. 
+# The external releases are only for older kernel versions and all
+# the future development will be in the main kernel tree.
 #
 #############################################################
-HOSTAP_VERSION=0.5.8
-HOSTAP_SOURCE=hostapd-$(HOSTAP_VERSION).tar.gz
+HOSTAP_VERSION=0.4.9
+HOSTAP_SOURCE=hostap-driver-$(HOSTAP_VERSION).tar.gz
 HOSTAP_SITE=http://hostap.epitest.fi/releases
 HOSTAP_DIR=$(BUILD_DIR)/hostapd-$(HOSTAP_VERSION)
 
