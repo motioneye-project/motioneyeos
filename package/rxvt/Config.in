@@ -1,10 +1,8 @@
 config BR2_PACKAGE_RXVT
 	bool "rxvt"
 	default n
-	depends BR2_PACKAGE_XSERVER_xorg || BR2_PACKAGE_XSERVER_tinyx
-
+	depends BR2_PACKAGE_XSERVER_xorg || BR2_PACKAGE_XSERVER_tinyx || BR2_PACKAGE_XSERVER_x11r7
 	help
 	  A nice small colour vt102 X terminal emulator.
-	  Does not build for X11R7 yet.
 
 	  http://www.rxvt.org/

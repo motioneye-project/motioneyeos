@@ -27,6 +27,18 @@ RXVT_CAT:=$(ZCAT)
 RXVT_DIR:=$(BUILD_DIR)/rxvt-$(RXVT_VERSION)
 RXVT_BINARY:=$(RXVT_DIR)/src/rxvt
 
+ifeq ($(strip $(BR2_PACKAGE_XSERVER_xorg)),y)
+RXVT_PREFIX:=/usr/X11R6
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_XSERVER_tinyx)),y)
+RXVT_PREFIX:=/usr/X11R6
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_XSERVER_x11r7)),y)
+RXVT_PREFIX:=/usr
+endif
+
 $(DL_DIR)/$(RXVT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(RXVT_SITE)/$(RXVT_SOURCE)
 
@@ -46,11 +58,11 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr/X11R6 \
+		--prefix=$(RXVT_PREFIX) \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--x-includes=$(STAGING_DIR)/usr/X11R6/include \
-		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
+		--x-includes=$(STAGING_DIR)$(RXVT_PREFIX)/include \
+		--x-libraries=$(STAGING_DIR)$(RXVT_PREFIX)/lib \
 		--disable-resources \
 		--disable-memset \
 	)
@@ -60,14 +72,14 @@ $(RXVT_BINARY): $(RXVT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(RXVT_DIR)
 	$(STRIP) $(STRIP_DISCARD_ALL) $(RXVT_BINARY)
 
-$(TARGET_DIR)/usr/X11R6/bin/rxvt: $(RXVT_BINARY)
-	cp -f $(RXVT_BINARY) $(TARGET_DIR)/usr/X11R6/bin
-	(cd $(TARGET_DIR)/usr/X11R6/bin; ln -fs rxvt xterm)
+$(TARGET_DIR)$(RXVT_PREFIX)/bin/rxvt: $(RXVT_BINARY)
+	cp -f $(RXVT_BINARY) $(TARGET_DIR)$(RXVT_PREFIX)/bin
+	(cd $(TARGET_DIR)$(RXVT_PREFIX)/bin; ln -fs rxvt xterm)
 
-rxvt: $(XSERVER) $(TARGET_DIR)/usr/X11R6/bin/rxvt
+rxvt: $(XSERVER) $(TARGET_DIR)$(RXVT_PREFIX)/bin/rxvt
 
 rxvt-clean:
-	rm -f $(TARGET_DIR)/usr/X11R6/bin/rxvt
+	rm -f $(TARGET_DIR)$(RXVT_PREFIX)/bin/rxvt
 	-$(MAKE) -C $(RXVT_DIR) clean
 
 rxvt-dirclean:
