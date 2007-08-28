@@ -17,12 +17,12 @@ mkisofs-source: $(DL_DIR)/$(MKISOFS_SOURCE)
 $(MKISOFS_DIR)/.unpacked: $(DL_DIR)/$(MKISOFS_SOURCE)
 	$(MKISOFS_CAT) $(DL_DIR)/$(MKISOFS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(MKISOFS_DIR) target/iso9660/ \*.patch
-	touch $(MKISOFS_DIR)/.unpacked
+	touch $@
 
 $(MKISOFS_DIR)/.configured: $(MKISOFS_DIR)/.unpacked
 	(cd $(MKISOFS_DIR); rm -rf config.cache; \
-	)
-	touch $(MKISOFS_DIR)/.configured
+	);
+	touch $@
 
 $(MKISOFS_TARGET): $(MKISOFS_DIR)/.configured
 	$(MAKE) -C $(MKISOFS_DIR)

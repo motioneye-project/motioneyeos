@@ -320,16 +320,19 @@ $(UCLIBC_DIR)/.configured: $(UCLIBC_DIR)/.config
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		HOSTCC="$(HOSTCC)" \
 		pregen install_dev
-	# Install the kernel headers to the first stage gcc include dir if necessary
+	# Install the kernel headers to the first stage gcc include dir
+	# if necessary
 ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
-	if [ ! -f $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/linux/version.h ]; \
-	then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/* $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/; \
+	if [ ! -f $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/linux/version.h ]; then \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
+			$(TOOL_BUILD_DIR)/uClibc_dev/usr/include/; \
 	fi
 else
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/; \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(TOOL_BUILD_DIR)/uClibc_dev/usr/include/; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/asm \
+			$(TOOL_BUILD_DIR)/uClibc_dev/usr/include/; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/linux \
+			$(TOOL_BUILD_DIR)/uClibc_dev/usr/include/; \
 		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ]; then \
 			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
 				$(TOOL_BUILD_DIR)/uClibc_dev/usr/include/; \
@@ -375,13 +378,16 @@ endif
 	# Install the kernel headers to the staging dir if necessary
 ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/* $(STAGING_DIR)/usr/include/; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
+			$(STAGING_DIR)/usr/include/; \
 	fi
 else
 
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(STAGING_DIR)/usr/include/; \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(STAGING_DIR)/usr/include/; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/asm \
+			$(STAGING_DIR)/usr/include/; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/linux \
+			$(STAGING_DIR)/usr/include/; \
 		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ]; then \
 			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
 				$(STAGING_DIR)/usr/include/; \
@@ -459,14 +465,16 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/usr/lib/libc.a
 		install_dev
 	# Install the kernel headers to the target dir if necessary
 ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
-	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ]; \
-	then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/* $(TARGET_DIR)/usr/include/; \
+	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ]; then \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
+			$(TARGET_DIR)/usr/include/; \
 	fi
 else
 	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm $(TARGET_DIR)/usr/include/; \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/linux $(TARGET_DIR)/usr/include/; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/asm \
+			$(TARGET_DIR)/usr/include/; \
+		cp -pLR $(LINUX_HEADERS_DIR)/include/linux \
+			$(TARGET_DIR)/usr/include/; \
 		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ]; then \
 			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
 				$(TARGET_DIR)/usr/include/; \

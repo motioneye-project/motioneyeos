@@ -19,7 +19,7 @@ tar-source: $(DL_DIR)/$(GNUTAR_SOURCE)
 $(GNUTAR_DIR)/.unpacked: $(DL_DIR)/$(GNUTAR_SOURCE)
 	$(GNUTAR_CAT) $(DL_DIR)/$(GNUTAR_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(GNUTAR_DIR) package/tar/ tar\*.patch
-	touch $(GNUTAR_DIR)/.unpacked
+	touch $@
 
 $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 	(cd $(GNUTAR_DIR); rm -rf config.cache; \
@@ -45,7 +45,7 @@ $(GNUTAR_DIR)/.configured: $(GNUTAR_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
-	touch $(GNUTAR_DIR)/.configured
+	touch $@
 
 $(GNUTAR_DIR)/$(GNUTAR_BINARY): $(GNUTAR_DIR)/.configured
 	$(MAKE) -C $(GNUTAR_DIR)
@@ -53,12 +53,15 @@ $(GNUTAR_DIR)/$(GNUTAR_BINARY): $(GNUTAR_DIR)/.configured
 # This stuff is needed to work around GNU make deficiencies
 tar-target_binary: $(GNUTAR_DIR)/$(GNUTAR_BINARY)
 	@if [ -L $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY) ]; then \
-		rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi
+		rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
+	fi
 	@if [ ! -f $(GNUTAR_DIR)/$(GNUTAR_BINARY) -o $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY) \
 	-ot $(GNUTAR_DIR)/$(GNUTAR_BINARY) ]; then \
-	    set -x; \
-	    rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
-	    cp -a $(GNUTAR_DIR)/$(GNUTAR_BINARY) $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); fi
+		set -x; \
+		rm -f $(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
+		cp -a $(GNUTAR_DIR)/$(GNUTAR_BINARY) \
+			$(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
+	fi
 
 tar: uclibc tar-target_binary
 

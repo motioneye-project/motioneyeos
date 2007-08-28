@@ -55,8 +55,8 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 		--datadir=/usr/share \
 		--localstatedir=/var \
 		--includedir=/usr/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		--enable-shared \
 		--enable-static \
 		--without-x \

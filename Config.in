@@ -108,7 +108,7 @@ config BR2_ARM_TYPE
 	default ARM922T		if BR2_arm922t
 	default ARM926T		if BR2_arm926t
 	default ARM10T		if BR2_arm10t
-	default ARM1136JF_S 	if BR2_arm1136jf_s
+	default ARM1136JF_S	if BR2_arm1136jf_s
 	default ARM1176JZ_S	if BR2_arm1176jz_s
 	default ARM1176JZF_S	if BR2_arm1176jzf_s
 	default ARM_SA110	if BR2_sa110
@@ -396,11 +396,11 @@ config BR2_ARCH
 config BR2_ENDIAN
 	string
 	default "LITTLE" if BR2_arm || BR2_cris || BR2_i386 || BR2_mipsel || \
-	                    BR2_sh3 || BR2_sh4 || BR2_x86_64 || BR2_nios2 || \
+			    BR2_sh3 || BR2_sh4 || BR2_x86_64 || BR2_nios2 || \
 			    BR2_sh64
 	default "BIG"    if BR2_alpha || BR2_armeb || BR2_avr32 || BR2_m68k || BR2_mips || \
-	                    BR2_powerpc || BR2_sh2a_nofpueb || BR2_sh2eb || \
-	                    BR2_sh3eb || BR2_sh4eb || BR2_sparc
+			    BR2_powerpc || BR2_sh2a_nofpueb || BR2_sh2eb || \
+			    BR2_sh3eb || BR2_sh4eb || BR2_sparc
 
 config BR2_GCC_TARGET_TUNE
 	string
@@ -635,7 +635,7 @@ config BR2_DL_DIR
 	  environment variable, then this overrides this configuration item.
 
 source	"target/device/Mirrors.in"
-	  
+
 config BR2_STAGING_DIR
 	string "Toolchain and header file location?"
 	default "$(BUILD_DIR)/staging_dir"
@@ -665,7 +665,7 @@ config BR2_TOPDIR_SUFFIX
 	  Add a custom string to the end of the build directories.
 
 	  build_ARCH -> build_ARCH_[SUFFIX]
-	  toolchain_build_ARCH -> toolchain_build_ARCH_[SUFFIX] 
+	  toolchain_build_ARCH -> toolchain_build_ARCH_[SUFFIX]
 
 config BR2_GNU_BUILD_SUFFIX
 	string "GNU build hostname suffix"
@@ -785,5 +785,3 @@ source "toolchain/Config.in"
 source "package/Config.in"
 
 source "target/Config.in"
-
-

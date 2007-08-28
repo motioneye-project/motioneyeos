@@ -78,4 +78,3 @@ ntpd-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_OPENNTPD)),y)
 TARGETS+=ntpd
 endif
-

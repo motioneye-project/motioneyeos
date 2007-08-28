@@ -54,27 +54,34 @@ $(STAGING_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR1)/$(CCACHE_BINARY)
 	(cd $(STAGING_DIR)/usr/bin-ccache; \
 		ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(GNU_TARGET_NAME)-gcc; \
 		ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(GNU_TARGET_NAME)-cc; \
-		ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(REAL_GNU_TARGET_NAME)-cc)
+		ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(REAL_GNU_TARGET_NAME)-cc; \
+	)
 	[ -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc ] && \
-		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/usr/bin-ccache/
+		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc \
+			$(STAGING_DIR)/usr/bin-ccache/
 	(cd $(STAGING_DIR)/usr/bin; \
 		ln -fs ccache $(GNU_TARGET_NAME)-cc; \
 		ln -fs ccache $(GNU_TARGET_NAME)-gcc; \
 		ln -fs ccache $(REAL_GNU_TARGET_NAME)-cc; \
-		ln -fs ccache $(REAL_GNU_TARGET_NAME)-gcc)
+		ln -fs ccache $(REAL_GNU_TARGET_NAME)-gcc; \
+	)
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 	[ -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++ ] && \
-		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++ $(STAGING_DIR)/usr/bin-ccache/
+		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++ \
+			$(STAGING_DIR)/usr/bin-ccache/
 	[ -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++ ] && \
-		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++ $(STAGING_DIR)/usr/bin-ccache/
+		mv $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++ \
+			$(STAGING_DIR)/usr/bin-ccache/
 	(cd $(STAGING_DIR)/usr/bin; \
 		ln -fs ccache $(GNU_TARGET_NAME)-c++; \
 		ln -fs ccache $(GNU_TARGET_NAME)-g++;\
 		ln -fs ccache $(REAL_GNU_TARGET_NAME)-c++; \
-		ln -fs ccache $(REAL_GNU_TARGET_NAME)-g++)
+		ln -fs ccache $(REAL_GNU_TARGET_NAME)-g++; \
+	)
 	(cd $(STAGING_DIR)/usr/bin-ccache; \
 		ln -fs $(REAL_GNU_TARGET_NAME)-c++ $(GNU_TARGET_NAME)-c++; \
-		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-g++)
+		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-g++; \
+	)
 endif
 
 ccache: gcc $(STAGING_DIR)/$(CCACHE_TARGET_BINARY)
@@ -85,25 +92,33 @@ ccache-clean:
 	rm -rf $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc
 	rm -rf $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
 	if [ -f $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-gcc ]; then \
-		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-gcc $(STAGING_DIR)/usr/bin/; \
+		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-gcc \
+			$(STAGING_DIR)/usr/bin/; \
 		(cd $(STAGING_DIR)/usr/bin; \
-		    ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(REAL_GNU_TARGET_NAME)-cc; \
-		    ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(GNU_TARGET_NAME)-cc; \
-		    ln -fs $(REAL_GNU_TARGET_NAME)-gcc $(GNU_TARGET_NAME)-gcc); \
+			ln -fs $(REAL_GNU_TARGET_NAME)-gcc \
+				$(REAL_GNU_TARGET_NAME)-cc; \
+			ln -fs $(REAL_GNU_TARGET_NAME)-gcc \
+				$(GNU_TARGET_NAME)-cc; \
+			ln -fs $(REAL_GNU_TARGET_NAME)-gcc \
+				$(GNU_TARGET_NAME)-gcc; \
+		); \
 	fi
 	if [ -f $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-c++ ]; then \
 		rm -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-c++; \
-		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-c++ $(STAGING_DIR)/usr/bin/; \
+		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-c++ \
+			$(STAGING_DIR)/usr/bin/; \
 	fi
 	if [ -f $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-g++ ]; then \
 		rm -f $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-g++; \
-		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-g++ $(STAGING_DIR)/usr/bin/; \
+		mv $(STAGING_DIR)/usr/bin-ccache/$(REAL_GNU_TARGET_NAME)-g++ \
+			$(STAGING_DIR)/usr/bin/; \
 	fi
 	rm -rf $(STAGING_DIR)/usr/bin-ccache/*
 	(cd $(STAGING_DIR)/usr/bin; \
 		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-c++; \
-		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-g++;\
-		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(REAL_GNU_TARGET_NAME)-c++)
+		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(GNU_TARGET_NAME)-g++; \
+		ln -fs $(REAL_GNU_TARGET_NAME)-g++ $(REAL_GNU_TARGET_NAME)-c++; \
+	)
 	-$(MAKE) -C $(CCACHE_DIR1) clean
 
 ccache-dirclean:
@@ -160,7 +175,8 @@ $(TARGET_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR2)/$(CCACHE_BINARY)
 		ln -fs /usr/bin/ccache cc; \
 		ln -fs /usr/bin/ccache gcc; \
 		ln -fs /usr/bin/ccache c++; \
-		ln -fs /usr/bin/ccache g++;)
+		ln -fs /usr/bin/ccache g++; \
+	)
 
 ccache_target: uclibc $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
 

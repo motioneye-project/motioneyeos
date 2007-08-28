@@ -40,7 +40,7 @@ $(MODUTILS_DIR1)/.configured: $(MODUTILS_DIR1)/.source
 		--prefix=/ \
 		--sysconfdir=/etc \
 	)
-	touch $(MODUTILS_DIR1)/.configured
+	touch $@
 
 $(MODUTILS_DIR1)/.build: $(MODUTILS_DIR1)/.configured
 	$(MAKE1) CC=$(TARGET_CC) -C $(MODUTILS_DIR1)
@@ -98,7 +98,7 @@ $(MODUTILS_DIR2)/.source: $(DL_DIR)/$(MODUTILS_SOURCE)
 	$(MODUTILS_CAT) $(DL_DIR)/$(MODUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) -xvf -
 	toolchain/patch-kernel.sh $(MODUTILS_DIR2) \
 		package/modutils \*.patch
-	touch $(MODUTILS_DIR2)/.source
+	touch $@
 
 $(MODUTILS_DIR2)/.configured: $(MODUTILS_DIR2)/.source
 	(cd $(MODUTILS_DIR2); \
@@ -109,16 +109,16 @@ $(MODUTILS_DIR2)/.configured: $(MODUTILS_DIR2)/.source
 		--prefix=/ \
 		--sysconfdir=/etc \
 	)
-	touch $(MODUTILS_DIR2)/.configured
+	touch $@
 
 $(MODUTILS_DIR2)/$(MODUTILS_BINARY): $(MODUTILS_DIR2)/.configured
 	$(MAKE1) -C $(MODUTILS_DIR2)
-	touch -c $(MODUTILS_DIR2)/$(MODUTILS_BINARY)
+	touch -c $@
 
 $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod: $(MODUTILS_DIR2)/$(MODUTILS_BINARY)
 	mkdir -p $(STAGING_DIR)/bin
 	cp $(MODUTILS_DIR2)/$(MODUTILS_BINARY) $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
-	touch -c $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
+	touch -c $@
 
 cross-depmod: uclibc $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
 
