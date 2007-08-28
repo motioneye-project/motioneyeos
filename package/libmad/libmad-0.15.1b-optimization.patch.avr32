@@ -1,0 +1,2922 @@
+diff --git a/bit.c b/bit.c
+index c2bfb24..262ce3a 100644
+--- a/bit.c
++++ b/bit.c
+@@ -25,12 +25,6 @@
+ 
+ # include "global.h"
+ 
+-# ifdef HAVE_LIMITS_H
+-#  include <limits.h>
+-# else
+-#  define CHAR_BIT  8
+-# endif
+-
+ # include "bit.h"
+ 
+ /*
+@@ -81,6 +75,8 @@ unsigned short const crc_table[256] = {
+ 
+ # define CRC_POLY  0x8005
+ 
++#ifndef FPM_AVR32
++
+ /*
+  * NAME:	bit->init()
+  * DESCRIPTION:	initialize bit pointer struct
+@@ -190,6 +186,8 @@ void mad_bit_write(struct mad_bitptr *bitptr, unsigned int len,
+ }
+ # endif
+ 
++#endif
++
+ /*
+  * NAME:	bit->crc()
+  * DESCRIPTION:	compute CRC-check word
+diff --git a/bit.h b/bit.h
+index 5a51570..70f550a 100644
+--- a/bit.h
++++ b/bit.h
+@@ -22,6 +22,92 @@
+ # ifndef LIBMAD_BIT_H
+ # define LIBMAD_BIT_H
+ 
++# ifdef HAVE_LIMITS_H
++#  include <limits.h>
++# else
++#  define CHAR_BIT  8
++# endif
++
++#ifdef FPM_AVR32
++
++struct mad_bitptr {
++  unsigned char const *byte;
++  unsigned int read_bytes;
++};
++
++/*
++ * NAME:	bit->init()
++ * DESCRIPTION:	initialize bit pointer struct
++ */
++static void mad_bit_init(struct mad_bitptr *bitptr, unsigned char const *byte)
++{
++  bitptr->byte  = byte;
++  bitptr->read_bytes  = 0;
++}
++
++/*
++ * NAME:	bit->length()
++ * DESCRIPTION:	return number of bits between start and end points
++ */
++static unsigned int mad_bit_length(struct mad_bitptr const *begin,
++			    struct mad_bitptr const *end)
++{
++  return (end->read_bytes - begin->read_bytes) +
++    8 * (end->byte - begin->byte);
++}
++
++/*
++ * NAME:	bit->nextbyte()
++ * DESCRIPTION:	return pointer to next unprocessed byte
++ */
++static unsigned char const *mad_bit_nextbyte(struct mad_bitptr const *bitptr)
++{
++  return bitptr->byte + ((bitptr->read_bytes + 0x7) >> 3);
++}
++
++/*
++ * NAME:	bit->skip()
++ * DESCRIPTION:	advance bit pointer
++ */
++static void mad_bit_skip(struct mad_bitptr *bitptr, unsigned int len)
++{
++  bitptr->read_bytes += len;
++  bitptr->byte += (bitptr->read_bytes >> 3);
++  bitptr->read_bytes &=  0x7;
++}
++
++/*
++ * NAME:	bit->read()
++ * DESCRIPTION:	read an arbitrary number of bits and return their UIMSBF value
++ */
++static unsigned long mad_bit_read(struct mad_bitptr *bitptr, unsigned int len)
++{
++  register unsigned long value;
++
++  if (!len)
++    return 0;
++
++  value = *(unsigned int *)bitptr->byte;
++
++  value <<= bitptr->read_bytes;
++  value >>= (32 - len);
++
++  bitptr->read_bytes += len;
++  bitptr->byte += (bitptr->read_bytes >> 3);
++  bitptr->read_bytes &=  0x7;
++
++  return value;
++}
++
++# define mad_bit_finish(bitptr)		/* nothing */
++
++static unsigned long  mad_bit_bitsleft(struct mad_bitptr *bitptr)
++{
++  return (8 - (bitptr)->read_bytes);
++}
++
++#else /* #ifdef FPM_AVR32 */
++
+ struct mad_bitptr {
+   unsigned char const *byte;
+   unsigned short cache;
+@@ -42,6 +128,8 @@ void mad_bit_skip(struct mad_bitptr *, unsigned int);
+ unsigned long mad_bit_read(struct mad_bitptr *, unsigned int);
+ void mad_bit_write(struct mad_bitptr *, unsigned int, unsigned long);
+ 
++#endif
++
+ unsigned short mad_bit_crc(struct mad_bitptr, unsigned int, unsigned short);
+ 
+ # endif
+diff --git a/configure b/configure
+index ee421cc..7a9f0c8 100755
+--- a/configure
++++ b/configure
+@@ -1048,7 +1048,7 @@ Optional Features:
+   --enable-speed          optimize for speed over accuracy
+   --enable-accuracy       optimize for accuracy over speed
+   --enable-fpm=ARCH       use ARCH-specific fixed-point math routines (one of:
+-                          intel, arm, mips, sparc, ppc, 64bit, default)
++                          intel, arm, avr32, mips, sparc, ppc, 64bit, default)
+   --enable-sso            use subband synthesis optimization
+   --disable-aso           disable architecture-specific optimizations
+   --enable-strict-iso     use strict ISO/IEC interpretations
+@@ -21477,6 +21477,7 @@ if test "${enable_fpm+set}" = set; then
+ 	no|default|approx) FPM="DEFAULT" ;;
+ 	intel|i?86)        FPM="INTEL"   ;;
+ 	arm)               FPM="ARM"     ;;
++	avr32)             FPM="AVR32"   ;;
+ 	mips)              FPM="MIPS"    ;;
+ 	sparc)             FPM="SPARC"   ;;
+ 	ppc|powerpc)       FPM="PPC"     ;;
+@@ -21498,6 +21499,7 @@ then
+     case "$host" in
+ 	i?86-*)     FPM="INTEL"  ;;
+ 	arm*-*)     FPM="ARM"    ;;
++	avr32*-*)   FPM="AVR32"  ;;
+ 	mips*-*)    FPM="MIPS"   ;;
+ 	sparc*-*)   FPM="SPARC"  ;;
+ 	powerpc*-*) FPM="PPC"    ;;
+@@ -21554,6 +21556,11 @@ then
+ 	    ASO="$ASO -DASO_IMDCT"
+ 	    ASO_OBJS="imdct_l_arm.lo"
+ 	    ;;
++	avr32*-*)
++	    ASO="$ASO -DASO_INTERLEAVE2"
++	    ASO="$ASO -DASO_ZEROCHECK"
++	    ASO_OBJS="dct32_avr32.lo synth_avr32.lo imdct_avr32.lo"
++	    ;;
+ 	mips*-*)
+ 	    ASO="$ASO -DASO_INTERLEAVE2"
+ 	    ASO="$ASO -DASO_ZEROCHECK"
+diff --git a/configure.ac b/configure.ac
+index 9b79399..063cb9b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -274,13 +274,14 @@ fi
+ AC_MSG_CHECKING(for architecture-specific fixed-point math routines)
+ AC_ARG_ENABLE(fpm, AC_HELP_STRING([--enable-fpm=ARCH],
+ 		   [use ARCH-specific fixed-point math routines
+-		    (one of: intel, arm, mips, sparc, ppc, 64bit, default)]),
++		    (one of: intel, arm, avr32, mips, sparc, ppc, 64bit, default)]),
+ [
+     case "$enableval" in
+ 	yes)                             ;;
+ 	no|default|approx) FPM="DEFAULT" ;;
+ 	intel|i?86)        FPM="INTEL"   ;;
+ 	arm)               FPM="ARM"     ;;
++	avr32)             FPM="AVR32"   ;;
+ 	mips)              FPM="MIPS"    ;;
+ 	sparc)             FPM="SPARC"   ;;
+ 	ppc|powerpc)       FPM="PPC"     ;;
+@@ -298,6 +299,7 @@ then
+     case "$host" in
+ 	i?86-*)     FPM="INTEL"  ;;
+ 	arm*-*)     FPM="ARM"    ;;
++	avr32*-*)   FPM="AVR32"  ;;
+ 	mips*-*)    FPM="MIPS"   ;;
+ 	sparc*-*)   FPM="SPARC"  ;;
+ 	powerpc*-*) FPM="PPC"    ;;
+@@ -343,6 +345,11 @@ then
+ 	    ASO="$ASO -DASO_IMDCT"
+ 	    ASO_OBJS="imdct_l_arm.lo"
+ 	    ;;
++	avr32*-*)
++	    ASO="$ASO -DASO_INTERLEAVE2"
++	    ASO="$ASO -DASO_ZEROCHECK"
++	    ASO_OBJS="dct32_avr32.lo synth_avr32.lo imdct_avr32.lo"
++	    ;;
+ 	mips*-*)
+ 	    ASO="$ASO -DASO_INTERLEAVE2"
+ 	    ASO="$ASO -DASO_ZEROCHECK"
+diff --git a/dct32_avr32.S b/dct32_avr32.S
+new file mode 100644
+index 0000000..7513340
+--- /dev/null
++++ b/dct32_avr32.S
+@@ -0,0 +1,780 @@
++/*
++   Optimized 32-point Discrete Cosine Transform (DCT)
++   Copyright 2003-2006 Atmel Corporation.
++
++   Written by Ronny Pedersen, Atmel Norway
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
++
++#define	SHIFT	12
++#define MAD_F_SCALEBITS 28
++#define SLOTS 8
++
++#define MAD_F(x)	((x + (1 << 15)) >> 16)
++
++#  define costab1	MAD_F(0x7fd8878e)
++#  define costab2	MAD_F(0x7f62368f)
++#  define costab3	MAD_F(0x7e9d55fc)
++#  define costab4	MAD_F(0x7d8a5f40)
++#  define costab5	MAD_F(0x7c29fbee)
++#  define costab6	MAD_F(0x7a7d055b)
++#  define costab7	MAD_F(0x78848414)
++#  define costab8	MAD_F(0x7641af3d)
++#  define costab9	MAD_F(0x73b5ebd1)
++#  define costab10	MAD_F(0x70e2cbc6)
++#  define costab11	MAD_F(0x6dca0d14)
++#  define costab12	MAD_F(0x6a6d98a4)
++#  define costab13	MAD_F(0x66cf8120)
++#  define costab14	MAD_F(0x62f201ac)
++#  define costab15	MAD_F(0x5ed77c8a)
++#  define costab16	MAD_F(0x5a82799a)
++#  define costab17	MAD_F(0x55f5a4d2)
++#  define costab18	MAD_F(0x5133cc94)
++#  define costab19	MAD_F(0x4c3fdff4)
++#  define costab20	MAD_F(0x471cece7)
++#  define costab21	MAD_F(0x41ce1e65)
++#  define costab22	MAD_F(0x3c56ba70)
++#  define costab23	MAD_F(0x36ba2014)
++#  define costab24	MAD_F(0x30fbc54d)
++#  define costab25	MAD_F(0x2b1f34eb)
++#  define costab26	MAD_F(0x25280c5e)
++#  define costab27	MAD_F(0x1f19f97b)
++#  define costab28	MAD_F(0x18f8b83c)
++#  define costab29	MAD_F(0x12c8106f)
++#  define costab30	MAD_F(0x0c8bd35e)
++#  define costab31	MAD_F(0x0647d97c)
++
++
++	.macro	butterfly2_in out1, out2, out3, out4, in, idx_in1, idx_in2, idx_in3, idx_in4, coeff1, coeff2, tmplo, tmphi
++	mov	\tmplo, \coeff1
++	ld.w	\out1, \in[\idx_in1 * 4]
++	ld.w	\out2, \in[\idx_in2 * 4]
++	ld.w	\out3, \in[\idx_in3 * 4]
++	ld.w	\out4, \in[\idx_in4 * 4]
++	sub	\tmphi, \out1, \out2
++	add	\out1, \out2
++	mulsatrndwh.w	\out2, \tmphi, \tmplo:b
++
++	sub	\tmphi, \out3, \out4
++	mov	\tmplo, \coeff2
++	add	\out3, \out4
++	mulsatrndwh.w	\out4, \tmphi, \tmplo:b
++	.endm
++
++	.macro	butterfly2	in1, in2, in3, in4, coeff1, tmplo, tmphi, tmp
++	mov	\tmp, \coeff1
++	sub	\tmphi, \in1, \in2
++	add	\in1, \in2
++	mulsatrndwh.w	\in2, \tmphi, \tmp:b
++
++	sub	\tmphi, \in3, \in4
++	add	\in3, \in4
++	mulsatrndwh.w	\in4, \tmphi, \tmp:b
++	.endm
++
++	.macro	butterfly4	in1, in2, in3, in4, in5, in6, in7, in8, coeff1, tmplo, tmphi, tmp
++	mov	\tmp, \coeff1
++	sub	\tmphi, \in1, \in2
++	add	\in1, \in2
++	mulsatrndwh.w	\in2, \tmphi, \tmp:b
++
++	sub	\tmphi, \in3, \in4
++	add	\in3, \in4
++	mulsatrndwh.w	\in4, \tmphi, \tmp:b
++
++	sub	\tmphi, \in5, \in6
++	add	\in5, \in6
++	mulsatrndwh.w	\in6, \tmphi, \tmp:b
++
++	sub	\tmphi, \in7, \in8
++	add	\in7, \in8
++	mulsatrndwh.w	\in8, \tmphi, \tmp:b
++	.endm
++
++	.macro	scale	reg
++	.endm
++
++/*void dct32(	mad_fixed_t const in[32], unsigned int slot,
++		mad_fixed_t lo[16][8], mad_fixed_t hi[16][8]) */
++
++	.global	dct32_avr32
++dct32_avr32:
++	stm	--sp, r0-r7, r9-r11, lr
++
++	sub	sp, 32*4
++
++/*	t0   = in[0]  + in[31];  t16  = MUL(in[0]  - in[31], costab1);
++	t1   = in[15] + in[16];  t17  = MUL(in[15] - in[16], costab31); */
++	butterfly2_in	r4/*t0*/, r5/*t16*/, r6/*t1*/, r7/*t17*/, r12, 0, 31, 15, 16, costab1, costab31, r10, r11
++
++/*	t41  = t16 + t17;
++	t59  = MUL(t16 - t17, costab2);
++	t33  =	 t0  + t1;
++	t50  = MUL(t0  - t1,  costab2);*/
++	butterfly2	r5/*t41*/, r7/*t59*/, r4/*t33*/, r6/*t50*/, costab2, r10, r11, lr
++
++/*	t2   = in[7]  + in[24];  t18  = MUL(in[7]  - in[24], costab15);
++	t3   = in[8]  + in[23];  t19  = MUL(in[8]  - in[23], costab17); */
++	butterfly2_in	r0/*t2*/, r1/*t18*/, r2/*t3*/, r3/*t19*/, r12, 7, 24, 8, 23, costab15, costab17, r10, r11
++
++/*	t42  = t18 + t19;
++	t60  = MUL(t18 - t19, costab30);
++	t34  = t2  + t3;
++	t51  = MUL(t2  - t3,  costab30); */
++	butterfly2	r1/*t42*/, r3/*t60*/, r0/*t34*/, r2/*t51*/, costab30, r10, r11, lr
++
++/*	t73  = t41 + t42;  t94  = MUL(t41 - t42, costab4);
++	t83  = t59 + t60;  t106 = MUL(t59 - t60, costab4); */
++
++
++/*	t69  = t33 + t34;  t89  = MUL(t33 - t34, costab4);
++	t78  = t50 + t51;  t100 = MUL(t50 - t51, costab4); */
++	butterfly4	r5/*t73*/, r1/*t94*/, r7/*t83*/, r3/*t106*/,r4/*t69*/, r0/*t89*/, r6/*t78*/, r2/*t100*/, costab4, r10, r11, lr
++
++/*	Store away the computed butterflies:
++	sp[0-7] = t83, t78, t73, t69, t106, t100, t94, t89 */
++	stm	sp, r0-r7
++
++
++/*	t4   = in[3]  + in[28];  t20  = MUL(in[3]  - in[28], costab7);
++	t5   = in[12] + in[19];  t21  = MUL(in[12] - in[19], costab25); */
++	butterfly2_in	r4/*t4*/, r5/*t20*/, r6/*t5*/, r7/*t21*/, r12, 3, 28, 12, 19, costab7, costab25, r10, r11
++
++/*	t43  = t20 + t21;
++	t61  = MUL(t20 - t21, costab14);
++	t35  = t4  + t5;
++	t52  = MUL(t4  - t5,  costab14); */
++	butterfly2	r5/*t43*/, r7/*t61*/, r4/*t35*/, r6/*t52*/, costab14, r10, r11, lr
++
++/*	t6   = in[4]  + in[27];  t22  = MUL(in[4]  - in[27], costab9);
++	t7   = in[11] + in[20];  t23  = MUL(in[11] - in[20], costab23); */
++	butterfly2_in	r0/*t6*/, r1/*t22*/, r2/*t7*/, r3/*t23*/, r12, 4, 27, 11, 20, costab9, costab23, r10, r11
++
++/*	t44  = t22 + t23;
++	t62  = MUL(t22 - t23, costab18);
++	t36  = t6  + t7;
++	t53  = MUL(t6  - t7,  costab18); */
++	butterfly2	r1/*t44*/, r3/*t62*/, r0/*t36*/, r2/*t53*/, costab18, r10, r11, lr
++
++/*	t74  = t43 + t44;  t95  = MUL(t43 - t44, costab28);
++	t84  = t61 + t62;  t107 = MUL(t61 - t62, costab28); */
++
++/*	t70  = t35 + t36;  t90  = MUL(t35 - t36, costab28);
++	t79  = t52 + t53;  t101 = MUL(t52 - t53, costab28); */
++	butterfly4	r5/*t74*/, r1/*t95*/, r7/*t84*/, r3/*t107*/, r4/*t70*/, r0/*t90*/, r6/*t79*/, r2/*t101*/, costab28, r10, r11, lr
++
++/*	Store away the computed butterflies:
++	sp[8-15] = t84, t79, t74, t70, t107, t101, t95, t90 */
++	sub	r10, sp, -8*4
++	stm	r10, r0-r7
++
++
++/*	t8   = in[1]  + in[30];  t24  = MUL(in[1]  - in[30], costab3);
++	t9   = in[14] + in[17];  t25  = MUL(in[14] - in[17], costab29); */
++	butterfly2_in	r4/*t8*/, r5/*t24*/, r6/*t9*/, r7/*t25*/, r12, 1, 30, 14, 17, costab3, costab29, r10, r11
++
++
++/*	t45  = t24 + t25;
++	t63  = MUL(t24 - t25, costab6);
++	t37  = t8  + t9;
++	t54  = MUL(t8  - t9,  costab6); */
++	butterfly2	r5/*t45*/, r7/*t63*/, r4/*t37*/, r6/*t54*/, costab6, r10, r11, lr
++
++/*	t10  = in[6]  + in[25];  t26  = MUL(in[6]  - in[25], costab13);
++	t11  = in[9]  + in[22];  t27  = MUL(in[9]  - in[22], costab19); */
++	butterfly2_in	r0/*t10*/, r1/*t26*/, r2/*t11*/, r3/*t27*/, r12, 6, 25, 9, 22, costab13, costab19, r10, r11
++
++/*	t46  = t26 + t27;
++	t64  = MUL(t26 - t27, costab26);
++	t38  = t10 + t11;
++	t55  = MUL(t10 - t11, costab26); */
++	butterfly2	r1/*t46*/, r3/*t64*/, r0/*t38*/, r2/*t55*/, costab26, r10, r11, lr
++
++/*	t75  = t45 + t46;  t96  = MUL(t45 - t46, costab12);
++	t85  = t63 + t64;  t108 = MUL(t63 - t64, costab12); */
++
++/*	t71  = t37 + t38;  t91  = MUL(t37 - t38, costab12);
++	t80  = t54 + t55;  t102 = MUL(t54 - t55, costab12); */
++	butterfly4	r5/*t75*/, r1/*t96*/, r7/*t85*/, r3/*t108*/, r4/*t71*/, r0/*t91*/, r6/*t80*/, r2/*t102*/, costab12, r10, r11, lr
++
++/*	Store away the computed butterflies:
++	sp[16-23] = t85, t80, t75, t71, t108, t102, t96, t91 */
++	sub	r10, sp, -16*4
++	stm	r10, r0-r7
++
++/*	t12  = in[2]  + in[29];  t28  = MUL(in[2]  - in[29], costab5);
++	t13  = in[13] + in[18];  t29  = MUL(in[13] - in[18], costab27); */
++	butterfly2_in	r4/*t12*/, r5/*t28*/, r6/*t13*/, r7/*t29*/, r12, 2, 29, 13, 18, costab5, costab27, r10, r11
++
++/*	t47  = t28 + t29;
++	t65  = MUL(t28 - t29, costab10);
++	t39  = t12 + t13;
++	t56  = MUL(t12 - t13, costab10); */
++	butterfly2	r5/*t47*/, r7/*t65*/, r4/*t39*/, r6/*t56*/, costab10, r10, r11, lr
++
++/*	t14  = in[5]  + in[26];  t30  = MUL(in[5]  - in[26], costab11);
++	t15  = in[10] + in[21];  t31  = MUL(in[10] - in[21], costab21);*/
++	butterfly2_in	r0/*t14*/, r1/*t30*/, r2/*t15*/, r3/*t31*/, r12, 5, 26, 10, 21, costab11, costab21, r10, r11
++
++/*	t48  = t30 + t31;
++	t66  = MUL(t30 - t31, costab22);
++	t40  = t14 + t15;
++	t57  = MUL(t14 - t15, costab22);*/
++	butterfly2	r1/*t48*/, r3/*t66*/, r0/*t40*/, r2/*t57*/, costab22, r10, r11, lr
++
++/*	t76  = t47 + t48;  t97  = MUL(t47 - t48, costab20);
++	t86  = t65 + t66;  t109 = MUL(t65 - t66, costab20);*/
++
++/*	t72  = t39 + t40;  t92  = MUL(t39 - t40, costab20);
++	t81  = t56 + t57;  t103 = MUL(t56 - t57, costab20);*/
++	butterfly4	r5/*t76*/, r1/*t97*/, r7/*t86*/, r3/*t109*/,r4/*t72*/, r0/*t92*/, r6/*t81*/, r2/*t103*/, costab20, r10, r11, lr
++
++/*	Store away the computed butterflies:
++	sp[24-31] = t86, t81, t76, t72, t109, t103, t97, t92 */
++	sub	r10, sp, -24*4
++	stm	r10, r0-r7
++
++/*      We now have the following on the stack:
++
++	sp[0-7] = t83, t78, t73, t69, t106, t100, t94, t89
++	sp[8-15] = t84, t79, t74, t70, t107, t101, t95, t90
++	sp[16-23] = t85, t80, t75, t71, t108, t102, t96, t91
++	sp[24-31] = t86, t81, t76, t72, t109, t103, t97, t92 	*/
++
++/*	Load 	{r0...r7} = { t72, t76, t71, t75, t70, t74, t69, t73 } */
++	ld.d	r6, sp[2*4]
++	ld.d	r4, sp[10*4]
++	ld.d	r2, sp[18*4]
++	ld.d	r0, sp[26*4]
++
++
++/*	t113 = t69  + t70;
++	t141 = MUL(t69 - t70, costab8);
++
++	t115 = t73  + t74;
++	t144 = MUL(t73 - t74, costab8); */
++	butterfly2	r6/*t113*/, r4/*t141*/, r7/*t115*/, r5/*t144*/, costab8, r10, r11, lr
++
++/*	t114 = t71  + t72;
++	t142 = MUL(t71 - t72, costab24);
++
++	t116 = t75  + t76;
++	t145 = MUL(t75 - t76, costab24); */
++	butterfly2	r2/*t114*/, r0/*t142*/, r3/*t116*/, r1/*t145*/, costab24, r10, r11, lr
++
++
++/*
++	t191 = t113 + t114;
++	t192 = MUL(t113 - t114, costab16)
++
++	t32  = t115 + t116;
++	t177 = MUL(t115 - t116, costab16) ;
++
++	t143 = t141 + t142;
++	t190 = MUL(t141 - t142, costab16) ;
++
++	t146 = t144 + t145;
++	t184 = MUL(t144 - t145, costab16) ; */
++	butterfly4	r6/*t191*/, r2/*t192*/, r7/*t32*/, r3/*t177*/, r4/*t143*/, r0/*190*/, r5/*t146*/, r1/*t184*/, costab16, r10, r11, lr
++
++/*	Store away the computed butterflies:
++	sp[2-3] = t32, t191
++	sp[10-11] = t146, t143
++	sp[18-19] = t177, t192
++	sp[26-27] = t184, t190 */
++	st.d	sp[2*4] , r6
++	st.d	sp[10*4], r4
++	st.d	sp[18*4], r2
++	st.d	sp[26*4], r0
++
++/*	Load 	{r0...r7} = { t81, t86, t80, t85, t79, t84, t78, t83 } */
++	ld.d	r6, sp[0*4]
++	ld.d	r4, sp[8*4]
++	ld.d	r2, sp[16*4]
++	ld.d	r0, sp[24*4]
++
++
++/*	t118 = t78  + t79;
++	t148 = MUL(t78 - t79, costab8);
++
++	t121 = t83  + t84;
++	t152 = MUL(t83 - t84, costab8); */
++	butterfly2	r6/*t118*/, r4/*t148*/, r7/*t121*/, r5/*t152*/, costab8, r10, r11, lr
++
++/*	t119 = t80  + t81;
++	t149 = MUL(t80 - t81, costab24);
++
++	t122 = t85  + t86;
++	t153 = MUL(t85 - t86, costab24); */
++	butterfly2	r2/*t119*/, r0/*t149*/, r3/*t122*/, r1/*t153*/, costab24, r10, r11, lr
++
++
++
++/*	t58  = t118 + t119;
++	t178 = MUL(t118 - t119, costab16) ;
++
++	t67  = t121 + t122;
++	t179 = MUL(t121 - t122, costab16) ;
++
++	t150 = t148 + t149;
++	t185 = MUL(t148 - t149, costab16) ;
++
++	t154 = t152 + t153;
++	t186 = MUL(t152 - t153, costab16) ; */
++	butterfly4	r6/*t58*/, r2/*t178*/, r7/*t67*/, r3/*t179*/, r4/*t150*/, r0/*185*/, r5/*t154*/, r1/*t186*/, costab16, r10, r11, lr
++
++/*	Store away the computed butterflies:
++	sp[0-1] = t67, t58
++	sp[8-9] = t154, t150
++	sp[16-17] = t179, t178
++	sp[24-25] = t186, t185 */
++	st.d	sp[0*4] , r6
++	st.d	sp[8*4], r4
++	st.d	sp[16*4], r2
++	st.d	sp[24*4], r0
++
++/*	Load 	{r0...r7} = { t92, t97, t91, t96, t90, t95, t89, t94 } */
++	ld.d	r6, sp[6*4]
++	ld.d	r4, sp[14*4]
++	ld.d	r2, sp[22*4]
++	ld.d	r0, sp[30*4]
++
++
++/*	t125 = t89  + t90;
++	t157 = MUL(t89 - t90, costab8);
++
++	t128 = t94  + t95;
++	t161 = MUL(t94 - t95, costab8); */
++	butterfly2	r6/*t125*/, r4/*t157*/, r7/*t128*/, r5/*t161*/, costab8, r10, r11, lr
++
++/*	t126 = t91  + t92;
++	t158 = MUL(t91 - t92, costab24);
++
++	t129 = t96  + t97;
++	t162 = MUL(t96 - t97, costab24); */
++	butterfly2	r2/*t126*/, r0/*t158*/, r3/*t129*/, r1/*t162*/, costab24, r10, r11, lr
++
++
++/*
++	t93  = t125 + t126;
++	t180 = MUL(t125 - t126, costab16) ;
++
++	t98  = t128 + t129;
++	t181 = MUL(t128 - t129, costab16) ;
++
++	t159 = t157 + t158;
++	t187 = MUL(t157 - t158, costab16) ;
++
++	t163 = t161 + t162;
++	t188 = MUL(t161 - t162, costab16) ; */
++	butterfly4	r6/*t93*/, r2/*t180*/, r7/*t98*/, r3/*t181*/, r4/*t159*/, r0/*187*/, r5/*t163*/, r1/*t188*/, costab16, r10, r11, lr
++
++
++/*	Store away the computed butterflies:
++	sp[6-7] = t98, t93
++	sp[14-15] = t163, t159
++	sp[22-23] = t181, t180
++	sp[30-31] = t188, t187 */
++	st.d	sp[6*4] , r6
++	st.d	sp[14*4], r4
++	st.d	sp[22*4], r2
++	st.d	sp[30*4], r0
++
++/*	Load 	{r0...r7} = { t103, t109, t102, t108, t101, t107, t100, t106 } */
++	ld.d	r6, sp[4*4]
++	ld.d	r4, sp[12*4]
++	ld.d	r2, sp[20*4]
++	ld.d	r0, sp[28*4]
++
++
++
++/*	t132 = t100 + t101;
++	t166 = MUL(t100 - t101, costab8);
++
++	t136 = t106 + t107;
++	t171 = MUL(t106 - t107, costab8); */
++	butterfly2	r6/*t132*/, r4/*t166*/, r7/*t136*/, r5/*t171*/, costab8, r10, r11, lr
++
++/*	t133 = t102 + t103;
++	t167 = MUL(t102 - t103, costab24);
++
++	t137 = t108 + t109;
++	t172 = MUL(t108 - t109, costab24);*/
++	butterfly2	r2/*t133*/, r0/*t167*/, r3/*t137*/, r1/*t172*/, costab24, r10, r11, lr
++
++
++/*	t104 = t132 + t133;
++	t182 = MUL(t132 - t133, costab16) ;
++
++	t110 = t136 + t137;
++	t183 = MUL(t136 - t137, costab16) ;
++
++	t168 = t166 + t167;
++	t189 = MUL(t166 - t167, costab16) ;
++
++	t173 = t171 + t172;
++	t208 = MUL(t171 - t172, costab16) ; */
++	butterfly4	r6/*t104*/, r2/*t182*/, r7/*t110*/, r3/*t183*/, r4/*t168*/, r0/*189*/, r5/*t173*/, r1/*t208*/, costab16, r10, r11, lr
++
++/*	Store away the computed butterflies:
++	sp[4-5] = t110, t104
++	sp[12-13] = t173, t168
++	sp[20-21] = t183, t182
++	sp[28-29] = t208, t189 */
++	st.d	sp[4*4] , r6
++	st.d	sp[12*4], r4
++	st.d	sp[20*4], r2
++	st.d	sp[28*4], r0
++
++/*	Now we have the following stack
++
++	sp[0-7]   = t67,  t58 , t32,  t191, t110, t104, t98,  t93
++	sp[8-15]  = t154, t150,	t146, t143, t173, t168,	t163, t159
++	sp[16-23] = t179, t178,	t177, t192, t183, t182,	t181, t180
++	sp[24-31] = t186, t185, t184, t190, t208, t189,	t188, t187
++*/
++
++	/* Get slot, lo and hi from stack */
++	lddsp	lr, sp[32*4 + 4] /*slot*/
++	lddsp	r12, sp[32*4 + 8] /*lo*/
++	lddsp	r11, sp[32*4 + 12] /*hi*/
++
++	add	r12, r12, lr << 2
++	add	r11, r11, lr << 2
++
++
++/*	t49  = -(t67 * 2) + t32;
++	 hi[14][slot] = SHIFT(t32);
++	t87  = -(t110 * 2) + t67;
++	t138 = -(t173 * 2) + t110;
++	t203 = -(t208 * 2) + t173; */
++
++	lddsp	r0/*t67*/, sp[0]
++	lddsp	r1/*t32*/, sp[2*4]
++	lddsp	r2/*t110*/, sp[4*4]
++	lddsp	r3/*t173*/, sp[12*4]
++	lddsp	r5/*t208*/, sp[28*4]
++
++	sub	r4/*t49*/, r1, r0 << 1
++	scale	r1
++	sub	r0/*t87*/, r0, r2 << 1
++	st.w	r11[14*SLOTS*4], r1
++	sub	r2/*t138*/, r2, r3 << 1
++	sub	r1/*t203*/, r3, r5 << 1
++
++/*      Live:	r0 = t87, r1= t203, r2= t138, r4 = t49
++	Free:	r3, r5, r6, r7, r8, r9, r10, lr  */
++
++/*	t68  = (t98 * 2) + t49;
++	hi[12][slot] = SHIFT(-t49);
++	t130 = -(t163 * 2) + t98;
++	t201 = -(t188 * 2) + t163;
++	t200 = -(t186 * 2) + t154;
++	t111 = (t154 * 2) + t87;
++	t77  = -(-(t87 * 2) - t68);
++	t88  = (t146 * 2) + t77;
++	t199 = -(t184 * 2) + t146;
++	hi[ 8][slot] = SHIFT(-t77);
++	hi[10][slot] = SHIFT(t68);*/
++	lddsp	r3/*t98*/, sp[6*4]
++	lddsp	r5/*t163*/, sp[14*4]
++	lddsp	r6/*t188*/, sp[30*4]
++	lddsp	r10/*t186*/, sp[24*4]
++
++	add	r7/*t68*/, r4, r3 << 1
++	neg	r4
++	scale	r4
++	lddsp	r9/*t154*/, sp[8*4]
++	sub	r3/*t130*/, r3, r5 << 1
++	st.w	r11[12*SLOTS*4], r4
++	sub	r8/*t201*/, r5, r6 << 1
++	sub	r4/*t200*/, r9, r10 << 1
++	lddsp	lr/*t146*/, sp[10*4]
++	lddsp	r6/*t184*/, sp[26*4]
++	add	r10/*t111*/, r0, r9 << 1
++	add	r5/*t77*/,r7, r0 << 1
++	add	r0/*t88*/, r5, lr << 1
++	sub	r6/*t199*/, lr, r6 << 1
++	neg	r5
++	scale	r5
++	scale	r7
++	st.w	r11[8*SLOTS*4], r5
++	st.w	r11[10*SLOTS*4], r7
++
++/*      Live:	r0 = t88, r1= t203, r2= t138, r3 = t130, r4 = t200,
++		r6 = 199, r8 = t201, r10 = t111
++	Free:	r5, r7, r9, lr    */
++
++
++/*
++	t123 = -(-(t138 * 2) - t111);
++	t174 = (t183 * 2) + t138;
++	t99  = -(t111 * 2) + t88;
++	hi[ 6][slot] = SHIFT(t88); */
++	lddsp	r5/*t183*/, sp[20*4]
++
++	add	r7/*t123*/, r10, r2 << 1
++	sub	r10/*t99*/, r0, r10 << 1
++	scale	r0
++	add	r2/*t174*/, r2, r5 << 1
++	st.w	r11[6*SLOTS*4], r0
++
++/*      Live:	r1 = t203, r2 = t174, r3 = t130, r4 = t200,
++		r6 = t199, r7 = t123, r8 = t201, r10 = t99
++	Free:	r0, r5, r9, lr    */
++
++/*	t112 = -(t130 * 2) + t99;
++	t164 = (t181 * 2) + t130;
++	hi[ 4][slot] = SHIFT(-t99); */
++	lddsp	r0/*t181*/, sp[22*4]
++
++	sub	r5/*t112*/, r10, r3 << 1
++	neg	r10
++	scale	r10
++	add	r3/*164*/, r3, r0 << 1
++	st.w	r11[4*SLOTS*4], r10
++
++/*      Live:	r1 = t203, r2 = t174, r3 = t164, r4 = t200,
++		r5 = t112, r6 = t199, r7 = t123, r8 = t201
++	Free:	r0, r9, r10, lr    */
++
++
++/*	t117 = -(-(t123 * 2) - t112);
++	t139 = (t179 * 2) + t123;
++	hi[ 2][slot] = SHIFT(t112); */
++	lddsp	r0/*t179*/, sp[16*4]
++
++	add	r9/*t117*/, r5, r7 << 1
++	scale	r5
++	add	r7/*t139*/, r7, r0 << 1
++	st.w	r11[2*SLOTS*4], r5
++
++/*      Live:	r1 = t203, r2 = t174, r3 = t164, r4 = t200,
++		r6 = t199, r7 = t139, r8 = t201, r9 = t117
++	Free:	r0, r5, r10, lr    */
++
++/*	t155 = -(t174 * 2) + t139;
++	t204 = -(-(t203 * 2) - t174);
++	t124 = (t177 * 2) + t117;
++	hi[ 0][slot] = SHIFT(-t117);
++	t131 = -(t139 * 2) + t124;
++	lo[ 1][slot] = SHIFT(t124);*/
++	lddsp	r0/*t177*/, sp[18*4]
++
++	sub	r5/*t155*/, r7, r2 << 1
++	add	r2/*t204*/, r2, r1 << 1
++	add	r0/*t124*/, r9, r0 << 1
++	neg	r9
++	scale	r9
++	sub	r7/*t131*/, r0, r7 << 1
++	scale	r0
++	st.w	r11[0*SLOTS*4], r9
++	st.w	r12[1*SLOTS*4], r0
++
++/*      Live:	r2 = t204, r3 = t164, r4 = t200,
++		r5 = t155, r6 = t199, r7 = t131, r8 = t201
++	Free:	r0, r1, r9, r10, lr    */
++
++/*	t140 = (t164 * 2) + t131;
++	lo[ 3][slot] = SHIFT(-t131);
++	t202 = -(-(t201 * 2) - t164);  */
++	add	r0/*t140*/, r7, r3 << 1
++	neg	r7
++	scale	r7
++	add	r3/*t202*/, r3, r8 << 1
++	st.w	r12[3*SLOTS*4], r7
++
++/*      Live:	r0 = t140, r2 = t204, r3 = t202, r4 = t200,
++		r5 = t155, r6 = t199
++	Free:	r1, r7, r8, r9, r10, lr    */
++
++
++/*	t147 = -(-(t155 * 2) - t140);
++	lo[ 5][slot] = SHIFT(t140);
++	t175 = -(t200 * 2) + t155;
++	t156 = -(t199 * 2) + t147;
++	lo[ 7][slot] = SHIFT(-t147); */
++	add	r1/*t147*/, r0, r5 << 1
++	scale	r0
++	sub	r5/*t175*/, r5, r4 << 1
++	sub	r4/*156*/, r1, r6 << 1
++	neg	r1
++	scale	r1
++	st.w	r12[5*SLOTS*4], r0
++	st.w	r12[7*SLOTS*4], r1
++
++/*      Live:	r2 = t204, r3 = t202,
++		r4 = t156, r5 = t175
++	Free:	r0, r1, r6, r7, r8, r9, r10, lr    */
++
++
++/*	t205 = -(-(t204 * 2) - t175);
++	t165 = -(t175 * 2) + t156;
++	lo[ 9][slot] = SHIFT(t156);
++	t176 = -(t202 * 2) + t165;
++	lo[11][slot] = SHIFT(-t165);
++	t206 = -(-(t205 * 2) - t176);
++	lo[15][slot] = SHIFT(-t206)
++	lo[13][slot] = SHIFT(t176) */
++	add	r0/*t205*/, r5, r2 << 1
++	sub	r1/*t165*/, r4, r5 << 1
++	scale	r4
++	sub	r3/*t176*/, r1, r3 << 1
++	st.w	r12[9*SLOTS*4], r4
++	neg	r1
++	scale	r1
++	add	r6/*t206*/, r3, r0 << 1
++	neg	r6
++	scale	r6
++	scale	r3
++	st.w	r12[11*SLOTS*4], r1
++	st.w	r12[15*SLOTS*4], r6
++	st.w	r12[13*SLOTS*4], r3
++
++/*	t193 = -((t190 * 2) - t143)
++	hi[ 7][slot] = SHIFT(t143);
++	lo[ 8][slot] = SHIFT(-t193);
++	t82  = -(t104 * 2) + t58;
++	hi[13][slot] = SHIFT(t58);
++	t134 = -(t168 * 2) + t104;
++	t196 = -(t189 * 2) + t168; */
++
++	lddsp	r0/*t190*/, sp[27*4]
++	lddsp	r1/*t143*/, sp[11*4]
++	lddsp	r2/*t104*/, sp[5*4]
++	lddsp	r3/*t58*/, sp[1*4]
++	lddsp	r4/*t168*/, sp[13*4]
++	lddsp	r5/*t189*/, sp[29*4]
++	sub	r0/*t193*/, r1, r0 << 1
++	neg	r0
++	scale	r1
++	scale	r0
++	st.w	r11[7*SLOTS*4], r1
++	st.w	r12[8*SLOTS*4], r0
++	sub	r0/*t82*/, r3, r2 << 1
++	scale	r3
++	sub	r2/*t134*/, r2, r4 << 1
++	sub	r4/*t196*/, r4, r5 << 1
++	st.w	r11[13*SLOTS*4], r3
++
++/*      Live:	r0 = t82, r2 = t134,
++		r4 = t196
++	Free:	r1, r3, r5, r6, r7, r8, r9, r10, lr    */
++
++
++
++/*
++
++	t207 = -(t185 * 2) + t150;
++	t105 = (t150 * 2) + t82;
++	hi[ 9][slot] = SHIFT(-t82);
++	t120 = -(-(t134 * 2) - t105);
++	hi[ 5][slot] = SHIFT(t105);
++	t169 = (t182 * 2) + t134;
++
++	t135 = (t178 * 2) + t120;
++	hi[ 1][slot] = SHIFT(-t120);
++	t197 = -(-(t196 * 2) - t169);
++	t151 = -(t169 * 2) + t135;
++	lo[ 2][slot] = SHIFT(t135); */
++	lddsp	r1/*t185*/, sp[25*4]
++	lddsp	r3/*t150*/, sp[9*4]
++	lddsp	r5/*t182*/, sp[21*4]
++	lddsp	r8/*t178*/, sp[17*4]
++
++	sub	r6/*t207*/, r3, r1 << 1
++	add	r3/*t105*/, r0, r3 << 1
++	neg	r0
++	scale	r0
++	add	r7/*t120*/, r3, r2 << 1
++	scale	r3
++	st.w	r11[9*SLOTS*4], r0
++	st.w	r11[5*SLOTS*4], r3
++	add	r2/*t169*/, r2, r5 << 1
++	add	r8/*t135*/, r7, r8 << 1
++	neg	r7
++	scale	r7
++	add	r4/*t197*/, r2, r4 << 1
++	sub	r2/*t151*/, r8, r2 << 1
++	scale	r8
++	st.w	r11[1*SLOTS*4], r7
++	st.w	r12[2*SLOTS*4], r8
++
++/*      Live:	r2 = t151, r4 = t197, r6 = t207
++
++	Free:	r0, r1, r3, r5, r7, r8, r9, r10, lr    */
++
++
++
++/*	t170 = -(t207 * 2) + t151;
++	lo[ 6][slot] = SHIFT(-t151);
++
++	t198 = -(-(t197 * 2) - t170);
++	lo[10][slot] = SHIFT(t170);
++	lo[14][slot] = SHIFT(-t198);
++
++	t127 = -(t159 * 2) + t93;
++	hi[11][slot] = SHIFT(t93);
++	t194 = -(t187 * 2) + t159;   */
++	lddsp	r0/*t159*/, sp[15*4]
++	lddsp	r1/*t93*/, sp[7*4]
++	lddsp	r3/*t187*/, sp[31*4]
++	sub	r5/*t170*/, r2, r6 << 1
++	neg	r2
++	scale	r2
++	add	r4/*t198*/,r5, r4 << 1
++	neg	r4
++	scale	r5
++	scale	r4
++	st.w	r12[6*SLOTS*4], r2
++	st.w	r12[10*SLOTS*4], r5
++	st.w	r12[14*SLOTS*4], r4
++	sub	r7/*t127*/, r1, r0 << 1
++	scale	r1
++	sub	r0/*t194*/, r0, r3 << 1
++	st.w	r11[11*SLOTS*4], r1
++
++
++/*      Live:	r0 = t194, r7 = t127
++	Free:	r1, r2, r3, r4, r6, r5, r8, r9, r10, lr    */
++
++/*	t160 = (t180 * 2) + t127;
++	hi[ 3][slot] = SHIFT(-t127);
++	t195 = -(-(t194 * 2) - t160);
++	lo[ 4][slot] = SHIFT(t160);
++	lo[12][slot] = SHIFT(-t195);
++
++	hi[15][slot] = SHIFT(t191);
++	lo[ 0][slot] = SHIFT(t192); */
++	lddsp	r1/*t180*/, sp[23*4]
++	lddsp	r2/*t191*/, sp[3*4]
++	lddsp	r3/*t192*/, sp[19*4]
++	add	r4/*t160*/, r7, r1 << 1
++	neg	r7
++	scale	r7
++	add	r6/*t195*/, r4, r0 << 1
++	scale	r4
++	neg	r6
++	scale	r6
++	st.w	r11[3*SLOTS*4], r7
++	st.w	r12[4*SLOTS*4], r4
++	st.w	r12[12*SLOTS*4], r6
++	scale	r2
++	scale	r3
++	st.w	r11[15*SLOTS*4], r2
++	st.w	r12[0*SLOTS*4], r3
++
++	sub	sp, -32*4
++	ldm	sp++,r0-r7, r9-r11, pc
+diff --git a/fixed.h b/fixed.h
+index 4b58abf..0a1350a 100644
+--- a/fixed.h
++++ b/fixed.h
+@@ -237,6 +237,46 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
+ #   define MAD_F_SCALEBITS  MAD_F_FRACBITS
+ #  endif
+ 
++/* --- AVR32 ----------------------------------------------------------------- */
++
++# elif defined(FPM_AVR32)
++
++typedef   signed short mad_coeff_t;
++
++struct DWstruct {int high, low;};
++
++typedef union {
++  struct DWstruct s;
++  long long ll;
++} DWunion;
++
++#  define MAD_F_MLX(hi, lo, x, y)  \
++  { register DWunion __res; \
++    __res.ll = (long long)x * (long long)y; \
++    /*    asm ("muls.d\t%0, %1, %2" : "=r" (__res.ll) : "r" (x), "r" (y));*/ \
++    hi = __res.s.high; \
++    lo = __res.s.low; }
++
++#  define MAD_F_MLA(hi, lo, x, y)  \
++  { register DWunion __res; \
++    __res.s.high = hi; \
++    __res.s.low = lo; \
++    __res.ll += (long long)x * (long long)y; \
++/*  asm ("macs.d\t%0, %1, %2" : "+r" (__res.ll) : "r" (x), "r" (y));*/ \
++    hi = __res.s.high; \
++    lo = __res.s.low; }
++
++
++#  define MAD_F_MLN(hi, lo)  \
++    asm ("neg	%0\n"  \
++	 "acr	%1\n"  \
++         "neg   %1"    \
++	 : "+r" (lo), "+r" (hi) \
++	 :: "cc")
++
++
++#  define MAD_F_SCALEBITS  MAD_F_FRACBITS
++
+ /* --- ARM ----------------------------------------------------------------- */
+ 
+ # elif defined(FPM_ARM)
+@@ -433,6 +473,8 @@ mad_fixed_t mad_f_mul_inline(mad_fixed_t x, mad_fixed_t y)
+  *
+  * Pre-rounding is required to stay within the limits of compliance.
+  */
++typedef   signed int mad_coeff_t;
++
+ #  if defined(OPT_SPEED)
+ #   define mad_f_mul(x, y)	(((x) >> 12) * ((y) >> 16))
+ #  else
+diff --git a/imdct_avr32.S b/imdct_avr32.S
+new file mode 100644
+index 0000000..d0ee6b4
+--- /dev/null
++++ b/imdct_avr32.S
+@@ -0,0 +1,789 @@
++/*
++   Optimized 36-point Inverse Modified Cosine Transform (IMDCT)
++   Copyright 2003-2006 Atmel Corporation.
++
++   Written by Ronny Pedersen, Atmel Norway
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
++
++#define MAD_F(x) ((x + (1 << 13)) >> 14)
++
++	.public	imdct36_avr32
++
++/*
++	void imdct36(mad_fixed_t const x[18], mad_fixed_t y[36])
++	{
++	mad_fixed_t tmp[18];
++	int i;
++*/
++/* DCT-IV */
++imdct36_avr32:
++	pushm	r0-r7,r11,lr
++	sub	sp, 4*18
++/*
++	{
++	mad_fixed_t tmp2[18];
++	int i;
++
++	/* scale[i] = 2 * cos(PI * (2 * i + 1) / (4 * 18)) */
++/*
++	static mad_fixed_t const scale[18] = {
++	MAD_F(0x1ff833fa), MAD_F(0x1fb9ea93), MAD_F(0x1f3dd120),
++	MAD_F(0x1e84d969), MAD_F(0x1d906bcf), MAD_F(0x1c62648b),
++	MAD_F(0x1afd100f), MAD_F(0x1963268b), MAD_F(0x1797c6a4),
++	MAD_F(0x159e6f5b), MAD_F(0x137af940), MAD_F(0x11318ef3),
++	MAD_F(0x0ec6a507), MAD_F(0x0c3ef153), MAD_F(0x099f61c5),
++	MAD_F(0x06ed12c5), MAD_F(0x042d4544), MAD_F(0x0165547c)
++	};
++*/
++
++  /* scaling */
++
++/*
++	for (i = 0; i < 18; i += 3) {
++		tmp2[i + 0] = mad_f_mul(x[i + 0], scale[i + 0]);
++		tmp2[i + 1] = mad_f_mul(x[i + 1], scale[i + 1]);
++		tmp2[i + 2] = mad_f_mul(x[i + 2], scale[i + 2]);
++	  }
++*/
++	/* even input butterfly */
++
++/*
++	for (i = 0; i < 9; i += 3) {
++		tmp3[i + 0] = tmp2[i + 0] + tmp2[18 - (i + 0) - 1];
++		tmp3[i + 1] = tmp2[i + 1] + tmp2[18 - (i + 1) - 1];
++		tmp3[i + 2] = tmp2[i + 2] + tmp2[18 - (i + 2) - 1];
++	  }
++	for (i = 0; i < 9; i += 3) {
++		tmp4[i + 0] = tmp2[i + 0] - tmp2[18 - (i + 0) - 1];
++		tmp4[i + 1] = tmp2[i + 1] - tmp2[18 - (i + 1) - 1];
++		tmp4[i + 2] = tmp2[i + 2] - tmp2[18 - (i + 2) - 1];
++	  }
++*/
++
++	ld.d	r8, r12[0]				/*r8 = x[1], r9 = x[0]*/
++	ld.d	r0, pc[scale_dctIV - .]			/*r0 = {scale[2], scale[3]}, r1 = { scale[0], scale[1] }*/
++	ld.d	r2, r12[2*4]				/*r2 = x[3], r3 = x[2]*/
++	ld.d	r4, pc[scale_dctIV - . + 14*2]		/*r4 = {scale[16], scale[17]}, r5 = { scale[14], scale[15] }*/
++	mulsatrndwh.w	r9/*tmp2[0]*/, r9, r1:t		/*tmp2[0] = mad_f_mul(x[0], scale[0]) */
++	ld.d	r6, r12[16*4]				/*r6 = x[17], r7 = x[16]*/
++	mulsatrndwh.w	r8/*tmp2[1]*/, r8, r1:b		/*tmp2[1] = mad_f_mul(x[1], scale[1]) */
++	mulsatrndwh.w	r3/*tmp2[2]*/, r3, r0:t		/*tmp2[2] = mad_f_mul(x[2], scale[2]) */
++	mulsatrndwh.w	r2/*tmp2[3]*/, r2, r0:b		/*tmp2[3] = mad_f_mul(x[3], scale[3]) */
++	ld.d	r0, r12[14*4]				/*r0 = x[15], r1 = x[14]*/
++	mulsatrndwh.w	r7/*tmp2[16]*/, r7, r4:t	/*tmp2[16] = mad_f_mul(x[16], scale[16]) */
++	mulsatrndwh.w	r6/*tmp2[17]*/, r6, r4:b	/*tmp2[17] = mad_f_mul(x[17], scale[17]) */
++	mulsatrndwh.w	r1/*tmp2[14]*/, r1, r5:t	/*tmp2[14] = mad_f_mul(x[14], scale[14]) */
++	mulsatrndwh.w	r0/*tmp2[15]*/, r0, r5:b	/*tmp2[15] = mad_f_mul(x[15], scale[15]) */
++
++	ld.d	r4, r12[4*4]				/*r4 = x[5], r5 = x[4]*/
++
++	sub		lr/*tmp4[0]*/, r9, r6
++	add		r6/*tmp3[0]*/, r9, r6
++	sub		r10/*tmp4[1]*/, r8, r7
++	add		r7/*tmp3[1]*/, r8, r7
++	sub		r9/*tmp4[2]*/, r3, r0
++	add		r0/*tmp3[2]*/, r3, r0
++	sub		r8/*tmp4[3]*/, r2, r1
++	add		r1/*tmp3[3]*/, r2, r1
++
++	ld.d	r2, pc[scale_dctIV - . + 4*2]		/*r2 = {scale[6], scale[7]}, r3 = { scale[4], scale[5] }*/
++
++	stm		--sp, r8-r10, lr		/*sp[0] = tmp4[0],sp[1] = tmp4[1],
++							  sp[2] = tmp4[2],sp[3] = tmp4[3] */
++
++	/* Registers used:	r0 = tmp3[2], r1 = tmp3[3], r6 = tmp3[0], r7 = tmp3[1], r12 = x
++	   Free	registers:	r2-r5, r8-r11, lr
++	*/
++	ld.d	r8, r12[6*4]				/*r8 = x[7], r9 = x[6]*/
++	ld.d	r10, pc[scale_dctIV - . + 10*2]		/*r10 = {scale[12], scale[13]}, r11 = { scale[10], scale[11] }*/
++	mulsatrndwh.w	r5/*tmp2[4]*/, r5, r3:t		/*tmp2[4] = mad_f_mul(x[4], scale[4]) */
++	mulsatrndwh.w	r4/*tmp2[5]*/, r4, r3:b		/*tmp2[5] = mad_f_mul(x[5], scale[5]) */
++	mulsatrndwh.w	r9/*tmp2[6]*/, r9, r2:t		/*tmp2[6] = mad_f_mul(x[6], scale[6]) */
++	mulsatrndwh.w	r8/*tmp2[7]*/, r8, r2:b		/*tmp2[7] = mad_f_mul(x[7], scale[7]) */
++
++	ld.d	r2, r12[12*4]				/*r2 = x[13], r3 = x[12]*/
++	ld.w	lr, r12[11*4]				/*lr = x[11] */
++	mulsatrndwh.w	r3/*tmp2[12]*/, r3, r10:t	/*tmp2[12] = mad_f_mul(x[12], scale[12]) */
++	mulsatrndwh.w	r2/*tmp2[13]*/, r2, r10:b	/*tmp2[13] = mad_f_mul(x[13], scale[13]) */
++	ld.w	r10, r12[10*4]				/*r10 = x[10] */
++	mulsatrndwh.w	lr/*tmp2[11]*/, lr, r11:b	/*tmp2[11] = mad_f_mul(x[11], scale[11]) */
++	mulsatrndwh.w	r10/*tmp2[10]*/, r10, r11:t	/*tmp2[10] = mad_f_mul(x[10], scale[10]) */
++
++	sub	r11/*tmp4[4]*/, r5, r2
++	add	r2/*tmp3[4]*/, r5, r2
++	sub	r5/*tmp4[5]*/, r4, r3
++	add	r3/*tmp3[5]*/, r4, r3
++	sub	r4/*tmp4[6]*/, r9, lr
++	add	lr/*tmp3[6]*/, r9, lr
++	sub	r9/*tmp4[7]*/, r8, r10
++	add	r10/*tmp3[7]*/, r8, r10
++	lddpc	r8, scale_dctIV + 8*2			/*r8 = {scale[8], scale[9]} */
++
++	stm	--sp, r4, r5, r9, r11			/*sp[0] = tmp4[4],sp[1] = tmp4[7],
++							  sp[2] = tmp4[5],sp[3] = tmp4[6] */
++	ld.d	r4, r12[8*4]				/*r4 = x[9], r5 = x[8]*/
++	mulsatrndwh.w	r5/*tmp2[8]*/, r5, r8:t		/*tmp2[8] = mad_f_mul(x[8], scale[8]) */
++	mulsatrndwh.w	r4/*tmp2[9]*/, r4, r8:b		/*tmp2[9] = mad_f_mul(x[9], scale[9]) */
++	sub		r9/*tmp4[8]*/, r5, r4
++	add		r5/*tmp3[8]*/, r5, r4
++
++	st.w	--sp, r9				/* sp[0] = tmp4[8] */
++
++	/* Registers used:
++
++		r0=tmp3[2], r1=tmp3[3], r2=tmp3[4], r3=tmp3[5], r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r10=tmp3[7], lr=tmp3[6]
++	   Free registers:
++		r4, r8, r9, r11, r12
++	*/
++
++
++  /* SDCT-II */
++/*
++
++	{
++	mad_fixed_t tmp3[9];
++	int i;
++*/
++	/* scale[i] = 2 * cos(PI * (2 * i + 1) / (2 * 18)) */
++/*
++	static mad_fixed_t const scale[9] = {
++	MAD_F(0x1fe0d3b4), MAD_F(0x1ee8dd47), MAD_F(0x1d007930),
++	MAD_F(0x1a367e59), MAD_F(0x16a09e66), MAD_F(0x125abcf8),
++	MAD_F(0x0d8616bc), MAD_F(0x08483ee1), MAD_F(0x02c9fad7)
++	};
++*/
++  /* divide the 18-point SDCT-II into two 9-point SDCT-IIs */
++
++
++  /* fastdct */
++
++/*
++	{
++	mad_fixed_t a0,  a1,  a2,  a3,  a4,  a5,  a6,  a7,  a8,  a9,  a10, a11, a12;
++	mad_fixed_t a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25;
++	mad_fixed_t m0,  m1,  m2,  m3,  m4,  m5,  m6,  m7;
++*/
++//	  enum {
++//	    c0 =  MAD_F(0x1f838b8d),  /* 2 * cos( 1 * PI / 18) */
++//	    c1 =  MAD_F(0x1bb67ae8),  /* 2 * cos( 3 * PI / 18) */
++//	    c2 =  MAD_F(0x18836fa3),  /* 2 * cos( 4 * PI / 18) */
++//	    c3 =  MAD_F(0x1491b752),  /* 2 * cos( 5 * PI / 18) */
++//	    c4 =  MAD_F(0x0af1d43a),  /* 2 * cos( 7 * PI / 18) */
++//	    c5 =  MAD_F(0x058e86a0),  /* 2 * cos( 8 * PI / 18) */
++//	    c6 = -MAD_F(0x1e11f642)   /* 2 * cos(16 * PI / 18) */
++//	  };
++
++/*
++	a2 = tmp3[6] + tmp3[2];
++	a6 = tmp3[8] + tmp3[0];
++	a11 = a2  - a6;
++	m5 = mad_f_mul(a11, -c6) ;
++	a4 = tmp3[1] + tmp3[7];
++
++	a18 =     tmp3[4] + a4;
++	a19 = -2 * tmp3[4] + a4;
++
++	a0 = tmp3[3] + tmp3[5];
++
++*/
++	add	r11/*a4*/, r7, r10
++	add	r12/*a18*/, r2, r11
++	sub	r11/*a19*/, r11, r2<<1
++
++	add	r4/*a2*/, lr, r0
++	add	r8/*a6*/, r5, r6
++	sub	r9/*a11*/, r4, r8
++
++	st.d	--sp, r0	/* sp[0] = tmp3[3], sp1[1] = tmp3[2]*/
++
++	mov	r2, MAD_F(0x1e11f642)
++	mulsatrndwh.w	r9/*m5*/, r9, r2:b
++
++	add	r2/*a0*/, r1, r3
++
++	/* Registers used:
++
++		r2=a0, r3=tmp3[5], r4=a2, r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r8=a6, r10=tmp3[7], r9=m5, r11=a19, r12=a18,lr=tmp3[6]
++	   Free registers:
++		r0, r1
++	*/
++
++/*
++	a8  = a0  + a2;
++	a12 = a8  + a6;
++	a10 = a0  - a6;
++	a9  = a0  - a2;
++	m7 = mad_f_mul(a9,  -c2) ;
++	m6 = mad_f_mul(a10, -c5) ;
++*/
++
++	add	r0/*a8*/, r2, r4
++	add	r0/*a12*/, r8
++	rsub	r8/*a10*/, r2
++	sub	r2/*a9*/, r4
++	mov	r1, -MAD_F(0x18836fa3)
++	mulsatrndwh.w	r2/*m7*/, r2, r1:b
++	mov	r1, -MAD_F(0x058e86a0)
++	mulsatrndwh.w	r8/*m6*/, r8, r1:b
++
++	/* Registers used:
++
++		r0=a12, r2=m7, r3=tmp3[5], r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r8=m6, r10=tmp3[7], r9=m5, r11=a19, r12=a18,lr=tmp3[6]
++	   Free registers:
++		r1, r4
++	*/
++
++
++/*
++	a21 = -a19 - (m5 << 1);
++	tmp[ 8] = a21 - (m6 << 1);
++
++	a20 = a19 - (m5 << 1);
++	tmp[ 4] = (m7 << 1)  + a20;
++	a22 = -a19 + (m6 << 1);
++	tmp[16] = a22 + (m7 << 1);
++	tmp[ 0] = a18 + a12;
++	tmp[12] = a12 - 2 * a18;
++*/
++	add	r1/*a21*/, r11, r9 << 1
++	neg	r1
++	sub	r1/*tmp[8]*/, r1, r8 << 1
++	stdsp	sp[4*11/*tmp3[..] on the stack*/ + 8*4], r1
++	sub	r4/*a20*/, r11, r9 << 1
++	add	r4/*tmp[4]*/, r4, r2 << 1
++	stdsp	sp[4*11/*tmp3[..] on the stack*/ + 4*4], r4
++	neg	r11
++	add	r1/*a22*/, r11, r8 << 1
++	add	r1/*tmp[16]*/, r1, r2 << 1
++	stdsp	sp[4*11/*tmp3[..] on the stack*/ + 16*4], r1
++	add	r4, r12, r0
++	sub	r1, r0, r12 << 1
++	stdsp	sp[4*11/*tmp3[..] on the stack*/ + 0*4], r4
++	stdsp	sp[4*11/*tmp3[..] on the stack*/ + 12*4], r1
++
++	ld.d	r0, sp++
++
++	/* Registers used:
++
++		r0 = tmp3[2], r1 = tmp3[3], r3=tmp3[5], r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r10=tmp3[7], r11=a19, lr=tmp3[6]
++	   Free registers:
++		r2,r4,r8,r9,r12
++	*/
++
++/*
++	a5 = tmp3[1] - tmp3[7];
++	a7 = tmp3[8] - tmp3[0];
++	a3 = tmp3[6] - tmp3[2];
++	a1 = tmp3[3] - tmp3[5];
++	a13 = a1  - a3;
++	a14 = a13 + a7;
++	m3 = mad_f_mul(a14, -c1) ;
++	m4 = mad_f_mul(a5,  -c1) ;
++	tmp[ 6] = m3 << 1;
++*/
++	sub	r7/*a5*/, r10
++	sub	r2/*a7*/, r5, r6
++	sub	r4/*a3*/, lr, r0
++	sub	r8/*a1*/, r1, r3
++	sub	r9/*a13*/, r8, r4
++	add	r12/*a14*/, r9, r2
++	mov	r0, -MAD_F(0x1bb67ae8)
++	mulsatrndwh.w	r12/*m3*/, r12, r0:b
++	mulsatrndwh.w	r7/*m4*/, r7, r0:b
++	lsl	r12, 1
++	stdsp	sp[4*9/*tmp3[..] on the stack*/ + 6*4], r12
++
++	/* Registers used:
++		r2 = a7, r4 = a3, r7 = m4, r8 = a1, r12 = m3
++
++	   Free registers:
++		r0, r1, r3, r5, r6, r10, r9, r11, lr
++	*/
++
++
++/*
++	a15 = a3  + a7;
++	m2 = mad_f_mul(a15, -c4) ;
++	a17 = a1  + a3;
++	m0 = mad_f_mul(a17, -c3) ;
++	a23 = (m4 << 1)  + (m2 << 1);
++	tmp[14] = a23 + (m0 << 1); */
++	add	r0/*a15*/, r4, r2
++	mov	r1, -MAD_F(0x0af1d43a)
++	mulsatrndwh.w	r0/*m2*/, r0, r1:b
++	mov	r3, -MAD_F(0x1491b752)
++	add	r5/*a17*/, r8, r4
++	mulsatrndwh.w	r5/*m0*/, r5, r3:b
++	lsl	r7, 1
++	add	r6/*a23*/, r7, r0 << 1
++	add	r6/*tmp[14]*/, r6, r5 << 1
++	stdsp	sp[4*9/*tmp3[..] on the stack*/ + 14*4], r6
++
++	/* Registers used:
++		r0 = m2, r2 = a7, r5 = m0, r7 = m4, r8 = a1
++
++	   Free registers:
++		r1, r3, r4, r6, r10, r9, r11, lr
++	*/
++
++/*
++	a16 = a1  - a7;
++	m1 = mad_f_mul(a16, -c0) ;
++	a24 = (m4 << 1)  - (m2 << 1);
++	tmp[10] = a24 - (m1 << 1);
++
++	a25 = (m4 << 1)  + (m1 << 1);
++	tmp[ 2] = (m0 << 1)  - a25;
++*/
++	sub	r3/*a16*/, r8, r2
++	mov	r4,  -MAD_F(0x1f838b8d)
++	mulsatrndwh.w	r3/*m1*/, r3, r4:b
++	sub	r1/*a24*/, r7, r0 << 1
++	sub	r1/*tmp[10]*/, r1, r3 << 1
++	stdsp	sp[4*9/*tmp3[..] on the stack*/ + 10*4], r1
++	add	r7/*a25*/, r7, r3 << 1
++	sub	r7, r7, r5 << 1
++	neg	r7
++	stdsp	sp[4*9/*tmp3[..] on the stack*/ + 2*4], r7
++
++
++
++
++  /* output to every other slot for convenience */
++
++  /*} */
++  /* End fastdct */
++
++  /* odd input butterfly and scaling */
++
++
++	/*  On the stack:
++		sp[0] = tmp4[8], sp[1] = tmp4[4],sp[2] = tmp4[7], sp[3] = tmp4[5],sp[4] = tmp4[6]
++		sp[5] = tmp4[0], sp[6] = tmp4[1],sp[7] = tmp4[2],sp[8] = tmp4[3]
++	*/
++
++  /*
++	  tmp3[0] = mad_f_mul(tmp4[0], scale[0]);
++	  tmp3[1] = mad_f_mul(tmp4[1], scale[1]) << 1;
++	  tmp3[2] = mad_f_mul(tmp4[2], scale[2]);
++	  tmp3[3] = mad_f_mul(tmp4[3], scale[3]) << 1;
++	  tmp3[4] = mad_f_mul(tmp4[4], scale[4]);
++	  tmp3[5] = mad_f_mul(tmp4[5], scale[5]);
++	  tmp3[6] = mad_f_mul(tmp4[6], scale[6]) << 1;
++	  tmp3[7] = mad_f_mul(tmp4[7], scale[7]);
++	  tmp3[8] = mad_f_mul(tmp4[8], scale[8]) << 1;
++  */
++	/* Registers used:
++		r1 = tmp4[3], r2 = tmp4[2], r3 = tmp4[1], r4 = tmp4[0], r7 = tmp4[6]
++		r10 = tmp4[5], r11 = tmp4[7], r12 = tmp4[4], lr = tmp4[8]
++
++	   Free registers:
++		r0, r5, r6, r8, r9
++	*/
++	ld.d	r8, pc[ scale_sdctII - . + 4*2]	/* r8 = { scale[6], scale[7] }, r9 = { scale[4], scale[5]} */
++	ldm	sp++, r1, r2, r3, r4, r7, r10, r11, r12, lr
++	mov	r5, MAD_F(0x02c9fad7)		/* r3 = scale[8] */
++	mulsatrndwh.w	r5/*tmp3[8]*/, lr, r5:b
++	mulsatrndwh.w	lr/*tmp3[6]*/, r7, r8:t
++	ld.d	r6, pc[ scale_sdctII - . + 0*2]	/* r6 = { scale[2], scale[3] }, r7 = { scale[0], scale[1]} */
++	lsl	lr, 1
++	lsl	r5, 1
++	mulsatrndwh.w	r0/*tmp3[2]*/, r2, r6:t
++	mulsatrndwh.w	r1/*tmp3[3]*/, r1, r6:b
++	mulsatrndwh.w	r6/*tmp3[0]*/, r4, r7:t
++	mulsatrndwh.w	r7/*tmp3[1]*/, r3, r7:b
++	mulsatrndwh.w	r3/*tmp3[5]*/, r10, r9:b
++	mulsatrndwh.w	r2/*tmp3[4]*/, r12, r9:t
++	mulsatrndwh.w	r9/*tmp3[7]*/, r11, r8:b
++	lsl	r1, 1
++	lsl	r7, 1
++
++
++  /* fastdct */
++
++/*
++	{
++	mad_fixed_t a0,  a1,  a2,  a3,  a4,  a5,  a6,  a7,  a8,  a9,  a10, a11, a12;
++	mad_fixed_t a13, a14, a15, a16, a17, a18, a19, a20, a21, a22, a23, a24, a25;
++	mad_fixed_t m0,  m1,  m2,  m3,  m4,  m5,  m6,  m7;
++*/
++//	  enum {
++//	    c0 =  MAD_F(0x1f838b8d),  /* 2 * cos( 1 * PI / 18) */
++//	    c1 =  MAD_F(0x1bb67ae8),  /* 2 * cos( 3 * PI / 18) */
++//	    c2 =  MAD_F(0x18836fa3),  /* 2 * cos( 4 * PI / 18) */
++//	    c3 =  MAD_F(0x1491b752),  /* 2 * cos( 5 * PI / 18) */
++//	    c4 =  MAD_F(0x0af1d43a),  /* 2 * cos( 7 * PI / 18) */
++//	    c5 =  MAD_F(0x058e86a0),  /* 2 * cos( 8 * PI / 18) */
++//	    c6 = -MAD_F(0x1e11f642)   /* 2 * cos(16 * PI / 18) */
++//	  };
++
++	/* Registers used:
++
++		r0=tmp3[2], r1=tmp3[3], r2=tmp3[4], r3=tmp3[5], r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r9=tmp3[7], lr=tmp3[6]
++	   Free registers:
++		r4, r8, r10, r11, r12
++	*/
++
++/*
++	a2 = tmp3[6] + (tmp3[2] << 1);
++	a6 = tmp3[8] + (tmp3[0] << 1);
++	a11 = a2 - a6;
++	m5 = mad_f_mul(a11, c6) ;
++	a4 = tmp3[1] + (tmp3[7] << 1);
++
++	a18 =     (tmp3[4] << 1) + a4;
++	a19 = -2 * (tmp3[4] << 1) + a4;
++
++	a0 = tmp3[3] + (tmp3[5] << 1);
++
++*/
++	add	r11/*a4*/, r7, r9 << 1
++	add	r12/*a18*/, r11, r2 << 1
++	sub	r11/*a19*/, r11, r2 << 2
++
++	add	r4/*a2*/, lr, r0 << 1
++	add	r8/*a6*/, r5, r6 << 1
++	sub	r10/*a11*/, r4, r8
++
++	st.d	--sp, r0	/* sp[0] = tmp3[3], sp1[1] = tmp3[2]*/
++
++	mov	r2, -MAD_F(0x1e11f642)
++	mulsatrndwh.w	r10/*m5*/, r10, r2:b
++
++	add	r2/*a0*/, r1, r3 << 1
++
++	/* Registers used:
++
++		r2=a0, r3=tmp3[5], r4=a2, r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r8=a6, r9=tmp3[7], r10=m5, r11=a19, r12=a18,lr=tmp3[6]
++	   Free registers:
++		r0, r1
++	*/
++
++/*
++	a8  = a0  + a2;
++	a12 = a8  + a6;
++	a10 = a0  - a6;
++	a9  = a0  - a2;
++	m7 = mad_f_mul(a9,  -c2) ;
++	m6 = mad_f_mul(a10, -c5) ;
++*/
++
++	add	r0/*a8*/, r2, r4
++	add	r0/*a12*/, r8
++	rsub	r8/*a10*/, r2
++	sub	r2/*a9*/, r4
++	mov	r1, -MAD_F(0x18836fa3)
++	mulsatrndwh.w	r2/*m7*/, r2, r1:b
++	mov	r1, -MAD_F(0x058e86a0)
++	mulsatrndwh.w	r8/*m6*/, r8, r1:b
++
++	/* Registers used:
++
++		r0=a12, r2=m7, r3=tmp3[5], r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r8=m6, r9=tmp3[7], r10=m5, r11=a19, r12=a18,lr=tmp3[6]
++	   Free registers:
++		r1, r4
++	*/
++
++
++/*
++	a21 = -a19 + (m5 << 1);
++	tmp[ 9] = a21 - (m6 << 1);
++
++	a20 = -(-a19 - (m5 << 1));
++	tmp[ 5] = (m7 << 1)  + a20;
++	a22 = -a19 + (m6 << 1);
++	tmp[17] = a22 + (m7 << 1);
++	tmp[ 1] = a18 + a12;
++	tmp[13] = a12 - 2 * a18;
++*/
++	sub	r1/*a21*/, r11, r10 << 1
++	neg	r1
++	sub	r1/*tmp[9]*/, r1, r8 << 1
++	stdsp	sp[4*2/*tmp3[..] on the stack*/ + 9*4], r1
++	add	r4/*a20*/, r11, r10 << 1
++	add	r4/*tmp[5]*/, r4, r2 << 1
++	stdsp	sp[4*2/*tmp3[..] on the stack*/ + 5*4], r4
++	neg	r11
++	add	r1/*a22*/, r11, r8 << 1
++	add	r1/*tmp[17]*/, r1, r2 << 1
++	stdsp	sp[4*2/*tmp3[..] on the stack*/ + 17*4], r1
++	add	r4, r12, r0
++	sub	r1, r0, r12 << 1
++	stdsp	sp[4*2/*tmp3[..] on the stack*/ + 1*4], r4
++	stdsp	sp[4*2/*tmp3[..] on the stack*/ + 13*4], r1
++
++	ld.d	r0, sp++
++
++	/* Registers used:
++
++		r0 = tmp3[2], r1 = tmp3[3], r3=tmp3[5], r5=tmp3[8], r6 = tmp3[0],
++		r7 = tmp3[1], r9=tmp3[7], r11=a19, lr=tmp3[6]
++	   Free registers:
++		r2,r4,r8,r10,r12
++	*/
++
++/*
++	a5 = tmp3[1] - (tmp3[7] << 1);
++	a7 = tmp3[8] - (tmp3[0] << 1);
++	a3 = tmp3[6] - (tmp3[2] << 1);
++	a1 = tmp3[3] - (tmp3[5] << 1);
++	a13 = a1  - a3;
++	a14 = a13 + a7;
++	m3 = mad_f_mul(a14, -c1) ;
++	m4 = mad_f_mul(a5,  -c1) ;
++	tmp[ 7] = m3 << 1;
++*/
++	sub	r7/*a5*/, r7, r9 << 1
++	sub	r2/*a7*/, r5, r6 << 1
++	sub	r4/*a3*/, lr, r0 << 1
++	sub	r8/*a1*/, r1, r3 << 1
++	sub	r10/*a13*/, r8, r4
++	add	r12/*a14*/, r10, r2
++	mov	r0, -MAD_F(0x1bb67ae8)
++	mulsatrndwh.w	r12/*m3*/, r12, r0:b
++	mulsatrndwh.w	r7/*m4*/, r7, r0:b
++	lsl	r12, 1
++	stdsp	sp[7*4], r12
++
++	/* Registers used:
++		r2 = a7, r4 = a3, r7 = m4, r8 = a1, r12 = m3
++
++	   Free registers:
++		r0, r1, r3, r5, r6, r9, r10, r11, lr
++	*/
++
++
++/*
++	a15 = a3  + a7;
++	m2 = mad_f_mul(a15, -c4) ;
++	a17 = a1  + a3;
++	m0 = mad_f_mul(a17, -c3) ;
++	a23 = (m4 << 1)  + (m2 << 1);
++	tmp[15] = a23 + (m0 << 1); */
++	add	r0/*a15*/, r4, r2
++	mov	r1, -MAD_F(0x0af1d43a)
++	mulsatrndwh.w	r0/*m2*/, r0, r1:b
++	mov	r3, -MAD_F(0x1491b752)
++	add	r5/*a17*/, r8, r4
++	mulsatrndwh.w	r5/*m0*/, r5, r3:b
++	lsl	r7, 1
++	add	r6/*a23*/, r7, r0 << 1
++	add	r6/*tmp[15]*/, r6, r5 << 1
++	stdsp	sp[15*4], r6
++
++	/* Registers used:
++		r0 = m2, r2 = a7, r5 = m0, r7 = m4, r8 = a1
++
++	   Free registers:
++		r1, r3, r4, r6, r9, r10, r11, lr
++	*/
++
++/*
++	a16 = a1  - a7;
++	m1 = mad_f_mul(a16, -c0) ;
++	a24 = (m4 << 1)  - (m2 << 1);
++	tmp[11] = a24 - (m1 << 1);
++
++	a25 = (m4 << 1)  + (m1 << 1);
++	tmp[ 3] = (m0 << 1)  - a25;
++*/
++	sub	r3/*a16*/, r8, r2
++	mov	r4,  -MAD_F(0x1f838b8d)
++	mulsatrndwh.w	r3/*m1*/, r3, r4:b
++	sub	r1/*a24*/, r7, r0 << 1
++	sub	r1/*tmp[11]*/, r1, r3 << 1
++	stdsp	sp[11*4], r1
++	add	r7/*a25*/, r7, r3 << 1
++	sub	r7, r7, r5 << 1
++	neg	r7
++	lddsp	r12, sp[4*18+4]	/* Get y from stack */
++	stdsp	sp[3*4], r7
++
++
++  /* output to every other slot for convenience */
++
++  /* End fastdct */
++
++  /* output accumulation */
++
++/*	for (i = 3; i < 18; i += 8) {
++	  tmp[i + 0] -= tmp[(i + 0) - 2];
++	  tmp[i + 2] -= tmp[(i + 2) - 2];
++	  tmp[i + 4] -= tmp[(i + 4) - 2];
++	  tmp[i + 6] -= tmp[(i + 6) - 2];
++	}
++	}
++*/
++
++/* End  SDCT-II */
++
++
++
++  /* scale reduction and output accumulation */
++
++/*
++	for (i = 1; i < 17; i += 4) {
++	  tmp[i + 0] = tmp[i + 0]  - tmp[(i + 0) - 1];
++	  tmp[i + 1] = tmp[i + 1]  - tmp[(i + 1) - 1];
++	  tmp[i + 2] = tmp[i + 2]  - tmp[(i + 2) - 1];
++	  tmp[i + 3] = tmp[i + 3]  - tmp[(i + 3) - 1];
++	}
++	tmp[17] = tmp[17] - tmp[16];
++	}
++*/
++/* End  DCT-IV */
++
++
++  /* convert 18-point DCT-IV to 36-point IMDCT */
++
++/*
++	for (i =  0; i <  9; i += 3) {
++	  y[i + 0] =  tmp[9 + (i + 0)];
++	  y[i + 1] =  tmp[9 + (i + 1)];
++	  y[i + 2] =  tmp[9 + (i + 2)];
++	}
++	for (i =  9; i < 27; i += 3) {
++	  y[i + 0] = -tmp[36 - (9 + (i + 0)) - 1];
++	  y[i + 1] = -tmp[36 - (9 + (i + 1)) - 1];
++	  y[i + 2] = -tmp[36 - (9 + (i + 2)) - 1];
++	}
++	for (i = 27; i < 36; i += 3) {
++	  y[i + 0] = -tmp[(i + 0) - 27];
++	  y[i + 1] = -tmp[(i + 1) - 27];
++	  y[i + 2] = -tmp[(i + 2) - 27];
++	}
++	}
++*/
++
++	/* Registers used:
++		r0 = tmp[8], r1 = tmp[7], r2 = tmp[6], r3 = tmp[5], r4 = tmp[4]
++		r5 = tmp[3], r6 = tmp[2], r7 = tmp[1], r8 = tmp[0], r12 = y
++
++	   Free registers:
++		r9, r10, r11, lr
++	*/
++
++	ldm	sp++, r0-r8	/* Get tmp[0]-tmp[8] from stack */
++	sub	r5, r7		/* tmp[3] -= tmp[1]*/
++	sub	r3, r5		/* tmp[5] -= tmp[3]*/
++	sub	r1, r3		/* tmp[7] -= tmp[5]*/
++
++	sub	r7, r8		/* tmp[1] -= tmp[0]*/
++	sub	r6, r7		/* tmp[2] -= tmp[1]*/
++	sub	r5, r6		/* tmp[3] -= tmp[2]*/
++	neg	r8
++	st.w	r12[26*4], r8	/* y[26] = -tmp[0] */
++	st.w	r12[27*4], r8	/* y[27] = -tmp[0] */
++	neg	r7
++	neg	r6
++	st.w	r12[25*4], r7	/* y[25] = -tmp[1] */
++	st.w	r12[24*4], r6	/* y[24] = -tmp[2] */
++	st.d	r12[28*4], r6	/* y[28] = -tmp[1], y[29] = -tmp[2]*/
++
++	sub	r4, r5		/* tmp[4] -= tmp[3]*/
++	sub	r3, r4		/* tmp[5] -= tmp[4]*/
++	neg	r5
++	neg	r4
++	st.w	r12[23*4], r5	/* y[23] = -tmp[3] */
++	st.w	r12[22*4], r4	/* y[22] = -tmp[4] */
++	st.d	r12[30*4], r4	/* y[30] = -tmp[3], y[31] = -tmp[4]*/
++
++	ldm	sp++, r4-r11,lr	/* Get tmp[9]-tmp[17] from stack */
++
++	sub	r2, r3		/* tmp[6] -= tmp[5]*/
++
++	sub	lr, r1		/* tmp[9] -= tmp[7]*/
++	sub	r10, lr		/* tmp[11] -= tmp[9]*/
++	sub	r8, r10		/* tmp[13] -= tmp[11]*/
++	sub	r6, r8		/* tmp[15] -= tmp[13]*/
++	sub	r4, r6		/* tmp[17] -= tmp[15]*/
++
++	sub	r1, r2		/* tmp[7] -= tmp[6]*/
++	sub	r0, r1		/* tmp[8] -= tmp[7]*/
++	neg	r3
++	neg	r2
++	st.w	r12[21*4], r3	/* y[21] = -tmp[5] */
++	st.w	r12[20*4], r2	/* y[20] = -tmp[6] */
++	st.d	r12[32*4], r2	/* y[32] = -tmp[5], y[33] = -tmp[6]*/
++
++	sub	lr, r0		/* tmp[9] -= tmp[8]*/
++	sub	r11, lr		/* tmp[10] -= tmp[9]*/
++	neg	r1
++	neg	r0
++	st.w	r12[19*4], r1	/* y[19] = -tmp[7] */
++	st.w	r12[18*4], r0	/* y[18] = -tmp[8] */
++	st.d	r12[34*4], r0	/* y[34] = -tmp[7], y[35] = -tmp[8]*/
++
++	sub	r10, r11	/* tmp[11] -= tmp[10]*/
++	sub	r9, r10		/* tmp[12] -= tmp[11]*/
++
++	st.w	r12[0*4], lr	/* y[0] = tmp[9]*/
++	neg	lr
++	st.w	r12[17*4], lr	/* y[17] = -tmp[9]*/
++	st.d	r12[1*4], r10	/* y[1] = tmp[10], y[2] = tmp[11] */
++	neg	r11
++	neg	r10
++	st.w	r12[16*4], r11	/* y[16] = -tmp[10] */
++	st.w	r12[15*4], r10	/* y[15] = -tmp[11] */
++
++
++	sub	r8, r9		/* tmp[13] -= tmp[12]*/
++	sub	r7, r8		/* tmp[14] -= tmp[13]*/
++	st.d	r12[3*4], r8	/* y[3] = tmp[12], y[4] = tmp[13] */
++	neg	r9
++	neg	r8
++	st.w	r12[14*4], r9	/* y[14] = -tmp[12] */
++	st.w	r12[13*4], r8	/* y[13] = -tmp[13] */
++
++	sub	r6, r7		/* tmp[15] -= tmp[14]*/
++	sub	r5, r6		/* tmp[16] -= tmp[15]*/
++	sub	r4, r5		/* tmp[17] -= tmp[16]*/
++
++	st.d	r12[5*4], r6	/* y[5] = tmp[14], y[6] = tmp[15] */
++	neg	r7
++	neg	r6
++	st.w	r12[12*4], r7	/* y[12] = -tmp[14] */
++	st.w	r12[11*4], r6	/* y[11] = -tmp[15] */
++
++	st.d	r12[7*4], r4	/* y[7] = tmp[16], y[8] = tmp[17] */
++	neg	r5
++	neg	r4
++	st.w	r12[10*4], r5	/* y[10] = -tmp[16] */
++	st.w	r12[9*4], r4	/* y[9] = -tmp[17] */
++
++	popm	r0-r7,r11,pc
++
++	.align	2
++scale_dctIV:
++	.short	MAD_F(0x1ff833fa), MAD_F(0x1fb9ea93), MAD_F(0x1f3dd120)
++	.short	MAD_F(0x1e84d969), MAD_F(0x1d906bcf), MAD_F(0x1c62648b)
++	.short	MAD_F(0x1afd100f), MAD_F(0x1963268b), MAD_F(0x1797c6a4)
++	.short	MAD_F(0x159e6f5b), MAD_F(0x137af940), MAD_F(0x11318ef3)
++	.short	MAD_F(0x0ec6a507), MAD_F(0x0c3ef153), MAD_F(0x099f61c5)
++	.short	MAD_F(0x06ed12c5), MAD_F(0x042d4544), MAD_F(0x0165547c)
++
++	.align	2
++scale_sdctII:
++	.short	MAD_F(0x1fe0d3b4), MAD_F(0x1ee8dd47), MAD_F(0x1d007930)
++	.short	MAD_F(0x1a367e59), MAD_F(0x16a09e66), MAD_F(0x125abcf8)
++	.short	MAD_F(0x0d8616bc), MAD_F(0x08483ee1), MAD_F(0x02c9fad7)
+diff --git a/layer3.c b/layer3.c
+index 4e5d3fa..dffdab3 100644
+--- a/layer3.c
++++ b/layer3.c
+@@ -378,6 +378,11 @@ mad_fixed_t const ca[8] = {
+   -MAD_F(0x003a2847) /* -0.014198569 */, -MAD_F(0x000f27b4) /* -0.003699975 */
+ };
+ 
++#ifdef FPM_AVR32
++# undef MAD_F
++# define MAD_F(x) ((x + (1 << 12)) >> 13)
++#endif
++
+ /*
+  * IMDCT coefficients for short blocks
+  * derived from section 2.4.3.4.10.2 of ISO/IEC 11172-3
+@@ -386,7 +391,7 @@ mad_fixed_t const ca[8] = {
+  * imdct_s[i /odd][k] = cos((PI / 24) * (2 * (6 + (i-1)/2) + 7) * (2 * k + 1))
+  */
+ static
+-mad_fixed_t const imdct_s[6][6] = {
++mad_coeff_t const imdct_s[6][6] = {
+ # include "imdct_s.dat"
+ };
+ 
+@@ -398,7 +403,7 @@ mad_fixed_t const imdct_s[6][6] = {
+  * window_l[i] = sin((PI / 36) * (i + 1/2))
+  */
+ static
+-mad_fixed_t const window_l[36] = {
++mad_coeff_t const window_l[36] = {
+   MAD_F(0x00b2aa3e) /* 0.043619387 */, MAD_F(0x0216a2a2) /* 0.130526192 */,
+   MAD_F(0x03768962) /* 0.216439614 */, MAD_F(0x04cfb0e2) /* 0.300705800 */,
+   MAD_F(0x061f78aa) /* 0.382683432 */, MAD_F(0x07635284) /* 0.461748613 */,
+@@ -429,7 +434,7 @@ mad_fixed_t const window_l[36] = {
+  * window_s[i] = sin((PI / 12) * (i + 1/2))
+  */
+ static
+-mad_fixed_t const window_s[12] = {
++mad_coeff_t const window_s[12] = {
+   MAD_F(0x0216a2a2) /* 0.130526192 */, MAD_F(0x061f78aa) /* 0.382683432 */,
+   MAD_F(0x09bd7ca0) /* 0.608761429 */, MAD_F(0x0cb19346) /* 0.793353340 */,
+   MAD_F(0x0ec835e8) /* 0.923879533 */, MAD_F(0x0fdcf549) /* 0.991444861 */,
+@@ -438,6 +443,11 @@ mad_fixed_t const window_s[12] = {
+   MAD_F(0x061f78aa) /* 0.382683432 */, MAD_F(0x0216a2a2) /* 0.130526192 */,
+ };
+ 
++#ifdef FPM_AVR32
++# undef MAD_F
++# define MAD_F(x)		((mad_fixed_t) (x##L))
++#endif
++
+ /*
+  * coefficients for intensity stereo processing
+  * derived from section 2.4.3.4.9.3 of ISO/IEC 11172-3
+@@ -879,6 +889,42 @@ void III_exponents(struct channel const *channel,
+  * NAME:	III_requantize()
+  * DESCRIPTION:	requantize one (positive) value
+  */
++
++#if 0
++/*static*/
++mad_fixed_t III_requantize(unsigned int value, signed int exp)
++{
++  register mad_fixed_t tmp2, tmp3;
++  long long tmp_d;
++
++  asm ("asr\t%0, %1, 2\n"
++       "ld.w\t%2, %4[%5 << 2]\n"
++       "sub\t%1, %1, %0 << 2\n"
++       "asr\t%3, %2, 7\n"
++       "andl\t%2, 0x7f, COH\n"
++       "add\t%0, %2\n"
++       "lsl\t%m0,%3,%0\n"
++       "neg\t%0\n"
++       "asr\t%3,%3,%0\n"
++       "add\t%2, %6, %1 << 2\n"
++       "ld.w\t%2, %2[12]\n"
++       "cp.w\t%0, 0\n"
++       "movlt\t%3, %m0\n"
++       "muls.d\t%0, %3, %2\n"
++       "cp.w\t%1, 0\n"
++       "breq\t0f\n"
++       "lsr\t%0, %0, 28\n"
++       "or\t%3, %0, %m0 << 4\n"
++       "0:\n"
++       : "=&r"(tmp_d), "+r"(exp), "=&r"(tmp2), "=&r"(tmp3)
++       : "r"(&rq_table), "r"(value), "r"(root_table));
++
++
++  return tmp3;
++}
++
++#else
++
+ static
+ mad_fixed_t III_requantize(unsigned int value, signed int exp)
+ {
+@@ -918,6 +964,7 @@ mad_fixed_t III_requantize(unsigned int value, signed int exp)
+ 
+   return frac ? mad_f_mul(requantized, root_table[3 + frac]) : requantized;
+ }
++#endif
+ 
+ /* we must take care that sz >= bits and sz < sizeof(long) lest bits == 0 */
+ # define MASK(cache, sz, bits)	\
+@@ -2054,27 +2101,42 @@ void imdct36(mad_fixed_t const X[18], mad_fixed_t x[36])
+ }
+ #  endif
+ 
++
++#ifdef FPM_AVR32
++# undef  mad_f_mul
++# define mad_f_mul(x, y) __builtin_mulsatrndwh_w(x, y)
++#endif
++
+ /*
+  * NAME:	III_imdct_l()
+  * DESCRIPTION:	perform IMDCT and windowing for long blocks
+  */
+ static
+-void III_imdct_l(mad_fixed_t const X[18], mad_fixed_t z[36],
++void III_imdct_l(mad_fixed_t /*const*/ X[18], mad_fixed_t z[36],
+ 		 unsigned int block_type)
+ {
+   unsigned int i;
++  mad_fixed_t *z_ptr;
++  mad_coeff_t *w_ptr;
+ 
+   /* IMDCT */
+ 
++#ifdef FPM_AVR32
++  imdct36_avr32(X, z);
++#else
+   imdct36(X, z);
++#endif
+ 
+   /* windowing */
+ 
++  z_ptr = &z[0];
++  w_ptr = &window_l[0];
++
+   switch (block_type) {
+   case 0:  /* normal window */
+ # if defined(ASO_INTERLEAVE1)
+     {
+-      register mad_fixed_t tmp1, tmp2;
++      register mad_coeff_t tmp1, tmp2;
+ 
+       tmp1 = window_l[0];
+       tmp2 = window_l[1];
+@@ -2091,15 +2153,16 @@ void III_imdct_l(mad_fixed_t const X[18], mad_fixed_t z[36],
+     }
+ # elif defined(ASO_INTERLEAVE2)
+     {
+-      register mad_fixed_t tmp1, tmp2;
++      register mad_fixed_t tmp1;
++      register mad_coeff_t tmp2;
+ 
+-      tmp1 = z[0];
+-      tmp2 = window_l[0];
++      tmp1 = *z_ptr;
++      tmp2 = *w_ptr++;
+ 
+       for (i = 0; i < 35; ++i) {
+-	z[i] = mad_f_mul(tmp1, tmp2);
+-	tmp1 = z[i + 1];
+-	tmp2 = window_l[i + 1];
++	*z_ptr++ = mad_f_mul(tmp1, tmp2);
++	tmp1 = *z_ptr;
++	tmp2 = *w_ptr++;
+       }
+ 
+       z[35] = mad_f_mul(tmp1, tmp2);
+@@ -2118,23 +2181,28 @@ void III_imdct_l(mad_fixed_t const X[18], mad_fixed_t z[36],
+ 
+   case 1:  /* start block */
+     for (i =  0; i < 18; i += 3) {
+-      z[i + 0] = mad_f_mul(z[i + 0], window_l[i + 0]);
+-      z[i + 1] = mad_f_mul(z[i + 1], window_l[i + 1]);
+-      z[i + 2] = mad_f_mul(z[i + 2], window_l[i + 2]);
++      *(z_ptr++) = mad_f_mul(*z_ptr, *w_ptr++);
++      *(z_ptr++) = mad_f_mul(*z_ptr, *w_ptr++);
++      *(z_ptr++) = mad_f_mul(*z_ptr, *w_ptr++);
+     }
++    z_ptr += 6;
++    w_ptr = &window_s[6];
+     /*  (i = 18; i < 24; ++i) z[i] unchanged */
+-    for (i = 24; i < 30; ++i) z[i] = mad_f_mul(z[i], window_s[i - 18]);
+-    for (i = 30; i < 36; ++i) z[i] = 0;
++    for (i = 24; i < 30; ++i) *z_ptr++ = mad_f_mul(*z_ptr, *w_ptr++);
++    for (i = 30; i < 36; ++i) *z_ptr++ = 0;
+     break;
+ 
+   case 3:  /* stop block */
+-    for (i =  0; i <  6; ++i) z[i] = 0;
+-    for (i =  6; i < 12; ++i) z[i] = mad_f_mul(z[i], window_s[i - 6]);
++    w_ptr = &window_s[0];
++    for (i =  0; i <  6; ++i) *z_ptr++ = 0;
++    for (i =  6; i < 12; ++i) *z_ptr++ = mad_f_mul(*z_ptr, *w_ptr++);
+     /*  (i = 12; i < 18; ++i) z[i] unchanged */
++    w_ptr = &window_l[18];
++    z_ptr += 6;
+     for (i = 18; i < 36; i += 3) {
+-      z[i + 0] = mad_f_mul(z[i + 0], window_l[i + 0]);
+-      z[i + 1] = mad_f_mul(z[i + 1], window_l[i + 1]);
+-      z[i + 2] = mad_f_mul(z[i + 2], window_l[i + 2]);
++      *z_ptr++ = mad_f_mul(*z_ptr, *w_ptr++ );
++      *z_ptr++ = mad_f_mul(*z_ptr, *w_ptr++);
++      *z_ptr++ = mad_f_mul(*z_ptr, *w_ptr++);
+     }
+     break;
+   }
+@@ -2146,10 +2214,10 @@ void III_imdct_l(mad_fixed_t const X[18], mad_fixed_t z[36],
+  * DESCRIPTION:	perform IMDCT and windowing for short blocks
+  */
+ static
+-void III_imdct_s(mad_fixed_t const X[18], mad_fixed_t z[36])
++void III_imdct_s(mad_fixed_t /*const*/ X[18], mad_fixed_t z[36])
+ {
+   mad_fixed_t y[36], *yptr;
+-  mad_fixed_t const *wptr;
++  mad_coeff_t const *wptr;
+   int w, i;
+   register mad_fixed64hi_t hi;
+   register mad_fixed64lo_t lo;
+@@ -2159,11 +2227,56 @@ void III_imdct_s(mad_fixed_t const X[18], mad_fixed_t z[36])
+   yptr = &y[0];
+ 
+   for (w = 0; w < 3; ++w) {
+-    register mad_fixed_t const (*s)[6];
++    register mad_coeff_t const (*s)[6];
+ 
+     s = imdct_s;
+ 
+     for (i = 0; i < 3; ++i) {
++#ifdef FPM_AVR32
++      register long long int acc, tmp1, tmp2, tmp3, tmp4;
++      asm volatile ("ld.d\t%0, %5++\n"
++                    "ld.d\t%1, %6[0]\n"
++                    "ld.d\t%2, %6[2*4]\n"
++                    "ld.d\t%3, %6[4*4]\n"
++                    "mulwh.d\t%4, %m1, %m0:t\n"
++                    "macwh.d\t%4, %1, %m0:b\n"
++                    "ld.w\t%m0, %5++\n"
++                    "macwh.d\t%4, %m2, %0:t\n"
++                    "macwh.d\t%4, %2, %0:b\n"
++                    "macwh.d\t%4, %m3, %m0:t\n"
++                    "macwh.d\t%4, %3, %m0:b\n"
++                    "ld.d\t%0, %5++\n"
++                    "rol\t%4\n"
++                    "rol\t%m4\n"
++                    : "=&r"(tmp1), "=&r"(tmp2), "=&r"(tmp3), "=&r"(tmp4),
++                      "=&r"(acc), "+r"(s)
++                    : "r"(X));
++
++      asm volatile ("st.w\t%1[0], %m0\n"
++                    "neg\t%m0\n"
++                    "st.w\t%2[5*4], %m0\n"
++                    : "+r"(acc)
++                    : "r"(&yptr[i]), "r"(&yptr[-i]));
++
++      asm volatile ("mulwh.d\t%4, %m1, %m0:t\n"
++                    "macwh.d\t%4, %1, %m0:b\n"
++                    "ld.w\t%m0, %5++\n"
++                    "macwh.d\t%4, %m2, %0:t\n"
++                    "macwh.d\t%4, %2, %0:b\n"
++                    "macwh.d\t%4, %m3, %m0:t\n"
++                    "macwh.d\t%4, %3, %m0:b\n"
++                    "rol\t%4\n"
++                    "rol\t%m4\n"
++                    : "+r"(tmp1), "+r"(tmp2), "+r"(tmp3), "+r"(tmp4),
++                      "=&r"(acc), "+r"(s)
++                    : "r"(X));
++
++      asm volatile (  "st.w\t%1[6*4], %m0\n"
++                      "st.w\t%2[11*4], %m0\n"
++                      :: "r"(acc), "r"(&yptr[i]), "r"(&yptr[-i]));
++
++
++#else
+       MAD_F_ML0(hi, lo, X[0], (*s)[0]);
+       MAD_F_MLA(hi, lo, X[1], (*s)[1]);
+       MAD_F_MLA(hi, lo, X[2], (*s)[2]);
+@@ -2187,6 +2300,7 @@ void III_imdct_s(mad_fixed_t const X[18], mad_fixed_t z[36])
+       yptr[11 - i] = yptr[i + 6];
+ 
+       ++s;
++#endif
+     }
+ 
+     yptr += 12;
+@@ -2198,6 +2312,196 @@ void III_imdct_s(mad_fixed_t const X[18], mad_fixed_t z[36])
+   yptr = &y[0];
+   wptr = &window_s[0];
+ 
++#ifdef FPM_AVR32
++  /*    z[0] = 0;
++        z[1] = 0;
++        z[2] = 0;
++        z[3] = 0;
++        z[4] = 0;
++        z[5] = 0;
++        z[30] = 0;
++        z[31] = 0;
++        z[32] = 0;
++        z[33] = 0;
++        z[34] = 0;
++        z[35] = 0;
++  */
++  {
++    register long long int tmp, tmp2, tmp3, w0123, w4567, w891011;
++    asm volatile ("mov\t%m0, 0\n"
++                  "mov\t%0, %m0\n"
++                  "st.d\t%1[0], %0\n"
++                  "st.d\t%1[2*4], %0\n"
++                  "st.d\t%1[4*4], %0\n"
++                  "st.d\t%1[30*4], %0\n"
++                  "st.d\t%1[32*4], %0\n"
++                  "st.d\t%1[34*4], %0\n"
++                  : "=&r"(tmp) : "r"(z));
++
++
++
++    /*
++            z[6] = mad_f_mul(yptr [0], wptr[0]);
++            z[7] = mad_f_mul(yptr [1], wptr[1]);
++            z[8] = mad_f_mul(yptr [2], wptr[2]);
++            z[9] = mad_f_mul(yptr [3], wptr[3]);
++            z[10] = mad_f_mul(yptr[4], wptr[4]);
++            z[11] = mad_f_mul(yptr[5], wptr[5]);
++            z[24] = mad_f_mul(yptr [30], wptr[6]);
++            z[25] = mad_f_mul(yptr [31], wptr[7]);
++            z[26] = mad_f_mul(yptr [32], wptr[8]);
++            z[27] = mad_f_mul(yptr [33], wptr[9]);
++            z[28] = mad_f_mul(yptr[34], wptr[10]);
++            z[29] = mad_f_mul(yptr[35], wptr[11]);
++    */
++
++
++    asm volatile ("ld.d\t%0, %5[0*4]\n"
++                  "ld.d\t%3, %6[0*4]\n"
++                  "ld.d\t%1, %5[2*4]\n"
++                  "ld.d\t%2, %5[4*4]\n"
++                  "mulsatrndwh.w\t%m3, %m3, %m0:t\n"
++                  "mulsatrndwh.w\t%3, %3, %m0:b\n"
++                  "ld.d\t%4, %6[2*4]\n"
++                  "st.d\t%7[6*4], %3\n"
++
++                  "mulsatrndwh.w\t%m4, %m4, %0:t\n"
++                  "mulsatrndwh.w\t%4, %4, %0:b\n"
++                  "ld.d\t%3, %6[4*4]\n"
++                  "st.d\t%7[8*4], %4\n"
++
++                  "mulsatrndwh.w\t%m3, %m3, %m1:t\n"
++                  "mulsatrndwh.w\t%3, %3, %m1:b\n"
++                  "ld.d\t%4, %6[30*4]\n"
++                  "st.d\t%7[10*4], %3\n"
++
++                  "mulsatrndwh.w\t%m4, %m4, %1:t\n"
++                  "mulsatrndwh.w\t%4, %4, %1:b\n"
++                  "ld.d\t%3, %6[32*4]\n"
++                  "st.d\t%7[24*4], %4\n"
++
++                  "mulsatrndwh.w\t%m3, %m3, %m2:t\n"
++                  "mulsatrndwh.w\t%3, %3, %m2:b\n"
++                  "ld.d\t%4, %6[34*4]\n"
++                  "st.d\t%7[26*4], %3\n"
++
++                  "mulsatrndwh.w\t%m4, %m4, %2:t\n"
++                  "mulsatrndwh.w\t%4, %4, %2:b\n"
++                  "st.d\t%7[28*4], %4\n"
++
++                  : "=&r"(w0123), "=&r"(w4567), "=&r"(w891011), "=&r"(tmp), "=&r"(tmp2)
++                  : "r"(wptr), "r"(yptr), "r"(z));
++    /*
++       MAD_F_ML0(hi, lo, yptr[6], wptr[6]);
++       MAD_F_MLA(hi, lo, yptr[12], wptr[0]);
++       z[12] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[7], wptr[7]);
++       MAD_F_MLA(hi, lo, yptr[13], wptr[1]);
++       z[13] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[8], wptr[8]);
++       MAD_F_MLA(hi, lo, yptr[14], wptr[2]);
++       z[14] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[9], wptr[9]);
++       MAD_F_MLA(hi, lo, yptr[15], wptr[3]);
++       z[15] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[10], wptr[10]);
++       MAD_F_MLA(hi, lo, yptr[16], wptr[4]);
++       z[16] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[11], wptr[11]);
++       MAD_F_MLA(hi, lo, yptr[17], wptr[5]);
++       z[17] = MAD_F_MLZ(hi, lo);
++
++       MAD_F_ML0(hi, lo, yptr[18], wptr[6]);
++       MAD_F_MLA(hi, lo, yptr[24], wptr[0]);
++       z[18] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[19], wptr[7]);
++       MAD_F_MLA(hi, lo, yptr[25], wptr[1]);
++       z[19] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[20], wptr[8]);
++       MAD_F_MLA(hi, lo, yptr[26], wptr[2]);
++       z[20] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[21], wptr[9]);
++       MAD_F_MLA(hi, lo, yptr[27], wptr[3]);
++       z[21] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[22], wptr[10]);
++       MAD_F_MLA(hi, lo, yptr[28], wptr[4]);
++       z[22] = MAD_F_MLZ(hi, lo);
++       MAD_F_ML0(hi, lo, yptr[23], wptr[11]);
++       MAD_F_MLA(hi, lo, yptr[29], wptr[5]);
++       z[23] = MAD_F_MLZ(hi, lo);*/
++
++
++    asm volatile ("ld.d\t%0, %3[6*4]\n"
++                  "ld.d\t%1, %3[12*4]\n"
++                  "mulwh.d\t%2, %m0, %5:t\n"
++                  "macwh.d\t%2, %m1, %m4:t\n"
++                  "mulwh.d\t%0, %0, %5:b\n"
++                  "macwh.d\t%0, %1, %m4:b\n"
++                  "lsl\t%m2, 1\n"
++                  "lsl\t%2, %m0, 1\n"
++                  "st.d\t%6[12*4], %2\n"
++
++                  "ld.d\t%0, %3[18*4]\n"
++                  "ld.d\t%1, %3[24*4]\n"
++                  "mulwh.d\t%2, %m0, %5:t\n"
++                  "macwh.d\t%2, %m1, %m4:t\n"
++                  "mulwh.d\t%0, %0, %5:b\n"
++                  "macwh.d\t%0, %1, %m4:b\n"
++                  "lsl\t%m2, 1\n"
++                  "lsl\t%2, %m0, 1\n"
++                  "st.d\t%6[18*4], %2\n"
++
++                  : "=&r"(tmp), "=&r"(tmp2), "=&r"(tmp3)
++                  : "r"(yptr), "r"(w0123), "r"(w4567), "r"(z));
++
++    asm volatile ("ld.d\t%0, %3[8*4]\n"
++                  "ld.d\t%1, %3[14*4]\n"
++                  "mulwh.d\t%2, %m0, %m5:t\n"
++                  "macwh.d\t%2, %m1, %4:t\n"
++                  "mulwh.d\t%0, %0, %m5:b\n"
++                  "macwh.d\t%0, %1, %4:b\n"
++                  "lsl\t%m2, 1\n"
++                  "lsl\t%2, %m0, 1\n"
++                  "st.d\t%6[14*4], %2\n"
++
++                  "ld.d\t%0, %3[20*4]\n"
++                  "ld.d\t%1, %3[26*4]\n"
++                  "mulwh.d\t%2, %m0, %m5:t\n"
++                  "macwh.d\t%2, %m1, %4:t\n"
++                  "mulwh.d\t%0, %0, %m5:b\n"
++                  "macwh.d\t%0, %1, %4:b\n"
++                  "lsl\t%m2, 1\n"
++                  "lsl\t%2, %m0, 1\n"
++                  "st.d\t%6[20*4], %2\n"
++
++                  : "=&r"(tmp), "=&r"(tmp2), "=&r"(tmp3)
++                  : "r"(yptr), "r"(w0123), "r"(w891011), "r"(z));
++
++    asm volatile ("ld.d\t%0, %3[10*4]\n"
++                  "ld.d\t%1, %3[16*4]\n"
++                  "mulwh.d\t%2, %m0, %5:t\n"
++                  "macwh.d\t%2, %m1, %m4:t\n"
++                  "mulwh.d\t%0, %0, %5:b\n"
++                  "macwh.d\t%0, %1, %m4:b\n"
++                  "lsl\t%m2, 1\n"
++                  "lsl\t%2, %m0, 1\n"
++                  "st.d\t%6[16*4], %2\n"
++
++                  "ld.d\t%0, %3[22*4]\n"
++                  "ld.d\t%1, %3[28*4]\n"
++                  "mulwh.d\t%2, %m0, %5:t\n"
++                  "macwh.d\t%2, %m1, %m4:t\n"
++                  "mulwh.d\t%0, %0, %5:b\n"
++                  "macwh.d\t%0, %1, %m4:b\n"
++                  "lsl\t%m2, 1\n"
++                  "lsl\t%2, %m0, 1\n"
++                  "st.d\t%6[22*4], %2\n"
++
++                  : "=&r"(tmp), "=&r"(tmp2), "=&r"(tmp3)
++                  : "r"(yptr), "r"(w4567), "r"(w891011), "r"(z));
++
++  }
++#else
+   for (i = 0; i < 6; ++i) {
+     z[i +  0] = 0;
+     z[i +  6] = mad_f_mul(yptr[ 0 + 0], wptr[0]);
+@@ -2218,8 +2522,15 @@ void III_imdct_s(mad_fixed_t const X[18], mad_fixed_t z[36])
+     ++yptr;
+     ++wptr;
+   }
++#endif
+ }
+ 
++#ifdef FPM_AVR32
++# undef  mad_f_mul
++# define mad_f_mul(x, y) ((((x) + (1L << 11)) >> 12) *  \
++				 (((y) + (1L << 15)) >> 16))
++#endif
++
+ /*
+  * NAME:	III_overlap()
+  * DESCRIPTION:	perform overlap-add of windowed IMDCT outputs
+diff --git a/synth.c b/synth.c
+index 1d28d43..f42d49b 100644
+--- a/synth.c
++++ b/synth.c
+@@ -29,20 +29,6 @@
+ # include "frame.h"
+ # include "synth.h"
+ 
+-/*
+- * NAME:	synth->init()
+- * DESCRIPTION:	initialize synth struct
+- */
+-void mad_synth_init(struct mad_synth *synth)
+-{
+-  mad_synth_mute(synth);
+-
+-  synth->phase = 0;
+-
+-  synth->pcm.samplerate = 0;
+-  synth->pcm.channels   = 0;
+-  synth->pcm.length     = 0;
+-}
+ 
+ /*
+  * NAME:	synth->mute()
+@@ -88,6 +74,10 @@ void mad_synth_mute(struct mad_synth *synth)
+ 
+ /* FPM_DEFAULT without OPT_SSO will actually lose accuracy and performance */
+ 
++# if defined(FPM_AVR32)
++#  define OPT_SSO
++# endif
++
+ # if defined(FPM_DEFAULT) && !defined(OPT_SSO)
+ #  define OPT_SSO
+ # endif
+@@ -522,9 +512,15 @@ void dct32(mad_fixed_t const in[32], unsigned int slot,
+ #  endif
+ #  define ML0(hi, lo, x, y)	((lo)  = (x) * (y))
+ #  define MLA(hi, lo, x, y)	((lo) += (x) * (y))
+-#  define MLN(hi, lo)		((lo)  = -(lo))
+-#  define MLZ(hi, lo)		((void) (hi), (mad_fixed_t) (lo))
+-#  define SHIFT(x)		((x) >> 2)
++#  if defined(FPM_AVR32)
++#   define MLN(hi, lo)		MAD_F_MLN((hi), (lo))
++#   define MLZ(hi, lo)		(hi)
++#   define SHIFT(x)		((x) << 2)
++#  else
++#   define MLN(hi, lo)		((lo)  = -(lo))
++#   define MLZ(hi, lo)		((void) (hi), (mad_fixed_t) (lo))
++#   define SHIFT(x)		((x) >> 2)
++#  endif
+ #  define PRESHIFT(x)		((MAD_F(x) + (1L << 13)) >> 14)
+ # else
+ #  define ML0(hi, lo, x, y)	MAD_F_ML0((hi), (lo), (x), (y))
+@@ -541,11 +537,54 @@ void dct32(mad_fixed_t const in[32], unsigned int slot,
+ #  endif
+ # endif
+ 
++/*
++ * NAME:	synth->init()
++ * DESCRIPTION:	initialize synth struct
++ */
++
++#ifdef FPM_AVR32
++short Dmod[17][33];
++#endif
++
+ static
++#ifdef FPM_AVR32
++short const D[17][32] = {
++#else
+ mad_fixed_t const D[17][32] = {
++#endif
+ # include "D.dat"
+ };
+ 
++void mad_synth_init(struct mad_synth *synth)
++{
++
++  mad_synth_mute(synth);
++
++  synth->phase = 0;
++
++  synth->pcm.samplerate = 0;
++  synth->pcm.channels   = 0;
++  synth->pcm.length     = 0;
++
++#ifdef FPM_AVR32
++  {
++    int i, j;
++    for ( i = 0; i < 17; i++ ){
++      for ( j = 0; j < 32; j++ ){
++        if ( j & 1 ){
++          Dmod[i][17 + (j >> 1)]= D[i][j];
++        } else {
++          Dmod[i][(j >> 1)]= D[i][j];
++        }
++      }
++
++      Dmod[i][16]= Dmod[i][16+8];
++    }
++  }
++#endif
++
++}
++
+ # if defined(ASO_SYNTH)
+ void synth_full(struct mad_synth *, struct mad_frame const *,
+ 		unsigned int, unsigned int);
+@@ -560,9 +599,13 @@ void synth_full(struct mad_synth *synth, struct mad_frame const *frame,
+ {
+   unsigned int phase, ch, s, sb, pe, po;
+   mad_fixed_t *pcm1, *pcm2, (*filter)[2][2][16][8];
+-  mad_fixed_t const (*sbsample)[36][32];
++  mad_fixed_t /*const*/ (*sbsample)[36][32];
+   register mad_fixed_t (*fe)[8], (*fx)[8], (*fo)[8];
++#ifdef FPM_AVR32
++  register short const (*Dptr)[32], *ptr;
++#else
+   register mad_fixed_t const (*Dptr)[32], *ptr;
++#endif
+   register mad_fixed64hi_t hi;
+   register mad_fixed64lo_t lo;
+ 
+@@ -573,6 +616,20 @@ void synth_full(struct mad_synth *synth, struct mad_frame const *frame,
+     pcm1     = synth->pcm.samples[ch];
+ 
+     for (s = 0; s < ns; ++s) {
++#  ifdef FPM_AVR32
++/*
++  int i;
++  for ( i = 0; i < 32; i++ ){
++  (*sbsample)[s][i] = ((*sbsample)[s][i] + (1 << 13)) & 0xFFFFC000;
++  }
++*/
++      dct32_avr32((*sbsample)[s], phase >> 1,
++	    (*filter)[0][phase & 1], (*filter)[1][phase & 1]);
++      /*      printf("dct32: %d\n", GET_CYCLES);*/
++      pcm1 = synth_avr32(phase, (mad_fixed_t *)filter, \
++                         pcm1, (short *)&Dmod[0]);
++      /*      printf("synth_window: %d\n", GET_CYCLES);*/
++#  else
+       dct32((*sbsample)[s], phase >> 1,
+ 	    (*filter)[0][phase & 1], (*filter)[1][phase & 1]);
+ 
+@@ -679,6 +736,7 @@ void synth_full(struct mad_synth *synth, struct mad_frame const *frame,
+       MLA(hi, lo, (*fo)[7], ptr[ 2]);
+ 
+       *pcm1 = SHIFT(-MLZ(hi, lo));
++#  endif
+       pcm1 += 16;
+ 
+       phase = (phase + 1) % 16;
+diff --git a/synth_avr32.S b/synth_avr32.S
+new file mode 100644
+index 0000000..701077b
+--- /dev/null
++++ b/synth_avr32.S
+@@ -0,0 +1,394 @@
++/*
++   Optimized function for speeding up synthesis filter
++   in MPEG Audio Decoding.
++   Copyright 2003-2006 Atmel Corporation.
++
++   Written by Ronny Pedersen and Lars Even Almås, Atmel Norway
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2 of the License, or
++   (at your option) any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software
++   Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. */
++
++
++/* *****************
++   Defining macros
++   ***************** */
++
++	.macro	window_1	f, ptr, acc, ptr_offset, mul, tmp1_lo, tmp1_hi, tmp2_lo, tmp2_hi, tmp3_lo, tmp3_hi
++	ld.d		\tmp1_lo, \f[0*4]			/* tmp1 = { f[0], f[1] } */
++	ld.w		\tmp2_lo, \ptr[0*2+\ptr_offset*2]	/* tmp2_lo = { ptr[0], ptr[1] }*/
++	ld.d		\tmp3_lo, \f[6*4]			/* tmp3 = { f[6], f[7] } */
++	ld.w		\tmp2_hi, \ptr[6*2+\ptr_offset*2]	/* tmp2_hi = { ptr[6], ptr[7] }*/
++	.if \mul
++	mulwh.d		\acc, \tmp1_hi, \tmp2_lo:t		/* f[0] * ptr[0]*/
++	.else
++	macwh.d		\acc, \tmp1_hi, \tmp2_lo:t		/* f[0] * ptr[0]*/
++	.endif
++	macwh.d		\acc, \tmp3_lo, \tmp2_lo:b		/* f[7] * ptr[1]*/
++	ld.w		\tmp2_lo, \ptr[2*2+\ptr_offset*2]	/* tmp2_lo = { ptr[2], ptr[3] }*/
++	macwh.d		\acc, \tmp1_lo, \tmp2_hi:b		/* f[1] * ptr[7]*/
++	ld.d		\tmp1_lo, \f[2*4]			/* tmp1 = { f[2], f[3] } */
++
++	macwh.d		\acc, \tmp3_hi, \tmp2_lo:t		/* f[6] * ptr[2]*/
++	macwh.d		\acc, \tmp1_hi, \tmp2_hi:t		/* f[2] * ptr[6]*/
++	ld.d		\tmp3_lo, \f[4*4]			/* tmp3 = { f[4], f[5] } */
++	ld.w		\tmp2_hi, \ptr[4*2+\ptr_offset*2]	/* tmp2_hi = { ptr[4], ptr[5] }*/
++	macwh.d		\acc, \tmp3_lo, \tmp2_lo:b		/* f[5] * ptr[3]*/
++
++	macwh.d		\acc, \tmp1_lo, \tmp2_hi:b		/* f[3] * ptr[5]*/
++	macwh.d		\acc, \tmp3_hi, \tmp2_hi:t		/* f[4] * ptr[4]*/
++	.endm
++
++	.macro	window_2	f, ptr, acc, ptr_offset, mul, tmp1_lo, tmp1_hi, tmp2_lo, tmp2_hi, tmp3_lo, tmp3_hi
++	ld.d		\tmp1_lo, \f[0*4]			/* tmp1 = { f[0], f[1] } */
++	ld.w		\tmp2_lo, \ptr[7*2+\ptr_offset*2]	/* tmp2_lo = { ptr[7], ptr[8] }*/
++	ld.d		\tmp3_lo, \f[2*4]			/* tmp3 = { f[2], f[3] } */
++	ld.w		\tmp2_hi, \ptr[9*2+\ptr_offset*2]	/* tmp2_hi = { ptr[9], ptr[10] }*/
++	.if \mul
++	mulwh.d		\acc, \tmp1_hi, \tmp2_lo:t		/* f[0] * ptr[7]*/
++	.else
++	macwh.d		\acc, \tmp1_hi, \tmp2_lo:t		/* f[0] * ptr[7]*/
++	.endif
++	macwh.d		\acc, \tmp1_lo, \tmp2_lo:b		/* f[1] * ptr[8]*/
++
++	ld.d		\tmp1_lo, \f[4*4]			/* tmp1 = { f[4], f[5] } */
++	ld.w		\tmp2_lo, \ptr[11*2+\ptr_offset*2]	/* tmp2_lo = { ptr[11], ptr[12] }*/
++
++	macwh.d		\acc, \tmp3_hi, \tmp2_hi:t		/* f[2] * ptr[9]*/
++	macwh.d		\acc, \tmp3_lo, \tmp2_hi:b		/* f[3] * ptr[10]*/
++
++	ld.d		\tmp3_lo, \f[6*4]			/* tmp3 = { f[6], f[7] } */
++	ld.w		\tmp2_hi, \ptr[13*2+\ptr_offset*2]	/* tmp2_hi = { ptr[13], ptr[14] }*/
++
++	macwh.d		\acc, \tmp1_hi, \tmp2_lo:t		/* f[4] * ptr[11]*/
++	macwh.d		\acc, \tmp1_lo, \tmp2_lo:b		/* f[5] * ptr[12]*/
++	macwh.d		\acc, \tmp3_hi, \tmp2_hi:t		/* f[6] * ptr[13]*/
++	macwh.d		\acc, \tmp3_lo, \tmp2_hi:b		/* f[7] * ptr[14]*/
++	.endm
++
++	.macro	scale	res, d_lo, d_hi
++	lsl		\d_hi, 2
++	.endm
++
++/* **********************
++   Starting main function
++   ********************** */
++
++/* Function synth_avr32 is called from synth.c with arguments:
++             phase, filter, *pcm1, &D[0]		*/
++
++	.global	synth_avr32
++synth_avr32:
++	pushm		r0-r7, lr
++	sub		sp, 8
++
++	/* R12 = phase, R11 = filter, R10 = pcm1, r9 = D*/
++	bld		r12, 0
++	brcc		synth_even
++
++	/* Filter for odd phases */
++
++	/*	fe = &(*filter)[0][1][0];
++		fx = &(*filter)[0][0][0];
++		fo = &(*filter)[1][0][0]; */
++	sub		lr /*fe*/, r11, -16*8*4
++	sub		r8 /*fo*/, r11, -16*8*4*2
++
++	/*	pe = phase >> 1; */
++	lsr		r12, 1
++	stdsp		sp[4], r12
++	/*	ptr = (short const *)Dmod + pe; */
++	add		r12, r9, r12 << 1
++
++	/*	ML0(hi, lo, (*fx)[0], ptr[0 + 17]);
++		MLA(hi, lo, (*fx)[1], ptr[7 + 17]);
++		MLA(hi, lo, (*fx)[2], ptr[6 + 17]);
++		MLA(hi, lo, (*fx)[3], ptr[5 + 17]);
++		MLA(hi, lo, (*fx)[4], ptr[4 + 17]);
++		MLA(hi, lo, (*fx)[5], ptr[3 + 17]);
++		MLA(hi, lo, (*fx)[6], ptr[2 + 17]);
++		MLA(hi, lo, (*fx)[7], ptr[1 + 17]); */
++	window_1	r11/*fx*/,r12/*ptr*/,r0/*acc*/,17/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++
++    /*		MLN(hi, lo); */
++	neg		r0
++	acr		r1
++	neg		r1
++
++    /*		MLA(hi, lo, (*fe)[0], ptr[0]);
++		MLA(hi, lo, (*fe)[1], ptr[7]);
++		MLA(hi, lo, (*fe)[2], ptr[6]);
++                MLA(hi, lo, (*fe)[3], ptr[5]);
++                MLA(hi, lo, (*fe)[4], ptr[4]);
++                MLA(hi, lo, (*fe)[5], ptr[3]);
++                MLA(hi, lo, (*fe)[6], ptr[2]);
++                MLA(hi, lo, (*fe)[7], ptr[1]); */
++	window_1	lr/*fe*/,r12/*ptr*/,r0/*acc*/,0/*off*/,0/*mac*/,r2,r3,r4,r5,r6,r7
++
++    /*		*pcm1++ = SHIFT(MLZ(hi, lo));
++
++		pcm2 = pcm1 + 31; */
++	scale		r1, r0, r1
++	st.w		r10/*pcm_1*/++, r1
++	sub		r11/*pcm2*/, r10, -4*31
++
++    /*		for (sb = 1; sb < 16; ++sb) { */
++	mov 		r2, 15
++	stdsp		sp[0], r2
++odd_loop:
++    /*		++fe;
++		ptr += 33; */
++	sub		lr /*fe*/, -8*4
++	sub		r12, -33*2
++
++    /*		ML0(hi, lo, (*fo)[0], ptr[0 + 17]);
++		MLA(hi, lo, (*fo)[1], ptr[7 + 17]);
++		MLA(hi, lo, (*fo)[2], ptr[6 + 17]);
++		MLA(hi, lo, (*fo)[3], ptr[5 + 17]);
++		MLA(hi, lo, (*fo)[4], ptr[4 + 17]);
++		MLA(hi, lo, (*fo)[5], ptr[3 + 17]);
++		MLA(hi, lo, (*fo)[6], ptr[2 + 17]);
++		MLA(hi, lo, (*fo)[7], ptr[1 + 17]); */
++	window_1	r8/*fo*/,r12/*ptr*/,r0/*acc*/,17/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++    /*		MLN(hi, lo); */
++
++	neg		r0
++	acr		r1
++	neg		r1
++
++    /*		MLA(hi, lo, (*fe)[7], ptr[1]);
++		MLA(hi, lo, (*fe)[6], ptr[2]);
++		MLA(hi, lo, (*fe)[5], ptr[3]);
++		MLA(hi, lo, (*fe)[4], ptr[4]);
++		MLA(hi, lo, (*fe)[3], ptr[5]);
++		MLA(hi, lo, (*fe)[2], ptr[6]);
++		MLA(hi, lo, (*fe)[1], ptr[7]);
++		MLA(hi, lo, (*fe)[0], ptr[0]); */
++	window_1	lr/*fe*/,r12/*ptr*/,r0/*acc*/,0/*off*/,0/*mac*/,r2,r3,r4,r5,r6,r7
++
++    /*	ptr -= 2*pe; */
++	lddsp		r2, sp[4]
++
++    /*		*pcm1++ = SHIFT(MLZ(hi, lo)); */
++
++	scale		r1, r0, r1
++	sub		r12/*ptr*/, r12, r2/*pe*/<< 2
++	st.w		r10/*pcm_1*/++, r1
++
++
++    /*		ML0(hi, lo, (*fe)[0], ptr[7  + 17]);
++		MLA(hi, lo, (*fe)[1], ptr[8  + 17]);
++		MLA(hi, lo, (*fe)[2], ptr[9  + 17]);
++		MLA(hi, lo, (*fe)[3], ptr[10 + 17]);
++		MLA(hi, lo, (*fe)[4], ptr[11 + 17]);
++		MLA(hi, lo, (*fe)[5], ptr[12 + 17]);
++		MLA(hi, lo, (*fe)[6], ptr[13 + 17]);
++		MLA(hi, lo, (*fe)[7], ptr[14 + 17]); */
++	window_2	lr/*fe*/,r12/*ptr*/,r0/*acc*/,17/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++    /*		MLA(hi, lo, (*fo)[7], ptr[14]);
++		MLA(hi, lo, (*fo)[6], ptr[13]);
++		MLA(hi, lo, (*fo)[5], ptr[12]);
++		MLA(hi, lo, (*fo)[4], ptr[11]);
++		MLA(hi, lo, (*fo)[3], ptr[10]);
++		MLA(hi, lo, (*fo)[2], ptr[9]);
++		MLA(hi, lo, (*fo)[1], ptr[8]);
++		MLA(hi, lo, (*fo)[0], ptr[7]); */
++	window_2	r8/*fo*/,r12/*ptr*/,r0/*acc*/,0/*off*/,0/*mac*/,r2,r3,r4,r5,r6,r7
++
++
++    /*		*pcm2-- = SHIFT(MLZ(hi, lo)); */
++	lddsp		r3, sp[4]
++	lddsp		r2, sp[0]
++	scale		r1, r0, r1
++	st.w		--r11/*pcm_2*/, r1
++
++    /*		ptr += 2*pe; */
++	add		r12/*ptr*/, r12, r3/*pe*/<< 2
++
++    /*		++fo;
++		} */
++	sub		r8/*fo*/, -8*4
++
++	sub		r2, 1
++	stdsp		sp[0], r2
++	brne		odd_loop
++
++    /*		ptr += 33; */
++	sub		r12/*ptr*/, -33*2
++
++    /*		ML0(hi, lo, (*fo)[0], ptr[0 + 17]);
++		MLA(hi, lo, (*fo)[1], ptr[7 + 17]);
++		MLA(hi, lo, (*fo)[2], ptr[6 + 17]);
++		MLA(hi, lo, (*fo)[3], ptr[5 + 17]);
++		MLA(hi, lo, (*fo)[4], ptr[4 + 17]);
++		MLA(hi, lo, (*fo)[5], ptr[3 + 17]);
++		MLA(hi, lo, (*fo)[6], ptr[2 + 17]);
++		MLA(hi, lo, (*fo)[7], ptr[1 + 17]); */
++	window_1	r8/*fo*/,r12/*ptr*/,r0/*acc*/,17/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++
++	rjmp		synth_end
++synth_even:
++	/* Filter for even phases */
++
++	/*	fe = &(*filter)[0][0][0];
++		fx = &(*filter)[0][1][0];
++		fo = &(*filter)[1][1][0]; */
++	sub		lr /*fx*/, r11, -16*8*4
++	sub		r8 /*fo*/, r11, -(16*8*4*2 + 16*8*4)
++
++	/*	po = ((phase - 1) & 0xF) >> 1; */
++	sub		r12, 1
++	andl		r12, 0xe, COH
++	stdsp		sp[4], r12
++	/*	ptr = (short const *)Dmod + po; */
++	add		r12, r9, r12
++
++	/*	ML0(hi, lo, (*fx)[0], ptr[0 + 17]);
++		MLA(hi, lo, (*fx)[1], ptr[7 + 17]);
++		MLA(hi, lo, (*fx)[2], ptr[6 + 17]);
++		MLA(hi, lo, (*fx)[3], ptr[5 + 17]);
++		MLA(hi, lo, (*fx)[4], ptr[4 + 17]);
++		MLA(hi, lo, (*fx)[5], ptr[3 + 17]);
++		MLA(hi, lo, (*fx)[6], ptr[2 + 17]);
++		MLA(hi, lo, (*fx)[7], ptr[1 + 17]); */
++	window_1	lr/*fx*/,r12/*ptr*/,r0/*acc*/,17/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++
++    /*		MLN(hi, lo); */
++	neg		r0
++	acr		r1
++	neg		r1
++
++    /*		MLA(hi, lo, (*fe)[0], ptr[0 + 1]);
++		MLA(hi, lo, (*fe)[1], ptr[7 + 1]);
++		MLA(hi, lo, (*fe)[2], ptr[6 + 1]);
++                MLA(hi, lo, (*fe)[3], ptr[5 + 1]);
++                MLA(hi, lo, (*fe)[4], ptr[4 + 1]);
++                MLA(hi, lo, (*fe)[5], ptr[3 + 1]);
++                MLA(hi, lo, (*fe)[6], ptr[2 + 1]);
++                MLA(hi, lo, (*fe)[7], ptr[1 + 1]); */
++	window_1	r11/*fe*/,r12/*ptr*/,r0/*acc*/,1/*off*/,0/*mac*/,r2,r3,r4,r5,r6,r7
++
++    /*		*pcm1++ = SHIFT(MLZ(hi, lo));
++
++		pcm2 = pcm1 + 31; */
++	scale		r1, r0, r1
++	st.w		r10/*pcm_1*/++, r1
++	sub		lr/*pcm2*/, r10, -4*31
++
++    /*		for (sb = 1; sb < 16; ++sb) { */
++	mov 		r2, 15
++	stdsp		sp[0], r2
++even_loop:
++    /*		++fe;
++		ptr += 33; */
++	sub		r11 /*fe*/, -8*4
++	sub		r12, -33*2
++
++    /*		ML0(hi, lo, (*fo)[0], ptr[0 + 17]);
++		MLA(hi, lo, (*fo)[1], ptr[7 + 17]);
++		MLA(hi, lo, (*fo)[2], ptr[6 + 17]);
++		MLA(hi, lo, (*fo)[3], ptr[5 + 17]);
++		MLA(hi, lo, (*fo)[4], ptr[4 + 17]);
++		MLA(hi, lo, (*fo)[5], ptr[3 + 17]);
++		MLA(hi, lo, (*fo)[6], ptr[2 + 17]);
++		MLA(hi, lo, (*fo)[7], ptr[1 + 17]); */
++	window_1	r8/*fo*/,r12/*ptr*/,r0/*acc*/,17/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++    /*		MLN(hi, lo); */
++	neg		r0
++	acr		r1
++	neg		r1
++
++    /*		MLA(hi, lo, (*fe)[7], ptr[1 + 1]);
++		MLA(hi, lo, (*fe)[6], ptr[2 + 1]);
++		MLA(hi, lo, (*fe)[5], ptr[3 + 1]);
++		MLA(hi, lo, (*fe)[4], ptr[4 + 1]);
++		MLA(hi, lo, (*fe)[3], ptr[5 + 1]);
++		MLA(hi, lo, (*fe)[2], ptr[6 + 1]);
++		MLA(hi, lo, (*fe)[1], ptr[7 + 1]);
++		MLA(hi, lo, (*fe)[0], ptr[0 + 1]); */
++	window_1	r11/*fe*/,r12/*ptr*/,r0/*acc*/,1/*off*/,0/*mac*/,r2,r3,r4,r5,r6,r7
++
++    /*		*pcm1++ = SHIFT(MLZ(hi, lo)); */
++	lddsp		r2, sp[4]
++	scale		r1, r0, r1
++    /*	ptr -= 2*po; */
++	sub		r12/*ptr*/, r12, r2/*po*/<< 1
++	st.w		r10/*pcm_1*/++, r1
++
++
++    /*		ML0(hi, lo, (*fe)[0], ptr[7  + 17 - 1]);
++		MLA(hi, lo, (*fe)[1], ptr[8  + 17 - 1]);
++		MLA(hi, lo, (*fe)[2], ptr[9  + 17 - 1]);
++		MLA(hi, lo, (*fe)[3], ptr[10 + 17 - 1]);
++		MLA(hi, lo, (*fe)[4], ptr[11 + 17 - 1]);
++		MLA(hi, lo, (*fe)[5], ptr[12 + 17 - 1]);
++		MLA(hi, lo, (*fe)[6], ptr[13 + 17 - 1]);
++		MLA(hi, lo, (*fe)[7], ptr[14 + 17 - 1]); */
++	window_2	r11/*fe*/,r12/*ptr*/,r0/*acc*/,16/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++    /*		MLA(hi, lo, (*fo)[7], ptr[14]);
++		MLA(hi, lo, (*fo)[6], ptr[13]);
++		MLA(hi, lo, (*fo)[5], ptr[12]);
++		MLA(hi, lo, (*fo)[4], ptr[11]);
++		MLA(hi, lo, (*fo)[3], ptr[10]);
++		MLA(hi, lo, (*fo)[2], ptr[9]);
++		MLA(hi, lo, (*fo)[1], ptr[8]);
++		MLA(hi, lo, (*fo)[0], ptr[7]); */
++	window_2	r8/*fo*/,r12/*ptr*/,r0/*acc*/,0/*off*/,0/*mac*/,r2,r3,r4,r5,r6,r7
++
++
++    /*		*pcm2-- = SHIFT(MLZ(hi, lo)); */
++	lddsp		r3, sp[4]
++	lddsp		r2, sp[0]
++	scale		r1, r0, r1
++	st.w		--lr/*pcm_2*/, r1
++
++    /*		ptr += 2*po; */
++	add		r12/*ptr*/, r12, r3/*po*/<< 1
++
++    /*		++fo;
++		} */
++	sub		r8/*fo*/, -8*4
++
++	sub		r2, 1
++	stdsp		sp[0], r2
++	brne		even_loop
++
++    /*		ptr += 33; */
++	sub		r12/*ptr*/, -33*2
++
++    /*		ML0(hi, lo, (*fo)[0], ptr[0 + 17]);
++		MLA(hi, lo, (*fo)[1], ptr[7 + 17]);
++		MLA(hi, lo, (*fo)[2], ptr[6 + 17]);
++		MLA(hi, lo, (*fo)[3], ptr[5 + 17]);
++		MLA(hi, lo, (*fo)[4], ptr[4 + 17]);
++		MLA(hi, lo, (*fo)[5], ptr[3 + 17]);
++		MLA(hi, lo, (*fo)[6], ptr[2 + 17]);
++		MLA(hi, lo, (*fo)[7], ptr[1 + 17]); */
++	window_1	r8/*fo*/,r12/*ptr*/,r0/*acc*/,17/*off*/,1/*mul*/,r2,r3,r4,r5,r6,r7
++
++
++
++synth_end:
++   /*		*pcm1 = SHIFT(-MLZ(hi, lo)); */
++	scale		r1, r0, r1
++	neg		r1
++	st.w		r10/*pcm_1*/, r1
++
++	mov		r12, r10
++	sub		sp, -8
++	popm		r0-r7, pc
++
++
++
++
++
