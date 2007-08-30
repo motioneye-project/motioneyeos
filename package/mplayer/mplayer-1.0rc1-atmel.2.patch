@@ -111,6 +111,7 @@ index 29002c8..56c6fe4 100755
  
  
  echocheck "X11 headers presence"
+Note that this hunk is a dulicate between the other patch
 -  for I in `echo $_inc_extra | sed s/-I//g` /usr/X11/include /usr/X11R6/include /usr/include/X11R6 /usr/include /usr/openwin/include ; do
 +  for I in `echo $_inc_extra | sed s/-I//g`; do
      if test -f "$I/X11/Xlib.h" ; then
