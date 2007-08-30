@@ -313,11 +313,11 @@
 -    __convert_from_v(char* __out, 
 -		     const int __size __attribute__ ((__unused__)),
 -		     const char* __fmt,
--#ifdef __UCLIBC_HAS_XLOCALE__
+-#ifdef __UCLIBC_HAS_XCLOCALE__
 -		     _Tv __v, const __c_locale& __cloc, int __prec)
 +    inline int
 +    __convert_from_v(const __c_locale&
-+#ifndef __UCLIBC_HAS_XLOCALE__
++#ifndef __UCLIBC_HAS_XCLOCALE__
 +					__cloc __attribute__ ((__unused__))
 +#endif
 +		     ,
@@ -326,7 +326,7 @@
 +		     const char* __fmt, ...)
      {
 +      va_list __args;
-+#ifdef __UCLIBC_HAS_XLOCALE__
++#ifdef __UCLIBC_HAS_XCLOCALE__
        __c_locale __old = __gnu_cxx::__uselocale(__cloc);
  #else
 -		     _Tv __v, const __c_locale&, int __prec)
@@ -343,5 +343,5 @@
 +      const int __ret = std::vsnprintf(__out, __size, __fmt, __args);
 +      va_end(__args);
  
- #ifdef __UCLIBC_HAS_XLOCALE__
+ #ifdef __UCLIBC_HAS_XCLOCALE__
        __gnu_cxx::__uselocale(__old);
