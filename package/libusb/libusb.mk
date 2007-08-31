@@ -19,6 +19,7 @@ $(LIBUSB_PATCH):
 endif
 $(DL_DIR)/$(LIBUSB_SOURCE): $(LIBUSB_PATCH)
 	$(WGET) -P $(DL_DIR) $(LIBUSB_SITE)/$(LIBUSB_SOURCE)
+	touch -c $@
 
 libusb-source: $(DL_DIR)/$(LIBUSB_SOURCE) $(LIBUSB_PATCH)
 
