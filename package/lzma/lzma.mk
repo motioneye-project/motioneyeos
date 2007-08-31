@@ -56,7 +56,7 @@ $(STAGING_DIR)/bin/lzma: $(LZMA_HOST_DIR)/src/lzma/lzma
 .PHONY: lzma-host use-lzma-host-binary
 use-lzma-host-binary:
 	if [ ! -f "$(TOOL_BUILD_DIR)/bin/lzma" ]; then \
-		[ -d $(TOOL_BUILD_DIR)/bin ] || mkdir $(TOOL_BUILD_DIR)/bin; \
+		[ -d $(TOOL_BUILD_DIR)/bin ] || mkdir -p $(TOOL_BUILD_DIR)/bin; \
 		ln -sf "$(HOST_LZMA_IF_ANY)" "$(TOOL_BUILD_DIR)/bin/lzma"; \
 	fi
 
