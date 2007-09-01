@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LM_SENSORS
+	bool "lm-sensors"
+	select BR2_PACKAGE_LIBSYSFS
+	default n
+	help
+	  Lm-sensors is a hardware health monitoring package for
+	  Linux. It allows you to access information from
+	  temperature, voltage, and fan speed sensors. It
+	  works with most newer systems.
+
+	  http://www.lm-sensors.org/
+
