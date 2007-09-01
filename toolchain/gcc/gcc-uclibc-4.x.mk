@@ -291,7 +291,7 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 		$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-gccbug
 	# Strip the host binaries
 ifeq ($(GCC_STRIP_HOST_BINARIES),true)
-	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-*
+	strip --strip-all -R .note -R .comment $(filter-out -gccbug,$(wildcard $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-*))
 	-strip --strip-all -R .note -R .comment $(STAGING_DIR)/usr/bin/faked
 endif
 	# Make sure we have 'cc'.
