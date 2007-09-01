@@ -41,10 +41,10 @@ endif
 BINUTILS_HOST_PREREQ:=
 BINUTILS_TARGET_PREREQ:=
 
-ifeq ($(findstring 3.,$(GCC_VERSION)),3.)
+ifeq ($(findstring x3.,x$(GCC_VERSION)),x3.)
 BINUTILS_NO_MPFR:=y
 endif
-ifeq ($(findstring 4.0,$(GCC_VERSION)),4.0)
+ifeq ($(findstring x4.0,x$(GCC_VERSION)),x4.0)
 BINUTILS_NO_MPFR:=y
 endif
 
