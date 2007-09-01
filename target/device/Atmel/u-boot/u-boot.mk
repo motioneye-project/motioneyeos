@@ -112,10 +112,10 @@ $(UBOOT_CUSTOM).test: .config $(UBOOT_BUILD_DIR)/.configured
 	echo "/* Automatically generated file, do not edit */" \
 	> $(UBOOT_CUSTOM).test
 ifneq ($(TARGET_HOSTNAME),)
-	echo "#if defined(CONFIG_HOSTNAME)">> $(UBOOT_CUSTOM).test
-	echo "#undef CONFIG_HOSTNAME">> $(UBOOT_CUSTOM).test
+	echo "#if defined(CONFIG_HOSTNAME)" >> $(UBOOT_CUSTOM).test
+	echo "#undef CONFIG_HOSTNAME" >> $(UBOOT_CUSTOM).test
 	echo "#define CONFIG_HOSTNAME $(TARGET_HOSTNAME)">> $(UBOOT_CUSTOM).test
-	echo "#endif">> $(UBOOT_CUSTOM).test
+	echo "#endif" >> $(UBOOT_CUSTOM).test
 endif
 ifneq ($(TARGET_UBOOT_IPADDR),)
 	echo "#define CONFIG_IPADDR $(TARGET_UBOOT_IPADDR)">> $(UBOOT_CUSTOM).test
@@ -136,34 +136,34 @@ endif
 
 $(UBOOT_SCR): .config
 ifneq ($(TARGET_UBOOT_IPADDR),)
-	echo setenv ipaddr $(TARGET_UBOOT_IPADDR)> $(UBOOT_SCR)
+	echo setenv ipaddr $(TARGET_UBOOT_IPADDR) > $(UBOOT_SCR)
 endif
 ifneq ($(TARGET_UBOOT_SERVERIP),)
-	echo setenv serverip $(TARGET_UBOOT_SERVERIP)>> $(UBOOT_SCR)
+	echo setenv serverip $(TARGET_UBOOT_SERVERIP) >> $(UBOOT_SCR)
 endif
 ifneq ($(TARGET_UBOOT_GATEWAY),)
-	echo setenv gatewayip $(TARGET_UBOOT_GATEWAY)>> $(UBOOT_SCR)
+	echo setenv gatewayip $(TARGET_UBOOT_GATEWAY) >> $(UBOOT_SCR)
 endif
 ifneq ($(TARGET_UBOOT_NETMASK),)
-	echo setenv netmask $(TARGET_UBOOT_NETMASK)>> $(UBOOT_SCR)
+	echo setenv netmask $(TARGET_UBOOT_NETMASK) >> $(UBOOT_SCR)
 endif
-	echo setenv linux $(LINUX26_KERNEL)>> $(UBOOT_SCR)
-	echo setenv kernel-version $(LINUX26_VERSION)>> $(UBOOT_SCR)
-	echo setenv kernel-date $(DATE)>> $(UBOOT_SCR)
+	echo setenv linux $(LINUX26_KERNEL) >> $(UBOOT_SCR)
+	echo setenv kernel-version $(LINUX26_VERSION) >> $(UBOOT_SCR)
+	echo setenv kernel-date $(DATE) >> $(UBOOT_SCR)
 	echo setenv hostname $(TARGET_HOSTNAME) >> $(UBOOT_SCR)
-	echo setenv fs-date $(DATE)>> $(UBOOT_SCR)
-	echo setenv rd-1 rootfs.$(BR2_ARCH)-$(DATE).ext2>> $(UBOOT_SCR)
-	echo setenv rd-2 rootfs.$(BR2_ARCH)-$(DATE).jffs2>> $(UBOOT_SCR)
-	echo setenv rd rootfs.$(BR2_ARCH)-$(DATE).ext2>> $(UBOOT_SCR)
-	echo setenv ver 1>> $(UBOOT_SCR)
+	echo setenv fs-date $(DATE) >> $(UBOOT_SCR)
+	echo setenv rd-1 rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(UBOOT_SCR)
+	echo setenv rd-2 rootfs.$(BR2_ARCH)-$(DATE).jffs2 >> $(UBOOT_SCR)
+	echo setenv rd rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(UBOOT_SCR)
+	echo setenv ver 1 >> $(UBOOT_SCR)
 ifneq ($(TARGET_UBOOT_ETHADDR),)
-	echo setenv ethaddr $(TARGET_UBOOT_ETHADDR)>> $(UBOOT_SCR)
+	echo setenv ethaddr $(TARGET_UBOOT_ETHADDR) >> $(UBOOT_SCR)
 endif
-	echo setenv fstype ram>> $(UBOOT_SCR)
+	echo setenv fstype ram >> $(UBOOT_SCR)
 	echo fs >> $(UBOOT_SCR)
 	echo os >> $(UBOOT_SCR)
-	echo setargs>> $(UBOOT_SCR)
-	echo saveenv>> $(UBOOT_SCR)
+	echo setargs >> $(UBOOT_SCR)
+	echo saveenv >> $(UBOOT_SCR)
 
 $(UBOOT_SCR).$(PROJECT): $(UBOOT_SCR) $(MKIMAGE)
 	$(MKIMAGE) -A arm \
