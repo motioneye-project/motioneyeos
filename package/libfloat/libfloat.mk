@@ -47,7 +47,7 @@ $(STAGING_DIR)/lib/libfloat.so $(STAGING_DIR)/lib/libfloat.a: $(LIBFLOAT_DIR)/li
 	(cd $(TARGET_DIR)/lib; ln -snf libfloat.so.1 libfloat.so)
 	(cd $(TARGET_DIR)/usr/lib; ln -snf /lib/libfloat.so libfloat.so)
 
-libfloat: gcc_initial $(STAGING_DIR)/lib/libfloat.so
+libfloat: $(gcc_initial) $(STAGING_DIR)/lib/libfloat.so
 
 libfloat-clean:
 	-$(MAKE) -C $(LIBFLOAT_DIR) clean

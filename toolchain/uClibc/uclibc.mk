@@ -341,7 +341,7 @@ else
 endif
 	touch $@
 
-$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(LIBFLOAT_TARGET)
+$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_initial) $(LIBFLOAT_TARGET)
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		PREFIX= \
 		DEVEL_PREFIX=/ \
@@ -382,7 +382,6 @@ ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 			$(STAGING_DIR)/usr/include/; \
 	fi
 else
-
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/asm \
 			$(STAGING_DIR)/usr/include/; \
