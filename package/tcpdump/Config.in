@@ -7,6 +7,13 @@ config BR2_PACKAGE_TCPDUMP
 
 	  http://www.tcpdump.org/
 
+config BR2_PACKAGE_TCPDUMP_SMB
+	bool "smb dump support"
+	default n
+	depends on BR2_PACKAGE_TCPDUMP
+	help
+	  enable possibly-buggy SMB printer
+
 config BR2_PACKAGE_DHCPDUMP
 	bool "dhcpdump"
 	default n

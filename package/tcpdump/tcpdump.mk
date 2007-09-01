@@ -12,6 +12,12 @@ TCPDUMP_SITE:=http://www.tcpdump.org/release
 TCPDUMP_SOURCE:=tcpdump-$(TCPDUMP_VERSION).tar.gz
 TCPDUMP_CAT:=$(ZCAT)
 
+ifneq ($(BR2_PACKAGE_TCPDUMP_SMB),y)
+TCPDUMP_ENABLE_SMB:=--disable-smb
+else
+TCPDUMP_ENABLE_SMB:=--enable-smb
+endif
+
 $(DL_DIR)/$(TCPDUMP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(TCPDUMP_SITE)/$(TCPDUMP_SOURCE)
 
@@ -37,7 +43,8 @@ $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		--without-crypto \
-		--disable-smb \
+		$(TCPDUMP_ENABLE_SMB) \
+		$(DISABLE_IPV6) \
 	)
 	$(SED) '/HAVE_PCAP_DEBUG/d' $(TCPDUMP_DIR)/config.h
 	touch $@
