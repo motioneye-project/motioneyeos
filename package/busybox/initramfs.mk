@@ -3,9 +3,11 @@
 # busybox image for initramfs
 #
 #############################################################
+ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_INITRAMFS)),y)
 
 BUSYBOX_INITRAMFS_DIR:=$(BUSYBOX_DIR)-initramfs
 BR2_INITRAMFS_DIR:=$(PROJECT_BUILD_DIR)/initramfs
+BB_INITRAMFS_TARGET:=$(IMAGE).initramfs_lst
 
 $(BUSYBOX_INITRAMFS_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
 	rm -rf $(BUILD_DIR)/tmp $(BUSYBOX_INITRAMFS_DIR)
@@ -34,6 +36,7 @@ $(BUSYBOX_INITRAMFS_DIR)/.config $(BUSYBOX_INITRAMFS_DIR)/.configured: $(BUSYBOX
 	 echo CONFIG_FALSE=y; \
 	 echo CONFIG_GUNZIP=y; \
 	 echo CONFIG_HALT=y; \
+	 echo CONFIG_INIT=y; \
 	 echo CONFIG_INSMOD=y; \
 	 echo CONFIG_KILL=y; \
 	 echo CONFIG_LN=y; \
@@ -47,8 +50,8 @@ $(BUSYBOX_INITRAMFS_DIR)/.config $(BUSYBOX_INITRAMFS_DIR)/.configured: $(BUSYBOX
 	 echo CONFIG_FEATURE_CHECK_TAINTED_MODULE=n; \
 	 echo CONFIG_FEATURE_2_4_MODULES=n; \
 	 echo CONFIG_MOUNT=y; \
-	 echo CONFIG_MSH=y; \
-	 echo CONFIG_FEATURE_SH_IS_MSH=y; \
+	 echo CONFIG_ASH=y; \
+	 echo CONFIG_FEATURE_SH_IS_ASH=y; \
 	 echo CONFIG_PS=y; \
 	 echo CONFIG_READLINK=y; \
 	 echo CONFIG_RMMOD=y; \
@@ -97,7 +100,25 @@ $(BR2_INITRAMFS_DIR)/bin/busybox: $(BUSYBOX_INITRAMFS_DIR)/busybox
 		install
 	$(STRIP) $(STRIP_STRIP_ALL) $@
 
-$(PROJECT_BUILD_DIR)/.initramfs_done: $(BR2_INITRAMFS_DIR)/bin/busybox
+
+$(BB_INITRAMFS_TARGET): $(BR2_INITRAMFS_DIR)/bin/busybox
+	ln -fs bin/busybox $(PROJECT_BUILD_DIR)/initramfs/init
+	mkdir -p $(PROJECT_BUILD_DIR)/initramfs/etc
+	cat target/generic/target_busybox_skeleton/etc/inittab > \
+		$(PROJECT_BUILD_DIR)/initramfs/etc/inittab
+	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	(echo "chown -R 0:0 $(PROJECT_BUILD_DIR)/initramfs"; \
+	 echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(PROJECT_BUILD_DIR)/initramfs"; \
+	 echo "$(CONFIG_SHELL) target/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(PROJECT_BUILD_DIR)/initramfs > $(BB_INITRAMFS_TARGET)"; \
+	) > $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	chmod +x $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	$(STAGING_DIR)/usr/bin/fakeroot -- \
+		$(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	touch -c $@
+
+$(PROJECT_BUILD_DIR)/.initramfs_done: $(BR2_INITRAMFS_DIR)/bin/busybox \
+					$(BB_INITRAMFS_TARGET)
 	touch $@
 
 busybox-initramfs: uclibc $(PROJECT_BUILD_DIR)/.initramfs_done
@@ -107,12 +128,13 @@ busybox-initramfs-menuconfig: host-sed $(BUILD_DIR) busybox-source $(BUSYBOX_INI
 
 busybox-initramfs-clean:
 	rm -f $(BUSYBOX_INITRAMFS_DIR)/busybox $(PROJECT_BUILD_DIR)/.initramfs_*
-	rm -rf $(BR2_INITRAMFS_DIR)
+	rm -rf $(BR2_INITRAMFS_DIR) $(BB_INITRAMFS_TARGET)
 	-$(MAKE) -C $(BUSYBOX_INITRAMFS_DIR) clean
 
 busybox-initramfs-dirclean:
 	rm -rf $(BUSYBOX_INITRAMFS_DIR) $(BR2_INITRAMFS_DIR) \
 		$(PROJECT_BUILD_DIR)/.initramfs_*
+endif
 #############################################################
 #
 # Toplevel Makefile options
