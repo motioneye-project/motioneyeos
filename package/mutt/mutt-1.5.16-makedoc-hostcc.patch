@@ -1,0 +1,32 @@
+--- mutt-1.5.16.oorig/Makefile.in	2007-09-02 22:16:23.000000000 +0200
++++ mutt-1.5.16/Makefile.in	2007-09-02 22:19:49.000000000 +0200
+@@ -164,12 +164,6 @@
+ DBX = @DBX@
+ DEBUGGER = @DEBUGGER@
+ 
+-# $(makedoc_OBJECTS): $(makedoc_SOURCES)
+-# 	$(HOST_CC) $(DEFS) $(AM_CPPFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) -c $<
+-
+-# makedoc: $(makedoc_OBJECTS) $(makedoc_DEPENDENCIES)
+-# 	@rm -rf makedoc
+-# 	$(HOST_CC) $(AM_CFLAGS) $(LDFLAGS) $(makedoc_LDFLAGS) $(makedoc_OBJECTS) $(makedoc_LDADD) -o makedoc
+ DEFS = -DPKGDATADIR=\"$(pkgdatadir)\" -DSYSCONFDIR=\"$(sysconfdir)\" \
+ 	-DBINDIR=\"$(bindir)\" -DMUTTLOCALEDIR=\"$(datadir)/locale\" \
+ 	-DHAVE_CONFIG_H=1
+@@ -447,9 +441,15 @@
+ 
+ clean-binPROGRAMS:
+ 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
++
++$(makedoc_OBJECTS): $(makedoc_SOURCES)
++	$(CC_FOR_BUILD) -DHAVE_UNISTD_H -DHAVE_GETOPT_H -DHAVE_STRERROR -c $< ;#$(DEFS) $(AM_CPPFLAGS) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CFLAGS) -c $<
++#makedoc: $(makedoc_OBJECTS) $(makedoc_DEPENDENCIES)
++#	@rm -rf makedoc
++#	$(CC_FOR_BUILD) $(AM_CFLAGS) $(LDFLAGS) $(makedoc_LDFLAGS) $(makedoc_OBJECTS) $(makedoc_LDADD) -o makedoc
+ makedoc$(EXEEXT): $(makedoc_OBJECTS) $(makedoc_DEPENDENCIES) 
+ 	@rm -f makedoc$(EXEEXT)
+-	$(LINK) $(makedoc_LDFLAGS) $(makedoc_OBJECTS) $(makedoc_LDADD) $(LIBS)
++	$(CC_FOR_BUILD) $(makedoc_LDFLAGS) $(makedoc_OBJECTS) $(makedoc_LDADD) $(LIBS) -o $@
+ mutt$(EXEEXT): $(mutt_OBJECTS) $(mutt_DEPENDENCIES) 
+ 	@rm -f mutt$(EXEEXT)
+ 	$(LINK) $(mutt_LDFLAGS) $(mutt_OBJECTS) $(mutt_LDADD) $(LIBS)

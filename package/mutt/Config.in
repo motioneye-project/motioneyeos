@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MUTT
+	bool "mutt"
+	default n
+	select BR2_PACKAGE_NCURSES
+	help
+	  Mutt is a sophisticated text-based Mail User Agent (MUA)
+
+	  http://www.mutt.org/
+
