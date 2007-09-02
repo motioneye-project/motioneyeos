@@ -1,5 +1,5 @@
 config BR2_PACKAGE_MUTT
-	bool "mutt"
+	bool "mutt (BROKEN for wchar; FIXME!)"
 	default n
 	select BR2_PACKAGE_NCURSES
 	help
