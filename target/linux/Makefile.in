@@ -152,19 +152,20 @@ ifeq ($(BR2_INET_IPV6),y)
 else
 	echo "# CONFIG_IPV6 is not set" >> $(LINUX26_DIR)/.config
 endif
-ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
 	$(SED) '/CONFIG_INITRAMFS_SOURCE/d' $(LINUX26_DIR)/.config
+	$(SED) '/INITRAMFS_ROOT_.ID/d' $(LINUX26_DIR)/.config
+ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
 	echo "CONFIG_INITRAMFS_SOURCE=\"$(INITRAMFS_TARGET)\"" >> \
 		$(LINUX26_DIR)/.config
-	$(SED) '/INITRAMFS_ROOT_.ID/d' $(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_ROOT_UID=0" >> $(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_ROOT_GID=0" >> $(LINUX26_DIR)/.config
 endif
 ifeq ($(BR2_PACKAGE_BUSYBOX_INITRAMFS),y)
+	# precedence for a small initramfs
 	$(SED) '/CONFIG_INITRAMFS_SOURCE/d' $(LINUX26_DIR)/.config
+	$(SED) '/INITRAMFS_ROOT_.ID/d' $(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_SOURCE=\"$(BB_INITRAMFS_TARGET)\"" >> \
 		$(LINUX26_DIR)/.config
-	$(SED) '/INITRAMFS_ROOT_.ID/d' $(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_ROOT_UID=0" >> $(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_ROOT_GID=0" >> $(LINUX26_DIR)/.config
 endif
