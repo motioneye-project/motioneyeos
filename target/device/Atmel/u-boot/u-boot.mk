@@ -147,7 +147,7 @@ endif
 ifneq ($(TARGET_UBOOT_NETMASK),)
 	echo setenv netmask $(TARGET_UBOOT_NETMASK) >> $(UBOOT_SCR)
 endif
-	echo setenv linux $(LINUX26_KERNEL) >> $(UBOOT_SCR)
+	echo setenv linux $(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE).gz >> $(UBOOT_SCR)
 	echo setenv kernel-version $(LINUX26_VERSION) >> $(UBOOT_SCR)
 	echo setenv kernel-date $(DATE) >> $(UBOOT_SCR)
 	echo setenv hostname $(TARGET_HOSTNAME) >> $(UBOOT_SCR)
