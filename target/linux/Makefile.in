@@ -209,6 +209,8 @@ linux26-modules: cross-depmod26 $(LINUX26_DIR)/.modules_installed
 
 linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
+linux26-patched: $(LINUX26_DIR)/.patched
+
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linux26clean:
 	rm -f $(LINUX26_KERNEL) $(LINUX26_DIR)/.configured
