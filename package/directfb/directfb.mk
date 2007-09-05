@@ -5,7 +5,7 @@
 #############################################################
 #DIRECTFB_VERSION:=0.9.25.1
 #DIRECTFB_SITE:=http://www.directfb.org/downloads/Old
-DIRECTFB_VERSION:=1.0.0
+DIRECTFB_VERSION:=1.0.1
 DIRECTFB_SITE:=http://www.directfb.org/downloads/Core
 DIRECTFB_SOURCE:=DirectFB-$(DIRECTFB_VERSION).tar.gz
 DIRECTFB_CAT:=$(ZCAT)
@@ -17,6 +17,11 @@ DIRECTFB_FUSION:=linux-fusion
 else
 DIRECTFB_MULTI:=
 DIRECTFB_FUSION:=
+endif
+ifeq ($(BR2_PACKAGE_XSERVER_none),y)
+DIRECTFB_X:= --disable-x11
+else
+DIRECTFB_X:= --enable-x11
 endif
 
 $(DL_DIR)/$(DIRECTFB_SOURCE):
@@ -55,6 +60,7 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 		--with-gfxdrivers=cle266,unichrome \
 		--enable-shared \
 		$(DIRECTFB_MULTI) \
+		$(DIRECTFB_X) \
 		--enable-jpeg \
 		--enable-png \
 		--enable-linux-input \
