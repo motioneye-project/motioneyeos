@@ -4,18 +4,24 @@
 #
 #############################################################
 
-DNSMASQ_SITE=http://thekelleys.org.uk/dnsmasq
+DNSMASQ_SITE:=http://thekelleys.org.uk/dnsmasq
 ifeq ($(filter $(TARGETS),dnsmasq1),)
-DNSMASQ_UPVER=2.39
-DNSMASQ_VERSION=dnsmasq2
+DNSMASQ_UPVER:=2.39
+DNSMASQ_VERSION:=dnsmasq2
 else
-DNSMASQ_UPVER=1.18
-DNSMASQ_VERSION=dnsmasq1
+DNSMASQ_UPVER:=1.18
+DNSMASQ_VERSION:=dnsmasq1
 endif
-DNSMASQ_SOURCE=dnsmasq-$(DNSMASQ_UPVER).tar.gz
-DNSMASQ_DIR=$(BUILD_DIR)/dnsmasq-$(DNSMASQ_UPVER)
-DNSMASQ_BINARY=dnsmasq
-DNSMASQ_TARGET_BINARY=usr/sbin/dnsmasq
+DNSMASQ_SOURCE:=dnsmasq-$(DNSMASQ_UPVER).tar.gz
+DNSMASQ_DIR:=$(BUILD_DIR)/dnsmasq-$(DNSMASQ_UPVER)
+DNSMASQ_BINARY:=dnsmasq
+DNSMASQ_TARGET_BINARY:=usr/sbin/dnsmasq
+
+ifneq ($(BR2_INET_IPV6),y)
+DNSMASQ_COPTS:=-DNO_IPV6
+else
+DNSMASQ_COPTS:=
+endif
 
 $(DL_DIR)/$(DNSMASQ_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DNSMASQ_SITE)/$(DNSMASQ_SOURCE)
@@ -28,7 +34,7 @@ $(DNSMASQ_DIR)/.source: $(DL_DIR)/$(DNSMASQ_SOURCE)
 
 $(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY): $(DNSMASQ_DIR)/.source
 	$(MAKE) CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
-		PREFIX=/usr -C $(DNSMASQ_DIR)
+		COPTS=$(DNSMASQ_COPTS) PREFIX=/usr -C $(DNSMASQ_DIR)
 
 $(TARGET_DIR)/$(DNSMASQ_TARGET_BINARY): $(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) PREFIX=/usr -C $(DNSMASQ_DIR) install
@@ -36,8 +42,9 @@ $(TARGET_DIR)/$(DNSMASQ_TARGET_BINARY): $(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY)
 	mkdir -p $(TARGET_DIR)/var/lib/misc
 	# Isn't this vulverable to symlink attacks?
 	ln -sf /tmp/dnsmasq.leases $(TARGET_DIR)/var/lib/misc/dnsmasq.leases
-	# Another questionable wipe out :(
-	#rm -rf $(TARGET_DIR)/usr/share/man
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
 
 dnsmasq: uclibc $(TARGET_DIR)/$(DNSMASQ_TARGET_BINARY)
 
