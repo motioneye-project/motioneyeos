@@ -6,7 +6,7 @@
 
 DNSMASQ_SITE:=http://thekelleys.org.uk/dnsmasq
 ifeq ($(filter $(TARGETS),dnsmasq1),)
-DNSMASQ_UPVER:=2.39
+DNSMASQ_UPVER:=2.40
 DNSMASQ_VERSION:=dnsmasq2
 else
 DNSMASQ_UPVER:=1.18
