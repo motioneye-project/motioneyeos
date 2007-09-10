@@ -1,0 +1,107 @@
+diff -urN busybox-1.7.0/applets/applets.c busybox-1.7.0-readlink/applets/applets.c
+--- busybox-1.7.0/applets/applets.c	2007-08-24 11:50:02.000000000 +0100
++++ busybox-1.7.0-readlink/applets/applets.c	2007-09-06 17:41:38.000000000 +0100
+@@ -546,7 +546,7 @@
+  help:
+ 		output_width = 80;
+ 		if (ENABLE_FEATURE_AUTOWIDTH) {
+-			/* Obtain the terminal width.  */
++			/* Obtain the terminal width */
+ 			get_terminal_width_height(0, &output_width, NULL);
+ 		}
+ 		/* leading tab and room to wrap */
+@@ -580,12 +580,11 @@
+ 
+ 	if (ENABLE_FEATURE_INSTALLER && strcmp(argv[1], "--install") == 0) {
+ 		const char *busybox;
+-		busybox = xmalloc_readlink_or_warn(bb_busybox_exec_path);
++		busybox = xmalloc_readlink(bb_busybox_exec_path);
+ 		if (!busybox)
+ 			busybox = bb_busybox_exec_path;
+ 		/* -s makes symlinks */
+-		install_links(busybox,
+-				 argv[2] && strcmp(argv[2], "-s") == 0);
++		install_links(busybox, argv[2] && strcmp(argv[2], "-s") == 0);
+ 		return 0;
+ 	}
+ 
+diff -urN busybox-1.7.0/include/libbb.h busybox-1.7.0-readlink/include/libbb.h
+--- busybox-1.7.0/include/libbb.h	2007-08-24 11:49:55.000000000 +0100
++++ busybox-1.7.0-readlink/include/libbb.h	2007-09-06 17:41:38.000000000 +0100
+@@ -248,9 +248,10 @@
+ DIR *xopendir(const char *path);
+ DIR *warn_opendir(const char *path);
+ 
+-char *xrealloc_getcwd_or_warn(char *cwd);
++/* UNUSED: char *xmalloc_realpath(const char *path); */
++char *xmalloc_readlink(const char *path);
+ char *xmalloc_readlink_or_warn(const char *path);
+-char *xmalloc_realpath(const char *path);
++char *xrealloc_getcwd_or_warn(char *cwd);
+ 
+ 
+ //TODO: signal(sid, f) is the same? then why?
+@@ -316,8 +317,8 @@
+ };
+ /* Create stream socket, and allocate suitable lsa.
+  * (lsa of correct size and lsa->sa.sa_family (AF_INET/AF_INET6))
+- * af == AF_UNSPEC will result in trying to create IPv6, and
+- * if kernel doesn't support it, IPv4.
++ * af == AF_UNSPEC will result in trying to create IPv6 socket,
++ * and if kernel doesn't support it, IPv4.
+  */
+ int xsocket_type(len_and_sockaddr **lsap, USE_FEATURE_IPV6(int af,) int sock_type);
+ int xsocket_stream(len_and_sockaddr **lsap);
+diff -urN busybox-1.7.0/libbb/xreadlink.c busybox-1.7.0-readlink/libbb/xreadlink.c
+--- busybox-1.7.0/libbb/xreadlink.c	2007-08-24 11:49:51.000000000 +0100
++++ busybox-1.7.0-readlink/libbb/xreadlink.c	2007-09-06 17:41:38.000000000 +0100
+@@ -10,8 +10,7 @@
+  * NOTE: This function returns a malloced char* that you will have to free
+  * yourself. You have been warned.
+  */
+-
+-char *xmalloc_readlink_or_warn(const char *path)
++char *xmalloc_readlink(const char *path)
+ {
+ 	enum { GROWBY = 80 }; /* how large we will grow strings by */
+ 
+@@ -20,20 +19,30 @@
+ 
+ 	do {
+ 		buf = xrealloc(buf, bufsize += GROWBY);
+-		readsize = readlink(path, buf, bufsize); /* 1st try */
++		readsize = readlink(path, buf, bufsize);
+ 		if (readsize == -1) {
+-			bb_perror_msg("%s", path);
+ 			free(buf);
+ 			return NULL;
+ 		}
+-	}
+-	while (bufsize < readsize + 1);
++	} while (bufsize < readsize + 1);
+ 
+ 	buf[readsize] = '\0';
+ 
+ 	return buf;
+ }
+ 
++char *xmalloc_readlink_or_warn(const char *path)
++{
++	char *buf = xmalloc_readlink(path);
++	if (!buf) {
++		/* EINVAL => "file: Invalid argument" => puzzled user */
++		bb_error_msg("%s: cannot read link (not a symlink?)", path);
++	}
++	return buf;
++}
++
++/* UNUSED */
++#if 0
+ char *xmalloc_realpath(const char *path)
+ {
+ #if defined(__GLIBC__) && !defined(__UCLIBC__)
+@@ -46,3 +55,4 @@
+ 	return xstrdup(realpath(path, buf));
+ #endif
+ }
++#endif
