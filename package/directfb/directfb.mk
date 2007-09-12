@@ -19,9 +19,9 @@ DIRECTFB_MULTI:=
 DIRECTFB_FUSION:=
 endif
 ifeq ($(BR2_PACKAGE_XSERVER_none),y)
-DIRECTFB_X:= --disable-x11
+DIRECTFB_X:=--disable-x11
 else
-DIRECTFB_X:= --enable-x11
+DIRECTFB_X:=--enable-x11
 endif
 
 $(DL_DIR)/$(DIRECTFB_SOURCE):
