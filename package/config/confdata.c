@@ -51,8 +51,8 @@ static char *conf_expand_value(const char *in)
 
 	res_value[0] = 0;
 	dst = name;
-	while ((src = (signed char *) strchr((const char *)in, '$'))) {
-		strncat(res_value, (char *)in, src - in);
+	while ((src = strchr(in, '$'))) {
+		strncat(res_value, in, src - in);
 		src++;
 		dst = name;
 		while (isalnum(*src) || *src == '_')
@@ -63,7 +63,7 @@ static char *conf_expand_value(const char *in)
 		strcat(res_value, sym_get_string_value(sym));
 		in = src;
 	}
-	strcat(res_value, (const char *)in);
+	strcat(res_value, in);
 
 	return res_value;
 }
@@ -74,7 +74,7 @@ char *conf_get_default_confname(void)
 	static char fullname[PATH_MAX+1];
 	char *env, *name;
 
-	name = conf_expand_value((const signed char *)conf_defname);
+	name = conf_expand_value(conf_defname);
 	env = getenv(SRCTREE);
 	if (env) {
 		sprintf(fullname, "%s/%s", env, name);
