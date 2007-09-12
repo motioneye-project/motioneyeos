@@ -52,7 +52,7 @@ int dialog_inputbox(const char *title, const char *prompt, int height, int width
 	if (!init)
 		instr[0] = '\0';
 	else
-		strcpy(instr, init);
+		strcpy((char *)instr, init);
 
 do_resize:
 	if (getmaxy(stdscr) <= (height - 2))
@@ -105,7 +105,7 @@ do_resize:
 		for (i = 0; i < box_width - 1; i++)
 			waddch(dialog, instr[scroll + i]);
 	} else {
-		waddstr(dialog, instr);
+		waddstr(dialog, (char *)instr);
 	}
 
 	wmove(dialog, box_y, box_x + input_x);
@@ -136,7 +136,7 @@ do_resize:
 							waddch(dialog,
 							       instr[scroll + input_x + i] ?
 							       instr[scroll + input_x + i] : ' ');
-						input_x = strlen(instr) - scroll;
+						input_x = strlen((char *)instr) - scroll;
 					} else
 						input_x--;
 					instr[scroll + input_x] = '\0';

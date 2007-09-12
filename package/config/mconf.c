@@ -413,7 +413,7 @@ again:
 		return;
 	}
 
-	sym_arr = sym_re_search(dialog_input_result);
+	sym_arr = sym_re_search((char *)dialog_input_result);
 	res = get_relations_str(sym_arr);
 	free(sym_arr);
 	show_textbox(_("Search Results"), str_get(&res), 0, 0);
@@ -789,7 +789,7 @@ static void conf_string(struct menu *menu)
 				      sym_get_string_value(menu->sym));
 		switch (res) {
 		case 0:
-			if (sym_set_string_value(menu->sym, dialog_input_result))
+			if (sym_set_string_value(menu->sym, (char *)dialog_input_result))
 				return;
 			show_textbox(NULL, _("You have made an invalid entry."), 5, 43);
 			break;
@@ -814,7 +814,7 @@ static void conf_load(void)
 		case 0:
 			if (!dialog_input_result[0])
 				return;
-			if (!conf_read(dialog_input_result))
+			if (!conf_read((char *)dialog_input_result))
 				return;
 			show_textbox(NULL, _("File does not exist!"), 5, 38);
 			break;
@@ -838,7 +838,7 @@ static void conf_save(void)
 		case 0:
 			if (!dialog_input_result[0])
 				return;
-			if (!conf_write(dialog_input_result))
+			if (!conf_write((char *)dialog_input_result))
 				return;
 			show_textbox(NULL, _("Can't create file!  Probably a nonexistent directory."), 5, 60);
 			break;

@@ -44,7 +44,7 @@ static void strip(char *str)
 
 	while ((isspace(*p)))
 		p++;
-	l = strlen(p);
+	l = strlen((char *)p);
 	if (p != str)
 		memmove(str, p, l + 1);
 	if (!l)
@@ -101,7 +101,7 @@ static void conf_askvalue(struct symbol *sym, const char *def)
 		check_stdin();
 	case ask_all:
 		fflush(stdout);
-		fgets(line, 128, stdin);
+		fgets((char *)line, 128, stdin);
 		return;
 	case set_default:
 		printf("%s\n", def);
@@ -194,8 +194,8 @@ int conf_string(struct menu *menu)
 				break;
 			}
 		default:
-			line[strlen(line)-1] = 0;
-			def = line;
+			line[strlen((char *)line)-1] = 0;
+			def = (char *)line;
 		}
 		if (def && sym_set_string_value(sym, def))
 			return 0;
@@ -243,7 +243,7 @@ static int conf_sym(struct menu *menu)
 		case 'n':
 		case 'N':
 			newval = no;
-			if (!line[1] || !strcmp(&line[1], "o"))
+			if (!line[1] || !strcmp((char *)&line[1], "o"))
 				break;
 			continue;
 		case 'm':
@@ -255,7 +255,7 @@ static int conf_sym(struct menu *menu)
 		case 'y':
 		case 'Y':
 			newval = yes;
-			if (!line[1] || !strcmp(&line[1], "es"))
+			if (!line[1] || !strcmp((char *)&line[1], "es"))
 				break;
 			continue;
 		case 0:
@@ -356,7 +356,7 @@ static int conf_choice(struct menu *menu)
 			check_stdin();
 		case ask_all:
 			fflush(stdout);
-			fgets(line, 128, stdin);
+			fgets((char *)line, 128, stdin);
 			strip(line);
 			if (line[0] == '?') {
 				printf("\n%s\n", menu->sym->help ?
@@ -366,7 +366,7 @@ static int conf_choice(struct menu *menu)
 			if (!line[0])
 				cnt = def;
 			else if (isdigit(line[0]))
-				cnt = atoi(line);
+				cnt = atoi((char *)line);
 			else
 				continue;
 			break;
@@ -390,7 +390,7 @@ static int conf_choice(struct menu *menu)
 		}
 		if (!child)
 			continue;
-		if (line[strlen(line) - 1] == '?') {
+		if (line[strlen((char *)line) - 1] == '?') {
 			printf("\n%s\n", child->sym->help ?
 				child->sym->help : nohelp_text);
 			continue;
