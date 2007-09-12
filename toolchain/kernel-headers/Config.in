@@ -6,7 +6,7 @@ menu "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
-	default BR2_KERNEL_HEADERS_2_6_22
+	default BR2_KERNEL_HEADERS_2_6_22_1
 	help
 	  Select the version of kernel header files you wish to use.
 	  You must select the correct set of header files to match
@@ -40,42 +40,61 @@ choice
 		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
 		bool "Linux 2.6.12 kernel headers"
 
+	config BR2_KERNEL_HEADERS_2_6_20_4
+		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
+		bool "Linux 2.6.20.4 kernel headers"
+
 	config BR2_KERNEL_HEADERS_2_6_20
 		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.6.20 kernel headers"
+		bool "Latest Linux 2.6.20.x kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_21_5
+		depends !BR2_avr32 && !BR2_nios2
+		bool "Linux 2.6.21.5 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_21
 		depends !BR2_avr32 && !BR2_nios2
-		bool "Linux 2.6.21.x kernel headers"
+		bool "Latest Linux 2.6.21.x kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_22_1
+		depends !BR2_nios2
+		bool "Linux 2.6.22.1 kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_22
-		depends !BR2_nios2
-		bool "Linux 2.6.22.x kernel headers"
+		depends !BR2_avr32 && !BR2_nios2
+		bool "Latest Linux 2.6.22.x kernel headers"
 
 endchoice
 
 config BR2_KERNEL_HEADERS_IPMI
 	bool "use ipmi kernel patches"
 	default n
-	depends BR2_KERNEL_HEADERS_2_6_20 || BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
+	depends BR2_KERNEL_HEADERS_2_6_20_4 || BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
 	help
 	  Apply patches which add IPMI sensor support.
 
 config BR2_KERNEL_HEADERS_LZMA
 	bool "use lzma initramfs kernel patches"
 	default n
-	depends BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
+	depends BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
 	help
 	  Apply patches which allow for lzma compressed
 	  initramfs filesystems.  This requires the lzma
 	  program in your development environment.
 
+config BR2_KERNEL_HEADERS_RT
+	bool "use realtime (-rt) kernel patches"
+	default n
+	depends BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
+	help
+	  Apply Ingo's realtime extensions to linux
+
 config BR2_KERNEL_HEADERS_PATCH_DIR
 	bool "Add additional headers from $(KERNEL_HEADERS_PATCH_DIR)"
 	default n
-	depends BR2_KERNEL_HEADERS_2_6_20 || BR2_KERNEL_HEADERS_2_6_21 || BR2_KERNEL_HEADERS_2_6_22
+	depends BR2_KERNEL_HEADERS_2_6_20_4 || BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
 	help
-	  Apply additonal kernel patches defined by KERNEL_HEADERS_PATCH_DIR
+	  Apply additional kernel patches defined by KERNEL_HEADERS_PATCH_DIR
 	  in your board directory.
 
 config BR2_DEFAULT_KERNEL_HEADERS
@@ -87,8 +106,11 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.6.9"     if BR2_KERNEL_HEADERS_2_6_9
 	default "2.6.11"    if BR2_KERNEL_HEADERS_2_6_11
 	default "2.6.12"    if BR2_KERNEL_HEADERS_2_6_12
+	default "2.6.20.4"  if BR2_KERNEL_HEADERS_2_6_20_4
 	default "2.6.20.19"  if BR2_KERNEL_HEADERS_2_6_20
+	default "2.6.21.5"  if BR2_KERNEL_HEADERS_2_6_21_5
 	default "2.6.21.7"  if BR2_KERNEL_HEADERS_2_6_21
+	default "2.6.22.1"  if BR2_KERNEL_HEADERS_2_6_22_1
 	default "2.6.22.6"  if BR2_KERNEL_HEADERS_2_6_22
 
 endmenu

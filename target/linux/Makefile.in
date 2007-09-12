@@ -110,7 +110,7 @@ ifneq ($(DOWNLOAD_LINUX26_VERSION),$(LINUX26_VERSION))
 endif
 	touch $@
 
-$(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked
+$(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked $(LINUX_HEADERS_DEPENDS)
 	toolchain/patch-kernel.sh $(LINUX26_DIR) toolchain/kernel-headers \
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
 ifeq ($(BR2_KERNEL_HEADERS_IPMI),y)
@@ -120,6 +120,9 @@ endif
 ifeq ($(BR2_KERNEL_HEADERS_LZMA),y)
 	toolchain/patch-kernel.sh $(LINUX26_DIR) toolchain/kernel-headers/lzma \
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
+endif
+ifeq ($(BR2_KERNEL_HEADERS_RT),y)
+	toolchain/patch-kernel.sh $(LINUX26_DIR) $(DL_DIR) $(LINUX_RT_SOURCE)
 endif
 ifeq ($(BR2_KERNEL_HEADERS_PATCH_DIR),y)
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(KERNEL_HEADERS_PATCH_DIR) \
