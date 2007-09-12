@@ -170,6 +170,44 @@
     tool. 
     The file is stored in the "binaries/<code>$(PROJECT)</code>/" directory</p>
 
+    <h3><a name="local_board_support" id="local_board_support"></a>
+    Creating your own board support</h3>
+
+    <p>Once a package has been unpacked, it is possible to manually update
+    configuration files. Buildroot can automatically save the configuration
+    of buildroot, linux, busybox, uclibc and u-boot in "local/$(PROJECT) by 
+    using the command:
+    </p>
+
+<pre>
+ $ make saveconfig
+</pre>
+
+     <p>Once a buildroot configuration has been created by saveconfig, 
+     the default "$(TOPDIR)/.config" file can be overridden by</p>
+
+<pre>
+ $ make BOARD=&lt;project&gt;
+</pre>
+
+    <p>Buildroot will then use "local/&lt;project&gt;/&lt;project&gt;.config"
+    instead of ".config". </p>
+
+    <p>If you want to modify your board, you can copy the project configuration
+     file to ".config" by using the command:</p> 
+
+<pre>
+ $ make BOARD=&lt;project&gt; getconfig
+</pre>
+
+    <p>You can share your custom board support directory between several buildroot trees
+    by setting the environment variable <code>BUILDROOT_LOCAL</code> to this directory,
+    </p> 
+
+
+    <h3><a name="offline_builds" id="offline_builds"></a>
+    Offline builds</h3>
+
     <p>If you intend to do an offline-build and just want to download all
     sources that you previously selected in &quot;make menuconfig&quot; then
     issue:</p>
