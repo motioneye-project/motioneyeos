@@ -154,15 +154,15 @@ MATCHBOX_LIB_OPTS:=
 MATCHBOX_LIB_DEPS:=
 
 MATCHBOX_WM_OPTS:=
-MATCHBOX_WM_DEPS:=x11r7-libxdamage
-MATCHBOX_WM_DEPS+=x11r7-libxcursor
+MATCHBOX_WM_DEPS:=xlib_libXdamage
+MATCHBOX_WM_DEPS+=xlib_libXcursor
 
 ifeq ($(strip $(BR2_PACKAGE_X11R7_LIBXCOMPOSITE)),y)
 ifeq ($(strip $(BR2_PACKAGE_X11R7_LIBXPM)),y)
   MATCHBOX_WM_OPTS+=--enable-composite
-  MATCHBOX_WM_DEPS+=x11r7-libxcomposite
-  MATCHBOX_WM_DEPS+=x11r7-libxpm
-  MATCHBOX_LIB_DEPS+=x11r7-libxpm
+  MATCHBOX_WM_DEPS+=xlib_libXcomposite
+  MATCHBOX_WM_DEPS+=xlib_libXpm
+  MATCHBOX_LIB_DEPS+=xlib_libXpm
 endif
 endif
 
@@ -172,7 +172,7 @@ MATCHBOX_PANEL_DEPS:=
 
 ifeq ($(strip $(BR2_PACKAGE_MATCHBOX_SNOTIFY)),y)
   MATCHBOX_SNOTIFY_OPTS+=--enable-startup-notification
-  MATCHBOX_SNOTIFY_DEPS+=x11r7-libxsm
+  MATCHBOX_SNOTIFY_DEPS+=xlib_libSM
   MATCHBOX_SNOTIFY_DEPS+=$(TARGET_DIR)/usr/lib/$(MATCHBOX_SNOTIFY_BIN)
   MATCHBOX_PANEL_DEPS+=$(TARGET_DIR)/usr/bin/$(MATCHBOX_SM_BIN)
 else
@@ -202,9 +202,9 @@ endif
 
 ifeq ($(strip $(BR2_PACKAGE_X11R7_LIBXFT2)),y)
   MATCHBOX_LIB_OPTS+=--enable-xft
-  MATCHBOX_LIB_DEPS+=x11r7-libxft2
+  MATCHBOX_LIB_DEPS+=xlib_libXft2
   #MATCHBOX_WM_OPTS+=--enable-standalone-xft
-  MATCHBOX_WM_DEPS+=x11r7-libxft2
+  MATCHBOX_WM_DEPS+=xlib_libXft2
 else
   MATCHBOX_LIB_OPTS+=--disable-xft
   #MATCHBOX_WM_OPTS+=--disable-standalone-xft
@@ -232,7 +232,7 @@ $(MATCHBOX_LIB_DIR)/.configured: $(MATCHBOX_LIB_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_LIB_OPTS) \
 	)
@@ -256,7 +256,7 @@ $(MATCHBOX_SNOTIFY_DIR)/.configured: $(MATCHBOX_SNOTIFY_DIR)/.unpacked
 	--libdir=$(STAGING_DIR)/usr/lib \
 	--includedir=$(STAGING_DIR)/usr/include \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	)
 	touch $(MATCHBOX_SNOTIFY_DIR)/.configured
@@ -281,7 +281,7 @@ $(MATCHBOX_WM_DIR)/.configured: $(MATCHBOX_WM_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_WM_OPTS) \
 	$(MATCHBOX_SNOTIFY_OPTS) \
@@ -308,7 +308,7 @@ $(MATCHBOX_SM_DIR)/.configured: $(MATCHBOX_SM_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_SNOTIFY_OPTS) \
 	)
@@ -334,7 +334,7 @@ $(MATCHBOX_CN_DIR)/.configured: $(MATCHBOX_CN_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	)
 	touch $(MATCHBOX_CN_DIR)/.configured
@@ -359,7 +359,7 @@ $(MATCHBOX_PL_DIR)/.configured: $(MATCHBOX_PL_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_SNOTIFY_OPTS) \
 	)
@@ -385,7 +385,7 @@ $(MATCHBOX_DP_DIR)/.configured: $(MATCHBOX_DP_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	$(MATCHBOX_SNOTIFY_OPTS) \
 	)
@@ -411,7 +411,7 @@ $(MATCHBOX_FK_DIR)/.configured: $(MATCHBOX_FK_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	)
 	$(SED) 's:^SUBDIRS = fakekey src tests.*:SUBDIRS = fakekey src:g' $(MATCHBOX_FK_DIR)/Makefile
@@ -437,7 +437,7 @@ $(MATCHBOX_KB_DIR)/.configured: $(MATCHBOX_KB_DIR)/.unpacked
 	--with-expat-includes=$(STAGING_DIR)/usr/include \
 	--with-expat-lib=$(STAGING_DIR)/usr/lib \
 	--with-x \
-	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
 	)
 	touch $(MATCHBOX_KB_DIR)/.configured
@@ -624,7 +624,7 @@ matchbox-panel: uclibc matchbox $(TARGET_DIR)/usr/bin/$(MATCHBOX_PL_BIN) $(TARGE
 
 matchbox-desktop: uclibc matchbox $(TARGET_DIR)/usr/bin/$(MATCHBOX_DP_BIN)
 
-matchbox-keyboard: uclibc matchbox x11r7-libxtst $(TARGET_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so $(TARGET_DIR)/usr/bin/$(MATCHBOX_KB_BIN)
+matchbox-keyboard: uclibc matchbox xlib_libXtst $(TARGET_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so $(TARGET_DIR)/usr/bin/$(MATCHBOX_KB_BIN)
 
 matchbox-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libmb.*

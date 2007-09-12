@@ -106,8 +106,8 @@ $(PANGO_DIR)/.configured: $(PANGO_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/include \
-		--x-libraries=$(STAGING_DIR)/lib \
+		--x-includes=$(STAGING_DIR)/usr/include/X11 \
+		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \

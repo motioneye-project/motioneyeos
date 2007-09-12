@@ -70,6 +70,8 @@ LIBGTK2_BUILD_ENV= \
 		ac_use_included_regex=no \
 		gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
+		ac_cv_prog_F77=no \
+		ac_cv_prog_CXX=no \
 		ac_cv_path_CUPS_CONFIG=no
 
 
@@ -111,8 +113,8 @@ $(LIBGTK2_DIR)/.configured: $(LIBGTK2_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/include \
-		--x-libraries=$(STAGING_DIR)/lib \
+		--x-includes=$(STAGING_DIR)/usr/include/X11 \
+		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \

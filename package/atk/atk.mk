@@ -82,6 +82,8 @@ $(ATK_DIR)/.configured: $(ATK_DIR)/.unpacked
 		ac_use_included_regex=no \
 		gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
+		ac_cv_prog_F77=no \
+		ac_cv_prog_CXX=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
@@ -101,8 +103,8 @@ $(ATK_DIR)/.configured: $(ATK_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/X11R6/include \
-		--x-libraries=$(STAGING_DIR)/usr/X11R6/lib \
+		--x-includes=$(STAGING_DIR)/usr/include/X11 \
+		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \

@@ -147,7 +147,8 @@ $(BUILD_DIR)/%/.stamp_patched: NAMEVER = $($(PKG)_NAME)-$($(PKG)_VERSION)
 $(BUILD_DIR)/%/.stamp_patched:
 	$(call MESSAGE,"Patching")
 	$(if $($(PKG)_PATCH),toolchain/patch-kernel.sh $(@D) $(DL_DIR) $($(PKG)_PATCH))
-	$(Q)(if test -d package/$($(PKG)_NAME) ; then \
+	$(Q)(\
+	if test -d package/$($(PKG)_NAME) ; then \
 	  if test "$(wildcard package/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
 	    toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
 	  else \
@@ -156,7 +157,17 @@ $(BUILD_DIR)/%/.stamp_patched:
 	      toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME)/$(NAMEVER) \*.patch || exit 1 ; \
 	    fi; \
 	  fi; \
-	fi)
+	else \
+	  if test "$(wildcard package/x11r7/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
+	    toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
+	  else \
+	    toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME) $($(PKG)_NAME)\*.patch || exit 1 ; \
+	    if test -d package/x11r7/$($(PKG)_NAME)/$(NAMEVER) ; then \
+	      toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME)/$(NAMEVER) \*.patch || exit 1 ; \
+	    fi; \
+	  fi; \
+	fi; \
+	)
 ifeq ($(strip $(BR2_UPDATE_CONFIG)),y)
 	$(Q)(for file in config.guess config.sub; do \
 		for i in $$(find $(@D) -name $$file); do \

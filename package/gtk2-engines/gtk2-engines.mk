@@ -104,8 +104,8 @@ $(GTK2_ENGINES_DIR)/.configured: $(GTK2_ENGINES_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/include \
-		--x-libraries=$(STAGING_DIR)/lib \
+		--x-includes=$(STAGING_DIR)/usr/include/X11 \
+		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \

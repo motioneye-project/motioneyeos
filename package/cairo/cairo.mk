@@ -101,8 +101,8 @@ $(CAIRO_DIR)/.configured: $(CAIRO_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--with-x \
-		--x-includes=$(STAGING_DIR)/usr/include \
-		--x-libraries=$(STAGING_DIR)/lib \
+		--x-includes=$(STAGING_DIR)/usr/include/X11 \
+		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--enable-ps=yes \
 		--enable-pdf=yes \
 		--enable-svg=no \
@@ -128,7 +128,7 @@ $(TARGET_DIR)/lib/libcairo.so.2.9.3: $(STAGING_DIR)/lib/$(CAIRO_BINARY)
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libcairo.so.2.*
 	touch -c $(TARGET_DIR)/lib/libcairo.so.2.9.3
 
-cairo: uclibc gettext libintl pkgconfig libglib2 $(XSERVER) $(TARGET_DIR)/lib/libcairo.so.2.9.3
+cairo: uclibc gettext libintl pkgconfig libglib2 zlib png fontconfig $(XSERVER) $(TARGET_DIR)/lib/libcairo.so.2.9.3
 
 cairo-clean:
 	rm -f $(TARGET_DIR)/lib/$(CAIRO_BINARY)

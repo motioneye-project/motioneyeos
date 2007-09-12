@@ -83,6 +83,8 @@ $(LIBGLIB2_DIR)/.configured: $(LIBGLIB2_DIR)/.unpacked
 		ac_use_included_regex=no \
 		gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
+		ac_cv_prog_F77=no \
+		ac_cv_prog_CXX=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

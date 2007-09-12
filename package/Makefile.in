@@ -237,6 +237,9 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
 XSERVER+=xorg
 endif
+ifeq ($(strip $(BR2_PACKAGE_XORG7)),y)
+XSERVER+=xserver_xorg-server
+endif
 ifeq ($(strip $(BR2_PACKAGE_XGGI)),y)
 XSERVER+=xggi
 endif
