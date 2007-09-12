@@ -35,7 +35,7 @@ DM_STAGING_BINARY:=$(STAGING_DIR)/usr/sbin/dmsetup
 DM_TARGET_BINARY:=$(TARGET_DIR)/usr/sbin/dmsetup
 DM_STAGING_LIBRARY:=$(STAGING_DIR)/lib/libdevmapper.so
 DM_TARGET_LIBRARY:=$(TARGET_DIR)/usr/lib/libdevmapper.so
-DM_TARGET_HEADER:=$(TARGET_DIR)/include/libdevmapper.h
+DM_TARGET_HEADER:=$(TARGET_DIR)/usr/include/libdevmapper.h
 
 $(DL_DIR)/$(DM_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DM_SITE)/$(DM_SOURCE) || \
@@ -108,8 +108,8 @@ $(DM_TARGET_LIBRARY): $(DM_TARGET_LIBRARY).$(DM_BASEVER)
 # Install header file
 $(DM_TARGET_HEADER): $(DM_TARGET_LIBRARY)
 	rm -f $@
-	mkdir -p $(STAGING_DIR)/include
-	$(INSTALL) -m 0644 $(STAGING_DIR)/include/libdevmapper.h $@
+	mkdir -p $(STAGING_DIR)/usr/include
+	$(INSTALL) -m 0644 $(STAGING_DIR)/usr/include/libdevmapper.h $@
 
 dm: uclibc $(DM_TARGET_BINARY) $(DM_TARGET_LIBRARY) #$(DM_TARGET_HEADER)
 
