@@ -29,6 +29,7 @@ ifneq ($(LM_SENSORS_PATCH),)
 		toolchain/patch-kernel.sh $(LM_SENSORS_DIR) $(LM_SENSORS_DIR)/debian/patches \*.patch; \
 	fi
 endif
+	-$(SED) "s/-O[[:digit:]]//g" $(LM_SENSORS_DIR)/Makefile
 	touch $@
 
 $(LM_SENSORS_DIR)/$(LM_SENSORS_BINARY): $(LM_SENSORS_DIR)/.unpacked
@@ -38,6 +39,12 @@ $(LM_SENSORS_DIR)/$(LM_SENSORS_BINARY): $(LM_SENSORS_DIR)/.unpacked
 		DESTDIR=$(TARGET_DIR) user
 
 $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY): $(LM_SENSORS_DIR)/$(LM_SENSORS_BINARY)
+	if [ ! -f $(TARGET_DIR)/etc/sensors.conf ]; then \
+		cp -dpf $(LM_SENSORS_DIR)/etc/sensors.conf.eg \
+			$(TARGET_DIR)/etc/sensors.conf; \
+		$(SED) '/^#/d' -e '/^[[:space:]]*$$/d' \
+			$(TARGET_DIR)/etc/sensors.conf; \
+	fi
 	cp -dpf $(LM_SENSORS_DIR)/$(LM_SENSORS_BINARY) $@
 	cp -dpf $(LM_SENSORS_DIR)/lib/libsensors.so* \
 		$(LM_SENSORS_DIR)/lib/libsensors.a $(TARGET_DIR)/usr/lib/
@@ -48,7 +55,9 @@ lm-sensors: uclibc libsysfs $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY)
 
 lm-sensors-clean:
 	-$(MAKE) -C $(LM_SENSORS_DIR) clean
-	rm -f $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY) \
+		$(TARGET_DIR)/lib/libsensors* \
+		$(TARGET_DIR)/etc/sensors.conf
 
 lm-sensors-dirclean:
 	rm -rf $(LM_SENSORS_DIR)
