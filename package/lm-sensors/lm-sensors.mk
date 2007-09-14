@@ -39,6 +39,9 @@ $(LM_SENSORS_DIR)/$(LM_SENSORS_BINARY): $(LM_SENSORS_DIR)/.unpacked
 
 $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY): $(LM_SENSORS_DIR)/$(LM_SENSORS_BINARY)
 	cp -dpf $(LM_SENSORS_DIR)/$(LM_SENSORS_BINARY) $@
+	cp -dpf $(LM_SENSORS_DIR)/lib/libsensors.so* \
+		$(LM_SENSORS_DIR)/lib/libsensors.a $(TARGET_DIR)/usr/lib/
+	-$(STRIP) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/lib/libsensors.so*
 	$(STRIP) $(STRIP_STRIP_ALL) $@
 
 lm-sensors: uclibc libsysfs $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY)
