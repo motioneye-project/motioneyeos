@@ -46,6 +46,13 @@ ifeq ($(BR2_SOFT_FLOAT),y)
 TARGET_CFLAGS+=-msoft-float
 endif
 
+ifeq ($(BR2_sparc_v9b),y)
+TARGET_CFLAGS+=-mvis
+endif
+ifeq ($(BR2_sparc64_v9b),y)
+TARGET_CFLAGS+=-mvis
+endif
+
 TARGET_CXXFLAGS=$(TARGET_CFLAGS)
 
 # else it's an external toolchain

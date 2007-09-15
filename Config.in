@@ -286,7 +286,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_sparc || BR2_sparc64
+	depends BR2_sparc
 	default BR2_sparc_v7
 	help
 	  Specific CPU variant to use
@@ -315,6 +315,8 @@ config BR2_sparc_tsc701
 	bool "tsc701"
 config BR2_sparc_v9
 	bool "v9"
+config BR2_sparc_v9b
+	bool "v9b"
 config BR2_sparc_ultrasparc
 	bool "ultrasparc"
 config BR2_sparc_ultrasparc3
@@ -323,6 +325,31 @@ config BR2_sparc_niagara
 	bool "niagara"
 endchoice
 
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_sparc64
+	default BR2_sparc64_v9
+	help
+	  Specific CPU variant to use
+
+config BR2_sparc64_v9
+	bool "v9"
+config BR2_sparc64_v9b
+	bool "v9b"
+config BR2_sparc64_ultrasparc
+	bool "ultrasparc"
+config BR2_sparc64_ultrasparc3
+	bool "ultrasparc3"
+config BR2_sparc64_niagara
+	bool "niagara"
+endchoice
+
+config BR2_SPARC_TYPE
+	string
+	default V7	if BR2_sparc_v7 || BR2_sparc_cypress || BR2_sparc_sparclite || BR2_sparc_f930 || BR2_sparc_f934 || BR2_sparc_sparclite86x || BR2_sparc_sparclet || BR2_sparc_tsc701
+	default V8	if BR2_sparc_v8 || BR2_sparc_supersparc || BR2_sparc_hypersparc
+	default V9	if BR2_sparc_v9 || BR2_sparc_ultrasparc || BR2_sparc_ultrasparc3 || BR2_sparc_niagara || BR2_sparc64_v9 || BR2_sparc64_ultrasparc || BR2_sparc64_ultrasparc3 || BR2_sparc64_niagara
+	default V9B	if BR2_sparc_v9b || BR2_sparc64_v9b
 
 choice
 	prompt "Target Architecture Variant"
@@ -557,10 +584,10 @@ config BR2_GCC_TARGET_TUNE
 	default sparclite86x	if BR2_sparc_sparclite86x
 	default sparclet	if BR2_sparc_sparclet
 	default tsc701		if BR2_sparc_tsc701
-	default v9		if BR2_sparc_v9
-	default ultrasparc	if BR2_sparc_ultrasparc
-	default ultrasparc3	if BR2_sparc_ultrasparc3
-	default niagara		if BR2_sparc_niagara
+	default v9		if BR2_sparc_v9 || BR2_sparc_v9b || BR2_sparc64_v9 || BR2_sparc64_v9b
+	default ultrasparc	if BR2_sparc_ultrasparc || BR2_sparc64_ultrasparc
+	default ultrasparc3	if BR2_sparc_ultrasparc3 || BR2_sparc64_ultrasparc3
+	default niagara		if BR2_sparc_niagara || BR2_sparc64_niagara
 	default g5		if BR2_s390_g5
 	default g6		if BR2_s390_g6
 	default z900		if BR2_s390_z900

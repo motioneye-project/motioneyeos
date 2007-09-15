@@ -75,6 +75,7 @@ UCLIBC_TARGET_ENDIAN:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
 		-e 's/mips/BIG/' \
 		-e 's/sh[234].*eb/BIG/' \
 		-e 's/sh[234]/LITTLE/' \
+		-e 's/sparc.*/BIG/' \
 ")
 
 ifneq ($(UCLIBC_TARGET_ENDIAN),LITTLE)
@@ -88,7 +89,9 @@ else
 UCLIBC_NOT_TARGET_ENDIAN:=LITTLE
 endif
 
-ARM_CONFIG:=CONFIG_$(strip $(subst ",, $(BR2_ARM_TYPE)))
+UCLIBC_ARM_TYPE:=CONFIG_$(strip $(subst ",, $(BR2_ARM_TYPE)))
+#"))
+UCLIBC_SPARC_TYPE:=CONFIG_SPARC_$(strip $(subst ",, $(BR2_SPARC_TYPE)))
 #"))
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
@@ -136,7 +139,7 @@ $(UCLIBC_DIR)/.oldconfig: $(UCLIBC_DIR)/.unpacked $(UCLIBC_CONFIG_FILE)
 ifeq ($(UCLIBC_TARGET_ARCH),arm)
 	$(SED) 's/^\(CONFIG_[^_]*[_]*ARM[^=]*\)=.*/# \1 is not set/g' \
 		 $(UCLIBC_DIR)/.oldconfig
-	$(SED) 's/^.*$(ARM_CONFIG).*/$(ARM_CONFIG)=y/g' $(UCLIBC_DIR)/.oldconfig
+	$(SED) 's/^.*$(UCLIBC_ARM_TYPE).*/$(UCLIBC_ARM_TYPE)=y/g' $(UCLIBC_DIR)/.oldconfig
 ifeq ($(BR2_ARM_EABI),y)
 	/bin/echo "# CONFIG_ARM_OABI is not set" >> $(UCLIBC_DIR)/.oldconfig
 	/bin/echo "CONFIG_ARM_EABI=y" >> $(UCLIBC_DIR)/.oldconfig
@@ -177,6 +180,13 @@ endif
 ifeq ($(BR2_sh4),y)
 	$(SED) 's,# CONFIG_SH4 is not set,CONFIG_SH4=y,g' $(UCLIBC_DIR)/.oldconfig
 endif
+endif
+ifeq ($(UCLIBC_TARGET_ARCH),sparc)
+	$(SED) 's/^\(CONFIG_[^_]*[_]*SPARC[^=]*\)=.*/# \1 is not set/g' \
+		 $(UCLIBC_DIR)/.oldconfig
+	for i in V7 V8 V9 V9B; do echo "# CONFIG_SPARC_$$i is not set"; done \
+		>> $(UCLIBC_DIR)/.oldconfig
+	$(SED) 's/^.*$(UCLIBC_SPARC_TYPE).*/$(UCLIBC_SPARC_TYPE)=y/g' $(UCLIBC_DIR)/.oldconfig
 endif
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
 	# The above doesn't work for me, so redo
