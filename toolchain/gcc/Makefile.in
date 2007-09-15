@@ -64,7 +64,7 @@ GCC_WITH_TUNE:=--with-tune=$(BR2_GCC_TARGET_TUNE)
 endif
 ifneq ($(strip $(subst ",,$(BR2_GCC_TARGET_ABI))),)
 # ")))
-GCC_WITH_ABI:=--with-tune=$(BR2_GCC_TARGET_ABI)
+GCC_WITH_ABI:=--with-abi=$(BR2_GCC_TARGET_ABI)
 endif
 endif
 
