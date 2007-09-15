@@ -104,7 +104,7 @@ $(BR2_INITRAMFS_DIR)/bin/busybox: $(BUSYBOX_INITRAMFS_DIR)/busybox
 	$(STRIP) $(STRIP_STRIP_ALL) $@
 
 
-$(BB_INITRAMFS_TARGET): $(BR2_INITRAMFS_DIR)/bin/busybox
+$(BB_INITRAMFS_TARGET): host-fakeroot $(BR2_INITRAMFS_DIR)/bin/busybox
 	ln -fs bin/busybox $(PROJECT_BUILD_DIR)/initramfs/init
 	mkdir -p $(PROJECT_BUILD_DIR)/initramfs/etc
 	cat target/generic/target_busybox_skeleton/etc/inittab > \
