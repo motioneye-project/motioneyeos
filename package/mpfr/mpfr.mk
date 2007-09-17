@@ -57,7 +57,7 @@ $(MPFR_TARGET_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/usr/lib/$(G
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		$(PREFERRED_LIB_FLAGS) \
-		--with-gmp=$(GMP_TARGET_DIR) \
+		--with-gmp-build=$(GMP_TARGET_DIR) \
 		$(DISABLE_NLS) \
 	)
 	touch $@
