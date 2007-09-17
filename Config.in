@@ -315,6 +315,8 @@ config BR2_sparc_tsc701
 	bool "tsc701"
 config BR2_sparc_v9
 	bool "v9"
+config BR2_sparc_v9a
+	bool "v9a"
 config BR2_sparc_v9b
 	bool "v9b"
 config BR2_sparc_ultrasparc
@@ -334,6 +336,8 @@ choice
 
 config BR2_sparc64_v9
 	bool "v9"
+config BR2_sparc64_v9a
+	bool "v9a"
 config BR2_sparc64_v9b
 	bool "v9b"
 config BR2_sparc64_ultrasparc
@@ -349,6 +353,7 @@ config BR2_SPARC_TYPE
 	default V7	if BR2_sparc_v7 || BR2_sparc_cypress || BR2_sparc_sparclite || BR2_sparc_f930 || BR2_sparc_f934 || BR2_sparc_sparclite86x || BR2_sparc_sparclet || BR2_sparc_tsc701
 	default V8	if BR2_sparc_v8 || BR2_sparc_supersparc || BR2_sparc_hypersparc
 	default V9	if BR2_sparc_v9 || BR2_sparc_ultrasparc || BR2_sparc_ultrasparc3 || BR2_sparc_niagara || BR2_sparc64_v9 || BR2_sparc64_ultrasparc || BR2_sparc64_ultrasparc3 || BR2_sparc64_niagara
+	default V9	if BR2_sparc_v9a || BR2_sparc64_v9a
 	default V9B	if BR2_sparc_v9b || BR2_sparc64_v9b
 
 choice
@@ -584,7 +589,9 @@ config BR2_GCC_TARGET_TUNE
 	default sparclite86x	if BR2_sparc_sparclite86x
 	default sparclet	if BR2_sparc_sparclet
 	default tsc701		if BR2_sparc_tsc701
-	default v9		if BR2_sparc_v9 || BR2_sparc_v9b || BR2_sparc64_v9 || BR2_sparc64_v9b
+	default v9		if BR2_sparc_v9 || BR2_sparc64_v9
+	default v9		if BR2_sparc_v9a || BR2_sparc64_v9a
+	default v9		if BR2_sparc_v9b || BR2_sparc64_v9b
 	default ultrasparc	if BR2_sparc_ultrasparc || BR2_sparc64_ultrasparc
 	default ultrasparc3	if BR2_sparc_ultrasparc3 || BR2_sparc64_ultrasparc3
 	default niagara		if BR2_sparc_niagara || BR2_sparc64_niagara

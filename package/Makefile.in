@@ -46,10 +46,8 @@ ifeq ($(BR2_SOFT_FLOAT),y)
 TARGET_CFLAGS+=-msoft-float
 endif
 
-ifeq ($(BR2_sparc_v9b),y)
-TARGET_CFLAGS+=-mvis
-endif
-ifeq ($(BR2_sparc64_v9b),y)
+# enable VIS for v9a and v9b
+ifeq ($(findstring y,$(BR2_sparc_v9a)$(BR2_sparc64_v9a)$(BR2_sparc_v9b)$(BR2_sparc64_v9b)),y)
 TARGET_CFLAGS+=-mvis
 endif
 
