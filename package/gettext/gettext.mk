@@ -116,9 +116,8 @@ $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY): $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libgettextpo.la
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libgettextsrc.la
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libintl.la
-	rm -f $(STAGING_DIR)/usr/bin/autopoint $(STAGING_DIR)/usr/bin/envsubst \
-	 $(STAGING_DIR)/usr/bin/gettext.sh $(STAGING_DIR)/usr/bin/gettextize \
-	 $(STAGING_DIR)/usr/bin/msg* $(STAGING_DIR)/usr/bin/?gettext
+	rm -f $(addprefix $(STAGING_DIR)/usr/bin/, \
+		autopoint envsubst gettext.sh gettextize msg* ?gettext)
 	touch -c $@
 
 gettext: uclibc pkgconfig $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
@@ -141,16 +140,21 @@ gettext-dirclean:
 gettext-target: $(GETTEXT_DIR)/$(GETTEXT_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GETTEXT_DIR) install
 	chmod +x $(TARGET_DIR)/usr/lib/libintl.so* # identify as needing to be stripped
-	rm -rf $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
-		$(TARGET_DIR)/usr/doc $(TARGET_DIR)/usr/share/aclocal \
-		$(TARGET_DIR)/usr/include/libintl.h
-	-rmdir $(TARGET_DIR)/usr/include
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/man
+endif
+	rm -rf $(addprefix $(TARGET_DIR),/usr/share/doc \
+		/usr/doc /usr/share/aclocal /usr/include/libintl.h)
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/include
 
 $(TARGET_DIR)/usr/lib/libintl.so: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)
 	cp -dpf $(STAGING_DIR)/usr/lib/libgettext*.so* \
 		$(STAGING_DIR)/usr/lib/libintl*.so* $(TARGET_DIR)/usr/lib/
-	rm -f $(TARGET_DIR)/usr/lib/libgettext*.so*.la $(TARGET_DIR)/usr/lib/libintl*.so*.la
+	rm -f $(addprefix $(TARGET_DIR)/usr/lib/, \
+		libgettext*.so*.la libintl*.so*.la)
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libintl.a: $(STAGING_DIR)/$(GETTEXT_TARGET_BINARY)

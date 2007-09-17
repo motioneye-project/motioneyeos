@@ -53,8 +53,9 @@ $(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--includedir=/usr/include \
 	)
 	touch $@
 
@@ -73,12 +74,18 @@ $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY): $(AUTOMAKE_DIR)/$(AUTOMAKE_BINARY)
 	    sysconfdir=$(TARGET_DIR)/etc \
 	    localstatedir=$(TARGET_DIR)/var \
 	    libdir=$(TARGET_DIR)/usr/lib \
-	    infodir=$(TARGET_DIR)/usr/info \
-	    mandir=$(TARGET_DIR)/usr/man \
+	    infodir=$(TARGET_DIR)/usr/share/info \
+	    mandir=$(TARGET_DIR)/usr/share/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(AUTOMAKE_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 	touch -c $@
 
 automake: uclibc autoconf $(TARGET_DIR)/$(AUTOMAKE_TARGET_BINARY)

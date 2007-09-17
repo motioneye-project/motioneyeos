@@ -46,7 +46,7 @@ dm-source: $(DL_DIR)/$(DM_SOURCE)
 $(DM_DIR)/.unpacked: $(DL_DIR)/$(DM_SOURCE)
 	$(DM_CAT) $(DL_DIR)/$(DM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(DM_DIR) package/dm/ \*.patch
-	touch $(DM_DIR)/.unpacked
+	touch $@
 
 $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
 	(cd $(DM_DIR); rm -rf config.cache; \
@@ -71,14 +71,14 @@ $(DM_DIR)/.configured: $(DM_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--includedir=/usr/include \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
 	)
-	touch $(DM_DIR)/.configured
+	touch $@
 
 $(DM_DIR)/$(DM_BINARY): dm-build
 $(DM_DIR)/$(DM_LIBRARY): dm-build
@@ -91,19 +91,19 @@ $(DM_STAGING_BINARY) $(DM_STAGING_LIBRARY): $(DM_DIR)/.configured
 $(DM_TARGET_BINARY): $(DM_STAGING_BINARY)
 	$(INSTALL) -m 0755 $? $@
 	-$(STRIP) $(DM_TARGET_BINARY)
-	touch -c $(DM_TARGET_BINARY)
+	touch -c $@
 
 # Install libdevmapper.so.1.00 from staging to target
 $(DM_TARGET_LIBRARY).$(DM_BASEVER): $(DM_STAGING_LIBRARY)
 	$(INSTALL) -m 0644 $? $@
-	-$(STRIP) $(DM_TARGET_LIBRARY)
-	touch -c $(DM_TARGET_LIBRARY).$(DM_BASEVER)
+	-$(STRIP) $@
+	touch -c $@
 
 # Makes libdevmapper.so a symlink to libdevmapper.so.1.00
 $(DM_TARGET_LIBRARY): $(DM_TARGET_LIBRARY).$(DM_BASEVER)
 	rm -f $@
 	ln -s $(<F) $@
-	touch -c $(DM_TARGET_LIBRARY)
+	touch -c $@
 
 # Install header file
 $(DM_TARGET_HEADER): $(DM_TARGET_LIBRARY)
@@ -114,7 +114,8 @@ $(DM_TARGET_HEADER): $(DM_TARGET_LIBRARY)
 dm: uclibc $(DM_TARGET_BINARY) $(DM_TARGET_LIBRARY) #$(DM_TARGET_HEADER)
 
 dm-clean:
-	rm $(DM_TARGET_BINARY) $(DM_TARGET_LIBRARY) $(DM_TARGET_LIBRARY).$(DM_BASEVER) $(DM_TARGET_HEADER)
+	rm $(DM_TARGET_BINARY) $(DM_TARGET_LIBRARY) \
+		$(DM_TARGET_LIBRARY).$(DM_BASEVER) $(DM_TARGET_HEADER)
 	$(MAKE) -C $(DM_DIR) clean
 
 dm-dirclean:

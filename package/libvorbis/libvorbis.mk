@@ -78,13 +78,13 @@ TREMOR_SOURCE:=$(TREMOR_NAME).tar.bz2
 
 
 $(DL_DIR)/$(TREMOR_SOURCE):
-	(cd $(BUILD_DIR) ; \
-	svn co $(TREMOR_TRUNK) ; \
-	mv -af Tremor $(TREMOR_NAME) ; \ 
-	tar -cvf $(TREMOR_NAME).tar $(TREMOR_DIR); \
-	bzip2 $(TREMOR_NAME).tar ; \
-	rm -fr $(TREMOR_DIR) ; \
-	mv $(TREMOR_NAME).tar.bz2 $(DL_DIR)/$(TREMOR_SOURCE) ; \
+	(cd $(BUILD_DIR); \
+		svn co $(TREMOR_TRUNK); \
+		mv -af Tremor $(TREMOR_NAME); \
+		tar -cvf $(TREMOR_NAME).tar $(TREMOR_DIR); \
+		bzip2 $(TREMOR_NAME).tar; \
+		rm -fr $(TREMOR_DIR); \
+		mv $(TREMOR_NAME).tar.bz2 $(DL_DIR)/$(TREMOR_SOURCE); \
 	)
 
 $(TREMOR_DIR)/.source: $(DL_DIR)/$(TREMOR_SOURCE)
@@ -92,11 +92,13 @@ $(TREMOR_DIR)/.source: $(DL_DIR)/$(TREMOR_SOURCE)
 	touch $@
 
 $(TREMOR_DIR)/.configured: $(TREMOR_DIR)/.source
-	(cd $(TREMOR_DIR); rm -rf config.cache ; \
+	(cd $(TREMOR_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
-		PKG_CONFIG_PATH="$(STAGING_DIR)/lib/pkconfig:$(STAGING_DIR)/usr/lib/pkgconfig" PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" PKG_CONFIG_SYSROOT=$(STAGING_DIR) \
+		PKG_CONFIG_PATH="$(STAGING_DIR)/lib/pkconfig:$(STAGING_DIR)/usr/lib/pkgconfig" \
+		PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" \
+		PKG_CONFIG_SYSROOT=$(STAGING_DIR) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -107,7 +109,7 @@ $(TREMOR_DIR)/.configured: $(TREMOR_DIR)/.source
 		--enable-static \
 		--disable-oggtest \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(TREMOR_DIR)/.libs: $(TREMOR_DIR)/.configured
@@ -124,7 +126,8 @@ $(TARGET_DIR)/usr/lib/tremor.a: $(TARGET_DIR)/usr/lib/tremor.so
 
 tremor-header: $(TARGET_DIR)/usr/lib/tremor.a
 	mkdir -p $(TARGET_DIR)/usr/include/vorbis
-	cp -dpf $(TREMOR_DIR)/include/vorbis/*.h $(TARGET_DIR)/usr/include/vorbis
+	cp -dpf $(TREMOR_DIR)/include/vorbis/*.h \
+		$(TARGET_DIR)/usr/include/vorbis
 
 tremor: uclibc pkgconfig $(TARGET_DIR)/usr/lib/tremor.so
 
@@ -154,4 +157,3 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS_HEADERS)),y)
  TARGETS+=libvorbis-header
 endif
-

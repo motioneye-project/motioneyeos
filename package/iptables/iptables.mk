@@ -26,17 +26,25 @@ $(IPTABLES_BUILD_DIR)/.configured: $(IPTABLES_BUILD_DIR)/.unpacked
 
 $(IPTABLES_BUILD_DIR)/iptables: $(IPTABLES_BUILD_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(IPTABLES_BUILD_DIR) \
-		KERNEL_DIR=$(LINUX_HEADERS_DIR) PREFIX=/usr \
-		COPT_FLAGS="$(TARGET_CFLAGS)"
+		KERNEL_DIR=$(LINUX_HEADERS_DIR) \
+		COPT_FLAGS="$(TARGET_CFLAGS)" \
+		PREFIX=/usr \
+		INCDIR="\$$(PREFIX)/include" \
+		MANDIR="\$$(PREFIX)/share/man"
 
 $(TARGET_DIR)/usr/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(IPTABLES_BUILD_DIR) \
-		KERNEL_DIR=$(LINUX_HEADERS_DIR) PREFIX=/usr \
+		KERNEL_DIR=$(LINUX_HEADERS_DIR) \
 		COPT_FLAGS="$(TARGET_CFLAGS)" \
+		PREFIX=/usr \
+		INCDIR="\$$(PREFIX)/include" \
+		MANDIR="\$$(PREFIX)/share/man" \
 		DESTDIR=$(TARGET_DIR) install
 	$(STRIP) $(TARGET_DIR)/usr/sbin/iptables*
 	$(STRIP) $(TARGET_DIR)/usr/lib/iptables/*.so
-	rm -rf $(TARGET_DIR)/usr/man
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
 
 iptables: $(TARGET_DIR)/usr/sbin/iptables
 

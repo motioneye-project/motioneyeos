@@ -17,6 +17,7 @@ $(DL_DIR)/$(BASH_SOURCE):
 bash-source: $(DL_DIR)/$(BASH_SOURCE)
 
 bash-unpacked: $(BASH_DIR)/.unpacked
+
 $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 	$(BASH_CAT) $(DL_DIR)/$(BASH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(BASH_DIR) package/bash/ bash??-\*
@@ -48,8 +49,9 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--includedir=/usr/include \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--with-curses \
@@ -67,17 +69,25 @@ $(TARGET_DIR)/$(BASH_TARGET_BINARY): $(BASH_DIR)/$(BASH_BINARY)
 	rm -f $(TARGET_DIR)/bin/bash*
 	mv $(TARGET_DIR)/usr/bin/bash* $(TARGET_DIR)/bin/
 	(cd $(TARGET_DIR)/bin; /bin/ln -fs bash sh)
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 
-#If both bash and busybox are selected, make certain bash wins
-#the fight over who gets to own the /bin/sh symlink
+# If both bash and busybox are selected, make certain bash wins
+# the fight over who gets to own the /bin/sh symlink.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 bash: ncurses uclibc busybox $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 else
 bash: ncurses uclibc $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 endif
 
+# If both bash and busybox are selected, the /bin/sh symlink
+# may need to be reinstated by the clean targets.
 bash-clean:
 	-$(MAKE1) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BASH_DIR) uninstall
 	rm -f $(TARGET_DIR)/$(BASH_TARGET_BINARY)

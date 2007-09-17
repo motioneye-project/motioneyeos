@@ -1,9 +1,10 @@
 #############################################################
 #
 # hostap
-# 
-# Note! Host AP driver was added into the main kernel tree in Linux v2.6.14. 
-# The version in the kernel tree should be used instead of this external hostap-driver package. 
+#
+# Note! Host AP driver was added into the main kernel tree in Linux v2.6.14.
+# The version in the kernel tree should be used instead of this external
+# hostap-driver package.
 # The external releases are only for older kernel versions and all
 # the future development will be in the main kernel tree.
 #
@@ -21,21 +22,25 @@ hostap-source: $(DL_DIR)/$(HOSTAP_SOURCE)
 $(HOSTAP_DIR)/.unpacked: $(DL_DIR)/$(HOSTAP_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(HOSTAP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	mv -f $(BUILD_DIR)/hostap $(HOSTAP_DIR)
-	touch $(HOSTAP_DIR)/.unpacked
+	touch $@
 
 $(HOSTAP_DIR)/.configured: $(HOSTAP_DIR)/.unpacked
 	#$(SED) "s,/.*#define PRISM2_DOWNLOAD_SUPPORT.*/,#define PRISM2_DOWNLOAD_SUPPORT,g" \
 	# $(HOSTAP_DIR)/driver/modules/hostap_config.h
-	touch $(HOSTAP_DIR)/.configured
+	touch $@
 
 $(HOSTAP_DIR)/utils/hostap_crypt_conf: $(HOSTAP_DIR)/.configured
-	$(MAKE) -C $(HOSTAP_DIR)/utils CC=$(TARGET_CC) CFLAGS="-Os -Wall $(TARGET_CFLAGS) -I../driver/modules"
-	$(MAKE) -C $(HOSTAP_DIR)/hostapd CC=$(TARGET_CC) CFLAGS="-Os -Wall $(TARGET_CFLAGS) -I../driver/modules -I../utils"
+	$(MAKE) -C $(HOSTAP_DIR)/utils \
+		CC=$(TARGET_CC) \
+		CFLAGS="-Os -Wall $(TARGET_CFLAGS) -I../driver/modules"
+	$(MAKE) -C $(HOSTAP_DIR)/hostapd \
+		CC=$(TARGET_CC) \
+		CFLAGS="-Os -Wall $(TARGET_CFLAGS) -I../driver/modules -I../utils"
 	touch -c $(HOSTAP_DIR)/driver/modules/hostap.o
 
 $(TARGET_DIR)//usr/bin/hostap_crypt_conf: $(HOSTAP_DIR)/utils/hostap_crypt_conf
 	# Make the dir
-	-rm -rf $(HOSTAP_TARGET_MODULE_DIR)
+	rm -rf $(HOSTAP_TARGET_MODULE_DIR)
 	mkdir -p $(HOSTAP_TARGET_MODULE_DIR)
 	# Copy the pcmcia-cs conf file
 	mkdir -p $(TARGET_DIR)/etc/pcmcia

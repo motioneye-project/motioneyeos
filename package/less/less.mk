@@ -15,7 +15,7 @@ $(DL_DIR)/$(LESS_SOURCE):
 
 $(LESS_DIR)/.source: $(DL_DIR)/$(LESS_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(LESS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LESS_DIR)/.source
+	touch $@
 
 $(LESS_DIR)/.configured: $(LESS_DIR)/.source
 	(cd $(LESS_DIR); \
@@ -28,14 +28,16 @@ $(LESS_DIR)/.configured: $(LESS_DIR)/.source
 		--prefix=/usr \
 		--sysconfdir=/etc \
 	)
-	touch $(LESS_DIR)/.configured
+	touch $@
 
 $(LESS_DIR)/$(LESS_BINARY): $(LESS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LESS_DIR)
 
 $(TARGET_DIR)/$(LESS_TARGET_BINARY): $(LESS_DIR)/$(LESS_BINARY)
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LESS_DIR) install
+ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -Rf $(TARGET_DIR)/usr/man
+endif
 
 less: uclibc ncurses $(TARGET_DIR)/$(LESS_TARGET_BINARY)
 

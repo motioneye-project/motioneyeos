@@ -95,8 +95,8 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--disable-rpath \
@@ -119,17 +119,25 @@ $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY): $(COREUTILS_DIR)/$(COREUTILS_BINARY)
 	# gnu thinks chroot is in bin, debian thinks it's in sbin
 	mv $(TARGET_DIR)/usr/bin/chroot $(TARGET_DIR)/usr/sbin/chroot
 	$(STRIP) $(TARGET_DIR)/usr/sbin/chroot > /dev/null 2>&1
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 
-#If both coreutils and busybox are selected, make certain coreutils
-#wins the fight over who gets to have their utils actually installed
+# If both coreutils and busybox are selected, make certain coreutils
+# wins the fight over who gets to have their utils actually installed.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 coreutils: uclibc busybox $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 else
 coreutils: uclibc $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 endif
 
+# If both coreutils and busybox are selected, the corresponding applets
+# may need to be reinstated by the clean targets.
 coreutils-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(COREUTILS_DIR) uninstall
 	-$(MAKE) -C $(COREUTILS_DIR) clean

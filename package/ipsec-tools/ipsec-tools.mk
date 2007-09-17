@@ -111,22 +111,21 @@ $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOONCTL): \
 	  $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_SETKEY) \
 	  $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOON) \
 	  $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOONCTL)
-	-rm -f $(TARGET_DIR)/usr/man/man3/ipsec_strerror.3 \
-	  $(TARGET_DIR)/usr/man/man3/ipsec_set_policy.3 \
-	  $(TARGET_DIR)/usr/man/man5/racoon.conf.5 \
-	  $(TARGET_DIR)/usr/man/man8/racoonctl.8 \
-	  $(TARGET_DIR)/usr/man/man8/racoon.8 \
-	  $(TARGET_DIR)/usr/man/man8/plainrsa-gen.8 \
-	  $(TARGET_DIR)/usr/man/man8/setkey.8
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -f $(addprefix $(TARGET_DIR)/usr/man/,
+		man3/ipsec_strerror.3 man3/ipsec_set_policy.3 \
+		man5/racoon.conf.5 \
+		man8/racoonctl.8 man8/racoon.8 \
+		man8/plainrsa-gen.8 man8/setkey.8)
+endif
 ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_LIBS)), y)
-	install -D $(IPSEC_TOOLS_DIR)/src/libipsec/.libs/libipsec.a \
-	  $(IPSEC_TOOLS_DIR)/src/libipsec/.libs/libipsec.la \
-	  $(IPSEC_TOOLS_DIR)/src/racoon/.libs/libracoon.a \
-	  $(IPSEC_TOOLS_DIR)/src/racoon/.libs/libracoon.la \
-	  $(STAGING_DIR)/lib
+	install -D $(addprefix $(IPSEC_TOOLS_DIR)/src/,
+		libipsec/.libs/libipsec.a libipsec/.libs/libipsec.la \
+		racoon/.libs/libracoon.a racoon/.libs/libracoon.la) \
+		$(STAGING_DIR)/lib
 endif
 ifneq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT)), y)
-	-rm -f $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOONCTL)
+	rm -f $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOONCTL)
 endif
 
 IPSEC_TOOLS_PROGS= $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_SETKEY) \
@@ -145,17 +144,15 @@ ipsec-tools-uninstall:
 ipsec-tools-clean:
 	$(MAKE) -C $(IPSEC_TOOLS_DIR) DESTDIR=$(TARGET_DIR) uninstall
 	$(MAKE) -C $(IPSEC_TOOLS_DIR) clean
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_LIBS)), y)
-	-rm -f $(STAGING_DIR)/lib/libipsec.a
-	-rm -f $(STAGING_DIR)/lib/libipsec.la
-	-rm -f $(STAGING_DIR)/lib/libracoon.a
-	-rm -f $(STAGING_DIR)/lib/libracoon.la
+ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_LIBS)),y)
+	rm -f $(addprefix $(STAGING_DIR)/lib/, \
+		libipsec.a libipsec.la libracoon.a libracoon.la)
 endif
-	-rm $(IPSEC_TOOLS_DIR)/.configured
+	rm -f $(IPSEC_TOOLS_DIR)/.configured
 
 ipsec-tools-dirclean:
 	@echo $(LINUX_DIR)
-	-rm -rf $(IPSEC_TOOLS_DIR)
+	rm -rf $(IPSEC_TOOLS_DIR)
 
 ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS)), y)
 TARGETS+=ipsec-tools

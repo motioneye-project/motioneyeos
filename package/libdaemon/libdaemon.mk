@@ -33,11 +33,11 @@ $(LIBDAEMON_DIR)/.unpacked: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 #		> $(PROJECT_BUILD_DIR)/patches/$(LIBDAEMON_NAME).patch
 #	toolchain/patch-kernel.sh $(LIBDAEMON_DIR) $(PROJECT_BUILD_DIR)/patches/ $(LIBDAEMON_NAME)\*.patch
 #	$(CONFIG_UPDATE) $(LIBDAEMON_DIR)
-	touch $(LIBDAEMON_DIR)/.unpacked
+	touch $@
 
 $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 	(cd $(LIBDAEMON_DIR) && rm -rf config.cache && autoconf)
-	( cd $(LIBDAEMON_DIR) && \
+	(cd $(LIBDAEMON_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
@@ -53,23 +53,23 @@ $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--includedir=/usr/include \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--disable-lynx \
 		--disable-shared \
 	)
-	touch $(LIBDAEMON_DIR)/.configured
+	touch $@
 
 $(LIBDAEMON_DIR)/.compiled: $(LIBDAEMON_DIR)/.configured
 	$(MAKE) LIBTOOL=$(LIBDAEMON_DIR)/libtool -C $(LIBDAEMON_DIR)
-	touch $(LIBDAEMON_DIR)/.compiled
+	touch $@
 
 $(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBDAEMON_DIR) install
-	touch -c $(STAGING_DIR)/lib/libdaemon.a
+	touch -c $@
 
 #$(TARGET_DIR)/usr/lib/libdaemon.a: $(STAGING_DIR)/lib/libdaemon.a
 # -$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdaemon.a

@@ -160,7 +160,10 @@ ifneq ($(BR2_PACKAGE_QUAGGA_HEADERS),y)
 	rm -rf $(TARGET_DIR)/usr/include/quagga
 endif
 ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/info
+	rm -rf $(TARGET_DIR)/usr/man
+endif
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/info
 endif
 
 quagga: uclibc $(TARGET_DIR)/usr/sbin/$(QUAGGA_TARGET_BINARY)

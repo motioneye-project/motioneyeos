@@ -38,8 +38,8 @@ $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share/misc \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
@@ -50,14 +50,21 @@ $(GZIP_BINARY): $(GZIP_DIR)/.configured
 
 $(GZIP_TARGET_BINARY): $(GZIP_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GZIP_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/bin; \
-	$(HOSTLN) -snf gzip gunzip; \
-	$(HOSTLN) -snf gzip zcat; \
-	$(HOSTLN) -snf zdiff zcmp; \
-	$(HOSTLN) -snf zgrep zegrep; \
-	$(HOSTLN) -snf zgrep zfgrep;)
+		$(HOSTLN) -snf gzip gunzip; \
+		$(HOSTLN) -snf gzip zcat; \
+		$(HOSTLN) -snf zdiff zcmp; \
+		$(HOSTLN) -snf zgrep zegrep; \
+		$(HOSTLN) -snf zgrep zfgrep; \
+	)
 
 gzip: uclibc $(GZIP_TARGET_BINARY)
 

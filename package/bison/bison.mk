@@ -19,7 +19,7 @@ bison-source: $(DL_DIR)/$(BISON_SOURCE)
 $(BISON_DIR)/.unpacked: $(DL_DIR)/$(BISON_SOURCE)
 	$(BISON_CAT) $(DL_DIR)/$(BISON_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(BISON_DIR)/build-aux
-	touch $(BISON_DIR)/.unpacked
+	touch $@
 
 $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 	(cd $(BISON_DIR); rm -rf config.cache; \
@@ -39,20 +39,27 @@ $(BISON_DIR)/.configured: $(BISON_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
+		--includedir=/usr/include \
 		$(DISABLE_NLS) \
 	)
 	echo 'all install:' > $(BISON_DIR)/examples/Makefile
-	touch $(BISON_DIR)/.configured
+	touch $@
 
 $(BISON_DIR)/$(BISON_BINARY): $(BISON_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(BISON_DIR)
 
 $(TARGET_DIR)/$(BISON_TARGET_BINARY): $(BISON_DIR)/$(BISON_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BISON_DIR) install
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 	cp -a package/bison/yacc $(TARGET_DIR)/usr/bin/yacc
 
 bison: uclibc $(TARGET_DIR)/$(BISON_TARGET_BINARY)

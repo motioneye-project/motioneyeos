@@ -26,7 +26,7 @@ $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--sysconfdir=/etc \
+		--sysconfdir=/etc; \
 	)
 	touch $@
 
@@ -34,8 +34,12 @@ $(DIALOG_DIR)/$(DIALOG_BINARY): $(DIALOG_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(DIALOG_DIR)
 
 $(TARGET_DIR)/$(DIALOG_TARGET_BINARY): $(DIALOG_DIR)/$(DIALOG_BINARY)
-	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(DIALOG_DIR) install
-	rm -Rf $(TARGET_DIR)/usr/man
+	$(MAKE) prefix=$(TARGET_DIR)/usr \
+		mandir=$(TARGET_DIR)/usr/share/man \
+		-C $(DIALOG_DIR) install
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -Rf $(TARGET_DIR)/usr/share/man
+endif
 
 dialog: uclibc ncurses $(TARGET_DIR)/$(DIALOG_TARGET_BINARY)
 

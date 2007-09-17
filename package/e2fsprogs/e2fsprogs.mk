@@ -46,8 +46,8 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		--enable-elf-shlibs --enable-dynamic-e2fsck --disable-swapfs \
 		--disable-debugfs --disable-imager \
 		--disable-resizer --enable-fsck \
@@ -62,25 +62,33 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 
 $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY): $(E2FSPROGS_DIR)/.configured
 	$(MAKE1) -C $(E2FSPROGS_DIR)
-	( \
-		cd $(E2FSPROGS_DIR)/misc; \
+	(cd $(E2FSPROGS_DIR)/misc; \
 		$(STRIP) $(E2FSPROGS_MISC_STRIP); \
 	)
 	#$(STRIP) $(E2FSPROGS_DIR)/lib/lib*.so.*.*
 	touch -c $@
 
 $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY): $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
-	$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(TARGET_DIR) -C $(E2FSPROGS_DIR) install
-	rm -rf ${TARGET_DIR}/sbin/mkfs.ext[23] ${TARGET_DIR}/sbin/fsck.ext[23] \
-		${TARGET_DIR}/sbin/findfs ${TARGET_DIR}/sbin/tune2fs
+	$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(TARGET_DIR) LDCONFIG=true \
+		-C $(E2FSPROGS_DIR) install
+	rm -rf ${TARGET_DIR}/sbin/mkfs.ext[23] \
+		${TARGET_DIR}/sbin/fsck.ext[23] \
+		${TARGET_DIR}/sbin/findfs \
+		${TARGET_DIR}/sbin/tune2fs
 	ln -sf mke2fs ${TARGET_DIR}/sbin/mkfs.ext2
 	ln -sf mke2fs ${TARGET_DIR}/sbin/mkfs.ext3
 	ln -sf e2fsck ${TARGET_DIR}/sbin/fsck.ext2
 	ln -sf e2fsck ${TARGET_DIR}/sbin/fsck.ext3
 	ln -sf e2label ${TARGET_DIR}/sbin/tune2fs
 	ln -sf e2label ${TARGET_DIR}/sbin/findfs
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 	touch -c $@
 
 e2fsprogs: uclibc $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY)
@@ -100,4 +108,3 @@ e2fsprogs-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_E2FSPROGS)),y)
 TARGETS+=e2fsprogs
 endif
-

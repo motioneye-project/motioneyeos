@@ -31,15 +31,21 @@ endif
 
 $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VERSION): $(BZIP2_DIR)/.unpacked
 	$(TARGET_CONFIGURE_OPTS) \
-	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) -C $(BZIP2_DIR) -f Makefile-libbz2_so
+	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) \
+		-C $(BZIP2_DIR) -f Makefile-libbz2_so
 	$(TARGET_CONFIGURE_OPTS) \
-	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) -C $(BZIP2_DIR) libbz2.a
+	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) \
+		-C $(BZIP2_DIR) libbz2.a
 	cp $(BZIP2_DIR)/bzlib.h $(STAGING_DIR)/usr/include/
 	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VERSION) $(STAGING_DIR)/lib/
 	cp $(BZIP2_DIR)/libbz2.a $(STAGING_DIR)/usr/lib/
-	(cd $(STAGING_DIR)/usr/lib/; ln -snf ../../lib/libbz2.so.$(BZIP2_VERSION) libbz2.so)
-	(cd $(STAGING_DIR)/lib; ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
-	 ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1)
+	(cd $(STAGING_DIR)/usr/lib/; \
+		ln -snf ../../lib/libbz2.so.$(BZIP2_VERSION) libbz2.so; \
+	)
+	(cd $(STAGING_DIR)/lib; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1; \
+	)
 
 $(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VERSION)
 	$(TARGET_CONFIGURE_OPTS) \
@@ -48,24 +54,34 @@ $(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VERSION)
 
 $(BZIP2_TARGET_BINARY): $(BZIP2_BINARY)
 	(cd $(TARGET_DIR)/usr/bin; \
-	rm -f bzip2 bunzip2 bzcat bzip2recover bzgrep bzegrep bzfgrep bzmore bzless bzdiff bzcmp)
+		rm -f bzip2 bunzip2 bzcat bzip2recover \
+			bzgrep bzegrep bzfgrep bzmore bzless bzdiff bzcmp; \
+	)
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) PREFIX=$(TARGET_DIR)/usr -C $(BZIP2_DIR) install
 	rm -f $(TARGET_DIR)/usr/lib/libbz2.a
 	rm -f $(TARGET_DIR)/usr/include/bzlib.h
 	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VERSION) $(TARGET_DIR)/usr/lib/
 	(cd $(TARGET_DIR)/usr/lib; \
-	ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
-	ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so)
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so; \
+	)
 	(cd $(TARGET_DIR)/usr/bin; \
-	ln -snf bzip2 bunzip2; \
-	ln -snf bzip2 bzcat; \
-	ln -snf bzdiff bzcmp; \
-	ln -snf bzmore bzless; \
-	ln -snf bzgrep bzegrep; \
-	ln -snf bzgrep bzfgrep;)
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+		ln -snf bzip2 bunzip2; \
+		ln -snf bzip2 bzcat; \
+		ln -snf bzdiff bzcmp; \
+		ln -snf bzmore bzless; \
+		ln -snf bzgrep bzegrep; \
+		ln -snf bzgrep bzfgrep; \
+	)
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 
 $(TARGET_DIR)/usr/lib/libbz2.a: $(STAGING_DIR)/lib/libbz2.a
 	mkdir -p $(TARGET_DIR)/usr/include
@@ -83,11 +99,12 @@ bzip2-headers: $(TARGET_DIR)/usr/lib/libbz2.a
 bzip2: uclibc $(BZIP2_TARGET_BINARY)
 
 bzip2-clean:
-	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BZIP2_DIR) uninstall
-	rm -f $(TARGET_DIR)/usr/lib/libbz2.* $(TARGET_DIR)/lib/libbz2.* \
-		$(TARGET_DIR)/usr/include/bzlib.h \
-		$(STAGING_DIR)/usr/include/bzlib.h \
-		$(STAGING_DIR)/usr/lib/libbz2.* $(STAGING_DIR)/lib/libbz2.*
+	rm -f $(addprefix $(TARGET_DIR),/lib/libbz2.* \
+					/usr/lib/libbz2.* \
+					/usr/include/bzlib.h)
+	rm -f $(addprefix $(STAGING_DIR),/lib/libbz2.* \
+					/usr/lib/libbz2.* \
+					/usr/include/bzlib.h)
 	-$(MAKE) -C $(BZIP2_DIR) clean
 
 bzip2-dirclean:

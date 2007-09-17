@@ -49,8 +49,8 @@ $(FLEX_DIR)/.configured: $(FLEX_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		--includedir=$(TARGET_DIR)/usr/include \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
@@ -79,8 +79,14 @@ $(TARGET_DIR)/$(FLEX_TARGET_BINARY): $(FLEX_DIR)/$(FLEX_BINARY)
 ifeq ($(strip $(BR2_PACKAGE_FLEX_LIBFL)),y)
 	install -D $(FLEX_DIR)/libfl.a $(STAGING_DIR)/lib/libfl.a
 endif
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/usr/bin; ln -snf flex lex)
 
 flex: uclibc $(TARGET_DIR)/$(FLEX_TARGET_BINARY)
@@ -97,8 +103,8 @@ flex-clean:
 	    sharedstatedir=$(TARGET_DIR)/usr/com \
 	    localstatedir=$(TARGET_DIR)/var \
 	    libdir=$(TARGET_DIR)/usr/lib \
-	    infodir=$(TARGET_DIR)/usr/info \
-	    mandir=$(TARGET_DIR)/usr/man \
+	    infodir=$(TARGET_DIR)/usr/share/info \
+	    mandir=$(TARGET_DIR)/usr/share/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 		-C $(FLEX_DIR) uninstall
 	rm -f $(TARGET_DIR)/usr/bin/lex

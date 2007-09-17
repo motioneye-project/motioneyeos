@@ -54,8 +54,9 @@ $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY): $(OPENNTPD_DIR)/$(OPENNTPD_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) STRIP_OPT="" -C $(OPENNTPD_DIR) install
 	-$(STRIP) $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
 	cp -af $(OPENNTPD_DIR)/ntpd.conf $(TARGET_DIR)/etc/ntpd.conf
-	# Why on earth do we wipe the whole man directory here?
-	#rm -Rf $(TARGET_DIR)/usr/man
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -Rf $(TARGET_DIR)/usr/share/man
+endif
 
 ntpd: uclibc $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
 
