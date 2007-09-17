@@ -459,6 +459,8 @@ uclibc-dirclean:
 
 uclibc-target-utils: $(TARGET_DIR)/usr/bin/ldd
 
+uclibc-target-utils-source: $(DL_DIR)/$(UCLIBC_SOURCE)
+
 #############################################################
 #
 # uClibc for the target just needs its header files

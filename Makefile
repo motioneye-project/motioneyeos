@@ -430,12 +430,4 @@ help:
 
 .PHONY: dummy subdirs release distclean clean config oldconfig \
 	menuconfig tags check test depend defconfig help
-
-
-dbg:
-	echo BASE_TARGETS_SOURCE=$(BASE_TARGETS_SOURCE)
-	echo BASE_TARGETS=$(BASE_TARGETS)
-	echo TARGETS_SOURCE=$(TARGETS_SOURCE)
-	echo TARGETS=$(TARGETS)
-
-bsource:	
+	
