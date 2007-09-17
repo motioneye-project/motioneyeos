@@ -3,7 +3,7 @@
 # gmp
 #
 #############################################################
-GMP_VERSION:=4.2.1
+GMP_VERSION:=4.2.2
 GMP_SOURCE:=gmp-$(GMP_VERSION).tar.bz2
 GMP_SITE:=http://ftp.sunet.se/pub/gnu/gmp/
 GMP_CAT:=$(BZCAT)
