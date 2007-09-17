@@ -217,6 +217,7 @@ TARGETS+=erase-fakeroots
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
+BASE_TARGETS_SOURCE:=$(patsubst %,%-source,$(BASE_TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 TARGETS_ALL:=$(patsubst %,__real_tgt_%,$(TARGETS))
 # all targets depend on the crosscompiler and it's prerequisites
@@ -283,7 +284,7 @@ $(TARGET_DIR): $(PROJECT_BUILD_DIR)/.root
 erase-fakeroots:
 	rm -f $(PROJECT_BUILD_DIR)/.fakeroot*
 
-source: $(TARGETS_SOURCE) $(HOST_SOURCE)
+source: $(BASE_TARGETS_SOURCE) $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 _source-check:
 	$(MAKE) SPIDER=--spider source
@@ -429,3 +430,12 @@ help:
 
 .PHONY: dummy subdirs release distclean clean config oldconfig \
 	menuconfig tags check test depend defconfig help
+
+
+dbg:
+	echo BASE_TARGETS_SOURCE=$(BASE_TARGETS_SOURCE)
+	echo BASE_TARGETS=$(BASE_TARGETS)
+	echo TARGETS_SOURCE=$(TARGETS_SOURCE)
+	echo TARGETS=$(TARGETS)
+
+bsource:	
