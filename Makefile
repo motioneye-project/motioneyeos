@@ -216,8 +216,7 @@ include target/Makefile.in
 TARGETS+=erase-fakeroots
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
-TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS))
-BASE_TARGETS_SOURCE:=$(patsubst %,%-source,$(BASE_TARGETS))
+TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS) $(BASE_TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 TARGETS_ALL:=$(patsubst %,__real_tgt_%,$(TARGETS))
 # all targets depend on the crosscompiler and it's prerequisites
@@ -284,7 +283,7 @@ $(TARGET_DIR): $(PROJECT_BUILD_DIR)/.root
 erase-fakeroots:
 	rm -f $(PROJECT_BUILD_DIR)/.fakeroot*
 
-source: $(BASE_TARGETS_SOURCE) $(TARGETS_SOURCE) $(HOST_SOURCE)
+source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 _source-check:
 	$(MAKE) SPIDER=--spider source
