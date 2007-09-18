@@ -129,7 +129,7 @@ ifeq ($(BR2_KERNEL_HEADERS_PATCH_DIR),y)
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
 endif
 ifeq ($(BR2_PACKAGE_OPENSWAN),y)
-	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) package/openswan \
+	toolchain/patch-kernel.sh $(LINUX26_DIR) package/openswan \
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
 endif
 ifneq ($(LINUX26_PATCH_DIR),)
