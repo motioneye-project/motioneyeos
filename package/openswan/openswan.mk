@@ -6,7 +6,7 @@
 # to enable that within busybox
 #
 #############################################################
-OPENSWAN_VERSION:=2.4.8
+OPENSWAN_VERSION:=2.4.9
 OPENSWAN_SOURCE:=openswan-$(OPENSWAN_VERSION).tar.gz
 OPENSWAN_SITE:=http://www.openswan.org/download/
 OPENSWAN_DIR:=$(BUILD_DIR)/openswan-$(OPENSWAN_VERSION)
@@ -32,9 +32,11 @@ $(OPENSWAN_DIR)/$(OPENSWAN_BINARY): $(OPENSWAN_DIR)/.unpacked
 	@echo "using kernel $(LINUX_KERNEL)"
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) -C $(OPENSWAN_DIR) \
-		CC=$(TARGET_CC) LD=$(TARGET_LD) \
+		CC="$(TARGET_CC)" LD="$(TARGET_LD)" \
+		LDFLAGS="$(TARGET_LDFLAGS) $(BR2_SYSROOT)" \
+		LD_LIBRARY_PATH= \
 		KERNELSRC=$(LINUX_DIR) DESTDIR=$(TARGET_DIR) INC_USRLOCAL=/usr \
-		USERCOMPILE="$(OPENSWAN_CFLAGS) $(TARGET_CFLAGS) -I$(TARGET_DIR)/usr/include" programs
+		USERCOMPILE="$(OPENSWAN_CFLAGS) $(TARGET_CFLAGS) $(BR2_ISYSROOT) -I$(TARGET_DIR)/usr/include" programs
 
 $(TARGET_DIR)/$(OPENSWAN_TARGET_BINARY): $(OPENSWAN_DIR)/$(OPENSWAN_BINARY)
 	$(TARGET_CONFIGURE_OPTS) \
