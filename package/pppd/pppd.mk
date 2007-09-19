@@ -56,8 +56,17 @@ $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured
 
 $(TARGET_DIR)/$(PPPD_TARGET_BINARY): $(PPPD_DIR)/$(PPPD_BINARY)
 	$(MAKE1) DESTDIR=$(TARGET_DIR)/usr CC=$(TARGET_CC) -C $(PPPD_DIR) install
-	rm -rf $(TARGET_DIR)/usr/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_ENABLE_LOCALE),y)
+	rm -rf $(TARGET_DIR)/usr/share/locale
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/info
+endif
+	rm -rf $(TARGET_DIR)/usr/share/doc
+	rm -rf $(TARGET_DIR)/usr/include/pppd
 
 pppd: uclibc $(TARGET_DIR)/$(PPPD_TARGET_BINARY)
 
@@ -67,6 +76,7 @@ pppd-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/pppstatus
 	rm -f $(TARGET_DIR)/usr/sbin/pppdump
 	rm -rf $(TARGET_DIR)/etc/ppp
+	rm -rf $(TARGET_DIR)/usr/include/pppd
 	-$(MAKE) -C $(PPPD_DIR) clean
 
 pppd-dirclean:
