@@ -4,7 +4,7 @@
 #
 #############################################################
 
-VPNC_VERSION=0.4.0
+VPNC_VERSION=0.5.1
 VPNC_SOURCE=vpnc-$(VPNC_VERSION).tar.gz
 VPNC_SITE=http://www.unix-ag.uni-kl.de/~massar/vpnc
 VPNC_DIR=$(BUILD_DIR)/vpnc-$(VPNC_VERSION)
@@ -19,12 +19,14 @@ $(DL_DIR)/$(VPNC_SOURCE):
 
 $(VPNC_DIR)/.unpacked: $(DL_DIR)/$(VPNC_SOURCE)
 	$(VPNC_CAT) $(DL_DIR)/$(VPNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(VPNC_DIR) package/vpnc \*.patch
+	toolchain/patch-kernel.sh $(VPNC_DIR) package/vpnc \*$(VPNC_VERSION).patch
 	touch $@
 
 $(VPNC_BINARY): $(VPNC_DIR)/.unpacked
 	rm -f $@
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) INCLUDE=$(STAGING_DIR)/usr/include \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS+=-lgcrypt LDFLAGS+=-lgpg-error \
 		CC="$(TARGET_CC)" -C $(VPNC_DIR)
 
 $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
