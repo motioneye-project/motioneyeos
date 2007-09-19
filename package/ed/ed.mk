@@ -3,7 +3,7 @@
 # ed
 #
 #############################################################
-ED_VERSION:=0.6
+ED_VERSION:=0.8
 ED_SOURCE:=ed-$(ED_VERSION).tar.bz2
 ED_SITE:=http://ftp.gnu.org/gnu/ed/
 ED_CAT:=$(BZCAT)
@@ -36,7 +36,7 @@ $(ED_DIR)/$(ED_BINARY): $(ED_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(ED_DIR)
 
 $(TARGET_DIR)/$(ED_TARGET_BINARY): $(ED_DIR)/$(ED_BINARY)
-	cp -dpf $(ED_DIR)/$(ED_BINARY) $(TARGET_DIR)/$(ED_TARGET_BINARY)
+	$(INSTALL) -D $(ED_DIR)/$(ED_BINARY) $(TARGET_DIR)/$(ED_TARGET_BINARY)
 
 ed: uclibc $(TARGET_DIR)/$(ED_TARGET_BINARY)
 
