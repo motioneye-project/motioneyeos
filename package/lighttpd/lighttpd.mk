@@ -3,7 +3,7 @@
 # lighttpd
 #
 #############################################################
-LIGHTTPD_VERSION:=1.4.16
+LIGHTTPD_VERSION:=1.4.18
 LIGHTTPD_SOURCE:=lighttpd_$(LIGHTTPD_VERSION).orig.tar.gz
 LIGHTTPD_PATCH:=lighttpd_$(LIGHTTPD_VERSION)-1.diff.gz
 LIGHTTPD_SITE:=http://ftp.debian.org/debian/pool/main/l/lighttpd
