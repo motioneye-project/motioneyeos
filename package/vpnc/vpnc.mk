@@ -20,15 +20,12 @@ $(DL_DIR)/$(VPNC_SOURCE):
 $(VPNC_DIR)/.unpacked: $(DL_DIR)/$(VPNC_SOURCE)
 	$(VPNC_CAT) $(DL_DIR)/$(VPNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(VPNC_DIR) package/vpnc \*.patch
-	touch $(VPNC_DIR)/.unpacked
+	touch $@
 
-$(VPNC_DIR)/.configured: $(VPNC_DIR)/.unpacked
-	touch $(VPNC_DIR)/.configured
-
-$(VPNC_BINARY): $(VPNC_DIR)/.configured
+$(VPNC_BINARY): $(VPNC_DIR)/.unpacked
 	rm -f $@
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) INCLUDE=$(STAGING_DIR)/usr/include \
-		CC=$(TARGET_CC) -C $(VPNC_DIR)
+		CC="$(TARGET_CC)" -C $(VPNC_DIR)
 
 $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
@@ -39,18 +36,16 @@ $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
 		MANDIR=/usr/share/man \
 		VERSION=$(VPNC_VERSION) \
 		INCLUDE=$(STAGING_DIR)/usr/include \
-		LDFLAGS="-g -lgcrypt -lgpg-error" \
+		LDFLAGS="-lgcrypt -lgpg-error" \
 		-C $(VPNC_DIR) install
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(VPNC_TARGET_BINARY)
 
-vpnc: uclibc $(VPNC_TARGET_BINARY)
+vpnc: uclibc libgcrypt $(VPNC_TARGET_BINARY)
 
 vpnc-source: $(DL_DIR)/$(VPNC_SOURCE)
 
 vpnc-clean:
-	@if [ -d $(VPNC_DIR)/Makefile ]; then \
-		$(MAKE) -C $(VPNC_DIR) clean; \
-	fi
+	-$(MAKE) -C $(VPNC_DIR) clean
 	rm -f $(STAGING_DIR)/usr/bin/vpnc
 
 vpnc-dirclean:
