@@ -672,9 +672,13 @@ config BR2_WGET
 	string "Wget command"
 	default "wget --passive-ftp -nd"
 
-config BR2_SVN
+config BR2_SVN_CO
 	string "Subversion (svn) command to download source tree"
 	default "svn co"
+
+config BR2_SVN_UP
+	string "Subversion (svn) command to update source tree"
+	default "svn up"
 
 config BR2_GIT
 	string "Git command to download source tree"

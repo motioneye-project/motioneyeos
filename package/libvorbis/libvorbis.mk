@@ -82,11 +82,11 @@ TREMOR_SOURCE:=$(TREMOR_NAME).tar.bz2
 
 $(DL_DIR)/$(TREMOR_SOURCE):
 	(cd $(BUILD_DIR); \
-		svn co $(TREMOR_TRUNK); \
+		$(SVN_CO) $(TREMOR_TRUNK); \
 		mv -f Tremor $(TREMOR_NAME); \
 		tar -cvf $(TREMOR_NAME).tar $(TREMOR_DIR); \
 		bzip2 $(TREMOR_NAME).tar; \
-		rm -fr $(TREMOR_DIR); \
+		rm -rf $(TREMOR_DIR); \
 		mv $(TREMOR_NAME).tar.bz2 $(DL_DIR)/$(TREMOR_SOURCE); \
 	)
 
@@ -99,9 +99,6 @@ $(TREMOR_DIR)/.configured: $(TREMOR_DIR)/.source
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
-		PKG_CONFIG_PATH="$(STAGING_DIR)/lib/pkconfig:$(STAGING_DIR)/usr/lib/pkgconfig" \
-		PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" \
-		PKG_CONFIG_SYSROOT=$(STAGING_DIR) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -150,13 +147,12 @@ tremor-dirclean:
 #
 ############################################################
 ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS)),y)
-ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS)),y)
+ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS_TREMOR)),y)
 TARGETS+=tremor
-else
-TARGETS+=libvorbis
 endif
+TARGETS+=libvorbis
 endif
 
 ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS_HEADERS)),y)
- TARGETS+=libvorbis-header
+TARGETS+=libvorbis-header
 endif
