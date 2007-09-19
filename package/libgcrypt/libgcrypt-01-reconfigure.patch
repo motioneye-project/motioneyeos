@@ -1,0 +1,17 @@
+--- libgcrypt-1.2.4.oorig/configure	2007-09-19 13:40:48.000000000 +0200
++++ libgcrypt-1.2.4/configure	2007-09-19 13:41:44.000000000 +0200
+@@ -27370,12 +27370,13 @@
+     i386-emx-os2 | i345686-pc-os2*emx | i386-pc-msdosdjgpp)
+         ac_cv_sys_symbol_underscore=yes
+         ;;
+-    *)
++    *)if test -z "$ac_cv_sys_symbol_underscore";then
+       if test "$cross_compiling" = yes; then
+          ac_cv_sys_symbol_underscore=yes
+       else
+          tmp_do_check="yes"
+       fi
++      fi
+        ;;
+ esac
+ if test "$tmp_do_check" = "yes"; then

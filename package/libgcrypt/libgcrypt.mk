@@ -18,12 +18,16 @@ $(LIBGCRYPT_DIR)/.source: $(DL_DIR)/$(LIBGCRYPT_SOURCE)
 	$(BZCAT) $(DL_DIR)/$(LIBGCRYPT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBGCRYPT_DIR) package/libgcrypt/ libgcrypt\*.patch
 	$(CONFIG_UPDATE) $(LIBGCRYPT_DIR)
+	# This is incorrectly hardwired to yes for cross-compiles with no
+	# sane way to pass pre-existing knowledge so fix it with the chainsaw..
+	$(SED) '/GNUPG_SYS_SYMBOL_UNDERSCORE/d' $(LIBGCRYPT_DIR)/configure
 	touch $@
 
 $(LIBGCRYPT_DIR)/.configured: $(LIBGCRYPT_DIR)/.source
-	(cd $(LIBGCRYPT_DIR); \
+	(cd $(LIBGCRYPT_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
+		ac_cv_sys_symbol_underscore=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -41,7 +45,6 @@ $(LIBGCRYPT_DIR)/.configured: $(LIBGCRYPT_DIR)/.source
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--disable-optimization \
-		--with-capabilities \
 	)
 	touch $@
 
