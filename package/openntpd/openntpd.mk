@@ -64,7 +64,7 @@ ntpd-source: $(DL_DIR)/$(OPENNTPD_SOURCE)
 
 ntpd-clean:
 	rm -f $(addprefix $(TARGET_DIR)/,etc/ntpd.conf \
-					 usr/share/man/man?/ntpd.conf* \
+					 usr/share/man/man?/ntpd* \
 					 $(OPENNTPD_TARGET_BINARY))
 	-$(MAKE) -C $(OPENNTPD_DIR) clean
 

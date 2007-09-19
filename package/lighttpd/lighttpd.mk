@@ -14,11 +14,13 @@ LIGHTTPD_TARGET_BINARY:=usr/sbin/lighttpd
 
 $(DL_DIR)/$(LIGHTTPD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(LIGHTTPD_SITE)/$(LIGHTTPD_SOURCE)
+
 ifneq ($(LIGHTTPD_PATCH),)
 LIGHTTPD_PATCH_FILE:=$(DL_DIR)/$(LIGHTTPD_PATCH)
 $(LIGHTTPD_PATCH_FILE):
 	$(WGET) -P $(DL_DIR) $(LIGHTTPD_SITE)/$(LIGHTTPD_PATCH)
 endif
+
 lighttpd-source: $(DL_DIR)/$(LIGHTTPD_SOURCE) $(LIGHTTPD_PATCH_FILE)
 
 $(LIGHTTPD_DIR)/.unpacked: $(DL_DIR)/$(LIGHTTPD_SOURCE)
@@ -63,17 +65,21 @@ $(LIGHTTPD_DIR)/.configured: $(LIGHTTPD_DIR)/.unpacked
 
 $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY): $(LIGHTTPD_DIR)/.configured
 	$(MAKE) -C $(LIGHTTPD_DIR)
-   
+
 $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY): $(LIGHTTPD_DIR)/$(LIGHTTPD_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LIGHTTPD_DIR) install
-	@rm -rf $(TARGET_DIR)/usr/share/man $(TARGET_DIR)/usr/man
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
 	@rm -rf $(TARGET_DIR)/usr/lib/lighttpd/*.la
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/lighttpd/*.so
 	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY)
 	@if [ ! -f $(TARGET_DIR)/etc/lighttpd/lighttpd.conf ]; then \
-		$(INSTALL) -m 0644 -D $(LIGHTTPD_DIR)/doc/lighttpd.conf $(TARGET_DIR)/etc/lighttpd/lighttpd.conf; \
+		$(INSTALL) -m 0644 -D $(LIGHTTPD_DIR)/doc/lighttpd.conf \
+			$(TARGET_DIR)/etc/lighttpd/lighttpd.conf; \
 	fi
-	$(INSTALL) -m 0755 -D package/lighttpd/rc.lighttpd $(TARGET_DIR)/etc/init.d/S99lighttpd
+	$(INSTALL) -m 0755 -D package/lighttpd/rc.lighttpd \
+		$(TARGET_DIR)/etc/init.d/S99lighttpd
 
 ifeq ($(strip $(BR2_PACKAGE_LIGHTTPD_OPENSSL)),y)
 lighttpd: uclibc openssl $(TARGET_DIR)/$(LIGHTTPD_TARGET_BINARY)

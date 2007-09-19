@@ -42,8 +42,8 @@ $(LIBGCRYPT_DIR)/.configured: $(LIBGCRYPT_DIR)/.source
 		--datadir=/usr/share \
 		--localstatedir=/var \
 		--includedir=/usr/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		--disable-optimization \
 	)
 	touch $@
@@ -57,6 +57,9 @@ $(STAGING_DIR)/$(LIBGCRYPT_TARGET_LIBRARY): $(LIBGCRYPT_DIR)/$(LIBGCRYPT_LIBRARY
 
 $(TARGET_DIR)/$(LIBGCRYPT_TARGET_LIBRARY): $(STAGING_DIR)/$(LIBGCRYPT_TARGET_LIBRARY)
 	cp -dpf $<* $(TARGET_DIR)/$(LIBGCRYPT_DESTDIR)
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(STAGING_DIR)/usr/share/info
+endif
 
 libgcrypt: uclibc libgpg-error $(TARGET_DIR)/$(LIBGCRYPT_TARGET_LIBRARY)
 

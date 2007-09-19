@@ -31,6 +31,7 @@ $(LIBEVENT_DIR)/.configured: $(LIBEVENT_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		--mandir=/usr/share/man \
 		--disable-static \
 		--with-gnu-ld \
 	)
@@ -44,9 +45,11 @@ $(STAGING_DIR)/$(LIBEVENT_TARGET_BINARY): $(LIBEVENT_DIR)/$(LIBEVENT_BINARY)
 
 $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY): $(STAGING_DIR)/$(LIBEVENT_TARGET_BINARY)
 	$(MAKE) -C $(LIBEVENT_DIR) DESTDIR=$(TARGET_DIR) install
-	rm -f $(TARGET_DIR)/usr/lib/libevent*.la $(TARGET_DIR)/usr/include/ev*
-	rm -f $(TARGET_DIR)/usr/man/man3/ev*.3
-	rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/usr/man/man3
+	rm -f $(addprefix $(TARGET_DIR)/usr/,lib/libevent*.la \
+					     include/ev*)
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -fr $(TARGET_DIR)/usr/share/man
+endif
 
 libevent: uclibc $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY)
 

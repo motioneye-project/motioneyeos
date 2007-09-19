@@ -46,8 +46,8 @@ $(LIBTOOL_DIR)/.configured: $(LIBTOOL_SRC_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		$(DISABLE_NLS) \
 	)
 	touch $@
@@ -67,15 +67,21 @@ $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
 	    sysconfdir=$(TARGET_DIR)/etc \
 	    localstatedir=$(TARGET_DIR)/var \
 	    libdir=$(TARGET_DIR)/usr/lib \
-	    infodir=$(TARGET_DIR)/usr/info \
-	    mandir=$(TARGET_DIR)/usr/man \
+	    infodir=$(TARGET_DIR)/usr/share/info \
+	    mandir=$(TARGET_DIR)/usr/share/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(LIBTOOL_DIR) install
 	$(STRIP) $(TARGET_DIR)//usr/lib/libltdl.so.*.*.* > /dev/null 2>&1
 	$(SED) "s,^CC.*,CC=\"/usr/bin/gcc\"," $(TARGET_DIR)/usr/bin/libtool
 	$(SED) "s,^LD.*,LD=\"/usr/bin/ld\"," $(TARGET_DIR)/usr/bin/libtool
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
+	rm -rf $(TARGET_DIR)/share/locale
+	rm -rf $(TARGET_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
 	touch -c $@
 
 libtool: uclibc $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY)
@@ -116,8 +122,14 @@ $(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_HOST_DIR)/.configured
 
 $(STAGING_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY)
 	$(MAKE) -C $(LIBTOOL_HOST_DIR) install
-	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
-		$(STAGING_DIR)/usr/man $(STAGING_DIR)/usr/share/doc
+	rm -rf $(STAGING_DIR)/share/locale
+	rm -rf $(STAGING_DIR)/usr/share/doc
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(STAGING_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(STAGING_DIR)/usr/share/man
+endif
 	touch -c $@
 
 host-libtool: $(STAGING_DIR)/$(LIBTOOL_TARGET_BINARY)

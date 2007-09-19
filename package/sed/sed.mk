@@ -54,21 +54,29 @@ build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 	@if [ -L $(HOST_SED_DIR)/$(SED_TARGET_BINARY) ]; then \
 		rm -f $(HOST_SED_DIR)/$(SED_TARGET_BINARY); \
 	fi
-	@if [ ! -f $(HOST_SED_DIR)/$(SED_TARGET_BINARY) -o $(HOST_SED_DIR)/$(SED_TARGET_BINARY) \
-	-ot $(SED_DIR1)/$(SED_BINARY) ]; then \
-	    set -x; \
-	    mkdir -p $(HOST_SED_DIR)/bin; \
-	    $(MAKE) DESTDIR=$(HOST_SED_DIR) -C $(SED_DIR1) install; \
-	    mv $(HOST_SED_DIR)/usr/bin/sed $(HOST_SED_DIR)/bin/; \
-	    rm -rf $(HOST_SED_DIR)/share/locale $(HOST_SED_DIR)/usr/info \
-		    $(HOST_SED_DIR)/usr/man $(HOST_SED_DIR)/usr/share/doc; \
+	@if [ ! -f $(HOST_SED_DIR)/$(SED_TARGET_BINARY) \
+	      -o $(HOST_SED_DIR)/$(SED_TARGET_BINARY) \
+	      -ot $(SED_DIR1)/$(SED_BINARY) ]; then \
+		set -x; \
+		mkdir -p $(HOST_SED_DIR)/bin; \
+		$(MAKE) DESTDIR=$(HOST_SED_DIR) -C $(SED_DIR1) install; \
+		mv $(HOST_SED_DIR)/usr/bin/sed $(HOST_SED_DIR)/bin/; \
+		rm -rf $(HOST_SED_DIR)/share/locale; \
+		rm -rf $(HOST_SED_DIR)/usr/share/doc; \
 	fi
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(HOST_SED_DIR)/usr/man/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(HOST_SED_DIR)/usr/share/man
+endif
 
 $(HOST_SED_DIR)/$(SED_TARGET_BINARY):
 	if [ ! -e "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)" ]; then \
 		mkdir -p "$(HOST_SED_DIR)/bin"; \
 		rm -f "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
-		ln -sf "$(HOST_SED_IF_ANY)" "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
+		ln -sf "$(HOST_SED_IF_ANY)" \
+			"$(HOST_SED_DIR)/$(SED_TARGET_BINARY)"; \
 	fi
 
 .PHONY: sed host-sed use-sed-host-binary
@@ -117,8 +125,8 @@ $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		--include=$(STAGING_DIR)/usr/include \
 		$(DISABLE_NLS) \
 	)
@@ -133,14 +141,21 @@ sed-target_binary: $(SED_DIR2)/$(SED_BINARY)
 		rm -f $(TARGET_DIR)/$(SED_TARGET_BINARY); \
 	fi
 
-	@if [ ! -f $(SED_DIR2)/$(SED_BINARY) -o $(TARGET_DIR)/$(SED_TARGET_BINARY) \
-	-ot $(SED_DIR2)/$(SED_BINARY) ]; then \
-	    set -x; \
-	    $(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) install; \
-	    mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/; \
-	    rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		    $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc; \
+	@if [ ! -f $(SED_DIR2)/$(SED_BINARY) \
+	      -o $(TARGET_DIR)/$(SED_TARGET_BINARY) \
+	      -ot $(SED_DIR2)/$(SED_BINARY) ]; then \
+		set -x; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) install; \
+		mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/; \
+		rm -rf $(TARGET_DIR)/share/locale; \
+		rm -rf $(TARGET_DIR)/usr/share/doc; \
 	fi
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/info
+endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/share/man
+endif
 
 sed: uclibc sed-target_binary
 

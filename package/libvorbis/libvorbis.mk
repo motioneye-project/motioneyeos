@@ -19,11 +19,13 @@ $(LIBVORBIS_DIR)/.source: $(DL_DIR)/$(LIBVORBIS_SOURCE)
 	touch $@
 
 $(LIBVORBIS_DIR)/.configured: $(LIBVORBIS_DIR)/.source
-	(cd $(LIBVORBIS_DIR); rm -rf config.cache ; \
+	(cd $(LIBVORBIS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
-		PKG_CONFIG_PATH="$(STAGING_DIR)/lib/pkconfig:$(STAGING_DIR)/usr/lib/pkgconfig" PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" PKG_CONFIG_SYSROOT=$(STAGING_DIR) \
+		PKG_CONFIG_PATH="$(STAGING_DIR)/lib/pkconfig:$(STAGING_DIR)/usr/lib/pkgconfig" \
+		PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" \
+		PKG_CONFIG_SYSROOT=$(STAGING_DIR) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -34,7 +36,7 @@ $(LIBVORBIS_DIR)/.configured: $(LIBVORBIS_DIR)/.source
 		--enable-static \
 		--disable-oggtest \
 		$(DISABLE_NLS) \
-	);
+	)
 	touch $@
 
 $(LIBVORBIS_DIR)/.libs: $(LIBVORBIS_DIR)/.configured
@@ -51,7 +53,8 @@ $(TARGET_DIR)/usr/lib/libvorbis.a: $(TARGET_DIR)/usr/lib/libvorbis.so
 
 libvorbis-header: $(TARGET_DIR)/usr/lib/libvorbis.a
 	mkdir -p $(TARGET_DIR)/usr/include/vorbis
-	cp -dpf $(LIBVORBIS_DIR)/include/vorbis/*.h $(TARGET_DIR)/usr/include/vorbis
+	cp -dpf $(LIBVORBIS_DIR)/include/vorbis/*.h \
+		$(TARGET_DIR)/usr/include/vorbis
 
 libvorbis: uclibc pkgconfig $(TARGET_DIR)/usr/lib/libvorbis.so
 
@@ -80,7 +83,7 @@ TREMOR_SOURCE:=$(TREMOR_NAME).tar.bz2
 $(DL_DIR)/$(TREMOR_SOURCE):
 	(cd $(BUILD_DIR); \
 		svn co $(TREMOR_TRUNK); \
-		mv -af Tremor $(TREMOR_NAME); \
+		mv -f Tremor $(TREMOR_NAME); \
 		tar -cvf $(TREMOR_NAME).tar $(TREMOR_DIR); \
 		bzip2 $(TREMOR_NAME).tar; \
 		rm -fr $(TREMOR_DIR); \

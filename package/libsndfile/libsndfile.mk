@@ -36,17 +36,20 @@ $(LIBSNDFILE_DIR)/$(LIBSNDFILE_BINARY): $(LIBSNDFILE_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBSNDFILE_DIR)
 
 $(TARGET_DIR)/$(LIBSNDFILE_TARGET_BINARY): $(LIBSNDFILE_DIR)/$(LIBSNDFILE_BINARY)
-	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LIBSNDFILE_DIR) install
 	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(LIBSNDFILE_DIR) install
-	rm -Rf $(TARGET_DIR)/usr/man
+	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LIBSNDFILE_DIR) install
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -Rf $(TARGET_DIR)/usr/share/man
+	rm -Rf $(STAGING_DIR)/usr/share/man
+endif
 
 libsndfile: uclibc $(TARGET_DIR)/$(LIBSNDFILE_TARGET_BINARY)
 
 libsndfile-source: $(DL_DIR)/$(LIBSNDFILE_SOURCE)
 
 libsndfile-clean:
+	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(LIBSNDFILE_DIR) uninstall
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LIBSNDFILE_DIR) uninstall
-	-$(MAKE) prefix=$(STAGING_DIR)/usr -C $(LIBSNDFILE_DIR) uninstall
 	-$(MAKE) -C $(LIBSNDFILE_DIR) clean
 
 libsndfile-dirclean:
@@ -60,4 +63,3 @@ libsndfile-dirclean:
 ifeq ($(strip $(BR2_PACKAGE_LIBSNDFILE)),y)
 TARGETS+=libsndfile
 endif
-
