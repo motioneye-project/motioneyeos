@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Starts OLSRD daemon
+#
+
+case "$1" in
+  start)
+  	echo "Starting OLSRd daemon: "
+	/usr/sbin/olsrd -d 0 -nofork & 
+	;;
+  stop)
+  	echo "Stopping OLSRd daemon: "
+	killall olsrd
+	;;
+  *)
+	echo $"Usage: $0 {start|stop}"
+	exit 1
+esac
+
+exit $?
+
