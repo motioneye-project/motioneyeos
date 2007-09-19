@@ -54,7 +54,7 @@ endif # Normal toolchain
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)
 GCC_CAT:=$(BZCAT)
-GCC_STRIP_HOST_BINARIES:=true
+GCC_STRIP_HOST_BINARIES:=nope
 
 
 ifeq ($(findstring x3.,x$(GCC_VERSION)),x3.)
