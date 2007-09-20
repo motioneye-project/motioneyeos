@@ -161,7 +161,7 @@ $(BUILD_DIR)/%/.stamp_patched:
 	    fi; \
 	  fi; \
 	else \
-	  echo "This must be wrong. Why do you need to special-case _any_ package here? Skipping until this is resolved properly." \
+	  echo "This must be wrong. Why do you need to special-case _any_ package here? Skipping until this is resolved properly."; \
 	  if false && test "$(wildcard package/x11r7/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
 	    toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
 	  else \
