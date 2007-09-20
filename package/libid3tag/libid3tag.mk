@@ -6,7 +6,7 @@
 
 LIBID3TAG_VERSION:=0.15.1b
 LIBID3TAG_SOURCE:=libid3tag-$(LIBID3TAG_VERSION).tar.gz
-LIBID3TAG_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/mad/
+LIBID3TAG_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/mad
 LIBID3TAG_DIR:=$(BUILD_DIR)/libid3tag-$(LIBID3TAG_VERSION)
 LIBID3TAG_CAT:=$(ZCAT)
 LIBID3TAG_BIN:=libid3tag.so.0.3.0
@@ -35,11 +35,10 @@ $(LIBID3TAG_DIR)/.configured: $(LIBID3TAG_DIR)/.unpacked
 	)
 	touch $@
 
-$(LIBID3TAG_DIR)/src/.libs/$(LIBID3TAG_BIN): $(LIBID3TAG_DIR)/.configured
+$(LIBID3TAG_DIR)/.libs/$(LIBID3TAG_BIN): $(LIBID3TAG_DIR)/.configured
 	$(MAKE) -C $(LIBID3TAG_DIR)
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBID3TAG_DIR) install
 
-$(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN): $(LIBID3TAG_DIR)/src/.libs/$(LIBID3TAG_BIN)
+$(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN): $(LIBID3TAG_DIR)/.libs/$(LIBID3TAG_BIN)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBID3TAG_DIR) install
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libid3tag.la
 
@@ -47,17 +46,15 @@ $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN): $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN)
 	cp -dpf $(STAGING_DIR)/usr/lib/libid3tag.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libid3tag.so*
 
-libid3tag: uclibc libmad $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN)
+libid3tag: uclibc zlib libmad $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN)
 
 libid3tag-source: $(DL_DIR)/$(LIBID3TAG_SOURCE)
 
 libid3tag-clean:
-	@if [ -d $(LIBID3TAG_DIR)/Makefile ]; then \
-		$(MAKE) -C $(LIBID3TAG_DIR) clean; \
-	fi
+	-$(MAKE) -C $(LIBID3TAG_DIR) clean
 	rm -f $(STAGING_DIR)/$(LIBID3TAG_TARGET_BIN)
-	rm -f $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN)
-
+	rm -f $(TARGET_DIR)/$(LIBID3TAG_TARGET_BIN) \
+		$(TARGET_DIR)/usr/lib/libid3tag*
 
 libid3tag-dirclean:
 	rm -rf $(LIBID3TAG_DIR)
