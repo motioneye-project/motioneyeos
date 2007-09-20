@@ -10,7 +10,7 @@ verbose=false
 export PATH=`pwd`:$PATH
 IFS="	" # tab
 
-function run_config_guess ()
+run_config_guess ()
 {
     rc=0
     while read machine release system version triplet ; do

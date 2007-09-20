@@ -9,7 +9,7 @@
 
 verbose=false
 
-function run_config_sub ()
+run_config_sub ()
 {
     rc=0
     while read alias canonical ; do
