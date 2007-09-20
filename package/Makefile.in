@@ -136,6 +136,7 @@ TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		GCC="$(TARGET_CROSS)gcc $(TARGET_CFLAGS)" \
 		CXX="$(TARGET_CROSS)g++ $(TARGET_CFLAGS)" \
 		CPP="$(TARGET_CROSS)cpp $(TARGET_CFLAGS)" \
+		CFLAGS="" CXXFLAGS="" FFLAGS="" \
 		RANLIB=$(TARGET_CROSS)ranlib \
 		STRIP=$(TARGET_CROSS)strip \
 		OBJCOPY=$(TARGET_CROSS)objcopy \
@@ -204,6 +205,18 @@ BR2_AC_CV_C_BIGENDIAN=ac_cv_c_bigendian=yes
 else
 BR2_AC_CV_C_BIGENDIAN=ac_cv_c_bigendian=no
 endif
+
+# Does malloc return live pointer for malloc(0) ?
+ifeq ($(MALLOC_GLIBC_COMPAT),y)
+BR2_AC_CV_FUNC_MALLOC_0_NONNULL=ac_cv_func_malloc_0_nonnull=yes \
+				gl_cv_func_malloc_0_nonnull=yes \
+				ac_cv_func_realloc_0_nonnull=yes
+else
+BR2_AC_CV_FUNC_MALLOC_0_NONNULL=ac_cv_func_malloc_0_nonnull=no \
+				gl_cv_func_malloc_0_nonnull=no \
+				ac_cv_func_realloc_0_nonnull=no
+endif
+
 
 TARGET_CONFIGURE_ARGS= \
 	$(BR2_AC_CV_TRAP_CHECK) \
