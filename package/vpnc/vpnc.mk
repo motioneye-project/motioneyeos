@@ -19,7 +19,7 @@ $(DL_DIR)/$(VPNC_SOURCE):
 
 $(VPNC_DIR)/.unpacked: $(DL_DIR)/$(VPNC_SOURCE)
 	$(VPNC_CAT) $(DL_DIR)/$(VPNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(VPNC_DIR) package/vpnc \*$(VPNC_VERSION).patch
+	toolchain/patch-kernel.sh $(VPNC_DIR) package/vpnc vpnc-$(VPNC_VERSION)\*.patch
 	touch $@
 
 $(VPNC_BINARY): $(VPNC_DIR)/.unpacked
