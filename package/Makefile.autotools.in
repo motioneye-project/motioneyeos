@@ -143,6 +143,9 @@ $(BUILD_DIR)/%/.stamp_extracted:
 	$(Q)touch $@
 
 # Patch
+# XXX: FIXME: This has to be done differently and path-independent, i.e. use
+# XXX: FIXME: the dir-part of the stem as base-dir (instead of hardcoding
+# XXX: FIXME: "package/".
 $(BUILD_DIR)/%/.stamp_patched: NAMEVER = $($(PKG)_NAME)-$($(PKG)_VERSION)
 $(BUILD_DIR)/%/.stamp_patched:
 	$(call MESSAGE,"Patching")
@@ -158,7 +161,8 @@ $(BUILD_DIR)/%/.stamp_patched:
 	    fi; \
 	  fi; \
 	else \
-	  if test "$(wildcard package/x11r7/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
+	  echo "This must be wrong. Why do you need to special-case _any_ package here? Skipping until this is resolved properly." \
+	  if false && test "$(wildcard package/x11r7/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
 	    toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
 	  else \
 	    toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME) $($(PKG)_NAME)\*.patch || exit 1 ; \
