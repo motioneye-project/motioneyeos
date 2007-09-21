@@ -3,7 +3,7 @@
 # libtool
 #
 #############################################################
-LIBTOOL_VERSION:=1.5.22
+LIBTOOL_VERSION:=1.5.24
 LIBTOOL_SOURCE:=libtool-$(LIBTOOL_VERSION).tar.gz
 LIBTOOL_SITE:=http://ftp.gnu.org/pub/gnu/libtool
 LIBTOOL_CAT:=$(ZCAT)
