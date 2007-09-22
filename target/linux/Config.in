@@ -1,8 +1,9 @@
-menu "Linux Options"
+#comment "Linux kernel options"
 
 config BR2_PACKAGE_LINUX
 	bool "linux kernel"
-	default n
+	depends on BR2_KERNEL_LINUX
+	default y
 	help
 	  The Linux kernel.
 	  http://www.kernel.org/
@@ -387,4 +388,3 @@ config BR2_LINUX_COPYTO
 	  	Copy kernel to secondary location
 
 endif
-endmenu

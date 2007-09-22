@@ -18,8 +18,34 @@ source "target/x86/grub/Config.in"
 #source "target/x86/grub2/Config.in"
 source "target/x86/syslinux/Config.in"
 source "target/powerpc/yaboot/Config.in"
-
 endmenu
 
+menu "Kernel"
+choice
+	prompt "Kernel type"
+	default BR2_KERNEL_LINUX
+
+config BR2_KERNEL_none
+	bool "none"
+	help
+	  Do not build a kernel
+
+config BR2_KERNEL_LINUX
+	bool "linux"
+	help
+	  Linux kernel
+
+config BR2_KERNEL_HURD
+	bool "hurd"
+	help
+	  GNU/Hurd kernel
+endchoice
+if BR2_KERNEL_LINUX
 source "target/linux/Config.in"
+endif
+if BR2_KERNEL_HURD
+source "target/hurd/Config.in"
+endif
+endmenu
+
 source "target/device/Config.in"
