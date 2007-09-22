@@ -62,8 +62,6 @@ endif
 
 module-init-tools: uclibc $(MODULE_INIT_TOOLS_TARGET_BINARY)
 
-module-init-tools-source: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
-
 module-init-tools-clean:
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(MODULE_INIT_TOOLS_DIR) uninstall
 	-$(MAKE) -C $(MODULE_INIT_TOOLS_DIR) clean
