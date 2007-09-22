@@ -4,11 +4,11 @@
 #
 #############################################################
 
-ifeq ("$(DEFAULT_KERNEL_HEADERS)","2.6.22.6")
+ifeq ("$(DEFAULT_KERNEL_HEADERS)","2.6.22.7")
 VERSION:=2
 PATCHLEVEL:=6
 SUBLEVEL:=22
-EXTRAVERSION:=.6
+EXTRAVERSION:=.7
 LOCALVERSION:=
 LINUX_HEADERS_VERSION:=$(VERSION).$(PATCHLEVEL).$(SUBLEVEL)$(EXTRAVERSION)
 LINUX_HEADERS_SITE:=http://www.kernel.org/pub/linux/kernel/v2.6/
