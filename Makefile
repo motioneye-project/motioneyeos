@@ -64,6 +64,9 @@ endif
 ifeq ($(KBUILD_VERBOSE),1)
   quiet=
   Q=
+ifndef VERBOSE
+  VERBOSE=1
+endif
 else
   quiet=quiet_
   Q=@
@@ -73,7 +76,7 @@ CONFIG_SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	else if [ -x /bin/bash ]; then echo /bin/bash; \
 	else echo sh; fi; fi)
 
-export CONFIG_SHELL quiet Q KBUILD_VERBOSE
+export CONFIG_SHELL quiet Q KBUILD_VERBOSE VERBOSE
 
 ifndef HOSTAR
 HOSTAR:=ar
