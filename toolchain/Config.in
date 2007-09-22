@@ -18,6 +18,4 @@ source "target/device/Toolchain.in"
 source "toolchain/Config.in.2"
 source "toolchain/external-toolchain/Config.in"
 
-source "project/Config.in"
-
 endmenu

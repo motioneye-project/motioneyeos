@@ -1,5 +1,9 @@
 menu "Board Support Options"
 
+source "project/Config.in"
+
+comment "Preset Devices"
+
 source "target/device/AMD/Config.in"
 source "target/device/Arm/Config.in"
 source "target/device/Atmel/Config.in"
