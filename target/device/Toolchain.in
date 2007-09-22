@@ -8,8 +8,7 @@ choice
 	  system or an external pre-built toolchain.
 
 config BR2_TOOLCHAIN_NORMAL
-	bool
-	prompt "Use default sources for toolchain"
+	bool "Use default sources for toolchain"
 	depends on !BR2_avr32
 	help
 	  Download vanilla binutils, gcc, uclibc and gdb from their 
@@ -18,8 +17,7 @@ config BR2_TOOLCHAIN_NORMAL
 	  I.E: Do not download a prepatched vendor source suite.
 
 config BR2_TOOLCHAIN_ATMEL_AVR32
-	bool
-	prompt "Use prepatched source for AVR32 toolchain"
+	bool "Use prepatched source for AVR32 toolchain"
 	depends on BR2_avr32
 	depends on BR2_GCC_VERSION_4_1_2
 	depends on BR2_GDB_VERSION_6_4 || !BR2_PACKAGE_GDB

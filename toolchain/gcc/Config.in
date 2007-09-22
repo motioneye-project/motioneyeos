@@ -1,6 +1,6 @@
 # Choose gcc version.
 
-comment "Gcc Options"
+comment "GCC Options"
 
 choice
 	prompt "GCC compiler Version"

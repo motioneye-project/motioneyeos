@@ -1,6 +1,6 @@
 #
 
-menu "Toolchain Options"
+menu "External Toolchain Options"
 	depends on BR2_TOOLCHAIN_EXTERNAL
 
 config BR2_TOOLCHAIN_EXTERNAL_LIB_C

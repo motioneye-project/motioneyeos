@@ -1,4 +1,4 @@
-menu "Toolchain type"
+menu "Toolchain"
 choice
 	prompt "Toolchain type"
 	default BR2_TOOLCHAIN_BUILDROOT
@@ -7,17 +7,17 @@ choice
 	  system or an external pre-built toolchain.
 
 config BR2_TOOLCHAIN_BUILDROOT
-	bool
-	prompt "Buildroot toolchain"
+	bool "Buildroot toolchain"
 
 config BR2_TOOLCHAIN_EXTERNAL
-	bool
-	prompt "External toolchain"
+	bool "External toolchain"
 endchoice
 
 source "target/device/Toolchain.in"
 
-endmenu
-
 source "toolchain/Config.in.2"
 source "toolchain/external-toolchain/Config.in"
+
+source "project/Config.in"
+
+endmenu

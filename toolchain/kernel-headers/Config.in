@@ -2,7 +2,7 @@
 # ignored if you are building your own kernel or using the system kernel.
 #
 
-menu "Kernel Header Options"
+comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
@@ -113,4 +113,3 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.6.22.1"  if BR2_KERNEL_HEADERS_2_6_22_1
 	default "2.6.22.6"  if BR2_KERNEL_HEADERS_2_6_22
 
-endmenu

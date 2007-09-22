@@ -1,4 +1,4 @@
-menu "Project Options"
+comment "Project Options"
 
 config BR2_PROJECT
 	string "Project name"
@@ -23,4 +23,3 @@ config BR2_BANNER
 	help
 	  The banner string is stored in "/etc/issue"
 
-endmenu
