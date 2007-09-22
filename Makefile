@@ -169,7 +169,7 @@ PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 #
 ##############################################################
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-BASE_TARGETS:=uclibc-configured binutils gcc uclibc-target-utils
+BASE_TARGETS:=uclibc-configured binutils cross_compiler uclibc-target-utils
 else
 BASE_TARGETS:=uclibc
 endif

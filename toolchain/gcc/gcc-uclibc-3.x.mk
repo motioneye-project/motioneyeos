@@ -350,7 +350,9 @@ ifeq ($(BR2_INSTALL_LIBGCJ),y)
 endif
 	touch $@
 
-gcc: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) uclibc \
+cross_compiler:=$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
+cross_compiler gcc: uclibc-configured binutils gcc_initial \
+	$(LIBFLOAT_TARGET) uclibc \
 	$(GCC_BUILD_DIR2)/.installed $(GCC_BUILD_DIR2)/.libs_installed \
 	$(GCC_TARGETS)
 
