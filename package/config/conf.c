@@ -558,6 +558,7 @@ int main(int ac, char **av)
 		if (stat(".config", &tmpstat)) {
 			printf(_("***\n"
 				"*** You have not yet configured Buildroot!\n"
+				"*** (missing .config file)\n"
 				"***\n"
 				"*** Please run some configurator (e.g. \"make oldconfig\" or\n"
 				"*** \"make menuconfig\" or \"make config\").\n"

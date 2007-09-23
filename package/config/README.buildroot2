@@ -1,4 +1,4 @@
-This is a copy of the kconfig code in the kernel (currently 2.6.21.5) tweaked to
+This is a copy of the kconfig code in the kernel (currently 2.6.22.7) tweaked to
 suit Buildroot.
 
 To update:
@@ -6,7 +6,7 @@ To update:
 	cd package/config.new
 	cp /usr/src/linux/Documentation/kbuild/kconfig-language.txt .
 	mv Makefile Makefile.kconfig
-	patch -p1 < ../config/kconfig-to-buildroot.patch
+	patch -p1 < ../config/kconfig-to-buildroot2.patch
 	cp ../config/README.buildroot2 .
 	cp ../config/foo.h .
 	cp ../config/Makefile .

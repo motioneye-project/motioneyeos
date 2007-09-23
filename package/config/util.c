@@ -44,7 +44,7 @@ int file_write_dep(const char *name)
 		else
 			fprintf(out, "\t%s\n", file->name);
 	}
-	fprintf(out, "\ninclude/config/auto.conf: \\\n"
+	fprintf(out, "\n$(BR2_DEPENDS_DIR)/config/auto.conf: \\\n"
 		     "\t$(deps_config)\n\n"
 		     "$(deps_config): ;\n");
 	fclose(out);
