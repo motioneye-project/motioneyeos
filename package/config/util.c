@@ -84,7 +84,7 @@ static int write_make_deps(const char *name)
 				    e = p->expr;
 				    if (e && e->left.sym->name) {
 				        if (!done) {
-					    fprintf(out, "%s:", br2_symbol_printer(sym->name));
+					    fprintf(out, "%s: $(BASE_TARGETS)", br2_symbol_printer(sym->name));
 					    done = 1;
 					}
 //printf("SELECTS %s\n",e->left.sym->name);
