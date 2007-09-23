@@ -13,7 +13,7 @@ DIALOG_TARGET_BINARY:=usr/bin/dialog
 $(DL_DIR)/$(DIALOG_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DIALOG_SITE)/$(DIALOG_SOURCE)
 
-$(DIALOG_DIR)/.source: $(DL_DIR)/$(DIALOG_SOURCE) $(DL_DIR)/$(DIALOG_PATCH1)
+$(DIALOG_DIR)/.source: $(DL_DIR)/$(DIALOG_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(DIALOG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 
@@ -32,6 +32,7 @@ $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source
 
 $(DIALOG_DIR)/$(DIALOG_BINARY): $(DIALOG_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(DIALOG_DIR)
+	touch -c $@
 
 $(TARGET_DIR)/$(DIALOG_TARGET_BINARY): $(DIALOG_DIR)/$(DIALOG_BINARY)
 	$(MAKE) prefix=$(TARGET_DIR)/usr \
