@@ -50,8 +50,9 @@ $(FREETYPE_DIR)/.compiled: $(FREETYPE_DIR)/.configured
 $(STAGING_DIR)/usr/include/freetype:
 	ln -sf ./freetype2/freetype $(STAGING_DIR)/usr/include/freetype
 
-$(STAGING_DIR)/include/freetype:
-	ln -sf ../usr/include/freetype2/freetype $(STAGING_DIR)/include/freetype
+#$(STAGING_DIR)/include/freetype:
+#	mkdir -p $(STAGING_DIR)/include
+#	ln -sf ../usr/include/freetype2/freetype $(STAGING_DIR)/include/freetype
 
 $(STAGING_DIR)/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(FREETYPE_DIR) install
@@ -96,7 +97,7 @@ freetype: uclibc pkgconfig $(TARGET_DIR)/lib/libfreetype.so freetype-links
 
 freetype-source: $(DL_DIR)/$(FREETYPE_SOURCE)
 
-freetype-links: $(STAGING_DIR)/usr/include/freetype $(STAGING_DIR)/include/freetype
+freetype-links: $(STAGING_DIR)/usr/include/freetype # $(STAGING_DIR)/include/freetype
 
 freetype-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FREETYPE_DIR) uninstall
