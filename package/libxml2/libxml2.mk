@@ -65,16 +65,23 @@ $(TARGET_DIR)/usr/lib/libxml2.a: $(STAGING_DIR)/usr/lib/libxml2.so
 
 libxml2: uclibc $(TARGET_DIR)/usr/lib/libxml2.so libxml2-headers
 
-$(STAGING_DIR)/usr/include/libxml: $(TARGET_DIR)/usr/lib/libxml2.so
+$(STAGING_DIR)/usr/include/libxml2: $(TARGET_DIR)/usr/lib/libxml2.so
 	cp -af $(LIBXML2_DIR)/include/libxml $(STAGING_DIR)/usr/include/libxml2
+	touch -c $@
 
 $(TARGET_DIR)/usr/include/libxml2: libxml2-headers
-	cp -af $(LIBXML2_DIR)/include/libxml $(TARGET_DIR)/usr/include/libxml2
+	cp -af $(LIBXML2_DIR)/usr/include/libxml2 $(TARGET_DIR)/usr/include/libxml2
+	touch -c $@
 
+$(TARGET_DIR)/usr/include/libxml: libxml2-headers
+	ln -s libxml2/libxml $(LIBXML2_DIR)/usr/include/libxml
+	touch -c $@
 
-libxml2-headers: $(STAGING_DIR)/usr/include/libxml
+libxml2-headers: $(STAGING_DIR)/usr/include/libxml2
 
-libxml2-target-headers: $(TARGET_DIR)/usr/include/libxml2 $(TARGET_DIR)/usr/lib/libxml2.a
+libxml2-target-headers: $(TARGET_DIR)/usr/include/libxml2 \
+	$(TARGET_DIR)/usr/include/libxml2 \
+	$(TARGET_DIR)/usr/lib/libxml2.a
 
 libxml2-source: $(DL_DIR)/$(LIBXML2_SOURCE)
 
