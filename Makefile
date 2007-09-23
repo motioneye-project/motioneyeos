@@ -409,7 +409,7 @@ endif # ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 
 %_defconfig: $(CONFIG)/conf
 	cp $(shell find ./target/ -name $@) .config
-	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+	- $(MAKE) oldconfig
 
 help:
 	@echo 'Cleaning:'
