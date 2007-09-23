@@ -3,7 +3,7 @@
 # samba
 #
 #############################################################
-SAMBA_VERSION:=3.0.25b
+SAMBA_VERSION:=3.0.26a
 SAMBA_SOURCE:=samba-$(SAMBA_VERSION).tar.gz
 SAMBA_SITE:=ftp://us4.samba.org/pub/samba/
 SAMBA_DIR:=$(BUILD_DIR)/samba-$(SAMBA_VERSION)/source
@@ -13,8 +13,6 @@ SAMBA_TARGET_BINARY:=usr/sbin/smbd
 
 $(DL_DIR)/$(SAMBA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SAMBA_SITE)/$(SAMBA_SOURCE)
-
-samba-source: $(DL_DIR)/$(SAMBA_SOURCE)
 
 $(SAMBA_DIR)/.unpacked: $(DL_DIR)/$(SAMBA_SOURCE)
 	$(SAMBA_CAT) $(DL_DIR)/$(SAMBA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -106,6 +104,10 @@ $(TARGET_DIR)/$(SAMBA_TARGET_BINARY): $(SAMBA_DIR)/$(SAMBA_BINARY)
 	rm -rf $(TARGET_DIR)/var/lib/samba
 
 samba: uclibc $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
+
+samba-source: $(DL_DIR)/$(SAMBA_SOURCE)
+
+samba-unpacked: $(SAMBA_DIR)/.unpacked
 
 samba-clean:
 	rm -f $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
