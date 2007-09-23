@@ -37,6 +37,7 @@ saveconfig: $(CONFIG)/conf
 		echo "BR2_UCLIBC_CONFIG:=$(LOCAL)/$(PROJECT)/uclibc-$(UCLIBC_VER).config" >> $(PROJECT_FILE); \
 	fi
 	if [ -f $(UBOOT_DIR)/include/configs/$(PROJECT).h ]; then \
+		mkdir -p $(LOCAL)/$(PROJECT)/u-boot; \
 		cp $(UBOOT_DIR)/include/configs/$(PROJECT).h \
 			$(LOCAL)/$(PROJECT)/u-boot/$(PROJECT).h; \
 	fi
