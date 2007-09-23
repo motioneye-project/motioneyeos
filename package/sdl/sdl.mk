@@ -55,7 +55,7 @@ $(STAGING_DIR)/include/directfb:
 $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(STAGING_DIR)/include/directfb
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
 		INCLUDE="-I./include -I$(STAGING_DIR)/usr/include/directfb" \
-		LDFLAGS=-L$(STAGING_DIR)/usr \
+		LDFLAGS="-L$(STAGING_DIR)/usr/lib" \
 		DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR)
 	touch $@
 
