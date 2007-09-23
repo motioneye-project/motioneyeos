@@ -90,6 +90,7 @@ GCC_COMMON_PREREQ=$(wildcard $(BR2_DEPENDS_DIR)/br2/install/libstdcpp*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/install/libgcj*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/install/objc*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/install/fortran*)\
+$(wildcard $(BR2_DEPENDS_DIR)/br2/install/libstdcpp*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/prefer/ima*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/toolchain/sysroot*)\
 $(wildcard $(BR2_DEPENDS_DIR)/br2/use/sjlj/exceptions*)\
