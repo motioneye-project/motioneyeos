@@ -1292,3 +1292,14 @@ diff -rdup kernel-config/zconf.y config/zconf.y
  		     "\t$(deps_config)\n\n"
  		     "$(deps_config): ;\n");
  	fclose(out);
+--- kernel-config/confdata.c	2007-09-23 15:33:26.000000000 +0200
++++ config/confdata.c	2007-09-23 16:10:52.000000000 +0200
+@@ -37,7 +37,7 @@
+ 
+ const char *conf_get_configname(void)
+ {
+-	char *name = getenv("KCONFIG_CONFIG");
++	char *name = getenv("BUILDROOT_CONFIG");
+ 
+ 	return name ? name : ".config";
+ }

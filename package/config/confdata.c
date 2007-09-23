@@ -37,7 +37,7 @@ static void conf_warning(const char *fmt, ...)
 
 const char *conf_get_configname(void)
 {
-	char *name = getenv("KCONFIG_CONFIG");
+	char *name = getenv("BUILDROOT_CONFIG");
 
 	return name ? name : ".config";
 }
