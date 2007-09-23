@@ -42,6 +42,7 @@ $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
+		--with-shared \
 		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
