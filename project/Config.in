@@ -11,15 +11,4 @@ config BR2_PROJECT
 	  Older targets may still build in the build_<arch>
 	  and store binaries in the top directory.
 
-config BR2_HOSTNAME
-	string "hostname"
-	default "uclibc"
-	help
-	  The hostname string is stored in "/etc/hostname"
-
-config BR2_BANNER
-	string "banner"
-	default "Welcome to the Erik's uClibc development environment."
-	help
-	  The banner string is stored in "/etc/issue"
 

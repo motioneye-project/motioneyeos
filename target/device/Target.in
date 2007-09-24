@@ -1,0 +1,623 @@
+choice
+	prompt "Target Architecture"
+	default BR2_i386
+	help
+	  Select the target architecture family to build for.
+
+config BR2_alpha
+	bool "alpha"
+config BR2_arm
+	bool "arm"
+config BR2_armeb
+	bool "armeb"
+config BR2_avr32
+	bool "avr32"
+config BR2_cris
+	bool "cris"
+config BR2_ia64
+	bool "ia64"
+config BR2_i386
+	bool "i386"
+config BR2_m68k
+	bool "m68k"
+config BR2_mips
+	bool "mips"
+config BR2_mipsel
+	bool "mipsel"
+config BR2_nios2
+	bool "nios2"
+config BR2_powerpc
+	bool "powerpc"
+config BR2_s390
+	bool "s390"
+config BR2_sh
+	bool "superh"
+config BR2_sh64
+	bool "superh64"
+config BR2_sparc
+	bool "sparc"
+config BR2_sparc64
+	bool "sparc64"
+config BR2_x86_64
+	bool "x86_64"
+endchoice
+
+#
+# Keep the variants separate, there's no need to clutter everything else.
+# sh is fairly "special" in this regard, as virtually everyone else has
+# things kept down to a _sensible_ number of target variants. No such
+# luck for sh..
+#
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_arm || BR2_armeb
+	default BR2_generic_arm
+	help
+	  Specific CPU variant to use
+
+config BR2_generic_arm
+	bool "generic_arm"
+config BR2_arm7tdmi
+	bool "arm7tdmi"
+config BR2_arm610
+	bool "arm610"
+config BR2_arm710
+	bool "arm710"
+config BR2_arm720t
+	bool "arm720t"
+config BR2_arm920t
+	bool "arm920t"
+config BR2_arm922t
+	bool "arm922t"
+config BR2_arm926t
+	bool "arm926t"
+config BR2_arm10t
+	bool "arm10t"
+config BR2_arm1136jf_s
+	bool "arm1136jf_s"
+config BR2_arm1176jz_s
+	bool "arm1176jz-s"
+config BR2_arm1176jzf_s
+	bool "arm1176jzf-s"
+config BR2_sa110
+	bool "sa110"
+config BR2_sa1100
+	bool "sa1100"
+config BR2_xscale
+	bool "xscale"
+config BR2_iwmmxt
+	bool "iwmmxt"
+endchoice
+
+config BR2_ARM_TYPE
+	string
+	default GENERIC_ARM	if BR2_generic_arm
+	default ARM610		if BR2_arm610
+	default ARM710		if BR2_arm710
+	default ARM7TDMI	if BR2_arm7tdmi
+	default ARM720T		if BR2_arm720t
+	default ARM920T		if BR2_arm920t
+	default ARM922T		if BR2_arm922t
+	default ARM926T		if BR2_arm926t
+	default ARM10T		if BR2_arm10t
+	default ARM1136JF_S	if BR2_arm1136jf_s
+	default ARM1176JZ_S	if BR2_arm1176jz_s
+	default ARM1176JZF_S	if BR2_arm1176jzf_s
+	default ARM_SA110	if BR2_sa110
+	default ARM_SA1100	if BR2_sa1100
+	default ARM_XSCALE	if BR2_xscale
+	default ARM_IWMMXT	if BR2_iwmmxt
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_avr32
+config BR2_at32ap7000
+	bool "AT32AP7000"
+config BR2_at32ap7001
+	bool "AT32AP7001"
+config BR2_at32ap7002
+	bool "AT32AP7002"
+endchoice
+
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_sh
+	default BR2_sh4
+	help
+	  Specific CPU variant to use
+
+config BR2_sh2a_nofpueb
+	bool "sh2a_nofpueb"
+config BR2_sh2eb
+	bool "sh2eb"
+config BR2_sh3
+	bool "sh3"
+config BR2_sh3eb
+	bool "sh3eb"
+config BR2_sh4
+	bool "sh4"
+config BR2_sh4eb
+	bool "sh4eb"
+endchoice
+
+#
+# gcc builds libstdc++ differently depending on the
+# host tuplet given to it, so let people choose
+#
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_i386
+	default BR2_x86_i386
+	help
+	  Specific CPU variant to use
+
+config BR2_x86_i386
+	bool "i386"
+config BR2_x86_i486
+	bool "i486"
+config BR2_x86_i586
+	bool "i586"
+config BR2_x86_i686
+	bool "i686"
+config BR2_x86_pentiumpro
+	bool "pentium pro"
+config BR2_x86_pentium_mmx
+	bool "pentium MMX"
+config BR2_x86_pentium_m
+	bool "pentium mobile"
+config BR2_x86_pentium2
+	bool "pentium2"
+config BR2_x86_pentium3
+	bool "pentium3"
+config BR2_x86_pentium4
+	bool "pentium4"
+config BR2_x86_prescott
+	bool "prescott"
+config BR2_x86_nocona
+	bool "nocona"
+config BR2_x86_core2
+	bool "core2"
+config BR2_x86_k6
+	bool "k6"
+config BR2_x86_k6_2
+	bool "k6-2"
+config BR2_x86_athlon
+	bool "athlon"
+config BR2_x86_athlon_4
+	bool "athlon-4"
+config BR2_x86_opteron
+	bool "opteron"
+config BR2_x86_opteron_sse3
+	bool "opteron w/ SSE3"
+config BR2_x86_barcelona
+	bool "barcelona"
+config BR2_x86_geode
+	bool "geode"
+config BR2_x86_c3
+	bool "cyrix 3 (MMX + 3dNOW!)"
+config BR2_x86_winchip_c6
+	bool "IDT winchip C6 (i486 + slow MMX)"
+config BR2_x86_winchip2
+	bool "IDT winchip2 (i486 +MMX +SSE)"
+endchoice
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_x86_64
+	default BR2_x86_64_core2
+	help
+	  Specific CPU variant to use
+
+config BR2_x86_64_barcelona
+	bool "barcelona"
+config BR2_x86_64_opteron_sse3
+	bool "opteron w/ sse3"
+config BR2_x86_64_opteron
+	bool "opteron"
+config BR2_x86_64_nocona
+	bool "nocona"
+config BR2_x86_64_core2
+	bool "core2"
+endchoice
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_alpha
+	default BR2_alpha_21064
+	help
+	  Specific CPU variant to use
+
+config BR2_alpha_21064
+	bool "21064"
+config BR2_alpha_21164
+	bool "21164"
+config BR2_alpha_21164a
+	bool "21164a"
+config BR2_alpha_21164pc
+	bool "21164pc"
+config BR2_alpha_21264
+	bool "21264"
+config BR2_alpha_21264a
+	bool "21264a"
+endchoice
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_s390
+	default BR2_s390_g5
+	help
+	  Specific CPU variant to use
+
+config BR2_s390_g5
+	bool "g5"
+config BR2_s390_g6
+	bool "g6"
+config BR2_s390_z900
+	bool "z900"
+config BR2_s390_z990
+	bool "z990"
+config BR2_s390_z9_109
+	bool "z9_109"
+endchoice
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_sparc
+	default BR2_sparc_v7
+	help
+	  Specific CPU variant to use
+
+config BR2_sparc_v7
+	bool "v7"
+config BR2_sparc_cypress
+	bool "cypress"
+config BR2_sparc_v8
+	bool "v8"
+config BR2_sparc_supersparc
+	bool "supersparc"
+config BR2_sparc_sparclite
+	bool "sparclite"
+config BR2_sparc_f930
+	bool "f930"
+config BR2_sparc_f934
+	bool "f934"
+config BR2_sparc_hypersparc
+	bool "hypersparc"
+config BR2_sparc_sparclite86x
+	bool "sparclite86x"
+config BR2_sparc_sparclet
+	bool "sparclet"
+config BR2_sparc_tsc701
+	bool "tsc701"
+config BR2_sparc_v9
+	bool "v9"
+config BR2_sparc_v9a
+	bool "v9a"
+config BR2_sparc_v9b
+	bool "v9b"
+config BR2_sparc_ultrasparc
+	bool "ultrasparc"
+config BR2_sparc_ultrasparc3
+	bool "ultrasparc3"
+config BR2_sparc_niagara
+	bool "niagara"
+endchoice
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_sparc64
+	default BR2_sparc64_v9
+	help
+	  Specific CPU variant to use
+
+config BR2_sparc64_v9
+	bool "v9"
+config BR2_sparc64_v9a
+	bool "v9a"
+config BR2_sparc64_v9b
+	bool "v9b"
+config BR2_sparc64_ultrasparc
+	bool "ultrasparc"
+config BR2_sparc64_ultrasparc3
+	bool "ultrasparc3"
+config BR2_sparc64_niagara
+	bool "niagara"
+endchoice
+
+config BR2_SPARC_TYPE
+	string
+	default V7	if BR2_sparc_v7 || BR2_sparc_cypress || BR2_sparc_sparclite || BR2_sparc_f930 || BR2_sparc_f934 || BR2_sparc_sparclite86x || BR2_sparc_sparclet || BR2_sparc_tsc701
+	default V8	if BR2_sparc_v8 || BR2_sparc_supersparc || BR2_sparc_hypersparc
+	default V9	if BR2_sparc_v9 || BR2_sparc_ultrasparc || BR2_sparc_ultrasparc3 || BR2_sparc_niagara || BR2_sparc64_v9 || BR2_sparc64_ultrasparc || BR2_sparc64_ultrasparc3 || BR2_sparc64_niagara
+	default V9	if BR2_sparc_v9a || BR2_sparc64_v9a
+	default V9B	if BR2_sparc_v9b || BR2_sparc64_v9b
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_ia64
+	default BR2_ia64_itanium2
+	help
+	  Specific CPU variant to use
+
+config BR2_ia64_itanium1
+	bool "itanium 1"
+config BR2_ia64_itanium2
+	bool "itanium 2"
+endchoice
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_powerpc
+	default BR2_generic_powerpc
+	help
+	  Specific CPU variant to use
+config BR2_generic_powerpc
+	bool "generic"
+config BR2_powerpc_401
+	bool "401"
+config BR2_powerpc_403
+	bool "403"
+config BR2_powerpc_405
+	bool "405"
+config BR2_powerpc_405fp
+	bool "405 with FPU"
+config BR2_powerpc_440
+	bool "440"
+config BR2_powerpc_440fp
+	bool "440 with FPU"
+config BR2_powerpc_505
+	bool "505"
+config BR2_powerpc_601
+	bool "601"
+config BR2_powerpc_602
+	bool "602"
+config BR2_powerpc_603
+	bool "603"
+config BR2_powerpc_603e
+	bool "603e"
+config BR2_powerpc_604
+	bool "604"
+config BR2_powerpc_604e
+	bool "604e"
+config BR2_powerpc_620
+	bool "620"
+config BR2_powerpc_630
+	bool "630"
+config BR2_powerpc_740
+	bool "740"
+config BR2_powerpc_7400
+	bool "7400"
+config BR2_powerpc_7450
+	bool "7450"
+config BR2_powerpc_750
+	bool "750"
+config BR2_powerpc_801
+	bool "801"
+config BR2_powerpc_821
+	bool "821"
+config BR2_powerpc_823
+	bool "823"
+config BR2_powerpc_860
+	bool "860"
+config BR2_powerpc_970
+	bool "970"
+config BR2_powerpc_8540
+	bool "8540"
+endchoice
+
+config BR2_ARCH
+	string
+	default "alpha"		if BR2_alpha
+	default "arm"		if BR2_arm
+	default "armeb"		if BR2_armeb
+	default "avr32"		if BR2_avr32
+	default "cris"		if BR2_cris
+	default "i386"		if BR2_x86_i386
+	default "i486"		if BR2_x86_i486
+	default "i586"		if BR2_x86_i586
+	default "i686"		if BR2_x86_i686
+	default "i686"		if BR2_x86_pentium4
+	default "i686"		if BR2_x86_nocona
+	default "i686"		if BR2_x86_core2
+	default "ia64"		if BR2_ia64
+	default "m68k"		if BR2_m68k
+	default "mips"		if BR2_mips
+	default "mipsel"	if BR2_mipsel
+	default "nios2"		if BR2_nios2
+	default "powerpc"	if BR2_powerpc
+	default "s390"		if BR2_s390
+	default "s390"		if BR2_s390x
+	default "sh2a_nofpueb"	if BR2_sh2a_nofpueb
+	default "sh2eb"		if BR2_sh2eb
+	default "sh3"		if BR2_sh3
+	default "sh3eb"		if BR2_sh3eb
+	default "sh4"		if BR2_sh4
+	default "sh4eb"		if BR2_sh4eb
+	default "sh64"		if BR2_sh64
+	default "sparc"		if BR2_sparc
+	default "sparc64"	if BR2_sparc64
+	default "x86_64"	if BR2_x86_64
+	default "x86_64"	if BR2_x86_64_nocona
+	default "x86_64"	if BR2_x86_64_core2
+	default "x86_64"	if BR2_x86_64_opteron
+	default "x86_64"	if BR2_x86_64_opteron_sse3
+	default "x86_64"	if BR2_x86_64_barcelona
+
+
+config BR2_ENDIAN
+	string
+	default "LITTLE" if BR2_arm || BR2_cris || BR2_i386 || BR2_mipsel || \
+			    BR2_sh3 || BR2_sh4 || BR2_x86_64 || BR2_nios2 || \
+			    BR2_sh64
+	default "BIG"    if BR2_alpha || BR2_armeb || BR2_avr32 || BR2_m68k || BR2_mips || \
+			    BR2_powerpc || BR2_sh2a_nofpueb || BR2_sh2eb || \
+			    BR2_sh3eb || BR2_sh4eb || BR2_sparc || BR2_sparc64
+
+config BR2_GCC_TARGET_TUNE
+	string
+	default i386		if BR2_x86_i386
+	default i486		if BR2_x86_i486
+	default i586		if BR2_x86_i586
+	default pentium-mmx	if BR2_x86_pentium_mmx
+	default i686		if BR2_x86_i686
+	default pentiumpro	if BR2_x86_pentiumpro
+	default pentium-m	if BR2_x86_pentium_m
+	default pentium2	if BR2_x86_pentium2
+	default pentium3	if BR2_x86_pentium3
+	default pentium4	if BR2_x86_pentium4
+	default prescott	if BR2_x86_prescott
+	default nocona		if BR2_x86_nocona
+	default core2		if BR2_x86_core2
+	default k8		if BR2_x86_opteron
+	default k8-sse3		if BR2_x86_opteron_sse3
+	default barcelona	if BR2_x86_barcelona
+	default k6		if BR2_x86_k6
+	default k6-2		if BR2_x86_k6_2
+	default athlon		if BR2_x86_athlon
+	default athlon-4	if BR2_x86_athlon_4
+	default winchip-c6	if BR2_x86_winchip_c6
+	default winchip2	if BR2_x86_winchip2
+	default c3		if BR2_x86_c3
+	default geode		if BR2_x86_geode
+	default nocona		if BR2_x86_64_nocona
+	default core2		if BR2_x86_64_core2
+	default k8		if BR2_x86_64_opteron
+	default k8-sse3		if BR2_x86_64_opteron_sse3
+	default barcelona	if BR2_x86_64_barcelona
+	default arm600		if BR2_arm600
+	default arm610		if BR2_arm610
+	default arm620		if BR2_arm620
+	default arm7tdmi	if BR2_arm7tdmi
+	default arm7tdmi	if BR2_arm720t
+	default arm7tdmi	if BR2_arm740t
+	default arm920		if BR2_arm920
+	default arm920t		if BR2_arm920t
+	default arm922t		if BR2_arm922t
+	default arm9tdmi	if BR2_arm926t
+	default arm1136j-s	if BR2_arm1136j_s
+	default arm1136jf-s	if BR2_arm1136jf_s
+	default arm1176jz-s	if BR2_arm1176jz_s
+	default arm1176jzf-s	if BR2_arm1176jzf_s
+	default strongarm110	if BR2_sa110
+	default strongarm1100	if BR2_sa1100
+	default xscale		if BR2_xscale
+	default iwmmxt		if BR2_iwmmxt
+	default v0		if BR2_cris_unknown
+	default v10		if BR2_cris_generic
+	default v3		if BR2_cris_etrax_4
+	default v8		if BR2_cris_etrax_100
+	default v10		if BR2_cris_etrax_100lx
+	default ev4		if BR2_alpha_21064
+	default ev5		if BR2_alpha_21164
+	default ev56		if BR2_alpha_21164a
+	default pca56		if BR2_alpha_21164pc
+	default ev6		if BR2_alpha_21264
+	default ev67		if BR2_alpha_21264a
+#	default itanium		if BR2_ia64_itanium1
+#	default itanium2	if BR2_ia64_itanium2
+	default 68000		if BR2_m68k_68000
+	default 68010		if BR2_m68k_68010
+	default 68020		if BR2_m68k_68020
+	default 68030		if BR2_m68k_68030
+	default 68040		if BR2_m68k_68040
+	default 68060		if BR2_m68k_68060
+	default mips1		if BR2_mips_1
+	default mips2		if BR2_mips_2
+	default mips3		if BR2_mips_3
+	default mips4		if BR2_mips_4
+	default mips32		if BR2_mips_32
+	default mips32r2	if BR2_mips_32r2
+	default mips64		if BR2_mips_64
+	default mips16		if BR2_mips_16
+	default 401		if BR2_powerpc_401
+	default 403		if BR2_powerpc_403
+	default 405		if BR2_powerpc_405
+	default 405fp		if BR2_powerpc_405fp
+	default 440		if BR2_powerpc_440
+	default 440fp		if BR2_powerpc_440fp
+	default 505		if BR2_powerpc_505
+	default 601		if BR2_powerpc_601
+	default 602		if BR2_powerpc_602
+	default 603		if BR2_powerpc_603
+	default 603e		if BR2_powerpc_603e
+	default 604		if BR2_powerpc_604
+	default 604e		if BR2_powerpc_604e
+	default 620		if BR2_powerpc_620
+	default 630		if BR2_powerpc_630
+	default 740		if BR2_powerpc_740
+	default 7400		if BR2_powerpc_7400
+	default 7450		if BR2_powerpc_7450
+	default 750		if BR2_powerpc_750
+	default 801		if BR2_powerpc_801
+	default 821		if BR2_powerpc_821
+	default 823		if BR2_powerpc_823
+	default 860		if BR2_powerpc_860
+	default 970		if BR2_powerpc_970
+	default 8540		if BR2_powerpc_8540
+	default v7		if BR2_sparc_v7
+	default cypress		if BR2_sparc_cypress
+	default v8		if BR2_sparc_v8
+	default supersparc	if BR2_sparc_supersparc
+	default hypersparc	if BR2_sparc_hypersparc
+	default sparclite	if BR2_sparc_sparclite
+	default f930		if BR2_sparc_f930
+	default f934		if BR2_sparc_f934
+	default sparclite86x	if BR2_sparc_sparclite86x
+	default sparclet	if BR2_sparc_sparclet
+	default tsc701		if BR2_sparc_tsc701
+	default v9		if BR2_sparc_v9 || BR2_sparc64_v9
+	default v9		if BR2_sparc_v9a || BR2_sparc64_v9a
+	default v9		if BR2_sparc_v9b || BR2_sparc64_v9b
+	default ultrasparc	if BR2_sparc_ultrasparc || BR2_sparc64_ultrasparc
+	default ultrasparc3	if BR2_sparc_ultrasparc3 || BR2_sparc64_ultrasparc3
+	default niagara		if BR2_sparc_niagara || BR2_sparc64_niagara
+	default g5		if BR2_s390_g5
+	default g6		if BR2_s390_g6
+	default z900		if BR2_s390_z900
+	default z990		if BR2_s390_z990
+	default z9-109		if BR2_s390_z9_109
+
+config BR2_GCC_TARGET_ARCH
+	string
+	default i386		if BR2_x86_i386
+	default i486		if BR2_x86_i486
+	default i586		if BR2_x86_i586
+	default pentium-mmx	if BR2_x86_pentium_mmx
+	default i686		if BR2_x86_i686
+	default pentiumpro	if BR2_x86_pentiumpro
+	default pentium-m	if BR2_x86_pentium_m
+	default pentium2	if BR2_x86_pentium2
+	default pentium3	if BR2_x86_pentium3
+	default pentium4	if BR2_x86_pentium4
+	default prescott	if BR2_x86_prescott
+	default nocona		if BR2_x86_nocona
+	default core2		if BR2_x86_core2
+	default k8		if BR2_x86_opteron
+	default k8-sse3		if BR2_x86_opteron_sse3
+	default barcelona	if BR2_x86_barcelona
+	default k6		if BR2_x86_k6
+	default k6-2		if BR2_x86_k6_2
+	default athlon		if BR2_x86_athlon
+	default athlon-4	if BR2_x86_athlon_4
+	default winchip-c6	if BR2_x86_winchip_c6
+	default winchip2	if BR2_x86_winchip2
+	default c3		if BR2_x86_c3
+	default geode		if BR2_x86_geode
+	default iwmmxt		if BR2_iwmmxt
+	default v0		if BR2_cris_unknown
+	default v10		if BR2_cris_generic
+	default v3		if BR2_cris_etrax_4
+	default v8		if BR2_cris_etrax_100
+	default v10		if BR2_cris_etrax_100lx
+	default 68000		if BR2_m68k_68000
+	default 68010		if BR2_m68k_68010
+	default 68020		if BR2_m68k_68020
+	default 68030		if BR2_m68k_68030
+	default 68040		if BR2_m68k_68040
+	default 68060		if BR2_m68k_68060
+	default g5		if BR2_s390_g5
+	default g6		if BR2_s390_g6
+	default z900		if BR2_s390_z900
+	default z990		if BR2_s390_z990
+	default z9-109		if BR2_s390_z9_109
