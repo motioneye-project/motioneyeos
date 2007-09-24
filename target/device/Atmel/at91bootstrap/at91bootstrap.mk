@@ -4,7 +4,7 @@
 #
 #############################################################
 AT91BOOTSTRAP_VERSION:=2.3
-AT91BOOTSTRAP_PATCH_LEVEL:=2
+AT91BOOTSTRAP_PATCH_LEVEL:=4
 AT91BOOTSTRAP_PATCHED_VERSION:=$(AT91BOOTSTRAP_VERSION).$(AT91BOOTSTRAP_PATCH_LEVEL)
 AT91BOOTSTRAP_NAME:=at91bootstrap-$(AT91BOOTSTRAP_VERSION)
 ATMEL_MIRROR:=$(strip $(subst ",, $(BR2_ATMEL_MIRROR)))
@@ -43,7 +43,7 @@ $(AT91BOOTSTRAP_DIR)/.unpacked: $(DL_DIR)/$(AT91BOOTSTRAP_SOURCE)
 	mkdir -p $(PROJECT_BUILD_DIR)
 	$(AT91BOOTSTRAP_ZCAT) $(DL_DIR)/$(AT91BOOTSTRAP_SOURCE) | tar -C $(PROJECT_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(AT91BOOTSTRAP_DIR) target/device/Atmel/at91bootstrap/ at91bootstrap\*.patch
-	touch $(AT91BOOTSTRAP_DIR)/.unpacked
+	touch $@
 
 $(AT91BOOTSTRAP_DIR)/.configured: $(AT91BOOTSTRAP_DIR)/.unpacked .config
 	$(MAKE) \
@@ -51,7 +51,7 @@ $(AT91BOOTSTRAP_DIR)/.configured: $(AT91BOOTSTRAP_DIR)/.unpacked .config
 		CROSS_COMPILE=$(TARGET_CROSS) \
 		-C $(AT91BOOTSTRAP_DIR) \
 		$(BOARD_NAME)_defconfig
-	touch $(AT91BOOTSTRAP_DIR)/.configured
+	touch $@
 
 $(AT91BOOTSTRAP_TARGET): $(AT91BOOTSTRAP_DIR)/.configured
 	$(MAKE) \

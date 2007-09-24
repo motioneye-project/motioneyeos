@@ -1,0 +1,336 @@
+diff -urN at91bootstrap-2.3-0rig/driver/dataflash.c at91bootstrap-2.3.4/driver/dataflash.c
+--- at91bootstrap-2.3-0rig/driver/dataflash.c	2007-04-22 13:56:29.000000000 +0200
++++ at91bootstrap-2.3.4/driver/dataflash.c	2007-09-24 20:56:18.000000000 +0200
+@@ -39,8 +39,12 @@
+ #include "../include/part.h"
+ #include "../include/main.h"
+ #include "../include/dataflash.h"
++#include "../include/debug.h"
+ #include <stdlib.h>
+ 
++#define	SUCCESS	1
++#define	FAILURE	0
++
+ #ifdef CFG_DATAFLASH
+ extern	div_t udiv(unsigned int numerator, unsigned int denominator);
+ /* Write SPI register */
+@@ -92,7 +96,7 @@
+ 	/* SPI_Enable */
+ 	write_spi(SPI_CR, AT91C_SPI_SPIEN);
+ 
+-	return 0;
++	return SUCCESS;
+ }
+ 
+ /*------------------------------------------------------------------------------*/
+@@ -134,12 +138,10 @@
+ 
+  	/* Try to get the dataflash semaphore */
+ 	if ((pDataFlash->bSemaphore) != UNLOCKED)
+-		return (char) 0;
++		return (char) FAILURE;
+ 	pDataFlash->bSemaphore = LOCKED;
+-
+ 	/* Compute command pattern */
+ 	dInternalAdr = (result.quot << AT91C_PAGE_OFFSET(pDataFlash)) + result.rem;
+-
+  	if (AT91C_DF_NB_PAGE(pDataFlash) >= 16384)
+ 	{
+ 		pDataFlash->command[0] = (bCmd & 0x000000FF) | \
+@@ -178,7 +180,7 @@
+ 
+     	while (df_is_busy(pDataFlash) == LOCKED);
+ 
+-	return 1;
++	return SUCCESS;
+ }
+ 
+ /*------------------------------------------------------------------------------*/
+@@ -194,13 +196,13 @@
+ 		if (df_get_status(pDataFlash))
+ 		{
+ 			if (df_is_ready(pDataFlash))
+-				return 1;
++				return SUCCESS;
+ 		}
+ 	}
+ 
+-	return 0;
++	return FAILURE;
+ }
+-
++volatile	int loop;
+ /*------------------------------------------------------------------------------*/
+ /* \fn    df_read								*/
+ /* \brief Read a block in dataflash						*/
+@@ -212,21 +214,30 @@
+ 	unsigned int size)
+ {
+ 	unsigned int SizeToRead;
++	int page_counter;
+ 
++	page_counter = 32;
+ 	while (size)
+ 	{
+-		SizeToRead = (size < AT91C_MAX_PDC_SIZE)? size : AT91C_MAX_PDC_SIZE;
+-
++		SizeToRead = (size < 0x8000)? size : 0x8000;
+ 		/* wait the dataflash ready status */
+-		df_wait_ready(pDf);
+-	    	df_continuous_read(pDf, (char *)buffer, SizeToRead, addr);
+-
+-		size -= SizeToRead;
+-		addr += SizeToRead;
+-		buffer += SizeToRead;
++		if(df_wait_ready(pDf) != 0) {
++		    	df_continuous_read(pDf, (char *)buffer, SizeToRead, addr);
++			dbg_print(".");
++			if(--page_counter <= 0) {
++				page_counter = 32;
++				dbg_print("\r\n");
++			}
++			size -= SizeToRead;
++			addr += SizeToRead;
++			buffer += SizeToRead;
++		} else {
++			/* We got a timeout */
++			dbg_print("Timeout while waiting for dataflash ready\n");
++			return FAILURE;
++		}
+ 	}
+-
+-   	return 0;
++   	return SUCCESS;
+ }
+ 
+ /*----------------------------------------------------------------------*/
+@@ -235,13 +246,19 @@
+ /*----------------------------------------------------------------------*/
+ static int df_download(AT91PS_DF pDf, unsigned int img_addr, unsigned int img_size, unsigned int img_dest)
+ {
++	dbg_print(">Loading from Dataflash[");
++	dbg_print_hex(img_addr);
++	dbg_print("] to SDRAM[");
++	dbg_print_hex(img_dest);
++	dbg_print("]\r\n");
+ 	/* read bytes in the dataflash */
+-	df_read(pDf, img_addr,(unsigned char *)img_dest, img_size);
+-
++	if(df_read(pDf, img_addr,(unsigned char *)img_dest, img_size) == FAILURE)
++		return FAILURE;
++	dbg_print("\r\n>Loading complete, [");
++	dbg_print_hex(IMG_SIZE);
++	dbg_print("] bytes\r\n");
+ 	/* wait the dataflash ready status */
+-	df_wait_ready(pDf);
+-
+-    return 0;
++	return df_wait_ready(pDf);
+ }
+ 
+ /*----------------------------------------------------------------------*/
+@@ -263,7 +280,7 @@
+ static int df_init (AT91PS_DF pDf)
+ {
+ 	int dfcode = 0;
+-	int status = 1;
++	int status = SUCCESS;
+ 
+ 	/* Default: AT45DB321B */
+ 	pDf->dfDescription.pages_number = 8192;
+@@ -302,18 +319,21 @@
+ 			pDf->dfDescription.pages_number = 4096;
+ 			pDf->dfDescription.pages_size = 528;
+ 			pDf->dfDescription.page_offset = 10;
++			dbg_print(">AT45DB161D detected\r\n");
+ 			break;
+ 
+ 		case AT45DB321B:
+ 			pDf->dfDescription.pages_number = 8192;
+ 			pDf->dfDescription.pages_size = 528;
+ 			pDf->dfDescription.page_offset = 10;
++			dbg_print(">AT45DB321D detected\r\n");
+ 			break;
+ 
+ 		case AT45DB642:
+ 			pDf->dfDescription.pages_number = 8192;
+ 			pDf->dfDescription.pages_size = 1056;
+ 			pDf->dfDescription.page_offset = 11;
++			dbg_print(">AT45DB642D detected\r\n");
+ 			break;
+ /*
+ 		case AT45DB1282:
+@@ -335,7 +355,7 @@
+ 			break;
+ */
+ 		default:
+-		        status = 0;
++		        status = FAILURE;
+ 			break;
+ 	}
+ 
+@@ -357,12 +377,12 @@
+ 		if (i != 23)
+ 		{
+ 			if ((buffer[i] != 0xEA) && (buffer[i] != 0xE5) )
+-				return -1;
++				return FAILURE;
+ 		}
+ 		i+=4;
+     	}
+ 
+-    	return 0;
++    	return SUCCESS;
+ }
+ 
+ /*------------------------------------------------------------------------------*/
+@@ -374,13 +394,14 @@
+     	AT91S_DF sDF;
+     	AT91PS_DF pDf = (AT91PS_DF)&sDF;
+     	unsigned int rxBuffer[128];
++	unsigned int status;
+ 
+     	pDf->bSemaphore = UNLOCKED;
+ 
+     	df_spi_init(pcs, DF_CS_SETTINGS);
+ 
+-    	if (!df_init(pDf))
+-        	return -1;
++    	if (df_init(pDf) == FAILURE)
++        	return FAILURE;
+ 
+ #ifdef AT91SAM9260
+ 	/* Test if a button has been pressed or not */
+@@ -391,10 +412,13 @@
+     	df_continuous_read(pDf, (char *)rxBuffer, 32, img_addr);
+ 	df_wait_ready(pDf);
+ 
+-	if (df_is_boot_valid((unsigned char*)rxBuffer))
+-		return -1;
++	if (df_is_boot_valid((unsigned char*)rxBuffer) == FAILURE) {
++		dbg_print(">Invalid Boot Area...\n\r");
++		return FAILURE;
++	}
+ 
+-	return df_download(pDf, img_addr, img_size, img_dest);
++	status = df_download(pDf, img_addr, img_size, img_dest);
++	return status;
+ }
+ 
+ #endif /* CFG_DATAFLASH */
+diff -urN at91bootstrap-2.3-0rig/driver/debug.c at91bootstrap-2.3.4/driver/debug.c
+--- at91bootstrap-2.3-0rig/driver/debug.c	2006-12-05 11:27:24.000000000 +0100
++++ at91bootstrap-2.3.4/driver/debug.c	2007-09-24 20:38:01.000000000 +0200
+@@ -85,4 +85,19 @@
+ 	}
+ }
+ 
++void dbg_print_hex(unsigned int data)
++{
++	unsigned char hex[11];
++	int i=0;
++	hex[0]='0';
++	hex[1]='x';
++	for(i = 9 ;i >= 2;i--) {
++		hex[i] = "0123456789ABCDEF"[data & 0xF];
++		data >>= 4;
++	}
++	hex[10]='\0';	
++	dbg_print((const char *) hex);
++}
++
++
+ #endif /* CFG_DEBUG */
+diff -urN at91bootstrap-2.3-0rig/include/debug.h at91bootstrap-2.3.4/include/debug.h
+--- at91bootstrap-2.3-0rig/include/debug.h	2006-12-05 11:27:20.000000000 +0100
++++ at91bootstrap-2.3.4/include/debug.h	2007-09-24 18:26:37.000000000 +0200
+@@ -45,5 +45,6 @@
+ /* Global functions */
+ extern void dbg_init(unsigned int);
+ extern void dbg_print(const char *ptr);
++extern void dbg_print_hex(unsigned int data);
+ 
+ #endif /*_DEBUG_H_*/
+diff -urN at91bootstrap-2.3-0rig/main.c at91bootstrap-2.3.4/main.c
+--- at91bootstrap-2.3-0rig/main.c	2007-09-24 18:26:10.000000000 +0200
++++ at91bootstrap-2.3.4/main.c	2007-09-24 20:56:20.000000000 +0200
+@@ -41,6 +41,10 @@
+ #include "include/flash.h"
+ #include "include/nandflash.h"
+ 
++int test(void)
++{
++
++}
+ /*------------------------------------------------------------------------------*/
+ /* Function Name       : main							*/
+ /* Object              : Main function						*/
+@@ -49,6 +53,7 @@
+ /*------------------------------------------------------------------------------*/
+ int main(void)
+ {
++
+ /* ================== 1st step: Hardware Initialization ================= */
+ 	/* Performs the hardware initialization */
+ #ifdef CFG_HW_INIT
+@@ -60,29 +65,35 @@
+ #ifdef CFG_DATAFLASH
+ 	load_df(AT91C_SPI_PCS_DATAFLASH, IMG_ADDRESS, IMG_SIZE, JUMP_ADDR);
+ #endif
+-
+ #ifdef CFG_FLASH
+ 	load_flash(IMG_ADDRESS, IMG_SIZE, JUMP_ADDR);
++	dbg_print(">Flash ready\r\n");
+ #endif
+ 
+ 	/* Load from Nandflash in RAM */
+ #ifdef CFG_NANDFLASH
+ 	load_nandflash(IMG_ADDRESS, IMG_SIZE, JUMP_ADDR);
++	dbg_print(">NANDflash ready\r\n");
+ #endif
+ 
+ /* ==================== 3rd step:  Process the Image =================== */
+ 	/* Uncompress the image */
+ #ifdef GUNZIP
+-	decompress_image((void *)IMG_ADDRESS, (void *)JUMP_ADDR, IMG_SIZE);	/* NOT IMPLEMENTED YET */
++	decompress_image((void *)IMG_ADDRESS, (void *)JUMP_ADDR, IMG_SIZE);
++	/* NOT IMPLEMENTED YET */
++	dbg_print(">Decompress ready\r\n");
+ #endif /* GUNZIP */
+ 
+ /* ==================== 4th step: Start the application =================== */
+ 	/* Set linux arguments */
+ #ifdef LINUX_ARG
+ 	linux_arg(LINUX_ARG);	/* NOT IMPLEMENTED YET */
++	dbg_print(">Linux ready\r\n");
+ #endif /* LINUX_ARG */
+-
++	dbg_print(">Start application at [");
++	dbg_print_hex(JUMP_ADDR);
++	dbg_print("]\r\n");
++	{ volatile unsigned int loop; for(loop = 200000; loop > 0; loop--);}
+ 	/* Jump to the Image Address */
+ 	return JUMP_ADDR;
+ }
+-
+diff -urN at91bootstrap-2.3-0rig/Makefile at91bootstrap-2.3.4/Makefile
+--- at91bootstrap-2.3-0rig/Makefile	2007-09-24 18:26:10.000000000 +0200
++++ at91bootstrap-2.3.4/Makefile	2007-09-24 20:56:53.000000000 +0200
+@@ -8,7 +8,7 @@
+ 
+ TOPDIR	:=	$(CURDIR)
+ 
+-VERSION:=2.3.2
++VERSION:=2.3.4
+ 
+ include	.config
+ 
+@@ -17,7 +17,7 @@
+ endif
+ 
+ ifeq	($(CONFIG_SPI_CLK),)
+-CONFIG_SPI_CLK=5000000
++CONFIG_SPI_CLK=33000000
+ endif
+ 
+ ifndef	MEMORY
