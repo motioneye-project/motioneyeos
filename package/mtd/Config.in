@@ -8,7 +8,6 @@ config BR2_PACKAGE_MTD
 config BR2_PACKAGE_MTD_EXPERIMENTAL
 	bool "Use experimental MTD (20061007)"
 	depends on BR2_PACKAGE_MTD
-	depends on BR2_TARGET_ATMEL
 	default n
 	help
 	  Build mtd/jffs utilities with Dataflash support
