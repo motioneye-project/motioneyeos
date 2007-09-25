@@ -124,6 +124,7 @@ $(PROJECT_BUILD_DIR)/.initramfs_done: $(BR2_INITRAMFS_DIR)/bin/busybox \
 					$(BB_INITRAMFS_TARGET)
 	touch $@
 
+busybox-initramfs-source:
 busybox-initramfs: uclibc $(PROJECT_BUILD_DIR)/.initramfs_done
 
 busybox-initramfs-menuconfig: host-sed $(BUILD_DIR) busybox-source $(BUSYBOX_INITRAMFS_DIR)/.configured
