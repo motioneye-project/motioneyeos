@@ -115,7 +115,7 @@ config BR2_INSTALL_LIBSTDCPP
 	bool "Build/install c++ compiler and libstdc++?"
 	default n
 	# >= 4.2.0 work fine without LARGEFILE
-	select BR2_LARGEFILE if BR2_GCC_SUPPORTS_SYSROOT
+	select BR2_LARGEFILE if !BR2_GCC_SUPPORTS_SYSROOT
 	select BR2_GCC_CROSS_CXX
 	help
 	  Build/install c++ compiler and libstdc++?
