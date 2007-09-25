@@ -4,93 +4,13 @@ comment "Binutils Options"
 
 choice
 	prompt "Binutils Version"
-	default BR2_BINUTILS_VERSION_2_17
+	default BR2_BINUTILS_VERSION_2_18
 	help
 	  Select the version of binutils you wish to use.
-
-	config BR2_BINUTILS_VERSION_2_14_90_0_8
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.14.90.0.8"
-
-	config BR2_BINUTILS_VERSION_2_15
-		depends !BR2_avr32 && BR2_DEPRECATED
-		bool "binutils 2.15"
-
-	config BR2_BINUTILS_VERSION_2_15_94_0_2_2
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.15.94.0.2.2"
-
-	config BR2_BINUTILS_VERSION_2_16_1
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.16.1"
-
-	config BR2_BINUTILS_VERSION_2_16_90_0_3
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.16.90.0.3"
-
-	config BR2_BINUTILS_VERSION_2_16_91_0_5
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.16.91.0.5"
-
-	config BR2_BINUTILS_VERSION_2_16_91_0_6
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.16.91.0.6"
-
-	config BR2_BINUTILS_VERSION_2_16_91_0_7
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.16.91.0.7"
 
 	config BR2_BINUTILS_VERSION_2_17
 		depends BR2_avr32 || !BR2_nios2 && BR2_DEPRECATED
 		bool "binutils 2.17"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_2
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.2"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_3
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.3"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_4
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.4"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_5
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.5"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_6
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.6"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_7
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.7"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_8
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.8"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_9
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.9"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_10
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.10"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_12
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.12"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_14
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.14"
-
-	config BR2_BINUTILS_VERSION_2_17_50_0_16
-		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "binutils 2.17.50.0.16"
 
 	config BR2_BINUTILS_VERSION_2_17_50_0_17
 		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
@@ -107,27 +27,7 @@ endchoice
 
 config BR2_BINUTILS_VERSION
 	string
-	default "2.14.90.0.8"	if BR2_BINUTILS_VERSION_2_14_90_0_8
-	default "2.15"		if BR2_BINUTILS_VERSION_2_15
-	default "2.15.94.0.2.2" if BR2_BINUTILS_VERSION_2_15_94_0_2_2
-	default "2.16.1"	if BR2_BINUTILS_VERSION_2_16_1
-	default "2.16.90.0.3"	if BR2_BINUTILS_VERSION_2_16_90_0_3
-	default "2.16.91.0.5"	if BR2_BINUTILS_VERSION_2_16_91_0_5
-	default "2.16.91.0.6"	if BR2_BINUTILS_VERSION_2_16_91_0_6
-	default "2.16.91.0.7"	if BR2_BINUTILS_VERSION_2_16_91_0_7
 	default "2.17"		if BR2_BINUTILS_VERSION_2_17
-	default "2.17.50.0.2"	if BR2_BINUTILS_VERSION_2_17_50_0_2
-	default "2.17.50.0.3"	if BR2_BINUTILS_VERSION_2_17_50_0_3
-	default "2.17.50.0.4"	if BR2_BINUTILS_VERSION_2_17_50_0_4
-	default "2.17.50.0.5"	if BR2_BINUTILS_VERSION_2_17_50_0_5
-	default "2.17.50.0.6"	if BR2_BINUTILS_VERSION_2_17_50_0_6
-	default "2.17.50.0.7"	if BR2_BINUTILS_VERSION_2_17_50_0_7
-	default "2.17.50.0.8"	if BR2_BINUTILS_VERSION_2_17_50_0_8
-	default "2.17.50.0.9"	if BR2_BINUTILS_VERSION_2_17_50_0_9
-	default "2.17.50.0.10"	if BR2_BINUTILS_VERSION_2_17_50_0_10
-	default "2.17.50.0.12"	if BR2_BINUTILS_VERSION_2_17_50_0_12
-	default "2.17.50.0.14"	if BR2_BINUTILS_VERSION_2_17_50_0_14
-	default "2.17.50.0.16"	if BR2_BINUTILS_VERSION_2_17_50_0_16
 	default "2.17.50.0.17"	if BR2_BINUTILS_VERSION_2_17_50_0_17
 	default "2.18"		if BR2_BINUTILS_VERSION_2_18
 	default "2.18.50.0.1"	if BR2_BINUTILS_VERSION_2_18_50_0_1
