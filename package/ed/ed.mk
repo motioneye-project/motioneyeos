@@ -40,6 +40,8 @@ $(TARGET_DIR)/$(ED_TARGET_BINARY): $(ED_DIR)/$(ED_BINARY)
 
 ed: uclibc $(TARGET_DIR)/$(ED_TARGET_BINARY)
 
+ed-source: $(DL_DIR)/$(ED_SOURCE)
+
 ed-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(ED_DIR) uninstall
 	-$(MAKE) -C $(ED_DIR) clean
