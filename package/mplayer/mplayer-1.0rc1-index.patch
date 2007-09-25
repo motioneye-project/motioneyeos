@@ -1,0 +1,22 @@
+diff -urN MPlayer-1.0rc1-0rig/stream/stream_dvb.c MPlayer-1.0rc1/stream/stream_dvb.c
+--- MPlayer-1.0rc1-0rig/stream/stream_dvb.c	2006-10-23 00:32:25.000000000 +0200
++++ MPlayer-1.0rc1/stream/stream_dvb.c	2007-09-25 08:37:54.000000000 +0200
+@@ -37,9 +37,7 @@
+ #include <sys/poll.h>
+ #include <unistd.h>
+ #include <fcntl.h>
+-#include <string.h>
+ #include <errno.h>
+-#include <fcntl.h>
+ 
+ #include "stream.h"
+ #include "libmpdemux/demuxer.h"
+@@ -168,7 +166,7 @@
+ 		if((line[0] == '#') || (strlen(line) == 0))
+ 			continue;
+ 
+-		colon = index(line, ':');
++		colon = strchr(line, ':');
+ 		if(colon)
+ 		{
+ 			k = colon - line;
