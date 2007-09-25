@@ -6,6 +6,9 @@ choice
 	  Select whether to use the toolchain provided by buildroot
 	  or an external toolchain.
 
+	  Some vendors provide toolchains in binary form, some in
+	  source form.
+
 config BR2_TOOLCHAIN_BUILDROOT
 	bool "Buildroot toolchain"
 	depends on !BR2_avr32
