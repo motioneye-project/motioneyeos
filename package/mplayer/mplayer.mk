@@ -60,6 +60,10 @@ $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY): $(MPLAYER_DIR)/$(MPLAYER_BINARY)
 
 mplayer: uclibc libmad $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
 
+mplayer-source: $(DL_DIR)/$(MPLAYER_SOURCE)
+
+mplayer-unpacked: $(MPLAYER_DIR)/.unpacked
+
 mplayer-clean:
 	rm -f $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
 	-$(MAKE) -C $(MPLAYER_DIR) clean
