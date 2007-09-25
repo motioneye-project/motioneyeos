@@ -19,7 +19,7 @@ endchoice
 
 config BR2_TOOLCHAIN_SOURCE
 	bool
-	default y if !BR2_TOOLCHAIN_EXTERNAL
+	default y if BR2_TOOLCHAIN_BUILDROOT || BR2_TOOLCHAIN_EXTERNAL_SOURCE
 	default n if BR2_TOOLCHAIN_EXTERNAL
 
 source "target/device/Toolchain.in"
