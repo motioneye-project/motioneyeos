@@ -1,6 +1,9 @@
-miscellaneous TODO items that may be worth thinking about and that could
-be discussed on the mailing-list and/or implemented.
+Buildroot3 TODOs
 
+- fix packages/Makefile.autotools.in to use a package-imposed patchdir
+- convert all packages that use autoconf to use the infrastructure of
+  packages/Makefile.autotools.in
+- fix setting of flags for packages
 
 - think about using a common --config-cache for configure
   Should take care of expanding TARGET_CONFIGURE_ARGS for cross compiles
