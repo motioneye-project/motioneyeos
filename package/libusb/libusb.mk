@@ -29,6 +29,9 @@ $(LIBUSB_DIR)/.unpacked: $(DL_DIR)/$(LIBUSB_SOURCE)
 ifneq ($(LIBUSB_PATCH_FILE),)
 	(cd $(LIBUSB_DIR) && $(LIBUSB_CAT) $(LIBUSB_PATCH) | patch -p1)
 endif
+	toolchain/patch-kernel.sh $(LIBUSB_DIR) package/libusb/ libusb-$(LIBUSB_VERSION)\*.patch*
+	$(SED) 's,^all:.*,all:,g' $(LIBUSB_DIR)/tests/Makefile.in
+	$(SED) 's,^install:.*,install:,g' $(LIBUSB_DIR)/tests/Makefile.in
 	touch $@
 
 $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
