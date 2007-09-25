@@ -9145,14 +9145,5 @@ diff -urN uClibc-0.9.29-0rig/libc/soft-fp/unordtf2.c uClibc-0.9.29/libc/soft-fp/
 +
 +  return r;
 +}
-diff -urN uClibc-0.9.29-0rig/Rules.mak uClibc-0.9.29/Rules.mak
---- uClibc-0.9.29-0rig/Rules.mak	2007-04-17 15:34:11.000000000 +0200
-+++ uClibc-0.9.29/Rules.mak	2007-09-25 07:26:39.000000000 +0200
-@@ -385,6 +385,7 @@
- # No longer needed with current toolchains, but leave it here for now.
- # If anyone is actually still using gcc 2.95 (say), they can uncomment it.
- #    LDADD_LIBFLOAT=-lfloat
-+CPU_LDFLAGS-y+=-lgcc 
- endif
- endif
+
  
