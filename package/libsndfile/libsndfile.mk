@@ -20,7 +20,7 @@ $(LIBSNDFILE_DIR)/.unpacked: $(DL_DIR)/$(LIBSNDFILE_SOURCE)
 	touch $@
 
 $(LIBSNDFILE_DIR)/.configured: $(LIBSNDFILE_DIR)/.unpacked
-	(cd $(LIBSNDFILE_DIR); \
+	(cd $(LIBSNDFILE_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

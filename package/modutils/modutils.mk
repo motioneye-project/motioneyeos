@@ -29,7 +29,7 @@ $(MODUTILS_DIR1)/.source: $(DL_DIR)/$(MODUTILS_SOURCE)
 	touch $(MODUTILS_DIR1)/.source
 
 $(MODUTILS_DIR1)/.configured: $(MODUTILS_DIR1)/.source
-	(cd $(MODUTILS_DIR1); \
+	(cd $(MODUTILS_DIR1); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		INSTALL=$(MODUTILS_DIR1)/install-sh \

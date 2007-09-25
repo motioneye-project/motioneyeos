@@ -21,7 +21,7 @@ $(FREETYPE_DIR)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
 
 # freetype for the target
 $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
-	(cd $(FREETYPE_DIR); \
+	(cd $(FREETYPE_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

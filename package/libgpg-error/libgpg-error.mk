@@ -21,7 +21,7 @@ $(LIBGPG_ERROR_DIR)/.source: $(DL_DIR)/$(LIBGPG_ERROR_SOURCE)
 	touch $(LIBGPG_ERROR_DIR)/.source
 
 $(LIBGPG_ERROR_DIR)/.configured: $(LIBGPG_ERROR_DIR)/.source
-	(cd $(LIBGPG_ERROR_DIR); \
+	(cd $(LIBGPG_ERROR_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

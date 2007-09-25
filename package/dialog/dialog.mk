@@ -18,7 +18,7 @@ $(DIALOG_DIR)/.source: $(DL_DIR)/$(DIALOG_SOURCE)
 	touch $@
 
 $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source
-	(cd $(DIALOG_DIR); \
+	(cd $(DIALOG_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

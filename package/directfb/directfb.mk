@@ -35,7 +35,7 @@ $(DIRECTFB_DIR)/.unpacked: $(DL_DIR)/$(DIRECTFB_SOURCE)
 	touch $@
 
 $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
-	(cd $(DIRECTFB_DIR); \
+	(cd $(DIRECTFB_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 	ac_cv_header_linux_wm97xx_h=no \

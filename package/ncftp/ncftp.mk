@@ -24,7 +24,7 @@ $(NCFTP_DIR)/.source: $(DL_DIR)/$(NCFTP_SOURCE)
 	touch $@
 
 $(NCFTP_DIR)/.configured: $(NCFTP_DIR)/.source
-	(cd $(NCFTP_DIR); \
+	(cd $(NCFTP_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

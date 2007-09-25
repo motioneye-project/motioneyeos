@@ -33,7 +33,8 @@ endif
 # sysctl code in this thing is apparently intended for
 # freebsd or some such thing...
 $(NETSNMP_DIR)/.configured: $(NETSNMP_DIR)/.unpacked
-	(cd $(NETSNMP_DIR); autoconf; \
+	(cd $(NETSNMP_DIR); rm -f config.cache; \
+		autoconf && \
 		ac_cv_CAN_USE_SYSCTL=no \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \

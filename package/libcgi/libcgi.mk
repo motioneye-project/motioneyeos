@@ -20,25 +20,25 @@ $(LIBCGI_DIR)/.source: $(DL_DIR)/$(LIBCGI_SOURCE)
 	touch $(LIBCGI_DIR)/.source
 
 $(LIBCGI_DIR)/.configured: $(LIBCGI_DIR)/.source
-	(cd $(LIBCGI_DIR); \
+	(cd $(LIBCGI_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
-			--target=$(GNU_TARGET_NAME) \
-			--host=$(GNU_TARGET_NAME) \
-			--build=$(GNU_HOST_NAME) \
-			--prefix=/usr \
-			--exec-prefix=/usr \
-			--bindir=/usr/bin \
-			--sbindir=/usr/sbin \
-			--libdir=/lib \
-			--libexecdir=/$(LIBCGI_DESTDIR) \
-			--sysconfdir=/etc \
-			--datadir=/usr/share \
-			--localstatedir=/var \
-			--includedir=/include \
-			--mandir=/usr/man \
-			--infodir=/usr/info \
+		--target=$(GNU_TARGET_NAME) \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--bindir=/usr/bin \
+		--sbindir=/usr/sbin \
+		--libdir=/lib \
+		--libexecdir=/$(LIBCGI_DESTDIR) \
+		--sysconfdir=/etc \
+		--datadir=/usr/share \
+		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/usr/man \
+		--infodir=/usr/info \
 	)
 	touch $(LIBCGI_DIR)/.configured
 

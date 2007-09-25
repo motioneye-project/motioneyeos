@@ -29,8 +29,7 @@ $(TCPDUMP_DIR)/.unpacked: $(DL_DIR)/$(TCPDUMP_SOURCE)
 	touch $@
 
 $(TCPDUMP_DIR)/.configured: $(TCPDUMP_DIR)/.unpacked
-	( \
-		cd $(TCPDUMP_DIR); \
+	(cd $(TCPDUMP_DIR); rm -f config.cache; \
 		ac_cv_linux_vers=$(BR2_DEFAULT_KERNEL_HEADERS) \
 		BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \

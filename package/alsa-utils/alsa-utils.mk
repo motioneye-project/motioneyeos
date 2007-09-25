@@ -21,7 +21,7 @@ $(ALSA_UTILS_DIR)/.unpacked: $(DL_DIR)/$(ALSA_UTILS_SOURCE)
 	touch $@
 
 $(ALSA_UTILS_DIR)/.configured: $(ALSA_UTILS_DIR)/.unpacked
-	(cd $(ALSA_UTILS_DIR); \
+	(cd $(ALSA_UTILS_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS)" \

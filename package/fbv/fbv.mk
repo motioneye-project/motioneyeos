@@ -22,7 +22,7 @@ $(FBV_DIR)/.unpacked: $(DL_DIR)/$(FBV_SOURCE)
 	touch $@
 
 $(FBV_DIR)/.configured: $(FBV_DIR)/.unpacked
-	(cd $(FBV_DIR); \
+	(cd $(FBV_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

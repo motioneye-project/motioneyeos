@@ -20,7 +20,7 @@ $(OPENNTPD_DIR)/.source: $(DL_DIR)/$(OPENNTPD_SOURCE)
 	touch $@
 
 $(OPENNTPD_DIR)/.configured: $(OPENNTPD_DIR)/.source
-	(cd $(OPENNTPD_DIR); \
+	(cd $(OPENNTPD_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

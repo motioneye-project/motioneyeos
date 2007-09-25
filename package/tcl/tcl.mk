@@ -17,7 +17,7 @@ $(TCL_DIR)/.source: $(DL_DIR)/$(TCL_SOURCE)
 	touch $(TCL_DIR)/.source
 
 $(TCL_DIR)/.configured: $(TCL_DIR)/.source
-	(cd $(TCL_DIR)/unix; \
+	(cd $(TCL_DIR)/unix; rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \

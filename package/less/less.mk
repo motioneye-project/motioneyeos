@@ -18,7 +18,7 @@ $(LESS_DIR)/.source: $(DL_DIR)/$(LESS_SOURCE)
 	touch $@
 
 $(LESS_DIR)/.configured: $(LESS_DIR)/.source
-	(cd $(LESS_DIR); \
+	(cd $(LESS_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
