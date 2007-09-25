@@ -61,10 +61,10 @@ void sym_init(void)
 	if (p)
 		sym_add_default(sym, p);
 
-	sym = sym_lookup("VERSION", 0);
+	sym = sym_lookup("BR2_VERSION", 0);
 	sym->type = S_STRING;
 	sym->flags |= SYMBOL_AUTO;
-	p = getenv("VERSION");
+	p = getenv("BR2_VERSION");
 	if (p)
 		sym_add_default(sym, p);
 

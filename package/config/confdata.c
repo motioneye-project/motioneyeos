@@ -413,7 +413,7 @@ int conf_write(const char *name)
 	if (!out)
 		return 1;
 
-	sym = sym_lookup("VERSION", 0);
+	sym = sym_lookup("BR2_VERSION", 0);
 	sym_calc_value(sym);
 	time(&now);
 	env = getenv("KCONFIG_NOTIMESTAMP");
@@ -681,7 +681,7 @@ int conf_write_autoconf(void)
 		return 1;
 	}
 
-	sym = sym_lookup("VERSION", 0);
+	sym = sym_lookup("BR2_VERSION", 0);
 	sym_calc_value(sym);
 	time(&now);
 	fprintf(out, "#\n"

@@ -6,6 +6,10 @@ config BR2_HAVE_DOT_CONFIG
 	bool
 	default y
 
+config BR2_VERSION
+	string
+	default "0.10.0-svn"
+
 source "target/arch.in"
 
 menu "Build options"

@@ -1,5 +1,7 @@
 Buildroot3 TODOs
 
+- stabilize for a 0.10.0 release
+
 - fix packages/Makefile.autotools.in to use a package-imposed patchdir
 - convert all packages that use autoconf to use the infrastructure of
   packages/Makefile.autotools.in
