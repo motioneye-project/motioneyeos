@@ -1,3 +1,25 @@
+menu "Target Options"
+
+comment "filesystem for target device"
+
+source "target/cramfs/Config.in"
+source "target/cloop/Config.in"
+source "target/ext2/Config.in"
+source "target/jffs2/Config.in"
+source "target/squashfs/Config.in"
+source "target/tar/Config.in"
+source "target/cpio/Config.in"
+source "target/iso9660/Config.in"
+source "target/initramfs/Config.in"
+
+comment "bootloader for target device"
+
+source "target/x86/grub/Config.in"
+#source "target/x86/grub2/Config.in"
+source "target/x86/syslinux/Config.in"
+source "target/powerpc/yaboot/Config.in"
+endmenu
+
 menu "Kernel"
 choice
 	prompt "Kernel type"
@@ -24,30 +46,6 @@ endif
 if BR2_KERNEL_HURD
 source "target/hurd/Config.in"
 endif
-source "toolchain/kernel-headers/Config.in"
 endmenu
 
-menu "Target Options"
-
-comment "filesystem for target device"
-
-source "target/cramfs/Config.in"
-source "target/cloop/Config.in"
-source "target/ext2/Config.in"
-source "target/jffs2/Config.in"
-source "target/squashfs/Config.in"
-source "target/tar/Config.in"
-source "target/cpio/Config.in"
-source "target/iso9660/Config.in"
-source "target/initramfs/Config.in"
-
-comment "bootloader for target device"
-
-source "target/x86/grub/Config.in"
-#source "target/x86/grub2/Config.in"
-source "target/x86/syslinux/Config.in"
-source "target/powerpc/yaboot/Config.in"
-endmenu
-
-
-
+source "target/device/Config.in"

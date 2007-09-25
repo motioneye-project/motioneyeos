@@ -1,5 +1,3 @@
-
-
 config BR2_PACKAGE_BUSYBOX
 	bool "BusyBox"
 	default y
@@ -120,6 +118,22 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	  file, and will specify their config file location with this option.
 
 	  Most people will just use the default BusyBox configuration file.
+
+config BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+	bool "Hide applications that are provided by busybox"
+	depends on BR2_PACKAGE_BUSYBOX
+	default y if BR2_PACKAGE_BUSYBOX_SNAPSHOT
+	help
+	  Do not show packages in menuconfig that are potentially provided
+	  by busybox.
+
+config BR2_PACKAGE_BUSYBOX_SKELETON
+	bool "use minimal target skeleton"
+	depends on BR2_PACKAGE_BUSYBOX
+	depends on !BR2_BUSYBOX_VERSION_1_0_1
+	help
+	  Use a minimal target skeleton. Make sure to select mdev
+	  which is used to populate /dev/.
 
 #config BR2_PACKAGE_BUSYBOX_INITRAMFS
 #	bool "initramfs perusing busybox"

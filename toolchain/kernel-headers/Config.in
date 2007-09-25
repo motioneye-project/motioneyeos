@@ -2,7 +2,7 @@
 # ignored if you are building your own kernel or using the system kernel.
 #
 
-comment "Kernel Header Options - Should not be modified once toolchain is built"
+comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
