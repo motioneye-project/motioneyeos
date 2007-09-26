@@ -1,7 +1,5 @@
 menu "Board Support Options"
 
-source "project/Config.in"
-
 comment "Preset Devices"
 
 source "target/device/AMD/Config.in"

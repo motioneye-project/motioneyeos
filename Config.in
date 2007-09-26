@@ -10,6 +10,8 @@ config BR2_VERSION
 	string
 	default "0.10.0-svn"
 
+source "project/Config.in"
+
 source "target/arch.in"
 
 menu "Build options"

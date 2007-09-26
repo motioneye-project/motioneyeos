@@ -127,6 +127,8 @@ config BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 	  Do not show packages in menuconfig that are potentially provided
 	  by busybox.
 
+comment "Skeleton configuration"
+
 config BR2_PACKAGE_BUSYBOX_SKELETON
 	bool "use minimal target skeleton"
 	depends on BR2_PACKAGE_BUSYBOX
@@ -134,6 +136,19 @@ config BR2_PACKAGE_BUSYBOX_SKELETON
 	help
 	  Use a minimal target skeleton. Make sure to select mdev
 	  which is used to populate /dev/.
+
+config BR2_HOSTNAME
+	string "hostname"
+	default "uclibc"
+	help
+	  The hostname string is stored in "/etc/hostname"
+
+config BR2_BANNER
+	string "banner"
+	default "Welcome to the Erik's uClibc development environment."
+	help
+	  The banner string is stored in "/etc/issue"
+
 
 #config BR2_PACKAGE_BUSYBOX_INITRAMFS
 #	bool "initramfs perusing busybox"
