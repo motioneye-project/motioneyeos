@@ -227,6 +227,9 @@ linux26-unpacked: $(LINUX26_DIR)/.patched
 
 linux26-config:	$(LINUX26_DIR)/.configured
 
+linux26-update:
+	cp -dpf $(LINUX26_DIR)/.config $(LINUX26_KCONFIG)
+
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linux26clean:
 	rm -f $(LINUX26_KERNEL) $(LINUX26_DIR)/.configured
