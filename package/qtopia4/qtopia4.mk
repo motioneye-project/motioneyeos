@@ -15,6 +15,11 @@
 #
 ######################################################################
 
+# BUG: In "OpenSuSE 10.2", dbus.h is at dbus-1.0/dbus/dbus.h
+# instead of at "dbus/dbus.h"
+# (cd /usr/include; sudo ln -s dbus-1.0/dbus dbus) 
+# to fix
+
 QTOPIA4_VERSION:=4.3.1
 QTOPIA4_CAT:=$(ZCAT)
 
@@ -79,7 +84,8 @@ QTOPIA4_DEP_LIBS+=libpng
 endif
 
 ifeq ($(BR2_PACKAGE_TSLIB),y)
-QTOPIA4_TSLIB=-qt-mouse-tslib
+#BUG: Qtopia refuse to recognize -qt-mouse-tslib
+#QTOPIA4_TSLIB=-qt-mouse-tslib
 QTOPIA4_DEP_LIBS+=tslib
 QTOPIA4_TSLIB_DEB="-D TSLIBMOUSEHANDLER_DEBUG"
 QTOPIA4_TSLIB_DEB:=$(strip $(subst ",, $(QTOPIA4_TSLIB_DEB)))
