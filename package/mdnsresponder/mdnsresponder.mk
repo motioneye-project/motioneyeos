@@ -19,6 +19,8 @@ $(DL_DIR)/$(MDNSRESPONDER_SOURCE):
 
 $(MDNSRESPONDER_DIR)/.unpacked: $(DL_DIR)/$(MDNSRESPONDER_SOURCE)
 	$(MDNSRESPONDER_CAT) $(DL_DIR)/$(MDNSRESPONDER_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(MDNSRESPONDER_DIR) package/mdnsresponder/ \
+		mDNSResponder-$(MDNSRESPONDER_VERSION)\*.patch
 	touch $@
 
 $(MDNSRESPONDER_DIR)/.configured: $(MDNSRESPONDER_DIR)/.unpacked
@@ -61,6 +63,8 @@ $(TARGET_DIR)/usr/bin/mDNSClientPosix: $(STAGING_DIR)/usr/lib/libdns_sd.so
 mdnsresponder: uclibc $(TARGET_DIR)/usr/sbin/mdnsd $(MDNSRESPONDER_INSTDEPS)
 
 mdnsresponder-source: $(DL_DIR)/$(MDNSRESPONDER_SOURCE)
+
+mdnsresponder-unpacked: $(MDNSRESPONDER_DIR)/.unpacked
 
 mdnsresponder-clean:
 	rm -f $(MDNSRESPONDER_DIR)/.configured $(MDNSRESPONDER_DIR)/.built $(MDNSRESPONDER_DIR)/.staged
