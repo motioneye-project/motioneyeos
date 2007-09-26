@@ -1,11 +1,17 @@
 menu "Package Selection for the target"
 
-
-comment "The default minimal system"
 source "package/busybox/Config.in"
 
+comment "The minimum needed to build a uClibc development system ---"
 
-comment "The minimum needed to build a uClibc development system"
+menuconfig BR2_APPLICATIONS
+	bool "Common Applications"
+	default y
+	help
+	  A set of applications, utilities and libraries for 
+	  text processing, toolchain generation and other things.
+
+if BR2_APPLICATIONS
 source "package/bash/Config.in"
 source "package/bzip2/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
@@ -77,7 +83,6 @@ source "package/lsof/Config.in"
 source "package/ltp-testsuite/Config.in"
 source "package/ltrace/Config.in"
 source "package/ltt/Config.in"
-source "package/microcom/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/module-init-tools/Config.in"
 source "package/modutils/Config.in"
@@ -114,14 +119,18 @@ endif
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/which/Config.in"
 endif
+endif
 
 menuconfig BR2_NETWORK_SUPPORT
 	bool "Networking"
 	default y
 	help
-	  Support for networking and related packages
+	  Support for communication, networking and related packages
 
 if BR2_NETWORK_SUPPORT
+comment "Communications applications"
+source "package/microcom/Config.in"
+comment "Networking applications"
 source "package/argus/Config.in"
 source "package/avahi/Config.in"
 source "package/boa/Config.in"

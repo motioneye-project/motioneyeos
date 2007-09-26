@@ -1,3 +1,10 @@
+menuconfig BR2_BUSYBOX_MENU
+	bool "Busybox configuration -- the default minimal system"
+	default y
+	help
+	  Configuration of Busybox, 
+
+if BR2_BUSYBOX_MENU
 config BR2_PACKAGE_BUSYBOX
 	bool "BusyBox"
 	default y
@@ -155,3 +162,4 @@ config BR2_BANNER
 #	depends on BR2_PACKAGE_BUSYBOX
 #	help
 #	  Build small initramfs perusing busybox.
+endif
