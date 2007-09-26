@@ -4388,7 +4388,7 @@ diff -urN uClibc-0.9.29-0rig/libc/soft-fp/Makefile.in uClibc-0.9.29/libc/soft-fp
 +
 +# SOFT_FLOAT functions
 +ifeq ($(UCLIBC_HAS_SOFT_FLOAT),y)
-+CSRC := \
++SOFT_FP_SRC := \
 +	adddf3.c addsf3.c addtf3.c \
 +	divdf3.c divsf3.c divtf3.c \
 +	eqdf2.c eqsf2.c eqtf2.c \
@@ -4410,8 +4410,8 @@ diff -urN uClibc-0.9.29-0rig/libc/soft-fp/Makefile.in uClibc-0.9.29/libc/soft-fp
 +SOFT_FP_DIR := $(top_srcdir)libc/soft-fp
 +SOFT_FP_OUT := $(top_builddir)libc/soft-fp
 +
-+SOFT_FP_SRC := $(patsubst %.c,$(SOFT_FP_DIR)/%.c,$(CSRC))
-+SOFT_FP_OBJ := $(patsubst %.c,$(SOFT_FP_OUT)/%.o,$(CSRC))
++SOFT_FP_SRC := $(patsubst %.c,$(SOFT_FP_DIR)/%.c,$(SOFT_FP_SRC))
++SOFT_FP_OBJ := $(patsubst %.c,$(SOFT_FP_OUT)/%.o,$(SOFT_FP_SRC))
 +
 +libc-y += $(SOFT_FP_OBJ)
 +
