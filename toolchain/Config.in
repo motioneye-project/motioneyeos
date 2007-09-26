@@ -3,27 +3,15 @@ choice
 	prompt "Toolchain type"
 	default BR2_TOOLCHAIN_BUILDROOT
 	help
-	  Select whether to use the toolchain provided by buildroot
-	  or an external toolchain.
-
-	  Some vendors provide toolchains in binary form, some in
-	  source form.
+	  Select whether to use the toolchain built by the buildroot
+	  system or an external pre-built toolchain.
 
 config BR2_TOOLCHAIN_BUILDROOT
 	bool "Buildroot toolchain"
-	depends on !BR2_avr32
 
 config BR2_TOOLCHAIN_EXTERNAL
-	bool "External binary toolchain"
-
-config BR2_TOOLCHAIN_EXTERNAL_SOURCE
-	bool "External source toolchain"
+	bool "External toolchain"
 endchoice
-
-config BR2_TOOLCHAIN_SOURCE
-	bool
-	default y if BR2_TOOLCHAIN_BUILDROOT || BR2_TOOLCHAIN_EXTERNAL_SOURCE
-	default n if BR2_TOOLCHAIN_EXTERNAL
 
 source "target/device/Toolchain.in"
 

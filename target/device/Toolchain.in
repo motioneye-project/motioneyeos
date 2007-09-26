@@ -1,18 +1,30 @@
-if BR2_TOOLCHAIN_EXTERNAL_SOURCE
 choice
 	prompt "Source location:"
-#	default BR2_TOOLCHAIN_ATMEL_AVR32 if BR2_avr32
+	default BR2_TOOLCHAIN_NORMAL		if!BR2_avr32
+	default BR2_TOOLCHAIN_ATMEL_AVR32	if BR2_avr32
+	depends on BR2_TOOLCHAIN_BUILDROOT
 	help
 	  Select whether to use the toolchain built by the buildroot
 	  system or an external pre-built toolchain.
 
+config BR2_TOOLCHAIN_NORMAL
+	bool
+	prompt "Use default sources for toolchain"
+	depends on !BR2_avr32
+	help
+	  Download vanilla binutils, gcc, uclibc and gdb from their 
+	  main download locations, and apply patches from the
+	  "toolchain/<package>" directores.
+	  I.E: Do not download a prepatched vendor source suite.
+
 config BR2_TOOLCHAIN_ATMEL_AVR32
-	bool "Use prepatched source for AVR32 toolchain"
+	bool
+	prompt "Use prepatched source for AVR32 toolchain"
 	depends on BR2_avr32
-#	depends on BR2_GCC_VERSION_4_1_2
-#	depends on BR2_GDB_VERSION_6_4 || !BR2_PACKAGE_GDB
-#	depends on BR2_BINUTILS_VERSION_2_17
-#	depends on BR2_UCLIBC_VERSION_0_9_28_3
+	depends on BR2_GCC_VERSION_4_1_2
+	depends on BR2_GDB_VERSION_6_4 || !BR2_PACKAGE_GDB
+	depends on BR2_BINUTILS_VERSION_2_17
+	depends on BR2_UCLIBC_VERSION_0_9_28_3
 
 endchoice
 
@@ -43,4 +55,3 @@ config BR2_VENDOR_GDB_RELEASE
 config BR2_VENDOR_PATCH_DIR
 	string
 	default "target/device/Atmel/toolchain/avr32" if BR2_TOOLCHAIN_ATMEL_AVR32
-endif
