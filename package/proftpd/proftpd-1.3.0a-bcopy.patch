@@ -1,0 +1,173 @@
+diff -urN proftpd-1.3.0a-0rig/ChangeLog proftpd-1.3.0a/ChangeLog
+--- proftpd-1.3.0a-0rig/ChangeLog	2006-04-16 23:39:01.000000000 +0200
++++ proftpd-1.3.0a/ChangeLog	2007-09-24 08:18:14.000000000 +0200
+@@ -1,3 +1,11 @@
++2007-09-24 08:00  ulfs
++
++	* contrib/mod_load/mod_load.c.in
++	* include/conf.h
++	* lib/glibc-glob.c
++	
++	Replace bzero/bcopy with memset/memcpy
++
+ 2006-04-16 14:36  castaglia
+ 
+ 	* contrib/dist/rpm/proftpd.spec, include/version.h, NEWS: 
+diff -urN proftpd-1.3.0a-0rig/config.h.in proftpd-1.3.0a/config.h.in
+--- proftpd-1.3.0a-0rig/config.h.in	2005-10-20 01:28:30.000000000 +0200
++++ proftpd-1.3.0a/config.h.in	2007-09-24 08:24:38.000000000 +0200
+@@ -190,7 +190,7 @@
+ #undef STACK_DIRECTION
+ 
+ /* Define if you have the ANSI C header files.  */
+-#undef STDC_HEADERS
++#define STDC_HEADERS	1
+ 
+ /* Define if you can safely include both <sys/time.h> and <time.h>.  */
+ #undef TIME_WITH_SYS_TIME
+@@ -202,10 +202,10 @@
+ #undef uid_t
+ 
+ /* The number of bytes in a short.  */
+-#undef SIZEOF_SHORT
++#define SIZEOF_SHORT	2
+ 
+ /* The number of bytes in an int.  */
+-#undef SIZEOF_INT
++#define SIZEOF_INT	4
+ 
+ /* The number of bytes in a long.  */
+ #undef SIZEOF_LONG
+@@ -222,9 +222,6 @@
+ /* The number of bytes in a time_t.  */
+ #undef SIZEOF_TIME_T
+ 
+-/* Define if you have the bcopy function.  */
+-#undef HAVE_BCOPY
+-
+ /* Define if you have the crypt function.  */
+ #undef HAVE_CRYPT
+ 
+@@ -307,7 +304,7 @@
+ #undef HAVE_INET_PTON
+ 
+ /* Define if you have the memcpy function.  */
+-#undef HAVE_MEMCPY
++#define HAVE_MEMCPY	1
+ 
+ /* Define if you have the mempcpy function.  */
+ #undef HAVE_MEMPCPY
+diff -urN proftpd-1.3.0a-0rig/contrib/mod_load/mod_load.c.in proftpd-1.3.0a/contrib/mod_load/mod_load.c.in
+--- proftpd-1.3.0a-0rig/contrib/mod_load/mod_load.c.in	2005-01-07 00:39:59.000000000 +0100
++++ proftpd-1.3.0a/contrib/mod_load/mod_load.c.in	2007-09-24 08:02:01.000000000 +0200
+@@ -651,7 +651,7 @@
+       for (i = 0; i < conf.config_maxclass; ++i)
+         {
+           struct class_stats stats;
+-          bzero ((char *) &stats, sizeof stats);
++          memset ((char *) &stats, 0, sizeof stats);
+ 
+           desc.sd_type = CPUTYPE_CLASS;
+           desc.sd_objid = i;
+diff -urN proftpd-1.3.0a-0rig/include/conf.h proftpd-1.3.0a/include/conf.h
+--- proftpd-1.3.0a-0rig/include/conf.h	2005-06-30 02:39:16.000000000 +0200
++++ proftpd-1.3.0a/include/conf.h	2007-09-24 08:20:26.000000000 +0200
+@@ -118,10 +118,6 @@
+ #  define strrchr rindex
+ # endif
+ char *strchr(),*strrchr();
+-# ifndef HAVE_MEMCPY
+-#  define memcpy(d,s,n) bcopy((s),(d),(n))
+-#  define memmove(d,s,n) bcopy((s),(d),(n))
+-# endif
+ #endif
+ 
+ #ifdef HAVE_BSTRING_H
+@@ -264,13 +260,6 @@
+ off_t lseek(int, off_t, int);
+ #endif
+ 
+-/* See if we have bcopy, if not define them to use the memcpy functions */
+-
+-#ifndef HAVE_BCOPY
+-# define bcopy(s,d,n)	memcpy((d),(s),(n))
+-# define bzero(d,n)	memset((d),0,(n))
+-#endif
+-
+ /* Solaris has __vsnprintf, but no vsnprintf */
+ #if ! defined(HAVE_VSNPRINTF) && defined(HAVE___VSNPRINTF)
+ # undef vsnprintf
+diff -urN proftpd-1.3.0a-0rig/lib/glibc-glob.c proftpd-1.3.0a/lib/glibc-glob.c
+--- proftpd-1.3.0a-0rig/lib/glibc-glob.c	2006-03-22 23:10:34.000000000 +0100
++++ proftpd-1.3.0a/lib/glibc-glob.c	2007-09-24 08:07:48.000000000 +0200
+@@ -215,18 +215,8 @@
+ 
+ #ifndef	ANSI_STRING
+ 
+-# ifndef bzero
+-extern void bzero ();
+-# endif
+-# ifndef bcopy
+-extern void bcopy ();
+-# endif
+-
+-# define memcpy(d, s, n)	bcopy ((s), (d), (n))
+ # define strrchr	rindex
+ /* memset is only used for zero here, but let's be paranoid.  */
+-# define memset(s, better_be_zero, n) \
+-  ((void) ((better_be_zero) == 0 ? (bzero((s), (n)), 0) : (abort(), 0)))
+ #endif	/* Not ANSI_STRING.  */
+ 
+ #if !defined HAVE_STRCOLL && !defined _LIBC
+diff -urN proftpd-1.3.0a-0rig/lib/libltdl/config-h.in proftpd-1.3.0a/lib/libltdl/config-h.in
+--- proftpd-1.3.0a-0rig/lib/libltdl/config-h.in	2004-10-29 07:17:55.000000000 +0200
++++ proftpd-1.3.0a/lib/libltdl/config-h.in	2007-09-24 08:25:40.000000000 +0200
+@@ -21,9 +21,6 @@
+ /* Define to 1 if you have the <assert.h> header file. */
+ #undef HAVE_ASSERT_H
+ 
+-/* Define to 1 if you have the `bcopy' function. */
+-#undef HAVE_BCOPY
+-
+ /* Define to 1 if you have the `closedir' function. */
+ #undef HAVE_CLOSEDIR
+ 
+@@ -74,7 +71,7 @@
+ #undef HAVE_MALLOC_H
+ 
+ /* Define to 1 if you have the `memcpy' function. */
+-#undef HAVE_MEMCPY
++#define HAVE_MEMCPY	1
+ 
+ /* Define to 1 if you have the `memmove' function. */
+ #undef HAVE_MEMMOVE
+@@ -180,7 +177,7 @@
+ #undef PACKAGE_VERSION
+ 
+ /* Define to 1 if you have the ANSI C header files. */
+-#undef STDC_HEADERS
++#define STDC_HEADERS	1
+ 
+ /* Define to empty if `const' does not conform to ANSI C. */
+ #undef const
+diff -urN proftpd-1.3.0a-0rig/lib/libltdl/ltdl.c proftpd-1.3.0a/lib/libltdl/ltdl.c
+--- proftpd-1.3.0a-0rig/lib/libltdl/ltdl.c	2004-10-29 07:17:55.000000000 +0200
++++ proftpd-1.3.0a/lib/libltdl/ltdl.c	2007-09-24 08:13:51.000000000 +0200
+@@ -372,9 +372,6 @@
+ 	  if you need that behaviour.  */
+ #if ! HAVE_MEMCPY
+ 
+-#  if HAVE_BCOPY
+-#    define memcpy(dest, src, size)	bcopy (src, dest, size)
+-#  else
+ #    define memcpy rpl_memcpy
+ 
+ static lt_ptr memcpy LT_PARAMS((lt_ptr dest, const lt_ptr src, size_t size));
+@@ -395,7 +392,6 @@
+   return dest;
+ }
+ 
+-#  endif /* !HAVE_BCOPY */
+ #endif   /* !HAVE_MEMCPY */
+ 
+ #if ! HAVE_MEMMOVE
