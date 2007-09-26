@@ -209,6 +209,11 @@ linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
 	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
 
+linux26-xconfig: $(LINUX26_DIR)/.patched host-sed
+	[ -f $(LINUX26_DIR)/.config ] || cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
+	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) xconfig
+	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
+
 linux26: $(LINUX26_KERNEL)
 
 $(LINUX26_DIR)/.modules_installed: $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep
@@ -218,7 +223,9 @@ linux26-modules: cross-depmod26 $(LINUX26_DIR)/.modules_installed
 
 linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
-linux26-patched: $(LINUX26_DIR)/.patched
+linux26-unpacked: $(LINUX26_DIR)/.patched
+
+linux26-config:	$(LINUX26_DIR)/.configured
 
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linux26clean:
