@@ -1,4 +1,4 @@
-menu "Target Options"
+menu "Target filesystem options"
 
 comment "filesystem for target device"
 
@@ -47,5 +47,3 @@ if BR2_KERNEL_HURD
 source "target/hurd/Config.in"
 endif
 endmenu
-
-source "target/device/Config.in"

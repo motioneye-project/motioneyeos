@@ -1,7 +1,8 @@
 #
 
-menu "External Toolchain Options"
-       depends on BR2_TOOLCHAIN_EXTERNAL
+if BR2_TOOLCHAIN_EXTERNAL
+comment "External Toolchain Options"
+
 
 config BR2_TOOLCHAIN_EXTERNAL_LIB_C
 	string "The core C library from the external toolchain"
@@ -104,4 +105,4 @@ config BR2_TARGET_OPTIMIZATION
 	help
 	  Optimizations to use when building for the target host.
 
-endmenu
+endif

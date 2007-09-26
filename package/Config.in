@@ -2,16 +2,8 @@ menu "Package Selection for the target"
 
 source "package/busybox/Config.in"
 
-comment "The minimum needed to build a uClibc development system ---"
+comment "The minimum needed to build a uClibc development system"
 
-menuconfig BR2_APPLICATIONS
-	bool "Common Applications"
-	default y
-	help
-	  A set of applications, utilities and libraries for 
-	  text processing, toolchain generation and other things.
-
-if BR2_APPLICATIONS
 source "package/bash/Config.in"
 source "package/bzip2/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
@@ -37,6 +29,15 @@ source "package/sed/Config.in"
 source "package/tar/Config.in"
 endif
 
+#menuconfig BR2_APPLICATION_SUPPORT
+#	bool "Common Applications"
+#	default y
+#	help
+#	  A set of applications, utilities and libraries for 
+#	  text processing, toolchain generation and other things.
+
+
+#if BR2_APPLICATION_SUPPORT
 comment "Other development stuff"
 source "package/autoconf/Config.in"
 source "package/automake/Config.in"
@@ -119,7 +120,6 @@ endif
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/which/Config.in"
 endif
-endif
 
 menuconfig BR2_NETWORK_SUPPORT
 	bool "Networking"
@@ -128,8 +128,6 @@ menuconfig BR2_NETWORK_SUPPORT
 	  Support for communication, networking and related packages
 
 if BR2_NETWORK_SUPPORT
-comment "Communications applications"
-source "package/microcom/Config.in"
 comment "Networking applications"
 source "package/argus/Config.in"
 source "package/avahi/Config.in"
@@ -157,6 +155,9 @@ source "package/libpcap/Config.in"
 source "package/links/Config.in"
 source "package/lrzsz/Config.in"
 source "package/mdnsresponder/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/microcom/Config.in"
+endif
 source "package/mrouted/Config.in"
 source "package/mutt/Config.in"
 source "package/nbd/Config.in"

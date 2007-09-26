@@ -10,19 +10,19 @@ source "target/device/Atmel/AVR32_Config.in"
 
 config BR2_BOARD_NAME
 	string
-	default	"at91rm9200df"		if	BR2_TARGET_AT91RM9200DF
-	default	"at91rm9200se"		if	BR2_TARGET_AT91RM9200SE
-	default	"at91rm9200ek"		if	BR2_TARGET_AT91RM9200EK
-	default	"at91rm9200dk"		if	BR2_TARGET_AT91RM9200DK
-	default	"at91sam9260ek"		if	BR2_TARGET_AT91SAM9260EK
-	default	"at91sam9260dfc"	if	BR2_TARGET_AT91SAM9260DFC
-	default	"at91sam9260pf"		if	BR2_TARGET_AT91SAM9260PF
-	default	"at91sam9261ek"		if	BR2_TARGET_AT91SAM9261EK
-	default	"at91sam9262ek"		if	BR2_TARGET_AT91SAM9262EK
-	default	"at91sam9263ek"		if	BR2_TARGET_AT91SAM9263EK
-	default	"at91sam9xeek"		if	BR2_TARGET_AT91SAM9XEEK
-	default	"atstk1002"		if	BR2_TARGET_AVR32_ATSTK1002
-	default	"atngw100"		if	BR2_TARGET_AVR32_ATNGW100
+	default	"at91rm9200df"		if BR2_TARGET_AT91RM9200DF
+	default	"at91rm9200se"		if BR2_TARGET_AT91RM9200SE
+	default	"at91rm9200ek"		if BR2_TARGET_AT91RM9200EK
+	default	"at91rm9200dk"		if BR2_TARGET_AT91RM9200DK
+	default	"at91sam9260ek"		if BR2_TARGET_AT91SAM9260EK
+	default	"at91sam9260dfc"	if BR2_TARGET_AT91SAM9260DFC
+	default	"at91sam9260pf"		if BR2_TARGET_AT91SAM9260PF
+	default	"at91sam9261ek"		if BR2_TARGET_AT91SAM9261EK
+	default	"at91sam9262ek"		if BR2_TARGET_AT91SAM9262EK
+	default	"at91sam9263ek"		if BR2_TARGET_AT91SAM9263EK
+	default	"at91sam9xeek"		if BR2_TARGET_AT91SAM9XEEK
+	default	"atstk1002"		if BR2_TARGET_AVR32_ATSTK1002
+	default	"atngw100"		if BR2_TARGET_AVR32_ATNGW100
 
 config BR2_TARGET_AT91_ADVANCED_INFO
 	bool "Remove work in progress"

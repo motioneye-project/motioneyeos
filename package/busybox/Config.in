@@ -1,10 +1,3 @@
-menuconfig BR2_BUSYBOX_MENU
-	bool "Busybox configuration -- the default minimal system"
-	default y
-	help
-	  Configuration of Busybox, 
-
-if BR2_BUSYBOX_MENU
 config BR2_PACKAGE_BUSYBOX
 	bool "BusyBox"
 	default y
@@ -23,40 +16,8 @@ choice
 	help
 	  Select the version of BusyBox you wish to use.
 
-	config BR2_BUSYBOX_VERSION_1_0_1
-		bool "BusyBox 1.0.1"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_1_3
-		bool "BusyBox 1.1.3"
-		depends on BR2_DEPRECATED
-
 	config BR2_BUSYBOX_VERSION_1_2_2_1
 		bool "BusyBox 1.2.2.1"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_4_0
-		bool "BusyBox 1.4.0"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_4_1
-		bool "BusyBox 1.4.1"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_4_2
-		bool "BusyBox 1.4.2"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_5_0
-		bool "BusyBox 1.5.0"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_5_1
-		bool "BusyBox 1.5.1"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_6_0
-		bool "BusyBox 1.6.0"
 		depends on BR2_DEPRECATED
 
 	config BR2_BUSYBOX_VERSION_1_6_1
@@ -77,15 +38,7 @@ endchoice
 
 config BR2_BUSYBOX_VERSION
 	string
-	default "1.0.1"		if BR2_BUSYBOX_VERSION_1_0_1
-	default "1.1.3"		if BR2_BUSYBOX_VERSION_1_1_3
 	default "1.2.2.1"	if BR2_BUSYBOX_VERSION_1_2_2_1
-	default "1.4.0"		if BR2_BUSYBOX_VERSION_1_4_0
-	default "1.4.1"		if BR2_BUSYBOX_VERSION_1_4_1
-	default "1.4.2"		if BR2_BUSYBOX_VERSION_1_4_2
-	default "1.5.0"		if BR2_BUSYBOX_VERSION_1_5_0
-	default "1.5.1"		if BR2_BUSYBOX_VERSION_1_5_1
-	default "1.6.0"		if BR2_BUSYBOX_VERSION_1_6_0
 	default "1.6.1"		if BR2_BUSYBOX_VERSION_1_6_1
 	default "1.7.0"		if BR2_BUSYBOX_VERSION_1_7_0
 	default "1.7.1"		if BR2_BUSYBOX_VERSION_1_7_1
@@ -108,15 +61,7 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	depends BR2_PACKAGE_BUSYBOX
 	default "target/device/x86/i386/busybox.config" if BR2_PACKAGE_BUSYBOX_SNAPSHOT
-	default "package/busybox/busybox-1.0.1.config" if BR2_BUSYBOX_VERSION_1_0_1
-	default "package/busybox/busybox-1.1.3.config" if BR2_BUSYBOX_VERSION_1_1_3
 	default "package/busybox/busybox-1.2.2.1.config" if BR2_BUSYBOX_VERSION_1_2_2_1
-	default "package/busybox/busybox-1.4.0.config" if BR2_BUSYBOX_VERSION_1_4_0
-	default "package/busybox/busybox-1.4.1.config" if BR2_BUSYBOX_VERSION_1_4_1
-	default "package/busybox/busybox-1.4.1.config" if BR2_BUSYBOX_VERSION_1_4_2
-	default "package/busybox/busybox-1.5.0.config" if BR2_BUSYBOX_VERSION_1_5_0
-	default "package/busybox/busybox-1.5.0.config" if BR2_BUSYBOX_VERSION_1_5_1
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_6_0
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_6_1
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_0
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_1
@@ -134,8 +79,6 @@ config BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 	  Do not show packages in menuconfig that are potentially provided
 	  by busybox.
 
-comment "Skeleton configuration"
-
 config BR2_PACKAGE_BUSYBOX_SKELETON
 	bool "use minimal target skeleton"
 	depends on BR2_PACKAGE_BUSYBOX
@@ -144,22 +87,8 @@ config BR2_PACKAGE_BUSYBOX_SKELETON
 	  Use a minimal target skeleton. Make sure to select mdev
 	  which is used to populate /dev/.
 
-config BR2_HOSTNAME
-	string "hostname"
-	default "uclibc"
-	help
-	  The hostname string is stored in "/etc/hostname"
-
-config BR2_BANNER
-	string "banner"
-	default "Welcome to the Erik's uClibc development environment."
-	help
-	  The banner string is stored in "/etc/issue"
-
-
 #config BR2_PACKAGE_BUSYBOX_INITRAMFS
 #	bool "initramfs perusing busybox"
 #	depends on BR2_PACKAGE_BUSYBOX
 #	help
 #	  Build small initramfs perusing busybox.
-endif

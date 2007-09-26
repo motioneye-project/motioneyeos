@@ -1,4 +1,6 @@
-menu "Board Support Options"
+menu "Target options"
+
+source "project/Config.in"
 
 comment "Preset Devices"
 

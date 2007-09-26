@@ -17,7 +17,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
 
 # without sysroot support. Sysroot toolchain is gcc-uclibc-4.x.mk
 ifneq ($(BR2_TOOLCHAIN_SYSROOT),y)
@@ -33,15 +33,16 @@ endif
 
 
 # redefine if using an external prepatched gcc source
-ifeq ($(BR2_TOOLCHAIN_NORMAL),)
+ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 GCC_SITE:=$(VENDOR_SITE)
 GCC_OFFICIAL_VER:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
+GCC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gcc-$(GCC_OFFICIAL_VER)
 endif
 
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)
 
-ifeq ($(BR2_TOOLCHAIN_NORMAL),y)
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 ifeq ($(GCC_SNAP_DATE),)
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 else
@@ -51,16 +52,12 @@ else
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 endif
 endif
-else
-GCC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gcc-$(GCC_OFFICIAL_VER)
 endif
-
 
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=true
 
-
-ifeq ($(findstring 3.,$(GCC_VERSION)),3.)
+ifeq ($(findstring x3.,x$(GCC_VERSION)),x3.)
 GCC_NO_MPFR:=y
 else
 ifneq ($(BR2_INSTALL_FORTRAN),y)

@@ -30,13 +30,14 @@ GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VER)
 endif
 
 # redefine if using an external prepatched gcc source
-ifeq ($(BR2_TOOLCHAIN_NORMAL),)
+ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 GCC_SITE:=$(VENDOR_SITE)
 GCC_OFFICIAL_VER:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
-endif
+GCC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gcc-$(GCC_OFFICIAL_VER)
+endif #!BR2_TOOLCHAIN_BUILDROOT
 
 # define patch location
-ifeq ($(BR2_TOOLCHAIN_NORMAL),y) # Normal toolchain
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y) # Normal toolchain
 ifeq ($(GCC_SNAP_DATE),) # Not a snapshot
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 else # Is a snapshot
@@ -47,9 +48,7 @@ else # Normal patch to snapshot
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 endif # Snapshot patch
 endif # Not a snapshot
-else # Prepatched toolchain
-GCC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gcc-$(GCC_OFFICIAL_VER)
-endif # Normal toolchain
+endif # BR2_TOOLCHAIN_BUILDROOT
 
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)

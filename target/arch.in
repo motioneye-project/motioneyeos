@@ -108,6 +108,18 @@ config BR2_ARM_TYPE
 	default ARM_XSCALE	if BR2_xscale
 	default ARM_IWMMXT	if BR2_iwmmxt
 
+choice
+	prompt "Target ABI"
+	depends BR2_arm || BR2_armeb
+	default BR2_ARM_OABI
+	help
+	  Application Binary Interface to use
+
+config BR2_ARM_OABI
+	bool "OABI"
+config BR2_ARM_EABI
+	bool "EABI"
+endchoice
 
 choice
 	prompt "Target Architecture Variant"
@@ -622,4 +634,25 @@ config BR2_GCC_TARGET_ARCH
 	default z900		if BR2_s390_z900
 	default z990		if BR2_s390_z990
 	default z9-109		if BR2_s390_z9_109
+
+config BR2_GCC_TARGET_ABI
+	string
+	default apcs-gnu	if BR2_arm_dunno
+	default atpcs		if BR2_arm_dunno
+	default aapcs		if BR2_arm_dunno
+	default aapcs-linux	if BR2_arm_dunno
+	default iwmmxt		if BR2_iwmmxt
+	default 32		if BR2_mipsel && BR2_OABI
+	default n32		if BR2_mipsel && BR2_EABI
+	default o64		if BR2_mips && BR2_OABI
+	default 64		if BR2_mips && BR2_ABI64
+	default eabi		if BR2_mips && BR2_EABI
+	default mmixware	if BR2_mmix && BR2_ABI_native
+	default gnu		if BR2_mmix && !BR2_ABI_native
+	default altivec		if BR2_powerpc && BR2_ABI_altivec
+	default no-altivec	if BR2_powerpc && BR2_ABI_no-altivec
+	default spe		if BR2_powerpc && BR2_ABI_spe
+	default no-spe		if BR2_powerpc && BR2_ABI_no-spe
+	default ibmlongdouble	if BR2_powerpc && BR2_ABI_ibmlongdouble
+	default ieeelongdouble	if BR2_powerpc && BR2_ABI_ieeelongdouble
 
