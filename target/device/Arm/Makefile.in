@@ -9,6 +9,6 @@ endif
 # pin some settings
 BR2_ARM_EABI:=y
 BR2_GNU_TARGET_SUFFIX:="linux-uclibcgnueabi"
-BR2_DEFAULT_KERNEL_HEADERS:="2.6.20"
+BR2_DEFAULT_KERNEL_HEADERS:="2.6.22.8"
 endif
 
