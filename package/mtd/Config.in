@@ -1,28 +1,32 @@
-config BR2_PACKAGE_MTD
+menuconfig BR2_PACKAGE_MTD
 	bool "mtd/jffs2 utilities"
 	default n
 	select BR2_PACKAGE_ZLIB
 	help
 	  Build mtd/jffs utilities
 
-config BR2_PACKAGE_MTD_EXPERIMENTAL
-	bool "Use experimental MTD (20061007)"
+if BR2_PACKAGE_MTD
+choice
+	prompt "Source package selection"
+	depends on BR2_PACKAGE_MTD
+	default BR2_PACKAGE_MTD20061007
+
+config BR2_PACKAGE_MTD_UTILS
+	bool "Use MTD-utils"
 	depends on BR2_PACKAGE_MTD
 	default n
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
-
-menu "MTD package selection"
+config BR2_PACKAGE_MTD_20061007
+	bool "Use MTD from (20061007)"
 	depends on BR2_PACKAGE_MTD
-	depends on !BR2_PACKAGE_MTD_EXPERIMENTAL
-choice
-	prompt "Source package selection"
-	depends on BR2_PACKAGE_MTD
-	default BR2_PACKAGE_MTD_ORIG
+	default n
+	help
+	  Build mtd/jffs utilities with Dataflash support
 
-config BR2_PACKAGE_MTD_ORIG
-	bool "Default source"
+config BR2_PACKAGE_MTD_20050122
+	bool "Use MTD from (20050122)"
 	help
 	  Use the stable release.
 
@@ -34,23 +38,20 @@ config BR2_PACKAGE_MTD_SNAPSHOT
 
 endchoice
 
-config BR2_PACKAGE_MTD_ORIG_STRING
-	string "MTD package"
-	depends on BR2_PACKAGE_MTD_ORIG
-	default "mtd_20050122.orig.tar.gz"
+config BR2_PACKAGE_MTD_SNAPSHOT_STRING
+	string	"mtd_YYYYMMDD.orig.tar.gz"
+	depends on BR2_PACKAGE_MTD_SNAPSHOT
 	help
 	  You should not modify the file name, unless you want to
 	  use a specific and private MTD package.
-	  Default is mtd_20050122.orig.tar.gz
-
-endmenu
 
 config BR2_PACKAGE_MTD_ORIG_STRING
 	string
-	depends on BR2_PACKAGE_MTD_EXPERIMENTAL
-	default "mtd_20061007.orig.tar.gz"
-	help
-	  Default is mtd_20061007.orig.tar.gz
+	depends on BR2_PACKAGE_MTD_ORIG
+	default "mtd-utils-1.1.0.tar.bz2" if BR2_PACKAGE_MTD_UTILS
+	default "mtd_20061007.orig.tar.gz" if BR2_PACKAGE_MTD_20050122
+	default "mtd_20050122.orig.tar.gz" if BR2_PACKAGE_MTD_20050122
+	default $(BR2_PACKAGE_MTD_SNAPSHOT_STRING) if BR2_PACKAGE_MTD_SNAPSHOT
 
 menu "MTD tools selection"
 	depends BR2_PACKAGE_MTD
@@ -99,13 +100,7 @@ config BR2_PACKAGE_MTD_JFFS3DUMP
 	bool "jffs3dump"
 	default y
 	depends on BR2_PACKAGE_MTD
-	depends on !BR2_PACKAGE_MTD_EXPERIMENTAL
-
-config BR2_PACKAGE_MTD_JFFS3DUMP
-	bool "jffs3dump (Don't check this since it is broken)"
-	default n
-	depends on BR2_PACKAGE_MTD
-	depends on !BR2_PACKAGE_MTD_EXPERIMENTAL
+	depends on !BR2_PACKAGE_MTD_20061007
 
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
@@ -166,6 +161,7 @@ config BR2_PACKAGE_MTD_DOC_LOADBIOS
 	bool "doc_loadbios"
 	default y
 	depends on BR2_PACKAGE_MTD
-
 endmenu
+
+endif
 
