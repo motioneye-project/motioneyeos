@@ -445,6 +445,9 @@ uclibc-config: host-sed $(UCLIBC_DIR)/.config
 
 uclibc-oldconfig: host-sed $(UCLIBC_DIR)/.oldconfig
 
+uclibc-update:
+	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
+
 uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
