@@ -27,12 +27,17 @@ $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	rm -rf $(MTD_HOST_DIR)
 	mv $(TOOL_BUILD_DIR)/$(MTD_NAME) $(MTD_HOST_DIR)
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
-		package/mtd/mtd-utils \*.patch
+		package/mtd/mtd-utils mtd-utils-$(MTD_VERSION)-all\*.patch
+	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
+		package/mtd/mtd-utils mtd-utils-$(MTD_VERSION)-host\*.patch
 	touch $@
+
 
 $(MTD_HOST_DIR)/mkfs.jffs2: $(MTD_HOST_DIR)/.unpacked
 	CC="$(HOSTCC)" CROSS= CFLAGS=-I$(LINUX_HEADERS_DIR)/include \
-		$(MAKE) LINUXDIR=$(LINUX_DIR) -C $(MTD_HOST_DIR) mkfs.jffs2
+		$(MAKE) LINUXDIR=$(LINUX_DIR) \
+		BUILDDIR=$(MTD_HOST_DIR) \
+		-C $(MTD_HOST_DIR) mkfs.jffs2
 
 mtd-host: $(MKFS_JFFS2)
 
@@ -52,8 +57,8 @@ mtd-host-dirclean:
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	mv $(BUILD_DIR)/$(MTD_NAME) $(MTD_DIR)
-	toolchain/patch-kernel.sh $(MTD_DIR) \
-		package/mtd/mtd-utils \*.patch
+	toolchain/patch-kernel.sh $(MTD_DIR) package/mtd/mtd-utils mtd-utils-$(MTD_VERSION)-all\*.patch
+	toolchain/patch-kernel.sh $(MTD_DIR) package/mtd/mtd-utils mtd-utils-$(MTD_VERSION)-target\*.patch
 	touch $@
 
 MTD_TARGETS_n :=
@@ -85,7 +90,8 @@ MTD_BUILD_TARGETS := $(addprefix $(MTD_DIR)/, $(MTD_TARGETS_y))
 $(MTD_BUILD_TARGETS): $(MTD_DIR)/.unpacked
 	mkdir -p $(TARGET_DIR)/usr/sbin
 	$(MAKE) CFLAGS="-I. -I./include -I$(LINUX_HEADERS_DIR)/include -I$(STAGING_DIR)/usr/include $(TARGET_CFLAGS)" \
-		CROSS= CC=$(TARGET_CC) LINUXDIR=$(LINUX26_DIR) WITHOUT_XATTR=1 -C $(MTD_DIR)
+		BUILDDIR=$(MTD_DIR) \
+		CROSS=$(TARGET_CROSS) CC=$(TARGET_CC) LINUXDIR=$(LINUX26_DIR) WITHOUT_XATTR=1 -C $(MTD_DIR)
 
 MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
 
