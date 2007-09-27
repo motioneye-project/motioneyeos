@@ -15,14 +15,12 @@ config BR2_PACKAGE_MTD_UTILS
 	bool "Use MTD-utils"
 	depends on BR2_PACKAGE_MTD
 	select BR2_PACKAGE_LZO
-	default n
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
 config BR2_PACKAGE_MTD_20061007
 	bool "Use MTD from (20061007)"
 	depends on BR2_PACKAGE_MTD
-	default n
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
