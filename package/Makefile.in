@@ -205,6 +205,8 @@ else
 BR2_AC_CV_C_BIGENDIAN=ac_cv_c_bigendian=no
 endif
 
+# XXX: FIXME: We would need to grab MALLOC_GLIBC_COMPAT from the uClibc.config
+# Including it doesn't seem wise, grepping is ugly.. Suggestions?
 # Does malloc return live pointer for malloc(0) ?
 ifeq ($(MALLOC_GLIBC_COMPAT),y)
 BR2_AC_CV_FUNC_MALLOC_0_NONNULL=ac_cv_func_malloc_0_nonnull=yes \
