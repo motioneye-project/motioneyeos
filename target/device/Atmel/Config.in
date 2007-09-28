@@ -5,8 +5,8 @@ menuconfig BR2_TARGET_ATMEL
 
 if BR2_TARGET_ATMEL
 
-source "target/device/Atmel/AT91_Config.in"
-source "target/device/Atmel/AVR32_Config.in"
+source "target/device/Atmel/Config.in.at91"
+source "target/device/Atmel/Config.in.avr32"
 
 config BR2_BOARD_NAME
 	string
