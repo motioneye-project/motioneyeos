@@ -12,6 +12,6 @@ config BR2_SOURCEFORGE_MIRROR
 	  The list of mirrors is available here:
 	  http://prdownloads.sourceforge.net/index-sf.html?download
 
-source	"target/device/Atmel/Mirrors.in"
+source	"target/device/Atmel/Config.in.mirrors"
 
 endmenu
