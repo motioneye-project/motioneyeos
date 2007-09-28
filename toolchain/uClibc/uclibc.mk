@@ -108,8 +108,7 @@ else
 UCLIBC_LOCALE_DATA=
 endif
 
-uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
-$(UCLIBC_DIR)/.unpacked: $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
+$(UCLIBC_DIR)/.unpacked: dirs kernel-headers host-sed $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
 	mkdir -p $(TOOL_BUILD_DIR)
 	rm -rf $(UCLIBC_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
@@ -442,14 +441,16 @@ uclibc: $(cross_compiler) $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 
-uclibc-config: host-sed $(UCLIBC_DIR)/.config
+uclibc-unpacked: $(UCLIBC_DIR)/.unpacked
 
-uclibc-oldconfig: host-sed $(UCLIBC_DIR)/.oldconfig
+uclibc-config: $(UCLIBC_DIR)/.config
 
-uclibc-update:
+uclibc-oldconfig: $(UCLIBC_DIR)/.oldconfig
+
+uclibc-update: uclibc-config
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
 
-uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
+uclibc-configured: $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
 

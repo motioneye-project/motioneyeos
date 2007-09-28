@@ -422,6 +422,10 @@ endif # ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
 	cp $(shell find ./target/ -name $@) .config
 	-@$(MAKE) oldconfig
 
+configured: dirs host-sed kernel-headers uclibc-configured busybox-config linux26-config
+
+cross: $(BASE_TARGETS)
+
 help:
 	@echo 'Cleaning:'
 	@echo '  clean                  - delete temporary files created by build'

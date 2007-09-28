@@ -168,6 +168,8 @@ ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
 		$(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_ROOT_UID=0" >> $(LINUX26_DIR)/.config
 	echo "CONFIG_INITRAMFS_ROOT_GID=0" >> $(LINUX26_DIR)/.config
+else
+	echo "CONFIG_INITRAMFS_SOURCE=\"\"" >> $(LINUX26_DIR)/.config
 endif
 ifeq ($(BR2_PACKAGE_BUSYBOX_INITRAMFS),y)
 	# precedence for a small initramfs
@@ -225,7 +227,7 @@ linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
 linux26-unpacked: $(LINUX26_DIR)/.patched
 
-linux26-config:	$(LINUX26_DIR)/.configured
+linux26-config:	host-sed $(LINUX26_DIR)/.configured
 
 linux26-update:
 	cp -dpf $(LINUX26_DIR)/.config $(LINUX26_KCONFIG)
