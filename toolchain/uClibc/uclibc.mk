@@ -108,7 +108,7 @@ else
 UCLIBC_LOCALE_DATA=
 endif
 
-$(UCLIBC_DIR)/.unpacked: dirs kernel-headers host-sed $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
+$(UCLIBC_DIR)/.unpacked: dirs host-sed $(DL_DIR)/$(UCLIBC_SOURCE) $(UCLIBC_LOCALE_DATA)
 	mkdir -p $(TOOL_BUILD_DIR)
 	rm -rf $(UCLIBC_DIR)
 	$(UCLIBC_CAT) $(DL_DIR)/$(UCLIBC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
@@ -366,7 +366,6 @@ uclibc-menuconfig: host-sed $(UCLIBC_DIR)/.config
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		HOSTCC="$(HOSTCC)" \
 		menuconfig && \
-	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE) && \
 	touch -c $(UCLIBC_DIR)/.config
 
 
@@ -450,7 +449,7 @@ uclibc-oldconfig: $(UCLIBC_DIR)/.oldconfig
 uclibc-update: uclibc-config
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
 
-uclibc-configured: $(UCLIBC_DIR)/.configured
+uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
 

@@ -227,7 +227,7 @@ linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
 linux26-unpacked: $(LINUX26_DIR)/.patched
 
-linux26-config:	host-sed $(LINUX26_DIR)/.configured
+linux26-config: host-sed $(LINUX26_DIR)/.configured
 
 linux26-update:
 	cp -dpf $(LINUX26_DIR)/.config $(LINUX26_KCONFIG)
