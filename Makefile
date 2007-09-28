@@ -91,6 +91,9 @@ endif
 ifndef HOSTCXX
 HOSTCXX:=g++
 endif
+ifndef HOSTFC
+HOSTFC:=gfortran
+endif
 ifndef HOSTCPP
 HOSTCPP:=cpp
 endif
@@ -107,6 +110,7 @@ HOSTAR:=$(shell $(CONFIG_SHELL) -c "which $(HOSTAR)" || type -p $(HOSTAR) || ech
 HOSTAS:=$(shell $(CONFIG_SHELL) -c "which $(HOSTAS)" || type -p $(HOSTAS) || echo as)
 HOSTCC:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCC)" || type -p $(HOSTCC) || echo gcc)
 HOSTCXX:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCXX)" || type -p $(HOSTCXX) || echo g++)
+HOSTFC:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLD)" || type -p $(HOSTLD) || echo || which g77 || type -p g77 || echo gfortran)
 HOSTCPP:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCPP)" || type -p $(HOSTCPP) || echo cpp)
 HOSTLD:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLD)" || type -p $(HOSTLD) || echo ld)
 HOSTLN:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLN)" || type -p $(HOSTLN) || echo ln)
@@ -114,7 +118,13 @@ HOSTNM:=$(shell $(CONFIG_SHELL) -c "which $(HOSTNM)" || type -p $(HOSTNM) || ech
 ifndef CFLAGS_FOR_BUILD
 CFLAGS_FOR_BUILD:=-g -O2
 endif
-export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTLD
+ifndef CXXFLAGS_FOR_BUILD
+CXXFLAGS_FOR_BUILD:=-g -O2
+endif
+ifndef FCFLAGS_FOR_BUILD
+FCFLAGS_FOR_BUILD:=-g -O2
+endif
+export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTFC HOSTLD
 
 
 ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
