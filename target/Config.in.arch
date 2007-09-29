@@ -129,13 +129,13 @@ choice
 	  Specific CPU variant to use
 
 config BR2_mips_1
-	bool "mips 1"
+	bool "mips I (generic)"
 config BR2_mips_2
-	bool "mips 2"
+	bool "mips II"
 config BR2_mips_3
-	bool "mips 3"
+	bool "mips III"
 config BR2_mips_4
-	bool "mips 4"
+	bool "mips IV"
 config BR2_mips_32
 	bool "mips 32"
 config BR2_mips_32r2
