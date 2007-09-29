@@ -12,8 +12,8 @@ config BR2_TARGET_ARM_INTEGRATOR_926
 	depends BR2_arm
 	default n
 	select BR2_PACKAGE_LINUX
-	select BR2_ARM_EABI
-	select BR2_KERNEL_HEADERS_2_6_20
+	select BR2_EABI
+	select BR2_KERNEL_HEADERS_2_6_22
 	select BR2_PTHREADS
 	select BR2_arm926t
 	help

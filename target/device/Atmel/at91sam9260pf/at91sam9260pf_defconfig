@@ -44,8 +44,8 @@ BR2_generic_arm=y
 # BR2_xscale is not set
 # BR2_iwmmxt is not set
 BR2_ARM_TYPE="GENERIC_ARM"
-BR2_ARM_OABI=y
-# BR2_ARM_EABI is not set
+BR2_OABI=y
+# BR2_EABI is not set
 BR2_ARCH="arm"
 BR2_ENDIAN="LITTLE"
 

@@ -111,14 +111,55 @@ config BR2_ARM_TYPE
 choice
 	prompt "Target ABI"
 	depends BR2_arm || BR2_armeb
-	default BR2_ARM_OABI
+	default BR2_OABI
 	help
 	  Application Binary Interface to use
 
-config BR2_ARM_OABI
+config BR2_OABI
 	bool "OABI"
-config BR2_ARM_EABI
+config BR2_EABI
 	bool "EABI"
+endchoice
+
+choice
+	prompt "Target Architecture Variant"
+	depends BR2_mips || BR2_mipsel
+	default BR2_mips_3
+	help
+	  Specific CPU variant to use
+
+config BR2_mips_1
+	bool "mips 1"
+config BR2_mips_2
+	bool "mips 2"
+config BR2_mips_3
+	bool "mips 3"
+config BR2_mips_4
+	bool "mips 4"
+config BR2_mips_32
+	bool "mips 32"
+config BR2_mips_32r2
+	bool "mips 32r2"
+config BR2_mips_64
+	bool "mips 64"
+config BR2_mips16_
+	bool "mips 16"
+endchoice
+
+
+choice
+	prompt "Target ABI"
+	depends BR2_mips || BR2_mipsel
+	default BR2_EABI
+	help
+	  Application Binary Interface to use
+
+config BR2_OABI
+	bool "OABI"
+config BR2_EABI
+	bool "EABI"
+config BR2_ABI64
+	bool "N64"
 endchoice
 
 choice
@@ -642,11 +683,11 @@ config BR2_GCC_TARGET_ABI
 	default aapcs		if BR2_arm_dunno
 	default aapcs-linux	if BR2_arm_dunno
 	default iwmmxt		if BR2_iwmmxt
-	default 32		if BR2_mipsel && BR2_OABI
+	default 32		if (BR2_mipsel || BR2_arm) && BR2_OABI
 	default n32		if BR2_mipsel && BR2_EABI
 	default o64		if BR2_mips && BR2_OABI
+	default eabi		if (BR2_mips || BR2_arm) && BR2_EABI
 	default 64		if BR2_mips && BR2_ABI64
-	default eabi		if BR2_mips && BR2_EABI
 	default mmixware	if BR2_mmix && BR2_ABI_native
 	default gnu		if BR2_mmix && !BR2_ABI_native
 	default altivec		if BR2_powerpc && BR2_ABI_altivec
