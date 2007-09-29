@@ -127,7 +127,7 @@ endif
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTFC HOSTLD
 
 
-ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
+ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 # cc-option
 # Usage: cflags-y+=$(call cc-option, -march=winchip-c6, -march=i586)
@@ -349,7 +349,7 @@ sourceball:
 	bzip2 -9 buildroot.tar; \
 
 
-else # ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
+else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 all: menuconfig
 
@@ -434,7 +434,7 @@ clean:
 distclean: clean
 	rm -rf sources/*
 
-endif # ifeq ($(strip $(BR2_HAVE_DOT_CONFIG)),y)
+endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 %_defconfig: $(CONFIG)/conf
 	cp $(shell find ./target/ -name $@) .config
