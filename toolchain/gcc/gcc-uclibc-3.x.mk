@@ -187,7 +187,6 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
 		--with-gnu-ld \
-		--with-as=$(TARGET_CROSS)as \
 		--disable-shared \
 		$(GCC_WITH_HOST_GMP) \
 		$(GCC_WITH_HOST_MPFR) \
@@ -252,8 +251,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		--enable-languages=$(GCC_CROSS_LANGUAGES) \
 		--disable-__cxa_atexit \
 		--enable-target-optspace \
-		--with-build-time-tools=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin \
-		--disable-libssp \
+		--with-gnu-ld \
 		$(GCC_WITH_HOST_GMP) \
 		$(GCC_WITH_HOST_MPFR) \
 		$(GCC_SHARED_LIBGCC) \

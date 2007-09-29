@@ -14,6 +14,9 @@ EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
 # AVR32 GCC configuration
 ifeq ($(strip $(BR2_avr32)),y)
 EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libssp
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--with-build-time-tools=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin \
+#EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--with-as=$(TARGET_CROSS)as
 endif
 
 ifeq ($(strip $(subst ",, $(BR2_GCC_IS_SNAP))),y)
@@ -79,6 +82,9 @@ EXTRA_TARGET_GCC_CONFIG_OPTIONS:=
 # AVR32 target GCC configuration
 ifeq ($(strip $(BR2_avr32)),y)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libmudflap
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libssp
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--with-build-time-tools=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin \
+#EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--with-as=$(TARGET_CROSS)as
 endif
 
 
