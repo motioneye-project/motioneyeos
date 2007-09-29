@@ -32,6 +32,7 @@
 # Set up a couple of getty's
 tty1::respawn:/sbin/getty 38400 tty1
 tty2::respawn:/sbin/getty 38400 tty2
+#ttyAMA0::respawn:/sbin/getty -L ttyAMA0 115200 vt100
 
 # Put a getty on the serial port
 #ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100

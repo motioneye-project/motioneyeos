@@ -1,6 +1,6 @@
 #
 # Automatically generated make config: don't edit
-# Thu Sep 27 19:19:26 2007
+# Fri Sep 28 20:43:18 2007
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_VERSION="0.10.0-svn"
@@ -41,30 +41,6 @@ BR2_arm926t=y
 BR2_ARM_TYPE="ARM926T"
 # BR2_ARM_OABI is not set
 BR2_ARM_EABI=y
-# BR2_x86_i386 is not set
-# BR2_x86_i486 is not set
-# BR2_x86_i586 is not set
-# BR2_x86_i686 is not set
-# BR2_x86_pentiumpro is not set
-# BR2_x86_pentium_mmx is not set
-# BR2_x86_pentium_m is not set
-# BR2_x86_pentium2 is not set
-# BR2_x86_pentium3 is not set
-# BR2_x86_pentium4 is not set
-# BR2_x86_prescott is not set
-# BR2_x86_nocona is not set
-# BR2_x86_core2 is not set
-# BR2_x86_k6 is not set
-# BR2_x86_k6_2 is not set
-# BR2_x86_athlon is not set
-# BR2_x86_athlon_4 is not set
-# BR2_x86_opteron is not set
-# BR2_x86_opteron_sse3 is not set
-# BR2_x86_barcelona is not set
-# BR2_x86_geode is not set
-# BR2_x86_c3 is not set
-# BR2_x86_winchip_c6 is not set
-# BR2_x86_winchip2 is not set
 BR2_ARCH="arm"
 BR2_ENDIAN="LITTLE"
 BR2_GCC_TARGET_TUNE="arm9tdmi"
@@ -163,7 +139,7 @@ BR2_TOOLCHAIN_SOURCE=y
 # BR2_KERNEL_HEADERS_2_6_22_1 is not set
 BR2_KERNEL_HEADERS_2_6_22=y
 # BR2_KERNEL_HEADERS_SNAP is not set
-BR2_DEFAULT_KERNEL_HEADERS="2.6.22.8"
+BR2_DEFAULT_KERNEL_HEADERS="2.6.22.9"
 
 #
 # uClibc Options
@@ -205,9 +181,10 @@ BR2_GCC_VERSION="4.2.1"
 BR2_TOOLCHAIN_SYSROOT=y
 # BR2_GCC_USE_SJLJ_EXCEPTIONS is not set
 BR2_EXTRA_GCC_CONFIG_OPTIONS=""
-# BR2_GCC_CROSS_CXX is not set
+BR2_GCC_CROSS_CXX=y
 # BR2_GCC_CROSS_FORTRAN is not set
-# BR2_INSTALL_LIBSTDCPP is not set
+BR2_INSTALL_LIBSTDCPP=y
+# BR2_INSTALL_LIBGCJ is not set
 # BR2_INSTALL_OBJC is not set
 # BR2_INSTALL_FORTRAN is not set
 BR2_GCC_SHARED_LIBGCC=y
@@ -262,33 +239,40 @@ BR2_PACKAGE_BUSYBOX_SKELETON=y
 #
 # The minimum needed to build a uClibc development system
 #
-# BR2_PACKAGE_BASH is not set
+BR2_PACKAGE_BASH=y
 # BR2_PACKAGE_BZIP2 is not set
 # BR2_PACKAGE_DIFFUTILS is not set
-# BR2_PACKAGE_FLEX is not set
-# BR2_PACKAGE_GCC_TARGET is not set
-# BR2_PACKAGE_MAKE is not set
+BR2_PACKAGE_FLEX=y
+BR2_PACKAGE_FLEX_LIBFL=y
+BR2_PACKAGE_GCC_TARGET=y
+BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS=""
+BR2_PACKAGE_MAKE=y
 
 #
 # Other development stuff
 #
 # BR2_PACKAGE_AUTOCONF is not set
 # BR2_PACKAGE_AUTOMAKE is not set
-# BR2_PACKAGE_BISON is not set
+BR2_PACKAGE_BISON=y
 # BR2_PACKAGE_CCACHE_TARGET is not set
 # BR2_PACKAGE_DISTCC is not set
 # BR2_PACKAGE_DMALLOC is not set
-# BR2_PACKAGE_EXPAT is not set
+BR2_PACKAGE_EXPAT=y
 # BR2_PACKAGE_FAKEROOT is not set
 BR2_HOST_FAKEROOT=y
-# BR2_PACKAGE_GETTEXT is not set
-# BR2_PACKAGE_LIBINTL is not set
-# BR2_PACKAGE_LIBGMP is not set
-# BR2_PACKAGE_LIBMPFR is not set
-# BR2_PACKAGE_LIBTOOL is not set
-# BR2_PACKAGE_M4 is not set
+BR2_PACKAGE_GETTEXT=y
+# BR2_PACKAGE_GETTEXT_STATIC is not set
+BR2_PACKAGE_LIBINTL=y
+BR2_PACKAGE_LIBGMP=y
+BR2_PACKAGE_LIBGMP_HEADERS=y
+BR2_PACKAGE_LIBMPFR=y
+BR2_PACKAGE_LIBMPFR_HEADERS=y
+BR2_PACKAGE_LIBTOOL=y
+BR2_PACKAGE_M4=y
+# BR2_PACKAGE_MPATROL is not set
 # BR2_PACKAGE_PKGCONFIG is not set
-# BR2_READLINE is not set
+BR2_READLINE=y
+BR2_PACKAGE_READLINE_TARGET=y
 # BR2_PACKAGE_XERCES is not set
 
 #
@@ -434,7 +418,8 @@ BR2_GRAPHIC_SUPPORT=y
 #
 # text rendering libraries
 #
-# BR2_PACKAGE_NCURSES is not set
+BR2_PACKAGE_NCURSES=y
+# BR2_PACKAGE_NCURSES_TARGET_HEADERS is not set
 # BR2_PACKAGE_NEWT is not set
 # BR2_PACKAGE_SLANG is not set
 
@@ -502,13 +487,13 @@ BR2_X11_PREFIX="/usr"
 # BR2_PACKAGE_MPLAYER is not set
 BR2_COMPRESSOR_SUPPORT=y
 # BR2_PACKAGE_LZO is not set
-# BR2_PACKAGE_LZMA_TARGET is not set
+BR2_PACKAGE_LZMA_TARGET=y
+# BR2_PACKAGE_LZMA_TARGET_HEADERS is not set
 # BR2_PACKAGE_LZMA_HOST is not set
 BR2_PACKAGE_ZLIB=y
 # BR2_PACKAGE_ZLIB_TARGET_HEADERS is not set
 BR2_SCRIPTING_SUPPORT=y
 # BR2_PACKAGE_MICROPERL is not set
-BR2_PACKAGE_MICROPERL_MODULES="warnings.pm warnings/register.pm strict.pm constant.pm vars.pm Exporter.pm Exporter/Heavy.pm Carp.pm Getopt/Long.pm"
 # BR2_PACKAGE_PYTHON is not set
 # BR2_PACKAGE_RUBY is not set
 # BR2_PACKAGE_TCL is not set
@@ -536,14 +521,9 @@ BR2_TARGET_ROOTFS_EXT2_NONE=y
 BR2_TARGET_ROOTFS_EXT2_COPYTO=""
 # BR2_TARGET_ROOTFS_JFFS2 is not set
 # BR2_TARGET_ROOTFS_SQUASHFS is not set
-BR2_TARGET_ROOTFS_TAR=y
-BR2_TARGET_ROOTFS_TAR_NONE=y
-# BR2_TARGET_ROOTFS_TAR_GZIP is not set
-# BR2_TARGET_ROOTFS_TAR_BZIP2 is not set
-# BR2_TARGET_ROOTFS_TAR_LZMA is not set
-BR2_TARGET_ROOTFS_TAR_OPTIONS=""
-# BR2_TARGET_ROOTFS_CPIO is not set
-# BR2_TARGET_ROOTFS_CPIO_NONE is not set
+# BR2_TARGET_ROOTFS_TAR is not set
+BR2_TARGET_ROOTFS_CPIO=y
+BR2_TARGET_ROOTFS_CPIO_NONE=y
 # BR2_TARGET_ROOTFS_CPIO_GZIP is not set
 # BR2_TARGET_ROOTFS_CPIO_BZIP2 is not set
 # BR2_TARGET_ROOTFS_CPIO_LZMA is not set
@@ -559,5 +539,5 @@ BR2_TARGET_ROOTFS_TAR_OPTIONS=""
 # BR2_KERNEL_none is not set
 BR2_KERNEL_LINUX=y
 # BR2_KERNEL_HURD is not set
-BR2_PACKAGE_LINUX_KCONFIG="target/device/Arm/linux26.integrator926.config"
-BR2_PACKAGE_LINUX_FORMAT="zImage"
+BR2_PACKAGE_LINUX_KCONFIG="target/device/Arm/linux26.integrator926_huge.config"
+BR2_PACKAGE_LINUX_FORMAT="vmlinux"
