@@ -19,10 +19,3 @@ config BR2_TARGET_AMD_ALCHEMY_DBAU1500
 comment "Package support"
 	depends BR2_TARGET_AMD_ALCHEMY
 
-config BR2_PACKAGE_LINUX
-	bool "linux"
-	default n
-	depends BR2_TARGET_AMD_ALCHEMY
-	help
-	    The Linux kernel.
-	    http://www.kernel.org/

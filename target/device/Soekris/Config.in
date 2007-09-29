@@ -17,11 +17,3 @@ config BR2_TARGET_SOEKRIS_NET4801
 comment "Package support"
 	depends on BR2_TARGET_SOEKRIS_NET4521 || BR2_TARGET_SOEKRIS_NET4801
 
-config BR2_PACKAGE_LINUX
-	bool "linux"
-	depends on BR2_TARGET_SOEKRIS_NET4521 || BR2_TARGET_SOEKRIS_NET4801
-	default n
-	help
-	    The Linux kernel.
-
-	    http://www.kernel.org/

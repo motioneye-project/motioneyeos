@@ -42,7 +42,7 @@ config BR2_AT91_LINUXPATCH_SITE
 	depends on BR2_TARGET_AT91
 	default "http://maxim.org.za/AT91RM9200/2.6"
 	help
-	    Main download location for AT91 Linux stuff
+	  Main download location for AT91 Linux stuff
 
 config BR2_TARGET_ATMEL_COPYTO
 	string "also copy the image to..."
