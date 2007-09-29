@@ -10,4 +10,4 @@ XAPP_XSETROOT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XSETROOT_AUTORECONF = YES
 XAPP_XSETROOT_DEPENDENCIES = xlib_libX11 xlib_libXmu xdata_xbitmaps
 
-$(eval $(call AUTOTARGETS,xapp_xsetroot))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xsetroot))

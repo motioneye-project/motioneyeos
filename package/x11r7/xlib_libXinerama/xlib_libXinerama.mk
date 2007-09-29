@@ -12,4 +12,4 @@ XLIB_LIBXINERAMA_INSTALL_STAGING = YES
 XLIB_LIBXINERAMA_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_xineramaproto
 XLIB_LIBXINERAMA_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXinerama))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXinerama))

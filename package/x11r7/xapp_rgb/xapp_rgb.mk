@@ -10,4 +10,4 @@ XAPP_RGB_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_RGB_AUTORECONF = YES
 XAPP_RGB_DEPENDENCIES = xproto_xproto
 
-$(eval $(call AUTOTARGETS,xapp_rgb))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_rgb))

@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_SPACEORB_SITE = http://xorg.freedesktop.org/releases/individu
 XDRIVER_XF86_INPUT_SPACEORB_AUTORECONF = YES
 XDRIVER_XF86_INPUT_SPACEORB_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-spaceorb))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-spaceorb))

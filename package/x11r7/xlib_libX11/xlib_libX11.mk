@@ -13,4 +13,4 @@ XLIB_LIBX11_DEPENDENCIES = libxcb xutil_util-macros xlib_xtrans xlib_libXau xlib
 XLIB_LIBX11_CONF_ENV = ac_cv_func_mmap_fixed_mapped=yes CC_FOR_BUILD="/usr/bin/gcc -I$(STAGING_DIR)/usr/include"
 XLIB_LIBX11_CONF_OPT = --disable-malloc0returnsnull --with-xcb --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libX11))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libX11))

@@ -10,4 +10,4 @@ XAPP_SMPROXY_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_SMPROXY_AUTORECONF = YES
 XAPP_SMPROXY_DEPENDENCIES = xlib_libXmu xlib_libXt
 
-$(eval $(call AUTOTARGETS,xapp_smproxy))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_smproxy))

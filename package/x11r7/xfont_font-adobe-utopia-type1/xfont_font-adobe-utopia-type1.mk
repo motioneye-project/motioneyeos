@@ -11,4 +11,4 @@ XFONT_FONT_ADOBE_UTOPIA_TYPE1_AUTORECONF = YES
 XFONT_FONT_ADOBE_UTOPIA_TYPE1_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) MKFONTSCALE=/usr/bin/mkfontscale MKFONTDIR=/usr/bin/mkfontdir FCCACHE=/usr/bin/fc-cache install
 XFONT_FONT_ADOBE_UTOPIA_TYPE1_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) MKFONTSCALE=/usr/bin/mkfontscale MKFONTDIR=/usr/bin/mkfontdir FCCACHE=/usr/bin/fc-cache install-data
 
-$(eval $(call AUTOTARGETS,xfont_font-adobe-utopia-type1))
+$(eval $(call AUTOTARGETS,package/x11r7,xfont_font-adobe-utopia-type1))

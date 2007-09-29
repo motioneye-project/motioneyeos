@@ -10,4 +10,4 @@ XAPP_BEFORELIGHT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_BEFORELIGHT_AUTORECONF = YES
 XAPP_BEFORELIGHT_DEPENDENCIES = xlib_libX11 xlib_libXScrnSaver xlib_libXaw xlib_libXt
 
-$(eval $(call AUTOTARGETS,xapp_beforelight))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_beforelight))

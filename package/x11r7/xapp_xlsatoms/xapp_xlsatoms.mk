@@ -10,4 +10,4 @@ XAPP_XLSATOMS_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XLSATOMS_AUTORECONF = YES
 XAPP_XLSATOMS_DEPENDENCIES = xlib_libX11 xlib_libXmu
 
-$(eval $(call AUTOTARGETS,xapp_xlsatoms))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xlsatoms))

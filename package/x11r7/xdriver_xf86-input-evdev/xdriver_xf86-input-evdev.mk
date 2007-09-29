@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_EVDEV_SITE = http://xorg.freedesktop.org/releases/individual/
 XDRIVER_XF86_INPUT_EVDEV_AUTORECONF = YES
 XDRIVER_XF86_INPUT_EVDEV_DEPENDENCIES = xproto_inputproto xserver_xorg-server xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-evdev))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-evdev))

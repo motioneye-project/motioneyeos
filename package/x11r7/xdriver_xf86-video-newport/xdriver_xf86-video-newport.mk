@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_NEWPORT_SITE = http://xorg.freedesktop.org/releases/individua
 XDRIVER_XF86_VIDEO_NEWPORT_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_NEWPORT_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-newport))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-newport))

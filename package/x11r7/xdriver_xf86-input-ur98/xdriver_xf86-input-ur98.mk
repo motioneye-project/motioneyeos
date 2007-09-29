@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_UR98_SITE = http://xorg.freedesktop.org/releases/individual/d
 XDRIVER_XF86_INPUT_UR98_AUTORECONF = YES
 XDRIVER_XF86_INPUT_UR98_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-ur98))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-ur98))

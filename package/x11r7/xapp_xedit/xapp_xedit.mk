@@ -10,4 +10,4 @@ XAPP_XEDIT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XEDIT_AUTORECONF = YES
 XAPP_XEDIT_DEPENDENCIES = xlib_libXaw xlib_libXprintUtil
 
-$(eval $(call AUTOTARGETS,xapp_xedit))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xedit))

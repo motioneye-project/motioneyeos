@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_APM_SITE = http://xorg.freedesktop.org/releases/individual/dr
 XDRIVER_XF86_VIDEO_APM_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_APM_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xextproto xproto_xf86rushproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-apm))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-apm))

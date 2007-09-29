@@ -10,4 +10,4 @@ XAPP_XTRAP_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XTRAP_AUTORECONF = YES
 XAPP_XTRAP_DEPENDENCIES = xlib_libX11 xlib_libXTrap
 
-$(eval $(call AUTOTARGETS,xapp_xtrap))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xtrap))

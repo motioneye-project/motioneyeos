@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_ELOGRAPHICS_SITE = http://xorg.freedesktop.org/releases/indiv
 XDRIVER_XF86_INPUT_ELOGRAPHICS_AUTORECONF = YES
 XDRIVER_XF86_INPUT_ELOGRAPHICS_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-elographics))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-elographics))

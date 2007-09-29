@@ -10,4 +10,4 @@ XAPP_ICEAUTH_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_ICEAUTH_AUTORECONF = YES
 XAPP_ICEAUTH_DEPENDENCIES = xlib_libICE xlib_libX11
 
-$(eval $(call AUTOTARGETS,xapp_iceauth))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_iceauth))

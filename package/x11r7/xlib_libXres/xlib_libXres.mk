@@ -12,4 +12,4 @@ XLIB_LIBXRES_INSTALL_STAGING = YES
 XLIB_LIBXRES_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_resourceproto xproto_xproto
 XLIB_LIBXRES_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXres))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXres))

@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_SUNFFB_SITE = http://xorg.freedesktop.org/releases/individual
 XDRIVER_XF86_VIDEO_SUNFFB_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_SUNFFB_DEPENDENCIES = xserver_xorg-server libdrm xproto_fontsproto xproto_randrproto xproto_renderproto xproto_xextproto xproto_xf86driproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-sunffb))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-sunffb))

@@ -12,4 +12,4 @@ XLIB_LIBXTRAP_INSTALL_STAGING = YES
 XLIB_LIBXTRAP_DEPENDENCIES = xlib_libX11 xlib_libXt xlib_libXext xproto_trapproto
 XLIB_LIBXTRAP_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXTrap))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXTrap))

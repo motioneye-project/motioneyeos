@@ -10,4 +10,4 @@ XAPP_XAUTH_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XAUTH_AUTORECONF = YES
 XAPP_XAUTH_DEPENDENCIES = xlib_libX11 xlib_libXau xlib_libXext xlib_libXmu
 
-$(eval $(call AUTOTARGETS,xapp_xauth))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xauth))

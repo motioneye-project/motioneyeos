@@ -10,4 +10,4 @@ XAPP_XVIDTUNE_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XVIDTUNE_AUTORECONF = YES
 XAPP_XVIDTUNE_DEPENDENCIES = xlib_libXaw xlib_libXxf86vm
 
-$(eval $(call AUTOTARGETS,xapp_xvidtune))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xvidtune))

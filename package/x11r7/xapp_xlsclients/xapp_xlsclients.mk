@@ -10,4 +10,4 @@ XAPP_XLSCLIENTS_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XLSCLIENTS_AUTORECONF = YES
 XAPP_XLSCLIENTS_DEPENDENCIES = xlib_libX11 xlib_libXmu
 
-$(eval $(call AUTOTARGETS,xapp_xlsclients))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xlsclients))

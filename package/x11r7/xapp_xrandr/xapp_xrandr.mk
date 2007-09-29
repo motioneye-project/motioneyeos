@@ -11,4 +11,4 @@ XAPP_XRANDR_AUTORECONF = YES
 XAPP_XRANDR_DEPENDENCIES = xlib_libXrandr xlib_libX11
 XAPP_XRANDR_CONF_OPT = --disable-malloc0returnsnull
 
-$(eval $(call AUTOTARGETS,xapp_xrandr))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xrandr))

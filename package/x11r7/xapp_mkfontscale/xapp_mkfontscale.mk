@@ -10,4 +10,4 @@ XAPP_MKFONTSCALE_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_MKFONTSCALE_AUTORECONF = YES
 XAPP_MKFONTSCALE_DEPENDENCIES = freetype xlib_libX11 xlib_libfontenc
 
-$(eval $(call AUTOTARGETS,xapp_mkfontscale))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_mkfontscale))

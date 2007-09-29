@@ -12,4 +12,4 @@ XLIB_LIBXAU_INSTALL_STAGING = YES
 XLIB_LIBXAU_DEPENDENCIES = xproto_xproto xproto_xproto xutil_util-macros
 XLIB_LIBXAU_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXau))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXau))

@@ -13,4 +13,4 @@ XLIB_LIBXT_DEPENDENCIES = xlib_libSM xlib_libX11 xproto_kbproto xproto_xproto xc
 XLIB_LIBXT_CONF_ENV = CC_FOR_BUILD="/usr/bin/gcc -I$(STAGING_DIR)/usr/include"
 XLIB_LIBXT_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXt))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXt))

@@ -10,4 +10,4 @@ XAPP_XDM_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XDM_AUTORECONF = YES
 XAPP_XDM_DEPENDENCIES = xapp_xinit xapp_sessreg xapp_xrdb xlib_libX11 xlib_libXaw xlib_libXdmcp xlib_libXinerama xlib_libXt xproto_xineramaproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xapp_xdm))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xdm))

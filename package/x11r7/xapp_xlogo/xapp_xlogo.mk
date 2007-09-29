@@ -10,4 +10,4 @@ XAPP_XLOGO_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XLOGO_AUTORECONF = YES
 XAPP_XLOGO_DEPENDENCIES = xlib_libXaw xlib_libXprintUtil xlib_libXrender
 
-$(eval $(call AUTOTARGETS,xapp_xlogo))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xlogo))

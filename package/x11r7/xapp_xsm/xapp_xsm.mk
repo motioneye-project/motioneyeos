@@ -10,4 +10,4 @@ XAPP_XSM_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XSM_AUTORECONF = YES
 XAPP_XSM_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,xapp_xsm))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xsm))

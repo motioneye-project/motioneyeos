@@ -12,4 +12,4 @@ XLIB_LIBXXF86MISC_INSTALL_STAGING = YES
 XLIB_LIBXXF86MISC_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_xf86miscproto xproto_xproto
 XLIB_LIBXXF86MISC_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXxf86misc))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXxf86misc))

@@ -12,4 +12,4 @@ XLIB_LIBOLDX_INSTALL_STAGING = YES
 XLIB_LIBOLDX_DEPENDENCIES = xlib_libX11
 XLIB_LIBOLDX_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_liboldX))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_liboldX))

@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_MGA_SITE = http://xorg.freedesktop.org/releases/individual/dr
 XDRIVER_XF86_VIDEO_MGA_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_MGA_DEPENDENCIES = xserver_xorg-server libdrm xproto_fontsproto xproto_glproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xextproto xproto_xf86driproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-mga))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-mga))

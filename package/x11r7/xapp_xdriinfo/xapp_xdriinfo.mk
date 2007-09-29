@@ -10,4 +10,4 @@ XAPP_XDRIINFO_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XDRIINFO_AUTORECONF = YES
 XAPP_XDRIINFO_DEPENDENCIES = xlib_libX11 xproto_glproto mesa3d
 
-$(eval $(call AUTOTARGETS,xapp_xdriinfo))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xdriinfo))

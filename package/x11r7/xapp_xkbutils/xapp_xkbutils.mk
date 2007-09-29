@@ -10,4 +10,4 @@ XAPP_XKBUTILS_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XKBUTILS_AUTORECONF = YES
 XAPP_XKBUTILS_DEPENDENCIES = xlib_libXaw xlib_libxkbfile
 
-$(eval $(call AUTOTARGETS,xapp_xkbutils))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xkbutils))

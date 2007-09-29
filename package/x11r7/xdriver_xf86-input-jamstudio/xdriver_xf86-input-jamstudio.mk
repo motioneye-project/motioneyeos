@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_JAMSTUDIO_SITE = http://xorg.freedesktop.org/releases/individ
 XDRIVER_XF86_INPUT_JAMSTUDIO_AUTORECONF = YES
 XDRIVER_XF86_INPUT_JAMSTUDIO_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-jamstudio))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-jamstudio))

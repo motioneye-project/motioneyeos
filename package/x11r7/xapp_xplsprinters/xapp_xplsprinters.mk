@@ -10,4 +10,4 @@ XAPP_XPLSPRINTERS_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XPLSPRINTERS_AUTORECONF = YES
 XAPP_XPLSPRINTERS_DEPENDENCIES = xlib_libX11 xlib_libXp xlib_libXprintUtil
 
-$(eval $(call AUTOTARGETS,xapp_xplsprinters))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xplsprinters))

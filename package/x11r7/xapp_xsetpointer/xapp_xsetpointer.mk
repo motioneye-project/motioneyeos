@@ -10,4 +10,4 @@ XAPP_XSETPOINTER_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XSETPOINTER_AUTORECONF = YES
 XAPP_XSETPOINTER_DEPENDENCIES = xproto_inputproto xlib_libX11 xlib_libXi
 
-$(eval $(call AUTOTARGETS,xapp_xsetpointer))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xsetpointer))

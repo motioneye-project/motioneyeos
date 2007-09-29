@@ -10,4 +10,4 @@ XAPP_XKBCOMP_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XKBCOMP_AUTORECONF = YES
 XAPP_XKBCOMP_DEPENDENCIES = xlib_libX11 xlib_libxkbfile
 
-$(eval $(call AUTOTARGETS,xapp_xkbcomp))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xkbcomp))

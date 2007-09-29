@@ -12,4 +12,4 @@ XLIB_LIBXPRINTAPPUTIL_INSTALL_STAGING = YES
 XLIB_LIBXPRINTAPPUTIL_DEPENDENCIES = xlib_libX11 xlib_libXp xlib_libXprintUtil
 XLIB_LIBXPRINTAPPUTIL_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXprintAppUtil))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXprintAppUtil))

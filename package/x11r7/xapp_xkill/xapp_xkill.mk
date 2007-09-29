@@ -10,4 +10,4 @@ XAPP_XKILL_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XKILL_AUTORECONF = YES
 XAPP_XKILL_DEPENDENCIES = xlib_libX11 xlib_libXmu
 
-$(eval $(call AUTOTARGETS,xapp_xkill))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xkill))

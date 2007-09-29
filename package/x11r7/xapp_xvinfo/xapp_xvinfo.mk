@@ -10,4 +10,4 @@ XAPP_XVINFO_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XVINFO_AUTORECONF = YES
 XAPP_XVINFO_DEPENDENCIES = xlib_libX11 xlib_libXv
 
-$(eval $(call AUTOTARGETS,xapp_xvinfo))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xvinfo))

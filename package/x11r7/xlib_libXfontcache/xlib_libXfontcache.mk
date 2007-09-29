@@ -12,4 +12,4 @@ XLIB_LIBXFONTCACHE_INSTALL_STAGING = YES
 XLIB_LIBXFONTCACHE_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_fontcacheproto
 XLIB_LIBXFONTCACHE_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXfontcache))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXfontcache))

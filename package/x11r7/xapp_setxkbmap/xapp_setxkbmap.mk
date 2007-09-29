@@ -10,4 +10,4 @@ XAPP_SETXKBMAP_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_SETXKBMAP_AUTORECONF = YES
 XAPP_SETXKBMAP_DEPENDENCIES = xlib_libX11 xlib_libxkbfile
 
-$(eval $(call AUTOTARGETS,xapp_setxkbmap))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_setxkbmap))

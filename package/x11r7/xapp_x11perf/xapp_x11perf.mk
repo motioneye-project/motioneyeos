@@ -10,4 +10,4 @@ XAPP_X11PERF_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_X11PERF_AUTORECONF = YES
 XAPP_X11PERF_DEPENDENCIES = xlib_libX11 xlib_libXmu xlib_libXft
 
-$(eval $(call AUTOTARGETS,xapp_x11perf))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_x11perf))

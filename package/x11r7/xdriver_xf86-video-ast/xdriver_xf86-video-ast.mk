@@ -9,4 +9,4 @@ XDRIVER_XF86_VIDEO_AST_SOURCE = xf86-video-ast-$(XDRIVER_XF86_VIDEO_AST_VERSION)
 XDRIVER_XF86_VIDEO_AST_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_VIDEO_AST_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-ast))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-ast))

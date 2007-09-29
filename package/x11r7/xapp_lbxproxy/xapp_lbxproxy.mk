@@ -10,4 +10,4 @@ XAPP_LBXPROXY_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_LBXPROXY_AUTORECONF = YES
 XAPP_LBXPROXY_DEPENDENCIES = xlib_libICE xlib_libX11 xlib_libXext xlib_liblbxutil xlib_xtrans xproto_xproxymanagementprotocol
 
-$(eval $(call AUTOTARGETS,xapp_lbxproxy))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_lbxproxy))

@@ -10,4 +10,4 @@ XAPP_XGC_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XGC_AUTORECONF = YES
 XAPP_XGC_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,xapp_xgc))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xgc))

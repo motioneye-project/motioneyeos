@@ -10,4 +10,4 @@ XAPP_SCRIPTS_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_SCRIPTS_AUTORECONF = YES
 XAPP_SCRIPTS_DEPENDENCIES = xlib_libX11
 
-$(eval $(call AUTOTARGETS,xapp_scripts))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_scripts))

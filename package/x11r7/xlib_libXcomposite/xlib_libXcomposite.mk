@@ -12,4 +12,4 @@ XLIB_LIBXCOMPOSITE_INSTALL_STAGING = YES
 XLIB_LIBXCOMPOSITE_DEPENDENCIES = xproto_compositeproto xlib_libX11 xlib_libXext xlib_libXfixes xproto_xproto
 XLIB_LIBXCOMPOSITE_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXcomposite))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXcomposite))

@@ -10,4 +10,4 @@ XAPP_PROXYMNGR_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_PROXYMNGR_AUTORECONF = YES
 XAPP_PROXYMNGR_DEPENDENCIES = xlib_libICE xlib_libX11 xlib_libXt xproto_xproxymanagementprotocol
 
-$(eval $(call AUTOTARGETS,xapp_proxymngr))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_proxymngr))

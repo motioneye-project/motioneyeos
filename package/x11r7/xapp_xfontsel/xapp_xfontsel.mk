@@ -10,4 +10,4 @@ XAPP_XFONTSEL_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XFONTSEL_AUTORECONF = YES
 XAPP_XFONTSEL_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,xapp_xfontsel))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xfontsel))

@@ -12,4 +12,4 @@ XLIB_LIBXP_INSTALL_STAGING = YES
 XLIB_LIBXP_DEPENDENCIES = xlib_libX11 xlib_libXau xlib_libXext xproto_printproto
 XLIB_LIBXP_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXp))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXp))

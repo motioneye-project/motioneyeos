@@ -10,4 +10,4 @@ XAPP_XCALC_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XCALC_AUTORECONF = YES
 XAPP_XCALC_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,xapp_xcalc))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xcalc))

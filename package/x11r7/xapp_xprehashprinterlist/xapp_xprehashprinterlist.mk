@@ -10,4 +10,4 @@ XAPP_XPREHASHPRINTERLIST_SITE = http://xorg.freedesktop.org/releases/individual/
 XAPP_XPREHASHPRINTERLIST_AUTORECONF = YES
 XAPP_XPREHASHPRINTERLIST_DEPENDENCIES = xlib_libX11 xlib_libXp
 
-$(eval $(call AUTOTARGETS,xapp_xprehashprinterlist))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xprehashprinterlist))

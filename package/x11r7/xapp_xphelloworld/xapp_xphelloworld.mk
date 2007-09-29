@@ -10,4 +10,4 @@ XAPP_XPHELLOWORLD_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XPHELLOWORLD_AUTORECONF = YES
 XAPP_XPHELLOWORLD_DEPENDENCIES = xlib_libXaw xlib_libXprintAppUtil xlib_libXprintUtil xlib_libXt
 
-$(eval $(call AUTOTARGETS,xapp_xphelloworld))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xphelloworld))

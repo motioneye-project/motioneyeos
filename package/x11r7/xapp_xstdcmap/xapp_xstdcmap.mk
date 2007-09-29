@@ -10,4 +10,4 @@ XAPP_XSTDCMAP_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XSTDCMAP_AUTORECONF = YES
 XAPP_XSTDCMAP_DEPENDENCIES = xlib_libX11 xlib_libXmu
 
-$(eval $(call AUTOTARGETS,xapp_xstdcmap))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xstdcmap))

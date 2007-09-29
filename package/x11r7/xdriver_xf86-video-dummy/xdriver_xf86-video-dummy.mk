@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_DUMMY_SITE = http://xorg.freedesktop.org/releases/individual/
 XDRIVER_XF86_VIDEO_DUMMY_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_DUMMY_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xf86dgaproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-dummy))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-dummy))

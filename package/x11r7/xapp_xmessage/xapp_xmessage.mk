@@ -10,4 +10,4 @@ XAPP_XMESSAGE_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMESSAGE_AUTORECONF = YES
 XAPP_XMESSAGE_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,xapp_xmessage))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xmessage))

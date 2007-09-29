@@ -10,4 +10,4 @@ XAPP_XCMSDB_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XCMSDB_AUTORECONF = YES
 XAPP_XCMSDB_DEPENDENCIES = xlib_libX11
 
-$(eval $(call AUTOTARGETS,xapp_xcmsdb))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xcmsdb))

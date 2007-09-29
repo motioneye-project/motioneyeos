@@ -9,4 +9,4 @@ XAPP_TWM_SOURCE = twm-$(XAPP_TWM_VERSION).tar.bz2
 XAPP_TWM_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_TWM_AUTORECONF = YES
 
-$(eval $(call AUTOTARGETS,xapp_twm))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_twm))

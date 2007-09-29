@@ -10,4 +10,4 @@ XAPP_XBIFF_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XBIFF_AUTORECONF = YES
 XAPP_XBIFF_DEPENDENCIES = xlib_libXaw xdata_xbitmaps
 
-$(eval $(call AUTOTARGETS,xapp_xbiff))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xbiff))

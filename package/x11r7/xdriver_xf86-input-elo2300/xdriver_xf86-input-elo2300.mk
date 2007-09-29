@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_ELO2300_SITE = http://xorg.freedesktop.org/releases/individua
 XDRIVER_XF86_INPUT_ELO2300_AUTORECONF = YES
 XDRIVER_XF86_INPUT_ELO2300_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-elo2300))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-elo2300))

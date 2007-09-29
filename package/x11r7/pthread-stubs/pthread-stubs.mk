@@ -10,5 +10,5 @@ PTHREAD_STUBS_SITE = http://xcb.freedesktop.org/dist/
 PTHREAD_STUBS_DEPENDENCIES = uclibc
 PTHREAD_STUBS_INSTALL_STAGING = YES
 
-$(eval $(call AUTOTARGETS,pthread-stubs))
+$(eval $(call AUTOTARGETS,package/x11r7,pthread-stubs))
 

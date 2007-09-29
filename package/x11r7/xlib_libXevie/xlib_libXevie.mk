@@ -12,4 +12,4 @@ XLIB_LIBXEVIE_INSTALL_STAGING = YES
 XLIB_LIBXEVIE_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_evieext xproto_xproto
 XLIB_LIBXEVIE_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXevie))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXevie))

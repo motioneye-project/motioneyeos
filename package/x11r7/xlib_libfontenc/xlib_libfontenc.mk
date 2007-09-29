@@ -12,4 +12,4 @@ XLIB_LIBFONTENC_INSTALL_STAGING = YES
 XLIB_LIBFONTENC_DEPENDENCIES = xproto_xproto
 XLIB_LIBFONTENC_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libfontenc))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libfontenc))

@@ -12,4 +12,4 @@ OPENCHROME_DEPENDENCIES = xserver_xorg-server libdrm xlib_libX11 xlib_libXvMC xp
 OPENCHROME_AUTORECONF = YES
 OPENCHROME_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,openchrome))
+$(eval $(call AUTOTARGETS,package/x11r7,openchrome))

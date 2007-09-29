@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_MAGICTOUCH_SITE = http://xorg.freedesktop.org/releases/indivi
 XDRIVER_XF86_INPUT_MAGICTOUCH_AUTORECONF = YES
 XDRIVER_XF86_INPUT_MAGICTOUCH_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-magictouch))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-magictouch))

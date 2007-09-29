@@ -10,4 +10,4 @@ XAPP_XWD_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XWD_AUTORECONF = YES
 XAPP_XWD_DEPENDENCIES = xlib_libX11 xlib_libXmu
 
-$(eval $(call AUTOTARGETS,xapp_xwd))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xwd))

@@ -10,4 +10,4 @@ XFONT_ENCODINGS_SITE = http://xorg.freedesktop.org/releases/individual/font
 XFONT_ENCODINGS_AUTORECONF = YES
 XFONT_ENCODINGS_MAKE_OPT =
 
-$(eval $(call AUTOTARGETS,xfont_encodings))
+$(eval $(call AUTOTARGETS,package/x11r7,xfont_encodings))

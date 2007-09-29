@@ -12,4 +12,4 @@ XLIB_LIBXTST_INSTALL_STAGING = YES
 XLIB_LIBXTST_DEPENDENCIES = xlib_libX11 xlib_libXext xproto_recordproto
 XLIB_LIBXTST_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXtst))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXtst))

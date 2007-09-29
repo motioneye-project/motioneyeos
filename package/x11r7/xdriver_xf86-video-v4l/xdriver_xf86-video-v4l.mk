@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_V4L_SITE = http://xorg.freedesktop.org/releases/individual/dr
 XDRIVER_XF86_VIDEO_V4L_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_V4L_DEPENDENCIES = xserver_xorg-server xproto_randrproto xproto_videoproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-v4l))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-v4l))

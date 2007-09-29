@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_FBDEV_SITE = http://xorg.freedesktop.org/releases/individual/
 XDRIVER_XF86_VIDEO_FBDEV_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_FBDEV_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-fbdev))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-fbdev))

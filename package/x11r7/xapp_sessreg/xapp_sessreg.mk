@@ -10,4 +10,4 @@ XAPP_SESSREG_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_SESSREG_AUTORECONF = YES
 XAPP_SESSREG_DEPENDENCIES = xlib_libX11 xproto_xproto
 
-$(eval $(call AUTOTARGETS,xapp_sessreg))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_sessreg))

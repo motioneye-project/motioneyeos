@@ -10,4 +10,4 @@ XAPP_XF86DGA_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XF86DGA_AUTORECONF = YES
 XAPP_XF86DGA_DEPENDENCIES = xlib_libX11 xlib_libXxf86dga
 
-$(eval $(call AUTOTARGETS,xapp_xf86dga))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xf86dga))

@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_PALMAX_SITE = http://xorg.freedesktop.org/releases/individual
 XDRIVER_XF86_INPUT_PALMAX_AUTORECONF = YES
 XDRIVER_XF86_INPUT_PALMAX_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-palmax))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-palmax))

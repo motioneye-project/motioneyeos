@@ -13,5 +13,5 @@ LIBXCB_AUTORECONF = YES
 LIBXCB_DEPENDENCIES = pthread-stubs xcb-proto xlib_libXdmcp xlib_libXau
 LIBXCB_CONF_ENV = STAGING_DIR="$(STAGING_DIR)"
 
-$(eval $(call AUTOTARGETS,libxcb))
+$(eval $(call AUTOTARGETS,package/x11r7,libxcb))
 

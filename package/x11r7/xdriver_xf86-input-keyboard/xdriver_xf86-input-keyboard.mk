@@ -10,4 +10,4 @@ XDRIVER_XF86_INPUT_KEYBOARD_SITE = http://xorg.freedesktop.org/releases/individu
 XDRIVER_XF86_INPUT_KEYBOARD_AUTORECONF = YES
 XDRIVER_XF86_INPUT_KEYBOARD_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_kbproto xproto_randrproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-input-keyboard))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-input-keyboard))

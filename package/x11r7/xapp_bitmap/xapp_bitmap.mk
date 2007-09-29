@@ -10,4 +10,4 @@ XAPP_BITMAP_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_BITMAP_AUTORECONF = YES
 XAPP_BITMAP_DEPENDENCIES = xlib_libX11 xlib_libXaw xlib_libXmu xdata_xbitmaps
 
-$(eval $(call AUTOTARGETS,xapp_bitmap))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_bitmap))

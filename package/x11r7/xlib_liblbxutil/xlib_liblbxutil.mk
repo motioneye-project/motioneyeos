@@ -12,4 +12,4 @@ XLIB_LIBLBXUTIL_INSTALL_STAGING = YES
 XLIB_LIBLBXUTIL_DEPENDENCIES = xproto_xextproto
 XLIB_LIBLBXUTIL_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_liblbxutil))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_liblbxutil))

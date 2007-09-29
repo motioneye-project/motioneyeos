@@ -12,4 +12,4 @@ XLIB_LIBXFT_INSTALL_STAGING = YES
 XLIB_LIBXFT_DEPENDENCIES = fontconfig freetype xlib_libX11 xlib_libXext xlib_libXrender xproto_xproto
 XLIB_LIBXFT_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libXft))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libXft))

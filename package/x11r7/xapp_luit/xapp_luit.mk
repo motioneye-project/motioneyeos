@@ -10,4 +10,4 @@ XAPP_LUIT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_LUIT_AUTORECONF = YES
 XAPP_LUIT_DEPENDENCIES = xlib_libX11 xlib_libfontenc
 
-$(eval $(call AUTOTARGETS,xapp_luit))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_luit))

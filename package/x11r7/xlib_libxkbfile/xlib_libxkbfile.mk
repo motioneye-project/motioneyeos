@@ -12,4 +12,4 @@ XLIB_LIBXKBFILE_INSTALL_STAGING = YES
 XLIB_LIBXKBFILE_DEPENDENCIES = xlib_libX11 xproto_kbproto
 XLIB_LIBXKBFILE_CONF_OPT = --enable-shared --disable-static
 
-$(eval $(call AUTOTARGETS,xlib_libxkbfile))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libxkbfile))

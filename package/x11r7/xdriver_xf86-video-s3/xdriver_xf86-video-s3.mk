@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_S3_SITE = http://xorg.freedesktop.org/releases/individual/dri
 XDRIVER_XF86_VIDEO_S3_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_S3_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xextproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-s3))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-s3))

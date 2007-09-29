@@ -10,4 +10,4 @@ XAPP_XCLIPBOARD_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XCLIPBOARD_AUTORECONF = YES
 XAPP_XCLIPBOARD_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,xapp_xclipboard))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xclipboard))

@@ -10,4 +10,4 @@ XAPP_XEYES_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XEYES_AUTORECONF = YES
 XAPP_XEYES_DEPENDENCIES = xlib_libX11 xlib_libXext xlib_libXmu xlib_libXt
 
-$(eval $(call AUTOTARGETS,xapp_xeyes))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xeyes))

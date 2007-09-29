@@ -10,4 +10,4 @@ XAPP_XFD_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XFD_AUTORECONF = YES
 XAPP_XFD_DEPENDENCIES = freetype fontconfig xlib_libXaw xlib_libXft
 
-$(eval $(call AUTOTARGETS,xapp_xfd))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xfd))

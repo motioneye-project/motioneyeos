@@ -10,4 +10,4 @@ XAPP_FSTOBDF_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_FSTOBDF_AUTORECONF = YES
 XAPP_FSTOBDF_DEPENDENCIES = xlib_libFS xlib_libX11
 
-$(eval $(call AUTOTARGETS,xapp_fstobdf))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_fstobdf))

@@ -58,6 +58,8 @@
 # FOO_SUBDIR [default empty]
 #	relative path in the package source from which to run configure and
 #	make
+# FOO_DIR_PREFIX [default empty]
+#	toplevel relative path to package *.mk file and corresponding patches
 #
 ## The following variables contain hook target names
 ## by default they do nothing, they can be overriden in package makefiles
@@ -151,23 +153,13 @@ $(BUILD_DIR)/%/.stamp_patched:
 	$(call MESSAGE,"Patching")
 	$(if $($(PKG)_PATCH),toolchain/patch-kernel.sh $(@D) $(DL_DIR) $($(PKG)_PATCH))
 	$(Q)(\
-	if test -d package/$($(PKG)_NAME) ; then \
-	  if test "$(wildcard package/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
-	    toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
+	if test -d $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME) ; then \
+	  if test "$(wildcard $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
+	    toolchain/patch-kernel.sh $(@D) $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
 	  else \
-	    toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME) $($(PKG)_NAME)\*.patch || exit 1 ; \
-	    if test -d package/$($(PKG)_NAME)/$(NAMEVER) ; then \
-	      toolchain/patch-kernel.sh $(@D) package/$($(PKG)_NAME)/$(NAMEVER) \*.patch || exit 1 ; \
-	    fi; \
-	  fi; \
-	else \
-	  echo "This must be wrong. Why do you need to special-case _any_ package here? Skipping until this is resolved properly."; \
-	  if false && test "$(wildcard package/x11r7/$($(PKG)_NAME)/$(NAMEVER)*.patch)" ; then \
-	    toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME) $(NAMEVER)\*.patch || exit 1 ; \
-	  else \
-	    toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME) $($(PKG)_NAME)\*.patch || exit 1 ; \
-	    if test -d package/x11r7/$($(PKG)_NAME)/$(NAMEVER) ; then \
-	      toolchain/patch-kernel.sh $(@D) package/x11r7/$($(PKG)_NAME)/$(NAMEVER) \*.patch || exit 1 ; \
+	    toolchain/patch-kernel.sh $(@D) $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME) $($(PKG)_NAME)\*.patch || exit 1 ; \
+	    if test -d package/$($(PKG)_DIR_PREFIX)/$($(PKG)_NAME)/$(NAMEVER) ; then \
+	      toolchain/patch-kernel.sh $(@D) $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME)/$(NAMEVER) \*.patch || exit 1 ; \
 	    fi; \
 	  fi; \
 	fi; \
@@ -258,15 +250,17 @@ $(BUILD_DIR)/%/.stamp_dircleaned:
 ################################################################################
 # AUTOTARGETS -- the target generator macro; define a set of human-readable 
 # make targets, stamps, and default per-package variables.
-# Argument 1 is the (lowercase) package name.
+# Argument 1 is the package directory prefix.
+# Argument 2 is the (lowercase) package name.
 ################################################################################
 
 define AUTOTARGETS
-$(call AUTOTARGETS_INNER,$(1),$(call UPPERCASE,$(1)))
+$(call AUTOTARGETS_INNER,$(2),$(call UPPERCASE,$(2)),$(1))
 endef
       
 # AUTOTARGETS_INNER -- does the job for AUTOTARGETS; argument 1 is the
-# lowercase package name, argument 2 the uppercase package name
+# lowercase package name, argument 2 the uppercase package name,
+# argument 3 the package directory prefix
 define AUTOTARGETS_INNER
 
 # define package-specific variables to default values
@@ -290,6 +284,7 @@ $(2)_CLEAN_OPT			?= clean
 $(2)_UNINSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) uninstall
 $(2)_UNINSTALL_TARGET_OPT	?= DESTDIR=$$(TARGET_DIR)  uninstall
 $(2)_SUBDIR			?=
+$(2)_DIR_PREFIX			=  $(if $(3),$(3),$(TOP_SRCDIR)/package)
 
 
 # define sub-target stamps

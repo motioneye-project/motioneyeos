@@ -10,4 +10,4 @@ XAPP_BDFTOPCF_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_BDFTOPCF_AUTORECONF = YES
 XAPP_BDFTOPCF_DEPENDENCIES = xlib_libXfont
 
-$(eval $(call AUTOTARGETS,xapp_bdftopcf))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_bdftopcf))

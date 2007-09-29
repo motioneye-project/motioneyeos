@@ -10,4 +10,4 @@ XDRIVER_XF86_VIDEO_I810_SITE = http://xorg.freedesktop.org/releases/individual/d
 XDRIVER_XF86_VIDEO_I810_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_I810_DEPENDENCIES = xserver_xorg-server libdrm xlib_libX11 xlib_libXvMC xproto_fontsproto xproto_randrproto xproto_renderproto xproto_xextproto xproto_xf86driproto xproto_xproto
 
-$(eval $(call AUTOTARGETS,xdriver_xf86-video-i810))
+$(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-i810))

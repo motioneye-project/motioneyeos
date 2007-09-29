@@ -10,4 +10,4 @@ XAPP_XDITVIEW_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XDITVIEW_AUTORECONF = YES
 XAPP_XDITVIEW_DEPENDENCIES = xlib_libXaw
 
-$(eval $(call AUTOTARGETS,xapp_xditview))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xditview))

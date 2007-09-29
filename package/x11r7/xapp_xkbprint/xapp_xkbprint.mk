@@ -10,4 +10,4 @@ XAPP_XKBPRINT_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XKBPRINT_AUTORECONF = YES
 XAPP_XKBPRINT_DEPENDENCIES = xlib_libxkbfile
 
-$(eval $(call AUTOTARGETS,xapp_xkbprint))
+$(eval $(call AUTOTARGETS,package/x11r7,xapp_xkbprint))
