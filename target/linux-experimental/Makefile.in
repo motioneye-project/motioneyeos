@@ -184,7 +184,7 @@ ifeq ($(strip $(BR2_LINUX_CUSTOMIZE)),y)
 	make -C $(LINUX26_DIR) xconfig
 endif
 	$(SED) '/CONFIG_AEABI/d' $(LINUX26_DIR)/.config
-ifeq ($(BR2_EABI),y)
+ifeq ($(BR2_ARM_EABI),y)
 	echo "CONFIG_AEABI=y" >> $(LINUX26_DIR)/.config
 	$(SED) '/CONFIG_OABI_COMPAT/d' $(LINUX26_DIR)/.config
 	echo "# CONFIG_OABI_COMPAT is not set" >> $(LINUX26_DIR)/.config

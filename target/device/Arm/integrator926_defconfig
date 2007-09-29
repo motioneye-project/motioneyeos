@@ -39,8 +39,8 @@ BR2_arm926t=y
 # BR2_xscale is not set
 # BR2_iwmmxt is not set
 BR2_ARM_TYPE="ARM926T"
-# BR2_OABI is not set
-BR2_EABI=y
+# BR2_ARM_OABI is not set
+BR2_ARM_EABI=y
 # BR2_x86_i386 is not set
 # BR2_x86_i486 is not set
 # BR2_x86_i586 is not set

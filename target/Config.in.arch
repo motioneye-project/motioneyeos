@@ -111,13 +111,13 @@ config BR2_ARM_TYPE
 choice
 	prompt "Target ABI"
 	depends BR2_arm || BR2_armeb
-	default BR2_OABI
+	default BR2_ARM_OABI
 	help
 	  Application Binary Interface to use
 
-config BR2_OABI
+config BR2_ARM_OABI
 	bool "OABI"
-config BR2_EABI
+config BR2_ARM_EABI
 	bool "EABI"
 endchoice
 
@@ -150,15 +150,15 @@ endchoice
 choice
 	prompt "Target ABI"
 	depends BR2_mips || BR2_mipsel
-	default BR2_EABI
+	default BR2_MIPS_EABI
 	help
 	  Application Binary Interface to use
 
-config BR2_OABI
+config BR2_MIPS_OABI
 	bool "OABI"
-config BR2_EABI
+config BR2_MIPS_EABI
 	bool "EABI"
-config BR2_ABI64
+config BR2_MIPS_ABI64
 	bool "N64"
 endchoice
 
@@ -683,17 +683,17 @@ config BR2_GCC_TARGET_ABI
 	default aapcs		if BR2_arm_dunno
 	default aapcs-linux	if BR2_arm_dunno
 	default iwmmxt		if BR2_iwmmxt
-	default 32		if (BR2_mipsel || BR2_arm) && BR2_OABI
-	default n32		if BR2_mipsel && BR2_EABI
-	default o64		if BR2_mips && BR2_OABI
-	default eabi		if (BR2_mips || BR2_arm) && BR2_EABI
-	default 64		if BR2_mips && BR2_ABI64
-	default mmixware	if BR2_mmix && BR2_ABI_native
-	default gnu		if BR2_mmix && !BR2_ABI_native
-	default altivec		if BR2_powerpc && BR2_ABI_altivec
-	default no-altivec	if BR2_powerpc && BR2_ABI_no-altivec
-	default spe		if BR2_powerpc && BR2_ABI_spe
-	default no-spe		if BR2_powerpc && BR2_ABI_no-spe
-	default ibmlongdouble	if BR2_powerpc && BR2_ABI_ibmlongdouble
-	default ieeelongdouble	if BR2_powerpc && BR2_ABI_ieeelongdouble
+	default 32		if BR2_mipsel && BR2_MIPS_OABI
+	default n32		if BR2_mipsel && BR2_MIPS_EABI
+	default o64		if BR2_mips && BR2_MIPS_OABI
+	default eabi		if BR2_mips && BR2_MIPS_EABI
+	default 64		if BR2_mips && BR2_MIPS_ABI64
+	default mmixware	if BR2_mmix && BR2_MMIX_ABI_native
+	default gnu		if BR2_mmix && !BR2_MMIX_ABI_native
+	default altivec		if BR2_powerpc && BR2_PPC_ABI_altivec
+	default no-altivec	if BR2_powerpc && BR2_PPC_ABI_no-altivec
+	default spe		if BR2_powerpc && BR2_PPC_ABI_spe
+	default no-spe		if BR2_powerpc && BR2_PPC_ABI_no-spe
+	default ibmlongdouble	if BR2_powerpc && BR2_PPC_ABI_ibmlongdouble
+	default ieeelongdouble	if BR2_powerpc && BR2_PPC_ABI_ieeelongdouble
 
