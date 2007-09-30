@@ -97,6 +97,11 @@ $(GRUB_DIR)/.configured: $(GRUB_DIR)/.unpacked
 
 $(GRUB_DIR)/$(GRUB_BINARY): $(GRUB_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(GRUB_DIR)
+	rm -f $(GRUB_DIR)/$(GRUB_BINARY)
+	$(MAKE) CC=$(TARGET_CC) CFLAGS+=-static -C $(GRUB_DIR)/grub grub
+	mkdir -p $(dir $(STAGING_DIR)/$(GRUB_TARGET_BINARY))
+	mv $(GRUB_DIR)/$(GRUB_BINARY) $(STAGING_DIR)/$(GRUB_TARGET_BINARY).static
+	$(MAKE) CC=$(TARGET_CC) -C $(GRUB_DIR)/grub
 
 $(GRUB_DIR)/.installed: $(GRUB_DIR)/$(GRUB_BINARY)
 	cp $(GRUB_DIR)/$(GRUB_BINARY) $(TARGET_DIR)/$(GRUB_TARGET_BINARY)
