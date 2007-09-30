@@ -358,7 +358,7 @@ cross_compiler gcc: gcc-config $(GCC_BUILD_DIR2)/.installed $(GCC_BUILD_DIR2)/.l
 
 gcc-source: $(DL_DIR)/$(GCC_SOURCE)
 
-gcc-config:uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) \
+gcc-config: uclibc-configured binutils gcc_initial $(LIBFLOAT_TARGET) \
 	uclibc $(GCC_BUILD_DIR2)/.configured
 
 gcc-clean:
