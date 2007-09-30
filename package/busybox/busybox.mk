@@ -5,7 +5,7 @@
 #############################################################
 
 
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX_SNAPSHOT),y)
 # Be aware that this changes daily....
 BUSYBOX_DIR:=$(PROJECT_BUILD_DIR)/busybox
 BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
@@ -35,7 +35,7 @@ ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
 	$(SED) "/#include.*busybox\.h/a#define CONFIG_SYSLOGD" $(BUSYBOX_DIR)/init/init.c
 endif
 	# Allow busybox patches.
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX_SNAPSHOT),y)
 	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox.\*.patch
 else
 	toolchain/patch-kernel.sh $(BUSYBOX_DIR) package/busybox busybox-$(BUSYBOX_VERSION)-\*.patch
@@ -46,21 +46,21 @@ $(BUSYBOX_DIR)/.configured: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)
 	cp -f $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
 	$(SED) s,^CONFIG_PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
 		$(BUSYBOX_DIR)/.config
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_0_1)),y)
+ifeq ($(BR2_BUSYBOX_VERSION_1_0_1),y)
 	$(SED) "s,^CROSS.*,CROSS=$(TARGET_CROSS)\n\PREFIX=$(TARGET_DIR),;" \
 		$(BUSYBOX_DIR)/Rules.mak
 endif
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_1_3)),y)
+ifeq ($(BR2_BUSYBOX_VERSION_1_1_3),y)
 	$(SED) s,^PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
 		$(BUSYBOX_DIR)/.config
 endif
-ifeq ($(strip $(BR2_BUSYBOX_VERSION_1_2_2_1)),y)
+ifeq ($(BR2_BUSYBOX_VERSION_1_2_2_1),y)
 	$(SED) s,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
 		$(BUSYBOX_DIR)/.config
 	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
 		$(BUSYBOX_DIR)/.config
 endif
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX_SNAPSHOT),y)
 	$(SED) s,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
 		$(BUSYBOX_DIR)/.config
 	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
@@ -148,6 +148,6 @@ busybox-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX)),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 TARGETS+=busybox
 endif
