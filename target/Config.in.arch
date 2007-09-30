@@ -142,7 +142,7 @@ config BR2_mips_32r2
 	bool "mips 32r2"
 config BR2_mips_64
 	bool "mips 64"
-config BR2_mips16_
+config BR2_mips_16
 	bool "mips 16"
 endchoice
 
