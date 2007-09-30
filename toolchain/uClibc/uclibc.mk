@@ -150,9 +150,16 @@ endif
 endif
 ifeq ($(UCLIBC_TARGET_ARCH),mips)
 	$(SED) '/CONFIG_MIPS_[NO].._ABI/d' $(UCLIBC_DIR)/.oldconfig
+	$(SED) '/CONFIG_MIPS_ISA_.*/d' $(UCLIBC_DIR)/.oldconfig
 	(/bin/echo "# CONFIG_MIPS_O32_ABI is not set"; \
 	 /bin/echo "# CONFIG_MIPS_N32_ABI is not set"; \
 	 /bin/echo "# CONFIG_MIPS_N64_ABI is not set"; \
+	 /bin/echo "# CONFIG_MIPS_ISA_1 is not set"; \
+	 /bin/echo "# CONFIG_MIPS_ISA_2 is not set"; \
+	 /bin/echo "# CONFIG_MIPS_ISA_3 is not set"; \
+	 /bin/echo "# CONFIG_MIPS_ISA_4 is not set"; \
+	 /bin/echo "# CONFIG_MIPS_ISA_MIPS32 is not set"; \
+	 /bin/echo "# CONFIG_MIPS_ISA_MIPS64 is not set"; \
 	) >> $(UCLIBC_DIR)/.oldconfig
 ifeq ($(BR2_MIPS_OABI),y)
 	$(SED) 's/.*\(CONFIG_MIPS_O32_ABI\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
@@ -162,6 +169,27 @@ ifeq ($(BR2_MIPS_EABI),y)
 endif
 ifeq ($(BR2_MIPS_ABI64),y)
 	$(SED) 's/.*\(CONFIG_MIPS_N64_ABI\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_mips_1),y)
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_1\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_mips_2),y)
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_2\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_mips_3),y)
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_3\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_mips_4),y)
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_4\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_mips_32),y)
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS32\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_mips_32r2),y)
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS32\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_mips_64),y)
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS64\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
 endif
 endif
 ifeq ($(UCLIBC_TARGET_ARCH),sh)
