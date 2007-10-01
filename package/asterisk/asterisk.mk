@@ -45,10 +45,10 @@ $(TARGET_DIR)/$(ASTERISK_TARGET_BINARY): $(ASTERISK_DIR)/$(ASTERISK_BINARY)
 		DEBUG= \
 		$(TARGET_CONFIGURE_OPTS) \
 		DESTDIR=$(TARGET_DIR) install
-	$(STRIP) $(TARGET_DIR)/usr/sbin/asterisk
-	$(STRIP) $(TARGET_DIR)/usr/sbin/stereorize
-	$(STRIP) $(TARGET_DIR)/usr/sbin/streamplayer
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) \
+	$(STRIPCMD) $(TARGET_DIR)/usr/sbin/asterisk
+	$(STRIPCMD) $(TARGET_DIR)/usr/sbin/stereorize
+	$(STRIPCMD) $(TARGET_DIR)/usr/sbin/streamplayer
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) \
 		$(TARGET_DIR)/usr/lib/asterisk/modules/*.so
 	$(INSTALL) -m 755 $(ASTERISK_DIR)/contrib/init.d/rc.debian.asterisk \
 		$(TARGET_DIR)/etc/init.d/S60asterisk

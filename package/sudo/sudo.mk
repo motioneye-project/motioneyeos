@@ -59,7 +59,7 @@ $(TARGET_DIR)/usr/bin/sudo: $(SUDO_DIR)/sudo
 	$(INSTALL) -m 4555 -D $(SUDO_DIR)/sudo $(TARGET_DIR)/usr/bin/sudo
 	$(INSTALL) -m 0555 -D $(SUDO_DIR)/visudo $(TARGET_DIR)/usr/sbin/visudo
 	$(INSTALL) -m 0440 -D $(SUDO_DIR)/sudoers $(TARGET_DIR)/etc/sudoers
-	$(STRIP) $(TARGET_DIR)/usr/bin/sudo $(TARGET_DIR)/usr/sbin/visudo
+	$(STRIPCMD) $(TARGET_DIR)/usr/bin/sudo $(TARGET_DIR)/usr/sbin/visudo
 	touch -c $(TARGET_DIR)/usr/bin/sudo
 
 sudo: uclibc $(TARGET_DIR)/usr/bin/sudo

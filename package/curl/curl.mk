@@ -48,11 +48,11 @@ $(TARGET_DIR)/usr/lib/libcurl.so.3.0.0: $(STAGING_DIR)/bin/$(CURL_BINARY)
 	-mkdir $(TARGET_DIR)/usr/lib
 	-mkdir $(TARGET_DIR)/usr/bin
 	cp -a $(STAGING_DIR)/lib/libcurl.so* $(TARGET_DIR)/usr/lib
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcurl.so.3.0.0
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcurl.so.3.0.0
 
 $(TARGET_DIR)/usr/bin/$(CURL_BINARY): $(TARGET_DIR)/usr/lib/libcurl.so.3.0.0
 	cp -a $(STAGING_DIR)/bin/$(CURL_BINARY) $(TARGET_DIR)/usr/bin
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(CURL_BINARY)
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(CURL_BINARY)
 
 curl: uclibc $(TARGET_DIR)/usr/bin/$(CURL_BINARY)
 

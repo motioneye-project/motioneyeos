@@ -67,7 +67,7 @@ $(TARGET_DIR)/$(M4_TARGET_BINARY): $(M4_DIR)/src/$(M4_BINARY)
 	    mandir=$(TARGET_DIR)/usr/share/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(M4_DIR) install
-	$(STRIP) $(TARGET_DIR)/$(M4_TARGET_BINARY) > /dev/null 2>&1
+	$(STRIPCMD) $(TARGET_DIR)/$(M4_TARGET_BINARY) > /dev/null 2>&1
 ifneq ($(BR2_HAVE_INFOPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/info
 endif

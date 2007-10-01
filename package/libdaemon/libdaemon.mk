@@ -66,7 +66,7 @@ $(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
 	touch -c $@
 
 #$(TARGET_DIR)/usr/lib/libdaemon.a: $(STAGING_DIR)/lib/libdaemon.a
-# -$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdaemon.a
+# -$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdaemon.a
 
 libdaemon: uclibc pkgconfig $(STAGING_DIR)/lib/libdaemon.a
 

@@ -58,7 +58,7 @@ $(STAGING_DIR)/lib/libdrm.so: $(LIBDRM_DIR)/.compiled
 
 $(TARGET_DIR)/lib/libdrm.so: $(STAGING_DIR)/lib/libdrm.so
 	cp -dpf $(STAGING_DIR)/lib/libdrm.so* $(TARGET_DIR)/lib/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libdrm.so
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libdrm.so
 
 libdrm: uclibc pkgconfig $(TARGET_DIR)/lib/libdrm.so
 

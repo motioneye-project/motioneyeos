@@ -55,7 +55,7 @@ $(TARGET_DIR)/$(GAWK_TARGET_BINARY): $(GAWK_DIR)/$(GAWK_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GAWK_DIR) install
 	rm -f $(TARGET_DIR)/usr/bin/gawk-*
 	(cd $(TARGET_DIR)/usr/bin; ln -snf gawk awk)
-	$(STRIP) $(TARGET_DIR)/usr/lib/awk/* > /dev/null 2>&1
+	$(STRIPCMD) $(TARGET_DIR)/usr/lib/awk/* > /dev/null 2>&1
 ifneq ($(BR2_HAVE_INFOPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/info
 endif

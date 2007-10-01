@@ -60,7 +60,7 @@ $(BOA_WORKDIR)/.installed: $(BOA_WORKDIR)/src/boa $(BOA_WORKDIR)/src/boa_indexer
 	mkdir -p $(TARGET_DIR)/etc/boa
 	cp -f package/boa/boa.conf $(TARGET_DIR)/etc/boa
 	cp -f package/boa/mime.types $(TARGET_DIR)/etc/mime.types
-	$(STRIP) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/boa $(TARGET_DIR)/usr/lib/boa/boa_indexer
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/boa $(TARGET_DIR)/usr/lib/boa/boa_indexer
 	touch $(BOA_WORKDIR)/.installed
 
 boa: uclibc $(BOA_WORKDIR)/.installed

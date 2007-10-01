@@ -125,7 +125,7 @@ $(STAGING_DIR)/lib/*metacity*.so: $(METACITY_DIR)/.compiled
 
 $(TARGET_DIR)/lib/*metacity*.so: $(STAGING_DIR)/lib/*metacity*.so
 	cp -dpf $(STAGING_DIR)/lib/*metacity*.so* $(TARGET_DIR)/lib/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/*metacity*.so
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/*metacity*.so
 	cp -dpf $(STAGING_DIR)/bin/*metacity* $(TARGET_DIR)/bin/
 	mkdir -p $(TARGET_DIR)/usr/share/metacity/icons
 	cp -dpf $(STAGING_DIR)/usr/share/metacity/icons/* $(TARGET_DIR)/usr/share/metacity/icons/

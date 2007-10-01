@@ -82,8 +82,8 @@ $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1: $(STAGING_DIR)/lib/$(LIBGTK12_BINARY)
 	cp -a $(STAGING_DIR)/lib/libgdk.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libgdk-1.2.so.0 $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libgdk-1.2.so.0.9.1 $(TARGET_DIR)/lib/
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgdk-1.2.so.0.9.1
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgdk-1.2.so.0.9.1
 	touch -c $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1
 
 libgtk12: uclibc libglib12 $(XSERVER) $(TARGET_DIR)/lib/libgtk-1.2.so.0.9.1

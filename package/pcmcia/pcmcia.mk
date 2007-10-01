@@ -55,7 +55,7 @@ $(PCMCIA_DIR)/cardmgr/cardmgr: $(PCMCIA_DIR)/.configured
 	for fo in $$A; do \
 		file $$fo | grep "ELF" | grep "executable" > /dev/null 2>&1; \
 		if [ $$? = 0 ]; then \
-			$(STRIP) $$fo; \
+			$(STRIPCMD) $$fo; \
 		fi; \
 	done
 	touch -c $(PCMCIA_DIR)/cardmgr/cardmgr

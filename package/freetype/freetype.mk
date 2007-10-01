@@ -66,7 +66,7 @@ $(STAGING_DIR)/lib/libfreetype.so: $(FREETYPE_DIR)/.compiled
 
 $(TARGET_DIR)/lib/libfreetype.so: $(STAGING_DIR)/lib/libfreetype.so
 	cp -dpf $(STAGING_DIR)/lib/libfreetype.so* $(TARGET_DIR)/lib/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libfreetype.so
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libfreetype.so
 
 # freetype for the host, needed for build-tools of fontconfig
 

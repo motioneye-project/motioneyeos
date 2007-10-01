@@ -40,8 +40,8 @@ $(TARGET_DIR)/usr/sbin/iptables: $(IPTABLES_BUILD_DIR)/iptables
 		INCDIR="\$$(PREFIX)/include" \
 		MANDIR="\$$(PREFIX)/share/man" \
 		DESTDIR=$(TARGET_DIR) install
-	$(STRIP) $(TARGET_DIR)/usr/sbin/iptables*
-	$(STRIP) $(TARGET_DIR)/usr/lib/iptables/*.so
+	$(STRIPCMD) $(TARGET_DIR)/usr/sbin/iptables*
+	$(STRIPCMD) $(TARGET_DIR)/usr/lib/iptables/*.so
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/man
 endif

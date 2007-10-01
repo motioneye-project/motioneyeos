@@ -27,7 +27,7 @@ $(MKDOSFS_DIR)/.unpacked: $(DL_DIR)/$(MKDOSFS_SOURCE)
 
 $(MKDOSFS_DIR)/$(MKDOSFS_BINARY): $(MKDOSFS_DIR)/.unpacked
 	$(MAKE) CFLAGS="$(MKDOSFS_CFLAGS)" CC="$(TARGET_CC)" -C $(MKDOSFS_DIR)
-	$(STRIP) $(MKDOSFS_DIR)/mkdosfs/mkdosfs
+	$(STRIPCMD) $(MKDOSFS_DIR)/mkdosfs/mkdosfs
 	touch -c $(MKDOSFS_DIR)/mkdosfs/mkdosfs
 
 $(TARGET_DIR)/$(MKDOSFS_TARGET_BINARY): $(MKDOSFS_DIR)/$(MKDOSFS_BINARY)

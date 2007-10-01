@@ -40,7 +40,7 @@ $(L2TP_DIR)/$(L2TP_BINARY): $(L2TP_DIR)/.unpacked
 $(TARGET_DIR)/$(L2TP_TARGET_BINARY): $(L2TP_DIR)/$(L2TP_BINARY)
 	cp -dpf $(L2TP_DIR)/$(L2TP_BINARY) $@
 	cp -dpf package/l2tp/l2tpd $(TARGET_DIR)/etc/init.d/
-	$(STRIP) $@
+	$(STRIPCMD) $@
 
 l2tp: uclibc $(TARGET_DIR)/$(L2TP_TARGET_BINARY)
 

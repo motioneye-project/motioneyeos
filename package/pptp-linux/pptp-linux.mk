@@ -55,7 +55,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 	mkdir -p $(TARGET_DIR)/usr/share/man/man8
 	$(INSTALL) -m 644 $(PPTP_LINUX_DIR)/pptp.8 $(TARGET_DIR)/usr/share/man/man8/pptp.8
 endif
-	$(STRIP) $(STRIP_STRIP_ALL) $@
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 pptp-linux: uclibc $(TARGET_DIR)/$(PPTP_LINUX_TARGET_BINARY)
 

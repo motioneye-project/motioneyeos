@@ -43,7 +43,7 @@ $(STAGING_DIR)/lib/libfloat.so $(STAGING_DIR)/lib/libfloat.a: $(LIBFLOAT_DIR)/li
 	(cd $(STAGING_DIR)/lib; ln -snf libfloat.so.1 libfloat.so)
 	cp -dpf $(LIBFLOAT_DIR)/libfloat.a $(TARGET_DIR)/usr/lib/libfloat.a
 	cp -dpf $(LIBFLOAT_DIR)/libfloat.so.1 $(TARGET_DIR)/lib/libfloat.so.1
-	$(STRIP) $(TARGET_DIR)/lib/libfloat.so.1 > /dev/null 2>&1
+	$(STRIPCMD) $(TARGET_DIR)/lib/libfloat.so.1 > /dev/null 2>&1
 	(cd $(TARGET_DIR)/lib; ln -snf libfloat.so.1 libfloat.so)
 	(cd $(TARGET_DIR)/usr/lib; ln -snf /lib/libfloat.so libfloat.so)
 

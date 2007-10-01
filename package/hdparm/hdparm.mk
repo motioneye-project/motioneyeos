@@ -32,7 +32,7 @@ $(TARGET_DIR)/$(HDPARM_TARGET_BINARY): $(HDPARM_DIR)/$(HDPARM_BINARY)
 ifeq ($(BR2_HAVE_MANPAGES),y)
 	$(INSTALL) -D $(HDPARM_DIR)/hdparm.8 $(TARGET_DIR)/usr/share/man/man8/hdparm.8
 endif
-	$(STRIP) $(STRIP_STRIP_ALL) $@
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 hdparm: uclibc $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
 

@@ -65,7 +65,7 @@ $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
 
 $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libSDL*.so* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libSDL.so
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libSDL.so
 
 SDL sdl: uclibc $(TARGET_DIR)/usr/lib/libSDL.so
 

@@ -60,7 +60,7 @@ findutils-target_binary: $(FINDUTILS_DIR)/$(FINDUTILS_BINARY)
 		-ot $(FINDUTILS_DIR)/$(FINDUTILS_BINARY) ]; then \
 		set -x; \
 		$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) install; \
-		$(STRIP) $(TARGET_DIR)/usr/lib/locate/* > /dev/null 2>&1; \
+		$(STRIPCMD) $(TARGET_DIR)/usr/lib/locate/* > /dev/null 2>&1; \
 	fi
 ifneq ($(BR2_HAVE_INFOPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/info

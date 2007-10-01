@@ -48,7 +48,7 @@ endif
 
 $(TARGET_DIR)/$(LSOF_TARGET_BINARY): $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/$(LSOF_BINARY)
 	cp $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/$(LSOF_BINARY) $@
-	$(STRIP) $@
+	$(STRIPCMD) $@
 
 lsof: uclibc $(TARGET_DIR)/$(LSOF_TARGET_BINARY)
 

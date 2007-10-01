@@ -114,7 +114,7 @@ $(LZMA_TARGET_DIR)/src/lzma/lzma: $(LZMA_TARGET_DIR)/.configured
 
 $(TARGET_DIR)/$(LZMA_TARGET_BINARY): $(LZMA_TARGET_DIR)/src/lzma/lzma
 	cp -dpf $(LZMA_TARGET_DIR)/src/lzma/lzma $@
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $@
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 	touch -c $@
 
 #lzma-headers: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)

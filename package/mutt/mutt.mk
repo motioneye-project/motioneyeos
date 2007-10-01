@@ -54,7 +54,7 @@ $(MUTT_DIR)/$(MUTT_BINARY): $(MUTT_DIR)/.configured
 
 $(TARGET_DIR)/$(MUTT_TARGET_BINARY): $(MUTT_DIR)/$(MUTT_BINARY)
 	cp -dpf $(MUTT_DIR)/$(MUTT_BINARY) $@
-	$(STRIP) $(STRIP_STRIP_ALL) $@
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 mutt: uclibc ncurses $(TARGET_DIR)/$(MUTT_TARGET_BINARY)
 

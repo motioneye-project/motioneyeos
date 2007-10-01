@@ -62,7 +62,7 @@ $(TARGET_DIR)/$(KEXEC_TARGET_BINARY): $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/bui
 	cp -dpf $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/$(KEXEC_BINARY) \
 		$(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/kdump \
 		$(TARGET_DIR)/sbin/
-	$(STRIP) $(STRIP_STRIP_ALL) $(TARGET_DIR)/sbin/k{exec,dump}
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/sbin/k{exec,dump}
 
 kexec: uclibc $(TARGET_DIR)/$(KEXEC_TARGET_BINARY)
 

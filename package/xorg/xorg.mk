@@ -125,11 +125,11 @@ $(TARGET_XSERVER): $(XORG_XSERVER)
 	for file in $(XORG_APPS); do \
 		cp -f $(XORG_DIR)/programs/$$file $(XORG_BINX); \
 		chmod a+x $(XORG_PROGS)/$$file; \
-		$(STRIP) $(XORG_PROGS)/$$file || /bin/true; \
+		$(STRIPCMD) $(XORG_PROGS)/$$file || /bin/true; \
 	done
 	cp $(XORG_XSERVER) $(TARGET_XSERVER)
 	(cd $(XORG_BINX); ln -snf $(XSERVER_BINARY) X)
-	$(STRIP) $(TARGET_XSERVER)
+	$(STRIPCMD) $(TARGET_XSERVER)
 	mkdir -p $(XORG_LIBX)/modules
 	cp -LRf $(XORG_DIR)/exports/lib/modules/ $(XORG_LIBX)/
 	( cd $(XORG_DIR)/fonts; $(MAKE) \
@@ -190,7 +190,7 @@ $(XORG_LIBX)/libX11.so.6.2: $(TARGET_XSERVER) $(XORG_LIBX)/X11/fonts/ttf-dejavu/
 	mkdir -p $(XORG_LIBX)
 	set -e; for dirs in $(XORG_LIBS); do \
 		file=`find $(XORG_LDIR)/$$dirs -type f -iname "*$$dirs.so*"`; \
-		$(STRIP) $(STRIP_STRIP_UNNEEDED) $$file; \
+		$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $$file; \
 		cp -f $$file $(XORG_LIBX); \
 		file=`find $(XORG_LDIR)/$$dirs -type l -iname "*$$dirs.so*"`; \
 		cp -pRf $$file $(XORG_LIBX); \

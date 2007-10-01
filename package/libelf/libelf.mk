@@ -59,7 +59,7 @@ ifeq ($(BR2_PACKAGE_LIBELF_HEADERS),y)
 $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION): $(STAGING_DIR)/usr/lib/libelf.a
 	$(INSTALL) $(STAGING_DIR)/usr/lib/libelf* $(@D)
 	cp -dpR $(STAGING_DIR)/usr/include/{gelf.h,libelf*} $(TARGET_DIR)/usr/include/
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $@
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
 libelf: uclibc $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION)
 else

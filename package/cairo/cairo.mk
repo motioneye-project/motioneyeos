@@ -125,7 +125,7 @@ $(STAGING_DIR)/lib/$(CAIRO_BINARY): $(CAIRO_DIR)/src/.libs/$(CAIRO_BINARY)
 $(TARGET_DIR)/lib/libcairo.so.2.9.3: $(STAGING_DIR)/lib/$(CAIRO_BINARY)
 	cp -a $(STAGING_DIR)/lib/libcairo.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libcairo.so.2* $(TARGET_DIR)/lib/
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libcairo.so.2.*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libcairo.so.2.*
 	touch -c $(TARGET_DIR)/lib/libcairo.so.2.9.3
 
 cairo: uclibc gettext libintl pkgconfig libglib2 zlib png fontconfig $(XSERVER) $(TARGET_DIR)/lib/libcairo.so.2.9.3

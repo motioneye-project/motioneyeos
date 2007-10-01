@@ -70,15 +70,15 @@ $(STAGING_DIR)/usr/lib/libts.so: $(TSLIB_DIR)/.compiled
 
 $(TARGET_DIR)/usr/lib/libts.so: $(STAGING_DIR)/usr/lib/libts.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libts*.so* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libts.so*
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(STAGING_DIR)/usr/lib/ts/*.so
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libts.so*
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(STAGING_DIR)/usr/lib/ts/*.so
 	cp -dpf $(STAGING_DIR)/usr/lib/ts/*.so $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/usr/bin/ts_calibrate $(TARGET_DIR)/usr/bin/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/ts_calibrate
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/ts_calibrate
 	cp -dpf $(STAGING_DIR)/usr/bin/ts_finddev $(TARGET_DIR)/usr/bin/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/ts_finddev
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/ts_finddev
 	cp -dpf $(STAGING_DIR)/usr/bin/inputattach $(TARGET_DIR)/usr/bin/
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/inputattach
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/inputattach
 	cp -dpf package/tslib/ts.conf $(TARGET_DIR)/etc/
 
 tslib: uclibc $(TARGET_DIR)/usr/lib/libts.so

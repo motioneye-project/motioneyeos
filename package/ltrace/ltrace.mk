@@ -63,7 +63,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 	$(INSTALL) -D $(LTRACE_DIR)/ltrace.1 \
 		$(TARGET_DIR)/usr/share/man/man1/ltrace.1
 endif
-	$(STRIP) $(STRIP_STRIP_ALL) $@
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 ltrace: uclibc libelf $(TARGET_DIR)/$(LTRACE_TARGET_BINARY)
 

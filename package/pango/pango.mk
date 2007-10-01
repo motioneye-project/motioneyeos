@@ -137,11 +137,11 @@ $(TARGET_DIR)/lib/libpango-1.0.so.0: $(STAGING_DIR)/lib/$(PANGO_BINARY)
 	cp -a $(STAGING_DIR)/lib/libpangoxft-1.0.so.0* $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libpangocairo-1.0.so $(TARGET_DIR)/lib/
 	cp -a $(STAGING_DIR)/lib/libpangocairo-1.0.so.0* $(TARGET_DIR)/lib/
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpango-1.0.so.0.*
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangox-1.0.so.0.*
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangoft2-1.0.so.0.*
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangoxft-1.0.so.0.*
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangocairo-1.0.so.0.*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpango-1.0.so.0.*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangox-1.0.so.0.*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangoft2-1.0.so.0.*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangoxft-1.0.so.0.*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libpangocairo-1.0.so.0.*
 	mkdir -p $(TARGET_DIR)/lib/pango/1.5.0/modules
 	cp -a $(STAGING_DIR)/lib/pango/1.5.0/modules/*.so $(TARGET_DIR)/lib/pango/1.5.0/modules/
 	mkdir -p $(TARGET_DIR)/etc/pango

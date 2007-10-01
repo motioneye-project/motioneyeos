@@ -91,7 +91,7 @@ $(TARGET_DIR)/usr/lib/libbz2.a: $(STAGING_DIR)/lib/libbz2.a
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -fs /usr/lib/libbz2.so.1.0 libbz2.so; \
 	)
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libbz2.so.1.0
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libbz2.so.1.0
 	touch -c $@
 
 bzip2-headers: $(TARGET_DIR)/usr/lib/libbz2.a

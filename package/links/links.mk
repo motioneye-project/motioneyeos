@@ -42,7 +42,7 @@ $(LINKS_DIR)/.configured: $(LINKS_DIR)/.unpacked
 
 $(LINKS_DIR)/links: $(LINKS_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LINKS_DIR)
-	$(STRIP) $(LINKS_DIR)/links
+	$(STRIPCMD) $(LINKS_DIR)/links
 
 $(TARGET_DIR)/usr/bin/links: $(LINKS_DIR)/links
 	install -c $(LINKS_DIR)/links $(TARGET_DIR)/usr/bin/links

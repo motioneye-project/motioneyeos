@@ -57,7 +57,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 	mkdir -p $(TARGET_DIR)/usr/share/man/man8
 	$(INSTALL) -m 644 $(RP_PPPOE_TOPDIR)/man/pppoe.8 $(TARGET_DIR)/usr/share/man/man8/pppoe.8
 endif
-	$(STRIP) $(STRIP_STRIP_ALL) $@
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 rp-pppoe: uclibc $(TARGET_DIR)/$(RP_PPPOE_TARGET_BINARY)
 

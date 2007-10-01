@@ -40,7 +40,7 @@ $(DMRAID_DIR)/.configured: $(DMRAID_DIR)/.unpacked
 
 $(DMRAID_DIR)/tools/$(DMRAID_BINARY): $(DMRAID_DIR)/.configured
 	$(MAKE1) -C $(DMRAID_DIR)
-	-$(STRIP) $(DMRAID_DIR)/tools/$(DMRAID_BINARY)
+	-$(STRIPCMD) $(DMRAID_DIR)/tools/$(DMRAID_BINARY)
 	-$(UPX) --best $(DMRAID_DIR)/tools/$(DMRAID_BINARY)
 	touch -c $(DMRAID_DIR)/tools/$(DMRAID_BINARY)
 

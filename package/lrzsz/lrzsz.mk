@@ -62,7 +62,7 @@ $(LRZSZ_DIR)/.configured: $(LRZSZ_DIR)/.unpacked
 
 $(LRZSZ_DIR)/src/lrz: $(LRZSZ_DIR)/.configured
 	$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(LRZSZ_DIR)
-	$(STRIP) $(LRZSZ_DIR)/src/lrz $(LRZSZ_DIR)/src/lsz
+	$(STRIPCMD) $(LRZSZ_DIR)/src/lrz $(LRZSZ_DIR)/src/lsz
 
 $(TARGET_DIR)/usr/bin/rz: $(LRZSZ_DIR)/src/lrz
 	cp $(LRZSZ_DIR)/src/lrz $(TARGET_DIR)/usr/bin/rz

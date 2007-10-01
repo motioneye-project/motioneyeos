@@ -47,9 +47,9 @@ $(BRIDGE_BUILD_DIR)/brctl/brctl: $(BRIDGE_BUILD_DIR)/.configured
 
 $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY): $(BRIDGE_BUILD_DIR)/brctl/brctl
 	cp -af $(BRIDGE_BUILD_DIR)/brctl/brctl $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
-	$(STRIP) $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
+	$(STRIPCMD) $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
 	#cp -af $(BRIDGE_BUILD_DIR)/brctl/brctld $(TARGET_DIR)/usr/sbin/
-	#$(STRIP) $(TARGET_DIR)/usr/sbin/brctld
+	#$(STRIPCMD) $(TARGET_DIR)/usr/sbin/brctld
 
 bridge: $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
 

@@ -116,10 +116,10 @@ $(TINYX_BINX)/Xfbdev: $(TINYX_XFBDEV)
 	-mkdir $(TINYX_BINX)
 	for file in $(TINYX_APPS); do \
 		cp -f $(TINYX_DIR)/programs/$$file $(TINYX_BINX); \
-		$(STRIP) $(TINYX_PROGS)/$$file; \
+		$(STRIPCMD) $(TINYX_PROGS)/$$file; \
 	done
 	cp $(TINYX_DIR)/programs/Xserver/Xfbdev $(TINYX_BINX)
-	$(STRIP) $(TINYX_BINX)/Xfbdev
+	$(STRIPCMD) $(TINYX_BINX)/Xfbdev
 	cp -f $(TINYX_DIR)/startx $(TARGET_DIR)/bin
 	chmod a+x $(TARGET_DIR)/bin/startx
 
@@ -128,7 +128,7 @@ $(TINYX_BINX)/Xfbdev: $(TINYX_XFBDEV)
 $(TINYX_LIBX)/libX11.so.6.2: $(TINYX_XFBDEV)
 	for dirs in $(TINYX_LIBS); do \
 		file=`find $(TINYX_LDIR)/$$dirs -type f -iname "lib$$dirs.so*"`; \
-		$(STRIP) --strip-unneeded $$file; \
+		$(STRIPCMD) --strip-unneeded $$file; \
 		cp -f $$file $(TINYX_LIBX); \
 		file=`find $(TINYX_LDIR)/$$dirs -type l -iname "lib$$dirs.so*"`; \
 		cp -pRf $$file $(TINYX_LIBX); \

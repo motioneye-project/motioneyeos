@@ -48,7 +48,7 @@ $(IPERF_DIR)/.configured: $(IPERF_DIR)/.unpacked
 
 $(IPERF_DIR)/src/iperf: $(IPERF_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(IPERF_DIR)
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(IPERF_DIR)/src/iperf
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(IPERF_DIR)/src/iperf
 
 $(TARGET_DIR)/usr/bin/iperf: $(IPERF_DIR)/src/iperf
 	cp $(IPERF_DIR)/src/iperf $(TARGET_DIR)/usr/bin/iperf

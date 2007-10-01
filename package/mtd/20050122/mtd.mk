@@ -126,7 +126,7 @@ MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
 $(MTD_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/util/%
 	mkdir -p $(TARGET_DIR)/usr/sbin
 	cp -f $< $@
-	$(STRIP) $@
+	$(STRIPCMD) $@
 ifneq ($(BR2_PACKAGE_MTD_FLASHCP),)
 	-ln -sf flashcp $(TARGET_DIR)/usr/sbin/fcp
 endif

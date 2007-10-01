@@ -40,7 +40,7 @@ $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
 		INCLUDE=$(STAGING_DIR)/usr/include \
 		LDFLAGS="-lgcrypt -lgpg-error" \
 		-C $(VPNC_DIR) install
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(VPNC_TARGET_BINARY)
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(VPNC_TARGET_BINARY)
 
 vpnc: uclibc libgcrypt $(VPNC_TARGET_BINARY)
 

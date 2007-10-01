@@ -57,17 +57,17 @@ $(XFSPROGS_DIR)/$(XFSPROGS_BINARY): $(XFSPROGS_DIR)/.configured
 ifeq ($(XFSPROGS_CONFIG_SHARED),--enable-shared)
 	( \
 		cd $(XFSPROGS_DIR); \
-		$(STRIP) $(XFSPROGS_STRIP); \
-		$(STRIP) $(join $(dir $(XFSPROGS_STRIP_LIBDEP)), \
+		$(STRIPCMD) $(XFSPROGS_STRIP); \
+		$(STRIPCMD) $(join $(dir $(XFSPROGS_STRIP_LIBDEP)), \
 				$(addprefix .libs/,$(notdir $(XFSPROGS_STRIP_LIBDEP)))) \
 	)
-	$(STRIP) $(XFSPROGS_DIR)/lib*/.libs/lib*.so.*.*
+	$(STRIPCMD) $(XFSPROGS_DIR)/lib*/.libs/lib*.so.*.*
 else
 	( \
 		cd $(XFSPROGS_DIR); \
-		$(STRIP) $(XFSPROGS_STRIP) $(XFSPROGS_STRIP_LIBDEP) \
+		$(STRIPCMD) $(XFSPROGS_STRIP) $(XFSPROGS_STRIP_LIBDEP) \
 	)
-	$(STRIP) $(XFSPROGS_DIR)/lib*/lib*.so.*.*
+	$(STRIPCMD) $(XFSPROGS_DIR)/lib*/lib*.so.*.*
 endif
 	touch -c $(XFSPROGS_DIR)/$(XFSPROGS_BINARY)
 

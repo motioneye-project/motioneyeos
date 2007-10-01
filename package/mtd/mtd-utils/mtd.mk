@@ -97,7 +97,7 @@ MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
 
 $(MTD_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/%
 	cp -f $< $@
-	$(STRIP) $@
+	$(STRIPCMD) $@
 
 mtd: zlib $(MTD_TARGETS)
 

@@ -90,13 +90,13 @@ $(DM_STAGING_BINARY) $(DM_STAGING_LIBRARY): $(DM_DIR)/.configured
 # Install dmsetup from staging to target
 $(DM_TARGET_BINARY): $(DM_STAGING_BINARY)
 	$(INSTALL) -m 0755 $? $@
-	-$(STRIP) $(DM_TARGET_BINARY)
+	-$(STRIPCMD) $(DM_TARGET_BINARY)
 	touch -c $@
 
 # Install libdevmapper.so.1.00 from staging to target
 $(DM_TARGET_LIBRARY).$(DM_BASEVER): $(DM_STAGING_LIBRARY)
 	$(INSTALL) -m 0644 $? $@
-	-$(STRIP) $@
+	-$(STRIPCMD) $@
 	touch -c $@
 
 # Makes libdevmapper.so a symlink to libdevmapper.so.1.00

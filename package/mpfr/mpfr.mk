@@ -68,7 +68,7 @@ $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.configured
 
 $(STAGING_DIR)/usr/lib/$(MPFR_BINARY): $(MPFR_TARGET_DIR)/.libs/$(MPFR_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(MPFR_TARGET_DIR) install
-	$(STRIP) $(STRIP_STRIP_UNNEEDED) $(STAGING_DIR)/usr/lib/libmpfr$(LIBTGTEXT)*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(STAGING_DIR)/usr/lib/libmpfr$(LIBTGTEXT)*
 
 $(TARGET_DIR)/usr/lib/libmpfr.so $(TARGET_DIR)/usr/lib/libmpfr.so.$(MPFR_LIBVERSION) $(TARGET_DIR)/usr/lib/libmpfr.a: $(STAGING_DIR)/usr/lib/$(MPFR_BINARY)
 	cp -dpf $(STAGING_DIR)/usr/lib/libmpfr$(LIBTGTEXT)* $(TARGET_DIR)/usr/lib/

@@ -38,8 +38,8 @@ $(TARGET_DIR)/$(OLSR_TARGET_BINARY): $(OLSR_DIR)/$(OLSR_BINARY)
 	cp -dpf package/olsr/S50olsr $(TARGET_DIR)/etc/init.d/
 	test -r $(TARGET_DIR)/etc/olsrd.conf || \
 		cp -dpf $(OLSR_DIR)/files/olsrd.conf.default.lq $(TARGET_DIR)/etc/olsrd.conf
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(OLSR_TARGET_PLUGIN)/olsrd_*.so*
-	$(STRIP) $(STRIP_STRIP_ALL) $@
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(OLSR_TARGET_PLUGIN)/olsrd_*.so*
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 olsr: uclibc $(TARGET_DIR)/$(OLSR_TARGET_BINARY)
 

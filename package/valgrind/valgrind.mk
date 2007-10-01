@@ -40,7 +40,7 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 
 $(VALGRIND_DIR)/none/vgskin_none.so: $(VALGRIND_DIR)/.configured
 	$(MAKE) -C $(VALGRIND_DIR)
-	-$(STRIP) $(STRIP_STRIP_UNNEEDED) $(VALGRIND_DIR)/*.so*
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(VALGRIND_DIR)/*.so*
 	touch -c $(VALGRIND_DIR)/none/vgskin_none.so
 
 $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/none/vgskin_none.so

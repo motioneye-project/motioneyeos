@@ -47,12 +47,12 @@ $(OPENNTPD_DIR)/$(OPENNTPD_BINARY): $(OPENNTPD_DIR)/.configured
 	# ntpd.c buffer.c log.c imsg.c ntp.c ntp_msg.c y.tab.c config.c \
 	# server.c client.c sensors.c util.c; \
 	#)
-	$(STRIP) $@
+	$(STRIPCMD) $@
 
 $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY): $(OPENNTPD_DIR)/$(OPENNTPD_BINARY)
 	rm -f $(TARGET_DIR)/etc/ntpd.conf
 	$(MAKE) DESTDIR=$(TARGET_DIR) STRIP_OPT="" -C $(OPENNTPD_DIR) install
-	-$(STRIP) $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
+	-$(STRIPCMD) $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
 	cp -af $(OPENNTPD_DIR)/ntpd.conf $(TARGET_DIR)/etc/ntpd.conf
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -Rf $(TARGET_DIR)/usr/share/man
