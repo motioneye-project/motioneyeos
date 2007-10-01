@@ -37,11 +37,10 @@ ARCH_BIG_ENDIAN=y
 # ARCH_HAS_NO_MMU is not set
 ARCH_HAS_MMU=y
 UCLIBC_HAS_FLOATS=y
-# UCLIBC_HAS_FPU is not set
 # HAS_FPU is not set
 UCLIBC_HAS_SOFT_FLOAT=y
 DO_C99_MATH=y
-KERNEL_SOURCE="/home/ulf/projects/Buildroot/20070927/buildroot/toolchain_build_avr32/linux"
+KERNEL_SOURCE="/home/ulf/projects/Buildroot/20071001/buildroot/toolchain_build_avr32/linux"
 C_SYMBOL_PREFIX=""
 HAVE_DOT_CONFIG=y
 
@@ -151,7 +150,7 @@ DEVEL_PREFIX="/usr/"
 #
 # uClibc development/debugging options
 #
-CROSS_COMPILER_PREFIX="/home/ulf/projects/Buildroot/20070927/buildroot/build_avr32/staging_dir/usr/bin/avr32-linux-uclibc-"
+CROSS_COMPILER_PREFIX="/home/ulf/projects/Buildroot/20071001/buildroot/build_avr32/staging_dir/usr/bin/avr32-linux-uclibc-"
 # DODEBUG is not set
 # DODEBUG_PT is not set
 # DOASSERTS is not set
