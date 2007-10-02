@@ -1,0 +1,11 @@
+--- ltrace-0.5.orig/read_config_file.c	2006-02-20 22:48:07.000000000 +0100
++++ ltrace-0.5/read_config_file.c	2007-10-02 12:18:21.000000000 +0200
+@@ -57,7 +57,7 @@
+ 
+ 	while (tmp->name) {
+ 		if (!strncmp(*str, tmp->name, strlen(tmp->name))
+-		    && index(" ,)#", *(*str + strlen(tmp->name)))) {
++		    && strchr(" ,)#", *(*str + strlen(tmp->name)))) {
+ 			*str += strlen(tmp->name);
+ 			return tmp->pt;
+ 		}
