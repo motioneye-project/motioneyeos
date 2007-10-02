@@ -1,8 +1,8 @@
 config BR2_PACKAGE_LTRACE
 	bool "ltrace"
 	default n
-	depends on BR2_LARGEFILE
-	depends on BR2_PACKAGE_LIBELF
+	#depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBELF_HEADERS
 	help
 	  Debugging program which runs a specified command until it exits.
 
