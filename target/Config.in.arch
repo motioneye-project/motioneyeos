@@ -124,9 +124,13 @@ endchoice
 choice
 	prompt "Target Architecture Variant"
 	depends BR2_mips || BR2_mipsel
-	default BR2_mips_3
+	default BR2_mips_3 if BR2_mips
+	default BR2_mips_1 if BR2_mipsel
 	help
 	  Specific CPU variant to use
+	  
+	  64bit cabable: 3, 4, 64, 64r2
+	  non-64bit capable: 1, 2, 32, 32r2
 
 config BR2_mips_1
 	bool "mips I (generic)"

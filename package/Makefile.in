@@ -51,6 +51,10 @@ ifeq ($(findstring y,$(BR2_sparc_v9a)$(BR2_sparc64_v9a)$(BR2_sparc_v9b)$(BR2_spa
 TARGET_CFLAGS+=-mvis
 endif
 
+ifeq ($(findstring yy,$(BR2_mips)$(BR2_MIPS_ABI64)),yy)
+TARGET_CFLAGS+=-fno-pic -mno-abicalls
+endif
+
 TARGET_CXXFLAGS=$(TARGET_CFLAGS)
 
 # else it's an external toolchain
