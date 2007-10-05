@@ -131,6 +131,7 @@ config BR2_GNU_TARGET_SUFFIX
 	  Default options are:
 	      linux-uclibcgnueabi for ARM EABI
 	      linux-uclibc for the rest
+	      gnuhurd-uclibc for the hurd
 
 config BR2_JLEVEL
 	int "Number of jobs to run simultaneously"

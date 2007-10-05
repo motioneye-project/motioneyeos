@@ -137,6 +137,9 @@ ifneq ($(BR2_ENABLE_LOCALE),y)
 GCC_ENABLE_CLOCALE:=--disable-clocale
 endif
 
+ifeq ($(BR2_KERNEL_HURD),y)
+EXTRA_GCC1_CONFIG_OPTIONS+=--without-headers
+endif
 
 $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)

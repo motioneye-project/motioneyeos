@@ -1,0 +1,38 @@
+# GNU Hurd kernel
+#
+ifeq ($(BR2_KERNEL_HURD),y)
+
+HURD_MODULE_SITE:= -d:pserver:anonymous@cvs.savannah.gnu.org:/sources/hurd
+MIG_MODULE_NAME:=mig
+MIG_MODULE_VERSION:=cvs
+HURD_MODULE_NAME:=hurd
+HURD_MODULE_VERSION:=cvs
+HURD_CMD_CO=cvs -z3 $(HURD_MODULE_SITE) co
+HURD_CMD_UP:=cvs up -PA -d
+HURD_SRC_DIR:=hurd-$(HURD_MODULE_VERSION)
+MIG_SRC_DIR:=mig-$(MIG_MODULE_VERSION)
+
+$(TOOL_BUILD_DIR)/$(HURD_SRC_DIR)/.unpacked:
+	mkdir -p $(@D)
+	(cd $(TOOL_BUILD_DIR) && \
+	 $(HURD_CMD_CO) -d $(HURD_SRC_DIR) $(HURD_MODULE_NAME); \
+	)
+	touch $@
+
+$(TOOL_BUILD_DIR)/$(MIG_SRC_DIR)/.unpacked:
+	mkdir -p $(@D)
+	(cd $(TOOL_BUILD_DIR) && \
+	 $(HURD_CMD_CO) -d $(MIG_SRC_DIR) $(MIG_MODULE_NAME); \
+	)
+	touch $@
+
+$(TOOL_BUILD_DIR)/$(HURD_SRC_DIR)/.updated: $(TOOL_BUILD_DIR)/$(HURD_SRC_DIR)/.unpacked
+	(cd $(@D) && $(HURD_CMD_UP))
+
+$(TOOL_BUILD_DIR)/$(MIG_SRC_DIR)/.updated: $(TOOL_BUILD_DIR)/$(MIG_SRC_DIR)/.unpacked
+	(cd $(@D) && $(HURD_CMD_UP))
+
+hurd-source: $(TOOL_BUILD_DIR)/$(HURD_SRC_DIR)/.updated \
+	$(TOOL_BUILD_DIR)/$(MIG_SRC_DIR)/.updated
+
+endif

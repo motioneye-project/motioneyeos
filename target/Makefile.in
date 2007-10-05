@@ -24,4 +24,4 @@ include target/*/*.mk
 #else
 include target/linux/Makefile.in
 #endif
-
+include target/hurd/Makefile.in

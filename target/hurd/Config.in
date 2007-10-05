@@ -1,5 +1,5 @@
 config BR2_PACKAGE_HURD
-	bool "Hurd kernel"
+	bool "Hurd kernel (see helptext)"
 	depends on BR2_KERNEL_HURD
 	default y
 	help
