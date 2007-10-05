@@ -17,11 +17,11 @@ include target/*/*.mk
 # We already did add the kernel target to TARGETS and now just pull in the rules
 # to actually build this target.
 
-ifeq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_EXPERIMENTAL_CONFIG))),y)
+#ifeq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_EXPERIMENTAL_CONFIG))),y)
 #"))
+#include target/linux/Makefile.in
+##include target/linux-experimental/Makefile.in
+#else
 include target/linux/Makefile.in
-#include target/linux-experimental/Makefile.in
-else
-include target/linux/Makefile.in
-endif
+#endif
 
