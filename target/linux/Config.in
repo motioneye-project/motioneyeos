@@ -10,7 +10,7 @@ config BR2_PACKAGE_LINUX
 
 	  Note: Requires kernel-headers >= 2.6.19 since the other
 	        kernel headers are just that (headers) and not full
-		kernels. This is a feature.
+	        kernels. This is a feature.
 
 config BR2_PACKAGE_LINUX_EXPERIMENTAL_CONFIG
 	bool "linux kernel experimental configuration"

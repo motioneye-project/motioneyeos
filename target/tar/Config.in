@@ -48,3 +48,13 @@ config BR2_TARGET_ROOTFS_TAR_OPTIONS
 	  Any other flags you want to pass to tar
 	  Refer to tar --help for details
 
+config BR2_TARGET_ROOTFS_TAR_COPYTO
+	string "also copy the image to..."
+	depends on BR2_TARGET_ROOTFS_TAR
+	default ""
+	help
+	  Copies the resulting image to a secondary location
+	  like a tftp server's root directory.
+
+	  Example: $(IMAGE)-$(DATE).tar
+

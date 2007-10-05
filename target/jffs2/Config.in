@@ -49,7 +49,7 @@ config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	default 0x2100
 
 config BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
-	bool	"Do not use Cleanmarker"
+	bool "Do not use Cleanmarker"
 	depends on BR2_TARGET_ROOTFS_JFFS2
 	default n
 	help
@@ -79,17 +79,17 @@ choice
 
 config BR2_TARGET_ROOTFS_JFFS2_LE
 	bool "little-endian"
-	depends on 	BR2_TARGET_ROOTFS_JFFS2
+	depends on BR2_TARGET_ROOTFS_JFFS2
 
 config BR2_TARGET_ROOTFS_JFFS2_BE
 	bool "big-endian"
-	depends on 	BR2_TARGET_ROOTFS_JFFS2
+	depends on BR2_TARGET_ROOTFS_JFFS2
 
 endchoice
 
 config BR2_TARGET_ROOTFS_JFFS2_SQUASH
 	bool "Make all files be owned by root"
-	depends on 	BR2_TARGET_ROOTFS_JFFS2
+	depends on BR2_TARGET_ROOTFS_JFFS2
 
 config BR2_TARGET_ROOTFS_JFFS2_OUTPUT
 	string "Output File"
@@ -98,7 +98,7 @@ config BR2_TARGET_ROOTFS_JFFS2_OUTPUT
 
 config BR2_TARGET_ROOTFS_JFFS2_COPYTO
 	string "also copy the image to..."
-	depends on 	BR2_TARGET_ROOTFS_JFFS2
+	depends on BR2_TARGET_ROOTFS_JFFS2
 	default ""
 	help
 	  Copies the resulting image to a secondary location.
