@@ -1,0 +1,98 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-018
+
+Bug-Reported-by:	osicka@post.cz
+Bug-Reference-ID:	<228.177-19682-1132061412-1179356692@post.cz>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2007-05/msg00061.html
+
+Bug-Description:
+
+In certain cases, bash can lose the saved status of a background job, though
+it should still be reported by `wait'.  Bash can also loop infinitely after
+creating and waiting for 4096 jobs.
+
+Patch:
+
+*** ../bash-20070510/jobs.c	Thu Mar  8 16:05:50 2007
+--- bash-3.2/jobs.c	Fri May 18 11:40:14 2007
+***************
+*** 784,792 ****
+      {
+        old = js.j_firstj++;
+        while (js.j_firstj != old)
+  	{
+  	  if (js.j_firstj >= js.j_jobslots)
+  	    js.j_firstj = 0;
+! 	  if (jobs[js.j_firstj])
+  	    break;
+  	  js.j_firstj++;
+--- 784,794 ----
+      {
+        old = js.j_firstj++;
++       if (old >= js.j_jobslots)
++ 	old = js.j_jobslots - 1;
+        while (js.j_firstj != old)
+  	{
+  	  if (js.j_firstj >= js.j_jobslots)
+  	    js.j_firstj = 0;
+! 	  if (jobs[js.j_firstj] || js.j_firstj == old)	/* needed if old == 0 */
+  	    break;
+  	  js.j_firstj++;
+***************
+*** 798,806 ****
+      {
+        old = js.j_lastj--;
+        while (js.j_lastj != old)
+  	{
+  	  if (js.j_lastj < 0)
+  	    js.j_lastj = js.j_jobslots - 1;
+! 	  if (jobs[js.j_lastj])
+  	    break;
+  	  js.j_lastj--;
+--- 800,810 ----
+      {
+        old = js.j_lastj--;
++       if (old < 0)
++ 	old = 0;
+        while (js.j_lastj != old)
+  	{
+  	  if (js.j_lastj < 0)
+  	    js.j_lastj = js.j_jobslots - 1;
+! 	  if (jobs[js.j_lastj] || js.j_lastj == old)	/* needed if old == js.j_jobslots */
+  	    break;
+  	  js.j_lastj--;
+***************
+*** 964,968 ****
+    realloc_jobs_list ();
+  
+!   return (js.j_lastj);
+  }
+  
+--- 975,983 ----
+    realloc_jobs_list ();
+  
+! #ifdef DEBUG
+!   itrace("compact_jobs_list: returning %d", (js.j_lastj || jobs[js.j_lastj]) ? js.j_lastj + 1 : 0);
+! #endif
+! 
+!   return ((js.j_lastj || jobs[js.j_lastj]) ? js.j_lastj + 1 : 0);
+  }
+  
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 17
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 18
+  
+  #endif /* _PATCHLEVEL_H_ */

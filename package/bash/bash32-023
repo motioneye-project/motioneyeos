@@ -1,0 +1,51 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-023
+
+Bug-Reported-by:	Chet Ramey <chet.ramey@cwru.edu>
+Bug-Reference-ID:
+Bug-Reference-URL:
+
+Bug-Description:
+
+When an error occurs during the pattern removal word expansion, the shell
+can free unallocated memory or free memory multiple times.
+
+Patch:
+
+*** ../bash-3.2-patched/subst.c	Tue Apr  3 16:47:19 2007
+--- bash-3.2/subst.c	Tue Jul 17 09:45:11 2007
+***************
+*** 3975,3979 ****
+      patstr++;
+  
+!   pattern = getpattern (patstr, quoted, 1);
+  
+    temp1 = (char *)NULL;		/* shut up gcc */
+--- 4008,4016 ----
+      patstr++;
+  
+!   /* Need to pass getpattern newly-allocated memory in case of expansion --
+!      the expansion code will free the passed string on an error. */
+!   temp1 = savestring (patstr);
+!   pattern = getpattern (temp1, quoted, 1);
+!   free (temp1);
+  
+    temp1 = (char *)NULL;		/* shut up gcc */
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 22
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 23
+  
+  #endif /* _PATCHLEVEL_H_ */

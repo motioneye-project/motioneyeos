@@ -1,0 +1,126 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-022
+
+Bug-Reported-by:	Chet Ramey <chet.ramey@cwru.edu>
+Bug-Reference-ID:
+Bug-Reference-URL:
+
+Bug-Description:
+
+POSIX specifies that the `read' builtin invoked from an interative shell
+must prompt with $PS2 when a line is continued using a backslash while
+reading from a terminal.
+
+Patch:
+
+*** ../bash-3.2-patched/builtins/read.def	Tue Sep 19 08:45:48 2006
+--- bash-3.2/builtins/read.def	Thu May 24 16:03:30 2007
+***************
+*** 128,133 ****
+  {
+    register char *varname;
+!   int size, i, nr, pass_next, saw_escape, eof, opt, retval, code;
+!   int input_is_tty, input_is_pipe, unbuffered_read;
+    int raw, edit, nchars, silent, have_timeout, fd;
+    unsigned int tmout;
+--- 131,136 ----
+  {
+    register char *varname;
+!   int size, i, nr, pass_next, saw_escape, eof, opt, retval, code, print_ps2;
+!   int input_is_tty, input_is_pipe, unbuffered_read, skip_ctlesc, skip_ctlnul;
+    int raw, edit, nchars, silent, have_timeout, fd;
+    unsigned int tmout;
+***************
+*** 135,139 ****
+    char c;
+    char *input_string, *orig_input_string, *ifs_chars, *prompt, *arrayname;
+!   char *e, *t, *t1;
+    struct stat tsb;
+    SHELL_VAR *var;
+--- 138,142 ----
+    char c;
+    char *input_string, *orig_input_string, *ifs_chars, *prompt, *arrayname;
+!   char *e, *t, *t1, *ps2;
+    struct stat tsb;
+    SHELL_VAR *var;
+***************
+*** 149,152 ****
+--- 152,156 ----
+    USE_VAR(i);
+    USE_VAR(pass_next);
++   USE_VAR(print_ps2);
+    USE_VAR(saw_escape);
+    USE_VAR(input_is_pipe);
+***************
+*** 164,167 ****
+--- 168,172 ----
+  #endif
+    USE_VAR(list);
++   USE_VAR(ps2);
+  
+    i = 0;		/* Index into the string that we are reading. */
+***************
+*** 387,391 ****
+  #endif
+  
+!   for (eof = retval = 0;;)
+      {
+  #if defined (READLINE)
+--- 394,399 ----
+  #endif
+  
+!   ps2 = 0;
+!   for (print_ps2 = eof = retval = 0;;)
+      {
+  #if defined (READLINE)
+***************
+*** 413,416 ****
+--- 421,433 ----
+  #endif
+  
++       if (print_ps2)
++ 	{
++ 	  if (ps2 == 0)
++ 	    ps2 = get_string_value ("PS2");
++ 	  fprintf (stderr, "%s", ps2 ? ps2 : "");
++ 	  fflush (stderr);
++ 	  print_ps2 = 0;
++ 	}
++ 
+        if (unbuffered_read)
+  	retval = zread (fd, &c, 1);
+***************
+*** 441,445 ****
+  	  pass_next = 0;
+  	  if (c == '\n')
+! 	    i--;		/* back up over the CTLESC */
+  	  else
+  	    goto add_char;
+--- 458,466 ----
+  	  pass_next = 0;
+  	  if (c == '\n')
+! 	    {
+! 	      i--;		/* back up over the CTLESC */
+! 	      if (interactive && input_is_tty && raw == 0)
+! 		print_ps2 = 1;
+! 	    }
+  	  else
+  	    goto add_char;
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 21
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 22
+  
+  #endif /* _PATCHLEVEL_H_ */

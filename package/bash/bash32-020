@@ -1,0 +1,183 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-020
+
+Bug-Reported-by:	Ian A Watson <WATSON_IAN_A@LILLY.COM>
+Bug-Reference-ID:	<OFEC551808.69D02C7F-ON8525729A.0045708D-8525729A.0046150B@EliLilly.lilly.com>
+Bug-Reference-URL:
+
+Bug-Description:
+
+In some cases of error processing, a jump back to the top-level processing
+loop from a builtin command  would leave the shell in an inconsistent state.
+
+Patch:
+
+*** ../bash-3.2-patched/sig.c	Wed Jan 25 14:57:59 2006
+--- bash-3.2/sig.c	Sat Mar 10 11:11:30 2007
+***************
+*** 351,354 ****
+--- 351,373 ----
+  #undef XHANDLER
+  
++ /* Run some of the cleanups that should be performed when we run
++    jump_to_top_level from a builtin command context.  XXX - might want to
++    also call reset_parser here. */
++ void
++ top_level_cleanup ()
++ {
++   /* Clean up string parser environment. */
++   while (parse_and_execute_level)
++     parse_and_execute_cleanup ();
++ 
++ #if defined (PROCESS_SUBSTITUTION)
++   unlink_fifo_list ();
++ #endif /* PROCESS_SUBSTITUTION */
++ 
++   run_unwind_protects ();
++   loop_level = continuing = breaking = 0;
++   return_catch_flag = 0;
++ }
++ 
+  /* What to do when we've been interrupted, and it is safe to handle it. */
+  void
+*** ../bash-3.2-patched/sig.h	Wed Jan 25 14:50:27 2006
+--- bash-3.2/sig.h	Sat Mar 10 11:14:18 2007
+***************
+*** 122,125 ****
+--- 122,126 ----
+  extern void initialize_terminating_signals __P((void));
+  extern void reset_terminating_signals __P((void));
++ extern void top_level_cleanup __P((void));
+  extern void throw_to_top_level __P((void));
+  extern void jump_to_top_level __P((int)) __attribute__((__noreturn__));
+*** ../bash-3.2-patched/builtins/common.c	Tue Apr  3 16:47:13 2007
+--- bash-3.2/builtins/common.c	Mon Apr 30 15:01:33 2007
+***************
+*** 132,135 ****
+--- 132,136 ----
+      {
+        builtin_error (_("too many arguments"));
++       top_level_cleanup ();
+        jump_to_top_level (DISCARD);
+      }
+***************
+*** 396,400 ****
+  	    throw_to_top_level ();
+  	  else
+! 	    jump_to_top_level (DISCARD);
+  	}
+        no_args (list->next);
+--- 410,417 ----
+  	    throw_to_top_level ();
+  	  else
+! 	    {
+! 	      top_level_cleanup ();
+! 	      jump_to_top_level (DISCARD);
+! 	    }
+  	}
+        no_args (list->next);
+*** ../bash-3.2-patched/subst.c	Tue Apr  3 16:47:19 2007
+--- bash-3.2/subst.c	Tue Jul 17 09:45:11 2007
+***************
+*** 1279,1283 ****
+        if (no_longjmp_on_fatal_error == 0)
+  	{			/* { */
+! 	  report_error ("bad substitution: no closing `%s' in %s", "}", string);
+  	  last_command_exit_value = EXECUTION_FAILURE;
+  	  exp_jump_to_top_level (DISCARD);
+--- 1290,1294 ----
+        if (no_longjmp_on_fatal_error == 0)
+  	{			/* { */
+! 	  report_error (_("bad substitution: no closing `%s' in %s"), "}", string);
+  	  last_command_exit_value = EXECUTION_FAILURE;
+  	  exp_jump_to_top_level (DISCARD);
+***************
+*** 7662,7665 ****
+--- 7706,7711 ----
+    expand_no_split_dollar_star = 0;	/* XXX */
+    expanding_redir = 0;
++ 
++   top_level_cleanup ();			/* from sig.c */
+  
+    jump_to_top_level (v);
+***************
+*** 7880,7884 ****
+  	    {
+  	      report_error (_("no match: %s"), tlist->word->word);
+! 	      jump_to_top_level (DISCARD);
+  	    }
+  	  else if (allow_null_glob_expansion == 0)
+--- 7927,7931 ----
+  	    {
+  	      report_error (_("no match: %s"), tlist->word->word);
+! 	      exp_jump_to_top_level (DISCARD);
+  	    }
+  	  else if (allow_null_glob_expansion == 0)
+*** ../bash-3.2-patched/arrayfunc.c	Thu Jul 27 09:37:59 2006
+--- bash-3.2/arrayfunc.c	Thu May 31 11:55:46 2007
+***************
+*** 619,622 ****
+--- 619,624 ----
+      {
+        last_command_exit_value = EXECUTION_FAILURE;
++ 
++       top_level_cleanup ();      
+        jump_to_top_level (DISCARD);
+      }
+*** ../bash-3.2-patched/expr.c	Wed Dec 28 17:47:03 2005
+--- bash-3.2/expr.c	Tue Apr 24 14:17:59 2007
+***************
+*** 930,933 ****
+--- 930,934 ----
+  	{
+  	  expr_unwind ();
++ 	  top_level_cleanup ();
+  	  jump_to_top_level (DISCARD);
+  	}
+*** ../bash-3.2-patched/variables.c	Fri Sep  8 13:33:32 2006
+--- bash-3.2/variables.c	Tue Jul 17 09:54:59 2007
+***************
+*** 1822,1830 ****
+  	  lval = evalexp (oval, &expok);	/* ksh93 seems to do this */
+  	  if (expok == 0)
+! 	    jump_to_top_level (DISCARD);
+  	}
+        rval = evalexp (value, &expok);
+        if (expok == 0)
+! 	jump_to_top_level (DISCARD);
+        if (flags & ASS_APPEND)
+  	rval += lval;
+--- 1855,1869 ----
+  	  lval = evalexp (oval, &expok);	/* ksh93 seems to do this */
+  	  if (expok == 0)
+! 	    {
+! 	      top_level_cleanup ();
+! 	      jump_to_top_level (DISCARD);
+! 	    }
+  	}
+        rval = evalexp (value, &expok);
+        if (expok == 0)
+! 	{
+! 	  top_level_cleanup ();
+! 	  jump_to_top_level (DISCARD);
+! 	}
+        if (flags & ASS_APPEND)
+  	rval += lval;
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 19
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 20
+  
+  #endif /* _PATCHLEVEL_H_ */

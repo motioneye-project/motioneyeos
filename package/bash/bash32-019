@@ -1,0 +1,343 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-019
+
+Bug-Reported-by:	Thomas Loeber <ifp@loeber1.de>
+Bug-Reference-ID:	<200703082223.08919.ifp@loeber1.de>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2007-03/msg00036.html
+
+Bug-Description:
+
+When rl_read_key returns -1, indicating that bash's controlling terminal
+has been invalidated for some reason (e.g., receiving a SIGHUP), the error
+status was not reported correctly to the caller.  This could cause input
+loops. 
+
+Patch:
+
+*** ../bash-3.2-patched/lib/readline/complete.c	Fri Jul 28 11:35:49 2006
+--- bash-3.2/lib/readline/complete.c	Tue Mar 13 08:50:16 2007
+***************
+*** 429,433 ****
+        if (c == 'n' || c == 'N' || c == RUBOUT)
+  	return (0);
+!       if (c == ABORT_CHAR)
+  	_rl_abort_internal ();
+        if (for_pager && (c == NEWLINE || c == RETURN))
+--- 440,444 ----
+        if (c == 'n' || c == 'N' || c == RUBOUT)
+  	return (0);
+!       if (c == ABORT_CHAR || c < 0)
+  	_rl_abort_internal ();
+        if (for_pager && (c == NEWLINE || c == RETURN))
+*** ../bash-3.2-patched/lib/readline/input.c	Wed Aug 16 15:15:16 2006
+--- bash-3.2/lib/readline/input.c	Wed May  2 16:07:59 2007
+***************
+*** 514,518 ****
+       int size;
+  {
+!   int mb_len = 0;
+    size_t mbchar_bytes_length;
+    wchar_t wc;
+--- 522,526 ----
+       int size;
+  {
+!   int mb_len, c;
+    size_t mbchar_bytes_length;
+    wchar_t wc;
+***************
+*** 521,531 ****
+    memset(&ps, 0, sizeof (mbstate_t));
+    memset(&ps_back, 0, sizeof (mbstate_t));
+!   
+    while (mb_len < size)
+      {
+        RL_SETSTATE(RL_STATE_MOREINPUT);
+!       mbchar[mb_len++] = rl_read_key ();
+        RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  
+        mbchar_bytes_length = mbrtowc (&wc, mbchar, mb_len, &ps);
+        if (mbchar_bytes_length == (size_t)(-1))
+--- 529,545 ----
+    memset(&ps, 0, sizeof (mbstate_t));
+    memset(&ps_back, 0, sizeof (mbstate_t));
+! 
+!   mb_len = 0;  
+    while (mb_len < size)
+      {
+        RL_SETSTATE(RL_STATE_MOREINPUT);
+!       c = rl_read_key ();
+        RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  
++       if (c < 0)
++ 	break;
++ 
++       mbchar[mb_len++] = c;
++ 
+        mbchar_bytes_length = mbrtowc (&wc, mbchar, mb_len, &ps);
+        if (mbchar_bytes_length == (size_t)(-1))
+***************
+*** 565,569 ****
+    c = first;
+    memset (mb, 0, mlen);
+!   for (i = 0; i < mlen; i++)
+      {
+        mb[i] = (char)c;
+--- 579,583 ----
+    c = first;
+    memset (mb, 0, mlen);
+!   for (i = 0; c >= 0 && i < mlen; i++)
+      {
+        mb[i] = (char)c;
+*** ../bash-3.2-patched/lib/readline/isearch.c	Mon Dec 26 17:18:53 2005
+--- bash-3.2/lib/readline/isearch.c	Fri Mar  9 14:30:59 2007
+***************
+*** 328,333 ****
+  
+    f = (rl_command_func_t *)NULL;
+!  
+!  /* Translate the keys we do something with to opcodes. */
+    if (c >= 0 && _rl_keymap[c].type == ISFUNC)
+      {
+--- 328,340 ----
+  
+    f = (rl_command_func_t *)NULL;
+! 
+!   if (c < 0)
+!     {
+!       cxt->sflags |= SF_FAILED;
+!       cxt->history_pos = cxt->last_found_line;
+!       return -1;
+!     }
+! 
+!   /* Translate the keys we do something with to opcodes. */
+    if (c >= 0 && _rl_keymap[c].type == ISFUNC)
+      {
+*** ../bash-3.2-patched/lib/readline/misc.c	Mon Dec 26 17:20:46 2005
+--- bash-3.2/lib/readline/misc.c	Fri Mar  9 14:44:11 2007
+***************
+*** 147,150 ****
+--- 147,152 ----
+  	  rl_clear_message ();
+  	  RL_UNSETSTATE(RL_STATE_NUMERICARG);
++ 	  if (key < 0)
++ 	    return -1;
+  	  return (_rl_dispatch (key, _rl_keymap));
+  	}
+*** ../bash-3.2-patched/lib/readline/readline.c	Wed Aug 16 15:00:36 2006
+--- bash-3.2/lib/readline/readline.c	Fri Mar  9 14:47:24 2007
+***************
+*** 646,649 ****
+--- 669,677 ----
+      {
+        nkey = _rl_subseq_getchar (cxt->okey);
++       if (nkey < 0)
++ 	{
++ 	  _rl_abort_internal ();
++ 	  return -1;
++ 	}
+        r = _rl_dispatch_subseq (nkey, cxt->dmap, cxt->subseq_arg);
+        cxt->flags |= KSEQ_DISPATCHED;
+*** ../bash-3.2-patched/lib/readline/text.c	Fri Jul 28 11:55:27 2006
+--- bash-3.2/lib/readline/text.c	Sun Mar 25 13:41:38 2007
+***************
+*** 858,861 ****
+--- 864,870 ----
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  
++   if (c < 0)
++     return -1;
++ 
+  #if defined (HANDLE_SIGNALS)
+    if (RL_ISSTATE (RL_STATE_CALLBACK) == 0)
+***************
+*** 1521,1524 ****
+--- 1530,1536 ----
+    mb_len = _rl_read_mbchar (mbchar, MB_LEN_MAX);
+  
++   if (mb_len <= 0)
++     return -1;
++ 
+    if (count < 0)
+      return (_rl_char_search_internal (-count, bdir, mbchar, mb_len));
+***************
+*** 1537,1540 ****
+--- 1549,1555 ----
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  
++   if (c < 0)
++     return -1;
++ 
+    if (count < 0)
+      return (_rl_char_search_internal (-count, bdir, c));
+*** ../bash-3.2-patched/lib/readline/vi_mode.c	Sat Jul 29 16:42:28 2006
+--- bash-3.2/lib/readline/vi_mode.c	Fri Mar  9 15:02:11 2007
+***************
+*** 887,890 ****
+--- 887,897 ----
+    c = rl_read_key ();
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
++ 
++   if (c < 0)
++     {
++       *nextkey = 0;
++       return -1;
++     }
++ 
+    *nextkey = c;
+  
+***************
+*** 903,906 ****
+--- 910,918 ----
+  	  c = rl_read_key ();	/* real command */
+  	  RL_UNSETSTATE(RL_STATE_MOREINPUT);
++ 	  if (c < 0)
++ 	    {
++ 	      *nextkey = 0;
++ 	      return -1;
++ 	    }
+  	  *nextkey = c;
+  	}
+***************
+*** 1225,1236 ****
+       _rl_callback_generic_arg *data;
+  {
+  #if defined (HANDLE_MULTIBYTE)
+!   _rl_vi_last_search_mblen = _rl_read_mbchar (_rl_vi_last_search_mbchar, MB_LEN_MAX);
+  #else
+    RL_SETSTATE(RL_STATE_MOREINPUT);
+!   _rl_vi_last_search_char = rl_read_key ();
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  #endif
+  
+    _rl_callback_func = 0;
+    _rl_want_redisplay = 1;
+--- 1243,1262 ----
+       _rl_callback_generic_arg *data;
+  {
++   int c;
+  #if defined (HANDLE_MULTIBYTE)
+!   c = _rl_vi_last_search_mblen = _rl_read_mbchar (_rl_vi_last_search_mbchar, MB_LEN_MAX);
+  #else
+    RL_SETSTATE(RL_STATE_MOREINPUT);
+!   c = rl_read_key ();
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  #endif
+  
++   if (c <= 0)
++     return -1;
++ 
++ #if !defined (HANDLE_MULTIBYTE)
++   _rl_vi_last_search_char = c;
++ #endif
++ 
+    _rl_callback_func = 0;
+    _rl_want_redisplay = 1;
+***************
+*** 1248,1251 ****
+--- 1274,1278 ----
+       int count, key;
+  {
++   int c;
+  #if defined (HANDLE_MULTIBYTE)
+    static char *target;
+***************
+*** 1294,1302 ****
+  	{
+  #if defined (HANDLE_MULTIBYTE)
+! 	  _rl_vi_last_search_mblen = _rl_read_mbchar (_rl_vi_last_search_mbchar, MB_LEN_MAX);
+  #else
+  	  RL_SETSTATE(RL_STATE_MOREINPUT);
+! 	  _rl_vi_last_search_char = rl_read_key ();
+  	  RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  #endif
+  	}
+--- 1321,1335 ----
+  	{
+  #if defined (HANDLE_MULTIBYTE)
+! 	  c = _rl_read_mbchar (_rl_vi_last_search_mbchar, MB_LEN_MAX);
+! 	  if (c <= 0)
+! 	    return -1;
+! 	  _rl_vi_last_search_mblen = c;
+  #else
+  	  RL_SETSTATE(RL_STATE_MOREINPUT);
+! 	  c = rl_read_key ();
+  	  RL_UNSETSTATE(RL_STATE_MOREINPUT);
++ 	  if (c < 0)
++ 	    return -1;
++ 	  _rl_vi_last_search_char = c;
+  #endif
+  	}
+***************
+*** 1468,1471 ****
+--- 1501,1507 ----
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  
++   if (c < 0)
++     return -1;
++ 
+  #if defined (HANDLE_MULTIBYTE)
+    if (MB_CUR_MAX > 1 && rl_byte_oriented == 0)
+***************
+*** 1486,1489 ****
+--- 1522,1528 ----
+    _rl_vi_last_replacement = c = _rl_vi_callback_getchar (mb, MB_LEN_MAX);
+  
++   if (c < 0)
++     return -1;
++ 
+    _rl_callback_func = 0;
+    _rl_want_redisplay = 1;
+***************
+*** 1517,1520 ****
+--- 1556,1562 ----
+      _rl_vi_last_replacement = c = _rl_vi_callback_getchar (mb, MB_LEN_MAX);
+  
++   if (c < 0)
++     return -1;
++ 
+    return (_rl_vi_change_char (count, c, mb));
+  }
+***************
+*** 1651,1655 ****
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  
+!   if (ch < 'a' || ch > 'z')
+      {
+        rl_ding ();
+--- 1693,1697 ----
+    RL_UNSETSTATE(RL_STATE_MOREINPUT);
+  
+!   if (ch < 0 || ch < 'a' || ch > 'z')	/* make test against 0 explicit */
+      {
+        rl_ding ();
+***************
+*** 1703,1707 ****
+        return 0;
+      }
+!   else if (ch < 'a' || ch > 'z')
+      {
+        rl_ding ();
+--- 1745,1749 ----
+        return 0;
+      }
+!   else if (ch < 0 || ch < 'a' || ch > 'z')	/* make test against 0 explicit */
+      {
+        rl_ding ();
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 18
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 19
+  
+  #endif /* _PATCHLEVEL_H_ */

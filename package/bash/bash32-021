@@ -1,0 +1,72 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-021
+
+Bug-Reported-by:	BAGSHAW Paul RD-TECH-REN <paul.bagshaw@orange-ftgroup.com>
+Bug-Reference-ID:	<941BA0BF46DB8F4983FF7C8AFE800BC205EA7D4B@ftrdmel3.rd.francetelecom.fr>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2007-03/msg00065.html
+
+Bug-Description:
+
+When the parser read a backslash-escaped character that would be treated
+internally as an escape, it would double the number of escape characters.
+
+Patch:
+
+*** ../bash-3.2-patched/parse.y	Mon Oct 30 17:22:00 2006
+--- bash-3.2/parse.y	Sat Mar 24 17:13:20 2007
+***************
+*** 3377,3381 ****
+  	{
+  	  pass_next_character = 0;
+! 	  goto got_character;
+  	}
+  
+--- 3377,3381 ----
+  	{
+  	  pass_next_character = 0;
+! 	  goto got_escaped_character;
+  	}
+  
+***************
+*** 3651,3660 ****
+      got_character:
+  
+-       all_digit_token &= DIGIT (character);
+-       dollar_present |= character == '$';
+- 
+        if (character == CTLESC || character == CTLNUL)
+  	token[token_index++] = CTLESC;
+  
+        token[token_index++] = character;
+  
+--- 3651,3662 ----
+      got_character:
+  
+        if (character == CTLESC || character == CTLNUL)
+  	token[token_index++] = CTLESC;
+  
++     got_escaped_character:
++ 
++       all_digit_token &= DIGIT (character);
++       dollar_present |= character == '$';
++ 
+        token[token_index++] = character;
+  
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 20
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 21
+  
+  #endif /* _PATCHLEVEL_H_ */
