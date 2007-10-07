@@ -290,7 +290,7 @@ $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
 		-C $(GCC_BUILD_DIR2) install
 	if [ -d "$(STAGING_DIR)/lib64" ]; then \
 		if [ ! -e "$(STAGING_DIR)/lib" ]; then \
-			mkdir "$(STAGING_DIR)/lib"; \
+			mkdir -p "$(STAGING_DIR)/lib"; \
 		fi; \
 		mv "$(STAGING_DIR)/lib64/"* "$(STAGING_DIR)/lib/"; \
 		rmdir "$(STAGING_DIR)/lib64"; \
