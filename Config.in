@@ -102,6 +102,19 @@ config BR2_TOPDIR_SUFFIX
 	  build_ARCH -> build_ARCH_[SUFFIX]
 	  toolchain_build_ARCH -> toolchain_build_ARCH_[SUFFIX]
 
+config BR2_ROOTFS_PREFIX
+	string "Custom root fs prefix"
+	default "rootfs"
+	help
+	  Add a custom string to the beginning of the root file system name.
+
+config BR2_ROOTFS_SUFFIX
+	string "Custom root fs suffix"
+	default "$(DATE)" if BR2_TARGET_ATMEL
+	default "" if !BR2_TARGET_ATMEL
+	help
+	  Add a custom string to the end of the root file system name.
+
 config BR2_GNU_BUILD_SUFFIX
 	string "GNU build hostname suffix"
 	default "pc-linux-gnu"
