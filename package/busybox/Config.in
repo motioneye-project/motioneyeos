@@ -26,11 +26,11 @@ choice
 
 	config BR2_BUSYBOX_VERSION_1_7_0
 		bool "BusyBox 1.7.0"
-		depends on BR2_DEPRECATED
+		depends on BR2_DEPRECATED || BR2_RECENT
 
 	config BR2_BUSYBOX_VERSION_1_7_1
 		bool "BusyBox 1.7.1"
-		depends on BR2_DEPRECATED
+		depends on BR2_DEPRECATED || BR2_RECENT
 
 	config BR2_BUSYBOX_VERSION_1_7_2
 		bool "BusyBox 1.7.2"
