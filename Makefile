@@ -291,10 +291,12 @@ $(STAGING_DIR):
 ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 	@mkdir -p $(STAGING_DIR)/usr/lib
 else
+ifneq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 	@ln -snf . $(STAGING_DIR)/usr
 	@mkdir -p $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)
 	@ln -snf ../lib $(STAGING_DIR)/usr/lib
 	@ln -snf ../lib $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib
+endif
 endif
 	@mkdir -p $(STAGING_DIR)/usr/include
 
