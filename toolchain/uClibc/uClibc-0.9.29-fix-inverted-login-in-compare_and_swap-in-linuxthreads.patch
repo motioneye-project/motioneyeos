@@ -1,0 +1,28 @@
+From: Haavard Skinnemoen <hskinnemoen@atmel.com>
+Date: Wed, 19 Sep 2007 10:03:36 +0200
+Subject: [Avr-gnu-toolchain] [uClibc PATCH] Fix inverted logic in
+	__compare_and_swap in linuxthreads.old
+
+If the old value equals the value in memory, the result should be
+TRUE, not FALSE.
+
+Signed-off-by: Haavard Skinnemoen <hskinnemoen@atmel.com>
+---
+ .../linuxthreads.old/sysdeps/avr32/pt-machine.h    |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/libpthread/linuxthreads.old/sysdeps/avr32/pt-machine.h b/libpthread/linuxthreads.old/sysdeps/avr32/pt-machine.h
+index 2e8a33b..eccf329 100644
+--- a/libpthread/linuxthreads.old/sysdeps/avr32/pt-machine.h
++++ b/libpthread/linuxthreads.old/sysdeps/avr32/pt-machine.h
+@@ -67,7 +67,7 @@ __compare_and_swap(long int *p, long int oldval, long int newval)
+ 		: "m"(*p), [new] "r"(newval), [old] "r"(oldval)
+ 		: "cc", "memory");
+ 
+-	return result;
++	return result == 0;
+ }
+ 
+ #endif /* pt-machine.h */
+-- 
+1.5.3.1
