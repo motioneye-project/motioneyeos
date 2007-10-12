@@ -58,9 +58,6 @@ if mount_fs dev /dev tmpfs "size=512k,mode=0755"; then
 	mkdir_fs /dev/pts
 	mount_fs pts /dev/pts devpts
 	mkdir_fs /dev/shm
-	# Hack to enable mouse support when using buildroot mdev
-	ln -s . /dev/input
-	ln -s . /dev/snd
 fi
 
 mount_fs config /config configfs
