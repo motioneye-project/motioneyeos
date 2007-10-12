@@ -2,7 +2,7 @@
 
 INETD=/usr/sbin/inetd
 
-echo -n "Starting inted: "
+echo -n "Starting inetd: "
 if [ ! -x "${INETD}" ]; then
 	echo "missing"
 	exit 1
