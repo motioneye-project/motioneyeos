@@ -1,0 +1,438 @@
+From: Haavard Skinnemoen <hskinnemoen@atmel.com>
+Subject: [PATCH 2/2] atmel_mci: Fix two subtle but deadly races
+
+This patch fixes two possible races in the atmel_mci driver, at least
+one of which may cause card probing to fail.
+
+The first one may happen if a command fails and the next command is
+queued before the controller is ready to accept a new one. Fix this by
+not enabling error interrupts for commands and instead do any error
+handling when the CMDRDY bit has been set.
+
+The second one may happen after a successful read data transfer where
+then next command is queued after the DMA transfer is complete, but
+before the whole data transfer from the card is complete (i.e. the
+card is still sending CRC, for example.) Fix this by waiting for the
+NOTBUSY bit to be set before considering the request to be done. This
+will also ensure that we actually see any CRC failures before
+completing the request.
+
+Signed-off-by: Haavard Skinnemoen <hskinnemoen@atmel.com>
+---
+ drivers/mmc/host/atmel-mci.c |  172 +++++++++++++-----------------------------
+ 1 files changed, 54 insertions(+), 118 deletions(-)
+
+diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+index 1dc91b4..45323c9 100644
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -28,20 +28,15 @@
+ 
+ #define DRIVER_NAME "atmel_mci"
+ 
+-#define MCI_CMD_ERROR_FLAGS	(MCI_BIT(RINDE)	| MCI_BIT(RDIRE) |	\
+-				 MCI_BIT(RCRCE) | MCI_BIT(RENDE) |	\
+-				 MCI_BIT(RTOE))
+ #define MCI_DATA_ERROR_FLAGS	(MCI_BIT(DCRCE) | MCI_BIT(DTOE) |	\
+ 				 MCI_BIT(OVRE) | MCI_BIT(UNRE))
+ 
+ enum {
+ 	EVENT_CMD_COMPLETE = 0,
+-	EVENT_CMD_ERROR,
+ 	EVENT_DATA_COMPLETE,
+ 	EVENT_DATA_ERROR,
+ 	EVENT_STOP_SENT,
+ 	EVENT_STOP_COMPLETE,
+-	EVENT_STOP_ERROR,
+ 	EVENT_DMA_ERROR,
+ 	EVENT_CARD_DETECT,
+ };
+@@ -61,13 +56,14 @@ struct atmel_mci {
+ 	struct mmc_command	*cmd;
+ 	struct mmc_data		*data;
+ 
++	u32			cmd_status;
++	u32			data_status;
++	u32			stop_status;
+ 	u32			stop_cmdr;
+-	u32			stop_iflags;
+ 
+ 	struct tasklet_struct	tasklet;
+ 	unsigned long		pending_events;
+ 	unsigned long		completed_events;
+-	u32			error_status;
+ 
+ 	int			present;
+ 	int			detect_pin;
+@@ -99,8 +95,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ /* Test bit macros for completed events */
+ #define mci_cmd_is_complete(host)			\
+ 	test_bit(EVENT_CMD_COMPLETE, &host->completed_events)
+-#define mci_cmd_error_is_complete(host)			\
+-	test_bit(EVENT_CMD_ERROR, &host->completed_events)
+ #define mci_data_is_complete(host)			\
+ 	test_bit(EVENT_DATA_COMPLETE, &host->completed_events)
+ #define mci_data_error_is_complete(host)		\
+@@ -109,8 +103,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ 	test_bit(EVENT_STOP_SENT, &host->completed_events)
+ #define mci_stop_is_complete(host)			\
+ 	test_bit(EVENT_STOP_COMPLETE, &host->completed_events)
+-#define mci_stop_error_is_complete(host)		\
+-	test_bit(EVENT_STOP_ERROR, &host->completed_events)
+ #define mci_dma_error_is_complete(host)			\
+ 	test_bit(EVENT_DMA_ERROR, &host->completed_events)
+ #define mci_card_detect_is_complete(host)			\
+@@ -119,8 +111,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ /* Test and clear bit macros for pending events */
+ #define mci_clear_cmd_is_pending(host)			\
+ 	test_and_clear_bit(EVENT_CMD_COMPLETE, &host->pending_events)
+-#define mci_clear_cmd_error_is_pending(host)		\
+-	test_and_clear_bit(EVENT_CMD_ERROR, &host->pending_events)
+ #define mci_clear_data_is_pending(host)			\
+ 	test_and_clear_bit(EVENT_DATA_COMPLETE, &host->pending_events)
+ #define mci_clear_data_error_is_pending(host)		\
+@@ -129,8 +119,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ 	test_and_clear_bit(EVENT_STOP_SENT, &host->pending_events)
+ #define mci_clear_stop_is_pending(host)			\
+ 	test_and_clear_bit(EVENT_STOP_COMPLETE, &host->pending_events)
+-#define mci_clear_stop_error_is_pending(host)		\
+-	test_and_clear_bit(EVENT_STOP_ERROR, &host->pending_events)
+ #define mci_clear_dma_error_is_pending(host)		\
+ 	test_and_clear_bit(EVENT_DMA_ERROR, &host->pending_events)
+ #define mci_clear_card_detect_is_pending(host)		\
+@@ -139,8 +127,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ /* Test and set bit macros for completed events */
+ #define mci_set_cmd_is_completed(host)			\
+ 	test_and_set_bit(EVENT_CMD_COMPLETE, &host->completed_events)
+-#define mci_set_cmd_error_is_completed(host)		\
+-	test_and_set_bit(EVENT_CMD_ERROR, &host->completed_events)
+ #define mci_set_data_is_completed(host)			\
+ 	test_and_set_bit(EVENT_DATA_COMPLETE, &host->completed_events)
+ #define mci_set_data_error_is_completed(host)		\
+@@ -149,8 +135,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ 	test_and_set_bit(EVENT_STOP_SENT, &host->completed_events)
+ #define mci_set_stop_is_completed(host)			\
+ 	test_and_set_bit(EVENT_STOP_COMPLETE, &host->completed_events)
+-#define mci_set_stop_error_is_completed(host)		\
+-	test_and_set_bit(EVENT_STOP_ERROR, &host->completed_events)
+ #define mci_set_dma_error_is_completed(host)		\
+ 	test_and_set_bit(EVENT_DMA_ERROR, &host->completed_events)
+ #define mci_set_card_detect_is_completed(host)		\
+@@ -159,8 +143,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ /* Set bit macros for completed events */
+ #define mci_set_cmd_complete(host)			\
+ 	set_bit(EVENT_CMD_COMPLETE, &host->completed_events)
+-#define mci_set_cmd_error_complete(host)		\
+-	set_bit(EVENT_CMD_ERROR, &host->completed_events)
+ #define mci_set_data_complete(host)			\
+ 	set_bit(EVENT_DATA_COMPLETE, &host->completed_events)
+ #define mci_set_data_error_complete(host)		\
+@@ -169,8 +151,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ 	set_bit(EVENT_STOP_SENT, &host->completed_events)
+ #define mci_set_stop_complete(host)			\
+ 	set_bit(EVENT_STOP_COMPLETE, &host->completed_events)
+-#define mci_set_stop_error_complete(host)		\
+-	set_bit(EVENT_STOP_ERROR, &host->completed_events)
+ #define mci_set_dma_error_complete(host)		\
+ 	set_bit(EVENT_DMA_ERROR, &host->completed_events)
+ #define mci_set_card_detect_complete(host)		\
+@@ -179,8 +159,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ /* Set bit macros for pending events */
+ #define mci_set_cmd_pending(host)			\
+ 	set_bit(EVENT_CMD_COMPLETE, &host->pending_events)
+-#define mci_set_cmd_error_pending(host)			\
+-	set_bit(EVENT_CMD_ERROR, &host->pending_events)
+ #define mci_set_data_pending(host)			\
+ 	set_bit(EVENT_DATA_COMPLETE, &host->pending_events)
+ #define mci_set_data_error_pending(host)		\
+@@ -189,8 +167,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ 	set_bit(EVENT_STOP_SENT, &host->pending_events)
+ #define mci_set_stop_pending(host)			\
+ 	set_bit(EVENT_STOP_COMPLETE, &host->pending_events)
+-#define mci_set_stop_error_pending(host)		\
+-	set_bit(EVENT_STOP_ERROR, &host->pending_events)
+ #define mci_set_dma_error_pending(host)			\
+ 	set_bit(EVENT_DMA_ERROR, &host->pending_events)
+ #define mci_set_card_detect_pending(host)		\
+@@ -199,8 +175,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ /* Clear bit macros for pending events */
+ #define mci_clear_cmd_pending(host)			\
+ 	clear_bit(EVENT_CMD_COMPLETE, &host->pending_events)
+-#define mci_clear_cmd_error_pending(host)		\
+-	clear_bit(EVENT_CMD_ERROR, &host->pending_events)
+ #define mci_clear_data_pending(host)			\
+ 	clear_bit(EVENT_DATA_COMPLETE, &host->pending_events)
+ #define mci_clear_data_error_pending(host)		\
+@@ -209,8 +183,6 @@ MODULE_PARM_DESC(fmax, "Max frequency in Hz of the MMC bus clock");
+ 	clear_bit(EVENT_STOP_SENT, &host->pending_events)
+ #define mci_clear_stop_pending(host)			\
+ 	clear_bit(EVENT_STOP_COMPLETE, &host->pending_events)
+-#define mci_clear_stop_error_pending(host)		\
+-	clear_bit(EVENT_STOP_ERROR, &host->pending_events)
+ #define mci_clear_dma_error_pending(host)		\
+ 	clear_bit(EVENT_DMA_ERROR, &host->pending_events)
+ #define mci_clear_card_detect_pending(host)		\
+@@ -471,20 +443,16 @@ static void atmci_set_timeout(struct atmel_mci *host,
+ }
+ 
+ /*
+- * Return mask with interrupt flags to be handled for this command.
++ * Return mask with command flags to be enabled for this command.
+  */
+ static u32 atmci_prepare_command(struct mmc_host *mmc,
+-				 struct mmc_command *cmd,
+-				 u32 *cmd_flags)
++				 struct mmc_command *cmd)
+ {
+ 	u32 cmdr;
+-	u32 iflags;
+ 
+ 	cmd->error = MMC_ERR_NONE;
+ 
+-	cmdr = 0;
+-	BUG_ON(MCI_BFEXT(CMDNB, cmdr) != 0);
+-	cmdr = MCI_BFINS(CMDNB, cmd->opcode, cmdr);
++	cmdr = MCI_BF(CMDNB, cmd->opcode);
+ 
+ 	if (cmd->flags & MMC_RSP_PRESENT) {
+ 		if (cmd->flags & MMC_RSP_136)
+@@ -503,16 +471,11 @@ static u32 atmci_prepare_command(struct mmc_host *mmc,
+ 	if (mmc->ios.bus_mode == MMC_BUSMODE_OPENDRAIN)
+ 		cmdr |= MCI_BIT(OPDCMD);
+ 
+-	iflags = MCI_BIT(CMDRDY) | MCI_CMD_ERROR_FLAGS;
+-	if (!(cmd->flags & MMC_RSP_CRC))
+-		iflags &= ~MCI_BIT(RCRCE);
+-
+ 	dev_dbg(&mmc->class_dev,
+ 		"cmd: op %02x arg %08x flags %08x, cmdflags %08lx\n",
+ 		cmd->opcode, cmd->arg, cmd->flags, (unsigned long)cmdr);
+ 
+-	*cmd_flags = cmdr;
+-	return iflags;
++	return cmdr;
+ }
+ 
+ static void atmci_start_command(struct atmel_mci *host,
+@@ -596,13 +559,13 @@ static void atmci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 	host->pending_events = 0;
+ 	host->completed_events = 0;
+ 
+-	iflags = atmci_prepare_command(mmc, mrq->cmd, &cmdflags);
++	iflags = MCI_BIT(CMDRDY);
++	cmdflags = atmci_prepare_command(mmc, mrq->cmd);
+ 
+ 	if (mrq->stop) {
+-		BUG_ON(!data);
++		WARN_ON(!data);
+ 
+-		host->stop_iflags = atmci_prepare_command(mmc, mrq->stop,
+-							  &host->stop_cmdr);
++		host->stop_cmdr = atmci_prepare_command(mmc, mrq->stop);
+ 		host->stop_cmdr |= MCI_BF(TRCMD, MCI_TRCMD_STOP_TRANS);
+ 		if (!(data->flags & MMC_DATA_WRITE))
+ 			host->stop_cmdr |= MCI_BIT(TRDIR);
+@@ -716,7 +679,7 @@ static void send_stop_cmd(struct mmc_host *mmc, struct mmc_data *data,
+ 	struct atmel_mci *host = mmc_priv(mmc);
+ 
+ 	atmci_start_command(host, data->stop, host->stop_cmdr | flags);
+-	mci_writel(host, IER, host->stop_iflags);
++	mci_writel(host, IER, MCI_BIT(CMDRDY));
+ }
+ 
+ static void atmci_data_complete(struct atmel_mci *host, struct mmc_data *data)
+@@ -735,18 +698,30 @@ static void atmci_data_complete(struct atmel_mci *host, struct mmc_data *data)
+ 		atmci_request_end(host->mmc, data->mrq);
+ }
+ 
+-static void atmci_command_error(struct mmc_host *mmc,
+-				struct mmc_command *cmd,
+-				u32 status)
++static void atmci_command_complete(struct atmel_mci *host,
++			struct mmc_command *cmd, u32 status)
+ {
+-	dev_dbg(&mmc->class_dev, "command error: status=0x%08x\n", status);
+-
+ 	if (status & MCI_BIT(RTOE))
+ 		cmd->error = MMC_ERR_TIMEOUT;
+-	else if (status & MCI_BIT(RCRCE))
++	else if ((cmd->flags & MMC_RSP_CRC)
++			&& (status & MCI_BIT(RCRCE)))
+ 		cmd->error = MMC_ERR_BADCRC;
+-	else
++	else if (status & (MCI_BIT(RINDE) | MCI_BIT(RDIRE) | MCI_BIT(RENDE)))
+ 		cmd->error = MMC_ERR_FAILED;
++
++	if (cmd->error != MMC_ERR_NONE) {
++		dev_dbg(&host->mmc->class_dev,
++				"command error: op=0x%x status=0x%08x\n",
++				cmd->opcode, status);
++
++		if (cmd->data) {
++			dma_stop_request(host->dma.req.req.dmac,
++					host->dma.req.req.channel);
++			mci_writel(host, IDR, MCI_BIT(NOTBUSY)
++					| MCI_DATA_ERROR_FLAGS);
++			host->data = NULL;
++		}
++	}
+ }
+ 
+ static void atmci_tasklet_func(unsigned long priv)
+@@ -761,38 +736,16 @@ static void atmci_tasklet_func(unsigned long priv)
+ 		 host->pending_events, host->completed_events,
+ 		 mci_readl(host, IMR));
+ 
+-	if (mci_clear_cmd_error_is_pending(host)) {
+-		struct mmc_command *cmd;
+-
+-		mci_set_cmd_error_complete(host);
+-		mci_clear_cmd_pending(host);
+-		cmd = host->mrq->cmd;
+-
+-		if (cmd->data) {
+-			dma_stop_request(host->dma.req.req.dmac,
+-					 host->dma.req.req.channel);
+-			host->data = NULL;
+-		}
+-
+-		atmci_command_error(mmc, cmd, host->error_status);
+-		atmci_request_end(mmc, cmd->mrq);
+-	}
+-	if (mci_clear_stop_error_is_pending(host)) {
+-		mci_set_stop_error_complete(host);
+-		mci_clear_stop_pending(host);
+-		atmci_command_error(mmc, host->mrq->stop,
+-				    host->error_status);
+-		if (!host->data)
+-			atmci_request_end(mmc, host->mrq);
+-	}
+ 	if (mci_clear_cmd_is_pending(host)) {
+ 		mci_set_cmd_complete(host);
+-		if (!mrq->data || mci_data_is_complete(host)
++		atmci_command_complete(host, mrq->cmd, host->cmd_status);
++		if (!host->data || mci_data_is_complete(host)
+ 		    || mci_data_error_is_complete(host))
+ 			atmci_request_end(mmc, mrq);
+ 	}
+ 	if (mci_clear_stop_is_pending(host)) {
+ 		mci_set_stop_complete(host);
++		atmci_command_complete(host, mrq->stop, host->stop_status);
+ 		if (mci_data_is_complete(host)
+ 		    || mci_data_error_is_complete(host))
+ 			atmci_request_end(mmc, mrq);
+@@ -815,7 +768,7 @@ static void atmci_tasklet_func(unsigned long priv)
+ 		atmci_data_complete(host, data);
+ 	}
+ 	if (mci_clear_data_error_is_pending(host)) {
+-		u32 status = host->error_status;
++		u32 status = host->data_status;
+ 
+ 		mci_set_data_error_complete(host);
+ 		mci_clear_data_pending(host);
+@@ -858,10 +811,8 @@ static void atmci_tasklet_func(unsigned long priv)
+ 
+ 		/* Clean up queue if present */
+ 		if (mrq) {
+-			if (!mci_cmd_is_complete(host)
+-			    && !mci_cmd_error_is_complete(host)) {
++			if (!mci_cmd_is_complete(host))
+ 				mrq->cmd->error = MMC_ERR_TIMEOUT;
+-			}
+ 			if (mrq->data && !mci_data_is_complete(host)
+ 			    && !mci_data_error_is_complete(host)) {
+ 				dma_stop_request(host->dma.req.req.dmac,
+@@ -869,10 +820,8 @@ static void atmci_tasklet_func(unsigned long priv)
+ 				host->data->error = MMC_ERR_TIMEOUT;
+ 				atmci_data_complete(host, data);
+ 			}
+-			if (mrq->stop && !mci_stop_is_complete(host)
+-			    && !mci_stop_error_is_complete(host)) {
++			if (mrq->stop && !mci_stop_is_complete(host))
+ 				mrq->stop->error = MMC_ERR_TIMEOUT;
+-			}
+ 
+ 			host->cmd = NULL;
+ 			atmci_request_end(mmc, mrq);
+@@ -895,13 +844,16 @@ static void atmci_cmd_interrupt(struct mmc_host *mmc, u32 status)
+ 	cmd->resp[2] = mci_readl(host, RSPR);
+ 	cmd->resp[3] = mci_readl(host, RSPR);
+ 
+-	mci_writel(host, IDR, MCI_BIT(CMDRDY) | MCI_CMD_ERROR_FLAGS);
++	mci_writel(host, IDR, MCI_BIT(CMDRDY));
+ 	host->cmd = NULL;
+ 
+-	if (mci_stop_sent_is_complete(host))
++	if (mci_stop_sent_is_complete(host)) {
++		host->stop_status = status;
+ 		mci_set_stop_pending(host);
+-	else
++	} else {
++		host->cmd_status = status;
+ 		mci_set_cmd_pending(host);
++	}
+ 
+ 	tasklet_schedule(&host->tasklet);
+ }
+@@ -920,18 +872,16 @@ static void atmci_xfer_complete(struct dma_request *_req)
+ 	if (data->stop && !mci_set_stop_sent_is_completed(host))
+ 		send_stop_cmd(host->mmc, data, 0);
+ 
+-	if (data->flags & MMC_DATA_READ) {
+-		mci_writel(host, IDR, MCI_DATA_ERROR_FLAGS);
+-		mci_set_data_pending(host);
+-		tasklet_schedule(&host->tasklet);
+-	} else {
+-		/*
+-		 * For the WRITE case, wait for NOTBUSY. This function
+-		 * is called when everything has been written to the
+-		 * controller, not when the card is done programming.
+-		 */
+-		mci_writel(host, IER, MCI_BIT(NOTBUSY));
+-	}
++	/*
++	 * Regardless of what the documentation says, we have to wait
++	 * for NOTBUSY even after block read operations.
++	 *
++	 * When the DMA transfer is complete, the controller may still
++	 * be reading the CRC from the card, i.e. the data transfer is
++	 * still in progress and we haven't seen all the potential
++	 * error bits yet.
++	 */
++	mci_writel(host, IER, MCI_BIT(NOTBUSY));
+ }
+ 
+ static void atmci_dma_error(struct dma_request *_req)
+@@ -963,24 +913,10 @@ static irqreturn_t atmci_interrupt(int irq, void *dev_id)
+ 	pending = status & mask;
+ 
+ 	do {
+-		if (pending & MCI_CMD_ERROR_FLAGS) {
+-			mci_writel(host, IDR, (MCI_BIT(CMDRDY)
+-					       | MCI_BIT(NOTBUSY)
+-					       | MCI_CMD_ERROR_FLAGS
+-					       | MCI_DATA_ERROR_FLAGS));
+-			host->error_status = status;
+-			host->cmd = NULL;
+-			if (mci_stop_sent_is_complete(host))
+-				mci_set_stop_error_pending(host);
+-			else
+-				mci_set_cmd_error_pending(host);
+-			tasklet_schedule(&host->tasklet);
+-			break;
+-		}
+ 		if (pending & MCI_DATA_ERROR_FLAGS) {
+ 			mci_writel(host, IDR, (MCI_BIT(NOTBUSY)
+ 					       | MCI_DATA_ERROR_FLAGS));
+-			host->error_status = status;
++			host->data_status = status;
+ 			mci_set_data_error_pending(host);
+ 			tasklet_schedule(&host->tasklet);
+ 			break;
+-- 
+1.5.3.2
+
+_______________________________________________
+Kernel mailing list
+Kernel@avr32linux.org
+http://duppen.flaskehals.net/cgi-bin/mailman/listinfo/kernel

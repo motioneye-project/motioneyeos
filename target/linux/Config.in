@@ -81,11 +81,17 @@ config BR2_LINUX_2_6_STABLE
 	help
 	  Linux 2.6.22.1
 
+config BR2_LINUX_2_6_22_10
+	bool "Linux 2.6.22.10"
+	depends BR2_PACKAGE_LINUX
+	help
+	  Linux 2.6.22.10
+
 config BR2_LINUX_2_6_22_1
 	bool "Linux 2.6.22.1"
 	depends BR2_PACKAGE_LINUX
 	help
-	  Linux 2.6.22-rc1
+	  Linux 2.6.22.1
 
 config BR2_LINUX_2_6_22
 	bool "Linux 2.6.22"
@@ -212,13 +218,14 @@ config BR2_DOWNLOAD_LINUX26_VERSION
 	default "2.6.21.6" if BR2_LINUX_2_6_21_6
 	default "2.6.22" if BR2_LINUX_2_6_22
 	default "2.6.22.1" if BR2_LINUX_2_6_22_1
+	default "2.6.22.10" if BR2_LINUX_2_6_22_10
 	default "2.6.22" if BR2_LINUX_2_6_23_RC1
 	default "2.6.22" if BR2_LINUX_2_6_SNAP
 	default "2.6.22" if BR2_LINUX_2_6_MM
 	default $(BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION) if BR2_LINUX_CUSTOM
 
 config BR2_LINUX26_VERSION
-	string "Selected Version:"
+	string #"Selected Version:"
 	default "2.6.15" if BR2_LINUX_2_6_15
 	default "2.6.16" if BR2_LINUX_2_6_16
 	default "2.6.17" if BR2_LINUX_2_6_17
@@ -232,6 +239,7 @@ config BR2_LINUX26_VERSION
 	default "2.6.21.6" if BR2_LINUX_2_6_21_6
 	default "2.6.22" if BR2_LINUX_2_6_22
 	default "2.6.22.1" if BR2_LINUX_2_6_22_1
+	default "2.6.22.10" if BR2_LINUX_2_6_22_10
 	default "2.6.22" if BR2_LINUX_2_6_23_RC1
 	default "2.6.22" if BR2_LINUX_2_6_SNAP
 	default "2.6.22" if BR2_LINUX_2_6_MM
@@ -252,6 +260,7 @@ config BR2_LINUX26_RC_PATCH
 	default "" if BR2_LINUX_2_6_21_6
 	default "" if BR2_LINUX_2_6_22
 	default "" if BR2_LINUX_2_6_22_1
+	default "" if BR2_LINUX_2_6_22_10
 	default "patch-2.6.23-rc1.bz2" if BR2_LINUX_2_6_23_RC1
 	default $(BR2_CUSTOM_LINUX26_RC_PATCH) if BR2_LINUX_CUSTOM
 

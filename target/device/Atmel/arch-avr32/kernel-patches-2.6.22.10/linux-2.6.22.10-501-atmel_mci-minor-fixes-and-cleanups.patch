@@ -1,0 +1,290 @@
+From: Haavard Skinnemoen <hskinnemoen@atmel.com>
+Subject: [PATCH 1/2] atmel_mci: Minor fixes and cleanups
+
+  * Use ios->clock to define when to enable the controller instead of
+    ios->power_mode.
+  * Send initialization command (74 idle clock cycles) when power_mode
+    is set to MMC_POWER_ON.
+  * Use dev_dbg() and friends instead of pr_debug() and printk().
+  * Don't print data- or probe errors when debugging is not enabled.
+  * Adjust ocr_avail range to 3.2V-3.4V using proper constants.
+
+Signed-off-by: Haavard Skinnemoen <hskinnemoen@atmel.com>
+---
+ drivers/mmc/host/atmel-mci.c |  120 ++++++++++++++++++++++-------------------
+ 1 files changed, 64 insertions(+), 56 deletions(-)
+
+diff --git a/drivers/mmc/host/atmel-mci.c b/drivers/mmc/host/atmel-mci.c
+index 74d343f..1dc91b4 100644
+--- a/drivers/mmc/host/atmel-mci.c
++++ b/drivers/mmc/host/atmel-mci.c
+@@ -464,9 +464,8 @@ static void atmci_set_timeout(struct atmel_mci *host,
+ 		dtocyc = 15;
+ 	}
+ 
+-	pr_debug("%s: setting timeout to %u cycles\n",
+-		 mmc_hostname(host->mmc),
+-		 dtocyc << dtomul_to_shift[dtomul]);
++	dev_dbg(&host->mmc->class_dev, "setting timeout to %u cycles\n",
++			dtocyc << dtomul_to_shift[dtomul]);
+ 	mci_writel(host, DTOR, (MCI_BF(DTOMUL, dtomul)
+ 				| MCI_BF(DTOCYC, dtocyc)));
+ }
+@@ -508,9 +507,9 @@ static u32 atmci_prepare_command(struct mmc_host *mmc,
+ 	if (!(cmd->flags & MMC_RSP_CRC))
+ 		iflags &= ~MCI_BIT(RCRCE);
+ 
+-	pr_debug("%s: cmd: op %02x arg %08x flags %08x, cmdflags %08lx\n",
+-		 mmc_hostname(mmc), cmd->opcode, cmd->arg, cmd->flags,
+-		 (unsigned long)cmdr);
++	dev_dbg(&mmc->class_dev,
++		"cmd: op %02x arg %08x flags %08x, cmdflags %08lx\n",
++		cmd->opcode, cmd->arg, cmd->flags, (unsigned long)cmdr);
+ 
+ 	*cmd_flags = cmdr;
+ 	return iflags;
+@@ -589,7 +588,8 @@ static void atmci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ 
+ 	iflags = mci_readl(host, IMR);
+ 	if (iflags)
+-		printk("WARNING: IMR=0x%08x\n", mci_readl(host, IMR));
++		dev_warn(&mmc->class_dev, "WARNING: IMR=0x%08x\n",
++				mci_readl(host, IMR));
+ 
+ 	WARN_ON(host->mrq != NULL);
+ 	host->mrq = mrq;
+@@ -623,16 +623,30 @@ static void atmci_request(struct mmc_host *mmc, struct mmc_request *mrq)
+ static void atmci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ {
+ 	struct atmel_mci *host = mmc_priv(mmc);
++	u32 mr;
+ 
+ 	if (ios->clock) {
+ 		u32 clkdiv;
+ 
++		/* Set clock rate */
+ 		clkdiv = host->bus_hz / (2 * ios->clock) - 1;
+-		if (clkdiv > 255)
++		if (clkdiv > 255) {
++			dev_warn(&mmc->class_dev,
++				"clock %u too slow; using %lu\n",
++				ios->clock, host->bus_hz / (2 * 256));
+ 			clkdiv = 255;
+-		mci_writel(host, MR, (clkdiv
+-				      | MCI_BIT(WRPROOF)
+-				      | MCI_BIT(RDPROOF)));
++		}
++
++		mr = mci_readl(host, MR);
++		mr = MCI_BFINS(CLKDIV, clkdiv, mr)
++			| MCI_BIT(WRPROOF) | MCI_BIT(RDPROOF);
++		mci_writel(host, MR, mr);
++
++		/* Enable the MCI controller */
++		mci_writel(host, CR, MCI_BIT(MCIEN));
++	} else {
++		/* Disable the MCI controller */
++		mci_writel(host, CR, MCI_BIT(MCIDIS));
+ 	}
+ 
+ 	switch (ios->bus_width) {
+@@ -645,14 +659,19 @@ static void atmci_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
+ 	}
+ 
+ 	switch (ios->power_mode) {
+-	case MMC_POWER_OFF:
+-		mci_writel(host, CR, MCI_BIT(MCIDIS));
+-		break;
+-	case MMC_POWER_UP:
+-		mci_writel(host, CR, MCI_BIT(SWRST));
+-		break;
+ 	case MMC_POWER_ON:
+-		mci_writel(host, CR, MCI_BIT(MCIEN));
++		/* Send init sequence (74 clock cycles) */
++		mci_writel(host, IDR, ~0UL);
++		mci_writel(host, CMDR, MCI_BF(SPCMD, MCI_SPCMD_INIT_CMD));
++		while (!(mci_readl(host, SR) & MCI_BIT(CMDRDY)))
++			cpu_relax();
++		break;
++	default:
++		/*
++		 * TODO: None of the currently available AVR32-based
++		 * boards allow MMC power to be turned off. Implement
++		 * power control when this can be tested properly.
++		 */
+ 		break;
+ 	}
+ }
+@@ -664,11 +683,12 @@ static int atmci_get_ro(struct mmc_host *mmc)
+ 
+ 	if (host->wp_pin >= 0) {
+ 		read_only = gpio_get_value(host->wp_pin);
+-		pr_debug("%s: card is %s\n", mmc_hostname(mmc),
+-			 read_only ? "read-only" : "read-write");
++		dev_dbg(&mmc->class_dev, "card is %s\n",
++				read_only ? "read-only" : "read-write");
+ 	} else {
+-		pr_debug("%s: no pin for checking read-only switch."
+-			 " Assuming write-enable.\n", mmc_hostname(mmc));
++		dev_dbg(&mmc->class_dev,
++			"no pin for checking read-only switch."
++			" Assuming write-enable.\n");
+ 	}
+ 
+ 	return read_only;
+@@ -719,8 +739,7 @@ static void atmci_command_error(struct mmc_host *mmc,
+ 				struct mmc_command *cmd,
+ 				u32 status)
+ {
+-	pr_debug("%s: command error: status=0x%08x\n",
+-		 mmc_hostname(mmc), status);
++	dev_dbg(&mmc->class_dev, "command error: status=0x%08x\n", status);
+ 
+ 	if (status & MCI_BIT(RTOE))
+ 		cmd->error = MMC_ERR_TIMEOUT;
+@@ -737,7 +756,8 @@ static void atmci_tasklet_func(unsigned long priv)
+ 	struct mmc_request *mrq = host->mrq;
+ 	struct mmc_data *data = host->data;
+ 
+-	pr_debug("atmci_tasklet: pending/completed/mask %lx/%lx/%x\n",
++	dev_dbg(&mmc->class_dev,
++		"tasklet: pending/completed/mask %lx/%lx/%x\n",
+ 		 host->pending_events, host->completed_events,
+ 		 mci_readl(host, IMR));
+ 
+@@ -784,8 +804,8 @@ static void atmci_tasklet_func(unsigned long priv)
+ 		/* DMA controller got bus error => invalid address */
+ 		data->error = MMC_ERR_INVALID;
+ 
+-		printk(KERN_DEBUG "%s: dma error after %u bytes xfered\n",
+-		       mmc_hostname(mmc), host->data->bytes_xfered);
++		dev_dbg(&mmc->class_dev, "dma error after %u bytes xfered\n",
++				host->data->bytes_xfered);
+ 
+ 		if (data->stop
+ 		    && !mci_set_stop_sent_is_completed(host))
+@@ -803,24 +823,18 @@ static void atmci_tasklet_func(unsigned long priv)
+ 		dma_stop_request(host->dma.req.req.dmac,
+ 				 host->dma.req.req.channel);
+ 
+-		printk(KERN_DEBUG "%s: data error: status=0x%08x\n",
+-		       mmc_hostname(host->mmc), status);
+-
+ 		if (status & MCI_BIT(DCRCE)) {
+-			printk(KERN_DEBUG "%s: Data CRC error\n",
+-			       mmc_hostname(host->mmc));
++			dev_dbg(&mmc->class_dev, "data CRC error\n");
+ 			data->error = MMC_ERR_BADCRC;
+ 		} else if (status & MCI_BIT(DTOE)) {
+-			printk(KERN_DEBUG "%s: Data Timeout error\n",
+-			       mmc_hostname(host->mmc));
++			dev_dbg(&mmc->class_dev, "data timeout error\n");
+ 			data->error = MMC_ERR_TIMEOUT;
+ 		} else {
+-			printk(KERN_DEBUG "%s: Data FIFO error\n",
+-			       mmc_hostname(host->mmc));
++			dev_dbg(&mmc->class_dev, "data FIFO error\n");
+ 			data->error = MMC_ERR_FIFO;
+ 		}
+-		printk(KERN_DEBUG "%s: Bytes xfered: %u\n",
+-		       mmc_hostname(host->mmc), data->bytes_xfered);
++		dev_dbg(&mmc->class_dev, "bytes xfered: %u\n",
++				data->bytes_xfered);
+ 
+ 		if (data->stop
+ 		    && !mci_set_stop_sent_is_completed(host))
+@@ -998,8 +1012,8 @@ static irqreturn_t atmci_detect_change(int irq, void *dev_id)
+ 	int present = !gpio_get_value(irq_to_gpio(irq));
+ 
+ 	if (present != host->present) {
+-		pr_debug("%s: card %s\n", mmc_hostname(host->mmc),
+-			 present ? "inserted" : "removed");
++		dev_dbg(&mmc->class_dev, "card %s\n",
++			present ? "inserted" : "removed");
+ 		host->present = present;
+ 		mci_set_card_detect_pending(host);
+ 		tasklet_schedule(&host->tasklet);
+@@ -1058,7 +1072,7 @@ static int __devinit atmci_probe(struct platform_device *pdev)
+ 	mmc->ops = &atmci_ops;
+ 	mmc->f_min = (host->bus_hz + 511) / 512;
+ 	mmc->f_max = min((unsigned int)(host->bus_hz / 2), fmax);
+-	mmc->ocr_avail	= 0x00100000;
++	mmc->ocr_avail	= MMC_VDD_32_33 | MMC_VDD_33_34;
+ 	mmc->caps |= MMC_CAP_4_BIT_DATA;
+ 
+ 	tasklet_init(&host->tasklet, atmci_tasklet_func, (unsigned long)mmc);
+@@ -1071,8 +1085,7 @@ static int __devinit atmci_probe(struct platform_device *pdev)
+ 	host->present = 1;
+ 	if (host->detect_pin >= 0) {
+ 		if (gpio_request(host->detect_pin, "mmc_detect")) {
+-			printk(KERN_WARNING "%s: no detect pin available\n",
+-			       mmc_hostname(host->mmc));
++			dev_dbg(&mmc->class_dev, "no detect pin available\n");
+ 			host->detect_pin = -1;
+ 		} else {
+ 			host->present = !gpio_get_value(host->detect_pin);
+@@ -1080,8 +1093,7 @@ static int __devinit atmci_probe(struct platform_device *pdev)
+ 	}
+ 	if (host->wp_pin >= 0) {
+ 		if (gpio_request(host->wp_pin, "mmc_wp")) {
+-			printk(KERN_WARNING "%s: no WP pin available\n",
+-			       mmc_hostname(host->mmc));
++			dev_dbg(&mmc->class_dev, "no WP pin available\n");
+ 			host->wp_pin = -1;
+ 		}
+ 	}
+@@ -1090,14 +1102,12 @@ static int __devinit atmci_probe(struct platform_device *pdev)
+ 	ret = -ENOMEM;
+ 	host->dma.req.req.dmac = find_dma_controller(0);
+ 	if (!host->dma.req.req.dmac) {
+-		printk(KERN_ERR
+-		       "mmci: No DMA controller available, aborting\n");
++		dev_dbg(&mmc->class_dev, "no DMA controller available\n");
+ 		goto out_free_irq;
+ 	}
+ 	ret = dma_alloc_channel(host->dma.req.req.dmac);
+ 	if (ret < 0) {
+-		printk(KERN_ERR
+-		       "mmci: Unable to allocate DMA channel, aborting\n");
++		dev_dbg(&mmc->class_dev, "unable to allocate DMA channel\n");
+ 		goto out_free_irq;
+ 	}
+ 	host->dma.req.req.channel = ret;
+@@ -1110,7 +1120,6 @@ static int __devinit atmci_probe(struct platform_device *pdev)
+ 
+ 	mci_writel(host, CR, MCI_BIT(SWRST));
+ 	mci_writel(host, IDR, ~0UL);
+-	mci_writel(host, CR, MCI_BIT(MCIEN));
+ 
+ 	platform_set_drvdata(pdev, host);
+ 
+@@ -1122,17 +1131,16 @@ static int __devinit atmci_probe(struct platform_device *pdev)
+ 				  IRQF_TRIGGER_FALLING | IRQF_TRIGGER_RISING,
+ 				  DRIVER_NAME, mmc);
+ 		if (ret) {
+-			printk(KERN_ERR
+-			       "%s: could not request IRQ %d for detect pin\n",
+-			       mmc_hostname(mmc),
+-			       gpio_to_irq(host->detect_pin));
++			dev_dbg(&mmc->class_dev,
++				"could not request IRQ %d for detect pin\n",
++				gpio_to_irq(host->detect_pin));
+ 			gpio_free(host->detect_pin);
+ 			host->detect_pin = -1;
+ 		}
+ 	}
+ 
+-	printk(KERN_INFO "%s: Atmel MCI controller at 0x%08lx irq %d\n",
+-	       mmc_hostname(mmc), host->mapbase, irq);
++	dev_info(&mmc->class_dev, "Atmel MCI controller at 0x%08lx irq %d\n",
++			host->mapbase, irq);
+ 
+ 	atmci_init_debugfs(host);
+ 
+-- 
+1.5.3.2
+
+_______________________________________________
+Kernel mailing list
+Kernel@avr32linux.org
+http://duppen.flaskehals.net/cgi-bin/mailman/listinfo/kernel

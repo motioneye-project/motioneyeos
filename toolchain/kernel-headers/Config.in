@@ -6,7 +6,9 @@ comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
+	default BR2_KERNEL_HEADERS_2_6_22_10 if BR2_avr32
 	default BR2_KERNEL_HEADERS_2_6_22
+
 	help
 	  Select the version of kernel header files you wish to use.
 	  You must select the correct set of header files to match
@@ -63,9 +65,17 @@ choice
 		depends !BR2_nios2
 		bool "Linux 2.6.22.1 kernel headers"
 
+	config BR2_KERNEL_HEADERS_2_6_22_10
+		depends !BR2_nios2
+		bool "Linux 2.6.22.10 kernel headers"
+
 	config BR2_KERNEL_HEADERS_2_6_22
 		depends !BR2_avr32 && !BR2_nios2
 		bool "Latest Linux 2.6.22.x kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_23
+		depends !BR2_avr32 && !BR2_nios2
+		bool "Latest Linux 2.6.23.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_SNAP
 		bool "Linux 2.6 snapshot"
@@ -98,25 +108,27 @@ config BR2_KERNEL_HEADERS_RT
 config BR2_KERNEL_HEADERS_PATCH_DIR
 	bool "Add additional headers from $(KERNEL_HEADERS_PATCH_DIR)"
 	default n
-	depends BR2_KERNEL_HEADERS_2_6_20_4 || BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
+	depends BR2_KERNEL_HEADERS_2_6_20_4 || BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1  || BR2_KERNEL_HEADERS_2_6_22_10
 	help
 	  Apply additional kernel patches defined by KERNEL_HEADERS_PATCH_DIR
 	  in your board directory.
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "2.4.25"    if BR2_KERNEL_HEADERS_2_4_25
-	default "2.4.27"    if BR2_KERNEL_HEADERS_2_4_27
-	default "2.4.29"    if BR2_KERNEL_HEADERS_2_4_29
-	default "2.4.31"    if BR2_KERNEL_HEADERS_2_4_31
-	default "2.6.9"     if BR2_KERNEL_HEADERS_2_6_9
-	default "2.6.11"    if BR2_KERNEL_HEADERS_2_6_11
-	default "2.6.12"    if BR2_KERNEL_HEADERS_2_6_12
-	default "2.6.20.4"  if BR2_KERNEL_HEADERS_2_6_20_4
-	default "2.6.20.20" if BR2_KERNEL_HEADERS_2_6_20
-	default "2.6.21.5"  if BR2_KERNEL_HEADERS_2_6_21_5
-	default "2.6.21.7"  if BR2_KERNEL_HEADERS_2_6_21
-	default "2.6.22.1"  if BR2_KERNEL_HEADERS_2_6_22_1
-	default "2.6.22.9"  if BR2_KERNEL_HEADERS_2_6_22
-	default "2.6"       if BR2_KERNEL_HEADERS_SNAP
+	default "2.4.25"	if BR2_KERNEL_HEADERS_2_4_25
+	default "2.4.27"	if BR2_KERNEL_HEADERS_2_4_27
+	default "2.4.29"	if BR2_KERNEL_HEADERS_2_4_29
+	default "2.4.31"	if BR2_KERNEL_HEADERS_2_4_31
+	default "2.6.9"		if BR2_KERNEL_HEADERS_2_6_9
+	default "2.6.11"	if BR2_KERNEL_HEADERS_2_6_11
+	default "2.6.12"	if BR2_KERNEL_HEADERS_2_6_12
+	default "2.6.20.4"	if BR2_KERNEL_HEADERS_2_6_20_4
+	default "2.6.20.20"	if BR2_KERNEL_HEADERS_2_6_20
+	default "2.6.21.5"	if BR2_KERNEL_HEADERS_2_6_21_5
+	default "2.6.21.7"	if BR2_KERNEL_HEADERS_2_6_21
+	default "2.6.22.1"	if BR2_KERNEL_HEADERS_2_6_22_1
+	default "2.6.22.10"	if BR2_KERNEL_HEADERS_2_6_22_10
+	default "2.6.22.10"	if BR2_KERNEL_HEADERS_2_6_22
+	default "2.6.23"	if BR2_KERNEL_HEADERS_2_6_22
+	default "2.6"		if BR2_KERNEL_HEADERS_SNAP
 
