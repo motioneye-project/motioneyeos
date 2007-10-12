@@ -349,8 +349,10 @@ ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 		$(TARGET_DIR)/lib/
 endif
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
+ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 	cp -dpf $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib/libstdc++.so* \
 		$(TARGET_DIR)/usr/lib/
+endif
 endif
 ifeq ($(BR2_INSTALL_LIBGCJ),y)
 	cp -dpf $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/lib/
