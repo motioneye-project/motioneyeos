@@ -1,0 +1,12 @@
+diff -urN haserl-0.8.0-0rig/src/haserl.c haserl-0.8.0/src/haserl.c
+--- haserl-0.8.0-0rig/src/haserl.c	2004-11-10 18:59:35.000000000 +0100
++++ haserl-0.8.0/src/haserl.c	2007-10-12 14:36:28.000000000 +0200
+@@ -131,7 +131,7 @@
+ 	if (strlen(prefix)) { memcpy (entry, prefix, strlen(prefix)); }
+ 	memcpy ((char *) (entry + strlen(prefix)), newbuf, strlen(newbuf));
+ 
+-	keylen = (size_t) (index (entry, '=') - entry);
++	keylen = (size_t) (strchr (entry, '=') - entry);
+ 	
+ 	if ( keylen <= 0 ) {
+ 			free (entry);

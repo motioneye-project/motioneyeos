@@ -15,6 +15,7 @@ $(DL_DIR)/$(HASERL_SOURCE):
 
 $(HASERL_DIR)/.unpacked: $(DL_DIR)/$(HASERL_SOURCE)
 	$(HASERL_CAT) $(DL_DIR)/$(HASERL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(HASERL_DIR) package/haserl/ haserl-$(HASERL_VERSION)\*.patch
 	touch $@
 
 $(HASERL_DIR)/.configured: $(HASERL_DIR)/.unpacked
@@ -40,6 +41,8 @@ $(HASERL_DIR)/.installed: $(HASERL_DIR)/src/haserl
 haserl: uclibc $(HASERL_DIR)/.installed
 
 haserl-source: $(DL_DIR)/$(HASERL_SOURCE)
+
+haserl-unpacked: $(HASERL_DIR)/.unpacked
 
 haserl-clean:
 	-$(MAKE) -C $(HASERL_DIR) clean
