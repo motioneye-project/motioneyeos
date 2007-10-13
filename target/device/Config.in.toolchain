@@ -6,17 +6,40 @@ choice
 	  Select whether to use the toolchain built by the buildroot
 	  system or an external pre-built toolchain.
 
-config BR2_TOOLCHAIN_ATMEL_AVR32
-	bool "Use prepatched source for AVR32 toolchain"
+config BR2_TOOLCHAIN_ATMEL_AVR32_4_1_2
+	bool "Use prepatched source for AVR32 gcc-4.1.2 toolchain"
 	depends on BR2_avr32
-	select BR2_GCC_VERSION_4_1_2
-	select BR2_BINUTILS_VERSION_2_17
-	select BR2_UCLIBC_VERSION_0_9_28_3
+	select BR2_EXT_GCC_VERSION_4_1_2
+	select BR2_EXT_BINUTILS_VERSION_2_17
+	select BR2_EXT_UCLIBC_VERSION_0_9_29
+	select BR2_TOOLCHAIN_ATMEL_AVR32
+	help
+	  The gcc-4.1.2 toolchain for the AVR32
+
+config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1
+	bool "Use prepatched source for AVR32 gcc-4.2.1 toolchain"
+	depends on BR2_avr32
+	select BR2_EXT_GCC_VERSION_4_2_1
+	select BR2_EXT_BINUTILS_VERSION_2_17
+	select BR2_EXT_UCLIBC_VERSION_0_9_29
+	select BR2_TOOLCHAIN_ATMEL_AVR32
+	help
+	  The gcc-4.2.1 toolchain for the AVR32
+	  * gcc-4.2.1
+	  * binutils-2.17
+	  * uClibc-0.9.29
+	  * gdb-6.4
+	  This will not be able to build qtopia
+	  due to internal errors.
 
 config BR2_TOOLCHAIN_UNKNOWNVENDOR
 	bool "Use prepatched source from unknown vendor"
 
 endchoice
+
+config BR2_TOOLCHAIN_ATMEL_AVR32
+	bool
+	default n
 
 if BR2_TOOLCHAIN_ATMEL_AVR32
 config BR2_VENDOR_SITE
@@ -29,19 +52,20 @@ config BR2_VENDOR_SUFFIX
 
 config BR2_VENDOR_BINUTILS_RELEASE
 	string
-	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_GCC_RELEASE
 	string
-	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32_4_1_2
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1
 
 config BR2_VENDOR_UCLIBC_RELEASE
 	string
-	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_GDB_RELEASE
 	string
-	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32
 
 config BR2_VENDOR_PATCH_DIR
 	string
@@ -79,3 +103,29 @@ endif
 
 
 endif
+
+
+config	BR2_EXT_GCC_VERSION_4_1_2
+	bool
+	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
+	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE
+
+config	BR2_EXT_GCC_VERSION_4_2_1
+	bool
+	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
+	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE
+
+config	BR2_EXT_BINUTILS_VERSION_2_17
+	bool
+	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
+	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE
+
+config	BR2_EXT_UCLIBC_VERSION_0_9_29
+	bool
+	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
+	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE
+
+config	BR2_EXT_UCLIBC_VERSION_0_9_28_3
+	bool
+	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
+	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE

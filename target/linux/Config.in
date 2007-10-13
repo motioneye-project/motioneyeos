@@ -59,7 +59,8 @@ if BR2_PACKAGE_LINUX_EXPERIMENTAL_CONFIG
 choice
 	prompt "Linux Kernel Version"
 	depends on BR2_PACKAGE_LINUX
-	default BR2_LINUX_2_6_22_1
+	default BR2_LINUX_2_6_22_1 if !BR2_avr32
+	default BR2_LINUX_2_6_22_10 if BR2_avr32
 	help
 	  Select the specific Linux version you want to use
 
