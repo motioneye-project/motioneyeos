@@ -23,26 +23,52 @@ endmenu
 menu "Kernel"
 choice
 	prompt "Kernel type"
-	default BR2_KERNEL_LINUX
+	default BR2_KERNEL_LINUX_ADVANCED if BR2_TARGET_ATMEL
+	default BR2_KERNEL_LINUX if !BR2_TARGET_ATMEL
 
 config BR2_KERNEL_none
 	bool "none"
 	help
 	  Do not build a kernel
 
-config BR2_KERNEL_LINUX
-	bool "linux"
+config BR2_KERNEL_LINUX_ADVANCED
+	bool "linux (Advanced configuration)"
+	select BR2_PACKAGE_LINUX
 	help
-	  Linux kernel
+	  The Linux kernel - Advanced Configuration.
+	  http://www.kernel.org/
+
+	  Note: Requires kernel-headers >= 2.6.19 since the other
+	        kernel headers are just that (headers) and not full
+	        kernels. This is a feature.
+
+config BR2_KERNEL_LINUX
+	bool "linux (Same version as linux headers)"
+	select BR2_PACKAGE_LINUX
+	help
+	  The Linux kernel.
+	  http://www.kernel.org/
+
+	  Note: Requires kernel-headers >= 2.6.19 since the other
+	        kernel headers are just that (headers) and not full
+	        kernels. This is a feature.
 
 config BR2_KERNEL_HURD
 	bool "hurd"
 	help
 	  GNU/Hurd kernel
 endchoice
-if BR2_KERNEL_LINUX
+
+config BR2_PACKAGE_LINUX
+	bool
+	default n
+
+if BR2_PACKAGE_LINUX
 source "target/linux/Config.in"
+#source "target/linux/Config.in.experimental"
+source "target/linux/Config.in.advanced"
 endif
+
 if BR2_KERNEL_HURD
 source "target/hurd/Config.in"
 endif

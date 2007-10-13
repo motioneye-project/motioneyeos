@@ -1,0 +1,501 @@
+if BR2_KERNEL_LINUX_ADVANCED
+# --- "Linux kernel options"
+# This file exports the following symbols for use by Makefile's
+# 
+# BR2_PACKAGE_LINUX
+# 
+# BR2_KERNEL_SITE
+# BR2_DOWNLOAD_LINUX26_VERSION
+# BR2_LINUX26_VERSION
+# 
+# BR2_KERNEL_PATCH_SITE
+# BR2_KERNEL_PATCH
+# 
+# BR2_LINUX26_CUSTOM
+# BR2_CUSTOM_LINUX26_PATCH_SITE
+# BR2_CUSTOM_LINUX26_PATCH
+# 
+# BR2_LINUX_BSP_PATCH
+# 
+# BR2_PACKAGE_LINUX_USE_KCONFIG
+# BR2_PACKAGE_LINUX_USE_DEFCONFIG
+# BR2_PACKAGE_LINUX_USE_XCONFIG
+# BR2_PACKAGE_LINUX_KCONFIG
+# 
+# BR2_PACKAGE_LINUX_FORMAT
+# 
+# BR2_LINUX_COPYTO_ROOTFS
+# BR2_LINUX_COPYTO_TFTPBOOT
+# BR2_LINUX_COPYTO
+# 
+# ---------------------------------------------------------------------------
+# --- These 'constants' requires regular maintenance, so put them first
+config BR2_KERNEL_PATCH_LEVEL
+	string
+	default "1" if BR2_LINUX_2_6_23 && BR2_KERNEL_ADD_LATEST_MINORPATCH
+	default "10" if BR2_LINUX_2_6_22 && BR2_KERNEL_ADD_LATEST_MINORPATCH
+	default "7" if BR2_LINUX_2_6_21 && BR2_KERNEL_ADD_LATEST_MINORPATCH
+	default "20" if BR2_LINUX_2_6_20 && BR2_KERNEL_ADD_LATEST_MINORPATCH
+	default "$(BR2_KERNEL_MINORLEVEL)" if BR2_KERNEL_ADD_MINORPATCH
+
+config BR2_KERNEL_CURRENT_VERSION
+	string
+	default "2.6.23.1"
+
+config BR2_KERNEL_NEXT_VERSION
+	string
+	default "2.6.24" if BR2_LINUX_2_6_23
+	default "2.6.23" if BR2_LINUX_2_6_22
+	default "2.6.22" if BR2_LINUX_2_6_21
+	default "2.6.21" if BR2_LINUX_2_6_20
+
+config BR2_KERNEL_THIS_VERSION
+	string
+	default "2.6.23" if BR2_LINUX_2_6_23
+	default "2.6.22" if BR2_LINUX_2_6_22
+	default "2.6.21" if BR2_LINUX_2_6_21
+	default "2.6.20" if BR2_LINUX_2_6_20
+
+config LINUX26_LATEST_RC_VERSION
+	string
+	default "2.6.23" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+
+config LINUX26_LATEST_MM_VERSION
+	string
+	default "2.6.23-mm1" if BR2_KERNEL_ADD_LATEST_MM_PATCH
+
+config LINUX26_LATEST_GIT_VERSION
+	string
+	default "2.6.23-git3" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
+
+config BR2_KERNEL_SITE
+	string
+	default "http://ftp.kernel.org/pub/linux/kernel/v2.6/"
+
+config BR2_MM_PATCH_SITE
+	string
+	default "http://ftp.kernel.org/pub/linux/kernel/people/akpm/patches/2.6"
+
+config BR2_MM_PATCH_DIR
+	string
+	default "$(BR2_DOWNLOAD_LINUX26_VERSION)/$(LINUX26_LATEST_MM_VERSION)" if BR2_KERNEL_ADD_LATEST_MM_PATCH
+	default "$(BR2_DOWNLOAD_LINUX26_VERSION)/$(BR2_LINUX26_MM_VERSION)" if BR2_KERNEL_ADD_MM_PATCH
+
+config BR2_RC_MM_PATCH_DIR
+	string
+	default "$(BR2_KERNEL_NEXT_VERSION)-rc$(BR2_KERNEL_RC_LEVEL)/2.6.$(BR2_KERNEL_NEXT_VERSION)-rc$(BR2_KERNEL_RC_LEVEL)-mm$(BR2_KERNEL_MM_LEVEL)"
+
+config BR2_KERNEL_PATCH_SITE
+	string
+	default "http://ftp.kernel.org/pub/linux/kernel/v2.6/" if BR2_KERNEL_ADD_MINORPATCH
+	default "http://ftp.kernel.org/pub/linux/kernel/v2.6/testing/" if BR2_KERNEL_ADD_RC_PATCH || BR2_KERNEL_ADD_LATEST_RC_PATCH
+	default "http://ftp.kernel.org/pub/linux/kernel/v2.6/snapshots/" if BR2_KERNEL_ADD_SNAPSHOT || BR2_KERNEL_ADD_LATEST_SNAPSHOT
+	default "$(BR2_MM_PATCH_SITE)/$(BR2_MM_PATCH_DIR)/" if BR2_KERNEL_ADD_MM_PATCH || BR2_KERNEL_ADD_LATEST_MM_PATCH
+	default $(BR2_CUSTOM_LINUX26_PATCH_SITE) if BR2_LINUX26_CUSTOM
+
+config BR2_LINUX26_RC_VERSION
+	string
+	default "$(BR2_KERNEL_NEXT_VERSION)-rc$(BR2_KERNEL_RC_LEVEL)" if BR2_KERNEL_ADD_RC_PATCH
+
+config BR2_LINUX26_SNAPSHOT_VERSION
+	string
+	default "$(BR2_KERNEL_THIS_VERSION)-git$(BR2_KERNEL_GIT_LEVEL)" if BR2_KERNEL_ADD_SNAPSHOT
+
+config BR2_LINUX26_RC_SNAPSHOT_VERSION
+	string
+	default "$(BR2_KERNEL_NEXT_VERSION)-rc$(BR2_KERNEL_RC_LEVEL)-git$(BR2_KERNEL_GIT_LEVEL)" if BR2_KERNEL_ADD_SNAPSHOT
+
+config BR2_LINUX26_MM_VERSION
+	string
+	default "$(BR2_KERNEL_THIS_VERSION)-mm$(BR2_KERNEL_MM_LEVEL)" if BR2_KERNEL_ADD_MM_PATCH
+
+config BR2_LINUX26_RC_MM_VERSION
+	string
+	default "$(BR2_KERNEL_NEXT_VERSION)-rc$(BR2_KERNEL_RC_LEVEL)-mm$(BR2_KERNEL_MM_LEVEL)" if BR2_KERNEL_ADD_MM_PATCH
+
+# ---------------------------------------------------------------------------
+
+choice
+	prompt "Linux Kernel Version"
+	default BR2_LINUX_2_6_22_10 if BR2_avr32
+	default BR2_LINUX_2_6_22_1 if !BR2_avr32 && BR2_TARGET_ATMEL
+	default BR2_LINUX_2_6_22 if !BR2_TARGET_ATMEL
+	help
+	  Select the specific Linux version you want to use
+
+config BR2_LINUX_2_6_STABLE
+	bool "The latest stable Linux kernel (2.6.23)"
+	help
+	  Linux 2.6.23
+
+config BR2_LINUX_2_6_23
+	bool "Linux 2.6.23"
+	select BR2_KERNEL_BASE
+	help
+	  Linux 2.6.23
+
+config BR2_LINUX_2_6_22_10
+	bool "Linux 2.6.22.10"
+	select BR2_KERNEL_PREPATCHED
+	help
+	  Linux 2.6.22.10
+
+config BR2_LINUX_2_6_22_1
+	bool "Linux 2.6.22.1"
+	select BR2_KERNEL_PREPATCHED
+	help
+	  Linux 2.6.22.1
+
+config BR2_LINUX_2_6_22
+	bool "Linux 2.6.22"
+	select BR2_KERNEL_LATEST
+	select BR2_KERNEL_BASE
+	help
+	  Linux 2.6.22
+
+config BR2_LINUX_2_6_21_7
+	bool "Linux 2.6.21.7"
+	select BR2_KERNEL_PREPATCHED
+	help
+	  Linux 2.6.21.1
+
+config BR2_LINUX_2_6_21_5
+	bool "Linux 2.6.21.5"
+	select BR2_KERNEL_PREPATCHED
+	help
+	  Linux 2.6.21.5
+
+config BR2_LINUX_2_6_21
+	bool "Linux 2.6.21"
+	select BR2_KERNEL_BASE
+	help
+	  Linux 2.6.21
+
+config BR2_LINUX_2_6_20
+	bool "Linux 2.6.20"
+	select BR2_KERNEL_BASE
+	help
+	  Linux 2.6.20
+
+config BR2_LINUX26_CUSTOM
+	bool "Linux <custom> version"
+	help
+	  Linux <your selection>
+
+endchoice
+
+if BR2_LINUX26_CUSTOM
+config BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION
+	string "Linux Tarball version"
+	default "linux-2.6.22"
+	help
+	  Specify any .tar.bz2 file
+
+config BR2_CUSTOM_LINUX26_VERSION
+	string "Linux Version"
+	default "linux-2.6.22-version"
+	help
+	  Specify what the linux version will be called
+
+config BR2_CUSTOM_LINUX26_PATCH
+	string "patch name"
+	default "patch-2.6.22-rc6-mm1.bz2"
+	help
+	  Specify a patch to be downloaded
+
+config BR2_CUSTOM_LINUX26_PATCH_SITE
+	string "patch site"
+	default "http://"
+	help
+	  Specify from where the patch will be downloaded.
+
+endif
+
+# -----------------------------------------------
+
+menu "Patches"
+	depends on BR2_PACKAGE_LINUX
+
+choice
+	prompt "Add a patch to the Linux Kernel"
+	depends on BR2_PACKAGE_LINUX
+	depends on !BR2_KERNEL_PREPATCHED
+	default BR2_KERNEL_ADD_NO_PATCH
+	help
+	  Select a patch to add to the Linux kernel
+
+config BR2_KERNEL_ADD_NO_PATCH
+	bool "Do not add a patch"
+
+config BR2_KERNEL_ADD_LATEST_MINORPATCH
+	bool "Add _latest_ '.#' minor patch"
+	select BR2_KERNEL_ADD_PATCH
+
+config BR2_KERNEL_ADD_MINORPATCH
+	bool "Add a '.#' minor patch"
+	select BR2_KERNEL_ADD_PATCH
+
+config BR2_KERNEL_ADD_LATEST_RC_PATCH
+	bool "Add _latest_ '-rc#' patch"
+	select BR2_KERNEL_ADD_PATCH
+
+config BR2_KERNEL_ADD_RC_PATCH
+	bool "Add an '-rc#' patch"
+	select BR2_KERNEL_ADD_PATCH
+
+config BR2_KERNEL_ADD_LATEST_SNAPSHOT
+	bool "Add _latest_ 'snapshot' patch"
+	select BR2_KERNEL_ADD_PATCH
+
+config BR2_KERNEL_ADD_SNAPSHOT
+	bool "Add a 'snapshot' patch (linux-2.6.X-rc#-git#)"
+	select BR2_KERNEL_ADD_PATCH
+
+config BR2_KERNEL_ADD_LATEST_MM_PATCH
+	bool "Add latest '-mm' patch for the stable linux kernel"
+	select BR2_KERNEL_ADD_PATCH
+
+config BR2_KERNEL_ADD_MM_PATCH
+	bool "Add an '-mm#' patch for the stable linux kernel"
+	select BR2_KERNEL_ADD_PATCH
+
+endchoice
+
+config BR2_KERNEL_ADD_PATCH
+	bool
+	default n
+
+
+config BR2_KERNEL_MINORLEVEL
+	string "patch level"
+	default ""
+	depends on BR2_KERNEL_ADD_MINORPATCH
+
+config BR2_KERNEL_RC_LEVEL
+	string "-rc patch Level"
+	default ""
+	depends on BR2_KERNEL_ADD_RC_PATCH || BR2_KERNEL_ADD_SNAPSHOT
+
+config BR2_KERNEL_GIT_LEVEL
+	string "-git patch Level"
+	default ""
+	depends on BR2_KERNEL_ADD_SNAPSHOT
+
+config BR2_KERNEL_MM_LEVEL
+	string "-mm patch Level"
+	default ""
+	depends on BR2_KERNEL_ADD_MM_PATCH
+
+config BR2_LINUX_BSP_PATCH
+	string "Additional patch to apply (from \$(DL_DIR))"
+	default ""
+	help
+	  Apply a patch located in \$(DL_DIR).
+	  You need to download or create this before
+	  enable this option
+
+config BR2_KERNEL_PATCH
+	string
+	default "patch-$(BR2_DOWNLOAD_LINUX26_VERSION).$(BR2_KERNEL_PATCH_LEVEL).bz2" if BR2_KERNEL_ADD_MINORPATCH || BR2_KERNEL_ADD_LATEST_MINORPATCH
+	default "patch-$(LINUX26_LATEST_RC_VERSION).bz2" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+	default "patch-$(BR2_LINUX26_RC_VERSION).bz2" if BR2_KERNEL_ADD_RC_PATCH
+	default "patch-$(LINUX26_LATEST_GIT_VERSION).bz2" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
+	default "patch-$(BR2_LINUX26_SNAPSHOT_VERSION).bz2" if BR2_KERNEL_ADD_SNAPSHOT
+	default "$(LINUX26_LATEST_MM_VERSION).bz2" if BR2_KERNEL_ADD_LATEST_MM_PATCH
+	default "$(BR2_LINUX26_MM_VERSION).bz2" if BR2_KERNEL_ADD_MM_PATCH
+	default $(BR2_CUSTOM_LINUX26_PATCH) if BR2_LINUX26_CUSTOM
+
+endmenu
+
+# -----------------------------------------------
+
+config BR2_KERNEL_PREPATCHED
+	bool
+	default n
+
+config BR2_KERNEL_BASE
+	bool
+	default n
+
+config BR2_KERNEL_LATEST
+	bool
+	default n
+
+config BR2_DOWNLOAD_LINUX26_VERSION
+	string
+	default "$(BR2_KERNEL_THIS_VERSION)" if BR2_KERNEL_BASE
+	default "2.6.21.5" if BR2_LINUX_2_6_21_5
+	default "2.6.21.7" if BR2_LINUX_2_6_21_7
+	default "2.6.22.1" if BR2_LINUX_2_6_22_1
+	default "2.6.22.10" if BR2_LINUX_2_6_22_10
+	default "$(BR2_KERNEL_CURRENT_VERSION)"if BR2_LINUX_2_6_STABLE
+	default "$(BR2_DEFAULT_KERNEL_HEADERS)" if BR2_KERNEL_LINUX_HEADERS_VERSION
+	default $(BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION) if BR2_LINUX26_CUSTOM
+
+config BR2_LINUX26_VERSION
+	string
+	default "$(BR2_KERNEL_THIS_VERSION).$(BR2_KERNEL_PATCH_LEVEL)" if BR2_KERNEL_BASE && BR2_KERNEL_ADD_MINORPATCH
+	default "$(LINUX26_LATEST_RC_VERSION)" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+	default "$(LINUX26_LATEST_MM_VERSION)" if BR2_KERNEL_ADD_LATEST_MM_PATCH
+	default "$(LINUX26_LATEST_GIT_VERSION)" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
+	default "$(BR2_LINUX26_RC_VERSION)" if BR2_KERNEL_BASE && BR2_KERNEL_ADD_RC_PATCH
+	default "$(BR2_LINUX26_SNAPSHOT_VERSION)" if BR2_KERNEL_BASE && BR2_KERNEL_ADD_SNAPSHOT
+	default "$(BR2_LINUX26_MM_VERSION)" if BR2_KERNEL_BASE && BR2_KERNEL_ADD_MM_PATCH
+	default "$(BR2_KERNEL_THIS_VERSION)" if BR2_KERNEL_BASE && ! BR2_KERNEL_ADD_PATCH
+	default "2.6.21.5" if BR2_LINUX_2_6_21_5
+	default "2.6.21.7" if BR2_LINUX_2_6_21_7
+	default "2.6.22.1" if BR2_LINUX_2_6_22_1
+	default "2.6.22.10" if BR2_LINUX_2_6_22_10
+	default "$(BR2_KERNEL_CURRENT_VERSION)"if BR2_LINUX_2_6_STABLE
+	default $(BR2_CUSTOM_LINUX26_VERSION) if BR2_LINUX26_CUSTOM
+
+menu "Linux Kernel Configuration"
+
+choice
+	prompt "Linux Kernel Configuration"
+	depends on BR2_PACKAGE_LINUX
+	default BR2_PACKAGE_LINUX_USE_KCONFIG
+	help
+	  Select the way to configure the Linux
+
+config BR2_PACKAGE_LINUX_USE_KCONFIG
+	bool ".config file"
+	depends on BR2_PACKAGE_LINUX
+	help
+	  kernel's .config to use to build a kernel for the target.
+
+	  If the above setting is empty, you can change the default
+	  board-imposed value by passing LINUX26_KCONFIG=<path> to
+	  make.
+
+config BR2_PACKAGE_LINUX_USE_DEFCONFIG
+	bool "Run make <board>_defconfig "
+	depends BR2_PACKAGE_LINUX
+	help
+	  Configure Linux by make <board>_defconfig
+
+config BR2_PACKAGE_LINUX_USE_XCONFIG
+	bool "Run make ARCH=$(ARCH) xconfig before build"
+	depends BR2_PACKAGE_LINUX
+	help
+	  Configure Linux by make xconfig
+endchoice
+
+config BR2_PACKAGE_LINUX_KCONFIG
+	string ".config file"
+	depends on BR2_PACKAGE_LINUX_USE_KCONFIG
+	default "$(BR2_BOARD_PATH)/$(BR2_BOARD_NAME)-linux-$(BR2_LINUX26_VERSION).config"
+	help
+	  kernel's .config to use to build a kernel for the target.
+
+	  If the above setting is empty, you can change the default
+	  board-imposed value by passing LINUX26_KCONFIG=<path> to
+	  make.
+
+endmenu
+
+choice
+	prompt "kernel binary format"
+	depends on BR2_PACKAGE_LINUX
+	default BR2_LINUX_BIN_UIMAGE
+	help
+	  Select the specific Linux binary type you want to use
+
+config BR2_LINUX_BIN_BZIMAGE
+	bool "bzImage"
+	depends BR2_PACKAGE_LINUX
+	help
+	  Linux 2.6.19.2
+
+config BR2_LINUX_BIN_UIMAGE
+	bool "uImage"
+	depends BR2_PACKAGE_LINUX
+	help
+	  Build uImage binary
+
+config BR2_LINUX_BIN_VMLINUX
+	bool "vmlinux"
+	depends BR2_PACKAGE_LINUX
+	help
+	  Build vmlinux binary
+
+config BR2_LINUX_BIN_ZIMAGE
+	bool "zImage"
+	depends BR2_PACKAGE_LINUX
+	help
+	  Linux 2.6.19.2
+
+config BR2_LINUX_BIN_CUSTOM
+	bool "<custom> Linux binary"
+	depends BR2_PACKAGE_LINUX
+	help
+	  Build custom Linux binary format
+endchoice
+
+config BR2_LINUX_BIN_CUSTOM_BIN
+	string "custom kernel binary format"
+	depends on BR2_LINUX_BIN_CUSTOM
+	default ""
+	help
+	  Which Linux binary format?
+
+config BR2_PACKAGE_LINUX_FORMAT
+	string #"kernel binary format"
+	depends on BR2_PACKAGE_LINUX
+	default "bzImage" if BR2_LINUX_BIN_BZIMAGE
+	default "uImage" if BR2_LINUX_BIN_UIMAGE
+	default "vmlinux" if BR2_LINUX_BIN_VMLINUX
+	default "zImage" if BR2_LINUX_BIN_ZIMAGE
+	default $(BR2_LINUX_BIN_CUSTOM_BIN) if BR2_LINUX_BIN_CUSTOM
+	help
+	  kernel binary format.
+	  Popular values include:
+	  - bzImage
+	  - zImage
+	  - vmlinux
+	  - zImage
+	  - xipImage
+	  and other, architecture dependant formats.
+
+	  Note that the default format is supposed to be set by your
+	  board-description, if any.
+	  i386 and compatible default to bzImage if nothing was given
+	  above.
+	  If the above setting is empty, you can change the default
+	  board-imposed value by passing LINUX26_FORMAT=<string> to
+	  make.
+
+menu "Destinations for linux kernel binaries"
+
+config BR2_LINUX_COPYTO_ROOTFS
+	bool "Copy kernel to root file system"
+	depends BR2_PACKAGE_LINUX
+	default n
+	help
+	  Copy kernel to <root>/boot directory
+
+config BR2_LINUX_COPYTO_TFTPBOOT
+	bool "Copy kernel to /tftpboot"
+	default y if BR2_TARGET_ATMEL
+	default n if !BR2_TARGET_ATMEL
+	help
+	  Copy kernel to /tftpboot directory
+
+config BR2_LINUX_COPYTO
+	string "Copy kernel to <dir>..."
+	default ""
+	help
+	  Copy kernel to secondary location
+
+endmenu
+
+config BR2_LINUX_COPY_CONFIGURATION
+	bool "Copy buildroot configuration to Linux file system"
+	default y if BR2_TARGET_ATMEL
+	default n if !BR2_TARGET_ATMEL
+	help
+	  The configuration files for buildroot, uclibc, busybox and linux
+	  are copied to the "<root>/boot" directory.
+
+endif
+
