@@ -22,6 +22,7 @@ $(READLINE_DIR)/.unpacked: $(DL_DIR)/$(READLINE_SOURCE)
 	mkdir -p $(READLINE_DIR)
 	tar -C $(BUILD_DIR) -zxf $(DL_DIR)/$(READLINE_SOURCE)
 	$(CONFIG_UPDATE) $(READLINE_DIR)
+	$(CONFIG_UPDATE) $(READLINE_DIR)/support
 	touch $@
 
 $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
