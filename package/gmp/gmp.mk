@@ -5,7 +5,7 @@
 #############################################################
 GMP_VERSION:=4.2.2
 GMP_SOURCE:=gmp-$(GMP_VERSION).tar.bz2
-GMP_SITE:=http://ftp.sunet.se/pub/gnu/gmp/
+GMP_SITE:=http://ftp.sunet.se/pub/gnu/gmp
 GMP_CAT:=$(BZCAT)
 GMP_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_TARGET_DIR:=$(BUILD_DIR)/gmp-$(GMP_VERSION)
