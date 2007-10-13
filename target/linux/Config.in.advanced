@@ -487,8 +487,6 @@ config BR2_LINUX_COPYTO
 	help
 	  Copy kernel to secondary location
 
-endmenu
-
 config BR2_LINUX_COPY_CONFIGURATION
 	bool "Copy buildroot configuration to Linux file system"
 	default y if BR2_TARGET_ATMEL
@@ -497,5 +495,6 @@ config BR2_LINUX_COPY_CONFIGURATION
 	  The configuration files for buildroot, uclibc, busybox and linux
 	  are copied to the "<root>/boot" directory.
 
+endmenu
 endif
 
