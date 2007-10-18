@@ -84,6 +84,14 @@ config BR2_STAGING_DIR
 	  Most people will leave this set to the default value of
 	  "$(BUILD_DIR)/staging_dir".
 
+config BR2_FPU_SUFFIX
+	bool "Add '_nofpu' suffix for softfloat toolchains"
+	default n
+	help
+	  If the toolchain is configured to use softfloat, then
+	  the "_nofpu" suffix will be added to the toolchain build
+	  directory name and to any rootfs image name
+
 config BR2_TOPDIR_PREFIX
 	string "Custom build dir prefix"
 	default ""
