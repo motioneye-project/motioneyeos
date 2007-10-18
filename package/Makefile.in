@@ -317,6 +317,3 @@ X11_PREFIX:=$(strip $(subst ",, $(BR2_X11_PREFIX)))
 #"))
 
 include package/Makefile.autotools.in
-
-package-status:
-	@echo	IMAGE=$(IMAGE)
