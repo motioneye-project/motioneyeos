@@ -65,9 +65,12 @@ TARGET_CXXFLAGS=$(TARGET_CFLAGS)
 TARGET_LDFLAGS=-L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib
 endif
 #########################################################################
-ifeq ($(BR2_ROOTFS_SUFFIX),)
+#ifeq ($(BR2_ROOTFS_SUFFIX),)
+ROOTFS_SUFFIX:=$(strip $(subst ",, $(BR2_ROOTFS_SUFFIX)))
+ifeq ($(ROOTFS_SUFFIX),)
 ROOTFS_SUFFIX:=
 else
+XXXX=xxxx
 ROOTFS_SUFFIX:=-$(BR2_ROOTFS_SUFFIX)
 endif
 
@@ -315,3 +318,5 @@ X11_PREFIX:=$(strip $(subst ",, $(BR2_X11_PREFIX)))
 
 include package/Makefile.autotools.in
 
+package-status:
+	@echo	IMAGE=$(IMAGE)
