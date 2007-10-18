@@ -252,7 +252,7 @@ endif
 ifeq ($(BR2_KERNEL_HEADERS_PATCH_DIR),y)
 	if [ -d $(KERNEL_HEADERS_PATCH_DIR) ] ; then \
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(KERNEL_HEADERS_PATCH_DIR) \
-		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2} \
+		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2} ; \
 	fi
 endif
 ifeq ($(BR2_PACKAGE_OPENSWAN),y)
