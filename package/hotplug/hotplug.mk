@@ -26,7 +26,7 @@ $(TARGET_DIR)/sbin/hotplug: $(HOTPLUG_DIR)/hotplug
 
 hotplug: uclibc $(TARGET_DIR)/sbin/hotplug
 
-hotplug-source: $(DL_DIR)/$(HOTPLUG_SOURCE)
+hotplug-source: $(HOTPLUG_SOURCE)
 
 hotplug-clean:
 	rm -f $(TARGET_DIR)/sbin/hotplug
