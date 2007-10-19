@@ -3,7 +3,7 @@
 # ncftp client
 #
 #############################################################
-NCFTP_VERSION:=3.2.0
+NCFTP_VERSION:=3.2.1
 NCFTP_SOURCE:=ncftp-$(NCFTP_VERSION)-src.tar.bz2
 NCFTP_SITE:=ftp://ftp.ncftp.com/ncftp
 NCFTP_DIR:=$(BUILD_DIR)/ncftp-$(NCFTP_VERSION)
