@@ -127,6 +127,7 @@ ifneq ($(BR2_ENABLE_LOCALE),y)
 GCC_ENABLE_CLOCALE:=--disable-clocale
 endif
 
+HOST_SOURCE+=gcc-source
 
 #############################################################
 #

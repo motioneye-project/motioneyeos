@@ -141,6 +141,8 @@ ifeq ($(BR2_KERNEL_HURD),y)
 EXTRA_GCC1_CONFIG_OPTIONS+=--without-headers
 endif
 
+HOST_SOURCE+=gcc-source
+
 $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)
 	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
