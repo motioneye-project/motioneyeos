@@ -12,6 +12,8 @@ config BR2_armeb
 	bool "armeb"
 config BR2_avr32
 	bool "avr32"
+	select BR2_SOFT_FLOAT
+
 config BR2_cris
 	bool "cris"
 config BR2_ia64

@@ -11,14 +11,6 @@ TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
 EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
 #"))
 
-# AVR32 GCC configuration
-ifeq ($(strip $(BR2_avr32)),y)
-EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap
-EXTRA_GCC_CONFIG_OPTIONS+=--disable-libssp
-EXTRA_GCC_CONFIG_OPTIONS+=--with-build-time-tools=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin \
-#EXTRA_GCC_CONFIG_OPTIONS+=--with-as=$(TARGET_CROSS)as
-endif
-
 ifeq ($(strip $(subst ",, $(BR2_GCC_IS_SNAP))),y)
 #"))
 GCC_SNAP_DATE:=$(strip $(subst ",, $(BR2_GCC_SNAP_DATE)))
@@ -69,6 +61,15 @@ ifneq ($(strip $(subst ",,$(BR2_GCC_TARGET_ABI))),)
 # ")))
 GCC_WITH_ABI:=--with-abi=$(BR2_GCC_TARGET_ABI)
 endif
+endif
+
+# AVR32 GCC configuration
+ifeq ($(strip $(BR2_avr32)),y)
+EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap
+SOFT_FLOAT_CONFIG_OPTION:=
+EXTRA_GCC_CONFIG_OPTIONS+=--disable-libssp
+EXTRA_GCC_CONFIG_OPTIONS+=--with-build-time-tools=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin \
+#EXTRA_GCC_CONFIG_OPTIONS+=--with-as=$(TARGET_CROSS)as
 endif
 
 TARGET_GCC_FLAGS= CFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
