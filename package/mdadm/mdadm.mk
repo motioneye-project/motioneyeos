@@ -5,7 +5,7 @@
 #############################################################
 MDADM_VERSION:=2.6.2
 MDADM_SOURCE:=mdadm_$(MDADM_VERSION).orig.tar.gz
-MDADM_PATCH:=mdadm_$(MDADM_VERSION)-1.diff.gz
+MDADM_PATCH:=mdadm_$(MDADM_VERSION)-2.diff.gz
 MDADM_CAT:=$(ZCAT)
 MDADM_SITE:=http://ftp.debian.org/debian/pool/main/m/mdadm
 MDADM_DIR:=$(BUILD_DIR)/mdadm-$(MDADM_VERSION)
@@ -44,7 +44,7 @@ $(TARGET_DIR)/$(MDADM_TARGET_BINARY): $(MDADM_DIR)/$(MDADM_BINARY)
 
 mdadm: uclibc $(TARGET_DIR)/$(MDADM_TARGET_BINARY)
 
-mdadm-source: $(DL_DIR)/$(MDADM_SOURCE)
+mdadm-source: $(DL_DIR)/$(MDADM_SOURCE) $(MDADM_PATCH_FILE)
 
 mdadm-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(MDADM_DIR) uninstall
