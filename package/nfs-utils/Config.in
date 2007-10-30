@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NFS_UTILS
 	bool "nfs-utils"
+	depends on BR2_INET_RPC
 	default n
 	help
 	  The NFS Linux kernel server.
@@ -7,6 +8,9 @@ config BR2_PACKAGE_NFS_UTILS
 	  Enable it yourself if you want to access big exports!
 
 	  http://sourceforge.net/projects/nfs
+
+comment "nfs-utils requires a toolchain with 'Enable RPC' selected"
+	depends on !BR2_INET_RPC
 
 menu "NFS utilities selection"
 	depends BR2_PACKAGE_NFS_UTILS
