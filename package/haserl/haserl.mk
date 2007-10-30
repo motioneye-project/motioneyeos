@@ -4,10 +4,11 @@
 #
 #############################################################
 
-HASERL_VERSION=0.8.0
-HASERL_SOURCE=haserl-$(HASERL_VERSION).tar.gz
-HASERL_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/haserl/
-HASERL_DIR=$(BUILD_DIR)/haserl-$(HASERL_VERSION)
+HASERL_VERSION:=$(strip $(subst ",,$(BR2_PACKAGE_HASERL_VERSION)))
+#"))
+HASERL_SOURCE:=haserl-$(HASERL_VERSION).tar.gz
+HASERL_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/haserl/
+HASERL_DIR:=$(BUILD_DIR)/haserl-$(HASERL_VERSION)
 HASERL_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(HASERL_SOURCE):

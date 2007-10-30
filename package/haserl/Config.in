@@ -7,3 +7,28 @@ config BR2_PACKAGE_HASERL
 	  where something like PHP is too big.
 
 	  http://haserl.sourceforge.net/
+
+choice
+	prompt "Haserl version"
+	default BR2_PACKAGE_HASERL_VERSION_0_9_20
+	depends on BR2_PACKAGE_HASERL
+	help
+	  Select the older stable version, or the newer developer version
+
+config BR2_PACKAGE_HASERL_VERSION_0_8_0
+	bool	"v 0.8.0"
+	help
+	  stable version
+
+config BR2_PACKAGE_HASERL_VERSION_0_9_20
+	bool	"v 0.9.20"
+	help
+	  developer version - seems OK though
+
+endchoice
+
+
+config BR2_PACKAGE_HASERL_VERSION
+	string
+	default "0.8.0"		if BR2_PACKAGE_HASERL_VERSION_0_8_0
+	default "0.9.20"	if BR2_PACKAGE_HASERL_VERSION_0_9_20
