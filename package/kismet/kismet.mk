@@ -62,8 +62,6 @@ kismet-clean:
 	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_drone
 	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_server
 	rm -f $(KISMET_DIR)/conf/kismet.conf $(TARGET_DIR)/etc/kismet.conf
-
-
 	-$(MAKE) -C $(KISMET_DIR) clean
 
 kismet-dirclean:
