@@ -47,14 +47,15 @@ $(KISMET_DIR)/$(KISMET_BINARY): $(KISMET_DIR)/.configured
 	$(MAKE) CXX="$(TARGET_CXX)" CC="$(TARGET_CC)" \
 		-C $(KISMET_DIR)
 
-$(TARGET_DIR)/$(KISMET_TARGET_BINARY): $(KISMET_DIR)/$(KISMET_BINARY)
+$(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/$(KISMET_BINARY): $(KISMET_DIR)/$(KISMET_BINARY)
 	install -m 755 $(KISMET_DIR)/kismet $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet
 	install -m 755 $(KISMET_DIR)/kismet_client $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_client
 	install -m 755 $(KISMET_DIR)/kismet_drone $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_drone
 	install -m 755 $(KISMET_DIR)/kismet_server $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_server
 	install -m 755 $(KISMET_DIR)/conf/kismet.conf $(TARGET_DIR)/etc/kismet.conf
 
-kismet: uclibc ncurses libpcap $(TARGET_DIR)/$(KISMET_TARGET_BINARY)
+kismet: uclibc ncurses libpcap $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/$(KISMET_BINARY)
+
 
 kismet-clean:
 	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet
