@@ -9,6 +9,10 @@ config BR2_PACKAGE_ALSA_UTILS
 
 	  http://www.alsa-project.org/
 
+comment "alsa-utils needs ncurses"
+	depends on BR2_PACKAGE_ALSA_LIB
+	depends on !BR2_PACKAGE_NCURSES
+
 menu "ALSA utils selection"
 	depends on BR2_PACKAGE_ALSA_UTILS
 
