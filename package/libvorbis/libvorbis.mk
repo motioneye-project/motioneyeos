@@ -56,7 +56,7 @@ libvorbis-header: $(TARGET_DIR)/usr/lib/libvorbis.a
 	cp -dpf $(LIBVORBIS_DIR)/include/vorbis/*.h \
 		$(TARGET_DIR)/usr/include/vorbis
 
-libvorbis: uclibc pkgconfig $(TARGET_DIR)/usr/lib/libvorbis.so
+libvorbis: uclibc pkgconfig libogg $(TARGET_DIR)/usr/lib/libvorbis.so
 
 libvorbis-source: $(DL_DIR)/$(LIBVORBIS_SOURCE)
 
@@ -74,20 +74,20 @@ libvorbis-dirclean:
 ############################################################
 
 TREMOR_TRUNK:=http://svn.xiph.org/trunk/Tremor/
-TREMOR_VERSION:=-svn-$(DATE)
+TREMOR_VERSION:=svn-$(DATE)
 TREMOR_NAME:=Tremor-$(TREMOR_VERSION)
 TREMOR_DIR:=$(BUILD_DIR)/$(TREMOR_NAME)
 TREMOR_SOURCE:=$(TREMOR_NAME).tar.bz2
-
+TREMOR_CAT=$(BZCAT)
 
 $(DL_DIR)/$(TREMOR_SOURCE):
 	(cd $(BUILD_DIR); \
 		$(SVN_CO) $(TREMOR_TRUNK); \
 		mv -f Tremor $(TREMOR_NAME); \
-		tar -cvf $(TREMOR_NAME).tar $(TREMOR_DIR); \
+		tar -cvf $(TREMOR_NAME).tar $(TREMOR_NAME); \
 		bzip2 $(TREMOR_NAME).tar; \
 		rm -rf $(TREMOR_DIR); \
-		mv $(TREMOR_NAME).tar.bz2 $(DL_DIR)/$(TREMOR_SOURCE); \
+		mv $(TREMOR_SOURCE) $(DL_DIR)/$(TREMOR_SOURCE); \
 	)
 
 $(TREMOR_DIR)/.source: $(DL_DIR)/$(TREMOR_SOURCE)
@@ -99,7 +99,7 @@ $(TREMOR_DIR)/.configured: $(TREMOR_DIR)/.source
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
-		./configure \
+		./autogen.sh \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -129,7 +129,7 @@ tremor-header: $(TARGET_DIR)/usr/lib/tremor.a
 	cp -dpf $(TREMOR_DIR)/include/vorbis/*.h \
 		$(TARGET_DIR)/usr/include/vorbis
 
-tremor: uclibc pkgconfig $(TARGET_DIR)/usr/lib/tremor.so
+tremor: uclibc pkgconfig libogg $(TARGET_DIR)/usr/lib/tremor.so
 
 tremor-source: $(DL_DIR)/$(TREMOR_SOURCE)
 

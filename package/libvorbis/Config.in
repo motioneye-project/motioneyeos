@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBVORBIS
 	bool "libvorbis"
 	default n
+	depends on BR2_PACKAGE_LIBOGG
 	help
 	  Library for the Vorbis open source audio decoder
 	  Ogg Vorbis is a fully open, non-proprietary, patent-and-royalty-free,
@@ -29,3 +30,6 @@ config BR2_PACKAGE_LIBVORBIS_TREMOR
 	help
 	  Use the Tremor fixed point implementation
 	  Not yet implemented
+
+comment "libvorbis requires the package libogg to build"
+	depends on !BR2_PACKAGE_LIBVORBIS
