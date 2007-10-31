@@ -7,14 +7,37 @@ config BR2_PACKAGE_NCFTP
 
 	  http://www.ncftp.com/ncftp/
 
-config BR2_PACKAGE_NCFTP_UTILS
-	bool "install utils (ncftpput, ncftpget, ncftpls)"
+menu "ncFTP tools selection"
+	depends BR2_PACKAGE_NCFTP
+
+config BR2_PACKAGE_NCFTP_GET
+	bool "NcFTPGet - command-line utility program"
+	default y
+	depends BR2_PACKAGE_NCFTP
+
+config BR2_PACKAGE_NCFTP_PUT
+	bool "NcFTPPut - command-line utility program"
+	default y
+	depends BR2_PACKAGE_NCFTP
+
+config BR2_PACKAGE_NCFTP_LS
+	bool "NcFTPLs - command-line utility program"
+	default y
+	depends BR2_PACKAGE_NCFTP
+
+config BR2_PACKAGE_NCFTP_BATCH
+	bool "NcFTPBatch - background FTP program for individual users"
+	default y
+	depends BR2_PACKAGE_NCFTP
+
+config BR2_PACKAGE_NCFTP_SPOOLER
+	bool "NcFTPSpooler - spooler - not working properly"
 	default n
-	depends on BR2_PACKAGE_NCFTP
-	help
-	  This will also install:
-	  - NcFTPGet - command-line utility program
-	  - NcFTPPut - command-line utility program
-	  - NcFTPLs - command-line utility program
-	  - NcFTPBatch - background FTP program for individual users
-	  - NcFTPSpooler - background batch FTP service for systems
+	depends BR2_PACKAGE_NCFTP
+
+config BR2_PACKAGE_NCFTP_BOOKMARKS
+	bool "NcFTPBookmarks - not working properly"
+	default n
+	depends BR2_PACKAGE_NCFTP
+
+endmenu
