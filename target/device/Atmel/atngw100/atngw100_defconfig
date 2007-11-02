@@ -1,6 +1,6 @@
 #
 # Automatically generated make config: don't edit
-# Wed Oct 24 00:47:46 2007
+# Fri Nov  2 18:26:44 2007
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_VERSION="0.10.0-svn"
@@ -358,6 +358,7 @@ BR2_NETWORK_SUPPORT=y
 # BR2_PACKAGE_IPROUTE2 is not set
 # BR2_PACKAGE_IPSEC_TOOLS is not set
 # BR2_PACKAGE_IPTABLES is not set
+# BR2_PACKAGE_KISMET is not set
 # BR2_PACKAGE_L2TP is not set
 # BR2_PACKAGE_LIBCGI is not set
 # BR2_PACKAGE_LIBCGICC is not set
