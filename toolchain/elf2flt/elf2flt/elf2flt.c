@@ -727,7 +727,7 @@ dump_symbols(symbols, number_of_symbols);
 					   give an error by default, and
 					   require `safe' relocations to be
 					   enumberated explicitly?).  */
-					goto good_32bit_resolve_reloc;
+					goto good_32bit_resolved_reloc;
 #endif
 				good_32bit_resolved_reloc:
 					if (bfd_big_endian (abs_bfd))
