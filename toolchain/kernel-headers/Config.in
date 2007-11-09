@@ -74,7 +74,7 @@ choice
 		bool "Latest Linux 2.6.22.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_23
-		depends !BR2_avr32 && !BR2_nios2
+		depends !BR2_avr32
 		bool "Latest Linux 2.6.23.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_SNAP
