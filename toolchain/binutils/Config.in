@@ -28,6 +28,7 @@ endchoice
 
 config BR2_BINUTILS_VERSION
 	string
+	default "2.15"		if BR2_nios2
 	default "2.17"		if BR2_BINUTILS_VERSION_2_17
 	default "2.17.50.0.17"	if BR2_BINUTILS_VERSION_2_17_50_0_17
 	default "2.18"		if BR2_BINUTILS_VERSION_2_18
