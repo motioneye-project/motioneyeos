@@ -23,7 +23,7 @@ $(DL_DIR)/$(LIBUSB_SOURCE): $(LIBUSB_PATCH)
 
 libusb-source: $(DL_DIR)/$(LIBUSB_SOURCE) $(LIBUSB_PATCH)
 
-libusb-unpacked: $(LIBUSB_DIR)/.unpacked
+libusb-unpacked: host-automake host-autoconf $(LIBUSB_DIR)/.unpacked
 $(LIBUSB_DIR)/.unpacked: $(DL_DIR)/$(LIBUSB_SOURCE)
 	$(LIBUSB_CAT) $(DL_DIR)/$(LIBUSB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(LIBUSB_PATCH_FILE),)
@@ -32,6 +32,8 @@ endif
 	toolchain/patch-kernel.sh $(LIBUSB_DIR) package/libusb/ libusb-$(LIBUSB_VERSION)\*.patch*
 	$(SED) 's,^all:.*,all:,g' $(LIBUSB_DIR)/tests/Makefile.in
 	$(SED) 's,^install:.*,install:,g' $(LIBUSB_DIR)/tests/Makefile.in
+	$(CONFIG_UPDATE) $(LIBUSB_DIR)
+	cd $(LIBUSB_DIR) && $(AUTORECONF)
 	touch $@
 
 $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
