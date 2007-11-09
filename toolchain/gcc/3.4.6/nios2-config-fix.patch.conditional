@@ -1,0 +1,19 @@
+--- gcc-3.4.6/gcc/config/t-linux-uclibc	2007-11-07 14:50:34.000000000 +0100
++++ /dev/null	2007-11-02 12:35:37.750656579 +0100
+@@ -1,5 +0,0 @@
+-# Remove glibc specific files added in t-linux
+-SHLIB_MAPFILES := $(filter-out $(srcdir)/config/libgcc-glibc.ver, $(SHLIB_MAPFILES))
+-
+-# Use unwind-dw2-fde instead of unwind-dw2-fde-glibc
+-LIB2ADDEH := $(subst unwind-dw2-fde-glibc.c,unwind-dw2-fde.c,$(LIB2ADDEH))
+--- gcc-3.4.6/gcc/config.gcc.orig	2007-11-07 14:50:34.000000000 +0100
++++ gcc-3.4.6/gcc/config.gcc	2007-11-07 15:32:31.000000000 +0100
+@@ -2334,7 +2334,7 @@
+ # Rather than hook into each target, just do it after all the linux
+ # targets have been processed
+ case ${target} in
+-*-linux-uclibc*) tm_defines="${tm_defines} USE_UCLIBC" ; tmake_file="${tmake_file} t-linux-uclibc"
++*-linux-uclibc*) tm_defines="${tm_defines} USE_UCLIBC"
+ esac
+ 
+ # Support for --with-cpu and related options (and a few unrelated options,

@@ -27,7 +27,9 @@ endif
 ifeq ($(BR2_SOFT_FLOAT),y)
 # gcc 3.4.x soft float configuration is different than previous versions.
 ifeq ($(findstring x3.4.,x$(GCC_VERSION)),x3.4.)
+ifneq ($(BR2_nios2),y)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
+endif
 else
 SOFT_FLOAT_CONFIG_OPTION:=--without-float
 endif
