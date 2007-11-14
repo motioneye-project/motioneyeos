@@ -25,6 +25,11 @@ $(KISMET_DIR)/.configured: $(KISMET_DIR)/.patched
 	(cd $(KISMET_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
+		DBUS_CFLAGS="-I$(STAGING_DIR)/usr/include/dbus-1.0 -I$(STAGING_DIR)/usr/lib/dbus-1.0/include" \
+		DBUS_LIBS="$(STAGING_DIR)/usr/lib/libdbus-1.so" \
+		DBUS_GLIB_CFLAGS="-I$(STAGING_DIR)/usr/include/glib-2.0 -I$(STAGING_DIR)/usr/lib/glib-2.0/include" \
+		DBUS_GLIB_LIBS="$(STAGING_DIR)/lib/libglib-2.0.so $(STAGING_DIR)/lib/libgobject-2.0.so $(STAGING_DIR)/lib/libgmodule-2.0.so $(STAGING_DIR)/lib/libgthread-2.0.so" \
+		PKG_CONFIG=/usr/bin/pkg-config \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -40,12 +45,18 @@ $(KISMET_DIR)/.configured: $(KISMET_DIR)/.patched
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		$(DISABLE_NLS) \
+		$(DISABLE_LARGEFILE) \
 	)
 	touch $@
 
 $(KISMET_DIR)/$(KISMET_BINARY): $(KISMET_DIR)/.configured
 	$(MAKE) CXX="$(TARGET_CXX)" CC="$(TARGET_CC)" \
 		-C $(KISMET_DIR)
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet_client
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet_drone
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet_server
 
 $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/$(KISMET_BINARY): $(KISMET_DIR)/$(KISMET_BINARY)
 	install -m 755 $(KISMET_DIR)/kismet $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet
