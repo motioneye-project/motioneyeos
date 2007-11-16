@@ -4,3 +4,23 @@ config BR2_PACKAGE_FREETYPE
 	help
 
 	http://www.freetype.org/
+
+choice
+	prompt "Freetype Version"
+	depends BR2_PACKAGE_FREETYPE
+	default BR2_FREETYPE_VERSION_2_2_1
+	help
+	  Select the version of Freetype you wish to use.
+
+	config BR2_FREETYPE_VERSION_2_2_1
+		bool "Freetype 2.2.1"
+
+	config BR2_FREETYPE_VERSION_2_3_5
+		bool "Freetype 2.3.5"
+
+endchoice
+
+config BR2_FREETYPE_VERSION
+	string
+	default "2.2.1"		if BR2_FREETYPE_VERSION_2_2_1
+	default "2.3.5"		if BR2_FREETYPE_VERSION_2_3_5

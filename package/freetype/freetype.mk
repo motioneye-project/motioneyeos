@@ -3,7 +3,7 @@
 # freetype
 #
 #############################################################
-FREETYPE_VERSION:=2.2.1
+FREETYPE_VERSION:=$(strip $(subst ",, $(BR2_FREETYPE_VERSION)))
 FREETYPE_SOURCE:=freetype-$(FREETYPE_VERSION).tar.bz2
 FREETYPE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/freetype
 FREETYPE_CAT:=$(BZCAT)
