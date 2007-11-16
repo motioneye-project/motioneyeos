@@ -1,7 +1,27 @@
 config BR2_PACKAGE_SDL
 	bool "SDL"
 	default n
-	select BR2_PACKAGE_DIRECTFB
 	help
 
 	  http://www.libsdl.org/
+
+menu "SDL options selection"
+	depends BR2_PACKAGE_SDL
+
+config BR2_PACKAGE_SDL_FBCON
+	bool "SDL framebuffer console video driver"
+	default y
+
+config BR2_PACKAGE_SDL_DIRECTFB
+	bool "SDL DirectFB video driver"
+	default n
+
+config BR2_PACKAGE_SDL_QTOPIA
+	bool "SDL Qtopia video driver"
+	default n
+
+config BR2_PACKAGE_SDL_X11
+	bool "SDL X11 video driver"
+	default n
+
+endmenu

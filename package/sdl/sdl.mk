@@ -3,13 +3,39 @@
 # SDL
 #
 #############################################################
-SDL_VERSION:=1.2.11
+SDL_VERSION:=1.2.12
 # 1.2.12 is available, but depends on Pulse Audio 0.9
 # which is not available in buildroot (yet)
 SDL_SOURCE:=SDL-$(SDL_VERSION).tar.gz
 SDL_SITE:=http://www.libsdl.org/release
 SDL_CAT:=$(ZCAT)
 SDL_DIR:=$(BUILD_DIR)/SDL-$(SDL_VERSION)
+
+ifeq ($(BR2_PACKAGE_SDL_FBCON),y)
+SDL_FBCON=--enable-video-fbcon=yes
+else
+SDL_FBCON=--enable-video-fbcon=no
+endif
+
+ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
+SDL_DIRECTFB=--enable-video-directfb=yes
+SDL_DIRECTFB_TARGET:=$(STAGING_DIR)/include/directfb
+SDL_DIRECTFB_INCLUDES:=-I$(STAGING_DIR)/usr/include/directfb
+else
+SDL_DIRECTFB=--enable-video-directfb=no
+endif
+
+ifeq ($(BR2_PACKAGE_SDL_QTOPIA),y)
+SDL_QTOPIA=--enable-video-qtopia=yes
+else
+SDL_QTOPIA=--enable-video-qtopia=no
+endif
+
+ifeq ($(BR2_PACKAGE_SDL_X11),y)
+SDL_X11=--enable-video-x11=yes
+else
+SDL_X11=--enable-video-x11=no
+endif
 
 $(DL_DIR)/$(SDL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SDL_SITE)/$(SDL_SOURCE)
@@ -43,18 +69,25 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 		--includedir=/include \
 		--mandir=/man \
 		--infodir=/info \
+		--enable-pulseaudio=no \
 		--disable-arts \
 		--disable-esd \
 		--disable-nasm \
-		--disable-video-x11 )
+		$(SDL_FBCON) \
+		$(SDL_DIRECTFB) \
+		$(SDL_QTOPIA) \
+		$(SDL_X11) \
+		)
 	touch $@
 
-$(STAGING_DIR)/include/directfb:
+ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
+$(SDL_DIRECTFB_TARGET):
 	ln -s ../usr/include/directfb $(STAGING_DIR)/include/directfb
+endif
 
-$(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(STAGING_DIR)/include/directfb
+$(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(SDL_DIRECTFB_TARGET)
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
-		INCLUDE="-I./include -I$(STAGING_DIR)/usr/include/directfb" \
+		INCLUDE="-I./include $(SDL_DIRECTFB_INCLUDES)" \
 		LDFLAGS="-L$(STAGING_DIR)/usr/lib" \
 		DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR)
 	touch $@
