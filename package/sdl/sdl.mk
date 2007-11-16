@@ -94,6 +94,11 @@ $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(SDL_DIRECTFB_TARGET)
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR) install
+	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
+		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
+		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
+		-e "s,-I/include/SDL,-I\'$(STAGING_DIR)/include/SDL\',g" \
+		$(STAGING_DIR)/usr/bin/sdl-config
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so
