@@ -68,6 +68,7 @@ $(DIRECTFB_DIR)/.configured: $(DIRECTFB_DIR)/.unpacked
 		--enable-freetype \
 		--disable-sysfs \
 		--disable-sdl \
+		--disable-vnc \
 		--disable-video4linux \
 		--disable-video4linux2 \
 		--enable-fusion )
