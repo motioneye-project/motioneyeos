@@ -1,9 +1,27 @@
 config BR2_PACKAGE_DBUS
 	bool "dbus"
 	default n
-	select BR2_PACKAGE_EXPAT
-	select BR2_PACKAGE_LIBXML2
 	help
 	  The D-Bus message bus system.
 
 	  http://www.freedesktop.org/wiki/Software/dbus
+
+choice
+	prompt "XML library to use"
+	depends BR2_PACKAGE_DBUS
+	default BR2_DBUS_LIBXML2 if BR2_PACKAGE_LIBXML2
+	default BR2_DBUS_EXPAT
+	help
+	  Select the XML library to use with D-Bus. Select Expat
+	  unless you have specific reasons for using libxml2 as
+	  Expat is significant smaller.
+
+	config BR2_DBUS_EXPAT
+	       bool "Expat"
+	       select BR2_PACKAGE_EXPAT
+
+	config BR2_DBUS_LIBXML2
+	       bool "libxml2"
+	       select BR2_PACKAGE_LIBXML2
+
+endchoice
