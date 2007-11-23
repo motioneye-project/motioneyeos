@@ -3,7 +3,7 @@
 # imagemagick
 #
 #############################################################
-IMAGEMAGICK_VERSION:=6.3.5
+IMAGEMAGICK_VERSION:=6.3.7
 IMAGEMAGICK_SOURCE:=ImageMagick.tar.bz2
 IMAGEMAGICK_SITE:=ftp://ftp.imagemagick.org/pub/ImageMagick
 IMAGEMAGICK_DIR:=$(BUILD_DIR)/ImageMagick-$(IMAGEMAGICK_VERSION)
