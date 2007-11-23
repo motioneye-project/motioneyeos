@@ -168,9 +168,6 @@ endif
 	#toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc i386-gcc-soft-float.patch
 	#endif
 endif
-ifeq ("$(strip $(ARCH))","nios2")
-	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) nios2-config-fix.patch.conditional
-endif
 	touch $@
 
 # The --without-headers option stopped working with gcc 3.0 and has never been
