@@ -22,15 +22,24 @@ ifeq ($(strip $(BR2_PACKAGE_AVAHI_AUTOIPD)),y)
 AVAHI_TARGETS+=$(TARGET_DIR)/usr/sbin/avahi-autoipd
 endif
 
+AVAHI_EXTRA_DEPS:=
+
 ifeq ($(strip $(BR2_PACKAGE_AVAHI_DAEMON)),y)
 AVAHI_TARGETS+=$(TARGET_DIR)/usr/sbin/avahi-daemon
 AVAHI_DISABLE_EXPAT:=
 # depend on the exact library file instead of expat so avahi isn't always
 # considered out-of-date
-AVAHI_EXPAT_DEP:=$(STAGING_DIR)/usr/lib/libexpat.so.1
+AVAHI_EXTRA_DEPS+=$(STAGING_DIR)/usr/lib/libexpat.so.1
 else
 AVAHI_DISABLE_EXPAT:=--disable-expat
-AVAHI_EXPAT_DEP:=
+
+endif
+
+ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+AVAHI_DISABLE_DBUS:=
+AVAHI_EXTRA_DEPS+=$(STAGING_DIR)/usr/lib/libdbus-1.so
+else
+AVAHI_DISABLE_DBUS:=--disable-dbus
 endif
 
 $(DL_DIR)/$(AVAHI_SOURCE):
@@ -43,13 +52,9 @@ $(AVAHI_DIR)/.unpacked: $(DL_DIR)/$(AVAHI_SOURCE)
 	toolchain/patch-kernel.sh $(AVAHI_DIR) package/avahi/ \*.patch
 	touch $@
 
-$(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
+$(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXTRA_DEPS)
 	(cd $(AVAHI_DIR) && rm -rf config.cache && autoconf)
 	(cd $(AVAHI_DIR) && \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		LIBDAEMON_CFLAGS="-I$(STAGING_DIR)/usr/include" \
-		LIBDAEMON_LIBS="-L$(STAGING_DIR)/lib -ldaemon" \
 		ac_cv_func_strtod=yes \
 		ac_fsusage_space=yes \
 		fu_cv_sys_stat_statfs2_bsize=yes \
@@ -125,7 +130,7 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXPAT_DEP)
 		--disable-qt3 \
 		--disable-qt4 \
 		--disable-gtk \
-		--disable-dbus \
+		$(AVAHI_DISABLE_DBUS) \
 		$(AVAHI_DISABLE_EXPAT) \
 		--disable-gdbm \
 		--disable-python \
