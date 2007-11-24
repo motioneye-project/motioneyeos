@@ -1,0 +1,56 @@
+diff -urp fuse-2.7.0-orig/lib/fuse.c fuse-2.7.0/lib/fuse.c
+--- fuse-2.7.0-orig/lib/fuse.c	2007-07-02 14:33:08.000000000 +0300
++++ fuse-2.7.0/lib/fuse.c	2007-08-22 19:31:39.000000000 +0300
+@@ -3294,7 +3294,7 @@ __asm__(".symver fuse_process_cmd,__fuse
+ __asm__(".symver fuse_read_cmd,__fuse_read_cmd@");
+ __asm__(".symver fuse_set_getcontext_func,__fuse_set_getcontext_func@");
+ __asm__(".symver fuse_new_compat2,fuse_new@");
+-__asm__(".symver fuse_new_compat22,fuse_new@FUSE_2.2");
++//__asm__(".symver fuse_new_compat22,fuse_new@FUSE_2.2");
+ 
+ #endif /* __FreeBSD__ */
+ 
+diff -urp fuse-2.7.0-orig/lib/helper.c fuse-2.7.0/lib/helper.c
+--- fuse-2.7.0-orig/lib/helper.c	2007-07-02 14:32:17.000000000 +0300
++++ fuse-2.7.0/lib/helper.c	2007-08-22 19:32:40.000000000 +0300
+@@ -391,10 +391,10 @@ int fuse_mount_compat1(const char *mount
+ }
+ 
+ __asm__(".symver fuse_setup_compat2,__fuse_setup@");
+-__asm__(".symver fuse_setup_compat22,fuse_setup@FUSE_2.2");
++//__asm__(".symver fuse_setup_compat22,fuse_setup@FUSE_2.2");
+ __asm__(".symver fuse_teardown,__fuse_teardown@");
+ __asm__(".symver fuse_main_compat2,fuse_main@");
+-__asm__(".symver fuse_main_real_compat22,fuse_main_real@FUSE_2.2");
++//__asm__(".symver fuse_main_real_compat22,fuse_main_real@FUSE_2.2");
+ 
+ #endif /* __FreeBSD__ */
+ 
+@@ -428,6 +428,6 @@ int fuse_mount_compat25(const char *moun
+ }
+ 
+ __asm__(".symver fuse_setup_compat25,fuse_setup@FUSE_2.5");
+-__asm__(".symver fuse_teardown_compat22,fuse_teardown@FUSE_2.2");
++//__asm__(".symver fuse_teardown_compat22,fuse_teardown@FUSE_2.2");
+ __asm__(".symver fuse_main_real_compat25,fuse_main_real@FUSE_2.5");
+ __asm__(".symver fuse_mount_compat25,fuse_mount@FUSE_2.5");
+diff -urp fuse-2.7.0-orig/lib/mount_bsd.c fuse-2.7.0/lib/mount_bsd.c
+--- fuse-2.7.0-orig/lib/mount_bsd.c	2006-05-03 17:46:04.000000000 +0300
++++ fuse-2.7.0/lib/mount_bsd.c	2007-08-22 19:31:55.000000000 +0300
+@@ -360,4 +360,4 @@ int fuse_kern_mount(const char *mountpoi
+     return res;
+ }
+ 
+-__asm__(".symver fuse_unmount_compat22,fuse_unmount@FUSE_2.2");
++//__asm__(".symver fuse_unmount_compat22,fuse_unmount@FUSE_2.2");
+diff -urp fuse-2.7.0-orig/lib/mount.c fuse-2.7.0/lib/mount.c
+--- fuse-2.7.0-orig/lib/mount.c	2007-07-02 14:32:17.000000000 +0300
++++ fuse-2.7.0/lib/mount.c	2007-08-22 19:31:19.000000000 +0300
+@@ -579,5 +579,5 @@ int fuse_kern_mount(const char *mountpoi
+     return res;
+ }
+ 
+-__asm__(".symver fuse_mount_compat22,fuse_mount@FUSE_2.2");
+-__asm__(".symver fuse_unmount_compat22,fuse_unmount@FUSE_2.2");
++//__asm__(".symver fuse_mount_compat22,fuse_mount@FUSE_2.2");
++//__asm__(".symver fuse_unmount_compat22,fuse_unmount@FUSE_2.2");
