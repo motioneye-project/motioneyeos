@@ -7,7 +7,7 @@ config BR2_PACKAGE_DBUS
 
 	  http://www.freedesktop.org/wiki/Software/dbus
 
-comment "dbus not available (need expat or libxml2)
+comment "dbus not available (need expat or libxml2)"
 	depends on !BR2_PACKAGE_EXPAT && !BR2_PACKAGE_LIBXML2
 
 choice
