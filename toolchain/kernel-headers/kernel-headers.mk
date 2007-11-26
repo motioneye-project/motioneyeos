@@ -24,6 +24,8 @@ KERNEL_ARCH:=$(shell $(SHELL) -c "echo \"$(ARCH)\" | sed -e \"s/-.*//\" \
 # assume old manually sanitized kernel-headers
 LINUX_HEADERS_IS_KERNEL=n
 
+# this needs to be included before kernel-headers-new to set old-style mode
+include toolchain/kernel-headers/kernel-headers-old-versions.makefile
 include toolchain/kernel-headers/kernel-headers-new.makefile
 include toolchain/kernel-headers/kernel-headers-old.makefile
 
