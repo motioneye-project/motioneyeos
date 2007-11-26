@@ -77,6 +77,6 @@ ntfs-3g-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-#ifeq ($(strip $(BR2_PACKAGE_NTFS-3G)),y)
+ifeq ($(strip $(BR2_PACKAGE_NTFS-3G)),y)
 TARGETS+=ntfs-3g
-#endif
+endif
