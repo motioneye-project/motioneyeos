@@ -67,7 +67,7 @@ $(STAGING_DIR)/usr/lib/libdbus-1.so: $(DBUS_DIR)/$(DBUS_BINARY)
 $(TARGET_DIR)/$(DBUS_TARGET_BINARY): $(STAGING_DIR)/usr/lib/libdbus-1.so
 	mkdir -p $(TARGET_DIR)/var/run/dbus $(TARGET_DIR)/etc/init.d
 	$(MAKE) DESTDIR=$(TARGET_DIR) STRIPPROG='$(STRIPCMD)' \
-		initdir=/etc/init.d -C $(DBUS_DIR)/dbus install-strip
+		initdir=/etc/init.d -C $(DBUS_DIR) install-strip
 	rm -rf $(TARGET_DIR)/usr/lib/dbus-1.0 \
 		$(TARGET_DIR)/usr/lib/libdbus-1.la \
 		$(TARGET_DIR)/usr/include/dbus-1.0 \
