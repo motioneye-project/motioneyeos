@@ -38,13 +38,8 @@ $(LIBMAD_DIR)/.configured: $(LIBMAD_DIR)/.unpacked
 	)
 	touch $@
 
-# This rule runs 'libtoolize' since the ltmain.sh which comes in the tarball
-# is unsuitable with new libtool versions (causing shared libraries to build
-# without the .so extension).
-
 $(LIBMAD_DIR)/libmad.la: $(LIBMAD_DIR)/.configured
 	rm -f $@
-	(cd $(LIBMAD_DIR); libtoolize --force)
 	$(MAKE) -C $(LIBMAD_DIR)
 
 $(STAGING_DIR)/usr/lib/libmad.so.0: $(LIBMAD_DIR)/libmad.la

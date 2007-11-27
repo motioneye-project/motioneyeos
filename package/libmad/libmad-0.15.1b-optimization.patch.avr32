@@ -139,6 +139,46 @@ index 5a51570..70f550a 100644
  unsigned short mad_bit_crc(struct mad_bitptr, unsigned int, unsigned short);
  
  # endif
+diff --git a/configure.ac b/configure.ac
+index 9b79399..063cb9b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -274,13 +274,14 @@ fi
+ AC_MSG_CHECKING(for architecture-specific fixed-point math routines)
+ AC_ARG_ENABLE(fpm, AC_HELP_STRING([--enable-fpm=ARCH],
+ 		   [use ARCH-specific fixed-point math routines
+-		    (one of: intel, arm, mips, sparc, ppc, 64bit, default)]),
++		    (one of: intel, arm, avr32, mips, sparc, ppc, 64bit, default)]),
+ [
+     case "$enableval" in
+ 	yes)                             ;;
+ 	no|default|approx) FPM="DEFAULT" ;;
+ 	intel|i?86)        FPM="INTEL"   ;;
+ 	arm)               FPM="ARM"     ;;
++	avr32)             FPM="AVR32"   ;;
+ 	mips)              FPM="MIPS"    ;;
+ 	sparc)             FPM="SPARC"   ;;
+ 	ppc|powerpc)       FPM="PPC"     ;;
+@@ -298,6 +299,7 @@ then
+     case "$host" in
+ 	i?86-*)     FPM="INTEL"  ;;
+ 	arm*-*)     FPM="ARM"    ;;
++	avr32*-*)   FPM="AVR32"  ;;
+ 	mips*-*)    FPM="MIPS"   ;;
+ 	sparc*-*)   FPM="SPARC"  ;;
+ 	powerpc*-*) FPM="PPC"    ;;
+@@ -343,6 +345,11 @@ then
+ 	    ASO="$ASO -DASO_IMDCT"
+ 	    ASO_OBJS="imdct_l_arm.lo"
+ 	    ;;
++	avr32*-*)
++	    ASO="$ASO -DASO_INTERLEAVE2"
++	    ASO="$ASO -DASO_ZEROCHECK"
++	    ASO_OBJS="dct32_avr32.lo synth_avr32.lo imdct_avr32.lo"
++	    ;;
+ 	mips*-*)
+ 	    ASO="$ASO -DASO_INTERLEAVE2"
+ 	    ASO="$ASO -DASO_ZEROCHECK"
 diff --git a/configure b/configure
 index ee421cc..7a9f0c8 100755
 --- a/configure
@@ -169,46 +209,6 @@ index ee421cc..7a9f0c8 100755
  	sparc*-*)   FPM="SPARC"  ;;
  	powerpc*-*) FPM="PPC"    ;;
 @@ -21554,6 +21556,11 @@ then
- 	    ASO="$ASO -DASO_IMDCT"
- 	    ASO_OBJS="imdct_l_arm.lo"
- 	    ;;
-+	avr32*-*)
-+	    ASO="$ASO -DASO_INTERLEAVE2"
-+	    ASO="$ASO -DASO_ZEROCHECK"
-+	    ASO_OBJS="dct32_avr32.lo synth_avr32.lo imdct_avr32.lo"
-+	    ;;
- 	mips*-*)
- 	    ASO="$ASO -DASO_INTERLEAVE2"
- 	    ASO="$ASO -DASO_ZEROCHECK"
-diff --git a/configure.ac b/configure.ac
-index 9b79399..063cb9b 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -274,13 +274,14 @@ fi
- AC_MSG_CHECKING(for architecture-specific fixed-point math routines)
- AC_ARG_ENABLE(fpm, AC_HELP_STRING([--enable-fpm=ARCH],
- 		   [use ARCH-specific fixed-point math routines
--		    (one of: intel, arm, mips, sparc, ppc, 64bit, default)]),
-+		    (one of: intel, arm, avr32, mips, sparc, ppc, 64bit, default)]),
- [
-     case "$enableval" in
- 	yes)                             ;;
- 	no|default|approx) FPM="DEFAULT" ;;
- 	intel|i?86)        FPM="INTEL"   ;;
- 	arm)               FPM="ARM"     ;;
-+	avr32)             FPM="AVR32"   ;;
- 	mips)              FPM="MIPS"    ;;
- 	sparc)             FPM="SPARC"   ;;
- 	ppc|powerpc)       FPM="PPC"     ;;
-@@ -298,6 +299,7 @@ then
-     case "$host" in
- 	i?86-*)     FPM="INTEL"  ;;
- 	arm*-*)     FPM="ARM"    ;;
-+	avr32*-*)   FPM="AVR32"  ;;
- 	mips*-*)    FPM="MIPS"   ;;
- 	sparc*-*)   FPM="SPARC"  ;;
- 	powerpc*-*) FPM="PPC"    ;;
-@@ -343,6 +345,11 @@ then
  	    ASO="$ASO -DASO_IMDCT"
  	    ASO_OBJS="imdct_l_arm.lo"
  	    ;;
