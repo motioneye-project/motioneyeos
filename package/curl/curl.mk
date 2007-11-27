@@ -3,7 +3,8 @@
 # curl
 #
 #############################################################
-CURL_VERSION:=7.13.1
+CURL_VERSION:=7.17.1
+LIBCURL_VERSION:=4.0.1
 CURL_SOURCE:=curl-$(CURL_VERSION).tar.bz2
 CURL_SITE:=http://curl.haxx.se/download/
 CURL_CAT:=$(BZCAT)
@@ -17,7 +18,7 @@ curl-source: $(DL_DIR)/$(CURL_SOURCE)
 
 $(CURL_DIR)/.unpacked: $(DL_DIR)/$(CURL_SOURCE)
 	$(CURL_CAT) $(DL_DIR)/$(CURL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(CURL_DIR) package/curl/ \*.patch*
+	toolchain/patch-kernel.sh $(CURL_DIR) package/curl/ curl-$(CURL_VERSION)-\*.patch*
 	touch $(CURL_DIR)/.unpacked
 
 $(CURL_DIR)/.configured: $(CURL_DIR)/.unpacked
@@ -44,13 +45,13 @@ $(STAGING_DIR)/bin/$(CURL_BINARY): $(CURL_DIR)/src/.libs/$(CURL_BINARY)
 	-rm -rf $(STAGING_DIR)/man
 	touch $(STAGING_DIR)/bin/$(CURL_BINARY)
 
-$(TARGET_DIR)/usr/lib/libcurl.so.3.0.0: $(STAGING_DIR)/bin/$(CURL_BINARY)
+$(TARGET_DIR)/usr/lib/libcurl.so.$(LIBCURL_VERSION): $(STAGING_DIR)/bin/$(CURL_BINARY)
 	-mkdir $(TARGET_DIR)/usr/lib
 	-mkdir $(TARGET_DIR)/usr/bin
 	cp -a $(STAGING_DIR)/lib/libcurl.so* $(TARGET_DIR)/usr/lib
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcurl.so.3.0.0
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcurl.so.$(LIBCURL_VERSION)
 
-$(TARGET_DIR)/usr/bin/$(CURL_BINARY): $(TARGET_DIR)/usr/lib/libcurl.so.3.0.0
+$(TARGET_DIR)/usr/bin/$(CURL_BINARY): $(TARGET_DIR)/usr/lib/libcurl.so.$(LIBCURL_VERSION)
 	cp -a $(STAGING_DIR)/bin/$(CURL_BINARY) $(TARGET_DIR)/usr/bin
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/$(CURL_BINARY)
 
