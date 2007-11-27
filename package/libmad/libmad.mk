@@ -40,7 +40,7 @@ $(LIBMAD_DIR)/.configured: $(LIBMAD_DIR)/.unpacked
 
 $(LIBMAD_DIR)/libmad.la: $(LIBMAD_DIR)/.configured
 	rm -f $@
-	$(MAKE) -C $(LIBMAD_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBMAD_DIR)
 
 $(STAGING_DIR)/usr/lib/libmad.so.0: $(LIBMAD_DIR)/libmad.la
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBMAD_DIR) install
