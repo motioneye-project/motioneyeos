@@ -8,7 +8,7 @@ LIBGPG_ERROR_SOURCE:=libgpg-error-$(LIBGPG_ERROR_VERSION).tar.bz2
 LIBGPG_ERROR_SITE:=ftp://gd.tuwien.ac.at/privacy/gnupg/libgpg-error
 LIBGPG_ERROR_DIR:=$(BUILD_DIR)/libgpg-error-$(LIBGPG_ERROR_VERSION)
 LIBGPG_ERROR_LIBRARY:=src/libgpg-error.la
-LIBGPG_ERROR_DESTDIR:=lib
+LIBGPG_ERROR_DESTDIR:=usr/lib
 LIBGPG_ERROR_TARGET_LIBRARY=$(LIBGPG_ERROR_DESTDIR)/libgpg-error.so
 
 $(DL_DIR)/$(LIBGPG_ERROR_SOURCE):
@@ -32,7 +32,7 @@ $(LIBGPG_ERROR_DIR)/.configured: $(LIBGPG_ERROR_DIR)/.source
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/$(LIBGPG_ERROR_DESTDIR) \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
@@ -49,7 +49,7 @@ $(LIBGPG_ERROR_DIR)/$(LIBGPG_ERROR_LIBRARY): $(LIBGPG_ERROR_DIR)/.configured
 
 $(STAGING_DIR)/$(LIBGPG_ERROR_TARGET_LIBRARY): $(LIBGPG_ERROR_DIR)/$(LIBGPG_ERROR_LIBRARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBGPG_ERROR_DIR) install
-
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libgpg-error.la
 
 $(TARGET_DIR)/$(LIBGPG_ERROR_TARGET_LIBRARY): $(STAGING_DIR)/$(LIBGPG_ERROR_TARGET_LIBRARY)
 	cp -dpf $<* $(TARGET_DIR)/$(LIBGPG_ERROR_DESTDIR)
@@ -61,6 +61,7 @@ libgpg-error-source: $(DL_DIR)/$(LIBGPG_ERROR_SOURCE)
 libgpg-error-clean:
 	rm -f $(TARGET_DIR)/$(LIBGPG_ERROR_TARGET_LIBRARY)*
 	-$(MAKE) -C $(LIBGPG_ERROR_DIR) clean
+	rm -f $(STAGING_DIR)/$(LIBGPG_ERROR_TARGET_LIBRARY)\*
 
 libgpg-error-dirclean:
 	rm -rf $(LIBGPG_ERROR_DIR)
