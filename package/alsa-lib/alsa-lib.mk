@@ -11,6 +11,12 @@ ALSA_LIB_CAT:=$(BZCAT)
 ALSA_LIB_BINARY:=libasound.so.2.0.0
 ALSA_LIB_TARGET_BINARY:=usr/lib/$(ALSA_LIB_BINARY)
 
+ifeq ($(BR2_arm),y)
+ALSA_LIB_ABI:=-mabi=aapcs-linux
+else
+ALSA_LIB_ABI:=
+endif
+
 $(DL_DIR)/$(ALSA_LIB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ALSA_LIB_SITE)/$(ALSA_LIB_SOURCE)
 
@@ -24,7 +30,7 @@ $(ALSA_LIB_DIR)/.configured: $(ALSA_LIB_DIR)/.unpacked
 	(cd $(ALSA_LIB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS) -mabi=aapcs-linux" \
+		CFLAGS="$(TARGET_CFLAGS) $(ALSA_LIB_ABI)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
