@@ -16,6 +16,7 @@ LIBDAEMON_NAME:=libdaemon-$(LIBDAEMON_VERSION)
 LIBDAEMON_DIR:=$(BUILD_DIR)/$(LIBDAEMON_NAME)
 LIBDAEMON_SITE:=http://0pointer.de/lennart/projects/libdaemon/
 LIBDAEMON_SOURCE:=$(LIBDAEMON_NAME).tar.gz
+LIBDAEMON_DESTDIR:=$(STAGING_DIR)/usr/lib
 LIBDAEMON_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(LIBDAEMON_SOURCE):
@@ -42,7 +43,7 @@ $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
@@ -58,17 +59,18 @@ $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 	touch $@
 
 $(LIBDAEMON_DIR)/.compiled: $(LIBDAEMON_DIR)/.configured
-	$(MAKE) LIBTOOL=$(LIBDAEMON_DIR)/libtool -C $(LIBDAEMON_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) LIBTOOL=$(LIBDAEMON_DIR)/libtool -C $(LIBDAEMON_DIR)
 	touch $@
 
-$(STAGING_DIR)/lib/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
+$(LIBDAEMON_DESTDIR)/libdaemon.a: $(LIBDAEMON_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBDAEMON_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libdaemon.la
 	touch -c $@
 
-#$(TARGET_DIR)/usr/lib/libdaemon.a: $(STAGING_DIR)/lib/libdaemon.a
+#$(TARGET_DIR)/usr/lib/libdaemon.a: $(LIBDAEMON_DESTDIR)/libdaemon.a
 # -$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdaemon.a
 
-libdaemon: uclibc pkgconfig $(STAGING_DIR)/lib/libdaemon.a
+libdaemon: uclibc pkgconfig $(LIBDAEMON_DESTDIR)/libdaemon.a
 
 libdaemon-unpacked: $(LIBDAEMON_DIR)/.unpacked
 
