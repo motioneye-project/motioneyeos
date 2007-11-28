@@ -8,7 +8,7 @@ LIBGCRYPT_SOURCE:=libgcrypt-$(LIBGCRYPT_VERSION).tar.bz2
 LIBGCRYPT_SITE:=ftp://gd.tuwien.ac.at/privacy/gnupg/libgcrypt/
 LIBGCRYPT_DIR:=$(BUILD_DIR)/libgcrypt-$(LIBGCRYPT_VERSION)
 LIBGCRYPT_LIBRARY:=src/libgcrypt.la
-LIBGCRYPT_DESTDIR:=lib
+LIBGCRYPT_DESTDIR:=usr/lib
 LIBGCRYPT_TARGET_LIBRARY=$(LIBGCRYPT_DESTDIR)/libgcrypt.so
 
 $(DL_DIR)/$(LIBGCRYPT_SOURCE):
@@ -36,7 +36,7 @@ $(LIBGCRYPT_DIR)/.configured: $(LIBGCRYPT_DIR)/.source
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/$(LIBGCRYPT_DESTDIR) \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
@@ -53,6 +53,7 @@ $(LIBGCRYPT_DIR)/$(LIBGCRYPT_LIBRARY): $(LIBGCRYPT_DIR)/.configured
 
 $(STAGING_DIR)/$(LIBGCRYPT_TARGET_LIBRARY): $(LIBGCRYPT_DIR)/$(LIBGCRYPT_LIBRARY)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(STAGING_DIR) -C $(LIBGCRYPT_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libgcrypt.la
 	touch -c $@
 
 $(TARGET_DIR)/$(LIBGCRYPT_TARGET_LIBRARY): $(STAGING_DIR)/$(LIBGCRYPT_TARGET_LIBRARY)
@@ -68,6 +69,7 @@ libgcrypt-source: $(DL_DIR)/$(LIBGCRYPT_SOURCE)
 libgcrypt-clean:
 	rm -f $(TARGET_DIR)/$(LIBGCRYPT_TARGET_LIBRARY)*
 	-$(MAKE) -C $(LIBGCRYPT_DIR) clean
+	rm -rf $(STAGING_DIR)/$(LIBGCRYPT_TARGET_LIBRARY)\*
 
 libgcrypt-dirclean:
 	rm -rf $(LIBGCRYPT_DIR)
