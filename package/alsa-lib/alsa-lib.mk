@@ -24,7 +24,7 @@ $(ALSA_LIB_DIR)/.configured: $(ALSA_LIB_DIR)/.unpacked
 	(cd $(ALSA_LIB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS) -mabi=aapcs-linux" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
