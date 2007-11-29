@@ -41,11 +41,16 @@ $(LIBOGG_DIR)/.configured: $(LIBOGG_DIR)/.source
 	touch $@
 
 $(LIBOGG_DIR)/.libs: $(LIBOGG_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(LIBOGG_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBOGG_DIR)
 	touch $@
 
-$(TARGET_DIR)/usr/lib/libogg.so: $(LIBOGG_DIR)/.libs
-	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LIBOGG_DIR) install
+$(STAGING_DIR)/usr/lib/libogg.so: $(LIBOGG_DIR)/.libs
+	mkdir -p $(STAGING_DIR)
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBOGG_DIR) install
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libogg.la
+
+$(TARGET_DIR)/usr/lib/libogg.so: $(STAGING_DIR)/usr/lib/libogg.so
+	cp -dpf $(STAGING_DIR)/usr/lib/libogg.so* $(TARGET_DIR)/usr/lib
 ifneq ($(strip $(BR2_HAVE_MANPAGES)),y)
 	rm -rf $(TARGET_DIR)/usr/share/doc/$(LIBOGG_NAME)
 endif
@@ -65,7 +70,8 @@ libogg: uclibc pkgconfig $(TARGET_DIR)/usr/lib/libogg.so
 libogg-source: $(DL_DIR)/$(LIBOGG_SOURCE)
 
 libogg-clean:
-	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(LIBOGG_DIR) uninstall
+	-rm -rf $(TARGET_DIR)/usr/lib/libogg.so*
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBOGG_DIR) uninstall
 	-$(MAKE) -C $(LIBOGG_DIR) clean
 
 libogg-dirclean:
