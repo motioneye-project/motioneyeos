@@ -8,9 +8,9 @@ config BR2_PACKAGE_FLEX
 	  http://www.gnu.org/software/flex/
 
 config BR2_PACKAGE_FLEX_LIBFL
-	bool "Install libfl.a under staging_dir/lib"
+	bool "Install libfl.a under staging_dir/usr/lib"
 	default y
 	depends on BR2_PACKAGE_FLEX
 	help
-	  Install libfl.a under staging_dir/lib for further development
+	  Install libfl.a under staging_dir/usr/lib for further development
 	  on a host machine.

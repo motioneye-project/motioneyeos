@@ -77,7 +77,7 @@ $(TARGET_DIR)/$(FLEX_TARGET_BINARY): $(FLEX_DIR)/$(FLEX_BINARY)
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(FLEX_DIR) install
 ifeq ($(strip $(BR2_PACKAGE_FLEX_LIBFL)),y)
-	install -D $(FLEX_DIR)/libfl.a $(STAGING_DIR)/lib/libfl.a
+	install -D $(FLEX_DIR)/libfl.a $(STAGING_DIR)/usr/lib/libfl.a
 endif
 ifneq ($(BR2_HAVE_INFOPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/info
