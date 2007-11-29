@@ -23,6 +23,7 @@ $(DL_DIR)/$(SPEEX_SOURCE):
 
 $(SPEEX_DIR)/.unpacked: $(DL_DIR)/$(SPEEX_SOURCE)
 	$(SPEEX_CAT) $(DL_DIR)/$(SPEEX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(SPEEX_DIR)
 	touch $(SPEEX_DIR)/.unpacked
 
 $(SPEEX_DIR)/Makefile: $(SPEEX_DIR)/.unpacked
