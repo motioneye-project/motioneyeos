@@ -24,9 +24,13 @@ config BR2_PACKAGE_AVAHI_DAEMON
 	bool "mDNS/DNS-SD daemon"
 	default n
 	depends on BR2_PACKAGE_AVAHI
-	select BR2_PACKAGE_EXPAT
+	depends BR2_PACKAGE_EXPAT
 	help
 	  The Avahi mDNS/DNS-SD daemon implementing Apple's ZeroConf
 	  architecture (also known as "Rendezvous" or "Bonjour").
 	  The daemon registers local IP addresses and services using
 	  mDNS/DNS-SD.
+
+comment "mDNS/DNS-SD daemon	- disabled (requires expat)"
+	depends on BR2_PACKAGE_AVAHI
+	depends !BR2_PACKAGE_EXPAT
