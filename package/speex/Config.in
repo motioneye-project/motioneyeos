@@ -1,0 +1,17 @@
+config BR2_PACKAGE_SPEEX
+	bool "speex"
+	default n
+	help
+	  Speex is an Open Source/Free Software patent-free
+	  audio compression format designed for speech.
+	  It can be used for Voice over IP
+
+	  http://www.speex.org/
+
+config BR2_PACKAGE_SPEEX_ARM5E
+	bool "Support ARM5E instruction set"
+	default y
+	depends on BR2_PACKAGE_SPEEX && BR2_arm
+	help
+	  Use the additional instructions available in the ARM5E 
+	  or later cores.
