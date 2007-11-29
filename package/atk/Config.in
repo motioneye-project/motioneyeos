@@ -1,6 +1,9 @@
 config BR2_PACKAGE_ATK
 	bool "atk"
 	default n
-	select BR2_PACKAGE_LIBGLIB2
+	depends BR2_PACKAGE_LIBGLIB2
 	help
 	  The ATK accessibility toolkit, needed to build GTK+-2.x.
+
+comment "atk		- disabled (requires libglib2)"
+	depends !BR2_PACKAGE_LIBGLIB2
