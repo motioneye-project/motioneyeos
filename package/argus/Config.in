@@ -1,9 +1,11 @@
 config BR2_PACKAGE_ARGUS
 	bool "argus"
 	default n
-	select BR2_PACKAGE_LIBPCAP
+	depends BR2_PACKAGE_LIBPCAP
 	help
 	  A Real Time Flow Monitor-based audit engine.
 
 	  http://qosient.com/argus/
 
+comment "argus		- disabled (requires libpcap)"
+	depends on !BR2_PACKAGE_LIBPCAP
