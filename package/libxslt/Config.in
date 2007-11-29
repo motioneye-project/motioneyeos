@@ -16,6 +16,6 @@ config BR2_PACKAGE_LIBXSLT
 
 	  http://www.w3.org/TR/xslt
 
-comment "libxslt disabled (requires pkgconfig)"
+comment "libxslt	- disabled (requires pkgconfig)"
 	depends !BR2_PACKAGE_PKGCONFIG
 
