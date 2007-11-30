@@ -18,4 +18,4 @@ config BR2_PACKAGE_LIGHTTPD_OPENSSL
 	depends on BR2_PACKAGE_LIGHTTPD
 	select BR2_PACKAGE_OPENSSL
 	help
-	  Enable OpenSSL support for libghttpd.
+	  Enable OpenSSL support for lighttpd.
