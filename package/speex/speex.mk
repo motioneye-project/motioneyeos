@@ -23,6 +23,7 @@ $(DL_DIR)/$(SPEEX_SOURCE):
 
 $(SPEEX_DIR)/.unpacked: $(DL_DIR)/$(SPEEX_SOURCE)
 	$(SPEEX_CAT) $(DL_DIR)/$(SPEEX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(SPEEX_DIR) package/speex/ speex-$(SPEEX_VERSION)\*.patch
 	$(CONFIG_UPDATE) $(SPEEX_DIR)
 	touch $(SPEEX_DIR)/.unpacked
 
