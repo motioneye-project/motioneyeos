@@ -153,6 +153,7 @@ source "package/kismet/Config.in"
 source "package/l2tp/Config.in"
 source "package/libcgi/Config.in"
 source "package/libcgicc/Config.in"
+source "package/libosip2/Config.in"
 source "package/libpcap/Config.in"
 source "package/links/Config.in"
 source "package/lrzsz/Config.in"
@@ -413,6 +414,16 @@ source "package/python/Config.in"
 source "package/ruby/Config.in"
 source "package/tcl/Config.in"
 source "package/php/Config.in"
+endif
+
+menuconfig BR2_GAMES
+	bool "Games"
+	default y
+	help
+	  Support for games
+
+if BR2_GAMES
+source "package/lxdoom/Config.in"
 endif
 
 endmenu
