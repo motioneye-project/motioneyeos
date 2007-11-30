@@ -407,6 +407,7 @@ menuconfig BR2_SCRIPTING_SUPPORT
 	  Support for scripting languages, interpreter languages.
 
 if BR2_SCRIPTING_SUPPORT
+source "package/lua/Config.in"
 source "package/microperl/Config.in"
 source "package/python/Config.in"
 source "package/ruby/Config.in"
