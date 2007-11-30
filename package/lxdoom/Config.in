@@ -1,0 +1,5 @@
+config BR2_PACKAGE_DOOM
+	bool "doom"
+	default n
+	help
+	  This is the linux version of the popular doom game.
