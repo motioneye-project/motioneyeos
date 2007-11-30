@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBEXOSIP2
+	bool "libeXosip2"
+	default n
+	help
+	  GNU Higher level SIP (Session Initiation Protocol)
+	  This library aims to provide multimedia and telecom software
+	  developers an easy and powerful interface to initiate and
+	  control SIP based sessions in their applications. 
+	  SIP is a open standard replacement from IETF for H323.
+
+	  http://www.gnu.org/software/osip/
