@@ -28,7 +28,7 @@ $(LINUX_FUSION_DIR)/$(LINUX_FUSION):
 linux-fusion: $(LINUX_FUSION_DIR)/$(LINUX_FUSION) $(LINUX_FUSION_HEADER)
 
 linux-fusion-clean:
-	rm -f $(LINUX_FUSION_DIR)/$(LINUX_FUSION))
+	rm -f $(LINUX_FUSION_DIR)/$(LINUX_FUSION)
 
 #############################################################
 #
