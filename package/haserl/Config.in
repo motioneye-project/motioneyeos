@@ -10,7 +10,7 @@ config BR2_PACKAGE_HASERL
 
 choice
 	prompt "Haserl version"
-	default BR2_PACKAGE_HASERL_VERSION_0_9_20
+	default BR2_PACKAGE_HASERL_VERSION_0_9_21
 	depends on BR2_PACKAGE_HASERL
 	help
 	  Select the older stable version, or the newer developer version
@@ -20,8 +20,8 @@ config BR2_PACKAGE_HASERL_VERSION_0_8_0
 	help
 	  stable version
 
-config BR2_PACKAGE_HASERL_VERSION_0_9_20
-	bool	"v 0.9.20"
+config BR2_PACKAGE_HASERL_VERSION_0_9_21
+	bool	"v 0.9.21"
 	help
 	  developer version - seems OK though
 
@@ -31,4 +31,4 @@ endchoice
 config BR2_PACKAGE_HASERL_VERSION
 	string
 	default "0.8.0"		if BR2_PACKAGE_HASERL_VERSION_0_8_0
-	default "0.9.20"	if BR2_PACKAGE_HASERL_VERSION_0_9_20
+	default "0.9.21"	if BR2_PACKAGE_HASERL_VERSION_0_9_21
