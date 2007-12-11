@@ -5,7 +5,7 @@
 #############################################################
 
 OLSR_VERSION_MAJOR=0.5
-OLSR_VERSION_MINOR=3
+OLSR_VERSION_MINOR=4
 OLSR_VERSION:=$(OLSR_VERSION_MAJOR).$(OLSR_VERSION_MINOR)
 OLSR_SOURCE:=olsrd-$(OLSR_VERSION).tar.bz2
 OLSR_SITE:=http://www.olsr.org/releases/$(OLSR_VERSION_MAJOR)
