@@ -35,6 +35,9 @@ $(ELF2FLT_DIR)/.configured: $(ELF2FLT_DIR)/.patched
 $(ELF2FLT_DIR)/$(ELF2FLT_BINARY): $(ELF2FLT_DIR)/.configured
 	$(MAKE) -C $(ELF2FLT_DIR) all
 	$(MAKE) -C $(ELF2FLT_DIR) install
+	ln -snf $(REAL_GNU_TARGET_NAME)-elf2flt $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-elf2flt
+	ln -snf $(REAL_GNU_TARGET_NAME)-flthdr  $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-flthdr
+	ln -snf $(REAL_GNU_TARGET_NAME)-ld.real $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-ld.real
 
 elf2flt: uclibc_target uclibc-configured binutils gcc $(ELF2FLT_DIR)/$(ELF2FLT_BINARY)
 
