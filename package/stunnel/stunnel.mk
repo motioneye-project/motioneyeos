@@ -44,7 +44,7 @@ $(STUNNEL_DIR)/.configured: $(STUNNEL_DIR)/.unpacked
 		--infodir=/usr/info \
 		--with-random=/dev/urandom \
 		--disable-libwrap \
-		--with-ssl=$(STAGING_DIR) \
+		--with-ssl=$(STAGING_DIR)/usr/ \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
