@@ -12,6 +12,32 @@ config BR2_SOURCEFORGE_MIRROR
 	  The list of mirrors is available here:
 	  http://prdownloads.sourceforge.net/index-sf.html?download
 
+config BR2_KERNEL_MIRROR
+	string "Kernel.org mirror"
+	default "http://www.kernel.org/pub/"
+	help
+	  kernel.org is mirrored on a number of servers around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Have a look on the kernel.org site for a list of mirrors, then enter
+	  the URL to the base directory.  Examples:
+
+	     http://www.XX.kernel.org/pub (XX = country code)
+	     http://mirror.aarnet.edu.au/pub/ftp.kernel.org
+
+config BR2_GNU_MIRROR
+	string "GNU Software mirror"
+	default "http://ftp.gnu.org"
+	help
+	  GNU has multiple software mirrors scattered around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Have a look on the gnu.org site for a list of mirrors, then enter
+	  the URL to the base directory.  Examples:
+
+	     http://ftp.gnu.org/pub/gnu (XX = country code)
+	     http://mirror.aarnet.edu.au/pub/gnu
+
 source	"target/device/Atmel/Config.in.mirrors"
 
 endmenu

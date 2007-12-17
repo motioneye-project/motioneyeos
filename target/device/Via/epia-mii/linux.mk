@@ -38,7 +38,7 @@ LINUX_BINLOC=arch/$(LINUX_KARCH)/boot/$(LINUX_FORMAT)
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
 LINUX_CAT:=$(BZCAT)
-LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.6
+LINUX_SITE=$(BR2_KERNEL_MIRROR)/linux/kernel/v2.6
 LINUX_KCONFIG=target/device/Via/epia-mii/linux.config
 LINUX_KERNEL=$(BUILD_DIR)/buildroot-kernel
 # Used by pcmcia-cs and others

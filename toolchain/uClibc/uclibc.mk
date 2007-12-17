@@ -514,7 +514,8 @@ uclibc-clean:
 uclibc-dirclean:
 	rm -rf $(UCLIBC_DIR)
 
-uclibc-target-utils: $(TARGET_DIR)/usr/bin/ldd
+uclibc-target-utils: 
+#$(TARGET_DIR)/usr/bin/ldd
 
 uclibc-target-utils-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 

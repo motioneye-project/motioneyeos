@@ -5,7 +5,7 @@
 #############################################################
 ED_VERSION:=0.8
 ED_SOURCE:=ed-$(ED_VERSION).tar.bz2
-ED_SITE:=http://ftp.gnu.org/gnu/ed/
+ED_SITE:=$(BR2_GNU_MIRROR)/ed/
 ED_CAT:=$(BZCAT)
 ED_DIR:=$(BUILD_DIR)/ed-$(ED_VERSION)
 ED_BINARY:=ed

@@ -22,7 +22,7 @@ ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 
 ifeq ($(GCC_SNAP_DATE),)
 GCC_OFFICIAL_VER:=$(GCC_VERSION)
-GCC_SITE:=http://ftp.gnu.org/gnu/gcc/gcc-$(GCC_VERSION)
+GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
 #GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_OFFICIAL_VER)
 else
 GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)

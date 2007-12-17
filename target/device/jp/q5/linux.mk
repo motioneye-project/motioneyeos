@@ -50,7 +50,7 @@ LINUX_BINLOC=$(LINUX_FORMAT)
 LINUX_DIR=$(BUILD_DIR)/linux-$(LINUX_VERSION)
 LINUX_SOURCE=linux-$(DOWNLOAD_LINUX_VERSION).tar.bz2
 LINUX_CAT:=$(BZCAT)
-LINUX_SITE=http://www.kernel.org/pub/linux/kernel/v2.4
+LINUX_SITE=$(BR2_KERNEL_MIRROR)/linux/kernel/v2.4
 # Used by pcmcia-cs and others
 LINUX_SOURCE_DIR=$(LINUX_DIR)
 

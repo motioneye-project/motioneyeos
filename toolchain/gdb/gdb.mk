@@ -21,7 +21,7 @@ GDB_PATCH_DIR:=toolchain/gdb/$(GDB_VERSION)
 else
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-GDB_SITE:=http://ftp.gnu.org/gnu/gdb
+GDB_SITE:=$(BR2_GNU_MIRROR)/gdb
 else
 GDB_SITE:=$(VENDOR_SITE)
 endif

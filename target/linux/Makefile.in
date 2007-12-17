@@ -23,7 +23,7 @@ endif
 
 LINUX26_SOURCE=linux-$(DOWNLOAD_LINUX26_VERSION).tar.bz2
 LINUX26_BZCAT:=$(BZCAT)
-LINUX26_SITE=http://ftp.kernel.org/pub/linux/kernel/v2.6
+LINUX26_SITE=$(BR2_KERNEL_MIRROR)/linux/kernel/v2.6
 
 ifeq ($(BOARD_PATH),)
 BOARD_PATH:=$(strip $(subst ",,$(BR2_BOARD_PATH)))
