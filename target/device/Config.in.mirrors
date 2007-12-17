@@ -27,7 +27,7 @@ config BR2_KERNEL_MIRROR
 
 config BR2_GNU_MIRROR
 	string "GNU Software mirror"
-	default "http://ftp.gnu.org"
+	default "http://ftp.gnu.org/pub/gnu"
 	help
 	  GNU has multiple software mirrors scattered around the world.
 	  The following allows you to select your preferred mirror.
@@ -35,7 +35,7 @@ config BR2_GNU_MIRROR
 	  Have a look on the gnu.org site for a list of mirrors, then enter
 	  the URL to the base directory.  Examples:
 
-	     http://ftp.gnu.org/pub/gnu (XX = country code)
+	     http://ftp.gnu.org/pub/gnu
 	     http://mirror.aarnet.edu.au/pub/gnu
 
 source	"target/device/Atmel/Config.in.mirrors"
