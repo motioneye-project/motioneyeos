@@ -5,10 +5,6 @@
 #
 # This makefile composed by Thomas Lundquist <thomasez@zelow.no>
 #
-# There is two versions built, one for the target and one for
-# staging. The target version is built in the staging_dir and the
-# staging version in the toolchain_dir.
-#
 # BTW, this uses alot of FPU calls and it's pretty slow if you use
 # the kernels FPU emulation so it's better to choose soft float in the
 # buildroot config (and uClibc.config of course, if you have your own.)
@@ -20,7 +16,7 @@
 # (cd /usr/include; sudo ln -s dbus-1.0/dbus dbus) 
 # to fix
 
-QTOPIA4_VERSION:=4.3.1
+QTOPIA4_VERSION:=4.3.2
 QTOPIA4_CAT:=$(ZCAT)
 
 BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME)))
@@ -98,6 +94,12 @@ else
 QTOPIA4_DEBUG=-release
 endif
 
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+QTOPIA4_SHARED=-shared
+else
+QTOPIA4_SHARED=-static
+endif
+
 ifeq ($(BR2_ENDIAN),"LITTLE")
 QTOPIA4_ENDIAN=-little-endian
 else
@@ -123,6 +125,25 @@ else
 QTOPIA4_MNG_LIB=-no-libmng
 endif
 
+ifeq ($(BR2_PACKAGE_QTOPIA4_QTZLIB),y)
+QTOPIA4_ZLIB=-qt-zlib
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_SYSTEMZLIB),y)
+QTOPIA4_ZLIB=-system-zlib
+else
+QTOPIA4_ZLIB=-no-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_QTOPIA4_QTJPEG),y)
+QTOPIA4_JPEG=-qt-libjpeg
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_SYSTEMJPEG),y)
+QTOPIA4_JPEG=-system-libjpeg
+else
+QTOPIA4_JPEG=-no-libjpeg
+endif
+
+
 QTOPIA4_DEBUG:=$(strip $(subst ",, $(QTOPIA4_DEBUG)))
 #"))
 BR2_PACKAGE_QTOPIA4_EMB_PLATFORM:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)))
@@ -130,29 +151,13 @@ BR2_PACKAGE_QTOPIA4_EMB_PLATFORM:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_EMB_
 
 
 # Variable for other Qt applications to use
-QTOPIA4_QMAKE:=$(QTOPIA4_HOST_DIR)/bin/qmake
+QTOPIA4_QMAKE:=$(QTOPIA4_TARGET_DIR)/bin/qmake
 
 $(DL_DIR)/$(QTOPIA4_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(QTOPIA4_SITE)/$(QTOPIA4_SOURCE)
 
 qtopia4-source: $(DL_DIR)/$(QTOPIA4_SOURCE)
 
-##############################################################################
-#
-# And now for the fun part, we have to do this in a two stage build because
-# Qt saves the library path inside the binary libraries. I.e.
-# libQtCore.so.<version> contains a hardcoded link to where the Qt libraries
-# are installed. Therefor we have to do one build for host/staging where
-# prefix is in our staging_dir, and a second build with prefix /usr for the
-# target.
-#
-##############################################################################
-
-#################################
-#
-# Target
-#
-#################################
 
 $(QTOPIA4_TARGET_DIR)/.unpacked: $(DL_DIR)/$(QTOPIA4_SOURCE)
 	$(QTOPIA4_CAT) $(DL_DIR)/$(QTOPIA4_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -184,6 +189,7 @@ endif
 		-xplatform qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++ \
 		$(QTOPIA4_QCONFIG_COMMAND) \
 		$(QTOPIA4_DEBUG) \
+		$(QTOPIA4_SHARED) \
 		$(QTOPIA4_DEPTHS) \
 		-no-stl \
 		-no-cups \
@@ -192,6 +198,8 @@ endif
 		-no-accessibility \
 		$(QTOPIA4_MNG_LIB) \
 		$(QTOPIA4_GIF_LIB) \
+		$(QTOPIA4_JPEG) \
+		$(QTOPIA4_ZLIB) \
 		-no-sql-db2 \
 		-no-sql-ibase \
 		-no-sql-mysql \
@@ -201,15 +209,15 @@ endif
 		-no-sql-sqlite \
 		-no-sql-sqlite2 \
 		-no-sql-tds \
-		-prefix /usr \
-		-docdir /usr/share/qt4/doc \
-		-headerdir /usr/include/qt4 \
-		-datadir /usr/share/qt4 \
-		-plugindir /usr/lib/qt4/plugins \
-		-translationdir /usr/share/qt4/translations \
-		-sysconfdir /etc/qt4 \
-		-examplesdir /usr/share/qt4/examples \
-		-demosdir /usr/share/qt4/demos \
+		-prefix $(QTOPIA4_TARGET_DIR) \
+		-docdir $(QTOPIA4_TARGET_DIR)/doc \
+		-headerdir $(QTOPIA4_TARGET_DIR)/include \
+		-datadir $(QTOPIA4_TARGET_DIR) \
+		-plugindir $(QTOPIA4_TARGET_DIR)/plugins \
+		-translationdir $(QTOPIA4_TARGET_DIR)/translations \
+		-sysconfdir $(QTOPIA4_TARGET_DIR) \
+		-examplesdir $(QTOPIA4_TARGET_DIR)/examples \
+		-demosdir $(QTOPIA4_TARGET_DIR)/demos \
 		-fast \
 		-nomake examples \
 		-no-rpath \
@@ -221,16 +229,20 @@ endif
 	);
 	touch $@
 
-$(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_TARGET_DIR)/.configured
+$(QTOPIA4_TARGET_DIR)/.built: $(QTOPIA4_TARGET_DIR)/.configured
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(QTOPIA4_TARGET_DIR) sub-src
+	touch $@
 
-$(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_TARGET_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION)
+$(QTOPIA4_TARGET_DIR)/.installed: $(QTOPIA4_TARGET_DIR)/.built
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
 	touch $(TARGET_DIR)/usr/lib/fonts/fontdir
-	cp -dpf $(STAGING_DIR)/usr/lib/fonts/helvetica*.qpf $(TARGET_DIR)/usr/lib/fonts
-	cp -dpf $(STAGING_DIR)/usr/lib/fonts/fixed*.qpf $(TARGET_DIR)/usr/lib/fonts
-	cp -dpf $(STAGING_DIR)/usr/lib/fonts/micro*.qpf $(TARGET_DIR)/usr/lib/fonts
+	cp -dpf $(QTOPIA4_TARGET_DIR)/lib/fonts/helvetica*.qpf $(TARGET_DIR)/usr/lib/fonts
+	cp -dpf $(QTOPIA4_TARGET_DIR)/lib/fonts/fixed*.qpf $(TARGET_DIR)/usr/lib/fonts
+	cp -dpf $(QTOPIA4_TARGET_DIR)/lib/fonts/micro*.qpf $(TARGET_DIR)/usr/lib/fonts
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
 	cp -dpf $(QTOPIA4_TARGET_DIR)/lib/libQt*.so.* $(TARGET_DIR)/usr/lib/
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.$(QTOPIA4_VERSION)
+endif
 	# Install image plugins if they are built
 	if [ -d $(QTOPIA4_TARGET_DIR)/plugins/imageformats ]; then \
 		mkdir -p $(TARGET_DIR)/usr/lib/qt4/plugins; \
@@ -241,100 +253,23 @@ $(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_TARGET_DIR)/lib
 	-rm $(TARGET_DIR)/usr/lib/libQtSql*
 	# Remove Svg libraries, not needed
 	-rm $(TARGET_DIR)/usr/lib/libQtSvg*
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.$(QTOPIA4_VERSION)
-
-#################################
-#
-# Host/Staging
-#
-#################################
-
-$(QTOPIA4_HOST_DIR)/.unpacked: $(DL_DIR)/$(QTOPIA4_SOURCE)
-	$(QTOPIA4_CAT) $(DL_DIR)/$(QTOPIA4_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(QTOPIA4_HOST_DIR) package/qtopia4/ \
-		qtopia-$(QTOPIA4_VERSION)-\*.patch\*
+	# Fix compiler path
+	$(SED) '\,QMAKE_CC, c\QMAKE_CC = $(TARGET_CC)' $(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '\,QMAKE_CXX, c\QMAKE_CXX = $(TARGET_CXX)' $(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '\,QMAKE_LINK, c\QMAKE_LINK = $(TARGET_CXX)' $(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '\,QMAKE_LINK_SHLIB, c\QMAKE_LINK_SHLIB = $(TARGET_CXX)' $(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '\,QMAKE_AR, c\QMAKE_AR = $(TARGET_CROSS)ar cqs' $(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '\,QMAKE_RANLIB, c\QMAKE_RANLIB = $(TARGET_RANLIB)' $(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
+	$(SED) '\,QMAKE_STRIP, c\QMAKE_STRIP = $(TARGET_CROSS)strip' $(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
 	touch $@
 
-# This configure is very tailored towards a specific need.
-$(QTOPIA4_HOST_DIR)/.configured: $(QTOPIA4_HOST_DIR)/.unpacked
-	# Patching configure to get rid of some feature I dont want.
-	# (I don't want SQL either but there is no option for that at all,
-	# the SQL library will be built even without the plugins/drivers).
-ifneq ($(BR2_INET_IPV6),y)
-	$(SED) 's/^CFG_IPV6=auto/CFG_IPV6=no/' $(QTOPIA4_HOST_DIR)/configure
-	$(SED) 's/^CFG_IPV6IFNAME=auto/CFG_IPV6IFNAME=no/' $(QTOPIA4_HOST_DIR)/configure
-endif
-	$(SED) 's/^CFG_XINERAMA=auto/CFG_XINERAMA=no/' $(QTOPIA4_HOST_DIR)/configure
-	$(SED) 's,-O2,$(TARGET_CFLAGS),' $(QTOPIA4_HOST_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
-	-[ -f $(QTOPIA4_QCONFIG_FILE) ] && cp $(QTOPIA4_QCONFIG_FILE) \
-		$(QTOPIA4_HOST_DIR)/$(QTOPIA4_QCONFIG_FILE_LOCATION)
-	(cd $(QTOPIA4_HOST_DIR); rm -rf config.cache; \
-		PATH=$(TARGET_PATH) \
-		QPEHOME=/usr \
-		QPEDIR=/usr \
-		./configure \
-		-v \
-		-platform linux-g++ \
-		-embedded $(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM) \
-		-xplatform qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++ \
-		$(QTOPIA4_QCONFIG_COMMAND) \
-		$(QTOPIA4_DEBUG) \
-		$(QTOPIA4_DEPTHS) \
-		-no-stl \
-		-no-cups \
-		-no-nis \
-		-no-freetype \
-		-no-accessibility \
-		$(QTOPIA4_MNG_LIB) \
-		$(QTOPIA4_GIF_LIB) \
-		-no-sql-db2 \
-		-no-sql-ibase \
-		-no-sql-mysql \
-		-no-sql-oci \
-		-no-sql-odbc \
-		-no-sql-psql \
-		-no-sql-sqlite \
-		-no-sql-sqlite2 \
-		-no-sql-tds \
-		-prefix $(STAGING_DIR)/usr \
-		-docdir $(STAGING_DIR)/usr/share/qt4/doc \
-		-headerdir $(STAGING_DIR)/usr/include/qt4 \
-		-datadir $(STAGING_DIR)/usr/share/qt4 \
-		-plugindir $(STAGING_DIR)/usr/lib/qt4/plugins \
-		-translationdir $(STAGING_DIR)/usr/share/qt4/translations \
-		-sysconfdir $(STAGING_DIR)/etc/qt4 \
-		-examplesdir $(STAGING_DIR)/usr/share/qt4/examples \
-		-demosdir $(STAGING_DIR)/usr/share/qt4/demos \
-		-fast \
-		-nomake examples \
-		-no-rpath \
-		$(QTOPIA4_QT3SUPPORT) \
-		$(QTOPIA4_TSLIB) \
-		$(QTOPIA4_LARGEFILE) \
-		$(QTOPIA4_ENDIAN) \
-		$(QTOPIA4_APPROVE_GPL_LICENSE) \
-	);
-	touch $@
 
-$(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_HOST_DIR)/.configured
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(QTOPIA4_HOST_DIR)
-
-$(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION): $(QTOPIA4_HOST_DIR)/lib/libQtCore.so.$(QTOPIA4_VERSION)
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(QTOPIA4_HOST_DIR) install
-	# For some reason make install misses copying this file.
-	# cp -dpf $(QTOPIA4_HOST_DIR)/src/corelib/arch/qatomic_avr32.h $(STAGING_DIR)/include/qt4/QtCore/
-	# Try other patch first.
-
-qtopia4: uclibc zlib $(QTOPIA4_DEP_LIBS) \
-		$(STAGING_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION) \
-		$(TARGET_DIR)/usr/lib/libQtCore.so.$(QTOPIA4_VERSION)
+qtopia4: uclibc zlib $(QTOPIA4_DEP_LIBS) $(QTOPIA4_TARGET_DIR)/.installed
 
 qtopia4-clean:
-	-$(MAKE) -C $(QTOPIA4_HOST_DIR) clean
 	-$(MAKE) -C $(QTOPIA4_TARGET_DIR) clean
 
 qtopia4-dirclean:
-	rm -rf $(QTOPIA4_HOST_DIR)
 	rm -rf $(QTOPIA4_TARGET_DIR)
 
 #############################################################
