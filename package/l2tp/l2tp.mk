@@ -6,7 +6,7 @@
 L2TP_VERSION:=0.70-pre20031121
 L2TP_SOURCE:=l2tpd_$(L2TP_VERSION).orig.tar.gz
 L2TP_PATCH:=l2tpd_$(L2TP_VERSION)-2.2.diff.gz
-L2TP_SITE:=ftp://ftp.debian.org/debian/pool/main/l/l2tpd/
+L2TP_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/l/l2tpd/
 L2TP_DIR:=$(BUILD_DIR)/l2tpd-$(L2TP_VERSION)
 L2TP_CAT:=$(ZCAT)
 L2TP_BINARY:=l2tpd

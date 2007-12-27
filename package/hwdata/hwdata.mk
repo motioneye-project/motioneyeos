@@ -6,7 +6,7 @@
 HWDATA_VERSION:=0.191
 HWDATA_SOURCE:=hwdata_$(HWDATA_VERSION).orig.tar.gz
 HWDATA_PATCH:=hwdata_$(HWDATA_VERSION)-1.diff.gz
-HWDATA_SITE:=http://ftp.debian.org/debian/pool/main/h/hwdata/
+HWDATA_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/h/hwdata/
 HWDATA_CAT:=$(ZCAT)
 HWDATA_DIR:=$(BUILD_DIR)/hwdata-$(HWDATA_VERSION)
 HWDATA_BINARY:=pci.ids

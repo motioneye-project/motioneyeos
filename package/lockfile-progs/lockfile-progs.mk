@@ -5,7 +5,7 @@
 #############################################################
 LOCKFILE_PROGS_VERSION=0.1.11
 LOCKFILE_PROGS_SOURCE:=lockfile-progs_$(LOCKFILE_PROGS_VERSION).tar.gz
-LOCKFILE_PROGS_SITE:=http://ftp.debian.org/debian/pool/main/l/lockfile-progs/
+LOCKFILE_PROGS_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/l/lockfile-progs/
 LOCKFILE_PROGS_CAT:=$(ZCAT)
 LOCKFILE_PROGS_DIR:=$(BUILD_DIR)/sid
 LOCKFILE_PROGS_BINARY:=usr/bin/lockfile-create

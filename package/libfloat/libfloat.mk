@@ -5,7 +5,7 @@
 #############################################################
 LIBFLOAT_SOURCE:=libfloat_990616.orig.tar.gz
 LIBFLOAT_PATCH:=libfloat_990616-3.diff.gz
-LIBFLOAT_SITE:=http://ftp.debian.org/debian/pool/main/libf/libfloat
+LIBFLOAT_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/libf/libfloat
 LIBFLOAT_CAT:=$(ZCAT)
 LIBFLOAT_DIR:=$(BUILD_DIR)/libfloat
 

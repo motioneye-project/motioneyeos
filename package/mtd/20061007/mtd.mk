@@ -4,7 +4,7 @@
 #
 #############################################################
 MTD_SOURCE=mtd_20061007.orig.tar.gz
-MTD_SITE=http://ftp.debian.org/debian/pool/main/m/mtd
+MTD_SITE=$(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mtd
 MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_orig
 MTD_DIR:=$(BUILD_DIR)/mtd_orig
 MTD_CAT:=$(ZCAT)

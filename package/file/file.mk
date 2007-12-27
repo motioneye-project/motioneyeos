@@ -5,7 +5,7 @@
 #############################################################
 FILE_VERSION:=4.21
 FILE_SOURCE:=file_$(FILE_VERSION).orig.tar.gz
-FILE_SITE:=http://ftp.debian.org/debian/pool/main/f/file
+FILE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/f/file
 FILE_SOURCE_DIR:=$(BUILD_DIR)/file-$(FILE_VERSION)
 FILE_DIR1:=$(TOOL_BUILD_DIR)/file-$(FILE_VERSION)-host
 FILE_DIR2:=$(BUILD_DIR)/file-$(FILE_VERSION)-target

@@ -6,7 +6,7 @@
 ACPID_VERSION:=1.0.4
 ACPID_DIR=$(BUILD_DIR)/acpid-$(ACPID_VERSION)
 ACPID_SOURCE=acpid_$(ACPID_VERSION)-1.tar.gz
-ACPID_SITE=http://ftp.debian.org/debian/pool/main/a/acpid
+ACPID_SITE=$(BR2_DEBIAN_MIRROR)/debian/pool/main/a/acpid
 
 $(DL_DIR)/$(ACPID_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ACPID_SITE)/$(ACPID_SOURCE)

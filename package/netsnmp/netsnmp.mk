@@ -9,7 +9,7 @@ NETSNMP_URL:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/net
 NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-$(NETSNMP_VERSION)
 NETSNMP_SOURCE:=net-snmp-$(NETSNMP_VERSION).tar.gz
 NETSNMP_PATCH1:=net-snmp_$(NETSNMP_VERSION)-$(NETSNMP_PATCH_VERSION).diff.gz
-NETSNMP_PATCH1_URL:=http://ftp.debian.org/debian/pool/main/n/net-snmp/
+NETSNMP_PATCH1_URL:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/n/net-snmp/
 
 $(DL_DIR)/$(NETSNMP_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NETSNMP_URL)/$(NETSNMP_SOURCE)

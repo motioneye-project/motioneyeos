@@ -38,6 +38,16 @@ config BR2_GNU_MIRROR
 	     http://ftp.gnu.org/pub/gnu
 	     http://mirror.aarnet.edu.au/pub/gnu
 
+config BR2_DEBIAN_MIRROR
+	string "Debian Software mirror"
+	default "http://ftp.debian.org"
+	help
+	  Debian has multiple software mirrors scattered around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Usually, just add your country code like XX here:
+	  http://ftp.XX.debian.org
+
 source	"target/device/Atmel/Config.in.mirrors"
 
 endmenu

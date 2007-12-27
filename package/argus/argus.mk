@@ -6,7 +6,7 @@
 ARGUS_VERSION:=3.0.0.rc.34
 ARGUS_SOURCE:=argus_$(ARGUS_VERSION).orig.tar.gz
 ARGUS_PATCH:=argus_$(ARGUS_VERSION)-1.diff.gz
-ARGUS_SITE:=ftp://ftp.debian.org/debian/pool/main/a/argus/
+ARGUS_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/a/argus/
 ARGUS_DIR:=$(BUILD_DIR)/argus-$(ARGUS_VERSION)
 ARGUS_CAT:=$(ZCAT)
 ARGUS_BINARY:=bin/argus

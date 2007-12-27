@@ -22,8 +22,8 @@ ifeq ($(GRUB_SUPPORTED_ARCH),y)
 #############################################################
 GRUB_SOURCE:=grub_0.97.orig.tar.gz
 GRUB_PATCH:=grub_0.97-28.diff.gz
-GRUB_SITE=http://ftp.debian.org/debian/pool/main/g/grub
-GRUB_PATCH_SITE:=http://ftp.debian.org/debian/pool/main/g/grub
+GRUB_SITE=$(BR2_DEBIAN_MIRROR)/debian/pool/main/g/grub
+GRUB_PATCH_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/g/grub
 GRUB_CAT:=$(ZCAT)
 GRUB_DIR:=$(BUILD_DIR)/grub-0.97
 GRUB_BINARY:=grub/grub

@@ -5,7 +5,7 @@
 #############################################################
 LIBLOCKFILE_VERSION=1.06.1
 LIBLOCKFILE_SOURCE:=liblockfile_$(LIBLOCKFILE_VERSION).tar.gz
-LIBLOCKFILE_SITE:=http://ftp.debian.org/debian/pool/main/libl/liblockfile/
+LIBLOCKFILE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/libl/liblockfile/
 LIBLOCKFILE_CAT:=$(ZCAT)
 LIBLOCKFILE_DIR:=$(BUILD_DIR)/liblockfile-$(LIBLOCKFILE_VERSION)
 LIBLOCKFILE_BINARY:=liblockfile.so.1.0

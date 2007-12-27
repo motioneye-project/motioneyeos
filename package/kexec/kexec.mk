@@ -6,7 +6,7 @@
 KEXEC_VERSION:=1.101
 KEXEC_SOURCE:=kexec-tools_$(KEXEC_VERSION)-kdump10.orig.tar.gz
 KEXEC_PATCH:=kexec-tools_$(KEXEC_VERSION)-kdump10-2.diff.gz
-KEXEC_SITE:=ftp://ftp.debian.org/debian/pool/main/k/kexec-tools/
+KEXEC_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/k/kexec-tools/
 KEXEC_DIR:=$(BUILD_DIR)/kexec-tools-$(KEXEC_VERSION)
 KEXEC_CAT:=$(ZCAT)
 KEXEC_BINARY:=kexec

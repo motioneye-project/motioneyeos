@@ -6,7 +6,7 @@
 CVS_VERSION:=1.12.13
 CVS_SOURCE:=cvs_$(CVS_VERSION).orig.tar.gz
 CVS_PATCH:=cvs_$(CVS_VERSION)-8.diff.gz
-CVS_SITE:=http://ftp.debian.org/debian/pool/main/c/cvs/
+CVS_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/c/cvs/
 CVS_DIR:=$(BUILD_DIR)/cvs-$(CVS_VERSION)
 CVS_CAT:=$(ZCAT)
 CVS_BINARY:=src/cvs

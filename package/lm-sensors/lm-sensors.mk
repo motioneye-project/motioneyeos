@@ -6,7 +6,7 @@
 LM_SENSORS_VERSION:=2.10.4
 LM_SENSORS_SOURCE:=lm-sensors_$(LM_SENSORS_VERSION).orig.tar.gz
 LM_SENSORS_PATCH:=lm-sensors_$(LM_SENSORS_VERSION)-3.diff.gz
-LM_SENSORS_SITE:=http://ftp.debian.org/debian/pool/main/l/lm-sensors/
+LM_SENSORS_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/l/lm-sensors/
 LM_SENSORS_DIR:=$(BUILD_DIR)/lm_sensors-$(LM_SENSORS_VERSION)
 LM_SENSORS_CAT:=$(ZCAT)
 LM_SENSORS_BINARY:=prog/sensors/sensors

@@ -5,7 +5,7 @@
 #############################################################
 GNUPATCH_VERSION:=2.5.9
 GNUPATCH_SOURCE:=patch_$(GNUPATCH_VERSION).orig.tar.gz
-GNUPATCH_SITE:=http://ftp.debian.org/debian/pool/main/p/patch
+GNUPATCH_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/p/patch
 GNUPATCH_CAT:=$(ZCAT)
 GNUPATCH_DIR:=$(BUILD_DIR)/patch-$(GNUPATCH_VERSION)
 GNUPATCH_BINARY:=patch

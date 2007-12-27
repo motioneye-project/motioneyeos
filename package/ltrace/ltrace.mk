@@ -6,7 +6,7 @@
 LTRACE_VERSION=0.5
 LTRACE_SOURCE=ltrace_$(LTRACE_VERSION).orig.tar.gz
 LTRACE_PATCH=ltrace_$(LTRACE_VERSION)-3.diff.gz
-LTRACE_SITE=http://ftp.debian.org/debian/pool/main/l/ltrace
+LTRACE_SITE=$(BR2_DEBIAN_MIRROR)/debian/pool/main/l/ltrace
 LTRACE_DIR=$(BUILD_DIR)/ltrace-$(LTRACE_VERSION)
 LTRACE_BINARY=ltrace
 LTRACE_TARGET_BINARY=usr/bin/ltrace

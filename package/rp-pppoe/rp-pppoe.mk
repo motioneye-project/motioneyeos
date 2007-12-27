@@ -6,7 +6,7 @@
 RP_PPPOE_VERSION:=3.8
 RP_PPPOE_SOURCE:=rp-pppoe_$(RP_PPPOE_VERSION).orig.tar.gz
 RP_PPPOE_PATCH:=rp-pppoe_$(RP_PPPOE_VERSION)-3.diff.gz
-RP_PPPOE_SITE:=ftp://ftp.debian.org/debian/pool/main/r/rp-pppoe
+RP_PPPOE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/r/rp-pppoe
 RP_PPPOE_TOPDIR:=$(BUILD_DIR)/rp-pppoe-$(RP_PPPOE_VERSION)
 RP_PPPOE_DIR:=$(BUILD_DIR)/rp-pppoe-$(RP_PPPOE_VERSION)/src
 RP_PPPOE_CAT:=$(ZCAT)

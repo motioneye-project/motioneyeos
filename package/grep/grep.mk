@@ -5,7 +5,7 @@
 #############################################################
 GNUGREP_VERSION:=2.5.1
 GNUGREP_SOURCE:=grep_$(GNUGREP_VERSION).ds1.orig.tar.gz
-GNUGREP_SITE:=http://ftp.debian.org/debian/pool/main/g/grep/
+GNUGREP_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/g/grep/
 GNUGREP_DIR:=$(BUILD_DIR)/grep-$(GNUGREP_VERSION)
 GNUGREP_CAT:=$(ZCAT)
 GNUGREP_BINARY:=src/grep

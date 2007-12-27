@@ -6,7 +6,7 @@
 MUTT_VERSION:=1.5.16
 MUTT_SOURCE:=mutt_$(MUTT_VERSION).orig.tar.gz
 MUTT_PATCH:=mutt_$(MUTT_VERSION)-3.diff.gz
-MUTT_SITE:=ftp://ftp.debian.org/debian/pool/main/m/mutt/
+MUTT_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mutt/
 MUTT_DIR:=$(BUILD_DIR)/mutt-$(MUTT_VERSION)
 MUTT_CAT:=$(ZCAT)
 MUTT_BINARY:=mutt

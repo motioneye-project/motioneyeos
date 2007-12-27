@@ -6,7 +6,7 @@
 LIGHTTPD_VERSION:=1.4.18
 LIGHTTPD_SOURCE:=lighttpd_$(LIGHTTPD_VERSION).orig.tar.gz
 LIGHTTPD_PATCH:=lighttpd_$(LIGHTTPD_VERSION)-1.diff.gz
-LIGHTTPD_SITE:=http://ftp.debian.org/debian/pool/main/l/lighttpd
+LIGHTTPD_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/l/lighttpd
 LIGHTTPD_DIR:=$(BUILD_DIR)/lighttpd-$(LIGHTTPD_VERSION)
 LIGHTTPD_CAT:=$(ZCAT)
 LIGHTTPD_BINARY:=src/lighttpd

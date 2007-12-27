@@ -8,7 +8,7 @@
 #############################################################
 LZO_VERSION:=1.08
 LZO_SOURCE:=lzo_$(LZO_VERSION).orig.tar.gz
-LZO_SITE:=http://ftp.debian.org/debian/pool/main/l/lzo
+LZO_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/l/lzo
 #LZO_SOURCE:=lzo-$(LZO_VERSION).tar.bz2
 #LZO_SITE:=http://www.oberhumer.com/opensource/lzo/download
 LZO_DIR:=$(BUILD_DIR)/lzo-$(LZO_VERSION)

@@ -6,7 +6,7 @@
 TIFF_VERSION:=3.8.2
 TIFF_SOURCE:=tiff_$(TIFF_VERSION).orig.tar.gz
 TIFF_SOURCE2:=tiff-$(TIFF_VERSION).tar.gz
-TIFF_SITE:=http://ftp.debian.org/pool/main/t/tiff/
+TIFF_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/t/tiff/
 TIFF_DIR:=$(BUILD_DIR)/tiff-$(TIFF_VERSION)
 TIFF_CAT:=$(ZCAT)
 

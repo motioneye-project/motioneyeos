@@ -6,7 +6,7 @@
 PPTP_LINUX_VERSION:=1.7.0
 PPTP_LINUX_SOURCE:=pptp-linux_$(PPTP_LINUX_VERSION).orig.tar.gz
 #PPTP_LINUX_PATCH:=pptp-linux_$(PPTP_LINUX_VERSION)-2.diff.gz
-PPTP_LINUX_SITE:=http://ftp.debian.org/debian/pool/main/p/pptp-linux
+PPTP_LINUX_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/p/pptp-linux
 PPTP_LINUX_DIR:=$(BUILD_DIR)/pptp-linux-$(PPTP_LINUX_VERSION).orig
 PPTP_LINUX_CAT:=$(ZCAT)
 PPTP_LINUX_BINARY:=pptp
