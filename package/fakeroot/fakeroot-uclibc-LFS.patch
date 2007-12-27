@@ -1,14 +1,14 @@
-diff -u fakeroot-1.7.1.orig/communicate.h fakeroot-1.7.1/communicate.h
---- fakeroot-1.7.1.orig/communicate.h	2005-10-02 17:35:36.000000000 +0200
-+++ fakeroot-1.7.1/communicate.h	2007-09-20 19:43:38.000000000 +0200
+diff -u fakeroot-1.8.10.orig/communicate.h fakeroot-1.8.10/communicate.h
+--- fakeroot-1.8.10.orig/communicate.h  2007-11-20 21:56:53.000000000 -0500
++++ fakeroot-1.8.10/communicate.h       2007-12-13 11:00:03.000000000 -0500
 @@ -35,7 +35,9 @@
  #endif
  
  /* Then decide whether we do or do not use the stat64 support */
--#if defined(sun) || __GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1)
-+#if defined(sun) \
-+	|| (!defined __UCLIBC__ && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1))) \
-+	|| (defined __UCLIBC__ && defined UCLIBC_HAS_LFS)
+-#if (defined(sun) && !defined(__SunOS_5_5_1) && !defined(_LP64)) || __GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1)
++#if (defined(sun) && !defined(__SunOS_5_5_1) && !defined(_LP64)) \
++       || (!defined __UCLIBC__ && (__GLIBC__ > 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ >= 1))) \
++       || (defined __UCLIBC__ && defined UCLIBC_HAS_LFS)
  # define STAT64_SUPPORT
  #else
  # warning Not using stat64 support
