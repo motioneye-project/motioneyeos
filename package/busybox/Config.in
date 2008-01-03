@@ -36,7 +36,7 @@ config BR2_BUSYBOX_VERSION
 	string
 	default "1.2.2.1"	if BR2_BUSYBOX_VERSION_1_2_2_1
 	default "1.6.1"		if BR2_BUSYBOX_VERSION_1_6_1
-	default "1.7.2"		if BR2_BUSYBOX_VERSION_1_7_X
+	default "1.7.4"		if BR2_BUSYBOX_VERSION_1_7_X
 
 
 config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
