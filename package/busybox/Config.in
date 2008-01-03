@@ -12,7 +12,7 @@ config BR2_PACKAGE_BUSYBOX
 choice
 	prompt "BusyBox Version"
 	depends BR2_PACKAGE_BUSYBOX
-	default BR2_BUSYBOX_VERSION_1_7_2
+	default BR2_BUSYBOX_VERSION_1_7_X
 	help
 	  Select the version of BusyBox you wish to use.
 
@@ -24,16 +24,8 @@ choice
 		bool "BusyBox 1.6.1"
 		depends on BR2_DEPRECATED
 
-	config BR2_BUSYBOX_VERSION_1_7_0
-		bool "BusyBox 1.7.0"
-		depends on BR2_DEPRECATED || BR2_RECENT
-
-	config BR2_BUSYBOX_VERSION_1_7_1
-		bool "BusyBox 1.7.1"
-		depends on BR2_DEPRECATED || BR2_RECENT
-
-	config BR2_BUSYBOX_VERSION_1_7_2
-		bool "BusyBox 1.7.2"
+	config BR2_BUSYBOX_VERSION_1_7_X
+		bool "BusyBox 1.7.x"
 
 	config BR2_PACKAGE_BUSYBOX_SNAPSHOT
 		bool "daily snapshot"
@@ -44,9 +36,7 @@ config BR2_BUSYBOX_VERSION
 	string
 	default "1.2.2.1"	if BR2_BUSYBOX_VERSION_1_2_2_1
 	default "1.6.1"		if BR2_BUSYBOX_VERSION_1_6_1
-	default "1.7.0"		if BR2_BUSYBOX_VERSION_1_7_0
-	default "1.7.1"		if BR2_BUSYBOX_VERSION_1_7_1
-	default "1.7.2"		if BR2_BUSYBOX_VERSION_1_7_2
+	default "1.7.2"		if BR2_BUSYBOX_VERSION_1_7_X
 
 
 config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
@@ -68,9 +58,7 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	default "target/device/x86/i386/busybox.config" if BR2_PACKAGE_BUSYBOX_SNAPSHOT
 	default "package/busybox/busybox-1.2.2.1.config" if BR2_BUSYBOX_VERSION_1_2_2_1
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_6_1
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_0
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_1
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_2
+	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_X
 	help
 	  Some people may wish to use their own modified BusyBox configuration
 	  file, and will specify their config file location with this option.
