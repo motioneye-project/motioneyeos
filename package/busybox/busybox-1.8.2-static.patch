@@ -1,0 +1,12 @@
+diff -urN busybox-1.8.2/applets/applets.c busybox-1.8.2-static/applets/applets.c
+--- busybox-1.8.2/applets/applets.c	2007-11-10 01:40:53.000000000 +0000
++++ busybox-1.8.2-static/applets/applets.c	2007-12-09 03:46:04.000000000 +0000
+@@ -17,7 +17,7 @@
+ #warning See sources.redhat.com/bugzilla/show_bug.cgi?id=3400
+ #warning Note that glibc is unsuitable for static linking anyway.
+ #warning If you still want to do it, remove -Wl,--gc-sections
+-#warning from top-level Makefile and remove this warning.
++#warning from file scripts/trylink and remove this warning.
+ #error Aborting compilation.
+ #endif
+ 

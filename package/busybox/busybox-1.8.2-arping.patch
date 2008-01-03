@@ -1,0 +1,13 @@
+diff -urN busybox-1.8.2/networking/arping.c busybox-1.8.2-arping/networking/arping.c
+--- busybox-1.8.2/networking/arping.c	2007-11-10 01:40:47.000000000 +0000
++++ busybox-1.8.2-arping/networking/arping.c	2007-12-18 10:31:55.000000000 +0000
+@@ -207,7 +207,8 @@
+ 		}
+ 
+ 		if (last) {
+-			printf(" %u.%03ums\n", last / 1000, last % 1000);
++			unsigned diff = MONOTONIC_US() - last;
++			printf(" %u.%03ums\n", diff / 1000, diff % 1000);
+ 		} else {
+ 			printf(" UNSOLICITED?\n");
+ 		}
