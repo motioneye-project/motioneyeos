@@ -2,7 +2,7 @@ menu "Atmel Mirrors"
 
 config BR2_ATMEL_MIRROR
 	string "Atmel AVR32/AT91 download site"
-	default "ftp://at91dist:distrib@81.80.104.162/AT91_Third_Party_Design_Flow/Linux_Host/"
+	default "ftp://www.at91.com/pub/buildroot/"
 	help
 	  Unofficial site for AVR32/AT91 Buildroot patches, or your local mirror.
 	  Atmel does not currently support buildroot, but this site makes

@@ -136,7 +136,7 @@ BR2_SOURCEFORGE_MIRROR="easynews"
 #
 # Atmel Mirrors
 #
-BR2_ATMEL_MIRROR="ftp://at91dist:distrib@81.80.104.162/AT91_Third_Party_Design_Flow/Linux_Host/"
+BR2_ATMEL_MIRROR="ftp://www.at91.com/pub/buildroot"
 BR2_AT91_PATCH_MIRROR="http://maxim.org.za/AT91RM9200/2.6/"
 BR2_STAGING_DIR="$(BUILD_DIR)/staging_dir"
 # BR2_FPU_SUFFIX is not set

@@ -1,6 +1,6 @@
 #
 # Automatically generated make config: don't edit
-# Fri Nov  2 13:40:33 2007
+# Tue Jan  8 09:03:00 2008
 #
 BR2_HAVE_DOT_CONFIG=y
 BR2_VERSION="0.10.0-svn"
@@ -39,8 +39,8 @@ BR2_generic_arm=y
 # BR2_xscale is not set
 # BR2_iwmmxt is not set
 BR2_ARM_TYPE="GENERIC_ARM"
-BR2_ARM_OABI=y
-# BR2_ARM_EABI is not set
+# BR2_ARM_OABI is not set
+BR2_ARM_EABI=y
 BR2_ARCH="arm"
 BR2_ENDIAN="LITTLE"
 
@@ -51,8 +51,8 @@ BR2_ENDIAN="LITTLE"
 #
 # Project Options
 #
-BR2_PROJECT="at91sam9261ek"
-BR2_HOSTNAME="AT91SAM9261EK"
+BR2_PROJECT="at91sam9263ek"
+BR2_HOSTNAME="AT91SAM9263EK"
 BR2_BANNER="Welcome to the Erik's uClibc development environment running on an AT91SAM9261EK"
 
 #
@@ -84,8 +84,6 @@ BR2_TARGET_AT91SAM9263=y
 # BR2_TARGET_AT91SAM9262EK is not set
 BR2_TARGET_AT91SAM9263EK=y
 # BR2_TARGET_AT91SAM9XEEK is not set
-# BR2_TARGET_AT91SAM9261EK_SPIMODE0 is not set
-# BR2_TARGET_AT91SAM9261EK_SPIMODE3 is not set
 BR2_BOARD_NAME="at91sam9263ek"
 # BR2_TARGET_AT91_ADVANCED_INFO is not set
 
@@ -100,7 +98,7 @@ BR2_AT91_LINUXPATCH_SITE="http://maxim.org.za/AT91RM9200/2.6"
 BR2_TARGET_ATMEL_COPYTO="/tftpboot"
 BR2_BOARD_PATH="target/device/Atmel/$(BR2_BOARD_NAME)"
 BR2_TARGET_UBOOT=y
-BR2_TARGET_UBOOT_SERVERIP="10.175.196.220"
+BR2_TARGET_UBOOT_SERVERIP="10.175.196.221"
 BR2_TARGET_UBOOT_IPADDR="10.175.196.18"
 BR2_TARGET_UBOOT_GATEWAY="10.175.196.1"
 BR2_TARGET_UBOOT_NETMASK="255.255.255.0"
@@ -145,11 +143,14 @@ BR2_DL_DIR="$(BASE_DIR)/dl"
 # Mirrors and Download locations
 #
 BR2_SOURCEFORGE_MIRROR="easynews"
+BR2_KERNEL_MIRROR="http://www.kernel.org/pub/"
+BR2_GNU_MIRROR="http://ftp.gnu.org/pub/gnu"
+BR2_DEBIAN_MIRROR="http://ftp.debian.org"
 
 #
 # Atmel Mirrors
 #
-BR2_ATMEL_MIRROR="ftp://at91dist:distrib@81.80.104.162/AT91_Third_Party_Design_Flow/Linux_Host/"
+BR2_ATMEL_MIRROR="ftp://www.at91.com/pub/buildroot"
 BR2_AT91_PATCH_MIRROR="http://maxim.org.za/AT91RM9200/2.6/"
 BR2_STAGING_DIR="$(BUILD_DIR)/staging_dir"
 # BR2_FPU_SUFFIX is not set
@@ -295,11 +296,11 @@ BR2_CROSS_TOOLCHAIN_TARGET_UTILS=y
 BR2_PACKAGE_BUSYBOX=y
 # BR2_BUSYBOX_VERSION_1_2_2_1 is not set
 # BR2_BUSYBOX_VERSION_1_6_1 is not set
-# BR2_BUSYBOX_VERSION_1_7_0 is not set
-# BR2_BUSYBOX_VERSION_1_7_1 is not set
-BR2_BUSYBOX_VERSION_1_7_2=y
+# BR2_BUSYBOX_VERSION_1_7_X is not set
+# BR2_BUSYBOX_VERSION_1_8_X is not set
+BR2_BUSYBOX_VERSION_1_9_X=y
 # BR2_PACKAGE_BUSYBOX_SNAPSHOT is not set
-BR2_BUSYBOX_VERSION="1.7.2"
+BR2_BUSYBOX_VERSION="1.9.0"
 BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS=y
 BR2_PACKAGE_BUSYBOX_CONFIG="package/busybox/busybox-1.6.0.config"
 BR2_PACKAGE_BUSYBOX_HIDE_OTHERS=y
@@ -357,6 +358,10 @@ BR2_HOST_FAKEROOT=y
 # BR2_PACKAGE_LIBLOCKFILE is not set
 # BR2_PACKAGE_LIBSYSFS is not set
 # BR2_PACKAGE_LIBXML2 is not set
+
+#
+# libxslt	- disabled (requires pkgconfig)
+#
 # BR2_PACKAGE_LOCKFILE_PROGS is not set
 # BR2_PACKAGE_LSOF is not set
 # BR2_PACKAGE_LTP-TESTSUITE is not set
@@ -371,7 +376,10 @@ BR2_NETWORK_SUPPORT=y
 #
 # Networking applications
 #
-# BR2_PACKAGE_ARGUS is not set
+
+#
+# argus		- disabled (requires libpcap)
+#
 # BR2_PACKAGE_AVAHI is not set
 # BR2_PACKAGE_BOA is not set
 # BR2_PACKAGE_BIND is not set
@@ -385,12 +393,17 @@ BR2_NETWORK_SUPPORT=y
 # BR2_PACKAGE_IRDA_UTILS is not set
 # BR2_PACKAGE_IPERF is not set
 # BR2_PACKAGE_IPROUTE2 is not set
-# BR2_PACKAGE_IPSEC_TOOLS is not set
+
+#
+# ipsec-tools	- disabled (requires openssl, flex and the flex library (libfl.a) )
+#
 # BR2_PACKAGE_IPTABLES is not set
 # BR2_PACKAGE_KISMET is not set
 # BR2_PACKAGE_L2TP is not set
 # BR2_PACKAGE_LIBCGI is not set
 # BR2_PACKAGE_LIBCGICC is not set
+# BR2_PACKAGE_LIBEXOSIP2 is not set
+# BR2_PACKAGE_LIBOSIP2 is not set
 # BR2_PACKAGE_LIBPCAP is not set
 # BR2_PACKAGE_LINKS is not set
 # BR2_PACKAGE_LRZSZ is not set
@@ -439,14 +452,21 @@ BR2_NETWORK_SUPPORT=y
 # BR2_PACKAGE_TFTPD is not set
 # BR2_PACKAGE_TN5250 is not set
 # BR2_PACKAGE_TTCP is not set
-# BR2_PACKAGE_VPNC is not set
+
+#
+# vpnc		- disabled (requires libgcrypt and libgpg_error)
+#
 # BR2_PACKAGE_VTUN is not set
 # BR2_PACKAGE_WIRELESS_TOOLS is not set
 BR2_BLOCKDEV_SUPPORT=y
-# BR2_PACKAGE_DBUS is not set
+
+#
+# dbus not available (need expat or libxml2)
+#
 # BR2_PACKAGE_DM is not set
 # BR2_PACKAGE_DMRAID is not set
 # BR2_PACKAGE_E2FSPROGS is not set
+# BR2_PACKAGE_LIBFUSE is not set
 # BR2_PACKAGE_GADGETFS_TEST is not set
 # BR2_PACKAGE_HAL is not set
 # BR2_PACKAGE_HWDATA is not set
@@ -460,6 +480,7 @@ BR2_BLOCKDEV_SUPPORT=y
 # BR2_PACKAGE_MEMTESTER is not set
 # BR2_PACKAGE_MKDOSFS is not set
 # BR2_PACKAGE_MTD is not set
+# BR2_PACKAGE_NTFS-3G is not set
 # BR2_PACKAGE_PCIUTILS is not set
 # BR2_PACKAGE_PCMCIA is not set
 # BR2_PACKAGE_RAIDTOOLS is not set
@@ -471,7 +492,10 @@ BR2_BLOCKDEV_SUPPORT=y
 # BR2_PACKAGE_XFSPROGS is not set
 BR2_AUDIO_SUPPORT=y
 # BR2_PACKAGE_ALSA_LIB is not set
-# BR2_PACKAGE_ASTERISK is not set
+
+#
+# asterisk	- disabled (required openssl and mpg123)
+#
 # BR2_PACKAGE_AUMIX is not set
 # BR2_PACKAGE_LIBMAD is not set
 # BR2_PACKAGE_LIBOGG is not set
@@ -482,6 +506,7 @@ BR2_AUDIO_SUPPORT=y
 #
 # BR2_PACKAGE_MADPLAY is not set
 # BR2_PACKAGE_MPG123 is not set
+# BR2_PACKAGE_SPEEX is not set
 BR2_GRAPHIC_SUPPORT=y
 
 #
@@ -505,6 +530,7 @@ BR2_GRAPHIC_SUPPORT=y
 # BR2_PACKAGE_LIBPNG is not set
 # BR2_PACKAGE_LIBUNGIF is not set
 # BR2_PACKAGE_SDL is not set
+# BR2_PACKAGE_SDL_TTF is not set
 # BR2_PACKAGE_TIFF is not set
 
 #
@@ -531,7 +557,10 @@ BR2_X11_PREFIX="/usr"
 #
 # X libraries and helper libraries
 #
-# BR2_PACKAGE_ATK is not set
+
+#
+# atk		- disabled (requires libglib2)
+#
 # BR2_PACKAGE_PANGO is not set
 # BR2_PACKAGE_LIBDRM is not set
 # BR2_PACKAGE_LIBGLIB12 is not set
@@ -550,6 +579,10 @@ BR2_X11_PREFIX="/usr"
 #
 
 #
+# dillo		- disabled (requires jpeg,libglib12,libgtk12,zlib,libpng and Xorg(7))
+#
+
+#
 # Video libraries/codecs and applications
 #
 # BR2_PACKAGE_MPLAYER is not set
@@ -559,11 +592,17 @@ BR2_COMPRESSOR_SUPPORT=y
 # BR2_PACKAGE_LZMA_HOST is not set
 # BR2_PACKAGE_ZLIB is not set
 BR2_SCRIPTING_SUPPORT=y
+
+#
+# lua		- disabled (requires readline and ncurses)
+#
 # BR2_PACKAGE_MICROPERL is not set
 # BR2_PACKAGE_PYTHON is not set
 # BR2_PACKAGE_RUBY is not set
 # BR2_PACKAGE_TCL is not set
 # BR2_PACKAGE_PHP is not set
+BR2_GAMES=y
+# BR2_PACKAGE_DOOM is not set
 
 #
 # Target filesystem options
