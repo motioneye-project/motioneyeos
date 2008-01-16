@@ -3,17 +3,10 @@
 # mkcloop to build to target cloop filesystems
 #
 #############################################################
-### /cloop_2.01.5.orig.tar.gz
-CLOOP_VERSION=2.01
+CLOOP_VERSION=2.06
 CLOOP_DIR=$(BUILD_DIR)/cloop-$(CLOOP_VERSION)
-### CLOOP_SOURCE=cloop_$(CLOOP_VERSION).5.orig.tar.gz
-### CLOOP_SITE=http://ftp.debian.org/debian/pool/main/c/cloop
-# http://ftp.debian.org/debian/pool/main/c/cloop/cloop_2.01.5-4.diff.gz
-### CLOOP_PATCH1:=cloop_2.01.5-4.diff.gz
-### CLOOP_PATCH1_URL:=$(CLOOP_SITE)
-# http://developer.linuxtag.net/knoppix/sources/cloop_2.01-5.tar.gz
-CLOOP_SOURCE=cloop_$(CLOOP_VERSION)-5.tar.gz
-CLOOP_SITE=http://developer.linuxtag.net/knoppix/sources
+CLOOP_SOURCE=cloop_$(CLOOP_VERSION)-2.tar.gz
+CLOOP_SITE=http://debian-knoppix.alioth.debian.org/sources/
 
 CLOOP_TARGET:=$(IMAGE).cloop
 ### Note: not used yet! ck
@@ -70,25 +63,26 @@ cloop-module: $(CLOOP_DIR)/cloop.o
 ### Note: target/default/device_table.txt is not yet supported! ck
 # the quickfix is to use sudo to mount the previous created cramroot
 check-tools:
-	which mkisofs
-	- which symlinks
-
-clooproot: cloop check-tools $(IMAGE).cramfs ### cramfsroot
-	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	@rm -rf $(TARGET_DIR)/usr/man
 	@rm -rf $(TARGET_DIR)/usr/share/man
 endif
 ifneq ($(BR2_HAVE_INFOPAGES),y)
 	@rm -rf $(TARGET_DIR)/usr/info
+	@rm -rf $(TARGET_DIR)/usr/share/info
 endif
 	@rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
+	which mkisofs
+	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
+	- which symlinks && symlinks -r $(TARGET_DIR)
+
+$(IMAGE).cramfs: cramfsroot
+
+clooproot: cloop check-tools $(IMAGE).cramfs
 	### $(CLOOP_DIR)/create_compressed_fs -q -D target/default/device_table.txt $(TARGET_DIR) $(CLOOP_TARGET)
 	## mkisofs -r $(TARGET_DIR) | $(CLOOP_DIR)/create_compressed_fs - 65536 > $(CLOOP_TARGET)
-	sudo /sbin/losetup -d /dev/loop1
-	sudo /sbin/losetup /dev/loop1 $(IMAGE).cramfs
 	sudo mkdir -p /mnt/compressed
-	sudo mount -o ro -t cramfs /dev/loop1 /mnt/compressed
+	sudo mount -o ro,loop -t cramfs $(IMAGE).cramfs /mnt/compressed
 	mkisofs -r /mnt/compressed | $(CLOOP_DIR)/create_compressed_fs - 65536 > $(CLOOP_TARGET)
 	- symlinks -r /mnt/compressed
 	sudo umount /mnt/compressed
