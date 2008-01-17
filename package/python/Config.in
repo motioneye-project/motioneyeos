@@ -5,3 +5,96 @@ config BR2_PACKAGE_PYTHON
 	  The python language interpreter.
 
 	  http://www.python.org/
+
+choice
+	prompt "Module format to install"
+	depends on BR2_PACKAGE_PYTHON
+	default BR2_PACKAGE_PYTHON_PY_ONLY
+	help
+	  Select Python module format to install on target (py, pyc or both)
+
+config BR2_PACKAGE_PYTHON_PY_ONLY
+	bool ".py sources only"
+
+config BR2_PACKAGE_PYTHON_PYC_ONLY
+	bool ".pyc compiled sources only"
+
+config BR2_PACKAGE_PYTHON_PY_PYC
+	bool ".py sources and .pyc compiled"
+
+endchoice
+
+comment "The following modules are unusual or require extra libraries"
+	depends on BR2_PACKAGE_PYTHON
+
+config BR2_PACKAGE_PYTHON_BSDDB
+	depends on BR2_PACKAGE_PYTHON
+	bool "bsddb module"
+	default n
+	help
+	  bsddb module for Python.
+
+config BR2_PACKAGE_PYTHON_CODECSCJK
+	depends on BR2_PACKAGE_PYTHON
+	bool "codecscjk module"
+	default y
+	help
+	  Chinese/Japanese/Korean codecs module for Python (large).
+
+config BR2_PACKAGE_PYTHON_CURSES
+	depends on BR2_PACKAGE_PYTHON
+	bool "curses module"
+	default n
+	help
+	  curses module for Python.
+
+config BR2_PACKAGE_PYTHON_GDBM
+	depends on BR2_PACKAGE_PYTHON
+	bool "gdbm module"
+	default n
+	help
+	  gdbm module for Python.
+
+config BR2_PACKAGE_PYTHON_NIS
+	depends on BR2_PACKAGE_PYTHON
+	bool "nis module"
+	default n
+	help
+	  nis module for Python.
+
+config BR2_PACKAGE_PYTHON_PYEXPAT
+	depends on BR2_PACKAGE_PYTHON
+	bool "pyexpat"
+	default n
+	help
+	  pyexpat module for Python.
+
+config BR2_PACKAGE_PYTHON_READLINE
+	depends on BR2_PACKAGE_PYTHON
+	bool "readline"
+	default n
+	help
+	  readline module for Python (required for command-line 
+	  editing in the Python shell).
+
+config BR2_PACKAGE_PYTHON_SSL
+	depends on BR2_PACKAGE_PYTHON
+	bool "ssl"
+	default n
+	help
+	  _ssl module for Python (required for https in urllib etc).
+
+config BR2_PACKAGE_PYTHON_TKINTER
+	depends on BR2_PACKAGE_PYTHON
+	bool "tkinter module"
+	default n
+	help
+	  tkinter module for Python.
+
+config BR2_PACKAGE_PYTHON_UNICODEDATA
+	depends on BR2_PACKAGE_PYTHON
+	bool "unicodedata module"
+	default y
+	help
+	  Unicode character database (used by stringprep module) (large).
+
