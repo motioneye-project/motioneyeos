@@ -31,6 +31,9 @@ QTOPIA4_SITE:=http://$(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME):$(BR2_QTOPIA4_CO
 QTOPIA4_SOURCE:=qtopia-core-commercial-src-$(QTOPIA4_VERSION).tar.gz
 QTOPIA4_TARGET_DIR:=$(BUILD_DIR)/qtopia-core-commercial-src-$(QTOPIA4_VERSION)
 QTOPIA4_HOST_DIR:=$(TOOL_BUILD_DIR)/qtopia-core-commercial-src-$(QTOPIA4_VERSION)
+QTOPIA4_NO_SQL_OCI:=-no-sql-oci
+QTOPIA4_NO_SQL_TDS:=-no-sql-tds
+QTOPIA4_NO_SQL_DB2:=-no-sql-db2
 
 else
 
@@ -81,7 +84,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_TSLIB),y)
 #BUG: Qtopia refuse to recognize -qt-mouse-tslib
-#QTOPIA4_TSLIB=-qt-mouse-tslib
+QTOPIA4_TSLIB=-qt-mouse-tslib
 QTOPIA4_DEP_LIBS+=tslib
 QTOPIA4_TSLIB_DEB="-D TSLIBMOUSEHANDLER_DEBUG"
 QTOPIA4_TSLIB_DEB:=$(strip $(subst ",, $(QTOPIA4_TSLIB_DEB)))
@@ -200,15 +203,15 @@ endif
 		$(QTOPIA4_GIF_LIB) \
 		$(QTOPIA4_JPEG) \
 		$(QTOPIA4_ZLIB) \
-		-no-sql-db2 \
 		-no-sql-ibase \
 		-no-sql-mysql \
-		-no-sql-oci \
 		-no-sql-odbc \
 		-no-sql-psql \
 		-no-sql-sqlite \
 		-no-sql-sqlite2 \
-		-no-sql-tds \
+		$(QTOPIA4_NO_SQL_DB2) \
+		$(QTOPIA4_NO_SQL_OCI) \
+		$(QTOPIA4_NO_SQL_TDS) \
 		-prefix $(QTOPIA4_TARGET_DIR) \
 		-docdir $(QTOPIA4_TARGET_DIR)/doc \
 		-headerdir $(QTOPIA4_TARGET_DIR)/include \
