@@ -3,7 +3,7 @@
 # lzma
 #
 #############################################################
-LZMA_VERSION:=4.32.0beta3
+LZMA_VERSION:=4.32.4
 LZMA_SOURCE:=lzma-$(LZMA_VERSION).tar.gz
 LZMA_CAT:=$(ZCAT)
 LZMA_SITE:=http://tukaani.org/lzma/
