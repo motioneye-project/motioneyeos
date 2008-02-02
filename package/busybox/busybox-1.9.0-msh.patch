@@ -1,0 +1,79 @@
+--- busybox-1.9.0/include/libbb.h	Fri Dec 21 22:00:31 2007
++++ busybox-1.9.0-msh/include/libbb.h	Sat Feb  2 18:55:36 2008
+@@ -950,10 +950,9 @@
+ };
+ line_input_t *new_line_input_t(int flags);
+ /* Returns:
+- * -1 on read errors or EOF, or on bare Ctrl-D.
+- * 0  on ctrl-C,
++ * -1 on read errors or EOF, or on bare Ctrl-D,
++ * 0  on ctrl-C (the line entered is still returned in 'command'),
+  * >0 length of input string, including terminating '\n'
+- * [is this true? stores "" in 'command' if return value is 0 or -1]
+  */
+ int read_line_input(const char* prompt, char* command, int maxsize, line_input_t *state);
+ #else
+--- busybox-1.9.0/libbb/lineedit.c	Mon Dec 24 14:08:25 2007
++++ busybox-1.9.0-msh/libbb/lineedit.c	Sat Feb  2 18:55:36 2008
+@@ -1315,8 +1315,8 @@
+ #define CTRL(a) ((a) & ~0x40)
+ 
+ /* Returns:
+- * -1 on read errors or EOF, or on bare Ctrl-D.
+- * 0  on ctrl-C,
++ * -1 on read errors or EOF, or on bare Ctrl-D,
++ * 0  on ctrl-C (the line entered is still returned in 'command'),
+  * >0 length of input string, including terminating '\n'
+  */
+ int read_line_input(const char *prompt, char *command, int maxsize, line_input_t *st)
+--- busybox-1.9.0/shell/msh.c	Fri Dec 21 22:00:28 2007
++++ busybox-1.9.0-msh/shell/msh.c	Sat Feb  2 18:57:12 2008
+@@ -2825,11 +2825,13 @@
+ 
+ 	if (pin != NULL) {
+ 		xmove_fd(pin[0], 0);
+-		if (pin[1] != 0) close(pin[1]);
++		if (pin[1] != 0)
++			close(pin[1]);
+ 	}
+ 	if (pout != NULL) {
+ 		xmove_fd(pout[1], 1);
+-		if (pout[1] != 1) close(pout[0]);
++		if (pout[1] != 1)
++			close(pout[0]);
+ 	}
+ 
+ 	iopp = t->ioact;
+@@ -4162,7 +4164,7 @@
+ 		return 0;
+ 	}
+ 	if (i != 0) {
+-		waitpid(i, NULL, 0);
++		waitpid(i, NULL, 0); // safe_waitpid?
+ 		global_env.iop->argp->aword = ++cp;
+ 		close(pf[1]);
+ 		PUSHIO(afile, remap(pf[0]),
+@@ -4181,7 +4183,8 @@
+ 	 *  echo "$files" >zz
+ 	 */
+ 	xmove_fd(pf[1], 1);
+-	if (pf[0] != 1) close(pf[0]);
++	if (pf[0] != 1)
++		close(pf[0]);
+ 
+ 	argument_list[0] = (char *) DEFAULT_SHELL;
+ 	argument_list[1] = (char *) "-c";
+@@ -4834,9 +4837,11 @@
+ 		static int position = 0, size = 0;
+ 
+ 		while (size == 0 || position >= size) {
+-			read_line_input(current_prompt, filechar_cmdbuf, BUFSIZ, line_input_state);
+-			size = strlen(filechar_cmdbuf);
++			size = read_line_input(current_prompt, filechar_cmdbuf, BUFSIZ, line_input_state);
++			if (size < 0) /* Error/EOF */
++				exit(0);
+ 			position = 0;
++			/* if Ctrl-C, size == 0 and loop will repeat */
+ 		}
+ 		c = filechar_cmdbuf[position];
+ 		position++;
