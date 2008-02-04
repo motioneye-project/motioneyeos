@@ -51,7 +51,7 @@ choice
 
 	config BR2_KERNEL_HEADERS_2_6_20
 		depends !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Latest Linux 2.6.20.x kernel headers"
+		bool "Linux 2.6.20.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_21_5
 		depends !BR2_avr32 && !BR2_nios2
@@ -59,7 +59,7 @@ choice
 
 	config BR2_KERNEL_HEADERS_2_6_21
 		depends !BR2_avr32 && !BR2_nios2
-		bool "Latest Linux 2.6.21.x kernel headers"
+		bool "Linux 2.6.21.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_22_1
 		depends !BR2_avr32 && !BR2_nios2
@@ -71,11 +71,15 @@ choice
 
 	config BR2_KERNEL_HEADERS_2_6_22
 		depends !BR2_avr32 && !BR2_nios2
-		bool "Latest Linux 2.6.22.x kernel headers"
+		bool "Linux 2.6.22.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_23
 		depends !BR2_avr32
-		bool "Latest Linux 2.6.23.x kernel headers"
+		bool "Linux 2.6.23.x kernel headers"
+
+	config BR2_KERNEL_HEADERS_2_6_24
+		depends on !BR2_avr32
+		bool "Linux 2.6.24.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_SNAP
 		bool "Linux 2.6 snapshot"
@@ -131,5 +135,6 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.6.22.10"	if BR2_KERNEL_HEADERS_2_6_22_10
 	default "2.6.22.10"	if BR2_KERNEL_HEADERS_2_6_22
 	default "2.6.23"	if BR2_KERNEL_HEADERS_2_6_23
+	default "2.6.24"	if BR2_KERNEL_HEADERS_2_6_24
 	default "2.6"		if BR2_KERNEL_HEADERS_SNAP
 
