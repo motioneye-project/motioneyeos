@@ -9,5 +9,11 @@ config BR2_PACKAGE_READLINE_TARGET
 	bool "readline for the target"
 	depends on BR2_READLINE
 	help
-	  Say yes here to install the readline libraries and headers
+	  Say yes here to install the readline libraries on the target.
+
+config BR2_PACKAGE_READLINE_HEADERS
+	bool "readline headers for the target"
+	depends on BR2_PACKAGE_READLINE_TARGET
+	help
+	  Say yes here to install the readline headers and documentation
 	  on the target.
