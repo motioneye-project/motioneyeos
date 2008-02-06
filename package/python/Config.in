@@ -6,6 +6,14 @@ config BR2_PACKAGE_PYTHON
 
 	  http://www.python.org/
 
+config BR2_PACKAGE_PYTHON_DEV
+	depends on BR2_PACKAGE_PYTHON
+	bool "development files on target"
+	default n
+	help
+	  If enabled, development files (headers and static libpython) will be
+	  installed on the target.
+
 choice
 	prompt "Module format to install"
 	depends on BR2_PACKAGE_PYTHON
