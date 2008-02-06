@@ -1,0 +1,70 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.2
+Patch-ID: readline52-004
+
+Bug-Reported-by: Peter Volkov <torre_cremata@mail.ru>
+Bug-Reference-ID: <1173636022.7039.36.camel@localhost>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2007-03/msg00039.html
+
+Bug-Description:
+
+When restoring the original prompt after finishing an incremental search,
+bash sometimes places the cursor incorrectly if the primary prompt contains
+invisible characters.
+
+Patch:
+
+*** ../readline-5.2.3/display.c	Fri Apr 20 13:30:16 2007
+--- ./display.c	Fri Apr 20 15:17:01 2007
+***************
+*** 1599,1604 ****
+  	  if (temp > 0)
+  	    {
+  	      _rl_output_some_chars (nfd, temp);
+! 	      _rl_last_c_pos += _rl_col_width (nfd, 0, temp);;
+  	    }
+  	}
+--- 1599,1618 ----
+  	  if (temp > 0)
+  	    {
++ 	      /* If nfd begins at the prompt, or before the invisible
++ 		 characters in the prompt, we need to adjust _rl_last_c_pos
++ 		 in a multibyte locale to account for the wrap offset and
++ 		 set cpos_adjusted accordingly. */
+  	      _rl_output_some_chars (nfd, temp);
+! 	      if (MB_CUR_MAX > 1 && rl_byte_oriented == 0)
+! 		{
+!                   _rl_last_c_pos += _rl_col_width (nfd, 0, temp);
+!                   if (current_line == 0 && wrap_offset &&  ((nfd - new) <= prompt_last_invisible))
+! 		    {
+! 		      _rl_last_c_pos -= wrap_offset;
+! 		      cpos_adjusted = 1;
+! 		    }
+! 		}
+!               else
+!                 _rl_last_c_pos += temp;
+  	    }
+  	}
+***************
+*** 1608,1613 ****
+--- 1622,1639 ----
+  	  if (temp > 0)
+  	    {
++ 	      /* If nfd begins at the prompt, or before the invisible
++ 		 characters in the prompt, we need to adjust _rl_last_c_pos
++ 		 in a multibyte locale to account for the wrap offset and
++ 		 set cpos_adjusted accordingly. */
+  	      _rl_output_some_chars (nfd, temp);
+  	      _rl_last_c_pos += col_temp;		/* XXX */
++ 	      if (MB_CUR_MAX > 1 && rl_byte_oriented == 0)
++ 		{
++ 		  if (current_line == 0 && wrap_offset &&  ((nfd - new) <= prompt_last_invisible))
++ 		    {
++ 		      _rl_last_c_pos -= wrap_offset;
++ 		      cpos_adjusted = 1;
++ 		    }
++ 		}
+  	    }
+  	  lendiff = (oe - old) - (ne - new);

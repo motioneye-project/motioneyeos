@@ -1,0 +1,70 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.2
+Patch-ID: readline52-008
+
+Bug-Reported-by:	dAniel hAhler <ubuntu@thequod.de>
+Bug-Reference-ID:	<4702ED8A.5000503@thequod.de>
+Bug-Reference-URL:	https://bugs.launchpad.net/ubuntu/+source/bash/+bug/119938
+
+Bug-Description:
+
+When updating the display after displaying, for instance, a list of possible
+completions, readline will place the cursor at the wrong position if the
+prompt contains invisible characters and a newline.
+
+Patch:
+
+*** ../readline-5.2-patched/display.c	Mon Aug  6 14:26:29 2007
+--- ./display.c	Wed Oct 10 22:43:58 2007
+***************
+*** 1049,1053 ****
+  	      else
+  		tx = nleft;
+! 	      if (_rl_last_c_pos > tx)
+  		{
+  	          _rl_backspace (_rl_last_c_pos - tx);	/* XXX */
+--- 1049,1053 ----
+  	      else
+  		tx = nleft;
+! 	      if (tx >= 0 && _rl_last_c_pos > tx)
+  		{
+  	          _rl_backspace (_rl_last_c_pos - tx);	/* XXX */
+***************
+*** 1205,1209 ****
+  {
+    register char *ofd, *ols, *oe, *nfd, *nls, *ne;
+!   int temp, lendiff, wsatend, od, nd;
+    int current_invis_chars;
+    int col_lendiff, col_temp;
+--- 1205,1209 ----
+  {
+    register char *ofd, *ols, *oe, *nfd, *nls, *ne;
+!   int temp, lendiff, wsatend, od, nd, o_cpos;
+    int current_invis_chars;
+    int col_lendiff, col_temp;
+***************
+*** 1466,1469 ****
+--- 1466,1471 ----
+      }
+  
++   o_cpos = _rl_last_c_pos;
++ 
+    /* When this function returns, _rl_last_c_pos is correct, and an absolute
+       cursor postion in multibyte mode, but a buffer index when not in a
+***************
+*** 1475,1479 ****
+       invisible characters in the prompt string.  Let's see if setting this when
+       we make sure we're at the end of the drawn prompt string works. */
+!   if (current_line == 0 && MB_CUR_MAX > 1 && rl_byte_oriented == 0 && _rl_last_c_pos == prompt_physical_chars)
+      cpos_adjusted = 1;
+  #endif
+--- 1477,1483 ----
+       invisible characters in the prompt string.  Let's see if setting this when
+       we make sure we're at the end of the drawn prompt string works. */
+!   if (current_line == 0 && MB_CUR_MAX > 1 && rl_byte_oriented == 0 && 
+!       (_rl_last_c_pos > 0 || o_cpos > 0) &&
+!       _rl_last_c_pos == prompt_physical_chars)
+      cpos_adjusted = 1;
+  #endif

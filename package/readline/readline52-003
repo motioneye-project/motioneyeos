@@ -1,0 +1,37 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.2
+Patch-ID: readline52-003
+
+Bug-Reported-by: Peter Volkov <torre_cremata@mail.ru>
+Bug-Reference-ID: <1171795523.8021.18.camel@localhost>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-bash/2007-02/msg00054.html
+
+Bug-Description:
+
+When moving the cursor, bash sometimes misplaces the cursor when the prompt
+contains two or more multibyte characters.  The particular circumstance that
+uncovered the problem was having the (multibyte) current directory name in
+the prompt string.
+
+Patch:
+
+*** ../readline-5.2.2/display.c	Fri Jan 19 13:34:50 2007
+--- ./display.c	Sat Mar 10 17:25:44 2007
+***************
+*** 1745,1749 ****
+      {
+        dpos = _rl_col_width (data, 0, new);
+!       if (dpos > prompt_last_invisible)		/* XXX - don't use woff here */
+  	{
+  	  dpos -= woff;
+--- 1745,1752 ----
+      {
+        dpos = _rl_col_width (data, 0, new);
+!       /* Use NEW when comparing against the last invisible character in the
+! 	 prompt string, since they're both buffer indices and DPOS is a
+! 	 desired display position. */
+!       if (new > prompt_last_invisible)		/* XXX - don't use woff here */
+  	{
+  	  dpos -= woff;

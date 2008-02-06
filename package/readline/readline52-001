@@ -1,0 +1,30 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.2
+Patch-ID: readline52-001
+
+Bug-Reported-by:	ebb9@byu.net
+Bug-Reference-ID:	<45540862.9030900@byu.net>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2006-11/msg00017.html
+			http://lists.gnu.org/archive/html/bug-bash/2006-11/msg00016.html
+
+Bug-Description:
+
+In some cases, code that is intended to be used in the presence of multibyte
+characters is called when no such characters are present, leading to incorrect
+display position calculations and incorrect redisplay.
+
+Patch:
+
+*** ../readline-5.2/display.c	Thu Sep 14 14:20:12 2006
+--- readline-5.2/display.c	Mon Nov 13 17:55:57 2006
+***************
+*** 2381,2384 ****
+--- 2409,2414 ----
+    if (end <= start)
+      return 0;
++   if (MB_CUR_MAX == 1 || rl_byte_oriented)
++     return (end - start);
+  
+    memset (&ps, 0, sizeof (mbstate_t));

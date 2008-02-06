@@ -1,0 +1,45 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.2
+Patch-ID: readline52-009
+
+Bug-Reported-by:	dAniel hAhler <ubuntu@thequod.de>
+Bug-Reference-ID:
+Bug-Reference-URL:
+
+Bug-Description:
+
+Under some circumstances, readline will incorrectly display a prompt string
+containing invisible characters after the final newline.
+
+Patch:
+
+*** ../readline-5.2-patched/display.c	2007-08-25 13:47:08.000000000 -0400
+--- ./display.c	2007-11-10 17:51:29.000000000 -0500
+***************
+*** 392,396 ****
+        local_prompt = expand_prompt (p, &prompt_visible_length,
+  				       &prompt_last_invisible,
+! 				       (int *)NULL,
+  				       &prompt_physical_chars);
+        c = *t; *t = '\0';
+--- 420,424 ----
+        local_prompt = expand_prompt (p, &prompt_visible_length,
+  				       &prompt_last_invisible,
+! 				       &prompt_invis_chars_first_line,
+  				       &prompt_physical_chars);
+        c = *t; *t = '\0';
+***************
+*** 399,403 ****
+        local_prompt_prefix = expand_prompt (prompt, &prompt_prefix_length,
+  						   (int *)NULL,
+! 						   &prompt_invis_chars_first_line,
+  						   (int *)NULL);
+        *t = c;
+--- 427,431 ----
+        local_prompt_prefix = expand_prompt (prompt, &prompt_prefix_length,
+  						   (int *)NULL,
+! 						   (int *)NULL,
+  						   (int *)NULL);
+        *t = c;

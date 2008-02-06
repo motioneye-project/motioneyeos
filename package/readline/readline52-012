@@ -1,0 +1,150 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.2
+Patch-ID: readline52-012
+
+Bug-Reported-by:	Chet Ramey <chet.ramey@case.edu>
+Bug-Reference-ID:
+Bug-Reference-URL:
+
+Bug-Description:
+
+This updates the options required to create shared libraries on several
+systems, including Mac OS X 10.5 (darwin9.x), FreeBSD, NetBSD, OpenBSD,
+AIX, and HP/UX.
+
+Patch:
+
+*** ../readline-5.2-patched/support/shobj-conf	2006-04-11 09:15:43.000000000 -0400
+--- ./support/shobj-conf	2007-12-06 23:46:41.000000000 -0500
+***************
+*** 11,15 ****
+  # chet@po.cwru.edu
+  
+! # Copyright (C) 1996-2002 Free Software Foundation, Inc.
+  #
+  # This program is free software; you can redistribute it and/or modify
+--- 11,15 ----
+  # chet@po.cwru.edu
+  
+! # Copyright (C) 1996-2007 Free Software Foundation, Inc.
+  #
+  # This program is free software; you can redistribute it and/or modify
+***************
+*** 115,119 ****
+  	;;
+  
+! freebsd2* | netbsd*)
+  	SHOBJ_CFLAGS=-fpic
+  	SHOBJ_LD=ld
+--- 115,119 ----
+  	;;
+  
+! freebsd2*)
+  	SHOBJ_CFLAGS=-fpic
+  	SHOBJ_LD=ld
+***************
+*** 126,130 ****
+  # FreeBSD-3.x ELF
+  freebsd[3-9]*|freebsdelf[3-9]*|freebsdaout[3-9]*|dragonfly*)
+! 	SHOBJ_CFLAGS=-fpic
+  	SHOBJ_LD='${CC}'
+  
+--- 126,130 ----
+  # FreeBSD-3.x ELF
+  freebsd[3-9]*|freebsdelf[3-9]*|freebsdaout[3-9]*|dragonfly*)
+! 	SHOBJ_CFLAGS=-fPIC
+  	SHOBJ_LD='${CC}'
+  
+***************
+*** 143,147 ****
+  
+  # Darwin/MacOS X
+! darwin8*)
+  	SHOBJ_STATUS=supported
+  	SHLIB_STATUS=supported
+--- 143,147 ----
+  
+  # Darwin/MacOS X
+! darwin[89]*)
+  	SHOBJ_STATUS=supported
+  	SHLIB_STATUS=supported
+***************
+*** 154,158 ****
+  	SHLIB_LIBSUFF='dylib'
+  
+! 	SHOBJ_LDFLAGS='-undefined dynamic_lookup'
+  	SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
+  
+--- 154,158 ----
+  	SHLIB_LIBSUFF='dylib'
+  
+! 	SHOBJ_LDFLAGS='-dynamiclib -dynamic -undefined dynamic_lookup -arch_only `/usr/bin/arch`'
+  	SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
+  
+***************
+*** 172,176 ****
+  
+  	case "${host_os}" in
+! 	darwin[78]*)	SHOBJ_LDFLAGS=''
+  			SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
+  			;;
+--- 172,176 ----
+  
+  	case "${host_os}" in
+! 	darwin[789]*)	SHOBJ_LDFLAGS=''
+  			SHLIB_XLDFLAGS='-dynamiclib -arch_only `/usr/bin/arch` -install_name $(libdir)/$@ -current_version $(SHLIB_MAJOR)$(SHLIB_MINOR) -compatibility_version $(SHLIB_MAJOR) -v'
+  			;;
+***************
+*** 183,187 ****
+  	;;
+  
+! openbsd*)
+  	SHOBJ_CFLAGS=-fPIC
+  	SHOBJ_LD='${CC}'
+--- 183,187 ----
+  	;;
+  
+! openbsd*|netbsd*)
+  	SHOBJ_CFLAGS=-fPIC
+  	SHOBJ_LD='${CC}'
+***************
+*** 248,252 ****
+  	;;
+  
+! aix4.[2-9]*-*gcc*)		# lightly tested by jik@cisco.com
+  	SHOBJ_CFLAGS=-fpic
+  	SHOBJ_LD='ld'
+--- 248,252 ----
+  	;;
+  
+! aix4.[2-9]*-*gcc*|aix[5-9].*-*gcc*)		# lightly tested by jik@cisco.com
+  	SHOBJ_CFLAGS=-fpic
+  	SHOBJ_LD='ld'
+***************
+*** 259,263 ****
+  	;;
+  
+! aix4.[2-9]*)
+  	SHOBJ_CFLAGS=-K
+  	SHOBJ_LD='ld'
+--- 259,263 ----
+  	;;
+  
+! aix4.[2-9]*|aix[5-9].*)
+  	SHOBJ_CFLAGS=-K
+  	SHOBJ_LD='ld'
+***************
+*** 330,334 ****
+  	# if you have problems linking here, moving the `-Wl,+h,$@' from
+  	# SHLIB_XLDFLAGS to SHOBJ_LDFLAGS has been reported to work
+! 	SHOBJ_LDFLAGS='-shared -Wl,-b -Wl,+s'
+  
+  	SHLIB_XLDFLAGS='-Wl,+h,$@ -Wl,+b,$(libdir)'
+--- 330,334 ----
+  	# if you have problems linking here, moving the `-Wl,+h,$@' from
+  	# SHLIB_XLDFLAGS to SHOBJ_LDFLAGS has been reported to work
+! 	SHOBJ_LDFLAGS='-shared -fpic -Wl,-b -Wl,+s'
+  
+  	SHLIB_XLDFLAGS='-Wl,+h,$@ -Wl,+b,$(libdir)'

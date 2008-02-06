@@ -1,0 +1,49 @@
+			   READLINE PATCH REPORT
+			   =====================
+
+Readline-Release: 5.2
+Patch-ID: readline52-002
+
+Bug-Reported-by: Magnus Svensson <msvensson@mysql.com>
+Bug-Reference-ID: <45BDC44D.80609@mysql.com>
+Bug-Reference-URL: http://lists.gnu.org/archive/html/bug-readline/2007-01/msg00002.html
+
+Bug-Description:
+
+Readline neglects to reallocate the array it uses to keep track of wrapped
+screen lines when increasing its size.  This will eventually result in
+segmentation faults when given sufficiently long input.
+
+Patch:
+
+*** ../readline-5.2-patched/display.c	Thu Sep 14 14:20:12 2006
+--- ./display.c	Fri Feb  2 20:23:17 2007
+***************
+*** 561,574 ****
+--- 561,586 ----
+        wrap_offset = prompt_invis_chars_first_line = 0;
+      }
+  
++ #if defined (HANDLE_MULTIBYTE)
+  #define CHECK_INV_LBREAKS() \
+        do { \
+  	if (newlines >= (inv_lbsize - 2)) \
+  	  { \
+  	    inv_lbsize *= 2; \
+  	    inv_lbreaks = (int *)xrealloc (inv_lbreaks, inv_lbsize * sizeof (int)); \
++ 	    _rl_wrapped_line = (int *)xrealloc (_rl_wrapped_line, inv_lbsize * sizeof (int)); \
+  	  } \
+        } while (0)
++ #else
++ #define CHECK_INV_LBREAKS() \
++       do { \
++ 	if (newlines >= (inv_lbsize - 2)) \
++ 	  { \
++ 	    inv_lbsize *= 2; \
++ 	    inv_lbreaks = (int *)xrealloc (inv_lbreaks, inv_lbsize * sizeof (int)); \
++ 	  } \
++       } while (0)
++ #endif /* HANDLE_MULTIBYTE */
+  
+  #if defined (HANDLE_MULTIBYTE)	  
+  #define CHECK_LPOS() \
