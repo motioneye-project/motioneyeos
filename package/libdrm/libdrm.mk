@@ -16,6 +16,7 @@ libdrm-source: $(DL_DIR)/$(LIBDRM_SOURCE)
 
 $(LIBDRM_DIR)/.unpacked: $(DL_DIR)/$(LIBDRM_SOURCE)
 	$(LIBDRM_CAT) $(DL_DIR)/$(LIBDRM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(LIBDRM_DIR)
 	touch $@
 
 $(LIBDRM_DIR)/.configured: $(LIBDRM_DIR)/.unpacked

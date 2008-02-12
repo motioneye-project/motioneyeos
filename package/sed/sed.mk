@@ -37,6 +37,7 @@ $(SED_DIR1)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	mkdir -p $(HOST_SED_DIR)/bin
 	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(SED_DIR1) package/sed/ configure.patch
+	$(CONFIG_UPDATE) $(SED_DIR1)/config
 	touch $@
 
 $(SED_DIR1)/.configured: $(SED_DIR1)/.unpacked
@@ -105,6 +106,7 @@ endif
 #############################################################
 $(SED_DIR2)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(SED_DIR2)/config
 	touch $(SED_DIR2)/.unpacked
 
 $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked

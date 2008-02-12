@@ -24,6 +24,7 @@ autoconf-source: $(DL_DIR)/$(AUTOCONF_SOURCE)
 
 $(AUTOCONF_SRC_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 	$(AUTOCONF_CAT) $(DL_DIR)/$(AUTOCONF_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(AUTOCONF_SRC_DIR)
 	touch $@
 
 #############################################################

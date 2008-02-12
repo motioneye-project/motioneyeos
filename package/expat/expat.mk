@@ -22,6 +22,7 @@ $(EXPAT_DIR)/.unpacked: $(DL_DIR)/$(EXPAT_SOURCE)
 	$(EXPAT_CAT) $(DL_DIR)/$(EXPAT_SOURCE) | \
 		tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(EXPAT_DIR)
+	$(CONFIG_UPDATE) $(EXPAT_DIR)/conftools
 	touch $@
 
 $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked

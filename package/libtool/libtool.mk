@@ -20,6 +20,8 @@ libtool-source: $(DL_DIR)/$(LIBTOOL_SOURCE)
 
 $(LIBTOOL_SRC_DIR)/.unpacked: $(DL_DIR)/$(LIBTOOL_SOURCE)
 	$(LIBTOOL_CAT) $(DL_DIR)/$(LIBTOOL_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(LIBTOOL_SRC_DIR)
+	$(CONFIG_UPDATE) $(LIBTOOL_SRC_DIR)/libltdl
 	touch $@
 
 #############################################################

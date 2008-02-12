@@ -18,6 +18,7 @@ which-source: $(DL_DIR)/$(WHICH_SOURCE)
 
 $(WHICH_DIR)/.unpacked: $(DL_DIR)/$(WHICH_SOURCE)
 	$(WHICH_CAT) $(DL_DIR)/$(WHICH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(WHICH_DIR)
 	touch $(WHICH_DIR)/.unpacked
 
 $(WHICH_DIR)/.configured: $(WHICH_DIR)/.unpacked

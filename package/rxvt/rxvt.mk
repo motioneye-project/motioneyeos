@@ -35,6 +35,7 @@ rxvt-source: $(DL_DIR)/$(RXVT_SOURCE)
 $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
 	$(RXVT_CAT) $(DL_DIR)/$(RXVT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ \*.patch
+	$(CONFIG_UPDATE) $(RXVT_DIR)/autoconf
 	touch $(RXVT_DIR)/.unpacked
 
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked

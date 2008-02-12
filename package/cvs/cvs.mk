@@ -38,6 +38,7 @@ $(CVS_DIR)/.unpacked: $(DL_DIR)/$(CVS_SOURCE) $(CVS_PATCH_FILE)
 	$(BZCAT) $(CVS_DIR)/cvs-$(CVS_VERSION)/cvs-$(CVS_VERSION).tar.bz2 | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	rm -rf $(CVS_DIR)/cvs-$(CVS_VERSION)
 	$(CONFIG_UPDATE) $(CVS_DIR)
+	$(CONFIG_UPDATE) $(CVS_DIR)/build-aux
 	toolchain/patch-kernel.sh $(CVS_DIR) package/cvs \*$(CVS_VERSION)\*.patch
 ifneq ($(CVS_PATCH),)
 	toolchain/patch-kernel.sh $(CVS_DIR) $(DL_DIR) $(CVS_PATCH)

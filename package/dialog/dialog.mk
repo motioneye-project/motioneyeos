@@ -15,6 +15,7 @@ $(DL_DIR)/$(DIALOG_SOURCE):
 
 $(DIALOG_DIR)/.source: $(DL_DIR)/$(DIALOG_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(DIALOG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(DIALOG_DIR)
 	touch $@
 
 $(DIALOG_DIR)/.configured: $(DIALOG_DIR)/.source

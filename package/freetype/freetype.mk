@@ -17,6 +17,7 @@ $(DL_DIR)/$(FREETYPE_SOURCE):
 $(FREETYPE_DIR)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
 	$(FREETYPE_CAT) $(DL_DIR)/$(FREETYPE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(FREETYPE_DIR)
+	$(CONFIG_UPDATE) $(FREETYPE_DIR)/builds/unix
 	touch $(FREETYPE_DIR)/.unpacked
 
 # freetype for the target

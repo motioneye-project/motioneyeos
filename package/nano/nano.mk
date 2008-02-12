@@ -18,6 +18,7 @@ nano-source: $(DL_DIR)/$(NANO_SOURCE)
 
 $(NANO_DIR)/.unpacked: $(DL_DIR)/$(NANO_SOURCE)
 	$(NANO_CAT) $(DL_DIR)/$(NANO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(NANO_DIR)
 	touch $(NANO_DIR)/.unpacked
 
 $(NANO_DIR)/.configured: $(NANO_DIR)/.unpacked

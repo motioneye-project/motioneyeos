@@ -19,6 +19,7 @@ netcat-source: $(DL_DIR)/$(NETCAT_SOURCE)
 
 $(NETCAT_DIR)/.unpacked: $(DL_DIR)/$(NETCAT_SOURCE)
 	$(NETCAT_CAT) $(DL_DIR)/$(NETCAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(NETCAT_DIR)
 	touch $@
 
 $(NETCAT_DIR)/.configured: $(NETCAT_DIR)/.unpacked

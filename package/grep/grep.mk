@@ -22,6 +22,7 @@ $(GNUGREP_DIR)/.unpacked: $(DL_DIR)/$(GNUGREP_SOURCE)
 	mv $(GNUGREP_DIR) $(GNUGREP_DIR).xxx
 	$(GNUGREP_CAT) $(GNUGREP_DIR).xxx/grep_$(GNUGREP_VERSION).tar.gz | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	rm -rf $(GNUGREP_DIR).xxx
+	$(CONFIG_UPDATE) $(GNUGREP_DIR)
 	touch $(GNUGREP_DIR)/.unpacked
 
 $(GNUGREP_DIR)/.configured: $(GNUGREP_DIR)/.unpacked

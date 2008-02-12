@@ -18,6 +18,7 @@ wget-source: $(DL_DIR)/$(WGET_SOURCE)
 
 $(WGET_DIR)/.unpacked: $(DL_DIR)/$(WGET_SOURCE)
 	$(WGET_CAT) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	$(CONFIG_UPDATE) $(WGET_DIR)
 	touch $(WGET_DIR)/.unpacked
 
 $(WGET_DIR)/.configured: $(WGET_DIR)/.unpacked
