@@ -114,6 +114,13 @@ config BR2_TARGET_ROOTFS_JFFS2_SQUASH
 	bool "Make all files be owned by root"
 	depends on BR2_TARGET_ROOTFS_JFFS2
 
+config BR2_TARGET_ROOTFS_JFFS2_SUMMARY
+	bool "Produce a summarized JFFS2 image"
+	depends on BR2_TARGET_ROOTFS_JFFS2
+    help
+      A summarised image can be mounted faster if support is
+      enabled in the kernel (CONFIG_JFFS2_SUMMARY)
+
 config BR2_TARGET_ROOTFS_JFFS2_OUTPUT
 	string "Output File"
 	depends on BR2_TARGET_ROOTFS_JFFS2

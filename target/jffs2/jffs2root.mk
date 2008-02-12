@@ -5,6 +5,7 @@
 #############################################################
 
 JFFS2_OPTS := -e $(strip $(BR2_TARGET_ROOTFS_JFFS2_EBSIZE))
+SUMTOOL_OPTS := $(JFFS2_OPTS)
 
 ifeq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PAD)),y)
 ifneq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE)),0x0)
@@ -12,6 +13,7 @@ JFFS2_OPTS += --pad=$(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE))
 else
 JFFS2_OPTS += -p
 endif
+SUMTOOLS_OPTS += -p
 endif
 
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_SQUASH),y)
@@ -20,16 +22,19 @@ endif
 
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_LE),y)
 JFFS2_OPTS += -l
+SUMTOOLS_OPTS += -l
 endif
 
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_BE),y)
 JFFS2_OPTS += -b
+SUMTOOL_OPTS += -b
 endif
 
 ifneq ($(BR2_TARGET_ROOTFS_JFFS2_DEFAULT_PAGESIZE),y)
 JFFS2_OPTS += -s $(BR2_TARGET_ROOTFS_JFFS2_PAGESIZE)
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER),y)
 JFFS2_OPTS += -n
+SUMTOOL_OPTS += -n
 endif
 endif
 
@@ -70,8 +75,15 @@ ifneq ($(TARGET_DEVICE_TABLE),)
 		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 endif
 	# Use fakeroot so mkfs.jffs2 believes the previous fakery
+ifneq ($(BR2_TARGET_ROOTFS_JFFS2_SUMMARY),)
+	echo "$(MKFS_JFFS2) $(JFFS2_OPTS) -d $(TARGET_DIR) -o $(JFFS2_TARGET).nosummary && " \
+		"$(SUMTOOL) $(SUMTOOL_OPTS) -i $(JFFS2_TARGET).nosummary -o $(JFFS2_TARGET) && " \
+		"rm $(JFFS2_TARGET).nosummary" \
+		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
+else
 	echo "$(MKFS_JFFS2) $(JFFS2_OPTS) -d $(TARGET_DIR) -o $(JFFS2_TARGET)" \
 		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
+endif
 	chmod a+x $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 	$(STAGING_DIR)/usr/bin/fakeroot -- $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 	-@rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))

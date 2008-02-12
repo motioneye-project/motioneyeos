@@ -25,11 +25,12 @@ endif
 
 #############################################################
 #
-# Build mkfs.jffs2 for use on the local host system if
+# Build mkfs.jffs2 and sumtool for use on the local host system if
 # needed by target/jffs2root.
 #
 #############################################################
 MKFS_JFFS2 := $(MTD_HOST_DIR)/util/mkfs.jffs2
+SUMTOOL := $(MTD_HOST_DIR)/util/sumtool
 
 ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
 $(DL_DIR)/$(MTD_SOURCE):
@@ -55,11 +56,15 @@ $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	touch $@
 endif
 
-$(MTD_HOST_DIR)/util/mkfs.jffs2: $(MTD_HOST_DIR)/.unpacked
+$(MKFS_JFFS2): $(MTD_HOST_DIR)/.unpacked
 	CFLAGS=-I$(LINUX_HEADERS_DIR)/include $(MAKE) CC="$(HOSTCC)" CROSS= \
 		LINUXDIR=$(LINUX_DIR) -C $(MTD_HOST_DIR)/util mkfs.jffs2
 
-mtd-host: $(MKFS_JFFS2)
+$(SUMTOOL): $(MTD_HOST_DIR)/.unpacked
+	CFLAGS=-I$(LINUX_HEADERS_DIR)/include $(MAKE) CC="$(HOSTCC)" CROSS= \
+		LINUXDIR=$(LINUX_DIR) -C $(MTD_HOST_DIR)/util sumtool
+
+mtd-host: $(MKFS_JFFS2) $(SUMTOOL)
 
 mtd-host-source: $(DL_DIR)/$(MTD_SOURCE)
 

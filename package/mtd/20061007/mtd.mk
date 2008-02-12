@@ -12,11 +12,12 @@ MTD_DATE:=20061007
 
 #############################################################
 #
-# Build mkfs.jffs2 for use on the local host system if
+# Build mkfs.jffs2 and sumtool for use on the local host system if
 # needed by target/jffs2root.
 #
 #############################################################
 MKFS_JFFS2 := $(MTD_HOST_DIR)/mkfs.jffs2
+SUMTOOL := $(MTD_HOST_DIR)/sumtool
 
 $(DL_DIR)/$(MTD_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
@@ -29,11 +30,15 @@ $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 		package/mtd/$(MTD_DATE) \*.patch
 	touch $@
 
-$(MTD_HOST_DIR)/mkfs.jffs2: $(MTD_HOST_DIR)/.unpacked
+$(MKFS_JFFS2): $(MTD_HOST_DIR)/.unpacked
 	CC="$(HOSTCC)" CROSS= CFLAGS=-I$(LINUX_HEADERS_DIR)/include \
 		$(MAKE) LINUXDIR=$(LINUX_DIR) -C $(MTD_HOST_DIR) mkfs.jffs2
 
-mtd-host: $(MKFS_JFFS2)
+$(SUMTOOL): $(MTD_HOST_DIR)/.unpacked
+	CC="$(HOSTCC)" CROSS= CFLAGS=-I$(LINUX_HEADERS_DIR)/include \
+		$(MAKE) LINUXDIR=$(LINUX_DIR) -C $(MTD_HOST_DIR) sumtool
+
+mtd-host: $(MKFS_JFFS2) $(SUMTOOL)
 
 mtd-host-source: $(DL_DIR)/$(MTD_SOURCE)
 
