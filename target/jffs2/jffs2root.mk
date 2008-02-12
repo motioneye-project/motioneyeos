@@ -13,7 +13,7 @@ JFFS2_OPTS += --pad=$(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE))
 else
 JFFS2_OPTS += -p
 endif
-SUMTOOLS_OPTS += -p
+SUMTOOL_OPTS += -p
 endif
 
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_SQUASH),y)
@@ -22,7 +22,7 @@ endif
 
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_LE),y)
 JFFS2_OPTS += -l
-SUMTOOLS_OPTS += -l
+SUMTOOL_OPTS += -l
 endif
 
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_BE),y)
