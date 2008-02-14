@@ -1,0 +1,581 @@
+--- busybox-1.9.0/include/libbb.h	Fri Dec 21 23:00:31 2007
++++ busybox-1.9.0-hush_nommu_tick/include/libbb.h	Sun Feb 10 13:16:38 2008
+@@ -641,6 +641,9 @@
+   void re_exec(char **argv) ATTRIBUTE_NORETURN;
+   void forkexit_or_rexec(char **argv);
+   extern bool re_execed;
++  int  BUG_fork_is_unavailable_on_nommu(void);
++  int  BUG_daemon_is_unavailable_on_nommu(void);
++  void BUG_bb_daemonize_is_unavailable_on_nommu(void);
+ # define fork()          BUG_fork_is_unavailable_on_nommu()
+ # define daemon(a,b)     BUG_daemon_is_unavailable_on_nommu()
+ # define bb_daemonize(a) BUG_bb_daemonize_is_unavailable_on_nommu()
+--- busybox-1.9.0/shell/hush.c	Mon Dec 24 15:26:23 2007
++++ busybox-1.9.0-hush_nommu_tick/shell/hush.c	Mon Feb 11 09:34:27 2008
+@@ -80,18 +80,28 @@
+ #include <glob.h>      /* glob, of course */
+ #include <getopt.h>    /* should be pretty obvious */
+ /* #include <dmalloc.h> */
++extern char **environ;
++#include "busybox.h" /* for APPLET_IS_NOFORK/NOEXEC */
+ 
+-extern char **environ; /* This is in <unistd.h>, but protected with __USE_GNU */
+ 
+-#include "busybox.h" /* for APPLET_IS_NOFORK/NOEXEC */
++#if !BB_MMU && ENABLE_HUSH_TICK
++//#undef ENABLE_HUSH_TICK
++//#define ENABLE_HUSH_TICK 0
++#warning On NOMMU, hush command substitution is dangerous.
++#warning Dont use it for commands which produce lots of output.
++#warning For more info see shell/hush.c, generate_stream_from_list().
++#endif
+ 
++#if !BB_MMU && ENABLE_HUSH_JOB
++#undef ENABLE_HUSH_JOB
++#define ENABLE_HUSH_JOB 0
++#endif
+ 
+-#if !BB_MMU
+-/* A bit drastic. Can allow some simpler commands
+- * by analysing command in generate_stream_from_list()
+- */
+-#undef ENABLE_HUSH_TICK
+-#define ENABLE_HUSH_TICK 0
++#if !ENABLE_HUSH_INTERACTIVE
++#undef ENABLE_FEATURE_EDITING
++#define ENABLE_FEATURE_EDITING 0
++#undef ENABLE_FEATURE_EDITING_FANCY_PROMPT
++#define ENABLE_FEATURE_EDITING_FANCY_PROMPT 0
+ #endif
+ 
+ 
+@@ -178,13 +188,6 @@
+ #endif
+ 
+ 
+-#if !ENABLE_HUSH_INTERACTIVE
+-#undef ENABLE_FEATURE_EDITING
+-#define ENABLE_FEATURE_EDITING 0
+-#undef ENABLE_FEATURE_EDITING_FANCY_PROMPT
+-#define ENABLE_FEATURE_EDITING_FANCY_PROMPT 0
+-#endif
+-
+ #define SPECIAL_VAR_SYMBOL   3
+ 
+ #define PARSEFLAG_EXIT_FROM_LOOP 1
+@@ -510,10 +513,10 @@
+ static int free_pipe(struct pipe *pi, int indent);
+ /*  really run the final data structures: */
+ static int setup_redirects(struct child_prog *prog, int squirrel[]);
+-static int run_list_real(struct pipe *pi);
++static int run_list(struct pipe *pi);
+ static void pseudo_exec_argv(char **argv) ATTRIBUTE_NORETURN;
+ static void pseudo_exec(struct child_prog *child) ATTRIBUTE_NORETURN;
+-static int run_pipe_real(struct pipe *pi);
++static int run_pipe(struct pipe *pi);
+ /*   extended glob support: */
+ static char **globhack(const char *src, char **strings);
+ static int glob_needed(const char *s);
+@@ -1418,7 +1421,7 @@
+ 	}
+ }
+ 
+-/* Called after [v]fork() in run_pipe_real(), or from builtin_exec().
++/* Called after [v]fork() in run_pipe(), or from builtin_exec().
+  * Never returns.
+  * XXX no exit() here.  If you don't exec, use _exit instead.
+  * The at_exit handlers apparently confuse the calling process,
+@@ -1440,9 +1443,8 @@
+ 	/* If a variable is assigned in a forest, and nobody listens,
+ 	 * was it ever really set?
+ 	 */
+-	if (argv[0] == NULL) {
++	if (!argv[0])
+ 		_exit(EXIT_SUCCESS);
+-	}
+ 
+ 	argv = expand_strvec_to_strvec(argv);
+ 
+@@ -1486,15 +1488,15 @@
+ 	_exit(1);
+ }
+ 
+-/* Called after [v]fork() in run_pipe_real()
++/* Called after [v]fork() in run_pipe()
+  */
+ static void pseudo_exec(struct child_prog *child)
+ {
+ // FIXME: buggy wrt NOMMU! Must not modify any global data
+-// until it does exec/_exit, but currently it does.
+-	if (child->argv) {
++// until it does exec/_exit, but currently it does
++// (puts malloc'ed stuff into environment)
++	if (child->argv)
+ 		pseudo_exec_argv(child->argv);
+-	}
+ 
+ 	if (child->group) {
+ #if !BB_MMU
+@@ -1503,11 +1505,12 @@
+ 		int rcode;
+ 
+ #if ENABLE_HUSH_INTERACTIVE
+-		debug_printf_exec("pseudo_exec: setting interactive_fd=0\n");
+-		interactive_fd = 0;    /* crucial!!!! */
++// run_list_level now takes care of it?
++//		debug_printf_exec("pseudo_exec: setting interactive_fd=0\n");
++//		interactive_fd = 0;    /* crucial!!!! */
+ #endif
+-		debug_printf_exec("pseudo_exec: run_list_real\n");
+-		rcode = run_list_real(child->group);
++		debug_printf_exec("pseudo_exec: run_list\n");
++		rcode = run_list(child->group);
+ 		/* OK to leak memory by not calling free_pipe_list,
+ 		 * since this process is about to exit */
+ 		_exit(rcode);
+@@ -1649,6 +1652,7 @@
+ // + killall -STOP cat
+ 
+  wait_more:
++// TODO: safe_waitpid?
+ 	while ((childpid = waitpid(-1, &status, attributes)) > 0) {
+ 		const int dead = WIFEXITED(status) || WIFSIGNALED(status);
+ 
+@@ -1673,7 +1677,7 @@
+ 					if (dead) {
+ 						fg_pipe->progs[i].pid = 0;
+ 						fg_pipe->running_progs--;
+-						if (i == fg_pipe->num_progs-1)
++						if (i == fg_pipe->num_progs - 1)
+ 							/* last process gives overall exitstatus */
+ 							rcode = WEXITSTATUS(status);
+ 					} else {
+@@ -1754,13 +1758,13 @@
+ }
+ #endif
+ 
+-/* run_pipe_real() starts all the jobs, but doesn't wait for anything
++/* run_pipe() starts all the jobs, but doesn't wait for anything
+  * to finish.  See checkjobs().
+  *
+  * return code is normally -1, when the caller has to wait for children
+  * to finish to determine the exit status of the pipe.  If the pipe
+  * is a simple builtin command, however, the action is done by the
+- * time run_pipe_real returns, and the exit code is provided as the
++ * time run_pipe returns, and the exit code is provided as the
+  * return value.
+  *
+  * The input of the pipe is always stdin, the output is always
+@@ -1773,11 +1777,11 @@
+  * Returns -1 only if started some children. IOW: we have to
+  * mask out retvals of builtins etc with 0xff!
+  */
+-static int run_pipe_real(struct pipe *pi)
++static int run_pipe(struct pipe *pi)
+ {
+ 	int i;
+-	int nextin, nextout;
+-	int pipefds[2];				/* pipefds[0] is for reading */
++	int nextin;
++	int pipefds[2];		/* pipefds[0] is for reading */
+ 	struct child_prog *child;
+ 	const struct built_in_command *x;
+ 	char *p;
+@@ -1786,9 +1790,8 @@
+ 	int rcode;
+ 	const int single_fg = (pi->num_progs == 1 && pi->followup != PIPE_BG);
+ 
+-	debug_printf_exec("run_pipe_real start: single_fg=%d\n", single_fg);
++	debug_printf_exec("run_pipe start: single_fg=%d\n", single_fg);
+ 
+-	nextin = 0;
+ #if ENABLE_HUSH_JOB
+ 	pi->pgrp = -1;
+ #endif
+@@ -1803,11 +1806,11 @@
+ 	if (single_fg && child->group && child->subshell == 0) {
+ 		debug_printf("non-subshell grouping\n");
+ 		setup_redirects(child, squirrel);
+-		debug_printf_exec(": run_list_real\n");
+-		rcode = run_list_real(child->group);
++		debug_printf_exec(": run_list\n");
++		rcode = run_list(child->group) & 0xff;
+ 		restore_redirects(squirrel);
+-		debug_printf_exec("run_pipe_real return %d\n", rcode);
+-		return rcode; // do we need to add '... & 0xff' ?
++		debug_printf_exec("run_pipe return %d\n", rcode);
++		return rcode;
+ 	}
+ 
+ 	if (single_fg && child->argv != NULL) {
+@@ -1849,7 +1852,7 @@
+ 				rcode = x->function(argv_expanded) & 0xff;
+ 				free(argv_expanded);
+ 				restore_redirects(squirrel);
+-				debug_printf_exec("run_pipe_real return %d\n", rcode);
++				debug_printf_exec("run_pipe return %d\n", rcode);
+ 				return rcode;
+ 			}
+ 		}
+@@ -1866,20 +1869,21 @@
+ 				rcode = run_nofork_applet_prime(&nofork_save, a, argv_expanded) & 0xff;
+ 				free(argv_expanded);
+ 				restore_redirects(squirrel);
+-				debug_printf_exec("run_pipe_real return %d\n", rcode);
++				debug_printf_exec("run_pipe return %d\n", rcode);
+ 				return rcode;
+ 			}
+ 		}
+ #endif
+ 	}
+ 
+-	/* Going to fork a child per each pipe member */
+-	pi->running_progs = 0;
+-
+ 	/* Disable job control signals for shell (parent) and
+ 	 * for initial child code after fork */
+ 	set_jobctrl_sighandler(SIG_IGN);
+ 
++	/* Going to fork a child per each pipe member */
++	pi->running_progs = 0;
++	nextin = 0;
++
+ 	for (i = 0; i < pi->num_progs; i++) {
+ 		child = &(pi->progs[i]);
+ 		if (child->argv)
+@@ -1888,42 +1892,34 @@
+ 			debug_printf_exec(": pipe member with no argv\n");
+ 
+ 		/* pipes are inserted between pairs of commands */
+-		if ((i + 1) < pi->num_progs) {
+-			pipe(pipefds);
+-			nextout = pipefds[1];
+-		} else {
+-			nextout = 1;
+-			pipefds[0] = -1;
+-		}
++		pipefds[0] = 0;
++		pipefds[1] = 1;
++		if ((i + 1) < pi->num_progs)
++			xpipe(pipefds);
+ 
+-		/* XXX test for failed fork()? */
+-#if BB_MMU
+-		child->pid = fork();
+-#else
+-		child->pid = vfork();
+-#endif
++		child->pid = BB_MMU ? fork() : vfork();
+ 		if (!child->pid) { /* child */
+-			/* Every child adds itself to new process group
+-			 * with pgid == pid of first child in pipe */
+ #if ENABLE_HUSH_JOB
++			/* Every child adds itself to new process group
++			 * with pgid == pid_of_first_child_in_pipe */
+ 			if (run_list_level == 1 && interactive_fd) {
++				pid_t pgrp;
+ 				/* Don't do pgrp restore anymore on fatal signals */
+ 				set_fatal_sighandler(SIG_DFL);
+-				if (pi->pgrp < 0) /* true for 1st process only */
+-					pi->pgrp = getpid();
+-				if (setpgid(0, pi->pgrp) == 0 && pi->followup != PIPE_BG) {
++				pgrp = pi->pgrp;
++				if (pgrp < 0) /* true for 1st process only */
++					pgrp = getpid();
++				if (setpgid(0, pgrp) == 0 && pi->followup != PIPE_BG) {
+ 					/* We do it in *every* child, not just first,
+ 					 * to avoid races */
+-					tcsetpgrp(interactive_fd, pi->pgrp);
++					tcsetpgrp(interactive_fd, pgrp);
+ 				}
+ 			}
+ #endif
+-			/* in non-interactive case fatal sigs are already SIG_DFL */
+ 			xmove_fd(nextin, 0);
+-			xmove_fd(nextout, 1);
+-			if (pipefds[0] != -1) {
+-				close(pipefds[0]);  /* opposite end of our output pipe */
+-			}
++			xmove_fd(pipefds[1], 1); /* write end */
++			if (pipefds[0] > 1)
++				close(pipefds[0]); /* read end */
+ 			/* Like bash, explicit redirects override pipes,
+ 			 * and the pipe fd is available for dup'ing. */
+ 			setup_redirects(child, NULL);
+@@ -1932,26 +1928,35 @@
+ 			set_jobctrl_sighandler(SIG_DFL);
+ 			set_misc_sighandler(SIG_DFL);
+ 			signal(SIGCHLD, SIG_DFL);
+-			pseudo_exec(child);
++			pseudo_exec(child); /* does not return */
+ 		}
+ 
+-		pi->running_progs++;
+-
++		if (child->pid < 0) { /* [v]fork failed */
++			/* Clearly indicate, was it fork or vfork */
++			bb_perror_msg(BB_MMU ? "fork" : "vfork");
++		} else {
++			pi->running_progs++;
+ #if ENABLE_HUSH_JOB
+-		/* Second and next children need to know pid of first one */
+-		if (pi->pgrp < 0)
+-			pi->pgrp = child->pid;
++			/* Second and next children need to know pid of first one */
++			if (pi->pgrp < 0)
++				pi->pgrp = child->pid;
+ #endif
+-		if (nextin != 0)
+-			close(nextin);
+-		if (nextout != 1)
+-			close(nextout);
++		}
+ 
+-		/* If there isn't another process, nextin is garbage
+-		   but it doesn't matter */
++		if (i)
++			close(nextin);
++		if ((i + 1) < pi->num_progs)
++			close(pipefds[1]); /* write end */
++		/* Pass read (output) pipe end to next iteration */
+ 		nextin = pipefds[0];
+ 	}
+-	debug_printf_exec("run_pipe_real return -1\n");
++
++	if (!pi->running_progs) {
++		debug_printf_exec("run_pipe return 1 (all forks failed, no children)\n");
++		return 1;
++	}
++
++	debug_printf_exec("run_pipe return -1 (%u children started)\n", pi->running_progs);
+ 	return -1;
+ }
+ 
+@@ -2020,7 +2025,7 @@
+ 
+ /* NB: called by pseudo_exec, and therefore must not modify any
+  * global data until exec/_exit (we can be a child after vfork!) */
+-static int run_list_real(struct pipe *pi)
++static int run_list(struct pipe *pi)
+ {
+ 	struct pipe *rpipe;
+ #if ENABLE_HUSH_LOOPS
+@@ -2029,7 +2034,6 @@
+ 	char **for_list = NULL;
+ 	int flag_rep = 0;
+ #endif
+-	int save_num_progs;
+ 	int flag_skip = 1;
+ 	int rcode = 0; /* probably for gcc only */
+ 	int flag_restore = 0;
+@@ -2041,7 +2045,7 @@
+ 	reserved_style rword;
+ 	reserved_style skip_more_for_this_rword = RES_XXXX;
+ 
+-	debug_printf_exec("run_list_real start lvl %d\n", run_list_level + 1);
++	debug_printf_exec("run_list start lvl %d\n", run_list_level + 1);
+ 
+ #if ENABLE_HUSH_LOOPS
+ 	/* check syntax for "for" */
+@@ -2050,7 +2054,7 @@
+ 		 && (rpipe->next == NULL)
+ 		) {
+ 			syntax("malformed for"); /* no IN or no commands after IN */
+-			debug_printf_exec("run_list_real lvl %d return 1\n", run_list_level);
++			debug_printf_exec("run_list lvl %d return 1\n", run_list_level);
+ 			return 1;
+ 		}
+ 		if ((rpipe->res_word == RES_IN && rpipe->next->res_word == RES_IN && rpipe->next->progs[0].argv != NULL)
+@@ -2058,7 +2062,7 @@
+ 		) {
+ 			/* TODO: what is tested in the first condition? */
+ 			syntax("malformed for"); /* 2nd condition: not followed by IN */
+-			debug_printf_exec("run_list_real lvl %d return 1\n", run_list_level);
++			debug_printf_exec("run_list lvl %d return 1\n", run_list_level);
+ 			return 1;
+ 		}
+ 	}
+@@ -2106,9 +2110,10 @@
+ 		signal_SA_RESTART(SIGTSTP, handler_ctrl_z);
+ 		signal(SIGINT, handler_ctrl_c);
+ 	}
+-#endif
++#endif /* JOB */
+ 
+ 	for (; pi; pi = flag_restore ? rpipe : pi->next) {
++//why?		int save_num_progs;
+ 		rword = pi->res_word;
+ #if ENABLE_HUSH_LOOPS
+ 		if (rword == RES_WHILE || rword == RES_UNTIL || rword == RES_FOR) {
+@@ -2181,12 +2186,12 @@
+ #endif
+ 		if (pi->num_progs == 0)
+ 			continue;
+-		save_num_progs = pi->num_progs; /* save number of programs */
+-		debug_printf_exec(": run_pipe_real with %d members\n", pi->num_progs);
+-		rcode = run_pipe_real(pi);
++//why?		save_num_progs = pi->num_progs;
++		debug_printf_exec(": run_pipe with %d members\n", pi->num_progs);
++		rcode = run_pipe(pi);
+ 		if (rcode != -1) {
+ 			/* We only ran a builtin: rcode was set by the return value
+-			 * of run_pipe_real(), and we don't need to wait for anything. */
++			 * of run_pipe(), and we don't need to wait for anything. */
+ 		} else if (pi->followup == PIPE_BG) {
+ 			/* What does bash do with attempts to background builtins? */
+ 			/* Even bash 3.2 doesn't do that well with nested bg:
+@@ -2199,7 +2204,6 @@
+ 			rcode = EXIT_SUCCESS;
+ 		} else {
+ #if ENABLE_HUSH_JOB
+-			/* Paranoia, just "interactive_fd" should be enough? */
+ 			if (run_list_level == 1 && interactive_fd) {
+ 				/* waits for completion, then fg's main shell */
+ 				rcode = checkjobs_and_fg_shell(pi);
+@@ -2213,7 +2217,7 @@
+ 		}
+ 		debug_printf_exec(": setting last_return_code=%d\n", rcode);
+ 		last_return_code = rcode;
+-		pi->num_progs = save_num_progs; /* restore number of programs */
++//why?		pi->num_progs = save_num_progs;
+ #if ENABLE_HUSH_IF
+ 		if (rword == RES_IF || rword == RES_ELIF)
+ 			next_if_code = rcode;  /* can be overwritten a number of times */
+@@ -2244,7 +2248,7 @@
+ 		signal(SIGINT, SIG_IGN);
+ 	}
+ #endif
+-	debug_printf_exec("run_list_real lvl %d return %d\n", run_list_level + 1, rcode);
++	debug_printf_exec("run_list lvl %d return %d\n", run_list_level + 1, rcode);
+ 	return rcode;
+ }
+ 
+@@ -2318,19 +2322,19 @@
+ }
+ 
+ /* Select which version we will use */
+-static int run_list(struct pipe *pi)
++static int run_and_free_list(struct pipe *pi)
+ {
+ 	int rcode = 0;
+-	debug_printf_exec("run_list entered\n");
+-	if (fake_mode == 0) {
+-		debug_printf_exec(": run_list_real with %d members\n", pi->num_progs);
+-		rcode = run_list_real(pi);
++	debug_printf_exec("run_and_free_list entered\n");
++	if (!fake_mode) {
++		debug_printf_exec(": run_list with %d members\n", pi->num_progs);
++		rcode = run_list(pi);
+ 	}
+ 	/* free_pipe_list has the side effect of clearing memory.
+-	 * In the long run that function can be merged with run_list_real,
++	 * In the long run that function can be merged with run_list,
+ 	 * but doing that now would hobble the debugging effort. */
+-	free_pipe_list(pi, 0);
+-	debug_printf_exec("run_list return %d\n", rcode);
++	free_pipe_list(pi, /* indent: */ 0);
++	debug_printf_exec("run_nad_free_list return %d\n", rcode);
+ 	return rcode;
+ }
+ 
+@@ -3224,15 +3228,17 @@
+ 	int pid, channel[2];
+ 
+ 	xpipe(channel);
+-	pid = fork();
+-	if (pid < 0) {
+-		bb_perror_msg_and_die("fork");
+-	} else if (pid == 0) {
++/* *** NOMMU WARNING *** */
++/* By using vfork here, we suspend parent till child exits or execs.
++ * If child will not do it before it fills the pipe, it can block forever
++ * in write(STDOUT_FILENO), and parent (shell) will be also stuck.
++ */
++	pid = BB_MMU ? fork() : vfork();
++	if (pid < 0)
++		bb_perror_msg_and_die(BB_MMU ? "fork" : "vfork");
++	if (pid == 0) { /* child */
+ 		close(channel[0]);
+-		if (channel[1] != 1) {
+-			dup2(channel[1], 1);
+-			close(channel[1]);
+-		}
++		xmove_fd(channel[1], 1);
+ 		/* Prevent it from trying to handle ctrl-z etc */
+ #if ENABLE_HUSH_JOB
+ 		run_list_level = 1;
+@@ -3244,11 +3250,12 @@
+ 		 * everywhere outside actual command execution. */
+ 		/*set_jobctrl_sighandler(SIG_IGN);*/
+ 		set_misc_sighandler(SIG_DFL);
+-		_exit(run_list_real(head));   /* leaks memory */
++		_exit(run_list(head));   /* leaks memory */
+ 	}
+ 	close(channel[1]);
+ 	pf = fdopen(channel[0], "r");
+ 	return pf;
++	/* head is freed by the caller */
+ }
+ 
+ /* Return code is exit status of the process that is run. */
+@@ -3272,7 +3279,8 @@
+ 	b_free(&result);
+ 
+ 	p = generate_stream_from_list(inner.list_head);
+-	if (p == NULL) return 1;
++	if (p == NULL)
++		return 1;
+ 	close_on_exec_on(fileno(p));
+ 	setup_file_in_str(&pipe_str, p);
+ 
+@@ -3297,7 +3305,7 @@
+ 	 * at the same time.  That would be a lot of work, and contrary
+ 	 * to the KISS philosophy of this program. */
+ 	retcode = fclose(p);
+-	free_pipe_list(inner.list_head, 0);
++	free_pipe_list(inner.list_head, /* indent: */ 0);
+ 	debug_printf("closed FILE from child, retcode=%d\n", retcode);
+ 	return retcode;
+ }
+@@ -3677,8 +3685,8 @@
+ 			done_word(&temp, &ctx);
+ 			done_pipe(&ctx, PIPE_SEQ);
+ 			debug_print_tree(ctx.list_head, 0);
+-			debug_printf_exec("parse_stream_outer: run_list\n");
+-			run_list(ctx.list_head);
++			debug_printf_exec("parse_stream_outer: run_and_free_list\n");
++			run_and_free_list(ctx.list_head);
+ 		} else {
+ 			if (ctx.old_flag != 0) {
+ 				free(ctx.stack);
+@@ -3687,7 +3695,7 @@
+ 			temp.nonnull = 0;
+ 			temp.o_quote = 0;
+ 			inp->p = NULL;
+-			free_pipe_list(ctx.list_head, 0);
++			free_pipe_list(ctx.list_head, /* indent: */ 0);
+ 		}
+ 		b_free(&temp);
+ 	} while (rcode != -1 && !(parse_flag & PARSEFLAG_EXIT_FROM_LOOP));   /* loop on syntax errors, return on EOF */
+@@ -3901,14 +3909,14 @@
+ 
+ 	if (argv[optind] == NULL) {
+ 		opt = parse_and_run_file(stdin);
+-		goto final_return;
++	} else {
++		debug_printf("\nrunning script '%s'\n", argv[optind]);
++		global_argv = argv + optind;
++		global_argc = argc - optind;
++		input = xfopen(argv[optind], "r");
++		fcntl(fileno(input), F_SETFD, FD_CLOEXEC);
++		opt = parse_and_run_file(input);
+ 	}
+-
+-	debug_printf("\nrunning script '%s'\n", argv[optind]);
+-	global_argv = argv + optind;
+-	global_argc = argc - optind;
+-	input = xfopen(argv[optind], "r");
+-	opt = parse_and_run_file(input);
+ 
+  final_return:
+ 

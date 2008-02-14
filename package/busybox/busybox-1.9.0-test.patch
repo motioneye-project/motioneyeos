@@ -1,0 +1,88 @@
+--- busybox-1.9.0/coreutils/test.c	Fri Dec 21 23:00:29 2007
++++ busybox-1.9.0-test/coreutils/test.c	Sat Feb  9 06:45:50 2008
+@@ -555,4 +555,4 @@
+ {
+ 	int res;
+ 	const char *arg0;
+-	bool _off;
++	bool negate = 0;
+
+ 	arg0 = bb_basename(argv[0]);
+ 	if (arg0[0] == '[') {
+@@ -578,1 +578,1 @@
+ 	INIT_S();
+
+ 	res = setjmp(leaving);
+-	if (res) {
++	if (res)
+ 		goto ret;
+-	}
+
+ 	/* resetting ngroups is probably unnecessary.  it will
+ 	 * force a new call to getgroups(), which prevents using
+@@ -592,2 +591,2 @@
+ 	 */
+ 	ngroups = 0;
+
++	//argc--;
++	argv++;
++
+ 	/* Implement special cases from POSIX.2, section 4.62.4 */
+-	if (argc == 1) {
++	if (!argv[0]) { /* "test" */
+ 		res = 1;
+ 		goto ret;
+ 	}
+-	if (argc == 2) {
+-		res = (*argv[1] == '\0');
++	if (LONE_CHAR(argv[0], '!') && argv[1]) {
++		negate = 1;
++		//argc--;
++		argv++;
++	}
++	if (!argv[1]) { /* "test [!] arg" */
++		res = (*argv[0] == '\0');
+ 		goto ret;
+ 	}
+-
+-	/* remember if we saw argc==4 which wants *no* '!' test */
+-	_off = argc - 4;
+-	if (_off ? (LONE_CHAR(argv[1], '!'))
+-	         : (argv[1][0] != '!' || argv[1][1] != '\0')
+-	) {
+-		if (argc == 3) {
+-			res = (*argv[2] != '\0');
+-			goto ret;
+-		}
+-
+-		t_lex(argv[2 + _off]);
++	if (argv[2] && !argv[3]) {
++		t_lex(argv[1]);
+ 		if (t_wp_op && t_wp_op->op_type == BINOP) {
+-			t_wp = &argv[1 + _off];
+-			res = (binop() == _off);
++			/* "test [!] arg1 <binary_op> arg2" */
++			t_wp = &argv[0];
++			res = (binop() == 0);
+ 			goto ret;
+ 		}
+ 	}
+-	t_wp = &argv[1];
++
++	/* Some complex expression. Undo '!' removal */
++	if (negate) {
++		negate = 0;
++		//argc++;
++		argv--;
++	}
++	t_wp = &argv[0];
+ 	res = !oexpr(t_lex(*t_wp));
+
+ 	if (*t_wp != NULL && *++t_wp != NULL) {
+@@ -628,5 +633,5 @@
+ 	}
+  ret:
+ 	DEINIT_S();
+-	return res;
++	return negate ? !res : res;
+ }

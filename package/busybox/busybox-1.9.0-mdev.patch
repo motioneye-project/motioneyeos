@@ -1,0 +1,17 @@
+--- busybox-1.9.0/util-linux/mdev.c	Fri Dec 21 23:16:45 2007
++++ busybox-1.9.0-mdev/util-linux/mdev.c	Tue Feb 12 16:57:00 2008
+@@ -78,8 +78,12 @@
+ 					val = strtok(vline, " \t");
+ 					vline = NULL;
+ 				} while (val && !*val);
+-				if (!val)
+-					break;
++				if (!val) {
++					if (field)
++						break;
++					else
++						goto next_line;
++				}
+ 
+ 				if (field == 0) {
+ 
