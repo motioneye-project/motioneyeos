@@ -4,7 +4,7 @@
 #
 #############################################################
 LIBUSB_VERSION:=0.1.12
-LIBUSB_PATCH_FILE:=libusb_$(LIBUSB_VERSION)-7.diff.gz
+LIBUSB_PATCH_FILE:=libusb_$(LIBUSB_VERSION)-9.diff.gz
 LIBUSB_SOURCE:=libusb_$(LIBUSB_VERSION).orig.tar.gz
 #LIBUSB_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libusb/
 LIBUSB_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/libu/libusb
