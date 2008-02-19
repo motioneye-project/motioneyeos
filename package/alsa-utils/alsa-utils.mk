@@ -73,6 +73,8 @@ $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY): $(ALSA_UTILS_DIR)/$(ALSA_UTILS_BINARY
 
 alsa-utils: uclibc alsa-lib ncurses $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY)
 
+alsa-utils-source: $(DL_DIR)/$(ALSA_UTILS_SOURCE)
+
 alsa-utils-clean:
 	for file in $(ALSA_UTILS_TARGETS_y); do \
 		rm -f $(TARGET_DIR)/$$file; \

@@ -30,6 +30,8 @@ $(TARGET_DIR)/$(FBSET_TARGET_BINARY): $(FBSET_DIR)/$(FBSET_BINARY)
 
 fbset: uclibc $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
 
+fbset-source: $(DL_DIR)/$(FBSET_SOURCE)
+
 fbset-clean:
 	rm -f $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
 	-$(MAKE) -C $(FBSET_DIR) clean

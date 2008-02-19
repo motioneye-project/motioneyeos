@@ -131,6 +131,8 @@ imagemagick: uclibc jpeg tiff $(IMAGEMAGICK_LIB) \
 		$(IMAGEMAGICK_DIR)/.libinstall \
 		$(IMAGEMAGICK_TARGET_BINARIES)
 
+imagemagick-source: $(DL_DIR)/$(IMAGEMAGICK_SOURCE)
+
 imagemagick-clean:
 	rm -f $(TARGET_DIR)/$(IMAGEMAGICK_TARGET_BINARY)
 	rm -f $(TARGET_DIR)/usr/bin/animate

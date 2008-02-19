@@ -64,6 +64,8 @@ $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY): $(STAGING_DIR)/$(ALSA_LIB_TARGET_BINARY
 
 alsa-lib: uclibc $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY)
 
+alsa-lib-source: $(DL_DIR)/$(ALSA-LIB_SOURCE)
+
 alsa-lib-clean:
 	rm -f $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY)
 	-$(MAKE) -C $(ALSA_LIB_DIR) clean
