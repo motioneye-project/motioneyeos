@@ -87,10 +87,6 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/module-init-tools/Config.in"
 source "package/modutils/Config.in"
 endif
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
-# busybox has an editor..
-source "package/nano/Config.in"
-endif
 source "package/portage/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/procps/Config.in"
@@ -110,14 +106,26 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/tinylogin/Config.in"
 endif
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
-# busybox has an editor..
-source "package/uemacs/Config.in"
-endif
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/util-linux/Config.in"
 endif
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/which/Config.in"
+endif
+
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+# busybox has an editor
+
+menuconfig BR2_TEXTEDIT_SUPPORT
+	bool "Text editors"
+	default y
+	help
+	  Support for text editors
+
+if BR2_TEXTEDIT_SUPPORT
+source "package/nano/Config.in"
+source "package/uemacs/Config.in"
+endif
+
 endif
 
 menuconfig BR2_NETWORK_SUPPORT
