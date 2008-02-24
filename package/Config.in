@@ -46,7 +46,6 @@ source "toolchain/ccache/Config.in.2"
 source "package/cvs/Config.in"
 source "package/distcc/Config.in"
 source "package/dmalloc/Config.in"
-source "package/expat/Config.in"
 source "package/fakeroot/Config.in"
 source "package/gettext/Config.in"
 source "package/gmp/Config.in"
@@ -57,7 +56,6 @@ source "package/mpatrol/Config.in"
 source "package/pkgconfig/Config.in"
 source "package/readline/Config.in"
 source "package/valgrind/Config.in"
-source "package/xerces/Config.in"
 
 comment "Other stuff"
 source "package/at/Config.in"
@@ -80,8 +78,6 @@ source "package/libgcrypt/Config.in"
 source "package/libgpg-error/Config.in"
 source "package/liblockfile/Config.in"
 source "package/libsysfs/Config.in"
-source "package/libxml2/Config.in"
-source "package/libxslt/Config.in"
 source "package/lockfile-progs/Config.in"
 source "package/lsof/Config.in"
 source "package/ltp-testsuite/Config.in"
@@ -417,6 +413,19 @@ source "package/python/Config.in"
 source "package/ruby/Config.in"
 source "package/tcl/Config.in"
 source "package/php/Config.in"
+endif
+
+menuconfig BR2_XML_SUPPORT
+	bool "XML handling"
+	default y
+	help
+	  Support for XML handling
+
+if BR2_XML_SUPPORT
+source "package/expat/Config.in"
+source "package/libxml2/Config.in"
+source "package/libxslt/Config.in"
+source "package/xerces/Config.in"
 endif
 
 menuconfig BR2_GAMES
