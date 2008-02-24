@@ -3,3 +3,81 @@ config BR2_PACKAGE_E2FSPROGS
 	default n
 	help
 	  The EXT2 file system utilities and libraries
+
+config BR2_PACKAGE_E2FSPROGS_BADBLOCKS
+	bool "badblocks"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_BLKID
+	bool "blkid"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_CHATTR
+	bool "chattr"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_DUMPE2FS
+	bool "dumpe2fs"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_E2FSCK
+	bool "e2fsck"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_E2LABEL
+	bool "e2label"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_FILEFRAG
+	bool "filefrag"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_FINDFS
+	bool "findfs"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+	select BR2_PACKAGE_E2FSPROGS_E2LABEL
+
+config BR2_PACKAGE_E2FSPROGS_FSCK
+	bool "fsck"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_LOGSAVE
+	bool "logsave"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_LSATTR
+	bool "chattr"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_MKE2FS
+	bool "mke2fs"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_MKLOSTFOUND
+	bool "mklost+found"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_TUNE2FS
+	bool "tune2fs"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+	select BR2_PACKAGE_E2FSPROGS_E2LABEL
+
+config BR2_PACKAGE_E2FSPROGS_UUIDGEN
+	bool "uuidgen"
+	default y
+	depends on BR2_PACKAGE_E2FSPROGS
+
