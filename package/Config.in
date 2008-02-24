@@ -423,6 +423,7 @@ menuconfig BR2_XML_SUPPORT
 
 if BR2_XML_SUPPORT
 source "package/expat/Config.in"
+source "package/ezxml/Config.in"
 source "package/libxml2/Config.in"
 source "package/libxslt/Config.in"
 source "package/xerces/Config.in"
