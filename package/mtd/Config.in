@@ -46,9 +46,9 @@ config BR2_PACKAGE_MTD_SNAPSHOT_STRING
 
 config BR2_PACKAGE_MTD_ORIG_STRING
 	string
-	depends on BR2_PACKAGE_MTD_ORIG
+	depends on BR2_PACKAGE_MTD
 	default "mtd-utils-1.1.0.tar.bz2" if BR2_PACKAGE_MTD_UTILS
-	default "mtd_20061007.orig.tar.gz" if BR2_PACKAGE_MTD_20050122
+	default "mtd_20061007.orig.tar.gz" if BR2_PACKAGE_MTD_20061007
 	default "mtd_20050122.orig.tar.gz" if BR2_PACKAGE_MTD_20050122
 	default $(BR2_PACKAGE_MTD_SNAPSHOT_STRING) if BR2_PACKAGE_MTD_SNAPSHOT
 

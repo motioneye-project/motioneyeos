@@ -1,0 +1,18 @@
+diff -ur linux-2.6.21.5/include/asm-arm/Kbuild linux-2.6.21.5-patched/include/asm-arm/Kbuild
+--- linux-2.6.21.5/include/asm-arm/Kbuild	2007-06-11 13:37:06.000000000 -0500
++++ linux-2.6.21.5-patched/include/asm-arm/Kbuild	2008-02-27 18:17:46.999128276 -0600
+@@ -1 +1,3 @@
+ include include/asm-generic/Kbuild.asm
++
++header-y += linkage.h
+diff -ur linux-2.6.21.5/include/linux/Kbuild linux-2.6.21.5-patched/include/linux/Kbuild
+--- linux-2.6.21.5/include/linux/Kbuild	2007-06-11 13:37:06.000000000 -0500
++++ linux-2.6.21.5-patched/include/linux/Kbuild	2008-02-27 18:15:05.921149678 -0600
+@@ -100,6 +100,7 @@
+ header-y += jffs2.h
+ header-y += keyctl.h
+ header-y += limits.h
++header-y += linkage.h
+ header-y += lock_dlm_plock.h
+ header-y += magic.h
+ header-y += major.h

@@ -1,0 +1,63 @@
+diff -ur gcc-4.1.2/gcc/config/arm/unwind-arm.c gcc-4.1.2-patched/gcc/config/arm/unwind-arm.c
+--- gcc-4.1.2/gcc/config/arm/unwind-arm.c	2006-09-20 12:31:12.000000000 -0500
++++ gcc-4.1.2-patched/gcc/config/arm/unwind-arm.c	2008-02-27 13:30:45.339282365 -0600
+@@ -29,7 +29,13 @@
+ 
+ /* We add a prototype for abort here to avoid creating a dependency on
+    target headers.  */
++#ifndef BOOTSTRAP_GCC
+ extern void abort (void);
++#else
++void abort (void)
++{
++}
++#endif
+ 
+ /* Definitions for C++ runtime support routines.  We make these weak
+    declarations to avoid pulling in libsupc++ unnecessarily.  */
+@@ -542,7 +548,9 @@
+ 	{
+ 	  UCB_SAVED_CALLSITE_ADDR (ucbp) = saved_vrs.core.r[R_PC];
+ 
++#ifndef BOOTSTRAP_GCC
+ 	  next_vrs = saved_vrs;
++#endif
+ 
+ 	  /* Call the pr to decide what to do.  */
+ 	  pr_result = ((personality_routine) UCB_PR_ADDR (ucbp))
+@@ -572,7 +580,9 @@
+       if (entry_code != _URC_OK)
+ 	return entry_code;
+ 
++#ifndef BOOTSTRAP_GCC
+       saved_vrs = next_vrs;
++#endif
+     }
+   while (pr_result == _URC_CONTINUE_UNWIND);
+ 
+diff -ur gcc-4.1.2/gcc/mklibgcc.in gcc-4.1.2-patched/gcc/mklibgcc.in
+--- gcc-4.1.2/gcc/mklibgcc.in	2006-09-10 02:13:12.000000000 -0500
++++ gcc-4.1.2-patched/gcc/mklibgcc.in	2008-02-27 13:39:15.697843177 -0600
+@@ -169,7 +169,7 @@
+   # It is too hard to guarantee that vis_hide and gen-hide-list will never
+   # be referenced if SHLIB_LINK is not set, so set them to the values they'd
+   # have if SHLIB_LINK were set and we didn't have visibility support.
+-  echo "vis_hide ="
++  echo "vis_hide :=-DBOOTSTRAP_GCC"
+   echo "gen-hide-list = echo > \$@"
+ fi
+ 
+diff -ur gcc-4.1.2/gcc/unwind-dw2.c gcc-4.1.2-patched/gcc/unwind-dw2.c
+--- gcc-4.1.2/gcc/unwind-dw2.c	2005-11-17 19:19:10.000000000 -0600
++++ gcc-4.1.2-patched/gcc/unwind-dw2.c	2008-02-27 13:29:55.414640030 -0600
+@@ -1311,8 +1311,10 @@
+       void *c = current->reg[i];
+       void *t = target->reg[i];
+ 
++#ifndef BOOTSTRAP_GCC
+       if (t && c && t != c)
+ 	memcpy (c, t, dwarf_reg_size_table[i]);
++#endif
+     }
+ 
+   /* If the current frame doesn't have a saved stack pointer, then we
