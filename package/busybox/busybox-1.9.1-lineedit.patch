@@ -1,0 +1,19 @@
+--- busybox-1.9.1/libbb/lineedit.c	Tue Feb 12 17:10:25 2008
++++ busybox-1.9.1-lineedit/libbb/lineedit.c	Mon Feb 18 23:26:54 2008
+@@ -246,7 +246,15 @@
+ 	if (cmdedit_x >= num) {
+ 		cmdedit_x -= num;
+ 		if (num <= 4) {
+-			printf("\b\b\b\b" + (4-num));
++			/* This is longer by 5 bytes on x86.
++			 * Also gets mysteriously
++			 * miscompiled for some ARM users.
++			 * printf(("\b\b\b\b" + 4) - num);
++			 * return;
++			 */
++			do {
++				bb_putchar('\b');
++			} while (--num);
+ 			return;
+ 		}
+ 		printf("\033[%uD", num);
