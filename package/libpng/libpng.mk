@@ -34,6 +34,7 @@ libpng-source: $(DL_DIR)/$(LIBPNG_SOURCE)
 
 $(LIBPNG_DIR)/.unpacked: $(DL_DIR)/$(LIBPNG_SOURCE)
 	$(LIBPNG_CAT) $(DL_DIR)/$(LIBPNG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(LIBPNG_DIR) package/libpng/ libpng\*.patch
 	$(CONFIG_UPDATE) $(LIBPNG_DIR)
 	touch $@
 
