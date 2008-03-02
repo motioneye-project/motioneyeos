@@ -5,13 +5,7 @@
 #############################################################
 
 DNSMASQ_SITE:=http://thekelleys.org.uk/dnsmasq
-ifeq ($(filter $(TARGETS),dnsmasq1),)
 DNSMASQ_UPVER:=2.40
-DNSMASQ_VERSION:=dnsmasq2
-else
-DNSMASQ_UPVER:=1.18
-DNSMASQ_VERSION:=dnsmasq1
-endif
 DNSMASQ_SOURCE:=dnsmasq-$(DNSMASQ_UPVER).tar.gz
 DNSMASQ_DIR:=$(BUILD_DIR)/dnsmasq-$(DNSMASQ_UPVER)
 DNSMASQ_BINARY:=dnsmasq
@@ -28,8 +22,7 @@ $(DL_DIR)/$(DNSMASQ_SOURCE):
 
 $(DNSMASQ_DIR)/.source: $(DL_DIR)/$(DNSMASQ_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(DNSMASQ_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(DNSMASQ_DIR) package/dnsmasq/ \
-		$(DNSMASQ_VERSION)\*.patch
+	toolchain/patch-kernel.sh $(DNSMASQ_DIR) package/dnsmasq/ \*.patch
 	touch $@
 
 $(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY): $(DNSMASQ_DIR)/.source
@@ -40,7 +33,7 @@ $(TARGET_DIR)/$(DNSMASQ_TARGET_BINARY): $(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) PREFIX=/usr -C $(DNSMASQ_DIR) install
 	$(STRIPCMD) $(TARGET_DIR)/$(DNSMASQ_TARGET_BINARY)
 	mkdir -p $(TARGET_DIR)/var/lib/misc
-	# Isn't this vulverable to symlink attacks?
+	# Isn't this vulnerable to symlink attacks?
 	ln -sf /tmp/dnsmasq.leases $(TARGET_DIR)/var/lib/misc/dnsmasq.leases
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/man
