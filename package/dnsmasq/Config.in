@@ -6,3 +6,11 @@ config BR2_PACKAGE_DNSMASQ
 	  coupled DNS and DHCP service to a LAN.
 
 	  http://www.thekelleys.org.uk/dnsmasq/
+
+config BR2_PACKAGE_DNSMASQ_TFTP
+	bool "tftp support"
+	default y
+	depends on BR2_PACKAGE_DNSMASQ
+	help
+	  Enable TFTP support in dnsmasq.
+
