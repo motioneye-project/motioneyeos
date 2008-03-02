@@ -21,6 +21,12 @@ ifneq ($(BR2_PACKAGE_DNSMASQ_TFTP),y)
 DNSMASQ_COPTS+=-DNO_TFTP
 endif
 
+ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+DNSMASQ_DBUS:=$(TARGET_DIR)/usr/bin/dbus-daemon
+else
+DNSMASQ_DBUS:=
+endif
+
 $(DL_DIR)/$(DNSMASQ_SOURCE):
 	$(WGET) -P $(DL_DIR) $(DNSMASQ_SITE)/$(DNSMASQ_SOURCE)
 
@@ -29,7 +35,14 @@ $(DNSMASQ_DIR)/.source: $(DL_DIR)/$(DNSMASQ_SOURCE)
 	toolchain/patch-kernel.sh $(DNSMASQ_DIR) package/dnsmasq/ \*.patch
 	touch $@
 
-$(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY): $(DNSMASQ_DIR)/.source
+$(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY): $(DNSMASQ_DIR)/.source $(DNSMASQ_DBUS)
+ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+	$(SED) 's^.*#define HAVE_DBUS.*^#define HAVE_DBUS^' \
+		$(DNSMASQ_DIR)/src/config.h
+else
+	$(SED) 's^.*#define HAVE_DBUS.*^/* #define HAVE_DBUS */^' \
+		$(DNSMASQ_DIR)/src/config.h
+endif
 	$(MAKE) CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
 		COPTS='$(DNSMASQ_COPTS)' PREFIX=/usr -C $(DNSMASQ_DIR)
 
