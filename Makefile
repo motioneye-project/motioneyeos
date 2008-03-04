@@ -322,6 +322,10 @@ source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 _source-check:
 	$(MAKE) SPIDER=--spider source
 
+external-deps:
+	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)toolchain/wget-show-external-deps.sh \
+	source
+
 #############################################################
 #
 # Cleanup and misc junk
@@ -461,6 +465,7 @@ help:
 	@echo 'Miscellaneous:'
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  source-check           - check all packages for valid download URLs'
+	@echo '  external-deps          - list external packages used'
 	@echo
 	@echo 'See docs/README and docs/buildroot.html for further details'
 	@echo
