@@ -72,7 +72,7 @@ $(TARGET_DIR)/$(DBUS_TARGET_BINARY): $(STAGING_DIR)/usr/lib/libdbus-1.so
 		$(TARGET_DIR)/usr/lib/libdbus-1.la \
 		$(TARGET_DIR)/usr/include/dbus-1.0 \
 		$(TARGET_DIR)/usr/lib/pkgconfig
-	$(INSTALL) -m 0755 package/dbus/S97messagebus $(TARGET_DIR)/etc/init.d
+	$(INSTALL) -m 0755 package/dbus/S30dbus $(TARGET_DIR)/etc/init.d
 	rm -f $(TARGET_DIR)/etc/init.d/messagebus
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/man
@@ -84,7 +84,7 @@ dbus-clean:
 	rm -f $(TARGET_DIR)/etc/dbus-1/session.conf
 	rm -f $(TARGET_DIR)/etc/dbus-1/system.conf
 	rmdir -p --ignore-fail-on-non-empty $(TARGET_DIR)/etc/dbus-1/system.d
-	rm -f $(TARGET_DIR)/etc/init.d/S97messagebus
+	rm -f $(TARGET_DIR)/etc/init.d/S30dbus
 	rm -f $(TARGET_DIR)/usr/lib/libdbus-1.so*
 	rm -f $(TARGET_DIR)/usr/bin/dbus-daemon
 	rm -rf $(TARGET_DIR)/tmp/dbus
