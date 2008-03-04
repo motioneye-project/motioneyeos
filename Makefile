@@ -187,7 +187,7 @@ PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 #
 ##############################################################
 ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
-BASE_TARGETS:=uclibc-configured binutils cross_compiler uclibc-target-utils
+BASE_TARGETS:=uclibc-configured binutils cross_compiler uclibc-target-utils kernel-headers
 else
 BASE_TARGETS:=uclibc
 endif
