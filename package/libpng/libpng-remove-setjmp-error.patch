@@ -1,7 +1,7 @@
-diff -ur libpng-1.2.16/pngconf.h libpng-1.2.16-patched/pngconf.h
---- libpng-1.2.16/pngconf.h	2007-01-31 07:22:33.000000000 -0600
-+++ libpng-1.2.16-patched/pngconf.h	2008-02-27 17:40:23.707516659 -0600
-@@ -310,13 +310,6 @@
+diff -ur libpng-1.2.25/pngconf.h libpng-1.2.25-patched/pngconf.h
+--- libpng-1.2.25/pngconf.h	2008-02-18 16:31:05.000000000 -0600
++++ libpng-1.2.25-patched/pngconf.h	2008-03-05 07:30:22.900478085 -0600
+@@ -319,13 +319,6 @@
  #      define PNG_SAVE_BSD_SOURCE
  #      undef _BSD_SOURCE
  #    endif
@@ -9,7 +9,7 @@ diff -ur libpng-1.2.16/pngconf.h libpng-1.2.16-patched/pngconf.h
 -     /* If you encounter a compiler error here, see the explanation
 -      * near the end of INSTALL.
 -      */
--         __png.h__ already includes setjmp.h;
+-         __pngconf.h__ already includes setjmp.h;
 -         __dont__ include it again.;
 -#    endif
  #  endif /* __linux__ */
