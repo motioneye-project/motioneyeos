@@ -17,6 +17,10 @@ else
 ALSA_LIB_ABI:=
 endif
 
+ifeq ($(BR2_SOFT_FLOAT),y)
+	SOFT_FLOAT=--with-softfloat
+endif
+
 $(DL_DIR)/$(ALSA_LIB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ALSA_LIB_SITE)/$(ALSA_LIB_SOURCE)
 
@@ -42,7 +46,7 @@ $(ALSA_LIB_DIR)/.configured: $(ALSA_LIB_DIR)/.unpacked
 		--enable-static \
 		--disable-docs \
 		--with-alsa-devdir=/dev \
-		--with-softfloat \
+		$(SOFT_FLOAT) \
 		$(DISABLE_NLS) \
 	)
 	touch $@
