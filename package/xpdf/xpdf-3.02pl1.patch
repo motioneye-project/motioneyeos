@@ -1,0 +1,33 @@
+*** xpdf-3.02.orig/xpdf/Stream.cc	Tue Feb 27 14:05:52 2007
+--- xpdf-3.02/xpdf/Stream.cc	Thu Jul 26 14:44:43 2007
+***************
+*** 410,424 ****
+    ok = gFalse;
+  
+    nVals = width * nComps;
+-   if (width <= 0 || nComps <= 0 || nBits <= 0 ||
+-       nComps >= INT_MAX / nBits ||
+-       width >= INT_MAX / nComps / nBits ||
+-       nVals * nBits + 7 < 0) {
+-     return;
+-   }
+    pixBytes = (nComps * nBits + 7) >> 3;
+    rowBytes = ((nVals * nBits + 7) >> 3) + pixBytes;
+!   if (rowBytes <= 0) {
+      return;
+    }
+    predLine = (Guchar *)gmalloc(rowBytes);
+--- 410,422 ----
+    ok = gFalse;
+  
+    nVals = width * nComps;
+    pixBytes = (nComps * nBits + 7) >> 3;
+    rowBytes = ((nVals * nBits + 7) >> 3) + pixBytes;
+!   if (width <= 0 || nComps <= 0 || nBits <= 0 ||
+!       nComps > gfxColorMaxComps ||
+!       nBits > 16 ||
+!       width >= INT_MAX / nComps ||      // check for overflow in nVals 
+!       nVals >= (INT_MAX - 7) / nBits) { // check for overflow in rowBytes
+      return;
+    }
+    predLine = (Guchar *)gmalloc(rowBytes);
