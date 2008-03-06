@@ -1,0 +1,20 @@
+--- a/src/network.c	2007-07-15 18:49:24.000000000 -0400
++++ b/src/network.c	2008-03-01 21:29:40.000000000 -0500
+@@ -742,7 +742,7 @@ int network_start_server(void)
+ 
+ #ifdef HAVE_IPV6
+     if (netplay_ipv6) {
+-        bzero((char*)&server_addr6, sizeof(struct sockaddr_in6));
++        memset((char*)&server_addr6, 0, sizeof(struct sockaddr_in6));
+         server_addr6.sin6_port = htons(server_port);
+         server_addr6.sin6_family = PF_INET6;
+         server_addr6.sin6_addr=in6addr_any;
+@@ -853,7 +853,7 @@ int network_connect_client(void)
+     }
+ #ifdef HAVE_IPV6
+     if (netplay_ipv6) {
+-        bzero((char*)&server_addr6, sizeof(struct sockaddr_in6));
++        memset((char*)&server_addr6, 0, sizeof(struct sockaddr_in6));
+         server_addr6.sin6_port = htons(server_port);
+         server_addr6.sin6_family = PF_INET6;
+         memcpy(&server_addr6.sin6_addr, server_hostent->h_addr, server_hostent->h_length);

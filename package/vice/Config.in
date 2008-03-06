@@ -1,0 +1,7 @@
+config BR2_PACKAGE_VICE
+	bool "vice"
+	default n
+	help
+	  VICE is a Commodore emulator
+
+	  http://www.viceteam.org/online
