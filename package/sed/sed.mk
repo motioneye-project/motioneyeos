@@ -107,7 +107,7 @@ endif
 $(SED_DIR2)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(SED_DIR2)/config
-	touch $(SED_DIR2)/.unpacked
+	touch $@
 
 $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 	(cd $(SED_DIR2); rm -rf config.cache; \
