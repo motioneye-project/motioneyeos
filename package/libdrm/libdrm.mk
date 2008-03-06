@@ -32,7 +32,7 @@ $(LIBDRM_DIR)/.configured: $(LIBDRM_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
@@ -47,21 +47,21 @@ $(LIBDRM_DIR)/.compiled: $(LIBDRM_DIR)/.configured
 	$(MAKE) CCexe="$(HOSTCC)" -C $(LIBDRM_DIR)
 	touch $(LIBDRM_DIR)/.compiled
 
-$(STAGING_DIR)/lib/libdrm.so: $(LIBDRM_DIR)/.compiled
+$(STAGING_DIR)/usr/lib/libdrm.so: $(LIBDRM_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBDRM_DIR) install
-	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" $(STAGING_DIR)/lib/libdrm.la
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libdrm.la
 	#$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
 	# -e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
-	# -e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/include\',g" \
-	# -e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
+	# -e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" \
+	# -e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
 	# $(STAGING_DIR)/usr/bin/libdrm-config
-	touch -c $(STAGING_DIR)/lib/libdrm.so
+	touch -c $(STAGING_DIR)/usr/lib/libdrm.so
 
-$(TARGET_DIR)/lib/libdrm.so: $(STAGING_DIR)/lib/libdrm.so
-	cp -dpf $(STAGING_DIR)/lib/libdrm.so* $(TARGET_DIR)/lib/
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libdrm.so
+$(TARGET_DIR)/usr/lib/libdrm.so: $(STAGING_DIR)/usr/lib/libdrm.so
+	cp -dpf $(STAGING_DIR)/usr/lib/libdrm.so* $(TARGET_DIR)/usr/lib/
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdrm.so
 
-libdrm: uclibc pkgconfig $(TARGET_DIR)/lib/libdrm.so
+libdrm: uclibc pkgconfig $(TARGET_DIR)/usr/lib/libdrm.so
 
 libdrm-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBDRM_DIR) uninstall
