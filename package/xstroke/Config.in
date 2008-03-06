@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XSTROKE
+	bool "xstroke"
+	default n
+	help
+	  Handwriting recognition for X
+
+	  http://avr32linux.org/twiki/pub/Main/XStroke
