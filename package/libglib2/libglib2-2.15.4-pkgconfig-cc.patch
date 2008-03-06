@@ -1,0 +1,15 @@
+--- a/glib-2.0.pc.in	2007-01-16 18:24:39.000000000 -0500
++++ b/glib-2.0.pc.in	2008-02-09 09:25:28.000000000 -0500
+@@ -3,9 +3,9 @@ exec_prefix=@exec_prefix@
+ libdir=@libdir@
+ includedir=@includedir@
+ 
+-glib_genmarshal=glib-genmarshal
+-gobject_query=gobject-query
+-glib_mkenums=glib-mkenums
++glib_genmarshal=/usr/bin/glib-genmarshal
++gobject_query=/usr/bin/gobject-query
++glib_mkenums=/usr/bin/glib-mkenums
+ 
+ Name: GLib
+ Description: C Utility Library
