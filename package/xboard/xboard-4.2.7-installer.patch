@@ -1,0 +1,55 @@
+--- a/Makefile.in	2003-11-28 16:12:57.000000000 -0500
++++ b/Makefile.in	2008-02-13 13:18:34.000000000 -0500
+@@ -63,27 +63,27 @@ default: xboard zic2xpm
+ all: default pseudosource info FAQ html dvi ps
+ 
+ install: installdirs default
+-	$(INSTALL_PROGRAM) -s xboard $(bindir)/xboard
+-	$(INSTALL_PROGRAM) -s zic2xpm $(bindir)/zic2xpm
+-	$(INSTALL_PROGRAM) cmail $(bindir)/cmail
+-	$(INSTALL_PROGRAM) $(srcdir)/pxboard $(bindir)/pxboard
+-	$(INSTALL_DATA) $(srcdir)/xboard.man $(man6dir)/xboard$(man6ext)
+-	$(INSTALL_DATA) $(srcdir)/zic2xpm.man $(man6dir)/zic2xpm$(man6ext)
+-	$(INSTALL_DATA) xboard.info $(infodir)/xboard.info
++	$(INSTALL_PROGRAM) xboard $(DESTDIR)$(bindir)/xboard
++	$(INSTALL_PROGRAM) zic2xpm $(DESTDIR)$(bindir)/zic2xpm
++	$(INSTALL_PROGRAM) cmail $(DESTDIR)$(bindir)/cmail
++	$(INSTALL_PROGRAM) $(srcdir)/pxboard $(DESTDIR)$(bindir)/pxboard
++	$(INSTALL_DATA) $(srcdir)/xboard.man $(DESTDIR)$(man6dir)/xboard$(man6ext)
++	$(INSTALL_DATA) $(srcdir)/zic2xpm.man $(DESTDIR)$(man6dir)/zic2xpm$(man6ext)
++	$(INSTALL_DATA) xboard.info $(DESTDIR)$(infodir)/xboard.info
+ 	-PATH=$$PATH:/sbin:/usr/sbin install-info \
+-		$(infodir)/xboard.info $(infodir)/dir
++		$(infodir)/xboard.info $(DESTDIR)$(infodir)/dir
+ 
+ installdirs: mkinstalldirs
+ 	$(srcdir)/mkinstalldirs $(bindir) $(mandir) $(man6dir) $(infodir)
+ 
+ uninstall:
+-	rm -f $(bindir)/xboard $(bindir)/cmail $(bindir)/pxboard
+-	rm -f $(bindir)/zic2xpm
+-	rm -f $(man6dir)/xboard$(man6ext) $(man6dir)/cmail$(man6ext)
+-	rm -f $(man6dir)/zic2xpm$(man6ext)
+-	rm -f $(infodir)/xboard.info
++	rm -f $(DESTDIR)$(bindir)/xboard $(DESTDIR)$(bindir)/cmail $(DESTDIR)$(bindir)/pxboard
++	rm -f $(DESTDIR)$(bindir)/zic2xpm
++	rm -f $(DESTDIR)$(man6dir)/xboard$(man6ext) $(DESTDIR)$(man6dir)/cmail$(man6ext)
++	rm -f $(DESTDIR)$(man6dir)/zic2xpm$(man6ext)
++	rm -f $(DESTDIR)$(infodir)/xboard.info
+ 	-PATH=$$PATH:/sbin:/usr/sbin install-info --delete \
+-		$(infodir)/xboard.info $(infodir)/dir
++		$(DESTDIR)$(infodir)/xboard.info $(DESTDIR)$(infodir)/dir
+ 
+ clean:
+ 	rm -f xboard zic2xpm *.o xboard.txt zic2xpm.txt $(LEX_OUTPUT_ROOT).c
+--- a/Makefile.in	2008-02-13 13:20:14.000000000 -0500
++++ b/Makefile.in	2008-02-13 13:21:25.000000000 -0500
+@@ -74,7 +74,7 @@ install: installdirs default
+ 		$(infodir)/xboard.info $(DESTDIR)/$(infodir)/dir
+ 
+ installdirs: mkinstalldirs
+-	$(srcdir)/mkinstalldirs $(bindir) $(mandir) $(man6dir) $(infodir)
++	$(srcdir)/mkinstalldirs $(DESTDIR)$(bindir) $(DESTDIR)$(mandir) $(DESTDIR)$(man6dir) $(DESTDIR)$(infodir)
+ 
+ uninstall:
+ 	rm -f $(DESTDIR)/$(bindir)/xboard $(DESTDIR)/$(bindir)/cmail $(DESTDIR)/$(bindir)/pxboard
