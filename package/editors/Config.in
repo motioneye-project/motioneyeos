@@ -1,0 +1,5 @@
+menu "Editors"
+
+source "package/editors/vim/Config.in"
+
+endmenu

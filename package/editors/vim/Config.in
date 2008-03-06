@@ -1,0 +1,16 @@
+config BR2_PACKAGE_VIM
+	bool "Vim"
+	default n
+	select BR2_PACKAGE_NCURSES
+	help
+	  VIM Text editor
+
+	  http://www.vim.org/
+
+config BR2_PACKAGE_VIM_RUNTIME
+	bool "Install runtime"
+	default y
+	depends BR2_PACKAGE_VIM
+	help
+	  Install VIM runtime (syntax highlighing + macros).
+	  This option adds about 13MB of data to /usr/share/
