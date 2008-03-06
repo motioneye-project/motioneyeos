@@ -67,5 +67,5 @@ bridge-dirclean:
 #
 #############################################################
 ifeq ($(strip $(BR2_PACKAGE_BRIDGE)),y)
-TARGETS+=bridge
+TARGETS+=bridge-utils
 endif
