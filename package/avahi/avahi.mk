@@ -145,11 +145,13 @@ $(AVAHI_DIR)/.compiled: $(AVAHI_DIR)/.configured
 	touch $@
 
 $(AVAHI_DIR)/.installed: $(AVAHI_DIR)/.compiled
+	mkdir -p $(STAGING_DIR)/etc/avahi
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(AVAHI_DIR) install
 	touch $@
 
 $(TARGET_DIR)/usr/sbin/avahi-autoipd: $(AVAHI_DIR)/.installed
 	mkdir -p $(TARGET_DIR)/etc/avahi
+	mkdir -p $(TARGET_DIR)/etc/init.d
 	mkdir -p $(TARGET_DIR)/var/lib
 	mkdir -p $(TARGET_DIR)/usr/share/udhcpc
 	cp -af $(STAGING_DIR)/etc/avahi/avahi-autoipd.action $(TARGET_DIR)/etc/avahi/
