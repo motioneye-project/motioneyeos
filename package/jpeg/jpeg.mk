@@ -49,7 +49,7 @@ $(JPEG_DIR)/.configured: $(JPEG_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
@@ -67,14 +67,15 @@ $(JPEG_DIR)/.libs/libjpeg.a: $(JPEG_DIR)/.configured
 	$(MAKE) -C $(JPEG_DIR) all
 	touch -c $@
 
-$(STAGING_DIR)/lib/libjpeg.a: $(JPEG_DIR)/.libs/libjpeg.a
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(JPEG_DIR) install-headers install-lib
-	rm $(STAGING_DIR)/lib/libjpeg.la
+$(STAGING_DIR)/usr/lib/libjpeg.a: $(JPEG_DIR)/.libs/libjpeg.a
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(JPEG_DIR) install
+	cp -f $(JPEG_DIR)/libjpeg.la $(STAGING_DIR)/usr/lib
+	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libjpeg.la
 	touch -c $@
 
-$(TARGET_DIR)/usr/lib/libjpeg.so: $(STAGING_DIR)/lib/libjpeg.a
+$(TARGET_DIR)/usr/lib/libjpeg.so: $(STAGING_DIR)/usr/lib/libjpeg.a
 	mkdir -p $(TARGET_DIR)/usr/lib
-	cp -dpf $(STAGING_DIR)/lib/libjpeg.so* $(TARGET_DIR)/usr/lib/
+	cp -dpf $(STAGING_DIR)/usr/lib/libjpeg.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libjpeg.so*
 	touch -c $@
 
