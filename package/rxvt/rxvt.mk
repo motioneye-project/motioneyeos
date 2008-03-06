@@ -36,7 +36,7 @@ $(RXVT_DIR)/.unpacked: $(DL_DIR)/$(RXVT_SOURCE)
 	$(RXVT_CAT) $(DL_DIR)/$(RXVT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(RXVT_DIR) package/rxvt/ \*.patch
 	$(CONFIG_UPDATE) $(RXVT_DIR)/autoconf
-	touch $(RXVT_DIR)/.unpacked
+	touch $@
 
 $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 	(cd $(RXVT_DIR); rm -rf config.cache; \
@@ -55,7 +55,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		--disable-resources \
 		--disable-memset \
 	)
-	touch $(RXVT_DIR)/.configured
+	touch $@
 
 $(RXVT_BINARY): $(RXVT_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(RXVT_DIR)
