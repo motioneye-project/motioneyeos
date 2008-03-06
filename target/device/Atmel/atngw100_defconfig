@@ -89,7 +89,7 @@ BR2_GIT="git clone"
 BR2_ZCAT="zcat"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""
-BR2_DL_DIR="$(BASE_DIR)/src/dl"
+BR2_DL_DIR="$(BASE_DIR)/dl"
 
 #
 # Mirrors and Download locations
