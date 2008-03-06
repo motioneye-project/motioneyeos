@@ -20,7 +20,7 @@ $(RSYNC_DIR)/.unpacked: $(DL_DIR)/$(RSYNC_SOURCE)
 	$(RSYNC_CAT) $(DL_DIR)/$(RSYNC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(RSYNC_DIR) package/rsync/ rsync\*.patch
 	$(CONFIG_UPDATE) $(RSYNC_DIR)
-	touch $(RSYNC_DIR)/.unpacked
+	touch $@
 
 $(RSYNC_DIR)/.configured: $(RSYNC_DIR)/.unpacked
 	(cd $(RSYNC_DIR); rm -rf config.cache; \
@@ -33,7 +33,7 @@ $(RSYNC_DIR)/.configured: $(RSYNC_DIR)/.unpacked
 		--prefix=/usr \
 		--with-included-popt \
 	)
-	touch $(RSYNC_DIR)/.configured
+	touch $@
 
 $(RSYNC_DIR)/$(RSYNC_BINARY): $(RSYNC_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(RSYNC_DIR)
