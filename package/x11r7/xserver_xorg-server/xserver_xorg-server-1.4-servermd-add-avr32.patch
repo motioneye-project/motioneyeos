@@ -1,0 +1,19 @@
+--- a/include/servermd.h.orig	2007-08-23 15:04:54.000000000 -0400
++++ b/include/servermd.h	2007-10-03 12:08:40.000000000 -0400
+@@ -151,6 +151,16 @@ SOFTWARE.
+ 
+ #endif /* __arm32__ */
+ 
++#ifdef __avr32__
++
++#define IMAGE_BYTE_ORDER        MSBFirst
++#define BITMAP_BIT_ORDER        MSBFirst
++#define GLYPHPADBYTES           4
++#define GETLEFTBITS_ALIGNMENT   1
++#define AVOID_MEMORY_READ
++
++#endif /* __avr32__ */ 
++
+ #if defined (hpux) || defined __hppa__
+ 
+ #define IMAGE_BYTE_ORDER	MSBFirst

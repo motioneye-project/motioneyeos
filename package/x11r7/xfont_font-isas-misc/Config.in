@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XFONT_FONT_ISAS_MISC
+	bool "font-isas-misc"
+	default n
+	help
+	  font-isas-misc 1.0.0
+	  No description available

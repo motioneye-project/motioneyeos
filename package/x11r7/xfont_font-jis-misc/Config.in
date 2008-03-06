@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XFONT_FONT_JIS_MISC
+	bool "font-jis-misc"
+	default n
+	help
+	  font-jis-misc 1.0.0
+	  No description available

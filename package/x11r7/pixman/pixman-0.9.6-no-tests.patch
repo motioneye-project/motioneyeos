@@ -1,0 +1,11 @@
+--- a/Makefile.in.orig	2008-01-30 12:56:25.000000000 -0500
++++ b/Makefile.in	2008-01-30 12:56:38.000000000 -0500
+@@ -198,7 +198,7 @@ sbindir = @sbindir@
+ sharedstatedir = @sharedstatedir@
+ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+-SUBDIRS = pixman test
++SUBDIRS = pixman 
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = pixman-1.pc
+ RELEASE_OR_SNAPSHOT = $$(if test "x$(CAIRO_VERSION_MINOR)" = "x$$(echo "$(CAIRO_VERSION_MINOR)/2*2" | bc)" ; then echo release; else echo snapshot; fi)

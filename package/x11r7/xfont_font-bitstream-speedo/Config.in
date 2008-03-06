@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XFONT_FONT_BITSTREAM_SPEEDO
+	bool "font-bitstream-speedo"
+	default n
+	help
+	  font-bitstream-speedo 1.0.0
+	  No description available

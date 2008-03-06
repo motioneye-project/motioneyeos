@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XFONT_FONT_WINITZKI_CYRILLIC
+	bool "font-winitzki-cyrillic"
+	default n
+	help
+	  font-winitzki-cyrillic 1.0.0
+	  No description available

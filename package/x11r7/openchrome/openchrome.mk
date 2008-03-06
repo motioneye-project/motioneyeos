@@ -9,7 +9,7 @@ OPENCHROME_SITE = http://bazaar.mezis.net/
 
 OPENCHROME_DEPENDENCIES = xserver_xorg-server libdrm xlib_libX11 xlib_libXvMC xproto_fontsproto xproto_glproto xproto_randrproto xproto_renderproto xproto_xextproto xproto_xf86driproto xproto_xproto
 
-OPENCHROME_AUTORECONF = YES
+OPENCHROME_AUTORECONF = NO
 OPENCHROME_CONF_OPT = --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,package/x11r7,openchrome))

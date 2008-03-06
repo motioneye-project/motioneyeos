@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XFONT_FONT_BH_75DPI
+	bool "font-bh-75dpi"
+	default n
+	help
+	  font-bh-75dpi 1.0.0
+	  No description available

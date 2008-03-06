@@ -1,0 +1,28 @@
+--- a/configure.orig	2008-01-30 11:14:50.000000000 -0500
++++ b/configure	2008-01-30 11:15:25.000000000 -0500
+@@ -27686,25 +27686,6 @@ HAVE_DEFS_ENT=
+ as_ac_File=`echo "ac_cv_file_$XORG_SGML_PATH/X11/defs.ent" | $as_tr_sh`
+ { echo "$as_me:$LINENO: checking for $XORG_SGML_PATH/X11/defs.ent" >&5
+ echo $ECHO_N "checking for $XORG_SGML_PATH/X11/defs.ent... $ECHO_C" >&6; }
+-if { as_var=$as_ac_File; eval "test \"\${$as_var+set}\" = set"; }; then
+-  echo $ECHO_N "(cached) $ECHO_C" >&6
+-else
+-  test "$cross_compiling" = yes &&
+-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+-   { (exit 1); exit 1; }; }
+-if test -r "$XORG_SGML_PATH/X11/defs.ent"; then
+-  eval "$as_ac_File=yes"
+-else
+-  eval "$as_ac_File=no"
+-fi
+-fi
+-ac_res=`eval echo '${'$as_ac_File'}'`
+-	       { echo "$as_me:$LINENO: result: $ac_res" >&5
+-echo "${ECHO_T}$ac_res" >&6; }
+-if test `eval echo '${'$as_ac_File'}'` = yes; then
+-  HAVE_DEFS_ENT=yes
+-fi
+ 
+ 
+ # Extract the first word of "linuxdoc", so it can be a program name with args.

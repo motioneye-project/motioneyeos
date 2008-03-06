@@ -16,7 +16,7 @@ $(XDATA_XCURSOR_THEMES_DIR)/.extracted: $(DL_DIR)/$(XDATA_XCURSOR_THEMES_SOURCE)
 	touch $@
 
 $(XDATA_XCURSOR_THEMES_DIR)/.patched: $(XDATA_XCURSOR_THEMES_DIR)/.extracted
-	toolchain/patch-kernel.sh $(XDATA_XCURSOR_THEMES_DIR) package/xdata_xcursor-themes/ xdata_xcursor-themes\*.patch
+	toolchain/patch-kernel.sh $(XDATA_XCURSOR_THEMES_DIR) package/x11r7/xdata_xcursor-themes/ xdata_xcursor-themes\*.patch
 	touch $@
 
 $(XDATA_XCURSOR_THEMES_DIR)/.configured: $(XDATA_XCURSOR_THEMES_DIR)/.patched
@@ -49,10 +49,12 @@ $(XDATA_XCURSOR_THEMES_DIR)/.built: $(XDATA_XCURSOR_THEMES_DIR)/.configured
 	touch $@
 
 $(XDATA_XCURSOR_THEMES_DIR)/.installed: $(XDATA_XCURSOR_THEMES_DIR)/.built
-	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) install-exec
-	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) install
-	toolchain/replace.sh $(STAGING_DIR)/usr/lib ".*\.la" "\(['= ]\)/usr" "\\1$(STAGING_DIR)/usr"
-	find $(TARGET_DIR)/usr -name '*.la' -print -delete
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(XDATA_XCURSOR_THEMES_DIR) install-exec install-data
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(XDATA_XCURSOR_THEMES_DIR) install
+#	toolchain/replace.sh $(STAGING_DIR)/usr/lib ".*\.la" "\(['= ]\)/usr" "\\1$(STAGING_DIR)/usr"
+#	find $(TARGET_DIR)/usr -name '*.la' -print -delete
+	ln -s -f ./redglass $(TARGET_DIR)/usr/share/icons/default
+	cd
 	touch $@
 
 xdata_xcursor-themes-clean:

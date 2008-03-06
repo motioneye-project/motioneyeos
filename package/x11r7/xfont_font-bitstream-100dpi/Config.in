@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XFONT_FONT_BITSTREAM_100DPI
+	bool "font-bitstream-100dpi"
+	default n
+	help
+	  font-bitstream-100dpi 1.0.0
+	  No description available

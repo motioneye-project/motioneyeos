@@ -1,0 +1,8 @@
+config BR2_PACKAGE_MCOOKIE
+	bool "mcookie"
+	default n
+	help
+		cookie generator for X server
+
+		http://www.x.org
+

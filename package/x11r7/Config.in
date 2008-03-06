@@ -1,5 +1,5 @@
 menuconfig BR2_PACKAGE_XORG7
-bool "X.org X Window System, X11R7, release 7.2"
+bool "X.org X Window System, X11R7, release 7.3"
 default n
 default y if BR2_PACKAGE_XSERVER_x11r7
 select BR2_PACKAGE_ZLIB
@@ -16,6 +16,7 @@ if BR2_PACKAGE_XORG7
 	menu "X11R7 Libraries"
 		source package/x11r7/libxcb/Config.in
 		source package/x11r7/mesa3d/Config.in
+		source package/x11r7/pixman/Config.in
 		source package/x11r7/pthread-stubs/Config.in
 		source package/x11r7/xlib_libFS/Config.in
 		source package/x11r7/xlib_libICE/Config.in
@@ -226,10 +227,43 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdriver_xf86-video-voodoo/Config.in
 	endmenu
 	menu "X11R7 Fonts"
+		source package/x11r7/xfont_font-util/Config.in
 		source package/x11r7/xfont_encodings/Config.in
+		source package/x11r7/xfont_font-adobe-100dpi/Config.in
+		source package/x11r7/xfont_font-adobe-75dpi/Config.in
+		source package/x11r7/xfont_font-adobe-utopia-100dpi/Config.in
+		source package/x11r7/xfont_font-adobe-utopia-75dpi/Config.in
 		source package/x11r7/xfont_font-adobe-utopia-type1/Config.in
+		source package/x11r7/xfont_font-alias/Config.in
+		source package/x11r7/xfont_font-arabic-misc/Config.in
+		source package/x11r7/xfont_font-bh-100dpi/Config.in
+		source package/x11r7/xfont_font-bh-75dpi/Config.in
+		source package/x11r7/xfont_font-bh-lucidatypewriter-100dpi/Config.in
+		source package/x11r7/xfont_font-bh-lucidatypewriter-75dpi/Config.in
+		source package/x11r7/xfont_font-bh-ttf/Config.in
+		source package/x11r7/xfont_font-bh-type1/Config.in
+		source package/x11r7/xfont_font-bitstream-100dpi/Config.in
+		source package/x11r7/xfont_font-bitstream-75dpi/Config.in
+		source package/x11r7/xfont_font-bitstream-speedo/Config.in
 		source package/x11r7/xfont_font-bitstream-type1/Config.in
+		source package/x11r7/xfont_font-cronyx-cyrillic/Config.in
+		source package/x11r7/xfont_font-cursor-misc/Config.in
+		source package/x11r7/xfont_font-daewoo-misc/Config.in
+		source package/x11r7/xfont_font-dec-misc/Config.in
 		source package/x11r7/xfont_font-ibm-type1/Config.in
+		source package/x11r7/xfont_font-isas-misc/Config.in
+		source package/x11r7/xfont_font-jis-misc/Config.in
+		source package/x11r7/xfont_font-micro-misc/Config.in
+		source package/x11r7/xfont_font-misc-cyrillic/Config.in
+		source package/x11r7/xfont_font-misc-ethiopic/Config.in
+		source package/x11r7/xfont_font-misc-meltho/Config.in
+		source package/x11r7/xfont_font-misc-misc/Config.in
+		source package/x11r7/xfont_font-mutt-misc/Config.in
+		source package/x11r7/xfont_font-schumacher-misc/Config.in
+		source package/x11r7/xfont_font-screen-cyrillic/Config.in
+		source package/x11r7/xfont_font-sony-misc/Config.in
+		source package/x11r7/xfont_font-sun-misc/Config.in
+		source package/x11r7/xfont_font-winitzki-cyrillic/Config.in
 		source package/x11r7/xfont_font-xfree86-type1/Config.in
 	endmenu
 	menu "X11R7 X protocols"
@@ -270,9 +304,13 @@ if BR2_PACKAGE_XORG7
 	menu "X11R7 Utilities"
 		source package/x11r7/xutil_makedepend/Config.in
 		source package/x11r7/xutil_util-macros/Config.in
+		source package/x11r7/mcookie/Config.in
 	endmenu
 	menu "X11R7 Other data"
 		source package/x11r7/xdata_xbitmaps/Config.in
+		source package/x11r7/xdata_xcursor-themes/Config.in
+		source package/x11r7/xkeyboard-config/Config.in
+		source package/x11r7/xdata_xkbdata/Config.in
 	endmenu
 endif
 

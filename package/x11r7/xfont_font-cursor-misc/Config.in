@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XFONT_FONT_CURSOR_MISC
+	bool "font-cursor-misc"
+	default n
+	help
+	  font-cursor-misc 1.0.0
+	  No description available

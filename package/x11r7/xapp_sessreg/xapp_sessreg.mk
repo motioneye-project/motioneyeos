@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-XAPP_SESSREG_VERSION = 1.0.2
+XAPP_SESSREG_VERSION = 1.0.3
 XAPP_SESSREG_SOURCE = sessreg-$(XAPP_SESSREG_VERSION).tar.bz2
 XAPP_SESSREG_SITE = http://xorg.freedesktop.org/releases/individual/app
-XAPP_SESSREG_AUTORECONF = YES
+XAPP_SESSREG_AUTORECONF = NO
 XAPP_SESSREG_DEPENDENCIES = xlib_libX11 xproto_xproto
 
 $(eval $(call AUTOTARGETS,package/x11r7,xapp_sessreg))
