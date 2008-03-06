@@ -1,0 +1,13 @@
+--- a/Makefile.in	2000-04-01 22:45:36.000000000 -0500
++++ b/Makefile.in	2008-02-29 13:18:24.000000000 -0500
+@@ -126,6 +126,10 @@ tgz: $(SRCTGZ)
+ 
+ bindist: $(BINTGZ)
+ 
++install :
++	mkdir -p $(GAMESDIR)
++	install -c magiccube4d $(GAMESDIR)
++
+ rpm: $(SRCTGZ)
+ 	rpm -ta $(SRCTGZ)
+ 
