@@ -40,7 +40,7 @@ config BR2_KERNEL_PATCH_LEVEL
 
 config BR2_KERNEL_CURRENT_VERSION
 	string
-	default "2.6.23.1"
+	default "2.6.24"
 
 config BR2_KERNEL_NEXT_VERSION
 	string
@@ -51,6 +51,7 @@ config BR2_KERNEL_NEXT_VERSION
 
 config BR2_KERNEL_THIS_VERSION
 	string
+	default "2.6.24" if BR2_LINUX_2_6_24
 	default "2.6.23" if BR2_LINUX_2_6_23
 	default "2.6.22" if BR2_LINUX_2_6_22
 	default "2.6.21" if BR2_LINUX_2_6_21
@@ -58,15 +59,15 @@ config BR2_KERNEL_THIS_VERSION
 
 config LINUX26_LATEST_RC_VERSION
 	string
-	default "2.6.23" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+	default "2.6.24" if BR2_KERNEL_ADD_LATEST_RC_PATCH
 
 config LINUX26_LATEST_MM_VERSION
 	string
-	default "2.6.23-mm1" if BR2_KERNEL_ADD_LATEST_MM_PATCH
+	default "2.6.24-mm1" if BR2_KERNEL_ADD_LATEST_MM_PATCH
 
 config LINUX26_LATEST_GIT_VERSION
 	string
-	default "2.6.23-git3" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
+	default "2.6.24-git3" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
 
 config BR2_KERNEL_SITE
 	string
@@ -124,9 +125,15 @@ choice
 	  Select the specific Linux version you want to use
 
 config BR2_LINUX_2_6_STABLE
-	bool "The latest stable Linux kernel (2.6.23)"
+	bool "The latest stable Linux kernel (2.6.24)"
 	help
-	  Linux 2.6.23
+	  Linux 2.6.24
+
+config BR2_LINUX_2_6_24
+	bool "Linux 2.6.24"
+	select BR2_KERNEL_BASE
+	help
+	  Linux 2.6.24
 
 config BR2_LINUX_2_6_23
 	bool "Linux 2.6.23"

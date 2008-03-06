@@ -91,7 +91,7 @@ else
 ifeq ($(BR2_i386),y)
 LINUX26_KCONFIG:=$(BOARD_PATH)/linux26.config
 else
-LINUX26_KCONFIG:=$(BR2_BOARD_PATH)/$(BR2_BOARD_NAME)-linux-$(LINUX26_VERSION).config
+LINUX26_KCONFIG:=$(BR2_BOARD_PATH)/linux-$(LINUX26_VERSION).config
 endif
 endif
 endif
@@ -139,15 +139,29 @@ endif
 # --------------
 # BZIMAGE
 ifeq ($(LINUX26_FORMAT),bzImage)
-LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
-KERNEL_EXT:=.bz
+LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/bzImage
+KERNEL_EXT:=
 endif
 
 endif
 
 # -----------------------------------------------------------------------------
 # File name for the Linux kernel binary
+ifeq ($(LINUX26_FORMAT),uImage)
+LINUX26_KERNEL_NAME:="uImage"
+endif
+ifeq ($(LINUX26_FORMAT),bzImage)
+LINUX26_KERNEL_NAME:="bzImage"
+endif
+ifeq ($(LINUX26_FORMAT),vmlinux)
+LINUX26_KERNEL_NAME:="vmlinux"
+endif
+ifeq ($(LINUX26_FORMAT),zImage)
+LINUX26_KERNEL_NAME:="zImage"
+endif
+ifeq ($(LINUX26_FORMAT),custom)
 LINUX26_KERNEL_NAME:=$(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE)$(KERNEL_EXT)
+endif
 
 ifndef LINUX26_KERNEL
 LINUX26_KERNEL:=$(BINARIES_DIR)/$(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE)$(KERNEL_EXT)
@@ -260,9 +274,7 @@ ifeq ($(BR2_PACKAGE_OPENSWAN),y)
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
 endif
 ifneq ($(LINUX26_PATCH_DIR),)
-	if [ -d $(LINUX26_PATCH_DIR) ] ; then \
-		toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR) linux-$(LINUX26_VERSION)-\*.patch ; \
-	fi
+		toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR) linux-$(LINUX26_VERSION)-\*.patch ; 
 endif
 	touch $@
 
