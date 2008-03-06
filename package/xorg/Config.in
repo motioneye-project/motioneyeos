@@ -1,4 +1,5 @@
 config BR2_PACKAGE_XORG
+	depends BR2_DEPRECATED
 	bool "X.org X Window System"
 	default y if BR2_PACKAGE_XSERVER_xorg
 	select BR2_PACKAGE_ZLIB
