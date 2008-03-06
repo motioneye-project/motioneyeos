@@ -1,0 +1,11 @@
+--- a/Makefile.in	2008-01-28 22:38:09.000000000 -0500
++++ b/Makefile.in	2008-02-11 12:52:45.000000000 -0500
+@@ -330,7 +330,7 @@ sharedstatedir = @sharedstatedir@
+ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+ 
+-SRC_SUBDIRS = gdk-pixbuf gdk gtk modules demos tests perf contrib
++SRC_SUBDIRS = gdk-pixbuf gdk gtk modules demos perf contrib
+ SUBDIRS = po po-properties $(SRC_SUBDIRS) docs m4macros
+ 
+ # require automake 1.4

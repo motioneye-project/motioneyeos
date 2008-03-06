@@ -7,6 +7,9 @@ config BR2_PACKAGE_LIBGTK2
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_TIFF
 	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_CUPS
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBGLIB2
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7||BR2_PACKAGE_TINYX
 	help
 	  The GTK+ version 2 graphical user interface library
