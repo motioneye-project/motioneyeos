@@ -10,8 +10,8 @@ READLINE_DIR:=$(BUILD_DIR)/readline-$(READLINE_VERSION)
 READLINE_CAT:=$(ZCAT)
 READLINE_BINARY:=libhistory.a
 READLINE_SHARED_BINARY:=libhistory.so
-READLINE_TARGET_BINARY:=lib/$(READLINE_BINARY)
-READLINE_TARGET_SHARED_BINARY:=lib/$(READLINE_SHARED_BINARY)
+READLINE_TARGET_BINARY:=usr/lib/$(READLINE_BINARY)
+READLINE_TARGET_SHARED_BINARY:=usr/lib/$(READLINE_SHARED_BINARY)
 
 $(DL_DIR)/$(READLINE_SOURCE):
 	$(WGET) -P $(DL_DIR) $(READLINE_SITE)/$(READLINE_SOURCE)
@@ -39,7 +39,7 @@ $(READLINE_DIR)/.configured: $(READLINE_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
@@ -73,8 +73,8 @@ $(TARGET_DIR)/$(READLINE_TARGET_SHARED_BINARY): $(READLINE_DIR)/$(READLINE_BINAR
 	BUILD_CC=$(TARGET_CC) HOSTCC="$(HOSTCC)" CC=$(TARGET_CC) \
 	$(MAKE1) DESTDIR=$(TARGET_DIR) \
 		-C $(READLINE_DIR) install-shared uninstall-doc
-	chmod 775 $(TARGET_DIR)/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/lib/libhistory.so.$(READLINE_VERSION)
-	$(STRIPCMD) $(TARGET_DIR)/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/lib/libhistory.so.$(READLINE_VERSION)
+	chmod 775 $(TARGET_DIR)/usr/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/usr/lib/libhistory.so.$(READLINE_VERSION)
+	$(STRIPCMD) $(TARGET_DIR)/usr/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/usr/lib/libhistory.so.$(READLINE_VERSION)
 ifneq ($(strip $(BR2_PACKAGE_READLINE_HEADERS)),y)
 	rm -rf $(TARGET_DIR)/usr/include/readline
 endif
