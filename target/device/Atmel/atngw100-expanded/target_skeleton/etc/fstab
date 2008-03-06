@@ -1,0 +1,14 @@
+# device	mount point	type		options		dump	pass
+#/dev/mtdblock1	/		jffs2		defaults	1	1
+#/dev/mmcblk0p1	/		ext3		defaults	1	1
+/dev/mmcblk0p2  swap	swap		defaults    0   0
+/dev/mmcblk0p3  /mnt/sdcard vfat	defaults	0	0
+proc		/proc		proc		defaults	0	0
+sys			/sys		sysfs		defaults	0	0
+dev			/dev		tmpfs		defaults	0	0
+pts			/dev/pts	devpts		defaults	0	0
+run			/var/run	tmpfs		defaults	0	0
+log			/var/log	tmpfs		defaults	0	0
+samba		/var/lib/samba	tmpfs	defaults	0	0
+tmp			/tmp		tmpfs		defaults	0	0
+config		/config		configfs	defaults	0	0

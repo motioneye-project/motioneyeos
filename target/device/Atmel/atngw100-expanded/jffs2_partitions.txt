@@ -1,0 +1,7 @@
+# Partition setup for ATNGW100.
+#
+# root is a 8 MB NOR flash.
+# usr is a 8 MB serial DataFlash.
+#
+# <mount point>		<mount name>	<page size>	<erase size>	<cleanmarkers>	<device file>	<pad size>
+/			root		0x1000		0x10000		1		1		0x0

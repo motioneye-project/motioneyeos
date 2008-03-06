@@ -1,0 +1,25 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Settings hostname: "
+	if [ ! -x ${hostname_program} ]; then
+		log_error "Missing 'hostname' program (${hostname_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	if ${hostname_program} ${hostname}; then
+		echo "'${hostname}'"
+		echo ${hostname} > /etc/hostname
+	else
+		echo "Failed"
+		return 1
+	fi
+}
+
+stop() {
+	return 0
+}
+
+rc_run_command "$1"

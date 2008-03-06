@@ -1,0 +1,7 @@
+# Configure Loopback
+auto lo
+iface lo inet loopback
+
+# Configure Ethernet 0
+#auto eth0
+iface eth0 inet dhcp

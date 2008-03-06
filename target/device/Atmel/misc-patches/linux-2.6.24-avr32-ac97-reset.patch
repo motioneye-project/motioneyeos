@@ -1,0 +1,289 @@
+diff --git a/sound/avr32/ac97c.c b/sound/avr32/ac97c.c
+index 0ec0b1c..3a58375 100644
+--- a/sound/avr32/ac97c.c
++++ b/sound/avr32/ac97c.c
+@@ -25,6 +25,8 @@
+ #include <sound/ac97_codec.h>
+ #include <sound/memalloc.h>
+ 
++#include <asm/gpio.h>
++#include <asm/arch/board.h>
+ #include <asm/dma-controller.h>
+ 
+ #include "ac97c.h"
+@@ -37,6 +39,7 @@ struct atmel_ac97_dma_info {
+ 	struct dma_request_cyclic req_rx;
+ 	unsigned short rx_periph_id;
+ 	unsigned short tx_periph_id;
++	unsigned short controller;
+ };
+ 
+ struct atmel_ac97 {
+@@ -51,6 +54,7 @@ struct atmel_ac97 {
+ 	struct snd_ac97_bus *ac97_bus;
+ 	int opened;
+ 	int period;
++	int reset_pin;
+ 	u64 cur_format;
+ 	unsigned int cur_rate;
+ 	struct clk *mck;
+@@ -692,6 +696,12 @@ timed_out:
+ 
+ static void snd_atmel_ac97_reset(struct atmel_ac97 *chip)
+ {
++	if (chip->reset_pin >= 0) {
++		gpio_set_value(chip->reset_pin, 0);
++		udelay(5);
++		gpio_set_value(chip->reset_pin, 1);
++	}
++
+ 	ac97c_writel(chip, MR, AC97C_MR_WRST);
+ 	mdelay(1);
+ 	ac97c_writel(chip, MR, AC97C_MR_ENA);
+@@ -727,6 +737,7 @@ static int __devinit snd_atmel_ac97_create(struct snd_card *card,
+ 		.read	= snd_atmel_ac97_read,
+ 	};
+ 	struct atmel_ac97 *chip = get_chip(card);
++	struct ac97c_platform_data *pdata;
+ 	struct resource *regs;
+ 	struct clk *mck;
+ 	int err;
+@@ -735,6 +746,29 @@ static int __devinit snd_atmel_ac97_create(struct snd_card *card,
+ 	if (!regs)
+ 		return -ENXIO;
+ 
++	pdata = pdev->dev.platform_data;
++	if (pdata) {
++		chip->reset_pin = pdata->reset_pin;
++
++		if (chip->reset_pin >= 0) {
++			if (gpio_request(chip->reset_pin,
++						chip->card->shortname)) {
++				dev_dbg(&pdev->dev,
++						"ac97: reset pin "
++						"not available\n");
++				chip->reset_pin = -1;
++			} else {
++				gpio_direction_output(chip->reset_pin, 1);
++			}
++		}
++
++		chip->dma.rx_periph_id = pdata->dma_rx_periph_id;
++		chip->dma.tx_periph_id = pdata->dma_tx_periph_id;
++		chip->dma.controller = pdata->dma_controller_id;
++	} else {
++		return -ENXIO;
++	}
++
+ 	mck = clk_get(&pdev->dev, "pclk");
+ 	if (IS_ERR(mck))
+ 		return PTR_ERR(mck);
+@@ -789,23 +823,19 @@ static int __devinit snd_atmel_ac97_probe(struct platform_device *pdev)
+ 	if (err)
+ 		goto out_free_card;
+ 
+-	/* TODO: Get this information from the platform device */
+-	chip->dma.req_tx.req.dmac = find_dma_controller(0);
++	chip->dma.req_tx.req.dmac = find_dma_controller(chip->dma.controller);
+ 	if (!chip->dma.req_tx.req.dmac) {
+ 		dev_dbg(&chip->pdev->dev, "DMA controller for TX missing\n");
+ 		err = -ENODEV;
+ 		goto out_free_card;
+ 	}
+-	chip->dma.req_rx.req.dmac = find_dma_controller(0);
++	chip->dma.req_rx.req.dmac = find_dma_controller(chip->dma.controller);
+ 	if (!chip->dma.req_rx.req.dmac) {
+ 		dev_dbg(&chip->pdev->dev, "DMA controller for RX missing\n");
+ 		err = -ENODEV;
+ 		goto out_free_card;
+ 	}
+ 
+-	chip->dma.rx_periph_id = 3;
+-	chip->dma.tx_periph_id = 4;
+-
+ 	ch = dma_alloc_channel(chip->dma.req_tx.req.dmac);
+ 	if (ch < 0) {
+ 		dev_dbg(&chip->pdev->dev,
+-- 
+1.5.2.5
+diff --git a/arch/avr32/mach-at32ap/at32ap700x.c b/arch/avr32/mach-at32ap/at32ap700x.c
+index 06795d0..58f3841 100644
+--- a/arch/avr32/mach-at32ap/at32ap700x.c
++++ b/arch/avr32/mach-at32ap/at32ap700x.c
+@@ -1552,12 +1552,15 @@ static struct clk atmel_ac97c0_pclk = {
+ 	.index		= 10,
+ };
+ 
+-struct platform_device *__init at32_add_device_ac97c(unsigned int id)
++struct platform_device *__init
++at32_add_device_ac97c(unsigned int id, struct ac97c_platform_data *data)
+ {
+ 	struct platform_device *pdev;
+ 
+ 	if (id != 0)
+ 		return NULL;
++	if (!data)
++		return NULL;
+ 
+ 	pdev = platform_device_alloc("atmel_ac97c", id);
+ 	if (!pdev)
+@@ -1567,10 +1570,17 @@ struct platform_device *__init at32_add_device_ac97c(unsigned int id)
+ 				ARRAY_SIZE(atmel_ac97c0_resource)))
+ 		goto err_add_resources;
+ 
+-	select_peripheral(PB(20), PERIPH_B, 0);	/* SYNC	*/
+-	select_peripheral(PB(21), PERIPH_B, 0);	/* SDO	*/
+-	select_peripheral(PB(22), PERIPH_B, 0);	/* SDI	*/
+-	select_peripheral(PB(23), PERIPH_B, 0);	/* SCLK	*/
++	if (platform_device_add_data(pdev, data,
++				sizeof(struct ac97c_platform_data)))
++		goto err_add_resources;
++
++	select_peripheral(PB(20), PERIPH_B, 0);	/* SDO	*/
++	select_peripheral(PB(21), PERIPH_B, 0);	/* SYNC	*/
++	select_peripheral(PB(22), PERIPH_B, 0);	/* SCLK	*/
++	select_peripheral(PB(23), PERIPH_B, 0);	/* SDI	*/
++
++	if (data->reset_pin != GPIO_PIN_NONE)
++		at32_select_gpio(data->reset_pin, 0);
+ 
+ 	atmel_ac97c0_pclk.dev = &pdev->dev;
+ 
+diff --git a/include/asm-avr32/arch-at32ap/board.h b/include/asm-avr32/arch-at32ap/board.h
+index 8816b66..0386a0e 100644
+--- a/include/asm-avr32/arch-at32ap/board.h
++++ b/include/asm-avr32/arch-at32ap/board.h
+@@ -76,7 +76,16 @@ struct mci_platform_data {
+ };
+ struct platform_device *
+ at32_add_device_mci(unsigned int id, struct mci_platform_data *data);
+-struct platform_device *at32_add_device_ac97c(unsigned int id);
++
++struct ac97c_platform_data {
++	unsigned short dma_rx_periph_id;
++	unsigned short dma_tx_periph_id;
++	unsigned short dma_controller_id;
++	int reset_pin;
++};
++struct platform_device *
++at32_add_device_ac97c(unsigned int id, struct ac97c_platform_data *data);
++
+ struct platform_device *at32_add_device_abdac(unsigned int id);
+ 
+ struct cf_platform_data {
+-- 
+1.5.2.5
+diff --git a/arch/avr32/boards/atstk1000/atstk1002.c b/arch/avr32/boards/atstk1000/atstk1002.c
+index 90436fa..eba6f89 100644
+--- a/arch/avr32/boards/atstk1000/atstk1002.c
++++ b/arch/avr32/boards/atstk1000/atstk1002.c
+@@ -151,6 +151,15 @@ static void __init set_hw_addr(struct platform_device *pdev)
+ 	clk_put(pclk);
+ }
+ 
++#ifdef CONFIG_BOARD_ATSTK100X_ENABLE_AC97
++static struct ac97c_platform_data __initdata ac97c0_data = {
++	.dma_rx_periph_id	= 3,
++	.dma_tx_periph_id	= 4,
++	.dma_controller_id	= 0,
++	.reset_pin		= GPIO_PIN_NONE,
++};
++#endif
++
+ #ifdef CONFIG_BOARD_ATSTK1000_EXTDAC
+ static void __init atstk1002_setup_extdac(void)
+ {
+@@ -253,7 +262,7 @@ static int __init atstk1002_init(void)
+ #endif
+ 	at32_add_device_usba(0, NULL);
+ #ifdef CONFIG_BOARD_ATSTK100X_ENABLE_AC97
+-	at32_add_device_ac97c(0);
++	at32_add_device_ac97c(0, &ac97c0_data);
+ #else
+ 	at32_add_device_abdac(0);
+ #endif
+diff --git a/arch/avr32/boards/atstk1000/atstk1003.c b/arch/avr32/boards/atstk1000/atstk1003.c
+index 768d204..2564e3c 100644
+--- a/arch/avr32/boards/atstk1000/atstk1003.c
++++ b/arch/avr32/boards/atstk1000/atstk1003.c
+@@ -72,6 +72,15 @@ static struct cf_platform_data __initdata cf0_data = {
+ 	.cs		= 4,
+ };
+ 
++#ifdef CONFIG_BOARD_ATSTK100X_ENABLE_AC97
++static struct ac97c_platform_data __initdata ac97c0_data = {
++	.dma_rx_periph_id	= 3,
++	.dma_tx_periph_id	= 4,
++	.dma_controller_id	= 0,
++	.reset_pin		= GPIO_PIN_NONE,
++};
++#endif
++
+ #ifdef CONFIG_BOARD_ATSTK1000_EXTDAC
+ static void __init atstk1003_setup_extdac(void)
+ {
+@@ -164,7 +173,7 @@ static int __init atstk1003_init(void)
+ #endif
+ 	at32_add_device_usba(0, NULL);
+ #ifdef CONFIG_BOARD_ATSTK100X_ENABLE_AC97
+-	at32_add_device_ac97c(0);
++	at32_add_device_ac97c(0, &ac97c0_data);
+ #else
+ 	at32_add_device_abdac(0);
+ #endif
+diff --git a/arch/avr32/boards/atstk1000/atstk1004.c b/arch/avr32/boards/atstk1000/atstk1004.c
+index 96015dd..3c25a6f 100644
+--- a/arch/avr32/boards/atstk1000/atstk1004.c
++++ b/arch/avr32/boards/atstk1000/atstk1004.c
+@@ -64,6 +64,15 @@ static struct spi_board_info spi1_board_info[] __initdata = { {
+ } };
+ #endif
+ 
++#ifdef CONFIG_BOARD_ATSTK100X_ENABLE_AC97
++static struct ac97c_platform_data __initdata ac97c0_data = {
++	.dma_rx_periph_id	= 3,
++	.dma_tx_periph_id	= 4,
++	.dma_controller_id	= 0,
++	.reset_pin		= GPIO_PIN_NONE,
++};
++#endif
++
+ #ifdef CONFIG_BOARD_ATSTK1000_EXTDAC
+ static void __init atstk1004_setup_extdac(void)
+ {
+@@ -136,7 +145,7 @@ static int __init atstk1004_init(void)
+ 			     fbmem_start, fbmem_size);
+ 	at32_add_device_usba(0, NULL);
+ #ifdef CONFIG_BOARD_ATSTK100X_ENABLE_AC97
+-	at32_add_device_ac97c(0);
++	at32_add_device_ac97c(0, &ac97c0_data);
+ #else
+ 	at32_add_device_abdac(0);
+ #endif
+-- 
+1.5.2.5
+--- a/arch/avr32/boards/atngw100/setup.c	2008-02-26 12:27:37.000000000 -0500
++++ b/arch/avr32/boards/atngw100/setup.c	2008-02-26 12:26:08.000000000 -0500
+@@ -201,6 +201,13 @@ static struct platform_device i2c_gpio_d
+ };
+ #endif
+ 
++static struct ac97c_platform_data __initdata ac97c0_data = {
++	.dma_rx_periph_id	= 3,
++	.dma_tx_periph_id	= 4,
++	.dma_controller_id	= 0,
++	.reset_pin		= GPIO_PIN_NONE, // change to whatever pin you want, i.e. GPIO_PIN_PB(18)
++};
++
+ static int __init atngw100_init(void)
+ {
+ 	unsigned	i;
+@@ -222,7 +229,7 @@ static int __init atngw100_init(void)
+ 	at32_add_device_spi(0, spi0_board_info, ARRAY_SIZE(spi0_board_info));
+ 	at32_add_device_mci(0, &mci0_data);
+ 	at32_add_device_usba(0, NULL);
+-	at32_add_device_ac97c(0);
++	at32_add_device_ac97c(0, &ac97c0_data);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(ngw_leds); i++) {
+ 		at32_select_gpio(ngw_leds[i].gpio,

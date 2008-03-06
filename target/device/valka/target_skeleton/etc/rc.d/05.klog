@@ -1,0 +1,24 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Starting klogd: "
+	if [ ! -x ${klogd_program} ]; then
+		log_error "Missing 'klogd' program (${klogd_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	if ${klogd_program}; then
+		echo "Ok"
+	else
+		echo "Failed "
+		exit 1
+	fi
+}
+
+stop() {
+	return 0
+}
+
+rc_run_command "$1"

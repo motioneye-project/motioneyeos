@@ -1,5 +1,5 @@
 config BR2_TARGET_AT91BOOTSTRAP
-	depends on BR2_TARGET_AT91SAM9260EK || BR2_TARGET_AT91SAM9260DFC || BR2_TARGET_AT91SAM9260PF || \
+	depends on BR2_TARGET_AT91SAM9260EK || BR2_TARGET_AT91SAM9260DFC || \
 	BR2_TARGET_AT91SAM9261EK || BR2_TARGET_AT91SAM9263EK || BR2_TARGET_AT91SAM9XEEK
 	bool "Build AT91 Bootstrap for selected chip"
 
@@ -26,8 +26,8 @@ config BR2_TARGET_AT91BOOT_NANDFLASH
 	bool "NAND Flash"
 
 config BR2_TARGET_AT91BOOT_FLASH
-        depends on BR2_TARGET_AT91SAM9XEEK || BR2_TARGET_AT91SAM9260PF
-	bool "Internal Flash or external parallel flash"
+        depends on BR2_TARGET_AT91SAM9XEEK
+	bool "Internal Flash"
 
 endchoice
 
@@ -37,48 +37,3 @@ config BR2_TARGET_AT91BOOTSTRAP_MEMORY
 	default	"dataflashcard"	if	BR2_TARGET_AT91BOOT_DATAFLASHCARD
 	default	"nandflash"	if	BR2_TARGET_AT91BOOT_NANDFLASH
 	default	"flash"		if	BR2_TARGET_AT91BOOT_FLASH
-
-config	BR2_AT91BOOTSTRAP_IMG_SIZE
-	string	"Image Size to copy to SDRAM"
-	default	"0x32000"	if	BR2_TARGET_AT91BOOT_DATAFLASH || BR2_TARGET_AT91BOOT_DATAFLASHCARD
-	default	"0x30000"	if	BR2_TARGET_AT91BOOT_NANDFLASH
-	default	"0x100000"	if	BR2_TARGET_AT91BOOT_FLASH
-	depends BR2_TARGET_AT91BOOTSTRAP
-	help
-	  Select the size of your application
-	  AT91 Bootstrap will copy this amount from flash to SDRAM
-
-choice	
-	prompt "Start address of application"
-	default BR2_AT91BOOTSTRAP_JUMP_TO_DEFAULT
-	depends on BR2_TARGET_AT91BOOTSTRAP
-	help
-	  Select Chip for which AT91 bootstrap should be built
-	  Currently supports AT91SAM9260EK, AT91SAM9261EK, AT91SAM9XEEK, AT91SAM9263EK
-
-config	BR2_AT91BOOTSTRAP_JUMP_TO_DEFAULT
-	bool "Copy to the default U-Boot start location in the SDRAM"
-	help
-	  This is where you copy the U-Boot boot loader
-
-config	BR2_AT91BOOTSTRAP_JUMP_TO_HIGH_SDRAM
-	bool "Copy to the last Megabyte of the SDRAM"
-	help
-	  This is where you copy a boot loader
-
-config	BR2_AT91BOOTSTRAP_JUMP_TO_START_OF_SDRAM
-	bool "Copy to the start of the SDRAM"
-	help
-	  This is where you copy a standalone application
-endchoice
-
-config	BR2_AT91BOOTSTRAP_JUMP_ADDR
-	string
-	default	"0x23F00000" if BR2_AT91BOOTSTRAP_JUMP_TO_DEFAULT
-	default	"0x23F00000" if BR2_AT91BOOTSTRAP_JUMP_TO_HIGH_SDRAM	
-	default "0x20000000" if BR2_AT91BOOTSTRAP_JUMP_TO_START_OF_SDRAM
-	depends on BR2_TARGET_AT91BOOTSTRAP
-
-comment "It will be copied to $(BR2_AT91BOOTSTRAP_JUMP_ADDR)"
-	depends on BR2_TARGET_AT91BOOTSTRAP
-

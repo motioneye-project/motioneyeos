@@ -1,0 +1,24 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Mounting virtual filesystems:"
+	mount_fs proc /proc proc
+	mount_fs sys /sys sysfs
+	mount_fs config /config configfs
+	mount_fs tmp /tmp tmpfs
+	mount_fs run /var/run tmpfs
+	mkdir_fs /var/run/lock
+	if mount_fs dev /dev tmpfs "size=512k,mode=0755"; then
+		mkdir_fs /dev/pts
+		mkdir_fs /dev/shm
+	fi
+	mount_fs ptr /dev/pts devpts
+	echo ""
+}
+
+stop() {
+	return 0
+}
+
+rc_run_command "$1"

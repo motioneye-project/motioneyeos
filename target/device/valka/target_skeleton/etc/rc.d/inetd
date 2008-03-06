@@ -1,0 +1,27 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Starting inetd: "
+	 if [ ! -x ${inetd_program} ]; then
+		log_error "Missing 'inetd' program (${inetd_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	${inetd_program} -f ${inetd_flags} &
+	pid=$!
+	if [ "$?" -eq 0 ]; then
+		echo "${pid}" > ${inetd_pidfile}
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+stop() {
+	echo " * Stopping inetd..."
+	killpid ${inetd_pidfile}
+}
+
+rc_run_command "$1" "inetd"

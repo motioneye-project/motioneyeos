@@ -1,0 +1,175 @@
+diff -Nrup linux-2.6.23/arch/avr32/boards/atngw100/flash.c linux-2.6.23-patched/arch/avr32/boards/atngw100/flash.c
+--- a/arch/avr32/boards/atngw100/flash.c	2008-01-31 10:47:55.000000000 -0500
++++ b/arch/avr32/boards/atngw100/flash.c	2008-01-31 10:21:07.000000000 -0500
+@@ -42,7 +42,6 @@ static struct mtd_partition flash_parts[
+ 		.name           = "u-boot",
+ 		.offset         = 0x00000000,
+ 		.size           = 0x00020000,           /* 128 KiB */
+-		.mask_flags     = MTD_WRITEABLE,
+ 	},
+ 	{
+ 		.name           = "root",
+diff -Nrup linux-2.6.23/arch/avr32/boards/atngw100/setup.c linux-2.6.23-patched/arch/avr32/boards/atngw100/setup.c
+--- a/arch/avr32/boards/atngw100/setup.c	2008-01-31 10:47:55.000000000 -0500
++++ b/arch/avr32/boards/atngw100/setup.c	2008-01-31 10:28:00.000000000 -0500
+@@ -16,6 +16,8 @@
+ #include <linux/types.h>
+ #include <linux/leds.h>
+ #include <linux/spi/spi.h>
++#include <linux/fb.h>
++#include <video/atmel_lcdc.h>
+ 
+ #include <asm/io.h>
+ #include <asm/setup.h>
+@@ -27,6 +29,58 @@
+ 
+ /* Initialized by bootloader-specific startup code. */
+ struct tag *bootloader_tags __initdata;
++static struct fb_videomode __initdata video_modes[] = {
++	{
++		.name		= "640x480@60",
++		.refresh	= 60,
++		.xres		= 640,		.yres		= 480,
++		.pixclock	= KHZ2PICOS(23856),
++
++		.left_margin	= 80,		.right_margin	= 16,
++		.upper_margin	= 13,		.lower_margin	= 1,
++		.hsync_len	= 64,		.vsync_len	= 3,
++
++		.sync		= 0,
++		.vmode		= FB_VMODE_NONINTERLACED,
++	},
++	{
++		.name		= "320x240@117",
++		.refresh	= 117,
++		.xres		= 320,		.yres		= 240,
++		.pixclock	= KHZ2PICOS(12074),
++
++		.left_margin	= 40,		.right_margin	= 8,
++		.upper_margin	= 14,		.lower_margin	= 1,
++		.hsync_len	= 32,		.vsync_len	= 3,
++
++		.sync		= 0,
++		.vmode		= FB_VMODE_NONINTERLACED,
++	},
++};
++
++static struct fb_monspecs __initdata atngw100_default_monspecs = {
++	.manufacturer		= "ATM",
++	.monitor		= "GENERIC",
++	.modedb			= video_modes,
++	.modedb_len		= ARRAY_SIZE(video_modes),
++	.hfmin			= 14820,
++	.hfmax			= 32000,
++	.vfmin			= 30,
++	.vfmax			= 200,
++	.dclkmax		= 30000000,
++};
++
++struct atmel_lcdfb_info __initdata atngw100_lcdc_data = {
++	.default_bpp		= 16,
++	.default_dmacon		= ATMEL_LCDC_DMAEN | ATMEL_LCDC_DMA2DEN,
++	.default_lcdcon2	= (ATMEL_LCDC_DISTYPE_TFT
++				   | ATMEL_LCDC_INVCLK 
++				   | ATMEL_LCDC_INVDVAL_NORMAL
++				   | ATMEL_LCDC_CLKMOD_ALWAYSACTIVE
++				   | ATMEL_LCDC_MEMOR_BIG),
++	.default_monspecs	= &atngw100_default_monspecs,
++	.guard_time		= 2,
++};
+ 
+ struct eth_addr {
+ 	u8 addr[6];
+@@ -156,16 +210,19 @@ static int __init atngw100_init(void)
+ 	 * reserve any pins for it.
+ 	 */
+ 
++	at32_add_device_lcdc(1, &atngw100_lcdc_data, fbmem_start, fbmem_size);
++
+ 	at32_add_system_devices();
+ 
+ 	at32_add_device_usart(0);
+ 
+ 	set_hw_addr(at32_add_device_eth(0, &eth_data[0]));
+-	set_hw_addr(at32_add_device_eth(1, &eth_data[1]));
++	//set_hw_addr(at32_add_device_eth(1, &eth_data[1]));
+ 
+ 	at32_add_device_spi(0, spi0_board_info, ARRAY_SIZE(spi0_board_info));
+ 	at32_add_device_mci(0, &mci0_data);
+ 	at32_add_device_usba(0, NULL);
++	at32_add_device_ac97c(0);
+ 
+ 	for (i = 0; i < ARRAY_SIZE(ngw_leds); i++) {
+ 		at32_select_gpio(ngw_leds[i].gpio,
+diff -Nrup linux-2.6.23/arch/avr32/mach-at32ap/at32ap700x.c linux-2.6.23-patched/arch/avr32/mach-at32ap/at32ap700x.c
+--- a/arch/avr32/mach-at32ap/at32ap700x.c	2008-01-31 10:47:55.000000000 -0500
++++ b/arch/avr32/mach-at32ap/at32ap700x.c	2008-01-31 10:29:22.000000000 -0500
+@@ -1116,6 +1116,15 @@ at32_add_device_lcdc(unsigned int id, st
+ 	struct fb_videomode *modedb;
+ 	unsigned int modedb_size;
+ 
++	/*  help to prevent DMA underruns, which causes
++		the screen position to jump around */	 
++	hmatrix_writel(SCFG4, HMATRIX_BIT(ARBT) 
++					| HMATRIX_BF(FIXED_DEFMSTR, 0x5) 
++					| HMATRIX_BF(SLOT_CYCLE, 0x40) 
++					| HMATRIX_BF(DEFMSTR_TYPE
++					, HMATRIX_DEFMSTR_TYPE_FIXED_DEFAULT));
++	hmatrix_writel(PRAS4, 0x0FF00000);
++
+ 	/*
+ 	 * Do a deep copy of the fb data, monspecs and modedb. Make
+ 	 * sure all allocations are done before setting up the
+@@ -1133,7 +1142,7 @@ at32_add_device_lcdc(unsigned int id, st
+ 	monspecs->modedb = modedb;
+ 
+ 	switch (id) {
+-	case 0:
++	case 0:		// STK1000 peripheral connections
+ 		pdev = &atmel_lcdfb0_device;
+ 		select_peripheral(PC(19), PERIPH_A, 0);	/* CC	  */
+ 		select_peripheral(PC(20), PERIPH_A, 0);	/* HSYNC  */
+@@ -1170,6 +1179,43 @@ at32_add_device_lcdc(unsigned int id, st
+ 		clk_set_parent(&atmel_lcdfb0_pixclk, &pll0);
+ 		clk_set_rate(&atmel_lcdfb0_pixclk, clk_get_rate(&pll0));
+ 		break;
++	case 1:		// NGW100 peripheral connections
++		pdev = &atmel_lcdfb0_device;
++		//select_peripheral(PC(19), PERIPH_B, 0);	/* CC	  */
++		select_peripheral(PC(20), PERIPH_A, 0);	/* HSYNC  */
++		select_peripheral(PC(21), PERIPH_A, 0);	/* PCLK	  */
++		select_peripheral(PC(22), PERIPH_A, 0);	/* VSYNC  */
++		select_peripheral(PE(1), PERIPH_B, 0);	/* DVAL	  */
++		select_peripheral(PE(2), PERIPH_B, 0);	/* MODE	  */
++		//select_peripheral(PC(25), PERIPH_A, 0);	/* PWR	  */
++		select_peripheral(PE(3), PERIPH_B, 0);	/* DATA0  */
++		select_peripheral(PE(4), PERIPH_B, 0);	/* DATA1  */
++		select_peripheral(PE(5), PERIPH_B, 0);	/* DATA2  */
++		select_peripheral(PE(6), PERIPH_B, 0);	/* DATA3  */
++		select_peripheral(PE(7), PERIPH_B, 0);	/* DATA4  */
++		select_peripheral(PC(31), PERIPH_A, 0);	/* DATA5  */
++		select_peripheral(PD(0),  PERIPH_A, 0);	/* DATA6  */
++		select_peripheral(PD(1),  PERIPH_A, 0);	/* DATA7  */
++		select_peripheral(PE(8),  PERIPH_B, 0);	/* DATA8  */
++		select_peripheral(PE(9),  PERIPH_B, 0);	/* DATA9  */
++		select_peripheral(PE(10),  PERIPH_B, 0);	/* DATA10 */
++		select_peripheral(PE(11),  PERIPH_B, 0);	/* DATA11 */
++		select_peripheral(PE(12),  PERIPH_B, 0);	/* DATA12 */
++		select_peripheral(PD(7),  PERIPH_A, 0);	/* DATA13 */
++		select_peripheral(PD(8),  PERIPH_A, 0);	/* DATA14 */
++		select_peripheral(PD(9),  PERIPH_A, 0);	/* DATA15 */
++		select_peripheral(PE(13), PERIPH_B, 0);	/* DATA16 */
++		select_peripheral(PE(14), PERIPH_B, 0);	/* DATA17 */
++		select_peripheral(PE(15), PERIPH_B, 0);	/* DATA18 */
++		select_peripheral(PE(16), PERIPH_B, 0);	/* DATA19 */
++		select_peripheral(PE(17), PERIPH_B, 0);	/* DATA20 */
++		select_peripheral(PE(18), PERIPH_B, 0);	/* DATA21 */
++		select_peripheral(PD(16), PERIPH_A, 0);	/* DATA22 */
++		select_peripheral(PD(17), PERIPH_A, 0);	/* DATA23 */
++
++		clk_set_parent(&atmel_lcdfb0_pixclk, &pll0);
++		clk_set_rate(&atmel_lcdfb0_pixclk, clk_get_rate(&pll0));
++		break;
+ 
+ 	default:
+ 		goto err_invalid_id;

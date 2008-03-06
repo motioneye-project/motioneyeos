@@ -1,0 +1,11 @@
+--- a/board/atmel/atngw100/atngw100.c	2008-03-02 10:17:04.000000000 -0500
++++ b/board/atmel/atngw100/atngw100.c	2008-03-02 10:21:23.000000000 -0500
+@@ -31,7 +31,7 @@ DECLARE_GLOBAL_DATA_PTR;
+ static const struct sdram_info sdram = {
+ 	.phys_addr	= CFG_SDRAM_BASE,
+ 	.row_bits	= 13,
+-	.col_bits	= 9,
++	.col_bits	= 10,
+ 	.bank_bits	= 2,
+ 	.cas		= 3,
+ 	.twr		= 2,

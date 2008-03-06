@@ -1,0 +1,34 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	if checkyesno ${onewire_thermal_enable}; then
+		echo -n " * Loading 1wire thermal module: "
+		if ${modprobe_program} w1_therm; then
+			echo "Ok"
+		else
+			echo "Failed" 
+		fi
+	fi 
+	if checkyesno ${onewire_id_enable}; then
+		echo -n " * Loading 1wire id module: "
+		if ${modprobe_program} w1_ds2433; then
+			echo "Ok"
+		else
+			echo "Failed" 
+		fi
+	fi
+
+	echo -n " * Loading 1wire module: "
+	if ${modprobe_program} ds2482 force=0,0x18; then
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+stop() {
+	return 0
+}
+
+rc_run_command "$1" "onewire"

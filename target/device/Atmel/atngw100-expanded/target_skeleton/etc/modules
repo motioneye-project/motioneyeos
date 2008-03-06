@@ -1,0 +1,13 @@
+snd-atmel-ac97
+snd-pcm-oss
+snd-mixer-oss
+
+g_file_storage file=/dev/mmcblk0p3 removable=1
+
+
+# Uncomment g_file_storage to add mass-storage on USB
+#
+# WARNING: Remember to unmount the SD-card before probing g_file_storage.
+#          Failing to unmount before probing g_file_storage can corrupt
+#          your SD-card when accessed through the USB.
+#g_file_storage file=/dev/mmcblk0p1 removable=1

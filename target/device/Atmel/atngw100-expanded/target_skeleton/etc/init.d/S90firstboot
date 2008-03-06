@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ -e /etc/.firstboot ]; then
+	exit 0
+fi
+
+FC_CACHE=`which fc-cache`
+PANGO_QUERY_MODULES=`which pango-querymodules`
+GTK_QUERY_IMMODULES=`which gtk-query-immodules-2.0`
+GDK_PIXBUF_QUERYLOADERS=`which gdk-pixbuf-query-loaders`
+
+echo "Running first-boot configuration."
+echo "This may take a minute."
+
+ 
+${FC_CACHE} -v
+${PANGO_QUERY_MODULES} > /etc/pango/pango.modules
+${GTK_QUERY_IMMODULES} > /etc/gtk-2.0/gtk.immodules
+${GDK_PIXBUF_QUERYLOADERS} > /etc/gtk-2.0/gdk-pixbuf.loaders
+
+touch /etc/.firstboot

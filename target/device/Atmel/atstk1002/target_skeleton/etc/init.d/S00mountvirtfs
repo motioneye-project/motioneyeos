@@ -58,6 +58,8 @@ if mount_fs dev /dev tmpfs "size=512k,mode=0755"; then
 	mkdir_fs /dev/pts
 	mount_fs pts /dev/pts devpts
 	mkdir_fs /dev/shm
+	# g_serial is not detected by mdev.
+	mknod /dev/ttygserial c 127 0
 fi
 
 mount_fs config /config configfs

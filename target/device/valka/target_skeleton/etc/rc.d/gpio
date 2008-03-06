@@ -1,0 +1,34 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Setting up GPIO: "
+
+	if ! create_gpio "io0" 1 0x03f8802a 0x03f88000; then
+		log_error "io0 failed"
+		echo "failed"
+		return 1
+	fi
+	if ! create_gpio "io1" 0 0xaa800000 0x00000000; then
+		log_error "io1 failed"
+		echo "failed"
+		return 1
+	fi
+	echo "Ok"
+}
+
+stop() {
+	return 0
+}
+
+create_gpio() {
+	if ! mkdir_fs /config/gpio/${1}; then
+		return 1
+	fi
+	echo "${2}" > /config/gpio/${1}/gpio_id
+	echo "${3}" > /config/gpio/${1}/pin_mask
+	echo "${4}" > /config/gpio/${1}/oe_mask
+	echo "1" > /config/gpio/${1}/enabled
+}
+
+rc_run_command "$1" "gpio"

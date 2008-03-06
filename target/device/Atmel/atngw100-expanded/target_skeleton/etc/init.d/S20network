@@ -1,0 +1,11 @@
+#! /bin/sh
+
+IFUP=/sbin/ifup
+
+echo -n "Network interfaces: "
+if ${IFUP} -a; then
+	echo "done"
+else
+	echo "failed"
+	exit 1
+fi

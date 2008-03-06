@@ -1,0 +1,130 @@
+>From 9c5fa914202d20756c56e0c4fd76035ed8f8ced8 Mon Sep 17 00:00:00 2001
+From: Hans-Christian Egtvedt <hcegtvedt@atmel.com>
+Date: Mon, 6 Aug 2007 08:31:14 +0200
+Subject: [PATCH 1/1] Add gpio_mouse board setup to atstk1000 board
+
+This patch adds a gpio_mouse_platform_data to the atstk1000 board code and
+registers a gpio_mouse platform_device. This will enable a GPIO mouse on header
+J1 on GPIO of the ATSTK1000 development kit. The board code is enabled/disabled
+in menuconfig.
+
+By connecting J1 (GPIO) to J25 (SWITCH) you can use the following keys to
+simulate a mouse:
+
+SW0: right
+SW1: down
+SW2: up
+SW3: left
+SW5: right button
+SW6: middle button
+SW7: left button
+
+Signed-off-by: Hans-Christian Egtvedt <hcegtvedt@atmel.com>
+---
+ arch/avr32/boards/atstk1000/Kconfig     |   16 ++++++++++
+ arch/avr32/boards/atstk1000/atstk1002.c |   48 +++++++++++++++++++++++++++++++
+ 2 files changed, 64 insertions(+), 0 deletions(-)
+
+diff --git a/arch/avr32/boards/atstk1000/Kconfig b/arch/avr32/boards/atstk1000/Kconfig
+index 718578f..d99d4bd 100644
+--- a/arch/avr32/boards/atstk1000/Kconfig
++++ b/arch/avr32/boards/atstk1000/Kconfig
+@@ -52,6 +52,22 @@ config BOARD_ATSTK100X_SPI1
+ 	  GPIO lines and accessed through the J1 jumper block.  Say "y"
+ 	  here to configure that SPI controller.
+ 
++config BOARD_ATSTK1002_GPIO_MOUSE
++	bool "Configure gpio_mouse on GPIO J1 header"
++	depends on !BOARD_ATSTK1002_SW4_CUSTOM
++	help
++	  Enable gpio_mouse board configuration on GPIO 0 to 7. Connecting a
++	  10-pin flat cable from J1 (GPIO) to J25 (SWITCH) will let a user give
++	  mouse inputs using the the switches SW0 to SW7.
++
++	  SW0: right
++	  SW1: down
++	  SW2: up
++	  SW3: left
++	  SW5: right button
++	  SW6: middle button
++	  SW7: left button
++
+ config BOARD_ATSTK1000_J2_LED
+ 	bool
+ 	default BOARD_ATSTK1000_J2_LED8 || BOARD_ATSTK1000_J2_RGB
+diff --git a/arch/avr32/boards/atstk1000/atstk1002.c b/arch/avr32/boards/atstk1000/atstk1002.c
+index c958fd4..c7560e5 100644
+--- a/arch/avr32/boards/atstk1000/atstk1002.c
++++ b/arch/avr32/boards/atstk1000/atstk1002.c
+@@ -16,6 +16,7 @@
+ #include <linux/types.h>
+ #include <linux/spi/spi.h>
+ #include <linux/spi/at73c213.h>
++#include <linux/gpio_mouse.h>
+ 
+ #include <video/atmel_lcdc.h>
+ 
+@@ -100,6 +101,49 @@ static struct mci_platform_data __initdata mci0_data = {
+ 	.cs		= 4,
+ };
+ 
++#ifdef CONFIG_BOARD_ATSTK1002_GPIO_MOUSE
++static struct gpio_mouse_platform_data gpio_mouse0_data = {
++	.polarity	= GPIO_MOUSE_POLARITY_ACT_LOW,
++	{
++		{
++			.up		= GPIO_PIN_PB(2),
++			.down		= GPIO_PIN_PB(1),
++			.left		= GPIO_PIN_PB(3),
++			.right		= GPIO_PIN_PB(0),
++			.bleft		= GPIO_PIN_PB(7),
++			.bmiddle	= GPIO_PIN_PB(6),
++			.bright		= GPIO_PIN_PB(5),
++		},
++	},
++	.scan_ms	= 10,
++};
++
++static struct platform_device gpio_mouse0_device = {
++	.name		= "gpio_mouse",
++	.id		= 0,
++	.dev		= {
++		.platform_data = &gpio_mouse0_data,
++	},
++};
++
++static void __init add_device_gpio_mouse0(void)
++{
++	struct platform_device *pdev = &gpio_mouse0_device;
++	struct gpio_mouse_platform_data *data = pdev->dev.platform_data;
++
++	at32_select_gpio(data->up, 0);
++	at32_select_gpio(data->down, 0);
++	at32_select_gpio(data->left, 0);
++	at32_select_gpio(data->right, 0);
++
++	at32_select_gpio(data->bleft, 0);
++	at32_select_gpio(data->bmiddle, 0);
++	at32_select_gpio(data->bright, 0);
++
++	platform_device_register(pdev);
++}
++#endif
++
+ /*
+  * The next two functions should go away as the boot loader is
+  * supposed to initialize the macb address registers with a valid
+@@ -269,6 +313,10 @@ static int __init atstk1002_init(void)
+ 	atstk1000_setup_j2_leds();
+ 	atstk1002_setup_extdac();
+ 
++#ifdef CONFIG_BOARD_ATSTK1002_GPIO_MOUSE
++	add_device_gpio_mouse0();
++#endif
++
+ 	return 0;
+ }
+ postcore_initcall(atstk1002_init);
+-- 
+1.5.2.3
+

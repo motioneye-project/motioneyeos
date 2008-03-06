@@ -1,0 +1,20 @@
+--- a/include/configs/atngw100.h	2008-03-02 10:17:04.000000000 -0500
++++ b/include/configs/atngw100.h	2008-03-02 10:22:46.000000000 -0500
+@@ -42,7 +42,7 @@
+ #define CFG_POWER_MANAGER		1
+ #define CFG_OSC0_HZ			20000000
+ #define CFG_PLL0_DIV			1
+-#define CFG_PLL0_MUL			7
++#define CFG_PLL0_MUL			10
+ #define CFG_PLL0_SUPPRESS_CYCLES	16
+ #define CFG_CLKDIV_CPU			0
+ #define CFG_CLKDIV_HSB			1
+@@ -56,7 +56,7 @@
+  *
+  * We want icp=1 (default) and ivco=0 (80-160 MHz) or ivco=2 (150-240MHz).
+  */
+-#define CFG_PLL0_OPT			0x04
++#define CFG_PLL0_OPT			0x06
+ 
+ #define CONFIG_USART1			1
+ 

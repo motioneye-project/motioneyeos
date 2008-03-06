@@ -1,0 +1,2954 @@
+diff --git a/include/linux/videodev2.h b/include/linux/videodev2.h
+index 441b877..3a85a5e 100644
+--- a/include/linux/videodev2.h
++++ b/include/linux/videodev2.h
+@@ -298,6 +298,9 @@ struct v4l2_pix_format
+ #define V4L2_PIX_FMT_PWC2     v4l2_fourcc('P','W','C','2') /* pwc newer webcam */
+ #define V4L2_PIX_FMT_ET61X251 v4l2_fourcc('E','6','2','5') /* ET61X251 compression */
+ 
++/* Byte-swapped YUYV */
++#define V4L2_PIX_FMT_VYUY     v4l2_fourcc('V','Y','U','Y') /* 16 YUV 4:2:2 */
++#define V4L2_PIX_FMT_YVYU     v4l2_fourcc('Y','V','Y','U') /* 16 YUV 4:2:2 */
+ /*
+  *	F O R M A T   E N U M E R A T I O N
+  */
+diff --git a/drivers/media/video/Makefile b/drivers/media/video/Makefile
+index 44ccaed..78e38d0 100644
+--- a/drivers/media/video/Makefile
++++ b/drivers/media/video/Makefile
+@@ -77,6 +77,7 @@ obj-$(CONFIG_VIDEO_HEXIUM_ORION) += hexium_orion.o
+ obj-$(CONFIG_VIDEO_HEXIUM_GEMINI) += hexium_gemini.o
+ obj-$(CONFIG_VIDEO_DPC) += dpc7146.o
+ obj-$(CONFIG_TUNER_3036) += tuner-3036.o
++obj-$(CONFIG_VIDEO_AVR32_ISI) += atmel-isi.o
+ 
+ obj-$(CONFIG_VIDEO_TUNER) += tuner.o
+ obj-$(CONFIG_VIDEO_BUF)   += video-buf.o
+diff --git a/drivers/media/video/atmel-isi.c b/drivers/media/video/atmel-isi.c
+new file mode 100644
+index 0000000..a53a3c0
+--- /dev/null
++++ b/drivers/media/video/atmel-isi.c
+@@ -0,0 +1,1868 @@
++/*
++ * Copyright (c) 2007 Atmel Corporation
++ *
++ * Based on the bttv driver for Bt848 with respective copyright holders
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++#define DEBUG
++#include <linux/clk.h>
++#include <linux/completion.h>
++#include <linux/dma-mapping.h>
++#include <linux/fs.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/ioctl.h>
++#include <linux/kernel.h>
++#include <linux/mm.h>
++#include <linux/module.h>
++#include <linux/moduleparam.h>
++#include <linux/platform_device.h>
++#include <linux/slab.h>
++#include <linux/version.h>
++#include <linux/videodev2.h>
++#include <linux/wait.h>
++
++#include <linux/kfifo.h>
++
++#include <asm/io.h>
++
++#include <media/v4l2-common.h>
++
++#include "atmel-isi.h"
++
++#define ATMEL_ISI_VERSION	KERNEL_VERSION(0, 1, 0)
++#define ISI_CODEC 0
++
++/* Default ISI capture buffer size */
++#define ISI_CAPTURE_BUFFER_SIZE 800*600*2
++/* Default ISI video frame size */
++#define ISI_VIDEO_BUFFER_SIZE 320*240*2
++/* Default number of ISI video buffers */
++#define ISI_VIDEO_BUFFERS 4
++/* Maximum number of video buffers */
++#define ISI_VIDEO_BUFFERS_MAX 8
++
++/* Interrupt mask for a single capture */
++#define ISI_CAPTURE_MASK (ISI_BIT(SOF) | ISI_BIT(FO_C_EMP))
++
++/* ISI capture buffer size */
++static int capture_buffer_size = ISI_CAPTURE_BUFFER_SIZE;
++/* Number of buffers used for streaming video */
++static int video_buffers = 4;
++static int video_buffer_size = ISI_VIDEO_BUFFER_SIZE;
++
++/* Preview path horizontal size */
++static int prev_hsize = 320;
++/* Preview path vertical size */
++static int prev_vsize = 240;
++/* Scaling factor of the preview path */
++static int prev_decimation_factor = 1;
++
++/* Input image horizontal size */
++static int image_hsize = 320;
++
++/* Input image vertical size */
++static int image_vsize = 240;
++
++/* Frame rate scaler 
++ * 1 = capture every second frame
++ * 2 = capture every third frame
++ * ...
++ * */
++static int frame_rate_scaler = 2;
++
++/* Set this value if we want to pretend a specific V4L2 output format 
++ *  This format is for the capturing interface
++ */ 
++static int capture_v4l2_fmt = V4L2_PIX_FMT_YUYV;
++/* Set this value if we want to pretend a specific V4L2 output format 
++ *  This format is for the streaming interface
++ */
++static int streaming_v4l2_fmt = V4L2_PIX_FMT_YUYV;
++
++MODULE_PARM_DESC(video_buffers,"Number of frame buffers used for streaming");
++module_param(video_buffers, int, 0664);
++MODULE_PARM_DESC(capture_buffer_size,"Capture buffer size");
++module_param(capture_buffer_size, int, 0664);
++MODULE_PARM_DESC(image_hsize,"Horizontal size of input image");
++module_param(image_hsize, int, 0664);
++MODULE_PARM_DESC(image_vsize,"Vertical size of input image");
++module_param(image_vsize, int, 0664);
++MODULE_PARM_DESC(frame_rate_scaler, "Frame rate scaler");
++module_param(frame_rate_scaler, int, 0664);
++MODULE_PARM_DESC(prev_hsize, "Horizontal image size of preview path output");
++module_param(prev_hsize, int, 0664);
++MODULE_PARM_DESC(prev_vsize, "Vertical image size of preview path output");
++module_param(prev_vsize, int, 0664);
++MODULE_PARM_DESC(prev_decimation_factor, "Preview path decimaion factor");
++module_param(prev_decimation_factor, int, 0664);
++/* Single frame capturing states */
++enum {
++	STATE_IDLE = 0,
++	STATE_CAPTURE_READY,
++	STATE_CAPTURE_WAIT_SOF,
++	STATE_CAPTURE_IN_PROGRESS,
++	STATE_CAPTURE_DONE,
++	STATE_CAPTURE_ERROR,
++};
++
++/* Frame buffer states
++ *  FRAME_UNUSED Frame(buffer) is not used by the ISI module -> an application
++ *  can usually read out data in this state
++ *  FRAME_QUEUED An application has queued the buffer in the incoming queue 
++ *  FRAME_DONE The ISI module has filled the buffer with data and placed is on
++ *  the outgoing queue
++ *  FRAME_ERROR Not used at the moment
++ *  */
++enum frame_status {
++	FRAME_UNUSED,
++	FRAME_QUEUED,
++	FRAME_DONE,
++	FRAME_ERROR,
++};
++/* Frame buffer descriptor 
++ *  Used by the ISI module as a linked list for the DMA controller.
++ */
++struct fbd {
++	/* Physical address of the frame buffer */
++	dma_addr_t fb_address;
++	/* Physical address of the next fbd */
++	dma_addr_t next_fbd_address;
++};
++
++/* Frame buffer data
++ */
++struct frame_buffer {
++	/*  Frame buffer descriptor
++	 *  Used by the ISI DMA controller to provide linked list DMA operation
++	 */
++	struct fbd fb_desc;
++	/* Pointer to the start of the frame buffer */
++	void *frame_buffer;
++	/* Timestamp of the captured frame */
++	struct timeval timestamp;
++	/* Frame number of the frame  */
++	unsigned long sequence;
++	/* Buffer number*/
++	int index;
++	/* Bytes used in the buffer for data, needed as buffers are always
++	 *  aligned to pages and thus may be bigger than the amount of data*/
++	int bytes_used;
++	/* Mmap count
++	 *  Counter to measure how often this buffer is mmapped 
++	 */
++	int mmap_count;
++	/* Buffer status */
++	enum frame_status status;
++};
++
++struct atmel_isi {
++	/* ISI module spin lock. Protects against concurrent access of variables
++	 * that are shared with the ISR */
++	spinlock_t			lock;
++	void __iomem			*regs;
++	/* Pointer to the start of the fbd list */
++	dma_addr_t			fbd_list_start;
++	/* Frame buffers */
++	struct frame_buffer 		video_buffer[ISI_VIDEO_BUFFERS_MAX];
++	/* Frame buffer currently used by the ISI module */
++	struct frame_buffer		*current_buffer;
++	/* Size of a frame buffer */
++	size_t				capture_buffer_size;
++	/* Streaming status 
++	 *  If set ISI is in streaming mode */
++	int				streaming;
++	/* Queue for incoming buffers
++	 *  The buffer number (index) is stored in the fifo as reference 
++	 */
++	struct kfifo 			*grabq;
++	/* Spinlock for the incoming queue */
++	spinlock_t 			grabq_lock;
++	/* Queue for outgoing buffers
++	 *  Buffer number is stored in the fifo as reference
++	 */
++	struct kfifo			*doneq;
++	/* Spinlock for the incoming queue */
++	spinlock_t			doneq_lock;
++
++	/* State of the ISI module in capturing mode */
++	int				state;
++	/* Pointer to ISI buffer */
++	void				*capture_buf;
++	/* Physical address of the capture buffer */
++	dma_addr_t			capture_phys;
++	/* Size of the ISI buffer */
++	size_t				capture_buf_size;
++	/* Capture/streaming wait queue */
++	wait_queue_head_t		capture_wq;
++
++	struct atmel_isi_camera		*camera;
++	struct atmel_isi_format		format;
++	struct atmel_isi_format		streaming_format;
++
++	struct mutex			mutex;
++	/* User counter for the streaming interface */
++	int				stream_users;
++	/* User counter of the capture interface */
++	int				capture_users;
++	/* Video device for capturing (Codec path) */
++	struct video_device		cdev;
++	/* Video device for streaming (Preview path) */
++	struct video_device		vdev;
++	struct completion		reset_complete;
++	struct clk			*pclk;
++	struct clk			*hclk;
++	struct platform_device		*pdev;
++	unsigned int			irq;
++};
++
++#define to_atmel_isi(vdev) container_of(vdev, struct atmel_isi, vdev)
++
++struct atmel_isi_fh {
++	struct atmel_isi		*isi;
++	unsigned int			read_off;
++};
++
++/*-----------------------------------------------------------------------------
++ * Interface to the actual camera.
++ */
++static LIST_HEAD(camera_list);
++static DEFINE_MUTEX(camera_list_mutex);
++
++static void avr32_isi_release_camera(struct atmel_isi *isi,
++				     struct atmel_isi_camera *cam)
++{
++	mutex_lock(&camera_list_mutex);
++	cam->isi = NULL;
++	isi->camera = NULL;
++	module_put(cam->owner);
++	mutex_unlock(&camera_list_mutex);
++}
++
++int atmel_isi_register_camera(struct atmel_isi_camera *cam)
++{
++	pr_debug("atmel_isi: register camera %s\n", cam->name);
++
++	mutex_lock(&camera_list_mutex);
++	list_add_tail(&cam->list, &camera_list);
++	mutex_unlock(&camera_list_mutex);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(atmel_isi_register_camera);
++
++void atmel_isi_unregister_camera(struct atmel_isi_camera *cam)
++{
++	pr_debug("atmel_isi: unregister camera %s\n", cam->name);
++
++	mutex_lock(&camera_list_mutex);
++	if (cam->isi)
++		cam->isi->camera = NULL;
++	list_del(&cam->list);
++	mutex_unlock(&camera_list_mutex);
++}
++EXPORT_SYMBOL_GPL(atmel_isi_unregister_camera);
++
++static struct atmel_isi_camera * avr32_isi_grab_camera(struct atmel_isi *isi)
++{
++	struct atmel_isi_camera *entry, *cam = NULL;
++
++	mutex_lock(&camera_list_mutex);
++	list_for_each_entry(entry, &camera_list, list) {
++		/* Just grab the first camera available */
++		if (!entry->isi) {
++			if (!try_module_get(entry->owner))
++				continue;
++
++			cam = entry;
++			cam->isi = isi;
++			pr_debug("%s: got camera: %s\n",
++				 isi->vdev.name, cam->name);
++			break;
++		}
++	}
++	mutex_unlock(&camera_list_mutex);
++
++	return cam;
++}
++
++static int avr32_isi_set_camera_input(struct atmel_isi *isi)
++{
++	struct atmel_isi_camera *cam = isi->camera;
++	int ret;
++	u32 cr1;
++	u32 cr2;
++
++	isi->format.pix.width = image_hsize;
++	isi->format.pix.height = image_vsize;
++	isi->format.pix.bytesperline = 0;
++
++	ret = cam->set_format(cam, &isi->format);
++	if (ret)
++		return ret;
++
++
++	switch (isi->format.input_format) {
++	case ATMEL_ISI_PIXFMT_GREY:
++		cr2 = ISI_BIT(GRAYSCALE);
++		break;
++	case ATMEL_ISI_PIXFMT_CbYCrY:
++		cr2 = ISI_BF(YCC_SWAP, 0);
++		break;
++	case ATMEL_ISI_PIXFMT_CrYCbY:
++		cr2 = ISI_BF(YCC_SWAP, 1);
++		break;
++	case ATMEL_ISI_PIXFMT_YCbYCr:
++		cr2 = ISI_BF(YCC_SWAP, 2);
++		break;
++	case ATMEL_ISI_PIXFMT_YCrYCb:
++		cr2 = ISI_BF(YCC_SWAP, 3);
++		break;
++	case ATMEL_ISI_PIXFMT_RGB24:
++		cr2 = ISI_BIT(COL_SPACE) | ISI_BF(RGB_CFG, 0);
++		break;
++	case ATMEL_ISI_PIXFMT_BGR24:
++		cr2 = ISI_BIT(COL_SPACE) | ISI_BF(RGB_CFG, 1);
++		break;
++	case ATMEL_ISI_PIXFMT_RGB16:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_MODE)
++		       | ISI_BF(RGB_CFG, 0));
++		break;
++	case ATMEL_ISI_PIXFMT_BGR16:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_MODE)
++		       | ISI_BF(RGB_CFG, 1));
++		break;
++	case ATMEL_ISI_PIXFMT_GRB16:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_MODE)
++		       | ISI_BF(RGB_CFG, 2));
++		break;
++	case ATMEL_ISI_PIXFMT_GBR16:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_MODE)
++		       | ISI_BF(RGB_CFG, 3));
++		break;
++	case ATMEL_ISI_PIXFMT_RGB24_REV:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_SWAP)
++		       | ISI_BF(RGB_CFG, 0));
++		break;
++	case ATMEL_ISI_PIXFMT_BGR24_REV:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_SWAP)
++		       | ISI_BF(RGB_CFG, 1));
++		break;
++	case ATMEL_ISI_PIXFMT_RGB16_REV:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_SWAP)
++		       | ISI_BIT(RGB_MODE) | ISI_BF(RGB_CFG, 0));
++		break;
++	case ATMEL_ISI_PIXFMT_BGR16_REV:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_SWAP)
++		       | ISI_BIT(RGB_MODE) | ISI_BF(RGB_CFG, 1));
++		break;
++	case ATMEL_ISI_PIXFMT_GRB16_REV:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_SWAP)
++		       | ISI_BIT(RGB_MODE) | ISI_BF(RGB_CFG, 2));
++		break;
++	case ATMEL_ISI_PIXFMT_GBR16_REV:
++		cr2 = (ISI_BIT(COL_SPACE) | ISI_BIT(RGB_SWAP)
++		       | ISI_BIT(RGB_MODE) | ISI_BF(RGB_CFG, 3));
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	
++	cr1 = ISI_BF(EMB_SYNC, cam->has_emb_sync)
++		| ISI_BF(HSYNC_POL, cam->hsync_act_low)
++		| ISI_BF(VSYNC_POL, cam->vsync_act_low)
++		| ISI_BF(PIXCLK_POL, cam->pclk_act_falling)
++		| ISI_BIT(DIS);
++
++	isi_writel(isi, CR1, cr1);
++	isi_writel(isi, CR2, cr2);
++
++	return 0;
++}
++
++static int avr32_isi_capture_set_format(struct atmel_isi *isi,
++				struct atmel_isi_format *fmt)
++{
++	u32 cr2;
++
++	fmt->pix.width = min(2048U, fmt->pix.width);
++	fmt->pix.height = min(2048U, fmt->pix.height);
++	fmt->pix.bytesperline = 0;
++
++	/* Set format if we have specified one */
++	if(capture_v4l2_fmt){
++		fmt->pix.pixelformat = capture_v4l2_fmt;
++	}
++	else {
++		/* Codec path output format */
++		fmt->pix.pixelformat = V4L2_PIX_FMT_YVYU;
++	}
++
++	/* The ISI module outputs either YUV 4:2:2 (codec path)
++	 * or RGB 5:5:5 (preview path) (ISI grayscale mode is not supported 
++	 * by V4L2). Therefore two pixels will be in a 32bit word */
++	fmt->pix.bytesperline = ALIGN(fmt->pix.width * 2, 4);
++	fmt->pix.sizeimage = fmt->pix.bytesperline * fmt->pix.height;
++	
++	cr2 = isi_readl(isi, CR2);
++	cr2 = ISI_BFINS(IM_VSIZE, fmt->pix.height - 1, cr2);
++	cr2 = ISI_BFINS(IM_HSIZE, fmt->pix.width - 1, cr2);
++	isi_writel(isi, CR2, cr2);
++
++	pr_debug("set capture format: width=%d height=%d\n",
++		fmt->pix.width, fmt->pix.height);
++
++	return 0;
++}
++
++static int avr32_isi_streaming_set_format(struct atmel_isi *isi,
++				struct atmel_isi_format *fmt)
++{
++	memcpy(&isi->streaming_format, &isi->format, 
++		sizeof(struct atmel_isi_format)); 
++#ifndef ISI_CODEC
++	fmt->pix.width = min(640U, prev_hsize);
++	fmt->pix.height = min(480U, prev_vsize);
++	fmt->pix.bytesperline = 0;
++
++	/* Set format if we have specified one */
++	if(streaming_v4l2_fmt){
++		fmt->pix.pixelformat = streaming_v4l2_fmt;
++	}
++	else {
++		/* Preview path output format
++		 * Would be logically V4L2_PIX_FMT_BGR555X 
++		 * but this format does not exist in the specification
++		 * So for now we pretend V4L2_PIX_FMT_RGB555X 
++		 */
++		fmt->pix.pixelformat = V4L2_PIX_FMT_RGB555X;
++	}
++
++	/* The ISI module outputs either YUV 4:2:2 (codec path) 
++	 * or RGB 5:5:5 (preview path) (ISI grayscale mode is not 
++	 * supported yet. Therefore two pixels will be in a 32bit word 
++	 */
++	fmt->pix.bytesperline = ALIGN(fmt->pix.width * 2, 4);
++	fmt->pix.sizeimage = fmt->pix.bytesperline * fmt->pix.height;
++	
++	/* These values depend on the sensor output image size */
++	isi_writel(isi, PDECF, prev_decimation_factor);/* 1/16 * 16 = 1*/
++	isi_writel(isi,PSIZE , ISI_BF(PREV_HSIZE,prev_hsize - 1)
++		| ISI_BF(PREV_VSIZE, prev_vsize - 1));
++
++	pr_debug("set_format: cr1=0x%08x cr2=0x%08x\n",
++		 isi_readl(isi, CR1), isi_readl(isi, CR2));
++#else
++	avr32_isi_capture_set_format(isi, &isi->streaming_format);
++#endif
++	return 0;
++}
++
++static int avr32_isi_start_capture(struct atmel_isi *isi)
++{
++	u32 cr1;
++	int ret;
++
++	spin_lock_irq(&isi->lock);
++	isi->state = STATE_IDLE;
++	isi_readl(isi, SR); /* clear any pending SOF interrupt */
++	isi_writel(isi, IER, ISI_BIT(SOF));
++	isi_writel(isi, CR1, isi_readl(isi, CR1) & ~ISI_BIT(DIS));	
++	spin_unlock_irq(&isi->lock);
++
++	pr_debug("isi: waiting for SOF\n");
++	ret = wait_event_interruptible(isi->capture_wq,
++				       isi->state != STATE_IDLE);
++	if (ret)
++		return ret;
++	if (isi->state != STATE_CAPTURE_READY)
++		return -EIO;
++
++	/*
++	 * Do a codec request. Next SOF indicates start of capture,
++	 * the one after that indicates end of capture.
++	 */
++	pr_debug("isi: starting capture\n");
++	isi_writel(isi, CDBA, isi->capture_phys);
++
++	spin_lock_irq(&isi->lock);
++	isi->state = STATE_CAPTURE_WAIT_SOF;
++	cr1 = isi_readl(isi, CR1);
++	cr1 |= ISI_BIT(CODEC_ON);
++	isi_writel(isi, CR1, cr1);
++	isi_writel(isi, IER, ISI_CAPTURE_MASK);
++	spin_unlock_irq(&isi->lock);
++
++	return 0;
++}
++
++static void avr32_isi_capture_done(struct atmel_isi *isi,
++				   int state)
++{
++	u32 cr1;
++
++	cr1 = isi_readl(isi, CR1);
++	cr1 &= ~ISI_BIT(CODEC_ON);
++	isi_writel(isi, CR1, cr1);
++
++	isi->state = state;
++	wake_up_interruptible(&isi->capture_wq);
++	isi_writel(isi, IDR, ISI_CAPTURE_MASK);
++}
++
++static irqreturn_t avr32_isi_handle_streaming(struct atmel_isi *isi, 
++	int sequence){
++	
++	int reqnr;
++
++	if(kfifo_get(isi->grabq, (unsigned char *) &reqnr,
++			sizeof(int)) != sizeof(int)){
++			
++		/* as no new buffer is available we keep the
++		* current one
++		*/
++		pr_debug("isi: dropping frame\n");
++#ifdef ISI_CODEC
++		isi_writel(isi, CDBA, 
++			isi->current_buffer->fb_desc.fb_address);
++
++		isi_writel(isi, CR1, ISI_BIT(CODEC_ON) | 
++			isi_readl(isi, CR1));
++#else
++		/* TEST this has to be tested if it messes up the ISI
++		 * streaming process */
++		isi_writel(isi, PPFBD, (unsigned long) 
++			&isi->video_buffer[isi->current_buffer->index]);
++#endif
++	}
++	else{
++		isi->current_buffer->status = FRAME_DONE;
++		isi->current_buffer->sequence = sequence;
++			
++		do_gettimeofday(&isi->current_buffer->timestamp);
++			
++		/*isi->current_buffer->bytes_used = 
++			ISI_VIDEO_MAX_FRAME_SIZE; */
++			
++		kfifo_put(isi->doneq, (unsigned char *) 
++			&(isi->current_buffer->index), sizeof(int));
++			
++		isi->current_buffer = &(isi->video_buffer[reqnr]);
++#ifdef ISI_CODEC
++		isi_writel(isi, CDBA, 
++			isi->current_buffer->fb_desc.fb_address);
++		isi_writel(isi, CR1, ISI_BIT(CODEC_ON) | 
++			isi_readl(isi, CR1));
++#else
++		/*TODO check if fbd corresponds to frame buffer */
++#endif
++		wake_up_interruptible(&isi->capture_wq);
++	}
++	return IRQ_HANDLED;
++}
++
++/* FIXME move code from ISR here
++static irqreturn_t avr32_isi_handle_capturing(struct atmel_isi *isi){
++
++}*/
++/* isi interrupt service routine */
++static irqreturn_t isi_interrupt(int irq, void *dev_id)
++{
++	struct atmel_isi *isi = dev_id;
++	u32 status, mask, pending;
++	irqreturn_t ret = IRQ_NONE;
++	static int sequence = 0;
++
++	spin_lock(&isi->lock);
++
++	status = isi_readl(isi, SR);
++	mask = isi_readl(isi, IMR);
++	pending = status & mask;
++
++	pr_debug("isi: interrupt status %x pending %x\n",
++		 status, pending);
++	if(isi->streaming){
++		if(likely(pending & (ISI_BIT(FO_C_EMP) | ISI_BIT(FO_P_EMP)))){
++		
++			sequence++;
++		 	ret = avr32_isi_handle_streaming(isi, sequence);
++		}
++	}
++	else{
++	while (pending) {
++		if (pending & (ISI_BIT(FO_C_OVF) | ISI_BIT(FR_OVR))) {
++			avr32_isi_capture_done(isi, STATE_CAPTURE_ERROR);
++			pr_debug("%s: FIFO overrun (status=0x%x)\n",
++				 isi->vdev.name, status);
++		} else if (pending & ISI_BIT(SOF)) {
++			switch (isi->state) {
++			case STATE_IDLE:
++				isi->state = STATE_CAPTURE_READY;
++				wake_up_interruptible(&isi->capture_wq);
++				break;
++			case STATE_CAPTURE_READY:
++				break;
++			case STATE_CAPTURE_WAIT_SOF:
++				isi->state = STATE_CAPTURE_IN_PROGRESS;
++				break;
++			/*
++			case STATE_CAPTURE_IN_PROGRESS:
++				avr32_isi_capture_done(isi, STATE_CAPTURE_DONE);
++				break;
++				*/
++			}
++		}
++		if (pending & ISI_BIT(FO_C_EMP)){
++			if( isi->state == STATE_CAPTURE_IN_PROGRESS)
++				avr32_isi_capture_done(isi, STATE_CAPTURE_DONE);
++		}
++
++		if (pending & ISI_BIT(SOFTRST)) {
++			complete(&isi->reset_complete);
++			isi_writel(isi, IDR, ISI_BIT(SOFTRST));
++		}
++
++		status = isi_readl(isi, SR);
++		mask = isi_readl(isi, IMR);
++		pending = status & mask;
++		ret = IRQ_HANDLED;
++	}
++	}
++	spin_unlock(&isi->lock);
++
++	return ret;
++}
++
++/* ------------------------------------------------------------------------
++ *  IOCTL videoc handling
++ *  ----------------------------------------------------------------------*/
++
++/* --------Capture ioctls ------------------------------------------------*/
++/* Device capabilities callback function.
++ */
++static int avr32_isi_capture_querycap(struct file *file, void *priv,
++			      struct v4l2_capability *cap)
++{
++	strcpy(cap->driver, "atmel-isi");
++	strcpy(cap->card, "Atmel Image Sensor Interface");
++	cap->version = ATMEL_ISI_VERSION;
++	/* V4L2_CAP_VIDEO_CAPTURE -> This is a capture device
++	 * V4L2_CAP_READWRITE -> read/write interface used
++	 */
++	cap->capabilities = (V4L2_CAP_VIDEO_CAPTURE 
++			     | V4L2_CAP_READWRITE
++			     );
++	return 0;
++}
++
++/*  Input enumeration callback function. 
++ *  Enumerates available input devices.
++ *  This can be called many times from the V4L2-layer by 
++ *  incrementing the index to get all avaliable input devices.
++ */
++static int avr32_isi_capture_enum_input(struct file *file, void *priv,
++				struct v4l2_input *input)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++
++	/* Just one input (ISI) is available */
++	if (input->index != 0)
++		return -EINVAL;
++
++	/* Set input name as camera name */
++	strlcpy(input->name, isi->camera->name, sizeof(input->name));
++	input->type = V4L2_INPUT_TYPE_CAMERA;
++	
++	/* Set to this value just because this should be set to a 
++	 * defined value
++	 */
++	input->std = V4L2_STD_PAL;
++
++	return 0;
++}
++/* Selects an input device.
++ *  One input device (ISI) currently supported.
++ */
++static int avr32_isi_capture_s_input(struct file *file, void *priv,
++			     unsigned int index)
++{
++	if (index != 0)
++		return -EINVAL;
++	return 0;
++}
++
++/* Gets current input device.
++ */
++static int avr32_isi_capture_g_input(struct file *file, void *priv,
++			     unsigned int *index)
++{
++	*index = 0;
++	return 0;
++}
++
++/* Format callback function 
++ * Returns a v4l2_fmtdesc structure with according values to a
++ * index.
++ * This function is called from user space until it returns 
++ * -EINVAL.
++ */
++static int avr32_isi_capture_enum_fmt_cap(struct file *file, void *priv,
++				  struct v4l2_fmtdesc *fmt)
++{
++	if (fmt->index != 0)
++		return -EINVAL;
++
++	/* if we want to pretend another ISI output 
++	 * this is usefull if we input an other input format from a camera
++	 * than specified in the ISI -> makes it possible to swap bytes 
++	 * in the ISI output format but messes up the preview path output
++	 */ 
++	if(capture_v4l2_fmt){
++		fmt->pixelformat = capture_v4l2_fmt;
++	}
++	else {
++		/* This is the format the ISI tries to output */
++		strcpy(fmt->description, "YCbYCr (YUYV) 4:2:2");
++		fmt->pixelformat = V4L2_PIX_FMT_YUYV;
++	}
++
++	return 0;
++}
++
++static int avr32_isi_capture_try_fmt_cap(struct file *file, void *priv,
++			struct v4l2_format *vfmt)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++
++	/* Just return the current format for now */
++	memcpy(&vfmt->fmt.pix, &isi->format.pix,
++		sizeof(struct v4l2_pix_format));
++
++	return 0;
++}
++
++/* Gets current hardware configuration
++ *  For capture devices the pixel format settings are 
++ *  important.
++ */
++static int avr32_isi_capture_g_fmt_cap(struct file *file, void *priv,
++			       struct v4l2_format *vfmt)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++
++	/* Return current pixel format */
++	memcpy(&vfmt->fmt.pix, &isi->format.pix,
++	       sizeof(struct v4l2_pix_format));
++
++	return 0;
++}
++
++static int avr32_isi_capture_s_fmt_cap(struct file *file, void *priv,
++			       struct v4l2_format *vfmt)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++	int ret = 0;
++	
++	/* We have a fixed format so just copy the current format 
++	 * back
++	 */
++	memcpy(&vfmt->fmt.pix, &isi->format.pix,
++		sizeof(struct v4l2_pix_format));
++
++	return ret;
++}
++
++/* ------------ Preview path ioctls ------------------------------*/
++/* Device capabilities callback function.
++ */
++static int avr32_isi_querycap(struct file *file, void *priv,
++			      struct v4l2_capability *cap)
++{
++	strcpy(cap->driver, "atmel-isi");
++	strcpy(cap->card, "Atmel Image Sensor Interface");
++	cap->version = ATMEL_ISI_VERSION;
++	/* V4L2_CAP_VIDEO_CAPTURE -> This is a capture device
++	 * V4L2_CAP_READWRITE -> read/write interface used
++	 * V4L2_CAP_STREAMING -> ioctl + mmap interface used
++	 */
++	cap->capabilities = (V4L2_CAP_VIDEO_CAPTURE 
++			     | V4L2_CAP_READWRITE
++			     | V4L2_CAP_STREAMING
++			     );
++	return 0;
++}
++
++/* Input enumeration callback function. 
++ *  Enumerates available input devices.
++ *  This can be called many times from the V4L2-layer by 
++ *  incrementing the index to get all avaliable input devices.
++ */
++static int avr32_isi_enum_input(struct file *file, void *priv,
++				struct v4l2_input *input)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++
++	/* Just one input (ISI) is available */
++	if (input->index != 0)
++		return -EINVAL;
++
++	/* Set input name as camera name */
++	strlcpy(input->name, isi->camera->name, sizeof(input->name));
++	input->type = V4L2_INPUT_TYPE_CAMERA;
++	
++	/* Set to this value just because this should be set to a 
++	 * defined value
++	 */
++	input->std = V4L2_STD_PAL;
++
++	return 0;
++}
++
++/* Selects an input device.
++ *  One input device (ISI) currently supported.
++ */
++static int avr32_isi_s_input(struct file *file, void *priv,
++			     unsigned int index)
++{
++	if (index != 0)
++		return -EINVAL;
++
++	return 0;
++}
++
++/* Gets current input device.
++ */
++static int avr32_isi_g_input(struct file *file, void *priv,
++			     unsigned int *index)
++{
++	*index = 0;
++	return 0;
++}
++
++/* Format callback function 
++ * Returns a v4l2_fmtdesc structure with according values to a
++ * index.
++ * This function is called from user space until it returns 
++ * -EINVAL.
++ */
++static int avr32_isi_enum_fmt_cap(struct file *file, void *priv,
++				  struct v4l2_fmtdesc *fmt)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++
++	if (fmt->index != 0)
++		return -EINVAL;
++
++	/* TODO: Return all possible formats 
++	* This depends on ISI and camera.
++	* A enum_fmt function or a data structure should be 
++	* added to the camera driver.
++	* For now just one format supported 
++	*/
++	if(streaming_v4l2_fmt){
++		strcpy(fmt->description, "Pretended format");
++	}
++	else{
++		strcpy(fmt->description, "Normal format");
++	}
++	fmt->pixelformat = isi->streaming_format.pix.pixelformat;//V4L2_PIX_FMT_UYVY;
++
++	return 0;
++}
++
++static int avr32_isi_try_fmt_cap(struct file *file, void *priv,
++			struct v4l2_format *vfmt)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++
++	/* FIXME For now we just return the current format*/
++	memcpy(&vfmt->fmt.pix, &isi->streaming_format.pix,
++		sizeof(struct v4l2_pix_format));
++	return 0;
++}
++
++/* Gets current hardware configuration
++ *  For capture devices the pixel format settings are 
++ *  important.
++ */
++static int avr32_isi_g_fmt_cap(struct file *file, void *priv,
++			       struct v4l2_format *vfmt)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++
++	/*Copy current pixel format structure to user space*/
++	memcpy(&vfmt->fmt.pix, &isi->streaming_format.pix,
++	       sizeof(struct v4l2_pix_format));
++
++	return 0;
++}
++
++static int avr32_isi_s_fmt_cap(struct file *file, void *priv,
++			       struct v4l2_format *vfmt)
++{
++	struct atmel_isi_fh *fh = priv;
++	struct atmel_isi *isi = fh->isi;
++	int ret = 0;
++	
++	/* Just return the current format as we do not support
++	* format switching */
++	memcpy(&vfmt->fmt.pix, &isi->streaming_format.pix,
++		sizeof(struct v4l2_pix_format));
++
++	return ret;
++}
++
++/* Checks if control is supported in driver
++ * No controls currently supported yet
++ */
++static int avr32_isi_queryctrl(struct file *file, void *priv,
++			   struct v4l2_queryctrl *qc)
++{
++	switch(qc->id){
++	case V4L2_CID_BRIGHTNESS:
++		strcpy(qc->name, "Brightness");
++		qc->minimum = 0;
++		qc->maximum = 100;
++		qc->step = 1;
++		qc->default_value = 50;
++		qc->flags = 0;
++		break;
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int avr32_isi_g_ctrl(struct file *file, void *priv,
++			struct v4l2_control *ctrl)
++{
++	switch(ctrl->id){
++	case V4L2_CID_BRIGHTNESS:
++		ctrl->value = 0;
++		break;
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int avr32_isi_s_ctrl(struct file *file, void *priv,
++			struct v4l2_control *ctrl)
++{
++	switch(ctrl->id){
++	case V4L2_CID_BRIGHTNESS:
++		break;
++	default:
++		return -EINVAL;
++	}
++	return 0;
++}
++
++static int avr32_isi_reqbufs(struct file *file, void *private_data, 
++			struct v4l2_requestbuffers *req)
++{
++	/* Only memory mapped buffers supported*/
++	if(req->memory != V4L2_MEMORY_MMAP){
++		pr_debug("atmel_isi: buffer format not supported\n");
++		return -EINVAL;
++	}
++	pr_debug("atmel_isi: Requested %d buffers. Using %d buffers\n",
++		req->count, video_buffers);
++	/* buffer number is fixed for now as it is difficult to get 
++	 * that memory at runtime */	
++	req->count = video_buffers;
++	memset(&req->reserved, 0, sizeof(req->reserved));
++	return 0;
++}
++
++static int avr32_isi_querybuf(struct file *file, void *private_data, 
++			struct v4l2_buffer *buf)
++{
++	struct atmel_isi_fh *fh = private_data;
++	struct atmel_isi *isi = fh->isi;
++	struct frame_buffer *buffer; 
++
++	if(unlikely(buf->type != V4L2_BUF_TYPE_VIDEO_CAPTURE))
++		return -EINVAL;
++	if(unlikely(buf->index >= video_buffers))
++		return -EINVAL;
++
++	buffer = &(isi->video_buffer[buf->index]);
++
++	buf->type = V4L2_BUF_TYPE_VIDEO_CAPTURE;
++	buf->length = video_buffer_size;
++	buf->memory = V4L2_MEMORY_MMAP;
++
++	/* set index as mmap reference to the buffer */
++	buf->m.offset = buf->index << PAGE_SHIFT;
++	
++	switch(buffer->status){
++	case FRAME_UNUSED:
++	case FRAME_ERROR:
++	case FRAME_QUEUED:
++		buf->flags |= V4L2_BUF_FLAG_QUEUED;
++		buf->bytesused = buffer->bytes_used;
++		break;
++	case FRAME_DONE:
++		buf->flags |= V4L2_BUF_FLAG_DONE;
++		buf->bytesused = buffer->bytes_used;
++		buf->sequence = buffer->sequence;
++		buf->timestamp = buffer->timestamp;
++		break;
++	}
++
++	buf->field = V4L2_FIELD_NONE; /* no interlacing stuff */
++
++	if(buffer->mmap_count)
++		buf->flags |= V4L2_BUF_FLAG_MAPPED;
++	else 
++		buf->flags &= ~V4L2_BUF_FLAG_MAPPED;
++
++	pr_debug("atmel_isi: querybuf index:%d offset:%d\n",
++		buf->index, buf->m.offset);
++
++	return 0;
++}
++
++static int avr32_isi_qbuf(struct file *file, void *private_data,
++			struct v4l2_buffer *buf)
++{
++	struct atmel_isi_fh *fh = private_data;
++	struct atmel_isi *isi = fh->isi;
++	struct frame_buffer *buffer;
++	
++	if(unlikely(buf->type != V4L2_BUF_TYPE_VIDEO_CAPTURE))
++		return -EINVAL;
++	if(unlikely(buf->index >= video_buffers || buf->index < 0))
++		return -EINVAL;
++	if(unlikely(buf->memory != V4L2_MEMORY_MMAP))
++		return -EINVAL;
++
++	buffer = &(isi->video_buffer[buf->index]);
++	if(unlikely(buffer->status != FRAME_UNUSED))
++		return -EINVAL;
++
++	mutex_lock(&isi->mutex);
++	buf->flags |= V4L2_BUF_FLAG_QUEUED;
++	buf->flags &= ~V4L2_BUF_FLAG_DONE;
++	buffer->status = FRAME_QUEUED;
++	kfifo_put(isi->grabq, (unsigned char*) &buf->index, sizeof(int));
++	mutex_unlock(&isi->mutex);
++
++	return 0;
++}
++
++static int avr32_isi_dqbuf(struct file *file, void *private_data,
++			struct v4l2_buffer *buf)
++{
++	struct atmel_isi_fh *fh = private_data;
++	struct atmel_isi *isi = fh->isi;
++	struct frame_buffer *buffer;
++	int reqnr = 0;
++
++	if(unlikely(buf->type != V4L2_BUF_TYPE_VIDEO_CAPTURE))
++		return -EINVAL;
++	/* Mencoder does not set this flag
++	 *
++	if(unlikely(buf->memory != V4L2_MEMORY_MMAP)){
++		pr_debug("isi: dequeue failed buffer not of mmapped type\n");
++		return -EINVAL;
++	}*/
++	if((kfifo_len(isi->doneq) == 0) && (file->f_flags & O_NONBLOCK)){
++		pr_debug("Done-queue is empty\n");
++		return -EAGAIN;
++	}
++	/*
++	if(wait_event_interruptible(isi->capture_wq, 
++		kfifo_len(isi->doneq) != 0) < 0){
++		pr_debug("Done-queue interrupted\n");
++		return -EINTR;
++	}
++	*/
++	if(!kfifo_get(isi->doneq, (unsigned char*) &reqnr, sizeof(int))){
++		return -EBUSY;
++	}
++	buffer = &(isi->video_buffer[reqnr]);
++
++	if(unlikely(buffer->status != FRAME_DONE)){
++		pr_debug("isi: error, dequeued buffer not ready\n");
++		return -EINVAL;
++	}
++	buf->index = reqnr;
++	buf->bytesused = buffer->bytes_used;
++	buf->timestamp = buffer->timestamp;
++	buf->sequence = buffer->sequence;
++	buf->m.offset = reqnr << PAGE_SHIFT;
++	buffer->status = FRAME_UNUSED;
++	buf->flags = V4L2_BUF_FLAG_MAPPED | V4L2_BUF_FLAG_DONE;
++
++	buf->length = isi->capture_buffer_size;
++	buf->field = V4L2_FIELD_NONE;
++	buf->memory = V4L2_MEMORY_MMAP;
++	return 0;
++}
++
++static int avr32_isi_streamon(struct file *file, void *private_data,
++			enum v4l2_buf_type type)
++{
++	struct atmel_isi_fh *fh = private_data;
++	struct atmel_isi *isi = fh->isi;
++	int reqnr;
++	struct frame_buffer *buffer;
++	u32 cr1;
++
++	if(unlikely(type != V4L2_BUF_TYPE_VIDEO_CAPTURE))
++		return -EINVAL;
++	
++	if(!kfifo_get(isi->grabq, (unsigned char*) &reqnr, sizeof(int))){
++		mutex_unlock(&isi->mutex);
++		pr_debug("atmel_isi: No buffer in IN-Queue, start of streaming\
++			aborted (one buffer is required in IN-Queue)\n"); 
++		return -EINVAL;
++	}
++	buffer = &(isi->video_buffer[reqnr]);
++	
++
++	spin_lock_irq(isi->lock);
++	isi->streaming = 1;
++	isi->current_buffer = buffer;
++	cr1 = isi_readl(isi, CR1);
++#ifdef ISI_CODEC
++	isi_writel(isi, CDBA, buffer->fb_desc.fb_address);
++	/* Enable codec path */
++	cr1 |= ISI_BIT(CODEC_ON) | ISI_BIT(DIS);
++#else
++	isi_writel(isi, PPFBD, isi->fbd_list_start);
++#endif
++	/* Enable interrupts */
++	isi_readl(isi, SR);
++	/* FIXME enable codec/preview path according to setup */
++	isi_writel(isi, IER, ISI_BIT(FO_C_EMP) | ISI_BIT(FO_P_EMP));
++
++	cr1 |= ISI_BF(FRATE, frame_rate_scaler);
++
++	/* Enable ISI module*/
++	cr1 &= ~ISI_BIT(DIS);
++	isi_writel(isi, CR1, cr1);
++	spin_unlock_irq(isi->lock);
++
++	isi->camera->start_capture(isi->camera);
++
++	return 0;
++}
++
++static int avr32_isi_streamoff(struct file *file, void *private_data,
++			enum v4l2_buf_type type)
++{
++	struct atmel_isi_fh *fh = private_data;
++	struct atmel_isi *isi = fh->isi;
++
++	if(unlikely(type != V4L2_BUF_TYPE_VIDEO_CAPTURE))
++		return -EINVAL;
++
++	spin_lock_irq(isi->lock);
++	isi->streaming = 0;
++#ifdef ISI_CODEC
++	/* Disble codec path */
++	isi_writel(isi, CR1, isi_readl(isi, CR1) & (~ISI_BIT(CODEC_ON)));
++#endif
++	/* Disable interrupts */
++	isi_writel(isi, IDR, ISI_BIT(FO_C_EMP) | ISI_BIT(FO_P_EMP));
++	
++	/* Disable ISI module*/
++	isi_writel(isi, CR1, isi_readl(isi, CR1) | ISI_BIT(DIS));
++	spin_unlock_irq(isi->lock);
++
++	isi->camera->stop_capture(isi->camera);
++	pr_debug("atmel_isi: Stream off\n");
++
++	return 0;
++}
++
++/*----------------------------------------------------------------------------*/
++static int avr32_isi_capture_close (struct inode *inode, struct file *file)
++{
++	struct atmel_isi_fh *fh = file->private_data;
++	struct atmel_isi *isi = fh->isi;
++	u32 cr1;
++
++	mutex_lock(&isi->mutex);
++
++	isi->capture_users--;
++	kfree(fh);
++
++	/* Stop camera and ISI  if driver has no users */
++	if(!isi->stream_users) {
++		isi->camera->stop_capture(isi->camera);
++
++		spin_lock_irq(&isi->lock);
++		cr1 = isi_readl(isi, CR1);
++		cr1 |= ISI_BIT(DIS);
++		isi_writel(isi, CR1, cr1);
++		spin_unlock_irq(&isi->lock);
++	}
++	mutex_unlock(&isi->mutex);
++
++	return 0;
++}
++
++static int avr32_isi_capture_open (struct inode *inode, struct file *file)
++{
++	struct video_device *vdev = video_devdata(file);
++	struct atmel_isi *isi = to_atmel_isi(vdev);
++	struct atmel_isi_fh *fh;
++	int ret = -EBUSY;
++	unsigned long timeout;
++
++	mutex_lock(&isi->mutex);
++	
++
++	if (isi->capture_users) {
++		pr_debug("%s: open(): device busy\n", vdev->name);
++		goto out;
++	}
++
++	if (!isi->camera) {
++
++		ret = -ENODEV;
++		isi->camera = avr32_isi_grab_camera(isi);
++		if (!isi->camera)
++			goto out;
++
++		ret = avr32_isi_set_camera_input(isi);
++		if(ret)
++			goto out;
++	}
++
++	avr32_isi_capture_set_format(isi, &isi->format);
++
++	/*
++	 * Reset the controller and wait for completion. The
++	 * reset will only succeed if we have a pixel clock
++	 * from the camera.
++	 */
++	if(isi->stream_users == 0){
++		
++		init_completion(&isi->reset_complete);
++		isi_writel(isi, IER, ISI_BIT(SOFTRST));
++		isi_writel(isi, CR1, ISI_BIT(RST));
++
++		timeout = wait_for_completion_timeout(&isi->reset_complete,
++			msecs_to_jiffies(100));
++
++		isi_writel(isi, IDR, ~0UL);
++		if (timeout == 0) {
++			ret = -ETIMEDOUT;
++			goto out;
++		}
++	}
++	
++	ret = -ENOMEM;
++	fh = kzalloc(sizeof(struct atmel_isi_fh), GFP_KERNEL);
++	if (!fh) {
++		pr_debug("%s: open(): out of memory\n", vdev->name);
++		goto out;
++	}
++
++	fh->isi = isi;
++	file->private_data = fh;
++	isi->capture_users++;
++
++	ret = 0;
++
++out:
++	mutex_unlock(&isi->mutex);
++	return ret;
++}
++
++static ssize_t avr32_isi_capture_read(struct file *file, char __user *data,
++			      size_t count, loff_t *ppos)
++{
++	struct atmel_isi_fh *fh = file->private_data;
++	struct atmel_isi *isi = fh->isi;
++	int state;
++	int ret;
++
++	state = STATE_IDLE;
++
++	pr_debug("isi: read %zu bytes read_off=%u state=%u sizeimage=%u\n",
++		count, fh->read_off, state, isi->format.pix.sizeimage);
++	isi->camera->start_capture(isi->camera);
++	
++
++	avr32_isi_start_capture(isi);
++
++	ret = wait_event_interruptible( isi->capture_wq,
++			(isi->state == STATE_CAPTURE_DONE)
++			|| (isi->state == STATE_CAPTURE_ERROR));
++	if (ret)
++		return ret;
++	if (isi->state == STATE_CAPTURE_ERROR) {
++		isi->state = STATE_IDLE;
++		return -EIO;
++	}
++
++	fh->read_off = 0;
++
++	count = min(count, (size_t)isi->format.pix.sizeimage - fh->read_off);
++	ret = copy_to_user(data, isi->capture_buf + fh->read_off, count);
++	if (ret)
++		return -EFAULT;
++
++	fh->read_off += count;
++	if (fh->read_off >= isi->format.pix.sizeimage)
++		isi->state = STATE_IDLE;
++
++	return count;
++}
++
++static void avr32_isi_capture_release (struct video_device *vdev)
++{
++	pr_debug("%s: release\n", vdev->name);
++}
++
++/* ----------------- Streaming interface -------------------------------------*/
++static void avr32_isi_vm_open(struct vm_area_struct *vma){
++	struct frame_buffer *buffer = 
++		(struct frame_buffer *) vma->vm_private_data;
++	buffer->mmap_count++;
++	pr_debug("atmel_isi: vm_open count=%d\n",buffer->mmap_count);
++}
++
++static void avr32_isi_vm_close(struct vm_area_struct *vma){
++	struct frame_buffer *buffer = 
++		(struct frame_buffer *) vma->vm_private_data;
++	pr_debug("atmel_isi: vm_close count=%d\n",buffer->mmap_count);	
++	buffer->mmap_count--;
++	if(buffer->mmap_count < 0)
++		printk("atmel_isi: mmap_count went negative\n");
++}
++
++/* FIXME remove this function 
++struct page *avr32_isi_vm_nopage( struct vm_area_struct *vma, 
++	unsigned long address, int *type )
++{
++    return NOPAGE_SIGBUS;
++}
++*/
++
++static struct vm_operations_struct avr32_isi_vm_ops = {
++	.open = avr32_isi_vm_open,
++	.close = avr32_isi_vm_close,
++	//.nopage = avr32_isi_vm_nopage,
++};
++
++static int avr32_isi_mmap(struct file *file, struct vm_area_struct *vma)
++{
++	unsigned long pfn;
++	int ret;
++	struct atmel_isi_fh *fh = file->private_data;
++	struct atmel_isi * isi = fh->isi;
++	struct frame_buffer *buffer = &(isi->video_buffer[vma->vm_pgoff]);
++	unsigned long size = vma->vm_end - vma->vm_start;
++
++	pr_debug("atmel_isi: mmap called pgoff=%ld size=%ld \n", 
++		vma->vm_pgoff, size);
++
++	if(size > video_buffer_size){
++		pr_debug("atmel_isi: mmap requested buffer is to large\n");
++		return -EINVAL;
++	}
++	if(vma->vm_pgoff > video_buffers){
++		pr_debug("atmel_isi: invalid mmap page offset\n");
++		return -EINVAL;
++	}
++	pfn = isi->video_buffer[vma->vm_pgoff].fb_desc.fb_address >> PAGE_SHIFT;
++
++	ret = remap_pfn_range(vma, vma->vm_start, pfn,
++		vma->vm_end - vma->vm_start, vma->vm_page_prot);
++	if(ret){
++		return ret;
++	}
++	
++	vma->vm_ops = &avr32_isi_vm_ops;
++	vma->vm_flags = VM_DONTEXPAND; /* fixed size */
++	vma->vm_flags |= VM_RESERVED;/* do not swap out */
++	vma->vm_flags |= VM_DONTCOPY;
++	vma->vm_flags |= VM_SHARED;
++	vma->vm_private_data = (void *) buffer;
++	avr32_isi_vm_open(vma);
++
++	pr_debug("atmel_isi: vma start=0x%08lx, size=%ld phys=%ld \n",
++		(unsigned long) vma->vm_start,
++		(unsigned long) vma->vm_end - (unsigned long) vma->vm_start,
++		pfn << PAGE_SHIFT);
++	return 0;
++}
++
++static unsigned int avr32_isi_poll(struct file *file, poll_table *wait)
++{
++	struct atmel_isi_fh *fh = file->private_data;
++	struct atmel_isi *isi = fh->isi;
++	unsigned int ret = 0;
++
++	mutex_lock(&isi->mutex);
++	poll_wait(file, &isi->capture_wq, wait);
++	if(kfifo_len(isi->doneq))
++		ret = POLLIN | POLLRDNORM;
++	mutex_unlock(&isi->mutex);
++
++	return ret;
++}
++
++static int avr32_isi_stream_close (struct inode *inode, struct file *file)
++{
++	struct atmel_isi_fh *fh = file->private_data;
++	struct atmel_isi *isi = fh->isi;
++	u32 cr1;
++
++	mutex_lock(&isi->mutex);
++
++	isi->stream_users--;
++	kfree(fh);
++
++	/* Stop camera and ISI if driver has no users */
++	if(!isi->capture_users) {
++		isi->camera->stop_capture(isi->camera);
++
++		spin_lock_irq(&isi->lock);
++		cr1 = isi_readl(isi, CR1);
++		cr1 |= ISI_BIT(DIS);
++		isi_writel(isi, CR1, cr1);
++		spin_unlock_irq(&isi->lock);
++	}
++
++	mutex_unlock(&isi->mutex);
++
++	return 0;
++}
++
++static int avr32_isi_stream_open (struct inode *inode, struct file *file)
++{
++	struct video_device *vdev = video_devdata(file);
++	struct atmel_isi *isi = to_atmel_isi(vdev);
++	struct atmel_isi_fh *fh;
++	int ret = -EBUSY;
++	unsigned long timeout;
++
++	mutex_lock(&isi->mutex);
++	
++
++	if (isi->stream_users) {
++		pr_debug("%s: open(): device busy\n", vdev->name);
++		goto out;
++	}
++
++	if (!isi->camera) {
++		ret = -ENODEV;
++		isi->camera = avr32_isi_grab_camera(isi);
++		if (!isi->camera)
++			goto out;
++		ret = -EINVAL;
++		ret = avr32_isi_set_camera_input(isi);
++		if(ret)
++			goto out;
++	}
++	avr32_isi_streaming_set_format(isi, &isi->format);
++	kfifo_reset(isi->grabq);
++	kfifo_reset(isi->doneq);
++
++	/*
++	 * Reset the controller and wait for completion. The
++	 * reset will only succeed if we have a pixel clock
++	 * from the camera.
++	 */
++	if(isi->stream_users == 0){
++		
++		init_completion(&isi->reset_complete);
++		isi_writel(isi, IER, ISI_BIT(SOFTRST));
++		isi_writel(isi, CR1, ISI_BIT(RST));
++
++		timeout = wait_for_completion_timeout(&isi->reset_complete,
++			msecs_to_jiffies(100));
++
++		if (timeout == 0) {
++			ret = -ETIMEDOUT;
++			goto out;
++		}
++		isi_writel(isi, IDR, ~0UL);
++	}
++
++	ret = -ENOMEM;
++	fh = kzalloc(sizeof(struct atmel_isi_fh), GFP_KERNEL);
++	if (!fh) {
++		pr_debug("%s: open(): out of memory\n", vdev->name);
++		goto out;
++	}
++
++	fh->isi = isi;
++	file->private_data = fh;
++	isi->stream_users++;
++
++	ret = 0;
++
++out:
++	mutex_unlock(&isi->mutex);
++	return ret;
++}
++
++static void avr32_isi_stream_release (struct video_device *vdev)
++{
++	struct atmel_isi *isi = to_atmel_isi(vdev);
++	pr_debug("%s: release\n", vdev->name);
++	kfree(isi);
++}
++
++/* -----------------------------------------------------------------------*/
++
++/* Streaming v4l2 device file operations */
++static struct file_operations avr32_isi_streaming_fops = {
++	.owner		= THIS_MODULE,
++	.ioctl		= video_ioctl2,
++	.open		= avr32_isi_stream_open,
++	.release	= avr32_isi_stream_close,
++	.mmap		= avr32_isi_mmap,
++	.poll		= avr32_isi_poll,
++};
++
++/* Capture v4l2 device file operations */
++static struct file_operations avr32_isi_capture_fops = {
++	.owner		= THIS_MODULE,
++	.open		= avr32_isi_capture_open,
++	.release	= avr32_isi_capture_close,
++	.read		= avr32_isi_capture_read,
++	.ioctl		= video_ioctl2,
++};
++
++static int __exit avr32_isi_remove(struct platform_device *pdev)
++{
++	struct atmel_isi *isi = platform_get_drvdata(pdev);
++	int i;
++
++	if (isi->camera)
++		isi->camera->stop_capture(isi->camera);
++
++	if (isi->camera)
++		avr32_isi_release_camera(isi, isi->camera);
++	video_unregister_device(&isi->cdev);
++	video_unregister_device(&isi->vdev);
++
++	platform_set_drvdata(pdev, NULL);
++
++	/* release capture buffer */
++	dma_free_coherent(&pdev->dev, capture_buffer_size,
++			  isi->capture_buf, isi->capture_phys);
++
++	/* release frame buffers */
++	for(i = 0; i < video_buffers; i++){
++		dma_free_coherent(&pdev->dev, 
++			video_buffer_size,
++			isi->video_buffer[i].frame_buffer,
++			isi->video_buffer[i].fb_desc.fb_address);
++	}
++
++	kfifo_free(isi->doneq);
++	kfifo_free(isi->grabq);
++	
++	free_irq(isi->irq, isi);
++	iounmap(isi->regs);
++	clk_disable(isi->hclk);
++	clk_disable(isi->pclk);
++	clk_put(isi->hclk);
++	clk_put(isi->pclk);
++
++	/*
++	 * Don't free isi here -- it will be taken care of by the
++	 * release() callback.
++	 */
++
++	return 0;
++}
++
++
++static int __init avr32_isi_probe(struct platform_device *pdev)
++{
++	unsigned int irq;
++	struct atmel_isi *isi;
++	struct clk *pclk, *hclk;
++	struct resource *regs;
++	int ret;
++	int i;
++	int video_bytes_used = video_buffer_size;
++
++	regs = platform_get_resource(pdev, IORESOURCE_MEM, 0);
++	if(!regs)
++		return -ENXIO;
++
++	pclk = clk_get(&pdev->dev, "pclk");
++	if (IS_ERR(pclk))
++		return PTR_ERR(pclk);
++	hclk = clk_get(&pdev->dev, "hclk");
++	if (IS_ERR(hclk)) {
++		ret = PTR_ERR(hclk);
++		goto err_hclk;
++	}
++	clk_enable(pclk);
++	clk_enable(hclk);
++
++	isi = kzalloc(sizeof(struct atmel_isi), GFP_KERNEL);
++	if(!isi){
++		ret = -ENOMEM;
++		dev_err(&pdev->dev, "can't allocate interface!\n");
++		goto err_alloc_isi;
++	}
++
++	isi->pclk = pclk;
++	isi->hclk = hclk;
++
++	/* Round up buffer sizes to the next page if needed */
++	video_buffer_size = PAGE_ALIGN(video_buffer_size);
++	capture_buffer_size = PAGE_ALIGN(capture_buffer_size);
++
++	spin_lock_init(&isi->lock);
++	mutex_init(&isi->mutex);
++	init_waitqueue_head(&isi->capture_wq);
++	
++	/* Initialize v4l2 capture device */
++	isi->cdev.fops = &avr32_isi_capture_fops;
++	strcpy(isi->cdev.name, "atmel_isi_capture");
++	isi->cdev.type = VFL_TYPE_GRABBER;
++	isi->cdev.type2 = VID_TYPE_CAPTURE;
++	isi->cdev.minor = -1;
++	isi->cdev.release =avr32_isi_capture_release;
++	isi->cdev.vidioc_querycap = avr32_isi_capture_querycap;
++	isi->cdev.vidioc_enum_fmt_cap = avr32_isi_capture_enum_fmt_cap;
++	isi->cdev.vidioc_try_fmt_cap = avr32_isi_capture_try_fmt_cap;
++	isi->cdev.vidioc_g_fmt_cap = avr32_isi_capture_g_fmt_cap;
++	isi->cdev.vidioc_s_fmt_cap = avr32_isi_capture_s_fmt_cap;
++	isi->cdev.vidioc_enum_input = avr32_isi_capture_enum_input;
++	isi->cdev.vidioc_g_input = avr32_isi_capture_g_input;
++	isi->cdev.vidioc_s_input = avr32_isi_capture_s_input;
++#ifdef DEBUG
++	isi->cdev.debug = V4L2_DEBUG_IOCTL | V4L2_DEBUG_IOCTL_ARG;
++#endif
++
++	/* Initialize v4l2 streaming device */
++	isi->vdev.fops = &avr32_isi_streaming_fops;
++	strcpy(isi->vdev.name, "atmel-isi");
++	isi->vdev.type = VFL_TYPE_GRABBER;
++	isi->vdev.type2 = VID_TYPE_CAPTURE;
++	isi->vdev.minor = -1;
++	isi->vdev.release = avr32_isi_stream_release;
++#ifdef DEBUG
++	isi->vdev.debug = V4L2_DEBUG_IOCTL | V4L2_DEBUG_IOCTL_ARG;
++#endif
++
++	isi->vdev.vidioc_querycap = avr32_isi_querycap;
++	isi->vdev.vidioc_enum_fmt_cap = avr32_isi_enum_fmt_cap;
++	isi->vdev.vidioc_try_fmt_cap = avr32_isi_try_fmt_cap;
++	isi->vdev.vidioc_g_fmt_cap = avr32_isi_g_fmt_cap;
++	isi->vdev.vidioc_s_fmt_cap = avr32_isi_s_fmt_cap;
++	isi->vdev.vidioc_enum_input = avr32_isi_enum_input;
++	isi->vdev.vidioc_g_input = avr32_isi_g_input;
++	isi->vdev.vidioc_s_input = avr32_isi_s_input;
++	isi->vdev.vidioc_queryctrl = avr32_isi_queryctrl;
++	isi->vdev.vidioc_g_ctrl = avr32_isi_g_ctrl;
++	isi->vdev.vidioc_s_ctrl = avr32_isi_s_ctrl;
++	isi->vdev.vidioc_querybuf = avr32_isi_querybuf;
++	isi->vdev.vidioc_reqbufs = avr32_isi_reqbufs;
++	isi->vdev.vidioc_qbuf = avr32_isi_qbuf;
++	isi->vdev.vidioc_dqbuf = avr32_isi_dqbuf;
++	isi->vdev.vidioc_streamon = avr32_isi_streamon;
++	isi->vdev.vidioc_streamoff = avr32_isi_streamoff;
++
++	isi->regs = ioremap(regs->start, regs->end - regs->start + 1);
++        if (!isi->regs) {
++		ret = -ENOMEM;
++		goto err_ioremap;
++	}
++
++	irq = platform_get_irq(pdev,0);
++	ret = request_irq(irq, isi_interrupt, 0, "isi", isi);
++	if (ret) {
++		dev_err(&pdev->dev, "unable to request irq %d\n", irq);
++		goto err_req_irq;
++	}
++	isi->irq = irq;
++
++	/* Allocate ISI capture buffer */
++	isi->capture_buf = dma_alloc_coherent(&pdev->dev,
++					      capture_buffer_size,
++					      &isi->capture_phys,
++					      GFP_KERNEL);
++	if (!isi->capture_buf) {
++		ret = -ENOMEM;
++		dev_err(&pdev->dev, "failed to allocate capture buffer\n");
++		goto err_alloc_cbuf;
++	}
++
++	/* Allocate and initialize video buffers */
++	for(i=0;i < video_buffers; i++){
++		memset(&isi->video_buffer[i], 0, sizeof(struct frame_buffer));
++		isi->video_buffer[i].frame_buffer = 
++			dma_alloc_coherent(&pdev->dev,
++				video_buffer_size,
++				(dma_addr_t *)
++				&(isi->video_buffer[i].fb_desc.fb_address),
++				GFP_KERNEL);
++		if(!isi->video_buffer[i].frame_buffer){
++			ret = -ENOMEM;
++			dev_err(&pdev->dev, 
++				"failed to allocate video buffer\n");
++			goto err_alloc_vbuf;
++		}
++		
++		isi->video_buffer[i].bytes_used = video_bytes_used;
++		isi->video_buffer[i].status = FRAME_UNUSED;
++		isi->video_buffer[i].index = i;
++
++#ifdef DEBUG
++	/* Put some color into the buffers */
++	/*
++		memset(isi->video_buffer[i].frame_buffer, (i*4)%0xFF, 
++			video_buffer_size); 
++			*/
++#endif
++	}
++	/* set up frame buffer descriptor list for ISI module*/
++	/* FIXME 
++	isi->fbd_list_start = dma_map_single(&pdev->dev,
++		&isi->video_buffer[0].fb_desc,
++		sizeof(struct fbd),
++		DMA_NONE);
++		*/
++	isi->fbd_list_start = __pa(&isi->video_buffer[0].fb_desc);
++	for(i=0; i < (video_buffers - 1); i++){
++		isi->video_buffer[i].fb_desc.next_fbd_address =
++		/*
++			dma_map_single(&pdev->dev, 
++				&isi->video_buffer[i+1].fb_desc,
++				sizeof(struct fbd),
++				DMA_NONE);*/
++			__pa(&isi->video_buffer[i+1]);
++	}
++	/* FIXME
++	 * isi->video_buffer[i].fb_desc.next_fbd_address =
++	 * 	isi->fbd_list_start;
++	 */
++	isi->video_buffer[i].fb_desc.next_fbd_address = 
++		__pa(&isi->video_buffer[0]);
++	
++#ifdef DEBUG
++	for(i=0;i < video_buffers; i++){
++		pr_debug("atmel_isi: fbd at %08lx video buffer at \
++phys addr %08lx \n", __pa(&isi->video_buffer[i]),
++		(unsigned long) isi->video_buffer[i].fb_desc.fb_address);
++	}
++#endif
++	dev_info(&pdev->dev,
++		 "capture buffer: %d bytes at %p (phys 0x%08x)\n",
++		 capture_buffer_size, isi->capture_buf,
++		 isi->capture_phys);
++	
++	spin_lock_init(&isi->grabq_lock);
++	isi->grabq = kfifo_alloc(sizeof(int) * video_buffers, GFP_KERNEL,
++		&isi->grabq_lock);
++	if(IS_ERR(isi->grabq)){
++		dev_err(&pdev->dev, "fifo allocation failed\n");
++		goto err_fifo_alloc1;
++	}
++	spin_lock_init(&isi->doneq_lock);
++	isi->doneq = kfifo_alloc(sizeof(int) * video_buffers, GFP_KERNEL,
++		&isi->doneq_lock);
++	if(IS_ERR(isi->doneq)){
++		dev_err(&pdev->dev, "fifo allocation failed\n");
++		goto err_fifo_alloc2;
++	}
++
++	isi_writel(isi, CR1, ISI_BIT(DIS));
++	
++	ret = video_register_device(&isi->cdev, VFL_TYPE_GRABBER, -1);
++	if(ret)
++		goto err_register1;
++
++	ret = video_register_device(&isi->vdev, VFL_TYPE_GRABBER, -1);
++	if (ret)
++		goto err_register2;
++
++	platform_set_drvdata(pdev, isi);
++
++	dev_info(&pdev->dev, "Atmel ISI V4L2 device at 0x%08lx\n",
++		 (unsigned long)regs->start);
++
++	return 0;
++
++err_register2:
++	video_unregister_device(&isi->cdev);
++err_register1:
++	kfifo_free(isi->doneq);
++err_fifo_alloc2:
++	kfifo_free(isi->grabq);
++err_fifo_alloc1:
++err_alloc_vbuf:
++	while(i--)
++		dma_free_coherent(&pdev->dev, video_buffer_size,
++				isi->video_buffer[i].frame_buffer,
++				isi->video_buffer[i].fb_desc.fb_address);
++	dma_free_coherent(&pdev->dev, capture_buffer_size,
++				isi->capture_buf,
++				isi->capture_phys);
++err_alloc_cbuf:
++        free_irq(isi->irq, isi);
++err_req_irq:
++	iounmap(isi->regs);
++err_ioremap:
++	kfree(isi);
++err_alloc_isi:
++	clk_disable(hclk);
++	clk_disable(pclk);
++	clk_put(hclk);
++err_hclk:
++	clk_put(pclk);
++
++	return ret;
++
++}
++
++static struct platform_driver avr32_isi_driver = {
++	.probe		= avr32_isi_probe,
++	.remove		= __exit_p(avr32_isi_remove),
++	.driver		= {
++		.name = "atmel_isi",
++		.owner = THIS_MODULE,
++	},
++};
++
++static int __init avr32_isi_init(void)
++{
++	return platform_driver_probe(&avr32_isi_driver, &avr32_isi_probe);
++
++/*FIXME	return  platform_driver_register(&avr32_isi_driver);*/
++}
++
++
++static void __exit avr32_isi_exit(void)
++{
++	platform_driver_unregister(&avr32_isi_driver);
++}
++
++
++module_init(avr32_isi_init);
++module_exit(avr32_isi_exit);
++
++MODULE_AUTHOR("Lars Häring <lharing@atmel.com>");
++MODULE_DESCRIPTION("The V4L2 driver for AVR32 Linux");
++MODULE_LICENSE("GPL");
++MODULE_SUPPORTED_DEVICE("video");
+diff --git a/drivers/media/video/atmel-isi.h b/drivers/media/video/atmel-isi.h
+new file mode 100644
+index 0000000..2aa3c14
+--- /dev/null
++++ b/drivers/media/video/atmel-isi.h
+@@ -0,0 +1,252 @@
++/*
++ * Register definitions for the Atmel Image Sensor Interface.
++ *
++ * Copyright (C) 2006 Atmel Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++#ifndef __ASM_AVR32_ISI_H__
++#define __ASM_AVR32_ISI_H__
++
++#include <linux/videodev2.h>
++
++/* ISI register offsets */
++#define ISI_CR1					0x0000
++#define ISI_CR2					0x0004
++#define ISI_SR					0x0008
++#define ISI_IER					0x000c
++#define ISI_IDR					0x0010
++#define ISI_IMR					0x0014
++#define ISI_PSIZE				0x0020
++#define ISI_PDECF				0x0024
++#define ISI_PPFBD				0x0028
++#define ISI_CDBA				0x002c
++#define ISI_Y2R_SET0				0x0030
++#define ISI_Y2R_SET1				0x0034
++#define ISI_R2Y_SET0				0x0038
++#define ISI_R2Y_SET1				0x003c
++#define ISI_R2Y_SET2				0x0040
++
++/* Bitfields in CR1 */
++#define ISI_RST_OFFSET				0
++#define ISI_RST_SIZE				1
++#define ISI_DIS_OFFSET				1
++#define ISI_DIS_SIZE				1
++#define ISI_HSYNC_POL_OFFSET			2
++#define ISI_HSYNC_POL_SIZE			1
++#define ISI_VSYNC_POL_OFFSET			3
++#define ISI_VSYNC_POL_SIZE			1
++#define ISI_PIXCLK_POL_OFFSET			4
++#define ISI_PIXCLK_POL_SIZE			1
++#define ISI_EMB_SYNC_OFFSET			6
++#define ISI_EMB_SYNC_SIZE			1
++#define ISI_CRC_SYNC_OFFSET			7
++#define ISI_CRC_SYNC_SIZE			1
++#define ISI_FRATE_OFFSET			8
++#define ISI_FRATE_SIZE				3
++#define ISI_FULL_OFFSET				12
++#define ISI_FULL_SIZE				1
++#define ISI_THMASK_OFFSET			13
++#define ISI_THMASK_SIZE				2
++#define ISI_CODEC_ON_OFFSET			15
++#define ISI_CODEC_ON_SIZE			1
++#define ISI_SLD_OFFSET				16
++#define ISI_SLD_SIZE				8
++#define ISI_SFD_OFFSET				24
++#define ISI_SFD_SIZE				8
++
++/* Bitfields in CR2 */
++#define ISI_IM_VSIZE_OFFSET			0
++#define ISI_IM_VSIZE_SIZE			11
++#define ISI_GS_MODE_OFFSET			11
++#define ISI_GS_MODE_SIZE			1
++#define ISI_RGB_MODE_OFFSET			12
++#define ISI_RGB_MODE_SIZE			1
++#define ISI_GRAYSCALE_OFFSET			13
++#define ISI_GRAYSCALE_SIZE			1
++#define ISI_RGB_SWAP_OFFSET			14
++#define ISI_RGB_SWAP_SIZE			1
++#define ISI_COL_SPACE_OFFSET			15
++#define ISI_COL_SPACE_SIZE			1
++#define ISI_IM_HSIZE_OFFSET			16
++#define ISI_IM_HSIZE_SIZE			11
++#define ISI_YCC_SWAP_OFFSET			28
++#define ISI_YCC_SWAP_SIZE			2
++#define ISI_RGB_CFG_OFFSET			30
++#define ISI_RGB_CFG_SIZE			2
++
++/* Bitfields in SR */
++#define ISI_CDC_STATUS_OFFSET			3
++#define ISI_CDC_STATUS_SIZE			1
++
++/* Bitfields in SR/IER/IDR/IMR */
++#define ISI_SOF_OFFSET				0
++#define ISI_SOF_SIZE				1
++#define ISI_SOFTRST_OFFSET			2
++#define ISI_SOFTRST_SIZE			1
++#define ISI_CRC_ERR_OFFSET			4
++#define ISI_CRC_ERR_SIZE			1
++#define ISI_FO_C_OVF_OFFSET			5
++#define ISI_FO_C_OVF_SIZE			1
++#define ISI_FO_P_OVF_OFFSET			6
++#define ISI_FO_P_OVF_SIZE			1
++#define ISI_FO_P_EMP_OFFSET			7
++#define ISI_FO_P_EMP_SIZE			1
++#define ISI_FO_C_EMP_OFFSET			8
++#define ISI_FO_C_EMP_SIZE			1
++#define ISI_FR_OVR_OFFSET			9
++#define ISI_FR_OVR_SIZE				1
++
++/* Bitfields in PSIZE */
++#define ISI_PREV_VSIZE_OFFSET			0
++#define ISI_PREV_VSIZE_SIZE			10
++#define ISI_PREV_HSIZE_OFFSET			16
++#define ISI_PREV_HSIZE_SIZE			10
++
++/* Bitfields in PCDEF */
++#define ISI_DEC_FACTOR_OFFSET			0
++#define ISI_DEC_FACTOR_SIZE			8
++
++/* Bitfields in PPFBD */
++#define ISI_PREV_FBD_ADDR_OFFSET		0
++#define ISI_PREV_FBD_ADDR_SIZE			32
++
++/* Bitfields in CDBA */
++#define ISI_CODEC_DMA_ADDR_OFFSET		0
++#define ISI_CODEC_DMA_ADDR_SIZE			32
++
++/* Bitfields in Y2R_SET0 */
++#define ISI_Y2R_SET0_C3_OFFSET			24
++#define ISI_Y2R_SET0_C3_SIZE			8
++
++/* Bitfields in Y2R_SET1 */
++#define ISI_Y2R_SET1_C4_OFFSET			0
++#define ISI_Y2R_SET1_C4_SIZE			9
++#define ISI_YOFF_OFFSET				12
++#define ISI_YOFF_SIZE				1
++#define ISI_CROFF_OFFSET			13
++#define ISI_CROFF_SIZE				1
++#define ISI_CBOFF_OFFSET			14
++#define ISI_CBOFF_SIZE				1
++
++/* Bitfields in R2Y_SET0 */
++#define ISI_C0_OFFSET				0
++#define ISI_C0_SIZE				8
++#define ISI_C1_OFFSET				8
++#define ISI_C1_SIZE				8
++#define ISI_C2_OFFSET				16
++#define ISI_C2_SIZE				8
++#define ISI_ROFF_OFFSET				24
++#define ISI_ROFF_SIZE				1
++
++/* Bitfields in R2Y_SET1 */
++#define ISI_R2Y_SET1_C3_OFFSET			0
++#define ISI_R2Y_SET1_C3_SIZE			8
++#define ISI_R2Y_SET1_C4_OFFSET			8
++#define ISI_R2Y_SET1_C4_SIZE			8
++#define ISI_C5_OFFSET				16
++#define ISI_C5_SIZE				8
++#define ISI_GOFF_OFFSET				24
++#define ISI_GOFF_SIZE				1
++
++/* Bitfields in R2Y_SET2 */
++#define ISI_C6_OFFSET				0
++#define ISI_C6_SIZE				8
++#define ISI_C7_OFFSET				8
++#define ISI_C7_SIZE				8
++#define ISI_C8_OFFSET				16
++#define ISI_C8_SIZE				8
++#define ISI_BOFF_OFFSET				24
++#define ISI_BOFF_SIZE				1
++
++/* Constants for FRATE */
++#define ISI_FRATE_CAPTURE_ALL			0
++
++/* Constants for YCC_SWAP */
++#define ISI_YCC_SWAP_DEFAULT			0
++#define ISI_YCC_SWAP_MODE_1			1
++#define ISI_YCC_SWAP_MODE_2			2
++#define ISI_YCC_SWAP_MODE_3			3
++
++/* Constants for RGB_CFG */
++#define ISI_RGB_CFG_DEFAULT			0
++#define ISI_RGB_CFG_MODE_1			1
++#define ISI_RGB_CFG_MODE_2			2
++#define ISI_RGB_CFG_MODE_3			3
++
++/* Bit manipulation macros */
++#define ISI_BIT(name)					\
++	(1 << ISI_##name##_OFFSET)
++#define ISI_BF(name,value)				\
++	(((value) & ((1 << ISI_##name##_SIZE) - 1))	\
++	 << ISI_##name##_OFFSET)
++#define ISI_BFEXT(name,value)				\
++	(((value) >> ISI_##name##_OFFSET)		\
++	 & ((1 << ISI_##name##_SIZE) - 1))
++#define ISI_BFINS(name,value,old)			\
++	(((old) & ~(((1 << ISI_##name##_SIZE) - 1)	\
++		    << ISI_##name##_OFFSET))\
++	 | ISI_BF(name,value))
++
++/* Register access macros */
++#define isi_readl(port,reg)				\
++	__raw_readl((port)->regs + ISI_##reg)
++#define isi_writel(port,reg,value)			\
++	__raw_writel((value), (port)->regs + ISI_##reg)
++
++#define ATMEL_V4L2_VID_FLAGS ( V4L2_CAP_VIDEO_OUTPUT )
++
++struct atmel_isi;
++
++enum atmel_isi_pixfmt {
++	ATMEL_ISI_PIXFMT_GREY,		/* Greyscale */
++	ATMEL_ISI_PIXFMT_CbYCrY,
++	ATMEL_ISI_PIXFMT_CrYCbY,
++	ATMEL_ISI_PIXFMT_YCbYCr,
++	ATMEL_ISI_PIXFMT_YCrYCb,
++	ATMEL_ISI_PIXFMT_RGB24,
++	ATMEL_ISI_PIXFMT_BGR24,
++	ATMEL_ISI_PIXFMT_RGB16,
++	ATMEL_ISI_PIXFMT_BGR16,
++	ATMEL_ISI_PIXFMT_GRB16,		/* G[2:0] R[4:0]/B[4:0] G[5:3] */
++	ATMEL_ISI_PIXFMT_GBR16,		/* G[2:0] B[4:0]/R[4:0] G[5:3] */
++	ATMEL_ISI_PIXFMT_RGB24_REV,
++	ATMEL_ISI_PIXFMT_BGR24_REV,
++	ATMEL_ISI_PIXFMT_RGB16_REV,
++	ATMEL_ISI_PIXFMT_BGR16_REV,
++	ATMEL_ISI_PIXFMT_GRB16_REV,	/* G[2:0] R[4:0]/B[4:0] G[5:3] */
++	ATMEL_ISI_PIXFMT_GBR16_REV,	/* G[2:0] B[4:0]/R[4:0] G[5:3] */
++};
++
++struct atmel_isi_format {
++	struct v4l2_pix_format pix;
++	enum atmel_isi_pixfmt input_format;
++};
++
++struct atmel_isi_camera {
++	const char		*name;
++	struct module		*owner;
++	struct list_head	list;
++	unsigned int		hsync_act_low:1;
++	unsigned int		vsync_act_low:1;
++	unsigned int		pclk_act_falling:1;
++	unsigned int		has_emb_sync:1;
++	/* ISI supports up to 17 formats */
++	unsigned int		pixelformats[17];
++	int (*get_format)(struct atmel_isi_camera *cam,
++			  struct atmel_isi_format *fmt);
++	int (*set_format)(struct atmel_isi_camera *cam,
++			  struct atmel_isi_format *fmt);
++	int (*start_capture)(struct atmel_isi_camera *cam);
++	int (*stop_capture)(struct atmel_isi_camera *cam);
++	struct atmel_isi	*isi;
++};
++
++extern int atmel_isi_register_camera(struct atmel_isi_camera *cam);
++extern void atmel_isi_unregister_camera(struct atmel_isi_camera *cam);
++
++
++#endif /* __ASM_AVR32_ISI_H__ */
++
+diff --git a/drivers/media/video/Kconfig b/drivers/media/video/Kconfig
+index 7558484..a8cdf42 100644
+--- a/drivers/media/video/Kconfig
++++ b/drivers/media/video/Kconfig
+@@ -13,6 +13,20 @@ menuconfig VIDEO_CAPTURE_DRIVERS
+ 
+ if VIDEO_CAPTURE_DRIVERS && VIDEO_DEV
+ 
++config VIDEO_AVR32_ISI
++	tristate "AVR32 video support"
++	depends on VIDEO_DEV
++	---help---
++	  This module makes the AVR32 Image Sensor Interface available 
++
++config VIDEO_MT9M112
++	tristate "Micron MT9M112 camera"
++	default n
++	depends on VIDEO_AVR32_ISI && I2C
++	---help---
++	 This will add support for the Micron MT9M112 camera.
++	  as a v4l2 device.
++
+ config VIDEO_ADV_DEBUG
+ 	bool "Enable advanced debug functionality"
+ 	default n
+diff --git a/drivers/media/video/Makefile b/drivers/media/video/Makefile
+index 78e38d0..3156969 100644
+--- a/drivers/media/video/Makefile
++++ b/drivers/media/video/Makefile
+@@ -77,7 +77,8 @@ obj-$(CONFIG_VIDEO_HEXIUM_ORION) += hexium_orion.o
+ obj-$(CONFIG_VIDEO_HEXIUM_GEMINI) += hexium_gemini.o
+ obj-$(CONFIG_VIDEO_DPC) += dpc7146.o
+ obj-$(CONFIG_TUNER_3036) += tuner-3036.o
+ obj-$(CONFIG_VIDEO_AVR32_ISI) += atmel-isi.o
++obj-$(CONFIG_VIDEO_MT9M112) += tm13m3.o
+ 
+ obj-$(CONFIG_VIDEO_TUNER) += tuner.o
+ obj-$(CONFIG_VIDEO_BUF)   += video-buf.o
+diff --git a/drivers/media/video/tm13m3.c b/drivers/media/video/tm13m3.c
+new file mode 100644
+index 0000000..42f0fd3
+--- /dev/null
++++ b/drivers/media/video/tm13m3.c
+@@ -0,0 +1,631 @@
++/*
++ * Micron Mt9M112 camera driver.
++ *
++ * Copyright (C) 2005-2007 Atmel Corporation
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License version 2 as
++ * published by the Free Software Foundation.
++ */
++//#define DEBUG
++
++#include <linux/clk.h>
++#include <linux/module.h>
++#include <linux/init.h>
++#include <linux/interrupt.h>
++#include <linux/io.h>
++#include <linux/device.h>
++#include <linux/list.h>
++#include <linux/delay.h>
++#include <linux/i2c.h>
++
++#include <linux/err.h>
++#include <asm/gpio.h>
++#include <asm/arch/board.h>
++#include <asm/arch/at32ap700x.h>
++
++#include "atmel-isi.h"
++
++/* camera standby pin */
++#define CAM_STANDBY GPIO_PIN_PA(9) 
++/* camera reset pin */
++#define CAM_RESET GPIO_PIN_PA(8)
++
++/*! Maximum number of pixels in a row */
++#define TM13M3_MAX_WIDTH	1280
++/*! Maximum number of rows */
++#define TM13M3_MAX_HEIGHT	1024
++
++/*! Clock for image sensor CLKIN signal */
++static char mclk_name[32] = "gclk0";
++/*! Parent clock of gclk0 
++ *  Either osc0 or pll0
++ *  We use osc0 with 20MHz quarz.
++ */
++static char mclk_parent_name[32] = "osc0";
++
++static struct clk *mclk;
++static struct clk *mclk_parent;
++module_param_string(mclk, mclk_name, sizeof(mclk_name), 0644);
++MODULE_PARM_DESC(mclk, "Name of the clock used as camera clock input");
++
++module_param_string(mclk_parent, mclk_parent_name,
++		    sizeof(mclk_parent_name), 0644);
++MODULE_PARM_DESC(mclk, "Name of mclk parent clock");
++
++
++/* Register adresses */
++#define CHIP_VERSION		0x0
++#define PROGRAM_CONTROL		0x2CC
++#define READ_MODE_CONTEXT_B	0x20
++#define CONTEXT_CONTROL		0xC8
++#define COLUMN_WIDTH		0x4
++#define HORIZONTAL_OUTPUT_SIZE_B	0x1A1
++#define VERTICAL_OUTPUT_SIZE_B	0x1A4
++#define ROW_WIDTH		0x3
++#define PAGE_MAP		0xF0
++#define OUTPUT_FORMAT_CONTROL_A	0x13A
++#define HORIZONTAL_ZOOM	0x1A6
++#define VERTICAL_ZOOM	0x1A9
++#define PLL_CONTROL_1	0x66
++#define PLL_CONTROL_2	0x67
++#define CLOCK_CONTROL	0x65
++
++/* Chip ID stored in CHIP_VERSION register */
++#define MT9M112_CHIP_ID 0x148C
++/* I2C address of camera module */
++#define I2C_TM13M3	0x5D
++
++static unsigned short normal_i2c[] = {
++	I2C_TM13M3,
++	I2C_CLIENT_END
++};
++I2C_CLIENT_INSMOD;
++
++#ifdef CONFIG_DEBUG_FS
++struct reg_dbg {
++	struct tm13m3 *is;
++	struct dentry *dentry;
++	unsigned int offset;
++};
++#endif
++
++struct tm13m3 {
++	struct mutex		mutex;
++	u16			current_page;
++	u32			current_format;
++	u16			pll_avr_ctrl;
++	struct clk		*mclk;
++	struct i2c_client	client;
++	struct atmel_isi_camera	cam;
++#ifdef CONFIG_DEBUG_FS
++	struct dentry		*debugfs_root;
++	struct reg_dbg		debugfs_reg[37];
++#endif
++};
++
++
++#define to_tm13m3(cam) container_of(cam, struct tm13m3, cam)
++
++static struct i2c_driver tm13m3_driver;
++
++static int tm13m3_write_16(struct tm13m3 *is, u16 reg, u16 value)
++{
++	int ret = 0;
++	u16 register_page = 0;
++
++	register_page = reg >> 8;
++
++	if ((register_page  !=  is->current_page)
++		&& (reg != PAGE_MAP)){
++
++		if( 0 <= (ret = i2c_smbus_write_word_data(&is->client, PAGE_MAP, cpu_to_le16(register_page))))
++			is->current_page = register_page;
++	} 
++
++	if(ret >= 0){
++		ret = i2c_smbus_write_word_data(&is->client, (u8) reg, cpu_to_le16(value));
++	}
++	return ret;
++}
++
++static int tm13m3_read_16(struct tm13m3 *is, u16 reg)
++{
++	int ret = 0;
++	u16 register_page = 0;
++
++	register_page = reg >> 8;
++
++	if ((register_page  !=  is->current_page)
++		&& (reg != PAGE_MAP)){
++
++		if( 0 <= (ret = i2c_smbus_write_word_data(&is->client, PAGE_MAP, cpu_to_le16(register_page))))
++			is->current_page = register_page;
++	} 
++
++if(ret >=  0){
++		ret = i2c_smbus_read_word_data(&is->client, (u8) reg);
++	}
++
++	if (ret < 0)
++		return -EIO;
++
++	return le16_to_cpu(ret);
++}
++
++#ifdef CONFIG_DEBUG_FS
++#include <linux/debugfs.h>
++#include <linux/uaccess.h>
++
++struct tm13m3_reg {
++	u16 address;
++	const char *name;
++};
++
++static struct tm13m3_reg tm13m3_registers[38] = {
++	{ .address = CHIP_VERSION, .name = "chip_version"},
++	{ .address = 0x1, .name = "row_start"},
++	{ .address = 0x2, .name = "column_start"},
++	{ .address = 0x3, .name = "row_width"},
++	{ .address = 0x4, .name = "column_width"},
++	{ .address = 0x5, .name = "horizontal_blanking_b"},
++	{ .address = 0x6, .name = "vertical_blanking_b"},
++	{ .address = 0x7, .name = "horizontal_blanking_a"},
++	{ .address = 0x8, .name = "vertical_blanking_a"},
++	{ .address = 0x0D, .name = "reset"},
++	{ .address = 0x20, .name = "read_mode_context_b"},
++	{ .address = 0x21, .name = "read_mode_context_a"},
++	{ .address = 0x22, .name = "dark_col_row"},
++	{ .address = 0x65, .name = "clock_control"},
++	{ .address = 0x66, .name = "pll_control_1"},
++	{ .address = 0x67, .name = "pll_control_2"},
++	{ .address = 0xC8, .name = "context_control"},
++	{ .address = 0x106, .name = "mode_control"},
++	{ .address = 0x108, .name = "format_control"},
++	{ .address = 0x13A, .name = "output_format_control_a"},
++	{ .address = 0x148, .name = "test_pattern_generator"},
++	{ .address = 0x19B, .name = "output_format_control_b"},
++	{ .address = 0x1A1, .name = "horizontal_output_size_b"},
++	{ .address = 0x1A4, .name = "vertical_output_size_b"},
++	{ .address = 0x1A5, .name = "horizontal_pan"},
++	{ .address = 0x1A6, .name = "horizontal_zoom"},
++	{ .address = 0x1A7, .name = "horizontal_output_size_a"},
++	{ .address = 0x1A8, .name = "vertical_pan"},
++	{ .address = 0x1A9, .name = "vertical_zoom"},
++	{ .address = 0x1AA, .name = "vertical_output_size_a"},
++	{ .address = 240,  .name = "page_map"},
++	{ .address = 0x2C8, .name = "global_context_control"},
++	{ .address = 0x2CB, .name = "program_advance"},
++	{ .address = 0x2CC, .name = "program_control"},
++	{ .address = 0x2D2, .name = "default_program_conf"},
++	{ .address = 0x2D3, .name = "user_global_context_control"},
++	{ .address = (0x100 | 0), .name = "module_id"},
++	{ .address = (0x200 | 2), .name = "mode_control"},
++};
++
++static u64 reg_dbg_get(void *data)
++{
++	struct reg_dbg *reg = data;
++	int ret = 0;
++
++	mutex_lock(&reg->is->mutex);	
++	ret = tm13m3_read_16(reg->is, tm13m3_registers[reg->offset].address);
++	mutex_unlock(&reg->is->mutex);
++
++	if (ret < 0) {
++		printk("%s: failed to read reg 0x%02x: %d\n",
++		       reg->is->cam.name, 
++		       tm13m3_registers[reg->offset].address, ret);
++		return ~0ULL;
++	}
++	return ret;
++}
++
++static void reg_dbg_set(void *data, u64 val)
++{
++	struct reg_dbg *reg = data;
++	int ret = 0;
++	
++	mutex_lock(&reg->is->mutex);
++	ret = tm13m3_write_16(reg->is, tm13m3_registers[reg->offset].address, (u16) val);
++	mutex_unlock(&reg->is->mutex);
++
++	if (ret < 0){
++		printk("%s: failed to write reg 0x%02x: %d\n",
++			reg->is->cam.name,
++			tm13m3_registers[reg->offset].address, ret);
++	}
++}
++DEFINE_SIMPLE_ATTRIBUTE(reg_dbg_fops, reg_dbg_get, reg_dbg_set, "%04llx\n");
++
++static void tm13m3_init_debugfs(struct tm13m3 *is)
++{
++	struct dentry *root, *reg;
++	unsigned int i;
++
++	root = debugfs_create_dir(is->cam.name, NULL);
++	if (IS_ERR(root) || !root)
++		goto err_root;
++	is->debugfs_root = root;
++
++	for (i = 0; i < ARRAY_SIZE(is->debugfs_reg); i++) {
++		if (!tm13m3_registers[i].name)
++			continue;
++
++		is->debugfs_reg[i].is = is;
++		is->debugfs_reg[i].offset = i;
++
++		reg = debugfs_create_file(tm13m3_registers[i].name, S_IRUGO | S_IWUSR,
++					  root, &is->debugfs_reg[i],
++					  &reg_dbg_fops);
++		if (!reg)
++			goto err_reg;
++		is->debugfs_reg[i].dentry = reg;
++	}
++
++	return;
++
++err_reg:
++	while (i--)
++		debugfs_remove(is->debugfs_reg[i].dentry);
++	debugfs_remove(root);
++err_root:
++	is->debugfs_root = NULL;
++	printk(KERN_ERR "%s: failed to initialize debugfs\n",
++	       is->cam.name);
++}
++
++static void tm13m3_cleanup_debugfs(struct tm13m3 *is)
++{
++	unsigned int i;
++
++	if (is->debugfs_root) {
++		for (i = 0; i < ARRAY_SIZE(is->debugfs_reg); i++)
++			debugfs_remove(is->debugfs_reg[i].dentry);
++		debugfs_remove(is->debugfs_root);
++	}
++}
++#else
++static inline void tm13m3_init_debugfs(struct tm13m3 *is)
++{
++
++}
++
++static inline void tm13m3_cleanup_debugfs(struct tm13m3 *is)
++{
++
++}
++#endif /* CONFIG_DEBUG_FS */
++
++static int tm13m3_get_format(struct atmel_isi_camera *cam,
++			   struct atmel_isi_format *fmt)
++{
++	struct tm13m3 *is = to_tm13m3(cam);
++	int ret = 0;
++
++	fmt->pix.colorspace = V4L2_COLORSPACE_SMPTE170M;
++	fmt->input_format = ATMEL_ISI_PIXFMT_CbYCrY;
++	fmt->input_format = is->current_format;
++
++	fmt->pix.width = 320;
++	fmt->pix.height = 240;
++
++	return ret;
++}
++
++static int tm13m3_set_format(struct atmel_isi_camera *cam,
++			   struct atmel_isi_format *fmt)
++{
++	struct tm13m3 *is = to_tm13m3(cam);
++	int ret = 0;
++
++	fmt->pix.colorspace = V4L2_COLORSPACE_SMPTE170M;
++/*
++	switch(fmt->input_format){
++	case ATMEL_ISI_PIXFMT_CbYCrY:
++		is->current_format = ATMEL_ISI_PIXFMT_CbYCrY;
++		break;	
++	case ATMEL_ISI_PIXFMT_YCbYCr:
++		is->current_format = ATMEL_ISI_PIXFMT_YCbYCr;
++		break;
++	case ATMEL_ISI_PIXFMT_CrYCbY:
++		is->current_format = ATMEL_ISI_PIXFMT_CrYCbY;
++		break;
++	case ATMEL_ISI_PIXFMT_YCrYCb:
++		is->current_format = ATMEL_ISI_PIXFMT_YCrYCb;
++		break;
++	default:
++		// force a valid format
++		fmt->input_format = ATMEL_ISI_PIXFMT_CbYCrY;
++		is->current_format = ATMEL_ISI_PIXFMT_CbYCrY;
++		pr_debug("%s: Not supported format, forcing default format\n",
++			cam->name);
++		break;
++	}
++*/
++	fmt->input_format = ATMEL_ISI_PIXFMT_CrYCbY;
++	is->current_format = ATMEL_ISI_PIXFMT_CrYCbY;
++
++	/* adjust picture width and height */
++	if (fmt->pix.width > TM13M3_MAX_WIDTH)
++		fmt->pix.width = TM13M3_MAX_WIDTH;
++	if (fmt->pix.height > TM13M3_MAX_HEIGHT)
++		fmt->pix.height = TM13M3_MAX_HEIGHT;
++
++	//tm13m3_write_16(is, COLUMN_WIDTH, fmt->pix.width);
++	//tm13m3_write_16(is, ROW_WIDTH, fmt->pix.height);
++	//tm13m3_write_16(is, HORIZONTAL_ZOOM, fmt->pix.width);
++	//tm13m3_write_16(is, VERTICAL_ZOOM, fmt->pix.height);
++
++	//tm13m3_write_16(is, HORIZONTAL_OUTPUT_SIZE_B, fmt->pix.width);
++	//tm13m3_write_16(is, VERTICAL_OUTPUT_SIZE_B, fmt->pix.height);
++
++	/* FIXME Set context output width needed ??*/
++
++	pr_debug("%s: set_format %ux%u\n", cam->name,
++		 fmt->pix.width, fmt->pix.height);
++	return ret;
++}
++
++static void tm13m3_reset_soft(struct tm13m3 *is)
++{
++	tm13m3_write_16(is, 0x0D, 0x0001);
++	/*FIXME test if toggling is really needed */
++	tm13m3_write_16(is, 0x0D, 0x0000);
++}
++
++static void tm13m3_reset_hardware(struct tm13m3 *is)
++{
++	gpio_set_value(CAM_RESET, 0);
++	//FIXME : set correct reset interval usleep();
++	gpio_set_value(CAM_RESET, 1);
++}
++
++static int tm13m3_start_capture(struct atmel_isi_camera *cam)
++{
++	struct tm13m3 *is = to_tm13m3(cam);
++	int ret = 0;
++
++	return ret;
++}
++
++static int tm13m3_stop_capture(struct atmel_isi_camera *cam)
++{
++	struct tm13m3 *is = to_tm13m3(cam);
++	int ret = 0;
++
++
++	return ret;
++}
++
++static int tm13m3_init_hardware(struct tm13m3 *is)
++{
++	int chip_id;
++
++	tm13m3_reset_hardware(is);
++	/* set register page to reset value*/
++	is->current_page = 0;
++	is->current_format = ATMEL_ISI_PIXFMT_CbYCrY;
++
++	pr_debug("tm13m3: Init sensor\n");
++	/* Try to identify the camera */
++	chip_id = tm13m3_read_16(is, CHIP_VERSION);
++	if (chip_id < 0)
++		return -EIO;
++
++	if (chip_id != MT9M112_CHIP_ID) {
++		printk(KERN_ERR "%s: Unknown chip ID 0x%04x\n",
++		       is->cam.name, chip_id);
++		return -ENODEV;
++	}
++#if 0
++	/* Configure pll for 36,8 MHz with CLKIN = 20MHz
++	 * fout = fclkin * M * 1 /( 2* (N+1) * (P+1))
++	 */
++	/* Set P = 2  */
++	tm13m3_write_16(is, PLL_CONTROL_2, 0x0502);
++	/* M = 22, N = 1*/
++	tm13m3_write_16(is, PLL_CONTROL_1, 0x1601);
++	/* wake up pll*/
++	tm13m3_write_16(is, CLOCK_CONTROL, 0x8000);
++	/* wait until pll has stabilized */
++	mdelay(1);
++	/* set pll as master clock*/
++	tm13m3_write_16(is, CLOCK_CONTROL, 0x0000);
++
++#endif
++	/* Set semi-auto mode program mode*/
++	tm13m3_write_16(is, PROGRAM_CONTROL, 0x0010);
++	/* set context B read mode */
++	tm13m3_write_16(is, READ_MODE_CONTEXT_B, 0x0100);
++	/* switch to read+resize context B */
++	tm13m3_write_16(is, CONTEXT_CONTROL, 0x0408);
++	/* set ITU-R BT.656 codes */
++	tm13m3_write_16(is, OUTPUT_FORMAT_CONTROL_A, 0x0A00);
++	/* set sensor image size */ 
++	tm13m3_write_16(is, HORIZONTAL_ZOOM, 320);
++	tm13m3_write_16(is, VERTICAL_ZOOM, 240);
++	tm13m3_write_16(is, HORIZONTAL_OUTPUT_SIZE_B, 320);
++	tm13m3_write_16(is, VERTICAL_OUTPUT_SIZE_B, 240);
++	tm13m3_write_16(is, COLUMN_WIDTH, 320);
++	tm13m3_write_16(is, ROW_WIDTH, 240);
++	return 0;
++}
++static int tm13m3_detect_client(struct i2c_adapter *adapter,
++			      int address, int kind)
++{
++	struct i2c_client *client;
++	struct tm13m3 *is;
++	int ret;
++
++	pr_debug("tm13m3: detecting client on address 0x%x\n", address);
++
++	/* Check if the adapter supports the needed features */
++	if (!i2c_check_functionality(adapter,
++				     (I2C_FUNC_SMBUS_READ_BYTE_DATA
++				      | I2C_FUNC_SMBUS_WRITE_BYTE_DATA
++				      | I2C_FUNC_SMBUS_READ_WORD_DATA
++				      | I2C_FUNC_SMBUS_WRITE_WORD_DATA)))
++		return 0;
++
++	is = kzalloc(sizeof(struct tm13m3), GFP_KERNEL);
++	if (!is)
++		return -ENOMEM;
++
++	client = &is->client;
++	client->addr = address;
++	client->adapter = adapter;
++	client->driver = &tm13m3_driver;
++	strcpy(client->name, "tm13m3");
++
++	is->cam.name = client->name;
++	is->cam.hsync_act_low = 0;
++	is->cam.vsync_act_low = 0;
++	is->cam.pclk_act_falling = 0;
++	/* no SAV/EAV sync -> HSYNC and VSYNC used */
++	/*is->cam.has_emb_sync = 0;*/
++	is->cam.has_emb_sync = 1;
++
++	is->cam.get_format = tm13m3_get_format;
++	is->cam.set_format = tm13m3_set_format;
++	is->cam.start_capture = tm13m3_start_capture;
++	is->cam.stop_capture = tm13m3_stop_capture;
++
++	mutex_init(&is->mutex);
++
++	is->mclk = clk_get(NULL, mclk_name);
++	if (IS_ERR(is->mclk)) {
++		ret = PTR_ERR(is->mclk);
++		goto err_clk;
++	}
++	clk_enable(is->mclk);
++
++	ret = i2c_attach_client(client);
++	if (ret)
++		goto err_attach;
++
++	i2c_set_clientdata(client, is);
++
++	ret = tm13m3_init_hardware(is);
++	if (ret)
++		goto err_init_hw;
++
++	/* We're up and running. Notify the ISI driver */
++	ret = atmel_isi_register_camera(&is->cam);
++	if (ret)
++		goto err_register;
++
++	printk(KERN_INFO "TM13M3 Image Sensor at %s:0x%02x\n",
++	       adapter->name, address);
++
++	tm13m3_init_debugfs(is);
++
++	return 0;
++
++err_register:
++err_init_hw:
++//	at76_reset_hardware(is);
++	i2c_detach_client(client);
++err_attach:
++	clk_disable(is->mclk);
++	clk_put(is->mclk);
++err_clk:
++	kfree(is);
++	return ret;
++}
++
++static int tm13m3_attach_adapter(struct i2c_adapter *adapter)
++{
++	pr_debug("tm13m3: starting probe for adapter %s (%u)\n",
++		 adapter->name, adapter->id);
++	return i2c_probe(adapter, &addr_data, &tm13m3_detect_client);
++}
++
++static int tm13m3_detach_client(struct i2c_client *client)
++{
++	struct tm13m3 *is = i2c_get_clientdata(client);
++	int ret;
++
++	tm13m3_cleanup_debugfs(is);
++	atmel_isi_unregister_camera(&is->cam);
++
++	tm13m3_reset_hardware(is);
++
++	ret = i2c_detach_client(client);
++	if (ret)
++		return ret;
++
++	clk_disable(is->mclk);
++	clk_put(is->mclk);
++	kfree(is);
++
++	return 0;
++}
++
++static struct i2c_driver tm13m3_driver = {
++	.driver = {
++		.name	= "tm13m3",
++	},
++	.id		= I2C_DRIVERID_TM13M3,
++	.attach_adapter	= &tm13m3_attach_adapter,
++	.detach_client	= &tm13m3_detach_client,
++};
++
++static int __init tm13m3_init(void)
++{
++	        /*
++         * Set up the master clock, if available. If clk_get() fails,
++         * this hopefully means that the board generates a suitable
++         * master clock some other way, which is fine by us.
++         *
++         * We need to do this before probing the i2c bus, as the
++         * camera won't ack any messages when it doesn't have a clock.
++         */
++        mclk_parent = clk_get(NULL, mclk_parent_name);
++        if (!IS_ERR(mclk_parent))
++                clk_enable(mclk_parent);
++        else {
++                mclk_parent = NULL;
++		pr_debug("tm13m3: No parent clock available\n");
++	}
++
++        mclk = clk_get(NULL, mclk_name);
++        if (!IS_ERR(mclk)) {
++                if (mclk_parent)
++                        clk_set_parent(mclk, mclk_parent);
++
++                clk_set_rate(mclk, 27000000);
++                clk_enable(mclk);
++        } else {
++                mclk = NULL;
++		pr_debug("tm13m3: No clock set\n");
++        }
++
++	gpio_direction_output(CAM_STANDBY, 0);
++	/* Reset sequence */
++	gpio_direction_output(CAM_RESET, 0);
++	udelay(4);
++	gpio_set_value(CAM_RESET, 1);
++
++	return i2c_add_driver(&tm13m3_driver);
++
++}
++module_init(tm13m3_init);
++
++static void __exit tm13m3_exit(void)
++{
++	if (mclk) {
++		clk_disable(mclk);
++		clk_put(mclk);
++	}
++	if (mclk_parent) {
++		clk_disable(mclk_parent);
++		clk_put(mclk_parent);
++	}
++	i2c_del_driver(&tm13m3_driver);
++}
++module_exit(tm13m3_exit);
++
++MODULE_DESCRIPTION("Atmel Image Sensor Interface Driver");
++MODULE_AUTHOR("Lars Häring <lharing@atmel.com>");
++MODULE_LICENSE("GPL");
+>From dc4286f6020df0bf791228cdfe7d4ea58e2f46ef Mon Sep 17 00:00:00 2001
+From: Haavard Skinnemoen <hskinnemoen@atmel.com>
+Date: Wed, 17 Jan 2007 13:47:40 +0100
+Subject: [PATCH] AP7000: Add platform_device for ISI
+
+Signed-off-by: Haavard Skinnemoen <hskinnemoen@atmel.com>
+---
+ arch/avr32/mach-at32ap/at32ap700x.c   |   47 +++++++++++++++++++++++++++++++++
+ include/asm-avr32/arch-at32ap/board.h |    1 +
+ 2 files changed, 48 insertions(+), 0 deletions(-)
+
+diff --git a/arch/avr32/mach-at32ap/at32ap700x.c b/arch/avr32/mach-at32ap/at32ap700x.c
+index 1130c8a..4184296 100644
+--- a/arch/avr32/mach-at32ap/at32ap700x.c
++++ b/arch/avr32/mach-at32ap/at32ap700x.c
+@@ -1396,6 +1396,51 @@ at32_add_device_abdac(unsigned int id)
+ }
+ 
+ /* --------------------------------------------------------------------
++ *  ISI
++ * -------------------------------------------------------------------- */
++static struct resource atmel_isi0_resource[] = {
++	PBMEM(0xfff02c00),
++	IRQ(30),
++};
++DEFINE_DEV(atmel_isi, 0);
++DEV_CLK(hclk, atmel_isi0, hsb, 5);
++DEV_CLK(pclk, atmel_isi0, pbb, 11);
++
++struct platform_device *__init
++at32_add_device_isi(unsigned int id)
++{
++	struct platform_device *pdev;
++
++	switch (id) {
++	case 0:
++		pdev = &atmel_isi0_device;
++		select_peripheral(PB(0),  PERIPH_A, 0);	/* DATA0  */
++		select_peripheral(PB(1),  PERIPH_A, 0);	/* DATA1  */
++		select_peripheral(PB(2),  PERIPH_A, 0);	/* DATA2  */
++		select_peripheral(PB(3),  PERIPH_A, 0);	/* DATA3  */
++		select_peripheral(PB(4),  PERIPH_A, 0);	/* DATA4  */
++		select_peripheral(PB(5),  PERIPH_A, 0);	/* DATA5  */
++		select_peripheral(PB(6),  PERIPH_A, 0);	/* DATA6  */
++		select_peripheral(PB(7),  PERIPH_A, 0);	/* DATA7  */
++		select_peripheral(PB(11), PERIPH_B, 0);	/* DATA8  */
++		select_peripheral(PB(12), PERIPH_B, 0);	/* DATA9  */
++		select_peripheral(PB(13), PERIPH_B, 0);	/* DATA10 */
++		select_peripheral(PB(14), PERIPH_B, 0);	/* DATA11 */
++		select_peripheral(PB(8),  PERIPH_A, 0);	/* HSYNC  */
++		select_peripheral(PB(9),  PERIPH_A, 0);	/* VSYNC  */
++		select_peripheral(PB(10), PERIPH_A, 0);	/* PCLK	  */
++		break;
++
++	default:
++		return NULL;
++	}
++
++	platform_device_register(pdev);
++
++	return pdev;
++}
++
++/* --------------------------------------------------------------------
+  *  GCLK
+  * -------------------------------------------------------------------- */
+ static struct clk gclk0 = {
+@@ -1493,6 +1538,8 @@ struct clk *at32_clock_list[] = {
+ 	&gclk2,
+ 	&gclk3,
+ 	&gclk4,
++	&atmel_isi0_hclk,
++	&atmel_isi0_pclk,
+ };
+ unsigned int at32_nr_clocks = ARRAY_SIZE(at32_clock_list);
+ 
+diff --git a/include/asm-avr32/arch-at32ap/board.h b/include/asm-avr32/arch-at32ap/board.h
+index 9b36eb8..931f5af 100644
+--- a/include/asm-avr32/arch-at32ap/board.h
++++ b/include/asm-avr32/arch-at32ap/board.h
+@@ -55,6 +55,7 @@ at32_add_device_lcdc(unsigned int id, struct atmel_lcdfb_info *data,
+ 
+ struct platform_device *at32_add_device_ac97c(unsigned int id);
+ struct platform_device *at32_add_device_abdac(unsigned int id);
++struct platform_device *at32_add_device_isi(unsigned int id);
+ 
+ /* depending on what's hooked up, not all SSC pins will be used */
+ #define	ATMEL_SSC_TK		0x01
+-- 
+1.5.2.3
+
+>From 6bac229e6999ce8e761baf97975fc5db774721fa Mon Sep 17 00:00:00 2001
+From: Haavard Skinnemoen <hskinnemoen@atmel.com>
+Date: Wed, 21 Feb 2007 15:35:44 +0100
+Subject: [PATCH] NGW100: Wire up the ISI
+
+Since the NGW100 doesn't actually have a camera on board, this patch
+merely serves as an example on how you might wire up the ISI on a
+board that does have a camera.
+---
+ arch/avr32/boards/atngw100/setup.c |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/arch/avr32/boards/atngw100/setup.c b/arch/avr32/boards/atngw100/setup.c
+index d649974..6ca98bb 100644
+--- a/arch/avr32/boards/atngw100/setup.c
++++ b/arch/avr32/boards/atngw100/setup.c
+@@ -178,6 +178,11 @@ static int __init atngw100_init(void)
+ 	at32_add_device_twi(0);
+ #endif
+ 
++	at32_add_device_isi(0);
++
++	/* Master clock for the camera (GCLK0) */
++	at32_select_periph(GPIO_PIN_PA(30), GPIO_PERIPH_A, 0);
++
+ 	return 0;
+ }
+ postcore_initcall(atngw100_init);
+-- 
+1.5.2.3

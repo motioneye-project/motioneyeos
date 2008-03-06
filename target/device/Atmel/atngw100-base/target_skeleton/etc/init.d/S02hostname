@@ -1,0 +1,47 @@
+#!/bin/sh
+
+PROGRAM=/bin/hostname
+
+echo -n "Setting hostname: "
+[ -x ${PROGRAM} ] || (echo "missing"; exit 0)
+
+if [ -f /etc/hostname ]; then
+	HOST="$(cat /etc/hostname)"
+else
+	HOST="localhost.localdomain"
+fi
+
+start() {
+	if ${PROGRAM} "${HOST}"; then
+		echo "'${HOST}'"
+	else
+		echo "failed"
+		exit 1
+	fi
+}
+
+stop() {
+	return 0
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

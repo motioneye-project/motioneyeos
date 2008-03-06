@@ -1,0 +1,76 @@
+comment "Atmel AVR32 Specific Device Support"
+	depends BR2_avr32
+
+config BR2_TARGET_AVR32
+	bool "Board support for the Atmel AP7 microprocessors"
+	depends BR2_avr32
+	default n
+	help
+	  Atmel AT32AP7XXX AVR32 based systems
+
+choice
+	prompt "AVR32 device"
+	depends BR2_TARGET_AVR32
+	default BR2_TARGET_AT32AP7000
+	help
+	  Select the specific AVR32 chip you wish to use.
+
+config BR2_TARGET_AT32AP7000
+	bool "Board support for the Atmel AT32AP7000 Microprocessor"
+	depends BR2_TARGET_AVR32
+	help
+	  Atmel AT32AP7000 AVR32 based systems
+
+config BR2_TARGET_AT32AP7001
+	bool "Board support for the Atmel AT32AP7001 Microprocessor"
+	depends BR2_TARGET_AVR32
+	help
+	  Atmel AT32AP7001 AVR32 based systems
+
+config BR2_TARGET_AT32AP7002
+	bool "Board support for the Atmel AT32AP7002 Microprocessor"
+	depends BR2_TARGET_AVR32
+	help
+	  Atmel AT32AP7002 AVR32 based systems
+
+endchoice
+
+comment "Development board support"
+	depends BR2_TARGET_AVR32
+
+choice
+	prompt "Development board support"
+	depends BR2_TARGET_AVR32
+	default BR2_TARGET_AVR32_ATSTK1000
+	help
+	  Select the specific AVR32 development board you wish to use.
+
+config BR2_TARGET_AVR32_ATSTK1002
+	bool "Atmel ATSTK1000/2 AVR32 development board support"
+	depends BR2_TARGET_AT32AP7000
+	select BR2_PACKAGE_LINUX
+	help
+	  The Atmel ATSTK1000 AVR32 Development Board.
+
+config BR2_TARGET_AVR32_ATNGW100
+	bool "Atmel AVR32 network gateway board support"
+	depends BR2_TARGET_AT32AP7000
+	select BR2_PACKAGE_LINUX
+	help
+	  The Atmel AVR32 Network Gateway Board.
+
+config BR2_TARGET_AVR32_ATNGW100_BASE
+	bool "Atmel AVR32 basic network gateway board support"
+	depends BR2_TARGET_AT32AP7000
+	select BR2_PACKAGE_LINUX
+	help
+	  Very simple configuration for the Atmel AVR32 Network Gateway Board.
+
+config BR2_TARGET_AVR32_ATNGW100_EXPANDED
+	bool "Atmel AVR32 expanded network gateway board support"
+	depends BR2_TARGET_AT32AP7000
+	select BR2_PACKAGE_LINUX
+	help
+	  The Atmel AVR32 Network Gateway Board expanded to include audio, video, and PS/2.
+
+endchoice

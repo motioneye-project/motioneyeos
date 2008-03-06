@@ -1,0 +1,3 @@
+#!/bin/ash
+# Local startup file, executed after system is up and running
+

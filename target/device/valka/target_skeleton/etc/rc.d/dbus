@@ -1,0 +1,30 @@
+#!/bin/sh
+. /etc/rc.subr 
+
+start() {
+	[ -x /usr/bin/dbus-daemon ] || exit 0
+	[ -d /var/run/dbus ] || mkdir -p /var/run/dbus
+	[ -d /var/lock/subsys ] || mkdir -p /var/lock/subsys
+
+    echo -n " * Starting dbus: "
+
+    dbus-uuidgen --ensure
+    dbus-daemon --system
+    RETVAL=$?
+    echo "Ok"
+    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/dbus-daemon
+}
+
+stop() {
+    echo -n " * Stopping dbus: "
+
+    killall dbus-daemon
+    RETVAL=$?
+    echo "Ok"
+    if [ $RETVAL -eq 0 ]; then
+        rm -f /var/lock/subsys/dbus-daemon
+        rm -f /var/run/messagebus.pid
+    fi
+}
+
+rc_run_command "$1" "dbus"

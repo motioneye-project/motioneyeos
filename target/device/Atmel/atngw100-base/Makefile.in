@@ -1,0 +1,6 @@
+ifeq ($(strip $(BR2_TARGET_AVR32_ATNGW100_BASE)),y)
+ATNGW100_BASE_PATH=target/device/Atmel/atngw100-base
+
+TARGET_SKELETON=$(ATNGW100_BASE_PATH)/target_skeleton
+TARGET_DEVICE_TABLE=$(ATNGW100_BASE_PATH)/device_table.txt
+endif

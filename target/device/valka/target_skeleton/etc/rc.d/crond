@@ -1,0 +1,27 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Starting crond: "
+	if [ ! -x ${crond_program} ]; then
+		log_error "Missing 'crond' program (${crond_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	${crond_program} -f -c ${crond_dir} ${crond_flags} &
+	pid=$!
+	if [ "$?" -eq 0 ]; then
+		echo "${pid}" > ${crond_pidfile}
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+stop() {
+	echo " * Stopping crond..."
+	killpid ${crond_pidfile}
+}
+
+rc_run_command "$1" "crond"

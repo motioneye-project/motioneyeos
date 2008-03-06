@@ -1,0 +1,17 @@
+#!/bin/sh
+. /etc/rc.subr
+
+start() {
+ 	echo -n " * Starting lighttpd: "
+	if ${lighttpd_program} ${lighttpd_flags}; then
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+stop() {
+	echo " * Stopping lighttpd..."
+	killpid "${lighttpd_pidfile}"
+}
+
+rc_run_command "$1" "lighttpd"

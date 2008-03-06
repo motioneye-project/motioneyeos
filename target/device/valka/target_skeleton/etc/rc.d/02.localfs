@@ -1,0 +1,22 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Mounting local filesystems: "
+	if ${mount_program} -a; then
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+stop() {
+	echo -n " * Unmounting local filesystems: "
+	if ${umount_program} -a 2>/dev/null; then
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+rc_run_command "$1"

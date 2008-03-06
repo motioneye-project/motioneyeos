@@ -1,0 +1,24 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Running ntpdate: "
+	if [ ! -x ${ntpdate_program} ]; then
+		log_error "Missing 'ntpdate' program (${ntpdate_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	if ${ntpdate_program} ${ntpdate_flags} ${ntpdate_servers} > /dev/null 2>&1; then
+		echo "Ok"
+	else
+		echo "Failed"
+		exit 1
+	fi
+}
+
+stop() {
+	return 0
+}
+
+rc_run_command "$1" "ntpdate"

@@ -1,0 +1,37 @@
+#!/bin/sh
+. /etc/rc.subr
+
+start() {
+	if [ ! -d /etc/dropbear ]; then                                         
+		if ! mkdir_fs /etc/dropbear; then                               
+			return 1                                                
+		fi       
+	fi 
+
+	# Check for the Dropbear RSA key
+	if [ ! -f /etc/dropbear/dropbear_rsa_host_key ] ; then
+		echo -n " * Generating SSH RSA Key: "
+		${dropbearkey_program} -t rsa -f /etc/dropbear/dropbear_rsa_host_key > /dev/null 2>&1
+		echo "Ok"
+	fi
+
+	# Check for the Dropbear DSS key
+	if [ ! -f /etc/dropbear/dropbear_dss_host_key ] ; then
+		echo -n " * Generating SSH DSS Key: "
+		${dropbearkey_program} -t dss -f /etc/dropbear/dropbear_dss_host_key > /dev/null 2>&1
+		echo "Ok"
+	fi
+
+ 	echo -n " * Starting dropbear sshd: "
+	if ${dropbear_program} -P ${dropbear_pidfile} ${dropbear_flags}; then
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+stop() {
+	echo " * Stopping dropbear sshd..."
+	killpid "${dropbear_pidfile}"
+}
+
+rc_run_command "$1" "dropbear"

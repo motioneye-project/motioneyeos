@@ -1,0 +1,76 @@
+#!/bin/sh
+
+MOUNT=/bin/mount
+MKDIR=/bin/mkdir
+
+retval=0
+
+mount_fs()
+{
+	if [ "$1" = "" -o "$2" = "" -o "$3" = "" ]; then
+		return;
+	fi
+
+	if [ "$4" = "" ]; then
+		if ! ${MOUNT} -t $3 $1 $2; then
+			echo "  mount $2 failed"
+			retval=1
+			return 1
+		else
+			echo "  $2 mounted"
+		fi
+	else
+		if ! ${MOUNT} -t $3 -o $4 $1 $2; then
+			echo "  mount $2 failed"
+			retval=1
+			return 1
+		else
+			echo "  $2 mounted"
+		fi
+	fi
+
+	return 0
+}
+
+mkdir_fs()
+{
+	if [ "$1" = "" ]; then
+		return;
+	fi
+
+	if ! ${MKDIR} $1; then
+		echo "  mkdir $1 failed"
+		retval=1
+		return 1
+	else
+		echo "  $1 directory made"
+	fi
+
+	return 0
+}
+
+echo "Mounting virtual filesystems:"
+
+mount_fs proc /proc proc
+mount_fs sys /sys sysfs
+
+if mount_fs dev /dev tmpfs "size=512k,mode=0755"; then
+	mkdir_fs /dev/pts
+	mount_fs pts /dev/pts devpts
+	mkdir_fs /dev/shm
+	# g_serial is not detected by mdev.
+	mknod /dev/ttygserial c 127 0
+	mknod /dev/ttyS0 c 4 64
+	mknod /dev/null c 1 3
+fi
+
+mount_fs config /config configfs
+mount_fs tmp /tmp tmpfs
+mount_fs run /var/run tmpfs
+mount_fs log /var/log tmpfs
+
+if [ $retval -ne 0 ]; then
+	echo "  WARNING: not able to mount all virtual file systems"
+fi
+
+exit $retval

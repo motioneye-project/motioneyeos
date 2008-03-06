@@ -8,7 +8,7 @@ if [ ! -x "${TELNETD}" ]; then
 	exit 1
 fi
 
-if ${TELNETD} -l /bin/ash; then
+if ${TELNETD} -l /bin/sh; then
 	echo "done"
 else
 	echo "failed"

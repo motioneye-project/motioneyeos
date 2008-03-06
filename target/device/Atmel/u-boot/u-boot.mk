@@ -1,282 +1,149 @@
 #############################################################
 #
-# u-boot mkimage to build to target u-boot filesystems and
-#
-# u-boot.bin - the boot loader for the target - which needs soft float, so
-# we won't make it.
-#
+# U-Boot
 #
 #############################################################
-UBOOT_VERSION:=1.2.0-atmel
-ATMEL_MIRROR:=$(strip $(subst ",, $(BR2_ATMEL_MIRROR)))
-#"))
-UBOOT_DIR:=$(BUILD_DIR)/u-boot-$(UBOOT_VERSION)
-UBOOT_BUILD_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(UBOOT_VERSION)
-UBOOT_SOURCE:=u-boot-$(UBOOT_VERSION).tar.bz2
-#UBOOT_SOURCE:=u-boot-1.1.5-atmel.tar.bz2
-#UBOOT_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/u-boot
-UBOOT_SITE:=$(ATMEL_MIRROR)
-UBOOT_PATCH_SITE:=$(ATMEL_MIRROR)
-UBOOT_CAT:=$(BZCAT)
-UBOOT_PATCH_SOURCE:=u-boot-1.2.0-atmel-patch.tar.bz2
+U_BOOT_VERSION:=1.3.0
+U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
+U_BOOT_SITE:=ftp://ftp.denx.de/pub/u-boot
+U_BOOT_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
+U_BOOT_CAT:=$(BZCAT)
+U_BOOT_BIN:=u-boot.bin
+U_BOOT_TOOLS_BIN:=mkimage
 
-MKIMAGE_BINLOC:=$(UBOOT_BUILD_DIR)/tools/mkimage
-MKIMAGE:=$(KERNEL_CROSS)mkimage
+U_BOOT_INC_CONF_FILE:=$(U_BOOT_DIR)/include/configs/$(subst _config,,$(BR2_TARGET_U_BOOT_CONFIG_BOARD)).h
 
-UBOOT_BIN:=$(BOARD_NAME)-u-boot-$(UBOOT_VERSION)-$(DATE).bin
+$(DL_DIR)/$(U_BOOT_SOURCE):
+	 $(WGET) -P $(DL_DIR) $(U_BOOT_SITE)/$(U_BOOT_SOURCE)
 
-UBOOT_PATCHES:=$(PROJECT_BUILD_DIR)/u-boot-patches
-
-UBOOT_ATMEL_BMP:=$(UBOOT_PATCHES)/atmel.bmp
-
-UBOOT_SCR=$(BINARIES_DIR)/autoscript
-TARGET_UBOOT_IPADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_IPADDR)))
-#"))
-TARGET_UBOOT_SERVERIP:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP)))
-#"))
-TARGET_UBOOT_GATEWAY:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_GATEWAY)))
-#"))
-TARGET_UBOOT_NETMASK:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_NETMASK)))
-#"))
-TARGET_UBOOT_ETHADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR)))
-#"))
-UBOOT_CUSTOM:=$(UBOOT_DIR)/include/custom.h
-
-$(DL_DIR)/$(UBOOT_SOURCE):
-	$(WGET) -P $(DL_DIR) $(UBOOT_SITE)/$(UBOOT_SOURCE)
-
-$(DL_DIR)/$(UBOOT_PATCH_SOURCE):
-	$(WGET) -P $(DL_DIR) $(UBOOT_PATCH_SITE)/$(UBOOT_PATCH_SOURCE)
-
-$(UBOOT_DIR)/.unpacked: $(DL_DIR)/$(UBOOT_SOURCE)
-	mkdir -p $(BUILD_DIR)
-	$(UBOOT_CAT) $(DL_DIR)/$(UBOOT_SOURCE) | tar -C $(BUILD_DIR) -xvf -
+$(U_BOOT_DIR)/.unpacked: $(DL_DIR)/$(U_BOOT_SOURCE)
+	$(U_BOOT_CAT) $(DL_DIR)/$(U_BOOT_SOURCE) \
+		| tar -C $(PROJECT_BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(U_BOOT_DIR) target/device/Atmel/u-boot/ \
+		u-boot-$(U_BOOT_VERSION)-\*.patch\*
 	touch $@
 
-$(UBOOT_PATCHES)/.unpacked: $(DL_DIR)/$(UBOOT_PATCH_SOURCE)
-	mkdir -p $(UBOOT_PATCHES)
-	bzcat $(DL_DIR)/$(UBOOT_PATCH_SOURCE) | tar -C $(UBOOT_PATCHES) -xvf -
+$(U_BOOT_DIR)/.header_copied: $(U_BOOT_DIR)/.unpacked
+ifneq ($(BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE),"")
+	@if [ ! -f "$(BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE)" ]; then	\
+		echo "	You specified BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE,"; \
+		echo "	but the file at:";				\
+		echo "	'$(BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE)'";	\
+		echo "	does not exist.";				\
+		echo;							\
+		echo "	Configure the BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE variable."; \
+		echo;							\
+		exit 1;							\
+	fi
+	cp -dpf $(BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE) $(U_BOOT_INC_CONF_FILE)
+endif
 	touch $@
 
-$(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE): $(UBOOT_DIR)/.unpacked $(UBOOT_PATCHES)/.unpacked
-	toolchain/patch-kernel.sh $(UBOOT_DIR) $(UBOOT_PATCHES) \*.patch
-	touch $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE)
-# cp $(UBOOT_CONFIG_FILE) $(UBOOT_DIR)/include/configs/.
-# cp $(UBOOT_PATCHES)/cmd_defenv.c $(UBOOT_DIR)/common/.
-# cp $(UBOOT_ATMEL_BMP) $(UBOOT_DIR)/tools/logos/.
-
-$(UBOOT_BUILD_DIR)/.configured: $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE)
-ifneq ($(strip $(UBOOT_CONFIG_FILE)),)
-	cp $(UBOOT_CONFIG_FILE) $(UBOOT_DIR)/include/configs/.
+$(U_BOOT_DIR)/.configured: $(U_BOOT_DIR)/.header_copied
+ifeq ($(strip $(BR2_TARGET_U_BOOT_CONFIG_BOARD)),"")
+	@echo
+	@echo "	You did not specify a target u-boot config board, so u-boot"
+	@echo "	has no way of knowing which board you want to build your"
+	@echo "	bootloader for."
+	@echo
+	@echo "	Configure the BR2_TARGET_U_BOOT_CONFIG_BOARD variable."
+	@echo
+	@exit 1
 endif
-	$(MAKE) \
-		O=$(UBOOT_BUILD_DIR) \
-		CONFIG_NOSOFTFLOAT=1 \
-		-C $(UBOOT_DIR) \
-		$(UBOOT_CONFIG)
-	$(SED) 's/ $$(SREC) $$(BIN)//' $(UBOOT_DIR)/examples/Makefile
-	touch $(UBOOT_BUILD_DIR)/.configured
-# $(MAKE) O=$(UBOOT_BUILD_DIR) -C $(UBOOT_DIR)
+	$(TARGET_CONFIGURE_OPTS)		\
+		CFLAGS="$(TARGET_CFLAGS)"	\
+		LDFLAGS="$(TARGET_LDFLAGS)"	\
+		$(MAKE) -C $(U_BOOT_DIR)	\
+		$(BR2_TARGET_U_BOOT_CONFIG_BOARD)
+	touch $@
 
-$(MKIMAGE_BINLOC): $(UBOOT_BUILD_DIR)/.configured
-	$(MAKE) \
-		O=$(UBOOT_BUILD_DIR) \
-		CROSS_COMPILE= \
-		CONFIG_NOSOFTFLOAT=1 \
-		TOPDIR=$(UBOOT_DIR) \
-		SRCTREE=$(UBOOT_DIR) \
-		-C $(UBOOT_DIR) tools
-	touch $(MKIMAGE_BINLOC)
-
-$(UBOOT_BUILD_DIR)/u-boot.bin: $(UBOOT_BUILD_DIR)/.configured $(UBOOT_CUSTOM)
-	echo TARGET_CROSS=$(TARGET_CROSS)
-	$(MAKE) O=$(UBOOT_BUILD_DIR) \
-		CROSS_COMPILE=$(TARGET_CROSS) \
-		CONFIG_NOSOFTFLOAT=1 \
-		TOPDIR=$(UBOOT_DIR) \
-		SRCTREE=$(UBOOT_DIR) \
-		TFTPBOOT=/tftpboot \
-		-C $(UBOOT_DIR)
-
-$(BINARIES_DIR)/$(UBOOT_BIN): $(UBOOT_BUILD_DIR)/u-boot.bin
-	mkdir -p $(BINARIES_DIR)
-	cp $(UBOOT_BUILD_DIR)/u-boot.bin $(BINARIES_DIR)/$(UBOOT_BIN)
-
-/tftpboot/$(UBOOT_BIN): $(UBOOT_BUILD_DIR)/u-boot.bin
-	mkdir -p /tftpboot
-	cp $(UBOOT_BUILD_DIR)/u-boot.bin /tftpboot/$(UBOOT_BIN)
-
-uboot-bin: $(BINARIES_DIR)/$(UBOOT_BIN) /tftpboot/$(UBOOT_BIN)
-
-$(UBOOT_CUSTOM).test: .config $(UBOOT_BUILD_DIR)/.configured
-	echo "/* Automatically generated file, do not edit */" \
-	> $(UBOOT_CUSTOM).test
-ifneq ($(TARGET_HOSTNAME),)
-	echo "#if defined(CONFIG_HOSTNAME)" >> $(UBOOT_CUSTOM).test
-	echo "#undef CONFIG_HOSTNAME" >> $(UBOOT_CUSTOM).test
-	echo "#define CONFIG_HOSTNAME $(TARGET_HOSTNAME)">> $(UBOOT_CUSTOM).test
-	echo "#endif" >> $(UBOOT_CUSTOM).test
+$(U_BOOT_DIR)/.header_modified: $(U_BOOT_DIR)/.configured
+	# Modify configuration header in $(U_BOOT_INC_CONF_FILE)
+	@echo >> $(U_BOOT_INC_CONF_FILE)
+	@echo "/* Add a wrapper around the values Buildroot sets. */" >> $(U_BOOT_INC_CONF_FILE)
+	@echo "#ifndef __BR2_ADDED_CONFIG_H" >> $(U_BOOT_INC_CONF_FILE)
+	@echo "#define __BR2_ADDED_CONFIG_H" >> $(U_BOOT_INC_CONF_FILE)
+ifneq ($(strip $(BR2_PROJECT)),"")
+	@echo "#define CONFIG_HOSTNAME" >> $(U_BOOT_INC_CONF_FILE)
+	$(SED) 's,^#define.*CONFIG_HOSTNAME.*,#define CONFIG_HOSTNAME	$(subst ",,$(BR2_PROJECT)),' $(U_BOOT_INC_CONF_FILE)
 endif
-ifneq ($(TARGET_UBOOT_IPADDR),)
-	echo "#define CONFIG_IPADDR $(TARGET_UBOOT_IPADDR)">> $(UBOOT_CUSTOM).test
+ifneq ($(strip $(BR2_TARGET_U_BOOT_SERVERIP)),"")
+	@echo "#define CONFIG_SERVERIP" >> $(U_BOOT_INC_CONF_FILE)
+	$(SED) 's,^#define.*CONFIG_SERVERIP.*,#define CONFIG_SERVERIP	$(subst ",,$(BR2_TARGET_U_BOOT_SERVERIP)),' $(U_BOOT_INC_CONF_FILE)
 endif
-ifneq ($(TARGET_UBOOT_SERVERIP),)
-	echo "#define CONFIG_SERVERIP $(TARGET_UBOOT_SERVERIP)">> $(UBOOT_CUSTOM).test
+ifneq ($(strip $(BR2_TARGET_U_BOOT_IPADDR)),"")
+	@echo "#define CONFIG_IPADDR" >> $(U_BOOT_INC_CONF_FILE)
+	$(SED) 's,^#define.*CONFIG_IPADDR.*,#define CONFIG_IPADDR	$(subst ",,$(BR2_TARGET_U_BOOT_IPADDR)),' $(U_BOOT_INC_CONF_FILE)
+ifneq ($(strip $(BR2_TARGET_U_BOOT_GATEWAY)),"")
+	@echo "#define CONFIG_GATEWAYIP" >> $(U_BOOT_INC_CONF_FILE)
+	$(SED) 's,^#define.*CONFIG_GATEWAYIP.*,#define CONFIG_GATEWAYIP	$(subst ",,$(BR2_TARGET_U_BOOT_GATEWAY)),' $(U_BOOT_INC_CONF_FILE)
 endif
-ifneq ($(TARGET_UBOOT_GATEWAY),)
-	echo "#define CONFIG_GATEWAYIP $(TARGET_UBOOT_GATEWAY)">> $(UBOOT_CUSTOM).test
+ifneq ($(strip $(BR2_TARGET_U_BOOT_NETMASK)),"")
+	@echo "#define CONFIG_NETMASK" >> $(U_BOOT_INC_CONF_FILE)
+	$(SED) 's,^#define.*CONFIG_NETMASK.*,#define CONFIG_NETMASK	$(subst ",,$(BR2_TARGET_U_BOOT_NETMASK)),' $(U_BOOT_INC_CONF_FILE)
 endif
-ifneq ($(TARGET_UBOOT_NETMASK),)
-	echo "#define CONFIG_NETMASK $(TARGET_UBOOT_NETMASK)">> $(UBOOT_CUSTOM).test
+endif # end BR2_TARGET_U_BOOT_IPADDR
+ifneq ($(strip $(BR2_TARGET_U_BOOT_ETH0ADDR)),"")
+	@echo "#define CONFIG_ETHADDR" >> $(U_BOOT_INC_CONF_FILE)
+	$(SED) 's,^#define.*CONFIG_ETHADDR.*,#define CONFIG_ETHADDR	$(subst ",,$(BR2_TARGET_U_BOOT_ETH0ADDR)),' $(U_BOOT_INC_CONF_FILE)
 endif
-ifneq ($(TARGET_UBOOT_ETHADDR),)
-	echo "#define CONFIG_ETHADDR $(TARGET_UBOOT_ETHADDR)">> $(UBOOT_CUSTOM).test
+ifneq ($(strip $(BR2_TARGET_U_BOOT_ETH1ADDR)),"")
+	@echo "#define CONFIG_ETH1ADDR" >> $(U_BOOT_INC_CONF_FILE)
+	$(SED) 's,^#define.*CONFIG_ETH1ADDR.*,#define CONFIG_ETH1ADDR	$(subst ",,$(BR2_TARGET_U_BOOT_ETH1ADDR)),' $(U_BOOT_INC_CONF_FILE)
 endif
-	diff -q $(UBOOT_CUSTOM).test $(UBOOT_CUSTOM) || cp -af $(UBOOT_CUSTOM).test $(UBOOT_CUSTOM)
-
-$(UBOOT_SCR): .config
-ifneq ($(TARGET_UBOOT_IPADDR),)
-	echo setenv ipaddr $(TARGET_UBOOT_IPADDR) > $(UBOOT_SCR)
+ifneq ($(strip $(BR2_TARGET_U_BOOT_BOOTARGS)),"")
+	@echo "#undef CONFIG_BOOTARGS" >> $(U_BOOT_INC_CONF_FILE)
+	@echo '#define CONFIG_BOOTARGS $(BR2_TARGET_U_BOOT_BOOTARGS)' >> $(U_BOOT_INC_CONF_FILE)
 endif
-ifneq ($(TARGET_UBOOT_SERVERIP),)
-	echo setenv serverip $(TARGET_UBOOT_SERVERIP) >> $(UBOOT_SCR)
+ifneq ($(strip $(BR2_TARGET_U_BOOT_BOOTCMD)),"")
+	@echo "#undef CONFIG_BOOTCOMMAND" >> $(U_BOOT_INC_CONF_FILE)
+	@echo '#define CONFIG_BOOTCOMMAND $(BR2_TARGET_U_BOOT_BOOTCMD)' >> $(U_BOOT_INC_CONF_FILE)
 endif
-ifneq ($(TARGET_UBOOT_GATEWAY),)
-	echo setenv gatewayip $(TARGET_UBOOT_GATEWAY) >> $(UBOOT_SCR)
-endif
-ifneq ($(TARGET_UBOOT_NETMASK),)
-	echo setenv netmask $(TARGET_UBOOT_NETMASK) >> $(UBOOT_SCR)
-endif
-	echo setenv linux $(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE).gz >> $(UBOOT_SCR)
-	echo setenv kernel-version $(LINUX26_VERSION) >> $(UBOOT_SCR)
-	echo setenv kernel-date $(DATE) >> $(UBOOT_SCR)
-	echo setenv hostname $(TARGET_HOSTNAME) >> $(UBOOT_SCR)
-	echo setenv fs-date $(DATE) >> $(UBOOT_SCR)
-	echo setenv rd-1 rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(UBOOT_SCR)
-	echo setenv rd-2 rootfs.$(BR2_ARCH)-$(DATE).jffs2 >> $(UBOOT_SCR)
-	echo setenv rd rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(UBOOT_SCR)
-	echo setenv ver 1 >> $(UBOOT_SCR)
-ifneq ($(TARGET_UBOOT_ETHADDR),)
-	echo setenv ethaddr $(TARGET_UBOOT_ETHADDR) >> $(UBOOT_SCR)
-endif
-	echo setenv fstype ram >> $(UBOOT_SCR)
-	echo fs >> $(UBOOT_SCR)
-	echo os >> $(UBOOT_SCR)
-	echo setargs >> $(UBOOT_SCR)
-	echo saveenv >> $(UBOOT_SCR)
+	@echo "#endif /* __BR2_ADDED_CONFIG_H */" >> $(U_BOOT_INC_CONF_FILE)
+	touch $@
 
-$(UBOOT_SCR).$(PROJECT): $(UBOOT_SCR) $(MKIMAGE)
-	$(MKIMAGE) -A arm \
-				-O linux \
-				-T script \
-				-C none \
-				-a 0 \
-				-e 0 \
-				-n "autoscr config" \
-				-d $(UBOOT_SCR) \
-				$(UBOOT_SCR).$(PROJECT)
-	cp $(UBOOT_SCR).$(PROJECT) /tftpboot
+$(U_BOOT_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/.header_modified
+	$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(MAKE) -C $(U_BOOT_DIR)
 
-$(MKIMAGE): $(MKIMAGE_BINLOC)
-	cp -f $(MKIMAGE_BINLOC) $(MKIMAGE)
+$(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
+	cp -dpf $(U_BOOT_DIR)/$(U_BOOT_BIN) $(BINARIES_DIR)
+	cp -dpf $(U_BOOT_DIR)/tools/$(U_BOOT_TOOLS_BIN) $(STAGING_DIR)/usr/bin/
 
-uboot: $(MKIMAGE) uboot-bin $(UBOOT_SCR).$(PROJECT)
+u-boot: gcc $(BINARIES_DIR)/$(U_BOOT_BIN)
 
-uboot-source: $(DL_DIR)/$(UBOOT_SOURCE)
+u-boot-clean:
+	$(MAKE) -C $(U_BOOT_DIR) clean
 
-uboot-clean:
-	rm -fr $(UBOOT_BUILD_DIR)
-	rm -fr $(UBOOT_PATCHES)
-	rm -f $(BINARIES_DIR)/$(UBOOT_BIN)
-	rm -fr $(UBOOT_DIR)
-	rm -f $(UBOOT_SCR)
-	rm -f $(UBOOT_SCR).$(PROJECT)
-# -$(MAKE) -C $(UBOOT_DIR)/uboot-tools clean
+u-boot-dirclean:
+	rm -rf $(U_BOOT_DIR)
 
-uboot-dirclean: uboot-clean
-	rm -rf $(UBOOT_DIR)
-
-uboot-new:
-	rm -fr $(UBOOT_BUILD_DIR)/u-boot
-	rm -fr $(UBOOT_BUILD_DIR)/u-boot.gz
-	rm -fr $(UBOOT_BUILD_DIR)/u-boot.bin
-	rm -fr /tftpboot/$(UBOOT_BIN)
-	rm -fr $(BINARIES_DIR)/$(UBOOT_BIN)
-
-.PHONY: uboot-bin
-#############################################################
-#
-# Build the uboot root filesystem image
-#
-#############################################################
-
-UBOOT_TARGET:=$(IMAGE).uboot
-
-ubootroot: host-fakeroot makedevs uboot
-	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
-	@rm -rf $(TARGET_DIR)/usr/man
-	@rm -rf $(TARGET_DIR)/usr/info
-	-/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null
-	# Use fakeroot to pretend all target binaries are owned by root
-	rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	touch $(STAGING_DIR)/.fakeroot.00000
-	cat $(STAGING_DIR)/.fakeroot* > $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	echo "chown -R root:root $(TARGET_DIR)" >> $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	# Use fakeroot to pretend to create all needed device nodes
-	echo "$(STAGING_DIR)/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(TARGET_DIR)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	# Use fakeroot so mkuboot believes the previous fakery
-	echo "$(UBOOT_DIR)/uboot-tools/mkuboot " \
-		    "$(TARGET_DIR) $(UBOOT_TARGET) " \
-		    "-noappend $(UBOOT_ENDIANNESS)" \
-		>> $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-
-ubootroot-source: uboot-source
-
-ubootroot-clean:
-	-$(MAKE) -C $(UBOOT_DIR) clean
-
-ubootroot-dirclean:
-	rm -rf $(UBOOT_DIR)
+u-boot-source: $(DL_DIR)/$(U_BOOT_SOURCE)
 
 #############################################################
 #
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_UBOOT)),y)
-TARGETS+=uboot
+ifeq ($(strip $(BR2_TARGET_U_BOOT)),y)
+TARGETS+=u-boot
 endif
 
-uboot-test:
-	-@echo source=$(DL_DIR)/$(UBOOT_SOURCE)
-	-@ls $(DL_DIR)/$(UBOOT_SOURCE)
-	-@echo patch=$(DL_DIR)/$(UBOOT_PATCH_SOURCE)
-	-@ls $(DL_DIR)/$(UBOOT_PATCH_SOURCE)
-	-@echo unpacked=$(UBOOT_PATCHES)/.unpacked
-	-@ls $(UBOOT_PATCHES)/.unpacked
-	-@echo patch-unpacked=$(UBOOT_PATCHES)/.unpacked
-	-@ls $(UBOOT_PATCHES)/.unpacked
-	-@echo patched-source=$(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE)
-	-@ls $(UBOOT_DIR)/.patched.$(UBOOT_PATCH_SOURCE)
-	-@echo configured=$(UBOOT_BUILD_DIR)/.configured
-	-@ls $(UBOOT_BUILD_DIR)/.configured
-	-@echo mkimage=$(MKIMAGE_BINLOC)
-	-@ls $(MKIMAGE_BINLOC)
-	-@echo u-boot.bin=$(UBOOT_BUILD_DIR)/u-boot.bin
-	-@ls $(UBOOT_BUILD_DIR)/u-boot.bin
-	-@echo binaries-u-boot.bin=$(BINARIES_DIR)/$(UBOOT_BIN)
-	-@ls $(BINARIES_DIR)/$(UBOOT_BIN)
-	-@echo tftpboot=/tftpboot/$(UBOOT_BIN)
-	-@ls /tftpboot/$(UBOOT_BIN)
-	-@echo "mkimage = $(MKIMAGE)"
-	-@ls $(MKIMAGE)
-	-@echo "u-boot script=$(UBOOT_SCR).$(PROJECT)"
-	-@ls $(UBOOT_SCR).$(PROJECT)
-	-@echo "u-boot script (ASCII)=$(UBOOT_SCR)"
-	-@ls $(UBOOT_SCR)
-	-@echo "mkimage binary=$(MKIMAGE_BINLOC)"
-	-@ls $(MKIMAGE_BINLOC)
+u-boot-status:
+	@echo
+	@echo U_BOOT_INC_CONF_FILE = $(U_BOOT_INC_CONF_FILE)
+	@echo
+	@echo BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE = $(BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE)
+	@echo BR2_TARGET_U_BOOT_CONFIG_BOARD = $(BR2_TARGET_U_BOOT_CONFIG_BOARD)
+	@echo BR2_TARGET_U_BOOT_SERVERIP = $(BR2_TARGET_U_BOOT_SERVERIP)
+	@echo BR2_TARGET_U_BOOT_IPADDR = $(BR2_TARGET_U_BOOT_IPADDR)
+	@echo BR2_TARGET_U_BOOT_GATEWAY = $(BR2_TARGET_U_BOOT_GATEWAY)
+	@echo BR2_TARGET_U_BOOT_NETMASK = $(BR2_TARGET_U_BOOT_NETMASK)
+	@echo BR2_TARGET_U_BOOT_ETH0ADDR = $(BR2_TARGET_U_BOOT_ETH0ADDR)
+	@echo BR2_TARGET_U_BOOT_ETH1ADDR = $(BR2_TARGET_U_BOOT_ETH1ADDR)
+	@echo BR2_TARGET_U_BOOT_BOOTARGS = $(BR2_TARGET_U_BOOT_BOOTARGS)
+	@echo BR2_TARGET_U_BOOT_BOOTCMD = $(BR2_TARGET_U_BOOT_BOOTCMD)
+	@echo
+	@exit 0

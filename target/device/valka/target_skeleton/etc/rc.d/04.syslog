@@ -1,0 +1,24 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Starting syslogd: "
+	if [ ! -x ${syslogd_program} ]; then
+		log_error "Missing 'syslogd' program (${syslogd_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	if ${syslogd_program}; then
+		echo "Ok"
+	else
+		echo "Failed"
+		exit 1
+	fi
+}
+
+stop() {
+	return 0
+}
+
+rc_run_command "$1"

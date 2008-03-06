@@ -1,0 +1,31 @@
+#!/bin/sh
+. /etc/rc.subr
+
+start() {
+	if checkyesno ${portmap_enable}; then
+		if [ ! -x ${portmap_program} ]; then
+			log_error "Missing 'portmap' program (${portmap_program})"
+			echo "Failed"
+			return 1
+		fi
+
+		echo -n " * Starting portmap: "
+		if ${portmap_program} ${portmap_flags}; then
+			mkdir -p /var/lock/subsys
+			touch /var/lock/subsys/portmap
+			echo "Ok"
+		else
+			echo "Failed"
+		fi
+	fi
+}
+
+
+stop() {
+	echo -n " * Stopping portmap: "
+	killall portmap
+	rm -rf /var/lock/subsys > /dev/null 2>&1
+	echo "Ok"
+}
+
+rc_run_command "$1"

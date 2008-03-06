@@ -1,0 +1,19 @@
+#!/bin/sh
+
+
+case $1 in
+    deconfig)
+	ifconfig $interface 0.0.0.0
+	;;
+    bound|renew)
+	ifconfig $interface $ip netmask $subnet broadcast $broadcast
+	route add default gw $router
+	echo -n > /etc/resolv.conf
+	[ -z "$domain" ] || echo "domain $domain" >> /etc/resolv.conf
+	for n in $dns; do echo "nameserver $n" >> /etc/resolv.conf; done
+	if [ ! -z "$hostname" ]; then
+		echo $hostname > /etc/hostname
+		hostname $hostname
+	fi
+	;;
+esac

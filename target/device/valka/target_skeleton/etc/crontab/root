@@ -1,0 +1,2 @@
+#min	hour	mday	month	wday	command
+1	3	*	*	*	echo "Hello" >> /var/crondtest

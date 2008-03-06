@@ -1,0 +1,101 @@
+#!/bin/ash
+
+if [ ! -x "/etc/default/rc.conf" ]; then
+	echo "ERROR: /etc/default/rc.conf missing!"
+	exit 1 
+fi
+. /etc/default/rc.conf
+
+if [ -x /etc/rc.conf ]; then
+	. /etc/rc.conf
+fi
+
+### Check if $1 is yes or no/notset
+checkyesno() {
+	case $1 in
+
+	# "yes", "true", "on", or "1" 
+	[Yy][Ee][Ss]|[Tt][Rr][Uu][Ee]|[Oo][Nn]|1)
+		return 0      
+		;;            
+	# "no", "false", "off", or "0" 
+	[Nn][Oo]|[Ff][Aa][Ll][Ss][Ee]|[Oo][Ff][Ff]|0)
+		return 1      
+		;;            
+	esac
+	return 1
+}
+
+### Run command 
+rc_run_command() {
+	if [ "$2" != "" ]; then                      
+		_name=$2                             
+		eval _enable=\$${_name}_enable
+		if ! checkyesno "$_enable"; then
+			return 0
+		fi
+	fi 
+
+	case $1 in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart)
+		stop
+		start
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
+	esac
+}
+
+### Mount fs
+mount_fs() {
+	if [ "$1" = "" -o "$2" = "" -o "$3" = "" ]; then
+		return;       
+	fi
+
+	echo -n " $2"
+	if [ "$4" = "" ]; then
+		if ! ${mount_program} -t $3 $1 $2; then
+			echo -n "=failed"
+			return 1
+		fi
+	else
+		if ! ${mount_program} -t $3 -o $4 $1 $2; then
+			echo -n "=failed"
+		fi
+	fi
+	return 0
+}
+
+mkdir_fs() {
+	if [ "$1" = "" ]; then
+		return 1;
+	fi
+
+	if ! ${mkdir_program} $1 2>/dev/null; then
+		log_error "mkdir $1 failed"
+		return 1
+	fi
+
+	return 0
+}
+
+### Kill process based on pidfile
+killpid() {
+	if [ ! -f "$1" ]; then
+		return 0
+	fi
+	read _pid < $1
+	${kill_program} ${_pid} > /dev/null 2>&1
+}
+
+## Log error
+log_error() {
+	echo "$1" | logger -p error
+}

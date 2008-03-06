@@ -1,0 +1,27 @@
+#!/bin/ash
+. /etc/rc.subr
+
+echo "Running startup scripts..."
+for s in /etc/rc.d/*; do
+	if [ -x $s ]; then
+		$s start
+	fi
+done
+
+### Run other start scripts (the linux init.d type scripts) ####
+echo "Running init.d/ startup scripts..."
+for s in /etc/init.d/S*; do
+	if [ -x $s ]; then
+		$s start
+	fi
+done
+
+### Run rc.local if it exists ##################################
+if [ -x /etc/rc.local ]; then
+	echo "Running local startup script..."
+	. /etc/rc.local
+fi
+
+echo
+echo "ValkaSys ready"
+echo

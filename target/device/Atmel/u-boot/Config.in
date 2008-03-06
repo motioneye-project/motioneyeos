@@ -1,44 +1,103 @@
-config BR2_TARGET_UBOOT
-	bool "Das U-Boot Boot Monitor"
-	depends on BR2_TARGET_AT91
-	depends on !BR2_TARGET_AT91SAM9260PF
+config BR2_TARGET_U_BOOT
+	bool "u-boot"
 	default n
+	depends on BR2_avr32 || BR2_arm || BR2_armeb || BR2_i386 || BR2_powerpc || BR2_m68k || BR2_mips || BR2_nios2
 	help
-	  Build "Das U-Boot" Boot Monitor
+	  U-Boot, the universal boot loader for multiple platforms and target
+	  boards.
 
-config BR2_TARGET_UBOOT_SERVERIP
-	string "server ip"
-	depends on BR2_TARGET_UBOOT
-	default "10.175.196.221"
+	  http://www.denx.de/wiki/UBoot/
+
+config BR2_TARGET_U_BOOT_CONFIG_HEADER_FILE
+	string "U-Boot config header file"
+	depends on BR2_TARGET_U_BOOT
 	help
-	  TFTP server ip address
+	  Set this variable to a file containing a U-Boot configuration for the
+	  target board. This file will be copied into the U-Boot directory
+	  include/configs.
 
-config BR2_TARGET_UBOOT_IPADDR
-	string "ip address"
-	depends on BR2_TARGET_UBOOT
-	default "10.175.196.18"
+config BR2_TARGET_U_BOOT_CONFIG_BOARD
+	string "U-Boot target board configuration"
+	depends on BR2_TARGET_U_BOOT
 	help
-	  TFTP server ip address
+	  Set this variable to the target board you want to configure U-Boot
+	  for. This will use the default options for this board in U-Boot and
+	  build accordingly.
 
-config BR2_TARGET_UBOOT_GATEWAY
-	string "gateway ip"
-	depends on BR2_TARGET_UBOOT
-	default "10.175.196.1"
+	  For example "atstk1002_config" for ATSTK1000 with ATSTK1002 top
+	  module for the AVR32 starter kit.
+
+config BR2_TARGET_U_BOOT_SERVERIP
+	string "Server IP"
+	depends on BR2_TARGET_U_BOOT
+	default "192.168.0.1"
 	help
-	  Gateway ip address
+	  The IP address for the remote server providing TFTP services.
 
-config BR2_TARGET_UBOOT_NETMASK
+config BR2_TARGET_U_BOOT_IPADDR
+	string "Target IP address"
+	depends on BR2_TARGET_U_BOOT
+	default "192.168.0.42"
+	help
+	  Target board IP address, only set this if you intend to use a fixed
+	  address (i.e. no DHCP). A blanc target IP address will allow the
+	  board to use DHCP.
+
+config BR2_TARGET_U_BOOT_GATEWAY
+	string "Gateway IP"
+	depends on BR2_TARGET_U_BOOT && BR2_TARGET_U_BOOT_IPADDR != ""
+	default "192.168.0.1"
+	help
+	  Set the gateway IP address if you need to connect to a machine
+	  outside the netmask for the network.
+
+config BR2_TARGET_U_BOOT_NETMASK
 	string "netmask"
-	depends on BR2_TARGET_UBOOT
+	depends on BR2_TARGET_U_BOOT && BR2_TARGET_U_BOOT_IPADDR != ""
 	default "255.255.255.0"
 	help
-	  Network Mask
+	  Network mask for the target board network.
 
-config BR2_TARGET_UBOOT_ETHADDR
-	string "Ethernet address"
-	depends on BR2_TARGET_UBOOT
-	default "04:25:fe:ed:00:18"
+config BR2_TARGET_U_BOOT_ETH0ADDR
+	string "Ethernet 0 address"
+	depends on BR2_TARGET_U_BOOT
 	help
-	  Target ip address, this should be changed for production units
+	  Target board MAC address for interface 0. You should have a MAC
+	  address range provided by the company who made you MAC hardware.
 
+config BR2_TARGET_U_BOOT_ETH1ADDR
+	string "Ethernet 1 address"
+	depends on BR2_TARGET_U_BOOT
+	help
+	  Target board MAC address for interface 1. You should have a MAC
+	  address range provided by the company who made you MAC hardware.
 
+config BR2_TARGET_U_BOOT_BOOTARGS
+	string "Boot arguments"
+	depends on BR2_TARGET_U_BOOT
+	default "console=ttyS0 root=/dev/mtdblock1 rootfstype=jffs2"
+	help
+	  Set the boot arguments in U-Boot to let it boot the way you prefer by
+	  default. Typoes here will result in a non-booting target board.
+
+	  Example booting from MMC/SD-card:
+	    console=ttyS0 root=/dev/mmcblk0p1
+
+	  Example booting from flash devices (NOR, NAND, DataFlash, etc):
+	    console=ttyS0 root=/dev/mtdblock1 rootfstype=jffs2
+
+config BR2_TARGET_U_BOOT_BOOTCMD
+	string "Boot command"
+	depends on BR2_TARGET_U_BOOT
+	default "fsload /boot/$(LINUX26_FORMAT); bootm"
+	help
+	  Set the boot command in U-Boot which specifies how U-Boot should load
+	  your kernel image, or if you want to do other commands automatically
+	  when U-Boot starts.
+
+	  Loading a kernel from MMC/SD-card:
+	    mmcinit; ext2load mmc 0:1 <RAM address>
+	    /boot/$(BR2_PACKAGE_LINUX_FORMAT); bootm
+
+	  Loading a kernel from flash devices (NOR, NAND, DataFlash, etc):
+	    fsload <RAM address> /boot/$(BR2_PACKAGE_LINUX_FORMAT); bootm

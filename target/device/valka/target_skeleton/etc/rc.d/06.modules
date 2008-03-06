@@ -1,0 +1,31 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	if checkyesno ${modules_enable}; then
+		if [ ! -x "${modprobe_program}" -o ! -f "/etc/modules" ]; then
+			echo "Missing 'modprobe_program' program (${modprobe_program})"
+			exit 1
+		else
+			echo
+		fi
+
+		echo -n "Loading modules: " 
+		grep '^[^#]' "/etc/modules" | \
+		while read module args; do
+			[ "$module" ] || continue
+			if ${modprobe_program} $module $args; then
+				echo -n "$module "
+			else
+				echo -n "$module=failed "
+			fi
+		done
+		echo ""
+	fi
+}
+
+stop() {
+	return 0
+}
+
+rc_run_command "$1"

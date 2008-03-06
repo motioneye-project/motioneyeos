@@ -1,0 +1,7 @@
+#!/bin/ash
+. /etc/rc.subr
+
+echo "Shutting down services..."
+for s in $(ls /etc/rc.d | sort -r); do
+	/etc/rc.d/$s stop
+done

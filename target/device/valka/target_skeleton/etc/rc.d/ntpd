@@ -1,0 +1,24 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	if [ ! -x ${ntpd_program} ]; then
+		log_error "Missing 'ntpd' program (${ntpd_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	echo -n " * Starting ntpd: "
+	if ${ntpd_program} -c ${ntpd_config} -p ${ntpd_pidfile} ${ntpd_flags}; then
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+stop() {
+	echo " * Stopping ntpd..."
+	killpid ${ntpd_pidfile}
+}
+
+rc_run_command "$1" "ntpd"

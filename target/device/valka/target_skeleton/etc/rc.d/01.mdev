@@ -1,0 +1,23 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Starting mdev: "
+	set -e
+	trap 'echo "Failed"' EXIT
+	${ln_program} -s /proc/self/fd /dev/fd
+	${ln_program} -s /proc/self/fd/0 /dev/stdin
+	${ln_program} -s /proc/self/fd/1 /dev/stdout
+	${ln_program} -s /proc/self/fd/2 /dev/stderr
+	${ln_program} -s /proc/kcore /dev/core
+	echo /sbin/mdev > /proc/sys/kernel/hotplug
+	${mdev_program} ${mdev_flags}
+	trap - EXIT
+	echo "Ok"
+}
+
+stop() {
+	return 0;
+}
+
+rc_run_command "$1"

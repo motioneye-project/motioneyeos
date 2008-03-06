@@ -1,0 +1,32 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Network interfaces: "
+	if checkyesno ${eth0_enable}; then
+		if ${ifup_program} eth0 > /dev/null 2>&1; then
+			echo -n "eth0 "
+		else
+			echo -n "eth0=failed "
+		fi
+	fi
+	if checkyesno ${eth1_enable}; then
+		if ${ifup_program} eth1 > /dev/null 2>&1; then
+			echo -n "eth1"
+		else
+			echo -n "eth1=failed"
+		fi
+	fi
+	echo ""
+}
+
+stop() {
+	echo -n " * Stopping network interfaces: "
+	if ${ifdown_program} -fa > /dev/null 2>&1; then
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+rc_run_command "$1"

@@ -1,12 +1,6 @@
-ifeq ($(BOARD_NAME),atstk1002)
-#BR2_PACKAGE_BUSYBOX_CONFIG=$(ATSTK1000_PATH)/busybox.config
-#UCLIBC_CONFIG_FILE=target/device/Atmel/uClibc.config.$(ARCH)
+ifeq ($(strip $(BR2_TARGET_AVR32_ATSTK1002)),y)
+ATSTK1002_PATH=target/device/Atmel/atstk1002
 
-TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
-TARGET_DEVICE_TABLE=$(BOARD_PATH)/device_table.txt
-
-ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
-#LINUX26_FORMAT=uImage
-#LINUX26_KCONFIG=$(BOARD_PATH)/linux26.atstk1002.config
-endif
+TARGET_SKELETON=$(ATSTK1002_PATH)/target_skeleton
+TARGET_DEVICE_TABLE=$(ATSTK1002_PATH)/device_table.txt
 endif

@@ -1,0 +1,33 @@
+menuconfig BR2_TARGET_VALKA
+	bool "ValkaSys"
+	depends on BR2_avr32
+	default n
+
+if BR2_TARGET_VALKA
+
+choice
+	prompt "Controller board"
+	depends BR2_TARGET_VALKA
+	help
+	  Valka Controller Board to build for
+
+config BR2_TARGET_VALKA_V100SC2
+	bool "V100SC2 (Based on NGW100)"
+	depends BR2_TARGET_VALKA
+	help
+	  Board based on NGW100
+
+endchoice
+
+config BR2_BOARD_NAME
+	string
+	default "v100sc2"	if	BR2_TARGET_VALKA_V100SC2
+
+config BR2_BOARD_PATH
+	string "Board repository"
+	depends on BR2_TARGET_VALKA
+	default "target/device/valka/$(BR2_BOARD_NAME)"
+	help
+	  Top directory of Valka board configurations
+
+endif
