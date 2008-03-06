@@ -1,0 +1,67 @@
+--- source/tools/genccode/Makefile.in	2007-12-12 13:57:28.000000000 -0500
++++ source/tools/genccode/Makefile.in	2008-02-07 14:37:56.000000000 -0500
+@@ -31,7 +31,7 @@ ifneq ($(top_builddir),$(top_srcdir))
+ CPPFLAGS += -I$(top_builddir)/common
+ endif
+ CPPFLAGS += -I$(top_srcdir)/common -I$(srcdir)/../toolutil
+-LIBS = $(LIBICUTOOLUTIL) $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M)
++LIBS = $(LIBICUTOOLUTIL) $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M) -lsupc++ -lstdc++
+ 
+ OBJECTS = genccode.o
+ 
+--- source/tools/gencmn/Makefile.in	2007-12-12 13:57:28.000000000 -0500
++++ source/tools/gencmn/Makefile.in	2008-02-07 14:37:56.000000000 -0500
+@@ -31,7 +31,7 @@ ifneq ($(top_builddir),$(top_srcdir))
+ CPPFLAGS += -I$(top_builddir)/common
+ endif
+ CPPFLAGS += -I$(top_srcdir)/common -I$(srcdir)/../toolutil
+-LIBS = $(LIBICUTOOLUTIL) $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M)
++LIBS = $(LIBICUTOOLUTIL) $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M) -lsupc++ -lstdc++
+ 
+ OBJECTS = gencmn.o
+
+--- source/tools/genrb/Makefile.in	2007-12-12 13:57:28.000000000 -0500
++++ source/tools/genrb/Makefile.in	2008-02-07 14:37:56.000000000 -0500
+@@ -55,7 +55,7 @@ ifneq ($(top_builddir),$(top_srcdir))
+ CPPFLAGS += -I$(top_builddir)/common
+ endif
+ CPPFLAGS += -I$(top_srcdir)/common -I$(top_srcdir)/i18n -I$(srcdir)/../toolutil
+-LIBS = $(LIBICUI18N) $(LIBICUTOOLUTIL) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M)
++LIBS = $(LIBICUI18N) $(LIBICUTOOLUTIL) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M) -lsupc++ -lstdc++
+ 
+ OBJECTS = errmsg.o genrb.o parse.o read.o reslist.o ustr.o rbutil.o \
+ wrtjava.o rle.o wrtxml.o prscmnts.o
+
+--- source/tools/pkgdata/Makefile.in	2007-12-12 13:57:28.000000000 -0500
++++ source/tools/pkgdata/Makefile.in	2008-02-07 14:37:56.000000000 -0500
+@@ -35,7 +35,7 @@ CPPFLAGS += -I$(top_builddir)/common
+ endif
+ CPPFLAGS += -I$(top_srcdir)/common -I$(srcdir)/../toolutil
+ DEFS += -DUDATA_SO_SUFFIX=\".$(SO)\" -DSTATIC_O=\"$(STATIC_O)\"
+-LIBS = $(LIBICUTOOLUTIL) $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M)
++LIBS = $(LIBICUTOOLUTIL) $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M) -lsupc++ -lstdc++
+ 
+ OBJECTS = pkgdata.o pkgtypes.o make.o dllmode.o cmnmode.o filemode.o sttcmode.o winmode.o
+ 
+--- source/samples/date/Makefile.in	2007-12-12 13:57:28.000000000 -0500
++++ source/samples/date/Makefile.in	2008-02-07 14:37:56.000000000 -0500
+@@ -21,7 +21,7 @@ CLEANFILES = *~ $(DEPS)
+ TARGET = icudate$(EXEEXT)
+ 
+ CPPFLAGS += -I$(top_builddir)/common -I$(top_srcdir)/common -I$(top_srcdir)/i18n
+-LIBS = $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M)
++LIBS = $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M) -lsupc++ -lstdc++
+ 
+ OBJECTS = uprint.o date.o
+ 
+--- source/samples/cal/Makefile.in	2007-12-12 13:57:28.000000000 -0500
++++ source/samples/cal/Makefile.in	2008-02-07 14:37:56.000000000 -0500
+@@ -21,7 +21,7 @@ CLEANFILES = *~ $(DEPS)
+ TARGET = icucal$(EXEEXT)
+ 
+ CPPFLAGS += -I$(top_builddir)/common -I$(top_srcdir)/common -I$(top_srcdir)/i18n
+-LIBS = $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M)
++LIBS = $(LIBICUI18N) $(LIBICUUC) $(DEFAULT_LIBS) $(LIB_M) -lsupc++ -lstdc++
+ 
+ OBJECTS = uprint.o cal.o
+ 
