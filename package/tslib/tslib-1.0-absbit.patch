@@ -1,0 +1,11 @@
+--- a/plugins/input-raw.c	2008-02-28 14:25:33.000000000 -0500
++++ b/plugins/input-raw.c	2008-02-28 14:27:25.000000000 -0500
+@@ -49,7 +49,7 @@ static int check_fd(struct tslib_input *
+ 	struct tsdev *ts = i->module.dev;
+ 	int version;
+ 	u_int32_t bit;
+-	u_int64_t absbit;
++	u_int32_t absbit;
+ 
+ 	if (! ((ioctl(ts->fd, EVIOCGVERSION, &version) >= 0) &&
+ 		(version == EV_VERSION) &&

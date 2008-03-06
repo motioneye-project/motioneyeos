@@ -1,0 +1,11 @@
+--- a/plugins/input-raw.c	2008-01-25 14:02:23.000000000 +0100
++++ b/plugins/input-raw.new.c	2008-01-25 14:02:50.000000000 +0100
+@@ -58,8 +58,6 @@ static int check_fd(struct tslib_input *
+ 		(ioctl(ts->fd, EVIOCGBIT(EV_ABS, sizeof(absbit) * 8), &absbit) >= 0) &&
+ 		(absbit & (1 << ABS_X)) &&
+ 		(absbit & (1 << ABS_Y)) && (absbit & (1 << ABS_PRESSURE)))) {
+-		fprintf(stderr, "selected device is not a touchscreen I understand\n");
+-		return -1;
+ 	}
+ 
+ 	if (bit & (1 << EV_SYN))
