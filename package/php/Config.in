@@ -31,24 +31,4 @@ config BR2_PACKAGE_PHP_FASTCGI
         help
           fast cgi interface for php
 
-config BR2_PACKAGE_PHP_OPENSSL
-        bool "openssl support"
-        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_OPENSSL
-        default y
-        help
-          openssl support
-
-config BR2_PACKAGE_PHP_XML2
-        bool "xml2 support"
-        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_LIBXML2
-        default y
-        help
-          xml support
-
-config BR2_PACKAGE_PHP_ZLIB
-        bool "zlib support"
-        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_ZLIB
-        default y
-        help
-          zlib support
-
+source "package/php/Config.ext"

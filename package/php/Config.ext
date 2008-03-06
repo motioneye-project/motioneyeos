@@ -1,0 +1,173 @@
+menu "PHP Extensions"
+
+config BR2_PACKAGE_PHP_EXT_SOCKETS
+	bool "socket"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  Sockets support
+
+config BR2_PACKAGE_PHP_EXT_POSIX
+	bool "posix"
+	depends on BR2_PACKAGE_PHP
+	default y
+	help
+	  POSIX support
+
+config BR2_PACKAGE_PHP_EXT_SPL
+	bool "SPL"
+	depends on BR2_PACKAGE_PHP
+	default y
+	help
+	  SPL support
+
+config BR2_PACKAGE_PHP_EXT_SESSION
+	bool "Session"
+	depends on BR2_PACKAGE_PHP
+	default y
+	help
+	  Session support
+
+config BR2_PACKAGE_PHP_EXT_OPENSSL
+        bool "openssl"
+        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_OPENSSL
+        default n
+        help
+          openssl support
+
+config BR2_PACKAGE_PHP_EXT_LIBXML2
+        bool "xml2"
+        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_LIBXML2
+        default y
+        help
+          xml support
+
+config BR2_PACKAGE_PHP_EXT_ZLIB
+        bool "zlib"
+        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_ZLIB
+        default y
+        help
+          zlib support
+
+config BR2_PACKAGE_PHP_EXT_EXIF
+	bool "EXIF"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  EXIF support
+
+config BR2_PACKAGE_PHP_EXT_FTP
+	bool "FTP"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  FTP Support
+
+config BR2_PACKAGE_PHP_EXT_GETTEXT
+	bool "gettext"
+	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_GETTEXT
+	default n
+	help
+	  gettext support
+
+config BR2_PACKAGE_PHP_EXT_GMP
+	bool "gmp"
+	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_LIBGMP
+	default n
+	help
+	  GMP support
+
+config BR2_PACKAGE_PHP_EXT_JSON
+	bool "JSON"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  JSON support
+
+config BR2_PACKAGE_PHP_EXT_READLINE
+	bool "readline"
+	depends on BR2_PACKAGE_PHP && (BR2_PACKAGE_PHP_CLI || BR2_PACKAGE_PHP_CGI) && BR2_READLINE
+	default n
+	help
+	  readline support
+
+config BR2_PACKAGE_PHP_EXT_NCURSES
+	bool "ncurses"
+	depends on BR2_PACKAGE_PHP && (BR2_PACKAGE_PHP_CLI || BR2_PACKAGE_PHP_CGI) && BR2_PACKAGE_NCURSES
+	default n
+	help
+	  ncurses support
+
+config BR2_PACKAGE_PHP_EXT_SYSVMSG
+	bool "sysvmsg - System V Message queue"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  System V Message queue support
+
+config BR2_PACKAGE_PHP_EXT_SYSVSEM
+	bool "sysvsem - System V Semaphores"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  System V Sempahore support
+
+config BR2_PACKAGE_PHP_EXT_SYSVSHM
+	bool "sysvshm - System V Shared memory"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  System V Shared memory support
+
+config BR2_PACKAGE_PHP_EXT_ZIP
+	bool "zip"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  Zip Support
+
+config BR2_PACKAGE_PHP_EXT_FILTER
+	bool "filter"
+	depends on BR2_PACKAGE_PHP
+	default n
+	help
+	  Input filter support
+
+comment "Database extensions"
+
+config BR2_PACKAGE_PHP_EXT_SQLITE
+	bool "sqlite"
+	depends on BR2_PACKAGE_PHP
+	default y
+	help
+	  SQLite
+
+config BR2_PACKAGE_PHP_EXT_SQLITE_UTF8
+	bool "sqlite UTF8 support"
+	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_PHP_EXT_SQLITE
+	default n
+	help
+	  UTF8 Support for sqlite
+
+config BR2_PACKAGE_PHP_EXT_PDO
+	bool "PDO"
+	depends on BR2_PACKAGE_PHP
+	default y
+	help
+	  PDO support
+
+config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
+	bool "PDO_SQLite"
+	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_PHP_EXT_PDO
+	default y
+	help
+	  SQLite support for PDO
+
+config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
+	bool "PDO_MySQL"
+	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_PHP_EXT_PDO
+	default n
+	help
+	  MySQL support for PDO
+
+endmenu
