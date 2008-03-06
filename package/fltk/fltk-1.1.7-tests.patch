@@ -1,0 +1,11 @@
+--- a/test/Makefile	2006-01-15 13:36:16.000000000 -0500
++++ b/test/Makefile	2008-02-12 13:34:25.000000000 -0500
+@@ -230,7 +230,7 @@ uninstall-osx:
+ # FLUID file rules
+ .fl.cxx .fl.h:	../fluid/fluid$(EXEEXT)
+ 	echo Generating $<...
+-	../fluid/fluid$(EXEEXT) -c $<
++	/usr/bin/fluid$(EXEEXT) -c $<
+ 
+ # All demos depend on the FLTK library...
+ $(ALL): ../lib/$(LIBNAME)
