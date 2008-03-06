@@ -1,0 +1,11 @@
+--- a/Makefile	2008-02-18 09:39:41.000000000 -0500
++++ b/Makefile	2008-02-18 09:43:21.000000000 -0500
+@@ -75,7 +75,7 @@ BTARGET  = kwdhash.gen version.gen versi
+ 	   ldlinux.bss ldlinux.sys ldlinux.bin \
+ 	   pxelinux.0 isolinux.bin isolinux-debug.bin \
+ 	   extlinux.bin extlinux.bss extlinux.sys
+-BOBJECTS = $(BTARGET) mbr/mbr.bin dos/syslinux.com win32/syslinux.exe \
++BOBJECTS = $(BTARGET) mbr/mbr.bin dos/syslinux.com  \
+ 	memdisk/memdisk memdump/memdump.com
+ # BESUBDIRS and IESUBDIRS are "early", i.e. before the root; BSUBDIRS
+ # and ISUBDIRS are "late", after the root.
