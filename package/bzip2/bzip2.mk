@@ -29,7 +29,7 @@ endif
 	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(BZIP2_DIR)/Makefile-libbz2_so
 	touch $@
 
-$(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VERSION): $(BZIP2_DIR)/.unpacked
+$(STAGING_DIR)/usr/lib/libbz2.so.$(BZIP2_VERSION): $(BZIP2_DIR)/.unpacked
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) \
 		-C $(BZIP2_DIR) -f Makefile-libbz2_so
@@ -37,17 +37,17 @@ $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VERSION): $(BZIP2_DIR)/.unpacked
 	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) \
 		-C $(BZIP2_DIR) libbz2.a
 	cp $(BZIP2_DIR)/bzlib.h $(STAGING_DIR)/usr/include/
-	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VERSION) $(STAGING_DIR)/lib/
+	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VERSION) $(STAGING_DIR)/usr/lib/
 	cp $(BZIP2_DIR)/libbz2.a $(STAGING_DIR)/usr/lib/
 	(cd $(STAGING_DIR)/usr/lib/; \
 		ln -snf ../../lib/libbz2.so.$(BZIP2_VERSION) libbz2.so; \
 	)
-	(cd $(STAGING_DIR)/lib; \
+	(cd $(STAGING_DIR)/usr/lib; \
 		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
 		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1; \
 	)
 
-$(BZIP2_BINARY): $(STAGING_DIR)/lib/libbz2.so.$(BZIP2_VERSION)
+$(BZIP2_BINARY): $(STAGING_DIR)/usr/lib/libbz2.so.$(BZIP2_VERSION)
 	$(TARGET_CONFIGURE_OPTS) \
 	$(MAKE) CC=$(TARGET_CC) -C $(BZIP2_DIR) bzip2 bzip2recover
 	touch -c $@
@@ -83,10 +83,10 @@ endif
 	rm -rf $(TARGET_DIR)/share/locale
 	rm -rf $(TARGET_DIR)/usr/share/doc
 
-$(TARGET_DIR)/usr/lib/libbz2.a: $(STAGING_DIR)/lib/libbz2.a
+$(TARGET_DIR)/usr/lib/libbz2.a: $(STAGING_DIR)/usr/lib/libbz2.a
 	mkdir -p $(TARGET_DIR)/usr/include
 	cp $(STAGING_DIR)/usr/include/bzlib.h $(TARGET_DIR)/usr/include/
-	cp $(STAGING_DIR)/lib/libbz2.a $(TARGET_DIR)/usr/lib/
+	cp $(STAGING_DIR)/usr/lib/libbz2.a $(TARGET_DIR)/usr/lib/
 	rm -f $(TARGET_DIR)/lib/libbz2.so
 	(cd $(TARGET_DIR)/usr/lib; \
 		ln -fs /usr/lib/libbz2.so.1.0 libbz2.so; \
