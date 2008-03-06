@@ -1,0 +1,7 @@
+config BR2_PACKAGE_OPENMOTIF
+	bool "openmotif"
+	default n
+	help
+	  OpenMotif is the publicly licensed version of Motif, the industry standard user interface toolkit for UNIX systems.
+
+	  ftp://ftp.ics.com/openmotif/2.3/2.3.0

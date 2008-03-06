@@ -1,0 +1,758 @@
+diff -rup a/lib/Xm/BaseClass.c b/lib/Xm/BaseClass.c
+--- a/lib/Xm/BaseClass.c	2002-01-10 15:56:19.000000000 -0500
++++ b/lib/Xm/BaseClass.c	2008-02-27 12:56:46.000000000 -0500
+@@ -56,7 +56,7 @@ static char rcsid[] = "$TOG: BaseClass.c
+ #include <Xm/ExtObjectP.h>
+ #include <Xm/Screen.h>
+ #include <Xm/VendorSEP.h>
+-#include <Xm/XmosP.h>		/* for bzero */
++#include <Xm/XmosP.h>		
+ #include "BaseClassI.h"
+ #include "CallbackI.h"
+ #include "DropSMgrI.h"
+diff -rup a/lib/Xm/Color.c b/lib/Xm/Color.c
+--- a/lib/Xm/Color.c	2002-01-10 15:56:22.000000000 -0500
++++ b/lib/Xm/Color.c	2008-02-27 12:57:01.000000000 -0500
+@@ -50,7 +50,7 @@
+ #include <Xm/ManagerP.h>
+ #include <Xm/PrimitiveP.h>
+ #include <Xm/XmP.h>
+-#include <Xm/XmosP.h>		/* for bzero */
++#include <Xm/XmosP.h>		
+ #include "ColorI.h"
+ #include "ImageCachI.h"
+ #include "MessagesI.h"
+diff -rup a/lib/Xm/ComboBox.c b/lib/Xm/ComboBox.c
+--- a/lib/Xm/ComboBox.c	2005-05-18 07:43:44.000000000 -0400
++++ b/lib/Xm/ComboBox.c	2008-02-27 12:57:20.000000000 -0500
+@@ -45,7 +45,7 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <Xm/XmP.h>
+-#include <Xm/XmosP.h>		/* for bzero et al */
++#include <Xm/XmosP.h>		
+ #include <X11/Shell.h>
+ #include <X11/cursorfont.h>
+ #include <X11/keysym.h>
+@@ -1431,7 +1431,7 @@ ComboBoxParentProcess(Widget		  wid,
+ 	    {
+ 	      XmListCallbackStruct call_data;
+ 	
+-	      bzero((char*) &call_data, sizeof(XmListCallbackStruct));
++	      memset((char*) &call_data, 0, sizeof(XmListCallbackStruct));
+ 	      if (pos)
+ 		{
+ 		  call_data.item		    = XmStringCopy(item);
+diff -rup a/lib/Xm/Container.c b/lib/Xm/Container.c
+--- a/lib/Xm/Container.c	2005-07-13 05:25:16.000000000 -0400
++++ b/lib/Xm/Container.c	2008-02-27 12:57:46.000000000 -0500
+@@ -79,7 +79,7 @@
+ #include "CareVisualTI.h"
+ #include "MessagesI.h"
+ #include "ClipWindTI.h"
+-#include <Xm/XmosP.h>                /* for bzero et al */
++#include <Xm/XmosP.h>                
+ 
+ #define	ZERO_DIM	0
+ #define	DEFAULT_INDENTATION	40
+@@ -9417,7 +9417,7 @@ ScrollProc(
+ 	/* get the current position */
+ 	nav_data.valueMask =
+ 	    NavValue | NavIncrement | NavMinimum | NavMaximum | NavSliderSize;
+-	bzero(&nav_data,sizeof(XmNavigatorDataRec));
++	memset(&nav_data, 0, sizeof(XmNavigatorDataRec));
+ 	navigatorTrait->getValue(*nav, &nav_data);
+ 
+ 	/* compute the new position */
+diff -rup a/lib/Xm/DropSMgr.c b/lib/Xm/DropSMgr.c
+--- a/lib/Xm/DropSMgr.c	2006-04-20 07:26:07.000000000 -0400
++++ b/lib/Xm/DropSMgr.c	2008-02-27 12:58:12.000000000 -0500
+@@ -98,7 +98,7 @@ static char rcsid[] = "$TOG: DropSMgr.c 
+ #include <Xm/ManagerP.h>
+ #include <Xm/DragC.h>
+ #include <Xm/DropTrans.h>
+-#include <Xm/XmosP.h>		/* for bzero */
++#include <Xm/XmosP.h>		
+ #include "XmI.h"
+ #include "DisplayI.h"
+ #include "DragBSI.h"
+@@ -2401,7 +2401,7 @@ PutDSToStream(
+ 	 * that the widget does not define resources all of the required
+ 	 * animation resources.
+ 	 */
+-	bzero(((void *) &iccInfo), sizeof(iccInfo));
++	memset(((void *) &iccInfo), 0, sizeof(iccInfo));
+ 
+ 	if (last)
+ 		tType |= XmDSM_T_CLOSE;
+@@ -3283,7 +3283,7 @@ CreateInfo(
+ 	size_t size;
+ 
+ 	/* zero out the working info struct */
+-	bzero((void *)(&fullInfoRec), sizeof(fullInfoRec));
++	memset((void *)(&fullInfoRec), 0, sizeof(fullInfoRec));
+ 
+ 	/* Load that puppy */
+ 	SetDSLeaf(&fullInfoRec, True);
+@@ -3448,7 +3448,7 @@ int index;
+ 	/*
+ 	 * Clear the full info back to the default (kind of) state.
+ 	 */
+-	bzero((void *)(full_info), sizeof(XmDSFullInfoRec));
++	memset((void *)(full_info), 0, sizeof(XmDSFullInfoRec));
+ 	full_info->animation_pixmap = XmUNSPECIFIED_PIXMAP;
+ 	full_info->animation_mask = XmUNSPECIFIED_PIXMAP;
+ 
+diff -rup a/lib/Xm/FileSB.c b/lib/Xm/FileSB.c
+--- a/lib/Xm/FileSB.c	2005-12-27 06:14:13.000000000 -0500
++++ b/lib/Xm/FileSB.c	2008-02-27 12:49:09.000000000 -0500
+@@ -2643,7 +2643,7 @@ SetValues(
+     *   picked-up there by the XmNqualifySearchDataProc routine to fill
+     *   in the value field of the search data.
+     */
+-    bzero( (char*)&searchData, sizeof( XmFileSelectionBoxCallbackStruct)) ;
++    memset( (char*)&searchData, 0, sizeof( XmFileSelectionBoxCallbackStruct)) ;
+ 
+     if(    FS_DirMask( new_w) != FS_DirMask( current)    )
+     {   
+diff -rup a/lib/Xm/List.c b/lib/Xm/List.c
+--- a/lib/Xm/List.c	2007-01-24 12:07:35.000000000 -0500
++++ b/lib/Xm/List.c	2008-02-27 12:49:27.000000000 -0500
+@@ -5696,7 +5696,7 @@ ClickElement(XmListWidget lw,
+   unsigned char selection_policy;
+   XmListCallbackStruct cb;
+ 
+-  bzero((char*) &cb, sizeof(XmListCallbackStruct));
++  memset((char*) &cb, 0, sizeof(XmListCallbackStruct));
+   item = lw->list.LastHLItem;
+   lw->list.DidSelection = TRUE;
+ 
+diff -rup a/lib/Xm/Obso2_0.c b/lib/Xm/Obso2_0.c
+--- a/lib/Xm/Obso2_0.c	2002-05-14 17:29:03.000000000 -0400
++++ b/lib/Xm/Obso2_0.c	2008-02-27 12:50:04.000000000 -0500
+@@ -512,7 +512,7 @@ _XmGetDefaultThresholdsForScreen( Screen
+   * that call this routine don't have a widget, we need this hack
+   * to create a dummy widget.
+   */
+-  bzero((void*) &widget, sizeof(widget) );
++  memset((void*) &widget, 0, sizeof(widget) );
+   widget.core.self = &widget;
+   widget.core.widget_class = coreWidgetClass;
+   widget.core.screen = screen;
+diff -rup a/lib/Xm/Protocols.c b/lib/Xm/Protocols.c
+--- a/lib/Xm/Protocols.c	2002-05-14 17:29:23.000000000 -0400
++++ b/lib/Xm/Protocols.c	2008-02-27 12:58:54.000000000 -0500
+@@ -48,7 +48,7 @@ static char rcsid[] = "$XConsortium: Pro
+ 
+ /* (c) Copyright 1987, 1988, 1989, 1990, 1991, 1992 HEWLETT-PACKARD COMPANY */
+ 
+-#include <Xm/XmosP.h>           /* for bzero et al */
++#include <Xm/XmosP.h>          
+ #include <Xm/ProtocolsP.h>
+ #include "BaseClassI.h"
+ #include "CallbackI.h"
+@@ -327,7 +327,7 @@ RemoveAllPMgr(
+ 
+     XtInsertEventHandler( w, KeyPressMask, TRUE, RemoveAllPMgrHandler,
+                                                          closure, XtListHead) ;
+-    bzero((void *) &ev, sizeof(XEvent));
++    memset((void *) &ev, 0, sizeof(XEvent));
+     ev.xkey.type = KeyPress ;
+     ev.xkey.display = XtDisplay( w) ;
+     ev.xkey.time = XtLastTimestampProcessed( XtDisplay( w)) ;
+diff -rup a/lib/Xm/RCLayout.c b/lib/Xm/RCLayout.c
+--- a/lib/Xm/RCLayout.c	2002-01-30 10:47:18.000000000 -0500
++++ b/lib/Xm/RCLayout.c	2008-02-27 12:58:35.000000000 -0500
+@@ -62,7 +62,7 @@ static char *rcsid = "$XConsortium: RCLa
+ #include <Xm/RowColumnP.h>
+ #include <Xm/TearOffBP.h>
+ #include <Xm/TearOffP.h>
+-#include <Xm/XmosP.h>		/* for bzero */
++#include <Xm/XmosP.h>		
+ #include "LabelGI.h"
+ #include "GeoUtilsI.h"
+ #include "RCLayoutI.h"
+@@ -1947,7 +1947,7 @@ _XmRC_SetOrGetTextMargins(
+ 
+   if (op == XmBASELINE_GET) {
+     /* in case the class does not have this procedure */
+-    bzero((void *) textMargins, sizeof(XmBaselineMargins));
++    memset((void *) textMargins, 0, sizeof(XmBaselineMargins));
+   }
+ 
+   textMargins->get_or_set = op;
+diff -rup a/lib/Xm/ResConvert.c b/lib/Xm/ResConvert.c
+--- a/lib/Xm/ResConvert.c	2003-10-22 12:26:08.000000000 -0400
++++ b/lib/Xm/ResConvert.c	2008-02-27 12:51:24.000000000 -0500
+@@ -2600,7 +2600,7 @@ GetNextTab(char **s,
+   char 	sign[2];
+   char	*tmp;
+ 
+-  bzero(sign, sizeof(sign));
++  memset(sign, 0, sizeof(sign));
+   unitType[0] = '\0';
+   
+   if (sscanf(*s, " %2[+]", sign) == 1)
+diff -rup a/lib/Xm/TearOff.c b/lib/Xm/TearOff.c
+--- a/lib/Xm/TearOff.c	2003-10-06 06:10:24.000000000 -0400
++++ b/lib/Xm/TearOff.c	2008-02-27 12:59:10.000000000 -0500
+@@ -63,7 +63,7 @@ static char rcsid[] = "$TOG: TearOff.c /
+ #include <Xm/SeparatorP.h>
+ #include <Xm/TraitP.h>
+ #include <Xm/VirtKeysP.h>
+-#include <Xm/XmosP.h>		/* for bzero */
++#include <Xm/XmosP.h>		
+ #include "MenuStateI.h"
+ #include "MenuUtilI.h"
+ #include "RCMenuI.h"
+@@ -1095,7 +1095,7 @@ _XmTearOffInitiate(
+    }
+    else
+    {
+-      bzero((void *)&sprop, sizeof(sprop));
++      memset((void *)&sprop, 0, sizeof(sprop));
+       /* Fix for 9346,  use sizeof(long) to calculate total
+ 	 size of block from get property */
+       memcpy(&sprop, rprop, (size_t)sizeof(long) * num_items);
+diff -rup a/lib/Xm/TxtPropCv.c b/lib/Xm/TxtPropCv.c
+--- a/lib/Xm/TxtPropCv.c	2005-06-10 07:50:56.000000000 -0400
++++ b/lib/Xm/TxtPropCv.c	2008-02-27 12:52:24.000000000 -0500
+@@ -192,7 +192,7 @@ GetTextSegment(Display *display, /* unus
+ 	      /* The text should be already be valid locale text */
+ 	      char *tmp = XtMalloc(char_count + sizeof(wchar_t));
+ 	      memcpy(tmp, text, char_count);
+-	      bzero(tmp + char_count, sizeof(wchar_t));
++	      memset(tmp + char_count, 0, sizeof(wchar_t));
+ 
+ 	      *buffer = tmp;
+ 	    }
+@@ -216,7 +216,7 @@ GetTextSegment(Display *display, /* unus
+ 		     already be valid locale text. */
+ 		  char *tmp = XtMalloc(char_count + sizeof(wchar_t));
+ 		  memcpy(tmp, text, char_count);
+-		  bzero(tmp + char_count, sizeof(wchar_t));
++		  memset(tmp + char_count, 0, sizeof(wchar_t));
+ 
+ 		  *buffer = tmp;
+ 		}
+@@ -226,7 +226,7 @@ GetTextSegment(Display *display, /* unus
+ 		  /* The text is valid STRING text */
+ 		  char *tmp = XtMalloc(char_count + sizeof(wchar_t));
+ 		  memcpy(tmp, text, char_count);
+-		  bzero(tmp + char_count, sizeof(wchar_t));
++		  memset(tmp + char_count, 0, sizeof(wchar_t));
+ 
+ 		  *buffer = tmp;
+ 		}
+diff -rup a/lib/Xm/VendorS.c b/lib/Xm/VendorS.c
+--- a/lib/Xm/VendorS.c	2006-11-08 09:18:05.000000000 -0500
++++ b/lib/Xm/VendorS.c	2008-02-27 12:59:26.000000000 -0500
+@@ -65,7 +65,7 @@ static char rcsid[] = "$TOG: VendorS.c /
+ #include <Xm/UnitTypeT.h>
+ #include <Xm/VendorSEP.h>
+ #include <Xm/VendorSP.h>
+-#include <Xm/XmosP.h>		/* for bzero */
++#include <Xm/XmosP.h>		
+ #include <Xm/ToolTipCT.h>
+ #include "BaseClassI.h"
+ #include "CallbackI.h"
+@@ -1818,7 +1818,7 @@ MotifWarningHandler (String name,
+      char *par[10];
+      if (i > 10) i = 10;
+      memcpy((char*)par, (char*)params, i * sizeof(String));
+-     bzero((char *)&par[i], (10-i) * sizeof(String));
++     memset((char *)&par[i], 0, (10-i) * sizeof(String));
+      (void) sprintf(&buf[strlen(buf)], buf2, par[0], par[1], par[2], par[3],
+ 		    par[4], par[5], par[6], par[7], par[8], par[9]);
+    } else
+diff -rup a/lib/Xm/Xmfuncs.h b/lib/Xm/Xmfuncs.h
+--- a/lib/Xm/Xmfuncs.h	2002-01-04 16:23:20.000000000 -0500
++++ b/lib/Xm/Xmfuncs.h	2008-02-27 12:36:01.000000000 -0500
+@@ -36,14 +36,14 @@ in this Software without prior written a
+ 
+ #ifdef X_USEBFUNCS
+ void bcopy();
+-void bzero();
++//void bzero();
+ int bcmp();
+ #else
+ #if (__STDC__ && !defined(X_NOT_STDC_ENV) && !defined(sun) && !defined(macII) && !defined(apollo)) || defined(SVR4) || defined(hpux) || defined(_IBMR2) || defined(_SEQUENT_)
+ #include <string.h>
+ #define _XFUNCS_H_INCLUDED_STRING_H
+ #define bcopy(b1,b2,len) memmove(b2, b1, (size_t)(len))
+-#define bzero(b,len) memset(b, 0, (size_t)(len))
++//#define bzero(b,len) memset(b, 0, (size_t)(len))
+ #define bcmp(b1,b2,len) memcmp(b1, b2, (size_t)(len))
+ #else
+ #ifdef sgi
+@@ -52,11 +52,11 @@ int bcmp();
+ #ifdef SYSV
+ #include <memory.h>
+ void bcopy();
+-#define bzero(b,len) memset(b, 0, len)
++//#define bzero(b,len) memset(b, 0, len)
+ #define bcmp(b1,b2,len) memcmp(b1, b2, len)
+ #else /* bsd */
+ void bcopy();
+-void bzero();
++//void bzero();
+ int bcmp();
+ #endif /* SYSV */
+ #endif /* sgi */
+@@ -70,8 +70,8 @@ int bcmp();
+ #ifndef _XFUNCS_H_INCLUDED_STRING_H
+ #include <string.h>
+ #endif
+-#undef bzero
+-#define bzero(b,len) memset(b,0,len)
++//#undef bzero
++//#define bzero(b,len) memset(b,0,len)
+ #else /* else X_NOT_STDC_ENV or SunOS 4 */
+ #if defined(SYSV) || defined(luna) || defined(sun) || defined(__sxg__)
+ #include <memory.h>
+diff -rup a/lib/Xm/XmIm.c b/lib/Xm/XmIm.c
+--- a/lib/Xm/XmIm.c	2005-07-18 09:01:07.000000000 -0400
++++ b/lib/Xm/XmIm.c	2008-02-27 12:59:39.000000000 -0500
+@@ -60,7 +60,7 @@ static char rcsid[] = "$TOG: XmIm.c /mai
+ #include <Xm/PrimitiveP.h>
+ #include <Xm/VendorSEP.h>
+ #include <Xm/VendorSP.h>
+-#include <Xm/XmosP.h>		/* for bzero */
++#include <Xm/XmosP.h>		
+ #include "BaseClassI.h"
+ #include "MessagesI.h"
+ #include "XmI.h"
+@@ -1035,7 +1035,7 @@ recreate_xic_info(XIC		  xic,
+   
+   /* This XIC must have been created by the application directly. */
+   xic_info = XtNew(XmImXICRec);
+-  bzero((char*) xic_info, sizeof(XmImXICRec));
++  memset((char*) xic_info, 0, sizeof(XmImXICRec));
+   (void) XGetICValues(xic, XNInputStyle, &xic_info->input_style, NULL);
+   xic_info->next = im_info->iclist;
+   im_info->iclist = xic_info;
+@@ -1128,11 +1128,11 @@ create_xic_info(Widget		shell,
+   
+   /* Create the XIC info record. */
+   xic_info = XtNew(XmImXICRec);
+-  bzero((char*) xic_info, sizeof(XmImXICRec));
++  memset((char*) xic_info, 0, sizeof(XmImXICRec));
+   xic_info->input_style = style;
+   xic_info->anonymous = True;
+   xic_info->preedit_buffer = XtNew(PreeditBufferRec);
+-  bzero((char *) xic_info->preedit_buffer, sizeof(PreeditBufferRec));
++  memset((char *) xic_info->preedit_buffer, 0, sizeof(PreeditBufferRec));
+   
+   xic_info->next = im_info->iclist;
+   im_info->iclist = xic_info;
+@@ -1215,9 +1215,9 @@ set_values(Widget w,
+       icp->focus_window && icp->focus_window != XtWindow(w))
+     return;
+   
+-  bzero((char*) &status_vlist, sizeof(VaArgListRec));
+-  bzero((char*) &preedit_vlist, sizeof(VaArgListRec));
+-  bzero((char*) &xic_vlist, sizeof(VaArgListRec));
++  memset((char*) &status_vlist, 0, sizeof(VaArgListRec));
++  memset((char*) &preedit_vlist, 0, sizeof(VaArgListRec));
++  memset((char*) &xic_vlist, 0, sizeof(VaArgListRec));
+   for (i = num_args; i > 0; i--, argp++) {
+     name = XrmStringToName(argp->name);
+     if (name == area_name && !(icp->input_style & XIMPreeditPosition))
+@@ -1490,7 +1490,7 @@ ImPreeditDoneCallback(XIC xic,
+     XtFree((char *)icp->preedit_buffer->text);
+   if (icp->preedit_buffer->feedback)
+     XtFree((char *)icp->preedit_buffer->feedback);
+-  bzero((char *)icp->preedit_buffer, sizeof(PreeditBufferRec)); 
++  memset((char *)icp->preedit_buffer, 0, sizeof(PreeditBufferRec)); 
+ }
+ 
+ static void
+@@ -1589,9 +1589,9 @@ ImPreeditDrawCallback(XIC xic,
+ 		text->length * sizeof(XIMFeedback));
+ 
+       pb->length = pb->length + text->length - data->chg_length;
+-      bzero((char *)pb->text + pb->length * sizeof(wchar_t),
++      memset((char *)pb->text + pb->length * sizeof(wchar_t), 0,
+ 	    sizeof(wchar_t));
+-      bzero((char *)pb->feedback + pb->length * sizeof(XIMFeedback),
++      memset((char *)pb->feedback + pb->length * sizeof(XIMFeedback), 0,
+ 	    sizeof(XIMFeedback));
+ 
+       XtFree((char *) wchar);
+@@ -1609,9 +1609,9 @@ ImPreeditDrawCallback(XIC xic,
+ 	    ml * sizeof(XIMFeedback));
+ 
+     pb->length = pb->length - data->chg_length;
+-    bzero((char *)pb->text + pb->length * sizeof(wchar_t),
++    memset((char *)pb->text + pb->length * sizeof(wchar_t), 0,
+ 	  data->chg_length * sizeof(wchar_t));
+-    bzero((char *)pb->feedback + pb->length * sizeof(XIMFeedback),
++    memset((char *)pb->feedback + pb->length * sizeof(XIMFeedback), 0,
+ 	  data->chg_length * sizeof(XIMFeedback));
+   }
+ 
+@@ -2217,7 +2217,7 @@ get_xim_info(Widget  widget)
+   
+   /* Create a record so that we only try XOpenIM() once. */
+   xim_info = XtNew(XmImDisplayRec);
+-  bzero((char*) xim_info, sizeof(XmImDisplayRec));
++  memset((char*) xim_info, 0, sizeof(XmImDisplayRec));
+   xmDisplay->display.xmim_info = (XtPointer)xim_info;
+   
+   /* Setup any specified locale modifiers. */
+@@ -2305,7 +2305,7 @@ get_im_info_ptr(Widget  w,
+   if ((ve->vendor.im_info == NULL) && create)
+     {
+       im_info = XtNew(XmImShellRec);
+-      bzero((char*) im_info, sizeof(XmImShellRec));
++      memset((char*) im_info, 0, sizeof(XmImShellRec));
+       ve->vendor.im_info = (XtPointer)im_info;
+       
+       xim_info = get_xim_info(p);
+diff -rup a/lib/Xm/XmosP.h b/lib/Xm/XmosP.h
+--- a/lib/Xm/XmosP.h	2002-06-17 16:36:30.000000000 -0400
++++ b/lib/Xm/XmosP.h	2008-02-27 13:00:08.000000000 -0500
+@@ -42,8 +42,8 @@
+ #ifndef _XmosP_h
+ #define _XmosP_h
+ 
+-/* Some SVR4 systems don't have bzero. */
+-#include <Xm/Xmfuncs.h>		/* for bzero et al */
++
++#include <Xm/Xmfuncs.h>		
+ 
+ /*
+  * Fix for 8975 - using LOGNAME instead of USER on SYSV and SVR4 
+diff -rup a/lib/Xm/Xmos_r.h b/lib/Xm/Xmos_r.h
+--- a/lib/Xm/Xmos_r.h	2002-06-17 16:36:30.000000000 -0400
++++ b/lib/Xm/Xmos_r.h	2008-02-27 13:01:20.000000000 -0500
+@@ -502,13 +502,13 @@ typedef struct {
+   struct servent_data sdata;
+ } _Xgetservbynameparams;
+ #  define _XGethostbyname(h,hp) \
+-  (bzero((char*)&(hp).hdata,sizeof((hp).hdata)),	\
++  (memset((char*)&(hp).hdata,sizeof((hp).hdata)), 0,	\
+    ((gethostbyname_r((h),&(hp).hent,&(hp).hdata) == -1) ? NULL : &(hp).hent))
+ #  define _XGethostbyaddr(a,al,t,hp) \
+-  (bzero((char*)&(hp).hdata,sizeof((hp).hdata)),	\
++  (memset((char*)&(hp).hdata,sizeof((hp).hdata)), 0,	\
+    ((gethostbyaddr_r((a),(al),(t),&(hp).hent,&(hp).hdata) == -1) ? NULL : &(hp).hent))
+ #  define _XGetservbyname(s,p,sp) \
+-  (bzero((char*)&(sp).sdata,sizeof((sp).sdata)),	\
++  (memset((char*)&(sp).sdata,sizeof((sp).sdata)), 0,	\
+    ((getservbyname_r((s),(p),&(sp).sent,&(sp).sdata) == -1) ? NULL : &(sp).sent) )
+ # endif
+ # ifdef X_POSIX_THREAD_SAFE_FUNCTIONS
+diff -rup a/lib/Xm/Xmpoll.h b/lib/Xm/Xmpoll.h
+--- a/lib/Xm/Xmpoll.h	2002-06-17 16:36:30.000000000 -0400
++++ b/lib/Xm/Xmpoll.h	2008-02-27 13:01:38.000000000 -0500
+@@ -110,7 +110,7 @@ typedef struct fd_set {
+ #define FD_ISSET(n, p)  ((p)->fds_bits[(n)/NFDBITS] & ((fd_mask)1 << ((n) % NFDBITS)))
+ #endif
+ #ifndef FD_ZERO
+-#define FD_ZERO(p)      bzero((char *)(p), sizeof(*(p)))
++#define FD_ZERO(p)      memset((char *)(p), 0, sizeof(*(p)))
+ #endif
+ 
+ /*
+diff -rup a/lib/Xm/XmRenderT.c b/lib/Xm/XmRenderT.c
+--- a/lib/Xm/XmRenderT.c	2005-09-07 05:06:10.000000000 -0400
++++ b/lib/Xm/XmRenderT.c	2008-02-27 13:02:27.000000000 -0500
+@@ -435,7 +435,7 @@ GetResources(XmRendition rend,
+   /* Initialize found */
+   if (found == NULL)
+     found = (Boolean *)XtMalloc(_XmNumRenditionResources * sizeof(Boolean));
+-  bzero(found, _XmNumRenditionResources * sizeof(Boolean));
++  memset(found, 0, _XmNumRenditionResources * sizeof(Boolean));
+ 
+   /* Compile names and classes. */
+   if (wid != NULL)
+@@ -588,7 +588,7 @@ GetResources(XmRendition rend,
+ 		memcpy(((char *)GetPtr(rend) + res->xrm_offset),
+ 		       value.addr, res->xrm_size);
+ 	      else 
+-		bzero(((char *)GetPtr(rend) + res->xrm_offset), res->xrm_size);
++		memset(((char *)GetPtr(rend) + res->xrm_offset), 0, res->xrm_size);
+ 	    }
+ 	      
+ 	}
+@@ -1185,7 +1185,7 @@ CloneRendition(XmRendition rend)
+   if (rend == NULL) return(NULL);
+   
+   copy = (_XmRendition)XtMalloc(sizeof(_XmRenditionRec));
+-  bzero((char*)copy, sizeof(_XmRenditionRec));
++  memset((char*)copy, 0, sizeof(_XmRenditionRec));
+   copy_handle = GetHandle(_XmRendition);
+   SetPtr(copy_handle, copy);
+   
+@@ -1341,7 +1341,7 @@ XmRenderTableAddRenditions(XmRenderTable
+     {
+       matches =
+ 	(Boolean *)ALLOCATE_LOCAL(rendition_count * sizeof(Boolean));
+-      bzero(matches, rendition_count * sizeof(Boolean));
++      memset(matches, 0, rendition_count * sizeof(Boolean));
+       
+       /* May have to copy table if shared. */
+       if (_XmRTRefcount(oldtable) > 1)
+@@ -2201,7 +2201,7 @@ _XmRenditionCreate(Display *display,
+ 
+   /* Allocate rendition. */
+   rend_int = (_XmRendition)XtMalloc(sizeof(_XmRenditionRec));
+-  bzero((char*)rend_int, sizeof(_XmRenditionRec));
++  memset((char*)rend_int, 0, sizeof(_XmRenditionRec));
+   rend = GetHandle(_XmRendition);
+   SetPtr(rend, rend_int);
+
+diff -rup a/lib/Xm/XmString.c b/lib/Xm/XmString.c
+--- a/lib/Xm/XmString.c	2005-12-19 05:32:36.000000000 -0500
++++ b/lib/Xm/XmString.c	2008-02-27 13:03:31.000000000 -0500
+@@ -3133,7 +3133,7 @@ XmStringExtent(
+       XmRendition	rend;
+       _XmStringArraySegRec array_seg;
+       
+-      bzero((char*) &scratch, sizeof(_XmRenditionRec));
++      memset((char*) &scratch, 0, sizeof(_XmRenditionRec));
+       tmp = &scratch;
+       rend = &tmp;
+       
+@@ -4087,7 +4087,7 @@ _XmStringDrawSegment(Display *d,
+ 		 * text data, since optimized string does not have padding. 
+ 		 */
+ 		{
+-		  bzero((char*)&under_seg, sizeof(_XmStringOptSegRec));
++		  memset((char*)&under_seg, 0, sizeof(_XmStringOptSegRec));
+ 		  _XmEntryType(&under_seg) = XmSTRING_ENTRY_OPTIMIZED;
+ 		  _XmEntryTagIndex(&under_seg) = _XmStrTagIndex(*underline);
+ 		  _XmEntryByteCountSet(&under_seg, _XmStrByteCount(*underline));
+@@ -5069,10 +5069,10 @@ _render(Display *d,
+   if (!string) return;
+   
+   tmp1 = &scratch1;
+-  bzero((char *)tmp1, sizeof(_XmRenditionRec));
++  memset((char *)tmp1, 0, sizeof(_XmRenditionRec));
+   rend1 = &tmp1;
+   tmp2 = &scratch2;
+-  bzero((char *)tmp2, sizeof(_XmRenditionRec));
++  memset((char *)tmp2, 0, sizeof(_XmRenditionRec));
+   rend2 = &tmp2;
+ 
+   _XmRendDisplay(rend1) = _XmRendDisplay(rend2) = d;
+@@ -7010,7 +7010,7 @@ XmStringBaseline(
+ 	_XmProcessLock();
+   }
+ #endif
+-  bzero((char*) &scratch, sizeof(_XmRenditionRec));
++  memset((char*) &scratch, 0, sizeof(_XmRenditionRec));
+   tmp = &scratch;
+   rend = &tmp;
+       
+@@ -7095,7 +7095,7 @@ _XmStringGetBaselines(XmRenderTable rend
+       *baselines = (Dimension*) XtMalloc(*line_count * sizeof(Dimension));
+ 
+       /* Initialize the scratch rendition for tabs. */
+-      bzero((char*) &scratch, sizeof(_XmRenditionRec));
++      memset((char*) &scratch, 0, sizeof(_XmRenditionRec));
+       _XmRendDisplay(rend) = 
+ 	((_XmRTDisplay(rendertable) == NULL) ?
+ 	 _XmGetDefaultDisplay() : _XmRTDisplay(rendertable));
+@@ -9057,7 +9057,7 @@ XmeStringGetComponent(_XmStringContext c
+ 	    {
+ 	      char* tmp = XtMalloc(char_count + sizeof(wchar_t));
+ 	      memcpy(tmp, seg_text, char_count);
+-	      bzero(tmp + char_count, sizeof(wchar_t));
++	      memset(tmp + char_count, 0, sizeof(wchar_t));
+ 	      *value = (XtPointer) tmp;
+ 	    }
+ 	  else
+@@ -9207,7 +9207,7 @@ _XmStringContextReInit(_XmStringContext 
+ 		       _XmString	string)
+ {
+   assert(context != NULL);
+-  bzero((char*) context, sizeof(_XmStringContextRec));
++  memset((char*) context, 0, sizeof(_XmStringContextRec));
+ 
+   _XmStrContString(context) = string;
+   _XmStrContOpt(context)    = _XmStrOptimized(string);
+@@ -9526,7 +9526,7 @@ XmParseMappingCreate(ArgList  arg_list,
+ {
+   /* Allocate and initialize the return value. */
+   XmParseMapping result = XtNew(_XmParseMappingRec);
+-  bzero((char*)result, sizeof(_XmParseMappingRec));
++  memset((char*)result, 0, sizeof(_XmParseMappingRec));
+ 
+   /* Default values are established by bzero().
+    *
+diff -rup a/lib/Xm/XmStringFunc.c b/lib/Xm/XmStringFunc.c
+--- a/lib/Xm/XmStringFunc.c	2002-01-10 15:57:05.000000000 -0500
++++ b/lib/Xm/XmStringFunc.c	2008-02-27 13:03:50.000000000 -0500
+@@ -715,7 +715,7 @@ XmStringTableProposeTablist(XmStringTabl
+     return ((XmTabList)NULL);
+   }
+   
+-  bzero((char*) &scratch, sizeof(_XmRenditionRec));
++  memset((char*) &scratch, 0, sizeof(_XmRenditionRec));
+   tmp = &scratch;
+   rend = &tmp;
+   
+diff -rup a/lib/Xm/XmStringI.h b/lib/Xm/XmStringI.h
+--- a/lib/Xm/XmStringI.h	2002-01-04 16:23:19.000000000 -0500
++++ b/lib/Xm/XmStringI.h	2008-02-27 13:05:00.000000000 -0500
+@@ -492,7 +492,7 @@ typedef struct __XmStringArraySegRec *_X
+ {									   \
+   switch (type) { 							   \
+   case XmSTRING_OPTIMIZED : 						   \
+-    bzero((char*)str, sizeof(_XmStringOptRec));				   \
++    memset((char*)str, 0, sizeof(_XmStringOptRec));				   \
+     _XmStrType(str) = type; 						   \
+     _XmStrTextType(str) = XmNO_TEXT;                                       \
+     _XmStrDirection(str) = XmSTRING_DIRECTION_UNSET;			   \
+@@ -501,7 +501,7 @@ typedef struct __XmStringArraySegRec *_X
+     _XmStrRefCountSet(str, 1);			 	 	 	   \
+     break; 								   \
+   case XmSTRING_MULTIPLE_ENTRY : 					   \
+-    bzero((char*)str, sizeof(_XmStringMultiRec));			   \
++    memset((char*)str, 0, sizeof(_XmStringMultiRec));			   \
+     _XmStrType(str) = type; 						   \
+     _XmStrRefCountSet(str, 1);			 	 	 	   \
+     break; 								   \
+@@ -524,7 +524,7 @@ typedef struct __XmStringArraySegRec *_X
+     (str) = (_XmString)							   \
+       _XmStrMalloc(sizeof(_XmStringOptRec) +                               \
+ 		   (text_len ? (text_len - TEXT_BYTES_IN_STRUCT) : 0));    \
+-    bzero((char*)str, sizeof(_XmStringOptRec)); 			   \
++    memset((char*)str, 0, sizeof(_XmStringOptRec)); 			   \
+     _XmStrType(str) = type; 						   \
+     _XmStrTextType(str) = XmNO_TEXT;                                       \
+     _XmStrDirection(str) = XmSTRING_DIRECTION_UNSET;			   \
+@@ -535,7 +535,7 @@ typedef struct __XmStringArraySegRec *_X
+     break; 								   \
+   case XmSTRING_MULTIPLE_ENTRY : 					   \
+     (str) = (_XmString)_XmStrMalloc(sizeof(_XmStringMultiRec));		   \
+-    bzero((char*)str, sizeof(_XmStringMultiRec));			   \
++    memset((char*)str, 0, sizeof(_XmStringMultiRec));			   \
+     _XmStrType(str) = type; 						   \
+     _XmStrRefCountSet(str, 1);			 	 	 	   \
+     break; 								   \
+@@ -661,15 +661,15 @@ typedef struct __XmStringArraySegRec *_X
+ {									   \
+   switch (type) { 							   \
+   case XmSTRING_ENTRY_OPTIMIZED : 					   \
+-    bzero((char*)entry, sizeof(_XmStringOptSegRec));			   \
++    memset((char*)entry, 0, sizeof(_XmStringOptSegRec));			   \
+     _XmEntryTagIndex(entry) = TAG_INDEX_UNSET;			 	   \
+     _XmEntryRendIndex(entry) = REND_INDEX_UNSET;		 	   \
+     break; 								   \
+   case XmSTRING_ENTRY_ARRAY : 						   \
+-    bzero((char*)entry, sizeof(_XmStringArraySegRec));			   \
++    memset((char*)entry, 0, sizeof(_XmStringArraySegRec));			   \
+     break; 								   \
+   case XmSTRING_ENTRY_UNOPTIMIZED :					   \
+-    bzero((char*)entry, sizeof(_XmStringUnoptSegRec));		   \
++    memset((char*)entry, 0, sizeof(_XmStringUnoptSegRec));		   \
+     break; 								   \
+   } 									   \
+   _XmEntryType(entry) = type; 						   \
+@@ -683,17 +683,17 @@ typedef struct __XmStringArraySegRec *_X
+   switch (type) { 							   \
+   case XmSTRING_ENTRY_OPTIMIZED : 					   \
+     (entry) = (_XmStringEntry)XtMalloc(sizeof(_XmStringOptSegRec));	   \
+-    bzero((char*)entry, sizeof(_XmStringOptSegRec));			   \
++    memset((char*)entry, 0, sizeof(_XmStringOptSegRec));			   \
+     _XmEntryTagIndex(entry) = TAG_INDEX_UNSET;			 	   \
+     _XmEntryRendIndex(entry) = REND_INDEX_UNSET;		 	   \
+     break; 								   \
+   case XmSTRING_ENTRY_ARRAY : 						   \
+     (entry) = (_XmStringEntry)XtMalloc(sizeof(_XmStringArraySegRec));	   \
+-    bzero((char*)entry, sizeof(_XmStringArraySegRec));			   \
++    memset((char*)entry, 0, sizeof(_XmStringArraySegRec));			   \
+     break; 								   \
+   case XmSTRING_ENTRY_UNOPTIMIZED :					   \
+     (entry) = (_XmStringEntry)XtMalloc(sizeof(_XmStringUnoptSegRec));  \
+-    bzero((char*)entry, sizeof(_XmStringUnoptSegRec));		   \
++    memset((char*)entry, 0, sizeof(_XmStringUnoptSegRec));		   \
+     break; 								   \
+   } 									   \
+   if (entry) {                                                             \
+diff -rup a/lib/Xm/XmStringSeg.c b/lib/Xm/XmStringSeg.c
+--- a/lib/Xm/XmStringSeg.c	2002-01-10 15:57:06.000000000 -0500
++++ b/lib/Xm/XmStringSeg.c	2008-02-27 13:05:16.000000000 -0500
+@@ -291,7 +291,7 @@ _XmStringGetSegment(_XmStringContext   c
+ 	{
+ 	  char *tmp = XtMalloc(*char_count + sizeof(wchar_t));
+ 	  memcpy(tmp, *text, *char_count);
+-	  bzero(tmp + *char_count, sizeof(wchar_t));
++	  memset(tmp + *char_count, 0, sizeof(wchar_t));
+ 
+ 	  *text = (XtPointer) tmp;
+ 	}
+diff -rup a/lib/Xm/XmTabList.c b/lib/Xm/XmTabList.c
+--- a/lib/Xm/XmTabList.c	2002-01-30 10:47:25.000000000 -0500
++++ b/lib/Xm/XmTabList.c	2008-02-27 13:00:38.000000000 -0500
+@@ -225,7 +225,7 @@ _XmCreateTabList(Widget parent,
+   if (_XmRendTabs(rend) == NULL) 
+     {
+       tl = (XmTabList)XtMalloc(sizeof(_XmTabListRec));
+-      bzero((char *)tl, sizeof(_XmTabListRec));
++      memset((char *)tl, 0, sizeof(_XmTabListRec));
+       _XmRendTabs(rend) = tl;
+     }
+   
+diff -rup a/lib/Xm/Xpmcreate.c b/lib/Xm/Xpmcreate.c
+--- a/lib/Xm/Xpmcreate.c	2005-12-06 12:31:15.000000000 -0500
++++ b/lib/Xm/Xpmcreate.c	2008-02-27 12:55:24.000000000 -0500
+@@ -2254,7 +2254,7 @@ ParseAndPutPixels(dc, data, width, heigh
+  	    if (ncolors > 256)
+  		return (XpmFileInvalid);
+ 
+-	    bzero((char *)colidx, 256 * sizeof(short));
++	    memset((char *)colidx, 0, 256 * sizeof(short));
+ 	    for (a = 0; a < ncolors; a++)
+ 		colidx[(unsigned char)colorTable[a].string[0]] = a + 1;
+ 
+@@ -2296,7 +2296,7 @@ if (cidx[f]) XpmFree(cidx[f]);}
+ 	    unsigned short *cidx[256];
+ 	    unsigned int char1;
+ 
+-	    bzero((char *)cidx, 256 * sizeof(unsigned short *)); /* init */
++	    memset((char *)cidx, 0, 256 * sizeof(unsigned short *)); /* init */
+ 	    for (a = 0; a < ncolors; a++) {
+ 		char1 = (unsigned char) colorTable[a].string[0];
+ 		if (cidx[char1] == NULL) { /* get new memory */
+diff -rup a/lib/Xm/XpmI.h b/lib/Xm/XpmI.h
+--- a/lib/Xm/XpmI.h	2005-12-05 11:31:46.000000000 -0500
++++ b/lib/Xm/XpmI.h	2008-02-27 12:55:57.000000000 -0500
+@@ -139,9 +139,9 @@ extern FILE *popen();
+ #ifndef bcopy
+ #define bcopy(source, dest, count) memcpy(dest, source, count)
+ #endif
+-#ifndef bzero
+-#define bzero(b, len) memset(b, 0, len)
+-#endif
++//#ifndef bzero
++//#define bzero(b, len) memset(b, 0, len)
++//#endif
+ #endif
+ 
+ /* the following is defined in X11R6 but not in previous versions */
+diff -rup a/lib/Xm/Xpmparse.c b/lib/Xm/Xpmparse.c
+--- a/lib/Xm/Xpmparse.c	2005-12-05 11:31:46.000000000 -0500
++++ b/lib/Xm/Xpmparse.c	2008-02-27 12:56:18.000000000 -0500
+@@ -555,7 +555,7 @@ ParsePixels(data, width, height, ncolors
+ 	        return (XpmFileInvalid);
+ 	    }
+ 
+-	    bzero((char *)colidx, 256 * sizeof(short));
++	    memset((char *)colidx, 0, 256 * sizeof(short));
+ 	    for (a = 0; a < ncolors; a++)
+ 		colidx[(unsigned char)colorTable[a].string[0]] = a + 1;
+ 
+@@ -591,7 +591,7 @@ do \
+ 	    unsigned short *cidx[256];
+ 	    unsigned int char1;
+ 
+-	    bzero((char *)cidx, 256 * sizeof(unsigned short *)); /* init */
++	    memset((char *)cidx, 0, 256 * sizeof(unsigned short *)); /* init */
+ 	    for (a = 0; a < ncolors; a++) {
+ 		char1 = (unsigned char) colorTable[a].string[0];
+ 		if (cidx[char1] == NULL) { /* get new memory */
+

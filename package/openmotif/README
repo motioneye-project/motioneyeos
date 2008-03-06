@@ -1,0 +1,2 @@
+Compiling OpenMotif may require byacc (or just yacc) 
+to be installed on the host build system 
