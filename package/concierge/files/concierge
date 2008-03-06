@@ -1,0 +1,2 @@
+#!/bin/sh
+/usr/bin/jamvm -jar /usr/lib/concierge/concierge-1.0_RC2.jar

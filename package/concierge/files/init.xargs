@@ -1,0 +1,10 @@
+-init
+-all
+-Dch.ethz.iks.concierge.debug=true
+-Dch.ethz.iks.concierge.log.enabled=true
+-Dch.ethz.iks.concierge.log.level=4
+
+
+#-istart shell-1.0.0.RC2.jar
+#-istart service-tracker-1.0.0.RC2.jar
+#-istart event-admin-1.0.0.RC2.jar

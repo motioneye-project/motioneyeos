@@ -1,0 +1,7 @@
+config BR2_PACKAGE_CLASSPATH
+	bool "classpath"
+	default n
+
+	help
+	  GNU Classpath, Essential Libraries for Java, is a GNU project to create free core class libraries for use with virtual machines and compilers for the java programming language
+	  http://www.classpath.org/
