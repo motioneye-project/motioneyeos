@@ -3,7 +3,7 @@
 # file
 #
 #############################################################
-FILE_VERSION:=4.21
+FILE_VERSION:=4.23
 FILE_SOURCE:=file_$(FILE_VERSION).orig.tar.gz
 FILE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/f/file
 FILE_SOURCE_DIR:=$(BUILD_DIR)/file-$(FILE_VERSION)
