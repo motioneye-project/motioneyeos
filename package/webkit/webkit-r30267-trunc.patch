@@ -1,0 +1,11 @@
+--- a/JavaScriptCore/wtf/MathExtras.h	2008-02-04 21:09:08.000000000 -0500
++++ b/JavaScriptCore/wtf/MathExtras.h	2008-02-11 13:31:28.000000000 -0500
+@@ -75,6 +75,8 @@ inline bool signbit(double x) { return x
+ 
+ #endif
+ 
++inline double trunc(double num) { return num > 0 ? floor(num) : ceil(num); }
++
+ #if COMPILER(MSVC)
+ 
+ inline bool isinf(double num) { return !_finite(num) && !_isnan(num); }
