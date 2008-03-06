@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XVKBD
+	bool "xvkbd"
+	default n
+	help
+	  on-screen keyboard for X
+
+	  http://homepage3.nifty.com/tsato/xvkbd
