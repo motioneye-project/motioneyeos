@@ -1,0 +1,215 @@
+ uClibc and Glibc are not the same -- there are a number of differences which
+may or may not cause you problems.  This document attempts to list these
+differences and, when completed, will contain a full list of all relevant
+differences.
+
+
+1) uClibc is smaller than glibc.  We attempt to maintain a glibc compatible
+interface, allowing applications that compile with glibc to easily compile with
+uClibc.  However, we do not include _everything_ that glibc includes, and
+therefore some applications may not compile.  If this happens to you, please
+report the failure to the uclibc mailing list, with detailed error messages.
+
+2) uClibc is much more configurable then glibc.  This means that a developer
+may have compiled uClibc in such a way that significant amounts of
+functionality have been omitted.
+
+3) uClibc does not even attempt to ensure binary compatibility across releases.
+When a new version of uClibc is released, you may or may not need to recompile
+all your binaries.
+
+4) malloc(0) in glibc returns a valid pointer to something(!?!?) while in
+uClibc calling malloc(0) returns a NULL.  The behavior of malloc(0) is listed
+as implementation-defined by SuSv3, so both libraries are equally correct.
+This difference also applies to realloc(NULL, 0).  I personally feel glibc's
+behavior is not particularly safe.  To enable glibc behavior, one has to
+explicitly enable the MALLOC_GLIBC_COMPAT option.
+
+4.1) glibc's malloc() implementation has behavior that is tunable via the
+MALLOC_CHECK_ environment variable.  This is primarily used to provide extra
+malloc debugging features.  These extended malloc debugging features are not
+available within uClibc.  There are many good malloc debugging libraries
+available for Linux (dmalloc, electric fence, valgrind, etc) that work much
+better than the glibc extended malloc debugging.  So our omitting this
+functionality from uClibc is not a great loss.
+
+5) uClibc does not provide a database library (libdb).
+
+6) uClibc does not support NSS (/lib/libnss_*), which allows glibc to easily
+support various methods of authentication and DNS resolution.  uClibc only
+supports flat password files and shadow password files for storing
+authentication information.  If you need something more complex than this,
+you can compile and install pam.
+
+7) uClibc's libresolv is only a stub.  Some, but not all of the functionality
+provided by glibc's libresolv is provided internal to uClibc.  Other functions
+are not at all implemented.
+
+8) libnsl provides support for Network Information Service (NIS) which was
+originally called "Yellow Pages" or "YP", which is an extension of RPC invented
+by Sun to share Unix password files over the network.  I personally think NIS
+is an evil abomination and should not be used.  These days, using ldap is much
+more effective mechanism for doing the same thing.  uClibc provides a stub
+libnsl, but has no actual support for Network Information Service (NIS).
+We therefore, also do not provide any of the headers files provided by glibc
+under /usr/include/rpcsvc.
+
+9) uClibc's locale support is not 100% complete yet.  We are working on it.
+
+10) uClibc's math library only supports long double as inlines, and even
+then the long double support is quite limited.  Also, very few of the
+float math functions are implemented.  Stick with double and you should
+be just fine.
+
+11) uClibc's libcrypt does not support the reentrant crypt_r, setkey_r and
+encrypt_r, since these are not required by SuSv3.
+
+12) uClibc directly uses kernel types to define most opaque data types.
+
+13) uClibc directly uses the linux kernel's arch specific 'stuct stat'.
+
+14) uClibc's librt library currently lacks all aio routines, all clock
+    routines, and all shm routines (only the timer routines and the mq
+    routines are implemented).
+
+<other things as we notice them>
+
+
+
+******************************  Manuel's Notes  ******************************
+
+Some general comments...
+
+The intended target for all my uClibc code is ANSI/ISO C99 and SUSv3
+compliance.  While some glibc extensions are present, many will eventually
+be configurable.  Also, even when present, the glibc-like extensions may
+differ slightly or be more restrictive than the native glibc counterparts.
+They are primarily meant to be porting _aides_ and not necessarily
+drop-in replacements.
+
+Now for some details...
+
+time functions
+--------------
+1) Leap seconds are not supported.
+2) /etc/timezone and the whole zoneinfo directory tree are not supported.
+   To set the timezone, set the TZ environment variable as specified in
+   http://www.opengroup.org/onlinepubs/007904975/basedefs/xbd_chap08.html
+   or you may also create an /etc/TZ file of a single line, ending with a
+   newline, containing the TZ setting.  For example
+   echo CST6CDT > /etc/TZ
+3) Currently, locale specific eras and alternate digits are not supported.
+   They are on my TODO list.
+
+wide char support
+-----------------
+1) The only multibyte encoding currently supported is UTF-8.  The various
+   ISO-8859-* encodings are (optionally) supported.  The internal
+   representation of wchar's is assumed to be 31 bit unicode values in
+   native endian representation.  Also, the underlying char encoding is
+   assumed to match ASCII in the range 0-0x7f.
+2) In the next iteration of locale support, I plan to add support for
+   (at least some) other multibyte encodings.
+
+locale support
+--------------
+1) The target for support is SUSv3 locale functionality.  While nl_langinfo
+   has been extended, similar to glibc, it only returns values for related
+   locale entries.
+2) Currently, all SUSv3 libc locale functionality should be implemented
+   except for wcsftime and collating item support in regex.
+
+stdio
+-----
+1) Conversion of large magnitude floating-point values by printf suffers a loss
+   of precision due to the algorithm used.
+2) uClibc's printf is much stricter than glibcs, especially regarding positional
+   args.  The entire format string is parsed first and an error is returned if
+   a problem is detected.  In locales other than C, the format string is checked
+   to be a valid multibyte sequence as well.  Also, currently at most 10 positional
+   args are allowed (although this is configurable).
+3) BUFSIZ is configurable, but no attempt is made at automatic tuning of internal
+   buffer sizes for stdio streams.  In fact, the stdio code in general sacrifices
+   sophistication/performace for minimal size.
+4) uClibc allows glibc-like custom printf functions.  However, while not
+   currently checked, the specifier must be <= 0x7f.
+5) uClibc allows glibc-like custom streams.  However, no in-buffer seeking is
+   done.
+6) The functions fcloseall() and __fpending() can behave differently than their
+   glibc counterparts.
+7) uClibc's setvbuf is more restrictive about when it can be called than glibc's
+   is.  The standards specify that setvbuf must occur before any other operations
+   take place on the stream.
+8) Right now, %m is not handled properly by printf when the format uses positional
+   args.
+9) The FILEs created by glibc's fmemopen(), open_memstream(), and fopencookie()
+   are not capable of wide orientation.  The corresponding uClibc routines do
+   not have this limitation.
+10) For scanf, the C99 standard states "The fscanf function returns the value of
+    the macro EOF if an input failure occurs before any conversion."  But glibc's
+    scanf does not respect conversions for which assignment was surpressed, even
+    though the standard states that the value is converted but not stored.
+
+glibc bugs that Ulrich Drepper has refused to acknowledge or comment on
+  ( http://sources.redhat.com/ml/libc-alpha/2003-09/ )
+-----------------------------------------------------------------------
+1) The C99 standard says that for printf, a %s conversion makes no special
+   provisions for multibyte characters.  SUSv3 is even more clear, stating
+   that bytes are written and a specified precision is in bytes.  Yet glibc
+   treats the arg as a multibyte string when a precision is specified and
+   not otherwise.
+2) Both C99 and C89 state that the %c conversion for scanf reads the exact
+   number of bytes specified by the optional field width (or 1 if not specified).
+   uClibc complies with the standard.  There is an argument that perhaps the
+   specified width should be treated as an upper bound, based on some historical
+   use.  However, such behavior should be mentioned in the Conformance document.
+3) glibc's scanf is broken regarding some numeric patterns.  Some invalid
+   strings are accepted as valid ("0x.p", "1e", digit grouped strings).
+   In spite of my posting examples clearly illustrating the bugs, they remain
+   unacknowledged by the glibc developers.
+4) glibc's scanf seems to require a 'p' exponent for hexadecimal float strings.
+   According to the standard, this is optional.
+5) C99 requires that once an EOF is encountered, the stream should be treated
+   as if at end-of-file even if more data becomes available.  Further reading
+   can be attempted by clearing the EOF flag though, via clearerr() or a file
+   positioning function.  For details concerning the original change, see
+   Defect Report #141.  glibc is currently non-compliant, and the developers
+   did not comment when I asked for their official position on this issue.
+6) glibc's collation routines and/or localedef are broken regarding implicit
+   and explicit UNDEFINED rules.
+
+More to follow as I think of it...
+
+
+
+
+Profiling:
+-------------------------------------------------------------------
+
+uClibc no longer supports 'gcc -fprofile-arcs  -pg' style profiling, which
+causes your application to generate a 'gmon.out' file that can then be analyzed
+by 'gprof'.  Not only does this require explicit extra support in uClibc, it
+requires that you rebuild everything with profiling support.  There is both a
+size and performance penalty to profiling your applications this way, as well
+as Heisenberg effects, where the act of measuring changes what is measured.
+
+There exist a number of less invasive alternatives that do not require you to
+specially instrument your application, and recompile and relink everything.
+
+The OProfile system-wide profiler is an excellent alternative:
+      http://oprofile.sourceforge.net/
+
+Many people have had good results using the combination of Valgrind
+to generate profiling information and KCachegrind for analysis:
+      http://developer.kde.org/~sewardj/
+      http://kcachegrind.sourceforge.net/
+
+Prospect is another alternative based on OProfile:
+      http://prospect.sourceforge.net/
+
+And the Linux Trace Toolkit (LTT) is also a fine tool:
+    http://www.opersys.com/LTT/
+
+FunctionCheck:
+	http://www710.univ-lyon1.fr/~yperret/fnccheck/
+

@@ -1,72 +1,3 @@
-diff --git a/.gitignore b/.gitignore
-new file mode 100644
-index 0000000..f474699
---- /dev/null
-+++ b/.gitignore
-@@ -0,0 +1,63 @@
-+#
-+# NOTE! Don't add files that are generated in specific
-+# subdirectories here. Add them in the ".gitignore" file
-+# in that subdirectory instead.
-+#
-+# Normal rules
-+#
-+.*
-+*.o
-+*.a
-+*.so
-+*.os
-+*.oS
-+.config*
-+
-+#
-+# Top-level generic files
-+#
-+obj.*
-+
-+#
-+# Generated files
-+#
-+extra/config/conf
-+extra/config/lex.zconf.c
-+extra/config/lkc_defs.h
-+extra/config/mconf
-+extra/config/zconf.hash.c
-+extra/config/zconf.tab.c
-+extra/config/zconf.tab.h
-+
-+lib
-+
-+include/asm
-+include/asm-*
-+include/bits
-+include/linux
-+
-+include/sys/acct.h
-+include/sys/elf.h
-+include/sys/epoll.h
-+include/sys/inotify.h
-+include/sys/io.h
-+include/sys/prctl.h
-+include/sys/procfs.h
-+include/sys/ptrace.h
-+include/sys/ucontext.h
-+include/sys/user.h
-+
-+include/dl-osinfo.h
-+include/fpu_control.h
-+include/hp-timing.h
-+include/pthread.h
-+include/semaphore.h
-+include/thread_db.h
-+
-+ldso/include/dl-debug.h
-+ldso/include/dl-startup.h
-+ldso/include/dl-syscalls.h
-+ldso/include/dl-sysdep.h
-+ldso/include/elf.h
-+
-+libc/misc/internals/interp.c
 diff --git a/Rules.mak b/Rules.mak
 index d054bbb..55381cf 100644
 --- a/Rules.mak
@@ -900,6 +831,30 @@ index 5cf1d04..d4294ec 100644
  
  	/* OK, now do the relocations.  We do not do a lazy binding here, so
  	   that once we are done, we have considerably more flexibility. */
+diff --git a/libc/inet/resolv.c b/libc/inet/resolv.c
+index f4e6cac..9cdc3fe 100644
+--- a/libc/inet/resolv.c
++++ b/libc/inet/resolv.c
+@@ -1643,7 +1643,7 @@ int attribute_hidden __read_etc_hosts_r(FILE * fp, const char * name, int type,
+ 			*result=result_buf;
+ 			ret=NETDB_SUCCESS;
+ #ifdef __UCLIBC_HAS_IPV6__
+-        } else if (type == AF_INET6 && inet_pton(AF_INET6, alias[0], in6) > 0) {
++		} else if (type == AF_INET6 && inet_pton(AF_INET6, alias[0], in6) > 0) {
+ 			DPRINTF("Found INET6\n");
+ 			addr_list6[0] = in6;
+ 			addr_list6[1] = 0;
+@@ -1658,8 +1658,8 @@ int attribute_hidden __read_etc_hosts_r(FILE * fp, const char * name, int type,
+ 		} else {
+ 			DPRINTF("Error\n");
+ 			ret=TRY_AGAIN;
+-			break; /* bad ip address */
+-        }
++			continue; /* bad ip address, keep searching */
++		}
+ 
+ 		if (action!=GETHOSTENT) {
+ 			fclose(fp);
 diff --git a/libc/string/avr32/Makefile b/libc/string/avr32/Makefile
 new file mode 100644
 index 0000000..e19e9d9
@@ -994,10 +949,10 @@ index 0000000..c999e65
 +#endif /* __UCLIBC_SUSV3_LEGACY__ */
 diff --git a/libc/string/avr32/memcmp.S b/libc/string/avr32/memcmp.S
 new file mode 100644
-index 0000000..7359a64
+index 0000000..ae6cc91
 --- /dev/null
 +++ b/libc/string/avr32/memcmp.S
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,61 @@
 +/*
 + * Copyright (C) 2004-2007 Atmel Corporation
 + *
@@ -1041,14 +996,17 @@ index 0000000..7359a64
 +	retal	0
 +
 +.Lfound_word:
-+	psub.b	r9, r8, r9
-+	bfextu	r8, r9, 24, 8
-+	retne	r8
-+	bfextu	r8, r9, 16, 8
-+	retne	r8
-+	bfextu	r8, r9, 8, 8
-+	retne	r8
-+	retal	r9
++	mov	len, 4
++
++2:	bfextu	r11, r9, 24, 8
++	bfextu	r12, r8, 24, 8
++	sub	r12, r11
++	retne	r12
++	lsl	r8, 8
++	lsl	r9, 8
++	sub	len, 1
++	brne	2b
++	retal	r12
 +
 +	.size	memcmp, . - memcmp
 +
@@ -2752,30 +2710,39 @@ index 0000000..ca1fa7a
 +4:	.align	4
 diff --git a/libc/sysdeps/linux/avr32/crti.S b/libc/sysdeps/linux/avr32/crti.S
 new file mode 100644
-index 0000000..3e132d0
+index 0000000..660f47c
 --- /dev/null
 +++ b/libc/sysdeps/linux/avr32/crti.S
-@@ -0,0 +1,17 @@
+@@ -0,0 +1,26 @@
 +
 +	.section .init
 +	.align	2
 +	.global	_init
 +	.type	_init, @function
 +_init:
-+	/* Use a four-byte instruction to avoid NOPs */
-+	stm	--sp, r0-r7,lr
++	stm	--sp, r6, lr
++	lddpc	r6, 2f
++1:	rsub	r6, pc
++	rjmp	3f
 +	.align	2
++2:	.long	1b - _GLOBAL_OFFSET_TABLE_
++3:
 +
 +	.section .fini
 +	.align	2
 +	.global	_fini
 +	.type	_fini, @function
 +_fini:
-+	stm	--sp, r0-r7,lr
++	stm	--sp, r6, lr
++	lddpc	r6, 2f
++1:	rsub	r6, pc
++	rjmp	3f
 +	.align	2
++2:	.long	1b - _GLOBAL_OFFSET_TABLE_
++3:
 diff --git a/libc/sysdeps/linux/avr32/crtn.S b/libc/sysdeps/linux/avr32/crtn.S
 new file mode 100644
-index 0000000..577adcc
+index 0000000..f7d1040
 --- /dev/null
 +++ b/libc/sysdeps/linux/avr32/crtn.S
 @@ -0,0 +1,14 @@
@@ -2784,14 +2751,14 @@ index 0000000..577adcc
 +	.align	2
 +	.global	_init
 +	.type	_init, @function
-+	ldm	sp++, r0-r7,pc
++	ldm	sp++, r6, pc
 +	.size	_init, . - _init
 +
 +	.section .fini
 +	.align	2
 +	.global _fini
 +	.type	_fini, @function
-+	ldm	sp++, r0-r7,pc
++	ldm	sp++, r6, pc
 +	.size	_fini, . - _fini
 diff --git a/libc/sysdeps/linux/avr32/mmap.c b/libc/sysdeps/linux/avr32/mmap.c
 new file mode 100644
@@ -3405,7 +3372,7 @@ index 0000000..03ca99f
 +libc_hidden_weak(vfork)
 diff --git a/libpthread/linuxthreads.old/sysdeps/avr32/pt-machine.h b/libpthread/linuxthreads.old/sysdeps/avr32/pt-machine.h
 new file mode 100644
-index 0000000..2e8a33b
+index 0000000..eccf329
 --- /dev/null
 +++ b/libpthread/linuxthreads.old/sysdeps/avr32/pt-machine.h
 @@ -0,0 +1,73 @@
@@ -3478,7 +3445,7 @@ index 0000000..2e8a33b
 +		: "m"(*p), [new] "r"(newval), [old] "r"(oldval)
 +		: "cc", "memory");
 +
-+	return result;
++	return result == 0;
 +}
 +
 +#endif /* pt-machine.h */

@@ -1,0 +1,145 @@
+--- a/libpthread/linuxthreads.old/attr.c	2006-01-24 12:41:01.000000000 -0500
++++ b/libpthread/linuxthreads.old/attr.c	2008-02-10 11:35:32.000000000 -0500
+@@ -25,6 +25,14 @@
+ #include "pthread.h"
+ #include "internals.h"
+ 
++#include <sys/resource.h>
++#include <inttypes.h>
++#include <stdio.h>
++#include <stdio_ext.h>
++#include <stdlib.h>
++#include <sys/resource.h>
++
++
+ /* NOTE: With uClibc I don't think we need this versioning stuff.
+  * Therefore, define the function pthread_attr_init() here using
+  * a strong symbol. */
+@@ -209,4 +217,94 @@ int __pthread_attr_getstacksize(const pt
+   *stacksize = attr->__stacksize;
+   return 0;
+ }
++
++
++extern int *__libc_stack_end;
++
+ weak_alias (__pthread_attr_getstacksize, pthread_attr_getstacksize)
++void* pthread_getattr_np(pthread_t thread, pthread_attr_t *attr)
++{
++    static void *stackBase = 0;
++    static size_t stackSize = 0;
++    int ret = 0;
++    /* Stack size limit.  */
++    struct rlimit rl;
++
++    /* The safest way to get the top of the stack is to read
++    /proc/self/maps and locate the line into which
++    __libc_stack_end falls.  */
++    FILE *fp = fopen("/proc/self/maps", "rc");
++    if (fp == NULL)
++        ret = errno;
++    /* We need the limit of the stack in any case.  */
++    else if (getrlimit (RLIMIT_STACK, &rl) != 0)
++        ret = errno;
++    else {
++        /* We need no locking.  */
++        __fsetlocking (fp, FSETLOCKING_BYCALLER);
++
++        /* Until we found an entry (which should always be the case)
++        mark the result as a failure.  */
++        ret = ENOENT;
++
++        char *line = NULL;
++        size_t linelen = 0;
++        uintptr_t last_to = 0;
++
++        while (! feof_unlocked (fp)) {
++            if (getdelim (&line, &linelen, '\n', fp) <= 0)
++                break;
++
++            uintptr_t from;
++            uintptr_t to;
++            if (sscanf (line, "%x-%x", &from, &to) != 2)
++                continue;
++            if (from <= (uintptr_t) __libc_stack_end
++            && (uintptr_t) __libc_stack_end < to) {
++                /* Found the entry.  Now we have the info we need.  */
++                attr->__stacksize = rl.rlim_cur;
++#ifdef _STACK_GROWS_UP
++                /* Don't check to enforce a limit on the __stacksize */
++                attr->__stackaddr = (void *) from;
++#else
++                attr->__stackaddr = (void *) to;
++
++                /* The limit might be too high.  */
++                if ((size_t) attr->__stacksize > (size_t) attr->__stackaddr - last_to)
++                    attr->__stacksize = (size_t) attr->__stackaddr - last_to;
++#endif
++
++                /* We succeed and no need to look further.  */
++                ret = 0;
++                break;
++            }
++            last_to = to;
++        }
++
++        fclose (fp);
++        free (line);
++    }
++#ifndef _STACK_GROWS_UP
++    stackBase = (char *) attr->__stackaddr - attr->__stacksize;
++#else
++    stackBase = attr->__stackaddr;
++#endif
++    stackSize = attr->__stacksize;
++    return (void*)(stackBase + stackSize);
++}
++
++int __pthread_attr_getstack (const pthread_attr_t *attr, void **stackaddr,
++			     size_t *stacksize)
++{
++  /* XXX This function has a stupid definition.  The standard specifies
++     no error value but what is if no stack address was set?  We simply
++     return the value we have in the member.  */
++#ifndef _STACK_GROWS_UP
++  *stackaddr = (char *) attr->__stackaddr - attr->__stacksize;
++#else
++  *stackaddr = attr->__stackaddr;
++#endif
++  *stacksize = attr->__stacksize;
++  return 0;
++}
++weak_alias (__pthread_attr_getstack, pthread_attr_getstack)
+
+--- a/libpthread/linuxthreads.old/sysdeps/pthread/pthread.h	2006-12-07 22:19:36.000000000 -0500
++++ b/libpthread/linuxthreads.old/sysdeps/pthread/pthread.h	2008-02-10 11:42:35.000000000 -0500
+@@ -288,15 +288,11 @@ extern int pthread_attr_getstacksize (__
+ 				      __attr, size_t *__restrict __stacksize)
+      __THROW;
+ 
+-#if 0
+-/* Not yet implemented in uClibc! */
+-
+ #ifdef __USE_GNU
+ /* Initialize thread attribute *ATTR with attributes corresponding to the
+    already running thread TH.  It shall be called on unitialized ATTR
+    and destroyed with pthread_attr_destroy when no longer needed.  */
+-extern int pthread_getattr_np (pthread_t __th, pthread_attr_t *__attr) __THROW;
+-#endif
++extern void* pthread_getattr_np(pthread_t thread, pthread_attr_t *attr);
+ #endif
+ 
+ /* Functions for scheduling control.  */
+@@ -599,6 +595,11 @@ extern int pthread_cancel (pthread_t __c
+    cancelled.  */
+ extern void pthread_testcancel (void);
+ 
++/* Return the previously set address for the stack.  */
++extern int pthread_attr_getstack (__const pthread_attr_t *__restrict __attr,
++				  void **__restrict __stackaddr,
++				  size_t *__restrict __stacksize) __THROW;
++
+ 
+ /* Install a cleanup handler: ROUTINE will be called with arguments ARG
+    when the thread is cancelled or calls pthread_exit.  ROUTINE will also
+
