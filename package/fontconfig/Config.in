@@ -4,5 +4,6 @@ config BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_EXPAT
 	default n
 	help
-
+	a library for font customization and configuration.
+	
 	http://www.fontconfig.org/
