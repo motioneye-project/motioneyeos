@@ -1,0 +1,5 @@
+config BR2_PACKAGE_X11VNC
+	bool "x11vnc"
+	default n
+	help
+	  VNC server for X11 display
