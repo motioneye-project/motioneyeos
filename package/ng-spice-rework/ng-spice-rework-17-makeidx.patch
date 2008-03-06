@@ -1,0 +1,12 @@
+--- a/src/Makefile.in	2005-08-30 03:58:00.000000000 -0400
++++ b/src/Makefile.in	2008-02-13 14:38:04.000000000 -0500
+@@ -882,7 +882,8 @@ spice.o: main.c
+ 		$(COMPILE) -DSIMULATOR -o spice.o  -c $(srcdir)/main.c
+ 
+ ngspice.idx: makeidx
+-	./makeidx $(srcdir)/ngspice.txt
++	gcc -I/usr/include -I.. -I./include $(makeidx_SOURCES) -o makeidx-host
++	./makeidx-host $(srcdir)/ngspice.txt
+ # Tell versions [3.59,3.63) of GNU make to not export all variables.
+ # Otherwise a system limit (for SysV at least) may be exceeded.
+ .NOEXPORT:
