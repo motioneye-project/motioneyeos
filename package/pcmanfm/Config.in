@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PCMANFM
+	bool "pcmanfm"
+	select BR2_PACKAGE_GAMIN
+	select BR2_PACKAGE_STARTUP_NOTIFICATION
+	select BR2_PACKAGE_LIBGTK2
+	default n
+	help
+	  An extremly fast and lightweight file manager which features tabbed browsing and user-friendly interface.
+
+	  http://internap.dl.sourceforge.net/sourceforge/pcmanfm
