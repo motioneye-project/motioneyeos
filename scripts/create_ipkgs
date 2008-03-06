@@ -1,0 +1,82 @@
+#!/bin/sh
+
+# this script is very *alpha* so be gentle...
+
+# change these lines to your arch and maintainer name
+ARCH="avr32"
+PACK_MAINTAINER="John Voltz <john.voltz@gmail.com>"
+
+BUILDROOT_DIR=`pwd`
+
+echo "Creating ipkgs from your build directory..."
+echo "Please be patient, as this can take a long time.
+			"
+
+# create the ipkg directories
+mkdir -p ${BUILDROOT_DIR}/ipkg-temp
+mkdir -p ${BUILDROOT_DIR}/ipkg-out
+
+for PACKAGE in `ls -d ./build_*/*`; do
+	
+	# extract some info
+	NAME_WITHOUT_VER=${PACKAGE%-*}
+	VERSION=${PACKAGE#${NAME_WITHOUT_VER}-}
+	NAME_WITHOUT_DIR=${NAME_WITHOUT_VER#*/*/}
+	CLEAN_NAME=${NAME_WITHOUT_DIR//_/-}
+
+	# clean out the temp directory
+	rm -rf ${BUILDROOT_DIR}/ipkg-temp/*
+
+	# install the package to temp directory
+	cd ${PACKAGE}
+	echo "Installing ${NAME_WITHOUT_DIR} to ./ipkg-temp"
+	make DESTDIR=${BUILDROOT_DIR}/ipkg-temp DSTROOT=${BUILDROOT_DIR}/ipkg-temp install &> /dev/null 
+
+	# create the control file
+	cd ${BUILDROOT_DIR}
+	mkdir ${BUILDROOT_DIR}/ipkg-temp/CONTROL
+
+	# find it's corresponding buildroot package directory 
+	PACK_NAME=`find ./package -path './package/config' -prune -o -name ${NAME_WITHOUT_DIR}`
+	PACK_NAME=${PACK_NAME%./package/config}
+	PACK_NAME=${PACK_NAME#./package/config}
+	PACK_NAME=`echo -n ${PACK_NAME}`
+
+	# there must be an better way to extract the description and 
+	# dependencies from the Config.in and *.mk file. 
+	# Haven't figured it out just yet.
+	CONF_FILE=`cat ${PACK_NAME}/Config.in`
+	#MAKE_FILE=`cat ${PACK_NAME}/*.mk`
+	HELP_STR=${CONF_FILE#*help}
+	HELP_STR=${HELP_STR%%comment*}
+	HELP_STR=${HELP_STR%%choice*}
+	HELP_STR=${HELP_STR%%depends*}
+	HELP_STR=${HELP_STR%%http*}
+	HELP_STR=`echo -n ${HELP_STR}`
+
+	echo ${HELP_STR}
+
+	if [ "${PACK_NAME}" != "" ]; then
+		echo "Creating ipkg of: ${PACKAGE}"
+
+cat > ${BUILDROOT_DIR}/ipkg-temp/CONTROL/control <<EOF
+Package: ${CLEAN_NAME}
+Priority: optional
+Version: ${VERSION}
+Architecture: ${ARCH}
+Maintainer: ${PACK_MAINTAINER}
+Depends: uclibc
+Description: ${HELP_STR}
+EOF
+
+		# build the package
+		package/ipkg/ipkg-build ${BUILDROOT_DIR}/ipkg-temp ${BUILDROOT_DIR}/ipkg-out
+
+	fi
+
+	echo "Complete.
+					"
+
+done
+
+echo "ipkg builds are finished."
