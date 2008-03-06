@@ -19,7 +19,7 @@ nano-source: $(DL_DIR)/$(NANO_SOURCE)
 $(NANO_DIR)/.unpacked: $(DL_DIR)/$(NANO_SOURCE)
 	$(NANO_CAT) $(DL_DIR)/$(NANO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(NANO_DIR)
-	touch $(NANO_DIR)/.unpacked
+	touch $@
 
 $(NANO_DIR)/.configured: $(NANO_DIR)/.unpacked
 	(cd $(NANO_DIR); rm -rf config.cache; \
@@ -33,7 +33,7 @@ $(NANO_DIR)/.configured: $(NANO_DIR)/.unpacked
 		--prefix=/ \
 		--enable-tiny \
 	)
-	touch $(NANO_DIR)/.configured
+	touch $@
 
 $(NANO_DIR)/$(NANO_BINARY): $(NANO_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(NANO_DIR)
