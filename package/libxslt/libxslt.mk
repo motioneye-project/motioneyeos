@@ -13,6 +13,8 @@ $(DL_DIR)/$(LIBXSLT_SOURCE):
 
 $(LIBXSLT_DIR)/.unpacked: $(DL_DIR)/$(LIBXSLT_SOURCE)
 	gzip -d -c $(DL_DIR)/$(LIBXSLT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(LIBXSLT_DIR) package/libxslt/ libxslt-$(LIBXSLT_VERSION)\*.patch*
+	$(CONFIG_UPDATE) $(LIBXSLT_DIR)
 	touch $@
 
 #PKG_CONFIG_PATH="$(STAGING_DIR)/lib/pkconfig:$(STAGING_DIR)/usr/lib/pkgconfig" \
@@ -24,7 +26,10 @@ $(LIBXSLT_DIR)/.configured: $(LIBXSLT_DIR)/.unpacked
 	(cd $(LIBXSLT_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
+		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig" \
 		CFLAGS="$(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE" \
+		EXSLT_LIBDIR=$(STAGING_DIR)/usr/lib \
+		XSLT_LIBDIR=$(STAGING_DIR)/usr/lib \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -38,7 +43,7 @@ $(LIBXSLT_DIR)/.configured: $(LIBXSLT_DIR)/.unpacked
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
+		--includedir=/usr/include \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--enable-shared \
@@ -48,6 +53,7 @@ $(LIBXSLT_DIR)/.configured: $(LIBXSLT_DIR)/.unpacked
 		--without-debugging \
 		--without-python \
 		--without-threads \
+		--with-libxml-libs-prefix=$(STAGING_DIR)/usr/lib \
 	);
 	touch $@
 
