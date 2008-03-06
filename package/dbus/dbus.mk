@@ -16,7 +16,7 @@ DBUS_XML:=expat
 DBUS_XML_DEP:=expat
 else
 DBUS_XML:=libxml
-DBUS_XML_DEP:=libxml2-headers
+DBUS_XML_DEP:=libxml2
 endif
 
 $(DL_DIR)/$(DBUS_SOURCE):
