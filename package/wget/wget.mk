@@ -19,7 +19,7 @@ wget-source: $(DL_DIR)/$(WGET_SOURCE)
 $(WGET_DIR)/.unpacked: $(DL_DIR)/$(WGET_SOURCE)
 	$(WGET_CAT) $(DL_DIR)/$(WGET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(WGET_DIR)
-	touch $(WGET_DIR)/.unpacked
+	touch $@
 
 $(WGET_DIR)/.configured: $(WGET_DIR)/.unpacked
 	(cd $(WGET_DIR); rm -rf config.cache; \
@@ -34,7 +34,7 @@ $(WGET_DIR)/.configured: $(WGET_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		--without-ssl \
 	)
-	touch $(WGET_DIR)/.configured
+	touch $@
 
 $(WGET_DIR)/$(WGET_BINARY): $(WGET_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(WGET_DIR)
