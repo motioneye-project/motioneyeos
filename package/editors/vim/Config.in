@@ -1,5 +1,5 @@
 config BR2_PACKAGE_VIM
-	bool "Vim"
+	bool "vim"
 	default n
 	select BR2_PACKAGE_NCURSES
 	help
@@ -8,7 +8,7 @@ config BR2_PACKAGE_VIM
 	  http://www.vim.org/
 
 config BR2_PACKAGE_VIM_RUNTIME
-	bool "Install runtime"
+	bool "install runtime"
 	default y
 	depends BR2_PACKAGE_VIM
 	help
