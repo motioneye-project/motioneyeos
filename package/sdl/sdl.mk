@@ -4,8 +4,6 @@
 #
 #############################################################
 SDL_VERSION:=1.2.12
-# 1.2.12 is available, but depends on Pulse Audio 0.9
-# which is not available in buildroot (yet)
 SDL_SOURCE:=SDL-$(SDL_VERSION).tar.gz
 SDL_SITE:=http://www.libsdl.org/release
 SDL_CAT:=$(ZCAT)
