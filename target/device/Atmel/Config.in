@@ -61,6 +61,7 @@ config BR2_BOARD_PATH
 
 endmenu
 
+source "target/device/Atmel/u-boot/Config.in"
 
 source "target/device/Atmel/DataFlashBoot/Config.in"
 
