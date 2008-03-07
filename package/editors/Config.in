@@ -1,5 +1,12 @@
-menu "Editors"
+menuconfig BR2_TEXTEDIT_SUPPORT
+	bool "Text editors"
+	default y
+	help
+	  Support for text editors
 
+if BR2_TEXTEDIT_SUPPORT
+source "package/editors/ed/Config.in"
+source "package/editors/nano/Config.in"
+source "package/editors/uemacs/Config.in"
 source "package/editors/vim/Config.in"
-
-endmenu
+endif
