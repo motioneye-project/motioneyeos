@@ -55,18 +55,10 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
+		--prefix=$(STAGING_DIR)/usr \
 		--exec-prefix=/usr \
-		--bindir=/bin \
-		--sbindir=/sbin \
-		--libdir=/lib \
-		--libexecdir=/lib \
 		--sysconfdir=/etc \
-		--datadir=/share \
 		--localstatedir=/var \
-		--includedir=/include \
-		--mandir=/man \
-		--infodir=/info \
 		--enable-pulseaudio=no \
 		--disable-arts \
 		--disable-esd \
@@ -91,11 +83,9 @@ $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(SDL_DIRECTFB_TARGET)
 	touch $@
 
 $(STAGING_DIR)/usr/lib/libSDL.so: $(SDL_DIR)/.compiled
-	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR) install
-	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)\',g" \
-		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
-		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/lib\',g" \
-		-e "s,-I/include/SDL,-I\'$(STAGING_DIR)/include/SDL\',g" \
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(SDL_DIR) install
+# sdl-config uses -Lexec_prefix/lib instead of -Lprefix/lib - fix it
+	$(SED) 's^-L\$${exec_prefix}^-L\$${prefix}^' \
 		$(STAGING_DIR)/usr/bin/sdl-config
 	touch -c $@
 
