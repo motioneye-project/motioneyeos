@@ -1,0 +1,36 @@
+--- a/src/util/Makefile.in.orig	2008-01-30 10:54:59.000000000 -0500
++++ b/src/util/Makefile.in	2008-01-30 10:54:16.000000000 -0500
+@@ -50,8 +50,8 @@ PROGRAMS = $(noinst_PROGRAMS)
+ makekeys_SOURCES = makekeys.c
+ makekeys_OBJECTS = makekeys-makekeys.$(OBJEXT)
+ makekeys_LDADD = $(LDADD)
+-makekeys_LINK = $(LIBTOOL) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
+-	--mode=link $(CCLD) $(makekeys_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
++HOST_CC = gcc
++makekeys_LINK = $(HOST_CC) $(makekeys_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) \
+ 	$(LDFLAGS) -o $@
+ DEFAULT_INCLUDES = -I. -I$(top_builddir)/src -I$(top_builddir)/include/X11@am__isrc@
+ depcomp = $(SHELL) $(top_srcdir)/depcomp
+@@ -307,18 +307,18 @@ distclean-compile:
+ @am__fastdepCC_FALSE@	$(LTCOMPILE) -c -o $@ $<
+ 
+ makekeys-makekeys.o: makekeys.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -MT makekeys-makekeys.o -MD -MP -MF $(DEPDIR)/makekeys-makekeys.Tpo -c -o makekeys-makekeys.o `test -f 'makekeys.c' || echo '$(srcdir)/'`makekeys.c
++@am__fastdepCC_TRUE@	$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -MT makekeys-makekeys.o -MD -MP -MF $(DEPDIR)/makekeys-makekeys.Tpo -c -o makekeys-makekeys.o `test -f 'makekeys.c' || echo '$(srcdir)/'`makekeys.c
+ @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/makekeys-makekeys.Tpo $(DEPDIR)/makekeys-makekeys.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='makekeys.c' object='makekeys-makekeys.o' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -c -o makekeys-makekeys.o `test -f 'makekeys.c' || echo '$(srcdir)/'`makekeys.c
++@am__fastdepCC_FALSE@	$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -c -o makekeys-makekeys.o `test -f 'makekeys.c' || echo '$(srcdir)/'`makekeys.c
+ 
+ makekeys-makekeys.obj: makekeys.c
+-@am__fastdepCC_TRUE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -MT makekeys-makekeys.obj -MD -MP -MF $(DEPDIR)/makekeys-makekeys.Tpo -c -o makekeys-makekeys.obj `if test -f 'makekeys.c'; then $(CYGPATH_W) 'makekeys.c'; else $(CYGPATH_W) '$(srcdir)/makekeys.c'; fi`
++@am__fastdepCC_TRUE@	$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -MT makekeys-makekeys.obj -MD -MP -MF $(DEPDIR)/makekeys-makekeys.Tpo -c -o makekeys-makekeys.obj `if test -f 'makekeys.c'; then $(CYGPATH_W) 'makekeys.c'; else $(CYGPATH_W) '$(srcdir)/makekeys.c'; fi`
+ @am__fastdepCC_TRUE@	mv -f $(DEPDIR)/makekeys-makekeys.Tpo $(DEPDIR)/makekeys-makekeys.Po
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	source='makekeys.c' object='makekeys-makekeys.obj' libtool=no @AMDEPBACKSLASH@
+ @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+-@am__fastdepCC_FALSE@	$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -c -o makekeys-makekeys.obj `if test -f 'makekeys.c'; then $(CYGPATH_W) 'makekeys.c'; else $(CYGPATH_W) '$(srcdir)/makekeys.c'; fi`
++@am__fastdepCC_FALSE@	$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makekeys_CFLAGS) $(CFLAGS) -c -o makekeys-makekeys.obj `if test -f 'makekeys.c'; then $(CYGPATH_W) 'makekeys.c'; else $(CYGPATH_W) '$(srcdir)/makekeys.c'; fi`
+ 
+ mostlyclean-libtool:
+ 	-rm -f *.lo
