@@ -318,7 +318,7 @@ erase-fakeroots:
 	rm -f $(PROJECT_BUILD_DIR)/.fakeroot*
 
 target-devfiles:
-ifeq ($(strip $(BR2_TARGET_DEV_FILES)),y)
+ifeq ($(strip $(BR2_HAVE_DEVFILES)),y)
 	cp -a $(STAGING_DIR)/usr/include $(TARGET_DIR)/usr
 	cp $(STAGING_DIR)/usr/lib/*.a $(TARGET_DIR)/usr/lib
 	cp $(STAGING_DIR)/lib/*.a $(TARGET_DIR)/lib

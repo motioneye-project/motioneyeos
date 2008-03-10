@@ -239,8 +239,8 @@ config BR2_HAVE_INFOPAGES
 	  If you say n here, your target will not contain any
 	  infopage.
 
-config BR2_TARGET_DEV_FILES
-	bool "Development files in target filesystem"
+config BR2_HAVE_DEVFILES
+	bool "development files in target filesystem"
 	default n
 	help
 	  Install headers and static libraries in the
