@@ -6,7 +6,7 @@
 
 ICU_VERSION:=4c-3_8_1
 ICU_SOURCE:=icu$(ICU_VERSION)-src.tgz
-ICU_SITE:=http://superb-west.dl.sourceforge.net/sourceforge/icu
+ICU_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/icu
 ICU_CAT:=$(ZCAT)
 ICU_DIR:=$(BUILD_DIR)/icu/source
 ICU_HOST_DIR:=$(BUILD_DIR)/icu-host/source
