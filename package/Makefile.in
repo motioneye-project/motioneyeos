@@ -305,6 +305,11 @@ ifneq ($(BR2_GCC_CROSS_CXX),y)
 TARGET_CONFIGURE_OPTS+=CXX=""
 endif
 
+ifeq ($(BR2_ENABLE_DEBUG),y)
+ENABLE_DEBUG:=--enable-debug
+else
+ENABLE_DEBUG:=
+endif
 
 
 # X Windowing system
