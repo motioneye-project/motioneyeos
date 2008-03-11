@@ -111,13 +111,14 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE_UTF8),y)
 endif
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO),y)
-	PHP_CONFIGURE+=--with-pdo
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_SQLITE),y)
 	PHP_CONFIGURE+=--with-pdo-sqlite
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),y)
-	PHP_CONFIGURE+=--with-pod-mysql
+	PHP_CONFIGURE+=--with-pdo-mysql
 endif
+else
+	PHP_CONFIGURE+=--without-pdo-sqlite
 endif
 
 $(DL_DIR)/$(PHP_SOURCE):
