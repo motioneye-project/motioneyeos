@@ -57,6 +57,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		--with-curses \
 		--enable-alias \
 		--without-bash-malloc \
+		$(ENABLE_DEBUG) \
 	)
 	touch $@
 
