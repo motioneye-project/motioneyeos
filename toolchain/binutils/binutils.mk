@@ -8,7 +8,7 @@ BINUTILS_VERSION:=$(strip $(subst ",, $(BR2_BINUTILS_VERSION)))
 
 EXTRA_BINUTILS_CONFIG_OPTIONS=$(strip $(subst ",, $(BR2_EXTRA_BINUTILS_CONFIG_OPTIONS)))
 #"))
-BINUTILS_SITE:=ftp://ftp.kernel.org/pub/linux/devel/binutils
+BINUTILS_SITE:=$(BR2_KERNEL_MIRROR)/linux/devel/binutils
 ifeq ($(BINUTILS_VERSION),2.18)
 BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
 endif

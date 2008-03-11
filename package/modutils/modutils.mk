@@ -6,7 +6,7 @@
 MODUTILS_VERSION:=2.4.27
 MODUTILS_SOURCE=modutils-$(MODUTILS_VERSION).tar.bz2
 MODUTILS_CAT:=$(BZCAT)
-MODUTILS_SITE=http://ftp.kernel.org/pub/linux/utils/kernel/modutils/v2.4/
+MODUTILS_SITE=$(BR2_KERNEL_MIRROR)/linux/utils/kernel/modutils/v2.4/
 MODUTILS_DIR1=$(BUILD_DIR)/modutils-$(MODUTILS_VERSION)
 MODUTILS_DIR2=$(TOOL_BUILD_DIR)/modutils-$(MODUTILS_VERSION)
 MODUTILS_BINARY=depmod
