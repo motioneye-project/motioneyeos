@@ -1,0 +1,72 @@
+config BR2_TARGET_UBOOT
+	bool "Das U-Boot Boot Monitor"
+	depends on !BR2_TARGET_AT91
+	default n
+	help
+	  Build "Das U-Boot" Boot Monitor
+
+config BR2_TARGET_UBOOT_BOARDNAME
+	string "board name"
+	depends on BR2_TARGET_UBOOT
+	default "$(BOARD_NAME)"
+	help
+	  One of U-Boot supported boards to be built.
+	  This will be suffixed with _config to meet U-Boot standard naming.
+
+config BR2_TARGET_UBOOT_CUSTOM_PATCH
+	string "custom patch"
+	depends on BR2_TARGET_UBOOT
+	help
+	  If your board requires a custom patch, add the path to the file here.
+	  Most users may leave this empty
+
+config BR2_TARGET_UBOOT_SERVERIP
+	string "server ip"
+	depends on BR2_TARGET_UBOOT
+	default "10.175.196.221"
+	help
+	  TFTP server ip address
+
+config BR2_TARGET_UBOOT_IPADDR
+	string "ip address"
+	depends on BR2_TARGET_UBOOT
+	default "10.175.196.18"
+	help
+	  Target ip address
+
+config BR2_TARGET_UBOOT_GATEWAY
+	string "gateway ip"
+	depends on BR2_TARGET_UBOOT
+	default "10.175.196.1"
+	help
+	  Gateway ip address
+
+config BR2_TARGET_UBOOT_NETMASK
+	string "netmask"
+	depends on BR2_TARGET_UBOOT
+	default "255.255.255.0"
+	help
+	  Network Mask
+
+config BR2_TARGET_UBOOT_ETHADDR
+	string "ethernet address"
+	depends on BR2_TARGET_UBOOT
+	default "04:25:fe:ed:00:18"
+	help
+	  Target MAC address for the ethernet interface.
+	  This should be changed for production units
+
+config BR2_TARGET_UBOOT_ETH1ADDR
+	string "ethernet 2 address"
+	depends on BR2_TARGET_UBOOT
+	depends on BR2_TARGET_AVR32
+	help
+	  Target MAC address for the second ethernet interface.
+
+config BR2_TARGET_UBOOT_SILENT
+	bool "silent console"
+	depends on BR2_TARGET_UBOOT
+	default n
+	help
+	  If the option has been enabled, the output can be
+	  silenced by setting the environment variable "silent".

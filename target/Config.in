@@ -18,6 +18,8 @@ source "target/x86/grub/Config.in"
 #source "target/x86/grub2/Config.in"
 source "target/x86/syslinux/Config.in"
 source "target/powerpc/yaboot/Config.in"
+source "target/u-boot/Config.in"
+source "target/device/Atmel/u-boot/Config.in"
 endmenu
 
 menu "Kernel"

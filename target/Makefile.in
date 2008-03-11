@@ -10,7 +10,10 @@ include target/generic/Makefile.in
 include target/device/Makefile.in
 include target/x86/Makefile.in
 include target/powerpc/Makefile.in
-include target/device/Atmel/u-boot/u-boot.mk
+
+ifeq ($(strip $(BR2_TARGET_UBOOT)),y)
+include target/u-boot/Makefile.in
+endif
 
 # and finally build the filesystems/tarballs
 include target/*/*.mk

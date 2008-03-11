@@ -30,15 +30,15 @@ UBOOT_PATCHES:=$(PROJECT_BUILD_DIR)/u-boot-patches
 UBOOT_ATMEL_BMP:=$(UBOOT_PATCHES)/atmel.bmp
 
 UBOOT_SCR=$(BINARIES_DIR)/autoscript
-TARGET_UBOOT_IPADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_IPADDR)))
+TARGET_UBOOT_IPADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_IPADDR_AT91)))
 #"))
-TARGET_UBOOT_SERVERIP:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP)))
+TARGET_UBOOT_SERVERIP:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP_AT91)))
 #"))
-TARGET_UBOOT_GATEWAY:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_GATEWAY)))
+TARGET_UBOOT_GATEWAY:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_GATEWAY_AT91)))
 #"))
-TARGET_UBOOT_NETMASK:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_NETMASK)))
+TARGET_UBOOT_NETMASK:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_NETMASK_AT91)))
 #"))
-TARGET_UBOOT_ETHADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR)))
+TARGET_UBOOT_ETHADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR_AT91)))
 #"))
 UBOOT_CUSTOM:=$(UBOOT_DIR)/include/custom.h
 
@@ -247,7 +247,7 @@ ubootroot-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_UBOOT)),y)
+ifeq ($(strip $(BR2_TARGET_UBOOT_AT91)),y)
 TARGETS+=uboot
 endif
 
