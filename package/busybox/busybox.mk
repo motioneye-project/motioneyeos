@@ -125,7 +125,7 @@ endif
 
 busybox: uclibc $(TARGET_DIR)/bin/busybox
 
-busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE) $(BUSYBOX_CONFIG_FILE)
+busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE)
 
 busybox-unpacked: $(BUSYBOX_DIR)/.unpacked
 
