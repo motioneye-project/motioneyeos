@@ -5,7 +5,7 @@
 #############################################################
 GNUTAR_VERSION:=1.18
 GNUTAR_SOURCE:=tar-$(GNUTAR_VERSION).tar.bz2
-GNUTAR_SITE:=$(BR2_GNU_MIRROR)/tar/
+GNUTAR_SITE:=$(BR2_GNU_MIRROR)/gnu/tar/
 GNUTAR_DIR:=$(BUILD_DIR)/tar-$(GNUTAR_VERSION)
 GNUTAR_CAT:=$(BZCAT)
 GNUTAR_BINARY:=src/tar

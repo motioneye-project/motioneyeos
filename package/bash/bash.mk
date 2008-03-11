@@ -5,7 +5,7 @@
 #############################################################
 BASH_VERSION:=3.2
 BASH_SOURCE:=bash-$(BASH_VERSION).tar.gz
-BASH_SITE:=http://ftp.gnu.org/pub/gnu/bash
+BASH_SITE:=$(BR2_GNU_MIRROR)/gnu/bash
 BASH_CAT:=$(ZCAT)
 BASH_DIR:=$(BUILD_DIR)/bash-$(BASH_VERSION)
 BASH_BINARY:=bash

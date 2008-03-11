@@ -5,7 +5,7 @@
 #############################################################
 AUTOCONF_VERSION:=2.61
 AUTOCONF_SOURCE:=autoconf-$(AUTOCONF_VERSION).tar.bz2
-AUTOCONF_SITE:=http://ftp.gnu.org/pub/gnu/autoconf
+AUTOCONF_SITE:=$(BR2_GNU_MIRROR)/gnu/autoconf
 AUTOCONF_CAT:=$(BZCAT)
 AUTOCONF_SRC_DIR:=$(TOOL_BUILD_DIR)/autoconf-$(AUTOCONF_VERSION)
 AUTOCONF_DIR:=$(BUILD_DIR)/autoconf-$(AUTOCONF_VERSION)

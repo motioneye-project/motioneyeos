@@ -6,7 +6,7 @@
 COREUTILS_VERSION:=6.9
 COREUTILS_SOURCE:=coreutils-$(COREUTILS_VERSION).tar.bz2
 #COREUTILS_SITE:=ftp://alpha.gnu.org/gnu/coreutils/
-COREUTILS_SITE:=http://ftp.gnu.org/pub/gnu/coreutils
+COREUTILS_SITE:=$(BR2_GNU_MIRROR)/gnu/coreutils
 COREUTILS_CAT:=$(BZCAT)
 COREUTILS_DIR:=$(BUILD_DIR)/coreutils-$(COREUTILS_VERSION)
 COREUTILS_BINARY:=src/vdir
