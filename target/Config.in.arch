@@ -476,8 +476,13 @@ config BR2_ARCH
 	default "i386"		if BR2_x86_i386
 	default "i486"		if BR2_x86_i486
 	default "i586"		if BR2_x86_i586
+	default "i586"		if BR2_x86_pentium_mmx
 	default "i686"		if BR2_x86_i686
+	default "i686"		if BR2_x86_pentium2
+	default "i686"		if BR2_x86_pentium3
 	default "i686"		if BR2_x86_pentium4
+	default "i686"		if BR2_x86_pentium_m
+	default "i686"		if BR2_x86_pentiumpro
 	default "i686"		if BR2_x86_nocona
 	default "i686"		if BR2_x86_core2
 	default "ia64"		if BR2_ia64
