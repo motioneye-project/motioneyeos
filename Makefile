@@ -242,10 +242,12 @@ endif
 
 include package/*/*.mk
 
+TARGETS+=target-devfiles
+
 # target stuff is last so it can override anything else
 include target/Makefile.in
 
-TARGETS+=erase-fakeroots target-devfiles
+TARGETS+=erase-fakeroots 
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS) $(BASE_TARGETS))
@@ -318,18 +320,14 @@ erase-fakeroots:
 	rm -f $(PROJECT_BUILD_DIR)/.fakeroot*
 
 target-devfiles:
-ifeq ($(strip $(BR2_HAVE_DEVFILES)),y)
-	cp -a $(STAGING_DIR)/usr/include $(TARGET_DIR)/usr
-	cp $(STAGING_DIR)/usr/lib/*.a $(TARGET_DIR)/usr/lib
-	cp $(STAGING_DIR)/lib/*.a $(TARGET_DIR)/lib
-	cp $(STAGING_DIR)/usr/lib/*.la $(TARGET_DIR)/usr/lib
-	cp $(STAGING_DIR)/lib/*.la $(TARGET_DIR)/lib
+ifeq ($(BR2_HAVE_DEVFILES),y)
+	( scripts/copy.sh $(STAGING_DIR) $(TARGET_DIR) )
 else
 	rm -rf $(TARGET_DIR)/usr/include
-	find $(TARGET_DIR)/usr/lib -name '*.a' -delete
-	find $(TARGET_DIR)/lib -name '*.a' -delete
-	find $(TARGET_DIR)/usr/lib -name '*.la' -delete
-	find $(TARGET_DIR)/lib -name '*.la' -delete
+	find $(TARGET_DIR)/usr/lib -name '*.a' -delete 
+	find $(TARGET_DIR)/lib -name '*.a' -delete 
+	find $(TARGET_DIR)/usr/lib -name '*.la' -delete 
+	find $(TARGET_DIR)/lib -name '*.la' -delete 
 endif
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
