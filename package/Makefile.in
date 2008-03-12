@@ -9,6 +9,31 @@ HOSTMAKE :=$(shell $(CONFIG_SHELL) -c "which $(HOSTMAKE)" || type -p $(HOSTMAKE)
 MAKE1:=$(HOSTMAKE) MAKE="$(firstword $(HOSTMAKE)) -j1"
 MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
 
+ifeq ($(BR2_OPTIMIZE_0),y)
+TARGET_OPTIMIZATION=-O0
+endif
+ifeq ($(BR2_OPTIMIZE_1),y)
+TARGET_OPTIMIZATION=-O1
+endif
+ifeq ($(BR2_OPTIMIZE_2),y)
+TARGET_OPTIMIZATION=-O2
+endif
+ifeq ($(BR2_OPTIMIZE_3),y)
+TARGET_OPTIMIZATION=-O3
+endif
+ifeq ($(BR2_OPTIMIZE_S),y)
+TARGET_OPTIMIZATION=-Os
+endif
+ifeq ($(BR2_DEBUG_1),y)
+TARGET_DEBUGGING=-g1
+endif
+ifeq ($(BR2_DEBUG_2),y)
+TARGET_DEBUGGING=-g2
+endif
+ifeq ($(BR2_DEBUG_3),y)
+TARGET_DEBUGGING=-g3
+endif
+
 
 #########################################################################
 ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
