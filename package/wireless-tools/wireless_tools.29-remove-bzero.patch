@@ -1,0 +1,29 @@
+--- a/iwlib.c	2007-06-29 19:43:31.000000000 -0400
++++ b/iwlib.c	2008-03-12 14:18:48.000000000 -0400
+@@ -475,7 +475,7 @@ iw_get_range_info(int		skfd,
+   union iw_range_raw *	range_raw;
+ 
+   /* Cleanup */
+-  bzero(buffer, sizeof(buffer));
++  memset(buffer, 0, sizeof(buffer));
+ 
+   wrq.u.data.pointer = (caddr_t) buffer;
+   wrq.u.data.length = sizeof(buffer);
+@@ -504,7 +504,7 @@ iw_get_range_info(int		skfd,
+   else
+     {
+       /* Zero unknown fields */
+-      bzero((char *) range, sizeof(struct iw_range));
++      memset((char *) range, 0, sizeof(struct iw_range));
+ 
+       /* Initial part unmoved */
+       memcpy((char *) range,
+@@ -2960,7 +2960,7 @@ iw_process_scanning_token(struct iw_even
+ 	oldwscan->next = wscan;
+ 
+       /* Reset it */
+-      bzero(wscan, sizeof(struct wireless_scan));
++      memset(wscan, 0, sizeof(struct wireless_scan));
+ 
+       /* Save cell identifier */
+       wscan->has_ap_addr = 1;

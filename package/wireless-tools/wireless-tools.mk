@@ -20,6 +20,7 @@ $(DL_DIR)/$(WIRELESS_TOOLS_SOURCE):
 
 $(WIRELESS_TOOLS_BUILD_DIR)/.unpacked: $(DL_DIR)/$(WIRELESS_TOOLS_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(WIRELESS_TOOLS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(WIRELESS_TOOLS_BUILD_DIR) package/wireless-tools/ \*.patch
 	sed -i -e s:'strip':'$(STRIPCMD)':g $(WIRELESS_TOOLS_BUILD_DIR)/Makefile
 	touch $(WIRELESS_TOOLS_BUILD_DIR)/.unpacked
 
