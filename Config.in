@@ -186,6 +186,7 @@ config BR2_RECENT
 
 config BR2_ENABLE_DEBUG
 	bool "build packages with debugging symbols"
+	select BR2_PACKAGE_GDB_SERVER
 	default n
 	help
 	  Build packages with debugging symbols
