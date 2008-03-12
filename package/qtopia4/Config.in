@@ -12,7 +12,6 @@ config BR2_PACKAGE_QTOPIA4_DEBUG
 	bool "Compile with debug support"
 	default n
 	depends BR2_PACKAGE_QTOPIA4
-	help
 
 choice
 	prompt "Library type"
@@ -60,7 +59,7 @@ config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
 	default ""
 	depends BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
 	help
-	    Commercial users can download their source directly by providing a username.
+	  Commercial users can download their source directly by providing a username.
 
 
 config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
@@ -68,22 +67,14 @@ config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
 	default ""
 	depends BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
 	help
-	    Commercial users can download their source directly by providing a password.
+	  Commercial users can download their source directly by providing a password.
 
 config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	default y
 	depends BR2_PACKAGE_QTOPIA4
 	help
-	    Turns on support for older Qt3.
-
-config BR2_PACKAGE_QTOPIA4_DEPTHS
-	string "color depths to support"
-	default "-depths 8"
-	depends BR2_PACKAGE_QTOPIA4
-	help
-	    Which color depths to support for the library. Default is "-depths
-	    8". Is specified by a comma separated list, i.e. -depths 24,16,8.
+	  Turns on support for older Qt3.
 
 config BR2_PACKAGE_QTOPIA4_GIF
 	bool "Enable GIF support"
@@ -95,37 +86,78 @@ config BR2_PACKAGE_QTOPIA4_GIF
 config BR2_PACKAGE_QTOPIA4_LIBMNG
 	bool "Enable libmng support"
 	default n
-	select BR2_PACKAGE_LIBPNG
 	depends BR2_PACKAGE_QTOPIA4
 	help
 	  This compiles and installs the plugin for MNG support.
 
 choice
-	prompt "libjpeg support"
+	prompt "JPEG support"
 	depends BR2_PACKAGE_QTOPIA4
 	default BR2_PACKAGE_QTOPIA4_NOJPEG
 	help
 	  Select libjpeg support.
 
 config BR2_PACKAGE_QTOPIA4_NOJPEG
-	bool
-	prompt "No jpeg support"
-	help
-	  Disable JPEG support
+	bool "No jpeg support"
 
 config BR2_PACKAGE_QTOPIA4_SYSTEMJPEG
-	bool
+	bool "Use system libjpeg"
 	select BR2_PACKAGE_JPEG
-	prompt "use system libjpeg"
-	help
-	  Link against system libjpeg
 
 config BR2_PACKAGE_QTOPIA4_QTJPEG
-	bool
-	prompt "use qt libjpeg"
-	help
-	  Link against libjpeg proveded with Qt
+	bool "Use Qt libjpeg"
+
 endchoice
+
+choice
+	prompt "PNG support"
+	depends BR2_PACKAGE_QTOPIA4
+	default BR2_PACKAGE_QTOPIA4_NOPNG
+	help
+	  Select which library to use if PNG support should be enabled.
+
+config BR2_PACKAGE_QTOPIA4_NOPNG
+	bool "No PNG support"
+
+config BR2_PACKAGE_QTOPIA4_SYSTEMPNG
+	bool "Use system libpng"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_QTOPIA4_QTPNG
+	bool "Use Qt bundled libpng"
+
+endchoice
+
+choice
+	prompt "TIFF support"
+	depends BR2_PACKAGE_QTOPIA4
+	default BR2_PACKAGE_QTOPIA4_NOTIFF
+	help
+	  Select which library to use if TIFF support should be enabled.
+
+config BR2_PACKAGE_QTOPIA4_NOTIFF
+	bool "No TIFF support"
+
+config BR2_PACKAGE_QTOPIA4_SYSTEMTIFF
+	bool "Use system libtiff"
+	select BR2_PACKAGE_TIFF
+
+config BR2_PACKAGE_QTOPIA4_QTTIFF
+	bool "Use Qt bundled libtiff"
+
+endchoice
+
+config BR2_PACKAGE_QTOPIA4_SQL
+	bool "Enable SQL support"
+	depends BR2_PACKAGE_QTOPIA4
+	help
+	  Enable all the SQL drivers it QtSql library.
+
+config BR2_PACKAGE_QTOPIA4_OPENSSL
+	bool "Enable OpenSSL support"
+	depends BR2_PACKAGE_QTOPIA4
+	help
+	  Enable support for the OpenSSL encryption library.
 
 choice
 	prompt "zlib support"
@@ -146,7 +178,7 @@ config BR2_PACKAGE_QTOPIA4_QTZLIB
 	prompt "Qt zlib"
 	help
 	  Use the zlib bundled with Qt.
-	
+
 config BR2_PACKAGE_QTOPIA4_SYSTEMZLIB
 	bool
 	select BR2_PACKAGE_ZLIB
@@ -154,7 +186,6 @@ config BR2_PACKAGE_QTOPIA4_SYSTEMZLIB
 	help
 	  Use the shared zlib from the system.
 endchoice
-								    
 
 config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	string "The embedded platform we are making Qtopia4 for"
@@ -176,4 +207,4 @@ config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	default "generic"	if BR2_sparc
 	depends BR2_PACKAGE_QTOPIA4
 	help
-	    The platform.
+	  The platform.
