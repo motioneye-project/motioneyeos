@@ -211,6 +211,15 @@ config BR2_STRIP_none
 	  none    do not strip (only for debugging!)
 endchoice
 
+if BR2_STRIP_none
+config BR2_ENABLE_DEBUG
+	bool "build packages with debugging symbols"
+	default n
+	help
+	  Build packages with debugging symbols
+	  enabled
+endif
+
 config BR2_PREFER_STATIC_LIB
 	bool "prefer static libraries"
 	default n
