@@ -4,7 +4,7 @@
 #
 #############################################################
 FAKEROOT_VERSION:=1.9.3
-FAKEROOT_SOURCE:=fakeroot-$(FAKEROOT_VERSION).tar.gz
+FAKEROOT_SOURCE:=fakeroot_$(FAKEROOT_VERSION).tar.gz
 FAKEROOT_SITE:=http://snapshot.debian.net/archive/2008/02/06/debian/pool/main/f/fakeroot
 FAKEROOT_CAT:=$(ZCAT)
 FAKEROOT_SOURCE_DIR:=$(BUILD_DIR)/fakeroot-$(FAKEROOT_VERSION)
