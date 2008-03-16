@@ -253,7 +253,7 @@ endchoice
 
 choice
 	prompt "gcc optimization level"
-	default BR2_OPTIMIZE_0
+	default BR2_OPTIMIZE_S
 	help
 	  Set the optimization level for gcc
 
