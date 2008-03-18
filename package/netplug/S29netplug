@@ -40,7 +40,7 @@ case "$1" in
   start)
 	# Start daemon.
 	echo -n $"Starting network plug daemon: "
-	start-stop-daemon --start --quiet --pidfile /var/run/netplugd.pid --exec /sbin/netplugd ${NETPLUGDARGS}
+	start-stop-daemon -S -q -p /var/run/netplugd.pid -x /sbin/netplugd ${NETPLUGDARGS}
 	RETVAL=$?
 	echo
 	[ $RETVAL -eq 0 ] && touch /var/lock/subsys/netplugd
@@ -48,7 +48,7 @@ case "$1" in
   stop)
 	# Stop daemon.
 	echo -n $"Shutting down network plug daemon: "
-	start-stop-daemon --stop --name netplugd
+	start-stop-daemon -K -n netplugd
 	RETVAL=$?
 	echo
 	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/netplugd

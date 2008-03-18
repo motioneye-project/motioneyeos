@@ -27,12 +27,12 @@
 +
 +start() {
 + 	echo -n "Starting dropbear sshd: "
-+	start-stop-daemon --start --quiet --pidfile /var/run/dropbear.pid --exec /usr/sbin/dropbear
++	start-stop-daemon -S -q -p /var/run/dropbear.pid --exec /usr/sbin/dropbear
 +	echo "OK"
 +}
 +stop() {
 +	echo -n "Stopping sshd: "
-+	start-stop-daemon --stop --quiet --pidfile /var/run/dropbear.pid
++	start-stop-daemon -K -q -p /var/run/dropbear.pid
 +	echo "OK"
 +}
 +restart() {

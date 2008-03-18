@@ -7,12 +7,12 @@ umask 077
 
 start() {
  	echo -n "Starting lighttpd: "
-	start-stop-daemon --start --quiet --make-pidfile --pidfile /var/run/lighttpd.pid -b --exec /usr/sbin/lighttpd -- -f /etc/lighttpd/lighttpd.conf -D
+	start-stop-daemon -S -q -m -p /var/run/lighttpd.pid -b -x /usr/sbin/lighttpd -- -f /etc/lighttpd/lighttpd.conf -D
 	echo "OK"
 }
 stop() {
 	echo -n "Stopping lighttpd: "
-	start-stop-daemon --stop --quiet --pidfile /var/run/lighttpd.pid
+	start-stop-daemon -K -q -p /var/run/lighttpd.pid
 	echo "OK"
 }
 restart() {

@@ -7,8 +7,8 @@ umask 077
 
 start() {
  	echo -n "Starting mdnsd: "
-	start-stop-daemon --start --quiet --pidfile /var/run/mdnsd.pid \
-                --exec /usr/sbin/mdnsd
+	start-stop-daemon -S -q -p /var/run/mdnsd.pid \
+                -x /usr/sbin/mdnsd
 	if [ "$?" != "0" ] ; then
 		echo "FAIL"
 		return 1
@@ -16,8 +16,8 @@ start() {
 	echo "OK"
 
 	echo -n "Starting mDNSResponderPosix: "
-	start-stop-daemon --start --quiet --pidfile /var/run/mDNSResponderPosix.pid \
-                --exec /usr/sbin/mDNSResponderPosix \
+	start-stop-daemon -S -q -p /var/run/mDNSResponderPosix.pid \
+                -x /usr/sbin/mDNSResponderPosix \
                 -- -b -f /etc/mDNSResponderPosix.conf -P /var/run/mDNSResponderPosix.pid
 	if [ "$?" != "0" ] ; then
 		echo "FAIL"
@@ -27,7 +27,7 @@ start() {
 }
 stop() {
 	echo -n "Stopping mDNSResponderPosix: "
-	start-stop-daemon --stop --quiet --pidfile /var/run/mDNSResponderPosix.pid
+	start-stop-daemon -K -q -p /var/run/mDNSResponderPosix.pid
 	if [ "$?" != "0" ] ; then
 		echo "FAIL"
 		return 1
@@ -35,7 +35,7 @@ stop() {
 	echo "OK"
 
 	echo -n "Stopping mdnsd: "
-	start-stop-daemon --stop --quiet --pidfile /var/run/mdnsd.pid
+	start-stop-daemon -K -q -p /var/run/mdnsd.pid
 	if [ "$?" != "0" ] ; then
 		echo "FAIL"
 		return 1

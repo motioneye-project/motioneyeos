@@ -9,20 +9,20 @@ umask 077
 
 start() {
  	echo -n "Starting syslogd: "
-	start-stop-daemon --start --quiet --pidfile /var/run/syslog.pid --exec /sbin/syslogd -- -m 0
+	start-stop-daemon -S -q -p /var/run/syslog.pid -x /sbin/syslogd -- -m 0
 	echo "OK"
 
 	echo -n "Starting klogd: "
-	start-stop-daemon --start --quiet --pidfile /var/run/klogd.pid --exec /sbin/klogd
+	start-stop-daemon -S -q -p /var/run/klogd.pid -x /sbin/klogd
 	echo "OK"
 }
 stop() {
 	echo -n "Stopping klogd: "
-	start-stop-daemon --stop --name klogd
+	start-stop-daemon -K -n klogd
 	echo "OK"
 
 	echo -n "Stopping syslogd: "
-	start-stop-daemon --stop --name syslogd
+	start-stop-daemon -K -n syslogd
 	echo "OK"
 }
 restart() {
