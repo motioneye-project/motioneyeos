@@ -1,9 +1,11 @@
 ifneq ($(findstring y,$(BR2_mips)$(BR2_mipsel)),)
 BR2_BOARD_PATH:=target/device/mips
+BOARD_PATH:=target/device/mips
+
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX_KCONFIG)),)
 ifndef LINUX26_KCONFIG
-LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
+LINUX26_KCONFIG=$(BOARD_PATH)/linux26.config
 endif
 else
 LINUX26_KCONFIG=$(strip $(BR2_PACKAGE_LINUX_KCONFIG))
