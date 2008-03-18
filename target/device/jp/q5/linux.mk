@@ -32,7 +32,7 @@ LINUX_KERNEL=linux-kernel-$(LINUX_VERSION)-$(ARCH).srec
 
 
 # Linux kernel configuration file
-LINUX_KCONFIG=$(JP_Q5_PATH)/linux.config
+LINUX_KCONFIG=$(BOARD_PATH)/linux.config
 
 # kernel patches
 LINUX_PATCH_DIR=target/device/jp/q5/kernel-patches-$(DOWNLOAD_LINUX_VERSION)/
