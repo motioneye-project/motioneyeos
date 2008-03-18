@@ -1,8 +1,9 @@
-BR2_BOARD_PATH:=target/device/x86/i386
+# BR2_BOARD_PATH:=target/device/x86/i386
+BOARD_PATH:=target/device/x86/i386
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX_KCONFIG)),)
 ifndef LINUX26_KCONFIG
-LINUX26_KCONFIG=$(BR2_BOARD_PATH)/linux26.config
+LINUX26_KCONFIG=$(BOARD_PATH)/linux26.config
 endif
 else
 LINUX26_KCONFIG=$(strip $(BR2_PACKAGE_LINUX_KCONFIG))
@@ -16,4 +17,4 @@ else
 LINUX26_FORMAT=$(strip $(BR2_PACKAGE_LINUX_FORMAT))
 endif
 
-KERNEL_HEADERS_PATCH_DIR:=$(BR2_BOARD_PATH)/kernel-header-patches
+KERNEL_HEADERS_PATCH_DIR:=$(BOARD_PATH)/kernel-header-patches
