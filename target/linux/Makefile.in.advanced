@@ -74,7 +74,7 @@ LINUX26_PATCH_SITE:=$(strip $(subst ",,$(BR2_KERNEL_SITE)))
 # ------------------------------------
 # kernel patches provided by buildroot
 ifeq ($(strip $(LINUX26_PATCH_DIR)),)
-LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches-$(LINUX26_VERSION)/
+LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches/
 endif
 
 # -----------------------------------------------------------------------------
@@ -161,6 +161,10 @@ LINUX26_KERNEL_NAME:="zImage"
 endif
 ifeq ($(LINUX26_FORMAT),custom)
 LINUX26_KERNEL_NAME:=$(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE)$(KERNEL_EXT)
+endif
+
+ifeq ($(BOARD_NAME),)
+BOARD_NAME=$(ARCH)
 endif
 
 ifndef LINUX26_KERNEL
@@ -274,7 +278,10 @@ ifeq ($(BR2_PACKAGE_OPENSWAN),y)
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
 endif
 ifneq ($(LINUX26_PATCH_DIR),)
-		toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR) linux-$(LINUX26_VERSION)-\*.patch ; 
+	if [ -d $(LINUX26_PATCH_DIR) ] ; then \
+	toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR) \
+		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2} ; \
+	fi
 endif
 	touch $@
 
@@ -420,6 +427,7 @@ linux-status:
 	@echo LINUX26_VERSION=$(LINUX26_VERSION)
 	@echo LINUX26_SOURCE=$(LINUX26_SOURCE)
 	@echo LINUX26_DIR=$(LINUX26_DIR)
+	@echo LINUX26_PATCH_DIR=$(LINUX26_PATCH_DIR)
 	@echo TARGETS=$(TARGETS)
 	@echo LINUX26_TARGETS=$(LINUX26_TARGETS)
 	@echo LINUX26_HEADERS_PATCH_DIR=$(LINUX26_HEADERS_PATCH_DIR)
