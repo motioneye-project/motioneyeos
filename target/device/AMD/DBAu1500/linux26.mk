@@ -20,7 +20,8 @@ LINUX26_FORMAT=vmlinux
 LINUX26_BINLOC=$(LINUX26_FORMAT)
 
 # Linux kernel configuration file
-LINUX26_KCONFIG=$(ALCHEMY_DBAU1500_PATH)/linux26.config
+#LINUX26_KCONFIG=$(ALCHEMY_DBAU1500_PATH)/linux26.config
+LINUX26_KCONFIG=$(BOARD_PATH)/linux26.config
 
 # File name for the Linux kernel binary
 LINUX26_KERNEL=linux-kernel-$(LINUX26_VERSION)-$(KERNEL_ARCH).srec
