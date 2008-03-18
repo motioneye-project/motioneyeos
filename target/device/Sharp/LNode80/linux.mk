@@ -32,7 +32,7 @@ LINUX_KERNEL=zImage-$(LINUX_VERSION)-$(ARCH)
 
 
 # Linux kernel configuration file
-LINUX_KCONFIG=$(SHARP_LNODE80_PATH)/linux.config
+LINUX_KCONFIG=$(BOARD_PATH)/linux.config
 
 # kernel patches
 LINUX_PATCH_DIR=target/device/Sharp/LNode80/kernel-patches/
