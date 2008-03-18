@@ -10,16 +10,17 @@ endif
 
 endif
 
-SOEKRIS_NET4801_PATH=target/device/Soekris/net4801
+#SOEKRIS_NET4801_PATH=target/device/Soekris/net4801
+BOARD_PATH=target/device/Soekris/net4801
 
 ifeq ($(strip $(BR2_TARGET_SOEKRIS_NET4801)),y)
-UCLIBC_CONFIG_FILE:=$(SOEKRIS_NET4801_PATH)/uClibc.config
-BR2_PACKAGE_BUSYBOX_CONFIG:=$(SOEKRIS_NET4801_PATH)/busybox.config
+UCLIBC_CONFIG_FILE:=$(BOARD_PATH)/uClibc.config
+BR2_PACKAGE_BUSYBOX_CONFIG:=$(BOARD_PATH)/busybox.config
 
 ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
 TARGETS+=linux26
 include target/device/Soekris/soekris_gpio/soekris_gpio.mk
-LINUX26_KCONFIG=$(SOEKRIS_NET4801_PATH)/linux26.config
+LINUX26_KCONFIG=$(BOARD_PATH)/linux26.config
 endif
 
 endif
