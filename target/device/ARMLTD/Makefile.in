@@ -1,4 +1,4 @@
-ifeq ($(BR2_TARGET_ARM_INTEGRATOR_926),y)
+ifeq ($(BR2_TARGET_ARMLTD_INTEGRATOR_926),y)
 LINUX26_KCONFIG:=target/device/Arm/linux26.integrator926.config
 TARGETS+=linux26
 
