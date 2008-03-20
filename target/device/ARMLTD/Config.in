@@ -9,7 +9,7 @@ comment "Arm based Device Support"
 config BR2_TARGET_ARM_INTEGRATOR_926
 	bool "Integrator arm926"
 	depends BR2_arm && BR2_TARGET_ARMLTD
-	default n
+	default y
 	select BR2_PACKAGE_LINUX
 	select BR2_ARM_EABI
 	select BR2_KERNEL_HEADERS_2_6_22
