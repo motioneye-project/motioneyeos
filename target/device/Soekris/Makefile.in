@@ -1,4 +1,6 @@
 # Override the default uClibc configuration
+ifeq ($(strip $(BR2_TARGET_SOEKRIS)),y)
+
 ifeq ($(strip $(BR2_TARGET_SOEKRIS_NET4521)),y)
 UCLIBC_CONFIG_FILE:=target/device/Soekris/net4521/uClibc.config
 BR2_PACKAGE_BUSYBOX_CONFIG:=target/device/Soekris/net4521/busybox.config
@@ -23,4 +25,5 @@ include target/device/Soekris/soekris_gpio/soekris_gpio.mk
 LINUX26_KCONFIG=$(BOARD_PATH)/linux26.config
 endif
 
+endif
 endif
