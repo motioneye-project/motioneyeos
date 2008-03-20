@@ -1,0 +1,51 @@
+ifeq ($(BR2_TARGET_ARM),y)
+
+BOARD_NAME=arm
+BR2_BOARD_PATH:=target/device/ARM
+BOARD_PATH:=target/device/ARM
+
+# These are set by Config.in
+DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
+#"))
+ifeq ($(DOWNLOAD_LINUX26_VERSION),)
+DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+endif
+
+LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_LINUX26_VERSION)))
+#"))
+ifeq ($(LINUX26_VERSION),)
+LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+endif
+
+# These are set by "new" Config.in
+ifeq ($(BR2_LINUX26_KCONFIG),)
+LINUX26_KCONFIG:=$(BOARD_PATH)/$(BOARD_NAME)-linux.config
+endif
+
+# This should be part of target/linux/Makefile.in
+LINUX26_BUILD_DIR:=$(PROJECT_BUILD_DIR)
+
+LINUX26_BINLOC=$(LINUX26_FORMAT)
+
+LINUX26_COPYTO:=/tftpboot
+
+LINUX26_PATCH_DIR:=target/device/ARM/kernel-patches
+
+# The board specific Makefile.in can redefine BOARD_NAME's
+LINUX_BOARD_NAME:=$(BOARD_NAME)
+
+BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox.config
+
+
+# Needs to be AFTER board specific Makefiles
+
+arm_status:
+	@echo PROJECT_BUILD_DIR=$(PROJECT_BUILD_DIR)
+	@echo BOARD_NAME=$(BOARD_NAME)
+	@echo BR2_BOARD_PATH=$(BR2_BOARD_PATH)
+	@echo MAJOR_MINOR=$(LINUX_MAJOR_VER)$(LINUX_MINOR_VER)
+	@echo DOWNLOAD_LINUX26_VERSION=$(DOWNLOAD_LINUX26_VERSION)
+	@echo LINUX_SOURCE=$(LINUX_SOURCE)
+	@echo TARGETS=$(TARGETS)
+
+endif

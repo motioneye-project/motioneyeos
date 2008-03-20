@@ -1,0 +1,15 @@
+config BR2_TARGET_ARM
+	bool
+	depends on BR2_arm
+	depends on !BR2_TARGET_ARMLTD
+	depends on !BR2_TARGET_ATMEL
+	depends on !BR2_TARGET_SHARP
+	default y
+
+config BR2_BOARD_NAME
+	string
+	default "arm"
+
+config BR2_BOARD_PATH
+	string
+	default "target/device/ARM"

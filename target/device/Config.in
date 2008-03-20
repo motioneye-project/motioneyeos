@@ -13,6 +13,10 @@ source "target/device/Sharp/Config.in"
 source "target/device/Soekris/Config.in"
 source "target/device/valka/Config.in"
 source "target/device/Via/Config.in"
+
+comment "Generic Architecture support"
+
+source "target/device/ARM/Config.in"
 source "target/device/x86/Config.in"
 
 # This must be last
