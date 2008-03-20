@@ -91,7 +91,7 @@ else
 ifeq ($(BR2_i386),y)
 LINUX26_KCONFIG:=$(BOARD_PATH)/linux26.config
 else
-LINUX26_KCONFIG:=$(BR2_BOARD_PATH)/linux-$(LINUX26_VERSION).config
+LINUX26_KCONFIG:=$(BOARD_PATH)/linux-$(LINUX26_VERSION).config
 endif
 endif
 endif
