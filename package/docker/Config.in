@@ -1,0 +1,7 @@
+config BR2_PACKAGE_DOCKER
+	bool "docker"
+	default n
+	help
+	  a system tray dock for X
+
+	  http://icculus.org/openbox/2/docker

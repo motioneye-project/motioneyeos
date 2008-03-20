@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ALSAMIXERGUI
+	bool "alsamixergui"
+	default n
+	help
+	  A nice GUI mixer for Alsa using fltk
+
+	  http://snapshot.debian.net/archive/2008/03/19/debian/pool/main/a/alsamixergui
