@@ -49,13 +49,13 @@ config BR2_BUSYBOX_VERSION
 	default "1.9.2"		if BR2_BUSYBOX_VERSION_1_9_X
 
 
-config BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS
-	bool "Install symlinks for BusyBox applets"
+config BR2_PACKAGE_BUSYBOX_FULLINSTALL
+	bool "Run BusyBox's own full installation"
 	depends BR2_PACKAGE_BUSYBOX
 	default y
 	help
-	  If you want to automatically install symlinks for all the
-	  supported applets to the busybox binary, then answer Y.
+	  If you want to run BusyBox's own full install for the
+	  configured applets, then answer Y.
 
 	  This may overwrite files from other packages if your
 	  busybox includes replacement applets for the package.
