@@ -31,7 +31,8 @@ $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS) $(BR2_STRACE_CFLAGS)" \
-		aaa_ac_cv_header_linux_if_packet_h=yes \
+		ac_cv_header_linux_if_packet_h=yes \
+		ac_cv_header_linux_netlink_h=yes \
 		./configure \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
