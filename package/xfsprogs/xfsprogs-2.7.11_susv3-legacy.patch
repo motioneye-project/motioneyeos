@@ -1,2504 +1,1254 @@
-Index: package/xfsprogs/xfsprogs-2.7.11_susv3-legacy.patch
-===================================================================
---- package/xfsprogs/xfsprogs-2.7.11_susv3-legacy.patch	(revision 21474)
-+++ package/xfsprogs/xfsprogs-2.7.11_susv3-legacy.patch	(working copy)
-@@ -1,1245 +1,1254 @@
--diff -ru xfsprogs-2.7.11_vanilla/copy/xfs_copy.c xfsprogs-2.7.11_sysv3-legacy/copy/xfs_copy.c
----- xfsprogs-2.7.11_vanilla/copy/xfs_copy.c	2006-01-17 03:46:46.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/copy/xfs_copy.c	2008-03-21 16:01:59.000000000 +0000
--@@ -903,7 +903,7 @@
-- 
-- 		/* save what we need (agf) in the btree buffer */
-- 
---		bcopy(ag_hdr.xfs_agf, btree_buf.data, source_sectorsize);
--+		memmove(btree_buf.data, ag_hdr.xfs_agf, source_sectorsize);
-- 		ag_hdr.xfs_agf = (xfs_agf_t *) btree_buf.data;
-- 		btree_buf.length = source_blocksize;
-- 
--diff -ru xfsprogs-2.7.11_vanilla/growfs/xfs_growfs.c xfsprogs-2.7.11_sysv3-legacy/growfs/xfs_growfs.c
----- xfsprogs-2.7.11_vanilla/growfs/xfs_growfs.c	2006-01-17 03:46:48.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/growfs/xfs_growfs.c	2008-03-21 16:06:21.000000000 +0000
--@@ -250,7 +250,7 @@
-- 	 * Need root access from here on (using raw devices)...
-- 	 */
-- 
---	bzero(&xi, sizeof(xi));
--+	memset(&xi, 0, sizeof(xi));
-- 	xi.dname = datadev;
-- 	xi.logname = logdev;
-- 	xi.rtname = rtdev;
--diff -ru xfsprogs-2.7.11_vanilla/io/bmap.c xfsprogs-2.7.11_sysv3-legacy/io/bmap.c
----- xfsprogs-2.7.11_vanilla/io/bmap.c	2006-01-17 03:46:49.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/io/bmap.c	2008-03-21 16:06:21.000000000 +0000
--@@ -175,7 +175,7 @@
-- 
-- 	do {	/* loop a miximum of two times */
-- 
---		bzero(map, sizeof(*map));	/* zero header */
--+		memset(map, 0, sizeof(*map));	/* zero header */
-- 
-- 		map->bmv_length = -1;
-- 		map->bmv_count = map_size;
--diff -ru xfsprogs-2.7.11_vanilla/libhandle/jdm.c xfsprogs-2.7.11_sysv3-legacy/libhandle/jdm.c
----- xfsprogs-2.7.11_vanilla/libhandle/jdm.c	2006-01-17 03:46:49.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/libhandle/jdm.c	2008-03-21 16:06:21.000000000 +0000
--@@ -47,7 +47,7 @@
-- {
-- 	handlep->fh_fshandle = *fshandlep;
-- 	handlep->fh_sz_following = FILEHANDLE_SZ_FOLLOWING;
---	bzero(handlep->fh_pad, FILEHANDLE_SZ_PAD);
--+	memset(handlep->fh_pad, 0, FILEHANDLE_SZ_PAD);
-- 	handlep->fh_gen = statp->bs_gen;
-- 	handlep->fh_ino = statp->bs_ino;
-- }
--diff -ru xfsprogs-2.7.11_vanilla/logprint/log_misc.c xfsprogs-2.7.11_sysv3-legacy/logprint/log_misc.c
----- xfsprogs-2.7.11_vanilla/logprint/log_misc.c	2006-01-17 03:46:51.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/logprint/log_misc.c	2008-03-21 15:04:51.000000000 +0000
--@@ -120,10 +120,10 @@
--     xlog_op_header_t hbuf;
-- 
--     /*
---     * bcopy because on 64/n32, partial reads can cause the op_head
--+     * memmove because on 64/n32, partial reads can cause the op_head
--      * pointer to come in pointing to an odd-numbered byte
--      */
---    bcopy(op_head, &hbuf, sizeof(xlog_op_header_t));
--+    memmove(&hbuf, op_head, sizeof(xlog_op_header_t));
--     op_head = &hbuf;
--     *ptr += sizeof(xlog_op_header_t);
--     printf("Oper (%d): tid: %x  len: %d  clientid: %s  ", i,
--@@ -253,10 +253,10 @@
--     long long		 x, y;
-- 
--     /*
---     * bcopy to ensure 8-byte alignment for the long longs in
--+     * memmove to ensure 8-byte alignment for the long longs in
--      * buf_log_format_t structure
--      */
---    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_buf_log_format_t), len));
--+    memmove(&lbuf, *ptr, MIN(sizeof(xfs_buf_log_format_t), len));
--     f = &lbuf;
--     *ptr += len;
-- 
--@@ -319,15 +319,15 @@
-- 		} else {
-- 			printf("\n");
-- 			/*
---			 * bcopy because *ptr may not be 8-byte aligned
--+			 * memmove because *ptr may not be 8-byte aligned
-- 			 */
---			bcopy(*ptr, &x, sizeof(long long));
---			bcopy(*ptr+8, &y, sizeof(long long));
--+			memmove(&x, *ptr, sizeof(long long));
--+			memmove(&y, *ptr+8, sizeof(long long));
-- 			printf("icount: %lld  ifree: %lld  ",
-- 				INT_GET(x, ARCH_CONVERT),
-- 				INT_GET(y, ARCH_CONVERT));
---			bcopy(*ptr+16, &x, sizeof(long long));
---			bcopy(*ptr+24, &y, sizeof(long long));
--+			memmove(&x, *ptr+16, sizeof(long long));
--+			memmove(&y, *ptr+24, sizeof(long long));
-- 			printf("fdblks: %lld  frext: %lld\n",
-- 				INT_GET(x, ARCH_CONVERT),
-- 				INT_GET(y, ARCH_CONVERT));
--@@ -475,10 +475,10 @@
--     xfs_efd_log_format_t lbuf;
-- 
--     /*
---     * bcopy to ensure 8-byte alignment for the long longs in
--+     * memmove to ensure 8-byte alignment for the long longs in
--      * xfs_efd_log_format_t structure
--      */
---    bcopy(*ptr, &lbuf, len);
--+    memmove(&lbuf, *ptr, len);
--     f = &lbuf;
--     *ptr += len;
--     if (len >= sizeof(xfs_efd_log_format_t)) {
--@@ -511,10 +511,10 @@
--     xfs_efi_log_format_t lbuf;
-- 
--     /*
---     * bcopy to ensure 8-byte alignment for the long longs in
--+     * memmove to ensure 8-byte alignment for the long longs in
--      * xfs_efi_log_format_t structure
--      */
---    bcopy(*ptr, &lbuf, len);
--+    memmove(&lbuf, *ptr, len);
--     f = &lbuf;
--     *ptr += len;
--     if (len >= sizeof(xfs_efi_log_format_t)) {
--@@ -544,7 +544,7 @@
--     xfs_qoff_logformat_t *f;
--     xfs_qoff_logformat_t lbuf;
-- 
---    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_qoff_logformat_t), len));
--+    memmove(&lbuf, *ptr, MIN(sizeof(xfs_qoff_logformat_t), len));
--     f = &lbuf;
--     *ptr += len;
--     if (len >= sizeof(xfs_qoff_logformat_t)) {
--@@ -598,14 +598,14 @@
-- 
-- 	printf("SHORTFORM DIRECTORY size %d count %d\n",
-- 	       size, sfp->hdr.count);
---	bcopy(&(sfp->hdr.parent), &ino, sizeof(ino));
--+	memmove(&ino, &(sfp->hdr.parent), sizeof(ino));
-- 	printf(".. ino 0x%llx\n", (unsigned long long)INT_GET(ino, ARCH_CONVERT));
-- 
-- 	count = (uint)(sfp->hdr.count);
-- 	sfep = &(sfp->list[0]);
-- 	for (i = 0; i < count; i++) {
---		bcopy(&(sfep->inumber), &ino, sizeof(ino));
---		bcopy((sfep->name), namebuf, sfep->namelen);
--+		memmove(&ino, &(sfep->inumber), sizeof(ino));
--+		memmove(namebuf, (sfep->name), sfep->namelen);
-- 		namebuf[sfep->namelen] = '\0';
-- 		printf("%s ino 0x%llx namelen %d\n",
-- 		       namebuf, (unsigned long long)ino, sfep->namelen);
--@@ -628,12 +628,12 @@
--     /*
--      * print inode type header region
--      *
---     * bcopy to ensure 8-byte alignment for the long longs in
--+     * memmove to ensure 8-byte alignment for the long longs in
--      * xfs_inode_log_format_t structure
--      *
--      * len can be smaller than xfs_inode_log_format_t sometimes... (?)
--      */
---    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_inode_log_format_t), len));
--+    memmove(&lbuf, *ptr, MIN(sizeof(xfs_inode_log_format_t), len));
--     version = lbuf.ilf_type;
--     f = &lbuf;
--     (*i)++;					/* bump index */
--@@ -679,7 +679,7 @@
-- 	return f->ilf_size-1;
--     }
-- 
---    bcopy(*ptr, &dino, sizeof(dino));
--+    memmove(&dino, *ptr, sizeof(dino));
--     mode = dino.di_mode & S_IFMT;
--     size = (int)dino.di_size;
--     xlog_print_trans_inode_core(&dino);
--@@ -798,10 +798,10 @@
--     /*
--      * print dquot header region
--      *
---     * bcopy to ensure 8-byte alignment for the long longs in
--+     * memmove to ensure 8-byte alignment for the long longs in
--      * xfs_dq_logformat_t structure
--      */
---    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_dq_logformat_t), len));
--+    memmove(&lbuf, *ptr, MIN(sizeof(xfs_dq_logformat_t), len));
--     f = &lbuf;
--     (*i)++;					/* bump index */
--     *ptr += len;
--@@ -830,7 +830,7 @@
-- 	head = (xlog_op_header_t *)*ptr;
-- 	xlog_print_op_header(head, *i, ptr);
-- 	ASSERT(INT_GET(head->oh_len, ARCH_CONVERT) == sizeof(xfs_disk_dquot_t));
---	bcopy(*ptr, &ddq, sizeof(xfs_disk_dquot_t));
--+	memmove(&ddq, *ptr, sizeof(xfs_disk_dquot_t));
-- 	printf("DQUOT: magic 0x%hx flags 0%ho\n",
-- 	       INT_GET(ddq.d_magic, ARCH_CONVERT),
-- 	       INT_GET(ddq.d_flags, ARCH_CONVERT));
--diff -ru xfsprogs-2.7.11_vanilla/mkfs/proto.c xfsprogs-2.7.11_sysv3-legacy/mkfs/proto.c
----- xfsprogs-2.7.11_vanilla/mkfs/proto.c	2006-01-17 03:46:51.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/mkfs/proto.c	2008-03-21 16:06:21.000000000 +0000
--@@ -234,7 +234,7 @@
-- 	if (dolocal && len <= XFS_IFORK_DSIZE(ip)) {
-- 		libxfs_idata_realloc(ip, len, XFS_DATA_FORK);
-- 		if (buf)
---			bcopy(buf, ip->i_df.if_u1.if_data, len);
--+			memmove(ip->i_df.if_u1.if_data, buf, len);
-- 		ip->i_d.di_size = len;
-- 		ip->i_df.if_flags &= ~XFS_IFEXTENTS;
-- 		ip->i_df.if_flags |= XFS_IFINLINE;
--@@ -257,9 +257,9 @@
-- 		d = XFS_FSB_TO_DADDR(mp, map.br_startblock);
-- 		bp = libxfs_trans_get_buf(logit ? tp : 0, mp->m_dev, d,
-- 			nb << mp->m_blkbb_log, 0);
---		bcopy(buf, XFS_BUF_PTR(bp), len);
--+		memmove(XFS_BUF_PTR(bp), buf, len);
-- 		if (len < XFS_BUF_COUNT(bp))
---			bzero(XFS_BUF_PTR(bp) + len, XFS_BUF_COUNT(bp) - len);
--+			memset(XFS_BUF_PTR(bp) + len, 0, XFS_BUF_COUNT(bp) - len);
-- 		if (logit)
-- 			libxfs_trans_log_buf(tp, bp, 0, XFS_BUF_COUNT(bp) - 1);
-- 		else
--@@ -376,7 +376,7 @@
-- 	cred_t		creds;
-- 	char		*value;
-- 
---	bzero(&creds, sizeof(creds));
--+	memset(&creds, 0, sizeof(creds));
-- 	mstr = getstr(pp);
-- 	switch (mstr[0]) {
-- 	case '-':
--@@ -635,8 +635,8 @@
-- 	tp = libxfs_trans_alloc(mp, 0);
-- 	if ((i = libxfs_trans_reserve(tp, MKFS_BLOCKRES_INODE, 0, 0, 0, 0)))
-- 		res_failed(i);
---	bzero(&creds, sizeof(creds));
---	bzero(&fsxattrs, sizeof(fsxattrs));
--+	memset(&creds, 0, sizeof(creds));
--+	memset(&fsxattrs, 0, sizeof(fsxattrs));
-- 	error = libxfs_inode_alloc(&tp, NULL, S_IFREG, 1, 0,
-- 					&creds, &fsxattrs, &rbmip);
-- 	if (error) {
--diff -ru xfsprogs-2.7.11_vanilla/mkfs/xfs_mkfs.c xfsprogs-2.7.11_sysv3-legacy/mkfs/xfs_mkfs.c
----- xfsprogs-2.7.11_vanilla/mkfs/xfs_mkfs.c	2006-01-17 03:46:51.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/mkfs/xfs_mkfs.c	2008-03-21 16:06:21.000000000 +0000
--@@ -631,9 +631,9 @@
-- 	extent_flagging = 1;
-- 	force_overwrite = 0;
-- 	worst_freelist = 0;
---	bzero(&fsx, sizeof(fsx));
--+	memset(&fsx, 0, sizeof(fsx));
-- 
---	bzero(&xi, sizeof(xi));
--+	memset(&xi, 0, sizeof(xi));
-- 	xi.notvolok = 1;
-- 	xi.setblksize = 1;
-- 	xi.isreadonly = LIBXFS_EXCLUSIVELY;
--@@ -1882,7 +1882,7 @@
-- 	bsize = 1 << (blocklog - BBSHIFT);
-- 	mp = &mbuf;
-- 	sbp = &mp->m_sb;
---	bzero(mp, sizeof(xfs_mount_t));
--+	memset(mp, 0, sizeof(xfs_mount_t));
-- 	sbp->sb_blocklog = (__uint8_t)blocklog;
-- 	sbp->sb_sectlog = (__uint8_t)sectorlog;
-- 	sbp->sb_agblklog = (__uint8_t)libxfs_log2_roundup((unsigned int)agsize);
--@@ -2028,12 +2028,12 @@
-- 	 * ext[2,3] and reiserfs (64k) - and hopefully all else.
-- 	 */
-- 	buf = libxfs_getbuf(xi.ddev, 0, BTOBB(WHACK_SIZE));
---	bzero(XFS_BUF_PTR(buf), WHACK_SIZE);
--+	memset(XFS_BUF_PTR(buf), 0, WHACK_SIZE);
-- 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-- 
-- 	/* OK, now write the superblock */
-- 	buf = libxfs_getbuf(xi.ddev, XFS_SB_DADDR, XFS_FSS_TO_BB(mp, 1));
---	bzero(XFS_BUF_PTR(buf), sectorsize);
--+	memset(XFS_BUF_PTR(buf), 0, sectorsize);
-- 	libxfs_xlate_sb(XFS_BUF_PTR(buf), sbp, -1, XFS_SB_ALL_BITS);
-- 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-- 
--@@ -2056,7 +2056,7 @@
-- 	if (!xi.disfile) {
-- 		buf = libxfs_getbuf(xi.ddev, (xi.dsize - BTOBB(WHACK_SIZE)), 
-- 				    BTOBB(WHACK_SIZE));
---		bzero(XFS_BUF_PTR(buf), WHACK_SIZE);
--+		memset(XFS_BUF_PTR(buf), 0, WHACK_SIZE);
-- 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-- 	}
-- 
--@@ -2084,7 +2084,7 @@
-- 		buf = libxfs_getbuf(xi.ddev,
-- 				XFS_AG_DADDR(mp, agno, XFS_SB_DADDR),
-- 				XFS_FSS_TO_BB(mp, 1));
---		bzero(XFS_BUF_PTR(buf), sectorsize);
--+		memset(XFS_BUF_PTR(buf), 0, sectorsize);
-- 		libxfs_xlate_sb(XFS_BUF_PTR(buf), sbp, -1, XFS_SB_ALL_BITS);
-- 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-- 
--@@ -2095,7 +2095,7 @@
-- 				XFS_AG_DADDR(mp, agno, XFS_AGF_DADDR(mp)),
-- 				XFS_FSS_TO_BB(mp, 1));
-- 		agf = XFS_BUF_TO_AGF(buf);
---		bzero(agf, sectorsize);
--+		memset(agf, 0, sectorsize);
-- 		if (agno == agcount - 1)
-- 			agsize = dblocks - (xfs_drfsbno_t)(agno * agsize);
-- 		INT_SET(agf->agf_magicnum, ARCH_CONVERT, XFS_AGF_MAGIC);
--@@ -2130,7 +2130,7 @@
-- 				XFS_AG_DADDR(mp, agno, XFS_AGI_DADDR(mp)),
-- 				XFS_FSS_TO_BB(mp, 1));
-- 		agi = XFS_BUF_TO_AGI(buf);
---		bzero(agi, sectorsize);
--+		memset(agi, 0, sectorsize);
-- 		INT_SET(agi->agi_magicnum, ARCH_CONVERT, XFS_AGI_MAGIC);
-- 		INT_SET(agi->agi_versionnum, ARCH_CONVERT, XFS_AGI_VERSION);
-- 		INT_SET(agi->agi_seqno, ARCH_CONVERT, agno);
--@@ -2152,7 +2152,7 @@
-- 				XFS_AGB_TO_DADDR(mp, agno, XFS_BNO_BLOCK(mp)),
-- 				bsize);
-- 		block = XFS_BUF_TO_SBLOCK(buf);
---		bzero(block, blocksize);
--+		memset(block, 0, blocksize);
-- 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_ABTB_MAGIC);
-- 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
-- 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 1);
--@@ -2202,7 +2202,7 @@
-- 				XFS_AGB_TO_DADDR(mp, agno, XFS_CNT_BLOCK(mp)),
-- 				bsize);
-- 		block = XFS_BUF_TO_SBLOCK(buf);
---		bzero(block, blocksize);
--+		memset(block, 0, blocksize);
-- 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_ABTC_MAGIC);
-- 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
-- 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 1);
--@@ -2239,7 +2239,7 @@
-- 				XFS_AGB_TO_DADDR(mp, agno, XFS_IBT_BLOCK(mp)),
-- 				bsize);
-- 		block = XFS_BUF_TO_SBLOCK(buf);
---		bzero(block, blocksize);
--+		memset(block, 0, blocksize);
-- 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-- 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
-- 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 0);
--@@ -2253,7 +2253,7 @@
-- 	 */
-- 	buf = libxfs_getbuf(mp->m_dev,
-- 		(xfs_daddr_t)XFS_FSB_TO_BB(mp, dblocks - 1LL), bsize);
---	bzero(XFS_BUF_PTR(buf), blocksize);
--+	memset(XFS_BUF_PTR(buf), 0, blocksize);
-- 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-- 
-- 	/*
--@@ -2262,7 +2262,7 @@
-- 	if (mp->m_rtdev && rtblocks > 0) {
-- 		buf = libxfs_getbuf(mp->m_rtdev,
-- 				XFS_FSB_TO_BB(mp, rtblocks - 1LL), bsize);
---		bzero(XFS_BUF_PTR(buf), blocksize);
--+		memset(XFS_BUF_PTR(buf), 0, blocksize);
-- 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-- 	}
-- 
--@@ -2273,7 +2273,7 @@
-- 		xfs_alloc_arg_t	args;
-- 		xfs_trans_t	*tp;
-- 
---		bzero(&args, sizeof(args));
--+		memset(&args, 0, sizeof(args));
-- 		args.tp = tp = libxfs_trans_alloc(mp, 0);
-- 		args.mp = mp;
-- 		args.agno = agno;
--diff -ru xfsprogs-2.7.11_vanilla/repair/agheader.c xfsprogs-2.7.11_sysv3-legacy/repair/agheader.c
----- xfsprogs-2.7.11_vanilla/repair/agheader.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/agheader.c	2008-03-21 16:11:54.000000000 +0000
--@@ -184,7 +184,7 @@
-- 
--  * the inprogress fields, version numbers, and counters
--  * are allowed to differ as well as all fields after the
--- * counters to cope with the pre-6.5 mkfs non-bzeroed
--+ * counters to cope with the pre-6.5 mkfs non-zeroed
--  * secondary superblock sectors.
--  */
-- 
--@@ -233,7 +233,7 @@
-- 	 * (e.g. were pre-6.5 beta) could leave garbage in the secondary
-- 	 * superblock sectors.  Anything stamping the shared fs bit or better
-- 	 * into the secondaries is ok and should generate clean secondary
---	 * superblock sectors.  so only run the bzero check on the
--+	 * superblock sectors.  so only run the zero check on the
-- 	 * potentially garbaged secondaries.
-- 	 */
-- 	if (pre_65_beta ||
--@@ -275,7 +275,7 @@
-- 				do_warn(
-- 		_("zeroing unused portion of %s superblock (AG #%u)\n"),
-- 					!i ? _("primary") : _("secondary"), i);
---				bzero((void *)((__psint_t)sb + size),
--+				memset((void *)((__psint_t)sb + size), 0,
-- 					mp->m_sb.sb_sectsize - size);
-- 			} else
-- 				do_warn(
--@@ -286,7 +286,7 @@
-- 
-- 	/*
-- 	 * now look for the fields we can manipulate directly.
---	 * if we did a bzero and that bzero could have included
--+	 * if we did a zero and that zero could have included
-- 	 * the field in question, just silently reset it.  otherwise,
-- 	 * complain.
-- 	 *
--diff -ru xfsprogs-2.7.11_vanilla/repair/attr_repair.c xfsprogs-2.7.11_sysv3-legacy/repair/attr_repair.c
----- xfsprogs-2.7.11_vanilla/repair/attr_repair.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/attr_repair.c	2008-03-21 16:06:21.000000000 +0000
--@@ -83,7 +83,7 @@
-- int
-- valuecheck(char *namevalue, char *value, int namelen, int valuelen)
-- {
---	/* for proper alignment issues, get the structs and bcopy the values */
--+	/* for proper alignment issues, get the structs and memmove the values */
-- 	xfs_mac_label_t macl;
-- 	xfs_acl_t thisacl;
-- 	void *valuep;
--@@ -93,8 +93,8 @@
-- 			(strncmp(namevalue, SGI_ACL_DEFAULT,
-- 				SGI_ACL_DEFAULT_SIZE) == 0)) {
-- 		if (value == NULL) {
---			bzero(&thisacl, sizeof(xfs_acl_t));
---			bcopy(namevalue+namelen, &thisacl, valuelen);
--+			memset(&thisacl, 0, sizeof(xfs_acl_t));
--+			memmove(&thisacl, namevalue+namelen, valuelen);
-- 			valuep = &thisacl;
-- 		} else
-- 			valuep = value;
--@@ -107,8 +107,8 @@
-- 		}
-- 	} else if (strncmp(namevalue, SGI_MAC_FILE, SGI_MAC_FILE_SIZE) == 0) {
-- 		if (value == NULL) {
---			bzero(&macl, sizeof(xfs_mac_label_t));
---			bcopy(namevalue+namelen, &macl, valuelen);
--+			memset(&macl, 0, sizeof(xfs_mac_label_t));
--+			memmove(&macl, namevalue+namelen, valuelen);
-- 			valuep = &macl;
-- 		} else
-- 			valuep = value;
--@@ -357,7 +357,7 @@
-- 		}
-- 		ASSERT(mp->m_sb.sb_blocksize == XFS_BUF_COUNT(bp));
-- 		length = MIN(XFS_BUF_COUNT(bp), valuelen - amountdone);
---		bcopy(XFS_BUF_PTR(bp), value, length);
--+		memmove(value, XFS_BUF_PTR(bp), length);
-- 		amountdone += length;
-- 		value += length;
-- 		i++;
--@@ -803,7 +803,7 @@
-- 	 * the way.  Then walk the leaf blocks left-to-right, calling
-- 	 * a parent-verification routine each time we traverse a block.
-- 	 */
---	bzero(&da_cursor, sizeof(da_bt_cursor_t));
--+	memset(&da_cursor, 0, sizeof(da_bt_cursor_t));
-- 	da_cursor.active = 0;
-- 	da_cursor.type = 0;
-- 	da_cursor.ino = ino;
--diff -ru xfsprogs-2.7.11_vanilla/repair/dinode.c xfsprogs-2.7.11_sysv3-legacy/repair/dinode.c
----- xfsprogs-2.7.11_vanilla/repair/dinode.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/dinode.c	2008-03-21 16:06:21.000000000 +0000
--@@ -296,7 +296,7 @@
-- 	/* and clear the forks */
-- 
-- 	if (dirty && !no_modify)
---		bzero(&dino->di_u, XFS_LITINO(mp));
--+		memset(&dino->di_u, 0, XFS_LITINO(mp));
-- 
-- 	return(dirty);
-- }
--@@ -1516,8 +1516,8 @@
-- 		 * local symlink, just copy the symlink out of the
-- 		 * inode into the data area
-- 		 */
---		bcopy((char *)XFS_DFORK_DPTR(dino),
---			symlink, INT_GET(dinoc->di_size, ARCH_CONVERT));
--+		memmove(symlink, (char *)XFS_DFORK_DPTR(dino),
--+			INT_GET(dinoc->di_size, ARCH_CONVERT));
-- 	} else {
-- 		/*
-- 		 * stored in a meta-data file, have to bmap one block
--@@ -1542,7 +1542,7 @@
-- 			buf_data = (char *)XFS_BUF_PTR(bp);
-- 			size = MIN(INT_GET(dinoc->di_size, ARCH_CONVERT)
-- 				- amountdone, (int)XFS_FSB_TO_BB(mp, 1)*BBSIZE);
---			bcopy(buf_data, cptr, size);
--+			memmove(cptr, buf_data, size);
-- 			cptr += size;
-- 			amountdone += size;
-- 			i++;
--diff -ru xfsprogs-2.7.11_vanilla/repair/dir.c xfsprogs-2.7.11_sysv3-legacy/repair/dir.c
----- xfsprogs-2.7.11_vanilla/repair/dir.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/dir.c	2008-03-21 16:15:02.000000000 +0000
--@@ -334,7 +334,7 @@
-- 		 * happened.
-- 		 */
-- 		if (junkit)  {
---			bcopy(sf_entry->name, name, namelen);
--+			memmove(name, sf_entry->name, namelen);
-- 			name[namelen] = '\0';
-- 
-- 			if (!no_modify)  {
--@@ -352,7 +352,7 @@
-- 
-- 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
-- 				num_entries--;
---				bzero((void *) ((__psint_t) sf_entry + tmp_len),
--+				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-- 					tmp_elen);
-- 
-- 				/*
--@@ -511,7 +511,7 @@
-- 	if ((freemap = malloc(mp->m_sb.sb_blocksize)) == NULL)
-- 		return(NULL);
-- 
---	bzero(freemap, mp->m_sb.sb_blocksize/NBBY);
--+	memset(freemap, 0, mp->m_sb.sb_blocksize/NBBY);
-- 
-- 	return(freemap);
-- }
--@@ -520,7 +520,7 @@
-- void
-- init_da_freemap(da_freemap_t *dir_freemap)
-- {
---	bzero(dir_freemap, sizeof(da_freemap_t) * DA_BMAP_SIZE);
--+	memset(dir_freemap, 0, sizeof(da_freemap_t) * DA_BMAP_SIZE);
-- }
-- 
-- /*
--@@ -753,7 +753,7 @@
-- 	da_hole_map_t	holemap;
-- 
-- 	init_da_freemap(dir_freemap);
---	bzero(&holemap, sizeof(da_hole_map_t));
--+	memset(&holemap, 0, sizeof(da_hole_map_t));
-- 
-- 	set_da_freemap(mp, dir_freemap, 0, 50);
-- 	set_da_freemap(mp, dir_freemap, 100, 126);
--@@ -1525,9 +1525,9 @@
-- 				memmove(entry, entry + 1, (INT_GET(hdr->count, ARCH_CONVERT) - i) *
-- 					sizeof(xfs_dir_leaf_entry_t));
-- 			}
---			bzero((void *) ((__psint_t) entry +
--+			memset((void *) ((__psint_t) entry +
-- 				(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
---				sizeof(xfs_dir_leaf_entry_t)),
--+				sizeof(xfs_dir_leaf_entry_t)), 0,
-- 				sizeof(xfs_dir_leaf_entry_t));
-- 
-- 			start = (__psint_t) &leaf->entries[INT_GET(hdr->count, ARCH_CONVERT)] -
--@@ -1624,9 +1624,9 @@
-- 						(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
-- 						sizeof(xfs_dir_leaf_entry_t));
-- 				}
---				bzero((void *) ((__psint_t) entry +
--+				memset((void *) ((__psint_t) entry +
-- 					(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
---					sizeof(xfs_dir_leaf_entry_t)),
--+					sizeof(xfs_dir_leaf_entry_t)), 0,
-- 					sizeof(xfs_dir_leaf_entry_t));
-- 
-- 				/*
--@@ -1825,11 +1825,11 @@
-- 					    sizeof(xfs_dir_leaf_entry_t))  {
-- 						memmove(entry, entry + 1,
-- 							bytes);
---						bzero((void *)
---						((__psint_t) entry + bytes),
--+						memset((void *)
--+						((__psint_t) entry + bytes), 0,
-- 						sizeof(xfs_dir_leaf_entry_t));
-- 					} else  {
---						bzero(entry,
--+						memset(entry, 0,
-- 						sizeof(xfs_dir_leaf_entry_t));
-- 					}
-- 
--@@ -2067,11 +2067,11 @@
-- 				 */
-- 				if (bytes > sizeof(xfs_dir_leaf_entry_t))  {
-- 					memmove(entry, entry + 1, bytes);
---					bzero((void *)
---						((__psint_t) entry + bytes),
--+					memset((void *)
--+						((__psint_t) entry + bytes), 0,
-- 						sizeof(xfs_dir_leaf_entry_t));
-- 				} else  {
---					bzero(entry,
--+					memset(entry, 0,
-- 						sizeof(xfs_dir_leaf_entry_t));
-- 				}
-- 
--@@ -2136,7 +2136,7 @@
-- 		 * making it impossible for the stored length
-- 		 * value to be out of range.
-- 		 */
---		bcopy(namest->name, fname, entry->namelen);
--+		memmove(fname, namest->name, entry->namelen);
-- 		fname[entry->namelen] = '\0';
-- 		hashval = libxfs_da_hashname(fname, entry->namelen);
-- 
--@@ -2465,7 +2465,7 @@
-- 	 * (XFS_DIR_LEAF_MAPSIZE (3) * biggest regions)
-- 	 * and see if they match what's in the block
-- 	 */
---	bzero(&holemap, sizeof(da_hole_map_t));
--+	memset(&holemap, 0, sizeof(da_hole_map_t));
-- 	process_da_freemap(mp, dir_freemap, &holemap);
-- 
-- 	if (zero_len_entries)  {
--@@ -2522,7 +2522,7 @@
-- 			/*
-- 			 * copy leaf block header
-- 			 */
---			bcopy(&leaf->hdr, &new_leaf->hdr,
--+			memmove(&new_leaf->hdr, &leaf->hdr,
-- 				sizeof(xfs_dir_leaf_hdr_t));
-- 
-- 			/*
--@@ -2568,8 +2568,8 @@
-- 				d_entry->namelen = s_entry->namelen;
-- 				d_entry->pad2 = 0;
-- 
---				bcopy((char *) leaf + INT_GET(s_entry->nameidx, ARCH_CONVERT),
---					first_byte, bytes);
--+				memmove(first_byte, (char *) leaf + INT_GET(s_entry->nameidx, ARCH_CONVERT),
--+					bytes);
-- 
-- 				num_entries++;
-- 				d_entry++;
--@@ -2581,7 +2581,7 @@
-- 			/*
-- 			 * zero space between end of table and top of heap
-- 			 */
---			bzero(d_entry, (__psint_t) first_byte
--+			memset(d_entry, 0, (__psint_t) first_byte
-- 					- (__psint_t) d_entry);
-- 
-- 			/*
--@@ -2617,7 +2617,7 @@
-- 			/*
-- 			 * final step, copy block back
-- 			 */
---			bcopy(new_leaf, leaf, mp->m_sb.sb_blocksize);
--+			memmove(leaf, new_leaf, mp->m_sb.sb_blocksize);
-- 
-- 			*buf_dirty = 1;
-- 		} else  {
--@@ -2853,7 +2853,7 @@
-- 	 * the way.  Then walk the leaf blocks left-to-right, calling
-- 	 * a parent-verification routine each time we traverse a block.
-- 	 */
---	bzero(&da_cursor, sizeof(da_bt_cursor_t));
--+	memset(&da_cursor, 0, sizeof(da_bt_cursor_t));
-- 
-- 	da_cursor.active = 0;
-- 	da_cursor.type = 0;
--diff -ru xfsprogs-2.7.11_vanilla/repair/dir2.c xfsprogs-2.7.11_sysv3-legacy/repair/dir2.c
----- xfsprogs-2.7.11_vanilla/repair/dir2.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/dir2.c	2008-03-21 16:06:21.000000000 +0000
--@@ -124,7 +124,7 @@
-- 		}
-- 		for (i = off = 0; i < nex; i++, off += XFS_BUF_COUNT(bp)) {
-- 			bp = bplist[i];
---			bcopy(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
--+			memmove((char *)dabuf->data + off, XFS_BUF_PTR(bp),
-- 				XFS_BUF_COUNT(bp));
-- 		}
-- 	}
--@@ -149,7 +149,7 @@
-- 		dabuf->dirty = 0;
-- 		for (i=off=0; i < dabuf->nbuf; i++, off += XFS_BUF_COUNT(bp)) {
-- 			bp = dabuf->bps[i];
---			bcopy((char *)dabuf->data + off, XFS_BUF_PTR(bp),
--+			memmove(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
-- 				XFS_BUF_COUNT(bp));
-- 		}
-- 	}
--@@ -187,10 +187,10 @@
-- 			do_error(_("couldn't malloc dir2 buffer list\n"));
-- 			exit(1);
-- 		}
---		bcopy(dabuf->bps, bplist, nbuf * sizeof(*bplist));
--+		memmove(bplist, dabuf->bps, nbuf * sizeof(*bplist));
-- 		for (i = off = 0; i < nbuf; i++, off += XFS_BUF_COUNT(bp)) {
-- 			bp = bplist[i];
---			bcopy((char *)dabuf->data + off, XFS_BUF_PTR(bp),
--+			memmove(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
-- 				XFS_BUF_COUNT(bp));
-- 		}
-- 	}
--@@ -223,7 +223,7 @@
-- 			do_error(_("couldn't malloc dir2 buffer list\n"));
-- 			exit(1);
-- 		}
---		bcopy(dabuf->bps, bplist, nbuf * sizeof(*bplist));
--+		memmove(bplist, dabuf->bps, nbuf * sizeof(*bplist));
-- 	}
-- 	da_buf_done(dabuf);
-- 	for (i = 0; i < nbuf; i++)
--@@ -1076,7 +1076,7 @@
-- 		 * happened.
-- 		 */
-- 		if (junkit)  {
---			bcopy(sfep->name, name, namelen);
--+			memmove(name, sfep->name, namelen);
-- 			name[namelen] = '\0';
-- 
-- 			if (!no_modify)  {
--@@ -1095,7 +1095,7 @@
-- 
-- 				INT_MOD(sfp->hdr.count, ARCH_CONVERT, -1);
-- 				num_entries--;
---				bzero((void *) ((__psint_t) sfep + tmp_len),
--+				memset((void *) ((__psint_t) sfep + tmp_len), 0,
-- 					tmp_elen);
-- 
-- 				/*
--@@ -1921,7 +1921,7 @@
-- 	 * Then walk the leaf blocks left-to-right, calling a parent
-- 	 * verification routine each time we traverse a block.
-- 	 */
---	bzero(&da_cursor, sizeof(da_cursor));
--+	memset(&da_cursor, 0, sizeof(da_cursor));
-- 	da_cursor.ino = ino;
-- 	da_cursor.dip = dip;
-- 	da_cursor.blkmap = blkmap;
--diff -ru xfsprogs-2.7.11_vanilla/repair/globals.h xfsprogs-2.7.11_sysv3-legacy/repair/globals.h
----- xfsprogs-2.7.11_vanilla/repair/globals.h	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/globals.h	2008-03-21 16:10:19.000000000 +0000
--@@ -66,7 +66,7 @@
--  * the partial sb mask bit set, then you depend on the fields
--  * in it up to and including sb_inoalignmt but the unused part of the
--  * sector may have trash in it.  If the sb has any bits set that are in
--- * the good mask, then the entire sb and sector are good (was bzero'ed
--+ * the good mask, then the entire sb and sector are good (was zero'ed
--  * by mkfs).  The third mask is for filesystems made by pre-6.5 campus
--  * alpha mkfs's.  Those are rare so we'll check for those under
--  * a special option.
--diff -ru xfsprogs-2.7.11_vanilla/repair/incore.c xfsprogs-2.7.11_sysv3-legacy/repair/incore.c
----- xfsprogs-2.7.11_vanilla/repair/incore.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/incore.c	2008-03-21 16:06:21.000000000 +0000
--@@ -74,7 +74,7 @@
-- 				numblocks);
-- 			return;
-- 		}
---		bzero(ba_bmap[i], size);
--+		memset(ba_bmap[i], 0, size);
-- 	}
-- 
-- 	if (rtblocks == 0)  {
--diff -ru xfsprogs-2.7.11_vanilla/repair/incore_bmc.c xfsprogs-2.7.11_sysv3-legacy/repair/incore_bmc.c
----- xfsprogs-2.7.11_vanilla/repair/incore_bmc.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/incore_bmc.c	2008-03-21 16:06:21.000000000 +0000
--@@ -29,7 +29,7 @@
-- {
-- 	int i;
-- 
---	bzero(cursor, sizeof(bmap_cursor_t));
--+	memset(cursor, 0, sizeof(bmap_cursor_t));
-- 	cursor->ino = NULLFSINO;
-- 	cursor->num_levels = num_levels;
-- 
--diff -ru xfsprogs-2.7.11_vanilla/repair/incore_ino.c xfsprogs-2.7.11_sysv3-legacy/repair/incore_ino.c
----- xfsprogs-2.7.11_vanilla/repair/incore_ino.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/incore_ino.c	2008-03-21 16:06:21.000000000 +0000
--@@ -515,12 +515,11 @@
-- 	if (!tmp)
-- 		do_error(_("couldn't memalign pentries table\n"));
-- 
---	(void) bcopy(irec->ino_un.plist->pentries, tmp,
--+	memmove(tmp, irec->ino_un.plist->pentries,
-- 			target * sizeof(parent_entry_t));
-- 
-- 	if (cnt > target)
---		(void) bcopy(irec->ino_un.plist->pentries + target,
---				tmp + target + 1,
--+		memmove(tmp + target + 1, irec->ino_un.plist->pentries + target,
-- 				(cnt - target) * sizeof(parent_entry_t));
-- 
-- 	free(irec->ino_un.plist->pentries);
--@@ -674,7 +673,7 @@
-- 	if (bptrs_index == BPTR_ALLOC_NUM)
-- 		bptrs = NULL;
-- 
---	bzero(bptr, sizeof(backptrs_t));
--+	memset(bptr, 0, sizeof(backptrs_t));
-- 
-- 	return(bptr);
-- }
--@@ -688,7 +687,7 @@
-- 	if ((ptr = malloc(sizeof(backptrs_t))) == NULL)
-- 		do_error(_("could not malloc back pointer table\n"));
-- 
---	bzero(ptr, sizeof(backptrs_t));
--+	memset(ptr, 0, sizeof(backptrs_t));
-- 
-- 	return(ptr);
-- }
--@@ -802,7 +801,7 @@
-- 	if ((last_rec = malloc(sizeof(ino_tree_node_t *) * agcount)) == NULL)
-- 		do_error(_("couldn't malloc uncertain inode cache area\n"));
-- 
---	bzero(last_rec, sizeof(ino_tree_node_t *) * agcount);
--+	memset(last_rec, 0, sizeof(ino_tree_node_t *) * agcount);
-- 
-- 	full_backptrs = 0;
-- 
--diff -ru xfsprogs-2.7.11_vanilla/repair/phase4.c xfsprogs-2.7.11_sysv3-legacy/repair/phase4.c
----- xfsprogs-2.7.11_vanilla/repair/phase4.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/phase4.c	2008-03-21 16:06:21.000000000 +0000
--@@ -68,7 +68,7 @@
-- 		namest = XFS_DIR_LEAF_NAMESTRUCT(leaf,
-- 			INT_GET(entry->nameidx, ARCH_CONVERT));
-- 		XFS_DIR_SF_GET_DIRINO(&namest->inumber, &lino);
---		bcopy(namest->name, fname, entry->namelen);
--+		memmove(fname, namest->name, entry->namelen);
-- 		fname[entry->namelen] = '\0';
-- 
-- 		if (fname[0] != '/' && !strcmp(fname, ORPHANAGE))  {
--@@ -316,7 +316,7 @@
-- 		tmp_sfe = NULL;
-- 		sf_entry = next_sfe;
-- 		XFS_DIR_SF_GET_DIRINO(&sf_entry->inumber, &lino);
---		bcopy(sf_entry->name, fname, sf_entry->namelen);
--+		memmove(fname, sf_entry->name, sf_entry->namelen);
-- 		fname[sf_entry->namelen] = '\0';
-- 
-- 		if (!strcmp(ORPHANAGE, fname))  {
--@@ -447,7 +447,7 @@
-- 
-- 			INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
-- 
---			bzero((void *) ((__psint_t) sf_entry + tmp_len),
--+			memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-- 				tmp_elen);
-- 
-- 			/*
--@@ -534,7 +534,7 @@
-- 		}
-- 		dep = (xfs_dir2_data_entry_t *)ptr;
-- 		lino = INT_GET(dep->inumber, ARCH_CONVERT);
---		bcopy(dep->name, fname, dep->namelen);
--+		memmove(fname, dep->name, dep->namelen);
-- 		fname[dep->namelen] = '\0';
-- 
-- 		if (fname[0] != '/' && !strcmp(fname, ORPHANAGE))  {
--@@ -797,7 +797,7 @@
-- 		sf_entry = next_sfe;
-- 		lino = XFS_DIR2_SF_GET_INUMBER(sf,
-- 			XFS_DIR2_SF_INUMBERP(sf_entry));
---		bcopy(sf_entry->name, fname, sf_entry->namelen);
--+		memmove(fname, sf_entry->name, sf_entry->namelen);
-- 		fname[sf_entry->namelen] = '\0';
-- 
-- 		if (!strcmp(ORPHANAGE, fname))  {
--@@ -931,7 +931,7 @@
-- 			if (lino > XFS_DIR2_MAX_SHORT_INUM)
-- 				sf->hdr.i8count--;
-- 
---			bzero((void *) ((__psint_t) sf_entry + tmp_len),
--+			memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-- 				tmp_elen);
-- 
-- 			/*
--@@ -1292,7 +1292,7 @@
-- 		/*
-- 		 * now reset the bitmap for all ags
-- 		 */
---		bzero(ba_bmap[i], roundup(mp->m_sb.sb_agblocks/(NBBY/XR_BB),
--+		memset(ba_bmap[i], 0, roundup(mp->m_sb.sb_agblocks/(NBBY/XR_BB),
-- 						sizeof(__uint64_t)));
-- 		for (j = 0; j < ag_hdr_block; j++)
-- 			set_agbno_state(mp, i, j, XR_E_INUSE_FS);
--diff -ru xfsprogs-2.7.11_vanilla/repair/phase5.c xfsprogs-2.7.11_sysv3-legacy/repair/phase5.c
----- xfsprogs-2.7.11_vanilla/repair/phase5.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/phase5.c	2008-03-21 16:12:06.000000000 +0000
--@@ -93,7 +93,7 @@
-- 	 * extents of free blocks.  At this point, we know
-- 	 * that blocks in the bitmap are either set to an
-- 	 * "in use" state or set to unknown (0) since the
---	 * bmaps were bzero'ed in phase 4 and only blocks
--+	 * bmaps were zero'ed in phase 4 and only blocks
-- 	 * being used by inodes, inode bmaps, ag headers,
-- 	 * and the files themselves were put into the bitmap.
-- 	 *
--@@ -664,7 +664,7 @@
-- 		 * initialize block header
-- 		 */
-- 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
---		bzero(bt_hdr, mp->m_sb.sb_blocksize);
--+		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-- 
-- 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
-- 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, level);
--@@ -741,7 +741,7 @@
-- 		 * initialize block header
-- 		 */
-- 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
---		bzero(bt_hdr, mp->m_sb.sb_blocksize);
--+		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-- 
-- 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
-- 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, i);
--@@ -772,7 +772,7 @@
-- 		 * block initialization, lay in block header
-- 		 */
-- 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
---		bzero(bt_hdr, mp->m_sb.sb_blocksize);
--+		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-- 
-- 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
-- 		bt_hdr->bb_level = 0;
--@@ -1021,7 +1021,7 @@
-- 		 * initialize block header
-- 		 */
-- 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
---		bzero(bt_hdr, mp->m_sb.sb_blocksize);
--+		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-- 
-- 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-- 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, level);
--@@ -1060,7 +1060,7 @@
-- 			XFS_AG_DADDR(mp, agno, XFS_AGI_DADDR(mp)),
-- 			mp->m_sb.sb_sectsize/BBSIZE);
-- 	agi = XFS_BUF_TO_AGI(agi_buf);
---	bzero(agi, mp->m_sb.sb_sectsize);
--+	memset(agi, 0, mp->m_sb.sb_sectsize);
-- 
-- 	INT_SET(agi->agi_magicnum, ARCH_CONVERT, XFS_AGI_MAGIC);
-- 	INT_SET(agi->agi_versionnum, ARCH_CONVERT, XFS_AGI_VERSION);
--@@ -1124,7 +1124,7 @@
-- 		 * initialize block header
-- 		 */
-- 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
---		bzero(bt_hdr, mp->m_sb.sb_blocksize);
--+		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-- 
-- 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-- 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, i);
--@@ -1152,7 +1152,7 @@
-- 		 * block initialization, lay in block header
-- 		 */
-- 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
---		bzero(bt_hdr, mp->m_sb.sb_blocksize);
--+		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-- 
-- 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-- 		bt_hdr->bb_level = 0;
--@@ -1239,7 +1239,7 @@
-- 			XFS_AG_DADDR(mp, agno, XFS_AGF_DADDR(mp)),
-- 			mp->m_sb.sb_sectsize/BBSIZE);
-- 	agf = XFS_BUF_TO_AGF(agf_buf);
---	bzero(agf, mp->m_sb.sb_sectsize);
--+	memset(agf, 0, mp->m_sb.sb_sectsize);
-- 
-- #ifdef XR_BLD_FREE_TRACE
-- 	fprintf(stderr, "agf = 0x%x, agf_buf->b_un.b_addr = 0x%x\n",
--@@ -1287,7 +1287,7 @@
-- 				XFS_AG_DADDR(mp, agno, XFS_AGFL_DADDR(mp)),
-- 				mp->m_sb.sb_sectsize/BBSIZE);
-- 		agfl = XFS_BUF_TO_AGFL(agfl_buf);
---		bzero(agfl, mp->m_sb.sb_sectsize);
--+		memset(agfl, 0, mp->m_sb.sb_sectsize);
-- 		/*
-- 		 * ok, now grab as many blocks as we can
-- 		 */
--diff -ru xfsprogs-2.7.11_vanilla/repair/phase6.c xfsprogs-2.7.11_sysv3-legacy/repair/phase6.c
----- xfsprogs-2.7.11_vanilla/repair/phase6.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/phase6.c	2008-03-21 16:06:21.000000000 +0000
--@@ -341,7 +341,7 @@
-- 			error);
-- 	}
-- 
---	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
--+	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
-- 
-- 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
-- 	ip->i_d.di_mode = S_IFREG;
--@@ -461,7 +461,7 @@
-- 			return(1);
-- 		}
-- 
---		bcopy(bmp, XFS_BUF_PTR(bp), mp->m_sb.sb_blocksize);
--+		memmove(XFS_BUF_PTR(bp), bmp, mp->m_sb.sb_blocksize);
-- 
-- 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
-- 
--@@ -531,7 +531,7 @@
-- 			return(1);
-- 		}
-- 
---		bcopy(smp, XFS_BUF_PTR(bp), mp->m_sb.sb_blocksize);
--+		memmove(XFS_BUF_PTR(bp), smp, mp->m_sb.sb_blocksize);
-- 
-- 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
-- 
--@@ -576,7 +576,7 @@
-- 			error);
-- 	}
-- 
---	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
--+	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
-- 
-- 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
-- 	ip->i_d.di_mode = S_IFREG;
--@@ -674,7 +674,7 @@
-- 	/*
-- 	 * take care of the core -- initialization from xfs_ialloc()
-- 	 */
---	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
--+	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
-- 
-- 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
-- 	ip->i_d.di_mode = (__uint16_t) mode|S_IFDIR;
--@@ -1231,7 +1231,7 @@
-- 	/*
-- 	 * snag the info we need out of the directory then release all buffers
-- 	 */
---	bcopy(namest->name, fname, entry->namelen);
--+	memmove(fname, namest->name, entry->namelen);
-- 	fname[entry->namelen] = '\0';
-- 	*hashval = INT_GET(entry->hashval, ARCH_CONVERT);
-- 	namelen = entry->namelen;
--@@ -1341,7 +1341,7 @@
-- 		junkit = 0;
-- 
-- 		XFS_DIR_SF_GET_DIRINO(&namest->inumber, &lino);
---		bcopy(namest->name, fname, entry->namelen);
--+		memmove(fname, namest->name, entry->namelen);
-- 		fname[entry->namelen] = '\0';
-- 
-- 		ASSERT(lino != NULLFSINO);
--@@ -1656,7 +1656,7 @@
-- 	libxfs_trans_ijoin(tp, ip, 0);
-- 	libxfs_trans_ihold(tp, ip);
-- 	libxfs_da_bjoin(tp, bp);
---	bzero(&args, sizeof(args));
--+	memset(&args, 0, sizeof(args));
-- 	XFS_BMAP_INIT(&flist, &firstblock);
-- 	args.dp = ip;
-- 	args.trans = tp;
--@@ -1907,7 +1907,7 @@
-- 			continue;
-- 		}
-- 		junkit = 0;
---		bcopy(dep->name, fname, dep->namelen);
--+		memmove(fname, dep->name, dep->namelen);
-- 		fname[dep->namelen] = '\0';
-- 		ASSERT(INT_GET(dep->inumber, ARCH_CONVERT) != NULLFSINO);
-- 		/*
--@@ -2350,7 +2350,7 @@
-- 	}
-- 
-- 	/* allocate blocks for btree */
---	bzero(&args, sizeof(args));
--+	memset(&args, 0, sizeof(args));
-- 	args.trans = tp;
-- 	args.dp = ip;
-- 	args.whichfork = XFS_DATA_FORK;
--@@ -2364,7 +2364,7 @@
-- 		/* NOTREACHED */
-- 	}
-- 	leaf = lbp->data;
---	bzero(leaf, mp->m_dirblksize);
--+	memset(leaf, 0, mp->m_dirblksize);
-- 	INT_SET(leaf->hdr.info.magic, ARCH_CONVERT, XFS_DIR2_LEAFN_MAGIC);
-- 	libxfs_da_log_buf(tp, lbp, 0, mp->m_dirblksize - 1);
-- 	libxfs_bmap_finish(&tp, &flist, firstblock, &committed);
--@@ -2381,7 +2381,7 @@
-- 		libxfs_trans_ijoin(tp, ip, 0);
-- 		libxfs_trans_ihold(tp, ip);
-- 		XFS_BMAP_INIT(&flist, &firstblock);
---		bzero(&args, sizeof(args));
--+		memset(&args, 0, sizeof(args));
-- 		args.trans = tp;
-- 		args.dp = ip;
-- 		args.whichfork = XFS_DATA_FORK;
--@@ -2398,7 +2398,7 @@
-- 			/* NOTREACHED */
-- 		}
-- 		free = fbp->data;
---		bzero(free, mp->m_dirblksize);
--+		memset(free, 0, mp->m_dirblksize);
-- 		INT_SET(free->hdr.magic, ARCH_CONVERT, XFS_DIR2_FREE_MAGIC);
-- 		INT_SET(free->hdr.firstdb, ARCH_CONVERT, i);
-- 		INT_SET(free->hdr.nvalid, ARCH_CONVERT, XFS_DIR2_MAX_FREE_BESTS(mp));
--@@ -2473,7 +2473,7 @@
-- 			mp->m_dirblksize);
-- 		exit(1);
-- 	}
---	bcopy(bp->data, data, mp->m_dirblksize);
--+	memmove(data, bp->data, mp->m_dirblksize);
-- 	ptr = (char *)data->u;
-- 	if (INT_GET(data->hdr.magic, ARCH_CONVERT) == XFS_DIR2_BLOCK_MAGIC) {
-- 		btp = XFS_DIR2_BLOCK_TAIL_P(mp, (xfs_dir2_block_t *)data);
--@@ -2495,7 +2495,7 @@
-- 	libxfs_da_bhold(tp, fbp);
-- 	XFS_BMAP_INIT(&flist, &firstblock);
-- 	needlog = needscan = 0;
---	bzero(((xfs_dir2_data_t *)(bp->data))->hdr.bestfree,
--+	memset(((xfs_dir2_data_t *)(bp->data))->hdr.bestfree, 0,
-- 		sizeof(data->hdr.bestfree));
-- 	libxfs_dir2_data_make_free(tp, bp, (xfs_dir2_data_aoff_t)sizeof(data->hdr),
-- 		mp->m_dirblksize - sizeof(data->hdr), &needlog, &needscan);
--@@ -2856,7 +2856,7 @@
-- 			}
-- 		}
-- 
---		bcopy(sf_entry->name, fname, sf_entry->namelen);
--+		memmove(fname, sf_entry->name, sf_entry->namelen);
-- 		fname[sf_entry->namelen] = '\0';
-- 
-- 		ASSERT(no_modify || lino != NULLFSINO);
--@@ -2967,7 +2967,7 @@
-- 				memmove(sf_entry, tmp_sfe, tmp_len);
-- 
-- 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
---				bzero((void *) ((__psint_t) sf_entry + tmp_len),
--+				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-- 						tmp_elen);
-- 
-- 				/*
--@@ -3071,7 +3071,7 @@
-- 
-- 		XFS_DIR_SF_GET_DIRINO(&sf_entry->inumber, &lino);
-- 
---		bcopy(sf_entry->name, fname, sf_entry->namelen);
--+		memmove(fname, sf_entry->name, sf_entry->namelen);
-- 		fname[sf_entry->namelen] = '\0';
-- 
-- 		if (sf_entry->name[0] == '/')  {
--@@ -3087,7 +3087,7 @@
-- 				memmove(sf_entry, tmp_sfe, tmp_len);
-- 
-- 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
---				bzero((void *) ((__psint_t) sf_entry + tmp_len),
--+				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-- 						tmp_elen);
-- 
-- 				/*
--@@ -3242,7 +3242,7 @@
-- 			}
-- 		}
-- 
---		bcopy(sfep->name, fname, sfep->namelen);
--+		memmove(fname, sfep->name, sfep->namelen);
-- 		fname[sfep->namelen] = '\0';
-- 
-- 		ASSERT(no_modify || (lino != NULLFSINO && lino != 0));
--@@ -3363,7 +3363,7 @@
-- 				memmove(sfep, tmp_sfep, tmp_len);
-- 
-- 				INT_MOD(sfp->hdr.count, ARCH_CONVERT, -1);
---				bzero((void *) ((__psint_t) sfep + tmp_len),
--+				memset((void *) ((__psint_t) sfep + tmp_len), 0,
-- 						tmp_elen);
-- 
-- 				/*
--@@ -3879,8 +3879,8 @@
-- 	int			i;
-- 	int			j;
-- 
---	bzero(&zerocr, sizeof(struct cred));
---	bzero(&zerofsx, sizeof(struct fsxattr));
--+	memset(&zerocr, 0, sizeof(struct cred));
--+	memset(&zerofsx, 0, sizeof(struct fsxattr));
-- 
-- 	do_log(_("Phase 6 - check inode connectivity...\n"));
-- 
--diff -ru xfsprogs-2.7.11_vanilla/repair/rt.c xfsprogs-2.7.11_sysv3-legacy/repair/rt.c
----- xfsprogs-2.7.11_vanilla/repair/rt.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/rt.c	2008-03-21 15:14:13.000000000 +0000
--@@ -275,7 +275,7 @@
-- 			continue;
-- 		}
-- 		bytes = bp->b_un.b_addr;
---		bcopy(bytes, (char *)sumfile + sumbno * mp->m_sb.sb_blocksize,
--+		memmove((char *)sumfile + sumbno * mp->m_sb.sb_blocksize, bytes,
-- 			mp->m_sb.sb_blocksize);
-- 		libxfs_putbuf(bp);
-- 	}
--diff -ru xfsprogs-2.7.11_vanilla/repair/sb.c xfsprogs-2.7.11_sysv3-legacy/repair/sb.c
----- xfsprogs-2.7.11_vanilla/repair/sb.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/repair/sb.c	2008-03-21 16:10:10.000000000 +0000
--@@ -77,7 +77,7 @@
-- 	dest->sb_fdblocks = 0;
-- 	dest->sb_frextents = 0;
-- 
---	bzero(source->sb_fname, 12);
--+	memset(source->sb_fname, 0, 12);
-- }
-- 
-- /*
--@@ -105,7 +105,7 @@
-- 		exit(1);
-- 	}
-- 
---	bzero(&bufsb, sizeof(xfs_sb_t));
--+	memset(&bufsb, 0, sizeof(xfs_sb_t));
-- 	retval = 0;
-- 	dirty = 0;
-- 	bsize = 0;
--@@ -144,7 +144,7 @@
-- 			 * found one.  now verify it by looking
-- 			 * for other secondaries.
-- 			 */
---			bcopy(&bufsb, rsb, sizeof(xfs_sb_t));
--+			memmove(rsb, &bufsb, sizeof(xfs_sb_t));
-- 			rsb->sb_inprogress = 0;
-- 			clear_sunit = 1;
-- 
--@@ -576,7 +576,7 @@
-- void
-- get_sb_geometry(fs_geometry_t *geo, xfs_sb_t *sbp)
-- {
---	bzero(geo, sizeof(fs_geometry_t));
--+	memset(geo, 0, sizeof(fs_geometry_t));
-- 
-- 	/*
-- 	 * blindly set fields that we know are always good
--@@ -643,7 +643,7 @@
-- 	 * superblock fields located after sb_widthfields get set
-- 	 * into the geometry structure only if we can determine
-- 	 * from the features enabled in this superblock whether
---	 * or not the sector was bzero'd at mkfs time.
--+	 * or not the sector was zero'd at mkfs time.
-- 	 */
-- 	if ((!pre_65_beta && (sbp->sb_versionnum & XR_GOOD_SECSB_VNMASK)) ||
-- 	    (pre_65_beta && (sbp->sb_versionnum & XR_ALPHA_SECSB_VNMASK))) {
--diff -ru xfsprogs-2.7.11_vanilla/rtcp/xfs_rtcp.c xfsprogs-2.7.11_sysv3-legacy/rtcp/xfs_rtcp.c
----- xfsprogs-2.7.11_vanilla/rtcp/xfs_rtcp.c	2006-01-17 03:46:52.000000000 +0000
--+++ xfsprogs-2.7.11_sysv3-legacy/rtcp/xfs_rtcp.c	2008-03-21 16:06:21.000000000 +0000
--@@ -365,7 +365,7 @@
-- 			return( -1 );
-- 		}
-- 
---		bzero( fbuf, iosz);
--+		memset( fbuf, 0, iosz);
-- 	}
-- 
-- 	close(fromfd);
-+diff -ru xfsprogs-2.7.11_vanilla/copy/xfs_copy.c xfsprogs-2.7.11_susv3-legacy/copy/xfs_copy.c
-+--- xfsprogs-2.7.11_vanilla/copy/xfs_copy.c	2006-01-17 03:46:46.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/copy/xfs_copy.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -903,7 +903,7 @@
-+ 
-+ 		/* save what we need (agf) in the btree buffer */
-+ 
-+-		bcopy(ag_hdr.xfs_agf, btree_buf.data, source_sectorsize);
-++		memmove(btree_buf.data, ag_hdr.xfs_agf, source_sectorsize);
-+ 		ag_hdr.xfs_agf = (xfs_agf_t *) btree_buf.data;
-+ 		btree_buf.length = source_blocksize;
-+ 
-+diff -ru xfsprogs-2.7.11_vanilla/growfs/xfs_growfs.c xfsprogs-2.7.11_susv3-legacy/growfs/xfs_growfs.c
-+--- xfsprogs-2.7.11_vanilla/growfs/xfs_growfs.c	2006-01-17 03:46:48.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/growfs/xfs_growfs.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -250,7 +250,7 @@
-+ 	 * Need root access from here on (using raw devices)...
-+ 	 */
-+ 
-+-	bzero(&xi, sizeof(xi));
-++	memset(&xi, 0, sizeof(xi));
-+ 	xi.dname = datadev;
-+ 	xi.logname = logdev;
-+ 	xi.rtname = rtdev;
-+diff -ru xfsprogs-2.7.11_vanilla/io/bmap.c xfsprogs-2.7.11_susv3-legacy/io/bmap.c
-+--- xfsprogs-2.7.11_vanilla/io/bmap.c	2006-01-17 03:46:49.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/io/bmap.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -175,7 +175,7 @@
-+ 
-+ 	do {	/* loop a miximum of two times */
-+ 
-+-		bzero(map, sizeof(*map));	/* zero header */
-++		memset(map, 0, sizeof(*map));	/* zero header */
-+ 
-+ 		map->bmv_length = -1;
-+ 		map->bmv_count = map_size;
-+diff -ru xfsprogs-2.7.11_vanilla/libhandle/jdm.c xfsprogs-2.7.11_susv3-legacy/libhandle/jdm.c
-+--- xfsprogs-2.7.11_vanilla/libhandle/jdm.c	2006-01-17 03:46:49.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/libhandle/jdm.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -47,7 +47,7 @@
-+ {
-+ 	handlep->fh_fshandle = *fshandlep;
-+ 	handlep->fh_sz_following = FILEHANDLE_SZ_FOLLOWING;
-+-	bzero(handlep->fh_pad, FILEHANDLE_SZ_PAD);
-++	memset(handlep->fh_pad, 0, FILEHANDLE_SZ_PAD);
-+ 	handlep->fh_gen = statp->bs_gen;
-+ 	handlep->fh_ino = statp->bs_ino;
-+ }
-+diff -ru xfsprogs-2.7.11_vanilla/logprint/log_misc.c xfsprogs-2.7.11_susv3-legacy/logprint/log_misc.c
-+--- xfsprogs-2.7.11_vanilla/logprint/log_misc.c	2006-01-17 03:46:51.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/logprint/log_misc.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -120,10 +120,10 @@
-+     xlog_op_header_t hbuf;
-+ 
-+     /*
-+-     * bcopy because on 64/n32, partial reads can cause the op_head
-++     * memmove because on 64/n32, partial reads can cause the op_head
-+      * pointer to come in pointing to an odd-numbered byte
-+      */
-+-    bcopy(op_head, &hbuf, sizeof(xlog_op_header_t));
-++    memmove(&hbuf, op_head, sizeof(xlog_op_header_t));
-+     op_head = &hbuf;
-+     *ptr += sizeof(xlog_op_header_t);
-+     printf("Oper (%d): tid: %x  len: %d  clientid: %s  ", i,
-+@@ -253,10 +253,10 @@
-+     long long		 x, y;
-+ 
-+     /*
-+-     * bcopy to ensure 8-byte alignment for the long longs in
-++     * memmove to ensure 8-byte alignment for the long longs in
-+      * buf_log_format_t structure
-+      */
-+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_buf_log_format_t), len));
-++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_buf_log_format_t), len));
-+     f = &lbuf;
-+     *ptr += len;
-+ 
-+@@ -319,15 +319,15 @@
-+ 		} else {
-+ 			printf("\n");
-+ 			/*
-+-			 * bcopy because *ptr may not be 8-byte aligned
-++			 * memmove because *ptr may not be 8-byte aligned
-+ 			 */
-+-			bcopy(*ptr, &x, sizeof(long long));
-+-			bcopy(*ptr+8, &y, sizeof(long long));
-++			memmove(&x, *ptr, sizeof(long long));
-++			memmove(&y, *ptr+8, sizeof(long long));
-+ 			printf("icount: %lld  ifree: %lld  ",
-+ 				INT_GET(x, ARCH_CONVERT),
-+ 				INT_GET(y, ARCH_CONVERT));
-+-			bcopy(*ptr+16, &x, sizeof(long long));
-+-			bcopy(*ptr+24, &y, sizeof(long long));
-++			memmove(&x, *ptr+16, sizeof(long long));
-++			memmove(&y, *ptr+24, sizeof(long long));
-+ 			printf("fdblks: %lld  frext: %lld\n",
-+ 				INT_GET(x, ARCH_CONVERT),
-+ 				INT_GET(y, ARCH_CONVERT));
-+@@ -475,10 +475,10 @@
-+     xfs_efd_log_format_t lbuf;
-+ 
-+     /*
-+-     * bcopy to ensure 8-byte alignment for the long longs in
-++     * memmove to ensure 8-byte alignment for the long longs in
-+      * xfs_efd_log_format_t structure
-+      */
-+-    bcopy(*ptr, &lbuf, len);
-++    memmove(&lbuf, *ptr, len);
-+     f = &lbuf;
-+     *ptr += len;
-+     if (len >= sizeof(xfs_efd_log_format_t)) {
-+@@ -511,10 +511,10 @@
-+     xfs_efi_log_format_t lbuf;
-+ 
-+     /*
-+-     * bcopy to ensure 8-byte alignment for the long longs in
-++     * memmove to ensure 8-byte alignment for the long longs in
-+      * xfs_efi_log_format_t structure
-+      */
-+-    bcopy(*ptr, &lbuf, len);
-++    memmove(&lbuf, *ptr, len);
-+     f = &lbuf;
-+     *ptr += len;
-+     if (len >= sizeof(xfs_efi_log_format_t)) {
-+@@ -544,7 +544,7 @@
-+     xfs_qoff_logformat_t *f;
-+     xfs_qoff_logformat_t lbuf;
-+ 
-+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_qoff_logformat_t), len));
-++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_qoff_logformat_t), len));
-+     f = &lbuf;
-+     *ptr += len;
-+     if (len >= sizeof(xfs_qoff_logformat_t)) {
-+@@ -598,14 +598,14 @@
-+ 
-+ 	printf("SHORTFORM DIRECTORY size %d count %d\n",
-+ 	       size, sfp->hdr.count);
-+-	bcopy(&(sfp->hdr.parent), &ino, sizeof(ino));
-++	memmove(&ino, &(sfp->hdr.parent), sizeof(ino));
-+ 	printf(".. ino 0x%llx\n", (unsigned long long)INT_GET(ino, ARCH_CONVERT));
-+ 
-+ 	count = (uint)(sfp->hdr.count);
-+ 	sfep = &(sfp->list[0]);
-+ 	for (i = 0; i < count; i++) {
-+-		bcopy(&(sfep->inumber), &ino, sizeof(ino));
-+-		bcopy((sfep->name), namebuf, sfep->namelen);
-++		memmove(&ino, &(sfep->inumber), sizeof(ino));
-++		memmove(namebuf, (sfep->name), sfep->namelen);
-+ 		namebuf[sfep->namelen] = '\0';
-+ 		printf("%s ino 0x%llx namelen %d\n",
-+ 		       namebuf, (unsigned long long)ino, sfep->namelen);
-+@@ -628,12 +628,12 @@
-+     /*
-+      * print inode type header region
-+      *
-+-     * bcopy to ensure 8-byte alignment for the long longs in
-++     * memmove to ensure 8-byte alignment for the long longs in
-+      * xfs_inode_log_format_t structure
-+      *
-+      * len can be smaller than xfs_inode_log_format_t sometimes... (?)
-+      */
-+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_inode_log_format_t), len));
-++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_inode_log_format_t), len));
-+     version = lbuf.ilf_type;
-+     f = &lbuf;
-+     (*i)++;					/* bump index */
-+@@ -679,7 +679,7 @@
-+ 	return f->ilf_size-1;
-+     }
-+ 
-+-    bcopy(*ptr, &dino, sizeof(dino));
-++    memmove(&dino, *ptr, sizeof(dino));
-+     mode = dino.di_mode & S_IFMT;
-+     size = (int)dino.di_size;
-+     xlog_print_trans_inode_core(&dino);
-+@@ -798,10 +798,10 @@
-+     /*
-+      * print dquot header region
-+      *
-+-     * bcopy to ensure 8-byte alignment for the long longs in
-++     * memmove to ensure 8-byte alignment for the long longs in
-+      * xfs_dq_logformat_t structure
-+      */
-+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_dq_logformat_t), len));
-++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_dq_logformat_t), len));
-+     f = &lbuf;
-+     (*i)++;					/* bump index */
-+     *ptr += len;
-+@@ -830,7 +830,7 @@
-+ 	head = (xlog_op_header_t *)*ptr;
-+ 	xlog_print_op_header(head, *i, ptr);
-+ 	ASSERT(INT_GET(head->oh_len, ARCH_CONVERT) == sizeof(xfs_disk_dquot_t));
-+-	bcopy(*ptr, &ddq, sizeof(xfs_disk_dquot_t));
-++	memmove(&ddq, *ptr, sizeof(xfs_disk_dquot_t));
-+ 	printf("DQUOT: magic 0x%hx flags 0%ho\n",
-+ 	       INT_GET(ddq.d_magic, ARCH_CONVERT),
-+ 	       INT_GET(ddq.d_flags, ARCH_CONVERT));
-+diff -ru xfsprogs-2.7.11_vanilla/mkfs/proto.c xfsprogs-2.7.11_susv3-legacy/mkfs/proto.c
-+--- xfsprogs-2.7.11_vanilla/mkfs/proto.c	2006-01-17 03:46:51.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/mkfs/proto.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -234,7 +234,7 @@
-+ 	if (dolocal && len <= XFS_IFORK_DSIZE(ip)) {
-+ 		libxfs_idata_realloc(ip, len, XFS_DATA_FORK);
-+ 		if (buf)
-+-			bcopy(buf, ip->i_df.if_u1.if_data, len);
-++			memmove(ip->i_df.if_u1.if_data, buf, len);
-+ 		ip->i_d.di_size = len;
-+ 		ip->i_df.if_flags &= ~XFS_IFEXTENTS;
-+ 		ip->i_df.if_flags |= XFS_IFINLINE;
-+@@ -257,9 +257,9 @@
-+ 		d = XFS_FSB_TO_DADDR(mp, map.br_startblock);
-+ 		bp = libxfs_trans_get_buf(logit ? tp : 0, mp->m_dev, d,
-+ 			nb << mp->m_blkbb_log, 0);
-+-		bcopy(buf, XFS_BUF_PTR(bp), len);
-++		memmove(XFS_BUF_PTR(bp), buf, len);
-+ 		if (len < XFS_BUF_COUNT(bp))
-+-			bzero(XFS_BUF_PTR(bp) + len, XFS_BUF_COUNT(bp) - len);
-++			memset(XFS_BUF_PTR(bp) + len, 0, XFS_BUF_COUNT(bp) - len);
-+ 		if (logit)
-+ 			libxfs_trans_log_buf(tp, bp, 0, XFS_BUF_COUNT(bp) - 1);
-+ 		else
-+@@ -376,7 +376,7 @@
-+ 	cred_t		creds;
-+ 	char		*value;
-+ 
-+-	bzero(&creds, sizeof(creds));
-++	memset(&creds, 0, sizeof(creds));
-+ 	mstr = getstr(pp);
-+ 	switch (mstr[0]) {
-+ 	case '-':
-+@@ -635,8 +635,8 @@
-+ 	tp = libxfs_trans_alloc(mp, 0);
-+ 	if ((i = libxfs_trans_reserve(tp, MKFS_BLOCKRES_INODE, 0, 0, 0, 0)))
-+ 		res_failed(i);
-+-	bzero(&creds, sizeof(creds));
-+-	bzero(&fsxattrs, sizeof(fsxattrs));
-++	memset(&creds, 0, sizeof(creds));
-++	memset(&fsxattrs, 0, sizeof(fsxattrs));
-+ 	error = libxfs_inode_alloc(&tp, NULL, S_IFREG, 1, 0,
-+ 					&creds, &fsxattrs, &rbmip);
-+ 	if (error) {
-+diff -ru xfsprogs-2.7.11_vanilla/mkfs/xfs_mkfs.c xfsprogs-2.7.11_susv3-legacy/mkfs/xfs_mkfs.c
-+--- xfsprogs-2.7.11_vanilla/mkfs/xfs_mkfs.c	2006-01-17 03:46:51.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/mkfs/xfs_mkfs.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -631,9 +631,9 @@
-+ 	extent_flagging = 1;
-+ 	force_overwrite = 0;
-+ 	worst_freelist = 0;
-+-	bzero(&fsx, sizeof(fsx));
-++	memset(&fsx, 0, sizeof(fsx));
-+ 
-+-	bzero(&xi, sizeof(xi));
-++	memset(&xi, 0, sizeof(xi));
-+ 	xi.notvolok = 1;
-+ 	xi.setblksize = 1;
-+ 	xi.isreadonly = LIBXFS_EXCLUSIVELY;
-+@@ -1882,7 +1882,7 @@
-+ 	bsize = 1 << (blocklog - BBSHIFT);
-+ 	mp = &mbuf;
-+ 	sbp = &mp->m_sb;
-+-	bzero(mp, sizeof(xfs_mount_t));
-++	memset(mp, 0, sizeof(xfs_mount_t));
-+ 	sbp->sb_blocklog = (__uint8_t)blocklog;
-+ 	sbp->sb_sectlog = (__uint8_t)sectorlog;
-+ 	sbp->sb_agblklog = (__uint8_t)libxfs_log2_roundup((unsigned int)agsize);
-+@@ -2028,12 +2028,12 @@
-+ 	 * ext[2,3] and reiserfs (64k) - and hopefully all else.
-+ 	 */
-+ 	buf = libxfs_getbuf(xi.ddev, 0, BTOBB(WHACK_SIZE));
-+-	bzero(XFS_BUF_PTR(buf), WHACK_SIZE);
-++	memset(XFS_BUF_PTR(buf), 0, WHACK_SIZE);
-+ 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-+ 
-+ 	/* OK, now write the superblock */
-+ 	buf = libxfs_getbuf(xi.ddev, XFS_SB_DADDR, XFS_FSS_TO_BB(mp, 1));
-+-	bzero(XFS_BUF_PTR(buf), sectorsize);
-++	memset(XFS_BUF_PTR(buf), 0, sectorsize);
-+ 	libxfs_xlate_sb(XFS_BUF_PTR(buf), sbp, -1, XFS_SB_ALL_BITS);
-+ 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-+ 
-+@@ -2056,7 +2056,7 @@
-+ 	if (!xi.disfile) {
-+ 		buf = libxfs_getbuf(xi.ddev, (xi.dsize - BTOBB(WHACK_SIZE)), 
-+ 				    BTOBB(WHACK_SIZE));
-+-		bzero(XFS_BUF_PTR(buf), WHACK_SIZE);
-++		memset(XFS_BUF_PTR(buf), 0, WHACK_SIZE);
-+ 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-+ 	}
-+ 
-+@@ -2084,7 +2084,7 @@
-+ 		buf = libxfs_getbuf(xi.ddev,
-+ 				XFS_AG_DADDR(mp, agno, XFS_SB_DADDR),
-+ 				XFS_FSS_TO_BB(mp, 1));
-+-		bzero(XFS_BUF_PTR(buf), sectorsize);
-++		memset(XFS_BUF_PTR(buf), 0, sectorsize);
-+ 		libxfs_xlate_sb(XFS_BUF_PTR(buf), sbp, -1, XFS_SB_ALL_BITS);
-+ 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-+ 
-+@@ -2095,7 +2095,7 @@
-+ 				XFS_AG_DADDR(mp, agno, XFS_AGF_DADDR(mp)),
-+ 				XFS_FSS_TO_BB(mp, 1));
-+ 		agf = XFS_BUF_TO_AGF(buf);
-+-		bzero(agf, sectorsize);
-++		memset(agf, 0, sectorsize);
-+ 		if (agno == agcount - 1)
-+ 			agsize = dblocks - (xfs_drfsbno_t)(agno * agsize);
-+ 		INT_SET(agf->agf_magicnum, ARCH_CONVERT, XFS_AGF_MAGIC);
-+@@ -2130,7 +2130,7 @@
-+ 				XFS_AG_DADDR(mp, agno, XFS_AGI_DADDR(mp)),
-+ 				XFS_FSS_TO_BB(mp, 1));
-+ 		agi = XFS_BUF_TO_AGI(buf);
-+-		bzero(agi, sectorsize);
-++		memset(agi, 0, sectorsize);
-+ 		INT_SET(agi->agi_magicnum, ARCH_CONVERT, XFS_AGI_MAGIC);
-+ 		INT_SET(agi->agi_versionnum, ARCH_CONVERT, XFS_AGI_VERSION);
-+ 		INT_SET(agi->agi_seqno, ARCH_CONVERT, agno);
-+@@ -2152,7 +2152,7 @@
-+ 				XFS_AGB_TO_DADDR(mp, agno, XFS_BNO_BLOCK(mp)),
-+ 				bsize);
-+ 		block = XFS_BUF_TO_SBLOCK(buf);
-+-		bzero(block, blocksize);
-++		memset(block, 0, blocksize);
-+ 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_ABTB_MAGIC);
-+ 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
-+ 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 1);
-+@@ -2202,7 +2202,7 @@
-+ 				XFS_AGB_TO_DADDR(mp, agno, XFS_CNT_BLOCK(mp)),
-+ 				bsize);
-+ 		block = XFS_BUF_TO_SBLOCK(buf);
-+-		bzero(block, blocksize);
-++		memset(block, 0, blocksize);
-+ 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_ABTC_MAGIC);
-+ 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
-+ 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 1);
-+@@ -2239,7 +2239,7 @@
-+ 				XFS_AGB_TO_DADDR(mp, agno, XFS_IBT_BLOCK(mp)),
-+ 				bsize);
-+ 		block = XFS_BUF_TO_SBLOCK(buf);
-+-		bzero(block, blocksize);
-++		memset(block, 0, blocksize);
-+ 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-+ 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
-+ 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 0);
-+@@ -2253,7 +2253,7 @@
-+ 	 */
-+ 	buf = libxfs_getbuf(mp->m_dev,
-+ 		(xfs_daddr_t)XFS_FSB_TO_BB(mp, dblocks - 1LL), bsize);
-+-	bzero(XFS_BUF_PTR(buf), blocksize);
-++	memset(XFS_BUF_PTR(buf), 0, blocksize);
-+ 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-+ 
-+ 	/*
-+@@ -2262,7 +2262,7 @@
-+ 	if (mp->m_rtdev && rtblocks > 0) {
-+ 		buf = libxfs_getbuf(mp->m_rtdev,
-+ 				XFS_FSB_TO_BB(mp, rtblocks - 1LL), bsize);
-+-		bzero(XFS_BUF_PTR(buf), blocksize);
-++		memset(XFS_BUF_PTR(buf), 0, blocksize);
-+ 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
-+ 	}
-+ 
-+@@ -2273,7 +2273,7 @@
-+ 		xfs_alloc_arg_t	args;
-+ 		xfs_trans_t	*tp;
-+ 
-+-		bzero(&args, sizeof(args));
-++		memset(&args, 0, sizeof(args));
-+ 		args.tp = tp = libxfs_trans_alloc(mp, 0);
-+ 		args.mp = mp;
-+ 		args.agno = agno;
-+diff -ru xfsprogs-2.7.11_vanilla/repair/agheader.c xfsprogs-2.7.11_susv3-legacy/repair/agheader.c
-+--- xfsprogs-2.7.11_vanilla/repair/agheader.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/agheader.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -184,7 +184,7 @@
-+ 
-+  * the inprogress fields, version numbers, and counters
-+  * are allowed to differ as well as all fields after the
-+- * counters to cope with the pre-6.5 mkfs non-bzeroed
-++ * counters to cope with the pre-6.5 mkfs non-zeroed
-+  * secondary superblock sectors.
-+  */
-+ 
-+@@ -233,7 +233,7 @@
-+ 	 * (e.g. were pre-6.5 beta) could leave garbage in the secondary
-+ 	 * superblock sectors.  Anything stamping the shared fs bit or better
-+ 	 * into the secondaries is ok and should generate clean secondary
-+-	 * superblock sectors.  so only run the bzero check on the
-++	 * superblock sectors.  so only run the zero check on the
-+ 	 * potentially garbaged secondaries.
-+ 	 */
-+ 	if (pre_65_beta ||
-+@@ -275,7 +275,7 @@
-+ 				do_warn(
-+ 		_("zeroing unused portion of %s superblock (AG #%u)\n"),
-+ 					!i ? _("primary") : _("secondary"), i);
-+-				bzero((void *)((__psint_t)sb + size),
-++				memset((void *)((__psint_t)sb + size), 0,
-+ 					mp->m_sb.sb_sectsize - size);
-+ 			} else
-+ 				do_warn(
-+@@ -286,7 +286,7 @@
-+ 
-+ 	/*
-+ 	 * now look for the fields we can manipulate directly.
-+-	 * if we did a bzero and that bzero could have included
-++	 * if we did a zero and that zero could have included
-+ 	 * the field in question, just silently reset it.  otherwise,
-+ 	 * complain.
-+ 	 *
-+diff -ru xfsprogs-2.7.11_vanilla/repair/attr_repair.c xfsprogs-2.7.11_susv3-legacy/repair/attr_repair.c
-+--- xfsprogs-2.7.11_vanilla/repair/attr_repair.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/attr_repair.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -83,7 +83,7 @@
-+ int
-+ valuecheck(char *namevalue, char *value, int namelen, int valuelen)
-+ {
-+-	/* for proper alignment issues, get the structs and bcopy the values */
-++	/* for proper alignment issues, get the structs and memmove the values */
-+ 	xfs_mac_label_t macl;
-+ 	xfs_acl_t thisacl;
-+ 	void *valuep;
-+@@ -93,8 +93,8 @@
-+ 			(strncmp(namevalue, SGI_ACL_DEFAULT,
-+ 				SGI_ACL_DEFAULT_SIZE) == 0)) {
-+ 		if (value == NULL) {
-+-			bzero(&thisacl, sizeof(xfs_acl_t));
-+-			bcopy(namevalue+namelen, &thisacl, valuelen);
-++			memset(&thisacl, 0, sizeof(xfs_acl_t));
-++			memmove(&thisacl, namevalue+namelen, valuelen);
-+ 			valuep = &thisacl;
-+ 		} else
-+ 			valuep = value;
-+@@ -107,8 +107,8 @@
-+ 		}
-+ 	} else if (strncmp(namevalue, SGI_MAC_FILE, SGI_MAC_FILE_SIZE) == 0) {
-+ 		if (value == NULL) {
-+-			bzero(&macl, sizeof(xfs_mac_label_t));
-+-			bcopy(namevalue+namelen, &macl, valuelen);
-++			memset(&macl, 0, sizeof(xfs_mac_label_t));
-++			memmove(&macl, namevalue+namelen, valuelen);
-+ 			valuep = &macl;
-+ 		} else
-+ 			valuep = value;
-+@@ -357,7 +357,7 @@
-+ 		}
-+ 		ASSERT(mp->m_sb.sb_blocksize == XFS_BUF_COUNT(bp));
-+ 		length = MIN(XFS_BUF_COUNT(bp), valuelen - amountdone);
-+-		bcopy(XFS_BUF_PTR(bp), value, length);
-++		memmove(value, XFS_BUF_PTR(bp), length);
-+ 		amountdone += length;
-+ 		value += length;
-+ 		i++;
-+@@ -803,7 +803,7 @@
-+ 	 * the way.  Then walk the leaf blocks left-to-right, calling
-+ 	 * a parent-verification routine each time we traverse a block.
-+ 	 */
-+-	bzero(&da_cursor, sizeof(da_bt_cursor_t));
-++	memset(&da_cursor, 0, sizeof(da_bt_cursor_t));
-+ 	da_cursor.active = 0;
-+ 	da_cursor.type = 0;
-+ 	da_cursor.ino = ino;
-+diff -ru xfsprogs-2.7.11_vanilla/repair/dinode.c xfsprogs-2.7.11_susv3-legacy/repair/dinode.c
-+--- xfsprogs-2.7.11_vanilla/repair/dinode.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/dinode.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -296,7 +296,7 @@
-+ 	/* and clear the forks */
-+ 
-+ 	if (dirty && !no_modify)
-+-		bzero(&dino->di_u, XFS_LITINO(mp));
-++		memset(&dino->di_u, 0, XFS_LITINO(mp));
-+ 
-+ 	return(dirty);
-+ }
-+@@ -1516,8 +1516,8 @@
-+ 		 * local symlink, just copy the symlink out of the
-+ 		 * inode into the data area
-+ 		 */
-+-		bcopy((char *)XFS_DFORK_DPTR(dino),
-+-			symlink, INT_GET(dinoc->di_size, ARCH_CONVERT));
-++		memmove(symlink, (char *)XFS_DFORK_DPTR(dino),
-++			INT_GET(dinoc->di_size, ARCH_CONVERT));
-+ 	} else {
-+ 		/*
-+ 		 * stored in a meta-data file, have to bmap one block
-+@@ -1542,7 +1542,7 @@
-+ 			buf_data = (char *)XFS_BUF_PTR(bp);
-+ 			size = MIN(INT_GET(dinoc->di_size, ARCH_CONVERT)
-+ 				- amountdone, (int)XFS_FSB_TO_BB(mp, 1)*BBSIZE);
-+-			bcopy(buf_data, cptr, size);
-++			memmove(cptr, buf_data, size);
-+ 			cptr += size;
-+ 			amountdone += size;
-+ 			i++;
-+diff -ru xfsprogs-2.7.11_vanilla/repair/dir.c xfsprogs-2.7.11_susv3-legacy/repair/dir.c
-+--- xfsprogs-2.7.11_vanilla/repair/dir.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/dir.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -334,7 +334,7 @@
-+ 		 * happened.
-+ 		 */
-+ 		if (junkit)  {
-+-			bcopy(sf_entry->name, name, namelen);
-++			memmove(name, sf_entry->name, namelen);
-+ 			name[namelen] = '\0';
-+ 
-+ 			if (!no_modify)  {
-+@@ -352,7 +352,7 @@
-+ 
-+ 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
-+ 				num_entries--;
-+-				bzero((void *) ((__psint_t) sf_entry + tmp_len),
-++				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-+ 					tmp_elen);
-+ 
-+ 				/*
-+@@ -511,7 +511,7 @@
-+ 	if ((freemap = malloc(mp->m_sb.sb_blocksize)) == NULL)
-+ 		return(NULL);
-+ 
-+-	bzero(freemap, mp->m_sb.sb_blocksize/NBBY);
-++	memset(freemap, 0, mp->m_sb.sb_blocksize/NBBY);
-+ 
-+ 	return(freemap);
-+ }
-+@@ -520,7 +520,7 @@
-+ void
-+ init_da_freemap(da_freemap_t *dir_freemap)
-+ {
-+-	bzero(dir_freemap, sizeof(da_freemap_t) * DA_BMAP_SIZE);
-++	memset(dir_freemap, 0, sizeof(da_freemap_t) * DA_BMAP_SIZE);
-+ }
-+ 
-+ /*
-+@@ -753,7 +753,7 @@
-+ 	da_hole_map_t	holemap;
-+ 
-+ 	init_da_freemap(dir_freemap);
-+-	bzero(&holemap, sizeof(da_hole_map_t));
-++	memset(&holemap, 0, sizeof(da_hole_map_t));
-+ 
-+ 	set_da_freemap(mp, dir_freemap, 0, 50);
-+ 	set_da_freemap(mp, dir_freemap, 100, 126);
-+@@ -1525,9 +1525,9 @@
-+ 				memmove(entry, entry + 1, (INT_GET(hdr->count, ARCH_CONVERT) - i) *
-+ 					sizeof(xfs_dir_leaf_entry_t));
-+ 			}
-+-			bzero((void *) ((__psint_t) entry +
-++			memset((void *) ((__psint_t) entry +
-+ 				(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
-+-				sizeof(xfs_dir_leaf_entry_t)),
-++				sizeof(xfs_dir_leaf_entry_t)), 0,
-+ 				sizeof(xfs_dir_leaf_entry_t));
-+ 
-+ 			start = (__psint_t) &leaf->entries[INT_GET(hdr->count, ARCH_CONVERT)] -
-+@@ -1624,9 +1624,9 @@
-+ 						(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
-+ 						sizeof(xfs_dir_leaf_entry_t));
-+ 				}
-+-				bzero((void *) ((__psint_t) entry +
-++				memset((void *) ((__psint_t) entry +
-+ 					(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
-+-					sizeof(xfs_dir_leaf_entry_t)),
-++					sizeof(xfs_dir_leaf_entry_t)), 0,
-+ 					sizeof(xfs_dir_leaf_entry_t));
-+ 
-+ 				/*
-+@@ -1825,11 +1825,11 @@
-+ 					    sizeof(xfs_dir_leaf_entry_t))  {
-+ 						memmove(entry, entry + 1,
-+ 							bytes);
-+-						bzero((void *)
-+-						((__psint_t) entry + bytes),
-++						memset((void *)
-++						((__psint_t) entry + bytes), 0,
-+ 						sizeof(xfs_dir_leaf_entry_t));
-+ 					} else  {
-+-						bzero(entry,
-++						memset(entry, 0,
-+ 						sizeof(xfs_dir_leaf_entry_t));
-+ 					}
-+ 
-+@@ -2067,11 +2067,11 @@
-+ 				 */
-+ 				if (bytes > sizeof(xfs_dir_leaf_entry_t))  {
-+ 					memmove(entry, entry + 1, bytes);
-+-					bzero((void *)
-+-						((__psint_t) entry + bytes),
-++					memset((void *)
-++						((__psint_t) entry + bytes), 0,
-+ 						sizeof(xfs_dir_leaf_entry_t));
-+ 				} else  {
-+-					bzero(entry,
-++					memset(entry, 0,
-+ 						sizeof(xfs_dir_leaf_entry_t));
-+ 				}
-+ 
-+@@ -2136,7 +2136,7 @@
-+ 		 * making it impossible for the stored length
-+ 		 * value to be out of range.
-+ 		 */
-+-		bcopy(namest->name, fname, entry->namelen);
-++		memmove(fname, namest->name, entry->namelen);
-+ 		fname[entry->namelen] = '\0';
-+ 		hashval = libxfs_da_hashname(fname, entry->namelen);
-+ 
-+@@ -2465,7 +2465,7 @@
-+ 	 * (XFS_DIR_LEAF_MAPSIZE (3) * biggest regions)
-+ 	 * and see if they match what's in the block
-+ 	 */
-+-	bzero(&holemap, sizeof(da_hole_map_t));
-++	memset(&holemap, 0, sizeof(da_hole_map_t));
-+ 	process_da_freemap(mp, dir_freemap, &holemap);
-+ 
-+ 	if (zero_len_entries)  {
-+@@ -2522,7 +2522,7 @@
-+ 			/*
-+ 			 * copy leaf block header
-+ 			 */
-+-			bcopy(&leaf->hdr, &new_leaf->hdr,
-++			memmove(&new_leaf->hdr, &leaf->hdr,
-+ 				sizeof(xfs_dir_leaf_hdr_t));
-+ 
-+ 			/*
-+@@ -2568,8 +2568,8 @@
-+ 				d_entry->namelen = s_entry->namelen;
-+ 				d_entry->pad2 = 0;
-+ 
-+-				bcopy((char *) leaf + INT_GET(s_entry->nameidx, ARCH_CONVERT),
-+-					first_byte, bytes);
-++				memmove(first_byte, (char *) leaf + INT_GET(s_entry->nameidx, ARCH_CONVERT),
-++					bytes);
-+ 
-+ 				num_entries++;
-+ 				d_entry++;
-+@@ -2581,7 +2581,7 @@
-+ 			/*
-+ 			 * zero space between end of table and top of heap
-+ 			 */
-+-			bzero(d_entry, (__psint_t) first_byte
-++			memset(d_entry, 0, (__psint_t) first_byte
-+ 					- (__psint_t) d_entry);
-+ 
-+ 			/*
-+@@ -2617,7 +2617,7 @@
-+ 			/*
-+ 			 * final step, copy block back
-+ 			 */
-+-			bcopy(new_leaf, leaf, mp->m_sb.sb_blocksize);
-++			memmove(leaf, new_leaf, mp->m_sb.sb_blocksize);
-+ 
-+ 			*buf_dirty = 1;
-+ 		} else  {
-+@@ -2853,7 +2853,7 @@
-+ 	 * the way.  Then walk the leaf blocks left-to-right, calling
-+ 	 * a parent-verification routine each time we traverse a block.
-+ 	 */
-+-	bzero(&da_cursor, sizeof(da_bt_cursor_t));
-++	memset(&da_cursor, 0, sizeof(da_bt_cursor_t));
-+ 
-+ 	da_cursor.active = 0;
-+ 	da_cursor.type = 0;
-+diff -ru xfsprogs-2.7.11_vanilla/repair/dir2.c xfsprogs-2.7.11_susv3-legacy/repair/dir2.c
-+--- xfsprogs-2.7.11_vanilla/repair/dir2.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/dir2.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -124,7 +124,7 @@
-+ 		}
-+ 		for (i = off = 0; i < nex; i++, off += XFS_BUF_COUNT(bp)) {
-+ 			bp = bplist[i];
-+-			bcopy(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
-++			memmove((char *)dabuf->data + off, XFS_BUF_PTR(bp),
-+ 				XFS_BUF_COUNT(bp));
-+ 		}
-+ 	}
-+@@ -149,7 +149,7 @@
-+ 		dabuf->dirty = 0;
-+ 		for (i=off=0; i < dabuf->nbuf; i++, off += XFS_BUF_COUNT(bp)) {
-+ 			bp = dabuf->bps[i];
-+-			bcopy((char *)dabuf->data + off, XFS_BUF_PTR(bp),
-++			memmove(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
-+ 				XFS_BUF_COUNT(bp));
-+ 		}
-+ 	}
-+@@ -187,10 +187,10 @@
-+ 			do_error(_("couldn't malloc dir2 buffer list\n"));
-+ 			exit(1);
-+ 		}
-+-		bcopy(dabuf->bps, bplist, nbuf * sizeof(*bplist));
-++		memmove(bplist, dabuf->bps, nbuf * sizeof(*bplist));
-+ 		for (i = off = 0; i < nbuf; i++, off += XFS_BUF_COUNT(bp)) {
-+ 			bp = bplist[i];
-+-			bcopy((char *)dabuf->data + off, XFS_BUF_PTR(bp),
-++			memmove(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
-+ 				XFS_BUF_COUNT(bp));
-+ 		}
-+ 	}
-+@@ -223,7 +223,7 @@
-+ 			do_error(_("couldn't malloc dir2 buffer list\n"));
-+ 			exit(1);
-+ 		}
-+-		bcopy(dabuf->bps, bplist, nbuf * sizeof(*bplist));
-++		memmove(bplist, dabuf->bps, nbuf * sizeof(*bplist));
-+ 	}
-+ 	da_buf_done(dabuf);
-+ 	for (i = 0; i < nbuf; i++)
-+@@ -1076,7 +1076,7 @@
-+ 		 * happened.
-+ 		 */
-+ 		if (junkit)  {
-+-			bcopy(sfep->name, name, namelen);
-++			memmove(name, sfep->name, namelen);
-+ 			name[namelen] = '\0';
-+ 
-+ 			if (!no_modify)  {
-+@@ -1095,7 +1095,7 @@
-+ 
-+ 				INT_MOD(sfp->hdr.count, ARCH_CONVERT, -1);
-+ 				num_entries--;
-+-				bzero((void *) ((__psint_t) sfep + tmp_len),
-++				memset((void *) ((__psint_t) sfep + tmp_len), 0,
-+ 					tmp_elen);
-+ 
-+ 				/*
-+@@ -1921,7 +1921,7 @@
-+ 	 * Then walk the leaf blocks left-to-right, calling a parent
-+ 	 * verification routine each time we traverse a block.
-+ 	 */
-+-	bzero(&da_cursor, sizeof(da_cursor));
-++	memset(&da_cursor, 0, sizeof(da_cursor));
-+ 	da_cursor.ino = ino;
-+ 	da_cursor.dip = dip;
-+ 	da_cursor.blkmap = blkmap;
-+diff -ru xfsprogs-2.7.11_vanilla/repair/globals.h xfsprogs-2.7.11_susv3-legacy/repair/globals.h
-+--- xfsprogs-2.7.11_vanilla/repair/globals.h	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/globals.h	2008-03-24 14:36:47.000000000 +0000
-+@@ -66,7 +66,7 @@
-+  * the partial sb mask bit set, then you depend on the fields
-+  * in it up to and including sb_inoalignmt but the unused part of the
-+  * sector may have trash in it.  If the sb has any bits set that are in
-+- * the good mask, then the entire sb and sector are good (was bzero'ed
-++ * the good mask, then the entire sb and sector are good (was zero'ed
-+  * by mkfs).  The third mask is for filesystems made by pre-6.5 campus
-+  * alpha mkfs's.  Those are rare so we'll check for those under
-+  * a special option.
-+diff -ru xfsprogs-2.7.11_vanilla/repair/incore.c xfsprogs-2.7.11_susv3-legacy/repair/incore.c
-+--- xfsprogs-2.7.11_vanilla/repair/incore.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/incore.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -74,7 +74,7 @@
-+ 				numblocks);
-+ 			return;
-+ 		}
-+-		bzero(ba_bmap[i], size);
-++		memset(ba_bmap[i], 0, size);
-+ 	}
-+ 
-+ 	if (rtblocks == 0)  {
-+diff -ru xfsprogs-2.7.11_vanilla/repair/incore_bmc.c xfsprogs-2.7.11_susv3-legacy/repair/incore_bmc.c
-+--- xfsprogs-2.7.11_vanilla/repair/incore_bmc.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/incore_bmc.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -29,7 +29,7 @@
-+ {
-+ 	int i;
-+ 
-+-	bzero(cursor, sizeof(bmap_cursor_t));
-++	memset(cursor, 0, sizeof(bmap_cursor_t));
-+ 	cursor->ino = NULLFSINO;
-+ 	cursor->num_levels = num_levels;
-+ 
-+diff -ru xfsprogs-2.7.11_vanilla/repair/incore_ino.c xfsprogs-2.7.11_susv3-legacy/repair/incore_ino.c
-+--- xfsprogs-2.7.11_vanilla/repair/incore_ino.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/incore_ino.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -515,12 +515,11 @@
-+ 	if (!tmp)
-+ 		do_error(_("couldn't memalign pentries table\n"));
-+ 
-+-	(void) bcopy(irec->ino_un.plist->pentries, tmp,
-++	memmove(tmp, irec->ino_un.plist->pentries,
-+ 			target * sizeof(parent_entry_t));
-+ 
-+ 	if (cnt > target)
-+-		(void) bcopy(irec->ino_un.plist->pentries + target,
-+-				tmp + target + 1,
-++		memmove(tmp + target + 1, irec->ino_un.plist->pentries + target,
-+ 				(cnt - target) * sizeof(parent_entry_t));
-+ 
-+ 	free(irec->ino_un.plist->pentries);
-+@@ -674,7 +673,7 @@
-+ 	if (bptrs_index == BPTR_ALLOC_NUM)
-+ 		bptrs = NULL;
-+ 
-+-	bzero(bptr, sizeof(backptrs_t));
-++	memset(bptr, 0, sizeof(backptrs_t));
-+ 
-+ 	return(bptr);
-+ }
-+@@ -688,7 +687,7 @@
-+ 	if ((ptr = malloc(sizeof(backptrs_t))) == NULL)
-+ 		do_error(_("could not malloc back pointer table\n"));
-+ 
-+-	bzero(ptr, sizeof(backptrs_t));
-++	memset(ptr, 0, sizeof(backptrs_t));
-+ 
-+ 	return(ptr);
-+ }
-+@@ -802,7 +801,7 @@
-+ 	if ((last_rec = malloc(sizeof(ino_tree_node_t *) * agcount)) == NULL)
-+ 		do_error(_("couldn't malloc uncertain inode cache area\n"));
-+ 
-+-	bzero(last_rec, sizeof(ino_tree_node_t *) * agcount);
-++	memset(last_rec, 0, sizeof(ino_tree_node_t *) * agcount);
-+ 
-+ 	full_backptrs = 0;
-+ 
-+diff -ru xfsprogs-2.7.11_vanilla/repair/phase4.c xfsprogs-2.7.11_susv3-legacy/repair/phase4.c
-+--- xfsprogs-2.7.11_vanilla/repair/phase4.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/phase4.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -68,7 +68,7 @@
-+ 		namest = XFS_DIR_LEAF_NAMESTRUCT(leaf,
-+ 			INT_GET(entry->nameidx, ARCH_CONVERT));
-+ 		XFS_DIR_SF_GET_DIRINO(&namest->inumber, &lino);
-+-		bcopy(namest->name, fname, entry->namelen);
-++		memmove(fname, namest->name, entry->namelen);
-+ 		fname[entry->namelen] = '\0';
-+ 
-+ 		if (fname[0] != '/' && !strcmp(fname, ORPHANAGE))  {
-+@@ -316,7 +316,7 @@
-+ 		tmp_sfe = NULL;
-+ 		sf_entry = next_sfe;
-+ 		XFS_DIR_SF_GET_DIRINO(&sf_entry->inumber, &lino);
-+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
-++		memmove(fname, sf_entry->name, sf_entry->namelen);
-+ 		fname[sf_entry->namelen] = '\0';
-+ 
-+ 		if (!strcmp(ORPHANAGE, fname))  {
-+@@ -447,7 +447,7 @@
-+ 
-+ 			INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
-+ 
-+-			bzero((void *) ((__psint_t) sf_entry + tmp_len),
-++			memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-+ 				tmp_elen);
-+ 
-+ 			/*
-+@@ -534,7 +534,7 @@
-+ 		}
-+ 		dep = (xfs_dir2_data_entry_t *)ptr;
-+ 		lino = INT_GET(dep->inumber, ARCH_CONVERT);
-+-		bcopy(dep->name, fname, dep->namelen);
-++		memmove(fname, dep->name, dep->namelen);
-+ 		fname[dep->namelen] = '\0';
-+ 
-+ 		if (fname[0] != '/' && !strcmp(fname, ORPHANAGE))  {
-+@@ -797,7 +797,7 @@
-+ 		sf_entry = next_sfe;
-+ 		lino = XFS_DIR2_SF_GET_INUMBER(sf,
-+ 			XFS_DIR2_SF_INUMBERP(sf_entry));
-+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
-++		memmove(fname, sf_entry->name, sf_entry->namelen);
-+ 		fname[sf_entry->namelen] = '\0';
-+ 
-+ 		if (!strcmp(ORPHANAGE, fname))  {
-+@@ -931,7 +931,7 @@
-+ 			if (lino > XFS_DIR2_MAX_SHORT_INUM)
-+ 				sf->hdr.i8count--;
-+ 
-+-			bzero((void *) ((__psint_t) sf_entry + tmp_len),
-++			memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-+ 				tmp_elen);
-+ 
-+ 			/*
-+@@ -1292,7 +1292,7 @@
-+ 		/*
-+ 		 * now reset the bitmap for all ags
-+ 		 */
-+-		bzero(ba_bmap[i], roundup(mp->m_sb.sb_agblocks/(NBBY/XR_BB),
-++		memset(ba_bmap[i], 0, roundup(mp->m_sb.sb_agblocks/(NBBY/XR_BB),
-+ 						sizeof(__uint64_t)));
-+ 		for (j = 0; j < ag_hdr_block; j++)
-+ 			set_agbno_state(mp, i, j, XR_E_INUSE_FS);
-+diff -ru xfsprogs-2.7.11_vanilla/repair/phase5.c xfsprogs-2.7.11_susv3-legacy/repair/phase5.c
-+--- xfsprogs-2.7.11_vanilla/repair/phase5.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/phase5.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -93,7 +93,7 @@
-+ 	 * extents of free blocks.  At this point, we know
-+ 	 * that blocks in the bitmap are either set to an
-+ 	 * "in use" state or set to unknown (0) since the
-+-	 * bmaps were bzero'ed in phase 4 and only blocks
-++	 * bmaps were zero'ed in phase 4 and only blocks
-+ 	 * being used by inodes, inode bmaps, ag headers,
-+ 	 * and the files themselves were put into the bitmap.
-+ 	 *
-+@@ -664,7 +664,7 @@
-+ 		 * initialize block header
-+ 		 */
-+ 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
-+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
-++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-+ 
-+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
-+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, level);
-+@@ -741,7 +741,7 @@
-+ 		 * initialize block header
-+ 		 */
-+ 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
-+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
-++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-+ 
-+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
-+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, i);
-+@@ -772,7 +772,7 @@
-+ 		 * block initialization, lay in block header
-+ 		 */
-+ 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
-+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
-++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-+ 
-+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
-+ 		bt_hdr->bb_level = 0;
-+@@ -1021,7 +1021,7 @@
-+ 		 * initialize block header
-+ 		 */
-+ 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
-+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
-++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-+ 
-+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, level);
-+@@ -1060,7 +1060,7 @@
-+ 			XFS_AG_DADDR(mp, agno, XFS_AGI_DADDR(mp)),
-+ 			mp->m_sb.sb_sectsize/BBSIZE);
-+ 	agi = XFS_BUF_TO_AGI(agi_buf);
-+-	bzero(agi, mp->m_sb.sb_sectsize);
-++	memset(agi, 0, mp->m_sb.sb_sectsize);
-+ 
-+ 	INT_SET(agi->agi_magicnum, ARCH_CONVERT, XFS_AGI_MAGIC);
-+ 	INT_SET(agi->agi_versionnum, ARCH_CONVERT, XFS_AGI_VERSION);
-+@@ -1124,7 +1124,7 @@
-+ 		 * initialize block header
-+ 		 */
-+ 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
-+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
-++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-+ 
-+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, i);
-+@@ -1152,7 +1152,7 @@
-+ 		 * block initialization, lay in block header
-+ 		 */
-+ 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
-+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
-++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
-+ 
-+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
-+ 		bt_hdr->bb_level = 0;
-+@@ -1239,7 +1239,7 @@
-+ 			XFS_AG_DADDR(mp, agno, XFS_AGF_DADDR(mp)),
-+ 			mp->m_sb.sb_sectsize/BBSIZE);
-+ 	agf = XFS_BUF_TO_AGF(agf_buf);
-+-	bzero(agf, mp->m_sb.sb_sectsize);
-++	memset(agf, 0, mp->m_sb.sb_sectsize);
-+ 
-+ #ifdef XR_BLD_FREE_TRACE
-+ 	fprintf(stderr, "agf = 0x%x, agf_buf->b_un.b_addr = 0x%x\n",
-+@@ -1287,7 +1287,7 @@
-+ 				XFS_AG_DADDR(mp, agno, XFS_AGFL_DADDR(mp)),
-+ 				mp->m_sb.sb_sectsize/BBSIZE);
-+ 		agfl = XFS_BUF_TO_AGFL(agfl_buf);
-+-		bzero(agfl, mp->m_sb.sb_sectsize);
-++		memset(agfl, 0, mp->m_sb.sb_sectsize);
-+ 		/*
-+ 		 * ok, now grab as many blocks as we can
-+ 		 */
-+diff -ru xfsprogs-2.7.11_vanilla/repair/phase6.c xfsprogs-2.7.11_susv3-legacy/repair/phase6.c
-+--- xfsprogs-2.7.11_vanilla/repair/phase6.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/phase6.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -341,7 +341,7 @@
-+ 			error);
-+ 	}
-+ 
-+-	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
-++	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
-+ 
-+ 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
-+ 	ip->i_d.di_mode = S_IFREG;
-+@@ -461,7 +461,7 @@
-+ 			return(1);
-+ 		}
-+ 
-+-		bcopy(bmp, XFS_BUF_PTR(bp), mp->m_sb.sb_blocksize);
-++		memmove(XFS_BUF_PTR(bp), bmp, mp->m_sb.sb_blocksize);
-+ 
-+ 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
-+ 
-+@@ -531,7 +531,7 @@
-+ 			return(1);
-+ 		}
-+ 
-+-		bcopy(smp, XFS_BUF_PTR(bp), mp->m_sb.sb_blocksize);
-++		memmove(XFS_BUF_PTR(bp), smp, mp->m_sb.sb_blocksize);
-+ 
-+ 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
-+ 
-+@@ -576,7 +576,7 @@
-+ 			error);
-+ 	}
-+ 
-+-	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
-++	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
-+ 
-+ 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
-+ 	ip->i_d.di_mode = S_IFREG;
-+@@ -674,7 +674,7 @@
-+ 	/*
-+ 	 * take care of the core -- initialization from xfs_ialloc()
-+ 	 */
-+-	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
-++	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
-+ 
-+ 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
-+ 	ip->i_d.di_mode = (__uint16_t) mode|S_IFDIR;
-+@@ -1231,7 +1231,7 @@
-+ 	/*
-+ 	 * snag the info we need out of the directory then release all buffers
-+ 	 */
-+-	bcopy(namest->name, fname, entry->namelen);
-++	memmove(fname, namest->name, entry->namelen);
-+ 	fname[entry->namelen] = '\0';
-+ 	*hashval = INT_GET(entry->hashval, ARCH_CONVERT);
-+ 	namelen = entry->namelen;
-+@@ -1341,7 +1341,7 @@
-+ 		junkit = 0;
-+ 
-+ 		XFS_DIR_SF_GET_DIRINO(&namest->inumber, &lino);
-+-		bcopy(namest->name, fname, entry->namelen);
-++		memmove(fname, namest->name, entry->namelen);
-+ 		fname[entry->namelen] = '\0';
-+ 
-+ 		ASSERT(lino != NULLFSINO);
-+@@ -1656,7 +1656,7 @@
-+ 	libxfs_trans_ijoin(tp, ip, 0);
-+ 	libxfs_trans_ihold(tp, ip);
-+ 	libxfs_da_bjoin(tp, bp);
-+-	bzero(&args, sizeof(args));
-++	memset(&args, 0, sizeof(args));
-+ 	XFS_BMAP_INIT(&flist, &firstblock);
-+ 	args.dp = ip;
-+ 	args.trans = tp;
-+@@ -1907,7 +1907,7 @@
-+ 			continue;
-+ 		}
-+ 		junkit = 0;
-+-		bcopy(dep->name, fname, dep->namelen);
-++		memmove(fname, dep->name, dep->namelen);
-+ 		fname[dep->namelen] = '\0';
-+ 		ASSERT(INT_GET(dep->inumber, ARCH_CONVERT) != NULLFSINO);
-+ 		/*
-+@@ -2350,7 +2350,7 @@
-+ 	}
-+ 
-+ 	/* allocate blocks for btree */
-+-	bzero(&args, sizeof(args));
-++	memset(&args, 0, sizeof(args));
-+ 	args.trans = tp;
-+ 	args.dp = ip;
-+ 	args.whichfork = XFS_DATA_FORK;
-+@@ -2364,7 +2364,7 @@
-+ 		/* NOTREACHED */
-+ 	}
-+ 	leaf = lbp->data;
-+-	bzero(leaf, mp->m_dirblksize);
-++	memset(leaf, 0, mp->m_dirblksize);
-+ 	INT_SET(leaf->hdr.info.magic, ARCH_CONVERT, XFS_DIR2_LEAFN_MAGIC);
-+ 	libxfs_da_log_buf(tp, lbp, 0, mp->m_dirblksize - 1);
-+ 	libxfs_bmap_finish(&tp, &flist, firstblock, &committed);
-+@@ -2381,7 +2381,7 @@
-+ 		libxfs_trans_ijoin(tp, ip, 0);
-+ 		libxfs_trans_ihold(tp, ip);
-+ 		XFS_BMAP_INIT(&flist, &firstblock);
-+-		bzero(&args, sizeof(args));
-++		memset(&args, 0, sizeof(args));
-+ 		args.trans = tp;
-+ 		args.dp = ip;
-+ 		args.whichfork = XFS_DATA_FORK;
-+@@ -2398,7 +2398,7 @@
-+ 			/* NOTREACHED */
-+ 		}
-+ 		free = fbp->data;
-+-		bzero(free, mp->m_dirblksize);
-++		memset(free, 0, mp->m_dirblksize);
-+ 		INT_SET(free->hdr.magic, ARCH_CONVERT, XFS_DIR2_FREE_MAGIC);
-+ 		INT_SET(free->hdr.firstdb, ARCH_CONVERT, i);
-+ 		INT_SET(free->hdr.nvalid, ARCH_CONVERT, XFS_DIR2_MAX_FREE_BESTS(mp));
-+@@ -2473,7 +2473,7 @@
-+ 			mp->m_dirblksize);
-+ 		exit(1);
-+ 	}
-+-	bcopy(bp->data, data, mp->m_dirblksize);
-++	memmove(data, bp->data, mp->m_dirblksize);
-+ 	ptr = (char *)data->u;
-+ 	if (INT_GET(data->hdr.magic, ARCH_CONVERT) == XFS_DIR2_BLOCK_MAGIC) {
-+ 		btp = XFS_DIR2_BLOCK_TAIL_P(mp, (xfs_dir2_block_t *)data);
-+@@ -2495,7 +2495,7 @@
-+ 	libxfs_da_bhold(tp, fbp);
-+ 	XFS_BMAP_INIT(&flist, &firstblock);
-+ 	needlog = needscan = 0;
-+-	bzero(((xfs_dir2_data_t *)(bp->data))->hdr.bestfree,
-++	memset(((xfs_dir2_data_t *)(bp->data))->hdr.bestfree, 0,
-+ 		sizeof(data->hdr.bestfree));
-+ 	libxfs_dir2_data_make_free(tp, bp, (xfs_dir2_data_aoff_t)sizeof(data->hdr),
-+ 		mp->m_dirblksize - sizeof(data->hdr), &needlog, &needscan);
-+@@ -2856,7 +2856,7 @@
-+ 			}
-+ 		}
-+ 
-+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
-++		memmove(fname, sf_entry->name, sf_entry->namelen);
-+ 		fname[sf_entry->namelen] = '\0';
-+ 
-+ 		ASSERT(no_modify || lino != NULLFSINO);
-+@@ -2967,7 +2967,7 @@
-+ 				memmove(sf_entry, tmp_sfe, tmp_len);
-+ 
-+ 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
-+-				bzero((void *) ((__psint_t) sf_entry + tmp_len),
-++				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-+ 						tmp_elen);
-+ 
-+ 				/*
-+@@ -3071,7 +3071,7 @@
-+ 
-+ 		XFS_DIR_SF_GET_DIRINO(&sf_entry->inumber, &lino);
-+ 
-+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
-++		memmove(fname, sf_entry->name, sf_entry->namelen);
-+ 		fname[sf_entry->namelen] = '\0';
-+ 
-+ 		if (sf_entry->name[0] == '/')  {
-+@@ -3087,7 +3087,7 @@
-+ 				memmove(sf_entry, tmp_sfe, tmp_len);
-+ 
-+ 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
-+-				bzero((void *) ((__psint_t) sf_entry + tmp_len),
-++				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
-+ 						tmp_elen);
-+ 
-+ 				/*
-+@@ -3242,7 +3242,7 @@
-+ 			}
-+ 		}
-+ 
-+-		bcopy(sfep->name, fname, sfep->namelen);
-++		memmove(fname, sfep->name, sfep->namelen);
-+ 		fname[sfep->namelen] = '\0';
-+ 
-+ 		ASSERT(no_modify || (lino != NULLFSINO && lino != 0));
-+@@ -3363,7 +3363,7 @@
-+ 				memmove(sfep, tmp_sfep, tmp_len);
-+ 
-+ 				INT_MOD(sfp->hdr.count, ARCH_CONVERT, -1);
-+-				bzero((void *) ((__psint_t) sfep + tmp_len),
-++				memset((void *) ((__psint_t) sfep + tmp_len), 0,
-+ 						tmp_elen);
-+ 
-+ 				/*
-+@@ -3879,8 +3879,8 @@
-+ 	int			i;
-+ 	int			j;
-+ 
-+-	bzero(&zerocr, sizeof(struct cred));
-+-	bzero(&zerofsx, sizeof(struct fsxattr));
-++	memset(&zerocr, 0, sizeof(struct cred));
-++	memset(&zerofsx, 0, sizeof(struct fsxattr));
-+ 
-+ 	do_log(_("Phase 6 - check inode connectivity...\n"));
-+ 
-+diff -ru xfsprogs-2.7.11_vanilla/repair/rt.c xfsprogs-2.7.11_susv3-legacy/repair/rt.c
-+--- xfsprogs-2.7.11_vanilla/repair/rt.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/rt.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -275,7 +275,7 @@
-+ 			continue;
-+ 		}
-+ 		bytes = bp->b_un.b_addr;
-+-		bcopy(bytes, (char *)sumfile + sumbno * mp->m_sb.sb_blocksize,
-++		memmove((char *)sumfile + sumbno * mp->m_sb.sb_blocksize, bytes,
-+ 			mp->m_sb.sb_blocksize);
-+ 		libxfs_putbuf(bp);
-+ 	}
-+diff -ru xfsprogs-2.7.11_vanilla/repair/sb.c xfsprogs-2.7.11_susv3-legacy/repair/sb.c
-+--- xfsprogs-2.7.11_vanilla/repair/sb.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/repair/sb.c	2008-03-24 14:36:47.000000000 +0000
-+@@ -77,7 +77,7 @@
-+ 	dest->sb_fdblocks = 0;
-+ 	dest->sb_frextents = 0;
-+ 
-+-	bzero(source->sb_fname, 12);
-++	memset(source->sb_fname, 0, 12);
-+ }
-+ 
-+ /*
-+@@ -105,7 +105,7 @@
-+ 		exit(1);
-+ 	}
-+ 
-+-	bzero(&bufsb, sizeof(xfs_sb_t));
-++	memset(&bufsb, 0, sizeof(xfs_sb_t));
-+ 	retval = 0;
-+ 	dirty = 0;
-+ 	bsize = 0;
-+@@ -144,7 +144,7 @@
-+ 			 * found one.  now verify it by looking
-+ 			 * for other secondaries.
-+ 			 */
-+-			bcopy(&bufsb, rsb, sizeof(xfs_sb_t));
-++			memmove(rsb, &bufsb, sizeof(xfs_sb_t));
-+ 			rsb->sb_inprogress = 0;
-+ 			clear_sunit = 1;
-+ 
-+@@ -576,7 +576,7 @@
-+ void
-+ get_sb_geometry(fs_geometry_t *geo, xfs_sb_t *sbp)
-+ {
-+-	bzero(geo, sizeof(fs_geometry_t));
-++	memset(geo, 0, sizeof(fs_geometry_t));
-+ 
-+ 	/*
-+ 	 * blindly set fields that we know are always good
-+@@ -643,7 +643,7 @@
-+ 	 * superblock fields located after sb_widthfields get set
-+ 	 * into the geometry structure only if we can determine
-+ 	 * from the features enabled in this superblock whether
-+-	 * or not the sector was bzero'd at mkfs time.
-++	 * or not the sector was zero'd at mkfs time.
-+ 	 */
-+ 	if ((!pre_65_beta && (sbp->sb_versionnum & XR_GOOD_SECSB_VNMASK)) ||
-+ 	    (pre_65_beta && (sbp->sb_versionnum & XR_ALPHA_SECSB_VNMASK))) {
-+diff -ru xfsprogs-2.7.11_vanilla/rtcp/xfs_rtcp.c xfsprogs-2.7.11_susv3-legacy/rtcp/xfs_rtcp.c
-+--- xfsprogs-2.7.11_vanilla/rtcp/xfs_rtcp.c	2006-01-17 03:46:52.000000000 +0000
-++++ xfsprogs-2.7.11_susv3-legacy/rtcp/xfs_rtcp.c	2008-03-24 14:38:05.000000000 +0000
-+@@ -328,7 +328,7 @@
-+ 
-+ 	iosz =  dioattr.d_miniosz;
-+ 	fbuf = memalign( dioattr.d_mem, iosz);
-+-	bzero (fbuf, iosz);
-++	memset(fbuf, 0, iosz);
-+ 
-+ 	/*
-+ 	 * read the entire source file
-+@@ -365,7 +365,7 @@
-+ 			return( -1 );
-+ 		}
-+ 
-+-		bzero( fbuf, iosz);
-++		memset( fbuf, 0, iosz);
-+ 	}
-+ 
-+ 	close(fromfd);
+diff -ru xfsprogs-2.7.11_vanilla/copy/xfs_copy.c xfsprogs-2.7.11_susv3-legacy/copy/xfs_copy.c
+--- xfsprogs-2.7.11_vanilla/copy/xfs_copy.c	2006-01-17 03:46:46.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/copy/xfs_copy.c	2008-03-24 14:36:47.000000000 +0000
+@@ -903,7 +903,7 @@
+ 
+ 		/* save what we need (agf) in the btree buffer */
+ 
+-		bcopy(ag_hdr.xfs_agf, btree_buf.data, source_sectorsize);
++		memmove(btree_buf.data, ag_hdr.xfs_agf, source_sectorsize);
+ 		ag_hdr.xfs_agf = (xfs_agf_t *) btree_buf.data;
+ 		btree_buf.length = source_blocksize;
+ 
+diff -ru xfsprogs-2.7.11_vanilla/growfs/xfs_growfs.c xfsprogs-2.7.11_susv3-legacy/growfs/xfs_growfs.c
+--- xfsprogs-2.7.11_vanilla/growfs/xfs_growfs.c	2006-01-17 03:46:48.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/growfs/xfs_growfs.c	2008-03-24 14:36:47.000000000 +0000
+@@ -250,7 +250,7 @@
+ 	 * Need root access from here on (using raw devices)...
+ 	 */
+ 
+-	bzero(&xi, sizeof(xi));
++	memset(&xi, 0, sizeof(xi));
+ 	xi.dname = datadev;
+ 	xi.logname = logdev;
+ 	xi.rtname = rtdev;
+diff -ru xfsprogs-2.7.11_vanilla/io/bmap.c xfsprogs-2.7.11_susv3-legacy/io/bmap.c
+--- xfsprogs-2.7.11_vanilla/io/bmap.c	2006-01-17 03:46:49.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/io/bmap.c	2008-03-24 14:36:47.000000000 +0000
+@@ -175,7 +175,7 @@
+ 
+ 	do {	/* loop a miximum of two times */
+ 
+-		bzero(map, sizeof(*map));	/* zero header */
++		memset(map, 0, sizeof(*map));	/* zero header */
+ 
+ 		map->bmv_length = -1;
+ 		map->bmv_count = map_size;
+diff -ru xfsprogs-2.7.11_vanilla/libhandle/jdm.c xfsprogs-2.7.11_susv3-legacy/libhandle/jdm.c
+--- xfsprogs-2.7.11_vanilla/libhandle/jdm.c	2006-01-17 03:46:49.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/libhandle/jdm.c	2008-03-24 14:36:47.000000000 +0000
+@@ -47,7 +47,7 @@
+ {
+ 	handlep->fh_fshandle = *fshandlep;
+ 	handlep->fh_sz_following = FILEHANDLE_SZ_FOLLOWING;
+-	bzero(handlep->fh_pad, FILEHANDLE_SZ_PAD);
++	memset(handlep->fh_pad, 0, FILEHANDLE_SZ_PAD);
+ 	handlep->fh_gen = statp->bs_gen;
+ 	handlep->fh_ino = statp->bs_ino;
+ }
+diff -ru xfsprogs-2.7.11_vanilla/logprint/log_misc.c xfsprogs-2.7.11_susv3-legacy/logprint/log_misc.c
+--- xfsprogs-2.7.11_vanilla/logprint/log_misc.c	2006-01-17 03:46:51.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/logprint/log_misc.c	2008-03-24 14:36:47.000000000 +0000
+@@ -120,10 +120,10 @@
+     xlog_op_header_t hbuf;
+ 
+     /*
+-     * bcopy because on 64/n32, partial reads can cause the op_head
++     * memmove because on 64/n32, partial reads can cause the op_head
+      * pointer to come in pointing to an odd-numbered byte
+      */
+-    bcopy(op_head, &hbuf, sizeof(xlog_op_header_t));
++    memmove(&hbuf, op_head, sizeof(xlog_op_header_t));
+     op_head = &hbuf;
+     *ptr += sizeof(xlog_op_header_t);
+     printf("Oper (%d): tid: %x  len: %d  clientid: %s  ", i,
+@@ -253,10 +253,10 @@
+     long long		 x, y;
+ 
+     /*
+-     * bcopy to ensure 8-byte alignment for the long longs in
++     * memmove to ensure 8-byte alignment for the long longs in
+      * buf_log_format_t structure
+      */
+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_buf_log_format_t), len));
++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_buf_log_format_t), len));
+     f = &lbuf;
+     *ptr += len;
+ 
+@@ -319,15 +319,15 @@
+ 		} else {
+ 			printf("\n");
+ 			/*
+-			 * bcopy because *ptr may not be 8-byte aligned
++			 * memmove because *ptr may not be 8-byte aligned
+ 			 */
+-			bcopy(*ptr, &x, sizeof(long long));
+-			bcopy(*ptr+8, &y, sizeof(long long));
++			memmove(&x, *ptr, sizeof(long long));
++			memmove(&y, *ptr+8, sizeof(long long));
+ 			printf("icount: %lld  ifree: %lld  ",
+ 				INT_GET(x, ARCH_CONVERT),
+ 				INT_GET(y, ARCH_CONVERT));
+-			bcopy(*ptr+16, &x, sizeof(long long));
+-			bcopy(*ptr+24, &y, sizeof(long long));
++			memmove(&x, *ptr+16, sizeof(long long));
++			memmove(&y, *ptr+24, sizeof(long long));
+ 			printf("fdblks: %lld  frext: %lld\n",
+ 				INT_GET(x, ARCH_CONVERT),
+ 				INT_GET(y, ARCH_CONVERT));
+@@ -475,10 +475,10 @@
+     xfs_efd_log_format_t lbuf;
+ 
+     /*
+-     * bcopy to ensure 8-byte alignment for the long longs in
++     * memmove to ensure 8-byte alignment for the long longs in
+      * xfs_efd_log_format_t structure
+      */
+-    bcopy(*ptr, &lbuf, len);
++    memmove(&lbuf, *ptr, len);
+     f = &lbuf;
+     *ptr += len;
+     if (len >= sizeof(xfs_efd_log_format_t)) {
+@@ -511,10 +511,10 @@
+     xfs_efi_log_format_t lbuf;
+ 
+     /*
+-     * bcopy to ensure 8-byte alignment for the long longs in
++     * memmove to ensure 8-byte alignment for the long longs in
+      * xfs_efi_log_format_t structure
+      */
+-    bcopy(*ptr, &lbuf, len);
++    memmove(&lbuf, *ptr, len);
+     f = &lbuf;
+     *ptr += len;
+     if (len >= sizeof(xfs_efi_log_format_t)) {
+@@ -544,7 +544,7 @@
+     xfs_qoff_logformat_t *f;
+     xfs_qoff_logformat_t lbuf;
+ 
+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_qoff_logformat_t), len));
++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_qoff_logformat_t), len));
+     f = &lbuf;
+     *ptr += len;
+     if (len >= sizeof(xfs_qoff_logformat_t)) {
+@@ -598,14 +598,14 @@
+ 
+ 	printf("SHORTFORM DIRECTORY size %d count %d\n",
+ 	       size, sfp->hdr.count);
+-	bcopy(&(sfp->hdr.parent), &ino, sizeof(ino));
++	memmove(&ino, &(sfp->hdr.parent), sizeof(ino));
+ 	printf(".. ino 0x%llx\n", (unsigned long long)INT_GET(ino, ARCH_CONVERT));
+ 
+ 	count = (uint)(sfp->hdr.count);
+ 	sfep = &(sfp->list[0]);
+ 	for (i = 0; i < count; i++) {
+-		bcopy(&(sfep->inumber), &ino, sizeof(ino));
+-		bcopy((sfep->name), namebuf, sfep->namelen);
++		memmove(&ino, &(sfep->inumber), sizeof(ino));
++		memmove(namebuf, (sfep->name), sfep->namelen);
+ 		namebuf[sfep->namelen] = '\0';
+ 		printf("%s ino 0x%llx namelen %d\n",
+ 		       namebuf, (unsigned long long)ino, sfep->namelen);
+@@ -628,12 +628,12 @@
+     /*
+      * print inode type header region
+      *
+-     * bcopy to ensure 8-byte alignment for the long longs in
++     * memmove to ensure 8-byte alignment for the long longs in
+      * xfs_inode_log_format_t structure
+      *
+      * len can be smaller than xfs_inode_log_format_t sometimes... (?)
+      */
+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_inode_log_format_t), len));
++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_inode_log_format_t), len));
+     version = lbuf.ilf_type;
+     f = &lbuf;
+     (*i)++;					/* bump index */
+@@ -679,7 +679,7 @@
+ 	return f->ilf_size-1;
+     }
+ 
+-    bcopy(*ptr, &dino, sizeof(dino));
++    memmove(&dino, *ptr, sizeof(dino));
+     mode = dino.di_mode & S_IFMT;
+     size = (int)dino.di_size;
+     xlog_print_trans_inode_core(&dino);
+@@ -798,10 +798,10 @@
+     /*
+      * print dquot header region
+      *
+-     * bcopy to ensure 8-byte alignment for the long longs in
++     * memmove to ensure 8-byte alignment for the long longs in
+      * xfs_dq_logformat_t structure
+      */
+-    bcopy(*ptr, &lbuf, MIN(sizeof(xfs_dq_logformat_t), len));
++    memmove(&lbuf, *ptr, MIN(sizeof(xfs_dq_logformat_t), len));
+     f = &lbuf;
+     (*i)++;					/* bump index */
+     *ptr += len;
+@@ -830,7 +830,7 @@
+ 	head = (xlog_op_header_t *)*ptr;
+ 	xlog_print_op_header(head, *i, ptr);
+ 	ASSERT(INT_GET(head->oh_len, ARCH_CONVERT) == sizeof(xfs_disk_dquot_t));
+-	bcopy(*ptr, &ddq, sizeof(xfs_disk_dquot_t));
++	memmove(&ddq, *ptr, sizeof(xfs_disk_dquot_t));
+ 	printf("DQUOT: magic 0x%hx flags 0%ho\n",
+ 	       INT_GET(ddq.d_magic, ARCH_CONVERT),
+ 	       INT_GET(ddq.d_flags, ARCH_CONVERT));
+diff -ru xfsprogs-2.7.11_vanilla/mkfs/proto.c xfsprogs-2.7.11_susv3-legacy/mkfs/proto.c
+--- xfsprogs-2.7.11_vanilla/mkfs/proto.c	2006-01-17 03:46:51.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/mkfs/proto.c	2008-03-24 14:36:47.000000000 +0000
+@@ -234,7 +234,7 @@
+ 	if (dolocal && len <= XFS_IFORK_DSIZE(ip)) {
+ 		libxfs_idata_realloc(ip, len, XFS_DATA_FORK);
+ 		if (buf)
+-			bcopy(buf, ip->i_df.if_u1.if_data, len);
++			memmove(ip->i_df.if_u1.if_data, buf, len);
+ 		ip->i_d.di_size = len;
+ 		ip->i_df.if_flags &= ~XFS_IFEXTENTS;
+ 		ip->i_df.if_flags |= XFS_IFINLINE;
+@@ -257,9 +257,9 @@
+ 		d = XFS_FSB_TO_DADDR(mp, map.br_startblock);
+ 		bp = libxfs_trans_get_buf(logit ? tp : 0, mp->m_dev, d,
+ 			nb << mp->m_blkbb_log, 0);
+-		bcopy(buf, XFS_BUF_PTR(bp), len);
++		memmove(XFS_BUF_PTR(bp), buf, len);
+ 		if (len < XFS_BUF_COUNT(bp))
+-			bzero(XFS_BUF_PTR(bp) + len, XFS_BUF_COUNT(bp) - len);
++			memset(XFS_BUF_PTR(bp) + len, 0, XFS_BUF_COUNT(bp) - len);
+ 		if (logit)
+ 			libxfs_trans_log_buf(tp, bp, 0, XFS_BUF_COUNT(bp) - 1);
+ 		else
+@@ -376,7 +376,7 @@
+ 	cred_t		creds;
+ 	char		*value;
+ 
+-	bzero(&creds, sizeof(creds));
++	memset(&creds, 0, sizeof(creds));
+ 	mstr = getstr(pp);
+ 	switch (mstr[0]) {
+ 	case '-':
+@@ -635,8 +635,8 @@
+ 	tp = libxfs_trans_alloc(mp, 0);
+ 	if ((i = libxfs_trans_reserve(tp, MKFS_BLOCKRES_INODE, 0, 0, 0, 0)))
+ 		res_failed(i);
+-	bzero(&creds, sizeof(creds));
+-	bzero(&fsxattrs, sizeof(fsxattrs));
++	memset(&creds, 0, sizeof(creds));
++	memset(&fsxattrs, 0, sizeof(fsxattrs));
+ 	error = libxfs_inode_alloc(&tp, NULL, S_IFREG, 1, 0,
+ 					&creds, &fsxattrs, &rbmip);
+ 	if (error) {
+diff -ru xfsprogs-2.7.11_vanilla/mkfs/xfs_mkfs.c xfsprogs-2.7.11_susv3-legacy/mkfs/xfs_mkfs.c
+--- xfsprogs-2.7.11_vanilla/mkfs/xfs_mkfs.c	2006-01-17 03:46:51.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/mkfs/xfs_mkfs.c	2008-03-24 14:36:47.000000000 +0000
+@@ -631,9 +631,9 @@
+ 	extent_flagging = 1;
+ 	force_overwrite = 0;
+ 	worst_freelist = 0;
+-	bzero(&fsx, sizeof(fsx));
++	memset(&fsx, 0, sizeof(fsx));
+ 
+-	bzero(&xi, sizeof(xi));
++	memset(&xi, 0, sizeof(xi));
+ 	xi.notvolok = 1;
+ 	xi.setblksize = 1;
+ 	xi.isreadonly = LIBXFS_EXCLUSIVELY;
+@@ -1882,7 +1882,7 @@
+ 	bsize = 1 << (blocklog - BBSHIFT);
+ 	mp = &mbuf;
+ 	sbp = &mp->m_sb;
+-	bzero(mp, sizeof(xfs_mount_t));
++	memset(mp, 0, sizeof(xfs_mount_t));
+ 	sbp->sb_blocklog = (__uint8_t)blocklog;
+ 	sbp->sb_sectlog = (__uint8_t)sectorlog;
+ 	sbp->sb_agblklog = (__uint8_t)libxfs_log2_roundup((unsigned int)agsize);
+@@ -2028,12 +2028,12 @@
+ 	 * ext[2,3] and reiserfs (64k) - and hopefully all else.
+ 	 */
+ 	buf = libxfs_getbuf(xi.ddev, 0, BTOBB(WHACK_SIZE));
+-	bzero(XFS_BUF_PTR(buf), WHACK_SIZE);
++	memset(XFS_BUF_PTR(buf), 0, WHACK_SIZE);
+ 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
+ 
+ 	/* OK, now write the superblock */
+ 	buf = libxfs_getbuf(xi.ddev, XFS_SB_DADDR, XFS_FSS_TO_BB(mp, 1));
+-	bzero(XFS_BUF_PTR(buf), sectorsize);
++	memset(XFS_BUF_PTR(buf), 0, sectorsize);
+ 	libxfs_xlate_sb(XFS_BUF_PTR(buf), sbp, -1, XFS_SB_ALL_BITS);
+ 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
+ 
+@@ -2056,7 +2056,7 @@
+ 	if (!xi.disfile) {
+ 		buf = libxfs_getbuf(xi.ddev, (xi.dsize - BTOBB(WHACK_SIZE)), 
+ 				    BTOBB(WHACK_SIZE));
+-		bzero(XFS_BUF_PTR(buf), WHACK_SIZE);
++		memset(XFS_BUF_PTR(buf), 0, WHACK_SIZE);
+ 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
+ 	}
+ 
+@@ -2084,7 +2084,7 @@
+ 		buf = libxfs_getbuf(xi.ddev,
+ 				XFS_AG_DADDR(mp, agno, XFS_SB_DADDR),
+ 				XFS_FSS_TO_BB(mp, 1));
+-		bzero(XFS_BUF_PTR(buf), sectorsize);
++		memset(XFS_BUF_PTR(buf), 0, sectorsize);
+ 		libxfs_xlate_sb(XFS_BUF_PTR(buf), sbp, -1, XFS_SB_ALL_BITS);
+ 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
+ 
+@@ -2095,7 +2095,7 @@
+ 				XFS_AG_DADDR(mp, agno, XFS_AGF_DADDR(mp)),
+ 				XFS_FSS_TO_BB(mp, 1));
+ 		agf = XFS_BUF_TO_AGF(buf);
+-		bzero(agf, sectorsize);
++		memset(agf, 0, sectorsize);
+ 		if (agno == agcount - 1)
+ 			agsize = dblocks - (xfs_drfsbno_t)(agno * agsize);
+ 		INT_SET(agf->agf_magicnum, ARCH_CONVERT, XFS_AGF_MAGIC);
+@@ -2130,7 +2130,7 @@
+ 				XFS_AG_DADDR(mp, agno, XFS_AGI_DADDR(mp)),
+ 				XFS_FSS_TO_BB(mp, 1));
+ 		agi = XFS_BUF_TO_AGI(buf);
+-		bzero(agi, sectorsize);
++		memset(agi, 0, sectorsize);
+ 		INT_SET(agi->agi_magicnum, ARCH_CONVERT, XFS_AGI_MAGIC);
+ 		INT_SET(agi->agi_versionnum, ARCH_CONVERT, XFS_AGI_VERSION);
+ 		INT_SET(agi->agi_seqno, ARCH_CONVERT, agno);
+@@ -2152,7 +2152,7 @@
+ 				XFS_AGB_TO_DADDR(mp, agno, XFS_BNO_BLOCK(mp)),
+ 				bsize);
+ 		block = XFS_BUF_TO_SBLOCK(buf);
+-		bzero(block, blocksize);
++		memset(block, 0, blocksize);
+ 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_ABTB_MAGIC);
+ 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
+ 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 1);
+@@ -2202,7 +2202,7 @@
+ 				XFS_AGB_TO_DADDR(mp, agno, XFS_CNT_BLOCK(mp)),
+ 				bsize);
+ 		block = XFS_BUF_TO_SBLOCK(buf);
+-		bzero(block, blocksize);
++		memset(block, 0, blocksize);
+ 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_ABTC_MAGIC);
+ 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
+ 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 1);
+@@ -2239,7 +2239,7 @@
+ 				XFS_AGB_TO_DADDR(mp, agno, XFS_IBT_BLOCK(mp)),
+ 				bsize);
+ 		block = XFS_BUF_TO_SBLOCK(buf);
+-		bzero(block, blocksize);
++		memset(block, 0, blocksize);
+ 		INT_SET(block->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
+ 		INT_SET(block->bb_level, ARCH_CONVERT, 0);
+ 		INT_SET(block->bb_numrecs, ARCH_CONVERT, 0);
+@@ -2253,7 +2253,7 @@
+ 	 */
+ 	buf = libxfs_getbuf(mp->m_dev,
+ 		(xfs_daddr_t)XFS_FSB_TO_BB(mp, dblocks - 1LL), bsize);
+-	bzero(XFS_BUF_PTR(buf), blocksize);
++	memset(XFS_BUF_PTR(buf), 0, blocksize);
+ 	libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
+ 
+ 	/*
+@@ -2262,7 +2262,7 @@
+ 	if (mp->m_rtdev && rtblocks > 0) {
+ 		buf = libxfs_getbuf(mp->m_rtdev,
+ 				XFS_FSB_TO_BB(mp, rtblocks - 1LL), bsize);
+-		bzero(XFS_BUF_PTR(buf), blocksize);
++		memset(XFS_BUF_PTR(buf), 0, blocksize);
+ 		libxfs_writebuf(buf, LIBXFS_EXIT_ON_FAILURE);
+ 	}
+ 
+@@ -2273,7 +2273,7 @@
+ 		xfs_alloc_arg_t	args;
+ 		xfs_trans_t	*tp;
+ 
+-		bzero(&args, sizeof(args));
++		memset(&args, 0, sizeof(args));
+ 		args.tp = tp = libxfs_trans_alloc(mp, 0);
+ 		args.mp = mp;
+ 		args.agno = agno;
+diff -ru xfsprogs-2.7.11_vanilla/repair/agheader.c xfsprogs-2.7.11_susv3-legacy/repair/agheader.c
+--- xfsprogs-2.7.11_vanilla/repair/agheader.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/agheader.c	2008-03-24 14:36:47.000000000 +0000
+@@ -184,7 +184,7 @@
+ 
+  * the inprogress fields, version numbers, and counters
+  * are allowed to differ as well as all fields after the
+- * counters to cope with the pre-6.5 mkfs non-bzeroed
++ * counters to cope with the pre-6.5 mkfs non-zeroed
+  * secondary superblock sectors.
+  */
+ 
+@@ -233,7 +233,7 @@
+ 	 * (e.g. were pre-6.5 beta) could leave garbage in the secondary
+ 	 * superblock sectors.  Anything stamping the shared fs bit or better
+ 	 * into the secondaries is ok and should generate clean secondary
+-	 * superblock sectors.  so only run the bzero check on the
++	 * superblock sectors.  so only run the zero check on the
+ 	 * potentially garbaged secondaries.
+ 	 */
+ 	if (pre_65_beta ||
+@@ -275,7 +275,7 @@
+ 				do_warn(
+ 		_("zeroing unused portion of %s superblock (AG #%u)\n"),
+ 					!i ? _("primary") : _("secondary"), i);
+-				bzero((void *)((__psint_t)sb + size),
++				memset((void *)((__psint_t)sb + size), 0,
+ 					mp->m_sb.sb_sectsize - size);
+ 			} else
+ 				do_warn(
+@@ -286,7 +286,7 @@
+ 
+ 	/*
+ 	 * now look for the fields we can manipulate directly.
+-	 * if we did a bzero and that bzero could have included
++	 * if we did a zero and that zero could have included
+ 	 * the field in question, just silently reset it.  otherwise,
+ 	 * complain.
+ 	 *
+diff -ru xfsprogs-2.7.11_vanilla/repair/attr_repair.c xfsprogs-2.7.11_susv3-legacy/repair/attr_repair.c
+--- xfsprogs-2.7.11_vanilla/repair/attr_repair.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/attr_repair.c	2008-03-24 14:36:47.000000000 +0000
+@@ -83,7 +83,7 @@
+ int
+ valuecheck(char *namevalue, char *value, int namelen, int valuelen)
+ {
+-	/* for proper alignment issues, get the structs and bcopy the values */
++	/* for proper alignment issues, get the structs and memmove the values */
+ 	xfs_mac_label_t macl;
+ 	xfs_acl_t thisacl;
+ 	void *valuep;
+@@ -93,8 +93,8 @@
+ 			(strncmp(namevalue, SGI_ACL_DEFAULT,
+ 				SGI_ACL_DEFAULT_SIZE) == 0)) {
+ 		if (value == NULL) {
+-			bzero(&thisacl, sizeof(xfs_acl_t));
+-			bcopy(namevalue+namelen, &thisacl, valuelen);
++			memset(&thisacl, 0, sizeof(xfs_acl_t));
++			memmove(&thisacl, namevalue+namelen, valuelen);
+ 			valuep = &thisacl;
+ 		} else
+ 			valuep = value;
+@@ -107,8 +107,8 @@
+ 		}
+ 	} else if (strncmp(namevalue, SGI_MAC_FILE, SGI_MAC_FILE_SIZE) == 0) {
+ 		if (value == NULL) {
+-			bzero(&macl, sizeof(xfs_mac_label_t));
+-			bcopy(namevalue+namelen, &macl, valuelen);
++			memset(&macl, 0, sizeof(xfs_mac_label_t));
++			memmove(&macl, namevalue+namelen, valuelen);
+ 			valuep = &macl;
+ 		} else
+ 			valuep = value;
+@@ -357,7 +357,7 @@
+ 		}
+ 		ASSERT(mp->m_sb.sb_blocksize == XFS_BUF_COUNT(bp));
+ 		length = MIN(XFS_BUF_COUNT(bp), valuelen - amountdone);
+-		bcopy(XFS_BUF_PTR(bp), value, length);
++		memmove(value, XFS_BUF_PTR(bp), length);
+ 		amountdone += length;
+ 		value += length;
+ 		i++;
+@@ -803,7 +803,7 @@
+ 	 * the way.  Then walk the leaf blocks left-to-right, calling
+ 	 * a parent-verification routine each time we traverse a block.
+ 	 */
+-	bzero(&da_cursor, sizeof(da_bt_cursor_t));
++	memset(&da_cursor, 0, sizeof(da_bt_cursor_t));
+ 	da_cursor.active = 0;
+ 	da_cursor.type = 0;
+ 	da_cursor.ino = ino;
+diff -ru xfsprogs-2.7.11_vanilla/repair/dinode.c xfsprogs-2.7.11_susv3-legacy/repair/dinode.c
+--- xfsprogs-2.7.11_vanilla/repair/dinode.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/dinode.c	2008-03-24 14:36:47.000000000 +0000
+@@ -296,7 +296,7 @@
+ 	/* and clear the forks */
+ 
+ 	if (dirty && !no_modify)
+-		bzero(&dino->di_u, XFS_LITINO(mp));
++		memset(&dino->di_u, 0, XFS_LITINO(mp));
+ 
+ 	return(dirty);
+ }
+@@ -1516,8 +1516,8 @@
+ 		 * local symlink, just copy the symlink out of the
+ 		 * inode into the data area
+ 		 */
+-		bcopy((char *)XFS_DFORK_DPTR(dino),
+-			symlink, INT_GET(dinoc->di_size, ARCH_CONVERT));
++		memmove(symlink, (char *)XFS_DFORK_DPTR(dino),
++			INT_GET(dinoc->di_size, ARCH_CONVERT));
+ 	} else {
+ 		/*
+ 		 * stored in a meta-data file, have to bmap one block
+@@ -1542,7 +1542,7 @@
+ 			buf_data = (char *)XFS_BUF_PTR(bp);
+ 			size = MIN(INT_GET(dinoc->di_size, ARCH_CONVERT)
+ 				- amountdone, (int)XFS_FSB_TO_BB(mp, 1)*BBSIZE);
+-			bcopy(buf_data, cptr, size);
++			memmove(cptr, buf_data, size);
+ 			cptr += size;
+ 			amountdone += size;
+ 			i++;
+diff -ru xfsprogs-2.7.11_vanilla/repair/dir.c xfsprogs-2.7.11_susv3-legacy/repair/dir.c
+--- xfsprogs-2.7.11_vanilla/repair/dir.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/dir.c	2008-03-24 14:36:47.000000000 +0000
+@@ -334,7 +334,7 @@
+ 		 * happened.
+ 		 */
+ 		if (junkit)  {
+-			bcopy(sf_entry->name, name, namelen);
++			memmove(name, sf_entry->name, namelen);
+ 			name[namelen] = '\0';
+ 
+ 			if (!no_modify)  {
+@@ -352,7 +352,7 @@
+ 
+ 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
+ 				num_entries--;
+-				bzero((void *) ((__psint_t) sf_entry + tmp_len),
++				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
+ 					tmp_elen);
+ 
+ 				/*
+@@ -511,7 +511,7 @@
+ 	if ((freemap = malloc(mp->m_sb.sb_blocksize)) == NULL)
+ 		return(NULL);
+ 
+-	bzero(freemap, mp->m_sb.sb_blocksize/NBBY);
++	memset(freemap, 0, mp->m_sb.sb_blocksize/NBBY);
+ 
+ 	return(freemap);
+ }
+@@ -520,7 +520,7 @@
+ void
+ init_da_freemap(da_freemap_t *dir_freemap)
+ {
+-	bzero(dir_freemap, sizeof(da_freemap_t) * DA_BMAP_SIZE);
++	memset(dir_freemap, 0, sizeof(da_freemap_t) * DA_BMAP_SIZE);
+ }
+ 
+ /*
+@@ -753,7 +753,7 @@
+ 	da_hole_map_t	holemap;
+ 
+ 	init_da_freemap(dir_freemap);
+-	bzero(&holemap, sizeof(da_hole_map_t));
++	memset(&holemap, 0, sizeof(da_hole_map_t));
+ 
+ 	set_da_freemap(mp, dir_freemap, 0, 50);
+ 	set_da_freemap(mp, dir_freemap, 100, 126);
+@@ -1525,9 +1525,9 @@
+ 				memmove(entry, entry + 1, (INT_GET(hdr->count, ARCH_CONVERT) - i) *
+ 					sizeof(xfs_dir_leaf_entry_t));
+ 			}
+-			bzero((void *) ((__psint_t) entry +
++			memset((void *) ((__psint_t) entry +
+ 				(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
+-				sizeof(xfs_dir_leaf_entry_t)),
++				sizeof(xfs_dir_leaf_entry_t)), 0,
+ 				sizeof(xfs_dir_leaf_entry_t));
+ 
+ 			start = (__psint_t) &leaf->entries[INT_GET(hdr->count, ARCH_CONVERT)] -
+@@ -1624,9 +1624,9 @@
+ 						(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
+ 						sizeof(xfs_dir_leaf_entry_t));
+ 				}
+-				bzero((void *) ((__psint_t) entry +
++				memset((void *) ((__psint_t) entry +
+ 					(INT_GET(leaf->hdr.count, ARCH_CONVERT) - i - 1) *
+-					sizeof(xfs_dir_leaf_entry_t)),
++					sizeof(xfs_dir_leaf_entry_t)), 0,
+ 					sizeof(xfs_dir_leaf_entry_t));
+ 
+ 				/*
+@@ -1825,11 +1825,11 @@
+ 					    sizeof(xfs_dir_leaf_entry_t))  {
+ 						memmove(entry, entry + 1,
+ 							bytes);
+-						bzero((void *)
+-						((__psint_t) entry + bytes),
++						memset((void *)
++						((__psint_t) entry + bytes), 0,
+ 						sizeof(xfs_dir_leaf_entry_t));
+ 					} else  {
+-						bzero(entry,
++						memset(entry, 0,
+ 						sizeof(xfs_dir_leaf_entry_t));
+ 					}
+ 
+@@ -2067,11 +2067,11 @@
+ 				 */
+ 				if (bytes > sizeof(xfs_dir_leaf_entry_t))  {
+ 					memmove(entry, entry + 1, bytes);
+-					bzero((void *)
+-						((__psint_t) entry + bytes),
++					memset((void *)
++						((__psint_t) entry + bytes), 0,
+ 						sizeof(xfs_dir_leaf_entry_t));
+ 				} else  {
+-					bzero(entry,
++					memset(entry, 0,
+ 						sizeof(xfs_dir_leaf_entry_t));
+ 				}
+ 
+@@ -2136,7 +2136,7 @@
+ 		 * making it impossible for the stored length
+ 		 * value to be out of range.
+ 		 */
+-		bcopy(namest->name, fname, entry->namelen);
++		memmove(fname, namest->name, entry->namelen);
+ 		fname[entry->namelen] = '\0';
+ 		hashval = libxfs_da_hashname(fname, entry->namelen);
+ 
+@@ -2465,7 +2465,7 @@
+ 	 * (XFS_DIR_LEAF_MAPSIZE (3) * biggest regions)
+ 	 * and see if they match what's in the block
+ 	 */
+-	bzero(&holemap, sizeof(da_hole_map_t));
++	memset(&holemap, 0, sizeof(da_hole_map_t));
+ 	process_da_freemap(mp, dir_freemap, &holemap);
+ 
+ 	if (zero_len_entries)  {
+@@ -2522,7 +2522,7 @@
+ 			/*
+ 			 * copy leaf block header
+ 			 */
+-			bcopy(&leaf->hdr, &new_leaf->hdr,
++			memmove(&new_leaf->hdr, &leaf->hdr,
+ 				sizeof(xfs_dir_leaf_hdr_t));
+ 
+ 			/*
+@@ -2568,8 +2568,8 @@
+ 				d_entry->namelen = s_entry->namelen;
+ 				d_entry->pad2 = 0;
+ 
+-				bcopy((char *) leaf + INT_GET(s_entry->nameidx, ARCH_CONVERT),
+-					first_byte, bytes);
++				memmove(first_byte, (char *) leaf + INT_GET(s_entry->nameidx, ARCH_CONVERT),
++					bytes);
+ 
+ 				num_entries++;
+ 				d_entry++;
+@@ -2581,7 +2581,7 @@
+ 			/*
+ 			 * zero space between end of table and top of heap
+ 			 */
+-			bzero(d_entry, (__psint_t) first_byte
++			memset(d_entry, 0, (__psint_t) first_byte
+ 					- (__psint_t) d_entry);
+ 
+ 			/*
+@@ -2617,7 +2617,7 @@
+ 			/*
+ 			 * final step, copy block back
+ 			 */
+-			bcopy(new_leaf, leaf, mp->m_sb.sb_blocksize);
++			memmove(leaf, new_leaf, mp->m_sb.sb_blocksize);
+ 
+ 			*buf_dirty = 1;
+ 		} else  {
+@@ -2853,7 +2853,7 @@
+ 	 * the way.  Then walk the leaf blocks left-to-right, calling
+ 	 * a parent-verification routine each time we traverse a block.
+ 	 */
+-	bzero(&da_cursor, sizeof(da_bt_cursor_t));
++	memset(&da_cursor, 0, sizeof(da_bt_cursor_t));
+ 
+ 	da_cursor.active = 0;
+ 	da_cursor.type = 0;
+diff -ru xfsprogs-2.7.11_vanilla/repair/dir2.c xfsprogs-2.7.11_susv3-legacy/repair/dir2.c
+--- xfsprogs-2.7.11_vanilla/repair/dir2.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/dir2.c	2008-03-24 14:36:47.000000000 +0000
+@@ -124,7 +124,7 @@
+ 		}
+ 		for (i = off = 0; i < nex; i++, off += XFS_BUF_COUNT(bp)) {
+ 			bp = bplist[i];
+-			bcopy(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
++			memmove((char *)dabuf->data + off, XFS_BUF_PTR(bp),
+ 				XFS_BUF_COUNT(bp));
+ 		}
+ 	}
+@@ -149,7 +149,7 @@
+ 		dabuf->dirty = 0;
+ 		for (i=off=0; i < dabuf->nbuf; i++, off += XFS_BUF_COUNT(bp)) {
+ 			bp = dabuf->bps[i];
+-			bcopy((char *)dabuf->data + off, XFS_BUF_PTR(bp),
++			memmove(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
+ 				XFS_BUF_COUNT(bp));
+ 		}
+ 	}
+@@ -187,10 +187,10 @@
+ 			do_error(_("couldn't malloc dir2 buffer list\n"));
+ 			exit(1);
+ 		}
+-		bcopy(dabuf->bps, bplist, nbuf * sizeof(*bplist));
++		memmove(bplist, dabuf->bps, nbuf * sizeof(*bplist));
+ 		for (i = off = 0; i < nbuf; i++, off += XFS_BUF_COUNT(bp)) {
+ 			bp = bplist[i];
+-			bcopy((char *)dabuf->data + off, XFS_BUF_PTR(bp),
++			memmove(XFS_BUF_PTR(bp), (char *)dabuf->data + off,
+ 				XFS_BUF_COUNT(bp));
+ 		}
+ 	}
+@@ -223,7 +223,7 @@
+ 			do_error(_("couldn't malloc dir2 buffer list\n"));
+ 			exit(1);
+ 		}
+-		bcopy(dabuf->bps, bplist, nbuf * sizeof(*bplist));
++		memmove(bplist, dabuf->bps, nbuf * sizeof(*bplist));
+ 	}
+ 	da_buf_done(dabuf);
+ 	for (i = 0; i < nbuf; i++)
+@@ -1076,7 +1076,7 @@
+ 		 * happened.
+ 		 */
+ 		if (junkit)  {
+-			bcopy(sfep->name, name, namelen);
++			memmove(name, sfep->name, namelen);
+ 			name[namelen] = '\0';
+ 
+ 			if (!no_modify)  {
+@@ -1095,7 +1095,7 @@
+ 
+ 				INT_MOD(sfp->hdr.count, ARCH_CONVERT, -1);
+ 				num_entries--;
+-				bzero((void *) ((__psint_t) sfep + tmp_len),
++				memset((void *) ((__psint_t) sfep + tmp_len), 0,
+ 					tmp_elen);
+ 
+ 				/*
+@@ -1921,7 +1921,7 @@
+ 	 * Then walk the leaf blocks left-to-right, calling a parent
+ 	 * verification routine each time we traverse a block.
+ 	 */
+-	bzero(&da_cursor, sizeof(da_cursor));
++	memset(&da_cursor, 0, sizeof(da_cursor));
+ 	da_cursor.ino = ino;
+ 	da_cursor.dip = dip;
+ 	da_cursor.blkmap = blkmap;
+diff -ru xfsprogs-2.7.11_vanilla/repair/globals.h xfsprogs-2.7.11_susv3-legacy/repair/globals.h
+--- xfsprogs-2.7.11_vanilla/repair/globals.h	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/globals.h	2008-03-24 14:36:47.000000000 +0000
+@@ -66,7 +66,7 @@
+  * the partial sb mask bit set, then you depend on the fields
+  * in it up to and including sb_inoalignmt but the unused part of the
+  * sector may have trash in it.  If the sb has any bits set that are in
+- * the good mask, then the entire sb and sector are good (was bzero'ed
++ * the good mask, then the entire sb and sector are good (was zero'ed
+  * by mkfs).  The third mask is for filesystems made by pre-6.5 campus
+  * alpha mkfs's.  Those are rare so we'll check for those under
+  * a special option.
+diff -ru xfsprogs-2.7.11_vanilla/repair/incore.c xfsprogs-2.7.11_susv3-legacy/repair/incore.c
+--- xfsprogs-2.7.11_vanilla/repair/incore.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/incore.c	2008-03-24 14:36:47.000000000 +0000
+@@ -74,7 +74,7 @@
+ 				numblocks);
+ 			return;
+ 		}
+-		bzero(ba_bmap[i], size);
++		memset(ba_bmap[i], 0, size);
+ 	}
+ 
+ 	if (rtblocks == 0)  {
+diff -ru xfsprogs-2.7.11_vanilla/repair/incore_bmc.c xfsprogs-2.7.11_susv3-legacy/repair/incore_bmc.c
+--- xfsprogs-2.7.11_vanilla/repair/incore_bmc.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/incore_bmc.c	2008-03-24 14:36:47.000000000 +0000
+@@ -29,7 +29,7 @@
+ {
+ 	int i;
+ 
+-	bzero(cursor, sizeof(bmap_cursor_t));
++	memset(cursor, 0, sizeof(bmap_cursor_t));
+ 	cursor->ino = NULLFSINO;
+ 	cursor->num_levels = num_levels;
+ 
+diff -ru xfsprogs-2.7.11_vanilla/repair/incore_ino.c xfsprogs-2.7.11_susv3-legacy/repair/incore_ino.c
+--- xfsprogs-2.7.11_vanilla/repair/incore_ino.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/incore_ino.c	2008-03-24 14:36:47.000000000 +0000
+@@ -515,12 +515,11 @@
+ 	if (!tmp)
+ 		do_error(_("couldn't memalign pentries table\n"));
+ 
+-	(void) bcopy(irec->ino_un.plist->pentries, tmp,
++	memmove(tmp, irec->ino_un.plist->pentries,
+ 			target * sizeof(parent_entry_t));
+ 
+ 	if (cnt > target)
+-		(void) bcopy(irec->ino_un.plist->pentries + target,
+-				tmp + target + 1,
++		memmove(tmp + target + 1, irec->ino_un.plist->pentries + target,
+ 				(cnt - target) * sizeof(parent_entry_t));
+ 
+ 	free(irec->ino_un.plist->pentries);
+@@ -674,7 +673,7 @@
+ 	if (bptrs_index == BPTR_ALLOC_NUM)
+ 		bptrs = NULL;
+ 
+-	bzero(bptr, sizeof(backptrs_t));
++	memset(bptr, 0, sizeof(backptrs_t));
+ 
+ 	return(bptr);
+ }
+@@ -688,7 +687,7 @@
+ 	if ((ptr = malloc(sizeof(backptrs_t))) == NULL)
+ 		do_error(_("could not malloc back pointer table\n"));
+ 
+-	bzero(ptr, sizeof(backptrs_t));
++	memset(ptr, 0, sizeof(backptrs_t));
+ 
+ 	return(ptr);
+ }
+@@ -802,7 +801,7 @@
+ 	if ((last_rec = malloc(sizeof(ino_tree_node_t *) * agcount)) == NULL)
+ 		do_error(_("couldn't malloc uncertain inode cache area\n"));
+ 
+-	bzero(last_rec, sizeof(ino_tree_node_t *) * agcount);
++	memset(last_rec, 0, sizeof(ino_tree_node_t *) * agcount);
+ 
+ 	full_backptrs = 0;
+ 
+diff -ru xfsprogs-2.7.11_vanilla/repair/phase4.c xfsprogs-2.7.11_susv3-legacy/repair/phase4.c
+--- xfsprogs-2.7.11_vanilla/repair/phase4.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/phase4.c	2008-03-24 14:36:47.000000000 +0000
+@@ -68,7 +68,7 @@
+ 		namest = XFS_DIR_LEAF_NAMESTRUCT(leaf,
+ 			INT_GET(entry->nameidx, ARCH_CONVERT));
+ 		XFS_DIR_SF_GET_DIRINO(&namest->inumber, &lino);
+-		bcopy(namest->name, fname, entry->namelen);
++		memmove(fname, namest->name, entry->namelen);
+ 		fname[entry->namelen] = '\0';
+ 
+ 		if (fname[0] != '/' && !strcmp(fname, ORPHANAGE))  {
+@@ -316,7 +316,7 @@
+ 		tmp_sfe = NULL;
+ 		sf_entry = next_sfe;
+ 		XFS_DIR_SF_GET_DIRINO(&sf_entry->inumber, &lino);
+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
++		memmove(fname, sf_entry->name, sf_entry->namelen);
+ 		fname[sf_entry->namelen] = '\0';
+ 
+ 		if (!strcmp(ORPHANAGE, fname))  {
+@@ -447,7 +447,7 @@
+ 
+ 			INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
+ 
+-			bzero((void *) ((__psint_t) sf_entry + tmp_len),
++			memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
+ 				tmp_elen);
+ 
+ 			/*
+@@ -534,7 +534,7 @@
+ 		}
+ 		dep = (xfs_dir2_data_entry_t *)ptr;
+ 		lino = INT_GET(dep->inumber, ARCH_CONVERT);
+-		bcopy(dep->name, fname, dep->namelen);
++		memmove(fname, dep->name, dep->namelen);
+ 		fname[dep->namelen] = '\0';
+ 
+ 		if (fname[0] != '/' && !strcmp(fname, ORPHANAGE))  {
+@@ -797,7 +797,7 @@
+ 		sf_entry = next_sfe;
+ 		lino = XFS_DIR2_SF_GET_INUMBER(sf,
+ 			XFS_DIR2_SF_INUMBERP(sf_entry));
+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
++		memmove(fname, sf_entry->name, sf_entry->namelen);
+ 		fname[sf_entry->namelen] = '\0';
+ 
+ 		if (!strcmp(ORPHANAGE, fname))  {
+@@ -931,7 +931,7 @@
+ 			if (lino > XFS_DIR2_MAX_SHORT_INUM)
+ 				sf->hdr.i8count--;
+ 
+-			bzero((void *) ((__psint_t) sf_entry + tmp_len),
++			memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
+ 				tmp_elen);
+ 
+ 			/*
+@@ -1292,7 +1292,7 @@
+ 		/*
+ 		 * now reset the bitmap for all ags
+ 		 */
+-		bzero(ba_bmap[i], roundup(mp->m_sb.sb_agblocks/(NBBY/XR_BB),
++		memset(ba_bmap[i], 0, roundup(mp->m_sb.sb_agblocks/(NBBY/XR_BB),
+ 						sizeof(__uint64_t)));
+ 		for (j = 0; j < ag_hdr_block; j++)
+ 			set_agbno_state(mp, i, j, XR_E_INUSE_FS);
+diff -ru xfsprogs-2.7.11_vanilla/repair/phase5.c xfsprogs-2.7.11_susv3-legacy/repair/phase5.c
+--- xfsprogs-2.7.11_vanilla/repair/phase5.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/phase5.c	2008-03-24 14:36:47.000000000 +0000
+@@ -93,7 +93,7 @@
+ 	 * extents of free blocks.  At this point, we know
+ 	 * that blocks in the bitmap are either set to an
+ 	 * "in use" state or set to unknown (0) since the
+-	 * bmaps were bzero'ed in phase 4 and only blocks
++	 * bmaps were zero'ed in phase 4 and only blocks
+ 	 * being used by inodes, inode bmaps, ag headers,
+ 	 * and the files themselves were put into the bitmap.
+ 	 *
+@@ -664,7 +664,7 @@
+ 		 * initialize block header
+ 		 */
+ 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
+ 
+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, level);
+@@ -741,7 +741,7 @@
+ 		 * initialize block header
+ 		 */
+ 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
+ 
+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, i);
+@@ -772,7 +772,7 @@
+ 		 * block initialization, lay in block header
+ 		 */
+ 		bt_hdr = XFS_BUF_TO_ALLOC_BLOCK(lptr->buf_p);
+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
+ 
+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, magic);
+ 		bt_hdr->bb_level = 0;
+@@ -1021,7 +1021,7 @@
+ 		 * initialize block header
+ 		 */
+ 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
+ 
+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, level);
+@@ -1060,7 +1060,7 @@
+ 			XFS_AG_DADDR(mp, agno, XFS_AGI_DADDR(mp)),
+ 			mp->m_sb.sb_sectsize/BBSIZE);
+ 	agi = XFS_BUF_TO_AGI(agi_buf);
+-	bzero(agi, mp->m_sb.sb_sectsize);
++	memset(agi, 0, mp->m_sb.sb_sectsize);
+ 
+ 	INT_SET(agi->agi_magicnum, ARCH_CONVERT, XFS_AGI_MAGIC);
+ 	INT_SET(agi->agi_versionnum, ARCH_CONVERT, XFS_AGI_VERSION);
+@@ -1124,7 +1124,7 @@
+ 		 * initialize block header
+ 		 */
+ 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
+ 
+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
+ 		INT_SET(bt_hdr->bb_level, ARCH_CONVERT, i);
+@@ -1152,7 +1152,7 @@
+ 		 * block initialization, lay in block header
+ 		 */
+ 		bt_hdr = XFS_BUF_TO_INOBT_BLOCK(lptr->buf_p);
+-		bzero(bt_hdr, mp->m_sb.sb_blocksize);
++		memset(bt_hdr, 0, mp->m_sb.sb_blocksize);
+ 
+ 		INT_SET(bt_hdr->bb_magic, ARCH_CONVERT, XFS_IBT_MAGIC);
+ 		bt_hdr->bb_level = 0;
+@@ -1239,7 +1239,7 @@
+ 			XFS_AG_DADDR(mp, agno, XFS_AGF_DADDR(mp)),
+ 			mp->m_sb.sb_sectsize/BBSIZE);
+ 	agf = XFS_BUF_TO_AGF(agf_buf);
+-	bzero(agf, mp->m_sb.sb_sectsize);
++	memset(agf, 0, mp->m_sb.sb_sectsize);
+ 
+ #ifdef XR_BLD_FREE_TRACE
+ 	fprintf(stderr, "agf = 0x%x, agf_buf->b_un.b_addr = 0x%x\n",
+@@ -1287,7 +1287,7 @@
+ 				XFS_AG_DADDR(mp, agno, XFS_AGFL_DADDR(mp)),
+ 				mp->m_sb.sb_sectsize/BBSIZE);
+ 		agfl = XFS_BUF_TO_AGFL(agfl_buf);
+-		bzero(agfl, mp->m_sb.sb_sectsize);
++		memset(agfl, 0, mp->m_sb.sb_sectsize);
+ 		/*
+ 		 * ok, now grab as many blocks as we can
+ 		 */
+diff -ru xfsprogs-2.7.11_vanilla/repair/phase6.c xfsprogs-2.7.11_susv3-legacy/repair/phase6.c
+--- xfsprogs-2.7.11_vanilla/repair/phase6.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/phase6.c	2008-03-24 14:36:47.000000000 +0000
+@@ -341,7 +341,7 @@
+ 			error);
+ 	}
+ 
+-	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
++	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
+ 
+ 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
+ 	ip->i_d.di_mode = S_IFREG;
+@@ -461,7 +461,7 @@
+ 			return(1);
+ 		}
+ 
+-		bcopy(bmp, XFS_BUF_PTR(bp), mp->m_sb.sb_blocksize);
++		memmove(XFS_BUF_PTR(bp), bmp, mp->m_sb.sb_blocksize);
+ 
+ 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
+ 
+@@ -531,7 +531,7 @@
+ 			return(1);
+ 		}
+ 
+-		bcopy(smp, XFS_BUF_PTR(bp), mp->m_sb.sb_blocksize);
++		memmove(XFS_BUF_PTR(bp), smp, mp->m_sb.sb_blocksize);
+ 
+ 		libxfs_trans_log_buf(tp, bp, 0, mp->m_sb.sb_blocksize - 1);
+ 
+@@ -576,7 +576,7 @@
+ 			error);
+ 	}
+ 
+-	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
++	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
+ 
+ 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
+ 	ip->i_d.di_mode = S_IFREG;
+@@ -674,7 +674,7 @@
+ 	/*
+ 	 * take care of the core -- initialization from xfs_ialloc()
+ 	 */
+-	bzero(&ip->i_d, sizeof(xfs_dinode_core_t));
++	memset(&ip->i_d, 0, sizeof(xfs_dinode_core_t));
+ 
+ 	ip->i_d.di_magic = XFS_DINODE_MAGIC;
+ 	ip->i_d.di_mode = (__uint16_t) mode|S_IFDIR;
+@@ -1231,7 +1231,7 @@
+ 	/*
+ 	 * snag the info we need out of the directory then release all buffers
+ 	 */
+-	bcopy(namest->name, fname, entry->namelen);
++	memmove(fname, namest->name, entry->namelen);
+ 	fname[entry->namelen] = '\0';
+ 	*hashval = INT_GET(entry->hashval, ARCH_CONVERT);
+ 	namelen = entry->namelen;
+@@ -1341,7 +1341,7 @@
+ 		junkit = 0;
+ 
+ 		XFS_DIR_SF_GET_DIRINO(&namest->inumber, &lino);
+-		bcopy(namest->name, fname, entry->namelen);
++		memmove(fname, namest->name, entry->namelen);
+ 		fname[entry->namelen] = '\0';
+ 
+ 		ASSERT(lino != NULLFSINO);
+@@ -1656,7 +1656,7 @@
+ 	libxfs_trans_ijoin(tp, ip, 0);
+ 	libxfs_trans_ihold(tp, ip);
+ 	libxfs_da_bjoin(tp, bp);
+-	bzero(&args, sizeof(args));
++	memset(&args, 0, sizeof(args));
+ 	XFS_BMAP_INIT(&flist, &firstblock);
+ 	args.dp = ip;
+ 	args.trans = tp;
+@@ -1907,7 +1907,7 @@
+ 			continue;
+ 		}
+ 		junkit = 0;
+-		bcopy(dep->name, fname, dep->namelen);
++		memmove(fname, dep->name, dep->namelen);
+ 		fname[dep->namelen] = '\0';
+ 		ASSERT(INT_GET(dep->inumber, ARCH_CONVERT) != NULLFSINO);
+ 		/*
+@@ -2350,7 +2350,7 @@
+ 	}
+ 
+ 	/* allocate blocks for btree */
+-	bzero(&args, sizeof(args));
++	memset(&args, 0, sizeof(args));
+ 	args.trans = tp;
+ 	args.dp = ip;
+ 	args.whichfork = XFS_DATA_FORK;
+@@ -2364,7 +2364,7 @@
+ 		/* NOTREACHED */
+ 	}
+ 	leaf = lbp->data;
+-	bzero(leaf, mp->m_dirblksize);
++	memset(leaf, 0, mp->m_dirblksize);
+ 	INT_SET(leaf->hdr.info.magic, ARCH_CONVERT, XFS_DIR2_LEAFN_MAGIC);
+ 	libxfs_da_log_buf(tp, lbp, 0, mp->m_dirblksize - 1);
+ 	libxfs_bmap_finish(&tp, &flist, firstblock, &committed);
+@@ -2381,7 +2381,7 @@
+ 		libxfs_trans_ijoin(tp, ip, 0);
+ 		libxfs_trans_ihold(tp, ip);
+ 		XFS_BMAP_INIT(&flist, &firstblock);
+-		bzero(&args, sizeof(args));
++		memset(&args, 0, sizeof(args));
+ 		args.trans = tp;
+ 		args.dp = ip;
+ 		args.whichfork = XFS_DATA_FORK;
+@@ -2398,7 +2398,7 @@
+ 			/* NOTREACHED */
+ 		}
+ 		free = fbp->data;
+-		bzero(free, mp->m_dirblksize);
++		memset(free, 0, mp->m_dirblksize);
+ 		INT_SET(free->hdr.magic, ARCH_CONVERT, XFS_DIR2_FREE_MAGIC);
+ 		INT_SET(free->hdr.firstdb, ARCH_CONVERT, i);
+ 		INT_SET(free->hdr.nvalid, ARCH_CONVERT, XFS_DIR2_MAX_FREE_BESTS(mp));
+@@ -2473,7 +2473,7 @@
+ 			mp->m_dirblksize);
+ 		exit(1);
+ 	}
+-	bcopy(bp->data, data, mp->m_dirblksize);
++	memmove(data, bp->data, mp->m_dirblksize);
+ 	ptr = (char *)data->u;
+ 	if (INT_GET(data->hdr.magic, ARCH_CONVERT) == XFS_DIR2_BLOCK_MAGIC) {
+ 		btp = XFS_DIR2_BLOCK_TAIL_P(mp, (xfs_dir2_block_t *)data);
+@@ -2495,7 +2495,7 @@
+ 	libxfs_da_bhold(tp, fbp);
+ 	XFS_BMAP_INIT(&flist, &firstblock);
+ 	needlog = needscan = 0;
+-	bzero(((xfs_dir2_data_t *)(bp->data))->hdr.bestfree,
++	memset(((xfs_dir2_data_t *)(bp->data))->hdr.bestfree, 0,
+ 		sizeof(data->hdr.bestfree));
+ 	libxfs_dir2_data_make_free(tp, bp, (xfs_dir2_data_aoff_t)sizeof(data->hdr),
+ 		mp->m_dirblksize - sizeof(data->hdr), &needlog, &needscan);
+@@ -2856,7 +2856,7 @@
+ 			}
+ 		}
+ 
+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
++		memmove(fname, sf_entry->name, sf_entry->namelen);
+ 		fname[sf_entry->namelen] = '\0';
+ 
+ 		ASSERT(no_modify || lino != NULLFSINO);
+@@ -2967,7 +2967,7 @@
+ 				memmove(sf_entry, tmp_sfe, tmp_len);
+ 
+ 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
+-				bzero((void *) ((__psint_t) sf_entry + tmp_len),
++				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
+ 						tmp_elen);
+ 
+ 				/*
+@@ -3071,7 +3071,7 @@
+ 
+ 		XFS_DIR_SF_GET_DIRINO(&sf_entry->inumber, &lino);
+ 
+-		bcopy(sf_entry->name, fname, sf_entry->namelen);
++		memmove(fname, sf_entry->name, sf_entry->namelen);
+ 		fname[sf_entry->namelen] = '\0';
+ 
+ 		if (sf_entry->name[0] == '/')  {
+@@ -3087,7 +3087,7 @@
+ 				memmove(sf_entry, tmp_sfe, tmp_len);
+ 
+ 				INT_MOD(sf->hdr.count, ARCH_CONVERT, -1);
+-				bzero((void *) ((__psint_t) sf_entry + tmp_len),
++				memset((void *) ((__psint_t) sf_entry + tmp_len), 0,
+ 						tmp_elen);
+ 
+ 				/*
+@@ -3242,7 +3242,7 @@
+ 			}
+ 		}
+ 
+-		bcopy(sfep->name, fname, sfep->namelen);
++		memmove(fname, sfep->name, sfep->namelen);
+ 		fname[sfep->namelen] = '\0';
+ 
+ 		ASSERT(no_modify || (lino != NULLFSINO && lino != 0));
+@@ -3363,7 +3363,7 @@
+ 				memmove(sfep, tmp_sfep, tmp_len);
+ 
+ 				INT_MOD(sfp->hdr.count, ARCH_CONVERT, -1);
+-				bzero((void *) ((__psint_t) sfep + tmp_len),
++				memset((void *) ((__psint_t) sfep + tmp_len), 0,
+ 						tmp_elen);
+ 
+ 				/*
+@@ -3879,8 +3879,8 @@
+ 	int			i;
+ 	int			j;
+ 
+-	bzero(&zerocr, sizeof(struct cred));
+-	bzero(&zerofsx, sizeof(struct fsxattr));
++	memset(&zerocr, 0, sizeof(struct cred));
++	memset(&zerofsx, 0, sizeof(struct fsxattr));
+ 
+ 	do_log(_("Phase 6 - check inode connectivity...\n"));
+ 
+diff -ru xfsprogs-2.7.11_vanilla/repair/rt.c xfsprogs-2.7.11_susv3-legacy/repair/rt.c
+--- xfsprogs-2.7.11_vanilla/repair/rt.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/rt.c	2008-03-24 14:36:47.000000000 +0000
+@@ -275,7 +275,7 @@
+ 			continue;
+ 		}
+ 		bytes = bp->b_un.b_addr;
+-		bcopy(bytes, (char *)sumfile + sumbno * mp->m_sb.sb_blocksize,
++		memmove((char *)sumfile + sumbno * mp->m_sb.sb_blocksize, bytes,
+ 			mp->m_sb.sb_blocksize);
+ 		libxfs_putbuf(bp);
+ 	}
+diff -ru xfsprogs-2.7.11_vanilla/repair/sb.c xfsprogs-2.7.11_susv3-legacy/repair/sb.c
+--- xfsprogs-2.7.11_vanilla/repair/sb.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/repair/sb.c	2008-03-24 14:36:47.000000000 +0000
+@@ -77,7 +77,7 @@
+ 	dest->sb_fdblocks = 0;
+ 	dest->sb_frextents = 0;
+ 
+-	bzero(source->sb_fname, 12);
++	memset(source->sb_fname, 0, 12);
+ }
+ 
+ /*
+@@ -105,7 +105,7 @@
+ 		exit(1);
+ 	}
+ 
+-	bzero(&bufsb, sizeof(xfs_sb_t));
++	memset(&bufsb, 0, sizeof(xfs_sb_t));
+ 	retval = 0;
+ 	dirty = 0;
+ 	bsize = 0;
+@@ -144,7 +144,7 @@
+ 			 * found one.  now verify it by looking
+ 			 * for other secondaries.
+ 			 */
+-			bcopy(&bufsb, rsb, sizeof(xfs_sb_t));
++			memmove(rsb, &bufsb, sizeof(xfs_sb_t));
+ 			rsb->sb_inprogress = 0;
+ 			clear_sunit = 1;
+ 
+@@ -576,7 +576,7 @@
+ void
+ get_sb_geometry(fs_geometry_t *geo, xfs_sb_t *sbp)
+ {
+-	bzero(geo, sizeof(fs_geometry_t));
++	memset(geo, 0, sizeof(fs_geometry_t));
+ 
+ 	/*
+ 	 * blindly set fields that we know are always good
+@@ -643,7 +643,7 @@
+ 	 * superblock fields located after sb_widthfields get set
+ 	 * into the geometry structure only if we can determine
+ 	 * from the features enabled in this superblock whether
+-	 * or not the sector was bzero'd at mkfs time.
++	 * or not the sector was zero'd at mkfs time.
+ 	 */
+ 	if ((!pre_65_beta && (sbp->sb_versionnum & XR_GOOD_SECSB_VNMASK)) ||
+ 	    (pre_65_beta && (sbp->sb_versionnum & XR_ALPHA_SECSB_VNMASK))) {
+diff -ru xfsprogs-2.7.11_vanilla/rtcp/xfs_rtcp.c xfsprogs-2.7.11_susv3-legacy/rtcp/xfs_rtcp.c
+--- xfsprogs-2.7.11_vanilla/rtcp/xfs_rtcp.c	2006-01-17 03:46:52.000000000 +0000
++++ xfsprogs-2.7.11_susv3-legacy/rtcp/xfs_rtcp.c	2008-03-24 14:38:05.000000000 +0000
+@@ -328,7 +328,7 @@
+ 
+ 	iosz =  dioattr.d_miniosz;
+ 	fbuf = memalign( dioattr.d_mem, iosz);
+-	bzero (fbuf, iosz);
++	memset(fbuf, 0, iosz);
+ 
+ 	/*
+ 	 * read the entire source file
+@@ -365,7 +365,7 @@
+ 			return( -1 );
+ 		}
+ 
+-		bzero( fbuf, iosz);
++		memset( fbuf, 0, iosz);
+ 	}
+ 
+ 	close(fromfd);
