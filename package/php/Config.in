@@ -31,4 +31,6 @@ config BR2_PACKAGE_PHP_FASTCGI
         help
           fast cgi interface for php
 
+if BR2_PACKAGE_PHP
 source "package/php/Config.ext"
+endif
