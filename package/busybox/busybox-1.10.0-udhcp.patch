@@ -1,0 +1,15 @@
+--- busybox-1.10.0/networking/udhcp/clientsocket.c	Thu Mar 20 12:46:42 2008
++++ busybox-1.10.0-udhcp/networking/udhcp/clientsocket.c	Tue Mar 25 07:04:32 2008
+@@ -22,11 +22,11 @@
+  */
+ 
+ #include <features.h>
++#include <asm/types.h>
+ #if (defined(__GLIBC__) && __GLIBC__ >= 2 && __GLIBC_MINOR__ >= 1) || defined(_NEWLIB_VERSION)
+ #include <netpacket/packet.h>
+ #include <net/ethernet.h>
+ #else
+-#include <asm/types.h>
+ #include <linux/if_packet.h>
+ #include <linux/if_ether.h>
+ #endif
