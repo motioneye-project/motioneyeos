@@ -3,13 +3,14 @@
 # mtd provides jffs2 utilities
 #
 #############################################################
-MTD_SOURCE:=mtd_20050122.orig.tar.gz
-MTD_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mtd
-MTD_HOST_DIR := $(TOOL_BUILD_DIR)/mtd_orig
-MTD_DIR:=$(BUILD_DIR)/mtd_orig
+MTD_VERSION:=$(strip $(subst ",, $(BR2_PACKAGE_MTD_UTILS_GIT_COMMIT_ID)))
+#"))
+MTD_SOURCE:=mtd-utils-$(MTD_VERSION).tar.gz
+MTD_URL:=http://git.infradead.org/mtd-utils.git?a=snapshot;h=$(MTD_VERSION);sf=tgz
+MTD_HOST_DIR:= $(TOOL_BUILD_DIR)/mtd-utils-$(MTD_VERSION)
+MTD_DIR:=$(BUILD_DIR)/mtd-utils-$(MTD_VERSION)
 MTD_CAT:=$(ZCAT)
-
-
+MTD_NAME:=mtd-utils
 
 #############################################################
 #
@@ -17,28 +18,34 @@ MTD_CAT:=$(ZCAT)
 # needed by target/jffs2root.
 #
 #############################################################
-MKFS_JFFS2 := $(MTD_HOST_DIR)/util/mkfs.jffs2
-SUMTOOL := $(MTD_HOST_DIR)/util/sumtool
+MKFS_JFFS2 := $(MTD_HOST_DIR)/mkfs.jffs2
+SUMTOOL := $(MTD_HOST_DIR)/sumtool
 
-ifneq ($(MTD_SOURCE),)
 $(DL_DIR)/$(MTD_SOURCE):
-	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
-endif
+	$(WGET) -O $(DL_DIR)/$(MTD_SOURCE) $(MTD_URL)
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	mv $(TOOL_BUILD_DIR)/$(shell tar tzf $(DL_DIR)/$(MTD_SOURCE) | head -n 1 \
-		| xargs basename) $(MTD_HOST_DIR)
-	toolchain/patch-kernel.sh $(MTD_HOST_DIR) package/mtd/20050122 \*.patch
+	rm -rf $(MTD_HOST_DIR)
+	mv $(TOOL_BUILD_DIR)/$(MTD_NAME) $(MTD_HOST_DIR)
+	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
+		package/mtd/mtd-utils.git mtd-utils-all\*.patch
+	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
+		package/mtd/mtd-utils.git mtd-utils-host\*.patch
 	touch $@
 
+
 $(MKFS_JFFS2): $(MTD_HOST_DIR)/.unpacked
-	CFLAGS=-I$(LINUX_HEADERS_DIR)/include $(MAKE) CC="$(HOSTCC)" CROSS= \
-		LINUXDIR=$(LINUX_DIR) -C $(MTD_HOST_DIR)/util mkfs.jffs2
+	CC="$(HOSTCC)" CROSS= CFLAGS=-I$(LINUX_HEADERS_DIR)/include \
+		$(MAKE) \
+		BUILDDIR=$(MTD_HOST_DIR) WITHOUT_XATTR=1 \
+		-C $(MTD_HOST_DIR) mkfs.jffs2
 
 $(SUMTOOL): $(MTD_HOST_DIR)/.unpacked
-	CFLAGS=-I$(LINUX_HEADERS_DIR)/include $(MAKE) CC="$(HOSTCC)" CROSS= \
-		LINUXDIR=$(LINUX_DIR) -C $(MTD_HOST_DIR)/util sumtool
+	CC="$(HOSTCC)" CROSS= CFLAGS=-I$(LINUX_HEADERS_DIR)/include \
+		$(MAKE) \
+		BUILDDIR=$(MTD_HOST_DIR) WITHOUT_XATTR=1 \
+		-C $(MTD_HOST_DIR) sumtool
 
 mtd-host: $(MKFS_JFFS2) $(SUMTOOL)
 
@@ -57,10 +64,9 @@ mtd-host-dirclean:
 #############################################################
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	mv $(BUILD_DIR)/$(shell tar tzf $(DL_DIR)/$(MTD_SOURCE) \
-		| head -n 1 | xargs basename) $(MTD_DIR)
-	toolchain/patch-kernel.sh $(MTD_DIR) \
-		package/mtd/20050122 \*.patch
+	mv $(BUILD_DIR)/$(MTD_NAME) $(MTD_DIR)
+	toolchain/patch-kernel.sh $(MTD_DIR) package/mtd/mtd-utils.git mtd-utils-all\*.patch
+	toolchain/patch-kernel.sh $(MTD_DIR) package/mtd/mtd-utils.git mtd-utils-target\*.patch
 	touch $@
 
 MTD_TARGETS_n :=
@@ -73,56 +79,56 @@ MTD_TARGETS_$(BR2_PACKAGE_MTD_FLASH_LOCK) += flash_lock
 MTD_TARGETS_$(BR2_PACKAGE_MTD_FLASH_UNLOCK) += flash_unlock
 MTD_TARGETS_$(BR2_PACKAGE_MTD_FLASHCP) += flashcp
 MTD_TARGETS_$(BR2_PACKAGE_MTD_MKFSJFFS2) += mkfs.jffs2
-MTD_TARGETS_$(BR2_PACKAGE_MTD_MKFSJFFS) += mkfs.jffs
 MTD_TARGETS_$(BR2_PACKAGE_MTD_JFFS2DUMP) += jffs2dump
-MTD_TARGETS_$(BR2_PACKAGE_MTD_JFFS3DUMP) += jffs3dump
 MTD_TARGETS_$(BR2_PACKAGE_MTD_SUMTOOL) += sumtool
 MTD_TARGETS_$(BR2_PACKAGE_MTD_FTL_CHECK) += ftl_check
 MTD_TARGETS_$(BR2_PACKAGE_MTD_FTL_FORMAT) += ftl_format
 MTD_TARGETS_$(BR2_PACKAGE_MTD_NFTLDUMP) += nftldump
 MTD_TARGETS_$(BR2_PACKAGE_MTD_NFTL_FORMAT) += nftl_format
 MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDDUMP) += nanddump
+MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDTEST) += nandtest
 MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDWRITE) += nandwrite
 MTD_TARGETS_$(BR2_PACKAGE_MTD_MTD_DEBUG) += mtd_debug
 MTD_TARGETS_$(BR2_PACKAGE_MTD_DOCFDISK) += docfdisk
 MTD_TARGETS_$(BR2_PACKAGE_MTD_DOC_LOADBIOS) += doc_loadbios
 
-MTD_BUILD_TARGETS := $(addprefix $(MTD_DIR)/util/, $(MTD_TARGETS_y))
+MTD_TARGETS_UBI_n :=
+MTD_TARGETS_UBI_y :=
+
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBIATTACH) += ubiattach
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBICRC32) += ubicrc32
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBIDETACH) += ubidetach
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBIMIRROR) += ubimirror
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBIMKVOL) += ubimkvol
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBINFO) += ubinfo
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBIRMVOL) += ubirmvol
+MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBIUPDATEVOL) += ubiupdatevol
+
+MTD_BUILD_TARGETS := $(addprefix $(MTD_DIR)/, $(MTD_TARGETS_y)) $(addprefix $(MTD_DIR)/ubi-utils/, $(MTD_TARGETS_UBI_y))
 
 $(MTD_BUILD_TARGETS): $(MTD_DIR)/.unpacked
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
-		CFLAGS+="-I$(MTD_DIR)/include" \
-		CFLAGS+="-I$(LINUX_HEADERS_DIR)/include" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
-		LINUXDIR=$(LINUX_DIR) -C $(MTD_DIR)/util
+	mkdir -p $(TARGET_DIR)/usr/sbin
+	$(MAKE) OPTFLAGS="-DNEED_BCOPY -Dbcmp=memcmp -I$(STAGING_DIR)/usr/include $(TARGET_CFLAGS)" \
+	       BUILDDIR=$(MTD_DIR) \
+	       CROSS=$(TARGET_CROSS) CC=$(TARGET_CC) WITHOUT_XATTR=1 -C $(MTD_DIR)
 
 MTD_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_y))
+MTD_UBI_TARGETS := $(addprefix $(TARGET_DIR)/usr/sbin/, $(MTD_TARGETS_UBI_y))
 
-$(MTD_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/util/%
-	mkdir -p $(TARGET_DIR)/usr/sbin
+$(MTD_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/%
 	cp -f $< $@
 	$(STRIPCMD) $@
-ifneq ($(BR2_PACKAGE_MTD_FLASHCP),)
-	-ln -sf flashcp $(TARGET_DIR)/usr/sbin/fcp
-endif
-ifneq ($(BR2_PACKAGE_MTD_ERASE),)
-	-ln -sf flash_erase $(TARGET_DIR)/usr/sbin/erase
-	-ln -sf flash_eraseall $(TARGET_DIR)/usr/sbin/eraseall
-endif
 
-mtd: zlib $(MTD_TARGETS)
+$(MTD_UBI_TARGETS): $(TARGET_DIR)/usr/sbin/% : $(MTD_DIR)/ubi-utils/%
+	cp -f $< $@
+	$(STRIPCMD) $@
+
+mtd: zlib lzo $(MTD_TARGETS) $(MTD_UBI_TARGETS)
 
 mtd-source: $(DL_DIR)/$(MTD_SOURCE)
 
 mtd-clean:
 	-$(MAKE) -C $(MTD_DIR) clean
-ifneq ($(BR2_PACKAGE_MTD_FLASHCP),)
-	-rm -f $(MTD_TARGETS) $(TARGET_DIR)/usr/sbin/fcp
-endif
-ifneq ($(BR2_PACKAGE_MTD_ERASE),)
-	-rm -f $(MTD_TARGETS) $(TARGET_DIR)/usr/sbin/erase
-	-rm -f $(MTD_TARGETS) $(TARGET_DIR)/usr/sbin/eraseall
-endif
 
 mtd-dirclean:
 	rm -rf $(MTD_DIR)

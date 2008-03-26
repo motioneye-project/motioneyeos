@@ -7,6 +7,6 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_MTD_20050122)),y)
 include package/mtd/20050122/mtd.mk
 endif
-ifeq ($(strip $(BR2_PACKAGE_MTD_SNAPSHOT)),y)
-include package/mtd/20050122/mtd.mk
+ifeq ($(strip $(BR2_PACKAGE_MTD_UTILS_GIT)),y)
+include package/mtd/mtd-utils.git/mtd.mk
 endif

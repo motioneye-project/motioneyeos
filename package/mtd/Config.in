@@ -12,48 +12,65 @@ choice
 	default BR2_PACKAGE_MTD20061007
 
 config BR2_PACKAGE_MTD_UTILS
-	bool "Use MTD-utils"
+	bool "Use MTD-utils release"
 	depends on BR2_PACKAGE_MTD
 	select BR2_PACKAGE_LZO
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
 config BR2_PACKAGE_MTD_20061007
-	bool "Use MTD from (20061007)"
+	bool "Use MTD snapshot from 20061007"
 	depends on BR2_PACKAGE_MTD
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
 config BR2_PACKAGE_MTD_20050122
-	bool "Use MTD from (20050122)"
+	bool "Use MTD snapshot from 20050122"
 	help
 	  Use the stable release.
 
-config BR2_PACKAGE_MTD_SNAPSHOT
-	bool "Daily snapshot"
+config BR2_PACKAGE_MTD_UTILS_GIT
+	bool "Use MTD-utils from GIT"
 	help
-	  Use the latest MTD daily snapshot instead of release.
+	  Use the latest from GIT or a particular revision.
 	  You should probably say NO except for specific purpose.
 
 endchoice
 
-config BR2_PACKAGE_MTD_SNAPSHOT_STRING
-	string	"mtd_YYYYMMDD.orig.tar.gz"
-	depends on BR2_PACKAGE_MTD_SNAPSHOT
+config BR2_PACKAGE_MTD_UTILS_GIT_COMMIT_ID
+	string	"Commit ID to use"
+	default "e6088d987c545d60a86e1f44836ab8ba072fffd9"
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
 	help
-	  You should not modify the file name, unless you want to
-	  use a specific and private MTD package.
+	  If you wish to use the mtd-utils.git tree as of a specific
+	  commit, you can enter the commit ID here (for example,
+	  e6088d987c545d60a86e1f44836ab8ba072fffd9). 
 
-config BR2_PACKAGE_MTD_ORIG_STRING
-	string
-	depends on BR2_PACKAGE_MTD
-	default "mtd-utils-1.1.0.tar.bz2" if BR2_PACKAGE_MTD_UTILS
-	default "mtd_20061007.orig.tar.gz" if BR2_PACKAGE_MTD_20061007
-	default "mtd_20050122.orig.tar.gz" if BR2_PACKAGE_MTD_20050122
-	default $(BR2_PACKAGE_MTD_SNAPSHOT_STRING) if BR2_PACKAGE_MTD_SNAPSHOT
+	  Alternatively you can specify HEAD. Note that the current
+	  HEAD will be downloaded but won't be tracked when it changes.
 
-menu "MTD tools selection"
+comment "MTD tools selection"
 	depends BR2_PACKAGE_MTD
+
+config BR2_PACKAGE_MTD_DOCFDISK
+	bool "docfdisk"
+	default y
+	depends on BR2_PACKAGE_MTD
+
+config BR2_PACKAGE_MTD_DOC_LOADBIOS
+	bool "doc_loadbios"
+	default y
+	depends on BR2_PACKAGE_MTD
+
+config BR2_PACKAGE_MTD_ERASE
+	bool "erase"
+	default y
+	depends on BR2_PACKAGE_MTD_20050122
+
+config BR2_PACKAGE_MTD_FLASHCP
+	bool "flashcp"
+	default y
+	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FLASH_ERASE
 	bool "flash_erase"
@@ -80,13 +97,13 @@ config BR2_PACKAGE_MTD_FLASH_UNLOCK
 	default y
 	depends on BR2_PACKAGE_MTD
 
-config BR2_PACKAGE_MTD_FLASHCP
-	bool "flashcp"
+config BR2_PACKAGE_MTD_FTL_CHECK
+	bool "ftl_check"
 	default y
 	depends on BR2_PACKAGE_MTD
 
-config BR2_PACKAGE_MTD_ERASE
-	bool "erase"
+config BR2_PACKAGE_MTD_FTL_FORMAT
+	bool "ftl_format"
 	default y
 	depends on BR2_PACKAGE_MTD
 
@@ -98,21 +115,35 @@ config BR2_PACKAGE_MTD_JFFS2DUMP
 config BR2_PACKAGE_MTD_JFFS3DUMP
 	bool "jffs3dump"
 	default y
-	depends on BR2_PACKAGE_MTD
-	depends on !BR2_PACKAGE_MTD_20061007
+	depends on BR2_PACKAGE_MTD_20050122
 
-config BR2_PACKAGE_MTD_SUMTOOL
-	bool "sumtool"
+config BR2_PACKAGE_MTD_MKFSJFFS2
+	bool "mkfs.jffs2"
 	default y
 	depends on BR2_PACKAGE_MTD
 
-config BR2_PACKAGE_MTD_FTL_CHECK
-	bool "ftl_check"
+config BR2_PACKAGE_MTD_MKFSJFFS
+	bool "mkfs.jffs"
+	default y
+	depends on BR2_PACKAGE_MTD_20050122 || BR2_PACKAGE_MTD_20061007 || BR2_PACKAGE_MTD_UTILS
+
+config BR2_PACKAGE_MTD_MTD_DEBUG
+	bool "mtd_debug"
 	default y
 	depends on BR2_PACKAGE_MTD
 
-config BR2_PACKAGE_MTD_FTL_FORMAT
-	bool "ftl_format"
+config BR2_PACKAGE_MTD_NANDDUMP
+	bool "nanddump"
+	default y
+	depends on BR2_PACKAGE_MTD
+
+config BR2_PACKAGE_MTD_NANDTEST
+	bool "nandtest"
+	default y
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
+
+config BR2_PACKAGE_MTD_NANDWRITE
+	bool "nandwrite"
 	default y
 	depends on BR2_PACKAGE_MTD
 
@@ -126,41 +157,50 @@ config BR2_PACKAGE_MTD_NFTLDUMP
 	default y
 	depends on BR2_PACKAGE_MTD
 
-config BR2_PACKAGE_MTD_MKFSJFFS2
-	bool "mkfs.jffs2"
+config BR2_PACKAGE_MTD_SUMTOOL
+	bool "sumtool"
 	default y
 	depends on BR2_PACKAGE_MTD
 
-config BR2_PACKAGE_MTD_MKFSJFFS
-	bool "mkfs.jffs"
+config BR2_PACKAGE_MTD_UBIATTACH
+	bool "ubiattach"
 	default y
-	depends on BR2_PACKAGE_MTD
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
-config BR2_PACKAGE_MTD_NANDDUMP
-	bool "nanddump"
+config BR2_PACKAGE_MTD_UBICRC32
+	bool "ubicrc32"
 	default y
-	depends on BR2_PACKAGE_MTD
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
-config BR2_PACKAGE_MTD_NANDWRITE
-	bool "nandwrite"
+config BR2_PACKAGE_MTD_UBIDETACH
+	bool "ubidetach"
 	default y
-	depends on BR2_PACKAGE_MTD
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
-config BR2_PACKAGE_MTD_MTD_DEBUG
-	bool "mtd_debug"
+config BR2_PACKAGE_MTD_UBIMIRROR
+	bool "ubimirror"
 	default y
-	depends on BR2_PACKAGE_MTD
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
-config BR2_PACKAGE_MTD_DOCFDISK
-	bool "docfdisk"
+config BR2_PACKAGE_MTD_UBIMKVOL
+	bool "ubimkvol"
 	default y
-	depends on BR2_PACKAGE_MTD
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
-config BR2_PACKAGE_MTD_DOC_LOADBIOS
-	bool "doc_loadbios"
+config BR2_PACKAGE_MTD_UBINFO
+	bool "ubinfo"
 	default y
-	depends on BR2_PACKAGE_MTD
-endmenu
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
+
+config BR2_PACKAGE_MTD_UBIRMVOL
+	bool "ubirmvol"
+	default y
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
+
+config BR2_PACKAGE_MTD_UBIUPDATEVOL
+	bool "ubiupdatevol"
+	default y
+	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
 endif
 

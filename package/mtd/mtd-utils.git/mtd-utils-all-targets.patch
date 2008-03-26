@@ -1,0 +1,34 @@
+diff -urN mtd-utils-1.1.0-0rig/Makefile mtd-utils-1.1.0/Makefile
+--- mtd-utils-1.1.0-0rig/Makefile	2007-08-03 15:55:51.000000000 +0200
++++ mtd-utils-1.1.0/Makefile	2007-09-27 08:20:55.000000000 +0200
+@@ -72,6 +72,30 @@
+ $(BUILDDIR)/sumtool: $(BUILDDIR)/sumtool.o $(BUILDDIR)/crc32.o
+ 	$(CC) $(LDFLAGS) -o $@ $^
+ 
++ftl_format:	$(BUILDDIR)/ftl_format
++flash_erase:	$(BUILDDIR)/flash_erase
++flash_eraseall:	$(BUILDDIR)/flash_eraseall
++nanddump:	$(BUILDDIR)/nanddump
++doc_loadbios:	$(BUILDDIR)/doc_loadbios
++mkfs.jffs:	$(BUILDDIR)/mkfs.jffs
++ftl_check:	$(BUILDDIR)/ftl_check
++mkfs.jffs2:	$(BUILDDIR)/mkfs.jffs2
++flash_lock:	$(BUILDDIR)/flash_lock
++flash_unlock:	$(BUILDDIR)/flash_unlock
++flash_info:	$(BUILDDIR)/flash_info
++flash_otp_info:	$(BUILDDIR)/flash_otp_info
++flash_otp_dump:	$(BUILDDIR)/flash_otp_dump
++mtd_debug:	$(BUILDDIR)/mtd_debug
++flashcp:	$(BUILDDIR)/flashcp
++nandwrite:	$(BUILDDIR)/nandwrite
++jffs2dump:	$(BUILDDIR)/jffs2dump
++nftldump:	$(BUILDDIR)/nftldump
++nftl_format:	$(BUILDDIR)/nftl_format
++docfdisk:	$(BUILDDIR)/docfdisk
++rfddump:	$(BUILDDIR)/rfddump
++rfdformat:	$(BUILDDIR)/rfdformat
++sumtool:	$(BUILDDIR)/sumtool
++
+ install: ${TARGETS}
+ 	mkdir -p ${DESTDIR}/${SBINDIR}
+ 	install -m0755 ${TARGETS} ${DESTDIR}/${SBINDIR}/
