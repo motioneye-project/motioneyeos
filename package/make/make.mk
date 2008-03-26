@@ -5,7 +5,7 @@
 #############################################################
 GNUMAKE_VERSION:=3.81
 GNUMAKE_SOURCE:=make-$(GNUMAKE_VERSION).tar.bz2
-GNUMAKE_SITE:=$(BR2_GNU_MIRROR)/gnu/make
+GNUMAKE_SITE:=$(BR2_GNU_MIRROR)/make
 GNUMAKE_DIR:=$(BUILD_DIR)/make-$(GNUMAKE_VERSION)
 GNUMAKE_CAT:=$(BZCAT)
 GNUMAKE_BINARY:=make

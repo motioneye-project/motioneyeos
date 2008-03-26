@@ -5,7 +5,7 @@
 #############################################################
 AUTOMAKE_VERSION:=1.10
 AUTOMAKE_SOURCE:=automake-$(AUTOMAKE_VERSION).tar.bz2
-AUTOMAKE_SITE:=$(BR2_GNU_MIRROR)/gnu/automake
+AUTOMAKE_SITE:=$(BR2_GNU_MIRROR)/automake
 AUTOMAKE_CAT:=$(BZCAT)
 AUTOMAKE_SRC_DIR:=$(TOOL_BUILD_DIR)/automake-$(AUTOMAKE_VERSION)
 AUTOMAKE_DIR:=$(BUILD_DIR)/automake-$(AUTOMAKE_VERSION)

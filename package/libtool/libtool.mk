@@ -5,7 +5,7 @@
 #############################################################
 LIBTOOL_VERSION:=1.5.24
 LIBTOOL_SOURCE:=libtool-$(LIBTOOL_VERSION).tar.gz
-LIBTOOL_SITE:=$(BR2_GNU_MIRROR)/gnu/libtool
+LIBTOOL_SITE:=$(BR2_GNU_MIRROR)/libtool
 LIBTOOL_CAT:=$(ZCAT)
 LIBTOOL_SRC_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VERSION)
 LIBTOOL_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VERSION)

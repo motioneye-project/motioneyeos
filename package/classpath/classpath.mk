@@ -5,7 +5,7 @@
 #############################################################
 CLASSPATH_VERSION = 0.96.1
 CLASSPATH_SOURCE = classpath-$(CLASSPATH_VERSION).tar.gz
-CLASSPATH_SITE = ftp://ftp.gnu.org/gnu/classpath/
+CLASSPATH_SITE = $(BR2_GNU_MIRROR)/classpath
 CLASSPATH_AUTORECONF = NO
 CLASSPATH_INSTALL_STAGING = YES
 CLASSPATH_INSTALL_TARGET = YES

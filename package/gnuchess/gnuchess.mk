@@ -5,7 +5,7 @@
 #############################################################
 GNUCHESS_VERSION = 5.07
 GNUCHESS_SOURCE = gnuchess-$(GNUCHESS_VERSION).tar.gz
-GNUCHESS_SITE = http://ftp.gnu.org/pub/gnu/chess
+GNUCHESS_SITE = $(BR2_GNU_MIRROR)/chess
 GNUCHESS_AUTORECONF = NO
 GNUCHESS_INSTALL_STAGING = NO
 GNUCHESS_INSTALL_TARGET = YES

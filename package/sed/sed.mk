@@ -5,7 +5,7 @@
 #############################################################
 SED_VERSION:=4.1.5
 SED_SOURCE:=sed-$(SED_VERSION).tar.gz
-SED_SITE:=$(BR2_GNU_MIRROR)/gnu/sed
+SED_SITE:=$(BR2_GNU_MIRROR)/sed
 SED_CAT:=$(ZCAT)
 SED_DIR1:=$(TOOL_BUILD_DIR)/sed-$(SED_VERSION)
 SED_DIR2:=$(BUILD_DIR)/sed-$(SED_VERSION)
