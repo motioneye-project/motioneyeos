@@ -9,7 +9,7 @@ NANO_SITE:=http://www.nano-editor.org/dist/v1.3/
 NANO_DIR:=$(BUILD_DIR)/nano-$(NANO_VERSION)
 NANO_CAT:=$(ZCAT)
 NANO_BINARY:=src/nano
-NANO_TARGET_BINARY:=sbin/bin/nano
+NANO_TARGET_BINARY:=usr/bin/nano
 
 $(DL_DIR)/$(NANO_SOURCE):
 	$(WGET) -P $(DL_DIR) $(NANO_SITE)/$(NANO_SOURCE)
