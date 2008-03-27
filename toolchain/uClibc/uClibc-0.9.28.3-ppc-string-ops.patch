@@ -1,0 +1,56 @@
+diff -urpN uClibc-0.9.28.3/libc/string/powerpc/string.c uClibc-0.9.28.3-patched/libc/string/powerpc/string.c
+--- uClibc-0.9.28.3/libc/string/powerpc/string.c	2005-06-21 16:03:15.000000000 +0200
++++ uClibc-0.9.28.3-patched/libc/string/powerpc/string.c	2008-03-27 00:22:16.000000000 +0100
+@@ -32,7 +32,7 @@
+ #include <locale.h> /* for __LOCALE_C_ONLY */
+ 
+ #ifdef L_memcpy
+-void attribute_hidden *__memcpy(void *to, const void *from, size_t n)
++void *memcpy(void *to, const void *from, size_t n)
+ /* PPC can do pre increment and load/store, but not post increment and load/store.
+    Therefore use *++ptr instead of *ptr++. */
+ {
+@@ -87,11 +87,10 @@ void attribute_hidden *__memcpy(void *to
+ 		goto copy_chunks;
+ 	goto lessthan8;
+ }
+-strong_alias(__memcpy, memcpy);
+ #endif
+ 
+ #ifdef L_memmove
+-void attribute_hidden *__memmove(void *to, const void *from, size_t n)
++void *memmove(void *to, const void *from, size_t n)
+ {
+ 	unsigned long rem, chunks, tmp1, tmp2;
+ 	unsigned char *tmp_to;
+@@ -142,7 +141,6 @@ void attribute_hidden *__memmove(void *t
+ 		goto copy_chunks;
+ 	goto lessthan8;
+ }
+-strong_alias(__memmove, memmove);
+ #endif
+ 
+ #ifdef L_memset
+@@ -156,7 +154,7 @@ static inline int expand_byte_word(int c
+ 	    : "=r" (c) : "0" (c));
+ 	return c;
+ }
+-void attribute_hidden *__memset(void *to, int c, size_t n)
++void *memset(void *to, int c, size_t n)
+ {
+ 	unsigned long rem, chunks;
+ 	unsigned char *tmp_to;
+@@ -202,12 +200,10 @@ void attribute_hidden *__memset(void *to
+ 		goto copy_chunks;
+ 	goto lessthan8;
+ }
+-strong_alias(__memset, memset);
+ #endif
+ 
+ #ifdef L_bzero
+-weak_alias(__bzero,bzero);
+-void __bzero(void *s, size_t n)
++void bzero(void *s, size_t n)
+ {
+ 	(void)memset(s, 0, n);
+ }
