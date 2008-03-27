@@ -45,17 +45,17 @@ $(LIBUSB_DIR)/.configured: $(LIBUSB_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/ \
+		--prefix=$(STAGING_DIR)/usr \
 		--disable-debug \
 		--disable-build-docs \
 	)
 	touch $@
 
-$(STAGING_DIR)/lib/libusb.so: $(LIBUSB_DIR)/.configured
+$(STAGING_DIR)/usr/lib/libusb.so: $(LIBUSB_DIR)/.configured
 	$(MAKE) -C $(LIBUSB_DIR)
-	$(MAKE) -C $(LIBUSB_DIR) DESTDIR=$(STAGING_DIR) install
+	$(MAKE) -C $(LIBUSB_DIR) install
 
-$(TARGET_DIR)/$(LIBUSB_BINARY): $(STAGING_DIR)/lib/libusb.so
+$(TARGET_DIR)/$(LIBUSB_BINARY): $(STAGING_DIR)/usr/lib/libusb.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libusb*.so* $(TARGET_DIR)/usr/lib/
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libusb*.so*
 
