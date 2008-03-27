@@ -29,8 +29,8 @@ $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY): $(LOCKFILE_PROGS_DIR)/.unpacked
 lockfile-progs: uclibc liblockfile $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY)
 
 lockfile-progs-clean:
-	rm -f $(TARGET_DIR)/usr/bin/lockfile-*
-	$(MAKE) -C $(LOCKFILE_PROGS_DIR) clean
+	-rm -f $(TARGET_DIR)/usr/bin/lockfile-*
+	-$(MAKE) -C $(LOCKFILE_PROGS_DIR) clean
 
 lockfile-progs-dirclean:
 	rm -rf $(LOCKFILE_PROGS_DIR)

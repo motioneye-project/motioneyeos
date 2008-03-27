@@ -42,9 +42,8 @@ nbd: uclibc $(TARGET_DIR)/sbin/nbd-client
 nbd-source: $(DL_DIR)/$(NBD_SOURCE)
 
 nbd-clean:
-	@if [ -d $(NBD_DIR)/Makefile ]; then \
-		$(MAKE) -C $(NBD_DIR) clean; \
-	fi
+	rm -f $(TARGET_DIR)/sbin/nbd-client
+	-$(MAKE) -C $(NBD_DIR) clean
 
 nbd-dirclean:
 	rm -rf $(NBD_DIR)

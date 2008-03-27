@@ -89,11 +89,9 @@ libeXosip2: uclibc $(TARGET_DIR)/usr/lib/libeXosip2.so
 libeXosip2-source: $(DL_DIR)/$(LIBEXOSIP2_SOURCE)
 
 libeXosip2-clean:
-	@if [ -d $(LIBEXOSIP2_DIR)/Makefile ]; then \
-		$(MAKE) -C $(LIBEXOSIP2_DIR) clean; \
-	fi
-	rm -f $(STAGING_DIR)/usr/lib/libeXosip2.*
-	rm -f $(TARGET_DIR)/usr/lib/libeXosip2.*
+	-$(MAKE) -C $(LIBEXOSIP2_DIR) clean
+	-rm -f $(STAGING_DIR)/usr/lib/libeXosip2.*
+	-rm -f $(TARGET_DIR)/usr/lib/libeXosip2.*
 
 
 libeXosip2-dirclean:

@@ -67,12 +67,11 @@ libosip2: uclibc $(TARGET_DIR)/usr/lib/libosip2.so $(TARGET_DIR)/usr/lib/libosip
 libosip2-source: $(DL_DIR)/$(LIBOSIP2_SOURCE)
 
 libosip2-clean:
-	@if [ -d $(LIBOSIP2_DIR)/Makefile ]; then \
-		$(MAKE) -C $(LIBOSIP2_DIR) clean; \
-	fi
-	rm -f $(STAGING_DIR)/usr/lib/libosip2.*
-	rm -f $(TARGET_DIR)/usr/lib/libosip2.*
-
+	-$(MAKE) -C $(LIBOSIP2_DIR) clean
+	-rm -f $(STAGING_DIR)/usr/lib/libosip2.*
+	-rm -f $(STAGING_DIR)/usr/lib/libosipparser2.*
+	-rm -f $(TARGET_DIR)/usr/lib/libosip2.*
+	-rm -f $(TARGET_DIR)/usr/lib/libosipparser2.*
 
 libosip2-dirclean:
 	rm -rf $(LIBOSIP2_DIR)

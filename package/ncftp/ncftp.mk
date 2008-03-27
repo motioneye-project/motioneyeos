@@ -67,7 +67,7 @@ $(TARGET_DIR)/usr/bin/ncftp $(TARGET_DIR)/usr/bin/ncftp%: $(addprefix $(NCFTP_DI
 ncftp: uclibc $(addprefix $(TARGET_DIR)/usr/bin/, $(NCFTP_TARGET_BINS))
 
 ncftp-clean:
-	$(MAKE) -C $(NCFTP_DIR) clean
+	-$(MAKE) -C $(NCFTP_DIR) clean
 	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(NCFTP_TARGET_BINS))
 
 ncftp-dirclean:

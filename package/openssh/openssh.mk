@@ -73,8 +73,8 @@ openssh: openssl zlib $(TARGET_DIR)/usr/bin/ssh
 openssh-source: $(DL_DIR)/$(OPENSSH_SOURCE)
 
 openssh-clean:
-	$(MAKE) -C $(OPENSSH_DIR) clean
-	$(MAKE) CC=$(TARGET_CC) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) uninstall
+	-$(MAKE) -C $(OPENSSH_DIR) clean
+	-$(MAKE) CC=$(TARGET_CC) DESTDIR=$(TARGET_DIR) -C $(OPENSSH_DIR) uninstall
 
 openssh-dirclean:
 	rm -rf $(OPENSSH_DIR)

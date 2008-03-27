@@ -38,7 +38,7 @@ $(TARGET_DIR)/$(TINYHTTPD_TARGET_BINARY): $(TINYHTTPD_DIR)/$(TINYHTTPD_BINARY)
 tinyhttpd: uclibc $(TARGET_DIR)/$(TINYHTTPD_TARGET_BINARY)
 
 tinyhttpd-clean:
-	$(MAKE) -C $(TINYHTTPD_DIR) clean
+	-$(MAKE) -C $(TINYHTTPD_DIR) clean
 	@rm -f $(TARGET_DIR)/$(TINYHTTPD_TARGET_BINARY)
 	@rm -f $(TARGET_DIR)/etc/init.d/S85tinyhttpd
 	@rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/var/www

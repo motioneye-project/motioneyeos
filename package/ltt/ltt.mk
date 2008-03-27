@@ -50,7 +50,7 @@ $(TOOL_BUILD_DIR)/bin/tracevisualizer: $(LTT_DIR1)/$(LTT_BINARY)
 host-ltt-tracevisualizer: $(TOOL_BUILD_DIR)/bin/tracevisualizer
 
 host-ltt-clean:
-	$(MAKE) -C $(LTT_DIR1) clean
+	-$(MAKE) -C $(LTT_DIR1) clean
 
 host-ltt-dirclean:
 	rm -rf $(LTT_DIR1)

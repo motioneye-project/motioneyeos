@@ -64,12 +64,10 @@ libmad-headers: $(TARGET_DIR)/usr/lib/libmad.a
 libmad-source: $(DL_DIR)/$(LIBMAD_SOURCE)
 
 libmad-clean:
-	@if [ -d $(LIBMAD_DIR)/Makefile ]; then \
-		$(MAKE) -C $(LIBMAD_DIR) clean; \
-	fi
-	rm -f $(STAGING_DIR)/usr/lib/libmad.*
+	-$(MAKE) -C $(LIBMAD_DIR) clean
+	-rm -f $(STAGING_DIR)/usr/lib/libmad.*
 	rm -f $(STAGING_DIR)/usr/include/mad.h
-	rm -f $(TARGET_DIR)/usr/lib/libmad.*
+	-rm -f $(TARGET_DIR)/usr/lib/libmad.*
 	rm -f $(TARGET_DIR)/usr/include/mad.h
 
 

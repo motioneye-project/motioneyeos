@@ -29,7 +29,7 @@ libfloat-source: $(DL_DIR)/$(LIBFLOAT_SOURCE) $(DL_DIR)/$(LIBFLOAT_PATCH)
 $(LIBFLOAT_DIR)/.unpacked: $(DL_DIR)/$(LIBFLOAT_SOURCE) $(DL_DIR)/$(LIBFLOAT_PATCH)
 	$(LIBFLOAT_CAT) $(DL_DIR)/$(LIBFLOAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	# Remove the binary files distributed with the the package.
-	$(MAKE) -C $(LIBFLOAT_DIR) clean
+	-$(MAKE) -C $(LIBFLOAT_DIR) clean
 	toolchain/patch-kernel.sh $(LIBFLOAT_DIR) $(DL_DIR) $(LIBFLOAT_PATCH)
 	toolchain/patch-kernel.sh $(LIBFLOAT_DIR) package/libfloat/ libfloat\*.patch
 	touch $@

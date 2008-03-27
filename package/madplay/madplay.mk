@@ -56,7 +56,7 @@ madplay: uclibc $(MADPLAY_ALSA_DEP) libmad libid3tag $(TARGET_DIR)/$(MADPLAY_TAR
 
 madplay-clean:
 	rm -f $(TARGET_DIR)/$(MADPLAY_TARGET_BIN)
-	$(MAKE) -C $(MADPLAY_DIR) clean
+	-$(MAKE) -C $(MADPLAY_DIR) clean
 
 madplay-dirclean:
 	rm -rf $(MADPLAY_DIR)

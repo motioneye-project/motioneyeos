@@ -35,18 +35,16 @@ $(RDESKTOP_DIR)/.configured: $(RDESKTOP_DIR)/.unpacked
 $(RDESKTOP_DIR)/rdesktop: $(RDESKTOP_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(RDESKTOP_DIR)
 
-$(RDESKTOP_DIR)/.installed: $(RDESKTOP_DIR)/rdesktop
-	cp $(RDESKTOP_DIR)/rdesktop $(TARGET_DIR)/usr/bin
-	touch $(RDESKTOP_DIR)/.installed
+$(TARGET_DIR)/usr/bin/rdesktop: $(RDESKTOP_DIR)/rdesktop
+	cp $^ $@
 
-rdesktop: uclibc openssl $(XSERVER) $(RDESKTOP_DIR)/.installed
+rdesktop: uclibc openssl $(XSERVER) $(TARGET_DIR)/usr/bin/rdesktop
 
 rdesktop-source: $(DL_DIR)/$(RDESKTOP_SOURCE)
 
 rdesktop-clean:
-	@if [ -d $(RDESKTOP_DIR)/Makefile ]; then \
-		$(MAKE) -C $(RDESKTOP_DIR) clean; \
-	fi
+	-$(MAKE) -C $(RDESKTOP_DIR) clean
+	rm -f $(TARGET_DIR)/usr/bin/rdesktop
 
 rdesktop-dirclean:
 	rm -rf $(RDESKTOP_DIR) $(RDESKTOP_DIR)

@@ -84,7 +84,7 @@ $(TARGET_DIR)/usr/lib/libdb.a: $(STAGING_DIR)/lib/libdb-$(DB_SO_VERSION).a
 berkeleydb-headers: $(TARGET_DIR)/usr/lib/libdb.a
 
 berkeleydb-clean:
-	$(MAKE) -C $(DB_DIR)/build_unix clean
+	-$(MAKE) -C $(DB_DIR)/build_unix clean
 
 berkeleydb-dirclean:
 	rm -rf $(DB_DIR)

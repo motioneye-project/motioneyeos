@@ -12,7 +12,7 @@ LUA_SITE=http://www.lua.org/ftp
 
 LUA_DIR=$(BUILD_DIR)/lua-$(LUA_VERSION)
 
-LUA_CFLAGS=-DLUA_USE_LINUX 
+LUA_CFLAGS=-DLUA_USE_LINUX
 LUA_MYLIBS="-Wl,-E -ldl -lreadline -lhistory -lncurses"
 
 $(DL_DIR)/$(LUA_SOURCE):
@@ -53,7 +53,7 @@ $(TARGET_DIR)/usr/bin/luac: $(STAGING_DIR)/usr/bin/luac
 	cp -dpf $(STAGING_DIR)/usr/bin/luac $(TARGET_DIR)/usr/bin/luac
 
 
-lua-bins:	$(TARGET_DIR)/usr/bin/lua $(TARGET_DIR)/usr/bin/luac 
+lua-bins:	$(TARGET_DIR)/usr/bin/lua $(TARGET_DIR)/usr/bin/luac
 
 lua-libs:	$(TARGET_DIR)/usr/lib/liblua.a
 
@@ -62,9 +62,11 @@ lua: uclibc readline ncurses lua-bins lua-libs
 lua-source: $(DL_DIR)/$(LUA_SOURCE)
 
 lua-clean:
-	@if [ -d $(LUA_DIR)/Makefile ]; then \
-		$(MAKE) -C $(LUA_DIR) clean; \
-	fi
+	rm -f $(STAGING_DIR)/usr/bin/lua $(TARGET_DIR)/usr/bin/luac
+	rm -f $(STAGING_DIR)/usr/lib/liblua.a
+	rm -f $(TARGET_DIR)/usr/bin/lua $(TARGET_DIR)/usr/bin/luac
+	rm -f $(TARGET_DIR)/usr/lib/liblua.a
+	-$(MAKE) -C $(LUA_DIR) clean
 
 lua-dirclean:
 	rm -rf $(LUA_DIR)

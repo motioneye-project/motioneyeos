@@ -53,7 +53,7 @@ $(LTP_TESTSUITE_DIR)/.installed: $(LTP_TESTSUITE_DIR)/.compiled
 ltp-testsuite: uclibc host-fakeroot $(LTP_TESTSUITE_DIR)/.installed
 
 ltp-testsuite-clean:
-	$(MAKE) -C $(LTP_TESTSUITE_DIR) clean
+	-$(MAKE) -C $(LTP_TESTSUITE_DIR) clean
 
 ltp-testsuite-dirclean:
 	rm -rf $(LTP_TESTSUITE_DIR)

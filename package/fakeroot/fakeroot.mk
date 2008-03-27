@@ -57,7 +57,7 @@ $(STAGING_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR1)/faked
 host-fakeroot: uclibc $(STAGING_DIR)/usr/bin/fakeroot
 
 host-fakeroot-clean:
-	$(MAKE) -C $(FAKEROOT_DIR1) clean
+	-$(MAKE) -C $(FAKEROOT_DIR1) clean
 
 host-fakeroot-dirclean:
 	rm -rf $(FAKEROOT_DIR1)
@@ -115,7 +115,7 @@ endif
 fakeroot: uclibc $(TARGET_DIR)/usr/bin/fakeroot
 
 fakeroot-clean:
-	$(MAKE) -C $(FAKEROOT_DIR2) clean
+	-$(MAKE) -C $(FAKEROOT_DIR2) clean
 	rm -f $(TARGET_DIR)/usr/bin/fake{d,root}
 
 fakeroot-dirclean:

@@ -69,7 +69,7 @@ strace: uclibc $(TARGET_DIR)/usr/bin/strace
 
 strace-clean:
 	rm -f $(TARGET_DIR)/usr/bin/strace
-	$(MAKE) -C $(STRACE_DIR) clean
+	-$(MAKE) -C $(STRACE_DIR) clean
 
 strace-dirclean:
 	rm -rf $(STRACE_DIR)

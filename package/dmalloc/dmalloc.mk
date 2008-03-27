@@ -85,11 +85,11 @@ $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY): $(DMALLOC_DIR)/$(DMALLOC_BINARY)
 dmalloc: uclibc $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
 
 dmalloc-clean:
-	rm -f $(TARGET_DIR)/usr/lib/libdmalloc*
-	rm -f $(STAGING_DIR)/usr/lib/libdmalloc*
+	-rm -f $(TARGET_DIR)/usr/lib/libdmalloc*
+	-rm -f $(STAGING_DIR)/usr/lib/libdmalloc*
 	rm -f $(STAGING_DIR)/usr/include/dmalloc.h
 	rm -f $(TARGET_DIR)/$(DMALLOC_TARGET_BINARY)
-	$(MAKE) -C $(DMALLOC_DIR) clean
+	-$(MAKE) -C $(DMALLOC_DIR) clean
 
 dmalloc-dirclean:
 	rm -rf $(DMALLOC_DIR)

@@ -68,9 +68,10 @@ boa: uclibc $(BOA_WORKDIR)/.installed
 boa-source: $(DL_DIR)/$(BOA_SOURCE)
 
 boa-clean:
-	@if [ -d $(BOA_WORKDIR)/Makefile ]; then \
-		$(MAKE) -C $(BOA_WORKDIR) clean; \
-	fi
+	-$(MAKE) -C $(BOA_WORKDIR) clean
+	rm -rf $(TARGET_DIR)/usr/sbin/boa \
+		$(TARGET_DIR)/usr/lib/boa/boa_indexer \
+		$(TARGET_DIR)/etc/mime.types $(TARGET_DIR)/etc/boa
 
 boa-dirclean:
 	rm -rf $(BOA_DIR) $(BOA_WORKDIR)

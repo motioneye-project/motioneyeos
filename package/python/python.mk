@@ -89,7 +89,7 @@ $(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched
 		$(MAKE) python Parser/pgen && \
 		mv python hostpython && \
 		mv Parser/pgen Parser/hostpgen && \
-		$(MAKE) distclean \
+		-$(MAKE) distclean \
 	) && \
 	touch $@
 
@@ -167,7 +167,8 @@ python: uclibc $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 
 python-clean:
 	-$(MAKE) -C $(PYTHON_DIR) distclean
-	rm $(PYTHON_DIR)/.configured $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+	rm -f $(PYTHON_DIR)/.configured $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+	-rm -rf $(TARGET_DIR)/usr/lib/python* $(TARGET_DIR)/usr/include/python*
 
 python-dirclean:
 	rm -rf $(PYTHON_DIR)

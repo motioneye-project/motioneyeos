@@ -82,16 +82,19 @@ $(TARGET_DIR)/usr/bin/speexenc: $(TARGET_DIR)/usr/bin/speexdec
 $(TARGET_DIR)/usr/lib/libspeex.so: $(TARGET_DIR)/usr/bin/speexenc
 	cp -dpf $(STAGING_DIR)/usr/lib/libspeex.so* $(TARGET_DIR)/usr/lib
 
-speex-bins:	
+speex-bins:
 
 speex: uclibc libogg $(TARGET_DIR)/usr/lib/libspeex.so
 
 speex-source: $(DL_DIR)/$(SPEEX_SOURCE)
 
 speex-clean:
-	@if [ -d $(SPEEX_DIR)/Makefile ]; then \
-		$(MAKE) -C $(SPEEX_DIR) clean; \
-	fi
+	-$(MAKE) -C $(SPEEX_DIR) clean
+	-rm -f $(STAGING_DIR)/usr/lib/libspeex.so*
+	rm -f $(STAGING_DIR)/usr/bin/speexenc $(STAGING_DIR)/usr/bin/speexdec
+	-rm -f $(TARGET_DIR)/usr/lib/libspeex.so*
+	rm -f $(TARGET_DIR)/usr/bin/speexenc $(TARGET_DIR)/usr/bin/speexdec
+
 
 speex-dirclean:
 	rm -rf $(SPEEX_DIR)

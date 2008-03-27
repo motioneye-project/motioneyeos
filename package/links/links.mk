@@ -48,7 +48,8 @@ $(TARGET_DIR)/usr/bin/links: $(LINKS_DIR)/links
 	install -c $(LINKS_DIR)/links $(TARGET_DIR)/usr/bin/links
 
 links-clean:
-	$(MAKE) -C $(LINKS_DIR) clean
+	-$(MAKE) -C $(LINKS_DIR) clean
+	rm -f $(TARGET_DIR)/usr/bin/links
 
 links-dirclean:
 	rm -rf $(LINKS_DIR)

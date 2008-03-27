@@ -63,9 +63,10 @@ $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY): $(DROPBEAR_DIR)/$(DROPBEAR_BINARY)
 dropbear: uclibc zlib $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY)
 
 dropbear-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) $(TARGET_CONFIGURE_OPTS) \
-		LD=$(TARGET_CC) -C $(DROPBEAR_DIR) uninstall
 	-$(MAKE) -C $(DROPBEAR_DIR) clean
+	rm -f $(TARGET_DIR)/$(DROPBEAR_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/usr/bin/{scp,ssh,dbclient,dropbearkey,dropbearconvert}
+	rm -f $(TARGET_DIR)/etc/init.d/S50dropbear
 
 dropbear-dirclean:
 	rm -rf $(DROPBEAR_DIR)

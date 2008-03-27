@@ -60,7 +60,7 @@ liblockfile-clean:
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -rf $(STAGING_DIR)/usr/share/man
 endif
-	$(MAKE) -C $(LIBLOCKFILE_DIR) clean
+	-$(MAKE) -C $(LIBLOCKFILE_DIR) clean
 
 liblockfile-dirclean:
 	rm -rf $(LIBLOCKFILE_DIR)

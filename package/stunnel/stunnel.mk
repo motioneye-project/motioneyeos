@@ -65,7 +65,8 @@ endif
 stunnel: uclibc $(TARGET_DIR)/usr/bin/stunnel
 
 stunnel-clean:
-	$(MAKE) -C $(STUNNEL_DIR) clean
+	-$(MAKE) -C $(STUNNEL_DIR) clean
+	rm -f $(TARGET_DIR)/usr/bin/stunnel
 
 stunnel-dirclean:
 	rm -rf $(STUNNEL_DIR)

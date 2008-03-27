@@ -54,19 +54,18 @@ $(SOCAT_WORKDIR)/socat: $(SOCAT_WORKDIR)/Makefile
 	rm -f $@
 	$(MAKE) -C $(SOCAT_WORKDIR)
 
-$(SOCAT_WORKDIR)/.installed: $(SOCAT_WORKDIR)/socat
+$(TARGET_DIR)/usr/bin/socat: $(SOCAT_WORKDIR)/socat
 	mkdir -p $(TARGET_DIR)/usr/man/man1
 	$(MAKE) -C $(SOCAT_WORKDIR) install prefix=$(TARGET_DIR)/usr DESTDIR=$(TARGET_DIR)
 	touch $@
 
-socat: uclibc $(SOCAT_WORKDIR)/.installed
+socat: uclibc $(TARGET_DIR)/usr/bin/socat
 
 socat-source: $(DL_DIR)/$(SOCAT_SOURCE)
 
 socat-clean:
-	@if [ -d $(SOCAT_WORKDIR)/Makefile ]; then \
-		$(MAKE) -C $(SOCAT_WORKDIR) clean; \
-	fi
+	-$(MAKE) -C $(SOCAT_WORKDIR) clean
+	rm -f $(TARGET_DIR)/usr/bin/{socat,filan,procan}
 
 socat-dirclean:
 	rm -rf $(SOCAT_DIR) $(SOCAT_WORKDIR)
