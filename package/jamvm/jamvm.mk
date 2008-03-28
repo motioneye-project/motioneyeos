@@ -9,8 +9,8 @@ JAMVM_SITE = http://www.avr32linux.org/twiki/pub/Main/JamVM/
 JAMVM_AUTORECONF = NO
 JAMVM_INSTALL_STAGING = YES
 JAMVM_INSTALL_TARGET = YES
-JAMVM_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install 
-JAMVM_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install 
+JAMVM_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
+JAMVM_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 JAMVM_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no ac_cv_func_strtod=yes \
@@ -57,16 +57,16 @@ JAMVM_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--with-classpath-install-dir=/usr \
 
 
-JAMVM_DEPENDENCIES = uclibc classpath  
+JAMVM_DEPENDENCIES = uclibc classpath
 
 #Include X libraries when we have an X server
 ifneq ($(BR2_PACKAGE_XSERVER_none),y)
-	JAMVM_DEPENDENCIES+= $(XSERVER) 
+	JAMVM_DEPENDENCIES+= $(XSERVER)
 	JAMVM_CONF_OPT+= --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib
 else
-	JAMVM_CONF_OPT+= --without-x  
+	JAMVM_CONF_OPT+= --without-x
 endif
 
 
@@ -99,7 +99,7 @@ endif
 ifeq ($(BR2_avr32),y)
 	JAMVM_CONF_OPT+= \
 		CFLAGS="-g0" \
-		CC="$(STAGING_DIR)/usr/bin/avr32-linux-gcc" 
+		CC="$(STAGING_DIR)/usr/bin/avr32-linux-gcc"
 endif
 
 $(eval $(call AUTOTARGETS,package,jamvm))
