@@ -31,23 +31,28 @@ noconfig_targets:=menuconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release tags \
 	source-check help
 
-# $(shell find . -name *_defconfig |sed 's/.*\///')
 
-# Pull in the user's configuration file
-ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
-ifeq ($(BOARD),)
--include $(TOPDIR).config
-else
--include $(TOPDIR)/local/$(BOARD)/$(BOARD).config
-endif
-endif
+# Use shell variables, if defined
 ifneq ($(BUILDROOT_DL_DIR),)
 BR2_DL_DIR:=$(BUILDROOT_DL_DIR)
 endif
+
 ifneq ($(BUILDROOT_LOCAL),)
 LOCAL:=$(BUILDROOT_LOCAL)
 else
-LOCAL:=local
+LOCAL:=$(TOPDIR)/local
+endif
+
+# $(shell find . -name *_defconfig |sed 's/.*\///')
+# Pull in the user's configuration file
+ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
+ifeq ($(BOARD),)
+# if "make BOARD=xyz" command
+-include $(TOPDIR).config
+else
+# if "make" command
+-include $(LOCAL)/$(BOARD)/$(BOARD).config
+endif
 endif
 
 # To put more focus on warnings, be less verbose as default
