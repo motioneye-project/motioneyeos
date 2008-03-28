@@ -4,5 +4,8 @@ config BR2_PACKAGE_CONCIERGE
         depends on BR2_PACKAGE_JAMVM
 
 	help
-	  Concierge is an optimized OSGi R3 framework implementations with a file footprint of about 80 kBytes. This makes it ideal for mobile or embedded devices. 
+	  Concierge is an optimized OSGi R3 framework implementations
+	  with a file footprint of about 80 kBytes. This makes it
+	  ideal for mobile or embedded devices.
+
 	  http://concierge.sourceforge.net/
