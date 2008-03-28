@@ -628,8 +628,8 @@ BR2_GAMES=y
 #
 # bootloader for target device
 #
-BR2_TARGET_GRUB=y
-BR2_TARGET_GRUB_SPLASH=y
+# BR2_TARGET_GRUB is not set
+# BR2_TARGET_GRUB_SPLASH is not set
 # BR2_TARGET_GRUB_DISKLESS is not set
 # BR2_TARGET_GRUB_3c595 is not set
 # BR2_TARGET_GRUB_3c90x is not set
