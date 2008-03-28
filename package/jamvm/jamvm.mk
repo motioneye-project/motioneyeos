@@ -4,8 +4,8 @@
 #
 #############################################################
 JAMVM_VERSION = 1.5.0
-JAMVM_SOURCE = jamvm-$(JAMVM_VERSION)-avr32-src.tgz
-JAMVM_SITE = http://www.avr32linux.org/twiki/pub/Main/JamVM/
+JAMVM_SOURCE = jamvm-$(JAMVM_VERSION).tar.gz
+JAMVM_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/jamvm/
 JAMVM_AUTORECONF = NO
 JAMVM_INSTALL_STAGING = YES
 JAMVM_INSTALL_TARGET = YES
