@@ -1,5 +1,4 @@
 ifeq ($(strip$(BOARD_NAME)),at91sam9260dfc)
 LINUX26_BOARD_NAME=at91sam9260ek
+BR2_PACKAGE_BUSYBOX_CONFIG:=$(BOARD_PATH)/busybox-1.9.1.config
 endif
-
-

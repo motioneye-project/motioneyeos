@@ -3,4 +3,5 @@ ATNGW100_BASE_PATH=target/device/Atmel/atngw100-base
 
 TARGET_SKELETON=$(ATNGW100_BASE_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(ATNGW100_BASE_PATH)/device_table.txt
+BR2_PACKAGE_BUSYBOX_CONFIG:=$(BOARD_PATH)/busybox-1.9.1.config
 endif
