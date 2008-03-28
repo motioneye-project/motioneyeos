@@ -4,7 +4,9 @@ config BR2_PACKAGE_ACE_OF_PENGUINS
 	default n
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
 	help
-	  The Ace of Penguins is a set of Unix/X solitaire games based on the ones available for Windows but with a number of enhancements.
+	  The Ace of Penguins is a set of Unix/X solitaire games based
+	  on the ones available for Windows but with a number of
+	  enhancements.
 
 	  http://www.delorie.com/store/ace/
 
