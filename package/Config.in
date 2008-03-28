@@ -459,7 +459,7 @@ endif
 
 menuconfig BR2_JAVA_SUPPORT
         bool "Java"
-        default n
+        default y
         help
           Support java programs (classpath, vm, osgi)
 
