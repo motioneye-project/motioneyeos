@@ -457,17 +457,8 @@ source "package/libxslt/Config.in"
 source "package/xerces/Config.in"
 endif
 
-menuconfig BR2_JAVA_SUPPORT
-        bool "Java"
-        default y
-        help
-          Support java programs (classpath, vm, osgi)
-
-if BR2_JAVA_SUPPORT
-source "package/classpath/Config.in"
-source "package/jamvm/Config.in"
-source "package/concierge/Config.in"
-endif
+# java support
+source "package/java/Config.in"
 
 menuconfig BR2_GAMES
 	bool "Games"
