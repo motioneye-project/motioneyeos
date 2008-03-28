@@ -1,0 +1,27 @@
+config BR2_PACKAGE_UDPCAST
+        bool "udpcast"
+        default n
+        help
+          A multicast protocol implementation which happens to
+          be very handy for imaging drives over the network.
+
+          http://www.udpcast.linux.lu/
+
+menu "udpcast tools selection"
+        depends on BR2_PACKAGE_UDPCAST
+
+config BR2_PACKAGE_UDPCAST_SENDER
+        bool "sender"
+        default n
+        depends on BR2_PACKAGE_UDPCAST
+        help
+          The udpcast transmitter.
+
+config BR2_PACKAGE_UDPCAST_RECEIVER
+        bool "receiver"
+        default n
+        depends on BR2_PACKAGE_UDPCAST
+        help
+          The udpcast receiver.
+
+endmenu
