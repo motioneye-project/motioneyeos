@@ -29,12 +29,12 @@ LINUX26_BINLOC=$(LINUX26_FORMAT)
 
 LINUX26_COPYTO:=/tftpboot
 
-LINUX26_PATCH_DIR:=target/device/ARM/kernel-patches
+#LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
 
 # The board specific Makefile.in can redefine BOARD_NAME's
 LINUX_BOARD_NAME:=$(BOARD_NAME)
 
-BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox.config
+BR2_PACKAGE_BUSYBOX_CONFIG:=$(BOARD_PATH)/busybox.config
 
 
 # Needs to be AFTER board specific Makefiles
