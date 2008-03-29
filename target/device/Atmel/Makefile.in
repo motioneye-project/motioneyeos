@@ -47,7 +47,7 @@ endif
 
 LINUX26_COPYTO:=/tftpboot
 
-LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
+#LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
 
 # The board specific Makefile.in can redefine BOARD_NAME's
 LINUX_BOARD_NAME:=$(BOARD_NAME)
