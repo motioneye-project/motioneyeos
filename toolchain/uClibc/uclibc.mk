@@ -357,6 +357,12 @@ endif
 ifeq ($(BR2_x86_pentium_mmx),y)
 	$(SED) 's,# CONFIG_586MMX is not set,CONFIG_586MMX=y,g' $(UCLIBC_DIR)/.oldconfig
 endif 
+ifeq ($(BR2_x86_i686),y)
+	$(SED) 's,# CONFIG_686 is not set,CONFIG_686=y,g' $(UCLIBC_DIR)/.oldconfig
+endif
+ifeq ($(BR2_x86_pentiumpro),y)
+	$(SED) 's,# CONFIG_686 is not set,CONFIG_686=y,g' $(UCLIBC_DIR)/.oldconfig
+endif 
 ifeq ($(BR2_x86_pentium2),y)
 	$(SED) 's,# CONFIG_PENTIUMII is not set,CONFIG_PENTIUMII=y,g' $(UCLIBC_DIR)/.oldconfig
 endif 
@@ -369,18 +375,12 @@ endif
 ifeq ($(BR2_x86_pentium_m),y)
 	$(SED) 's,# CONFIG_PENTIUM4 is not set,CONFIG_PENTIUM4=y,g' $(UCLIBC_DIR)/.oldconfig
 endif 
-ifeq ($(BR2_x86_pentiumpro),y)
-	$(SED) 's,# CONFIG_PENTIUM4 is not set,CONFIG_PENTIUM4=y,g' $(UCLIBC_DIR)/.oldconfig
-endif 
 ifeq ($(BR2_x86_nocona),y)
 	$(SED) 's,# CONFIG_PENTIUM4 is not set,CONFIG_PENTIUM4=y,g' $(UCLIBC_DIR)/.oldconfig
 endif 
 ifeq ($(BR2_x86_core2),y)
 	$(SED) 's,# CONFIG_PENTIUM4 is not set,CONFIG_PENTIUM4=y,g' $(UCLIBC_DIR)/.oldconfig
 endif 
-ifeq ($(BR2_x86_i686),y)
-	$(SED) 's,# CONFIG_686 is not set,CONFIG_686=y,g' $(UCLIBC_DIR)/.oldconfig
-endif
 endif
 
 $(UCLIBC_DIR)/.config: $(UCLIBC_DIR)/.oldconfig
