@@ -188,16 +188,6 @@ LINUX26_MAKE_FLAGS = HOSTCC="$(HOSTCC)" HOSTCFLAGS="$(HOSTCFLAGS)" \
 	LZMA="$(LZMA)" 
 
 # =============================================================================
-
-$(LINUX26_KCONFIG):
-	@if [ ! -f "$(LINUX26_KCONFIG)" ] ; then \
-		echo ""; \
-		echo "You should create a .config for your kernel"; \
-		echo "and install it as $(LINUX26_KCONFIG)"; \
-		echo ""; \
-		sleep 5; \
-	fi
-# =============================================================================
 ifneq ($(strip $(LINUX26_VERSION)),$(strip $(LINUX_HEADERS_VERSION)))
 $(DL_DIR)/$(LINUX26_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LINUX26_SITE)/$(LINUX26_SOURCE)
@@ -284,9 +274,9 @@ ifneq ($(LINUX26_PATCH_DIR),)
 	fi
 endif
 	touch $@
+# =============================================================================
 
-# -----------------------------------------------------------------------------
-$(LINUX26_DIR)/.configured: $(LINUX26_DIR)/.patched $(LINUX26_KCONFIG)
+$(LINUX26_DIR)/.config:	$(LINUX26_DIR)/.patched
 ifeq ($(BR2_PACKAGE_LINUX_USE_DEFCONFIG),y)
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(BOARD_NAME)_defconfig 
 endif
@@ -294,8 +284,33 @@ ifeq ($(BR2_PACKAGE_LINUX_USE_XCONFIG),y)
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) xconfig 
 endif
 ifeq ($(BR2_PACKAGE_LINUX_USE_KCONFIG),y)
-	cp -dpf $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
+	# Try user defined config
+	if [ -f "$(LINUX26_KCONFIG)" ] ; then \
+		cp -dpf $(LINUX26_KCONFIG) $@ ; \
+	fi
+	# Try to get a config for this linux version in the board directory
+	if [ ! -f "$(LINUX26_DIR)/.config" ] ; then \
+	    if [ -f "$(BOARD_PATH)/$(BOARD_NAME)-linux-$(LINUX26_VERSION).config" ] ; then \
+		cp -dpf $(BOARD_PATH)/$(BOARD_NAME)-linux-$(LINUX26_VERSION).config $@ ; \
+	    fi ; \
+	fi
+	# Try to get a config for latest linux version in the board directory
+	if [ ! -f "$(LINUX26_DIR)/.config" ] ; then \
+		scripts/get_linux_config.sh $(BOARD_PATH) $(LINUX26_DIR) ; \
+	fi
+	# Use a board config defined in the linux source.
+	if [ ! -f "$(LINUX26_DIR)/.config" ] ; then \
+		$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(BOARD_NAME)_defconfig || \
+			echo "$(BOARD_NAME)_defconfig failed..." ; \
+	fi
+	# let the user create his/her own config
+	if [ ! -f "$(LINUX26_DIR)/.config" ] ; then \
+		$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) xconfig ; \
+	fi
 endif
+
+# -----------------------------------------------------------------------------
+$(LINUX26_DIR)/.configured: $(LINUX26_DIR)/.config
 	$(SED) '/CONFIG_AEABI=y/d' $(LINUX26_DIR)/.config
 ifeq ($(BR2_ARM_EABI),y)
 	echo "CONFIG_AEABI=y" >> $(LINUX26_DIR)/.config
