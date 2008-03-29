@@ -32,7 +32,7 @@ if BR2_KERNEL_LINUX_ADVANCED
 # --- These 'constants' requires regular maintenance, so put them first
 config BR2_KERNEL_PATCH_LEVEL
 	string
-	default "3" if BR2_LINUX_2_6_24 && BR2_KERNEL_ADD_LATEST_MINORPATCH
+	default "4" if BR2_LINUX_2_6_24 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default "17" if BR2_LINUX_2_6_23 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default "19" if BR2_LINUX_2_6_22 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default "7" if BR2_LINUX_2_6_21 && BR2_KERNEL_ADD_LATEST_MINORPATCH
@@ -41,7 +41,7 @@ config BR2_KERNEL_PATCH_LEVEL
 
 config BR2_KERNEL_CURRENT_VERSION
 	string
-	default "2.6.24.3"
+	default "2.6.24.4"
 
 config BR2_KERNEL_NEXT_VERSION
 	string
@@ -63,15 +63,15 @@ config BR2_KERNEL_THIS_VERSION
 
 config LINUX26_LATEST_RC_VERSION
 	string
-	default "2.6.25" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+	default "2.6.25-rc7" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+
+config LINUX26_LATEST_GIT_VERSION
+	string
+	default "2.6.25-rc7-git5" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
 
 config LINUX26_LATEST_MM_VERSION
 	string
 	default "2.6.25-rc5-mm1" if BR2_KERNEL_ADD_LATEST_MM_PATCH
-
-config LINUX26_LATEST_GIT_VERSION
-	string
-	default "2.6.25-rc6-git3" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
 
 config BR2_KERNEL_SITE
 	string
@@ -129,9 +129,9 @@ choice
 	  Select the specific Linux version you want to use
 
 config BR2_LINUX_2_6_STABLE
-	bool "The latest stable Linux kernel (2.6.24.3)"
+	bool "The latest stable Linux kernel (2.6.24.4)"
 	help
-	  Linux 2.6.24.3
+	  Linux 2.6.24.4
 
 config BR2_LINUX_2_6_24
 	bool "Linux 2.6.24"
@@ -233,47 +233,66 @@ endif
 menu "Patches"
 	depends on BR2_PACKAGE_LINUX
 
+config BR2_KERNEL_ADD_KERNEL_ORG_PATCH
+	bool "Add kernel.org patch"
+	depends on BR2_KERNEL_BASE
+	help
+	  Add pre, snapshot or -mm patches
+	  from http://www.kernel.org/
+
+config BR2_KERNEL_ADD_LATEST
+	bool "Use only the latest patch version"
+	default y
+	depends on BR2_KERNEL_ADD_KERNEL_ORG_PATCH
+	help
+	  Restrict the choices to the latest versions
+
 choice
-	prompt "Add a patch to the Linux Kernel"
+	prompt "Add a kernel.org patch to the Linux Kernel"
 	depends on BR2_PACKAGE_LINUX
 	depends on !BR2_KERNEL_PREPATCHED
-	default BR2_KERNEL_ADD_NO_PATCH
+	depends on BR2_KERNEL_ADD_KERNEL_ORG_PATCH
 	help
 	  Select a patch to add to the Linux kernel
 
-config BR2_KERNEL_ADD_NO_PATCH
-	bool "Do not add a patch"
-
 config BR2_KERNEL_ADD_LATEST_MINORPATCH
 	bool "Add _latest_ '.#' minor patch"
+	depends on BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 config BR2_KERNEL_ADD_MINORPATCH
 	bool "Add a '.#' minor patch"
+	depends on !BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 config BR2_KERNEL_ADD_LATEST_RC_PATCH
 	bool "Add _latest_ '-rc#' patch"
+	depends on BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 config BR2_KERNEL_ADD_RC_PATCH
 	bool "Add an '-rc#' patch"
+	depends on !BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 config BR2_KERNEL_ADD_LATEST_SNAPSHOT
 	bool "Add _latest_ 'snapshot' patch"
+	depends on BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 config BR2_KERNEL_ADD_SNAPSHOT
 	bool "Add a 'snapshot' patch (linux-2.6.X-rc#-git#)"
+	depends on !BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 config BR2_KERNEL_ADD_LATEST_MM_PATCH
-	bool "Add latest '-mm' patch for the stable linux kernel"
+	bool "Add _latest_ '-mm' patch for the stable linux kernel"
+	depends on BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 config BR2_KERNEL_ADD_MM_PATCH
 	bool "Add an '-mm#' patch for the stable linux kernel"
+	depends on !BR2_KERNEL_ADD_LATEST
 	select BR2_KERNEL_ADD_PATCH
 
 endchoice
@@ -281,7 +300,6 @@ endchoice
 config BR2_KERNEL_ADD_PATCH
 	bool
 	default n
-
 
 config BR2_KERNEL_MINORLEVEL
 	string "patch level"
@@ -302,6 +320,12 @@ config BR2_KERNEL_MM_LEVEL
 	string "-mm patch Level"
 	default ""
 	depends on BR2_KERNEL_ADD_MM_PATCH
+
+source "target/device/Config.in.linux.patches"
+
+config BR2_LINUX_BOARD_PATCH
+	bool "Add board specific patch"
+	default y 
 
 config BR2_LINUX_BSP_PATCH
 	string "Additional patch to apply (from \$(DL_DIR))"

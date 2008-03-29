@@ -30,8 +30,6 @@ endif
 
 LINUX26_RC_PATCH:=$(strip  $(subst ",, $(BR2_LINUX26_RC_PATCH)))
 #"))
-LINUX_BSP_PATCH:=$(strip  $(subst ",, $(BR2_LINUX_BSP_ATMEL_PATCH)))
-#"))
 
 # These are set by "new" Config.in
 LINUX26_KCONFIG:=$(BOARD_PATH)/$(BOARD_NAME)-linux-$(LINUX26_VERSION).config
@@ -64,10 +62,6 @@ include target/device/Atmel/*/Makefile.in
 
 UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
 UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
-
-ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
-#include $(ATMEL_PATH)/Linux/linux.mk
-endif
 
 ifeq ($(strip $(BR2_TARGET_UBOOT_AT91)),y)
 include $(ATMEL_PATH)/u-boot/u-boot.mk

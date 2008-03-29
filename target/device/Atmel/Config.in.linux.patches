@@ -1,0 +1,6 @@
+if BR2_arm
+source "target/device/Atmel/arch-arm/Config.in.linux.patches"
+endif
+if BR2_avr32
+source "target/device/Atmel/arch-avr32/Config.in.linux.patches"
+endif

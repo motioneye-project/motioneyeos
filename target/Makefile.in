@@ -32,4 +32,6 @@ ifeq ($(strip $(subst ",,$(BR2_KERNEL_LINUX_ADVANCED))),y)
 include target/linux/Makefile.in.advanced
 endif
 
+include target/device/Makefile.in.linux
+
 include target/hurd/Makefile.in
