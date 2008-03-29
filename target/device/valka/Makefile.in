@@ -6,7 +6,7 @@ BOARD_PATH:=$(strip  $(subst ",, $(BR2_BOARD_PATH)))
 
 TARGET_SKELETON=$(VALKA_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(VALKA_PATH)/device_table.txt
-LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
+#LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
 
 valka_status:
 	@echo "***************************************************************"
