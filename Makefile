@@ -328,8 +328,7 @@ $(PROJECT_BUILD_DIR)/.root:
 		fi; \
 		touch $(STAGING_DIR)/.fakeroot.00000; \
 	fi
-	-find $(TARGET_DIR) -type d -name CVS | xargs rm -rf
-	-find $(TARGET_DIR) -type d -name .svn | xargs rm -rf
+	-find $(TARGET_DIR) -type d -name CVS -o -name .svn | xargs rm -rf
 	-find $(TARGET_DIR) -type f -name .empty | xargs rm -rf	
 	touch $@
 
