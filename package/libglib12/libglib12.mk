@@ -13,13 +13,11 @@ LIBGLIB12_BINARY:=libglib.a
 $(DL_DIR)/$(LIBGLIB12_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LIBGLIB12_SITE)/$(LIBGLIB12_SOURCE)
 
-libglib12-source: $(DL_DIR)/$(LIBGLIB12_SOURCE)
-
 $(LIBGLIB12_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 	$(LIBGLIB12_CAT) $(DL_DIR)/$(LIBGLIB12_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBGLIB12_DIR) package/libglib12/ \*.patch*
 	$(CONFIG_UPDATE) $(LIBGLIB12_DIR)
-	touch $(LIBGLIB12_DIR)/.unpacked
+	touch $@
 
 $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 	(cd $(LIBGLIB12_DIR); rm -rf config.cache; \
@@ -44,7 +42,7 @@ $(LIBGLIB12_DIR)/.configured: $(LIBGLIB12_DIR)/.unpacked
 		--enable-shared \
 		$(DISABLE_NLS) \
 	)
-	touch $(LIBGLIB12_DIR)/.configured
+	touch $@
 
 $(LIBGLIB12_DIR)/.libs/$(LIBGLIB12_BINARY): $(LIBGLIB12_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBGLIB12_DIR)
@@ -75,6 +73,10 @@ $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10: $(STAGING_DIR)/lib/$(LIBGLIB12_BINARY)
 	cp -dpf $(STAGING_DIR)/lib/libgmodule-1.2.so.0.0.10 $(TARGET_DIR)/lib/
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libgmodule-1.2.so.0.0.10
+
+libglib12-source: $(DL_DIR)/$(LIBGLIB12_SOURCE)
+
+libglib12-unpacked: $(LIBGLIB12_DIR)/.unpacked
 
 libglib12: uclibc $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10
 
