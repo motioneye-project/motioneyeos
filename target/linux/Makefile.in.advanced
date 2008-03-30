@@ -103,6 +103,12 @@ endif
 endif
 endif
 
+KERNEL_CONFIG_METHOD:=($(strip $(subst ",,$(BR2_KERNEL_CONFIG_METHOD))),)
+#"))
+ifeq ($(KERNEL_CONFIG_METHOD),)
+KERNEL_CONFIG_METHOD:=xconfig
+endif
+
 # -----------------------------------------------------------------------------
 ifndef LINUX26_FORMAT
 ifneq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_FORMAT))),)
@@ -302,7 +308,7 @@ ifeq ($(BR2_PACKAGE_LINUX_USE_DEFCONFIG),y)
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(BOARD_NAME)_defconfig 
 endif
 ifeq ($(BR2_PACKAGE_LINUX_USE_XCONFIG),y)
-	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) xconfig 
+	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(KERNEL_CONFIG_METHOD)
 endif
 ifeq ($(BR2_PACKAGE_LINUX_USE_KCONFIG),y)
 	# Try user defined config
@@ -326,7 +332,7 @@ ifeq ($(BR2_PACKAGE_LINUX_USE_KCONFIG),y)
 	fi
 	# let the user create his/her own config
 	if [ ! -f "$(LINUX26_DIR)/.config" ] ; then \
-		$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) xconfig ; \
+		$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(KERNEL_CONFIG_METHOD) ; \
 	fi
 endif
 

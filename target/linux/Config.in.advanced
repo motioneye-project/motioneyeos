@@ -416,11 +416,13 @@ config BR2_PACKAGE_LINUX_USE_DEFCONFIG
 	  Configure Linux by make <board>_defconfig
 
 config BR2_PACKAGE_LINUX_USE_XCONFIG
-	bool "Run make ARCH=$(ARCH) xconfig before build"
+	bool "Run make ARCH=$(ARCH) [xconfig|menuconfig] before build"
 	depends BR2_PACKAGE_LINUX
 	help
 	  Configure Linux by make xconfig
 endchoice
+
+
 
 config BR2_PACKAGE_LINUX_KCONFIG
 	string ".config file"
@@ -432,6 +434,29 @@ config BR2_PACKAGE_LINUX_KCONFIG
 	  If the above setting is empty, you can change the default
 	  board-imposed value by passing LINUX26_KCONFIG=<path> to
 	  make.
+
+choice
+	prompt "Preferred config tool"
+	default BR2_MAKE_XCONFIG
+	help
+	  Define the preferred tool to invoke if a configuration is invalid
+
+config	BR2_MAKE_XCONFIG
+	bool "make xconfig"
+	help
+	  Run "make menuconfig" if kernel ".config" is invalid
+
+config	BR2_MAKE_MENUCONFIG
+	bool "make menuconfig"
+	help
+	  Run "make menuconfig" if kernel ".config" is invalid
+
+endchoice
+
+config BR2_KERNEL_CONFIG_METHOD
+	string
+	default "xconfig"	if BR2_MAKE_XCONFIG
+	default "menuconfig"	if BR2_MAKE_MENUCONFIG
 
 endmenu
 
