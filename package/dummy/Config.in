@@ -1,0 +1,8 @@
+config BR2_PACKAGE_DUMMY
+	bool "dummy"
+	default n
+	help
+	  This is a dummy package to show how to integrate a new package into
+	  Buildroot. The syntax for this file is the default kbuild from the
+	  Linux kernel, more information at
+	  http://git.kernel.org/?p=linux/kernel/git/torvalds/linux-2.6.git;a=tree;f=Documentation/kbuild
