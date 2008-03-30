@@ -1,0 +1,226 @@
+lang => Català
+# Common
+Settings saved => Canvis desats
+Settings not saved => No s'han pogut desar els canvis
+Save Changes => Desar canvis
+Apply Changes => Aplicar canvis
+Clear Changes => Desfer canvis
+Review Changes => Comprovar canvis
+Host Name => Nom de l'equip
+Uptime => Uptime
+Load => Càrrega del sistema
+Version => Versió
+Categories => Categories
+Subcategories => Subcategories
+more... => més...
+Add => Afegir
+Remove => Eliminar
+Warning => Atenció
+Password_warning => No heu establert una clau d'accés pel router (accés web i ssh). Per favor, elegiu-ne una ara (el nom d'usuari serà 'root')
+
+# Categories
+Info => Info
+About => Quant a
+Router Info => Informació del router
+
+Status => Estat
+Connections => Connexions
+DHCP => DHCP
+Wireless => Wi-Fi
+
+System => Sistema
+Password => Clau
+Settings => Configuració
+Installed Software => Programes instal·lats
+Firmware Upgrade => Actualitzar Firmware
+
+Network => Xarxa
+LAN => LAN
+WAN => Internet
+Wireless => Wi-Fi
+Advanced Wireless => Wi-Fi (avançat)
+Hosts => Configuració de hosts
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => Aquest programa és programari lliure; podeu redistribuir-lo i/o <br />modificar-lo baix els termes de la General Public License<br /> tal i com està publicada per la Free Sofware Foundation; bé la versió 2 d'aquesta Llicència o bé (segons la seva elecció) de qualsevol posterior.
+Contributions by => Contribuidors
+Layout based on => Aspecte basat en
+by => realitzat per
+
+
+No config change. => No hi ha hagut canvis a la configuració.
+Config discarded. => Els canvis no s'han acceptat.
+Config changes: => Configuració actual:
+Updating config... => Actualitzant la configuració...
+
+
+# 'Router Info' page
+Firmware Version => Versió del firmware
+Kernel Version => Versió del Kernel
+Current Date/Time => Data/Hora
+MAC Address => Adreça MAC
+
+
+# 'Connections' page
+Connection Status => Estat de les connexions
+Physical Connections => Connexions físiques
+Router Connections => Connexions del router
+
+
+# 'DHCP' page
+DHCP leases => Préstecs DHCP
+IP Address => Adreça IP
+Name => Nom
+Expires in => Caduca d'ara a
+
+
+# 'Wireless Status' page
+Wireless Status => Estat del Wi-Fi
+
+# 'Password' page
+Password Change => Canvi de la clau
+New Password => Nova clau
+Confirm Password => Confirmeu la clau
+
+# 'System Settings' page
+System Settings => Paràmetres del sistema
+Host Name => Nom de l'host
+Language => Idioma
+
+# 'Installed Software' page
+Installed Packages => Paquets instal·lats
+Update package lists => Actualització de la llista de paquets
+Uninstall => Desinstal·lar
+Install => Instal·lar
+
+
+# 'Firmware Upgrade' page
+Firmware format => Format del firmware
+Error => Error
+done => fet
+Invalid_formt => Format del firmware invàlid
+Erase_JFFS2 => Esborrar la partició JFFS2
+Options => Opcions
+Firmware_image => Fitxer del firmware
+Upgrade => Actualitzar
+Upgrading... => Actualitzant...
+
+# 'LAN Settings' page
+LAN Settings => Opcions LAN
+LAN Configuration => Configuració LAN
+Netmask => Màscara de subxarxa
+Default Gateway => Porta d'enllaç (gateway)
+DNS Servers => Servidor DNS
+DNS Address => Adreça IP del DNS
+
+Note => Nota
+
+# 'WAN Settings' page
+WAN Settings => Opcions d'Internet
+WAN Configuration => Configuració d'Internet
+PPTP Server IP => Adreça IP del servidor PPTP
+Connection Type => Tipus de connexió
+No WAN => Sense configuració d'Internet
+DHCP => DHCP
+Static IP => IP estàtica
+IP Settings => Opcions IP
+PPP Settings => Opcions PPP
+Redial Policy => Política de reconnexió
+Connect on Demand => Baix demanda
+Keep Alive => Connexió permanent
+Maximum Idle Time => Temps màxim d'inactivitat
+Redial Timeout => Temps de reconnexió
+MTU => MTU (mida dels paquets)
+Username => Nom d'usuari
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => Configuració Wi-Fi
+Wireless Interface => Interfície Wi-Fi
+WEP Key => Clau WEP
+Selected WEP Key => Clau WEP seleccionada
+WPA PSK => WPA-PSK
+ESSID => ESSID
+Channel => Canal
+RADIUS IP Address => Adreça IP del servidor RADIUS
+RADIUS Server Key => Secret RADIUS
+Enabled => Actiu
+Disabled => Inactiu
+ESSID Broadcast => Difusió del SSID
+Show => Mostrar
+Hide => Ocultar
+WLAN Mode => Mode Wi-Fi
+Access Point => Punt d'accés
+Client => Client
+Bridge => Bridge
+Ad-Hoc => Ad-Hoc
+Operation mode => Mode de funcionament
+Encryption Settings => Paràmetres d'enriptació
+Encryption Type => Tipus d'encriptació
+PSK => PSK
+WPA Mode => Mode WPA
+WPA Algorithms => Algoritmes WPA
+WEP Keys => Clau WEP
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Configuració Wi-Fi avançada
+WDS Connections => Connexions WDS
+MAC Filter List => Filtrat per adreça MAC
+Filter Mode => Mode de filtrat
+Allow => Autoritzar
+Deny => Denegar
+Set => Establir
+Settings => Paràmetres
+Automatic WDS => WDS automàtic
+
+# "Hosts" page
+
+MAC Address => Adreça MAC
+Configured Hosts => Equips configurats
+DHCP Static => Entrades DHCP estàtiques
+Host Names => Nom dels equips
+
+Up => Pujar
+Down => Baixar
+Edit => Editar
+Delete => Esborrar
+Save => Desar
+Cancel => Rebutjar
+
+Forward => Redirigir
+Accept => Acceptar
+Drop => Rebutjar
+
+Firewall => Firewall
+Firewall Rules => Regles del Firewall
+Firewall Configuration => Configuració del Firewall
+
+New Rule => Nova regla
+Match => Filtrar
+Target => Acció
+Port => Port
+
+Protocol => Protocol
+Source IP => IP origen
+Destination IP => IP destí
+Source Ports => Ports origen
+Destination Ports => Ports destí
+
+Forward to => Redirigir a
+Port => Port
+
+Helptext ESSID => SSID
+Helptext DNS save => És recomanable desar els canvis abans d'afegir o eliminar servidors DNS a la llista
+
+Helptext Operation mode => Estableix el mode d'operació de la xarxa inalàmbrica (Wi-Fi) 'Client (bridge)' no canviarà la configuració de la interfície de xarxa. Simplement afegirà uns paràmetres que permetran que la interfície wireless actui en certa mida com un bridge.
+Helptext Encryption Type => 'WPA (RADIUS)' només pot emprar-se en mode Punt d'Accés.<br /> 'WPA (PSK)' no funciona en mode Ad-Hoc.
+Helptext IP Settings => Les opcions IP són opcionals per a DHCP y PPTP. Si les elegiu, s'empraran per defecte en cas de que la configuració automàtica falli.
+Helptext Idle Time => Nombre de segons sense activitat amb Internet que ha d'esperar el router abans de desconectar-se. (Només pel mode Baix Demanda).
+Helptext Redial Timeout => Nombre de segons sense rebre resposta del servidor que ha d'esperar el router per a tornar a connectar-se.
+
+# untranslated:
+Available packages => Paquets disponibles
+

@@ -1,0 +1,454 @@
+lang => Português
+
+# Common
+
+Settings saved => Alterações guardadas
+
+Settings not saved => Alterações não foram guardadas
+
+Save Changes => Guardar alterações
+
+Apply Changes => Aplicar alterações
+
+Clear Changes => Eliminar alterações
+
+Review Changes => Verificar alterações
+
+Host Name => Nome do sistema
+
+Uptime => Uptime
+
+Load => Carga do sistema
+
+Version => Versão
+
+Categories => Categorias
+
+Subcategories => Subcategorias
+
+more... => mais
+
+Add => Adicionar
+
+Remove => Eliminar
+
+Warning => Atenção
+
+Password_warning => Não foi estabelecida uma palavra-chave para o acesso ao router (acesso web e ssh). Por favor, estabeleça uma palavra-chave agora (o nome de utilizador será ‘root’)
+
+ 
+
+# Categories
+
+Info => Informação
+
+About => Acerca de
+
+Router Info => Informações do router
+
+ 
+
+Status => Estado
+
+Connections => Ligações
+
+DHCP => DHCP
+
+Wireless => Wi-Fi
+
+ 
+
+System => Sistema
+
+Password => Palavra-chave
+
+Settings => Configurações
+
+Installed Software => Software instalado
+
+Firmware Upgrade => Actualizar Firmware
+
+ 
+
+Network => Rede
+
+LAN => LAN
+
+WAN => Internet
+
+Wireless => Rede sem fios
+
+Advanced Wireless => Rede sem fios (avançado)
+
+Hosts => Configuração de sistemas (hosts)
+
+ 
+
+ 
+
+# 'About' page
+
+Copyright => Copyright
+
+ 
+
+GPL_Text => Este programa é livre e poderá ser distribuído e/ou <br>modificado segundo os termos da licença GPL (General Public License)<br>tal como publicada pela Free Software Foundation como está publicada por la Free Sofware Foundation; quer pela versão 2<br> quer por qualquer versão posterior (à sua escolha).
+
+Contributions by => Contribuidores
+
+Layout based on => Layout baseado em
+
+by => por
+
+ 
+
+ 
+
+No config change. => Não existem alterações de configurações.
+
+Config discarded. => As alterações foram ignoradas.
+
+Config changes: => Configuração actual:
+
+Updating config... => Actualizando as alterações...
+
+ 
+
+ 
+
+# 'Router Info' page
+
+Firmware Version => Versão do firmware
+
+Kernel Version => Versão do Kernel
+
+Current Date/Time => Data/Hora
+
+MAC Address => Endereço MAC
+
+ 
+
+ 
+
+# 'Connections' page
+
+Connection Status => Estado das ligações
+
+Physical Connections => Ligações físicas
+
+Router Connections => Ligações do router
+
+ 
+
+ 
+
+# 'DHCP' page
+
+DHCP leases => Préstimos de DHCP
+
+IP Address => Endereço IP
+
+Name => Nome
+
+Expires in => Expira em
+
+ 
+
+ 
+
+# 'Wireless Status' page
+
+Wireless Status => Estado da rede sem fios
+
+ 
+
+# 'Password' page
+
+Password Change => Alteração da palavra-chave
+
+New Password => Nova palavra-chave
+
+Confirm Password => Confirme a palavra-chave
+
+ 
+
+# 'System Settings' page
+
+System Settings => Parâmetros do sistema
+
+Host Name => Nome do sistema
+
+Language => Idioma
+
+ 
+
+# 'Installed Software' page
+
+Installed Packages => Pacotes (packages) instalados
+
+Update package lists => Actualização da lista de pacotes
+
+Uninstall => Remover
+
+Install => Instalar
+
+Available packages => Pacotes disponíveis
+
+ 
+
+ 
+
+# 'Firmware Upgrade' page
+
+Firmware format => Formato do firmware
+
+Error => Erro
+
+done => terminado
+
+Invalid_formt => Formato de firmware inválido
+
+Erase_JFFS2 => Apagar partição JFFS2
+
+Options => Opções
+
+Firmware_image => Ficheiro de firmware
+
+Upgrade => Actualizar
+
+Upgrading... => Actualizando...
+
+ 
+
+# 'LAN Settings' page
+
+LAN Settings => Configurações da LAN (rede local)
+
+LAN Configuration => Parâmetros LAN
+
+Netmask => Máscara da sub rede (netmask)
+
+Default Gateway => Gateway
+
+DNS Servers => Servidor DNS
+
+DNS Address => Endereço IP do DNS
+
+ 
+
+Note => Nota
+
+ 
+
+# 'WAN Settings' page
+
+WAN Settings => Configurações Internet
+
+WAN Configuration => Parâmetros de Internet
+
+PPTP Server IP => Endereço IP do servidor PPTP
+
+Connection Type => Tipo de ligação
+
+No WAN => Sem ligação à Internet
+
+DHCP => DHCP
+
+Static IP => IP estático
+
+IP Settings => Configurações IP
+
+PPP Settings => Configurações PPP
+
+Redial Policy => Opções de restabelecimento da ligação
+
+Connect on Demand => Ligar quando necessário
+
+Keep Alive => Manter ligação sempre activa
+
+Maximum Idle Time => Tempo máximo de inactividade
+
+Redial Timeout => Tempo de restabelecimento da ligação
+
+MTU => MTU (tamanho dos pacotes)
+
+Username => Nome do utilizador
+
+ 
+
+ 
+
+# 'Wireless Configuration' page
+
+Wireless Configuration => Configurações rede sem fios
+
+Wireless Interface => Interface rede sem fios
+
+WEP Key => Chave WEP
+
+Selected WEP Key => Palavra-chave WEP seleccionada
+
+WPA PSK => WPA-PSK
+
+ESSID => ESSID
+
+Channel => Canal
+
+RADIUS IP Address => Endereço IP do servidor RADIUS
+
+RADIUS Server Key => Palavra-chave RADIUS
+
+Enabled => Activo
+
+Disabled => Inactivo
+
+ESSID Broadcast => Difusão do SSID
+
+Show => Mostrar
+
+Hide => Ocultar
+
+WLAN Mode => Modo rede sem fios
+
+Access Point => Ponto de acesso
+
+Client => Cliente
+
+Bridge => Ponte (Bridge)
+
+Ad-Hoc => Ad-Hoc
+
+Operation mode => Modo de funcionamento
+
+Encryption Settings => Parâmetros de encriptação
+
+Encryption Type => Tipo de encriptação
+
+PSK => PSK
+
+WPA Mode => Modo WPA
+
+WPA Algorithms => Algoritmos WPA
+
+WEP Keys => Palavra-chave WEP
+
+ 
+
+# 'Advanced Wireless Configuration' page
+
+Advanced Wireless Configuration => Configurações rede sem fios (avançadas)
+
+WDS Connections => Ligações WDS
+
+MAC Filter List => Filtrar por endereço MAC
+
+Filter Mode => Tipo de filtro
+
+Allow => Autorizar
+
+Deny => Negar
+
+Set => Estabelecer
+
+Settings => Parâmetros
+
+Automatic WDS => WDS automático
+
+ 
+
+# "Hosts" page
+
+ 
+
+MAC Address => Endereço MAC
+
+Configured Hosts => Sistemas configurados
+
+DHCP Static => DHCP estático
+
+Host Names => Nome dos sistemas
+
+ 
+
+Up => Subir
+
+Down => Baixar
+
+Edit => Editar
+
+Delete => eliminar
+
+Save => Guardar
+
+Cancel => Cancelar
+
+ 
+
+Forward => Redireccionar
+
+Accept => Aceitar
+
+Drop => Descartar
+
+ 
+
+Firewall => Firewall
+
+Firewall Rules => Regras da Firewall
+
+Firewall Configuration => Configurações da Firewall
+
+ 
+
+New Rule => Nova regra
+
+Match => Filtrar
+
+Target => Destino
+
+Port => Porta
+
+ 
+
+Protocol => Protocolo
+
+Source IP => IP de origem
+
+Destination IP => IP de destino
+
+Source Ports => Portas de origem
+
+Destination Ports => Portas de destino
+
+ 
+
+Forward to => Redireccionar para
+
+Port => Porta
+
+ 
+
+Helptext ESSID => SSID
+
+Helptext DNS save => É recomendável guardar as alterações antes de adicionar ou eliminar servidores DNS
+
+ 
+
+Helptext Operation mode => Estabelece o modo de operação da rede sem fios. Escolhendo ‘Client (bridge)’ não altera a configuração da interface de rede. Irá simplesmente configurar alguns parâmetros da rede sem fios para operar em modo ponte (bridge).
+
+ 
+
+Helptext Encryption Type => 'WPA (RADIUS)' só pode ser usado em modo ‘Ponto de acesso’.<br /> 'WPA (PSK)' não funciona em modo Ad-Hoc.
+
+ 
+
+Helptext IP Settings => As opções IP são opcionais para os modos DHCP e PPTP. Apenas serão usadas caso alguma das configurações automática falhe
+
+.
+
+Helptext Idle Time => Número de segundos sem actividade na Internet que o router deve esperar antes de se desligar da Internet.
+
+(Apenas para o modo ‘Ligar quando necessário’ (connect on demand))
+
+ 
+Helptext Redial Timeout => Número de segundo sem receber resposta que o router deve esperar para voltar a estabelecer ligação à Internet.

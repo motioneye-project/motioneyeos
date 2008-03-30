@@ -1,0 +1,226 @@
+lang => Italiano
+# Common
+Settings saved => Cambiamenti salvati
+Settings not saved => Cambiamenti non salvati
+Save Changes => Salva cambiamenti
+Apply Changes => Applica cambiamenti
+Clear Changes => Elimina cambiamenti
+Review Changes => Controlla cambiamenti
+Host Name => Nome Host
+Uptime => Uptime
+Load => Caricamento del sistema
+Version => Versione
+Categories => Categoria
+Subcategories => Sottocategoria
+more... => altro...
+Add => Aggiungi
+Remove => Elimina
+Warning => Attenzione
+Password_warning => non e' stata ancora impostata una password di protezione per il router (accesso web o ssh). Per favore, inseriscine una ora (il nome utente sara': 'root')
+
+# Categories
+Info => Info
+About => Ringraziamenti
+Router Info => Informazioni del router
+
+Status => Stato
+Connections => Connessioni
+DHCP => DHCP
+Wireless => Wireless
+
+System => Sistema
+Password => Password
+Settings => Configurazione
+Installed Software => Programmi installati
+Firmware Upgrade => Aggiornamento Firmware
+
+Network => Rete
+LAN => LAN
+WAN => Internet
+Wireless => Wireless
+Advanced Wireless => Wireless (avanzato)
+Hosts => Configurazione Host
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => Questo programma  software  libero;  lecito ridistribuirlo e/o <br />modificarlo secondo i  termini della Licenza Pubblica Generica GNU <br />come pubblicata  dalla Free Software Foundation; o la versione 2 della licenza o (a scelta) una versione successiva.
+Contributions by => Contributi
+Layout based on => Interfaccia basata su
+by => da
+
+
+No config change. => Nessun cambiamento della configurazione.
+Config discarded. => I cambiamenti non sono stati accettati.
+Config changes: => Cambiamenti configurazione:
+Updating config... => Aggiornamento configurazione...
+
+
+# 'Router Info' page
+Firmware Version => Versione del firmware
+Kernel Version => Versione del Kernel
+Current Date/Time => Data/Ora
+MAC Address => Indirizzo MAC
+
+
+# 'Connections' page
+Connection Status => Stato della connessione
+Physical Connections => Connessioni fisiche
+Router Connections => Connessioni del router
+
+
+# 'DHCP' page
+DHCP leases => lease DHCP
+IP Address => Indirizzo IP
+Name => Nome
+Expires in => Scade il
+
+
+# 'Wireless Status' page
+Wireless Status => Stato Wireless
+
+# 'Password' page
+Password Change => Cambio password
+New Password => Nuova password
+Confirm Password => Confema password
+
+# 'System Settings' page
+System Settings => Parametri di sistema
+Host Name => Nome dell'host
+Language => Linguaggio
+
+# 'Installed Software' page
+Installed Packages => Pacchetti installati
+Update package lists => Aggiorna la lista dei pacchetti
+Uninstall => Disinstalla
+Install => Installa
+
+
+# 'Firmware Upgrade' page
+Firmware format => Formato del firmware
+Error => Errore
+done => eseguito
+Invalid_formt => Formato del firmware invalido
+Erase_JFFS2 => Cancella la partizione JFFS2
+Options => Opzioni
+Firmware_image => Immagine del firmware
+Upgrade => Aggiorna
+Upgrading... => Aggiornamento in corso...
+
+# 'LAN Settings' page
+LAN Settings => Parametri LAN
+LAN Configuration => Configuzione LAN
+Netmask => Netmask
+Default Gateway => Default Gateway
+DNS Servers => Server DNS
+DNS Address => Indirizzo IP del DNS
+
+Note => Nota
+
+# 'WAN Settings' page
+WAN Settings => Parametri Internet
+WAN Configuration => Configurazione Internet
+PPTP Server IP => Indirizzo IP del server PPTP
+Connection Type => Tipo di connessione
+No WAN => No WAN
+DHCP => DHCP
+Static IP => IP statico
+IP Settings => Paramentri IP
+PPP Settings => Parametri PPP
+Redial Policy => Opzioni di riconnessione
+Connect on Demand => Connessione su richiesta
+Keep Alive => Connessione permanente
+Maximum Idle Time => Tempo di inattivita' massimo
+Redial Timeout => Tempo di riconnessione
+MTU => MTU (grandezza pacchetti)
+Username => Nome utente
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => Parametri Wireless
+Wireless Interface => Interfaccia Wireless
+WEP Key => Chiave WEP
+Selected WEP Key => Chiave WEP selezionata
+WPA PSK => WPA-PSK
+ESSID => ESSID
+Channel => Canale
+RADIUS IP Address => Indirizzo IP del server RADIUS
+RADIUS Server Key => Server Key RADIUS
+Enabled => Attivato
+Disabled => Disattivato
+ESSID Broadcast => SSID Broadcast
+Show => Mostra
+Hide => Nascondi
+WLAN Mode => Modo WLAN
+Access Point => Punto di accesso
+Client => Client
+Bridge => Bridge
+Ad-Hoc => Ad-Hoc
+Operation mode => Modo di funzionamento
+Encryption Settings => Parametri di encryption
+Encryption Type => Tipo di encryption
+PSK => PSK
+WPA Mode => Modo WPA
+WPA Algorithms => Algoritmo WPA
+WEP Keys => Chiave WEP
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Configurazione Wireless avanzata
+WDS Connections => Connessioni WDS
+MAC Filter List => Filtro per indirizzo MAC
+Filter Mode => Metodo di filtraggio
+Allow => Autorizza
+Deny => Nega
+Set => Setta
+Settings => Parametri
+Automatic WDS => WDS Automatico
+
+# "Hosts" page
+
+MAC Address => Indirizzo MAC
+Configured Hosts => Host configurati
+DHCP Static => DHCP Statico
+Host Names => Nome Host
+
+Up => Su
+Down => Giu'
+Edit => Edita
+Delete => Elimina
+Save => Salva
+Cancel => Cancella
+
+Forward => Ridirigi
+Accept => Accetta
+Drop => Scarta
+
+Firewall => Firewall
+Firewall Rules => Regole del Firewall
+Firewall Configuration => Configurazione del Firewall
+
+New Rule => Nuova regola
+Match => Filtro
+Target => Obiettivo
+Port => Porta
+
+Protocol => Protocollo
+Source IP => IP di origine
+Destination IP => IP di destinazione
+Source Ports => Porta di origine
+Destination Ports => Porta di destinazione
+
+Forward to => Redirigi su
+Port => Porta
+
+Helptext ESSID => SSID
+Helptext DNS save => E' consigliabile salvare i cambiamenti prima di aggiungere o eliminare server DNS dalla lista
+
+Helptext Operation mode => Imposta il metodo di utilizzo della rete wireless. Scegliendo 'Client (bridge)' non cambiera' la configurazione dell'interfaccia di rete.
+Helptext Encryption Type => 'WPA (RADIUS)' puo' essere usato solo nel modo Access Point.<br /> 'WPA (PSK)' non funziona nel modo Ad-Hoc.
+Helptext IP Settings => Le opzioni IP sono opzioni per DHCP e PPTP.
+Helptext Idle Time => Numero di secondi che deve aspettare il router prima di disconnettersi. (Solo nel metodo ' Connessione su richiesta').
+Helptext Redial Timeout => Numero di secondi che il router deve aspettare per effettuare una nuova riconnessione.
+
+# untranslated:
+Available packages => Available packages
+

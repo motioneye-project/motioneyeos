@@ -1,0 +1,223 @@
+lang => Svenska
+# Common
+Settings saved => Inst&auml;llningar sparade
+Settings not saved => Inst&auml;llningar inte sparade
+Save Changes => Spara f&ouml;r&auml;ndringar
+Apply Changes => Applicera f&ouml;r&auml;ndringar
+Clear Changes => Ta bort f&ouml;r&auml;ndringar
+Review Changes => Se gjorda f&ouml;r&auml;ndringar
+Host Name => V&auml;rdnamn
+Uptime => Tid uppe
+Load => Ladda
+Version => Version
+Categories => Kategorier
+Subcategories => Underkategorier
+more... => mer...
+Add => L&auml;gg till
+Remove => Ta bort
+Warning => Varning
+Password_warning => Du har inte satt n&aring;got l&ouml;senord f&ouml;r Web-gr&auml;nssnittet och SSH accessen <br />Var v&auml;nlig och g&ouml;r detta nu (anv&auml;ndarnamnet i din browser kommer vara 'root').
+# Categories
+Info => Info
+About => Om
+Router Info => Router Info
+
+Status => Status
+Connections => Anslutningar
+DHCP => DHCP
+Wireless => Tr&aring;dl&ouml;s
+
+System => System
+Password => L&ouml;senord
+Settings => Inst&auml;llningar
+Installed Software => Installerad mjukvara
+Firmware Upgrade => Firmware uppgradering
+
+Network => N&auml;tverk
+LAN => LAN
+WAN => WAN
+Wireless => Tr&aring;dl&ouml;s
+Advanced Wireless => Avancerad Tr&aring;dl&ouml;s
+Hosts => Konfigurerade V&auml;rdar
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => Detta program &auml;r &ouml;ppen programvara; du kan &aring;terdistribuera den och/eller <br /> modifiera den under villkoren av best&auml;mmelserna i GNU General Public License <br /> publicerad av Free Software Foundation; antingen version 2 <br /> av licensen eller senare. <br />
+Contributions by => Bidrag av
+Layout based on => Layout baserad p&aring;
+by => av
+
+
+No config change. => Inga &auml;ndringar i inst&auml;llningarna gjordes.
+Config discarded. => Dina &auml;ndringar i inst&auml;llningarna har avbrutits. 
+Config changes: => Nuvarande &auml;ndringar i inst&auml;llningarna: 
+Updating config... => Uppdaterar dina inst&auml;llningar...
+
+# 'Router Info' page
+Firmware Version => Firmware Version
+Kernel Version => Kernel Version
+Current Date/Time => Nuvarande Datum/Tid
+MAC Address => Mac Adress
+
+
+# 'Connections' page
+Connection Status => Anslutningsstatus
+Physical Connections => Fysiska anslutningar
+Router Connections => Router anslutningar
+
+
+# 'DHCP' page
+DHCP leases => DHCP leases
+IP Address => IP Adress
+Name => Namn
+Expires in => Utg&aring;r om
+
+
+# 'Wireless Status' page
+Wireless Status => Tr&aring;dl&ouml;s Status
+
+# 'Password' page
+Password Change => Byt l&ouml;senord
+New Password => Nytt l&ouml;senord
+Confirm Password => Bekr&auml;fta nytt l&ouml;senord
+
+# 'System Settings' page
+System Settings => System Inst&auml;llningar
+Host Name => V&auml;rdnamn
+Language => Spr&aring;k
+
+# 'Installed Software' page
+Installed Packages => Installerade mjukvaror
+Update package lists => Uppdatera mjukvarulista
+Uninstall => Avinstallera
+Install => Installera
+
+
+# 'Firmware Upgrade' page
+Firmware format => Firmware format
+Error => Fel
+done => utf&ouml;rd
+Invalid_formt => Felaktigt Firmware Format
+Erase_JFFS2 => Ta bort JFFS2 partition
+Options => M&ouml;jligheter
+Firmware_image => Firmware att ladda upp 
+Upgrade => Uppgradering
+Upgrading... => Uppgradering...
+
+# 'LAN Settings' page
+LAN Settings => LAN Inst&auml;llningar
+LAN Configuration => LAN Inst&auml;llningar
+Netmask => Netmask
+Default Gateway => Default Gateway
+DNS Servers => DNS Servrar
+DNS Address => DNS Adress
+
+Note => Noteringar
+
+# 'WAN Settings' page
+WAN Settings => WAN Inst&auml;llningar
+WAN Configuration => WAN Inst&auml;llningar
+PPTP Server IP => PPTP Server IP
+Connection Type => Anslutningstyp
+No WAN => Ingen
+DHCP => DHCP
+Static IP => Statisk IP
+IP Settings => IP Inst&auml;llningar
+PPP Settings => PPP Inst&auml;llningar
+Redial Policy => &Aring;teruppringsnings Policy
+Connect on Demand => Anslut p&aring; beg&auml;ran 
+Keep Alive => H&aring;ll levande
+Maximum Idle Time => Maximum tid i vila
+Redial Timeout => Timeout f&ouml;r &aring;teruppringning
+MTU => MTU
+Username => Anv&auml;ndarnamn
+
+# 'Wireless Configuration' page
+Wireless Configuration => Tr&aring;dl&ouml;sa Inst&auml;llningar
+Wireless Interface => Tr&aring;dl&ouml;st Gr&auml;nssnitt
+WEP Key => WEP Nyckel
+Selected WEP Key => Vald WEP Nyckel
+WPA PSK => WPA PSK
+ESSID => ESSID
+Channel => Kanal
+RADIUS IP Address => RADIUS IP Adress
+RADIUS Server Key => RADIUS Server Nyckel
+Enabled => P&aring;satt
+Disabled => Avst&auml;ngd
+ESSID Broadcast => ESSID Broadcast
+Show => Visa
+Hide => G&ouml;m
+WLAN Mode => WLAN L&auml;ge
+Access Point => Accesspunkt 
+Client => Klient
+Bridge => Brygga
+Ad-Hoc => Ad-Hoc
+Operation mode => Tillst&aring;ndsl&auml;ge
+Encryption Settings => Krypteringsinst&auml;llningar 
+Encryption Type => Krypteringstyp
+PSK => PSK
+WPA Mode => WPA L&auml;ge
+WPA Algorithms => WPA Algoritmer
+WEP Keys => WEP Nyckel
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Avancerad Tr&aring;dl&ouml;s Inst&auml;llning
+WDS Connections => WDS Anslutningar
+MAC Filter List => MAC Filter Lista
+Filter Mode => Filterl&auml;ge
+Allow => Till&aring;t
+Deny => Neka
+Set => S&auml;tt
+Settings => Settings
+Automatic WDS => Automatisk WDS
+
+# "Hosts" page
+
+MAC Address => MAC Adress
+Configured Hosts => Konfigurerade V&auml;rdar
+DHCP Static => Statisk DHCP 
+Host Names => V&auml;rdnamn
+
+Up => Upp
+Down => Ned
+Edit => Editera
+Delete => Ta bort
+Save => Spara
+Cancel => Avbryt
+
+Forward => Fram&aring;t
+Accept => Acceptera
+Drop => Tappa
+
+Firewall => Brandv&auml;gg
+Firewall Rules => Brandv&auml;ggsregler 
+Firewall Configuration => Brandv&auml;ggsinst&auml;llningar
+
+New Rule => Ny Regel
+Match => Match
+Target => M&aring;l
+Port => Port
+
+Protocol => Protokoll
+Source IP => K&auml;ll IP
+Destination IP => Destinations IP
+Source Ports => K&auml;llport
+Destination Ports => Destinationsport
+
+Forward to => Skicka till
+Port => Port
+
+Helptext ESSID => Namn p&aring; ditt tr&aring;dl&ouml;sa N&auml;tverk
+Helptext DNS save => Du b&ouml;r spara dina inst&auml;llningar p&aring; denna sida f&ouml;re du l&auml;gger till/tar bort DNS servrar
+
+Helptext Operation mode => Detta s&auml;tter l&auml;gesinst&auml;llningen f&ouml;r ditt tr&aring;dl&ouml;sa n&auml;tverk. Att v&auml;lja 'Klient (Brygga)' kommer inte &auml;ndra ditt n&auml;tverks gr&auml;nssnittsinst&auml;llningar. Det kommer endast att s&auml;tta n&aring;gra parametrar i drivrutinerna som till&aring;ter en begr&auml;nsad bryggning av gr&auml;nssnittet. 
+Helptext Encryption Type => 'WPA (RADIUS)' st&ouml;djs endast i Accesspunktsl&auml;ge. <br /> 'WPA (PSK)' fungerar inte i Ad-Hoc l&auml;ge.
+Helptext IP Settings => IP inst&auml;llningar &auml;r inte obligatoriska f&ouml;r DHCP och PPTP. Om du s&auml;tter dem s&aring; anv&auml;nds de som standard om DHCP-servern inte &auml;r tillg&auml;nlig. 
+Helptext Idle Time => Antalet sekunder utan internet trafik som routern skall v&auml;nta p&aring; innan den fr&aring;nkopplar sig fr&aring;n Internet. (Anslut endast p&aring; beg&auml;ran)
+Helptext Redial Timeout => Antalet sekunder att v&auml;nta i innan f&ouml;rs&ouml;k till ny uppkoppling g&ouml;rs. (om ingen kontakt kunnat uppr&auml;ttas med tillhandah&aring;llaren)
+
+# untranslated:
+Available packages => Available packages
+

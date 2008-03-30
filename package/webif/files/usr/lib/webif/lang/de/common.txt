@@ -1,0 +1,228 @@
+lang => Deutsch
+# Common
+Settings saved => Einstellungen gespeichert
+Settings not saved => Einstellungen nicht gespeichert
+Save Changes => Speichern
+Apply Changes => &Uuml;bernehmen
+Clear Changes => Verwerfen
+Review Changes => Anzeigen
+Host Name => Hostname
+Uptime => Uptime
+Load => Systemlast
+Version => Version
+Categories => Kategorien
+Subcategories => Unterkategorien
+more... => Weitere Informationen...
+Add => Hinzuf&uuml;gen
+Remove => Entfernen
+Warning => Warnung
+Password_warning => es wurde noch kein Passwort f&uuml;r Web-Administration und SSH gesetzt.<br />Bitte geben Sie jetzt ein neues Passwort ein (Benutzername im Browser: 'root').
+
+# Categories
+Info => Info
+About => &Uuml;ber
+Router Info => Routerinformationen
+
+Status => Status
+Connections => Netzwerkverbindungen
+DHCP => DHCP
+Wireless => WLAN
+
+System => System
+Password => Passwort
+Settings => Einstellungen
+Installed Software => Installierte Software
+Firmware Upgrade => Firmware aktualisieren
+
+Network => Netzwerk
+LAN => LAN
+WAN => Internet
+Wireless => WLAN
+Advanced Wireless => WLAN (erweitert)
+Hosts => Host-Konfiguration
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => Dieses Programm ist freie Software. Sie k&ouml;nnen es unter den Bedingungen der GNU General Public License,<br /> wie von der Free Software Foundation ver&ouml;ffentlicht, weitergeben und/oder modifizieren,<br /> entweder gem&auml;&szlig; Version 2 der Lizenz oder (nach Ihrer Option) jeder sp&auml;teren Version.
+Contributions by => Mit Beitr&auml;gen von
+Layout based on => Layout basiert auf
+by => von
+
+
+No config change. => Es wurden keine Konfigurations&auml;nderungen vorgenommen.
+Config discarded. => Ihre Konfigurations&auml;nderungen wurden verworfen.
+Config changes: => Aktuelle Konfigurations&auml;nderungen:
+Updating config... => Aktualisiere die Konfiguration...
+
+
+# 'Router Info' page
+Firmware Version => Firmwareversion
+Kernel Version => Kernelversion
+Current Date/Time => Datum/Uhrzeit
+MAC Address => MAC-Adresse
+
+
+# 'Connections' page
+Connection Status => Verbindungsstatus
+Physical Connections => Netzwerkschnittstellen
+Router Connections => Netzwerkverbindungen auf dem Router
+
+
+# 'DHCP' page
+DHCP leases => DHCP-Leases
+IP Address => IP-Adresse
+Name => Name
+Expires in => G&uuml;ltigkeitsdauer
+
+
+# 'Wireless Status' page
+Wireless Status => WLAN-Status
+
+# 'Password' page
+Password Change => Passwort &auml;ndern
+New Password => Neues Passwort
+Confirm Password => Passwort best&auml;tigen
+
+# 'System Settings' page
+System Settings => Systemeinstellungen
+Host Name => Hostname
+Language => Sprache
+
+# 'Installed Software' page
+Installed Packages => Installierte Pakete
+Update package lists => Paketlisten aktualisieren
+Uninstall => Deinstallieren
+Install => Installieren
+
+
+# 'Firmware Upgrade' page
+Firmware format => Firmware-Format
+Error => Fehler
+done => fertig
+Invalid_format => Das Dateiformat der Firmware ist ung&uuml;ltig
+Erase_JFFS2 => JFFS2-Partition l&ouml;schen
+Options => Optionen
+Firmware_image => Firmware-Datei:
+Upgrade => Aktualisieren
+Upgrading... => Aktualisiere...
+
+# 'LAN Settings' page
+LAN Settings => Netzwerkeinstellungen
+LAN Configuration => Netzwerkkonfiguration
+Netmask => Subnetzmaske
+Default Gateway => Standardgateway
+DNS Servers => DNS-Server
+DNS Address => DNS-Serveradresse
+
+Note => Hinweis
+
+
+# 'WAN Settings' page
+WAN Settings => Internet-Einstellungen
+WAN Configuration => Internet-Konfiguration
+PPTP Server IP => PPTP-Serveradresse
+Connection Type => Verbindungsart
+No WAN => Keine Verbindung
+DHCP => DHCP
+Static IP => Statische Konfiguration
+IP Settings => IP-Konfiguration
+PPP Settings => PPP-Einstellungen
+Redial Policy => Verbindungsaufbau
+Connect on Demand => Bei Bedarf
+Keep Alive => Verbindung aufrechterhalten
+Maximum Idle Time => Wartezeit bei Inaktivit&auml;t
+Redial Timeout => Wartezeit bei unterbrochener Verbindung
+MTU => Maximale Paketgr&ouml;&szlig;e
+Username => Benutzername
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => WLAN-Konfiguration
+Wireless Interface => WLAN-Interface
+WEP Key => WEP-Schl&uuml;ssel
+Selected WEP Key => Ausgew&auml;hlter WEP Schl&uuml;ssel
+WPA PSK => WPA-Schl&uuml;ssel
+ESSID => ESSID
+Channel => Kanal
+RADIUS IP Address => RADIUS-Serveradresse
+RADIUS Server Key => RADIUS-Serverpasswort
+Enabled => Aktiviert
+Disabled => Deaktiviert
+ESSID Broadcast => ESSID-Broadcast 
+Show => Anzeigen
+Hide => Verstecken
+WLAN Mode => Betriebsmodus
+Access Point => Access Point
+Client => Client
+Bridge => Bridge
+Ad-Hoc => Ad-Hoc
+Encryption Settings => Verschl&uuml;sselungseinstellungen
+Encryption Type => Verschl&uuml;sselungsart
+PSK => Passwort
+WPA Mode => WPA-Modus
+WPA Algorithms => WPA-Verschl&uuml;sselungsalgorithmen
+WEP Keys => WEP-Schl&uuml;ssel
+
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => WLAN-Konfiguration (erweitert)
+WDS Connections => WDS-Verbindungen
+MAC Filter List => Zugriffsbeschr&auml;nkung (MAC-Adresse)
+Filter Mode => Filtermodus
+Allow => Erlauben
+Deny => Verweigern
+Set => Setzen
+Settings => Einstellungen
+Automatic WDS => Automatische WDS-Verbindung
+
+# "Hosts" page
+
+MAC Address => MAC-Adresse
+Configured Hosts => Konfigurierte Hosts
+DHCP Static => Statische DHCP-Eintr&auml;ge
+Host Names => Host-Eintr&auml;ge
+
+
+Up => Hoch
+Down => Runter
+Edit => Bearbeiten
+Delete => L&ouml;schen
+Save => Speichern
+Cancel => Abbrechen
+
+Forward => Weiterleiten
+Accept => Zulassen
+Drop => Verweigern
+
+Firewall => Firewall
+Firewall Rules => Firewall-Regeln
+Firewall Configuration => Firewall-Konfiguration
+
+New Rule => Neue Regel
+Match => Filter
+Target => Ziel
+Port => Port
+
+Protocol => Protokoll
+Source IP => Quell-IP
+Destination IP => Ziel-IP
+Source Ports => Quell-Ports
+Destination Ports => Ziel-Ports
+
+Forward to => Weiterleiten an
+Port => Port
+
+Helptext ESSID => Name des Funknetzwerks
+Helptext DNS save => Sie m&uuml;ssen Ihre &Auml;nderungen an dieser Seite speichern, bevor Sie DNS-Server hinzuf&uuml;gen oder entfernen
+
+Helptext Operation mode => Setzt den Betriebsmodus f&uuml;r das  WLAN-Interface. Die Einstellung 'Client (Bridge)' &auml;ndert nichts an den eigentlichen Netzwerkeinstellungen, es &auml;ndert lediglich einige Parameter im WLAN-Treiber, damit man das Interface eingeschr&auml;nkt in einer Bridge verwenden kann.
+Helptext Encryption Type => 'WPA (RADIUS)' wird nur im Access-Point-Modus unterstützt. <br /> 'WPA (PSK)' funktioniert nicht im Ad-Hoc-Modus. 
+Helptext IP Settings => IP-Einstellungen sind optional für DHCP und PPTP. Wenn sie gesetzt sind, werden sie als Standardwerte verwendet, falls kein DHCP-Server erreichbar ist. 
+Helptext Idle Time => Wartezeit in Sekunden, nach der bei Inaktivität die Internetverbindung getrennt wird.
+Helptext Redial Timeout => Maximale Zeit, die der Router auf Antwort vom Provider warten soll, bevor die Verbindung neu aufgebaut wird.
+
+# untranslated:
+Available packages => Verf&uuml;gbare Pakete
+

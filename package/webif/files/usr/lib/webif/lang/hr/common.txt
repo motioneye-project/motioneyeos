@@ -1,0 +1,199 @@
+lang => Hrvatski
+Encoding => UTF-8
+# Common
+Settings saved => Postavke Spremljene
+Settings not saved => Postavke Nisu Spremljene
+Save Changes => Spremi Postavke
+Apply Changes => Primijeni Postavke
+Clear Changes => Obri&scaron;i Postavke
+Review Changes => Pregledaj Izmjene
+Host Name => Naziv Hosta
+Uptime => U Pogonu Od
+Load => Optere&aelig;enje
+Version => Verzija
+Categories => Kategorije
+Subcategories => Podkategorije
+more... => nastavak...
+Add => Dodaj
+Remove => Makni
+Warning => Upozorenje
+Password_warning => Niste postavili lozinku za Web su&egrave;elje i SSH pristup
+Molimo vas unesite lozinku (korisni&egrave;ko ime u va&scaron;em pregledniku &aelig; biti 'root').
+# Categories
+Info => Informacije
+About => Opis
+Router Info => O ure&eth;aju
+Status => Status
+Connections => Veze
+DHCP => DHCP
+Wireless => Wireless
+System => Sustav
+Password => Lozinka
+Settings => Postavke
+Installed Software => Instalirani Softver
+Firmware Upgrade => Nadogradnja Firmware-a
+Network => Mre&zcaron;a
+LAN => LAN
+WAN => WAN
+Wireless => Wireless
+Advanced Wireless => Napredne Wireless Postavke
+Hosts => Konfigurirani Hostovi
+
+# 'About' page
+Copyright => Copyright
+GPL_Text => This program is free software; you can redistribute it and/or 
+modify it under the terms of the GNU General Public License 
+as published by the Free Software Foundation; either version 2 
+of the License, or (at your option) any later version. 
+
+Contributions by => Contributions by SL SOLUCIJE d.o.o.
+Layout based on => Layout based on SmartHop webif
+by => by Silvije Filipovic - silvije.filipovic@slsolucije.hr
+
+No config change. => Nema nikakvih promjena konfiguracije.
+Config discarded. => Va&scaron;e promjene konfiguracije su opozvane.
+Config changes: => Trenutne promjene konfiguracije:
+Updating config... => Konfiguracija se nadogra&eth;uje...
+
+# 'Router Info' page
+Firmware Version => Firmware Verzija
+Kernel Version => Kernel Verzija
+Current Date/Time => Trenutni Datum/ Vrijeme
+MAC Address => Mac Adresa
+
+# 'Connections' page
+Connection Status => Status Veza
+Physical Connections => Fizi&egrave;ke Veze
+Router Connections => Usmjeravanje
+
+# 'DHCP' page
+DHCP leases => DHCP dodjela
+IP Address => IP Adresa
+Name => Naziv
+Expires in => Rok istjecanja
+
+# 'Wireless Status' page
+Wireless Status => Wireless Status
+# 'Password' page
+Password Change => Promjena Lozinke
+New Password => Nova Lozinka
+Confirm Password => Potvrdi Lozinku
+# 'System Settings' page
+System Settings => Postavke Sustava
+Host Name => Naziv Hosta
+Language => Jezik
+# 'Installed Software' page
+Installed Packages => Instalirani Paketi
+Update package lists => A&zcaron;uriraj listu paketa
+Uninstall => Deinstaliraj
+Install => Instaliraj
+
+# 'Firmware Upgrade' page
+Firmware format => Firmware format
+Error => Gre&scaron;ka
+done => gotovo
+Invalid_formt => Neispravan Firmware Format
+Erase_JFFS2 => Izbri&scaron;i JFFS2 particiju
+Options => Opcije
+Firmware_image => Firmware image za upload
+Upgrade => Nadogradi
+Upgrading... => Nadogradnja u tijeku...
+# 'LAN Settings' page
+LAN Settings => LAN Postavke
+LAN Configuration => LAN Konfiguracija
+Netmask => Netmask
+Default Gateway => Default Gateway
+DNS Servers => DNS Serveri
+DNS Address => DNS Adresa
+Note => Bilje&scaron;ke
+# 'WAN Settings' page
+WAN Settings => WAN Postavke
+WAN Configuration => WAN Konfiguracija
+PPTP Server IP => PPTP Server IP
+Connection Type => Tip Konekcije
+No WAN => Bez WAN Konekcije
+DHCP => DHCP
+Static IP => Stati&egrave;ki IP
+IP Settings => IP Postavke
+PPP Settings => PPP Postavke
+Redial Policy => Redial Policy
+Connect on Demand => Spajanje na Zahtjev
+Keep Alive => Keep Alive
+Maximum Idle Time => Dozvoljeni Max. Idle Time
+Redial Timeout => Redial Timeout
+MTU => MTU
+Username => Korisni&egrave;ko Ime
+
+# 'Wireless Configuration' page
+Wireless Configuration => Wireless Konfiguracija
+Wireless Interface => Wireless Interface
+WEP Key => WEP Key
+Selected WEP Key => Odabrani WEP Key
+WPA PSK => WPA PSK
+ESSID => ESSID
+Channel => Kanal
+RADIUS IP Address => RADIUS IP Adresa
+RADIUS Server Key => RADIUS Server Key
+Enabled => Omogu&aelig;eno
+Disabled => Onemogu&aelig;eno
+ESSID Broadcast => ESSID Broadcast
+Show => Neskriveni
+Hide => Skriveni
+WLAN Mode => WLAN Mod
+Access Point => Access Point
+Client => Client
+Bridge => Bridge
+Ad-Hoc => Ad-Hoc
+Operation mode => Operaativni mod
+Encryption Settings => Postavke Enkripcije
+Encryption Type => Tip Enkripcije
+PSK => PSK
+WPA Mode => WPA Mod
+WPA Algorithms => WPA Algoritmi
+WEP Keys => WEP Keys
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Napredne Wireless Postavke
+WDS Connections => WDS Veze
+MAC Filter List => MAC Filter Lista
+Filter Mode => Filter Mod
+Allow => Dozvoli
+Deny => Zabrani
+Set => Postavi
+Settings => Postavke
+Automatic WDS => Automatski WDS
+# "Hosts" page
+MAC Address => MAC Adresa
+Configured Hosts => Konfigurirani Hostovi
+DHCP Static => Stati&egrave;ki DHCP
+Host Names => Nazivi Hostova
+Up => Gore
+Down => Dolje
+Edit => Uredi
+Delete => Bri&scaron;i
+Save => Spremi
+Cancel => Odustani
+Forward => Naprijed
+Accept => Prihvati
+Drop => Otka&zcaron;i
+Firewall => Firewall
+Firewall Rules => Firewall Pravila
+Firewall Configuration => Firewall Konfiguracija
+New Rule => Novo Pravilo
+Match => Uvjet
+Target => Cilj
+Port => Port
+Protocol => Protokol
+Source IP => Ishodi&scaron;ni IP
+Destination IP => Odredi&scaron;ni IP
+Source Ports => Ishodi&scaron;ni Portovi
+Destination Ports => Odredi&scaron;ni Portovi
+Forward to => Preusmjeravanje na
+Port => Port
+Helptext ESSID => Naziv Wireless Mre&zcaron;e
+Helptext DNS save => Trebali biste spremiti va&scaron;e postavke na ovoj stranici prije dodavanja/brisanja DNS poslju&zcaron;itelja
+Helptext Operation mode => Ova opcija odre&eth;uje operativni mod rada va&scaron;e wireless mre&zcaron;e. Odabir 'Client (Bridge)' ne&aelig;e promijeniti postavke mre&zcaron;nog su&egrave;elja. Samo &aelig;e biti dodani parametri u pogonski program koji omogu&aelig;avaju ograni&egrave;ene bridging funkcije su&egrave;elja.
+Helptext Encryption Type => 'WPA (RADIUS)' je podr&zcaron;an samo u Access Point modu. 
+'WPA (PSK)' ne radi u Ad-Hoc modu.
+Helptext IP Settings => IP Postavke su opcionalne za DHCP i PPTP. Ukoliko su postavljene, koriste se kao pretpostavljene, u slu&egrave;aju kada  DHCP poslu&zcaron;itelj nije dostupan.
+Helptext Idle Time => Vrijeme u sekundama bez internet prometa do kojeg ure&eth;aj treba &egrave;ekati prije prekida veze (samo kod Spajanja na Zahtjev)
+Helptext Redial Timeout => Vrijeme u sekundama za prijem odgovora od prividera prije ponovnog spajanja

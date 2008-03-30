@@ -1,0 +1,224 @@
+lang => Nederlands
+# Common
+Settings saved => Instellingen bewaard
+Settings not saved => Instellingen niet bewaard
+Save Changes => Bewaar wijzigingen
+Apply Changes => Gebruik wijzigingen
+Clear Changes => Wis wijzigingen
+Review Changes => Bekijk wijzigingen
+Host Name => Host naam
+Uptime => Uptime
+Load => Laad
+Version => Versie
+Categories => Categorie
+Subcategories => Subcategorie
+more... => meer...
+Add => Bijvoegen
+Remove => Verwijder
+Warning => Waarschuwing
+Password_warning => U hebt nog geen wachtwoord ingesteld voor de Web interface en SSH toegang. Gelieve er nu een in te geven (de gebruikersnaam in uw browser zal 'root' zijn).
+
+# Categories
+Info => Info
+About => Over
+Router Info => Router Info
+
+Status => Status
+Connections => Connecties
+DHCP => DHCP
+Wireless => Draadloos
+
+System => Systeem
+Password => Wachtwoord
+Settings => Instellingen
+Installed Software => Geinstalleerde Software
+Firmware Upgrade => Firmware Upgrade
+
+Network => Netwerk
+LAN => LAN
+WAN => WAN
+Wireless => Draadloos
+Advanced Wireless => Geavanceerd Draadloos
+Hosts => Geconfigureerde Hosts
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => Dit programma is vrije software; u mag het verdelen en/of wijzigen onder de voorwaarden van GNU General Public License zoals gepubliceerd door de Free Software Foundation; ofwel versie 2 van de licentie, of (volgens Uw keuze) iedere latere versie.
+
+Contributions by => Bijdragen door
+Layout based on => Layout gebasseerd op
+by => door
+
+
+No config change. => Er werden geen configuratie wijzigingen aangebracht.
+Config discarded. => Uw configuratie wijzigingen werden verworpen.
+Config changes: => Huidige configuratie wijzigingen:
+Updating config... => Uw configuratie wordt aangepast...
+
+
+# 'Router Info' page
+Firmware Version => Firmware Versie
+Kernel Version => Kernel Versie
+Current Date/Time => Huidige Datum/Tijd
+MAC Address => MAC Adres
+
+
+# 'Connections' page
+Connection Status => Verbindings Status
+Physical Connections => Fysieke Verbindingen
+Router Connections => Router Verbindingen
+
+
+# 'DHCP' page
+DHCP leases => DHCP leases
+IP Address => IP Adres
+Name => Naam
+Expires in => Vervalt binnen
+
+
+# 'Wireless Status' page
+Wireless Status => Draadloos Status
+
+# 'Password' page
+Password Change => Wachtwoord Wijzigen
+New Password => Nieuw Wachtwoord
+Confirm Password => Bevestig Wachtwoord
+
+# 'System Settings' page
+System Settings => Systeem Instellingen
+Host Name => Host naam
+Language => Taal
+
+# 'Installed Software' page
+Installed Packages => Geinstalleerde Pakketten
+Available packages => Beschikbare pakketten
+Update package lists => Aanpassen Pakketlijst
+Uninstall => Deinstalleren
+Install => Installeren
+
+
+# 'Firmware Upgrade' page
+Firmware format => Firmware Formaat
+Error => Fout
+done => voltooid
+Erase_JFFS2 => Wis JFFS2 partitie
+Options => Opties
+Firmware_image => Firmware image om te laden
+Upgrade => Upgrade
+Upgrading... => Upgrading...
+
+# 'LAN Settings' page
+LAN Settings => LAN Instellingen
+LAN Configuration => LAN Configuratie
+Netmask => Netmask
+Default Gateway => Standaard Gateway
+DNS Servers => DNS Servers
+DNS Address => DNS Adres
+
+Note => Nota
+
+# 'WAN Settings' page
+WAN Settings => WAN Instellingen
+WAN Configuration => WAN configuratie
+PPTP Server IP => PPTP Server IP
+Connection Type => Connectie Type
+No WAN => Geen WAN
+DHCP => DHCP
+Static IP => Statisch IP
+IP Settings => IP Instellingen
+PPP Settings => PPP Instellingen
+Redial Policy => Opnieuw bel beleid
+Redial Timeout => Bel vertraging
+Connect on Demand => Verbinden op Aanvraag
+Keep Alive => Hou actief
+Maximum Idle Time => Maximale Idle Time
+MTU => MTU
+Username => Gebruikersnaam
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => Draadloos Configuratie
+Wireless Interface => Draadloos Interface
+WEP Key => WEP Sleutel
+Selected WEP Key => Geselecteerde WEP sleutely
+WPA PSK => WPA PSK
+ESSID => ESSID
+Channel => Kanaal
+RADIUS IP Address => RADIUS IP Adres
+RADIUS Server Key => RADIUS Server Sleutel
+Enabled => Ingeschakeld
+Disabled => Uitgeschakeld
+ESSID Broadcast => ESSID Broadcast
+Show => Toon
+Hide => Verberg
+WLAN Mode => WLAN Mode
+Access Point => Toegangs Punt
+# Was "Klant" first which can only be translated as an economical client, i.e. a customer. AFAIK Dutch doesn't provide any true translation for Client in this context
+Client => Client
+Bridge => Brug
+Ad-Hoc => Ad-Hoc
+Operation mode => Operation mode
+Encryption Settings => Encryptie Instelligen
+Encryption Type => Encryptie Type
+PSK => PSK
+WPA Mode => WPA Mode
+WPA Algorithms => WPA Algoritmen
+WEP Keys => WEP Sleutels
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Geavanceerde Draadloze Configuratie
+WDS Connections => WDS Verbindingen
+MAC Filter List => MAC Filter Lijst
+Filter Mode => Filter Mode
+Allow => Toelaten
+Deny => Weigeren
+Set => Stel
+Settings => Instellingen
+Automatic WDS => Automatische WDS
+
+# "Hosts" page
+
+MAC Address => MAC Adres
+Configured Hosts => Geconfigureerde Hosts
+DHCP Static => DHCP Statisch
+Host Names => Host Namen
+
+Up => Op
+Down => Neer
+Edit => Wijzig
+Delete => Wis
+Save => Bewaar
+Cancel => Afbreken
+
+Forward => Doorsturen
+Accept => Accepteren
+Drop => Negeren
+
+Firewall => Firewall
+Firewall Rules => Firewall Regels
+Firewall Configuration => Firewall Configuratie
+
+New Rule => Nieuwe Regel
+Match => Overeenstemmen
+Target => Doel
+Port => Poort
+
+Protocol => Protocol
+Source IP => Bron IP
+Destination IP => Bestemmings IP
+Source Ports => Bron Poorten
+Destination Ports => Bestemmings Poorten
+
+Forward to => Doorsturen naar
+Port => Poort
+
+Helptext ESSID => Naam van uw Draadloos Netwerk
+Helptext DNS save => U moet de instellingen op deze pagina bewaren alvorens DNS servers te wijzigen/verwijderen
+
+Helptext Operation mode => Dit stelt de Operatie Mode voor uw draadloos netwerk in. Door 'Client (Brug)' te kiezen zullen uw network interface instellingen niet wijzigen. Er zullen alleen enkele parameters ingesteld worden in de draadloze driver die gelimiteerde overbrugging van de interface mogelijk maakt.
+Helptext Encryption Type => 'WPA (RADIUS)' wordt enkel ondersteund in de Toegangs Punt mode.<br />'WPA (PSK)' werkt niet in Ad-Hoc mode.
+Helptext IP Settings => IP instellingen zijn optioneel voor DHCP en PPTP. Indien U ze instelt dan worden ze als standaardwaarden gebruikt indien de DHCP server onbeschikbaar is.
+Helptext Idle Time => Het aantal seconden zonder internet verkeer dat de router zou moeten wachten alvorens zich af te sluiten van het Internet (Alleen bij Verbinden op Aanvraag)
+Helptext Redial Timeout => Het aantal seconden dat gewacht moet worden alvorens opnieuw een verbinding wordt gemaakt indien deze geweigerd werd door uw ISP.

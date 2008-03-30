@@ -1,0 +1,230 @@
+lang => Norsk
+# Common
+Settings saved => Innstillingene ble lagret
+Settings not saved => Innstillingene ble ikke lagret
+Save Changes => Lagre endringer
+Apply Changes => Aktiver endringer
+Clear Changes => Glem endringer
+Review Changes => Se endringer
+Host Name => Vertsnavn
+Uptime => Oppetid
+Load => Systembelastning
+Version => Versjon
+Categories => Kategorier
+Subcategories => Underkategorier
+more... => mer...
+Add => Legg til
+Remove => Fjern
+Warning => Advarsel
+Password_warning => Det er ikke satt et passord p&aring; hverken Webadministrasjon eller SSH.<br />Vennligst velg eller tast inn ditt passord (Brukernavn er 'root' med sm&aring; bokstaver).
+
+# Categories
+Info => Info
+About => Om
+Router Info => Routerinformasjon
+
+Status => Status
+Connections => Nettverksforbindelser
+DHCP => DHCP
+Wireless => Tr&aring;dl&oslash;s
+
+System => System
+Password => Passord
+Settings => Innstillinger
+Installed Software => Installerte programmer
+Firmware Upgrade => Firmwareoppgradering
+
+Network => Nettverk
+LAN => Lokalnett
+WAN => Internett
+Wireless => Tr&aring;dl&oslash;s
+Advanced Wireless => Avansert tr&aring;dl&oslash;s
+Hosts => Vertsnavn
+
+
+# 'About' page
+Copyright => Opphavsrett
+
+GPL_Text => Dette programmet er fri programvare.  Du m&aring; bruke, endre og videredistribuere det under betingelsene i "GNU General Public License",<br /> som offentliggjort av "Free Software Foundation" (Den frie programbevegelse), enten i versjon 2 av lisensen eller (etter ditt valg), en hvilkensomhelst senere versjon.
+
+Contributions by => Bidrag fra
+Layout based on => Layout er basert p&aring;
+by => av
+
+
+No config change. => Ingen konfigurasjonsendring foretatt
+Config discarded. => Konfigurasjonsendringerne ble forkastet
+Config changes: => Forel&oslash;pige endringer
+Updating config... => Oppdaterer konfigurasjonen
+
+# 'Router Info' page
+Firmware Version => Firmwareversjon
+Kernel Version => Kjerneversjon
+Current Date/Time => N&aring;v&aelig;rende tid/dato
+MAC Address => MAC adresse
+
+
+# 'Connections' page
+Connection Status => Forbindelsesstatus
+Physical Connections => Fysiske forbindelser
+Router Connections => Routerens forbindelser
+
+
+# 'DHCP' page
+DHCP leases => DHCP leasinger
+IP Address => IP adresse
+Name => Navn
+Expires in => Utl&oslash;pstid
+
+
+# 'Wireless Status' page
+Wireless Status => Tr&aring;dl&oslash;s status
+
+# 'Password' page
+Password Change => Endre passord
+New Password => Nytt passord
+Confirm Password => Nytt passord igjen
+
+# 'System Settings' page
+System Settings => Systeminnstillinger
+Host Name => Vertsnavn
+Language => Spr&aring;k
+
+# 'Installed Software' page
+Installed Packages => Installerte pakker
+Update package lists => Oppdater pakkelisten
+Uninstall => Avinstaller
+Install => Installer
+Available packages => Tilgjengelige pakker
+
+
+# 'Firmware Upgrade' page
+Firmware format => Firmwareformat
+Error => Feil
+done => ferdig
+Invalid_format => Ugyldig_format
+Erase_JFFS2 => Slett_JFFS2_partisjonen
+Options => Alternativer
+Firmware_image => Firmwarefil
+Upgrade => Oppgrader
+Upgrading... => Oppgraderer...
+
+# 'LAN Settings' page
+LAN Settings => Lokale nettinnstillinger
+LAN Configuration => Lokal nettverkskonfigurasjon
+Netmask => Undernettmaske
+Default Gateway => Standard gateway
+DNS Servers => DNS-tjenere
+DNS Address => DNS-tjeneradresse
+
+Note => Merk
+
+
+# 'WAN Settings' page
+WAN Settings => WAN-innstillinger
+WAN Configuration => WAN-konfigurasjon
+PPTP Server IP => PPTP-tjeneradresse
+Connection Type => Forbindelsestype
+No WAN => Ingen WAN
+DHCP => DHCP
+Static IP => Statisk IP
+IP Settings => IP-innstillinger
+PPP Settings => PPP-innstillinger
+Redial Policy => Gjenoppringingspolise
+Connect on Demand => Ring opp n&aring;r behovet er der
+Keep Alive => Hold forbindelsen i live (keep alive)
+Maximum Idle Time => Maksimal tid i tomgang (max idle)
+Redial Timeout => Gjenoppringningsavbrekkstid
+MTU => MTU
+Username => Brukernavn
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => Tr&aring;dl&oslash;s konfigurasjon
+Wireless Interface => Tr&aring;dl&oslash;st nettkort
+WEP Key => WEP n&oslash;kler
+Selected WEP Key => Valgt WEP n&oslash;kkel
+WPA PSK => WPA n&oslash;kler
+ESSID => ESSID
+Channel => Kanal
+RADIUS IP Address => IP adressen p&aring; RADIUS server
+RADIUS Server Key => Passord til RADIUS server
+Enabled => Aktivert
+Disabled => Deaktivert
+ESSID Broadcast => ESSID-Kringkasting 
+Show => Vis
+Hide => Skjul
+WLAN Mode => Tr&aring;dl&oslash;s tilstand
+Access Point => Tilgangspunkt
+Client => Klient
+Bridge => Bro
+Ad-Hoc => Ad-Hoc
+Encryption Settings => Krypteringsinnstillinger
+Encryption Type => Krypteringstype
+PSK => PSK-kode
+WPA Mode => WPA tilstand
+WPA Algorithms => WPA krypteringsalgoritme
+WEP Keys => WEP n&oslash;kler
+
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Avansert oppsett av tr&aring;dl&oslash;s
+WDS Connections => WDS forbindelser (WDS repeater)
+MAC Filter List => Filteringsliste (MAC-nummer)
+Filter Mode => Filtreringstilstand
+Allow => Tillat
+Deny => Forby
+Set => Sett
+Settings => Innstillinger
+Automatic WDS => Automatisk WDS-forbindelse
+
+# "Hosts" page
+
+MAC Address => MAC-adresse
+Configured Hosts => Vertsnavn
+DHCP Static => Statiske IP adresser til DHCP
+Host Names => Vertsnavn
+
+
+Up => Opp
+Down => Ned
+Edit => Endre
+Delete => Slette
+Save => Lagre
+Cancel => Annuller
+
+Forward => Forward (videresend)
+Accept => Accept (tillat)
+Drop => Drop (kast)
+
+Firewall => Brannmur
+Firewall Rules => Brannmurregler
+Firewall Configuration => Brannmurkonfigurasjon
+
+New Rule => Ny regel
+Match => Match (sammenlign)
+Target => Target (G&aring; til)
+Port => Port
+
+Protocol => Protokoll
+Source IP => Avsenders IP
+Destination IP => Mottakers IP
+Source Ports => Avsenders porter
+Destination Ports => Mottakers porter
+
+Forward to => Send videre til
+Port => Port
+
+Helptext ESSID => Navn p&aring; tr&aring;dl&oslash;s nettverk
+Helptext DNS save => Lagre endringer p&aring; denne siden f&oslash;r du legger til eller fjerner DNS-tjenere (Hvis du ikke vil miste dem.)
+
+Helptext Operation mode => Setter driftstilstanden for den tr&aring;dl&oslash;se delen av routeren. 'Klient' og 'Klient (bro)' brukes for &aring; koble 2 tr&aring;dl&oslash;se routere. I mange tilfeller er WDS en bedre (men mer avansert) l&oslash;ning. 'Klient' utnytter dog b&aring;ndbredden best, hvis du kun har en maskin tilkoblet. <br /> Innstillingen 'Klient (bro)' endrer ikke direkte ved nettverksinnstillingene. Det er et lite 'hack' som f&aring; routeren til &aring; tro at kun en maskin (en MAC-adresse) er tilkoblet. Det er gjort for &aring; overvinne begrensninger i 802.11-protokollen, som forhindrer at man problemfritt (i vanlig 'Klient'-tilstand) kan bruke den tr&aring;dl&oslash;se forbindelsen fra flere maskiner samtidig. <br /> AP brukes til en standalone router, hvor f.eks b&aelig;rbare pc'er skal ha tilgang til Internett og/eller lokalt nettverk. <br /> Hvis du ikke vet hva 'Ad Hoc'-tilstanden gj&oslash;, har du sannsynligvis ikke bruk for den.
+
+Helptext Encryption Type => 'WPA (RADIUS)' er kun st&oslash;ttet i AP (Tilgangspunkt)-tilstand. <br /> 'WPA (PSK)' fungerer ikke i 'Ad-Hoc' tilstand.
+
+Helptext IP Settings => IP-innstillinger er frivillig for DHCP og PPTP. N&aring; de er satt, blir de brukt som standardverdier hvis en DHCP-tjener ikke er tilgjengelig.
+
+Helptext Idle Time => Ventetid med inaktivitet f&oslash;r routeren kobler ned forbindelesen.
+
+Helptext Redial Timeout => Ventetid f&oslash;r routeren fors&oslash;ker &aring; ringe opp igjen.
+

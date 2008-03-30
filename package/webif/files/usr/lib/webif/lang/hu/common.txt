@@ -1,0 +1,227 @@
+lang => Magyar
+# Common
+Settings saved => Be&aacute;ll&iacute;t&aacute;sok elmentve
+Settings not saved => Be&aacute;ll&iacute;t&aacute;sok ment&eacute;s&eacute;nek mell&#337;z&eacute;se
+Save Changes => V&aacute;ltozat&aacute;sok ment&eacute;se
+Apply Changes => V&aacute;ltoztat&aacute;sok alkalmaz&aacute;sa
+Clear Changes => V&aacute;ltoztat&aacute;sok eldob&aacute;sa
+Review Changes => V&aacute;ltoztat&aacute;sok megtekint&eacute;se
+Host Name => Host n&eacute;v
+Uptime => &Uuml;zemid&#337;
+Load => Rendszer terhel&eacute;s
+Version => Verzi&oacute;
+Categories => Kategori&aacute;k
+Subcategories => Alkateg&oacute;ri&aacute;k
+more... => Tov&aacute;bbi inform&aacute;ci&oacute;k...
+Add => Hozz&aacute;ad
+Remove => Elt&aacute;vol&iacute;t
+Warning => Vigy&aacute;zat
+Password_warning => A Web-Adminisztr&aacute;toenak &eacute;s az SSH hozz&aacute;f&eacute;r&eacute;shez m&eacute;g nincs jelsz&oacute; be&aacute;ll&iacute;tva.<br />Adjon meg most egy &uacute;j jelsz&oacute;t (felhaszn&aacute;l&oacute;n&eacute;v a b&ouml;ng&eacute;sz&#337;ben: 'root').
+
+# Categories
+Info => Inform&aacute;ci&oacute;
+About => R&oacute;lunk
+Router Info => Router inform&aacute;ci&oacute;
+
+Status => &Aacute;llapot
+Connections => H&aacute;l&oacute;zati kapcsolatok
+DHCP => DHCP
+Wireless => WLAN
+
+System => Rendszer
+Password => Jelsz&oacute;
+Settings => Be&aacute;ll&iacute;t&aacute;sok
+Installed Software => Telep&iacute;t&eacute;s
+Firmware Upgrade => Firmware friss&iacute;t&eacute;s
+
+Network => H&aacute;l&oacute;zat
+LAN => LAN
+WAN => Internet
+Wireless => WLAN
+Advanced Wireless => WLAN (halad&oacute;)
+Hosts => Host konfigur&aacute;ci&oacute;
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => This program is free software; you can redistribute it and/or <br >modify it under the terms of the GNU General Public License <br >as published by the Free Software Foundation; either version 2 <br > of the License, or (at your option) any later version. 
+Contributions by => Contributions by
+Layout based on => Layout based on
+by => by
+
+No config change. => A konfigur&aacute;ci&oacute;ban nincs v&aacute;ltoz&aacute;s.
+Config discarded. => Konfigur&aacute;ci&oacute; v&aacute;ltoztat&aacute;sok eldobva.
+Config changes: => Konfigur&aacute;ci&oacute; m&oacute;dod&iacute;t&aacute;sok:
+Updating config... => Konfigur&aacute;ci&oacute; friss&iacute;t&eacute;se...
+
+
+# 'Router Info' page
+Firmware Version => Firmware verzi&oacute;
+Kernel Version => Kernel verzi&oacute;
+Current Date/Time => Aktu&aacute;lis d&aacute;tum/id&#337;
+MAC Address => MAC Address
+
+
+# 'Connections' page
+Connection Status => Kapcsolatok
+Physical Connections => Fizikai kapcsolatok
+Router Connections => Router kapcsolatok
+
+
+# 'DHCP' page
+DHCP leases => DHCP b&eacute;rletek
+IP Address => IP c&iacute;m
+Name => N&eacute;v
+Expires in => Lej&aacute;r
+
+
+# 'Wireless Status' page
+Wireless Status => WLAN &aacute;llapot
+
+# 'Password' page
+Password Change => Jelsz&oacute; csere
+New Password => &Uacute;j jelsz&oacute;
+Confirm Password => Jelsz&oacute; m&eacute;gegyszer
+
+# 'System Settings' page
+System Settings => Rendszer be&aacute;ll&iacute;t&aacute;sok
+Host Name => Host n&eacute;v
+Language => Nyelv
+
+# 'Installed Software' page
+Installed Packages => Telep&iacute;tett csomagok
+Update package lists => Csomaglista friss&iacute;t&eacute;se
+Uninstall => Elt&aacute;vol&iacute;t&aacute;s
+Install => Telep&iacute;t&eacute;s
+
+
+# 'Firmware Upgrade' page
+Firmware format => Firmware format
+Error => Hiba
+done => K&eacute;sz
+Invalid_format => &Eacute;rv&eacute;nytelen Firmware
+Erase_JFFS2 => JFFS2 part&iacute;ci&oacute; t&ouml;rl&eacute;se
+Options => Opci&oacute;k
+Firmware_image => Firmware
+Upgrade => Friss&iacute;t&eacute;s
+Upgrading... => Friss&iacute;t&eacute;s folyamatban...
+
+# 'LAN Settings' page
+LAN Settings => H&aacute;l&oacute;zat be&aacute;ll&iacute;t&aacute;sok
+LAN Configuration => H&aacute;l&oacute;zat konfigur&aacute;ci&oacute;
+Netmask => H&aacute;l&oacute;zati maszk
+Default Gateway => Alap&eacute;rtelmezett &aacute;tj&aacute;r&oacute;
+DNS Servers => DNS szerverek
+DNS Address => DNS szerver c&iacute;m
+
+Note => Megjegyz&eacute;s
+
+
+# 'WAN Settings' page
+WAN Settings => Internet be&aacute;ll&iacute;t&aacute;sok
+WAN Configuration => Internet konfigur&aacute;ci&oacute;
+PPTP Server IP => PPTP szerver c&iacute;m
+Connection Type => Kapcsolat t&iacute;pusa
+No WAN => Nincs internet
+DHCP => DHCP
+Static IP => Statikus IP konfigur&aacute;ci&oacute;
+IP Settings => IP be&aacute;ll&iacute;t&aacute;sok
+PPP Settings => PPP be&aacute;ll&iacute;t&aacute;sok
+Redial Policy => &Uacute;jrat&aacute;rcs&aacute;z&aacute;s szab&aacute;lya
+Connect on Demand => Csatlakoz&aacute;s k&eacute;r&eacute;s eset&eacute;n
+Keep Alive => Tartsd &eacute;letben
+Maximum Idle Time => Maximum inakt&iacute;v &iacute;d&#337;
+Redial Timeout => &Uacute;jrat&aacute;rcs&aacute;z&aacute;si id&#337;
+MTU => Maximal Transfer Unit
+Username => Felhaszn&aacute;l&oacute;
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => WLAN konfigur&aacute;ci&oacute;
+Wireless Interface => WLAN interf&eacute;sz
+WEP Key => WEP kulcs
+Selected WEP Key => V&aacute;lasztott WEP kulcs
+WPA PSK => WPA PSK
+ESSID => ESSID
+Channel => Csatorna
+RADIUS IP Address => RADIUS szerver c&iacute;m
+RADIUS Server Key => RADIUS szerver kulcs
+Enabled => Enged&eacute;lyezve
+Disabled => Tiltva
+ESSID Broadcast => ESSID hirdet&eacute;se (sz&oacute;r&aacute;sa)
+Show => Enged&eacute;lyezve
+Hide => Tiltva
+WLAN Mode => WLAN m&oacute;d
+Access Point => Access Point
+Client => Client
+Bridge => Bridge
+Ad-Hoc => Ad-Hoc
+Encryption Settings => Titkos&iacute;t&aacute;s be&aacute;ll&iacute;t&aacute;sok
+Encryption Type => Titkos&iacute;t&aacute;s t&iacute;pusa
+PSK => PSK
+WPA Mode => WPA m&oacute;d
+WPA Algorithms => WPA algoritmus
+WEP Keys => WEP kulcsok
+
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => WLAN konfigur&aacute;ci&oacute; (halad&oacute;)
+WDS Connections => WDS kapcsolatok
+MAC Filter List => MAC Address sz&uuml;r&eacute;s
+Filter Mode => Sz&uuml;r&#337; m&oacute;d
+Allow => Enged&eacute;lyez&#337;
+Deny => Tilt&oacute;
+Set => Be&aacute;ll&iacute;t&aacute;s
+Settings => Be&aacute;ll&iacute;t&aacute;sok
+Automatic WDS => Automatikus WDS
+
+# "Hosts" page
+
+MAC Address => MAC-Address
+Configured Hosts => Konfigur&aacute;lt g&eacute;pek
+DHCP Static => Statikus DHCP be&aacute;ll&iacute;t&aacute;sok
+Host Names => Host nevek
+
+
+Up => Fel
+Down => Le
+Edit => Szerkeszt&eacute;s
+Delete => T&ouml;rl&eacute;s
+Save => Ment&eacute;s
+Cancel => M&eacute;gse
+
+Forward => Tov&aacute;bb&iacute;t
+Accept => Elfogad
+Drop => Eldob
+
+Firewall => T&#369;zfal
+Firewall Rules => T&#369;zfal szab&aacute;lyok
+Firewall Configuration => T&#369;zfal konfigur&aacute;ci&oacute;
+
+New Rule => &Uacute;j szab&aacute;ly
+Match => Illeszt
+Target => C&eacute;l
+Port => Port
+
+Protocol => Protokoll
+Source IP => Forr&aacute;s-IP
+Destination IP => C&eacute;l-IP
+Source Ports => Forr&aacute;s-Portok
+Destination Ports => C&eacute;l-Portok
+
+Forward to => Tov&aacute;bb&iacute;t
+Port => Port
+
+Helptext ESSID => A vezet&eacute;k n&eacute;lk&uuml;li h&aacute;l&oacute;zat neve.
+Helptext DNS save => Mentsd el a be&aacute;ll&iacute;t&aacute;sokat, miel&#337;tt ezen az oldalon hozz&aacute;adsz ill. elt&aacute;vol&iacute;tasz DNS szervert.
+
+Helptext Operation mode => Ezek a be&aacute;ll&iacute;tsok a vezet&eacute;k n&eacute;lk&uuml;li h&aacute;lozat m&#369;k&ouml;d&eacute;s&eacute;t hat&aacute;rozz&aacute;k meg. A 'Client (Bridge)' m&oacute;d a h&aacute;l&oacute;zati csatol&oacute; be&aacute;ll&iacute;t&aacute;sait nem m&oacute;dos&iacute;tja. Csak n&eacute;h&aacute;ny param&eacute;tert &aacute;ll&iacute;t a vezet&eacute;kn&eacute;lk&uuml;li eszk&ouml;zmeghajt&oacute;ban, a korl&aacute;tozott &aacute;thidal&aacute;shoz.
+Helptext Encryption Type => 'WPA (RADIUS)' csak Access-Pont m&oacute;dban t&aacute;mogatott. <br /> 'WPA (PSK)' nem m&#369;k&ouml;dik Ad-Hoc m&oacute;dban. 
+Helptext IP Settings => IP be&aacute;ll&iacute;t&aacute;sok opcion&aacute;lisak a DHCP-hez &eacute;s a PPTP-hez. Az itt be&aacute;ll&iacute;tott &eacute;rt&eacute;kek lesznek az alap&eacute;rtelmezettek, ha a DHCP szerver nem el&eacute;rhet&#337;. 
+Helptext Idle Time => Maxim&aacute;lis id&#337; m&aacute;sodpercben internet forgalom n&eacute;lk&uuml;l, amennyit a router v&aacute;r miel&#337;tt bontja a kapcsolatot (csak 'Csatlakoz&aacute;s k&eacute;r&eacute;s eset&eacute;n' m&oacute;dban).
+Helptext Redial Timeout => Maxim&aacute;lis id&#337; m&aacute;sodpercben az &uacute;jrat&aacute;rcs&aacute;z&aacute;s el&#337;tt, ha a szolg&aacute;ltat&oacute; nem v&aacute;laszol.
+
+# untranslated:
+Available packages => Haszn&aacute;lhat&oacute; csomagok
+

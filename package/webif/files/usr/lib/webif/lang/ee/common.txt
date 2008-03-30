@@ -1,0 +1,230 @@
+lang => Eesti
+#Common 
+Settings saved => S&auml;tted salvestatud
+Settings not saved => S&auml;tted on salvestamata
+Save Changes => Salvesta muudatused
+Apply Changes => Rakenda muudatused
+Clear Changes => Kustuta muudatused
+Review Changes => Vaata tehtud muudatusi
+Host Name => Hostinimi
+Uptime => T&ouml;&ouml;v&otilde;imeaega seni
+Load => Koormus
+Version => Versioon
+Categories => Kategooriad
+Subcategories => Alamkategooriad
+more... => veel... 
+Add => Lisa
+Remove => Eemalda
+Warning => Hoiatus
+Password_warning => veebilidese ja SSH salas&otilde;na on seadmata<br />Palun, sisesta see (veebiliidese kasutajanimi on 'root').
+ 
+# Categories 
+Info => Info
+About => Teavet
+Router Info => Marsruuteri info
+ 
+Status => Olek
+Connections => &Uuml;hendused
+DHCP => DHCP 
+Wireless => Raadioliides
+ 
+System => S&uuml;steem
+Password => Parool
+Settings => S&auml;tted
+Installed Software => Installitud tarkvara
+Firmware Upgrade => P&uuml;sivara uuendamine
+ 
+Network => V&otilde;rk
+LAN => LAN 
+WAN => WAN 
+Wireless => Raadioliides
+Advanced Wireless => Raadioliidese t&auml;psemad s&auml;tted
+Hosts => Hostid
+ 
+
+# About page 
+Copyright => Copyright 
+ 
+GPL_Text => K&auml;esolev programm on vabavara; seda v&otilde;ib levitada ja/v&otilde;i <br >modifitseerida vastavalt Free Software Foundationi <br > avaldatud avaliku litsentsi GNU General Public License 2. versiooni v&otilde;i <br > (teie valikul) mis tahes uuema versiooni tingimustele.
+ 
+Contributions by => Kaasaaitajad
+Layout based on => Kujunduse idee
+by => autor
+ 
+ 
+No config change. => Konfiguratsioon muutmata. 
+Config discarded. => Konfiguratsioon h&uuml;ljatud. 
+Config changes: => Konfiguratsiooni muudatused: 
+Updating config... => Uuendan konfiguratsiooni... 
+ 
+# Router Info page 
+Firmware Version => P&uuml;sivara versioon
+Kernel Version => Kerneli versioon
+Current Date/Time => Praegune kuup&auml;ev/kellaaeg
+MAC Address => MAC-aadress 
+ 
+ 
+# Connections page 
+Connection Status => &Uuml;henduse olek
+Physical Connections => F&uuml;&uuml;silised &uuml;hendused
+Router Connections => Marsruuteri&uuml;hendused
+ 
+ 
+# DHCP page 
+DHCP leases => DHCP antud aadressid 
+IP Address => IP-aadress
+Name => Nimi
+Expires in => Aegub
+ 
+ 
+# Wireless Status page 
+Wireless Status => Raadioliidese olek
+ 
+# Password page 
+Password Change => Parooli muutmine
+New Password => Uus parool
+Confirm Password => Korrake parooli
+ 
+# System Settings page 
+System Settings => S&uuml;steemi s&auml;tted
+Host Name => Hostinimi
+Language => Keel
+ 
+# Installed Software page 
+Installed Packages => Installitud paketid
+Update package lists => V&auml;rskenda paketiloendit
+Uninstall => Desinstalli
+Install => Installi
+Available packages => Saadaolevad paketid 
+ 
+# Firmware Upgrade page 
+Firmware format => P&uuml;sivara vorming
+Error => T&otilde;rge
+done => valmis
+Invalid_format => Vale vorming
+Erase_JFFS2 => Kustuta JFFS2 
+Options => Valikud
+Firmware_image => P&uuml;sivara t&otilde;mmis
+Upgrade => Versiooniuuendus
+Upgrading... => Uuendan... 
+ 
+# LAN Settings page 
+LAN Settings => LAN-i s&auml;tted 
+LAN Configuration => LAN-i konfiguratsioon 
+Netmask => V&otilde;rgu mask
+Default Gateway => Vaikel&uuml;&uuml;s
+DNS Servers => DNS-serverid 
+DNS Address => DNS-i aadress
+ 
+Note => M&auml;rkus
+ 
+ 
+# WAN Settings page 
+WAN Settings => WAN-i s&auml;tted
+WAN Configuration => WAN-i konfiguratsioon
+PPTP Server IP => PPTP-serveri IP 
+Connection Type => &Uuml;henduse t&uuml;&uuml;p
+No WAN => WAN-i ei kasutata
+DHCP => DHCP 
+Static IP => Staatiline IP
+IP Settings => IP-s&auml;tted
+PPP Settings => PPP-s&auml;tted
+Redial Policy => Kordusvalimispoliitika
+Connect on Demand => &Uuml;henda n&otilde;udmisel
+Keep Alive => Hoia &uuml;hendust t&ouml;&ouml;s
+Maximum Idle Time => Maksimaalne j&otilde;udeaeg
+Redial Timeout => Kordusvalimise aegumine
+MTU => MTU 
+Username => Kasutajanimi
+ 
+ 
+# Wireless Configuration page 
+Wireless Configuration => Raadioliidese konfiguratsioon 
+Wireless Interface => Raadioliides
+WEP Key => WEP-v&otilde;ti 
+Selected WEP Key => Valitud WEP-v&otilde;ti 
+WPA PSK => WPA PSK 
+ESSID => ESSID 
+Channel => Kanal
+RADIUS IP Address => RADIUS IP-aadress
+RADIUS Server Key => RADIUS-serveri v&otilde;ti 
+Enabled => Lubatud
+Disabled => Keelatud
+ESSID Broadcast => ESSID-i levindamine 
+Show => N&auml;ita
+Hide => Peida
+WLAN Mode => WLAN-i rez"iim
+Access Point => AP
+Client => Klient
+Bridge => Sild
+Ad-Hoc => Ad-Hoc 
+Encryption Settings => Kr&uuml;pteerimise s&auml;tted
+Encryption Type => Kr&uuml;pteerimise t&uuml;&uuml;p
+PSK => PSK 
+WPA Mode => WPA rez"iim 
+WPA Algorithms => WPA algoritmid 
+WEP Keys => WEP-v&otilde;tmed 
+ 
+ 
+# Advanced Wireless Configuration page 
+Advanced Wireless Configuration => Raadioliidese t&auml;psem konfiguratsioon
+WDS Connections => WDS-&uuml;hendused 
+MAC Filter List => MAC-filtri loend 
+Filter Mode => Filtri rez"iim
+Allow => Luba
+Deny => Keela
+Set => Sea 
+Settings => S&auml;tted
+Automatic WDS => Automaatne WDS
+ 
+# "Hosts" page 
+ 
+MAC Address => MAC-aadress 
+Configured Hosts => Konfigureeritud hostid
+DHCP Static => Staatiline DHCP
+Host Names => Hostinimed
+ 
+ 
+Up => &Uuml;les
+Down => Alla
+Edit => Muuda
+Delete => Kustuta
+Save => Salvesta
+Cancel => Loobu
+ 
+Forward => Forward
+Accept => Accept
+Drop => Drop
+ 
+Firewall => Tulem&uuml;&uuml;r
+Firewall Rules => Tulem&uuml;&uuml;ri reeglid
+Firewall Configuration => Tulem&uuml;&uuml;ri konfiguratsioon
+ 
+New Rule => Uus reegel
+Match => Vastavus
+Target => Sihtkoht
+Port => Port 
+ 
+Protocol => Protokoll
+Source IP => Saatja IP
+Destination IP => Saaja IP 
+Source Ports => Saatja pordid
+Destination Ports => Saaja pordid
+ 
+Forward to => Suuna:
+Port => Port 
+ 
+Helptext ESSID => Teie traadita v&otilde;rgu v&otilde;rgunimi
+
+Helptext DNS save => Sellel lehel tehtud muudatused tuleb enne DNS-serverite lisamist/eemaldamist salvestada
+ 
+Helptext Operation mode => M&auml;&auml;rab teie traadita v&otilde;rgu t&ouml;&ouml;reziimi. S&auml;te "Klient (Sild)" ei muuda v&otilde;rguliidese s&auml;tteid. Muudetakse ainult raadioliidese draiveri teatud parameetreid, mis on seotud liidese sillarez"iimi piirangute lubamisega
+ 
+Helptext Encryption Type => 'WPA (RADIUS)' on lubatud ainult rez"iimis "AP". <br /> S&auml;te 'WPA (PSK)' ei t&ouml;&ouml;ta v&otilde;rd&otilde;igusv&otilde;rgurez"iimis (Ad-Hoc)
+ 
+Helptext IP Settings => IP-s&auml;tted on DHCP ja PPTP puhul valikulised. Kui muudate neid s&auml;tteid, siis rakendatakse need vaikes&auml;tetena juhul, kui DHCP-server pole saadaval.
+ 
+Helptext Idle Time => Aeg sekundites, mille v&auml;ltel marsruuter enne Interneti-&uuml;henduse katkestamist ootab (ainult s&auml;tte Connect on Demand puhul).
+ 
+Helptext Redial Timeout => Aeg sekundites, kui kaua marsruuter p&auml;rast teenusepakkuja v&otilde;rgust teate "pole vastust" saamist ootab, enne kui asub &uuml;hendust taastama.
+

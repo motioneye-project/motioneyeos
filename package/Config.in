@@ -208,6 +208,7 @@ source "package/ttcp/Config.in"
 source "package/udpcast/Config.in"
 source "package/vpnc/Config.in"
 source "package/vtun/Config.in"
+source "package/webif/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/wget/Config.in"
 endif

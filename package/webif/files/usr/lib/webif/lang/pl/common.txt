@@ -1,0 +1,228 @@
+lang => Polski
+# Common
+Settings saved => Ustawienia zosta&#322;y zapisane
+Settings not saved => Ustawienia niezosta&#322;y zapisane
+Save Changes => Zapisz zmiany
+Apply Changes => Zastosuj zmiany
+Clear Changes => Czy&#347;&#263; zmiany
+Review Changes => Przej&#380;yj zmiany
+Host Name => Hostname
+Uptime => Czas pracy
+Load => Obci&#261;&#380;enie
+Version => Wersja
+Categories => Kategorie
+Subcategories => Podkategorie
+more... => Wi&#281;cej Informacji...
+Add => Dodaj
+Remove => Usu&#324;
+Warning => Uwaga
+Password_warning => Niemasz ustawionego has&#322;a dost&#281;pu do WWW oraz SSH<br />Prosze wpisz je teraz(nazwa u&#380;ytkownika to 'root')
+
+# Categories
+Info => Info
+About => O Autorze
+Router Info => Info o WRT
+
+Status => Status
+Connections => Po&#322;aczenia
+DHCP => DHCP
+Wireless => WLAN
+
+System => System
+Password => Has&#322;o
+Settings => Ustawienia
+Installed Software => Zainstalowane pakiety
+Firmware Upgrade => Aktualizacja opr.
+
+Network => Sie&#263;
+LAN => LAN
+WAN => Internet(WAN)
+Wireless => WLAN
+Advanced Wireless => Zaawansowane WLAN
+Hosts => Konfiguracja Hostów
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => This program is free software; you can redistribute it and/or <br >modify it under the terms of the GNU General Public License <br >as published by the Free Software Foundation; either version 2 <br > of the License, or (at your option) any later version. 
+Contributions by => Wspólpracownicy
+Layout based on => Layout bazuje na
+by => by
+
+
+No config change. => Nie dokonano zmian.
+Config discarded. => Zmiany zosta&#322;y anulowane.
+Config changes: => Aktualna konfiguracja:
+Updating config... => Aktualizacja konfiguracji...
+
+
+# 'Router Info' page
+Firmware Version => Wersja Opr.
+Kernel Version => Wersja kernela
+Current Date/Time => Aktualna Data/Czas
+MAC Address => Adres MAC
+
+
+# 'Connections' page
+Connection Status => Stan po&#322;acze&#324;
+Physical Connections => Po&#322;&#261;czenia fizyczne
+Router Connections => Po&#322;&#261;czenia do routera
+
+
+# 'DHCP' page
+DHCP leases => Dzier&#380;awa DHCP
+IP Address => Adres IP
+Name => Nazwa
+Expires in => Wygasa za
+
+
+# 'Wireless Status' page
+Wireless Status => Status WLAN
+
+# 'Password' page
+Password Change => Zmien has&#322;o
+New Password => Nowe has&#322;o
+Confirm Password => Potwierdz has&#322;o
+
+# 'System Settings' page
+System Settings => Ustawienia Systemu
+Host Name => Hostname
+Language => J&#281;zyk
+
+# 'Installed Software' page
+Installed Packages => Zainstalowane pakiety
+Update package lists => Aktualizuj liste pakietów
+Uninstall => Usu&#324;
+Install => Instaluj
+
+
+# 'Firmware Upgrade' page
+Firmware format => Format pliku firmware
+Error => B&#322;&#261;d
+done => Gotowe
+Invalid_format => B&#322;&#281;dny format firmware
+Erase_JFFS2 => Formatuj JFFS2
+Options => Opcje
+Firmware_image => Obraz FW:
+Upgrade => Aktualizuj
+Upgrading... => Aktualizuje...
+
+# 'LAN Settings' page
+LAN Settings => Ustawienia LAN
+LAN Configuration => Konfiguracja LAN
+Netmask => Maska sieci
+Default Gateway => Brama domy&#347;lna
+DNS Servers => Serwer DNS
+DNS Address => Adres DNS
+
+Note => Notatka
+
+
+# 'WAN Settings' page
+WAN Settings => Ustawienia WAN
+WAN Configuration => Konfiguracja WAN
+PPTP Server IP => Adres serwera PPTP
+Connection Type => Po&#322;aczenie
+No WAN => Bez WAN
+DHCP => DHCP
+Static IP => Statyczne IP
+IP Settings => Ustawienia IP
+PPP Settings => Ustawienia PPP
+Redial Policy => Rodzaj wydzwaniania
+Connect on Demand => Po&#322;&#261;czenia na &#380;adanie
+Keep Alive => Trzymaj po&#322;&#261;czenie
+Maximum Idle Time => Max. czas bezczynno&#347;ci
+	
+MTU => MTU
+Username => Nazwa uzyt.
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => WLAN-Konfiguracja
+Wireless Interface => Intefejs WLAN
+WEP Key => Klucz WEP
+Selected WEP Key => Wybrany klucz WEP
+WPA PSK => WPA PSK
+ESSID => ESSID
+Channel => Kana&#322;
+RADIUS IP Address => Adres IP RADIUS
+RADIUS Server Key => Klucz RADIUS
+Enabled => W&#322;aczone
+Disabled => Wy&#322;&#261;czone
+ESSID Broadcast => Rozsy&#322;anie ESSID 
+Show => Poka&#380;
+Hide => Ukryj
+WLAN Mode => Tryb Radiowy
+Access Point => Punkt Dost&#281;powy
+Client => Klient
+Bridge => Most
+Ad-Hoc => Ad-Hoc
+Encryption Settings => Ustawienia kodowania
+Encryption Type => Rodzaj kodowania
+PSK => PSK
+WPA Mode => Tryb WPA
+WPA Algorithms => Algorytm WPA
+WEP Keys => Klucze WEP
+
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Zaawansowane WLAN
+WDS Connections => Po&#322;&#261;czenie WDS
+MAC Filter List => Filtrowanie MAC
+Filter Mode => Rodzaj filtra
+Allow => Udzielaj dost&#281;pu
+Deny => Odrzucaj dost&#281;p
+Set => Ustaw
+Settings => Ustawienia
+Automatic WDS => Automatyczny WDS
+
+# "Hosts" page
+
+MAC Address => Adres MAC
+Configured Hosts => Konfiguracja Host&#243;w
+DHCP Static => Statyczne DHCP
+Host Names => Lista Host&#243;w
+
+
+Up => W g&#243;r&#281;
+Down => W d&#243;&#322;
+Edit => Edytuj
+Delete => Kasuj
+Save => Zapisz
+Cancel => Anuluj
+
+Forward => Przekieruj
+Accept => Akceptuj
+Drop => Odrzu&#263;
+
+Firewall => Firewall
+Firewall Rules => Regu&#322;y Firewalla
+Firewall Configuration => Konfiguracja Firewalla
+
+New Rule => Nowa regu&#322;a
+Match => Dotyczy
+Target => Cel
+Port => Port
+
+Protocol => Protok&#243;&#322;
+Source IP => IP &#380;r&#243;d&#322;owe
+Destination IP => IP docelowe
+Source Ports => Port &#380;r&#243;d&#322;owy
+Destination Ports => Port docelowy
+
+Forward to => Przekieruj do
+Port => Port
+
+Helptext ESSID => Nazwa sieci radiowej
+Helptext DNS save => Musisz zapisa&#263; ustawienia przed dodaniem/usuni&#281;ciem serwera DNS
+
+Helptext Operation mode => Umo&#380;liwia wyb&#243;r pracy urz&#261;dzenia.
+Helptext Encryption Type => 'WPA (RADIUS)' dzia&#322;a tylko w trybie Access Point <br /> 'WPA (PSK)' nie dzia&#322;a w trybie Ad-Hoc. 
+Helptext IP Settings => Ustawienia numeru IP dla DHCP i PPTP jest niekonieczne. Je&#380;eli je ustawisz, b&#281;da u&#380;ywane jako domy&#347;lnje w przypadku , gdy serwer DHCP bedzie niedost&#281;pny.
+Helptext Idle Time => Czas w sekundach bezruchu internetowego, po up&#322;ywie kt&#243;rych nast&#281;puje roz&#322;aczenie (tylko Po&#322;&#261;czenie na z&#261;danie)
+Helptext Redial Timeout => Liczba sekund, kt&#243;re trzeba odczekac po tym, jak nie otrzymales odpowiedzi od providera (przed ponowna proba podlaczenia)
+
+# untranslated:
+Available packages => Available packages
+

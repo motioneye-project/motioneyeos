@@ -1,0 +1,225 @@
+lang => &#268;esky
+# Common
+Settings saved => Nastaven&#237; ulo&#382;eno
+Settings not saved => Nastaven&#237; nebylo ulo&#382;eno
+Save Changes => Ulo&#382;it zm&#277;ny
+Apply Changes => Prov&#233;st zm&#277;ny
+Clear Changes => Vymazat zm&#277;ny
+Review Changes => Prohl&#233;dnout zm&#277;ny
+Host Name => Hostname
+Uptime => Uptime
+Load => Zat&#237;&#382;en&#237;
+Version => Verze
+Categories => Kategorie
+Subcategories => Podkategorie
+more... => v&#237;ce...
+Add => P&#345;idat
+Remove => Odebrat
+Warning => Varov&#225;n&#237;
+Password_warning => nen&#237; nastaveno &#382;&#225;dn&#233; heslo pro p&#345;&#237;stup do webov&#233; administrace a p&#345;es SSH.<br />Nastavte jej pros&#237;m nyn&#237; (Login ve webu pou&#382;&#237;vejte: 'root').
+
+# Categories
+Info => Info
+About => Projekt
+Router Info => Router
+
+Status => Stav
+Connections => P&#345;ipojen&#237;
+DHCP => DHCP
+Wireless => WLAN
+
+System => Syst&#233;m
+Password => Heslo
+Settings => Nastaven&#237;
+Installed Software => Nainstalovan&#253; software
+Firmware Upgrade => Flashnut&#237; firmware
+
+Network => S&#237;&#357;
+LAN => LAN
+WAN => WAN port
+Wireless => WLAN
+Advanced Wireless => WLAN (podrobn&#233;)
+Hosts => Stanice (hosts)
+
+
+# 'About' page
+Copyright => Copyright
+
+GPL_Text => Tento program pat&#345;&#237; mezi voln&#253; software, m&#367;&#382;ete jej distribuovat a/nebo m&#277;nit pod podm&#237;nkami uveden&#253;mi <br /> v licenci GNU GPL (General Public License) vydan&#253;mi Nadac&#237; pro svobodn&#253; software (Free Software Foundation), <br /> jej&#237; druh&#233; verze, p&#345;&#237;padn&#277; pozd&#277;j&#353;&#237;ch verz&#237;.
+Contributions by => S p&#345;isp&#277;n&#237;m
+Layout based on => Layout postaven na
+by => od
+
+
+No config change. => Nebyly provedeny &#382;&#225;dn&#233; zm&#277;ny konfigurace.
+Config discarded. => Va&#353;e nastaven&#237; byla zahozena.
+Config changes: => Aktu&#225;ln&#237; zm&#277;ny konfigurace:
+Updating config... => Aktualizuji konfiguraci...
+
+
+# 'Router Info' page
+Firmware Version => Verze firmware
+Kernel Version => Verze j&#225;dra
+Current Date/Time => Aktu&#225;ln&#237; datum/&#269;as
+MAC Address => MAC adresa
+
+
+# 'Connections' page
+Connection Status => Stav spojen&#237;
+Physical Connections => Obsah ARP cache - aktivn&#237; MAC/IP adresy
+Router Connections => Spojen&#237; na router
+
+
+# 'DHCP' page
+DHCP leases => DHCP v&#253;p&#367;j&#269;ky
+IP Address => IP adresa
+Name => Jm&#233;no
+Expires in => Vypr&#353;&#237;
+
+
+# 'Wireless Status' page
+Wireless Status => Stav wifi
+
+# 'Password' page
+Password Change => Zm&#277;na hesla
+New Password => Nov&#233; heslo
+Confirm Password => Nov&#233; heslo (potvrzen&#237;)
+
+# 'System Settings' page
+System Settings => Syst&#233;mov&#225; nastaven&#237;
+Host Name => Hostname
+Language => Jazyk
+
+# 'Installed Software' page
+Installed Packages => Nainstalovan&#233; bal&#237;&#269;ky
+Available packages => Dostupn&#233; bal&#237;&#269;ky
+Update package lists => Aktualizovat seznam bal&#237;&#269;k&#367;
+Uninstall => Odinstalovat
+Install => Nainstalovat
+
+
+# 'Firmware Upgrade' page
+Firmware format => Form&#225;t firmware
+Error => Chyba
+done => hotovo
+Invalid_format => Form&#225;t firmware je nezn&#225;m&#253;
+Erase_JFFS2 => Smazat JFFS2 oblast
+Options => Mo&#382;nosti
+Firmware_image => Soubor firmware:
+Upgrade => Flashnout
+Upgrading... => Flashuji...
+
+# 'LAN Settings' page
+LAN Settings => Nastaven&#237; LAN
+LAN Configuration => Konfigurace LAN
+Netmask => Maska
+Default Gateway => Br&#225;na
+DNS Servers => DNS servery
+DNS Address => Adresa DNS serveru
+
+Note => Pozn&#225;mka
+
+
+# 'WAN Settings' page
+WAN Settings => Nastaven&#237; WAN portu
+WAN Configuration => Konfigurace
+PPTP Server IP => Adresa PPTP serveru
+Connection Type => Typ p&#345;ipojen&#237;
+No WAN => Odpojeno
+DHCP => DHCP
+Static IP => Pevn&#225; IP
+IP Settings => Nastaven&#237; IP
+PPP Settings => Nastaven&#237; PPP
+Redial Policy =>  Nav&#225;z&#225;n&#237; spojen&#237;
+Connect on Demand => Na vy&#382;&#225;d&#225;n&#237; (Connect on Demand)
+Keep Alive => St&#225;le p&#345;ipojen (Keep Alive)
+Maximum Idle Time => Maxim&#225;ln&#237; &#269;as bez aktivity (Maximum Idle Time)
+Redial Timeout => Prodleva znovunav&#225;z&#225;n&#237; spojen&#237; po jeho ztr&#225;t&#277; (Redial Timeout)
+MTU => Maxim&#225;ln&#237; velikost paketu (MTU)
+Username => U&#382;ivatelsk&#233; jm&#233;no
+
+
+# 'Wireless Configuration' page
+Wireless Configuration => Konfigurace wifi
+Wireless Interface => Wifi rozhran&#237;
+WEP Key => WEP kl&#237;&#269;
+Selected WEP Key => Vybran&#253; WEP kl&#237;&#269;
+WPA PSK => WPA kl&#237;&#269;
+ESSID => ESSID
+Channel => Kan&#225;l
+RADIUS IP Address => Adresa RADIUS serveru
+RADIUS Server Key => Heslo RADIUS serveru
+Enabled => Zapnuto
+Disabled => Vypnuto
+ESSID Broadcast => Skryt&#237; ESSID (ESSID-Broadcast) 
+Show => Zobrazeno
+Hide => Skryto
+WLAN Mode => Opera&#269;n&#237; m&#243;d
+Access Point => Access Point
+Client => Klient
+Bridge => Bridge
+Ad-Hoc => Ad-Hoc
+Encryption Settings => &#352;ifrov&#225;n&#237; p&#345;enosu
+Encryption Type => Typ &#353;ifrov&#225;n&#237;
+PSK => WPA PSK
+WPA Mode => M&#243;d WPA
+WPA Algorithms => WPA algoritmus
+WEP Keys => WEP kl&#237;&#269;e
+
+
+# 'Advanced Wireless Configuration' page
+Advanced Wireless Configuration => Roz&#353;&#237;&#345;en&#233; nastaven&#237; wifi
+WDS Connections => WDS spojen&#237;
+MAC Filter List => Seznam MAC filtru
+Filter Mode => M&#243;d MAC filtru
+Allow => Povolit MAC v seznamu
+Deny => Zak&#225;zat MAC s seznamu
+Set => Nastavit
+Settings => Nastaven&#237;
+Automatic WDS => Automatick&#233; WDS spojen&#237; (LazyWDS)
+
+# "Hosts" page
+
+MAC Address => MAC adresa
+Configured Hosts => Konfigurace stanic (hosts)
+DHCP Static => Pevn&#233; p&#345;id&#277;len&#237; IP podle MAC (DHCP)
+Host Names => Jm&#233;na stanic (hosts)
+
+
+Up => Nahoru
+Down => Dol&#367;
+Edit => Editovat
+Delete => Smazat
+Save => Ulo&#382;it
+Cancel => Storno
+
+Forward => Forward
+Accept => Accept
+Drop => Drop
+
+Firewall => Firewall
+Firewall Rules => Pravidla firewallu
+Firewall Configuration => Konfigurace firewallu
+
+New Rule => Nov&#233; pravidlo
+Match => Filtr
+Target => C&#237;l
+Port => Port
+
+Protocol => Protokol
+Source IP => Zdrojov&#225; IP
+Destination IP => C&#237;lov&#225; IP
+Source Ports => Zdrojov&#253; port
+Destination Ports => C&#237;lov&#253; port
+
+Forward to => Forward na
+Port => Port
+
+Helptext ESSID => N&#225;zev Va&#353;&#237; bezdr&#225;tov&#233; s&#237;t&#277;
+Helptext DNS save => P&#345;ed &#250;pravou nastaven&#237; DNS server&#367; ulo&#382;te ostatn&#237; zm&#277;ny na t&#233;to str&#225;nce.
+
+Helptext Operation mode => Toto nastaven&#237; m&#277;n&#237; m&#243;d bezdr&#225;tov&#233; s&#237;t&#277;. Volbou Klient (bridge) se nezm&#277;n&#237; nastaven&#237; s&#237;&#357;ov&#253;ch rozhran&#237;, pouze se nastav&#237; n&#277;kter&#233; parametry ovlada&#269;e wifi, kter&#233; umo&#382;n&#237; funk&#269;n&#277; omezenou mo&#382;nost vytvo&#345;en&#237; bridge nad rozhran&#237;mi.
+Helptext Encryption Type => 'WPA (RADIUS)' lze pou&#382;&#237;t pouze v m&#243;du Access Point. <br /> 'WPA (PSK)' nelze pou&#382;&#237;t v Ad-Hoc m&#243;du. 
+Helptext IP Settings => Nastaven&#237; IP je pro mo&#382;nost DHCP a PPTP voliteln&#233;. Zadan&#225; adresa se pou&#382;ije v p&#345;&#237;pad&#277;, &#382;e nen&#237; DHCP server dostupn&#253;.
+Helptext Idle Time => &#268;as v sekund&#225;ch, po kter&#253; kdy&#382; nedojde k &#382;&#225;dn&#233; aktivit&#277;, je spojen&#237; do Internetu uzav&#345;eno. (pouze pro volbu Connect on Demand)
+Helptext Redial Timeout => &#268;as po odpojen&#237;, po kter&#253; router &#269;ek&#225;, ne&#382; se pokus&#237; znovu nav&#225;zat spojen&#237;.
