@@ -259,11 +259,13 @@ choice
 
 config BR2_OPTIMIZE_0
 	bool "optimization level 0"
+	depends on !BR2_PACKAGE_LINUX
 	help
 	  Do not optimize. This is the default. 
 
 config BR2_OPTIMIZE_1
 	bool "optimization level 1"
+	depends on !BR2_PACKAGE_LINUX
 	help
 	  Optimize. Optimizing compilation takes somewhat more time, 
 	  and a lot more memory for a large function. With -O, the 
