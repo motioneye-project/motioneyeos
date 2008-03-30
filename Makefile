@@ -33,14 +33,10 @@ noconfig_targets:=menuconfig config oldconfig randconfig \
 
 
 # Use shell variables, if defined
-ifneq ($(BUILDROOT_DL_DIR),)
-BR2_DL_DIR:=$(BUILDROOT_DL_DIR)
-endif
-
 ifneq ($(BUILDROOT_LOCAL),)
-LOCAL:=$(BUILDROOT_LOCAL)
+BR2_LOCAL:=$(BUILDROOT_LOCAL)
 else
-LOCAL:=$(TOPDIR)/local
+BR2_LOCAL:=$(TOPDIR)/local
 endif
 
 # $(shell find . -name *_defconfig |sed 's/.*\///')
@@ -51,9 +47,15 @@ ifeq ($(BOARD),)
 -include $(TOPDIR).config
 else
 # if "make" command
--include $(LOCAL)/$(BOARD)/$(BOARD).config
+-include $(BR2_LOCAL)/$(BOARD)/$(BOARD).config
 endif
 endif
+
+# Override BR2_DL_DIR if shell variable defined
+ifneq ($(BUILDROOT_DL_DIR),)
+BR2_DL_DIR:=$(BUILDROOT_DL_DIR)
+endif
+LOCAL:=$(BR2_LOCAL)
 
 # To put more focus on warnings, be less verbose as default
 # Use 'make V=1' to see the full commands
