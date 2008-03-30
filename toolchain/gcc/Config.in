@@ -4,7 +4,7 @@ comment "GCC Options"
 
 choice
 	prompt "GCC compiler Version"
-	default BR2_GCC_VERSION_4_2_1 if !BR2_avr32
+	default BR2_GCC_VERSION_4_2_3 if !BR2_avr32
 	default BR2_GCC_VERSION_4_1_2 if BR2_avr32
 	help
 	  Select the version of gcc you wish to use.
@@ -23,15 +23,14 @@ choice
 		depends BR2_EXT_GCC_VERSION_4_1_2
 		bool "gcc 4.1.2"
 
-	config BR2_GCC_VERSION_4_2_0
-		depends !BR2_avr32 && !BR2_nios2
-		depends BR2_DEPRECATED || BR2_RECENT
-		bool "gcc 4.2.0"
-
 	config BR2_GCC_VERSION_4_2_1
 		depends !BR2_nios2
 		depends BR2_EXT_GCC_VERSION_4_2_1
 		bool "gcc 4.2.1"
+
+	config BR2_GCC_VERSION_4_2_3
+		depends !BR2_nios2 && !BR2_avr32
+		bool "gcc 4.2.3"
 
 #	config BR2_GCC_VERSION_4_3
 #		depends !BR2_avr32 && !BR2_nios2
@@ -52,8 +51,8 @@ config BR2_GCC_SUPPORTS_SYSROOT
 
 config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
-	default n if BR2_GCC_VERSION_3_4_6 || BR2_GCC_VERSION_4_0_4 || BR2_GCC_VERSION_4_1_2 || BR2_GCC_VERSION_4_2_0 || BR2_GCC_VERSION_4_2_1
-	default y if !BR2_GCC_VERSION_3_4_6 && !BR2_GCC_VERSION_4_0_4 && !BR2_GCC_VERSION_4_1_2 && !BR2_GCC_VERSION_4_2_0 && !BR2_GCC_VERSION_4_2_1
+	default n if BR2_GCC_VERSION_3_4_6 || BR2_GCC_VERSION_4_0_4 || BR2_GCC_VERSION_4_1_2 || BR2_GCC_VERSION_4_2_1 || BR2_GCC_VERSION_4_2_3
+	default y if !BR2_GCC_VERSION_3_4_6 && !BR2_GCC_VERSION_4_0_4 && !BR2_GCC_VERSION_4_1_2 && !BR2_GCC_VERSION_4_2_1 && !BR2_GCC_VERSION_4_2_3
 
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
@@ -68,8 +67,8 @@ config BR2_GCC_VERSION
 	default "3.4.6"     if BR2_GCC_VERSION_3_4_6
 	default "4.0.4"     if BR2_GCC_VERSION_4_0_4
 	default "4.1.2"     if BR2_GCC_VERSION_4_1_2
-	default "4.2.0"     if BR2_GCC_VERSION_4_2_0
 	default "4.2.1"     if BR2_GCC_VERSION_4_2_1
+	default "4.2.3"     if BR2_GCC_VERSION_4_2_3
 	default "4.3"       if BR2_GCC_VERSION_4_3
 
 config BR2_TOOLCHAIN_SYSROOT
