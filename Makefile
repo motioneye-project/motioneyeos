@@ -475,6 +475,9 @@ endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 	cp $(shell find ./target/ -name $@) .config
 	-@$(MAKE) oldconfig
 
+update:
+	cp .config $(BOARD_PATH)/$(BOARD_NAME)_defconfig
+
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 
 cross: $(BASE_TARGETS)
