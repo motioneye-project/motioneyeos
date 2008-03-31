@@ -61,10 +61,10 @@ $(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked
 $(DBUS_DIR)/$(DBUS_BINARY): $(DBUS_DIR)/.configured
 	$(MAKE) -C $(DBUS_DIR) all
 
-$(STAGING_DIR)/usr/lib/libdbus-1.so: $(DBUS_DIR)/$(DBUS_BINARY)
+$(STAGING_DIR)/$(DBUS_TARGET_BINARY): $(DBUS_DIR)/$(DBUS_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DBUS_DIR) install
 
-$(TARGET_DIR)/$(DBUS_TARGET_BINARY): $(STAGING_DIR)/usr/lib/libdbus-1.so
+$(TARGET_DIR)/$(DBUS_TARGET_BINARY): $(STAGING_DIR)/$(DBUS_TARGET_BINARY)
 	mkdir -p $(TARGET_DIR)/var/run/dbus $(TARGET_DIR)/var/lib/dbus $(TARGET_DIR)/etc/init.d
 ifeq ($(BR2_STRIP_none),y)
 	$(MAKE) DESTDIR=$(TARGET_DIR) \
