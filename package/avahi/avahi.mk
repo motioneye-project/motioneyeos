@@ -171,6 +171,7 @@ $(TARGET_DIR)/usr/sbin/avahi-daemon: $(AVAHI_DIR)/.installed
 ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
 	cp -dpf $(STAGING_DIR)/usr/bin/avahi-* $(TARGET_DIR)/usr/bin
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/avahi-*
+	mkdir -p $(TARGET_DIR)/etc/dbus-1/system.d/
 	cp -r $(STAGING_DIR)/etc/dbus-1/system.d/avahi-* \
 		$(TARGET_DIR)/etc/dbus-1/system.d/
 endif
