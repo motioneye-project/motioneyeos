@@ -103,7 +103,7 @@ endif
 endif
 endif
 
-KERNEL_CONFIG_METHOD:=($(strip $(subst ",,$(BR2_KERNEL_CONFIG_METHOD))),)
+KERNEL_CONFIG_METHOD:=$(strip $(subst ",,$(BR2_KERNEL_CONFIG_METHOD)))
 #"))
 ifeq ($(KERNEL_CONFIG_METHOD),)
 KERNEL_CONFIG_METHOD:=xconfig
@@ -335,6 +335,10 @@ ifeq ($(BR2_PACKAGE_LINUX_USE_KCONFIG),y)
 		$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(KERNEL_CONFIG_METHOD) ; \
 	fi
 endif
+ifneq ($(strip $(subst ",,$(BR2_EXTRA_VERSION))),)
+	$(SED) 's,^EXTRA_VERSION=.*,EXTRA_VERSION=="$(BR2_EXTRA_VERSION)",g'
+endif
+
 
 # -----------------------------------------------------------------------------
 $(LINUX26_DIR)/.configured: $(LINUX26_DIR)/.config
