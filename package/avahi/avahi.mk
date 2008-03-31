@@ -37,7 +37,7 @@ endif
 
 ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
 AVAHI_DISABLE_DBUS:=
-AVAHI_EXTRA_DEPS+=$(TARGET_DIR)/usr/bin/dbus-daemon
+AVAHI_EXTRA_DEPS+=$(STAGING_DIR)/usr/bin/dbus-daemon
 else
 AVAHI_DISABLE_DBUS:=--disable-dbus
 endif
