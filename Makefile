@@ -85,11 +85,6 @@ CONFIG_SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 
 export CONFIG_SHELL quiet Q KBUILD_VERBOSE VERBOSE
 
-HOSTCCACHE:=$(shell $(CONFIG_SHELL) -c "which ccache")
-ifneq ($(HOSTCCACHE),)
-BR2_HAVE_HOST_CCACHE=y
-endif
-
 ifndef HOSTAR
 HOSTAR:=ar
 endif
@@ -136,12 +131,6 @@ endif
 ifndef FCFLAGS_FOR_BUILD
 FCFLAGS_FOR_BUILD:=-g -O2
 endif
-
-ifeq ($(BR2_HAVE_HOST_CCACHE),y)
-HOSTCC:=$(HOSTCCACHE) $(HOSTCC)
-HOSTCXX:=$(HOSTCCACHE) $(HOSTCXX)
-endif
-
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTFC HOSTLD
 
 
