@@ -104,7 +104,7 @@ $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libncurs
 
 $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
-	-cp -dpf $(STAGING_DIR)/usr/lib/terminfo $(TARGET_DIR)/usr/lib/
+	ln -sf /usr/share/terminfo $(TARGET_DIR)/usr/lib/terminfo
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/x
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm $(TARGET_DIR)/usr/share/terminfo/x
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm-color $(TARGET_DIR)/usr/share/terminfo/x
@@ -129,8 +129,7 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/include/termcap.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.a $(TARGET_DIR)/usr/lib/
-	rm -f $(TARGET_DIR)/usr/lib/terminfo
-	(cd $(TARGET_DIR)/usr/lib; ln -fs ../share/terminfo; \
+	(cd $(TARGET_DIR)/usr/lib; \
 	 ln -fs libncurses.a libcurses.a; \
 	 ln -fs libncurses.a libtermcap.a; \
 	)
@@ -151,6 +150,7 @@ ncurses-clean:
 	rm -f $(STAGING_DIR)/usr/lib/libncurses.so* $(TARGET_DIR)/usr/lib/libncurses.so*
 	rm -rf $(STAGING_DIR)/usr/share/tabset $(TARGET_DIR)/usr/share/tabset
 	rm -rf $(STAGING_DIR)/usr/share/terminfo $(TARGET_DIR)/usr/share/terminfo
+	rm -rf $(TARGET_DIR)/usr/lib/terminfo
 	-$(MAKE) -C $(NCURSES_DIR) clean
 
 ncurses-dirclean:
