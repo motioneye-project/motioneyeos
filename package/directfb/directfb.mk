@@ -108,7 +108,7 @@ directfb: uclibc jpeg libpng freetype libsysfs tslib $(DIRECTFB_FUSION) \
 		$(TARGET_DIR)/usr/lib/libdirectfb.so
 
 directfb-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(DIRECTFB_DIR) uninstall
+	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(DIRECTFB_DIR) uninstall
 	-$(MAKE) -C $(DIRECTFB_DIR) clean
 
 directfb-dirclean:
