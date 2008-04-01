@@ -12,7 +12,12 @@ cd "${1:-.}" || usage
 if head=`git rev-parse --verify HEAD 2>/dev/null`; then
 	# Do we have an untagged version?
 	if git name-rev --tags HEAD | grep -E '^HEAD[[:space:]]+(.*~[0-9]*|undefined)$' > /dev/null; then
-	        git describe | awk -F- '{printf("-%05d-%s", $(NF-1),$(NF))}'
+	        git describe 2>/dev/null | awk -F- '{printf("-%05d-%s", $(NF-1),$(NF))}'
+	fi
+
+	# Is this git on svn?
+	if git config --get svn-remote.svn.url >/dev/null; then
+	        printf -- '-svn%s' "`git-svn find-rev $head`"
 	fi
 
 	# Are there uncommitted changes?
