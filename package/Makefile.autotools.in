@@ -234,6 +234,8 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 
 $(BUILD_DIR)/%/.stamp_cleaned:
 	$(call MESSAGE,"Cleaning up")
+	-$($(PKG)_MAKE_ENV) $(MAKE)  $($(PKG)_UNINSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	-$($(PKG)_MAKE_ENV) $(MAKE)  $($(PKG)_UNINSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
 	-$($(PKG)_MAKE_ENV) $(MAKE)  $($(PKG)_CLEAN_OPT) -C $(@D)/$($(PKG)_SUBDIR)
 
 $(BUILD_DIR)/%/.stamp_uninstalled:
