@@ -1,0 +1,16 @@
+--- busybox-1.10.0/networking/tcpudp.c	Thu Mar 20 12:46:42 2008
++++ busybox-1.10.0-tcpudp/networking/tcpudp.c	Mon Mar 31 21:27:38 2008
+@@ -29,10 +29,10 @@
+  * - don't know how to retrieve ORIGDST for udp.
+  */
+ 
+-#include <limits.h>
+-#include <linux/netfilter_ipv4.h> /* wants <limits.h> */
+-
+ #include "libbb.h"
++/* Wants <limits.h> etc, thus included after libbb.h: */
++#include <linux/netfilter_ipv4.h>
++
+ // TODO: move into this file:
+ #include "tcpudp_perhost.h"
+ 
