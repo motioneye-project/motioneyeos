@@ -2,6 +2,8 @@
 # filter the output from pkg-config (renamed as pkg-config.real)
 # and ensures PKG_CONFIG_SYSROOT is prepended to all paths
 
+set -o pipefail
+
 CMD=$0
 
 if [ ! "$PKG_CONFIG_SYSROOT" ]; then
@@ -22,6 +24,5 @@ then
 	#echo "OKAY" >&2;
 	exit 0;
 else
-	echo "pkg-config failed!" >&2
 	exit $?
 fi
