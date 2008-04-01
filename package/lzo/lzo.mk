@@ -54,7 +54,7 @@ $(STAGING_DIR)/usr/lib/liblzo.a: $(LZO_DIR)/src/liblzo.la
 lzo: uclibc $(STAGING_DIR)/usr/lib/liblzo.a
 
 lzo-clean:
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) uninstall
+	-$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LZO_DIR) uninstall
 	-$(MAKE) -C $(LZO_DIR) clean
 
 lzo-dirclean:

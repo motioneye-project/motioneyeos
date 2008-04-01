@@ -91,9 +91,8 @@ tslib-build: uclibc $(TSLIB_DIR)/.configured
 	touch $(TSLIB_DIR)/.compiled
 
 tslib-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(TSLIB_DIR) uninstall
-	rm -f $(STAGING_DIR)/lib/libts.*
-	rm -f $(STAGING_DIR)/usr/lib/libts.*
+	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(TSLIB_DIR) uninstall
+	rm -f $(STAGING_DIR)/lib/libts.* $(STAGING_DIR)/usr/lib/libts.*
 	-$(MAKE) -C $(TSLIB_DIR) clean
 
 tslib-dirclean:

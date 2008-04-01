@@ -64,7 +64,7 @@ $(TARGET_DIR)/usr/lib/libdrm.so: $(STAGING_DIR)/usr/lib/libdrm.so
 libdrm: uclibc pkgconfig $(TARGET_DIR)/usr/lib/libdrm.so
 
 libdrm-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBDRM_DIR) uninstall
+	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBDRM_DIR) uninstall
 	-$(MAKE) -C $(LIBDRM_DIR) clean
 
 libdrm-dirclean:

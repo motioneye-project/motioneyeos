@@ -55,7 +55,7 @@ $(STAGING_DIR)/$(PKGCONFIG_TARGET_BINARY): $(PKGCONFIG_DIR)/$(PKGCONFIG_BINARY)
 pkgconfig: uclibc $(STAGING_DIR)/$(PKGCONFIG_TARGET_BINARY)
 
 pkgconfig-clean:
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(PKGCONFIG_DIR) uninstall
+	-$(MAKE) DESTDIR=$(STAGING_DIR) -C $(PKGCONFIG_DIR) uninstall
 	-$(MAKE) -C $(PKGCONFIG_DIR) clean
 
 pkgconfig-dirclean:

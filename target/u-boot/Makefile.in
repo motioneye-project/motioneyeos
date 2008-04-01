@@ -25,7 +25,7 @@ define insert_define
 @echo "#endif" >> $(U_BOOT_INC_CONF_FILE)
 @echo "#define $(strip $(1)) $(2)" >> $(U_BOOT_INC_CONF_FILE)
 endef
-	
+
 $(DL_DIR)/$(U_BOOT_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(U_BOOT_SITE)/$(U_BOOT_SOURCE)
 
@@ -113,7 +113,7 @@ $(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
 u-boot: gcc $(BINARIES_DIR)/$(U_BOOT_BIN)
 
 u-boot-clean:
-	$(MAKE) -C $(U_BOOT_DIR) clean
+	-$(MAKE) -C $(U_BOOT_DIR) clean
 
 u-boot-dirclean:
 	rm -rf $(U_BOOT_DIR)

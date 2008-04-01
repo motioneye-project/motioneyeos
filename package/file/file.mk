@@ -105,7 +105,7 @@ endif
 file: zlib uclibc $(TARGET_DIR)/$(FILE_TARGET_BINARY)
 
 file-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FILE_DIR2) uninstall
+	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FILE_DIR2) uninstall
 	-$(MAKE) -C $(FILE_DIR2) clean
 
 file-dirclean:

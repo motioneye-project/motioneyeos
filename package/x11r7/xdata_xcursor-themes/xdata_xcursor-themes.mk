@@ -58,8 +58,8 @@ $(XDATA_XCURSOR_THEMES_DIR)/.installed: $(XDATA_XCURSOR_THEMES_DIR)/.built
 	touch $@
 
 xdata_xcursor-themes-clean:
-	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
-	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
+	-$(MAKE) prefix=$(STAGING_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
+	-$(MAKE) prefix=$(TARGET_DIR)/usr -C $(XDATA_XCURSOR_THEMES_DIR) uninstall
 	-$(MAKE) -C $(XDATA_XCURSOR_THEMES_DIR) clean
 	-rm $(XDATA_XCURSOR_THEMES_DIR)/.installed
 	-rm $(XDATA_XCURSOR_THEMES_DIR)/.built
