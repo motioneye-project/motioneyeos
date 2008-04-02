@@ -11,6 +11,7 @@ source "target/tar/Config.in"
 source "target/cpio/Config.in"
 source "target/iso9660/Config.in"
 source "target/initramfs/Config.in"
+source "target/romfs/Config.in"
 
 comment "bootloader for target device"
 
