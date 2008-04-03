@@ -3,9 +3,8 @@
 # diffutils
 #
 #############################################################
-DIFFUTILS_VERSION=2.8.7
+DIFFUTILS_VERSION=2.8.1
 DIFFUTILS_SOURCE:=diffutils-$(DIFFUTILS_VERSION).tar.gz
-#DIFFUTILS_SITE:=ftp://alpha.gnu.org/gnu/diffutils/
 DIFFUTILS_SITE:=$(BR2_GNU_MIRROR)/diffutils
 DIFFUTILS_CAT:=$(ZCAT)
 DIFFUTILS_DIR:=$(BUILD_DIR)/diffutils-$(DIFFUTILS_VERSION)

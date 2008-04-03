@@ -3,9 +3,8 @@
 # gzip
 #
 #############################################################
-GZIP_VERSION:=1.3.5
+GZIP_VERSION:=1.3.12
 GZIP_SOURCE:=gzip-$(GZIP_VERSION).tar.gz
-#GZIP_SITE:=ftp://alpha.gnu.org/gnu/gzip
 GZIP_SITE:=$(BR2_GNU_MIRROR)/gzip
 GZIP_DIR:=$(BUILD_DIR)/gzip-$(GZIP_VERSION)
 GZIP_CAT:=$(ZCAT)
