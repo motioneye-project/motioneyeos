@@ -18,7 +18,7 @@ uemacs-source: $(DL_DIR)/$(UEMACS_SOURCE)
 
 $(UEMACS_DIR)/.unpacked: $(DL_DIR)/$(UEMACS_SOURCE)
 	$(UEMACS_CAT) $(DL_DIR)/$(UEMACS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(UEMACS_DIR) package/uemacs/ uemacs\*.patch
+	toolchain/patch-kernel.sh $(UEMACS_DIR) package/editors/uemacs/ uemacs\*.patch
 	touch $(UEMACS_DIR)/.unpacked
 
 $(UEMACS_DIR)/$(UEMACS_BINARY): $(UEMACS_DIR)/.unpacked
