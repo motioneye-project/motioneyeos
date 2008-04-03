@@ -51,15 +51,15 @@ $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY): $(BRIDGE_BUILD_DIR)/brctl/brctl
 	#cp -af $(BRIDGE_BUILD_DIR)/brctl/brctld $(TARGET_DIR)/usr/sbin/
 	#$(STRIPCMD) $(TARGET_DIR)/usr/sbin/brctld
 
-bridge: $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
+bridge-utils: $(TARGET_DIR)/$(BRIDGE_TARGET_BINARY)
 
-bridge-source: $(DL_DIR)/$(BRIDGE_SOURCE)
+bridge-utils-source: $(DL_DIR)/$(BRIDGE_SOURCE)
 
-bridge-clean:
+bridge-utils-clean:
 	#$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BRIDGE_BUILD_DIR) uninstall
 	-$(MAKE) -C $(BRIDGE_BUILD_DIR) clean
 
-bridge-dirclean:
+bridge-utils-dirclean:
 	rm -rf $(BRIDGE_BUILD_DIR)
 #############################################################
 #
