@@ -1,0 +1,23 @@
+menuconfig BR2_PACKAGE_FESTIVAL
+bool "festival text-to-speech system"
+default n
+select BR2_PACKAGE_ALSA_LIB
+select BR2_PACKAGE_SPEECH_TOOLS
+help
+	Text to speech system for Linux
+
+if BR2_PACKAGE_FESTIVAL
+
+	menu "speech tools"
+		source "package/festival/speech-tools/Config.in"
+	endmenu
+
+	menu "festival lexicons"
+		source "package/festival/lexicons/Config.in"
+	endmenu
+
+	menu "festival voices"
+		source "package/festival/voices/Config.in"
+	endmenu
+
+endif

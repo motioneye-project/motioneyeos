@@ -1,0 +1,10 @@
+--- a/config/project.mak	2005-05-02 10:21:29.000000000 -0400
++++ b/config/project.mak	2008-04-01 14:22:01.000000000 -0400
+@@ -113,6 +113,6 @@ PROJECT_JAVA_ROOT=$(TOP)/src/modules/jav
+ DOCXX_DIRS = $(TOP)/src 
+ MODULE_TO_DOCXX = perl $(TOP)/src/modules/utilities/extract_module_doc++.prl
+ 
+-FTLIBDIR = $(FESTIVAL_HOME)/lib 
++FTLIBDIR = /usr/share/festival/lib 
+ 
+ 

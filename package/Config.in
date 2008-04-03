@@ -289,6 +289,7 @@ source "package/libvorbis/Config.in"
 source "package/madplay/Config.in"
 source "package/mpg123/Config.in"
 source "package/speex/Config.in"
+source "package/festival/Config.in"
 endif
 
 menuconfig BR2_GRAPHIC_SUPPORT

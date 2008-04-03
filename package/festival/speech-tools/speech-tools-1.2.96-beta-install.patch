@@ -1,0 +1,36 @@
+--- a/config/rules/install.mak	2001-04-04 07:55:32.000000000 -0400
++++ b/config/rules/install.mak	2008-04-03 12:37:45.000000000 -0400
+@@ -50,9 +50,9 @@ ifneq ($(SHARED),0)
+ endif
+ endif
+ 
+-ifeq ($(PROJECT_HOME_PATH), $(PROJECT_TOP_PATH))
+-    TO_INSTALL=make_bin
+-else
++#ifeq ($(PROJECT_HOME_PATH), $(PROJECT_TOP_PATH))
++#    TO_INSTALL=make_bin
++#else
+ 
+     TO_INSTALL= \
+ 	make_installed_exec$(S) \
+@@ -62,7 +62,7 @@ else
+     INSTALLED_LIB=$(shell (cd $($(PROJECT_PREFIX)_HOME); pwd))/lib
+     INSTALLED_PRIVATE_LIB=$(INSTALLED_LIB)/$(shell echo $(PROJECT_PREFIX)| tr A-Z a-z)
+     INSTALLED_BIN=$(shell (cd $($(PROJECT_PREFIX)_HOME); pwd))/bin
+-endif
++#endif
+ 
+ install: $(TO_INSTALL)
+ 
+--- a/config/rules/bin_process.mak	2004-01-27 18:56:39.000000000 -0500
++++ b/config/rules/bin_process.mak	2008-04-03 12:37:31.000000000 -0400
+@@ -69,7 +69,8 @@ endif
+ 	    do \
+ 	    b=`basename "$$i"`;\
+ 	    $(ECHO_N) " $$b";\
+-	    $(INSTALL_PROG) -s "$$main/$$i" "$(subst TOP,$(TOP),$(BIN))/$$b";\
++	    $(INSTALL_PROG) "$$main/$$i" "$(DESTDIR)/usr/bin/$$b";\
++		$(STRIP) "$(DESTDIR)/usr/bin/$$b";\
+ 	done
+ 	@echo
+ 

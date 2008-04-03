@@ -1,0 +1,55 @@
+diff -ur festival.orig/lib/init.scm festival/lib/init.scm
+--- festival.orig/lib/init.scm	2004-07-15 19:03:04.000000000 -0400
++++ festival/lib/init.scm	2007-03-15 11:58:09.000000000 -0400
+@@ -55,6 +55,10 @@
+ (if (probe_file (path-append libdir "sitevars.scm"))
+     (load (path-append libdir "sitevars.scm")))
+ 
++(if (probe_file "/etc/festival/sitevars.scm")
++    (load "/etc/festival/sitevars.scm"))
++
++
+ ;;; CSTR siod extensions
+ (require 'cstr)
+ 
+@@ -98,7 +102,7 @@
+  (t  ;; can't find direct support so guess that /dev/audio for 8k ulaw exists
+   (Parameter.def 'Audio_Method 'sunaudio)))
+ ;;;  If you have an external program to play audio add its definition
+-;;;  in siteinit.scm
++;;;  in ~/.festivalrc or /etc/festival/siteinit.scm
+ 
+ ;;; The audio spooler doesn't work under Windows so redefine audio_mode
+ (if (member 'mplayeraudio *modules*)
+@@ -135,9 +139,13 @@
+ ;;;
+ ;;;  Local site initialization, if the file exists load it
+ ;;;
++
+ (if (probe_file (path-append libdir "siteinit.scm"))
+     (load (path-append libdir "siteinit.scm")))
+ 
++(if (probe_file "/etc/festival/siteinit.scm")
++    (load "/etc/festival/siteinit.scm"))
++
+ ;;;  User initialization, if a user has a personal customization
+ ;;;  file loaded it
+ (if (probe_file (path-append home-directory ".siodrc"))
+diff -ur festival.orig/lib/voices.scm festival/lib/voices.scm
+--- festival.orig/lib/voices.scm	2005-05-02 10:20:37.000000000 -0400
++++ festival/lib/voices.scm	2007-03-15 12:00:19.000000000 -0400
+@@ -45,12 +45,12 @@
+ (defvar system-voice-path '( )
+   "system-voice-path
+    Additional directory not near the load path where voices can be
+-   found, this can be redefined in lib/sitevars.scm if desired.")
++   found, this can be redefined in /etc/festival/sitevars.scm if desired.")
+ 
+ (defvar system-voice-path-multisyn '( )
+   "system-voice-path-multisyn
+    Additional directory not near the load path where multisyn voices can be
+-   found, this can be redefined in lib/sitevars.scm if desired.")
++   found, this can be redefined in /etc/festival/sitevars.scm if desired.")
+ 
+ (defvar voice-path 
+   (remove-duplicates

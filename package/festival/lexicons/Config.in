@@ -1,0 +1,23 @@
+config BR2_PACKAGE_FESTLEX_CMU
+	bool "Carnegie Mellon University"
+	default n
+	help
+	  Lexicon for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTLEX_OALD
+	bool "Oxford Advanced Learners dictionary"
+	default n
+	help
+	  Lexicon for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTLEX_POS
+	bool "POSLEX"
+	default n
+	help
+	  Lexicon for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest

@@ -1,0 +1,72 @@
+config BR2_PACKAGE_FESTVOX_AWB
+	bool "Alan Scottish English"
+	default n
+	help
+	  Scottish English voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_BDL
+	bool "Brian US English"
+	default n
+	help
+	  US English male voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_JMK
+	bool "John Canadian English"
+	default n
+	help
+	  Canadian English voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_SLT
+	bool "Stephanie US English"
+	default n
+	help
+	  US English female voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_AWB_MULTISYN
+	bool "Alan multisyn (big file)"
+	default n
+	help
+	  voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_JMK_MULTISYN
+	bool "John multisyn (big file)"
+	default n
+	help
+	  voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_KAL_SIXTEENK
+	bool "Kevin diphone US English 16k"
+	default n
+	help
+	  diphone voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_KED_EIGHTK
+	bool "Kurt diphone American English 8k"
+	default n
+	help
+	  diphone voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
+config BR2_PACKAGE_FESTVOX_KED_SIXTEENK
+	bool "Kurt diphone American English 16k"
+	default n
+	help
+	  diphone voice for the festival text to speech system
+
+	  http://festvox.org/packed/festival/latest
+
