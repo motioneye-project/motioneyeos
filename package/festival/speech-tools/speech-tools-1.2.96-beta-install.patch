@@ -24,7 +24,7 @@
  
 --- a/config/rules/bin_process.mak	2004-01-27 18:56:39.000000000 -0500
 +++ b/config/rules/bin_process.mak	2008-04-03 12:37:31.000000000 -0400
-@@ -69,7 +69,8 @@ endif
+@@ -69,10 +69,17 @@ endif
  	    do \
  	    b=`basename "$$i"`;\
  	    $(ECHO_N) " $$b";\
@@ -32,5 +32,15 @@
 +	    $(INSTALL_PROG) "$$main/$$i" "$(DESTDIR)/usr/bin/$$b";\
 +		$(STRIP) "$(DESTDIR)/usr/bin/$$b";\
  	done
- 	@echo
- 
+-	@echo
+-
++	@$(ECHO_N) "Install Scheme Libraries:"
++	@main=`pwd` ;\
++	cp -a "$$main/../../lib" "$(DESTDIR)/usr/share/festival";\
++	for i in `find "$(DESTDIR)/usr/share/festival/lib" -name Makefile`;\
++		do \
++		rm "$$i"; \
++	done
++
+ .link_main:
+ 	@$(MAKE) MADE_FROM_ABOVE=1 --no-print-directory -C '$(PROJECT_MAIN_DIR)' BIN=TOP/$(DIRNAME) LIBDIR=MAIN/TOP/$(PROJECT_LIBRARY_DIR) MAIN='$($(PROJECT_PREFIX)_HOME)' .link_main$(S)
