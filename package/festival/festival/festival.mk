@@ -5,7 +5,7 @@
 #############################################################
 FESTIVAL_VERSION = 1.96-beta
 FESTIVAL_SOURCE = festival-$(FESTIVAL_VERSION).tar.gz
-FESTIVAL_SITE = http://festvox.org/packed/festival/latest
+FESTIVAL_SITE = http://festvox.org/packed/festival/1.96
 FESTIVAL_AUTORECONF = NO
 FESTIVAL_INSTALL_STAGING = NO
 FESTIVAL_INSTALL_TARGET = YES

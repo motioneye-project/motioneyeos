@@ -5,7 +5,7 @@
 #############################################################
 SPEECH_TOOLS_VERSION = 1.2.96-beta
 SPEECH_TOOLS_SOURCE = speech_tools-$(SPEECH_TOOLS_VERSION).tar.gz
-SPEECH_TOOLS_SITE = http://festvox.org/packed/festival/latest
+SPEECH_TOOLS_SITE = http://festvox.org/packed/festival/1.96
 SPEECH_TOOLS_AUTORECONF = NO
 SPEECH_TOOLS_INSTALL_STAGING = NO
 SPEECH_TOOLS_INSTALL_TARGET = YES
