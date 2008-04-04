@@ -27,7 +27,7 @@ menu "Kernel"
 choice
 	prompt "Kernel type"
 	default BR2_KERNEL_LINUX_ADVANCED if BR2_TARGET_ATMEL
-	default BR2_KERNEL_LINUX if !BR2_TARGET_ATMEL
+	default BR2_KERNEL_none if !BR2_TARGET_ATMEL
 
 config BR2_KERNEL_none
 	bool "none"
