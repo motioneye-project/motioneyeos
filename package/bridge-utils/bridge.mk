@@ -15,7 +15,7 @@ $(DL_DIR)/$(BRIDGE_SOURCE):
 
 $(BRIDGE_BUILD_DIR)/.unpacked: $(DL_DIR)/$(BRIDGE_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(BRIDGE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	patch -p1 -d $(BRIDGE_BUILD_DIR) < package/bridge/bridge.patch
+	patch -p1 -d $(BRIDGE_BUILD_DIR) < package/bridge-utils/bridge.patch
 	touch $(BRIDGE_BUILD_DIR)/.unpacked
 
 $(BRIDGE_BUILD_DIR)/.configured: $(BRIDGE_BUILD_DIR)/.unpacked
