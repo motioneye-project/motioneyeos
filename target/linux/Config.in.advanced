@@ -445,6 +445,7 @@ config BR2_PACKAGE_LINUX_KCONFIG
 
 choice
 	prompt "Preferred config tool"
+	default BR2_MAKE_XCONFIG IF BR2_TARGET_ATMEL
 	default BR2_MAKE_MENUCONFIG
 	help
 	  Define the preferred tool to invoke if a configuration is invalid
