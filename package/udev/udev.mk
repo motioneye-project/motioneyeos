@@ -47,8 +47,6 @@ $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
 		LDFLAGS="-warn-common" \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) -C $(UDEV_DIR) install
-
-$(UDEV_DIR)/.target_install: $(UDEV_DIR)/$(UDEV_BINARY)
 	$(INSTALL) -m 0755 package/udev/S10udev $(TARGET_DIR)/etc/init.d
 	$(INSTALL) -m 0644 $(UDEV_DIR)/etc/udev/frugalware/* $(TARGET_DIR)/etc/udev/rules.d
 	( grep udev_root $(TARGET_DIR)/etc/udev/udev.conf > /dev/null 2>&1 || echo 'udev_root=/dev' >> $(TARGET_DIR)/etc/udev/udev.conf )
@@ -59,12 +57,11 @@ ifneq ($(strip $(BR2_PACKAGE_UDEV_UTILS)),y)
 	rm -f $(TARGET_DIR)/usr/bin/udevinfo
 	rm -f $(TARGET_DIR)/usr/bin/udevtest
 endif
-	touch $@
 
 #####################################################################
 .PHONY: udev-source udev udev-clean udev-dirclean
 
-udev: uclibc $(TARGET_DIR)/$(UDEV_TARGET_BINARY) $(UDEV_DIR)/.target_install
+udev: uclibc $(TARGET_DIR)/$(UDEV_TARGET_BINARY)
 
 udev-source: $(DL_DIR)/$(UDEV_SOURCE)
 
