@@ -1,15 +1,20 @@
-config BR2_TARGET_ARM
-	bool
+menuconfig BR2_TARGET_ARM
+	bool "Generic ARM Support"
 	depends on BR2_arm
 	depends on !BR2_TARGET_ARMLTD
 	depends on !BR2_TARGET_ATMEL
 	depends on !BR2_TARGET_SHARP
 	default y
 
+if BR2_TARGET_ARM
+
 config BR2_BOARD_NAME
-	string
+	string "Board Name"
 	default "arm"
 
 config BR2_BOARD_PATH
-	string
+	string "Board Path"
 	default "target/device/ARM"
+
+endif
+
