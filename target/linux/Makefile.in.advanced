@@ -273,12 +273,12 @@ endif
 ifeq ($(BR2_KERNEL_HEADERS_PATCH_DIR),y)
 	if [ -d $(KERNEL_HEADERS_PATCH_DIR) ] ; then \
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(KERNEL_HEADERS_PATCH_DIR) \
-		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2} ; \
+		linux-$(LINUX26_VERSION)\*.patch{,.gz,.bz2} ; \
 	fi
 endif
 ifeq ($(BR2_PACKAGE_OPENSWAN),y)
 	toolchain/patch-kernel.sh $(LINUX26_DIR) package/openswan \
-		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
+		linux-$(LINUX26_VERSION)\*.patch{,.gz,.bz2}
 endif
 	touch $@
 
@@ -286,7 +286,7 @@ $(LINUX26_DIR)/.patched.arch: $(LINUX26_DIR)/.patched
 ifneq ($(BR2_KERNEL_ARCH_PATCH_DIR),)
 	if [ -d $(KERNEL_ARCH_PATCH_DIR) ] ; then \
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(KERNEL_ARCH_PATCH_DIR) \
-		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2} ; \
+		linux-\*.patch{,.gz,.bz2} ; \
 	fi
 endif
 	touch $@
@@ -295,13 +295,17 @@ $(LINUX26_DIR)/.patched.board: $(LINUX26_DIR)/.patched.arch $(KERNEL_COND_PATCHE
 ifneq ($(LINUX26_PATCH_DIR),)
 	if [ -d $(LINUX26_PATCH_DIR) ] ; then \
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(LINUX26_PATCH_DIR) \
-		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2} ; \
+		linux-$(LINUX26_VERSION)\*.patch{,.gz,.bz2} ; \
 	fi
 endif
 	touch $@
 
 # =============================================================================
 linux_patch: $(LINUX26_DIR)/.patched.board
+
+KERNEL_EXTRA_VERSION:=$(strip $(subst ",,$(BR2_EXTRA_VERSION)))
+#"))
+
 
 $(LINUX26_DIR)/.config:	$(LINUX26_DIR)/.patched.board
 ifeq ($(BR2_PACKAGE_LINUX_USE_DEFCONFIG),y)
@@ -336,9 +340,9 @@ ifeq ($(BR2_PACKAGE_LINUX_USE_KCONFIG),y)
 	fi
 endif
 ifneq ($(strip $(subst ",,$(BR2_EXTRA_VERSION))),)
-	$(SED) 's,^EXTRA_VERSION=.*,EXTRA_VERSION=="$(BR2_EXTRA_VERSION)",g'
+	$(SED) 's,^EXTRAVERSION.*,EXTRAVERSION = $(KERNEL_EXTRA_VERSION),g' $(LINUX26_DIR)/Makefile
 endif
-
+# $(strip $(subst ",, - ))
 
 # -----------------------------------------------------------------------------
 $(LINUX26_DIR)/.configured: $(LINUX26_DIR)/.config
@@ -472,6 +476,7 @@ linux-status:
 	@echo DOWNLOAD_LINUX26_VERSION=$(DOWNLOAD_LINUX26_VERSION)
 	@echo LINUX26_VERSION=$(LINUX26_VERSION)
 	@echo LINUX26_SOURCE=$(LINUX26_SOURCE)
+	@echo KERNEL_EXTRA_VERSION=$(KERNEL_EXTRA_VERSION)
 	@echo LINUX26_DIR=$(LINUX26_DIR)
 	@echo LINUX26_PATCH_DIR=$(LINUX26_PATCH_DIR)
 	@echo TARGETS=$(TARGETS)
@@ -486,6 +491,7 @@ linux-status:
 	@echo BR2_KERNEL_PATCH_SITE=$(BR2_KERNEL_PATCH_SITE)
 	@echo BR2_KERNEL_PATCH=$(BR2_KERNEL_PATCH)
 	@echo KERNEL_COND_PATCHES=$(KERNEL_COND_PATCHES)
+	@echo KERNEL_ARCH_PATCH_DIR=$(KERNEL_ARCH_PATCH_DIR)
 	@echo BR2_LINUX26_CUSTOM=$(BR2_LINUX26_CUSTOM)
 	@echo BR2_CUSTOM_LINUX26_PATCH_SITE=$(BR2_CUSTOM_LINUX26_PATCH_SITE)
 	@echo BR2_CUSTOM_LINUX26_PATCH=$(BR2_CUSTOM_LINUX26_PATCH)
