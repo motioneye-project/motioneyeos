@@ -28,7 +28,7 @@ $(DBUS_DIR)/.unpacked: $(DL_DIR)/$(DBUS_SOURCE)
 	$(DBUS_CAT) $(DL_DIR)/$(DBUS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked
+$(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked $(DBUS_XML_DEP)
 	(cd $(DBUS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
