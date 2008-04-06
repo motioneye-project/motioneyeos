@@ -1,8 +1,7 @@
 ifeq ($(BR2_TARGET_ARM),y)
 
-BOARD_NAME=arm
-BR2_BOARD_PATH:=target/device/ARM
-BOARD_PATH:=target/device/ARM
+BOARD_NAME:=$(strip  $(subst ",, $(BR2_BOARD_NAME)))
+BOARD_PATH:=$(strip  $(subst ",, $(BR2_BOARD_PATH)))
 
 # These are set by Config.in
 DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
