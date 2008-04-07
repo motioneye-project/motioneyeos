@@ -3,8 +3,10 @@
 # mkfs.ubifs to build to target ubifs filesystems
 #
 #############################################################
-MKFS_UBIFS_VERSION=2582f128dad78591bc3adcc87c343c690bb82e61
-MKFS_UBIFS_URL=http://git.infradead.org/users/dedekind/mkfs.ubifs.git?a=snapshot;h=$(MKFS_UBIFS_VERSION);sf=tgz
+#MKFS_UBIFS_VERSION=2582f128dad78591bc3adcc87c343c690bb82e61
+#MKFS_UBIFS_URL=http://git.infradead.org/users/dedekind/mkfs.ubifs.git?a=snapshot;h=$(MKFS_UBIFS_VERSION);sf=tgz
+MKFS_UBIFS_VERSION=v0.4
+MKFS_UBIFS_URL=http://git.infradead.org/users/dedekind/mkfs.ubifs.git?a=snapshot;h=refs/tags/mkfs.ubifs-$(MKFS_UBIFS_VERSION);sf=tgz
 MKFS_UBIFS_SOURCE:=mkfs.ubifs-$(MKFS_UBIFS_VERSION).tar.gz
 MKFS_UBIFS_DIR:= $(BUILD_DIR)/mkfs-ubifs-$(MKFS_UBIFS_VERSION)
 MKFS_UBIFS_CAT:=$(ZCAT)
