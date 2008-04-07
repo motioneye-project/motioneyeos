@@ -36,11 +36,12 @@
 -
 +	@$(ECHO_N) "Install Scheme Libraries:"
 +	@main=`pwd` ;\
-+	cp -a "$$main/../../lib" "$(DESTDIR)/usr/share/festival";\
++	mkdir -p "$(DESTDIR)/usr/share/festival"; cp -a "$$main/../../lib" "$(DESTDIR)/usr/share/festival";\
 +	for i in `find "$(DESTDIR)/usr/share/festival/lib" -name Makefile`;\
 +		do \
 +		rm "$$i"; \
 +	done
-+
- .link_main:
++ 
+ .link_main: 
  	@$(MAKE) MADE_FROM_ABOVE=1 --no-print-directory -C '$(PROJECT_MAIN_DIR)' BIN=TOP/$(DIRNAME) LIBDIR=MAIN/TOP/$(PROJECT_LIBRARY_DIR) MAIN='$($(PROJECT_PREFIX)_HOME)' .link_main$(S)
+ 
