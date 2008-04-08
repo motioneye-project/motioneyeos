@@ -1,5 +1,6 @@
---- dropbear-0.42/S50dropbear
-+++ dropbear-0.42/S50dropbear
+diff -rNu dropbear-0.51_vanilla/S50dropbear dropbear-0.51_init/S50dropbear
+--- dropbear-0.51_vanilla/S50dropbear	1970-01-01 00:00:00.000000000 +0000
++++ dropbear-0.51_init/S50dropbear	2008-04-08 14:46:53.000000000 +0000
 @@ -0,0 +1,56 @@
 +#!/bin/sh
 +#
@@ -9,24 +10,24 @@
 +# Make sure the dropbearkey progam exists
 +[ -f /usr/bin/dropbearkey ] || exit 0
 +
-+# Check for the Dropbear RSA key
-+if [ ! -f /etc/dropbear/dropbear_rsa_host_key ] ; then
-+	echo Generating RSA Key...
-+	mkdir -p /etc/dropbear
-+	/usr/bin/dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key
-+fi
-+
-+# Check for the Dropbear DSS key
-+if [ ! -f /etc/dropbear/dropbear_dss_host_key ] ; then
-+	echo Generating DSS Key...
-+	mkdir -p /etc/dropbear
-+	/usr/bin/dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key
-+fi
-+
-+umask 077
-+
 +start() {
 + 	echo -n "Starting dropbear sshd: "
++	# Make sure dropbear directory exists
++	if [ ! -d /etc/dropbear ] ; then
++		mkdir -p /etc/dropbear
++	fi
++	# Check for the Dropbear RSA key
++	if [ ! -f /etc/dropbear/dropbear_rsa_host_key ] ; then
++		/usr/bin/dropbearkey -t rsa -f /etc/dropbear/dropbear_rsa_host_key > /dev/null 2>&1
++		echo -n .
++	fi
++
++	# Check for the Dropbear DSS key
++	if [ ! -f /etc/dropbear/dropbear_dss_host_key ] ; then
++		/usr/bin/dropbearkey -t dss -f /etc/dropbear/dropbear_dss_host_key > /dev/null 2>&1
++		echo -n .
++	fi
++	umask 077
 +	start-stop-daemon -S -q -p /var/run/dropbear.pid --exec /usr/sbin/dropbear
 +	echo "OK"
 +}
