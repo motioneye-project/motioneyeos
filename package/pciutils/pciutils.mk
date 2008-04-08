@@ -3,7 +3,7 @@
 # pciutils
 #
 #############################################################
-PCIUTILS_VERSION:=2.2.6
+PCIUTILS_VERSION:=2.2.10
 PCIUTILS_SOURCE:=pciutils-$(PCIUTILS_VERSION).tar.gz
 PCIUTILS_CAT:=$(ZCAT)
 PCIUTILS_SITE:=ftp://atrey.karlin.mff.cuni.cz/pub/linux/pci
