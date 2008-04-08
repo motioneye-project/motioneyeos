@@ -37,18 +37,6 @@ config BR2_PACKAGE_MTD_UTILS_GIT
 
 endchoice
 
-config BR2_PACKAGE_MTD_UTILS_GIT_COMMIT_ID
-	string	"Commit ID to use"
-	default "e6088d987c545d60a86e1f44836ab8ba072fffd9"
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
-	help
-	  If you wish to use the mtd-utils.git tree as of a specific
-	  commit, you can enter the commit ID here (for example,
-	  e6088d987c545d60a86e1f44836ab8ba072fffd9). 
-
-	  Alternatively you can specify HEAD. Note that the current
-	  HEAD will be downloaded but won't be tracked when it changes.
-
 comment "MTD tools selection"
 	depends BR2_PACKAGE_MTD
 
