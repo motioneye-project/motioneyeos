@@ -36,25 +36,25 @@ config BR2_TARGET_ROOTFS_UBIFS_OUTPUT
 
 choice
 	prompt "ubifs runtime compression"
-	default BR2_TARGET_ROOTFS_UBIFS_LZO
+	default BR2_TARGET_ROOTFS_UBIFS_RT_LZO
 	depends on BR2_TARGET_ROOTFS_UBIFS
 	help
-	  Select compressor for ubifs filesystem of the root filesystem
+	  Select which compression format to use at run-time within the ubifs file system.
 
-config BR2_TARGET_ROOTFS_UBIFS_NONE
+config BR2_TARGET_ROOTFS_UBIFS_RT_NONE
 	bool "no compression"
 	help
-	  Do not compress the ubifs filesystem.
+	  Don't use run-time compression.
 
-config BR2_TARGET_ROOTFS_UBIFS_ZLIB
+config BR2_TARGET_ROOTFS_UBIFS_RT_ZLIB
 	bool "gzip"
 	help
-	  Compress the ubifs filesystem with zlib.
+	  Use zlib compression at run-time.
 
-config BR2_TARGET_ROOTFS_UBIFS_LZO
+config BR2_TARGET_ROOTFS_UBIFS_RT_LZO
 	bool "lzo"
 	help
-	  Compress the ext2 filesystem with lzo.
+	  Use lzo compression at run-time.
 
 endchoice
 
@@ -63,7 +63,7 @@ choice
 	default BR2_TARGET_ROOTFS_UBIFS_NONE
 	depends on BR2_TARGET_ROOTFS_UBIFS
 	help
-	  Select compressor for ubifs filesystem of the root filesystem
+	  Select which compression format to compress the final image into.
 
 config BR2_TARGET_ROOTFS_UBIFS_NONE
 	bool "no compression"
