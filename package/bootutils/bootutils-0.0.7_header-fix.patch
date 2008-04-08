@@ -1,0 +1,12 @@
+diff -ru bootutils-0.0.7_vanilla/libblkid/blkid.h bootutils-0.0.7_header-fix/libblkid/blkid.h
+--- bootutils-0.0.7_vanilla/libblkid/blkid.h	2007-07-16 18:30:48.000000000 +0000
++++ bootutils-0.0.7_header-fix/libblkid/blkid.h	2008-03-29 15:34:54.000000000 +0000
+@@ -14,7 +14,7 @@
+ #define _BLKID_BLKID_H
+ 
+ #include <sys/types.h>
+-#include <blkid/blkid_types.h>
++#include "blkid_types.h"
+ 
+ #ifdef __cplusplus
+ extern "C" {

@@ -60,6 +60,9 @@ comment "Other stuff"
 source "package/at/Config.in"
 source "package/berkeleydb/Config.in"
 source "package/bsdiff/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/bootutils/Config.in"
+endif
 source "package/cups/Config.in"
 source "package/customize/Config.in"
 source "package/dash/Config.in"
