@@ -4,4 +4,4 @@ config BR2_PACKAGE_LIBBEECRYPT
 	help
 	  Beecrypt is a general-purpose cryptography library.
 
-	  http://rpm5.org
+	  http://beecrypt.sf.net
