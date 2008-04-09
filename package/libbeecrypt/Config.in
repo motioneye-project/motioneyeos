@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBBEECRYPT
+	bool "libbeecrypt"
+	default n
+	help
+	  Beecrypt is a general-purpose cryptography library.
+
+	  http://rpm5.org
