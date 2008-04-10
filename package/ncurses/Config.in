@@ -12,7 +12,6 @@ config BR2_PACKAGE_NCURSES_TARGET_PANEL
 	default n
 	depends on BR2_PACKAGE_NCURSES
 	help
-	  Ncurses headers in target
 	  Includes ncurses dynamic libpanel in target
  
 config BR2_PACKAGE_NCURSES_TARGET_FORM
@@ -23,11 +22,11 @@ config BR2_PACKAGE_NCURSES_TARGET_FORM
 	  Includes ncurses dynamic libform in target
  
 config BR2_PACKAGE_NCURSES_TARGET_MENU
-        bool "ncurses libmenu in target"
-        default n
-        depends on BR2_PACKAGE_NCURSES
-        help
- 	  Includes ncurses dynamic libmenu in target
+	bool "ncurses libmenu in target"
+	default n
+	depends on BR2_PACKAGE_NCURSES
+	help
+	  Includes ncurses dynamic libmenu in target
 
 config BR2_PACKAGE_NCURSES_TARGET_HEADERS
 	bool "ncurses headers in target"
