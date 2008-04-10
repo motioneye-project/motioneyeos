@@ -95,18 +95,18 @@ $(UBOOT_BUILD_DIR)/u-boot.bin: $(UBOOT_BUILD_DIR)/.configured $(UBOOT_CUSTOM)
 		CONFIG_NOSOFTFLOAT=1 \
 		TOPDIR=$(UBOOT_DIR) \
 		SRCTREE=$(UBOOT_DIR) \
-		TFTPBOOT=/tftpboot \
+		TFTPBOOT=$(TARGET_ATMEL_COPYTO) \
 		-C $(UBOOT_DIR)
 
 $(BINARIES_DIR)/$(UBOOT_BIN): $(UBOOT_BUILD_DIR)/u-boot.bin
 	mkdir -p $(BINARIES_DIR)
 	cp $(UBOOT_BUILD_DIR)/u-boot.bin $(BINARIES_DIR)/$(UBOOT_BIN)
 
-/tftpboot/$(UBOOT_BIN): $(UBOOT_BUILD_DIR)/u-boot.bin
-	mkdir -p /tftpboot
-	cp $(UBOOT_BUILD_DIR)/u-boot.bin /tftpboot/$(UBOOT_BIN)
+$(TARGET_ATMEL_COPYTO)/$(UBOOT_BIN): $(UBOOT_BUILD_DIR)/u-boot.bin
+	mkdir -p $(TARGET_ATMEL_COPYTO)
+	cp $(UBOOT_BUILD_DIR)/u-boot.bin $(TARGET_ATMEL_COPYTO)/$(UBOOT_BIN)
 
-uboot-bin: $(BINARIES_DIR)/$(UBOOT_BIN) /tftpboot/$(UBOOT_BIN)
+uboot-bin: $(BINARIES_DIR)/$(UBOOT_BIN) $(TARGET_ATMEL_COPYTO)/$(UBOOT_BIN)
 
 $(UBOOT_CUSTOM).test: .config $(UBOOT_BUILD_DIR)/.configured
 	echo "/* Automatically generated file, do not edit */" \
@@ -175,7 +175,7 @@ $(UBOOT_SCR).$(PROJECT): $(UBOOT_SCR) $(MKIMAGE)
 				-n "autoscr config" \
 				-d $(UBOOT_SCR) \
 				$(UBOOT_SCR).$(PROJECT)
-	cp $(UBOOT_SCR).$(PROJECT) /tftpboot
+	cp $(UBOOT_SCR).$(PROJECT) $(TARGET_ATMEL_COPYTO)
 
 $(MKIMAGE): $(MKIMAGE_BINLOC)
 	cp -f $(MKIMAGE_BINLOC) $(MKIMAGE)
@@ -200,7 +200,7 @@ uboot-new:
 	rm -fr $(UBOOT_BUILD_DIR)/u-boot
 	rm -fr $(UBOOT_BUILD_DIR)/u-boot.gz
 	rm -fr $(UBOOT_BUILD_DIR)/u-boot.bin
-	rm -fr /tftpboot/$(UBOOT_BIN)
+	rm -fr $(TARGET_ATMEL_COPYTO)/$(UBOOT_BIN)
 	rm -fr $(BINARIES_DIR)/$(UBOOT_BIN)
 
 .PHONY: uboot-bin
@@ -270,8 +270,8 @@ uboot-test:
 	-@ls $(UBOOT_BUILD_DIR)/u-boot.bin
 	-@echo binaries-u-boot.bin=$(BINARIES_DIR)/$(UBOOT_BIN)
 	-@ls $(BINARIES_DIR)/$(UBOOT_BIN)
-	-@echo tftpboot=/tftpboot/$(UBOOT_BIN)
-	-@ls /tftpboot/$(UBOOT_BIN)
+	-@echo tftpboot=$(TARGET_ATMEL_COPYTO)/$(UBOOT_BIN)
+	-@ls $(TARGET_ATMEL_COPYTO)/$(UBOOT_BIN)
 	-@echo "mkimage = $(MKIMAGE)"
 	-@ls $(MKIMAGE)
 	-@echo "u-boot script=$(UBOOT_SCR).$(PROJECT)"
