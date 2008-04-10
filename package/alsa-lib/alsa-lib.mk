@@ -45,7 +45,6 @@ $(ALSA_LIB_DIR)/.configured: $(ALSA_LIB_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--disable-docs \
-		--with-alsa-devdir=/dev \
 		$(SOFT_FLOAT) \
 		$(DISABLE_NLS) \
 	)
