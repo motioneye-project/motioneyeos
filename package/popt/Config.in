@@ -1,0 +1,7 @@
+config BR2_PACKAGE_POPT
+	bool "popt"
+	default n
+	help
+	  Popt is a C library for parsing command line parameters.
+
+	  http://rpm5.org
