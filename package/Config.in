@@ -58,6 +58,7 @@ source "package/valgrind/Config.in"
 
 comment "Other stuff"
 source "package/at/Config.in"
+source "package/beecrypt/Config.in"
 source "package/berkeleydb/Config.in"
 source "package/bsdiff/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
