@@ -10,6 +10,7 @@ HASERL_SOURCE:=haserl-$(HASERL_VERSION).tar.gz
 HASERL_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/haserl/
 HASERL_DIR:=$(BUILD_DIR)/haserl-$(HASERL_VERSION)
 HASERL_CAT:=$(ZCAT)
+HASERL_BINARY:=usr/bin/haserl
 
 $(DL_DIR)/$(HASERL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(HASERL_SITE)/$(HASERL_SOURCE)
@@ -35,11 +36,10 @@ $(HASERL_DIR)/.configured: $(HASERL_DIR)/.unpacked
 $(HASERL_DIR)/src/haserl: $(HASERL_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(HASERL_DIR)
 
-$(HASERL_DIR)/.installed: $(HASERL_DIR)/src/haserl
-	cp $(HASERL_DIR)/src/haserl $(TARGET_DIR)/usr/bin
-	touch $@
+$(TARGET_DIR)/$(HASERL_BINARY): $(HASERL_DIR)/src/haserl
+	cp $^ $@
 
-haserl: uclibc $(HASERL_DIR)/.installed
+haserl: uclibc $(TARGET_DIR)/$(HASERL_BINARY)
 
 haserl-source: $(DL_DIR)/$(HASERL_SOURCE)
 
@@ -47,6 +47,7 @@ haserl-unpacked: $(HASERL_DIR)/.unpacked
 
 haserl-clean:
 	-$(MAKE) -C $(HASERL_DIR) clean
+	rm -f $(TARGET_DIR)/$(HASERL_BINARY)
 
 haserl-dirclean:
 	rm -rf $(HASERL_DIR)
