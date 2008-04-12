@@ -1,0 +1,38 @@
+config BR2_PACKAGE_NEON
+	bool "libneon"
+	default n
+	help
+	  HTTP and WebDAV client library, with a C interface.
+
+	  http://www.webdav.org/neon/
+
+choice
+	prompt "XML Support"
+	default BR2_PACKAGE_NEON_NOXML
+	depends BR2_PACKAGE_NEON
+	help
+	  Select which XML library to use...
+	  expat      use exapt
+	  libxml2    use libxml2
+	  none       do not build with XML support
+
+config BR2_PACKAGE_NEON_EXPAT
+	bool "expat"
+	depends BR2_PACKAGE_EXPAT
+	help
+	  expat      use exapt, a library for parsing XML.
+
+config BR2_PACKAGE_NEON_LIBXML2
+	bool "libxml2"
+	depends BR2_PACKAGE_LIBXML2
+	help
+	  libxml2    use libxml2, a library to read, modify and 
+	             write XML and HTML files.
+
+config BR2_PACKAGE_NEON_NOXML
+	bool "none"
+	help
+	  none       don't use XML, if this is the only option
+	             and you want XML support, you must choose
+		     XML handling below.
+endchoice

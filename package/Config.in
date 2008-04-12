@@ -172,6 +172,7 @@ source "package/mrouted/Config.in"
 source "package/mutt/Config.in"
 source "package/nbd/Config.in"
 source "package/ncftp/Config.in"
+source "package/neon/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/netcat/Config.in"
 endif
