@@ -1,0 +1,13 @@
+config BR2_PACKAGE_RPM
+	bool "rpm"
+	default n
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_BEECRYPT
+	select BR2_PACKAGE_NEON
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_NEON_EXPAT 	if BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_NEON_LIBXML2	if BR2_PACKAGE_LIBXML2
+	help
+	  The RPM package management system.
+
+	  http://rpm5.org

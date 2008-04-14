@@ -1,0 +1,13 @@
+diff -ur rpm-4.4.9_vanilla/rpmio/fts.c rpm-4.4.9_uclibc-ifdefs/rpmio/fts.c
+--- rpm-4.4.9_vanilla/rpmio/fts.c	2007-01-21 15:18:00.000000000 +0000
++++ rpm-4.4.9_uclibc-ifdefs/rpmio/fts.c	2008-03-22 13:26:40.000000000 +0000
+@@ -45,6 +47,9 @@
+ #include <string.h>
+ #include <unistd.h>
+ #else
++#if defined(__UCLIBC__)
++#   define __fxstat64(_stat_ver, _fd, _sbp)	fstat((_fd), (_sbp))
++#endif
+ #if defined(hpux) || defined(__hpux)
+ # define        _INCLUDE_POSIX_SOURCE
+ #   define __errno_location() 	(&errno)
