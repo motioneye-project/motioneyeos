@@ -18,6 +18,7 @@ RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 	--with-zlib=$(STAGING_DIR) \
 	--with-libbeecrypt=$(STAGING_DIR) \
 	--with-popt=$(STAGING_DIR) \
+	--disable-mutexsupport \
 	$(DISABLE_NLS)
 
 RPM_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) program_transform_name= install
