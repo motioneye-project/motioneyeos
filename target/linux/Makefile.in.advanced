@@ -230,7 +230,7 @@ LINUX26_TARGETS+=$(TARGET_DIR)/boot/$(LINUX26_KERNEL_NAME)
 endif
 
 ifeq ($(BR2_LINUX_COPYTO_TFTPBOOT),y)
-LINUX26_TARGETS+=$(BR2_LINUX_COPYTO)/$(LINUX26_KERNEL_NAME)
+LINUX26_TARGETS+=/tftpboot/$(LINUX26_KERNEL_NAME)
 endif
 
 ifneq ($(strip $(subst ",,$(BR2_LINUX_COPYTO))),)
@@ -437,9 +437,9 @@ $(TARGET_DIR)/boot/busybox.config: $(BUSYBOX_DIR)/.config
 	mkdir -p $(TARGET_DIR)/boot
 	cp -dpf .config $(TARGET_DIR)/boot/busybox.config
 
-$(BR2_LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
-	mkdir -p $(BR2_LINUX_COPYTO)
-	cp -dpf $(LINUX26_KERNEL) $(BR2_LINUX_COPYTO)/$(LINUX26_KERNEL_NAME)
+/tftpboot/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
+	mkdir -p /tftpboot
+	cp -dpf $(LINUX26_KERNEL) /tftpboot/$(LINUX26_KERNEL_NAME)
 
 $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 	mkdir -p $(LINUX_COPYTO)
