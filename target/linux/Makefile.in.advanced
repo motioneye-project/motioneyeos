@@ -438,8 +438,8 @@ $(TARGET_DIR)/boot/busybox.config: $(BUSYBOX_DIR)/.config
 	cp -dpf .config $(TARGET_DIR)/boot/busybox.config
 
 /tftpboot/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
-	mkdir -p /tftpboot
-	cp -dpf $(LINUX26_KERNEL) /tftpboot/$(LINUX26_KERNEL_NAME)
+	-mkdir -p /tftpboot
+	-cp -dpf $(LINUX26_KERNEL) /tftpboot/$(LINUX26_KERNEL_NAME)
 
 $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 	mkdir -p $(LINUX_COPYTO)
