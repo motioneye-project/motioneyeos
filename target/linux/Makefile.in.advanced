@@ -134,11 +134,7 @@ endif
 # --------------
 # UIMAGE
 ifeq ($(LINUX26_FORMAT),uImage)
-ifeq ($(BR2_avr32),y)
-LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/images/$(LINUX26_FORMAT)
-else
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
-endif
 KERNEL_EXT:=.gz
 endif
 
@@ -153,28 +149,15 @@ endif
 # BZIMAGE
 ifeq ($(LINUX26_FORMAT),bzImage)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/bzImage
-KERNEL_EXT:=
+KERNEL_EXT:=.bz
 endif
 
 endif
 
 # -----------------------------------------------------------------------------
 # File name for the Linux kernel binary
-ifeq ($(LINUX26_FORMAT),uImage)
-LINUX26_KERNEL_NAME:="uImage"
-endif
-ifeq ($(LINUX26_FORMAT),bzImage)
-LINUX26_KERNEL_NAME:="bzImage"
-endif
-ifeq ($(LINUX26_FORMAT),vmlinux)
-LINUX26_KERNEL_NAME:="vmlinux"
-endif
-ifeq ($(LINUX26_FORMAT),zImage)
-LINUX26_KERNEL_NAME:="zImage"
-endif
-ifeq ($(LINUX26_FORMAT),custom)
 LINUX26_KERNEL_NAME:=$(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE)$(KERNEL_EXT)
-endif
+
 
 ifeq ($(BOARD_NAME),)
 BOARD_NAME=$(ARCH)
@@ -387,10 +370,12 @@ $(LINUX26_DIR)/.depend_done: $(LINUX26_DIR)/.configured
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) prepare
 	touch $@
 
-$(LINUX26_KERNEL): $(INITRAMFS_TARGET) $(BB_INITRAMFS_TARGET) \
+$(LINUX26_DIR)/$(LINUX26_BINLOC): $(INITRAMFS_TARGET) $(BB_INITRAMFS_TARGET) \
 		$(LINUX26_DIR)/.depend_done
 	$(MAKE) $(LINUX26_MAKE_FLAGS) \
 		-C $(LINUX26_DIR) $(LINUX26_FORMAT)
+
+$(LINUX26_KERNEL): $(LINUX26_DIR)/$(LINUX26_BINLOC)
 	cp -pf $(LINUX26_DIR)/$(LINUX26_BINLOC) $(LINUX26_KERNEL)
 	touch -c $@
 
