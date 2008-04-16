@@ -184,7 +184,9 @@ LINUX26_MAKE_FLAGS = HOSTCC="$(HOSTCC)" HOSTCFLAGS="$(HOSTCFLAGS)" \
 	LZMA="$(LZMA)" 
 
 # =============================================================================
-ifneq ($(strip $(LINUX26_VERSION)),$(strip $(LINUX_HEADERS_VERSION)))
+# ifneq ($(strip $(LINUX26_VERSION)),$(strip $(LINUX_HEADERS_VERSION)))
+
+ifneq ($(strip $(LINUX26_SOURCE)),$(strip $(LINUX_HEADERS_SOURCE)))
 $(DL_DIR)/$(LINUX26_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LINUX26_SITE)/$(LINUX26_SOURCE)
 endif # ($(LINUX26_VERSION),$(LINUX_HEADERS_VERSION))
