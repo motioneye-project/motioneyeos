@@ -141,6 +141,7 @@ if BR2_NETWORK_SUPPORT
 comment "Networking applications"
 source "package/argus/Config.in"
 source "package/avahi/Config.in"
+source "package/axel/Config.in"
 source "package/boa/Config.in"
 source "package/bind/Config.in"
 source "package/bridge-utils/Config.in"
