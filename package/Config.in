@@ -235,9 +235,9 @@ menuconfig BR2_BLOCKDEV_SUPPORT
 
 if BR2_BLOCKDEV_SUPPORT
 source "package/acpid/Config.in"
-source "package/devmem2/Config.in"
 source "package/dbus/Config.in"
 source "package/dbus-glib/Config.in"
+source "package/devmem2/Config.in"
 source "package/dm/Config.in"
 source "package/dmraid/Config.in"
 source "package/e2fsprogs/Config.in"
