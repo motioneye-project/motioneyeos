@@ -117,6 +117,7 @@ u-boot: gcc $(BINARIES_DIR)/$(U_BOOT_BIN)
 
 u-boot-clean:
 	-$(MAKE) -C $(U_BOOT_DIR) clean
+	rm -f $(STAGING_DIR)/usr/bin/$(U_BOOT_TOOLS_BIN)
 
 u-boot-dirclean:
 	rm -rf $(U_BOOT_DIR)
