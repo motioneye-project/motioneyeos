@@ -132,7 +132,7 @@ $(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/$(U_BOOT_BIN)
 		-DUSE_HOSTCC -o $@ \
 		$(U_BOOT_DIR)/tools/env/*.c $(U_BOOT_DIR)/tools/crc32.c
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
-	ln -s fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
+	ln -sf fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
 
 u-boot: gcc $(BINARIES_DIR)/$(U_BOOT_BIN) $(U_BOOT_TARGET_TOOLS)
 
