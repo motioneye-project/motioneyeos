@@ -70,3 +70,15 @@ config BR2_TARGET_UBOOT_SILENT
 	help
 	  If the option has been enabled, the output can be
 	  silenced by setting the environment variable "silent".
+
+config BR2_TARGET_UBOOT_TOOL_MKIMAGE
+	bool "mkimage tool in target"
+	depends on BR2_TARGET_UBOOT
+	help
+	  Install mkimage tool in target.
+
+config BR2_TARGET_UBOOT_TOOL_ENV
+	bool "fw_printenv tool in target"
+	depends on BR2_TARGET_UBOOT
+	help
+	  Install fw_printenv / fw_setenv tools in target.
