@@ -1,5 +1,5 @@
 ifeq ($(strip $(BR2_TARGET_AVR32_ATSTK1002)),y)
-ATSTK1002_PATH=target/device/Atmel/atstk1002
+ATSTK1002_PATH=target/device/Atmel/atstk100x
 
 TARGET_SKELETON=$(ATSTK1002_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(ATSTK1002_PATH)/device_table.txt
