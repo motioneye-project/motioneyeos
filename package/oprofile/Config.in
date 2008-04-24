@@ -1,0 +1,20 @@
+config BR2_PACKAGE_OPROFILE
+	bool "oprofile"
+	default n
+	select BR2_PACKAGE_POPT
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  OProfile is a system-wide profiler for Linux systems,
+	  capable of profiling all running code at low overhead.
+	  OProfile is released under the GNU GPL.
+
+	  It consists of a kernel driver and a daemon for collecting
+	  sample data, and several post-profiling tools for turning
+	  data into information.
+
+	  OProfile leverages the hardware performance counters of the
+	  CPU to enable profiling of a wide variety of interesting
+	  statistics, which can also be used for basic time-spent
+	  profiling. All code is profiled: hardware and software
+	  interrupt handlers, kernel modules, the kernel, shared
+	  libraries, and applications. 
