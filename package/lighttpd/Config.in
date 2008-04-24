@@ -12,10 +12,24 @@ config BR2_PACKAGE_LIGHTTPD
 		 
 	  http://www.lighttpd.net/
 
+if BR2_PACKAGE_LIGHTTPD
+menu "lighttpd packages"
+
 config BR2_PACKAGE_LIGHTTPD_OPENSSL
-	bool "lighttpd-openssl"
+	bool "openssl"
 	default y
 	depends on BR2_PACKAGE_LIGHTTPD
 	select BR2_PACKAGE_OPENSSL
 	help
 	  Enable OpenSSL support for lighttpd.
+
+config BR2_PACKAGE_LIGHTTPD_PCRE
+	bool "pcre"
+	default n
+	depends on BR2_PACKAGE_LIGHTTPD
+	select BR2_PACKAGE_PCRE
+	help
+	  Enable PCRE support. Needed to support mod_rewrite
+
+endmenu
+endif

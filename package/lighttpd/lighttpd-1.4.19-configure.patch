@@ -1,0 +1,11 @@
+--- lighttpd-1.4.19-org/configure	2008-03-10 21:46:12.000000000 +0000
++++ lighttpd-1.4.19/configure	2008-03-31 06:58:41.000000000 +0000
+@@ -23971,7 +23971,7 @@
+ { echo "$as_me:$LINENO: result: $WITH_PCRE" >&5
+ echo "${ECHO_T}$WITH_PCRE" >&6; }
+ 
+-if test "x$cross_compiling" = xno -a "$WITH_PCRE" != "no"; then
++if test "$WITH_PCRE" != "no"; then
+   # Extract the first word of "pcre-config", so it can be a program name with args.
+ set dummy pcre-config; ac_word=$2
+ { echo "$as_me:$LINENO: checking for $ac_word" >&5
