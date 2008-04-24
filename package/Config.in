@@ -56,6 +56,7 @@ source "package/oprofile/Config.in"
 source "package/pkgconfig/Config.in"
 source "package/readline/Config.in"
 source "package/valgrind/Config.in"
+source "package/pcre/Config.in"
 
 comment "Other stuff"
 source "package/at/Config.in"
