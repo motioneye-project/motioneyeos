@@ -11,6 +11,7 @@ JAMVM_INSTALL_STAGING = YES
 JAMVM_INSTALL_TARGET = YES
 JAMVM_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
 JAMVM_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
+JAMVM_DIR_PREFIX = package/java
 
 JAMVM_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no ac_cv_func_strtod=yes \
@@ -102,4 +103,4 @@ ifeq ($(BR2_avr32),y)
 		CC="$(STAGING_DIR)/usr/bin/avr32-linux-gcc"
 endif
 
-$(eval $(call AUTOTARGETS,package,jamvm))
+$(eval $(call AUTOTARGETS,package/java,jamvm))

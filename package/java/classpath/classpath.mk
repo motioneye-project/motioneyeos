@@ -3,14 +3,15 @@
 # classpath 0.96.1
 #
 #############################################################
-CLASSPATH_VERSION = 0.96.1
+CLASSPATH_VERSION = 0.97.1
 CLASSPATH_SOURCE = classpath-$(CLASSPATH_VERSION).tar.gz
 CLASSPATH_SITE = $(BR2_GNU_MIRROR)/classpath
 CLASSPATH_AUTORECONF = NO
 CLASSPATH_INSTALL_STAGING = YES
 CLASSPATH_INSTALL_TARGET = YES
 CLASSPATH_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install 
-CLASSPATH_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install 
+CLASSPATH_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
+CLASSPATH_DIR_PREFIX = package/java
 
 CLASSPATH_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no ac_cv_func_strtod=yes \
@@ -91,4 +92,4 @@ endif
 
 
 
-$(eval $(call AUTOTARGETS,package,classpath))
+$(eval $(call AUTOTARGETS,package/java,classpath))
