@@ -3,7 +3,8 @@
 # mtd provides jffs2 utilities
 #
 #############################################################
-MTD_VERSION:=fcb52ccc99679460640386c297023f852b108f68
+MTD_VERSION:=$(strip $(subst ",, $(BR2_PACKAGE_MTD_UTILS_GIT_COMMIT_ID)))
+#"))
 MTD_SOURCE:=mtd-utils-$(MTD_VERSION).tar.gz
 MTD_URL:=http://git.infradead.org/mtd-utils.git?a=snapshot;h=$(MTD_VERSION);sf=tgz
 MTD_HOST_DIR:= $(TOOL_BUILD_DIR)/mtd-utils-$(MTD_VERSION)
@@ -21,7 +22,7 @@ MKFS_JFFS2 := $(MTD_HOST_DIR)/mkfs.jffs2
 SUMTOOL := $(MTD_HOST_DIR)/sumtool
 
 $(DL_DIR)/$(MTD_SOURCE):
-	$(WGET) -O $(DL_DIR)/$(MTD_SOURCE) "$(MTD_URL)"
+	$(WGET) -O $(DL_DIR)/$(MTD_SOURCE) $(MTD_URL)
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
@@ -63,7 +64,6 @@ mtd-host-dirclean:
 #############################################################
 $(MTD_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	rm -rf $(MTD_DIR)
 	mv $(BUILD_DIR)/$(MTD_NAME) $(MTD_DIR)
 	toolchain/patch-kernel.sh $(MTD_DIR) package/mtd/mtd-utils.git mtd-utils-all\*.patch
 	toolchain/patch-kernel.sh $(MTD_DIR) package/mtd/mtd-utils.git mtd-utils-target\*.patch
@@ -108,7 +108,7 @@ MTD_BUILD_TARGETS := $(addprefix $(MTD_DIR)/, $(MTD_TARGETS_y)) $(addprefix $(MT
 
 $(MTD_BUILD_TARGETS): $(MTD_DIR)/.unpacked
 	mkdir -p $(TARGET_DIR)/usr/sbin
-	$(MAKE1) OPTFLAGS="-DNEED_BCOPY -Dbcmp=memcmp -I$(STAGING_DIR)/usr/include $(TARGET_CFLAGS)" \
+	$(MAKE) OPTFLAGS="-DNEED_BCOPY -Dbcmp=memcmp -I$(STAGING_DIR)/usr/include $(TARGET_CFLAGS)" \
 	       BUILDDIR=$(MTD_DIR) \
 	       CROSS=$(TARGET_CROSS) CC=$(TARGET_CC) WITHOUT_XATTR=1 -C $(MTD_DIR)
 
