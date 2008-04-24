@@ -3,7 +3,7 @@
 # webkit
 #
 #############################################################
-WEBKIT_VERSION = r30574
+WEBKIT_VERSION = r31321
 WEBKIT_SOURCE = WebKit-$(WEBKIT_VERSION).tar.bz2
 WEBKIT_SITE = http://nightly.webkit.org/files/trunk/src/
 
