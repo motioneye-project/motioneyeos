@@ -28,4 +28,10 @@ XSERVER_XORG_SERVER_CONF_OPT = --enable-kdrive --enable-xfbdev --enable-freetype
 
 XSERVER_XORG_SERVER_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
+# Optional packages
+ifeq ($(strip $(BR2_PACKAGE_TSLIB)),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += tslib
+XSERVER_XORG_SERVER_CONF_OPT += --enable-tslib LDFLAGS="-lts"
+endif
+
 $(eval $(call AUTOTARGETS,package/x11r7,xserver_xorg-server))
