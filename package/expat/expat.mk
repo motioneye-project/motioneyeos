@@ -35,8 +35,16 @@ $(EXPAT_DIR)/.configured: $(EXPAT_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
+		--bindir=/bin \
+		--sbindir=/sbin \
+		--libdir=/lib \
+		--libexecdir=/lib \
 		--sysconfdir=/etc \
+		--datadir=/share \
 		--localstatedir=/var \
+		--includedir=/include \
+		--mandir=/man \
+		--infodir=/info \
 		--enable-shared \
 	)
 	touch $@
@@ -46,7 +54,7 @@ $(EXPAT_DIR)/$(EXPAT_BINARY): $(EXPAT_DIR)/.configured
 	touch -c $@
 
 $(STAGING_DIR)/$(EXPAT_TARGET_BINARY): $(EXPAT_DIR)/$(EXPAT_BINARY)
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(EXPAT_DIR) install
+	$(MAKE) DESTDIR=$(STAGING_DIR)/usr -C $(EXPAT_DIR) install
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
 		$(STAGING_DIR)/usr/lib/libexpat.la
 	touch -c $@
