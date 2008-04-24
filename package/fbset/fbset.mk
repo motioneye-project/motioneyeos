@@ -16,7 +16,9 @@ $(DL_DIR)/$(FBSET_SOURCE):
 
 $(FBSET_DIR)/.unpacked: $(DL_DIR)/$(FBSET_SOURCE)
 	$(FBSET_CAT) $(DL_DIR)/$(FBSET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(FBSET_DIR) package/fbset/ fbset-$(FBSET_VERSION)\*.patch\*
+	toolchain/patch-kernel.sh $(FBSET_DIR) package/fbset/ \
+		fbset-$(FBSET_VERSION)\*.patch \
+		fbset-$(FBSET_VERSION)\*.patch.$(ARCH)
 	touch $@
 
 $(FBSET_DIR)/$(FBSET_BINARY): $(FBSET_DIR)/.unpacked
