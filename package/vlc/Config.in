@@ -1,0 +1,7 @@
+config BR2_PACKAGE_VLC
+	bool "vlc"
+	default n
+	help
+	  a free cross-platform media player
+
+	  http://download.videolan.org/pub/videolan/vlc/0.8.6e
