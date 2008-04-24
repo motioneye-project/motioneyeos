@@ -21,7 +21,8 @@ strace-source: $(DL_DIR)/$(STRACE_SOURCE)
 
 $(STRACE_DIR)/.unpacked: $(DL_DIR)/$(STRACE_SOURCE)
 	$(STRACE_CAT) $(DL_DIR)/$(STRACE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(STRACE_DIR) package/strace strace\*.patch
+	toolchain/patch-kernel.sh $(STRACE_DIR) package/strace \
+		strace\*.patch strace\*.patch.$(ARCH)
 	$(CONFIG_UPDATE) $(STRACE_DIR)
 	touch $(STRACE_DIR)/.unpacked
 
