@@ -54,6 +54,7 @@ $(LIBXSLT_DIR)/.configured: $(LIBXSLT_DIR)/.unpacked
 		--without-python \
 		--without-threads \
 		--with-libxml-libs-prefix=$(STAGING_DIR)/usr/lib \
+		CFLAGS="-I$(STAGING_DIR)/usr/include/libxml2" \
 	);
 	touch $@
 
