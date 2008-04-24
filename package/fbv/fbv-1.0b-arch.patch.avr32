@@ -1,0 +1,48 @@
+diff -ur fbv-1.0b/fb_display.c fbv-1.0b-avr32/fb_display.c
+--- fbv-1.0b/fb_display.c	2004-09-07 14:09:43.000000000 +0200
++++ fbv-1.0b-avr32/fb_display.c	2006-05-04 13:30:25.000000000 +0200
+@@ -276,9 +276,6 @@
+ 	    for(i = 0; i < yc; i++, fbptr += scr_xs * cpp, imptr += pic_xs * cpp)
+ 			memcpy(fbptr, imptr, xc * cpp);
+ 		
+-	if(cpp == 1)
+-	    set8map(fh, &map_back);
+-	
+ 	munmap(fb, scr_xs * scr_ys * cpp);
+ }
+ 
+@@ -293,17 +290,17 @@
+ inline static unsigned short make15color(unsigned char r, unsigned char g, unsigned char b)
+ {
+     return (
+-	(((r >> 3) & 31) << 10) |
++	(((r >> 3) & 31)) |
+ 	(((g >> 3) & 31) << 5)  |
+-	 ((b >> 3) & 31)        );
++	 ((b >> 3) & 31) << 10);
+ }
+ 
+ inline static unsigned short make16color(unsigned char r, unsigned char g, unsigned char b)
+ {
+     return (
+-	(((r >> 3) & 31) << 11) |
+-	(((g >> 2) & 63) << 5)  |
+-	 ((b >> 3) & 31)        );
++	(((r >> 3) & 31))      |
++	(((g >> 3) & 31) << 5) |
++	 ((b >> 3) & 31) << 10);
+ }
+ 
+ void* convertRGB2FB(int fh, unsigned char *rgbbuff, unsigned long count, int bpp, int *cpp)
+@@ -342,9 +339,9 @@
+ 	    *cpp = 4;
+ 	    i_fbbuff = (unsigned int *) malloc(count * sizeof(unsigned int));
+ 	    for(i = 0; i < count ; i++)
+-		i_fbbuff[i] = ((rgbbuff[i*3] << 16) & 0xFF0000) |
++		i_fbbuff[i] = ((rgbbuff[i*3+2] << 16) & 0xFF0000) |
+ 			    ((rgbbuff[i*3+1] << 8) & 0xFF00) |
+-			    (rgbbuff[i*3+2] & 0xFF);
++			    (rgbbuff[i*3] & 0xFF);
+ 	    fbbuff = (void *) i_fbbuff;
+ 	    break;
+ 	default:

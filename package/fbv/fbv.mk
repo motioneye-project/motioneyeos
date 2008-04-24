@@ -18,7 +18,8 @@ fbv-source: $(DL_DIR)/$(FBV_SOURCE)
 
 $(FBV_DIR)/.unpacked: $(DL_DIR)/$(FBV_SOURCE)
 	$(FBV_CAT) $(DL_DIR)/$(FBV_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(FBV_DIR) package/fbv/ fbv-$(FBV_VERSION)\*.patch\*
+	toolchain/patch-kernel.sh $(FBV_DIR) package/fbv/ \
+		fbv-$(FBV_VERSION)\*.patch fbv-$(FBV_VERSION)\*.patch.$(ARCH)
 	touch $@
 
 $(FBV_DIR)/.configured: $(FBV_DIR)/.unpacked
@@ -27,7 +28,6 @@ $(FBV_DIR)/.configured: $(FBV_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--prefix=/usr \
-		--cc=$(TARGET_CC) \
 		--libs="-lz -lm" \
 	)
 	touch $@
