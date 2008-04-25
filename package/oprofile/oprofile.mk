@@ -50,7 +50,7 @@ $(TARGET_DIR)/usr/bin/oprofiled: $(OPROFILE_DIR)/daemon/oprofiled
 	$(INSTALL) -m 644 $(OPROFILE_DIR)/libregex/stl.pat $(TARGET_DIR)/usr/share/oprofile
 	$(INSTALL) -m 755 $(OPROFILE_DIR)/utils/opcontrol $(TARGET_DIR)/usr/bin
 	$(INSTALL) -m 755 $(addprefix $(OPROFILE_DIR)/, $(OPROFILE_BINARIES)) $(TARGET_DIR)/usr/bin
-	$(STRIP) --strip-unneeded $(addprefix $(TARGET_DIR)/usr/bin/, $(notdir $(OPROFILE_BINARIES)))
+	$(STRIPCMD) --strip-unneeded $(addprefix $(TARGET_DIR)/usr/bin/, $(notdir $(OPROFILE_BINARIES)))
 	touch -c $@
 
 oprofile: uclibc popt binutils_target $(TARGET_DIR)/usr/bin/oprofiled

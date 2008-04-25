@@ -15,7 +15,7 @@ $(WEBIF_DIR)/.unpacked:
 $(WEBIF_DIR)/.built: $(WEBIF_DIR)/.unpacked
 	$(TARGET_CC) $(TARGET_CFLAGS) -o $(WEBIF_DIR)/webif-page $(WEBIF_SOURCE)/src/webif-page.c
 	$(TARGET_CC) $(TARGET_CFLAGS) -o $(WEBIF_DIR)/bstrip $(WEBIF_SOURCE)/src/bstrip.c
-	$(STRIP) --strip-unneeded $(WEBIF_DIR)/webif-page $(WEBIF_DIR)/bstrip
+	$(STRIPCMD) --strip-unneeded $(WEBIF_DIR)/webif-page $(WEBIF_DIR)/bstrip
 	touch $@
 
 $(TARGET_DIR)/www/webif.css: $(WEBIF_DIR)/.built

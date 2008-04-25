@@ -60,7 +60,7 @@ $(DUMMY_DIR)/$(DUMMY_BINARY): $(DUMMY_DIR)/.configured
 # target root directory, to not waste valuable flash space.
 $(TARGET_DIR)/$(DUMMY_TARGET_BINARY): $(DUMMY_DIR)/$(DUMMY_BINARY)
 	cp -dpf $(DUMMY_DIR)/dummy $@
-	$(STRIP) --strip-unneeded $@
+	$(STRIPCMD) --strip-unneeded $@
 
 # Main rule which shows which other packages must be installed before the dummy
 # package is installed. This to ensure that all depending libraries are

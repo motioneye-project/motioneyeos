@@ -260,13 +260,13 @@ $(TARGET_DIR)/usr/lib/libQtCore.so.4: $(STAGING_DIR)/usr/lib/libQtCore.la
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/micro*.qpf $(TARGET_DIR)/usr/lib/fonts
 ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt*.so.* $(TARGET_DIR)/usr/lib/
-	-$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/lib/libQt*.so.*
+	-$(STRIPCMD) --strip-unneeded $(TARGET_DIR)/usr/lib/libQt*.so.*
 endif
 	# Install image plugins if they are built
 	if [ -d $(STAGING_DIR)/usr/plugins/imageformats ]; then \
 		mkdir -p $(TARGET_DIR)/usr/plugins; \
 		cp -dpfr $(STAGING_DIR)/usr/plugins/imageformats $(TARGET_DIR)/usr/plugins/; \
-		$(STRIP) --strip-unneeded $(TARGET_DIR)/usr/plugins/imageformats/*; \
+		$(STRIPCMD) --strip-unneeded $(TARGET_DIR)/usr/plugins/imageformats/*; \
 	fi
 ifneq ($(BR2_PACKAGE_QTOPIA4_SQL),y)
 	# Remove Sql libraries, not needed
