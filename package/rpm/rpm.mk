@@ -3,7 +3,7 @@
 # rpm
 #
 #############################################################
-RPM_VERSION = 5.0.3
+RPM_VERSION = 5.1.0
 RPM_SITE = http://rpm5.org/files/rpm/rpm-5.0/
 RPM_AUTORECONF = YES
 
@@ -18,7 +18,7 @@ RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 	--with-zlib=$(STAGING_DIR) \
 	--with-libbeecrypt=$(STAGING_DIR) \
 	--with-popt=$(STAGING_DIR) \
-	--disable-mutexsupport \
+	--with-mutex=UNIX/fcntl \
 	$(DISABLE_NLS)
 
 RPM_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) program_transform_name= install
