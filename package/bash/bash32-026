@@ -1,0 +1,82 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-026
+
+Bug-Reported-by:	Chet Ramey <chet.ramey@case.edu>
+Bug-Reference-ID:
+Bug-Reference-URL:
+
+Bug-Description:
+
+This keeps the Apple linker from attempting to link bash against Apple's
+readline library "replacement" rather than the one shipped with bash.  It
+extends the configure workaround to Mac OS X Leopard (10.5).
+
+As a side effect, the patch updates the copyright date displayed in the
+version string.
+
+You must re-run configure after applying the patch, and before rebuilding
+bash.
+
+Patch:
+
+*** ../bash-3.2-patched/configure.in	2007-03-06 11:07:38.000000000 -0500
+--- configure.in	2007-11-23 15:37:41.000000000 -0500
+***************
+*** 519,523 ****
+  		# dynamic version
+  		case "${host_os}" in
+! 		darwin8*)	READLINE_LIB='${READLINE_LIBRARY}' ;;
+  		*)		READLINE_LIB=-lreadline ;;
+  		esac
+--- 519,523 ----
+  		# dynamic version
+  		case "${host_os}" in
+! 		darwin[[89]]*)	READLINE_LIB='${READLINE_LIBRARY}' ;;
+  		*)		READLINE_LIB=-lreadline ;;
+  		esac
+*** ../bash-3.2-patched/configure	2007-03-24 14:51:22.000000000 -0400
+--- configure	2007-11-23 15:46:15.000000000 -0500
+***************
+*** 4872,4876 ****
+  		# dynamic version
+  		case "${host_os}" in
+! 		darwin8*)	READLINE_LIB='${READLINE_LIBRARY}' ;;
+  		*)		READLINE_LIB=-lreadline ;;
+  		esac
+--- 4872,4876 ----
+  		# dynamic version
+  		case "${host_os}" in
+! 		darwin[89]*)	READLINE_LIB='${READLINE_LIBRARY}' ;;
+  		*)		READLINE_LIB=-lreadline ;;
+  		esac
+*** ../bash-3.2-patched/version.c	2005-05-16 11:58:34.000000000 -0400
+--- version.c	2007-11-23 16:03:40.000000000 -0500
+***************
+*** 80,83 ****
+    printf ("GNU bash, version %s (%s)\n", shell_version_string (), MACHTYPE);
+    if (extended)
+!     printf (_("Copyright (C) 2005 Free Software Foundation, Inc.\n"));
+  }
+--- 80,83 ----
+    printf ("GNU bash, version %s (%s)\n", shell_version_string (), MACHTYPE);
+    if (extended)
+!     printf (_("Copyright (C) 2007 Free Software Foundation, Inc.\n"));
+  }
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 25
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 26
+  
+  #endif /* _PATCHLEVEL_H_ */

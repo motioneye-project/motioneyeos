@@ -1,0 +1,47 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-032
+
+Bug-Reported-by:	Uwe Doering <gemini@geminix.org>
+Bug-Reference-ID:	<46F3DD72.2090801@geminix.org>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2007-09/msg00102.html
+
+Bug-Description:
+
+There is an off-by-one error in the code that buffers characters received
+very quickly in succession, causing characters to be dropped.
+
+Patch:
+
+*** ../bash-3.2-patched/lib/readline/input.c	2007-08-25 13:47:10.000000000 -0400
+--- lib/readline/input.c	2007-10-12 22:55:25.000000000 -0400
+***************
+*** 155,159 ****
+        pop_index--;
+        if (pop_index < 0)
+! 	pop_index = ibuffer_len - 1;
+        ibuffer[pop_index] = key;
+        return (1);
+--- 155,159 ----
+        pop_index--;
+        if (pop_index < 0)
+! 	pop_index = ibuffer_len;
+        ibuffer[pop_index] = key;
+        return (1);
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 31
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 32
+  
+  #endif /* _PATCHLEVEL_H_ */

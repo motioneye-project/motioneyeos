@@ -1,0 +1,52 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-029
+
+Bug-Reported-by:	Tomas Janousek <tjanouse@redhat.com>
+Bug-Reference-ID:	<20071102104034.GA26893@redhat.com>
+Bug-Reference-URL:	https://bugzilla.redhat.com/show_bug.cgi?id=286861
+
+Bug-Description:
+
+When the bash arithmetic expression evaluator has temporarily turned off
+evalation, such as when parsing a pre- or post-decrement or -increment
+operator, and an error occurs, evaluation is not re-enabled.
+
+Patch:
+
+*** ../bash-3.2-patched/expr.c	2007-08-25 13:47:05.000000000 -0400
+--- expr.c	2007-10-18 08:08:44.000000000 -0400
+***************
+*** 287,290 ****
+--- 287,292 ----
+      }
+    free (expr_stack[expr_depth]);	/* free the allocated EXPR_CONTEXT */
++ 
++   noeval = 0;	/* XXX */
+  }
+  
+***************
+*** 320,323 ****
+--- 322,326 ----
+  
+    val = 0;
++   noeval = 0;
+  
+    FASTCOPY (evalbuf, oevalbuf, sizeof (evalbuf));
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 28
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 29
+  
+  #endif /* _PATCHLEVEL_H_ */

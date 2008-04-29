@@ -1,0 +1,79 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release: 3.2
+Patch-ID: bash32-025
+
+Bug-Reported-by:	Tom Bjorkholm <tom.bjorkholm@ericsson.com>
+Bug-Reference-ID:	<AEA1A32F001C6B4F98614B5B80D7647D01C075E9@esealmw115.eemea.ericsson.se>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-readline/2007-04/msg00004.html
+
+Bug-Description:
+
+An off-by-one error in readline's input buffering caused readline to drop
+each 511th character of buffered input (e.g., when pasting a large amount
+of data into a terminal window).
+
+Patch:
+
+*** ../bash-3.2-patched/lib/readline/input.c	Wed Aug 16 15:15:16 2006
+--- lib/readline/input.c	Tue Jul 17 09:24:21 2007
+***************
+*** 134,139 ****
+  
+    *key = ibuffer[pop_index++];
+! 
+    if (pop_index >= ibuffer_len)
+      pop_index = 0;
+  
+--- 134,142 ----
+  
+    *key = ibuffer[pop_index++];
+! #if 0
+    if (pop_index >= ibuffer_len)
++ #else
++   if (pop_index > ibuffer_len)
++ #endif
+      pop_index = 0;
+  
+***************
+*** 251,255 ****
+  	{
+  	  k = (*rl_getc_function) (rl_instream);
+! 	  rl_stuff_char (k);
+  	  if (k == NEWLINE || k == RETURN)
+  	    break;
+--- 254,259 ----
+  	{
+  	  k = (*rl_getc_function) (rl_instream);
+! 	  if (rl_stuff_char (k) == 0)
+! 	    break;			/* some problem; no more room */
+  	  if (k == NEWLINE || k == RETURN)
+  	    break;
+***************
+*** 374,378 ****
+--- 378,386 ----
+      }
+    ibuffer[push_index++] = key;
++ #if 0
+    if (push_index >= ibuffer_len)
++ #else
++   if (push_index > ibuffer_len)
++ #endif
+      push_index = 0;
+  
+*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- patchlevel.h	Mon Oct 16 14:22:54 2006
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 24
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 25
+  
+  #endif /* _PATCHLEVEL_H_ */
