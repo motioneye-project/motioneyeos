@@ -1,0 +1,7 @@
+default=0
+timeout=5
+splashimage=(hd0,0)/boot/grub/splash.xpm.gz
+hiddenmenu
+title Buildroot
+	root (hd0,0)
+	kernel /boot/bzImage rw root=/dev/hda1 vga=791 
