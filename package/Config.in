@@ -107,6 +107,7 @@ endif
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/rpm/Config.in"
 endif
+source "package/screen/Config.in"
 source "package/sqlite/Config.in"
 source "package/startup-notification/Config.in"
 source "package/strace/Config.in"

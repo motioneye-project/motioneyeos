@@ -1,0 +1,17 @@
+diff -ru screen-4.0.2_vanilla/Makefile.in screen-4.0.2_install-fix/Makefile.in
+--- screen-4.0.2_vanilla/Makefile.in	2003-12-05 13:59:39.000000000 +0000
++++ screen-4.0.2_install-fix/Makefile.in	2008-05-01 10:47:49.000000000 +0000
+@@ -74,11 +74,12 @@
+ 	-if [ -f $(DESTDIR)$(bindir)/$(SCREEN) ] && [ ! -f $(DESTDIR)$(bindir)/$(SCREEN).old ]; \
+ 		then mv $(DESTDIR)$(bindir)/$(SCREEN) $(DESTDIR)$(bindir)/$(SCREEN).old; fi
+ 	$(INSTALL_PROGRAM) screen $(DESTDIR)$(bindir)/$(SCREEN)
+-	-chown root $(DESTDIR)$(bindir)/$(SCREEN) && chmod 4755 $(DESTDIR)$(bindir)/$(SCREEN)
++	-chmod 4755 $(DESTDIR)$(bindir)/$(SCREEN)
+ # This doesn't work if $(bindir)/screen is a symlink
+ 	-if [ -f $(DESTDIR)$(bindir)/screen ] && [ ! -f $(DESTDIR)$(bindir)/screen.old ]; then mv $(DESTDIR)$(bindir)/screen $(DESTDIR)$(bindir)/screen.old; fi
+ 	rm -f $(DESTDIR)$(bindir)/screen
+ 	(cd $(DESTDIR)$(bindir) && ln -sf $(SCREEN) screen)
++	mkdir -p $(DESTDIR)$(SCREENENCODINGS)
+ 	cp $(srcdir)/utf8encodings/?? $(DESTDIR)$(SCREENENCODINGS)
+ 
+ ###############################################################################
