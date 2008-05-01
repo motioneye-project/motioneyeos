@@ -16,8 +16,8 @@ prompt contains invisible characters and a newline.
 
 Patch:
 
-*** ../bash-3.2.25/lib/readline/display.c	Mon Aug  6 14:26:29 2007
---- lib/readline/display.c	Wed Oct 10 22:43:58 2007
+*** bash-3.2.25/lib/readline/display.c	Mon Aug  6 14:26:29 2007
+--- bash-3.2/lib/readline/display.c	Wed Oct 10 22:43:58 2007
 ***************
 *** 1049,1053 ****
   	      else
@@ -68,8 +68,8 @@ Patch:
 !       _rl_last_c_pos == prompt_physical_chars)
       cpos_adjusted = 1;
   #endif
-*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

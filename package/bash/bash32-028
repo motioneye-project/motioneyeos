@@ -15,8 +15,8 @@ containing invisible characters after the final newline.
 
 Patch:
 
-*** ../bash-3.2-patched/lib/readline/display.c	2007-08-25 13:47:08.000000000 -0400
---- lib/readline/display.c	2007-11-10 17:51:29.000000000 -0500
+*** bash-3.2-patched/lib/readline/display.c	2007-08-25 13:47:08.000000000 -0400
+--- bash-3.2/lib/readline/display.c	2007-11-10 17:51:29.000000000 -0500
 ***************
 *** 392,396 ****
         local_prompt = expand_prompt (p, &prompt_visible_length,
@@ -43,8 +43,8 @@ Patch:
 ! 						   (int *)NULL,
   						   (int *)NULL);
         *t = c;
-*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */

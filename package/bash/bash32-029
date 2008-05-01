@@ -16,8 +16,8 @@ operator, and an error occurs, evaluation is not re-enabled.
 
 Patch:
 
-*** ../bash-3.2-patched/expr.c	2007-08-25 13:47:05.000000000 -0400
---- expr.c	2007-10-18 08:08:44.000000000 -0400
+*** bash-3.2-patched/expr.c	2007-08-25 13:47:05.000000000 -0400
+--- bash-3.2/expr.c	2007-10-18 08:08:44.000000000 -0400
 ***************
 *** 287,290 ****
 --- 287,292 ----
@@ -35,8 +35,8 @@ Patch:
 +   noeval = 0;
   
     FASTCOPY (evalbuf, oevalbuf, sizeof (evalbuf));
-*** ../bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
---- patchlevel.h	Mon Oct 16 14:22:54 2006
+*** bash-3.2/patchlevel.h	Thu Apr 13 08:31:04 2006
+--- bash-3.2/patchlevel.h	Mon Oct 16 14:22:54 2006
 ***************
 *** 26,30 ****
      looks for to find the patch level (for the sccs version string). */
