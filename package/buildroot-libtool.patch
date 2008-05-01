@@ -1,6 +1,6 @@
---- pango/ltmain.sh.orig	2004-11-23 09:19:19.000000000 -0700
-+++ pango/ltmain.sh	2007-01-13 14:36:53.000000000 -0700
-@@ -231,8 +231,9 @@
+--- a/ltmain.sh	2006-03-11 13:49:04.000000000 -0500
++++ b/ltmain.sh	2008-04-30 09:55:28.000000000 -0400
+@@ -273,8 +273,9 @@ func_infer_tag ()
  	# line option must be used.
  	if test -z "$tagname"; then
  	  $echo "$modename: unable to infer tagged configuration"
@@ -12,7 +12,7 @@
  #        else
  #          $echo "$modename: using $tagname tagged configuration"
  	fi
-@@ -2279,8 +2280,14 @@
+@@ -2407,8 +2408,14 @@ EOF
  	    absdir="$abs_ladir"
  	    libdir="$abs_ladir"
  	  else
@@ -27,9 +27,18 @@
 +	    #dir="$libdir"
 +	    #absdir="$libdir"
  	  fi
+ 	  test "X$hardcode_automatic" = Xyes && avoidtemprpath=yes
  	else
- 	  if test ! -f "$ladir/$objdir/$linklib" && test -f "$abs_ladir/$linklib"; then
-@@ -2754,6 +2761,16 @@
+@@ -2545,7 +2552,7 @@ EOF
+ 	   { test "$use_static_libs" = no || test -z "$old_library"; }; then
+ 	  if test "$installed" = no; then
+ 	    notinst_deplibs="$notinst_deplibs $lib"
+-	    need_relink=yes
++	    need_relink=no
+ 	  fi
+ 	  # This is a shared library
+ 
+@@ -2889,6 +2896,16 @@ EOF
  		esac
  		if grep "^installed=no" $deplib > /dev/null; then
  		  path="$absdir/$objdir"
@@ -46,7 +55,7 @@
  		else
  		  eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
  		  if test -z "$libdir"; then
-@@ -5141,6 +5158,10 @@
+@@ -5606,6 +5623,10 @@ fi\
  	    # Replace all uninstalled libtool libraries with the installed ones
  	    newdependency_libs=
  	    for deplib in $dependency_libs; do
@@ -57,7 +66,7 @@
  	      case $deplib in
  	      *.la)
  		name=`$echo "X$deplib" | $Xsed -e 's%^.*/%%'`
-@@ -5459,10 +5480,13 @@
+@@ -5927,10 +5948,13 @@ relink_command=\"$relink_command\""
  	  # At present, this check doesn't affect windows .dll's that
  	  # are installed into $libdir/../bin (currently, that works fine)
  	  # but it's something to keep an eye on.

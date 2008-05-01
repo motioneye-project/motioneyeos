@@ -142,7 +142,12 @@ $(BUILD_DIR)/%/.stamp_extracted:
 	$(Q)mkdir -p $(@D)
 	$(Q)$(INFLATE$(suffix $($(PKG)_SOURCE))) $(DL_DIR)/$($(PKG)_SOURCE) | \
 	$(TAR) --strip-components=1 -C $(@D) $(TAR_OPTIONS) -
-	chmod -R ug+rw $(@D)  
+# some packages have messed up permissions inside
+	$(Q)chmod -R ug+rw $(@D)
+# if the package uses libtool, patch it for cross-compiling in buildroot
+	for i in `find $(@D) -name ltmain.sh`; do \
+		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
+	done 
 	$(Q)touch $@
 
 # Patch
@@ -185,6 +190,9 @@ $(BUILD_DIR)/%/.stamp_configured:
 	$(call MESSAGE,"Configuring")
 	$(Q)if test "$($(PKG)_AUTORECONF)" = "YES"; then \
 		cd $(@D)/$($(PKG)_SUBDIR) && $(AUTORECONF); \
+		for i in `find $(@D)/$($(PKG)_SUBDIR) -name ltmain.sh`; do \
+			../../toolchain/patch-kernel.sh $${i%/*} ../../package buildroot-libtool.patch; \
+		done \
 	fi
 	cd $(@D)/$($(PKG)_SUBDIR) && rm -f config.cache && \
 	$(TARGET_CONFIGURE_OPTS) \
