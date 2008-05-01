@@ -1,0 +1,27 @@
+diff --git a/drivers/char/keyboard.c b/drivers/char/keyboard.c
+index d95f316..20a7193 100644
+--- a/drivers/char/keyboard.c
++++ b/drivers/char/keyboard.c
+@@ -1000,7 +1000,8 @@ DECLARE_TASKLET_DISABLED(keyboard_tasklet, kbd_bh, 0);
+ #if defined(CONFIG_X86) || defined(CONFIG_IA64) || defined(CONFIG_ALPHA) ||\
+     defined(CONFIG_MIPS) || defined(CONFIG_PPC) || defined(CONFIG_SPARC) ||\
+     defined(CONFIG_PARISC) || defined(CONFIG_SUPERH) ||\
+-    (defined(CONFIG_ARM) && defined(CONFIG_KEYBOARD_ATKBD) && !defined(CONFIG_ARCH_RPC))
++    (defined(CONFIG_ARM) && defined(CONFIG_KEYBOARD_ATKBD) && !defined(CONFIG_ARCH_RPC)) ||\
++    defined(CONFIG_AVR32)
+ 
+ #define HW_RAW(dev) (test_bit(EV_MSC, dev->evbit) && test_bit(MSC_RAW, dev->mscbit) &&\
+ 			((dev)->id.bustype == BUS_I8042) && ((dev)->id.vendor == 0x0001) && ((dev)->id.product == 0x0001))
+diff --git a/arch/avr32/boards/atngw100/setup.c b/arch/avr32/boards/atngw100/setup.c
+--- a/arch/avr32/boards/atngw100/setup.c	2008-01-31 13:38:32.000000000 -0500
++++ b/arch/avr32/boards/atngw100/setup.c	2008-01-31 13:44:09.000000000 -0500
+@@ -224,6 +224,9 @@ static int __init atngw100_init(void)
+ 	at32_add_device_usba(0, NULL);
+ 	at32_add_device_ac97c(0);
+ 
++	at32_add_device_psif(0);
++	at32_add_device_psif(1);
++
+ 	for (i = 0; i < ARRAY_SIZE(ngw_leds); i++) {
+ 		at32_select_gpio(ngw_leds[i].gpio,
+ 				AT32_GPIOF_OUTPUT | AT32_GPIOF_HIGH);

@@ -272,7 +272,7 @@ index 96015dd..3c25a6f 100644
 +	.dma_rx_periph_id	= 3,
 +	.dma_tx_periph_id	= 4,
 +	.dma_controller_id	= 0,
-+	.reset_pin		= GPIO_PIN_NONE, // change to whatever pin you want, i.e. GPIO_PIN_PB(18)
++	.reset_pin		= GPIO_PIN_PB(18), // change to whatever pin you want, i.e. GPIO_PIN_PB(18)
 +};
 +
  static int __init atngw100_init(void)

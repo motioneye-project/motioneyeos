@@ -1,0 +1,11 @@
+diff -Nrup linux-2.6.24/arch/avr32/boards/atngw100/flash.c linux-2.6.24-patched/arch/avr32/boards/atngw100/flash.c
+--- a/arch/avr32/boards/atngw100/flash.c	2008-01-31 10:47:55.000000000 -0500
++++ b/arch/avr32/boards/atngw100/flash.c	2008-01-31 10:21:07.000000000 -0500
+@@ -42,7 +42,6 @@ static struct mtd_partition flash_parts[
+ 		.name           = "u-boot",
+ 		.offset         = 0x00000000,
+ 		.size           = 0x00020000,           /* 128 KiB */
+-		.mask_flags     = MTD_WRITEABLE,
+ 	},
+ 	{
+ 		.name           = "root",

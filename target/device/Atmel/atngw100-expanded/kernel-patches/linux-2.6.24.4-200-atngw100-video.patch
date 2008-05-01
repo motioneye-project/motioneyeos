@@ -1,14 +1,3 @@
-diff -Nrup linux-2.6.24/arch/avr32/boards/atngw100/flash.c linux-2.6.24-patched/arch/avr32/boards/atngw100/flash.c
---- a/arch/avr32/boards/atngw100/flash.c	2008-01-31 10:47:55.000000000 -0500
-+++ b/arch/avr32/boards/atngw100/flash.c	2008-01-31 10:21:07.000000000 -0500
-@@ -42,7 +42,6 @@ static struct mtd_partition flash_parts[
- 		.name           = "u-boot",
- 		.offset         = 0x00000000,
- 		.size           = 0x00020000,           /* 128 KiB */
--		.mask_flags     = MTD_WRITEABLE,
- 	},
- 	{
- 		.name           = "root",
 diff -Nrup linux-2.6.24/arch/avr32/boards/atngw100/setup.c linux-2.6.24-patched/arch/avr32/boards/atngw100/setup.c
 --- a/arch/avr32/boards/atngw100/setup.c	2008-01-31 10:47:55.000000000 -0500
 +++ b/arch/avr32/boards/atngw100/setup.c	2008-01-31 10:28:00.000000000 -0500
@@ -21,10 +10,10 @@ diff -Nrup linux-2.6.24/arch/avr32/boards/atngw100/setup.c linux-2.6.24-patched/
  
  #include <asm/io.h>
  #include <asm/setup.h>
-@@ -27,6 +29,58 @@
- 
+@@ -28,9 +30,63 @@
  /* Initialized by bootloader-specific startup code. */
  struct tag *bootloader_tags __initdata;
+ 
 +static struct fb_videomode __initdata video_modes[] = {
 +	{
 +		.name		= "640x480@60",
@@ -77,15 +66,20 @@ diff -Nrup linux-2.6.24/arch/avr32/boards/atngw100/setup.c linux-2.6.24-patched/
 +	.default_monspecs	= &atngw100_default_monspecs,
 +	.guard_time		= 2,
 +};
- 
++
  struct eth_addr {
  	u8 addr[6];
-@@ -156,16 +210,19 @@ static int __init atngw100_init(void)
+ };
++
+ static struct eth_addr __initdata hw_addr[2];
+ static struct eth_platform_data __initdata eth_data[2];
+ 
+@@ -155,13 +211,14 @@ static int __init atngw100_init(void)
+ 	 * ATNGW100 uses 16-bit SDRAM interface, so we don't need to
  	 * reserve any pins for it.
  	 */
- 
 +	at32_add_device_lcdc(1, &atngw100_lcdc_data, fbmem_start, fbmem_size);
-+
+ 
  	at32_add_system_devices();
  
  	at32_add_device_usart(0);
@@ -96,30 +90,9 @@ diff -Nrup linux-2.6.24/arch/avr32/boards/atngw100/setup.c linux-2.6.24-patched/
  
  	at32_add_device_spi(0, spi0_board_info, ARRAY_SIZE(spi0_board_info));
  	at32_add_device_mci(0, &mci0_data);
- 	at32_add_device_usba(0, NULL);
-+	at32_add_device_ac97c(0);
- 
- 	for (i = 0; i < ARRAY_SIZE(ngw_leds); i++) {
- 		at32_select_gpio(ngw_leds[i].gpio,
 diff -Nrup linux-2.6.24/arch/avr32/mach-at32ap/at32ap700x.c linux-2.6.24-patched/arch/avr32/mach-at32ap/at32ap700x.c
 --- a/arch/avr32/mach-at32ap/at32ap700x.c	2008-01-31 10:47:55.000000000 -0500
 +++ b/arch/avr32/mach-at32ap/at32ap700x.c	2008-01-31 10:29:22.000000000 -0500
-@@ -1116,6 +1116,15 @@ at32_add_device_lcdc(unsigned int id, st
- 	struct fb_videomode *modedb;
- 	unsigned int modedb_size;
- 
-+	/*  help to prevent DMA underruns, which causes
-+		the screen position to jump around */	 
-+	hmatrix_writel(SCFG4, HMATRIX_BIT(ARBT) 
-+					| HMATRIX_BF(FIXED_DEFMSTR, 0x5) 
-+					| HMATRIX_BF(SLOT_CYCLE, 0x40) 
-+					| HMATRIX_BF(DEFMSTR_TYPE
-+					, HMATRIX_DEFMSTR_TYPE_FIXED_DEFAULT));
-+	hmatrix_writel(PRAS4, 0x0FF00000);
-+
- 	/*
- 	 * Do a deep copy of the fb data, monspecs and modedb. Make
- 	 * sure all allocations are done before setting up the
 @@ -1133,7 +1142,7 @@ at32_add_device_lcdc(unsigned int id, st
  	monspecs->modedb = modedb;
  
