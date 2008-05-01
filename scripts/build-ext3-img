@@ -21,8 +21,8 @@ fi
 
 IMAGE=${IMAGE_PATH}/${IMAGE_NAME}
 
-echo "Enter the path to the root filesystem that you want"
-echo "to install to the image"
+echo "Enter the path and filename for the root filesystem"
+echo "tarball that you want to install into the image"
 read ROOT_PATH
 
 if [ "${ROOT_PATH}" = "" ]; then
@@ -36,7 +36,7 @@ BYTE_SIZE=`du --summarize --block-size=${BLOCKSIZE} --human-readable ${ROOT_PATH
 CYLINDERS=${CYLINDERS%${ROOT_PATH}}
 BYTE_SIZE=${BYTE_SIZE%${ROOT_PATH}}
 
-CYLINDERS=`expr ${CYLINDERS} "+" 2`
+CYLINDERS=`expr ${CYLINDERS} "*" 2`
 
 echo "Now I will create an ext3 image file"
 echo "using ${CYLINDERS} cylinders, with ${BLOCKSIZE} bytes per block"
@@ -60,7 +60,7 @@ echo "in other words, ${BYTE_SIZE}bytes..."
 # Install Software to the image
 	mkdir -p ${IMAGE_PATH}/temp
     mount -o offset=32256,loop ${IMAGE} ${IMAGE_PATH}/temp
-    cp -a ${ROOT_PATH}/* ${IMAGE_PATH}/temp
+    tar -xvf ${ROOT_PATH} --directory ${IMAGE_PATH}/temp
     # make sure to unmount the image
     umount ${IMAGE_PATH}/temp
 	rm -rf ${IMAGE_PATH}/temp
@@ -124,7 +124,7 @@ ide0:0.redo = ""
 ide0:0.writeThrough = "FALSE"
 ide0:0.startConnected = "TRUE"
 
-ide1:0.present = "TRUE"
+ide1:0.present = "FALSE"
 ide1:0.fileName = ""
 ide1:0.deviceType = "disk"
 ide1:0.mode = ""
