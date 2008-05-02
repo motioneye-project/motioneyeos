@@ -1,0 +1,23 @@
+--- a/Makefile	2002-11-20 05:20:49.000000000 -0500
++++ b/Makefile	2008-04-28 12:36:23.000000000 -0400
+@@ -20,7 +20,6 @@ CFLAGS=-pedantic -Wall -W -O
+ 
+ PACKAGE=docker
+ VERSION=1.5
+-
+ target=docker
+ sources=docker.c kde.c icons.c xproperty.c net.c
+ headers=docker.h kde.h icons.h xproperty.h net.h version.h
+@@ -31,10 +30,10 @@ all: $(target) $(sources) $(headers)
+ 
+ $(target): $(sources:.c=.o)
+ 	$(CC) $(CFLAGS) -L$(XLIBPATH) -lX11 \
+-		`pkg-config --libs glib-2.0` $^ -o $@
++		`$(PKGCONFIG) --libs glib-2.0` $^ -o $@
+ 
+ %.o: %.c
+-	$(CC) -c $(CFLAGS) `pkg-config --cflags glib-2.0` $<
++	$(CC) -c $(CFLAGS) `$(PKGCONFIG) --cflags glib-2.0` $<
+ 
+ version.h: version.h.in Makefile
+ 	sed -e "s/@VERSION@/$(VERSION)/" version.h.in > $@
