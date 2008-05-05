@@ -1,0 +1,38 @@
+--- busybox-1.10.1/coreutils/echo.c	Sat Apr 19 05:50:32 2008
++++ busybox-1.10.1-echo/coreutils/echo.c	Wed Apr 30 02:37:08 2008
+@@ -27,10 +27,8 @@
+ 
+ /* This is a NOFORK applet. Be very careful! */
+ 
+-/* argc is unused, but removing it precludes compiler from
+- * using call -> jump optimization */
++/* NB: can be used by shell even if not enabled as applet */
+ 
+-int echo_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int echo_main(int argc ATTRIBUTE_UNUSED, char **argv)
+ {
+ 	const char *arg;
+@@ -110,15 +108,19 @@
+ 				}
+ #if !ENABLE_FEATURE_FANCY_ECHO
+ 				/* SUSv3 specifies that octal escapes must begin with '0'. */
+-				if ( (((unsigned char)*arg) - '1') >= 7)
++				if ( ((int)(unsigned char)(*arg) - '0') >= 8) /* '8' or bigger */
+ #endif
+ 				{
+ 					/* Since SUSv3 mandates a first digit of 0, 4-digit octals
+ 					* of the form \0### are accepted. */
+-					if (*arg == '0' && ((unsigned char)(arg[1]) - '0') < 8) {
+-						arg++;
++					if (*arg == '0') {
++						/* NB: don't turn "...\0" into "...\" */
++						if (arg[1] && ((unsigned char)(arg[1]) - '0') < 8) {
++							arg++;
++						}
+ 					}
+-					/* bb_process_escape_sequence can handle nul correctly */
++					/* bb_process_escape_sequence handles NUL correctly
++					 * ("...\" case). */
+ 					c = bb_process_escape_sequence(&arg);
+ 				}
+ 			}

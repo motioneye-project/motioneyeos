@@ -1,0 +1,11 @@
+--- busybox-1.10.1/scripts/trylink	Sat Apr 19 05:50:27 2008
++++ busybox-1.10.1-trylink/scripts/trylink	Wed Apr 30 02:10:19 2008
+@@ -66,7 +66,7 @@
+ 	#if defined(__GLIBC__) && !defined(__UCLIBC__)
+ 	syntax error here
+ 	#endif
+-	" >"$tempname"
++	" >"$tempname".c
+     if $CC "$tempname".c -c -o "$tempname".o >/dev/null 2>&1; then
+ 	echo "$2";
+     else

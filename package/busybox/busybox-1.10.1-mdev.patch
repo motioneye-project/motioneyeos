@@ -1,5 +1,5 @@
 --- busybox-1.10.1/util-linux/mdev.c	Sat Apr 19 05:50:39 2008
-+++ busybox-1.10.1-mdev/util-linux/mdev.c	Sat Apr 26 17:15:54 2008
++++ busybox-1.10.1-mdev/util-linux/mdev.c	Fri May  2 14:48:06 2008
 @@ -12,6 +12,8 @@
  #include "libbb.h"
  #include "xregex.h"
@@ -40,7 +40,7 @@
  	char *command = NULL;
  	char *alias = NULL;
  
-@@ -42,156 +58,177 @@
+@@ -42,156 +58,178 @@
  	 * also depend on path having writeable space after it.
  	 */
  	if (!delete) {
@@ -204,13 +204,19 @@
 +			if (ENABLE_FEATURE_MDEV_RENAME) {
 +				if (!next)
 +					break;
-+				val = next;
-+				next = next_field(val);
-+				if (*val == '>') {
++				if (*next == '>') {
 +#if ENABLE_FEATURE_MDEV_RENAME_REGEXP
-+					/* substitute %1..9 with off[1..9], if any */
 +					char *s, *p;
 +					unsigned i, n;
++#endif
++					val = next;
++					next = next_field(val);
++#if ENABLE_FEATURE_MDEV_RENAME_REGEXP
++					/* substitute %1..9 with off[1..9], if any */
++					n = 0;
++					s = val;
++					while (*s && *s++ == '%')
++						n++;
  
 -					/* parse GID */
 -					grp = getgrnam(str_gid);
@@ -218,11 +224,7 @@
 -						gid = grp->gr_gid;
 -					else
 -						gid = strtoul(str_gid, NULL, 10);
-+					n = 0;
-+					s = val;
-+					while (*s && *s++ == '%')
-+						n++;
- 
+-
 -				} else if (field == 2) {
 -
 -					/* Mode device permissions */
@@ -327,7 +329,7 @@
  
  		if (ENABLE_FEATURE_MDEV_RENAME)
  			unlink(device_name);
-@@ -208,39 +245,44 @@
+@@ -208,39 +246,44 @@
  			if (ENABLE_FEATURE_MDEV_RENAME && alias) {
  				char *dest;
  
@@ -389,7 +391,7 @@
  }
  
  /* File callback for /sys/ traversal */
-@@ -249,14 +291,15 @@
+@@ -249,14 +292,15 @@
                        void *userData,
                        int depth ATTRIBUTE_UNUSED)
  {
@@ -408,7 +410,7 @@
  	make_device(scratch, 0);
  
  	return TRUE;
-@@ -287,12 +330,6 @@
+@@ -287,12 +331,6 @@
  	int cnt;
  	int firmware_fd, loading_fd, data_fd;
  
@@ -421,7 +423,7 @@
  	/* check for /lib/firmware/$FIRMWARE */
  	xchdir("/lib/firmware");
  	firmware_fd = xopen(firmware, O_RDONLY);
-@@ -304,16 +341,15 @@
+@@ -304,16 +342,15 @@
  	xchdir(sysfs_path);
  	for (cnt = 0; cnt < 30; ++cnt) {
  		loading_fd = open("loading", O_WRONLY);
@@ -444,7 +446,7 @@
  		goto out;
  
  	/* load firmware by `cat /lib/firmware/$FIRMWARE > /sys/$DEVPATH/data */
-@@ -324,9 +360,9 @@
+@@ -324,9 +361,9 @@
  
  	/* tell kernel result by `echo [0|-1] > /sys/$DEVPATH/loading` */
  	if (cnt > 0)
@@ -456,7 +458,7 @@
  
   out:
  	if (ENABLE_FEATURE_CLEAN_UP) {
-@@ -341,16 +377,14 @@
+@@ -341,16 +378,14 @@
  {
  	char *action;
  	char *env_path;
@@ -475,7 +477,7 @@
  		struct stat st;
  
  		xstat("/", &st);
-@@ -366,26 +400,27 @@
+@@ -366,26 +401,27 @@
  			fileAction, dirAction, temp, 0);
  
  	} else {

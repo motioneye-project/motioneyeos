@@ -1,0 +1,24 @@
+--- busybox-1.10.1/archival/libunarchive/get_header_tar.c	Sat Apr 19 05:50:29 2008
++++ busybox-1.10.1-tar/archival/libunarchive/get_header_tar.c	Tue Apr 29 06:12:29 2008
+@@ -112,7 +112,7 @@
+ 	archive_handle->offset += 512;
+ 
+ 	/* If there is no filename its an empty header */
+-	if (tar.name[0] == 0) {
++	if (tar.name[0] == 0 && tar.prefix[0] == 0) {
+ 		if (end) {
+ 			/* This is the second consecutive empty header! End of archive!
+ 			 * Read until the end to empty the pipe from gz or bz2
+@@ -211,9 +211,12 @@
+ 	/* getOctal trashes subsequent field, therefore we call it
+ 	 * on fields in reverse order */
+ 	if (tar.devmajor[0]) {
++		char t = tar.prefix[0];
++		/* we trash prefix[0] here, but we DO need it later! */
+ 		unsigned minor = GET_OCTAL(tar.devminor);
+ 		unsigned major = GET_OCTAL(tar.devmajor);
+ 		file_header->device = makedev(major, minor);
++		tar.prefix[0] = t;
+ 	}
+ 	file_header->link_target = NULL;
+ 	if (!linkname && parse_names && tar.linkname[0]) {
