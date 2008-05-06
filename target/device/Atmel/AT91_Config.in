@@ -12,6 +12,7 @@ comment	"Selection criteria"
 
 config	BR2_TARGET_ATMEL_ALL
 	bool "Allow all ARM targets"
+	depends BR2_arm
 	default y
 
 config	BR2_TARGET_ATMEL_NET
