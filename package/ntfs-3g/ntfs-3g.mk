@@ -3,7 +3,7 @@
 # ntfs-3g
 #
 #############################################################
-NTFS-3G_VERSION:=1.810
+NTFS-3G_VERSION:=1.2506
 NTFS-3G_SOURCE:=ntfs-3g-$(NTFS-3G_VERSION).tgz
 NTFS-3G_SITE:=www.ntfs-3g.org
 NTFS-3G_DIR:=$(BUILD_DIR)/ntfs-3g-$(NTFS-3G_VERSION)
