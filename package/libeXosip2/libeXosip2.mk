@@ -4,9 +4,9 @@
 #
 #############################################################
 
-LIBEXOSIP2_VERSION=3.0.1
+LIBEXOSIP2_VERSION=3.1.0
 LIBEXOSIP2_SOURCE=libeXosip2-$(LIBEXOSIP2_VERSION).tar.gz
-LIBEXOSIP2_SITE=http://www.antisip.com/download/
+LIBEXOSIP2_SITE=http://www.antisip.com/download/exosip2
 LIBEXOSIP2_DIR=$(BUILD_DIR)/libeXosip2-$(LIBEXOSIP2_VERSION)
 LIBEXOSIP2_CAT:=$(ZCAT)
 
