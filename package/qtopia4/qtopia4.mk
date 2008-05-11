@@ -16,7 +16,9 @@
 # (cd /usr/include; sudo ln -s dbus-1.0/dbus dbus)
 # to fix
 
-QTOPIA4_VERSION:=4.4.0-snapshot-20080312
+QTOPIA4_VERSION:=4.4.0-snapshot-20080325
+# QTOPIA4_VERSION:=4.4.1-snapshot-20080511
+# QTOPIA4_VERSION:=4.5.0-snapshot-20080511
 QTOPIA4_CAT:=$(ZCAT)
 
 BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME)))
