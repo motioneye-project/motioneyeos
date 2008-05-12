@@ -5,7 +5,7 @@ diff -rup grub-0.97.orig/grub/asmstub.c grub-0.97/grub/asmstub.c
   *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
   */
  
-+#include <features.h>
++/* #include <features.h> - NK */
 +#if !defined __UCLIBC__ || (defined __UCLIBC__ && defined __UCLIBC_HAS_LFS__)
  /* Try to use glibc's transparant LFS support. */
  #define _LARGEFILE_SOURCE	1
@@ -22,7 +22,7 @@ diff -rup grub-0.97.orig/lib/device.c grub-0.97/lib/device.c
   *  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
   */
  
-+#include <features.h>
++/* #include <features.h> - NK */
 +#if !defined __UCLIBC__ || (defined __UCLIBC__ && defined __UCLIBC_HAS_LFS__)
  /* Try to use glibc's transparant LFS support. */
  #define _LARGEFILE_SOURCE       1
