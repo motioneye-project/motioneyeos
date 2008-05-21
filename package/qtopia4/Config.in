@@ -147,6 +147,12 @@ config BR2_PACKAGE_QTOPIA4_QTTIFF
 
 endchoice
 
+config BR2_PACKAGE_QTOPIA4_SVG
+	bool "Enable SVG support"
+	depends BR2_PACKAGE_QTOPIA4
+	help
+	  Enable the QtSvg library.
+
 config BR2_PACKAGE_QTOPIA4_SQL
 	bool "Enable SQL support"
 	depends BR2_PACKAGE_QTOPIA4

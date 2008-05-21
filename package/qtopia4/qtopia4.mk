@@ -154,6 +154,12 @@ else
 QTOPIA4_OPENSSL=-no-openssl
 endif
 
+ifeq ($(BR2_PACKAGE_QTOPIA4_SVG),y)
+QTOPIA4_SVG=-svg
+else
+QTOPIA4_SVG=-no-svg
+endif
+
 ifeq ($(BR2_PACKAGE_QTOPIA4_SQL),y)
 QTOPIA4_SQL_IBASE=-qt-sql-ibase
 QTOPIA4_SQL_MYSQL=-qt-sql-mysql
@@ -220,6 +226,7 @@ endif
 		$(QTOPIA4_PNG) \
 		$(QTOPIA4_TIFF) \
 		$(QTOPIA4_ZLIB) \
+		$(QTOPIA4_SVG) \
 		$(QTOPIA4_SQL_IBASE) \
 		$(QTOPIA4_SQL_MYSQL) \
 		$(QTOPIA4_SQL_ODBC) \
@@ -260,20 +267,22 @@ $(TARGET_DIR)/usr/lib/libQtCore.so.4: $(STAGING_DIR)/usr/lib/libQtCore.la
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/micro*.qpf $(TARGET_DIR)/usr/lib/fonts
 ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt*.so.* $(TARGET_DIR)/usr/lib/
-	-$(STRIPCMD) --strip-unneeded $(TARGET_DIR)/usr/lib/libQt*.so.*
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.*
 endif
 	# Install image plugins if they are built
 	if [ -d $(STAGING_DIR)/usr/plugins/imageformats ]; then \
 		mkdir -p $(TARGET_DIR)/usr/plugins; \
 		cp -dpfr $(STAGING_DIR)/usr/plugins/imageformats $(TARGET_DIR)/usr/plugins/; \
-		$(STRIPCMD) --strip-unneeded $(TARGET_DIR)/usr/plugins/imageformats/*; \
+		$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/plugins/imageformats/*; \
 	fi
 ifneq ($(BR2_PACKAGE_QTOPIA4_SQL),y)
 	# Remove Sql libraries, not needed
 	-rm $(TARGET_DIR)/usr/lib/libQtSql*
 endif
+ifneq ($(BR2_PACKAGE_QTOPIA4_SVG),y)
 	# Remove Svg libraries, not needed
 	-rm $(TARGET_DIR)/usr/lib/libQtSvg*
+endif
 
 qtopia4: uclibc zlib $(QTOPIA4_DEP_LIBS) $(TARGET_DIR)/usr/lib/libQtCore.so.4
 
