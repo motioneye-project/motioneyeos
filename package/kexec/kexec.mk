@@ -62,13 +62,13 @@ $(TARGET_DIR)/$(KEXEC_TARGET_BINARY): $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/bui
 	cp -dpf $(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/$(KEXEC_BINARY) \
 		$(KEXEC_DIR)/objdir-$(GNU_TARGET_NAME)/build/sbin/kdump \
 		$(TARGET_DIR)/sbin/
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/sbin/k{exec,dump}
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/sbin/kexec $(TARGET_DIR)/sbin/kdump
 
 kexec: uclibc $(TARGET_DIR)/$(KEXEC_TARGET_BINARY)
 
 kexec-clean:
 	-$(MAKE) -C $(KEXEC_DIR) clean
-	rm -f $(TARGET_DIR)/sbin/k{exec,dump}
+	rm -f $(TARGET_DIR)/sbin/kexec $(TARGET_DIR)/sbin/kdump
 
 kexec-dirclean:
 	rm -rf $(KEXEC_DIR)
