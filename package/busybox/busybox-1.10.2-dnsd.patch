@@ -1,0 +1,87 @@
+--- busybox-1.10.2/libbb/udp_io.c	Sat Apr 19 05:50:33 2008
++++ busybox-1.10.2-dnsd/libbb/udp_io.c	Thu May 22 19:40:32 2008
+@@ -36,11 +36,12 @@
+ #else
+ 	struct iovec iov[1];
+ 	struct msghdr msg;
+-	char cbuf[sizeof(struct in_pktinfo)
++	union {
++		char cmsg[CMSG_SPACE(sizeof(struct in_pktinfo))];
+ #if ENABLE_FEATURE_IPV6 && defined(IPV6_PKTINFO)
+-		| sizeof(struct in6_pktinfo) /* (a|b) is poor man's max(a,b) */
++		char cmsg6[CMSG_SPACE(sizeof(struct in6_pktinfo))];
+ #endif
+-	];
++	} u;
+ 	struct cmsghdr* cmsgptr;
+ 
+ 	if (from->sa_family != AF_INET
+@@ -57,15 +58,15 @@
+ 	iov[0].iov_base = buf;
+ 	iov[0].iov_len = len;
+ 
+-	memset(cbuf, 0, sizeof(cbuf));
++	memset(&u, 0, sizeof(u));
+ 
+ 	memset(&msg, 0, sizeof(msg));
+ 	msg.msg_name = (void *)(struct sockaddr *)to; /* or compiler will annoy us */
+ 	msg.msg_namelen = tolen;
+ 	msg.msg_iov = iov;
+ 	msg.msg_iovlen = 1;
+-	msg.msg_control = cbuf;
+-	msg.msg_controllen = sizeof(cbuf);
++	msg.msg_control = &u;
++	msg.msg_controllen = sizeof(u);
+ 	msg.msg_flags = flags;
+ 
+ 	cmsgptr = CMSG_FIRSTHDR(&msg);
+@@ -89,6 +90,8 @@
+ 		pktptr->ipi6_addr = ((struct sockaddr_in6*)from)->sin6_addr;
+ 	}
+ #endif
++	msg.msg_controllen = cmsgptr->cmsg_len;
++
+ 	return sendmsg(fd, &msg, flags);
+ #endif
+ }
+@@ -109,7 +112,9 @@
+ 	struct iovec iov[1];
+ 	union {
+ 		char cmsg[CMSG_SPACE(sizeof(struct in_pktinfo))];
++#if ENABLE_FEATURE_IPV6 && defined(IPV6_PKTINFO)
+ 		char cmsg6[CMSG_SPACE(sizeof(struct in6_pktinfo))];
++#endif
+ 	} u;
+ 	struct cmsghdr *cmsgptr;
+ 	struct msghdr msg;
+--- busybox-1.10.2/networking/dnsd.c	Sat Apr 19 05:50:27 2008
++++ busybox-1.10.2-dnsd/networking/dnsd.c	Thu May 22 19:40:32 2008
+@@ -194,7 +194,8 @@
+ 			for (i = 1; i <= (int)(d->name[0]); i++)
+ 				if (tolower(qs[i]) != d->name[i])
+ 					break;
+-			if (i > (int)(d->name[0])) {
++			if (i > (int)(d->name[0]) ||
++			    (d->name[0] == 1 && d->name[1] == '*')) {
+ 				strcpy((char *)as, d->ip);
+ #if DEBUG
+ 				fprintf(stderr, " OK as:%s\n", as);
+@@ -202,7 +203,8 @@
+ 				return 0;
+ 			}
+ 		} else if (type == REQ_PTR) { /* search by IP-address */
+-			if (!strncmp((char*)&d->rip[1], (char*)&qs[1], strlen(d->rip)-1)) {
++			if ((d->name[0] != 1 || d->name[1] != '*') &&
++			    !strncmp((char*)&d->rip[1], (char*)&qs[1], strlen(d->rip)-1)) {
+ 				strcpy((char *)as, d->name);
+ 				return 0;
+ 			}
+@@ -401,7 +403,7 @@
+ 		r = process_packet(buf);
+ 		if (r <= 0)
+ 			continue;
+-		send_to_from(udps, buf, r, 0, &to->u.sa, &from->u.sa, lsa->len);
++		send_to_from(udps, buf, r, 0, &from->u.sa, &to->u.sa, lsa->len);
+ 	}
+ 	return 0;
+ }

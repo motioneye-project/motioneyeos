@@ -1,0 +1,16 @@
+--- busybox-1.10.2/sysklogd/syslogd.c	Sat Apr 19 05:50:29 2008
++++ busybox-1.10.2-syslogd/sysklogd/syslogd.c	Sat May 24 23:02:56 2008
+@@ -347,10 +347,11 @@
+ 				sprintf(newFile, "%s.%d", G.logFilePath, i);
+ 				if (i == 0) break;
+ 				sprintf(oldFile, "%s.%d", G.logFilePath, --i);
+-				xrename(oldFile, newFile);
++				/* ignore errors - file might be missing */
++				rename(oldFile, newFile);
+ 			}
+ 			/* newFile == "f.0" now */
+-			xrename(G.logFilePath, newFile);
++			rename(G.logFilePath, newFile);
+ 			fl.l_type = F_UNLCK;
+ 			fcntl(G.logFD, F_SETLKW, &fl);
+ 			close(G.logFD);
