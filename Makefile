@@ -362,7 +362,7 @@ ifeq ($(DL_DIR),$(BASE_DIR)/dl)
 	rm -rf $(DL_DIR)
 endif
 	rm -rf $(BUILD_DIR) $(PROJECT_BUILD_DIR) $(BINARIES_DIR) \
-	$(LINUX_KERNEL) $(IMAGE) $(BASE_DIR)/include \
+	$(LINUX_KERNEL) $(BASE_DIR)/include \
 		.config.cmd
 	$(MAKE) -C $(CONFIG) clean
 
