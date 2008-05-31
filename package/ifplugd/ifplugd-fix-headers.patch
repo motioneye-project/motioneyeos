@@ -1,0 +1,24 @@
+---
+ src/interface.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: ifplugd-0.28/src/interface.c
+===================================================================
+--- ifplugd-0.28.orig/src/interface.c
++++ ifplugd-0.28/src/interface.c
+@@ -23,7 +23,6 @@
+ #endif
+ 
+ #include <linux/sockios.h>
+-#include <linux/if_ether.h>
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <sys/ioctl.h>
+@@ -32,6 +31,7 @@
+ #include <string.h>
+ #include <errno.h>
+ #include <netinet/in.h>
++#include <netinet/if_ether.h>
+ #include <stdio.h>
+ #include <ctype.h>
+ #include <stdlib.h>
