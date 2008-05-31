@@ -257,6 +257,15 @@ ifeq ($(UCLIBC_TARGET_ARCH),sparc)
 		>> $(UCLIBC_DIR)/.oldconfig
 	$(SED) 's/^.*$(UCLIBC_SPARC_TYPE).*/$(UCLIBC_SPARC_TYPE)=y/g' $(UCLIBC_DIR)/.oldconfig
 endif
+ifeq ($(UCLIBC_TARGET_ARCH),powerpc)
+ifeq ($(BR2_powerpc_8540),y)
+	/bin/echo "# CONFIG_CLASSIC is not set" >> $(UCLIBC_DIR)/.oldconfig
+	/bin/echo "CONFIG_E500=y" >> $(UCLIBC_DIR)/.oldconfig
+else
+	/bin/echo "CONFIG_CLASSIC=y" >> $(UCLIBC_DIR)/.oldconfig
+	/bin/echo "# CONFIG_E500 is not set" >> $(UCLIBC_DIR)/.oldconfig
+endif
+endif
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
 	# The above doesn't work for me, so redo
 	$(SED) 's/.*\(ARCH_$(UCLIBC_NOT_TARGET_ENDIAN)_ENDIAN\).*/# \1 is not set/g' \
