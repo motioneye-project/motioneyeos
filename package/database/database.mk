@@ -1,0 +1,1 @@
+include package/database/*/*.mk

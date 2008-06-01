@@ -127,6 +127,8 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/which/Config.in"
 endif
 
+source "package/database/Config.in"
+
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 # busybox has an editor
 

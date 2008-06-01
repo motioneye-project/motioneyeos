@@ -1,0 +1,5 @@
+menu "Database"
+
+source "package/database/mysql_client/Config.in"
+
+endmenu
