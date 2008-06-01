@@ -109,6 +109,7 @@ endif
 ### Database extensions
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
 	PHP_CONFIGURE+=--with-sqlite
+	PHP_DEPS+=sqlite
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE_UTF8),y)
 	PHP_CONFIGURE+=--enable-sqlite-utf8
 endif

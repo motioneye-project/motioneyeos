@@ -145,6 +145,7 @@ comment "Database extensions"
 config BR2_PACKAGE_PHP_EXT_SQLITE
 	bool "sqlite"
 	depends on BR2_PACKAGE_PHP
+	select BR2_PACKAGE_SQLITE
 	default y
 	help
 	  SQLite
@@ -173,6 +174,7 @@ config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
 config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 	bool "PDO_MySQL"
 	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_PHP_EXT_PDO
+	select BR2_PACKAGE_MYSQL_CLIENT
 	default n
 	help
 	  MySQL support for PDO
