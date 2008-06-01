@@ -15,6 +15,15 @@ source "target/device/Config.in"
 
 menu "Build options"
 
+config BR2_PRIMARY_SITE
+	string "Primary download site"
+	default ""
+	help
+	  Primary site to download from. If this option is set then buildroot
+	  will try to download package source first from this site and try the
+	  default if the file is not found.
+	  NOTE: This only works for packages using the Makefile.autotools.in
+
 config BR2_WGET
 	string "Wget command"
 	default "wget --passive-ftp -nd"
