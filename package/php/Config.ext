@@ -29,18 +29,25 @@ config BR2_PACKAGE_PHP_EXT_SESSION
 	  Session support
 
 config BR2_PACKAGE_PHP_EXT_OPENSSL
-        bool "openssl"
-        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_OPENSSL
-        default n
-        help
-          openssl support
+	bool "openssl"
+	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_OPENSSL
+	default n
+	help
+	  openssl support
 
 config BR2_PACKAGE_PHP_EXT_LIBXML2
-        bool "xml2"
-        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_LIBXML2
-        default y
-        help
-          xml support
+	bool "xml2"
+	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_LIBXML2
+	default y
+	help
+	  xml support
+
+config BR2_PACKAGE_PHP_EXT_SIMPLEXML
+	bool "simplexml"
+	depends on BR2_PACKAGE_PHP
+	select BR2_PACKAGE_PHP_EXIT_LIBXML2
+	help
+	  SimpleXML support
 
 config BR2_PACKAGE_PHP_EXT_ZLIB
         bool "zlib"

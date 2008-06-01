@@ -3,7 +3,7 @@
 # php
 #
 #############################################################
-PHP_VER:=5.2.5
+PHP_VER:=5.2.6
 PHP_SOURCE:=php-$(PHP_VER).tar.bz2
 PHP_SITE:=http://us.php.net/get/${PHP_SOURCE}/from/us2.php.net/mirror
 PHP_DIR:=$(BUILD_DIR)/php-$(PHP_VER)
@@ -58,6 +58,9 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_LIBXML2),y)
 		 --enable-xmlwriter
 	PHP_DEPS+=libxml2
 endif
+ifeq ($(BR2_PACKAGE_PHP_EXT_SIMPLEXML),y)
+	PHP_CONFIGURE+=--enable-simplexml
+endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_ZLIB),y)
 	PHP_CONFIGURE+=--with-zlib=$(STAGING_DIR)/usr
 	PHP_DEPS+=zlib
@@ -105,20 +108,20 @@ endif
 
 ### Database extensions
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
-	PHP_CONFIGURE+=--with-sql
+	PHP_CONFIGURE+=--with-sqlite
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE_UTF8),y)
 	PHP_CONFIGURE+=--enable-sqlite-utf8
 endif
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO),y)
+	PHP_CONFIGURE+=--enable-pdo
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_SQLITE),y)
 	PHP_CONFIGURE+=--with-pdo-sqlite
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),y)
-	PHP_CONFIGURE+=--with-pdo-mysql
+	PHP_CONFIGURE+=--with-pdo-mysql=$(STAGING_DIR)/usr
+	PHP_DEPS+=mysql_client
 endif
-else
-	PHP_CONFIGURE+=--without-pdo-sqlite
 endif
 
 $(DL_DIR)/$(PHP_SOURCE):
