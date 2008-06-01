@@ -1,4 +1,4 @@
-menu "Database"
+menuconfig "Database"
 
 source "package/database/mysql_client/Config.in"
 

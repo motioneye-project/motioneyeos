@@ -2,4 +2,4 @@ config BR2_PACKAGE_MYSQL_CLIENT
 	bool "MySQL 5.1 client"
 	default n
 	help
-	  MySQL 5.1 client
+	  MySQL client
