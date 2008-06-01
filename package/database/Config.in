@@ -1,5 +1,7 @@
 menuconfig BR2_DATABASE_SUPPORT
 	bool "Database"
-	default n
+	default y
 
+if BR2_DATABASE_SUPPORT
 source "package/database/mysql_client/Config.in"
+endif
