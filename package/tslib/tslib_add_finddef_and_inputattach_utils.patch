@@ -115,11 +115,11 @@ diff -Naur tslib-org/tests/inputattach.c tslib-1.0/tests/inputattach.c
 +#endif
 +#ifndef SERIO_SUNKBD
 +  #define SERIO_SUNKBD    0x10
-+#endif SERIO_SUNKBD
++#endif
 +#ifndef SERIO_WARRIOR
 +  #define SERIO_WARRIOR   0x18
 +#endif
-+#ifndef SERIO_WARRIOR
++#ifndef SERIO_SPACEORB
 +  #define SERIO_SPACEORB  0x19
 +#endif
 +#ifndef SERIO_MAGELLAN
