@@ -50,6 +50,8 @@ else # no softfloat support
 SOFT_FLOAT_CONFIG_OPTION:=
 TARGET_SOFT_FLOAT:=
 ARCH_FPU_SUFFIX:=
+endif
+
 # some additional defaults
 ifneq ($(strip $(subst ",,$(BR2_GCC_TARGET_ARCH))),)
 # ")))
@@ -62,7 +64,6 @@ endif
 ifneq ($(strip $(subst ",,$(BR2_GCC_TARGET_ABI))),)
 # ")))
 GCC_WITH_ABI:=--with-abi=$(BR2_GCC_TARGET_ABI)
-endif
 endif
 
 # AVR32 GCC configuration
