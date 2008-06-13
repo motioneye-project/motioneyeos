@@ -12,6 +12,7 @@ LIBTOOL_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VERSION)
 LIBTOOL_HOST_DIR:=$(TOOL_BUILD_DIR)/libtool-$(LIBTOOL_VERSION)-host
 LIBTOOL_BINARY:=libtool
 LIBTOOL_TARGET_BINARY:=usr/bin/libtool
+LIBTOOL:=$(STAGING_DIR)/usr/bin/libtool
 
 $(DL_DIR)/$(LIBTOOL_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(LIBTOOL_SITE)/$(LIBTOOL_SOURCE)
@@ -122,7 +123,7 @@ $(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_HOST_DIR)/.configured
 	$(MAKE) -C $(LIBTOOL_HOST_DIR)
 	touch -c $@
 
-$(STAGING_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY)
+$(LIBTOOL): $(LIBTOOL_HOST_DIR)/$(LIBTOOL_BINARY)
 	$(MAKE) -C $(LIBTOOL_HOST_DIR) install
 	rm -rf $(STAGING_DIR)/share/locale
 	rm -rf $(STAGING_DIR)/usr/share/doc
@@ -134,7 +135,7 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 endif
 	touch -c $@
 
-host-libtool: $(STAGING_DIR)/$(LIBTOOL_TARGET_BINARY)
+host-libtool: $(LIBTOOL)
 
 host-libtool-clean:
 	$(MAKE) -C $(LIBTOOL_HOST_DIR) uninstall
