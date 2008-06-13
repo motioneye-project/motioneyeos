@@ -6,13 +6,9 @@
 # by a 'make clean' so don't put anything sacred in here...
 #
 #############################################################
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
-DEFAULT_KERNEL_HEADERS:=$(strip $(subst ",, $(BR2_LINUX26_VERSION)))
-#"))
-else
+
 DEFAULT_KERNEL_HEADERS:=$(strip $(subst ",, $(BR2_DEFAULT_KERNEL_HEADERS)))
 #"))
-endif
 
 LINUX_HEADERS_SITE:=127.0.0.1
 LINUX_HEADERS_SOURCE:=unspecified-kernel-headers
