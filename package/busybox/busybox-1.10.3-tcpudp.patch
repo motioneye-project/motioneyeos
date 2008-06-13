@@ -1,0 +1,10 @@
+--- busybox-1.10.3/networking/tcpudp.c	Sat Apr 19 06:03:13 2008
++++ busybox-1.10.3-tcpudp/networking/tcpudp.c	Fri Jun 13 11:38:54 2008
+@@ -31,6 +31,7 @@
+ 
+ #include "libbb.h"
+ /* Wants <limits.h> etc, thus included after libbb.h: */
++#include <linux/types.h> /* for __be32 etc */
+ #include <linux/netfilter_ipv4.h>
+ 
+ // TODO: move into this file:
