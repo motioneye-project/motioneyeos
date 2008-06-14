@@ -58,7 +58,7 @@ CLASSPATH_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--disable-debug PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig" \
 		--disable-gconf-peer --disable-examples --disable-plugin
 
-CLASSPATH_DEPENDENCIES = uclibc png jpeg tiff
+CLASSPATH_DEPENDENCIES = uclibc pkgconfig png jpeg tiff
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 	CLASSPATH_DEPENDENCIES+= alsa-lib

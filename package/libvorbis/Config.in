@@ -2,6 +2,7 @@ config BR2_PACKAGE_LIBVORBIS
 	bool "libvorbis"
 	default n
 	depends on BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Library for the Vorbis open source audio decoder
 	  Ogg Vorbis is a fully open, non-proprietary, patent-and-royalty-free,

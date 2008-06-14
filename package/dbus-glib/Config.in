@@ -3,6 +3,7 @@ config BR2_PACKAGE_DBUS_GLIB
 	default n
 	depends on BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  GLib bindings for D-Bus.
 

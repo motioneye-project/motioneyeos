@@ -1,6 +1,7 @@
 config BR2_PACKAGE_GETTEXT
 	bool "gettext"
 	default n
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  The GNU `gettext' utilities are a set of tools that provide a
 	  framework to help other GNU packages produce multi-lingual

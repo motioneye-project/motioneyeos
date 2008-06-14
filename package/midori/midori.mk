@@ -13,9 +13,9 @@ MIDORI_INSTALL_TARGET = YES
 
 MIDORI_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME)  --prefix=/usr --sysconfdir=/etc \
-		PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig 
+		PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig
 
 
-MIDORI_DEPENDENCIES = uclibc webkit libsexy $(XSERVER) 
+MIDORI_DEPENDENCIES = uclibc pkgconfig webkit libsexy $(XSERVER)
 
 $(eval $(call AUTOTARGETS,package,midori))

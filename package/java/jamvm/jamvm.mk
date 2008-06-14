@@ -57,7 +57,7 @@ JAMVM_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--with-classpath-install-dir=/usr \
 
 
-JAMVM_DEPENDENCIES = uclibc classpath
+JAMVM_DEPENDENCIES = uclibc pkgconfig classpath
 
 #Include X libraries when we have an X server
 ifneq ($(BR2_PACKAGE_XSERVER_none),y)

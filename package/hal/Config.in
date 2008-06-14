@@ -5,5 +5,6 @@ config BR2_PACKAGE_HAL
 	select BR2_PACKAGE_DBUS_GLIB
 	select BR2_PACKAGE_HWDATA
 	select BR2_PACKAGE_UDEV_VOLUME_ID
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  The Hardware Abstraction Layer (HAL) suite.

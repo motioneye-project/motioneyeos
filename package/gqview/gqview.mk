@@ -12,7 +12,7 @@ GQVIEW_INSTALL_TARGET = YES
 
 GQVIEW_CONF_OPT = PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig
 
-GQVIEW_DEPENDENCIES = uclibc libgtk2
+GQVIEW_DEPENDENCIES = uclibc pkgconfig libgtk2
 
 $(eval $(call AUTOTARGETS,package,gqview))
 

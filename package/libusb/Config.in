@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBUSB
 	bool "libusb"
 	default n
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Userspace library for accessing USB devices
 

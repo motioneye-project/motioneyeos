@@ -86,7 +86,7 @@ ifeq ($(R2_PACKAGE_VIM_RUNTIME),y)
 	)
 endif
 
-vim: ncurses vim-source $(TARGET_DIR)/usr/bin/vim
+vim: uclibc pkgconfig ncurses vim-source $(TARGET_DIR)/usr/bin/vim
 
 #############################################################
 #
