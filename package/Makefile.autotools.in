@@ -130,6 +130,10 @@ TAR ?= tar
 
 # Retrieve and unpack the archive
 $(BUILD_DIR)/%/.stamp_downloaded:
+# support make external-deps
+ifeq ($(strip $(WGET)),$(TOPDIR)toolchain/wget-show-external-deps.sh)
+	$(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
+else
 	$(call MESSAGE,"Downloading")
 ifdef BR2_PRIMARY_SITE
 	-$(Q)test -e $(DL_DIR)/$($(PKG)_SOURCE) || $(WGET) -P $(DL_DIR) $(BR2_PRIMARY_SITE)/$($(PKG)_SOURCE)
@@ -138,6 +142,7 @@ endif
 	$(if $($(PKG)_PATCH),$(Q)test -e $(DL_DIR)/$($(PKG)_PATCH) || $(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_PATCH))
 	$(Q)mkdir -p $(@D)
 	$(Q)touch $@
+endif
 
 # Retrieve and unpack the archive
 $(BUILD_DIR)/%/.stamp_extracted:
