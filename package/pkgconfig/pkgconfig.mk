@@ -3,7 +3,7 @@
 # pkgconfig
 #
 #############################################################
-PKGCONFIG_VERSION:=0.21
+PKGCONFIG_VERSION:=0.23
 PKGCONFIG_SOURCE:=pkg-config-$(PKGCONFIG_VERSION).tar.gz
 PKGCONFIG_SITE:=http://pkgconfig.freedesktop.org/releases/
 PKGCONFIG_DIR:=$(BUILD_DIR)/pkg-config-$(PKGCONFIG_VERSION)
@@ -25,17 +25,8 @@ $(PKGCONFIG_DIR)/.configured: $(PKGCONFIG_DIR)/.unpacked
 	(cd $(PKGCONFIG_DIR); rm -rf config.cache; \
 		./configure \
 		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libdir=/lib \
-		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		--with-pc-path="$(STAGING_DIR)/lib/pkgconfig:$(STAGING_DIR)/usr/lib/pkgconfig" \
+		--with-pc-path="$(STAGING_DIR)/usr/lib/pkgconfig" \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
@@ -46,11 +37,7 @@ $(PKGCONFIG_DIR)/$(PKGCONFIG_BINARY): $(PKGCONFIG_DIR)/.configured
 
 $(STAGING_DIR)/$(PKGCONFIG_TARGET_BINARY): $(PKGCONFIG_DIR)/$(PKGCONFIG_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(PKGCONFIG_DIR) install
-	mv $(STAGING_DIR)/usr/bin/pkg-config $(STAGING_DIR)/usr/bin/pkg-config.real
-	cp package/pkgconfig/pkgconfig-filter.sh $(STAGING_DIR)/usr/bin/pkg-config
-	mkdir -p $(STAGING_DIR)/usr/lib/pkgconfig
-	rm -rf $(STAGING_DIR)/share/locale $(STAGING_DIR)/usr/info \
-		$(STAGING_DIR)/usr/man $(STAGING_DIR)/usr/share/doc
+	rm -rf $(STAGING_DIR)/usr/share/man
 
 pkgconfig: uclibc $(STAGING_DIR)/$(PKGCONFIG_TARGET_BINARY)
 

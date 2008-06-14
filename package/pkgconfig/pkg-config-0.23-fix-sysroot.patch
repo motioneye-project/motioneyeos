@@ -1,0 +1,34 @@
+[PATCH] fix PKG_CONFIG_SYSROOT_DIR handling
+
+With PKG_CONFIG_SYSROOT_DIR enabled, everything else than -L and -I words
+gets stripped away.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ pkg.c |    8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+Index: pkg-config-0.23/pkg.c
+===================================================================
+--- pkg-config-0.23.orig/pkg.c
++++ pkg-config-0.23/pkg.c
+@@ -472,17 +472,13 @@
+   while (tmp != NULL)
+     {
+       char *tmpstr = (char*) tmp->data;
+-      if (pcsysrootdir != NULL)
++      if (pcsysrootdir != NULL && tmpstr[0] == '-' &&
++          (tmpstr[1] == 'I' || tmpstr[1] == 'L'))
+ 	{
+-	  if (tmpstr[0] == '-' &&
+-	      (tmpstr[1] == 'I' ||
+-	       tmpstr[1] == 'L'))
+-	    {
+ 	      g_string_append_c (str, '-');
+ 	      g_string_append_c (str, tmpstr[1]);
+ 	      g_string_append (str, pcsysrootdir);
+ 	      g_string_append (str, tmpstr+2);
+-	    }
+ 	}
+       else 
+ 	{
