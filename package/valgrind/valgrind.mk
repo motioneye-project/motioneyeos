@@ -64,6 +64,7 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/coregrind/valgrind
 	cp package/valgrind/valgrind.sh $(TARGET_DIR)/usr/bin/valgrind
 	chmod a+x $(TARGET_DIR)/usr/bin/valgrind
 	rm -rf $(TARGET_DIR)/usr/share/doc/valgrind
+	rm -rf $(TARGET_DIR)/usr/lib/pkgconfig
 	#mkdir -p $(TARGET_DIR)/etc/default
 	#cp $(VALGRIND_DIR)/valgrind.default $(TARGET_DIR)/etc/default/valgrind
 	#mkdir -p $(TARGET_DIR)/usr/lib/valgrind
