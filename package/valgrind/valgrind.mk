@@ -39,12 +39,11 @@ $(VALGRIND_DIR)/.configured: $(VALGRIND_DIR)/.patched
 	)
 	touch $(VALGRIND_DIR)/.configured
 
-$(VALGRIND_DIR)/none/vgskin_none.so: $(VALGRIND_DIR)/.configured
+$(VALGRIND_DIR)/coregrind/valgrind: $(VALGRIND_DIR)/.configured
 	$(MAKE) -C $(VALGRIND_DIR)
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(VALGRIND_DIR)/*.so*
-	touch -c $(VALGRIND_DIR)/none/vgskin_none.so
+	touch -c $@
 
-$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/none/vgskin_none.so
+$(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/coregrind/valgrind
 	$(MAKE) \
 	    prefix=$(TARGET_DIR)/usr \
 	    exec_prefix=$(TARGET_DIR)/usr \
@@ -69,7 +68,7 @@ $(TARGET_DIR)/usr/bin/valgrind: $(VALGRIND_DIR)/none/vgskin_none.so
 	#cp $(VALGRIND_DIR)/valgrind.default $(TARGET_DIR)/etc/default/valgrind
 	#mkdir -p $(TARGET_DIR)/usr/lib/valgrind
 	#cp $(VALGRIND_DIR)/woody.supp $(TARGET_DIR)/usr/lib/valgrind/
-	touch -c $(TARGET_DIR)/usr/bin/valgrind
+	touch -c $@
 
 valgrind: $(TARGET_DIR)/usr/bin/valgrind
 
