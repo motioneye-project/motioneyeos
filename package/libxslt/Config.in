@@ -1,21 +1,18 @@
 config BR2_PACKAGE_LIBXSLT
 	bool "libxslt"
 	default n
-	depends BR2_PACKAGE_PKGCONFIG
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Install the xslt library which is used
 	  to transform XML files to other XML files.
 
-	  XSLT is designed for use as part of XSL, 
-	  which is a stylesheet language for XML. 
-	  In addition to XSLT, XSL includes an XML vocabulary 
-	  for specifying formatting. 
+	  XSLT is designed for use as part of XSL,
+	  which is a stylesheet language for XML.
+	  In addition to XSLT, XSL includes an XML vocabulary
+	  for specifying formatting.
 	  XSL specifies the styling of an XML document by using XSLT
 	  to describe how the document is transformed into another
 	  XML document that uses the formatting vocabulary.
 
 	  http://www.w3.org/TR/xslt
-
-comment "libxslt	- disabled (requires pkgconfig)"
-	depends !BR2_PACKAGE_PKGCONFIG
 
