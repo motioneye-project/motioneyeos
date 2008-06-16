@@ -16,13 +16,12 @@ config BR2_PACKAGE_LIBVORBIS
 	  WMA and PAC.
 
 config BR2_PACKAGE_LIBVORBIS_TREMOR
-	bool "libvorbis integer implementation"
+	bool "use fixed point implementation (tremor)
 	default y if BR2_arm || BR2_avr32
 	default n
 	depends on BR2_PACKAGE_LIBVORBIS
 	help
 	  Use the Tremor fixed point implementation
-	  Not yet implemented
 
 comment "libvorbis requires the package libogg to build"
 	depends on !BR2_PACKAGE_LIBOGG
