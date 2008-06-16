@@ -56,16 +56,6 @@ ifneq ($(strip $(BR2_HAVE_MANPAGES)),y)
 	rm -rf $(TARGET_DIR)/usr/share/doc/$(LIBOGG_NAME)
 endif
 
-$(TARGET_DIR)/usr/lib/libogg.a: $(STAGING_DIR)/usr/lib/libogg.so
-	cp -dpf $(STAGING_DIR)/usr/lib/libogg.a $@
-
-$(TARGET_DIR)/usr/include/ogg/ogg.h: $(STAGING_DIR)/usr/lib/libogg.so
-	mkdir -p $(TARGET_DIR)/usr/include/ogg
-	cp -dpf $(LIBOGG_DIR)/include/ogg/*.h \
-		$(TARGET_DIR)/usr/include/ogg
-
-libogg-header: $(TARGET_DIR)/usr/lib/libogg.a $(TARGET_DIR)/usr/include/ogg/ogg.h
-
 libogg: uclibc pkgconfig $(TARGET_DIR)/usr/lib/libogg.so
 
 libogg-source: $(DL_DIR)/$(LIBOGG_SOURCE)
@@ -85,8 +75,4 @@ libogg-dirclean:
 ############################################################
 ifeq ($(strip $(BR2_PACKAGE_LIBOGG)),y)
 TARGETS+=libogg
-endif
-
-ifeq ($(strip $(BR2_PACKAGE_LIBOGG_HEADERS)),y)
-TARGETS+=libogg-header
 endif

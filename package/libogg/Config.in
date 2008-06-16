@@ -3,12 +3,5 @@ config BR2_PACKAGE_LIBOGG
 	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
-	  Ogg is the name of Xiph.org's container format for audio, video, and metadata
-
-config BR2_PACKAGE_LIBOGG_HEADERS
-	bool "libogg target headers"
-	default n
-	depends on BR2_PACKAGE_LIBOGG
-	help
-	  Add target headers for the Ogg open source container format
-	  - Not yet implemented
+	  Ogg is the name of Xiph.org's container format for audio,
+	  video, and metadata
