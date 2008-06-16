@@ -3,7 +3,7 @@
 # lsof
 #
 #############################################################
-LSOF_VERSION:=4.78
+LSOF_VERSION:=4.80
 LSOF_SOURCE:=lsof_$(LSOF_VERSION).tar.bz2
 LSOF_SITE:=ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/
 LSOF_CAT:=$(BZCAT)
