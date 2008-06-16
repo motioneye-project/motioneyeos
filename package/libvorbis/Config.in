@@ -33,4 +33,4 @@ config BR2_PACKAGE_LIBVORBIS_TREMOR
 	  Not yet implemented
 
 comment "libvorbis requires the package libogg to build"
-	depends on !BR2_PACKAGE_LIBVORBIS
+	depends on !BR2_PACKAGE_LIBOGG
