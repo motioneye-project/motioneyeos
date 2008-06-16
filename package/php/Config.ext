@@ -45,7 +45,7 @@ config BR2_PACKAGE_PHP_EXT_LIBXML2
 config BR2_PACKAGE_PHP_EXT_SIMPLEXML
 	bool "simplexml"
 	depends on BR2_PACKAGE_PHP
-	select BR2_PACKAGE_PHP_EXIT_LIBXML2
+	select BR2_PACKAGE_PHP_EXT_LIBXML2
 	help
 	  SimpleXML support
 
