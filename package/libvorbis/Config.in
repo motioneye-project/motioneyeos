@@ -25,7 +25,7 @@ config BR2_PACKAGE_LIBVORBIS_HEADERS
 
 config BR2_PACKAGE_LIBVORBIS_TREMOR
 	bool "libvorbis integer implementation"
-	default y if BR2_arm || BR2_av32
+	default y if BR2_arm || BR2_avr32
 	default n
 	depends on BR2_PACKAGE_LIBVORBIS
 	help
