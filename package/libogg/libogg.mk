@@ -55,11 +55,9 @@ $(TARGET_DIR)/usr/lib/libogg.so: $(STAGING_DIR)/usr/lib/libogg.so
 ifneq ($(strip $(BR2_HAVE_MANPAGES)),y)
 	rm -rf $(TARGET_DIR)/usr/share/doc/$(LIBOGG_NAME)
 endif
-	touch $@
 
 $(TARGET_DIR)/usr/lib/libogg.a: $(TARGET_DIR)/usr/lib/libogg.so
-	cp -dpf $(LIBOGG_DIR)/lib/libogg.a $(TARGET_DIR)/usr/lib/
-	touch $@
+	cp -dpf $(STAGING_DIR)/usr/lib/libogg.a $@
 
 libogg-header: $(TARGET_DIR)/usr/lib/libogg.a
 	mkdir -p $(TARGET_DIR)/usr/include/ogg
