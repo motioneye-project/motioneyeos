@@ -89,7 +89,7 @@ $(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched
 		$(MAKE) python Parser/pgen && \
 		mv python hostpython && \
 		mv Parser/pgen Parser/hostpgen && \
-		-$(MAKE) distclean \
+		$(MAKE) distclean \
 	) && \
 	touch $@
 
