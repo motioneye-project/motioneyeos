@@ -6,7 +6,7 @@ comment "External Toolchain Options"
 
 config BR2_TOOLCHAIN_EXTERNAL_LIB_C
 	string "The core C library from the external toolchain"
-	default "libc.so.6"
+	default "libc.so.0"
 	help
 	  Specify the core C shared library found in the external
 	  toolchain. This is required in addition to any other
@@ -14,7 +14,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LIB_C
 
 config BR2_TOOLCHAIN_EXTERNAL_LIBS
 	string "Libraries to copy from the external toolchain"
-	default ""
+	default "ld-uClibc.so.0 libcrypt.so.0 libdl.so.0 libgcc_s.so libm.so.0 libnsl.so.0 libpthread.so.0 libresolv.so.0 librt.so.0 libutil.so.0"
 	help
 	  A space separated list of the shared libraries to be copied
 	  from the external toolchain into the root filesystem. Only
@@ -34,13 +34,13 @@ source "toolchain/gdb/Config.in.2"
 
 config BR2_TOOLCHAIN_EXTERNAL_PATH
 	string "External toolchain path"
-	default ""
+	default "/path/to/staging_dir/usr"
 	help
 	  Path to where the external toolchain is installed.
 
 config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	string "External toolchain prefix"
-	default ""
+	default "$(ARCH)-linux"
 	help
 	  This the the external toolchain prefix. For example:
 	    armeb-unknown-linux-gnu, mipsel-unknown-linux-gnu, etc.
