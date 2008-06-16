@@ -15,14 +15,6 @@ config BR2_PACKAGE_LIBVORBIS
 	  performance than MPEG-1/2 audio layer 3, MPEG-4 audio (TwinVQ),
 	  WMA and PAC.
 
-
-config BR2_PACKAGE_LIBVORBIS_HEADERS
-	bool "libvorbis target headers"
-	default n
-	depends on BR2_PACKAGE_LIBVORBIS
-	help
-	  Add target headers for the Vorbis open source audio decoder
-
 config BR2_PACKAGE_LIBVORBIS_TREMOR
 	bool "libvorbis integer implementation"
 	default y if BR2_arm || BR2_avr32

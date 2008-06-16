@@ -47,15 +47,6 @@ $(TARGET_DIR)/usr/lib/libvorbis.so: $(LIBVORBIS_DIR)/.libs
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LIBVORBIS_DIR) install
 	touch $@
 
-$(TARGET_DIR)/usr/lib/libvorbis.a: $(TARGET_DIR)/usr/lib/libvorbis.so
-	cp -dpf $(LIBVORBIS_DIR)/lib/libvorbis.a $(TARGET_DIR)/usr/lib/
-	touch $@
-
-libvorbis-header: $(TARGET_DIR)/usr/lib/libvorbis.a
-	mkdir -p $(TARGET_DIR)/usr/include/vorbis
-	cp -dpf $(LIBVORBIS_DIR)/include/vorbis/*.h \
-		$(TARGET_DIR)/usr/include/vorbis
-
 libvorbis: uclibc pkgconfig libogg $(TARGET_DIR)/usr/lib/libvorbis.so
 
 libvorbis-source: $(DL_DIR)/$(LIBVORBIS_SOURCE)
@@ -124,11 +115,6 @@ $(TARGET_DIR)/usr/lib/tremor.a: $(TARGET_DIR)/usr/lib/tremor.so
 	cp -dpf $(TREMOR_DIR)/lib/tremor.a $(TARGET_DIR)/usr/lib/
 	touch $@
 
-tremor-header: $(TARGET_DIR)/usr/lib/tremor.a
-	mkdir -p $(TARGET_DIR)/usr/include/vorbis
-	cp -dpf $(TREMOR_DIR)/include/vorbis/*.h \
-		$(TARGET_DIR)/usr/include/vorbis
-
 tremor: uclibc pkgconfig libogg $(TARGET_DIR)/usr/lib/tremor.so
 
 tremor-source: $(DL_DIR)/$(TREMOR_SOURCE)
@@ -151,8 +137,4 @@ ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS_TREMOR)),y)
 TARGETS+=tremor
 endif
 TARGETS+=libvorbis
-endif
-
-ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS_HEADERS)),y)
-TARGETS+=libvorbis-header
 endif
