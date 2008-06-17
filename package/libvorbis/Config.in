@@ -16,7 +16,7 @@ config BR2_PACKAGE_LIBVORBIS
 	  WMA and PAC.
 
 config BR2_PACKAGE_LIBVORBIS_TREMOR
-	bool "use fixed point implementation (tremor)
+	bool "use fixed point implementation (tremor)"
 	default y if BR2_SOFT_FLOAT
 	default n
 	depends on BR2_PACKAGE_LIBVORBIS
