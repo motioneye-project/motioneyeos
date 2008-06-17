@@ -336,12 +336,12 @@ ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 	rm -rf $(TARGET_DIR)/usr/lib/libgcc_s*.so*
 	-cp -dpf $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib/libgcc_s* \
 		$(TARGET_DIR)/lib/
-	-strip --strip-unneeded $(TARGET_DIR)/lib/libgcc_s*
+	-$(STRIPCMD) --strip-unneeded $(TARGET_DIR)/lib/libgcc_s*
 endif
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 	-cp -dpf $(STAGING_DIR)/lib/libstdc++.so* $(TARGET_DIR)/usr/lib/
-	-strip --strip-unneeded $(TARGET_DIR)/usr/lib/libstdc++.so*
+	-$(STRIPCMD) --strip-unneeded $(TARGET_DIR)/usr/lib/libstdc++.so*
 endif
 endif
 ifeq ($(BR2_INSTALL_LIBGCJ),y)
