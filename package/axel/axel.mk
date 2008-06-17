@@ -23,7 +23,7 @@ $(AXEL_DIR)/.unpacked: $(DL_DIR)/$(AXEL_SOURCE)
 
 $(AXEL_DIR)/Makefile.settings: $(AXEL_DIR)/.unpacked
 	(cd $(AXEL_DIR); \
-		./configure --enable-i18n=0 --prefix=/usr \
+		./configure --i18n=0 --prefix=/usr \
 	)
 	touch $@
 
