@@ -1,6 +1,7 @@
 config BR2_PACKAGE_USBUTILS
 	bool "usbutils"
 	default n
+	select BR2_PACKAGE_LIBUSB
 	help
 	  USB enumeration utilities
 
