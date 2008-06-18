@@ -14,37 +14,36 @@ choice
 		bool "gcc 3.4.6"
 
 	config BR2_GCC_VERSION_4_0_4
-		depends !BR2_avr32 && !BR2_nios2
-		depends BR2_DEPRECATED
+		depends on !BR2_avr32 && !BR2_nios2
+		depends on BR2_DEPRECATED
 		bool "gcc 4.0.4"
 
 	config BR2_GCC_VERSION_4_1_2
-		depends !BR2_nios2
-		depends BR2_EXT_GCC_VERSION_4_1_2
+		depends on !BR2_nios2
+		depends on BR2_EXT_GCC_VERSION_4_1_2
 		bool "gcc 4.1.2"
 
 	config BR2_GCC_VERSION_4_2_1
-		depends !BR2_nios2
-		depends BR2_EXT_GCC_VERSION_4_2_1
+		depends on !BR2_nios2
+		depends on BR2_EXT_GCC_VERSION_4_2_1
 		bool "gcc 4.2.1"
 
 	config BR2_GCC_VERSION_4_2_3
-		depends !BR2_nios2 && !BR2_avr32
+		depends on !BR2_avr32 && !BR2_nios2
 		bool "gcc 4.2.3"
 
 	config BR2_GCC_VERSION_4_2_4
-		depends !BR2_nios2 && !BR2_avr32
+		depends on !BR2_avr32 && !BR2_nios2
 		bool "gcc 4.2.4"
 
 #	config BR2_GCC_VERSION_4_3
 #		depends !BR2_avr32 && !BR2_nios2
 #		select BR2_GCC_IS_SNAP
 #		bool "gcc 4.3"
-
 endchoice
 
 config BR2_GCC_IS_SNAP
-	depends !BR2_avr32
+	depends on !BR2_avr32
 	bool
 	default n
 
@@ -61,7 +60,7 @@ config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
 	default "20070921"
-	depends BR2_GCC_IS_SNAP
+	depends on BR2_GCC_IS_SNAP
 	help
 	  Enter snapshot date to use for gcc.  Format is:
 	  YYYYMMDD

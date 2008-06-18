@@ -8,7 +8,7 @@ config BR2_PACKAGE_GCC_TARGET
 config BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS
 	string "Additional target gcc options"
 	default ""
-	depends BR2_PACKAGE_GCC_TARGET
+	depends on BR2_PACKAGE_GCC_TARGET
 	help
 	  Any additional target gcc options you may want to include....
 	  Including, but not limited to --disable-checking etc.
