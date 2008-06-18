@@ -29,9 +29,6 @@ endif
 ifeq ($(BR2_UCLIBC_VERSION_0_9_28_3),y)
 UCLIBC_VER:=0.9.28.3
 endif
-ifeq ($(BR2_UCLIBC_VERSION_0_9_28),y)
-UCLIBC_VER:=0.9.28
-endif
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
