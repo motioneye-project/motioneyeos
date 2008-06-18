@@ -234,6 +234,18 @@ fi
 
 #############################################################
 #
+# check build system 'awk'
+#
+#############################################################
+if ! which awk > /dev/null ; then
+	echo "awk installed:		    FALSE"
+	/bin/echo -e "\n\nYou must install 'awk' on your build machine\n";
+	exit 1;
+fi;
+echo "awk installed:					Ok"
+
+#############################################################
+#
 # check build system 'bison'
 #
 #############################################################
