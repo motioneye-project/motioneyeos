@@ -1,0 +1,12 @@
+--- a/lib/libcap/libcap.h	2008-04-24 19:46:29.475883739 +0200
++++ b/lib/libcap/libcap.h	2008-04-24 19:48:31.116088563 +0200
+@@ -52,7 +52,8 @@
+  */
+ 
+ #if !defined(_LINUX_CAPABILITY_VERSION) || \
+-            (_LINUX_CAPABILITY_VERSION != 0x19980330)
++           ((_LINUX_CAPABILITY_VERSION != 0x19980330) && \
++            (_LINUX_CAPABILITY_VERSION != 0x20071026))
+ 
+ # error "Kernel <linux/capability.h> does not match library"
+ # error "file "libcap.h" --> fix and recompile libcap"

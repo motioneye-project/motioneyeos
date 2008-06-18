@@ -3,7 +3,7 @@
 # proftpd
 #
 #############################################################
-PROFTPD_VERSION:=1.3.0a
+PROFTPD_VERSION:=1.3.1
 PROFTPD_SOURCE:=proftpd-$(PROFTPD_VERSION).tar.bz2
 PROFTPD_SITE:=ftp://ftp.proftpd.org/distrib/source/
 PROFTPD_DIR:=$(BUILD_DIR)/proftpd-$(PROFTPD_VERSION)
@@ -23,6 +23,7 @@ proftpd-source: $(DL_DIR)/$(PROFTPD_SOURCE)
 $(PROFTPD_DIR)/.unpacked: $(DL_DIR)/$(PROFTPD_SOURCE)
 	$(PROFTPD_CAT) $(DL_DIR)/$(PROFTPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(PROFTPD_DIR)
+	toolchain/patch-kernel.sh $(PROFTPD_DIR) package/proftpd/ proftpd-$(PROFTPD_VERSION)\*.patch;
 	touch $@
 
 $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
