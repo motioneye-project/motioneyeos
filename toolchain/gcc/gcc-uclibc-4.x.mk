@@ -219,12 +219,22 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	touch $@
 
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
+	# gcc >= 4.3.0 have to also build all-target-libgcc
+ifeq ($(BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE),y)
+	$(MAKE) -C $(GCC_BUILD_DIR1) all-gcc all-target-libgcc
+else
 	$(MAKE) -C $(GCC_BUILD_DIR1) all-gcc
+endif
 	touch $@
 
 gcc_initial=$(GCC_BUILD_DIR1)/.installed
 $(gcc_initial) $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc: $(GCC_BUILD_DIR1)/.compiled
+	# gcc >= 4.3.0 have to also install install-target-libgcc
+ifeq ($(BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE),y)
+	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) install-gcc install-target-libgcc
+else
 	PATH=$(TARGET_PATH) $(MAKE) -C $(GCC_BUILD_DIR1) install-gcc
+endif
 	touch $(gcc_initial)
 
 gcc_initial: uclibc-configured binutils $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-gcc
