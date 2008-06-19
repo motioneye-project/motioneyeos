@@ -1,5 +1,5 @@
 comment "Hitachi ULSI Systems device support"
-	depends BR2_sh
+	depends on BR2_sh
 
 config BR2_TARGET_HITACHI_SE
 	bool "Board support for Solution Engine development boards"
@@ -8,5 +8,5 @@ config BR2_TARGET_HITACHI_SE
 
 config BR2_TARGET_HITACHI_MS7206SE01
 	bool "MS7206SE01 development board support"
-	depends BR2_TARGET_HITACHI_SE && BR2_sh2a_nofpueb
+	depends on BR2_TARGET_HITACHI_SE && BR2_sh2a_nofpueb
 	default n

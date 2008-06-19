@@ -43,7 +43,7 @@ config	BR2_AT91BOOTSTRAP_IMG_SIZE
 	default	"0x32000"	if	BR2_TARGET_AT91BOOT_DATAFLASH || BR2_TARGET_AT91BOOT_DATAFLASHCARD
 	default	"0x30000"	if	BR2_TARGET_AT91BOOT_NANDFLASH
 	default	"0x100000"	if	BR2_TARGET_AT91BOOT_FLASH
-	depends BR2_TARGET_AT91BOOTSTRAP
+	depends on BR2_TARGET_AT91BOOTSTRAP
 	help
 	  Select the size of your application
 	  AT91 Bootstrap will copy this amount from flash to SDRAM

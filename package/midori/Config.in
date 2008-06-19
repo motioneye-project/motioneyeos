@@ -11,4 +11,4 @@ config BR2_PACKAGE_MIDORI
 	  http://software.twotoasts.de/?page=midori
 
 comment "midori		- disabled (requires Xorg(7))"
-	depends !(BR2_PACKAGE_XORG || BR2_PACKAGE_XORG7)
+	depends on !(BR2_PACKAGE_XORG || BR2_PACKAGE_XORG7)

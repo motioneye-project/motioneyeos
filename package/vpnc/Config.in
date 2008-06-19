@@ -1,7 +1,7 @@
 config BR2_PACKAGE_VPNC
 	bool "vpnc"
-	depends BR2_PACKAGE_LIBGCRYPT
-	depends BR2_PACKAGE_LIBGPG_ERROR
+	depends on BR2_PACKAGE_LIBGCRYPT
+	depends on BR2_PACKAGE_LIBGPG_ERROR
 	default n
 	help
 	  Client for Cisco VPN concentrator
@@ -13,4 +13,4 @@ config BR2_PACKAGE_VPNC
 	  http://www.unix-ag.uni-kl.de/~massar/vpnc
 
 comment "vpnc		- disabled (requires libgcrypt and libgpg_error)"
-	depends !BR2_PACKAGE_LIBGCRYPT || !BR2_PACKAGE_LIBGPG_ERROR
+	depends on !BR2_PACKAGE_LIBGCRYPT || !BR2_PACKAGE_LIBGPG_ERROR

@@ -6,7 +6,7 @@ config BR2_PACKAGE_SDL
 	  http://www.libsdl.org/
 
 menu "SDL options selection"
-	depends BR2_PACKAGE_SDL
+	depends on BR2_PACKAGE_SDL
 
 config BR2_PACKAGE_SDL_FBCON
 	bool "SDL framebuffer console video driver"

@@ -9,7 +9,7 @@ config BR2_PACKAGE_NEON
 choice
 	prompt "XML Support"
 	default BR2_PACKAGE_NEON_NOXML
-	depends BR2_PACKAGE_NEON
+	depends on BR2_PACKAGE_NEON
 	help
 	  Select which XML library to use...
 	  expat      use exapt
@@ -18,13 +18,13 @@ choice
 
 config BR2_PACKAGE_NEON_EXPAT
 	bool "expat"
-	depends BR2_PACKAGE_EXPAT
+	depends on BR2_PACKAGE_EXPAT
 	help
 	  expat      use exapt, a library for parsing XML.
 
 config BR2_PACKAGE_NEON_LIBXML2
 	bool "libxml2"
-	depends BR2_PACKAGE_LIBXML2
+	depends on BR2_PACKAGE_LIBXML2
 	help
 	  libxml2    use libxml2, a library to read, modify and 
 	             write XML and HTML files.

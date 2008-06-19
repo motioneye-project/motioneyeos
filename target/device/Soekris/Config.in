@@ -1,6 +1,6 @@
 menuconfig BR2_TARGET_SOEKRIS
 	bool "Soekris device support"
-	depends BR2_i386
+	depends on BR2_i386
 	default n
 
 if BR2_TARGET_SOEKRIS
@@ -13,7 +13,7 @@ config BR2_TARGET_SOEKRIS_NET4521
 
 config BR2_TARGET_SOEKRIS_NET4801
 	bool "Soekris net4801"
-	depends BR2_i386
+	depends on BR2_i386
 	default n
 	select BR2_PACKAGE_LINUX
 	help

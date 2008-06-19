@@ -7,13 +7,13 @@ if BR2_TARGET_VALKA
 
 choice
 	prompt "Controller board"
-	depends BR2_TARGET_VALKA
+	depends on BR2_TARGET_VALKA
 	help
 	  Valka Controller Board to build for
 
 config BR2_TARGET_VALKA_V100SC2
 	bool "V100SC2 (Based on NGW100)"
-	depends BR2_TARGET_VALKA
+	depends on BR2_TARGET_VALKA
 	help
 	  Board based on NGW100
 

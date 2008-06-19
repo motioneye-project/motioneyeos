@@ -8,4 +8,4 @@ config BR2_PACKAGE_BLACKBOX
 	  http://blackboxwm.sourceforge.net/
 
 comment "blackbox		- disabled (requires Xorg(7))"
-	depends !(BR2_PACKAGE_XORG || BR2_PACKAGE_XORG7)
+	depends on !(BR2_PACKAGE_XORG || BR2_PACKAGE_XORG7)

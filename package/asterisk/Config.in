@@ -3,11 +3,11 @@ config BR2_PACKAGE_ASTERISK
 	default n
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_ZLIB
-	depends BR2_PACKAGE_OPENSSL
-	depends BR2_PACKAGE_MPG123
+	depends on BR2_PACKAGE_OPENSSL
+	depends on BR2_PACKAGE_MPG123
 	help
 		Asterisk - the Open Source PBX
 
 comment "asterisk	- disabled (required openssl and mpg123)"
-	depends !BR2_PACKAGE_OPENSSL || ! BR2_PACKAGE_MPG123
+	depends on !BR2_PACKAGE_OPENSSL || ! BR2_PACKAGE_MPG123
 

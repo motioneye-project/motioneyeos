@@ -1,6 +1,6 @@
 comment "Generic x86 Device Support"
-	depends BR2_i386
+	depends on BR2_i386
 
 comment "Package support"
-	depends BR2_TARGET_AMD_ALCHEMY
+	depends on BR2_TARGET_AMD_ALCHEMY
 

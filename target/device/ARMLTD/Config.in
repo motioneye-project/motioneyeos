@@ -1,14 +1,14 @@
 menuconfig BR2_TARGET_ARMLTD
 	bool "ARM Ltd. Device Support"
-	depends BR2_arm
+	depends on BR2_arm
 	default n
 
 comment "Arm based Device Support"
-	depends BR2_arm && BR2_TARGET_ARMLTD
+	depends on BR2_arm && BR2_TARGET_ARMLTD
 
 config BR2_TARGET_ARM_INTEGRATOR_926
 	bool "Integrator arm926"
-	depends BR2_arm && BR2_TARGET_ARMLTD
+	depends on BR2_arm && BR2_TARGET_ARMLTD
 	default y
 	select BR2_PACKAGE_LINUX
 	select BR2_ARM_EABI

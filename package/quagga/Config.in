@@ -58,7 +58,7 @@ config BR2_PACKAGE_QUAGGA_OSPF6D
 	bool "quagga ospf6d"
 	default n
 	select BR2_PACKAGE_QUAGGA
-	depends BR2_INET_IPV6
+	depends on BR2_INET_IPV6
 	help
 	  routing software suite, providing implementations of
 	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.

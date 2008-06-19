@@ -419,13 +419,13 @@ config BR2_PACKAGE_LINUX_USE_KCONFIG
 
 config BR2_PACKAGE_LINUX_USE_DEFCONFIG
 	bool "Run make <board>_defconfig "
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Configure Linux by make <board>_defconfig
 
 config BR2_PACKAGE_LINUX_USE_XCONFIG
 	bool "Run make ARCH=$(ARCH) [xconfig|menuconfig] before build"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Configure Linux by make xconfig
 endchoice
@@ -478,31 +478,31 @@ choice
 
 config BR2_LINUX_BIN_BZIMAGE
 	bool "bzImage"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.19.2
 
 config BR2_LINUX_BIN_UIMAGE
 	bool "uImage"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Build uImage binary
 
 config BR2_LINUX_BIN_VMLINUX
 	bool "vmlinux"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Build vmlinux binary
 
 config BR2_LINUX_BIN_ZIMAGE
 	bool "zImage"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.19.2
 
 config BR2_LINUX_BIN_CUSTOM
 	bool "<custom> Linux binary"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Build custom Linux binary format
 endchoice
@@ -544,7 +544,7 @@ menu "Destinations for linux kernel binaries"
 
 config BR2_LINUX_COPYTO_ROOTFS
 	bool "Copy kernel to root file system"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	default n
 	help
 	  Copy kernel to <root>/boot directory

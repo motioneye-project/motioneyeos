@@ -11,7 +11,7 @@ config BR2_PACKAGE_VIM
 config BR2_PACKAGE_VIM_RUNTIME
 	bool "install runtime"
 	default y
-	depends BR2_PACKAGE_VIM
+	depends on BR2_PACKAGE_VIM
 	help
 	  Install VIM runtime (syntax highlighing + macros).
 	  This option adds about 13MB of data to /usr/share/

@@ -11,12 +11,12 @@ config BR2_PACKAGE_QTOPIA4
 config BR2_PACKAGE_QTOPIA4_DEBUG
 	bool "Compile with debug support"
 	default n
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 
 choice
 	prompt "Library type"
 	default BR2_PACKAGE_QTOPIA4_SHARED
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  Selects the library type: Shared or Static
 
@@ -29,7 +29,7 @@ endchoice
 choice
 	prompt "Qtopia 4 Core license type"
 	default BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_GPL
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  Selects the type of license you which to use for Qtopia 4 Core.
 
@@ -44,7 +44,7 @@ endchoice
 config BR2_PACKAGE_QTOPIA4_GPL_LICENSE_APPROVED
 	bool "Approve Qtopia Core 4 GPL licence"
 	default n
-	depends BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_GPL
+	depends on BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_GPL
 	help
 	  Select this if you approve the GNU GENERAL PUBLIC LICENSE Version 2
 	  on the Qtopia Core 4 library. By doing this you will not be asked
@@ -57,7 +57,7 @@ config BR2_PACKAGE_QTOPIA4_GPL_LICENSE_APPROVED
 config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
 	string "Qtopia Core 4 Commercial License Username"
 	default ""
-	depends BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
+	depends on BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
 	help
 	  Commercial users can download their source directly by providing a username.
 
@@ -65,34 +65,34 @@ config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
 config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
 	string "Qtopia Core 4 Commercial License Password"
 	default ""
-	depends BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
+	depends on BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
 	help
 	  Commercial users can download their source directly by providing a password.
 
 config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	default y
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  Turns on support for older Qt3.
 
 config BR2_PACKAGE_QTOPIA4_GIF
 	bool "Enable GIF support"
 	default n
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  This compiles and installs the plugin for GIF reading support.
 
 config BR2_PACKAGE_QTOPIA4_LIBMNG
 	bool "Enable libmng support"
 	default n
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  This compiles and installs the plugin for MNG support.
 
 choice
 	prompt "JPEG support"
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	default BR2_PACKAGE_QTOPIA4_NOJPEG
 	help
 	  Select libjpeg support.
@@ -111,7 +111,7 @@ endchoice
 
 choice
 	prompt "PNG support"
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	default BR2_PACKAGE_QTOPIA4_NOPNG
 	help
 	  Select which library to use if PNG support should be enabled.
@@ -130,7 +130,7 @@ endchoice
 
 choice
 	prompt "TIFF support"
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	default BR2_PACKAGE_QTOPIA4_NOTIFF
 	help
 	  Select which library to use if TIFF support should be enabled.
@@ -149,25 +149,25 @@ endchoice
 
 config BR2_PACKAGE_QTOPIA4_SVG
 	bool "Enable SVG support"
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  Enable the QtSvg library.
 
 config BR2_PACKAGE_QTOPIA4_SQL
 	bool "Enable SQL support"
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  Enable all the SQL drivers it QtSql library.
 
 config BR2_PACKAGE_QTOPIA4_OPENSSL
 	bool "Enable OpenSSL support"
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  Enable support for the OpenSSL encryption library.
 
 choice
 	prompt "zlib support"
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	default BR2_PACKAGE_QTOPIA4_QTZLIB
 	help
 	  Select zlib support.
@@ -211,6 +211,6 @@ config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	default "generic"	if BR2_sh
 	default "generic"	if BR2_sh64
 	default "generic"	if BR2_sparc
-	depends BR2_PACKAGE_QTOPIA4
+	depends on BR2_PACKAGE_QTOPIA4
 	help
 	  The platform.

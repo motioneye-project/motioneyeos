@@ -11,7 +11,7 @@ config BR2_PACKAGE_BUSYBOX
 
 choice
 	prompt "BusyBox Version"
-	depends BR2_PACKAGE_BUSYBOX
+	depends on BR2_PACKAGE_BUSYBOX
 	default BR2_BUSYBOX_VERSION_1_10_X
 	help
 	  Select the version of BusyBox you wish to use.
@@ -55,7 +55,7 @@ config BR2_BUSYBOX_VERSION
 
 config BR2_PACKAGE_BUSYBOX_FULLINSTALL
 	bool "Run BusyBox's own full installation"
-	depends BR2_PACKAGE_BUSYBOX
+	depends on BR2_PACKAGE_BUSYBOX
 	default y
 	help
 	  If you want to run BusyBox's own full install for the
@@ -68,7 +68,7 @@ config BR2_PACKAGE_BUSYBOX_FULLINSTALL
 
 config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
-	depends BR2_PACKAGE_BUSYBOX
+	depends on BR2_PACKAGE_BUSYBOX
 	default "target/device/x86/i386/busybox.config" if BR2_PACKAGE_BUSYBOX_SNAPSHOT
 	default "package/busybox/busybox-1.2.2.1.config" if BR2_BUSYBOX_VERSION_1_2_2_1
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_6_1

@@ -13,7 +13,7 @@ comment "dbus not available (need expat or libxml2)"
 
 choice
 	prompt "XML library to use"
-	depends BR2_PACKAGE_DBUS
+	depends on BR2_PACKAGE_DBUS
 	default BR2_DBUS_LIBXML2 if BR2_PACKAGE_LIBXML2
 	default BR2_DBUS_EXPAT
 	help

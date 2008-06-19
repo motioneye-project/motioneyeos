@@ -52,7 +52,7 @@ endchoice
 #
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_arm || BR2_armeb
+	depends on BR2_arm || BR2_armeb
 	default BR2_generic_arm
 	help
 	  Specific CPU variant to use
@@ -112,7 +112,7 @@ config BR2_ARM_TYPE
 
 choice
 	prompt "Target ABI"
-	depends BR2_arm || BR2_armeb
+	depends on BR2_arm || BR2_armeb
 	default BR2_ARM_OABI
 	help
 	  Application Binary Interface to use
@@ -125,7 +125,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_mips || BR2_mipsel
+	depends on BR2_mips || BR2_mipsel
 	default BR2_mips_3 if BR2_mips
 	default BR2_mips_1 if BR2_mipsel
 	help
@@ -157,7 +157,7 @@ endchoice
 
 choice
 	prompt "Target ABI"
-	depends BR2_mips || BR2_mipsel
+	depends on BR2_mips || BR2_mipsel
 	default BR2_MIPS_OABI32 if BR_mips_32 || BR_mips_32r2
 	default BR2_MIPS_ABI32 if BR_mips_64 || BR_mips_64r2
 	help
@@ -167,26 +167,26 @@ config BR2_MIPS_OABI32
 	bool "o32"
 config BR2_MIPS_ABI32
 	bool "n32"
-	depends BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
+	depends on BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
 config BR2_MIPS_EABI
 	bool "eabi"
-	depends BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
+	depends on BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
 config BR2_MIPS_ABI64
 	bool "n64"
-	depends BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
+	depends on BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
 config BR2_MIPS_OABI64
 	bool "o64"
-	depends BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
+	depends on BR2_mips_3 || BR2_mips_4 || BR2_mips_64 || BR2_mips_64r2 || BR2_mips_16
 config BR2_MIPS_ABI_none
 	bool "unspecified"
-	depends BR2_mips_16
+	depends on BR2_mips_16
 	help
 	  Unspecified ABI leaves ABI selection blank.
 endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_avr32
+	depends on BR2_avr32
 config BR2_at32ap7000
 	bool "AT32AP7000"
 config BR2_at32ap7001
@@ -198,7 +198,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_sh
+	depends on BR2_sh
 	default BR2_sh4
 	help
 	  Specific CPU variant to use
@@ -223,7 +223,7 @@ endchoice
 #
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_i386
+	depends on BR2_i386
 	default BR2_x86_i386
 	help
 	  Specific CPU variant to use
@@ -280,7 +280,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_x86_64
+	depends on BR2_x86_64
 	default BR2_x86_64_core2
 	help
 	  Specific CPU variant to use
@@ -299,7 +299,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_alpha
+	depends on BR2_alpha
 	default BR2_alpha_21064
 	help
 	  Specific CPU variant to use
@@ -320,7 +320,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_s390
+	depends on BR2_s390
 	default BR2_s390_g5
 	help
 	  Specific CPU variant to use
@@ -339,7 +339,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_sparc
+	depends on BR2_sparc
 	default BR2_sparc_v7
 	help
 	  Specific CPU variant to use
@@ -382,7 +382,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_sparc64
+	depends on BR2_sparc64
 	default BR2_sparc64_v9
 	help
 	  Specific CPU variant to use
@@ -411,7 +411,7 @@ config BR2_SPARC_TYPE
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_ia64
+	depends on BR2_ia64
 	default BR2_ia64_itanium2
 	help
 	  Specific CPU variant to use
@@ -424,7 +424,7 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends BR2_powerpc
+	depends on BR2_powerpc
 	default BR2_generic_powerpc
 	help
 	  Specific CPU variant to use

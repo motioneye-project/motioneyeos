@@ -15,7 +15,7 @@ config BR2_PACKAGE_UDEV_UTILS
 	  to your filesystem.
 
 menu "Extra udev tools"
-	depends BR2_PACKAGE_UDEV
+	depends on BR2_PACKAGE_UDEV
 
 config BR2_PACKAGE_UDEV_VOLUME_ID
 	bool "udev-libvolume_id"

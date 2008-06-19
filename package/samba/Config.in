@@ -12,7 +12,7 @@ config BR2_PACKAGE_SAMBA
 		so choose only the components you need.
 
 menu "Samba tools selection"
-	depends BR2_PACKAGE_SAMBA
+	depends on BR2_PACKAGE_SAMBA
 
 config BR2_PACKAGE_SAMBA_CIFS
 	bool "cifs"

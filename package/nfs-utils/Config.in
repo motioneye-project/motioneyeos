@@ -13,7 +13,7 @@ comment "nfs-utils requires a toolchain with 'Enable RPC' selected"
 	depends on !BR2_INET_RPC
 
 menu "NFS utilities selection"
-	depends BR2_PACKAGE_NFS_UTILS
+	depends on BR2_PACKAGE_NFS_UTILS
 
 config BR2_PACKAGE_NFS_UTILS_RPCDEBUG
 	bool "rpcdebug"

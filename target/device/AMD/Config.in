@@ -1,9 +1,9 @@
 comment "AMD Specific Device Support"
-	depends BR2_mipsel || BR2_mips
+	depends on BR2_mipsel || BR2_mips
 
 config BR2_TARGET_AMD_ALCHEMY
 	bool "Board support for the AMD development boards"
-	depends BR2_mipsel || BR2_mips
+	depends on BR2_mipsel || BR2_mips
 	default n
 	help
 	  AMD Alchemy mips based systems
@@ -11,11 +11,11 @@ config BR2_TARGET_AMD_ALCHEMY
 config BR2_TARGET_AMD_ALCHEMY_DBAU1500
 	bool "AMD Alchemy DBAu1500 Development Board Support"
 	default n
-	depends BR2_TARGET_AMD_ALCHEMY
+	depends on BR2_TARGET_AMD_ALCHEMY
 	select BR2_PACKAGE_LINUX
 	help
 	  The AMD Alchemy DBAu1500 Development Board
 
 comment "Package support"
-	depends BR2_TARGET_AMD_ALCHEMY
+	depends on BR2_TARGET_AMD_ALCHEMY
 

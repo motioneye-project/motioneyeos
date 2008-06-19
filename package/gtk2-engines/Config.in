@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LIBGTK2_ENGINES
 	bool "gtk engines"
 	default n
-	depends BR2_PACKAGE_LIBGTK2
+	depends on BR2_PACKAGE_LIBGTK2
 	help
 	  A collection of basic theme engines for GTK+.

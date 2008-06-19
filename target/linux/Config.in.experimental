@@ -10,115 +10,115 @@ choice
 
 config BR2_LINUX_2_6_SNAP
 	bool "The latest snapshot for the stable Linux kernel"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.x-git#
 
 config BR2_LINUX_2_6_MM
 	bool "With latest -mm patch for the stable Linux kernel"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.x-rc#-mm#
 
 config BR2_LINUX_2_6_STABLE
 	bool "The latest stable Linux kernel (2.6.22.1)"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.22.1
 
 config BR2_LINUX_2_6_22_10
 	bool "Linux 2.6.22.10"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.22.10
 
 config BR2_LINUX_2_6_22_1
 	bool "Linux 2.6.22.1"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.22.1
 
 config BR2_LINUX_2_6_22
 	bool "Linux 2.6.22"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.22
 
 config BR2_LINUX_2_6_21_6
 	bool "Linux 2.6.21.6"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.21.6
 
 config BR2_LINUX_2_6_21_1
 	bool "Linux 2.6.21.1"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.21.1
 
 config BR2_LINUX_2_6_21
 	bool "Linux 2.6.21"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.21
 
 config BR2_LINUX_2_6_20_4
 	bool "Linux 2.6.20.4"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.20.4
 
 config BR2_LINUX_2_6_20
 	bool "Linux 2.6.20"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.20
 
 config BR2_LINUX_2_6_19_2
 	bool "Linux 2.6.19.2"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.19.2
 
 config BR2_LINUX_2_6_19
 	bool "Linux 2.6.19"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.19
 
 config BR2_LINUX_2_6_18
 	bool "Linux 2.6.18"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.18
 
 config BR2_LINUX_2_6_17
 	bool "Linux 2.6.17"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.17
 
 config BR2_LINUX_2_6_16
 	bool "Linux 2.6.16"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.16
 
 config BR2_LINUX_2_6_15
 	bool "Linux 2.6.15"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.15
 
 config BR2_LINUX_2_6_23
 	bool "Linux 2.6.23"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.23
 
 config BR2_LINUX_CUSTOM
 	bool "Linux <custom> version"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux <your selection>
 
@@ -228,13 +228,13 @@ config BR2_PACKAGE_LINUX_USE_KCONFIG
 
 config BR2_LINUX26_DEFCONFIG
 	bool "Run make <board>_defconfig "
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Configure Linux by make <board>_defconfig
 
 config BR2_LINUX_CUSTOMIZE
 	bool "Run make ARCH=$(ARCH) xconfig before build"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Configure Linux by make xconfig
 endchoice
@@ -259,31 +259,31 @@ choice
 
 config BR2_LINUX_BIN_BZIMAGE
 	bool "bzImage"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.19.2
 
 config BR2_LINUX_BIN_UIMAGE
 	bool "uImage"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Build uImage binary
 
 config BR2_LINUX_BIN_VMLINUX
 	bool "vmlinux"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Build vmlinux binary
 
 config BR2_LINUX_BIN_ZIMAGE
 	bool "zImage"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Linux 2.6.19.2
 
 config BR2_LINUX_BIN_CUSTOM
 	bool "<custom> Linux binary"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	help
 	  Build custom Linux binary format
 endchoice
@@ -326,7 +326,7 @@ comment "Destinations for linux kernel binaries"
 
 config BR2_LINUX_IN_ROOTFS
 	bool "Copy kernel to root file system"
-	depends BR2_PACKAGE_LINUX
+	depends on BR2_PACKAGE_LINUX
 	default n
 	help
 	  Copy kernel to <root>/boot directory
@@ -338,7 +338,7 @@ menuconfig BR2_LINUX_COPY
 
 config BR2_LINUX_COPYTO
 	string "also copy the image to..."
-	depends BR2_LINUX_COPY
+	depends on BR2_LINUX_COPY
 	default "/tftpboot"
 	help
 	  Copy kernel to secondary location

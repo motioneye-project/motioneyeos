@@ -27,7 +27,7 @@ config BR2_BOARD_NAME
 
 config BR2_TARGET_AT91_ADVANCED_INFO
 	bool "Remove work in progress"
-	depends BR2_TARGET_AT91
+	depends on BR2_TARGET_AT91
 	default y
 	help
 	  Atmel AT91 ARM based systems

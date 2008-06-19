@@ -38,7 +38,7 @@ config BR2_PACKAGE_MTD_UTILS_GIT
 endchoice
 
 comment "MTD tools selection"
-	depends BR2_PACKAGE_MTD
+	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_DOCFDISK
 	bool "docfdisk"
