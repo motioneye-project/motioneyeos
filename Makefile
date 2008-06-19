@@ -170,6 +170,8 @@ ifneq ($(findstring cygwin,$(BR2_GNU_BUILD_SUFFIX)),)
 HOST_EXEEXT:=.exe
 HOST_LIBEXT:=.lib
 HOST_SHREXT:=.dll
+HOST_LOADLIBES="-lcurses -lintl"
+export HOST_LOADLIBES
 endif
 ifneq ($(findstring mingw,$(BR2_GNU_BUILD_SUFFIX)),)
 HOST_EXEEXT:=.exe
