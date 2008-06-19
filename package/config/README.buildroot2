@@ -1,15 +1,16 @@
-This is a copy of the kconfig code in the kernel (currently 2.6.22.7) tweaked to
-suit Buildroot.
+This is a copy of the kconfig code in the kernel (currently 2.6.23.14) tweaked
+to suit Buildroot.
 
 To update:
 	cp -r /usr/src/linux/scripts/kconfig package/config.new
 	cd package/config.new
 	cp /usr/src/linux/Documentation/kbuild/kconfig-language.txt .
-	mv Makefile Makefile.kconfig
 	patch -p1 < ../config/kconfig-to-buildroot2.patch
+	mv Makefile Makefile.kconfig
 	cp ../config/README.buildroot2 .
 	cp ../config/foo.h .
 	cp ../config/Makefile .
+	cp ../config/kconfig-to-buildroot2.patch .
 	cd ..
 	rm -rf config
 	mv config.new config

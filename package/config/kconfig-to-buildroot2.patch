@@ -501,15 +501,6 @@ diff -rdup kernel-config/expr.h config/expr.h
  };
  
  struct symbol {
-@@ -139,7 +139,7 @@ struct menu {
- 	struct property *prompt;
- 	struct expr *dep;
- 	unsigned int flags;
--	//char *help;
-+	/*char *help; */
- 	struct file *file;
- 	int lineno;
- 	void *data;
 diff -rdup kernel-config/gconf.c config/gconf.c
 --- kernel-config/gconf.c	2007-09-22 00:38:23.000000000 +0200
 +++ config/gconf.c	2007-09-23 15:33:26.000000000 +0200
