@@ -18,12 +18,9 @@ DBUS_XML:=expat
 DBUS_XML_DEP:=$(STAGING_DIR)/usr/lib/libexpat.so.1
 else
 DBUS_XML:=libxml
-# depend on the exact target instead of libxml2 so dbus isn't always
-# considered out-of-date.
-# It would be neat to use $(LIBXML2_TARGET_INSTALL_STAGING) here,
-# but the libxml2 makefile is only parsed after dbus, so that doesn't work
-DBUS_XML_DEP:=$(BUILD_DIR)/libxml2-2.6.29/.stamp_staging_installed
-$(LIBXML2_TARGET_INSTALL_STAGING)
+# Makefile.autotools.in unfortunately has broken dependency handling,
+# so we cannot do the same for libxml2
+DBUS_XML_DEP:=libxml2-install-staging
 endif
 
 $(DL_DIR)/$(DBUS_SOURCE):
