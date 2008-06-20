@@ -1,0 +1,11 @@
+--- busybox-1.10.3/networking/udhcp/clientsocket.c	Sat Apr 19 06:03:13 2008
++++ busybox-1.10.3-udhcpc/networking/udhcp/clientsocket.c	Fri Jun 20 16:48:32 2008
+@@ -76,7 +76,7 @@
+ 		BPF_STMT(BPF_LD|BPF_W|BPF_IND, 0),
+ 		BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, SERVER_AND_CLIENT_PORTS, 0, 1),	/* L3, L4 */
+ 		/* returns */
+-		BPF_STMT(BPF_RET|BPF_K, (~(uint32_t)0) ),               /* L3: pass */
++		BPF_STMT(BPF_RET|BPF_K, 0x0fffffff),                    /* L3: pass */
+ 		BPF_STMT(BPF_RET|BPF_K, 0),                             /* L4: reject */
+ 	};
+ 	static const struct sock_fprog filter_prog = {
