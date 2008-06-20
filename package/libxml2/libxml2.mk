@@ -21,9 +21,12 @@ LIBXML2_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--with-gnu-ld --enable-shared \
 		--enable-static --enable-ipv6=no \
 		--without-debugging --without-python \
-		--without-threads $(DISABLE_NLS) 
+		--without-threads $(DISABLE_NLS)
 
-
-LIBXML2_DEPENDENCIES = uclibc 
+LIBXML2_DEPENDENCIES = uclibc
 
 $(eval $(call AUTOTARGETS,package,libxml2))
+
+$(LIBXML2_HOOK_POST_INSTALL):
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libxml2*so*
+	touch $@
