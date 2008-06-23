@@ -44,7 +44,7 @@ endif
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 ifeq ($(BOARD),)
 # if "make BOARD=xyz" command
--include $(TOPDIR).config
+-include .config
 else
 # if "make" command
 -include $(BR2_LOCAL)/$(BOARD)/$(BOARD).config
