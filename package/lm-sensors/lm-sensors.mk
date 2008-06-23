@@ -62,7 +62,7 @@ lm-sensors: uclibc libsysfs $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY)
 lm-sensors-clean:
 	-$(MAKE) -C $(LM_SENSORS_DIR) clean
 	rm -f $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY) \
-		$(TARGET_DIR)/lib/libsensors* \
+		$(TARGET_DIR)/usr/lib/libsensors* \
 		$(TARGET_DIR)/etc/sensors.conf
 
 lm-sensors-dirclean:
