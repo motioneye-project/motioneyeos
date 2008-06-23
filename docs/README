@@ -35,7 +35,7 @@ $ make UCLIBC_CONFIG_FILE=/my/uClibc.config
 And you can specify a config-file for busybox:
 $ make BUSYBOX_CONFIG_FILE=/my/busybox.config
 
-To use a non-standart host-compiler (if you do not have 'gcc'),
+To use a non-standard host-compiler (if you do not have 'gcc'),
 make sure that the compiler is in your PATH and that the library paths are
 setup properly, if your compiler is built dynamically:
 $ make HOSTCC=gcc-4.3.orig HOSTCXX=gcc-4.3-mine
