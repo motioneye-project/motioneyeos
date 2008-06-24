@@ -27,7 +27,7 @@ $(RDESKTOP_DIR)/.configured: $(RDESKTOP_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--with-openssl=$(STAGING_DIR) \
+		--with-openssl=$(STAGING_DIR)/usr \
 		--sysconfdir=/etc \
 	)
 	touch $(RDESKTOP_DIR)/.configured
