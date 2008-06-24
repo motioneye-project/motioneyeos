@@ -341,8 +341,8 @@ source "package/sdl_mixer/Config.in"
 source "package/sdl_ttf/Config.in"
 source "package/tiff/Config.in"
 
-comment "busybox graphic applications" 
-comment "--> (May be broken in busybox)"
+comment "busybox graphic applications"
+comment "--> May be broken in busybox"
 source "package/fbv/Config.in"
 source "package/fbset/Config.in"
 
