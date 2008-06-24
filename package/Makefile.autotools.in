@@ -130,8 +130,8 @@ TAR ?= tar
 
 # Retrieve and unpack the archive
 $(BUILD_DIR)/%/.stamp_downloaded:
-# support make external-deps
-ifeq ($(strip $(WGET)),$(TOPDIR)toolchain/wget-show-external-deps.sh)
+# support make source/source-check/external-deps
+ifneq ($(filter source,$(MAKECMDGOALS)),)
 	$(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
 else
 	$(call MESSAGE,"Downloading")
