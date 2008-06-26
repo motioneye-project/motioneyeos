@@ -9,6 +9,7 @@ ETHTOOL_SOURCE:=ethtool-$(ETHTOOL_VERSION).tar.gz
 ETHTOOL_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/gkernel/
 ETHTOOL_DIR:=$(BUILD_DIR)/ethtool-$(ETHTOOL_VERSION)
 ETHTOOL_CAT:=$(ZCAT)
+ETHTOOL_BINARY=usr/sbin/ethtool
 
 $(DL_DIR)/$(ETHTOOL_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ETHTOOL_SITE)/$(ETHTOOL_SOURCE)
@@ -33,11 +34,11 @@ $(ETHTOOL_DIR)/.configured: $(ETHTOOL_DIR)/.unpacked
 $(ETHTOOL_DIR)/ethtool: $(ETHTOOL_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(ETHTOOL_DIR)
 
-$(ETHTOOL_DIR)/.installed: $(ETHTOOL_DIR)/ethtool
-	cp $(ETHTOOL_DIR)/ethtool $(TARGET_DIR)/usr/sbin
-	touch $@
+$(TARGET_DIR)/$(ETHTOOL_BINARY): $(ETHTOOL_DIR)/ethtool
+	cp $(ETHTOOL_DIR)/ethtool $@
+	$(STRIPCMD) $@
 
-ethtool: uclibc $(ETHTOOL_DIR)/.installed
+ethtool: uclibc $(TARGET_DIR)/$(ETHTOOL_BINARY)
 
 ethtool-source: $(DL_DIR)/$(ETHTOOL_SOURCE)
 
