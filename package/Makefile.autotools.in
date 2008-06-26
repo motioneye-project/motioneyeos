@@ -135,7 +135,8 @@ ifneq ($(filter source,$(MAKECMDGOALS)),)
 	$(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
 else
 	$(call MESSAGE,"Downloading")
-ifdef BR2_PRIMARY_SITE
+ifneq ($(strip $(subst ",,$(BR2_PRIMARY_SITE))),)
+#"))
 	-$(Q)test -e $(DL_DIR)/$($(PKG)_SOURCE) || $(WGET) -P $(DL_DIR) $(BR2_PRIMARY_SITE)/$($(PKG)_SOURCE)
 endif
 	$(Q)test -e $(DL_DIR)/$($(PKG)_SOURCE) || $(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
