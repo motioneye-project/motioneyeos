@@ -1,0 +1,20 @@
+--- mii-diag-2.11.orig/mii-diag.c.orig	2008-06-25 11:08:52.000000000 +1000
++++ mii-diag-2.11.orig/mii-diag.c	2005-03-27 03:56:33.000000000 +1000
+@@ -174,7 +174,7 @@
+ {
+ 	int c, errflag = 0;
+ 	char **spp, *ifname;
+-    char *progname = rindex(argv[0], '/') ? rindex(argv[0], '/')+1 : argv[0];
++    char *progname = strrchr(argv[0], '/') ? strrchr(argv[0], '/')+1 : argv[0];
+ 
+ 	while ((c = getopt_long(argc, argv, shortopts, longopts, 0)) != EOF)
+ 		switch (c) {
+@@ -310,7 +310,7 @@
+ 					str = endstr+1;
+ 				else {
+ 					fprintf(stderr, "Invalid driver parameter '%s'.\n", str);
+-					str = index(str, ',');
++					str = strchr(str, ',');
+ 				}
+ 			} else if (endstr[0] == ',') {
+ 				data32[i] = newval;
