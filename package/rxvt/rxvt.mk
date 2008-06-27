@@ -62,8 +62,8 @@ $(RXVT_BINARY): $(RXVT_DIR)/.configured
 	$(STRIPCMD) $(STRIP_DISCARD_ALL) $(RXVT_BINARY)
 
 $(TARGET_DIR)$(X11_PREFIX)/bin/rxvt: $(RXVT_BINARY)
-	cp -f $(RXVT_BINARY) $(TARGET_DIR)$(X11_PREFIX)/bin
-	(cd $(TARGET_DIR)$(X11_PREFIX)/bin; ln -fs rxvt xterm)
+	$(INSTALL) -m 0755 -D $^ $@
+	(cd $(@D); ln -fs rxvt xterm)
 
 rxvt: $(XSERVER) $(TARGET_DIR)$(X11_PREFIX)/bin/rxvt
 
