@@ -12,6 +12,8 @@ config BR2_PACKAGE_QTOPIA4_DEBUG
 	bool "Compile with debug support"
 	default n
 	depends on BR2_PACKAGE_QTOPIA4
+	help
+	  If unsure, say N.
 
 choice
 	prompt "Library type"
@@ -22,8 +24,19 @@ choice
 
 config BR2_PACKAGE_QTOPIA4_SHARED
 	bool "Shared library"
+	help
+	  Create and use shared Qt libraries.
+	  If you have multiple programs that depend on Qt or intend to use
+	  plugins, say Y.
+
 config BR2_PACKAGE_QTOPIA4_STATIC
 	bool "Static Library"
+	help
+	  Create and use static Qt libraries.
+	  If you don't have multiple programs on the target that depends on
+	  Qt, then this will save you quite some of storage space.
+	  If unsure, say Y.
+
 endchoice
 
 choice
@@ -71,10 +84,20 @@ config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
 
 config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 	bool "Compatibility with Qt3"
-	default y
+	default n
 	depends on BR2_PACKAGE_QTOPIA4
 	help
-	  Turns on support for older Qt3.
+	  Turns on support for older Qt3. This will create an additional 
+	  library with proxy code and increase the space required on target.
+	  If unsure say n.
+
+config BR2_PACKAGE_QTOPIA4_DEPTHS
+	string "color depths to support"
+	default "-depths 24,16,8"
+	depends on BR2_PACKAGE_QTOPIA4
+	help
+	  Which color depths to support for the library. Default is "-depths
+	  24,16,8". Different depths are specified by a comma separated list.
 
 config BR2_PACKAGE_QTOPIA4_GIF
 	bool "Enable GIF support"
@@ -99,14 +122,19 @@ choice
 
 config BR2_PACKAGE_QTOPIA4_NOJPEG
 	bool "No jpeg support"
+	help
+	  Disable JPEG support
 
 config BR2_PACKAGE_QTOPIA4_SYSTEMJPEG
-	bool "Use system libjpeg"
 	select BR2_PACKAGE_JPEG
+	bool "System libjpeg"
+	help
+	  Link against system libjpeg
 
 config BR2_PACKAGE_QTOPIA4_QTJPEG
-	bool "Use Qt libjpeg"
-
+	bool "Use Qt bundled libjpeg"
+	help
+	  Link against libjpeg proveded with Qt
 endchoice
 
 choice
@@ -120,12 +148,11 @@ config BR2_PACKAGE_QTOPIA4_NOPNG
 	bool "No PNG support"
 
 config BR2_PACKAGE_QTOPIA4_SYSTEMPNG
-	bool "Use system libpng"
+	bool "System libpng"
 	select BR2_PACKAGE_LIBPNG
 
 config BR2_PACKAGE_QTOPIA4_QTPNG
 	bool "Use Qt bundled libpng"
-
 endchoice
 
 choice
@@ -139,31 +166,12 @@ config BR2_PACKAGE_QTOPIA4_NOTIFF
 	bool "No TIFF support"
 
 config BR2_PACKAGE_QTOPIA4_SYSTEMTIFF
-	bool "Use system libtiff"
+	bool "System libtiff"
 	select BR2_PACKAGE_TIFF
 
 config BR2_PACKAGE_QTOPIA4_QTTIFF
 	bool "Use Qt bundled libtiff"
-
 endchoice
-
-config BR2_PACKAGE_QTOPIA4_SVG
-	bool "Enable SVG support"
-	depends on BR2_PACKAGE_QTOPIA4
-	help
-	  Enable the QtSvg library.
-
-config BR2_PACKAGE_QTOPIA4_SQL
-	bool "Enable SQL support"
-	depends on BR2_PACKAGE_QTOPIA4
-	help
-	  Enable all the SQL drivers it QtSql library.
-
-config BR2_PACKAGE_QTOPIA4_OPENSSL
-	bool "Enable OpenSSL support"
-	depends on BR2_PACKAGE_QTOPIA4
-	help
-	  Enable support for the OpenSSL encryption library.
 
 choice
 	prompt "zlib support"
@@ -172,27 +180,44 @@ choice
 	help
 	  Select zlib support.
 
-config BR2_PACKAGE_QTOPIA4_NOZLIB
-        bool
-	prompt "no zlib"
-	help
-	  Use the zlib bundled with Qt.
-
-
 config BR2_PACKAGE_QTOPIA4_QTZLIB
-	bool
-	prompt "Qt zlib"
+	bool "Qt zlib"
 	help
 	  Use the zlib bundled with Qt.
-
+	
 config BR2_PACKAGE_QTOPIA4_SYSTEMZLIB
-	bool
+	bool "System zlib"
 	select BR2_PACKAGE_ZLIB
-	prompt "System zlib"
 	help
 	  Use the shared zlib from the system.
 endchoice
+								    
+choice
+	prompt "freetype2 support"
+	depends on BR2_PACKAGE_QTOPIA4
+	default BR2_PACKAGE_QTOPIA4_NOFREETYPE
+	help
+	  Select freetype2 support.
 
+config BR2_PACKAGE_QTOPIA4_NOFREETYPE
+        bool "no freetype2 support"
+	help
+	  Do not compile in Freetype2 support.
+
+
+config BR2_PACKAGE_QTOPIA4_QTFREETYPE
+	bool "Qt freetype2"
+	help
+	  Use the libfreetype bundled with Qt.
+	
+config BR2_PACKAGE_QTOPIA4_SYSTEMFREETYPE
+	bool "System freetype2"
+	select BR2_PACKAGE_FREETYPE
+	help
+	  Use shared libfreetype from the target system.
+	  See http://www.freetype.org/
+endchoice
+	
 config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	string "The embedded platform we are making Qtopia4 for"
 	default "arm"	if BR2_arm
@@ -213,4 +238,50 @@ config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	default "generic"	if BR2_sparc
 	depends on BR2_PACKAGE_QTOPIA4
 	help
-	  The platform.
+	  The target platform.
+
+menuconfig BR2_PACKAGE_QTOPIA4_SQL_MODULE
+	bool "SQL Module"
+	default n
+	depends on BR2_PACKAGE_QTOPIA4
+	help
+	  Compile Qtopia SQL Module
+if BR2_PACKAGE_QTOPIA4_SQL_MODULE
+source "package/qtopia4/Config.sql.in"
+endif
+
+config BR2_PACKAGE_QTOPIA4_XMLPATTERNS
+	bool "XML Patterns Module"
+	default n
+	depends on BR2_PACKAGE_QTOPIA4
+	help
+	  Build QtXmlPatterns module.
+	  If unsure, say n
+
+config BR2_PACKAGE_QTOPIA4_SVG
+	bool "SVG Module"
+	default n
+	depends on BR2_PACKAGE_QTOPIA4
+	help
+	  Build the SVG module.
+	  If unsure, say n
+
+config BR2_PACKAGE_QTOPIA4_WEBKIT
+	bool "WebKit Module"
+	default n
+	depends on BR2_PACKAGE_QTOPIA4
+	help
+	  Build the WebKit module.
+	  If unsure, say n.
+
+config BR2_PACKAGE_QTOPIA4_OPENSSL
+	bool "Enable OpenSSL support"
+	depends on BR2_PACKAGE_QTOPIA4
+	select BR2_PACKAGE_OPENSSL
+	default n
+	help
+	  Enable support for the OpenSSL encryption library. If you use
+	  QSslSocket say y here, otherwise, say no to save space on the
+	  target.
+	  If unsure, say n.
+
