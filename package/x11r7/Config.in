@@ -228,6 +228,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdriver_xf86-video-via/Config.in
 		source package/x11r7/xdriver_xf86-video-vmware/Config.in
 		source package/x11r7/xdriver_xf86-video-voodoo/Config.in
+		source package/x11r7/xdriver_xf86-video-xgi/Config.in
 	endmenu
 	endif
 	menu "X11R7 Fonts"
