@@ -1,0 +1,11 @@
+--- a/Makefile.in.orig	2008-05-23 14:04:37.000000000 +0000
++++ b/Makefile.in	2008-05-23 14:04:50.000000000 +0000
+@@ -198,7 +198,7 @@ sysconfdir = @sysconfdir@
+ target_alias = @target_alias@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = pixman test
++SUBDIRS = pixman
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = pixman-1.pc
+ USERNAME = $$USER
