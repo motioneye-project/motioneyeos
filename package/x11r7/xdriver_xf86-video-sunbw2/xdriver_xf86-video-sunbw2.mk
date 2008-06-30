@@ -9,5 +9,6 @@ XDRIVER_XF86_VIDEO_SUNBW2_SOURCE = xf86-video-sunbw2-$(XDRIVER_XF86_VIDEO_SUNBW2
 XDRIVER_XF86_VIDEO_SUNBW2_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_VIDEO_SUNBW2_AUTORECONF = NO
 XDRIVER_XF86_VIDEO_SUNBW2_DEPENDENCIES = xserver_xorg-server xproto_randrproto xproto_xproto
+XDRIVER_XF86_VIDEO_SUNBW2_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 $(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-sunbw2))

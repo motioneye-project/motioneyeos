@@ -9,5 +9,6 @@ XDRIVER_XF86_VIDEO_I810_SOURCE = xf86-video-i810-$(XDRIVER_XF86_VIDEO_I810_VERSI
 XDRIVER_XF86_VIDEO_I810_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_VIDEO_I810_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_I810_DEPENDENCIES = xserver_xorg-server libdrm xlib_libX11 xlib_libXvMC xproto_fontsproto xproto_randrproto xproto_renderproto xproto_xextproto xproto_xf86driproto xproto_xproto
+XDRIVER_XF86_VIDEO_I810_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 $(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-i810))

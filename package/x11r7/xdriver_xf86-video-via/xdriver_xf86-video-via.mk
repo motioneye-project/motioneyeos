@@ -9,5 +9,6 @@ XDRIVER_XF86_VIDEO_VIA_SOURCE = xf86-video-via-$(XDRIVER_XF86_VIDEO_VIA_VERSION)
 XDRIVER_XF86_VIDEO_VIA_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_VIDEO_VIA_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_VIA_DEPENDENCIES = xserver_xorg-server libdrm xlib_libX11 xlib_libXvMC xproto_fontsproto xproto_glproto xproto_randrproto xproto_renderproto xproto_xextproto xproto_xf86driproto xproto_xproto
+XDRIVER_XF86_VIDEO_VIA_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 $(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-via))
