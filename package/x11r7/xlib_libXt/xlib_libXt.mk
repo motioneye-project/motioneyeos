@@ -14,3 +14,7 @@ XLIB_LIBXT_CONF_ENV = CC_FOR_BUILD="/usr/bin/gcc -I$(STAGING_DIR)/usr/include"
 XLIB_LIBXT_CONF_OPT = --disable-malloc0returnsnull --enable-shared --disable-static
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_libXt))
+
+# the host makestrs shouldn't get installed in target
+$(XLIB_LIBXT_HOOK_POST_INSTALL):
+	rm -f $(TARGET_DIR)/usr/bin/makestrs
