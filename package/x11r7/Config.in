@@ -196,6 +196,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdriver_xf86-video-i740/Config.in
 		source package/x11r7/xdriver_xf86-video-i810/Config.in
 		source package/x11r7/xdriver_xf86-video-imstt/Config.in
+		source package/x11r7/xdriver_xf86-video-intel/Config.in
 		source package/x11r7/xdriver_xf86-video-mga/Config.in
 		source package/x11r7/xdriver_xf86-video-neomagic/Config.in
 		source package/x11r7/xdriver_xf86-video-newport/Config.in

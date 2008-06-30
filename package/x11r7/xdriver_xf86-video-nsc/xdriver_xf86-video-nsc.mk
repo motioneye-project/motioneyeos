@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XDRIVER_XF86_VIDEO_NSC_VERSION = 2.8.2
+XDRIVER_XF86_VIDEO_NSC_VERSION = 2.8.3
 XDRIVER_XF86_VIDEO_NSC_SOURCE = xf86-video-nsc-$(XDRIVER_XF86_VIDEO_NSC_VERSION).tar.bz2
 XDRIVER_XF86_VIDEO_NSC_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_VIDEO_NSC_AUTORECONF = NO

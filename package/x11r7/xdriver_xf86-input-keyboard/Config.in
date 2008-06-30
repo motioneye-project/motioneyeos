@@ -7,5 +7,5 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_KEYBOARD
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-input-keyboard 1.1.1
+	  xf86-input-keyboard 1.2.2
 	  Keyboard input driver

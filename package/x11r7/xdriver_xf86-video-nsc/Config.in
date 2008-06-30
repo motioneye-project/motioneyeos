@@ -10,5 +10,5 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_NSC
 	select BR2_PACKAGE_XPROTO_XF86DGAPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-nsc 2.8.2
+	  xf86-video-nsc 2.8.3
 	  Nsc video driver

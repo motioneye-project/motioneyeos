@@ -6,5 +6,5 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_MOUSE
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-input-mouse 1.1.2
+	  xf86-input-mouse 1.2.2
 	  X.Org driver for mouse input devices

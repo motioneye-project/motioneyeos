@@ -11,5 +11,5 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_SAVAGE
 	select BR2_PACKAGE_XPROTO_XF86DRIPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-savage 2.1.2
+	  xf86-video-savage 2.1.3
 	  S3 Savage video driver

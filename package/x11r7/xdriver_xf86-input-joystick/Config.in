@@ -6,5 +6,5 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_JOYSTICK
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-input-joystick 1.1.0
+	  xf86-input-joystick 1.2.3
 	  X.Org driver for joystick input devices
