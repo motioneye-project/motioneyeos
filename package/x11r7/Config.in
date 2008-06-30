@@ -152,6 +152,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xwininfo/Config.in
 		source package/x11r7/xapp_xwud/Config.in
 	endmenu
+	if BR2_PACKAGE_XSERVER_xorg
 	menu "X11R7 Drivers"
 		source package/x11r7/openchrome/Config.in
 		source package/x11r7/xdriver_xf86-input-acecad/Config.in
@@ -178,6 +179,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdriver_xf86-input-penmount/Config.in
 		source package/x11r7/xdriver_xf86-input-spaceorb/Config.in
 		source package/x11r7/xdriver_xf86-input-summa/Config.in
+		source package/x11r7/xdriver_xf86-input-synaptics/Config.in
 		source package/x11r7/xdriver_xf86-input-tek4957/Config.in
 		source package/x11r7/xdriver_xf86-input-ur98/Config.in
 		source package/x11r7/xdriver_xf86-input-vmmouse/Config.in
@@ -227,6 +229,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdriver_xf86-video-vmware/Config.in
 		source package/x11r7/xdriver_xf86-video-voodoo/Config.in
 	endmenu
+	endif
 	menu "X11R7 Fonts"
 		source package/x11r7/xfont_font-util/Config.in
 		source package/x11r7/xfont_encodings/Config.in
@@ -311,7 +314,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdata_xbitmaps/Config.in
 		source package/x11r7/xdata_xcursor-themes/Config.in
 		source package/x11r7/xkeyboard-config/Config.in
-		source package/x11r7/xdata_xkbdata/Config.in
 	endmenu
 endif
 

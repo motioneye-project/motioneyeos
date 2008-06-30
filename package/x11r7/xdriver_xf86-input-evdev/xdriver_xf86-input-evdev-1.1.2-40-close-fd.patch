@@ -1,0 +1,18 @@
+From: Zephaniah E. Hull <warp@agamemnon.b5>
+Date: Tue, 11 Jul 2006 07:08:30 +0000 (-0400)
+Subject: Set pInfo->fd to -1 when we close it in EvdevProc.
+X-Git-Url: http://gitweb.freedesktop.org/?p=xorg/driver/xf86-input-evdev.git;a=commitdiff;h=eba5ea8d5a19f2b1984cbf20c95d22e243f19567
+
+Set pInfo->fd to -1 when we close it in EvdevProc.
+---
+
+--- a/src/evdev.c
++++ b/src/evdev.c
+@@ -200,6 +200,7 @@ EvdevProc(DeviceIntPtr device, int what)
+ 	    RemoveEnabledDevice (pInfo->fd);
+ 	    xf86RemoveSIGIOHandler (pInfo->fd);
+ 	    close (pInfo->fd);
++	    pInfo->fd = -1;
+ 
+ 	    if (pEvdev->state.axes)
+ 		EvdevAxesOff (device);

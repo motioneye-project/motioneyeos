@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XDATA_XKBDATA
-	bool "xkbdata"
-	default n
-	depends on !BR2_PACKAGE_XKEYBOARD_CONFIG
-	help
-	  xkbdata 1.0.1
-	  No description available

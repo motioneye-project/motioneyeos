@@ -1,0 +1,324 @@
+From: Zephaniah E. Hull <warp@aehallh.com>
+Date: Sun, 14 May 2006 11:55:50 +0000 (+0000)
+Subject: Tweak credits and references.
+X-Git-Tag: xf86-video-impact-0_2_0
+X-Git-Url: http://gitweb.freedesktop.org/?p=xorg/driver/xf86-input-evdev.git;a=commitdiff;h=e9c60da89a9c55b81b2dedcf6ee3d1aefb4ff591
+
+Tweak credits and references.
+Change the longs to unsigned longs in the bitfields.
+Cleanup our includes.
+Stop pulling in asm/types.h and asm/bitops.h.
+Conditionally define the stuff that used to come from the above, including
+    our own test_bit, set_bit and clear_bit.
+Change the longs to unsigned longs in the bitfields.
+Change the longs to unsigned longs in the bitfields.
+Use the bitop defines in evdev.h properly.
+Change the longs to unsigned longs in the bitfields.
+Change the longs to unsigned longs in the bitfields.
+Use the bitop defines in evdev.h properly.
+Change the longs to unsigned longs in the bitfields.
+Use the bitop defines in evdev.h properly.
+Add HPPA/HPPA64 entries. (Thanks to Fabio M. Di Nitto
+    <fabbione@ubuntu.com>)
+---
+
+--- a/ChangeLog
++++ b/ChangeLog
+@@ -1,3 +1,37 @@
++2006-05-14  Zephaniah E. Hull  <warp@aehallh.com>
++
++	* man/evdev.man:
++	Tweak credits and references.
++	* src/evdev.c: (EvdevParseBits), (EvdevParseBitOption),
++	(EvdevCorePreInit):
++	Change the longs to unsigned longs in the bitfields.
++
++	Cleanup our includes.
++	* src/evdev.h:
++	Stop pulling in asm/types.h and asm/bitops.h.
++
++	Conditionally define the stuff that used to come from
++	the above, including our own test_bit, set_bit and clear_bit.
++
++	Change the longs to unsigned longs in the bitfields.
++	* src/evdev_axes.c: (EvdevAxisAbsNew), (EvdevAxisRelNew):
++	Change the longs to unsigned longs in the bitfields.
++
++	Use the bitop defines in evdev.h properly.
++	* src/evdev_brain.c: (MatchAll), (MatchNot), (MatchAny):
++	Change the longs to unsigned longs in the bitfields.
++	* src/evdev_btn.c: (EvdevBtnNew):
++	Change the longs to unsigned longs in the bitfields.
++
++	Use the bitop defines in evdev.h properly.
++	* src/evdev_key.c: (EvdevKeyNew):
++	Change the longs to unsigned longs in the bitfields.
++
++	Use the bitop defines in evdev.h properly.
++	* src/inotify-syscalls.h:
++	Add HPPA/HPPA64 entries. (Thanks to Fabio M. Di Nitto
++	<fabbione@ubuntu.com>)
++
+ 2006-04-30  Zephaniah E. Hull  <warp@aehallh.com>
+ 
+ 	* configure.ac:
+--- a/src/evdev.c
++++ b/src/evdev.c
+@@ -61,8 +61,6 @@
+ #include <X11/XF86keysym.h>
+ #include <X11/extensions/XIproto.h>
+ 
+-#include <string.h>
+-
+ #include "evdev.h"
+ 
+ #include <xf86.h>
+@@ -328,7 +326,7 @@ EvdevNew(evdevDriverPtr driver, evdevDev
+ }
+ 
+ static void
+-EvdevParseBits (char *in, long *out, int len)
++EvdevParseBits (char *in, unsigned long *out, int len)
+ {
+     unsigned long v[2];
+     int n, i, max_bits = len * BITS_PER_LONG;
+@@ -351,7 +349,7 @@ EvdevParseBits (char *in, long *out, int
+ }
+ 
+ static void
+-EvdevParseBitOption (char *opt, long *all, long *not, long *any, int len)
++EvdevParseBitOption (char *opt, unsigned long *all, unsigned long *not, unsigned long *any, int len)
+ {
+     char *cur, *next;
+ 
+@@ -395,7 +393,7 @@ EvdevCorePreInit(InputDriverPtr drv, IDe
+ 	EvdevParseBitOption (tmp, pEvdev->all_bits.field,			\
+ 		pEvdev->not_bits.field,					\
+ 		pEvdev->any_bits.field,					\
+-		sizeof(pEvdev->not_bits.field) / sizeof (long));		\
++		sizeof(pEvdev->not_bits.field) / sizeof (unsigned long));	\
+ 	free (tmp);								\
+     }
+     bitoption(ev);
+--- a/src/evdev.h
++++ b/src/evdev.h
+@@ -72,20 +72,29 @@
+ #include <stdarg.h>
+ #include <xf86Xinput.h>
+ 
++#ifndef BITS_PER_LONG
+ #define BITS_PER_LONG		(sizeof(long) * 8)
++#endif
++
+ #define NBITS(x)		((((x)-1)/BITS_PER_LONG)+1)
+-#define OFF(x) 			((x)%BITS_PER_LONG)
+-#define LONG(x)			((x)/BITS_PER_LONG)
+-#define BIT(x)			(1UL<<((x)%BITS_PER_LONG))
+-#define test_bit(bit, array)    ((array[LONG(bit)] >> OFF(bit)) & 1)
++#define LONG(x)			((x) >> (sizeof(unsigned long) + 1))
++#define MASK(x)			(1 << ((x) & (sizeof (unsigned long) * 8 - 1)))
++
++#ifndef test_bit
++#define test_bit(bit, array)	(array[LONG(bit)] & MASK(bit))
++#endif
++#ifndef set_bit
++#define set_bit(bit, array)	(array[LONG(bit)] |= MASK(bit))
++#endif
++#ifndef clear_bit
++#define clear_bit(bit, array)	(array[LONG(bit)] &= ~MASK(bit))
++#endif
+ 
+ /* 2.4 compatibility */
+ #ifndef EVIOCGSW
+ 
+ #include <sys/time.h>
+ #include <sys/ioctl.h>
+-#include <asm/types.h>
+-#include <asm/bitops.h>
+ 
+ #define EVIOCGSW(len)		_IOC(_IOC_READ, 'E', 0x1b, len)		/* get all switch states */
+ 
+@@ -128,14 +137,14 @@
+ #define EVDEV_MAXBUTTONS	96
+ 
+ typedef struct {
+-    long	ev[NBITS(EV_MAX)];
+-    long	key[NBITS(KEY_MAX)];
+-    long	rel[NBITS(REL_MAX)];
+-    long	abs[NBITS(ABS_MAX)];
+-    long	msc[NBITS(MSC_MAX)];
+-    long	led[NBITS(LED_MAX)];
+-    long	snd[NBITS(SND_MAX)];
+-    long	ff[NBITS(FF_MAX)];
++    unsigned long	ev[NBITS(EV_MAX)];
++    unsigned long	key[NBITS(KEY_MAX)];
++    unsigned long	rel[NBITS(REL_MAX)];
++    unsigned long	abs[NBITS(ABS_MAX)];
++    unsigned long	msc[NBITS(MSC_MAX)];
++    unsigned long	led[NBITS(LED_MAX)];
++    unsigned long	snd[NBITS(SND_MAX)];
++    unsigned long	ff[NBITS(FF_MAX)];
+ } evdevBitsRec, *evdevBitsPtr;
+ 
+ typedef struct {
+--- a/src/evdev_axes.c
++++ b/src/evdev_axes.c
+@@ -49,14 +49,6 @@
+ 
+ #include <xf86_OSproc.h>
+ 
+-#define ArrayLength(a) (sizeof(a) / (sizeof((a)[0])))
+-
+-#define BITS_PER_LONG (sizeof(long) * 8)
+-#define NBITS(x) ((((x)-1)/BITS_PER_LONG)+1)
+-#define OFF(x)  ((x)%BITS_PER_LONG)
+-#define LONG(x) ((x)/BITS_PER_LONG)
+-#define TestBit(bit, array)    ((array[LONG(bit)] >> OFF(bit)) & 1)
+-
+ static char *rel_axis_names[] = {
+     "X",
+     "Y",
+@@ -328,7 +320,7 @@ EvdevAxisAbsNew(InputInfoPtr pInfo)
+ 
+     real_axes = 0;
+     for (i = 0; i < ABS_MAX; i++)
+-	if (TestBit (i, pEvdev->bits.abs))
++	if (test_bit (i, pEvdev->bits.abs))
+ 	    real_axes++;
+ 
+     if (!real_axes)
+@@ -344,7 +336,7 @@ EvdevAxisAbsNew(InputInfoPtr pInfo)
+     pInfo->conversion_proc = EvdevConvert;
+ 
+     for (i = 0, j = 0; i < ABS_MAX; i++) {
+-	if (!TestBit (i, pEvdev->bits.abs))
++	if (!test_bit (i, pEvdev->bits.abs))
+ 	    continue;
+ 
+ 	snprintf(option, sizeof(option), "%sAbsoluteAxisMap", abs_axis_names[i]);
+@@ -389,7 +381,7 @@ EvdevAxisAbsNew(InputInfoPtr pInfo)
+ 	xf86Msg(X_CONFIG, "%s: Unknown Mode: %s.\n", pInfo->name, s);
+     }
+ 
+-    if (TestBit (ABS_X, pEvdev->bits.abs) && TestBit (ABS_Y, pEvdev->bits.abs))
++    if (test_bit (ABS_X, pEvdev->bits.abs) && test_bit (ABS_Y, pEvdev->bits.abs))
+ 	k = xf86SetIntOption(pInfo->options, "AbsoluteScreen", 0);
+     else
+ 	k = xf86SetIntOption(pInfo->options, "AbsoluteScreen", -1);
+@@ -417,7 +409,7 @@ EvdevAxisRelNew(InputInfoPtr pInfo)
+ 
+     real_axes = 0;
+     for (i = 0; i < REL_MAX; i++)
+-	if (TestBit (i, pEvdev->bits.rel))
++	if (test_bit (i, pEvdev->bits.rel))
+ 	    real_axes++;
+ 
+     if (!real_axes && (!state->abs || state->abs->axes < 2))
+@@ -434,7 +426,7 @@ EvdevAxisRelNew(InputInfoPtr pInfo)
+     pInfo->conversion_proc = EvdevConvert;
+ 
+     for (i = 0, j = 0; i < REL_MAX; i++) {
+-	if (!TestBit (i, pEvdev->bits.rel))
++	if (!test_bit (i, pEvdev->bits.rel))
+ 	    continue;
+ 
+ 	snprintf(option, sizeof(option), "%sRelativeAxisMap", rel_axis_names[i]);
+--- a/src/evdev_brain.c
++++ b/src/evdev_brain.c
+@@ -86,7 +86,7 @@ typedef struct {
+ } evdevDevInfoRec, *evdevDevInfoPtr;
+ 
+ static Bool
+-MatchAll (long *dev, long *match, int len)
++MatchAll (unsigned long *dev, unsigned long *match, int len)
+ {
+     int i;
+ 
+@@ -98,7 +98,7 @@ MatchAll (long *dev, long *match, int le
+ }
+ 
+ static Bool
+-MatchNot (long *dev, long *match, int len)
++MatchNot (unsigned long *dev, unsigned long *match, int len)
+ {
+     int i;
+ 
+@@ -110,7 +110,7 @@ MatchNot (long *dev, long *match, int le
+ }
+ 
+ static Bool
+-MatchAny (long *dev, long *match, int len)
++MatchAny (unsigned long *dev, unsigned long *match, int len)
+ {
+     int i, found = 0;
+ 
+--- a/src/evdev_btn.c
++++ b/src/evdev_btn.c
+@@ -51,15 +51,6 @@
+ 
+ #include <xf86Module.h>
+ 
+-
+-#define ArrayLength(a) (sizeof(a) / (sizeof((a)[0])))
+-
+-#define BITS_PER_LONG (sizeof(long) * 8)
+-#define NBITS(x) ((((x)-1)/BITS_PER_LONG)+1)
+-#define OFF(x)  ((x)%BITS_PER_LONG)
+-#define LONG(x) ((x)/BITS_PER_LONG)
+-#define TestBit(bit, array)    ((array[LONG(bit)] >> OFF(bit)) & 1)
+-
+ void
+ EvdevBtnPostFakeClicks(InputInfoPtr pInfo, int button, int count)
+ {
+@@ -186,7 +177,7 @@ EvdevBtnNew(InputInfoPtr pInfo)
+     state->btn = Xcalloc (sizeof (evdevBtnRec));
+ 
+     for (i = BTN_MISC; i < (KEY_OK - 1); i++)
+-	if (TestBit (i, pEvdev->bits.key)) {
++	if (test_bit (i, pEvdev->bits.key)) {
+ 	    bit = i;
+ 	    if ((bit >= BTN_MOUSE) && (bit < BTN_JOYSTICK)) {
+ 		bit -= BTN_MOUSE - BTN_MISC;
+--- a/src/evdev_key.c
++++ b/src/evdev_key.c
+@@ -81,11 +81,6 @@
+ 
+ 
+ #define ArrayLength(a) (sizeof(a) / (sizeof((a)[0])))
+-#define BITS_PER_LONG (sizeof(long) * 8)
+-#define NBITS(x) ((((x)-1)/BITS_PER_LONG)+1)
+-#define OFF(x)  ((x)%BITS_PER_LONG)
+-#define LONG(x) ((x)/BITS_PER_LONG)
+-#define TestBit(bit, array)    ((array[LONG(bit)] >> OFF(bit)) & 1)
+ 
+ #define MIN_KEYCODE 8
+ #define GLYPHS_PER_KEY 2
+@@ -356,13 +351,13 @@ EvdevKeyNew (InputInfoPtr pInfo)
+     int i, keys = 0;
+ 
+     for (i = 0; i <= KEY_UNKNOWN; i++)
+-	if (TestBit (i, pEvdev->bits.key)) {
++	if (test_bit (i, pEvdev->bits.key)) {
+ 	    keys = 1;
+ 	    break;
+ 	}
+     if (!keys)
+ 	for (i = KEY_OK; i <= KEY_MAX; i++)
+-	    if (TestBit (i, pEvdev->bits.key)) {
++	    if (test_bit (i, pEvdev->bits.key)) {
+ 		keys = 1;
+ 		break;
+ 	    }
+--- a/src/inotify-syscalls.h
++++ b/src/inotify-syscalls.h
+@@ -39,6 +39,10 @@
+ # define __NR_inotify_init	290
+ # define __NR_inotify_add_watch	291
+ # define __NR_inotify_rm_watch	292
++#elif defined (__hppa__) || defined (__hppa64__)
++# define __NR_inotify_init	269
++# define __NR_inotify_add_watch	270
++# define __NR_inotify_rm_watch	271
+ #else
+ # error "Unsupported architecture!"
+ #endif

@@ -1,0 +1,31 @@
+From: Adam Jackson <ajax@nwnk.net>
+Date: Fri, 2 Jun 2006 19:39:52 +0000 (+0000)
+Subject: Fix an obvious bogon to avoid crashing on absolute axis setup.
+X-Git-Tag: xf86-video-impact-0_2_0
+X-Git-Url: http://gitweb.freedesktop.org/?p=xorg/driver/xf86-input-evdev.git;a=commitdiff;h=57a7f2844108072bf03c9f82baf92e3447d18fbe
+
+Fix an obvious bogon to avoid crashing on absolute axis setup.
+---
+
+--- a/ChangeLog
++++ b/ChangeLog
+@@ -1,3 +1,8 @@
++2006-06-02  Adam Jackson  <ajax@freedesktop.org>
++
++	* src/evdev_axes.c:
++	Fix an obvious bogon to avoid crashing on absolute axis setup.
++
+ 2006-05-15  Zephaniah E. Hull,,,  <warp@aehallh.com>
+ 
+ 	* src/evdev.h:
+--- a/src/evdev_axes.c
++++ b/src/evdev_axes.c
+@@ -385,7 +385,7 @@ EvdevAxisAbsNew(InputInfoPtr pInfo)
+ 	k = xf86SetIntOption(pInfo->options, "AbsoluteScreen", 0);
+     else
+ 	k = xf86SetIntOption(pInfo->options, "AbsoluteScreen", -1);
+-    if (k < screenInfo.numScreens) {
++    if (k < screenInfo.numScreens && k >= 0) {
+ 	state->abs->screen = k;
+ 	xf86Msg(X_CONFIG, "%s: AbsoluteScreen: %d.\n", pInfo->name, k);
+     } else {

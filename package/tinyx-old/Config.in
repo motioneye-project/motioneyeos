@@ -1,6 +1,0 @@
-config BR2_PACKAGE_TINYX_OLD
-	bool "tinyx (old version. which supposedly builds)"
-	default n
-	depends on BR2_PACKAGE_TINYX
-	help
-	  A tiny X server.  Also known as 'Xfbdev' and 'kdrive'.

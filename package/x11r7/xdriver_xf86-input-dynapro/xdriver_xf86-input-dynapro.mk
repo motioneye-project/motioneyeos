@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XDRIVER_XF86_INPUT_DYNAPRO_VERSION = 1.1.0
+XDRIVER_XF86_INPUT_DYNAPRO_VERSION = 1.1.2
 XDRIVER_XF86_INPUT_DYNAPRO_SOURCE = xf86-input-dynapro-$(XDRIVER_XF86_INPUT_DYNAPRO_VERSION).tar.bz2
 XDRIVER_XF86_INPUT_DYNAPRO_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_INPUT_DYNAPRO_AUTORECONF = NO

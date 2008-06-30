@@ -1,0 +1,31 @@
+--- a/configure	2006-10-13 18:36:20.000000000 -0400
++++ b/configure	2008-06-23 11:38:03.000000000 -0400
+@@ -20191,28 +20191,8 @@ echo "$as_me: Building with package name
+ as_ac_File=`echo "ac_cv_file_$prefix/share/X11/sgml/defs.ent" | $as_tr_sh`
+ echo "$as_me:$LINENO: checking for $prefix/share/X11/sgml/defs.ent" >&5
+ echo $ECHO_N "checking for $prefix/share/X11/sgml/defs.ent... $ECHO_C" >&6
+-if eval "test \"\${$as_ac_File+set}\" = set"; then
+-  echo $ECHO_N "(cached) $ECHO_C" >&6
+-else
+-  test "$cross_compiling" = yes &&
+-  { { echo "$as_me:$LINENO: error: cannot check for file existence when cross compiling" >&5
+-echo "$as_me: error: cannot check for file existence when cross compiling" >&2;}
+-   { (exit 1); exit 1; }; }
+-if test -r "$prefix/share/X11/sgml/defs.ent"; then
+-  eval "$as_ac_File=yes"
+-else
+-  eval "$as_ac_File=no"
+-fi
+-fi
+-echo "$as_me:$LINENO: result: `eval echo '${'$as_ac_File'}'`" >&5
+-echo "${ECHO_T}`eval echo '${'$as_ac_File'}'`" >&6
+-if test `eval echo '${'$as_ac_File'}'` = yes; then
+-  DEFS_ENT_PATH=$prefix/share/X11/sgml
+-else
+   DEFS_ENT_PATH=
+ 
+-fi
+-
+ 
+ # Extract the first word of "linuxdoc", so it can be a program name with args.
+ set dummy linuxdoc; ac_word=$2

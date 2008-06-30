@@ -1,0 +1,8 @@
+diff -Nwrup xfree86-driver-synaptics_0.14.7~git20070706.orig/configure xdriver_xf86-input-synaptics-0.14.7~git20070706/configure
+--- a/.stamp_configured	1969-12-31 19:00:00.000000000 -0500
++++ b/.stamp_configured	2008-06-23 11:01:16.000000000 -0400
+@@ -0,0 +1,4 @@
++#!/bin/sh
++
++echo "Dummy configure"
++ 

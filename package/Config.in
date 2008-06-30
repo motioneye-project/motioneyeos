@@ -353,24 +353,15 @@ source "package/qtopia4/Config.in"
 
 #source "package/microwin/Config.in"
 
-choice
-prompt "X Window System server"
-	default BR2_PACKAGE_XSERVER_none
-	help
-	  Xserver to use.
-	  For more information about the X protocol see
-	  http://www.x.org
-	  You may have to enable LOCALE and WCHAR to build
 
+menu "X Window System server"
 config BR2_PACKAGE_XSERVER_none
 	bool "none"
-config BR2_PACKAGE_XSERVER_x11r7
-	bool "x11r7"
 config BR2_PACKAGE_XSERVER_xorg
-	bool "xorg"
+	bool "modular xorg"
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
-endchoice
+endmenu
 
 config BR2_X11_PREFIX
 	string
@@ -379,15 +370,8 @@ config BR2_X11_PREFIX
 	help
 	  X11 apps root location
 
-if BR2_PACKAGE_XSERVER_x11r7
+if !BR2_PACKAGE_XSERVER_none
 source "package/x11r7/Config.in"
-endif
-if BR2_PACKAGE_XSERVER_xorg
-source "package/xorg/Config.in"
-endif
-if BR2_PACKAGE_XSERVER_tinyx
-source "package/tinyx/Config.in"
-source "package/tinyx-old/Config.in"
 endif
 
 comment "X libraries and helper libraries"
