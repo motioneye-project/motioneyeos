@@ -36,10 +36,13 @@ XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont lib
 									xproto_resourceproto xproto_trapproto xproto_videoproto xproto_xcmiscproto \
 									xproto_xextproto xproto_xf86bigfontproto xproto_xf86dgaproto xproto_xf86driproto \
 									xproto_xf86miscproto xproto_xf86rushproto xproto_xf86vidmodeproto xproto_xproto \
-									pixman dbus $(XSERVER_XORG_MESA_DEPS) mcookie 
+									pixman dbus $(XSERVER_XORG_MESA_DEPS) mcookie
 
-XSERVER_XORG_SERVER_CONF_OPT = $(XSERVER_XORG_ENABLE_KDRIVE) --enable-freetype $(XSERVER_XORG_ENABLE_MODULAR) \
-								--disable-config-hal $(XSERVER_XORG_MESA_DIR) CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1" 
+XSERVER_XORG_SERVER_CONF_OPT = $(XSERVER_XORG_ENABLE_KDRIVE)
+		--enable-freetype $(XSERVER_XORG_ENABLE_MODULAR) \
+		--disable-config-hal $(XSERVER_XORG_MESA_DIR) \
+		--disable-xnest --disable-xephyr --disable-xvfb \
+		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1"
 
 XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install-data
 XSERVER_XORG_SERVER_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
