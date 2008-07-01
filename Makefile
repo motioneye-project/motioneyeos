@@ -332,7 +332,7 @@ target-devfiles:
 ifeq ($(BR2_HAVE_DEVFILES),y)
 	( scripts/copy.sh $(STAGING_DIR) $(TARGET_DIR) )
 else
-	rm -rf $(TARGET_DIR)/usr/include
+	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/lib/pkgconfig
 	find $(TARGET_DIR)/usr/lib -name '*.a' -delete 
 	find $(TARGET_DIR)/lib -name '*.a' -delete 
 	find $(TARGET_DIR)/usr/lib -name '*.la' -delete 
