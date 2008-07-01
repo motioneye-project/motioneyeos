@@ -1,6 +1,7 @@
 config BR2_PACKAGE_QTE
 	bool "Qt/E"
 	default n
+	depends on BR2_DEPRECATED
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_PTHREADS_NATIVE
 	select BR2_PACKAGE_JPEG
