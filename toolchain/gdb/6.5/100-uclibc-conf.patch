@@ -1,7 +1,7 @@
---- gdb-6.3/bfd/configure.orig	Fri Oct  8 16:53:56 2004
-+++ gdb-6.3/bfd/configure	Sun Feb 27 18:32:58 2005
-@@ -3583,6 +3583,11 @@
-   lt_cv_file_magic_test_file=`echo /lib/libc.so* /lib/libc-*.so`
+--- a/bfd/configure
++++ b/bfd/configure
+@@ -3580,6 +3580,11 @@
+   lt_cv_deplibs_check_method=pass_all
    ;;
  
 +linux-uclibc*)
@@ -12,9 +12,9 @@
  netbsd* | knetbsd*-gnu)
    if echo __ELF__ | $CC -E - | grep __ELF__ > /dev/null; then
      lt_cv_deplibs_check_method='match_pattern /lib[^/\.]+\.so\.[0-9]+\.[0-9]+$'
---- gdb-6.3/libtool.m4.orig	Wed Jul 21 21:21:41 2004
-+++ gdb-6.3/libtool.m4	Mon Feb 28 00:08:11 2005
-@@ -653,6 +653,11 @@
+--- a/libtool.m4
++++ b/libtool.m4
+@@ -751,6 +751,11 @@
    fi
    ;;
  
@@ -26,8 +26,8 @@
  newsos6)
    [lt_cv_deplibs_check_method='file_magic ELF [0-9][0-9]*-bit [ML]SB (executable|dynamic lib)']
    lt_cv_file_magic_cmd=/usr/bin/file
---- gdb-6.3/ltconfig.orig	Tue Oct  5 15:34:42 2004
-+++ gdb-6.3/ltconfig	Sun Feb 27 18:14:41 2005
+--- a/ltconfig
++++ b/ltconfig
 @@ -602,7 +602,7 @@
  
  # Transform linux* to *-*-linux-gnu*, to support old configure scripts.
@@ -62,9 +62,9 @@
  netbsd*)
    need_lib_prefix=no
    need_version=no
---- gdb-6.3/opcodes/configure.orig	Fri Sep 17 08:13:38 2004
-+++ gdb-6.3/opcodes/configure	Mon Feb 28 00:09:42 2005
-@@ -3595,6 +3595,11 @@
+--- a/opcodes/configure
++++ b/opcodes/configure
+@@ -3591,6 +3591,11 @@
    fi
    ;;
  

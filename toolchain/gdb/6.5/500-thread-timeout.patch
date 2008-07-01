@@ -1,14 +1,14 @@
---- gdb-6.3.org/gdb/gdbserver/thread-db.c	2004-10-17 02:42:00.000000000 +0900
-+++ gdb-6.3/gdb/gdbserver/thread-db.c	2005-01-27 12:19:29.000000000 +0900
+--- a/gdb/gdbserver/thread-db.c
++++ b/gdb/gdbserver/thread-db.c
 @@ -21,6 +21,7 @@
-    Foundation, Inc., 59 Temple Place - Suite 330,
-    Boston, MA 02111-1307, USA.  */
+    Foundation, Inc., 51 Franklin Street, Fifth Floor,
+    Boston, MA 02110-1301, USA.  */
  
 +#include <unistd.h>
  #include "server.h"
  
  #include "linux-low.h"
-@@ -142,6 +143,7 @@
+@@ -134,6 +135,7 @@
    td_event_msg_t msg;
    td_err_e err;
    struct inferior_linux_data *tdata;
@@ -16,7 +16,7 @@
  
    if (debug_threads)
      fprintf (stderr, "Thread creation event.\n");
-@@ -152,7 +154,13 @@
+@@ -144,7 +146,13 @@
       In the LinuxThreads implementation, this is safe,
       because all events come from the manager thread
       (except for its own creation, of course).  */
@@ -31,4 +31,3 @@
    if (err != TD_OK)
      fprintf (stderr, "thread getmsg err: %s\n",
  	     thread_db_err_str (err));
-

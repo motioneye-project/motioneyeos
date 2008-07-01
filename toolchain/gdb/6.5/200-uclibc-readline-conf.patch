@@ -1,6 +1,6 @@
---- gdb-6.1.1-dist/readline/configure	2003-05-27 18:29:47.000000000 -0500
-+++ gdb-6.1.1/readline/configure	2004-08-09 14:20:23.000000000 -0500
-@@ -6249,7 +6249,12 @@
+--- a/readline/configure
++++ b/readline/configure
+@@ -7871,7 +7871,12 @@
  
  
  echo "$as_me:$LINENO: checking for mbstate_t" >&5
