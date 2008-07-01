@@ -238,7 +238,7 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 $(BUILD_DIR)/%/.stamp_target_installed:
 	$(call MESSAGE,"Installing to target")
 	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_INSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-	$(if $(BR2_HAVE_MANPAGES),,for d in man; do \
+	$(if $(BR2_HAVE_MANPAGES),,for d in man share/man; do \
 		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
 	done)
 	$(if $(BR2_HAVE_INFOPAGES),,for d in info share/info; do \
