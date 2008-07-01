@@ -6,14 +6,13 @@ HOSTMAKE=$(MAKE)
 endif
 HOSTMAKE :=$(shell $(CONFIG_SHELL) -c "which $(HOSTMAKE)" || type -p $(HOSTMAKE) || echo make)
 
-MAKE1:=$(HOSTMAKE) MAKE="$(firstword $(HOSTMAKE)) -j1"
-MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
-
 # honor silent mode
 ifeq (s,$(findstring s,$(MAKEFLAGS)))
-MAKE1+= -s
-MAKE+= -s
+MAKESILENT:=-s
 endif
+
+MAKE1:=$(HOSTMAKE) MAKE='$(firstword $(HOSTMAKE)) -j1 $(MAKESILENT)'
+MAKE:=$(HOSTMAKE) MAKE='$(firstword $(HOSTMAKE)) -j$(BR2_JLEVEL) $(MAKESILENT)'
 
 ifeq ($(BR2_OPTIMIZE_0),y)
 TARGET_OPTIMIZATION=-O0
