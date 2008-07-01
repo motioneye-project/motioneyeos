@@ -52,6 +52,10 @@ choice
 		bool "gdb 6.7.1"
 		depends on !BR2_avr32
 
+	config BR2_GDB_VERSION_6_8
+		bool "gdb 6.8"
+		depends on !BR2_avr32
+
 	config BR2_GDB_VERSION_SNAPSHOT
 		bool "gdb snapshot"
 		depends on !BR2_avr32 && !BR2_nios2
@@ -66,4 +70,5 @@ config BR2_GDB_VERSION
 	default "6.5"      if BR2_GDB_VERSION_6_5
 	default "6.6"      if BR2_GDB_VERSION_6_6
 	default "6.7.1"    if BR2_GDB_VERSION_6_7_1
+	default "6.8"      if BR2_GDB_VERSION_6_8
 	default "snapshot" if BR2_GDB_VERSION_SNAPSHOT
