@@ -12,7 +12,7 @@ config BR2_PACKAGE_BUSYBOX
 choice
 	prompt "BusyBox Version"
 	depends on BR2_PACKAGE_BUSYBOX
-	default BR2_BUSYBOX_VERSION_1_10_X
+	default BR2_BUSYBOX_VERSION_1_11_X
 	help
 	  Select the version of BusyBox you wish to use.
 
@@ -34,10 +34,11 @@ choice
 
 	config BR2_BUSYBOX_VERSION_1_9_X
 		bool "BusyBox 1.9.x"
-		depends on BR2_DEPRECATED || BR2_RECENT
+		depends on BR2_DEPRECATED
 
 	config BR2_BUSYBOX_VERSION_1_10_X
 		bool "BusyBox 1.10.x"
+		depends on BR2_DEPRECATED || BR2_RECENT
 
 	config BR2_BUSYBOX_VERSION_1_11_X
 		bool "BusyBox 1.11.x"
