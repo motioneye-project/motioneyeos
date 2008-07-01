@@ -113,7 +113,7 @@ endif
 ifeq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_MENU)),y)
 	cp -dpf $(NCURSES_DIR)/lib/libmenu.so* $(TARGET_DIR)/usr/lib/
 endif
-	ln -sf /usr/share/terminfo $(TARGET_DIR)/usr/lib/terminfo
+	ln -snf /usr/share/terminfo $(TARGET_DIR)/usr/lib/terminfo
 	mkdir -p $(TARGET_DIR)/usr/share/terminfo/x
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm $(TARGET_DIR)/usr/share/terminfo/x
 	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm-color $(TARGET_DIR)/usr/share/terminfo/x
