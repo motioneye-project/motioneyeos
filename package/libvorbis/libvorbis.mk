@@ -40,12 +40,15 @@ $(LIBVORBIS_DIR)/.configured: $(LIBVORBIS_DIR)/.source
 	touch $@
 
 $(LIBVORBIS_DIR)/.libs: $(LIBVORBIS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(LIBVORBIS_DIR)
+	$(MAKE) -C $(@D)
 	touch $@
 
-$(TARGET_DIR)/usr/lib/libvorbis.so: $(LIBVORBIS_DIR)/.libs
-	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(LIBVORBIS_DIR) install
-	touch $@
+$(STAGING_DIR)/usr/lib/libvorbis.so: $(LIBVORBIS_DIR)/.libs
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBVORBIS_DIR) install
+
+$(TARGET_DIR)/usr/lib/libvorbis.so: $(STAGING_DIR)/usr/lib/libvorbis.so
+	$(INSTALL) -D $(STAGING_DIR)/usr/lib/libvorbis*.so* $(TARGET_DIR)/usr/lib
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libvorbis*.so*
 
 libvorbis: uclibc pkgconfig libogg $(TARGET_DIR)/usr/lib/libvorbis.so
 
