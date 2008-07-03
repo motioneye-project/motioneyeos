@@ -1,0 +1,21 @@
+#! /bin/sh
+
+if [ x$ACTION = "x" ] ; then
+	echo "$0: should be called by mdev"
+	exit -1
+fi
+
+if [ $ACTION = "remove" ] ; then
+	umount -f /dev/$MDEV
+	rmdir /disk/$MDEV
+	exit 0
+fi
+
+if [ $ACTION = "add" ] ; then
+	mkdir -p /disk/$MDEV
+	mount -o sync /dev/$MDEV /disk/$MDEV
+	exit 0
+fi
+
+echo "$0: $ACTION=ACTION not recognized" > /dev/console
+env > /dev/console

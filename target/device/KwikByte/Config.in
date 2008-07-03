@@ -1,0 +1,91 @@
+menuconfig BR2_TARGET_KWIKBYTE
+	bool "KwikByte Board Support"
+	depends on BR2_arm
+	default n
+
+if BR2_TARGET_KWIKBYTE
+
+comment "Board Selection"
+
+choice
+	prompt	"KwikByte target board"
+	default BR2_TARGET_KB9202
+
+config BR2_TARGET_KB9202
+	bool "Board support for the KwikByte 9202 Evaluation Board"
+	depends on BR2_arm920t || BR2_generic_arm
+	help
+	  KwikByte kb9202 Eval Board
+
+endchoice
+
+
+config BR2_BOARD_NAME
+	string
+	default "kb9202"	if	BR2_TARGET_KB9202
+choice
+	prompt "Add AT91 specific patches"
+	depends on BR2_KERNEL_ARCH_PATCH_ENABLED
+	depends on BR2_arm
+	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_24
+#	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_23
+#	default BR2_ARCH_AT91_2_6_22_1		if BR2_LINUX_2_6_22_1
+#	default BR2_ARCH_AT91_2_6_21_5		if BR2_LINUX_2_6_21 || BR2_LINUX_2_6_21_5
+#	default BR2_ARCH_AT91_2_6_21_1		if BR2_LINUX_2_6_21_1
+#	default BR2_ARCH_AT91_2_6_20_4		if BR2_LINUX_2_6_20 || BR2_LINUX_2_6_20_4
+#	default BR2_ARCH_AT91_2_6_24
+	help
+	  Select a patch to add to the Linux kernel
+
+config	BR2_ARCH_AT91_2_6_24
+	bool "2.6.24"
+	help
+	  Apply the at91 linux-2.6.24 patches"
+
+#config	BR2_ARCH_AT91_2_6_22_1
+#	bool "2.6.22.1"
+#	help
+#	  Apply the at91 linux-2.6.22.1 patches"
+#
+#config	BR2_ARCH_AT91_2_6_21_5
+#	bool "2.6.21.5"
+#	help
+#	  Apply the at91 linux-2.6.21.5 patches"
+#
+#config	BR2_ARCH_AT91_2_6_21_1
+#	bool "2.6.21.1"
+#	help
+#	  Apply the at91 linux-2.6.21.1 patches"
+#
+#config	BR2_ARCH_AT91_2_6_20_4
+#	bool "2.6.20.4"
+#	help
+#	  Apply the at91 linux-2.6.20.4 patches"
+
+endchoice
+
+config	BR2_KERNEL_ARCH_PATCH_VERSION
+	string
+	depends on BR2_KERNEL_ARCH_PATCH_ENABLED
+	depends on BR2_arm
+	default "2.6.24" if BR2_ARCH_AT91_2_6_24
+#	default "2.6.22.1" if BR2_ARCH_AT91_2_6_22_1
+#	default "2.6.21.5" if BR2_ARCH_AT91_2_6_21_5
+#	default "2.6.21.1" if BR2_ARCH_AT91_2_6_21_1
+#	default "2.6.20.4" if BR2_ARCH_AT91_2_6_20_4
+
+config	BR2_KERNEL_ARCH_PATCH_DIR
+	string
+	default "target/device/Atmel/arch-arm/kernel-patches-$(BR2_KERNEL_ARCH_PATCH_VERSION)"
+
+config BR2_BOARD_PATH
+	string "Board Path"
+	default "target/device/KwikByte/$(BR2_BOARD_NAME)"
+
+config BR2_AT91_LINUXPATCH_SITE
+	string "AT91 Linux Patch mirror site"
+	default "http://maxim.org.za/AT91RM9200/2.6"
+	help
+	    Main download location for AT91 Linux stuff
+
+endif

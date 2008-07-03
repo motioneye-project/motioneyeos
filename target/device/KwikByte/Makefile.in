@@ -1,0 +1,52 @@
+ifeq ($(BR2_TARGET_KWIKBYTE),y)
+
+BOARD_NAME:=$(strip  $(subst ",, $(BR2_BOARD_NAME)))
+BOARD_PATH:=$(strip  $(subst ",, $(BR2_BOARD_PATH)))
+
+# These are set by Config.in
+DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
+#"))
+ifeq ($(DOWNLOAD_LINUX26_VERSION),)
+DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+endif
+
+LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_LINUX26_VERSION)))
+#"))
+ifeq ($(LINUX26_VERSION),)
+LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
+endif
+
+# These are set by "new" Config.in
+ifeq ($(BR2_LINUX26_KCONFIG),)
+LINUX26_KCONFIG:=$(BOARD_PATH)/$(BOARD_NAME)-linux.config
+endif
+
+# This should be part of target/linux/Makefile.in
+LINUX26_BUILD_DIR:=$(PROJECT_BUILD_DIR)
+
+LINUX26_BINLOC=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
+
+LINUX26_COPYTO:=/tftpboot
+
+#LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
+
+# The board specific Makefile.in can redefine BOARD_NAME's
+LINUX_BOARD_NAME:=$(BOARD_NAME)
+
+ifeq ($(BR2_TARGET_KB9202),y)
+include target/device/KwikByte/kb9202/Makefile.in
+endif
+
+# Needs to be AFTER board specific Makefiles
+
+kwikbyte_status:
+	@echo PROJECT_BUILD_DIR=$(PROJECT_BUILD_DIR)
+	@echo BOARD_NAME=$(BOARD_NAME)
+	@echo BR2_BOARD_PATH=$(BR2_BOARD_PATH)
+	@echo MAJOR_MINOR=$(LINUX_MAJOR_VER)$(LINUX_MINOR_VER)
+	@echo DOWNLOAD_LINUX26_VERSION=$(DOWNLOAD_LINUX26_VERSION)
+	@echo LINUX_SOURCE=$(LINUX_SOURCE)
+	@echo TARGETS=$(TARGETS)
+	@echo LINUX26_BINLOC=$(LINUX26_BINLOC)
+
+endif

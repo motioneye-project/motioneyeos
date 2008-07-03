@@ -1,0 +1,20 @@
+# /etc/network/interfaces -- configuration file for ifup/ifdown
+# The loopback interface
+# automatically added when upgrading
+auto lo
+iface lo inet loopback
+
+# the first network card - this entry was created during the
+# installation automatically added when upgrading
+
+# static IP mode 
+#  uncomment the next lines in this section (remove leading '#' characters)
+#auto eth0
+#iface eth0 inet static
+#        address 192.160.1.79
+#        netmask 255.255.255.0
+
+# DHCP mode
+#  uncomment the next lines in this section (remove leading '#' characters)
+#auto eth0
+#iface eth0 inet dhcp

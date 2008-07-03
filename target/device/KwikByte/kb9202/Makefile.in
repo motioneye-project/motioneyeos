@@ -1,0 +1,4 @@
+BOARD_PATH=target/device/KwikByte/kb9202
+
+TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
+TARGET_DEVICE_TABLE=$(BOARD_PATH)/device_table.txt

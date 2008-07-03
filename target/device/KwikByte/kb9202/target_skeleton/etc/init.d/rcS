@@ -1,0 +1,15 @@
+#!/bin/sh
+
+/bin/mount -n -t proc proc /proc
+/bin/mount -o remount,rw /
+
+/bin/mount /sys
+echo /sbin/mdev > /proc/sys/kernel/hotplug
+/sbin/mdev -a
+
+/bin/mount -a
+/bin/hostname -F /etc/hostname
+/sbin/ifconfig lo 127.0.0.1 up
+/sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
+/sbin/ifup eth0
+#telnetd -l /bin/sh

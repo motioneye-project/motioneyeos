@@ -1,0 +1,2 @@
+PATH="/usr/sbin:/bin:/usr/bin:/sbin"
+PS1="[\u@\h:\w] "
