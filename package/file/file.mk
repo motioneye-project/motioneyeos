@@ -85,6 +85,7 @@ $(FILE_DIR2)/.configured: $(FILE_SOURCE_DIR)/.unpacked
 	touch $@
 
 $(FILE_DIR2)/$(FILE_BINARY): $(FILE_DIR2)/.configured $(TOOL_BUILD_DIR)/bin/file
+	ln -sf $(FILE_DIR1)/install/bin/file $(FILE_DIR2)/magic/file
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) LDFLAGS="-static" -C $(FILE_DIR2)
 
 $(TARGET_DIR)/$(FILE_TARGET_BINARY): $(FILE_DIR2)/$(FILE_BINARY)
