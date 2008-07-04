@@ -357,10 +357,13 @@ source "package/qtopia4/Config.in"
 menu "X Window System server"
 config BR2_PACKAGE_XSERVER_none
 	bool "none"
+	default y
 config BR2_PACKAGE_XSERVER_xorg
 	bool "modular xorg"
+	depends on !BR2_PACKAGE_XSERVER_none
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
+	depends on !BR2_PACKAGE_XSERVER_none
 endmenu
 
 config BR2_X11_PREFIX
