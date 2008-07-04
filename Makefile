@@ -475,6 +475,9 @@ configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-co
 
 prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
 
+log:
+	$(MAKE) > $(PROJECT).log 2>&1 
+
 cross: $(BASE_TARGETS)
 
 help:
