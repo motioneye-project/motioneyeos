@@ -24,14 +24,16 @@ $(DL_DIR)/$(LIBDAEMON_SOURCE):
 
 libdaemon-source: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 
+libdaemon-unpacked: $(LIBDAEMON_DIR)/.unpacked
 $(LIBDAEMON_DIR)/.unpacked: $(DL_DIR)/$(LIBDAEMON_SOURCE)
 	$(LIBDAEMON_CAT) $(DL_DIR)/$(LIBDAEMON_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(LIBDAEMON_DIR) package/libdaemon/ \*.patch
-	$(CONFIG_UPDATE) $(LIBDAEMON_DIR)
 	touch $@
 
+libdaemon-configured: $(LIBDAEMON_DIR)/.configured
 $(LIBDAEMON_DIR)/.configured: $(LIBDAEMON_DIR)/.unpacked
 	(cd $(LIBDAEMON_DIR) && rm -rf config.cache && libtoolize --copy --force && autoreconf)
+	$(CONFIG_UPDATE) $(LIBDAEMON_DIR)
 	(cd $(LIBDAEMON_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
