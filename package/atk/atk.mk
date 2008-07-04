@@ -42,6 +42,14 @@ ATK_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes \
 		gl_cv_c_restrict=no ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
 		ac_cv_prog_F77=no ac_cv_prog_CXX=no 
 
+ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+ATK_CONF_OPT_X = --with-x \
+		--x-includes=$(STAGING_DIR)/usr/include/X11 \
+		--x-libraries=$(STAGING_DIR)/usr/lib
+else
+ATK_CONF_OPT_X = --without-x
+endif
+
 ATK_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) --prefix=/usr \
 		--exec-prefix=/usr --bindir=/usr/bin \
@@ -50,9 +58,7 @@ ATK_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(REAL_GNU_TARGET_NAME) \
 		--datadir=/usr/share --localstatedir=/var \
 		--includedir=/usr/include --mandir=/usr/man \
 		--infodir=/usr/info --enable-shared \
-		--enable-static --with-x \
-		--x-includes=$(STAGING_DIR)/usr/include/X11 \
-		--x-libraries=$(STAGING_DIR)/usr/lib \
+		--enable-static $(ATK_CONF_OPT_X) \
 		--disable-glibtest --enable-explicit-deps=no \
 		--disable-debug 
 
