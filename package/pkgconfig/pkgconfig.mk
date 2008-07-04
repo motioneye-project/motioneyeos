@@ -19,7 +19,7 @@ pkgconfig-source: $(DL_DIR)/$(PKGCONFIG_SOURCE)
 $(PKGCONFIG_DIR)/.unpacked: $(DL_DIR)/$(PKGCONFIG_SOURCE)
 	$(PKGCONFIG_CAT) $(DL_DIR)/$(PKGCONFIG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(PKGCONFIG_DIR) package/pkgconfig/ \*.patch
-	touch $(PKGCONFIG_DIR)/.unpacked
+	touch $@
 
 $(PKGCONFIG_DIR)/.configured: $(PKGCONFIG_DIR)/.unpacked
 	(cd $(PKGCONFIG_DIR); rm -rf config.cache; \
@@ -30,7 +30,7 @@ $(PKGCONFIG_DIR)/.configured: $(PKGCONFIG_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
-	touch $(PKGCONFIG_DIR)/.configured
+	touch $@
 
 $(PKGCONFIG_DIR)/$(PKGCONFIG_BINARY): $(PKGCONFIG_DIR)/.configured
 	$(MAKE) -C $(PKGCONFIG_DIR)
