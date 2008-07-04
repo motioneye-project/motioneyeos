@@ -18,10 +18,11 @@ $(FREETYPE_DIR)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
 	$(FREETYPE_CAT) $(DL_DIR)/$(FREETYPE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(FREETYPE_DIR) package/freetype/ \*.patch
 	$(CONFIG_UPDATE) $(FREETYPE_DIR)
+	$(CONFIG_UPDATE) $(FREETYPE_DIR)/builds/unix
 	touch $@
 
 $(FREETYPE_DIR)/.configured: $(FREETYPE_DIR)/.unpacked
-	(cd $(FREETYPE_DIR) && \
+	(cd $(FREETYPE_DIR);  rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
