@@ -48,10 +48,6 @@ config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_2
 	  It is generated from buildroot-avr32-v2.2.0-rc4
 	  in http://www.atmel.no/buildroot
 
-config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3_ENABLE
-	bool
-	default n
-
 config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3
 	bool "Use prepatched source for AVR32 gcc-4.2.3 toolchain"
 	depends on BR2_avr32
@@ -73,6 +69,10 @@ config BR2_TOOLCHAIN_UNKNOWNVENDOR
 	bool "Use prepatched source from unknown vendor"
 
 endchoice
+
+config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3_ENABLE
+	bool
+	default n
 
 config BR2_TOOLCHAIN_ATMEL_AVR32
 	bool

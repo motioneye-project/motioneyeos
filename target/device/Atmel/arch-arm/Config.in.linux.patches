@@ -17,37 +17,37 @@ choice
 config	BR2_ARCH_AT91_2_6_26_RC3
 	bool "2.6.26-rc3"
 	help
-	  Apply the at91 linux-2.6.26-rc3 patches"
+	  Apply the at91 linux-2.6.26-rc3 patches
 
 config	BR2_ARCH_AT91_2_6_25
 	bool "2.6.25"
 	help
-	  Apply the at91 linux-2.6.25 patches"
+	  Apply the at91 linux-2.6.25 patches
 
 config	BR2_ARCH_AT91_2_6_24
 	bool "2.6.24"
 	help
-	  Apply the at91 linux-2.6.24 patches"
+	  Apply the at91 linux-2.6.24 patches
 
 config	BR2_ARCH_AT91_2_6_22_1
 	bool "2.6.22.1"
 	help
-	  Apply the at91 linux-2.6.22.1 patches"
+	  Apply the at91 linux-2.6.22.1 patches
 
 config	BR2_ARCH_AT91_2_6_21_5
 	bool "2.6.21.5"
 	help
-	  Apply the at91 linux-2.6.21.5 patches"
+	  Apply the at91 linux-2.6.21.5 patches
 
 config	BR2_ARCH_AT91_2_6_21_1
 	bool "2.6.21.1"
 	help
-	  Apply the at91 linux-2.6.21.1 patches"
+	  Apply the at91 linux-2.6.21.1 patches
 
 config	BR2_ARCH_AT91_2_6_20_4
 	bool "2.6.20.4"
 	help
-	  Apply the at91 linux-2.6.20.4 patches"
+	  Apply the at91 linux-2.6.20.4 patches
 
 endchoice
 

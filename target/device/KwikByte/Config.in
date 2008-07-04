@@ -27,37 +27,37 @@ choice
 	prompt "Add AT91 specific patches"
 	depends on BR2_KERNEL_ARCH_PATCH_ENABLED
 	depends on BR2_arm
-	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_24
-#	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_23
-#	default BR2_ARCH_AT91_2_6_22_1		if BR2_LINUX_2_6_22_1
-#	default BR2_ARCH_AT91_2_6_21_5		if BR2_LINUX_2_6_21 || BR2_LINUX_2_6_21_5
-#	default BR2_ARCH_AT91_2_6_21_1		if BR2_LINUX_2_6_21_1
-#	default BR2_ARCH_AT91_2_6_20_4		if BR2_LINUX_2_6_20 || BR2_LINUX_2_6_20_4
-#	default BR2_ARCH_AT91_2_6_24
+	default BR2_ARCH_AT91_2_6_24_KB		if BR2_LINUX_2_6_24
+#	default BR2_ARCH_AT91_2_6_24_KB		if BR2_LINUX_2_6_23
+#	default BR2_ARCH_AT91_2_6_22_1_KB	if BR2_LINUX_2_6_22_1
+#	default BR2_ARCH_AT91_2_6_21_5_KB	if BR2_LINUX_2_6_21 || BR2_LINUX_2_6_21_5
+#	default BR2_ARCH_AT91_2_6_21_1_KB	if BR2_LINUX_2_6_21_1
+#	default BR2_ARCH_AT91_2_6_20_4_KB	if BR2_LINUX_2_6_20 || BR2_LINUX_2_6_20_4
+#	default BR2_ARCH_AT91_2_6_24_KB
 	help
 	  Select a patch to add to the Linux kernel
 
-config	BR2_ARCH_AT91_2_6_24
+config	BR2_ARCH_AT91_2_6_24_KB
 	bool "2.6.24"
 	help
 	  Apply the at91 linux-2.6.24 patches"
 
-#config	BR2_ARCH_AT91_2_6_22_1
+#config	BR2_ARCH_AT91_2_6_22_1_KB
 #	bool "2.6.22.1"
 #	help
 #	  Apply the at91 linux-2.6.22.1 patches"
 #
-#config	BR2_ARCH_AT91_2_6_21_5
+#config	BR2_ARCH_AT91_2_6_21_5_KB
 #	bool "2.6.21.5"
 #	help
 #	  Apply the at91 linux-2.6.21.5 patches"
 #
-#config	BR2_ARCH_AT91_2_6_21_1
+#config	BR2_ARCH_AT91_2_6_21_1_KB
 #	bool "2.6.21.1"
 #	help
 #	  Apply the at91 linux-2.6.21.1 patches"
 #
-#config	BR2_ARCH_AT91_2_6_20_4
+#config	BR2_ARCH_AT91_2_6_20_4_KB
 #	bool "2.6.20.4"
 #	help
 #	  Apply the at91 linux-2.6.20.4 patches"
@@ -68,11 +68,11 @@ config	BR2_KERNEL_ARCH_PATCH_VERSION
 	string
 	depends on BR2_KERNEL_ARCH_PATCH_ENABLED
 	depends on BR2_arm
-	default "2.6.24" if BR2_ARCH_AT91_2_6_24
-#	default "2.6.22.1" if BR2_ARCH_AT91_2_6_22_1
-#	default "2.6.21.5" if BR2_ARCH_AT91_2_6_21_5
-#	default "2.6.21.1" if BR2_ARCH_AT91_2_6_21_1
-#	default "2.6.20.4" if BR2_ARCH_AT91_2_6_20_4
+	default "2.6.24" if BR2_ARCH_AT91_2_6_24_KB
+#	default "2.6.22.1" if BR2_ARCH_AT91_2_6_22_1_KB
+#	default "2.6.21.5" if BR2_ARCH_AT91_2_6_21_5_KB
+#	default "2.6.21.1" if BR2_ARCH_AT91_2_6_21_1_KB
+#	default "2.6.20.4" if BR2_ARCH_AT91_2_6_20_4_KB
 
 config	BR2_KERNEL_ARCH_PATCH_DIR
 	string
