@@ -27,7 +27,7 @@ GDB_CAT:=$(BZCAT)
 
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
 GDB_SITE:=$(VENDOR_SITE)
-GDB_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
+GDB_PATCH_DIR:=toolchain/gdb/ext_source/$(VENDOR_PATCH_DIR)/$(GDB_OFFICIAL_VERSION)
 else
 GDB_SITE:=$(BR2_GNU_MIRROR)/gdb
 GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
@@ -61,6 +61,12 @@ endif
 	$(CONFIG_UPDATE) $(GDB_DIR)
 	touch $@
 
+gdb-patched: $(GDB_DIR)/.unpacked
+$(GDB_DIR)/.patched: $(GDB_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch
+	$(CONFIG_UPDATE) $(GDB_DIR)
+	touch $@
+
 gdb-dirclean:
 	rm -rf $(GDB_DIR)
 
@@ -82,7 +88,7 @@ GDB_TARGET_CONFIGURE_VARS:= \
 	bash_cv_func_sigsetjmp=present \
 	bash_cv_have_mbstate_t=yes
 
-$(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
+$(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.patched
 	mkdir -p $(GDB_TARGET_DIR)
 	(cd $(GDB_TARGET_DIR); \
 		gdb_cv_func_sigsetjmp=yes \

@@ -21,19 +21,19 @@
 ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 
 ifeq ($(GCC_SNAP_DATE),)
-GCC_OFFICIAL_VER:=$(GCC_VERSION)
+GCC_OFFICIAL_VERSION:=$(GCC_VERSION)
 GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
-#GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_OFFICIAL_VER)
+#GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_OFFICIAL_VERSION)
 else
-GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
-GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VER)
+GCC_OFFICIAL_VERSION:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
+GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VERSION)
 endif
 
 # redefine if using an external prepatched gcc source
 ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 GCC_SITE:=$(VENDOR_SITE)
-GCC_OFFICIAL_VER:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
-GCC_PATCH_DIR:=$(VENDOR_PATCH_DIR)/gcc-$(GCC_OFFICIAL_VER)
+GCC_OFFICIAL_VERSION:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
+GCC_PATCH_DIR:=toolchain/gcc/ext_source/$(VENDOR_PATCH_DIR)/$(GCC_OFFICIAL_VERSION)
 endif #!BR2_TOOLCHAIN_BUILDROOT
 
 # define patch location
@@ -41,8 +41,8 @@ ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y) # Normal toolchain
 ifeq ($(GCC_SNAP_DATE),) # Not a snapshot
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 else # Is a snapshot
-ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),) # Snapshot patch?
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VER)
+ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VERSION)),) # Snapshot patch?
+GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VERSION)
 else # Normal patch to snapshot
 # Use the normal location, if the dedicated location does not exist
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
@@ -50,8 +50,8 @@ endif # Snapshot patch
 endif # Not a snapshot
 endif # BR2_TOOLCHAIN_BUILDROOT
 
-GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VER)
+GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VERSION).tar.bz2
+GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VERSION)
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=nope
 GCC_SRC_DIR:=$(GCC_DIR)

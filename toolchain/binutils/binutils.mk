@@ -70,7 +70,7 @@ ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 BINUTILS_PATCH_DIR:=toolchain/binutils/$(BINUTILS_VERSION)
 else # ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),)
 BINUTILS_SITE:=$(VENDOR_SITE)
-BINUTILS_PATCH_DIR:=$(VENDOR_PATCH_DIR)/binutils-$(BINUTILS_OFFICIAL_VERSION)
+BINUTILS_PATCH_DIR:=toolchain/binutils/ext_source/$(VENDOR_PATCH_DIR)/$(BINUTILS_OFFICIAL_VERSION)
 endif
 
 BINUTILS_SOURCE:=binutils-$(BINUTILS_OFFICIAL_VERSION).tar.bz2
@@ -91,6 +91,7 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	$(CONFIG_UPDATE) $(BINUTILS_DIR)
 	touch $@
 
+binutils-patched: $(BINUTILS_DIR)/.patched
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply appropriate binutils patches.
 	toolchain/patch-kernel.sh $(BINUTILS_DIR) $(BINUTILS_PATCH_DIR) \*.patch

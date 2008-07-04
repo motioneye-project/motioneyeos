@@ -1,7 +1,7 @@
 if BR2_TOOLCHAIN_EXTERNAL_SOURCE
 choice
 	prompt "Source location:"
-	default BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1 if BR2_avr32
+	default BR2_TOOLCHAIN_ATMEL_AVR32_4_2_2 if BR2_avr32
 	help
 	  Select whether to use the toolchain built by the buildroot
 	  system or an external pre-built toolchain.
@@ -32,6 +32,43 @@ config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1
 	  This will not be able to build qtopia
 	  due to internal errors.
 
+config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_2
+	bool "Use prepatched source for AVR32 gcc-4.2.2 toolchain"
+	depends on BR2_avr32
+	select BR2_EXT_GCC_VERSION_4_2_2
+	select BR2_EXT_BINUTILS_VERSION_2_17
+	select BR2_EXT_UCLIBC_VERSION_0_9_29
+	select BR2_TOOLCHAIN_ATMEL_AVR32
+	help
+	  The gcc-4.2.2 toolchain for the AVR32
+	  * gcc-4.2.2
+	  * binutils-2.17
+	  * uClibc-0.9.29
+	  * gdb-6.7.1
+	  It is generated from buildroot-avr32-v2.2.0-rc4
+	  in http://www.atmel.no/buildroot
+
+config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3_ENABLE
+	bool
+	default n
+
+config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3
+	bool "Use prepatched source for AVR32 gcc-4.2.3 toolchain"
+	depends on BR2_avr32
+	depends on BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3_ENABLE
+	select BR2_EXT_GCC_VERSION_4_2_3
+	select BR2_EXT_BINUTILS_VERSION_2_17
+	select BR2_EXT_UCLIBC_VERSION_0_9_29
+	select BR2_TOOLCHAIN_ATMEL_AVR32
+	help
+	  The gcc-4.2.3 toolchain for the AVR32
+	  * gcc-4.2.3
+	  * binutils-2.17
+	  * uClibc-0.9.29
+	  * gdb-6.7.1
+	  It is generated from buildroot-avr32-v2.2.0-rc4
+	  in http://www.atmel.no/buildroot
+
 config BR2_TOOLCHAIN_UNKNOWNVENDOR
 	bool "Use prepatched source from unknown vendor"
 
@@ -52,24 +89,34 @@ config BR2_VENDOR_SUFFIX
 
 config BR2_VENDOR_BINUTILS_RELEASE
 	string
-	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32_4_1_2
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1
+	default "-2.1.5" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_2
+	default "-2.1.5" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3
 
 config BR2_VENDOR_GCC_RELEASE
 	string
 	default "-2.0" if BR2_TOOLCHAIN_ATMEL_AVR32_4_1_2
 	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1
+	default "-2.1.5" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_2
+	default "-2.1.5" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3
 
 config BR2_VENDOR_UCLIBC_RELEASE
 	string
-	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32_4_1_2
+	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1
+	default "-2.1.5" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_2
+	default "-2.1.5" if BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3
 
 config BR2_VENDOR_GDB_RELEASE
 	string
-	default "-2.1.3" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "-2.1.3" if BR2_GDB_VERSION_6_4
+	default "-2.1.3" if BR2_GDB_VERSION_6_4
+	default "-2.1.5" if BR2_GDB_VERSION_6_7_1
 
 config BR2_VENDOR_PATCH_DIR
 	string
-	default "target/device/Atmel/toolchain/avr32" if BR2_TOOLCHAIN_ATMEL_AVR32
+	default "Atmel/avr32" if BR2_TOOLCHAIN_ATMEL_AVR32
 endif
 if BR2_TOOLCHAIN_UNKNOWNVENDOR
 config BR2_VENDOR_SITE
@@ -98,7 +145,7 @@ config BR2_VENDOR_GDB_RELEASE
 
 config BR2_VENDOR_PATCH_DIR
 	string "local accumulated patchdir"
-	default "target/device/$(VENDOR)/toolchain/"
+	default "$(VENDOR)/$(ARCH)/"
 endif
 
 
@@ -111,6 +158,16 @@ config	BR2_EXT_GCC_VERSION_4_1_2
 	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE
 
 config	BR2_EXT_GCC_VERSION_4_2_1
+	bool
+	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
+	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE
+
+config	BR2_EXT_GCC_VERSION_4_2_2
+	bool
+	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
+	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE
+
+config	BR2_EXT_GCC_VERSION_4_2_3
 	bool
 	default y if !BR2_TOOLCHAIN_EXTERNAL_SOURCE
 	default n if  BR2_TOOLCHAIN_EXTERNAL_SOURCE

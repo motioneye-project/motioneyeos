@@ -473,6 +473,8 @@ update:
 
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 
+prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
+
 cross: $(BASE_TARGETS)
 
 help:
