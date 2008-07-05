@@ -31,10 +31,13 @@ openssl-unpack: $(OPENSSL_DIR)/.unpacked
 $(OPENSSL_DIR)/.unpacked: $(DL_DIR)/$(OPENSSL_SOURCE)
 	$(OPENSSL_CAT) $(DL_DIR)/$(OPENSSL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(OPENSSL_DIR) package/openssl/ openssl\*.patch
+	toolchain/patch-kernel.sh $(OPENSSL_DIR) package/openssl/ openssl\*.patch.$(ARCH)
 	# sigh... we have to resort to this just to set a gcc flag.
 	# grumble.. and of course make sure to escape any '/' in CFLAGS
+ifeq ($(BR2_avr32),)
 	$(SED) 's,/CFLAG=,/CFLAG= $(TARGET_SOFT_FLOAT) ,g' \
 		$(OPENSSL_DIR)/Configure
+endif
 	$(SED) '/CFLAG=/s,/;, $(shell echo '$(TARGET_CFLAGS)' | sed -e 's/\//\\\\\//g')/;,' \
 		$(OPENSSL_DIR)/Configure
 	$(CONFIG_UPDATE) $(OPENSSL_DIR)
