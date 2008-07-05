@@ -16,12 +16,28 @@ if BR2_PACKAGE_LIGHTTPD
 menu "lighttpd packages"
 
 config BR2_PACKAGE_LIGHTTPD_OPENSSL
-	bool "openssl"
+	bool "lighttpd openssl support"
 	default y
 	depends on BR2_PACKAGE_LIGHTTPD
 	select BR2_PACKAGE_OPENSSL
 	help
 	  Enable OpenSSL support for lighttpd.
+
+config BR2_PACKAGE_LIGHTTPD_ZLIB
+	bool "lighttpd zlib support"
+	default n
+	depends on BR2_PACKAGE_LIGHTTPD
+	select BR2_PACKAGE_ZLIB
+	help
+	  Enable zlib support for lighttpd mod_compress.
+
+config BR2_PACKAGE_LIGHTTPD_BZIP2
+	bool "lighttpd bzip2 support"
+	default n
+	depends on BR2_PACKAGE_LIGHTTPD
+	select BR2_PACKAGE_BZIP2
+	help
+	  Enable bzip2 support for lighttpd mod_compress.
 
 config BR2_PACKAGE_LIGHTTPD_PCRE
 	bool "pcre"

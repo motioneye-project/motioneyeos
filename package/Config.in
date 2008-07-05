@@ -173,6 +173,9 @@ source "package/libcgicc/Config.in"
 source "package/libeXosip2/Config.in"
 source "package/libosip2/Config.in"
 source "package/libpcap/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/lighttpd/Config.in"
+endif
 source "package/links/Config.in"
 source "package/lrzsz/Config.in"
 source "package/mdnsresponder/Config.in"
@@ -213,7 +216,6 @@ source "package/stunnel/Config.in"
 source "package/tcpdump/Config.in"
 source "package/tftpd/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
-source "package/lighttpd/Config.in"
 source "package/thttpd/Config.in"
 source "package/tinyhttpd/Config.in"
 endif
