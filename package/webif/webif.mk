@@ -52,7 +52,7 @@ endif
 webif: busybox $(TARGET_DIR)/www/webif.css
 
 webif-clean:
-	rm -f $(TARGET_DIR)/www/cgi-bin/webif* $(TARGET_DIR)/www/webif.*
+	rm -rf $(TARGET_DIR)/www/cgi-bin/webif* $(TARGET_DIR)/www/webif.*
 	rm -rf $(TARGET_DIR)/usr/lib/webif
 	rm -f $(TARGET_DIR)/usr/bin/bstrip $(TARGET_DIR)/usr/bin/webif-page
 	rm -r $(WEBIF_DIR)/bstrip $(WEBIF_DIR)/webif-page
