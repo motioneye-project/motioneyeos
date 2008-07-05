@@ -20,8 +20,9 @@ $(TSLIB_DIR)/.patched: $(DL_DIR)/$(TSLIB_SOURCE)
 	touch $(TSLIB_DIR)/.patched
 
 $(TSLIB_DIR)/.configured: $(TSLIB_DIR)/.patched
-	(cd $(TSLIB_DIR); rm -rf config.cache; \
-	./autogen.sh; \
+	(cd $(TSLIB_DIR); rm -rf config.cache; ./autogen.sh)
+	$(CONFIG_UPDATE) $(TSLIB_DIR)
+	(cd $(TSLIB_DIR) && \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
 	./configure \
