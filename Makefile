@@ -475,8 +475,17 @@ configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-co
 
 prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
 
-log:
-	$(MAKE) > $(PROJECT).log 2>&1 
+.lognr:
+	@echo "0" > .lognr
+
+log:	.lognr
+	@expr `cat .lognr` + 1 > .lognr	
+	@echo Creating $(PROJECT)-`cat .lognr`.log
+	@$(MAKE) > $(PROJECT)-`cat .lognr`.log 2>&1 
+
+tail:
+	grep "\.tar\."  $(PROJECT)-`cat .lognr`.log
+	tail --lines=25 $(PROJECT)-`cat .lognr`.log
 
 cross: $(BASE_TARGETS)
 
