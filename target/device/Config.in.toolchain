@@ -9,6 +9,7 @@ choice
 config BR2_TOOLCHAIN_ATMEL_AVR32_4_1_2
 	bool "Use prepatched source for AVR32 gcc-4.1.2 toolchain"
 	depends on BR2_avr32
+	depends on BR2_DEPRECATED
 	select BR2_EXT_GCC_VERSION_4_1_2
 	select BR2_EXT_BINUTILS_VERSION_2_17
 	select BR2_EXT_UCLIBC_VERSION_0_9_29
@@ -19,10 +20,12 @@ config BR2_TOOLCHAIN_ATMEL_AVR32_4_1_2
 config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_1
 	bool "Use prepatched source for AVR32 gcc-4.2.1 toolchain"
 	depends on BR2_avr32
+	depends on BR2_DEPRECATED
 	select BR2_EXT_GCC_VERSION_4_2_1
 	select BR2_EXT_BINUTILS_VERSION_2_17
 	select BR2_EXT_UCLIBC_VERSION_0_9_29
 	select BR2_TOOLCHAIN_ATMEL_AVR32
+	select BR2_GCC_SUPPORTS_SYSROOT
 	help
 	  The gcc-4.2.1 toolchain for the AVR32
 	  * gcc-4.2.1
@@ -39,6 +42,7 @@ config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_2
 	select BR2_EXT_BINUTILS_VERSION_2_17
 	select BR2_EXT_UCLIBC_VERSION_0_9_29
 	select BR2_TOOLCHAIN_ATMEL_AVR32
+	select BR2_GCC_SUPPORTS_SYSROOT
 	help
 	  The gcc-4.2.2 toolchain for the AVR32
 	  * gcc-4.2.2
@@ -67,6 +71,7 @@ config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3
 
 config BR2_TOOLCHAIN_UNKNOWNVENDOR
 	bool "Use prepatched source from unknown vendor"
+	depends on !BR2_avr32
 
 endchoice
 
