@@ -36,7 +36,7 @@ noconfig_targets:=menuconfig config oldconfig randconfig \
 ifneq ($(BUILDROOT_LOCAL),)
 BR2_LOCAL:=$(BUILDROOT_LOCAL)
 else
-BR2_LOCAL:=$(TOPDIR)/local
+BR2_LOCAL:=$(TOPDIR)local
 endif
 
 # $(shell find . -name *_defconfig |sed 's/.*\///')
@@ -56,6 +56,12 @@ ifneq ($(BUILDROOT_DL_DIR),)
 BR2_DL_DIR:=$(BUILDROOT_DL_DIR)
 endif
 LOCAL:=$(BR2_LOCAL)
+
+ifneq ($(BUILDROOT_HOST_GLIB),)
+HOST_GLIB:=$(BUILDROOT_HOST_GLIB)
+else
+HOST_GLIB:=$(BR2_HOST_GLIB)
+endif
 
 # To put more focus on warnings, be less verbose as default
 # Use 'make V=1' to see the full commands
@@ -511,4 +517,8 @@ help:
 
 .PHONY: dummy subdirs release distclean clean config oldconfig \
 	menuconfig tags check test depend defconfig help
-	
+
+status:
+	@echo LOCAL=$(LOCAL)
+	@echo BR2_DL_DIR=$(BR2_DL_DIR)
+	@echo HOST_GLIB=$(HOST_GLIB)
