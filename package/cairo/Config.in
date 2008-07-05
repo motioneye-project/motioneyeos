@@ -5,7 +5,7 @@ config BR2_PACKAGE_CAIRO
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_FONTCONFIG
-	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7||BR2_PACKAGE_TINYX
+	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7||BR2_PACKAGE_TINYX||BR2_PACKAGE_DIRECTFB
 	help
 	  Cairo is a 2D graphics library with support for multiple
 	  output devices. Currently supported output targets include

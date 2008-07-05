@@ -43,8 +43,9 @@ CAIRO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	CAIRO_CONF_OPT = --disable-xlib --without-x --enable-directfb
+	CAIRO_DEPENDENCIES_EXTRA = directfb
 endif
 
-CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 zlib png fontconfig $(XSERVER) 
+CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 zlib png fontconfig $(CAIRO_DEPENDENCIES_EXTRA) $(XSERVER) 
 
 $(eval $(call AUTOTARGETS,package,cairo))
