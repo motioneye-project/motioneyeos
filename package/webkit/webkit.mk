@@ -13,7 +13,7 @@ WEBKIT_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
 
 WEBKIT_AUTORECONF = YES
 WEBKIT_DEPENDENCIES = icu curl libxml2 libxslt xserver_xorg-server libgtk2 sqlite
-WEBKIT_MAKE_OPT = GLIB_GENMARSHAL=/usr/bin/glib-genmarshal GLIB_MKENUMS=/usr/bin/glib-mkenums
+WEBKIT_MAKE_OPT = GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal GLIB_MKENUMS=$(HOST_GLIB)/bin/glib-mkenums
 
 $(eval $(call AUTOTARGETS,package,webkit))
 
