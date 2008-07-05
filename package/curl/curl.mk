@@ -26,7 +26,9 @@ $(CURL_DIR)/.configured: $(CURL_DIR)/.unpacked
 	(cd $(CURL_DIR); rm -rf config.cache; \
 		aclocal; \
 		libtoolize --force; \
-		./reconf; \
+		./reconf; )
+	$(CONFIG_UPDATE) $(CURL_DIR)
+	(cd $(CURL_DIR); \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
