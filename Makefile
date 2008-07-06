@@ -57,12 +57,6 @@ BR2_DL_DIR:=$(BUILDROOT_DL_DIR)
 endif
 LOCAL:=$(BR2_LOCAL)
 
-ifneq ($(BUILDROOT_HOST_GLIB),)
-HOST_GLIB:=$(BUILDROOT_HOST_GLIB)
-else
-HOST_GLIB:=$(BR2_HOST_GLIB)
-endif
-
 # To put more focus on warnings, be less verbose as default
 # Use 'make V=1' to see the full commands
 ifdef V
@@ -128,6 +122,10 @@ HOSTCPP:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCPP)" || type -p $(HOSTCPP) || 
 HOSTLD:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLD)" || type -p $(HOSTLD) || echo ld)
 HOSTLN:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLN)" || type -p $(HOSTLN) || echo ln)
 HOSTNM:=$(shell $(CONFIG_SHELL) -c "which $(HOSTNM)" || type -p $(HOSTNM) || echo nm)
+HOST_GLIB_BIN:=`dirname $(shell $(CONFIG_SHELL) -c "which glib-genmarshal" || echo /usr/bin/glib-genmarshal)`
+HOST_GLIB:=$(shell $(CONFIG_SHELL) -c "dirname $(HOST_GLIB_BIN)" || echo /usr)
+
+
 ifndef CFLAGS_FOR_BUILD
 CFLAGS_FOR_BUILD:=-g -O2
 endif
@@ -522,3 +520,4 @@ status:
 	@echo LOCAL=$(LOCAL)
 	@echo BR2_DL_DIR=$(BR2_DL_DIR)
 	@echo HOST_GLIB=$(HOST_GLIB)
+	@echo HOST_GLIB_BIN=$(HOST_GLIB_BIN)

@@ -78,17 +78,6 @@ config BR2_DL_DIR
 
 	  The default is $(BASE_DIR)/dl
 
-config BR2_HOST_GLIB
-	string "Location of host Gnome library"
-	default "/usr"
-	help
-	  Directory where Gnome is installed on the host
-	  Gnome applications is installed in $(BR2_HOST_LIB)/bin 
-	  This is needed to build libgtk etc.
-	  The default is /usr
-	  It can be overridden by the BUILDROOT_HOST_GLIB
-	  shell variable
-
 source	"target/device/Config.in.mirrors"
 
 config BR2_STAGING_DIR
