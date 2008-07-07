@@ -460,7 +460,7 @@ source-check: allyesconfig
 #
 #############################################################
 clean:
-	rm -f .config .config.old .config.cmd .tmpconfig.h
+	rm -f .config .config.old .config.cmd .tmpconfig.h .lognr.*
 	-$(MAKE) -C $(CONFIG) clean
 
 distclean: clean
@@ -479,17 +479,13 @@ configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-co
 
 prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
 
-.lognr:
+.lognr.$(PROJECT):
 	@echo "0" > .lognr
 
-log:	.lognr
+log:	.lognr.$(PROJECT)
 	@expr `cat .lognr` + 1 > .lognr	
-	@echo Creating $(PROJECT)-`cat .lognr`.log
-	@$(MAKE) > $(PROJECT)-`cat .lognr`.log 2>&1 
-
-tail:
-	grep "\.tar\."  $(PROJECT)-`cat .lognr`.log
-	tail --lines=25 $(PROJECT)-`cat .lognr`.log
+	@echo Creating $(PROJECT)-`cat .lognr.$(PROJECT)`.log
+	@$(MAKE) > $(PROJECT)-`cat .lognr.$(PROJECT)`.log 2>&1 
 
 cross: $(BASE_TARGETS)
 
@@ -516,8 +512,3 @@ help:
 .PHONY: dummy subdirs release distclean clean config oldconfig \
 	menuconfig tags check test depend defconfig help
 
-status:
-	@echo LOCAL=$(LOCAL)
-	@echo BR2_DL_DIR=$(BR2_DL_DIR)
-	@echo HOST_GLIB=$(HOST_GLIB)
-	@echo HOST_GLIB_BIN=$(HOST_GLIB_BIN)
