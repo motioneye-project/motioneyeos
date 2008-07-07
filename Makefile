@@ -480,12 +480,14 @@ configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-co
 prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
 
 .lognr.$(PROJECT):
-	@echo "0" > .lognr
+	@echo "0" > .lognr.$(PROJECT)
 
 log:	.lognr.$(PROJECT)
-	@expr `cat .lognr` + 1 > .lognr	
+	@expr `cat .lognr.$(PROJECT)` + 1 > .lognr.$(PROJECT)	
 	@echo Creating $(PROJECT)-`cat .lognr.$(PROJECT)`.log
-	@$(MAKE) > $(PROJECT)-`cat .lognr.$(PROJECT)`.log 2>&1 
+	@$(MAKE) testing > $(PROJECT)-`cat .lognr.$(PROJECT)`.log 2>&1 
+
+testing:
 
 cross: $(BASE_TARGETS)
 
