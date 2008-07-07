@@ -485,9 +485,8 @@ prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
 log:	.lognr.$(PROJECT)
 	@expr `cat .lognr.$(PROJECT)` + 1 > .lognr.$(PROJECT)	
 	@echo Creating $(PROJECT)-`cat .lognr.$(PROJECT)`.log
-	@$(MAKE) testing > $(PROJECT)-`cat .lognr.$(PROJECT)`.log 2>&1 
+	@$(MAKE) > $(PROJECT)-`cat .lognr.$(PROJECT)`.log 2>&1 
 
-testing:
 
 cross: $(BASE_TARGETS)
 
