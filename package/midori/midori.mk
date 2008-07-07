@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MIDORI_VERSION = 0.0.17
+MIDORI_VERSION = 0.0.18
 MIDORI_SOURCE = midori-$(MIDORI_VERSION).tar.gz
 MIDORI_SITE = http://software.twotoasts.de/media/midori/
 MIDORI_AUTORECONF = YES
