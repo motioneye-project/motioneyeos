@@ -36,7 +36,7 @@ noconfig_targets:=menuconfig config oldconfig randconfig \
 ifneq ($(BUILDROOT_LOCAL),)
 BR2_LOCAL:=$(BUILDROOT_LOCAL)
 else
-BR2_LOCAL:=$(TOPDIR)local
+BR2_LOCAL:=$(TOPDIR)/local
 endif
 
 # $(shell find . -name *_defconfig |sed 's/.*\///')
@@ -349,7 +349,7 @@ _source-check:
 	$(MAKE) SPIDER=--spider source
 
 external-deps:
-	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)toolchain/wget-show-external-deps.sh \
+	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)/toolchain/wget-show-external-deps.sh \
 	source
 
 #############################################################
