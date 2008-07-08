@@ -40,7 +40,6 @@ ifeq ($(BR2_avr32),)
 endif
 	$(SED) '/CFLAG=/s,/;, $(shell echo '$(TARGET_CFLAGS)' | sed -e 's/\//\\\\\//g')/;,' \
 		$(OPENSSL_DIR)/Configure
-	$(CONFIG_UPDATE) $(OPENSSL_DIR)
 	touch $@
 
 $(OPENSSL_DIR)/Makefile: $(OPENSSL_DIR)/.unpacked
