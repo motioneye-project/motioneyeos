@@ -4,4 +4,5 @@ menuconfig BR2_DATABASE_SUPPORT
 
 if BR2_DATABASE_SUPPORT
 source "package/database/mysql_client/Config.in"
+source "package/database/sqlite/Config.in"
 endif
