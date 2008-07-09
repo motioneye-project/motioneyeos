@@ -4,4 +4,4 @@ config BR2_PACKAGE_GPERF
 	help
 	  A 'perfect hash function' generator
 
-	  $(BR2_GNU_MIRROR)
+	  http://www.gnu.org/software/gperf/
