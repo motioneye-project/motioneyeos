@@ -68,7 +68,7 @@ libfuse-source: $(DL_DIR)/$(LIBFUSE_SOURCE)
 libfuse-clean:
 	-$(MAKE) -C $(LIBFUSE_DIR) DESTDIR=$(STAGING_DIR) uninstall
 	-$(MAKE) -C $(LIBFUSE_DIR) clean
-	rm -f $(TARGET_DIR)/usr/lib/libfuse.so*
+	rm -f $(TARGET_DIR)/usr/bin/fusermount $(TARGET_DIR)/usr/lib/libfuse.so*
 
 libfuse-dirclean:
 	rm -rf $(LIBFUSE_DIR)
