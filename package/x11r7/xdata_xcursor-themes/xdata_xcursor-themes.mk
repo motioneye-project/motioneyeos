@@ -21,8 +21,8 @@ $(XDATA_XCURSOR_THEMES_DIR)/.patched: $(XDATA_XCURSOR_THEMES_DIR)/.extracted
 
 $(XDATA_XCURSOR_THEMES_DIR)/.configured: $(XDATA_XCURSOR_THEMES_DIR)/.patched
 	(cd $(XDATA_XCURSOR_THEMES_DIR) && \
-		aclocal -I. -I$(STAGING_DIR)/usr/share/aclocal --install && \
-		autoconf -I$(STAGING_DIR)/usr/share/aclocal && \
+		aclocal -I . -I $(STAGING_DIR)/usr/share/aclocal --install && \
+		autoconf -I $(STAGING_DIR)/usr/share/aclocal && \
 		automake -ac && \
 		rm -rf config.cache && \
 		$(TARGET_CONFIGURE_OPTS) \
