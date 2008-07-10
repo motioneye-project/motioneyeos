@@ -25,9 +25,10 @@ $(LIBFUSE_DIR)/.configured: $(LIBFUSE_DIR)/.source
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--sysconfdir=/etc \
 		--enable-shared \
 		--enable-static \
-		--program-prefix="" \
 		--disable-nls \
 		--disable-example \
 		--disable-kernel-module \
@@ -49,7 +50,7 @@ $(LIBFUSE_DIR)/.compiled: $(LIBFUSE_DIR)/.configured
 
 
 $(STAGING_DIR)/usr/lib/libfuse.so: $(LIBFUSE_DIR)/.compiled
-	$(MAKE) prefix=/usr -C $(LIBFUSE_DIR) DESTDIR=$(STAGING_DIR)/ install
+	$(MAKE) -C $(LIBFUSE_DIR) DESTDIR=$(STAGING_DIR)/ install
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libfuse.so: $(STAGING_DIR)/usr/lib/libfuse.so
