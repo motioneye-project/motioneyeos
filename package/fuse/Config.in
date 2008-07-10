@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBFUSE
-        bool "libfuse"
-        default n
-        help
+	bool "libfuse"
+	default n
+	help
 	  FUSE (Filesystem in UserSpacE)
 
 	  http://fuse.sourceforge.net/
