@@ -36,18 +36,10 @@ $(LIBFUSE_DIR)/.configured: $(LIBFUSE_DIR)/.source
 		--enable-util \
 	);
 	touch $@
-#		--disable-example
-#		--disable-mtab
-#		--disable-rpath
 
- 
 $(LIBFUSE_DIR)/.compiled: $(LIBFUSE_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(LIBFUSE_DIR)
 	touch $@
-#		CROSS_COMPILE="$(TARGET_CROSS)"
-#		AM_CFLAGS="$(TARGET_CFLAGS) -DDISABLE_COMPAT=1" \
-#		EXTRA_DIST=""
-
 
 $(STAGING_DIR)/usr/lib/libfuse.so: $(LIBFUSE_DIR)/.compiled
 	$(MAKE) -C $(LIBFUSE_DIR) DESTDIR=$(STAGING_DIR)/ install
