@@ -30,10 +30,9 @@ $(LIBFUSE_DIR)/.configured: $(LIBFUSE_DIR)/.source
 		--program-prefix="" \
 		--disable-nls \
 		--disable-example \
-		--enable-kernel-module \
+		--disable-kernel-module \
 		--enable-lib \
 		--enable-util \
-		--with-kernel="$(LINUX_DIR)" \
 	);
 	touch $@
 #		--disable-example
