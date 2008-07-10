@@ -42,7 +42,7 @@ config BR2_KERNEL_PATCH_LEVEL
 
 config BR2_KERNEL_CURRENT_VERSION
 	string
-	default "2.6.25.9"
+	default "2.6.25.10"
 
 config BR2_KERNEL_NEXT_VERSION
 	string
