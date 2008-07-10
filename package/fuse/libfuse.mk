@@ -5,7 +5,7 @@
 #############################################################
 LIBFUSE_VERSION:=2.7.0
 LIBFUSE_SOURCE:=fuse-$(LIBFUSE_VERSION).tar.gz
-LIBFUSE_SITE:=http://downloads.sourceforge.net/fuse
+LIBFUSE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/fuse/
 LIBFUSE_DIR:=$(BUILD_DIR)/fuse-$(LIBFUSE_VERSION)
 LIBFUSE_BINARY:=libfuse
 $(DL_DIR)/$(LIBFUSE_SOURCE):
