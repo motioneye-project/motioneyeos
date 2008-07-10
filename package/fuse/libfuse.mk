@@ -13,7 +13,7 @@ $(DL_DIR)/$(LIBFUSE_SOURCE):
 
 $(LIBFUSE_DIR)/.source: $(DL_DIR)/$(LIBFUSE_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(LIBFUSE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LIBFUSE_DIR) package/fuse/ patch/*.patch
+	toolchain/patch-kernel.sh $(LIBFUSE_DIR) package/fuse/ \*.patch
 	touch $@
 
 
