@@ -49,7 +49,7 @@ $(LIBFUSE_DIR)/.compiled: $(LIBFUSE_DIR)/.configured
 
 
 $(STAGING_DIR)/usr/lib/libfuse.so: $(LIBFUSE_DIR)/.compiled
-	$(MAKE) prefix=$/usr -C $(LIBFUSE_DIR) DESTDIR=$(STAGING_DIR)/ install
+	$(MAKE) prefix=/usr -C $(LIBFUSE_DIR) DESTDIR=$(STAGING_DIR)/ install
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libfuse.so: $(STAGING_DIR)/usr/lib/libfuse.so
