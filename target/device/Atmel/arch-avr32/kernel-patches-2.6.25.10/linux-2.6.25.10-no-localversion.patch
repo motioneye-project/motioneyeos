@@ -1,0 +1,5 @@
+diff -urN linux-2.6.25.10-0rig/localversion-atmel linux-2.6.25.10/localversion-atmel
+--- linux-2.6.25.10-0rig/localversion-atmel	2008-07-10 16:57:33.000000000 +0200
++++ linux-2.6.25.10/localversion-atmel	1970-01-01 01:00:00.000000000 +0100
+@@ -1 +0,0 @@
+-.atmel.2
