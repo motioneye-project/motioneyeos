@@ -16,7 +16,7 @@ IFPLUGD_DEPENDENCIES = uclibc libdaemon
 
 $(eval $(call AUTOTARGETS,package,ifplugd))
 
-$(IFPLUGD_HOOK_POST_INSTALL):
+$(IFPLUGD_HOOK_POST_INSTALL): $(IFPLUGD_TARGET_INSTALL_TARGET)
 	$(INSTALL) -d $(TARGET_DIR)/etc/ifplugd
 	@if [ ! -f $(TARGET_DIR)/etc/ifplugd/ifplugd.conf ]; then \
 		$(INSTALL) $(IFPLUGD_DIR)/conf/ifplugd.conf $(TARGET_DIR)/etc/ifplugd/; \
@@ -28,3 +28,4 @@ $(IFPLUGD_HOOK_POST_INSTALL):
 		$(TARGET_DIR)/etc/init.d/S45ifplugd
 	# don't use bash for init script
 	$(SED) 's^/bin/bash^/bin/sh^g' $(TARGET_DIR)/etc/init.d/S45ifplugd
+	touch $@
