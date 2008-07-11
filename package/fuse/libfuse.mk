@@ -27,6 +27,7 @@ $(LIBFUSE_DIR)/.configured: $(LIBFUSE_DIR)/.source
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
+		--program-prefix="" \
 		--enable-shared \
 		--enable-static \
 		--disable-nls \
