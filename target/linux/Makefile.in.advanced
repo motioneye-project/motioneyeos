@@ -454,6 +454,10 @@ linux26-config: host-sed $(LINUX26_DIR)/.configured
 linux26-update:
 	cp -dpf $(LINUX26_DIR)/.config $(LINUX26_KCONFIG)
 
+# force rebuild
+linux26-force:
+	touch $(LINUX26_DIR)/.configured
+
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linux26clean:
 	rm -f $(LINUX26_KERNEL) $(LINUX26_DIR)/.configured
