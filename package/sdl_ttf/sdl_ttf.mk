@@ -60,7 +60,7 @@ $(TARGET_DIR)/usr/lib/libSDL_ttf.so: $(STAGING_DIR)/usr/lib/libSDL_ttf.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libSDL_ttf*.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libSDL_ttf.so
 
-SDL sdl_ttf: uclibc $(TARGET_DIR)/usr/lib/libSDL_ttf.so
+sdl_ttf: uclibc sdl $(TARGET_DIR)/usr/lib/libSDL_ttf.so
 
 sdl_ttf-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SDL_TTF_DIR) uninstall
