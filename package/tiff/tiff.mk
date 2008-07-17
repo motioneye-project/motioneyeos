@@ -23,7 +23,8 @@ $(TIFF_DIR)/.unpacked: $(DL_DIR)/$(TIFF_SOURCE)
 	$(CONFIG_UPDATE) $(TIFF_DIR)/config
 	touch $(TIFF_DIR)/.unpacked
 
-$(TIFF_DIR)/.configured: $(TIFF_DIR)/.unpacked
+$(TIFF_DIR)/.configured: $(TIFF_DIR)/.unpacked \
+	$(STAGING_DIR)/usr/lib/libjpeg.a $(STAGING_DIR)/usr/lib/libz.so
 	(cd $(TIFF_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -67,7 +68,7 @@ $(TARGET_DIR)/usr/lib/libtiff.so: $(STAGING_DIR)/usr/lib/libtiff.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libtiff.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
-tiff: uclibc zlib jpeg $(TARGET_DIR)/usr/lib/libtiff.so
+tiff: uclibc $(TARGET_DIR)/usr/lib/libtiff.so
 
 tiff-clean:
 	-rm -f $(TARGET_DIR)/usr/lib/libtiff.so*
