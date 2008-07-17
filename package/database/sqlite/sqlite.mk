@@ -52,8 +52,8 @@ $(STAGING_DIR)/usr/bin/sqlite3: $(SQLITE_DIR)/sqlite3
 $(TARGET_DIR)/usr/bin/sqlite3: $(STAGING_DIR)/usr/bin/sqlite3
 	$(INSTALL) -m 0755 -D $^ $@
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
-	$(INSTALL) -m 0644 -D $(STAGING_DIR)/usr/lib/libsqlite3*.so* $(TARGET_DIR)/usr/lib/
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libsqlite3.so*
+	cp -dpf $(STAGING_DIR)/usr/lib/libsqlite3*.so* $(TARGET_DIR)/usr/lib/
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libsqlite3.so
 
 sqlite: uclibc readline-target ncurses $(TARGET_DIR)/usr/bin/sqlite3
 
@@ -63,6 +63,8 @@ sqlite-clean:
 	-$(MAKE) -C $(SQLITE_DIR) clean
 	-rm -rf $(STAGING_DIR)/usr/lib/libsqlite*
 	-rm -rf $(STAGING_DIR)/usr/bin/sqlite3
+	-rm -rf $(STAGING_DIR)/usr/include/sqlite*
+	-rm -rf $(STAGING_DIR)/usr/lib/pkgconfig/sqlite*
 	-rm -rf $(TARGET_DIR)/usr/lib/libsqlite*
 	-rm -rf $(TARGET_DIR)/usr/bin/sqlite3
 
