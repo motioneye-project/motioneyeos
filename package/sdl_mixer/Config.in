@@ -1,8 +1,8 @@
 config BR2_PACKAGE_SDL_MIXER
 	bool "SDL_mixer"
 	default n
+	depends on BR2_PACKAGE_SDL
 	help
-
 	  SDL_mixer is a sample multi-channel audio mixer library.
 	  It supports any number of simultaneously playing channels of
 	  16 bit stereo audio, plus a single channel of music, mixed

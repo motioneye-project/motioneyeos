@@ -48,7 +48,7 @@ $(TARGET_DIR)/usr/lib/libSDL_mixer.so: $(STAGING_DIR)/usr/lib/libSDL_mixer.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libSDL_mixer*.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libSDL_mixer*.so*
 
-sdl_mixer: uclibc $(TARGET_DIR)/usr/lib/libSDL_mixer.so
+sdl_mixer: sdl uclibc $(TARGET_DIR)/usr/lib/libSDL_mixer.so
 
 sdl_mixer-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libSDL_mixer*.so*
