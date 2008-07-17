@@ -48,12 +48,18 @@ $(FREETYPE_DIR)/.installed: $(FREETYPE_DIR)/.compiled
 	$(SED) "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/freetype-config
 	$(SED) "s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" $(STAGING_DIR)/usr/bin/freetype-config
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/bin/freetype-config
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libfreetype.so
 	touch $@
 
 freetype: uclibc pkgconfig $(FREETYPE_DIR)/.installed
 
 freetype-clean:
+	-$(MAKE) -C $(FREETYPE_DIR) DESTDIR=$(STAGING_DIR) uninstall
+	-$(MAKE) -C $(FREETYPE_DIR) DESTDIR=$(TARGET_DIR) uninstall
 	-$(MAKE) -C $(FREETYPE_DIR) clean
+
+freetype-dirclean:
+	rm -rf $(FREETYPE_DIR)
 
 #############################################################
 #
