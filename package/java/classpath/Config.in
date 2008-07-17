@@ -1,7 +1,6 @@
 config BR2_PACKAGE_CLASSPATH
 	bool "classpath"
 	select BR2_PACKAGE_PKGCONFIG
-	default n
 
 	help
 	  GNU Classpath, Essential Libraries for Java, is a GNU

@@ -64,7 +64,6 @@ endchoice
 
 config BR2_PACKAGE_LINUX
 	bool
-	default n
 
 if BR2_PACKAGE_LINUX
 source "target/linux/Config.in"

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_JAMVM
 	bool "jamvm"
-	default n
         depends on BR2_PACKAGE_CLASSPATH
 	select BR2_PACKAGE_PKGCONFIG
 	help

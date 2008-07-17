@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OPROFILE
 	bool "oprofile"
-	default n
 	select BR2_PACKAGE_POPT
 	select BR2_INSTALL_LIBSTDCPP
 	help

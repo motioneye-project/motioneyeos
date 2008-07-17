@@ -1,6 +1,5 @@
 config BR2_PACKAGE_IOSTAT
 	bool "iostat"
-	default n
 	help
 	  An I/O performance monitoring utility.
 

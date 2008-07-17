@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BERKELEYDB
 	bool "berkeleydb"
-	default n
 	help
 	  The Berkeley database.  A very common library for database 
 	  applications.

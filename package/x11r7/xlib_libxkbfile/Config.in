@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_LIBXKBFILE
 	bool "libxkbfile"
-	default n
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XPROTO_KBPROTO
 	help

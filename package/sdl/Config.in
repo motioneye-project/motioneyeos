@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SDL
 	bool "SDL"
-	default n
 	help
 
 	  http://www.libsdl.org/
@@ -14,14 +13,11 @@ config BR2_PACKAGE_SDL_FBCON
 
 config BR2_PACKAGE_SDL_DIRECTFB
 	bool "SDL DirectFB video driver"
-	default n
 
 config BR2_PACKAGE_SDL_QTOPIA
 	bool "SDL Qtopia video driver"
-	default n
 
 config BR2_PACKAGE_SDL_X11
 	bool "SDL X11 video driver"
-	default n
 
 endmenu

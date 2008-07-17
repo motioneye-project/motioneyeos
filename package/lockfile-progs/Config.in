@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LOCKFILE_PROGS
 	bool "lockfile programs"
-	default n
 	select BR2_PACKAGE_LIBLOCKFILE
 	help
 	  Build lockfile utility programs.

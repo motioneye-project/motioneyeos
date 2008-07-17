@@ -1,6 +1,5 @@
 config BR2_PACKAGE_M4
 	bool "m4"
-	default n
 	help
 	  An implementation of the traditional Unix macro processor.
 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_LIBXVMC
 	bool "libXvMC"
-	default n
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXV

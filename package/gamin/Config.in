@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GAMIN
 	bool "gamin"
-	default n
 	help
 	  the File Alteration Monitor
 

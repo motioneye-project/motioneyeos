@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_ALIAS
 	bool "font-alias"
-	default n
 	help
 	  font-alias 1.0.1
 	  No description available

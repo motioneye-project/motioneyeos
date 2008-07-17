@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_RSTART
 	bool "rstart"
-	default n
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
 	  rstart 1.0.2

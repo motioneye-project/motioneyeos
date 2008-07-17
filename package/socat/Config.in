@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SOCAT
 	bool "socat"
-	default n
 	help
 	  Multipurpose socket relay program.
 

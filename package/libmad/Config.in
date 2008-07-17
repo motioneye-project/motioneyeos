@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBMAD
 	bool "libmad"
-	default n
 	help
 	  High-quality MPEG audio decoder.  All computations are performed
 	  with fixed-point integer arithmetic, making it ideal for systems
@@ -10,7 +9,6 @@ config BR2_PACKAGE_LIBMAD
 
 config BR2_PACKAGE_LIBMAD_TARGET_HEADERS
 	bool "libmad headers in target"
-	default n
 	depends on BR2_PACKAGE_LIBMAD
 	help
 	  Put headers files in the target.

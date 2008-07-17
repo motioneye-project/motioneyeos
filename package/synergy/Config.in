@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SYNERGY
 	bool "synergy"
-	default n
 	depends on BR2_PACKAGE_XORG7
 	help
 	  Synergy lets you easily share a single mouse and 

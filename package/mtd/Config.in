@@ -1,6 +1,5 @@
 menuconfig BR2_PACKAGE_MTD
 	bool "mtd/jffs2 utilities"
-	default n
 	select BR2_PACKAGE_ZLIB
 	help
 	  Build mtd/jffs utilities

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBCGICC
 	bool "libcgicc"
-	default n
 	select BR2_INSTALL_LIBSTDCPP
 	help
 	  GNU cgicc is a C++ class library that greatly simplifies

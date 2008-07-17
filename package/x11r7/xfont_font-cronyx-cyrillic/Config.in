@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_CRONYX_CYRILLIC
 	bool "font-cronyx-cyrillic"
-	default n
 	help
 	  font-cronyx-cyrillic 1.0.0
 	  No description available

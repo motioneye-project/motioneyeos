@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XLSFONTS
 	bool "xlsfonts"
-	default n
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
 	  xlsfonts 1.0.1

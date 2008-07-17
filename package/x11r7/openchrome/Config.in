@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OPENCHROME
 	bool "openchrome"
-	default n
 	select BR2_PACKAGE_XSERVER_XORG_SERVER
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_XLIB_LIBX11

@@ -4,7 +4,6 @@ comment "Atmel AVR32 Specific Device Support"
 config BR2_TARGET_AVR32
 	bool "Board support for the Atmel AP7 microprocessors"
 	depends on BR2_avr32
-	default n
 	help
 	  Atmel AT32AP7XXX AVR32 based systems
 

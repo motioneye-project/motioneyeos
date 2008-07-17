@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBDAEMON
 	bool "libdaemon"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  libdaemon is a lightweight C library that eases the 

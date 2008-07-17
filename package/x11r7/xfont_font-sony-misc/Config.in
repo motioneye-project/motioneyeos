@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_SONY_MISC
 	bool "font-sony-misc"
-	default n
 	help
 	  font-sony-misc 1.0.0
 	  No description available

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_NEWT
 	bool "newt"
-	default n
 	help
 	  Programming library for color text mode, widget based user interfaces.
 

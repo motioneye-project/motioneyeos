@@ -76,11 +76,9 @@ endchoice
 
 config BR2_TOOLCHAIN_ATMEL_AVR32_4_2_3_ENABLE
 	bool
-	default n
 
 config BR2_TOOLCHAIN_ATMEL_AVR32
 	bool
-	default n
 
 if BR2_TOOLCHAIN_ATMEL_AVR32
 config BR2_VENDOR_SITE

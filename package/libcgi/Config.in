@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBCGI
 	bool "libcgi"
-	default n
 	help
 		LibCGI is a library written from scratch to easily make 
 		CGI applications in C.

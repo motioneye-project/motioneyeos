@@ -1,6 +1,5 @@
 config BR2_PACKAGE_KEXEC
 	bool "kexec"
-	default n
 	help
 	  Kexec is a user space utiltity for loading another kernel
 	  and asking the currently running kernel to do something with it.
@@ -10,7 +9,6 @@ config BR2_PACKAGE_KEXEC
 config BR2_PACKAGE_KEXEC_ZLIB
 	bool "Kexec with zlib support"
 	depends on BR2_PACKAGE_KEXEC
-	default n
 	select BR2_PACKAGE_ZLIB
 	help
 	  Support for compressed kernel images

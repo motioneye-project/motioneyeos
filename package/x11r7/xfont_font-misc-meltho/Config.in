@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_MISC_MELTHO
 	bool "font-misc-meltho"
-	default n
 	help
 	  font-misc-meltho 1.0.0
 	  No description available

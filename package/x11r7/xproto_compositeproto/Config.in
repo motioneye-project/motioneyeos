@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_COMPOSITEPROTO
 	bool "compositeproto"
-	default n
 	help
 	  compositeproto 0.3.1
 	  X.Org Composite protocol headers

@@ -1,7 +1,6 @@
 config BR2_PACKAGE_ACE_OF_PENGUINS
 	bool "ace_of_penguins"
 	select BR2_PACKAGE_LIBPNG
-	default n
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
 	help
 	  The Ace of Penguins is a set of Unix/X solitaire games based

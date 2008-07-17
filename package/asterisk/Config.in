@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ASTERISK
 	bool "asterisk"
-	default n
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_PACKAGE_OPENSSL

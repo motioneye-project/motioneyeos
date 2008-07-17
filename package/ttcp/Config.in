@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TTCP
 	bool "ttcp"
-	default n
 	help
 	  Benchmarking tool for determining TCP and UDP performance.
 

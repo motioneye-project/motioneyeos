@@ -1,6 +1,5 @@
  config BR2_PACKAGE_SPEECH_TOOLS
 	bool "speech tools for festival"
-	default n
 	help
 	  Speech tools for the festival text to speech system
 

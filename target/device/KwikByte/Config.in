@@ -1,7 +1,6 @@
 menuconfig BR2_TARGET_KWIKBYTE
 	bool "KwikByte Board Support"
 	depends on BR2_arm
-	default n
 
 if BR2_TARGET_KWIKBYTE
 

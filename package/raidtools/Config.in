@@ -1,6 +1,5 @@
 config BR2_PACKAGE_RAIDTOOLS
 	bool "raidtools"
-	default n
 	help
 	  Utilities to support 'old-style' RAID disks.
 

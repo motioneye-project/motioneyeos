@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XWUD
 	bool "xwud"
-	default n
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
 	  xwud 1.0.1

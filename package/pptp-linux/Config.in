@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PPTP_LINUX
 	bool "pptp-linux"
-	default n
 	help
 	  An implementation of the Point-to-point protocol client.
 

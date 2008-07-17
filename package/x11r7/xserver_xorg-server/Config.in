@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XSERVER_XORG_SERVER
 	bool "xorg-server"
-	default n
 	select BR2_PACKAGE_XLIB_LIBXFONT
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_XLIB_LIBXKBUI

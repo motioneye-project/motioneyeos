@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PHP
 	bool "php"
-	default n
 	help
 	  PHP  is a widely-used general-purpose scripting
 	  language that is especially suited for Web development

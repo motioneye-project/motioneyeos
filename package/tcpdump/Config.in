@@ -1,7 +1,6 @@
 config BR2_PACKAGE_TCPDUMP
 	bool "tcpdump"
 	select BR2_PACKAGE_LIBPCAP
-	default n
 	help
 	  A tool for network monitoring and data acquisition.
 
@@ -9,14 +8,12 @@ config BR2_PACKAGE_TCPDUMP
 
 config BR2_PACKAGE_TCPDUMP_SMB
 	bool "smb dump support"
-	default n
 	depends on BR2_PACKAGE_TCPDUMP
 	help
 	  enable possibly-buggy SMB printer
 
 config BR2_PACKAGE_DHCPDUMP
 	bool "dhcpdump"
-	default n
 	select BR2_PACKAGE_LIBPCAP
 	help
 	  A tool for monitoring dhcp requests using tcpdump.

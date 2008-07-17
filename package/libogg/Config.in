@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBOGG
 	bool "libogg"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Ogg is the name of Xiph.org's container format for audio,

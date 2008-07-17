@@ -1,6 +1,5 @@
 config BR2_PACKAGE_STARTUP_NOTIFICATION
 	bool "startup-notification"
-	default n
 	help
 	  Startup-notification is a library used to monitor application startup.
 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_AUMIX
 	bool "aumix"
-	default n
 	select BR2_PACKAGE_NCURSES
 	help
 	  aumix is a small, easy-to-use program to control the mixer

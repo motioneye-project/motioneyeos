@@ -1,6 +1,5 @@
 config BR2_PACKAGE_AUTOCONF
 	bool "autoconf"
-	default n
 	help
 	  Extensible program for developing configure scripts.  These 
 	  scripts handle all the mundane system/feature detection.

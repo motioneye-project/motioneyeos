@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LM_SENSORS
 	bool "lm-sensors"
-	default n
 	help
 	  Lm-sensors is a hardware health monitoring package for
 	  Linux. It allows you to access information from

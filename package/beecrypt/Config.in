@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BEECRYPT
 	bool "beecrypt"
-	default n
 	help
 	  Beecrypt is a general-purpose cryptography library.
 

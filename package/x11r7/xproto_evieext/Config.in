@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_EVIEEXT
 	bool "evieext"
-	default n
 	help
 	  evieext 1.0.2
 	  X.Org EvIE protocol headers

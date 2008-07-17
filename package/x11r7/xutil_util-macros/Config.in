@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XUTIL_UTIL_MACROS
 	bool "util-macros"
-	default n
 	help
 	  util-macros 1.1.5
 	  No description available

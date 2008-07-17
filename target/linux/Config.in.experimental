@@ -327,7 +327,6 @@ comment "Destinations for linux kernel binaries"
 config BR2_LINUX_IN_ROOTFS
 	bool "Copy kernel to root file system"
 	depends on BR2_PACKAGE_LINUX
-	default n
 	help
 	  Copy kernel to <root>/boot directory
 

@@ -1,6 +1,5 @@
 config BR2_TARGET_Q5
 	bool "jp-embedded Q5 board support"
-	default n
 	depends on BR2_mipsel
 	select BR2_PACKAGE_LINUX
 	help

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_LIBXFONT
 	bool "libXfont"
-	default n
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_XLIB_LIBFONTENC
 	select BR2_PACKAGE_XLIB_XTRANS

@@ -1,13 +1,11 @@
 config BR2_PACKAGE_LIBXML2
 	bool "libxml2"
-	default n
 	help
 	  XML C Parser
 	  ftp://xmlsoft.org/libxml2
 
 config BR2_PACKAGE_LIBXML2_TARGET_HEADERS
 	bool "libxml2 target headers"
-	default n
 	depends on BR2_PACKAGE_LIBXML2
 	help
 	  XML C Parser

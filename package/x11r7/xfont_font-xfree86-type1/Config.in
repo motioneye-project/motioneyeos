@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_XFREE86_TYPE1
 	bool "font-xfree86-type1"
-	default n
 	help
 	  font-xfree86-type1 1.0.0
 	  No description available

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBGTK2
 	bool "libgtk2"
-	default n
 	select BR2_PACKAGE_ATK
 	select BR2_PACKAGE_CAIRO
 	select BR2_PACKAGE_CUPS

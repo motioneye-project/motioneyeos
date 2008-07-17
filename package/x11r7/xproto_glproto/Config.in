@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_GLPROTO
 	bool "glproto"
-	default n
 	help
 	  glproto 1.4.8
 	  X.Org GL protocol headers

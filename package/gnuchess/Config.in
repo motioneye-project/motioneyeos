@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GNUCHESS
 	bool "gnuchess"
-	default n
 	help
 	  GNU Chess lets most modern computers play a full game of chess.
 

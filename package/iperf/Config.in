@@ -1,6 +1,5 @@
 config BR2_PACKAGE_IPERF
 	bool "iperf"
-	default n
 	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Internet Protocol bandwidth measuring tool for measuring

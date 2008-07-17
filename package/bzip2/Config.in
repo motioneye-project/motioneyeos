@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BZIP2
 	bool "bzip2"
-	default n
 	help
 	  Freely available, patent free, high-quality data compressor.  
 	  It typically compresses files to within 10% to 15% of the best 

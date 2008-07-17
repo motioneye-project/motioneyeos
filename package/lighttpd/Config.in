@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIGHTTPD
 	bool "lighttpd"
-	default n
 	help
 	  lighttpd a secure, fast, compliant and very flexible web-server
 	  which has been optimized for high-performance environments. It
@@ -25,7 +24,6 @@ config BR2_PACKAGE_LIGHTTPD_OPENSSL
 
 config BR2_PACKAGE_LIGHTTPD_ZLIB
 	bool "lighttpd zlib support"
-	default n
 	depends on BR2_PACKAGE_LIGHTTPD
 	select BR2_PACKAGE_ZLIB
 	help
@@ -33,7 +31,6 @@ config BR2_PACKAGE_LIGHTTPD_ZLIB
 
 config BR2_PACKAGE_LIGHTTPD_BZIP2
 	bool "lighttpd bzip2 support"
-	default n
 	depends on BR2_PACKAGE_LIGHTTPD
 	select BR2_PACKAGE_BZIP2
 	help
@@ -41,7 +38,6 @@ config BR2_PACKAGE_LIGHTTPD_BZIP2
 
 config BR2_PACKAGE_LIGHTTPD_PCRE
 	bool "pcre"
-	default n
 	depends on BR2_PACKAGE_LIGHTTPD
 	select BR2_PACKAGE_PCRE
 	help

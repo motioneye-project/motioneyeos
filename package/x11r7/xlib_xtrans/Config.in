@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_XTRANS
 	bool "xtrans"
-	default n
 	help
 	  xtrans 1.0.3
 	  X.Org xtrans library

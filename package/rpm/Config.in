@@ -1,6 +1,5 @@
 config BR2_PACKAGE_RPM
 	bool "rpm"
-	default n
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_BEECRYPT

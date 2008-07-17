@@ -1,6 +1,5 @@
 config BR2_PACKAGE_RUBY
 	bool "ruby"
-	default n
 	help
 	  Object Oriented Scripting Language.
 

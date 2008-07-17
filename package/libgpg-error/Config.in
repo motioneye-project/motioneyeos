@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBGPG_ERROR
 	bool "libgpg-error"
-	default n
 	help
 	  Libgpg-error is a small library with error codes and
 	  descriptions shared by most GnuPG related software.

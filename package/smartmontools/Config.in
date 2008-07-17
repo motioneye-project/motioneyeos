@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SMARTMONTOOLS
 	bool "smartmontools"
-	default n
 	help
 	  Control and monitor storage systems using S.M.A.R.T.
 

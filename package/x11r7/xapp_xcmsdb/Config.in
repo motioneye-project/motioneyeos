@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XCMSDB
 	bool "xcmsdb"
-	default n
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
 	  xcmsdb 1.0.1

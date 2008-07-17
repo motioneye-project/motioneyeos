@@ -1,6 +1,5 @@
 config BR2_PACKAGE_THTTPD
 	bool "thttpd"
-	default n
 	help
 	  thttpd is a simple, small, portable, fast, and secure HTTP server
 

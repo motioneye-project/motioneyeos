@@ -77,7 +77,6 @@ EOF
 cat > ../package/${PACKAGE_NAME}/Config.in <<EOF
 config BR2_PACKAGE_${NAME_UPPER}
 	bool "${PACKAGE_NAME}"
-	default n
 	help
 	  ${DESCRIPTION}
 

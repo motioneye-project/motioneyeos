@@ -1,6 +1,5 @@
 config BR2_PACKAGE_UEMACS
 	bool "uemacs"
-	default n
 	select BR2_PACKAGE_NCURSES
 	help
 	  A small emacs.

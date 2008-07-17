@@ -90,14 +90,12 @@ endchoice
 
 config BR2_KERNEL_HEADERS_IPMI
 	bool "use ipmi kernel patches"
-	default n
 	depends on BR2_KERNEL_HEADERS_2_6_20_4 || BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
 	help
 	  Apply patches which add IPMI sensor support.
 
 config BR2_KERNEL_HEADERS_LZMA
 	bool "use lzma initramfs kernel patches"
-	default n
 	depends on BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
 	help
 	  Apply patches which allow for lzma compressed
@@ -106,14 +104,12 @@ config BR2_KERNEL_HEADERS_LZMA
 
 config BR2_KERNEL_HEADERS_RT
 	bool "use realtime (-rt) kernel patches"
-	default n
 	depends on BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
 	help
 	  Apply Ingo's realtime extensions to linux
 
 config BR2_KERNEL_HEADERS_PATCH_DIR
 	bool "Add additional headers from $(KERNEL_HEADERS_PATCH_DIR)"
-	default n
 	depends on BR2_KERNEL_HEADERS_2_6_20_4 || BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1  || BR2_KERNEL_HEADERS_2_6_22_10
 	help
 	  Apply additional kernel patches defined by KERNEL_HEADERS_PATCH_DIR

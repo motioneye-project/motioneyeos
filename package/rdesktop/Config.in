@@ -2,7 +2,6 @@ config BR2_PACKAGE_RDESKTOP
 	bool "rdesktop"
 	select BR2_PACKAGE_OPENSSL
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
-	default n
 	help
 	  rdesktop is an open source client for Windows NT Terminal
 	  Server and Windows 2000/2003 Terminal Services, capable of

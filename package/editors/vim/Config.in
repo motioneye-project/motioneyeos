@@ -1,6 +1,5 @@
 config BR2_PACKAGE_VIM
 	bool "vim"
-	default n
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_PKGCONFIG
 	help

@@ -315,7 +315,6 @@ endchoice
 
 config BR2_KERNEL_ADD_PATCH
 	bool
-	default n
 
 config BR2_KERNEL_MINORLEVEL
 	string "patch level"
@@ -376,15 +375,12 @@ endmenu
 
 config BR2_KERNEL_PREPATCHED
 	bool
-	default n
 
 config BR2_KERNEL_BASE
 	bool
-	default n
 
 config BR2_KERNEL_LATEST
 	bool
-	default n
 
 config BR2_DOWNLOAD_LINUX26_VERSION
 	string
@@ -561,7 +557,6 @@ menu "Destinations for linux kernel binaries"
 config BR2_LINUX_COPYTO_ROOTFS
 	bool "Copy kernel to root file system"
 	depends on BR2_PACKAGE_LINUX
-	default n
 	help
 	  Copy kernel to <root>/boot directory
 

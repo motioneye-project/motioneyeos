@@ -1,6 +1,5 @@
 config BR2_PACKAGE_IPSEC_TOOLS
 	bool "ipsec-tools"
-	default n
 	depends on BR2_PACKAGE_OPENSSL && BR2_PACKAGE_FLEX && BR2_PACKAGE_FLEX_LIBFL
 	help
 	  This package is required to support IPSec for Linux 2.6+
@@ -17,7 +16,6 @@ config BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT
 	        be contacted by racoonctl(8).
 
 config BR2_PACKAGE_IPSEC_TOOLS_NATT
-	default n
 	depends on BR2_PACKAGE_IPSEC_TOOLS
 	bool "Enable NAT-Traversal"
 	help
@@ -32,7 +30,6 @@ config BR2_PACKAGE_IPSEC_TOOLS_NATT
 
 
 config BR2_PACKAGE_IPSEC_TOOLS_FRAG
-	default n
 	depends on BR2_PACKAGE_IPSEC_TOOLS
 	bool "Enable IKE fragmentation."
 	help
@@ -53,7 +50,6 @@ config BR2_PACKAGE_IPSEC_TOOLS_IPV6
 		IPv6 support.
 
 config BR2_PACKAGE_IPSEC_TOOLS_READLINE
-	default n
 	depends on BR2_PACKAGE_IPSEC_TOOLS
 	select BR2_READLINE
 	bool "Enable readline input support if available."

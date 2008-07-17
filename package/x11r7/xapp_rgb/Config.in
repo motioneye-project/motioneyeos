@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_RGB
 	bool "rgb"
-	default n
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
 	  rgb 1.0.1

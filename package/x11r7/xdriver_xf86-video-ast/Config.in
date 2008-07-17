@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XDRIVER_XF86_VIDEO_AST
 	bool "xf86-video-ast"
-	default n
 	help
 	  xf86-video-ast 0.81.0
 	  No description available

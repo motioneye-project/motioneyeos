@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBGTK12
 	bool "libgtk12"
-	default n
 	select BR2_PACKAGE_LIBGLIB12
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7||BR2_PACKAGE_TINYX
 	help

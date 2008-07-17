@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DMRAID
 	bool "dmraid"
-	default n
 	select BR2_PACKAGE_DM
 	help
 	  Device-Mapper Software RAID support tool/

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XGAMMA
 	bool "xgamma"
-	default n
 	select BR2_PACKAGE_XLIB_LIBXXF86VM
 	help
 	  xgamma 1.0.1

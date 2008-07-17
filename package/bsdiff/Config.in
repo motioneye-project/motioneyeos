@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BSDIFF
 	bool "bsdiff"
-	default n
 	select BR2_PACKAGE_BZIP2
 	help
 	  Binary patch/diff like xdelta but creates smaller diffs.

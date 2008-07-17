@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OPENSSH
 	bool "openssh"
-	default n
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_ZLIB
 	help

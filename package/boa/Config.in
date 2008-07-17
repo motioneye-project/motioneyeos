@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BOA
 	bool "boa"
-	default n
 	help
 	  A very small and very fast http daemon.  Not intended as 
 	  a feature-packed server.

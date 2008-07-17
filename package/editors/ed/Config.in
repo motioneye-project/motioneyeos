@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ED
 	bool "ed"
-	default n
 	help
 	  A line-oriented text editor.  Used to create, display, modify, 
 	  and otherwise manipulate text files.  Often used in scripts 

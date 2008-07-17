@@ -1,6 +1,5 @@
 config BR2_PACKAGE_UDHCP
 	bool "udhcp"
-	default n
 	help
 	  An embedded dhcp server/client package that strives to be 
 	  fully functional, RFC compliant, and really tiny.

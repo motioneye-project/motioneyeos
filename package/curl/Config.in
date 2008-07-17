@@ -1,6 +1,5 @@
 config BR2_PACKAGE_CURL
 	bool "curl"
-	default n
 	help
 	  cURL is a tool for getting files from FTP, HTTP, Gopher, Telnet,
 	  and Dict servers, using any of the supported protocols.
@@ -9,7 +8,6 @@ config BR2_PACKAGE_CURL
 
 config BR2_PACKAGE_LIBCURL
 	bool "libcurl"
-	default n
 	help
 	  cURL is a tool for getting files from FTP, HTTP, Gopher, Telnet,
 	  and Dict servers, using any of the supported protocols.

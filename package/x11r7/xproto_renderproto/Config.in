@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_RENDERPROTO
 	bool "renderproto"
-	default n
 	help
 	  renderproto 0.9.2
 	  X.Org Render protocol headers

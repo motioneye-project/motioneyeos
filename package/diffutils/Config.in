@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DIFFUTILS
 	bool"diffutils"
-	default n
 	help
 	  GNU diff. Compare files per line.
 

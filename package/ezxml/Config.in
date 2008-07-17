@@ -1,6 +1,5 @@
 config BR2_PACKAGE_EZXML
 	bool "ezxml"
-	default n
 	help
 	  ezXML is a XML parser C library that is simple and easy to use.
 

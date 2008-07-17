@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBID3TAG
 	bool "libid3tag"
-	default n
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_PACKAGE_LIBMAD
 	help

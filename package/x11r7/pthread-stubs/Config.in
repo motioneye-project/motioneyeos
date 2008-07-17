@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PTHREAD_STUBS
 	bool "pthread-stubs"
-	default n
 	help
 		This library provides weak aliases for pthread functions not 
 		provided in libc or otherwise available by default.

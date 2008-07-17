@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_BH_LUCIDATYPEWRITER_100DPI
 	bool "font-bh-lucidatypewriter-100dpi"
-	default n
 	help
 	  font-bh-lucidatypewriter-100dpi 1.0.0
 	  No description available

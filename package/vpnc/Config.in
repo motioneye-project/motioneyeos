@@ -2,7 +2,6 @@ config BR2_PACKAGE_VPNC
 	bool "vpnc"
 	depends on BR2_PACKAGE_LIBGCRYPT
 	depends on BR2_PACKAGE_LIBGPG_ERROR
-	default n
 	help
 	  Client for Cisco VPN concentrator
 	  3000 Series VPN Concentrator

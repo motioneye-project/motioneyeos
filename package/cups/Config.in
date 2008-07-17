@@ -1,6 +1,5 @@
 config BR2_PACKAGE_CUPS
 	bool "cups"
-	default n
 	help
 		The Common Unix Print Subsystem
 

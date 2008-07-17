@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MROUTED
 	bool "mrouted"
-	default n
 	help
 	  An implementation of the DVMRP multicast routing protocol.
 

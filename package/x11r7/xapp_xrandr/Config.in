@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XRANDR
 	bool "xrandr"
-	default n
 	select BR2_PACKAGE_XLIB_LIBXRANDR
 	select BR2_PACKAGE_XLIB_LIBX11
 	help

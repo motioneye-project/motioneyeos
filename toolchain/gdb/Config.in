@@ -2,21 +2,18 @@ comment "Gdb Options"
 
 config BR2_PACKAGE_GDB
 	bool "Build gdb debugger for the Target"
-	default n
 	select BR2_PACKAGE_NCURSES
 	help
 	    Build the full gdb debugger to run on the target.
 
 config BR2_PACKAGE_GDB_SERVER
 	bool "Build gdb server for the Target"
-	default n
 	help
 	    Build the gdbserver stub to run on the target.
 	    A full gdb is needed to debug the progam.
 
 config BR2_PACKAGE_GDB_HOST
 	bool "Build gdb for the Host"
-	default n
 	help
 	    Build gdb to run on the host to debug programs run on the target.
 

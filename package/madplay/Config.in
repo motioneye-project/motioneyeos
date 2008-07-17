@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MADPLAY
 	bool "madplay"
-	default n
 	select BR2_PACKAGE_LIBMAD
 	select BR2_PACKAGE_LIBID3TAG
 	help

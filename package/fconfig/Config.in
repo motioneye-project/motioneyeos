@@ -1,6 +1,5 @@
 config BR2_PACKAGE_FCONFIG
 	bool "fconfig"
-	default n
 	help
 	  fconfig - get/set RedBoot configuration parameters from Linux.
 

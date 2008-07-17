@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XKBPRINT
 	bool "xkbprint"
-	default n
 	select BR2_PACKAGE_XLIB_LIBXKBFILE
 	help
 	  xkbprint 1.0.1

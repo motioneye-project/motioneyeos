@@ -3,7 +3,6 @@ depends on BR2_PACKAGE_LIBGTK2
 
 config BR2_PACKAGE_GTK2_THEME_HICOLOR
 	bool "hicolor (defaut theme)"
-	default n
 	depends on BR2_PACKAGE_LIBGTK2
 
 endmenu

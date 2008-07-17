@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBXSLT
 	bool "libxslt"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Install the xslt library which is used

@@ -1,6 +1,5 @@
 menuconfig BR2_PACKAGE_XORG7
 bool "X.org X Window System, X11R7, release 7.3"
-default n
 default y if BR2_PACKAGE_XSERVER_x11r7
 select BR2_PACKAGE_ZLIB
 select BR2_PACKAGE_LIBPNG

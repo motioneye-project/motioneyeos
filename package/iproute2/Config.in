@@ -1,6 +1,5 @@
 config BR2_PACKAGE_IPROUTE2
 	bool "iproute2"
-	default n
 	help
 	  Kernel routing and traffic control utilities.  Provides things 
 	  like ip and tc.

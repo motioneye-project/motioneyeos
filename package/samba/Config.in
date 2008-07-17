@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SAMBA
 	bool "samba"
-	default n
 	help
 	  Provides print services to all manner of SMB/CIFS clients,
 	  including the numerous versions of Microsoft Windows

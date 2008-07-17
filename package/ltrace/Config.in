@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LTRACE
 	bool "ltrace"
-	default n
 	#depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LIBELF_HEADERS
 	help

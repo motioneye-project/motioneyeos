@@ -1,6 +1,5 @@
 config BR2_TARGET_ROOTFS_CLOOP
 	bool "cloop root filesystem for the target device"
-	default n
 	help
 	  Build a cloop root filesystem
 	  cloop is a Linux kernel module that enables compressed loopback filesystem

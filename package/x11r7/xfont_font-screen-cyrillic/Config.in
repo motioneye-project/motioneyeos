@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_SCREEN_CYRILLIC
 	bool "font-screen-cyrillic"
-	default n
 	help
 	  font-screen-cyrillic 1.0.1
 	  No description available

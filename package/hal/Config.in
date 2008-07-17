@@ -1,6 +1,5 @@
 config BR2_PACKAGE_HAL
 	bool "hal"
-	default n
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_DBUS_GLIB
 	select BR2_PACKAGE_HWDATA

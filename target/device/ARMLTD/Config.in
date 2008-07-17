@@ -1,7 +1,6 @@
 menuconfig BR2_TARGET_ARMLTD
 	bool "ARM Ltd. Device Support"
 	depends on BR2_arm
-	default n
 
 comment "Arm based Device Support"
 	depends on BR2_arm && BR2_TARGET_ARMLTD

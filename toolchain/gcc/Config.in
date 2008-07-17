@@ -56,7 +56,6 @@ endchoice
 config BR2_GCC_IS_SNAP
 	depends on !BR2_avr32
 	bool
-	default n
 
 config BR2_GCC_SUPPORTS_SYSROOT
 	bool
@@ -104,7 +103,6 @@ config BR2_TOOLCHAIN_SYSROOT
 
 config BR2_GCC_USE_SJLJ_EXCEPTIONS
 	bool "Enable setjmp/longjmp exceptions?"
-	default n
 	help
 	  For some platforms, proper stack unwinding works perfectly,
 	  while other platforms must use setjmp/longjmp exceptions for
@@ -119,20 +117,17 @@ config BR2_EXTRA_GCC_CONFIG_OPTIONS
 
 config BR2_GCC_CROSS_CXX
 	bool "C++ cross-compiler support"
-	default n
 	help
 	  Build a C++ cross-compiler
 
 config BR2_GCC_CROSS_FORTRAN
 	bool "Fortran cross-compiler support"
-	default n
 	depends on !BR2_avr32
 	help
 	  Build a Fortran cross-compiler
 
 config BR2_INSTALL_LIBSTDCPP
 	bool "Build/install c++ compiler and libstdc++?"
-	default n
 	# >= 4.2.0 work fine without LARGEFILE
 	select BR2_LARGEFILE if !BR2_GCC_SUPPORTS_SYSROOT
 	select BR2_GCC_CROSS_CXX
@@ -141,21 +136,18 @@ config BR2_INSTALL_LIBSTDCPP
 
 config BR2_INSTALL_LIBGCJ
 	bool "Build/install java compiler and libgcj?"
-	default n
 	depends on !BR2_avr32 && BR2_INSTALL_LIBSTDCPP
 	help
 	  Build/install java compiler and libgcj?
 
 config BR2_INSTALL_OBJC
 	bool "Build/install Objective-C compiler and runtime?"
-	default n
 	depends on !BR2_avr32
 	help
 	  Build/install Objective-C compiler and runtime?
 
 config BR2_INSTALL_FORTRAN
 	bool "Build/install Fortran compiler and runtime?"
-	default n
 	depends on !BR2_avr32
 	select BR2_PACKAGE_LIBMPFR
 	help

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DMALLOC
 	bool "dmalloc"
-	default n
 	help
 	  A debug memory allocation library which is a drop in replacement for
 	  the system's malloc, realloc, calloc, free and other memory management

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_NCFTP
 	bool "ncftp"
-	default n
 	help
 	  NcFTP Client (also known as just NcFTP) is a set of FREE application
 	  programs implementing the File Transfer Protocol (FTP).
@@ -32,12 +31,10 @@ config BR2_PACKAGE_NCFTP_BATCH
 
 config BR2_PACKAGE_NCFTP_SPOOLER
 	bool "NcFTPSpooler - spooler - not working properly"
-	default n
 	depends on BR2_PACKAGE_NCFTP
 
 config BR2_PACKAGE_NCFTP_BOOKMARKS
 	bool "NcFTPBookmarks - not working properly"
-	default n
 	depends on BR2_PACKAGE_NCFTP
 
 endmenu

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PROFTPD
 	bool "proftpd"
-	default n
 	help
 	  ProFTPD, a highly configurable FTP server.
 

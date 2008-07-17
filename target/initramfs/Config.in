@@ -1,6 +1,5 @@
 config BR2_TARGET_ROOTFS_INITRAMFS
 	bool "initramfs for initial ramdisk of linux kernel"
-	default n
 	help
 	  Build a file which is usable for the gen_init_cpio tool
 	  at linux kernel build. 

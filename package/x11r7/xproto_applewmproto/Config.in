@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_APPLEWMPROTO
 	bool "applewmproto"
-	default n
 	help
 	  applewmproto 1.0.3
 	  No description available

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GREP
 	bool "grep"
-	default n
 	select BR2_PACKAGE_GETTEXT
 	select BR2_PACKAGE_LIBINTL
 	help

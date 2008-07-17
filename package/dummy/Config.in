@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DUMMY
 	bool "dummy"
-	default n
 	help
 	  This is a dummy package to show how to integrate a new package into
 	  Buildroot. The syntax for this file is the default kbuild from the

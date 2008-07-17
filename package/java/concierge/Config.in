@@ -1,6 +1,5 @@
 config BR2_PACKAGE_CONCIERGE
 	bool "concierge"
-	default n
         depends on BR2_PACKAGE_JAMVM
 
 	help

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_FBV
 	bool "fbv"
-	default n
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBUNGIF

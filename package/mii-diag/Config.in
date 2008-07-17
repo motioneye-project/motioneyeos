@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MIIDIAG
 	bool "mii-diag"
-	default n
 	help
 	  mii-diag allows you to manipulate the MII registers of
 	  network cards.

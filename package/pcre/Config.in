@@ -1,5 +1,4 @@
 config BR2_PACKAGE_PCRE
 	bool "pcre"
-	default n
 	help
 	  Perl Compatible Regular Expressions

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBXCB
 	bool "libxcb"
-	default n
 	select BR2_PACKAGE_PTHREAD_STUBS
 	select BR2_PACKAGE_XCB_PROTO
 	select BR2_PACKAGE_XLIB_LIBXDMCP

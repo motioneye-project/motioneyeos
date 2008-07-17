@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XCB_PROTO
 	bool "xcb-proto"
-	default n
 	help
 		The protocol headers that define XCB.
 

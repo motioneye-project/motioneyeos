@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_LIBX11
 	bool "libX11"
-	default n
 	select BR2_PACKAGE_LIBXCB
 	select BR2_PACKAGE_XUTIL_UTIL_MACROS
 	select BR2_PACKAGE_XLIB_XTRANS

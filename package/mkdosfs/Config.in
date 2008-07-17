@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MKDOSFS
 	bool "mkdosfs"
-	default n
 	help
 	  Creates a DOS FAT filesystem on a device.
 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_XPROTO
 	bool "xproto"
-	default n
 	help
 	  xproto 7.0.10
 	  X.Org xproto protocol headers

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LINKS
 	bool "links"
-	default n
 	help
 	  Graphics and text mode WWW browser (kind of like lynx).
 

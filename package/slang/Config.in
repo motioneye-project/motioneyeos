@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SLANG
 	bool "slang"
-	default n
 	help
 	  Multi-platform console display library.
 

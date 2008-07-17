@@ -6,7 +6,6 @@ config BR2_PACKAGE_WEBKIT
 	select BR2_PACKAGE_LIBXML2 
 	select BR2_PACKAGE_LIBXSLT 
 	select BR2_PACKAGE_SQLITE
-	default n
 	help
 		WebKit is an open source, standards compliant web browser engine. 
 

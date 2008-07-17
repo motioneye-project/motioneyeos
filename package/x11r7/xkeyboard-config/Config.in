@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XKEYBOARD_CONFIG
 	bool "xkeyboard-config"
-	default n
 	help
 	  keyboard configuration database for X
 

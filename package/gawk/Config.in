@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GAWK
 	bool "gawk"
-	default n
 	depends on BR2_USE_WCHAR
 	help
 	  A special-purpose programming language which is data driven 

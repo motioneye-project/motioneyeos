@@ -1,6 +1,5 @@
 config BR2_PACKAGE_RUBIX
 	bool "rubix"
-	default n
 	help
 	  A 3D rubiks cube game for X
 

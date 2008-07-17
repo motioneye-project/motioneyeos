@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GPERF
 	bool "gperf"
-	default n
 	help
 	  A 'perfect hash function' generator
 

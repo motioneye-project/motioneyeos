@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_KBPROTO
 	bool "kbproto"
-	default n
 	help
 	  kbproto 1.0.3
 	  X.Org KB protocol headers

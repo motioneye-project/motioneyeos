@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BISON
 	bool "bison"
-	default n
 	help
 	  General-purpose parser generator that converts a 
 	  grammar description for an LALR context-free grammar into a C 

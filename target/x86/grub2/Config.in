@@ -1,12 +1,10 @@
 config BR2_TARGET_GRUB2
 	bool "grub2"
-	default n
 	help
 	  The GRand Unified Bootloader for x86 systems, take #2.
 
 config BR2_TARGET_GRUB2_SPLASH
 	bool "Splashimage support"
-	default n
 	depends on BR2_TARGET_GRUB2
 	help
 	  Add support for splashimage.

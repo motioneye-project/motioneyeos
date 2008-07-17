@@ -1,6 +1,5 @@
 config BR2_PACKAGE_USBMOUNT
 	bool "usbmount"
-	default n
 	select BR2_PACKAGE_UDEV_VOLUME_ID
 	select BR2_PACKAGE_UDEV_SCSI_ID
 	select BR2_PACKAGE_LOCKFILE_PROGS

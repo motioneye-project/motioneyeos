@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DIRECTFB
 	bool "directfb"
-	default n
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBPNG
@@ -13,7 +12,6 @@ config BR2_PACKAGE_DIRECTFB
 
 config BR2_PACKAGE_DIRECTFB_MULTI
 	bool "directfb multi application"
-	default n
 	depends on BR2_PACKAGE_DIRECTFB
 	select BR2_PACKAGE_LINUX_FUSION
 	help

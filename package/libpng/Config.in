@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBPNG
 	bool "libpng"
-	default n
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_PKGCONFIG
 	help

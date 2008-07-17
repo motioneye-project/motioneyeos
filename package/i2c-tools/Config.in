@@ -1,6 +1,5 @@
 config BR2_PACKAGE_I2C_TOOLS
     bool "i2c-tools"
-    default n
     help
         Heterogeneous set of I2C tools for Linux
 

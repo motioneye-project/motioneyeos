@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_ENCODINGS
 	bool "encodings"
-	default n
 	help
 	  encodings 1.0.2
 	  No description available

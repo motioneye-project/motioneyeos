@@ -1,5 +1,4 @@
 config BR2_PACKAGE_SFDISK
 	bool "sfdisk"
-	default n
 	help
 	  Partition table manipulator for Linux.

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_MUTT_MISC
 	bool "font-mutt-misc"
-	default n
 	help
 	  font-mutt-misc 1.0.0
 	  No description available

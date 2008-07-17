@@ -4,7 +4,6 @@ menuconfig BR2_KERNEL_ARCH_PATCH_ENABLED
 	depends on !BR2_KERNEL_PREPATCHED
 	default y if BR2_avr32
 	default y if BR2_TARGET_ATMEL && BR2_arm
-	default n
 
 if BR2_KERNEL_ARCH_PATCH_ENABLED
 

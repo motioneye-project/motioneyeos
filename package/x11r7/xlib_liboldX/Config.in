@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_LIBOLDX
 	bool "liboldX"
-	default n
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
 	  liboldX 1.0.1

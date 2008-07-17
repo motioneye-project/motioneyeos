@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_TWM
 	bool "twm"
-	default n
 	help
 	  twm 1.0.3
 	  No description available

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TFTPD
 	bool "tftpd"
-	default n
 	help
 	  HPA's Trivial File Transfer Protocol (tftp) server.
 

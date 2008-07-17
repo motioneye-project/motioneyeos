@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TINYHTTPD
 	bool "tinyhttpd"
-	default n
 	help
 	  A relatively simple webserver written as a school project. It is
 	  exceedingly simple, threaded and handles basic CGI scripts.

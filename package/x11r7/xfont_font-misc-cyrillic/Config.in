@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_MISC_CYRILLIC
 	bool "font-misc-cyrillic"
-	default n
 	help
 	  font-misc-cyrillic 1.0.0
 	  No description available

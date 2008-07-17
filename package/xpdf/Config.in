@@ -1,7 +1,6 @@
 config BR2_PACKAGE_XPDF
 	bool "xpdf"
 	select BR2_PACKAGE_OPENMOTIF
-	default n
 	help
 	  Xpdf is an open source viewer for Portable Document Format (PDF) files.
 

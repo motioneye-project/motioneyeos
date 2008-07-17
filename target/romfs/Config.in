@@ -1,6 +1,5 @@
 config BR2_TARGET_ROOTFS_ROMFS
 	bool "romfs root filesystem"
-	default n
 	select BR2_HOST_FAKEROOT
 	help
 	  Build a romfs image of the root filesystem.

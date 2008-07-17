@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MAKE
 	bool "make"
-	default n
 	help
 	  A tool which controls the generation of executables and other 
 	  non-source files of a program from the program's source files.

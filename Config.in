@@ -95,7 +95,6 @@ config BR2_STAGING_DIR
 
 config BR2_FPU_SUFFIX
 	bool "Add '_nofpu' suffix for softfloat toolchains"
-	default n
 	help
 	  If the toolchain is configured to use softfloat, then
 	  the "_nofpu" suffix will be added to the toolchain build
@@ -171,7 +170,6 @@ config BR2_JLEVEL
 
 config BR2_PREFER_IMA
 	bool "prefer IMA compiles"
-	default n
 	help
 	  Where possible, compile package with Inter Module Analysis.
 	  This potentially uses alot of system resources on your compile
@@ -183,7 +181,6 @@ config BR2_PREFER_IMA
 
 config BR2_DEPRECATED
 	bool "Show packages that are deprecated or obsolete"
-	default n
 	help
 	  This option hides outdated/obsolete versions of packages.
 
@@ -196,7 +193,6 @@ config BR2_RECENT
 config BR2_ENABLE_DEBUG
 	bool "build packages with debugging symbols"
 	select BR2_PACKAGE_GDB_SERVER
-	default n
 	help
 	  Build packages with debugging symbols
 	  enabled
@@ -330,7 +326,6 @@ endchoice
 
 config BR2_PREFER_STATIC_LIB
 	bool "prefer static libraries"
-	default n
 	help
 	  Where possible, build and use static libraries for the target.
 	  This potentially increases your code size and should only be
@@ -342,7 +337,6 @@ config BR2_PREFER_STATIC_LIB
 
 config BR2_HAVE_MANPAGES
 	bool "manpages on the target"
-	default n
 	help
 	  Leave the manpages on the target.
 	  If you say n here, your target will not contain any
@@ -350,7 +344,6 @@ config BR2_HAVE_MANPAGES
 
 config BR2_HAVE_INFOPAGES
 	bool "infopages on the target"
-	default n
 	help
 	  Leave the infopages on the target.
 	  If you say n here, your target will not contain any
@@ -358,7 +351,6 @@ config BR2_HAVE_INFOPAGES
 
 config BR2_HAVE_DEVFILES
 	bool "development files in target filesystem"
-	default n
 	help
 	  Install headers and static libraries in the
 	  target filesystem

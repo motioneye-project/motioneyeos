@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XMORE
 	bool "xmore"
-	default n
 	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
 	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
 	help

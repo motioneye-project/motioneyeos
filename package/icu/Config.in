@@ -1,5 +1,4 @@
 config BR2_PACKAGE_ICU
 	bool "icu"
-	default n
 	help
 	  International Components for Unicode.

@@ -45,7 +45,6 @@ config BR2_UCLIBC_CONFIG
 
 config BR2_ENABLE_LOCALE
 	bool "Enable locale/gettext/i18n support?"
-	default n
 	help
 	    Enable locale/gettext/i18n support?
 
@@ -74,13 +73,11 @@ endchoice
 config BR2_PTHREAD_DEBUG
 	bool "Thread library debugging"
 	depends on BR2_PTHREADS || BR2_PTHREADS_OLD || BR2_PTHREADS_NATIVE
-	default n
 	help
 	  Build the thread library with debugging enabled.
 
 config BR2_UCLIBC_PROGRAM_INVOCATION
 	bool "Enable 'program invocation name'"
-	default n
 	help
 	  Support for the GNU-specific program_invocation_name and
 	  program_invocation_short_name strings.  Some GNU packages 

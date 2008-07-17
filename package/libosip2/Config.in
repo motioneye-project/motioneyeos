@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBOSIP2
 	bool "libosip2"
-	default n
 	help
 	  GNU SIP (Session Initiation Protocol)
 	  This library aims to provide multimedia and telecom software

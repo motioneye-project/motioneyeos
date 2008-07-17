@@ -67,13 +67,11 @@ config	BR2_KERNEL_ARCH_PATCH_DIR
 
 config	BR2_LINUX_AVR32_ISI_PATCH
 	bool "Add ISI patch"
-	default n
 	help
 	  Add support for the Image Sensor Interface
 
 config	BR2_LINUX_AVR32_AC97_PATCH
 	bool "Add AC97 patch"
-	default n
 	help
 	  Add support for AC97. 
 	  Will need to be patched further to change GPIO_PIN_NONE
@@ -81,6 +79,5 @@ config	BR2_LINUX_AVR32_AC97_PATCH
 
 config	BR2_LINUX_AVR32_PSIF_PATCH
 	bool "Add PSIF patch"
-	default n
 	help
 	  Add support for the PS/2 Interface

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_FAKEROOT
 	bool "fakeroot"
-	default n
 	help
 	  Run commands in an environment faking root privileges.
 
@@ -9,4 +8,3 @@ config BR2_PACKAGE_FAKEROOT
 # dummy for fakeroot-source
 config BR2_HOST_FAKEROOT
 	bool
-	default n

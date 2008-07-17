@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_BITSTREAM_75DPI
 	bool "font-bitstream-75dpi"
-	default n
 	help
 	  font-bitstream-75dpi 1.0.0
 	  No description available

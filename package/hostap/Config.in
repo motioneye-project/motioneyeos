@@ -1,6 +1,5 @@
 config BR2_PACKAGE_HOSTAP
 	bool "hostap"
-	default n
 	depends on BR2_DEPRECATED
 	select BR2_PACKAGE_PCMCIA
 	help

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BASH
 	bool "bash"
-	default n
 	select BR2_PACKAGE_NCURSES
 	help
 	  The standard GNU Bourne again shell.

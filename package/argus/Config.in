@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ARGUS
 	bool "argus"
-	default n
 	depends on BR2_PACKAGE_LIBPCAP
 	help
 	  A Real Time Flow Monitor-based audit engine.

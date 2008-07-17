@@ -1,6 +1,5 @@
 config BR2_PACKAGE_UTIL-LINUX
 	bool "util-linux"
-	default n
 	help
 	  Various useful/essential Linux utilities.
 

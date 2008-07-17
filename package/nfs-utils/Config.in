@@ -1,7 +1,6 @@
 config BR2_PACKAGE_NFS_UTILS
 	bool "nfs-utils"
 	depends on BR2_INET_RPC
-	default n
 	help
 	  The NFS Linux kernel server.
 	  Warning: We do not force largefile support on here on purpose.
@@ -17,21 +16,18 @@ menu "NFS utilities selection"
 
 config BR2_PACKAGE_NFS_UTILS_RPCDEBUG
 	bool "rpcdebug"
-	default n
 	depends on BR2_PACKAGE_NFS_UTILS
 	help
 	  The RPC debugging utility
 
 config BR2_PACKAGE_NFS_UTILS_RPC_LOCKD
 	bool "rpc.lockd"
-	default n
 	depends on BR2_PACKAGE_NFS_UTILS
 	help
 	  NFS lock manager for Linux kernels older than 2.4
 
 config BR2_PACKAGE_NFS_UTILS_RPC_RQUOTAD
 	bool "rpc.rquotad"
-	default n
 	depends on BR2_PACKAGE_NFS_UTILS
 	help
 	  NFS remote quota server

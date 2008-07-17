@@ -1,6 +1,5 @@
 config BR2_PACKAGE_WGET
 	bool "wget"
-	default n
 	help
 	  Network utility to retrieve files from http/ftp/etc...
 

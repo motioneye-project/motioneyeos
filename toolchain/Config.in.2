@@ -17,38 +17,32 @@ source "toolchain/sstrip/Config.in"
 
 config BR2_ENABLE_MULTILIB
 	bool "Enable multilib support?"
-	default n
 	help
 	    Build libraries to support different ABIs.
 
 config BR2_LARGEFILE
 	bool "Enable large file (files > 2 GB) support?"
 	depends on !BR2_cris
-	default n
 	help
 	    Enable large file (files > 2 GB) support
 
 config BR2_INET_IPV6
 	bool "Enable IPv6"
-	default n
 	help
 	    Enable IPv6.
 
 config BR2_INET_RPC
 	bool "Enable RPC"
-	default n
 	help
 	    Enable RPC. RPC support is needed for nfs.
 
 config BR2_USE_WCHAR
 	bool "Enable WCHAR support"
-	default n
 	help
 	  Enable WCHAR. WCHAR support is needed for several packages
 
 config BR2_SOFT_FLOAT
 	bool "Use software floating point by default"
-	default n
 	depends on BR2_arm || BR2_armeb || BR2_avr32 || BR2_mips || BR2_mipsel || BR2_powerpc || BR2_nios2
 	help
 	  If your target CPU does not have a Floating Point Unit (FPU) or a
@@ -60,7 +54,6 @@ config BR2_SOFT_FLOAT
 
 #config BR2_SOFT_FLOAT_FP
 #	bool "Use softfp"
-#	default n
 
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"

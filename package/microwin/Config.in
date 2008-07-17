@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MICROWIN
 	bool "microwin"
-	default n
 	help
 	 Microwindows Graphical User Interface for small and
 	 embedded enviroments.

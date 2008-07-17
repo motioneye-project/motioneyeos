@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBGLIB12
 	bool "libglib12"
-	default n
 	help
 	  Low-level core library that forms the basis of GTK+ and GNOME.
 

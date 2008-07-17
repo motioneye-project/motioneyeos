@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LZMA_TARGET
 	bool "Install lzma for the target system"
-	default n
 	select BR2_GCC_CROSS_CXX
 	help
 	  lzma utils on the target
@@ -9,14 +8,12 @@ config BR2_PACKAGE_LZMA_TARGET
 
 config BR2_PACKAGE_LZMA_TARGET_HEADERS
 	bool "lzma headers in target"
-	default n
 	depends on BR2_PACKAGE_LZMA_TARGET
 	help
 	  Put headers files in the target.
 
 config BR2_PACKAGE_LZMA_HOST
 	bool "Install lzma for the host/build system"
-	default n
 	help
 	  lzma utils on the host
 

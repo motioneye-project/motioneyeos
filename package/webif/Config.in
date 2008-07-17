@@ -1,6 +1,5 @@
 config BR2_PACKAGE_WEBIF
 	bool "webif - Status Console"
-	default n
 	select BR2_PACKAGE_HASERL
 	help
 	  A web interface for showing different network status. This package
@@ -13,7 +12,6 @@ config BR2_PACKAGE_WEBIF
 config BR2_PACKAGE_WEBIF_INSTALL_INDEX_HTML
 	bool "instal index.html in /www which redirects to webif"
 	depends on BR2_PACKAGE_WEBIF
-	default n
 	help
 	  Installs a /www/index.html which redirects to the status console cgi
 	  scripts.
@@ -21,7 +19,6 @@ config BR2_PACKAGE_WEBIF_INSTALL_INDEX_HTML
 config BR2_PACKAGE_WEBIF_LANGUAGES
 	bool "install language support"
 	depends on BR2_PACKAGE_WEBIF
-	default n
 	help
 	  This option installs support for other languages than english.
 

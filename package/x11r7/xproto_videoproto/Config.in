@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_VIDEOPROTO
 	bool "videoproto"
-	default n
 	help
 	  videoproto 2.2.2
 	  X.Org Video protocol headers

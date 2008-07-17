@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DILLO
 	bool "dillo"
-	default n
 	depends on BR2_PACKAGE_JPEG
 	depends on BR2_PACKAGE_LIBGLIB12
 	depends on BR2_PACKAGE_LIBGTK12

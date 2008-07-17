@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TCL
 	bool "tcl"
-	default n
 	help
 	  TCL(Tool Command Language) is a simple textual language.
 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GETTEXT
 	bool "gettext"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  The GNU `gettext' utilities are a set of tools that provide a
@@ -11,7 +10,6 @@ config BR2_PACKAGE_GETTEXT
 
 config BR2_PACKAGE_GETTEXT_STATIC
 	bool "Use libgettext.a instead of libgettext.so.*"
-	default n
 	depends on BR2_PACKAGE_GETTEXT
 	depends on BR2_arm
 	help
@@ -24,7 +22,6 @@ config BR2_PACKAGE_GETTEXT_STATIC
 
 config BR2_PACKAGE_LIBINTL
 	bool "libintl"
-	default n
 	help
 	  Selecting this package installs all of gettext in the staging
 	  directory and the shared library for it's use in the target.

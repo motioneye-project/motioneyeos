@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BRIDGE
 	bool "bridge-utils"
-	default n
 	help
 	  Manage ethernet bridging; a way to connect networks together to
 	  form a larger network.

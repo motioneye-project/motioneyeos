@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ETHTOOL
 	bool "ethtool"
-	default n
 	help
 	  ethtool is a small utility for examining and tuning your
 	  ethernet-based network interface.

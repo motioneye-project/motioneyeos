@@ -1,6 +1,5 @@
 menuconfig BR2_PACKAGE_IRDA_UTILS
 	bool "irda_utils"
-	default n
 	help
 		Tools for accessing the irda-Subsystem of the Linux-Kernel
 
@@ -13,37 +12,30 @@ config IRDA_IRATTACH
 
 config IRDA_IRDAPING
 	bool "irdaping"
-	default n
 	help
 		what ping is for networks is irdaping for Irda
 
 config IRDA_IRNETD
 	bool "irnetd"
-	default n
 	help
 		Needed for Networking over Irda
 
 config IRDA_IRDADUMP
 	bool "irdadump"
-	default n
 	help
 		Like tcpdump, but for infrared connections
 
 config IRDA_FINDCHIP
 	bool "findchip"
-	default n
 
 config IRDA_PSION
 	bool "support psion-dongle"
-	default n
 
 config IRDA_TEKRAM
 	bool "support tekram-dongle"
-	default n
 
 config IRDA_SMCINIT
 	bool "support toshiba-laptops"
-	default n
 	help
 		Some Toshiba Laptops have buggy BIOSes which didn't initialize 
 		Irda. This may help those.

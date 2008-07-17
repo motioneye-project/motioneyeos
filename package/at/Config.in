@@ -1,6 +1,5 @@
 config BR2_PACKAGE_AT
 	bool "at"
-	default n
 	help
 	 At and batch read shell commands from standard input and
 	 store them as jobs to be scheduled for execution in the

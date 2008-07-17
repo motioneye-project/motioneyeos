@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OLSR
 	bool "OLSR mesh networking Daemon"
-	default n
 	help
 	  olsr
 	  

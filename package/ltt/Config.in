@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LTT
 	bool "LTT (Linux Trace Toolkit)"
-	default n
 	help
 	  A suite of tools designed to extract program execution
 	  details from the Linux operating system and interpret them.

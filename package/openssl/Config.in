@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OPENSSL
 	bool "openssl"
-	default n
 	help
 	  A collaborative effort to develop a robust, commercial-grade, fully 
 	  featured, and Open Source toolkit implementing the Secure Sockets 
@@ -11,7 +10,6 @@ config BR2_PACKAGE_OPENSSL
 
 config BR2_PACKAGE_OPENSSL_TARGET_HEADERS
 	bool "openssl headers in target"
-	default n
 	depends on BR2_PACKAGE_OPENSSL
 	help
 	  Put openssl headers in the target.

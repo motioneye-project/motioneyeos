@@ -3,7 +3,6 @@ config BR2_PACKAGE_MIDORI
 	select BR2_PACKAGE_WEBKIT
 	select BR2_PACKAGE_LIBSEXY
 	select BR2_PACKAGE_PKGCONFIG
-	default n
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
 	help
 	  Midori is a lightweight web browser based on WebKit

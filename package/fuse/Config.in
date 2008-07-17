@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBFUSE
 	bool "libfuse"
-	default n
 	select BR2_LARGEFILE
 	help
 	  FUSE (Filesystem in UserSpacE)

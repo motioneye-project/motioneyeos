@@ -1,6 +1,5 @@
 config BR2_PACKAGE_NG_SPICE_REWORK
 	bool "ng-spice-rework"
-	default n
 	help
 	  Ngspice is a mixed-level/mixed-signal circuit simulator.
 

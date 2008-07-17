@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XDM
 	bool "xdm"
-	default n
 	select BR2_PACKAGE_XAPP_XINIT
 	select BR2_PACKAGE_XAPP_SESSREG
 	select BR2_PACKAGE_XAPP_XRDB

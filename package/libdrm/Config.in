@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBDRM
 	bool "libdrm"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Direct Rendering Manager

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBVORBIS
 	bool "libvorbis"
-	default n
 	depends on BR2_PACKAGE_LIBOGG
 	select BR2_PACKAGE_PKGCONFIG
 	help
@@ -18,7 +17,6 @@ config BR2_PACKAGE_LIBVORBIS
 config BR2_PACKAGE_LIBVORBIS_TREMOR
 	bool "use fixed point implementation (tremor)"
 	default y if BR2_SOFT_FLOAT
-	default n
 	depends on BR2_PACKAGE_LIBVORBIS
 	help
 	  Use the Tremor fixed point implementation

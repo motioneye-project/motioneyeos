@@ -1,11 +1,9 @@
 config BR2_PACKAGE_LXDOOM
 	bool "lxdoom"
-	default n
 	help
 	  This is the linux version of the popular doom game.
 config BR2_PACKAGE_LXDOOM_WAD
 	bool "lxdoom-wad"
-	default n
 	depends on BR2_PACKAGE_LXDOOM
 	help
 	  This is the shareware wad data files for the doom game.

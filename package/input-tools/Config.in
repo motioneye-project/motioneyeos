@@ -1,6 +1,5 @@
 config BR2_PACKAGE_INPUT_TOOLS
 	bool "input-tools"
-	default n
 	help
 	  Tools for the Linux kernel input layer.
 	  http://linuxconsole.sourceforge.net/

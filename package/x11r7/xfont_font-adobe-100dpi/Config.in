@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_ADOBE_100DPI
 	bool "font-adobe-100dpi"
-	default n
 	help
 	  font-adobe-100dpi 1.0.0
 	  No description available

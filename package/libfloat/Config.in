@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBFLOAT
 	bool "libfloat"
-	default n
 	help
 	 Soft floating point library.
 	 

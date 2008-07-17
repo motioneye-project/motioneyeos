@@ -1,6 +1,5 @@
 config BR2_PACKAGE_HASERL
 	bool "haserl"
-	default n
 	help
 	  Haserl is a small cgi wrapper that enables shell scripts to be
 	  embedded into html documents. It is intended for environments

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_BLACKBOX
 	bool "blackbox"
-	default n
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
 	help
 	  Blackbox is a fast, lightweight window manager for the X Window System.

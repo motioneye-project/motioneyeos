@@ -1,6 +1,5 @@
 config BR2_PACKAGE_FLEX
 	bool "flex"
-	default n
 	help
 	  A fast lexical analyser generator.  A tool for generating 
 	  programs that perform pattern-matching on text.

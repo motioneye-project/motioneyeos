@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_UTIL
 	bool "font-util"
-	default n
 	help
 	  font-util 1.0.1
 	  No description available

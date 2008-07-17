@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ALSA_UTILS
 	bool "alsa-utils"
-	default n
 	depends on BR2_PACKAGE_ALSA_LIB
 	depends on BR2_PACKAGE_NCURSES
 	help
@@ -18,7 +17,6 @@ menu "ALSA utils selection"
 
 config BR2_PACKAGE_ALSA_UTILS_ALSACONF
 	bool "alsaconf"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_ALSACTL
@@ -33,58 +31,47 @@ config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 
 config BR2_PACKAGE_ALSA_UTILS_AMIDI
 	bool "amidi"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_AMIXER
 	bool "amixer"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_APLAY
 	bool "aplay"
-	default n
 	select BR2_LARGEFILE
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_ARECORD
 	bool "arecord"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_IECSET
 	bool "iecset"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_ACONNECT
 	bool "aconnect"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_APLAYMIDI
 	bool "aplaymidi"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_ARECORDMIDI
 	bool "arecordmidi"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_ASEQDUMP
 	bool "aseqdump"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_ASEQNET
 	bool "aseqnet"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 config BR2_PACKAGE_ALSA_UTILS_SPEAKER_TEST
 	bool "speaker-test"
-	default n
 	depends on BR2_PACKAGE_ALSA_UTILS
 
 endmenu

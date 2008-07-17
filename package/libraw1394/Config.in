@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBRAW1394
 	bool "libraw1394"
-	default n
 	help
 		Library for direct access to IEEE 1394 bus.
 

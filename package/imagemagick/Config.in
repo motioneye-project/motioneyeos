@@ -1,6 +1,5 @@
 config BR2_PACKAGE_IMAGEMAGICK
 	bool "imagemagick"
-	default n
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_TIFF
 	help

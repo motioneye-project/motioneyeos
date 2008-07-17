@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LUA
 	bool "lua"
-	default n
 	depends on BR2_READLINE
 	depends on BR2_PACKAGE_NCURSES
 	help

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LEAFPAD
 	bool "leafpad"
-	default n
 	help
 	  GTK+ based simple text editor
 

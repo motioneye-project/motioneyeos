@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SQLITE
 	bool "sqlite"
-	default n
 	select BR2_PACKAGE_NCURSES
 	select BR2_READLINE
 	help

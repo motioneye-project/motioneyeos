@@ -1,6 +1,5 @@
 config BR2_PACKAGE_FBSET
 	bool "fbset"
-	default n
 	help
 	  Fbset is a system utility to show or change the settings of the frame
 	  buffer device. The frame buffer device provides a simple and unique

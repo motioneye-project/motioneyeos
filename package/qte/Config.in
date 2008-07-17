@@ -1,6 +1,5 @@
 config BR2_PACKAGE_QTE
 	bool "Qt/E"
-	default n
 	depends on BR2_DEPRECATED
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_PTHREADS_NATIVE
@@ -61,7 +60,6 @@ config BR2_QTE_VERSION
 
 config BR2_PACKAGE_QTE_QVFB
 	bool "QVfb"
-	default n
 	depends on BR2_PACKAGE_QTE
 	help
 	  Trolltech provides a Virtual Framebuffer used to simulate the embedded device during development
@@ -92,7 +90,6 @@ config BR2_QTE_QVFB_VERSION
 
 config BR2_PACKAGE_QTE_QT3
 	bool "Qt/E-3.3.x for Qtopia build"
-	default n
 	depends on BR2_PACKAGE_QTE_QTOPIA
 	help
 	  Qtopia requires a Qt/E version >= 3.3.0; when using a Qt/E-2.3.x on the runtime, Qtopia still needs a Qt/E-3.3.x codebase to build
@@ -122,7 +119,6 @@ config BR2_QTE_QT3_VERSION
 
 config BR2_PACKAGE_QTE_QTOPIA
 	bool "Qtopia"
-	default n
 	depends on BR2_PACKAGE_QTE
 	help
 	  Qtopia defines some more advanced components used for mobile devices

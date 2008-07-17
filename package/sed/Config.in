@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SED
 	bool "sed"
-	default n
 	depends on BR2_USE_WCHAR
 	help
 	  Super-useful stream editor.

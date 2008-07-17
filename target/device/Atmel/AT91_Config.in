@@ -4,7 +4,6 @@ comment "Atmel AT91 Specific Device Support"
 config BR2_TARGET_AT91
 	bool "Board support for the Atmel AT91 range of microprocessors"
 	depends on BR2_arm
-	default n
 	help
 	  Atmel AT91 ARM based systems
 
@@ -23,17 +22,14 @@ config	BR2_TARGET_ATMEL_NET
 config	BR2_TARGET_ATMEL_LCD
 	bool "With LCD controller"
 	depends on !BR2_TARGET_ATMEL_ALL
-	default n
 
 config	BR2_TARGET_ATMEL_FPDSP
 	bool "With Floating Point DSP"
 	depends on !BR2_TARGET_ATMEL_ALL
-	default n
 
 config	BR2_TARGET_ATMEL_MPB
 	bool "With customizable MP-Block"
 	depends on !BR2_TARGET_ATMEL_ALL
-	default n
 
 comment "Device Selection"
 

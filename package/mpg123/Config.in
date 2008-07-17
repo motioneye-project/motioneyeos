@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MPG123
 	bool "mpg123"
-	default n
 	help
 	  Fast, free and portable MPEG audio player for Unix.  It supports
 	  MPEG 1.0/2.0 layers 1, 2 and 3.

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBART
 	bool "libart"
-	default n
 	help
 	  Libart is a library for high-performance 2D graphics. It
 	  supports a very powerful imaging model, basically the same

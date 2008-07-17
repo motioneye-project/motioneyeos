@@ -2,7 +2,6 @@
 
 config BR2_PACKAGE_EXPAT
 	bool"expat"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  The Expat XML Parser.

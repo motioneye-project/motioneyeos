@@ -1,7 +1,6 @@
 config BR2_PACKAGE_SDL_TTF
 	bool "SDL_TTF"
 	depends on BR2_PACKAGE_SDL
-	default n
 	select BR2_PACKAGE_FREETYPE
 	help
 	  SDL_ttf is a sample TrueType font library. It allows you to

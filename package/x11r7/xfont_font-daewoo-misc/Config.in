@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_DAEWOO_MISC
 	bool "font-daewoo-misc"
-	default n
 	help
 	  font-daewoo-misc 1.0.0
 	  No description available

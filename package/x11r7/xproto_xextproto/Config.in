@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_XEXTPROTO
 	bool "xextproto"
-	default n
 	help
 	  xextproto 7.0.2
 	  X.Org XExt protocol headers

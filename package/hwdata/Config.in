@@ -1,6 +1,5 @@
 config BR2_PACKAGE_HWDATA
 	bool "hwdata"
-	default n
 	help
 	  Various hardware identification and configuration data, such as
 	  the pci.ids database, or the XFree86/xorg Cards database.

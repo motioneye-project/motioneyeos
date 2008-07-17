@@ -77,19 +77,16 @@ config BR2_LARGEFILE
 
 config BR2_INET_IPV6
 	bool "Enable IPv6"
-	default n
 	help
 	    Enable IPv6.
 
 config BR2_INET_RPC
 	bool "Enable RPC"
-	default n
 	help
 	    Enable RPC. RPC support is needed for nfs.
 
 config BR2_SOFT_FLOAT
 	bool "Use software floating point by default"
-	default n
 	depends on BR2_arm || BR2_armeb || BR2_mips || BR2_mipsel || BR2_powerpc
 	help
 	  If your target CPU does not have a Floating Point Unit (FPU) or a

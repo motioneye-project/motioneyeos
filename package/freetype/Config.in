@@ -1,6 +1,5 @@
 config BR2_PACKAGE_FREETYPE
 	bool "freetype"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	a free, high-quality and portable font engine.

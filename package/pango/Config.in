@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PANGO
 	bool "pango"
-	default n
 	select BR2_PACKAGE_PKGCONFIG
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_EXPAT

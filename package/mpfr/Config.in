@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBMPFR
 	bool "mpfr"
-	default n
 	default y if BR2_INSTALL_FORTRAN
 	select BR2_PACKAGE_LIBGMP
 	help
@@ -12,7 +11,6 @@ config BR2_PACKAGE_LIBMPFR
 
 config BR2_PACKAGE_LIBMPFR_HEADERS
 	bool "mpfr headers for target"
-	default n
 	depends on BR2_PACKAGE_LIBMPFR
 	select BR2_PACKAGE_LIBGMP_HEADERS
 	help

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAPP_XMH
 	bool "xmh"
-	default n
 	select BR2_PACKAGE_XLIB_LIBXAW
 	help
 	  xmh 1.0.1

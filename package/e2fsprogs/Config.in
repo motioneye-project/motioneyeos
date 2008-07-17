@@ -1,6 +1,5 @@
 config BR2_PACKAGE_E2FSPROGS
 	bool "e2fsprogs"
-	default n
 	help
 	  The EXT2 file system utilities and libraries
 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MICROPERL
 	bool "microperl"
-	default n
 	help
 	  Perl without operating-specific functions such as readdir.
 

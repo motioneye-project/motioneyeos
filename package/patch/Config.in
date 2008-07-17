@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PATCH
 	bool "patch"
-	default n
 	help
 	  Take patch files (containing difference listings) and apply them 
 	  to original files, producing patched versions.

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_IFPLUGD
 	bool "ifplugd"
-	default n
 	select BR2_PACKAGE_LIBDAEMON
 	help
 	  Ifplugd is a daemon which will automatically configure your

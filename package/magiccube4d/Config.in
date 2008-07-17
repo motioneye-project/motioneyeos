@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MAGICCUBE4D
 	bool "magiccube4d"
-	default n
 	help
 	  Another rubiks cube-like game in 4D
 

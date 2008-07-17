@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LRZSZ
 	bool "lrzsz"
-	default n
 	help
 	  Portable and fast implementation of the X/Y/Zmodem protocols.
 

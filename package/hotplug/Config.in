@@ -1,6 +1,5 @@
 config BR2_PACKAGE_HOTPLUG
 	bool "hotplug"
-	default n
 	help
 	  Plug in new devices and use them immediately.
 

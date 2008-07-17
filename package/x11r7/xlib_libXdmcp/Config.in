@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_LIBXDMCP
 	bool "libXdmcp"
-	default n
 	select BR2_PACKAGE_XUTIL_UTIL_MACROS
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help

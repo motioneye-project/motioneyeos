@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XLIB_LIBLBXUTIL
 	bool "liblbxutil"
-	default n
 	select BR2_PACKAGE_XPROTO_XEXTPROTO
 	help
 	  liblbxutil 1.0.1

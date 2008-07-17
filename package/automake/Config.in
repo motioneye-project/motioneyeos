@@ -1,6 +1,5 @@
 config BR2_PACKAGE_AUTOMAKE
 	bool "automake"
-	default n
 	help
 	  Tool for automatically generating Makefile's for input to 
 	  configure scripts (made by autoconf).

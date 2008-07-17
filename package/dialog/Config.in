@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DIALOG
     bool "dialog"
-    default n
     select BR2_PACKAGE_NCURSES
     help
 	dialog - display dialog boxes from shell scripts

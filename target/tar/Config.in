@@ -1,6 +1,5 @@
 config BR2_TARGET_ROOTFS_TAR
 	bool "tar the root filesystem"
-	default n
 	select BR2_HOST_FAKEROOT
 	help
 	  Build a tar archive of the root filesystem

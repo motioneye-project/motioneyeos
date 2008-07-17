@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TAR
 	bool "tar"
-	default n
 	depends on BR2_USE_WCHAR
 	select BR2_UCLIBC_PROGRAM_INVOCATION
 	help

@@ -1,6 +1,5 @@
 menuconfig BR2_PACKAGE_FESTIVAL
 bool "festival text-to-speech system"
-default n
 select BR2_PACKAGE_ALSA_LIB
 select BR2_PACKAGE_SPEECH_TOOLS
 help

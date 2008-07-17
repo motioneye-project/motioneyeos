@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XPROTO_XPROXYMANAGEMENTPROTOCOL
 	bool "xproxymanagementprotocol"
-	default n
 	help
 	  xproxymanagementprotocol 1.0.2
 	  X.Org PM protocol headers

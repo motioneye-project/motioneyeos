@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LINUX_FUSION
 	bool "linux-fusion communication layer for DirectFB multi"
-	default n
 	depends on BR2_PACKAGE_DIRECTFB
 	help
 	  DirectFB Communication Layer allowing multiple DirectFB
