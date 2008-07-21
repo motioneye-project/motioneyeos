@@ -16,7 +16,7 @@ sdl_mixer-source: $(DL_DIR)/$(SDL_MIXER_SOURCE)
 
 $(SDL_MIXER_DIR)/.unpacked: $(DL_DIR)/$(SDL_MIXER_SOURCE)
 	$(SDL_MIXER_CAT) $(DL_DIR)/$(SDL_MIXER_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	$(CONFIG_UPDATE) $(SDL_MIXER_DIR)
+	$(CONFIG_UPDATE) $(SDL_MIXER_DIR)/build-scripts
 	touch $@
 
 $(SDL_MIXER_DIR)/.configured: $(SDL_MIXER_DIR)/.unpacked $(STAGING_DIR)/usr/lib/libSDL.so
