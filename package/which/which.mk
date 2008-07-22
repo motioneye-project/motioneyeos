@@ -9,7 +9,7 @@ WHICH_SITE:=http://www.xs4all.nl/~carlo17/which/
 WHICH_DIR:=$(BUILD_DIR)/which-$(WHICH_VERSION)
 WHICH_CAT:=$(ZCAT)
 WHICH_BINARY:=which
-WHICH_TARGET_BINARY:=bin/which
+WHICH_TARGET_BINARY:=usr/bin/which
 
 $(DL_DIR)/$(WHICH_SOURCE):
 	$(WGET) -P $(DL_DIR) $(WHICH_SITE)/$(WHICH_SOURCE)
@@ -29,7 +29,8 @@ $(WHICH_DIR)/.configured: $(WHICH_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/ \
+		--prefix=/usr \
+		--sysconfdir=/etc \
 	)
 	touch $@
 
