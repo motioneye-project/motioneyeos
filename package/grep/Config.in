@@ -1,8 +1,8 @@
 config BR2_PACKAGE_GREP
 	bool "grep"
-	select BR2_PACKAGE_GETTEXT
-	select BR2_PACKAGE_LIBINTL
+	select BR2_PACKAGE_GETTEXT if BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_LIBINTL if BR2_ENABLE_LOCALE
 	help
 	  The GNU regular expression matcher.
-	  Needs gettext
+
 	  http://www.gnu.org/software/grep/grep.html

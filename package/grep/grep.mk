@@ -11,6 +11,10 @@ GNUGREP_CAT:=$(ZCAT)
 GNUGREP_BINARY:=src/grep
 GNUGREP_TARGET_BINARY:=bin/grep
 
+ifeq ($(BR2_ENABLE_LOCALE),y)
+GNUGREP_EXTRA_DEPS:=gettext libintl
+endif
+
 $(DL_DIR)/$(GNUGREP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GNUGREP_SITE)/$(GNUGREP_SOURCE)
 
@@ -65,7 +69,7 @@ grep-target_binary: $(GNUGREP_DIR)/$(GNUGREP_BINARY)
 	    cp -a $(GNUGREP_DIR)/src/grep $(GNUGREP_DIR)/src/egrep \
 		$(GNUGREP_DIR)/src/fgrep $(TARGET_DIR)/bin/; fi
 
-grep: uclibc gettext libintl grep-target_binary
+grep: uclibc $(GNUGREP_EXTRA_DEPS) grep-target_binary
 
 grep-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GNUGREP_DIR) uninstall
