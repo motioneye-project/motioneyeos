@@ -11,10 +11,6 @@ GNUGREP_CAT:=$(ZCAT)
 GNUGREP_BINARY:=src/grep
 GNUGREP_TARGET_BINARY:=bin/grep
 
-ifeq ($(BR2_ENABLE_LOCALE),y)
-GNUGREP_EXTRA_DEPS:=gettext libintl
-endif
-
 $(DL_DIR)/$(GNUGREP_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(GNUGREP_SITE)/$(GNUGREP_SOURCE)
 
@@ -54,8 +50,9 @@ $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY): $(GNUGREP_DIR)/$(GNUGREP_BINARY)
 	done
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-grep: uclibc $(GNUGREP_EXTRA_DEPS) $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY)
-
+grep: uclibc $(if $(BR2_ENABLE_LOCALE),gettext libintl) \
+	 $(TARGET_DIR)/$(GNUGREP_TARGET_BINARY)
+	echo deps: $^
 grep-clean:
 	rm -f $(addprefix $(TARGET_DIR)/bin/,egrep fgrep grep)
 	-$(MAKE) -C $(GNUGREP_DIR) clean
