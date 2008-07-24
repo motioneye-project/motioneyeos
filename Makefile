@@ -350,7 +350,7 @@ _source-check:
 
 external-deps:
 	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)/toolchain/wget-show-external-deps.sh \
-	source
+		SPIDER=--spider source
 
 #############################################################
 #

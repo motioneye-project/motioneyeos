@@ -131,7 +131,7 @@ TAR ?= tar
 # Retrieve and unpack the archive
 $(BUILD_DIR)/%/.stamp_downloaded:
 # support make source-check/external-deps
-ifeq ($(MAKELEVEL),1)
+ifneq ($(SPIDER),)
 	$(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
 	$(if $($(PKG)_PATCH),$(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_PATCH))
 else
