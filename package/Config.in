@@ -73,7 +73,6 @@ endif
 source "package/file/Config.in"
 source "package/gamin/Config.in"
 source "package/icu/Config.in"
-source "package/ipkg/Config.in"
 source "package/kexec/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/less/Config.in"
@@ -98,13 +97,11 @@ source "package/modutils/Config.in"
 endif
 source "package/ng-spice-rework/Config.in"
 source "package/popt/Config.in"
-source "package/portage/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/procps/Config.in"
 endif
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/psmisc/Config.in"
-source "package/rpm/Config.in"
 endif
 source "package/screen/Config.in"
 source "package/startup-notification/Config.in"
@@ -434,6 +431,20 @@ endif
 source "package/lzo/Config.in"
 source "package/lzma/Config.in"
 source "package/zlib/Config.in"
+endif
+
+menuconfig BR2_PACKAGEMGRS_SUPPORT
+	bool "Package managers"
+	default y
+	help
+	  Support for package managers like rpm, portage, ipkg, ..
+
+if BR2_PACKAGEMGRS_SUPPORT
+source "package/ipkg/Config.in"
+source "package/portage/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/rpm/Config.in"
+endif
 endif
 
 menuconfig BR2_SCRIPTING_SUPPORT
