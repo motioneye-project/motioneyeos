@@ -1,11 +1,8 @@
 config BR2_PACKAGE_LUA
 	bool "lua"
-	depends on BR2_READLINE
-	depends on BR2_PACKAGE_NCURSES
+	select BR2_READLINE
+	select BR2_PACKAGE_NCURSES
 	help
 	  Lua is a powerful, fast, light-weight, embeddable scripting language.
 
 	  http://www.lua.org/
-
-comment "lua		- disabled (requires readline and ncurses)"
-	depends on !BR2_READLINE && !BR2_PACKAGE_NCURSES
