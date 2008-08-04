@@ -69,7 +69,9 @@ source "package/bootutils/Config.in"
 endif
 source "package/cups/Config.in"
 source "package/customize/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/dash/Config.in"
+endif
 source "package/file/Config.in"
 source "package/gamin/Config.in"
 source "package/icu/Config.in"
