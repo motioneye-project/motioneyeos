@@ -183,7 +183,8 @@ ccache_target: uclibc $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
 ccache_target-sources: $(DL_DIR)/$(CCACHE_SOURCE)
 
 ccache_target-clean:
-	rm -f $(TARGET_DIR)/$(CCACHE_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/$(CCACHE_TARGET_BINARY) \
+	      $(addprefix $(TARGET_DIR)/bin/,cc gcc c++ g++)
 	-$(MAKE) -C $(CCACHE_DIR2) clean
 
 ccache_target-dirclean:
