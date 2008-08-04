@@ -12,7 +12,7 @@ VICE_INSTALL_TARGET = YES
 
 VICE_CONF_OPT = --without-resid --with-alsa CFLAGS="-O0"
 
-VICE_DEPENDENCIES = uclibc 
+VICE_DEPENDENCIES = uclibc
 
 $(eval $(call AUTOTARGETS,package,vice))
 

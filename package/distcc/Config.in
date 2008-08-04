@@ -1,8 +1,8 @@
 config BR2_PACKAGE_DISTCC
 	bool "distcc"
 	help
-	  Distributed compiler client and server.  Allows you to 
-	  distribute compilation of C code across several machines 
+	  Distributed compiler client and server.  Allows you to
+	  distribute compilation of C code across several machines
 	  on a network.
 
 	  http://distcc.samba.org/

@@ -15,6 +15,6 @@ ACE_OF_PENGUINS_CONF_OPT = --target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) --build=$(GNU_HOST_NAME) \
 		--prefix=/usr --sysconfdir=/etc
 
-ACE_OF_PENGUINS_DEPENDENCIES = uclibc libpng $(XSERVER) 
+ACE_OF_PENGUINS_DEPENDENCIES = uclibc libpng $(XSERVER)
 
 $(eval $(call AUTOTARGETS,package,ace_of_penguins))

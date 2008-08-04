@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBTOOL
 	bool "libtool"
 	help
-	  Library that hides the complexity of using shared/static libraries 
+	  Library that hides the complexity of using shared/static libraries
 	  on different platforms behind a consistent, portable interface.
 
 	  http://www.gnu.org/software/libtool/

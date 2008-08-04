@@ -3,7 +3,7 @@ config BR2_PACKAGE_TAR
 	depends on BR2_USE_WCHAR
 	select BR2_UCLIBC_PROGRAM_INVOCATION
 	help
-	  A program that saves many files together into a single tape or disk 
+	  A program that saves many files together into a single tape or disk
 	  archive, and can restore individual files from the archive.
 
 	  http://www.gnu.org/software/tar/

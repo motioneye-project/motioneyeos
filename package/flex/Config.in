@@ -1,7 +1,7 @@
 config BR2_PACKAGE_FLEX
 	bool "flex"
 	help
-	  A fast lexical analyser generator.  A tool for generating 
+	  A fast lexical analyser generator.  A tool for generating
 	  programs that perform pattern-matching on text.
 
 	  http://www.gnu.org/software/flex/

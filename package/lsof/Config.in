@@ -2,7 +2,7 @@ config BR2_PACKAGE_LSOF
 	bool "lsof"
 	help
 	  lsof (LiSt Open Files)
-	  The lsof tool lists information about files opened by 
+	  The lsof tool lists information about files opened by
 	  processes.
 
 	  ftp://lsof.itap.purdue.edu/pub/tools/unix/lsof/

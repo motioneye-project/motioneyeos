@@ -33,7 +33,7 @@ ifneq ($(BR2_INET_IPV6),y)
 	PHP_CONFIGURE+=--disable-ipv6
 endif
 
-### Extensions 
+### Extensions
 ifeq ($(BR2_PACKAGE_PHP_EXT_SOCKETS),y)
 	PHP_CONFIGURE+=--enable-sockets
 endif

@@ -9,7 +9,7 @@ PANGO_SITE = http://ftp.gnome.org/pub/GNOME/sources/pango/1.19
 PANGO_AUTORECONF = YES
 PANGO_INSTALL_STAGING = YES
 PANGO_INSTALL_TARGET = YES
-PANGO_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install 
+PANGO_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
 PANGO_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
@@ -40,14 +40,14 @@ PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		gl_cv_func_mkdir_trailing_slash_bug=no gl_cv_func_mkstemp_limitations=no \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no PKG_CONFIG_SYSROOT="$(STAGING_DIR)" \
-		ac_cv_path_GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config 
+		ac_cv_path_GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 		
 ifneq ($(BR2_PACKAGE_XSERVER_none),y)
         PANGO_CONF_OPT_X = --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib --disable-glibtest
 else
-        PANGO_CONF_OPT_X = --without-x 
+        PANGO_CONF_OPT_X = --without-x
 endif
 
 PANGO_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
@@ -62,7 +62,7 @@ PANGO_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--enable-explicit-deps=no --disable-debug PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig"
 
 
-PANGO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 $(XSERVER) cairo 
+PANGO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 $(XSERVER) cairo
 
 
 $(eval $(call AUTOTARGETS,package,pango))

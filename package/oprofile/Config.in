@@ -16,4 +16,4 @@ config BR2_PACKAGE_OPROFILE
 	  statistics, which can also be used for basic time-spent
 	  profiling. All code is profiled: hardware and software
 	  interrupt handlers, kernel modules, the kernel, shared
-	  libraries, and applications. 
+	  libraries, and applications.

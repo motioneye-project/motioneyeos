@@ -19,13 +19,13 @@ config BR2_PACKAGE_IPSEC_TOOLS_NATT
 	depends on BR2_PACKAGE_IPSEC_TOOLS
 	bool "Enable NAT-Traversal"
 	help
-		This needs kernel support, which is available on Linux. On 
-		NetBSD, NAT-Traversal kernel support has not been integrated 
-		yet, you can get it from here: 
+		This needs kernel support, which is available on Linux. On
+		NetBSD, NAT-Traversal kernel support has not been integrated
+		yet, you can get it from here:
 
-		http://ipsec-tools.sourceforge.net/netbsd_nat-t.diff If you 
+		http://ipsec-tools.sourceforge.net/netbsd_nat-t.diff If you
 
-		live in a country where software patents are legal, using 
+		live in a country where software patents are legal, using
 		NAT-Traversal might infringe a patent.
 
 

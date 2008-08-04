@@ -8,7 +8,7 @@ config BR2_PACKAGE_LIGHTTPD
 	  Auth, Output-Compression, URL-Rewriting and many more) make
 	  lighttpd the perfect webserver-software for every server that
 	  is suffering load problems.
-		 
+		
 	  http://www.lighttpd.net/
 
 if BR2_PACKAGE_LIGHTTPD

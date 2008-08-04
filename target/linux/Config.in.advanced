@@ -1,33 +1,33 @@
 if BR2_KERNEL_LINUX_ADVANCED
 # --- "Linux kernel options"
 # This file exports the following symbols for use by Makefile's
-# 
+#
 # BR2_PACKAGE_LINUX
-# 
+#
 # BR2_KERNEL_SITE
 # BR2_DOWNLOAD_LINUX26_VERSION
 # BR2_LINUX26_VERSION
-# 
+#
 # BR2_KERNEL_PATCH_SITE
 # BR2_KERNEL_PATCH
-# 
+#
 # BR2_LINUX26_CUSTOM
 # BR2_CUSTOM_LINUX26_PATCH_SITE
 # BR2_CUSTOM_LINUX26_PATCH
-# 
+#
 # BR2_LINUX_BSP_PATCH
-# 
+#
 # BR2_PACKAGE_LINUX_USE_KCONFIG
 # BR2_PACKAGE_LINUX_USE_DEFCONFIG
 # BR2_PACKAGE_LINUX_USE_XCONFIG
 # BR2_PACKAGE_LINUX_KCONFIG
-# 
+#
 # BR2_PACKAGE_LINUX_FORMAT
-# 
+#
 # BR2_LINUX_COPYTO_ROOTFS
 # BR2_LINUX_COPYTO_TFTPBOOT
 # BR2_LINUX_COPYTO
-# 
+#
 # ---------------------------------------------------------------------------
 # --- These 'constants' requires regular maintenance, so put them first
 config BR2_KERNEL_PATCH_LEVEL
@@ -340,7 +340,7 @@ source "target/device/Config.in.linux.patches"
 
 config BR2_LINUX_BOARD_PATCH
 	bool "Add board specific patch"
-	default y 
+	default y
 
 config BR2_LINUX_BSP_PATCH
 	string "Additional patch to apply (from \$(DL_DIR))"

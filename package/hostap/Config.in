@@ -3,7 +3,7 @@ config BR2_PACKAGE_HOSTAP
 	depends on BR2_DEPRECATED
 	select BR2_PACKAGE_PCMCIA
 	help
-	  Linux driver for wireless LAN cards based on Intersil's 
+	  Linux driver for wireless LAN cards based on Intersil's
 	  Prism2/2.5/3 chipset.
 
 	  http://hostap.epitest.fi/

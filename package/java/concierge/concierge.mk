@@ -23,7 +23,7 @@ $(TARGET_DIR)/usr/lib/concierge/: $(DL_DIR)/concierge
 	cp -dpf package/concierge/files/init.xargs $(TARGET_DIR)/usr/lib/concierge/
 	touch -c $@
 
-$(TARGET_DIR)/usr/bin/concierge: 
+$(TARGET_DIR)/usr/bin/concierge:
 	cp -dpf package/concierge/files/concierge $(TARGET_DIR)/usr/bin/
 	chmod +x $(TARGET_DIR)/usr/bin/concierge
 	touch -c $@

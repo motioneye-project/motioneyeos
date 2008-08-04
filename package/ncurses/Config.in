@@ -1,7 +1,7 @@
 config BR2_PACKAGE_NCURSES
 	bool "ncurses"
 	help
-	  The Ncurses (new curses) library is a free software emulation of 
+	  The Ncurses (new curses) library is a free software emulation of
 	  curses in System V Release 4.0, and more.
 
 	  http://www.gnu.org/software/ncurses/
@@ -11,13 +11,13 @@ config BR2_PACKAGE_NCURSES_TARGET_PANEL
 	depends on BR2_PACKAGE_NCURSES
 	help
 	  Includes ncurses dynamic libpanel in target
- 
+
 config BR2_PACKAGE_NCURSES_TARGET_FORM
 	bool "ncurses libform in target"
 	depends on BR2_PACKAGE_NCURSES
 	help
 	  Includes ncurses dynamic libform in target
- 
+
 config BR2_PACKAGE_NCURSES_TARGET_MENU
 	bool "ncurses libmenu in target"
 	depends on BR2_PACKAGE_NCURSES

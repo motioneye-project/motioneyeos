@@ -157,7 +157,7 @@ $(BUILD_DIR)/%/.stamp_extracted:
 # if the package uses libtool, patch it for cross-compiling in buildroot
 	for i in `find $(@D) -name ltmain.sh`; do \
 		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
-	done 
+	done
 	$(Q)touch $@
 
 # Patch

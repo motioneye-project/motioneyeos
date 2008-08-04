@@ -5,7 +5,7 @@ menuconfig BR2_TARGET_SHARP
 if BR2_TARGET_SHARP
 comment "Sharp Specific Device Support"
 	depends on BR2_arm
- 
+
 config BR2_TARGET_SHARP_LNODE80
 	bool "Board support for the LNode80 development board"
 	depends on BR2_arm

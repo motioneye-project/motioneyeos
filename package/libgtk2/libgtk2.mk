@@ -9,8 +9,8 @@ LIBGTK2_SITE = ftp://ftp.gtk.org/pub/gtk/2.12
 LIBGTK2_AUTORECONF = NO
 LIBGTK2_INSTALL_STAGING = YES
 LIBGTK2_INSTALL_TARGET = YES
-LIBGTK2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install 
-LIBGTK2_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install 
+LIBGTK2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
+LIBGTK2_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 LIBGTK2_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no \
@@ -71,7 +71,7 @@ LIBGTK2_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_GLIB)/bin/gdk-pixbuf-csource \
 		ac_cv_prog_F77=no \
 		ac_cv_prog_CXX=no \
-		ac_cv_path_CUPS_CONFIG=no 
+		ac_cv_path_CUPS_CONFIG=no
 
 LIBGTK2_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -109,7 +109,7 @@ ifneq ($(BR2_PACKAGE_XSERVER_none),y)
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--with-gdktarget=x11
-	LIBGTK2_DEPENDENCIES_EXTRA = xlib_libXcomposite $(XSERVER) 
+	LIBGTK2_DEPENDENCIES_EXTRA = xlib_libXcomposite $(XSERVER)
 else
 	LIBGTK2_CONF_OPT += --without-x
 endif

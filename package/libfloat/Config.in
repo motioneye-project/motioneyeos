@@ -2,6 +2,6 @@ config BR2_PACKAGE_LIBFLOAT
 	bool "libfloat"
 	help
 	 Soft floating point library.
-	 
+	
 	 http://netwinder.osuosl.org/devteam/scottb/libfloat/
 

@@ -80,6 +80,6 @@ config BR2_UCLIBC_PROGRAM_INVOCATION
 	bool "Enable 'program invocation name'"
 	help
 	  Support for the GNU-specific program_invocation_name and
-	  program_invocation_short_name strings.  Some GNU packages 
+	  program_invocation_short_name strings.  Some GNU packages
 	  (like tar and coreutils) utilize these for extra useful
 	  output, but in general are not required.

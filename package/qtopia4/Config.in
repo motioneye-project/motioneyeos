@@ -83,7 +83,7 @@ config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	depends on BR2_PACKAGE_QTOPIA4
 	help
-	  Turns on support for older Qt3. This will create an additional 
+	  Turns on support for older Qt3. This will create an additional
 	  library with proxy code and increase the space required on target.
 	  If unsure say n.
 
@@ -185,7 +185,7 @@ config BR2_PACKAGE_QTOPIA4_SYSTEMZLIB
 	help
 	  Use the shared zlib from the system.
 endchoice
-								    
+								
 choice
 	prompt "freetype2 support"
 	depends on BR2_PACKAGE_QTOPIA4

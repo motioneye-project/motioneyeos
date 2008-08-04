@@ -260,7 +260,7 @@ TARGETS+=target-devfiles
 # target stuff is last so it can override anything else
 include target/Makefile.in
 
-TARGETS+=erase-fakeroots 
+TARGETS+=erase-fakeroots
 
 TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS) $(BASE_TARGETS))
@@ -337,10 +337,10 @@ ifeq ($(BR2_HAVE_DEVFILES),y)
 	( scripts/copy.sh $(STAGING_DIR) $(TARGET_DIR) )
 else
 	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/lib/pkgconfig
-	find $(TARGET_DIR)/usr/lib -name '*.a' -delete 
-	find $(TARGET_DIR)/lib -name '*.a' -delete 
-	find $(TARGET_DIR)/usr/lib -name '*.la' -delete 
-	find $(TARGET_DIR)/lib -name '*.la' -delete 
+	find $(TARGET_DIR)/usr/lib -name '*.a' -delete
+	find $(TARGET_DIR)/lib -name '*.a' -delete
+	find $(TARGET_DIR)/usr/lib -name '*.la' -delete
+	find $(TARGET_DIR)/lib -name '*.la' -delete
 endif
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
@@ -485,7 +485,7 @@ prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
 log:	.lognr.$(PROJECT)
 	@expr `cat .lognr.$(PROJECT)` + 1 > .lognr.$(PROJECT)	
 	@echo Creating $(PROJECT)-`cat .lognr.$(PROJECT)`.log
-	@$(MAKE) > $(PROJECT)-`cat .lognr.$(PROJECT)`.log 2>&1 
+	@$(MAKE) > $(PROJECT)-`cat .lognr.$(PROJECT)`.log 2>&1
 
 
 cross: $(BASE_TARGETS)

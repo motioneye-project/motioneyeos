@@ -13,7 +13,7 @@ choice
 config BR2_TOOLCHAIN_BUILDROOT
 	bool "Buildroot toolchain"
 	depends on !BR2_avr32
-  
+
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External binary toolchain"
 

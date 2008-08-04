@@ -32,7 +32,7 @@ endif
 #	bool "Common Applications"
 #	default y
 #	help
-#	  A set of applications, utilities and libraries for 
+#	  A set of applications, utilities and libraries for
 #	  text processing, toolchain generation and other things.
 
 

@@ -2,9 +2,9 @@ config BR2_PACKAGE_MODUTILS
 	bool "modutils"
 	depends on !BR2_PACKAGE_MODULE_INIT_TOOLS
 	help
-	  The modutils packages includes the kerneld program for automatic 
-	  loading and unloading of modules, as well as other module 
-	  management programs. Examples of loaded and unloaded modules are 
+	  The modutils packages includes the kerneld program for automatic
+	  loading and unloading of modules, as well as other module
+	  management programs. Examples of loaded and unloaded modules are
 	  device drivers and filesystems, as well as some other things.
 
 	  linux v.<2.6

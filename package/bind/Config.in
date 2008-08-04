@@ -8,7 +8,7 @@ config BR2_PACKAGE_BIND
 
 	    * a Domain Name System server (named)
 	    * a Domain Name System resolver library
-	    * tools for verifying the proper operation of the DNS server 
+	    * tools for verifying the proper operation of the DNS server
 
 	  The BIND DNS Server is used on the vast majority of name
 	  serving machines on the Internet, providing a robust and
@@ -16,6 +16,6 @@ config BR2_PACKAGE_BIND
 	  architecture can be built. The resolver library included in
 	  the BIND distribution provides the standard APIs for
 	  translation between domain names and Internet addresses and is
-	  intended to be linked with applications requiring name service. 
+	  intended to be linked with applications requiring name service.
 
 	  http://www.isc.org/sw/bind/

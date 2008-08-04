@@ -3,8 +3,8 @@ config BR2_PACKAGE_COREUTILS
 	depends on BR2_USE_WCHAR
 	select BR2_UCLIBC_PROGRAM_INVOCATION
 	help
-	  All of the basic file/text/shell utilities.  These are the 
-	  core utilities which are expected to exist on every system.  
+	  All of the basic file/text/shell utilities.  These are the
+	  core utilities which are expected to exist on every system.
 	  Busybox implements many of the most common.
 
 	  Things like:

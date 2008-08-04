@@ -9,7 +9,7 @@ CLASSPATH_SITE = $(BR2_GNU_MIRROR)/classpath
 CLASSPATH_AUTORECONF = NO
 CLASSPATH_INSTALL_STAGING = YES
 CLASSPATH_INSTALL_TARGET = YES
-CLASSPATH_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install 
+CLASSPATH_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
 CLASSPATH_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 CLASSPATH_DIR_PREFIX = package/java
 
@@ -42,7 +42,7 @@ CLASSPATH_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=/usr/bin/glib-genmarshal \
-		ac_cv_prog_F77=no ac_cv_prog_CXX=no ac_cv_path_CUPS_CONFIG=no 
+		ac_cv_prog_F77=no ac_cv_prog_CXX=no ac_cv_path_CUPS_CONFIG=no
 
 
 CLASSPATH_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
@@ -63,21 +63,21 @@ CLASSPATH_DEPENDENCIES = uclibc pkgconfig png jpeg tiff
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 	CLASSPATH_DEPENDENCIES+= alsa-lib
 	CLASSPATH_CONF_OPT+= --enable-alsa
-else 
+else
 	CLASSPATH_CONF_OPT+= --disable-alsa
 endif
 
 ifeq ($(BR2_PACKAGE_QTOPIA4),y)
 	CLASSPATH_DEPENDENCIES+= qtopia4
 	CLASSPATH_CONF_OPT+= --enable-qt-peer
-else 
+else
 	CLASSPATH_CONF_OPT+= --disable-qt-peer
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGTK2),y)
 	CLASSPATH_DEPENDENCIES+= libgtk2
 	CLASSPATH_CONF_OPT+= --enable-gtk-peer
-else 
+else
 	CLASSPATH_CONF_OPT+= --disable-gtk-peer
 endif
 
@@ -87,7 +87,7 @@ ifneq ($(BR2_PACKAGE_XSERVER_none),y)
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib
 else
-	CLASSPATH_CONF_OPT+= --without-x 
+	CLASSPATH_CONF_OPT+= --without-x
 endif
 
 

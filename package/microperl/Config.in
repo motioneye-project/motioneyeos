@@ -10,5 +10,5 @@ config BR2_PACKAGE_MICROPERL_MODULES
 	help
 	  List of microperl modules to copy to the rootfs.
 	  E.g.
-	  warnings.pm warnings/register.pm strict.pm constant.pm vars.pm 
+	  warnings.pm warnings/register.pm strict.pm constant.pm vars.pm
 	  Exporter.pm Exporter/Heavy.pm Carp.pm Getopt/Long.pm

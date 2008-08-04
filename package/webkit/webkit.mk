@@ -9,7 +9,7 @@ WEBKIT_SITE = http://nightly.webkit.org/files/trunk/src/
 
 WEBKIT_INSTALL_STAGING = YES
 WEBKIT_INSTALL_TARGET = YES
-WEBKIT_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install 
+WEBKIT_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
 
 WEBKIT_AUTORECONF = YES
 WEBKIT_DEPENDENCIES = icu curl libxml2 libxslt xserver_xorg-server libgtk2 sqlite

@@ -3,5 +3,5 @@ config BR2_PACKAGE_MICROWIN
 	help
 	 Microwindows Graphical User Interface for small and
 	 embedded enviroments.
-	 
+	
 	 http://microwindows.censoft.com/

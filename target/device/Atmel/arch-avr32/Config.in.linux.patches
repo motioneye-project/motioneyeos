@@ -73,7 +73,7 @@ config	BR2_LINUX_AVR32_ISI_PATCH
 config	BR2_LINUX_AVR32_AC97_PATCH
 	bool "Add AC97 patch"
 	help
-	  Add support for AC97. 
+	  Add support for AC97.
 	  Will need to be patched further to change GPIO_PIN_NONE
 	  to the real pin used as AC-97 reset pin.
 

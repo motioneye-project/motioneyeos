@@ -1,9 +1,9 @@
 config BR2_PACKAGE_MODULE_INIT_TOOLS
 	bool "module-init-tools"
 	help
-	  The module-init-tools package contains a set of programs for 
-	  loading, inserting, and removing kernel modules for Linux 
-	  (versions 2.5.48 and above). It serves the same function that 
+	  The module-init-tools package contains a set of programs for
+	  loading, inserting, and removing kernel modules for Linux
+	  (versions 2.5.48 and above). It serves the same function that
 	  the "modutils" package serves for Linux 2.4.
 
 	  http://www.kernel.org/pub/linux/utils/kernel/module-init-tools/

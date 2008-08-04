@@ -1,7 +1,7 @@
 config BR2_PACKAGE_IPROUTE2
 	bool "iproute2"
 	help
-	  Kernel routing and traffic control utilities.  Provides things 
+	  Kernel routing and traffic control utilities.  Provides things
 	  like ip and tc.
 
 	  http://developer.osdl.org/dev/iproute2/

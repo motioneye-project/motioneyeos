@@ -25,7 +25,7 @@ config BR2_PACKAGE_NEON_LIBXML2
 	bool "libxml2"
 	depends on BR2_PACKAGE_LIBXML2
 	help
-	  libxml2    use libxml2, a library to read, modify and 
+	  libxml2    use libxml2, a library to read, modify and
 	             write XML and HTML files.
 
 config BR2_PACKAGE_NEON_NOXML

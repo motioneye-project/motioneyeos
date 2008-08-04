@@ -9,7 +9,7 @@ LIBGLIB2_SITE = http://ftp.gtk.org/pub/glib/2.15
 LIBGLIB2_AUTORECONF = NO
 LIBGLIB2_INSTALL_STAGING = YES
 LIBGLIB2_INSTALL_TARGET = YES
-LIBGLIB2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install 
+LIBGLIB2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
 
 LIBGLIB2_CONF_ENV =	$(TARGET_CONFIGURE_OPTS) $(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
@@ -41,7 +41,7 @@ LIBGLIB2_CONF_ENV =	$(TARGET_CONFIGURE_OPTS) $(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal ac_cv_prog_F77=no \
-		ac_cv_prog_CXX=no ac_cv_func_posix_getgrgid_r=no 
+		ac_cv_prog_CXX=no ac_cv_func_posix_getgrgid_r=no
 
 LIBGLIB2_CONF_OPT =	--target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) --prefix=/usr \
@@ -51,8 +51,8 @@ LIBGLIB2_CONF_OPT =	--target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--datadir=/usr/share --localstatedir=/var \
 		--includedir=/usr/include --mandir=/usr/man \
 		--infodir=/usr/info --enable-shared \
-		--enable-static $(DISABLE_NLS) 
+		--enable-static $(DISABLE_NLS)
 
-LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig 
+LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig
 
 $(eval $(call AUTOTARGETS,package,libglib2))

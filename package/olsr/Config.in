@@ -2,7 +2,7 @@ config BR2_PACKAGE_OLSR
 	bool "OLSR mesh networking Daemon"
 	help
 	  olsr
-	  
+	
 	  The Optimized Link State Routing protocol (OLSR) is a routing protocol that is optimised
 	  for mobile ad-hoc networks, sometimes called wireless mesh networks. It is a proactive
 	  link-state routing protocol that floods a full topology table to all nodes in the network

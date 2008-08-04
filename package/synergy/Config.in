@@ -2,9 +2,9 @@ config BR2_PACKAGE_SYNERGY
 	bool "synergy"
 	depends on BR2_PACKAGE_XORG7
 	help
-	  Synergy lets you easily share a single mouse and 
-	  keyboard between multiple computers with different 
-	  operating systems, each with its own display, 
+	  Synergy lets you easily share a single mouse and
+	  keyboard between multiple computers with different
+	  operating systems, each with its own display,
 	  without special hardware.
 
 	  http://synergy2.sourceforge.net/

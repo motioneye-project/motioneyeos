@@ -11,7 +11,7 @@ config BR2_ATMEL_MIRROR
 	  Issues with contents of this server needs to be highlighted
 	  on the buildroot mailing list and
 	  should not be addressed directly to Atmel
-	  Atmel provides support for their AVR32 chips on 
+	  Atmel provides support for their AVR32 chips on
 	  http://avr32linux.org/ or http://www.avrfreaks.net/
 	  Atmel provides support for AT91 chips on www.at91.com.
 	  Commercial AT91 Linux support is through www.timesys.com

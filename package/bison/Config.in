@@ -1,8 +1,8 @@
 config BR2_PACKAGE_BISON
 	bool "bison"
 	help
-	  General-purpose parser generator that converts a 
-	  grammar description for an LALR context-free grammar into a C 
+	  General-purpose parser generator that converts a
+	  grammar description for an LALR context-free grammar into a C
 	  program to parse that grammar.
 
 	  http://www.gnu.org/software/bison/

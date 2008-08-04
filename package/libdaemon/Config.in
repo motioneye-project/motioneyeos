@@ -2,7 +2,7 @@ config BR2_PACKAGE_LIBDAEMON
 	bool "libdaemon"
 	select BR2_PACKAGE_PKGCONFIG
 	help
-	  libdaemon is a lightweight C library that eases the 
+	  libdaemon is a lightweight C library that eases the
 	  writing of UNIX daemons.
 
 	  http://0pointer.de/lennart/projects/libdaemon/

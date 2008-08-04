@@ -12,8 +12,8 @@ IPKG_INSTALL_STAGING = YES
 IPKG_INSTALL_TARGET = YES
 
 IPKG_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) --prefix=/usr --sysconfdir=/etc 
+		--build=$(GNU_HOST_NAME) --prefix=/usr --sysconfdir=/etc
 
-IPKG_DEPENDENCIES = uclibc 
+IPKG_DEPENDENCIES = uclibc
 
 $(eval $(call AUTOTARGETS,package,ipkg))

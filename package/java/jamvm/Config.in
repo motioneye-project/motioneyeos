@@ -3,7 +3,7 @@ config BR2_PACKAGE_JAMVM
         depends on BR2_PACKAGE_CLASSPATH
 	select BR2_PACKAGE_PKGCONFIG
 	help
-	  JamVM is a new Java Virtual Machine which conforms to 
-	  the JVM specification version 2 (blue book). 
+	  JamVM is a new Java Virtual Machine which conforms to
+	  the JVM specification version 2 (blue book).
 
 	  http://jamvm.sourceforge.net/

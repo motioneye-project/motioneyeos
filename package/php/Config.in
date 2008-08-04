@@ -12,7 +12,7 @@ config BR2_PACKAGE_PHP_CLI
         depends on BR2_PACKAGE_PHP
         default y
         help
-          command line interface for php. 
+          command line interface for php.
           you must have at least cli or cgi selected.
 
 config BR2_PACKAGE_PHP_CGI

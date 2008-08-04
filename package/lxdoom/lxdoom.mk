@@ -17,6 +17,6 @@ LXDOOM_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--includedir=/usr/include --enable-shared \
 		$(DISABLE_NLS)
 
-LXDOOM_DEPENDENCIES = uclibc  
+LXDOOM_DEPENDENCIES = uclibc
 
 $(eval $(call AUTOTARGETS,package,lxdoom))

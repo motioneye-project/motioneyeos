@@ -56,7 +56,7 @@ $(OPENMOTIF_DIR)/.configured: $(OPENMOTIF_HOST_DIR)/.configured
 	touch $(OPENMOTIF_DIR)/.configured
 
 $(OPENMOTIF_HOST_DIR)/.done: $(OPENMOTIF_DIR)/.configured
-	$(MAKE) -C $(OPENMOTIF_HOST_DIR) 
+	$(MAKE) -C $(OPENMOTIF_HOST_DIR)
 	ln -s -f $(OPENMOTIF_HOST_DIR)/config/util/makestrs $(OPENMOTIF_DIR)/config/util/makestrs-host
 	ln -s -f $(OPENMOTIF_HOST_DIR)/tools/wml/wmluiltok $(OPENMOTIF_DIR)/tools/wml/wmluiltok-host
 	ln -s -f $(OPENMOTIF_HOST_DIR)/tools/wml/wml $(OPENMOTIF_DIR)/tools/wml/wml-host
@@ -70,7 +70,7 @@ $(OPENMOTIF_HOST_DIR)/.done: $(OPENMOTIF_DIR)/.configured
 	touch $(OPENMOTIF_HOST_DIR)/.done
 
 $(OPENMOTIF_DIR)/.done: $(OPENMOTIF_HOST_DIR)/.done
-	$(MAKE) -C $(OPENMOTIF_DIR) 
+	$(MAKE) -C $(OPENMOTIF_DIR)
 	$(MAKE) -C $(OPENMOTIF_DIR) install DESTDIR=$(STAGING_DIR)
 	$(MAKE) -C $(OPENMOTIF_DIR) install DESTDIR=$(TARGET_DIR)
 	touch $(OPENMOTIF_DIR)/.done

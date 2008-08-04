@@ -1,6 +1,6 @@
 config BR2_PACKAGE_KISMET
 	bool "kismet"
-	select BR2_PACKAGE_NCURSES 
+	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBPCAP
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_DBUS_GLIB
@@ -13,5 +13,5 @@ config BR2_PACKAGE_KISMET
 		
 		Kismet identifies networks by passively collecting packets and detecting standard named
 		networks, detecting (and given time, decloaking) hidden networks, and infering the presence
-		of nonbeaconing networks via data traffic. 
+		of nonbeaconing networks via data traffic.
 

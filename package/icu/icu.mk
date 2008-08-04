@@ -51,7 +51,7 @@ $(ICU_HOST_DIR)/.done: $(ICU_DIR)/.configured
 	touch $(ICU_HOST_DIR)/.done
 
 $(ICU_DIR)/.done: $(ICU_HOST_DIR)/.done
-	$(MAKE) -C $(ICU_DIR) 
+	$(MAKE) -C $(ICU_DIR)
 	$(MAKE) -C $(ICU_DIR) install DESTDIR=$(STAGING_DIR)
 	$(MAKE) -C $(ICU_DIR) install DESTDIR=$(TARGET_DIR)
 	$(SED) "s,^default_prefix=.*,default_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/icu-config

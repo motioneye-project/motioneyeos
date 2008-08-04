@@ -37,7 +37,7 @@ config IRDA_TEKRAM
 config IRDA_SMCINIT
 	bool "support toshiba-laptops"
 	help
-		Some Toshiba Laptops have buggy BIOSes which didn't initialize 
+		Some Toshiba Laptops have buggy BIOSes which didn't initialize
 		Irda. This may help those.
 	
 endif

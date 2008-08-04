@@ -9,7 +9,7 @@ config BR2_TARGET_GRUB_SPLASH
 	depends on BR2_TARGET_GRUB
 	help
 	  Add support for splashimage.
-	  
+	
 	  A splashimage is a 14-color indexed .xpm picture which
 	  is displayed as background for the grub menu.
 

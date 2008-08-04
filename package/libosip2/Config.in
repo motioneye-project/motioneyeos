@@ -4,6 +4,6 @@ config BR2_PACKAGE_LIBOSIP2
 	  GNU SIP (Session Initiation Protocol)
 	  This library aims to provide multimedia and telecom software
 	  developers an easy and powerful interface to initiate and
-	  control SIP based sessions in their applications. 
+	  control SIP based sessions in their applications.
 	  SIP is a open standard replacement from IETF for H323.
 

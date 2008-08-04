@@ -74,7 +74,7 @@ config BR2_PACKAGE_PYTHON_READLINE
 	depends on BR2_PACKAGE_PYTHON
 	bool "readline"
 	help
-	  readline module for Python (required for command-line 
+	  readline module for Python (required for command-line
 	  editing in the Python shell).
 
 config BR2_PACKAGE_PYTHON_SSL
