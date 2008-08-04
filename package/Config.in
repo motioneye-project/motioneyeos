@@ -4,13 +4,11 @@ source "package/busybox/Config.in"
 
 comment "The minimum needed to build a uClibc development system"
 
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/bash/Config.in"
 source "package/bzip2/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/coreutils/Config.in"
-endif
 source "package/diffutils/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/findutils/Config.in"
 endif
 source "package/flex/Config.in"
@@ -106,8 +104,6 @@ source "package/procps/Config.in"
 endif
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/psmisc/Config.in"
-endif
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/rpm/Config.in"
 endif
 source "package/screen/Config.in"
@@ -118,14 +114,8 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/sysklogd/Config.in"
 # busybox has init and the runit stuff
 source "package/sysvinit/Config.in"
-endif
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/tinylogin/Config.in"
-endif
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/util-linux/Config.in"
-endif
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/which/Config.in"
 endif
 
