@@ -34,10 +34,7 @@ i2c-tools: uclibc $(TARGET_DIR)/$(I2C_TOOLS_TARGET_BINARY)
 i2c-tools-source: $(DL_DIR)/$(I2C_TOOLS_SOURCE)
 
 i2c-tools-clean:
-	for i in i2cdump i2cget i2cset i2cdetect; \
-	do \
-		rm -f $(TARGET_DIR)/usr/bin/$$i; \
-	done
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,i2cdump i2cget i2cset i2cdetect)
 	-$(MAKE) -C $(I2C_TOOLS_DIR) clean
 
 i2c-tools-dirclean:
