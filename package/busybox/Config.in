@@ -91,7 +91,7 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 config BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 	bool "Hide applications that are provided by busybox"
 	depends on BR2_PACKAGE_BUSYBOX
-	default y if BR2_PACKAGE_BUSYBOX_SNAPSHOT
+	default y
 	help
 	  Do not show packages in menuconfig that are potentially provided
 	  by busybox.
