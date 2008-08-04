@@ -4,5 +4,8 @@ config BR2_PACKAGE_LTRACE
 	select BR2_PACKAGE_LIBELF_HEADERS
 	help
 	  Debugging program which runs a specified command until it exits.
+	  While the command is executing, ltrace intercepts and records
+	  the dynamic library calls which are called by the executed
+	  process and the signals received by that process.
 
 	  http://packages.debian.org/unstable/utils/ltrace.html
