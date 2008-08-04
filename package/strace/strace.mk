@@ -64,7 +64,8 @@ endif
 strace: uclibc $(TARGET_DIR)/usr/bin/strace
 
 strace-clean:
-	rm -f $(TARGET_DIR)/usr/bin/strace
+	rm -f $(TARGET_DIR)/usr/bin/strace \
+	      $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/strace
 	-$(MAKE) -C $(STRACE_DIR) clean
 
 strace-dirclean:
