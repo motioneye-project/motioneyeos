@@ -8,10 +8,6 @@ ZLIB_SOURCE:=zlib-$(ZLIB_VERSION).tar.bz2
 ZLIB_CAT:=$(BZCAT)
 ZLIB_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
 ZLIB_DIR:=$(BUILD_DIR)/zlib-$(ZLIB_VERSION)
-ZLIB_CFLAGS:=-fPIC
-ifeq ($(BR2_LARGEFILE),y)
-ZLIB_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
-endif
 
 $(DL_DIR)/$(ZLIB_SOURCE):
 	$(WGET) -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
@@ -26,7 +22,7 @@ $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.patched
 	(cd $(ZLIB_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(ZLIB_CFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS) -fPIC" \
 		./configure \
 		--shared \
 		--prefix=/usr \

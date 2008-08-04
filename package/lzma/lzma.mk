@@ -9,10 +9,6 @@ LZMA_CAT:=$(ZCAT)
 LZMA_SITE:=http://tukaani.org/lzma/
 LZMA_HOST_DIR:=$(TOOL_BUILD_DIR)/lzma-$(LZMA_VERSION)
 LZMA_TARGET_DIR:=$(BUILD_DIR)/lzma-$(LZMA_VERSION)
-LZMA_CFLAGS:=$(TARGET_CFLAGS)
-ifeq ($(BR2_LARGEFILE),y)
-LZMA_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
-endif
 LZMA_TARGET_BINARY:=bin/lzma
 
 # lzma binary for use on the host
@@ -92,7 +88,7 @@ $(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.unpacked
 	(cd $(LZMA_TARGET_DIR); rm -f config.cache;\
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		CFLAGS="$(TARGET_CFLAGS) $(LZMA_CFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_func_malloc_0_nonnull=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \

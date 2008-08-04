@@ -80,6 +80,10 @@ ifeq ($(findstring yy,$(BR2_mips)$(BR2_MIPS_ABI64)),yy)
 TARGET_CFLAGS+=-fno-pic -mno-abicalls
 endif
 
+ifeq ($(BR2_LARGEFILE),y)
+TARGET_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
+endif
+
 TARGET_CXXFLAGS=$(TARGET_CFLAGS)
 
 # else it's an external toolchain

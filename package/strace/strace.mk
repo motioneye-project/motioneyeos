@@ -9,11 +9,6 @@ STRACE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/str
 STRACE_CAT:=$(BZCAT)
 STRACE_DIR:=$(BUILD_DIR)/strace-$(STRACE_VERSION)
 
-BR2_STRACE_CFLAGS:=
-ifeq ($(BR2_LARGEFILE),)
-BR2_STRACE_CFLAGS+=-U_LARGEFILE64_SOURCE -U__USE_LARGEFILE64 -U__USE_FILE_OFFSET64
-endif
-
 $(DL_DIR)/$(STRACE_SOURCE):
 	 $(WGET) -P $(DL_DIR) $(STRACE_SITE)/$(STRACE_SOURCE)
 
@@ -31,7 +26,7 @@ $(STRACE_DIR)/.configured: $(STRACE_DIR)/.unpacked
 		$(if $(BR2_LARGEFILE),ac_cv_type_stat64=yes,ac_cv_type_stat64=no) \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		CFLAGS="$(TARGET_CFLAGS) $(BR2_STRACE_CFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_header_linux_if_packet_h=yes \
 		ac_cv_header_linux_netlink_h=yes \
 		./configure \
