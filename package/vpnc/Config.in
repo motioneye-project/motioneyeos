@@ -1,7 +1,7 @@
 config BR2_PACKAGE_VPNC
 	bool "vpnc"
-	depends on BR2_PACKAGE_LIBGCRYPT
-	depends on BR2_PACKAGE_LIBGPG_ERROR
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_LIBGPG_ERROR
 	help
 	  Client for Cisco VPN concentrator
 	  3000 Series VPN Concentrator
@@ -10,6 +10,3 @@ config BR2_PACKAGE_VPNC
 	  Juniper/Netscreen
 
 	  http://www.unix-ag.uni-kl.de/~massar/vpnc
-
-comment "vpnc		- disabled (requires libgcrypt and libgpg_error)"
-	depends on !BR2_PACKAGE_LIBGCRYPT || !BR2_PACKAGE_LIBGPG_ERROR
