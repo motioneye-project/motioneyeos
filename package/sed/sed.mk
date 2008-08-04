@@ -113,7 +113,7 @@ $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 	(cd $(SED_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		CPPFLAGS="$(SED_CFLAGS)" \
+		CPPFLAGS="$(SED_CPPFLAGS)" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
