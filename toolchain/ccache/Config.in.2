@@ -1,7 +1,12 @@
 #
 
 config BR2_PACKAGE_CCACHE_TARGET
-	bool "ccache support in the target filesystem"
+	bool "ccache"
 	help
-	  ccache support in the target filesystem
+	  ccache is a compiler cache. It speeds up recompilation of
+	  C/C++ code by caching previous compiles and detecting when
+	  the same compile is being done again.
+
+	  http://ccache.samba.org
+
 
