@@ -1,6 +1,6 @@
 --- busybox-1.11.1/archival/libunarchive/get_header_tar.c	Wed Jun 25 14:51:17 2008
-+++ busybox-1.11.1-tar/archival/libunarchive/get_header_tar.c	Sun Jul 20 19:11:45 2008
-@@ -261,26 +261,31 @@
++++ busybox-1.11.1-tar/archival/libunarchive/get_header_tar.c	Wed Jul 23 02:16:24 2008
+@@ -261,26 +261,33 @@
  	case '0':
  #if ENABLE_FEATURE_TAR_OLDGNU_COMPATIBILITY
  		if (last_char_is(file_header->name, '/')) {
@@ -27,7 +27,9 @@
 -		break;
 +		goto size0;
  	case '5':
++#if ENABLE_FEATURE_TAR_OLDGNU_COMPATIBILITY
 + set_dir:
++#endif
  		file_header->mode |= S_IFDIR;
 -		break;
 +		goto size0;
