@@ -127,9 +127,9 @@ busybox: uclibc $(TARGET_DIR)/bin/busybox
 
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE)
 
-busybox-unpacked: $(BUSYBOX_DIR)/.unpacked
+busybox-unpacked: host-sed $(PROJECT_BUILD_DIR) $(BUSYBOX_DIR)/.unpacked
 
-busybox-config: $(BUSYBOX_DIR)/.configured
+busybox-config: host-sed $(PROJECT_BUILD_DIR) $(BUSYBOX_DIR)/.configured
 
 busybox-menuconfig: host-sed $(PROJECT_BUILD_DIR) busybox-source $(BUSYBOX_DIR)/.configured
 	$(MAKE) __TARGET_ARCH=$(ARCH) -C $(BUSYBOX_DIR) menuconfig
