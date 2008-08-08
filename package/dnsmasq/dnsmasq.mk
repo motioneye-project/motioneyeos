@@ -5,7 +5,7 @@
 #############################################################
 
 DNSMASQ_SITE:=http://thekelleys.org.uk/dnsmasq
-DNSMASQ_UPVER:=2.41
+DNSMASQ_UPVER:=2.45
 DNSMASQ_SOURCE:=dnsmasq-$(DNSMASQ_UPVER).tar.gz
 DNSMASQ_DIR:=$(BUILD_DIR)/dnsmasq-$(DNSMASQ_UPVER)
 DNSMASQ_BINARY:=dnsmasq
@@ -19,6 +19,10 @@ endif
 
 ifneq ($(BR2_PACKAGE_DNSMASQ_TFTP),y)
 DNSMASQ_COPTS+=-DNO_TFTP
+endif
+
+ifneq ($(BR2_LARGEFILE),y)
+DNSMASQ_COPTS+=-DNO_LARGEFILE
 endif
 
 ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
