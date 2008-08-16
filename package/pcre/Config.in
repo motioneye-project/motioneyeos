@@ -2,3 +2,5 @@ config BR2_PACKAGE_PCRE
 	bool "pcre"
 	help
 	  Perl Compatible Regular Expressions
+
+	  http://www.pcre.org/
