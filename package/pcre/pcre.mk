@@ -9,9 +9,10 @@ PCRE_SITE = ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre
 PCRE_INSTALL_STAGING = YES
 PCRE_INSTALL_TARGET = YES
 
-PCRE_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
-        --build=$(GNU_HOST_NAME) --prefix=/usr \
-        --includedir=/usr/include
+ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
+# pcre will use the host g++ if a cross version isn't available
+PCRE_CONF_OPT = --disable-cpp
+endif
 
 PCRE_DEPENDENCIES = uclibc
 
