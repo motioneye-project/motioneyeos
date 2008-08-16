@@ -213,7 +213,7 @@ $(BUILD_DIR)/%/.stamp_configured:
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--sysconfdir=/etc \
-		$(if $(findstring s,$(MAKEFLAGS)),--quiet,)
+		$(if $(findstring s,$(MAKEFLAGS)),--quiet,) \
 		$($(PKG)_CONF_OPT)
 	$(Q)touch $@
 
