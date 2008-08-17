@@ -11,8 +11,9 @@ SPEEX_INSTALL_STAGING = YES
 SPEEX_INSTALL_TARGET = YES
 SPEEX_INSTALL_TARGET_OPT:=DESTDIR=$(TARGET_DIR) install-strip
 SPEEX_DEPENDENCIES = libogg
-SPEEX_CONF_OPT = --with-ogg-libraries=$(STAGING_DIR)/usr/lib --with-ogg-includes=$(STAGING_DIR)/usr/include \
-		--disable-static --enable-fixed-point $(DISABLE_NLS)
+SPEEX_CONF_OPT = --with-ogg-libraries=$(STAGING_DIR)/usr/lib \
+		 --with-ogg-includes=$(STAGING_DIR)/usr/include \
+		 --enable-fixed-point $(DISABLE_NLS)
 
 ifeq ($(BR2_PACKAGE_SPEEX_ARM4),y)
 	SPEEX_CONF_OPT += --enable-arm4-asm
