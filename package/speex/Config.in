@@ -8,10 +8,18 @@ config BR2_PACKAGE_SPEEX
 
 	  http://www.speex.org/
 
+config BR2_PACKAGE_SPEEX_ARM_GENERIC
+       bool
+       default y
+       depends on BR2_PACKAGE_SPEEX && (BR2_generic_arm || BR2_arm610 || BR2_arm710)
+
+config BR2_PACKAGE_SPEEX_ARM4
+       bool
+       default y
+       depends on BR2_PACKAGE_SPEEX && (BR2_arm7tdmi || BR2_arm720t || BR2_arm920t || BR2_arm922t || BR2_sa110 || BR2_sa1100)
+
 config BR2_PACKAGE_SPEEX_ARM5E
-	bool "Support ARM5E instruction set"
 	default y
-	depends on BR2_PACKAGE_SPEEX && BR2_arm
-	help
-	  Use the additional instructions available in the ARM5E
-	  or later cores.
+	bool
+	depends on BR2_PACKAGE_SPEEX && BR2_arm && !(BR2_PACKAGE_SPEEX_ARM_GENERIC || BR2_PACKAGE_SPEEX_ARM4)
+
