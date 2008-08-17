@@ -1,5 +1,6 @@
 config BR2_PACKAGE_SPEEX
 	bool "speex"
+	select BR2_PACKAGE_LIBOGG
 	help
 	  Speex is an Open Source/Free Software patent-free
 	  audio compression format designed for speech.
