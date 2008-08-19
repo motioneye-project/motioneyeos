@@ -30,4 +30,4 @@ endchoice
 config BR2_PACKAGE_HASERL_VERSION
 	string
 	default "0.8.0"		if BR2_PACKAGE_HASERL_VERSION_0_8_X
-	default "0.9.23"	if BR2_PACKAGE_HASERL_VERSION_0_9_X
+	default "0.9.24"	if BR2_PACKAGE_HASERL_VERSION_0_9_X
