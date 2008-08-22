@@ -244,9 +244,6 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 	$(if $(BR2_HAVE_INFOPAGES),,for d in info share/info; do \
 		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
 	done)
-	$(if $(BR2_HAVE_INCLUDES),,for d in include; do \
-		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
-	done)
 	touch $@
 
 $(BUILD_DIR)/%/.stamp_cleaned:
