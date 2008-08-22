@@ -353,6 +353,10 @@ config BR2_PACKAGE_XSERVER_none
 	default y
 config BR2_PACKAGE_XSERVER_xorg
 	bool "modular xorg"
+	depends on BR2_USE_WCHAR # && BR2_ENABLE_LOCALE
+# depending on BR2_ENABLE_LOCALE gives a recursion error with dbus
+comment "xorg requires a toolchain with LOCALE and WCHAR support"
+	depends on !(BR2_USE_WCHAR && BR2_ENABLE_LOCALE)
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
 endmenu
