@@ -40,7 +40,11 @@ SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
 ifeq ($(BR2_SOFT_FLOAT_FP),y)
 TARGET_SOFT_FLOAT:=-mfloat-abi=softfp
 else # no fp at all
+ifeq ($(BR2_arm),y) # only set float-abi for arm
 TARGET_SOFT_FLOAT:=-mfloat-abi=soft
+else
+TARGET_SOFT_FLOAT:=-msoft-float
+endif
 endif
 else # not gcc-4.x
 TARGET_SOFT_FLOAT:=-msoft-float
