@@ -15,14 +15,7 @@ ifneq ($(BR2_LARGEFILE),y)
 LIBXML2_CONF_ENV = CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
 endif
 
-LIBXML2_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) --prefix=/usr \
-		--exec-prefix=/usr --bindir=/usr/bin \
-		--sbindir=/usr/sbin --libexecdir=/usr/lib \
-		--sysconfdir=/etc --datadir=/usr/share \
-		--localstatedir=/var --mandir=/usr/man \
-		--infodir=/usr/info --includedir=/usr/include \
-		--with-gnu-ld --enable-shared \
+LIBXML2_CONF_OPT = --with-gnu-ld --enable-shared \
 		--enable-static --enable-ipv6=no \
 		--without-debugging --without-python \
 		--without-threads $(DISABLE_NLS)
