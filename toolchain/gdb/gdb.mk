@@ -62,10 +62,6 @@ endif
 	touch $@
 
 gdb-patched: $(GDB_DIR)/.unpacked
-$(GDB_DIR)/.patched: $(GDB_DIR)/.unpacked
-	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch
-	$(CONFIG_UPDATE) $(GDB_DIR)
-	touch $@
 
 gdb-dirclean:
 	rm -rf $(GDB_DIR)
@@ -88,7 +84,7 @@ GDB_TARGET_CONFIGURE_VARS:= \
 	bash_cv_func_sigsetjmp=present \
 	bash_cv_have_mbstate_t=yes
 
-$(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.patched
+$(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
 	mkdir -p $(GDB_TARGET_DIR)
 	(cd $(GDB_TARGET_DIR); \
 		gdb_cv_func_sigsetjmp=yes \
