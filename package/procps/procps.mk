@@ -3,7 +3,7 @@
 # procps
 #
 #############################################################
-PROCPS_VERSION:=3.2.5
+PROCPS_VERSION:=3.2.7
 PROCPS_SOURCE:=procps-$(PROCPS_VERSION).tar.gz
 PROCPS_SITE:=http://procps.sourceforge.net/
 PROCPS_DIR:=$(BUILD_DIR)/procps-$(PROCPS_VERSION)
