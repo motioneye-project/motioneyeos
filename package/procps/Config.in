@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PROCPS
 	bool "procps"
 	select BR2_PACKAGE_NCURSES
+	depends on BR2_USE_WCHAR
 	help
 	  Standard informational utilities and process-handling tools.
 	  Provides things like kill, ps, uptime, free, top, etc...
