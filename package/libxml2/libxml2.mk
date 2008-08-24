@@ -17,7 +17,7 @@ LIBXML2_CONF_ENV = CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
 endif
 
 LIBXML2_CONF_OPT = --with-gnu-ld --enable-shared \
-		--enable-static --enable-ipv6=no \
+		--enable-static $(DISABLE_IPV6) \
 		--without-debugging --without-python \
 		--without-threads $(DISABLE_NLS)
 
