@@ -27,3 +27,8 @@ NEON_CONF_OPT+=--disable-webdav
 endif
 
 $(eval $(call AUTOTARGETS,package,neon))
+
+# neon doesn't have an install-strip target, so do it afterwards
+$(NEON_HOOK_POST_INSTALL): $(NEON_TARGET_INSTALL_TARGET)
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libneon.so
+	touch $@
