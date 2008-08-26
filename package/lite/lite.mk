@@ -18,8 +18,8 @@ $(eval $(call AUTOTARGETS,package,lite))
 
 $(LITE_HOOK_POST_INSTALL):
 	$(INSTALL) -d $(TARGET_DIR)/usr/share/LiTE/examples/
-	$(INSTALL) -d $(TARGET_DIR)/usr/share/fonts/truetype
+	$(INSTALL) -d $(TARGET_DIR)/usr/share/fonts/truetype/
 	$(INSTALL) -m0644 $(LITE_DIR)/data/*.png $(TARGET_DIR)/usr/share/LiTE/
 	$(INSTALL) -m0644 $(LITE_DIR)/examples/*.png $(TARGET_DIR)/usr/share/LiTE/examples/
-	$(INSTALL) -m0644 $(LITE_DIR)/fonts/*.ttf $(TARGET_DIR)/usr/share/fonts/truetype/ 
+	$(INSTALL) -m0644 $(LITE_DIR)/fonts/*.ttf $(TARGET_DIR)/usr/share/fonts/truetype/
 	touch $@
