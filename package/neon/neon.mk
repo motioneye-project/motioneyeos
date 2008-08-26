@@ -3,7 +3,7 @@
 # neon
 #
 #############################################################
-NEON_VERSION = 0.28.2
+NEON_VERSION = 0.28.3
 NEON_SITE = http://www.webdav.org/neon/
 NEON_INSTALL_STAGING = YES
 
