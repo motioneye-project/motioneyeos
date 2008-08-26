@@ -53,6 +53,6 @@ LIBGLIB2_CONF_OPT =	--target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--infodir=/usr/info --enable-shared \
 		--enable-static $(DISABLE_NLS)
 
-LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig
+LIBGLIB2_DEPENDENCIES = uclibc gettext libintl libiconv pkgconfig
 
 $(eval $(call AUTOTARGETS,package,libglib2))
