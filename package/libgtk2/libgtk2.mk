@@ -92,8 +92,7 @@ LIBGTK2_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \
-		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig" \
-		PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" \
+		$(DISABLE_LARGEFILE) \
 		$(LIBGTK2_CONF_OPT_X)  \
 		$(LIBGTK2_CONF_OPT_DFB)
 
@@ -109,11 +108,11 @@ ifneq ($(BR2_PACKAGE_XSERVER_none),y)
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--with-gdktarget=x11
-	LIBGTK2_DEPENDENCIES_EXTRA = xlib_libXcomposite $(XSERVER)
+	LIBGTK2_DEPENDENCIES_EXTRA = xlib_libXcomposite $(XSERVER) cups
 else
 	LIBGTK2_CONF_OPT += --without-x
 endif
 
-LIBGTK2_DEPENDENCIES = uclibc pkgconfig png jpeg tiff $(LIBGTK2_DEPENDENCIES_EXTRA) libglib2 cups cairo pango atk
+LIBGTK2_DEPENDENCIES = uclibc pkgconfig png jpeg tiff $(LIBGTK2_DEPENDENCIES_EXTRA) libglib2 cairo pango atk
 
 $(eval $(call AUTOTARGETS,package,libgtk2))
