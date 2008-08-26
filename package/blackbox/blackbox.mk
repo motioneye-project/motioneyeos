@@ -12,11 +12,8 @@ BLACKBOX_INSTALL_STAGING = NO
 BLACKBOX_INSTALL_TARGET = YES
 BLACKBOX_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-strip
 
-BLACKBOX_CONF_OPT =	--target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) --prefix=/usr \
-		--sysconfdir=/etc --x-includes=$(STAGING_DIR)/usr/include/X11 \
+BLACKBOX_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib
-
 
 BLACKBOX_DEPENDENCIES = uclibc $(XSERVER)
 
