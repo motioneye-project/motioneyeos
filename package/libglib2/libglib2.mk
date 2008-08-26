@@ -41,7 +41,8 @@ LIBGLIB2_CONF_ENV =	$(TARGET_CONFIGURE_OPTS) $(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal ac_cv_prog_F77=no \
-		ac_cv_prog_CXX=no ac_cv_func_posix_getgrgid_r=no
+		ac_cv_prog_CXX=no ac_cv_func_posix_getgrgid_r=no \
+		gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no)
 
 LIBGLIB2_CONF_OPT =	--target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) --prefix=/usr \
