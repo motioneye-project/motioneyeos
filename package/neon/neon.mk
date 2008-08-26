@@ -21,5 +21,9 @@ NEON_CONF_OPT+=--with-expat=$(STAGING_DIR)/usr/lib/libexpat.la
 NEON_CONF_OPT+=--with-libxml2=no
 NEON_DEPENDENCIES+=expat
 endif
+ifeq ($(strip $(BR2_PACKAGE_NEON_NOXML)),y)
+# webdav needs xml support
+NEON_CONF_OPT+=--disable-webdav
+endif
 
 $(eval $(call AUTOTARGETS,package,neon))
