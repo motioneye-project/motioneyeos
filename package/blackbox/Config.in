@@ -5,6 +5,3 @@ config BR2_PACKAGE_BLACKBOX
 	  Blackbox is a fast, lightweight window manager for the X Window System.
 
 	  http://blackboxwm.sourceforge.net/
-
-comment "blackbox		- disabled (requires Xorg(7))"
-	depends on !(BR2_PACKAGE_XORG || BR2_PACKAGE_XORG7)
