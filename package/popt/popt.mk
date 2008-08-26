@@ -6,10 +6,10 @@
 POPT_VERSION = 1.14
 POPT_SITE = http://rpm5.org/files/popt
 POPT_INSTALL_STAGING = YES
-
+POPT_INSTALL_TARGET:=YES
 POPT_CONF_ENV = ac_cv_va_copy=yes
 
-POPT_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) install
+POPT_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) install-strip
 
 
 $(eval $(call AUTOTARGETS,package,popt))
