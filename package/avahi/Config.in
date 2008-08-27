@@ -1,6 +1,8 @@
 config BR2_PACKAGE_AVAHI
 	bool "avahi"
 	select BR2_PACKAGE_LIBDAEMON
+	select BR2_PACKAGE_GETTEXT if BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_LIBINTL if BR2_ENABLE_LOCALE
 	help
 	  Avahi is a system which facilitates service
 	  discovery on a local network.

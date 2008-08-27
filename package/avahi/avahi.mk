@@ -142,7 +142,7 @@ $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXTRA_DEPS)
 	touch $@
 
 $(AVAHI_DIR)/.compiled: $(AVAHI_DIR)/.configured
-	$(MAKE) -C $(AVAHI_DIR)
+	$(MAKE) -C $(AVAHI_DIR) $(if $(BR2_ENABLE_LOCALE),LIBS=-lintl)
 	touch $@
 
 $(AVAHI_DIR)/.installed: $(AVAHI_DIR)/.compiled
@@ -180,7 +180,7 @@ endif
 		 $(TARGET_DIR)/usr/sbin/avahi-daemon
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
-avahi: uclibc libdaemon $(AVAHI_TARGETS)
+avahi: uclibc libdaemon $(AVAHI_TARGETS) $(if $(BR2_ENABLE_LOCALE),gettext libintl)
 
 avahi-clean:
 	-$(MAKE) -C $(AVAHI_DIR) distclean
