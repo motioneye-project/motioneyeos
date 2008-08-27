@@ -5,6 +5,7 @@ config BR2_PACKAGE_PCMANFM
 	select BR2_PACKAGE_STARTUP_NOTIFICATION
 	select BR2_PACKAGE_LIBGTK2
 	help
-	  An extremly fast and lightweight file manager which features tabbed browsing and user-friendly interface.
+	  An extremly fast and lightweight file manager which features
+	  tabbed browsing and user-friendly interface.
 
 	  http://internap.dl.sourceforge.net/sourceforge/pcmanfm
