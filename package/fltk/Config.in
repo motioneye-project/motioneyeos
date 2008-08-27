@@ -2,9 +2,7 @@ config BR2_PACKAGE_FLTK
 	bool "fltk"
 	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7
 	help
-	  a cross-platform C++ GUI toolkit for UNIX/Linux (X11), Microsoft Windows, and MacOS X.
+	  A cross-platform C++ GUI toolkit for UNIX/Linux (X11),
+	  Microsoft Windows, and MacOS X.
 
 	  http://www.fltk.org/
-
-comment "fltk		- disabled (requires Xorg(7))"
-	depends on !(BR2_PACKAGE_XORG || BR2_PACKAGE_XORG7)
