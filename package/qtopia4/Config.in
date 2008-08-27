@@ -69,15 +69,16 @@ config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
 	default ""
 	depends on BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
 	help
-	  Commercial users can download their source directly by providing a username.
-
+	  Commercial users can download their source directly by
+	  providing a username.
 
 config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
 	string "Qtopia Core 4 Commercial License Password"
 	default ""
 	depends on BR2_PACKAGE_QTOPIA4 && BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
 	help
-	  Commercial users can download their source directly by providing a password.
+	  Commercial users can download their source directly by
+	  providing a password.
 
 config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 	bool "Compatibility with Qt3"
