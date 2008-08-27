@@ -7,7 +7,9 @@ select BR2_PACKAGE_EXPAT
 select BR2_PACKAGE_FONTCONFIG
 select BR2_PACKAGE_PKGCONFIG
 help
-	Support for X11R7 libraries, servers, drivers, and/or applications in the target
+	Support for X11R7 libraries, servers, drivers, and/or
+	applications in the target.
+
 if BR2_PACKAGE_XORG7
 	menu "X11R7 Servers"
 		source package/x11r7/xserver_xorg-server/Config.in
