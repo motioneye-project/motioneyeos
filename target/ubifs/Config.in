@@ -38,7 +38,8 @@ choice
 	default BR2_TARGET_ROOTFS_UBIFS_RT_LZO
 	depends on BR2_TARGET_ROOTFS_UBIFS
 	help
-	  Select which compression format to use at run-time within the ubifs file system.
+	  Select which compression format to use at run-time within
+	  the ubifs file system.
 
 config BR2_TARGET_ROOTFS_UBIFS_RT_NONE
 	bool "no compression"
@@ -62,7 +63,8 @@ choice
 	default BR2_TARGET_ROOTFS_UBIFS_NONE
 	depends on BR2_TARGET_ROOTFS_UBIFS
 	help
-	  Select which compression format to compress the final image into.
+	  Select which compression format to compress the final image
+	  into.
 
 config BR2_TARGET_ROOTFS_UBIFS_NONE
 	bool "no compression"
@@ -73,22 +75,25 @@ config BR2_TARGET_ROOTFS_UBIFS_GZIP
 	bool "gzip"
 	help
 	  Do compress the ubifs filesystem with gzip.
-	  Note that you either have to have gzip installed on your host
-	  or select to build a gzip for your host. See the packages submenu.
+	  Note that you either have to have gzip installed on your
+	  host or select to build a gzip for your host. See the
+	  packages submenu.
 
 config BR2_TARGET_ROOTFS_UBIFS_BZIP2
 	bool "bzip2"
 	help
 	  Do compress the ubifs filesystem with bzip2.
-	  Note that you either have to have bzip2 installed on your host
-	  or select to build a bzip2 for your host. See the packages submenu.
+	  Note that you either have to have bzip2 installed on your
+	  host or select to build a bzip2 for your host. See the
+	  packages submenu.
 
 config BR2_TARGET_ROOTFS_UBIFS_LZMA
 	bool "lzma"
 	help
 	  Do compress the ubifs filesystem with lzma.
-	  Note that you either have to have lzma installed on your host
-	  or select to build a lzma for your host. See the packages submenu.
+	  Note that you either have to have lzma installed on your
+	  host or select to build a lzma for your host. See the
+	  packages submenu.
 
 endchoice
 
