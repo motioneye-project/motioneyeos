@@ -180,7 +180,7 @@ endif
 		 $(TARGET_DIR)/usr/sbin/avahi-daemon
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
-avahi: uclibc busybox libdaemon $(AVAHI_TARGETS)
+avahi: uclibc libdaemon $(AVAHI_TARGETS)
 
 avahi-clean:
 	-$(MAKE) -C $(AVAHI_DIR) distclean
