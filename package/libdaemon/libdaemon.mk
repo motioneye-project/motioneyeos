@@ -11,7 +11,7 @@
 # either version 2.1 of the License, or (at your option) any
 # later version.
 
-LIBDAEMON_VERSION:=0.12
+LIBDAEMON_VERSION:=0.13
 LIBDAEMON_NAME:=libdaemon-$(LIBDAEMON_VERSION)
 LIBDAEMON_DIR:=$(BUILD_DIR)/$(LIBDAEMON_NAME)
 LIBDAEMON_SITE:=http://0pointer.de/lennart/projects/libdaemon/
