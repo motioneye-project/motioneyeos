@@ -3,7 +3,9 @@ config BR2_TARGET_Q5
 	depends on BR2_mipsel
 	select BR2_PACKAGE_LINUX
 	help
-	  jp-embedded Q5 series MIPS based boards, see http://www.jp-embedded.com for further information.
+	  jp-embedded Q5 series MIPS based boards, see
+	  http://www.jp-embedded.com for further information.
+
 
 comment "Package support"
 	depends on BR2_TARGET_Q5
