@@ -1,7 +1,8 @@
 config BR2_PACKAGE_FBDUMP
 	bool "fbdump (Framebuffer Capture Tool)"
 	help
-	   fbdump is a simple tool to capture snapshots from the Linux kernel framebuffer
-	   device and write them out as a PPM file. Currently, most packed-pixel framebuffer
-       formats and the vga16 framebuffer are supported.
+	  fbdump is a simple tool to capture snapshots from the Linux kernel
+	  framebuffer  device and write them out as a PPM file. Currently,
+	  most packed-pixel framebuffer formats and the vga16 framebuffer
+	  are supported.
 
