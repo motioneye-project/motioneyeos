@@ -2,6 +2,7 @@ config BR2_PACKAGE_XPDF
 	bool "xpdf"
 	select BR2_PACKAGE_OPENMOTIF
 	help
-	  Xpdf is an open source viewer for Portable Document Format (PDF) files.
+	  Xpdf is an open source viewer for Portable Document Format
+	  (PDF) files.
 
 	  ftp://ftp.foolabs.com/pub/xpdf
