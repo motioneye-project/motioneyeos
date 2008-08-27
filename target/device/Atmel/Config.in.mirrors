@@ -4,18 +4,22 @@ config BR2_ATMEL_MIRROR
 	string "Atmel AVR32/AT91 download site"
 	default "ftp://www.at91.com/pub/buildroot/"
 	help
-	  Unofficial site for AVR32/AT91 Buildroot patches, or your local mirror.
+	  Unofficial site for AVR32/AT91 Buildroot patches, or your
+	  local mirror.
+
 	  Atmel does not currently support buildroot, but this site makes
 	  available neccessary patches and prepatched packages useful
 	  to extend a buildroot for AVR32 or AT91 ARM based boards.
 	  Issues with contents of this server needs to be highlighted
-	  on the buildroot mailing list and
-	  should not be addressed directly to Atmel
+	  on the buildroot mailing list and should not be addressed
+	  directly to Atmel.
+
 	  Atmel provides support for their AVR32 chips on
 	  http://avr32linux.org/ or http://www.avrfreaks.net/
 	  Atmel provides support for AT91 chips on www.at91.com.
 	  Commercial AT91 Linux support is through www.timesys.com
-	  Community  AT91 Linux support is through http://maxim.org.za/AT91_26.html
+	  Community  AT91 Linux support is through
+	  http://maxim.org.za/AT91_26.html
 
 config BR2_AT91_PATCH_MIRROR
 	string "Atmel AT91 Linux Patch download site"

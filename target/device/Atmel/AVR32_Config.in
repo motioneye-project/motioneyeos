@@ -70,6 +70,7 @@ config BR2_TARGET_AVR32_ATNGW100_EXPANDED
 	depends on BR2_TARGET_AT32AP7000
 	select BR2_PACKAGE_LINUX
 	help
-	  The Atmel AVR32 Network Gateway Board expanded to include audio, video, and PS/2.
+	  The Atmel AVR32 Network Gateway Board expanded to include
+	  audio, video, and PS/2.
 
 endchoice
