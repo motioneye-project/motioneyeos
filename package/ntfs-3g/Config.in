@@ -2,6 +2,11 @@ config BR2_PACKAGE_NTFS-3G
         bool "ntfs-3g"
 	select BR2_PACKAGE_PKGCONFIG
         help
-	  The NTFS-3G driver is an open source, freely available read/write NTFS driver for Linux, FreeBSD, Mac OS X, NetBSD, and Haiku. It provides safe and fast handling of the Windows XP, Windows Server 2003, Windows 2000 and Windows Vista file systems. Most POSIX file system operations are supported, with the exception of full file ownership and access right support.
+	  The NTFS-3G driver is an open source, freely available
+          read/write NTFS driver for Linux, FreeBSD, Mac OS X, NetBSD,
+          and Haiku. It provides safe and fast handling of the Windows
+          XP, Windows Server 2003, Windows 2000 and Windows Vista file
+          systems. Most POSIX file system operations are supported, with
+          the exception of full file ownership and access right support.
 
 	  http://www.ntfs-3g.org/
