@@ -1,0 +1,15 @@
+--- busybox-1.12.0/networking/udhcp/dhcpc.c	Wed Aug  6 00:55:58 2008
++++ busybox-1.12.0-dhcp/networking/udhcp/dhcpc.c	Thu Aug 28 00:05:23 2008
+@@ -259,9 +259,10 @@
+ 	if (opt & OPT_o)
+ 		client_config.no_default_options = 1;
+ 	while (list_O) {
+-		int n = index_in_strings(dhcp_option_strings, llist_pop(&list_O));
++		char *optstr = llist_pop(&list_O);
++		int n = index_in_strings(dhcp_option_strings, optstr);
+ 		if (n < 0)
+-			bb_error_msg_and_die("unknown option '%s'", list_O->data);
++			bb_error_msg_and_die("unknown option '%s'", optstr);
+ 		n = dhcp_options[n].code;
+ 		client_config.opt_mask[n >> 3] |= 1 << (n & 7);
+ 	}
