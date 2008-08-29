@@ -64,6 +64,7 @@
 ## The following variables contain hook target names
 ## by default they do nothing, they can be overriden in package makefiles
 #
+# FOO_HOOK_POST_EXTRACT, FOO_HOOK_POST_CONFIGURE,
 # FOO_HOOK_POST_BUILD, FOO_HOOK_POST_INSTALL
 #
 ## The following variables contain targets that can be overriden
@@ -314,6 +315,8 @@ $(2)_TARGET_UNINSTALL =		$$($(2)_DIR)/.stamp_uninstalled
 $(2)_TARGET_CLEAN =		$$($(2)_DIR)/.stamp_cleaned
 $(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
 
+$(2)_HOOK_POST_EXTRACT =	$$($(2)_DIR)/.stamp_hook_post_extract
+$(2)_HOOK_POST_CONFIGURE =	$$($(2)_DIR)/.stamp_hook_post_configure
 $(2)_HOOK_POST_BUILD =		$$($(2)_DIR)/.stamp_hook_post_build
 $(2)_HOOK_POST_INSTALL =	$$($(2)_DIR)/.stamp_hook_post_install
 
@@ -338,7 +341,9 @@ $(1)-build:		$(1)-configure \
 			$$($(2)_TARGET_BUILD) \
 			$$($(2)_HOOK_POST_BUILD)
 
-$(1)-configure:		$(1)-autoreconf $$($(2)_TARGET_CONFIGURE)
+$(1)-configure:		$(1)-autoreconf \
+			$$($(2)_TARGET_CONFIGURE) \
+			$$($(2)_HOOK_POST_CONFIGURE)
 
 ifeq ($$($(2)_AUTORECONF),YES)
 $(1)-autoreconf:	$(1)-patch $$($(2)_TARGET_AUTORECONF)
@@ -349,7 +354,9 @@ endif
 
 $(1)-patch:		$(1)-extract $$($(2)_TARGET_PATCH)
 
-$(1)-extract:		$(1)-depends $$($(2)_TARGET_EXTRACT)
+$(1)-extract:		$(1)-depends \
+			$$($(2)_TARGET_EXTRACT) \
+			$$($(2)_HOOK_POST_EXTRACT)
 
 $(1)-depends:		$(1)-source $$($(2)_DEPENDENCIES)
 
@@ -375,11 +382,15 @@ $$($(2)_TARGET_SOURCE):			PKG=$(2)
 $$($(2)_TARGET_UNINSTALL):		PKG=$(2)
 $$($(2)_TARGET_CLEAN):			PKG=$(2)
 $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
+$$($(2)_HOOK_POST_EXTRACT):		PKG=$(2)
+$$($(2)_HOOK_POST_CONFIGURE):	PKG=$(2)
 $$($(2)_HOOK_POST_BUILD):		PKG=$(2)
 $$($(2)_HOOK_POST_INSTALL):		PKG=$(2)
 
 # define hook targets
 # default hook behaviour: do nothing
+$$($(2)_HOOK_POST_EXTRACT):
+$$($(2)_HOOK_POST_CONFIGURE):
 $$($(2)_HOOK_POST_BUILD):
 $$($(2)_HOOK_POST_INSTALL):
 
