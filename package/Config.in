@@ -485,20 +485,7 @@ endif
 # java support
 source "package/java/Config.in"
 
-menuconfig BR2_GAMES
-	bool "Games"
-	default y
-	help
-	  Support for games
-
-if BR2_GAMES
-source "package/lxdoom/Config.in"
-source "package/ace_of_penguins/Config.in"
-source "package/gnuchess/Config.in"
-source "package/xboard/Config.in"
-source "package/rubix/Config.in"
-source "package/magiccube4d/Config.in"
-source "package/vice/Config.in"
-endif
+# various games packages
+source "package/games/Config.in"
 
 endmenu
