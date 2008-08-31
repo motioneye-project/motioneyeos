@@ -217,6 +217,20 @@
     <p>You can now disconnect or copy the content of your <code>dl</code> 
     directory to the build-host. </p>
 
+    <h3><a name="building_out_of_tree" id="building_out_of_tree"></a>
+    Building out-of-tree</h3>
+
+    <p>Buildroot supports building out of tree with a syntax similar
+    to the Linux kernel. To use it, add O=&lt;directory&gt; to the
+    make command line, E.G.:</p>
+
+<pre>
+ $ make O=/tmp/build
+</pre>
+
+    <p>And all the output files will be located under
+    <code>/tmp/build</code>.</p>
+
     <h3><a name="environment_variables" id="environment_variables"></a>
     Environment variables</h3>
 
