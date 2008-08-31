@@ -47,6 +47,10 @@ LIBGLIB2_CONF_ENV =	$(TARGET_CONFIGURE_OPTS) $(TARGET_CONFIGURE_ARGS) \
 LIBGLIB2_CONF_OPT = --enable-shared \
 		--enable-static $(DISABLE_NLS)
 
-LIBGLIB2_DEPENDENCIES = uclibc gettext libintl libiconv pkgconfig
+LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig
+
+ifneq ($(BR2_ENABLE_LOCALE),y)
+LIBGLIB2_DEPENDENCIES+=libiconv
+endif
 
 $(eval $(call AUTOTARGETS,package,libglib2))
