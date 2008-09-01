@@ -1,7 +1,6 @@
 config BR2_PACKAGE_CUPS
 	bool "cups"
 	help
-		The Common Unix Print Subsystem
+	  The Common Unix Print Subsystem
 
-		http://www.cups.org
-
+	  http://www.cups.org
