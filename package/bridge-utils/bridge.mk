@@ -4,9 +4,10 @@
 #
 #############################################################
 #
-BRIDGE_VERSION:=1.0.6
+BRIDGE_VERSION:=1.4
 BRIDGE_SOURCE:=bridge-utils-$(BRIDGE_VERSION).tar.gz
 BRIDGE_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/bridge/
+BRIDGE_AUTORECONF:=YES
 BRIDGE_INSTALL_STAGING:=NO
 BRIDGE_INSTALL_TARGET:=YES
 BRIDGE_INSTALL_TARGET_OPT:=DESTDIR=$(TARGET_DIR) install
