@@ -3,7 +3,7 @@
 # python
 #
 #############################################################
-PYTHON_VERSION=2.4.2
+PYTHON_VERSION=2.4.5
 PYTHON_VERSION_SHORT=2.4
 PYTHON_SOURCE:=Python-$(PYTHON_VERSION).tar.bz2
 PYTHON_SITE:=http://python.org/ftp/python/$(PYTHON_VERSION)
@@ -124,6 +124,7 @@ $(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
 ifneq ($(BR2_PACKAGE_PYTHON_SSL),y)
 	export PYTHON_DISABLE_SSL=1
 endif
+	rm -rf $(PYTHON_DIR)/Lib/test
 	LD_LIBRARY_PATH=$(STAGING_DIR)/lib
 	$(MAKE) CC=$(TARGET_CC) -C $(PYTHON_DIR) install \
 		DESTDIR=$(TARGET_DIR) CROSS_COMPILE=yes \
