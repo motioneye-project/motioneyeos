@@ -182,11 +182,17 @@ QTOPIA4_CONFIGURE+= -qt-sql-psql
 endif
 ifeq ($(BR2_PACKAGE_QTOPIA4_SQLITE),y)
 QTOPIA4_CONFIGURE+= -qt-sql-sqlite
+else
+QTOPIA4_CONFIGURE+= -no-sql-sqlite
 endif
 ifeq ($(BR2_PACKAGE_QTOPIA4_SQLITE2),y)
 QTOPIA4_CONFIGURE+= -qt-sql-sqlite2
 endif
+else
 # By default, no SQL driver is turned on by configure.
+# but it seams sqlite isn't disabled despite what says
+# configure --help
+QTOPIA4_CONFIGURE+= -no-sql-sqlite
 endif
 
 ifeq ($(BR2_PACKAGE_QTOPIA4_XMLPATTERNS),y)
