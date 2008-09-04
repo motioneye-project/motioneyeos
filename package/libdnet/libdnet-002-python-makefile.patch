@@ -1,0 +1,10 @@
+--- a/python/Makefile.am	2006-01-15 18:08:23.000000000 +1100
++++ b/python/Makefile.am	2008-09-04 15:25:52.000000000 +1000
+@@ -11,6 +11,7 @@
+ 	pyrexc $(srcdir)/dnet.pyx
+ 
+ python-build: $(srcdir)/dnet.c
++	CC="$(CC)" LDSHARED="$(CC) -shared" $(PYTHON) setup.py build_ext -I$(PYINCDIR)
+ 	$(PYTHON) setup.py build
+ 	touch python-build
+ 
