@@ -250,13 +250,18 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 $(BUILD_DIR)/%/.stamp_cleaned:
 	$(call MESSAGE,"Cleaning up")
 	-$($(PKG)_MAKE_ENV) $(MAKE)  $($(PKG)_UNINSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	rm -f $(@D)/.stamp_staging_installed
 	-$($(PKG)_MAKE_ENV) $(MAKE)  $($(PKG)_UNINSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	rm -f $(@D)/.stamp_target_installed
 	-$($(PKG)_MAKE_ENV) $(MAKE)  $($(PKG)_CLEAN_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	rm -f $(@D)/.stamp_built
 
 $(BUILD_DIR)/%/.stamp_uninstalled:
 	$(call MESSAGE,"Uninstalling")
 	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_UNINSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	rm -f $(@D)/.stamp_staging_installed
 	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_UNINSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	rm -f $(@D)/.stamp_target_installed
 
 $(BUILD_DIR)/%/.stamp_dircleaned:
 	rm -Rf $(@D)
