@@ -285,27 +285,8 @@ source "package/wipe/Config.in"
 source "package/xfsprogs/Config.in"
 endif
 
-menuconfig BR2_AUDIO_SUPPORT
-	bool "Audio libraries and applications"
-	default y
-	help
-	  Support for audio libraries and applications
-
-if BR2_AUDIO_SUPPORT
-source "package/alsa-lib/Config.in"
-source "package/alsa-utils/Config.in"
-source "package/asterisk/Config.in"
-source "package/aumix/Config.in"
-source "package/libid3tag/Config.in"
-source "package/libmad/Config.in"
-source "package/libogg/Config.in"
-source "package/libsndfile/Config.in"
-source "package/libvorbis/Config.in"
-source "package/madplay/Config.in"
-source "package/mpg123/Config.in"
-source "package/speex/Config.in"
-source "package/festival/Config.in"
-endif
+# Audio support
+source "package/audio/Config.in"
 
 menuconfig BR2_GRAPHIC_SUPPORT
 	bool "Graphic libraries and applications (graphic/text)"
