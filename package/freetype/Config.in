@@ -16,12 +16,12 @@ choice
 	config BR2_FREETYPE_VERSION_2_2_1
 		bool "Freetype 2.2.1"
 
-	config BR2_FREETYPE_VERSION_2_3_5
-		bool "Freetype 2.3.5"
+	config BR2_FREETYPE_VERSION_2_3_7
+		bool "Freetype 2.3.7"
 
 endchoice
 
 config BR2_FREETYPE_VERSION
 	string
 	default "2.2.1"		if BR2_FREETYPE_VERSION_2_2_1
-	default "2.3.5"		if BR2_FREETYPE_VERSION_2_3_5
+	default "2.3.7"		if BR2_FREETYPE_VERSION_2_3_7

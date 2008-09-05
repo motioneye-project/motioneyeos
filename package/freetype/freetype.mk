@@ -16,7 +16,7 @@ $(DL_DIR)/$(FREETYPE_SOURCE):
 
 $(FREETYPE_DIR)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
 	$(FREETYPE_CAT) $(DL_DIR)/$(FREETYPE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(FREETYPE_DIR) package/freetype/ \*.patch
+	toolchain/patch-kernel.sh $(FREETYPE_DIR) package/freetype/ freetype-$(FREETYPE_VERSION)-\*.patch
 	$(CONFIG_UPDATE) $(FREETYPE_DIR)
 	$(CONFIG_UPDATE) $(FREETYPE_DIR)/builds/unix
 	touch $@
