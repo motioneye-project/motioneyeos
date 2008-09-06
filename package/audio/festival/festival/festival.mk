@@ -17,5 +17,5 @@ FESTIVAL_MAKE_OPT = CC=$(TARGET_CC) CXX=$(TARGET_CXX)
 
 FESTIVAL_DEPENDENCIES = uclibc alsa-lib speech-tools
 
-$(eval $(call AUTOTARGETS,package/festival,festival))
+$(eval $(call AUTOTARGETS,package/audio/festival,festival))
 
