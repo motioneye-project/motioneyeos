@@ -26,7 +26,7 @@ $(DL_DIR)/$(ALSA_LIB_SOURCE):
 
 $(ALSA_LIB_DIR)/.unpacked: $(DL_DIR)/$(ALSA_LIB_SOURCE)
 	$(ALSA_LIB_CAT) $(DL_DIR)/$(ALSA_LIB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(ALSA_LIB_DIR) package/alsa-lib/ alsa-lib-$(ALSA_LIB_VERSION)\*.patch*
+	toolchain/patch-kernel.sh $(ALSA_LIB_DIR) package/audio/alsa-lib/ alsa-lib-$(ALSA_LIB_VERSION)\*.patch*
 	$(CONFIG_UPDATE) $(ALSA_LIB_DIR)
 	touch $@
 
