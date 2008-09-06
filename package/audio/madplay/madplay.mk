@@ -23,7 +23,7 @@ $(DL_DIR)/$(MADPLAY_SOURCE):
 
 $(MADPLAY_DIR)/.unpacked: $(DL_DIR)/$(MADPLAY_SOURCE)
 	$(MADPLAY_CAT) $(DL_DIR)/$(MADPLAY_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(MADPLAY_DIR) package/madplay madplay\*.patch\*
+	toolchain/patch-kernel.sh $(MADPLAY_DIR) package/audio/madplay madplay\*.patch\*
 	$(CONFIG_UPDATE) $(MADPLAY_DIR)
 	touch $@
 
