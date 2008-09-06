@@ -17,7 +17,7 @@ $(DL_DIR)/$(LIBID3TAG_SOURCE):
 
 $(LIBID3TAG_DIR)/.unpacked: $(DL_DIR)/$(LIBID3TAG_SOURCE)
 	$(LIBID3TAG_CAT) $(DL_DIR)/$(LIBID3TAG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LIBID3TAG_DIR) package/libid3tag/ libid3tag-$(LIBID3TAG_VERSION)\*.patch\*
+	toolchain/patch-kernel.sh $(LIBID3TAG_DIR) package/audio/libid3tag/ libid3tag-$(LIBID3TAG_VERSION)\*.patch\*
 	$(CONFIG_UPDATE) $(LIBID3TAG_DIR)
 	touch $@
 
