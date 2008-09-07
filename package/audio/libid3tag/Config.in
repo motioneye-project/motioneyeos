@@ -1,7 +1,6 @@
 config BR2_PACKAGE_LIBID3TAG
 	bool "libid3tag"
 	select BR2_PACKAGE_ZLIB
-	depends on BR2_PACKAGE_LIBMAD
 	help
 	  ID3 tag reading library from the MAD project.
 
