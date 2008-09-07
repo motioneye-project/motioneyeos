@@ -16,7 +16,7 @@ $(XAPP_XMAN_DIR)/.extracted: $(DL_DIR)/$(XAPP_XMAN_SOURCE)
 	touch $@
 
 $(XAPP_XMAN_DIR)/.patched: $(XAPP_XMAN_DIR)/.extracted
-	toolchain/patch-kernel.sh $(XAPP_XMAN_DIR) package/xapp_xman/ xapp_xman\*.patch
+	toolchain/patch-kernel.sh $(XAPP_XMAN_DIR) package/x11r7/xapp_xman/ xapp_xman\*.patch
 	touch $@
 
 $(XAPP_XMAN_DIR)/.configured: $(XAPP_XMAN_DIR)/.patched
