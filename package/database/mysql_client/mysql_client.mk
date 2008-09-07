@@ -27,4 +27,4 @@ MYSQL_CLIENT_CONF_OPT = \
 	--enable-thread-safe-client \
 	$(ENABLE_DEBUG)
 
-$(eval $(call AUTOTARGETS,package,mysql_client))
+$(eval $(call AUTOTARGETS,package/database,mysql_client))
