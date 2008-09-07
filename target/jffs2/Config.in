@@ -56,8 +56,6 @@ config BR2_TARGET_ROOTFS_JFFS2_PAGESIZE
 	default 0x1000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_128
 	default 0x1000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_64
 	default $(BR2_TARGET_ROOTFS_JFFS2_CUSTOM_PAGESIZE) if BR2_TARGET_ROOTFS_JFFS2_CUSTOM
-	help
-	  Set to pagesize of memory
 
 config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	hex
@@ -67,8 +65,6 @@ config BR2_TARGET_ROOTFS_JFFS2_EBSIZE
 	default 0x20000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_128
 	default 0x10000 if BR2_TARGET_ROOTFS_JFFS2_FLASH_64
 	default $(BR2_TARGET_ROOTFS_JFFS2_CUSTOM_EBSIZE) if BR2_TARGET_ROOTFS_JFFS2_CUSTOM
-	help
-	  Set to Erase Size of memory
 
 config BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
 	bool "Do not use Cleanmarker"
@@ -114,9 +110,9 @@ config BR2_TARGET_ROOTFS_JFFS2_SQUASH
 config BR2_TARGET_ROOTFS_JFFS2_SUMMARY
 	bool "Produce a summarized JFFS2 image"
 	depends on BR2_TARGET_ROOTFS_JFFS2
-    help
-      A summarised image can be mounted faster if support is
-      enabled in the kernel (CONFIG_JFFS2_SUMMARY)
+	help
+	  A summarised image can be mounted faster if support is
+	  enabled in the kernel (CONFIG_JFFS2_SUMMARY)
 
 config BR2_TARGET_ROOTFS_JFFS2_OUTPUT
 	string "Output File"
