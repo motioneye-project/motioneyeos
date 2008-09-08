@@ -132,7 +132,8 @@ endif
 		PYTHON_MODULES_LIB=$(STAGING_DIR)/lib \
 		PYTHON_DISABLE_MODULES="$(BR2_PYTHON_DISABLED_MODULES)" \
 		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen && \
-	rm $(TARGET_DIR)/usr/bin/python?.? && \
+	rm $(TARGET_DIR)/usr/bin/python && \
+	ln -s python$(PYTHON_VERSION_SHORT) $(TARGET_DIR)/usr/bin/python && \
 	rm $(TARGET_DIR)/usr/bin/idle && \
 	rm $(TARGET_DIR)/usr/bin/pydoc && \
 	find $(TARGET_DIR)/usr/lib/ -name '*.pyo' -exec rm {} \; && \
