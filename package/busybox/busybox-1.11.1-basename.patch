@@ -1,9 +1,0 @@
---- busybox-1.11.1/coreutils/basename.c	Wed Jun 25 14:51:23 2008
-+++ busybox-1.11.1-basename/coreutils/basename.c	Thu Jul 17 20:04:36 2008
-@@ -48,5 +48,5 @@
- 
- 	/* puts(s) will do, but we can do without stdio this way: */
- 	s[m++] = '\n';
--	return full_write(STDOUT_FILENO, s, m) == (ssize_t)m;
-+	return full_write(STDOUT_FILENO, s, m) != (ssize_t)m;
- }
