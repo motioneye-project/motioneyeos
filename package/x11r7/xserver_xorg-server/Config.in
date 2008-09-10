@@ -52,3 +52,9 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER
 	help
 	  xorg-server 1.4
 	  No description available
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR
+    bool "Null root cursor"
+    depends on BR2_PACKAGE_XSERVER_XORG_SERVER
+    help
+        Don't display root cursor.

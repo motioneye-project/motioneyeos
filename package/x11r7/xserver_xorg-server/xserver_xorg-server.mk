@@ -24,6 +24,12 @@ else
 XSERVER_XORG_ENABLE_KDRIVE:=--disable-kdrive --disable-xfbdev
 endif
 
+ifeq ($(strip $(BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR)),y)
+XSERVER_XORG_NULL_CURSOR:=--enable-null-root-cursor
+else
+XSERVER_XORG_NULL_CURSOR:=--disable-null-root-cursor
+endif
+
 XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont libdrm xlib_libxkbui \
 									xproto_compositeproto xproto_damageproto xproto_fixesproto \
 									xproto_glproto xproto_kbproto xproto_randrproto freetype \
@@ -42,6 +48,7 @@ XSERVER_XORG_SERVER_CONF_OPT = $(XSERVER_XORG_ENABLE_KDRIVE) \
 		--enable-freetype $(XSERVER_XORG_ENABLE_MODULAR) \
 		--disable-config-hal $(XSERVER_XORG_MESA_DIR) \
 		--disable-xnest --disable-xephyr --disable-xvfb \
+		$(XSERVER_XORG_NULL_CURSOR)
 		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1"
 
 XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install-data
