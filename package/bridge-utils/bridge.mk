@@ -22,9 +22,9 @@ $(BRIDGE_HOOK_POST_INSTALL): $(BRIDGE_TARGET_INSTALL_TARGET)
 	touch $@
 
 # bridge has no uninstall target
-$(BUILD_DIR)/bridge-$(BRIDGE_VERSION)/.stamp_uninstalled:
+$(BRIDGE_TARGET_UNINSTALL):
 	$(call MESSAGE,"Uninstalling")
 	rm -f $(addprefix $(TARGET_DIR)/usr/,lib/libbridge.a \
 		include/libbridge.h man/man8/brctl.8 sbin/brctl)
-	rm -f $(@D)/.stamp_target_installed
+	rm -f $(BRIDGE_TARGET_INSTALL_TARGET) $(BRIDGE_HOOK_POST_INSTALL)
 

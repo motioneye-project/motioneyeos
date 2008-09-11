@@ -234,15 +234,16 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 	touch $@
 
 # Install to target dir
-$(BUILD_DIR)/%/.stamp_target_installed:
+$(PROJECT_BUILD_DIR)/autotools-stamps/%_target_installed:
 	$(call MESSAGE,"Installing to target")
-	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_INSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
+	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_INSTALL_TARGET_OPT) -C $($(PKG)_DIR)/$($(PKG)_SUBDIR)
 	$(if $(BR2_HAVE_MANPAGES),,for d in man share/man; do \
 		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
 	done)
 	$(if $(BR2_HAVE_INFOPAGES),,for d in info share/info; do \
 		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
 	done)
+	$(Q)mkdir -p $(@D)
 	touch $@
 
 $(BUILD_DIR)/%/.stamp_cleaned:
@@ -255,7 +256,7 @@ $(BUILD_DIR)/%/.stamp_uninstalled:
 	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_UNINSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
 	rm -f $(@D)/.stamp_staging_installed
 	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_UNINSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-	rm -f $(@D)/.stamp_target_installed
+	rm -f $($(PKG)_TARGET_INSTALL_TARGET) $($(PKG)_HOOK_POST_INSTALL)
 
 $(BUILD_DIR)/%/.stamp_dircleaned:
 	rm -Rf $(@D)
@@ -302,7 +303,8 @@ $(2)_DIR_PREFIX			=  $(if $(3),$(3),$(TOP_SRCDIR)/package)
 
 
 # define sub-target stamps
-$(2)_TARGET_INSTALL_TARGET =	$$($(2)_DIR)/.stamp_target_installed
+# targets which affect $(TARGET_DIR) must use a unique stamp for each $(PROJECT)
+$(2)_TARGET_INSTALL_TARGET =	$(PROJECT_BUILD_DIR)/autotools-stamps/$(1)_target_installed
 $(2)_TARGET_INSTALL_STAGING =	$$($(2)_DIR)/.stamp_staging_installed
 $(2)_TARGET_BUILD =		$$($(2)_DIR)/.stamp_built
 $(2)_TARGET_CONFIGURE =		$$($(2)_DIR)/.stamp_configured
@@ -317,7 +319,7 @@ $(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
 $(2)_HOOK_POST_EXTRACT =	$$($(2)_DIR)/.stamp_hook_post_extract
 $(2)_HOOK_POST_CONFIGURE =	$$($(2)_DIR)/.stamp_hook_post_configure
 $(2)_HOOK_POST_BUILD =		$$($(2)_DIR)/.stamp_hook_post_build
-$(2)_HOOK_POST_INSTALL =	$$($(2)_DIR)/.stamp_hook_post_install
+$(2)_HOOK_POST_INSTALL =	$(PROJECT_BUILD_DIR)/autotools-stamps/$(1)_hook_post_install
 
 # human-friendly targets and target sequencing
 $(1):			$(1)-install
@@ -383,7 +385,7 @@ $$($(2)_TARGET_UNINSTALL):		PKG=$(2)
 $$($(2)_TARGET_CLEAN):			PKG=$(2)
 $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
 $$($(2)_HOOK_POST_EXTRACT):		PKG=$(2)
-$$($(2)_HOOK_POST_CONFIGURE):	PKG=$(2)
+$$($(2)_HOOK_POST_CONFIGURE):		PKG=$(2)
 $$($(2)_HOOK_POST_BUILD):		PKG=$(2)
 $$($(2)_HOOK_POST_INSTALL):		PKG=$(2)
 
