@@ -52,7 +52,7 @@
 # FOO_UNINSTALL_STAGING_OPT  [default DESTDIR=$(STAGING_DIR)/usr uninstall]
 #	arguments passed to <make> while uninstalling from the staging
 #	directory
-# FOO_UNINSTALL_TARGET_OPT [default DESTDIR=$(STAGING_DIR)/usr uninstall]
+# FOO_UNINSTALL_TARGET_OPT [default DESTDIR=$(TARGET_DIR)/usr uninstall]
 #	arguments passed to <make> while uninstalling from the target
 #	directory
 # FOO_SUBDIR [default empty]
