@@ -43,16 +43,16 @@
 #	install the package to the staging directory
 # FOO_INSTALL_TARGET [YES/NO, default YES]
 #	install the package to the target directory
-# FOO_INSTALL_STAGING_OPT [default DESTDIR=$(STAGING_DIR)/usr install]
+# FOO_INSTALL_STAGING_OPT [default DESTDIR=$(STAGING_DIR) install]
 #	arguments passed to <make> while installing to the staging directory
-# FOO_INSTALL_TARGET_OPT [default DESTDIR=$(TARGET_DIR)/usr install-exec]
+# FOO_INSTALL_TARGET_OPT [default DESTDIR=$(TARGET_DIR) install-exec]
 #	arguments passed to <make> while installing to the target directory
 # FOO_CLEAN_OPT [default clean]
 #	arguments passed to <make> while installing to the staging directory
-# FOO_UNINSTALL_STAGING_OPT  [default DESTDIR=$(STAGING_DIR)/usr uninstall]
+# FOO_UNINSTALL_STAGING_OPT  [default DESTDIR=$(STAGING_DIR) uninstall]
 #	arguments passed to <make> while uninstalling from the staging
 #	directory
-# FOO_UNINSTALL_TARGET_OPT [default DESTDIR=$(TARGET_DIR)/usr uninstall]
+# FOO_UNINSTALL_TARGET_OPT [default DESTDIR=$(TARGET_DIR) uninstall]
 #	arguments passed to <make> while uninstalling from the target
 #	directory
 # FOO_SUBDIR [default empty]
