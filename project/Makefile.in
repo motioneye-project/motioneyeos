@@ -30,7 +30,8 @@ TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xf
 BASE_DIR:=$(shell pwd)
 ifdef O
 ifeq ("$(origin O)", "command line")
-BASE_DIR := $(O)
+BASE_DIR := $(shell mkdir -p $(O) && cd $(O) && pwd)
+$(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 endif
 endif
 
