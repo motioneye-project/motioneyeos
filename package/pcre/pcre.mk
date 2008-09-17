@@ -20,5 +20,8 @@ PCRE_DEPENDENCIES = uclibc
 $(eval $(call AUTOTARGETS,package,pcre))
 
 $(PCRE_HOOK_POST_INSTALL): $(PCRE_TARGET_INSTALL_TARGET)
+	$(SED) 's,^prefix=.*,prefix=$(STAGING_DIR)/usr,' \
+		-e 's,^exec_prefix=.*,exec_prefix=$(STAGING_DIR)/usr,' \
+		$(STAGING_DIR)/usr/bin/pcre-config
 	rm -rf $(TARGET_DIR)/usr/share/doc/pcre
 	touch $@
