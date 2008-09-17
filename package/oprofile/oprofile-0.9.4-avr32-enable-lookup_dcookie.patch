@@ -1,0 +1,24 @@
+Index: oprofile-0.9.4/daemon/opd_cookie.c
+===================================================================
+--- oprofile-0.9.4.orig/daemon/opd_cookie.c	2008-07-25 16:00:17.000000000 +0200
++++ oprofile-0.9.4/daemon/opd_cookie.c	2008-07-25 16:00:20.000000000 +0200
+@@ -78,6 +78,19 @@
+ 		       (unsigned long)(cookie & 0xffffffff),
+ 		       (unsigned long)(cookie >> 32), buf, size);
+ }
++#elif (defined(__avr32__))
++static inline int lookup_dcookie(cookie_t cookie, char * buf, size_t size)
++{
++	/* On avr32, the first 64bit arg (cookie) is expected to be in
++	 * r11(MSW)/r10(LSW) which normally hold arg 2 and arg 3. The second arg
++	 * (buf) is then expected to be in r12 which normally holds the first
++	 * arg. Third arg (size) is at the right position.
++	 */
++	return syscall(__NR_lookup_dcookie, buf,
++			(unsigned long)(cookie >> 32),
++			(unsigned long)(cookie & 0xffffffff),
++			size);
++}
+ #else
+ static inline int lookup_dcookie(cookie_t cookie, char * buf, size_t size)
+ {
