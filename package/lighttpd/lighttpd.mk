@@ -10,18 +10,18 @@ LIGHTTPD_INSTALL_STAGING = NO
 LIGHTTPD_INSTALL_TARGET = YES
 LIGHTTPD_DEPENDENCIES = uclibc
 LIGHTTPD_CONF_ENV =
+
+ifneq ($(BR2_LARGEFILE),y)
+LIGHTTPD_LFS:=$(DISABLE_LARGEFILE) --disable-lfs
+endif
+
 LIGHTTPD_CONF_OPT = \
-	--target=$(GNU_TARGET_NAME) \
-	--host=$(GNU_TARGET_NAME) \
-	--build=$(GNU_HOST_NAME) \
-	--prefix=/usr \
 	--libdir=/usr/lib/lighttpd \
 	--libexecdir=/usr/lib \
-	--sysconfdir=/etc \
 	--localstatedir=/var \
 	--program-prefix="" \
 	$(DISABLE_IPV6) \
-	$(DISABLE_LARGEFILE)
+	$(LIGHTTPD_LFS)
 
 ifeq ($(strip $(BR2_PACKAGE_LIGHTTPD_OPENSSL)),y)
 LIGHTTPD_DEPENDENCIES += openssl
