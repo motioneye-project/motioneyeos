@@ -41,11 +41,10 @@ $(AUMIX_DIR)/.configured: $(AUMIX_DIR)/.unpacked
 $(AUMIX_DIR)/src/aumix: $(AUMIX_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(AUMIX_DIR)
 
-$(AUMIX_DIR)/.installed: $(AUMIX_DIR)/src/aumix
+$(TARGET_DIR)/usr/bin/aumix: $(AUMIX_DIR)/src/aumix
 	$(MAKE) -C $(AUMIX_DIR) DESTDIR=$(TARGET_DIR) install
-	touch $@
 
-aumix: uclibc ncurses $(AUMIX_DIR)/.installed
+aumix: uclibc ncurses $(TARGET_DIR)/usr/bin/aumix
 
 aumix-source: $(DL_DIR)/$(AUMIX_SOURCE)
 
