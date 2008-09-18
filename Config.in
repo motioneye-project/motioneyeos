@@ -126,8 +126,7 @@ config BR2_ROOTFS_PREFIX
 
 config BR2_ROOTFS_SUFFIX
 	string "Custom root fs suffix"
-	default "$(DATE)" if BR2_TARGET_ATMEL
-	default "" if !BR2_TARGET_ATMEL
+	default ""
 	help
 	  Add a custom string to the end of the root file system name.
 
