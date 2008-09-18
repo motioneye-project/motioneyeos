@@ -163,6 +163,7 @@ source "package/libcgicc/Config.in"
 source "package/libeXosip2/Config.in"
 source "package/libosip2/Config.in"
 source "package/libpcap/Config.in"
+source "package/libupnp/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/lighttpd/Config.in"
 endif
