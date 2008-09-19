@@ -202,8 +202,8 @@ $(BUILD_DIR)/%/.stamp_autoconfigured:
 	$(call MESSAGE,"Running autoreconf")
 	$(Q)cd $(@D)/$($(PKG)_SUBDIR) && $(AUTORECONF)
 # if the package uses libtool, patch it for cross-compiling in buildroot
-	if test "$($(PKG)_LIBTOOL_PATCH)" = "YES"; then \
-	$(Q)for i in `find $(@D)/$($(PKG)_SUBDIR) -name ltmain.sh`; do \
+	$(Q)if test "$($(PKG)_LIBTOOL_PATCH)" = "YES"; then \
+		for i in `find $(@D)/$($(PKG)_SUBDIR) -name ltmain.sh`; do \
 		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
 		done \
 	fi
