@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBCONFUSE
+	bool "libconfuse"
+	help
+	  LibConfuse is a configuration file parser library written in
+	  C. It supports sections and (lists of) values (strings,
+	  integers, floats, booleans or other sections), as well as some
+	  other features (such as single/double-quoted strings,
+	  environment variable expansion, functions and nested include
+	  statements.
+
+	  http://www.nongnu.org/confuse/
