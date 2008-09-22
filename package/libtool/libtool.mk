@@ -90,7 +90,7 @@ endif
 libtool: uclibc $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY)
 
 libtool-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBTOOL_DIR) uninstall
+	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBTOOL_DIR) uninstall
 	-$(MAKE) -C $(LIBTOOL_DIR) clean
 
 libtool-cross: uclibc $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
@@ -138,7 +138,7 @@ endif
 host-libtool: $(LIBTOOL)
 
 host-libtool-clean:
-	$(MAKE) -C $(LIBTOOL_HOST_DIR) uninstall
+	-$(MAKE) -C $(LIBTOOL_HOST_DIR) uninstall
 	-$(MAKE) -C $(LIBTOOL_HOST_DIR) clean
 
 host-libtool-dirclean:
