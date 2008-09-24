@@ -320,6 +320,7 @@ source "package/pixman/Config.in"
 source "package/sdl/Config.in"
 source "package/sdl_image/Config.in"
 source "package/sdl_mixer/Config.in"
+source "package/sdl_net/Config.in"
 source "package/sdl_ttf/Config.in"
 source "package/tiff/Config.in"
 
