@@ -6,6 +6,7 @@ menuconfig BR2_GAMES
 
 if BR2_GAMES
 source "package/games/ace_of_penguins/Config.in"
+source "package/games/doom-wad/Config.in"
 source "package/games/gnuchess/Config.in"
 source "package/games/lxdoom/Config.in"
 source "package/games/magiccube4d/Config.in"
