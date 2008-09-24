@@ -1,5 +1,6 @@
 config BR2_PACKAGE_OPENSSL
 	bool "openssl"
+	select BR2_PACKAGE_ZLIB
 	help
 	  A collaborative effort to develop a robust, commercial-grade, fully
 	  featured, and Open Source toolkit implementing the Secure Sockets
@@ -8,8 +9,17 @@ config BR2_PACKAGE_OPENSSL
 
 	  http://www.openssl.org/
 
-config BR2_PACKAGE_OPENSSL_TARGET_HEADERS
-	bool "openssl headers in target"
+config BR2_PACKAGE_OPENSSL_BIN
+	bool "openssl binary"
 	depends on BR2_PACKAGE_OPENSSL
+	default no
 	help
-	  Put openssl headers in the target.
+	  Install the openssl binary to the target file system. This is a
+	  command line tool for doing various crypthographic stuff.
+
+config BR2_PACKAGE_OPENSSL_ENGINES
+	bool "openssl additional engines"
+	depends on BR2_PACKAGE_OPENSSL
+	default no
+	help
+	  Install additional encryption engine libraries.
