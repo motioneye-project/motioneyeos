@@ -32,6 +32,12 @@ ifdef O
 ifeq ("$(origin O)", "command line")
 BASE_DIR := $(shell mkdir -p $(O) && cd $(O) && pwd)
 $(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
+
+# other packages might also support Linux-style out of tree builds
+# with the O=<dir> syntax (E.G. Busybox does). As make automatically
+# forwards command line variable definitions those packages get very
+# confused. Fix this by telling make to not do so
+MAKEOVERRIDES =
 endif
 endif
 
