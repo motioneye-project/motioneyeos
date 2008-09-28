@@ -59,8 +59,8 @@ config BR2_BUSYBOX_VERSION
 	default "1.8.3"		if BR2_BUSYBOX_VERSION_1_8_X
 	default "1.9.2"		if BR2_BUSYBOX_VERSION_1_9_X
 	default "1.10.4"	if BR2_BUSYBOX_VERSION_1_10_X
-	default "1.11.2"	if BR2_BUSYBOX_VERSION_1_11_X
-	default "1.12.0"	if BR2_BUSYBOX_VERSION_1_12_X
+	default "1.11.3"	if BR2_BUSYBOX_VERSION_1_11_X
+	default "1.12.1"	if BR2_BUSYBOX_VERSION_1_12_X
 
 config BR2_PACKAGE_BUSYBOX_FULLINSTALL
 	bool "Run BusyBox's own full installation"
