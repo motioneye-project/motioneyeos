@@ -428,7 +428,7 @@ $(TARGET_DIR)/boot/uclibc.config: $(UCLIBC_DIR)/.config
 
 $(TARGET_DIR)/boot/busybox.config: $(BUSYBOX_DIR)/.config
 	mkdir -p $(TARGET_DIR)/boot
-	cp -dpf .config $(TARGET_DIR)/boot/busybox.config
+	cp -dpf $(BUSYBOX_DIR)/.config $(TARGET_DIR)/boot/busybox.config
 
 /tftpboot/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 	-mkdir -p /tftpboot
