@@ -14,6 +14,3 @@ config BR2_CCACHE_DIR
 	help
 	    Where ccache should store cached files.
 
-comment "ccache dir location?       - disabled (requires ccache support)"
-	depends on !BR2_CCACHE
-
