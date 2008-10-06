@@ -26,6 +26,17 @@ and your toplevel .config to a machine that has an internet-connection
 and issue "make source" there, then copy the content of your dl/ dir to
 the build-host.
 
+Building out-of-tree:
+=====================
+
+Buildroot supports building out of tree with a syntax similar
+to the Linux kernel. To use it, add O=<directory> to the
+make command line, E.G.:
+
+$ make O=/tmp/build
+
+And all the output files will be located under /tmp/build.
+
 More finegrained configuration:
 ===============================
 
