@@ -3,7 +3,7 @@
 # which
 #
 #############################################################
-WHICH_VERSION:=2.19
+WHICH_VERSION:=2.20
 WHICH_SOURCE:=which-$(WHICH_VERSION).tar.gz
 WHICH_SITE:=http://www.xs4all.nl/~carlo17/which/
 WHICH_AUTORECONF:=NO
