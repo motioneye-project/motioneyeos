@@ -24,8 +24,9 @@ $(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
 	# Should probably patch things to use a relative path.
 	$(SED) "s,getenv(\"CCACHE_PATH\"),\"$(STAGING_DIR)/usr/bin-ccache\",g" \
 		$(CCACHE_DIR1)/execute.c
-	# WARNING - this will break if the toolchain build dir is deleted.
-	$(SED) "s,getenv(\"CCACHE_DIR\"),\"$(CCACHE_DIR1)/cache\",g" \
+	# WARNING - this will break if the toolchain build dir is deleted
+	#	when using the default cache dir location.
+	$(SED) "s,getenv(\"CCACHE_DIR\"),\"$(BR2_CCACHE_DIR)\",g" \
 		$(CCACHE_DIR1)/ccache.c
 	mkdir -p $(CCACHE_DIR1)/cache
 	touch $@

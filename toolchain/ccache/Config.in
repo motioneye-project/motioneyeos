@@ -7,3 +7,13 @@ config BR2_CCACHE
 	help
 	    Enable ccache support?
 
+config BR2_CCACHE_DIR
+	string "ccache dir location?"
+	depends on BR2_CCACHE
+	default "$(TOOL_BUILD_DIR)/ccache-$(CCACHE_VER)/cache"
+	help
+	    Where ccache should store cached files.
+
+comment "ccache dir location?       - disabled (requires ccache support)"
+	depends on !BR2_CCACHE
+
