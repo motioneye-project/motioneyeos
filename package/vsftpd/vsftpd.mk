@@ -3,7 +3,7 @@
 # vsftpd
 #
 #############################################################
-VSFTPD_VERSION:=2.0.5
+VSFTPD_VERSION:=2.0.7
 VSFTPD_SOURCE:=vsftpd-$(VSFTPD_VERSION).tar.gz
 VSFTPD_SITE:=ftp://vsftpd.beasts.org/users/cevans
 VSFTPD_DIR:=$(BUILD_DIR)/vsftpd-$(VSFTPD_VERSION)
@@ -12,7 +12,6 @@ VSFTPD_BINARY:=vsftpd
 VSFTPD_TARGET_BINARY:=usr/sbin/vsftpd
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-VSFTPF_PREREQ:=openssl
 VSFTPD_LIBS:=-lcrypt -lssl
 else
 VSFTPD_LIBS:=-lcrypt
@@ -26,7 +25,7 @@ vsftpd-source: $(DL_DIR)/$(VSFTPD_SOURCE)
 $(VSFTPD_DIR)/.unpacked: $(DL_DIR)/$(VSFTPD_SOURCE)
 	$(VSFTPD_CAT) $(DL_DIR)/$(VSFTPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(VSFTPD_DIR) package/vsftpd/ vsftpd\*.patch
-	touch $(VSFTPD_DIR)/.unpacked
+	touch $@
 
 $(VSFTPD_DIR)/.configured: $(VSFTPD_DIR)/.unpacked
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
@@ -45,17 +44,22 @@ else # not uclibc
 endif
 
 
-$(VSFTPD_DIR)/$(VSFTPD_BINARY): $(VSFTPF_PREREQ) $(VSFTPD_DIR)/.configured
+$(VSFTPD_DIR)/$(VSFTPD_BINARY): $(VSFTPD_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" LIBS="$(VSFTPD_LIBS)" -C $(VSFTPD_DIR)
 
-$(TARGET_DIR)/usr/sbin/$(VSFTPD_BINARY): $(VSFTPD_DIR)/$(VSFTPD_BINARY)
+$(TARGET_DIR)/$(VSFTPD_TARGET_BINARY): $(VSFTPD_DIR)/$(VSFTPD_BINARY)
 	cp -dpf $< $@
+	$(INSTALL) -D -m 0755 package/vsftpd/vsftpd-init $(TARGET_DIR)/etc/init.d/S70vsftpd
 
-vsftpd: uclibc libgmp $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+vsftpd: uclibc openssl $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
+else
+vsftpd: uclibc $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
+endif
 
 vsftpd-clean:
 	-$(MAKE) -C $(VSFTPD_DIR) clean
-	rm -f $(TARGET_DIR)/usr/sbin/$(VSFTPD_BINARY)
+	rm -f $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
 
 vsftpd-dirclean:
 	rm -rf $(VSFTPD_DIR)

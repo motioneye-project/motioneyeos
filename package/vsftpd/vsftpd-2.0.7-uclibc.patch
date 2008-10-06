@@ -1,0 +1,15 @@
+--- vsftpd-2.0.5/sysdeputil.c.orig	2008-10-06 15:24:42.000000000 -0600
++++ vsftpd-2.0.5/sysdeputil.c	2008-10-06 15:35:35.000000000 -0600
+@@ -159,7 +159,12 @@
+ #include <linux/capability.h>
+ #include <errno.h>
+ #include <syscall.h>
++/* try to handle kernel header versions correctly (2.4 and >= 2.6.18) */
++#ifndef capset
++#define capset(head,data) syscall(__NR_capset,head,data)
++#else
+ _syscall2(int, capset, cap_user_header_t, header, const cap_user_data_t, data)
++#endif /* capset */
+ /* Gross HACK to avoid warnings - linux headers overlap glibc headers */
+ #undef __NFDBITS
+ #undef __FDMASK
