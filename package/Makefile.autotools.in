@@ -124,6 +124,8 @@ TAR ?= tar
 #AUTORECONF ?= autoreconf -v -i -f -I $(ACLOCAL_STAGING_DIR)
 #	ACLOCAL="$(ACLOCAL)"
 
+# Automatically detect tar --strip-path/components option
+TAR_STRIP_COMPONENTS = $(shell tar --help | grep strip-path > /dev/null ; if test $$? = 0 ; then echo '--strip-path' ; else echo '--strip-components' ; fi)
 
 ################################################################################
 # Implicit targets -- produce a stamp file for each step of a package build
@@ -152,7 +154,7 @@ $(BUILD_DIR)/%/.stamp_extracted:
 	$(call MESSAGE,"Extracting")
 	$(Q)mkdir -p $(@D)
 	$(Q)$(INFLATE$(suffix $($(PKG)_SOURCE))) $(DL_DIR)/$($(PKG)_SOURCE) | \
-	$(TAR) --strip-components=1 -C $(@D) $(TAR_OPTIONS) -
+	$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
 # some packages have messed up permissions inside
 	$(Q)chmod -R ug+rw $(@D)
 	$(Q)touch $@
