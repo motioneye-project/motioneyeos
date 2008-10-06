@@ -4427,51 +4427,6 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  case `uname` in
      OS/390)	OS390Unix="yes";
  										if test "$CC" = "cc"; then
-@@ -3601,30 +4143,30 @@
- 		  exit 1
- 		fi
- 		CFLAGS="$CFLAGS -D_ALL_SOURCE"; LDFLAGS="$LDFLAGS -Wl,EDIT=NO"
--		echo "$as_me:$LINENO: result: yes" >&5
--echo "${ECHO_T}yes" >&6
-+		{ echo "$as_me:$LINENO: result: yes" >&5
-+echo "${ECHO_T}yes" >&6; }
- 		;;
-     *)		OS390Unix="no";
--		echo "$as_me:$LINENO: result: no" >&5
--echo "${ECHO_T}no" >&6
-+		{ echo "$as_me:$LINENO: result: no" >&5
-+echo "${ECHO_T}no" >&6; }
- 		;;
- esac
- fi
- 
- 
- 
--echo "$as_me:$LINENO: checking --with-features argument" >&5
--echo $ECHO_N "checking --with-features argument... $ECHO_C" >&6
-+{ echo "$as_me:$LINENO: checking --with-features argument" >&5
-+echo $ECHO_N "checking --with-features argument... $ECHO_C" >&6; }
- 
--# Check whether --with-features or --without-features was given.
-+# Check whether --with-features was given.
- if test "${with_features+set}" = set; then
--  withval="$with_features"
--  features="$withval"; echo "$as_me:$LINENO: result: $features" >&5
--echo "${ECHO_T}$features" >&6
--else
--  features="normal"; echo "$as_me:$LINENO: result: Defaulting to normal" >&5
--echo "${ECHO_T}Defaulting to normal" >&6
--fi;
-+  withval=$with_features; features="$withval"; { echo "$as_me:$LINENO: result: $features" >&5
-+echo "${ECHO_T}$features" >&6; }
-+else
-+  features="normal"; { echo "$as_me:$LINENO: result: Defaulting to normal" >&5
-+echo "${ECHO_T}Defaulting to normal" >&6; }
-+fi
-+
- 
- dovimdiff=""
- dogvimdiff=""
 @@ -3652,109 +4194,109 @@
  _ACEOF
   dovimdiff="installvimdiff";
