@@ -27,6 +27,18 @@ config BR2_PACKAGE_SAMBA_EVENTLOGADM
 	help
 	  Write Eventlog records to a tdb or perform other eventlog functions
 
+config BR2_PACKAGE_SAMBA_FINDSMB
+	bool "findsmb"
+	default y
+	depends on BR2_PACKAGE_SAMBA_SMBCLIENT
+	depends on BR2_PACKAGE_SAMBA_NMBLOOKUP
+	depends on BR2_PACKAGE_MICROPERL
+	help
+	  Script to browse network
+
+comment "findsmb       - disabled (requires nmblookup, smbclient and perl)"
+	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT || !BR2_PACKAGE_SAMBA_NMBLOOKUP || !BR2_PACKAGE_MICROPERL
+
 config BR2_PACKAGE_SAMBA_NET
 	bool "net"
 	default y
@@ -148,6 +160,16 @@ config BR2_PACKAGE_SAMBA_SWAT
 	depends on BR2_PACKAGE_SAMBA
 	help
 	  Samba Web Administration Tool
+
+config BR2_PACKAGE_SAMBA_SMBTAR
+	bool "smbtar"
+	default y
+	depends on BR2_PACKAGE_SAMBA_SMBCLIENT
+	help
+	  tar-like script that wraps smbclient
+
+comment "smbtar        - disabled (requires smbclient)"
+	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT
 
 config BR2_PACKAGE_SAMBA_TDB
 	bool "tdb"

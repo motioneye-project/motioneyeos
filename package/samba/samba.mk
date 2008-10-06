@@ -29,6 +29,10 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		samba_cv_USE_SETREUID=yes \
 		samba_cv_HAVE_KERNEL_OPLOCKS_LINUX=yes \
 		samba_cv_HAVE_IFACE_IFCONF=yes \
+		samba_cv_HAVE_MMAP=yes \
+		samba_cv_HAVE_FCNTL_LOCK=yes \
+		samba_cv_HAVE_SECURE_MKSTEMP=yes \
+		samba_cv_fpie=no \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -58,6 +62,7 @@ SAMBA_TARGETS_y :=
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_CIFS) += usr/sbin/mount.cifs \
 						   usr/sbin/umount.cifs
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_EVENTLOGADM) += usr/bin/eventlogadm
+SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_FINDSMB) += usr/bin/findsmb
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_NET) += usr/bin/net
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_NMBD) += usr/sbin/nmbd
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_NMBLOOKUP) += usr/bin/nmblookup
@@ -73,6 +78,7 @@ SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_SMBGET) += usr/bin/smbget
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_SMBPASSWD) += usr/bin/smbpasswd
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_SMBSPOOL) += usr/bin/smbspool
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_SMBSTATUS) += usr/bin/smbstatus
+SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_SMBTAR) += usr/bin/smbtar
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_SMBTREE) += usr/bin/smbtree
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_SWAT) += usr/sbin/swat
 SAMBA_TARGETS_$(BR2_PACKAGE_SAMBA_TDB) += usr/bin/tdbbackup \
@@ -91,7 +97,7 @@ $(TARGET_DIR)/$(SAMBA_TARGET_BINARY): $(SAMBA_DIR)/$(SAMBA_BINARY)
 		PRIVATEDIR="${TARGET_DIR}/etc/samba" \
 		CONFIGDIR="${TARGET_DIR}/etc/samba" \
 		VARDIR="${TARGET_DIR}/var/log/samba" \
-		-C $(SAMBA_DIR) installservers installbin installcifsmount
+		-C $(SAMBA_DIR) installservers installbin installcifsmount installscripts
 	for file in $(SAMBA_TARGETS_); do \
 		rm -f $(TARGET_DIR)/$$file; \
 	done
