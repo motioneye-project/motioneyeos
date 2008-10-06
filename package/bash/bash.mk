@@ -36,6 +36,16 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		CCFLAGS_FOR_BUILD="$(HOST_CFLAGS)" \
 		ac_cv_func_setvbuf_reversed=no \
+		ac_cv_have_decl_sys_siglist=yes \
+		bash_cv_job_control_missing=present \
+		bash_cv_sys_named_pipes=present \
+		bash_cv_unusable_rtsigs=no \
+		bash_cv_func_ctype_nonascii=yes \
+		bash_cv_decl_under_sys_siglist=yes \
+		bash_cv_ulimit_maxfds=yes \
+		bash_cv_getcwd_malloc=yes \
+		bash_cv_func_sigsetjmp=present \
+		bash_cv_printf_a_format=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
