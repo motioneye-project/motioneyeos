@@ -585,7 +585,7 @@ uclibc-target-utils-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 
 $(UCLIBC_DIR)/test/unistd/errno:
 	$(MAKE) -C $(UCLIBC_DIR)/test \
-	ARCH_CFLAGS=-I$(STAGING_DIR)/include \
+	ARCH_CFLAGS=-I$(STAGING_DIR)/usr/include \
 	UCLIBC_ONLY=1 TEST_INSTALLED_UCLIBC=1 compile
 
 $(TARGET_DIR)/root/uClibc/test/unistd/errno: $(UCLIBC_DIR)/test/unistd/errno
