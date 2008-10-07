@@ -1,14 +1,9 @@
 config BR2_PACKAGE_DIRECTFB
 	bool "directfb"
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_JPEG
-	select BR2_PACKAGE_LIBPNG
-	select BR2_PACKAGE_LIBSYSFS
 	select BR2_PACKAGE_FREETYPE
-	select BR2_PACKAGE_TSLIB
+	select BR2_PACKAGE_ZLIB
 	help
 	  http://www.directfb.org/
-
 
 config BR2_PACKAGE_DIRECTFB_MULTI
 	bool "directfb multi application"
@@ -17,3 +12,72 @@ config BR2_PACKAGE_DIRECTFB_MULTI
 	help
 	  Enable use of multiple concurrent DirectFB applications
 	  http://www.directfb.org/
+
+config BR2_PACKAGE_DIRECTFB_XSERVER
+        bool "build with X server backend"
+        default n
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_UNIQUE
+        bool "enable unique window manager"
+        default n
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_ATI128
+        bool "compile ati128 graphics driver"
+        default n
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_CLE266
+        bool "compile cle266 graphics driver"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_MATROX
+        bool "compile matrox graphics driver"
+        default n
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_UNICHROME
+        bool "compile unichrome graphics driver"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_KEYBOARD
+        bool "compile keyboard input driver"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_PS2MOUSE
+        bool "compile PS2 mouse input driver"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_SERIALMOUSE
+        bool "compile serial mouse input driver"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_PNG
+        bool "enable PNG support"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_ZLIB
+
+config BR2_PACKAGE_DIRECTFB_TSLIB
+        bool "enable touchscreen support"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+	select BR2_PACKAGE_TSLIB
+
+config BR2_PACKAGE_DIRECTFB_GIF
+        bool "enable GIF support"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_JPEG
+        bool "enable JPEG support"
+        default y
+        depends on BR2_PACKAGE_DIRECTFB
+	select BR2_PACKAGE_JPEG
