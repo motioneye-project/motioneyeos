@@ -8,12 +8,7 @@ OPENSSL_SITE:=http://www.openssl.org/source
 
 OPENSSL_TARGET_ARCH:=
 ifeq ($(BR2_i386),y)
-ifneq ($(ARCH),i386)
-OPENSSL_TARGET_ARCH:=i386-$(ARCH)
-endif
-ifeq ($(ARCH),i686)
-OPENSSL_TARGET_ARCH:=i386-i686/cmov
-endif
+OPENSSL_TARGET_ARCH:=generic32
 endif
 ifeq ($(OPENSSL_TARGET_ARCH),)
 OPENSSL_TARGET_ARCH:=$(ARCH)
