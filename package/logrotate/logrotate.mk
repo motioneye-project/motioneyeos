@@ -21,18 +21,20 @@ $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY): $(LOGROTATE_DIR)/$(LOGROTATE_BINARY)
 	$(INSTALL) -m 0644 package/logrotate/logrotate.conf $(TARGET_DIR)/etc/logrotate.conf
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/logrotate.d
 
-logrotate: uclibc busybox popt $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY)
+logrotate: popt $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY)
 
 logrotate-source: $(DL_DIR)/$(LOGROTATE_SOURCE)
 
 logrotate-clean:
 	rm -f $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY)
+	rm -f $(TARGET_DIR)/etc/logrotate.conf
+	-rmdir $(TARGET_DIR)/etc/logrotate.d
 	-$(MAKE) -C $(LOGROTATE_DIR) clean
 
 logrotate-dirclean:
-	rm -Rf $(LOGROTATE_DIR)
+	rm -rf $(LOGROTATE_DIR)
 
-ifeq ($(strip $(BR2_PACKAGE_LOGROTATE)),y)
+ifeq ($(BR2_PACKAGE_LOGROTATE),y)
 TARGETS+=logrotate
 endif
 
