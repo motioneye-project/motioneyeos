@@ -549,6 +549,9 @@ endif
 	touch -c $@
 
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
+ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
+UCLIBC_TARGETS+=uclibc-test
+endif
 endif
 
 uclibc: $(cross_compiler) $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
@@ -568,17 +571,39 @@ uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
 
-uclibc-clean:
+uclibc-clean: uclibc-test-clean
 	-$(MAKE1) -C $(UCLIBC_DIR) clean
 	rm -f $(UCLIBC_DIR)/.config
 
-uclibc-dirclean:
+uclibc-dirclean: uclibc-test-dirclean
 	rm -rf $(UCLIBC_DIR)
 
 uclibc-target-utils:
 #$(TARGET_DIR)/usr/bin/ldd
 
 uclibc-target-utils-source: $(DL_DIR)/$(UCLIBC_SOURCE)
+
+$(UCLIBC_DIR)/test/unistd/errno:
+	$(MAKE) -C $(UCLIBC_DIR)/test \
+	ARCH_CFLAGS=-I$(STAGING_DIR)/include \
+	UCLIBC_ONLY=1 TEST_INSTALLED_UCLIBC=1 compile
+
+$(TARGET_DIR)/root/uClibc/test/unistd/errno: $(UCLIBC_DIR)/test/unistd/errno
+	mkdir -p $(TARGET_DIR)/root/uClibc
+	cp -rdpf $(UCLIBC_DIR)/test $(TARGET_DIR)/root/uClibc
+	$(INSTALL) $(UCLIBC_DIR)/Rules.mak $(TARGET_DIR)/root/uClibc
+	$(INSTALL) $(UCLIBC_DIR)/.config $(TARGET_DIR)/root/uClibc
+
+uclibc-test: uclibc $(TARGET_DIR)/root/uClibc/test/unistd/errno
+
+uclibc-test-source: uclibc-source
+
+uclibc-test-clean:
+	-$(MAKE) -C $(UCLIBC_DIR)/test clean
+	rm -rf $(TARGET_DIR)/root/uClibc
+
+uclibc-test-dirclean:
+	rm -rf $(TARGET_DIR)/root/uClibc
 
 #############################################################
 #
@@ -615,11 +640,11 @@ endif
 
 uclibc_target: cross_compiler uclibc $(TARGET_DIR)/usr/lib/libc.a $(TARGET_DIR)/usr/bin/ldd
 
-uclibc_target-clean:
+uclibc_target-clean: uclibc-test-clean
 	rm -rf $(TARGET_DIR)/usr/include \
 		$(TARGET_DIR)/usr/lib/libc.a $(TARGET_DIR)/usr/bin/ldd
 
-uclibc_target-dirclean:
+uclibc_target-dirclean: uclibc-test-dirclean
 	rm -rf $(TARGET_DIR)/usr/include
 
 endif

@@ -83,3 +83,21 @@ config BR2_UCLIBC_PROGRAM_INVOCATION
 	  program_invocation_short_name strings.  Some GNU packages
 	  (like tar and coreutils) utilize these for extra useful
 	  output, but in general are not required.
+
+config BR2_UCLIBC_INSTALL_TEST_SUITE
+	bool "Compile and install uClibc tests"
+	default n
+	select BR2_PACKAGE_MAKE
+	help
+	  Enabling this option will compile and install the uClibc test suite.
+	  This is useful if you want to check if the uClibc library is working
+	  for your architecture and/or help developing uClibc.
+
+	  The test suite will be installed into /root/uClibc directory. To run
+	  the test suite enter the /root/uClibc/test directory and type
+	  "make UCLIBC_ONLY=1 CC=/bin/true check".
+
+	  See the /root/uClibc/test/README for additional information.
+
+	  This is not needed at all for normal builds, so you can safely say no
+	  if you do not plan to dig into your C library.
