@@ -17,6 +17,7 @@ config BR2_PACKAGE_DIRECTFB_XSERVER
         bool "build with X server backend"
         default n
         depends on BR2_PACKAGE_DIRECTFB
+	depends on BR2_PACKAGE_XSERVER_x11r7 || BR2_PACKAGE_XSERVER_tinyx
 
 config BR2_PACKAGE_DIRECTFB_UNIQUE
         bool "enable unique window manager"
@@ -63,7 +64,6 @@ config BR2_PACKAGE_DIRECTFB_PNG
         default y
         depends on BR2_PACKAGE_DIRECTFB
 	select BR2_PACKAGE_LIBPNG
-	select BR2_PACKAGE_ZLIB
 
 config BR2_PACKAGE_DIRECTFB_TSLIB
         bool "enable touchscreen support"
@@ -75,6 +75,7 @@ config BR2_PACKAGE_DIRECTFB_GIF
         bool "enable GIF support"
         default y
         depends on BR2_PACKAGE_DIRECTFB
+	select BR2_PACKAGE_LIBUNGIF
 
 config BR2_PACKAGE_DIRECTFB_JPEG
         bool "enable JPEG support"
