@@ -882,7 +882,19 @@ config BR2_PACKAGE_FOO
 
     <p>Of course, you can add other options to configure particular
     things in your software. </p>
-
+    <p>Finally you have to add your new <code>foo/Config.in</code> to
+    <code>package/Config.in</code>. The files included there are
+    <em>sorted alphabetically</em> per category and are <em>NOT<em>
+    supposed to contain anything but the <em>bare</em> name of the package.</p>
+<pre>
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/procps/Config.in"
+endif
+</pre>
+   <p><strong>Note:</strong><br>
+   Generally all packages should live <em>directly</em> in the
+   <code>package</code> directory to make it easier to find them.
+   </p>
    <h3>The real <i>Makefile</i></h3>
 
    <p>Finally, here's the hardest part. Create a file named
