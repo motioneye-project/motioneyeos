@@ -1,0 +1,12 @@
+config BR2_PACKAGE_SAWMAN
+	bool "SawMan (Window Manager)"
+	depends on BR2_PACKAGE_DIRECTFB
+	help
+	  SaWMan is a new window manager module for use with DirectFB. 
+          Its main difference to the default module is that it allows 
+          one process to be an application and window manager, 
+          implementing all kinds of diversity, while SaWMan is only the 
+          working horse.
+
+	   See http://www.directfb.org/downloads/Extras/README.SaWMan
+
