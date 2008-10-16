@@ -49,7 +49,8 @@ void new_string(void)
 void append_string(const char *str, int size)
 {
 	int new_size = text_size + size + 1;
-	if (size > 70) {
+
+	if ((YY_START == 2 /* HELP */) && (size > 70)) {
 	        fprintf (stderr, "%s:%d warning: Overlong line\n",
 			 current_file->name, current_file->lineno);
 	}
