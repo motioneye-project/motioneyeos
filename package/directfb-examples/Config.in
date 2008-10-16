@@ -1,0 +1,97 @@
+config BR2_PACKAGE_DIRECTFB_EXAMPLES
+       bool "directfb examples"
+       depends on BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_ANDI
+       bool "usr/bin/df_andi"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_BLTLOAD
+       bool "usr/bin/df_bltload"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_CPULOAD
+       bool "usr/bin/df_cpuload"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DATABUFFER
+       bool "usr/bin/df_databuffer"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DIOLOAD
+       bool "usr/bin/df_dioload"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DOK
+       bool "usr/bin/df_dok"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DRIVERTEST
+       bool "usr/bin/df_drivertest"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FIRE
+       bool "usr/bin/df_fire"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FLIP
+       bool "usr/bin/df_flip"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FONTS
+       bool "usr/bin/df_fonts"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_INPUT
+       bool "usr/bin/df_input"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_JOYSTICK
+       bool "usr/bin/df_joystick"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_KNUCKLES
+       bool "usr/bin/df_knuckles"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_LAYER
+       bool "usr/bin/df_layer"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_NEO
+       bool "usr/bin/df_neo"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_NETLOAD
+       bool "usr/bin/df_netload"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PALETTE
+       bool "usr/bin/df_palette"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PARTICLE
+       bool "usr/bin/df_particle"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PORTER
+       bool "usr/bin/df_porter"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_STRESS
+       bool "usr/bin/df_stress"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_TEXTURE
+       bool "usr/bin/df_texture"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_VIDEO
+       bool "usr/bin/df_video"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_VIDEO_PARTICLE
+       bool "usr/bin/df_video_particle"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_WINDOW
+       bool "usr/bin/df_window"
+       depends on BR2_PACKAGE_DIRECTFB_EXAMPLES
