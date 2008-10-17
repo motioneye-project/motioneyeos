@@ -3,7 +3,7 @@
 #
 # $1: source
 # $2: destination
-# $2: strip (y|n)       default is to strip
+# $3: strip (y|n)       default is to strip
 #
 copy_toolchain_lib_root = \
 	LIB="$(strip $1)"; \
