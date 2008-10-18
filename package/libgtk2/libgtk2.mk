@@ -3,7 +3,7 @@
 # libgtk2.0
 #
 #############################################################
-LIBGTK2_VERSION = 2.12.6
+LIBGTK2_VERSION = 2.12.12
 LIBGTK2_SOURCE = gtk+-$(LIBGTK2_VERSION).tar.bz2
 LIBGTK2_SITE = ftp://ftp.gtk.org/pub/gtk/2.12
 LIBGTK2_AUTORECONF = NO
