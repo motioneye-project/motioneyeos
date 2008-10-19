@@ -31,8 +31,8 @@ config BR2_PACKAGE_MATCHBOX_DESKTOP
 	  A PDA style application launcher or 'item browser'.
 
 config BR2_PACKAGE_MATCHBOX_KEYBOARD
-	bool "Metchbox Virtual Keyboard"
+	bool "Matchbox Virtual Keyboard"
 	depends on BR2_PACKAGE_MATCHBOX
 	select BR2_PACKAGE_XLIB_LIBXTST
 	help
-	  Virtual Keyboard (developement version from CVS)
+	  Virtual Keyboard
