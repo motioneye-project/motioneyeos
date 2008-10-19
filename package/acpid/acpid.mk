@@ -33,7 +33,7 @@ acpid: $(TARGET_DIR)/usr/sbin/acpid
 acpid-source: $(DL_DIR)/$(ACPID_SOURCE)
 
 acpid-clean:
-	-make -C $(ACPID_DIR) clean
+	-$(MAKE) -C $(ACPID_DIR) clean
 
 acpid-dirclean:
 	rm -rf $(ACPID_DIR)
