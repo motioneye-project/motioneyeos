@@ -70,13 +70,13 @@ $(VIM_DIR)/.build: $(VIM_DIR)/.configured
 
 $(TARGET_DIR)/usr/bin/vim: $(VIM_DIR)/.build
 	(cd $(VIM_DIR)/src; \
-		make DESTDIR=$(TARGET_DIR) installvimbin; \
-		make DESTDIR=$(TARGET_DIR) installlinks; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) installvimbin; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) installlinks; \
 	)
 ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
 	(cd $(VIM_DIR)/src; \
-		make DESTDIR=$(TARGET_DIR) installrtbase; \
-		make DESTDIR=$(TARGET_DIR) installmacros; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) installrtbase; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) installmacros; \
 	)
 endif
 
