@@ -16,10 +16,12 @@ BRIDGE_DEPENDENCIES:=uclibc
 
 $(eval $(call AUTOTARGETS,package,bridge))
 
+ifeq ($(BR2_ENABLE_DEBUG),)
 # bridge has no install-strip target
 $(BRIDGE_HOOK_POST_INSTALL): $(BRIDGE_TARGET_INSTALL_TARGET)
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/brctl
 	touch $@
+endif
 
 # bridge has no uninstall target
 $(BRIDGE_TARGET_UNINSTALL):
