@@ -348,6 +348,13 @@ config BR2_HAVE_INFOPAGES
 	  If you say n here, your target will not contain any
 	  infopage.
 
+config BR2_HAVE_DOCUMENTATION
+	bool "documentation on the target"
+	help
+	  Leave the documentation on the target.
+	  If you say n here, your target will not contain any
+	  documentation.
+
 config BR2_HAVE_DEVFILES
 	bool "development files in target filesystem"
 	help
