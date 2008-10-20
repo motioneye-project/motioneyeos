@@ -28,7 +28,9 @@ endif
 
 $(eval $(call AUTOTARGETS,package,neon))
 
+ifeq ($(BR2_ENABLE_DEBUG),)
 # neon doesn't have an install-strip target, so do it afterwards
 $(NEON_HOOK_POST_INSTALL): $(NEON_TARGET_INSTALL_TARGET)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libneon.so
 	touch $@
+endif
