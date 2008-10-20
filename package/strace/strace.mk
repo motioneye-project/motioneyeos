@@ -3,7 +3,7 @@
 # strace
 #
 #############################################################
-STRACE_VERSION:=4.5.15
+STRACE_VERSION:=4.5.18
 STRACE_SOURCE:=strace-$(STRACE_VERSION).tar.bz2
 STRACE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/strace
 STRACE_AUTORECONF:=no
