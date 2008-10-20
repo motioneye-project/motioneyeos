@@ -11,7 +11,6 @@ SDL_NET_CONF_OPT = --localstatedir=/var \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr
 
 SDL_NET_INSTALL_STAGING = YES
-SDL_NET_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-strip
 
 SDL_NET_DEPENDENCIES = sdl
 

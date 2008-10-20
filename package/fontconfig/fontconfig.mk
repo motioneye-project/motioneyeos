@@ -10,8 +10,6 @@ FONTCONFIG_AUTORECONF = NO
 FONTCONFIG_INSTALL_STAGING = YES
 FONTCONFIG_INSTALL_TARGET = YES
 
-FONTCONFIG_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-strip
-
 FONTCONFIG_CONF_OPT = --with-arch=$(GNU_TARGET_NAME) \
 		--with-freetype-config="$(STAGING_DIR)/usr/bin/freetype-config" \
 		--with-expat="$(STAGING_DIR)/usr/lib" \

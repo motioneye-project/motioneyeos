@@ -9,7 +9,6 @@ SPEEX_SITE=http://downloads.us.xiph.org/releases/speex
 SPEEX_AUTORECONF = NO
 SPEEX_INSTALL_STAGING = YES
 SPEEX_INSTALL_TARGET = YES
-SPEEX_INSTALL_TARGET_OPT:=DESTDIR=$(TARGET_DIR) install-strip
 SPEEX_DEPENDENCIES = libogg
 SPEEX_CONF_OPT = --with-ogg-libraries=$(STAGING_DIR)/usr/lib \
 		 --with-ogg-includes=$(STAGING_DIR)/usr/include \
