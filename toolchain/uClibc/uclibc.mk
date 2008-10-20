@@ -433,12 +433,9 @@ $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.confi
 		PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOL_BUILD_DIR)/uClibc_dev/ \
-		HOSTCC="$(HOSTCC)" \
-ifeq ($(BR2_UCLIBC_VERSION_0_9_28_3),y)
-		headers install_dev
-else
-		headers install_headers
-endif
+		HOSTCC="$(HOSTCC)" headers \
+		$(if $(BR2_UCLIBC_VERSION_0_9_28_3),install_dev,install_headers)
+
 	# Install the kernel headers to the first stage gcc include dir
 	# if necessary
 ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
