@@ -5,17 +5,19 @@ TARGET_HOSTNAME:=$(strip $(subst ",,$(BR2_HOSTNAME)))
 BANNER:=$(strip $(subst ",,$(BR2_BANNER)))
 #"))
 
+# silent mode requested?
+QUIET:=$(if $(findstring s,$(MAKEFLAGS)),-q,)
 
 # Strip off the annoying quoting
 ARCH:=$(strip $(subst ",, $(BR2_ARCH)))
 #"))
-WGET:=$(strip $(subst ",, $(BR2_WGET))) $(SPIDER)
+WGET:=$(strip $(subst ",, $(BR2_WGET))) $(SPIDER) $(QUIET)
 #"))
-SVN_CO:=$(strip $(subst ",, $(BR2_SVN_CO)))
+SVN_CO:=$(strip $(subst ",, $(BR2_SVN_CO))) $(QUIET)
 #"))
-SVN_UP:=$(strip $(subst ",, $(BR2_SVN_UP)))
+SVN_UP:=$(strip $(subst ",, $(BR2_SVN_UP))) $(QUIET)
 #"))
-GIT:=$(strip $(subst ",, $(BR2_GIT)))
+GIT:=$(strip $(subst ",, $(BR2_GIT))) $(QUIET)
 #"))
 ZCAT:=$(strip $(subst ",, $(BR2_ZCAT)))
 #"))
@@ -23,7 +25,6 @@ BZCAT:=$(strip $(subst ",, $(BR2_BZCAT)))
 #"))
 TAR_OPTIONS=$(subst ",, $(BR2_TAR_OPTIONS)) -xf
 #")
-
 
 # Buildroot supports building out of tree similarly to the Linux kernel.
 # To use, add O= to the make command line (make O=/tmp/build)
