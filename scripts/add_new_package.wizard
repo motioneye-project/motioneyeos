@@ -48,8 +48,7 @@ read CONFIG_OPTIONS
 URL=${DOWNLOAD_LOC%/*}
 TARBALL=${DOWNLOAD_LOC##*/}
 EXTENSION=${TARBALL##*.tar.}
-NAME_UPPER=`echo ${PACKAGE_NAME} | tr [a-z] [A-Z]`
-NAME_UPPER=${NAME_UPPER//-/_}
+NAME_UPPER=`echo ${PACKAGE_NAME} | tr a-z- A-Z_`
 
 mkdir ../package/${PACKAGE_NAME}
 
