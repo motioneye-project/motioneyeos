@@ -3,7 +3,7 @@
 # cairo
 #
 #############################################################
-CAIRO_VERSION = 1.4.14
+CAIRO_VERSION = 1.6.4
 CAIRO_SOURCE = cairo-$(CAIRO_VERSION).tar.gz
 CAIRO_SITE = http://cairographics.org/releases
 CAIRO_AUTORECONF = NO
@@ -46,6 +46,6 @@ ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	CAIRO_DEPENDENCIES_EXTRA = directfb
 endif
 
-CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 zlib png fontconfig $(CAIRO_DEPENDENCIES_EXTRA) $(XSERVER)
+CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 zlib png fontconfig $(CAIRO_DEPENDENCIES_EXTRA) pixman $(XSERVER) 
 
 $(eval $(call AUTOTARGETS,package,cairo))
