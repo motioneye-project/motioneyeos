@@ -1,6 +1,6 @@
-diff -rdup lsof_4.80.orig/lsof_4.80_src/dialects/linux/machine.h lsof_4.80/lsof_4.80_src/dialects/linux/machine.h
---- lsof_4.80.orig/lsof_4.80_src/dialects/linux/machine.h	2007-04-24 18:20:58.000000000 +0200
-+++ lsof_4.80/lsof_4.80_src/dialects/linux/machine.h	2007-05-15 12:17:03.000000000 +0200
+diff -rdup lsof_4.81.orig/lsof_4.81_src/dialects/linux/machine.h lsof_4.81/lsof_4.81_src/dialects/linux/machine.h
+--- lsof_4.81.orig/lsof_4.81_src/dialects/linux/machine.h	2007-04-24 18:20:58.000000000 +0200
++++ lsof_4.81/lsof_4.81_src/dialects/linux/machine.h	2007-05-15 12:17:03.000000000 +0200
 @@ -616,6 +616,6 @@
   * zeromem is a macro that uses bzero or memset.
   */
