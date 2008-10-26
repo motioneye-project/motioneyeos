@@ -13,11 +13,11 @@
  $(target): $(sources:.c=.o)
  	$(CC) $(CFLAGS) -L$(XLIBPATH) -lX11 \
 -		`pkg-config --libs glib-2.0` $^ -o $@
-+		`$(PKGCONFIG) --libs glib-2.0` $^ -o $@
++		`$(PKG_CONFIG) --libs glib-2.0` $^ -o $@
  
  %.o: %.c
 -	$(CC) -c $(CFLAGS) `pkg-config --cflags glib-2.0` $<
-+	$(CC) -c $(CFLAGS) `$(PKGCONFIG) --cflags glib-2.0` $<
++	$(CC) -c $(CFLAGS) `$(PKG_CONFIG) --cflags glib-2.0` $<
  
  version.h: version.h.in Makefile
  	sed -e "s/@VERSION@/$(VERSION)/" version.h.in > $@
