@@ -36,11 +36,12 @@ $(VIM_DIR)/.patched: $(VIM_DIR)/.unpacked
 
 $(VIM_DIR)/.configured: $(VIM_DIR)/.patched
 	(cd $(VIM_DIR)/src; \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		STRIP="$(TARGET_STRIP)" \
 		PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
 		PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
-        $(TARGET_CONFIGURE_ARGS) \
 		./configure --prefix=/usr \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
