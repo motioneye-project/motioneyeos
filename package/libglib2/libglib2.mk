@@ -45,7 +45,7 @@ LIBGLIB2_CONF_ENV =	\
 		gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no)
 
 LIBGLIB2_CONF_OPT = --enable-shared \
-		--enable-static $(DISABLE_NLS)
+		--enable-static
 
 LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig
 
