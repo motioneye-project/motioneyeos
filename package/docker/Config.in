@@ -1,5 +1,8 @@
 config BR2_PACKAGE_DOCKER
 	bool "docker"
+	depends on BR2_PACKAGE_XORG||BR2_PACKAGE_XORG7||BR2_PACKAGE_TINYX
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PKGCONFIG
 	help
 	  a system tray dock for X
 

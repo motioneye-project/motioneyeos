@@ -19,7 +19,7 @@ DOCKER_MAKE_OPT = CC=$(TARGET_CC) CXX=$(TARGET_CXX) LD=$(TARGET_LD) \
 
 DOCKER_INSTALL_TARGET_OPT = PREFIX=$(TARGET_DIR)/usr install
 
-DOCKER_DEPENDENCIES = uclibc
+DOCKER_DEPENDENCIES = uclibc pkgconfig libglib2 $(XSERVER)
 
 $(eval $(call AUTOTARGETS,package,docker))
 
