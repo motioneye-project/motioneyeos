@@ -23,3 +23,6 @@ DOCKER_DEPENDENCIES = uclibc
 
 $(eval $(call AUTOTARGETS,package,docker))
 
+$(DOCKER_HOOK_POST_INSTALL): $(DOCKER_TARGET_INSTALL_TARGET)
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/bin/docker
+	touch $@
