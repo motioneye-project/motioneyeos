@@ -36,14 +36,8 @@ $(VIM_DIR)/.patched: $(VIM_DIR)/.unpacked
 
 $(VIM_DIR)/.configured: $(VIM_DIR)/.patched
 	(cd $(VIM_DIR)/src; \
-		PATH=$(TARGET_PATH) \
-		CC="$(TARGET_CC)" \
-		CPP="$(TARGET_CPP)" \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		STRIP="$(TARGET_STRIP)" \
-		PKG_CONFIG_SYSROOT="$(STAGING_DIR)" \
-		PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" \
-		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig:$(PKG_CONFIG_PATH)" \
 		PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
 		PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
         $(TARGET_CONFIGURE_ARGS) \
