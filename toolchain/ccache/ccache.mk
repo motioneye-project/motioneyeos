@@ -40,6 +40,7 @@ $(CCACHE_DIR1)/.configured: $(CCACHE_DIR1)/.patched
 		--host=$(GNU_HOST_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		$(QUIET) \
 	)
 	touch $@
 
@@ -152,6 +153,7 @@ $(CCACHE_DIR2)/.configured: $(CCACHE_DIR2)/.patched
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		$(DISABLE_NLS) \
+		$(QUIET) \
 	)
 	touch $@
 

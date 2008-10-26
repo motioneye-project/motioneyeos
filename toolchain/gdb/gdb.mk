@@ -104,6 +104,7 @@ $(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
 		--disable-sim --enable-gdbserver \
 		--without-included-gettext \
 		--disable-werror \
+		$(QUIET) \
 	)
 ifeq ($(BR2_ENABLE_LOCALE),y)
 	-$(SED) "s,^INTL *=.*,INTL = -lintl,g;" $(GDB_DIR)/gdb/Makefile

@@ -197,6 +197,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_ABI) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
 		$(EXTRA_GCC_CONFIG_OPTIONS) \
+		$(QUIET) \
 	)
 	touch $@
 
