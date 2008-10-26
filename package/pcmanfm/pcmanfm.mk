@@ -10,7 +10,6 @@ PCMANFM_AUTORECONF = NO
 PCMANFM_INSTALL_STAGING = NO
 PCMANFM_INSTALL_TARGET = YES
 
-PCMANFM_CONF_ENV = PKG_CONFIG_PATH=$(STAGING_DIR)/usr/lib/pkgconfig
 PCMANFM_CONF_OPT = --disable-hal
 
 PCMANFM_DEPENDENCIES = uclibc pkgconfig libgtk2 gamin startup-notification

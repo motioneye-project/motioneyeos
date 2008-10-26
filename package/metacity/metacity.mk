@@ -38,7 +38,6 @@ $(METACITY_DIR)/.configured: $(METACITY_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
-		PKG_CONFIG=$(STAGING_DIR)/usr/bin/pkg-config \
 		GLIB_CONFIG=$(STAGING_DIR)/bin/glib-config \
 		ac_cv_func_posix_getpwuid_r=yes \
 		glib_cv_stack_grows=no \
