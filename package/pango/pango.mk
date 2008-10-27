@@ -9,8 +9,6 @@ PANGO_SITE = http://ftp.gnome.org/pub/GNOME/sources/pango/1.19
 PANGO_AUTORECONF = YES
 PANGO_INSTALL_STAGING = YES
 PANGO_INSTALL_TARGET = YES
-PANGO_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
-PANGO_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no ac_cv_func_strtod=yes \
