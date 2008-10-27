@@ -9,8 +9,6 @@ LIBGTK2_SITE = ftp://ftp.gtk.org/pub/gtk/2.12
 LIBGTK2_AUTORECONF = NO
 LIBGTK2_INSTALL_STAGING = YES
 LIBGTK2_INSTALL_TARGET = YES
-LIBGTK2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
-LIBGTK2_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 LIBGTK2_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no \
