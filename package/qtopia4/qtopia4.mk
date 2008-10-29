@@ -257,8 +257,12 @@ endif
 # Qt doesn't use PKG_CONFIG, it searches for pkg-config with 'which'.
 # PKG_CONFIG_SYSROOT is only used to avoid a warning from Qt's configure system
 # when cross compiling, Qt 4.4.3 is wrong here.
+# Don't use TARGET_CONFIGURE_OPTS here, qmake would be compiled for the target
+# instead of the host then.
 	(cd $(QTOPIA4_TARGET_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
+		PATH=$(TARGET_PATH) \
+		PKG_CONFIG_SYSROOT_DIR="$(STAGING_DIR)" \
+		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig:$(PKG_CONFIG_PATH)" \
 		PKG_CONFIG_SYSROOT="$(STAGING_DIR)" \
 		./configure \
 		-verbose \
