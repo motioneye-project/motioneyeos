@@ -401,7 +401,7 @@ $(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed: $(LINUX26_
 	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/build
 	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/source
 	$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX26_VERSION_PROBED)
-	touch -c $@
+	touch $@
 
 linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
 	[ -f $(LINUX26_DIR)/.config ] || cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
