@@ -42,6 +42,9 @@ LINUX26_VERSION:=$(LINUX_HEADERS_VERSION)
 endif
 endif
 
+# Ask the kernel what version number it will use when installing modules
+LINUX26_VERSION_PROBED = `$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) -s kernelrelease`
+
 ifeq ($(BOARD_PATH),)
 BOARD_PATH:=$(strip $(subst ",,$(BR2_BOARD_PATH)))
 #"))
@@ -388,16 +391,16 @@ $(LINUX26_KERNEL): $(LINUX26_DIR)/$(LINUX26_BINLOC)
 	touch -c $@
 
 # -----------------------------------------------------------------------------
-$(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_DIR)/.configured
-	rm -rf $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)
+$(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed: $(LINUX26_DIR)/.configured
+	rm -rf $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)
 	rm -f $(TARGET_DIR)/sbin/cardmgr
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) modules
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) \
 		DEPMOD=$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 \
 		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
-	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/build
-	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/source
-	$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX26_VERSION)	#$(LINUX_HEADERS_VERSION)
+	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/build
+	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/source
+	$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX26_VERSION_PROBED)
 	touch -c $@
 
 linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
@@ -440,10 +443,7 @@ $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 
 linux26: $(LINUX26_TARGETS)
 
-$(LINUX26_DIR)/.modules_installed: $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep
-	touch $@
-
-linux26-modules: cross-depmod26 $(LINUX26_DIR)/.modules_installed
+linux26-modules: cross-depmod26 $(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed
 
 linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
@@ -460,6 +460,7 @@ linux26-force:
 
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linux26clean:
+	rm -f $(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed
 	rm -f $(LINUX26_KERNEL) $(LINUX26_DIR)/.configured
 	-$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX26_DIR) clean
 
