@@ -394,13 +394,19 @@ $(LINUX26_KERNEL): $(LINUX26_DIR)/$(LINUX26_BINLOC)
 $(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed: $(LINUX26_DIR)/.configured
 	rm -rf $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)
 	rm -f $(TARGET_DIR)/sbin/cardmgr
-	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) modules
-	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) \
-		DEPMOD=$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 \
-		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
-	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/build
-	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/source
-	$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX26_VERSION_PROBED)
+	# Make Linux depend on modules only if enabled in the .config.
+	@if [ $(shell grep -c "CONFIG_MODULES=y" $(LINUX26_DIR)/.config) != 0 ] ; then	\
+		echo "*** Installing Linux kernel modules" ;				\
+		$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) modules;		\
+		$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR)				\
+			DEPMOD=$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26		\
+			INSTALL_MOD_PATH=$(TARGET_DIR) modules_install;			\
+		rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/build;	\
+		rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)/source;	\
+		$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX26_VERSION_PROBED); \
+	else										\
+		echo "*** Skipping installing modules since it is not enabled" ;	\
+	fi
 	touch $@
 
 linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
