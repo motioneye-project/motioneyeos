@@ -1,0 +1,31 @@
+Index: gcc-4.2.2/gcc/config/avr32/avr32.md
+===================================================================
+--- gcc-4.2.2.orig/gcc/config/avr32/avr32.md	2008-09-19 14:23:34.000000000 +0200
++++ gcc-4.2.2/gcc/config/avr32/avr32.md	2008-09-19 14:30:18.000000000 +0200
+@@ -803,14 +803,22 @@
+ (define_insn "*movsf_internal"
+   [(set (match_operand:SF 0 "nonimmediate_operand"     "=r,r,r,r,m")
+ 	(match_operand:SF 1 "general_operand"          "r, G,F,m,r"))]
+-  "TARGET_SOFT_FLOAT
+-   && (register_operand (operands[0], SFmode)
+-       || register_operand (operands[1], SFmode))"
++  "(register_operand (operands[0], SFmode)
++    || register_operand (operands[1], SFmode))"
+   {
+     switch (which_alternative) {
+       case 0:
+       case 1: return "mov\t%0, %1";
+-      case 2: return "mov\t%0, lo(%1)\;orh\t%0, hi(%1)";
++      case 2: 
++       {
++        HOST_WIDE_INT target_float[2];
++        real_to_target (target_float, CONST_DOUBLE_REAL_VALUE (operands[1]), SFmode);
++        if ( TARGET_V2_INSNS 
++             && avr32_hi16_immediate_operand (GEN_INT (target_float[0]), VOIDmode) )
++           return "movh\t%0, hi(%1)";
++        else
++           return "mov\t%0, lo(%1)\;orh\t%0, hi(%1)";
++       }
+       case 3:
+         if ( (REG_P(XEXP(operands[1], 0))
+               && REGNO(XEXP(operands[1], 0)) == SP_REGNUM)
