@@ -65,12 +65,68 @@ else
 QTOPIA4_CONFIGURE+= -no-qt3support
 endif
 
-ifeq ($(BR2_PACKAGE_TSLIB),y)
-QTOPIA4_CONFIGURE+= -qt-mouse-tslib
+
+### Display drivers
+ifeq ($(BR2_PACKAGE_QTOPIA4_GFX_LINUXFB),y)
+QTOPIA4_CONFIGURE += -qt-gfx-linuxfb
+else
+QTOPIA4_CONFIGURE += -no-gfx-linuxfb
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_GFX_TRANSFORMED),y)
+QTOPIA4_CONFIGURE += -qt-gfx-transformed
+else
+QTOPIA4_CONFIGURE += -no-gfx-transformed
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_GFX_QVFB),y)
+QTOPIA4_CONFIGURE += -qt-gfx-qvfb
+else
+QTOPIA4_CONFIGURE += -no-gfx-qvfb
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_GFX_VNC),y)
+QTOPIA4_CONFIGURE += -qt-gfx-vnc
+else
+QTOPIA4_CONFIGURE += -no-gfx-vnc
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_GFX_MULTISCREEN),y)
+QTOPIA4_CONFIGURE += -qt-gfx-multiscreen
+else
+QTOPIA4_CONFIGURE += -no-gfx-multiscreen
+endif
+
+### Mouse drivers
+ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_PC),y)
+QTOPIA4_CONFIGURE += qt-mouse-pc
+else
+QTOPIA4_CONFIGURE += -no-mouse-pc
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_BUS),y)
+QTOPIA4_CONFIGURE += qt-mouse-bus
+else
+QTOPIA4_CONFIGURE += -no-mouse-bus
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_LINUXTP),y)
+QTOPIA4_CONFIGURE += qt-mouse-linuxtp
+else
+QTOPIA4_CONFIGURE += -no-mouse-linuxtp
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_YOPY),y)
+QTOPIA4_CONFIGURE += qt-mouse-yopy
+else
+QTOPIA4_CONFIGURE += -no-mouse-yopy
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_VR41XX),y)
+QTOPIA4_CONFIGURE += qt-mouse-vr41xx
+else
+QTOPIA4_CONFIGURE += -no-mouse-vr41xx
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_TSLIB),y)
+QTOPIA4_CONFIGURE += qt-mouse-tslib
 QTOPIA4_DEP_LIBS+=tslib
 QTOPIA4_TSLIB_DEB="-D TSLIBMOUSEHANDLER_DEBUG"
 QTOPIA4_TSLIB_DEB:=$(strip $(subst ",, $(QTOPIA4_TSLIB_DEB)))
 #"))
+else
+QTOPIA4_CONFIGURE += -no-mouse-tslib
 endif
 
 ifeq ($(BR2_PACKAGE_QTOPIA4_DEBUG),y)

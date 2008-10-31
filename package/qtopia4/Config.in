@@ -224,13 +224,9 @@ config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	help
 	  The target platform.
 
-menuconfig BR2_PACKAGE_QTOPIA4_SQL_MODULE
-	bool "SQL Module"
-	help
-	  Compile Qtopia SQL Module
-if BR2_PACKAGE_QTOPIA4_SQL_MODULE
 source "package/qtopia4/Config.sql.in"
-endif
+source "package/qtopia4/Config.gfx.in"
+source "package/qtopia4/Config.mouse.in"
 
 config BR2_PACKAGE_QTOPIA4_XMLPATTERNS
 	bool "XML Patterns Module"

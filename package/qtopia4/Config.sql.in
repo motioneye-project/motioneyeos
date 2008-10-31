@@ -1,3 +1,9 @@
+menuconfig BR2_PACKAGE_QTOPIA4_SQL_MODULE
+    bool "SQL Module"
+    help
+      Compile Qtopia SQL Module
+
+if BR2_PACKAGE_QTOPIA4_SQL_MODULE
 config BR2_PACKAGE_QTOPIA4_MYSQL
 	bool "MySQL Driver"
 	help
@@ -33,4 +39,4 @@ config BR2_PACKAGE_QTOPIA4_SQLITE2
 	help
 	  Build SQLite 2 driver
 	  If unsure, say n.
-
+endif

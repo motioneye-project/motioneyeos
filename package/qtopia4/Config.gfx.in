@@ -1,0 +1,23 @@
+menu "Graphics drivers"
+
+config BR2_PACKAGE_QTOPIA4_GFX_LINUXFB
+	bool "Linux Framebuffer"
+	default y
+
+config BR2_PACKAGE_QTOPIA4_GFX_TRANSFORMED
+	bool "Transformed"
+	default n
+
+config BR2_PACKAGE_QTOPIA4_GFX_QVFB
+	bool "Qt Virtual Framebuffer"
+	default n
+
+config BR2_PACKAGE_QTOPIA4_GFX_VNC
+	bool "VNC"
+	default n
+
+config BR2_PACKAGE_QTOPIA4_GFX_MULTISCREEN
+	bool "multiscreen"
+	default y
+
+endmenu
