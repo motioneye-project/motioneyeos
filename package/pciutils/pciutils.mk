@@ -26,13 +26,13 @@ $(PCIUTILS_DIR)/.unpacked: $(DL_DIR)/$(PCIUTILS_SOURCE) $(DL_DIR)/$(PCIIDS_SOURC
 	$(PCIUTILS_CAT) $(DL_DIR)/$(PCIUTILS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(PCIIDS_CAT) $(DL_DIR)/$(PCIIDS_SOURCE) > $(PCIUTILS_DIR)/pci.ids
 	toolchain/patch-kernel.sh $(PCIUTILS_DIR) package/pciutils pciutils\*.patch
-	touch $(PCIUTILS_DIR)/.unpacked
+	touch $@
 
 $(PCIUTILS_DIR)/.compiled: $(PCIUTILS_DIR)/.unpacked
 	$(MAKE1) CC=$(TARGET_CC) OPT="$(TARGET_CFLAGS)" -C $(PCIUTILS_DIR) \
 		SHAREDIR="/usr/share/misc" \
 		PREFIX=/usr
-	touch $(PCIUTILS_DIR)/.compiled
+	touch $@
 
 $(TARGET_DIR)/sbin/lspci: $(PCIUTILS_DIR)/.compiled
 	install -c $(PCIUTILS_DIR)/lspci $(TARGET_DIR)/sbin/lspci
