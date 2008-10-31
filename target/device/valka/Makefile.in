@@ -1,23 +1,16 @@
 ifeq ($(strip $(BR2_TARGET_VALKA)),y)
 VALKA_PATH= target/device/valka
 
-BOARD_NAME:=$(strip  $(subst ",, $(BR2_BOARD_NAME)))
-BOARD_PATH:=$(strip  $(subst ",, $(BR2_BOARD_PATH)))
-
 TARGET_SKELETON=$(VALKA_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(VALKA_PATH)/device_table.txt
-#LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
 
 valka_status:
 	@echo "***************************************************************"
 	@echo VALKA_PATH = $(VALKA_PATH)
-	@echo BOARD_NAME = $(BOARD_NAME)
-	@echo BOARD_PATH = $(BOARD_PATH)
+	@echo BOARD_NAME = $(BR_BOARD_NAME)
 	@echo TARGET_SKELETON = $(TARGET_SKELETON)
 	@echo TARGET_DEVICE_TABLE = $(TARGET_DEVICE_TABLE)
-	@echo PROJECT_BUILD_DIR = $(PROJECT_BUILD_DIR)
-	@echo BR2_UCLIBC_CONFIG = $(BR2_UCLIBC_CONFIG)
-	@echo BR2_PACKAGE_BUSYBOX_CONFIG = $(BR2_PACKAGE_BUSYBOX_CONFIG)	
+	@echo BR2_PACKAGE_BUSYBOX_CONFIG = $(BR2_PACKAGE_BUSYBOX_CONFIG)
 	@echo BR2_PACKAGE_LINUX_KCONFIG = $(BR2_PACKAGE_LINUX_KCONFIG)
 	@echo "*****************************************************************"
 	@echo TARGETS = $(TARGETS)

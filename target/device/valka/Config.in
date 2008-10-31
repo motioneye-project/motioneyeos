@@ -22,11 +22,4 @@ config BR2_BOARD_NAME
 	string
 	default "v100sc2"	if	BR2_TARGET_VALKA_V100SC2
 
-config BR2_BOARD_PATH
-	string "Board repository"
-	depends on BR2_TARGET_VALKA
-	default "target/device/valka/$(BR2_BOARD_NAME)"
-	help
-	  Top directory of Valka board configurations
-
 endif

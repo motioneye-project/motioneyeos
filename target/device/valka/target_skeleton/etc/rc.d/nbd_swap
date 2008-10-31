@@ -1,0 +1,31 @@
+#!/bin/ash
+. /etc/rc.subr
+
+start() {
+	echo -n " * Starting nbd swap: "
+	 if [ ! -x ${nbd_swap_program} ]; then
+		log_error "Missing 'nbd_client' program (${nbd_swap_program})"
+		echo "Failed"
+		return 1
+	fi
+
+	mknod ${nbd_swap_device} b 43 0
+	${nbd_swap_program} ${nbd_swap_server} ${nbd_swap_port} ${nbd_swap_device} &
+	pid=$!
+	if [ "$?" -eq 0 ]; then
+		echo "${pid}" > ${nbd_swap_pidfile}
+		mkswap ${nbd_swap_device}
+		swapon ${nbd_swap_device}
+		echo "Ok"
+	else
+		echo "Failed"
+	fi
+}
+
+stop() {
+	echo " * Stopping nbd swap..."
+	swapoff ${nbd_swap_device}
+	killpid ${nbd_swap_pidfile}
+}
+
+rc_run_command "$1" "nbd_swap"
