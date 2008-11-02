@@ -53,7 +53,7 @@ CLASSPATH_CONF_OPT = \
 		--disable-debug \
 		--disable-gconf-peer --disable-examples --disable-plugin
 
-CLASSPATH_DEPENDENCIES = uclibc pkgconfig png jpeg tiff
+CLASSPATH_DEPENDENCIES = uclibc pkgconfig libpng jpeg tiff
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 	CLASSPATH_DEPENDENCIES+= alsa-lib

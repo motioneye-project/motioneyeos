@@ -46,6 +46,6 @@ ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	CAIRO_DEPENDENCIES_EXTRA = directfb
 endif
 
-CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 zlib png fontconfig $(CAIRO_DEPENDENCIES_EXTRA) pixman $(XSERVER) 
+CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 zlib libpng fontconfig $(CAIRO_DEPENDENCIES_EXTRA) pixman $(XSERVER) 
 
 $(eval $(call AUTOTARGETS,package,cairo))

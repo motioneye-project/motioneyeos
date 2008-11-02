@@ -111,6 +111,6 @@ else
 	LIBGTK2_CONF_OPT += --without-x
 endif
 
-LIBGTK2_DEPENDENCIES = uclibc pkgconfig png jpeg tiff $(LIBGTK2_DEPENDENCIES_EXTRA) libglib2 cairo pango atk
+LIBGTK2_DEPENDENCIES = uclibc pkgconfig libpng jpeg tiff $(LIBGTK2_DEPENDENCIES_EXTRA) libglib2 cairo pango atk
 
 $(eval $(call AUTOTARGETS,package,libgtk2))
