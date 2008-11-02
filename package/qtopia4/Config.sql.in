@@ -1,7 +1,7 @@
 menuconfig BR2_PACKAGE_QTOPIA4_SQL_MODULE
-    bool "SQL Module"
-    help
-      Compile Qtopia SQL Module
+	bool "SQL Module"
+	help
+	  Compile Qtopia SQL Module
 
 if BR2_PACKAGE_QTOPIA4_SQL_MODULE
 config BR2_PACKAGE_QTOPIA4_MYSQL

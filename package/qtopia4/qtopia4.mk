@@ -95,38 +95,43 @@ endif
 
 ### Mouse drivers
 ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_PC),y)
-QTOPIA4_CONFIGURE += qt-mouse-pc
+QTOPIA4_CONFIGURE += -qt-mouse-pc
 else
 QTOPIA4_CONFIGURE += -no-mouse-pc
 endif
 ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_BUS),y)
-QTOPIA4_CONFIGURE += qt-mouse-bus
+QTOPIA4_CONFIGURE += -qt-mouse-bus
 else
 QTOPIA4_CONFIGURE += -no-mouse-bus
 endif
 ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_LINUXTP),y)
-QTOPIA4_CONFIGURE += qt-mouse-linuxtp
+QTOPIA4_CONFIGURE += -qt-mouse-linuxtp
 else
 QTOPIA4_CONFIGURE += -no-mouse-linuxtp
 endif
 ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_YOPY),y)
-QTOPIA4_CONFIGURE += qt-mouse-yopy
+QTOPIA4_CONFIGURE += -qt-mouse-yopy
 else
 QTOPIA4_CONFIGURE += -no-mouse-yopy
 endif
 ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_VR41XX),y)
-QTOPIA4_CONFIGURE += qt-mouse-vr41xx
+QTOPIA4_CONFIGURE += -qt-mouse-vr41xx
 else
 QTOPIA4_CONFIGURE += -no-mouse-vr41xx
 endif
 ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_TSLIB),y)
-QTOPIA4_CONFIGURE += qt-mouse-tslib
+QTOPIA4_CONFIGURE += -qt-mouse-tslib
 QTOPIA4_DEP_LIBS+=tslib
 QTOPIA4_TSLIB_DEB="-D TSLIBMOUSEHANDLER_DEBUG"
 QTOPIA4_TSLIB_DEB:=$(strip $(subst ",, $(QTOPIA4_TSLIB_DEB)))
 #"))
 else
 QTOPIA4_CONFIGURE += -no-mouse-tslib
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_MOUSE_QVFB),y)
+QTOPIA4_CONFIGURE += -qt-mouse-qvfb
+else
+QTOPIA4_CONFIGURE += -no-mouse-qvfb
 endif
 
 ifeq ($(BR2_PACKAGE_QTOPIA4_DEBUG),y)

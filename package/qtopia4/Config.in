@@ -185,7 +185,7 @@ choice
 	  Select freetype2 support.
 
 config BR2_PACKAGE_QTOPIA4_NOFREETYPE
-        bool "no freetype2 support"
+	bool "no freetype2 support"
 	help
 	  Do not compile in Freetype2 support.
 

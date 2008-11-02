@@ -2,30 +2,23 @@ menu "Mouse drivers"
 
 config BR2_PACKAGE_QTOPIA4_MOUSE_PC
 	bool "pc"
-	default n
 
 config BR2_PACKAGE_QTOPIA4_MOUSE_BUS
 	bool "bus"
-	default n
 
 config BR2_PACKAGE_QTOPIA4_MOUSE_LINUXTP
 	bool "linuxtp"
-	default n
 
 config BR2_PACKAGE_QTOPIA4_MOUSE_YOPY
 	bool "yopy"
-	default n
 
 config BR2_PACKAGE_QTOPIA4_MOUSE_VR41XX
-	bool "vxr41xx"
-	default n
+	bool "vr41xx"
 
 config BR2_PACKAGE_QTOPIA4_MOUSE_TSLIB
 	bool "tslib"
-	default n
 
 config BR2_PACKAGE_QTOPIA4_MOUSE_QVFB
 	bool "qvfb"
-	default n
 
 endmenu
