@@ -1,0 +1,25 @@
+--- busybox-1.12.1/libbb/setup_environment.c	Sun Sep 28 20:04:20 2008
++++ busybox-1.12.1-login/libbb/setup_environment.c	Fri Oct 31 00:56:51 2008
+@@ -32,15 +32,15 @@
+ 
+ void FAST_FUNC setup_environment(const char *shell, int clear_env, int change_env, const struct passwd *pw)
+ {
++	/* Change the current working directory to be the home directory
++	 * of the user */
++	if (chdir(pw->pw_dir)) {
++		xchdir("/");
++		bb_error_msg("can't chdir to home directory '%s'", pw->pw_dir);
++	}
++
+ 	if (clear_env) {
+ 		const char *term;
+-
+-		/* Change the current working directory to be the home directory
+-		 * of the user */
+-		if (chdir(pw->pw_dir)) {
+-			xchdir("/");
+-			bb_error_msg("can't chdir to home directory '%s'", pw->pw_dir);
+-		}
+ 
+ 		/* Leave TERM unchanged. Set HOME, SHELL, USER, LOGNAME, PATH.
+ 		   Unset all other environment variables.  */

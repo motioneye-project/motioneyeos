@@ -1,7 +1,7 @@
-diff -urN busybox-1.12.1/modutils/modprobe.c busybox-1.12.1-modprobe/modutils/modprobe.c
+diff -urpN busybox-1.12.1/modutils/modprobe.c busybox-1.12.1-modprobe/modutils/modprobe.c
 --- busybox-1.12.1/modutils/modprobe.c	2008-09-28 20:04:15.000000000 +0200
 +++ busybox-1.12.1-modprobe/modutils/modprobe.c	2008-10-10 14:36:58.000000000 +0200
-@@ -263,9 +263,9 @@
+@@ -263,9 +263,9 @@ static int FAST_FUNC include_conf_dir_ac
  	return TRUE;
  }
  
@@ -13,7 +13,7 @@ diff -urN busybox-1.12.1/modutils/modprobe.c busybox-1.12.1-modprobe/modutils/mo
  				include_conf_file_act,
  				include_conf_dir_act,
  				conf, 1);
-@@ -362,7 +362,7 @@
+@@ -362,7 +362,7 @@ static int FAST_FUNC include_conf_file_a
  			char *includefile;
  
  			includefile = skip_whitespace(line_buffer + 8);
@@ -22,7 +22,7 @@ diff -urN busybox-1.12.1/modutils/modprobe.c busybox-1.12.1-modprobe/modutils/mo
  		} else if (ENABLE_FEATURE_MODPROBE_BLACKLIST &&
  				(is_conf_command(line_buffer, "blacklist"))) {
  			char *mod;
-@@ -559,7 +559,7 @@
+@@ -559,7 +559,7 @@ static struct dep_t *build_dep(void)
  		if (ENABLE_FEATURE_2_6_MODULES) {
  			if (include_conf_file(&conf, "/etc/modprobe.conf"))
  				r = TRUE;

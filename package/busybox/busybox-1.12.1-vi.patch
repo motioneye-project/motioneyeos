@@ -1,0 +1,46 @@
+--- busybox-1.12.1/editors/vi.c	Sun Sep 28 20:04:29 2008
++++ busybox-1.12.1-vi/editors/vi.c	Thu Oct 30 23:54:30 2008
+@@ -291,6 +291,8 @@
+ #define INIT_G() do { \
+ 	SET_PTR_TO_GLOBALS(xzalloc(sizeof(G))); \
+ 	last_file_modified = -1; \
++	/* "" but has space for 2 chars */ \
++	USE_FEATURE_VI_SEARCH(last_search_pattern = xzalloc(2);) \
+ } while (0)
+ 
+ 
+@@ -2974,7 +2976,7 @@
+ 	const char *msg = msg; // for compiler
+ 	char c1, *p, *q, *save_dot;
+ 	char buf[12];
+-	int dir = dir; // for compiler
++	int dir;
+ 	int cnt, i, j;
+ 
+ //	c1 = c; // quiet the compiler
+@@ -3316,7 +3318,7 @@
+ 		q = get_input_line(buf);	// get input line- use "status line"
+ 		if (q[0] && !q[1]) {
+ 			if (last_search_pattern[0])
+-			    last_search_pattern[0] = c;
++				last_search_pattern[0] = c;
+ 			goto dc3; // if no pat re-use old pat
+ 		}
+ 		if (q[0]) {       // strlen(q) > 1: new pat- save it and find
+@@ -3346,14 +3348,8 @@
+ 			do_cmd(c);
+ 		}				// repeat cnt
+  dc3:
+-		if (last_search_pattern == 0) {
+-			msg = "No previous regular expression";
+-			goto dc2;
+-		}
+-		if (last_search_pattern[0] == '/') {
+-			dir = FORWARD;	// assume FORWARD search
+-			p = dot + 1;
+-		}
++		dir = FORWARD;	// assume FORWARD search
++		p = dot + 1;
+ 		if (last_search_pattern[0] == '?') {
+ 			dir = BACK;
+ 			p = dot - 1;
