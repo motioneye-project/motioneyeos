@@ -10,7 +10,7 @@ copy_toolchain_lib_root = \
 	DST="$(strip $2)"; \
 	STRIP="$(strip $3)"; \
  \
-	LIB_DIR=`$(TARGET_CC) -print-file-name=$${LIB} | sed -e "s,/$${LIB}\$$,,"`; \
+	LIB_DIR=`$(TARGET_CC) -print-file-name=$${LIB} | sed -e "s,$${LIB}\$$,,"`; \
  \
 	if test -z "$${LIB_DIR}"; then \
 		echo "copy_toolchain_lib_root: lib=$${LIB} not found"; \
@@ -27,7 +27,7 @@ copy_toolchain_lib_root = \
 			if test -h $${LIB_DIR}/$${LIB}; then \
 				cp -d $${LIB_DIR}/$${LIB} $(TARGET_DIR)$${DST}/; \
 			elif test -f $${LIB_DIR}/$${LIB}; then \
-				cp $${LIB_DIR}/$${LIB} $(TARGET_DIR)$${DST}/$${LIB}; \
+				$(INSTALL) -D -m0755 $${LIB_DIR}/$${LIB} $(TARGET_DIR)$${DST}/$${LIB}; \
 				case "$${STRIP}" in \
 				(0 | n | no) \
 ;; \
