@@ -93,6 +93,12 @@ config BR2_SOFT_FLOAT
 	help
 	  Set this option if the external toolchain supports soft float.
 
+config BR2_GCC_CROSS_CXX
+	bool "Toolchain has C++ cross-compiler ?"
+	help
+	  Set this option if the external toolchain has a C++
+	  cross-compiler.
+
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"
 	default "-Os -pipe"
