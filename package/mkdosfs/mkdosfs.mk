@@ -26,8 +26,8 @@ $(MKDOSFS_DIR)/$(MKDOSFS_BINARY): $(MKDOSFS_DIR)/.unpacked
 	touch -c $(MKDOSFS_DIR)/mkdosfs/mkdosfs
 
 $(TARGET_DIR)/$(MKDOSFS_TARGET_BINARY): $(MKDOSFS_DIR)/$(MKDOSFS_BINARY)
-	cp -a $(MKDOSFS_DIR)/$(MKDOSFS_BINARY) $(TARGET_DIR)/$(MKDOSFS_TARGET_BINARY)
-	touch -c $(TARGET_DIR)/sbin/mkdosfs
+	cp -a $(MKDOSFS_DIR)/$(MKDOSFS_BINARY) $@
+	touch -c $@
 
 mkdosfs: uclibc $(TARGET_DIR)/$(MKDOSFS_TARGET_BINARY)
 
