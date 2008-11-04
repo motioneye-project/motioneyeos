@@ -22,6 +22,7 @@ $(DL_DIR)/$(NETSNMP_SOURCE):
 $(NETSNMP_DIR)/.unpacked: $(DL_DIR)/$(NETSNMP_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(NETSNMP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(NETSNMP_DIR) package/netsnmp/ \*$(NETSNMP_VERSION)\*.patch
+	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
 ifeq ($(BR2_ENDIAN),"BIG")
