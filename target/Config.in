@@ -45,6 +45,11 @@ config BR2_KERNEL_LINUX_ADVANCED
 	        kernel headers are just that (headers) and not full
 	        kernels. This is a feature.
 
+# The kernel with the same version as linux headers cannot be compiled
+# when using an external toolchain, because the linux headers are not
+# handled by Buildroot in this case.
+if BR2_TOOLCHAIN_SOURCE
+
 config BR2_KERNEL_LINUX
 	bool "linux (Same version as linux headers)"
 	select BR2_PACKAGE_LINUX
@@ -55,6 +60,8 @@ config BR2_KERNEL_LINUX
 	  Note: Requires kernel-headers >= 2.6.19 since the other
 	        kernel headers are just that (headers) and not full
 	        kernels. This is a feature.
+
+endif
 
 config BR2_KERNEL_HURD
 	bool "hurd"
