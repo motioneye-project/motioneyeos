@@ -71,5 +71,5 @@ make-dirclean:
 #
 #############################################################
 ifeq ($(strip $(BR2_PACKAGE_MAKE)),y)
-TARGETS+=make
+TARGETS+=$(if $(BR2_PACKAGE_GETTEXT),gettext) make
 endif
