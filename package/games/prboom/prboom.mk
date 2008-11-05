@@ -40,12 +40,12 @@ $(PRBOOM_TARGET_INSTALL_TARGET):
 	$(INSTALL) -D $(PRBOOM_DIR)/src/prboom $(TARGET_DIR)/usr/games/prboom
 	$(INSTALL) -D $(PRBOOM_DIR)/src/prboom-game-server $(TARGET_DIR)/usr/games/prboom-game-server
 	$(INSTALL) -D $(PRBOOM_DIR)/data/prboom.wad $(TARGET_DIR)/usr/share/games/doom/prboom.wad
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/games/prboom
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/games/prboom-game-server
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/games/prboom
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/games/prboom-game-server
 	touch $@
 
 $(PRBOOM_TARGET_CLEAN):
-	rm -rf $(TARGET_DIR)/usr/share/games/doom/prboom.wad
-	rm -rf $(TARGET_DIR)/usr/games/prboom-game-server
-	rm -rf $(TARGET_DIR)/usr/games/prboom
+	rm -rf $(TARGET_DIR)/usr/share/games/doom/prboom.wad \
+		$(TARGET_DIR)/usr/games/prboom-game-server \
+		$(TARGET_DIR)/usr/games/prboom
 	-$(MAKE) -C $(PRBOOM_DIR) clean
