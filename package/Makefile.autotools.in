@@ -258,7 +258,6 @@ $(PROJECT_BUILD_DIR)/autotools-stamps/%_target_installed:
 	$(if $(BR2_HAVE_DOCUMENTATION),,for d in doc share/doc; do \
 		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
 	done)
-	$(Q)mkdir -p $(@D)
 	touch $@
 
 $(BUILD_DIR)/%/.stamp_cleaned:
