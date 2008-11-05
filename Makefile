@@ -276,8 +276,8 @@ $(BR2_DEPENDS_DIR): .config
 	cp -dpRf $(CONFIG)/buildroot-config $@
 
 dirs: $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
-	$(BR2_DEPENDS_DIR) \
-	$(BINARIES_DIR) $(PROJECT_BUILD_DIR)
+	$(BR2_DEPENDS_DIR) $(BINARIES_DIR) $(PROJECT_BUILD_DIR) \
+	$(PROJECT_BUILD_DIR)/autotools-stamps
 
 $(BASE_TARGETS): dirs
 
@@ -288,8 +288,8 @@ world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS_ALL)
 	$(BASE_TARGETS) $(TARGETS) $(TARGETS_ALL) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
 	$(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
-	$(BR2_DEPENDS_DIR) \
-	$(BINARIES_DIR) $(PROJECT_BUILD_DIR)
+	$(BR2_DEPENDS_DIR) $(BINARIES_DIR) $(PROJECT_BUILD_DIR) \
+	$(PROJECT_BUILD_DIR)/autotools-stamps
 
 #############################################################
 #
@@ -297,8 +297,8 @@ world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS_ALL)
 # dependencies anywhere else
 #
 #############################################################
-$(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) \
-	$(PROJECT_BUILD_DIR) $(BINARIES_DIR):
+$(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(PROJECT_BUILD_DIR) \
+	$(PROJECT_BUILD_DIR)/autotools-stamps $(BINARIES_DIR):
 	@mkdir -p $@
 
 $(STAGING_DIR):
@@ -318,7 +318,6 @@ endif
 
 $(PROJECT_BUILD_DIR)/.root:
 	mkdir -p $(TARGET_DIR)
-	mkdir -p $(PROJECT_BUILD_DIR)/autotools-stamps
 	if ! [ -d "$(TARGET_DIR)/bin" ]; then \
 		if [ -d "$(TARGET_SKELETON)" ]; then \
 			cp -fa $(TARGET_SKELETON)/* $(TARGET_DIR)/; \
