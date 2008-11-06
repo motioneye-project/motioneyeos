@@ -1,0 +1,9 @@
+# NTP Servers to use for ntpdate
+NTPSERVERS="pool.ntp.org"
+
+# Get initial time via ntpdate?
+NTPDATE=no
+NTPDATE_OPTS="-t 5"
+
+# Start the ntp daemon?
+NTPD=yes

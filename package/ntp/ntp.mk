@@ -67,6 +67,10 @@ ifeq ($(BR2_PACKAGE_NTP_SNTP),y)
 	install -m 755 $(NTP_DIR)/sntp/sntp $(TARGET_DIR)/usr/bin/sntp
 endif
 	install -m 755 package/ntp/ntp.sysvinit $(TARGET_DIR)/etc/init.d/S49ntp
+	@if [ ! -f $(TARGET_DIR)/etc/default/ntpd ]; then \
+		install -m 755 -d $(TARGET_DIR)/etc/default ; \
+		install -m 644 package/ntp/ntpd.etc.default $(TARGET_DIR)/etc/default/ntpd ; \
+	fi
 
 ntp: uclibc $(TARGET_DIR)/$(NTP_TARGET_BINARY)
 

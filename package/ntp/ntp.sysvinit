@@ -9,6 +9,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DESC="network time protocol daemon"
 NAME=ntpd
 DAEMON=/usr/sbin/$NAME
+NTPDATE_BIN=/usr/bin/ntpdate
 
 # Gracefully exit if the package has been removed.
 test -x $DAEMON || exit 0
@@ -20,9 +21,17 @@ then
 fi
 
 case "$1" in
-  start) echo -n "Starting $DESC: $NAME"
-	start-stop-daemon -S -q -x $DAEMON
-	echo "."
+  start)
+	if test x$NTPDATE = xyes ; then
+		echo -n "Getting initial time via ntp"
+		$NTPDATE_BIN $NTPDATE_OPTS $NTPSERVERS > /dev/null 2>&1
+		echo "."
+	fi
+	if test x$NTPD = xyes ; then
+		echo -n "Starting $DESC: $NAME"
+		start-stop-daemon -S -q -x $DAEMON
+		echo "."
+	fi
 	;;
   stop) echo -n "Stopping $DESC: $NAME"
 	start-stop-daemon -K -q -n $NAME
