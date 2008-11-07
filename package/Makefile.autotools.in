@@ -114,8 +114,8 @@ INFLATE.tar = cat
 
 # MESSAGE Macro -- display a message in bold type
 MESSAGE = @echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(1)$(TERM_RESET)"
-TERM_BOLD = #$(shell tput bold)
-TERM_RESET = #$(shell tput rmso)
+TERM_BOLD := $(shell tput smso)
+TERM_RESET := $(shell tput rmso)
 
 # Utility programs used to build packages
 TAR ?= tar
