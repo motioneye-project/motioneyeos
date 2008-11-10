@@ -34,6 +34,7 @@ libpcap-source: $(DL_DIR)/$(LIBPCAP_SOURCE)
 
 $(LIBPCAP_DIR)/.unpacked: $(DL_DIR)/$(LIBPCAP_SOURCE)
 	$(LIBPCAP_CAT) $(DL_DIR)/$(LIBPCAP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	rm -f $(LIBPCAP_DIR)/gencode.c.rej
 	toolchain/patch-kernel.sh $(LIBPCAP_DIR) package/libpcap/ \*.patch
 	$(CONFIG_UPDATE) $(LIBPCAP_DIR)
 	touch $@
