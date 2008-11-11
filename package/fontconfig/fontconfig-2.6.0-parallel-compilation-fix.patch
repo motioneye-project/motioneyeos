@@ -1,0 +1,26 @@
+---
+ fc-case/Makefile.am |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+Index: fontconfig-2.6.0/fc-case/Makefile.am
+===================================================================
+--- fontconfig-2.6.0.orig/fc-case/Makefile.am
++++ fontconfig-2.6.0/fc-case/Makefile.am
+@@ -36,6 +36,8 @@
+ 
+ noinst_MANS=fc-case.man
+ 
++noinst_HEADERS=$(TARG)
++
+ fc_case_SRCS= \
+ 	fc-case.c \
+ 	fccaseint.h \
+@@ -52,7 +54,7 @@
+ 
+ ALIAS_FILES = fcalias.h fcaliastail.h
+ 
+-BUILT_SOURCES = $(ALIAS_FILES) $(TARG)
++BUILT_SOURCES = $(ALIAS_FILES)
+ 
+ $(ALIAS_FILES): 
+ 	touch $(ALIAS_FILES)
