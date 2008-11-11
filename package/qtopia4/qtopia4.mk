@@ -212,7 +212,7 @@ QTOPIA4_CONFIGURE+= -qt-freetype
 else
 ifeq ($(BR2_PACKAGE_QTOPIA4_SYSTEMFREETYPE),y)
 QTOPIA4_CONFIGURE+= -system-freetype
-QTOPIA4_CONFIGURE+= -I $(FREETYPE_DIR)/include
+QTOPIA4_CONFIGURE+= -I $(STAGING_DIR)/usr/include/freetype2/
 QTOPIA4_DEP_LIBS+=freetype
 else
 QTOPIA4_CONFIGURE+= -no-freetype
@@ -342,6 +342,8 @@ endif
 		-no-rpath \
 		-nomake examples \
 		-nomake demos \
+		-I $(STAGING_DIR)/usr/include \
+		-L $(STAGING_DIR)/usr/lib \
 	)
 	touch $@
 
