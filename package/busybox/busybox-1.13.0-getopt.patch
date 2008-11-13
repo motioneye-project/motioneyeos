@@ -1,0 +1,22 @@
+--- busybox-1.13.0/libbb/getopt32.c	Thu Oct 30 08:41:34 2008
++++ busybox-1.13.0-getopt/libbb/getopt32.c	Wed Nov 12 23:04:01 2008
+@@ -515,6 +515,19 @@
+ 		}
+ 	}
+ 
++	/* In case getopt32 was already called:
++	 * reset the libc getopt() function, which keeps internal state.
++	 * run_nofork_applet_prime() does this, but we might end up here
++	 * also via gunzip_main() -> gzip_main(). Play safe.
++	 */
++#ifdef __GLIBC__
++	optind = 0;
++#else /* BSD style */
++	optind = 1;
++	/* optreset = 1; */
++#endif
++	/* optarg = NULL; opterr = 0; optopt = 0; - do we need this?? */
++
+ 	pargv = NULL;
+ 
+ 	/* Note: just "getopt() <= 0" will not work well for

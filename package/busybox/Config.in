@@ -12,7 +12,7 @@ config BR2_PACKAGE_BUSYBOX
 choice
 	prompt "BusyBox Version"
 	depends on BR2_PACKAGE_BUSYBOX
-	default BR2_BUSYBOX_VERSION_1_12_X
+	default BR2_BUSYBOX_VERSION_1_13_X
 	help
 	  Select the version of BusyBox you wish to use.
 
@@ -38,13 +38,18 @@ choice
 
 	config BR2_BUSYBOX_VERSION_1_10_X
 		bool "BusyBox 1.10.x"
-		depends on BR2_DEPRECATED || BR2_RECENT
+		depends on BR2_DEPRECATED
 
 	config BR2_BUSYBOX_VERSION_1_11_X
 		bool "BusyBox 1.11.x"
+		depends on BR2_DEPRECATED
 
 	config BR2_BUSYBOX_VERSION_1_12_X
 		bool "BusyBox 1.12.x"
+		depends on BR2_DEPRECATED || BR2_RECENT
+
+	config BR2_BUSYBOX_VERSION_1_13_X
+		bool "BusyBox 1.13.x"
 
 	config BR2_PACKAGE_BUSYBOX_SNAPSHOT
 		bool "daily snapshot"
@@ -61,6 +66,7 @@ config BR2_BUSYBOX_VERSION
 	default "1.10.4"	if BR2_BUSYBOX_VERSION_1_10_X
 	default "1.11.3"	if BR2_BUSYBOX_VERSION_1_11_X
 	default "1.12.2"	if BR2_BUSYBOX_VERSION_1_12_X
+	default "1.13.0"	if BR2_BUSYBOX_VERSION_1_13_X
 
 config BR2_PACKAGE_BUSYBOX_FULLINSTALL
 	bool "Run BusyBox's own full installation"
@@ -87,6 +93,7 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_10_X
 	default "package/busybox/busybox-1.11.x.config" if BR2_BUSYBOX_VERSION_1_11_X
 	default "package/busybox/busybox-1.11.x.config" if BR2_BUSYBOX_VERSION_1_12_X
+	default "package/busybox/busybox-1.11.x.config" if BR2_BUSYBOX_VERSION_1_13_X
 	help
 	  Some people may wish to use their own modified BusyBox configuration
 	  file, and will specify their config file location with this option.
