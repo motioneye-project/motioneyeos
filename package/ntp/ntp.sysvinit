@@ -3,8 +3,6 @@
 # System-V init script for the openntp daemon
 #
 
-set -e
-
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DESC="network time protocol daemon"
 NAME=ntpd
@@ -41,11 +39,10 @@ case "$1" in
 	start-stop-daemon -K -q -n $NAME -s 1
 	echo "done."
   ;;
-  restart) echo -n "Restarting $DESC: $NAME"
-	start-stop-daemon -K -q -n $NAME
+  restart) echo "Restarting $DESC: $NAME"
+	$0 stop
 	sleep 1
-	start-stop-daemon -S -q -x $DAEMON
-	echo "."
+	$0 start
 	;;
   *) echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
 	exit 1
