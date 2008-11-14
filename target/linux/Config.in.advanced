@@ -347,10 +347,6 @@ config BR2_KERNEL_MM_LEVEL
 
 source "target/device/Config.in.linux.patches"
 
-config BR2_LINUX_BOARD_PATCH
-	bool "Add board specific patch"
-	default y
-
 config BR2_LINUX_BSP_PATCH
 	string "Additional patch to apply (from \$(DL_DIR))"
 	default ""
