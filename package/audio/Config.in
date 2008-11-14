@@ -1,10 +1,4 @@
-menuconfig BR2_AUDIO_SUPPORT
-	bool "Audio libraries and applications"
-	default y
-	help
-	  Support for audio libraries and applications
-
-if BR2_AUDIO_SUPPORT
+menu "Audio libraries and applications"
 source "package/audio/alsa-lib/Config.in"
 source "package/audio/alsa-utils/Config.in"
 source "package/audio/asterisk/Config.in"
@@ -18,4 +12,4 @@ source "package/audio/madplay/Config.in"
 source "package/audio/mpg123/Config.in"
 source "package/audio/speex/Config.in"
 source "package/audio/festival/Config.in"
-endif
+endmenu

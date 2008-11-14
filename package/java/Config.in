@@ -1,11 +1,5 @@
-menuconfig BR2_JAVA_SUPPORT
-        bool "Java"
-        default y
-        help
-          Support java programs (classpath, vm, osgi)
-
-if BR2_JAVA_SUPPORT
+menu "Java"
 source "package/java/classpath/Config.in"
 source "package/java/jamvm/Config.in"
 source "package/java/concierge/Config.in"
-endif
+endmenu

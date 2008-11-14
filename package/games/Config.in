@@ -1,10 +1,4 @@
-menuconfig BR2_GAMES
-	bool "Games"
-	default y
-	help
-	  Support for games
-
-if BR2_GAMES
+menu "Games"
 source "package/games/ace_of_penguins/Config.in"
 source "package/games/doom-wad/Config.in"
 source "package/games/gnuchess/Config.in"
@@ -14,4 +8,4 @@ source "package/games/prboom/Config.in"
 source "package/games/rubix/Config.in"
 source "package/games/vice/Config.in"
 source "package/games/xboard/Config.in"
-endif
+endmenu

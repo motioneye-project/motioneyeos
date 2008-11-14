@@ -26,15 +26,6 @@ source "package/sed/Config.in"
 source "package/tar/Config.in"
 endif
 
-#menuconfig BR2_APPLICATION_SUPPORT
-#	bool "Common Applications"
-#	default y
-#	help
-#	  A set of applications, utilities and libraries for
-#	  text processing, toolchain generation and other things.
-
-
-#if BR2_APPLICATION_SUPPORT
 comment "Other development stuff"
 source "package/autoconf/Config.in"
 source "package/automake/Config.in"
@@ -130,13 +121,8 @@ source "package/editors/Config.in"
 
 endif
 
-menuconfig BR2_NETWORK_SUPPORT
-	bool "Networking"
-	default y
-	help
-	  Support for communication, networking and related packages
+menu "Networking"
 
-if BR2_NETWORK_SUPPORT
 comment "Networking applications"
 source "package/argus/Config.in"
 source "package/avahi/Config.in"
@@ -229,16 +215,9 @@ source "package/wget/Config.in"
 endif
 source "package/wireless-tools/Config.in"
 
-endif
+endmenu
 
-menuconfig BR2_BLOCKDEV_SUPPORT
-	bool "Hardware handling / blockdevices and filesystem maintenance"
-	default y
-	help
-	  Support for hardware handling and maintenance, block devices,
-	  filesystem creation and maintenance.
-
-if BR2_BLOCKDEV_SUPPORT
+menu "Hardware handling / blockdevices and filesystem maintenance"
 source "package/acpid/Config.in"
 source "package/dbus/Config.in"
 source "package/dbus-glib/Config.in"
@@ -287,19 +266,12 @@ source "package/usbmount/Config.in"
 source "package/usbutils/Config.in"
 source "package/wipe/Config.in"
 source "package/xfsprogs/Config.in"
-endif
+endmenu
 
 # Audio support
 source "package/audio/Config.in"
 
-menuconfig BR2_GRAPHIC_SUPPORT
-	bool "Graphic libraries and applications (graphic/text)"
-	default y
-	help
-	  Support for graphic libraries, X Window system and related
-	  packages, graphical toolkits, etc.
-
-if BR2_GRAPHIC_SUPPORT
+menu "Graphic libraries and applications (graphic/text)"
 comment "text rendering libraries"
 source "package/ncurses/Config.in"
 source "package/newt/Config.in"
@@ -413,65 +385,45 @@ source "package/xvkbd/Config.in"
 comment "Video libraries/codecs and applications"
 source "package/mplayer/Config.in"
 source "package/vlc/Config.in"
-endif
+endmenu
 
-menuconfig BR2_COMPRESSOR_SUPPORT
-	bool "Compressors / decompressors"
-	default y
-	help
-	  Support for compressors and decompressors like lzo, lzma, bzip2
+menu "Compressors / decompressors"
 
-if BR2_COMPRESSOR_SUPPORT
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/gzip/Config.in"
 endif
 source "package/lzo/Config.in"
 source "package/lzma/Config.in"
 source "package/zlib/Config.in"
-endif
+endmenu
 
-menuconfig BR2_PACKAGEMGRS_SUPPORT
-	bool "Package managers"
-	default y
-	help
-	  Support for package managers like rpm, portage, ipkg, ..
+menu "Package managers"
 
-if BR2_PACKAGEMGRS_SUPPORT
 source "package/ipkg/Config.in"
 source "package/portage/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/rpm/Config.in"
 endif
-endif
+endmenu
 
-menuconfig BR2_SCRIPTING_SUPPORT
-	bool "Interpreter languages / Scripting"
-	default y
-	help
-	  Support for scripting languages, interpreter languages.
+menu "Interpreter languages / Scripting"
 
-if BR2_SCRIPTING_SUPPORT
 source "package/lua/Config.in"
 source "package/microperl/Config.in"
 source "package/python/Config.in"
 source "package/ruby/Config.in"
 source "package/tcl/Config.in"
 source "package/php/Config.in"
-endif
+endmenu
 
-menuconfig BR2_XML_SUPPORT
-	bool "XML handling"
-	default y
-	help
-	  Support for XML handling
+menu "XML handling"
 
-if BR2_XML_SUPPORT
 source "package/expat/Config.in"
 source "package/ezxml/Config.in"
 source "package/libxml2/Config.in"
 source "package/libxslt/Config.in"
 source "package/xerces/Config.in"
-endif
+endmenu
 
 # java support
 source "package/java/Config.in"

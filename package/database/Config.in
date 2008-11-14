@@ -1,8 +1,4 @@
-menuconfig BR2_DATABASE_SUPPORT
-	bool "Database"
-	default y
-
-if BR2_DATABASE_SUPPORT
+menu "Database"
 source "package/database/mysql_client/Config.in"
 source "package/database/sqlite/Config.in"
-endif
+endmenu
