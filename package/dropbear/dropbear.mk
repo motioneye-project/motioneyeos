@@ -42,7 +42,7 @@ $(DROPBEAR_DIR)/.configured: $(DROPBEAR_DIR)/.unpacked
 	touch $@
 
 $(DROPBEAR_DIR)/$(DROPBEAR_BINARY): $(DROPBEAR_DIR)/.configured
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) LD=$(TARGET_CC) \
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) LD=$(TARGET_CC) \
 		PROGRAMS="dropbear dbclient dropbearkey dropbearconvert scp" \
 		MULTI=1 SCPPROGRESS=1 -C $(DROPBEAR_DIR)
 
