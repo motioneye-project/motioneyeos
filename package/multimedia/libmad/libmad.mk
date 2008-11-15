@@ -16,8 +16,8 @@ $(DL_DIR)/$(LIBMAD_SOURCE):
 $(LIBMAD_DIR)/.unpacked: $(DL_DIR)/$(LIBMAD_SOURCE)
 	$(LIBMAD_CAT) $(DL_DIR)/$(LIBMAD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(LIBMAD_DIR)
-	toolchain/patch-kernel.sh $(LIBMAD_DIR) package/audio/libmad/ libmad-$(LIBMAD_VERSION)\*.patch
-	toolchain/patch-kernel.sh $(LIBMAD_DIR) package/audio/libmad/ libmad-$(LIBMAD_VERSION)\*.patch.$(ARCH)
+	toolchain/patch-kernel.sh $(LIBMAD_DIR) package/multimedia/libmad/ libmad-$(LIBMAD_VERSION)\*.patch
+	toolchain/patch-kernel.sh $(LIBMAD_DIR) package/multimedia/libmad/ libmad-$(LIBMAD_VERSION)\*.patch.$(ARCH)
 	# Prevent automake from running.
 	(cd $(LIBMAD_DIR); touch -c config* aclocal.m4 Makefile*);
 	touch $@

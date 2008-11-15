@@ -22,7 +22,7 @@ ifeq ($(BR2_PACKAGE_SPEEX_ARM5E),y)
 	SPEEX_CONF_OPT += --enable-arm5e-asm
 endif
 
-$(eval $(call AUTOTARGETS,package/audio,speex))
+$(eval $(call AUTOTARGETS,package/multimedia,speex))
 
 $(SPEEX_TARGET_BUILD): $(SPEEX_TARGET_CONFIGURE)
 	$(call MESSAGE,"Building")

@@ -12,4 +12,4 @@ LIBOGG_INSTALL_TARGET = YES
 
 LIBOGG_DEPENDENCIES = uclibc pkgconfig
 
-$(eval $(call AUTOTARGETS,package/audio,libogg))
+$(eval $(call AUTOTARGETS,package/multimedia,libogg))

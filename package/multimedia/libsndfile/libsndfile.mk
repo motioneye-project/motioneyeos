@@ -15,7 +15,7 @@ $(DL_DIR)/$(LIBSNDFILE_SOURCE):
 
 $(LIBSNDFILE_DIR)/.unpacked: $(DL_DIR)/$(LIBSNDFILE_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(LIBSNDFILE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LIBSNDFILE_DIR) package/audio/libsndfile/ \*.patch
+	toolchain/patch-kernel.sh $(LIBSNDFILE_DIR) package/multimedia/libsndfile/ \*.patch
 	$(CONFIG_UPDATE) $(LIBSNDFILE_DIR)
 	touch $@
 

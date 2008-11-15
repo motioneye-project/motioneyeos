@@ -8,15 +8,15 @@ help
 if BR2_PACKAGE_FESTIVAL
 
 	menu "speech tools"
-		source "package/audio/festival/speech-tools/Config.in"
+		source "package/multimedia/festival/speech-tools/Config.in"
 	endmenu
 
 	menu "festival lexicons"
-		source "package/audio/festival/lexicons/Config.in"
+		source "package/multimedia/festival/lexicons/Config.in"
 	endmenu
 
 	menu "festival voices"
-		source "package/audio/festival/voices/Config.in"
+		source "package/multimedia/festival/voices/Config.in"
 	endmenu
 
 endif

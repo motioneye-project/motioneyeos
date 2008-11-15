@@ -23,7 +23,7 @@ $(DL_DIR)/$(MPG123_SOURCE):
 
 $(MPG123_DIR)/.unpacked: $(DL_DIR)/$(MPG123_SOURCE)
 	$(MPG123_CAT) $(DL_DIR)/$(MPG123_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(MPG123_DIR) package/audio/mpg123/ mpg123-$(MPG123_VERSION)\*.patch
+	toolchain/patch-kernel.sh $(MPG123_DIR) package/multimedia/mpg123/ mpg123-$(MPG123_VERSION)\*.patch
 	$(CONFIG_UPDATE) $(MPG123_DIR)/build
 	touch $@
 

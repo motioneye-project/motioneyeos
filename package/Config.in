@@ -268,8 +268,8 @@ source "package/wipe/Config.in"
 source "package/xfsprogs/Config.in"
 endmenu
 
-# Audio support
-source "package/audio/Config.in"
+# Audio/Video support
+source "package/multimedia/Config.in"
 
 menu "Graphic libraries and applications (graphic/text)"
 comment "text rendering libraries"
