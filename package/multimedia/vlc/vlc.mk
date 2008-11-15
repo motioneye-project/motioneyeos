@@ -14,5 +14,5 @@ VLC_CONF_OPT =
 
 VLC_DEPENDENCIES = uclibc
 
-$(eval $(call AUTOTARGETS,package,vlc))
+$(eval $(call AUTOTARGETS,package/multimedia,vlc))
 

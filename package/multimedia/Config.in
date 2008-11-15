@@ -10,6 +10,8 @@ source "package/multimedia/libsndfile/Config.in"
 source "package/multimedia/libvorbis/Config.in"
 source "package/multimedia/madplay/Config.in"
 source "package/multimedia/mpg123/Config.in"
+source "package/multimedia/mplayer/Config.in"
 source "package/multimedia/speex/Config.in"
 source "package/multimedia/festival/Config.in"
+source "package/multimedia/vlc/Config.in"
 endmenu

@@ -381,10 +381,6 @@ source "package/x11vnc/Config.in"
 source "package/xpdf/Config.in"
 source "package/xstroke/Config.in"
 source "package/xvkbd/Config.in"
-
-comment "Video libraries/codecs and applications"
-source "package/mplayer/Config.in"
-source "package/vlc/Config.in"
 endmenu
 
 menu "Compressors / decompressors"
