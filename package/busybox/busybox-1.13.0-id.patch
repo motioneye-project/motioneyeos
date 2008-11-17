@@ -1,12 +1,14 @@
 --- busybox-1.13.0/coreutils/id.c	Wed Nov  5 22:39:54 2008
-+++ busybox-1.13.0-id/coreutils/id.c	Sun Nov 16 15:59:46 2008
-@@ -17,6 +17,12 @@
++++ busybox-1.13.0-id/coreutils/id.c	Mon Nov 17 01:10:04 2008
+@@ -17,6 +17,14 @@
  
  #include "libbb.h"
  
++#if !ENABLE_USE_BB_PWD_GRP
 +#if defined(__UCLIBC_MAJOR__) && (__UCLIBC_MAJOR__ == 0)
 +#if (__UCLIBC_MINOR__ < 9) || (__UCLIBC_MINOR__ == 9 &&  __UCLIBC_SUBLEVEL__ < 30)
 +#error "Sorry, you need at least uClibc version 0.9.30 for id applet to build"
++#endif
 +#endif
 +#endif
 +
