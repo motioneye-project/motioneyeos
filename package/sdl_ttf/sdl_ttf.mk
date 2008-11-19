@@ -47,7 +47,7 @@ $(SDL_TTF_DIR)/.configured: $(SDL_TTF_DIR)/.unpacked
 
 $(SDL_TTF_DIR)/.compiled: $(SDL_TTF_DIR)/.configured
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
-		INCLUDE="-I$(STAGING_DIR)/usr/include/SDL" \
+		INCLUDES="-I$(STAGING_DIR)/usr/include/SDL -I$(STAGING_DIR)/usr/include/freetype2" \
 		LDFLAGS="-L$(STAGING_DIR)/usr/lib" \
 		DESTDIR=$(STAGING_DIR)/usr -C $(SDL_TTF_DIR)
 	touch $@
