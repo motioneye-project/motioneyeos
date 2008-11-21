@@ -1,0 +1,89 @@
+diff -urpN busybox-1.13.0/shell/ash.c busybox-1.13.0-ash/shell/ash.c
+--- busybox-1.13.0/shell/ash.c	2008-10-30 08:41:32.000000000 +0100
++++ busybox-1.13.0-ash/shell/ash.c	2008-11-21 11:38:04.000000000 +0100
+@@ -536,6 +536,7 @@ static const char dolatstr[] ALIGN1 = {
+ #define NHERE    24
+ #define NXHERE   25
+ #define NNOT     26
++#define N_NUMBER 27
+ 
+ union node;
+ 
+@@ -7546,43 +7547,44 @@ commandcmd(int argc UNUSED_PARAM, char *
+ 
+ /* ============ eval.c */
+ 
+-static int funcblocksize;          /* size of structures in function */
+-static int funcstringsize;         /* size of strings in node */
+-static void *funcblock;            /* block to allocate function from */
+-static char *funcstring;           /* block to allocate strings from */
++static int funcblocksize;       /* size of structures in function */
++static int funcstringsize;      /* size of strings in node */
++static void *funcblock;         /* block to allocate function from */
++static char *funcstring;        /* block to allocate strings from */
+ 
+ /* flags in argument to evaltree */
+-#define EV_EXIT 01              /* exit after evaluating tree */
+-#define EV_TESTED 02            /* exit status is checked; ignore -e flag */
++#define EV_EXIT    01           /* exit after evaluating tree */
++#define EV_TESTED  02           /* exit status is checked; ignore -e flag */
+ #define EV_BACKCMD 04           /* command executing within back quotes */
+ 
+-static const short nodesize[26] = {
+-	SHELL_ALIGN(sizeof(struct ncmd)),
+-	SHELL_ALIGN(sizeof(struct npipe)),
+-	SHELL_ALIGN(sizeof(struct nredir)),
+-	SHELL_ALIGN(sizeof(struct nredir)),
+-	SHELL_ALIGN(sizeof(struct nredir)),
+-	SHELL_ALIGN(sizeof(struct nbinary)),
+-	SHELL_ALIGN(sizeof(struct nbinary)),
+-	SHELL_ALIGN(sizeof(struct nbinary)),
+-	SHELL_ALIGN(sizeof(struct nif)),
+-	SHELL_ALIGN(sizeof(struct nbinary)),
+-	SHELL_ALIGN(sizeof(struct nbinary)),
+-	SHELL_ALIGN(sizeof(struct nfor)),
+-	SHELL_ALIGN(sizeof(struct ncase)),
+-	SHELL_ALIGN(sizeof(struct nclist)),
+-	SHELL_ALIGN(sizeof(struct narg)),
+-	SHELL_ALIGN(sizeof(struct narg)),
+-	SHELL_ALIGN(sizeof(struct nfile)),
+-	SHELL_ALIGN(sizeof(struct nfile)),
+-	SHELL_ALIGN(sizeof(struct nfile)),
+-	SHELL_ALIGN(sizeof(struct nfile)),
+-	SHELL_ALIGN(sizeof(struct nfile)),
+-	SHELL_ALIGN(sizeof(struct ndup)),
+-	SHELL_ALIGN(sizeof(struct ndup)),
+-	SHELL_ALIGN(sizeof(struct nhere)),
+-	SHELL_ALIGN(sizeof(struct nhere)),
+-	SHELL_ALIGN(sizeof(struct nnot)),
++static const short nodesize[N_NUMBER] = {
++	[NCMD     ] = SHELL_ALIGN(sizeof(struct ncmd)),
++	[NPIPE    ] = SHELL_ALIGN(sizeof(struct npipe)),
++	[NREDIR   ] = SHELL_ALIGN(sizeof(struct nredir)),
++	[NBACKGND ] = SHELL_ALIGN(sizeof(struct nredir)),
++	[NSUBSHELL] = SHELL_ALIGN(sizeof(struct nredir)),
++	[NAND     ] = SHELL_ALIGN(sizeof(struct nbinary)),
++	[NOR      ] = SHELL_ALIGN(sizeof(struct nbinary)),
++	[NSEMI    ] = SHELL_ALIGN(sizeof(struct nbinary)),
++	[NIF      ] = SHELL_ALIGN(sizeof(struct nif)),
++	[NWHILE   ] = SHELL_ALIGN(sizeof(struct nbinary)),
++	[NUNTIL   ] = SHELL_ALIGN(sizeof(struct nbinary)),
++	[NFOR     ] = SHELL_ALIGN(sizeof(struct nfor)),
++	[NCASE    ] = SHELL_ALIGN(sizeof(struct ncase)),
++	[NCLIST   ] = SHELL_ALIGN(sizeof(struct nclist)),
++	[NDEFUN   ] = SHELL_ALIGN(sizeof(struct narg)),
++	[NARG     ] = SHELL_ALIGN(sizeof(struct narg)),
++	[NTO      ] = SHELL_ALIGN(sizeof(struct nfile)),
++	[NTO2     ] = SHELL_ALIGN(sizeof(struct nfile)),
++	[NCLOBBER ] = SHELL_ALIGN(sizeof(struct nfile)),
++	[NFROM    ] = SHELL_ALIGN(sizeof(struct nfile)),
++	[NFROMTO  ] = SHELL_ALIGN(sizeof(struct nfile)),
++	[NAPPEND  ] = SHELL_ALIGN(sizeof(struct nfile)),
++	[NTOFD    ] = SHELL_ALIGN(sizeof(struct ndup)),
++	[NFROMFD  ] = SHELL_ALIGN(sizeof(struct ndup)),
++	[NHERE    ] = SHELL_ALIGN(sizeof(struct nhere)),
++	[NXHERE   ] = SHELL_ALIGN(sizeof(struct nhere)),
++	[NNOT     ] = SHELL_ALIGN(sizeof(struct nnot)),
+ };
+ 
+ static void calcsize(union node *n);
