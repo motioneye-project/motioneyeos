@@ -40,6 +40,6 @@ lockfile-progs-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LOCKFILE_PROGS)),y)
+ifeq ($(BR2_PACKAGE_LOCKFILE_PROGS),y)
 TARGETS+=lockfile-progs
 endif
