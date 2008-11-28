@@ -32,6 +32,8 @@
 #	run <autoreconf> before <configure>
 # FOO_LIBTOOL_PATCH [YES/NO, default YES]
 #	Do you want the standard buildroot patch applied to ltmain.sh? (libtool)
+# FOO_USE_CONFIG_CACHE [YES/NO default $(BR2_CONFIG_CACHE)]
+#   Do you wany to use the central configure cache file? See BR2_CONFIG_CACHE.
 # FOO_CONF_ENV [default empty]
 #	environment passed to the <configure> script
 # FOO_CONF_OPT [default empty]
@@ -217,8 +219,10 @@ $(BUILD_DIR)/%/.stamp_configured:
 	cd $(@D)/$($(PKG)_SUBDIR) && rm -f config.cache && \
 	$(TARGET_CONFIGURE_OPTS) \
 	$(TARGET_CONFIGURE_ARGS) \
+	$(TARGET_CONFIGURE_ENV) \
 	$($(PKG)_CONF_ENV) \
-		./configure \
+	$(if $(THIS_SRCDIR),$(THIS_SRCDIR)/,./)configure \
+		$(if $(filter YES,$($(PKG)_USE_CONFIG_CACHE)),--cache-file="$(PROJECT_BUILD_DIR)/tgt-config.cache",) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -302,6 +306,7 @@ $(2)_SITE			?= \
 $(2)_DEPENDENCIES		?=
 $(2)_AUTORECONF			?= NO
 $(2)_LIBTOOL_PATCH		?= YES
+$(2)_USE_CONFIG_CACHE   ?= $(if $(BR2_CONFIG_CACHE),YES,NO)
 $(2)_CONF_ENV			?=
 $(2)_CONF_OPT			?=
 $(2)_MAKE_ENV			?=
