@@ -2,6 +2,8 @@ choice
 	prompt "Add AT91 specific patches"
 	depends on BR2_KERNEL_ARCH_PATCH_ENABLED
 	depends on BR2_TARGET_ATMEL && BR2_arm
+	default BR2_ARCH_AT91_2_6_28_RC6	if BR2_LINUX_2_6_28
+	default BR2_ARCH_AT91_2_6_27_7		if BR2_LINUX_2_6_27
 	default BR2_ARCH_AT91_2_6_26		if BR2_LINUX_2_6_26
 	default BR2_ARCH_AT91_2_6_25		if BR2_LINUX_2_6_25
 	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_24
@@ -13,6 +15,16 @@ choice
 	default BR2_ARCH_AT91_2_6_24
 	help
 	  Select a patch to add to the Linux kernel
+
+config	BR2_ARCH_AT91_2_6_28_RC6
+	bool "2.6.28-rc6"
+	help
+	  Apply the at91 linux-2.6.28-rc6 patches
+
+config	BR2_ARCH_AT91_2_6_27_7
+	bool "2.6.27.7"
+	help
+	  Apply the at91 linux-2.6.27.7 patches
 
 config	BR2_ARCH_AT91_2_6_26
 	bool "2.6.26"
@@ -60,6 +72,8 @@ config	BR2_KERNEL_ARCH_PATCH_VERSION
 	string
 	depends on BR2_KERNEL_ARCH_PATCH_ENABLED
 	depends on BR2_TARGET_ATMEL && BR2_arm
+	default "2.6.28-rc6" if BR2_ARCH_AT91_2_6_28_RC6
+	default "2.6.27.7" if BR2_ARCH_AT91_2_6_27_7
 	default "2.6.26" if BR2_ARCH_AT91_2_6_26
 	default "2.6.26-rc3" if BR2_ARCH_AT91_2_6_26_RC3
 	default "2.6.25" if BR2_ARCH_AT91_2_6_25
@@ -72,7 +86,3 @@ config	BR2_KERNEL_ARCH_PATCH_VERSION
 config	BR2_KERNEL_ARCH_PATCH_DIR
 	string
 	default "target/device/Atmel/arch-arm/kernel-patches-$(BR2_KERNEL_ARCH_PATCH_VERSION)"
-
-
-
-
