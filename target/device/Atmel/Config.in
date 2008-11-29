@@ -19,6 +19,10 @@ config BR2_BOARD_NAME
 	default	"at91sam9262ek"		if	BR2_TARGET_AT91SAM9262EK
 	default	"at91sam9263ek"		if	BR2_TARGET_AT91SAM9263EK
 	default	"at91sam9xeek"		if	BR2_TARGET_AT91SAM9XEEK
+	default	"at91sam9g20ek"		if	BR2_TARGET_AT91SAM9G20EK
+	default	"at91sam9g20dfc"	if	BR2_TARGET_AT91SAM9G20DFC
+	default	"at91sam9m10ek"		if	BR2_TARGET_AT91SAM9M10EK
+	default	"at91sam9m10dfc"	if	BR2_TARGET_AT91SAM9M10DFC
 	default	"atstk100x"		if	BR2_TARGET_AVR32_ATSTK1002
 	default	"atngw100"		if	BR2_TARGET_AVR32_ATNGW100
 	default "atngw100-base"		if	BR2_TARGET_AVR32_ATNGW100_BASE

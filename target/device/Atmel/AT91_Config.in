@@ -64,9 +64,8 @@ config BR2_TARGET_AT91SAM9G20
 	depends on !BR2_TARGET_ATMEL_LCD
 	depends on !BR2_TARGET_ATMEL_FPDSP
 	depends on !BR2_TARGET_ATMEL_MPB
-	depends on ! BR2_TARGET_AT91_ADVANCED_INFO
 	help
-	  Atmel AT91SAM9G20 ARM based systems (Not Yet Implemented)
+	  Atmel AT91SAM9G20 ARM based systems
 
 config BR2_TARGET_AT91SAM9261
 	bool "Atmel AT91SAM9261 Microprocessor"
@@ -105,14 +104,14 @@ config BR2_TARGET_AT91SAM9263
 	help
 	  Atmel AT91SAM9263 ARM based systems
 
-config BR2_TARGET_AT91SAM9G41
-	bool "Atmel AT91SAM9G41 Microprocessor"
+config BR2_TARGET_AT91SAM9G40
+	bool "Atmel AT91SAM9G40 Microprocessor"
 	depends on BR2_TARGET_AT91
 	depends on !BR2_TARGET_ATMEL_FPDSP
 	depends on !BR2_TARGET_ATMEL_MPB
 	depends on ! BR2_TARGET_AT91_ADVANCED_INFO
 	help
-	  Atmel AT91SAM9G41 ARM based systems
+	  Atmel AT91SAM9G40 ARM based systems
 
 config BR2_TARGET_AT91SAM9M10
 	bool "Atmel AT91SAM9M10 Microprocessor"
@@ -205,19 +204,31 @@ config BR2_TARGET_AT91RM9200DK
 
 config BR2_TARGET_AT91SAM9260DFC
 	bool "Atmel AT91SAM9260DFC"
-	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9G20 || BR2_TARGET_AT91SAM9XE
+	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9XE
 	help
 	  The Atmel AT91SAM9260 Development Board booting from Dataflashcard
 
 config BR2_TARGET_AT91SAM9260EK
 	bool "Atmel AT91SAM9260EK"
-	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9G20 || BR2_TARGET_AT91SAM9XE
+	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9XE
 	help
 	  The Atmel AT91SAM9260 Development Board booting from dataflash
 
+config BR2_TARGET_AT91SAM9G20DFC
+	bool "Atmel AT91SAM9G20DFC"
+	depends on BR2_TARGET_AT91SAM9G20
+	help
+	  The Atmel AT91SAM9G20 Development Board booting from Dataflashcard
+
+config BR2_TARGET_AT91SAM9G20EK
+	bool "Atmel AT91SAM9G20EK"
+	depends on BR2_TARGET_AT91SAM9G20
+	help
+	  The Atmel AT91SAM9G20 Development Board booting from dataflash
+
 config BR2_TARGET_AT91SAM9XEEK
 	bool "Atmel AT91SAM9XE-EK"
-	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9G20 || BR2_TARGET_AT91SAM9XE
+	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9XE
 	help
 	  The Atmel AT91SAM9xe Development Board (Not Yet Implemented)
 
