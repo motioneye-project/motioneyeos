@@ -45,6 +45,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		--enable-fbdev \
 		$(MPLAYER_ENDIAN) \
 		--disable-mpdvdkit \
+		--disable-ivtv \
 		--disable-tv \
 		--enable-dynamic-plugins \
 	)
