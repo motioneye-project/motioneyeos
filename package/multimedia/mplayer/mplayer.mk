@@ -19,6 +19,10 @@ endif
 
 MPLAYER_DEP_LIBS:=libmad
 
+ifeq ($(strip $(BR2_PACKAGE_ALSA_LIB)),y)
+MPLAYER_DEP_LIBS+=alsa-lib
+endif
+
 $(DL_DIR)/$(MPLAYER_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MPLAYER_SITE)/$(MPLAYER_SOURCE)
 
