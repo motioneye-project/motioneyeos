@@ -19,7 +19,7 @@ endif
 
 MPLAYER_DEP_LIBS:=libmad
 
-ifeq ($(strip $(BR2_PACKAGE_ALSA_LIB)),y)
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 MPLAYER_DEP_LIBS+=alsa-lib
 endif
 
@@ -83,6 +83,6 @@ mplayer-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MPLAYER)),y)
+ifeq ($(BR2_PACKAGE_MPLAYER),y)
 TARGETS+=mplayer
 endif
