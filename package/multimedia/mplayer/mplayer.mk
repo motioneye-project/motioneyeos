@@ -17,12 +17,6 @@ else
 MPLAYER_ENDIAN:=--disable-big-endian
 endif
 
-MPLAYER_DEP_LIBS:=libmad
-
-ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
-MPLAYER_DEP_LIBS+=alsa-lib
-endif
-
 $(DL_DIR)/$(MPLAYER_SOURCE):
 	$(WGET) -P $(DL_DIR) $(MPLAYER_SITE)/$(MPLAYER_SOURCE)
 
@@ -66,7 +60,7 @@ $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY): $(MPLAYER_DIR)/$(MPLAYER_BINARY)
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
 	touch -c $@
 
-mplayer: uclibc $(MPLAYER_DEP_LIBS) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
+mplayer: uclibc $(if $(BR2_PACKAGE_LIBMAD),libmad) $(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
 
 mplayer-source: $(DL_DIR)/$(MPLAYER_SOURCE)
 
