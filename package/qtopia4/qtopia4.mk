@@ -342,8 +342,6 @@ endif
 		-no-rpath \
 		-nomake examples \
 		-nomake demos \
-		-I $(STAGING_DIR)/usr/include \
-		-L $(STAGING_DIR)/usr/lib \
 	)
 	touch $@
 
