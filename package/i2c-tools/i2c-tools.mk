@@ -3,7 +3,7 @@
 # i2c-tools
 #
 #############################################################
-I2C_TOOLS_VERSION:=3.0.1
+I2C_TOOLS_VERSION:=3.0.2
 I2C_TOOLS_SOURCE:=i2c-tools-$(I2C_TOOLS_VERSION).tar.bz2
 I2C_TOOLS_SITE:=http://dl.lm-sensors.org/i2c-tools/releases/
 I2C_TOOLS_DIR:=$(BUILD_DIR)/i2c-tools-$(I2C_TOOLS_VERSION)
