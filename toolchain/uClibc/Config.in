@@ -18,6 +18,10 @@ choice
 		bool "uClibc 0.9.29"
 		depends on BR2_EXT_UCLIBC_VERSION_0_9_29
 
+	config BR2_UCLIBC_VERSION_0_9_30
+		bool "uClibc 0.9.30"
+		depends on BR2_EXT_UCLIBC_VERSION_0_9_30
+
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
 

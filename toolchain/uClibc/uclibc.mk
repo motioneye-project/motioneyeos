@@ -15,7 +15,7 @@ endif
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 # Be aware that this changes daily....
-UCLIBC_VER:=0.9.29
+UCLIBC_VER:=0.9.30
 UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
 UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
 #"))
@@ -23,6 +23,9 @@ UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 UCLIBC_PATCH_DIR:=toolchain/uClibc/
 else
 # releases
+ifeq ($(BR2_UCLIBC_VERSION_0_9_30),y)
+UCLIBC_VER:=0.9.30
+endif
 ifeq ($(BR2_UCLIBC_VERSION_0_9_29),y)
 UCLIBC_VER:=0.9.29
 endif
