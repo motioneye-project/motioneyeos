@@ -528,7 +528,8 @@ loop:
 	}
 	fclose(table);
 
-	system("/bin/sync");
+	if (system("/bin/sync"))
+		bb_error_msg("sync failed, continuing anyway");
 
 	return 0;
 }
