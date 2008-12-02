@@ -40,9 +40,13 @@ cramfs-dirclean:
 #
 #############################################################
 ifeq ($(BR2_ENDIAN),"BIG")
-CRAMFS_ENDIANNESS=-b
+CRAMFS_OPTS=-b
 else
-CRAMFS_ENDIANNESS=-l
+CRAMFS_OPTS=-l
+endif
+
+ifneq ($(TARGET_DEVICE_TABLE),)
+CRAMFS_OPTS += -D $(TARGET_DEVICE_TABLE)
 endif
 
 CRAMFS_TARGET=$(IMAGE).cramfs
@@ -68,7 +72,7 @@ ifneq ($(TARGET_DEVICE_TABLE),)
 		>> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
 endif
 	# Use fakeroot so mkcramfs believes the previous fakery
-	echo "$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_ENDIANNESS) " \
+	echo "$(CRAMFS_DIR)/mkcramfs -q $(CRAMFS_OPTS) " \
 		"$(TARGET_DIR) $(CRAMFS_TARGET)" >> $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
 	chmod a+x $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
 	$(STAGING_DIR)/usr/bin/fakeroot -- $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
