@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBOIL
+	bool "liboil"
+	help
+	  Library of simple functions that are optimized for various CPUs.
+
+	  http://liboil.freedesktop.org/
