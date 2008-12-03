@@ -29,7 +29,7 @@ $(AUTOCONF_SRC_DIR)/.unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 
 #############################################################
 #
-# autoconf for the host
+# autoconf for the target
 #
 #############################################################
 
