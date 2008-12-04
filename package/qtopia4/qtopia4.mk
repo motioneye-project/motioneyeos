@@ -326,7 +326,7 @@ endif
 		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig:$(PKG_CONFIG_PATH)" \
 		PKG_CONFIG_SYSROOT="$(STAGING_DIR)" \
 		./configure \
-		-verbose \
+		$(if $(VERBOSE),-verbose,-silent) \
 		-force-pkg-config \
 		-embedded $(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM) \
 		$(QTOPIA4_QCONFIG_COMMAND) \
