@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DMRAID_VERSION=1.0.0.rc14
+DMRAID_VERSION=1.0.0.rc15
 DMRAID_SOURCE:=dmraid-$(DMRAID_VERSION).tar.bz2
 DMRAID_SITE:=http://people.redhat.com/~heinzm/sw/dmraid/src
 DMRAID_DIR:=$(BUILD_DIR)/dmraid/$(DMRAID_VERSION)
