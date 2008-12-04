@@ -53,7 +53,7 @@ $(AVAHI_DIR)/.unpacked: $(DL_DIR)/$(AVAHI_SOURCE)
 	touch $@
 
 $(AVAHI_DIR)/.configured: $(AVAHI_DIR)/.unpacked $(AVAHI_EXTRA_DEPS)
-	(cd $(AVAHI_DIR) && rm -rf config.cache && autoconf)
+	(cd $(AVAHI_DIR) && rm -rf config.cache && PATH=$(TARGET_PATH) autoconf)
 	(cd $(AVAHI_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -180,7 +180,7 @@ endif
 		 $(TARGET_DIR)/usr/sbin/avahi-daemon
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
-avahi: uclibc libdaemon $(if $(BR2_ENABLE_LOCALE),gettext libintl) $(AVAHI_TARGETS)
+avahi: host-autoconf uclibc libdaemon $(if $(BR2_ENABLE_LOCALE),gettext libintl) $(AVAHI_TARGETS)
 
 avahi-clean:
 	-$(MAKE) -C $(AVAHI_DIR) distclean
