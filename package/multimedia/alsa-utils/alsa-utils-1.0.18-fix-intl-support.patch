@@ -1,0 +1,11 @@
+--- a/seq/aseqnet/Makefile.in
++++ b/seq/aseqnet/Makefile.in
+@@ -252,7 +252,7 @@ clean-binPROGRAMS:
+ 	-test -z "$(bin_PROGRAMS)" || rm -f $(bin_PROGRAMS)
+ aseqnet$(EXEEXT): $(aseqnet_OBJECTS) $(aseqnet_DEPENDENCIES) 
+ 	@rm -f aseqnet$(EXEEXT)
+-	$(LINK) $(aseqnet_LDFLAGS) $(aseqnet_OBJECTS) $(aseqnet_LDADD) $(LIBS)
++	$(LINK) $(aseqnet_LDFLAGS) $(aseqnet_OBJECTS) $(aseqnet_LDADD) $(LIBS) $(INTLLIBS)
+ 
+ mostlyclean-compile:
+ 	-rm -f *.$(OBJEXT)
