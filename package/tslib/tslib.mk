@@ -20,7 +20,7 @@ $(TSLIB_DIR)/.patched: $(DL_DIR)/$(TSLIB_SOURCE)
 	touch $@
 
 $(TSLIB_DIR)/.configured: $(TSLIB_DIR)/.patched
-	(cd $(TSLIB_DIR); rm -rf config.cache; ./autogen.sh)
+	(cd $(TSLIB_DIR); rm -rf config.cache; PATH=$(TARGET_PATH) ./autogen.sh)
 	$(CONFIG_UPDATE) $(TSLIB_DIR)
 	(cd $(TSLIB_DIR) && \
 	$(TARGET_CONFIGURE_OPTS) \
@@ -84,7 +84,7 @@ $(TARGET_DIR)/usr/lib/libts.so: $(STAGING_DIR)/usr/lib/libts.so
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/ts_test
 	cp -dpf package/tslib/ts.conf $(TARGET_DIR)/etc/
 
-tslib: uclibc $(TARGET_DIR)/usr/lib/libts.so
+tslib: uclibc host-automake host-autoconf $(TARGET_DIR)/usr/lib/libts.so
 
 tslib-build: uclibc $(TSLIB_DIR)/.configured
 	rm -f $(TSLIB_DIR)/.compiled
