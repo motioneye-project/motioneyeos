@@ -35,7 +35,12 @@ choice
 
 	config BR2_BINUTILS_VERSION_2_18_50_0_6
 		depends on !BR2_avr32 && !BR2_nios2
+		depends on BR2_DEPRECATED
 		bool "binutils 2.18.50.0.6"
+
+	config BR2_BINUTILS_VERSION_2_18_50_0_8
+		depends on !BR2_avr32 && !BR2_nios2
+		bool "binutils 2.18.50.0.8"
 endchoice
 
 config BR2_BINUTILS_VERSION
@@ -47,6 +52,7 @@ config BR2_BINUTILS_VERSION
 	default "2.18.50.0.1"	if BR2_BINUTILS_VERSION_2_18_50_0_1
 	default "2.18.50.0.3"	if BR2_BINUTILS_VERSION_2_18_50_0_3
 	default "2.18.50.0.6"	if BR2_BINUTILS_VERSION_2_18_50_0_6
+	default "2.18.50.0.8"	if BR2_BINUTILS_VERSION_2_18_50_0_8
 
 config BR2_EXTRA_BINUTILS_CONFIG_OPTIONS
 	string "Additional binutils options"
