@@ -33,6 +33,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		samba_cv_HAVE_FCNTL_LOCK=yes \
 		samba_cv_HAVE_SECURE_MKSTEMP=yes \
 		samba_cv_fpie=no \
+		SMB_BUILD_CC_NEGATIVE_ENUM_VALUES=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
