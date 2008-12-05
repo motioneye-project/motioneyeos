@@ -3,12 +3,15 @@
 # build binutils for use on the host system
 #
 #############################################################
-BINUTILS_VERSION:=$(strip $(subst ",, $(BR2_BINUTILS_VERSION)))
-#"))
+BINUTILS_VERSION:=$(subst ",,$(BR2_BINUTILS_VERSION))
+#")
 
 EXTRA_BINUTILS_CONFIG_OPTIONS=$(strip $(subst ",, $(BR2_EXTRA_BINUTILS_CONFIG_OPTIONS)))
 #"))
 BINUTILS_SITE:=$(BR2_KERNEL_MIRROR)/linux/devel/binutils
+ifeq ($(BINUTILS_VERSION),2.19)
+BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
+endif
 ifeq ($(BINUTILS_VERSION),2.18)
 BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
 endif
@@ -143,6 +146,8 @@ binutils-clean:
 binutils-dirclean:
 	rm -rf $(BINUTILS_DIR1)
 
+binutils-src-dirclean:
+	rm -rf $(BINUTILS_DIR)
 
 #############################################################
 #
