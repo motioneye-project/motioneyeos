@@ -88,7 +88,7 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 	mkdir -p $(TOOL_BUILD_DIR)
 	rm -rf $(BINUTILS_DIR)
 	$(BINUTILS_CAT) $(DL_DIR)/$(BINUTILS_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
-	$(CONFIG_UPDATE) $(BINUTILS_DIR)
+	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
 binutils-patched: $(BINUTILS_DIR)/.patched

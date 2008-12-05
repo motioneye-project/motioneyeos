@@ -29,6 +29,7 @@ $(CCACHE_DIR1)/.patched: $(CCACHE_DIR1)/.unpacked
 	$(SED) "s,getenv(\"CCACHE_DIR\"),\"$(BR2_CCACHE_DIR)\",g" \
 		$(CCACHE_DIR1)/ccache.c
 	mkdir -p $(CCACHE_DIR1)/cache
+	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
 $(CCACHE_DIR1)/.configured: $(CCACHE_DIR1)/.patched

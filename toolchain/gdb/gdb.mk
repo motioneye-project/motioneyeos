@@ -58,7 +58,7 @@ ifeq ($(GDB_VERSION),snapshot)
 	ln -sf $(TOOL_BUILD_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
 endif
 	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch
-	$(CONFIG_UPDATE) $(GDB_DIR)
+	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
 gdb-patched: $(GDB_DIR)/.unpacked

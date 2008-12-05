@@ -27,7 +27,7 @@ libgmp-source: $(DL_DIR)/$(GMP_SOURCE)
 $(GMP_DIR)/.unpacked: $(DL_DIR)/$(GMP_SOURCE)
 	$(GMP_CAT) $(DL_DIR)/$(GMP_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(GMP_DIR) package/gmp/ \*.patch
-	$(CONFIG_UPDATE) $(GMP_DIR)
+	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
 $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
