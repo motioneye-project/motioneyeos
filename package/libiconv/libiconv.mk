@@ -5,7 +5,7 @@
 #############################################################
 LIBICONV_VERSION = 1.12
 LIBICONV_SOURCE = libiconv-$(LIBICONV_VERSION).tar.gz
-LIBICONV_SITE = http://ftp.gnu.org/pub/gnu/libiconv
+LIBICONV_SITE = $(BR2_GNU_MIRROR)/libiconv
 LIBICONV_AUTORECONF = NO
 LIBICONV_INSTALL_STAGING = YES
 LIBICONV_INSTALL_TARGET = YES
