@@ -115,7 +115,7 @@ $(TARGET_DIR)/usr/lib/tremor.a: $(TARGET_DIR)/usr/lib/tremor.so
 	cp -dpf $(TREMOR_DIR)/lib/tremor.a $(TARGET_DIR)/usr/lib/
 	touch $@
 
-tremor: uclibc pkgconfig libogg $(TARGET_DIR)/usr/lib/tremor.so
+tremor: uclibc pkgconfig host-autoconf host-automake libogg $(TARGET_DIR)/usr/lib/tremor.so
 
 tremor-source: $(DL_DIR)/$(TREMOR_SOURCE)
 
