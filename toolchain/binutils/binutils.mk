@@ -132,15 +132,14 @@ binutils: uclibc-configured $(BINUTILS_HOST_PREREQ) $(STAGING_DIR)/usr/bin/$(REA
 binutils-source: $(DL_DIR)/$(BINUTILS_SOURCE)
 
 binutils-clean:
-	rm -rf $(STAGING_DIR)/usr/bin/*{ar,as,ld,nm,objdump,ranlib,strip} \
-		$(STAGING_DIR)/usr/lib/{libiberty*,ldscripts}
 	-$(MAKE) -C $(BINUTILS_DIR1) DESTDIR=$(STAGING_DIR) \
 		tooldir=/usr build_tooldir=/usr uninstall
 	-$(MAKE) -C $(BINUTILS_DIR1) clean
+	rm -rf $(wildcard $(patsubst %,$(STAGING_DIR)/usr/bin/*%,ar as ld nm objdump ranlib strip c++filt)) \
+		$(wildcard $(patsubst %,$(STAGING_DIR)/usr/lib/%*,libiberty ldscripts))
 
 binutils-dirclean:
 	rm -rf $(BINUTILS_DIR1)
-
 
 
 #############################################################
@@ -183,12 +182,9 @@ $(TARGET_DIR)/usr/bin/ld: $(BINUTILS_DIR2)/binutils/objdump
 binutils_target: $(BINUTILS_TARGET_PREREQ) $(TARGET_DIR)/usr/bin/ld
 
 binutils_target-clean:
-	(cd $(TARGET_DIR)/usr/bin; \
-		rm -f addr2line ar as gprof ld nm objcopy \
-		      objdump ranlib readelf size strings strip; \
-	)
-	rm -f $(TARGET_DIR)/bin/$(REAL_GNU_TARGET_NAME)*
 	-$(MAKE) -C $(BINUTILS_DIR2) clean
+	rm -f $(TARGET_DIR)/bin/$(REAL_GNU_TARGET_NAME)* \
+		$(addprefix $(TARGET_DIR)/usr/bin/, addr2line ar as gprof ld nm objcopy objdump ranlib readelf size strings strip c++filt)
 
 binutils_target-dirclean:
 	rm -rf $(BINUTILS_DIR2)
