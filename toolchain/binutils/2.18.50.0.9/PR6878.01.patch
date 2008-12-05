@@ -1,0 +1,68 @@
+Index: a/gas/app.c
+===================================================================
+RCS file: /cvs/src/src/gas/app.c,v
+retrieving revision 1.47
+diff -c -3 -p -r1.47 app.c
+*** a/gas/app.c	18 Jul 2008 22:25:07 -0000	1.47
+--- b/gas/app.c	18 Sep 2008 07:50:44 -0000
+*************** do_scrub_chars (int (*get) (char *, int)
+*** 1024,1030 ****
+  
+  #ifndef IEEE_STYLE
+  	case LEX_IS_ONECHAR_QUOTE:
+! 	  if (state == 9)
+  	    {
+  	      char c;
+  
+--- 1024,1031 ----
+  
+  #ifndef IEEE_STYLE
+  	case LEX_IS_ONECHAR_QUOTE:
+! #ifdef H_TICK_HEX
+! 	  if (state == 9 && enable_h_tick_hex)
+  	    {
+  	      char c;
+  
+*************** do_scrub_chars (int (*get) (char *, int)
+*** 1032,1037 ****
+--- 1033,1039 ----
+  	      as_warn ("'%c found after symbol", c);
+  	      UNGET (c);
+  	    }
++ #endif
+  	  if (state == 10)
+  	    {
+  	      /* Preserve the whitespace in foo 'b'.  */
+Index: gas/messages.c
+===================================================================
+RCS file: /cvs/src/src/gas/messages.c,v
+retrieving revision 1.21
+diff -c -3 -p -r1.21 messages.c
+*** a/gas/messages.c	30 Jul 2008 04:34:57 -0000	1.21
+--- b/gas/messages.c	18 Sep 2008 07:50:44 -0000
+*************** as_warn_internal (char *file, unsigned i
+*** 162,171 ****
+  
+    identify (file);
+    if (file)
+!     fprintf (stderr, "%s:%u: ", file, line);
+!   fprintf (stderr, _("Warning: "));
+!   fputs (buffer, stderr);
+!   (void) putc ('\n', stderr);
+  #ifndef NO_LISTING
+    listing_warning (buffer);
+  #endif
+--- 162,174 ----
+  
+    identify (file);
+    if (file)
+!     {
+!       fprintf (stderr, "%s:", file);
+!       if (line)
+! 	fprintf (stderr, "%u:", line);
+!       fputc (' ', stderr);
+!     }
+!   fprintf (stderr, _("Warning: %s\n"), buffer);
+  #ifndef NO_LISTING
+    listing_warning (buffer);
+  #endif
