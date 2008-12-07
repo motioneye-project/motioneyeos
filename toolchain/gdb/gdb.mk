@@ -63,6 +63,7 @@ endif
 
 gdb-patched: $(GDB_DIR)/.unpacked
 
+gdb-source: $(DL_DIR)/$(GDB_SOURCE)
 gdb-dirclean:
 	rm -rf $(GDB_DIR)
 
