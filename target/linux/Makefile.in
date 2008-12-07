@@ -198,13 +198,19 @@ $(LINUX26_KERNEL): $(INITRAMFS_TARGET) $(BB_INITRAMFS_TARGET) \
 $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_DIR)/.configured
 	rm -rf $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)
 	rm -f $(TARGET_DIR)/sbin/cardmgr
-	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) modules
-	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) \
+	@if grep -q CONFIG_MODULES=y $(LINUX26_DIR)/.config; then \
+	    set -x; \
+	    echo "Have CONFIG_MODULES"; \
+	    $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) modules; \
+	    $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) \
 		DEPMOD=$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 \
-		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install
-	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/build
-	rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/source
-	$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX_HEADERS_VERSION)
+		INSTALL_MOD_PATH=$(TARGET_DIR) modules_install; \
+	    rm -f $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/build \
+		$(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/source; \
+	    $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26 -b $(TARGET_DIR) $(LINUX_HEADERS_VERSION); \
+	else \
+	    echo "No CONFIG_MODULES"; \
+	fi
 	touch -c $@
 
 linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
