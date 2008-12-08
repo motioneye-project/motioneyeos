@@ -1,0 +1,122 @@
+menuconfig BR2_PACKAGE_GST_PLUGINS_GOOD
+	bool "gst-plugins-good"
+	depends on BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	help
+	  A set of well-supported plug-ins for GStreamer under the preferred
+	  license.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GST_PLUGINS_GOOD
+
+comment "dependency-less plugins"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOFILTER
+	bool "videofilter"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ALPHA
+	bool "alpha"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_APETAG
+	bool "apetag"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_AUDIOFX
+	bool "audiofx"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_AUPARSE
+	bool "auparse"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_AUTODETECT
+	bool "autodetect"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_AVI
+	bool "avi (*.avi video)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_CUTTER
+	bool "cutter"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_DEBUG
+	bool "debug"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_EFFECTV
+	bool "effectv"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_EQUALIZER
+	bool "equalizer"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ID3DEMUX
+	bool "id3demux (*.mp3 audio)"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ICYDEMUX
+	bool "icydemux"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_INTERLEAVE
+	bool "interleave"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLX
+	bool "flx"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GOOM
+	bool "goom"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_GOOM2K1
+	bool "goom2k1"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_LAW
+	bool "law"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_LEVEL
+	bool "level"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA
+	bool "matroska"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MONOSCOPE
+	bool "monoscope"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MULTIFILE
+	bool "multifile"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MULTIPART
+	bool "multipart"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_QTDEMUX
+	bool "qtdemux"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_REPLAYGAIN
+	bool "replaygain"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_RTP
+	bool "rtp"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_RTSP
+	bool "rtsp"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SMPTE
+	bool "smpte"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SPECTRUM
+	bool "spectrum"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_UDP
+	bool "udp"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOBOX
+	bool "videobox"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOCROP
+	bool "videocrop"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOMIXER
+	bool "videomixer"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_WAVENC
+	bool "wavenc"
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_WAVPARSE
+	bool "wavparse (*.wav audio)"
+	default y
+
+endif
