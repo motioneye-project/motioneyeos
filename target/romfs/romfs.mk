@@ -74,6 +74,6 @@ romfsroot-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_ROOTFS_ROMFS)),y)
+ifeq ($(BR2_TARGET_ROOTFS_ROMFS),y)
 TARGETS+=romfsroot
 endif

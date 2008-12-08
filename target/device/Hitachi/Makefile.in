@@ -1,5 +1,5 @@
 # Override the default uClibc configuration
-ifeq ($(strip $(BR2_TARGET_HITACHI_MS7206SE01)),y)
+ifeq ($(BR2_TARGET_HITACHI_MS7206SE01),y)
 
 include target/device/Hitachi/MS7206SE01/Makefile.in
 

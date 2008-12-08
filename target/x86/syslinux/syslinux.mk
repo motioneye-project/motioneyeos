@@ -62,9 +62,9 @@ endif
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_SYSLINUX)),y)
+ifeq ($(BR2_TARGET_SYSLINUX),y)
 TARGETS+=syslinux
 endif
-ifeq ($(strip $(BR2_TARGET_PXELINUX)),y)
+ifeq ($(BR2_TARGET_PXELINUX),y)
 TARGETS+=pxelinux
 endif

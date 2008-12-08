@@ -38,7 +38,7 @@ endif
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_YABOOT)),y)
+ifeq ($(BR2_TARGET_YABOOT),y)
 TARGETS+=yaboot
 endif
 

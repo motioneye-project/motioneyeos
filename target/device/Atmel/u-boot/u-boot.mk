@@ -247,7 +247,7 @@ ubootroot-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_UBOOT_AT91)),y)
+ifeq ($(BR2_TARGET_UBOOT_AT91),y)
 TARGETS+=uboot
 endif
 

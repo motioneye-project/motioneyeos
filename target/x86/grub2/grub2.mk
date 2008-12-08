@@ -129,6 +129,6 @@ endif
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_GRUB2)),y)
+ifeq ($(BR2_TARGET_GRUB2),y)
 TARGETS+=grub2
 endif

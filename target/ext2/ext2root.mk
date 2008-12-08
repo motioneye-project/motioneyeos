@@ -42,20 +42,20 @@ genext2fs: $(GENEXT2_DIR)/genext2fs
 
 EXT2_OPTS :=
 
-ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2_SQUASH)),y)
+ifeq ($(BR2_TARGET_ROOTFS_EXT2_SQUASH),y)
 EXT2_OPTS += -U
 endif
 
 ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
-EXT2_OPTS += -b $(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS))
+EXT2_OPTS += -b $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)
 endif
 
 ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_INODES)),0)
-EXT2_OPTS += -N $(strip $(BR2_TARGET_ROOTFS_EXT2_INODES))
+EXT2_OPTS += -N $(BR2_TARGET_ROOTFS_EXT2_INODES)
 endif
 
 ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS)),)
-EXT2_OPTS += -m $(strip $(BR2_TARGET_ROOTFS_EXT2_RESBLKS))
+EXT2_OPTS += -m $(BR2_TARGET_ROOTFS_EXT2_RESBLKS)
 endif
 
 EXT2_BASE := $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_OUTPUT))
@@ -155,6 +155,6 @@ ext2root-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_ROOTFS_EXT2)),y)
+ifeq ($(BR2_TARGET_ROOTFS_EXT2),y)
 TARGETS+=ext2root
 endif

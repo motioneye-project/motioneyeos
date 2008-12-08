@@ -86,6 +86,6 @@ at91bootstrap-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_AT91BOOTSTRAP)),y)
+ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
 TARGETS+=at91bootstrap
 endif

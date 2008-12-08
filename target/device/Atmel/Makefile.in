@@ -1,11 +1,11 @@
 # *******************************************************************
 
-ifeq ($(strip $(BR2_TARGET_ATMEL)),y)
+ifeq ($(BR2_TARGET_ATMEL),y)
 ATMEL_PATH:=target/device/Atmel
 
-BOARD_NAME:=$(strip  $(subst ",, $(BR2_BOARD_NAME)))
+BOARD_NAME:=$(strip $(subst ",, $(BR2_BOARD_NAME)))
 #"))
-BOARD_PATH:=$(strip  $(subst ",, $(BR2_BOARD_PATH)))
+BOARD_PATH:=$(strip $(subst ",, $(BR2_BOARD_PATH)))
 #"))
 
 ATMEL_TARGET:=$(ATMEL_PATH)/root
@@ -13,22 +13,22 @@ TARGET_SKELETON:=$(ATMEL_TARGET)/target_skeleton
 TARGET_DEVICE_TABLE:=$(ATMEL_TARGET)/device_table.txt
 TARGET_SKELETON_LINKS:=$(ATMEL_TARGET)/skel.tar.gz
 
-TARGET_ATMEL_COPYTO:=$(strip  $(subst ",, $(BR2_TARGET_ATMEL_COPYTO)))
+TARGET_ATMEL_COPYTO:=$(strip $(subst ",, $(BR2_TARGET_ATMEL_COPYTO)))
 
 # These are set by Config.in
-DOWNLOAD_LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
+DOWNLOAD_LINUX26_VERSION:= $(strip $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
 #"))
 ifeq ($(DOWNLOAD_LINUX26_VERSION),)
 DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
 endif
 
-LINUX26_VERSION:=$(strip  $(subst ",, $(BR2_LINUX26_VERSION)))
+LINUX26_VERSION:=$(strip $(subst ",, $(BR2_LINUX26_VERSION)))
 #"))
 ifeq ($(LINUX26_VERSION),)
 LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
 endif
 
-LINUX26_RC_PATCH:=$(strip  $(subst ",, $(BR2_LINUX26_RC_PATCH)))
+LINUX26_RC_PATCH:=$(strip $(subst ",, $(BR2_LINUX26_RC_PATCH)))
 #"))
 
 # These are set by "new" Config.in
@@ -39,7 +39,7 @@ LINUX26_BUILD_DIR:=$(PROJECT_BUILD_DIR)
 
 #LINUX26_BINLOC=$(LINUX26_FORMAT)
 #LINUX26_BINLOC:=$(BINARIES_DIR)/$(LINUX26_KERNEL)
-ifeq ($(strip $(BR2_avr32)),y)
+ifeq ($(BR2_avr32),y)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/images/$(BR2_PACKAGE_LINUX_FORMAT)
 endif
 
@@ -63,15 +63,15 @@ include target/device/Atmel/*/Makefile.in
 UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
 UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
 
-ifeq ($(strip $(BR2_TARGET_UBOOT_AT91)),y)
+ifeq ($(BR2_TARGET_UBOOT_AT91),y)
 include $(ATMEL_PATH)/u-boot/u-boot.mk
 endif
 
-ifeq ($(strip $(BR2_TARGET_DATAFLASHBOOT)),y)
+ifeq ($(BR2_TARGET_DATAFLASHBOOT),y)
 include $(ATMEL_PATH)/DataFlashBoot/DataflashBoot.mk
 endif
 
-ifeq ($(strip $(BR2_TARGET_AT91BOOTSTRAP)),y)
+ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
 include $(ATMEL_PATH)/at91bootstrap/at91bootstrap.mk
 endif
 

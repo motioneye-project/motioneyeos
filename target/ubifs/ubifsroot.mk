@@ -113,7 +113,7 @@ $(UBIFS_BASE).$(UBIFS_ROOTFS_COMPRESSOR_EXT): $(UBIFS_ROOTFS_COMPRESSOR_PREREQ) 
 	$(UBIFS_ROOTFS_COMPRESSOR) $(UBIFS_BASE) > $(UBIFS_TARGET)
 endif
 
-UBIFS_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_UBIFS_COPYTO)))
+UBIFS_COPYTO := $(subst ",,$(BR2_TARGET_ROOTFS_UBIFS_COPYTO))
 # "))
 
 ubifsroot: $(UBIFS_TARGET)
@@ -135,7 +135,7 @@ ubifsroot-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_ROOTFS_UBIFS)),y)
+ifeq ($(BR2_TARGET_ROOTFS_UBIFS),y)
 TARGETS+=ubifsroot
 endif
 

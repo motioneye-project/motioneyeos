@@ -21,10 +21,10 @@ U_BOOT_INC_CONF_FILE:=$(U_BOOT_DIR)/include/config.h
 endif
 
 U_BOOT_TARGET_TOOLS:=
-ifeq ($(strip $(BR2_TARGET_UBOOT_TOOL_MKIMAGE)),y)
+ifeq ($(BR2_TARGET_UBOOT_TOOL_MKIMAGE),y)
 U_BOOT_TARGET_TOOLS+=$(TARGET_DIR)/usr/bin/mkimage
 endif
-ifeq ($(strip $(BR2_TARGET_UBOOT_TOOL_ENV)),y)
+ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
 U_BOOT_TARGET_TOOLS+=$(TARGET_DIR)/usr/sbin/fw_printenv
 endif
 
@@ -106,7 +106,7 @@ endif
 ifneq ($(strip $(BR2_TARGET_UBOOT_BOOTCMD)),"")
 	$(call insert_define, CONFIG_BOOTCOMMAND, $(BR2_TARGET_UBOOT_BOOTCMD))
 endif
-ifeq ($(strip $(BR2_TARGET_UBOOT_SILENT)),y)
+ifeq ($(BR2_TARGET_UBOOT_SILENT),y)
 	$(call insert_define, CONFIG_SILENT_CONSOLE,)
 endif
 	@echo "#endif /* __BR2_ADDED_CONFIG_H */" >> $(U_BOOT_INC_CONF_FILE)
@@ -154,7 +154,7 @@ u-boot-source: $(DL_DIR)/$(U_BOOT_SOURCE)
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_UBOOT)),y)
+ifeq ($(BR2_TARGET_UBOOT),y)
 TARGETS+=u-boot
 endif
 

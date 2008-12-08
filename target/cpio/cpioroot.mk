@@ -91,6 +91,6 @@ cpioroot-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_ROOTFS_CPIO)),y)
+ifeq ($(BR2_TARGET_ROOTFS_CPIO),y)
 TARGETS+=cpioroot
 endif

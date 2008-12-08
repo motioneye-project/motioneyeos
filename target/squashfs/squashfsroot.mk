@@ -85,6 +85,6 @@ squashfsroot-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_ROOTFS_SQUASHFS)),y)
+ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS),y)
 TARGETS+=squashfsroot
 endif

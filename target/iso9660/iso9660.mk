@@ -50,7 +50,7 @@ ISO9660_BOOT_MENU:=$(subst ",,$(BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU))
 #")
 ISO9660_OPTS:=
 
-ifeq ($(strip $(BR2_TARGET_ROOTFS_ISO9660_SQUASH)),y)
+ifeq ($(BR2_TARGET_ROOTFS_ISO9660_SQUASH),y)
 ISO9660_OPTS+=-U
 endif
 
@@ -90,6 +90,6 @@ iso9660root-dirclean: mkisofs-dirclean
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_ROOTFS_ISO9660)),y)
+ifeq ($(BR2_TARGET_ROOTFS_ISO9660),y)
 TARGETS+=iso9660root
 endif

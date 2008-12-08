@@ -1,4 +1,4 @@
-ifeq ($(strip $(BR2_TARGET_VALKA)),y)
+ifeq ($(BR2_TARGET_VALKA),y)
 VALKA_PATH= target/device/valka
 
 TARGET_SKELETON=$(VALKA_PATH)/target_skeleton

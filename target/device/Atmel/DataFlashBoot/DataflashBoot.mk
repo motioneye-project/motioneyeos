@@ -5,7 +5,8 @@
 #############################################################
 DATAFLASHBOOT_VERSION:=1.05
 DATAFLASHBOOT_NAME:=DataflashBoot-$(DATAFLASHBOOT_VERSION)
-ATMEL_MIRROR:=$(strip  $(subst ",, $(BR2_ATMEL_MIRROR)))
+ATMEL_MIRROR:=$(strip $(subst ",, $(BR2_ATMEL_MIRROR)))
+# "))
 DATAFLASHBOOT_SITE:=$(ATMEL_MIRROR)/Source
 DATAFLASHBOOT_SOURCE:=$(DATAFLASHBOOT_NAME).tar.bz2
 DATAFLASHBOOT_DIR:=$(PROJECT_BUILD_DIR)/$(DATAFLASHBOOT_NAME)
@@ -42,6 +43,6 @@ endif
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_TARGET_DATAFLASHBOOT)),y)
+ifeq ($(BR2_TARGET_DATAFLASHBOOT),y)
 TARGETS+=dataflash
 endif
