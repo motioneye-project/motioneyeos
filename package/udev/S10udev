@@ -58,6 +58,9 @@ case "$1" in
 	exit 1
 
         mkdir $udev_root/pts $udev_root/shm
+        mknod -m 0666 /dev/null c 1 3
+        mknod -m 0666 /dev/zero c 1 5
+        mknod -m 0600 /dev/console c 5 1
 
         # populate /dev (normally)
         echo -n "Populating $udev_root using udev: "
