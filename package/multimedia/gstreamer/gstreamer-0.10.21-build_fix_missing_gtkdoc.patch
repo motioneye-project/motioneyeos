@@ -1,0 +1,43 @@
+Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
+Date: 2008-10-15
+Initial Package Version: 0.10.21
+Upstream Status: Not yet known, just raised as gnome bug 556348.
+Origin: Self
+Description: Allows 'make install' to succeed if gtkdoc-rebase is not present.
+
+diff -Naur gstreamer-0.10.21.orig/common/gtk-doc.mak gstreamer-0.10.21/common/gtk-doc.mak
+--- gstreamer-0.10.21.orig/common/gtk-doc.mak	2008-09-10 10:13:16.000000000 +0100
++++ gstreamer-0.10.21/common/gtk-doc.mak	2008-10-15 18:12:18.000000000 +0100
+@@ -201,7 +201,7 @@
+ 	           $(DESTDIR)$(TARGET_DIR)/$(DOC_MODULE)-@GST_MAJORMINOR@.devhelp2; \
+ 	  fi; \
+ 	  which gtkdoc-rebase >/dev/null && \
+-	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) ; \
++	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) || true ; \
+ 	fi) 
+ uninstall-local:
+ 	(installfiles=`echo ./html/*.html`; \
+diff -Naur gstreamer-0.10.21.orig/docs/gst/Makefile.in gstreamer-0.10.21/docs/gst/Makefile.in
+--- gstreamer-0.10.21.orig/docs/gst/Makefile.in	2008-10-02 22:54:18.000000000 +0100
++++ gstreamer-0.10.21/docs/gst/Makefile.in	2008-10-15 18:12:45.000000000 +0100
+@@ -809,7 +809,7 @@
+ 	           $(DESTDIR)$(TARGET_DIR)/$(DOC_MODULE)-@GST_MAJORMINOR@.devhelp2; \
+ 	  fi; \
+ 	  which gtkdoc-rebase >/dev/null && \
+-	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) ; \
++	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) || true ; \
+ 	fi) 
+ uninstall-local:
+ 	(installfiles=`echo ./html/*.html`; \
+diff -Naur gstreamer-0.10.21.orig/docs/libs/Makefile.in gstreamer-0.10.21/docs/libs/Makefile.in
+--- gstreamer-0.10.21.orig/docs/libs/Makefile.in	2008-10-02 22:54:18.000000000 +0100
++++ gstreamer-0.10.21/docs/libs/Makefile.in	2008-10-15 18:12:18.000000000 +0100
+@@ -811,7 +811,7 @@
+ 	           $(DESTDIR)$(TARGET_DIR)/$(DOC_MODULE)-@GST_MAJORMINOR@.devhelp2; \
+ 	  fi; \
+ 	  which gtkdoc-rebase >/dev/null && \
+-	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) ; \
++	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) || true ; \
+ 	fi) 
+ uninstall-local:
+ 	(installfiles=`echo ./html/*.html`; \
