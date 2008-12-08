@@ -115,6 +115,6 @@ bzip2-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_BZIP2)),y)
+ifeq ($(BR2_PACKAGE_BZIP2),y)
 TARGETS+=bzip2
 endif

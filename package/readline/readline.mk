@@ -75,7 +75,7 @@ $(TARGET_DIR)/$(READLINE_TARGET_SHARED_BINARY): $(READLINE_DIR)/$(READLINE_BINAR
 		-C $(READLINE_DIR) install-shared uninstall-doc
 	chmod 775 $(TARGET_DIR)/usr/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/usr/lib/libhistory.so.$(READLINE_VERSION)
 	$(STRIPCMD) $(TARGET_DIR)/usr/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/usr/lib/libhistory.so.$(READLINE_VERSION)
-ifneq ($(strip $(BR2_PACKAGE_READLINE_HEADERS)),y)
+ifneq ($(BR2_PACKAGE_READLINE_HEADERS),y)
 	rm -rf $(TARGET_DIR)/usr/include/readline
 endif
 
@@ -93,9 +93,9 @@ readline-target: readline $(TARGET_DIR)/$(READLINE_TARGET_SHARED_BINARY)
 readline-target-clean:
 	-$(MAKE) DESTDIR=$(TARGET_DIR) -C $(READLINE_DIR) uninstall
 
-ifeq ($(strip $(BR2_READLINE)),y)
+ifeq ($(BR2_READLINE),y)
 TARGETS+=readline
 endif
-ifeq ($(strip $(BR2_PACKAGE_READLINE_TARGET)),y)
+ifeq ($(BR2_PACKAGE_READLINE_TARGET),y)
 TARGETS+=readline-target
 endif

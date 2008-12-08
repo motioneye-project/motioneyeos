@@ -69,6 +69,6 @@ libcgi-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBCGI)),y)
+ifeq ($(BR2_PACKAGE_LIBCGI),y)
 TARGETS+=libcgi
 endif

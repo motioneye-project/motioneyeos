@@ -77,6 +77,6 @@ thttpd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_THTTPD)),y)
+ifeq ($(BR2_PACKAGE_THTTPD),y)
 TARGETS+=thttpd
 endif

@@ -76,6 +76,6 @@ libusb-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBUSB)),y)
+ifeq ($(BR2_PACKAGE_LIBUSB),y)
 TARGETS+=libusb
 endif

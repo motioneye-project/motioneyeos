@@ -81,6 +81,6 @@ boa-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_BOA)),y)
+ifeq ($(BR2_PACKAGE_BOA),y)
 TARGETS+=boa
 endif

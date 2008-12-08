@@ -10,28 +10,28 @@ NCFTP_DIR:=$(BUILD_DIR)/ncftp-$(NCFTP_VERSION)
 
 NCFTP_TARGET_BINS:=ncftp
 
-ifeq ($(strip $(BR2_PACKAGE_NCFTP_GET)),y)
+ifeq ($(BR2_PACKAGE_NCFTP_GET),y)
 NCFTP_TARGET_BINS+=ncftpget
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_NCFTP_PUT)),y)
+ifeq ($(BR2_PACKAGE_NCFTP_PUT),y)
 NCFTP_TARGET_BINS+=ncftpput
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_NCFTP_LS)),y)
+ifeq ($(BR2_PACKAGE_NCFTP_LS),y)
 NCFTP_TARGET_BINS+=ncftpls
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_NCFTP_BATCH)),y)
+ifeq ($(BR2_PACKAGE_NCFTP_BATCH),y)
 NCFTP_TARGET_BINS+=ncftpbatch
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_NCFTP_SPOOLER)),y)
+ifeq ($(BR2_PACKAGE_NCFTP_SPOOLER),y)
 #Someone needs to figure out what to do...
 NCFTP_TARGET_BINS+=
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_NCFTP_BOOKMARKS)),y)
+ifeq ($(BR2_PACKAGE_NCFTP_BOOKMARKS),y)
 NCFTP_TARGET_BINS+=ncftpbookmarks
 endif
 
@@ -78,6 +78,6 @@ ncftp-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_NCFTP)),y)
+ifeq ($(BR2_PACKAGE_NCFTP),y)
 TARGETS+=ncftp
 endif

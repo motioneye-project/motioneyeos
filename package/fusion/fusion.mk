@@ -35,7 +35,7 @@ linux-fusion-clean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LINUX_FUSION)),y)
+ifeq ($(BR2_PACKAGE_LINUX_FUSION),y)
 TARGETS+=linux-fusion
 endif
 

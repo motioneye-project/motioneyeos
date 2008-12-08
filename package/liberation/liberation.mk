@@ -42,6 +42,6 @@ liberation-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBERATION)),y)
+ifeq ($(BR2_PACKAGE_LIBERATION),y)
 TARGETS+=liberation
 endif

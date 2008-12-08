@@ -77,6 +77,6 @@ setserial-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SETSERIAL)),y)
+ifeq ($(BR2_PACKAGE_SETSERIAL),y)
 TARGETS+=setserial
 endif

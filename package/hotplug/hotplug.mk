@@ -40,6 +40,6 @@ hotplug-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_HOTPLUG)),y)
+ifeq ($(BR2_PACKAGE_HOTPLUG),y)
 TARGETS+=hotplug
 endif

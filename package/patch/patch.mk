@@ -65,6 +65,6 @@ patch-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_PATCH)),y)
+ifeq ($(BR2_PACKAGE_PATCH),y)
 TARGETS+=patch
 endif

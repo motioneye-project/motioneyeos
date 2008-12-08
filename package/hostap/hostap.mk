@@ -67,6 +67,6 @@ hostap-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_HOSTAP)),y)
+ifeq ($(BR2_PACKAGE_HOSTAP),y)
 TARGETS+=hostap
 endif

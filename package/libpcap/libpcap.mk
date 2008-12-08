@@ -80,6 +80,6 @@ libpcap-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBPCAP)),y)
+ifeq ($(BR2_PACKAGE_LIBPCAP),y)
 TARGETS+=libpcap
 endif

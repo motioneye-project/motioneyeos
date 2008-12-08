@@ -65,6 +65,6 @@ lsof-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LSOF)),y)
+ifeq ($(BR2_PACKAGE_LSOF),y)
 TARGETS+=lsof
 endif

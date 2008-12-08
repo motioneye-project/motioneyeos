@@ -94,6 +94,6 @@ festvox: $(FESTVOX_STATUS_DIR)/.installed
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_FESTIVAL)),y)
+ifeq ($(BR2_PACKAGE_FESTIVAL),y)
 TARGETS+=festvox
 endif

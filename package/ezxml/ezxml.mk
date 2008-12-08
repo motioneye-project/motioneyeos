@@ -42,6 +42,6 @@ ezxml-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_EZXML)),y)
+ifeq ($(BR2_PACKAGE_EZXML),y)
 TARGETS+=ezxml
 endif

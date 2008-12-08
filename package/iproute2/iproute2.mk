@@ -54,6 +54,6 @@ iproute2-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_IPROUTE2)),y)
+ifeq ($(BR2_PACKAGE_IPROUTE2),y)
 TARGETS+=iproute2
 endif

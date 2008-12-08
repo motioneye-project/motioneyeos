@@ -42,7 +42,7 @@ $(MODULE_INIT_TOOLS_DIR)/$(MODULE_INIT_TOOLS_BINARY): $(MODULE_INIT_TOOLS_DIR)/.
 	$(MAKE) CC=$(TARGET_CC) -C $(MODULE_INIT_TOOLS_DIR)
 	touch -c $(MODULE_INIT_TOOLS_DIR)/$(MODULE_INIT_TOOLS_BINARY)
 
-ifeq ($(strip $(BR2_PACKAGE_MODUTILS)),y)
+ifeq ($(BR2_PACKAGE_MODUTILS),y)
 $(MODULE_INIT_TOOLS_TARGET_BINARY): \
 	$(MODULE_INIT_TOOLS_DIR)/$(MODULE_INIT_TOOLS_BINARY) \
 	modutils
@@ -50,7 +50,7 @@ else
 $(MODULE_INIT_TOOLS_TARGET_BINARY): \
 	$(MODULE_INIT_TOOLS_DIR)/$(MODULE_INIT_TOOLS_BINARY)
 endif
-ifeq ($(strip $(BR2_PACKAGE_MODUTILS)),y)
+ifeq ($(BR2_PACKAGE_MODUTILS),y)
 	$(MAKE) prefix=$(TARGET_DIR) -C $(MODULE_INIT_TOOLS_DIR) moveold
 endif
 	STRIPPROG='$(STRIPPROG)' \
@@ -109,7 +109,7 @@ cross-depmod26-clean:
 cross-depmod26-dirclean:
 	rm -rf $(MODULE_INIT_TOOLS_DIR2)
 
-ifeq ($(strip $(BR2_PACKAGE_LINUX)),y)
+ifeq ($(BR2_PACKAGE_LINUX),y)
 HOST_SOURCE+=module-init-tools-source
 endif
 
@@ -118,6 +118,6 @@ endif
 ## Toplevel Makefile options
 #
 ##############################################################
-ifeq ($(strip $(BR2_PACKAGE_MODULE_INIT_TOOLS)),y)
+ifeq ($(BR2_PACKAGE_MODULE_INIT_TOOLS),y)
 TARGETS+=module-init-tools
 endif

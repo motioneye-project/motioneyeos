@@ -65,6 +65,6 @@ raidtools2-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_RAIDTOOLS)),y)
+ifeq ($(BR2_PACKAGE_RAIDTOOLS),y)
 TARGETS+=raidtools
 endif

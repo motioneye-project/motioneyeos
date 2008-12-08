@@ -11,7 +11,7 @@ SED_DIR1:=$(TOOL_BUILD_DIR)/sed-$(SED_VERSION)
 SED_DIR2:=$(BUILD_DIR)/sed-$(SED_VERSION)
 SED_BINARY:=sed/sed
 SED_TARGET_BINARY:=bin/sed
-ifeq ($(strip $(BR2_LARGEFILE)),y)
+ifeq ($(BR2_LARGEFILE),y)
 SED_CPPFLAGS=-D_FILE_OFFSET_BITS=64
 endif
 #HOST_SED_DIR:=$(STAGING_DIR)
@@ -174,6 +174,6 @@ sed-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SED)),y)
+ifeq ($(BR2_PACKAGE_SED),y)
 TARGETS+=sed
 endif

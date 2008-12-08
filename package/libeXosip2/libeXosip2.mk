@@ -103,6 +103,6 @@ libeXosip2-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBEXOSIP2)),y)
+ifeq ($(BR2_PACKAGE_LIBEXOSIP2),y)
 TARGETS+=libeXosip2
 endif

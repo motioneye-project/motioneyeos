@@ -76,6 +76,6 @@ ntpd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_OPENNTPD)),y)
+ifeq ($(BR2_PACKAGE_OPENNTPD),y)
 TARGETS+=ntpd
 endif

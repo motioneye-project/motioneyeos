@@ -73,6 +73,6 @@ smartmontools-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SMARTMONTOOLS)),y)
+ifeq ($(BR2_PACKAGE_SMARTMONTOOLS),y)
 TARGETS+=smartmontools
 endif

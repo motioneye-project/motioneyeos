@@ -104,6 +104,6 @@ tslib-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_TSLIB)),y)
+ifeq ($(BR2_PACKAGE_TSLIB),y)
 TARGETS+=tslib
 endif

@@ -69,6 +69,6 @@ vsftpd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_VSFTPD)),y)
+ifeq ($(BR2_PACKAGE_VSFTPD),y)
 TARGETS+=vsftpd
 endif

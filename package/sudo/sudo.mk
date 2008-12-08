@@ -77,11 +77,11 @@ sudo-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SUDO)),y)
+ifeq ($(BR2_PACKAGE_SUDO),y)
 TARGETS+=sudo
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_LIBPAM)),y)
+ifeq ($(BR2_PACKAGE_LIBPAM),y)
 SUDO_EXTRA_CONFIG=--enable-pam
 sudo: libpam
 endif

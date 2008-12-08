@@ -56,6 +56,6 @@ mii-diag-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MIIDIAG)),y)
+ifeq ($(BR2_PACKAGE_MIIDIAG),y)
 TARGETS+=mii-diag
 endif

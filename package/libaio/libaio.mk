@@ -45,6 +45,6 @@ libaio-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBAIO)),y)
+ifeq ($(BR2_PACKAGE_LIBAIO),y)
 TARGETS+=libaio
 endif

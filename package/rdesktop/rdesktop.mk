@@ -53,6 +53,6 @@ rdesktop-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_RDESKTOP)),y)
+ifeq ($(BR2_PACKAGE_RDESKTOP),y)
 TARGETS+=rdesktop
 endif

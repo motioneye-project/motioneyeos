@@ -25,7 +25,7 @@ ifneq ($(BR2_LARGEFILE),y)
 DNSMASQ_COPTS+=-DNO_LARGEFILE
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+ifeq ($(BR2_PACKAGE_DBUS),y)
 DNSMASQ_DBUS:=$(TARGET_DIR)/usr/bin/dbus-daemon
 else
 DNSMASQ_DBUS:=
@@ -40,7 +40,7 @@ $(DNSMASQ_DIR)/.source: $(DL_DIR)/$(DNSMASQ_SOURCE)
 	touch $@
 
 $(DNSMASQ_DIR)/src/$(DNSMASQ_BINARY): $(DNSMASQ_DIR)/.source $(DNSMASQ_DBUS)
-ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+ifeq ($(BR2_PACKAGE_DBUS),y)
 	$(SED) 's^.*#define HAVE_DBUS.*^#define HAVE_DBUS^' \
 		$(DNSMASQ_DIR)/src/config.h
 else
@@ -79,6 +79,6 @@ dnsmasq-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DNSMASQ)),y)
+ifeq ($(BR2_PACKAGE_DNSMASQ),y)
 TARGETS+=dnsmasq
 endif

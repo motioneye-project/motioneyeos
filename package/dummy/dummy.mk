@@ -88,6 +88,6 @@ dummy-dirclean:
 #
 #############################################################
 # This is how the dummy package is added to the list of rules to build.
-ifeq ($(strip $(BR2_PACKAGE_DUMMY)),y)
+ifeq ($(BR2_PACKAGE_DUMMY),y)
 TARGETS+=dummy
 endif

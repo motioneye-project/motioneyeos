@@ -88,6 +88,6 @@ pppd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_PPPD)),y)
+ifeq ($(BR2_PACKAGE_PPPD),y)
 TARGETS+=pppd
 endif

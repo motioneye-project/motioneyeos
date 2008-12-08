@@ -37,6 +37,6 @@ devmem2-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DEVMEM2)),y)
+ifeq ($(BR2_PACKAGE_DEVMEM2),y)
 TARGETS+=devmem2
 endif

@@ -96,6 +96,6 @@ xfsprogs-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_XFSPROGS)),y)
+ifeq ($(BR2_PACKAGE_XFSPROGS),y)
 TARGETS+=xfsprogs
 endif

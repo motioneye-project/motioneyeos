@@ -83,6 +83,6 @@ valgrind-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_VALGRIND)),y)
+ifeq ($(BR2_PACKAGE_VALGRIND),y)
 TARGETS+=valgrind
 endif

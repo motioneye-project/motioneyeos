@@ -54,6 +54,6 @@ ed-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_ED)),y)
+ifeq ($(BR2_PACKAGE_ED),y)
 TARGETS+=ed
 endif

@@ -61,6 +61,6 @@ openswan-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_OPENSWAN)),y)
+ifeq ($(BR2_PACKAGE_OPENSWAN),y)
 TARGETS+=openswan
 endif

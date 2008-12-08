@@ -17,7 +17,7 @@ KEXEC_DEPS_y:=
 
 KEXEC_DEPS_$(KEXEC_PACKAGE_KEXEC) += zlib
 
-ifeq ($(strip $(BR2_PACKAGE_KEXEC_ZLIB)),y)
+ifeq ($(BR2_PACKAGE_KEXEC_ZLIB),y)
 KEXEC_CONFIG_OPTS += --with-zlib
 else
 KEXEC_CONFIG_OPTS += --without-zlib
@@ -77,6 +77,6 @@ kexec-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_KEXEC)),y)
+ifeq ($(BR2_PACKAGE_KEXEC),y)
 TARGETS+=kexec
 endif

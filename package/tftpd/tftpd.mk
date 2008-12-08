@@ -76,6 +76,6 @@ tftpd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_TFTPD)),y)
+ifeq ($(BR2_PACKAGE_TFTPD),y)
 TARGETS+=tftpd
 endif

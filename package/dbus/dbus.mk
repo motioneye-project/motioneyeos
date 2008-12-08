@@ -11,7 +11,7 @@ DBUS_CAT:=$(ZCAT)
 DBUS_BINARY:=bus/dbus-daemon
 DBUS_TARGET_BINARY:=usr/bin/dbus-daemon
 
-ifeq ($(strip $(BR2_DBUS_EXPAT)),y)
+ifeq ($(BR2_DBUS_EXPAT),y)
 DBUS_XML:=expat
 # depend on the exact library file instead of expat so dbus isn't always
 # considered out-of-date
@@ -111,6 +111,6 @@ dbus-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+ifeq ($(BR2_PACKAGE_DBUS),y)
 TARGETS+=dbus
 endif

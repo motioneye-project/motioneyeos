@@ -121,15 +121,15 @@ dhcp-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-#ifeq ($(strip $(BR2_PACKAGE_ISC_DHCP)),y)
+#ifeq ($(BR2_PACKAGE_ISC_DHCP),y)
 #TARGETS+=dhcp
 #endif
-ifeq ($(strip $(BR2_PACKAGE_DHCP_SERVER)),y)
+ifeq ($(BR2_PACKAGE_DHCP_SERVER),y)
 TARGETS+=dhcp_server
 endif
-ifeq ($(strip $(BR2_PACKAGE_DHCP_RELAY)),y)
+ifeq ($(BR2_PACKAGE_DHCP_RELAY),y)
 TARGETS+=dhcp_relay
 endif
-ifeq ($(strip $(BR2_PACKAGE_DHCP_CLIENT)),y)
+ifeq ($(BR2_PACKAGE_DHCP_CLIENT),y)
 TARGETS+=dhcp_client
 endif

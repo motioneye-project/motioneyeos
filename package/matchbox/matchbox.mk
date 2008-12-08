@@ -160,8 +160,8 @@ MATCHBOX_WM_OPTS:=
 MATCHBOX_WM_DEPS:=xlib_libXdamage
 MATCHBOX_WM_DEPS+=xlib_libXcursor
 
-ifeq ($(strip $(BR2_PACKAGE_X11R7_LIBXCOMPOSITE)),y)
-ifeq ($(strip $(BR2_PACKAGE_X11R7_LIBXPM)),y)
+ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
+ifeq ($(BR2_PACKAGE_X11R7_LIBXPM),y)
   MATCHBOX_WM_OPTS+=--enable-composite
   MATCHBOX_WM_DEPS+=xlib_libXcomposite
   MATCHBOX_WM_DEPS+=xlib_libXpm
@@ -173,7 +173,7 @@ MATCHBOX_SNOTIFY_OPTS:=
 MATCHBOX_SNOTIFY_DEPS:=
 MATCHBOX_PANEL_DEPS:=
 
-ifeq ($(strip $(BR2_PACKAGE_MATCHBOX_SNOTIFY)),y)
+ifeq ($(BR2_PACKAGE_MATCHBOX_SNOTIFY),y)
   MATCHBOX_SNOTIFY_OPTS+=--enable-startup-notification
   MATCHBOX_SNOTIFY_DEPS+=xlib_libSM
   MATCHBOX_SNOTIFY_DEPS+=$(TARGET_DIR)/usr/lib/$(MATCHBOX_SNOTIFY_BIN)
@@ -182,28 +182,28 @@ else
   MATCHBOX_SNOTIFY_OPTS+=--disable-startup-notification
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_JPEG)),y)
+ifeq ($(BR2_PACKAGE_JPEG),y)
   MATCHBOX_LIB_OPTS+=--enable-jpeg
   MATCHBOX_LIB_DEPS+=jpeg
 else
   MATCHBOX_LIB_OPTS+=--disable-jpeg
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_LIBPNG)),y)
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
   MATCHBOX_LIB_OPTS+=--enable-png
   MATCHBOX_LIB_DEPS+=libpng
 else
   MATCHBOX_LIB_OPTS+=--disable-png
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_PANGO)),y)
+ifeq ($(BR2_PACKAGE_PANGO),y)
   MATCHBOX_LIB_OPTS+=--enable-pango
   MATCHBOX_LIB_DEPS+=pango
 else
   MATCHBOX_LIB_OPTS+=--disable-pango
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_X11R7_LIBXFT2)),y)
+ifeq ($(BR2_PACKAGE_X11R7_LIBXFT2),y)
   MATCHBOX_LIB_OPTS+=--enable-xft
   MATCHBOX_LIB_DEPS+=xlib_libXft2
   #MATCHBOX_WM_OPTS+=--enable-standalone-xft
@@ -662,18 +662,18 @@ matchbox-keyboard-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MATCHBOX)),y)
+ifeq ($(BR2_PACKAGE_MATCHBOX),y)
 TARGETS+=matchbox
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_MATCHBOX_PANEL)),y)
+ifeq ($(BR2_PACKAGE_MATCHBOX_PANEL),y)
 TARGETS+=matchbox-panel
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_MATCHBOX_DESKTOP)),y)
+ifeq ($(BR2_PACKAGE_MATCHBOX_DESKTOP),y)
 TARGETS+=matchbox-desktop
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_MATCHBOX_KEYBOARD)),y)
+ifeq ($(BR2_PACKAGE_MATCHBOX_KEYBOARD),y)
 TARGETS+=matchbox-keyboard
 endif

@@ -56,6 +56,6 @@ microwin-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MICROWIN)),y)
+ifeq ($(BR2_PACKAGE_MICROWIN),y)
 TARGETS+=microwin
 endif

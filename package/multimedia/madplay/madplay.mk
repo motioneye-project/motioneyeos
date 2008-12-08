@@ -13,7 +13,7 @@ MADPLAY_TARGET_BIN:=usr/bin/$(MADPLAY_BIN)
 
 # Check if ALSA is built, then we should configure after alsa-lib so
 # ./configure can find alsa-lib.
-ifeq ($(strip $(BR2_PACKAGE_MADPLAY_ALSA)),y)
+ifeq ($(BR2_PACKAGE_MADPLAY_ALSA),y)
 MADPLAY_USE_ALSA:=--with-alsa
 MADPLAY_ALSA_DEP:=alsa-lib
 endif
@@ -68,6 +68,6 @@ madplay-source: $(DL_DIR)/$(MADPLAY_SOURCE)
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MADPLAY)),y)
+ifeq ($(BR2_PACKAGE_MADPLAY),y)
 TARGETS+=madplay
 endif

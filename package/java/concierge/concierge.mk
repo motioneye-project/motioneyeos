@@ -35,6 +35,6 @@ concierge: $(TARGET_DIR)/usr/lib/concierge $(TARGET_DIR)/usr/bin/concierge
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_CONCIERGE)),y)
+ifeq ($(BR2_PACKAGE_CONCIERGE),y)
 TARGETS+=concierge
 endif

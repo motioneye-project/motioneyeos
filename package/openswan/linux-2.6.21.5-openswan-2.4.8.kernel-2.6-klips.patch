@@ -9785,7 +9785,7 @@ packaging/utils/kernelpatch 2.6
 +asm-obj-$(CONFIG_MWINCHIP3D)	+= match686.o
 +
 +obj-y += $(asm-obj-y)
-+ifneq ($(strip $(asm-obj-y)),)
++ifneq ($(asm-obj-y),)
 +  EXTRA_CFLAGS += -DASMV
 +endif
 +
@@ -13875,12 +13875,12 @@ packaging/utils/kernelpatch 2.6
 +++ linux/net/ipsec/alg/Makefile     Mon Feb  9 13:51:03 2004
 @@ -0,0 +1,112 @@
 +# Makefile,v 1.1.2.1 2003/11/21 18:12:23 jjo Exp
-+ifeq ($(strip $(KLIPSMODULE)),)
++ifeq ($(KLIPSMODULE),)
 +FREESWANSRCDIR=.
 +else
 +FREESWANSRCDIR=../../../..
 +endif
-+ifeq ($(strip $(KLIPS_TOP)),)
++ifeq ($(KLIPS_TOP),)
 +KLIPS_TOP=../../..
 +override EXTRA_CFLAGS += -I$(KLIPS_TOP)/include
 +endif

@@ -69,6 +69,6 @@ udhcp-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_UDHCP)),y)
+ifeq ($(BR2_PACKAGE_UDHCP),y)
 TARGETS+=udhcp
 endif

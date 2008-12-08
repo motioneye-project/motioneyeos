@@ -59,6 +59,6 @@ xerces-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_XERCES)),y)
+ifeq ($(BR2_PACKAGE_XERCES),y)
 TARGETS+=xerces
 endif

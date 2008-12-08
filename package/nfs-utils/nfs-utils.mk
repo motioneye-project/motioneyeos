@@ -91,6 +91,6 @@ nfs-utils-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_NFS_UTILS)),y)
+ifeq ($(BR2_PACKAGE_NFS_UTILS),y)
 TARGETS+=nfs-utils
 endif

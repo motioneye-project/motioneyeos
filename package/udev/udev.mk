@@ -52,7 +52,7 @@ $(TARGET_DIR)/$(UDEV_TARGET_BINARY): $(UDEV_DIR)/$(UDEV_BINARY)
 	( grep udev_root $(TARGET_DIR)/etc/udev/udev.conf > /dev/null 2>&1 || echo 'udev_root=/dev' >> $(TARGET_DIR)/etc/udev/udev.conf )
 	install -m 0755 -D $(UDEV_DIR)/udevstart $(TARGET_DIR)/sbin/udevstart
 	rm -rf $(TARGET_DIR)/usr/share/man
-ifneq ($(strip $(BR2_PACKAGE_UDEV_UTILS)),y)
+ifneq ($(BR2_PACKAGE_UDEV_UTILS),y)
 	rm -f $(TARGET_DIR)/usr/sbin/udevmonitor
 	rm -f $(TARGET_DIR)/usr/bin/udevinfo
 	rm -f $(TARGET_DIR)/usr/bin/udevtest
@@ -76,7 +76,7 @@ udev-dirclean: $(UDEV_DIRCLEAN_DEPS)
 	rm -rf $(UDEV_DIR)
 
 #####################################################################
-ifeq ($(strip $(BR2_PACKAGE_UDEV_VOLUME_ID)),y)
+ifeq ($(BR2_PACKAGE_UDEV_VOLUME_ID),y)
 .PHONY: udev-volume_id udev-volume_id-clean udev-volume_id-dirclean
 
 $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION):
@@ -120,7 +120,7 @@ UDEV_DIRCLEAN_DEPS+=udev-volume_id-dirclean
 endif
 
 #####################################################################
-ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
+ifeq ($(BR2_PACKAGE_UDEV_SCSI_ID),y)
 .PHONY: udev-scsi_id udev-scsi_id-clean udev-scsi_id-dirclean
 
 $(TARGET_DIR)/lib/udev/scsi_id: $(STAGING_DIR)/usr/lib/libvolume_id.so.$(UDEV_VOLUME_ID_VERSION)
@@ -156,14 +156,14 @@ endif
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_UDEV)),y)
+ifeq ($(BR2_PACKAGE_UDEV),y)
 TARGETS+=udev
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_UDEV_VOLUME_ID)),y)
+ifeq ($(BR2_PACKAGE_UDEV_VOLUME_ID),y)
 TARGETS+=udev-volume_id
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_UDEV_SCSI_ID)),y)
+ifeq ($(BR2_PACKAGE_UDEV_SCSI_ID),y)
 TARGETS+=udev-scsi_id
 endif

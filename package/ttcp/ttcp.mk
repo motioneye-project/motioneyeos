@@ -41,6 +41,6 @@ ttcp-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_TTCP)),y)
+ifeq ($(BR2_PACKAGE_TTCP),y)
 TARGETS+=ttcp
 endif

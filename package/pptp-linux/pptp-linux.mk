@@ -73,6 +73,6 @@ pptp-linux-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_PPTP_LINUX)),y)
+ifeq ($(BR2_PACKAGE_PPTP_LINUX),y)
 TARGETS+=pptp-linux
 endif

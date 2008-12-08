@@ -77,7 +77,7 @@ mesa3d-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MESA3D)),y)
+ifeq ($(BR2_PACKAGE_MESA3D),y)
 TARGETS+=mesa3d
 endif
 # :mode=makefile:

@@ -68,6 +68,6 @@ dash-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DASH)),y)
+ifeq ($(BR2_PACKAGE_DASH),y)
 TARGETS+=dash
 endif

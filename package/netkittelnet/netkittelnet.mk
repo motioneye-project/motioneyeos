@@ -63,6 +63,6 @@ netkittelnet-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_NETKITTELNET)),y)
+ifeq ($(BR2_PACKAGE_NETKITTELNET),y)
 TARGETS+=netkittelnet
 endif

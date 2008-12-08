@@ -42,6 +42,6 @@ usbmount-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_USBMOUNT)),y)
+ifeq ($(BR2_PACKAGE_USBMOUNT),y)
 TARGETS+=usbmount
 endif

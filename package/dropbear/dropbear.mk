@@ -76,6 +76,6 @@ dropbear-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DROPBEAR)),y)
+ifeq ($(BR2_PACKAGE_DROPBEAR),y)
 TARGETS+=dropbear
 endif

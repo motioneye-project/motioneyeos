@@ -55,6 +55,6 @@ lm-sensors-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LM_SENSORS)),y)
+ifeq ($(BR2_PACKAGE_LM_SENSORS),y)
 TARGETS+=lm-sensors
 endif

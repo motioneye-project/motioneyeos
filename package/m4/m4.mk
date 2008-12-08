@@ -132,6 +132,6 @@ host-m4-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_M4)),y)
+ifeq ($(BR2_PACKAGE_M4),y)
 TARGETS+=m4
 endif

@@ -53,6 +53,6 @@ dillo-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DILLO)),y)
+ifeq ($(BR2_PACKAGE_DILLO),y)
 TARGETS+=dillo
 endif

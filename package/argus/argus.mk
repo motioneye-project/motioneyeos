@@ -64,6 +64,6 @@ argus-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_ARGUS)),y)
+ifeq ($(BR2_PACKAGE_ARGUS),y)
 TARGETS+=argus
 endif

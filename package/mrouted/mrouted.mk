@@ -48,6 +48,6 @@ mrouted-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MROUTED)),y)
+ifeq ($(BR2_PACKAGE_MROUTED),y)
 TARGETS+=mrouted
 endif

@@ -87,10 +87,10 @@ modutils-target-clean:
 # build modutils for use on the host system
 #
 #############################################################
-ifeq ($(strip $(BR2_mips)),y)
+ifeq ($(BR2_mips),y)
 DEPMOD_EXTRA_STUFF=CFLAGS=-D__MIPSEB__
 endif
-ifeq ($(strip $(BR2_mipsel)),y)
+ifeq ($(BR2_mipsel),y)
 DEPMOD_EXTRA_STUFF=CFLAGS=-D__MIPSEL__
 endif
 
@@ -138,6 +138,6 @@ cross-depmod-dirclean:
 ## Toplevel Makefile options
 #
 ##############################################################
-ifeq ($(strip $(BR2_PACKAGE_MODUTILS)),y)
+ifeq ($(BR2_PACKAGE_MODUTILS),y)
 TARGETS+=modutils
 endif

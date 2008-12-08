@@ -133,6 +133,6 @@ host-autoconf-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_AUTOCONF)),y)
+ifeq ($(BR2_PACKAGE_AUTOCONF),y)
 TARGETS+=autoconf
 endif

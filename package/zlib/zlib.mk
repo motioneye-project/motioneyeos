@@ -78,9 +78,9 @@ zlib-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_ZLIB)),y)
+ifeq ($(BR2_PACKAGE_ZLIB),y)
 TARGETS+=zlib
 endif
-ifeq ($(strip $(BR2_PACKAGE_ZLIB_TARGET_HEADERS)),y)
+ifeq ($(BR2_PACKAGE_ZLIB_TARGET_HEADERS),y)
 TARGETS+=zlib-headers
 endif

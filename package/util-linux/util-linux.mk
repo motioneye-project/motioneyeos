@@ -86,6 +86,6 @@ util-linux-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_UTIL-LINUX)),y)
+ifeq ($(BR2_PACKAGE_UTIL-LINUX),y)
 TARGETS+=util-linux
 endif

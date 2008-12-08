@@ -17,7 +17,7 @@ OPENVPN_TARGET_BINARY:=usr/sbin/openvpn
 #
 # Select thread model.
 #
-ifeq ($(strip $(BR2_PTHREADS_NATIVE)),y)
+ifeq ($(BR2_PTHREADS_NATIVE),y)
 THREAD_MODEL="--enable-threads=posix"
 else
 THREAD_MODEL=--enable-pthread
@@ -81,6 +81,6 @@ openvpn-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_OPENVPN)),y)
+ifeq ($(BR2_PACKAGE_OPENVPN),y)
 TARGETS+=openvpn
 endif

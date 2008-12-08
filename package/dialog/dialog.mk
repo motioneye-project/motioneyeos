@@ -59,6 +59,6 @@ dialog-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DIALOG)),y)
+ifeq ($(BR2_PACKAGE_DIALOG),y)
 TARGETS+=dialog
 endif

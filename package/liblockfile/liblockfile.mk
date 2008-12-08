@@ -70,6 +70,6 @@ liblockfile-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBLOCKFILE)),y)
+ifeq ($(BR2_PACKAGE_LIBLOCKFILE),y)
 TARGETS+=liblockfile
 endif

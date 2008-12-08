@@ -127,10 +127,10 @@ fakeroot-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_FAKEROOT)),y)
+ifeq ($(BR2_PACKAGE_FAKEROOT),y)
 TARGETS+=fakeroot
 endif
 
-ifeq ($(strip $(BR2_HOST_FAKEROOT)),y)
+ifeq ($(BR2_HOST_FAKEROOT),y)
 HOST_SOURCE+=fakeroot-source
 endif

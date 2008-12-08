@@ -155,6 +155,6 @@ sandbox-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_PORTAGE)),y)
+ifeq ($(BR2_PACKAGE_PORTAGE),y)
 TARGETS+=portage sandbox
 endif

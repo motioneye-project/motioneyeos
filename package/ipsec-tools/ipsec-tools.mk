@@ -18,25 +18,25 @@ IPSEC_TOOLS_TARGET_BINARY_RACOON:=usr/sbin/racoon
 IPSEC_TOOLS_TARGET_BINARY_RACOONCTL:=usr/sbin/racoonctl
 IPSEC_TOOLS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ipsec-tools/
 
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --enable-adminport
 else
 IPSEC_TOOLS_CONFIG_FLAGS+= --disable-adminport
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_NATT)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_NATT), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --enable-natt
 else
 IPSEC_TOOLS_CONFIG_FLAGS+= --disable-natt
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_FRAG)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_FRAG), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --enable-frag
 else
 IPSEC_TOOLS_CONFIG_FLAGS+= --disable-frag
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_STATS)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_STATS), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --enable-stats
 else
 IPSEC_TOOLS_CONFIG_FLAGS+= --disable-stats
@@ -44,7 +44,7 @@ endif
 
 ifeq ($(BR2_INET_IPV6),y)
 
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_IPV6)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_IPV6), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --enable-ipv6
 else
 IPSEC_TOOLS_CONFIG_FLAGS+= $(DISABLE_IPV6)
@@ -54,7 +54,7 @@ else # ignore user's choice if it doesn't
 IPSEC_TOOLS_CONFIG_FLAGS+= $(DISABLE_IPV6)
 endif
 
-ifneq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_READLINE)), y)
+ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --without-readline
 endif
 
@@ -118,20 +118,20 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 		man8/racoonctl.8 man8/racoon.8 \
 		man8/plainrsa-gen.8 man8/setkey.8)
 endif
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_LIBS)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_LIBS), y)
 	install -D $(addprefix $(IPSEC_TOOLS_DIR)/src/, \
 		libipsec/.libs/libipsec.a libipsec/.libs/libipsec.la \
 		racoon/.libs/libracoon.a racoon/.libs/libracoon.la) \
 		$(STAGING_DIR)/lib
 endif
-ifneq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT)), y)
+ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT), y)
 	rm -f $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOONCTL)
 endif
 
 IPSEC_TOOLS_PROGS= $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_SETKEY) \
     $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOON)
 
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT), y)
 IPSEC_TOOLS_PROGS+= $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOONCTL)
 endif
 
@@ -144,7 +144,7 @@ ipsec-tools-uninstall:
 ipsec-tools-clean:
 	-$(MAKE) -C $(IPSEC_TOOLS_DIR) DESTDIR=$(TARGET_DIR) uninstall
 	-$(MAKE) -C $(IPSEC_TOOLS_DIR) clean
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS_LIBS)),y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_LIBS),y)
 	rm -f $(addprefix $(STAGING_DIR)/lib/, \
 		libipsec.a libipsec.la libracoon.a libracoon.la)
 endif
@@ -153,6 +153,6 @@ endif
 ipsec-tools-dirclean:
 	rm -rf $(IPSEC_TOOLS_DIR)
 
-ifeq ($(strip $(BR2_PACKAGE_IPSEC_TOOLS)), y)
+ifeq ($(BR2_PACKAGE_IPSEC_TOOLS), y)
 TARGETS+=ipsec-tools
 endif

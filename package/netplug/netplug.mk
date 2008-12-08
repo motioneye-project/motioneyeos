@@ -48,6 +48,6 @@ netplug-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_NETPLUG)),y)
+ifeq ($(BR2_PACKAGE_NETPLUG),y)
 TARGETS+=netplug
 endif

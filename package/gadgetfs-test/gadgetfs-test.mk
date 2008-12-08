@@ -46,6 +46,6 @@ gadgetfs-test-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_GADGETFS_TEST)),y)
+ifeq ($(BR2_PACKAGE_GADGETFS_TEST),y)
 TARGETS+=gadgetfs-test
 endif

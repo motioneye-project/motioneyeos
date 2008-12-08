@@ -65,7 +65,7 @@ libraw1394-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBRAW1394)),y)
+ifeq ($(BR2_PACKAGE_LIBRAW1394),y)
 TARGETS+=libraw1394
 endif
 

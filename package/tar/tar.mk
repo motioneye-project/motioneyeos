@@ -79,6 +79,6 @@ tar-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_TAR)),y)
+ifeq ($(BR2_PACKAGE_TAR),y)
 TARGETS+=tar
 endif

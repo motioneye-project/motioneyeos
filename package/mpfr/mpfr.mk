@@ -116,6 +116,6 @@ host-libmpfr-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBMPFR)),y)
+ifeq ($(BR2_PACKAGE_LIBMPFR),y)
 TARGETS+=libmpfr
 endif

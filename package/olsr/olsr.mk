@@ -58,6 +58,6 @@ olsr-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_OLSR)),y)
+ifeq ($(BR2_PACKAGE_OLSR),y)
 TARGETS+=olsr $(OLSR_PLUGINS)
 endif

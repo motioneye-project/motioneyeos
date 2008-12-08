@@ -63,6 +63,6 @@ netkitbase-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_NETKITBASE)),y)
+ifeq ($(BR2_PACKAGE_NETKITBASE),y)
 TARGETS+=netkitbase
 endif

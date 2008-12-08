@@ -63,6 +63,6 @@ libid3tag-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBID3TAG)),y)
+ifeq ($(BR2_PACKAGE_LIBID3TAG),y)
 TARGETS+=libid3tag
 endif

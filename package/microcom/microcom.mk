@@ -73,6 +73,6 @@ microcom: uclibc $(TARGET_DIR)/usr/bin/microcom
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MICROCOM)),y)
+ifeq ($(BR2_PACKAGE_MICROCOM),y)
 TARGETS+=microcom
 endif

@@ -65,6 +65,6 @@ libevent-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBEVENT)),y)
+ifeq ($(BR2_PACKAGE_LIBEVENT),y)
 TARGETS+=libevent
 endif

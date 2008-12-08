@@ -57,6 +57,6 @@ vpnc-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_VPNC)),y)
+ifeq ($(BR2_PACKAGE_VPNC),y)
 TARGETS+=vpnc
 endif

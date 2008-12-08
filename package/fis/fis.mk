@@ -46,6 +46,6 @@ fis-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_FIS)),y)
+ifeq ($(BR2_PACKAGE_FIS),y)
 TARGETS+=fis
 endif

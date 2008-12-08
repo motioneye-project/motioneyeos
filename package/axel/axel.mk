@@ -50,6 +50,6 @@ axel-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_AXEL)),y)
+ifeq ($(BR2_PACKAGE_AXEL),y)
 TARGETS+=axel
 endif

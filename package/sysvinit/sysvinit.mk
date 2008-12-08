@@ -45,6 +45,6 @@ sysvinit-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SYSVINIT)),y)
+ifeq ($(BR2_PACKAGE_SYSVINIT),y)
 TARGETS+=sysvinit
 endif

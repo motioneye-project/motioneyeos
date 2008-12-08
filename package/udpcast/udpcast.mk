@@ -94,6 +94,6 @@ udpcast-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_UDPCAST)),y)
+ifeq ($(BR2_PACKAGE_UDPCAST),y)
 TARGETS+=udpcast
 endif

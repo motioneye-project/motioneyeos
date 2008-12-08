@@ -55,6 +55,6 @@ less-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LESS)),y)
+ifeq ($(BR2_PACKAGE_LESS),y)
 TARGETS+=less
 endif

@@ -109,6 +109,6 @@ pcmcia-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_PCMCIA)),y)
+ifeq ($(BR2_PACKAGE_PCMCIA),y)
 TARGETS+=pcmcia
 endif

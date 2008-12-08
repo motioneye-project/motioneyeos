@@ -133,6 +133,6 @@ mtd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MTD)),y)
+ifeq ($(BR2_PACKAGE_MTD),y)
 TARGETS+=mtd
 endif

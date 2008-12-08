@@ -110,6 +110,6 @@ hal-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_HAL)),y)
+ifeq ($(BR2_PACKAGE_HAL),y)
 TARGETS+=hal
 endif

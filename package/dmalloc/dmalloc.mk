@@ -100,6 +100,6 @@ dmalloc-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DMALLOC)),y)
+ifeq ($(BR2_PACKAGE_DMALLOC),y)
 TARGETS+=dmalloc
 endif

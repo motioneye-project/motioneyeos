@@ -100,6 +100,6 @@ libgtk12-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBGTK12)),y)
+ifeq ($(BR2_PACKAGE_LIBGTK12),y)
 TARGETS+=libgtk12
 endif

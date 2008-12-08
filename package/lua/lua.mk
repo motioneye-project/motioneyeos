@@ -76,6 +76,6 @@ lua-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LUA)),y)
+ifeq ($(BR2_PACKAGE_LUA),y)
 TARGETS+=lua
 endif

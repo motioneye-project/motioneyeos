@@ -40,10 +40,10 @@ $(TARGET_DIR)/usr/lib/libtcl8.4.so: $(TCL_DIR)/unix/libtcl8.4.so
 	$(MAKE) INSTALL_ROOT=$(TARGET_DIR) -C $(TCL_DIR)/unix install
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libtcl8.4.so
 	rm -Rf $(TARGET_DIR)/usr/man
-	-if [ "$(strip $(BR2_PACKAGE_TCL_DEL_ENCODINGS))" == "y" ]; then \
+	-if [ "$(BR2_PACKAGE_TCL_DEL_ENCODINGS)" == "y" ]; then \
 	rm -Rf $(TARGET_DIR)/usr/lib/tcl8.4/encoding/*; \
 	fi
-	-if [ "$(strip $(BR2_PACKAGE_TCL_SHLIB_ONLY))" == "y" ]; then \
+	-if [ "$(BR2_PACKAGE_TCL_SHLIB_ONLY)" == "y" ]; then \
 	rm -f $(TARGET_DIR)/usr/bin/tclsh8.4; \
 	fi
 
@@ -63,6 +63,6 @@ tcl-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_TCL)),y)
+ifeq ($(BR2_PACKAGE_TCL),y)
 TARGETS+=tcl
 endif

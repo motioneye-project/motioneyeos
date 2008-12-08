@@ -43,6 +43,6 @@ mkdosfs-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MKDOSFS)),y)
+ifeq ($(BR2_PACKAGE_MKDOSFS),y)
 TARGETS+=mkdosfs
 endif

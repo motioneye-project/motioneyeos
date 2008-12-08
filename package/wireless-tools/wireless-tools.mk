@@ -53,6 +53,6 @@ wireless-tools-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_WIRELESS_TOOLS)),y)
+ifeq ($(BR2_PACKAGE_WIRELESS_TOOLS),y)
 TARGETS+=wireless-tools
 endif

@@ -3,7 +3,7 @@
 # busybox image for initramfs
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_INITRAMFS)),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX_INITRAMFS),y)
 
 BUSYBOX_INITRAMFS_DIR:=$(BUSYBOX_DIR)-initramfs
 BR2_INITRAMFS_DIR:=$(PROJECT_BUILD_DIR)/initramfs
@@ -13,7 +13,7 @@ $(BUSYBOX_INITRAMFS_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
 	rm -rf $(BUILD_DIR)/tmp $(BUSYBOX_INITRAMFS_DIR)
 	mkdir -p $(BUILD_DIR)/tmp
 	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR)/tmp $(TAR_OPTIONS) -
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_SNAPSHOT)),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX_SNAPSHOT),y)
 	mv $(BUILD_DIR)/tmp/busybox $(BUSYBOX_INITRAMFS_DIR)
 else
 	mv $(BUILD_DIR)/tmp/busybox-$(BUSYBOX_VERSION) $(BUSYBOX_INITRAMFS_DIR)
@@ -144,6 +144,6 @@ endif
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_BUSYBOX_INITRAMFS)),y)
+ifeq ($(BR2_PACKAGE_BUSYBOX_INITRAMFS),y)
 TARGETS+=busybox-initramfs
 endif

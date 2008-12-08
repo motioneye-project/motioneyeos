@@ -66,6 +66,6 @@ distcc-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DISTCC)),y)
+ifeq ($(BR2_PACKAGE_DISTCC),y)
 TARGETS+=distcc
 endif

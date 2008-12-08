@@ -78,9 +78,9 @@ libmad-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBMAD)),y)
+ifeq ($(BR2_PACKAGE_LIBMAD),y)
 TARGETS+=libmad
 endif
-ifeq ($(strip $(BR2_PACKAGE_LIBMAD_TARGET_HEADERS)),y)
+ifeq ($(BR2_PACKAGE_LIBMAD_TARGET_HEADERS),y)
 TARGETS+=libmad-headers
 endif

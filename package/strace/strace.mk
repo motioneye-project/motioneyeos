@@ -21,7 +21,7 @@ $(eval $(call AUTOTARGETS,package,strace))
 $(STRACE_HOOK_POST_INSTALL): $(STRACE_TARGET_INSTALL_TARGET)
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/bin/strace
 	rm -f $(TARGET_DIR)/usr/bin/strace-graph
-ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
+ifeq ($(BR2_CROSS_TOOLCHAIN_TARGET_UTILS),y)
 	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils
 	install -c $(TARGET_DIR)/usr/bin/strace \
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/strace

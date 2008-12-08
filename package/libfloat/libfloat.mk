@@ -60,6 +60,6 @@ libfloat-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-#ifeq ($(strip $(BR2_PACKAGE_LIBFLOAT)),y)
+#ifeq ($(BR2_PACKAGE_LIBFLOAT),y)
 #TARGETS+=libfloat
 #endif

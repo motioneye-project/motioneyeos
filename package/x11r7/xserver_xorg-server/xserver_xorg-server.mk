@@ -10,7 +10,7 @@ XSERVER_XORG_SERVER_SITE = http://xorg.freedesktop.org/releases/individual/xserv
 XSERVER_XORG_SERVER_AUTORECONF = NO
 XSERVER_XORG_SERVER_INSTALL_STAGING = YES
 
-ifeq ($(strip $(BR2_PACKAGE_XSERVER_xorg)),y)
+ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
 XSERVER_XORG_MESA_DEPS:=mesa3d
 XSERVER_XORG_MESA_DIR:=--with-mesa-source="$(BUILD_DIR)/Mesa-$(MESA3D_VERSION)"
 XSERVER_XORG_ENABLE_MODULAR:=--enable-xorg
@@ -18,13 +18,13 @@ else
 XSERVER_XORG_ENABLE_MODULAR:=--disable-xorg
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_XSERVER_tinyx)),y)
+ifeq ($(BR2_PACKAGE_XSERVER_tinyx),y)
 XSERVER_XORG_ENABLE_KDRIVE:=--enable-kdrive --enable-xfbdev
 else
 XSERVER_XORG_ENABLE_KDRIVE:=--disable-kdrive --disable-xfbdev
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR)),y)
+ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR),y)
 XSERVER_XORG_NULL_CURSOR:=--enable-null-root-cursor
 else
 XSERVER_XORG_NULL_CURSOR:=--disable-null-root-cursor
@@ -54,7 +54,7 @@ XSERVER_XORG_SERVER_CONF_OPT = $(XSERVER_XORG_ENABLE_KDRIVE) \
 XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install-data
 
 # Optional packages
-ifeq ($(strip $(BR2_PACKAGE_TSLIB)),y)
+ifeq ($(BR2_PACKAGE_TSLIB),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += tslib
 XSERVER_XORG_SERVER_CONF_OPT += --enable-tslib LDFLAGS="-lts"
 endif

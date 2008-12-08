@@ -89,6 +89,6 @@ cvs-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_CVS)),y)
+ifeq ($(BR2_PACKAGE_CVS),y)
 TARGETS+=cvs
 endif

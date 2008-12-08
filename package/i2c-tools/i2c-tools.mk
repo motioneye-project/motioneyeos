@@ -45,6 +45,6 @@ i2c-tools-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_I2C_TOOLS)),y)
+ifeq ($(BR2_PACKAGE_I2C_TOOLS),y)
 TARGETS+=i2c-tools
 endif

@@ -79,6 +79,6 @@ rxvt-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_RXVT)),y)
+ifeq ($(BR2_PACKAGE_RXVT),y)
 TARGETS+=rxvt
 endif

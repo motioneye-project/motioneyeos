@@ -79,6 +79,6 @@ libsysfs-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBSYSFS)),y)
+ifeq ($(BR2_PACKAGE_LIBSYSFS),y)
 TARGETS+=libsysfs
 endif

@@ -78,7 +78,7 @@ xapp_xman: xapp_xman-depends $(XAPP_XMAN_DIR)/.installed
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_XAPP_XMAN)),y)
+ifeq ($(BR2_PACKAGE_XAPP_XMAN),y)
 TARGETS+=xapp_xman
 endif
 

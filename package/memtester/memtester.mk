@@ -42,6 +42,6 @@ memtester-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MEMTESTER)),y)
+ifeq ($(BR2_PACKAGE_MEMTESTER),y)
 TARGETS+=memtester
 endif

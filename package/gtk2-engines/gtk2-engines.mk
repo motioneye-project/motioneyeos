@@ -156,6 +156,6 @@ gtk2-engines-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_GTK2_ENGINES)),y)
+ifeq ($(BR2_PACKAGE_GTK2_ENGINES),y)
 TARGETS+=gtk2-engines
 endif

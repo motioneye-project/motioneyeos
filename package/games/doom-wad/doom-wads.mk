@@ -30,6 +30,6 @@ doom-wad: $(TARGET_DIR)/usr/share/games/doom/doom1.wad
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DOOM_WAD)),y)
+ifeq ($(BR2_PACKAGE_DOOM_WAD),y)
 TARGETS+=doom-wad
 endif

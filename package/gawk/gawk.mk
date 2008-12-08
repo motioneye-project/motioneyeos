@@ -79,6 +79,6 @@ gawk-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_GAWK)),y)
+ifeq ($(BR2_PACKAGE_GAWK),y)
 TARGETS+=gawk
 endif

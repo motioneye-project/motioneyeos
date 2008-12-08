@@ -74,6 +74,6 @@ dbus-glib-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DBUS_GLIB)),y)
+ifeq ($(BR2_PACKAGE_DBUS_GLIB),y)
 TARGETS+=dbus-glib
 endif

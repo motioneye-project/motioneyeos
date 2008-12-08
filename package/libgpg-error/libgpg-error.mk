@@ -71,6 +71,6 @@ libgpg-error-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBGPG_ERROR)),y)
+ifeq ($(BR2_PACKAGE_LIBGPG_ERROR),y)
 TARGETS+=libgpg-error
 endif

@@ -81,6 +81,6 @@ lrzsz-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LRZSZ)),y)
+ifeq ($(BR2_PACKAGE_LRZSZ),y)
 TARGETS+=lrzsz
 endif

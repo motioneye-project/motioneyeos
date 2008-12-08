@@ -71,6 +71,6 @@ icu-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_ICU)),y)
+ifeq ($(BR2_PACKAGE_ICU),y)
 TARGETS+=icu
 endif

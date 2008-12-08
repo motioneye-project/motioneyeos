@@ -82,6 +82,6 @@ alsa-lib-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_ALSA_LIB)),y)
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 TARGETS+=alsa-lib
 endif

@@ -60,6 +60,6 @@ libsndfile-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBSNDFILE)),y)
+ifeq ($(BR2_PACKAGE_LIBSNDFILE),y)
 TARGETS+=libsndfile
 endif

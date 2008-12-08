@@ -72,6 +72,6 @@ libfuse-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBFUSE)),y)
+ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 TARGETS+=libfuse
 endif

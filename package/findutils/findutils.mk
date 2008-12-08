@@ -85,6 +85,6 @@ findutils-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_FINDUTILS)),y)
+ifeq ($(BR2_PACKAGE_FINDUTILS),y)
 TARGETS+=findutils
 endif

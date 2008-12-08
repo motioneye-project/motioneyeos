@@ -45,6 +45,6 @@ fconfig-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_FCONFIG)),y)
+ifeq ($(BR2_PACKAGE_FCONFIG),y)
 TARGETS+=fconfig
 endif

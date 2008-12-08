@@ -57,6 +57,6 @@ tinylogin-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_TINYLOGIN)),y)
+ifeq ($(BR2_PACKAGE_TINYLOGIN),y)
 TARGETS+=tinylogin
 endif

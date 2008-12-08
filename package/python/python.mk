@@ -180,6 +180,6 @@ python-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_PYTHON)),y)
+ifeq ($(BR2_PACKAGE_PYTHON),y)
 TARGETS+=python
 endif

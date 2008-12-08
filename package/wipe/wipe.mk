@@ -52,6 +52,6 @@ wipe-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_WIPE)),y)
+ifeq ($(BR2_PACKAGE_WIPE),y)
 TARGETS+=wipe
 endif

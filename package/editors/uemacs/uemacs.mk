@@ -43,6 +43,6 @@ uemacs-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_UEMACS)),y)
+ifeq ($(BR2_PACKAGE_UEMACS),y)
 TARGETS+=uemacs
 endif

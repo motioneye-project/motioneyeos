@@ -57,6 +57,6 @@ dhcpdump-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DHCPDUMP)),y)
+ifeq ($(BR2_PACKAGE_DHCPDUMP),y)
 TARGETS+=dhcpdump
 endif

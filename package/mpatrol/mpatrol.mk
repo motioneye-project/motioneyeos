@@ -86,6 +86,6 @@ mpatrol-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MPATROL)),y)
+ifeq ($(BR2_PACKAGE_MPATROL),y)
 TARGETS+=mpatrol
 endif

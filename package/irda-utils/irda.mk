@@ -52,6 +52,6 @@ irda-utils-dirclean: $(IRDA_UTILS_DIR)/.dirclean
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_IRDA_UTILS)),y)
+ifeq ($(BR2_PACKAGE_IRDA_UTILS),y)
 TARGETS+=irda-utils
 endif

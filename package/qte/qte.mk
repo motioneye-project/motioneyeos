@@ -238,12 +238,12 @@ $(QTE_QTOPIA_IFILE): $(QTE_QTOPIA_FILE)
 
 qte: $(QTE_QTE_LIB)
 
-ifeq ($(strip $(BR2_PACKAGE_QTE_QTOPIA)),y)
+ifeq ($(BR2_PACKAGE_QTE_QTOPIA),y)
 qte: $(QTE_QTOPIA_IFILE)
 endif
 
 # kinda no-op right now, these are built anyhow
-ifeq ($(strip $(BR2_PACKAGE_QTE_QVFB)),y)
+ifeq ($(BR2_PACKAGE_QTE_QVFB),y)
 qte: $(QTE_QTE_DIR)/$(QTE_UIC_BINARY) $(QTE_QTE_DIR)/$(QTE_QVFB_BINARY)
 endif
 
@@ -260,6 +260,6 @@ qte-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_QTE)),y)
+ifeq ($(BR2_PACKAGE_QTE),y)
 TARGETS+=qte
 endif

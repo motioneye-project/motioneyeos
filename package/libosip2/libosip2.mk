@@ -82,6 +82,6 @@ libosip2-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBOSIP2)),y)
+ifeq ($(BR2_PACKAGE_LIBOSIP2),y)
 TARGETS+=libosip2
 endif

@@ -72,6 +72,6 @@ at-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_AT)),y)
+ifeq ($(BR2_PACKAGE_AT),y)
 TARGETS+=at
 endif

@@ -132,8 +132,8 @@ tremor-dirclean:
 # Toplevel Makefile options
 #
 ############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS)),y)
-ifeq ($(strip $(BR2_PACKAGE_LIBVORBIS_TREMOR)),y)
+ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
+ifeq ($(BR2_PACKAGE_LIBVORBIS_TREMOR),y)
 TARGETS+=tremor
 endif
 TARGETS+=libvorbis

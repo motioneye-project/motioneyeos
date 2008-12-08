@@ -52,6 +52,6 @@ sysklogd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SYSKLOGD)),y)
+ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
 TARGETS+=sysklogd
 endif

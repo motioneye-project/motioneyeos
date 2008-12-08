@@ -11,7 +11,7 @@ GETTEXT_CAT:=$(ZCAT)
 GETTEXT_BINARY:=gettext-runtime/src/gettext
 GETTEXT_TARGET_BINARY:=usr/bin/gettext
 
-ifeq ($(strip $(BR2_PACKAGE_GETTEXT_STATIC)),y)
+ifeq ($(BR2_PACKAGE_GETTEXT_STATIC),y)
 LIBINTL_TARGET_BINARY:=usr/lib/libintl.a
 else
 LIBINTL_TARGET_BINARY:=usr/lib/libintl.so
@@ -29,7 +29,7 @@ $(GETTEXT_DIR)/.unpacked: $(DL_DIR)/$(GETTEXT_SOURCE)
 	$(CONFIG_UPDATE) $(GETTEXT_DIR)/build-aux
 	touch $@
 
-ifeq ($(strip $(BR2_TOOLCHAIN_EXTERNAL)),y)
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 IGNORE_EXTERNAL_GETTEXT:=--with-included-gettext
 endif
 
@@ -172,9 +172,9 @@ libintl: $(TARGET_DIR)/$(LIBINTL_TARGET_BINARY)
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LIBINTL)),y)
+ifeq ($(BR2_PACKAGE_LIBINTL),y)
 TARGETS+=libintl
 endif
-ifeq ($(strip $(BR2_PACKAGE_GETTEXT)),y)
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
 TARGETS+=gettext
 endif

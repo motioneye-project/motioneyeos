@@ -62,6 +62,6 @@ dmraid-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DMRAID)),y)
+ifeq ($(BR2_PACKAGE_DMRAID),y)
 TARGETS+=dmraid
 endif

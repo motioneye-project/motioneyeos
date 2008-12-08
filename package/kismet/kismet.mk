@@ -79,6 +79,6 @@ kismet-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_KISMET)),y)
+ifeq ($(BR2_PACKAGE_KISMET),y)
 TARGETS+=kismet
 endif

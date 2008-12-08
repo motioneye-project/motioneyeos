@@ -44,6 +44,6 @@ memstat-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MEMSTAT)),y)
+ifeq ($(BR2_PACKAGE_MEMSTAT),y)
 TARGETS+=memstat
 endif

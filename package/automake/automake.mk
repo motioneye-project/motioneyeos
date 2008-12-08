@@ -136,6 +136,6 @@ host-automake-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_AUTOMAKE)),y)
+ifeq ($(BR2_PACKAGE_AUTOMAKE),y)
 TARGETS+=automake
 endif

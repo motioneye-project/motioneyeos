@@ -63,6 +63,6 @@ sdl_mixer-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SDL_MIXER)),y)
+ifeq ($(BR2_PACKAGE_SDL_MIXER),y)
 TARGETS+=sdl_mixer
 endif

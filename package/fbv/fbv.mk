@@ -51,6 +51,6 @@ fbv-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_FBV)),y)
+ifeq ($(BR2_PACKAGE_FBV),y)
 TARGETS+=fbv
 endif

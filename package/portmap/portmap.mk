@@ -42,6 +42,6 @@ portmap-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_PORTMAP)),y)
+ifeq ($(BR2_PACKAGE_PORTMAP),y)
 TARGETS+=portmap
 endif

@@ -82,6 +82,6 @@ vim: uclibc pkgconfig ncurses vim-source $(TARGET_DIR)/usr/bin/vim
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_VIM)),y)
+ifeq ($(BR2_PACKAGE_VIM),y)
 TARGETS+=vim
 endif

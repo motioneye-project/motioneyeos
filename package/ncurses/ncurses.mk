@@ -29,7 +29,7 @@ NCURSES_DIR:=$(BUILD_DIR)/ncurses-$(NCURSES_VERSION)
 NCURSES_SOURCE:=ncurses-$(NCURSES_VERSION).tar.gz
 NCURSES_CAT:=$(ZCAT)
 
-ifneq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_HEADERS)),y)
+ifneq ($(BR2_PACKAGE_NCURSES_TARGET_HEADERS),y)
 NCURSES_WANT_STATIC=--disable-static
 endif
 
@@ -104,13 +104,13 @@ $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libncurs
 
 $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
-ifeq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_PANEL)),y)
+ifeq ($(BR2_PACKAGE_NCURSES_TARGET_PANEL),y)
 	cp -dpf $(NCURSES_DIR)/lib/libpanel.so* $(TARGET_DIR)/usr/lib/
 endif
-ifeq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_FORM)),y)
+ifeq ($(BR2_PACKAGE_NCURSES_TARGET_FORM),y)
 	cp -dpf $(NCURSES_DIR)/lib/libform.so* $(TARGET_DIR)/usr/lib/
 endif
-ifeq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_MENU)),y)
+ifeq ($(BR2_PACKAGE_NCURSES_TARGET_MENU),y)
 	cp -dpf $(NCURSES_DIR)/lib/libmenu.so* $(TARGET_DIR)/usr/lib/
 endif
 	ln -snf /usr/share/terminfo $(TARGET_DIR)/usr/lib/terminfo
@@ -170,9 +170,9 @@ ncurses-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_NCURSES)),y)
+ifeq ($(BR2_PACKAGE_NCURSES),y)
 TARGETS+=ncurses
 endif
-ifeq ($(strip $(BR2_PACKAGE_NCURSES_TARGET_HEADERS)),y)
+ifeq ($(BR2_PACKAGE_NCURSES_TARGET_HEADERS),y)
 TARGETS+=ncurses-headers
 endif

@@ -75,6 +75,6 @@ socat-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_SOCAT)),y)
+ifeq ($(BR2_PACKAGE_SOCAT),y)
 TARGETS+=socat
 endif

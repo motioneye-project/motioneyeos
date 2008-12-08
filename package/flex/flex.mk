@@ -76,7 +76,7 @@ $(TARGET_DIR)/$(FLEX_TARGET_BINARY): $(FLEX_DIR)/$(FLEX_BINARY)
 	    mandir=$(TARGET_DIR)/usr/man \
 	    includedir=$(TARGET_DIR)/usr/include \
 	    -C $(FLEX_DIR) install
-ifeq ($(strip $(BR2_PACKAGE_FLEX_LIBFL)),y)
+ifeq ($(BR2_PACKAGE_FLEX_LIBFL),y)
 	install -D $(FLEX_DIR)/libfl.a $(STAGING_DIR)/usr/lib/libfl.a
 endif
 ifneq ($(BR2_HAVE_INFOPAGES),y)
@@ -108,7 +108,7 @@ flex-clean:
 	    includedir=$(TARGET_DIR)/usr/include \
 		-C $(FLEX_DIR) uninstall
 	rm -f $(TARGET_DIR)/usr/bin/lex
-ifeq ($(strip $(BR2_PACKAGE_FLEX_LIBFL)),y)
+ifeq ($(BR2_PACKAGE_FLEX_LIBFL),y)
 	-rm $(STAGING_DIR)/lib/libfl.a
 endif
 	-$(MAKE) -C $(FLEX_DIR) clean
@@ -121,6 +121,6 @@ flex-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_FLEX)),y)
+ifeq ($(BR2_PACKAGE_FLEX),y)
 TARGETS+=flex
 endif

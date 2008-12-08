@@ -56,6 +56,6 @@ usbutils-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_USBUTILS)),y)
+ifeq ($(BR2_PACKAGE_USBUTILS),y)
 TARGETS+=usbutils
 endif

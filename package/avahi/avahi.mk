@@ -18,13 +18,13 @@ AVAHI_CAT:=$(ZCAT)
 
 AVAHI_TARGETS:=
 
-ifeq ($(strip $(BR2_PACKAGE_AVAHI_AUTOIPD)),y)
+ifeq ($(BR2_PACKAGE_AVAHI_AUTOIPD),y)
 AVAHI_TARGETS+=$(TARGET_DIR)/usr/sbin/avahi-autoipd
 endif
 
 AVAHI_EXTRA_DEPS:=
 
-ifeq ($(strip $(BR2_PACKAGE_AVAHI_DAEMON)),y)
+ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 AVAHI_TARGETS+=$(TARGET_DIR)/usr/sbin/avahi-daemon
 AVAHI_DISABLE_EXPAT:=--with-xml=expat
 # depend on the exact library file instead of expat so avahi isn't always
@@ -35,7 +35,7 @@ AVAHI_DISABLE_EXPAT:=--disable-expat --with-xml=none
 
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+ifeq ($(BR2_PACKAGE_DBUS),y)
 AVAHI_DISABLE_DBUS:=
 AVAHI_EXTRA_DEPS+=$(STAGING_DIR)/usr/bin/dbus-daemon
 else
@@ -169,7 +169,7 @@ $(TARGET_DIR)/usr/sbin/avahi-daemon: $(AVAHI_DIR)/.installed
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libavahi-*.so*
 	cp -af $(STAGING_DIR)/etc/avahi/avahi-daemon.conf $(TARGET_DIR)/etc/avahi/
 	cp -af package/avahi/S50avahi-daemon $(TARGET_DIR)/etc/init.d/
-ifeq ($(strip $(BR2_PACKAGE_DBUS)),y)
+ifeq ($(BR2_PACKAGE_DBUS),y)
 	cp -dpf $(STAGING_DIR)/usr/bin/avahi-* $(TARGET_DIR)/usr/bin
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/avahi-*
 	mkdir -p $(TARGET_DIR)/etc/dbus-1/system.d/
@@ -199,6 +199,6 @@ avahi-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_AVAHI)),y)
+ifeq ($(BR2_PACKAGE_AVAHI),y)
 TARGETS+=avahi
 endif

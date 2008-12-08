@@ -75,6 +75,6 @@ rp-pppoe-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_RP_PPPOE)),y)
+ifeq ($(BR2_PACKAGE_RP_PPPOE),y)
 TARGETS+=rp-pppoe
 endif

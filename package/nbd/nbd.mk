@@ -52,6 +52,6 @@ nbd-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_NBD)),y)
+ifeq ($(BR2_PACKAGE_NBD),y)
 TARGETS+=nbd
 endif

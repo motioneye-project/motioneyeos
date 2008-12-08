@@ -13,7 +13,7 @@ MPG123_TARGET_BIN:=usr/bin/mpg123
 
 # Check if ALSA is built, then we should configure after alsa-lib so
 # ./configure can find alsa-lib.
-ifeq ($(strip $(BR2_PACKAGE_MPG123_ALSA)),y)
+ifeq ($(BR2_PACKAGE_MPG123_ALSA),y)
 MPG123_USE_ALSA:=--with-audio=alsa
 MPG123_ALSA_DEP:=alsa-lib
 endif
@@ -68,6 +68,6 @@ mpg123-source: $(DL_DIR)/$(MPG123_SOURCE)
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MPG123)),y)
+ifeq ($(BR2_PACKAGE_MPG123),y)
 TARGETS+=mpg123
 endif

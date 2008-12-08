@@ -368,16 +368,16 @@ endif
 # X Windowing system
 
 XSERVER:=
-ifeq ($(strip $(BR2_PACKAGE_TINYX)),y)
+ifeq ($(BR2_PACKAGE_TINYX),y)
 XSERVER+=tinyx
 endif
-ifeq ($(strip $(BR2_PACKAGE_XORG)),y)
+ifeq ($(BR2_PACKAGE_XORG),y)
 XSERVER+=xorg
 endif
-ifeq ($(strip $(BR2_PACKAGE_XORG7)),y)
+ifeq ($(BR2_PACKAGE_XORG7),y)
 XSERVER+=xserver_xorg-server
 endif
-ifeq ($(strip $(BR2_PACKAGE_XGGI)),y)
+ifeq ($(BR2_PACKAGE_XGGI),y)
 XSERVER+=xggi
 endif
 

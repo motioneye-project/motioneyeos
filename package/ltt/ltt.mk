@@ -116,6 +116,6 @@ ltt: host-ltt-tracevisualizer ltt-tracedaemon
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LTT)),y)
+ifeq ($(BR2_PACKAGE_LTT),y)
 TARGETS+=ltt
 endif

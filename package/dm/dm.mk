@@ -126,6 +126,6 @@ dm-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DM)),y)
+ifeq ($(BR2_PACKAGE_DM),y)
 TARGETS+=dm
 endif

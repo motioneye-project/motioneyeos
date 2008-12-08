@@ -74,7 +74,7 @@ xfont_font-util-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_XFONT_FONT_UTIL)),y)
+ifeq ($(BR2_PACKAGE_XFONT_FONT_UTIL),y)
 TARGETS+=xfont_font-util
 endif
 

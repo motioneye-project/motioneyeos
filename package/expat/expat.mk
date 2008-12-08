@@ -75,6 +75,6 @@ expat-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_EXPAT)),y)
+ifeq ($(BR2_PACKAGE_EXPAT),y)
 TARGETS+=expat
 endif

@@ -65,6 +65,6 @@ cups-clean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_CUPS)),y)
+ifeq ($(BR2_PACKAGE_CUPS),y)
 TARGETS+=cups
 endif

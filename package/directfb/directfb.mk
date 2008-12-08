@@ -191,6 +191,6 @@ directfb-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_DIRECTFB)),y)
+ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 TARGETS+=directfb
 endif

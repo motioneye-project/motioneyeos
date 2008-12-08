@@ -192,7 +192,7 @@ $(BUILD_DIR)/%/.stamp_patched:
 	  fi; \
 	fi; \
 	)
-ifeq ($(strip $(BR2_UPDATE_CONFIG)),y)
+ifeq ($(BR2_UPDATE_CONFIG),y)
 	$(Q)(for file in config.guess config.sub; do \
 		for i in $$(find $(@D) -name $$file); do \
 			cp package/gnuconfig/$$file $$i; \

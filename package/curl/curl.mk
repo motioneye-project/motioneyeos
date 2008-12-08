@@ -89,9 +89,9 @@ curl-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_CURL)),y)
+ifeq ($(BR2_PACKAGE_CURL),y)
 TARGETS+=curl
 endif
-ifeq ($(strip $(BR2_PACKAGE_LIBCURL)),y)
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
 TARGETS+=libcurl
 endif

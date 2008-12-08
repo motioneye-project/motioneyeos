@@ -41,6 +41,6 @@ iostat-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_IOSTAT)),y)
+ifeq ($(BR2_PACKAGE_IOSTAT),y)
 TARGETS+=iostat
 endif

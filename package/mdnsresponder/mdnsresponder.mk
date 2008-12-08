@@ -91,6 +91,6 @@ mdnsresponder-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MDNSRESPONDER)),y)
+ifeq ($(BR2_PACKAGE_MDNSRESPONDER),y)
 TARGETS+=mdnsresponder
 endif

@@ -56,7 +56,7 @@ $(STUNNEL_DIR)/src/stunnel: $(STUNNEL_DIR)/.configured
 $(TARGET_DIR)/usr/bin/stunnel: $(STUNNEL_DIR)/src/stunnel
 	install -c $(STUNNEL_DIR)/src/stunnel $(TARGET_DIR)/usr/bin/stunnel
 	$(STRIPCMD) $(TARGET_DIR)/usr/bin/stunnel > /dev/null 2>&1
-ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
+ifeq ($(BR2_CROSS_TOOLCHAIN_TARGET_UTILS),y)
 	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils
 	install -c $(TARGET_DIR)/usr/bin/stunnel \
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/stunnel
@@ -77,6 +77,6 @@ stunnel-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_STUNNEL)),y)
+ifeq ($(BR2_PACKAGE_STUNNEL),y)
 TARGETS+=stunnel
 endif

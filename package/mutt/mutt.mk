@@ -71,6 +71,6 @@ mutt-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_MUTT)),y)
+ifeq ($(BR2_PACKAGE_MUTT),y)
 TARGETS+=mutt
 endif

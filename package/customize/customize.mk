@@ -27,6 +27,6 @@ customize-clean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_CUSTOMIZE)),y)
+ifeq ($(BR2_PACKAGE_CUSTOMIZE),y)
 TARGETS+=customize
 endif

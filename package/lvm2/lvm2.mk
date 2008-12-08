@@ -80,6 +80,6 @@ lvm2-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_LVM2)),y)
+ifeq ($(BR2_PACKAGE_LVM2),y)
 TARGETS+=lvm2
 endif

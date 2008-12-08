@@ -84,6 +84,6 @@ asterisk-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_ASTERISK)),y)
+ifeq ($(BR2_PACKAGE_ASTERISK),y)
 TARGETS+=asterisk
 endif
