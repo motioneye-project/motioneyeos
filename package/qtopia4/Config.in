@@ -228,6 +228,15 @@ source "package/qtopia4/Config.sql.in"
 source "package/qtopia4/Config.gfx.in"
 source "package/qtopia4/Config.mouse.in"
 
+config BR2_PACKAGE_QTOPIA4_PHONON
+	bool "Phonon Module"
+	select BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	help
+	  Build the Phonon module. Support for different audio/video
+	  formats can be configured at the GStreamer package.
+	  If unsure, say n.
+
 config BR2_PACKAGE_QTOPIA4_XMLPATTERNS
 	bool "XML Patterns Module"
 	help

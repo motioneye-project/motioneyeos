@@ -262,6 +262,13 @@ else
 QTOPIA4_CONFIGURE+= -no-xmlpatterns
 endif
 
+ifeq ($(BR2_PACKAGE_QTOPIA4_PHONON),y)
+QTOPIA4_CONFIGURE+= -phonon
+QTOPIA4_DEP_LIBS+=gstreamer gst-plugins-base
+else
+QTOPIA4_CONFIGURE+= -no-phonon
+endif
+
 ifeq ($(BR2_PACKAGE_QTOPIA4_SVG),y)
 QTOPIA4_CONFIGURE+= -svg
 else
@@ -361,6 +368,10 @@ $(TARGET_DIR)/usr/lib/libQtCore.so.4: $(STAGING_DIR)/usr/lib/libQtCore.la
 ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt*.so.* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.*
+ifeq ($(BR2_PACKAGE_QTOPIA4_PHONON),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libphonon.so.* $(TARGET_DIR)/usr/lib/
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libphonon.so.*
+endif
 endif
 	# Install image plugins if they are built
 	if [ -d $(STAGING_DIR)/usr/plugins/imageformats ]; then \
@@ -368,6 +379,11 @@ endif
 		cp -dpfr $(STAGING_DIR)/usr/plugins/imageformats $(TARGET_DIR)/usr/plugins/; \
 		$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/plugins/imageformats/*; \
 	fi
+ifeq ($(BR2_PACKAGE_QTOPIA4_PHONON),y)
+	mkdir -p $(TARGET_DIR)/usr/plugins
+	cp -dpfr $(STAGING_DIR)/usr/plugins/phonon_backend $(TARGET_DIR)/usr/plugins/
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/plugins/phonon_backend/*
+endif
 ifneq ($(BR2_PACKAGE_QTOPIA4_SQL_MODULE),y)
 	# Remove Sql libraries, not needed
 	-rm $(TARGET_DIR)/usr/lib/libQtSql*
