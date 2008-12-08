@@ -1,0 +1,81 @@
+menuconfig BR2_PACKAGE_GST_PLUGINS_BASE
+	bool "gst-plugins-base"
+	depends on BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_LIBOIL
+	help
+	  A basic set of well-supported plug-ins for GStreamer.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GST_PLUGINS_BASE
+
+comment "dependency-less plugins"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ADDER
+	bool "adder"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIOCONVERT
+	bool "audioconvert (mandatory for audio playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIORATE
+	bool "audiorate"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIORESAMPLE
+	bool "audioresample (mandatory for audio playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIOTESTSRC
+	bool "audiotestsrc"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_FFMPEGCOLORSPACE
+	bool "ffmpegcolorspace (mandatory for video playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_GDP
+	bool "gdp"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_PLAYBACK
+	bool "playback (mandatory)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_SUBPARSE
+	bool "subparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_TCP
+	bool "tcp"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_TYPEFIND
+	bool "typefind (mandatory)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VIDEOTESTSRC
+	bool "videotestsrc"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VIDEORATE
+	bool "videorate"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VIDEOSCALE
+	bool "videoscale (mandatory for video playback)"
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VOLUME
+	bool "volume (mandatory for audio playback)"
+	default y
+
+comment "plugins with external dependencies (there may be more available)"
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_OGG
+	bool "ogg (*.ogg audio/video)"
+	select BR2_PACKAGE_LIBOGG
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_THEORA
+	bool "theora (*.ogg video)"
+	select BR2_PACKAGE_LIBTHEORA
+
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_VORBIS
+	bool "vorbis (*.ogg audio)"
+	select BR2_PACKAGE_LIBVORBIS
+
+endif
+

@@ -1,0 +1,31 @@
+Submitted By: Ken Moffat <ken at linuxfromscratch dot org>
+Date: 2008-10-15
+Initial Package Version: 0.10.21
+Upstream Status: Not yet known, just raised as gnome bug 556444.
+Origin: Self
+Description: Allows 'make install' to succeed if gtkdoc-rebase is not present.
+
+diff -Naur gst-plugins-base-0.10.21.orig/common/gtk-doc.mak gst-plugins-base-0.10.21/common/gtk-doc.mak
+--- gst-plugins-base-0.10.21.orig/common/gtk-doc.mak	2008-09-10 10:13:25.000000000 +0100
++++ gst-plugins-base-0.10.21/common/gtk-doc.mak	2008-10-15 18:39:02.000000000 +0100
+@@ -201,7 +201,7 @@
+ 	           $(DESTDIR)$(TARGET_DIR)/$(DOC_MODULE)-@GST_MAJORMINOR@.devhelp2; \
+ 	  fi; \
+ 	  which gtkdoc-rebase >/dev/null && \
+-	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) ; \
++	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) || true ; \
+ 	fi) 
+ uninstall-local:
+ 	(installfiles=`echo ./html/*.html`; \
+diff -Naur gst-plugins-base-0.10.21.orig/docs/libs/Makefile.in gst-plugins-base-0.10.21/docs/libs/Makefile.in
+--- gst-plugins-base-0.10.21.orig/docs/libs/Makefile.in	2008-10-02 23:46:08.000000000 +0100
++++ gst-plugins-base-0.10.21/docs/libs/Makefile.in	2008-10-15 18:38:42.000000000 +0100
+@@ -822,7 +822,7 @@
+ 	           $(DESTDIR)$(TARGET_DIR)/$(DOC_MODULE)-@GST_MAJORMINOR@.devhelp2; \
+ 	  fi; \
+ 	  which gtkdoc-rebase >/dev/null && \
+-	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) ; \
++	    gtkdoc-rebase --relative --dest-dir=$(DESTDIR) --html-dir=$(DESTDIR)$(TARGET_DIR) || true ; \
+ 	fi) 
+ uninstall-local:
+ 	(installfiles=`echo ./html/*.html`; \
