@@ -21,7 +21,7 @@ ifeq ($(BR2_TARGET_ROOTFS_TAR_LZMA),y)
 TAR_COMPRESSOR:=lzma -9 -c
 TAR_COMPRESSOR_EXT:=lzma
 endif
-ROOTFS_TAR_COPYTO:=$(subst ",,$(BR2_TARGET_ROOTFS_TAR_COPYTO))
+ROOTFS_TAR_COPYTO:=$(strip $(subst ",,$(BR2_TARGET_ROOTFS_TAR_COPYTO)))
 # "))
 
 tarroot: host-fakeroot makedevs
