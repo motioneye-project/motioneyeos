@@ -57,10 +57,6 @@ ifneq ($(ROOTFS_TAR_COPYTO),)
 endif
 	-@rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 
-EXT2_COPYTO := $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_COPYTO))
-# "))
-
-
 tarroot-source:
 
 tarroot-clean:
