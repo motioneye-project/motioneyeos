@@ -19,7 +19,7 @@ config BR2_PACKAGE_GDB_HOST
 
 choice
 	prompt "GDB debugger Version"
-	default BR2_GDB_VERSION_6_6 if !BR2_avr32
+	default BR2_GDB_VERSION_6_8 if !BR2_avr32
 	default BR2_GDB_VERSION_6_7_1 if BR2_avr32
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_GDB_SERVER || BR2_PACKAGE_GDB_HOST
 	help
