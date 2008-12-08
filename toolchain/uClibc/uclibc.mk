@@ -545,7 +545,7 @@ $(TARGET_DIR)/usr/bin/ldd: $(cross_compiler)
 	$(MAKE1) -C $(UCLIBC_DIR) CC=$(TARGET_CROSS)gcc \
 		CPP=$(TARGET_CROSS)cpp LD=$(TARGET_CROSS)ld \
 		PREFIX=$(TARGET_DIR) utils install_utils
-ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
+ifeq ($(BR2_CROSS_TOOLCHAIN_TARGET_UTILS),y)
 	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils
 	install -c $(TARGET_DIR)/usr/bin/ldd \
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/ldd

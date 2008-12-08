@@ -44,6 +44,6 @@ mklibs:
 #
 #############################################################
 
-ifeq ($(strip $(BR2_MKLIBS)),y)
+ifeq ($(BR2_MKLIBS),y)
 mklibs: $(STAGING_DIR)/mklibs-stamp
 endif

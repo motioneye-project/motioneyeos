@@ -48,6 +48,6 @@ elf2flt-clean:
 elf2flt-dirclean:
 	rm -rf $(ELF2FLT_SOURCE)
 
-ifeq ($(strip $(BR2_ELF2FLT)),y)
+ifeq ($(BR2_ELF2FLT),y)
 TARGETS+=elf2flt
 endif

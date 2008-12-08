@@ -61,10 +61,10 @@ sstrip_target-dirclean:
 #
 #############################################################
 
-ifeq ($(strip $(BR2_PACKAGE_SSTRIP_HOST)),y)
+ifeq ($(BR2_PACKAGE_SSTRIP_HOST),y)
 TARGETS+=sstrip_host
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_SSTRIP_TARGET)),y)
+ifeq ($(BR2_PACKAGE_SSTRIP_TARGET),y)
 TARGETS+=sstrip_target
 endif

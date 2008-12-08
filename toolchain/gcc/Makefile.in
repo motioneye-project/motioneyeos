@@ -20,7 +20,7 @@ GCC_SNAP_DATE:=
 endif
 #")))
 
-ifeq ($(strip $(BR2_GCC_USE_SJLJ_EXCEPTIONS)),y)
+ifeq ($(BR2_GCC_USE_SJLJ_EXCEPTIONS),y)
 GCC_USE_SJLJ_EXCEPTIONS:=--enable-sjlj-exceptions
 endif
 
@@ -71,7 +71,7 @@ GCC_WITH_ABI:=--with-abi=$(BR2_GCC_TARGET_ABI)
 endif
 
 # AVR32 GCC configuration
-ifeq ($(strip $(BR2_avr32)),y)
+ifeq ($(BR2_avr32),y)
 EXTRA_GCC_CONFIG_OPTIONS+=--disable-libmudflap
 SOFT_FLOAT_CONFIG_OPTION:=
 EXTRA_GCC_CONFIG_OPTIONS+=--disable-libssp
@@ -84,11 +84,11 @@ TARGET_GCC_FLAGS= CFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
 	CFLAGS="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)" \
 	BOOT_CFLAGS="$(TARGET_CFLAGS) $(TARGET_SOFT_FLOAT)"
 
-ifeq ($(strip $(BR2_PACKAGE_GCC_TARGET)),y)
+ifeq ($(BR2_PACKAGE_GCC_TARGET),y)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS:=
 
 # AVR32 target GCC configuration
-ifeq ($(strip $(BR2_avr32)),y)
+ifeq ($(BR2_avr32),y)
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libmudflap
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--disable-libssp
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--with-build-time-tools=$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/bin \

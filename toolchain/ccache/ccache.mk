@@ -191,9 +191,9 @@ ccache_target-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_CCACHE)),y)
+ifeq ($(BR2_CCACHE),y)
 TARGETS+=ccache
 endif
-ifeq ($(strip $(BR2_PACKAGE_CCACHE_TARGET)),y)
+ifeq ($(BR2_PACKAGE_CCACHE_TARGET),y)
 TARGETS+=ccache_target
 endif

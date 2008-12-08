@@ -173,7 +173,7 @@ $(GDB_SERVER_DIR)/gdbserver: $(GDB_SERVER_DIR)/.configured
 	$(STRIPCMD) $(GDB_SERVER_DIR)/gdbserver
 
 $(TARGET_DIR)/usr/bin/gdbserver: $(GDB_SERVER_DIR)/gdbserver
-ifeq ($(strip $(BR2_CROSS_TOOLCHAIN_TARGET_UTILS)),y)
+ifeq ($(BR2_CROSS_TOOLCHAIN_TARGET_UTILS),y)
 	mkdir -p $(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils
 	install -c $(GDB_SERVER_DIR)/gdbserver \
 		$(STAGING_DIR)/$(REAL_GNU_TARGET_NAME)/target_utils/gdbserver
@@ -240,14 +240,14 @@ gdbhost-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(strip $(BR2_PACKAGE_GDB)),y)
+ifeq ($(BR2_PACKAGE_GDB),y)
 TARGETS+=gdb_target
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_GDB_SERVER)),y)
+ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
 TARGETS+=gdbserver
 endif
 
-ifeq ($(strip $(BR2_PACKAGE_GDB_HOST)),y)
+ifeq ($(BR2_PACKAGE_GDB_HOST),y)
 TARGETS+=gdbhost
 endif
