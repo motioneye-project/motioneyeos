@@ -9,7 +9,7 @@ config BR2_PACKAGE_FREETYPE
 choice
 	prompt "Freetype Version"
 	depends on BR2_PACKAGE_FREETYPE
-	default BR2_FREETYPE_VERSION_2_2_1
+	default BR2_FREETYPE_VERSION_2_3_7
 	help
 	  Select the version of Freetype you wish to use.
 
