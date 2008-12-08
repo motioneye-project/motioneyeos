@@ -23,7 +23,7 @@ config BR2_PACKAGE_UDEV_VOLUME_ID
 
 config BR2_PACKAGE_UDEV_SCSI_ID
 	bool "udev-scsi_id"
-	depends on BR2_PACKAGE_UDEV
+	depends on BR2_PACKAGE_UDEV_VOLUME_ID
 	help
 	  Build and install SCSI disk identification library.
 
