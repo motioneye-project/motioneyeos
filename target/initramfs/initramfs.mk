@@ -12,6 +12,8 @@ else
 INITRAMFS_TARGET:= #nothing
 endif
 
+TARGETS+=$(INITRAMFS_TARGET)
+
 $(INITRAMFS_TARGET) initramfs: host-fakeroot makedevs
 	rm -f $(TARGET_DIR)/init
 	ln -s sbin/init $(TARGET_DIR)/init
