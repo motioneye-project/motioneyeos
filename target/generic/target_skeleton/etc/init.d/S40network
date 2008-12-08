@@ -3,28 +3,18 @@
 # Start the network....
 #
 
-start() {
- 	echo "Starting network..."
-	/sbin/ifup -a
-}	
-stop() {
-	echo -n "Stopping network..."
-	/sbin/ifdown -a
-}
-restart() {
-	stop
-	start
-}	
-
 case "$1" in
   start)
-  	start
+ 	echo "Starting network..."
+	/sbin/ifup -a
 	;;
   stop)
-  	stop
+	echo -n "Stopping network..."
+	/sbin/ifdown -a
 	;;
   restart|reload)
-  	restart
+	"$0" stop
+	"$0" start
 	;;
   *)
 	echo $"Usage: $0 {start|stop|restart}"
