@@ -54,7 +54,7 @@ ifeq ($(findstring x4.0,x$(GCC_VERSION)),x4.0)
 BINUTILS_NO_MPFR:=y
 endif
 
-ifndef BINUTILS_NO_MPFR
+ifndef $(BINUTILS_NO_MPFR)
 BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp$(HOST_SHREXT) \
 	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr$(HOST_SHREXT)
 
