@@ -1,0 +1,28 @@
+--- busybox-1.13.1/init/init.c	Sat Nov 29 07:48:56 2008
++++ busybox-1.13.1-init/init/init.c	Tue Dec  9 22:17:43 2008
+@@ -118,18 +118,18 @@
+ 
+ 	msg[0] = '\r';
+ 	va_start(arguments, fmt);
+-	l = vsnprintf(msg + 1, sizeof(msg) - 2, fmt, arguments);
+-	if (l > sizeof(msg) - 2)
+-		l = sizeof(msg) - 2;
++	l = 1 + vsnprintf(msg + 1, sizeof(msg) - 2, fmt, arguments);
++	if (l > sizeof(msg) - 1)
++		l = sizeof(msg) - 1;
+ 	msg[l] = '\0';
+ 	va_end(arguments);
+ 
+ 	if (ENABLE_FEATURE_INIT_SYSLOG) {
+-		/* Log the message to syslogd */
+ 		if (where & L_LOG) {
+-			/* don't print out "\r" */
+-			openlog(applet_name, 0, LOG_DAEMON);
+-			syslog(LOG_INFO, "init: %s", msg + 1);
++			/* Log the message to syslogd */
++			openlog("init", 0, LOG_DAEMON);
++			/* don't print "\r" */
++			syslog(LOG_INFO, "%s", msg + 1);
+ 			closelog();
+ 		}
+ 		msg[l++] = '\n';
