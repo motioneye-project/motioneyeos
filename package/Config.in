@@ -128,7 +128,9 @@ comment "Networking applications"
 source "package/argus/Config.in"
 source "package/avahi/Config.in"
 source "package/axel/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/boa/Config.in"
+endif
 source "package/bind/Config.in"
 source "package/bridge-utils/Config.in"
 source "package/curl/Config.in"
