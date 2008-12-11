@@ -53,7 +53,7 @@ $(STAGING_DIR)/usr/lib/libz.a: $(ZLIB_DIR)/libz.a
 	touch -c $@
 
 $(STAGING_DIR)/usr/lib/libz.so: $(STAGING_DIR)/usr/lib/libz.a
-	$(INSTALL) $(ZLIB_DIR)/libz.so* $(STAGING_DIR)/usr/lib/
+	cp -dpf $(ZLIB_DIR)/libz.so* $(STAGING_DIR)/usr/lib/
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libz.so: $(STAGING_DIR)/usr/lib/libz.so
