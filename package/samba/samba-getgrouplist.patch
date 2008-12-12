@@ -1,7 +1,6 @@
-diff -ur samba-3.0.25a/source/configure.in samba-3.0.25a-patched/source/configure.in
---- samba-3.0.25a/source/configure.in	2007-05-23 10:29:20.000000000 -0500
-+++ samba-3.0.25a-patched/source/configure.in	2007-06-19 11:38:21.000000000 -0500
-@@ -1370,38 +1370,6 @@
+--- a/source/configure.in
++++ b/source/configure.in
+@@ -1182,38 +1182,6 @@ AC_TRY_COMPILE([
  AC_DEFINE(HAVE_PRCTL, 1, [Whether prctl is available]),[])
  
  #

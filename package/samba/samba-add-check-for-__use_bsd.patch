@@ -1,0 +1,18 @@
+--- a/source/client/mount.cifs.c
++++ b/source/client/mount.cifs.c
+@@ -91,6 +91,7 @@ char * prefixpath = NULL;
+ 
+ /* glibc doesn't have strlcpy, strlcat. Ensure we do. JRA. We
+  * don't link to libreplace so need them here. */
++#if defined(__GLIBC__) && !(defined(__UCLIBC__) && defined(__USE_BSD))
+ 
+ /* like strncpy but does not 0 fill the buffer and always null
+  *    terminates. bufsize is the size of the destination buffer */
+@@ -126,6 +127,7 @@ static size_t strlcat(char *d, const cha
+ 	}
+ 	return ret;
+ }
++#endif /* __GLIBC__ && !(__UCLIBC__ && __USE_BSD) */
+ 
+ /* BB finish BB
+ 

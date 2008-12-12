@@ -3,7 +3,7 @@
 # samba
 #
 #############################################################
-SAMBA_VERSION:=3.0.33
+SAMBA_VERSION:=3.2.5
 SAMBA_SOURCE:=samba-$(SAMBA_VERSION).tar.gz
 SAMBA_SITE:=http://samba.org/samba/ftp/stable/
 SAMBA_DIR:=$(BUILD_DIR)/samba-$(SAMBA_VERSION)/source
@@ -32,8 +32,9 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		samba_cv_HAVE_MMAP=yes \
 		samba_cv_HAVE_FCNTL_LOCK=yes \
 		samba_cv_HAVE_SECURE_MKSTEMP=yes \
+		samba_cv_HAVE_NATIVE_ICONV=no \
+		samba_cv_CC_NEGATIVE_ENUM_VALUES=yes \
 		samba_cv_fpie=no \
-		SMB_BUILD_CC_NEGATIVE_ENUM_VALUES=yes \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -45,17 +46,21 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		--with-privatedir=/etc/samba \
 		--with-logfilebase=/var/log/samba \
 		--with-configdir=/etc/samba \
+		--with-libiconv=$(STAGING_DIR) \
 		--without-ldap \
-		--without-libaddns \
+		--without-ads \
+		--without-acl \
 		--with-included-popt \
 		--with-included-iniparser \
-		--disable-cups \
+		--disable-shared-libs \
 		--disable-static \
+		--disable-cups \
+		$(BR2_LARGEFILE) \
 	)
 	touch $@
 
 $(SAMBA_DIR)/$(SAMBA_BINARY): $(SAMBA_DIR)/.configured
-	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(SAMBA_DIR)
+	$(MAKE1) -C $(SAMBA_DIR)
 
 SAMBA_TARGETS_ :=
 SAMBA_TARGETS_y :=
@@ -98,13 +103,22 @@ $(TARGET_DIR)/$(SAMBA_TARGET_BINARY): $(SAMBA_DIR)/$(SAMBA_BINARY)
 		PRIVATEDIR="${TARGET_DIR}/etc/samba" \
 		CONFIGDIR="${TARGET_DIR}/etc/samba" \
 		VARDIR="${TARGET_DIR}/var/log/samba" \
-		-C $(SAMBA_DIR) installservers installbin installcifsmount installscripts
+		-C $(SAMBA_DIR) installlibs installservers installbin installcifsmount installscripts
+	# Do not install the LDAP-like embedded database tools
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/ldb, add del edit modify search)
+	# Remove not used library by Samba binaries
+	rm -f $(TARGET_DIR)/usr/lib/libnetapi*
+	rm -f $(TARGET_DIR)/usr/lib/libsmbclient*
+	rm -f $(TARGET_DIR)/usr/lib/libtalloc*
+	rm -f $(TARGET_DIR)/usr/lib/libtdb*
+	# Remove not wanted Samba binaries
 	for file in $(SAMBA_TARGETS_); do \
 		rm -f $(TARGET_DIR)/$$file; \
 	done
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
+	# Strip the wanted Samba binaries
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
 	for file in $(SAMBA_TARGETS_y); do \
-		$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$$file; \
+		$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/$$file; \
 	done
 ifeq ($(BR2_PACKAGE_SAMBA_SWAT),y)
 	cp -dpfr $(SAMBA_DIR)/../swat $(TARGET_DIR)/usr/
@@ -116,7 +130,7 @@ endif
 	rm -rf $(TARGET_DIR)/var/cache/samba
 	rm -rf $(TARGET_DIR)/var/lib/samba
 
-samba: uclibc $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
+samba: libiconv $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
 
 samba-source: $(DL_DIR)/$(SAMBA_SOURCE)
 
