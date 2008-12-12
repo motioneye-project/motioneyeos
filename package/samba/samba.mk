@@ -60,7 +60,8 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 	touch $@
 
 $(SAMBA_DIR)/$(SAMBA_BINARY): $(SAMBA_DIR)/.configured
-	$(MAKE1) -C $(SAMBA_DIR)
+	$(MAKE) -C $(SAMBA_DIR) proto
+	$(MAKE) -C $(SAMBA_DIR)
 
 SAMBA_TARGETS_ :=
 SAMBA_TARGETS_y :=
