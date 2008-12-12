@@ -60,6 +60,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 	touch $@
 
 $(SAMBA_DIR)/$(SAMBA_BINARY): $(SAMBA_DIR)/.configured
+	# make proto must be done before make to be parallel safe
 	$(MAKE) -C $(SAMBA_DIR) proto
 	$(MAKE) -C $(SAMBA_DIR)
 
