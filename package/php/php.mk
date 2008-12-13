@@ -3,7 +3,7 @@
 # php
 #
 #############################################################
-PHP_VER:=5.2.6
+PHP_VER:=5.2.7
 PHP_SOURCE:=php-$(PHP_VER).tar.bz2
 PHP_SITE:=http://us.php.net/get/${PHP_SOURCE}/from/us2.php.net/mirror
 PHP_DIR:=$(BUILD_DIR)/php-$(PHP_VER)
