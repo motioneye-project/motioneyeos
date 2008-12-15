@@ -1,15 +1,6 @@
 #
 
 if BR2_TOOLCHAIN_SOURCE
-source "toolchain/kernel-headers/Config.in"
-source "toolchain/uClibc/Config.in"
-source "toolchain/binutils/Config.in"
-source "toolchain/gcc/Config.in"
-source "toolchain/ccache/Config.in"
-source "toolchain/gdb/Config.in"
-
-comment "Common Toolchain Options"
-
 source "toolchain/elf2flt/Config.in"
 source "toolchain/mklibs/Config.in"
 source "toolchain/sstrip/Config.in"

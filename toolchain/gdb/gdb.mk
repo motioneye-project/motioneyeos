@@ -3,13 +3,8 @@
 # gdb
 #
 ######################################################################
-ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
 GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
 #"))
-else
-GDB_VERSION:=$(strip $(subst ",, $(BR2_EXT_GDB_VERSION)))
-#"))
-endif
 
 ifeq ($(GDB_VERSION),snapshot)
 # Be aware that this changes daily....

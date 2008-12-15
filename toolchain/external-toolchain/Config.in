@@ -1,9 +1,6 @@
 #
 
 if BR2_TOOLCHAIN_EXTERNAL
-comment "External Toolchain Options"
-
-
 config BR2_TOOLCHAIN_EXTERNAL_LIB_C
 	string "The core C library from the external toolchain"
 	default "libc.so.0"
@@ -27,82 +24,4 @@ config BR2_TOOLCHAIN_EXTERNAL_STRIP
         prompt "Strip shared libraries"
 	help
 	  Strip shared libraries copied from the external toolchain.
-
-comment "Common Toolchain Options"
-
-source "toolchain/gdb/Config.in.2"
-
-config BR2_TOOLCHAIN_EXTERNAL_PATH
-	string "External toolchain path"
-	default "/path/to/staging_dir/usr"
-	help
-	  Path to where the external toolchain is installed.
-
-config BR2_TOOLCHAIN_EXTERNAL_PREFIX
-	string "External toolchain prefix"
-	default "$(ARCH)-linux"
-	help
-	  This the the external toolchain prefix. For example:
-	    armeb-unknown-linux-gnu, mipsel-unknown-linux-gnu, etc.
-
-choice
-	prompt "Thread library implementation"
-	default BR2_EXT_PTHREADS_OLD
-	help
-	  Select the version of libpthreads used in the external toolchain.
-
-	config BR2_EXT_PTHREADS_NONE
-		bool
-		prompt "none"
-
-	config BR2_EXT_PTHREADS
-		bool
-		prompt "linuxthreads"
-
-	config BR2_EXT_PTHREADS_OLD
-		bool
-		prompt "linuxthreads (stable/old)"
-
-	config BR2_EXT_PTHREADS_NATIVE
-		bool
-		prompt "Native POSIX Threading (NPTL)"
-endchoice
-
-config BR2_LARGEFILE
-	bool "Toolchain supports large files (> 2 GB) ?"
-	depends on !BR2_cris
-	default y
-	help
-	  Set this option if the external toolchain supports large
-	  files (> 2 GB)
-
-
-config BR2_INET_IPV6
-	bool "Toolchain supports IPv6 ?"
-	help
-	  Set this option if the external toolchain supports IPv6.
-
-config BR2_INET_RPC
-	bool "Toolchain supports RPC ?"
-	help
-	  Set this option if the external toolchain supports RPC.
-
-config BR2_SOFT_FLOAT
-	bool "Toolchain supports soft float ?"
-	depends on BR2_arm || BR2_armeb || BR2_mips || BR2_mipsel || BR2_powerpc
-	help
-	  Set this option if the external toolchain supports soft float.
-
-config BR2_GCC_CROSS_CXX
-	bool "Toolchain has C++ cross-compiler ?"
-	help
-	  Set this option if the external toolchain has a C++
-	  cross-compiler.
-
-config BR2_TARGET_OPTIMIZATION
-	string "Target Optimizations"
-	default "-Os -pipe"
-	help
-	  Optimizations to use when building for the target host.
-
 endif

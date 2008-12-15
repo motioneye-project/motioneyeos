@@ -28,7 +28,16 @@ config BR2_TOOLCHAIN_SOURCE
 
 source "target/device/Config.in.toolchain"
 
-source "toolchain/Config.in.2"
+source "toolchain/Config.in.1"
 source "toolchain/external-toolchain/Config.in"
+
+# we want gdb config in the middle of both source and external
+# toolchains, but mconf won't let us source the same file twice,
+# so put it here instead
+source "toolchain/gdb/Config.in"
+comment "Common Toolchain Options"
+
+source "toolchain/Config.in.2"
+source "toolchain/external-toolchain/Config.in.2"
 
 endmenu
