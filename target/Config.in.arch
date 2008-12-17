@@ -186,18 +186,6 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_avr32
-config BR2_at32ap7000
-	bool "AT32AP7000"
-config BR2_at32ap7001
-	bool "AT32AP7001"
-config BR2_at32ap7002
-	bool "AT32AP7002"
-endchoice
-
-
-choice
-	prompt "Target Architecture Variant"
 	depends on BR2_sh
 	default BR2_sh4
 	help
