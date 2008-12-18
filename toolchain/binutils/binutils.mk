@@ -109,8 +109,8 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
-		--mandir=/usr/share/man \
-		--infodir=/usr/share/info \
+		--mandir=$(BR2_SYSROOT_PREFIX)/usr/share/man \
+		--infodir=$(BR2_SYSROOT_PREFIX)/usr/share/info \
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		$(BR2_CONFIGURE_STAGING_SYSROOT) \
 		$(DISABLE_NLS) \
