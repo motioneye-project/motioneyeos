@@ -24,9 +24,10 @@ config BR2_BOARD_NAME
 	default	"at91sam9m10ek"		if	BR2_TARGET_AT91SAM9M10EK
 	default	"at91sam9m10dfc"	if	BR2_TARGET_AT91SAM9M10DFC
 	default	"atstk100x"		if	BR2_TARGET_AVR32_ATSTK1002
+	default	"atstk1005"		if	BR2_TARGET_AVR32_ATSTK1005
 	default	"atngw100"		if	BR2_TARGET_AVR32_ATNGW100
 	default "atngw100-base"		if	BR2_TARGET_AVR32_ATNGW100_BASE
-	default "atngw100-expanded"	if  BR2_TARGET_AVR32_ATNGW100_EXPANDED
+	default "atngw100-expanded"	if	BR2_TARGET_AVR32_ATNGW100_EXPANDED
 
 config BR2_TARGET_AT91_ADVANCED_INFO
 	bool "Remove work in progress"
