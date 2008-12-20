@@ -1,0 +1,11 @@
+#!/bin/sh
+
+MOUNT=/bin/mount
+
+echo -n "Mounting remote filesystems: "
+if ${MOUNT} -t nfs -a; then
+	echo "done"
+else
+	echo "failed"
+	exit 1
+fi

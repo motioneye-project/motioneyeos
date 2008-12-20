@@ -1,0 +1,16 @@
+#!/bin/sh
+
+INETD=/usr/sbin/inetd
+
+echo -n "Starting inetd: "
+if [ ! -x "${INETD}" ]; then
+	echo "missing"
+	exit 1
+fi
+
+if ${INETD}; then
+	echo "done"
+else
+	echo "failed"
+	exit 1
+fi

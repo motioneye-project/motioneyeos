@@ -1,0 +1,28 @@
+# Inittab for the ATSTK1000 development board
+#
+# Note: BusyBox init doesn't support runlevels.  The runlevels field is
+# completely ignored by BusyBox init. If you want runlevels, use sysvinit.
+#
+# Format for each entry: <id>:<runlevels>:<action>:<process>
+#
+# id        == tty to run on, or empty for /dev/console
+# runlevels == ignored
+# action    == one of sysinit, respawn, askfirst, wait, and once
+# process   == program to run
+
+# Run the rcS script after kernel is booted.
+::sysinit:/etc/init.d/rcS
+
+# Run a shell on the first serial port. Comment out if you want a getty instead.
+ttyS0::respawn:-/bin/sh
+
+# Run a shell on the g_serial port (USB gadget device)? This shell will spawn
+# error message if the device is not connected.
+#ttygserial::respawn:-/bin/sh
+
+# Uncomment this to run a getty on the first serial port.
+#ttyS0::respawn:/sbin/getty -L ttyS0 115200 vt100
+ttyS2::respawn:/sbin/getty -L ttyS2 115200 vt100
+
+# Run a script on shutdown.
+::shutdown:/etc/init.d/rcK

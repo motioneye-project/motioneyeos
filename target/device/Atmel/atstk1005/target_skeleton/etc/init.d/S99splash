@@ -1,0 +1,17 @@
+#!/bin/sh
+
+PROGRAM=/usr/bin/fbv
+SPLASHFILE="/etc/stk1000splash.jpg"
+
+echo -n "Splash image: "
+if [ ! -x "${PROGRAM}" -o ! -f "${SPLASHFILE}" ]; then
+	echo "missing"
+	exit 1
+fi
+
+${PROGRAM} ${SPLASHFILE} > /dev/null &
+if [ $? -eq 0 ]; then
+	echo "loaded"
+else
+	echo "failed"
+fi

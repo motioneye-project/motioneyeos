@@ -1,0 +1,25 @@
+#!/bin/sh
+
+FBV=/usr/bin/fbv
+FBSET=/usr/sbin/fbset
+FBMODEFILE="/etc/fb.modes"
+SPLASHFILE="/etc/stk1000bootsplash.jpg"
+
+echo -n "Bootsplash image: "
+if [ ! -x "${FBV}" -o ! -x "${FBSET}" -o \
+		! -f "${SPLASHFILE}" -o ! -f "${FBMODEFILE}" ]; then
+	echo "missing"
+	exit 1
+fi
+
+if ! ${FBSET} 320x240-68; then
+	echo "failed"
+	exit 1
+fi
+
+${FBV} ${SPLASHFILE} > /dev/null &
+if [ $? -eq 0 ]; then
+	echo "loaded"
+else
+	echo "failed"
+fi

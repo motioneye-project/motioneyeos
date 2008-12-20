@@ -1,0 +1,11 @@
+#!/bin/sh
+
+for s in /etc/init.d/S*; do
+	if [ -x $s ]; then
+		$s start
+	fi
+done
+
+echo
+echo "STK1000 ready"
+echo

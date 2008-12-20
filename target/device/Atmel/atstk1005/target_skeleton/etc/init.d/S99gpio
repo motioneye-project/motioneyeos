@@ -1,0 +1,142 @@
+#!/bin/sh
+
+echo -n "Get board type for GPIO: "
+if [ ! -e "/etc/release" ]; then
+	echo "missing";
+	exit 1
+fi
+
+BOARD=`cat /etc/release | cut -d ' ' -f1`
+
+if [ "${BOARD}" == "" ]; then
+	echo "none";
+elif [ "${BOARD}" == "NGW" ]; then
+	echo "'${BOARD}'"
+
+	echo -n "  boot LED: "
+	if mkdir /config/gpio/bootled > /dev/null 2> /dev/null; then
+		if ! echo 0 > /config/gpio/bootled/gpio_id; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0x10000 > /config/gpio/bootled/pin_mask; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0x10000 > /config/gpio/bootled/oe_mask; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 1 > /config/gpio/bootled/enabled; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0x10000 > /dev/gpio0; then
+			echo "failed"
+			exit 1
+		fi
+
+		echo "done"
+	else
+		echo "failed"
+		exit 1
+	fi
+
+	echo -n "  LED A: "
+	if mkdir /config/gpio/leda > /dev/null 2> /dev/null; then
+		if ! echo 0 > /config/gpio/leda/gpio_id; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0x80000 > /config/gpio/leda/pin_mask; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0x80000 > /config/gpio/leda/oe_mask; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 1 > /config/gpio/leda/enabled; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0 > /dev/gpio1; then
+			echo "failed"
+			exit 1
+		fi
+
+		echo "done"
+	else
+		echo "failed"
+		exit 1
+	fi
+
+	echo -n "  LED B: "
+	if mkdir /config/gpio/ledb > /dev/null 2> /dev/null; then
+		if ! echo 4 > /config/gpio/ledb/gpio_id; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0x80000 > /config/gpio/ledb/pin_mask; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0x80000 > /config/gpio/ledb/oe_mask; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 1 > /config/gpio/ledb/enabled; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0 > /dev/gpio2; then
+			echo "failed"
+			exit 1
+		fi
+
+		echo "done"
+	else
+		echo "failed"
+		exit 1
+	fi
+elif [ "${BOARD}" == "STK1000" ]; then # end NGW
+	echo "'${BOARD}'"
+
+	echo -n "  switches: "
+	if mkdir /config/gpio/switches > /dev/null 2> /dev/null; then
+		if ! echo 1 > /config/gpio/switches/gpio_id; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 0xff > /config/gpio/switches/pin_mask; then
+			echo "failed"
+			exit 1
+		fi
+
+		if ! echo 1 > /config/gpio/switches/enabled; then
+			echo "failed"
+			exit 1
+		fi
+
+		echo "done"
+	else
+		echo "failed"
+		exit 1
+	fi
+else # end STK1000
+	echo "'${BOARD}'"
+	echo "  WARNING: no GPIO for this board"
+fi
