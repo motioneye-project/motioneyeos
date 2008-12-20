@@ -1,0 +1,27 @@
+From 474d77e07d5adfe7976b6f3ed131660867489778 Mon Sep 17 00:00:00 2001
+From: Hans-Christian Egtvedt <hans-christian.egtvedt@atmel.com>
+Date: Wed, 26 Nov 2008 11:38:35 +0100
+Subject: [PATCH 1/3] avr32: remove .note.gnu.build-id section when making vmlinux.bin
+
+This patch will remove the section .note.gnu.build-id added in binutils
+2.18 from the vmlinux.bin binary. Not removing this section results in a
+huge multiple gigabyte binary and likewize large uImage.
+
+Signed-off-by: Hans-Christian Egtvedt <hans-christian.egtvedt@atmel.com>
+
+diff --git a/arch/avr32/boot/images/Makefile b/arch/avr32/boot/images/Makefile
+index 219720a..1848bf0 100644
+--- a/arch/avr32/boot/images/Makefile
++++ b/arch/avr32/boot/images/Makefile
+@@ -10,7 +10,7 @@ MKIMAGE		:= $(srctree)/scripts/mkuboot.sh
+ 
+ extra-y		:= vmlinux.bin vmlinux.gz
+ 
+-OBJCOPYFLAGS_vmlinux.bin := -O binary
++OBJCOPYFLAGS_vmlinux.bin := -O binary -R .note.gnu.build-id
+ $(obj)/vmlinux.bin: vmlinux FORCE
+ 	$(call if_changed,objcopy)
+ 
+-- 
+1.5.6.3
+

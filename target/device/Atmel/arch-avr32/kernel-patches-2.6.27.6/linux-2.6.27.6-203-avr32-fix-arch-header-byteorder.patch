@@ -1,0 +1,35 @@
+Index: linux-2.6.27.6/arch/avr32/include/asm/byteorder.h
+===================================================================
+--- linux-2.6.27.6.orig/arch/avr32/include/asm/byteorder.h	2008-11-28 16:47:15.000000000 +0100
++++ linux-2.6.27.6/arch/avr32/include/asm/byteorder.h	2008-11-28 16:47:31.000000000 +0100
+@@ -7,8 +7,9 @@
+ #include <asm/types.h>
+ #include <linux/compiler.h>
+ 
+-#define __BIG_ENDIAN
++#define __BIG_ENDIAN 4321
+ #define __SWAB_64_THRU_32__
++#define __BYTEORDER_HAS_U64__
+ 
+ #ifdef __CHECKER__
+ extern unsigned long __builtin_bswap_32(unsigned long x);
+@@ -33,5 +34,5 @@
+ #define __arch_swab32 __arch_swab32
+ #endif
+ 
+-#include <linux/byteorder.h>
++#include <linux/byteorder/big_endian.h>
+ #endif /* __ASM_AVR32_BYTEORDER_H */
+Index: linux-2.6.27.6/arch/avr32/mach-at32ap/include/mach/io.h
+===================================================================
+--- linux-2.6.27.6.orig/arch/avr32/mach-at32ap/include/mach/io.h	2008-11-28 16:47:58.000000000 +0100
++++ linux-2.6.27.6/arch/avr32/mach-at32ap/include/mach/io.h	2008-11-28 16:48:15.000000000 +0100
+@@ -1,7 +1,7 @@
+ #ifndef __ASM_AVR32_ARCH_AT32AP_IO_H
+ #define __ASM_AVR32_ARCH_AT32AP_IO_H
+ 
+-#include <linux/swab.h>
++#include <linux/byteorder/swabb.h>
+ 
+ #if defined(CONFIG_AP700X_32_BIT_SMC)
+ # define __swizzle_addr_b(addr)	(addr ^ 3UL)

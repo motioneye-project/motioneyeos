@@ -1,0 +1,59 @@
+From 86fd2e3e74a191ae43122ac18f62f5163c577d4b Mon Sep 17 00:00:00 2001
+From: Hans-Christian Egtvedt <hans-christian.egtvedt@atmel.com>
+Date: Wed, 26 Nov 2008 14:11:59 +0100
+Subject: [PATCH 3/3] atmel_mpopfb: add signal to disable line caching and set correct output
+
+This patch adds a signal to disable line caching, due to an errata in
+silicon revision A. It also sets the output from MPOP to BGR to match
+big endian framebuffer memory.
+
+Signed-off-by: Hans-Christian Egtvedt <hans-christian.egtvedt@atmel.com>
+
+diff --git a/drivers/video/atmel_mpopfb.c b/drivers/video/atmel_mpopfb.c
+index 3b4b668..350303b 100644
+--- a/drivers/video/atmel_mpopfb.c
++++ b/drivers/video/atmel_mpopfb.c
+@@ -313,6 +313,10 @@ static int atmel_mpopfb_check_var(struct fb_var_screeninfo *var,
+ static void atmel_mpopfb_start(struct atmel_mpopfb_info *sinfo)
+ {
+ 	if (!sinfo->running) {
++		unsigned int line_cache_disable =
++			sinfo->baseimg_info.line_cache_disable ?
++			ATMEL_MPOP_CR_CACHEDIS_MASK : 0;
++
+ 		dev_dbg(sinfo->info->device, "  * Starting MPOP.\n");
+ 
+ 		/* Enable all error interrupts. */
+@@ -323,9 +327,9 @@ static void atmel_mpopfb_start(struct atmel_mpopfb_info *sinfo)
+ 		 * reading from the slave interface it will start
+ 		 * generating a frame.
+ 		 */
+-		mpop_writel(sinfo, ATMEL_MPOP_CR,
+-			    ATMEL_MPOP_CR_EN_MASK
+-			    /*| ATMEL_MPOP_CR_OUT_BGR_MASK */ );
++		mpop_writel(sinfo, ATMEL_MPOP_CR, ATMEL_MPOP_CR_EN_MASK
++				| line_cache_disable
++				| ATMEL_MPOP_CR_OUT_BGR_MASK);
+ 
+ 		sinfo->running = 1;
+ 	}
+diff --git a/include/linux/atmel_mpopfb.h b/include/linux/atmel_mpopfb.h
+index cd12e16..d0f2505 100644
+--- a/include/linux/atmel_mpopfb.h
++++ b/include/linux/atmel_mpopfb.h
+@@ -42,9 +42,11 @@ struct atmel_mpopfb_baseimg_info {
+ 	unsigned xsize;
+ 	unsigned ysize;
+ 
+-	/* Signal that we should flip the video. */
++	/* Signal for flipping the video. */
+ 	int flip;
+ 
++	/* Signal for disabling the line cache. */
++	int line_cache_disable;
+ };
+ 
+ enum atmel_mpopfb_overlay_type {
+-- 
+1.5.6.3
+

@@ -1,0 +1,31 @@
+--- a/arch/avr32/boards/atstk1000/atstk1002.c
++++ b/arch/avr32/boards/atstk1000/atstk1002.c
+@@ -99,6 +99,7 @@ static struct mtd_partition *nand_part_i
+ static struct atmel_nand_data atstk1006_nand_data __initdata = {
+ 	.cle		= 21,
+ 	.ale		= 22,
++	.det_pin	= GPIO_PIN_NONE,
+ 	.rdy_pin	= GPIO_PIN_PB(30),
+ 	.enable_pin	= GPIO_PIN_PB(29),
+ 	.partition_info	= nand_part_info,
+--- a/arch/avr32/mach-at32ap/at32ap700x.c
++++ b/arch/avr32/mach-at32ap/at32ap700x.c
+@@ -1969,13 +1969,14 @@ at32_add_device_nand(unsigned int id, st
+ 		goto fail;
+ 
+ 	hmatrix_sfr_set_bits(HMATRIX_SLAVE_EBI, HMATRIX_EBI_NAND_ENABLE);
+-	if (data->enable_pin)
++
++	if (gpio_is_valid(data->enable_pin))
+ 		at32_select_gpio(data->enable_pin,
+ 				AT32_GPIOF_OUTPUT | AT32_GPIOF_HIGH);
+-	if (data->rdy_pin)
+-		at32_select_gpio(data->rdy_pin, 0);
+-	if (data->det_pin)
++	if (gpio_is_valid(data->det_pin))
+ 		at32_select_gpio(data->det_pin, 0);
++	if (gpio_is_valid(data->rdy_pin))
++		at32_select_gpio(data->rdy_pin, 0);
+ 
+ 	platform_device_add(pdev);
+ 	return pdev;
