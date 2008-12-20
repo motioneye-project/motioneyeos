@@ -10,7 +10,7 @@ choice
 
 	config BR2_BINUTILS_VERSION_2_17
 		depends on BR2_avr32 || !BR2_nios2
-		depends on BR2_DEPRECATED
+		depends on BR2_DEPRECATED && !BR2_avr32
 		depends on BR2_EXT_BINUTILS_VERSION_2_17
 		bool "binutils 2.17"
 
@@ -20,7 +20,8 @@ choice
 		bool "binutils 2.17.50.0.17"
 
 	config BR2_BINUTILS_VERSION_2_18
-		depends on !BR2_avr32 && !BR2_nios2
+		depends on !BR2_nios2
+		depends on BR2_EXT_BINUTILS_VERSION_2_18
 		bool "binutils 2.18"
 
 	config BR2_BINUTILS_VERSION_2_18_50_0_1
