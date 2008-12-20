@@ -77,8 +77,6 @@ ifeq ($(BR2_PACKAGE_OPENSWAN),y)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) package/openswan \
 		linux-$(LINUX_HEADERS_VERSION)-\*.patch{,.gz,.bz2}
 endif
-	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) toolchain/kernel-headers/arch/$(ARCH)/linux-$(LINUX_HEADERS_VERSION) \
-		linux-\*.patch{,.gz,.bz2}
 	touch $@
 
 $(LINUX_HEADERS_DIR)/.configured: $(LINUX_HEADERS_UNPACK_DIR)/.patched
