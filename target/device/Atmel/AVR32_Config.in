@@ -32,6 +32,12 @@ config BR2_TARGET_AT32AP7002
 	help
 	  Atmel AT32AP7002 AVR32 based systems
 
+config BR2_TARGET_AT32AP7200
+	bool "Board support for the Atmel AT32AP7200 Microprocessor"
+	depends on BR2_TARGET_AVR32
+	help
+	  Atmel AT32AP7200 AVR32 based systems
+
 endchoice
 
 comment "Development board support"
@@ -50,6 +56,14 @@ config BR2_TARGET_AVR32_ATSTK1002
 	select BR2_PACKAGE_LINUX
 	help
 	  The Atmel ATSTK1000 AVR32 Development Board.
+
+config BR2_TARGET_AVR32_ATSTK1005
+	bool "Atmel ATSTK1000/5 AVR32 development board support"
+	depends on BR2_TARGET_AT32AP7200
+	select BR2_PACKAGE_LINUX
+	help
+	  The Atmel ATSTK1000 AVR32 Development Board,
+	  with the AT32AP7200 based top board
 
 config BR2_TARGET_AVR32_ATNGW100
 	bool "Atmel AVR32 network gateway board support"
