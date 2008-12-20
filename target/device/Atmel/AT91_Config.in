@@ -8,30 +8,36 @@ config BR2_TARGET_AT91
 	  Atmel AT91 ARM based systems
 
 comment	"Selection criteria"
+	depends on BR2_TARGET_AT91
 
 config	BR2_TARGET_ATMEL_ALL
 	bool "Allow all ARM targets"
-	depends on BR2_arm
+	depends on BR2_TARGET_AT91
 	default y
 
 config	BR2_TARGET_ATMEL_NET
 	bool "With network controller"
+	depends on BR2_TARGET_AT91
 	depends on !BR2_TARGET_ATMEL_ALL
 	default y
 
 config	BR2_TARGET_ATMEL_LCD
 	bool "With LCD controller"
+	depends on BR2_TARGET_AT91
 	depends on !BR2_TARGET_ATMEL_ALL
 
 config	BR2_TARGET_ATMEL_FPDSP
 	bool "With Floating Point DSP"
+	depends on BR2_TARGET_AT91
 	depends on !BR2_TARGET_ATMEL_ALL
 
 config	BR2_TARGET_ATMEL_MPB
 	bool "With customizable MP-Block"
+	depends on BR2_TARGET_AT91
 	depends on !BR2_TARGET_ATMEL_ALL
 
 comment "Device Selection"
+	depends on BR2_TARGET_AT91
 
 choice
 	prompt "AT91 device"
@@ -170,6 +176,7 @@ config BR2_TARGET_AT91SAM9262
 endchoice
 
 comment "Development Board Selection"
+	depends on BR2_TARGET_AT91
 
 choice
 	prompt "Development Board support"
