@@ -13,6 +13,7 @@ GCC_SCRIPT_TEMP:=$(BINARIES_DIR)/$(GCC_SCRIPT)
 	@echo	"export	GCCROOT=$(STAGING_DIR)/usr"			>>	$(GCC_SCRIPT_TEMP)
 	@echo	"export	PATH=\$$PATH:\$$GCCROOT/bin"			>>	$(GCC_SCRIPT_TEMP)
 	@echo	"export	CROSS_COMPILE=$(REAL_GNU_TARGET_NAME)-"		>>	$(GCC_SCRIPT_TEMP)
+	@chmod	a+x $(GCC_SCRIPT_TEMP)
 	@cp	$(GCC_SCRIPT_TEMP) ~/$(GCC_SCRIPT)
 	@cat	~/$(GCC_SCRIPT)
 
