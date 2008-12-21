@@ -27,6 +27,12 @@ choice
 
 endchoice
 
+config UCLIBC_VERSION
+	string
+	default "0.9.28.3"	if BR2_UCLIBC_VERSION_0_9_28_3
+	default "0.9.29"	if BR2_UCLIBC_VERSION_0_9_29
+	default "0.9.30"	if BR2_UCLIBC_VERSION_0_9_30
+	default "snapshot"	if BR2_UCLIBC_VERSION_SNAPSHOT
 
 config BR2_USE_UCLIBC_SNAPSHOT
 	string "Date (yyyymmdd) of snapshot or 'snapshot' for latest"

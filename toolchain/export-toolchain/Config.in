@@ -1,0 +1,8 @@
+config BR2_EXPORT_TOOLCHAIN
+	bool "Create script exporting toolchain to home directory"
+	default n
+	help
+	  This will generate a batchfile which, if run
+	  will add the Buildroot toolchain to the user PATH
+	  The file is called "$(ARCH)-uclibc-gcc-$(GCC_VERSION).sh"
+

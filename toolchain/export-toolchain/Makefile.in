@@ -1,0 +1,28 @@
+# This generates a script which exports the toolchain
+# using a shell script
+
+GCC_SCRIPT:=$(ARCH)-uclibc-gcc-$(GCC_VERSION).sh
+GCC_SCRIPT_TEMP:=$(BINARIES_DIR)/$(GCC_SCRIPT)
+
+~/$(GCC_SCRIPT): cross_compiler
+	@echo	"#!/bin/sh"						>	$(GCC_SCRIPT_TEMP)
+	@echo	"# $(ARCH) cross compiler toolchain created $(DATE)"	>>	$(GCC_SCRIPT_TEMP)
+	@echo	"# gcc-$(GCC_VERSION)"					>>	$(GCC_SCRIPT_TEMP)
+	@echo	"# binutils-$(BINUTILS_VERSION)"			>>	$(GCC_SCRIPT_TEMP)
+	@echo	"# uClibc-$(UCLIBC_VERSION)"				>>	$(GCC_SCRIPT_TEMP)
+	@echo	"export	GCCROOT=$(STAGING_DIR)/usr"			>>	$(GCC_SCRIPT_TEMP)
+	@echo	"export	PATH=\$$PATH:\$$GCCROOT/bin"			>>	$(GCC_SCRIPT_TEMP)
+	@echo	"export	CROSS_COMPILE=$(REAL_GNU_TARGET_NAME)-"		>>	$(GCC_SCRIPT_TEMP)
+	@cp	$(GCC_SCRIPT_TEMP) ~/$(GCC_SCRIPT)
+	@cat	~/$(GCC_SCRIPT)
+
+export-toolchain: ~/$(GCC_SCRIPT)
+
+export-toolchain-clean:
+	rm	-f ~/$(GCC_SCRIPT)
+	rm	-f $(GCC_SCRIPT_TEMP)
+
+ifeq ($(BR2_EXPORT_TOOLCHAIN),y)
+TARGETS+=export-toolchain
+endif
+
