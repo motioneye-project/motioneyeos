@@ -4,8 +4,8 @@
 #
 #############################################################
 SETSERIAL_VERSION:=2.17
-SETSERIAL_PATCH_VERSION:=-44
-#SETSERIAL_PATCH_FILE:=
+SETSERIAL_PATCH_VERSION:=.orig
+SETSERIAL_PATCH_FILE:=setserial_2.17-45.diff.gz
 SETSERIAL_SOURCE:=setserial_$(SETSERIAL_VERSION)$(SETSERIAL_PATCH_VERSION).tar.gz
 SETSERIAL_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/s/setserial/
 SETSERIAL_DIR:=$(BUILD_DIR)/setserial-$(SETSERIAL_VERSION)
@@ -64,6 +64,8 @@ $(TARGET_DIR)/$(SETSERIAL_TARGET_BINARY): $(SETSERIAL_DIR)/$(SETSERIAL_BINARY)
 setserial: uclibc $(TARGET_DIR)/$(SETSERIAL_TARGET_BINARY)
 
 setserial-source: $(DL_DIR)/$(SETSERIAL_SOURCE) $(SETSERIAL_PATCH)
+
+setserial-unpacked: $(SETSERIAL_DIR)/.unpacked
 
 setserial-clean:
 	rm -f $(TARGET_DIR)/$(SETSERIAL_TARGET_BINARY)
