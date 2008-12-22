@@ -1,0 +1,59 @@
+---
+ fc-arch/Makefile.am      |    2 +-
+ fc-case/Makefile.am      |    2 +-
+ fc-glyphname/Makefile.am |    2 +-
+ fc-lang/Makefile.am      |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+Index: fontconfig-2.6.0/fc-arch/Makefile.am
+===================================================================
+--- fontconfig-2.6.0.orig/fc-arch/Makefile.am
++++ fontconfig-2.6.0/fc-arch/Makefile.am
+@@ -24,7 +24,7 @@
+ 
+ CC = @CC_FOR_BUILD@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(WARN_CFLAGS)
+ 
+Index: fontconfig-2.6.0/fc-case/Makefile.am
+===================================================================
+--- fontconfig-2.6.0.orig/fc-case/Makefile.am
++++ fontconfig-2.6.0/fc-case/Makefile.am
+@@ -24,7 +24,7 @@
+ 
+ CC = @CC_FOR_BUILD@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(WARN_CFLAGS)
+ 
+Index: fontconfig-2.6.0/fc-glyphname/Makefile.am
+===================================================================
+--- fontconfig-2.6.0.orig/fc-glyphname/Makefile.am
++++ fontconfig-2.6.0/fc-glyphname/Makefile.am
+@@ -24,7 +24,7 @@
+ 
+ CC = @CC_FOR_BUILD@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(WARN_CFLAGS)
+ 
+Index: fontconfig-2.6.0/fc-lang/Makefile.am
+===================================================================
+--- fontconfig-2.6.0.orig/fc-lang/Makefile.am
++++ fontconfig-2.6.0/fc-lang/Makefile.am
+@@ -24,7 +24,7 @@
+ 
+ CC = @CC_FOR_BUILD@
+ EXEEXT = @EXEEXT_FOR_BUILD@
+-LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++LINK = $(CCLD) $(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
+ 
+ INCLUDES=-I${top_srcdir}/src -I${top_srcdir} $(WARN_CFLAGS)
+ 
