@@ -1,0 +1,21 @@
+ARM defines SYS_cacheflush, but doesn't have <asm/cachectl.h>
+---
+ system.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: strace-4.5.18/system.c
+===================================================================
+--- strace-4.5.18.orig/system.c
++++ strace-4.5.18/system.c
+@@ -70,9 +70,11 @@
+ #include <linux/capability.h>
+ #endif
+ 
++#ifndef ARM
+ #ifdef SYS_cacheflush
+ #include <asm/cachectl.h>
+ #endif
++#endif
+ 
+ #ifdef HAVE_LINUX_USTNAME_H
+ #include <linux/utsname.h>
