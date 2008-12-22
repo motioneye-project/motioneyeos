@@ -8,7 +8,7 @@
  LINK = $(LIBTOOL) $(LT_QUIET) --tag=CC --mode=link $(CCLD) \
  	$(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
 +makestrs_LINK = $(HOST_CC) \
-+	$(AM_CFLAGS) $(CFLAGS) $(AM_LDFLAGS) $(LDFLAGS) -o $@
++	$(AM_CFLAGS) $(CFLAGS_FOR_BUILD) $(AM_LDFLAGS) $(LDFLAGS_FOR_BUILD) -o $@
  SOURCES = $(makestrs_SOURCES)
  DIST_SOURCES = $(makestrs_SOURCES)
  am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
@@ -26,22 +26,22 @@
  makestrs-makestrs.o: makestrs.c
  	@@AMPRETTYECHO@ '  [C         ]  makestrs.c'
 -@am__fastdepCC_TRUE@	@AMSHOWCMDSAT@if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -MT makestrs-makestrs.o -MD -MP -MF "$(DEPDIR)/makestrs-makestrs.Tpo" -c -o makestrs-makestrs.o `test -f 'makestrs.c' || echo '$(srcdir)/'`makestrs.c; \
-+@am__fastdepCC_TRUE@	@AMSHOWCMDSAT@if $(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -MT makestrs-makestrs.o -MD -MP -MF "$(DEPDIR)/makestrs-makestrs.Tpo" -c -o makestrs-makestrs.o `test -f 'makestrs.c' || echo '$(srcdir)/'`makestrs.c; \
++@am__fastdepCC_TRUE@	@AMSHOWCMDSAT@if $(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS_FOR_BUILD) -MT makestrs-makestrs.o -MD -MP -MF "$(DEPDIR)/makestrs-makestrs.Tpo" -c -o makestrs-makestrs.o `test -f 'makestrs.c' || echo '$(srcdir)/'`makestrs.c; \
  @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/makestrs-makestrs.Tpo" "$(DEPDIR)/makestrs-makestrs.Po"; else rm -f "$(DEPDIR)/makestrs-makestrs.Tpo"; exit 1; fi
  @AMDEP_TRUE@@am__fastdepCC_FALSE@	@AMSHOWCMDSAT@source='makestrs.c' object='makestrs-makestrs.o' libtool=no @AMDEPBACKSLASH@
  @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 -@am__fastdepCC_FALSE@	@AMDEPSHOWCMDSAT@$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -c -o makestrs-makestrs.o `test -f 'makestrs.c' || echo '$(srcdir)/'`makestrs.c
-+@am__fastdepCC_FALSE@	@AMDEPSHOWCMDSAT@$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -c -o makestrs-makestrs.o `test -f 'makestrs.c' || echo '$(srcdir)/'`makestrs.c
++@am__fastdepCC_FALSE@	@AMDEPSHOWCMDSAT@$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS_FOR_BUILD) -c -o makestrs-makestrs.o `test -f 'makestrs.c' || echo '$(srcdir)/'`makestrs.c
  
  makestrs-makestrs.obj: makestrs.c
  	@@AMPRETTYECHO@ '  [C         ]  makestrs.c'
 -@am__fastdepCC_TRUE@	@AMSHOWCMDSAT@if $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -MT makestrs-makestrs.obj -MD -MP -MF "$(DEPDIR)/makestrs-makestrs.Tpo" -c -o makestrs-makestrs.obj `if test -f 'makestrs.c'; then $(CYGPATH_W) 'makestrs.c'; else $(CYGPATH_W) '$(srcdir)/makestrs.c'; fi`; \
-+@am__fastdepCC_TRUE@	@AMSHOWCMDSAT@if $(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -MT makestrs-makestrs.obj -MD -MP -MF "$(DEPDIR)/makestrs-makestrs.Tpo" -c -o makestrs-makestrs.obj `if test -f 'makestrs.c'; then $(CYGPATH_W) 'makestrs.c'; else $(CYGPATH_W) '$(srcdir)/makestrs.c'; fi`; \
++@am__fastdepCC_TRUE@	@AMSHOWCMDSAT@if $(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS_FOR_BUILD) -MT makestrs-makestrs.obj -MD -MP -MF "$(DEPDIR)/makestrs-makestrs.Tpo" -c -o makestrs-makestrs.obj `if test -f 'makestrs.c'; then $(CYGPATH_W) 'makestrs.c'; else $(CYGPATH_W) '$(srcdir)/makestrs.c'; fi`; \
  @am__fastdepCC_TRUE@	then mv -f "$(DEPDIR)/makestrs-makestrs.Tpo" "$(DEPDIR)/makestrs-makestrs.Po"; else rm -f "$(DEPDIR)/makestrs-makestrs.Tpo"; exit 1; fi
  @AMDEP_TRUE@@am__fastdepCC_FALSE@	@AMSHOWCMDSAT@source='makestrs.c' object='makestrs-makestrs.obj' libtool=no @AMDEPBACKSLASH@
  @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 -@am__fastdepCC_FALSE@	@AMDEPSHOWCMDSAT@$(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -c -o makestrs-makestrs.obj `if test -f 'makestrs.c'; then $(CYGPATH_W) 'makestrs.c'; else $(CYGPATH_W) '$(srcdir)/makestrs.c'; fi`
-+@am__fastdepCC_FALSE@	@AMDEPSHOWCMDSAT@$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS) -c -o makestrs-makestrs.obj `if test -f 'makestrs.c'; then $(CYGPATH_W) 'makestrs.c'; else $(CYGPATH_W) '$(srcdir)/makestrs.c'; fi`
++@am__fastdepCC_FALSE@	@AMDEPSHOWCMDSAT@$(HOST_CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(makestrs_CFLAGS) $(CFLAGS_FOR_BUILD) -c -o makestrs-makestrs.obj `if test -f 'makestrs.c'; then $(CYGPATH_W) 'makestrs.c'; else $(CYGPATH_W) '$(srcdir)/makestrs.c'; fi`
  
  mostlyclean-libtool:
  	@@AMPRETTYECHO@ '  [RM        ]  *.lo'
