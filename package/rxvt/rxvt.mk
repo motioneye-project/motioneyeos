@@ -42,7 +42,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 	(cd $(RXVT_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		rxvt_cv_ptys=GLIBC \
+		rxvt_cv_ptys=USG \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \

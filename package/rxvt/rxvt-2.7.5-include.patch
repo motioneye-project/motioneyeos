@@ -1,0 +1,17 @@
+uClibc doesn't have <sys/stropts.h>
+---
+ src/init.h |    1 -
+ 1 file changed, 1 deletion(-)
+
+Index: rxvt-2.7.5/src/init.h
+===================================================================
+--- rxvt-2.7.5.orig/src/init.h
++++ rxvt-2.7.5/src/init.h
+@@ -16,7 +16,6 @@
+ 
+ #if defined(PTYS_ARE_PTMX) && !defined(__CYGWIN32__)
+ # include <sys/resource.h>	/* for struct rlimit */
+-# include <sys/stropts.h>	/* for I_PUSH */
+ # define _NEW_TTY_CTRL		/* to get proper defines in <termios.h> */
+ #endif
+ 
