@@ -56,7 +56,17 @@ config BR2_UCLIBC_CONFIG
 config BR2_ENABLE_LOCALE
 	bool "Enable locale/gettext/i18n support?"
 	help
-	    Enable locale/gettext/i18n support?
+	  Enable locale/gettext/i18n support?
+
+config BR2_ENABLE_LOCALE_PREGENERATED
+	bool "Use pregenerated locale data?"
+	depends on BR2_ENABLE_LOCALE
+	help
+	  Instead of generating the locale data locally you can optionally
+	  download a pregenerated set of locales.
+
+	  Say N here unless your buildhost lacks locale support and you
+	  desparately want to use internationalization on your target.
 
 choice
 	prompt "Thread library implementation"
