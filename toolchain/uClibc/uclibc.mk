@@ -125,7 +125,7 @@ else
 	toolchain/patch-kernel.sh $(UCLIBC_DIR) $(UCLIBC_PATCH_DIR) \
 		uClibc.\*.patch uClibc.\*.patch.$(ARCH)
 endif
-ifneq ($(BR2_ENABLE_LOCALE_PREGENERATED)),)
+ifneq ($(BR2_ENABLE_LOCALE_PREGENERATED),)
 	cp -dpf $(DL_DIR)/$(UCLIBC_SOURCE_LOCALE) $(UCLIBC_DIR)/extra/locale/
 endif
 	touch $@
