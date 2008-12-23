@@ -46,6 +46,5 @@ CFLAGS_COMBINE = $(call cc-option,-combine,)
 
 # gcc has a bunch of needed stuff....
 include toolchain/gcc/Makefile.in
-
-include toolchain/export-toolchain/Makefile.in
-
+# breaks the build
+#include toolchain/export-toolchain/Makefile.in
