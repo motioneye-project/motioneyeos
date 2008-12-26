@@ -79,10 +79,11 @@ LIBGTK2_CONF_OPT = --enable-shared \
 		$(LIBGTK2_CONF_OPT_X)  \
 		$(LIBGTK2_CONF_OPT_DFB)
 
+LIBGTK2_DEPENDENCIES = pkgconfig libglib2 cairo pango atk
 
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	LIBGTK2_CONF_OPT += --with-gdktarget=directfb
-	LIBGTK2_DEPENDENCIES_EXTRA = directfb
+	LIBGTK2_DEPENDENCIES += directfb
 endif
 
 ifneq ($(BR2_PACKAGE_XSERVER_none),y)
@@ -91,11 +92,34 @@ ifneq ($(BR2_PACKAGE_XSERVER_none),y)
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--with-gdktarget=x11
-	LIBGTK2_DEPENDENCIES_EXTRA = xlib_libXcomposite $(XSERVER) cups
+	LIBGTK2_DEPENDENCIES += xlib_libXcomposite $(XSERVER)
 else
 	LIBGTK2_CONF_OPT += --without-x
 endif
 
-LIBGTK2_DEPENDENCIES = uclibc pkgconfig libpng jpeg tiff $(LIBGTK2_DEPENDENCIES_EXTRA) libglib2 cairo pango atk
+
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
+LIBGTK2_DEPENDENCIES += libpng
+else
+LIBGTK2_CONF_OPT += --without-libpng
+endif
+
+ifeq ($(BR2_PACKAGE_JPEG),y)
+LIBGTK2_DEPENDENCIES += jpeg
+else
+LIBGTK2_CONF_OPT += --without-libjpeg
+endif
+
+ifeq ($(BR2_PACKAGE_TIFF),y)
+LIBGTK2_DEPENDENCIES += tiff
+else
+LIBGTK2_CONF_OPT += --without-libtiff
+endif
+
+ifeq ($(BR2_PACKAGE_CUPS),y)
+LIBGTK2_DEPENDENCIES += cups
+else
+LIBGTK2_CONF_OPT += --disable-cups
+endif
 
 $(eval $(call AUTOTARGETS,package,libgtk2))
