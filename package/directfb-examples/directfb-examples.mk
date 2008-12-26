@@ -42,14 +42,13 @@ $(eval $(call AUTOTARGETS,package,directfb-examples))
 
 $(DIRECTFB_EXAMPLES_TARGET_INSTALL_TARGET): $(DIRECTFB_EXAMPLES_TARGET_INSTALL_STAGING)
 	$(call MESSAGE,"Installing to target")
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DIRECTFB_EXAMPLES_DIR) install
 	$(Q)mkdir -p $(TARGET_DIR)/usr/bin
 	$(Q)mkdir -p $(TARGET_DIR)/usr/share/directfb-examples/
 	$(Q)mkdir -p $(TARGET_DIR)/usr/share/directfb-examples/fonts/
 	for file in $(DIRECTFB_EXAMPLES_TARGETS_y); do \
 	        cp -dpf $(STAGING_DIR)/$$file $(TARGET_DIR)/$$file; \
+		$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$$file; \
 	done
-
 	$(Q)cp -rdpf $(STAGING_DIR)/usr/share/directfb-examples/fonts/decker.ttf $(TARGET_DIR)/usr/share/directfb-examples/fonts/
 ifeq ($(BR2_PACKAGE_DIRECTFB_EXAMPLES_ANDI),y)
 	$(Q)cp -rdpf $(STAGING_DIR)/usr/share/directfb-examples/destination_mask.png $(TARGET_DIR)/usr/share/directfb-examples/
@@ -101,5 +100,5 @@ ifeq ($(BR2_PACKAGE_DIRECTFB_EXAMPLES_WINDOW),y)
 	$(Q)cp -rdpf $(STAGING_DIR)/usr/share/directfb-examples/desktop.png $(TARGET_DIR)/usr/share/directfb-examples/
 	$(Q)cp -rdpf $(STAGING_DIR)/usr/share/directfb-examples/dfblogo.png $(TARGET_DIR)/usr/share/directfb-examples/
 endif
-	$(Q)touch -c $@
+	touch $@
 
