@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBGLADE
+	bool "libglade"
+	depends on BR2_PACKAGE_LIBGTK2
+	select BR2_PACKAGE_PKGCONFIG
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_ATK
+	select BR2_PACKAGE_LIBXML2
+	help
+	  Libglade allows you to load glade interface files in a program
+	  at runtime. It doesn't require GLADE to be used, but GLADE is
+	  by far the easiest way to create the interface files.
+
+	  http://ftp.gnome.org/pub/GNOME/sources/libglade/
