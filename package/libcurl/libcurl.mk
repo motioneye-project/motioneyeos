@@ -21,3 +21,8 @@ $(eval $(call AUTOTARGETS,package,libcurl))
 $(LIBCURL_HOOK_POST_INSTALL):
 	rm -rf $(TARGET_DIR)/usr/bin/curl-config \
 	       $(if $(BR2_PACKAGE_CURL),,$(TARGET_DIR)/usr/bin/curl)
+
+curl: libcurl
+curl-clean: libcurl-clean
+curl-dirclean: libcurl-dirclean
+curl-source: libcurl-source
