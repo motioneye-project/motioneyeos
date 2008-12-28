@@ -1,11 +1,3 @@
-config BR2_PACKAGE_CURL
-	bool "curl"
-	help
-	  cURL is a tool for getting files from FTP, HTTP, Gopher, Telnet,
-	  and Dict servers, using any of the supported protocols.
-
-	  http://curl.haxx.nu/
-
 config BR2_PACKAGE_LIBCURL
 	bool "libcurl"
 	help
@@ -13,3 +5,9 @@ config BR2_PACKAGE_LIBCURL
 	  and Dict servers, using any of the supported protocols.
 
 	  http://curl.haxx.nu/
+
+config BR2_PACKAGE_CURL
+	bool "curl binary"
+	depends on BR2_PACKAGE_LIBCURL
+	help
+	  Install curl binary as well
