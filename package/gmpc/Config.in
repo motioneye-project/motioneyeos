@@ -1,0 +1,15 @@
+config BR2_PACKAGE_GMPC
+	bool "gmpc"
+	depends on BR2_PACKAGE_LIBGTK2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_GETTEXT
+	select BR2_PACKAGE_LIBINTL
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_PKGCONFIG
+	select BR2_PACKAGE_LIBMPD
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Gnome Music Player Client is a GNOME/GTK2.2 client for
+	  Music Player Daemon.
+
+	  http://gmpcwiki.sarine.nl/index.php?title=GMPC
