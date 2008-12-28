@@ -1,0 +1,25 @@
+ssluse.c: fix build breakage with --with-ssl --disable-verbose
+
+Revision 1.206 of ssluse.c removed the prefix argument to asn1_output,
+but it is still referenced in the CURL_DISABLE_VERBOSE_STRINGS case.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ lib/ssluse.c |    4 ----
+ 1 file changed, 4 deletions(-)
+
+Index: curl-7.19.2/lib/ssluse.c
+===================================================================
+--- curl-7.19.2.orig/lib/ssluse.c
++++ curl-7.19.2/lib/ssluse.c
+@@ -923,10 +923,6 @@
+   int i;
+   int year=0,month=0,day=0,hour=0,minute=0,second=0;
+ 
+-#ifdef CURL_DISABLE_VERBOSE_STRINGS
+-  (void)prefix;
+-#endif
+-
+   i=tm->length;
+   asn1_string=(const char *)tm->data;
+ 
