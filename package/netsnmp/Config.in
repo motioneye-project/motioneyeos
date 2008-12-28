@@ -1,6 +1,5 @@
 config BR2_PACKAGE_NETSNMP
 	bool "netsnmp"
-	select BR2_PACKAGE_OPENSSL
 	help
 	  Suite of applications used to implement SNMP v1, SNMP v2c, and
 	  SNMP v3 using both IPv4 and IPv6.

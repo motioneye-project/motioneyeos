@@ -130,7 +130,7 @@ endif
 	$(INSTALL) -D -m 0644 $(NETSNMP_DIR)/agent/mibgroup/header_complex.h $(STAGING_DIR)/usr/include/net-snmp/agent/header_complex.h
 	$(INSTALL) -D -m 0755 package/netsnmp/S59snmpd $(TARGET_DIR)/etc/init.d/S59snmpd
 
-netsnmp: openssl $(TARGET_DIR)/usr/sbin/snmpd
+netsnmp: $(if $(BR2_PACKAGE_OPENSSL),openssl) $(TARGET_DIR)/usr/sbin/snmpd
 
 netsnmp-headers: $(TARGET_DIR)/usr/include/net-snmp/net-snmp-config.h
 	$(INSTALL) -d $(TARGET_DIR)/usr/include/net-snmp
