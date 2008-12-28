@@ -315,7 +315,12 @@ source "package/qtopia4/Config.in"
 #source "package/microwin/Config.in"
 
 
-menu "X Window System server"
+choice
+	prompt "X Window System server"
+	default BR2_PACKAGE_XSERVER_none
+	help
+	  Select the X Window System server to use
+
 config BR2_PACKAGE_XSERVER_none
 	bool "none"
 	default y
@@ -327,12 +332,12 @@ comment "xorg requires a toolchain with LOCALE and WCHAR support"
 	depends on !(BR2_USE_WCHAR && BR2_ENABLE_LOCALE)
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
-endmenu
+endchoice
 
 config BR2_X11_PREFIX
 	string
-	default "/usr/X11R6"	if BR2_PACKAGE_XSERVER_xorg || BR2_PACKAGE_XSERVER_tinyx
-	default "/usr"		if !BR2_PACKAGE_XSERVER_xorg && !BR2_PACKAGE_XSERVER_tinyx
+	default "/usr/X11R6"	if BR2_PACKAGE_XSERVER_xorg
+	default "/usr"		if BR2_PACKAGE_XSERVER_tinyx
 	help
 	  X11 apps root location
 
