@@ -3,7 +3,7 @@
 # netsnmp
 #
 #############################################################
-NETSNMP_VERSION:=5.4.1
+NETSNMP_VERSION:=5.4.2.1
 NETSNMP_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/net-snmp/
 NETSNMP_DIR:=$(BUILD_DIR)/net-snmp-$(NETSNMP_VERSION)
 NETSNMP_SOURCE:=net-snmp-$(NETSNMP_VERSION).tar.gz
