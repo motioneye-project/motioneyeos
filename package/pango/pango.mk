@@ -5,7 +5,7 @@
 #############################################################
 PANGO_VERSION = 1.20.5
 PANGO_SOURCE = pango-$(PANGO_VERSION).tar.bz2
-PANGO_SITE = http://ftp.gnome.org/pub/GNOME/sources/pango/1.19
+PANGO_SITE = http://ftp.gnome.org/pub/GNOME/sources/pango/1.20
 PANGO_AUTORECONF = YES
 PANGO_INSTALL_STAGING = YES
 PANGO_INSTALL_TARGET = YES
