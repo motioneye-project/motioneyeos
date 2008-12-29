@@ -11,7 +11,7 @@ GMPC_CONF_ENV = ac_cv_lib_curl_curl_global_init=yes
 GMPC_CONF_OPT = --disable-mmkeys $(DISABLE_NLS)
 
 
-GMPC_DEPENDENCIES = libglib2 libgtk2 libcurl libmpd
+GMPC_DEPENDENCIES = libglib2 libgtk2 libglade libcurl libmpd
 
 
 $(eval $(call AUTOTARGETS,package,gmpc))
