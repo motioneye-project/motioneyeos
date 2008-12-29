@@ -5,7 +5,7 @@
 #############################################################
 LIBGLIB2_VERSION = 2.16.6
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.bz2
-LIBGLIB2_SITE = http://ftp.gtk.org/pub/glib/2.15
+LIBGLIB2_SITE = http://ftp.gtk.org/pub/glib/2.16
 LIBGLIB2_AUTORECONF = NO
 LIBGLIB2_INSTALL_STAGING = YES
 LIBGLIB2_INSTALL_TARGET = YES
