@@ -332,6 +332,9 @@ comment "xorg requires a toolchain with LOCALE and WCHAR support"
 	depends on !(BR2_USE_WCHAR && BR2_ENABLE_LOCALE)
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "tinyx"
+	depends on BR2_USE_WCHAR
+comment "tinyx requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
 endchoice
 
 config BR2_X11_PREFIX
