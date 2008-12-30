@@ -323,7 +323,6 @@ choice
 
 config BR2_PACKAGE_XSERVER_none
 	bool "none"
-	default y
 config BR2_PACKAGE_XSERVER_xorg
 	bool "modular xorg"
 	depends on BR2_USE_WCHAR # && BR2_ENABLE_LOCALE
