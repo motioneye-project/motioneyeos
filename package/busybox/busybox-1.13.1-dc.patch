@@ -1,0 +1,13 @@
+--- busybox-1.13.1/miscutils/dc.c	Sun Nov  9 18:28:16 2008
++++ busybox-1.13.1-dc/miscutils/dc.c	Tue Dec 30 11:36:52 2008
+@@ -19,7 +19,9 @@
+ #define pointer   (G.pointer   )
+ #define base      (G.base      )
+ #define stack     (G.stack     )
+-#define INIT_G() do { } while (0)
++#define INIT_G() do { \
++	base = 10; \
++} while (0)
+ 
+ 
+ static void push(double a)
