@@ -123,3 +123,7 @@ LIBGTK2_CONF_OPT += --disable-cups
 endif
 
 $(eval $(call AUTOTARGETS,package,libgtk2))
+
+$(LIBGTK2_HOOK_POST_INSTALL):
+	$(INSTALL) -m 755 package/libgtk2/S26libgtk2 $(TARGET_DIR)/etc/init.d/
+	touch $@

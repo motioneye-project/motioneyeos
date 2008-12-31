@@ -1,0 +1,19 @@
+#!/bin/sh
+#
+# run pgdk-pixbuf-query-loaders if needed
+
+FILE=/etc/gtk-2.0/gdk-pixbuf.loaders
+
+case "$1" in
+    start|"")
+	if [ ! -f "$FILE" ] ; then
+	    /usr/bin/gdk-pixbuf-query-loaders > "$FILE"
+	fi
+	;;
+    stop)
+	;;
+    *)
+	echo "Usage: $0 {start|stop}" >&2
+	exit 1
+	;;
+esac
