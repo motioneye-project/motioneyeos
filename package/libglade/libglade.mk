@@ -15,3 +15,4 @@ $(LIBGLADE_HOOK_POST_INSTALL):
 	rm -rf $(TARGET_DIR)/usr/share/gtk-doc \
 	       $(TARGET_DIR)/usr/share/xml/libglade \
 	       $(TARGET_DIR)/usr/bin/libglade-convert
+	touch $@
