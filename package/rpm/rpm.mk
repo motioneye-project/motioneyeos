@@ -3,9 +3,10 @@
 # rpm
 #
 #############################################################
-RPM_VERSION = 5.1.1
+RPM_VERSION = 5.1.6
 RPM_SITE = http://rpm5.org/files/rpm/rpm-5.1/
 RPM_AUTORECONF = YES
+RPM_LIBTOOL_PATCH = NO
 
 RPM_DEPENDENCIES = zlib bzip2 beecrypt neon popt
 

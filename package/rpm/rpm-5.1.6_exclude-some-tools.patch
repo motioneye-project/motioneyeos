@@ -1,0 +1,12 @@
+diff -u --new-file --recursive rpm-5.1.6_vanilla/tools/Makefile.am rpm-5.1.6_no-noncompiling-tools/tools/Makefile.am
+--- rpm-5.1.6_vanilla/tools/Makefile.am	2008-06-15 08:57:25.000000000 +0000
++++ rpm-5.1.6_no-noncompiling-tools/tools/Makefile.am	2008-11-29 19:37:55.000000000 +0000
+@@ -39,7 +39,7 @@
+ 	$(top_builddir)/build/librpmbuild.la \
+ 	$(RPM_LDADD_COMMON)
+ 
+-bin_PROGRAMS =		rpm2cpio rpmcache rpmdigest rpmmtree rpmrepo
++bin_PROGRAMS =		rpm2cpio 
+ 
+ pkglibdir =		@USRLIBRPM@
+ pkglib_PROGRAMS =	rpmcmp rpmdeps @WITH_LIBELF_DEBUGEDIT@
