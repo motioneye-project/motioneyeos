@@ -3,8 +3,8 @@
 # xfsprogs
 #
 #############################################################
-XFSPROGS_VERSION:=2.7.11
-XFSPROGS_SOURCE=xfsprogs-$(XFSPROGS_VERSION).src.tar.gz
+XFSPROGS_VERSION:=2.10.2
+XFSPROGS_SOURCE=xfsprogs_$(XFSPROGS_VERSION)-1.tar.gz
 #XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/cmd_tars
 XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/previous/cmd_tars/
 XFSPROGS_DIR=$(BUILD_DIR)/xfsprogs-$(XFSPROGS_VERSION)
@@ -33,6 +33,7 @@ XFSPROGS_CONFIG_SHARED:=--enable-shared
 
 $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 	(cd $(XFSPROGS_DIR); rm -rf config.cache; \
+		ac_cv_header_aio_h=yes ac_cv_lib_rt_lio_listio=yes \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CPPFLAGS="-I$(E2FSPROGS_DIR)/lib" \
