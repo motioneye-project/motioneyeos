@@ -55,3 +55,7 @@ PANGO_CONF_OPT = --enable-shared --enable-static \
 PANGO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 $(XSERVER) cairo
 
 $(eval $(call AUTOTARGETS,package,pango))
+
+$(PANGO_HOOK_POST_INSTALL):
+	$(INSTALL) -m 755 package/pango/S25pango $(TARGET_DIR)/etc/init.d/
+	touch $@
