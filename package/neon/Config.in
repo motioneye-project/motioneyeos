@@ -6,6 +6,13 @@ config BR2_PACKAGE_NEON
 
 	  http://www.webdav.org/neon/
 
+config BR2_PACKAGE_NEON_ZLIB
+	bool "ZLIB support"
+	depends on BR2_PACKAGE_NEON
+	select BR2_PACKAGE_ZLIB
+	help
+	  build with ZLIB support
+
 choice
 	prompt "XML Support"
 	default BR2_PACKAGE_NEON_NOXML

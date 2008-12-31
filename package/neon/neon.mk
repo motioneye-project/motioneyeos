@@ -16,6 +16,12 @@ NEON_CONF_OPT+=--with-libxml2=yes
 NEON_CONF_OPT+=--with-expat=no
 NEON_DEPENDENCIES+=libxml2
 endif
+ifeq ($(BR2_PACKAGE_NEON_ZLIB),y)
+NEON_CONF_OPT+=--with-zlib=$(STAGING_DIR)
+NEON_DEPENDENCIES+=zlib
+else
+NEON_CONF_OPT+=--without-zlib
+endif
 ifeq ($(BR2_PACKAGE_NEON_EXPAT),y)
 NEON_CONF_OPT+=--with-expat=$(STAGING_DIR)/usr/lib/libexpat.la
 NEON_CONF_OPT+=--with-libxml2=no
