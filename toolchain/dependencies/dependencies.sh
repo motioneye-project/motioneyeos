@@ -248,6 +248,18 @@ echo "awk installed:					Ok"
 
 #############################################################
 #
+# check build system 'bash'
+#
+#############################################################
+if ! $SHELL --version 2>&1 | grep -q '^GNU bash'; then
+	echo "bash installed:		    FALSE"
+	/bin/echo -e "\n\nYou must install 'bash' on your build machine\n";
+	exit 1;
+fi;
+echo "bash installed:					Ok"
+
+#############################################################
+#
 # check build system 'bison'
 #
 #############################################################
