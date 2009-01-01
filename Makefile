@@ -79,11 +79,15 @@ else
   Q=@
 endif
 
-CONFIG_SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
+# we want bash as shell
+SHELL:=$(shell if [ -x "$$BASH" ]; then echo $$BASH; \
 	else if [ -x /bin/bash ]; then echo /bin/bash; \
 	else echo sh; fi; fi)
 
-export CONFIG_SHELL quiet Q KBUILD_VERBOSE VERBOSE
+# kconfig uses CONFIG_SHELL
+CONFIG_SHELL:=$(SHELL)
+
+export SHELL CONFIG_SHELL quiet Q KBUILD_VERBOSE VERBOSE
 
 ifndef HOSTAR
 HOSTAR:=ar
@@ -113,17 +117,17 @@ endif
 ifndef HOSTNM
 HOSTNM:=nm
 endif
-HOSTAR:=$(shell $(CONFIG_SHELL) -c "which $(HOSTAR)" || type -p $(HOSTAR) || echo ar)
-HOSTAS:=$(shell $(CONFIG_SHELL) -c "which $(HOSTAS)" || type -p $(HOSTAS) || echo as)
-HOSTCC:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCC)" || type -p $(HOSTCC) || echo gcc)
-HOSTCXX:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCXX)" || type -p $(HOSTCXX) || echo g++)
-HOSTFC:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLD)" || type -p $(HOSTLD) || echo || which g77 || type -p g77 || echo gfortran)
-HOSTCPP:=$(shell $(CONFIG_SHELL) -c "which $(HOSTCPP)" || type -p $(HOSTCPP) || echo cpp)
-HOSTLD:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLD)" || type -p $(HOSTLD) || echo ld)
-HOSTLN:=$(shell $(CONFIG_SHELL) -c "which $(HOSTLN)" || type -p $(HOSTLN) || echo ln)
-HOSTNM:=$(shell $(CONFIG_SHELL) -c "which $(HOSTNM)" || type -p $(HOSTNM) || echo nm)
-HOST_GLIB_BIN:=`dirname $(shell $(CONFIG_SHELL) -c "which glib-genmarshal" || echo /usr/bin/glib-genmarshal)`
-HOST_GLIB:=$(shell $(CONFIG_SHELL) -c "dirname $(HOST_GLIB_BIN)" || echo /usr)
+HOSTAR:=$(shell which $(HOSTAR) || type -p $(HOSTAR) || echo ar)
+HOSTAS:=$(shell which $(HOSTAS) || type -p $(HOSTAS) || echo as)
+HOSTCC:=$(shell which $(HOSTCC) || type -p $(HOSTCC) || echo gcc)
+HOSTCXX:=$(shell which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
+HOSTFC:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo || which g77 || type -p g77 || echo gfortran)
+HOSTCPP:=$(shell which $(HOSTCPP) || type -p $(HOSTCPP) || echo cpp)
+HOSTLD:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
+HOSTLN:=$(shell which $(HOSTLN) || type -p $(HOSTLN) || echo ln)
+HOSTNM:=$(shell which $(HOSTNM) || type -p $(HOSTNM) || echo nm)
+HOST_GLIB_BIN:=`dirname $(shell which glib-genmarshal || echo /usr/bin/glib-genmarshal)`
+HOST_GLIB:=$(shell dirname $(HOST_GLIB_BIN) || echo /usr)
 
 
 ifndef CFLAGS_FOR_BUILD

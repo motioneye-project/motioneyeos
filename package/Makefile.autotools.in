@@ -127,7 +127,7 @@ TAR ?= tar
 #	ACLOCAL="$(ACLOCAL)"
 
 # Automatically detect tar --strip-path/components option
-TAR_STRIP_COMPONENTS := $(shell $(CONFIG_SHELL) -c '$(TAR) --help | grep strip-path > /dev/null ; if test $$? = 0 ; then echo '--strip-path' ; else echo '--strip-components' ; fi')
+TAR_STRIP_COMPONENTS := $(shell $(TAR) --help | grep strip-path > /dev/null ; if test $$? = 0 ; then echo '--strip-path' ; else echo '--strip-components' ; fi)
 
 ################################################################################
 # Implicit targets -- produce a stamp file for each step of a package build

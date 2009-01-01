@@ -4,7 +4,7 @@ endif
 ifndef HOSTMAKE
 HOSTMAKE=$(MAKE)
 endif
-HOSTMAKE :=$(shell $(CONFIG_SHELL) -c "which $(HOSTMAKE)" || type -p $(HOSTMAKE) || echo make)
+HOSTMAKE :=$(shell which $(HOSTMAKE) || type -p $(HOSTMAKE) || echo make)
 
 MAKE1:=$(HOSTMAKE) -j1
 MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
@@ -178,8 +178,8 @@ TARGET_STRIP=true -Not_stripping
 STRIPCMD=$(TARGET_STRIP)
 endif
 INSTALL=/usr/bin/install
-FLEX:=$(shell $(CONFIG_SHELL) -c 'which flex || type -p flex')
-BISON:=$(shell $(CONFIG_SHELL) -c 'which bison || type -p bison')
+FLEX:=$(shell which flex || type -p flex)
+BISON:=$(shell which bison || type -p bison)
 
 HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/sparc.*/sparc/' \

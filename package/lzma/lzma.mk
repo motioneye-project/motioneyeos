@@ -13,8 +13,8 @@ LZMA_TARGET_BINARY:=bin/lzma
 
 # lzma binary for use on the host
 LZMA=$(TOOL_BUILD_DIR)/bin/lzma
-HOST_LZMA_BINARY=$(shell $(CONFIG_SHELL) package/lzma/lzmacheck.sh)
-HOST_LZMA_IF_ANY=$(shell $(CONFIG_SHELL) toolchain/dependencies/check-host-lzma.sh)
+HOST_LZMA_BINARY=$(shell package/lzma/lzmacheck.sh)
+HOST_LZMA_IF_ANY=$(shell toolchain/dependencies/check-host-lzma.sh)
 
 
 $(DL_DIR)/$(LZMA_SOURCE):
