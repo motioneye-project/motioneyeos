@@ -3,7 +3,7 @@
 # e2fsprogs
 #
 #############################################################
-E2FSPROGS_VERSION:=1.39
+E2FSPROGS_VERSION:=1.41.3
 E2FSPROGS_SOURCE=e2fsprogs-$(E2FSPROGS_VERSION).tar.gz
 E2FSPROGS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/e2fsprogs
 E2FSPROGS_DIR=$(BUILD_DIR)/e2fsprogs-$(E2FSPROGS_VERSION)
@@ -48,6 +48,7 @@ $(E2FSPROGS_DIR)/.configured: $(E2FSPROGS_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
+		--disable-tls \
 		--enable-elf-shlibs --enable-dynamic-e2fsck --disable-swapfs \
 		--disable-debugfs --disable-imager \
 		--disable-resizer --enable-fsck \
@@ -85,8 +86,8 @@ E2FSPROGS_RM$(BR2_PACKAGE_E2FSPROGS_UUIDGEN) += ${TARGET_DIR}/bin/uuidgen
 $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY): $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
 	$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(TARGET_DIR) LDCONFIG=true \
 		-C $(E2FSPROGS_DIR) install
-	rm -rf ${TARGET_DIR}/sbin/mkfs.ext[23] \
-		${TARGET_DIR}/sbin/fsck.ext[23] \
+	rm -rf ${TARGET_DIR}/sbin/mkfs.ext[234] \
+		${TARGET_DIR}/sbin/fsck.ext[234] \
 		${TARGET_DIR}/sbin/findfs \
 		${TARGET_DIR}/sbin/tune2fs
 ifneq ($(E2FSPROGS_RM),)
@@ -95,10 +96,12 @@ endif
 ifeq ($(BR2_PACKAGE_E2FSPROGS_MKE2FS),y)
 	ln -sf mke2fs ${TARGET_DIR}/sbin/mkfs.ext2
 	ln -sf mke2fs ${TARGET_DIR}/sbin/mkfs.ext3
+	ln -sf mke2fs ${TARGET_DIR}/sbin/mkfs.ext4
 endif
 ifeq ($(BR2_PACKAGE_E2FSPROGS_E2FSCK),y)
 	ln -sf e2fsck ${TARGET_DIR}/sbin/fsck.ext2
 	ln -sf e2fsck ${TARGET_DIR}/sbin/fsck.ext3
+	ln -sf e2fsck ${TARGET_DIR}/sbin/fsck.ext4
 endif
 ifeq ($(BR2_PACKAGE_E2FSPROGS_TUNE2FS),y)
 	ln -sf e2label ${TARGET_DIR}/sbin/tune2fs
