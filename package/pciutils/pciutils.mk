@@ -3,7 +3,6 @@
 # pciutils
 #
 #############################################################
-PCIUTILS_VERSION:=2.2.10
 PCIUTILS_VERSION:=3.0.1
 PCIUTILS_SOURCE:=pciutils-$(PCIUTILS_VERSION).tar.gz
 PCIUTILS_CAT:=$(ZCAT)
@@ -55,7 +54,7 @@ $(TARGET_DIR)/sbin/setpci: $(PCIUTILS_DIR)/.compiled
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 $(TARGET_DIR)/usr/share/misc/$(PCIIDS_FILE): $(PCIUTILS_DIR)/.unpacked
-	$(INSTALL) -D $(PCIUTILS_DIR)/$(PCIIDS_FILE) $(@D)
+	$(INSTALL) -D $(PCIUTILS_DIR)/$(PCIIDS_FILE) $@
 
 pciutils: uclibc $(if $(BR2_PACKAGE_ZLIB),zlib) $(TARGET_DIR)/sbin/setpci $(TARGET_DIR)/sbin/lspci $(TARGET_DIR)/usr/share/misc/$(PCIIDS_FILE)
 
