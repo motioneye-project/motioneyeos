@@ -269,10 +269,12 @@ endchoice
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_x86_64
-	default BR2_x86_64_core2
+	default BR2_x86_64_generic
 	help
 	  Specific CPU variant to use
 
+config BR2_x86_64_generic
+	bool "generic"
 config BR2_x86_64_barcelona
 	bool "barcelona"
 config BR2_x86_64_opteron_sse3
@@ -507,6 +509,7 @@ config BR2_ARCH
 	default "sparc"		if BR2_sparc
 	default "sparc64"	if BR2_sparc64
 	default "x86_64"	if BR2_x86_64
+	default "x86_64"	if BR2_x86_64_generic
 	default "x86_64"	if BR2_x86_64_nocona
 	default "x86_64"	if BR2_x86_64_core2
 	default "x86_64"	if BR2_x86_64_opteron
@@ -549,6 +552,7 @@ config BR2_GCC_TARGET_TUNE
 	default winchip2	if BR2_x86_winchip2
 	default c3		if BR2_x86_c3
 	default geode		if BR2_x86_geode
+	default generic		if BR2_x86_64_generic
 	default nocona		if BR2_x86_64_nocona
 	default core2		if BR2_x86_64_core2
 	default k8		if BR2_x86_64_opteron
