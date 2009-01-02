@@ -26,8 +26,6 @@ config BR2_TOOLCHAIN_SOURCE
 	default y if BR2_TOOLCHAIN_BUILDROOT || BR2_TOOLCHAIN_EXTERNAL_SOURCE
 	default n if BR2_TOOLCHAIN_EXTERNAL
 
-source "toolchain/export-toolchain/Config.in"
-
 source "target/device/Config.in.toolchain"
 
 source "toolchain/Config.in.1"
