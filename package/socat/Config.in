@@ -1,6 +1,28 @@
-config BR2_PACKAGE_SOCAT
+menuconfig BR2_PACKAGE_SOCAT
 	bool "socat"
 	help
 	  Multipurpose socket relay program.
 
 	  http://www.dest-unreach.org/socat/
+if BR2_PACKAGE_SOCAT
+config BR2_PACKAGE_SOCAT_PREDEF_CRDLY_SHIFT
+	string "CRDLY_SHIFT"
+	default "9"
+	help
+	  Add configure variable
+
+config BR2_PACKAGE_SOCAT_PREDEF_TABDLY_SHIFT
+	string "TABDLY_SHIFT"
+	default "11"
+	help
+	  Add configure variable
+
+config BR2_PACKAGE_SOCAT_PREDEF_CSIZE_SHIFT
+	string "CSIZE_SHIFT"
+	default "4"
+	help
+	  Add configure variable
+
+endif
+
+
