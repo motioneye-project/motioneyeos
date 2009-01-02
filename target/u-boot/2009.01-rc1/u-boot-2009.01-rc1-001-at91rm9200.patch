@@ -1,0 +1,723 @@
+diff -urN u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/at91_pio.h u-boot-2009.01/include/asm-arm/arch-at91rm9200/at91_pio.h
+--- u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/at91_pio.h	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2009.01/include/asm-arm/arch-at91rm9200/at91_pio.h	2009-01-01 14:02:28.000000000 +0100
+@@ -0,0 +1,49 @@
++/*
++ * [origin: Linux kernel include/asm-arm/arch-at91/at91_pio.h]
++ *
++ * Copyright (C) 2005 Ivan Kokshaysky
++ * Copyright (C) SAN People
++ *
++ * Parallel I/O Controller (PIO) - System peripherals registers.
++ * Based on AT91RM9200 datasheet revision E.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef AT91_PIO_H
++#define AT91_PIO_H
++
++#define PIO_PER		0x00	/* Enable Register */
++#define PIO_PDR		0x04	/* Disable Register */
++#define PIO_PSR		0x08	/* Status Register */
++#define PIO_OER		0x10	/* Output Enable Register */
++#define PIO_ODR		0x14	/* Output Disable Register */
++#define PIO_OSR		0x18	/* Output Status Register */
++#define PIO_IFER	0x20	/* Glitch Input Filter Enable */
++#define PIO_IFDR	0x24	/* Glitch Input Filter Disable */
++#define PIO_IFSR	0x28	/* Glitch Input Filter Status */
++#define PIO_SODR	0x30	/* Set Output Data Register */
++#define PIO_CODR	0x34	/* Clear Output Data Register */
++#define PIO_ODSR	0x38	/* Output Data Status Register */
++#define PIO_PDSR	0x3c	/* Pin Data Status Register */
++#define PIO_IER		0x40	/* Interrupt Enable Register */
++#define PIO_IDR		0x44	/* Interrupt Disable Register */
++#define PIO_IMR		0x48	/* Interrupt Mask Register */
++#define PIO_ISR		0x4c	/* Interrupt Status Register */
++#define PIO_MDER	0x50	/* Multi-driver Enable Register */
++#define PIO_MDDR	0x54	/* Multi-driver Disable Register */
++#define PIO_MDSR	0x58	/* Multi-driver Status Register */
++#define PIO_PUDR	0x60	/* Pull-up Disable Register */
++#define PIO_PUER	0x64	/* Pull-up Enable Register */
++#define PIO_PUSR	0x68	/* Pull-up Status Register */
++#define PIO_ASR		0x70	/* Peripheral A Select Register */
++#define PIO_BSR		0x74	/* Peripheral B Select Register */
++#define PIO_ABSR	0x78	/* AB Status Register */
++#define PIO_OWER	0xa0	/* Output Write Enable Register */
++#define PIO_OWDR	0xa4	/* Output Write Disable Register */
++#define PIO_OWSR	0xa8	/* Output Write Status Register */
++
++#endif
+diff -urN u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/at91_pmc.h u-boot-2009.01/include/asm-arm/arch-at91rm9200/at91_pmc.h
+--- u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/at91_pmc.h	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2009.01/include/asm-arm/arch-at91rm9200/at91_pmc.h	2009-01-01 15:51:28.000000000 +0100
+@@ -0,0 +1,116 @@
++/*
++ * [origin: Linux kernel include/asm-arm/arch-at91/at91_pmc.h]
++ *
++ * Copyright (C) 2005 Ivan Kokshaysky
++ * Copyright (C) SAN People
++ *
++ * Copyright (C) 2008 Ulf Samuelsson
++ *
++ * Power Management Controller (PMC) - System peripherals registers.
++ * Based on AT91RM9200 datasheet revision E.
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ */
++
++#ifndef AT91_PMC_H
++#define AT91_PMC_H
++
++#define	AT91_PMC_SCER		(AT91_PMC + 0x00)	/* System Clock Enable Register */
++#define	AT91_PMC_SCDR		(AT91_PMC + 0x04)	/* System Clock Disable Register */
++
++#define	AT91_PMC_SCSR		(AT91_PMC + 0x08)	/* System Clock Status Register */
++#define		AT91_PMC_PCK		(1 <<  0)		/* Processor Clock */
++#define		AT91RM9200_PMC_UDP	(1 <<  1)		/* USB Devcice Port Clock [AT91RM9200 only] */
++#define		AT91RM9200_PMC_MCKUDP	(1 <<  2)		/* USB Device Port Master Clock Automatic Disable on Suspend [AT91RM9200 only] */
++#define		AT91RM9200_PMC_UHP	(1 <<  4)		/* USB Host Port Clock [AT91RM9200 only] */
++#define		AT91SAM926x_PMC_UHP	(1 <<  6)		/* USB Host Port Clock [AT91SAM926x only] */
++#define		AT91CAP9_PMC_UHP	(1 <<  6)		/* USB Host Port Clock [AT91CAP9 only] */
++#define		AT91SAM926x_PMC_UDP	(1 <<  7)		/* USB Devcice Port Clock [AT91SAM926x only] */
++#define		AT91_PMC_PCK0		(1 <<  8)		/* Programmable Clock 0 */
++#define		AT91_PMC_PCK1		(1 <<  9)		/* Programmable Clock 1 */
++#define		AT91_PMC_PCK2		(1 << 10)		/* Programmable Clock 2 */
++#define		AT91_PMC_PCK3		(1 << 11)		/* Programmable Clock 3 */
++#define		AT91_PMC_HCK0		(1 << 16)		/* AHB Clock (USB host) [AT91SAM9261 only] */
++#define		AT91_PMC_HCK1		(1 << 17)		/* AHB Clock (LCD) [AT91SAM9261 only] */
++#define	AT91_PMC_RES_0C		(AT91_PMC + 0x0c)	/* Reserved */
++
++#define	AT91_PMC_PCER		(AT91_PMC + 0x10)	/* Peripheral Clock Enable Register */
++#define	AT91_PMC_PCDR		(AT91_PMC + 0x14)	/* Peripheral Clock Disable Register */
++#define	AT91_PMC_PCSR		(AT91_PMC + 0x18)	/* Peripheral Clock Status Register */
++#define	AT91_PMC_RES_1C		(AT91_PMC + 0x1c)	/* Reserved */
++
++
++#define	AT91_CKGR_MOR		(AT91_PMC + 0x20)	/* Main Oscillator Register [not on SAM9RL] */
++#define		AT91_PMC_MOSCEN		(1    << 0)		/* Main Oscillator Enable */
++#define		AT91_PMC_OSCBYPASS	(1    << 1)		/* Oscillator Bypass [AT91SAM926x only] */
++#define		AT91_PMC_OSCOUNT	(0xff << 8)		/* Main Oscillator Start-up Time */
++
++#define	AT91_CKGR_MCFR		(AT91_PMC + 0x24)	/* Main Clock Frequency Register */
++#define		AT91_PMC_MAINF		(0xffff <<  0)		/* Main Clock Frequency */
++#define		AT91_PMC_MAINRDY	(1	<< 16)		/* Main Clock Ready */
++
++#define	AT91_CKGR_PLLAR		(AT91_PMC + 0x28)	/* PLL A Register */
++#define	AT91_CKGR_PLLBR		(AT91_PMC + 0x2c)	/* PLL B Register */
++#define		AT91_PMC_DIV		(0xff  <<  0)		/* Divider */
++#define		AT91_PMC_PLLCOUNT	(0x3f  <<  8)		/* PLL Counter */
++#define		AT91_PMC_OUT		(3     << 14)		/* PLL Clock Frequency Range */
++#define		AT91_PMC_MUL		(0x7ff << 16)		/* PLL Multiplier */
++#define		AT91_PMC_USBDIV		(3     << 28)		/* USB Divisor (PLLB only) */
++#define			AT91_PMC_USBDIV_1		(0 << 28)
++#define			AT91_PMC_USBDIV_2		(1 << 28)
++#define			AT91_PMC_USBDIV_4		(2 << 28)
++#define		AT91_PMC_USB96M		(1     << 28)		/* Divider by 2 Enable (PLLB only) */
++
++#define	AT91_PMC_MCKR		(AT91_PMC + 0x30)	/* Master Clock Register */
++#define		AT91_PMC_CSS		(3 <<  0)		/* Master Clock Selection */
++#define			AT91_PMC_CSS_SLOW		(0 << 0)
++#define			AT91_PMC_CSS_MAIN		(1 << 0)
++#define			AT91_PMC_CSS_PLLA		(2 << 0)
++#define			AT91_PMC_CSS_PLLB		(3 << 0)
++#define		AT91_PMC_PRES		(7 <<  2)		/* Master Clock Prescaler */
++#define			AT91_PMC_PRES_1			(0 << 2)
++#define			AT91_PMC_PRES_2			(1 << 2)
++#define			AT91_PMC_PRES_4			(2 << 2)
++#define			AT91_PMC_PRES_8			(3 << 2)
++#define			AT91_PMC_PRES_16		(4 << 2)
++#define			AT91_PMC_PRES_32		(5 << 2)
++#define			AT91_PMC_PRES_64		(6 << 2)
++#define		AT91_PMC_MDIV		(3 <<  8)		/* Master Clock Division */
++#define			AT91_PMC_MDIV_1			(0 << 8)
++#define			AT91_PMC_MDIV_2			(1 << 8)
++#define			AT91_PMC_MDIV_3			(2 << 8)
++#define			AT91_PMC_MDIV_4			(3 << 8)
++
++#define	AT91_PMC_RES_34		(AT91_PMC + 0x34)	/* Reserved */
++#define	AT91_PMC_RES_38		(AT91_PMC + 0x38)	/* Reserved */
++#define	AT91_PMC_RES_3C		(AT91_PMC + 0x3c)	/* Reserved */
++
++#define	AT91_PMC_PCKR(n)	(AT91_PMC + 0x40 + ((n) * 4))	/* Programmable Clock 0-3 Registers */
++
++#define	AT91_PMC_RES_50		(AT91_PMC + 0x50)	/* Reserved */
++#define	AT91_PMC_RES_54		(AT91_PMC + 0x54)	/* Reserved */
++#define	AT91_PMC_RES_58		(AT91_PMC + 0x58)	/* Reserved */
++#define	AT91_PMC_RES_5C		(AT91_PMC + 0x5c)	/* Reserved */
++
++#define	AT91_PMC_IER		(AT91_PMC + 0x60)	/* Interrupt Enable Register */
++#define	AT91_PMC_IDR		(AT91_PMC + 0x64)	/* Interrupt Disable Register */
++#define	AT91_PMC_SR		(AT91_PMC + 0x68)	/* Status Register */
++#define		AT91_PMC_MOSCS		(1 <<  0)		/* MOSCS Flag */
++#define		AT91_PMC_LOCKA		(1 <<  1)		/* PLLA Lock */
++#define		AT91_PMC_LOCKB		(1 <<  2)		/* PLLB Lock */
++#define		AT91_PMC_MCKRDY		(1 <<  3)		/* Master Clock */
++#define		AT91_PMC_PCK0RDY	(1 <<  8)		/* Programmable Clock 0 */
++#define		AT91_PMC_PCK1RDY	(1 <<  9)		/* Programmable Clock 1 */
++#define		AT91_PMC_PCK2RDY	(1 << 10)		/* Programmable Clock 2 */
++#define		AT91_PMC_PCK3RDY	(1 << 11)		/* Programmable Clock 3 */
++#define	AT91_PMC_IMR		(AT91_PMC + 0x6c)	/* Interrupt Mask Register */
++
++#define AT91_PMC_PROT		(AT91_PMC + 0xe4)	/* Protect Register [AT91CAP9 revC only] */
++#define		AT91_PMC_PROTKEY	0x504d4301		/* Activation Code */
++
++#define AT91_PMC_VER	(AT91_PMC + 0xfc)	/* PMC Module Version [AT91CAP9 only] */
++
++#endif
+diff -urN u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/AT91RM9200.h u-boot-2009.01/include/asm-arm/arch-at91rm9200/AT91RM9200.h
+--- u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/AT91RM9200.h	2009-01-01 13:09:34.000000000 +0100
++++ u-boot-2009.01/include/asm-arm/arch-at91rm9200/AT91RM9200.h	2009-01-01 15:52:00.000000000 +0100
+@@ -28,6 +28,114 @@
+ #ifndef __ASSEMBLY__
+ typedef volatile unsigned int AT91_REG;		/* Hardware register definition */
+ 
++/*
++ * Peripheral identifiers/interrupts.
++ */
++#define AT91RM9200_ID_AIC	0	/* Advanced Interrupt Controller (FIQ) */
++#define AT91RM9200_ID_SYSIRQ	1	/* System Peripherals */
++#define AT91RM9200_ID_PIOA	2	/* Parallel IO Controller A */
++#define AT91RM9200_ID_PIOB	3	/* Parallel IO Controller B */
++#define AT91RM9200_ID_PIOC	4	/* Parallel IO Controller C */
++#define AT91RM9200_ID_PIOD	5	/* Parallel IO Controller D */
++#define AT91RM9200_ID_US0	6	/* USART 0 */
++#define AT91RM9200_ID_US1	7	/* USART 1 */
++#define AT91RM9200_ID_US2	8	/* USART 2 */
++#define AT91RM9200_ID_US3	9	/* USART 2 */
++#define AT91RM9200_ID_MCI	10	/* Multimedia Card Interface */
++#define AT91RM9200_ID_UDP	11	/* USB Device Port */
++#define AT91RM9200_ID_TWI	12	/* Two-Wire Interface */
++#define AT91RM9200_ID_SPI0	13	/* Serial Peripheral Interface 0 */
++#define AT91RM9200_ID_SSC0	14	/* Serial Synchronous Controller */
++#define AT91RM9200_ID_SSC1	15	/* Serial Synchronous Controller */
++#define AT91RM9200_ID_SSC2	16	/* Serial Synchronous Controller */
++#define AT91RM9200_ID_TC0	17	/* Timer Counter 0 */
++#define AT91RM9200_ID_TC1	18	/* Timer Counter 1 */
++#define AT91RM9200_ID_TC2	19	/* Timer Counter 2 */
++#define AT91RM9200_ID_TC3	20	/* Timer Counter 3 */
++#define AT91RM9200_ID_TC4	21	/* Timer Counter 4 */
++#define AT91RM9200_ID_TC5	22	/* Timer Counter 5 */
++#define AT91RM9200_ID_UHP	23	/* USB Host port */
++#define AT91RM9200_ID_EMAC	24	/* Ethernet */
++#define AT91RM9200_ID_IRQ0	25	/* Advanced Interrupt Controller (IRQ0) */
++#define AT91RM9200_ID_IRQ1	26	/* Advanced Interrupt Controller (IRQ1) */
++#define AT91RM9200_ID_IRQ2	27	/* Advanced Interrupt Controller (IRQ2) */
++#define AT91RM9200_ID_IRQ3	28	/* Advanced Interrupt Controller (IRQ3) */
++#define AT91RM9200_ID_IRQ4	29	/* Advanced Interrupt Controller (IRQ4) */
++#define AT91RM9200_ID_IRQ5	30	/* Advanced Interrupt Controller (IRQ5) */
++#define AT91RM9200_ID_IRQ6	31	/* Advanced Interrupt Controller (IRQ6) */
++/*
++ * User Peripheral physical base addresses.
++ */
++
++
++
++#define AT91RM9200_BASE_TC0	0xFFFA0000 /* (TC0) Base Address */
++#define AT91RM9200_BASE_TC1	0xFFFA4000 /* (TC0) Base Address */
++#define AT91RM9200_BASE_UDP	0xFFFB0000 /* (TC0) Base Address */
++#define AT91RM9200_BASE_MCI	0xFFFB4000 /* (TC0) Base Address */
++#define AT91RM9200_BASE_TWI	0xFFFB8000 /* (TC0) Base Address */
++#define AT91RM9200_BASE_EMAC	0xFFFBC000 /* (EMAC) Base Address */
++#define AT91RM9200_BASE_US0	0xFFFC0000 /* (US0) Base Address */
++#define AT91RM9200_BASE_US1	0xFFFC4000 /* (US1) Base Address */
++#define AT91RM9200_BASE_US2	0xFFFC8000 /* (US1) Base Address */
++#define AT91RM9200_BASE_US3	0xFFFCC000 /* (US1) Base Address */
++#define AT91RM9200_BASE_SPI	0xFFFE0000 /* (SPI) Base Address */
++
++#define AT91RM9200_BASE_AIC	0xFFFFF000 /* (AIC) Base Address */
++#define AT91RM9200_BASE_DBGU	0xFFFFF200 /* (DBGU) Base Address */
++#define AT91RM9200_BASE_PIOA	0xFFFFF400 /* (PIOA) Base Address */
++#define AT91RM9200_BASE_PIOB	0xFFFFF600 /* (PIOB) Base Address */
++#define AT91RM9200_BASE_PIOC	0xFFFFF800 /* (PIOC) Base Address */
++#define AT91RM9200_BASE_PIOD	0xFFFFFA00 /* (PIOC) Base Address */
++#define AT91RM9200_BASE_PMC	0xFFFFFC00 /* (PMC) Base Address */
++#define AT91RM9200_BASE_CKGR	0xFFFFFC20 /* (CKGR) Base Address */
++#define AT91RM9200_BASE_ST	0xFFFFFD00 /* (PMC) Base Address */
++#define AT91RM9200_BASE_RTC	0xFFFFFE00 /* (PMC) Base Address */
++#define AT91RM9200_BASE_MC	0xFFFFFF00 /* (PMC) Base Address */
++#define AT91RM9200_BASE_EBI	0xFFFFFF60 /* (PMC) Base Address */
++#define AT91RM9200_BASE_SMC2	0xFFFFFF70 /* (SMC2) Base Address */
++#define AT91RM9200_BASE_SDRAMC	0xFFFFFF90 /* (SMC2) Base Address */
++#define AT91RM9200_BASE_BFC	0xFFFFFFC0 /* (SMC2) Base Address */
++
++/*
++ * System Peripherals (offset from AT91_BASE_SYS)
++ */
++#define AT91_BASE_SYS		AT91RM9200_BASE_AIC
++
++#define AT91_AIC		(AT91RM9200_BASE_AIC	- AT91_BASE_SYS)
++#define AT91_DBGU		(AT91RM9200_BASE_DBGU	- AT91_BASE_SYS)
++#define AT91_PIOA		(AT91RM9200_BASE_PIOA	- AT91_BASE_SYS)
++#define AT91_PIOB		(AT91RM9200_BASE_PIOB	- AT91_BASE_SYS)
++#define AT91_PIOC		(AT91RM9200_BASE_PIOC	- AT91_BASE_SYS)
++#define AT91_PIOD		(AT91RM9200_BASE_PIOD	- AT91_BASE_SYS)
++#define AT91_PMC		(AT91RM9200_BASE_PMC	- AT91_BASE_SYS)
++#define AT91_PMC		(AT91RM9200_BASE_PMC	- AT91_BASE_SYS)
++#define AT91_PMC		(AT91RM9200_BASE_PMC	- AT91_BASE_SYS)
++#define AT91_PMC		(AT91RM9200_BASE_PMC	- AT91_BASE_SYS)
++#define AT91_PMC		(AT91RM9200_BASE_PMC	- AT91_BASE_SYS)
++
++#define AT91_CKGR		(AT91RM9200_BASE_CKGR	- AT91_BASE_SYS)
++#define AT91_ST			(AT91RM9200_BASE_ST	- AT91_BASE_SYS)
++#define AT91_RTC		(AT91RM9200_BASE_RTC	- AT91_BASE_SYS)
++#define AT91_MC			(AT91RM9200_BASE_MC	- AT91_BASE_SYS)
++#define AT91_EBI		(AT91RM9200_BASE_EBI	- AT91_BASE_SYS)
++#define 	AT91_EBI_CSA		((AT91RM9200_BASE_EBI +0x00)	- AT91_BASE_SYS)
++#define AT91_SMC2		(AT91RM9200_BASE_SMC2	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR0		((AT91RM9200_BASE_SMC2+0x00)	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR1		((AT91RM9200_BASE_SMC2+0x04)	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR2		((AT91RM9200_BASE_SMC2+0x08)	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR3		((AT91RM9200_BASE_SMC2+0x0c)	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR4		((AT91RM9200_BASE_SMC2+0x10)	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR5		((AT91RM9200_BASE_SMC2+0x14)	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR6		((AT91RM9200_BASE_SMC2+0x18)	- AT91_BASE_SYS)
++#define		AT91_SMC2_CSR7		((AT91RM9200_BASE_SMC2+0x1c)	- AT91_BASE_SYS)
++
++
++#define AT91_USART0		AT91RM9200_BASE_US0
++#define AT91_USART1		AT91RM9200_BASE_US1
++#define AT91_USART2		AT91RM9200_BASE_US2
++#define AT91_USART3		AT91RM9200_BASE_US3
++
+ /*****************************************************************************/
+ /*        SOFTWARE API DEFINITION  FOR Timer Counter Channel Interface       */
+ /*****************************************************************************/
+diff -urN u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/gpio.h u-boot-2009.01/include/asm-arm/arch-at91rm9200/gpio.h
+--- u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/gpio.h	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2009.01/include/asm-arm/arch-at91rm9200/gpio.h	2009-01-01 14:02:11.000000000 +0100
+@@ -0,0 +1,367 @@
++/*
++ * [origin: Linux kernel include/asm-arm/arch-at91/gpio.h]
++ *
++ *  Copyright (C) 2005 HP Labs
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ */
++
++#ifndef __ASM_ARCH_AT91_GPIO_H
++#define __ASM_ARCH_AT91_GPIO_H
++
++#include <asm/io.h>
++#include <asm/errno.h>
++#include <asm/arch/at91_pio.h>
++#include <asm/arch/hardware.h>
++
++#define PIN_BASE		32
++
++#define MAX_GPIO_BANKS		5
++
++/* these pin numbers double as IRQ numbers, like AT91xxx_ID_* values */
++
++#define	AT91_PIN_PA0	(PIN_BASE + 0x00 + 0)
++#define	AT91_PIN_PA1	(PIN_BASE + 0x00 + 1)
++#define	AT91_PIN_PA2	(PIN_BASE + 0x00 + 2)
++#define	AT91_PIN_PA3	(PIN_BASE + 0x00 + 3)
++#define	AT91_PIN_PA4	(PIN_BASE + 0x00 + 4)
++#define	AT91_PIN_PA5	(PIN_BASE + 0x00 + 5)
++#define	AT91_PIN_PA6	(PIN_BASE + 0x00 + 6)
++#define	AT91_PIN_PA7	(PIN_BASE + 0x00 + 7)
++#define	AT91_PIN_PA8	(PIN_BASE + 0x00 + 8)
++#define	AT91_PIN_PA9	(PIN_BASE + 0x00 + 9)
++#define	AT91_PIN_PA10	(PIN_BASE + 0x00 + 10)
++#define	AT91_PIN_PA11	(PIN_BASE + 0x00 + 11)
++#define	AT91_PIN_PA12	(PIN_BASE + 0x00 + 12)
++#define	AT91_PIN_PA13	(PIN_BASE + 0x00 + 13)
++#define	AT91_PIN_PA14	(PIN_BASE + 0x00 + 14)
++#define	AT91_PIN_PA15	(PIN_BASE + 0x00 + 15)
++#define	AT91_PIN_PA16	(PIN_BASE + 0x00 + 16)
++#define	AT91_PIN_PA17	(PIN_BASE + 0x00 + 17)
++#define	AT91_PIN_PA18	(PIN_BASE + 0x00 + 18)
++#define	AT91_PIN_PA19	(PIN_BASE + 0x00 + 19)
++#define	AT91_PIN_PA20	(PIN_BASE + 0x00 + 20)
++#define	AT91_PIN_PA21	(PIN_BASE + 0x00 + 21)
++#define	AT91_PIN_PA22	(PIN_BASE + 0x00 + 22)
++#define	AT91_PIN_PA23	(PIN_BASE + 0x00 + 23)
++#define	AT91_PIN_PA24	(PIN_BASE + 0x00 + 24)
++#define	AT91_PIN_PA25	(PIN_BASE + 0x00 + 25)
++#define	AT91_PIN_PA26	(PIN_BASE + 0x00 + 26)
++#define	AT91_PIN_PA27	(PIN_BASE + 0x00 + 27)
++#define	AT91_PIN_PA28	(PIN_BASE + 0x00 + 28)
++#define	AT91_PIN_PA29	(PIN_BASE + 0x00 + 29)
++#define	AT91_PIN_PA30	(PIN_BASE + 0x00 + 30)
++#define	AT91_PIN_PA31	(PIN_BASE + 0x00 + 31)
++
++#define	AT91_PIN_PB0	(PIN_BASE + 0x20 + 0)
++#define	AT91_PIN_PB1	(PIN_BASE + 0x20 + 1)
++#define	AT91_PIN_PB2	(PIN_BASE + 0x20 + 2)
++#define	AT91_PIN_PB3	(PIN_BASE + 0x20 + 3)
++#define	AT91_PIN_PB4	(PIN_BASE + 0x20 + 4)
++#define	AT91_PIN_PB5	(PIN_BASE + 0x20 + 5)
++#define	AT91_PIN_PB6	(PIN_BASE + 0x20 + 6)
++#define	AT91_PIN_PB7	(PIN_BASE + 0x20 + 7)
++#define	AT91_PIN_PB8	(PIN_BASE + 0x20 + 8)
++#define	AT91_PIN_PB9	(PIN_BASE + 0x20 + 9)
++#define	AT91_PIN_PB10	(PIN_BASE + 0x20 + 10)
++#define	AT91_PIN_PB11	(PIN_BASE + 0x20 + 11)
++#define	AT91_PIN_PB12	(PIN_BASE + 0x20 + 12)
++#define	AT91_PIN_PB13	(PIN_BASE + 0x20 + 13)
++#define	AT91_PIN_PB14	(PIN_BASE + 0x20 + 14)
++#define	AT91_PIN_PB15	(PIN_BASE + 0x20 + 15)
++#define	AT91_PIN_PB16	(PIN_BASE + 0x20 + 16)
++#define	AT91_PIN_PB17	(PIN_BASE + 0x20 + 17)
++#define	AT91_PIN_PB18	(PIN_BASE + 0x20 + 18)
++#define	AT91_PIN_PB19	(PIN_BASE + 0x20 + 19)
++#define	AT91_PIN_PB20	(PIN_BASE + 0x20 + 20)
++#define	AT91_PIN_PB21	(PIN_BASE + 0x20 + 21)
++#define	AT91_PIN_PB22	(PIN_BASE + 0x20 + 22)
++#define	AT91_PIN_PB23	(PIN_BASE + 0x20 + 23)
++#define	AT91_PIN_PB24	(PIN_BASE + 0x20 + 24)
++#define	AT91_PIN_PB25	(PIN_BASE + 0x20 + 25)
++#define	AT91_PIN_PB26	(PIN_BASE + 0x20 + 26)
++#define	AT91_PIN_PB27	(PIN_BASE + 0x20 + 27)
++#define	AT91_PIN_PB28	(PIN_BASE + 0x20 + 28)
++#define	AT91_PIN_PB29	(PIN_BASE + 0x20 + 29)
++#define	AT91_PIN_PB30	(PIN_BASE + 0x20 + 30)
++#define	AT91_PIN_PB31	(PIN_BASE + 0x20 + 31)
++
++#define	AT91_PIN_PC0	(PIN_BASE + 0x40 + 0)
++#define	AT91_PIN_PC1	(PIN_BASE + 0x40 + 1)
++#define	AT91_PIN_PC2	(PIN_BASE + 0x40 + 2)
++#define	AT91_PIN_PC3	(PIN_BASE + 0x40 + 3)
++#define	AT91_PIN_PC4	(PIN_BASE + 0x40 + 4)
++#define	AT91_PIN_PC5	(PIN_BASE + 0x40 + 5)
++#define	AT91_PIN_PC6	(PIN_BASE + 0x40 + 6)
++#define	AT91_PIN_PC7	(PIN_BASE + 0x40 + 7)
++#define	AT91_PIN_PC8	(PIN_BASE + 0x40 + 8)
++#define	AT91_PIN_PC9	(PIN_BASE + 0x40 + 9)
++#define	AT91_PIN_PC10	(PIN_BASE + 0x40 + 10)
++#define	AT91_PIN_PC11	(PIN_BASE + 0x40 + 11)
++#define	AT91_PIN_PC12	(PIN_BASE + 0x40 + 12)
++#define	AT91_PIN_PC13	(PIN_BASE + 0x40 + 13)
++#define	AT91_PIN_PC14	(PIN_BASE + 0x40 + 14)
++#define	AT91_PIN_PC15	(PIN_BASE + 0x40 + 15)
++#define	AT91_PIN_PC16	(PIN_BASE + 0x40 + 16)
++#define	AT91_PIN_PC17	(PIN_BASE + 0x40 + 17)
++#define	AT91_PIN_PC18	(PIN_BASE + 0x40 + 18)
++#define	AT91_PIN_PC19	(PIN_BASE + 0x40 + 19)
++#define	AT91_PIN_PC20	(PIN_BASE + 0x40 + 20)
++#define	AT91_PIN_PC21	(PIN_BASE + 0x40 + 21)
++#define	AT91_PIN_PC22	(PIN_BASE + 0x40 + 22)
++#define	AT91_PIN_PC23	(PIN_BASE + 0x40 + 23)
++#define	AT91_PIN_PC24	(PIN_BASE + 0x40 + 24)
++#define	AT91_PIN_PC25	(PIN_BASE + 0x40 + 25)
++#define	AT91_PIN_PC26	(PIN_BASE + 0x40 + 26)
++#define	AT91_PIN_PC27	(PIN_BASE + 0x40 + 27)
++#define	AT91_PIN_PC28	(PIN_BASE + 0x40 + 28)
++#define	AT91_PIN_PC29	(PIN_BASE + 0x40 + 29)
++#define	AT91_PIN_PC30	(PIN_BASE + 0x40 + 30)
++#define	AT91_PIN_PC31	(PIN_BASE + 0x40 + 31)
++
++#define	AT91_PIN_PD0	(PIN_BASE + 0x60 + 0)
++#define	AT91_PIN_PD1	(PIN_BASE + 0x60 + 1)
++#define	AT91_PIN_PD2	(PIN_BASE + 0x60 + 2)
++#define	AT91_PIN_PD3	(PIN_BASE + 0x60 + 3)
++#define	AT91_PIN_PD4	(PIN_BASE + 0x60 + 4)
++#define	AT91_PIN_PD5	(PIN_BASE + 0x60 + 5)
++#define	AT91_PIN_PD6	(PIN_BASE + 0x60 + 6)
++#define	AT91_PIN_PD7	(PIN_BASE + 0x60 + 7)
++#define	AT91_PIN_PD8	(PIN_BASE + 0x60 + 8)
++#define	AT91_PIN_PD9	(PIN_BASE + 0x60 + 9)
++#define	AT91_PIN_PD10	(PIN_BASE + 0x60 + 10)
++#define	AT91_PIN_PD11	(PIN_BASE + 0x60 + 11)
++#define	AT91_PIN_PD12	(PIN_BASE + 0x60 + 12)
++#define	AT91_PIN_PD13	(PIN_BASE + 0x60 + 13)
++#define	AT91_PIN_PD14	(PIN_BASE + 0x60 + 14)
++#define	AT91_PIN_PD15	(PIN_BASE + 0x60 + 15)
++#define	AT91_PIN_PD16	(PIN_BASE + 0x60 + 16)
++#define	AT91_PIN_PD17	(PIN_BASE + 0x60 + 17)
++#define	AT91_PIN_PD18	(PIN_BASE + 0x60 + 18)
++#define	AT91_PIN_PD19	(PIN_BASE + 0x60 + 19)
++#define	AT91_PIN_PD20	(PIN_BASE + 0x60 + 20)
++#define	AT91_PIN_PD21	(PIN_BASE + 0x60 + 21)
++#define	AT91_PIN_PD22	(PIN_BASE + 0x60 + 22)
++#define	AT91_PIN_PD23	(PIN_BASE + 0x60 + 23)
++#define	AT91_PIN_PD24	(PIN_BASE + 0x60 + 24)
++#define	AT91_PIN_PD25	(PIN_BASE + 0x60 + 25)
++#define	AT91_PIN_PD26	(PIN_BASE + 0x60 + 26)
++#define	AT91_PIN_PD27	(PIN_BASE + 0x60 + 27)
++#define	AT91_PIN_PD28	(PIN_BASE + 0x60 + 28)
++#define	AT91_PIN_PD29	(PIN_BASE + 0x60 + 29)
++#define	AT91_PIN_PD30	(PIN_BASE + 0x60 + 30)
++#define	AT91_PIN_PD31	(PIN_BASE + 0x60 + 31)
++
++#define	AT91_PIN_PE0	(PIN_BASE + 0x80 + 0)
++#define	AT91_PIN_PE1	(PIN_BASE + 0x80 + 1)
++#define	AT91_PIN_PE2	(PIN_BASE + 0x80 + 2)
++#define	AT91_PIN_PE3	(PIN_BASE + 0x80 + 3)
++#define	AT91_PIN_PE4	(PIN_BASE + 0x80 + 4)
++#define	AT91_PIN_PE5	(PIN_BASE + 0x80 + 5)
++#define	AT91_PIN_PE6	(PIN_BASE + 0x80 + 6)
++#define	AT91_PIN_PE7	(PIN_BASE + 0x80 + 7)
++#define	AT91_PIN_PE8	(PIN_BASE + 0x80 + 8)
++#define	AT91_PIN_PE9	(PIN_BASE + 0x80 + 9)
++#define	AT91_PIN_PE10	(PIN_BASE + 0x80 + 10)
++#define	AT91_PIN_PE11	(PIN_BASE + 0x80 + 11)
++#define	AT91_PIN_PE12	(PIN_BASE + 0x80 + 12)
++#define	AT91_PIN_PE13	(PIN_BASE + 0x80 + 13)
++#define	AT91_PIN_PE14	(PIN_BASE + 0x80 + 14)
++#define	AT91_PIN_PE15	(PIN_BASE + 0x80 + 15)
++#define	AT91_PIN_PE16	(PIN_BASE + 0x80 + 16)
++#define	AT91_PIN_PE17	(PIN_BASE + 0x80 + 17)
++#define	AT91_PIN_PE18	(PIN_BASE + 0x80 + 18)
++#define	AT91_PIN_PE19	(PIN_BASE + 0x80 + 19)
++#define	AT91_PIN_PE20	(PIN_BASE + 0x80 + 20)
++#define	AT91_PIN_PE21	(PIN_BASE + 0x80 + 21)
++#define	AT91_PIN_PE22	(PIN_BASE + 0x80 + 22)
++#define	AT91_PIN_PE23	(PIN_BASE + 0x80 + 23)
++#define	AT91_PIN_PE24	(PIN_BASE + 0x80 + 24)
++#define	AT91_PIN_PE25	(PIN_BASE + 0x80 + 25)
++#define	AT91_PIN_PE26	(PIN_BASE + 0x80 + 26)
++#define	AT91_PIN_PE27	(PIN_BASE + 0x80 + 27)
++#define	AT91_PIN_PE28	(PIN_BASE + 0x80 + 28)
++#define	AT91_PIN_PE29	(PIN_BASE + 0x80 + 29)
++#define	AT91_PIN_PE30	(PIN_BASE + 0x80 + 30)
++#define	AT91_PIN_PE31	(PIN_BASE + 0x80 + 31)
++
++static unsigned long at91_pios[] = {
++	AT91_PIOA,
++	AT91_PIOB,
++	AT91_PIOC,
++#ifdef AT91_PIOD
++	AT91_PIOD,
++#ifdef AT91_PIOE
++	AT91_PIOE
++#endif
++#endif
++};
++
++static inline void *pin_to_controller(unsigned pin)
++{
++	pin -= PIN_BASE;
++	pin /= 32;
++	return (void *)(AT91_BASE_SYS + at91_pios[pin]);
++}
++
++static inline unsigned pin_to_mask(unsigned pin)
++{
++	pin -= PIN_BASE;
++	return 1 << (pin % 32);
++}
++
++/*
++ * mux the pin to the "GPIO" peripheral role.
++ */
++static inline int at91_set_GPIO_periph(unsigned pin, int use_pullup)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + PIO_IDR);
++	__raw_writel(mask, pio + (use_pullup ? PIO_PUER : PIO_PUDR));
++	__raw_writel(mask, pio + PIO_PER);
++	return 0;
++}
++
++/*
++ * mux the pin to the "A" internal peripheral role.
++ */
++static inline int at91_set_A_periph(unsigned pin, int use_pullup)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + PIO_IDR);
++	__raw_writel(mask, pio + (use_pullup ? PIO_PUER : PIO_PUDR));
++	__raw_writel(mask, pio + PIO_ASR);
++	__raw_writel(mask, pio + PIO_PDR);
++	return 0;
++}
++
++/*
++ * mux the pin to the "B" internal peripheral role.
++ */
++static inline int at91_set_B_periph(unsigned pin, int use_pullup)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + PIO_IDR);
++	__raw_writel(mask, pio + (use_pullup ? PIO_PUER : PIO_PUDR));
++	__raw_writel(mask, pio + PIO_BSR);
++	__raw_writel(mask, pio + PIO_PDR);
++	return 0;
++}
++
++/*
++ * mux the pin to the gpio controller (instead of "A" or "B" peripheral), and
++ * configure it for an input.
++ */
++static inline int at91_set_gpio_input(unsigned pin, int use_pullup)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + PIO_IDR);
++	__raw_writel(mask, pio + (use_pullup ? PIO_PUER : PIO_PUDR));
++	__raw_writel(mask, pio + PIO_ODR);
++	__raw_writel(mask, pio + PIO_PER);
++	return 0;
++}
++
++/*
++ * mux the pin to the gpio controller (instead of "A" or "B" peripheral),
++ * and configure it for an output.
++ */
++static inline int at91_set_gpio_output(unsigned pin, int value)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + PIO_IDR);
++	__raw_writel(mask, pio + PIO_PUDR);
++	__raw_writel(mask, pio + (value ? PIO_SODR : PIO_CODR));
++	__raw_writel(mask, pio + PIO_OER);
++	__raw_writel(mask, pio + PIO_PER);
++	return 0;
++}
++
++/*
++ * enable/disable the glitch filter; mostly used with IRQ handling.
++ */
++static inline int at91_set_deglitch(unsigned pin, int is_on)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + (is_on ? PIO_IFER : PIO_IFDR));
++	return 0;
++}
++
++/*
++ * enable/disable the multi-driver; This is only valid for output and
++ * allows the output pin to run as an open collector output.
++ */
++static inline int at91_set_multi_drive(unsigned pin, int is_on)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + (is_on ? PIO_MDER : PIO_MDDR));
++	return 0;
++}
++
++static inline int gpio_direction_input(unsigned pin)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	if (!(__raw_readl(pio + PIO_PSR) & mask))
++		return -EINVAL;
++	__raw_writel(mask, pio + PIO_ODR);
++	return 0;
++}
++
++static inline int gpio_direction_output(unsigned pin, int value)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	if (!(__raw_readl(pio + PIO_PSR) & mask))
++		return -EINVAL;
++	__raw_writel(mask, pio + (value ? PIO_SODR : PIO_CODR));
++	__raw_writel(mask, pio + PIO_OER);
++	return 0;
++}
++
++/*
++ * assuming the pin is muxed as a gpio output, set its value.
++ */
++static inline int at91_set_gpio_value(unsigned pin, int value)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++
++	__raw_writel(mask, pio + (value ? PIO_SODR : PIO_CODR));
++	return 0;
++}
++
++/*
++ * read the pin's value (works even if it's not muxed as a gpio).
++ */
++static inline int at91_get_gpio_value(unsigned pin)
++{
++	void		*pio = pin_to_controller(pin);
++	unsigned	mask = pin_to_mask(pin);
++	u32		pdsr;
++
++	pdsr = __raw_readl(pio + PIO_PDSR);
++	return (pdsr & mask) != 0;
++}
++
++#endif
+diff -urN u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/io.h u-boot-2009.01/include/asm-arm/arch-at91rm9200/io.h
+--- u-boot-2009.01-rc1-0rig//include/asm-arm/arch-at91rm9200/io.h	1970-01-01 01:00:00.000000000 +0100
++++ u-boot-2009.01/include/asm-arm/arch-at91rm9200/io.h	2009-01-01 15:59:51.000000000 +0100
+@@ -0,0 +1,56 @@
++/*
++ * [origin: Linux kernel include/asm-arm/arch-at91/io.h]
++ *
++ *  Copyright (C) 2003 SAN People
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef __ASM_ARCH_IO_H
++#define __ASM_ARCH_IO_H
++
++#include <asm/io.h>
++
++static inline unsigned int at91_sys_read(unsigned int reg_offset)
++{
++	void *addr = (void *)AT91_BASE_SYS;
++
++	return __raw_readl(addr + reg_offset);
++}
++
++static inline void at91_sys_write(unsigned int reg_offset, unsigned long value)
++{
++	void *addr = (void *)AT91_BASE_SYS;
++
++	__raw_writel(value, addr + reg_offset);
++}
++
++static inline void at91_sys_setbit(unsigned long value, unsigned int reg_offset)
++{
++	void *addr = (void *)(AT91_BASE_SYS  + reg_offset);
++	value |= __raw_readl(addr);
++	__raw_writel(value, addr);
++}
++
++static inline void at91_sys_clrbit(unsigned long value, unsigned int reg_offset)
++{
++	void *addr = (void *)(AT91_BASE_SYS  + reg_offset);
++	unsigned long data;
++	data = __raw_readl(addr);
++	data &= ~value;
++	__raw_writel(data, addr);
++}
++
++#endif
+

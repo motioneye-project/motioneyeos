@@ -2,9 +2,11 @@ config BR2_TARGET_UBOOT_AT91
 	bool "Das U-Boot Boot Monitor"
 	depends on BR2_TARGET_AT91 && !BR2_TARGET_AT91SAM9G20
 	depends on !BR2_TARGET_AT91SAM9260PF
+	select BR2_TARGET_CUSTOM_UBOOT
 	help
-	  Build "Das U-Boot" Boot Monitor
+	  Build "Das U-Boot" Boot Monitor for AT91
 
+if BR2_TARGET_UBOOT_AT91
 config BR2_TARGET_UBOOT_SERVERIP_AT91
 	string "server ip"
 	depends on BR2_TARGET_UBOOT_AT91
@@ -40,4 +42,5 @@ config BR2_TARGET_UBOOT_ETHADDR_AT91
 	help
 	  Target ip address, this should be changed for production units
 
+endif
 

@@ -1,0 +1,324 @@
+diff -urN u-boot-2009.01-rc1-0rig//board/atmel/at91rm9200dk/at91rm9200dk.c u-boot-2009.01/board/atmel/at91rm9200dk/at91rm9200dk.c
+--- u-boot-2009.01-rc1-0rig//board/atmel/at91rm9200dk/at91rm9200dk.c	2009-01-01 13:09:31.000000000 +0100
++++ u-boot-2009.01/board/atmel/at91rm9200dk/at91rm9200dk.c	2009-01-01 16:11:36.000000000 +0100
+@@ -3,6 +3,9 @@
+  * Sysgo Real-Time Solutions, GmbH <www.elinos.com>
+  * Marius Groeger <mgroeger@sysgo.de>
+  *
++ * (C) Copyright 2008
++ * Ulf Samuelsson <ulf.samuelsson@atmel.com>
++ *
+  * See file CREDITS for list of people who contributed to this
+  * project.
+  *
+@@ -24,6 +27,10 @@
+ 
+ #include <common.h>
+ #include <asm/arch/AT91RM9200.h>
++#include <asm/arch/at91_pmc.h>
++#include <asm/arch/at91_pio.h>
++#include <asm/arch/gpio.h>
++#include <asm/arch/io.h>
+ #include <at91rm9200_net.h>
+ #include <dm9161.h>
+ 
+@@ -41,13 +48,13 @@
+ 
+ 	/* Correct IRDA resistor problem */
+ 	/* Set PA23_TXD in Output */
+-	((AT91PS_PIO) AT91C_BASE_PIOA)->PIO_OER = AT91C_PA23_TXD2;
++	at91_set_gpio_output(AT91_PIN_PA23, 1);
+ 
+ 	/* memory and cpu-speed are setup before relocation */
+ 	/* so we do _nothing_ here */
+ 
+ 	/* arch number of AT91RM9200DK-Board */
+-	gd->bd->bi_arch_number = MACH_TYPE_AT91RM9200DK;
++	gd->bd->bi_arch_number = AT91RM9200_BOARD;
+ 	/* adress of boot parameters */
+ 	gd->bd->bi_boot_params = PHYS_SDRAM + 0x100;
+ 
+@@ -91,46 +98,58 @@
+  */
+ #if defined(CONFIG_CMD_NAND)
+ extern ulong nand_probe (ulong physadr);
++/* set the bus interface characteristics based on
++ * tDS Data Set up Time 30 - ns
++ * tDH Data Hold Time 20 - ns
++ * tALS ALE Set up Time 20 - ns
++ * 16ns at 60 MHz ~= 3
++ */
+ 
+-#define AT91_SMARTMEDIA_BASE 0x40000000	/* physical address to access memory on NCS3 */
+-void nand_init (void)
+-{
+-	/* Setup Smart Media, fitst enable the address range of CS3 */
+-	*AT91C_EBI_CSA |= AT91C_EBI_CS3A_SMC_SmartMedia;
+-	/* set the bus interface characteristics based on
+-	   tDS Data Set up Time 30 - ns
+-	   tDH Data Hold Time 20 - ns
+-	   tALS ALE Set up Time 20 - ns
+-	   16ns at 60 MHz ~= 3  */
+ /*memory mapping structures */
+ #define SM_ID_RWH	(5 << 28)
+ #define SM_RWH		(1 << 28)
+ #define SM_RWS		(0 << 24)
+ #define SM_TDF		(1 << 8)
+ #define SM_NWS		(3)
+-	AT91C_BASE_SMC2->SMC2_CSR[3] = (SM_RWH | SM_RWS |
+-		AT91C_SMC2_ACSS_STANDARD | AT91C_SMC2_DBW_8 |
+-		SM_TDF | AT91C_SMC2_WSEN | SM_NWS);
++
++#define	SMARTMEDIA_INIT	(			\
++		SM_RWH |			\
++		SM_RWS |			\
++		AT91C_SMC2_ACSS_STANDARD |	\
++		AT91C_SMC2_DBW_8 |		\
++		SM_TDF |			\
++		AT91C_SMC2_WSEN |		\
++		SM_NWS				\
++		)
++
++
++
++#define AT91_SMARTMEDIA_BASE 0x40000000	/* physical address to access memory on NCS3 */
++void nand_init (void)
++{
++	/* Setup Smart Media, fitst enable the address range of CS3 */
++	/* *AT91C_EBI_CSA |= AT91C_EBI_CS3A_SMC_SmartMedia; */
++	at91_sys_setbit(AT91C_EBI_CS3A_SMC_SmartMedia, AT91_EBI_CSA);
++
++	/* Init Smartmedia Interface */
++	at91_sys_write(AT91_SMC2_CSR3, SMARTMEDIA_INIT);
+ 
+ 	/* enable the SMOE line PC0=SMCE, A21=CLE, A22=ALE */
+-	*AT91C_PIOC_ASR = AT91C_PC0_BFCK | AT91C_PC1_BFRDY_SMOE |
+-		AT91C_PC3_BFBAA_SMWE;
+-	*AT91C_PIOC_PDR = AT91C_PC0_BFCK | AT91C_PC1_BFRDY_SMOE |
+-		AT91C_PC3_BFBAA_SMWE;
++	at91_set_A_periph(AT91_PIN_PC0, 0);	/* BFCK	*/
++	at91_set_A_periph(AT91_PIN_PC1, 0);	/* BFRDY/SMOE */
++	at91_set_A_periph(AT91_PIN_PC3, 0);	/* BFBAA/SMWE */
+ 
+ 	/* Configure PC2 as input (signal READY of the SmartMedia) */
+-	*AT91C_PIOC_PER = AT91C_PC2_BFAVD;	/* enable direct output enable */
+-	*AT91C_PIOC_ODR = AT91C_PC2_BFAVD;	/* disable output */
++	at91_set_gpio_input(AT91_PIN_PC2, 0);
+ 
+ 	/* Configure PB1 as input (signal Card Detect of the SmartMedia) */
+-	*AT91C_PIOB_PER = AT91C_PIO_PB1;	/* enable direct output enable */
+-	*AT91C_PIOB_ODR = AT91C_PIO_PB1;	/* disable output */
++	at91_set_gpio_input(AT91_PIN_PB1, 0);
+ 
+ 	/* PIOB and PIOC clock enabling */
+-	*AT91C_PMC_PCER = 1 << AT91C_ID_PIOB;
+-	*AT91C_PMC_PCER = 1 << AT91C_ID_PIOC;
++	at91_sys_write(AT91_PMC_PCER, 1 << AT91RM9200_ID_PIOB);
++	at91_sys_write(AT91_PMC_PCER, 1 << AT91RM9200_ID_PIOC);
+ 
+-	if (*AT91C_PIOB_PDSR & AT91C_PIO_PB1)
++	if (at91_get_gpio_value(AT91_PIN_PB1))
+ 		printf ("  No SmartMedia card inserted\n");
+ #ifdef DEBUG
+ 	printf ("  SmartMedia card inserted\n");
+@@ -140,3 +159,4 @@
+ 	printf ("%4lu MB\n", nand_probe(AT91_SMARTMEDIA_BASE) >> 20);
+ }
+ #endif
++
+diff -urN u-boot-2009.01-rc1-0rig//board/atmel/at91rm9200dk/led.c u-boot-2009.01/board/atmel/at91rm9200dk/led.c
+--- u-boot-2009.01-rc1-0rig//board/atmel/at91rm9200dk/led.c	2009-01-01 13:09:31.000000000 +0100
++++ u-boot-2009.01/board/atmel/at91rm9200dk/led.c	2009-01-01 15:53:56.000000000 +0100
+@@ -24,57 +24,105 @@
+ 
+ #include <common.h>
+ #include <asm/arch/AT91RM9200.h>
++/*#include <asm/arch/at91_pmc.h>*/
++#include <asm/arch/gpio.h>
++#include <asm/arch/io.h>
+ 
+-#define	GREEN_LED	AT91C_PIO_PB0
+-#define	YELLOW_LED	AT91C_PIO_PB1
+-#define	RED_LED	AT91C_PIO_PB2
++#define	GREEN_LED			AT91_PIN_PB0
++#define	YELLOW_LED			AT91_PIN_PB1
++#define	RED_LED				AT91_PIN_PB2
+ 
+-void	green_LED_on(void)
++
++#define	GREEN_LED_ON			0
++#define	GREEN_LED_OFF			1
++#define	YELLOW_LED_ON			0
++#define	YELLOW_LED_OFF			1
++#define	RED_LED_ON			0
++#define	RED_LED_OFF			1
++
++#define	TIME_SLICE			500000
++
++void yellow_LED_on(void)
++{
++	at91_set_gpio_value(YELLOW_LED, YELLOW_LED_ON);
++}
++
++void yellow_LED_off(void)
++{
++	at91_set_gpio_value(YELLOW_LED, YELLOW_LED_OFF);
++}
++
++void red_LED_on(void)
+ {
+-	AT91PS_PIO	PIOB	= AT91C_BASE_PIOB;
+-	PIOB->PIO_CODR		= GREEN_LED;
++	at91_set_gpio_value(RED_LED, RED_LED_ON);
+ }
+ 
+-void	 yellow_LED_on(void)
++void red_LED_off(void)
+ {
+-	AT91PS_PIO	PIOB	= AT91C_BASE_PIOB;
+-	PIOB->PIO_CODR		= YELLOW_LED;
++	at91_set_gpio_value(RED_LED, RED_LED_OFF);
+ }
+ 
+-void	 red_LED_on(void)
++void green_LED_on(void)
+ {
+-	AT91PS_PIO	PIOB	= AT91C_BASE_PIOB;
+-	PIOB->PIO_CODR		= RED_LED;
++	at91_set_gpio_value(GREEN_LED, GREEN_LED_ON);
+ }
+ 
+-void	green_LED_off(void)
++void green_LED_off(void)
+ {
+-	AT91PS_PIO	PIOB	= AT91C_BASE_PIOB;
+-	PIOB->PIO_SODR		= GREEN_LED;
++	at91_set_gpio_value(GREEN_LED, GREEN_LED_OFF);
+ }
+ 
+-void	yellow_LED_off(void)
++static void	delay(unsigned int	time)
+ {
+-	AT91PS_PIO	PIOB	= AT91C_BASE_PIOB;
+-	PIOB->PIO_SODR		= YELLOW_LED;
++	volatile unsigned int	counter = time;
++	while(counter > 0) counter--;
+ }
+ 
+-void	red_LED_off(void)
++void	green_LED_blink(unsigned int time)
+ {
+-	AT91PS_PIO	PIOB	= AT91C_BASE_PIOB;
+-	PIOB->PIO_SODR		= RED_LED;
++	while(time > 0) {
++		green_LED_on();
++		delay(TIME_SLICE);
++		green_LED_off();
++		delay(TIME_SLICE);
++		time--;
++	}
+ }
+ 
++void	yellow_LED_blink(unsigned int time)
++{
++	while(time > 0) {
++		yellow_LED_on();
++		delay(TIME_SLICE);
++		yellow_LED_off();
++		delay(TIME_SLICE);
++		time--;
++	}
++}
+ 
+-void coloured_LED_init (void)
++void	red_LED_blink(unsigned int time)
+ {
+-	AT91PS_PIO	PIOB	= AT91C_BASE_PIOB;
+-	AT91PS_PMC	PMC	= AT91C_BASE_PMC;
+-	PMC->PMC_PCER		= (1 << AT91C_ID_PIOB);	/* Enable PIOB clock */
+-	/* Disable peripherals on LEDs */
+-	PIOB->PIO_PER		= AT91C_PIO_PB2 | AT91C_PIO_PB1 | AT91C_PIO_PB0;
+-	/* Enable pins as outputs */
+-	PIOB->PIO_OER		= AT91C_PIO_PB2 | AT91C_PIO_PB1 | AT91C_PIO_PB0;
+-	/* Turn all LEDs OFF */
+-	PIOB->PIO_SODR		= AT91C_PIO_PB2 | AT91C_PIO_PB1 | AT91C_PIO_PB0;
++	while(time > 0) {
++		red_LED_on();
++		delay(TIME_SLICE);
++		red_LED_off();
++		delay(TIME_SLICE);
++		time--;
++	}
+ }
++
++void coloured_LED_init(void)
++{
++	/* Enable clock */
++	at91_sys_write(AT91C_PMC_PCER, 1 << AT91RM9200_ID_PIOB);
++
++	at91_set_gpio_output(GREEN_LED, 1);
++	at91_set_gpio_output(YELLOW_LED, 1);
++	at91_set_gpio_output(RED_LED, 1);
++
++	at91_set_gpio_value(GREEN_LED,	GREEN_LED_OFF);
++	at91_set_gpio_value(YELLOW_LED, YELLOW_LED_OFF);
++	at91_set_gpio_value(RED_LED,	RED_LED_ON);
++}
++
++
+diff -urN u-boot-2009.01-rc1-0rig//board/atmel/at91rm9200dk/mux.c u-boot-2009.01/board/atmel/at91rm9200dk/mux.c
+--- u-boot-2009.01-rc1-0rig//board/atmel/at91rm9200dk/mux.c	2009-01-01 13:09:31.000000000 +0100
++++ u-boot-2009.01/board/atmel/at91rm9200dk/mux.c	2009-01-01 16:38:01.000000000 +0100
+@@ -1,37 +1,29 @@
+ #include <config.h>
+ #include <common.h>
+ #include <asm/hardware.h>
++#include <asm/arch/at91_pio.h>
++#include <asm/arch/gpio.h>
++#include <asm/arch/io.h>
+ #include <dataflash.h>
+ 
+ int AT91F_GetMuxStatus(void) {
+-#ifdef	DATAFLASH_MMC_SELECT
+-	AT91C_BASE_PIOB->PIO_PER = DATAFLASH_MMC_SELECT; /* Set in PIO mode */
+-	AT91C_BASE_PIOB->PIO_OER = DATAFLASH_MMC_SELECT; /* Configure in output */
+-
+-
+-	if(AT91C_BASE_PIOB->PIO_ODSR & DATAFLASH_MMC_SELECT) {
+-		return 1;
+-	} else {
+-		return 0;
+-	}
+-#endif
++#ifdef	CONFIG_CMD_AT91_SPIMUX
++	return at91_get_gpio_value(DATAFLASH_MMC_SELECT);
++#else
+ 	return 0;
++#endif
+ }
+ 
+-void AT91F_SelectMMC(void) {
+-#ifdef	DATAFLASH_MMC_SELECT
+-	AT91C_BASE_PIOB->PIO_PER = DATAFLASH_MMC_SELECT;	/* Set in PIO mode */
+-	AT91C_BASE_PIOB->PIO_OER = DATAFLASH_MMC_SELECT;	/* Configure in output */
+-	/* Set Output */
+-	AT91C_BASE_PIOB->PIO_SODR = DATAFLASH_MMC_SELECT;
++void AT91F_SelectMMC(void) 
++{
++#ifdef	CONFIG_CMD_AT91_SPIMUX
++	at91_set_gpio_output(DATAFLASH_MMC_SELECT, 1);	/* Set in PIO mode and select SD-Card*/
+ #endif
+ }
+ 
+ void AT91F_SelectSPI(void) {
+-#ifdef	DATAFLASH_MMC_SELECT
+-	AT91C_BASE_PIOB->PIO_PER = DATAFLASH_MMC_SELECT;	/* Set in PIO mode */
+-	AT91C_BASE_PIOB->PIO_OER = DATAFLASH_MMC_SELECT;	/* Configure in output */
+-	/* Clear Output */
+-	AT91C_BASE_PIOB->PIO_CODR = DATAFLASH_MMC_SELECT;
++#ifdef	CONFIG_CMD_AT91_SPIMUX
++	at91_set_gpio_output(DATAFLASH_MMC_SELECT, 0);	/* Set in PIO mode and select SPI */
+ #endif
+ }
++
+

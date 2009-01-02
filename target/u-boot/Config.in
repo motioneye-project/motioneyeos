@@ -1,8 +1,55 @@
-config BR2_TARGET_UBOOT
+config BR2_TARGET_CUSTOM_UBOOT
+	bool
+	help
+	  A target can "select" this to disable
+	  the build of vanilla u-boot.
+
+menuconfig BR2_TARGET_UBOOT
 	bool "Das U-Boot Boot Monitor"
-	depends on !BR2_TARGET_AT91
+	depends on !BR2_TARGET_CUSTOM_UBOOT
 	help
 	  Build "Das U-Boot" Boot Monitor
+
+if BR2_TARGET_UBOOT
+choice
+	prompt "U-Boot Version"
+	default BR2_TARGET_UBOOT_2009_01_RC1
+	help
+	  Select the specific Linux version you want to use
+	
+config BR2_TARGET_UBOOT_2009_01_RC1
+	bool "u-boot-2009.01-rc1"
+	depends on BR2_TARGET_UBOOT
+	help
+	  Use u-boot from December 2008 (RC1)
+
+config BR2_TARGET_UBOOT_2008_10
+	bool "u-boot-2008.10"
+	depends on BR2_TARGET_UBOOT
+	help
+	  Use u-boot from October 2008
+	
+config BR2_TARGET_UBOOT_1_3_4
+	bool "u-boot-1.3.4"
+	depends on BR2_TARGET_UBOOT
+	help
+	  Use u-boot from mid 2008
+	
+config BR2_TARGET_UBOOT_2009_01
+	bool "u-boot-2009.01"
+	depends on BR2_TARGET_UBOOT
+	help
+	  Use u-boot from January 2009
+	  Release date 2009-01-17
+
+endchoice
+
+config BR2_UBOOT_VERSION
+	string
+	default "2009.01-rc1"	if BR2_TARGET_UBOOT_2009_01_RC1
+	default "2008.10"	if BR2_TARGET_UBOOT_2008_10
+	default "1.3.4"		if BR2_TARGET_UBOOT_1_3_4
+	default "2009.01"	if BR2_TARGET_UBOOT_2009_01
 
 config BR2_TARGET_UBOOT_BOARDNAME
 	string "board name"
@@ -18,6 +65,62 @@ config BR2_TARGET_UBOOT_CUSTOM_PATCH
 	help
 	  If your board requires a custom patch, add the path to the file here.
 	  Most users may leave this empty
+
+choice
+	prompt "Bootsource"
+	depends on BR2_BOOTSOURCE
+	default BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASHCARD
+
+	config BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASHCARD
+	bool "Boot from dataflashcard"
+	depends on BR2_BOOTSOURCE_DATAFLASHCARD
+	help
+	  
+
+	config BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASH
+	bool "Boot from dataflash
+	depends on BR2_BOOTSOURCE_DATAFLASH
+	help
+	  
+
+	config BR2_TARGET_UBOOT_BOOTSOURCE_NANDFLASH
+	bool "Boot from a NAND flash"
+	depends on BR2_BOOTSOURCE_NANDFLASH
+	help
+	  Build u-boot with environment in the NAND flash
+
+	config BR2_TARGET_UBOOT_BOOTSOURCE_FLASH
+	bool "Boot from a parallell flash"
+	depends on BR2_BOOTSOURCE_FLASH
+	help
+	  Build u-boot with environment in a flash RAM
+
+	config BR2_TARGET_UBOOT_BOOTSOURCE_SDCARD
+	bool "Boot from a NAND flash"
+	depends on BR2_BOOTSOURCE_SDCARD
+	help
+	  Build u-boot with environment on an SD-Card
+	  Not yet supported
+
+	config BR2_TARGET_UBOOT_BOOTSOURCE_EEPROM
+	bool "Boot from a serial EEPROM"
+	depends on BR2_BOOTSOURCE_EEPROM
+	help
+	  Build u-boot with environment in a serial EEPROM
+	  Not yet supported
+
+
+endchoice
+
+config BR2_TARGET_UBOOT_BOOTSOURCE
+	string
+	depends on BR2_BOOTSOURCE
+	default "dataflash"	if BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASHCARD
+	default "dataflash"	if BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASH
+	default "nandflash"	if BR2_TARGET_UBOOT_BOOTSOURCE_NANDFLASH
+	default "flash"		if BR2_TARGET_UBOOT_BOOTSOURCE_FLASH
+	default "sdcard"	if BR2_TARGET_UBOOT_BOOTSOURCE_SDCARD
+	default "eeprom"	if BR2_TARGET_UBOOT_BOOTSOURCE_EEPROM
 
 config BR2_TARGET_UBOOT_SERVERIP
 	string "server ip"
@@ -80,3 +183,45 @@ config BR2_TARGET_UBOOT_TOOL_ENV
 	depends on BR2_TARGET_UBOOT
 	help
 	  Install fw_printenv / fw_setenv tools in target.
+endif
+
+config BR2_BOOTSOURCE_DATAFLASHCARD
+	bool
+	help
+	  Allow use of a dataflashcard as a boot source
+
+config BR2_BOOTSOURCE_DATAFLASH
+	bool
+	help
+	  Allow use of a dataflash as a boot source
+
+config BR2_BOOTSOURCE_NANDFLASH
+	bool
+	help
+	  Allow use of a NAND flash as a boot source
+
+config BR2_BOOTSOURCE_FLASH
+	bool
+	help
+	  Allow use of a flash RAM as a boot source
+
+config BR2_BOOTSOURCE_SDCARD
+	bool
+	help
+	  Allow use of an SD-card as a boot source
+
+config BR2_BOOTSOURCE_EEPROM
+	bool
+	help
+	  Allow use of a serial eeprom as a boot source
+
+config	BR2_BOOTSOURCE
+	bool
+	default y if BR2_BOOTSOURCE_DATAFLASHCARD
+	default y if BR2_BOOTSOURCE_DATAFLASH
+	default y if BR2_BOOTSOURCE_NANDFLASH
+	default y if BR2_BOOTSOURCE_FLASH
+	default y if BR2_BOOTSOURCE_SDCARD
+	default y if BR2_BOOTSOURCE_EEPROM
+	default n
+

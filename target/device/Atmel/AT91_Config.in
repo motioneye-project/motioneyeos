@@ -188,96 +188,132 @@ choice
 config BR2_TARGET_AT91RM9200DF
 	bool "Atmel AT91RM9200 Generic Dataflash(Card) Board Support"
 	depends on BR2_TARGET_AT91RM9200
+	select BR2_BOOTSOURCE_DATAFLASHCARD
 	help
 	  The Atmel AT91RM9200EK Development Board using Dataflashcard
 
 config BR2_TARGET_AT91RM9200SE
 	bool "Atmel AT91RM9200 Generic Dataflash(Card) Board Support (SE)"
 	depends on BR2_TARGET_AT91RM9200
+	select BR2_BOOTSOURCE_DATAFLASHCARD
 	help
 	  The Atmel AT91RM9200EK Development Board using Dataflashcard (SE)
 
 config BR2_TARGET_AT91RM9200EK
 	bool "Atmel AT91RM9200EK Development Board Support"
 	depends on BR2_TARGET_AT91RM9200
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_FLASH
 	help
 	  The Atmel AT91RM9200EK Development Board
 
 config BR2_TARGET_AT91RM9200DK
 	bool "Atmel AT91RM9200DK Development Board Support"
 	depends on BR2_TARGET_AT91RM9200
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_FLASH
 	help
 	  The Atmel AT91RM9200DK Development Board
 
 config BR2_TARGET_AT91SAM9260DFC
 	bool "Atmel AT91SAM9260DFC"
 	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9XE
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_DATAFLASH
 	help
 	  The Atmel AT91SAM9260 Development Board booting from Dataflashcard
 
 config BR2_TARGET_AT91SAM9260EK
 	bool "Atmel AT91SAM9260EK"
 	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9XE
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91SAM9260 Development Board booting from dataflash
 
 config BR2_TARGET_AT91SAM9G20DFC
 	bool "Atmel AT91SAM9G20DFC"
 	depends on BR2_TARGET_AT91SAM9G20
+	select BR2_BOOTSOURCE_DATAFLASHCARD
 	help
 	  The Atmel AT91SAM9G20 Development Board booting from Dataflashcard
 
 config BR2_TARGET_AT91SAM9G20EK
 	bool "Atmel AT91SAM9G20EK"
 	depends on BR2_TARGET_AT91SAM9G20
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91SAM9G20 Development Board booting from dataflash
 
 config BR2_TARGET_AT91SAM9XEEK
 	bool "Atmel AT91SAM9XE-EK"
 	depends on BR2_TARGET_AT91SAM9260 || BR2_TARGET_AT91SAM9XE
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91SAM9xe Development Board (Not Yet Implemented)
 
 config BR2_TARGET_AT91SAM9261EK
 	bool "Atmel AT91SAM9261EK"
 	depends on BR2_TARGET_AT91SAM9261 || BR2_TARGET_AT91SAM9261S
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91SAM9261 Development Board
 
 config BR2_TARGET_AT91SAM9RL64EK
 	bool "Atmel AT91SAM9RL64EK"
 	depends on BR2_TARGET_AT91SAM9RL64
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_NANDFLASH
+	select BR2_BOOTSOURCE_SDCARD
 	help
 	  The Atmel AT91SAM9RL64 Development Board
 
 config BR2_TARGET_AT91SAM9262EK
 	bool "Atmel AT91SAM9262EK"
 	depends on BR2_TARGET_AT91SAM9262
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91SAM9262 Development Board (Not Yet Implemented)
 
 config BR2_TARGET_AT91SAM9263EK
 	bool "Atmel AT91SAM9263EK"
 	depends on BR2_TARGET_AT91SAM9263
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91SAM9263 Development Board (Not Yet Implemented)
 
 config BR2_TARGET_AT572D940DCM
 	bool "Atmel AT572D940 Diopsis Computer Module"
 	depends on BR2_TARGET_AT572D940HF
+	select BR2_BOOTSOURCE_FLASH
+	select BR2_BOOTSOURCE_SDCARD
 	help
 	  The Atmel Diopsis CPU Module (Not Yet Implemented)
 
 config BR2_TARGET_AT91CAP9DK
 	bool "Atmel AT91CAP9DK"
 	depends on BR2_TARGET_AT91CAP9
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91CAP9 Development Kit (Not Yet Implemented)
 
 config BR2_TARGET_AT91CAP9STK
 	bool "Atmel AT91CAP9STK"
 	depends on BR2_TARGET_AT91CAP9
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_DATAFLASH
+	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91CAP9 Starter Kit (Not Yet Implemented)
 
@@ -303,4 +339,5 @@ config BR2_TARGET_AT91SAM9261EK_SPIMODE3
 	  Use SPI Mode 3
 
 endchoice
+
 
