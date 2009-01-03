@@ -54,6 +54,8 @@ DFB_BOARD_NAME:=$(BOARD_NAME)
 
 #BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox-$(BR2_BUSYBOX_VERSION).config
 
+U_BOOT_VERSION:=$(strip $(subst ",,$(BR2_UBOOT_VERSION)))
+#"))
 
 # Update things in board specific makefiles
 include target/device/Atmel/*/Makefile.in
@@ -63,9 +65,9 @@ include target/device/Atmel/*/Makefile.in
 UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
 UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
 
-ifeq ($(BR2_TARGET_UBOOT_AT91),y)
-include $(ATMEL_PATH)/u-boot/u-boot.mk
-endif
+#ifeq ($(BR2_TARGET_UBOOT_AT91),y)
+#include $(ATMEL_PATH)/u-boot/u-boot.mk
+#endif
 
 ifeq ($(BR2_TARGET_DATAFLASHBOOT),y)
 include $(ATMEL_PATH)/DataFlashBoot/DataflashBoot.mk

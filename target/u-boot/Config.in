@@ -1,12 +1,5 @@
-config BR2_TARGET_CUSTOM_UBOOT
-	bool
-	help
-	  A target can "select" this to disable
-	  the build of vanilla u-boot.
-
 menuconfig BR2_TARGET_UBOOT
 	bool "Das U-Boot Boot Monitor"
-	depends on !BR2_TARGET_CUSTOM_UBOOT
 	help
 	  Build "Das U-Boot" Boot Monitor
 
@@ -37,6 +30,11 @@ config BR2_TARGET_UBOOT_1_3_4
 	bool "u-boot-1.3.4"
 	depends on BR2_TARGET_UBOOT
 	
+config BR2_TARGET_UBOOT_1_2_0_ATMEL
+	bool "u-boot-1.2.0-atmel"
+	depends on BR2_TARGET_AT91
+	depends on BR2_TARGET_UBOOT
+	
 config BR2_TARGET_UBOOT_2009_01
 	bool "u-boot-2009.01"
 	depends on BR2_TARGET_UBOOT
@@ -48,7 +46,13 @@ config BR2_UBOOT_VERSION
 	default "2009.01-rc1"	if BR2_TARGET_UBOOT_2009_01_RC1
 	default "2008.10"	if BR2_TARGET_UBOOT_2008_10
 	default "1.3.4"		if BR2_TARGET_UBOOT_1_3_4
+	default "1.2.0-atmel"	if BR2_TARGET_UBOOT_1_2_0_ATMEL
 	default "2009.01"	if BR2_TARGET_UBOOT_2009_01
+
+config BR2_U_BOOT_SITE
+	string
+	default "$(BR2_ATMEL_MIRROR)"		if BR2_TARGET_UBOOT_1_2_0_ATMEL
+	default "ftp://ftp.denx.de/pub/u-boot"
 
 config BR2_TARGET_UBOOT_CUSTOM_PATCH
 	string "custom patch"

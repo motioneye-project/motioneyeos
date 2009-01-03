@@ -7,14 +7,30 @@ U_BOOT_VERSION:=$(strip $(subst ",,$(BR2_UBOOT_VERSION)))
 #"))
 
 U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
-U_BOOT_SITE:=ftp://ftp.denx.de/pub/u-boot
+
+U_BOOT_SITE:=$(strip $(subst ",,$(BR2_U_BOOT_SITE)))
+#"))
 U_BOOT_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
-U_BOOT_PATCH_DIR:=$(PROJECT_BUILD_DIR)/u-boot-patches
+U_BOOT_PATCH_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(U_BOOT_VERSION)-patches
 U_BOOT_CAT:=$(BZCAT)
 U_BOOT_BIN:=u-boot.bin
 U_BOOT_TARGET:=$(BOARD_NAME)-u-boot-$(U_BOOT_VERSION)-$(DATE).bin
 U_BOOT_TOOLS_BIN:=mkimage
 U_BOOT_TOOLS:=$(STAGING_DIR)/usr/bin/$(U_BOOT_TOOLS_BIN)
+MKIMAGE:=$(U_BOOT_TOOLS)
+
+U_BOOT_AUTOSCRIPT=$(BINARIES_DIR)/autoscript
+TARGET_UBOOT_IPADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_IPADDR)))
+#"))
+TARGET_UBOOT_SERVERIP:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP)))
+#"))
+TARGET_UBOOT_GATEWAY:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_GATEWAY)))
+#"))
+TARGET_UBOOT_NETMASK:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_NETMASK)))
+#"))
+TARGET_UBOOT_ETHADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_ETHADDR)))
+#"))
+
 # u-boot still uses arch=ppc for powerpc
 U_BOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
 ifeq ($(UBOOT_BOARD_NAME),"")
@@ -36,6 +52,11 @@ ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
 U_BOOT_TARGET_TOOLS+=$(TARGET_DIR)/usr/sbin/fw_printenv
 endif
 
+U_BOOT_CONFIGURE_OPTS :=
+
+ifneq ($(BR2_TARGET_UBOOT_1_2_0_ATMEL),)
+U_BOOT_CONFIGURE_OPTS += CONFIG_NOSOFTFLOAT=1
+endif
 
 # Define a helper function
 define insert_define
@@ -52,6 +73,7 @@ $(DL_DIR)/$(U_BOOT_SOURCE):
 $(U_BOOT_DIR)/.unpacked: $(DL_DIR)/$(U_BOOT_SOURCE)
 	$(U_BOOT_CAT) $(DL_DIR)/$(U_BOOT_SOURCE) \
 		| tar -C $(PROJECT_BUILD_DIR) $(TAR_OPTIONS) -
+	mkdir -p $(U_BOOT_DIR)
 	touch $@
 
 $(U_BOOT_DIR)/.patched: $(U_BOOT_DIR)/.unpacked
@@ -75,6 +97,7 @@ $(U_BOOT_DIR)/.configured: $(U_BOOT_DIR)/.header_copied
 	$(TARGET_CONFIGURE_OPTS)		\
 		CFLAGS="$(TARGET_CFLAGS)"	\
 		LDFLAGS="$(TARGET_LDFLAGS)"	\
+		$(U_BOOT_CONFIGURE_OPTS) \
 		$(MAKE) -C $(U_BOOT_DIR)	\
 		$(UBOOT_BOARD_NAME)_config
 	touch $@
@@ -151,6 +174,7 @@ $(U_BOOT_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/.header_modified
 	$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
+		$(U_BOOT_CONFIGURE_OPTS) \
 		$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" ARCH=$(U_BOOT_ARCH) \
 		 -C $(U_BOOT_DIR)
 
@@ -178,7 +202,9 @@ $(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/$(U_BOOT_BIN)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 	ln -sf fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
 
-u-boot: $(BINARIES_DIR)/$(U_BOOT_BIN) $(U_BOOT_TOOLS) $(U_BOOT_TARGET_TOOLS)
+u-boot: $(BINARIES_DIR)/$(U_BOOT_BIN) $(U_BOOT_TOOLS) $(U_BOOT_TARGET_TOOLS) u-boot-autoscript
+
+u-boot-autoscript: $(U_BOOT_AUTOSCRIPT).$(PROJECT)
 
 u-boot-clean:
 	-$(MAKE) -C $(U_BOOT_DIR) clean
@@ -192,6 +218,60 @@ u-boot-source: $(DL_DIR)/$(U_BOOT_SOURCE)
 u-boot-unpacked: $(U_BOOT_DIR)/.patched
 
 u-boot-configured: $(U_BOOT_DIR)/.header_modified
+
+#############################################################
+#
+# Generate an autoscript with the configration items
+#
+#############################################################
+
+$(U_BOOT_AUTOSCRIPT): .config
+	rm -f $(U_BOOT_AUTOSCRIPT)
+ifneq ($(TARGET_UBOOT_IPADDR),)
+	echo setenv ipaddr $(TARGET_UBOOT_IPADDR) > $(U_BOOT_AUTOSCRIPT)
+else
+	echo TARGET_UBOOT_IPADDR="$(TARGET_UBOOT_IPADDR)"
+endif
+ifneq ($(TARGET_UBOOT_SERVERIP),)
+	echo setenv serverip $(TARGET_UBOOT_SERVERIP) >> $(U_BOOT_AUTOSCRIPT)
+endif
+ifneq ($(TARGET_UBOOT_GATEWAY),)
+	echo setenv gatewayip $(TARGET_UBOOT_GATEWAY) >> $(U_BOOT_AUTOSCRIPT)
+endif
+ifneq ($(TARGET_UBOOT_NETMASK),)
+	echo setenv netmask $(TARGET_UBOOT_NETMASK) >> $(U_BOOT_AUTOSCRIPT)
+endif
+	echo setenv linux $(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE).gz >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv kernel-version $(LINUX26_VERSION) >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv kernel-date $(DATE) >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv hostname $(TARGET_HOSTNAME) >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv fs-date $(DATE) >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv rd-1 rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv rd-2 rootfs.$(BR2_ARCH)-$(DATE).jffs2 >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv rd rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv ver 1 >> $(U_BOOT_AUTOSCRIPT)
+ifneq ($(TARGET_UBOOT_ETHADDR),)
+	echo setenv ethaddr $(TARGET_UBOOT_ETHADDR) >> $(U_BOOT_AUTOSCRIPT)
+endif
+	echo setenv fstype ram >> $(U_BOOT_AUTOSCRIPT)
+	echo fs >> $(U_BOOT_AUTOSCRIPT)
+	echo os >> $(U_BOOT_AUTOSCRIPT)
+	echo setargs >> $(U_BOOT_AUTOSCRIPT)
+	echo saveenv >> $(U_BOOT_AUTOSCRIPT)
+
+$(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
+	$(MKIMAGE) -A arm \
+				-O linux \
+				-T script \
+				-C none \
+				-a 0 \
+				-e 0 \
+				-n "autoscr config" \
+				-d $(U_BOOT_AUTOSCRIPT) \
+				$(U_BOOT_AUTOSCRIPT).$(PROJECT)
+	cp $(U_BOOT_AUTOSCRIPT).$(PROJECT) $(TARGET_ATMEL_COPYTO)
+
+
 
 #############################################################
 #
