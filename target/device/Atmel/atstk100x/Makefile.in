@@ -1,7 +1,5 @@
 ifeq ($(strip $(BR2_TARGET_AVR32_ATSTK1002)),y)
-ATSTK1002_PATH=target/device/Atmel/atstk100x
-
-TARGET_SKELETON=$(ATSTK1002_PATH)/target_skeleton
-TARGET_DEVICE_TABLE=$(ATSTK1002_PATH)/device_table.txt
-BR2_PACKAGE_BUSYBOX_CONFIG:=$(BOARD_PATH)/busybox-1.9.1.config
+UBOOT_BOARD_NAME:=atstk1002
+TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
+TARGET_DEVICE_TABLE=$(BOARD_PATH)/device_table.txt
 endif

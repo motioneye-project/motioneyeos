@@ -1,12 +1,18 @@
 ifeq ($(strip $(BOARD_NAME)),at91sam9263ek)
-BR2_PACKAGE_BUSYBOX_CONFIG:=$(BOARD_PATH)/busybox-1.6.0.config
+LINUX_BOARD_NAME:=at91sam9263ek
+ifeq ($(U_BOOT_VERSION),1.2.0-atmel)
+UBOOT_BOARD_NAME:=at91sam9263ek
+else
 ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASHCARD),)
 UBOOT_BOARD_NAME:=at91sam9263ek_dataflash_cs0
 endif
+
 ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASH),)
-UBOOT_BOARD_NAME:=at91sam9263ek_dataflash_cs0
+UBOOT_BOARD_NAME:=at91sam9263ek_dataflash_cs1
 endif
+
 ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_NANDFLASH),)
 UBOOT_BOARD_NAME:=at91sam9263ek_nandflash
+endif
 endif
 endif

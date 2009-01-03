@@ -1,4 +1,7 @@
 ifeq ($(BOARD_NAME),at91sam9260pf)
 LINUX26_BOARD_NAME=at91sam9260ek
-BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox-1.6.0.config
+UBOOT_BOARD_NAME:=at91sam9260ek
+# Not functional for U-Boot
+# This needs to have a header file at91sam9260pf.h
+# which puts the environment in parallell flash
 endif

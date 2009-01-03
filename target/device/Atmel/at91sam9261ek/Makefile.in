@@ -1,12 +1,22 @@
 ifeq ($(strip $(BOARD_NAME)),at91sam9261ek)
-BR2_PACKAGE_BUSYBOX_CONFIG:=$(BOARD_PATH)/busybox-1.6.0.config
+LINUX_BOARD_NAME:=at91sam9261ek
+ifeq ($(U_BOOT_VERSION),1.2.0-atmel)
+UBOOT_BOARD_NAME:=at91sam9261ek
+else
 ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASHCARD),)
 UBOOT_BOARD_NAME:=at91sam9261ek_dataflash_cs0
+# use CS0 since we have to route CS0 to the SDcard
+# to allow boot from a card.
+# Note possible conflict with CS3 which needs to be
+# disabled both in U-Boot and in Linux
 endif
+
 ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASH),)
 UBOOT_BOARD_NAME:=at91sam9261ek_dataflash_cs0
 endif
+
 ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_NANDFLASH),)
 UBOOT_BOARD_NAME:=at91sam9261ek_nandflash
+endif
 endif
 endif
