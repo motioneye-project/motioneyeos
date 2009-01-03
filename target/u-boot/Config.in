@@ -67,7 +67,7 @@ choice
 	depends on BR2_BOOTSOURCE_DATAFLASHCARD
 
 	config BR2_TARGET_UBOOT_BOOTSOURCE_DATAFLASH
-	bool "Boot from dataflash
+	bool "Boot from dataflash"
 	depends on BR2_BOOTSOURCE_DATAFLASH
 
 	config BR2_TARGET_UBOOT_BOOTSOURCE_NANDFLASH
