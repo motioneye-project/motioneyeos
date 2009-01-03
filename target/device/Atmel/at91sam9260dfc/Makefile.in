@@ -14,3 +14,5 @@ ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_NANDFLASH),)
 UBOOT_BOARD_NAME:=at91sam9260ek_nandflash
 endif
 
+endif
+
