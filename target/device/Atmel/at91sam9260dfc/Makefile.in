@@ -13,8 +13,4 @@ endif
 ifneq ($(BR2_TARGET_UBOOT_BOOTSOURCE_NANDFLASH),)
 UBOOT_BOARD_NAME:=at91sam9260ek_nandflash
 endif
-ALLAN=1
-else
-ALLAN=2
-endif
 

@@ -3,6 +3,13 @@ config BR2_TARGET_AT91BOOTSTRAP
 	BR2_TARGET_AT91SAM9261EK || BR2_TARGET_AT91SAM9263EK || BR2_TARGET_AT91SAM9XEEK
 	bool "Build AT91 Bootstrap for selected chip"
 
+config BR2_TARGET_AT91BOOTSTRAP_BOARD
+	string "Bootstrap board"
+	default "$(BOARD_NAME)"
+	depends on BR2_TARGET_AT91BOOTSTRAP
+	help
+	  This is used to do a make <board>_config
+
 choice
 	prompt "Boot Memory"
 	default BR2_TARGET_AT91BOOT_DATAFLASHCARD

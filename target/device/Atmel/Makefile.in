@@ -84,8 +84,6 @@ atmel_status:
 	@echo DOWNLOAD_LINUX26_VERSION=$(DOWNLOAD_LINUX26_VERSION)
 	@echo LINUX_SOURCE=$(LINUX_SOURCE)
 	@echo TARGETS=$(TARGETS)
-	@echo ALLAN=$(ALLAN)
-
 
 #TARGETS+=atmel_status
 endif
