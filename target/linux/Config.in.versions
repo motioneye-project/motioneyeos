@@ -5,11 +5,13 @@
 
 config LINUX26_LATEST_RC_VERSION
 	string
-	default "2.6.28-rc9" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+	default "2.6.29-rc1" if BR2_KERNEL_ADD_LATEST_RC_PATCH
+	help
+	  Not really available as of 20090103
 
 config LINUX26_LATEST_GIT_VERSION
 	string
-	default "2.6.28-rc9-git1" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
+	default "2.6.28-git5" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
 
 config LINUX26_LATEST_MM_VERSION
 	string
@@ -17,36 +19,42 @@ config LINUX26_LATEST_MM_VERSION
 
 config BR2_KERNEL_CURRENT_VERSION
 	string
-	default "2.6.27.10"
+	default "2.6.28"
+
+config BR2_KERNEL_LATEST_2_6_28
+	string
+	default "1"
+	help
+	  Not really available as of 20090103
 
 config BR2_KERNEL_LATEST_2_6_27
-       string
-       default "10"
+	string
+	default "10"
 
 config BR2_KERNEL_LATEST_2_6_26
-       string
-       default "8"
+	string
+	default "8"
 
 config BR2_KERNEL_LATEST_2_6_25
-       string
-       default "9"
+	string
+	default "9"
 
 config BR2_KERNEL_LATEST_2_6_24
-       string
-       default "7"
+	string
+	default "7"
 
 config BR2_KERNEL_LATEST_2_6_23
-       string
-       default "17"
+	string
+	default "17"
 
 config BR2_KERNEL_LATEST_2_6_22
-       string
-       default "19"
+	string
+	default "19"
 
 config BR2_KERNEL_LATEST_2_6_21
-       string
-       default "7"
+	string
+	default "7"
 
 config BR2_KERNEL_LATEST_2_6_20
-       string
-       default "21"
+	string
+	default "21"
