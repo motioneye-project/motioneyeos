@@ -56,7 +56,7 @@ $(LIBTOOL_DIR)/.configured: $(LIBTOOL_SRC_DIR)/.unpacked
 	touch $@
 
 $(LIBTOOL_DIR)/$(LIBTOOL_BINARY): $(LIBTOOL_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(LIBTOOL_DIR)
+	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(LIBTOOL_DIR)
 	touch -c $@
 
 $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY): $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
@@ -90,7 +90,7 @@ endif
 libtool: uclibc $(TARGET_DIR)/$(LIBTOOL_TARGET_BINARY)
 
 libtool-clean:
-	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBTOOL_DIR) uninstall
+	-$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LIBTOOL_DIR) uninstall
 	-$(MAKE) -C $(LIBTOOL_DIR) clean
 
 libtool-cross: uclibc $(LIBTOOL_DIR)/$(LIBTOOL_BINARY)
