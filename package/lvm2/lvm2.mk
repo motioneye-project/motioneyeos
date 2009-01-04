@@ -63,13 +63,13 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 
 $(LVM2_TARGET_SBINS): $(LVM2_DIR)/.configured
 	$(MAKE1) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
-	$(MAKE1) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR) install
+	$(MAKE1) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR) install
 	for binary in $(LVM2_SBIN); do echo $$binary; cp -a $(STAGING_DIR)/sbin/$$binary $(TARGET_DIR)/sbin; done
 
 lvm2: uclibc dm $(LVM2_TARGET_SBINS)
 
 lvm2-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(LVM2_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LVM2_DIR) uninstall
 	-$(MAKE) -C $(LVM2_DIR) clean
 
 lvm2-dirclean:
