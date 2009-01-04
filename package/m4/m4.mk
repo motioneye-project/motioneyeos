@@ -50,7 +50,7 @@ $(M4_DIR)/.configured: $(M4_DIR)/.unpacked
 	touch $@
 
 $(M4_DIR)/src/$(M4_BINARY): $(M4_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(M4_DIR)
+	$(MAKE) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(M4_DIR)
 
 $(TARGET_DIR)/$(M4_TARGET_BINARY): $(M4_DIR)/src/$(M4_BINARY)
 	$(MAKE) \
