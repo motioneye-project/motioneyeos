@@ -321,15 +321,6 @@ Index: openssl-0.9.8g/apps/speed.c
 ===================================================================
 --- openssl-0.9.8g.orig/apps/speed.c	2008-09-24 11:00:04.000000000 +0200
 +++ openssl-0.9.8g/apps/speed.c	2008-09-24 11:01:01.000000000 +0200
-@@ -113,7 +113,7 @@
- #elif !defined(OPENSSL_SYS_MSDOS) && !defined(OPENSSL_SYS_VXWORKS) && (!defined(OPENSSL_SYS_VMS) || defined(__DECC))
- # define TIMES
- #endif
--#if !defined(_UNICOS) && !defined(__OpenBSD__) && !defined(sgi) && !defined(__FreeBSD__) && !(defined(__bsdi) || defined(__bsdi__)) && !defined(_AIX) && !defined(OPENSSL_SYS_MPE) && !defined(__NetBSD__) && !defined(OPENSSL_SYS_VXWORKS) /* FIXME */
-+#if !defined(OPENSSL_SYS_NEWLIB) && !defined(_UNICOS) && !defined(__OpenBSD__) && !defined(sgi) && !defined(__FreeBSD__) && !(defined(__bsdi) || defined(__bsdi__)) && !defined(_AIX) && !defined(OPENSSL_SYS_MPE) && !defined(__NetBSD__) && !defined(OPENSSL_SYS_VXWORKS) /* FIXME */
- # define TIMEB
- #endif
- 
 @@ -237,6 +237,11 @@
   */
  
