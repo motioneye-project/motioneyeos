@@ -14,3 +14,4 @@ UBOOT_BOARD_NAME:=at91sam9g20ek_nandflash
 endif
 
 endif
+
