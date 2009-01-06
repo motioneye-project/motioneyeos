@@ -437,6 +437,8 @@ config BR2_PACKAGE_LINUX_USE_DEFCONFIG
 	depends on BR2_PACKAGE_LINUX
 	help
 	  Configure Linux by make <board>_defconfig
+	  You have to supply a BOARD_NAME, either by
+	  defining it in a BSP or by make BOARD_NAME=<board>
 
 config BR2_PACKAGE_LINUX_USE_XCONFIG
 	bool "Run make ARCH=$(ARCH) [xconfig|menuconfig] before build"
@@ -444,8 +446,6 @@ config BR2_PACKAGE_LINUX_USE_XCONFIG
 	help
 	  Configure Linux by make xconfig
 endchoice
-
-
 
 config BR2_PACKAGE_LINUX_KCONFIG
 	string ".config file"
@@ -462,6 +462,7 @@ choice
 	prompt "Preferred config tool"
 	default BR2_MAKE_XCONFIG if BR2_TARGET_ATMEL
 	default BR2_MAKE_MENUCONFIG
+	depends on BR2_PACKAGE_LINUX_USE_XCONFIG
 	help
 	  Define the preferred tool to invoke if a configuration is invalid
 
