@@ -309,7 +309,7 @@ diff -urN u-boot-2009.01-0rig//common/cmd_factory.c u-boot-2009.01/common/cmd_fa
 +);
 +#endif /* #if	defined(CONFIG_LOAD_SCRIPTS) */
 +
-+#endif	/* CONFIG_DEFENV */
++
 diff -urN u-boot-2009.01-0rig//common/Makefile u-boot-2009.01/common/Makefile
 --- u-boot-2009.01-0rig//common/Makefile	2008-12-16 23:48:27.000000000 +0100
 +++ u-boot-2009.01/common/Makefile	2009-01-02 19:17:16.000000000 +0100
