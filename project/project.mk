@@ -27,6 +27,8 @@ saveconfig: $(CONFIG)/conf
 			$(LOCAL)/$(PROJECT)/linux-$(LINUX26_VERSION).config; \
 		$(SED) '/BR2_PACKAGE_LINUX_KCONFIG/d' $(PROJECT_FILE); \
 		echo "BR2_PACKAGE_LINUX_KCONFIG=\"$(LOCAL)/$(PROJECT)/linux-$(LINUX26_VERSION).config\"" >> $(PROJECT_FILE); \
+		$(SED) '/BR2_BOARD_PATH/d' $(PROJECT_FILE); \
+		echo "BR2_BOARD_PATH=\"$(LOCAL)/$(PROJECT)\"" >> $(PROJECT_FILE); \
 	fi
 	if [ -f $(BUSYBOX_DIR)/.config ]; then \
 		cp $(BUSYBOX_DIR)/.config \
