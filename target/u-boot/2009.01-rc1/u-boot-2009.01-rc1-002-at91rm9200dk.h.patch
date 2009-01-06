@@ -182,7 +182,7 @@ diff -urN u-boot-2009.01-rc1-0rig//include/configs/at91rm9200dk_df.h u-boot-2009
 +#define CONFIG_SYS_MAX_DATAFLASH_PAGES		16384
 +#define CONFIG_SYS_DATAFLASH_LOGIC_ADDR_CS0	0xC0000000	/* Logical adress for CS0 */
 +#define CONFIG_SYS_DATAFLASH_LOGIC_ADDR_CS3	0xD0000000	/* Logical adress for CS3 */
-+#define	CFG_SUPPORT_BLOCK_ERASE		1
++#define CONFIG__SUPPORT_BLOCK_ERASE		1
 +
 +
 +#define PHYS_FLASH_1			0x10000000
