@@ -14,11 +14,20 @@ U_BOOT_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
 U_BOOT_PATCH_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(U_BOOT_VERSION)-patches
 U_BOOT_CAT:=$(BZCAT)
 U_BOOT_BIN:=u-boot.bin
+U_BOOT_TARGET_BIN:=$(PROJECT)-u-boot-$(U_BOOT_VERSION)-$(DATE).bin
+
 U_BOOT_TOOLS_BIN:=mkimage
 U_BOOT_TOOLS:=$(STAGING_DIR)/usr/bin/$(U_BOOT_TOOLS_BIN)
 MKIMAGE:=$(U_BOOT_TOOLS)
-
 U_BOOT_AUTOSCRIPT=$(BINARIES_DIR)/autoscript
+
+U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN) $(U_BOOT_TOOLS) $(U_BOOT_TARGET_TOOLS)
+
+ifeq ($(strip $(subst ",,$(BR2_TARGET_UBOOT_DEFAULT_ENV))),y)
+#"))
+U_BOOT_TARGETS += u-boot-autoscript
+endif
+
 TARGET_UBOOT_IPADDR:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_IPADDR)))
 #"))
 TARGET_UBOOT_SERVERIP:=$(strip $(subst ",, $(BR2_TARGET_UBOOT_SERVERIP)))
@@ -179,7 +188,9 @@ $(U_BOOT_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/.header_modified
 
 $(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
 	rm -f $(BINARIES_DIR)/$(U_BOOT_BIN)
-	cp -dpf $(U_BOOT_DIR)/$(U_BOOT_BIN) $(BINARIES_DIR)
+	rm -f $(BINARIES_DIR)/$(U_BOOT_TARGET_BIN)
+	cp -dpf $(U_BOOT_DIR)/$(U_BOOT_BIN) $(BINARIES_DIR)/$(U_BOOT_TARGET_BIN)
+	(cd $(BINARIES_DIR); ln -s $(U_BOOT_TARGET_BIN) $(U_BOOT_BIN))
 
 $(U_BOOT_TOOLS):	$(U_BOOT_DIR)/tools/$(U_BOOT_TOOLS_BIN)
 	cp -dpf $(U_BOOT_DIR)/tools/$(U_BOOT_TOOLS_BIN) $(STAGING_DIR)/usr/bin/
@@ -199,7 +210,7 @@ $(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/$(U_BOOT_BIN)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 	ln -sf fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
 
-u-boot: $(BINARIES_DIR)/$(U_BOOT_BIN) $(U_BOOT_TOOLS) $(U_BOOT_TARGET_TOOLS)
+u-boot: $(U_BOOT_TARGETS)
 
 u-boot-autoscript: $(U_BOOT_AUTOSCRIPT).$(PROJECT)
 
@@ -238,13 +249,13 @@ endif
 ifneq ($(TARGET_UBOOT_NETMASK),)
 	echo setenv netmask $(TARGET_UBOOT_NETMASK) >> $(U_BOOT_AUTOSCRIPT)
 endif
-	echo setenv linux $(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE).gz >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv linux $(LINUX26_KERNEL_NAME).gz >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv kernel-version $(LINUX26_VERSION) >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv kernel-date $(DATE) >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv hostname $(TARGET_HOSTNAME) >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv fs-date $(DATE) >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv rd-1 rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv rd-2 rootfs.$(BR2_ARCH)-$(DATE).jffs2 >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv rd-1 rootfs.$(ARCH)-$(DATE).ext2 >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv rd-2 rootfs.$(ARCH)-$(DATE).jffs2 >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv rd rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv ver 1 >> $(U_BOOT_AUTOSCRIPT)
 ifneq ($(TARGET_UBOOT_ETHADDR),)
@@ -257,7 +268,7 @@ endif
 	echo saveenv >> $(U_BOOT_AUTOSCRIPT)
 
 $(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
-	$(MKIMAGE) -A arm \
+	$(MKIMAGE) -A $(ARCH) \
 				-O linux \
 				-T script \
 				-C none \
@@ -266,7 +277,6 @@ $(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
 				-n "autoscr config" \
 				-d $(U_BOOT_AUTOSCRIPT) \
 				$(U_BOOT_AUTOSCRIPT).$(PROJECT)
-	cp $(U_BOOT_AUTOSCRIPT).$(PROJECT) $(TARGET_ATMEL_COPYTO)
 
 
 
