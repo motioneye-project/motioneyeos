@@ -15,6 +15,7 @@ choice
 
 	config BR2_FREETYPE_VERSION_2_2_1
 		bool "Freetype 2.2.1"
+		depends on BR2_DEPRECATED
 
 	config BR2_FREETYPE_VERSION_2_3_7
 		bool "Freetype 2.3.7"
