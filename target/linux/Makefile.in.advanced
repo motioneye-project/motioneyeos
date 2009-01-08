@@ -126,6 +126,9 @@ endif
 # -----------------------------------------------------------------------------
 # Has to be set by the target/device
 
+LINUX26_MKIMAGE_DIR:=
+LINUX26_MKIMAGE_DEP:=
+
 # --------------
 # VMLINUX
 ifeq ($(LINUX26_FORMAT),vmlinux)
@@ -138,6 +141,8 @@ endif
 # --------------
 # UIMAGE
 ifeq ($(LINUX26_FORMAT),uImage)
+LINUX26_MKIMAGE_DIR:=$(PROJECT_BUILD_DIR)/u-boot-tools
+LINUX26_MKIMAGE_DEP:=linux26-mkimage
 ifeq ($(LINUX26_BINLOC),)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
 endif
@@ -191,7 +196,7 @@ LINUX26_MAKE_FLAGS = HOSTCC="$(HOSTCC)" HOSTCFLAGS="$(HOSTCFLAGS)" \
 	CROSS_COMPILE=$(KERNEL_CROSS) \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
 	LZMA="$(LZMA)" \
-	PATH=$(STAGING_DIR)/usr/bin:$(PATH)
+	PATH=$(LINUX26_MKIMAGE_DIR):$(PATH)
 
 # =============================================================================
 # ifneq ($(strip $(LINUX26_VERSION)),$(strip $(LINUX_HEADERS_VERSION)))
@@ -380,7 +385,7 @@ endif
 	touch $@
 
 # -----------------------------------------------------------------------------
-$(LINUX26_DIR)/.depend_done: $(LINUX26_DIR)/.configured
+$(LINUX26_DIR)/.depend_done: $(LINUX26_DIR)/.configured $(LINUX26_MKIMAGE_DEP)
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) prepare
 	touch $@
 
@@ -446,9 +451,15 @@ $(TARGET_DIR)/boot/busybox.config: $(BUSYBOX_DIR)/.config
 	-mkdir -p /tftpboot
 	-cp -dpf $(LINUX26_KERNEL) /tftpboot/$(LINUX26_KERNEL_NAME)
 
+ifneq ($(LINUX_COPYTO),/tftpboot)
 $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 	mkdir -p $(LINUX_COPYTO)
 	cp -dpf $(LINUX26_KERNEL) $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME)
+endif
+
+linux26-mkimage:	u-boot
+	mkdir -p $(LINUX26_MKIMAGE_DIR)
+	cp $(MKIMAGE) $(LINUX26_MKIMAGE_DIR)
 
 linux26: $(LINUX26_TARGETS)
 
