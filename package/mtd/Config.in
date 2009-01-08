@@ -25,6 +25,7 @@ config BR2_PACKAGE_MTD_20061007
 
 config BR2_PACKAGE_MTD_20050122
 	bool "Use MTD snapshot from 20050122"
+	depends on BR2_DEPRECATED
 	help
 	  Use the stable release.
 
