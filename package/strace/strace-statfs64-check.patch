@@ -1,6 +1,5 @@
-diff -dup strace-4.5.15.orig/acinclude.m4 strace-4.5.15/acinclude.m4
---- strace-4.5.15.orig/acinclude.m4	2004-04-14 04:21:01.000000000 +0200
-+++ strace-4.5.15/acinclude.m4	2007-01-29 17:31:37.000000000 +0100
+--- a/acinclude.m4
++++ b/acinclude.m4
 @@ -210,6 +210,26 @@ then
  fi
  ])
@@ -28,10 +27,9 @@ diff -dup strace-4.5.15.orig/acinclude.m4 strace-4.5.15/acinclude.m4
  dnl ### A macro to determine if off_t is a long long
  AC_DEFUN([AC_OFF_T_IS_LONG_LONG],
  [AC_MSG_CHECKING(for long long off_t)
-diff -dup strace-4.5.15.orig/configure.ac strace-4.5.15/configure.ac
---- strace-4.5.15.orig/configure.ac	2007-01-11 12:37:55.000000000 +0100
-+++ strace-4.5.15/configure.ac	2007-01-29 17:32:02.000000000 +0100
-@@ -169,6 +169,7 @@ AC_CHECK_MEMBERS([struct stat.st_blksize
+--- a/configure.ac
++++ b/configure.ac
+@@ -170,6 +170,7 @@ AC_CHECK_MEMBERS([struct stat.st_blksize
  		  struct stat.st_level,
  		  struct stat.st_rdev])
  AC_STAT64
@@ -39,10 +37,9 @@ diff -dup strace-4.5.15.orig/configure.ac strace-4.5.15/configure.ac
  
  AC_TYPE_SIGNAL
  AC_TYPE_UID_T
-diff -dup strace-4.5.15.orig/file.c strace-4.5.15/file.c
---- strace-4.5.15.orig/file.c	2007-01-15 21:25:52.000000000 +0100
-+++ strace-4.5.15/file.c	2007-01-29 17:33:15.000000000 +0100
-@@ -1635,7 +1635,7 @@ struct tcb *tcp;
+--- a/file.c
++++ b/file.c
+@@ -1704,7 +1704,7 @@ struct tcb *tcp;
  	return 0;
  }
  

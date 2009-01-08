@@ -1,6 +1,6 @@
---- strace/process.c
-+++ strace/process.c
-@@ -2663,7 +2663,6 @@ const struct xlat struct_user_offsets[] 
+--- a/process.c
++++ b/process.c
+@@ -2726,7 +2726,6 @@ const struct xlat struct_user_offsets[] 
         { 4*REG_GBR,            "4*REG_GBR"                             },
         { 4*REG_MACH,           "4*REG_MACH"                            },
         { 4*REG_MACL,           "4*REG_MACL"                            },

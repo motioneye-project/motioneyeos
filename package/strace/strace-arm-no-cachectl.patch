@@ -3,10 +3,8 @@ ARM defines SYS_cacheflush, but doesn't have <asm/cachectl.h>
  system.c |    2 ++
  1 file changed, 2 insertions(+)
 
-Index: strace-4.5.18/system.c
-===================================================================
---- strace-4.5.18.orig/system.c
-+++ strace-4.5.18/system.c
+--- a/system.c
++++ b/system.c
 @@ -70,9 +70,11 @@
  #include <linux/capability.h>
  #endif

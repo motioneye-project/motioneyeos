@@ -1,5 +1,5 @@
---- strace-4.5.15.orig/syscall.c	2007-01-29 17:23:38.000000000 +0100
-+++ strace-4.5.15/syscall.c	2007-01-29 18:02:17.000000000 +0100
+--- a/syscall.c
++++ b/syscall.c
 @@ -125,6 +125,18 @@
  #define TP TRACE_PROCESS
  #define TS TRACE_SIGNAL

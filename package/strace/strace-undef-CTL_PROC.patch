@@ -1,6 +1,6 @@
---- strace-4.5.12/system.c.oorig	2005-06-01 21:22:06.000000000 +0200
-+++ strace-4.5.12/system.c	2006-09-28 18:18:31.000000000 +0200
-@@ -1572,7 +1572,9 @@
+--- a/system.c
++++ b/system.c
+@@ -1614,7 +1614,9 @@ static const struct xlat sysctl_root[] =
  	{ CTL_KERN, "CTL_KERN" },
  	{ CTL_VM, "CTL_VM" },
  	{ CTL_NET, "CTL_NET" },

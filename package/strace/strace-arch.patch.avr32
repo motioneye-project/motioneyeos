@@ -1,86 +1,23 @@
-diff --git a/Makefile.am b/Makefile.am
-index a9972fe..8e4ecac 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -29,6 +29,7 @@ EXTRA_DIST = $(man_MANS) errnoent.sh signalent.sh syscallent.sh ioctlsort.c \
- 	     linux/alpha/errnoent.h linux/alpha/ioctlent.h \
- 	     linux/alpha/signalent.h linux/alpha/syscallent.h \
- 	     linux/arm/syscallent.h \
+@@ -34,6 +34,7 @@ EXTRA_DIST = $(man_MANS) errnoent.sh sig
+ 	     linux/arm/syscallent.h linux/arm/syscallent1.h \
+ 	     linux/arm/signalent1.h linux/arm/ioctlent1.h \
+ 	     linux/arm/errnoent1.h \
 +	     linux/avr32/syscallent.h \
  	     linux/hppa/errnoent.h linux/hppa/ioctlent.h \
  	     linux/hppa/signalent.h linux/hppa/syscallent.h \
  	     linux/ia64/syscallent.h linux/ia64/errnoent.h \
-diff --git a/Makefile.in b/Makefile.in
-index bb0f8b1..d8e618b 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -121,6 +121,7 @@ EGREP = @EGREP@
- EXEEXT = @EXEEXT@
- FREEBSD_FALSE = @FREEBSD_FALSE@
- FREEBSD_TRUE = @FREEBSD_TRUE@
-+GREP = @GREP@
- I386_FALSE = @I386_FALSE@
- I386_TRUE = @I386_TRUE@
- INSTALL_DATA = @INSTALL_DATA@
-@@ -158,7 +159,6 @@ WARNFLAGS = @WARNFLAGS@
- X86_64_FALSE = @X86_64_FALSE@
- X86_64_TRUE = @X86_64_TRUE@
- ac_ct_CC = @ac_ct_CC@
--ac_ct_STRIP = @ac_ct_STRIP@
- am__fastdepCC_FALSE = @am__fastdepCC_FALSE@
- am__fastdepCC_TRUE = @am__fastdepCC_TRUE@
- am__include = @am__include@
-@@ -174,24 +174,31 @@ build_cpu = @build_cpu@
- build_os = @build_os@
- build_vendor = @build_vendor@
- datadir = @datadir@
-+datarootdir = @datarootdir@
-+docdir = @docdir@
-+dvidir = @dvidir@
- exec_prefix = @exec_prefix@
- host = @host@
- host_alias = @host_alias@
- host_cpu = @host_cpu@
- host_os = @host_os@
- host_vendor = @host_vendor@
-+htmldir = @htmldir@
- includedir = @includedir@
- infodir = @infodir@
- install_sh = @install_sh@
- libdir = @libdir@
- libexecdir = @libexecdir@
-+localedir = @localedir@
- localstatedir = @localstatedir@
- mandir = @mandir@
- mkdir_p = @mkdir_p@
- oldincludedir = @oldincludedir@
- opsys = @opsys@
-+pdfdir = @pdfdir@
- prefix = @prefix@
- program_transform_name = @program_transform_name@
-+psdir = @psdir@
- sbindir = @sbindir@
- sharedstatedir = @sharedstatedir@
- sysconfdir = @sysconfdir@
-@@ -222,6 +229,7 @@ EXTRA_DIST = $(man_MANS) errnoent.sh signalent.sh syscallent.sh ioctlsort.c \
- 	     linux/alpha/errnoent.h linux/alpha/ioctlent.h \
- 	     linux/alpha/signalent.h linux/alpha/syscallent.h \
- 	     linux/arm/syscallent.h \
+@@ -222,6 +222,7 @@ EXTRA_DIST = $(man_MANS) errnoent.sh sig
+ 	     linux/arm/syscallent.h linux/arm/syscallent1.h \
+ 	     linux/arm/signalent1.h linux/arm/ioctlent1.h \
+ 	     linux/arm/errnoent1.h \
 +	     linux/avr32/syscallent.h \
  	     linux/hppa/errnoent.h linux/hppa/ioctlent.h \
  	     linux/hppa/signalent.h linux/hppa/syscallent.h \
  	     linux/ia64/syscallent.h linux/ia64/errnoent.h \
-@@ -522,7 +530,7 @@ distdir: $(DISTFILES)
- 	esac
- 	$(am__remove_distdir)
- 	mkdir $(distdir)
--	$(mkdir_p) $(distdir)/debian $(distdir)/freebsd $(distdir)/freebsd/i386 $(distdir)/linux $(distdir)/linux/alpha $(distdir)/linux/arm $(distdir)/linux/hppa $(distdir)/linux/ia64 $(distdir)/linux/m68k $(distdir)/linux/mips $(distdir)/linux/powerpc $(distdir)/linux/s390 $(distdir)/linux/s390x $(distdir)/linux/sh $(distdir)/linux/sh64 $(distdir)/linux/sparc $(distdir)/linux/sparc64 $(distdir)/linux/x86_64 $(distdir)/sunos4 $(distdir)/svr4
-+	$(mkdir_p) $(distdir)/debian $(distdir)/freebsd $(distdir)/freebsd/i386 $(distdir)/linux $(distdir)/linux/alpha $(distdir)/linux/arm $(distdir)/linux/avr32 $(distdir)/linux/hppa $(distdir)/linux/ia64 $(distdir)/linux/m68k $(distdir)/linux/mips $(distdir)/linux/powerpc $(distdir)/linux/s390 $(distdir)/linux/s390x $(distdir)/linux/sh $(distdir)/linux/sh64 $(distdir)/linux/sparc $(distdir)/linux/sparc64 $(distdir)/linux/x86_64 $(distdir)/sunos4 $(distdir)/svr4
- 	@srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`; \
- 	topsrcdirstrip=`echo "$(top_srcdir)" | sed 's|.|.|g'`; \
- 	list='$(DISTFILES)'; for file in $$list; do \
-diff --git a/config.h.in b/config.h.in
-index a2aeb2e..5778dc8 100644
 --- a/config.h.in
 +++ b/config.h.in
 @@ -6,6 +6,9 @@
@@ -93,8 +30,6 @@ index a2aeb2e..5778dc8 100644
  /* Define for the FreeBSD operating system. */
  #undef FREEBSD
  
-diff --git a/configure.ac b/configure.ac
-index 49a9b20..87695b8 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -103,6 +103,10 @@ x86?64*)
@@ -108,13 +43,11 @@ index 49a9b20..87695b8 100644
  *)
  	AC_MSG_RESULT([NO!])
  	AC_MSG_ERROR([architecture $host_cpu is not supported by strace])
-diff --git a/defs.h b/defs.h
-index 486fac5..1818e8c 100644
 --- a/defs.h
 +++ b/defs.h
-@@ -94,6 +94,9 @@
- #  if defined(X86_64)
- #     define LINUX_X86_64
+@@ -113,6 +113,9 @@
+ #     define LINUX_MIPSN64
+ #     define LINUX_MIPS64
  #  endif
 +#  if defined(AVR32)
 +#     define LINUX_AVR32
@@ -122,7 +55,7 @@ index 486fac5..1818e8c 100644
  #endif
  
  #if defined(SVR4) || defined(FREEBSD)
-@@ -120,7 +123,7 @@
+@@ -139,7 +142,7 @@
  #include <sys/pioctl.h>
  #endif /* FREEBSD */
  #else /* !USE_PROCFS */
@@ -131,18 +64,15 @@ index 486fac5..1818e8c 100644
  #include <sys/ptrace.h>
  #else
  /* Work around awkward prototype in ptrace.h. */
-@@ -327,7 +330,7 @@ struct tcb {
+@@ -356,7 +359,7 @@ struct tcb {
  #define TCB_FOLLOWFORK	00400	/* Process should have forks followed */
  #define TCB_REPRINT	01000	/* We should reprint this syscall on exit */
  #ifdef LINUX
--# if defined(ALPHA) || defined(SPARC) || defined(SPARC64) || defined(POWERPC) || defined(IA64) || defined(HPPA) || defined(SH) || defined(SH64) || defined(S390) || defined(S390X) || defined(ARM)
-+# if defined(ALPHA) || defined(SPARC) || defined(SPARC64) || defined(POWERPC) || defined(IA64) || defined(HPPA) || defined(SH) || defined(SH64) || defined(S390) || defined(S390X) || defined(ARM) || defined(AVR32)
+-# if defined(ALPHA) || defined(SPARC) || defined(SPARC64) || defined(POWERPC) || defined(IA64) || defined(HPPA) || defined(SH) || defined(SH64) || defined(S390) || defined(S390X) || defined(ARM) || defined(MIPS)
++# if defined(ALPHA) || defined(SPARC) || defined(SPARC64) || defined(POWERPC) || defined(IA64) || defined(HPPA) || defined(SH) || defined(SH64) || defined(S390) || defined(S390X) || defined(ARM) || defined(MIPS) || defined(AVR32)
  #  define TCB_WAITEXECVE 02000	/* ignore SIGTRAP after exceve */
  # endif
  # define TCB_CLONE_DETACHED 04000 /* CLONE_DETACHED set in creating syscall */
-diff --git a/linux/avr32/ioctlent.h b/linux/avr32/ioctlent.h
-new file mode 100644
-index 0000000..0f0a63d
 --- /dev/null
 +++ b/linux/avr32/ioctlent.h
 @@ -0,0 +1,1268 @@
@@ -1414,9 +1344,6 @@ index 0000000..0f0a63d
 +{"linux/dm-ioctl.h", "DM_DEV_SET_GEOMETRY_32", 0xc134fd0f},
 +{"linux/dm-ioctl.h", "DM_DEV_SET_GEOMETRY", 0xc134fd0f},
 +{"linux/hiddev.h", "HIDIOCGUSAGES", 0xd01c4813},
-diff --git a/linux/avr32/ioctlent.sh b/linux/avr32/ioctlent.sh
-new file mode 100644
-index 0000000..8e1b448
 --- /dev/null
 +++ b/linux/avr32/ioctlent.sh
 @@ -0,0 +1,124 @@
@@ -1544,9 +1471,6 @@ index 0000000..8e1b448
 +
 +# Clean up.
 +rm -f ioctlent.tmp
-diff --git a/linux/avr32/syscallent.h b/linux/avr32/syscallent.h
-new file mode 100644
-index 0000000..702d28f
 --- /dev/null
 +++ b/linux/avr32/syscallent.h
 @@ -0,0 +1,307 @@
@@ -1857,11 +1781,9 @@ index 0000000..702d28f
 +	{ 3,	TI,	sys_shmget,		"shmget"	}, /* 275 */
 +	{ 1,	TI,	sys_shmdt,		"shmdt"		}, /* 276 */
 +	{ 3,	TI,	sys_shmctl,		"shmctl"	}, /* 277 */
-diff --git a/process.c b/process.c
-index 96e3676..dd11a0a 100644
 --- a/process.c
 +++ b/process.c
-@@ -714,6 +714,10 @@ int new;
+@@ -750,6 +750,10 @@ int new;
  		return -1;
  
         return 0;
@@ -1872,7 +1794,7 @@ index 96e3676..dd11a0a 100644
  #else
  #warning Do not know how to handle change_syscall for this architecture
  #endif /* architecture */
-@@ -794,6 +798,28 @@ setarg(tcp, argnum)
+@@ -830,6 +834,28 @@ setarg(tcp, argnum)
  		if (errno)
  			return -1;
          }
@@ -1901,9 +1823,9 @@ index 96e3676..dd11a0a 100644
  #else
  # warning Sorry, setargs not implemented for this architecture.
  #endif
-@@ -2882,8 +2908,27 @@ const struct xlat struct_user_offsets[] = {
- 	{ uoff(regs.ARM_pc),	"pc"					},
- 	{ uoff(regs.ARM_cpsr),	"cpsr"					},
+@@ -3002,8 +3028,27 @@ const struct xlat struct_user_offsets[] 
+ 	{ 69,			"fpcsr"					},
+ 	{ 70,			"fpeir"					},
  #endif
 -
 -#if !defined(S390) && !defined(S390X) && !defined(MIPS) && !defined(SPARC64)
@@ -1931,7 +1853,7 @@ index 96e3676..dd11a0a 100644
  	{ uoff(u_fpvalid),	"offsetof(struct user, u_fpvalid)"	},
  #endif
  #if  defined(I386) || defined(X86_64)
-@@ -2899,20 +2944,20 @@ const struct xlat struct_user_offsets[] = {
+@@ -3019,20 +3064,20 @@ const struct xlat struct_user_offsets[] 
  #if !defined(SPARC64)
  	{ uoff(start_code),	"offsetof(struct user, start_code)"	},
  #endif
@@ -1955,11 +1877,9 @@ index 96e3676..dd11a0a 100644
  	{ uoff(u_fpstate),	"offsetof(struct user, u_fpstate)"	},
  #endif
  	{ uoff(magic),		"offsetof(struct user, magic)"		},
-diff --git a/syscall.c b/syscall.c
-index ade4f0d..9c26ecb 100644
 --- a/syscall.c
 +++ b/syscall.c
-@@ -809,6 +809,8 @@ internal_syscall(struct tcb *tcp)
+@@ -784,6 +784,8 @@ internal_syscall(struct tcb *tcp)
         static long r9;
  #elif defined(X86_64)
         static long rax;
@@ -1968,7 +1888,7 @@ index ade4f0d..9c26ecb 100644
  #endif
  #endif /* LINUX */
  #ifdef FREEBSD
-@@ -1264,7 +1266,26 @@ struct tcb *tcp;
+@@ -1294,7 +1296,26 @@ struct tcb *tcp;
  			return 0;
  		}
  	}
@@ -1996,7 +1916,7 @@ index ade4f0d..9c26ecb 100644
  #endif /* LINUX */
  #ifdef SUNOS4
  	if (upeek(pid, uoff(u_arg[7]), &scno) < 0)
-@@ -1623,6 +1644,17 @@ struct tcb *tcp;
+@@ -1670,6 +1691,17 @@ struct tcb *tcp;
                          tcp->u_rval = r9;
  	                u_error = 0;
                  }
@@ -2014,7 +1934,7 @@ index ade4f0d..9c26ecb 100644
  #endif /* SH64 */
  #endif /* SH */
  #endif /* HPPA */
-@@ -1848,6 +1880,12 @@ force_result(tcp, error, rval)
+@@ -1896,6 +1928,12 @@ force_result(tcp, error, rval)
          r9 = error ? -error : rval;
  	if (ptrace(PTRACE_POKEUSER, tcp->pid, (char*)REG_GENERAL(9), r9) < 0)
  		return -1;
@@ -2027,7 +1947,7 @@ index ade4f0d..9c26ecb 100644
  #endif /* SH64 */
  #endif /* SH */
  #endif /* HPPA */
-@@ -2120,6 +2158,14 @@ struct tcb *tcp;
+@@ -2190,6 +2228,14 @@ struct tcb *tcp;
  				return -1;
  		}
  	}
@@ -2042,29 +1962,9 @@ index ade4f0d..9c26ecb 100644
  #else /* Other architecture (like i386) (32bits specific) */
  	{
  		int i;
-@@ -2382,7 +2428,7 @@ trace_syscall(struct tcb *tcp)
- 
- 	switch (known_scno(tcp)) {
- #ifdef LINUX
--#if !defined (ALPHA) && !defined(SPARC) && !defined(SPARC64) && !defined(MIPS) && !defined(HPPA)
-+#if !defined (ALPHA) && !defined(SPARC) && !defined(SPARC64) && !defined(MIPS) && !defined(HPPA) && !defined(AVR32)
- 	case SYS_socketcall:
- 		decode_subcall(tcp, SYS_socket_subcall,
- 			SYS_socket_nsubcalls, deref_style);
-@@ -2391,7 +2437,7 @@ trace_syscall(struct tcb *tcp)
- 		decode_subcall(tcp, SYS_ipc_subcall,
- 			SYS_ipc_nsubcalls, shift_style);
- 		break;
--#endif /* !ALPHA && !MIPS && !SPARC && !SPARC64 && !HPPA */
-+#endif /* !ALPHA && !MIPS && !SPARC && !SPARC64 && !HPPA && !AVR32 */
- #if defined (SPARC) || defined (SPARC64)
- 	case SYS_socketcall:
- 		sparc_socket_decode (tcp);
-diff --git a/util.c b/util.c
-index 6359110..5cb1f50 100644
 --- a/util.c
 +++ b/util.c
-@@ -1069,6 +1069,9 @@ struct tcb *tcp;
+@@ -1097,6 +1097,9 @@ struct tcb *tcp;
  #elif defined(SH64)
         if (upeek(tcp->pid, REG_PC ,&pc) < 0)
                 return -1;
@@ -2074,7 +1974,7 @@ index 6359110..5cb1f50 100644
  #endif
  	return pc;
  #endif /* LINUX */
-@@ -1217,6 +1220,14 @@ struct tcb *tcp;
+@@ -1245,6 +1248,14 @@ struct tcb *tcp;
  		return;
  	}
  	tprintf("[%08lx] ", pc);
@@ -2089,7 +1989,7 @@ index 6359110..5cb1f50 100644
  #endif /* !architecture */
  #endif /* LINUX */
  
-@@ -1398,6 +1409,9 @@ typedef struct regs arg_setup_state;
+@@ -1444,6 +1455,9 @@ typedef struct regs arg_setup_state;
  #  define arg0_offset   (REG_OFFSET+16)
  #  define arg1_offset   (REG_OFFSET+24)
  #  define restore_arg0(tcp, state, val) 0
