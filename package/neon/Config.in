@@ -19,7 +19,7 @@ choice
 	depends on BR2_PACKAGE_NEON
 	help
 	  Select which XML library to use...
-	  expat      use exapt
+	  expat      use expat
 	  libxml2    use libxml2
 	  none       do not build with XML support
 
@@ -27,7 +27,7 @@ config BR2_PACKAGE_NEON_EXPAT
 	bool "expat"
 	depends on BR2_PACKAGE_EXPAT
 	help
-	  expat      use exapt, a library for parsing XML.
+	  expat      use expat, a library for parsing XML.
 
 config BR2_PACKAGE_NEON_LIBXML2
 	bool "libxml2"
