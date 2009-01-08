@@ -505,6 +505,8 @@ help:
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'
 	@echo '  oldconfig              - resolve any unresolved symbols in .config'
+	@echo '  saveconfig             - save current configuration under local/<project>'
+	@echo '  getconfig              - restore saved configuration from local/<project>'
 	@echo
 	@echo 'Miscellaneous:'
 	@echo '  source                 - download all sources needed for offline-build'
