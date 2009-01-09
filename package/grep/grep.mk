@@ -3,9 +3,9 @@
 # grep
 #
 #############################################################
-GNUGREP_VERSION:=2.5.1
-GNUGREP_SOURCE:=grep_$(GNUGREP_VERSION).ds1.orig.tar.gz
-GNUGREP_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/g/grep/
+GNUGREP_VERSION:=2.5.3
+GNUGREP_SOURCE:=grep-$(GNUGREP_VERSION).tar.gz
+GNUGREP_SITE:=$(BR2_GNU_MIRROR)/grep
 GNUGREP_DIR:=$(BUILD_DIR)/grep-$(GNUGREP_VERSION)
 GNUGREP_CAT:=$(ZCAT)
 GNUGREP_BINARY:=src/grep
@@ -19,9 +19,6 @@ grep-source: $(DL_DIR)/$(GNUGREP_SOURCE)
 $(GNUGREP_DIR)/.unpacked: $(DL_DIR)/$(GNUGREP_SOURCE)
 	rm -rf $(GNUGREP_DIR).xxx
 	$(GNUGREP_CAT) $(DL_DIR)/$(GNUGREP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	mv $(GNUGREP_DIR) $(GNUGREP_DIR).xxx
-	$(GNUGREP_CAT) $(GNUGREP_DIR).xxx/grep_$(GNUGREP_VERSION).tar.gz | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	rm -rf $(GNUGREP_DIR).xxx
 	$(CONFIG_UPDATE) $(GNUGREP_DIR)
 	touch $@
 
