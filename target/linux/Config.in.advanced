@@ -464,6 +464,7 @@ config BR2_LINUX_BIN_BZIMAGE
 config BR2_LINUX_BIN_UIMAGE
 	bool "uImage"
 	depends on BR2_PACKAGE_LINUX
+	select BR2_TARGET_UBOOT
 	help
 	  Build uImage binary
 
