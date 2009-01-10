@@ -11,7 +11,7 @@ FONTCONFIG_USE_CONFIG_CACHE = NO
 FONTCONFIG_INSTALL_STAGING = YES
 FONTCONFIG_INSTALL_TARGET = YES
 # This package does not like using the target cflags for some reason.
-FONTCONFIG_CONF_ENV = CFLAGS=
+FONTCONFIG_CONF_ENV = CFLAGS="-I$(STAGING_DIR)/usr/include/freetype2"
 
 FONTCONFIG_CONF_OPT = --with-arch=$(GNU_TARGET_NAME) \
 		--with-freetype-config="$(STAGING_DIR)/usr/bin/freetype-config" \
