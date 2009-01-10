@@ -1,0 +1,45 @@
+#!/bin/bash
+OK=0
+FAIL=1
+TOPDIR=`pwd`
+LOG_FILE=$1.log
+LOG_DIR=${TOPDIR}/log/
+LOG=${LOG_DIR}/${LOG_FILE}
+DEPENDENCY=${LOG_DIR}/DEPEND/$1.depend.txt
+
+LOG_OK_DIR=${LOG_DIR}/OK
+LOG_FAIL_DIR=${LOG_DIR}/FAIL
+LOG_OK_FILE=${LOG_OK_DIR}/${LOG_FILE}.OK
+LOG_FAIL_FILE=${LOG_FAIL_DIR}/${LOG_FILE}.FAIL
+
+mkdir -p ${LOG_DIR}
+mkdir -p ${LOG_OK_DIR}
+mkdir -p ${LOG_FAIL_DIR}
+mkdir -p ${LOG_DIR}/DEPEND
+
+test=${OK}
+
+function build_package ()
+{
+	printf "%-52s" "$1"
+	rm -f {LOG}
+	rm -f {LOG_OK_FILE}
+	rm -f {LOG_FAIL_FILE}
+	rm -f ${DEPENDENCY}
+
+	make $1-dirclean > /dev/null 2>&1
+
+	make $1 >> ${LOG} 2>&1 || test=${FAIL}
+	grep "\.tar\." ${LOG} > ${DEPENDENCY}
+	if [ ${test} == ${OK} ] ; then
+		mv ${LOG} ${LOG_OK_FILE}
+		echo "OK"
+	else
+		mv ${LOG} ${LOG_FAIL_FILE}
+		echo "FAIL"
+	fi
+}
+
+build_package $1
+
+
