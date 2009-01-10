@@ -6,5 +6,6 @@ config BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Low-level core library that forms the basis of GTK+ and GNOME.
+	  Requires libglig2 (-dev) on the host. 
 
 	  http://www.gtk.org/
