@@ -1,0 +1,61 @@
+#! /bin/sh
+#
+# submitted by Morgon Kanter
+# 
+
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/sbin/vtund
+CONFFILE=/etc/vtund-start.conf
+PIDPREFIX=/var/run/vtund
+  
+test -f $DAEMON || exit 0
+  
+case "$1" in 
+       start)
+      # find all the defined tunnels
+      egrep -v '^[:space:]*(#.*)?$' $CONFFILE | while true;
+      do
+          read i
+          # no more lines available? done, then.
+          if [ $? != 0 ] ; then break; fi
+              SARGS=`echo $i|sed -ne 's/--server--\s*/-s -P /p'`;
+              if [ -n "$SARGS" ];
+              then
+                 echo "Starting vtund server."
+                  start-stop-daemon --start --exec $DAEMON --pidfile $PIDPREFIX.pid -- $SARGS;
+              else
+                  # split args into host and rest
+                  HOST=`echo $i|cut -f 1 -d " "`;
+                  TARGET=`echo $i|cut -f 2 -d " "`;
+                  echo  "Starting vtund client $HOST to $TARGET.";
+                  start-stop-daemon --start --exec $DAEMON --pidfile $PIDPREFIX.$HOST.pid -- $i;
+ 
+              fi
+          done
+              ;;
+       stop) 
+          echo "Stopping vtund.";
+          for i in $PIDPREFIX*;
+          do
+              start-stop-daemon --stop --pidfile $i; 
+              rm -f $i;
+          done
+               ;;
+       reload|force-reload)
+          echo "Reloading vtund.";
+          for i in $PIDPREFIX*;
+          do
+              start-stop-daemon --stop --signal 1 --pidfile $i; 
+          done
+              ;;
+       restart) 
+          $0 stop
+          sleep 1;
+          $0 start
+          ;;
+   *)
+      echo "Usage: $0 {start|stop|restart|reload|force-reload}" >&2
+       exit 1
+               ;;
+esac
+exit 0

@@ -6,7 +6,8 @@
 # to enable that within busybox
 #
 #############################################################
-VTUN_VERSION:=2.6
+#Old version 2.6
+VTUN_VERSION:=3.0.2
 VTUN_SOURCE:=vtun-$(VTUN_VERSION).tar.gz
 VTUN_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/vtun/
 VTUN_DIR:=$(BUILD_DIR)/vtun-$(VTUN_VERSION)
@@ -21,11 +22,15 @@ vtun-source: $(DL_DIR)/$(VTUN_SOURCE)
 
 $(VTUN_DIR)/.unpacked: $(DL_DIR)/$(VTUN_SOURCE)
 	$(VTUN_CAT) $(DL_DIR)/$(VTUN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	mv $(BUILD_DIR)/vtun $(VTUN_DIR)
-	toolchain/patch-kernel.sh $(VTUN_DIR) package/vtun/ vtun\*.patch
-	touch $(VTUN_DIR)/.unpacked
+	touch $@
 
-$(VTUN_DIR)/.configured: $(VTUN_DIR)/.unpacked
+$(VTUN_DIR)/.patched: $(VTUN_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(VTUN_DIR) package/vtun/ vtun-$(VTUN_VERSION)\*.patch
+	touch $@
+
+
+
+$(VTUN_DIR)/.configured: $(VTUN_DIR)/.patched
 	(cd $(VTUN_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -59,6 +64,10 @@ $(TARGET_DIR)/$(VTUN_TARGET_BINARY): $(VTUN_DIR)/$(VTUN_BINARY)
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
 vtun: uclibc zlib lzo openssl $(TARGET_DIR)/$(VTUN_TARGET_BINARY)
+
+vtun-unpacked: $(VTUN_DIR)/.unpacked
+
+vtun-patched: $(VTUN_DIR)/.patched
 
 vtun-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(VTUN_DIR) uninstall
