@@ -5,7 +5,7 @@
 #############################################################
 LIBSNDFILE_VERSION:=1.0.17
 LIBSNDFILE_SOURCE:=libsndfile-$(LIBSNDFILE_VERSION).tar.gz
-LIBSNDFILE_SITE:=http://www.mega-nerd.com/libsndfile/$(LIBUSB_SOURCE)
+LIBSNDFILE_SITE:=http://www.mega-nerd.com/libsndfile
 LIBSNDFILE_DIR:=$(BUILD_DIR)/libsndfile-$(LIBSNDFILE_VERSION)
 LIBSNDFILE_BINARY:=src/.libs/libsndfile.so
 LIBSNDFILE_TARGET_BINARY:=usr/lib/libsndfile.so
