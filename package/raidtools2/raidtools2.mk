@@ -66,5 +66,5 @@ raidtools2-dirclean:
 #
 #############################################################
 ifeq ($(BR2_PACKAGE_RAIDTOOLS),y)
-TARGETS+=raidtools
+TARGETS+=raidtools2
 endif
