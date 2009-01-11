@@ -132,7 +132,7 @@ endif
 
 $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	mkdir -p $(TARGET_DIR)/usr/include
-	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/ncurses.h
+	cp -dpf $(NCURSES_DIR)/include/curses.h $(TARGET_DIR)/usr/include/curses.h
 	cp -dpf $(NCURSES_DIR)/include/ncurses_dll.h $(TARGET_DIR)/usr/include/ncurses_dll.h
 	cp -dpf $(NCURSES_DIR)/include/term.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(NCURSES_DIR)/include/unctrl.h $(TARGET_DIR)/usr/include/
@@ -142,7 +142,7 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	 ln -fs libncurses.a libcurses.a; \
 	 ln -fs libncurses.a libtermcap.a; \
 	)
-	(cd $(TARGET_DIR)/usr/include; ln -fs ncurses.h curses.h)
+	(cd $(TARGET_DIR)/usr/include; ln -fs curses.h ncurses.h)
 	rm -f $(TARGET_DIR)/lib/libncurses.so
 	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libncurses.so.$(NCURSES_VERSION) libncurses.so)
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
