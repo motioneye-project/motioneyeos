@@ -1,0 +1,67 @@
+<!--#include file="header.html" -->
+
+<h2>Testing Buildroot for an Architecture</h2>
+
+<p>
+<h4>scripts/mkpkg script</h4>
+If you want to test the build of a single package you can use the mkpkg script.
+</p>
+<p>
+<li>$ scripts/mkpkg PACKAGE</li> 
+</p>
+<p>
+Will make the board, and save the result in a log file.
+The log file resides in
+<li>$ log/OK/PACKAGE.log.OK</li> 
+</p>
+<p>
+if the build succeeds and in
+<li>$ log/OK/PACKAGE.log.FAIL</li>
+</p>
+<p>
+if it cannot complete.
+</p>
+
+<p>
+By creating an alias
+<li>alias mk=scripts/mkpkg</li>
+</p>
+<p>
+it is enough to type
+<li>$ mk PACKAGE</li> 
+</p>
+<p>
+mkpkg will only print out the <h4>{PACKAGE}......OK</h4> or <h4>{PACKAGE}......FAIL</h4>
+depending on success or failure making it easy to get an overview
+of the status of this specific architecture.
+</p>
+<p>
+It is recommended to build a simple board before running the test
+to get some basic things done.
+</p>
+<p>
+<h4>scripts/buildall.sh script</h4>
+</p>
+<p>
+By running this script you will run scripts/mkpkg on
+a lot of the packages available in Buildroot.
+</p>
+<p>
+You need to run the script while in the TOP directory.
+I.E: Where you typically run make.
+</p>
+<p>
+There are a few lacking, for no very good reason,
+but these can be easily added.
+</p>
+<p>
+Note that some packages will not build properly
+if you do not enable them using makeconfig.
+</p>
+<p>
+Examples are:
+<li>freetype</li>
+<li>socat</li>
+</p>
+
+<!--#include file="footer.html" -->
