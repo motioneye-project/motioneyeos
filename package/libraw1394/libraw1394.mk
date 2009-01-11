@@ -46,7 +46,7 @@ $(LIBRAW1394_DIR)/.compiled: $(LIBRAW1394_DIR)/.configured
 $(STAGING_DIR)/usr/lib/libraw1394.so: $(LIBRAW1394_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBRAW1394_DIR)/src install
 
-$(TARGET_DIR)/usr/lib/libraw1394.so: $(STAGING_DIR)/lib/libraw1394.so
+$(TARGET_DIR)/usr/lib/libraw1394.so: $(STAGING_DIR)/usr/lib/libraw1394.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libraw1394.so* $(TARGET_DIR)/usr/lib/
 
 libraw1394: uclibc $(TARGET_DIR)/usr/lib/libraw1394.so
