@@ -21,10 +21,10 @@ test=${OK}
 
 function build_package ()
 {
-	printf "%-52s" "$1"
-	rm -f {LOG}
-	rm -f {LOG_OK_FILE}
-	rm -f {LOG_FAIL_FILE}
+	printf "%-31s" "$1"
+	rm -f ${LOG}
+	rm -f ${LOG_OK_FILE}
+	rm -f ${LOG_FAIL_FILE}
 	rm -f ${DEPENDENCY}
 
 	make $1-dirclean > /dev/null 2>&1
