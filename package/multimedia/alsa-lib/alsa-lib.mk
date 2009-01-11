@@ -17,6 +17,10 @@ else
 ALSA_LIB_ABI:=
 endif
 
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+ALSA_LIB_CONFIGURE_OPTS += --with-pythonlibs=-lpython$(PYTHON_VERSION_MAJOR)
+endif
+
 ifeq ($(BR2_SOFT_FLOAT),y)
 	SOFT_FLOAT=--with-softfloat
 endif
@@ -45,6 +49,7 @@ $(ALSA_LIB_DIR)/.configured: $(ALSA_LIB_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--disable-docs \
+		$(ALSA_LIB_CONFIGURE_OPTS) \
 		$(SOFT_FLOAT) \
 		$(DISABLE_NLS) \
 	)
