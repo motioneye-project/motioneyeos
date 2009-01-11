@@ -5,8 +5,8 @@
 #############################################################
 XFSPROGS_VERSION:=2.10.2
 XFSPROGS_SOURCE=xfsprogs_$(XFSPROGS_VERSION)-1.tar.gz
-#XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/cmd_tars
-XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/previous/cmd_tars/
+XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/cmd_tars
+#XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/previous/cmd_tars/
 XFSPROGS_DIR=$(BUILD_DIR)/xfsprogs-$(XFSPROGS_VERSION)
 XFSPROGS_CAT:=$(ZCAT)
 XFSPROGS_BINARY:=mkfs/mkfs.xfs

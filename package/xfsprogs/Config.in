@@ -1,6 +1,11 @@
+
+comment "Note that xfsprogs needs a toolchain with UCLIBC_SV4_DEPRECATED enabled"
+	depends on BR2_PACKAGE_XFSPROGS
+
 config BR2_PACKAGE_XFSPROGS
 	bool "xfsprogs"
 	help
 	  The XFS file system utilities and libraries
 
 	  http://oss.sgi.com/projects/xfs/
+
