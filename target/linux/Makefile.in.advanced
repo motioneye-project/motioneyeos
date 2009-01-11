@@ -223,7 +223,7 @@ endif
 
 
 # -----------------------------------------------------------------------------
-LINUX26_TARGETS+=$(LINUX26_KERNEL)
+LINUX26_TARGETS+=$(LINUX26_KERNEL) linux26-version
 
 ifeq ($(BR2_LINUX_COPYTO_ROOTFS),y)
 LINUX26_TARGETS+=$(TARGET_DIR)/boot/$(LINUX26_KERNEL_NAME)
@@ -386,6 +386,7 @@ endif
 
 # -----------------------------------------------------------------------------
 $(LINUX26_DIR)/.depend_done: $(LINUX26_DIR)/.configured $(LINUX26_MKIMAGE_DEP)
+	-mv $(LINUX26_DIR)/localversion* $(TARGET_DIR)/boot
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) prepare
 	touch $@
 
@@ -457,11 +458,17 @@ $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 	cp -dpf $(LINUX26_KERNEL) $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME)
 endif
 
+$(PROJECT_BUILD_DIR)/.linux-version:
+	echo $(LINUX26_VERSION_PROBED) > $(PROJECT_BUILD_DIR)/.linux-version
+	echo LINUX_MODULES=$(LINUX26_VERSION_PROBED)	
+
 linux26-mkimage:	u-boot
 	mkdir -p $(LINUX26_MKIMAGE_DIR)
 	cp $(MKIMAGE) $(LINUX26_MKIMAGE_DIR)
 
 linux26: $(LINUX26_TARGETS)
+
+linux26-version: $(PROJECT_BUILD_DIR)/.linux-version
 
 linux26-modules: cross-depmod26 $(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed
 
