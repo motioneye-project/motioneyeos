@@ -30,7 +30,6 @@ config BR2_TARGET_UBOOT_1_3_4
 config BR2_TARGET_UBOOT_1_2_0_ATMEL
 	bool "u-boot-1.2.0-atmel"
 	depends on BR2_TARGET_AT91
-	depends on BR2_DEPRECATED
 
 #config BR2_TARGET_UBOOT_2009_01
 #	bool "u-boot-2009.01"
