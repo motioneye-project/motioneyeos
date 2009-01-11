@@ -5,8 +5,15 @@
 #############################################################
 
 SUDO_VERSION:=1.6.8p12
+#SUDO_SITE:=ftp://ftp.sudo.ws/pub/sudo/
+SUDO_SITE:=$(BR2_ATMEL_MIRROR)
+
+#SUDO_VERSION:=1.7.0
+#SUDO_SITE:=http://www.courtesan.com/sudo/dist
+# 1.7.0 Needs update Cross-Compiler patches
+
+
 SUDO_SOURCE:=sudo-$(SUDO_VERSION).tar.gz
-SUDO_SITE:=http://www.courtesan.com/sudo/dist
 SUDO_DIR:=$(BUILD_DIR)/sudo-$(SUDO_VERSION)
 SUDO_UNZIP:=$(ZCAT)
 
@@ -17,7 +24,7 @@ sudo-source: $(DL_DIR)/$(SUDO_SOURCE) $(SUDO_CONFIG_FILE)
 
 $(SUDO_DIR)/.unpacked: $(DL_DIR)/$(SUDO_SOURCE)
 	$(SUDO_UNZIP) $(DL_DIR)/$(SUDO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(SUDO_DIR) package/sudo sudo\*.patch
+	toolchain/patch-kernel.sh $(SUDO_DIR) package/sudo sudo-$(SUDO_VERSION)\*.patch
 	$(CONFIG_UPDATE) $(SUDO_DIR)
 	touch $@
 
@@ -57,13 +64,20 @@ $(SUDO_DIR)/sudo: $(SUDO_DIR)/.configured
 	touch -c $@
 
 $(TARGET_DIR)/usr/bin/sudo: $(SUDO_DIR)/sudo
-	$(INSTALL) -m 4555 -D $(SUDO_DIR)/sudo $(TARGET_DIR)/usr/bin/sudo
-	$(INSTALL) -m 0555 -D $(SUDO_DIR)/visudo $(TARGET_DIR)/usr/sbin/visudo
-	$(INSTALL) -m 0440 -D $(SUDO_DIR)/sudoers $(TARGET_DIR)/etc/sudoers
+	rm -f $(TARGET_DIR)/usr/bin/sudo
+	rm -f $(TARGET_DIR)/usr/sbin/visudo
+	rm -f $(TARGET_DIR)/etc/sudoers
+	$(INSTALL) -m 0777 -D $(SUDO_DIR)/sudo $(TARGET_DIR)/usr/bin/sudo
+	$(INSTALL) -m 0777 -D $(SUDO_DIR)/visudo $(TARGET_DIR)/usr/sbin/visudo
 	$(STRIPCMD) $(TARGET_DIR)/usr/bin/sudo $(TARGET_DIR)/usr/sbin/visudo
+	chmod 4555  $(TARGET_DIR)/usr/bin/sudo
+	chmod 0555  $(TARGET_DIR)/usr/sbin/visudo
+	$(INSTALL) -m 0440 -D $(SUDO_DIR)/sudoers $(TARGET_DIR)/etc/sudoers
 	touch -c $(TARGET_DIR)/usr/bin/sudo
 
 sudo: uclibc $(TARGET_DIR)/usr/bin/sudo
+
+sudo-unpacked: $(SUDO_DIR)/.unpacked
 
 sudo-clean:
 	rm -f $(TARGET_DIR)/usr/bin/sudo $(TARGET_DIR)/etc/sudoers \
