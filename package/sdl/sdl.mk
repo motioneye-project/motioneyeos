@@ -9,6 +9,8 @@ SDL_SITE:=http://www.libsdl.org/release
 SDL_CAT:=$(ZCAT)
 SDL_DIR:=$(BUILD_DIR)/SDL-$(SDL_VERSION)
 
+SDL_EXTRA_CFLAGS = -I./include -D_GNU_SOURCE=1 -fvisibility=hidden -D_REENTRANT -D_REENTRANT -DHAVE_LINUX_VERSION_H
+
 ifeq ($(BR2_PACKAGE_SDL_FBCON),y)
 SDL_FBCON=--enable-video-fbcon=yes
 else
@@ -19,6 +21,7 @@ ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
 SDL_DIRECTFB=--enable-video-directfb=yes
 SDL_DIRECTFB_TARGET:=$(STAGING_DIR)/include/directfb
 SDL_DIRECTFB_INCLUDES:=-I$(STAGING_DIR)/usr/include/directfb
+SDL_EXTRA_CFLAGS += $(SDL_DIRECTFB_INCLUDES)
 else
 SDL_DIRECTFB=--enable-video-directfb=no
 endif
@@ -71,12 +74,13 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 
 ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
 $(SDL_DIRECTFB_TARGET):
-	ln -s ../usr/include/directfb $(STAGING_DIR)/include/directfb
+	mkdir -p $(STAGING_DIR)/include
+	ln -s ../usr/include/directfb $(SDL_DIRECTFB_TARGET)
 endif
 
 $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(SDL_DIRECTFB_TARGET)
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) \
-		INCLUDE="-I./include $(SDL_DIRECTFB_INCLUDES)" \
+		EXTRA_CFLAGS="$(SDL_EXTRA_CFLAGS)" \
 		LDFLAGS="-L$(STAGING_DIR)/usr/lib" \
 		DESTDIR=$(STAGING_DIR)/usr -C $(SDL_DIR)
 	touch $@
@@ -93,6 +97,8 @@ $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libSDL.so
 
 SDL sdl: uclibc $(TARGET_DIR)/usr/lib/libSDL.so
+
+sdl-unpacked: $(SDL_DIR)/.unpacked
 
 sdl-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SDL_DIR) uninstall
