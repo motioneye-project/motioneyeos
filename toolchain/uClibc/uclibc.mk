@@ -185,6 +185,7 @@ ifeq ($(UCLIBC_TARGET_ARCH),mips)
 	 /bin/echo "# CONFIG_MIPS_ISA_3 is not set"; \
 	 /bin/echo "# CONFIG_MIPS_ISA_4 is not set"; \
 	 /bin/echo "# CONFIG_MIPS_ISA_MIPS32 is not set"; \
+	 /bin/echo "# CONFIG_MIPS_ISA_MIPS32R2 is not set"; \
 	 /bin/echo "# CONFIG_MIPS_ISA_MIPS64 is not set"; \
 	) >> $(UCLIBC_DIR)/.oldconfig
 ifeq ($(BR2_MIPS_OABI),y)
@@ -209,10 +210,10 @@ ifeq ($(BR2_mips_4),y)
 	$(SED) 's/.*\(CONFIG_MIPS_ISA_4\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(BR2_mips_32),y)
-	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS32\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS32\)[^R].*/\1=y/' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(BR2_mips_32r2),y)
-	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS32\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
+	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS32R2\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(BR2_mips_64),y)
 	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS64\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
