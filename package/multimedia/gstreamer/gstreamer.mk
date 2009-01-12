@@ -17,9 +17,6 @@ endif
 ifeq ($(BR2_nios2),y)
 GSTREAMER_CONF_ENV = as_cv_unaligned_access=no
 endif
-ifeq ($(BR2_s390),y)
-GSTREAMER_CONF_ENV = as_cv_unaligned_access=yes
-endif
 
 GSTREAMER_CONF_OPT = \
 		$(DISABLE_NLS) \

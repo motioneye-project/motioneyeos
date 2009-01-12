@@ -15,7 +15,6 @@ BR2_i386=y
 # BR2_mipsel is not set
 # BR2_nios2 is not set
 # BR2_powerpc is not set
-# BR2_s390 is not set
 # BR2_sh is not set
 # BR2_sh64 is not set
 # BR2_sparc is not set

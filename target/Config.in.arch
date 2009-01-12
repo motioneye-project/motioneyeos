@@ -30,8 +30,6 @@ config BR2_nios2
 	bool "nios2"
 config BR2_powerpc
 	bool "powerpc"
-config BR2_s390
-	bool "s390"
 config BR2_sh
 	bool "superh"
 config BR2_sh64
@@ -310,25 +308,6 @@ endchoice
 
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_s390
-	default BR2_s390_g5
-	help
-	  Specific CPU variant to use
-
-config BR2_s390_g5
-	bool "g5"
-config BR2_s390_g6
-	bool "g6"
-config BR2_s390_z900
-	bool "z900"
-config BR2_s390_z990
-	bool "z990"
-config BR2_s390_z9_109
-	bool "z9_109"
-endchoice
-
-choice
-	prompt "Target Architecture Variant"
 	depends on BR2_sparc
 	default BR2_sparc_v7
 	help
@@ -497,8 +476,6 @@ config BR2_ARCH
 	default "mipsel"	if BR2_mipsel
 	default "nios2"		if BR2_nios2
 	default "powerpc"	if BR2_powerpc
-	default "s390"		if BR2_s390
-	default "s390"		if BR2_s390x
 	default "sh2a_nofpueb"	if BR2_sh2a_nofpueb
 	default "sh2eb"		if BR2_sh2eb
 	default "sh3"		if BR2_sh3
@@ -646,11 +623,6 @@ config BR2_GCC_TARGET_TUNE
 	default ultrasparc	if BR2_sparc_ultrasparc || BR2_sparc64_ultrasparc
 	default ultrasparc3	if BR2_sparc_ultrasparc3 || BR2_sparc64_ultrasparc3
 	default niagara		if BR2_sparc_niagara || BR2_sparc64_niagara
-	default g5		if BR2_s390_g5
-	default g6		if BR2_s390_g6
-	default z900		if BR2_s390_z900
-	default z990		if BR2_s390_z990
-	default z9-109		if BR2_s390_z9_109
 
 config BR2_GCC_TARGET_ARCH
 	string
@@ -690,11 +662,6 @@ config BR2_GCC_TARGET_ARCH
 	default 68030		if BR2_m68k_68030
 	default 68040		if BR2_m68k_68040
 	default 68060		if BR2_m68k_68060
-	default g5		if BR2_s390_g5
-	default g6		if BR2_s390_g6
-	default z900		if BR2_s390_z900
-	default z990		if BR2_s390_z990
-	default z9-109		if BR2_s390_z9_109
 
 config BR2_GCC_TARGET_ABI
 	string
