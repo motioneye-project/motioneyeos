@@ -5,14 +5,14 @@
 #############################################################
 
 SUDO_VERSION:=1.6.8p12
-SUDO_SITE:=$(BR2_ATMEL_MIRROR)
+SUDO_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/s/sudo
+SUDO_SOURCE:=sudo_$(SUDO_VERSION).orig.tar.gz
 
 #SUDO_VERSION:=1.7.0
 #SUDO_SITE:=http://www.courtesan.com/sudo/dist
 # 1.7.0 Needs update Cross-Compiler patches
+# SUDO_SOURCE:=sudo-$(SUDO_VERSION).tar.gz
 
-
-SUDO_SOURCE:=sudo-$(SUDO_VERSION).tar.gz
 SUDO_DIR:=$(BUILD_DIR)/sudo-$(SUDO_VERSION)
 SUDO_UNZIP:=$(ZCAT)
 
