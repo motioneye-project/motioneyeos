@@ -150,6 +150,8 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 
 ncurses: $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 
+ncurses-unpacked: $(NCURSES_DIR)/.patched
+
 ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
 
 ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
