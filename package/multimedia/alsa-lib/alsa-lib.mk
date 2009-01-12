@@ -19,6 +19,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 ALSA_LIB_CONFIGURE_OPTS += --with-pythonlibs=-lpython$(PYTHON_VERSION_MAJOR)
+else
+ALSA_LIB_CONFIGURE_OPTS += --disable-python
 endif
 
 ifeq ($(BR2_SOFT_FLOAT),y)
