@@ -15,9 +15,7 @@ LIBPNG_CONF_ENV = \
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_calloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes
-LIBPNG_CONF_OPT = \
-		--without-libpng-compat \
-		--without-x
+LIBPNG_CONF_OPT = --without-libpng-compat
 LIBPNG_DEPENDENCIES = uclibc pkgconfig zlib
 
 $(eval $(call AUTOTARGETS,package,libpng))
