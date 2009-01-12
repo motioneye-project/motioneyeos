@@ -7,10 +7,9 @@ function nmk()
 }
 
 if	[ ${already-done} == 1 ] ; then
-
-
 nmk	busybox
-
+fi	# ********* already-done
+#**********************************************************************************
 
 if	[ ${busybox-tools} == 1 ] ; then
 	mk	bash
@@ -304,8 +303,10 @@ echo "Audio and video libraries and applications"
 mk	alsa-lib
 mk	alsa-utils
 mk	asterisk
-fi	# ********* already-done
-#**********************************************************************************
+
+
+if	[ ${already-done} == 1 ] ; then
+
 mk	aumix
 mk	gstreamer
 mk	gst-plugins-base
@@ -337,7 +338,7 @@ echo "	graphic libraries"
 mk	directfb
 mk	directfb-examples
 mk	fbdump
-mk	fusion
+mk	linux-fusion
 mk	imagemagick
 mk	jpeg
 mk	libart
@@ -458,3 +459,5 @@ nmk	java
 # various games packages
 nmk	games
 
+fi	# ********* already-done
+#**********************************************************************************
