@@ -36,7 +36,7 @@ diff -urN linux-fusion-8.0.2-0rig//Makefile linux-fusion-8.0.2/Makefile
  export CONFIG_FUSION_DEVICE=m
  
 -
-+ARCH=avr32
++ARCH=$(ARCH)
  ifeq ($(DEBUG),yes)
    CPPFLAGS += -DFUSION_DEBUG_SKIRMISH_DEADLOCK
  endif
@@ -45,7 +45,7 @@ diff -urN linux-fusion-8.0.2-0rig//Makefile linux-fusion-8.0.2/Makefile
  ifeq ($(call check-version,2,6,24),1)
  	$(MAKE) -C $(KERNEL_BUILD) \
 -		KCPPFLAGS="$(CPPFLAGS) -I`pwd`/linux/include" \
-+		ARCH=avr32 \
++		ARCH=$(ARCH) \
 +		CC=$(CROSS_COMPILE)gcc \
 +		AS=$(CROSS_COMPILE)as \
 +		KCPPFLAGS="$(CPPFLAGS) \
@@ -56,7 +56,7 @@ diff -urN linux-fusion-8.0.2-0rig//Makefile linux-fusion-8.0.2/Makefile
  else
  	$(MAKE) -C $(KERNEL_BUILD) \
 -		CPPFLAGS="$(CPPFLAGS) -D__KERNEL__ -I`pwd`/linux/include -I$(KERNEL_BUILD)/include -I$(KERNEL_SOURCE)/include $(AUTOCONF_H)" \
-+		ARCH=avr32 \
++		ARCH=$(ARCH) \
 +		CC=$(CROSS_COMPILE)gcc \
 +		AS=$(CROSS_COMPILE)as \
 +		CPPFLAGS="$(CPPFLAGS) \
