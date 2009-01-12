@@ -41,10 +41,14 @@ CAIRO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
 		ac_cv_path_GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal
 
+CAIRO_CONF_OPT = --disable-gtk-doc --with-html-dir=/dev/null
+
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
-	CAIRO_CONF_OPT = --disable-xlib --without-x --enable-directfb
+	CAIRO_CONF_OPT = --disable-xlib --without-x --enable-directfb \
+		--disable-gtk-doc --with-html-dir=/dev/null
 	CAIRO_DEPENDENCIES_EXTRA = directfb
 endif
+
 
 CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 zlib libpng fontconfig $(CAIRO_DEPENDENCIES_EXTRA) pixman $(XSERVER) 
 
