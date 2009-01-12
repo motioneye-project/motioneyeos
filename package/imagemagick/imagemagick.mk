@@ -3,8 +3,8 @@
 # imagemagick
 #
 #############################################################
-IMAGEMAGICK_VERSION:=6.3.7
-IMAGEMAGICK_SOURCE:=ImageMagick.tar.bz2
+IMAGEMAGICK_VERSION:=6.4.8-4
+IMAGEMAGICK_SOURCE:=ImageMagick-$(IMAGEMAGICK_VERSION).tar.bz2
 IMAGEMAGICK_SITE:=ftp://ftp.imagemagick.org/pub/ImageMagick
 IMAGEMAGICK_DIR:=$(BUILD_DIR)/ImageMagick-$(IMAGEMAGICK_VERSION)
 IMAGEMAGICK_CAT:=$(BZCAT)
@@ -28,7 +28,7 @@ $(DL_DIR)/$(IMAGEMAGICK_SOURCE):
 
 $(IMAGEMAGICK_DIR)/.unpacked: $(DL_DIR)/$(IMAGEMAGICK_SOURCE)
 	$(IMAGEMAGICK_CAT) $(DL_DIR)/$(IMAGEMAGICK_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(IMAGEMAGICK_DIR) package/imagemagick/ imagemagick-\*.patch\*
+	toolchain/patch-kernel.sh $(IMAGEMAGICK_DIR) package/imagemagick/ imagemagick-$(IMAGEMAGICK_VERSION)\*.patch\*
 	$(CONFIG_UPDATE) $(IMAGEMAGICK_DIR)/config
 	touch $@
 
@@ -132,6 +132,8 @@ imagemagick: uclibc jpeg tiff $(IMAGEMAGICK_LIB) \
 		$(IMAGEMAGICK_TARGET_BINARIES)
 
 imagemagick-source: $(DL_DIR)/$(IMAGEMAGICK_SOURCE)
+
+imagemagick-unpacked:$(IMAGEMAGICK_DIR)/.unpacked
 
 imagemagick-clean:
 	rm -f $(TARGET_DIR)/$(IMAGEMAGICK_TARGET_BINARY)
