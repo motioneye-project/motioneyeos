@@ -59,7 +59,11 @@ ifndef LINUX26_BINLOC
 ifeq ($(LINUX26_FORMAT),vmlinux)
 LINUX26_BINLOC=$(LINUX26_FORMAT)
 else
+ifeq ($(BR2_ARCH),"cris")
+LINUX26_BINLOC=arch/$(KERNEL_ARCH)/arch-v10/boot/$(LINUX26_FORMAT)
+else
 LINUX26_BINLOC=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
+endif
 endif
 endif
 
