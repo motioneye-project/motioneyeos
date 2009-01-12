@@ -1,0 +1,39 @@
+--- busybox-1.13.2/testsuite/mdev.tests	Sun Nov  9 18:28:19 2008
++++ busybox-1.13.2-mdev/testsuite/mdev.tests	Mon Jan 12 08:59:15 2009
+@@ -111,6 +111,22 @@
+ 
+ # continuing to use directory structure from prev test
+ rm -rf mdev.testdir/dev/*
++echo "sda 0:0 644 =block/ @echo @echo TEST" >mdev.testdir/etc/mdev.conf
++testing "mdev move and command" \
++	"env - PATH=$PATH ACTION=add DEVPATH=/block/sda chroot mdev.testdir /mdev 2>&1;
++	ls -lnR mdev.testdir/dev | $FILTER_LS2" \
++"\
++@echo TEST
++mdev.testdir/dev:
++drwxr-xr-x 2 0 0 block
++
++mdev.testdir/dev/block:
++brw-r--r-- 1 0 0 sda
++" \
++	"" ""
++
++# continuing to use directory structure from prev test
++rm -rf mdev.testdir/dev/*
+ echo "@8,0 :1 644" >mdev.testdir/etc/mdev.conf
+ testing "mdev #maj,min and no explicit uid" \
+ 	"env - PATH=$PATH ACTION=add DEVPATH=/block/sda chroot mdev.testdir /mdev 2>&1;
+--- busybox-1.13.2/util-linux/mdev.c	Sun Nov  9 18:28:22 2008
++++ busybox-1.13.2-mdev/util-linux/mdev.c	Mon Jan 12 08:59:15 2009
+@@ -179,8 +179,9 @@
+ 			unsigned i, n;
+ #endif
+ 			char *a = val;
+-			s = strchr(val, ' ');
+-			val = (s && s[1]) ? s+1 : NULL;
++			s = strchrnul(val, ' ');
++			val = (s[0] && s[1]) ? s+1 : NULL;
++			s[0] = '\0';
+ #if ENABLE_FEATURE_MDEV_RENAME_REGEXP
+ 			/* substitute %1..9 with off[1..9], if any */
+ 			n = 0;
