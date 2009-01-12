@@ -262,7 +262,7 @@ ifeq ($(UCLIBC_TARGET_ARCH),sparc)
 		 $(UCLIBC_DIR)/.oldconfig
 	for i in V7 V8 V9 V9B; do echo "# CONFIG_SPARC_$$i is not set"; done \
 		>> $(UCLIBC_DIR)/.oldconfig
-	$(SED) 's/^.*$(UCLIBC_SPARC_TYPE).*/$(UCLIBC_SPARC_TYPE)=y/g' $(UCLIBC_DIR)/.oldconfig
+	$(SED) 's/^.*$(UCLIBC_SPARC_TYPE)[^B].*/$(UCLIBC_SPARC_TYPE)=y/g' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(UCLIBC_TARGET_ARCH),powerpc)
 ifeq ($(BR2_powerpc_8540),y)
