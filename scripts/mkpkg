@@ -33,10 +33,10 @@ function build_package ()
 	grep "\.tar\." ${LOG} > ${DEPENDENCY}
 	if [ ${test} == ${OK} ] ; then
 		mv ${LOG} ${LOG_OK_FILE}
-		echo "OK"
+		echo "OK	"
 	else
 		mv ${LOG} ${LOG_FAIL_FILE}
-		echo "FAIL"
+		echo "FAIL	"
 	fi
 }
 
