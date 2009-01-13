@@ -16,23 +16,17 @@ liberation-source: $(DL_DIR)/$(LIBERATION_SOURCE)
 
 $(LIBERATION_DIR)/.unpacked: $(DL_DIR)/$(LIBERATION_SOURCE)
 	$(LIBERATION_CAT) $(DL_DIR)/$(LIBERATION_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LIBERATION_DIR)/.unpacked
+	touch -c $@
 
-$(STAGING_DIR)/usr/share/fonts/LiberationMono-Bold.ttf: $(LIBERATION_DIR)/.unpacked
-	-mkdir -p $(STAGING_DIR)/usr/share/fonts/liberation
-	$(INSTALL) -m0644 $(LIBERATION_DIR)/*.ttf $(STAGING_DIR)/usr/share/fonts/liberation/
-	touch -c $(STAGING_DIR)/usr/share/fonts/.ttf
-
-$(TARGET_DIR)/usr/share/fonts/LiberationMono-Bold.ttf: $(STAGING_DIR)/usr/share/fonts/LiberationMono-Bold.ttf
+$(TARGET_DIR)/usr/share/fonts/LiberationMono-Bold.ttf: $(LIBERATION_DIR)/.unpacked
 	-mkdir -p $(TARGET_DIR)/usr/share/fonts/liberation
 	$(INSTALL) -m0644 $(LIBERATION_DIR)/*.ttf $(TARGET_DIR)/usr/share/fonts/liberation/
-	touch -c $(TARGET_DIR)/usr/share/fonts/.ttf
+	touch -c $@
 
 liberation: uclibc $(TARGET_DIR)/usr/share/fonts/LiberationMono-Bold.ttf
 
 liberation-clean:
 	rm -rf $(TARGET_DIR)/usr/share/fonts/liberation/
-	rm -rf $(STAGING_DIR)/usr/share/fonts/liberation/
 
 liberation-dirclean:
 	rm -rf $(LIBERATION_DIR)
