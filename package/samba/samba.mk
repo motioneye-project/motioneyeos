@@ -11,6 +11,10 @@ SAMBA_CAT:=$(ZCAT)
 SAMBA_BINARY:=bin/smbd
 SAMBA_TARGET_BINARY:=usr/sbin/smbd
 
+ifneq ($(BR2_LARGEFILE),y)
+SAMBA_DISABLE_LARGEFILE:=--disable-largefile
+endif
+
 $(DL_DIR)/$(SAMBA_SOURCE):
 	$(WGET) -P $(DL_DIR) $(SAMBA_SITE)/$(SAMBA_SOURCE)
 
@@ -55,7 +59,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		--disable-shared-libs \
 		--disable-static \
 		--disable-cups \
-		$(BR2_LARGEFILE) \
+		$(SAMBA_DISABLE_LARGEFILE) \
 	)
 	touch $@
 
