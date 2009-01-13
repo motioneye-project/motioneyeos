@@ -6,6 +6,7 @@ choice
 
 config BR2_alpha
 	bool "alpha"
+	depends on BROKEN # no threads, shared libs, gcc psignal compile errors
 config BR2_arm
 	bool "arm"
 config BR2_armeb
