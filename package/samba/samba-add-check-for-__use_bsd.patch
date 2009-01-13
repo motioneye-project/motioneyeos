@@ -1,6 +1,6 @@
 --- a/source/client/mount.cifs.c
 +++ b/source/client/mount.cifs.c
-@@ -91,6 +91,7 @@ char * prefixpath = NULL;
+@@ -96,6 +96,7 @@ char * prefixpath = NULL;
  
  /* glibc doesn't have strlcpy, strlcat. Ensure we do. JRA. We
   * don't link to libreplace so need them here. */
@@ -8,11 +8,11 @@
  
  /* like strncpy but does not 0 fill the buffer and always null
   *    terminates. bufsize is the size of the destination buffer */
-@@ -126,6 +127,7 @@ static size_t strlcat(char *d, const cha
- 	}
- 	return ret;
+@@ -177,6 +178,7 @@ static void mount_cifs_usage(void)
+ 	SAFE_FREE(mountpassword);
+ 	exit(EX_USAGE);
  }
 +#endif /* __GLIBC__ && !(__UCLIBC__ && __USE_BSD) */
  
- /* BB finish BB
- 
+ /* caller frees username if necessary */
+ static char * getusername(void) {

@@ -1,6 +1,6 @@
 --- a/source/configure.in
 +++ b/source/configure.in
-@@ -1182,38 +1182,6 @@ AC_TRY_COMPILE([
+@@ -1199,38 +1199,6 @@ AC_TRY_COMPILE([
  AC_DEFINE(HAVE_PRCTL, 1, [Whether prctl is available]),[])
  
  #

@@ -1,0 +1,40 @@
+--- a/source/client/mount.cifs.c
++++ b/source/client/mount.cifs.c
+@@ -16,6 +16,10 @@
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
+ 
++#ifdef _SAMBA_BUILD_
++#include "include/config.h"
++#endif
++
+ #ifndef _GNU_SOURCE
+ #define _GNU_SOURCE
+ #endif
+@@ -57,10 +61,6 @@
+  #endif /* _SAMBA_BUILD_ */
+ #endif /* MOUNT_CIFS_VENDOR_SUFFIX */
+ 
+-#ifdef _SAMBA_BUILD_
+-#include "include/config.h"
+-#endif
+-
+ #ifndef MS_MOVE 
+ #define MS_MOVE 8192 
+ #endif 
+@@ -138,6 +138,7 @@ static size_t strlcat(char *d, const cha
+ 	return ret;
+ }
+ #endif
++#endif /* __GLIBC__ && !(__UCLIBC__ && __USE_BSD) */
+ 
+ /* BB finish BB
+ 
+@@ -178,7 +179,6 @@ static void mount_cifs_usage(void)
+ 	SAFE_FREE(mountpassword);
+ 	exit(EX_USAGE);
+ }
+-#endif /* __GLIBC__ && !(__UCLIBC__ && __USE_BSD) */
+ 
+ /* caller frees username if necessary */
+ static char * getusername(void) {

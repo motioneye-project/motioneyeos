@@ -1,6 +1,6 @@
 --- a/source/configure
 +++ b/source/configure
-@@ -40770,85 +40770,8 @@ fi
+@@ -41016,85 +41016,8 @@ fi
  
  rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
  
@@ -88,7 +88,7 @@
  
  for ac_func in getgrouplist
  do
-@@ -40943,8 +40866,6 @@ _ACEOF
+@@ -41189,8 +41112,6 @@ _ACEOF
  fi
  done
  
