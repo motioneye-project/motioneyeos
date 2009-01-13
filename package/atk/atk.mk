@@ -54,6 +54,8 @@ ATK_CONF_OPT =  --enable-shared \
 		--disable-glibtest --enable-explicit-deps=no \
 		--disable-debug
 
+ATK_MAKE_OPT = GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal GLIB_MKENUMS=$(HOST_GLIB)/bin/glib-mkenums
+
 ATK_DEPENDENCIES = libglib2 pkgconfig
 
 $(eval $(call AUTOTARGETS,package,atk))
