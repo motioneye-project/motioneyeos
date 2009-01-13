@@ -90,7 +90,7 @@ mk	libconfuse
 mk	libdaemon
 mk	libelf
 mk	libevent
-mk	libfloat
+nmk	libfloat	# obsolete
 mk	libgcrypt
 mk	libgpg-error
 mk	libiconv
@@ -121,7 +121,6 @@ if	[ ${busybox-tools} == 1 ] ; then
 fi
 
 mk	screen
-mk	startup-notification
 mk	strace
 mk	sudo
 
@@ -167,7 +166,7 @@ mk	ethtool
 mk	haserl
 mk	hostap
 mk	ifplugd
-mk	irda-utils
+nmk	irda-utils	# makefile is broken
 mk	iperf
 mk	iproute2
 mk	ipsec-tools
@@ -206,7 +205,7 @@ mk	netsnmp
 mk	nfs-utils
 mk	ntp
 mk	olsr
-mk	openntpd
+mk	ntpd
 mk	openssh
 mk	openssl
 mk	openvpn
@@ -280,7 +279,7 @@ mk	mtd
 mk	ntfs-3g
 mk	pciutils
 mk	pcmcia
-mk	raidtools
+mk	raidtools2
 mk	setserial
 if	[ ${busybox-tools} == 1 ] ; then
 	# busybox has fdisk
@@ -350,7 +349,7 @@ mk	sawman
 mk	sdl
 mk	sdl_image
 mk	sdl_mixer
-mk	sdl_net
+mk	SDL_net
 mk	sdl_ttf
 mk	tiff
 
@@ -390,6 +389,8 @@ mk	fontconfig
 mk	freetype
 mk	tslib
 mk	webkit
+
+nmk	startup-notification		# Depends on X11
 
 echo "X Window managers"
 mk	matchbox
