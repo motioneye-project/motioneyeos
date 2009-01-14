@@ -1,0 +1,12 @@
+diff -urN ttcp-0rig/ttcp.c ttcp/ttcp.c
+--- ttcp-0rig/ttcp.c	1993-05-17 00:00:00.000000000 +0200
++++ ttcp/ttcp.c	2009-01-14 23:46:19.000000000 +0100
+@@ -241,7 +241,7 @@
+ 			if ((addr=gethostbyname(host)) == NULL)
+ 				err("bad hostname");
+ 			sinhim.sin_family = addr->h_addrtype;
+-			bcopy(addr->h_addr,(char*)&addr_tmp, addr->h_length);
++			memmove((char*)&addr_tmp, addr->h_addr, addr->h_length);
+ #if defined(cray)
+ 			sinhim.sin_addr = addr_tmp;
+ #else
