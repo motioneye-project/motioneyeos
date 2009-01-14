@@ -13,7 +13,7 @@ $(DL_DIR)/$(ACPID_SOURCE):
 
 $(ACPID_DIR)/.unpacked: $(DL_DIR)/$(ACPID_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(ACPID_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	toolchain/patch-kernel.sh $(ACPID_DIR) package/acpid/ acpid\*.patch
+	toolchain/patch-kernel.sh $(ACPID_DIR) package/acpid/ acpid-$(ACPID_VERSION)\*.patch
 	touch $(ACPID_DIR)/.unpacked
 
 $(ACPID_DIR)/acpid: $(ACPID_DIR)/.unpacked
