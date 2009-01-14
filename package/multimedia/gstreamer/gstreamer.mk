@@ -24,6 +24,8 @@ GSTREAMER_CONF_OPT = \
 		--disable-examples \
 		--disable-tests \
 		--disable-failing-tests
+		--disable-gtk-doc \
+		--without-html-dir
 
 GSTREAMER_DEPENDENCIES = libglib2 libxml2 pkgconfig
 
