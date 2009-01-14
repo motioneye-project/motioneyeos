@@ -23,7 +23,7 @@ GSTREAMER_CONF_OPT = \
 		$(DISABLE_LARGEFILE) \
 		--disable-examples \
 		--disable-tests \
-		--disable-failing-tests
+		--disable-failing-tests \
 		--disable-gtk-doc \
 		--without-html-dir
 
