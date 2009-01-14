@@ -122,6 +122,8 @@ else
 LIBGTK2_CONF_OPT += --disable-cups
 endif
 
+LIBGTK2_MAKE_OPT = GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal GLIB_MKENUMS=$(HOST_GLIB)/bin/glib-mkenums
+
 $(eval $(call AUTOTARGETS,package,libgtk2))
 
 $(LIBGTK2_HOOK_POST_INSTALL):
