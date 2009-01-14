@@ -84,7 +84,7 @@ $(TARGET_DIR)/usr/bin/sip_reg: $(STAGING_DIR)/usr/bin/sip_reg
 
 
 
-libeXosip2: uclibc $(TARGET_DIR)/usr/lib/libeXosip2.so
+libeXosip2: uclibc libosip2 $(TARGET_DIR)/usr/lib/libeXosip2.so
 
 libeXosip2-source: $(DL_DIR)/$(LIBEXOSIP2_SOURCE)
 
