@@ -46,7 +46,7 @@ ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	CAIRO_CONF_OPT = --disable-xlib --without-x --enable-directfb
 	CAIRO_DEPENDENCIES_EXTRA = directfb
 endif
-CAIRO_CONF_OPT += --disable-gtk-doc --with-html-dir=""
+CAIRO_CONF_OPT += --disable-gtk-doc --without-html-dir
 
 CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig zlib libpng fontconfig $(CAIRO_DEPENDENCIES_EXTRA) pixman $(XSERVER) 
 
