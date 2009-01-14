@@ -4,7 +4,7 @@
 #
 #############################################################
 
-VPNC_VERSION=0.5.1
+VPNC_VERSION=0.5.3
 VPNC_SOURCE=vpnc-$(VPNC_VERSION).tar.gz
 VPNC_SITE=http://www.unix-ag.uni-kl.de/~massar/vpnc
 VPNC_DIR=$(BUILD_DIR)/vpnc-$(VPNC_VERSION)

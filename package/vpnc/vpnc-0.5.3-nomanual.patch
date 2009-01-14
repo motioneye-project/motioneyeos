@@ -1,0 +1,15 @@
+diff -urN vpnc-0.5.3-0rig/Makefile vpnc-0.5.3/Makefile
+--- vpnc-0.5.3-0rig/Makefile	2008-11-19 21:36:12.000000000 +0100
++++ vpnc-0.5.3/Makefile	2009-01-15 00:38:36.000000000 +0100
+@@ -72,7 +72,10 @@
+ 	$(CC) -o $@ $^ $(LDFLAGS)
+ 
+ vpnc.8 : vpnc.8.template makeman.pl vpnc
+-	./makeman.pl
++	@echo "Cannot make manual when cross compiling"
++	touch $@
++
++#	./makeman.pl
+ 
+ vpnc-script : vpnc-script.in
+ 	sed -e 's,@''PREFIX''@,$(PREFIX),g' $< > $@ && chmod 755 $@
