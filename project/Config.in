@@ -19,7 +19,7 @@ config BR2_HOSTNAME
 
 config BR2_BANNER
 	string "banner"
-	default "Welcome to the Erik's uClibc development environment."
+	default "Welcome to Buildroot"
 	help
 	  The banner string is stored in "/etc/issue"
 
