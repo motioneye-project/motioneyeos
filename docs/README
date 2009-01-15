@@ -57,6 +57,5 @@ $ make HOSTCC=gcc-4.3 linux26-menuconfig
 $ make HOSTCC=gcc-4.3 uclibc-menuconfig
 $ make HOSTCC=gcc-4.3 busybox-menuconfig
 
-Please feed suggestions, bug reports, insults, and bribes back to:
-	Erik Andersen <andersen@codepoet.org>
-or the buildroot mailing list.
+Please feed suggestions, bug reports, insults, and bribes back to the
+buildroot mailing list: buildroot@uclibc.org
