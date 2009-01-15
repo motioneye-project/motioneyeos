@@ -19,16 +19,21 @@ mkdir -p ${LOG_DIR}/DEPEND
 
 test=${OK}
 
-function build_package ()
+function	clean_files()
 {
-	printf "%-31s" "$1"
 	rm -f ${LOG}
 	rm -f ${LOG_OK_FILE}
 	rm -f ${LOG_FAIL_FILE}
 	rm -f ${DEPENDENCY}
+}
 
+function	dirclean ()
+{
 	make $1-dirclean > /dev/null 2>&1
+}
 
+function	process ()
+{
 	make $1 >> ${LOG} 2>&1 || test=${FAIL}
 	grep "\.tar\." ${LOG} > ${DEPENDENCY}
 	if [ ${test} == ${OK} ] ; then
@@ -36,10 +41,33 @@ function build_package ()
 		echo "OK	"
 	else
 		mv ${LOG} ${LOG_FAIL_FILE}
-		echo "FAIL	"
+		printf "FAIL	"
+		echo	\"$2\"
 	fi
 }
 
-build_package $1
+function build_package ()
+{
+	printf "mk	%-31s" "$1"
+	if [ "$2X" == "X" ] ; then		# no parameters
+		clean_files	$1
+		dirclean	$1
+		process		$1
+	elif [ "$2X" == "OKX" ] ; then	# Previous build was OK
+		clean_files	$1
+		dirclean	$1
+		process		$1
+	elif [ "$2X" == "FAILX" ] ; then
+		clean_files	$1
+		dirclean	$1
+		process		$1 $3
+	elif [ "$2X" == "BROKENX" ] ; then
+		printf  "BROKEN	"
+		echo	\"$3\"
+	fi
+}
+
+build_package $1 $2 $3
+
 
 
