@@ -106,6 +106,7 @@ $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--with-cxx=no \
+		--enable-shared \
 		$(DISABLE_IPV6) \
 		$(DISABLE_NLS) \
 	)
@@ -166,7 +167,17 @@ ifneq ($(BR2_PACKAGE_PYTHON_TKINTER),y)
 	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/lib-tk
 endif
 
-python: uclibc $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+$(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so: $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+		cp -dpr $(PYTHON_DIR)/libpython*.so.* $(STAGING_DIR)/usr/lib
+		(\
+		cd $(STAGING_DIR)/usr/lib ; \
+		rm -f libpython$(PYTHON_VERSION_MAJOR).so ; \
+		ln -s `basename  \`ls libpython*.so.*\`` libpython$(PYTHON_VERSION_MAJOR).so \
+		)
+
+libpython:	$(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so
+
+python: uclibc $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY) libpython
 
 python-clean:
 	-$(MAKE) -C $(PYTHON_DIR) distclean
