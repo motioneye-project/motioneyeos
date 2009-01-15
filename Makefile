@@ -516,6 +516,12 @@ help:
 	@echo 'See docs/README and docs/buildroot.html for further details'
 	@echo
 
+release: distclean
+	OUT=buildroot-$$(grep -A2 BR2_VERSION $(CONFIG_CONFIG_IN)|grep default|cut -f2 -d\"); \
+	rm -rf ../$$OUT*; cp -al . ../$$OUT; cd ..; \
+	tar cfz $$OUT.tar.gz --exclude .svn --exclude .git --exclude \*~ $$OUT; \
+	rm -rf $$OUT
+
 .PHONY: dummy subdirs release distclean clean config oldconfig \
 	menuconfig tags check test depend defconfig help
 
