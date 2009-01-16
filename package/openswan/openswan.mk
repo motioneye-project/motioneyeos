@@ -8,7 +8,7 @@
 #############################################################
 OPENSWAN_VERSION:=2.4.9
 OPENSWAN_SOURCE:=openswan-$(OPENSWAN_VERSION).tar.gz
-OPENSWAN_SITE:=http://www.openswan.org/download/
+OPENSWAN_SITE:=http://www.openswan.org/download/old/
 OPENSWAN_DIR:=$(BUILD_DIR)/openswan-$(OPENSWAN_VERSION)
 OPENSWAN_CAT:=$(ZCAT)
 OPENSWAN_BINARY:=programs/pluto/pluto
