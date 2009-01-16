@@ -76,7 +76,7 @@ endef
 #"))
 
 $(DL_DIR)/$(U_BOOT_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(U_BOOT_SITE)/$(U_BOOT_SOURCE)
+	 $(call DOWNLOAD,$(U_BOOT_SITE),$(U_BOOT_SOURCE))
 
 $(U_BOOT_DIR)/.unpacked: $(DL_DIR)/$(U_BOOT_SOURCE)
 	$(U_BOOT_CAT) $(DL_DIR)/$(U_BOOT_SOURCE) \
