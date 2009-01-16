@@ -22,29 +22,35 @@ choice
 	config BR2_GCC_VERSION_4_1_2
 		depends on !BR2_nios2
 		depends on BR2_EXT_GCC_VERSION_4_1_2
+		depends on BR2_DEPRECATED
 		bool "gcc 4.1.2"
 
 	config BR2_GCC_VERSION_4_2_1
 		depends on !BR2_nios2
 		depends on BR2_EXT_GCC_VERSION_4_2_1
+		depends on BR2_DEPRECATED
 		bool "gcc 4.2.1"
 
 	config BR2_GCC_VERSION_4_2_2
 		depends on BR2_avr32
 		depends on BR2_EXT_GCC_VERSION_4_2_2
+		depends on BR2_DEPRECATED
 		bool "gcc 4.2.2"
 
 	config BR2_GCC_VERSION_4_2_3
 		depends on !BR2_nios2
-		depends on BR2_EXT_GCC_VERSION_4_2_3 || BR2_DEPRECATED
+		depends on BR2_EXT_GCC_VERSION_4_2_3
+		depends on BR2_DEPRECATED || BR2_avr32
 		bool "gcc 4.2.3"
 
 	config BR2_GCC_VERSION_4_2_4
 		depends on !BR2_avr32 && !BR2_nios2
+		depends on BR2_RECENT || BR2_DEPRECATED
 		bool "gcc 4.2.4"
 
 	config BR2_GCC_VERSION_4_3_1
 		depends on !BR2_avr32 && !BR2_nios2
+		depends on BR2_RECENT || BR2_DEPRECATED
 		bool "gcc 4.3.1"
 
 	config BR2_GCC_VERSION_4_3_2
