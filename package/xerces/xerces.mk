@@ -5,7 +5,7 @@
 #############################################################
 XERCES_VERSION:=2.7.0
 XERCES_SOURCE:=xerces-c-src_2_7_0.tar.gz
-XERCES_SITE:=http://www.apache.org/dist/xml/xerces-c/source/
+XERCES_SITE:=http://archive.apache.org/dist/xml/xerces-c/source/
 XERCES_CAT:=$(ZCAT)
 XERCES_DIR:=$(BUILD_DIR)/xerces-c-src_2_7_0
 XERCES_BINARY:=lib/libxerces-c.so.27.0
