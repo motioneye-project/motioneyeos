@@ -994,7 +994,7 @@ endif
     <a name="ex2line11" id="ex2line11">11</a>  FOO_TARGET_BINARY:=usr/bin/foo
     <a name="ex2line12" id="ex2line12">12</a>
     <a name="ex2line13" id="ex2line13">13</a>  $(DL_DIR)/$(FOO_SOURCE):
-    <a name="ex2line14" id="ex2line14">14</a>          $(WGET) -P $(DL_DIR) $(FOO_SITE)/$(FOO_SOURCE)
+    <a name="ex2line14" id="ex2line14">14</a>          $(call DOWNLOAD,$(FOO_SITE),$(FOO_SOURCE))
     <a name="ex2line15" id="ex2line15">15</a>
     <a name="ex2line16" id="ex2line16">16</a>  $(FOO_DIR)/.source: $(DL_DIR)/$(FOO_SOURCE)
     <a name="ex2line17" id="ex2line17">17</a>          $(ZCAT) $(DL_DIR)/$(FOO_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

@@ -119,6 +119,30 @@ MESSAGE = @echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(1)$(TERM_RES
 TERM_BOLD := $(shell tput smso)
 TERM_RESET := $(shell tput rmso)
 
+################################################################################
+# DOWNLOAD -- Download helper. Will try to download source from:
+# 1) BR2_PRIMARY_SITE if enabled
+# 2) Download site
+# 3) BR2_BACKUP_SITE if enabled
+#
+# Argument 1 is the source location
+# Argument 2 is the source filename
+#
+# E.G. use like this:
+# $(call DOWNLOAD,$(FOO_SITE),$(FOO_SOURCE))
+################################################################################
+
+# support make source-check/external-deps
+ifneq ($(SPIDER),)
+DOWNLOAD:=$(WGET) -P $(DL_DIR) $(1)/$(2)
+else
+define DOWNLOAD
+	$(Q)test -e $(DL_DIR)/$(2) || \
+	for site in $(strip $(subst ",,$(BR2_PRIMARY_SITE))) $(1) $(strip $(subst ",,$(BR2_BACKUP_SITE))); \
+	do $(WGET) -P $(DL_DIR) $$site/$(2) && exit; done
+endef
+endif
+
 # Utility programs used to build packages
 TAR ?= tar
 #ACLOCAL_STAGING_DIR ?= $(STAGING_DIR)/usr/share/aclocal
@@ -136,17 +160,12 @@ TAR_STRIP_COMPONENTS := $(shell $(TAR) --help | grep strip-path > /dev/null ; if
 # Retrieve and unpack the archive
 $(BUILD_DIR)/%/.stamp_downloaded:
 # support make source-check/external-deps
-ifneq ($(SPIDER),)
-	$(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
-	$(if $($(PKG)_PATCH),$(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_PATCH))
-else
+ifeq ($(SPIDER),)
 	$(call MESSAGE,"Downloading")
-ifneq ($(strip $(subst ",,$(BR2_PRIMARY_SITE))),)
-#"))
-	-$(Q)test -e $(DL_DIR)/$($(PKG)_SOURCE) || $(WGET) -P $(DL_DIR) $(BR2_PRIMARY_SITE)/$($(PKG)_SOURCE)
 endif
-	$(Q)test -e $(DL_DIR)/$($(PKG)_SOURCE) || $(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_SOURCE)
-	$(if $($(PKG)_PATCH),$(Q)test -e $(DL_DIR)/$($(PKG)_PATCH) || $(WGET) -P $(DL_DIR) $($(PKG)_SITE)/$($(PKG)_PATCH))
+	$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_SOURCE))
+	$(if $($(PKG)_PATCH),$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_PATCH)))
+ifeq ($(SPIDER),)
 	$(Q)mkdir -p $(@D)
 	$(Q)touch $@
 endif

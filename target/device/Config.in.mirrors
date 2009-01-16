@@ -9,6 +9,14 @@ config BR2_PRIMARY_SITE
 	  default if the file is not found.
 	  NOTE: This only works for packages using the Makefile.autotools.in
 
+config BR2_BACKUP_SITE
+	string "Backup download site"
+	default "http://buildroot.uclibc.org/downloads/sources/"
+	help
+	  Backup site to download from. If this option is set then buildroot
+	  will fall back to download package sources from here if the
+	  normal location fails.
+
 config BR2_SOURCEFORGE_MIRROR
 	string "Sourceforge mirror site"
 	default "easynews"
