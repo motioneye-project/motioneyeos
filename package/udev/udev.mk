@@ -25,7 +25,7 @@ endif
 UDEV_ROOT:=/dev
 
 $(DL_DIR)/$(UDEV_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(UDEV_SITE)/$(UDEV_SOURCE)
+	 $(call DOWNLOAD,$(UDEV_SITE),$(UDEV_SOURCE))
 
 $(UDEV_DIR)/.unpacked: $(DL_DIR)/$(UDEV_SOURCE)
 	$(UDEV_CAT) $(DL_DIR)/$(UDEV_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

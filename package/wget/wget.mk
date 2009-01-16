@@ -12,7 +12,7 @@ WGET_BINARY:=src/wget
 WGET_TARGET_BINARY:=bin/wget
 
 $(DL_DIR)/$(WGET_SOURCE):
-	$(WGET) -P $(DL_DIR) $(WGET_SITE)/$(WGET_SOURCE)
+	$(call DOWNLOAD,$(WGET_SITE),$(WGET_SOURCE))
 
 wget-source: $(DL_DIR)/$(WGET_SOURCE)
 

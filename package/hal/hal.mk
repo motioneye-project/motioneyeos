@@ -20,7 +20,7 @@ GLIB_LIBS:=$(STAGING_DIR)/lib/libglib-2.0.so \
 DBUS_GLIB_LIBS:=$(STAGING_DIR)/usr/lib/libdbus-glib-1.so
 
 $(DL_DIR)/$(HAL_SOURCE):
-	$(WGET) -P $(DL_DIR) $(HAL_SITE)/$(HAL_SOURCE)
+	$(call DOWNLOAD,$(HAL_SITE),$(HAL_SOURCE))
 
 hal-source: $(DL_DIR)/$(HAL_SOURCE)
 

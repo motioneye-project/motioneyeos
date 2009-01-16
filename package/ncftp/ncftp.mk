@@ -38,7 +38,7 @@ endif
 ncftp-source: $(DL_DIR)/$(NCFTP_SOURCE)
 
 $(DL_DIR)/$(NCFTP_SOURCE):
-	$(WGET) -P $(DL_DIR) $(NCFTP_SITE)/$(NCFTP_SOURCE)
+	$(call DOWNLOAD,$(NCFTP_SITE),$(NCFTP_SOURCE))
 
 $(NCFTP_DIR)/.source: $(DL_DIR)/$(NCFTP_SOURCE)
 	$(BZCAT) $(DL_DIR)/$(NCFTP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

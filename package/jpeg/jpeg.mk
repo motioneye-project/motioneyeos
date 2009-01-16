@@ -27,7 +27,7 @@ JPEG_SOURCE=jpegsrc.v$(JPEG_VERSION).tar.gz
 JPEG_CAT:=$(ZCAT)
 
 $(DL_DIR)/$(JPEG_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(JPEG_SITE)/$(JPEG_SOURCE)
+	 $(call DOWNLOAD,$(JPEG_SITE),$(JPEG_SOURCE))
 
 jpeg-source: $(DL_DIR)/$(JPEG_SOURCE)
 

@@ -26,7 +26,7 @@ UDHCP_SITE:=http://udhcp.busybox.net/downloads/
 UDHCP_DIR:=$(BUILD_DIR)/udhcp-$(UDHCP_VERSION)
 
 $(DL_DIR)/$(UDHCP_SOURCE):
-	$(WGET) -P $(DL_DIR) $(UDHCP_SITE)/$(UDHCP_SOURCE)
+	$(call DOWNLOAD,$(UDHCP_SITE),$(UDHCP_SOURCE))
 
 udhcp-source: $(DL_DIR)/$(UDHCP_SOURCE)
 

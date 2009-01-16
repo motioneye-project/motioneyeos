@@ -28,7 +28,7 @@ LTP_PATCHES+=ltp-testsuite-disable-ipv6-tests.patch
 endif
 
 $(DL_DIR)/$(LTP_TESTSUITE_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(LTP_TESTSUITE_SITE)/$(LTP_TESTSUITE_SOURCE)
+	 $(call DOWNLOAD,$(LTP_TESTSUITE_SITE),$(LTP_TESTSUITE_SOURCE))
 
 ltp-testsuite-source: $(DL_DIR)/$(LTP_TESTSUITE_SOURCE)
 

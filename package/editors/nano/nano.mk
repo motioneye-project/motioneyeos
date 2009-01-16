@@ -12,7 +12,7 @@ NANO_BINARY:=src/nano
 NANO_TARGET_BINARY:=usr/bin/nano
 
 $(DL_DIR)/$(NANO_SOURCE):
-	$(WGET) -P $(DL_DIR) $(NANO_SITE)/$(NANO_SOURCE)
+	$(call DOWNLOAD,$(NANO_SITE),$(NANO_SOURCE))
 
 nano-source: $(DL_DIR)/$(NANO_SOURCE)
 

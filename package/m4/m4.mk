@@ -21,7 +21,7 @@ gl_cv_absolute_wchar_h=gl_cv_absolute_wchar_h=__fpending.h
 endif
 
 $(DL_DIR)/$(M4_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(M4_SITE)/$(M4_SOURCE)
+	 $(call DOWNLOAD,$(M4_SITE),$(M4_SOURCE))
 
 m4-source: $(DL_DIR)/$(M4_SOURCE)
 

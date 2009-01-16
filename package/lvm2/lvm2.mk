@@ -34,7 +34,7 @@ LVM2_SBIN:=lvchange lvcreate lvdisplay lvextend lvm lvmchange lvmdiskscan lvmsad
 LVM2_TARGET_SBINS=$(foreach lvm2sbin, $(LVM2_SBIN), $(TARGET_DIR)/sbin/$(lvm2sbin))
 
 $(DL_DIR)/$(LVM2_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(LVM2_SITE)/$(LVM2_SOURCE)
+	 $(call DOWNLOAD,$(LVM2_SITE),$(LVM2_SOURCE))
 
 lvm2-source: $(DL_DIR)/$(LVM2_SOURCE)
 

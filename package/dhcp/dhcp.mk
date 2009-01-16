@@ -19,7 +19,7 @@ BVARS=PREDEFINES='-D_PATH_DHCPD_DB=\"/var/lib/dhcp/dhcpd.leases\" \
 	VARDB=/var/lib/dhcp
 
 $(DL_DIR)/$(DHCP_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(DHCP_SITE)/$(DHCP_SOURCE)
+	 $(call DOWNLOAD,$(DHCP_SITE),$(DHCP_SOURCE))
 
 dhcp-source: $(DL_DIR)/$(DHCP_SOURCE)
 

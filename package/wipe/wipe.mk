@@ -14,11 +14,11 @@ WIPE_BINARY:=wipe
 WIPE_TARGET_BINARY:=bin/wipe
 
 $(DL_DIR)/$(WIPE_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(WIPE_SITE)/$(WIPE_SOURCE)
+	 $(call DOWNLOAD,$(WIPE_SITE),$(WIPE_SOURCE))
 
 ifneq ($(WIPE_PATCH),)
 $(DL_DIR)/$(WIPE_PATCH):
-	 $(WGET) -P $(DL_DIR) $(WIPE_SITE)/$(WIPE_PATCH)
+	 $(call DOWNLOAD,$(WIPE_SITE),$(WIPE_PATCH))
 endif
 
 wipe-source: $(DL_DIR)/$(WIPE_SOURCE) $(DL_DIR)/$(WIPE_PATCH)

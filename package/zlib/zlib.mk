@@ -10,7 +10,7 @@ ZLIB_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpn
 ZLIB_DIR:=$(BUILD_DIR)/zlib-$(ZLIB_VERSION)
 
 $(DL_DIR)/$(ZLIB_SOURCE):
-	$(WGET) -P $(DL_DIR) $(ZLIB_SITE)/$(ZLIB_SOURCE)
+	$(call DOWNLOAD,$(ZLIB_SITE),$(ZLIB_SOURCE))
 
 $(ZLIB_DIR)/.patched: $(DL_DIR)/$(ZLIB_SOURCE)
 	$(ZLIB_CAT) $(DL_DIR)/$(ZLIB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

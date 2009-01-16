@@ -39,7 +39,7 @@ SDL_X11=--enable-video-x11=no
 endif
 
 $(DL_DIR)/$(SDL_SOURCE):
-	$(WGET) -P $(DL_DIR) $(SDL_SITE)/$(SDL_SOURCE)
+	$(call DOWNLOAD,$(SDL_SITE),$(SDL_SOURCE))
 
 sdl-source: $(DL_DIR)/$(SDL_SOURCE)
 

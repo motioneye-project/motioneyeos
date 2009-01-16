@@ -15,7 +15,7 @@ MODUTILS_TARGET_BINARY=sbin/$(MODUTILS_BINARY)
 STRIPPROG=$(STRIPCMD)
 
 $(DL_DIR)/$(MODUTILS_SOURCE):
-	$(WGET) -P $(DL_DIR) $(MODUTILS_SITE)/$(MODUTILS_SOURCE)
+	$(call DOWNLOAD,$(MODUTILS_SITE),$(MODUTILS_SOURCE))
 
 #############################################################
 #

@@ -24,7 +24,7 @@ DBUS_XML_DEP:=libxml2-install-staging
 endif
 
 $(DL_DIR)/$(DBUS_SOURCE):
-	$(WGET) -P $(DL_DIR) $(DBUS_SITE)/$(DBUS_SOURCE)
+	$(call DOWNLOAD,$(DBUS_SITE),$(DBUS_SOURCE))
 
 dbus-source: $(DL_DIR)/$(DBUS_SOURCE)
 

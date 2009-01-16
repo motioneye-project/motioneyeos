@@ -13,7 +13,7 @@ BIND_BINARY:=bin/named/named
 BIND_TARGET_BINARY:=usr/sbin/named
 
 $(DL_DIR)/$(BIND_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(BIND_SITE)/$(BIND_SOURCE)
+	 $(call DOWNLOAD,$(BIND_SITE),$(BIND_SOURCE))
 
 bind-source: $(DL_DIR)/$(BIND_SOURCE)
 

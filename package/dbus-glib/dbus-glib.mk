@@ -12,7 +12,7 @@ DBUS_GLIB_BINARY:=dbus/.libs/dbus-binding-tool
 DBUS_GLIB_TARGET_BINARY:=usr/bin/dbus-binding-tool
 
 $(DL_DIR)/$(DBUS_GLIB_SOURCE):
-	$(WGET) -P $(DL_DIR) $(DBUS_GLIB_SITE)/$(DBUS_GLIB_SOURCE)
+	$(call DOWNLOAD,$(DBUS_GLIB_SITE),$(DBUS_GLIB_SOURCE))
 
 dbus-glib-source: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
 

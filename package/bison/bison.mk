@@ -12,7 +12,7 @@ BISON_BINARY:=src/bison
 BISON_TARGET_BINARY:=usr/bin/bison
 
 $(DL_DIR)/$(BISON_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(BISON_SITE)/$(BISON_SOURCE)
+	 $(call DOWNLOAD,$(BISON_SITE),$(BISON_SOURCE))
 
 bison-source: $(DL_DIR)/$(BISON_SOURCE)
 

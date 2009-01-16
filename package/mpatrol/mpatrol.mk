@@ -37,7 +37,7 @@ endif
 endif
 
 $(DL_DIR)/$(MPATROL_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(MPATROL_SITE)/$(MPATROL_SOURCE)
+	 $(call DOWNLOAD,$(MPATROL_SITE),$(MPATROL_SOURCE))
 
 mpatrol-source: $(DL_DIR)/$(MPATROL_SOURCE)
 

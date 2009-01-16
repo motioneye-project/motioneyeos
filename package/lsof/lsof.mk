@@ -21,7 +21,7 @@ BR2_LSOF_CFLAGS+=-UHASIPv6
 endif
 
 $(DL_DIR)/$(LSOF_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(LSOF_SITE)/$(LSOF_SOURCE)
+	 $(call DOWNLOAD,$(LSOF_SITE),$(LSOF_SOURCE))
 
 lsof-source: $(DL_DIR)/$(LSOF_SOURCE)
 

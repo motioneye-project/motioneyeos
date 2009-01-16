@@ -12,7 +12,7 @@ FBV_BINARY:=fbv
 FBV_TARGET_BINARY:=usr/bin/$(FBV_BINARY)
 
 $(DL_DIR)/$(FBV_SOURCE):
-	$(WGET) -P $(DL_DIR) $(FBV_SITE)/$(FBV_SOURCE)
+	$(call DOWNLOAD,$(FBV_SITE),$(FBV_SOURCE))
 
 fbv-source: $(DL_DIR)/$(FBV_SOURCE)
 

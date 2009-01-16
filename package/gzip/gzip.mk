@@ -12,7 +12,7 @@ GZIP_BINARY:=$(GZIP_DIR)/gzip
 GZIP_TARGET_BINARY:=$(TARGET_DIR)/bin/zmore
 
 $(DL_DIR)/$(GZIP_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(GZIP_SITE)/$(GZIP_SOURCE)
+	 $(call DOWNLOAD,$(GZIP_SITE),$(GZIP_SOURCE))
 
 gzip-source: $(DL_DIR)/$(GZIP_SOURCE)
 

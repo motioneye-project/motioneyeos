@@ -24,7 +24,7 @@ THREAD_MODEL=--enable-pthread
 endif
 
 $(DL_DIR)/$(OPENVPN_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(OPENVPN_SITE)/$(OPENVPN_SOURCE)
+	 $(call DOWNLOAD,$(OPENVPN_SITE),$(OPENVPN_SOURCE))
 
 openvpn-source: $(DL_DIR)/$(OPENVPN_SOURCE)
 

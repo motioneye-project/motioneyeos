@@ -15,7 +15,7 @@ LIBTOOL_TARGET_BINARY:=usr/bin/libtool
 LIBTOOL:=$(STAGING_DIR)/usr/bin/libtool
 
 $(DL_DIR)/$(LIBTOOL_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(LIBTOOL_SITE)/$(LIBTOOL_SOURCE)
+	 $(call DOWNLOAD,$(LIBTOOL_SITE),$(LIBTOOL_SOURCE))
 
 libtool-source: $(DL_DIR)/$(LIBTOOL_SOURCE)
 

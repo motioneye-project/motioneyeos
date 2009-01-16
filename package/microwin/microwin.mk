@@ -18,7 +18,7 @@ MICROWIN_VERSION=$(subst $(MICROWIN_DIR)/microwindows-,,$(wildcard $(MICROWIN_DI
 MICROWIN_CONFIG:=$(MICROWIN_DIR)/src/Configs/config.uclibc
 
 $(DL_DIR)/$(MICROWIN_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(MICROWIN_SITE)/$(MICROWIN_SOURCE)
+	 $(call DOWNLOAD,$(MICROWIN_SITE),$(MICROWIN_SOURCE))
 
 microwin-source: $(DL_DIR)/$(MICROWIN_SOURCE)
 

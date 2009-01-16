@@ -16,7 +16,7 @@ ENABLE_IPV6:=--enable-ipv6
 endif
 
 $(DL_DIR)/$(PROFTPD_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(PROFTPD_SITE)/$(PROFTPD_SOURCE)
+	 $(call DOWNLOAD,$(PROFTPD_SITE),$(PROFTPD_SOURCE))
 
 proftpd-source: $(DL_DIR)/$(PROFTPD_SOURCE)
 

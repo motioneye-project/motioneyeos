@@ -38,8 +38,8 @@ DM_TARGET_LIBRARY:=$(TARGET_DIR)/usr/lib/libdevmapper.so
 DM_TARGET_HEADER:=$(TARGET_DIR)/usr/include/libdevmapper.h
 
 $(DL_DIR)/$(DM_SOURCE):
-	$(WGET) -P $(DL_DIR) $(DM_SITE)/$(DM_SOURCE) || \
-		$(WGET) -P $(DL_DIR) $(DM_SITE_OLD)/$(DM_SOURCE)
+	$(call DOWNLOAD,$(DM_SITE),$(DM_SOURCE) || \)
+		$(call DOWNLOAD,$(DM_SITE_OLD),$(DM_SOURCE))
 
 dm-source: $(DL_DIR)/$(DM_SOURCE)
 

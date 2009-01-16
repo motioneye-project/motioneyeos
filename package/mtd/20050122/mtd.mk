@@ -22,7 +22,7 @@ SUMTOOL := $(MTD_HOST_DIR)/util/sumtool
 
 ifneq ($(MTD_SOURCE),)
 $(DL_DIR)/$(MTD_SOURCE):
-	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
+	$(call DOWNLOAD,$(MTD_SITE),$(MTD_SOURCE))
 endif
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)

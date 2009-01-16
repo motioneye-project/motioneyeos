@@ -19,7 +19,7 @@ TCPDUMP_ENABLE_SMB:=--enable-smb
 endif
 
 $(DL_DIR)/$(TCPDUMP_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(TCPDUMP_SITE)/$(TCPDUMP_SOURCE)
+	 $(call DOWNLOAD,$(TCPDUMP_SITE),$(TCPDUMP_SOURCE))
 
 tcpdump-source: $(DL_DIR)/$(TCPDUMP_SOURCE)
 

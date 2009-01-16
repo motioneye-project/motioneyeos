@@ -23,12 +23,12 @@ CVS_CONFIGURE_ARGS+=--with-external-zlib
 endif
 
 $(DL_DIR)/$(CVS_SOURCE):
-	$(WGET) -P $(DL_DIR) $(CVS_SITE)/$(CVS_SOURCE)
+	$(call DOWNLOAD,$(CVS_SITE),$(CVS_SOURCE))
 
 ifneq ($(CVS_PATCH),)
 CVS_PATCH_FILE=$(DL_DIR)/$(CVS_PATCH)
 $(CVS_PATCH_FILE):
-	$(WGET) -P $(DL_DIR) $(CVS_SITE)/$(CVS_PATCH)
+	$(call DOWNLOAD,$(CVS_SITE),$(CVS_PATCH))
 endif
 cvs-source: $(DL_DIR)/$(CVS_SOURCE) $(CVS_PATCH_FILE)
 

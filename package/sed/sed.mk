@@ -22,7 +22,7 @@ HOST_SED_IF_ANY=$(shell toolchain/dependencies/check-host-sed.sh)
 
 $(DL_DIR)/$(SED_SOURCE):
 	mkdir -p $(DL_DIR)
-	$(WGET) -P $(DL_DIR) $(SED_SITE)/$(SED_SOURCE)
+	$(call DOWNLOAD,$(SED_SITE),$(SED_SOURCE))
 
 sed-source: $(DL_DIR)/$(SED_SOURCE)
 

@@ -12,7 +12,7 @@ MKDOSFS_BINARY:=mkdosfs/mkdosfs
 MKDOSFS_TARGET_BINARY:=sbin/mkdosfs
 
 $(DL_DIR)/$(MKDOSFS_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(MKDOSFS_SITE)/$(MKDOSFS_SOURCE)
+	 $(call DOWNLOAD,$(MKDOSFS_SITE),$(MKDOSFS_SOURCE))
 
 mkdosfs-source: $(DL_DIR)/$(MKDOSFS_SOURCE)
 

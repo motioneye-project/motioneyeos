@@ -14,10 +14,10 @@ VIM_CONFIG_H:=$(VIM_DIR)/src/auto/config.h
 VIM_CONFIG_MK:=$(VIM_DIR)/src/auto/config.mk
 
 $(DL_DIR)/$(VIM_SOURCE):
-	$(WGET) -P $(DL_DIR) $(VIM_SOURCE_SITE)/$(VIM_SOURCE)
+	$(call DOWNLOAD,$(VIM_SOURCE_SITE),$(VIM_SOURCE))
 
 $(DL_DIR)/vim/%:
-	$(WGET) -P $(DL_DIR)/vim/ $(VIM_PATCH_SITE)/$*
+	$(call DOWNLOAD,$(VIM_PATCH_SITE),$*)
 
 vim-source: $(DL_DIR)/$(VIM_SOURCE) $(VIM_PATCHES)
 

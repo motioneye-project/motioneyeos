@@ -12,7 +12,7 @@ TFTP_HPA_BINARY:=tftpd/tftpd
 TFTP_HPA_TARGET_BINARY:=usr/sbin/in.tftpd
 
 $(DL_DIR)/$(TFTP_HPA_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(TFTP_HPA_SITE)/$(TFTP_HPA_SOURCE)
+	 $(call DOWNLOAD,$(TFTP_HPA_SITE),$(TFTP_HPA_SOURCE))
 
 tftpd-source: $(DL_DIR)/$(TFTP_HPA_SOURCE)
 

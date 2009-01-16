@@ -12,7 +12,7 @@ NTFS-3G_BINARY:=ntfs-3g
 
 http://www.ntfs-3g.org/ntfs-3g-1.5130.tgz
 $(DL_DIR)/$(NTFS-3G_SOURCE):
-	$(WGET) -P $(DL_DIR) $(NTFS-3G_SITE)/$(NTFS-3G_SOURCE)
+	$(call DOWNLOAD,$(NTFS-3G_SITE),$(NTFS-3G_SOURCE))
 
 $(NTFS-3G_DIR)/.source: $(DL_DIR)/$(NTFS-3G_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(NTFS-3G_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

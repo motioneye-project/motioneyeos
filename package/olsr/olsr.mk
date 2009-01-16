@@ -18,7 +18,7 @@ OLSR_PLUGINS=dot_draw dyn_gw secure
 OLSR_TARGET_PLUGIN=usr/lib/
 
 $(DL_DIR)/$(OLSR_SOURCE):
-	$(WGET) -P $(DL_DIR) $(OLSR_SITE)/$(OLSR_SOURCE)
+	$(call DOWNLOAD,$(OLSR_SITE),$(OLSR_SOURCE))
 
 olsr-source: $(DL_DIR)/$(OLSR_SOURCE)
 

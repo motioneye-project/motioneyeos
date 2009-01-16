@@ -14,7 +14,7 @@ EXPAT_BINARY:=.libs/libexpat.a
 EXPAT_TARGET_BINARY:=usr/lib/libexpat.so.1
 
 $(DL_DIR)/$(EXPAT_SOURCE):
-	$(WGET) -P $(DL_DIR) $(EXPAT_SITE)/$(EXPAT_SOURCE)
+	$(call DOWNLOAD,$(EXPAT_SITE),$(EXPAT_SOURCE))
 
 expat-source: $(DL_DIR)/$(EXPAT_SOURCE)
 

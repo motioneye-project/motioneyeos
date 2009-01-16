@@ -21,7 +21,7 @@ MKFS_JFFS2 := $(MTD_HOST_DIR)/mkfs.jffs2
 SUMTOOL := $(MTD_HOST_DIR)/sumtool
 
 $(DL_DIR)/$(MTD_SOURCE):
-	$(WGET) -P $(DL_DIR) $(MTD_SITE)/$(MTD_SOURCE)
+	$(call DOWNLOAD,$(MTD_SITE),$(MTD_SOURCE))
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -

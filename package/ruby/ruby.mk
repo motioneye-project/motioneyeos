@@ -12,7 +12,7 @@ RUBY_BINARY:=ruby
 RUBY_TARGET_BINARY:=usr/bin/ruby
 
 $(DL_DIR)/$(RUBY_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(RUBY_SITE)/$(RUBY_SOURCE)
+	 $(call DOWNLOAD,$(RUBY_SITE),$(RUBY_SOURCE))
 
 ruby-source: $(DL_DIR)/$(RUBY_SOURCE)
 

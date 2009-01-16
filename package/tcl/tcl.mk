@@ -9,7 +9,7 @@ TCL_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/tcl
 TCL_DIR:=$(BUILD_DIR)/tcl$(TCL_VERSION)
 
 $(DL_DIR)/$(TCL_SOURCE):
-	$(WGET) -P $(DL_DIR) $(TCL_SITE)/$(TCL_SOURCE)
+	$(call DOWNLOAD,$(TCL_SITE),$(TCL_SOURCE))
 
 $(TCL_DIR)/.source: $(DL_DIR)/$(TCL_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(TCL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

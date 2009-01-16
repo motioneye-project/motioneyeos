@@ -12,7 +12,7 @@ GAWK_BINARY:=gawk
 GAWK_TARGET_BINARY:=usr/bin/gawk
 
 $(DL_DIR)/$(GAWK_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(GAWK_SITE)/$(GAWK_SOURCE)
+	 $(call DOWNLOAD,$(GAWK_SITE),$(GAWK_SOURCE))
 
 gawk-source: $(DL_DIR)/$(GAWK_SOURCE)
 

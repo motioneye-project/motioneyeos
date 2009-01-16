@@ -11,7 +11,7 @@ NBD_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/nbd/
 NBD_DIR=$(BUILD_DIR)/nbd-$(NBD_VERSION)
 
 $(DL_DIR)/$(NBD_SOURCE):
-	$(WGET) -P $(DL_DIR) $(NBD_SITE)/$(NBD_SOURCE)
+	$(call DOWNLOAD,$(NBD_SITE),$(NBD_SOURCE))
 
 $(NBD_DIR)/.unpacked: $(DL_DIR)/$(NBD_SOURCE)
 	$(NBD_CAT) $(DL_DIR)/$(NBD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

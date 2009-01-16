@@ -12,13 +12,13 @@ FESTLEX_INSTALL_DIR = $(TARGET_DIR)/usr/share
 $(FESTLEX_STATUS_DIR)/.downloaded:
 	mkdir -p $(FESTLEX_STATUS_DIR)
 ifeq ($(BR2_PACKAGE_FESTLEX_CMU),y)
-	$(Q)test -e $(DL_DIR)/$(LEX1) || $(WGET) -P $(DL_DIR) $(FESTIVAL_SITE)/$(LEX1)
+	$(call DOWNLOAD,$(FESTIVAL_SITE),$(LEX1))
 endif
 ifeq ($(BR2_PACKAGE_FESTLEX_OALD),y)
-	$(Q)test -e $(DL_DIR)/$(LEX2) || $(WGET) -P $(DL_DIR) $(FESTIVAL_SITE)/$(LEX2)
+	$(call DOWNLOAD,$(FESTIVAL_SITE),$(LEX2))
 endif
 ifeq ($(BR2_PACKAGE_FESTLEX_POS),y)
-	$(Q)test -e $(DL_DIR)/$(LEX3) || $(WGET) -P $(DL_DIR) $(FESTIVAL_SITE)/$(LEX3)
+	$(call DOWNLOAD,$(FESTIVAL_SITE),$(LEX3))
 endif
 	touch $@
 

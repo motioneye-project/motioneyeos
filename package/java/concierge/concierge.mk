@@ -11,10 +11,10 @@ CONCIERGE_SITE_BUNDLES = http://concierge.sourceforge.net/bundles/
 
 $(DL_DIR)/concierge:
 	 mkdir -p $(DL_DIR)/concierge/
-	 $(WGET) -P $(DL_DIR)/concierge/ $(CONCIERGE_SITE)/concierge-$(CONCIERGE_VERSION).jar
-	 $(WGET) -P $(DL_DIR)/concierge/ $(CONCIERGE_SITE_BUNDLES)shell-1.0.0.RC2.jar
-	 $(WGET) -P $(DL_DIR)/concierge/ $(CONCIERGE_SITE_BUNDLES)service-tracker-1.0.0.RC2.jar
-	 $(WGET) -P $(DL_DIR)/concierge/ $(CONCIERGE_SITE_BUNDLES)event-admin-1.0.0.RC2.jar
+	 $(call DOWNLOAD,$(CONCIERGE_SITE),concierge-$(CONCIERGE_VERSION).jar)
+	 $(call DOWNLOAD,$(CONCIERGE_SITE_BUNDLES)shell-1.0.0.RC2.jar)
+	 $(call DOWNLOAD,$(CONCIERGE_SITE_BUNDLES)service-tracker-1.0.0.RC2.jar)
+	 $(call DOWNLOAD,$(CONCIERGE_SITE_BUNDLES)event-admin-1.0.0.RC2.jar)
 
 $(TARGET_DIR)/usr/lib/concierge/: $(DL_DIR)/concierge
 	mkdir -p $(TARGET_DIR)/usr/lib

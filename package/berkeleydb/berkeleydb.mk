@@ -11,7 +11,7 @@ DB_DIR:=$(BUILD_DIR)/db-$(DB_VERSION).NC
 DB_SHARLIB:=libdb-$(DB_SO_VERSION).so
 
 $(DL_DIR)/$(DB_SOURCE):
-	$(WGET) -P $(DL_DIR) $(DB_SITE)/$(DB_SOURCE)
+	$(call DOWNLOAD,$(DB_SITE),$(DB_SOURCE))
 
 berkeleydb-source: $(DL_DIR)/$(DB_SOURCE)
 

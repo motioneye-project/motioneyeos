@@ -11,7 +11,7 @@ IOSTAT_BINARY:=iostat
 IOSTAT_TARGET_BINARY:=usr/bin/iostat
 
 $(DL_DIR)/$(IOSTAT_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(IOSTAT_SITE)/$(IOSTAT_SOURCE)
+	 $(call DOWNLOAD,$(IOSTAT_SITE),$(IOSTAT_SOURCE))
 
 iostat-source: $(DL_DIR)/$(IOSTAT_SOURCE)
 

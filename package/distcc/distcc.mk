@@ -12,7 +12,7 @@ DISTCC_BINARY:=distcc
 DISTCC_TARGET_BINARY:=usr/bin/distcc
 
 $(DL_DIR)/$(DISTCC_SOURCE):
-	$(WGET) -P $(DL_DIR) $(DISTCC_SITE)/$(DISTCC_SOURCE)
+	$(call DOWNLOAD,$(DISTCC_SITE),$(DISTCC_SOURCE))
 
 distcc-source: $(DL_DIR)/$(CVS_SOURCE)
 

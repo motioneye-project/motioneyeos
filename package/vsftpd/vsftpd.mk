@@ -18,7 +18,7 @@ VSFTPD_LIBS:=-lcrypt
 endif
 
 $(DL_DIR)/$(VSFTPD_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(VSFTPD_SITE)/$(VSFTPD_SOURCE)
+	 $(call DOWNLOAD,$(VSFTPD_SITE),$(VSFTPD_SOURCE))
 
 vsftpd-source: $(DL_DIR)/$(VSFTPD_SOURCE)
 

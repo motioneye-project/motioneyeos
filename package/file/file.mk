@@ -14,7 +14,7 @@ FILE_BINARY:=src/file
 FILE_TARGET_BINARY:=usr/bin/file
 
 $(DL_DIR)/$(FILE_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(FILE_SITE)/$(FILE_SOURCE)
+	 $(call DOWNLOAD,$(FILE_SITE),$(FILE_SOURCE))
 
 file-source: $(DL_DIR)/$(FILE_SOURCE)
 

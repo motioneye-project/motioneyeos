@@ -18,7 +18,7 @@ HOST_LZMA_IF_ANY=$(shell toolchain/dependencies/check-host-lzma.sh)
 
 
 $(DL_DIR)/$(LZMA_SOURCE):
-	$(WGET) -P $(DL_DIR) $(LZMA_SITE)/$(LZMA_SOURCE)
+	$(call DOWNLOAD,$(LZMA_SITE),$(LZMA_SOURCE))
 
 ######################################################################
 #

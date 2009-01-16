@@ -9,7 +9,7 @@ ACPID_SOURCE=acpid_$(ACPID_VERSION).orig.tar.gz
 ACPID_SITE=$(BR2_DEBIAN_MIRROR)/debian/pool/main/a/acpid
 
 $(DL_DIR)/$(ACPID_SOURCE):
-	$(WGET) -P $(DL_DIR) $(ACPID_SITE)/$(ACPID_SOURCE)
+	$(call DOWNLOAD,$(ACPID_SITE),$(ACPID_SOURCE))
 
 $(ACPID_DIR)/.unpacked: $(DL_DIR)/$(ACPID_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(ACPID_SOURCE) | tar -C $(BUILD_DIR) -xvf -

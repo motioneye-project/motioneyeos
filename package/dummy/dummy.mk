@@ -21,7 +21,7 @@ DUMMY_TARGET_BINARY:=usr/bin/$(DUMMY_BINARY)
 
 # The download rule. Main purpose is to download the source package.
 $(DL_DIR)/$(DUMMY_SOURCE):
-	$(WGET) -P $(DL_DIR) $(DUMMY_SITE)/$(DUMMY_SOURCE)
+	$(call DOWNLOAD,$(DUMMY_SITE),$(DUMMY_SOURCE))
 
 # The unpacking rule. Main purpose is to extract the source package, apply any
 # patches and update config.guess and config.sub.

@@ -12,7 +12,7 @@ BASH_BINARY:=bash
 BASH_TARGET_BINARY:=bin/bash
 
 $(DL_DIR)/$(BASH_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(BASH_SITE)/$(BASH_SOURCE)
+	 $(call DOWNLOAD,$(BASH_SITE),$(BASH_SOURCE))
 
 bash-source: $(DL_DIR)/$(BASH_SOURCE)
 

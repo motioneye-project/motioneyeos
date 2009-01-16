@@ -20,7 +20,7 @@ GMP_CPP_FLAGS:=CPPFLAGS=-DDLL_EXPORT
 endif
 
 $(DL_DIR)/$(GMP_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(GMP_SITE)/$(GMP_SOURCE)
+	 $(call DOWNLOAD,$(GMP_SITE),$(GMP_SOURCE))
 
 libgmp-source: $(DL_DIR)/$(GMP_SOURCE)
 

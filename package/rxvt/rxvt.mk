@@ -28,7 +28,7 @@ RXVT_DIR:=$(BUILD_DIR)/rxvt-$(RXVT_VERSION)
 RXVT_BINARY:=$(RXVT_DIR)/src/rxvt
 
 $(DL_DIR)/$(RXVT_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(RXVT_SITE)/$(RXVT_SOURCE)
+	 $(call DOWNLOAD,$(RXVT_SITE),$(RXVT_SOURCE))
 
 rxvt-source: $(DL_DIR)/$(RXVT_SOURCE)
 

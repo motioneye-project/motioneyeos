@@ -13,7 +13,7 @@ LTT_BINARY:=Visualizer/tracevisualizer
 LTT_TARGET_BINARY:=Daemon/tracedaemon
 
 $(DL_DIR)/$(LTT_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(LTT_SITE)/$(LTT_SOURCE)
+	 $(call DOWNLOAD,$(LTT_SITE),$(LTT_SOURCE))
 
 ltt-source: $(DL_DIR)/$(LTT_SOURCE)
 

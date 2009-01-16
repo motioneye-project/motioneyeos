@@ -12,7 +12,7 @@ ICU_DIR:=$(BUILD_DIR)/icu/source
 ICU_HOST_DIR:=$(BUILD_DIR)/icu-host/source
 
 $(DL_DIR)/$(ICU_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(ICU_SITE)/$(ICU_SOURCE)
+	 $(call DOWNLOAD,$(ICU_SITE),$(ICU_SOURCE))
 
 icu-source: $(DL_DIR)/$(ICU_SOURCE)
 

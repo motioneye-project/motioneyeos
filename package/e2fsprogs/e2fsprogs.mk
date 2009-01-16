@@ -16,7 +16,7 @@ E2FSPROGS_MISC_STRIP:= \
 	lsattr mke2fs mklost+found tune2fs uuidgen
 
 $(DL_DIR)/$(E2FSPROGS_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(E2FSPROGS_SITE)/$(E2FSPROGS_SOURCE)
+	 $(call DOWNLOAD,$(E2FSPROGS_SITE),$(E2FSPROGS_SOURCE))
 
 e2fsprogs-source: $(DL_DIR)/$(E2FSPROGS_SOURCE)
 

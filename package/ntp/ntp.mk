@@ -12,7 +12,7 @@ NTP_BINARY:=ntpdate/ntpdate
 NTP_TARGET_BINARY:=usr/bin/ntpdate
 
 $(DL_DIR)/$(NTP_SOURCE):
-	$(WGET) -P $(DL_DIR) $(NTP_SITE)/$(NTP_SOURCE)
+	$(call DOWNLOAD,$(NTP_SITE),$(NTP_SOURCE))
 
 ntp-source: $(DL_DIR)/$(NTP_SOURCE)
 

@@ -11,7 +11,7 @@ EEPROG_BINARY:=eeprog
 EEPROG_TARGET_BINARY:=usr/sbin/eeprog
 
 $(DL_DIR)/$(EEPROG_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(EEPROG_SITE)/$(EEPROG_SOURCE)
+	 $(call DOWNLOAD,$(EEPROG_SITE),$(EEPROG_SOURCE))
 
 eeprog-source: $(DL_DIR)/$(EEPROG_SOURCE)
 

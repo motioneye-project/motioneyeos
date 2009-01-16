@@ -9,7 +9,7 @@ XAPP_XMAN_SITE:=http://xorg.freedesktop.org/releases/individual/app
 XAPP_XMAN_DIR:=$(BUILD_DIR)/xman-$(XAPP_XMAN_VERSION)
 
 $(DL_DIR)/$(XAPP_XMAN_SOURCE):
-	$(WGET) -P $(DL_DIR) $(XAPP_XMAN_SITE)/$(XAPP_XMAN_SOURCE)
+	$(call DOWNLOAD,$(XAPP_XMAN_SITE),$(XAPP_XMAN_SOURCE))
 
 $(XAPP_XMAN_DIR)/.extracted: $(DL_DIR)/$(XAPP_XMAN_SOURCE)
 	$(BZCAT) $(DL_DIR)/$(XAPP_XMAN_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

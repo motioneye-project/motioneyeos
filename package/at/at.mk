@@ -12,7 +12,7 @@ AT_TARGET_SCRIPT:=etc/init.d/S99at
 AT_BINARY:=at
 
 $(DL_DIR)/$(AT_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(AT_SITE)/$(AT_SOURCE)
+	 $(call DOWNLOAD,$(AT_SITE),$(AT_SOURCE))
 
 at-source: $(DL_DIR)/$(AT_SOURCE)
 

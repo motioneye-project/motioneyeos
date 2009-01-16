@@ -69,7 +69,7 @@ BR2_PYTHON_DISABLED_MODULES += unicodedata
 endif
 
 $(DL_DIR)/$(PYTHON_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(PYTHON_SITE)/$(PYTHON_SOURCE)
+	 $(call DOWNLOAD,$(PYTHON_SITE),$(PYTHON_SOURCE))
 
 python-source: $(DL_DIR)/$(PYTHON_SOURCE)
 

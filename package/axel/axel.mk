@@ -12,7 +12,7 @@ AXEL_BINARY:=axel
 AXEL_TARGET_BINARY:=usr/bin/axel
 
 $(DL_DIR)/$(AXEL_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(AXEL_SITE)/$(AXEL_SOURCE)
+	 $(call DOWNLOAD,$(AXEL_SITE),$(AXEL_SOURCE))
 
 axel-source: $(DL_DIR)/$(AXEL_SOURCE)
 

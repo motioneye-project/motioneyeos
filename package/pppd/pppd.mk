@@ -13,7 +13,7 @@ PPPD_TARGET_BINARY:=usr/sbin/pppd
 
 
 $(DL_DIR)/$(PPPD_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(PPPD_SITE)/$(PPPD_SOURCE)
+	 $(call DOWNLOAD,$(PPPD_SITE),$(PPPD_SOURCE))
 
 pppd-source: $(DL_DIR)/$(PPPD_SOURCE)
 

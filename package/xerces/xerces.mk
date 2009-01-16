@@ -11,7 +11,7 @@ XERCES_DIR:=$(BUILD_DIR)/xerces-c-src_2_7_0
 XERCES_BINARY:=lib/libxerces-c.so.27.0
 
 $(DL_DIR)/$(XERCES_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(XERCES_SITE)/$(XERCES_SOURCE)
+	 $(call DOWNLOAD,$(XERCES_SITE),$(XERCES_SOURCE))
 
 xerces-source: $(DL_DIR)/$(XERCES_SOURCE)
 

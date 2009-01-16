@@ -16,7 +16,7 @@ LUA_CFLAGS=-DLUA_USE_LINUX
 LUA_MYLIBS="-Wl,-E -ldl -lreadline -lhistory -lncurses"
 
 $(DL_DIR)/$(LUA_SOURCE):
-	$(WGET) -P $(DL_DIR) $(LUA_SITE)/$(LUA_SOURCE)
+	$(call DOWNLOAD,$(LUA_SITE),$(LUA_SOURCE))
 
 $(LUA_DIR)/.unpacked: $(DL_DIR)/$(LUA_SOURCE)
 	$(LUA_CAT) $(DL_DIR)/$(LUA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

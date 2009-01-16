@@ -10,7 +10,7 @@ EZXML_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ezxm
 EZXML_DIR:=$(BUILD_DIR)/ezxml
 
 $(DL_DIR)/$(EZXML_SOURCE):
-	$(WGET) -P $(DL_DIR) $(EZXML_SITE)/$(EZXML_SOURCE)
+	$(call DOWNLOAD,$(EZXML_SITE),$(EZXML_SOURCE))
 
 $(EZXML_DIR)/.unpacked: $(DL_DIR)/$(EZXML_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(EZXML_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

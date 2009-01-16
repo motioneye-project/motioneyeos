@@ -40,7 +40,7 @@ SOCAT_CONFIGURE_OPTS += sc_cv_sys_csize_shift=$(CSIZE_SHIFT)
 endif
 
 $(DL_DIR)/$(SOCAT_SOURCE):
-	$(WGET) -P $(DL_DIR) $(SOCAT_SITE)/$(SOCAT_SOURCE)
+	$(call DOWNLOAD,$(SOCAT_SITE),$(SOCAT_SOURCE))
 
 $(SOCAT_DIR)/.unpacked: $(DL_DIR)/$(SOCAT_SOURCE)
 	$(SOCAT_CAT) $(DL_DIR)/$(SOCAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -

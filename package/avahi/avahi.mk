@@ -43,7 +43,7 @@ AVAHI_DISABLE_DBUS:=--disable-dbus
 endif
 
 $(DL_DIR)/$(AVAHI_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(AVAHI_SITE)/$(AVAHI_SOURCE)
+	 $(call DOWNLOAD,$(AVAHI_SITE),$(AVAHI_SOURCE))
 
 avahi-source: $(DL_DIR)/$(AVAHI_SOURCE)
 

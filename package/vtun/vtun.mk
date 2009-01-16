@@ -16,7 +16,7 @@ VTUN_BINARY:=vtund
 VTUN_TARGET_BINARY:=usr/sbin/vtund
 
 $(DL_DIR)/$(VTUN_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(VTUN_SITE)/$(VTUN_SOURCE)
+	 $(call DOWNLOAD,$(VTUN_SITE),$(VTUN_SOURCE))
 
 vtun-source: $(DL_DIR)/$(VTUN_SOURCE)
 
