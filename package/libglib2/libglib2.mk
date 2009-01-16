@@ -3,9 +3,12 @@
 # libglib2
 #
 #############################################################
-LIBGLIB2_VERSION = 2.16.6
+LIBGLIB2_VERSION_MAJOR = 2.16
+LIBGLIB2_VERSION_MINOR = 6
+LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).$(LIBGLIB2_VERSION_MINOR)
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.bz2
-LIBGLIB2_SITE = http://ftp.gtk.org/pub/glib/2.16
+LIBGLIB2_SITE = http://ftp.gtk.org/pub/glib/$(LIBGLIB2_VERSION_MAJOR)
+
 LIBGLIB2_AUTORECONF = NO
 LIBGLIB2_INSTALL_STAGING = YES
 LIBGLIB2_INSTALL_TARGET = YES
@@ -52,6 +55,11 @@ LIBGLIB2_CONF_OPT = --enable-shared \
 LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
+LIBGLIB2_DEPENDENCIES+=libiconv
+endif
+
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+LIBGLIB2_CONF_OPT += --with-libiconv=gnu
 LIBGLIB2_DEPENDENCIES+=libiconv
 endif
 
