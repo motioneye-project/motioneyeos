@@ -28,7 +28,6 @@ DM_PATCH=28
 DM_VERSION=$(DM_BASEVER).$(DM_PATCH)
 DM_SOURCE:=device-mapper.$(DM_VERSION).tgz
 DM_SITE:=ftp://sources.redhat.com/pub/dm
-DM_SITE_OLD:=ftp://sources.redhat.com/pub/dm/old
 DM_CAT:=$(ZCAT)
 DM_DIR:=$(BUILD_DIR)/device-mapper.$(DM_VERSION)
 DM_STAGING_BINARY:=$(STAGING_DIR)/usr/sbin/dmsetup
@@ -38,8 +37,7 @@ DM_TARGET_LIBRARY:=$(TARGET_DIR)/usr/lib/libdevmapper.so
 DM_TARGET_HEADER:=$(TARGET_DIR)/usr/include/libdevmapper.h
 
 $(DL_DIR)/$(DM_SOURCE):
-	$(call DOWNLOAD,$(DM_SITE),$(DM_SOURCE) || \)
-		$(call DOWNLOAD,$(DM_SITE_OLD),$(DM_SOURCE))
+	$(call DOWNLOAD,$(DM_SITE),$(DM_SOURCE))
 
 dm-source: $(DL_DIR)/$(DM_SOURCE)
 
