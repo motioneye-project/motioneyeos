@@ -1,0 +1,20 @@
+--- a/alsactl/init_parse.c	2009-01-15 10:44:48.000000000 +0000
++++ b/alsactl/init_parse.c	2009-01-15 10:46:41.000000000 +0000
+@@ -381,7 +381,7 @@ static int set_ctl_value(struct space *s
+ 				snd_ctl_elem_value_set_integer(space->ctl_value, idx, val);
+ 			} else if (items > 2 && value[items-2] == 'd' && value[items-1] == 'B') {
+ 				val = strtol(value, NULL, 0) * 100;
+-				if ((pos2 = index(value, '.')) != NULL) {
++				if ((pos2 = strchr(value, '.')) != NULL) {
+ 					if (isdigit(*(pos2-1)) && isdigit(*(pos2-2))) {
+ 						if (val < 0)
+ 							val -= strtol(pos2 + 1, NULL, 0);
+@@ -1253,7 +1253,7 @@ static char *new_root_dir(const char *fi
+ 
+ 	res = strdup(filename);
+ 	if (res) {
+-		tmp = rindex(res, '/');
++		tmp = strrchr(res, '/');
+ 		if (tmp)
+ 			*tmp = '\0';
+ 	}
