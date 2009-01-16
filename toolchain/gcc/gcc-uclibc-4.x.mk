@@ -529,5 +529,10 @@ gcc_target-clean:
 gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
+gcc-status:
+	@echo GCC_OFFICIAL_VERSION=$(GCC_OFFICIAL_VERSION)
+	@echo GCC_PATCH_DIR=$(GCC_PATCH_DIR)
+	@echo GCC_SITE=$(GCC_SITE)
+
 endif
 # gcc-4.x only

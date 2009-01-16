@@ -32,9 +32,8 @@ choice
 		bool "gcc 4.2.1"
 
 	config BR2_GCC_VERSION_4_2_2
-		depends on BR2_avr32
 		depends on BR2_EXT_GCC_VERSION_4_2_2
-		depends on BR2_DEPRECATED
+		depends on BR2_DEPRECATED || BR2_avr32
 		bool "gcc 4.2.2"
 
 	config BR2_GCC_VERSION_4_2_3

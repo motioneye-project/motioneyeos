@@ -1,9 +1,9 @@
 #
 # Automatically generated make config: don't edit
-# Sat Jan 10 02:15:06 2009
+# Fri Jan 16 23:00:00 2009
 #
 BR2_HAVE_DOT_CONFIG=y
-BR2_VERSION="0.10.0-svn"
+BR2_VERSION="2009.02-svn"
 # BR2_alpha is not set
 # BR2_arm is not set
 # BR2_armeb is not set
@@ -16,7 +16,6 @@ BR2_avr32=y
 # BR2_mipsel is not set
 # BR2_nios2 is not set
 # BR2_powerpc is not set
-# BR2_s390 is not set
 # BR2_sh is not set
 # BR2_sh64 is not set
 # BR2_sparc is not set
@@ -85,7 +84,6 @@ BR2_BOARD_PATH="target/device/Atmel/$(BR2_BOARD_NAME)"
 #
 # Build options
 #
-BR2_PRIMARY_SITE=""
 BR2_WGET="wget --passive-ftp --retry-connrefused --waitretry=10"
 BR2_SVN_CO="svn co"
 BR2_SVN_UP="svn up"
@@ -98,6 +96,8 @@ BR2_DL_DIR="$(BASE_DIR)/dl"
 #
 # Mirrors and Download locations
 #
+BR2_PRIMARY_SITE=""
+BR2_BACKUP_SITE="http://buildroot.uclibc.org/downloads/sources/"
 BR2_SOURCEFORGE_MIRROR="easynews"
 BR2_KERNEL_MIRROR="http://www.kernel.org/pub/"
 BR2_GNU_MIRROR="http://ftp.gnu.org/pub/gnu"
@@ -165,7 +165,7 @@ BR2_EXT_GCC_VERSION_4_2_2=y
 # BR2_EXT_BINUTILS_VERSION_2_17 is not set
 BR2_EXT_BINUTILS_VERSION_2_18=y
 # BR2_EXT_UCLIBC_VERSION_0_9_28_3 is not set
-BR2_EXT_UCLIBC_VERSION_0_9_29=y
+# BR2_EXT_UCLIBC_VERSION_0_9_29 is not set
 BR2_EXT_UCLIBC_VERSION_0_9_30=y
 
 #
@@ -186,7 +186,7 @@ BR2_EXT_UCLIBC_VERSION_0_9_30=y
 BR2_KERNEL_HEADERS_2_6_27=y
 # BR2_KERNEL_HEADERS_2_6_28 is not set
 # BR2_KERNEL_HEADERS_SNAP is not set
-BR2_DEFAULT_KERNEL_HEADERS="2.6.27.10"
+BR2_DEFAULT_KERNEL_HEADERS="2.6.27.11"
 
 #
 # uClibc Options
@@ -352,6 +352,7 @@ BR2_PACKAGE_LIBDAEMON=y
 # BR2_PACKAGE_LIBGCRYPT is not set
 # BR2_PACKAGE_LIBGPG_ERROR is not set
 BR2_PACKAGE_LIBICONV=y
+# BR2_PACKAGE_LIBIDN is not set
 # BR2_PACKAGE_LIBLOCKFILE is not set
 # BR2_PACKAGE_LIBOIL is not set
 # BR2_PACKAGE_LIBSYSFS is not set
@@ -398,7 +399,6 @@ BR2_PACKAGE_HASERL=y
 BR2_PACKAGE_HASERL_VERSION_0_9_X=y
 BR2_PACKAGE_HASERL_VERSION="0.9.25"
 # BR2_PACKAGE_IFPLUGD is not set
-# BR2_PACKAGE_IRDA_UTILS is not set
 # BR2_PACKAGE_IPERF is not set
 # BR2_PACKAGE_IPROUTE2 is not set
 
@@ -411,6 +411,7 @@ BR2_PACKAGE_IPTABLES=y
 # BR2_PACKAGE_LIBCGI is not set
 # BR2_PACKAGE_LIBCGICC is not set
 # BR2_PACKAGE_LIBCURL is not set
+# BR2_PACKAGE_LIBDNET is not set
 # BR2_PACKAGE_LIBEXOSIP2 is not set
 # BR2_PACKAGE_LIBOSIP2 is not set
 # BR2_PACKAGE_LIBPCAP is not set
@@ -602,6 +603,7 @@ BR2_PACKAGE_MTD_MTD_DEBUG=y
 # BR2_PACKAGE_LIBART is not set
 # BR2_PACKAGE_LIBPNG is not set
 # BR2_PACKAGE_LIBUNGIF is not set
+BR2_PACKAGE_LINUX_FUSION=y
 # BR2_PACKAGE_PIXMAN is not set
 # BR2_PACKAGE_SDL is not set
 # BR2_PACKAGE_TIFF is not set
@@ -728,6 +730,7 @@ BR2_PACKAGE_ZLIB=y
 BR2_TARGET_ROOTFS_JFFS2=y
 # BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_1056 is not set
 # BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_528 is not set
+# BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_2K_128K is not set
 BR2_TARGET_ROOTFS_JFFS2_FLASH_128=y
 # BR2_TARGET_ROOTFS_JFFS2_FLASH_64 is not set
 # BR2_TARGET_ROOTFS_JFFS2_CUSTOM is not set
