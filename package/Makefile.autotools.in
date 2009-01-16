@@ -134,7 +134,7 @@ TERM_RESET := $(shell tput rmso)
 
 # support make source-check/external-deps
 ifneq ($(SPIDER),)
-DOWNLOAD:=$(WGET) -P $(DL_DIR) $(1)/$(2)
+DOWNLOAD=$(WGET) -P $(DL_DIR) $(1)/$(2)
 else
 define DOWNLOAD
 	$(Q)test -e $(DL_DIR)/$(2) || \
