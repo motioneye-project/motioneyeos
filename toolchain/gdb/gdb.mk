@@ -41,7 +41,7 @@ endif
 endif
 
 $(DL_DIR)/$(GDB_SOURCE):
-	$(WGET) -P $(DL_DIR) $(GDB_SITE)/$(GDB_SOURCE)
+	$(call DOWNLOAD,$(GDB_SITE),$(GDB_SOURCE))
 
 gdb-unpacked: $(GDB_DIR)/.unpacked
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)

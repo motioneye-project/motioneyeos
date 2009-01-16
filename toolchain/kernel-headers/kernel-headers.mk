@@ -31,7 +31,7 @@ include toolchain/kernel-headers/kernel-headers-new.makefile
 include toolchain/kernel-headers/kernel-headers-old.makefile
 
 $(DL_DIR)/$(LINUX_HEADERS_SOURCE):
-	$(WGET) -P $(DL_DIR) $(LINUX_HEADERS_SITE)/$(LINUX_HEADERS_SOURCE)
+	$(call DOWNLOAD,$(LINUX_HEADERS_SITE),$(LINUX_HEADERS_SOURCE))
 
 kernel-headers: $(LINUX_HEADERS_DIR)/.configured
 

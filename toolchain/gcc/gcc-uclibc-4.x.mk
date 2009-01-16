@@ -149,7 +149,7 @@ HOST_SOURCE+=gcc-source
 
 $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)
-	$(WGET) -P $(DL_DIR) $(GCC_SITE)/$(GCC_SOURCE)
+	$(call DOWNLOAD,$(GCC_SITE),$(GCC_SOURCE))
 
 gcc-unpacked: $(GCC_DIR)/.patched
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
