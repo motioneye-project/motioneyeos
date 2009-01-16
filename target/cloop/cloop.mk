@@ -11,10 +11,10 @@ CLOOP_SITE=http://debian-knoppix.alioth.debian.org/sources/
 CLOOP_TARGET:=$(IMAGE).cloop
 ### Note: not used yet! ck
 ### $(DL_DIR)/$(CLOOP_PATCH1):
-### $(WGET) -P $(DL_DIR) $(CLOOP_PATCH1_URL)/$(CLOOP_PATCH1)
+### $(call DOWNLOAD,$(CLOOP_PATCH1_URL),$(CLOOP_PATCH1))
 
 $(DL_DIR)/$(CLOOP_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(CLOOP_SITE)/$(CLOOP_SOURCE)
+	 $(call DOWNLOAD,$(CLOOP_SITE),$(CLOOP_SOURCE))
 
 $(CLOOP_DIR)/.unpacked: $(DL_DIR)/$(CLOOP_SOURCE) ### $(DL_DIR)/$(CLOOP_PATCH1)
 	$(ZCAT) $(DL_DIR)/$(CLOOP_SOURCE) | tar -C $(BUILD_DIR) -xvf -

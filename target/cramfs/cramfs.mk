@@ -14,7 +14,7 @@ CRAMFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/cram
 endif
 
 $(DL_DIR)/$(CRAMFS_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(CRAMFS_SITE)/$(CRAMFS_SOURCE)
+	 $(call DOWNLOAD,$(CRAMFS_SITE),$(CRAMFS_SOURCE))
 
 $(CRAMFS_DIR): $(DL_DIR)/$(CRAMFS_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(CRAMFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -

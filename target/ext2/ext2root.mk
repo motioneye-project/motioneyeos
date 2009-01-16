@@ -9,7 +9,7 @@ GENEXT2_SOURCE=genext2fs-$(GENEXT2_VERSION).tar.gz
 GENEXT2_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/genext2fs
 
 $(DL_DIR)/$(GENEXT2_SOURCE):
-	$(WGET) -P $(DL_DIR) $(GENEXT2_SITE)/$(GENEXT2_SOURCE)
+	$(call DOWNLOAD,$(GENEXT2_SITE),$(GENEXT2_SOURCE))
 
 $(GENEXT2_DIR)/.unpacked: $(DL_DIR)/$(GENEXT2_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(GENEXT2_SOURCE) | tar -C $(BUILD_DIR) -xvf -

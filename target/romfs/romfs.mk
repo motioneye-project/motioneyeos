@@ -9,7 +9,7 @@ ROMFS_SOURCE=genromfs-$(ROMFS_VERSION).tar.gz
 ROMFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/romfs
 
 $(DL_DIR)/$(ROMFS_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(ROMFS_SITE)/$(ROMFS_SOURCE)
+	 $(call DOWNLOAD,$(ROMFS_SITE),$(ROMFS_SOURCE))
 
 $(ROMFS_DIR): $(DL_DIR)/$(ROMFS_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(ROMFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -

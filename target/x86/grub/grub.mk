@@ -62,10 +62,10 @@ GRUB_CONFIG-$(BR2_TARGET_GRUB_via_rhine) += --enable-via-rhine
 GRUB_CONFIG-$(BR2_TARGET_GRUB_w89c840) += --enable-w89c840
 
 $(DL_DIR)/$(GRUB_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(GRUB_SITE)/$(GRUB_SOURCE)
+	 $(call DOWNLOAD,$(GRUB_SITE),$(GRUB_SOURCE))
 
 $(DL_DIR)/$(GRUB_PATCH):
-	 $(WGET) -P $(DL_DIR) $(GRUB_PATCH_SITE)/$(GRUB_PATCH)
+	 $(call DOWNLOAD,$(GRUB_PATCH_SITE),$(GRUB_PATCH))
 
 grub-source: $(DL_DIR)/$(GRUB_SOURCE) $(DL_DIR)/$(GRUB_PATCH)
 

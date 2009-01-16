@@ -11,7 +11,7 @@ YABOOT_SITE:=http://penguinppc.org/bootloaders/yaboot
 YABOOT_DIR:=$(BUILD_DIR)/yaboot-1.3.13
 
 $(DL_DIR)/$(YABOOT_SOURCE):
-	 $(WGET) -P $(DL_DIR) $(YABOOT_SITE)/$(YABOOT_SOURCE)
+	 $(call DOWNLOAD,$(YABOOT_SITE),$(YABOOT_SOURCE))
 
 yaboot-source: $(DL_DIR)/$(YABOOT_SOURCE)
 
