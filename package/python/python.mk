@@ -167,25 +167,41 @@ ifneq ($(BR2_PACKAGE_PYTHON_TKINTER),y)
 	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/lib-tk
 endif
 
-$(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so: $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
-		cp -dpr $(PYTHON_DIR)/libpython*.so.* $(STAGING_DIR)/usr/lib
-		(\
-		cd $(STAGING_DIR)/usr/lib ; \
-		rm -f libpython$(PYTHON_VERSION_MAJOR).so ; \
-		ln -s `basename  \`ls libpython*.so.*\`` libpython$(PYTHON_VERSION_MAJOR).so \
-		)
-
-libpython:	$(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so
-
-python: uclibc $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY) libpython
+python: uclibc $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 
 python-clean:
 	-$(MAKE) -C $(PYTHON_DIR) distclean
 	rm -f $(PYTHON_DIR)/.configured $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 	-rm -rf $(TARGET_DIR)/usr/lib/python* $(TARGET_DIR)/usr/include/python*
+	-rm -f $(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so
 
 python-dirclean:
 	rm -rf $(PYTHON_DIR)
+
+####  LIBPYTHON
+
+
+LIBPYTHON_BINARY:=libpython$(PYTHON_VERSION_MAJOR).so
+
+libpython:	python $(TARGET_DIR)/usr/lib/$(LIBPYTHON_BINARY)
+
+
+$(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so: $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+		cp -dpr $(PYTHON_DIR)/$(LIBPYTHON_BINARY).* $(STAGING_DIR)/usr/lib
+		(\
+		cd $(STAGING_DIR)/usr/lib ; \
+		rm -f $(LIBPYTHON_BINARY) ; \
+		ln -s `basename  \`ls libpython*.so.*\`` $(LIBPYTHON_BINARY) \
+		)
+
+$(TARGET_DIR)/usr/lib/$(LIBPYTHON_BINARY): $(STAGING_DIR)/usr/lib/$(LIBPYTHON_BINARY)
+		cp -dpr $(STAGING_DIR)/usr/lib/$(LIBPYTHON_BINARY).* $(TARGET_DIR)/usr/lib
+		(\
+		cd $(TARGET_DIR)/usr/lib ; \
+		rm -f $(LIBPYTHON_BINARY) ; \
+		ln -s `basename  \`ls libpython*.so.*\`` $(LIBPYTHON_BINARY) \
+		)
+
 #############################################################
 #
 # Toplevel Makefile options
