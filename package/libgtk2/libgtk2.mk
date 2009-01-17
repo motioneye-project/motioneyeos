@@ -75,6 +75,7 @@ LIBGTK2_CONF_OPT = --enable-shared \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
 		--disable-debug \
+		--without-html-dir \
 		$(DISABLE_LARGEFILE) \
 		$(LIBGTK2_CONF_OPT_X)  \
 		$(LIBGTK2_CONF_OPT_DFB)

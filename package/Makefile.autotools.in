@@ -248,6 +248,7 @@ $(BUILD_DIR)/%/.stamp_configured:
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--sysconfdir=/etc \
+		$(DISABLE_DOCUMENTATION) \
 		$(QUIET) $($(PKG)_CONF_OPT)
 	$(Q)touch $@
 
