@@ -22,9 +22,7 @@ GST_PLUGINS_GOOD_CONF_OPT = \
 		--disable-aalibtest \
 		--disable-esdtest \
 		--disable-shout2 \
-		--disable-shout2test \
-		--disable-gtk-doc \
-		--without-html-dir
+		--disable-shout2test
 
 GST_PLUGINS_GOOD_DEPENDENCIES = gstreamer gst-plugins-base
 

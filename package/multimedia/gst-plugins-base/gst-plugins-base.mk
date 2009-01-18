@@ -17,9 +17,7 @@ GST_PLUGINS_BASE_CONF_OPT = \
 		--disable-xshm \
 		--disable-oggtest \
 		--disable-vorbistest \
-		--disable-freetypetest \
-		--disable-gtk-doc \
-		--without-html-dir
+		--disable-freetypetest
 
 GST_PLUGINS_BASE_DEPENDENCIES = gstreamer liboil
 
