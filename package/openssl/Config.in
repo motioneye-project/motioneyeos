@@ -12,7 +12,6 @@ config BR2_PACKAGE_OPENSSL
 config BR2_PACKAGE_OPENSSL_BIN
 	bool "openssl binary"
 	depends on BR2_PACKAGE_OPENSSL
-	default no
 	help
 	  Install the openssl binary to the target file system. This is a
 	  command line tool for doing various crypthographic stuff.
@@ -20,6 +19,5 @@ config BR2_PACKAGE_OPENSSL_BIN
 config BR2_PACKAGE_OPENSSL_ENGINES
 	bool "openssl additional engines"
 	depends on BR2_PACKAGE_OPENSSL
-	default no
 	help
 	  Install additional encryption engine libraries.

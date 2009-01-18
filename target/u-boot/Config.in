@@ -360,5 +360,3 @@ config	BR2_BOOTSOURCE
 	default y if BR2_BOOTSOURCE_FLASH
 	default y if BR2_BOOTSOURCE_SDCARD
 	default y if BR2_BOOTSOURCE_EEPROM
-	default n
-

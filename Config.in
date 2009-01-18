@@ -182,7 +182,6 @@ config BR2_RECENT
 
 config BR2_CONFIG_CACHE
 	bool "Use a central configure cache file"
-	default n
 	help
 	  This determines if a central config cache is used by
 	  packages, reducing the configure time for packages as each
