@@ -20,8 +20,7 @@ RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 	--with-libbeecrypt=$(STAGING_DIR) \
 	--with-popt=$(STAGING_DIR) \
 	--with-mutex=UNIX/fcntl \
-	--with-bzip2 \
-	$(DISABLE_NLS)
+	--with-bzip2
 
 RPM_MAKE_OPT = -j1
 

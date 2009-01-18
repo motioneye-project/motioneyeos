@@ -19,8 +19,6 @@ GSTREAMER_CONF_ENV = as_cv_unaligned_access=no
 endif
 
 GSTREAMER_CONF_OPT = \
-		$(DISABLE_NLS) \
-		$(DISABLE_LARGEFILE) \
 		--disable-examples \
 		--disable-tests \
 		--disable-failing-tests

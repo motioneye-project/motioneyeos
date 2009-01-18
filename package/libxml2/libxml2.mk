@@ -16,7 +16,7 @@ endif
 LIBXML2_CONF_OPT = --with-gnu-ld --enable-shared \
 		--enable-static $(DISABLE_IPV6) \
 		--without-debugging --without-python \
-		--without-threads $(DISABLE_NLS)
+		--without-threads 
 
 LIBXML2_DEPENDENCIES = uclibc
 
