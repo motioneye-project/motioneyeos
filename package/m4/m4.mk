@@ -15,7 +15,7 @@ M4_TARGET_BINARY:=usr/bin/m4
 ifeq ($(UCLIBC_HAS_REGEX),y)
 gl_cv_func_re_compile_pattern_working=gl_cv_func_re_compile_pattern_working=yes
 endif
-ifneq ($(UCLIBC_HAS_WCHAR),y)
+ifneq ($(BR2_USE_WCHAR),y)
 gt_cv_c_wchar_t=gt_cv_c_wchar_t=no
 gl_cv_absolute_wchar_h=gl_cv_absolute_wchar_h=__fpending.h
 endif
