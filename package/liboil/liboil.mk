@@ -6,7 +6,7 @@
 LIBOIL_VERSION = 0.3.15
 LIBOIL_SOURCE = liboil-$(LIBOIL_VERSION).tar.gz
 LIBOIL_SITE = http://liboil.freedesktop.org/download
-LIBOIL_AUTORECONF = NO
+LIBOIL_AUTORECONF = YES
 LIBOIL_INSTALL_STAGING = YES
 LIBOIL_INSTALL_TARGET = YES
 
@@ -28,6 +28,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
 LIBOIL_GLIB_DEP = libglib2
+endif
+
+ifeq ($(BR2_VFP_FLOAT),y)
+LIBOIL_CONF_OPT+=--enable-vfp
 endif
 
 LIBOIL_DEPENDENCIES = uclibc $(LIBOIL_GLIB_DEP)
