@@ -1,0 +1,5 @@
+ifneq ($(BR2_TARGET_U_BOOT_ARCH_AT91_PATCH_DIR),)
+U_BOOT_ARCH_PATCH_DIR:=$(strip $(subst ",, $(BR2_TARGET_U_BOOT_ARCH_AT91_PATCH_DIR)))
+#"))
+endif
+

@@ -17,8 +17,11 @@ choice
 	help
 	  Select the specific U-Boot version you want to use
 
-config BR2_TARGET_UBOOT_2009_01_RC1
-	bool "u-boot-2009.01-rc1"
+#config BR2_TARGET_UBOOT_2009_01
+#	bool "u-boot-2009.01"
+
+config BR2_TARGET_UBOOT_2009_01_RC3
+	bool "u-boot-2009.01-rc3"
 
 config BR2_TARGET_UBOOT_2008_10
 	bool "u-boot-2008.10"
@@ -31,23 +34,22 @@ config BR2_TARGET_UBOOT_1_2_0_ATMEL
 	bool "u-boot-1.2.0-atmel"
 	depends on BR2_TARGET_AT91
 
-#config BR2_TARGET_UBOOT_2009_01
-#	bool "u-boot-2009.01"
-
 endchoice
 
 config BR2_UBOOT_VERSION
 	string
-	default "2009.01-rc1"	if BR2_TARGET_UBOOT_2009_01_RC1
+	default "2009.01"	if BR2_TARGET_UBOOT_2009_01
+	default "2009.01-rc3"	if BR2_TARGET_UBOOT_2009_01_RC3
 	default "2008.10"	if BR2_TARGET_UBOOT_2008_10
 	default "1.3.4"		if BR2_TARGET_UBOOT_1_3_4
 	default "1.2.0-atmel"	if BR2_TARGET_UBOOT_1_2_0_ATMEL
-	default "2009.01"	if BR2_TARGET_UBOOT_2009_01
 
 config BR2_U_BOOT_SITE
 	string
 	default "$(BR2_ATMEL_MIRROR)"		if BR2_TARGET_UBOOT_1_2_0_ATMEL
 	default "ftp://ftp.denx.de/pub/u-boot"
+
+source "target/device/Config.in.u-boot"
 
 config BR2_TARGET_UBOOT_CUSTOM_PATCH
 	string "custom patch"
