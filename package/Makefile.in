@@ -185,6 +185,10 @@ INSTALL=/usr/bin/install
 FLEX:=$(shell which flex || type -p flex)
 BISON:=$(shell which bison || type -p bison)
 
+# hostcc version as an integer - E.G. 4.3.2 => 432
+HOSTCC_VERSION:=$(shell $(HOSTCC) --version | \
+	sed -n 's/^.* \([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)[ ]*.*$$/\1\2\3/p')
+
 HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/sparc.*/sparc/' \
 	-e 's/arm.*/arm/g' \

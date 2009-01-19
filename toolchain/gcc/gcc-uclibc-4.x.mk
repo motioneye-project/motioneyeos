@@ -145,6 +145,13 @@ ifeq ($(BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE),y)
 GCC_DECIMAL_FLOAT:=--disable-decimal-float
 endif
 
+# gcc version < 4.2.0 don't have -Wno-overlength-strings and the configure
+# script has problems detecting it, so help it
+ifeq ($(shell test $(HOSTCC_VERSION) -lt 420 && echo OLD),OLD)
+GCC_CONF_ENV:=acx_cv_prog_cc_pedantic__Wno_long_long__Wno_variadic_macros_____________Wno_overlength_strings=no \
+	acx_cv_prog_cc_warning__Wno_overlength_strings=no
+endif
+
 HOST_SOURCE+=gcc-source
 
 $(DL_DIR)/$(GCC_SOURCE):
@@ -227,7 +234,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 $(GCC_BUILD_DIR1)/.compiled: $(GCC_BUILD_DIR1)/.configured
 	# gcc >= 4.3.0 have to also build all-target-libgcc
 ifeq ($(BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE),y)
-	$(MAKE) -C $(GCC_BUILD_DIR1) all-gcc all-target-libgcc
+	$(GCC_CONF_ENV) $(MAKE) -C $(GCC_BUILD_DIR1) all-gcc all-target-libgcc
 else
 	$(MAKE) -C $(GCC_BUILD_DIR1) all-gcc
 endif
@@ -301,7 +308,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 	touch $@
 
 $(GCC_BUILD_DIR2)/.compiled: $(GCC_BUILD_DIR2)/.configured
-	$(MAKE) -C $(GCC_BUILD_DIR2) all
+	$(GCC_CONF_ENV) $(MAKE) -C $(GCC_BUILD_DIR2) all
 	touch $@
 
 $(GCC_BUILD_DIR2)/.installed: $(GCC_BUILD_DIR2)/.compiled
