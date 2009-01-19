@@ -71,8 +71,7 @@ LINUX26_PATCH_SITE:=$(strip $(subst ",,$(BR2_KERNEL_PATCH_SITE)))
 LINUX26_BSP_PATCH:=$(strip $(subst ",,$(BR2_LINUX_BSP_PATCH)))
 #"))
 
-LINUX26_PATCH_SITE:=$(strip $(subst ",,$(BR2_KERNEL_SITE)))
-#"))
+LINUX_HEADERS_DEPENDS:= $(DL_DIR)/$(LINUX26_PATCH_SOURCE) $(LINUX26_BSP_PATCH)
 
 # ------------------------------------
 # kernel patches provided by buildroot
