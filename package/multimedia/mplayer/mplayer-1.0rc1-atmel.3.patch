@@ -33,8 +33,6 @@
  create mode 100644 libswscale/pico-avr32.h
  create mode 100644 libswscale/yuv2rgb_avr32.c
 
-diff --git a/cfg-common.h b/cfg-common.h
-index 780df38..7d878a8 100644
 --- a/cfg-common.h
 +++ b/cfg-common.h
 @@ -235,6 +235,10 @@
@@ -48,8 +46,6 @@ index 780df38..7d878a8 100644
  	// draw by slices or whole frame (useful with libmpeg2/libavcodec)
  	{"slices", &vd_use_slices, CONF_TYPE_FLAG, 0, 0, 1, NULL},
  	{"noslices", &vd_use_slices, CONF_TYPE_FLAG, 0, 1, 0, NULL},
-diff --git a/cfg-mencoder.h b/cfg-mencoder.h
-index 411b748..addf791 100644
 --- a/cfg-mencoder.h
 +++ b/cfg-mencoder.h
 @@ -5,6 +5,10 @@
@@ -63,8 +59,6 @@ index 411b748..addf791 100644
  #ifdef USE_FAKE_MONO
  extern int fakemono; // defined in dec_audio.c
  #endif
-diff --git a/cfg-mplayer.h b/cfg-mplayer.h
-index 62b6eac..31499c2 100644
 --- a/cfg-mplayer.h
 +++ b/cfg-mplayer.h
 @@ -4,6 +4,10 @@
@@ -78,8 +72,6 @@ index 62b6eac..31499c2 100644
  extern int noconsolecontrols;
  
  #if defined(HAVE_FBDEV)||defined(HAVE_VESA)
-diff --git a/configure b/configure
-index 29002c8..56c6fe4 100755
 --- a/configure
 +++ b/configure
 @@ -1203,6 +1203,15 @@ EOF
@@ -116,8 +108,6 @@ index 29002c8..56c6fe4 100755
      if test -f "$I/X11/Xlib.h" ; then
        _inc_x11="-I$I"
        _x11_headers="yes"
-diff --git a/libaf/af_format.c b/libaf/af_format.c
-index e5b7cc9..5d7ea6d 100644
 --- a/libaf/af_format.c
 +++ b/libaf/af_format.c
 @@ -20,7 +20,14 @@
@@ -135,11 +125,9 @@ index e5b7cc9..5d7ea6d 100644
  #else
  #define lrintf(x) ((int)(x))
  #endif
-diff --git a/libavcodec/Makefile b/libavcodec/Makefile
-index 17b6c45..8e1dc96 100644
 --- a/libavcodec/Makefile
 +++ b/libavcodec/Makefile
-@@ -360,6 +360,12 @@ OBJS-$(TARGET_ARCH_SPARC)              += sparc/dsputil_vis.o \
+@@ -360,6 +360,12 @@ OBJS-$(TARGET_ARCH_SPARC)              +
  
  sparc/dsputil_vis.o: CFLAGS += -mcpu=ultrasparc -mtune=ultrasparc
  
@@ -160,9 +148,6 @@ index 17b6c45..8e1dc96 100644
  	   armv4l/*.o armv4l/*~ \
  	   mlib/*.o mlib/*~ \
  	   alpha/*.o alpha/*~ \
-diff --git a/libavcodec/avr32/dsputil_avr32.c b/libavcodec/avr32/dsputil_avr32.c
-new file mode 100644
-index 0000000..200284d
 --- /dev/null
 +++ b/libavcodec/avr32/dsputil_avr32.c
 @@ -0,0 +1,2678 @@
@@ -2844,9 +2829,6 @@ index 0000000..200284d
 +}
 +#endif
 +
-diff --git a/libavcodec/avr32/fdct.S b/libavcodec/avr32/fdct.S
-new file mode 100644
-index 0000000..be45b86
 --- /dev/null
 +++ b/libavcodec/avr32/fdct.S
 @@ -0,0 +1,541 @@
@@ -3391,9 +3373,6 @@ index 0000000..be45b86
 +
 +
 +
-diff --git a/libavcodec/avr32/h264idct.S b/libavcodec/avr32/h264idct.S
-new file mode 100644
-index 0000000..4b23e2d
 --- /dev/null
 +++ b/libavcodec/avr32/h264idct.S
 @@ -0,0 +1,451 @@
@@ -3848,9 +3827,6 @@ index 0000000..4b23e2d
 +		
 +//    }
 +//}
-diff --git a/libavcodec/avr32/idct.S b/libavcodec/avr32/idct.S
-new file mode 100644
-index 0000000..e7551ec
 --- /dev/null
 +++ b/libavcodec/avr32/idct.S
 @@ -0,0 +1,829 @@
@@ -4683,9 +4659,6 @@ index 0000000..e7551ec
 +	.short	- FIX_1_961570560, - FIX_0_390180644, FIX_0_298631336, FIX_2_053119869
 +	.short	FIX_3_072711026, FIX_1_501321110, - FIX_0_899976223, - FIX_2_562915447
 +	
-diff --git a/libavcodec/avr32/mc.S b/libavcodec/avr32/mc.S
-new file mode 100644
-index 0000000..07a002d
 --- /dev/null
 +++ b/libavcodec/avr32/mc.S
 @@ -0,0 +1,434 @@
@@ -5123,9 +5096,6 @@ index 0000000..07a002d
 +avg_pixels8_avr32:
 +avg_no_rnd_pixels8_avr32:
 +	pixels8	0	
-diff --git a/libavcodec/avr32/pico.h b/libavcodec/avr32/pico.h
-new file mode 100644
-index 0000000..32201ba
 --- /dev/null
 +++ b/libavcodec/avr32/pico.h
 @@ -0,0 +1,260 @@
@@ -5389,8 +5359,6 @@ index 0000000..32201ba
 +
 +#endif
 +
-diff --git a/libavcodec/bitstream.h b/libavcodec/bitstream.h
-index 26b4f8d..1f8fabf 100644
 --- a/libavcodec/bitstream.h
 +++ b/libavcodec/bitstream.h
 @@ -171,7 +171,7 @@ typedef struct RL_VLC_ELEM {
@@ -5513,11 +5481,9 @@ index 26b4f8d..1f8fabf 100644
  
  /**
   * parses a vlc code, faster then get_vlc()
-diff --git a/libavcodec/dsputil.c b/libavcodec/dsputil.c
-index 56c42b9..8fc10c6 100644
 --- a/libavcodec/dsputil.c
 +++ b/libavcodec/dsputil.c
-@@ -4197,6 +4197,9 @@ void dsputil_init(DSPContext* c, AVCodecContext *avctx)
+@@ -4197,6 +4197,9 @@ void dsputil_init(DSPContext* c, AVCodec
  #ifdef ARCH_BFIN
      dsputil_init_bfin(c,avctx);
  #endif
@@ -5527,8 +5493,6 @@ index 56c42b9..8fc10c6 100644
  
      for(i=0; i<64; i++){
          if(!c->put_2tap_qpel_pixels_tab[0][i])
-diff --git a/libavcodec/h264.c b/libavcodec/h264.c
-index 865e80a..8f7c3f1 100644
 --- a/libavcodec/h264.c
 +++ b/libavcodec/h264.c
 @@ -3258,7 +3258,12 @@ static void free_tables(H264Context *h){
@@ -5544,7 +5508,7 @@ index 865e80a..8f7c3f1 100644
      h->dequant8_coeff[0] = h->dequant8_buffer[0];
      h->dequant8_coeff[1] = h->dequant8_buffer[1];
  
-@@ -3281,7 +3286,13 @@ static void init_dequant8_coeff_table(H264Context *h){
+@@ -3281,7 +3286,13 @@ static void init_dequant8_coeff_table(H2
  
  static void init_dequant4_coeff_table(H264Context *h){
      int i,j,q,x;
@@ -5558,7 +5522,7 @@ index 865e80a..8f7c3f1 100644
      for(i=0; i<6; i++ ){
          h->dequant4_coeff[i] = h->dequant4_buffer[i];
          for(j=0; j<i; j++){
-@@ -4663,7 +4674,11 @@ static int decode_slice_header(H264Context *h){
+@@ -4663,7 +4674,11 @@ static int decode_slice_header(H264Conte
          if (MPV_common_init(s) < 0)
              return -1;
  
@@ -5570,11 +5534,9 @@ index 865e80a..8f7c3f1 100644
              memcpy(h->zigzag_scan, zigzag_scan, 16*sizeof(uint8_t));
              memcpy(h-> field_scan,  field_scan, 16*sizeof(uint8_t));
          }else{
-diff --git a/libavutil/common.h b/libavutil/common.h
-index 3ae5971..7e52b90 100644
 --- a/libavutil/common.h
 +++ b/libavutil/common.h
-@@ -283,23 +283,39 @@ static inline int mid_pred(int a, int b, int c)
+@@ -283,23 +283,39 @@ static inline int mid_pred(int a, int b,
   * @param amax maximum value of the clip range
   * @return cliped value
   */
@@ -5614,8 +5576,6 @@ index 3ae5971..7e52b90 100644
  
  /* math */
  int64_t ff_gcd(int64_t a, int64_t b);
-diff --git a/libavutil/internal.h b/libavutil/internal.h
-index 285d304..a8b0718 100644
 --- a/libavutil/internal.h
 +++ b/libavutil/internal.h
 @@ -210,6 +210,15 @@ if((y)<(x)){\
@@ -5634,8 +5594,6 @@ index 285d304..a8b0718 100644
  #ifndef HAVE_LRINTF
  /* XXX: add ISOC specific test to avoid specific BSD testing. */
  /* better than nothing implementation. */
-diff --git a/libfaad2/common.h b/libfaad2/common.h
-index f809042..6c5fb21 100644
 --- a/libfaad2/common.h
 +++ b/libfaad2/common.h
 @@ -67,7 +67,7 @@ extern "C" {
@@ -5647,8 +5605,6 @@ index f809042..6c5fb21 100644
  #define FIXED_POINT
  #endif
  
-diff --git a/libmpcodecs/ad_libmad.c b/libmpcodecs/ad_libmad.c
-index 076359a..51b77fe 100644
 --- a/libmpcodecs/ad_libmad.c
 +++ b/libmpcodecs/ad_libmad.c
 @@ -86,6 +86,11 @@ static int init(sh_audio_t *sh){
@@ -5663,9 +5619,6 @@ index 076359a..51b77fe 100644
    sh->samplesize=2;
    
    return 1;
-diff --git a/libswscale/pico-avr32.h b/libswscale/pico-avr32.h
-new file mode 100644
-index 0000000..7ac6200
 --- /dev/null
 +++ b/libswscale/pico-avr32.h
 @@ -0,0 +1,137 @@
@@ -5806,8 +5759,6 @@ index 0000000..7ac6200
 +
 +#endif
 +
-diff --git a/libswscale/swscale_internal.h b/libswscale/swscale_internal.h
-index ecd28f5..3221d0c 100644
 --- a/libswscale/swscale_internal.h
 +++ b/libswscale/swscale_internal.h
 @@ -173,7 +173,7 @@ typedef struct SwsContext{
@@ -5819,8 +5770,6 @@ index ecd28f5..3221d0c 100644
  
  //FIXME replace this with something faster
  #define isPlanarYUV(x) ((x)==PIX_FMT_YUV410P || (x)==PIX_FMT_YUV420P	\
-diff --git a/libswscale/yuv2rgb.c b/libswscale/yuv2rgb.c
-index 71759bc..fa83985 100644
 --- a/libswscale/yuv2rgb.c
 +++ b/libswscale/yuv2rgb.c
 @@ -44,6 +44,10 @@
@@ -5834,7 +5783,7 @@ index 71759bc..fa83985 100644
  #define DITHER1XBPP // only for mmx
  
  const uint8_t  __attribute__((aligned(8))) dither_2x2_4[2][8]={
-@@ -601,6 +605,12 @@ SwsFunc yuv2rgb_get_func_ptr (SwsContext *c)
+@@ -601,6 +605,12 @@ SwsFunc yuv2rgb_get_func_ptr (SwsContext
  	if(t) return t;
      }
  #endif
@@ -5847,7 +5796,7 @@ index 71759bc..fa83985 100644
  #ifdef HAVE_ALTIVEC
      if (c->flags & SWS_CPU_CAPS_ALTIVEC)
      {
-@@ -678,6 +688,10 @@ int yuv2rgb_c_init_tables (SwsContext *c, const int inv_table[4], int fullRange,
+@@ -678,6 +688,10 @@ int yuv2rgb_c_init_tables (SwsContext *c
  //printf("%lld %lld %lld %lld %lld\n", cy, crv, cbu, cgu, cgv);
      oy -= 256*brightness;
  
@@ -5858,9 +5807,6 @@ index 71759bc..fa83985 100644
      for (i = 0; i < 1024; i++) {
  	int j;
  
-diff --git a/libswscale/yuv2rgb_avr32.c b/libswscale/yuv2rgb_avr32.c
-new file mode 100644
-index 0000000..4a8341e
 --- /dev/null
 +++ b/libswscale/yuv2rgb_avr32.c
 @@ -0,0 +1,416 @@
@@ -6280,8 +6226,6 @@ index 0000000..4a8341e
 +
 +
 +#undef RGB
-diff --git a/libvo/vo_fbdev2.c b/libvo/vo_fbdev2.c
-index 053c193..7017770 100644
 --- a/libvo/vo_fbdev2.c
 +++ b/libvo/vo_fbdev2.c
 @@ -22,6 +22,9 @@
@@ -6310,7 +6254,7 @@ index 053c193..7017770 100644
  	fb_bpp = fb_vinfo.bits_per_pixel;
  
  	/* 16 and 15 bpp is reported as 16 bpp */
-@@ -289,6 +301,10 @@ static int config(uint32_t width, uint32_t height, uint32_t d_width,
+@@ -289,6 +301,10 @@ static int config(uint32_t width, uint32
  		mp_msg(MSGT_VO, MSGL_ERR, "[fbdev2] Can't malloc next_frame: %s\n", strerror(errno));
  		return 1;
  	}
@@ -6423,7 +6367,7 @@ index 053c193..7017770 100644
  }
  
  static void uninit(void)
-@@ -403,6 +478,10 @@ static int control(uint32_t request, void *data, ...)
+@@ -403,6 +478,10 @@ static int control(uint32_t request, voi
    switch (request) {
    case VOCTRL_QUERY_FORMAT:
      return query_format(*((uint32_t*)data));
@@ -6434,8 +6378,6 @@ index 053c193..7017770 100644
    }
    return VO_NOTIMPL;
  }
-diff --git a/version.sh b/version.sh
-index 44b5c5d..cf22a68 100755
 --- a/version.sh
 +++ b/version.sh
 @@ -1,2 +1,2 @@

@@ -1,7 +1,6 @@
-diff -urN MPlayer-1.0rc1-0rig/stream/stream_dvb.c MPlayer-1.0rc1/stream/stream_dvb.c
---- MPlayer-1.0rc1-0rig/stream/stream_dvb.c	2006-10-23 00:32:25.000000000 +0200
-+++ MPlayer-1.0rc1/stream/stream_dvb.c	2007-09-25 08:37:54.000000000 +0200
-@@ -37,9 +37,7 @@
+--- a/stream/stream_dvb.c
++++ b/stream/stream_dvb.c
+@@ -37,9 +37,7 @@ Foundation, Inc., 675 Mass Ave, Cambridg
  #include <sys/poll.h>
  #include <unistd.h>
  #include <fcntl.h>
@@ -11,7 +10,7 @@ diff -urN MPlayer-1.0rc1-0rig/stream/stream_dvb.c MPlayer-1.0rc1/stream/stream_d
  
  #include "stream.h"
  #include "libmpdemux/demuxer.h"
-@@ -168,7 +166,7 @@
+@@ -168,7 +166,7 @@ static dvb_channels_list *dvb_get_channe
  		if((line[0] == '#') || (strlen(line) == 0))
  			continue;
  
