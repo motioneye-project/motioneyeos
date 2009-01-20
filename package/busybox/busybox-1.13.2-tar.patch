@@ -1,0 +1,11 @@
+--- busybox-1.13.2/archival/tar.c	Sun Nov  9 18:28:02 2008
++++ busybox-1.13.2-tar/archival/tar.c	Tue Jan 20 03:52:04 2009
+@@ -591,8 +591,6 @@
+ 	struct TarBallInfo tbInfo;
+ 
+ 	tbInfo.hlInfoHead = NULL;
+-
+-	fchmod(tar_fd, 0644);
+ 	tbInfo.tarFd = tar_fd;
+ 	tbInfo.verboseFlag = verboseFlag;
+ 
