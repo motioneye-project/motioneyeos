@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XERCES
-	bool "xerces"
+	bool "xerces-c++"
+	select BR2_PACKAGE_LIBICONV
 	help
 	  Xerces-C++ is a validating XML parser written in portable C++.
 
