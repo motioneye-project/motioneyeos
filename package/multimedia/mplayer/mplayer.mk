@@ -17,6 +17,14 @@ else
 MPLAYER_ENDIAN:=--disable-big-endian
 endif
 
+# mplayer unfortunately uses --disable-largefileS, so we cannot use
+# DISABLE_LARGEFILE
+ifeq ($(BR2_LARGEFILE),y)
+MPLAYER_LARGEFILE:=--enable-largefiles
+else
+MPLAYER_LARGEFILE:=--disable-largefiles
+endif
+
 $(DL_DIR)/$(MPLAYER_SOURCE):
 	$(call DOWNLOAD,$(MPLAYER_SITE),$(MPLAYER_SOURCE))
 
@@ -45,6 +53,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		--enable-mad \
 		--enable-fbdev \
 		$(MPLAYER_ENDIAN) \
+		$(MPLAYER_LARGEFILE) \
 		--enable-cross-compile \
 		--disable-mpdvdkit \
 		--disable-ivtv \

@@ -1,0 +1,18 @@
+mplayer: don't unconditionally force largefile support for libraries
+---
+ common.mak |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: MPlayer-1.0rc1/common.mak
+===================================================================
+--- MPlayer-1.0rc1.orig/common.mak
++++ MPlayer-1.0rc1/common.mak
+@@ -5,7 +5,7 @@
+ SRC_DIR = $(SRC_PATH)/lib$(NAME)
+ VPATH = $(SRC_DIR)
+ 
+-CFLAGS += -DHAVE_AV_CONFIG_H -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE \
++CFLAGS += -DHAVE_AV_CONFIG_H \
+           -D_ISOC9X_SOURCE -I$(BUILD_ROOT) -I$(SRC_PATH) \
+           -I$(SRC_PATH)/libavutil $(OPTFLAGS)
+ SRCS := $(OBJS:.o=.c) $(ASM_OBJS:.o=.S) $(CPPOBJS:.o=.cpp)
