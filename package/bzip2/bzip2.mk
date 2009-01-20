@@ -40,7 +40,7 @@ $(STAGING_DIR)/usr/lib/libbz2.so.$(BZIP2_VERSION): $(BZIP2_DIR)/.unpacked
 	cp $(BZIP2_DIR)/libbz2.so.$(BZIP2_VERSION) $(STAGING_DIR)/usr/lib/
 	cp $(BZIP2_DIR)/libbz2.a $(STAGING_DIR)/usr/lib/
 	(cd $(STAGING_DIR)/usr/lib/; \
-		ln -snf ../../lib/libbz2.so.$(BZIP2_VERSION) libbz2.so; \
+		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so; \
 	)
 	(cd $(STAGING_DIR)/usr/lib; \
 		ln -snf libbz2.so.$(BZIP2_VERSION) libbz2.so.1.0; \
