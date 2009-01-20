@@ -3,7 +3,6 @@ config BR2_PACKAGE_DBUS_GLIB
 	depends on BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_PKGCONFIG
-	select BR2_PACKAGE_EXPAT
 	help
 	  GLib bindings for D-Bus.
 
