@@ -1,0 +1,27 @@
+mplayer: configure: handle target=powerpc-linux as well as ppc-linux
+---
+ configure |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: MPlayer-1.0rc1/configure
+===================================================================
+--- MPlayer-1.0rc1.orig/configure
++++ MPlayer-1.0rc1/configure
+@@ -133,7 +133,7 @@
+ 
+ ppc() {
+   case "$host_arch" in
+-    ppc) return 0;;
++    ppc|powerpc) return 0;;
+     *) return 1;;
+   esac
+ }
+@@ -1213,7 +1213,7 @@
+     _optimizing=''
+     ;;
+ 
+-  ppc)
++  ppc|powerpc)
+     _def_arch='#define ARCH_POWERPC 1'
+     _def_dcbzl='#define NO_DCBZL 1'
+     _target_arch='TARGET_ARCH_POWERPC = yes'
