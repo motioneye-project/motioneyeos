@@ -45,6 +45,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		--enable-mad \
 		--enable-fbdev \
 		$(MPLAYER_ENDIAN) \
+		--enable-cross-compile \
 		--disable-mpdvdkit \
 		--disable-ivtv \
 		--disable-tv \
