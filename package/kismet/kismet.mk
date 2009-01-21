@@ -62,6 +62,7 @@ $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/$(KISMET_BINARY): $(KISMET_DIR)/$(KISME
 
 kismet: uclibc ncurses libpcap dbus $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/$(KISMET_BINARY)
 
+kismet-unpacked: $(KISMET_DIR)/.patched
 
 kismet-clean:
 	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet
