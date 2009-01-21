@@ -17,7 +17,8 @@ libcgicc-source: $(DL_DIR)/$(LIBCGICC_SOURCE)
 
 $(LIBCGICC_DIR)/.unpacked: $(DL_DIR)/$(LIBCGICC_SOURCE)
 	$(LIBCGICC_CAT) $(DL_DIR)/$(LIBCGICC_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LIBCGICC_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(LIBCGICC_DIR) package/libcgicc cgicc\*.patch
+	touch $@
 
 $(LIBCGICC_DIR)/.configured: $(LIBCGICC_DIR)/.unpacked
 	(cd $(LIBCGICC_DIR); rm -f config.cache; \
@@ -40,11 +41,11 @@ $(LIBCGICC_DIR)/.configured: $(LIBCGICC_DIR)/.unpacked
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 	)
-	touch $(LIBCGICC_DIR)/.configured
+	touch $@
 
 $(LIBCGICC_DIR)/.compiled: $(LIBCGICC_DIR)/.configured
 	$(MAKE) -C $(LIBCGICC_DIR)
-	touch $(LIBCGICC_DIR)/.compiled
+	touch $@
 
 $(STAGING_DIR)/lib/libcgicc.so: $(LIBCGICC_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBCGICC_DIR) install
@@ -54,6 +55,8 @@ $(TARGET_DIR)/usr/lib/libcgicc.so: $(STAGING_DIR)/lib/libcgicc.so
 	cp -dpf $(STAGING_DIR)/lib/libcgicc.so* $(TARGET_DIR)/usr/lib/
 
 libcgicc: uclibc $(TARGET_DIR)/usr/lib/libcgicc.so
+
+libcgicc-unpacked: $(LIBCGICC_DIR)/.unpacked
 
 libcgicc-clean:
 		-$(MAKE) -C $(LIBCGICC_DIR) clean
