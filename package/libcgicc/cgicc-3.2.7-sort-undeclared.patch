@@ -1,0 +1,38 @@
+From: Robert Schwebel <r.schwebel@pengutronix.de>
+Subject: [patch] sort is now in <algorithm>
+
+When built with gcc-4.3.2, cgicc-3.2.7 cannot be compiled any more; sort
+is now being part of <algorithm> and must be written as ::sort:
+
+cardgame.cpp:1232: error: 'sort' was not declared in this scope
+make[2]: *** [cardgame.o] Error 1
+
+Fix it.
+
+Signed-off-by: Robert Schwebel <r.schwebel@pengutronix.de>
+
+---
+ demo/cardgame.cpp |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+Index: cgicc-3.2.7/demo/cardgame.cpp
+===================================================================
+--- cgicc-3.2.7.orig/demo/cardgame.cpp
++++ cgicc-3.2.7/demo/cardgame.cpp
+@@ -36,6 +36,7 @@
+ #include <sstream>
+ #include <fstream>
+ #include <queue>
++#include <algorithm>
+ 
+ #include "cgicc/CgiDefs.h"
+ #include "cgicc/Cgicc.h"
+@@ -1043,7 +1044,7 @@ namespace CardGameTools
+ 
+ 	void drawPlayerCards(datasplayer *vPlayer)
+ 	{
+-		sort (vPlayer->cardsList->begin(),vPlayer->cardsList->end());
++		std::sort (vPlayer->cardsList->begin(),vPlayer->cardsList->end());
+ 		cout <<"<form name=\"cards\">"; 
+ 		cout <<"<input type=\"hidden\" name=\"actionner\" value=\"\">"; 
+ 		cout <<"<input type=\"hidden\" name=\"card\" value=\"\">"; 
