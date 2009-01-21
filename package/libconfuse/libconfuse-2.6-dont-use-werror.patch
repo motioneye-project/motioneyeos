@@ -1,0 +1,34 @@
+confuse: don't compile with -Werror
+
+Werror isn't really a robust setting for !development.
+---
+ src/Makefile.am |    2 +-
+ src/Makefile.in |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: confuse-2.6/src/Makefile.am
+===================================================================
+--- confuse-2.6.orig/src/Makefile.am
++++ confuse-2.6/src/Makefile.am
+@@ -10,7 +10,7 @@
+ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+ 
+ if cc_is_gcc
+-AM_CFLAGS=-Wall -Werror
++AM_CFLAGS=-Wall
+ endif
+ 
+ LIBS = @LIBS@
+Index: confuse-2.6/src/Makefile.in
+===================================================================
+--- confuse-2.6.orig/src/Makefile.in
++++ confuse-2.6/src/Makefile.in
+@@ -196,7 +196,7 @@
+ libconfuse_la_SOURCES = confuse.c lexer.l
+ libconfuse_la_LIBADD = $(LTLIBINTL)
+ include_HEADERS = confuse.h
+-@cc_is_gcc_TRUE@AM_CFLAGS = -Wall -Werror
++@cc_is_gcc_TRUE@AM_CFLAGS = -Wall
+ CLEANFILES = *~ \#*\#
+ AM_LFLAGS = -Pcfg_yy -olex.yy.c
+ all: all-am
