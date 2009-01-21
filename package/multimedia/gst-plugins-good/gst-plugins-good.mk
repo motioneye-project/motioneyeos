@@ -142,6 +142,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-matroska
+GST_PLUGINS_GOOD_DEPENDENCIES += zlib bzip2
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-matroska
 endif
@@ -234,6 +235,38 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_WAVPARSE),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-wavparse
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-wavparse
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ANNODEX),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-annodex
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-annodex
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ESD),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-esd
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-esd
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_JPEG),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-jpeg
+GST_PLUGINS_GOOD_DEPENDENCIES += jpeg
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-jpeg
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-oss
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-oss
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_PNG),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-png
+GST_PLUGINS_GOOD_DEPENDENCIES += libpng
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-png
 endif
 
 $(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-good))
