@@ -1,0 +1,21 @@
+diff -urN oprofile-0.9.4-0rig//daemon/liblegacy/opd_kernel.c oprofile-0.9.4/daemon/liblegacy/opd_kernel.c
+--- oprofile-0.9.4-0rig//daemon/liblegacy/opd_kernel.c	2005-05-04 04:47:03.000000000 +0200
++++ oprofile-0.9.4/daemon/liblegacy/opd_kernel.c	2009-01-21 07:40:20.000000000 +0100
+@@ -270,6 +270,9 @@
+  */
+ static void opd_drop_module_sample(unsigned long eip)
+ {
++	verbprintf(vmodule, "query_module not available on linux-2.6: %s\n", strerror(EPERM));
++
++#if	0
+ 	char * module_names;
+ 	char * name;
+ 	size_t size = 1024;
+@@ -307,6 +310,7 @@
+ 
+ 	if (module_names)
+ 		free(module_names);
++#endif
+ }
+ 
+ 
