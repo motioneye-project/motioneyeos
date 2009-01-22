@@ -1,0 +1,13 @@
+diff -urN u-boot-2009.01-rc3/include/asm-avr32/io.h u-boot-avr32//include/asm-avr32/io.h
+--- u-boot-2009.01-rc3/include/asm-avr32/io.h	2009-01-18 21:37:48.000000000 +0100
++++ u-boot-avr32//include/asm-avr32/io.h	2009-01-22 07:14:38.000000000 +0100
+@@ -125,9 +125,4 @@
+ 
+ }
+ 
+-static inline phys_addr_t virt_to_phys(void * vaddr)
+-{
+-	return (phys_addr_t)(vaddr);
+-}
+-
+ #endif /* __ASM_AVR32_IO_H */
