@@ -56,3 +56,4 @@ config BR2_TARGET_GENERIC_DEV_SYSTEM
 	help
 	  Board support for a generic development system.
 
+source "target/generic/Config.in.test"
