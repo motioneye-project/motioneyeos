@@ -13,7 +13,7 @@ config BR2_TARGET_UBOOT_BOARDNAME
 
 choice
 	prompt "U-Boot Version"
-	default BR2_TARGET_UBOOT_2008_10
+	default BR2_TARGET_UBOOT_2009_01
 	help
 	  Select the specific U-Boot version you want to use
 
