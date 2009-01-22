@@ -22,9 +22,38 @@ GST_PLUGINS_GOOD_CONF_OPT = \
 		--disable-aalibtest \
 		--disable-esdtest \
 		--disable-shout2 \
-		--disable-shout2test
+		--disable-shout2test \
+		--disable-esd 
 
 GST_PLUGINS_GOOD_DEPENDENCIES = gstreamer gst-plugins-base
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_BZ2),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-bz2
+GST_PLUGINS_GOOD_DEPENDENCIES += bzip2
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-bz2
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_ZLIB),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-zlib
+GST_PLUGINS_GOOD_DEPENDENCIES += zlib
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_JPEG),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-jpeg
+GST_PLUGINS_GOOD_DEPENDENCIES += jpeg
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-jpeg
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PNG),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-png
+GST_PLUGINS_GOOD_DEPENDENCIES += libpng
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-png
+endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOFILTER),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-videofilter
@@ -239,34 +268,15 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ANNODEX),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-annodex
+GST_PLUGINS_GOOD_DEPENDENCIES += libxml2
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-annodex
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ESD),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-esd
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-esd
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_JPEG),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-jpeg
-GST_PLUGINS_GOOD_DEPENDENCIES += jpeg
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-jpeg
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-oss
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-oss
-endif
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_PNG),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-png
-GST_PLUGINS_GOOD_DEPENDENCIES += libpng
-else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-png
 endif
 
 $(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-good))

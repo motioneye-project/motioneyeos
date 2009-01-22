@@ -10,6 +10,30 @@ menuconfig BR2_PACKAGE_GST_PLUGINS_GOOD
 
 if BR2_PACKAGE_GST_PLUGINS_GOOD
 
+config BR2_PACKAGE_GST_PLUGINS_GOOD_JPEG
+	bool "jpeg (JPEG support)"
+	select BR2_PACKAGE_JPEG
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PNG
+	bool "png (PNG support)"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_BZ2
+	bool "bz2 support"
+	depends on BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA
+	select BR2_PACKAGE_BZIP2
+	help
+	  Enable bz2 support for the following plugins:
+	  matroska
+
+config BR2_PACKAGE_GST_PLUGINS_GOOD_ZLIB
+	bool "zlib support"
+	depends on BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_QTDEMUX || BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ID3DEMUX || BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA
+	select BR2_PACKAGE_ZLIB
+	help
+	  Enable zlib support for the following plugins:
+	  id3demux, qtdemux, matroska
+
 comment "dependency-less plugins"
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_VIDEOFILTER
@@ -72,8 +96,6 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_LEVEL
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA
 	bool "matroska"
-	select BR2_PACKAGE_BZIP2
-	select BR2_PACKAGE_ZLIB
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MONOSCOPE
 	bool "monoscope"
@@ -121,25 +143,13 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_WAVPARSE
 	bool "wavparse (*.wav audio)"
 	default y
 
-comment "plugins with external dependencies (more to come)"
+comment "plugins with external dependencies"
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ANNODEX
 	bool "annodex (XML Library)"
-	default y
-
-config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ESD
-	bool "esdsink (ESounD sound daemon)"
-
-config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_JPEG
-	bool "jpeg (JPEG support)"
-	select BR2_PACKAGE_JPEG
-	default y
+	select BR2_PACKAGE_LIBXML2
 
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS
 	bool "ossaudio (OSS audio)"
 
-config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_PNG
-	bool "png (PNG support)"
-	select BR2_PACKAGE_LIBPNG
-	default y
 endif
