@@ -506,6 +506,7 @@ help:
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'
 	@echo '  oldconfig              - resolve any unresolved symbols in .config'
+	@echo '  configured             - make {uclibc/busybox/linux26}-config'
 	@echo '  saveconfig             - save current configuration under local/<project>'
 	@echo '  getconfig              - restore saved configuration from local/<project>'
 	@echo
