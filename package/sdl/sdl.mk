@@ -75,7 +75,7 @@ $(SDL_DIR)/.configured: $(SDL_DIR)/.unpacked
 ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
 $(SDL_DIRECTFB_TARGET):
 	mkdir -p $(STAGING_DIR)/include
-	ln -s ../usr/include/directfb $(SDL_DIRECTFB_TARGET)
+	ln -s -f ../usr/include/directfb $(SDL_DIRECTFB_TARGET)
 endif
 
 $(SDL_DIR)/.compiled: $(SDL_DIR)/.configured $(SDL_DIRECTFB_TARGET)
