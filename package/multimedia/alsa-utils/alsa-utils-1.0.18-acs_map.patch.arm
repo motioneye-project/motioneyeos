@@ -1,0 +1,29 @@
+When configuring alsa-utils, it will use the hosts <ncurses.h>
+See: alsa-utils <VERSION> / alsamixer/.deps/alsamicer.Po
+This will, on OpenSuSE 11.0, and possibly other distributions
+result in that the preprocessor directive:
+#define acs_map _nc_acs_map
+which is present in the Buildroot build of ncurses,
+is not executed, and the
+extern <chartype> acs_map[]; 
+declaration in the host ncurses will
+result in an undefined symbol: acs_map.
+
+This patches give up trying to force alsa-utils to use the correct
+ncurses, and just defines a byte with the needed symbol.
+
+
+diff -urN alsa-utils-1.0.18-0rig//alsamixer/alsamixer.c alsa-utils-1.0.18/alsamixer/alsamixer.c
+--- alsa-utils-1.0.18-0rig//alsamixer/alsamixer.c	2008-10-29 13:42:11.000000000 +0100
++++ alsa-utils-1.0.18/alsamixer/alsamixer.c	2009-01-22 23:35:29.000000000 +0100
+@@ -115,6 +115,10 @@
+ #include <sys/time.h>
+ 
+ #include <locale.h>
++/* Ugly hack to get rid of undefined "acs_map" */
++/* This is caused by configure using host ncurses.h */
++/* instead of buildroot's ncurses.h */
++unsigned long acs_map[1];
+ 
+ #ifndef CURSESINC
+ #include <ncurses.h>
