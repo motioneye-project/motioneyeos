@@ -58,7 +58,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.patched
 		--exec-prefix=/usr \
 		--bindir=/usr/bin \
 		--sbindir=/usr/sbin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
@@ -82,7 +82,7 @@ $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/.configured
 	$(MAKE1) DESTDIR=$(STAGING_DIR) -C $(NCURSES_DIR) \
 		libs panel menu form headers
 
-$(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
+$(STAGING_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
 	$(MAKE1) \
 	    prefix=$(STAGING_DIR)/usr/ \
 	    exec_prefix=$(STAGING_DIR) \
@@ -92,7 +92,7 @@ $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libncurs
 	    datadir=$(STAGING_DIR)/usr/share \
 	    sysconfdir=$(STAGING_DIR)/etc \
 	    localstatedir=$(STAGING_DIR)/var \
-	    libdir=$(STAGING_DIR)/lib \
+	    libdir=$(STAGING_DIR)/usr/lib \
 	    infodir=$(STAGING_DIR)/usr/info \
 	    mandir=$(STAGING_DIR)/usr/man \
 	    includedir=$(STAGING_DIR)/usr/include \
@@ -102,8 +102,8 @@ $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libncurs
 	chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
 	touch -c $@
 
-$(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION): $(STAGING_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
-	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/
+$(TARGET_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION): $(STAGING_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION)
+	cp -dpf $(NCURSES_DIR)/lib/libncurses.so* $(TARGET_DIR)/usr/lib/
 ifeq ($(BR2_PACKAGE_NCURSES_TARGET_PANEL),y)
 	cp -dpf $(NCURSES_DIR)/lib/libpanel.so* $(TARGET_DIR)/usr/lib/
 endif
@@ -143,12 +143,12 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(STAGING_DIR)/lib/libncurses.a
 	 ln -fs libncurses.a libtermcap.a; \
 	)
 	(cd $(TARGET_DIR)/usr/include; ln -fs curses.h ncurses.h)
-	rm -f $(TARGET_DIR)/lib/libncurses.so
-	(cd $(TARGET_DIR)/usr/lib; ln -fs ../../lib/libncurses.so.$(NCURSES_VERSION) libncurses.so)
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
+	rm -f $(TARGET_DIR)/usr/lib/libncurses.so
+	(cd $(TARGET_DIR)/usr/lib; ln -fs libncurses.so.$(NCURSES_VERSION) libncurses.so)
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION)
 	touch -c $@
 
-ncurses: $(TARGET_DIR)/lib/libncurses.so.$(NCURSES_VERSION)
+ncurses: $(TARGET_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION)
 
 ncurses-unpacked: $(NCURSES_DIR)/.patched
 
@@ -157,7 +157,6 @@ ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
 ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
 
 ncurses-clean:
-	rm -f $(STAGING_DIR)/lib/libncurses.so* $(TARGET_DIR)/lib/libncurses.so*
 	rm -f $(STAGING_DIR)/usr/lib/libncurses.so* $(TARGET_DIR)/usr/lib/libncurses.so*
 	rm -rf $(STAGING_DIR)/usr/share/tabset $(TARGET_DIR)/usr/share/tabset
 	rm -rf $(STAGING_DIR)/usr/share/terminfo $(TARGET_DIR)/usr/share/terminfo
