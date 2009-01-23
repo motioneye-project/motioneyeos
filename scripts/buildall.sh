@@ -189,7 +189,6 @@ EXE	mk	mtd                            OK
 AVR	mk	ntfs-3g                        FAIL	"Machine avr32 not recognized"
 EXE	mk	pciutils                       FAIL	"Compile Error"
 skip	mk	pcmcia                         DISABLED	""
-skip	mk	raidtools2                     DISABLED	""
 EXE	mk	setserial                      OK	
 bb	mk	sfdisk
 AVR	mk	smartmontools                  FAIL	"Machine avr32 not recognized"
