@@ -18,6 +18,10 @@ MPG123_USE_ALSA:=--with-audio=alsa
 MPG123_ALSA_DEP:=alsa-lib
 endif
 
+ifeq ($(BR2_PACKAGE_MPG123_ARM_UNROLL_FIX),y)
+MPG123_ARM_UNROLL_FIX:= -DMPG123_ARM_UNROLL_FIX
+endif
+
 $(DL_DIR)/$(MPG123_SOURCE):
 	$(call DOWNLOAD,$(MPG123_SITE),$(MPG123_SOURCE))
 
@@ -31,7 +35,7 @@ $(MPG123_DIR)/.configured: $(MPG123_DIR)/.unpacked
 	(cd $(MPG123_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS) $(MPG123_ARM_UNROLL_FIX)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(REAL_GNU_TARGET_NAME) \
@@ -54,6 +58,11 @@ $(TARGET_DIR)/$(MPG123_TARGET_BIN): $(MPG123_DIR)/$(MPG123_BIN)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(MPG123_TARGET_BIN)
 
 mpg123: uclibc $(MPG123_ALSA_DEP) $(TARGET_DIR)/$(MPG123_TARGET_BIN)
+
+mpg123x: 
+	touch $(MPG123_DIR)/.configured
+
+mpg123-unpacked: $(MPG123_DIR)/.unpacked
 
 mpg123-clean:
 	-$(MAKE) -C $(MPG123_DIR) clean

@@ -10,3 +10,7 @@ config BR2_PACKAGE_MPG123_ALSA
 	bool
 	default y
 	depends on BR2_PACKAGE_ALSA_LIB
+
+config BR2_PACKAGE_MPG123_ARM_UNROLL_FIX
+	bool
+	default y if BR2_arm && BR2_GCC_VERSION_4_3_2
