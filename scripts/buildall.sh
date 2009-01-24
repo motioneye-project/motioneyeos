@@ -1,5 +1,14 @@
 #!/bin/sh
+sed	-i s/^.*Config.in.test.*//	Config.in
+echo	"source \"scripts/test/Config.in.test.$1\"" >> Config.in
+sed	-i s/^.*BR2_TARGET_TEST_PACKAGES*//	.config
+echo	"BR2_TARGET_TEST_PACKAGES=y" >> .config
+cat	scripts/test/noconfiguration.$1 >> .config
+make 	oldconfig
+
+
 source	"scripts/testheader.inc"
+
 
 skip	mk	busybox
 bb	mk	bash
