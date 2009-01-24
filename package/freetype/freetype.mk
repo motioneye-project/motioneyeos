@@ -4,13 +4,14 @@
 #
 #############################################################
 FREETYPE_VERSION = $(strip $(subst ",, $(BR2_FREETYPE_VERSION)))
+#"))
 FREETYPE_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/freetype
 FREETYPE_SOURCE = freetype-$(FREETYPE_VERSION).tar.bz2
 FREETYPE_LIBTOOL_PATCH = NO
 FREETYPE_INSTALL_STAGING = YES
 FREETYPE_INSTALL_TARGET = YES
 FREETYPE_MAKE_OPT = CCexe="$(HOSTCC)"
-FREETYPE_DEPENDENCIES = uclibc pkgconfig zlib
+FREETYPE_DEPENDENCIES = uclibc pkgconfig $(if $(BR2_PACKAGE_ZLIB,zlib)
 
 $(eval $(call AUTOTARGETS,package,freetype))
 
