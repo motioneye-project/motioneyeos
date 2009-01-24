@@ -10,7 +10,12 @@ LIBDNET_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/l
 LIBDNET_INSTALL_STAGING = YES
 LIBDNET_INSTALL_TARGET = YES
 LIBDNET_AUTORECONF = YES
-LIBDNET_CONF_OPT = --with-gnu-ld --enable-shared --enable-static
+LIBDNET_CONF_OPT = \
+	--with-gnu-ld \
+	--enable-shared \
+	--enable-static \
+	--with-check=no
+
 LIBDNET_DEPENDENCIES = uclibc
 
 ifneq ($(BR2_PACKAGE_LIBDNET_PYTHON),)
