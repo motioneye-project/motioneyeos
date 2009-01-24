@@ -88,6 +88,14 @@ ifeq ($(BR2_LARGEFILE),y)
 TARGET_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 
+# Handle bug fixes in toolchain
+ifeq ($(BR2_arm),y)
+ifeq ($(BR2_GCC_VERSION_4_3_2),y)
+# Removes segment violation in mpg123.
+TARGET_CFLAGS+=-DARM_UNROLL_FIX
+endif
+endif
+
 TARGET_CXXFLAGS=$(TARGET_CFLAGS)
 
 # else it's an external toolchain

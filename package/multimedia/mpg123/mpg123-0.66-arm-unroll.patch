@@ -5,7 +5,7 @@ diff -urN mpg123-0.66-0rig//src/layer2.c mpg123-0.66/src/layer2.c
  
  }
  
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +static int	al_table_get_d_out;
 +void al_table_get_d(struct al_table * al)
 +{
@@ -28,7 +28,7 @@ diff -urN mpg123-0.66-0rig//src/layer2.c mpg123-0.66/src/layer2.c
          if ( (ba=*bita++) ) 
          {
            k=(alloc2 = alloc1+ba)->bits;
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +	  al_table_get_d(alloc2);
 +	  d1 = al_table_get_d_out;
 +          if( (d1) < 0) 
@@ -42,7 +42,7 @@ diff -urN mpg123-0.66-0rig//src/layer2.c mpg123-0.66/src/layer2.c
        if ( (ba=*bita++) )
        {
          k=(alloc2 = alloc1+ba)->bits;
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +	al_table_get_d(alloc2);
 +	d1 = al_table_get_d_out;
 +        if( (d1) < 0)
@@ -60,7 +60,7 @@ diff -urN mpg123-0.66-0rig//src/layer3.c mpg123-0.66/src/layer3.c
  static int pretab1[22] = {0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,3,3,3,2,0};
  static int pretab2[22] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 -
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +extern int arm_funroll_data;
 +extern void arm_funroll_fix(short *val);
 +#endif
@@ -71,7 +71,7 @@ diff -urN mpg123-0.66-0rig//src/layer3.c mpg123-0.66/src/layer3.c
              step = 3;
            }
          }
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +	{
 +	    register short *val = h->table;
 +	    REFRESH_MASK;
@@ -104,7 +104,7 @@ diff -urN mpg123-0.66-0rig//src/layer3.c mpg123-0.66/src/layer3.c
              v = gr_info->pow2gain[((*scf++) + (*pretab++)) << shift];
  
          }
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +	{
 +	    register short *val = h->table;
 +	    REFRESH_MASK;
@@ -789,7 +789,7 @@ diff -urN mpg123-0.66-0rig//src/layer3.c~ mpg123-0.66/src/layer3.c~
 +
 +static int pretab1[22] = {0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,3,3,3,2,0};
 +static int pretab2[22] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +extern int arm_funroll_data;
 +extern void arm_funroll_fix(short *val);
 +#endif
@@ -1081,7 +1081,7 @@ diff -urN mpg123-0.66-0rig//src/layer3.c~ mpg123-0.66/src/layer3.c~
 +            v = gr_info->pow2gain[((*scf++) + (*pretab++)) << shift];
 +
 +        }
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +	{
 +	    register short *val = h->table;
 +	    REFRESH_MASK;
@@ -1171,7 +1171,7 @@ diff -urN mpg123-0.66-0rig//src/layer3.c~ mpg123-0.66/src/layer3.c~
 +      register short *val = h->table,a;
 +
 +      REFRESH_MASK;
-+#if	defined(MPG123_ARM_UNROLL_FIX)
++#if	defined(ARM_UNROLL_FIX)
 +	do {
 +		arm_funroll_fix(val); val++;
 +		a = arm_funroll_data;
