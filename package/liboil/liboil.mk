@@ -26,6 +26,8 @@ ifeq ($(BR2_x86_64),y)
 LIBOIL_CONF_ENV = as_cv_unaligned_access=yes
 endif
 
+LIBOIL_CONF_OPT+=--with-gnu-ld
+
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
 LIBOIL_GLIB_DEP = libglib2
 endif
@@ -42,3 +44,8 @@ $(LIBOIL_HOOK_POST_INSTALL):
 	# Remove useless bugreport program from the target
 	rm -f $(TARGET_DIR)/usr/bin/oil-bugreport
 	touch $@
+
+$(LIBOIL_HOOK_POST_CONFIGURE):
+	$(SED) 's/uberopt//g' $(LIBOIL_DIR)/examples/Makefile
+	$(SED) 's/work//g' $(LIBOIL_DIR)/examples/Makefile
+
