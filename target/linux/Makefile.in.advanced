@@ -112,7 +112,7 @@ endif
 KERNEL_CONFIG_METHOD:=$(strip $(subst ",,$(BR2_KERNEL_CONFIG_METHOD)))
 #"))
 ifeq ($(KERNEL_CONFIG_METHOD),)
-KERNEL_CONFIG_METHOD:=xconfig
+KERNEL_CONFIG_METHOD:=menuconfig
 endif
 
 # -----------------------------------------------------------------------------
