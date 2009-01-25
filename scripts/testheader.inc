@@ -1,4 +1,7 @@
-alias mk="scripts/mkpkg"
+function mk()
+{
+	scripts/mkpkg $1 $2 "$3"
+}
 
 function	header()
 {
@@ -26,11 +29,16 @@ function	EXE()
 {
 	printf 	"EXE	"
 	if [ ${active} == 1 ] ; then
-		printf "$1	"
-		$1 $2 $3 $4 $5 $6
+		$1 $2 $3 "$4"
 		return 0;
 	else
-		echo "$1 $2 $3 $4 $5 $6"
+		printf	"%-8s"	"$1"
+		printf	"%-32s"	"$2"
+		printf	"%-16s"	"$3"
+		if [ "${4}X" != "X" ] ; then
+			printf	"%-64s"	"\"$4\""
+		fi
+		echo
 		return 1;
 	fi
 }
@@ -42,11 +50,16 @@ function	AVR()
 		echo "mk $2 UNSUPPORTED \"$4\" $5 $6"
 		return 1;
 	elif [ ${active} == 1 ] ; then
-		printf "$1	"
-		$1 $2 $3 $4 $5 $6
+		$1 $2 "$3" "$4"
 		return 0;
 	else
-		echo "$1 $2 $3 $4 $5 $6"
+		printf	"%-8s"	"$1"
+		printf	"%-32s"	"$2"
+		printf	"%-16s"	"$3"
+		if [ "${4}X" != "X" ] ; then
+			printf	"%-64s"	"\"$4\"";
+		fi
+		echo
 		return 1;
 	fi
 }
@@ -54,29 +67,46 @@ function	AVR()
 
 function skip()
 {
-	printf "skip	%-31s" "$1"
-	if [ "$2X" == "OKX" ] ; then
-		echo "DISABLED	$3 $4"
-	elif [ "$2X" == "FAILX" ] ; then
-		echo "DISABLED	$3 $4"
-	elif [ "$2X" == "BROKENX" ] ; then
-		echo "DISABLED	$3 $4"
-	elif [ "$2X" == "DISABLEDX" ] ; then
-		echo "DISABLED	\"$3 $4\""
+	printf "skip	%-8s" "$1"
+	printf "%-32s" "$2"
+	if [   "$3X" == "OKX" ] ; then
+		printf "%-16s"	"DISABLED"
+		if [ "${4}X" != "X" ] ; then
+			printf	"%-64s"	"\"$4\""
+		fi
+	elif [ "$3X" == "FAILX" ] ; then
+		printf "%-16s"	"DISABLED"
+		if [ "${4}X" != "X" ] ; then
+			printf	"%-64s"	"\"$4\""
+		fi
+	elif [ "$3X" == "BROKENX" ] ; then
+		printf "%-16s"	"DISABLED"
+		if [ "${4}X" != "X" ] ; then
+			printf	"%-64s"	"\"$4\""
+		fi
+	elif [ "$3X" == "DISABLEDX" ] ; then
+		printf "%-16s"	"DISABLED"
+		if [ "${4}X" != "X" ] ; then
+			printf	"%-64s"	"\"$4\""
+		fi
 	else
-		echo "DISABLED	\"$2 $3 $4\""
+		printf "%-16s"	"DISABLED"
+		if [ "${4}X" != "X" ] ; then
+			printf	"%-64s"	"\"$4\""
+		fi
 	fi
+	echo
 }
 
 function bb()
 {
-	printf 	"bb	"
+	printf 	"%-8s"	"bb"
 	if [ ${busybox} == 1 ] ; then
-		printf "$1	"
+		printf "%-8s"	"$1"
 		$1 $2 $3 $4 $5 $6
 		return 0;
 	else
-		echo "$1 $2 $3 $4 $5 $6"
+		echo "$1	$2 $3 $4 $5 $6"
 		return 1;
 	fi
 }
