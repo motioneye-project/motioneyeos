@@ -30,7 +30,7 @@ config BR2_PACKAGE_NCFTP_BATCH
 	depends on BR2_PACKAGE_NCFTP
 
 config BR2_PACKAGE_NCFTP_SPOOLER
-	bool "NcFTPSpooler - spooler"
+	bool "NcFTPSpooler - spooler - not working properly"
 	depends on BR2_PACKAGE_NCFTP
 	depends on BR2_PACKAGE_NCURSES
 
