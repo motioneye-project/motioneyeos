@@ -233,7 +233,6 @@ gcc_initial-dirclean:
 # affect gcc-target. However, I haven't tested gcc-target yet so no
 # guarantees. mjn3
 
-comma:=,
 GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
 $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 	mkdir -p $(GCC_BUILD_DIR2)

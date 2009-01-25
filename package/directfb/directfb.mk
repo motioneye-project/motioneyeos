@@ -52,9 +52,6 @@ endif
 ifeq ($(DIRECTFB_GFX),)
 DIRECTFB_GFX:=none
 else
-comma:=,
-empty:=
-space:=$(empty) $(empty)
 DIRECTFB_GFX:=$(subst $(space),$(comma),$(strip $(DIRECTFB_GFX)))
 endif
 
@@ -75,9 +72,6 @@ endif
 ifeq ($(DIRECTFB_INPUT),)
 DIRECTFB_INPUT:=none
 else
-comma:=,
-empty:=
-space:=$(empty) $(empty)
 DIRECTFB_INPUT:=$(subst $(space),$(comma),$(strip $(DIRECTFB_INPUT)))
 endif
 

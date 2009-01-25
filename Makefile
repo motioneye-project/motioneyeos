@@ -40,6 +40,11 @@ else
 BR2_LOCAL:=$(TOPDIR)/local
 endif
 
+# Variables for use in Make constructs
+comma:=,
+empty:=
+space:=$(empty) $(empty)
+
 # $(shell find . -name *_defconfig |sed 's/.*\///')
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
