@@ -78,18 +78,10 @@ $(CUPS_DIR)/.configured: $(CUPS_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--includedir=/usr/include  \
-		--libdir=/usr/lib \
-		--exec-prefix=/ \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
+		--exec-prefix=/usr \
 		--sysconfdir=/etc \
-		--with-config-file-path=/etc \
-		--datadir=/usr/share/misc \
 		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
+		--with-config-file-path=/etc \
 		--disable-gnutls \
 		--disable-gssapi \
 		$(CUPS_CONF_OPT) \
