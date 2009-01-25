@@ -86,12 +86,46 @@ config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 	  library with proxy code and increase the space required on target.
 	  If unsure say n.
 
-config BR2_PACKAGE_QTOPIA4_DEPTHS
-	string "color depths to support"
-	default "-depths 24,16,8"
-	help
-	  Which color depths to support for the library. Default is "-depths
-	  24,16,8". Different depths are specified by a comma separated list.
+menu "Pixel depths"
+comment "Deselecting each option leads to Qt's default (8,16,32)"
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_ALL
+	bool "All supported depths"
+
+if !BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_ALL
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_1
+	bool "1 bpp, black/white"
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_4
+	bool "4 bpp, grayscale"
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_8
+	bool "8 bpp, paletted"
+	default y
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_12
+	bool "12 bpp, rgb 4-4-4"
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_15
+	bool "15 bpp, rgb 5-5-5"
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_16
+	bool "16 bpp, rgb 5-6-5"
+	default y
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_18
+	bool "18 bpp, rgb 6-6-6"
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_24
+	bool "24 bpp, rgb 8-8-8"
+
+config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_32
+	bool "32 bpp, argb 8-8-8-8 and rgb 8-8-8"
+	default y
+
+endif
+endmenu
 
 config BR2_PACKAGE_QTOPIA4_GIF
 	bool "Enable GIF support"
