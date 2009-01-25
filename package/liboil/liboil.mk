@@ -45,6 +45,10 @@ $(LIBOIL_HOOK_POST_INSTALL):
 	rm -f $(TARGET_DIR)/usr/bin/oil-bugreport
 	touch $@
 
+
+# Disable some examples that will break the build.
+# There are sveral more that can be removed
+# by someone with time over.
 $(LIBOIL_HOOK_POST_CONFIGURE):
 	$(SED) 's/uberopt//g' $(LIBOIL_DIR)/examples/Makefile
 	$(SED) 's/work//g' $(LIBOIL_DIR)/examples/Makefile
