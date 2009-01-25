@@ -476,6 +476,9 @@ clean:
 distclean: clean
 	rm -rf sources/*
 
+flush:
+	rm -f $(PROJECT_BUILD_DIR)/tgt-config.cache
+
 endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 %_defconfig: $(CONFIG)/conf
@@ -519,6 +522,7 @@ help:
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  source-check           - check all packages for valid download URLs'
 	@echo '  external-deps          - list external packages used'
+	@echo '  flush                  - flush configuration cache'
 	@echo
 	@echo 'See docs/README and docs/buildroot.html for further details'
 	@echo
