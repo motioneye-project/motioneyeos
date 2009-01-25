@@ -26,13 +26,18 @@ ifeq ($(BR2_PACKAGE_NCFTP_BATCH),y)
 NCFTP_TARGET_BINS+=ncftpbatch
 endif
 
+ifeq ($(BR2_PACKAGE_NCURSES),y)
 ifeq ($(BR2_PACKAGE_NCFTP_SPOOLER),y)
 #Someone needs to figure out what to do...
 NCFTP_TARGET_BINS+=
 endif
 
+# only set if NCURSES is available
 ifeq ($(BR2_PACKAGE_NCFTP_BOOKMARKS),y)
 NCFTP_TARGET_BINS+=ncftpbookmarks
+endif
+
+NCFTP_DEPS += ncurses
 endif
 
 ncftp-source: $(DL_DIR)/$(NCFTP_SOURCE)
@@ -64,7 +69,7 @@ $(TARGET_DIR)/usr/bin/ncftp $(TARGET_DIR)/usr/bin/ncftp%: $(addprefix $(NCFTP_DI
 	$(INSTALL) -m 0755 $(NCFTP_DIR)/bin/$(notdir $@) $(TARGET_DIR)/usr/bin
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-ncftp: uclibc $(addprefix $(TARGET_DIR)/usr/bin/, $(NCFTP_TARGET_BINS))
+ncftp: uclibc $(NCFTP_DEPS) $(addprefix $(TARGET_DIR)/usr/bin/, $(NCFTP_TARGET_BINS))
 
 ncftp-clean:
 	-$(MAKE) -C $(NCFTP_DIR) clean
