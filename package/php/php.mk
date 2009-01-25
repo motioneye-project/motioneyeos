@@ -87,7 +87,7 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_READLINE),y)
 	PHP_DEPS+=readline
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_NCURSES),y)
-	PHP_CONFIGURE+=--with-ncurses=$(STATING_DIR)/usr
+	PHP_CONFIGURE+=--with-ncurses=$(STAGING_DIR)/usr
 	PHP_DEPS+=ncurses
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_SYSVMSG),y)
@@ -132,6 +132,8 @@ php-source: $(DL_DIR)/$(PHP_SOURCE)
 
 $(PHP_DIR)/.unpacked: $(DL_DIR)/$(PHP_SOURCE)
 	$(PHP_CAT) $(DL_DIR)/$(PHP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(PHP_DIR) package/php/ php\*.patch
+	toolchain/patch-kernel.sh $(PHP_DIR) package/php/ php\*.patch.$(ARCH)
 	touch $@
 
 $(PHP_DIR)/.configured: $(PHP_DIR)/.unpacked
@@ -183,6 +185,8 @@ $(TARGET_DIR)/etc/php.ini: $(PHP_DIR)/.staged
 	cp -f $(PHP_DIR)/php.ini-dist $(TARGET_DIR)/etc/php.ini
 
 php: uclibc $(PHP_DEPS) $(PHP_TARGET_DEPS) $(TARGET_DIR)/etc/php.ini
+
+php-unpacked: $(PHP_DIR)/.unpacked
 
 php-clean:
 	rm -f $(PHP_DIR)/.configured $(PHP_DIR)/.built $(PHP_DIR)/.staged
