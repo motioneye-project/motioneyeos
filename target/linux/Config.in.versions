@@ -19,17 +19,17 @@ config LINUX26_LATEST_MM_VERSION
 
 config BR2_KERNEL_CURRENT_VERSION
 	string
-	default "2.6.28.1"
+	default "2.6.28.2"
 	help
 	  This is the latest stable kernel (including minor version)
 
 config BR2_KERNEL_LATEST_2_6_28
 	string
-	default "1"
+	default "2"
 
 config BR2_KERNEL_LATEST_2_6_27
 	string
-	default "12"
+	default "13"
 
 config BR2_KERNEL_LATEST_2_6_26
 	string
@@ -37,7 +37,7 @@ config BR2_KERNEL_LATEST_2_6_26
 
 config BR2_KERNEL_LATEST_2_6_25
 	string
-	default "9"
+	default "19"
 
 config BR2_KERNEL_LATEST_2_6_24
 	string
