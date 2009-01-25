@@ -23,18 +23,38 @@ $(DL_DIR)/$(MICROPERL_SOURCE):
 
 $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
 	$(MICROPERL_CAT) $(DL_DIR)/$(MICROPERL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	(cd $(MICROPERL_DIR); chmod -R u+w *)
 	touch $@
 
-$(MICROPERL_DIR)/.configured: $(MICROPERL_DIR)/.source
-ifeq ($(BR2_PACKAGE_AUTOMAKE),y)
+$(MICROPERL_DIR)/.host_configured: $(MICROPERL_DIR)/.source
 	# we need to build a perl for the host just for Errno.pm
-	(cd $(MICROPERL_DIR); ./Configure -de; \
-	 $(MAKE) CC="$(HOSTCC)"; \
-	 $(SHELL) ext/util/make_ext nonxs Errno MAKE="$(firstword $(MAKE))"; \
+	(cd $(MICROPERL_DIR); ./Configure -Dcc=$(HOSTCC) -de  )
+	touch $@
+
+
+$(MICROPERL_DIR)/.host_configured_and_fixed: $(MICROPERL_DIR)/.host_configured
+	$(SED) 's/^.*<command-line>.*//g' $(MICROPERL_DIR)/makefile
+	$(SED) 's/^.*<command-line>.*//g' $(MICROPERL_DIR)/x2p/makefile
+	touch $@
+
+$(MICROPERL_DIR)/.host_make: $(MICROPERL_DIR)/.host_configured_and_fixed
+	$(MAKE) -C $(MICROPERL_DIR)		|| echo "An error is expected on make"
+	touch $@
+
+$(MICROPERL_DIR)/.host_make_fixed: $(MICROPERL_DIR)/.host_make
+	$(SED) 's#^.*<asm/page.h>.*##g' $(MICROPERL_DIR)/ext/IPC/SysV/SysV.c
+	$(MAKE) -C $(MICROPERL_DIR) test	|| echo "An error is expected on make test"
+	touch $@
+
+$(MICROPERL_DIR)/.configured: $(MICROPERL_DIR)/.host_make_fixed
+	# we need to build a perl for the host just for Errno.pm
+	(cd $(MICROPERL_DIR); \
+	 chmod a+x ext/util/make_ext; \
+	 ext/util/make_ext nonxs Errno MAKE="$(firstword $(MAKE))" \
 	)
-endif
-	(cd $(MICROPERL_DIR); chmod u+w uconfig.h; . ./uconfig.sh; \
-	 $(MAKE) -f Makefile.micro regen_uconfig; \
+	(cd $(MICROPERL_DIR); \
+	 chmod u+w uconfig.h; ./uconfig.sh; \
+	 $(MAKE) -f $(MICROPERL_DIR)/Makefile.micro regen_uconfig; \
 	 $(SED) 's,PRIVLIB ".*,PRIVLIB "/$(MICROPERL_MODS_DIR)",' \
 		 -e 's,PRIVLIB_EXP ".*,PRIVLIB_EXP "$(MICROPERL_MODS_DIR)",' \
 		 -e 's,BIN ".*,BIN "/usr/bin",' \
@@ -43,7 +63,7 @@ endif
 	touch $@
 
 $(MICROPERL_DIR)/microperl: $(MICROPERL_DIR)/.configured
-	$(MAKE) -f Makefile.micro CC=$(TARGET_CC) \
+	$(MAKE) -f $(MICROPERL_DIR)/Makefile.micro CC=$(TARGET_CC) \
 		OPTIMIZE="$(TARGET_CFLAGS)" -C $(MICROPERL_DIR)
 ifeq ($(BR2_PACKAGE_AUTOMAKE),y)
 	#(cd $(@D); \
@@ -58,7 +78,7 @@ ifneq ($(MICROPERL_MODS),)
 		[ -d $$i ] || mkdir -p $$i; \
 	 done; \
 	 for i in $(MICROPERL_MODS); do \
-	 cp -dpf lib/$$i $(TARGET_DIR)/$(MICROPERL_MODS_DIR)/$$i; \
+	 cp -dpf $(MICROPERL_DIR)/lib/$$i $(TARGET_DIR)/$(MICROPERL_MODS_DIR)/$$i; \
 	 done; \
 	)
 endif
@@ -68,6 +88,14 @@ endif
 microperl: uclibc $(TARGET_DIR)/usr/bin/microperl
 
 microperl-source: $(DL_DIR)/$(MICROPERL_SOURCE)
+
+microperl-unpacked: $(MICROPERL_DIR)/.source
+
+microperl-config: $(MICROPERL_DIR)/.host_configured
+
+microperl-host: $(MICROPERL_DIR)/.host_make
+
+microperl-host-fixed: $(MICROPERL_DIR)/.host_make_fixed
 
 microperl-clean:
 	rm -rf $(TARGET_DIR)/usr/bin/microperl \
