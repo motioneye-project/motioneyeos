@@ -23,7 +23,7 @@ $(DL_DIR)/$(MICROPERL_SOURCE):
 
 $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
 	$(MICROPERL_CAT) $(DL_DIR)/$(MICROPERL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	(cd $(MICROPERL_DIR); chmod -R u+w *)
+	chmod -R u+w $(MICROPERL_DIR)
 	touch $@
 
 $(MICROPERL_DIR)/.host_configured: $(MICROPERL_DIR)/.source
