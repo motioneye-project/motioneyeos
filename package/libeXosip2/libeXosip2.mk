@@ -27,14 +27,10 @@ $(LIBEXOSIP2_DIR)/.configured: $(LIBEXOSIP2_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--exec-prefix=/ \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
+		--exec-prefix=/usr \
 		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
 		--localstatedir=/var \
 		--libdir=/usr/lib \
 		--includedir=$(STAGING_DIR)/usr/include \
