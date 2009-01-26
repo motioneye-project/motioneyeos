@@ -132,9 +132,6 @@ HOSTCPP:=$(shell which $(HOSTCPP) || type -p $(HOSTCPP) || echo cpp)
 HOSTLD:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
 HOSTLN:=$(shell which $(HOSTLN) || type -p $(HOSTLN) || echo ln)
 HOSTNM:=$(shell which $(HOSTNM) || type -p $(HOSTNM) || echo nm)
-HOST_GLIB_BIN:=`dirname $(shell which glib-genmarshal || echo /usr/bin/glib-genmarshal)`
-HOST_GLIB:=$(shell dirname $(HOST_GLIB_BIN) || echo /usr)
-
 
 ifndef CFLAGS_FOR_BUILD
 CFLAGS_FOR_BUILD:=-g -O2
