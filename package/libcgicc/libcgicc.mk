@@ -30,16 +30,8 @@ $(LIBCGICC_DIR)/.configured: $(LIBCGICC_DIR)/.unpacked
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libdir=/lib \
-		--libexecdir=/usr/lib \
 		--sysconfdir=/etc \
-		--datadir=/usr/share \
 		--localstatedir=/var \
-		--includedir=/include \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
 	)
 	touch $@
 
@@ -47,12 +39,12 @@ $(LIBCGICC_DIR)/.compiled: $(LIBCGICC_DIR)/.configured
 	$(MAKE) -C $(LIBCGICC_DIR)
 	touch $@
 
-$(STAGING_DIR)/lib/libcgicc.so: $(LIBCGICC_DIR)/.compiled
+$(STAGING_DIR)/usr/lib/libcgicc.so: $(LIBCGICC_DIR)/.compiled
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBCGICC_DIR) install
-	touch -c $(STAGING_DIR)/lib/libcgicc.so
+	touch -c $(STAGING_DIR)/usr/lib/libcgicc.so
 
-$(TARGET_DIR)/usr/lib/libcgicc.so: $(STAGING_DIR)/lib/libcgicc.so
-	cp -dpf $(STAGING_DIR)/lib/libcgicc.so* $(TARGET_DIR)/usr/lib/
+$(TARGET_DIR)/usr/lib/libcgicc.so: $(STAGING_DIR)/usr/lib/libcgicc.so
+	cp -dpf $(STAGING_DIR)/usr/lib/libcgicc.so* $(TARGET_DIR)/usr/lib/
 
 libcgicc: uclibc $(TARGET_DIR)/usr/lib/libcgicc.so
 
