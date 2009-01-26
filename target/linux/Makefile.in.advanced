@@ -110,8 +110,8 @@ endif
 endif
 
 # Override config method with shell variable
-ifneq ($(BUILDROOT_KERNEL_CONFIG_METHOD),)
-KERNEL_CONFIG_METHOD:=$(strip $(subst ",,$(BUILDROOT_KERNEL_CONFIG_METHOD)))
+ifneq ($(BUILDROOT_USE_XWINDOWS),)
+KERNEL_CONFIG_METHOD:=xconfig
 #"))
 else
 KERNEL_CONFIG_METHOD:=$(strip $(subst ",,$(BR2_KERNEL_CONFIG_METHOD)))
