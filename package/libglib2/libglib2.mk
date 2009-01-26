@@ -62,3 +62,10 @@ LIBGLIB2_DEPENDENCIES+=libiconv
 endif
 
 $(eval $(call AUTOTARGETS,package,libglib2))
+
+# we NEED a host glib-genmarshal
+ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+ifeq ($(wildcard $(HOST_GLIB)/bin/glib-genmarshal),)
+$(error Host glib-genmarshal not found. Please install glib development package on your host (something like libglib2.0-dev))
+endif
+endif
