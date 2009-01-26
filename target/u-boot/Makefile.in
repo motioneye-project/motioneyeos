@@ -290,7 +290,7 @@ $(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
 #
 #############################################################
 ifeq ($(BR2_TARGET_UBOOT),y)
-TARGETS+=u-boot mkimage
+TARGETS+=u-boot
 endif
 
 u-boot-status:
