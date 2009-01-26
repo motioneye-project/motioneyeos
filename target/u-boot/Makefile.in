@@ -281,6 +281,12 @@ $(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
 #############################################################
 ifeq ($(BR2_TARGET_UBOOT),y)
 TARGETS+=u-boot
+
+# we NEED a board name
+ifeq ($(UBOOT_BOARD_NAME),)
+$(error NO U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
+endif
+
 endif
 
 u-boot-status:
