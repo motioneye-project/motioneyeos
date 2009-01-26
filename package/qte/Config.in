@@ -1,7 +1,7 @@
 config BR2_PACKAGE_QTE
 	bool "Qt/E"
 	depends on BR2_DEPRECATED
-	select BR2_INSTALL_LIBSTDCPP
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PTHREADS_NATIVE
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBPNG
@@ -13,6 +13,10 @@ config BR2_PACKAGE_QTE
 
 	  Only tested with threading on, PACKAGE_JPEG, PACKAGE_LIBPNG,
 	  but remove those if you like.
+
+comment "Qt/E requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_DEPRECATED
 
 config BR2_PACKAGE_QTE_COMMERCIAL_USERNAME
 	string "Qt/E Commercial License Username"

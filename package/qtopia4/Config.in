@@ -1,11 +1,14 @@
 config BR2_PACKAGE_QTOPIA4
 	bool "qtopia4"
-	select BR2_INSTALL_LIBSTDCPP
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PTHREADS_NATIVE
 	help
 	  Qtopia core 4.
 
 	  http://www.trolltech.com/
+
+comment "qtopia4 requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 if BR2_PACKAGE_QTOPIA4
 
