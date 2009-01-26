@@ -22,6 +22,7 @@ config BR2_TARGET_UBOOT_2009_01
 
 config BR2_TARGET_UBOOT_2008_10
 	bool "u-boot-2008.10"
+	depends on BR2_DEPRECATED || BR2_RECENT
 
 config BR2_TARGET_UBOOT_1_3_4
 	bool "u-boot-1.3.4"
