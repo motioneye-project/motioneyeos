@@ -1,8 +1,6 @@
-comment "asterisk	- is currently broken due to a bad patch"
-	depends on BR2_PACKAGE_ASTERISK
-
 config BR2_PACKAGE_ASTERISK
 	bool "asterisk"
+	depends on BROKEN
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_ZLIB
 	depends on BR2_PACKAGE_OPENSSL
