@@ -25,6 +25,11 @@ else
 MPLAYER_LARGEFILE:=--disable-largefiles
 endif
 
+ifeq ($(BR2_i386),y)
+# This seems to be required to compile some of the inline asm
+MPLAYER_CFLAGS:=-fomit-frame-pointer
+endif
+
 $(DL_DIR)/$(MPLAYER_SOURCE):
 	$(call DOWNLOAD,$(MPLAYER_SITE),$(MPLAYER_SOURCE))
 
@@ -38,7 +43,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 	(cd $(MPLAYER_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
+		CFLAGS="$(TARGET_CFLAGS) $(MPLAYER_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--prefix=/usr \
