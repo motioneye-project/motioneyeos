@@ -22,6 +22,7 @@ MKIMAGE:=$(U_BOOT_TOOLS)
 U_BOOT_AUTOSCRIPT=$(BINARIES_DIR)/autoscript
 
 U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN) $(U_BOOT_TOOLS)
+#U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN)
 
 ifeq ($(strip $(subst ",,$(BR2_TARGET_UBOOT_DEFAULT_ENV))),y)
 #"))
@@ -289,7 +290,7 @@ $(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
 #
 #############################################################
 ifeq ($(BR2_TARGET_UBOOT),y)
-TARGETS+=u-boot
+TARGETS+=u-boot mkimage
 endif
 
 u-boot-status:
