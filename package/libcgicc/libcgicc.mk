@@ -32,6 +32,7 @@ $(LIBCGICC_DIR)/.configured: $(LIBCGICC_DIR)/.unpacked
 		--exec-prefix=/usr \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
+		--disable-demos \
 	)
 	touch $@
 
