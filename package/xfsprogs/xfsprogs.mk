@@ -46,7 +46,7 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--exec-prefix=/ \
+		--exec-prefix=/usr \
 		--libdir=/usr/lib \
 		$(XFSPROGS_CONFIG_SHARED) \
 	)
