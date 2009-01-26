@@ -1,6 +1,7 @@
 config BR2_PACKAGE_MODUTILS
 	bool "modutils"
 	depends on !BR2_PACKAGE_MODULE_INIT_TOOLS
+	depends on BR2_DEPRECATED
 	help
 	  The modutils packages includes the kerneld program for automatic
 	  loading and unloading of modules, as well as other module
