@@ -1,3 +1,6 @@
+comment "bind has no inherent support for AVR32" 
+	depends on BR2_avr32 && BR2_PACKAGE_BIND
+
 config BR2_PACKAGE_BIND
 	bool "bind"
 	help

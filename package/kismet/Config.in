@@ -1,3 +1,6 @@
+comment "kismet has no inherent support for AVR32" 
+	depends on BR2_avr32 && BR2_PACKAGE_KISMET
+
 config BR2_PACKAGE_KISMET
 	bool "kismet"
 	select BR2_PACKAGE_NCURSES

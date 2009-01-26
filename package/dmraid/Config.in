@@ -1,3 +1,6 @@
+comment "dmraid has no inherent support for AVR32" 
+	depends on BR2_avr32 && BR2_PACKAGE_DMRAID
+
 config BR2_PACKAGE_DMRAID
 	bool "dmraid"
 	select BR2_PACKAGE_DM
