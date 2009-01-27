@@ -25,6 +25,7 @@ $(eval $(call AUTOTARGETS,package,libxml2))
 $(LIBXML2_HOOK_POST_EXTRACT):
 	rm -f $(LIBXML2_DIR)/win32/Makefile.msvc.rej
 	rm -f $(LIBXML2_DIR)/macos/src/XMLTestPrefix.h.rej
+	touch $@
 
 $(LIBXML2_HOOK_POST_INSTALL):
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
