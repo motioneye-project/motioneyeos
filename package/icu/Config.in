@@ -1,4 +1,8 @@
 config BR2_PACKAGE_ICU
 	bool "icu"
+	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  International Components for Unicode.
+
+comment "icu requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
