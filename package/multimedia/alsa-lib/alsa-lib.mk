@@ -77,7 +77,7 @@ $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY): $(STAGING_DIR)/$(ALSA_LIB_TARGET_BINARY
 
 alsa-lib: uclibc $(ALSA_LIB_DEPS) $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY)
 
-alsa-lib-source: $(DL_DIR)/$(ALSA-LIB_SOURCE)
+alsa-lib-source: $(DL_DIR)/$(ALSA_LIB_SOURCE)
 
 alsa-lib-clean:
 	rm -f $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY)
