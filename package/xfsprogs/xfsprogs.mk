@@ -45,9 +45,7 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--libdir=/usr/lib \
+		--exec-prefix=/ \
 		$(XFSPROGS_CONFIG_SHARED) \
 	)
 	touch $(XFSPROGS_DIR)/.configured
@@ -75,7 +73,6 @@ endif
 $(TARGET_DIR)/$(XFSPROGS_TARGET_BINARY): $(XFSPROGS_DIR)/$(XFSPROGS_BINARY)
 	$(MAKE1) PATH=$(TARGET_PATH) \
 	    DIST_ROOT=$(TARGET_DIR) \
-	    prefix=/usr \
 	    exec-prefix=/ \
 	    -C $(XFSPROGS_DIR) install
 	rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
