@@ -243,7 +243,7 @@ choice
 
 config BR2_STRIP_strip
 	bool "strip"
-	depends on !BR2_ENABLE_DEBUG &&  !BR2_ELF2FLT
+	depends on !BR2_ENABLE_DEBUG && !BR2_ELF2FLT
 	help
 	  strip   is the normal strip command
 
