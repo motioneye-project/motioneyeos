@@ -27,11 +27,11 @@ $(ELF2FLT_DIR)/.configured: $(ELF2FLT_DIR)/.patched
 		LDFLAGS=-lz \
 		$(ELF2FLT_DIR)/configure \
 		--with-bfd-include-dir=$(BINUTILS_DIR1)/bfd/ \
-               --with-binutils-include-dir=$(BINUTILS_DIR)/include/ \
+		--with-binutils-include-dir=$(BINUTILS_DIR)/include/ \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--with-libbfd=$(BINUTILS_DIR1)/bfd/libbfd.a \
 		--with-libiberty=$(BINUTILS_DIR1)/libiberty/libiberty.a \
-		--prefix=$(STAGING_DIR))
+		--prefix=$(STAGING_DIR)/usr)
 	touch $@
 
 $(ELF2FLT_DIR)/$(ELF2FLT_BINARY): $(ELF2FLT_DIR)/.configured
