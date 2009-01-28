@@ -24,6 +24,7 @@ endif
 
 $(ELF2FLT_DIR)/.configured: $(ELF2FLT_DIR)/.patched
 	(cd $(ELF2FLT_DIR); rm -rf config.cache; \
+		LDFLAGS=-lz \
 		$(ELF2FLT_DIR)/configure \
 		--with-bfd-include-dir=$(BINUTILS_DIR1)/bfd/ \
                --with-binutils-include-dir=$(BINUTILS_DIR)/include/ \
