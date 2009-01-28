@@ -3,7 +3,7 @@
 # autoconf
 #
 #############################################################
-AUTOCONF_VERSION:=2.61
+AUTOCONF_VERSION:=2.63
 AUTOCONF_SOURCE:=autoconf-$(AUTOCONF_VERSION).tar.bz2
 AUTOCONF_SITE:=$(BR2_GNU_MIRROR)/autoconf
 AUTOCONF_CAT:=$(BZCAT)
