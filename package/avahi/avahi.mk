@@ -158,6 +158,7 @@ $(TARGET_DIR)/usr/sbin/avahi-autoipd: $(AVAHI_DIR)/.installed
 	chmod 0755 $(TARGET_DIR)/usr/share/udhcpc/default.script
 	cp -af package/avahi/S05avahi-setup.sh $(TARGET_DIR)/etc/init.d/
 	cp $(STAGING_DIR)/usr/sbin/avahi-autoipd $@
+	rm -f $(TARGET_DIR)/var/lib/avahi-autoipd
 	ln -sf /tmp/avahi-autoipd $(TARGET_DIR)/var/lib/avahi-autoipd
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
