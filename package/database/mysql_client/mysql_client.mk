@@ -25,3 +25,7 @@ MYSQL_CLIENT_CONF_OPT = \
 	$(ENABLE_DEBUG)
 
 $(eval $(call AUTOTARGETS,package/database,mysql_client))
+
+$(MYSQL_CLIENT_HOOK_POST_INSTALL):
+	rm -rf $(TARGET_DIR)/usr/mysql-test $(TARGET_DIR)/usr/sql-bench
+	touch $@
