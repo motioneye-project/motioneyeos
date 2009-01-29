@@ -473,10 +473,11 @@ clean:
 distclean: clean
 	rm -rf sources/*
 
-flush:
-	rm -f $(PROJECT_BUILD_DIR)/tgt-config.cache
 
 endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
+
+flush:
+	rm -f $(PROJECT_BUILD_DIR)/tgt-config.cache
 
 %_defconfig: $(CONFIG)/conf
 	cp $(shell find ./target/ -name $@) .config
