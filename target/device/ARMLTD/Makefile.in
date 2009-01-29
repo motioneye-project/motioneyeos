@@ -1,14 +1,11 @@
-ifeq ($(BR2_TARGET_ARMLTD_INTEGRATOR_926),y)
-LINUX26_KCONFIG:=target/device/Arm/linux26.integrator926.config
-TARGETS+=linux26
+ifeq ($(BR2_TARGET_ARMLTD),y)
+BOARD_NAME=$(strip $(subst ",,$(BR2_BOARD_NAME)))
+#"))
+BOARD_PATH=$(strip $(subst ",,$(BR2_BOARD_PATH)))
+#"))
 
-ifndef UCLIBC_CONFIG_FILE
-UCLIBC_CONFIG_FILE:=target/device/ARM/uClibc.integrator926.config
-endif
 
 # pin some settings
-BR2_ARM_EABI:=y
 BR2_GNU_TARGET_SUFFIX:="linux-uclibcgnueabi"
-BR2_DEFAULT_KERNEL_HEADERS:="2.6.22.8"
 endif
 
