@@ -8,7 +8,6 @@ choice
 	default BR2_ARCH_AT91_2_6_25		if BR2_LINUX_2_6_25
 	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_24
 	default BR2_ARCH_AT91_2_6_22		if BR2_LINUX_2_6_22
-	default BR2_ARCH_AT91_2_6_28
 	help
 	  Select a patch to add to the Linux kernel
 
