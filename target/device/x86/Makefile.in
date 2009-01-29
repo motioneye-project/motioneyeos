@@ -1,3 +1,4 @@
 ifeq ($(BR2_i386),y)
-include target/device/x86/i386/Makefile.in
+include target/device/x86/*/Makefile.in
 endif
+

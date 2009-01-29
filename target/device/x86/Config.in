@@ -8,8 +8,8 @@ choice
 	prompt "Pentium (or later) Controller board"
 	help
 
-config BR2_TARGET_I386
-	bool "i386"
+config BR2_TARGET_I686
+	bool "i686"
 	depends on BR2_i386
 	default y
 
@@ -17,7 +17,7 @@ endchoice
 
 config BR2_BOARD_NAME
 	string
-	default "i386"		if BR2_TARGET_I386
+	default "i686"		if BR2_TARGET_I686
 
 config BR2_BOARD_PATH
 	string "Board Path"
