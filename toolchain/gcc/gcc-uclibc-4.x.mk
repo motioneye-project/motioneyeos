@@ -179,10 +179,6 @@ endif
 ifeq ("$(strip $(ARCH))","armeb")
 	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
 endif
-	# Not yet updated to 3.4.1.
-	#ifeq ("$(strip $(ARCH))","i386")
-	#toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc i386-gcc-soft-float.patch
-	#endif
 endif
 	touch $@
 
