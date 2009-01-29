@@ -9,10 +9,6 @@ source "target/device/ARMLTD/Config.in"
 source "target/device/Atmel/Config.in"
 source "target/device/KwikByte/Config.in"
 source "target/device/valka/Config.in"
-
-comment "Generic Architecture support"
-	depends on BR2_i386
-
 source "target/device/x86/Config.in"
 
 # This must be last

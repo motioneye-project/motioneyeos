@@ -1,6 +1,27 @@
-comment "Generic x86 Device Support"
+menuconfig BR2_TARGET_X86
+	bool "Generic x86 Device Support"
 	depends on BR2_i386
 
-comment "Package support"
-	depends on BR2_TARGET_AMD_ALCHEMY
+if BR2_TARGET_X86
+
+choice
+	prompt "Pentium (or later) Controller board"
+	help
+
+config BR2_TARGET_I386
+	bool "i386"
+	depends on BR2_i386
+	default y
+
+endchoice
+
+config BR2_BOARD_NAME
+	string
+	default "i386"		if BR2_TARGET_I386
+
+config BR2_BOARD_PATH
+	string "Board Path"
+	default "target/device/x86/$(BR2_BOARD_NAME)"
+
+endif
 
