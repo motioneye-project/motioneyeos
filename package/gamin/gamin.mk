@@ -10,13 +10,17 @@ GAMIN_AUTORECONF = NO
 GAMIN_INSTALL_STAGING = YES
 GAMIN_INSTALL_TARGET = YES
 
-GAMIN_CONF_OPT = --program-prefix=""
+GAMIN_CONF_OPT = --program-prefix="" --disable-debug
 
 GAMIN_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 GAMIN_CONF_ENV = have_abstract_sockets=no
 
-GAMIN_DEPENDENCIES = uclibc libgtk2
+ifneq ($(BR2_LARGEFILE),y)
+GAMIN_CONF_ENV += CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
+endif
+
+GAMIN_DEPENDENCIES = uclibc libglib2
 
 $(eval $(call AUTOTARGETS,package,gamin))
 
