@@ -8,7 +8,7 @@ choice
 	  Select a patch to add to the Linux kernel
 
 config	BR2_ARCH_AVR32_2_6_28_2
-	bool "2.6.28.2"
+	bool "2.6.28.2 (experimental)"
 	help
 	  Apply the avr32 linux-2.6.28.2 patches
 
@@ -30,19 +30,4 @@ config	BR2_KERNEL_ARCH_PATCH_DIR
 	string
 	default "target/device/Atmel/arch-avr32/kernel-patches-$(BR2_KERNEL_ARCH_PATCH_VERSION)"
 
-config	BR2_LINUX_AVR32_ISI_PATCH
-	bool "Add ISI patch"
-	help
-	  Add support for the Image Sensor Interface
 
-config	BR2_LINUX_AVR32_AC97_PATCH
-	bool "Add AC97 patch"
-	help
-	  Add support for AC97.
-	  Will need to be patched further to change GPIO_PIN_NONE
-	  to the real pin used as AC-97 reset pin.
-
-config	BR2_LINUX_AVR32_PSIF_PATCH
-	bool "Add PSIF patch"
-	help
-	  Add support for the PS/2 Interface
