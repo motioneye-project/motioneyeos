@@ -1,3 +1,5 @@
+ARCH=`make -f scripts/test/Makefile ARCH`
+
 function mk()
 {
 	scripts/mkpkg $1 $2 "$3"
