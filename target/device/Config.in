@@ -9,7 +9,6 @@ source "target/device/ARMLTD/Config.in"
 source "target/device/Atmel/Config.in"
 source "target/device/KwikByte/Config.in"
 source "target/device/valka/Config.in"
-source "target/device/Via/Config.in"
 
 comment "Generic Architecture support"
 
