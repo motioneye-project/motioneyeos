@@ -10,7 +10,6 @@ choice
 	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_23
 	default BR2_ARCH_AT91_2_6_22_1		if BR2_LINUX_2_6_22_1
 	default BR2_ARCH_AT91_2_6_21_5		if BR2_LINUX_2_6_21 || BR2_LINUX_2_6_21_5
-	default BR2_ARCH_AT91_2_6_21_1		if BR2_LINUX_2_6_21_1
 	default BR2_ARCH_AT91_2_6_20_4		if BR2_LINUX_2_6_20 || BR2_LINUX_2_6_20_4
 	default BR2_ARCH_AT91_2_6_24
 	help
@@ -30,11 +29,6 @@ config	BR2_ARCH_AT91_2_6_26
 	bool "2.6.26"
 	help
 	  Apply the at91 linux-2.6.26 patches
-
-config	BR2_ARCH_AT91_2_6_26_RC3
-	bool "2.6.26-rc3"
-	help
-	  Apply the at91 linux-2.6.26-rc3 patches
 
 config	BR2_ARCH_AT91_2_6_25
 	bool "2.6.25"
@@ -56,11 +50,6 @@ config	BR2_ARCH_AT91_2_6_21_5
 	help
 	  Apply the at91 linux-2.6.21.5 patches
 
-config	BR2_ARCH_AT91_2_6_21_1
-	bool "2.6.21.1"
-	help
-	  Apply the at91 linux-2.6.21.1 patches
-
 config	BR2_ARCH_AT91_2_6_20_4
 	bool "2.6.20.4"
 	help
@@ -75,12 +64,10 @@ config	BR2_KERNEL_ARCH_PATCH_VERSION
 	default "2.6.28" if BR2_ARCH_AT91_2_6_28
 	default "2.6.27.7" if BR2_ARCH_AT91_2_6_27_7
 	default "2.6.26" if BR2_ARCH_AT91_2_6_26
-	default "2.6.26-rc3" if BR2_ARCH_AT91_2_6_26_RC3
 	default "2.6.25" if BR2_ARCH_AT91_2_6_25
 	default "2.6.24" if BR2_ARCH_AT91_2_6_24
 	default "2.6.22.1" if BR2_ARCH_AT91_2_6_22_1
 	default "2.6.21.5" if BR2_ARCH_AT91_2_6_21_5
-	default "2.6.21.1" if BR2_ARCH_AT91_2_6_21_1
 	default "2.6.20.4" if BR2_ARCH_AT91_2_6_20_4
 
 config	BR2_KERNEL_ARCH_PATCH_DIR
