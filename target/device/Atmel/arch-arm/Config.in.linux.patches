@@ -9,8 +9,6 @@ choice
 	default BR2_ARCH_AT91_2_6_24		if BR2_LINUX_2_6_24
 	default BR2_ARCH_AT91_2_6_23		if BR2_LINUX_2_6_23
 	default BR2_ARCH_AT91_2_6_22		if BR2_LINUX_2_6_22
-	default BR2_ARCH_AT91_2_6_21		if BR2_LINUX_2_6_21
-	default BR2_ARCH_AT91_2_6_20		if BR2_LINUX_2_6_20
 	default BR2_ARCH_AT91_2_6_28
 	help
 	  Select a patch to add to the Linux kernel
@@ -29,36 +27,31 @@ config	BR2_ARCH_AT91_2_6_26
 	bool "2.6.26"
 	help
 	  Apply the at91 linux-2.6.26 patches
+	  Will apply on latest 2.6.2
 
 config	BR2_ARCH_AT91_2_6_25
 	bool "2.6.25"
 	help
 	  Apply the at91 linux-2.6.25 patches
+	  Will apply on latest 2.6.2
 
 config	BR2_ARCH_AT91_2_6_24
 	bool "2.6.24"
 	help
 	  Apply the at91 linux-2.6.24 patches
+	  Will apply on latest 2.6.2
 
 config	BR2_ARCH_AT91_2_6_23
 	bool "2.6.23"
 	help
 	  Apply the at91 linux-2.6.23 patches
+	  Will apply on latest 2.6.2
 
 config	BR2_ARCH_AT91_2_6_22
 	bool "2.6.22"
 	help
 	  Apply the at91 linux-2.6.22 patches
-
-config	BR2_ARCH_AT91_2_6_21
-	bool "2.6.21"
-	help
-	  Apply the at91 linux-2.6.21 patches
-
-config	BR2_ARCH_AT91_2_6_20
-	bool "2.6.20"
-	help
-	  Apply the at91 linux-2.6.20 patches
+	  Will apply on latest 2.6.2
 
 endchoice
 
@@ -73,8 +66,6 @@ config	BR2_KERNEL_ARCH_PATCH_VERSION
 	default "2.6.24" if BR2_ARCH_AT91_2_6_24
 	default "2.6.24" if BR2_ARCH_AT91_2_6_23
 	default "2.6.22" if BR2_ARCH_AT91_2_6_22
-	default "2.6.21" if BR2_ARCH_AT91_2_6_21
-	default "2.6.20" if BR2_ARCH_AT91_2_6_20
 
 config	BR2_KERNEL_ARCH_PATCH_DIR
 	string
