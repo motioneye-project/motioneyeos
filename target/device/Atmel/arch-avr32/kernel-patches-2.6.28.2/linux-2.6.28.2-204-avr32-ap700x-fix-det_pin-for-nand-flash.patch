@@ -1,0 +1,33 @@
+diff -urN linux-2.6.28.2-0rig//arch/avr32/boards/atstk1000/atstk1002.c linux-2.6.28.2/arch/avr32/boards/atstk1000/atstk1002.c
+--- linux-2.6.28.2-0rig//arch/avr32/boards/atstk1000/atstk1002.c	2009-01-29 08:39:35.000000000 +0100
++++ linux-2.6.28.2/arch/avr32/boards/atstk1000/atstk1002.c	2009-01-29 09:50:56.000000000 +0100
+@@ -99,6 +99,7 @@
+ static struct atmel_nand_data atstk1006_nand_data __initdata = {
+ 	.cle		= 21,
+ 	.ale		= 22,
++	.det_pin	= GPIO_PIN_NONE,
+ 	.rdy_pin	= GPIO_PIN_PB(30),
+ 	.enable_pin	= GPIO_PIN_PB(29),
+ 	.partition_info	= nand_part_info,
+diff -urN linux-2.6.28.2-0rig//arch/avr32/mach-at32ap/at32ap700x.c linux-2.6.28.2/arch/avr32/mach-at32ap/at32ap700x.c
+--- linux-2.6.28.2-0rig//arch/avr32/mach-at32ap/at32ap700x.c	2009-01-29 09:41:04.000000000 +0100
++++ linux-2.6.28.2/arch/avr32/mach-at32ap/at32ap700x.c	2009-01-29 09:50:56.000000000 +0100
+@@ -1972,13 +1972,14 @@
+ 		goto fail;
+ 
+ 	hmatrix_sfr_set_bits(HMATRIX_SLAVE_EBI, HMATRIX_EBI_NAND_ENABLE);
+-	if (data->enable_pin)
++
++	if (gpio_is_valid(data->enable_pin))
+ 		at32_select_gpio(data->enable_pin,
+ 				AT32_GPIOF_OUTPUT | AT32_GPIOF_HIGH);
+-	if (data->rdy_pin)
+-		at32_select_gpio(data->rdy_pin, 0);
+-	if (data->det_pin)
++	if (gpio_is_valid(data->det_pin))
+ 		at32_select_gpio(data->det_pin, 0);
++	if (gpio_is_valid(data->rdy_pin))
++		at32_select_gpio(data->rdy_pin, 0);
+ 
+ 	platform_device_add(pdev);
+ 	return pdev;

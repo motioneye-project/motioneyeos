@@ -1,0 +1,23 @@
+From f26e2224d46430ac4f6c0ddeb518f5766ba62b16 Mon Sep 17 00:00:00 2001
+From: Hans-Christian Egtvedt <hans-christian.egtvedt@atmel.com>
+Date: Wed, 26 Nov 2008 14:10:45 +0100
+Subject: [PATCH 2/3] atmel_mpopfb: remove define DEBUG to disable debug output
+
+Signed-off-by: Hans-Christian Egtvedt <hans-christian.egtvedt@atmel.com>
+
+diff --git a/drivers/video/atmel_mpopfb.c b/drivers/video/atmel_mpopfb.c
+index 0a07f7b..3b4b668 100644
+--- a/drivers/video/atmel_mpopfb.c
++++ b/drivers/video/atmel_mpopfb.c
+@@ -8,8 +8,6 @@
+  * more details.
+  */
+ 
+-#define DEBUG
+-
+ #include <linux/clk.h>
+ #include <linux/delay.h>
+ #include <linux/dma-mapping.h>
+-- 
+1.5.6.3
+
