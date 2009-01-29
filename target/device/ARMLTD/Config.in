@@ -5,16 +5,37 @@ menuconfig BR2_TARGET_ARMLTD
 comment "Arm based Device Support"
 	depends on BR2_arm && BR2_TARGET_ARMLTD
 
+
+if BR2_TARGET_ARMLTD
+
+choice
+	prompt "Controller board"
+	help
+	  ARM Ltd. Controller Board to build for
+
 config BR2_TARGET_ARM_INTEGRATOR_926
 	bool "Integrator arm926"
 	depends on BR2_arm && BR2_TARGET_ARMLTD
 	default y
-	select BR2_PACKAGE_LINUX
 	select BR2_ARM_EABI
-	select BR2_KERNEL_HEADERS_2_6_22
-	select BR2_PTHREADS
 	select BR2_arm926t
-	help
-	  An ARM integrator 926 board for use with qemu.
-	  This one has an MMU.
 
+config BR2_TARGET_ARM_INTEGRATOR_926_HUGE
+	bool "Integrator arm926 (Huge)"
+	depends on BR2_arm && BR2_TARGET_ARMLTD
+	default y
+	select BR2_ARM_EABI
+	select BR2_arm926t
+
+endchoice
+
+config BR2_BOARD_NAME
+	string
+	default "integrator926"		if BR2_TARGET_ARM_INTEGRATOR_926
+	default "integrator926_huge"	if BR2_TARGET_ARM_INTEGRATOR_926
+
+config BR2_BOARD_PATH
+	string "Board Path"
+	default "target/device/ARMLTD/$(BR2_BOARD_NAME)"
+
+endif
