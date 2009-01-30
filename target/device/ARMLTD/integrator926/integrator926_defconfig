@@ -306,7 +306,7 @@ BR2_HOST_FAKEROOT=y
 # oprofile requires a toolchain with C++ support enabled
 #
 # BR2_PACKAGE_PKGCONFIG is not set
-# BR2_READLINE is not set
+# BR2_PACKAGE_READLINE is not set
 # BR2_PACKAGE_PCRE is not set
 
 #

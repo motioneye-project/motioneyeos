@@ -2,7 +2,7 @@ config BR2_PACKAGE_MYSQL_CLIENT
 	bool "MySQL 5.1 client"
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_NCURSES
-	select BR2_READLINE
+	select BR2_PACKAGE_READLINE
 	help
 	  MySQL client
 

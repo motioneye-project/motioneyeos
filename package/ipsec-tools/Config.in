@@ -51,7 +51,7 @@ config BR2_PACKAGE_IPSEC_TOOLS_IPV6
 
 config BR2_PACKAGE_IPSEC_TOOLS_READLINE
 	depends on BR2_PACKAGE_IPSEC_TOOLS
-	select BR2_READLINE
+	select BR2_PACKAGE_READLINE
 	bool "Enable readline input support if available."
 
 config BR2_PACKAGE_IPSEC_TOOLS_LIBS

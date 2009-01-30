@@ -86,6 +86,6 @@ readline-clean:
 readline-dirclean:
 	rm -rf $(READLINE_DIR)
 
-ifeq ($(BR2_READLINE),y)
+ifeq ($(BR2_PACKAGE_READLINE),y)
 TARGETS+=readline
 endif
