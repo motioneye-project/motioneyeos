@@ -2,7 +2,7 @@ config BR2_PACKAGE_QTE
 	bool "Qt/E"
 	depends on BR2_DEPRECATED
 	depends on BR2_INSTALL_LIBSTDCPP
-	select BR2_PTHREADS_NATIVE
+	depends on BR2_PTHREADS_NATIVE
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBPNG
 	help
