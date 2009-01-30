@@ -3,6 +3,7 @@ VALKA_PATH= target/device/valka
 
 TARGET_SKELETON=$(VALKA_PATH)/target_skeleton
 TARGET_DEVICE_TABLE=$(VALKA_PATH)/device_table.txt
+KERNEL_HEADERS_PATCH_DIR=target/device/Atmel/arch-avr32/kernel-headers-2.6.28.2
 
 valka_status:
 	@echo "***************************************************************"

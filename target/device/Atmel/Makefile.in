@@ -13,6 +13,10 @@ TARGET_SKELETON:=$(ATMEL_TARGET)/target_skeleton
 TARGET_DEVICE_TABLE:=$(ATMEL_TARGET)/device_table.txt
 TARGET_SKELETON_LINKS:=$(ATMEL_TARGET)/skel.tar.gz
 
+ifeq ($(BR2_avr32),y)
+KERNEL_HEADERS_PATCH_DIR=target/device/Atmel/arch-avr32/kernel-headers-2.6.28.2
+endif
+
 ifneq ($(COPYTO),)
 TARGET_ATMEL_COPYTO:=$(strip $(subst ",, $(BR2_COPYTO)))
 else
