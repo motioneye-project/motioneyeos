@@ -319,14 +319,14 @@ endif
 		ln -snf $(REAL_GNU_TARGET_NAME)-gcc \
 			$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-cc; \
 	fi
-	if [ ! -e $(STAGING_DIR)/usr/bin/cc ]; then \
-		ln -snf gcc $(STAGING_DIR)/usr/bin/cc; \
+	if [ ! -e $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/cc ]; then \
+		ln -snf gcc $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/cc; \
 	fi
 	# Set up the symlinks to enable lying about target name.
 	set -e; \
-	(cd $(STAGING_DIR); \
+	(cd $(STAGING_DIR)/usr; \
 		ln -snf $(REAL_GNU_TARGET_NAME) $(GNU_TARGET_NAME); \
-		cd usr/bin; \
+		cd bin; \
 		for app in $(REAL_GNU_TARGET_NAME)-*; do \
 			ln -snf $${app} \
 			$(GNU_TARGET_NAME)$${app##$(REAL_GNU_TARGET_NAME)}; \
