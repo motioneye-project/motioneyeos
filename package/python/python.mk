@@ -17,7 +17,7 @@ PYTHON_SITE_PACKAGE_DIR=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site
 BR2_PYTHON_DISABLED_MODULES=dbm zipfile
 
 ifeq ($(BR2_PACKAGE_PYTHON_READLINE),y)
-PYTHON_DEPS += readline-target
+PYTHON_DEPS += readline
 else
 BR2_PYTHON_DISABLED_MODULES += readline
 endif

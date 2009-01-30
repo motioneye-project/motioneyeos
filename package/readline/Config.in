@@ -3,9 +3,3 @@ config BR2_READLINE
 	bool "readline"
 	help
 	    Enable GNU readline support?
-
-config BR2_PACKAGE_READLINE_TARGET
-	bool "readline for the target"
-	depends on BR2_READLINE
-	help
-	  Say yes here to install the readline libraries on the target.

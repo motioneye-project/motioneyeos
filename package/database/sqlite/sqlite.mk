@@ -55,7 +55,7 @@ $(TARGET_DIR)/usr/bin/sqlite3: $(STAGING_DIR)/usr/bin/sqlite3
 	cp -dpf $(STAGING_DIR)/usr/lib/libsqlite3*.so* $(TARGET_DIR)/usr/lib/
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libsqlite3.so
 
-sqlite: uclibc readline-target ncurses $(TARGET_DIR)/usr/bin/sqlite3
+sqlite: uclibc ncurses $(TARGET_DIR)/usr/bin/sqlite3
 
 sqlite-source: $(DL_DIR)/$(SQLITE_SOURCE)
 
