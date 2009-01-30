@@ -14,9 +14,10 @@ config BR2_PACKAGE_QTE
 	  Only tested with threading on, PACKAGE_JPEG, PACKAGE_LIBPNG,
 	  but remove those if you like.
 
-comment "Qt/E requires a toolchain with C++ support enabled"
+comment "Qt/E requires a toolchain with C++ support enabled and native threading enabled (NPTL)"
 	depends on !BR2_INSTALL_LIBSTDCPP
 	depends on BR2_DEPRECATED
+	depends on !BR2_PTHREADS_NATIVE
 
 config BR2_PACKAGE_QTE_COMMERCIAL_USERNAME
 	string "Qt/E Commercial License Username"
