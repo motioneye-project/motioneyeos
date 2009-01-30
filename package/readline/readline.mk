@@ -75,9 +75,6 @@ $(TARGET_DIR)/$(READLINE_TARGET_SHARED_BINARY): $(READLINE_DIR)/$(READLINE_BINAR
 		-C $(READLINE_DIR) install-shared uninstall-doc
 	chmod 775 $(TARGET_DIR)/usr/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/usr/lib/libhistory.so.$(READLINE_VERSION)
 	$(STRIPCMD) $(TARGET_DIR)/usr/lib/libreadline.so.$(READLINE_VERSION) $(TARGET_DIR)/usr/lib/libhistory.so.$(READLINE_VERSION)
-ifneq ($(BR2_PACKAGE_READLINE_HEADERS),y)
-	rm -rf $(TARGET_DIR)/usr/include/readline
-endif
 
 readline: ncurses $(STAGING_DIR)/usr/include/readline/readline.h
 
