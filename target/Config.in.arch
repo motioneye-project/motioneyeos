@@ -670,11 +670,10 @@ config BR2_GCC_TARGET_ARCH
 
 config BR2_GCC_TARGET_ABI
 	string
-	default apcs-gnu	if BR2_arm_dunno
+	default apcs-gnu	if BR2_ARM_OABI
 	default atpcs		if BR2_arm_dunno
 	default aapcs		if BR2_arm_dunno
-	default aapcs-linux	if BR2_arm_dunno
-	default iwmmxt		if BR2_iwmmxt
+	default aapcs-linux	if BR2_ARM_EABI
 	default 32		if BR2_MIPS_OABI32
 	default n32		if BR2_MIPS_ABI32
 	default eabi		if BR2_MIPS_EABI
