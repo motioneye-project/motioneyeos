@@ -8,7 +8,7 @@ LIBXML2_SOURCE = libxml2-sources-$(LIBXML2_VERSION).tar.gz
 LIBXML2_SITE = ftp://xmlsoft.org/libxml2
 LIBXML2_INSTALL_STAGING = YES
 LIBXML2_INSTALL_TARGET = YES
-LIBXML2_LIBTOOL_PATCH = NO
+
 ifneq ($(BR2_LARGEFILE),y)
 LIBXML2_CONF_ENV = CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
 endif
@@ -27,21 +27,10 @@ $(LIBXML2_HOOK_POST_EXTRACT):
 	rm -f $(LIBXML2_DIR)/macos/src/XMLTestPrefix.h.rej
 	touch $@
 
-$(LIBXML2_HOOK_POST_INSTALL):\
-	$(LIBXML2_TARGET_SOURCE)		\
-	$(LIBXML2_TARGET_EXTRACT)		\
-	$(LIBXML2_HOOK_POST_EXTRACT)		\
-	$(LIBXML2_TARGET_PATCH)			\
-	$(LIBXML2_TARGET_AUTORECONF)		\
-	$(LIBXML2_TARGET_CONFIGURE)		\
-	$(LIBXML2_TARGET_LIBTOOL_PATCH)		\
-	$(LIBXML2_TARGET_BUILD)			\
-	$(LIBXML2_HOOK_POST_BUILD)		\
-	$(LIBXML2_TARGET_INSTALL_STAGING)
+$(LIBXML2_HOOK_POST_INSTALL):
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
 	$(SED) "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
 	rm -rf $(TARGET_DIR)/usr/share/aclocal \
 	       $(TARGET_DIR)/usr/share/doc/libxml2-$(LIBXML2_VERSION) \
 	       $(TARGET_DIR)/usr/share/gtk-doc
 	touch $@
-
