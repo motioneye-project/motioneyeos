@@ -109,17 +109,12 @@ endif
 endif
 endif
 
-# Override config method with shell variable
-ifneq ($(BUILDROOT_USE_XWINDOWS),)
-KERNEL_CONFIG_METHOD:=xconfig
-#"))
-else
 KERNEL_CONFIG_METHOD:=$(strip $(subst ",,$(BR2_KERNEL_CONFIG_METHOD)))
 #"))
 ifeq ($(KERNEL_CONFIG_METHOD),)
 KERNEL_CONFIG_METHOD:=menuconfig
 endif
-endif
+
 # -----------------------------------------------------------------------------
 ifndef LINUX26_FORMAT
 ifneq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_FORMAT))),)
