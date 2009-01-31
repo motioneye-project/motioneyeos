@@ -28,7 +28,7 @@ $(DBUS_DIR)/.unpacked: $(DL_DIR)/$(DBUS_SOURCE)
 	$(DBUS_CAT) $(DL_DIR)/$(DBUS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked
+$(DBUS_DIR)/.configured: $(DBUS_DIR)/.unpacked $(DBUS_XML_DEP)
 	(cd $(DBUS_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -113,3 +113,9 @@ dbus-dirclean:
 ifeq ($(BR2_PACKAGE_DBUS),y)
 TARGETS+=dbus
 endif
+
+dbus-status:
+	@echo	BR2_DBUS_EXPAT=$(BR2_DBUS_EXPAT)
+	@echo	DBUS_XML=$(DBUS_XML)
+	@echo	DBUS_XML_DEP=$(DBUS_XML_DEP)
+
