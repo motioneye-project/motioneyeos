@@ -18,6 +18,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/libxcb/Config.in
 		source package/x11r7/mesa3d/Config.in
 		source package/x11r7/pthread-stubs/Config.in
+		source package/x11r7/xcb-util/Config.in
 		source package/x11r7/xlib_libFS/Config.in
 		source package/x11r7/xlib_libICE/Config.in
 		source package/x11r7/xlib_libSM/Config.in
@@ -126,6 +127,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xlsclients/Config.in
 		source package/x11r7/xapp_xlsfonts/Config.in
 		source package/x11r7/xapp_xmag/Config.in
+		source package/x11r7/xapp_xman/Config.in
 		source package/x11r7/xapp_xmessage/Config.in
 		source package/x11r7/xapp_xmh/Config.in
 		source package/x11r7/xapp_xmodmap/Config.in
