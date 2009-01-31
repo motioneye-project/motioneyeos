@@ -26,6 +26,8 @@ config BR2_TOOLCHAIN_SOURCE
 	default y if BR2_TOOLCHAIN_BUILDROOT || BR2_TOOLCHAIN_EXTERNAL_SOURCE
 	default n if BR2_TOOLCHAIN_EXTERNAL
 
+source "toolchain/external-toolchain/Config.in.2"
+
 source "target/device/Config.in.toolchain"
 
 source "toolchain/Config.in.1"
@@ -38,6 +40,6 @@ source "toolchain/gdb/Config.in"
 comment "Common Toolchain Options"
 
 source "toolchain/Config.in.2"
-source "toolchain/external-toolchain/Config.in.2"
 
 endmenu
+
