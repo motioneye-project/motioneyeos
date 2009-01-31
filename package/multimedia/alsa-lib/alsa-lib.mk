@@ -12,9 +12,15 @@ ALSA_LIB_BINARY:=libasound.so.2.0.0
 ALSA_LIB_TARGET_BINARY:=usr/lib/$(ALSA_LIB_BINARY)
 
 ifeq ($(BR2_arm),y)
-ALSA_LIB_ABI:=-mabi=aapcs-linux
+ALSA_LIB_ABI+=-mabi=aapcs-linux
 else
-ALSA_LIB_ABI:=
+ALSA_LIB_ABI+=
+endif
+
+ifeq ($(BR2_avr32),y)
+ALSA_LIB_ABI+=-DAVR32_INLINE_BUG
+else
+ALSA_LIB_ABI+=
 endif
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB_PYTHON),y)
@@ -76,6 +82,8 @@ $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY): $(STAGING_DIR)/$(ALSA_LIB_TARGET_BINARY
 	touch -c $@
 
 alsa-lib: uclibc $(ALSA_LIB_DEPS) $(TARGET_DIR)/$(ALSA_LIB_TARGET_BINARY)
+
+alsa-lib-unpacked: $(ALSA_LIB_DIR)/.unpacked
 
 alsa-lib-source: $(DL_DIR)/$(ALSA_LIB_SOURCE)
 
