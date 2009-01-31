@@ -1,0 +1,33 @@
+https://support.ntp.org/bugs/show_bug.cgi?id=769
+http://bugs.gentoo.org/254030
+
+--- ntp/util/tickadj.c
++++ ntp/util/tickadj.c
+@@ -21,7 +21,8 @@
+ # include <unistd.h>
+ #endif /* HAVE_UNISTD_H */
+ 
+-#ifdef HAVE___ADJTIMEX		/* Linux */
++/* proper handling here has been moved to upstream ntp bugzilla */
++#ifdef linux
+ 
+ #include <sys/timex.h>
+ struct timex txc;
+@@ -91,7 +92,7 @@
+ 	}
+ 
+ 	if (!errflg) {
+-		if (__adjtimex(&txc) < 0)
++		if (adjtimex(&txc) < 0)
+ 			perror("adjtimex");
+ 		else if (!quiet)
+ 			printf("tick     = %ld\ntick_adj = %d\n",
+@@ -146,7 +147,7 @@
+ #endif
+ 	}
+     
+-	if (__adjtimex(&txc) < 0)
++	if (adjtimex(&txc) < 0)
+ 	{
+ 		perror("adjtimex");
+ 	}
