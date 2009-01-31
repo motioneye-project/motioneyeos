@@ -484,7 +484,7 @@ flush:
 	-@$(MAKE) oldconfig
 
 update:
-	cp .config $(BOARD_PATH)/$(BOARD_NAME)_defconfig
+	cp .config $(BOARD_PATH)/$(PROJECT)_defconfig
 
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 
