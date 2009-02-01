@@ -505,8 +505,6 @@ config BR2_LINUX_COPYTO_ROOTFS
 
 config BR2_LINUX_COPYTO_TFTPBOOT
 	bool "Copy kernel to /tftpboot"
-	default y if BR2_TARGET_ATMEL
-	default n if !BR2_TARGET_ATMEL
 	help
 	  Copy kernel to /tftpboot directory
 
@@ -518,8 +516,6 @@ config BR2_LINUX_COPYTO
 
 config BR2_LINUX_COPY_CONFIGURATION
 	bool "Copy buildroot configuration to Linux file system"
-	default y if BR2_TARGET_ATMEL
-	default n if !BR2_TARGET_ATMEL
 	help
 	  The configuration files for buildroot, uclibc, busybox and linux
 	  are copied to the "<root>/boot" directory.
