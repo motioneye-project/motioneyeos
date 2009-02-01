@@ -3,8 +3,8 @@
 # mpfr
 #
 #############################################################
-MPFR_VERSION:=2.3.0
-MPFR_PATCH:=patches
+MPFR_VERSION:=2.3.2
+#MPFR_PATCH:=patches
 MPFR_PATCH_FILE:=mpfr-$(MPFR_VERSION).patch
 MPFR_SOURCE:=mpfr-$(MPFR_VERSION).tar.bz2
 MPFR_CAT:=$(BZCAT)
@@ -13,8 +13,7 @@ MPFR_DIR:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_TARGET_DIR:=$(BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_BINARY:=libmpfr$(LIBTGTEXT)
 MPFR_HOST_BINARY:=libmpfr$(HOST_SHREXT)
-MPFR_LIBVERSION:=1.0.1
-#MPFR_SVN_CMD:=svn co svn://scm.gforge.inria.fr/svn/mpfr/branches/2.3 mpfr-2.3
+MPFR_LIBVERSION:=1.1.2
 
 # need patch
 ifneq ($(MPFR_PATCH),)
