@@ -22,31 +22,18 @@ $(LIBEXOSIP2_DIR)/.configured: $(LIBEXOSIP2_DIR)/.unpacked
 	(cd $(LIBEXOSIP2_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
+		OSIP_CFLAGS="$(TARGET_CFLAGS)" \
+		OSIP_LIBS="-L$(STAGING_DIR)/usr/lib -losip2 -losipparser2" \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
-		--exec-prefix=/usr \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--libdir=/usr/lib \
-		--includedir=$(STAGING_DIR)/usr/include \
-		--oldincludedir=/usr/include \
 		--enable-shared \
 		--enable-static \
 		$(DISABLE_NLS) \
 	)
 	touch $@
-
-#		--with-gnu-ld \
-#		--libexecdir=$(STAGING_DIR)/usr/lib \
-#		--libdir=$(STAGING_DIR)/usr/lib \
-#		--libdir=/usr/lib \
-#		--libexecdir=/usr/lib \
-
 
 $(LIBEXOSIP2_DIR)/.compiled: $(LIBEXOSIP2_DIR)/.configured
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(LIBEXOSIP2_DIR)
