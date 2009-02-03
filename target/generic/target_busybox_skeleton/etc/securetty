@@ -22,3 +22,7 @@ ttyPSC0
 ttyPSC1
 ttyPSC2
 ttyPSC3
+ttyCPM0
+ttyCPM1
+ttyCPM2
+ttyCPM3
