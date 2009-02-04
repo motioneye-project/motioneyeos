@@ -82,7 +82,10 @@ ifneq ($(MICROPERL_MODS),)
 	 done; \
 	)
 endif
-	cp -dpf $(MICROPERL_DIR)/microperl $(TARGET_DIR)/usr/bin/microperl
+	cp -dpf $(MICROPERL_DIR)/microperl $@
+ifneq ($(BR2_STRIP_none),y)
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
+endif
 	(cd $(TARGET_DIR)/usr/bin; rm -f perl; ln -s microperl perl;)
 
 microperl: uclibc $(TARGET_DIR)/usr/bin/microperl
