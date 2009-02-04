@@ -498,23 +498,5 @@ gcc-status:
 	@echo GCC_PATCH_DIR=$(GCC_PATCH_DIR)
 	@echo GCC_SITE=$(GCC_SITE)
 
-GCCSCRIPT=$(ARCH)-uclibc-gcc-$(BR2_GCC_VERSION).sh
-
-gccscript:
-	@rm -f $(GCCSCRIPT)
-	@rm -f gcc.sh
-	@echo	"#!/bin/sh"						> $(GCCSCRIPT)
-	@echo	"# $(ARCH) cross compiler toolchain created $(DATE)"	>> $(GCCSCRIPT)
-	@echo	"# gcc-$(BR2_GCC_VERSION)"				>> $(GCCSCRIPT)
-	@echo	"# binutils-$(BR2_BINUTILS_VERSION)"			>> $(GCCSCRIPT)
-	@echo	"# uClibc-$(UCLIBC_VER)"				>> $(GCCSCRIPT)
-	@echo	"export	GCCROOT=$(BR2_STAGING_DIR)/usr"			>> $(GCCSCRIPT)
-	@echo	"export	PATH=\$$GCCROOT/bin:\$$PATH"			>> $(GCCSCRIPT)
-	@echo	"export	GCCPREFIX=$(ARCH)-linux"			>> $(GCCSCRIPT)
-	@echo	"export	CROSS_COMPILE=\$$GCCPREFIX-"			>> $(GCCSCRIPT)
-	@chmod	a+x $(GCCSCRIPT)
-	@ln	-s $(GCCSCRIPT) gcc.sh
-	@echo	"$(GCCSCRIPT) created"
-	@more	$(GCCSCRIPT)
 endif
 # gcc-4.x only

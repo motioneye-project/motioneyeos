@@ -3,12 +3,9 @@
 if BR2_TOOLCHAIN_EXTERNAL
 config BR2_TOOLCHAIN_EXTERNAL_PATH
 	string "External toolchain path"
-	default "$(GCCROOT)"
+	default "/path/to/staging_dir/usr"
 	help
 	  Path to where the external toolchain is installed.
-	  Either define GCCROOT in your environment
-	  or an absolute path like:
-	  "/path/to/staging_dir/usr"
 
 config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	string "External toolchain prefix"
