@@ -1,5 +1,17 @@
 menu "Target filesystem options"
 
+config BR2_ROOTFS_PREFIX
+	string "Custom root fs prefix"
+	default "rootfs"
+	help
+	  Add a custom string to the beginning of the root file system name.
+
+config BR2_ROOTFS_SUFFIX
+	string "Custom root fs suffix"
+	default ""
+	help
+	  Add a custom string to the end of the root file system name.
+
 comment "filesystem for target device"
 
 source "target/cramfs/Config.in"
