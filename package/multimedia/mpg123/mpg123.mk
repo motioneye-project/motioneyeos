@@ -31,7 +31,7 @@ $(MPG123_DIR)/.configured: $(MPG123_DIR)/.unpacked
 	(cd $(MPG123_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
-		CFLAGS="$(TARGET_CFLAGS) $(MPG123_ARM_UNROLL_FIX)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--target=$(REAL_GNU_TARGET_NAME) \
