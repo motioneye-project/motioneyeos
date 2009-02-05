@@ -55,9 +55,6 @@ $(TARGET_DIR)/$(MPG123_TARGET_BIN): $(MPG123_DIR)/$(MPG123_BIN)
 
 mpg123: uclibc $(MPG123_ALSA_DEP) $(TARGET_DIR)/$(MPG123_TARGET_BIN)
 
-mpg123x: 
-	touch $(MPG123_DIR)/.configured
-
 mpg123-unpacked: $(MPG123_DIR)/.unpacked
 
 mpg123-clean:
