@@ -7,8 +7,8 @@ ChangeLog (regrename)
 
 Index: gcc/regrename.c
 ===================================================================
---- gcc/regrename.c	(revision 197947)
-+++ gcc/regrename.c	(working copy)
+--- a/gcc/regrename.c	(revision 197947)
++++ b/gcc/regrename.c	(working copy)
 @@ -783,6 +783,10 @@ build_def_use (basic_block bb)
  		recog_data.operand_type[i] = OP_INOUT;
  	    }
