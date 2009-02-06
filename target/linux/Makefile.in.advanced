@@ -138,7 +138,6 @@ ifeq ($(LINUX26_FORMAT),vmlinux)
 ifeq ($(LINUX26_BINLOC),)
 LINUX26_BINLOC:=$(LINUX26_FORMAT)
 endif
-KERNEL_EXT:=
 endif
 
 # --------------
@@ -149,7 +148,6 @@ LINUX26_MKIMAGE_DEP:=$(LINUX26_MKIMAGE_DIR)/mkimage
 ifeq ($(LINUX26_BINLOC),)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
 endif
-KERNEL_EXT:=.gz
 endif
 
 # --------------
@@ -158,7 +156,6 @@ ifeq ($(LINUX26_FORMAT),zImage)
 ifeq ($(LINUX26_BINLOC),)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
 endif
-KERNEL_EXT:=.z
 endif
 
 # --------------
@@ -167,14 +164,13 @@ ifeq ($(LINUX26_FORMAT),bzImage)
 ifeq ($(LINUX26_BINLOC),)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/bzImage
 endif
-KERNEL_EXT:=.bz
 endif
 
 ROOTFS_STRIPPED_SUFFIX=$(strip $(subst ",,$(ROOTFS_SUFFIX)))
 #"))
 # -----------------------------------------------------------------------------
 # File name for the Linux kernel binary
-LINUX26_KERNEL_NAME:=$(BOARD_NAME)-linux-$(LINUX26_VERSION)$(ROOTFS_STRIPPED_SUFFIX)$(KERNEL_EXT)
+LINUX26_KERNEL_NAME:=$(LINUX26_FORMAT)$(ROOTFS_STRIPPED_SUFFIX)
 
 
 ifeq ($(BOARD_NAME),)
@@ -182,7 +178,7 @@ BOARD_NAME=$(ARCH)
 endif
 
 ifndef LINUX26_KERNEL
-LINUX26_KERNEL:=$(BINARIES_DIR)/$(BOARD_NAME)-linux-$(LINUX26_VERSION)-$(DATE)$(KERNEL_EXT)
+LINUX26_KERNEL:=$(BINARIES_DIR)/$(LINUX26_KERNEL_NAME)
 endif
 
 # for packages that need it

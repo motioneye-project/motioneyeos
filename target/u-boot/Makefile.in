@@ -243,7 +243,7 @@ endif
 ifneq ($(TARGET_UBOOT_NETMASK),)
 	echo setenv netmask $(TARGET_UBOOT_NETMASK) >> $(U_BOOT_AUTOSCRIPT)
 endif
-	echo setenv linux $(LINUX26_KERNEL_NAME).gz >> $(U_BOOT_AUTOSCRIPT)
+	echo setenv linux $(LINUX26_KERNEL_NAME) >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv kernel-version $(LINUX26_VERSION) >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv kernel-date $(DATE) >> $(U_BOOT_AUTOSCRIPT)
 	echo setenv hostname $(TARGET_HOSTNAME) >> $(U_BOOT_AUTOSCRIPT)
