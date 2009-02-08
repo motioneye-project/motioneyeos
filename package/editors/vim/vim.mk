@@ -9,7 +9,7 @@ VIM_SITE:=http://ftp.vim.org/pub/vim
 VIM_SOURCE_SITE:=$(VIM_SITE)/unix
 VIM_PATCH_SITE:=$(VIM_SITE)/patches/7.1
 VIM_DIR:=$(BUILD_DIR)/vim71
-VIM_PATCHES:=$(shell cat package/editors/vim/patches | sed -s 's:\(.\+\):$(DL_DIR)/vim/$(VIM_VERSION).\1:')
+VIM_PATCHES:=$(shell sed -e 's:^:$(DL_DIR)/vim/$(VIM_VERSION).:' package/editors/vim/patches)
 VIM_CONFIG_H:=$(VIM_DIR)/src/auto/config.h
 VIM_CONFIG_MK:=$(VIM_DIR)/src/auto/config.mk
 
