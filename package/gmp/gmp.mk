@@ -83,7 +83,7 @@ $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 		--prefix="$(GMP_HOST_DIR)" \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
-		--enable-shared \
+		--disable-shared \
 		--enable-static \
 		$(DISABLE_NLS) \
 	)

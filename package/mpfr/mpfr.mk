@@ -96,7 +96,7 @@ $(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_HOST_B
 		--prefix="$(MPFR_HOST_DIR)" \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
-		--enable-shared \
+		--disable-shared \
 		--enable-static \
 		--with-gmp=$(GMP_HOST_DIR) \
 		$(DISABLE_NLS) \
