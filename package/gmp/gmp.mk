@@ -10,7 +10,7 @@ GMP_CAT:=$(BZCAT)
 GMP_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_TARGET_DIR:=$(BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_BINARY:=libgmp$(LIBTGTEXT)
-GMP_HOST_BINARY:=libgmp$(HOST_SHREXT)
+GMP_HOST_BINARY:=libgmp$(HOST_LIBEXT)
 GMP_LIBVERSION:=3.4.2
 
 # this is a workaround for a bug in GMP, please see
