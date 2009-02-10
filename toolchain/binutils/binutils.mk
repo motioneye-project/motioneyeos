@@ -55,8 +55,8 @@ BINUTILS_NO_MPFR:=y
 endif
 
 ifndef BINUTILS_NO_MPFR
-BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp$(HOST_SHREXT) \
-	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr$(HOST_SHREXT)
+BINUTILS_HOST_PREREQ:=$(TOOL_BUILD_DIR)/gmp/lib/libgmp$(HOST_LIBEXT) \
+	$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr$(HOST_LIBEXT)
 
 BINUTILS_TARGET_PREREQ:=$(TARGET_DIR)/usr/lib/libgmp$(LIBTGTEXT) \
 	$(TARGET_DIR)/usr/lib/libmpfr$(LIBTGTEXT)
