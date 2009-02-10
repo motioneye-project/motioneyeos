@@ -311,7 +311,6 @@ config BR2_TARGET_UBOOT_ETHADDR
 
 config BR2_TARGET_UBOOT_ETH1ADDR
 	string "ethernet 2 address"
-	depends on BR2_TARGET_AVR32
 	help
 	  Target MAC address for the second ethernet interface.
 
