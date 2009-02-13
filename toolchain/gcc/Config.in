@@ -4,7 +4,7 @@ comment "GCC Options"
 
 choice
 	prompt "GCC compiler Version"
-	default BR2_GCC_VERSION_4_3_2 if !BR2_avr32
+	default BR2_GCC_VERSION_4_3_3 if !BR2_avr32
 	default BR2_GCC_VERSION_4_2_3 if BR2_avr32
 	help
 	  Select the version of gcc you wish to use.
@@ -49,12 +49,17 @@ choice
 
 	config BR2_GCC_VERSION_4_3_1
 		depends on !BR2_avr32 && !BR2_nios2
-		depends on BR2_RECENT || BR2_DEPRECATED
+		depends on BR2_DEPRECATED
 		bool "gcc 4.3.1"
 
 	config BR2_GCC_VERSION_4_3_2
 		depends on !BR2_avr32 && !BR2_nios2
+		depends on BR2_RECENT || BR2_DEPRECATED
 		bool "gcc 4.3.2"
+
+	config BR2_GCC_VERSION_4_3_3
+		depends on !BR2_avr32 && !BR2_nios2
+		bool "gcc 4.3.3"
 
 #	config BR2_GCC_VERSION_4_3
 #		depends on !BR2_avr32 && !BR2_nios2
@@ -95,6 +100,7 @@ config BR2_GCC_VERSION
 	default "4.2.4"     if BR2_GCC_VERSION_4_2_4
 	default "4.3.1"     if BR2_GCC_VERSION_4_3_1
 	default "4.3.2"     if BR2_GCC_VERSION_4_3_2
+	default "4.3.3"     if BR2_GCC_VERSION_4_3_3
 	default "4.3"       if BR2_GCC_VERSION_4_3
 
 config BR2_TOOLCHAIN_SYSROOT
