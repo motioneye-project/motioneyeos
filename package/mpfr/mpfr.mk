@@ -3,7 +3,7 @@
 # mpfr
 #
 #############################################################
-MPFR_VERSION:=2.3.2
+MPFR_VERSION:=2.4.0
 #MPFR_PATCH:=patches
 MPFR_PATCH_FILE:=mpfr-$(MPFR_VERSION).patch
 MPFR_SOURCE:=mpfr-$(MPFR_VERSION).tar.bz2
@@ -13,7 +13,7 @@ MPFR_DIR:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_TARGET_DIR:=$(BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_BINARY:=libmpfr$(LIBTGTEXT)
 MPFR_HOST_BINARY:=libmpfr$(HOST_LIBEXT)
-MPFR_LIBVERSION:=1.1.2
+MPFR_LIBVERSION:=1.2.0
 
 # need patch
 ifneq ($(MPFR_PATCH),)
