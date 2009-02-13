@@ -3,7 +3,7 @@
 # gmp
 #
 #############################################################
-GMP_VERSION:=4.2.2
+GMP_VERSION:=4.2.4
 GMP_SOURCE:=gmp-$(GMP_VERSION).tar.bz2
 GMP_SITE:=http://ftp.sunet.se/pub/gnu/gmp
 GMP_CAT:=$(BZCAT)
@@ -11,7 +11,7 @@ GMP_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_TARGET_DIR:=$(BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_BINARY:=libgmp$(LIBTGTEXT)
 GMP_HOST_BINARY:=libgmp$(HOST_LIBEXT)
-GMP_LIBVERSION:=3.4.2
+GMP_LIBVERSION:=3.4.4
 
 # this is a workaround for a bug in GMP, please see
 # http://gmplib.org/list-archives/gmp-devel/2006-April/000618.html
