@@ -27,4 +27,15 @@ config BR2_PACKAGE_UDEV_SCSI_ID
 	help
 	  Build and install SCSI disk identification library.
 
+config BR2_PACKAGE_UDEV_PATH_ID
+	bool "udev-path_id"
+	depends on BR2_PACKAGE_UDEV_VOLUME_ID
+	help
+	  Install udev's unique device path generation program path_id.
+
+config BR2_PACKAGE_UDEV_FIRMWARE_SH
+	bool "udev-firmware_sh"
+	depends on BR2_PACKAGE_UDEV_VOLUME_ID
+	help
+	  Install udev's firmware loading script firmware.sh.
 endmenu
