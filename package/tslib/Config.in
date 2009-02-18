@@ -1,7 +1,6 @@
 config BR2_PACKAGE_TSLIB
 	bool "libts - The Touchscreen tslib Library"
 	help
-
 	    http://tslib.berlios.de/
 
 	    Tslib is an abstraction layer for touchscreen panel events.
