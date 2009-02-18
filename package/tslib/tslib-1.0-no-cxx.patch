@@ -1,0 +1,17 @@
+tslib: Doesn't use C++, so don't require it in the configure script
+---
+ configure.ac |    1 -
+ 1 file changed, 1 deletion(-)
+
+Index: tslib-1.0/configure.ac
+===================================================================
+--- tslib-1.0.orig/configure.ac
++++ tslib-1.0/configure.ac
+@@ -15,7 +15,6 @@
+ TS_DEFAULT_FLAGS
+ 
+ # Checks for programs.
+-AC_PROG_CXX
+ AC_PROG_CC
+ AC_PROG_CPP
+ TS_CC_HIDDEN_VISIBILITY
