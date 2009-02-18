@@ -1,0 +1,17 @@
+--- busybox-1.13.2/include/libbb.h	Wed Dec 31 04:06:45 2008
++++ busybox-1.13.2-killall/include/libbb.h	Sat Feb 14 02:41:18 2009
+@@ -1275,7 +1275,13 @@
+ 	PSSCAN_UTIME    = 1 << 13,
+ 	PSSCAN_TTY      = 1 << 14,
+ 	PSSCAN_SMAPS	= (1 << 15) * ENABLE_FEATURE_TOPMEM,
+-	PSSCAN_ARGVN    = (1 << 16) * (ENABLE_PGREP || ENABLE_PKILL || ENABLE_PIDOF),
++	/* NB: used by find_pid_by_name(). Any applet using it
++	 * needs to be mentioned here. */
++	PSSCAN_ARGVN    = (1 << 16) * (ENABLE_KILLALL
++				|| ENABLE_PGREP || ENABLE_PKILL
++				|| ENABLE_PIDOF
++				|| ENABLE_SESTATUS 
++				),
+ 	USE_SELINUX(PSSCAN_CONTEXT = 1 << 17,)
+ 	PSSCAN_START_TIME = 1 << 18,
+ 	PSSCAN_CPU      = 1 << 19,
