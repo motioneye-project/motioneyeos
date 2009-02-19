@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LIBVORBIS
 	bool "libvorbis"
-	depends on BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBOGG
 	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Library for the Vorbis open source audio decoder
@@ -20,6 +20,3 @@ config BR2_PACKAGE_LIBVORBIS_TREMOR
 	depends on BR2_PACKAGE_LIBVORBIS
 	help
 	  Use the Tremor fixed point implementation
-
-comment "libvorbis requires the package libogg to build"
-	depends on !BR2_PACKAGE_LIBOGG
