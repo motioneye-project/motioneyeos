@@ -21,6 +21,7 @@ PPPD_OPTIONS_$(BR2_PACKAGE_PPPD_FILTER) += FILTER=y
 
 $(PPPD_DIR)/.unpacked: $(DL_DIR)/$(PPPD_SOURCE)
 	$(PPPD_CAT) $(DL_DIR)/$(PPPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(PPPD_DIR) package/pppd/ pppd\*.patch
 	$(SED) 's/ -DIPX_CHANGE -DHAVE_MMAP//' $(PPPD_DIR)/pppd/Makefile.linux
 	$(SED) 's/FILTER=y/#FILTER=y/' $(PPPD_DIR)/pppd/Makefile.linux
 	$(SED) 's,(INSTALL) -s,(INSTALL),' $(PPPD_DIR)/*/Makefile.linux

@@ -1,0 +1,21 @@
+diff -Nura ppp-2.4.4/pppd/plugins/rp-pppoe/discovery.c ppp-2.4.4-nobsd/pppd/plugins/rp-pppoe/discovery.c
+--- ppp-2.4.4/pppd/plugins/rp-pppoe/discovery.c	2005-03-22 07:22:32.000000000 -0300
++++ ppp-2.4.4-nobsd/pppd/plugins/rp-pppoe/discovery.c	2009-02-17 09:01:27.000000000 -0200
+@@ -598,7 +598,7 @@
+     do {
+ 	padiAttempts++;
+ 	if (padiAttempts > MAX_PADI_ATTEMPTS) {
+-	    warn("Timeout waiting for PADO packets");
++	    syslog(LOG_WARNING, "Timeout waiting for PADO packets");
+ 	    close(conn->discoverySocket);
+ 	    conn->discoverySocket = -1;
+ 	    return;
+@@ -627,7 +627,7 @@
+     do {
+ 	padrAttempts++;
+ 	if (padrAttempts > MAX_PADI_ATTEMPTS) {
+-	    warn("Timeout waiting for PADS packets");
++	    syslog(LOG_WARNING, "Timeout waiting for PADS packets");
+ 	    close(conn->discoverySocket);
+ 	    conn->discoverySocket = -1;
+ 	    return;
