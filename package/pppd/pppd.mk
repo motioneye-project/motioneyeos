@@ -17,15 +17,17 @@ $(DL_DIR)/$(PPPD_SOURCE):
 
 pppd-source: $(DL_DIR)/$(PPPD_SOURCE)
 
+PPPD_OPTIONS_$(BR2_PACKAGE_PPPD_FILTER) += FILTER=y
+
 $(PPPD_DIR)/.unpacked: $(DL_DIR)/$(PPPD_SOURCE)
 	$(PPPD_CAT) $(DL_DIR)/$(PPPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	$(SED) 's/ -DIPX_CHANGE -DHAVE_MMAP//' $(PPPD_DIR)/pppd/Makefile.linux
-	$(SED) 's/HAVE_MULTILINK=y/#HAVE_MULTILINK=y/' $(PPPD_DIR)/pppd/Makefile.linux
 	$(SED) 's/FILTER=y/#FILTER=y/' $(PPPD_DIR)/pppd/Makefile.linux
 	$(SED) 's,(INSTALL) -s,(INSTALL),' $(PPPD_DIR)/*/Makefile.linux
 	$(SED) 's,(INSTALL) -s,(INSTALL),' $(PPPD_DIR)/pppd/plugins/*/Makefile.linux
 	$(SED) 's/ -o root//' $(PPPD_DIR)/*/Makefile.linux
 	$(SED) 's/ -g daemon//' $(PPPD_DIR)/*/Makefile.linux
+	$(SED) 's/ifneq ($$(wildcard \/usr\/include\/pcap-bpf.h),)/ifdef FILTER/' $(PPPD_DIR)/*/Makefile.linux
 	touch $@
 
 $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
@@ -52,10 +54,10 @@ $(PPPD_DIR)/.configured: $(PPPD_DIR)/.unpacked
 	touch $@
 
 $(PPPD_DIR)/$(PPPD_BINARY): $(PPPD_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) COPTS="$(TARGET_CFLAGS)" -C $(PPPD_DIR)
+	$(MAKE) CC=$(TARGET_CC) COPTS="$(TARGET_CFLAGS)" -C $(PPPD_DIR) $(PPPD_OPTIONS_y)
 
 $(TARGET_DIR)/$(PPPD_TARGET_BINARY): $(PPPD_DIR)/$(PPPD_BINARY)
-	$(MAKE1) DESTDIR=$(TARGET_DIR)/usr CC=$(TARGET_CC) -C $(PPPD_DIR) install
+	$(MAKE1) DESTDIR=$(TARGET_DIR)/usr CC=$(TARGET_CC) -C $(PPPD_DIR) install $(PPPD_OPTIONS_y)
 ifneq ($(BR2_ENABLE_LOCALE),y)
 	rm -rf $(TARGET_DIR)/usr/share/locale
 endif
