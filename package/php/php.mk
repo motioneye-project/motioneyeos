@@ -5,7 +5,7 @@
 #############################################################
 PHP_VER:=5.2.8
 PHP_SOURCE:=php-$(PHP_VER).tar.bz2
-PHP_SITE:=http://us.php.net/get/${PHP_SOURCE}/from/us2.php.net/mirror
+PHP_SITE:=http://www.php.net/distributions
 PHP_DIR:=$(BUILD_DIR)/php-$(PHP_VER)
 PHP_CAT=$(BZCAT)
 PHP_DEPS=
@@ -126,7 +126,7 @@ endif
 endif
 
 $(DL_DIR)/$(PHP_SOURCE):
-	$(WGET) -P $(DL_DIR) $(PHP_SITE)
+	$(call DOWNLOAD,$(PHP_SITE),$(PHP_SOURCE))
 
 php-source: $(DL_DIR)/$(PHP_SOURCE)
 
