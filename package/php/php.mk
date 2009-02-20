@@ -126,7 +126,7 @@ endif
 endif
 
 $(DL_DIR)/$(PHP_SOURCE):
-	 $(call DOWNLOAD,$(PHP_SITE))
+	$(WGET) -P $(DL_DIR) $(PHP_SITE)
 
 php-source: $(DL_DIR)/$(PHP_SOURCE)
 
