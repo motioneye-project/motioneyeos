@@ -109,7 +109,9 @@ endif
 ### Database extensions
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
 	PHP_CONFIGURE+=--with-sqlite
-	PHP_DEPS+=sqlite
+ifneq ($(BR2_LARGEFILE),y)
+	PHP_CFLAGS+= -DSQLITE_DISABLE_LFS
+endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE_UTF8),y)
 	PHP_CONFIGURE+=--enable-sqlite-utf8
 endif
@@ -118,6 +120,7 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_PDO),y)
 	PHP_CONFIGURE+=--enable-pdo
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_SQLITE),y)
 	PHP_CONFIGURE+=--with-pdo-sqlite
+	PHP_CFLAGS+= -DSQLITE_OMIT_LOAD_EXTENSION
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),y)
 	PHP_CONFIGURE+=--with-pdo-mysql=$(STAGING_DIR)/usr
@@ -164,7 +167,7 @@ $(PHP_DIR)/.configured: $(PHP_DIR)/.unpacked
 	touch $@
 
 $(PHP_DIR)/.built: $(PHP_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(PHP_DIR)
+	$(MAKE) CC="$(TARGET_CC) $(PHP_CFLAGS)" -C $(PHP_DIR)
 	touch $@
 
 $(PHP_DIR)/.staged: $(PHP_DIR)/.built

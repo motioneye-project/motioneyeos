@@ -131,7 +131,6 @@ comment "Database extensions"
 config BR2_PACKAGE_PHP_EXT_SQLITE
 	bool "sqlite"
 	depends on BR2_PACKAGE_PHP
-	select BR2_PACKAGE_SQLITE
 	default y
 	help
 	  SQLite
