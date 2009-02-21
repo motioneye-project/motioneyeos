@@ -2,54 +2,49 @@ menu "PHP Extensions"
 
 config BR2_PACKAGE_PHP_EXT_SOCKETS
 	bool "socket"
-	depends on BR2_PACKAGE_PHP
 	help
 	  Sockets support
 
 config BR2_PACKAGE_PHP_EXT_POSIX
 	bool "posix"
-	depends on BR2_PACKAGE_PHP
 	default y
 	help
 	  POSIX support
 
 config BR2_PACKAGE_PHP_EXT_SPL
 	bool "SPL"
-	depends on BR2_PACKAGE_PHP
 	default y
 	help
 	  SPL support
 
 config BR2_PACKAGE_PHP_EXT_SESSION
 	bool "Session"
-	depends on BR2_PACKAGE_PHP
 	default y
 	help
 	  Session support
 
 config BR2_PACKAGE_PHP_EXT_OPENSSL
 	bool "openssl"
-	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_OPENSSL
+	depends on BR2_PACKAGE_OPENSSL
 	help
 	  openssl support
 
 config BR2_PACKAGE_PHP_EXT_LIBXML2
 	bool "xml2"
-	depends on BR2_PACKAGE_PHP && BR2_PACKAGE_LIBXML2
+	depends on BR2_PACKAGE_LIBXML2
 	default y
 	help
 	  xml support
 
 config BR2_PACKAGE_PHP_EXT_SIMPLEXML
 	bool "simplexml"
-	depends on BR2_PACKAGE_PHP
 	select BR2_PACKAGE_PHP_EXT_LIBXML2
 	help
 	  SimpleXML support
 
 config BR2_PACKAGE_PHP_EXT_ZLIB
         bool "zlib"
-        depends on BR2_PACKAGE_PHP && BR2_PACKAGE_ZLIB
+        depends on BR2_PACKAGE_ZLIB
         default y
         help
           zlib support
