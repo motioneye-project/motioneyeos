@@ -1,11 +1,17 @@
---- libsndfile-1.0.17/Makefile.in.orig	2006-12-06 17:26:46.000000000 +0100
-+++ libsndfile-1.0.17/Makefile.in	2006-12-06 17:31:11.000000000 +0100
-@@ -209,7 +209,7 @@
- target_cpu = @target_cpu@
- target_os = @target_os@
- target_vendor = @target_vendor@
--SUBDIRS = man doc Win32 Octave src examples regtest tests
+---
+ Makefile.in |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: libsndfile-1.0.18/Makefile.in
+===================================================================
+--- libsndfile-1.0.18.orig/Makefile.in
++++ libsndfile-1.0.18/Makefile.in
+@@ -260,7 +260,7 @@
+ top_srcdir = @top_srcdir@
+ DISTCHECK_CONFIGURE_FLAGS = --enable-gcc-werror
+ @BUILD_OCTAVE_MOD_TRUE@octave_dir = Octave
+-SUBDIRS = M4 man doc Win32 src $(octave_dir) examples regtest tests programs
 +SUBDIRS = src
- DIST_SUBDIRS = $(SUBDIRS)
- EXTRA_DIST = reconfigure.mk acinclude.m4 libsndfile.spec.in \
- 			sndfile.pc.in Mingw-make-dist.sh
+ DIST_SUBDIRS = M4 man doc Win32 src Octave examples regtest tests programs
+ EXTRA_DIST = libsndfile.spec.in sndfile.pc.in Mingw-make-dist.sh
+ pkgconfigdir = $(libdir)/pkgconfig
