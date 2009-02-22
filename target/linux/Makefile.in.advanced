@@ -459,7 +459,7 @@ $(TARGET_DIR)/boot/busybox.config: $(BUSYBOX_DIR)/.config
 /tftpboot/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 	-mkdir -p /tftpboot
 	-cp -dpf $(LINUX26_KERNEL) $@
-	touch $@
+	-touch $@
 
 ifneq ($(LINUX_COPYTO),/tftpboot)
 $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
