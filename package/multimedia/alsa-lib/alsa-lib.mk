@@ -57,6 +57,7 @@ $(ALSA_LIB_DIR)/.configured: $(ALSA_LIB_DIR)/.unpacked
 		--enable-shared \
 		--enable-static \
 		--disable-docs \
+		--without-versioned \
 		$(ALSA_LIB_CONFIGURE_OPTS) \
 		$(SOFT_FLOAT) \
 		$(DISABLE_NLS) \
