@@ -36,11 +36,10 @@ $(MESA3D_DIR)/.configured: $(MESA3D_DIR)/.extracted
 	) >> $(MESA_CONFIG_FILE)
 	touch $@
 
-$(MESA3D_DIR)/.built: BR2_JLEVEL=1
 $(MESA3D_DIR)/.built: $(MESA3D_DIR)/.configured
 	gccinc=$$($(TARGET_CC) -print-search-dirs | grep '^install:' | sed 's@^install: @@')include; \
 	rm -f $(MESA3D_DIR)/config/current
-	env $(MESA_BUILD_ENV) $(MAKE) \
+	env $(MESA_BUILD_ENV) $(MAKE1) \
 		MKDEP="makedepend -I$$gccinc" \
 		CC=$(TARGET_CC) CXX=$(TARGET_CXX) CC_FOR_BUILD=/usr/bin/gcc \
 		-C $(MESA3D_DIR) $(MESA_TARGET)
