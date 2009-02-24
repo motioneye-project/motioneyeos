@@ -1,5 +1,6 @@
 config BR2_PACKAGE_OPENSWAN
         bool "openswan"
+        depends on BROKEN # doesn't compile with current kernel headers
         select BR2_PACKAGE_LIBGMP
         select BR2_PACKAGE_MICROPERL
         help
