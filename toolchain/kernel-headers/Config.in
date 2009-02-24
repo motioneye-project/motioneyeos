@@ -16,10 +16,6 @@ choice
 	  For the snapshot, you have to provide the
 	  linux-2.6.tar.bz2 tarball in your download dir.
 
-	config BR2_KERNEL_HEADERS_2_4_31
-		depends on !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.4.31 kernel headers"
-
 	config BR2_KERNEL_HEADERS_2_6_20_4
 		depends on !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
 		bool "Linux 2.6.20.4 kernel headers"

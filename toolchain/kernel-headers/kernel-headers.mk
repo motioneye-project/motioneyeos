@@ -22,13 +22,7 @@ KERNEL_ARCH:=$(shell $(SHELL) -c "echo \"$(ARCH)\" | sed -e \"s/-.*//\" \
 	-e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
 	-e s/sh.*/sh/ -e s/nios2.*/nios2nommu/")
 
-# assume old manually sanitized kernel-headers
-LINUX_HEADERS_IS_KERNEL=n
-
-# this needs to be included before kernel-headers-new to set old-style mode
-include toolchain/kernel-headers/kernel-headers-old-versions.makefile
 include toolchain/kernel-headers/kernel-headers-new.makefile
-include toolchain/kernel-headers/kernel-headers-old.makefile
 
 $(DL_DIR)/$(LINUX_HEADERS_SOURCE):
 	$(call DOWNLOAD,$(LINUX_HEADERS_SITE),$(LINUX_HEADERS_SOURCE))

@@ -4,8 +4,6 @@
 #
 #############################################################
 
-# new-style kernels?
-ifeq ($(LINUX_HEADERS_VERSION),)
 # parse linux version string
 LNXVER:=$(subst ., , $(strip $(DEFAULT_KERNEL_HEADERS)))
 VERSION:=$(word 1, $(LNXVER))
@@ -23,8 +21,6 @@ LINUX_HEADERS_SOURCE:=linux-$(LINUX_HEADERS_VERSION).tar.bz2
 LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOL_BUILD_DIR)/linux-$(LINUX_HEADERS_VERSION)
 LINUX_HEADERS_DIR:=$(TOOL_BUILD_DIR)/linux
-LINUX_HEADERS_IS_KERNEL=y
-endif
 
 ifeq ("$(DEFAULT_KERNEL_HEADERS)","2.6.22.1")
 LINUX_RT_VERSION:=rt9
@@ -34,7 +30,6 @@ ifeq ("$(DEFAULT_KERNEL_HEADERS)","2.6.21.5")
 LINUX_RT_VERSION:=rt20
 endif
 
-ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 # Need to redefine KERNEL_HEADERS_PATCH_DIR if you want
 # board specific kernel headers
 KERNEL_HEADERS_PATCH_DIR:=toolchain/kernel-headers/empty
@@ -92,5 +87,3 @@ ifeq ($(BR2_ARCH),"cris")
 	$(SED) "/^#include <asm\/page\.h>/d" $(LINUX_HEADERS_DIR)/include/asm/user.h
 endif
 	touch $@
-
-endif
