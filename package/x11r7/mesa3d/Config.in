@@ -1,7 +1,7 @@
 config BR2_PACKAGE_MESA3D
 	bool "Mesa 3D Graphics Library"
 	select BR2_PACKAGE_XPROTO_GLPROTO
-	select BR2_PACKAGE_XSERVER_XORG_SERVER
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER
 	help
 	  Mesa 3D, an open-source implementation of the OpenGL specification.
 
