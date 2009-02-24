@@ -20,7 +20,7 @@ DBUS_DEPENDENCIES = uclibc pkgconfig
 
 ifeq ($(BR2_DBUS_EXPAT),y)
 DBUS_XML:=expat
-DBUS_DEPENDENCIES += ezxml
+DBUS_DEPENDENCIES += expat
 else
 DBUS_XML:=libxml
 DBUS_DEPENDENCIES += libxml2
