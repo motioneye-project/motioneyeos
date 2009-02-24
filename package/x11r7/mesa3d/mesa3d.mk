@@ -24,6 +24,8 @@ endif
 MESA_BUILD_ENV=$(TARGET_CONFIGURE_OPTS)
 MESA_CONFIG_FILE=$(MESA3D_DIR)/configs/$(MESA_TARGET)
 
+MESA_GCCINCLUDE=$(shell $(TARGET_CC) -print-search-dirs|grep '^install:'|sed 's/^install: //')/include
+
 #MESA_DRIVERS= i810 i915 i965 mga mach64 r128 r200 r300 s3v savage sis ffb tdfx trident unichrome
 MESA_DRIVERS=
 
@@ -46,15 +48,14 @@ $(MESA3D_DIR)/.configured: $(MESA3D_DIR)/.extracted
 		echo "USING_EGL = 0" && \
 		echo "X11_INCLUDES = " && \
 		echo "EXTRA_LIB_PATH = " && \
-		echo "PROGRAM_DIRS =" \
+		echo "PROGRAM_DIRS =" && \
+		echo "MKDEP_OPTIONS = -fdepend -Y$(STAGING_DIR)/usr/include -I$(MESA_GCCINCLUDE)" \
 	) >> $(MESA_CONFIG_FILE)
 	touch $@
 
 $(MESA3D_DIR)/.built: $(MESA3D_DIR)/.configured
-	gccinc=$$($(TARGET_CC) -print-search-dirs | grep '^install:' | sed 's@^install: @@')include; \
 	rm -f $(MESA3D_DIR)/config/current
 	env $(MESA_BUILD_ENV) $(MAKE1) \
-		MKDEP="makedepend -I$$gccinc" \
 		CC=$(TARGET_CC) CXX=$(TARGET_CXX) CC_FOR_BUILD=/usr/bin/gcc \
 		-C $(MESA3D_DIR) $(MESA_TARGET)
 	touch $@
