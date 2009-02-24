@@ -7,9 +7,23 @@ MESA3D_VERSION:=7.0.3
 MESA3D_SOURCE:=MesaLib-$(MESA3D_VERSION).tar.gz
 MESA3D_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/mesa3d
 MESA3D_DIR:=$(BUILD_DIR)/Mesa-$(MESA3D_VERSION)
-MESA_TARGET=linux-dri-x86
+MESA_TARGET:=linux-dri
+
+ifeq ($(BR2_i386),y)
+MESA_TARGET:=linux-dri-x86
+endif
+
+ifeq ($(BR2_x86_64),y)
+MESA_TARGET:=linux-dri-x86-64
+endif
+
+ifeq ($(BR2_ppc),y)
+MESA_TARGET:=linux-dri-ppc
+endif
+
 MESA_BUILD_ENV=$(TARGET_CONFIGURE_OPTS)
 MESA_CONFIG_FILE=$(MESA3D_DIR)/configs/$(MESA_TARGET)
+
 #MESA_DRIVERS= i810 i915 i965 mga mach64 r128 r200 r300 s3v savage sis ffb tdfx trident unichrome
 MESA_DRIVERS=
 
