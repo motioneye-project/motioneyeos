@@ -16,30 +16,6 @@ choice
 	  For the snapshot, you have to provide the
 	  linux-2.6.tar.bz2 tarball in your download dir.
 
-	config BR2_KERNEL_HEADERS_2_6_20_4
-		depends on !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.6.20.4 kernel headers"
-
-	config BR2_KERNEL_HEADERS_2_6_20
-		depends on !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.6.20.x kernel headers"
-
-	config BR2_KERNEL_HEADERS_2_6_21_5
-		depends on !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.6.21.5 kernel headers"
-
-	config BR2_KERNEL_HEADERS_2_6_21
-		depends on !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.6.21.x kernel headers"
-
-	config BR2_KERNEL_HEADERS_2_6_22_1
-		depends on !BR2_avr32 && !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.6.22.1 kernel headers"
-
-	config BR2_KERNEL_HEADERS_2_6_22_10
-		depends on !BR2_nios2 && BR2_DEPRECATED
-		bool "Linux 2.6.22.10 kernel headers"
-
 	config BR2_KERNEL_HEADERS_2_6_22
 		depends on BR2_DEPRECATED
 		bool "Linux 2.6.22.x kernel headers"
@@ -72,20 +48,6 @@ choice
 
 endchoice
 
-config BR2_KERNEL_HEADERS_IPMI
-	bool "use ipmi kernel patches"
-	depends on BR2_KERNEL_HEADERS_2_6_20_4 || BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
-	help
-	  Apply patches which add IPMI sensor support.
-
-config BR2_KERNEL_HEADERS_LZMA
-	bool "use lzma initramfs kernel patches"
-	depends on BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
-	help
-	  Apply patches which allow for lzma compressed
-	  initramfs filesystems.  This requires the lzma
-	  program in your development environment.
-
 config BR2_KERNEL_HEADERS_RT
 	bool "use realtime (-rt) kernel patches"
 	depends on BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
@@ -101,13 +63,6 @@ config BR2_KERNEL_HEADERS_PATCH_DIR
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "2.4.31"	if BR2_KERNEL_HEADERS_2_4_31
-	default "2.6.20.4"	if BR2_KERNEL_HEADERS_2_6_20_4
-	default "2.6.20.20"	if BR2_KERNEL_HEADERS_2_6_20
-	default "2.6.21.5"	if BR2_KERNEL_HEADERS_2_6_21_5
-	default "2.6.21.7"	if BR2_KERNEL_HEADERS_2_6_21
-	default "2.6.22.1"	if BR2_KERNEL_HEADERS_2_6_22_1
-	default "2.6.22.10"	if BR2_KERNEL_HEADERS_2_6_22_10
 	default "2.6.22.10"	if BR2_KERNEL_HEADERS_2_6_22
 	default "2.6.23"	if BR2_KERNEL_HEADERS_2_6_23
 	default "2.6.24.7"	if BR2_KERNEL_HEADERS_2_6_24

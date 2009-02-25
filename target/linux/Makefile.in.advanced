@@ -260,14 +260,6 @@ ifneq ($(LINUX26_BSP_PATCH),)
 endif
 	toolchain/patch-kernel.sh $(LINUX26_DIR) toolchain/kernel-headers \
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
-ifeq ($(BR2_KERNEL_HEADERS_IPMI),y)
-	toolchain/patch-kernel.sh $(LINUX26_DIR) toolchain/kernel-headers/ipmi \
-		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
-endif
-ifeq ($(BR2_KERNEL_HEADERS_LZMA),y)
-	toolchain/patch-kernel.sh $(LINUX26_DIR) toolchain/kernel-headers/lzma \
-		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
-endif
 ifeq ($(BR2_KERNEL_HEADERS_RT),y)
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(DL_DIR) $(LINUX_RT_SOURCE)
 endif
