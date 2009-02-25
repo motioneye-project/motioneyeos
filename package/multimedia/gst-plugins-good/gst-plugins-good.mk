@@ -273,6 +273,12 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-annodex
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLAC),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-flac
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-flac
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-oss
 else

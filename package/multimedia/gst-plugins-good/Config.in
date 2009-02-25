@@ -149,6 +149,10 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ANNODEX
 	bool "annodex (XML Library)"
 	select BR2_PACKAGE_LIBXML2
 
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLAC
+	bool "flac (libFLAC)"
+	select BR2_PACKAGE_FLAC
+
 config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_OSS
 	bool "ossaudio (OSS audio)"
 
