@@ -30,9 +30,6 @@ ifeq ("$(DEFAULT_KERNEL_HEADERS)","2.6.26.8")
 LINUX_RT_VERSION:=rt16
 endif
 
-# Need to redefine KERNEL_HEADERS_PATCH_DIR if you want
-# board specific kernel headers
-KERNEL_HEADERS_PATCH_DIR:=toolchain/kernel-headers/empty
 LINUX_HEADERS_DEPENDS:=
 
 ifeq ($(BR2_KERNEL_HEADERS_RT),y)
@@ -56,9 +53,9 @@ $(LINUX_HEADERS_UNPACK_DIR)/.patched: $(LINUX_HEADERS_UNPACK_DIR)/.unpacked $(LI
 ifeq ($(BR2_KERNEL_HEADERS_RT),y)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) $(DL_DIR) $(LINUX_RT_SOURCE)
 endif
-ifeq ($(BR2_KERNEL_HEADERS_PATCH_DIR),y)
+ifneq ($(KERNEL_HEADERS_PATCH_DIR),)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) $(KERNEL_HEADERS_PATCH_DIR) \
-		\*.patch{,.gz,.bz2}
+		linux-$(LINUX_HEADERS_VERSION)-\*.patch{,.gz,.bz2}
 endif
 ifeq ($(BR2_PACKAGE_OPENSWAN),y)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) package/openswan \

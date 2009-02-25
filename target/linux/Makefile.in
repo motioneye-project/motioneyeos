@@ -129,7 +129,7 @@ $(LINUX26_DIR)/.patched: $(LINUX26_DIR)/.unpacked $(LINUX_HEADERS_DEPENDS)
 ifeq ($(BR2_KERNEL_HEADERS_RT),y)
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(DL_DIR) $(LINUX_RT_SOURCE)
 endif
-ifeq ($(BR2_KERNEL_HEADERS_PATCH_DIR),y)
+ifneq ($(KERNEL_HEADERS_PATCH_DIR),)
 	toolchain/patch-kernel.sh $(LINUX26_DIR) $(KERNEL_HEADERS_PATCH_DIR) \
 		linux-$(LINUX26_VERSION)-\*.patch{,.gz,.bz2}
 endif
