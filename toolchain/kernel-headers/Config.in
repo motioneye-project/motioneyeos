@@ -50,7 +50,7 @@ endchoice
 
 config BR2_KERNEL_HEADERS_RT
 	bool "use realtime (-rt) kernel patches"
-	depends on BR2_KERNEL_HEADERS_2_6_21_5 || BR2_KERNEL_HEADERS_2_6_22_1
+	depends on BR2_KERNEL_HEADERS_2_6_24 || BR2_KERNEL_HEADERS_2_6_26
 	help
 	  Apply Ingo's realtime extensions to linux
 
