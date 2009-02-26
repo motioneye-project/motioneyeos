@@ -171,7 +171,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_MATROSKA),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-matroska
-GST_PLUGINS_GOOD_DEPENDENCIES += zlib bzip2
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-matroska
 endif
