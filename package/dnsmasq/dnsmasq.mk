@@ -26,7 +26,7 @@ DNSMASQ_COPTS+=-DNO_LARGEFILE
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-DNSMASQ_DBUS:=$(TARGET_DIR)/usr/bin/dbus-daemon
+DNSMASQ_DBUS:=dbus
 else
 DNSMASQ_DBUS:=
 endif
