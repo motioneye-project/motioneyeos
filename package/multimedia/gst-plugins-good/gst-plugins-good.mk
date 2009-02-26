@@ -275,6 +275,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLAC),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-flac
+GST_PLUGINS_GOOD_DEPENDENCIES += flac
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-flac
 endif
