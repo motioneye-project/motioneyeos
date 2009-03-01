@@ -100,6 +100,8 @@ $(STAGING_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION): $(NCURSES_DIR)/lib/libn
 	    ticdir=$(STAGING_DIR)/usr/share/terminfo \
 	    -C $(NCURSES_DIR) install
 	chmod a-x $(NCURSES_DIR)/lib/libncurses.so*
+	$(SED) 's^prefix="^prefix="$(STAGING_DIR)^' \
+		$(STAGING_DIR)/bin/ncurses5-config
 	touch -c $@
 
 $(TARGET_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION): $(STAGING_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION)
