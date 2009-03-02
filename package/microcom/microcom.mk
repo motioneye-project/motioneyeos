@@ -26,7 +26,7 @@
 # TARGETS
 # http://microcom.port5.com/m102.tar.gz
 MICROCOM_VERSION:=1.02
-MICROCOM_SITE:=http://buildroot.uclibc.org/downloads/buildroot-sources/
+MICROCOM_SITE:=http://buildroot.net/downloads/sources/
 MICROCOM_SOURCE:=m102.tar.gz
 MICROCOM_DIR:=$(BUILD_DIR)/microcom-$(MICROCOM_VERSION)
 
