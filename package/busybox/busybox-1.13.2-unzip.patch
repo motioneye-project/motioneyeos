@@ -1,0 +1,12 @@
+diff -urpN busybox-1.13.2/archival/unzip.c busybox-1.13.2-unzip/archival/unzip.c
+--- busybox-1.13.2/archival/unzip.c	2008-11-09 18:28:02.000000000 +0100
++++ busybox-1.13.2-unzip/archival/unzip.c	2009-02-26 12:17:21.000000000 +0100
+@@ -140,7 +140,7 @@ struct BUG_cde_header_must_be_16_bytes {
+ };
+ 
+ #define FIX_ENDIANNESS_CDE(cde_header) do { \
+-	(cde_header).formatted.cds_offset = SWAP_LE16((cde_header).formatted.cds_offset); \
++	(cde_header).formatted.cds_offset = SWAP_LE32((cde_header).formatted.cds_offset); \
+ } while (0)
+ 
+ enum { zip_fd = 3 };

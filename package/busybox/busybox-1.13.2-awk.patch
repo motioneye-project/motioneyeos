@@ -1,0 +1,46 @@
+diff -urpN busybox-1.13.2/editors/awk.c busybox-1.13.2-awk/editors/awk.c
+--- busybox-1.13.2/editors/awk.c	2008-11-09 18:28:21.000000000 +0100
++++ busybox-1.13.2-awk/editors/awk.c	2009-02-26 12:17:05.000000000 +0100
+@@ -392,8 +392,12 @@ static const uint16_t PRIMES[] ALIGN2 = 
+ 
+ 
+ /* Globals. Split in two parts so that first one is addressed
+- * with (mostly short) negative offsets */
++ * with (mostly short) negative offsets.
++ * NB: it's unsafe to put members of type "double"
++ * into globals2 (gcc may fail to align them).
++ */
+ struct globals {
++	double t_double;
+ 	chain beginseq, mainseq, endseq;
+ 	chain *seq;
+ 	node *break_ptr, *continue_ptr;
+@@ -442,16 +446,16 @@ struct globals2 {
+ 	tsplitter exec_builtin__tspl;
+ 
+ 	/* biggest and least used members go last */
+-	double t_double;
+ 	tsplitter fsplitter, rsplitter;
+ };
+ #define G1 (ptr_to_globals[-1])
+ #define G (*(struct globals2 *)ptr_to_globals)
+ /* For debug. nm --size-sort awk.o | grep -vi ' [tr] ' */
+-/* char G1size[sizeof(G1)]; - 0x6c */
+-/* char Gsize[sizeof(G)]; - 0x1cc */
++/*char G1size[sizeof(G1)]; - 0x74 */
++/*char Gsize[sizeof(G)]; - 0x1c4 */
+ /* Trying to keep most of members accessible with short offsets: */
+-/* char Gofs_seed[offsetof(struct globals2, evaluate__seed)]; - 0x90 */
++/*char Gofs_seed[offsetof(struct globals2, evaluate__seed)]; - 0x90 */
++#define t_double     (G1.t_double    )
+ #define beginseq     (G1.beginseq    )
+ #define mainseq      (G1.mainseq     )
+ #define endseq       (G1.endseq      )
+@@ -479,7 +483,6 @@ struct globals2 {
+ #define t_info       (G.t_info      )
+ #define t_tclass     (G.t_tclass    )
+ #define t_string     (G.t_string    )
+-#define t_double     (G.t_double    )
+ #define t_lineno     (G.t_lineno    )
+ #define t_rollback   (G.t_rollback  )
+ #define intvar       (G.intvar      )
