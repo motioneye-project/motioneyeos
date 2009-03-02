@@ -3,7 +3,7 @@
 # php
 #
 #############################################################
-PHP_VER:=5.2.8
+PHP_VER:=5.2.9
 PHP_SOURCE:=php-$(PHP_VER).tar.bz2
 PHP_SITE:=http://www.php.net/distributions
 PHP_DIR:=$(BUILD_DIR)/php-$(PHP_VER)
@@ -144,7 +144,7 @@ $(PHP_DIR)/.configured: $(PHP_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CC=$(TARGET_CC) \
-		./configure $(DISABLE_NLS) \
+		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
