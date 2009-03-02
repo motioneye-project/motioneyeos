@@ -15,6 +15,7 @@
 	#83: liblockfile fails to compile due to eaccess redefinition
 	#163: Xtensa architecture port
 	#241: device mapper + lvm2: build together
+	#243: ctorrent: new package
 	#271: Library 'libgcc_s.so.1' not installed in search path
 	#287: New package libnl
 	#331: Update MPlayer to version 1.0rc2

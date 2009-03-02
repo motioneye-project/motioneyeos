@@ -1,0 +1,13 @@
+comment "ctorrent requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_CTORRENT
+	bool "ctorrent"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  CTorrent is a BitTorrent client implemented in C++
+	  to be lightweight and quick.
+	  http://ctorrent.sourceforge.net/
+
+	  This is the enhanced version from
+	  http://www.rahul.net/dholmes/ctorrent/
