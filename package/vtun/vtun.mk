@@ -50,7 +50,7 @@ $(VTUN_DIR)/.configured: $(VTUN_DIR)/.patched
 		--mandir=/usr/man \
 		--infodir=/usr/info \
 		--with-ssl-headers=$(STAGING_DIR)/usr/include/openssl \
-		--with-lzo-headers=$(STAGING_DIR)/usr/include \
+		--with-lzo-headers=$(STAGING_DIR)/usr/include/lzo \
 		--with-lzo-lib=$(STAGING_DIR)/usr/lib \
 	)
 	touch $(VTUN_DIR)/.configured
