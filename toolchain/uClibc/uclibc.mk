@@ -13,35 +13,21 @@ UCLIBC_CONFIG_FILE=$(subst ",, $(strip $(BR2_UCLIBC_CONFIG)))
 #")
 endif
 
-ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
-# Be aware that this changes daily....
-UCLIBC_VER:=0.9.30
-UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
-UCLIBC_SOURCE:=uClibc-$(strip $(subst ",, $(BR2_USE_UCLIBC_SNAPSHOT))).tar.bz2
-#"))
-UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
-UCLIBC_PATCH_DIR:=toolchain/uClibc/
-else
-# releases
-ifeq ($(BR2_UCLIBC_VERSION_0_9_30_1),y)
-UCLIBC_VER:=0.9.30.1
-endif
-ifeq ($(BR2_UCLIBC_VERSION_0_9_30),y)
-UCLIBC_VER:=0.9.30
-endif
-ifeq ($(BR2_UCLIBC_VERSION_0_9_29),y)
-UCLIBC_VER:=0.9.29
-endif
-ifeq ($(BR2_UCLIBC_VERSION_0_9_28_3),y)
-UCLIBC_VER:=0.9.28.3
-endif
-UCLIBC_SITE:=http://www.uclibc.org/downloads
+UCLIBC_VER:=$(subst ",,$(BR2_UCLIBC_VERSION_STRING))
+#")
 
+UCLIBC_OFFICIAL_VERSION:=$(UCLIBC_VER)$(VENDOR_SUFFIX)$(VENDOR_UCLIBC_RELEASE)
+
+ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
+UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
+UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc
+else
+UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
+UCLIBC_SITE:=http://www.uclibc.org/downloads
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
 UCLIBC_SITE:=$(VENDOR_SITE)
 endif
-
-UCLIBC_OFFICIAL_VERSION:=$(UCLIBC_VER)$(VENDOR_SUFFIX)$(VENDOR_UCLIBC_RELEASE)
+endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 UCLIBC_PATCH_DIR:=toolchain/uClibc/
@@ -49,9 +35,7 @@ else
 UCLIBC_PATCH_DIR:=toolchain/uClibc/ext_source/$(VENDOR_PATCH_DIR)/$(UCLIBC_OFFICIAL_VERSION)
 endif
 
-UCLIBC_DIR:=$(TOOL_BUILD_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
 UCLIBC_SOURCE:=uClibc-$(UCLIBC_OFFICIAL_VERSION).tar.bz2
-endif
 
 UCLIBC_CAT:=$(BZCAT)
 
