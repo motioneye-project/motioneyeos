@@ -1,0 +1,20 @@
+[PATCH] fix multiple definitions of umount2 issue
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ mount/umount.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: util-linux-2.13-pre7/mount/umount.c
+===================================================================
+--- util-linux-2.13-pre7.orig/mount/umount.c
++++ util-linux-2.13-pre7/mount/umount.c
+@@ -29,7 +29,7 @@
+ #include "nfsmount.h"
+ #include <arpa/inet.h>
+ 
+-#if defined(MNT_FORCE) && !defined(__sparc__) && !defined(__arm__)
++#if 1
+ /* Interesting ... it seems libc knows about MNT_FORCE and presumably
+    about umount2 as well -- need not do anything */
+ #else /* MNT_FORCE */

@@ -1,0 +1,25 @@
+[PATCH]: fix util-linux build without NLS support
+
+util-linux partly supports builds without NLS support, but it forgets to
+provide a dummy setlocale() macro.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ include/nls.h |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+Index: util-linux-2.13-pre7/include/nls.h
+===================================================================
+--- util-linux-2.13-pre7.orig/include/nls.h
++++ util-linux-2.13-pre7/include/nls.h
+@@ -19,6 +19,10 @@
+ # define textdomain(Domain) /* empty */
+ # define _(Text) (Text)
+ # define N_(Text) (Text)
++# undef LC_ALL
++# define LC_ALL 0
++# undef setlocale
++# define setlocale(category, locale)
+ #endif
+ 
+ 

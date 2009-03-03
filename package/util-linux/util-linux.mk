@@ -3,7 +3,7 @@
 # util-linux
 #
 #############################################################
-UTIL-LINUX_VERSION:=2.12r
+UTIL-LINUX_VERSION:=2.13-pre7
 UTIL-LINUX_SOURCE:=util-linux-$(UTIL-LINUX_VERSION).tar.bz2
 UTIL-LINUX_SITE:=$(BR2_KERNEL_MIRROR)/linux/utils/util-linux
 UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-$(UTIL-LINUX_VERSION)
@@ -11,15 +11,19 @@ UTIL-LINUX_CAT:=$(BZCAT)
 UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/chkdupexe
 UTIL-LINUX_TARGET_BINARY:=$(TARGET_DIR)/usr/bin/chkdupexe
 
+# schedutils isn't support for all archs
+ifneq ($(BR2_i386)$(BR2_powerpc)$(BR2_x86_64)$(BR2_ia64)$(BR2_alpha),)
+UTIL-LINUX_SCHED_UTILS:=--enable-schedutils
+else
+UTIL-LINUX_SCHED_UTILS:=--disable-schedutils
+endif
+
 $(DL_DIR)/$(UTIL-LINUX_SOURCE):
 	$(call DOWNLOAD,$(UTIL-LINUX_SITE),$(UTIL-LINUX_SOURCE))
 
 $(UTIL-LINUX_DIR)/.unpacked: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
 	$(UTIL-LINUX_CAT) $(DL_DIR)/$(UTIL-LINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(UTIL-LINUX_DIR) package/util-linux/ util-linux\*.patch
-ifneq ($(BR2_LARGEFILE),y)
-	$(SED) "/D_FILE_OFFSET_BITS/ d" $(UTIL-LINUX_DIR)/MCONFIG
-endif
 	touch $(UTIL-LINUX_DIR)/.unpacked
 
 $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
@@ -28,24 +32,21 @@ $(UTIL-LINUX_DIR)/.configured: $(UTIL-LINUX_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libdir=/lib \
-		--libexecdir=/usr/lib \
+		--host=$(GNU_TARGET_NAME) \
+		--build=$(GNU_HOST_NAME) \
+		--disable-use-tty-group \
+		--prefix=/ \
+		--exec-prefix=/ \
 		--sysconfdir=/etc \
 		--datadir=/usr/share \
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		$(UTIL-LINUX_SCHED_UTILS) \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		ARCH=$(ARCH) \
 	)
-	$(SED) "s,^INSTALLSUID=.*,INSTALLSUID=\\$$\(INSTALL\) -m \\$$\(BINMODE\)," \
-		$(UTIL-LINUX_DIR)/MCONFIG
-	$(SED) "s,^USE_TTY_GROUP=.*,USE_TTY_GROUP=no," $(UTIL-LINUX_DIR)/MCONFIG
 	touch $(UTIL-LINUX_DIR)/.configured
 
 $(UTIL-LINUX_BINARY): $(UTIL-LINUX_DIR)/.configured
