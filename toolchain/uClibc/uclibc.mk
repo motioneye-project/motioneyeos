@@ -23,6 +23,9 @@ UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 UCLIBC_PATCH_DIR:=toolchain/uClibc/
 else
 # releases
+ifeq ($(BR2_UCLIBC_VERSION_0_9_30_1),y)
+UCLIBC_VER:=0.9.30.1
+endif
 ifeq ($(BR2_UCLIBC_VERSION_0_9_30),y)
 UCLIBC_VER:=0.9.30
 endif
