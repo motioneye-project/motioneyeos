@@ -21,30 +21,6 @@ endif
 ifeq ($(BINUTILS_VERSION),2.17)
 BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
 endif
-ifeq ($(BINUTILS_VERSION),2.16)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-BINUTILS_NO_MPFR:=y
-endif
-ifeq ($(BINUTILS_VERSION),2.16.1)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-BINUTILS_NO_MPFR:=y
-endif
-ifeq ($(BINUTILS_VERSION),2.15)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-BINUTILS_NO_MPFR:=y
-endif
-ifeq ($(BINUTILS_VERSION),2.14)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-BINUTILS_NO_MPFR:=y
-endif
-ifeq ($(BINUTILS_VERSION),2.13)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-BINUTILS_NO_MPFR:=y
-endif
-ifeq ($(BINUTILS_VERSION),2.15.97)
-BINUTILS_SITE:=ftp://sources.redhat.com/pub/binutils/snapshots/
-BINUTILS_NO_MPFR:=y
-endif
 
 # We do not rely on the host's gmp/mpfr but use a known working one
 BINUTILS_HOST_PREREQ:=
