@@ -1,5 +1,12 @@
 menu "PHP Extensions"
 
+config BR2_PACKAGE_PHP_CONFIG
+	string "PHP configuration file to use"
+	default "$(PHP_DIR)/php.ini-dist"
+	help
+	  If you want to use a different php.ini file define it here.
+	  Otherwise it'll just copy the default php.ini-dist from PHP.
+
 config BR2_PACKAGE_PHP_EXT_SOCKETS
 	bool "socket"
 	help
@@ -15,7 +22,7 @@ config BR2_PACKAGE_PHP_EXT_SPL
 	bool "SPL"
 	default y
 	help
-	  SPL support
+	  Standard PHP library support
 
 config BR2_PACKAGE_PHP_EXT_SESSION
 	bool "Session"
@@ -25,16 +32,15 @@ config BR2_PACKAGE_PHP_EXT_SESSION
 
 config BR2_PACKAGE_PHP_EXT_OPENSSL
 	bool "openssl"
-	depends on BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_OPENSSL
 	help
 	  openssl support
 
 config BR2_PACKAGE_PHP_EXT_LIBXML2
 	bool "xml2"
-	depends on BR2_PACKAGE_LIBXML2
-	default y
+	select BR2_PACKAGE_LIBXML2
 	help
-	  xml support
+	  libxml2 support
 
 config BR2_PACKAGE_PHP_EXT_SIMPLEXML
 	bool "simplexml"
@@ -44,7 +50,7 @@ config BR2_PACKAGE_PHP_EXT_SIMPLEXML
 
 config BR2_PACKAGE_PHP_EXT_ZLIB
         bool "zlib"
-        depends on BR2_PACKAGE_ZLIB
+        select BR2_PACKAGE_ZLIB
         default y
         help
           zlib support
@@ -61,20 +67,20 @@ config BR2_PACKAGE_PHP_EXT_FTP
 
 config BR2_PACKAGE_PHP_EXT_GETTEXT
 	bool "gettext"
-	depends on BR2_PACKAGE_GETTEXT
+	select BR2_PACKAGE_GETTEXT
 	help
 	  gettext support
 
 config BR2_PACKAGE_PHP_EXT_GMP
 	bool "gmp"
-	depends on BR2_PACKAGE_LIBGMP
+	select BR2_PACKAGE_LIBGMP
 	help
 	  GMP support
 
 config BR2_PACKAGE_PHP_EXT_JSON
 	bool "JSON"
 	help
-	  JSON support
+	  JavaScript Object Serialization support
 
 config BR2_PACKAGE_PHP_EXT_READLINE
 	bool "readline"
@@ -87,6 +93,11 @@ config BR2_PACKAGE_PHP_EXT_NCURSES
 	depends on (BR2_PACKAGE_PHP_CLI || BR2_PACKAGE_PHP_CGI) && BR2_PACKAGE_NCURSES
 	help
 	  ncurses support
+
+config BR2_PACKAGE_PHP_EXT_PCRE
+	bool "PCRE"
+	help
+	  Perl Compatible Regular Expressions support
 
 config BR2_PACKAGE_PHP_EXT_SYSVMSG
 	bool "sysvmsg - System V Message queue"
@@ -106,20 +117,24 @@ config BR2_PACKAGE_PHP_EXT_SYSVSHM
 config BR2_PACKAGE_PHP_EXT_ZIP
 	bool "zip"
 	help
-	  Zip Support
+	  Zip read/write support
 
 config BR2_PACKAGE_PHP_EXT_FILTER
 	bool "filter"
 	help
 	  Input filter support
 
+config BR2_PACKAGE_PHP_EXT_CALENDAR
+	bool "calendar"
+	help
+	  Calendar and event support
+
 comment "Database extensions"
 
 config BR2_PACKAGE_PHP_EXT_SQLITE
-	bool "sqlite"
-	default y
+	bool "SQLite"
 	help
-	  SQLite
+	  Legacy SQLite2 support
 
 config BR2_PACKAGE_PHP_EXT_SQLITE_UTF8
 	bool "sqlite UTF8 support"
@@ -129,22 +144,27 @@ config BR2_PACKAGE_PHP_EXT_SQLITE_UTF8
 
 config BR2_PACKAGE_PHP_EXT_PDO
 	bool "PDO"
-	default y
 	help
-	  PDO support
+	  PHP Data Objects support
 
 config BR2_PACKAGE_PHP_EXT_PDO_SQLITE
 	bool "PDO_SQLite"
 	depends on BR2_PACKAGE_PHP_EXT_PDO
-	default y
 	help
-	  SQLite support for PDO
+	  SQLite driver for PDO
+
+config BR2_PACKAGE_PHP_EXT_PDO_SQLITE_EXTERNAL
+	bool "PDO_SQLite external"
+	depends on BR2_PACKAGE_PHP_EXT_PDO_SQLITE
+	select BR2_PACKAGE_SQLITE
+	help
+	  Use external sqlite3 library
 
 config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 	bool "PDO_MySQL"
 	depends on BR2_PACKAGE_PHP_EXT_PDO
 	select BR2_PACKAGE_MYSQL_CLIENT
 	help
-	  MySQL support for PDO
+	  PDO driver for MySQL
 
 endmenu
