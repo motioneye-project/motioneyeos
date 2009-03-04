@@ -18,6 +18,7 @@ config BR2_TARGET_GENERIC_FIREWALL
 
 config BR2_TARGET_GENERIC_DEV_SYSTEM
 	bool "Generic development system"
+	depends on BR2_USE_WCHAR && BR2_UCLIBC_PROGRAM_INVOCATION
 	select BR2_CCACHE
 	select BR2_PACKAGE_GDB
 	select BR2_PACKAGE_GDB_SERVER
@@ -56,3 +57,5 @@ config BR2_TARGET_GENERIC_DEV_SYSTEM
 	help
 	  Board support for a generic development system.
 
+comment "Generic development system requires a toolchain with WCHAR and PROGRAM_INVOCATION support"
+	depends on !(BR2_USE_WCHAR && BR2_UCLIBC_PROGRAM_INVOCATION)
