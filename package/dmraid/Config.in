@@ -3,6 +3,7 @@ comment "dmraid has no inherent support for AVR32"
 
 config BR2_PACKAGE_DMRAID
 	bool "dmraid"
+	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_DM
 	help
 	  dmraid discovers, activates, deactivates and displays properties
@@ -10,3 +11,6 @@ config BR2_PACKAGE_DMRAID
 
 	  dmraid uses the Linux device-mapper to create devices with
 	  respective mappings for the ATARAID sets discovered.
+
+comment "dmraid requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
