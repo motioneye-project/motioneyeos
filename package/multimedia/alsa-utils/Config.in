@@ -35,8 +35,11 @@ config BR2_PACKAGE_ALSA_UTILS_AMIXER
 
 config BR2_PACKAGE_ALSA_UTILS_APLAY
 	bool "aplay"
-	select BR2_LARGEFILE
+	depends on BR2_LARGEFILE
 	depends on BR2_PACKAGE_ALSA_UTILS
+
+comment "aplay requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_ALSA_UTILS_ARECORD
 	bool "arecord"
