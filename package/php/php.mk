@@ -169,7 +169,8 @@ $(PHP_HOOK_POST_INSTALL):
 	rm -rf $(TARGET_DIR)/usr/lib/php
 	rm -f $(TARGET_DIR)/usr/bin/phpize
 	rm -f $(TARGET_DIR)/usr/bin/php-config
-	$(INSTALL) -m 0755 $(BR2_PACKAGE_PHP_CONFIG) $(TARGET_DIR)/etc/php.ini
+	if [ ! -f $(TARGET_DIR)/etc/php.ini ]; then \
+		$(INSTALL) -m 0755 $(BR2_PACKAGE_PHP_CONFIG) $(TARGET_DIR)/etc/php.ini; fi
 
 $(PHP_TARGET_UNINSTALL):
 	$(call MESSAGE,"Uninstalling")
