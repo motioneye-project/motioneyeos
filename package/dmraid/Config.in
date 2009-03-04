@@ -5,4 +5,8 @@ config BR2_PACKAGE_DMRAID
 	bool "dmraid"
 	select BR2_PACKAGE_DM
 	help
-	  Device-Mapper Software RAID support tool/
+	  dmraid discovers, activates, deactivates and displays properties
+	  of software RAID sets (eg, ATARAID) and contained DOS partitions.
+
+	  dmraid uses the Linux device-mapper to create devices with
+	  respective mappings for the ATARAID sets discovered.
