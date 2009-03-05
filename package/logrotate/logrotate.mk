@@ -10,7 +10,7 @@ $(DL_DIR)/$(LOGROTATE_SOURCE):
 
 $(LOGROTATE_DIR)/.source: $(DL_DIR)/$(LOGROTATE_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(LOGROTATE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LOGROTATE_DIR) package/logrotate/ *.patch
+	toolchain/patch-kernel.sh $(LOGROTATE_DIR) package/logrotate/ logrotate\*.patch
 	touch $@
 
 $(LOGROTATE_DIR)/$(LOGROTATE_BINARY): $(LOGROTATE_DIR)/.source
