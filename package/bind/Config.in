@@ -22,3 +22,10 @@ config BR2_PACKAGE_BIND
 	  intended to be linked with applications requiring name service.
 
 	  http://www.isc.org/sw/bind/
+
+config BR2_PACKAGE_BIND_TOOLS
+	bool "Install tools"
+	depends on BR2_PACKAGE_BIND
+	help
+	  Install tools (host, nslookup, dig, nsupdate)
+

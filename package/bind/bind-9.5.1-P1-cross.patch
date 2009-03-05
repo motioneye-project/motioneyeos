@@ -1,0 +1,14 @@
+diff -Nura bind-9.5.1-P1/lib/dns/Makefile.in bind-9.5.1-P1.gencross/lib/dns/Makefile.in
+--- bind-9.5.1-P1/lib/dns/Makefile.in	2007-09-11 22:09:08.000000000 -0300
++++ bind-9.5.1-P1.gencross/lib/dns/Makefile.in	2009-03-04 16:35:23.000000000 -0200
+@@ -160,8 +160,8 @@
+ 	./gen -s ${srcdir} > code.h
+ 
+ gen: gen.c
+-	${BUILD_CC} ${BUILD_CFLAGS} -I${top_srcdir}/lib/isc/include \
+-	${BUILD_CPPFLAGS} ${BUILD_LDFLAGS} -o $@ ${srcdir}/gen.c ${BUILD_LIBS}
++	${HOSTCC} ${HOST_CFLAGS} -I${top_srcdir}/lib/isc/include \
++	${HOST_LDFLAGS} -o $@ ${srcdir}/gen.c
+ 
+ rbtdb64.@O@: rbtdb.c
+ 
