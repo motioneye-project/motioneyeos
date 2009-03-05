@@ -1,6 +1,5 @@
 config BR2_PACKAGE_AVAHI
 	bool "avahi"
-	select BR2_PACKAGE_LIBDAEMON
 	select BR2_PACKAGE_GETTEXT if BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_LIBINTL if BR2_ENABLE_LOCALE
 	help
@@ -13,6 +12,7 @@ config BR2_PACKAGE_AVAHI_AUTOIPD
 	bool "IPv4LL network address configuration daemon"
 	default y
 	depends on BR2_PACKAGE_AVAHI
+	select BR2_PACKAGE_LIBDAEMON
 	help
 	  Avahi-autoipd implements IPv4LL, "Dynamic Configuration of
 	  IPv4 Link-Local Addresses" (IETF RFC3927), a protocol for
@@ -24,6 +24,7 @@ config BR2_PACKAGE_AVAHI_AUTOIPD
 config BR2_PACKAGE_AVAHI_DAEMON
 	bool "mDNS/DNS-SD daemon"
 	depends on BR2_PACKAGE_AVAHI
+	select BR2_PACKAGE_LIBDAEMON
 	select BR2_PACKAGE_EXPAT
 	help
 	  The Avahi mDNS/DNS-SD daemon implementing Apple's ZeroConf
