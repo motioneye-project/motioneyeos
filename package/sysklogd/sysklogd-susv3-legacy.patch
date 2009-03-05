@@ -1,0 +1,20 @@
+[PATCH] replace susv3 legacy functions with modern equivalents
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ syslog.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: sysklogd-1.4.1/syslog.c
+===================================================================
+--- sysklogd-1.4.1.orig/syslog.c
++++ sysklogd-1.4.1/syslog.c
+@@ -178,7 +178,7 @@
+ 		return;
+ 	(void)strcat(tbuf, "\r\n");
+ 	cnt += 2;
+-	p = index(tbuf, '>') + 1;
++	p = strchr(tbuf, '>') + 1;
+ 	(void)write(fd, p, cnt - (p - tbuf));
+ 	(void)close(fd);
+ }

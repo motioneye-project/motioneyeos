@@ -66,11 +66,10 @@
 
 --- sysklogd-1.4.1/ksym_mod.c.orig	2005-11-24 23:15:01.000000000 +1000
 +++ sysklogd-1.4.1/ksym_mod.c	2005-11-24 23:11:54.000000000 +1000
-@@ -89,17 +89,22 @@
+@@ -89,17 +89,21 @@
  #include <errno.h>
  #include <sys/fcntl.h>
  #include <sys/stat.h>
-+#include <linux/linkage.h>
 +#include <linux/version.h>
  #if !defined(__GLIBC__)
  #include <linux/time.h>
