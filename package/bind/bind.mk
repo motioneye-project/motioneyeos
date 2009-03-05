@@ -36,6 +36,7 @@ ifneq ($(BR2_PACKAGE_BIND_TOOLS),y)
 	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(BIND_TARGET_BINS))
 endif
 	$(INSTALL) -m 0755 -D package/bind/bind.sysvinit $(TARGET_DIR)/etc/init.d/S81named
+	touch $@
 
 $(BIND_TARGET_UNINSTALL):
 	$(call MESSAGE,"Uninstalling")
