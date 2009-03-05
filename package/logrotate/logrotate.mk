@@ -10,11 +10,11 @@ $(DL_DIR)/$(LOGROTATE_SOURCE):
 
 $(LOGROTATE_DIR)/.source: $(DL_DIR)/$(LOGROTATE_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(LOGROTATE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LOGROTATE_DIR) package/logrotate/ *.patch	
+	toolchain/patch-kernel.sh $(LOGROTATE_DIR) package/logrotate/ *.patch
 	touch $@
 
 $(LOGROTATE_DIR)/$(LOGROTATE_BINARY): $(LOGROTATE_DIR)/.source
-	$(MAKE) CC=$(TARGET_CC) -C $(LOGROTATE_DIR)
+	$(MAKE) CC="$(TARGET_CC) $(TARGET_CFLAGS)" -C $(LOGROTATE_DIR)
 
 $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY): $(LOGROTATE_DIR)/$(LOGROTATE_BINARY)
 	$(MAKE) PREFIX=$(TARGET_DIR) -C $(LOGROTATE_DIR) install
