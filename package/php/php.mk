@@ -171,6 +171,7 @@ $(PHP_HOOK_POST_INSTALL):
 	rm -f $(TARGET_DIR)/usr/bin/php-config
 	if [ ! -f $(TARGET_DIR)/etc/php.ini ]; then \
 		$(INSTALL) -m 0755 $(BR2_PACKAGE_PHP_CONFIG) $(TARGET_DIR)/etc/php.ini; fi
+	touch $@
 
 $(PHP_TARGET_UNINSTALL):
 	$(call MESSAGE,"Uninstalling")
