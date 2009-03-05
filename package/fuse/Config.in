@@ -1,7 +1,10 @@
 config BR2_PACKAGE_LIBFUSE
 	bool "libfuse"
-	select BR2_LARGEFILE
+	depends on BR2_LARGEFILE
 	help
 	  FUSE (Filesystem in UserSpacE)
 
 	  http://fuse.sourceforge.net/
+
+comment "libfuse requires a toolchain with LARGEFILE support"
+        depends on !BR2_LARGEFILE
