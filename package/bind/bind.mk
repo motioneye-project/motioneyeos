@@ -31,7 +31,7 @@ BIND_CONF_OPT =	$(DISABLE_IPV6) \
 $(eval $(call AUTOTARGETS,package,bind))
 
 $(BIND_HOOK_POST_INSTALL):
-	rm -f $(TARGET_DIR)/isc-config.sh
+	rm -f $(TARGET_DIR)/usr/bin/isc-config.sh
 ifneq ($(BR2_PACKAGE_BIND_TOOLS),y)
 	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(BIND_TARGET_BINS))
 endif
