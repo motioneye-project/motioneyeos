@@ -38,7 +38,7 @@ $(OPENSSL_TARGET_CONFIGURE):
 		./Configure \
 			linux-$(OPENSSL_TARGET_ARCH) \
 			--prefix=/usr \
-			--openssldir=/usr/lib/ssl \
+			--openssldir=/etc/ssl \
 			threads \
 			shared \
 			no-idea \
