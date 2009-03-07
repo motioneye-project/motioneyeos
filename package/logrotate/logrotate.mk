@@ -18,8 +18,8 @@ $(LOGROTATE_DIR)/$(LOGROTATE_BINARY): $(LOGROTATE_DIR)/.source
 
 $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY): $(LOGROTATE_DIR)/$(LOGROTATE_BINARY)
 	$(MAKE) PREFIX=$(TARGET_DIR) -C $(LOGROTATE_DIR) install
-	if [ ! -f $(TARGET_DIR)/etc/logrotate.conf ]; then
-		$(INSTALL) -m 0644 package/logrotate/logrotate.conf $(TARGET_DIR)/etc/logrotate.conf;
+	if [ ! -f $(TARGET_DIR)/etc/logrotate.conf ]; then \
+		$(INSTALL) -m 0644 package/logrotate/logrotate.conf $(TARGET_DIR)/etc/logrotate.conf; \
 	fi
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/logrotate.d
 
