@@ -218,6 +218,7 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/wget/Config.in"
 endif
 source "package/wireless-tools/Config.in"
+source "package/wpa_supplicant/Config.in"
 
 endmenu
 
