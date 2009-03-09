@@ -44,6 +44,7 @@ $(PCIUTILS_DIR)/.compiled: $(PCIUTILS_DIR)/.unpacked
 	$(MAKE1) CC="$(TARGET_CC)" OPT="$(TARGET_CFLAGS)" RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(PCIUTILS_DIR) \
 		SHAREDIR="/usr/share/misc" \
 		ZLIB=$(PCIUTILS_HAVE_ZLIB) \
+		HOST=$(KERNEL_ARCH)-linux \
 		PREFIX=/usr
 	touch $@
 
