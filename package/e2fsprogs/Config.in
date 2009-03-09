@@ -1,5 +1,6 @@
 config BR2_PACKAGE_E2FSPROGS
 	bool "e2fsprogs"
+	depends on BR2_LARGEFILE
 	help
 	  The EXT2 file system utilities and libraries
 
@@ -80,3 +81,5 @@ config BR2_PACKAGE_E2FSPROGS_UUIDGEN
 	default y
 	depends on BR2_PACKAGE_E2FSPROGS
 
+comment "e2fsprogs requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
