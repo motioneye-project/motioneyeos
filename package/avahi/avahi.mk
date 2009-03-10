@@ -92,7 +92,7 @@ AVAHI_CONF_OPT = --localstatedir=/var \
 		--with-autoipd-user=default \
 		--with-autoipd-group=default
 
-AVAHI_DEPENDENCIES = $(if $(BR2_ENABLE_LOCALE),gettext libintl)
+AVAHI_DEPENDENCIES = $(if $(BR2_PACKAGE_GETTEXT),gettext)
 
 ifneq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_AVAHI_AUTOIPD),)
 AVAHI_DEPENDENCIES += libdaemon
@@ -113,7 +113,8 @@ else
 AVAHI_CONF_OPT += --disable-dbus
 endif
 
-ifeq ($(BR2_ENABLE_LOCALE),y)
+ifeq ($(BR2_PACKAGE_LIBINTL),y)
+AVAHI_DEPENDENCIES += libintl
 AVAHI_MAKE_OPT = LIBS=-lintl
 endif
 
