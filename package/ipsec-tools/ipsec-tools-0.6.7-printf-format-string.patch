@@ -1,0 +1,64 @@
+[patch]: ipsec-tools: fix printf format string for size_t
+
+Use %zu instead of %d for printing out size_t variables. Fixes a build issue
+on 64bit as ipsec-tools uses -Werror.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/racoon/algorithm.c |    6 +++---
+ src/racoon/oakley.c    |    4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+Index: ipsec-tools-0.6.7/src/racoon/oakley.c
+===================================================================
+--- ipsec-tools-0.6.7.orig/src/racoon/oakley.c
++++ ipsec-tools-0.6.7/src/racoon/oakley.c
+@@ -252,7 +252,7 @@
+ 
+ #ifdef ENABLE_STATS
+ 	gettimeofday(&end, NULL);
+-	syslog(LOG_NOTICE, "%s(%s%d): %8.6f", __func__,
++	syslog(LOG_NOTICE, "%s(%s%zu): %8.6f", __func__,
+ 		s_attr_isakmp_group(dh->type), dh->prime->l << 3,
+ 		timedelta(&start, &end));
+ #endif
+@@ -299,7 +299,7 @@
+ 
+ #ifdef ENABLE_STATS
+ 	gettimeofday(&end, NULL);
+-	syslog(LOG_NOTICE, "%s(%s%d): %8.6f", __func__,
++	syslog(LOG_NOTICE, "%s(%s%zu): %8.6f", __func__,
+ 		s_attr_isakmp_group(dh->type), dh->prime->l << 3,
+ 		timedelta(&start, &end));
+ #endif
+Index: ipsec-tools-0.6.7/src/racoon/algorithm.c
+===================================================================
+--- ipsec-tools-0.6.7.orig/src/racoon/algorithm.c
++++ ipsec-tools-0.6.7/src/racoon/algorithm.c
+@@ -394,7 +394,7 @@
+ 
+ #ifdef ENABLE_STATS
+ 	gettimeofday(&end, NULL);
+-	syslog(LOG_NOTICE, "%s(%s size=%d): %8.6f", __func__,
++	syslog(LOG_NOTICE, "%s(%s size=%zu): %8.6f", __func__,
+ 		f->name, buf->l, timedelta(&start, &end));
+ #endif
+ 
+@@ -506,7 +506,7 @@
+ 
+ #ifdef ENABLE_STATS
+ 	gettimeofday(&end, NULL);
+-	syslog(LOG_NOTICE, "%s(%s klen=%d size=%d): %8.6f", __func__,
++	syslog(LOG_NOTICE, "%s(%s klen=%zu size=%zu): %8.6f", __func__,
+ 		f->name, key->l << 3, buf->l, timedelta(&start, &end));
+ #endif
+ 	return res;
+@@ -535,7 +535,7 @@
+ 
+ #ifdef ENABLE_STATS
+ 	gettimeofday(&end, NULL);
+-	syslog(LOG_NOTICE, "%s(%s klen=%d size=%d): %8.6f", __func__,
++	syslog(LOG_NOTICE, "%s(%s klen=%zu size=%zu): %8.6f", __func__,
+ 		f->name, key->l << 3, buf->l, timedelta(&start, &end));
+ #endif
+ 	return res;
