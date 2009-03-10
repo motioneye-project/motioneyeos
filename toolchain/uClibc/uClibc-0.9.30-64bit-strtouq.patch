@@ -1,0 +1,48 @@
+[PATCH]: Add strtouq alias (to strtoul) for 64bit
+
+The strtouq alias was only available on 32bit, breaking compilation of stuff
+using strtouq on 64bit machines. At the same time use the correct return
+type (u_quad_t).
+
+Signed-of-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ include/stdlib.h     |    4 +++-
+ libc/stdlib/stdlib.c |    1 +
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+Index: uClibc-0.9.30.1/libc/stdlib/stdlib.c
+===================================================================
+--- uClibc-0.9.30.1.orig/libc/stdlib/stdlib.c
++++ uClibc-0.9.30.1/libc/stdlib/stdlib.c
+@@ -401,6 +401,9 @@
+ libc_hidden_proto(__XL_NPP(strtoull))
+ strong_alias(__XL_NPP(strtoul),__XL_NPP(strtoull))
+ libc_hidden_def(__XL_NPP(strtoull))
++#if !defined(L_strtoul_l)
++strong_alias(strtoul,strtouq)
++#endif
+ #endif
+ 
+ 
+Index: uClibc-0.9.30.1/include/stdlib.h
+===================================================================
+--- uClibc-0.9.30.1.orig/include/stdlib.h
++++ uClibc-0.9.30.1/include/stdlib.h
+@@ -203,6 +203,8 @@
+ __END_NAMESPACE_STD
+ 
+ #ifdef __USE_BSD
++#include <sys/types.h> /* for u_quad_t */
++
+ /* Convert a string to a quadword integer.  */
+ __extension__
+ extern long long int strtoq (__const char *__restrict __nptr,
+@@ -210,7 +212,7 @@
+      __THROW __nonnull ((1)) __wur;
+ /* Convert a string to an unsigned quadword integer.  */
+ __extension__
+-extern unsigned long long int strtouq (__const char *__restrict __nptr,
++extern u_quad_t strtouq (__const char *__restrict __nptr,
+ 				       char **__restrict __endptr, int __base)
+      __THROW __nonnull ((1)) __wur;
+ #endif /* GCC and use BSD.  */
