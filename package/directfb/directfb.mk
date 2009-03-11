@@ -56,6 +56,9 @@ DIRECTFB_GFX:=$(subst $(space),$(comma),$(strip $(DIRECTFB_GFX)))
 endif
 
 DIRECTFB_INPUT:=
+ifeq ($(BR2_PACKAGE_DIRECTFB_LINUXINPUT),y)
+DIRECTFB_INPUT+= linuxinput
+endif
 ifeq ($(BR2_PACKAGE_DIRECTFB_KEYBOARD),y)
 DIRECTFB_INPUT+= keyboard
 endif
