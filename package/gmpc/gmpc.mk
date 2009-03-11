@@ -10,8 +10,13 @@ GMPC_LIBTOOL_PATCH = NO
 GMPC_CONF_ENV = ac_cv_lib_curl_curl_global_init=yes
 GMPC_CONF_OPT = --disable-mmkeys
 
-
 GMPC_DEPENDENCIES = libglib2 libgtk2 libglade libcurl libmpd
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBSM),y)
+GMPC_DEPENENCIES += xlib_libSM
+GMPC_CONF_OPT += --enable-sm
+else
+GMPC_CONF_OPT += --disable-sm
+endif
 
 $(eval $(call AUTOTARGETS,package,gmpc))
