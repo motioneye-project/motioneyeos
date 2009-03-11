@@ -90,6 +90,7 @@ config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 
 config BR2_PACKAGE_QTOPIA4_GUI_MODULE
 	bool "Gui Module"
+	default y
 	help
 	  Turns on support to Gui applications. If your board don't have
 	  video output, or you don't require Qt GUI, say n.
