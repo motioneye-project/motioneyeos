@@ -22,5 +22,6 @@ $(LIBICONV_HOOK_POST_INSTALL):
 	rm -f $(TARGET_DIR)/usr/lib/preloadable_libiconv.so
 ifneq ($(BR2_ENABLE_DEBUG),y)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libiconv.so.*
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcharset.so.*
 endif
 	touch $@
