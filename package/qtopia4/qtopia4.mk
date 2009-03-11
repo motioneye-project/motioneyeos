@@ -420,6 +420,10 @@ ifeq ($(BR2_PACKAGE_QTOPIA4_PHONON),y)
 	cp -dpfr $(STAGING_DIR)/usr/plugins/phonon_backend $(TARGET_DIR)/usr/plugins/
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/plugins/phonon_backend/*
 endif
+ifneq ($(BR2_PACKAGE_QTOPIA4_GUI_MODULE),y)
+	# Remove Gui library, not needed
+	-rm $(TARGET_DIR)/usr/lib/libQtGui*
+endif
 ifneq ($(BR2_PACKAGE_QTOPIA4_SQL_MODULE),y)
 	# Remove Sql libraries, not needed
 	-rm $(TARGET_DIR)/usr/lib/libQtSql*

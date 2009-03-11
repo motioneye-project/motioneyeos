@@ -88,6 +88,13 @@ config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
 	  library with proxy code and increase the space required on target.
 	  If unsure say n.
 
+config BR2_PACKAGE_QTOPIA4_GUI_MODULE
+	bool "Gui Module"
+	help
+	  Turns on support to Gui applications. If your board don't have
+	  video output, or you don't require Qt GUI, say n.
+
+if BR2_PACKAGE_QTOPIA4_GUI_MODULE
 menu "Pixel depths"
 comment "Deselecting each option leads to Qt's default (8,16,32)"
 
@@ -128,6 +135,7 @@ config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_32
 
 endif
 endmenu
+endif
 
 config BR2_PACKAGE_QTOPIA4_GIF
 	bool "Enable GIF support"

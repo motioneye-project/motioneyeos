@@ -109,8 +109,8 @@ diff -urN u-boot-2009.01-0rig//common/cmd_factory.c u-boot-2009.01/common/cmd_fa
 +	setenv("fs-date",	MK_STR(DATE));
 +	setenv("rd",		"rootfs.arm-"MK_STR(DATE)".ext2");
 +#endif
-+#if	defined(KERNEL_VERSION)
-+	setenv("linux",		MK_STR(BOARD_NAME)"-linux-"MK_STR(KERNEL_VERSION)"-"MK_STR(DATE)".gz");
++#if	defined(KERNEL_NAME)
++	setenv("linux",		MK_STR(KERNEL_NAME));
 +#endif
 +	setenv("get-ramdisk",	"tftp	${ramdisk}	${rd};		setenv rd-size	${filesize}");
 +	setenv("store-ramdisk",	"cp.b	${ramdisk}	${FS}		${rd-size}");
@@ -243,32 +243,17 @@ diff -urN u-boot-2009.01-0rig//common/cmd_factory.c u-boot-2009.01/common/cmd_fa
 +
 +int do_os (cmd_tbl_t *cmdtp, int flag, int argc, char *argv[])
 +{
-+	char *kchip;
-+	char *kdate;
-+	char *kver;
-+	char cmd[512];
-+	kchip = getenv("hostname");
-+	kdate = getenv("kernel-date");
-+	kver = getenv("kernel-version");
-+	if((strlen(kdate) + strlen(kver) + 32) >  500) {
-+		printf("Error: Environment too large during 'os': ");
-+		printf("len=%d\n", strlen(kdate) + strlen(kver) + 32);
-+	} else if(kver != NULL) {
-+		if(kdate != NULL) {
-+			sprintf(cmd,"%s-linux-%s-%s.gz",kchip,kver,kdate);
-+		} else {
-+			sprintf(cmd,"%s-linux-%s.gz",kchip,kver);
-+		}
-+		printf("Setting kernel to %s\n",cmd);
-+		setenv("linux",cmd);
-+		return 0;
-+	}
-+	return 1;
++#if defined(KERNEL_NAME)
++	setenv("linux", MK_STR(KERNEL_NAME));
++#else
++	setenv("linux", "uImage");
++#endif
++	return 0;
 +}
 +
 +U_BOOT_CMD(
 +	os,	1,	1,	do_os,
-+	"os\t- Select linux version  ${hostname}-linux-${kernel-name}-${kernel-date}\n"
++	"os\t- Select linux version\n"
 +	,	"\n"
 +);
 +
