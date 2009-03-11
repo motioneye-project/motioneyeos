@@ -34,7 +34,7 @@ $(AUTOMAKE_SRC_DIR)/.unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 #
 #############################################################
 
-$(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked
+$(AUTOMAKE_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked $(AUTOCONF)
 	mkdir -p $(AUTOMAKE_DIR)
 	(cd $(AUTOMAKE_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -103,7 +103,7 @@ automake-dirclean:
 #
 #############################################################
 
-$(AUTOMAKE_HOST_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked
+$(AUTOMAKE_HOST_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked $(AUTOCONF)
 	mkdir -p $(AUTOMAKE_HOST_DIR)
 	(cd $(AUTOMAKE_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
