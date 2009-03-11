@@ -20,3 +20,10 @@ GMPC_CONF_OPT += --disable-sm
 endif
 
 $(eval $(call AUTOTARGETS,package,gmpc))
+
+# we NEED a host gob2
+ifeq ($(BR2_PACKAGE_GMPC),y)
+ifeq ($(wildcard $(shell which gob2 || echo /usr/bin/gob2)),)
+$(error Host gob2 not found. Please install GTK+ Object Builder package on your host (something like gob2))
+endif
+endif
