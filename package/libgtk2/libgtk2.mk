@@ -135,4 +135,5 @@ $(eval $(call AUTOTARGETS,package,libgtk2))
 
 $(LIBGTK2_HOOK_POST_INSTALL):
 	$(INSTALL) -m 755 package/libgtk2/S26libgtk2 $(TARGET_DIR)/etc/init.d/
+	rm -rf $(TARGET_DIR)/usr/share/gtk-2.0/demo
 	touch $@
