@@ -7,6 +7,7 @@ FILE=/etc/pango/pango.modules
 case "$1" in
     start|"")
 	if [ ! -f "$FILE" ] ; then
+	    mkdir -p /etc/pango
 	    /usr/bin/pango-querymodules > "$FILE"
 	fi
 	;;
