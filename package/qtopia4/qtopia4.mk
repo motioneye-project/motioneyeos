@@ -16,7 +16,7 @@
 # (cd /usr/include; sudo ln -s dbus-1.0/dbus dbus)
 # to fix
 
-QTOPIA4_VERSION:=4.4.3
+QTOPIA4_VERSION:=4.5.0
 QTOPIA4_CAT:=$(BZCAT)
 
 BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME)))
@@ -36,7 +36,7 @@ else # Good, good, we are free:
 QTOPIA4_SITE=ftp://ftp.trolltech.com/qt/source
 QTOPIA4_SOURCE:=qt-embedded-linux-opensource-src-$(QTOPIA4_VERSION).tar.bz2
 QTOPIA4_TARGET_DIR:=$(BUILD_DIR)/qt-embedded-linux-opensource-src-$(QTOPIA4_VERSION)
-ifeq ($(BR2_PACKAGE_QTOPIA4_GPL_LICENSE_APPROVED),y)
+ifeq ($(BR2_PACKAGE_QTOPIA4_LICENSE_APPROVED),y)
 QTOPIA4_CONFIGURE+= -confirm-license
 endif
 endif

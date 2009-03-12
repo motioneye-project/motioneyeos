@@ -41,9 +41,12 @@ endchoice
 
 choice
 	prompt "Qtopia 4 Core license type"
-	default BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_GPL
+	default BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_LGPL
 	help
 	  Selects the type of license you which to use for Qtopia 4 Core.
+
+config BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_LGPL
+	bool "LGPL license"
 
 config BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_GPL
 	bool "GPL license"
@@ -53,16 +56,17 @@ config BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
 
 endchoice
 
-config BR2_PACKAGE_QTOPIA4_GPL_LICENSE_APPROVED
-	bool "Approve Qtopia Core 4 GPL licence"
-	depends on BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_GPL
+config BR2_PACKAGE_QTOPIA4_LICENSE_APPROVED
+	bool "Approve Qtopia Core 4 license"
+	depends on BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_GPL || BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_LGPL
 	help
-	  Select this if you approve the GNU GENERAL PUBLIC LICENSE Version 2
-	  on the Qtopia Core 4 library. By doing this you will not be asked
-	  while the library is compiled. Please read and understand the GPL
-	  licence before approving this.
+	  Select this if you approve the above selected license for the
+	  Qtopia Core 4 library.
+	  By doing this you will not be asked while the library is compiled.
+	  Please read and understand the license terms before approving this.
 
-	  For full GPL version 2 see http://www.gnu.org/licenses/gpl.txt
+	  For full GPL version 2 see http://www.gnu.org/licenses/gpl2.txt
+	  For full LGPL see http://www.gnu.org/licenses/lgpl.txt
 
 
 config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
