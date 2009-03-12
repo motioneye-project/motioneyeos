@@ -42,11 +42,47 @@ CAIRO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_cv_path_GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal
 
 
+CAIRO_DEPENDENCIES = uclibc pkgconfig fontconfig pixman
+
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
-	CAIRO_CONF_OPT = --disable-xlib --without-x --enable-directfb
-	CAIRO_DEPENDENCIES_EXTRA = directfb
+	CAIRO_CONF_OPT += --enable-directfb
+	CAIRO_DEPENDENCIES += directfb
+else
+	CAIRO_CONF_OPT += --disable-directfb
 endif
 
-CAIRO_DEPENDENCIES = uclibc gettext libintl pkgconfig zlib libpng fontconfig $(CAIRO_DEPENDENCIES_EXTRA) pixman $(XSERVER) 
+ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+	CAIRO_CONF_OPT += --enable-xlib --with-x
+	CAIRO_DEPENDENCIES += $(XSERVER)
+else
+	CAIRO_CONF_OPT += --disable-xlib --without-x
+endif
+
+ifeq ($(BR2_PACKAGE_CAIRO_PS),y)
+	CAIRO_CONF_OPT += --enable-ps
+	CAIRO_DEPENDENCIES += zlib
+else
+	CAIRO_CONF_OPT += --disable-ps
+endif
+
+ifeq ($(BR2_PACKAGE_CAIRO_PDF),y)
+	CAIRO_CONF_OPT += --enable-pdf
+	CAIRO_DEPENDENCIES += zlib
+else
+	CAIRO_CONF_OPT += --disable-pdf
+endif
+
+ifeq ($(BR2_PACKAGE_CAIRO_PNG),y)
+	CAIRO_CONF_OPT += --enable-png
+	CAIRO_DEPENDENCIES += libpng
+else
+	CAIRO_CONF_OPT += --disable-png
+endif
+
+ifeq ($(BR2_PACKAGE_CAIRO_SVG),y)
+	CAIRO_CONF_OPT += --enable-svg
+else
+	CAIRO_CONF_OPT += --disable-svg
+endif
 
 $(eval $(call AUTOTARGETS,package,cairo))
