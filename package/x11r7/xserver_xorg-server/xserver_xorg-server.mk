@@ -31,9 +31,21 @@ else
 XSERVER_XORG_NULL_CURSOR:=--disable-null-root-cursor
 endif
 
+ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_BUILTIN_FONTS),y)
+XSERVER_XORG_BUILTIN_FONTS:=--enable-builtin-fonts
+else
+XSERVER_XORG_BUILTIN_FONTS:=--disable-builtin-fonts
+endif
+
+ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX),y)
+XSERVER_XORG_AIGLX:=--enable-aiglx
+else
+XSERVER_XORG_AIGLX:=--disable-aiglx
+endif
+
 XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont libdrm xlib_libxkbui \
 									xproto_compositeproto xproto_damageproto xproto_fixesproto \
-									xproto_glproto xproto_kbproto xproto_randrproto freetype \
+									xproto_glproto xproto_kbproto xproto_randrproto \
 									xlib_libX11 xlib_libXau xlib_libXaw xlib_libXdmcp xlib_libXScrnSaver \
 									xlib_libXext xlib_libXfixes xlib_libXi xlib_libXmu xlib_libXpm \
 									xlib_libXrender xlib_libXres xlib_libXtst xlib_libXft xlib_libXcursor \
@@ -50,6 +62,8 @@ XSERVER_XORG_SERVER_CONF_OPT = $(XSERVER_XORG_ENABLE_KDRIVE) \
 		--disable-config-hal $(XSERVER_XORG_MESA_DIR) \
 		--disable-xnest --disable-xephyr --disable-xvfb \
 		$(XSERVER_XORG_NULL_CURSOR) \
+		$(XSERVER_XORG_BUILTIN_FONTS) \
+		$(XSERVER_XORG_AIGLX) \
 		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1"
 
 XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install-data
