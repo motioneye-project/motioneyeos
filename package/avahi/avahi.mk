@@ -78,7 +78,6 @@ AVAHI_CONF_OPT = --localstatedir=/var \
 		--disable-qt4 \
 		--disable-gtk \
 		--disable-gdbm \
-		--disable-python \
 		--disable-python-dbus \
 		--disable-pygtk \
 		--disable-mono \
@@ -111,6 +110,21 @@ ifeq ($(BR2_PACKAGE_DBUS),y)
 AVAHI_DEPENDENCIES += dbus
 else
 AVAHI_CONF_OPT += --disable-dbus
+endif
+
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+AVAHI_CONF_ENV += am_cv_pathless_PYTHON=python \
+		am_cv_path_PYTHON=$(PYTHON_TARGET_BINARY) \
+		am_cv_python_version=$(PYTHON_VERSION) \
+		am_cv_python_platform=linux2 \
+		am_cv_python_pythondir=$(PYTHON_SITE_PACKAGE_DIR) \
+		am_cv_python_pyexecdir=$(PYTHON_SITE_PACKAGE_DIR) \
+		py_cv_mod_socket_=yes
+
+AVAHI_DEPENDENCIES += libpython
+AVAHI_CONF_OPT += --enable-python
+else
+AVAHI_CONF_OPT += --disable-python
 endif
 
 ifeq ($(BR2_PACKAGE_LIBINTL),y)
