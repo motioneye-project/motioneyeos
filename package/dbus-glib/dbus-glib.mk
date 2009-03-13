@@ -50,6 +50,7 @@ $(DBUS_GLIB_DIR)/$(DBUS_GLIB_BINARY): $(DBUS_GLIB_DIR)/.configured
 	$(MAKE) DBUS_BUS_LIBS="$(STAGING_DIR)/usr/lib/libexpat.so" -C $(DBUS_GLIB_DIR) all
 
 $(STAGING_DIR)/usr/lib/libdbus-glib-1.so.2.0.0: $(DBUS_GLIB_DIR)/$(DBUS_GLIB_BINARY)
+	cp -a $(DBUS_GLIB_DIR)/dbus-glib-1.pc $(STAGING_DIR)/usr/lib/pkgconfig
 	cp -a $(DBUS_GLIB_DIR)/dbus/.libs/libdbus-glib-1.so* $(STAGING_DIR)/usr/lib
 	-touch -c $(STAGING_DIR)/usr/lib/libdbus-glib-1.so.2.0.0
 
