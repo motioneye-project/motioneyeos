@@ -1,0 +1,20 @@
+diff -uNr xlib_libpciaccess-0.10.3.orig/configure.ac xlib_libpciaccess-0.10.3/configure.ac
+--- xlib_libpciaccess-0.10.3.orig/configure.ac	2009-02-09 18:35:50.000000000 -0800
++++ xlib_libpciaccess-0.10.3/configure.ac	2009-02-09 18:38:56.000000000 -0800
+@@ -91,10 +91,12 @@
+ AM_CONDITIONAL(OPENBSD, [test "x$openbsd" = xyes])
+ AM_CONDITIONAL(SOLARIS, [test "x$solaris" = xyes])
+ 
+-AC_CHECK_FILE([/usr/include/asm/mtrr.h],
+-              [have_mtrr_h="yes"], [have_mtrr_h="no"])
+-if test "x$have_mtrr_h" = xyes; then
+-    AC_DEFINE(HAVE_MTRR, 1, [Use MTRRs on mappings])
++if test "$cross_compiling" != yes; then
++AC_CHECK_FILE([/usr/include/asm/mtrr.h],
++              [have_mtrr_h="yes"], [have_mtrr_h="no"])
++if test "x$have_mtrr_h" = xyes; then
++    AC_DEFINE(HAVE_MTRR, 1, [Use MTRRs on mappings])
++fi
+ fi
+ 
+ AC_SUBST(PCIACCESS_CFLAGS)

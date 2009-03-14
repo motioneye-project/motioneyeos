@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XSERVER_XORG_SERVER_VERSION = 1.4.2
+XSERVER_XORG_SERVER_VERSION = 1.5.2
 XSERVER_XORG_SERVER_SOURCE = xorg-server-$(XSERVER_XORG_SERVER_VERSION).tar.bz2
 XSERVER_XORG_SERVER_SITE = http://xorg.freedesktop.org/releases/individual/xserver
 XSERVER_XORG_SERVER_AUTORECONF = NO
@@ -20,7 +20,7 @@ XSERVER_XORG_ENABLE_MODULAR:=--disable-xorg
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_tinyx),y)
-XSERVER_XORG_ENABLE_KDRIVE:=--enable-kdrive --enable-xfbdev
+XSERVER_XORG_ENABLE_KDRIVE:=--enable-kdrive --enable-xfbdev --disable-glx --disable-dri
 else
 XSERVER_XORG_ENABLE_KDRIVE:=--disable-kdrive --disable-xfbdev
 endif
@@ -43,7 +43,7 @@ else
 XSERVER_XORG_AIGLX:=--disable-aiglx
 endif
 
-XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont libdrm xlib_libxkbui \
+XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont libdrm xlib_libxkbui openssl \
 									xproto_compositeproto xproto_damageproto xproto_fixesproto \
 									xproto_glproto xproto_kbproto xproto_randrproto \
 									xlib_libX11 xlib_libXau xlib_libXaw xlib_libXdmcp xlib_libXScrnSaver \

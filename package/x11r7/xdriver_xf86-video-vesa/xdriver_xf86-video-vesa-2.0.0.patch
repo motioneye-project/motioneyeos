@@ -1,0 +1,13 @@
+--- xf86-video-vesa-2.0.0/configure.ac.orig	2007-06-11 13:10:35.000000000 +0200
++++ xf86-video-vesa-2.0.0/configure.ac	2007-06-11 14:16:45.000000000 +0200
+@@ -56,8 +56,8 @@
+ PKG_CHECK_MODULES(XORG, xorg-server >= 1.0.99.901 xproto fontsproto $REQUIRED_MODULES)
+ sdkdir=$(pkg-config --variable=sdkdir xorg-server)
+ 
+-CFLAGS="$CFLAGS $XORG_CFLAGS "' -I$(top_srcdir)/src'
+-INCLUDES="$XORG_INCS -I${sdkdir} "'-I$(top_srcdir)/src -I$(prefix)/include'
++CFLAGS="$CFLAGS $XORG_CFLAGS "'-I$(top_srcdir)/src'
++INCLUDES="$XORG_INCS "'-I$(top_srcdir)/src'
+ AC_SUBST([CFLAGS])
+ AC_SUBST([INCLUDES])
+ 

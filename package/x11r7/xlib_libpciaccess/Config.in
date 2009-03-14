@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XLIB_LIBPCIACCESS
+	bool "libpciaccess"
+	help
+	  libpciaccess 0.10.3
+	  X.Org libpciaccess

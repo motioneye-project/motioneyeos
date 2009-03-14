@@ -1,5 +1,5 @@
 menuconfig BR2_PACKAGE_XORG7
-bool "X.org X Window System, X11R7, release 7.3"
+bool "X.org X Window System, X11R7, release 7.4"
 default y if BR2_PACKAGE_XSERVER_x11r7
 select BR2_PACKAGE_ZLIB
 select BR2_PACKAGE_LIBPNG
@@ -61,6 +61,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xlib_libxkbfile/Config.in
 		source package/x11r7/xlib_libxkbui/Config.in
 		source package/x11r7/xlib_xtrans/Config.in
+		source package/x11r7/xlib_libpciaccess/Config.in
 	endmenu
 	menu "X11R7 Applications"
 		source package/x11r7/xapp_appres/Config.in
@@ -91,6 +92,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_viewres/Config.in
 		source package/x11r7/xapp_x11perf/Config.in
 		source package/x11r7/xapp_xauth/Config.in
+		source package/x11r7/xapp_xbacklight/Config.in
 		source package/x11r7/xapp_xbiff/Config.in
 		source package/x11r7/xapp_xcalc/Config.in
 		source package/x11r7/xapp_xclipboard/Config.in
@@ -116,6 +118,7 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_xgc/Config.in
 		source package/x11r7/xapp_xhost/Config.in
 		source package/x11r7/xapp_xinit/Config.in
+		source package/x11r7/xapp_xinput/Config.in
 		source package/x11r7/xapp_xkbcomp/Config.in
 		source package/x11r7/xapp_xkbevd/Config.in
 		source package/x11r7/xapp_xkbprint/Config.in
@@ -156,34 +159,13 @@ if BR2_PACKAGE_XORG7
 	endmenu
 	if BR2_PACKAGE_XSERVER_xorg
 	menu "X11R7 Drivers"
-		source package/x11r7/openchrome/Config.in
 		source package/x11r7/xdriver_xf86-input-acecad/Config.in
 		source package/x11r7/xdriver_xf86-input-aiptek/Config.in
-		source package/x11r7/xdriver_xf86-input-calcomp/Config.in
-		source package/x11r7/xdriver_xf86-input-citron/Config.in
-		source package/x11r7/xdriver_xf86-input-digitaledge/Config.in
-		source package/x11r7/xdriver_xf86-input-dmc/Config.in
-		source package/x11r7/xdriver_xf86-input-dynapro/Config.in
-		source package/x11r7/xdriver_xf86-input-elo2300/Config.in
-		source package/x11r7/xdriver_xf86-input-elographics/Config.in
 		source package/x11r7/xdriver_xf86-input-evdev/Config.in
-		source package/x11r7/xdriver_xf86-input-fpit/Config.in
-		source package/x11r7/xdriver_xf86-input-hyperpen/Config.in
-		source package/x11r7/xdriver_xf86-input-jamstudio/Config.in
 		source package/x11r7/xdriver_xf86-input-joystick/Config.in
 		source package/x11r7/xdriver_xf86-input-keyboard/Config.in
-		source package/x11r7/xdriver_xf86-input-magellan/Config.in
-		source package/x11r7/xdriver_xf86-input-magictouch/Config.in
-		source package/x11r7/xdriver_xf86-input-microtouch/Config.in
 		source package/x11r7/xdriver_xf86-input-mouse/Config.in
-		source package/x11r7/xdriver_xf86-input-mutouch/Config.in
-		source package/x11r7/xdriver_xf86-input-palmax/Config.in
-		source package/x11r7/xdriver_xf86-input-penmount/Config.in
-		source package/x11r7/xdriver_xf86-input-spaceorb/Config.in
-		source package/x11r7/xdriver_xf86-input-summa/Config.in
 		source package/x11r7/xdriver_xf86-input-synaptics/Config.in
-		source package/x11r7/xdriver_xf86-input-tek4957/Config.in
-		source package/x11r7/xdriver_xf86-input-ur98/Config.in
 		source package/x11r7/xdriver_xf86-input-vmmouse/Config.in
 		source package/x11r7/xdriver_xf86-input-void/Config.in
 		source package/x11r7/xdriver_xf86-video-apm/Config.in
@@ -192,20 +174,22 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdriver_xf86-video-ati/Config.in
 		source package/x11r7/xdriver_xf86-video-chips/Config.in
 		source package/x11r7/xdriver_xf86-video-cirrus/Config.in
-		source package/x11r7/xdriver_xf86-video-cyrix/Config.in
 		source package/x11r7/xdriver_xf86-video-dummy/Config.in
 		source package/x11r7/xdriver_xf86-video-fbdev/Config.in
+		source package/x11r7/xdriver_xf86-video-geode/Config.in
+		source package/x11r7/xdriver_xf86-video-glide/Config.in
 		source package/x11r7/xdriver_xf86-video-glint/Config.in
 		source package/x11r7/xdriver_xf86-video-i128/Config.in
 		source package/x11r7/xdriver_xf86-video-i740/Config.in
-		source package/x11r7/xdriver_xf86-video-i810/Config.in
-		source package/x11r7/xdriver_xf86-video-imstt/Config.in
+		source package/x11r7/xdriver_xf86-video-impact/Config.in
 		source package/x11r7/xdriver_xf86-video-intel/Config.in
+		source package/x11r7/xdriver_xf86-video-mach64/Config.in
 		source package/x11r7/xdriver_xf86-video-mga/Config.in
 		source package/x11r7/xdriver_xf86-video-neomagic/Config.in
 		source package/x11r7/xdriver_xf86-video-newport/Config.in
-		source package/x11r7/xdriver_xf86-video-nsc/Config.in
 		source package/x11r7/xdriver_xf86-video-nv/Config.in
+		source package/x11r7/xdriver_xf86-video-openchrome/Config.in
+		source package/x11r7/xdriver_xf86-video-r128/Config.in
 		source package/x11r7/xdriver_xf86-video-rendition/Config.in
 		source package/x11r7/xdriver_xf86-video-s3/Config.in
 		source package/x11r7/xdriver_xf86-video-s3virge/Config.in
@@ -225,12 +209,13 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xdriver_xf86-video-trident/Config.in
 		source package/x11r7/xdriver_xf86-video-tseng/Config.in
 		source package/x11r7/xdriver_xf86-video-v4l/Config.in
+		source package/x11r7/xdriver_xf86-video-vermilion/Config.in
 		source package/x11r7/xdriver_xf86-video-vesa/Config.in
-		source package/x11r7/xdriver_xf86-video-vga/Config.in
-		source package/x11r7/xdriver_xf86-video-via/Config.in
 		source package/x11r7/xdriver_xf86-video-vmware/Config.in
 		source package/x11r7/xdriver_xf86-video-voodoo/Config.in
+		source package/x11r7/xdriver_xf86-video-wsfb/Config.in
 		source package/x11r7/xdriver_xf86-video-xgi/Config.in
+		source package/x11r7/xdriver_xf86-video-xgixp/Config.in
 	endmenu
 	endif
 	menu "X11R7 Fonts"

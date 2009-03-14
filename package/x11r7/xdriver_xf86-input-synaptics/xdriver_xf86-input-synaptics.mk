@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XDRIVER_XF86_INPUT_SYNAPTICS_VERSION = 0.14.7~git20070706
+XDRIVER_XF86_INPUT_SYNAPTICS_VERSION = 0.15.0
 XDRIVER_XF86_INPUT_SYNAPTICS_SOURCE = xfree86-driver-synaptics_$(XDRIVER_XF86_INPUT_SYNAPTICS_VERSION).orig.tar.gz
 XDRIVER_XF86_INPUT_SYNAPTICS_SITE = http://ftp.de.debian.org/debian/pool/main/x/xfree86-driver-synaptics
 XDRIVER_XF86_INPUT_SYNAPTICS_AUTORECONF = NO
