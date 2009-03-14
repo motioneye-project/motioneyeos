@@ -134,7 +134,7 @@ $(TARGET_DIR)/lib/*metacity*.so: $(STAGING_DIR)/lib/*metacity*.so
 	cp -a $(STAGING_DIR)/usr/share/themes/Clearlooks \
 		$(TARGET_DIR)/usr/share/themes/
 	(cd $(TARGET_DIR)/usr/share/themes; rm -rf Atlanta; ln -s Clearlooks Atlanta)
-	cp package/metacity/Xsession $(TARGET_DIR)/etc/X11/
+	install -D package/metacity/Xsession $(TARGET_DIR)/etc/X11/Xsession
 
 metacity: uclibc zlib $(XSERVER) libgtk2 $(TARGET_DIR)/lib/*metacity*.so
 
