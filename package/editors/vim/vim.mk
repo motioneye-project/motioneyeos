@@ -16,8 +16,8 @@ VIM_CONFIG_MK:=$(VIM_DIR)/src/auto/config.mk
 $(DL_DIR)/$(VIM_SOURCE):
 	$(call DOWNLOAD,$(VIM_SOURCE_SITE),$(VIM_SOURCE))
 
-$(DL_DIR)/vim/%:
-	$(call DOWNLOAD,$(VIM_PATCH_SITE),$*)
+$(DL_DIR)/$(VIM_VERSION).%:
+	$(call DOWNLOAD,$(VIM_PATCH_SITE),$(notdir $@))
 
 vim-source: $(DL_DIR)/$(VIM_SOURCE) $(VIM_PATCHES)
 
