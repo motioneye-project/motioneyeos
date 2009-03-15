@@ -58,10 +58,16 @@ $(OPENSSL_HOOK_POST_INSTALL):
 ifeq ($(BR2_PACKAGE_OPENSSL_BIN),y)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/openssl
 else
+	# libraries gets installed read only, so strip fails
+	for i in $(addprefix $(TARGET_DIR)/usr/lib/,libcrypto.so.* libssl.so.*); \
+	do chmod +w $$i; $(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $$i; done
 	rm -f $(TARGET_DIR)/usr/bin/c_rehash
 	rm -f $(TARGET_DIR)/usr/bin/openssl
 endif
 ifneq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
 	rm -rf $(TARGET_DIR)/usr/lib/engines
+else
+	chmod +w $(TARGET_DIR)/usr/lib/engines/lib*.so
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/engines/lib*.so
 endif
 	touch $@
