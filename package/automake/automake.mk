@@ -104,8 +104,8 @@ automake-dirclean:
 #############################################################
 
 $(AUTOMAKE_HOST_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked $(AUTOCONF)
-	mkdir -p $(AUTOMAKE_HOST_DIR)
-	(cd $(AUTOMAKE_HOST_DIR); rm -rf config.cache; \
+	mkdir -p $(@D)
+	(cd $(@D); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
@@ -116,7 +116,7 @@ $(AUTOMAKE_HOST_DIR)/.configured: $(AUTOMAKE_SRC_DIR)/.unpacked $(AUTOCONF)
 	touch $@
 
 $(AUTOMAKE_HOST_DIR)/$(AUTOMAKE_BINARY): $(AUTOMAKE_HOST_DIR)/.configured
-	$(MAKE) -C $(AUTOMAKE_HOST_DIR)
+	$(MAKE) -C $(@D)
 	touch -c $@
 
 $(AUTOMAKE): $(AUTOMAKE_HOST_DIR)/$(AUTOMAKE_BINARY)
