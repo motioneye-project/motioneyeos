@@ -12,7 +12,7 @@ XSERVER_XORG_SERVER_INSTALL_STAGING = YES
 XSERVER_XORG_SERVER_USE_CONFIG_CACHE = NO # overrides CFLAGS
 XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install-data
 
-XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont libdrm xlib_libxkbui openssl \
+XSERVER_XORG_SERVER_DEPENDENCIES =  xutil_util-macros xlib_libXfont libdrm xlib_libxkbui openssl \
 									xproto_compositeproto xproto_damageproto xproto_fixesproto \
 									xproto_glproto xproto_kbproto xproto_randrproto \
 									xlib_libX11 xlib_libXau xlib_libXaw xlib_libXdmcp xlib_libXScrnSaver \
@@ -20,13 +20,13 @@ XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont lib
 									xlib_libXrender xlib_libXres xlib_libXtst xlib_libXft xlib_libXcursor \
 									xlib_libXinerama xlib_libXrandr xlib_libXdamage xlib_libXxf86misc xlib_libXxf86vm \
 									xlib_liblbxutil xlib_libxkbfile xlib_xtrans xdata_xbitmaps xproto_bigreqsproto \
-									xproto_evieext xproto_fontsproto xproto_inputproto xproto_recordproto xproto_renderproto \
-									xproto_resourceproto xproto_trapproto xproto_videoproto xproto_xcmiscproto \
+									xproto_evieext xproto_fontsproto xproto_inputproto xproto_renderproto \
+									xproto_resourceproto xproto_videoproto xproto_xcmiscproto \
 									xproto_xextproto xproto_xf86bigfontproto xproto_xf86dgaproto xproto_xf86driproto \
 									xproto_xf86miscproto xproto_xf86rushproto xproto_xf86vidmodeproto xproto_xproto \
 									pixman mcookie
 
-XSERVER_XORG_SERVER_CONF_OPT = --enable-freetype --disable-config-hal \
+XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		--disable-xnest --disable-xephyr --disable-xvfb \
 		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1"
 
@@ -71,5 +71,21 @@ ifeq ($(BR2_PACKAGE_DBUS),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += dbus
 XSERVER_XORG_SERVER_CONF_OPT += --enable-config-dbus
 endif
+
+ifeq ($(BR2_PACKAGE_FREETYPE),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += freetype
+XSERVER_XORG_SERVER_CONF_OPT += --enable-freetype
+endif
+
+ifeq ($(BR2_PACKAGE_XPROTO_TRAPPROTO),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xproto_trapproto
+XSERVER_XORG_SERVER_CONF_OPT += --enable-xtrap
+endif
+
+ifeq ($(BR2_PACKAGE_XPROTO_RECORDPROTO),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xproto_recordproto
+XSERVER_XORG_SERVER_CONF_OPT += --enable-record
+endif
+
 
 $(eval $(call AUTOTARGETS,package/x11r7,xserver_xorg-server))
