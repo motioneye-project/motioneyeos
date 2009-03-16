@@ -3,7 +3,6 @@
 # libgtk2.0
 #
 #############################################################
-#LIBGTK2_VERSION = 2.15.0
 LIBGTK2_VERSION_MAJOR:=2.12
 LIBGTK2_VERSION_MINOR:=12
 LIBGTK2_VERSION = $(LIBGTK2_VERSION_MAJOR).$(LIBGTK2_VERSION_MINOR)
@@ -77,9 +76,7 @@ LIBGTK2_CONF_OPT = --enable-shared \
 		--enable-static \
 		--disable-glibtest \
 		--enable-explicit-deps=no \
-		--disable-debug \
-		$(LIBGTK2_CONF_OPT_X)  \
-		$(LIBGTK2_CONF_OPT_DFB)
+		--disable-debug
 
 LIBGTK2_DEPENDENCIES = pkgconfig libglib2 cairo pango atk
 
