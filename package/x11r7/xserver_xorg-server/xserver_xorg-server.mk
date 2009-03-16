@@ -24,7 +24,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES =  freetype xutil_util-macros xlib_libXfont lib
 									xproto_resourceproto xproto_trapproto xproto_videoproto xproto_xcmiscproto \
 									xproto_xextproto xproto_xf86bigfontproto xproto_xf86dgaproto xproto_xf86driproto \
 									xproto_xf86miscproto xproto_xf86rushproto xproto_xf86vidmodeproto xproto_xproto \
-									pixman dbus mcookie
+									pixman mcookie
 
 XSERVER_XORG_SERVER_CONF_OPT = --enable-freetype --disable-config-hal \
 		--disable-xnest --disable-xephyr --disable-xvfb \
@@ -65,6 +65,11 @@ endif
 ifeq ($(BR2_PACKAGE_TSLIB),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += tslib
 XSERVER_XORG_SERVER_CONF_OPT += --enable-tslib LDFLAGS="-lts"
+endif
+
+ifeq ($(BR2_PACKAGE_DBUS),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += dbus
+XSERVER_XORG_SERVER_CONF_OPT += --enable-config-dbus
 endif
 
 $(eval $(call AUTOTARGETS,package/x11r7,xserver_xorg-server))
