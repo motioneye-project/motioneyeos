@@ -18,14 +18,6 @@ endif
 
 DBUS_DEPENDENCIES = uclibc pkgconfig
 
-ifeq ($(BR2_DBUS_EXPAT),y)
-DBUS_XML:=expat
-DBUS_DEPENDENCIES += expat
-else
-DBUS_XML:=libxml
-DBUS_DEPENDENCIES += libxml2
-endif
-
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
 DBUS_CONF_OPT = --program-prefix="" \
 		--with-dbus-user=dbus \
@@ -37,10 +29,23 @@ DBUS_CONF_OPT = --program-prefix="" \
 		--disable-doxygen-docs \
 		--disable-static \
 		--enable-dnotify \
-		--without-x \
-		--with-xml=$(DBUS_XML) \
 		--with-system-socket=/var/run/dbus/system_bus_socket \
 		--with-system-pid-file=/var/run/messagebus.pid
+
+ifeq ($(BR2_DBUS_EXPAT),y)
+DBUS_CONF_OPT += --with-xml=expat
+DBUS_DEPENDENCIES += expat
+else
+DBUS_CONF_OPT += --with-xml=libxml
+DBUS_DEPENDENCIES += libxml2
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
+DBUS_CONF_OPT += --with-x
+DBUS_DEPENDENCIES += xlib_libX11
+else
+DBUS_CONF_OPT += --without-x
+endif
 
 $(eval $(call AUTOTARGETS,package,dbus))
 
