@@ -17,7 +17,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES =  xutil_util-macros xlib_libXfont libdrm xlib_
 									xproto_glproto xproto_kbproto xproto_randrproto \
 									xlib_libX11 xlib_libXau xlib_libXaw xlib_libXdmcp xlib_libXScrnSaver \
 									xlib_libXext xlib_libXfixes xlib_libXi xlib_libXmu xlib_libXpm \
-									xlib_libXrender xlib_libXres xlib_libXtst xlib_libXft xlib_libXcursor \
+									xlib_libXrender xlib_libXres xlib_libXft xlib_libXcursor \
 									xlib_libXinerama xlib_libXrandr xlib_libXdamage xlib_libXxf86misc xlib_libXxf86vm \
 									xlib_liblbxutil xlib_libxkbfile xlib_xtrans xdata_xbitmaps xproto_bigreqsproto \
 									xproto_evieext xproto_fontsproto xproto_inputproto xproto_renderproto \
