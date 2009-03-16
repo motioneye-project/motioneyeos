@@ -28,6 +28,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES =  xutil_util-macros xlib_libXfont libdrm xlib_
 
 XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		--disable-xnest --disable-xephyr --disable-xvfb \
+		--with-builder-addr=buildroot@uclibc.org \
 		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1"
 
 ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
