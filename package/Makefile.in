@@ -290,7 +290,9 @@ HOST_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \
 		ORIGINAL_AS_FOR_TARGET="$(TARGET_AS)" \
 		ORIGINAL_LD_FOR_TARGET="$(TARGET_LD)" \
 		ORIGINAL_NM_FOR_TARGET="$(TARGET_NM)" \
-		ORIGINAL_OBJDUMP_FOR_TARGET="$(TARGET_OBJDUMP)"
+		ORIGINAL_OBJDUMP_FOR_TARGET="$(TARGET_OBJDUMP)" \
+		PKG_CONFIG="$(STAGING_DIR)/usr/bin/pkg-config" \
+		PKG_CONFIG_PATH="$(HOST_DIR)/usr/lib/pkgconfig:$(PKG_CONFIG_PATH)"
 
 #######################################################################
 # settings we need to pass to configure
