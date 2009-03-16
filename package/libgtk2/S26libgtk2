@@ -7,6 +7,7 @@ FILE=/etc/gtk-2.0/gdk-pixbuf.loaders
 case "$1" in
     start|"")
 	if [ ! -f "$FILE" ] ; then
+	    mkdir -p /etc/gtk-2.0
 	    /usr/bin/gdk-pixbuf-query-loaders > "$FILE"
 	fi
 	;;
