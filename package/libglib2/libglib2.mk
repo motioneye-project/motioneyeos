@@ -15,10 +15,6 @@ LIBGLIB2_INSTALL_STAGING = YES
 LIBGLIB2_INSTALL_TARGET = YES
 LIBGLIB2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
 
-# detect install prefix of host glib development stuff
-HOST_GLIB_BIN:=`dirname $(shell which glib-genmarshal || echo /usr/bin/glib-genmarshal)`
-HOST_GLIB:=$(shell dirname $(HOST_GLIB_BIN) || echo /usr)
-
 LIBGLIB2_CONF_ENV =	\
 		ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		glib_cv_uscore=no ac_cv_func_strtod=yes \
@@ -48,14 +44,14 @@ LIBGLIB2_CONF_ENV =	\
 		gl_cv_func_mkdir_trailing_slash_bug=no gl_cv_func_mkstemp_limitations=no \
 		ac_cv_func_working_mktime=yes jm_cv_func_working_re_compile_pattern=yes \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
-		ac_cv_path_GLIB_GENMARSHAL=$(HOST_GLIB)/bin/glib-genmarshal ac_cv_prog_F77=no \
+		ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/usr/bin/glib-genmarshal ac_cv_prog_F77=no \
 		ac_cv_func_posix_getgrgid_r=no \
 		gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no)
 
 LIBGLIB2_CONF_OPT = --enable-shared \
 		--enable-static
 
-LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig
+LIBGLIB2_DEPENDENCIES = uclibc gettext libintl pkgconfig host-libglib2
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
 LIBGLIB2_DEPENDENCIES+=libiconv
@@ -68,9 +64,51 @@ endif
 
 $(eval $(call AUTOTARGETS,package,libglib2))
 
-# we NEED a host glib-genmarshal
-ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
-ifeq ($(wildcard $(HOST_GLIB)/bin/glib-genmarshal),)
-$(error Host glib-genmarshal not found. Please install glib development package on your host (something like libglib2.0-dev))
-endif
-endif
+$(LIBGLIB2_HOOK_POST_INSTALL): $(LIBGLIB2_TARGET_INSTALL_STAGING)
+	$(SED) 's~^BIN_DIR=.*~BIN_DIR=$(HOST_DIR)/usr/bin/~' \
+		$(STAGING_DIR)/usr/lib/pkgconfig/glib-2.0.pc
+	touch $@
+
+# libglib2 for the host
+LIBGLIB2_HOST_DIR:=$(BUILD_DIR)/libglib2-$(LIBGLIB2_VERSION)-host
+LIBGLIB2_HOST_BINARY:=$(HOST_DIR)/usr/bin/glib-genmarshal
+
+$(LIBGLIB2_HOST_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB2_SOURCE)
+	mkdir -p $(@D)
+	$(INFLATE$(suffix $(LIBGLIB2_SOURCE))) $< | \
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+	touch $@
+
+$(LIBGLIB2_HOST_DIR)/.configured: $(LIBGLIB2_HOST_DIR)/.unpacked
+	(cd $(@D); rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
+		$(@D)/configure \
+		--prefix=$(HOST_DIR)/usr \
+		--sysconfdir=$(HOST_DIR)/etc \
+		--enable-shared \
+		--disable-static \
+		--disable-gtk-doc \
+		--enable-debug=no \
+	)
+	touch $@
+
+$(LIBGLIB2_HOST_DIR)/.compiled: $(LIBGLIB2_HOST_DIR)/.configured
+	$(MAKE) -C $(@D)
+	touch $@
+
+$(LIBGLIB2_HOST_BINARY): $(LIBGLIB2_HOST_DIR)/.compiled
+	$(MAKE) -C $(<D) install
+
+host-libglib2: $(LIBGLIB2_HOST_BINARY)
+
+host-libglib2-source: libglib2-source
+
+host-libglib2-clean:
+	rm -f $(addprefix $(LIBGLIB2_HOST_DIR)/,.unpacked .configured .compiled)
+	$(MAKE) -C $(LIBGLIB2_HOST_DIR) uninstall
+	$(MAKE) -C $(LIBGLIB2_HOST_DIR) clean
+
+host-libglib2-dirclean:
+	rm -rf $(LIBGLIB2_HOST_DIR)
