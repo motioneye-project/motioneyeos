@@ -1,0 +1,140 @@
+[PATCH]: add --with-dbus-binding-tool option to use an external dbus-binding-tool
+
+Cross compilation fix. dbus-binding-tool needs to run on the host, but gets
+compiled for the target. Add an option to use an external program
+(host version) instead.
+
+Based on similar patch in ptxdist.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure.ac                           |    5 +++++
+ dbus/examples/Makefile.am              |    4 ++--
+ dbus/examples/statemachine/Makefile.am |    4 ++--
+ test/core/Makefile.am                  |    6 +++---
+ test/interfaces/Makefile.am            |   12 ++++++------
+ tools/Makefile.am                      |    2 +-
+ 6 files changed, 19 insertions(+), 14 deletions(-)
+
+Index: dbus-glib-0.80/configure.ac
+===================================================================
+--- dbus-glib-0.80.orig/configure.ac
++++ dbus-glib-0.80/configure.ac
+@@ -70,6 +70,11 @@
+     AC_DEFINE(DBUS_ENABLE_VERBOSE_MODE,1,[Support a verbose mode])
+ fi
+ 
++AC_ARG_WITH(dbus-binding-tool,
++  AS_HELP_STRING([--with-dbus-binding-tool=[filename]],[Use external dbus-binding-tool program]),
++  [DBUS_BINDING_TOOL=$withval],[DBUS_BINDING_TOOL=\$\(top_builddir\)/dbus/dbus-binding-tool])
++AC_SUBST(DBUS_BINDING_TOOL)
++
+ 
+ dnl DBUS_BUILD_TESTS controls unit tests built in to .c files 
+ dnl and also some stuff in the test/ subdir
+Index: dbus-glib-0.80/dbus/examples/Makefile.am
+===================================================================
+--- dbus-glib-0.80.orig/dbus/examples/Makefile.am
++++ dbus-glib-0.80/dbus/examples/Makefile.am
+@@ -21,7 +21,7 @@
+ BUILT_SOURCES = example-service-glue.h
+ 
+ example-service-glue.h: example-service.xml
+-	$(LIBTOOL) --mode=execute $(top_builddir)/dbus/dbus-binding-tool --prefix=some_object --mode=glib-server --output=example-service-glue.h $(srcdir)/example-service.xml
++	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=some_object --mode=glib-server --output=example-service-glue.h $(srcdir)/example-service.xml
+ 
+ 
+ ## Makefile.am bits for another client/server pair
+@@ -37,7 +37,7 @@
+ BUILT_SOURCES += example-signal-emitter-glue.h
+ 
+ example-signal-emitter-glue.h: example-signal-emitter.xml
+-	$(LIBTOOL) --mode=execute $(top_builddir)/dbus/dbus-binding-tool --prefix=test_object --mode=glib-server --output=example-signal-emitter-glue.h $(srcdir)/example-signal-emitter.xml
++	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=test_object --mode=glib-server --output=example-signal-emitter-glue.h $(srcdir)/example-signal-emitter.xml
+ 
+ CLEANFILES = $(BUILT_SOURCES)
+ 
+Index: dbus-glib-0.80/dbus/examples/statemachine/Makefile.am
+===================================================================
+--- dbus-glib-0.80.orig/dbus/examples/statemachine/Makefile.am
++++ dbus-glib-0.80/dbus/examples/statemachine/Makefile.am
+@@ -26,10 +26,10 @@
+ BUILT_SOURCES = statemachine-server-glue.h statemachine-glue.h
+ 
+ statemachine-server-glue.h: statemachine-server.xml
+-	$(LIBTOOL) --mode=execute $(top_builddir)/dbus/dbus-binding-tool --prefix=sm_server --mode=glib-server --output=$@ $<
++	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=sm_server --mode=glib-server --output=$@ $<
+ 
+ statemachine-glue.h: statemachine.xml
+-	$(LIBTOOL) --mode=execute $(top_builddir)/dbus/dbus-binding-tool --prefix=sm_object --mode=glib-server --output=$@ $<
++	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=sm_object --mode=glib-server --output=$@ $<
+ 
+ sm-marshal.c: Makefile sm-marshal.list
+ 	@GLIB_GENMARSHAL@ --prefix=sm_marshal $(srcdir)/sm-marshal.list --header --body > $@.tmp && mv $@.tmp $@
+Index: dbus-glib-0.80/test/core/Makefile.am
+===================================================================
+--- dbus-glib-0.80.orig/test/core/Makefile.am
++++ dbus-glib-0.80/test/core/Makefile.am
+@@ -63,13 +63,13 @@
+ test_service_glib_LDADD= $(top_builddir)/dbus/libdbus-glib-1.la $(DBUS_GLIB_THREADS_LIBS) 
+ 
+ test-service-glib-glue.h: test-service-glib.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(DEBUG) $(top_builddir)/dbus/dbus-binding-tool --prefix=my_object --mode=glib-server --output=test-service-glib-glue.h $(srcdir)/test-service-glib.xml
++	$(DEBUG) $(DBUS_BINDING_TOOL) --prefix=my_object --mode=glib-server --output=test-service-glib-glue.h $(srcdir)/test-service-glib.xml
+ 
+ test-service-glib-subclass-glue.h: test-service-glib-subclass.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(DEBUG) $(top_builddir)/dbus/dbus-binding-tool --prefix=my_object_subclass --mode=glib-server --output=test-service-glib-subclass-glue.h $(srcdir)/test-service-glib-subclass.xml
++	$(DEBUG) $(DBUS_BINDING_TOOL) --prefix=my_object_subclass --mode=glib-server --output=test-service-glib-subclass-glue.h $(srcdir)/test-service-glib-subclass.xml
+ 
+ test-service-glib-bindings.h: test-service-glib.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(DEBUG) $(top_builddir)/dbus/dbus-binding-tool --prefix=my_object --mode=glib-client --output=test-service-glib-bindings.h $(srcdir)/test-service-glib.xml
++	$(DEBUG) $(DBUS_BINDING_TOOL) --prefix=my_object --mode=glib-client --output=test-service-glib-bindings.h $(srcdir)/test-service-glib.xml
+ 
+ my-object-marshal.c: Makefile my-object-marshal.list
+ 	@GLIB_GENMARSHAL@ --prefix=my_object_marshal $(srcdir)/my-object-marshal.list --header --body > my-object-marshal.c
+Index: dbus-glib-0.80/test/interfaces/Makefile.am
+===================================================================
+--- dbus-glib-0.80.orig/test/interfaces/Makefile.am
++++ dbus-glib-0.80/test/interfaces/Makefile.am
+@@ -47,22 +47,22 @@
+ 	test-goodbye-bindings.h
+ 
+ test-song-glue.h: test-song.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(top_builddir)/dbus/dbus-binding-tool --prefix=test_song --mode=glib-server --output=test-song-glue.h $(srcdir)/test-song.xml
++	$(DBUS_BINDING_TOOL) --prefix=test_song --mode=glib-server --output=test-song-glue.h $(srcdir)/test-song.xml
+ 
+ test-song-bindings.h: test-song.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(top_builddir)/dbus/dbus-binding-tool --prefix=test_song --mode=glib-client --output=test-song-bindings.h $(srcdir)/test-song.xml
++	$(DBUS_BINDING_TOOL) --prefix=test_song --mode=glib-client --output=test-song-bindings.h $(srcdir)/test-song.xml
+ 
+ test-hello-glue.h: test-hello.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(top_builddir)/dbus/dbus-binding-tool --prefix=test_hello --mode=glib-server --output=test-hello-glue.h $(srcdir)/test-hello.xml
++	$(DBUS_BINDING_TOOL) --prefix=test_hello --mode=glib-server --output=test-hello-glue.h $(srcdir)/test-hello.xml
+ 
+ test-hello-bindings.h: test-hello.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(top_builddir)/dbus/dbus-binding-tool --prefix=test_hello --mode=glib-client --output=test-hello-bindings.h $(srcdir)/test-hello.xml
++	$(DBUS_BINDING_TOOL) --prefix=test_hello --mode=glib-client --output=test-hello-bindings.h $(srcdir)/test-hello.xml
+ 
+ test-goodbye-glue.h: test-goodbye.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(top_builddir)/dbus/dbus-binding-tool --prefix=test_goodbye --mode=glib-server --output=test-goodbye-glue.h $(srcdir)/test-goodbye.xml
++	$(DBUS_BINDING_TOOL) --prefix=test_goodbye --mode=glib-server --output=test-goodbye-glue.h $(srcdir)/test-goodbye.xml
+ 
+ test-goodbye-bindings.h: test-goodbye.xml $(top_builddir)/dbus/dbus-binding-tool
+-	$(top_builddir)/dbus/dbus-binding-tool --prefix=test_goodbye --mode=glib-client --output=test-goodbye-bindings.h $(srcdir)/test-goodbye.xml
++	$(DBUS_BINDING_TOOL) --prefix=test_goodbye --mode=glib-client --output=test-goodbye-bindings.h $(srcdir)/test-goodbye.xml
+ 
+ 
+ CLEANFILES = \
+Index: dbus-glib-0.80/tools/Makefile.am
+===================================================================
+--- dbus-glib-0.80.orig/tools/Makefile.am
++++ dbus-glib-0.80/tools/Makefile.am
+@@ -4,7 +4,7 @@
+ libdbus_glibdir = $(includedir)/dbus-1.0/dbus
+ 
+ dbus-glib-bindings.h: dbus-bus-introspect.xml $(top_builddir)/dbus/dbus-binding-tool$(EXEEXT)
+-	$(top_builddir)/dbus/dbus-binding-tool --mode=glib-client --prefix=dbus_bus --output=dbus-glib-bindings.h dbus-bus-introspect.xml
++	$(DBUS_BINDING_TOOL) --mode=glib-client --prefix=dbus_bus --output=dbus-glib-bindings.h dbus-bus-introspect.xml
+ 
+ BUILT_SOURCES = dbus-glib-bindings.h dbus-bus-introspect.xml
+ 

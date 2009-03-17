@@ -3,78 +3,71 @@
 # dbus-glib
 #
 #############################################################
-DBUS_GLIB_VERSION:=0.72
-DBUS_GLIB_SOURCE:=dbus-glib-$(DBUS_GLIB_VERSION).tar.gz
-DBUS_GLIB_SITE:=http://dbus.freedesktop.org/releases/dbus-glib/
-DBUS_GLIB_DIR:=$(BUILD_DIR)/dbus-glib-$(DBUS_GLIB_VERSION)
-DBUS_GLIB_CAT:=$(ZCAT)
-DBUS_GLIB_BINARY:=dbus/.libs/dbus-binding-tool
-DBUS_GLIB_TARGET_BINARY:=usr/bin/dbus-binding-tool
+DBUS_GLIB_VERSION = 0.80
+DBUS_GLIB_SOURCE = dbus-glib-$(DBUS_GLIB_VERSION).tar.gz
+DBUS_GLIB_SITE = http://dbus.freedesktop.org/releases/dbus-glib/
+DBUS_GLIB_INSTALL_STAGING = YES
+DBUS_GLIB_INSTALL_TARGET = YES
 
-$(DL_DIR)/$(DBUS_GLIB_SOURCE):
-	$(call DOWNLOAD,$(DBUS_GLIB_SITE),$(DBUS_GLIB_SOURCE))
-
-dbus-glib-source: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
-
-$(DBUS_GLIB_DIR)/.unpacked: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
-	$(DBUS_GLIB_CAT) $(DL_DIR)/$(DBUS_GLIB_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(DBUS_GLIB_DIR) package/dbus-glib/ \*.patch
-	touch $(DBUS_GLIB_DIR)/.unpacked
-
-$(DBUS_GLIB_DIR)/.configured: $(DBUS_GLIB_DIR)/.unpacked
-	(cd $(DBUS_GLIB_DIR); rm -rf config.cache; autoconf; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		ac_cv_have_abstract_sockets=yes \
+DBUS_GLIB_CONF_ENV = ac_cv_have_abstract_sockets=yes \
 		ac_cv_func_posix_getpwnam_r=yes \
-		have_abstract_sockets=yes \
-		DBUS_CFLAGS="-I$(STAGING_DIR)/usr/include/dbus-1.0 -I$(STAGING_DIR)/usr/lib/dbus-1.0/include" \
-		DBUS_LIBS="$(STAGING_DIR)/usr/lib/libdbus-1.so" \
-		DBUS_GLIB_CFLAGS="-I$(STAGING_DIR)/usr/include/glib-2.0 -I$(STAGING_DIR)/usr/lib/glib-2.0/include" \
-		DBUS_GLIB_LIBS="$(STAGING_DIR)/usr/lib/libglib-2.0.so $(STAGING_DIR)/usr/lib/libgobject-2.0.so $(STAGING_DIR)/usr/lib/libgmodule-2.0.so $(STAGING_DIR)/usr/lib/libgthread-2.0.so" \
-		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--localstatedir=/var \
+		have_abstract_sockets=yes
+
+DBUS_GLIB_CONF_OPT = --localstatedir=/var \
 		--program-prefix="" \
 		--disable-tests \
 		--disable-xml-docs \
+		--with-introspect-xml=$(DBUS_HOST_INTROSPECT) \
+		--with-dbus-binding-tool=$(DBUS_GLIB_HOST_BINARY) \
+		--disable-bash-completion \
+		--disable-doxygen-docs \
+		--enable-asserts=yes
+
+DBUS_GLIB_DEPENDENCIES = uclibc pkgconfig dbus host-dbus host-dbus-glib libglib2
+
+$(eval $(call AUTOTARGETS,package,dbus-glib))
+
+# dbus-glib for the host
+DBUS_GLIB_HOST_DIR:=$(BUILD_DIR)/dbus-glib-$(DBUS_GLIB_VERSION)-host
+DBUS_GLIB_HOST_BINARY:=$(HOST_DIR)/usr/bin/dbus-binding-tool
+
+$(DBUS_GLIB_HOST_DIR)/.unpacked: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
+	mkdir -p $(@D)
+	$(INFLATE$(suffix $(DBUS_GLIB_SOURCE))) $< | \
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+	touch $@
+
+$(DBUS_GLIB_HOST_DIR)/.configured: $(DBUS_GLIB_HOST_DIR)/.unpacked $(EXPAT_HOST_BINARY)
+	(cd $(@D); rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
+		$(@D)/configure \
+		--prefix=$(HOST_DIR)/usr \
+		--sysconfdir=$(HOST_DIR)/etc \
+		--disable-tests \
+		--disable-xml-docs \
+		--disable-bash-completion \
 		--disable-doxygen-docs \
 		--enable-asserts=yes \
 	)
-	touch $(DBUS_GLIB_DIR)/.configured
+	touch $@
 
-$(DBUS_GLIB_DIR)/$(DBUS_GLIB_BINARY): $(DBUS_GLIB_DIR)/.configured
-	$(MAKE) DBUS_BUS_LIBS="$(STAGING_DIR)/usr/lib/libexpat.so" -C $(DBUS_GLIB_DIR) all
+$(DBUS_GLIB_HOST_DIR)/.compiled: $(DBUS_GLIB_HOST_DIR)/.configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+	touch $@
 
-$(STAGING_DIR)/usr/lib/libdbus-glib-1.so.2.0.0: $(DBUS_GLIB_DIR)/$(DBUS_GLIB_BINARY)
-	cp -a $(DBUS_GLIB_DIR)/dbus-glib-1.pc $(STAGING_DIR)/usr/lib/pkgconfig
-	cp -a $(DBUS_GLIB_DIR)/dbus/.libs/libdbus-glib-1.so* $(STAGING_DIR)/usr/lib
-	-touch -c $(STAGING_DIR)/usr/lib/libdbus-glib-1.so.2.0.0
+$(DBUS_GLIB_HOST_BINARY): $(DBUS_GLIB_HOST_DIR)/.compiled
+	$(MAKE) -C $(<D) install
 
-$(TARGET_DIR)/$(DBUS_GLIB_TARGET_BINARY): $(STAGING_DIR)/usr/lib/libdbus-glib-1.so.2.0.0
-	cp -a $(DBUS_GLIB_DIR)/dbus/.libs/libdbus-glib-1.so.2* $(TARGET_DIR)/usr/lib
-	cp -a $(DBUS_GLIB_DIR)/dbus/.libs/dbus-binding-tool $(TARGET_DIR)/usr/bin
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdbus-glib-1.so.2.0.0
+host-dbus-glib: $(DBUS_GLIB_HOST_BINARY)
 
-dbus-glib: uclibc pkgconfig dbus expat libglib2 $(TARGET_DIR)/$(DBUS_GLIB_TARGET_BINARY)
+host-dbus-glib-source: dbus-glib-source
 
-dbus-glib-clean:
-	rm -f $(TARGET_DIR)/usr/lib/libdbus-glib-1.so.2*
-	rm -f $(TARGET_DIR)/usr/bin/dbus-binding-tool
-	rm -f $(STAGING_DIR)/usr/lib/libdbus-glib-1.so*
-	-$(MAKE) -C $(DBUS_GLIB_DIR) clean
+host-dbus-glib-clean:
+	rm -f $(addprefix $(DBUS_GLIB_HOST_DIR)/,.unpacked .configured .compiled)
+	$(MAKE) -C $(DBUS_GLIB_HOST_DIR) uninstall
+	$(MAKE) -C $(DBUS_GLIB_HOST_DIR) clean
 
-dbus-glib-dirclean:
-	rm -rf $(DBUS_GLIB_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_DBUS_GLIB),y)
-TARGETS+=dbus-glib
-endif
+host-dbus-glib-dirclean:
+	rm -rf $(DBUS_GLIB_HOST_DIR)
