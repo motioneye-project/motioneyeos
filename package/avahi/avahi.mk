@@ -72,11 +72,8 @@ AVAHI_CONF_ENV = ac_cv_func_strtod=yes \
 		avahi_cv_sys_cxx_works=yes
 
 AVAHI_CONF_OPT = --localstatedir=/var \
-		--disable-glib \
-		--disable-gobject \
 		--disable-qt3 \
 		--disable-qt4 \
-		--disable-gtk \
 		--disable-gdbm \
 		--disable-python-dbus \
 		--disable-pygtk \
@@ -110,6 +107,18 @@ ifeq ($(BR2_PACKAGE_DBUS),y)
 AVAHI_DEPENDENCIES += dbus
 else
 AVAHI_CONF_OPT += --disable-dbus
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+AVAHI_DEPENDENCIES += libglib2
+else
+AVAHI_CONF_OPT += --disable-glib --disable-gobject
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGTK2),y)
+AVAHI_DEPENDENCIES += libgtk2
+else
+AVAHI_CONF_OPT += --disable-gtk
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
