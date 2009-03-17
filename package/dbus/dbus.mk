@@ -57,6 +57,7 @@ $(DBUS_HOOK_POST_INSTALL): $(DBUS_TARGET_INSTALL_TARGET)
 # dbus for the host
 DBUS_HOST_DIR:=$(BUILD_DIR)/dbus-$(DBUS_VERSION)-host
 DBUS_HOST_BINARY:=$(HOST_DIR)/usr/bin/dbus-daemon
+DBUS_HOST_INTROSPECT:=$(DBUS_HOST_DIR)/introspect.xml
 
 $(DBUS_HOST_DIR)/.unpacked: $(DL_DIR)/$(DBUS_SOURCE)
 	mkdir -p $(@D)
@@ -87,18 +88,22 @@ $(DBUS_HOST_DIR)/.configured: $(DBUS_HOST_DIR)/.unpacked $(EXPAT_HOST_BINARY)
 	touch $@
 
 $(DBUS_HOST_DIR)/.compiled: $(DBUS_HOST_DIR)/.configured
-	$(MAKE) -C $(@D)
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
 	touch $@
 
 $(DBUS_HOST_BINARY): $(DBUS_HOST_DIR)/.compiled
 	$(MAKE) -C $(<D) install
 
-host-dbus: $(DBUS_HOST_BINARY)
+$(DBUS_HOST_INTROSPECT): $(DBUS_HOST_BINARY)
+	$(DBUS_HOST_BINARY) --introspect > $@
+
+host-dbus: $(DBUS_HOST_INTROSPECT)
 
 host-dbus-source: dbus-source
 
 host-dbus-clean:
 	rm -f $(addprefix $(DBUS_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(DBUS_HOST_INTROSPECT)
 	$(MAKE) -C $(DBUS_HOST_DIR) uninstall
 	$(MAKE) -C $(DBUS_HOST_DIR) clean
 

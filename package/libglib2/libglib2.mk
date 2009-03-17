@@ -99,7 +99,7 @@ $(LIBGLIB2_HOST_DIR)/.compiled: $(LIBGLIB2_HOST_DIR)/.configured
 	touch $@
 
 $(LIBGLIB2_HOST_BINARY): $(LIBGLIB2_HOST_DIR)/.compiled
-	$(MAKE) -C $(<D) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
 
 host-libglib2: $(LIBGLIB2_HOST_BINARY)
 

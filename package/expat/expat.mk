@@ -46,7 +46,7 @@ $(EXPAT_HOST_DIR)/.configured: $(EXPAT_HOST_DIR)/.unpacked
 	touch $@
 
 $(EXPAT_HOST_DIR)/.compiled: $(EXPAT_HOST_DIR)/.configured
-	$(MAKE) -C $(@D)
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
 	touch $@
 
 $(EXPAT_HOST_BINARY): $(EXPAT_HOST_DIR)/.compiled
