@@ -64,11 +64,6 @@ endif
 
 $(eval $(call AUTOTARGETS,package,libglib2))
 
-$(LIBGLIB2_HOOK_POST_INSTALL): $(LIBGLIB2_TARGET_INSTALL_STAGING)
-	$(SED) 's~^BIN_DIR=.*~BIN_DIR=$(HOST_DIR)/usr/bin/~' \
-		$(STAGING_DIR)/usr/lib/pkgconfig/glib-2.0.pc
-	touch $@
-
 # libglib2 for the host
 LIBGLIB2_HOST_DIR:=$(BUILD_DIR)/libglib2-$(LIBGLIB2_VERSION)-host
 LIBGLIB2_HOST_BINARY:=$(HOST_DIR)/usr/bin/glib-genmarshal
