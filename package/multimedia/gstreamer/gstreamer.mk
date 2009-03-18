@@ -23,6 +23,6 @@ GSTREAMER_CONF_OPT = \
 		--disable-tests \
 		--disable-failing-tests
 
-GSTREAMER_DEPENDENCIES = libglib2 libxml2 pkgconfig
+GSTREAMER_DEPENDENCIES = libglib2 libxml2 host-pkgconfig
 
 $(eval $(call AUTOTARGETS,package/multimedia,gstreamer))

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_NEON
 	bool "libneon"
-	select BR2_PACKAGE_PKGCONFIG
 	help
 	  HTTP and WebDAV client library, with a C interface.
 

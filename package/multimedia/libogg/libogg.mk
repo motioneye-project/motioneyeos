@@ -10,6 +10,6 @@ LIBOGG_AUTORECONF = NO
 LIBOGG_INSTALL_STAGING = YES
 LIBOGG_INSTALL_TARGET = YES
 
-LIBOGG_DEPENDENCIES = uclibc pkgconfig
+LIBOGG_DEPENDENCIES = uclibc host-pkgconfig
 
 $(eval $(call AUTOTARGETS,package/multimedia,libogg))

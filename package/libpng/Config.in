@@ -1,7 +1,6 @@
 config BR2_PACKAGE_LIBPNG
 	bool "libpng"
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_PKGCONFIG
 	help
 	  Library for handling PNG (Portable Network Graphics)
 	  images.

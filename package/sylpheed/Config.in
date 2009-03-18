@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SYLPHEED
 	bool "sylpheed"
-	select BR2_PACKAGE_PKGCONFIG
 	help
 	  lightweight and user-friendly e-mail client.
 

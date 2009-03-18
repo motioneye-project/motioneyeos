@@ -63,7 +63,7 @@ $(TARGET_DIR)/usr/bin/ntfs-3g: $(STAGING_DIR)/usr/bin/ntfs-3g
 	cp -dpf $(STAGING_DIR)/bin/ntfs-3g $(TARGET_DIR)/bin/
 	touch -c $@
 
-ntfs-3g: uclibc pkgconfig libfuse $(TARGET_DIR)/usr/bin/ntfs-3g
+ntfs-3g: uclibc host-pkgconfig libfuse $(TARGET_DIR)/usr/bin/ntfs-3g
 
 ntfs-3g-source: $(DL_DIR)/$(NTFS-3G_SOURCE)
 

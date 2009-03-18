@@ -5,7 +5,6 @@ select BR2_PACKAGE_ZLIB
 select BR2_PACKAGE_LIBPNG
 select BR2_PACKAGE_EXPAT
 select BR2_PACKAGE_FONTCONFIG
-select BR2_PACKAGE_PKGCONFIG
 help
 	Support for X11R7 libraries, servers, drivers, and/or
 	applications in the target.

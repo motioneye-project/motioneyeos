@@ -16,7 +16,7 @@ EXPAT_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) installlib
 
 EXPAT_CONF_OPT = --enable-shared
 
-EXPAT_DEPENDENCIES = uclibc pkgconfig
+EXPAT_DEPENDENCIES = uclibc host-pkgconfig
 
 $(eval $(call AUTOTARGETS,package,expat))
 

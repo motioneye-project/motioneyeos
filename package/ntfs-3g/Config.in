@@ -3,7 +3,6 @@ comment "ntfs-3g has no inherent support for AVR32"
 
 config BR2_PACKAGE_NTFS-3G
         bool "ntfs-3g"
-	select BR2_PACKAGE_PKGCONFIG
         help
 	  The NTFS-3G driver is an open source, freely available
           read/write NTFS driver for Linux, FreeBSD, Mac OS X, NetBSD,

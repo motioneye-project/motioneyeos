@@ -75,7 +75,7 @@ ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
 	)
 endif
 
-vim: uclibc pkgconfig ncurses vim-source $(TARGET_DIR)/usr/bin/vim
+vim: uclibc host-pkgconfig ncurses vim-source $(TARGET_DIR)/usr/bin/vim
 
 #############################################################
 #

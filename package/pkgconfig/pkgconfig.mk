@@ -3,18 +3,23 @@
 # pkgconfig
 #
 #############################################################
-PKGCONFIG_VERSION:=0.23
-PKGCONFIG_SOURCE:=pkg-config-$(PKGCONFIG_VERSION).tar.gz
-PKGCONFIG_SITE:=http://pkgconfig.freedesktop.org/releases/
+PKGCONFIG_VERSION = 0.23
+PKGCONFIG_SOURCE = pkg-config-$(PKGCONFIG_VERSION).tar.gz
+PKGCONFIG_SITE = http://pkgconfig.freedesktop.org/releases/
+
+ifeq ($(BR2_ENABLE_DEBUG),y) # install-exec doesn't install aclocal stuff
+PKGCONFIG_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-exec
+endif
+
+PKGCONFIG_DEPENDENCIES = uclibc libglib2
+
+PKGCONFIG_CONF_OPT = --with-installed-glib
+
+$(eval $(call AUTOTARGETS,package,pkgconfig))
 
 # pkgconfig for the host
-PKGCONFIG_HOST_DIR:=$(BUILD_DIR)/pkg-config-$(PKGCONFIG_VERSION)-host
+PKGCONFIG_HOST_DIR:=$(BUILD_DIR)/pkgconfig-$(PKGCONFIG_VERSION)-host
 PKGCONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/pkg-config
-
-$(DL_DIR)/$(PKGCONFIG_SOURCE):
-	 $(call DOWNLOAD,$(PKGCONFIG_SITE),$(PKGCONFIG_SOURCE))
-
-pkgconfig-source: $(DL_DIR)/$(PKGCONFIG_SOURCE)
 
 $(PKGCONFIG_HOST_DIR)/.unpacked: $(DL_DIR)/$(PKGCONFIG_SOURCE)
 	mkdir -p $(@D)
@@ -39,21 +44,12 @@ $(PKGCONFIG_HOST_DIR)/.compiled: $(PKGCONFIG_HOST_DIR)/.configured
 $(PKGCONFIG_HOST_BINARY): $(PKGCONFIG_HOST_DIR)/.compiled
 	$(MAKE) -C $(<D) install
 
-host-pkgconfig pkgconfig: $(PKGCONFIG_HOST_BINARY)
+host-pkgconfig: $(PKGCONFIG_HOST_BINARY)
 
-host-pkgconfig-clean pkgconfig-clean:
+host-pkgconfig-clean:
 	rm -f $(addprefix $(PKGCONFIG_HOST_DIR)/,.unpacked .configured .compiled)
 	-$(MAKE) -C $(PKGCONFIG_HOST_DIR) uninstall
 	-$(MAKE) -C $(PKGCONFIG_HOST_DIR) clean
 
-host-pkgconfig-dirclean pkgconfig-dirclean:
+host-pkgconfig-dirclean:
 	rm -rf $(PKGCONFIG_HOST_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_PKGCONFIG),y)
-TARGETS+=pkgconfig
-endif

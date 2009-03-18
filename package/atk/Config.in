@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ATK
 	bool "atk"
-	select BR2_PACKAGE_PKGCONFIG
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  The ATK accessibility toolkit, needed to build GTK+-2.x.

@@ -12,7 +12,7 @@ PCMANFM_INSTALL_TARGET = YES
 
 PCMANFM_CONF_OPT = --disable-hal
 
-PCMANFM_DEPENDENCIES = uclibc pkgconfig libgtk2 gamin startup-notification
+PCMANFM_DEPENDENCIES = uclibc host-pkgconfig libgtk2 gamin startup-notification
 
 $(eval $(call AUTOTARGETS,package,pcmanfm))
 

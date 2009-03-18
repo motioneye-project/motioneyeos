@@ -1,6 +1,5 @@
 config BR2_PACKAGE_CAIRO
 	bool "cairo"
-	select BR2_PACKAGE_PKGCONFIG
 	select BR2_PACKAGE_PIXMAN
 	select BR2_PACKAGE_FONTCONFIG
 	help

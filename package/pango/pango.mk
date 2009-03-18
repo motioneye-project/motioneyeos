@@ -52,7 +52,7 @@ PANGO_CONF_OPT = --enable-shared --enable-static \
 		$(PANGO_CONF_OPT_X) \
 		--enable-explicit-deps=no --disable-debug
 
-PANGO_DEPENDENCIES = uclibc gettext libintl pkgconfig libglib2 $(XSERVER) cairo
+PANGO_DEPENDENCIES = uclibc gettext libintl host-pkgconfig libglib2 $(XSERVER) cairo
 
 $(eval $(call AUTOTARGETS,package,pango))
 

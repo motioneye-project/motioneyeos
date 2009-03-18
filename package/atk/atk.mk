@@ -53,6 +53,6 @@ ATK_CONF_OPT =  --enable-shared \
 		--disable-glibtest --enable-explicit-deps=no \
 		--disable-debug
 
-ATK_DEPENDENCIES = libglib2 pkgconfig
+ATK_DEPENDENCIES = libglib2 host-pkgconfig
 
 $(eval $(call AUTOTARGETS,package,atk))

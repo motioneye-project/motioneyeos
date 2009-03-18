@@ -23,7 +23,7 @@ DBUS_GLIB_CONF_OPT = --localstatedir=/var \
 		--disable-doxygen-docs \
 		--enable-asserts=yes
 
-DBUS_GLIB_DEPENDENCIES = uclibc pkgconfig dbus host-dbus host-dbus-glib libglib2
+DBUS_GLIB_DEPENDENCIES = uclibc host-pkgconfig dbus host-dbus host-dbus-glib libglib2
 
 $(eval $(call AUTOTARGETS,package,dbus-glib))
 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_GQVIEW
 	bool "gqview"
-	select BR2_PACKAGE_PKGCONFIG
 	help
 	  GQview is an image viewer for Unix operating systems
 
