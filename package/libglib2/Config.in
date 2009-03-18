@@ -5,6 +5,5 @@ config BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  Low-level core library that forms the basis of GTK+ and GNOME.
-	  Requires libglib2 (-dev) on the host. 
 
 	  http://www.gtk.org/
