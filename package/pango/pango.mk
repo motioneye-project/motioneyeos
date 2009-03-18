@@ -59,3 +59,46 @@ $(eval $(call AUTOTARGETS,package,pango))
 $(PANGO_HOOK_POST_INSTALL):
 	$(INSTALL) -m 755 package/pango/S25pango $(TARGET_DIR)/etc/init.d/
 	touch $@
+
+# pango for the host
+PANGO_HOST_DIR:=$(BUILD_DIR)/pango-$(PANGO_VERSION)-host
+PANGO_HOST_BINARY:=$(HOST_DIR)/usr/bin/pango-querymodules
+
+$(PANGO_HOST_DIR)/.unpacked: $(DL_DIR)/$(PANGO_SOURCE)
+	mkdir -p $(@D)
+	$(INFLATE$(suffix $(PANGO_SOURCE))) $< | \
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+	touch $@
+
+$(PANGO_HOST_DIR)/.configured: $(PANGO_HOST_DIR)/.unpacked $(PKGCONFIG_HOST_BINARY) $(CAIRO_HOST_BINARY) $(LIBGLIB2_HOST_BINARY)
+	(cd $(@D); rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
+		$(@D)/configure \
+		--prefix=$(HOST_DIR)/usr \
+		--sysconfdir=$(HOST_DIR)/etc \
+		--disable-static \
+		--with-x \
+		--disable-debug \
+	)
+	touch $@
+
+$(PANGO_HOST_DIR)/.compiled: $(PANGO_HOST_DIR)/.configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+	touch $@
+
+$(PANGO_HOST_BINARY): $(PANGO_HOST_DIR)/.compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+
+host-pango: $(PANGO_HOST_BINARY)
+
+host-pango-source: pango-source
+
+host-pango-clean:
+	rm -f $(addprefix $(PANGO_HOST_DIR)/,.unpacked .configured .compiled)
+	-$(MAKE) -C $(PANGO_HOST_DIR) uninstall
+	-$(MAKE) -C $(PANGO_HOST_DIR) clean
+
+host-pango-dirclean:
+	rm -rf $(PANGO_HOST_DIR)
