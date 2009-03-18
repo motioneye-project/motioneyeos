@@ -23,10 +23,6 @@ ALSA_LIB_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 ALSA_LIB_CONF_OPT += --enable-debug
 endif
 
-ifeq ($(BR2_arm),y)
-ALSA_LIB_CFLAGS+=-mabi=aapcs-linux
-endif
-
 ifeq ($(BR2_avr32),y)
 ALSA_LIB_CFLAGS+=-DAVR32_INLINE_BUG
 endif
