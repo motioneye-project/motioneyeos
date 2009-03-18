@@ -82,7 +82,7 @@ $(PANGO_HOST_DIR)/.configured: $(PANGO_HOST_DIR)/.unpacked $(PKGCONFIG_HOST_BINA
 		--prefix=$(HOST_DIR)/usr \
 		--sysconfdir=$(HOST_DIR)/etc \
 		--disable-static \
-		--with-x \
+		$(if $(BR2_PACKAGE_XSERVER_none),--without-x,--with-x) \
 		--disable-debug \
 	)
 	touch $@
