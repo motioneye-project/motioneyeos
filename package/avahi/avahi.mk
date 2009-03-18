@@ -126,8 +126,8 @@ AVAHI_CONF_ENV += am_cv_pathless_PYTHON=python \
 		am_cv_path_PYTHON=$(PYTHON_TARGET_BINARY) \
 		am_cv_python_version=$(PYTHON_VERSION) \
 		am_cv_python_platform=linux2 \
-		am_cv_python_pythondir=$(PYTHON_SITE_PACKAGE_DIR) \
-		am_cv_python_pyexecdir=$(PYTHON_SITE_PACKAGE_DIR) \
+		am_cv_python_pythondir=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages \
+		am_cv_python_pyexecdir=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages \
 		py_cv_mod_socket_=yes
 
 AVAHI_DEPENDENCIES += libpython
