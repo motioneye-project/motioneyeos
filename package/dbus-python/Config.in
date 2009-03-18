@@ -1,0 +1,9 @@
+config BR2_PACKAGE_DBUS_PYTHON
+	bool "dbus-python"
+	depends on BR2_PACKAGE_DBUS
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_DBUS_GLIB
+	help
+	  Python bindings for D-Bus
+
+	  http://dbus.freedesktop.org/doc/dbus-python/
