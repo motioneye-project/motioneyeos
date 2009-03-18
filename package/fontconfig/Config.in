@@ -3,6 +3,6 @@ config BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_EXPAT
 	help
-	a library for font customization and configuration.
-	
-	http://www.fontconfig.org/
+	  a library for font customization and configuration.
+
+	  http://www.fontconfig.org/
