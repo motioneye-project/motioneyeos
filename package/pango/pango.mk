@@ -57,7 +57,9 @@ PANGO_DEPENDENCIES = uclibc gettext libintl host-pkgconfig libglib2 $(XSERVER) c
 $(eval $(call AUTOTARGETS,package,pango))
 
 $(PANGO_HOOK_POST_INSTALL):
-	$(INSTALL) -m 755 package/pango/S25pango $(TARGET_DIR)/etc/init.d/
+	mkdir -p $(TARGET_DIR)/etc/pango
+	$(PANGO_HOST_BINARY) > $(TARGET_DIR)/etc/pango/pango.modules
+	$(SED) 's~$(HOST_DIR)~~g' $(TARGET_DIR)/etc/pango/pango.modules
 	touch $@
 
 # pango for the host
@@ -68,6 +70,7 @@ $(PANGO_HOST_DIR)/.unpacked: $(DL_DIR)/$(PANGO_SOURCE)
 	mkdir -p $(@D)
 	$(INFLATE$(suffix $(PANGO_SOURCE))) $< | \
 		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(@D) package/pango/ \*.patch
 	touch $@
 
 $(PANGO_HOST_DIR)/.configured: $(PANGO_HOST_DIR)/.unpacked $(PKGCONFIG_HOST_BINARY) $(CAIRO_HOST_BINARY) $(LIBGLIB2_HOST_BINARY)
