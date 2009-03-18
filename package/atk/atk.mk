@@ -40,18 +40,18 @@ ATK_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes \
 		jm_cv_func_working_re_compile_pattern=yes ac_use_included_regex=no \
 		gl_cv_c_restrict=no ac_cv_prog_F77=no
 
+ATK_CONF_OPT =  --enable-shared \
+		--enable-static
+		--disable-glibtest --enable-explicit-deps=no \
+		--disable-debug
+
 ifneq ($(BR2_PACKAGE_XSERVER_none),y)
-ATK_CONF_OPT_X = --with-x \
+ATK_CONF_OPT += --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib --disable-glibtest
 else
-ATK_CONF_OPT_X = --without-x
+ATK_CONF_OPT += --without-x
 endif
-
-ATK_CONF_OPT =  --enable-shared \
-		--enable-static $(ATK_CONF_OPT_X) \
-		--disable-glibtest --enable-explicit-deps=no \
-		--disable-debug
 
 ATK_DEPENDENCIES = libglib2 host-pkgconfig
 
