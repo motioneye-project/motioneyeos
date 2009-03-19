@@ -1,4 +1,4 @@
-config BR2_PACKAGE_PKGCONFIG
+config BR2_PACKAGE_PKG_CONFIG
 	bool "pkg-config"
 	select BR2_PACKAGE_LIBGLIB2
 	help
