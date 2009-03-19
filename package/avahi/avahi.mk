@@ -115,8 +115,8 @@ else
 AVAHI_CONF_OPT += --disable-glib --disable-gobject
 endif
 
-ifeq ($(BR2_PACKAGE_LIBGTK2),y)
-AVAHI_DEPENDENCIES += libgtk2
+ifeq ($(BR2_PACKAGE_LIBGLADE),y)
+AVAHI_DEPENDENCIES += libglade
 else
 AVAHI_CONF_OPT += --disable-gtk
 endif

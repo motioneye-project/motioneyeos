@@ -152,7 +152,6 @@ $(STAMP_DIR)/host_libgtk2_configured: $(STAMP_DIR)/host_libgtk2_unpacked $(STAMP
 		--disable-static \
 		--disable-glibtest \
 		--without-libtiff \
-		--without-libpng \
 		--without-libjpeg \
 		--with-x \
 		--with-gdktarget=x11 \
