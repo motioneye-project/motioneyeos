@@ -88,7 +88,7 @@ $(STAMP_DIR)/host_pango_configured: $(STAMP_DIR)/host_pango_unpacked $(STAMP_DIR
 	touch $@
 
 $(STAMP_DIR)/host_pango_compiled: $(STAMP_DIR)/host_pango_configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(PANGO_HOST_DIR)
+	$(HOST_MAKE_ENV) PKG_CONFIG_PATH="$(HOST_DIR)/usr/lib/pkgconfig$(PKG_CONFIG_PATH)" $(MAKE) -C $(PANGO_HOST_DIR)
 	touch $@
 
 $(STAMP_DIR)/host_pango_installed: $(STAMP_DIR)/host_pango_compiled
