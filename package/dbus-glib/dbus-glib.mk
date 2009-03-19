@@ -31,20 +31,20 @@ $(eval $(call AUTOTARGETS,package,dbus-glib))
 DBUS_GLIB_HOST_DIR:=$(BUILD_DIR)/dbus-glib-$(DBUS_GLIB_VERSION)-host
 DBUS_GLIB_HOST_BINARY:=$(HOST_DIR)/usr/bin/dbus-binding-tool
 
-$(DBUS_GLIB_HOST_DIR)/.unpacked: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_dbusglib_unpacked: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
+	mkdir -p $(DBUS_GLIB_HOST_DIR)
 	$(INFLATE$(suffix $(DBUS_GLIB_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(DBUS_GLIB_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(DBUS_GLIB_HOST_DIR)/.configured: $(DBUS_GLIB_HOST_DIR)/.unpacked $(EXPAT_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_dbusglib_configured: $(STAMP_DIR)/host_dbusglib_unpacked $(STAMP_DIR)/host_dbus_installed
+	(cd $(DBUS_GLIB_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--disable-tests \
 		--disable-xml-docs \
 		--disable-bash-completion \
@@ -53,21 +53,22 @@ $(DBUS_GLIB_HOST_DIR)/.configured: $(DBUS_GLIB_HOST_DIR)/.unpacked $(EXPAT_HOST_
 	)
 	touch $@
 
-$(DBUS_GLIB_HOST_DIR)/.compiled: $(DBUS_GLIB_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_dbusglib_compiled: $(STAMP_DIR)/host_dbusglib_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(DBUS_GLIB_HOST_DIR)
 	touch $@
 
-$(DBUS_GLIB_HOST_BINARY): $(DBUS_GLIB_HOST_DIR)/.compiled
-	$(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_dbusglib_installed: $(STAMP_DIR)/host_dbusglib_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(DBUS_GLIB_HOST_DIR) install
+	touch $@
 
-host-dbus-glib: $(DBUS_GLIB_HOST_BINARY)
+host-dbus-glib: $(STAMP_DIR)/host_dbusglib_installed
 
 host-dbus-glib-source: dbus-glib-source
 
 host-dbus-glib-clean:
-	rm -f $(addprefix $(DBUS_GLIB_HOST_DIR)/,.unpacked .configured .compiled)
-	$(MAKE) -C $(DBUS_GLIB_HOST_DIR) uninstall
-	$(MAKE) -C $(DBUS_GLIB_HOST_DIR) clean
+	rm -f $(addprefix $(STAMP_DIR)/host_dbusglib_,unpacked configured compiled installed)
+	-$(MAKE) -C $(DBUS_GLIB_HOST_DIR) uninstall
+	-$(MAKE) -C $(DBUS_GLIB_HOST_DIR) clean
 
 host-dbus-glib-dirclean:
 	rm -rf $(DBUS_GLIB_HOST_DIR)

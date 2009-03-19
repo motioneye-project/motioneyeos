@@ -71,6 +71,9 @@ STAGING_DIR:=$(strip $(subst ",, $(BR2_STAGING_DIR)))
 # packages compiled for the host goes here
 HOST_DIR:=$(BUILD_DIR)/host_dir
 
+# stamp (dependency) files go here
+STAMP_DIR:=$(BUILD_DIR)/stamps
+
 # All configurable packages (like Busybox,Linux etc) should be built
 # in PROJECT_BUILD_DIR
 PROJECT_BUILD_DIR:=$(BASE_DIR)/$(TOPDIR_PREFIX)project_build_$(ARCH)$(ARCH_FPU_SUFFIX)$(TOPDIR_SUFFIX)/$(PROJECT)

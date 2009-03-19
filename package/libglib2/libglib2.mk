@@ -68,20 +68,20 @@ $(eval $(call AUTOTARGETS,package,libglib2))
 LIBGLIB2_HOST_DIR:=$(BUILD_DIR)/libglib2-$(LIBGLIB2_VERSION)-host
 LIBGLIB2_HOST_BINARY:=$(HOST_DIR)/usr/bin/glib-genmarshal
 
-$(LIBGLIB2_HOST_DIR)/.unpacked: $(DL_DIR)/$(LIBGLIB2_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_libglib2_unpacked: $(DL_DIR)/$(LIBGLIB2_SOURCE)
+	mkdir -p $(LIBGLIB2_HOST_DIR)
 	$(INFLATE$(suffix $(LIBGLIB2_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(LIBGLIB2_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(LIBGLIB2_HOST_DIR)/.configured: $(LIBGLIB2_HOST_DIR)/.unpacked
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_libglib2_configured: $(STAMP_DIR)/host_libglib2_unpacked $(STAMP_DIR)/host_pkgconfig_installed
+	(cd $(LIBGLIB2_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--enable-shared \
 		--disable-static \
 		--disable-gtk-doc \
@@ -89,21 +89,22 @@ $(LIBGLIB2_HOST_DIR)/.configured: $(LIBGLIB2_HOST_DIR)/.unpacked
 	)
 	touch $@
 
-$(LIBGLIB2_HOST_DIR)/.compiled: $(LIBGLIB2_HOST_DIR)/.configured
-	$(MAKE) -C $(@D)
+$(STAMP_DIR)/host_libglib2_compiled: $(STAMP_DIR)/host_libglib2_configured
+	$(MAKE) -C $(LIBGLIB2_HOST_DIR)
 	touch $@
 
-$(LIBGLIB2_HOST_BINARY): $(LIBGLIB2_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_libglib2_installed: $(STAMP_DIR)/host_libglib2_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(LIBGLIB2_HOST_DIR) install
+	touch $@
 
-host-libglib2: $(LIBGLIB2_HOST_BINARY)
+host-libglib2: $(STAMP_DIR)/host_libglib2_installed
 
 host-libglib2-source: libglib2-source
 
 host-libglib2-clean:
-	rm -f $(addprefix $(LIBGLIB2_HOST_DIR)/,.unpacked .configured .compiled)
-	$(MAKE) -C $(LIBGLIB2_HOST_DIR) uninstall
-	$(MAKE) -C $(LIBGLIB2_HOST_DIR) clean
+	rm -f $(addprefix $(STAMP_DIR)/host_libglib2_,unpacked configured compiled installed)
+	-$(MAKE) -C $(LIBGLIB2_HOST_DIR) uninstall
+	-$(MAKE) -C $(LIBGLIB2_HOST_DIR) clean
 
 host-libglib2-dirclean:
 	rm -rf $(LIBGLIB2_HOST_DIR)

@@ -27,40 +27,40 @@ $(eval $(call AUTOTARGETS,package,fontconfig))
 
 # fontconfig for the host
 FONTCONFIG_HOST_DIR:=$(BUILD_DIR)/fontconfig-$(FONTCONFIG_VERSION)-host
-FONTCONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/fc-cache
 
-$(FONTCONFIG_HOST_DIR)/.unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_fontconfig_unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
+	mkdir -p $(FONTCONFIG_HOST_DIR)
 	$(INFLATE$(suffix $(FONTCONFIG_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(FONTCONFIG_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(FONTCONFIG_HOST_DIR)/.configured: $(FONTCONFIG_HOST_DIR)/.unpacked $(FREETYPE_HOST_BINARY) $(EXPAT_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_fontconfig_configured: $(STAMP_DIR)/host_fontconfig_unpacked $(STAMP_DIR)/host_freetype_installed $(STAMP_DIR)/host_expat_installed
+	(cd $(FONTCONFIG_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--disable-docs \
 		--disable-static \
 	)
 	touch $@
 
-$(FONTCONFIG_HOST_DIR)/.compiled: $(FONTCONFIG_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_fontconfig_compiled: $(STAMP_DIR)/host_fontconfig_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(FONTCONFIG_HOST_DIR)
 	touch $@
 
-$(FONTCONFIG_HOST_BINARY): $(FONTCONFIG_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_fontconfig_installed: $(STAMP_DIR)/host_fontconfig_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(FONTCONFIG_HOST_DIR) install
+	touch $@
 
-host-fontconfig: $(FONTCONFIG_HOST_BINARY)
+host-fontconfig: $(STAMP_DIR)/host_fontconfig_installed
 
 host-fontconfig-source: fontconfig-source
 
 host-fontconfig-clean:
-	rm -f $(addprefix $(FONTCONFIG_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_fontconfig_,unpacked configured compiled installed)
 	-$(MAKE) -C $(FONTCONFIG_HOST_DIR) uninstall
 	-$(MAKE) -C $(FONTCONFIG_HOST_DIR) clean
 

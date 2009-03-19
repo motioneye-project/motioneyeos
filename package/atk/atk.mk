@@ -59,41 +59,41 @@ $(eval $(call AUTOTARGETS,package,atk))
 
 # atk for the host
 ATK_HOST_DIR:=$(BUILD_DIR)/atk-$(ATK_VERSION)-host
-ATK_HOST_BINARY:=$(HOST_DIR)/usr/lib/libatk-1.0.a
 
-$(ATK_HOST_DIR)/.unpacked: $(DL_DIR)/$(ATK_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_atk_unpacked: $(DL_DIR)/$(ATK_SOURCE)
+	mkdir -p $(ATK_HOST_DIR)
 	$(INFLATE$(suffix $(ATK_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(ATK_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(ATK_HOST_DIR)/.configured: $(ATK_HOST_DIR)/.unpacked $(LIBGLIB2_HOST_BINARY) $(PKG_CONFIG_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_atk_configured: $(STAMP_DIR)/host_atk_unpacked $(STAMP_DIR)/host_libglib2_installed $(STAMP_DIR)/host_pkgconfig_installed
+	(cd $(ATK_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--enable-shared \
 		--disable-static \
 		--disable-glibtest \
 	)
 	touch $@
 
-$(ATK_HOST_DIR)/.compiled: $(ATK_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_atk_compiled: $(STAMP_DIR)/host_atk_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(ATK_HOST_DIR)
 	touch $@
 
-$(ATK_HOST_BINARY): $(ATK_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_atk_installed: $(STAMP_DIR)/host_atk_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(ATK_HOST_DIR) install
+	touch $@
 
-host-atk: $(ATK_HOST_BINARY)
+host-atk: $(STAMP_DIR)/host_atk_installed
 
 host-atk-source: atk-source
 
 host-atk-clean:
-	rm -f $(addprefix $(ATK_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_atk_,unpacked configured compiled installed)
 	-$(MAKE) -C $(ATK_HOST_DIR) uninstall
 	-$(MAKE) -C $(ATK_HOST_DIR) clean
 

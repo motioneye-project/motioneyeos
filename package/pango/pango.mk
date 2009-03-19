@@ -66,40 +66,41 @@ $(PANGO_HOOK_POST_INSTALL):
 PANGO_HOST_DIR:=$(BUILD_DIR)/pango-$(PANGO_VERSION)-host
 PANGO_HOST_BINARY:=$(HOST_DIR)/usr/bin/pango-querymodules
 
-$(PANGO_HOST_DIR)/.unpacked: $(DL_DIR)/$(PANGO_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_pango_unpacked: $(DL_DIR)/$(PANGO_SOURCE)
+	mkdir -p $(PANGO_HOST_DIR)
 	$(INFLATE$(suffix $(PANGO_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(@D) package/pango/ \*.patch
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(PANGO_HOST_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(PANGO_HOST_DIR) package/pango/ \*.patch
 	touch $@
 
-$(PANGO_HOST_DIR)/.configured: $(PANGO_HOST_DIR)/.unpacked $(PKG_CONFIG_HOST_BINARY) $(CAIRO_HOST_BINARY) $(LIBGLIB2_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_pango_configured: $(STAMP_DIR)/host_pango_unpacked $(STAMP_DIR)/host_cairo_installed $(STAMP_DIR)/host_libglib2_installed
+	(cd $(PANGO_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--disable-static \
 		$(if $(BR2_PACKAGE_XSERVER_none),--without-x,--with-x) \
 		--disable-debug \
 	)
 	touch $@
 
-$(PANGO_HOST_DIR)/.compiled: $(PANGO_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_pango_compiled: $(STAMP_DIR)/host_pango_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(PANGO_HOST_DIR)
 	touch $@
 
-$(PANGO_HOST_BINARY): $(PANGO_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_pango_installed: $(STAMP_DIR)/host_pango_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(PANGO_HOST_DIR) install
+	touch $@
 
-host-pango: $(PANGO_HOST_BINARY)
+host-pango: $(STAMP_DIR)/host_pango_installed
 
 host-pango-source: pango-source
 
 host-pango-clean:
-	rm -f $(addprefix $(PANGO_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_pango_,unpacked configured compiled installed)
 	-$(MAKE) -C $(PANGO_HOST_DIR) uninstall
 	-$(MAKE) -C $(PANGO_HOST_DIR) clean
 

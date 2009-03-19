@@ -21,34 +21,38 @@ $(eval $(call AUTOTARGETS,package,pkgconfig))
 PKG_CONFIG_HOST_DIR:=$(BUILD_DIR)/pkg-config-$(PKG_CONFIG_VERSION)-host
 PKG_CONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/pkg-config
 
-$(PKG_CONFIG_HOST_DIR)/.unpacked: $(DL_DIR)/$(PKG_CONFIG_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_pkgconfig_unpacked: $(DL_DIR)/$(PKG_CONFIG_SOURCE)
+	mkdir -p $(PKG_CONFIG_HOST_DIR)
 	$(INFLATE$(suffix $(PKG_CONFIG_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(@D) package/pkgconfig/ \*.patch
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(PKG_CONFIG_HOST_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(PKG_CONFIG_HOST_DIR) package/pkgconfig/ \*.patch
 	touch $@
 
-$(PKG_CONFIG_HOST_DIR)/.configured: $(PKG_CONFIG_HOST_DIR)/.unpacked
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_pkgconfig_configured: $(STAMP_DIR)/host_pkgconfig_unpacked
+	(cd $(PKG_CONFIG_HOST_DIR); rm -rf config.cache; \
+		$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LDFLAGS="$(HOST_LDFLAGS)" \
 		./configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--with-pc-path="$(STAGING_DIR)/usr/lib/pkgconfig" \
 		--disable-static \
 	)
 	touch $@
 
-$(PKG_CONFIG_HOST_DIR)/.compiled: $(PKG_CONFIG_HOST_DIR)/.configured
-	$(MAKE) -C $(@D)
+$(STAMP_DIR)/host_pkgconfig_compiled: $(STAMP_DIR)/host_pkgconfig_configured
+	$(MAKE) -C $(PKG_CONFIG_HOST_DIR)
 	touch $@
 
-$(PKG_CONFIG_HOST_BINARY): $(PKG_CONFIG_HOST_DIR)/.compiled
-	$(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_pkgconfig_installed: $(STAMP_DIR)/host_pkgconfig_compiled
+	$(MAKE) -C $(PKG_CONFIG_HOST_DIR) install
+	touch $@
 
-host-pkgconfig: $(PKG_CONFIG_HOST_BINARY)
+host-pkgconfig: $(STAMP_DIR)/host_pkgconfig_installed
 
 host-pkgconfig-clean:
-	rm -f $(addprefix $(PKG_CONFIG_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_pkgconfig_,unpacked configured compiled installed)
 	-$(MAKE) -C $(PKG_CONFIG_HOST_DIR) uninstall
 	-$(MAKE) -C $(PKG_CONFIG_HOST_DIR) clean
 

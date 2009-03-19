@@ -134,22 +134,21 @@ $(LIBGTK2_HOOK_POST_INSTALL):
 
 # libgtk2 for the host
 LIBGTK2_HOST_DIR:=$(BUILD_DIR)/libgtk2-$(LIBGTK2_VERSION)-host
-LIBGTK2_HOST_BINARY:=$(HOST_DIR)/usr/bin/gdk-pixbuf-csource
 
-$(LIBGTK2_HOST_DIR)/.unpacked: $(DL_DIR)/$(LIBGTK2_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_libgtk2_unpacked: $(DL_DIR)/$(LIBGTK2_SOURCE)
+	mkdir -p $(LIBGTK2_HOST_DIR)
 	$(INFLATE$(suffix $(LIBGTK2_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(LIBGTK2_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(LIBGTK2_HOST_DIR)/.configured: $(LIBGTK2_HOST_DIR)/.unpacked $(PKG_CONFIG_HOST_BINARY) $(CAIRO_HOST_BINARY) $(LIBGLIB2_HOST_BINARY) $(PANGO_HOST_BINARY) $(ATK_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_libgtk2_configured: $(STAMP_DIR)/host_libgtk2_unpacked $(STAMP_DIR)/host_cairo_installed $(STAMP_DIR)/host_libglib2_installed $(STAMP_DIR)/host_pango_installed $(STAMP_DIR)/host_atk_installed
+	(cd $(LIBGTK2_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--disable-static \
 		--disable-glibtest \
 		--without-libtiff \
@@ -162,19 +161,20 @@ $(LIBGTK2_HOST_DIR)/.configured: $(LIBGTK2_HOST_DIR)/.unpacked $(PKG_CONFIG_HOST
 	)
 	touch $@
 
-$(LIBGTK2_HOST_DIR)/.compiled: $(LIBGTK2_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_libgtk2_compiled: $(STAMP_DIR)/host_libgtk2_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(LIBGTK2_HOST_DIR)
 	touch $@
 
-$(LIBGTK2_HOST_BINARY): $(LIBGTK2_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_libgtk2_installed: $(STAMP_DIR)/host_libgtk2_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(LIBGTK2_HOST_DIR) install
+	touch $@
 
-host-libgtk2: $(LIBGTK2_HOST_BINARY)
+host-libgtk2: $(STAMP_DIR)/host_libgtk2_installed
 
 host-libgtk2-source: libgtk2-source
 
 host-libgtk2-clean:
-	rm -f $(addprefix $(LIBGTK2_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_libgtk2_,unpacked configured compiled installed)
 	-$(MAKE) -C $(LIBGTK2_HOST_DIR) uninstall
 	-$(MAKE) -C $(LIBGTK2_HOST_DIR) clean
 

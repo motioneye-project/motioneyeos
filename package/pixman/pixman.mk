@@ -13,38 +13,38 @@ $(eval $(call AUTOTARGETS,package,pixman))
 
 # pixman for the host
 PIXMAN_HOST_DIR:=$(BUILD_DIR)/pixman-$(PIXMAN_VERSION)-host
-PIXMAN_HOST_BINARY:=$(HOST_DIR)/usr/lib/libpixman-1.0.a
 
-$(PIXMAN_HOST_DIR)/.unpacked: $(DL_DIR)/$(PIXMAN_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_pixman_unpacked: $(DL_DIR)/$(PIXMAN_SOURCE)
+	mkdir -p $(PIXMAN_HOST_DIR)
 	$(INFLATE$(suffix $(PIXMAN_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(PIXMAN_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(PIXMAN_HOST_DIR)/.configured: $(PIXMAN_HOST_DIR)/.unpacked
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_pixman_configured: $(STAMP_DIR)/host_pixman_unpacked
+	(cd $(PIXMAN_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 	)
 	touch $@
 
-$(PIXMAN_HOST_DIR)/.compiled: $(PIXMAN_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_pixman_compiled: $(STAMP_DIR)/host_pixman_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(PIXMAN_HOST_DIR)
 	touch $@
 
-$(PIXMAN_HOST_BINARY): $(PIXMAN_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_pixman_installed: $(STAMP_DIR)/host_pixman_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(PIXMAN_HOST_DIR) install
+	touch $@
 
-host-pixman: $(PIXMAN_HOST_BINARY)
+host-pixman: $(STAMP_DIR)/host_pixman_installed
 
 host-pixman-source: pixman-source
 
 host-pixman-clean:
-	rm -f $(addprefix $(PIXMAN_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_pixman_,unpacked configured compiled installed)
 	-$(MAKE) -C $(PIXMAN_HOST_DIR) uninstall
 	-$(MAKE) -C $(PIXMAN_HOST_DIR) clean
 

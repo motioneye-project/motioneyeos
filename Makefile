@@ -283,7 +283,7 @@ $(BR2_DEPENDS_DIR): .config
 
 dirs: $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BR2_DEPENDS_DIR) $(BINARIES_DIR) $(PROJECT_BUILD_DIR) \
-	$(PROJECT_BUILD_DIR)/autotools-stamps
+	$(PROJECT_BUILD_DIR)/autotools-stamps $(STAMP_DIR)
 
 $(BASE_TARGETS): dirs
 
@@ -295,7 +295,7 @@ world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS_ALL)
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
 	$(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BR2_DEPENDS_DIR) $(BINARIES_DIR) $(PROJECT_BUILD_DIR) \
-	$(PROJECT_BUILD_DIR)/autotools-stamps
+	$(PROJECT_BUILD_DIR)/autotools-stamps $(STAMP_DIR)
 
 #############################################################
 #
@@ -304,7 +304,7 @@ world: dependencies dirs target-host-info $(BASE_TARGETS) $(TARGETS_ALL)
 #
 #############################################################
 $(DL_DIR) $(TOOL_BUILD_DIR) $(BUILD_DIR) $(HOST_DIR) $(PROJECT_BUILD_DIR) \
-	$(PROJECT_BUILD_DIR)/autotools-stamps $(BINARIES_DIR):
+	$(PROJECT_BUILD_DIR)/autotools-stamps $(BINARIES_DIR) $(STAMP_DIR):
 	@mkdir -p $@
 
 $(STAGING_DIR):
@@ -365,10 +365,10 @@ external-deps:
 #
 #############################################################
 clean: $(TARGETS_CLEAN)
-	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE) $(PROJECT_BUILD_DIR)/.root $(PROJECT_BUILD_DIR)/autotools-stamps
+	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE) $(PROJECT_BUILD_DIR)/.root $(PROJECT_BUILD_DIR)/autotools-stamps $(STAMP_DIR)
 
 dirclean: $(TARGETS_DIRCLEAN)
-	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE) $(PROJECT_BUILD_DIR)/.root $(PROJECT_BUILD_DIR)/autotools-stamps
+	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE) $(PROJECT_BUILD_DIR)/.root $(PROJECT_BUILD_DIR)/autotools-stamps $(STAMP_DIR)
 
 distclean:
 ifeq ($(DL_DIR),$(BASE_DIR)/dl)

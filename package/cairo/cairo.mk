@@ -86,22 +86,21 @@ $(eval $(call AUTOTARGETS,package,cairo))
 
 # cairo for the host
 CAIRO_HOST_DIR:=$(BUILD_DIR)/cairo-$(CAIRO_VERSION)-host
-CAIRO_HOST_BINARY:=$(HOST_DIR)/usr/lib/libcairo.a
 
-$(CAIRO_HOST_DIR)/.unpacked: $(DL_DIR)/$(CAIRO_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_cairo_unpacked: $(DL_DIR)/$(CAIRO_SOURCE)
+	mkdir -p $(CAIRO_HOST_DIR)
 	$(INFLATE$(suffix $(CAIRO_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(CAIRO_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(CAIRO_HOST_DIR)/.configured: $(CAIRO_HOST_DIR)/.unpacked $(PKG_CONFIG_HOST_BINARY) $(FONTCONFIG_HOST_BINARY) $(PIXMAN_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_cairo_configured: $(STAMP_DIR)/host_cairo_unpacked $(STAMP_DIR)/host_pkgconfig_installed $(STAMP_DIR)/host_fontconfig_installed $(STAMP_DIR)/host_pixman_installed
+	(cd $(CAIRO_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--enable-ps \
 		--enable-pdf \
 		--enable-xlib \
@@ -111,19 +110,20 @@ $(CAIRO_HOST_DIR)/.configured: $(CAIRO_HOST_DIR)/.unpacked $(PKG_CONFIG_HOST_BIN
 	)
 	touch $@
 
-$(CAIRO_HOST_DIR)/.compiled: $(CAIRO_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_cairo_compiled: $(STAMP_DIR)/host_cairo_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(CAIRO_HOST_DIR)
 	touch $@
 
-$(CAIRO_HOST_BINARY): $(CAIRO_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_cairo_installed: $(STAMP_DIR)/host_cairo_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(CAIRO_HOST_DIR) install
+	touch $@
 
-host-cairo: $(CAIRO_HOST_BINARY)
+host-cairo: $(STAMP_DIR)/host_cairo_installed
 
 host-cairo-source: cairo-source
 
 host-cairo-clean:
-	rm -f $(addprefix $(CAIRO_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_cairo_,unpacked configured compiled installed)
 	-$(MAKE) -C $(CAIRO_HOST_DIR) uninstall
 	-$(MAKE) -C $(CAIRO_HOST_DIR) clean
 

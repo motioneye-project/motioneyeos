@@ -56,23 +56,22 @@ $(DBUS_HOOK_POST_INSTALL): $(DBUS_TARGET_INSTALL_TARGET)
 
 # dbus for the host
 DBUS_HOST_DIR:=$(BUILD_DIR)/dbus-$(DBUS_VERSION)-host
-DBUS_HOST_BINARY:=$(HOST_DIR)/usr/bin/dbus-daemon
 DBUS_HOST_INTROSPECT:=$(DBUS_HOST_DIR)/introspect.xml
 
-$(DBUS_HOST_DIR)/.unpacked: $(DL_DIR)/$(DBUS_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_dbus_unpacked: $(DL_DIR)/$(DBUS_SOURCE)
+	mkdir -p $(DBUS_HOST_DIR)
 	$(INFLATE$(suffix $(DBUS_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(DBUS_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(DBUS_HOST_DIR)/.configured: $(DBUS_HOST_DIR)/.unpacked $(EXPAT_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_dbus_configured: $(DBUS_HOST_DIR)/.unpacked $(STAMP_DIR)/host_expat_installed $(STAMP_DIR)/host_pkgconfig_installed
+	(cd $(DBUS_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 		--with-dbus-user=dbus \
 		--disable-tests \
 		--disable-asserts \
@@ -87,25 +86,24 @@ $(DBUS_HOST_DIR)/.configured: $(DBUS_HOST_DIR)/.unpacked $(EXPAT_HOST_BINARY)
 	)
 	touch $@
 
-$(DBUS_HOST_DIR)/.compiled: $(DBUS_HOST_DIR)/.configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+$(STAMP_DIR)/host_dbus_compiled: $(STAMP_DIR)/host_dbus_configured
+	$(HOST_MAKE_ENV) $(MAKE) -C $(DBUS_HOST_DIR)
 	touch $@
 
-$(DBUS_HOST_BINARY): $(DBUS_HOST_DIR)/.compiled
-	$(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_dbus_installed: $(STAMP_DIR)/host_dbus_compiled
+	$(MAKE) -C $(DBUS_HOST_DIR) install
+	$(HOST_DIR)/usr/bin/dbus-daemon --introspect > $(DBUS_HOST_INTROSPECT)
+	touch $@
 
-$(DBUS_HOST_INTROSPECT): $(DBUS_HOST_BINARY)
-	$(DBUS_HOST_BINARY) --introspect > $@
-
-host-dbus: $(DBUS_HOST_INTROSPECT)
+host-dbus: $(STAMP_DIR)/host_dbus_installed
 
 host-dbus-source: dbus-source
 
 host-dbus-clean:
-	rm -f $(addprefix $(DBUS_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_dbus_,unpacked configured compiled installed)
 	rm -f $(DBUS_HOST_INTROSPECT)
-	$(MAKE) -C $(DBUS_HOST_DIR) uninstall
-	$(MAKE) -C $(DBUS_HOST_DIR) clean
+	-$(MAKE) -C $(DBUS_HOST_DIR) uninstall
+	-$(MAKE) -C $(DBUS_HOST_DIR) clean
 
 host-dbus-dirclean:
 	rm -rf $(DBUS_HOST_DIR)

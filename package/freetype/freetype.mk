@@ -25,38 +25,38 @@ $(FREETYPE_HOOK_POST_INSTALL):
 
 # freetype for the host
 FREETYPE_HOST_DIR:=$(BUILD_DIR)/freetype-$(FREETYPE_VERSION)-host
-FREETYPE_HOST_BINARY:=$(HOST_DIR)/usr/bin/freetype-config
 
-$(FREETYPE_HOST_DIR)/.unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
-	mkdir -p $(@D)
+$(STAMP_DIR)/host_freetype_unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
+	mkdir -p $(FREETYPE_HOST_DIR)
 	$(INFLATE$(suffix $(FREETYPE_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(FREETYPE_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(FREETYPE_HOST_DIR)/.configured: $(FREETYPE_HOST_DIR)/.unpacked $(PKG_CONFIG_HOST_BINARY)
-	(cd $(@D); rm -rf config.cache; \
+$(STAMP_DIR)/host_freetype_configured: $(STAMP_DIR)/host_freetype_unpacked $(STAMP_DIR)/host_pkgconfig_installed
+	(cd $(FREETYPE_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		$(@D)/configure \
-		--prefix=$(HOST_DIR)/usr \
-		--sysconfdir=$(HOST_DIR)/etc \
+		./configure \
+		--prefix="$(HOST_DIR)/usr" \
+		--sysconfdir="$(HOST_DIR)/etc" \
 	)
 	touch $@
 
-$(FREETYPE_HOST_DIR)/.compiled: $(FREETYPE_HOST_DIR)/.configured
-	$(MAKE) -C $(@D)
+$(STAMP_DIR)/host_freetype_compiled: $(STAMP_DIR)/host_freetype_configured
+	$(MAKE) -C $(FREETYPE_HOST_DIR)
 	touch $@
 
-$(FREETYPE_HOST_BINARY): $(FREETYPE_HOST_DIR)/.compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(<D) install
+$(STAMP_DIR)/host_freetype_installed: $(STAMP_DIR)/host_freetype_compiled
+	$(HOST_MAKE_ENV) $(MAKE) -C $(FREETYPE_HOST_DIR) install
+	touch $@
 
-host-freetype: $(FREETYPE_HOST_BINARY)
+host-freetype: $(STAMP_DIR)/host_freetype_installed
 
 host-freetype-source: freetype-source
 
 host-freetype-clean:
-	rm -f $(addprefix $(FREETYPE_HOST_DIR)/,.unpacked .configured .compiled)
+	rm -f $(addprefix $(STAMP_DIR)/host_freetype_,unpacked configured compiled installed)
 	-$(MAKE) -C $(FREETYPE_HOST_DIR) uninstall
 	-$(MAKE) -C $(FREETYPE_HOST_DIR) clean
 
