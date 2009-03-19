@@ -40,6 +40,7 @@ $(PKGCONFIG_HOST_DIR)/.configured: $(PKGCONFIG_HOST_DIR)/.unpacked
 
 $(PKGCONFIG_HOST_DIR)/.compiled: $(PKGCONFIG_HOST_DIR)/.configured
 	$(MAKE) -C $(@D)
+	touch $@
 
 $(PKGCONFIG_HOST_BINARY): $(PKGCONFIG_HOST_DIR)/.compiled
 	$(MAKE) -C $(<D) install
