@@ -1,3 +1,8 @@
+menuconfig BR2_TARGET_AMD
+	bool "AMD Specific Device Support"
+
+if BR2_TARGET_AMD
+
 comment "AMD Specific Device Support"
 	depends on BR2_mipsel || BR2_mips
 
@@ -17,3 +22,4 @@ config BR2_TARGET_AMD_ALCHEMY_DBAU1500
 comment "Package support"
 	depends on BR2_TARGET_AMD_ALCHEMY
 
+endif
