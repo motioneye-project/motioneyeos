@@ -59,3 +59,127 @@ config BR2_TARGET_GENERIC_DEV_SYSTEM
 
 comment "Generic development system requires a toolchain with WCHAR and PROGRAM_INVOCATION support"
 	depends on !(BR2_USE_WCHAR && BR2_UCLIBC_PROGRAM_INVOCATION)
+
+menuconfig BR2_TARGET_GENERIC_GETTY
+	bool "Generic serial port config"
+	depends on !(BR2_TARGET_ATMEL||BR2_TARGET_KWIKBYTE||BR2_TARGET_VALKA)
+
+if BR2_TARGET_GENERIC_GETTY
+
+choice
+	prompt "Serial port to run a getty on"
+	default BR2_TARGET_GENERIC_GETTY_TTYSO
+	help
+	  Select a port to run a getty (login prompt) on.
+
+config BR2_TARGET_GENERIC_GETTY_NONE
+	bool "none"
+config BR2_TARGET_GENERIC_GETTY_TTYSO
+	bool "ttyS0"
+config BR2_TARGET_GENERIC_GETTY_TTYS1
+	bool "ttyS1"
+config BR2_TARGET_GENERIC_GETTY_TTYS2
+	bool "ttyS2"
+config BR2_TARGET_GENERIC_GETTY_TTYS3
+	bool "ttyS3"
+config BR2_TARGET_GENERIC_GETTY_TTYAMA0
+	bool "ttyAMA0"
+	depends on BR2_arm
+config BR2_TARGET_GENERIC_GETTY_TTYAMA1
+	bool "ttyAMA1"
+	depends on BR2_arm
+config BR2_TARGET_GENERIC_GETTY_TTYAMA2
+	bool "ttyAMA2"
+	depends on BR2_arm
+config BR2_TARGET_GENERIC_GETTY_TTYAMA3
+	bool "ttyAMA3"
+	depends on BR2_arm
+config BR2_TARGET_GENERIC_GETTY_TTYUL0
+	bool "ttyUL0"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYUL1
+	bool "ttyUL1"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYUL2
+	bool "ttyUL2"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYUL3
+	bool "ttyUL3"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYPSC0
+	bool "ttyPSC0"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYPSC1
+	bool "ttyPSC1"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYPSC2
+	bool "ttyPSC2"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYPSC3
+	bool "ttyPSC3"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYCPM0
+	bool "ttyCPM0"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYCPM1
+	bool "ttyCPM1"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYCPM2
+	bool "ttyCPM2"
+	depends on BR2_powerpc
+config BR2_TARGET_GENERIC_GETTY_TTYCPM3
+	bool "ttyCPM3"
+	depends on BR2_powerpc
+endchoice
+
+config BR2_TARGET_GENERIC_GETTY_PORT
+	string
+	default "#ttyS0"	if BR2_TARGET_GENERIC_GETTY_NONE
+	default "ttyS0"		if BR2_TARGET_GENERIC_GETTY_TTYS0
+	default "ttyS1"		if BR2_TARGET_GENERIC_GETTY_TTYS1
+	default "ttyS2"		if BR2_TARGET_GENERIC_GETTY_TTYS2
+	default "ttyS3"		if BR2_TARGET_GENERIC_GETTY_TTYS3
+	default "ttyAMA0"	if BR2_TARGET_GENERIC_GETTY_TTYAMA0
+	default "ttyAMA1"	if BR2_TARGET_GENERIC_GETTY_TTYAMA1
+	default "ttyAMA2"	if BR2_TARGET_GENERIC_GETTY_TTYAMA2
+	default "ttyAMA3"	if BR2_TARGET_GENERIC_GETTY_TTYAMA3
+	default "ttyUL0"	if BR2_TARGET_GENERIC_GETTY_TTYUL0
+	default "ttyUL1"	if BR2_TARGET_GENERIC_GETTY_TTYUL1
+	default "ttyUL2"	if BR2_TARGET_GENERIC_GETTY_TTYUL2
+	default "ttyUL3"	if BR2_TARGET_GENERIC_GETTY_TTYUL3
+	default "ttyPSC0"	if BR2_TARGET_GENERIC_GETTY_TTYPSC0
+	default "ttyPSC1"	if BR2_TARGET_GENERIC_GETTY_TTYPSC1
+	default "ttyPSC2"	if BR2_TARGET_GENERIC_GETTY_TTYPSC2
+	default "ttyPSC3"	if BR2_TARGET_GENERIC_GETTY_TTYPSC3
+	default "ttyCPM0"	if BR2_TARGET_GENERIC_GETTY_TTYCPM0
+	default "ttyCPM1"	if BR2_TARGET_GENERIC_GETTY_TTYCPM1
+	default "ttyCPM2"	if BR2_TARGET_GENERIC_GETTY_TTYCPM2
+	default "ttyCPM3"	if BR2_TARGET_GENERIC_GETTY_TTYCPM3
+
+choice
+	prompt "Baudrate to use"
+	default BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
+	help
+	  Select a baudrate to use.
+
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_9600
+	bool "9600"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_19200
+	bool "19200"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_38400
+	bool "38400"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_57600
+	bool "57600"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
+	bool "115200"
+endchoice
+
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE
+	string
+	default "9600"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_9600
+	default "19200"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_19200
+	default "38400"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_38400
+	default "57600"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_57600
+	default "115200"	if BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
+
+endif
