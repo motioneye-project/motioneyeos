@@ -13,16 +13,20 @@ config BR2_TARGET_UBOOT_BOARDNAME
 
 choice
 	prompt "U-Boot Version"
-	default BR2_TARGET_UBOOT_2009_01
+	default BR2_TARGET_UBOOT_2009_03
 	help
 	  Select the specific U-Boot version you want to use
 
+config BR2_TARGET_UBOOT_2009_03
+	bool "u-boot-2009.03"
+
 config BR2_TARGET_UBOOT_2009_01
 	bool "u-boot-2009.01"
+	depends on BR2_DEPRECATED || BR2_RECENT
 
 config BR2_TARGET_UBOOT_2008_10
 	bool "u-boot-2008.10"
-	depends on BR2_DEPRECATED || BR2_RECENT
+	depends on BR2_DEPRECATED
 
 config BR2_TARGET_UBOOT_1_3_4
 	bool "u-boot-1.3.4"
@@ -36,6 +40,7 @@ endchoice
 
 config BR2_UBOOT_VERSION
 	string
+	default "2009.03"	if BR2_TARGET_UBOOT_2009_03
 	default "2009.01"	if BR2_TARGET_UBOOT_2009_01
 	default "2008.10"	if BR2_TARGET_UBOOT_2008_10
 	default "1.3.4"		if BR2_TARGET_UBOOT_1_3_4
