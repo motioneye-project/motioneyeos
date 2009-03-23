@@ -68,13 +68,13 @@ if BR2_TARGET_GENERIC_GETTY
 
 choice
 	prompt "Serial port to run a getty on"
-	default BR2_TARGET_GENERIC_GETTY_TTYSO
+	default BR2_TARGET_GENERIC_GETTY_TTYS0
 	help
 	  Select a port to run a getty (login prompt) on.
 
 config BR2_TARGET_GENERIC_GETTY_NONE
 	bool "none"
-config BR2_TARGET_GENERIC_GETTY_TTYSO
+config BR2_TARGET_GENERIC_GETTY_TTYS0
 	bool "ttyS0"
 config BR2_TARGET_GENERIC_GETTY_TTYS1
 	bool "ttyS1"
