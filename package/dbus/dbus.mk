@@ -52,6 +52,8 @@ $(eval $(call AUTOTARGETS,package,dbus))
 
 $(DBUS_HOOK_POST_INSTALL): $(DBUS_TARGET_INSTALL_TARGET)
 	rm -rf $(TARGET_DIR)/usr/lib/dbus-1.0
+	rm -rf $(TARGET_DIR)/var/lib/dbus
+	ln -sf /tmp/dbus $(TARGET_DIR)/var/lib/dbus
 	$(INSTALL) -m 0755 package/dbus/S30dbus $(TARGET_DIR)/etc/init.d
 	touch $@
 

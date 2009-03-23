@@ -16,6 +16,7 @@
 # Create needed directories.
 [ -d /var/run/dbus ] || mkdir -p /var/run/dbus
 [ -d /var/lock/subsys ] || mkdir -p /var/lock/subsys
+[ -d /tmp/dbus ] || mkdir -p /tmp/dbus
 
 RETVAL=0
 
