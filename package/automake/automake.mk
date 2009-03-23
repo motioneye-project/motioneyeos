@@ -30,7 +30,7 @@ $(STAMP_DIR)/host_automake_unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 	toolchain/patch-kernel.sh $(AUTOMAKE_HOST_DIR) package/automake/ \*.patch
 	touch $@
 
-$(STAMP_DIR)/host_automake_configured: $(STAMP_DIR)/host_automake_unpacked
+$(STAMP_DIR)/host_automake_configured: $(STAMP_DIR)/host_automake_unpacked $(STAMP_DIR)/host_autoconf_installed
 	(cd $(AUTOMAKE_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
