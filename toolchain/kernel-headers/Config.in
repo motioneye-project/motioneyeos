@@ -6,7 +6,7 @@ comment "Kernel Header Options"
 
 choice
 	prompt "Kernel Headers"
-	default BR2_KERNEL_HEADERS_2_6_28
+	default BR2_KERNEL_HEADERS_2_6_29
 
 	help
 	  Select the version of kernel header files you wish to use.
@@ -15,10 +15,6 @@ choice
 
 	  For the snapshot, you have to provide the
 	  linux-2.6.tar.bz2 tarball in your download dir.
-
-	config BR2_KERNEL_HEADERS_2_6_22
-		depends on BR2_DEPRECATED
-		bool "Linux 2.6.22.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_23
 		depends on BR2_DEPRECATED
@@ -37,11 +33,15 @@ choice
 		bool "Linux 2.6.26.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_27
-		depends on BR2_DEPRECATED || BR2_RECENT
+		depends on BR2_DEPRECATED
 		bool "Linux 2.6.27.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_28
 		bool "Linux 2.6.28.x kernel headers"
+		depends on BR2_DEPRECATED || BR2_RECENT
+
+	config BR2_KERNEL_HEADERS_2_6_29
+		bool "Linux 2.6.29.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_SNAP
 		bool "Linux 2.6 snapshot"
@@ -56,12 +56,12 @@ config BR2_KERNEL_HEADERS_RT
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "2.6.22.10"	if BR2_KERNEL_HEADERS_2_6_22
 	default "2.6.23"	if BR2_KERNEL_HEADERS_2_6_23
 	default "2.6.24.7"	if BR2_KERNEL_HEADERS_2_6_24
 	default "2.6.25.19"	if BR2_KERNEL_HEADERS_2_6_25
 	default "2.6.26.8"	if BR2_KERNEL_HEADERS_2_6_26
 	default "2.6.27.21"	if BR2_KERNEL_HEADERS_2_6_27
 	default "2.6.28.9"	if BR2_KERNEL_HEADERS_2_6_28
+	default "2.6.29"	if BR2_KERNEL_HEADERS_2_6_29
 	default "2.6"		if BR2_KERNEL_HEADERS_SNAP
 
