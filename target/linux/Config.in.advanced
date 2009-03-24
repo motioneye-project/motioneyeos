@@ -433,6 +433,8 @@ endmenu
 choice
 	prompt "kernel binary format"
 	depends on BR2_PACKAGE_LINUX
+	default BR2_LINUX_BIN_BZIMAGE if BR2_i386
+	default BR2_LINUX_BIN_BZIMAGE if BR2_x86_64
 	default BR2_LINUX_BIN_UIMAGE
 	help
 	  Select the specific Linux binary type you want to use
