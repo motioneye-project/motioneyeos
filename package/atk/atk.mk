@@ -60,6 +60,9 @@ $(eval $(call AUTOTARGETS,package,atk))
 # atk for the host
 ATK_HOST_DIR:=$(BUILD_DIR)/atk-$(ATK_VERSION)-host
 
+$(DL_DIR)/$(ATK_SOURCE):
+	$(call DOWNLOAD,$(ATK_SITE),$(ATK_SOURCE))
+
 $(STAMP_DIR)/host_atk_unpacked: $(DL_DIR)/$(ATK_SOURCE)
 	mkdir -p $(ATK_HOST_DIR)
 	$(INFLATE$(suffix $(ATK_SOURCE))) $< | \

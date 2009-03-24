@@ -21,6 +21,9 @@ $(eval $(call AUTOTARGETS,package,pkgconfig))
 PKG_CONFIG_HOST_DIR:=$(BUILD_DIR)/pkg-config-$(PKG_CONFIG_VERSION)-host
 PKG_CONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/pkg-config
 
+$(DL_DIR)/$(PKG_CONFIG_SOURCE):
+	$(call DOWNLOAD,$(PKG_CONFIG_SITE),$(PKG_CONFIG_SOURCE))
+
 $(STAMP_DIR)/host_pkgconfig_unpacked: $(DL_DIR)/$(PKG_CONFIG_SOURCE)
 	mkdir -p $(PKG_CONFIG_HOST_DIR)
 	$(INFLATE$(suffix $(PKG_CONFIG_SOURCE))) $< | \

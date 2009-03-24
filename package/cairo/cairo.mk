@@ -87,6 +87,9 @@ $(eval $(call AUTOTARGETS,package,cairo))
 # cairo for the host
 CAIRO_HOST_DIR:=$(BUILD_DIR)/cairo-$(CAIRO_VERSION)-host
 
+$(DL_DIR)/$(CAIRO_SOURCE):
+	$(call DOWNLOAD,$(CAIRO_SITE),$(CAIRO_SOURCE))
+
 $(STAMP_DIR)/host_cairo_unpacked: $(DL_DIR)/$(CAIRO_SOURCE)
 	mkdir -p $(CAIRO_HOST_DIR)
 	$(INFLATE$(suffix $(CAIRO_SOURCE))) $< | \

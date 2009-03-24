@@ -26,6 +26,9 @@ $(FREETYPE_HOOK_POST_INSTALL):
 # freetype for the host
 FREETYPE_HOST_DIR:=$(BUILD_DIR)/freetype-$(FREETYPE_VERSION)-host
 
+$(DL_DIR)/$(FREETYPE_SOURCE):
+	$(call DOWNLOAD,$(FREETYPE_SITE),$(FREETYPE_SOURCE))
+
 $(STAMP_DIR)/host_freetype_unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
 	mkdir -p $(FREETYPE_HOST_DIR)
 	$(INFLATE$(suffix $(FREETYPE_SOURCE))) $< | \

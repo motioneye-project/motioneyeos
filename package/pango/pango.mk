@@ -66,6 +66,9 @@ $(PANGO_HOOK_POST_INSTALL):
 PANGO_HOST_DIR:=$(BUILD_DIR)/pango-$(PANGO_VERSION)-host
 PANGO_HOST_BINARY:=$(HOST_DIR)/usr/bin/pango-querymodules
 
+$(DL_DIR)/$(PANGO_SOURCE):
+	$(call DOWNLOAD,$(PANGO_SITE),$(PANGO_SOURCE))
+
 $(STAMP_DIR)/host_pango_unpacked: $(DL_DIR)/$(PANGO_SOURCE)
 	mkdir -p $(PANGO_HOST_DIR)
 	$(INFLATE$(suffix $(PANGO_SOURCE))) $< | \

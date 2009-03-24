@@ -68,6 +68,9 @@ $(eval $(call AUTOTARGETS,package,libglib2))
 LIBGLIB2_HOST_DIR:=$(BUILD_DIR)/libglib2-$(LIBGLIB2_VERSION)-host
 LIBGLIB2_HOST_BINARY:=$(HOST_DIR)/usr/bin/glib-genmarshal
 
+$(DL_DIR)/$(LIBGLIB2_SOURCE):
+	$(call DOWNLOAD,$(LIBGLIB2_SITE),$(LIBGLIB2_SOURCE))
+
 $(STAMP_DIR)/host_libglib2_unpacked: $(DL_DIR)/$(LIBGLIB2_SOURCE)
 	mkdir -p $(LIBGLIB2_HOST_DIR)
 	$(INFLATE$(suffix $(LIBGLIB2_SOURCE))) $< | \

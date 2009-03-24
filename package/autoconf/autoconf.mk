@@ -24,6 +24,9 @@ AUTOCONF_HOST_DIR:=$(BUILD_DIR)/autoconf-$(AUTOCONF_VERSION)-host
 AUTOCONF:=$(HOST_DIR)/usr/bin/autoconf
 AUTORECONF=$(HOST_CONFIGURE_OPTS) ACLOCAL="$(ACLOCAL)" $(HOST_DIR)/usr/bin/autoreconf -v -f -i -I "$(ACLOCAL_DIR)"
 
+$(DL_DIR)/$(AUTOCONF_SOURCE):
+	$(call DOWNLOAD,$(AUTOCONF_SITE),$(AUTOCONF_SOURCE))
+
 $(STAMP_DIR)/host_autoconf_unpacked: $(DL_DIR)/$(AUTOCONF_SOURCE)
 	mkdir -p $(AUTOCONF_HOST_DIR)
 	$(INFLATE$(suffix $(AUTOCONF_SOURCE))) $< | \

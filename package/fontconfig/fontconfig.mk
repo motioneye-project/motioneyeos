@@ -28,6 +28,9 @@ $(eval $(call AUTOTARGETS,package,fontconfig))
 # fontconfig for the host
 FONTCONFIG_HOST_DIR:=$(BUILD_DIR)/fontconfig-$(FONTCONFIG_VERSION)-host
 
+$(DL_DIR)/$(FONTCONFIG_SOURCE):
+	$(call DOWNLOAD,$(FONTCONFIG_SITE),$(FONTCONFIG_SOURCE))
+
 $(STAMP_DIR)/host_fontconfig_unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
 	mkdir -p $(FONTCONFIG_HOST_DIR)
 	$(INFLATE$(suffix $(FONTCONFIG_SOURCE))) $< | \

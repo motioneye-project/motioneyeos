@@ -21,6 +21,9 @@ LIBTOOL_HOST_DIR:=$(BUILD_DIR)/libtool-$(LIBTOOL_VERSION)-host
 # variables used by other packages
 LIBTOOL:=$(HOST_DIR)/usr/bin/libtool
 
+$(DL_DIR)/$(LIBTOOL_SOURCE):
+	$(call DOWNLOAD,$(LIBTOOL_SITE),$(LIBTOOL_SOURCE))
+
 $(STAMP_DIR)/host_libtool_unpacked: $(DL_DIR)/$(LIBTOOL_SOURCE)
 	mkdir -p $(LIBTOOL_HOST_DIR)
 	$(INFLATE$(suffix $(LIBTOOL_SOURCE))) $< | \

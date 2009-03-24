@@ -135,6 +135,9 @@ $(LIBGTK2_HOOK_POST_INSTALL):
 # libgtk2 for the host
 LIBGTK2_HOST_DIR:=$(BUILD_DIR)/libgtk2-$(LIBGTK2_VERSION)-host
 
+$(DL_DIR)/$(LIBGTK2_SOURCE):
+	$(call DOWNLOAD,$(LIBGTK2_SITE),$(LIBGTK2_SOURCE))
+
 $(STAMP_DIR)/host_libgtk2_unpacked: $(DL_DIR)/$(LIBGTK2_SOURCE)
 	mkdir -p $(LIBGTK2_HOST_DIR)
 	$(INFLATE$(suffix $(LIBGTK2_SOURCE))) $< | \

@@ -27,6 +27,9 @@ $(EXPAT_HOOK_POST_INSTALL): $(EXPAT_TARGET_INSTALL_TARGET)
 # expat for the host
 EXPAT_HOST_DIR:=$(BUILD_DIR)/expat-$(EXPAT_VERSION)-host
 
+$(DL_DIR)/$(EXPAT_SOURCE):
+	$(call DOWNLOAD,$(EXPAT_SITE),$(EXPAT_SOURCE))
+
 $(STAMP_DIR)/host_expat_unpacked: $(DL_DIR)/$(EXPAT_SOURCE)
 	mkdir -p $(EXPAT_HOST_DIR)
 	$(INFLATE$(suffix $(EXPAT_SOURCE))) $< | \

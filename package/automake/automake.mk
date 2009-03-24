@@ -23,6 +23,9 @@ AUTOMAKE:=$(HOST_DIR)/usr/bin/automake
 ACLOCAL_DIR = $(STAGING_DIR)/usr/share/aclocal
 ACLOCAL = $(HOST_DIR)/usr/bin/aclocal -I $(ACLOCAL_DIR)
 
+$(DL_DIR)/$(AUTOMAKE_SOURCE):
+	$(call DOWNLOAD,$(AUTOMAKE_SITE),$(AUTOMAKE_SOURCE))
+
 $(STAMP_DIR)/host_automake_unpacked: $(DL_DIR)/$(AUTOMAKE_SOURCE)
 	mkdir -p $(AUTOMAKE_HOST_DIR)
 	$(INFLATE$(suffix $(AUTOMAKE_SOURCE))) $< | \

@@ -14,6 +14,9 @@ $(eval $(call AUTOTARGETS,package,pixman))
 # pixman for the host
 PIXMAN_HOST_DIR:=$(BUILD_DIR)/pixman-$(PIXMAN_VERSION)-host
 
+$(DL_DIR)/$(PIXMAN_SOURCE):
+	$(call DOWNLOAD,$(PIXMAN_SITE),$(PIXMAN_SOURCE))
+
 $(STAMP_DIR)/host_pixman_unpacked: $(DL_DIR)/$(PIXMAN_SOURCE)
 	mkdir -p $(PIXMAN_HOST_DIR)
 	$(INFLATE$(suffix $(PIXMAN_SOURCE))) $< | \

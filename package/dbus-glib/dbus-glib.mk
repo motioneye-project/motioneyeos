@@ -31,6 +31,9 @@ $(eval $(call AUTOTARGETS,package,dbus-glib))
 DBUS_GLIB_HOST_DIR:=$(BUILD_DIR)/dbus-glib-$(DBUS_GLIB_VERSION)-host
 DBUS_GLIB_HOST_BINARY:=$(HOST_DIR)/usr/bin/dbus-binding-tool
 
+$(DL_DIR)/$(DBUS_GLIB_SOURCE):
+	$(call DOWNLOAD,$(DBUS_GLIB_SITE),$(DBUS_GLIB_SOURCE))
+
 $(STAMP_DIR)/host_dbusglib_unpacked: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
 	mkdir -p $(DBUS_GLIB_HOST_DIR)
 	$(INFLATE$(suffix $(DBUS_GLIB_SOURCE))) $< | \
