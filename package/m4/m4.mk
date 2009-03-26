@@ -24,6 +24,9 @@ $(eval $(call AUTOTARGETS,package,m4))
 # m4 for the host
 M4_HOST_DIR:=$(BUILD_DIR)/m4-$(M4_VERSION)-host
 
+$(DL_DIR)/$(M4_SOURCE):
+	$(call DOWNLOAD,$(M4_SITE),$(M4_SOURCE))
+
 $(STAMP_DIR)/host_m4_unpacked: $(DL_DIR)/$(M4_SOURCE)
 	mkdir -p $(M4_HOST_DIR)
 	$(INFLATE$(suffix $(M4_SOURCE))) $< | \
