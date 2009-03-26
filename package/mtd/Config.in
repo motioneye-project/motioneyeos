@@ -7,19 +7,16 @@ menuconfig BR2_PACKAGE_MTD
 if BR2_PACKAGE_MTD
 choice
 	prompt "Source package selection"
-	depends on BR2_PACKAGE_MTD
 	default BR2_PACKAGE_MTD20061007
 
 config BR2_PACKAGE_MTD_UTILS
 	bool "Use MTD-utils release"
-	depends on BR2_PACKAGE_MTD
 	select BR2_PACKAGE_LZO
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
 config BR2_PACKAGE_MTD_20061007
 	bool "Use MTD snapshot from 20061007"
-	depends on BR2_PACKAGE_MTD
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
@@ -38,17 +35,14 @@ config BR2_PACKAGE_MTD_UTILS_GIT
 endchoice
 
 comment "MTD tools selection"
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_DOCFDISK
 	bool "docfdisk"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_DOC_LOADBIOS
 	bool "doc_loadbios"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_ERASE
 	bool "erase"
@@ -58,47 +52,38 @@ config BR2_PACKAGE_MTD_ERASE
 config BR2_PACKAGE_MTD_FLASHCP
 	bool "flashcp"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FLASH_ERASE
 	bool "flash_erase"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FLASH_ERASEALL
 	bool "flash_eraseall"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FLASH_INFO
 	bool "flash_info"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FLASH_LOCK
 	bool "flash_lock"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FLASH_UNLOCK
 	bool "flash_unlock"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FTL_CHECK
 	bool "ftl_check"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_FTL_FORMAT
 	bool "ftl_format"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_JFFS2DUMP
 	bool "jffs2dump"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_JFFS3DUMP
 	bool "jffs3dump"
@@ -108,7 +93,6 @@ config BR2_PACKAGE_MTD_JFFS3DUMP
 config BR2_PACKAGE_MTD_MKFSJFFS2
 	bool "mkfs.jffs2"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_MKFSJFFS
 	bool "mkfs.jffs"
@@ -118,12 +102,10 @@ config BR2_PACKAGE_MTD_MKFSJFFS
 config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_NANDDUMP
 	bool "nanddump"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_NANDTEST
 	bool "nandtest"
@@ -133,22 +115,18 @@ config BR2_PACKAGE_MTD_NANDTEST
 config BR2_PACKAGE_MTD_NANDWRITE
 	bool "nandwrite"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_NFTL_FORMAT
 	bool "nftl_format"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_NFTLDUMP
 	bool "nftldump"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
 	default y
-	depends on BR2_PACKAGE_MTD
 
 config BR2_PACKAGE_MTD_UBIATTACH
 	bool "ubiattach"
