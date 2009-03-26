@@ -5,7 +5,7 @@
 #############################################################
 UTIL-LINUX_VERSION:=2.13-pre7
 UTIL-LINUX_SOURCE:=util-linux-$(UTIL-LINUX_VERSION).tar.bz2
-UTIL-LINUX_SITE:=$(BR2_KERNEL_MIRROR)/linux/utils/util-linux
+UTIL-LINUX_SITE:=$(BR2_KERNEL_MIRROR)/linux/utils/util-linux/testing
 UTIL-LINUX_DIR:=$(BUILD_DIR)/util-linux-$(UTIL-LINUX_VERSION)
 UTIL-LINUX_CAT:=$(BZCAT)
 UTIL-LINUX_BINARY:=$(UTIL-LINUX_DIR)/misc-utils/chkdupexe
