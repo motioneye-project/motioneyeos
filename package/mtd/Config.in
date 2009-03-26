@@ -7,7 +7,7 @@ menuconfig BR2_PACKAGE_MTD
 if BR2_PACKAGE_MTD
 choice
 	prompt "Source package selection"
-	default BR2_PACKAGE_MTD20061007
+	default BR2_PACKAGE_MTD_UTILS
 
 config BR2_PACKAGE_MTD_UTILS
 	bool "Use MTD-utils release"
@@ -17,6 +17,7 @@ config BR2_PACKAGE_MTD_UTILS
 
 config BR2_PACKAGE_MTD_20061007
 	bool "Use MTD snapshot from 20061007"
+	depends on BR2_DEPRECATED || BR2_RECENT
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
