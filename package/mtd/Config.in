@@ -39,11 +39,9 @@ comment "MTD tools selection"
 
 config BR2_PACKAGE_MTD_DOCFDISK
 	bool "docfdisk"
-	default y
 
 config BR2_PACKAGE_MTD_DOC_LOADBIOS
 	bool "doc_loadbios"
-	default y
 
 config BR2_PACKAGE_MTD_ERASE
 	bool "erase"
@@ -97,7 +95,6 @@ config BR2_PACKAGE_MTD_MKFSJFFS2
 
 config BR2_PACKAGE_MTD_MKFSJFFS
 	bool "mkfs.jffs"
-	default y
 	depends on BR2_PACKAGE_MTD_20050122 || BR2_PACKAGE_MTD_20061007 || BR2_PACKAGE_MTD_UTILS
 
 config BR2_PACKAGE_MTD_MTD_DEBUG
@@ -119,11 +116,9 @@ config BR2_PACKAGE_MTD_NANDWRITE
 
 config BR2_PACKAGE_MTD_NFTL_FORMAT
 	bool "nftl_format"
-	default y
 
 config BR2_PACKAGE_MTD_NFTLDUMP
 	bool "nftldump"
-	default y
 
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
