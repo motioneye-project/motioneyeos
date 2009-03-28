@@ -63,6 +63,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		--disable-mpdvdkit \
 		--disable-ivtv \
 		--disable-tv \
+		--disable-live \
 		--enable-dynamic-plugins \
 	)
 	touch $@
