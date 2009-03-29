@@ -49,6 +49,10 @@ $(STAMP_DIR)/host_libtool_compiled: $(STAMP_DIR)/host_libtool_configured
 
 $(STAMP_DIR)/host_libtool_installed: $(STAMP_DIR)/host_libtool_compiled
 	$(MAKE) -C $(LIBTOOL_HOST_DIR) install
+	install -D -m 0644 $(HOST_DIR)/usr/share/aclocal/libtool.m4 \
+		$(STAGING_DIR)/usr/share/aclocal/libtool.m4
+	install -D -m 0644 $(HOST_DIR)/usr/share/aclocal/ltdl.m4 \
+		$(STAGING_DIR)/usr/share/aclocal/ltdl.m4
 	touch $@
 
 host-libtool: $(STAMP_DIR)/host_libtool_installed

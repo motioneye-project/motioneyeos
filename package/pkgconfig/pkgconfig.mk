@@ -50,6 +50,8 @@ $(STAMP_DIR)/host_pkgconfig_compiled: $(STAMP_DIR)/host_pkgconfig_configured
 
 $(STAMP_DIR)/host_pkgconfig_installed: $(STAMP_DIR)/host_pkgconfig_compiled
 	$(MAKE) -C $(PKG_CONFIG_HOST_DIR) install
+	install -D -m 0644 $(HOST_DIR)/usr/share/aclocal/pkg.m4 \
+		$(STAGING_DIR)/usr/share/aclocal/pkg.m4
 	touch $@
 
 host-pkgconfig: $(STAMP_DIR)/host_pkgconfig_installed

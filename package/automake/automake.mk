@@ -20,7 +20,7 @@ AUTOMAKE_HOST_DIR:=$(BUILD_DIR)/automake-$(AUTOMAKE_VERSION)-host
 
 # variables used by other packages
 AUTOMAKE:=$(HOST_DIR)/usr/bin/automake
-ACLOCAL_DIR = $(HOST_DIR)/usr/share/aclocal
+ACLOCAL_DIR = $(STAGING_DIR)/usr/share/aclocal
 ACLOCAL = $(HOST_DIR)/usr/bin/aclocal -I $(ACLOCAL_DIR)
 
 $(DL_DIR)/$(AUTOMAKE_SOURCE):
@@ -51,6 +51,7 @@ $(STAMP_DIR)/host_automake_compiled: $(STAMP_DIR)/host_automake_configured
 
 $(STAMP_DIR)/host_automake_installed: $(STAMP_DIR)/host_automake_compiled
 	$(MAKE) -C $(AUTOMAKE_HOST_DIR) install
+	mkdir -p $(STAGING_DIR)/usr/share/aclocal
 	touch $@
 
 host-automake: $(STAMP_DIR)/host_automake_installed
