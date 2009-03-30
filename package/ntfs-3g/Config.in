@@ -1,11 +1,10 @@
 comment "ntfs-3g has no inherent support for AVR32"
-	depends on BR2_avr32 && BR2_PACKAGE_NTFS-3G
+	depends on BR2_avr32 && BR2_PACKAGE_NTFS_3G
 
-config BR2_PACKAGE_NTFS-3G
+config BR2_PACKAGE_NTFS_3G
 	bool "ntfs-3g"
-	select BR2_PACKAGE_LIBFUSE
 	depends on BR2_LARGEFILE
-	depends on BR2_WCHAR
+	depends on BR2_USE_WCHAR
 	help
 	  The NTFS-3G driver is an open source, freely available
 	  read/write NTFS driver for Linux, FreeBSD, Mac OS X, NetBSD,
@@ -17,4 +16,4 @@ config BR2_PACKAGE_NTFS-3G
 	  http://www.ntfs-3g.org/
 
 comment "ntfs-3g requires a toolchain with LARGEFILE and WCHAR support"
-	depends on !(BR2_LARGEFILE && BR2_WCHAR)
+	depends on !(BR2_LARGEFILE && BR2_USE_WCHAR)

@@ -3,81 +3,32 @@
 # ntfs-3g
 #
 #############################################################
-#NTFS-3G_VERSION:=1.2506
-NTFS-3G_VERSION:=1.5130
-NTFS-3G_SOURCE:=ntfs-3g-$(NTFS-3G_VERSION).tgz
-NTFS-3G_SITE:=www.ntfs-3g.org
-NTFS-3G_DIR:=$(BUILD_DIR)/ntfs-3g-$(NTFS-3G_VERSION)
-NTFS-3G_BINARY:=ntfs-3g
+NTFS_3G_VERSION:=2009.3.8
+NTFS_3G_SOURCE:=ntfs-3g-$(NTFS_3G_VERSION).tgz
+NTFS_3G_SITE:=http://www.ntfs-3g.org/
+NTFS_3G_CONF_OPT:=--disable-ldconfig --program-prefix=""
+NTFS_3G_INSTALL_STAGING:=yes
 
-$(DL_DIR)/$(NTFS-3G_SOURCE):
-	$(call DOWNLOAD,$(NTFS-3G_SITE),$(NTFS-3G_SOURCE))
+$(eval $(call AUTOTARGETS,package,ntfs-3g))
 
-$(NTFS-3G_DIR)/.source: $(DL_DIR)/$(NTFS-3G_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(NTFS-3G_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+$(NTFS_3G_TARGET_INSTALL_TARGET): $(NTFS_3G_TARGET_INSTALL_STAGING)
+	$(call MESSAGE,"Installing to target")
+	cp -dpf $(STAGING_DIR)/usr/lib/libntfs-3g.so* $(TARGET_DIR)/lib/
+	$(INSTALL) -m 0755 $(STAGING_DIR)/usr/bin/ntfs-3g $(TARGET_DIR)/bin/
+	$(INSTALL) -m 0755 $(STAGING_DIR)/usr/bin/ntfs-3g.probe $(TARGET_DIR)/bin/
 	touch $@
 
-$(NTFS-3G_DIR)/.configured: $(NTFS-3G_DIR)/.source
-	(cd $(NTFS-3G_DIR); rm -rf config.cache ; \
-	$(TARGET_CONFIGURE_OPTS) \
-	CFLAGS="$(TARGET_CFLAGS)" \
-		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--libdir=/usr/lib \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--includedir=/usr/include \
-		--program-prefix="" \
-		--with-gnu-ld \
-		--enable-shared \
-		--enable-static \
-		, \
-		ac_cv_path_LDCONFIG=""\
-	);
+ifeq ($(BR2_ENABLE_DEBUG),)
+$(NTFS_3G_HOOK_POST_INSTALL): $(NTFS_3G_TARGET_INSTALL_TARGET)
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/bin/ntfs-3g
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/bin/ntfs-3g.probe
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/lib/libntfs-3g.so*
 	touch $@
-
-$(NTFS-3G_DIR)/.compiled: $(NTFS-3G_DIR)/.configured
-	$(MAKE) prefix=$/usr CC=$(TARGET_CC)-C $(NTFS-3G_DIR)
-	touch $@
-
-$(STAGING_DIR)/usr/bin/ntfs-3g: $(NTFS-3G_DIR)/.compiled
-	$(MAKE) prefix=$/usr -C $(NTFS-3G_DIR) DESTDIR=$(STAGING_DIR)/ install
-	touch -c $@
-
-$(TARGET_DIR)/usr/bin/ntfs-3g: $(STAGING_DIR)/usr/bin/ntfs-3g
-	rm -f $(TARGET_DIR)/lib/libntfs-3g.so.*
-	cp -dpf $(STAGING_DIR)/lib/libntfs-3g.so.* $(TARGET_DIR)/lib/
-	-unlink $(TARGET_DIR)/usr/lib/libntfs-3g*
-	ln -s /lib/libntfs-3g.so  $(TARGET_DIR)/usr/lib/libntfs-3g.so
-	cp -dpf $(STAGING_DIR)/bin/ntfs-3g $(TARGET_DIR)/bin/
-	touch -c $@
-
-ntfs-3g: uclibc host-pkgconfig libfuse $(TARGET_DIR)/usr/bin/ntfs-3g
-
-ntfs-3g-source: $(DL_DIR)/$(NTFS-3G_SOURCE)
-
-ntfs-3g-clean:
-	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(NTFS-3G_DIR) uninstall
-	unlink $(TARGET_DIR)/usr/lib/libntfs-3g*
-	rm -f $(TARGET_DIR)/lib/libntfs-3g*
-	rm -f $(TARGET_DIR)/bin/ntfs-3g
-	-$(MAKE) -C $(NTFS-3G_DIR) clean
-
-ntfs-3g-dirclean:
-	rm -rf $(NTFS-3G_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_NTFS-3G),y)
-TARGETS+=ntfs-3g
 endif
+
+$(NTFS_3G_TARGET_UNINSTALL):
+	$(call MESSAGE,"Uninstalling")
+	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(NTFS_3G_DIR) uninstall
+	rm -f $(TARGET_DIR)/lib/libntfs-3g*
+	rm -f $(TARGET_DIR)/bin/ntfs-3g $(TARGET_DIR)/bin/ntfs-3g.probe
+	rm -f $(NTFS_3G_TARGET_INSTALL_STAGING) $(NTFS_3G_TARGET_INSTALL_TARGET) $(NTFS_3G_HOOK_POST_INSTALL)
