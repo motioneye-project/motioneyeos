@@ -5,6 +5,7 @@ config BR2_PACKAGE_NTFS-3G
 	bool "ntfs-3g"
 	select BR2_PACKAGE_LIBFUSE
 	depends on BR2_LARGEFILE
+	depends on BR2_WCHAR
 	help
 	  The NTFS-3G driver is an open source, freely available
 	  read/write NTFS driver for Linux, FreeBSD, Mac OS X, NetBSD,
@@ -15,5 +16,5 @@ config BR2_PACKAGE_NTFS-3G
 
 	  http://www.ntfs-3g.org/
 
-comment "ntfs-3g requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+comment "ntfs-3g requires a toolchain with LARGEFILE and WCHAR support"
+	depends on !(BR2_LARGEFILE && BR2_WCHAR)
