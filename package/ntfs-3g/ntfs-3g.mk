@@ -10,7 +10,6 @@ NTFS-3G_SITE:=www.ntfs-3g.org
 NTFS-3G_DIR:=$(BUILD_DIR)/ntfs-3g-$(NTFS-3G_VERSION)
 NTFS-3G_BINARY:=ntfs-3g
 
-http://www.ntfs-3g.org/ntfs-3g-1.5130.tgz
 $(DL_DIR)/$(NTFS-3G_SOURCE):
 	$(call DOWNLOAD,$(NTFS-3G_SITE),$(NTFS-3G_SOURCE))
 
