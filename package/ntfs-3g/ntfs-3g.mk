@@ -46,9 +46,6 @@ $(NTFS-3G_DIR)/.configured: $(NTFS-3G_DIR)/.source
 $(NTFS-3G_DIR)/.compiled: $(NTFS-3G_DIR)/.configured
 	$(MAKE) prefix=$/usr CC=$(TARGET_CC)-C $(NTFS-3G_DIR)
 	touch $@
-#		CROSS_COMPILE="$(TARGET_CROSS)"
-
-
 
 $(STAGING_DIR)/usr/bin/ntfs-3g: $(NTFS-3G_DIR)/.compiled
 	$(MAKE) prefix=$/usr -C $(NTFS-3G_DIR) DESTDIR=$(STAGING_DIR)/ install
