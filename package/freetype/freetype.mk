@@ -21,6 +21,10 @@ $(FREETYPE_HOOK_POST_INSTALL):
 		-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include/freetype2\',g" \
 		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
 		$(STAGING_DIR)/usr/bin/freetype-config
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libfreetype.so
+ifneq ($(BR2_HAVE_DEVFILES),y)
+	rm -f $(TARGET_DIR)/usr/bin/freetype-config
+endif
 	touch $@
 
 # freetype for the host
