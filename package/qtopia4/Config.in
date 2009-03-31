@@ -244,12 +244,12 @@ config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	default "x86_64"	if BR2_x86_64
 	default "mips"	if BR2_mips
 	default "mips"	if BR2_mipsel
+	default "ppc"	if BR2_powerpc
 # Not that I really believe these will work..
 	default "generic"	if BR2_alpha
 	default "generic"	if BR2_chris
 	default "generic"	if BR2_m68k
 	default "generic"	if BR2_nios2
-	default "generic"	if BR2_powerpc
 	default "generic"	if BR2_sh
 	default "generic"	if BR2_sh64
 	default "generic"	if BR2_sparc
