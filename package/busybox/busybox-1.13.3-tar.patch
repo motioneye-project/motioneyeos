@@ -1,0 +1,37 @@
+diff -urpN busybox-1.13.3/archival/libunarchive/get_header_tar.c busybox-1.13.3-tar/archival/libunarchive/get_header_tar.c
+--- busybox-1.13.3/archival/libunarchive/get_header_tar.c	2009-02-26 12:46:40.000000000 +0100
++++ busybox-1.13.3-tar/archival/libunarchive/get_header_tar.c	2009-04-01 01:15:26.000000000 +0200
+@@ -91,7 +91,7 @@ char FAST_FUNC get_header_tar(archive_ha
+ 
+  again_after_align:
+ 
+-#if ENABLE_DESKTOP
++#if ENABLE_DESKTOP || ENABLE_FEATURE_TAR_AUTODETECT
+ 	/* to prevent misdetection of bz2 sig */
+ 	*(uint32_t*)(&tar) = 0;
+ 	i = full_read(archive_handle->src_fd, &tar, 512);
+@@ -142,7 +142,7 @@ char FAST_FUNC get_header_tar(archive_ha
+ #if ENABLE_FEATURE_TAR_AUTODETECT
+ 		char FAST_FUNC (*get_header_ptr)(archive_handle_t *);
+ 
+- USE_DESKTOP(autodetect:)
++ autodetect:
+ 		/* tar gz/bz autodetect: check for gz/bz2 magic.
+ 		 * If we see the magic, and it is the very first block,
+ 		 * we can switch to get_header_tar_gz/bz2/lzma().
+diff -urpN busybox-1.13.3/archival/tar.c busybox-1.13.3-tar/archival/tar.c
+--- busybox-1.13.3/archival/tar.c	2009-02-26 12:56:00.000000000 +0100
++++ busybox-1.13.3-tar/archival/tar.c	2009-04-01 01:15:39.000000000 +0200
+@@ -934,8 +934,10 @@ int tar_main(int argc UNUSED_PARAM, char
+ 			tar_handle->src_fd = fileno(tar_stream);
+ 			tar_handle->seek = seek_by_read;
+ 		} else {
+-			if (ENABLE_FEATURE_TAR_AUTODETECT && flags == O_RDONLY) {
+-				get_header_ptr = get_header_tar;
++			if (ENABLE_FEATURE_TAR_AUTODETECT
++			 && get_header_ptr == get_header_tar
++			 && flags == O_RDONLY
++			) {
+ 				tar_handle->src_fd = open_zipped(tar_filename);
+ 				if (tar_handle->src_fd < 0)
+ 					bb_perror_msg_and_die("can't open '%s'", tar_filename);

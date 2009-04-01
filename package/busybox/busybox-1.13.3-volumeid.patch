@@ -1,0 +1,18 @@
+diff -urpN busybox-1.13.3/util-linux/volume_id/get_devname.c busybox-1.13.3-volumeid/util-linux/volume_id/get_devname.c
+--- busybox-1.13.3/util-linux/volume_id/get_devname.c	2009-02-26 12:47:41.000000000 +0100
++++ busybox-1.13.3-volumeid/util-linux/volume_id/get_devname.c	2009-03-31 21:46:37.000000000 +0200
+@@ -223,13 +223,11 @@ void display_uuid_cache(void)
+ char *get_devname_from_label(const char *spec)
+ {
+ 	struct uuidCache_s *uc;
+-	int spec_len = strlen(spec);
+ 
+ 	uuidcache_init();
+ 	uc = uuidCache;
+ 	while (uc) {
+-// FIXME: empty label ("LABEL=") matches anything??!
+-		if (uc->label[0] && strncmp(spec, uc->label, spec_len) == 0) {
++		if (uc->label[0] && strcmp(spec, uc->label) == 0) {
+ 			return xstrdup(uc->device);
+ 		}
+ 		uc = uc->next;
