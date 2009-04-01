@@ -231,7 +231,7 @@ ubootroot: host-fakeroot makedevs uboot
 		    "-noappend $(UBOOT_ENDIANNESS)" \
 		>> $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
 	chmod a+x $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
-	$(STAGING_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
+	$(HOST_DIR)/usr/bin/fakeroot -- $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
 	-@rm -f $(STAGING_DIR)/_fakeroot.$(notdir $(UBOOT_TARGET))
 
 ubootroot-source: uboot-source
