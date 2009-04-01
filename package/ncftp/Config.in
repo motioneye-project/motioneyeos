@@ -25,18 +25,13 @@ config BR2_PACKAGE_NCFTP_LS
 	depends on BR2_PACKAGE_NCFTP
 
 config BR2_PACKAGE_NCFTP_BATCH
-	bool "NcFTPBatch - background FTP program for individual users"
+	bool "NcFTPBatch & NcFTPSpooler - background FTP program for individual users"
 	default y
 	depends on BR2_PACKAGE_NCFTP
 
-config BR2_PACKAGE_NCFTP_SPOOLER
-	bool "NcFTPSpooler - spooler - not working properly"
-	depends on BR2_PACKAGE_NCFTP
-	depends on BR2_PACKAGE_NCURSES
-
 config BR2_PACKAGE_NCFTP_BOOKMARKS
-	bool "NcFTPBookmarks"
+	bool "NcFTPBookmarks - ncurses based Bookmark Editor"
 	depends on BR2_PACKAGE_NCFTP
-	depends on BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES
 
 endmenu
