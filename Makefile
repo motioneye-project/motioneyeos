@@ -264,6 +264,10 @@ include package/*/*.mk
 
 TARGETS+=target-devfiles
 
+ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
+TARGETS+=target-purgelocales
+endif
+
 # target stuff is last so it can override anything else
 include target/Makefile.in
 
@@ -346,6 +350,24 @@ else
 	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/lib/pkgconfig
 	find $(TARGET_DIR)/lib \( -name '*.a' -o -name '*.la' \) -delete
 	find $(TARGET_DIR)/usr/lib \( -name '*.a' -o -name '*.la' \) -delete
+endif
+
+ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
+LOCALE_WHITELIST=$(PROJECT_BUILD_DIR)/locales.nopurge
+LOCALE_NOPURGE=$(strip $(subst ",,$(BR2_ENABLE_LOCALE_WHITELIST)))
+#"))
+
+target-purgelocales:
+	rm -f $(LOCALE_WHITELIST)
+	for i in $(LOCALE_NOPURGE); do echo $$i >> $(LOCALE_WHITELIST); done
+
+	for dir in $(wildcard $(addprefix $(TARGET_DIR),/usr/share/locale /usr/share/X11/locale /usr/man /usr/share/man)); \
+	do \
+		for lang in $$(cd $$dir; ls .|grep -v man); \
+		do \
+			grep -qx $$lang $(LOCALE_WHITELIST) || rm -rf $$dir/$$lang; \
+		done; \
+	done
 endif
 
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
