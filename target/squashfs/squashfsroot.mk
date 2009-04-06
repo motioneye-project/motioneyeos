@@ -3,7 +3,8 @@
 # mksquashfs to build to target squashfs filesystems
 #
 #############################################################
-SQUASHFS_VERSION:=3.4
+SQUASHFS_VERSION:=$(strip $(subst ",,$(BR2_TARGET_ROOTFS_SQUASHFS_VERSION)))
+#"))
 SQUASHFS_DIR:=$(BUILD_DIR)/squashfs$(SQUASHFS_VERSION)
 SQUASHFS_SOURCE:=squashfs$(SQUASHFS_VERSION).tar.gz
 SQUASHFS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/squashfs
@@ -35,10 +36,13 @@ squashfs-dirclean:
 # Build the squashfs root filesystem image
 #
 #############################################################
+ifeq ($(BR2_TARGET_ROOTFS_SQUASHFS_3),y)
+# 4.x is always little endian
 ifeq ($(BR2_ENDIAN),"BIG")
 SQUASHFS_ENDIANNESS=-be
 else
 SQUASHFS_ENDIANNESS=-le
+endif
 endif
 
 SQUASHFS_TARGET:=$(IMAGE).squashfs
