@@ -16,7 +16,7 @@ liberation-source: $(DL_DIR)/$(LIBERATION_SOURCE)
 
 $(LIBERATION_DIR)/.unpacked: $(DL_DIR)/$(LIBERATION_SOURCE)
 	$(LIBERATION_CAT) $(DL_DIR)/$(LIBERATION_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch -c $@
+	touch $@
 
 $(TARGET_DIR)/usr/share/fonts/LiberationMono-Bold.ttf: $(LIBERATION_DIR)/.unpacked
 	-mkdir -p $(TARGET_DIR)/usr/share/fonts/liberation
