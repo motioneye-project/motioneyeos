@@ -1,0 +1,12 @@
+diff -Nura openssl-0.9.8k/Makefile.org openssl-0.9.8k.nofips/Makefile.org
+--- openssl-0.9.8k/Makefile.org	2009-03-03 20:40:29.000000000 -0200
++++ openssl-0.9.8k.nofips/Makefile.org	2009-03-26 09:50:27.000000000 -0300
+@@ -131,7 +131,7 @@
+ 
+ BASEADDR=
+ 
+-DIRS=   crypto fips ssl engines apps test tools
++DIRS=   crypto ssl engines apps test tools
+ SHLIBDIRS= crypto ssl fips
+ 
+ # dirs in crypto to build
