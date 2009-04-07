@@ -8,7 +8,7 @@ config BR2_TARGET_ROOTFS_JFFS2
 if BR2_TARGET_ROOTFS_JFFS2
 
 choice
-	prompt "Memory Type"
+	prompt "Flash Type"
 	default BR2_TARGET_ROOTFS_JFFS2_FLASH_128
 
 config BR2_TARGET_ROOTFS_JFFS2_DATAFLASH_1056
