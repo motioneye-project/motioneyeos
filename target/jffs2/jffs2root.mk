@@ -16,10 +16,6 @@ endif
 SUMTOOL_OPTS += -p
 endif
 
-ifeq ($(BR2_TARGET_ROOTFS_JFFS2_SQUASH),y)
-JFFS2_OPTS += -q
-endif
-
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_LE),y)
 JFFS2_OPTS += -l
 SUMTOOL_OPTS += -l

@@ -113,10 +113,6 @@ config BR2_TARGET_ROOTFS_JFFS2_BE
 
 endchoice
 
-config BR2_TARGET_ROOTFS_JFFS2_SQUASH
-	bool "Make all files be owned by root"
-	depends on BR2_TARGET_ROOTFS_JFFS2
-
 config BR2_TARGET_ROOTFS_JFFS2_SUMMARY
 	bool "Produce a summarized JFFS2 image"
 	depends on BR2_TARGET_ROOTFS_JFFS2
