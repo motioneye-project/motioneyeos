@@ -52,15 +52,6 @@ endif
 CRAMFS_TARGET=$(IMAGE).cramfs
 
 cramfsroot: host-fakeroot makedevs cramfs
-	#-@find $(TARGET_DIR)/lib -type f -name \*.so\* | xargs $(STRIPCMD) --strip-unneeded 2>/dev/null || true
-	-@find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	@rm -rf $(TARGET_DIR)/usr/man
-endif
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	@rm -rf $(TARGET_DIR)/usr/info
-endif
-	$(if $(TARGET_LDCONFIG),test -x $(TARGET_LDCONFIG) && $(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null)
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(CRAMFS_TARGET))
 	touch $(PROJECT_BUILD_DIR)/.fakeroot.00000

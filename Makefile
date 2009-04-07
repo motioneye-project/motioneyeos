@@ -262,7 +262,7 @@ endif
 
 include package/*/*.mk
 
-TARGETS+=target-devfiles
+TARGETS+=target-finalize
 
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 TARGETS+=target-purgelocales
@@ -343,7 +343,7 @@ $(TARGET_DIR): $(PROJECT_BUILD_DIR)/.root
 erase-fakeroots:
 	rm -f $(PROJECT_BUILD_DIR)/.fakeroot*
 
-target-devfiles:
+target-finalize:
 ifeq ($(BR2_HAVE_DEVFILES),y)
 	( scripts/copy.sh $(STAGING_DIR) $(TARGET_DIR) )
 else
@@ -351,6 +351,14 @@ else
 	find $(TARGET_DIR)/lib \( -name '*.a' -o -name '*.la' \) -delete
 	find $(TARGET_DIR)/usr/lib \( -name '*.a' -o -name '*.la' \) -delete
 endif
+ifneq ($(BR2_HAVE_MANPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/man
+endif
+ifneq ($(BR2_HAVE_INFOPAGES),y)
+	rm -rf $(TARGET_DIR)/usr/info $(TARGET_DIR)/usr/share/info
+endif
+	find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
+	$(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null
 
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 LOCALE_WHITELIST=$(PROJECT_BUILD_DIR)/locales.nopurge
