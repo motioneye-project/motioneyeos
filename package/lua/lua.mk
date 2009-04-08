@@ -4,7 +4,7 @@
 #
 #############################################################
 
-LUA_VERSION=5.1.2
+LUA_VERSION=5.1.4
 
 LUA_SOURCE=lua-$(LUA_VERSION).tar.gz
 LUA_CAT:=$(ZCAT)
