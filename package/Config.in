@@ -404,6 +404,7 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/gzip/Config.in"
 endif
 source "package/lzo/Config.in"
+source "package/lzop/Config.in"
 source "package/lzma/Config.in"
 source "package/zlib/Config.in"
 endmenu
