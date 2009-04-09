@@ -19,7 +19,8 @@ define COPY_FILE
 	fi
 endef
 COPYTO=$(strip $(subst ",,$(BUILDROOT_COPYTO)))
-else ifneq ($(strip $(subst ",,$(BR2_COPYTO))),)	# Global override
+else
+ifneq ($(strip $(subst ",,$(BR2_COPYTO))),)	# Global override
 #"))
 define COPY_FILE
 	@echo "BR2_COPYTO: Copy to $(BR2_COPYTO)/$(strip $(3))" ; \
@@ -51,6 +52,7 @@ define COPY_FILE
 	fi
 endef
 #"))
+endif
 endif
 
 # make sure to put everything that is board-specific before the tarroot targets
