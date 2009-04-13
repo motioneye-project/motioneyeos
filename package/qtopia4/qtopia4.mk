@@ -293,7 +293,7 @@ QTOPIA4_CONFIGURE+= -no-sql-sqlite
 endif
 
 ifeq ($(BR2_PACKAGE_QTOPIA4_XMLPATTERNS),y)
-QTOPIA4_CONFIGURE+= -xmlpatterns
+QTOPIA4_CONFIGURE+= -xmlpatterns -exceptions
 else
 QTOPIA4_CONFIGURE+= -no-xmlpatterns
 endif
