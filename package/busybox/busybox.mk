@@ -46,12 +46,6 @@ $(BUSYBOX_DIR)/.config: $(BUSYBOX_DIR)/.unpacked $(BUSYBOX_CONFIG_FILE)
 	cp -f $(BUSYBOX_CONFIG_FILE) $(BUSYBOX_DIR)/.config
 	$(SED) s,^CONFIG_PREFIX=.*,CONFIG_PREFIX=\"$(TARGET_DIR)\", \
 		$(BUSYBOX_DIR)/.config
-ifeq ($(BR2_BUSYBOX_VERSION_1_2_2_1),y)
-	$(SED) s,^CROSS_COMPILER_PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
-		$(BUSYBOX_DIR)/.config
-	$(SED) s,^PREFIX=.*,CROSS_COMPILER_PREFIX=\"$(TARGET_CROSS)\", \
-		$(BUSYBOX_DIR)/.config
-endif
 # id applet breaks on >=1.13.0 with old uclibc unless the bb pwd routines are used
 ifeq ($(BR2_BUSYBOX_VERSION_1_13_X)$(BR2_BUSYBOX_VERSION_1_14_X)$(BR2_UCLIBC_VERSION_0_9_28_3)$(BR2_UCLIBC_VERSION_0_9_29),yy)
 	if grep -q 'CONFIG_ID=y' $(BUSYBOX_DIR)/.config; \

@@ -16,34 +16,6 @@ choice
 	help
 	  Select the version of BusyBox you wish to use.
 
-	config BR2_BUSYBOX_VERSION_1_2_2_1
-		bool "BusyBox 1.2.2.1"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_6_1
-		bool "BusyBox 1.6.1"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_7_X
-		bool "BusyBox 1.7.x"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_8_X
-		bool "BusyBox 1.8.x"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_9_X
-		bool "BusyBox 1.9.x"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_10_X
-		bool "BusyBox 1.10.x"
-		depends on BR2_DEPRECATED
-
-	config BR2_BUSYBOX_VERSION_1_11_X
-		bool "BusyBox 1.11.x"
-		depends on BR2_DEPRECATED
-
 	config BR2_BUSYBOX_VERSION_1_12_X
 		bool "BusyBox 1.12.x"
 		depends on BR2_DEPRECATED
@@ -62,13 +34,6 @@ endchoice
 
 config BR2_BUSYBOX_VERSION
 	string
-	default "1.2.2.1"	if BR2_BUSYBOX_VERSION_1_2_2_1
-	default "1.6.1"		if BR2_BUSYBOX_VERSION_1_6_1
-	default "1.7.5"		if BR2_BUSYBOX_VERSION_1_7_X
-	default "1.8.3"		if BR2_BUSYBOX_VERSION_1_8_X
-	default "1.9.2"		if BR2_BUSYBOX_VERSION_1_9_X
-	default "1.10.4"	if BR2_BUSYBOX_VERSION_1_10_X
-	default "1.11.3"	if BR2_BUSYBOX_VERSION_1_11_X
 	default "1.12.4"	if BR2_BUSYBOX_VERSION_1_12_X
 	default "1.13.4"	if BR2_BUSYBOX_VERSION_1_13_X
 	default "1.14.0"	if BR2_BUSYBOX_VERSION_1_14_X
@@ -90,13 +55,6 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	depends on BR2_PACKAGE_BUSYBOX
 	default "target/device/x86/i386/busybox.config" if BR2_PACKAGE_BUSYBOX_SNAPSHOT
-	default "package/busybox/busybox-1.2.2.1.config" if BR2_BUSYBOX_VERSION_1_2_2_1
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_6_1
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_7_X
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_8_X
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_9_X
-	default "package/busybox/busybox-1.6.0.config" if BR2_BUSYBOX_VERSION_1_10_X
-	default "package/busybox/busybox-1.11.x.config" if BR2_BUSYBOX_VERSION_1_11_X
 	default "package/busybox/busybox-1.11.x.config" if BR2_BUSYBOX_VERSION_1_12_X
 	default "package/busybox/busybox-1.13.x.config" if BR2_BUSYBOX_VERSION_1_13_X
 	default "package/busybox/busybox-1.13.x.config" if BR2_BUSYBOX_VERSION_1_14_X
