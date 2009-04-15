@@ -161,6 +161,7 @@ config BR2_INSTALL_FORTRAN
 config BR2_GCC_SHARED_LIBGCC
 	bool "Build/install a shared libgcc?"
 	default y
+	depends on !BR2_sparc && !BR2_sparc64
 	help
 	  Build/install a shared libgcc library
 
