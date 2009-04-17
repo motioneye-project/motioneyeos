@@ -15,7 +15,7 @@ PKG_CONFIG_DEPENDENCIES = uclibc libglib2
 
 PKG_CONFIG_CONF_OPT = --with-installed-glib
 
-$(eval $(call AUTOTARGETS,package,pkgconfig))
+$(eval $(call AUTOTARGETS,package,pkg-config))
 
 # pkg-config for the host
 PKG_CONFIG_HOST_DIR:=$(BUILD_DIR)/pkg-config-$(PKG_CONFIG_VERSION)-host
@@ -28,7 +28,7 @@ $(STAMP_DIR)/host_pkgconfig_unpacked: $(DL_DIR)/$(PKG_CONFIG_SOURCE)
 	mkdir -p $(PKG_CONFIG_HOST_DIR)
 	$(INFLATE$(suffix $(PKG_CONFIG_SOURCE))) $< | \
 		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(PKG_CONFIG_HOST_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(PKG_CONFIG_HOST_DIR) package/pkgconfig/ \*.patch
+	toolchain/patch-kernel.sh $(PKG_CONFIG_HOST_DIR) package/pkg-config/ \*.patch
 	touch $@
 
 $(STAMP_DIR)/host_pkgconfig_configured: $(STAMP_DIR)/host_pkgconfig_unpacked
