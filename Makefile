@@ -402,9 +402,8 @@ distclean:
 ifeq ($(DL_DIR),$(BASE_DIR)/dl)
 	rm -rf $(DL_DIR)
 endif
-	rm -rf $(BUILD_DIR) $(PROJECT_BUILD_DIR) $(BINARIES_DIR) \
-	$(LINUX_KERNEL) $(BASE_DIR)/include \
-		.config.cmd
+	rm -rf $(TOOL_BUILD_DIR) $(BUILD_DIR) $(PROJECT_BUILD_DIR) $(BINARIES_DIR) \
+	.config.cmd
 	$(MAKE) -C $(CONFIG) clean
 
 sourceball:
