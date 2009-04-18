@@ -1,0 +1,13 @@
+--- busybox-1.14.0/util-linux/acpid.c	Tue Apr 14 01:43:11 2009
++++ busybox-1.14.0-acpid/util-linux/acpid.c	Sat Apr 18 13:33:19 2009
+@@ -78,8 +78,8 @@
+ 	// goto configuration directory
+ 	xchdir(opt_conf);
+ 
+-//	// setup signals
+-//	bb_signals(BB_FATAL_SIGS, record_signo);
++	// prevent zombies
++	signal(SIGCHLD, SIG_IGN);
+ 
+ 	// no explicit evdev files given? -> use proc event interface
+ 	if (!*argv) {
