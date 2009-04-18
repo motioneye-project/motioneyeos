@@ -105,6 +105,8 @@ $(CUPS_DIR)/.installed: $(CUPS_DIR)/.compiled
 
 cups: uclibc $(CUPS_DEPENDENCIES) $(CUPS_DIR)/.installed
 
+cups-source: $(DL_DIR)/$(CUPS_SOURCE)
+
 cups-clean:
 	-$(MAKE) -C $(CUPS_DIR) clean
 
