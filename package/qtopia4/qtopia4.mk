@@ -16,6 +16,10 @@
 # (cd /usr/include; sudo ln -s dbus-1.0/dbus dbus)
 # to fix
 
+# BUG: There is a workaround below (search for x86x86fix) for
+# x86 crosscompiling under linux x86. Please remove it when the workaround
+# is no longer necessary.
+
 QTOPIA4_VERSION:=4.5.0
 QTOPIA4_CAT:=$(BZCAT)
 
@@ -321,6 +325,19 @@ QTOPIA4_CONFIGURE:=$(strip $(subst ",, $(QTOPIA4_CONFIGURE)))
 #"))
 BR2_PACKAGE_QTOPIA4_EMB_PLATFORM:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)))
 #"))
+
+# x86x86fix
+# Workaround Qt Embedded bug when crosscompiling for x86 under x86 with linux
+# host. It's unclear if this would happen on other hosts.
+ifneq ($(findstring pc-linux,$(BR2_GNU_BUILD_SUFFIX)),)
+ifeq ($(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM),x86)
+QTOPIA4_CONFIGURE+= -platform linux-g++
+QTOPIA4_CONFIGURE:=$(strip $(subst ",, $(QTOPIA4_CONFIGURE)))
+#"))
+endif
+endif
+# End of workaround.
+
 
 QTOPIA4_QMAKE_CONF:=$(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
 
