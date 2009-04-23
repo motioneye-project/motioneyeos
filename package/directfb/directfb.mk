@@ -4,7 +4,7 @@
 #
 #############################################################
 DIRECTFB_VERSION_MAJOR:=1.2
-DIRECTFB_VERSION:=1.2.7
+DIRECTFB_VERSION:=1.2.8
 #DIRECTFB_VERSION:=1.3.0	is a development version
 #DIRECTFB_VERSION_MAJOR:=1.3
 DIRECTFB_SITE:=http://www.directfb.org/downloads/Core
