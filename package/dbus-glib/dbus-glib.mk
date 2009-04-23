@@ -40,7 +40,7 @@ $(STAMP_DIR)/host_dbusglib_unpacked: $(DL_DIR)/$(DBUS_GLIB_SOURCE)
 		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(DBUS_GLIB_HOST_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(STAMP_DIR)/host_dbusglib_configured: $(STAMP_DIR)/host_dbusglib_unpacked $(STAMP_DIR)/host_dbus_installed
+$(STAMP_DIR)/host_dbusglib_configured: $(STAMP_DIR)/host_dbusglib_unpacked $(STAMP_DIR)/host_dbus_installed $(STAMP_DIR)/host_expat_installed $(STAMP_DIR)/host_libglib2_installed
 	(cd $(DBUS_GLIB_HOST_DIR); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
