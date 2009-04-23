@@ -1,0 +1,13 @@
+config BR2_PACKAGE_TAGLIB
+	bool "taglib"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  TagLib is a library for reading and editing the meta-data of
+          several popular audio formats. Currently it supports both ID3v1
+          and ID3v2 for MP3 files, Ogg Vorbis comments and ID3 tags and
+          Vorbis comments in FLAC, MPC, Speex, WavPack and TrueAudio files.
+
+	  http://developer.kde.org/~wheeler/taglib.html
+
+comment "taglib requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
