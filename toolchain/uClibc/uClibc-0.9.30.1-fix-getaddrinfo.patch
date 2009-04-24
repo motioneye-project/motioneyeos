@@ -1,0 +1,13 @@
+[PATCH]: runp->ifa_addr can be NULL. Backport of r24336.
+diff -Narup uClibc-0.9.30.1.orig/libc/inet/getaddrinfo.c uClibc-0.9.30.1/libc/inet/getaddrinfo.c
+--- uClibc-0.9.30.1.orig/libc/inet/getaddrinfo.c	2009-02-26 21:49:14.000000000 +0900
++++ uClibc-0.9.30.1/libc/inet/getaddrinfo.c	2009-03-06 00:59:23.000000000 +0900
+@@ -187,6 +187,8 @@ static unsigned __check_pf(void)
+ 		}
+ 
+ 		for (runp = ifa; runp != NULL; runp = runp->ifa_next) {
++			if (runp->ifa_addr == NULL)
++				continue;
+ #if defined __UCLIBC_HAS_IPV4__
+ 			if (runp->ifa_addr->sa_family == PF_INET)
+ 				seen |= SEEN_IPV4;
