@@ -206,6 +206,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--with-gnu-ld \
 		--disable-shared \
 		--disable-libssp \
+		--disable-tls \
 		$(GCC_WITH_HOST_GMP) \
 		$(GCC_WITH_HOST_MPFR) \
 		$(DISABLE_NLS) \
@@ -281,6 +282,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		--enable-target-optspace \
 		--with-gnu-ld \
 		--disable-libssp \
+		--disable-tls \
 		$(GCC_SHARED_LIBGCC) \
 		$(GCC_WITH_HOST_GMP) \
 		$(GCC_WITH_HOST_MPFR) \
@@ -410,6 +412,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		--disable-__cxa_atexit \
 		--with-gnu-ld \
 		--disable-libssp \
+		--disable-tls \
 		$(GCC_SHARED_LIBGCC) \
 		$(GCC_WITH_TARGET_GMP) \
 		$(GCC_WITH_TARGET_MPFR) \
