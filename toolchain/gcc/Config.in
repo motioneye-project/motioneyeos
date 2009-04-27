@@ -142,9 +142,13 @@ config BR2_GCC_CROSS_FORTRAN
 	help
 	  Build a Fortran cross-compiler
 
+config BR2_GCC_CROSS_JAVA
+       bool
+
 config BR2_INSTALL_LIBGCJ
 	bool "Build/install java compiler and libgcj?"
 	depends on !BR2_avr32 && BR2_INSTALL_LIBSTDCPP
+	select BR2_GCC_CROSS_JAVA
 	help
 	  Build/install java compiler and libgcj?
 

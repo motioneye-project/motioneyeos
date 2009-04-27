@@ -80,6 +80,9 @@ endif
 ifeq ($(BR2_GCC_CROSS_FORTRAN),y)
 GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),fortran
 endif
+ifeq ($(BR2_GCC_CROSS_JAVA),y)
+GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),java
+endif
 ifeq ($(BR2_GCC_CROSS_OBJC),y)
 GCC_CROSS_LANGUAGES:=$(GCC_CROSS_LANGUAGES),objc
 endif
@@ -356,14 +359,11 @@ ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
 endif
 endif
 ifeq ($(BR2_INSTALL_LIBGCJ),y)
-	cp -dpf $(STAGING_DIR)/lib/libgcj.so* $(TARGET_DIR)/lib/
-	cp -dpf $(STAGING_DIR)/lib/lib-org-w3c-dom.so* $(TARGET_DIR)/lib/
-	cp -dpf $(STAGING_DIR)/lib/lib-org-xml-sax.so* $(TARGET_DIR)/lib/
+	cp -dpf $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib/libgcj.so* $(TARGET_DIR)/usr/lib/
 	mkdir -p $(TARGET_DIR)/usr/lib/security
-	cp -dpf $(STAGING_DIR)/usr/lib/security/libgcj.security \
-		$(TARGET_DIR)/usr/lib/security/
 	cp -dpf $(STAGING_DIR)/usr/lib/security/classpath.security \
 		$(TARGET_DIR)/usr/lib/security/
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libgcj.so*
 endif
 	mkdir -p $(@D)
 	touch $@
