@@ -6,15 +6,6 @@
 GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
 #"))
 
-ifeq ($(GDB_VERSION),snapshot)
-# Be aware that this changes daily....
-GDB_SITE:=ftp://sources.redhat.com/pub/gdb/snapshots/current
-GDB_SOURCE:=gdb.tar.bz2
-GDB_CAT:=$(BZCAT)
-GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_VERSION)
-GDB_PATCH_DIR:=toolchain/gdb/$(GDB_VERSION)
-else
-
 GDB_OFFICIAL_VERSION:=$(GDB_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GDB_RELEASE)
 
 GDB_SOURCE:=gdb-$(GDB_OFFICIAL_VERSION).tar.bz2
@@ -37,7 +28,6 @@ endif
 
 ifeq ($(GDB_VERSION),6.3)
 DISABLE_GDBMI:=--disable-gdbmi
-endif
 endif
 
 $(DL_DIR)/$(GDB_SOURCE):
