@@ -32,9 +32,10 @@
       <li><a href="#custom_uclibc">Customizing the uClibc
       configuration</a></li>
       <li><a href="#buildroot_innards">How Buildroot works</a></li>
-      <li><a href="#using_toolchain">Using the uClibc toolchain</a></li>
-      <li><a href="#toolchain_standalone">Using the uClibc toolchain
-      outside of Buildroot</a></li>
+      <li><a href="#multi_project"Building several projects in the
+      same buildroot source tree</a></li>
+      <li><a href="#using_toolchain">Using the uClibc toolchain
+      outside Buildroot</a></li>
       <li><a href="#downloaded_packages">Location of downloaded packages</a>
       </li>
       <li><a href="#add_software">Extending Buildroot with more
@@ -524,7 +525,10 @@ $ make me&lt;TAB&gt;
     <h2><a name="multi_project" id="multi_project"></a>Building several
       projects in the same buildroot source tree</h2>
 
-    <p><b>BACKGROUND</b></p>
+    <p><i>Note: the contents of this section are obsolete since this
+    feature has been implemented.</i></p>
+
+    <h3>Background</h3>
 
     <p>Buildroot has always supported building several projects in the same
     tree if each project was for a different architecture. </p>
@@ -560,8 +564,7 @@ $ make me&lt;TAB&gt;
     was also duplicated, so each </code>package</code> would also
     be rebuilt once per project, resulting in even longer build times.</p>
 
-
-    <p><b>PROJECT TO SHARE TOOLCHAIN AND PACKAGE BUILDS</b></p>
+    <h3>Project to share toolchain and package builds</h3>
 
     <p>Work has started on a project which will allow the user to build
     multiple root file systems for the same architecture in the same tree.
@@ -591,7 +594,7 @@ $ make me&lt;TAB&gt;
     <p>Only packages, not used by the first project, will have to go
     through the normal extract-configure-compile flow. </p>
 
-    <p><b>IMPLEMENTATION</b></p>
+    <h3>Implementation</h3>
 
     <p>The core of the solution is the introduction
     of two new directories: </p>
@@ -646,7 +649,7 @@ $ make me&lt;TAB&gt;
     <p>The resulting binaries for all architectures are stored in the
     <code>&quot;$(BINARIES_DIR)&quot;</code> directory. <p>
 
-    <p><b>SUMMARY</b></p>
+    <h3>Summary</h3>
 
     <p>The project will share directories which can be share without
     conflicts, but will use unique build directories, where the user
@@ -693,7 +696,7 @@ $ make me&lt;TAB&gt;
 	defaults to "make menuconfig".
      </p>
 
-    <h2><a name="Todo" id="Todo"></a>Todo</h2>
+    <h3>Todo</h3>
     <ol>
 
      <li>Configurable packages</li>
@@ -763,7 +766,7 @@ $ make me&lt;TAB&gt;
      </ol>
 
     <h2><a name="using_toolchain" id="using_toolchain"></a>Using the
-    uClibc toolchain</h2>
+    uClibc toolchain outside Buildroot</h2>
 
     <p>You may want to compile your own programs or other software
     that are not packaged in Buildroot. In order to do this, you can
@@ -791,32 +794,19 @@ export PATH=&quot;$PATH:~/buildroot/build_mips/staging_dir/usr/bin/&quot;
 mips-linux-gcc -o foo foo.c
 </pre>
 
-    <p><b>Important</b> : do not try to move a gcc-3.x toolchain to an other
-    directory, it won't work. There are some hardcoded paths in the
-    <i>gcc</i> configuration. If the default toolchain directory
-    doesn't suit your needs, please refer to the <a
-    href="#toolchain_standalone">Using the uClibc toolchain outside of
-    buildroot</a> section. </p>
-    <p>If you are using a current gcc-4.x, then use --sysroot and -isysroot
-    since these toolchains have fully functional sysroot support. No
-    hardcoded paths do exist in these configurations. </p>
+     <p><b>Important</b> : do not try to move a gcc-3.x toolchain to an other
+     directory, it won't work. There are some hardcoded paths in the
+     <i>gcc</i> configuration. If you are using a current gcc-4.x, it
+     is possible to relocate the toolchain, but then
+     <code>--sysroot</code> must be passed every time the compiler is
+     called to tell where the libraries and header files are, which
+     might be cumbersome.</p>
 
-    <h2><a name="toolchain_standalone" id="toolchain_standalone"></a>Using the
-    uClibc toolchain outside of buildroot</h2>
-
-    <p>By default, the cross-compilation toolchain is generated inside
-    <code>build_ARCH/staging_dir/</code>. But sometimes, it may be useful to
-    install it somewhere else, so that it can be used to compile other programs
-    or by other users. Moving the <code>build_ARCH/staging_dir/</code>
-    directory elsewhere is <b>not possible if using gcc-3.x</b>, because there
-    are some hardcoded paths in the toolchain configuration. This works, thanks
-    to sysroot support, with current, stable gcc-4.x toolchains, of course. </p>
-
-    <p>If you want to use the generated gcc-3.x toolchain for other purposes,
-    you can configure Buildroot to generate it elsewhere using the
-    option of the configuration tool : <code>Build options -&gt;
-    Toolchain and header file location</code>, which defaults to
-    <code>$(BUILD_DIR)/staging_dir/</code>. </p>
+     <p>It is also possible to generate the Buildroot toolchain in
+     another directory than <code>build_ARCH/staging_dir</code> using
+     the <code>Build options -&gt; Toolchain and header file
+     location</code> option. This could be useful if the toolchain
+     must be shared with other users.</p>
 
     <h2><a name="downloaded_packages"
     id="downloaded_packages"></a>Location of downloaded packages</h2>
@@ -1173,13 +1163,12 @@ endif
       <li><a href="http://www.uclibc.org/">http://www.uclibc.org/</a></li>
       <li><a href="http://www.busybox.net/">http://www.busybox.net/</a></li>
     </ul>
-
   </div>
 <!--
-	<a href="http://validator.w3.org/check?uri=referer"><img
-	border="0" height="31" width="88"
-	src="images/valid-html401.png"
-	alt="Valid HTML"></img></a>
+       <a href="http://validator.w3.org/check?uri=referer"><img
+       border="0" height="31" width="88"
+       src="images/valid-html401.png"
+       alt="Valid HTML"></img></a>
 -->
 
 </body>
