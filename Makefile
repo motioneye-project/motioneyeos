@@ -334,8 +334,8 @@ $(PROJECT_BUILD_DIR)/.root:
 		fi; \
 		touch $(STAGING_DIR)/.fakeroot.00000; \
 	fi
-	-find $(TARGET_DIR) -type d -name CVS -o -name .svn | xargs rm -rf
-	-find $(TARGET_DIR) -type f -name .empty | xargs rm -rf
+	-find $(TARGET_DIR) -type d -name CVS -o -name .svn -print0 | xargs -0 rm -rf
+	-find $(TARGET_DIR) -type f -name .empty -print0 | xargs -0 rm -rf
 	touch $@
 
 $(TARGET_DIR): $(PROJECT_BUILD_DIR)/.root
@@ -348,8 +348,8 @@ ifeq ($(BR2_HAVE_DEVFILES),y)
 	( scripts/copy.sh $(STAGING_DIR) $(TARGET_DIR) )
 else
 	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/lib/pkgconfig
-	find $(TARGET_DIR)/lib \( -name '*.a' -o -name '*.la' \) -delete
-	find $(TARGET_DIR)/usr/lib \( -name '*.a' -o -name '*.la' \) -delete
+	find $(TARGET_DIR)/lib \( -name '*.a' -o -name '*.la' \) -print0 | xargs -0 rm -f
+	find $(TARGET_DIR)/usr/lib \( -name '*.a' -o -name '*.la' \) -print0 | xargs -0 rm -f
 endif
 ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/man
