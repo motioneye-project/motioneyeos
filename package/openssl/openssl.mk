@@ -58,7 +58,7 @@ $(OPENSSL_TARGET_BUILD):
 $(OPENSSL_HOOK_POST_INSTALL):
 	$(if $(BR2_HAVE_DEVFILES),,rm -rf $(TARGET_DIR)/usr/lib/ssl)
 ifeq ($(BR2_PACKAGE_OPENSSL_BIN),y)
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/openssl
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/bin/openssl
 else
 	rm -f $(TARGET_DIR)/usr/bin/openssl
 endif
