@@ -21,15 +21,6 @@ endif
 
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
 
-# NOTE: This option should not be used with gdb versions 6.4 and above.
-ifeq ($(GDB_VERSION),6.2.1)
-DISABLE_GDBMI:=--disable-gdbmi
-endif
-
-ifeq ($(GDB_VERSION),6.3)
-DISABLE_GDBMI:=--disable-gdbmi
-endif
-
 $(DL_DIR)/$(GDB_SOURCE):
 	$(call DOWNLOAD,$(GDB_SITE),$(GDB_SOURCE))
 
