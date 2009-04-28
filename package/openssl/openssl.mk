@@ -46,6 +46,8 @@ $(OPENSSL_TARGET_CONFIGURE):
 			no-rc5 \
 			zlib-dynamic \
 	)
+	$(SED) "s:-march=[-a-z0-9] ::" -e "s:-mcpu=[-a-z0-9] ::g" $(OPENSSL_DIR)/Makefile
+	$(SED) "s:-O[0-9]:$(TARGET_CFLAGS):" $(OPENSSL_DIR)/Makefile
 	touch $@
 
 $(OPENSSL_TARGET_BUILD):
@@ -61,9 +63,9 @@ else
 	# libraries gets installed read only, so strip fails
 	for i in $(addprefix $(TARGET_DIR)/usr/lib/,libcrypto.so.* libssl.so.*); \
 	do chmod +w $$i; $(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $$i; done
-	rm -f $(TARGET_DIR)/usr/bin/c_rehash
 	rm -f $(TARGET_DIR)/usr/bin/openssl
 endif
+	rm -f $(TARGET_DIR)/usr/bin/c_rehash
 ifneq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
 	rm -rf $(TARGET_DIR)/usr/lib/engines
 else
