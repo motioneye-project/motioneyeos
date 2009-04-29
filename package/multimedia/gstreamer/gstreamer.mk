@@ -3,10 +3,11 @@
 # gstreamer
 #
 #############################################################
-GSTREAMER_VERSION = 0.10.21
+GSTREAMER_VERSION = 0.10.22
 GSTREAMER_SOURCE = gstreamer-$(GSTREAMER_VERSION).tar.bz2
 GSTREAMER_SITE = http://gstreamer.freedesktop.org/src/gstreamer
 GSTREAMER_INSTALL_STAGING = YES
+GSTREAMER_LIBTOOL_PATCH = NO
 
 # Checking if unaligned memory access works correctly cannot be done when cross
 # compiling. For the following architectures there is no information available
