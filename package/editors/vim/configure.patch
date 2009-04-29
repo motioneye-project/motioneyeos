@@ -1,6 +1,5 @@
-diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
---- vim71-original/src/auto/configure	2008-02-17 14:58:14.000000000 +0000
-+++ vim71/src/auto/configure	2008-02-17 14:57:02.000000000 +0000
+--- vim71/src/auto/configure.orig	2009-04-29 14:01:00.000000000 -0600
++++ vim71/src/auto/configure	2009-04-29 14:00:11.000000000 -0600
 @@ -1,25 +1,54 @@
  #! /bin/sh
  # Guess values for system-dependent variables and create Makefiles.
@@ -1298,7 +1297,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  _ACEOF
  
    cat <<\_ACEOF
-@@ -901,126 +1385,96 @@
+@@ -902,126 +1386,96 @@
    CFLAGS      C compiler flags
    LDFLAGS     linker flags, e.g. -L<lib dir> if you have libraries in a
                nonstandard directory <lib dir>
@@ -1404,8 +1403,15 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  [\\/]* | ?:[\\/]* ) ac_abs_top_srcdir=$ac_top_srcdir;;
 -  *) ac_abs_top_srcdir=$ac_abs_builddir/$ac_top_srcdir;;
 -  esac;;
--esac
--
++    ac_top_srcdir=$srcdir
++    ac_abs_top_srcdir=$srcdir ;;
++  *) # Relative name.
++    ac_srcdir=$ac_top_build_prefix$srcdir$ac_dir_suffix
++    ac_top_srcdir=$ac_top_build_prefix$srcdir
++    ac_abs_top_srcdir=$ac_pwd/$srcdir ;;
+ esac
++ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
+ 
 -    cd $ac_dir
 -    # Check for guested configure; otherwise get Cygnus style configure.
 -    if test -f $ac_srcdir/configure.gnu; then
@@ -1418,15 +1424,6 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -	   test -f $ac_srcdir/configure.in; then
 -      echo
 -      $ac_configure --help
-+    ac_top_srcdir=$srcdir
-+    ac_abs_top_srcdir=$srcdir ;;
-+  *) # Relative name.
-+    ac_srcdir=$ac_top_build_prefix$srcdir$ac_dir_suffix
-+    ac_top_srcdir=$ac_top_build_prefix$srcdir
-+    ac_abs_top_srcdir=$ac_pwd/$srcdir ;;
-+esac
-+ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
-+
 +    cd "$ac_dir" || { ac_status=$?; continue; }
 +    # Check for guested configure.
 +    if test -f "$ac_srcdir/configure.gnu"; then
@@ -1477,7 +1474,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  {
  cat <<_ASUNAME
  ## --------- ##
-@@ -1039,7 +1493,7 @@
+@@ -1040,7 +1494,7 @@
  /bin/arch              = `(/bin/arch) 2>/dev/null              || echo unknown`
  /usr/bin/arch -k       = `(/usr/bin/arch -k) 2>/dev/null       || echo unknown`
  /usr/convex/getsysinfo = `(/usr/convex/getsysinfo) 2>/dev/null || echo unknown`
@@ -1486,7 +1483,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  /bin/machine           = `(/bin/machine) 2>/dev/null           || echo unknown`
  /usr/bin/oslevel       = `(/usr/bin/oslevel) 2>/dev/null       || echo unknown`
  /bin/universe          = `(/bin/universe) 2>/dev/null          || echo unknown`
-@@ -1053,6 +1507,7 @@
+@@ -1054,6 +1508,7 @@
    test -z "$as_dir" && as_dir=.
    echo "PATH: $as_dir"
  done
@@ -1494,7 +1491,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  } >&5
  
-@@ -1074,7 +1529,6 @@
+@@ -1075,7 +1530,6 @@
  ac_configure_args=
  ac_configure_args0=
  ac_configure_args1=
@@ -1502,7 +1499,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  ac_must_keep_next=false
  for ac_pass in 1 2
  do
-@@ -1085,7 +1539,7 @@
+@@ -1086,7 +1540,7 @@
      -q | -quiet | --quiet | --quie | --qui | --qu | --q \
      | -silent | --silent | --silen | --sile | --sil)
        continue ;;
@@ -1511,7 +1508,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        ac_arg=`echo "$ac_arg" | sed "s/'/'\\\\\\\\''/g"` ;;
      esac
      case $ac_pass in
-@@ -1107,9 +1561,7 @@
+@@ -1108,9 +1562,7 @@
  	  -* ) ac_must_keep_next=true ;;
  	esac
        fi
@@ -1522,7 +1519,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        ;;
      esac
    done
-@@ -1120,8 +1572,8 @@
+@@ -1121,8 +1573,8 @@
  # When interrupted or exit'd, cleanup temporary files, and complete
  # config.log.  We remove comments because anyway the quotes in there
  # would cause problems or look ugly.
@@ -1533,7 +1530,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  trap 'exit_status=$?
    # Save into config.log some information that might help in debugging.
    {
-@@ -1134,20 +1586,34 @@
+@@ -1135,20 +1587,34 @@
  _ASBOX
      echo
      # The following way of writing the cache mishandles newlines in values,
@@ -1578,7 +1575,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      echo
  
      cat <<\_ASBOX
-@@ -1158,22 +1624,28 @@
+@@ -1159,22 +1625,28 @@
      echo
      for ac_var in $ac_subst_vars
      do
@@ -1614,7 +1611,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        done | sort
        echo
      fi
-@@ -1185,26 +1657,24 @@
+@@ -1186,26 +1658,24 @@
  ## ----------- ##
  _ASBOX
        echo
@@ -1646,7 +1643,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # Predefined preprocessor variables.
  
-@@ -1235,14 +1705,17 @@
+@@ -1236,14 +1706,17 @@
  
  # Let the site file select an alternate cache file if it wants to.
  # Prefer explicitly selected file to automatically selected ones.
@@ -1671,7 +1668,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    if test -r "$ac_site_file"; then
      { echo "$as_me:$LINENO: loading site script $ac_site_file" >&5
  echo "$as_me: loading site script $ac_site_file" >&6;}
-@@ -1258,8 +1731,8 @@
+@@ -1259,8 +1732,8 @@
      { echo "$as_me:$LINENO: loading cache $cache_file" >&5
  echo "$as_me: loading cache $cache_file" >&6;}
      case $cache_file in
@@ -1682,7 +1679,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      esac
    fi
  else
-@@ -1271,12 +1744,11 @@
+@@ -1272,12 +1745,11 @@
  # Check that the precious variables saved in the cache have kept the same
  # value.
  ac_cache_corrupted=false
@@ -1698,7 +1695,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    case $ac_old_set,$ac_new_set in
      set,)
        { echo "$as_me:$LINENO: error: \`$ac_var' was set to \`$ac_old_val' in the previous run" >&5
-@@ -1301,8 +1773,7 @@
+@@ -1302,8 +1774,7 @@
    # Pass precious variables to config.status.
    if test "$ac_new_set" = set; then
      case $ac_new_val in
@@ -1708,7 +1705,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      *) ac_arg=$ac_var=$ac_new_val ;;
      esac
      case " $ac_configure_args " in
-@@ -1319,12 +1790,6 @@
+@@ -1320,12 +1791,6 @@
     { (exit 1); exit 1; }; }
  fi
  
@@ -1721,7 +1718,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  
  
-@@ -1341,41 +1806,47 @@
+@@ -1342,41 +1807,47 @@
  
  
  
@@ -1786,7 +1783,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    SET_MAKE="MAKE=${MAKE-make}"
  fi
  
-@@ -1388,8 +1859,8 @@
+@@ -1389,8 +1860,8 @@
  if test -n "$ac_tool_prefix"; then
    # Extract the first word of "${ac_tool_prefix}gcc", so it can be a program name with args.
  set dummy ${ac_tool_prefix}gcc; ac_word=$2
@@ -1797,7 +1794,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_CC+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1402,32 +1873,34 @@
+@@ -1403,32 +1874,34 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -1839,7 +1836,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_ac_ct_CC+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1440,36 +1913,51 @@
+@@ -1441,36 +1914,51 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -1901,7 +1898,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_CC+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1482,74 +1970,34 @@
+@@ -1483,74 +1971,34 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -1985,7 +1982,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_CC+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1563,7 +2011,7 @@
+@@ -1564,7 +2012,7 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -1994,7 +1991,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      if test "$as_dir/$ac_word$ac_exec_ext" = "/usr/ucb/cc"; then
         ac_prog_rejected=yes
         continue
-@@ -1574,6 +2022,7 @@
+@@ -1575,6 +2023,7 @@
    fi
  done
  done
@@ -2002,7 +1999,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  if test $ac_prog_rejected = yes; then
    # We found a bogon in the path, so make sure we never use it.
-@@ -1591,22 +2040,23 @@
+@@ -1592,22 +2041,23 @@
  fi
  CC=$ac_cv_prog_CC
  if test -n "$CC"; then
@@ -2033,7 +2030,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_CC+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1619,36 +2069,38 @@
+@@ -1620,36 +2070,38 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -2080,7 +2077,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_ac_ct_CC+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1661,29 +2113,45 @@
+@@ -1662,29 +2114,45 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -2132,7 +2129,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  
  fi
-@@ -1696,21 +2164,35 @@
+@@ -1697,21 +2165,35 @@
     { (exit 1); exit 1; }; }
  
  # Provide some information about the compiler.
@@ -2176,7 +2173,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }
-@@ -1735,47 +2217,77 @@
+@@ -1736,47 +2218,77 @@
  # Try to create an executable without -o first, disregard a.out.
  # It will help us diagnose broken compilers, and finding out an intuition
  # of exeext.
@@ -2276,7 +2273,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
-@@ -1787,19 +2299,21 @@
+@@ -1788,19 +2300,21 @@
  fi
  
  ac_exeext=$ac_cv_exeext
@@ -2305,7 +2302,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }; }; then
-@@ -1818,22 +2332,27 @@
+@@ -1819,22 +2333,27 @@
      fi
    fi
  fi
@@ -2345,7 +2342,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }; then
-@@ -1844,9 +2363,8 @@
+@@ -1845,9 +2364,8 @@
  for ac_file in conftest.exe conftest conftest.*; do
    test -f "$ac_file" || continue
    case $ac_file in
@@ -2356,7 +2353,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	  break;;
      * ) break;;
    esac
-@@ -1860,14 +2378,14 @@
+@@ -1861,14 +2379,14 @@
  fi
  
  rm -f conftest$ac_cv_exeext
@@ -2375,7 +2372,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_objext+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1887,14 +2405,20 @@
+@@ -1888,14 +2406,20 @@
  }
  _ACEOF
  rm -f conftest.o conftest.obj
@@ -2400,7 +2397,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      *) ac_cv_objext=`expr "$ac_file" : '.*\.\(.*\)'`
         break;;
    esac
-@@ -1912,12 +2436,12 @@
+@@ -1913,12 +2437,12 @@
  
  rm -f conftest.$ac_cv_objext conftest.$ac_ext
  fi
@@ -2417,7 +2414,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_c_compiler_gnu+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -1940,50 +2464,49 @@
+@@ -1941,50 +2465,49 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -2491,7 +2488,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  /* confdefs.h.  */
  _ACEOF
  cat confdefs.h >>conftest.$ac_ext
-@@ -1999,38 +2522,118 @@
+@@ -2000,38 +2523,118 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -2610,11 +2607,11 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +fi
 +
 +rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
- fi
--rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
++fi
 +
 +rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-+fi
+ fi
+-rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 +
 +rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
 +   ac_c_werror_flag=$ac_save_c_werror_flag
@@ -2626,7 +2623,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "$ac_test_CFLAGS" = set; then
    CFLAGS=$ac_save_CFLAGS
  elif test $ac_cv_prog_cc_g = yes; then
-@@ -2046,12 +2649,12 @@
+@@ -2047,12 +2650,12 @@
      CFLAGS=
    fi
  fi
@@ -2643,7 +2640,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  ac_save_CC=$CC
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -2085,12 +2688,17 @@
+@@ -2086,12 +2689,17 @@
  /* OSF 4.0 Compaq cc is some sort of almost-ANSI by default.  It has
     function prototypes and stuff, but not '\xHH' hex character constants.
     These don't provoke an error unfortunately, instead are silently treated
@@ -2663,7 +2660,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  int test (int i, double x);
  struct s1 {int (*f) (int a);};
  struct s2 {int (*f) (double a);};
-@@ -2105,237 +2713,89 @@
+@@ -2106,205 +2714,57 @@
    return 0;
  }
  _ACEOF
@@ -2791,33 +2788,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -   'extern "C" void exit (int) throw ();' \
 -   'extern "C" void exit (int);' \
 -   'void exit (int);'
-+
-+ac_ext=c
-+ac_cpp='$CPP $CPPFLAGS'
-+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-+ac_compiler_gnu=$ac_cv_c_compiler_gnu
-+	ac_ext=c
-+ac_cpp='$CPP $CPPFLAGS'
-+ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
-+ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
-+ac_compiler_gnu=$ac_cv_c_compiler_gnu
-+{ echo "$as_me:$LINENO: checking how to run the C preprocessor" >&5
-+echo $ECHO_N "checking how to run the C preprocessor... $ECHO_C" >&6; }
-+# On Suns, sometimes $CPP names a directory.
-+if test -n "$CPP" && test -d "$CPP"; then
-+  CPP=
-+fi
-+if test -z "$CPP"; then
-+  if test "${ac_cv_prog_CPP+set}" = set; then
-+  echo $ECHO_N "(cached) $ECHO_C" >&6
-+else
-+      # Double quotes because CPP needs to be expanded
-+    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib/cpp"
-+    do
-+      ac_preproc_ok=false
-+for ac_c_preproc_warn_flag in '' yes
- do
+-do
 -  cat >conftest.$ac_ext <<_ACEOF
 -/* confdefs.h.  */
 -_ACEOF
@@ -2919,51 +2890,24 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -else
 -  echo "$as_me: failed program was:" >&5
 -sed 's/^/| /' conftest.$ac_ext >&5
--
+ 
 -fi
 -rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
--ac_ext=c
--ac_cpp='$CPP $CPPFLAGS'
--ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
--ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
--ac_compiler_gnu=$ac_cv_c_compiler_gnu
--	ac_ext=c
--ac_cpp='$CPP $CPPFLAGS'
--ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
--ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
--ac_compiler_gnu=$ac_cv_c_compiler_gnu
+ ac_ext=c
+ ac_cpp='$CPP $CPPFLAGS'
+ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+@@ -2315,8 +2775,8 @@
+ ac_compile='$CC -c $CFLAGS $CPPFLAGS conftest.$ac_ext >&5'
+ ac_link='$CC -o conftest$ac_exeext $CFLAGS $CPPFLAGS $LDFLAGS conftest.$ac_ext $LIBS >&5'
+ ac_compiler_gnu=$ac_cv_c_compiler_gnu
 -echo "$as_me:$LINENO: checking how to run the C preprocessor" >&5
 -echo $ECHO_N "checking how to run the C preprocessor... $ECHO_C" >&6
--# On Suns, sometimes $CPP names a directory.
--if test -n "$CPP" && test -d "$CPP"; then
--  CPP=
--fi
--if test -z "$CPP"; then
--  if test "${ac_cv_prog_CPP+set}" = set; then
--  echo $ECHO_N "(cached) $ECHO_C" >&6
--else
--      # Double quotes because CPP needs to be expanded
--    for CPP in "$CC -E" "$CC -E -traditional-cpp" "/lib/cpp"
--    do
--      ac_preproc_ok=false
--for ac_c_preproc_warn_flag in '' yes
--do
--  # Use a header file that comes with gcc, so configuring glibc
--  # with a fresh cross-compiler works.
--  # Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
--  # <limits.h> exists even on freestanding compilers.
--  # On the NeXT, cc -E runs the code through the compiler's parser,
--  # not just through cpp. "Syntax error" is here to catch this case.
-+  # Use a header file that comes with gcc, so configuring glibc
-+  # with a fresh cross-compiler works.
-+  # Prefer <limits.h> to <assert.h> if __STDC__ is defined, since
-+  # <limits.h> exists even on freestanding compilers.
-+  # On the NeXT, cc -E runs the code through the compiler's parser,
-+  # not just through cpp. "Syntax error" is here to catch this case.
-   cat >conftest.$ac_ext <<_ACEOF
- /* confdefs.h.  */
- _ACEOF
-@@ -2349,24 +2809,22 @@
++{ echo "$as_me:$LINENO: checking how to run the C preprocessor" >&5
++echo $ECHO_N "checking how to run the C preprocessor... $ECHO_C" >&6; }
+ # On Suns, sometimes $CPP names a directory.
+ if test -n "$CPP" && test -d "$CPP"; then
+   CPP=
+@@ -2350,24 +2810,22 @@
  #endif
  		     Syntax error
  _ACEOF
@@ -2999,7 +2943,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    :
  else
    echo "$as_me: failed program was:" >&5
-@@ -2375,9 +2833,10 @@
+@@ -2376,9 +2834,10 @@
    # Broken: fails on valid input.
  continue
  fi
@@ -3011,7 +2955,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    # can be detected and how.
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -2387,24 +2846,22 @@
+@@ -2388,24 +2847,22 @@
  /* end confdefs.h.  */
  #include <ac_nonexistent.h>
  _ACEOF
@@ -3047,7 +2991,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    # Broken: success on invalid input.
  continue
  else
-@@ -2415,6 +2872,7 @@
+@@ -2416,6 +2873,7 @@
  ac_preproc_ok=:
  break
  fi
@@ -3055,7 +2999,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  rm -f conftest.err conftest.$ac_ext
  
  done
-@@ -2432,8 +2890,8 @@
+@@ -2433,8 +2891,8 @@
  else
    ac_cv_prog_CPP=$CPP
  fi
@@ -3066,7 +3010,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  ac_preproc_ok=false
  for ac_c_preproc_warn_flag in '' yes
  do
-@@ -2456,24 +2914,22 @@
+@@ -2457,24 +2915,22 @@
  #endif
  		     Syntax error
  _ACEOF
@@ -3102,7 +3046,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    :
  else
    echo "$as_me: failed program was:" >&5
-@@ -2482,9 +2938,10 @@
+@@ -2483,9 +2939,10 @@
    # Broken: fails on valid input.
  continue
  fi
@@ -3114,7 +3058,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    # can be detected and how.
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -2494,24 +2951,22 @@
+@@ -2495,24 +2952,22 @@
  /* end confdefs.h.  */
  #include <ac_nonexistent.h>
  _ACEOF
@@ -3150,7 +3094,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    # Broken: success on invalid input.
  continue
  else
-@@ -2522,6 +2977,7 @@
+@@ -2523,6 +2978,7 @@
  ac_preproc_ok=:
  break
  fi
@@ -3158,7 +3102,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  rm -f conftest.err conftest.$ac_ext
  
  done
-@@ -2544,19 +3000,166 @@
+@@ -2545,19 +3001,166 @@
  ac_compiler_gnu=$ac_cv_c_compiler_gnu
  
  
@@ -3309,7 +3253,10 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +IFS=$as_save_IFS
 +
 +
-+fi
+ fi
+-echo "$as_me:$LINENO: result: $ac_cv_prog_egrep" >&5
+-echo "${ECHO_T}$ac_cv_prog_egrep" >&6
+- EGREP=$ac_cv_prog_egrep
 +
 +EGREP="$ac_cv_path_EGREP"
 +if test -z "$EGREP"; then
@@ -3320,10 +3267,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +
 +else
 +  ac_cv_path_EGREP=$EGREP
- fi
--echo "$as_me:$LINENO: result: $ac_cv_prog_egrep" >&5
--echo "${ECHO_T}$ac_cv_prog_egrep" >&6
-- EGREP=$ac_cv_prog_egrep
++fi
 +
 +
 +   fi
@@ -3334,7 +3278,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  
  cat >conftest.$ac_ext <<_ACEOF
-@@ -2567,18 +3170,13 @@
+@@ -2568,18 +3171,13 @@
  /* end confdefs.h.  */
  
  _ACEOF
@@ -3355,7 +3299,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -2586,123 +3184,81 @@
+@@ -2587,123 +3185,81 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -3426,7 +3370,8 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
--fi
++
+ fi
 -rm -f conftest.err conftest.$ac_objext \
 -      conftest$ac_exeext conftest.$ac_ext
 -if test "$ac_cv_search_strerror" = no; then
@@ -3438,7 +3383,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -cat confdefs.h >>conftest.$ac_ext
 -cat >>conftest.$ac_ext <<_ACEOF
 -/* end confdefs.h.  */
- 
+-
 -/* Override any gcc2 internal prototype to avoid an error.  */
 -#ifdef __cplusplus
 -extern "C"
@@ -3481,7 +3426,6 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -else
 -  echo "$as_me: failed program was:" >&5
 -sed 's/^/| /' conftest.$ac_ext >&5
-+fi
  
 +rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
 +      conftest$ac_exeext
@@ -3522,7 +3466,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_AWK+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -2715,32 +3271,34 @@
+@@ -2716,32 +3272,34 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -3564,7 +3508,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_STRIP+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -2753,29 +3311,31 @@
+@@ -2754,29 +3312,31 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -3601,7 +3545,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test -z "$CFLAGS"; then
    CFLAGS="-O"
    test "$GCC" = yes && CFLAGS="-O2 -fno-strength-reduce -Wall"
-@@ -2796,13 +3356,12 @@
+@@ -2797,13 +3357,12 @@
    fi
  fi
  
@@ -3621,7 +3565,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  test "$GCC" = yes && CPP_MM=M;
  
-@@ -2814,76 +3373,76 @@
+@@ -2815,76 +3374,76 @@
  
  OS_EXTRA_SRC=""; OS_EXTRA_OBJ=""
  
@@ -3722,13 +3666,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_mac_arch"
 -  MACARCH="$withval"; echo "$as_me:$LINENO: result: $MACARCH" >&5
 -echo "${ECHO_T}$MACARCH" >&6
--else
++  withval=$with_mac_arch; MACARCH="$withval"; { echo "$as_me:$LINENO: result: $MACARCH" >&5
++echo "${ECHO_T}$MACARCH" >&6; }
+ else
 -  MACARCH="current"; echo "$as_me:$LINENO: result: defaulting to $MACARCH" >&5
 -echo "${ECHO_T}defaulting to $MACARCH" >&6
 -fi;
-+  withval=$with_mac_arch; MACARCH="$withval"; { echo "$as_me:$LINENO: result: $MACARCH" >&5
-+echo "${ECHO_T}$MACARCH" >&6; }
-+else
 +  MACARCH="current"; { echo "$as_me:$LINENO: result: defaulting to $MACARCH" >&5
 +echo "${ECHO_T}defaulting to $MACARCH" >&6; }
 +fi
@@ -3742,7 +3685,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
                              save_cppflags="$CPPFLAGS"
      save_cflags="$CFLAGS"
      save_ldflags="$LDFLAGS"
-@@ -2904,38 +3463,34 @@
+@@ -2905,38 +3464,34 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -3799,7 +3742,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	CPPFLAGS="$CPPFLAGS -arch i386"
  	LDFLAGS="$save_ldflags -arch i386"
  	cat >conftest.$ac_ext <<_ACEOF
-@@ -2954,43 +3509,41 @@
+@@ -2955,43 +3510,41 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -3863,7 +3806,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        conftest$ac_exeext conftest.$ac_ext
    elif test "x$MACARCH" = "xintel"; then
      CPPFLAGS="$CPPFLAGS -arch intel"
-@@ -3011,8 +3564,8 @@
+@@ -3012,8 +3565,8 @@
        CPPFLAGS="$CPPFLAGS -I/Developer/Headers/FlatCarbon"
      fi
  
@@ -3874,7 +3817,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_header_stdc+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -3036,35 +3589,31 @@
+@@ -3037,35 +3590,31 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -3924,7 +3867,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  if test $ac_cv_header_stdc = yes; then
    # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
-@@ -3120,6 +3669,7 @@
+@@ -3121,6 +3670,7 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  #include <ctype.h>
@@ -3932,7 +3875,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #if ((' ' & 0x0FF) == 0x020)
  # define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
  # define TOUPPER(c) (ISLOWER(c) ? 'A' + ((c) - 'a') : (c))
-@@ -3139,18 +3689,27 @@
+@@ -3140,18 +3690,27 @@
    for (i = 0; i < 256; i++)
      if (XOR (islower (i), ISLOWER (i))
  	|| toupper (i) != TOUPPER (i))
@@ -3966,7 +3909,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }; }; then
-@@ -3163,12 +3722,14 @@
+@@ -3164,12 +3723,14 @@
  ( exit $ac_status )
  ac_cv_header_stdc=no
  fi
@@ -3984,7 +3927,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_header_stdc = yes; then
  
  cat >>confdefs.h <<\_ACEOF
-@@ -3191,9 +3752,9 @@
+@@ -3192,9 +3753,9 @@
  		  inttypes.h stdint.h unistd.h
  do
  as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
@@ -3997,7 +3940,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
    cat >conftest.$ac_ext <<_ACEOF
-@@ -3207,38 +3768,35 @@
+@@ -3208,38 +3769,35 @@
  #include <$ac_header>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -4053,7 +3996,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
    cat >>confdefs.h <<_ACEOF
  #define `echo "HAVE_$ac_header" | $as_tr_cpp` 1
-@@ -3250,17 +3808,17 @@
+@@ -3251,17 +3809,17 @@
  
  
  if test "${ac_cv_header_Carbon_Carbon_h+set}" = set; then
@@ -4077,7 +4020,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -3271,41 +3829,37 @@
+@@ -3272,41 +3830,37 @@
  #include <Carbon/Carbon.h>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -4137,7 +4080,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -3314,24 +3868,22 @@
+@@ -3315,24 +3869,22 @@
  /* end confdefs.h.  */
  #include <Carbon/Carbon.h>
  _ACEOF
@@ -4173,7 +4116,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -3339,9 +3891,10 @@
+@@ -3340,9 +3892,10 @@
  
    ac_header_preproc=no
  fi
@@ -4186,7 +4129,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -3365,25 +3918,18 @@
+@@ -3366,25 +3919,18 @@
  echo "$as_me: WARNING: Carbon/Carbon.h: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: Carbon/Carbon.h: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: Carbon/Carbon.h: in the future, the compiler will take precedence" >&2;}
@@ -4217,7 +4160,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test $ac_cv_header_Carbon_Carbon_h = yes; then
-@@ -3403,8 +3949,8 @@
+@@ -3404,8 +3950,8 @@
    fi
  
  else
@@ -4228,7 +4171,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  
  
-@@ -3431,80 +3977,80 @@
+@@ -3432,80 +3978,80 @@
    fi
  fi
  
@@ -4243,13 +4186,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_vim_name"
 -  VIMNAME="$withval"; echo "$as_me:$LINENO: result: $VIMNAME" >&5
 -echo "${ECHO_T}$VIMNAME" >&6
--else
++  withval=$with_vim_name; VIMNAME="$withval"; { echo "$as_me:$LINENO: result: $VIMNAME" >&5
++echo "${ECHO_T}$VIMNAME" >&6; }
+ else
 -  VIMNAME="vim"; echo "$as_me:$LINENO: result: Defaulting to $VIMNAME" >&5
 -echo "${ECHO_T}Defaulting to $VIMNAME" >&6
 -fi;
-+  withval=$with_vim_name; VIMNAME="$withval"; { echo "$as_me:$LINENO: result: $VIMNAME" >&5
-+echo "${ECHO_T}$VIMNAME" >&6; }
-+else
 +  VIMNAME="vim"; { echo "$as_me:$LINENO: result: Defaulting to $VIMNAME" >&5
 +echo "${ECHO_T}Defaulting to $VIMNAME" >&6; }
 +fi
@@ -4266,13 +4208,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_ex_name"
 -  EXNAME="$withval"; echo "$as_me:$LINENO: result: $EXNAME" >&5
 -echo "${ECHO_T}$EXNAME" >&6
--else
++  withval=$with_ex_name; EXNAME="$withval"; { echo "$as_me:$LINENO: result: $EXNAME" >&5
++echo "${ECHO_T}$EXNAME" >&6; }
+ else
 -  EXNAME="ex"; echo "$as_me:$LINENO: result: Defaulting to ex" >&5
 -echo "${ECHO_T}Defaulting to ex" >&6
 -fi;
-+  withval=$with_ex_name; EXNAME="$withval"; { echo "$as_me:$LINENO: result: $EXNAME" >&5
-+echo "${ECHO_T}$EXNAME" >&6; }
-+else
 +  EXNAME="ex"; { echo "$as_me:$LINENO: result: Defaulting to ex" >&5
 +echo "${ECHO_T}Defaulting to ex" >&6; }
 +fi
@@ -4298,15 +4239,15 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +  VIEWNAME="view"; { echo "$as_me:$LINENO: result: Defaulting to view" >&5
 +echo "${ECHO_T}Defaulting to view" >&6; }
 +fi
++
  
  
 -echo "$as_me:$LINENO: checking --with-global-runtime argument" >&5
 -echo $ECHO_N "checking --with-global-runtime argument... $ECHO_C" >&6
- 
--# Check whether --with-global-runtime or --without-global-runtime was given.
 +{ echo "$as_me:$LINENO: checking --with-global-runtime argument" >&5
 +echo $ECHO_N "checking --with-global-runtime argument... $ECHO_C" >&6; }
-+
+ 
+-# Check whether --with-global-runtime or --without-global-runtime was given.
 +# Check whether --with-global-runtime was given.
  if test "${with_global_runtime+set}" = set; then
 -  withval="$with_global_runtime"
@@ -4349,16 +4290,16 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +  { echo "$as_me:$LINENO: result: no" >&5
 +echo "${ECHO_T}no" >&6; }
 +fi
++
  
 -echo "$as_me:$LINENO: checking if character set is EBCDIC" >&5
 -echo $ECHO_N "checking if character set is EBCDIC... $ECHO_C" >&6
-+
 +{ echo "$as_me:$LINENO: checking if character set is EBCDIC" >&5
 +echo $ECHO_N "checking if character set is EBCDIC... $ECHO_C" >&6; }
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -3527,41 +4073,37 @@
+@@ -3528,41 +4074,37 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -4416,7 +4357,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  case "$cf_cv_ebcdic" in  #(vi
      yes)	cat >>confdefs.h <<\_ACEOF
  #define EBCDIC 1
-@@ -3574,8 +4116,8 @@
+@@ -3575,8 +4117,8 @@
  
  
  if test "$cf_cv_ebcdic" = "yes"; then
@@ -4427,7 +4368,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  case `uname` in
      OS/390)	OS390Unix="yes";
  										if test "$CC" = "cc"; then
-@@ -3652,109 +4194,109 @@
+@@ -3741,109 +4283,109 @@
  _ACEOF
   dovimdiff="installvimdiff";
  			dogvimdiff="installgvimdiff" ;;
@@ -4451,13 +4392,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_compiledby"
 -  compiledby="$withval"; echo "$as_me:$LINENO: result: $withval" >&5
 -echo "${ECHO_T}$withval" >&6
--else
++  withval=$with_compiledby; compiledby="$withval"; { echo "$as_me:$LINENO: result: $withval" >&5
++echo "${ECHO_T}$withval" >&6; }
+ else
 -  compiledby=""; echo "$as_me:$LINENO: result: no" >&5
 -echo "${ECHO_T}no" >&6
 -fi;
-+  withval=$with_compiledby; compiledby="$withval"; { echo "$as_me:$LINENO: result: $withval" >&5
-+echo "${ECHO_T}$withval" >&6; }
-+else
 +  compiledby=""; { echo "$as_me:$LINENO: result: no" >&5
 +echo "${ECHO_T}no" >&6; }
 +fi
@@ -4556,13 +4496,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_plthome"
 -  with_plthome="$withval"; echo "$as_me:$LINENO: result: $with_plthome" >&5
 -echo "${ECHO_T}$with_plthome" >&6
--else
++  withval=$with_plthome; with_plthome="$withval"; { echo "$as_me:$LINENO: result: $with_plthome" >&5
++echo "${ECHO_T}$with_plthome" >&6; }
+ else
 -  with_plthome="";echo "$as_me:$LINENO: result: \"no\"" >&5
 -echo "${ECHO_T}\"no\"" >&6
 -fi;
-+  withval=$with_plthome; with_plthome="$withval"; { echo "$as_me:$LINENO: result: $with_plthome" >&5
-+echo "${ECHO_T}$with_plthome" >&6; }
-+else
 +  with_plthome="";{ echo "$as_me:$LINENO: result: \"no\"" >&5
 +echo "${ECHO_T}\"no\"" >&6; }
 +fi
@@ -4595,7 +4534,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_mzscheme+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -3769,28 +4311,29 @@
+@@ -3858,28 +4400,29 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -4631,7 +4570,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  			if test "X$vi_cv_path_mzscheme" != "X"; then
  	  lsout=`ls -l $vi_cv_path_mzscheme`
  	  if echo "$lsout" | grep -e '->' >/dev/null 2>/dev/null; then
-@@ -3799,8 +4342,8 @@
+@@ -3888,8 +4431,8 @@
  	fi
  
  	if test "X$vi_cv_path_mzscheme" != "X"; then
@@ -4642,7 +4581,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${vi_cv_path_mzscheme_pfx+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -3811,8 +4354,8 @@
+@@ -3900,8 +4443,8 @@
  		(lambda () (split-path (find-system-path (quote exec-file)))) \
  		(lambda (base name must-be-dir?) base)) (quote up))))"`
  fi
@@ -4653,7 +4592,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	    	    vi_cv_path_mzscheme_pfx=`echo "$vi_cv_path_mzscheme_pfx" | sed 's+/$++'`
  	fi
      fi
-@@ -3820,23 +4363,23 @@
+@@ -3909,23 +4452,23 @@
  
    SCHEME_INC=
    if test "X$vi_cv_path_mzscheme_pfx" != "X"; then
@@ -4689,7 +4628,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	vi_cv_path_mzscheme_pfx=
        fi
      fi
-@@ -3877,23 +4420,23 @@
+@@ -3966,23 +4509,23 @@
  fi
  
  
@@ -4723,7 +4662,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_perl+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -3908,30 +4451,31 @@
+@@ -3997,30 +4540,31 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -4763,7 +4702,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      if $vi_cv_path_perl -e 'require 5.003_01' >/dev/null 2>/dev/null; then
       eval `$vi_cv_path_perl -V:usethreads`
       if test "X$usethreads" = "XUNKNOWN" -o "X$usethreads" = "Xundef"; then
-@@ -3943,18 +4487,18 @@
+@@ -4032,18 +4576,18 @@
  	   badthreads=no
  	 else
  	   badthreads=yes
@@ -4788,7 +4727,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        eval `$vi_cv_path_perl -V:shrpenv`
        if test "X$shrpenv" = "XUNKNOWN"; then # pre 5.003_04
  	shrpenv=""
-@@ -3969,8 +4513,8 @@
+@@ -4058,8 +4602,8 @@
                    perlldflags=`cd $srcdir; $vi_cv_path_perl -MExtUtils::Embed \
  		-e 'ccdlflags' | sed -e 's/-bE:perl.exp//'`
  
@@ -4799,7 +4738,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        cflags_save=$CFLAGS
        libs_save=$LIBS
        ldflags_save=$LDFLAGS
-@@ -3993,37 +4537,34 @@
+@@ -4082,37 +4626,34 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -4855,7 +4794,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        conftest$ac_exeext conftest.$ac_ext
        CFLAGS=$cflags_save
        LIBS=$libs_save
-@@ -4046,8 +4587,8 @@
+@@ -4135,8 +4676,8 @@
        fi
       fi
      else
@@ -4866,7 +4805,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      fi
    fi
  
-@@ -4078,22 +4619,22 @@
+@@ -4167,22 +4708,22 @@
  
  
  
@@ -4899,7 +4838,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_python+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4108,31 +4649,32 @@
+@@ -4197,31 +4738,32 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -4940,7 +4879,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${vi_cv_var_python_version+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4140,19 +4682,19 @@
+@@ -4229,19 +4771,19 @@
  	    ${vi_cv_path_python} -c 'import sys; print sys.version[:3]'`
  
  fi
@@ -4968,7 +4907,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${vi_cv_path_python_pfx+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4160,11 +4702,11 @@
+@@ -4249,11 +4791,11 @@
  	    ${vi_cv_path_python} -c \
  		"import sys; print sys.prefix"`
  fi
@@ -4984,7 +4923,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${vi_cv_path_python_epfx+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4172,8 +4714,8 @@
+@@ -4261,8 +4803,8 @@
  	    ${vi_cv_path_python} -c \
  		"import sys; print sys.exec_prefix"`
  fi
@@ -4995,7 +4934,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  
        if test "${vi_cv_path_pythonpath+set}" = set; then
-@@ -4188,14 +4730,14 @@
+@@ -4277,14 +4819,14 @@
  
  
  
@@ -5016,7 +4955,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${vi_cv_path_python_conf+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4211,14 +4753,14 @@
+@@ -4300,14 +4842,14 @@
  	done
  
  fi
@@ -5035,7 +4974,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        else
  
  			if test "${vi_cv_path_python_plibs+set}" = set; then
-@@ -4268,8 +4810,8 @@
+@@ -4357,8 +4899,8 @@
  	fi
  	PYTHON_GETPATH_CFLAGS="-DPYTHONPATH='\"${vi_cv_path_pythonpath}\"' -DPREFIX='\"${vi_cv_path_python_pfx}\"' -DEXEC_PREFIX='\"${vi_cv_path_python_epfx}\"'"
  
@@ -5046,7 +4985,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	threadsafe_flag=
  	thread_lib=
  	        if test "`(uname) 2>/dev/null`" != Darwin; then
-@@ -4300,47 +4842,44 @@
+@@ -4389,47 +4931,44 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -5116,7 +5055,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	cflags_save=$CFLAGS
  	libs_save=$LIBS
  	CFLAGS="$CFLAGS $PYTHON_CFLAGS"
-@@ -4361,37 +4900,34 @@
+@@ -4450,37 +4989,34 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -5172,7 +5111,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        conftest$ac_exeext conftest.$ac_ext
  	CFLAGS=$cflags_save
  	LIBS=$libs_save
-@@ -4410,8 +4946,8 @@
+@@ -4499,8 +5035,8 @@
  
        fi
      else
@@ -5183,7 +5122,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      fi
    fi
  fi
-@@ -4422,36 +4958,36 @@
+@@ -4511,36 +5047,36 @@
  
  
  
@@ -5220,13 +5159,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_tclsh"
 -  tclsh_name="$withval"; echo "$as_me:$LINENO: result: $tclsh_name" >&5
 -echo "${ECHO_T}$tclsh_name" >&6
--else
++  withval=$with_tclsh; tclsh_name="$withval"; { echo "$as_me:$LINENO: result: $tclsh_name" >&5
++echo "${ECHO_T}$tclsh_name" >&6; }
+ else
 -  tclsh_name="tclsh8.5"; echo "$as_me:$LINENO: result: no" >&5
 -echo "${ECHO_T}no" >&6
 -fi;
-+  withval=$with_tclsh; tclsh_name="$withval"; { echo "$as_me:$LINENO: result: $tclsh_name" >&5
-+echo "${ECHO_T}$tclsh_name" >&6; }
-+else
 +  tclsh_name="tclsh8.5"; { echo "$as_me:$LINENO: result: no" >&5
 +echo "${ECHO_T}no" >&6; }
 +fi
@@ -5240,7 +5178,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_tcl+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4466,35 +5002,36 @@
+@@ -4555,35 +5091,36 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -5285,7 +5223,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_tcl+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4509,34 +5046,35 @@
+@@ -4598,34 +5135,35 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -5329,7 +5267,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_tcl+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4551,34 +5089,35 @@
+@@ -4640,34 +5178,35 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -5373,7 +5311,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_tcl+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4593,34 +5132,35 @@
+@@ -4682,34 +5221,35 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -5417,7 +5355,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_tcl+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4635,39 +5175,40 @@
+@@ -4724,39 +5264,40 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -5468,10 +5406,10 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +      { echo "$as_me:$LINENO: checking for location of Tcl include" >&5
 +echo $ECHO_N "checking for location of Tcl include... $ECHO_C" >&6; }
        if test "x$MACOSX" != "xyes"; then
- 	tclinc="$tclloc/include $tclloc/include/tcl $tclloc/include/tcl$tclver /usr/local/include /usr/include"
+ 	tclinc="$tclloc/include $tclloc/include/tcl $tclloc/include/tcl$tclver /usr/local/include /usr/include /usr/include/tcl$tclver"
        else
-@@ -4675,20 +5216,20 @@
-       fi
+@@ -4765,20 +5306,20 @@
+       TCL_INC=
        for try in $tclinc; do
  	if test -f "$try/tcl.h"; then
 -	  echo "$as_me:$LINENO: result: $try/tcl.h" >&5
@@ -5497,7 +5435,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	if test "x$MACOSX" != "xyes"; then
  	  tclcnf=`echo $tclinc | sed s/include/lib/g`
  	  tclcnf="$tclcnf `echo $tclinc | sed s/include/lib64/g`"
-@@ -4697,8 +5238,8 @@
+@@ -4787,8 +5328,8 @@
  	fi
  	for try in $tclcnf; do
  	  if test -f $try/tclConfig.sh; then
@@ -5508,7 +5446,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	    . $try/tclConfig.sh
  	    	    TCL_LIBS=`eval echo "$TCL_LIB_SPEC $TCL_LIBS"`
  	    	    	    TCL_DEFS=`echo $TCL_DEFS | sed -e 's/\\\\ /\\\\X/g' | tr ' ' '\012' | sed -e '/^-[^D]/d' -e '/-D[^_]/d' -e 's/-D_/ -D_/' | tr '\012' ' ' | sed -e 's/\\\\X/\\\\ /g'`
-@@ -4706,10 +5247,10 @@
+@@ -4796,10 +5337,10 @@
  	  fi
  	done
  	if test -z "$TCL_LIBS"; then
@@ -5523,7 +5461,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	  tcllib=`echo $tclinc | sed s/include/lib/g`
  	  tcllib="$tcllib `echo $tclinc | sed s/include/lib64/g`"
  	  for ext in .so .a ; do
-@@ -4717,8 +5258,8 @@
+@@ -4807,8 +5348,8 @@
  	      for try in $tcllib ; do
  		trylib=tcl$ver$ext
  		if test -f $try/lib$trylib ; then
@@ -5534,7 +5472,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  		  TCL_LIBS="-L$try -ltcl$ver -ldl -lm"
  		  if test "`(uname) 2>/dev/null`" = SunOS &&
  					 uname -r | grep '^5' >/dev/null; then
-@@ -4730,8 +5271,8 @@
+@@ -4820,8 +5361,8 @@
  	    done
  	  done
  	  if test -z "$TCL_LIBS"; then
@@ -5545,7 +5483,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	    SKIP_TCL=YES
  	  fi
  	fi
-@@ -4747,8 +5288,8 @@
+@@ -4837,8 +5378,8 @@
  	fi
        fi
      else
@@ -5556,7 +5494,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      fi
    fi
  fi
-@@ -4758,23 +5299,23 @@
+@@ -4848,23 +5389,23 @@
  
  
  
@@ -5590,7 +5528,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_vi_cv_path_ruby+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4789,39 +5330,40 @@
+@@ -4879,39 +5420,40 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -5645,7 +5583,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	RUBY_CFLAGS="-I$rubyhdrdir"
  	rubylibs=`$vi_cv_path_ruby -r rbconfig -e 'print Config::CONFIG["LIBS"]'`
  	if test "X$rubylibs" != "X"; then
-@@ -4856,12 +5398,12 @@
+@@ -4946,12 +5488,12 @@
  _ACEOF
  
        else
@@ -5662,7 +5600,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      fi
    fi
  fi
-@@ -4871,17 +5413,17 @@
+@@ -4961,17 +5503,17 @@
  
  
  
@@ -5688,7 +5626,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "$enable_cscope" = "yes"; then
    cat >>confdefs.h <<\_ACEOF
  #define FEAT_CSCOPE 1
-@@ -4889,17 +5431,17 @@
+@@ -4979,17 +5521,17 @@
  
  fi
  
@@ -5714,7 +5652,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "$enable_workshop" = "yes"; then
    cat >>confdefs.h <<\_ACEOF
  #define FEAT_SUN_WORKSHOP 1
-@@ -4914,21 +5456,21 @@
+@@ -5004,21 +5546,21 @@
    fi
  fi
  
@@ -5746,7 +5684,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_socket_socket+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -4941,56 +5483,53 @@
+@@ -5031,56 +5573,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -5824,7 +5762,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_socket_socket = yes; then
    cat >>confdefs.h <<_ACEOF
  #define HAVE_LIBSOCKET 1
-@@ -5001,8 +5540,8 @@
+@@ -5091,8 +5630,8 @@
  fi
  
  
@@ -5835,7 +5773,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_nsl_gethostbyname+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -5015,56 +5554,53 @@
+@@ -5105,56 +5644,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -5913,7 +5851,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_nsl_gethostbyname = yes; then
    cat >>confdefs.h <<_ACEOF
  #define HAVE_LIBNSL 1
-@@ -5074,8 +5610,8 @@
+@@ -5164,8 +5700,8 @@
  
  fi
  
@@ -5924,7 +5862,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -5115,41 +5651,38 @@
+@@ -5205,41 +5741,38 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -5986,7 +5924,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  if test "$enable_netbeans" = "yes"; then
    cat >>confdefs.h <<\_ACEOF
-@@ -5162,17 +5695,17 @@
+@@ -5252,17 +5785,17 @@
  
  fi
  
@@ -6012,7 +5950,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "$enable_sniff" = "yes"; then
    cat >>confdefs.h <<\_ACEOF
  #define FEAT_SNIFF 1
-@@ -5184,17 +5717,17 @@
+@@ -5274,17 +5807,17 @@
  
  fi
  
@@ -6038,7 +5976,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "$enable_multibyte" = "yes"; then
    cat >>confdefs.h <<\_ACEOF
  #define FEAT_MBYTE 1
-@@ -5202,53 +5735,53 @@
+@@ -5292,53 +5825,53 @@
  
  fi
  
@@ -6057,12 +5995,11 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -fi;
 -echo "$as_me:$LINENO: result: $enable_hangulinput" >&5
 -echo "${ECHO_T}$enable_hangulinput" >&6
--
++fi
+ 
 -echo "$as_me:$LINENO: checking --enable-xim argument" >&5
 -echo $ECHO_N "checking --enable-xim argument... $ECHO_C" >&6
 -# Check whether --enable-xim or --disable-xim was given.
-+fi
-+
 +{ echo "$as_me:$LINENO: result: $enable_hangulinput" >&5
 +echo "${ECHO_T}$enable_hangulinput" >&6; }
 +
@@ -6073,23 +6010,21 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  enableval="$enable_xim"
 -  echo "$as_me:$LINENO: result: $enable_xim" >&5
 -echo "${ECHO_T}$enable_xim" >&6
--else
++  enableval=$enable_xim; { echo "$as_me:$LINENO: result: $enable_xim" >&5
++echo "${ECHO_T}$enable_xim" >&6; }
+ else
 -  enable_xim="auto"; echo "$as_me:$LINENO: result: defaulting to auto" >&5
 -echo "${ECHO_T}defaulting to auto" >&6
 -fi;
--
++  enable_xim="auto"; { echo "$as_me:$LINENO: result: defaulting to auto" >&5
++echo "${ECHO_T}defaulting to auto" >&6; }
++fi
+ 
 -echo "$as_me:$LINENO: checking --enable-fontset argument" >&5
 -echo $ECHO_N "checking --enable-fontset argument... $ECHO_C" >&6
 -# Check whether --enable-fontset or --disable-fontset was given.
 -if test "${enable_fontset+set}" = set; then
 -  enableval="$enable_fontset"
-+  enableval=$enable_xim; { echo "$as_me:$LINENO: result: $enable_xim" >&5
-+echo "${ECHO_T}$enable_xim" >&6; }
-+else
-+  enable_xim="auto"; { echo "$as_me:$LINENO: result: defaulting to auto" >&5
-+echo "${ECHO_T}defaulting to auto" >&6; }
-+fi
-+
  
 +{ echo "$as_me:$LINENO: checking --enable-fontset argument" >&5
 +echo $ECHO_N "checking --enable-fontset argument... $ECHO_C" >&6; }
@@ -6124,7 +6059,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_xmkmfpath+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -5263,66 +5796,72 @@
+@@ -5353,66 +5886,72 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -6158,12 +6093,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
 -  echo "$as_me:$LINENO: checking for X" >&5
 -echo $ECHO_N "checking for X... $ECHO_C" >&6
- 
++
 +  { echo "$as_me:$LINENO: checking for X" >&5
 +echo $ECHO_N "checking for X... $ECHO_C" >&6; }
  
+ 
 -# Check whether --with-x or --without-x was given.
-+
 +# Check whether --with-x was given.
  if test "${with_x+set}" = set; then
 -  withval="$with_x"
@@ -6221,7 +6156,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	ac_im_usrlibdir=$ac_im_libdir; break
        fi
      done
-@@ -5330,7 +5869,7 @@
+@@ -5420,7 +5959,7 @@
      # bogus both because they are the default anyway, and because
      # using them would break gcc on systems where it needs fixed includes.
      case $ac_im_incroot in
@@ -6230,7 +6165,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	*) test -f "$ac_im_incroot/X11/Xos.h" && ac_x_includes=$ac_im_incroot;;
      esac
      case $ac_im_usrlibdir in
-@@ -5339,7 +5878,7 @@
+@@ -5429,7 +5968,7 @@
      esac
    fi
    cd ..
@@ -6239,7 +6174,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  
  # Standard set of common directories for X headers.
-@@ -5380,7 +5919,7 @@
+@@ -5470,7 +6009,7 @@
  /usr/openwin/share/include'
  
  if test "$ac_x_includes" = no; then
@@ -6248,7 +6183,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    # First, try using that file with no special directory specified.
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -5388,26 +5927,24 @@
+@@ -5478,26 +6017,24 @@
  cat confdefs.h >>conftest.$ac_ext
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
@@ -6287,7 +6222,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    # We can compile using X headers with no special include directory.
  ac_x_includes=
  else
-@@ -5415,12 +5952,13 @@
+@@ -5505,12 +6042,13 @@
  sed 's/^/| /' conftest.$ac_ext >&5
  
    for ac_dir in $ac_x_header_dirs; do
@@ -6302,7 +6237,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  rm -f conftest.err conftest.$ac_ext
  fi # $ac_x_includes = no
  
-@@ -5429,44 +5967,40 @@
+@@ -5519,44 +6057,40 @@
    # See if we find them without any special options.
    # Don't add to $LIBS permanently.
    ac_save_LIBS=$LIBS
@@ -6362,7 +6297,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    LIBS=$ac_save_LIBS
  # We can link X programs with no special library path.
  ac_x_libraries=
-@@ -5474,49 +6008,54 @@
+@@ -5564,49 +6098,54 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -6436,7 +6371,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  
  if test "$no_x" = yes; then
-@@ -5537,12 +6076,12 @@
+@@ -5627,12 +6166,12 @@
      X_LIBS="$X_LIBS -L$x_libraries"
      # For Solaris; some versions of Sun CC require a space after -R and
      # others require no space.  Words are not sufficient . . . .
@@ -6455,7 +6390,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  /* confdefs.h.  */
  _ACEOF
  cat confdefs.h >>conftest.$ac_ext
-@@ -5558,43 +6097,32 @@
+@@ -5648,43 +6187,32 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -6515,7 +6450,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  /* confdefs.h.  */
  _ACEOF
  cat confdefs.h >>conftest.$ac_ext
-@@ -5610,47 +6138,42 @@
+@@ -5700,47 +6228,42 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -6563,10 +6498,6 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -ac_R_space=no
 +	{ echo "$as_me:$LINENO: result: neither works" >&5
 +echo "${ECHO_T}neither works" >&6; }
-+fi
-+
-+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-+      conftest$ac_exeext conftest.$ac_ext
  fi
 -rm -f conftest.err conftest.$ac_objext \
 +
@@ -6583,12 +6514,16 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -      fi
 -      LIBS=$ac_xsave_LIBS
 -    esac
++fi
++
++rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
++      conftest$ac_exeext conftest.$ac_ext
 +    ac_c_werror_flag=$ac_xsave_c_werror_flag
 +    LIBS=$ac_xsave_LIBS
    fi
  
    # Check for system-dependent libraries X programs must link with.
-@@ -5671,50 +6194,46 @@
+@@ -5761,50 +6284,46 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -6657,7 +6592,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_dnet_dnet_ntoa+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -5727,63 +6246,60 @@
+@@ -5817,63 +6336,60 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -6744,7 +6679,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_dnet_stub_dnet_ntoa+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -5796,63 +6312,61 @@
+@@ -5886,63 +6402,61 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -6831,7 +6766,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        conftest$ac_exeext conftest.$ac_ext
      LIBS="$ac_xsave_LIBS"
  
-@@ -5864,8 +6378,8 @@
+@@ -5954,8 +6468,8 @@
      # on Irix 5.2, according to T.E. Dickey.
      # The functions gethostbyname, getservbyname, and inet_addr are
      # in -lbsd on LynxOS 3.0.1/i386, according to Lars Hecking.
@@ -6842,7 +6777,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_func_gethostbyname+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -5892,72 +6406,63 @@
+@@ -5982,72 +6496,63 @@
  
  #undef gethostbyname
  
@@ -6939,7 +6874,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_nsl_gethostbyname+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -5970,63 +6475,60 @@
+@@ -6060,63 +6565,60 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -7026,7 +6961,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_bsd_gethostbyname+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6039,56 +6541,53 @@
+@@ -6129,56 +6631,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -7104,7 +7039,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_bsd_gethostbyname = yes; then
    X_EXTRA_LIBS="$X_EXTRA_LIBS -lbsd"
  fi
-@@ -6103,8 +6602,8 @@
+@@ -6193,8 +6692,8 @@
      # variants that don't use the name server (or something).  -lsocket
      # must be given before -lnsl if both are needed.  We assume that
      # if connect needs -lnsl, so does gethostbyname.
@@ -7115,7 +7050,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_func_connect+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6131,72 +6630,63 @@
+@@ -6221,72 +6720,63 @@
  
  #undef connect
  
@@ -7212,7 +7147,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_socket_connect+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6209,56 +6699,53 @@
+@@ -6299,56 +6789,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -7290,7 +7225,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_socket_connect = yes; then
    X_EXTRA_LIBS="-lsocket $X_EXTRA_LIBS"
  fi
-@@ -6266,8 +6753,8 @@
+@@ -6356,8 +6843,8 @@
      fi
  
      # Guillermo Gomez says -lposix is necessary on A/UX.
@@ -7301,7 +7236,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_func_remove+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6294,72 +6781,63 @@
+@@ -6384,72 +6871,63 @@
  
  #undef remove
  
@@ -7398,7 +7333,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_posix_remove+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6372,56 +6850,53 @@
+@@ -6462,56 +6940,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -7476,7 +7411,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_posix_remove = yes; then
    X_EXTRA_LIBS="$X_EXTRA_LIBS -lposix"
  fi
-@@ -6429,8 +6904,8 @@
+@@ -6519,8 +6994,8 @@
      fi
  
      # BSDI BSD/OS 2.1 needs -lipc for XOpenDisplay.
@@ -7487,7 +7422,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_func_shmat+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6457,72 +6932,63 @@
+@@ -6547,72 +7022,63 @@
  
  #undef shmat
  
@@ -7584,7 +7519,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_ipc_shmat+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6535,56 +7001,53 @@
+@@ -6625,56 +7091,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -7662,7 +7597,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_ipc_shmat = yes; then
    X_EXTRA_LIBS="$X_EXTRA_LIBS -lipc"
  fi
-@@ -6601,8 +7064,8 @@
+@@ -6691,8 +7154,8 @@
    # These have to be linked with before -lX11, unlike the other
    # libraries we check for below, so use a different variable.
    # John Interrante, Karl Berry
@@ -7673,7 +7608,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_ICE_IceConnectionNumber+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6615,56 +7078,53 @@
+@@ -6705,56 +7168,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -7751,7 +7686,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_ICE_IceConnectionNumber = yes; then
    X_PRE_LIBS="$X_PRE_LIBS -lSM -lICE"
  fi
-@@ -6683,8 +7143,8 @@
+@@ -6773,8 +7233,8 @@
  
    if test -d "$x_includes" && test ! -d "$x_libraries"; then
      x_libraries=`echo "$x_includes" | sed s/include/lib/`
@@ -7762,7 +7697,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      X_LIBS="$X_LIBS -L$x_libraries"
      if test "`(uname) 2>/dev/null`" = SunOS &&
  					 uname -r | grep '^5' >/dev/null; then
-@@ -6694,8 +7154,8 @@
+@@ -6784,8 +7244,8 @@
  
    if test -d "$x_libraries" && test ! -d "$x_includes"; then
      x_includes=`echo "$x_libraries" | sed s/lib/include/`
@@ -7773,7 +7708,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      X_CFLAGS="$X_CFLAGS -I$x_includes"
    fi
  
-@@ -6704,8 +7164,8 @@
+@@ -6794,8 +7254,8 @@
      X_LIBS="`echo $X_LIBS\  | sed -e 's%-R/usr/lib %%' -e 's%-R /usr/lib %%'`"
  
  
@@ -7784,7 +7719,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cflags_save=$CFLAGS
    CFLAGS="$CFLAGS $X_CFLAGS"
    cat >conftest.$ac_ext <<_ACEOF
-@@ -6724,37 +7184,33 @@
+@@ -6814,37 +7274,33 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -7839,7 +7774,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    CFLAGS=$cflags_save
  
    if test "${no_x-no}" = yes; then
-@@ -6770,8 +7226,8 @@
+@@ -6860,8 +7316,8 @@
      ac_save_LDFLAGS="$LDFLAGS"
      LDFLAGS="-L$x_libraries $LDFLAGS"
  
@@ -7850,7 +7785,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_Xdmcp__XdmcpAuthDoIt+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6784,63 +7240,60 @@
+@@ -6874,63 +7330,60 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -7937,7 +7872,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_ICE_IceOpenConnection+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6853,64 +7306,61 @@
+@@ -6943,64 +7396,61 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -8025,7 +7960,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_Xpm_XpmCreatePixmapFromData+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -6923,63 +7373,60 @@
+@@ -7013,63 +7463,60 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -8112,7 +8047,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      cflags_save=$CFLAGS
      CFLAGS="$CFLAGS $X_CFLAGS -Werror"
      cat >conftest.$ac_ext <<_ACEOF
-@@ -6998,34 +7445,29 @@
+@@ -7088,34 +7535,29 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -8161,7 +8096,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -7042,41 +7484,38 @@
+@@ -7132,41 +7574,38 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -8222,7 +8157,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      CFLAGS=$cflags_save
  
      LDFLAGS="$ac_save_LDFLAGS"
-@@ -7086,15 +7525,15 @@
+@@ -7176,15 +7615,15 @@
  
  test "x$with_x" = xno -a "x$MACOSX" != "xyes" -a "x$QNX" != "xyes" && enable_gui=no
  
@@ -8244,7 +8179,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  enable_gui_canon=`echo "_$enable_gui" | \
  	sed 's/[ _+-]//g;y/ABCDEFGHIJKLMNOPQRSTUVWXYZ/abcdefghijklmnopqrstuvwxyz/'`
-@@ -7112,44 +7551,44 @@
+@@ -7202,44 +7641,44 @@
  if test "x$QNX" = "xyes" -a "x$with_x" = "xno" ; then
    SKIP_PHOTON=
    case "$enable_gui_canon" in
@@ -8313,7 +8248,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  		SKIP_GTK=
  		SKIP_GTK2=
  		SKIP_GNOME=
-@@ -7157,49 +7596,49 @@
+@@ -7247,49 +7686,49 @@
  		SKIP_ATHENA=
  		SKIP_NEXTAW=
  		SKIP_CARBON=;;
@@ -8387,7 +8322,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    if test "x$enable_gtk_check" = "xno"; then
      SKIP_GTK=YES
      SKIP_GNOME=YES
-@@ -7208,17 +7647,17 @@
+@@ -7298,17 +7737,17 @@
  
  if test "x$SKIP_GTK2" != "xYES" -a "$enable_gui_canon" != "gtk2" \
  				-a "$enable_gui_canon" != "gnome2"; then
@@ -8413,7 +8348,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    if test "x$enable_gtk2_check" = "xno"; then
      SKIP_GTK2=YES
    fi
-@@ -7226,85 +7665,85 @@
+@@ -7316,85 +7755,85 @@
  
  if test "x$SKIP_GNOME" != "xYES" -a "$enable_gui_canon" != "gnome" \
  				 -a "$enable_gui_canon" != "gnome2"; then
@@ -8539,7 +8474,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    if test "x$enable_carbon_check" = "xno"; then
      SKIP_CARBON=YES
    fi
-@@ -7312,10 +7751,10 @@
+@@ -7402,10 +7841,10 @@
  
  
  if test "x$MACOSX" = "xyes" -a -z "$SKIP_CARBON" -a "x$CARBON" = "xyes"; then
@@ -8554,7 +8489,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    GUITYPE=CARBONGUI
    if test "$VIMNAME" = "vim"; then
      VIMNAME=Vim
-@@ -7347,47 +7786,47 @@
+@@ -7437,47 +7876,47 @@
  
  if test -z "$SKIP_GTK"; then
  
@@ -8569,13 +8504,12 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_gtk_prefix"
 -  gtk_config_prefix="$withval"; echo "$as_me:$LINENO: result: $gtk_config_prefix" >&5
 -echo "${ECHO_T}$gtk_config_prefix" >&6
--else
++  withval=$with_gtk_prefix; gtk_config_prefix="$withval"; { echo "$as_me:$LINENO: result: $gtk_config_prefix" >&5
++echo "${ECHO_T}$gtk_config_prefix" >&6; }
+ else
 -  gtk_config_prefix=""; echo "$as_me:$LINENO: result: no" >&5
 -echo "${ECHO_T}no" >&6
 -fi;
-+  withval=$with_gtk_prefix; gtk_config_prefix="$withval"; { echo "$as_me:$LINENO: result: $gtk_config_prefix" >&5
-+echo "${ECHO_T}$gtk_config_prefix" >&6; }
-+else
 +  gtk_config_prefix=""; { echo "$as_me:$LINENO: result: no" >&5
 +echo "${ECHO_T}no" >&6; }
 +fi
@@ -8592,23 +8526,21 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_gtk_exec_prefix"
 -  gtk_config_exec_prefix="$withval"; echo "$as_me:$LINENO: result: $gtk_config_prefix" >&5
 -echo "${ECHO_T}$gtk_config_prefix" >&6
--else
++  withval=$with_gtk_exec_prefix; gtk_config_exec_prefix="$withval"; { echo "$as_me:$LINENO: result: $gtk_config_prefix" >&5
++echo "${ECHO_T}$gtk_config_prefix" >&6; }
+ else
 -  gtk_config_exec_prefix=""; echo "$as_me:$LINENO: result: no" >&5
 -echo "${ECHO_T}no" >&6
 -fi;
--
++  gtk_config_exec_prefix=""; { echo "$as_me:$LINENO: result: no" >&5
++echo "${ECHO_T}no" >&6; }
++fi
+ 
 -  echo "$as_me:$LINENO: checking --disable-gtktest argument" >&5
 -echo $ECHO_N "checking --disable-gtktest argument... $ECHO_C" >&6
 -  # Check whether --enable-gtktest or --disable-gtktest was given.
 -if test "${enable_gtktest+set}" = set; then
 -  enableval="$enable_gtktest"
-+  withval=$with_gtk_exec_prefix; gtk_config_exec_prefix="$withval"; { echo "$as_me:$LINENO: result: $gtk_config_prefix" >&5
-+echo "${ECHO_T}$gtk_config_prefix" >&6; }
-+else
-+  gtk_config_exec_prefix=""; { echo "$as_me:$LINENO: result: no" >&5
-+echo "${ECHO_T}no" >&6; }
-+fi
-+
  
 +  { echo "$as_me:$LINENO: checking --disable-gtktest argument" >&5
 +echo $ECHO_N "checking --disable-gtktest argument... $ECHO_C" >&6; }
@@ -8633,7 +8565,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    fi
  
    if test "x$gtk_config_prefix" != "x" ; then
-@@ -7401,8 +7840,8 @@
+@@ -7491,8 +7930,8 @@
    if test "X$GTK_CONFIG" = "X"; then
      # Extract the first word of "gtk-config", so it can be a program name with args.
  set dummy gtk-config; ac_word=$2
@@ -8644,7 +8576,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_GTK_CONFIG+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -7417,33 +7856,34 @@
+@@ -7507,33 +7946,34 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -8687,7 +8619,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_GTK12_CONFIG+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -7458,39 +7898,40 @@
+@@ -7548,39 +7988,40 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -8738,7 +8670,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_PKG_CONFIG+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -7505,28 +7946,29 @@
+@@ -7595,28 +8036,29 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -8774,7 +8706,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    fi
  
    if test "x$GTK_CONFIG:$PKG_CONFIG" != "xno:no"; then
-@@ -7535,8 +7977,8 @@
+@@ -7625,8 +8067,8 @@
    if test "X$GTK_CONFIG" != "Xno" -o "X$PKG_CONFIG" != "Xno"; then
    {
      min_gtk_version=2.2.0
@@ -8785,7 +8717,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      no_gtk=""
      if (test "X$SKIP_GTK2" != "XYES" -a "X$PKG_CONFIG" != "Xno") \
  	  && $PKG_CONFIG --exists gtk+-2.0; then
-@@ -7615,13 +8057,22 @@
+@@ -7705,13 +8147,22 @@
  
  _ACEOF
  rm -f conftest$ac_exeext
@@ -8812,7 +8744,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }; }; then
-@@ -7634,27 +8085,29 @@
+@@ -7724,27 +8175,29 @@
  ( exit $ac_status )
  no_gtk=yes
  fi
@@ -8849,7 +8781,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        GTK_CFLAGS=""
        GTK_LIBS=""
        :
-@@ -7685,8 +8138,8 @@
+@@ -7775,8 +8228,8 @@
    if test "X$GTK_CONFIG" != "Xno" -o "X$PKG_CONFIG" != "Xno"; then
    {
      min_gtk_version=1.1.16
@@ -8860,7 +8792,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      no_gtk=""
      if (test "X$SKIP_GTK2" != "XYES" -a "X$PKG_CONFIG" != "Xno") \
  	  && $PKG_CONFIG --exists gtk+-2.0; then
-@@ -7765,13 +8218,22 @@
+@@ -7855,13 +8308,22 @@
  
  _ACEOF
  rm -f conftest$ac_exeext
@@ -8887,7 +8819,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }; }; then
-@@ -7784,26 +8246,28 @@
+@@ -7874,26 +8336,28 @@
  ( exit $ac_status )
  no_gtk=yes
  fi
@@ -8923,7 +8855,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        GTK_CFLAGS=""
        GTK_LIBS=""
        :
-@@ -7831,8 +8295,8 @@
+@@ -7921,8 +8385,8 @@
      if test "x$GUITYPE" = "xGTK"; then
      if test "$gtk_major_version" = 1 -a "0$gtk_minor_version" -lt 2 \
  	 -o "$gtk_major_version" = 1 -a "$gtk_minor_version" = 2 -a "0$gtk_micro_version" -lt 3; then
@@ -8934,7 +8866,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      else
      {
        if test "0$gtk_major_version" -ge 2; then
-@@ -7857,26 +8321,25 @@
+@@ -7947,26 +8411,25 @@
  
  
  
@@ -8944,13 +8876,13 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  withval="$with_gnome_includes"
 -  CFLAGS="$CFLAGS -I$withval"
 +  withval=$with_gnome_includes; CFLAGS="$CFLAGS -I$withval"
-+
-+fi
  
 -fi;
++fi
  
  
 -# Check whether --with-gnome-libs or --without-gnome-libs was given.
++
 +# Check whether --with-gnome-libs was given.
  if test "${with_gnome_libs+set}" = set; then
 -  withval="$with_gnome_libs"
@@ -8971,7 +8903,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        want_gnome=yes
        have_gnome=yes
      else
-@@ -7891,34 +8354,35 @@
+@@ -7981,34 +8444,35 @@
      fi
  else
    want_gnome=yes
@@ -9020,7 +8952,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        if test "x" = xfail; then
  	{ { echo "$as_me:$LINENO: error: Could not find libgnomeui-2.0 via pkg-config" >&5
  echo "$as_me: error: Could not find libgnomeui-2.0 via pkg-config" >&2;}
-@@ -7930,8 +8394,8 @@
+@@ -8020,8 +8484,8 @@
    {
      # Extract the first word of "gnome-config", so it can be a program name with args.
  set dummy gnome-config; ac_word=$2
@@ -9031,7 +8963,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_path_GNOME_CONFIG+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -7946,43 +8410,44 @@
+@@ -8036,43 +8500,44 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -9088,7 +9020,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	no_gnome_config="yes"
        fi
      fi
-@@ -7998,18 +8463,18 @@
+@@ -8088,18 +8553,18 @@
      fi
  
      if test "$no_gnome_config" = "yes"; then
@@ -9113,7 +9045,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	if test x = xfail; then
  	  { { echo "$as_me:$LINENO: error: Could not find the gnomeConf.sh file that is generated by gnome-libs install" >&5
  echo "$as_me: error: Could not find the gnomeConf.sh file that is generated by gnome-libs install" >&2;}
-@@ -8040,8 +8505,8 @@
+@@ -8130,8 +8595,8 @@
    gui_XXX="/usr/XXX/Motif* /usr/Motif*/XXX /usr/XXX /usr/shlib /usr/X11*/XXX /usr/XXX/X11* /usr/dt/XXX /local/Motif*/XXX /local/XXX/Motif* /usr/local/Motif*/XXX /usr/local/XXX/Motif* /usr/local/XXX /usr/local/X11*/XXX /usr/local/LessTif/Motif*/XXX $MOTIFHOME/XXX"
      GUI_INC_LOC="`echo $GUI_INC_LOC|sed 's%-I%%g'`"
  
@@ -9124,7 +9056,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    gui_includes="`echo $x_includes|sed 's%/^/^/*$%%'` `echo "$gui_XXX" | sed s/XXX/include/g` $GUI_INC_LOC"
    GUI_INC_LOC=
    for try in $gui_includes; do
-@@ -8052,42 +8517,42 @@
+@@ -8142,42 +8607,42 @@
    if test -n "$GUI_INC_LOC"; then
      if test "$GUI_INC_LOC" = /usr/include; then
        GUI_INC_LOC=
@@ -9185,7 +9117,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      gui_libs="`echo $x_libraries|sed 's%/^/^/*$%%'` `echo "$gui_XXX" | sed s/XXX/lib/g` `echo "$GUI_INC_LOC" | sed s/include/lib/` $GUI_LIB_LOC"
      GUI_LIB_LOC=
      for try in $gui_libs; do
-@@ -8100,12 +8565,12 @@
+@@ -8190,12 +8655,12 @@
      if test -n "$GUI_LIB_LOC"; then
              if test "$GUI_LIB_LOC" = /usr/lib; then
  	GUI_LIB_LOC=
@@ -9202,7 +9134,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	  if test "`(uname) 2>/dev/null`" = SunOS &&
  					 uname -r | grep '^5' >/dev/null; then
  	    GUI_LIB_LOC="$GUI_LIB_LOC -R $GUI_LIB_LOC"
-@@ -8114,8 +8579,8 @@
+@@ -8204,8 +8669,8 @@
        fi
        MOTIF_LIBNAME=-lXm
      else
@@ -9213,7 +9145,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        SKIP_MOTIF=YES
      fi
    fi
-@@ -8132,8 +8597,8 @@
+@@ -8222,8 +8687,8 @@
  GUI_X_LIBS=
  
  if test -z "$SKIP_ATHENA"; then
@@ -9224,7 +9156,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cflags_save=$CFLAGS
    CFLAGS="$CFLAGS $X_CFLAGS"
    cat >conftest.$ac_ext <<_ACEOF
-@@ -8154,37 +8619,33 @@
+@@ -8244,37 +8709,33 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -9279,7 +9211,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    CFLAGS=$cflags_save
  fi
  
-@@ -8193,8 +8654,8 @@
+@@ -8283,8 +8744,8 @@
  fi
  
  if test -z "$SKIP_NEXTAW"; then
@@ -9290,7 +9222,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cflags_save=$CFLAGS
    CFLAGS="$CFLAGS $X_CFLAGS"
    cat >conftest.$ac_ext <<_ACEOF
-@@ -8215,37 +8676,33 @@
+@@ -8305,37 +8766,33 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -9345,7 +9277,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    CFLAGS=$cflags_save
  fi
  
-@@ -8263,8 +8720,8 @@
+@@ -8353,8 +8810,8 @@
  
      ldflags_save=$LDFLAGS
    LDFLAGS="$X_LIBS $LDFLAGS"
@@ -9356,7 +9288,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_Xext_XShapeQueryExtension+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -8277,62 +8734,59 @@
+@@ -8367,62 +8824,59 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -9442,7 +9374,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_w_wslen+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -8345,62 +8799,59 @@
+@@ -8435,62 +8889,59 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -9528,7 +9460,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_dl_dlsym+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -8413,62 +8864,59 @@
+@@ -8503,62 +8954,59 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -9614,7 +9546,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_Xmu_XmuCreateStippledPixmap+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -8481,63 +8929,60 @@
+@@ -8571,63 +9019,60 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -9701,7 +9633,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_Xp_XpEndJob+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -8550,56 +8995,53 @@
+@@ -8640,56 +9085,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -9779,7 +9711,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_Xp_XpEndJob = yes; then
    GUI_X_LIBS="-lXp $GUI_X_LIBS"
  fi
-@@ -8607,8 +9049,8 @@
+@@ -8697,8 +9139,8 @@
    fi
    LDFLAGS=$ldflags_save
  
@@ -9790,7 +9722,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    NARROW_PROTO=
    rm -fr conftestdir
    if mkdir conftestdir; then
-@@ -8624,11 +9066,11 @@
+@@ -8714,11 +9156,11 @@
      rm -fr conftestdir
    fi
    if test -z "$NARROW_PROTO"; then
@@ -9806,7 +9738,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    fi
  
  fi
-@@ -8640,18 +9082,19 @@
+@@ -8730,18 +9172,19 @@
  for ac_header in X11/SM/SMlib.h
  do
  as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
@@ -9834,7 +9766,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -8662,41 +9105,37 @@
+@@ -8752,41 +9195,37 @@
  #include <$ac_header>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -9894,7 +9826,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -8705,24 +9144,22 @@
+@@ -8795,24 +9234,22 @@
  /* end confdefs.h.  */
  #include <$ac_header>
  _ACEOF
@@ -9930,7 +9862,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -8730,9 +9167,10 @@
+@@ -8820,9 +9257,10 @@
  
    ac_header_preproc=no
  fi
@@ -9943,7 +9875,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -8756,25 +9194,19 @@
+@@ -8846,25 +9284,19 @@
  echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
@@ -9976,7 +9908,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
-@@ -8798,18 +9230,19 @@
+@@ -8888,18 +9320,19 @@
  for ac_header in X11/xpm.h X11/Sunkeysym.h
  do
  as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
@@ -10004,7 +9936,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -8820,41 +9253,37 @@
+@@ -8910,41 +9343,37 @@
  #include <$ac_header>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -10064,7 +9996,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -8863,24 +9292,22 @@
+@@ -8953,24 +9382,22 @@
  /* end confdefs.h.  */
  #include <$ac_header>
  _ACEOF
@@ -10100,7 +10032,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -8888,9 +9315,10 @@
+@@ -8978,9 +9405,10 @@
  
    ac_header_preproc=no
  fi
@@ -10113,7 +10045,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -8914,25 +9342,19 @@
+@@ -9004,25 +9432,19 @@
  echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
@@ -10146,7 +10078,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
-@@ -8946,8 +9368,8 @@
+@@ -9036,8 +9458,8 @@
  
  
      if test ! "$enable_xim" = "no"; then
@@ -10157,7 +10089,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -8958,11 +9380,11 @@
+@@ -9048,11 +9470,11 @@
  _ACEOF
  if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
    $EGREP "XIMText" >/dev/null 2>&1; then
@@ -10173,7 +10105,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  rm -f conftest*
  
-@@ -8971,8 +9393,8 @@
+@@ -9061,8 +9483,8 @@
  
      if test "$enable_xim" = "auto" -a "$enable_hangulinput" != "yes" \
  		-a "x$GUITYPE" != "xNONE" ; then
@@ -10184,7 +10116,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      enable_xim="yes"
    fi
  fi
-@@ -8980,8 +9402,8 @@
+@@ -9070,8 +9492,8 @@
  if test -z "$SKIP_ATHENA" -o -z "$SKIP_NEXTAW" -o -z "$SKIP_MOTIF"; then
    cppflags_save=$CPPFLAGS
    CPPFLAGS="$CPPFLAGS $X_CFLAGS"
@@ -10195,7 +10127,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9000,29 +9422,24 @@
+@@ -9090,29 +9512,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -10238,7 +10170,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  		      cat >>confdefs.h <<\_ACEOF
  #define HAVE_X11_XMU_EDITRES_H 1
  _ACEOF
-@@ -9031,10 +9448,11 @@
+@@ -9121,10 +9538,11 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -10253,7 +10185,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    CPPFLAGS=$cppflags_save
  fi
  
-@@ -9052,18 +9470,19 @@
+@@ -9142,18 +9560,19 @@
  		   Xm/UnhighlightT.h Xm/Notebook.h
  do
  as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
@@ -10281,7 +10213,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9074,41 +9493,37 @@
+@@ -9164,41 +9583,37 @@
  #include <$ac_header>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -10341,7 +10273,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9117,24 +9532,22 @@
+@@ -9207,24 +9622,22 @@
  /* end confdefs.h.  */
  #include <$ac_header>
  _ACEOF
@@ -10377,7 +10309,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -9142,9 +9555,10 @@
+@@ -9232,9 +9645,10 @@
  
    ac_header_preproc=no
  fi
@@ -10390,7 +10322,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -9168,25 +9582,19 @@
+@@ -9258,25 +9672,19 @@
  echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
@@ -10423,7 +10355,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
-@@ -9200,8 +9608,8 @@
+@@ -9290,8 +9698,8 @@
  
  
    if test $ac_cv_header_Xm_XpmP_h = yes; then
@@ -10434,7 +10366,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9218,29 +9626,24 @@
+@@ -9308,29 +9716,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -10477,7 +10409,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define XPMATTRIBUTES_TYPE XpmAttributes_21
  _ACEOF
  
-@@ -9248,14 +9651,15 @@
+@@ -9338,14 +9741,15 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -10496,7 +10428,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    else
      cat >>confdefs.h <<\_ACEOF
  #define XPMATTRIBUTES_TYPE XpmAttributes
-@@ -9266,18 +9670,18 @@
+@@ -9356,18 +9760,18 @@
  fi
  
  if test "x$GUITYPE" = "xNONE" -a "$enable_xim" = "yes"; then
@@ -10521,7 +10453,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    enable_fontset="no"
  fi
  
-@@ -9314,8 +9718,8 @@
+@@ -9404,8 +9808,8 @@
  
  if test "$enable_hangulinput" = "yes"; then
    if test "x$GUITYPE" = "xNONE"; then
@@ -10532,7 +10464,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      enable_hangulinput=no
    else
      cat >>confdefs.h <<\_ACEOF
-@@ -9330,115 +9734,33 @@
+@@ -9420,115 +9824,33 @@
  fi
  
  
@@ -10665,7 +10597,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9449,41 +9771,37 @@
+@@ -9539,41 +9861,37 @@
  #include <elf.h>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -10725,7 +10657,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9492,24 +9810,22 @@
+@@ -9582,24 +9900,22 @@
  /* end confdefs.h.  */
  #include <elf.h>
  _ACEOF
@@ -10761,7 +10693,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -9517,9 +9833,10 @@
+@@ -9607,9 +9923,10 @@
  
    ac_header_preproc=no
  fi
@@ -10774,7 +10706,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -9543,25 +9860,18 @@
+@@ -9633,25 +9950,18 @@
  echo "$as_me: WARNING: elf.h: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: elf.h: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: elf.h: in the future, the compiler will take precedence" >&2;}
@@ -10805,7 +10737,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test $ac_cv_header_elf_h = yes; then
-@@ -9571,8 +9881,8 @@
+@@ -9661,8 +9971,8 @@
  
  if test "$HAS_ELF" = 1; then
  
@@ -10816,7 +10748,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_elf_main+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -9589,46 +9899,43 @@
+@@ -9679,46 +9989,43 @@
  int
  main ()
  {
@@ -10881,7 +10813,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_elf_main = yes; then
    cat >>confdefs.h <<_ACEOF
  #define HAVE_LIBELF 1
-@@ -9648,9 +9955,9 @@
+@@ -9738,9 +10045,9 @@
  ac_header_dirent=no
  for ac_hdr in dirent.h sys/ndir.h sys/dir.h ndir.h; do
    as_ac_Header=`echo "ac_cv_header_dirent_$ac_hdr" | $as_tr_sh`
@@ -10894,7 +10826,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
    cat >conftest.$ac_ext <<_ACEOF
-@@ -9672,38 +9979,35 @@
+@@ -9762,38 +10069,35 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -10950,7 +10882,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
    cat >>confdefs.h <<_ACEOF
  #define `echo "HAVE_$ac_hdr" | $as_tr_cpp` 1
-@@ -9715,13 +10019,12 @@
+@@ -9805,13 +10109,12 @@
  done
  # Two versions of opendir et al. are in -ldir and -lx on SCO Xenix.
  if test $ac_header_dirent = dirent.h; then
@@ -10966,7 +10898,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9729,126 +10032,83 @@
+@@ -9819,302 +10122,213 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -11037,106 +10969,48 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
--fi
++
+ fi
 -rm -f conftest.err conftest.$ac_objext \
 -      conftest$ac_exeext conftest.$ac_ext
 -if test "$ac_cv_search_opendir" = no; then
 -  for ac_lib in dir; do
 -    LIBS="-l$ac_lib  $ac_func_search_save_LIBS"
 -    cat >conftest.$ac_ext <<_ACEOF
--/* confdefs.h.  */
--_ACEOF
--cat confdefs.h >>conftest.$ac_ext
--cat >>conftest.$ac_ext <<_ACEOF
--/* end confdefs.h.  */
- 
--/* Override any gcc2 internal prototype to avoid an error.  */
--#ifdef __cplusplus
--extern "C"
--#endif
--/* We use char because int might match the return type of a gcc2
--   builtin and then its argument prototype would still apply.  */
--char opendir ();
--int
--main ()
--{
--opendir ();
--  ;
--  return 0;
--}
--_ACEOF
--rm -f conftest.$ac_objext conftest$ac_exeext
--if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
--  (eval $ac_link) 2>conftest.er1
--  ac_status=$?
--  grep -v '^ *+' conftest.er1 >conftest.err
--  rm -f conftest.er1
--  cat conftest.err >&5
--  echo "$as_me:$LINENO: \$? = $ac_status" >&5
--  (exit $ac_status); } &&
--	 { ac_try='test -z "$ac_c_werror_flag"
--			 || test ! -s conftest.err'
--  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
--  (eval $ac_try) 2>&5
--  ac_status=$?
--  echo "$as_me:$LINENO: \$? = $ac_status" >&5
--  (exit $ac_status); }; } &&
--	 { ac_try='test -s conftest$ac_exeext'
--  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
--  (eval $ac_try) 2>&5
--  ac_status=$?
--  echo "$as_me:$LINENO: \$? = $ac_status" >&5
--  (exit $ac_status); }; }; then
--  ac_cv_search_opendir="-l$ac_lib"
--break
--else
--  echo "$as_me: failed program was:" >&5
--sed 's/^/| /' conftest.$ac_ext >&5
-+fi
- 
++
 +rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
 +      conftest$ac_exeext
 +  if test "${ac_cv_search_opendir+set}" = set; then
 +  break
- fi
--rm -f conftest.err conftest.$ac_objext \
--      conftest$ac_exeext conftest.$ac_ext
--  done
++fi
 +done
 +if test "${ac_cv_search_opendir+set}" = set; then
 +  :
 +else
 +  ac_cv_search_opendir=no
- fi
++fi
 +rm conftest.$ac_ext
- LIBS=$ac_func_search_save_LIBS
- fi
--echo "$as_me:$LINENO: result: $ac_cv_search_opendir" >&5
--echo "${ECHO_T}$ac_cv_search_opendir" >&6
--if test "$ac_cv_search_opendir" != no; then
--  test "$ac_cv_search_opendir" = "none required" || LIBS="$ac_cv_search_opendir $LIBS"
++LIBS=$ac_func_search_save_LIBS
++fi
 +{ echo "$as_me:$LINENO: result: $ac_cv_search_opendir" >&5
 +echo "${ECHO_T}$ac_cv_search_opendir" >&6; }
 +ac_res=$ac_cv_search_opendir
 +if test "$ac_res" != no; then
 +  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
- 
- fi
- 
- else
--  echo "$as_me:$LINENO: checking for library containing opendir" >&5
--echo $ECHO_N "checking for library containing opendir... $ECHO_C" >&6
++
++fi
++
++else
 +  { echo "$as_me:$LINENO: checking for library containing opendir" >&5
 +echo $ECHO_N "checking for library containing opendir... $ECHO_C" >&6; }
- if test "${ac_cv_search_opendir+set}" = set; then
-   echo $ECHO_N "(cached) $ECHO_C" >&6
- else
-   ac_func_search_save_LIBS=$LIBS
--ac_cv_search_opendir=no
- cat >conftest.$ac_ext <<_ACEOF
++if test "${ac_cv_search_opendir+set}" = set; then
++  echo $ECHO_N "(cached) $ECHO_C" >&6
++else
++  ac_func_search_save_LIBS=$LIBS
++cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -9856,123 +10116,81 @@
+ cat confdefs.h >>conftest.$ac_ext
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -11196,7 +11070,8 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  ac_status=$?
 -  echo "$as_me:$LINENO: \$? = $ac_status" >&5
 -  (exit $ac_status); }; }; then
--  ac_cv_search_opendir="none required"
+-  ac_cv_search_opendir="-l$ac_lib"
+-break
 +  (exit $ac_status); } && {
 +	 test -z "$ac_c_werror_flag" ||
 +	 test ! -s conftest.err
@@ -11209,6 +11084,114 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
 +
  fi
+-rm -f conftest.err conftest.$ac_objext \
+-      conftest$ac_exeext conftest.$ac_ext
+-  done
++
++rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
++      conftest$ac_exeext
++  if test "${ac_cv_search_opendir+set}" = set; then
++  break
++fi
++done
++if test "${ac_cv_search_opendir+set}" = set; then
++  :
++else
++  ac_cv_search_opendir=no
+ fi
++rm conftest.$ac_ext
+ LIBS=$ac_func_search_save_LIBS
+ fi
+-echo "$as_me:$LINENO: result: $ac_cv_search_opendir" >&5
+-echo "${ECHO_T}$ac_cv_search_opendir" >&6
+-if test "$ac_cv_search_opendir" != no; then
+-  test "$ac_cv_search_opendir" = "none required" || LIBS="$ac_cv_search_opendir $LIBS"
++{ echo "$as_me:$LINENO: result: $ac_cv_search_opendir" >&5
++echo "${ECHO_T}$ac_cv_search_opendir" >&6; }
++ac_res=$ac_cv_search_opendir
++if test "$ac_res" != no; then
++  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
+ 
+ fi
+ 
+-else
+-  echo "$as_me:$LINENO: checking for library containing opendir" >&5
+-echo $ECHO_N "checking for library containing opendir... $ECHO_C" >&6
+-if test "${ac_cv_search_opendir+set}" = set; then
++fi
++
++
++{ echo "$as_me:$LINENO: checking for ANSI C header files" >&5
++echo $ECHO_N "checking for ANSI C header files... $ECHO_C" >&6; }
++if test "${ac_cv_header_stdc+set}" = set; then
+   echo $ECHO_N "(cached) $ECHO_C" >&6
+ else
+-  ac_func_search_save_LIBS=$LIBS
+-ac_cv_search_opendir=no
+-cat >conftest.$ac_ext <<_ACEOF
++  cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+ cat confdefs.h >>conftest.$ac_ext
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
++#include <stdlib.h>
++#include <stdarg.h>
++#include <string.h>
++#include <float.h>
+ 
+-/* Override any gcc2 internal prototype to avoid an error.  */
+-#ifdef __cplusplus
+-extern "C"
+-#endif
+-/* We use char because int might match the return type of a gcc2
+-   builtin and then its argument prototype would still apply.  */
+-char opendir ();
+ int
+ main ()
+ {
+-opendir ();
++
+   ;
+   return 0;
+ }
+ _ACEOF
+-rm -f conftest.$ac_objext conftest$ac_exeext
+-if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
+-  (eval $ac_link) 2>conftest.er1
++rm -f conftest.$ac_objext
++if { (ac_try="$ac_compile"
++case "(($ac_try" in
++  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
++  *) ac_try_echo=$ac_try;;
++esac
++eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
++  (eval "$ac_compile") 2>conftest.er1
+   ac_status=$?
+   grep -v '^ *+' conftest.er1 >conftest.err
+   rm -f conftest.er1
+   cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); } &&
+-	 { ac_try='test -z "$ac_c_werror_flag"
+-			 || test ! -s conftest.err'
+-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+-  (eval $ac_try) 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); }; } &&
+-	 { ac_try='test -s conftest$ac_exeext'
+-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
+-  (eval $ac_try) 2>&5
+-  ac_status=$?
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  (exit $ac_status); }; }; then
+-  ac_cv_search_opendir="none required"
+-else
+-  echo "$as_me: failed program was:" >&5
+-sed 's/^/| /' conftest.$ac_ext >&5
+-
+-fi
 -rm -f conftest.err conftest.$ac_objext \
 -      conftest$ac_exeext conftest.$ac_ext
 -if test "$ac_cv_search_opendir" = no; then
@@ -11263,64 +11246,56 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -else
 -  echo "$as_me: failed program was:" >&5
 -sed 's/^/| /' conftest.$ac_ext >&5
- 
-+rm -f core conftest.err conftest.$ac_objext conftest_ipa8_conftest.oo \
-+      conftest$ac_exeext
-+  if test "${ac_cv_search_opendir+set}" = set; then
-+  break
- fi
+-
+-fi
 -rm -f conftest.err conftest.$ac_objext \
 -      conftest$ac_exeext conftest.$ac_ext
 -  done
-+done
-+if test "${ac_cv_search_opendir+set}" = set; then
-+  :
-+else
-+  ac_cv_search_opendir=no
- fi
-+rm conftest.$ac_ext
- LIBS=$ac_func_search_save_LIBS
- fi
+-fi
+-LIBS=$ac_func_search_save_LIBS
+-fi
 -echo "$as_me:$LINENO: result: $ac_cv_search_opendir" >&5
 -echo "${ECHO_T}$ac_cv_search_opendir" >&6
 -if test "$ac_cv_search_opendir" != no; then
 -  test "$ac_cv_search_opendir" = "none required" || LIBS="$ac_cv_search_opendir $LIBS"
-+{ echo "$as_me:$LINENO: result: $ac_cv_search_opendir" >&5
-+echo "${ECHO_T}$ac_cv_search_opendir" >&6; }
-+ac_res=$ac_cv_search_opendir
-+if test "$ac_res" != no; then
-+  test "$ac_res" = "none required" || LIBS="$ac_res $LIBS"
- 
- fi
- 
- fi
- 
- 
+-
+-fi
+-
+-fi
+-
+-
 -echo "$as_me:$LINENO: checking for ANSI C header files" >&5
 -echo $ECHO_N "checking for ANSI C header files... $ECHO_C" >&6
-+{ echo "$as_me:$LINENO: checking for ANSI C header files" >&5
-+echo $ECHO_N "checking for ANSI C header files... $ECHO_C" >&6; }
- if test "${ac_cv_header_stdc+set}" = set; then
-   echo $ECHO_N "(cached) $ECHO_C" >&6
- else
-@@ -9996,35 +10214,31 @@
- }
- _ACEOF
- rm -f conftest.$ac_objext
+-if test "${ac_cv_header_stdc+set}" = set; then
+-  echo $ECHO_N "(cached) $ECHO_C" >&6
+-else
+-  cat >conftest.$ac_ext <<_ACEOF
+-/* confdefs.h.  */
+-_ACEOF
+-cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+-#include <stdlib.h>
+-#include <stdarg.h>
+-#include <string.h>
+-#include <float.h>
+-
+-int
+-main ()
+-{
+-
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-rm -f conftest.$ac_objext
 -if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
 -  (eval $ac_compile) 2>conftest.er1
-+if { (ac_try="$ac_compile"
-+case "(($ac_try" in
-+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-+  *) ac_try_echo=$ac_try;;
-+esac
-+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-+  (eval "$ac_compile") 2>conftest.er1
-   ac_status=$?
-   grep -v '^ *+' conftest.er1 >conftest.err
-   rm -f conftest.er1
-   cat conftest.err >&5
-   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  ac_status=$?
+-  grep -v '^ *+' conftest.er1 >conftest.err
+-  rm -f conftest.er1
+-  cat conftest.err >&5
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
 -  (exit $ac_status); } &&
 -	 { ac_try='test -z "$ac_c_werror_flag"
 -			 || test ! -s conftest.err'
@@ -11353,7 +11328,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  if test $ac_cv_header_stdc = yes; then
    # SunOS 4.x string.h does not declare mem*, contrary to ANSI.
-@@ -10080,6 +10294,7 @@
+@@ -10170,6 +10384,7 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  #include <ctype.h>
@@ -11361,7 +11336,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #if ((' ' & 0x0FF) == 0x020)
  # define ISLOWER(c) ('a' <= (c) && (c) <= 'z')
  # define TOUPPER(c) (ISLOWER(c) ? 'A' + ((c) - 'a') : (c))
-@@ -10099,18 +10314,27 @@
+@@ -10189,18 +10404,27 @@
    for (i = 0; i < 256; i++)
      if (XOR (islower (i), ISLOWER (i))
  	|| toupper (i) != TOUPPER (i))
@@ -11395,7 +11370,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }; }; then
-@@ -10123,12 +10347,14 @@
+@@ -10213,12 +10437,14 @@
  ( exit $ac_status )
  ac_cv_header_stdc=no
  fi
@@ -11413,7 +11388,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_header_stdc = yes; then
  
  cat >>confdefs.h <<\_ACEOF
-@@ -10137,8 +10363,8 @@
+@@ -10227,8 +10453,8 @@
  
  fi
  
@@ -11424,7 +11399,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_header_sys_wait_h+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -10151,7 +10377,7 @@
+@@ -10241,7 +10467,7 @@
  #include <sys/types.h>
  #include <sys/wait.h>
  #ifndef WEXITSTATUS
@@ -11433,7 +11408,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #endif
  #ifndef WIFEXITED
  # define WIFEXITED(stat_val) (((stat_val) & 255) == 0)
-@@ -10168,38 +10394,34 @@
+@@ -10258,38 +10484,34 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -11488,7 +11463,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_header_sys_wait_h = yes; then
  
  cat >>confdefs.h <<\_ACEOF
-@@ -10210,8 +10432,8 @@
+@@ -10300,8 +10522,8 @@
  
  
  if test $ac_cv_header_sys_wait_h = no; then
@@ -11499,7 +11474,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -10228,29 +10450,24 @@
+@@ -10318,29 +10540,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -11542,7 +11517,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  			cat >>confdefs.h <<\_ACEOF
  #define HAVE_SYS_WAIT_H 1
  _ACEOF
-@@ -10263,10 +10480,11 @@
+@@ -10353,10 +10570,11 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -11557,7 +11532,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  
  
-@@ -10320,18 +10538,19 @@
+@@ -10410,18 +10628,19 @@
  	sys/acl.h sys/access.h sys/sysctl.h sys/sysinfo.h wchar.h wctype.h
  do
  as_ac_Header=`echo "ac_cv_header_$ac_header" | $as_tr_sh`
@@ -11585,7 +11560,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -10342,41 +10561,37 @@
+@@ -10432,41 +10651,37 @@
  #include <$ac_header>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -11645,7 +11620,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -10385,24 +10600,22 @@
+@@ -10475,24 +10690,22 @@
  /* end confdefs.h.  */
  #include <$ac_header>
  _ACEOF
@@ -11681,7 +11656,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -10410,9 +10623,10 @@
+@@ -10500,9 +10713,10 @@
  
    ac_header_preproc=no
  fi
@@ -11694,7 +11669,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -10436,25 +10650,19 @@
+@@ -10526,25 +10740,19 @@
  echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
@@ -11727,7 +11702,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
-@@ -10467,8 +10675,8 @@
+@@ -10557,8 +10765,8 @@
  done
  
  
@@ -11738,7 +11713,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -10487,29 +10695,24 @@
+@@ -10577,29 +10785,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -11781,7 +11756,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  		      cat >>confdefs.h <<\_ACEOF
  #define HAVE_PTHREAD_NP_H 1
  _ACEOF
-@@ -10518,27 +10721,29 @@
+@@ -10608,27 +10811,29 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -11822,7 +11797,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -10549,41 +10754,37 @@
+@@ -10639,41 +10844,37 @@
  #include <$ac_header>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -11882,7 +11857,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -10592,24 +10793,22 @@
+@@ -10682,24 +10883,22 @@
  /* end confdefs.h.  */
  #include <$ac_header>
  _ACEOF
@@ -11918,7 +11893,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -10617,9 +10816,10 @@
+@@ -10707,9 +10906,10 @@
  
    ac_header_preproc=no
  fi
@@ -11931,7 +11906,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -10643,25 +10843,19 @@
+@@ -10733,25 +10933,19 @@
  echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
@@ -11964,7 +11939,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
-@@ -10680,8 +10874,8 @@
+@@ -10770,8 +10964,8 @@
  
  else
  
@@ -11975,7 +11950,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cppflags_save=$CPPFLAGS
  CPPFLAGS="$CPPFLAGS $X_CFLAGS"
  cat >conftest.$ac_ext <<_ACEOF
-@@ -10714,47 +10908,43 @@
+@@ -10804,47 +10998,43 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -12043,7 +12018,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_gcc_traditional+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -10795,15 +10985,15 @@
+@@ -10885,15 +11075,15 @@
  
    fi
  fi
@@ -12063,7 +12038,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_c_const+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -10821,10 +11011,10 @@
+@@ -10911,10 +11101,10 @@
  #ifndef __cplusplus
    /* Ultrix mips cc rejects this.  */
    typedef int charset[2];
@@ -12077,7 +12052,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    /* NEC SVR4.0.2 mips cc rejects this.  */
    struct point {int x, y;};
    static struct point const zero = {0,0};
-@@ -10833,16 +11023,17 @@
+@@ -10923,16 +11113,17 @@
       an arm of an if-expression whose if-part is not a constant
       expression */
    const char *g = "string";
@@ -12099,7 +12074,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    }
    { /* Someone thinks the Sun supposedly-ANSI compiler will reject this.  */
      int x[] = {25, 17};
-@@ -10861,7 +11052,9 @@
+@@ -10951,7 +11142,9 @@
    }
    { /* ULTRIX-32 V3.1 (Rev 9) vcc rejects this */
      const int foo = 10;
@@ -12109,7 +12084,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #endif
  
    ;
-@@ -10869,38 +11062,34 @@
+@@ -10959,38 +11152,34 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -12164,7 +12139,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_c_const = no; then
  
  cat >>confdefs.h <<\_ACEOF
-@@ -10909,8 +11098,8 @@
+@@ -10999,8 +11188,8 @@
  
  fi
  
@@ -12175,7 +12150,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_mode_t+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -10921,50 +11110,47 @@
+@@ -11011,50 +11200,47 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  $ac_includes_default
@@ -12245,7 +12220,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_type_mode_t = yes; then
    :
  else
-@@ -10975,8 +11161,8 @@
+@@ -11065,8 +11251,8 @@
  
  fi
  
@@ -12256,7 +12231,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_off_t+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -10987,62 +11173,59 @@
+@@ -11077,62 +11263,59 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  $ac_includes_default
@@ -12341,7 +12316,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_pid_t+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -11053,50 +11236,47 @@
+@@ -11143,50 +11326,47 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  $ac_includes_default
@@ -12411,7 +12386,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_type_pid_t = yes; then
    :
  else
-@@ -11107,8 +11287,8 @@
+@@ -11197,8 +11377,8 @@
  
  fi
  
@@ -12422,7 +12397,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_size_t+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -11119,62 +11299,59 @@
+@@ -11209,62 +11389,59 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  $ac_includes_default
@@ -12507,7 +12482,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_uid_t+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -11196,8 +11373,8 @@
+@@ -11286,8 +11463,8 @@
  rm -f conftest*
  
  fi
@@ -12518,7 +12493,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_type_uid_t = no; then
  
  cat >>confdefs.h <<\_ACEOF
-@@ -11211,8 +11388,8 @@
+@@ -11301,8 +11478,8 @@
  
  fi
  
@@ -12529,7 +12504,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_header_time+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -11236,38 +11413,34 @@
+@@ -11326,38 +11503,34 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -12584,7 +12559,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_header_time = yes; then
  
  cat >>confdefs.h <<\_ACEOF
-@@ -11276,8 +11449,8 @@
+@@ -11366,8 +11539,8 @@
  
  fi
  
@@ -12595,7 +12570,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_ino_t+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -11288,50 +11461,47 @@
+@@ -11378,50 +11551,47 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  $ac_includes_default
@@ -12665,7 +12640,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_type_ino_t = yes; then
    :
  else
-@@ -11342,8 +11512,8 @@
+@@ -11432,8 +11602,8 @@
  
  fi
  
@@ -12676,7 +12651,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_dev_t+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -11354,50 +11524,47 @@
+@@ -11444,50 +11614,47 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  $ac_includes_default
@@ -12746,7 +12721,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_type_dev_t = yes; then
    :
  else
-@@ -11409,11 +11576,11 @@
+@@ -11499,11 +11666,11 @@
  fi
  
  
@@ -12762,7 +12737,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  else
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -11440,8 +11607,8 @@
+@@ -11530,8 +11697,8 @@
  fi
  rm -f conftest*
  
@@ -12773,7 +12748,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  if test $ac_cv_type_rlim_t = no; then
    cat >> confdefs.h <<\EOF
-@@ -11449,11 +11616,11 @@
+@@ -11539,11 +11706,11 @@
  EOF
  fi
  
@@ -12789,7 +12764,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  else
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -11478,8 +11645,8 @@
+@@ -11568,8 +11735,8 @@
  fi
  rm -f conftest*
  
@@ -12800,7 +12775,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  fi
  if test $ac_cv_type_stack_t = no; then
    cat >> confdefs.h <<\EOF
-@@ -11487,8 +11654,8 @@
+@@ -11577,8 +11744,8 @@
  EOF
  fi
  
@@ -12811,7 +12786,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -11513,29 +11680,24 @@
+@@ -11603,29 +11770,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -12854,7 +12829,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_SS_BASE 1
  _ACEOF
  
-@@ -11543,26 +11705,27 @@
+@@ -11633,26 +11795,27 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -12894,7 +12869,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -11579,43 +11742,40 @@
+@@ -11669,43 +11832,40 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -12957,7 +12932,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
                case "`uname -s 2>/dev/null`" in
  	OSF1|SCO_SV)	tlibs="ncurses curses termlib termcap";;
  	*)	tlibs="ncurses termlib termcap curses";;
-@@ -11623,9 +11783,9 @@
+@@ -11713,9 +11873,9 @@
    for libname in $tlibs; do
  
  as_ac_Lib=`echo "ac_cv_lib_${libname}''_tgetent" | $as_tr_sh`
@@ -12970,7 +12945,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
    ac_check_lib_save_LIBS=$LIBS
-@@ -11637,56 +11797,54 @@
+@@ -11727,56 +11887,54 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -13049,7 +13024,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test `eval echo '${'$as_ac_Lib'}'` = yes; then
    cat >>confdefs.h <<_ACEOF
  #define `echo "HAVE_LIB${libname}" | $as_tr_cpp` 1
-@@ -11713,13 +11871,22 @@
+@@ -11803,13 +11961,22 @@
  main() {char *s; s=(char *)tgoto("%p1%d", 0, 1); exit(0); }
  _ACEOF
  rm -f conftest$ac_exeext
@@ -13076,7 +13051,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_status=$?
    echo "$as_me:$LINENO: \$? = $ac_status" >&5
    (exit $ac_status); }; }; then
-@@ -11732,25 +11899,27 @@
+@@ -11822,25 +11989,27 @@
  ( exit $ac_status )
  res="FAIL"
  fi
@@ -13111,7 +13086,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -11767,34 +11936,30 @@
+@@ -11857,34 +12026,30 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -13161,7 +13136,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        You need to install a terminal library; for example ncurses.
        Or specify the name of the library with --with-tlib." >&5
  echo "$as_me: error: NOT FOUND!
-@@ -11802,18 +11967,46 @@
+@@ -11892,18 +12057,46 @@
        Or specify the name of the library with --with-tlib." >&2;}
     { (exit 1); exit 1; }; }
  fi
@@ -13217,7 +13192,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  /* confdefs.h.  */
  _ACEOF
  cat confdefs.h >>conftest.$ac_ext
-@@ -11823,144 +12016,47 @@
+@@ -11913,144 +12106,47 @@
  #ifdef HAVE_TERMCAP_H
  # include <termcap.h>
  #endif
@@ -13397,7 +13372,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  /* confdefs.h.  */
  _ACEOF
  cat confdefs.h >>conftest.$ac_ext
-@@ -11981,29 +12077,25 @@
+@@ -12071,29 +12167,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -13441,7 +13416,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define OSPEED_EXTERN 1
  _ACEOF
  
-@@ -12011,18 +12103,20 @@
+@@ -12101,18 +12193,20 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -13468,7 +13443,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -12043,29 +12137,25 @@
+@@ -12133,29 +12227,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -13512,7 +13487,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_UP_BC_PC 1
  _ACEOF
  
-@@ -12073,10 +12163,10 @@
+@@ -12163,10 +12253,10 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -13527,7 +13502,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -12098,29 +12188,25 @@
+@@ -12188,29 +12278,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -13571,7 +13546,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define UP_BC_PC_EXTERN 1
  _ACEOF
  
-@@ -12128,18 +12214,20 @@
+@@ -12218,18 +12304,20 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -13598,7 +13573,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -12160,29 +12248,24 @@
+@@ -12250,29 +12338,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -13641,7 +13616,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_OUTFUNTYPE 1
  _ACEOF
  
-@@ -12190,13 +12273,14 @@
+@@ -12280,13 +12363,14 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -13661,7 +13636,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -12216,29 +12300,24 @@
+@@ -12306,29 +12390,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -13704,7 +13679,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  			cat >>confdefs.h <<\_ACEOF
  #define SYS_SELECT_WITH_SYS_TIME 1
  _ACEOF
-@@ -12247,28 +12326,29 @@
+@@ -12337,28 +12416,29 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -13745,7 +13720,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test -c /dev/ptmx ; then
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -12286,29 +12366,25 @@
+@@ -12376,29 +12456,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -13789,7 +13764,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_SVR4_PTYS 1
  _ACEOF
  
-@@ -12316,18 +12392,19 @@
+@@ -12406,18 +12482,19 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -13816,7 +13791,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test -d /dev/ptym ; then
    pdir='/dev/ptym'
  else
-@@ -12363,102 +12440,72 @@
+@@ -12453,102 +12530,72 @@
  #define PTYRANGE1 "$p1"
  _ACEOF
  
@@ -13974,7 +13949,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_type_signal+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -12470,56 +12517,44 @@
+@@ -12560,56 +12607,44 @@
  /* end confdefs.h.  */
  #include <sys/types.h>
  #include <signal.h>
@@ -14049,7 +14024,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  cat >>confdefs.h <<_ACEOF
  #define RETSIGTYPE $ac_cv_type_signal
-@@ -12539,8 +12574,8 @@
+@@ -12629,8 +12664,8 @@
  
  fi
  
@@ -14060,7 +14035,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -12564,29 +12599,24 @@
+@@ -12654,29 +12689,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -14103,7 +14078,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  		cat >>confdefs.h <<\_ACEOF
  #define HAVE_SIGCONTEXT 1
  _ACEOF
-@@ -12595,62 +12625,28 @@
+@@ -12685,62 +12715,28 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -14185,7 +14160,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  
  
-@@ -12707,9 +12703,9 @@
+@@ -12797,9 +12793,9 @@
  	usleep utime utimes
  do
  as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -14198,7 +14173,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
    cat >conftest.$ac_ext <<_ACEOF
-@@ -12735,68 +12731,60 @@
+@@ -12825,68 +12821,60 @@
  
  #undef $ac_func
  
@@ -14290,7 +14265,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test `eval echo '${'$as_ac_var'}'` = yes; then
    cat >>confdefs.h <<_ACEOF
  #define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
-@@ -12806,8 +12794,8 @@
+@@ -12896,8 +12884,8 @@
  done
  
  
@@ -14301,7 +14276,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -12829,29 +12817,24 @@
+@@ -12919,29 +12907,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -14344,7 +14319,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_ST_BLKSIZE 1
  _ACEOF
  
-@@ -12859,58 +12842,26 @@
+@@ -12949,58 +12932,26 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -14417,7 +14392,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  save_LIBS="$LIBS"
  LIBS="$LIBS -liconv"
  cat >conftest.$ac_ext <<_ACEOF
-@@ -12933,29 +12884,25 @@
+@@ -13023,29 +12974,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -14461,7 +14436,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_ICONV 1
  _ACEOF
  
-@@ -12963,7 +12910,7 @@
+@@ -13053,7 +13000,7 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -14470,7 +14445,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -12984,29 +12931,25 @@
+@@ -13074,29 +13021,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -14514,7 +14489,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_ICONV 1
  _ACEOF
  
-@@ -13014,18 +12957,20 @@
+@@ -13104,18 +13047,20 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -14541,7 +14516,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13046,29 +12991,25 @@
+@@ -13136,29 +13081,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -14585,7 +14560,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_NL_LANGINFO_CODESET 1
  _ACEOF
  
-@@ -13076,26 +13017,27 @@
+@@ -13166,26 +13107,27 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -14626,7 +14601,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_posix1e_acl_get_file+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -13108,61 +13050,58 @@
+@@ -13198,61 +13140,58 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -14711,7 +14686,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_acl_acl_get_file+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -13175,60 +13114,57 @@
+@@ -13265,60 +13204,57 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -14795,7 +14770,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_attr_fgetxattr+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -13241,56 +13177,53 @@
+@@ -13331,56 +13267,53 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -14873,7 +14848,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test $ac_cv_lib_attr_fgetxattr = yes; then
    LIBS="$LIBS -lattr"
  fi
-@@ -13300,8 +13233,8 @@
+@@ -13390,8 +13323,8 @@
  fi
  
  
@@ -14884,7 +14859,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13325,29 +13258,25 @@
+@@ -13415,29 +13348,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -14928,7 +14903,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_POSIX_ACL 1
  _ACEOF
  
-@@ -13355,14 +13284,15 @@
+@@ -13445,14 +13374,15 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -14949,7 +14924,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13383,29 +13313,25 @@
+@@ -13473,29 +13403,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -14993,7 +14968,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_SOLARIS_ACL 1
  _ACEOF
  
-@@ -13413,14 +13339,15 @@
+@@ -13503,14 +13429,15 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -15014,7 +14989,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13452,29 +13379,25 @@
+@@ -13542,29 +13469,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -15058,7 +15033,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_AIX_ACL 1
  _ACEOF
  
-@@ -13482,31 +13405,32 @@
+@@ -13572,31 +13495,32 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -15106,7 +15081,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${vi_cv_have_gpm+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -13528,41 +13452,38 @@
+@@ -13618,41 +13542,38 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -15165,7 +15140,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    if test $vi_cv_have_gpm = yes; then
      LIBS="$LIBS -lgpm"
      cat >>confdefs.h <<\_ACEOF
-@@ -13571,12 +13492,12 @@
+@@ -13661,12 +13582,12 @@
  
    fi
  else
@@ -15182,7 +15157,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13593,29 +13514,25 @@
+@@ -13683,29 +13604,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -15226,7 +15201,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_RENAME 1
  _ACEOF
  
-@@ -13623,14 +13540,15 @@
+@@ -13713,14 +13630,15 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -15247,7 +15222,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13655,29 +13573,24 @@
+@@ -13745,29 +13663,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -15290,7 +15265,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_SYSCTL 1
  _ACEOF
  
-@@ -13685,13 +13598,14 @@
+@@ -13775,13 +13688,14 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -15310,7 +15285,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13714,29 +13628,24 @@
+@@ -13804,29 +13718,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -15353,7 +15328,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_SYSINFO 1
  _ACEOF
  
-@@ -13744,13 +13653,14 @@
+@@ -13834,13 +13743,14 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -15373,7 +15348,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -13770,29 +13680,24 @@
+@@ -13860,29 +13770,24 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -15416,44 +15391,42 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_SYSINFO_MEM_UNIT 1
  _ACEOF
  
-@@ -13800,13 +13705,14 @@
+@@ -13890,257 +13795,116 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
 -echo "$as_me:$LINENO: result: no" >&5
 -echo "${ECHO_T}no" >&6
-+	{ echo "$as_me:$LINENO: result: no" >&5
-+echo "${ECHO_T}no" >&6; }
- fi
+-fi
 -rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
- 
+-
 -echo "$as_me:$LINENO: checking for sysconf" >&5
 -echo $ECHO_N "checking for sysconf... $ECHO_C" >&6
-+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-+
-+{ echo "$as_me:$LINENO: checking for sysconf" >&5
-+echo $ECHO_N "checking for sysconf... $ECHO_C" >&6; }
- cat >conftest.$ac_ext <<_ACEOF
- /* confdefs.h.  */
- _ACEOF
-@@ -13825,29 +13731,24 @@
- }
- _ACEOF
- rm -f conftest.$ac_objext
+-cat >conftest.$ac_ext <<_ACEOF
+-/* confdefs.h.  */
+-_ACEOF
+-cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+-#include <unistd.h>
+-int
+-main ()
+-{
+-	(void)sysconf(_SC_PAGESIZE);
+-	(void)sysconf(_SC_PHYS_PAGES);
+-
+-  ;
+-  return 0;
+-}
+-_ACEOF
+-rm -f conftest.$ac_objext
 -if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
 -  (eval $ac_compile) 2>conftest.er1
-+if { (ac_try="$ac_compile"
-+case "(($ac_try" in
-+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-+  *) ac_try_echo=$ac_try;;
-+esac
-+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-+  (eval "$ac_compile") 2>conftest.er1
-   ac_status=$?
-   grep -v '^ *+' conftest.er1 >conftest.err
-   rm -f conftest.er1
-   cat conftest.err >&5
-   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  ac_status=$?
+-  grep -v '^ *+' conftest.er1 >conftest.err
+-  rm -f conftest.er1
+-  cat conftest.err >&5
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
 -  (exit $ac_status); } &&
 -	 { ac_try='test -z "$ac_c_werror_flag"
 -			 || test ! -s conftest.err'
@@ -15470,27 +15443,19 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  (exit $ac_status); }; }; then
 -  echo "$as_me:$LINENO: result: yes" >&5
 -echo "${ECHO_T}yes" >&6; cat >>confdefs.h <<\_ACEOF
-+  (exit $ac_status); } && {
-+	 test -z "$ac_c_werror_flag" ||
-+	 test ! -s conftest.err
-+       } && test -s conftest.$ac_objext; then
-+  { echo "$as_me:$LINENO: result: yes" >&5
-+echo "${ECHO_T}yes" >&6; }; cat >>confdefs.h <<\_ACEOF
- #define HAVE_SYSCONF 1
- _ACEOF
- 
-@@ -13855,201 +13756,64 @@
-   echo "$as_me: failed program was:" >&5
- sed 's/^/| /' conftest.$ac_ext >&5
- 
+-#define HAVE_SYSCONF 1
+-_ACEOF
+-
+-else
+-  echo "$as_me: failed program was:" >&5
+-sed 's/^/| /' conftest.$ac_ext >&5
+-
 -echo "$as_me:$LINENO: result: not usable" >&5
 -echo "${ECHO_T}not usable" >&6
-+	{ echo "$as_me:$LINENO: result: not usable" >&5
-+echo "${ECHO_T}not usable" >&6; }
- fi
+-fi
 -rm -f conftest.err conftest.$ac_objext conftest.$ac_ext
 -
- 
+-
 -echo "$as_me:$LINENO: checking size of int" >&5
 -echo $ECHO_N "checking size of int... $ECHO_C" >&6
 -if test "${ac_cv_sizeof_int+set}" = set; then
@@ -15532,39 +15497,21 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  echo "$as_me: program exited with status $ac_status" >&5
 -echo "$as_me: failed program was:" >&5
 -sed 's/^/| /' conftest.$ac_ext >&5
-+rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
- 
+-
 -( exit $ac_status )
 -ac_cv_sizeof_int=0
 -fi
 -rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
 -fi
 -fi
- 
+-
 -echo "$as_me:$LINENO: result: $ac_cv_sizeof_int" >&5
 -echo "${ECHO_T}$ac_cv_sizeof_int" >&6
 -cat >>confdefs.h <<_ACEOF
 -#define SIZEOF_INT $ac_cv_sizeof_int
-+#AC_MSG_CHECKING(size of int)
-+#AC_CACHE_VAL(ac_cv_sizeof_int,
-+#	[AC_TRY_RUN([#include <stdio.h>
-+#		main()
-+#		{
-+#		  FILE *f=fopen("conftestval", "w");
-+#		  if (!f) exit(1);
-+#		  fprintf(f, "%d\n", (int)sizeof(int));
-+#		  exit(0);
-+#		}],
-+#	    ac_cv_sizeof_int=`cat conftestval`,
-+#	    ac_cv_sizeof_int=0,
-+#	    AC_MSG_ERROR(failed to compile test program))])
-+#AC_MSG_RESULT($ac_cv_sizeof_int)
-+#AC_DEFINE_UNQUOTED(SIZEOF_INT, $ac_cv_sizeof_int)
-+cat >>confdefs.h <<\_ACEOF
-+#define SIZEOF_INT 4
- _ACEOF
- 
- 
+-_ACEOF
+-
+-
 -echo "$as_me:$LINENO: checking whether memmove/bcopy/memcpy handle overlaps" >&5
 -echo $ECHO_N "checking whether memmove/bcopy/memcpy handle overlaps... $ECHO_C" >&6
 -bcopy_test_prog='
@@ -15607,36 +15554,8 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  echo "$as_me:$LINENO: \$? = $ac_status" >&5
 -  (exit $ac_status); }; }; then
 -  cat >>confdefs.h <<\_ACEOF
-+#AC_MSG_CHECKING(whether memmove/bcopy/memcpy handle overlaps)
-+#[bcopy_test_prog='
-+#main() {
-+#  char buf[10];
-+#  strcpy(buf, "abcdefghi");
-+#  mch_memmove(buf, buf + 2, 3);
-+#  if (strncmp(buf, "ababcf", 6))
-+#    exit(1);
-+#  strcpy(buf, "abcdefghi");
-+#  mch_memmove(buf + 2, buf, 3);
-+#  if (strncmp(buf, "cdedef", 6))
-+#    exit(1);
-+#  exit(0); /* libc version works properly.  */
-+#}']
-+
-+#dnl Check for memmove() before bcopy(), makes memmove() be used when both are
-+#dnl present, fixes problem with incompatibility between Solaris 2.4 and 2.5.
-+
-+#AC_TRY_RUN([#define mch_memmove(s,d,l) memmove(d,s,l) $bcopy_test_prog],
-+#    AC_DEFINE(USEMEMMOVE) AC_MSG_RESULT(memmove does),
-+#    AC_TRY_RUN([#define mch_memmove(s,d,l) bcopy(d,s,l) $bcopy_test_prog],
-+#	AC_DEFINE(USEBCOPY) AC_MSG_RESULT(bcopy does),
-+#	AC_TRY_RUN([#define mch_memmove(s,d,l) memcpy(d,s,l) $bcopy_test_prog],
-+#	    AC_DEFINE(USEMEMCPY) AC_MSG_RESULT(memcpy does), AC_MSG_RESULT(no),
-+#	    AC_MSG_ERROR(failed to compile test program)),
-+#	AC_MSG_ERROR(failed to compile test program)),
-+#    AC_MSG_ERROR(failed to compile test program))
-+cat >>confdefs.h <<\_ACEOF
- #define USEMEMMOVE 1
- _ACEOF
+-#define USEMEMMOVE 1
+-_ACEOF
 - echo "$as_me:$LINENO: result: memmove does" >&5
 -echo "${ECHO_T}memmove does" >&6
 -else
@@ -15686,13 +15605,32 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -   { (exit 1); exit 1; }; }
 -else
 -  cat >conftest.$ac_ext <<_ACEOF
--/* confdefs.h.  */
--_ACEOF
--cat confdefs.h >>conftest.$ac_ext
--cat >>conftest.$ac_ext <<_ACEOF
--/* end confdefs.h.  */
++	{ echo "$as_me:$LINENO: result: no" >&5
++echo "${ECHO_T}no" >&6; }
++fi
++
++rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
++
++{ echo "$as_me:$LINENO: checking for sysconf" >&5
++echo $ECHO_N "checking for sysconf... $ECHO_C" >&6; }
++cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+ _ACEOF
+ cat confdefs.h >>conftest.$ac_ext
+ cat >>conftest.$ac_ext <<_ACEOF
+ /* end confdefs.h.  */
 -#define mch_memmove(s,d,l) memcpy(d,s,l) $bcopy_test_prog
--_ACEOF
++#include <unistd.h>
++int
++main ()
++{
++	(void)sysconf(_SC_PAGESIZE);
++	(void)sysconf(_SC_PHYS_PAGES);
++
++  ;
++  return 0;
++}
+ _ACEOF
 -rm -f conftest$ac_exeext
 -if { (eval echo "$as_me:$LINENO: \"$ac_link\"") >&5
 -  (eval $ac_link) 2>&5
@@ -15701,18 +15639,38 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  (exit $ac_status); } && { ac_try='./conftest$ac_exeext'
 -  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
 -  (eval $ac_try) 2>&5
--  ac_status=$?
--  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++rm -f conftest.$ac_objext
++if { (ac_try="$ac_compile"
++case "(($ac_try" in
++  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
++  *) ac_try_echo=$ac_try;;
++esac
++eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
++  (eval "$ac_compile") 2>conftest.er1
+   ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
 -  (exit $ac_status); }; }; then
 -  cat >>confdefs.h <<\_ACEOF
 -#define USEMEMCPY 1
--_ACEOF
++  (exit $ac_status); } && {
++	 test -z "$ac_c_werror_flag" ||
++	 test ! -s conftest.err
++       } && test -s conftest.$ac_objext; then
++  { echo "$as_me:$LINENO: result: yes" >&5
++echo "${ECHO_T}yes" >&6; }; cat >>confdefs.h <<\_ACEOF
++#define HAVE_SYSCONF 1
+ _ACEOF
 - echo "$as_me:$LINENO: result: memcpy does" >&5
 -echo "${ECHO_T}memcpy does" >&6
--else
++
+ else
 -  echo "$as_me: program exited with status $ac_status" >&5
 -echo "$as_me: failed program was:" >&5
--sed 's/^/| /' conftest.$ac_ext >&5
++  echo "$as_me: failed program was:" >&5
+ sed 's/^/| /' conftest.$ac_ext >&5
  
 -( exit $ac_status )
 -echo "$as_me:$LINENO: result: no" >&5
@@ -15725,11 +15683,69 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -fi
 -fi
 -rm -f core *.core gmon.out bb.out conftest$ac_exeext conftest.$ac_objext conftest.$ac_ext
--fi
++	{ echo "$as_me:$LINENO: result: not usable" >&5
++echo "${ECHO_T}not usable" >&6; }
+ fi
  
++rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
++
++
++#AC_MSG_CHECKING(size of int)
++#AC_CACHE_VAL(ac_cv_sizeof_int,
++#	[AC_TRY_RUN([#include <stdio.h>
++#		main()
++#		{
++#		  FILE *f=fopen("conftestval", "w");
++#		  if (!f) exit(1);
++#		  fprintf(f, "%d\n", (int)sizeof(int));
++#		  exit(0);
++#		}],
++#	    ac_cv_sizeof_int=`cat conftestval`,
++#	    ac_cv_sizeof_int=0,
++#	    AC_MSG_ERROR(failed to compile test program))])
++#AC_MSG_RESULT($ac_cv_sizeof_int)
++#AC_DEFINE_UNQUOTED(SIZEOF_INT, $ac_cv_sizeof_int)
++cat >>confdefs.h <<\_ACEOF
++#define SIZEOF_INT 4
++_ACEOF
++
++
++#AC_MSG_CHECKING(whether memmove/bcopy/memcpy handle overlaps)
++#[bcopy_test_prog='
++#main() {
++#  char buf[10];
++#  strcpy(buf, "abcdefghi");
++#  mch_memmove(buf, buf + 2, 3);
++#  if (strncmp(buf, "ababcf", 6))
++#    exit(1);
++#  strcpy(buf, "abcdefghi");
++#  mch_memmove(buf + 2, buf, 3);
++#  if (strncmp(buf, "cdedef", 6))
++#    exit(1);
++#  exit(0); /* libc version works properly.  */
++#}']
++
++#dnl Check for memmove() before bcopy(), makes memmove() be used when both are
++#dnl present, fixes problem with incompatibility between Solaris 2.4 and 2.5.
++
++#AC_TRY_RUN([#define mch_memmove(s,d,l) memmove(d,s,l) $bcopy_test_prog],
++#    AC_DEFINE(USEMEMMOVE) AC_MSG_RESULT(memmove does),
++#    AC_TRY_RUN([#define mch_memmove(s,d,l) bcopy(d,s,l) $bcopy_test_prog],
++#	AC_DEFINE(USEBCOPY) AC_MSG_RESULT(bcopy does),
++#	AC_TRY_RUN([#define mch_memmove(s,d,l) memcpy(d,s,l) $bcopy_test_prog],
++#	    AC_DEFINE(USEMEMCPY) AC_MSG_RESULT(memcpy does), AC_MSG_RESULT(no),
++#	    AC_MSG_ERROR(failed to compile test program)),
++#	AC_MSG_ERROR(failed to compile test program)),
++#    AC_MSG_ERROR(failed to compile test program))
++cat >>confdefs.h <<\_ACEOF
++#define USEMEMMOVE 1
++_ACEOF
++
++
  
  if test "$enable_multibyte" = "yes"; then
-@@ -14058,8 +13822,8 @@
+   cflags_save=$CFLAGS
+@@ -14148,8 +13912,8 @@
    if test -n "$x_includes" ; then
      CFLAGS="$CFLAGS -I$x_includes"
      LDFLAGS="$X_LIBS $LDFLAGS -lX11"
@@ -15740,7 +15756,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14076,27 +13840,22 @@
+@@ -14166,27 +13930,22 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext
@@ -15779,7 +15795,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14104,45 +13863,41 @@
+@@ -14194,45 +13953,41 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -15843,7 +15859,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  		cat >>confdefs.h <<\_ACEOF
  #define X_LOCALE 1
  _ACEOF
-@@ -14151,26 +13906,28 @@
+@@ -14241,26 +13996,28 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -15880,7 +15896,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_lib_xpg4__xpg4_setrunelocale+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -14183,63 +13940,60 @@
+@@ -14273,63 +14030,60 @@
  cat >>conftest.$ac_ext <<_ACEOF
  /* end confdefs.h.  */
  
@@ -15967,7 +15983,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  test -f tags && mv tags tags.save
  if (eval ctags --version /dev/null | grep Exuberant) < /dev/null 1>&5 2>&1; then
    TAGPRG="ctags -I INIT+ --fields=+S"
-@@ -14253,15 +14007,15 @@
+@@ -14343,15 +14097,15 @@
    (eval ctags -i+m /dev/null) < /dev/null 1>&5 2>&1 && TAGPRG="ctags -i+m"
  fi
  test -f tags.save && mv tags.save tags
@@ -15989,7 +16005,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "$MANDEF" = "man -s"; then
    cat >>confdefs.h <<\_ACEOF
  #define USEMAN_S 1
-@@ -14269,19 +14023,19 @@
+@@ -14359,19 +14113,19 @@
  
  fi
  
@@ -16017,7 +16033,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
    INSTALL_LANGS=install-languages
  
-@@ -14290,8 +14044,8 @@
+@@ -14380,8 +14134,8 @@
  
    # Extract the first word of "msgfmt", so it can be a program name with args.
  set dummy msgfmt; ac_word=$2
@@ -16028,7 +16044,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test "${ac_cv_prog_MSGFMT+set}" = set; then
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
-@@ -14304,27 +14058,29 @@
+@@ -14394,27 +14148,29 @@
    IFS=$as_save_IFS
    test -z "$as_dir" && as_dir=.
    for ac_exec_ext in '' $ac_executable_extensions; do
@@ -16065,7 +16081,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    if test -f po/Makefile; then
      have_gettext="no"
      if test -n "$MSGFMT"; then
-@@ -14344,34 +14100,30 @@
+@@ -14434,34 +14190,30 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -16115,7 +16131,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	  LIBS="$LIBS -lintl"
  	  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
-@@ -14389,45 +14141,43 @@
+@@ -14479,45 +14231,43 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -16183,7 +16199,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      fi
      if test $have_gettext = "yes"; then
        cat >>confdefs.h <<\_ACEOF
-@@ -14440,9 +14190,9 @@
+@@ -14530,9 +14280,9 @@
  for ac_func in bind_textdomain_codeset
  do
  as_ac_var=`echo "ac_cv_func_$ac_func" | $as_tr_sh`
@@ -16196,7 +16212,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    echo $ECHO_N "(cached) $ECHO_C" >&6
  else
    cat >conftest.$ac_ext <<_ACEOF
-@@ -14468,68 +14218,60 @@
+@@ -14558,68 +14308,60 @@
  
  #undef $ac_func
  
@@ -16288,7 +16304,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  if test `eval echo '${'$as_ac_var'}'` = yes; then
    cat >>confdefs.h <<_ACEOF
  #define `echo "HAVE_$ac_func" | $as_tr_cpp` 1
-@@ -14538,8 +14280,8 @@
+@@ -14628,8 +14370,8 @@
  fi
  done
  
@@ -16299,7 +16315,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14557,29 +14299,25 @@
+@@ -14647,29 +14389,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -16343,7 +16359,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  #define HAVE_NL_MSG_CAT_CNTR 1
  _ACEOF
  
-@@ -14587,33 +14325,34 @@
+@@ -14677,33 +14415,34 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -16391,7 +16407,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14624,41 +14363,37 @@
+@@ -14714,41 +14453,37 @@
  #include <dlfcn.h>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -16451,7 +16467,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14667,24 +14402,22 @@
+@@ -14757,24 +14492,22 @@
  /* end confdefs.h.  */
  #include <dlfcn.h>
  _ACEOF
@@ -16487,7 +16503,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -14692,9 +14425,10 @@
+@@ -14782,9 +14515,10 @@
  
    ac_header_preproc=no
  fi
@@ -16500,7 +16516,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -14718,42 +14452,35 @@
+@@ -14808,87 +14542,76 @@
  echo "$as_me: WARNING: dlfcn.h: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: dlfcn.h: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: dlfcn.h: in the future, the compiler will take precedence" >&2;}
@@ -16554,24 +16570,20 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14764,41 +14491,37 @@
- #include <dl.h>
- _ACEOF
- rm -f conftest.$ac_objext
+ cat confdefs.h >>conftest.$ac_ext
+-cat >>conftest.$ac_ext <<_ACEOF
+-/* end confdefs.h.  */
+-$ac_includes_default
+-#include <dl.h>
+-_ACEOF
+-rm -f conftest.$ac_objext
 -if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
 -  (eval $ac_compile) 2>conftest.er1
-+if { (ac_try="$ac_compile"
-+case "(($ac_try" in
-+  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
-+  *) ac_try_echo=$ac_try;;
-+esac
-+eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
-+  (eval "$ac_compile") 2>conftest.er1
-   ac_status=$?
-   grep -v '^ *+' conftest.er1 >conftest.err
-   rm -f conftest.er1
-   cat conftest.err >&5
-   echo "$as_me:$LINENO: \$? = $ac_status" >&5
+-  ac_status=$?
+-  grep -v '^ *+' conftest.er1 >conftest.err
+-  rm -f conftest.er1
+-  cat conftest.err >&5
+-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
 -  (exit $ac_status); } &&
 -	 { ac_try='test -z "$ac_c_werror_flag"
 -			 || test ! -s conftest.err'
@@ -16583,8 +16595,24 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -	 { ac_try='test -s conftest.$ac_objext'
 -  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
 -  (eval $ac_try) 2>&5
--  ac_status=$?
--  echo "$as_me:$LINENO: \$? = $ac_status" >&5
++cat >>conftest.$ac_ext <<_ACEOF
++/* end confdefs.h.  */
++$ac_includes_default
++#include <dl.h>
++_ACEOF
++rm -f conftest.$ac_objext
++if { (ac_try="$ac_compile"
++case "(($ac_try" in
++  *\"* | *\`* | *\\*) ac_try_echo=\$ac_try;;
++  *) ac_try_echo=$ac_try;;
++esac
++eval "echo \"\$as_me:$LINENO: $ac_try_echo\"") >&5
++  (eval "$ac_compile") 2>conftest.er1
+   ac_status=$?
++  grep -v '^ *+' conftest.er1 >conftest.err
++  rm -f conftest.er1
++  cat conftest.err >&5
+   echo "$as_me:$LINENO: \$? = $ac_status" >&5
 -  (exit $ac_status); }; }; then
 +  (exit $ac_status); } && {
 +	 test -z "$ac_c_werror_flag" ||
@@ -16614,7 +16642,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14807,24 +14530,22 @@
+@@ -14897,24 +14620,22 @@
  /* end confdefs.h.  */
  #include <dl.h>
  _ACEOF
@@ -16650,7 +16678,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -14832,9 +14553,10 @@
+@@ -14922,9 +14643,10 @@
  
    ac_header_preproc=no
  fi
@@ -16663,7 +16691,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -14858,25 +14580,18 @@
+@@ -14948,25 +14670,18 @@
  echo "$as_me: WARNING: dl.h: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: dl.h: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: dl.h: in the future, the compiler will take precedence" >&2;}
@@ -16694,7 +16722,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test $ac_cv_header_dl_h = yes; then
-@@ -14893,8 +14608,8 @@
+@@ -14983,8 +14698,8 @@
  #define HAVE_DLFCN_H 1
  _ACEOF
  
@@ -16705,7 +16733,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -14914,29 +14629,25 @@
+@@ -15004,29 +14719,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -16749,7 +16777,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  cat >>confdefs.h <<\_ACEOF
  #define HAVE_DLOPEN 1
-@@ -14946,10 +14657,10 @@
+@@ -15036,10 +14747,10 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -16764,7 +16792,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	      olibs=$LIBS
  	      LIBS="$LIBS -ldl"
  	      cat >conftest.$ac_ext <<_ACEOF
-@@ -14971,29 +14682,25 @@
+@@ -15061,29 +14772,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -16808,7 +16836,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  cat >>confdefs.h <<\_ACEOF
  #define HAVE_DLOPEN 1
-@@ -15003,17 +14710,19 @@
+@@ -15093,17 +14800,19 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -16834,7 +16862,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -15033,29 +14742,25 @@
+@@ -15123,29 +14832,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -16878,7 +16906,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  cat >>confdefs.h <<\_ACEOF
  #define HAVE_DLSYM 1
-@@ -15065,10 +14770,10 @@
+@@ -15155,10 +14860,10 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -16893,7 +16921,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	      olibs=$LIBS
  	      LIBS="$LIBS -ldl"
  	      cat >conftest.$ac_ext <<_ACEOF
-@@ -15090,29 +14795,25 @@
+@@ -15180,29 +14885,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -16937,7 +16965,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  cat >>confdefs.h <<\_ACEOF
  #define HAVE_DLSYM 1
-@@ -15122,14 +14823,16 @@
+@@ -15212,14 +14913,16 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -16958,7 +16986,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
        conftest$ac_exeext conftest.$ac_ext
  elif test x${DLL} = xdl.h; then
  
-@@ -15137,8 +14840,8 @@
+@@ -15227,8 +14930,8 @@
  #define HAVE_DL_H 1
  _ACEOF
  
@@ -16969,7 +16997,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -15158,29 +14861,25 @@
+@@ -15248,29 +14951,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -17013,7 +17041,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  cat >>confdefs.h <<\_ACEOF
  #define HAVE_SHL_LOAD 1
-@@ -15190,10 +14889,10 @@
+@@ -15280,10 +14979,10 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -17028,7 +17056,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  	  olibs=$LIBS
  	  LIBS="$LIBS -ldld"
  	  cat >conftest.$ac_ext <<_ACEOF
-@@ -15215,29 +14914,25 @@
+@@ -15305,29 +15004,25 @@
  }
  _ACEOF
  rm -f conftest.$ac_objext conftest$ac_exeext
@@ -17072,7 +17100,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  cat >>confdefs.h <<\_ACEOF
  #define HAVE_SHL_LOAD 1
-@@ -15247,32 +14942,35 @@
+@@ -15337,32 +15032,35 @@
    echo "$as_me: failed program was:" >&5
  sed 's/^/| /' conftest.$ac_ext >&5
  
@@ -17120,7 +17148,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -15283,41 +14981,37 @@
+@@ -15373,41 +15071,37 @@
  #include <$ac_header>
  _ACEOF
  rm -f conftest.$ac_objext
@@ -17180,7 +17208,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >conftest.$ac_ext <<_ACEOF
  /* confdefs.h.  */
  _ACEOF
-@@ -15326,24 +15020,22 @@
+@@ -15416,24 +15110,22 @@
  /* end confdefs.h.  */
  #include <$ac_header>
  _ACEOF
@@ -17216,7 +17244,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    ac_header_preproc=yes
  else
    echo "$as_me: failed program was:" >&5
-@@ -15351,9 +15043,10 @@
+@@ -15441,9 +15133,10 @@
  
    ac_header_preproc=no
  fi
@@ -17229,7 +17257,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # So?  What about this header?
  case $ac_header_compiler:$ac_header_preproc:$ac_c_preproc_warn_flag in
-@@ -15377,25 +15070,19 @@
+@@ -15467,25 +15160,19 @@
  echo "$as_me: WARNING: $ac_header: proceeding with the preprocessor's result" >&2;}
      { echo "$as_me:$LINENO: WARNING: $ac_header: in the future, the compiler will take precedence" >&5
  echo "$as_me: WARNING: $ac_header: in the future, the compiler will take precedence" >&2;}
@@ -17262,7 +17290,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  fi
  if test `eval echo '${'$as_ac_Header'}'` = yes; then
-@@ -15417,24 +15104,24 @@
+@@ -15507,24 +15194,24 @@
  
  if test "x$MACOSX" = "xyes" && test "x$CARBON" = "xyes" \
  	&& test "x$GUITYPE" != "xCARBONGUI"; then
@@ -17295,7 +17323,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  DEPEND_CFLAGS_FILTER=
  if test "$GCC" = yes; then
    gccmajor=`echo "$gccversion" | sed -e 's/^\([1-9]\)\..*$/\1/g'`
-@@ -15443,15 +15130,16 @@
+@@ -15533,15 +15220,16 @@
    fi
  fi
  if test "$DEPEND_CFLAGS_FILTER" = ""; then
@@ -17317,7 +17345,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >confcache <<\_ACEOF
  # This file is a shell script that caches the results of configure
  # tests run on this system so they can be shared between configure
-@@ -15470,39 +15158,58 @@
+@@ -15560,39 +15248,58 @@
  
  # The following way of writing the cache mishandles newlines in values,
  # but we know of no workaround that is simple, portable, and efficient.
@@ -17392,7 +17420,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    fi
  fi
  rm -f confcache
-@@ -15511,32 +15218,18 @@
+@@ -15601,32 +15308,18 @@
  # Let make expand exec_prefix.
  test "x$exec_prefix" = xNONE && exec_prefix='${prefix}'
  
@@ -17431,7 +17459,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  done
  LIBOBJS=$ac_libobjs
  
-@@ -15567,17 +15260,45 @@
+@@ -15657,17 +15350,45 @@
  ## M4sh Initialization.  ##
  ## --------------------- ##
  
@@ -17481,7 +17509,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # Support unset when possible.
  if ( (MAIL=60; unset MAIL) || exit) >/dev/null 2>&1; then
-@@ -15587,8 +15308,43 @@
+@@ -15677,8 +15398,43 @@
  fi
  
  
@@ -17526,7 +17554,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  PS1='$ '
  PS2='> '
  PS4='+ '
-@@ -15602,18 +15358,19 @@
+@@ -15692,18 +15448,19 @@
    if (set +x; test -z "`(eval $as_var=C; export $as_var) 2>&1`"); then
      eval $as_var=C; export $as_var
    else
@@ -17549,7 +17577,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    as_basename=basename
  else
    as_basename=false
-@@ -15621,159 +15378,120 @@
+@@ -15711,159 +15468,120 @@
  
  
  # Name of the executable.
@@ -17566,20 +17594,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  	  /^X\/\(\/\).*/{ s//\1/; q; }
 -  	  s/.*/./; q'`
 -
-+    sed '/^.*\/\([^/][^/]*\)\/*$/{
-+	    s//\1/
-+	    q
-+	  }
-+	  /^X\/\(\/\/\)$/{
-+	    s//\1/
-+	    q
-+	  }
-+	  /^X\/\(\/\).*/{
-+	    s//\1/
-+	    q
-+	  }
-+	  s/.*/./; q'`
- 
+-
 -# PATH needs CR, and LINENO needs CR and PATH.
 -# Avoid depending upon Character Ranges.
 -as_cr_letters='abcdefghijklmnopqrstuvwxyz'
@@ -17600,10 +17615,8 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  fi
 -  rm -f conf$$.sh
 -fi
-+# CDPATH.
-+$as_unset CDPATH
- 
- 
+-
+-
 -  as_lineno_1=$LINENO
 -  as_lineno_2=$LINENO
 -  as_lineno_3=`(expr $as_lineno_1 + 1) 2>/dev/null`
@@ -17620,6 +17633,24 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  test -z "$as_dir" && as_dir=.
 -  test -r "$as_dir/$0" && as_myself=$as_dir/$0 && break
 -done
++    sed '/^.*\/\([^/][^/]*\)\/*$/{
++	    s//\1/
++	    q
++	  }
++	  /^X\/\(\/\/\)$/{
++	    s//\1/
++	    q
++	  }
++	  /^X\/\(\/\).*/{
++	    s//\1/
++	    q
++	  }
++	  s/.*/./; q'`
++
++# CDPATH.
++$as_unset CDPATH
++
++
  
 -       ;;
 -  esac
@@ -17780,7 +17811,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  if mkdir -p . 2>/dev/null; then
    as_mkdir_p=:
-@@ -15782,7 +15500,28 @@
+@@ -15872,7 +15590,28 @@
    as_mkdir_p=false
  fi
  
@@ -17810,7 +17841,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  # Sed expression to map a string onto a valid CPP name.
  as_tr_cpp="eval sed 'y%*$as_cr_letters%P$as_cr_LETTERS%;s%[^_$as_cr_alnum]%_%g'"
-@@ -15791,31 +15530,14 @@
+@@ -15881,31 +15620,14 @@
  as_tr_sh="eval sed 'y%*+%pp%;s%[^_$as_cr_alnum]%_%g'"
  
  
@@ -17846,7 +17877,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
    CONFIG_FILES    = $CONFIG_FILES
    CONFIG_HEADERS  = $CONFIG_HEADERS
-@@ -15823,30 +15545,19 @@
+@@ -15913,30 +15635,19 @@
    CONFIG_COMMANDS = $CONFIG_COMMANDS
    $ $0 $@
  
@@ -17884,7 +17915,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  ac_cs_usage="\
  \`$as_me' instantiates files from templates according to the
  current configuration.
-@@ -15854,7 +15565,7 @@
+@@ -15944,7 +15655,7 @@
  Usage: $0 [OPTIONS] [FILE]...
  
    -h, --help       print this help, then exit
@@ -17893,7 +17924,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
    -q, --quiet      do not print progress messages
    -d, --debug      don't remove temporary files
        --recheck    update $as_me by reconfiguring in the same conditions
-@@ -15870,18 +15581,20 @@
+@@ -15960,18 +15671,20 @@
  $config_headers
  
  Report bugs to <bug-autoconf@gnu.org>."
@@ -17919,7 +17950,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  _ACEOF
  
  cat >>$CONFIG_STATUS <<\_ACEOF
-@@ -15892,39 +15605,24 @@
+@@ -15982,39 +15695,24 @@
  do
    case $1 in
    --*=*)
@@ -17965,7 +17996,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
      debug=: ;;
    --file | --fil | --fi | --f )
      $ac_shift
-@@ -15934,18 +15632,24 @@
+@@ -16024,18 +15722,24 @@
      $ac_shift
      CONFIG_HEADERS="$CONFIG_HEADERS $ac_optarg"
      ac_need_defaults=false;;
@@ -17995,7 +18026,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
    esac
    shift
-@@ -15961,29 +15665,43 @@
+@@ -16051,29 +15755,43 @@
  _ACEOF
  cat >>$CONFIG_STATUS <<_ACEOF
  if \$ac_cs_recheck; then
@@ -18048,7 +18079,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  # If the user did not use the arguments to specify the items to instantiate,
  # then the envvar interface is used.  Set only those that are not.
  # We use the long form for the default assignment because of an extremely
-@@ -15994,373 +15712,483 @@
+@@ -16084,373 +15802,483 @@
  fi
  
  # Have a temporary directory for convenience.  Make it in the build tree
@@ -18470,7 +18501,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +cat >>$CONFIG_STATUS <<_ACEOF
 +cat >"\$tmp/subs-2.sed" <<\CEOF$ac_eof
 +/@[a-zA-Z_][a-zA-Z_0-9]*@/!b end
-+_ACEOF
+ _ACEOF
 +sed '
 +s/[,\\&]/\\&/g; s/@/@|#_!!_#|/g
 +s/^/s,@/; s/!/@,|#_!!_#|/
@@ -18485,7 +18516,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +:end
 +s/|#_!!_#|//g
 +CEOF$ac_eof
- _ACEOF
++_ACEOF
 +
 +
 +# VPATH may cause trouble with some makes, so we remove $(srcdir),
@@ -18750,14 +18781,13 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  [\\/]* | ?:[\\/]* ) ac_abs_top_srcdir=$ac_top_srcdir;;
 -  *) ac_abs_top_srcdir=$ac_abs_builddir/$ac_top_srcdir;;
 -  esac;;
--esac
 +    ac_top_srcdir=$srcdir
 +    ac_abs_top_srcdir=$srcdir ;;
 +  *) # Relative name.
 +    ac_srcdir=$ac_top_build_prefix$srcdir$ac_dir_suffix
 +    ac_top_srcdir=$ac_top_build_prefix$srcdir
 +    ac_abs_top_srcdir=$ac_pwd/$srcdir ;;
-+esac
+ esac
 +ac_abs_srcdir=$ac_abs_top_srcdir$ac_dir_suffix
  
  
@@ -18848,7 +18878,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  cat >>$CONFIG_STATUS <<_ACEOF
    sed "$ac_vpsub
  $extrasub
-@@ -16368,251 +16196,136 @@
+@@ -16458,251 +16286,136 @@
  cat >>$CONFIG_STATUS <<\_ACEOF
  :t
  /@[a-zA-Z_][a-zA-Z_0-9]*@/!b
@@ -19038,6 +19068,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  # on some systems where configure will not decide to define it.
 -cat >>conftest.undefs <<\_ACEOF
 -s,^[	 ]*#[	 ]*undef[	 ][	 ]*[a-zA-Z_][a-zA-Z_0-9]*,/* & */,
+-_ACEOF
 +# (The regexp can be short, since the line contains either #define or #undef.)
 +echo 's/ $//
 +s,^[	 #]*u.*,/* & */,' >>conftest.defines
@@ -19052,19 +19083,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 +ac_in='$ac_file_inputs'
 +ac_out='"$tmp/out1"'
 +ac_nxt='"$tmp/out2"'
-+
-+while :
-+do
-+  # Write a here document:
-+    cat >>$CONFIG_STATUS <<_ACEOF
-+    # First, check the format of the line:
-+    cat >"\$tmp/defines.sed" <<\\CEOF
-+/^[	 ]*#[	 ]*undef[	 ][	 ]*$ac_word_re[	 ]*\$/b def
-+/^[	 ]*#[	 ]*define[	 ][	 ]*$ac_word_re[(	 ]/b def
-+b
-+:def
- _ACEOF
--
+ 
 -# Break up conftest.defines because some shells have a limit on the size
 -# of here documents, and old seds have small limits too (100 cmds).
 -echo '  # Handle all the #define templates only if necessary.' >>$CONFIG_STATUS
@@ -19073,7 +19092,8 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -echo '  :' >>$CONFIG_STATUS
 -rm -f conftest.tail
 -while grep . conftest.defines >/dev/null
--do
++while :
+ do
 -  # Write a limited-size here document to $tmp/defines.sed.
 -  echo '  cat >$tmp/defines.sed <<CEOF' >>$CONFIG_STATUS
 -  # Speed up: don't consider the non `#define' lines.
@@ -19082,6 +19102,15 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
 -  echo 't clr' >>$CONFIG_STATUS
 -  echo ': clr' >>$CONFIG_STATUS
 -  sed ${ac_max_here_lines}q conftest.defines >>$CONFIG_STATUS
++  # Write a here document:
++    cat >>$CONFIG_STATUS <<_ACEOF
++    # First, check the format of the line:
++    cat >"\$tmp/defines.sed" <<\\CEOF
++/^[	 ]*#[	 ]*undef[	 ][	 ]*$ac_word_re[	 ]*\$/b def
++/^[	 ]*#[	 ]*define[	 ][	 ]*$ac_word_re[(	 ]/b def
++b
++:def
++_ACEOF
 +  sed ${ac_max_sed_lines}q conftest.defines >>$CONFIG_STATUS
    echo 'CEOF
 -  sed -f $tmp/defines.sed $tmp/in >$tmp/out
@@ -19207,7 +19236,7 @@ diff -ur vim71-original/src/auto/configure vim71/src/auto/configure
  
  { (exit 0); exit 0; }
  _ACEOF
-@@ -16635,7 +16348,7 @@
+@@ -16725,7 +16438,7 @@
      ac_config_status_args="$ac_config_status_args --quiet"
    exec 5>/dev/null
    $SHELL $CONFIG_STATUS $ac_config_status_args || ac_cs_success=false
