@@ -1,9 +1,10 @@
 ######################################################################
 #
-# qtopia4 (Qtopia Core 4)
-# http://www.trolltech.com/
+# qtopia4 (Qt Embedded for Linux 4.5)
+# http://www.qtsoftware.com/
 #
-# This makefile composed by Thomas Lundquist <thomasez@zelow.no>
+# This makefile was oiginaly composed by Thomas Lundquist <thomasez@zelow.no>
+# Later heavily modified by buildroot developers
 #
 # BTW, this uses alot of FPU calls and it's pretty slow if you use
 # the kernels FPU emulation so it's better to choose soft float in the
@@ -339,6 +340,38 @@ endif
 endif
 # End of workaround.
 
+# Figure out what libs to install in the target
+QTOPIA4_LIBS=#empty
+ifeq ($(BR2_PACKAGE_QTOPIA4_GUI_MODULE),y)
+QTOPIA4_LIBS+= qtopia4-gui  
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_SQL_MODULE),y)
+QTOPIA4_LIBS+= qtopia4-sql
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_PHONON),y)
+QTOPIA4_LIBS+= qtopia4-phonon
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_SVG),y)
+QTOPIA4_LIBS+= qtopia4-svg
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_NETWORK),y)
+QTOPIA4_LIBS+= qtopia4-network
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_WEBKIT),y)
+QTOPIA4_LIBS+= qtopia4-webkit
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_XML),y)
+QTOPIA4_LIBS+= qtopia4-xml
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_XMLPATTERNS),y)
+QTOPIA4_LIBS+= qtopia4-xmlpatterns
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_SCRIPT),y)
+QTOPIA4_LIBS+= qtopia4-script
+endif
+ifeq ($(BR2_PACKAGE_QTOPIA4_SCRIPTTOOLS),y)
+QTOPIA4_LIBS+= qtopia4-scripttools
+endif
 
 QTOPIA4_QMAKE_CONF:=$(QTOPIA4_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)-g++/qmake.conf
 
@@ -360,6 +393,23 @@ QTOPIA4_QMAKE:=$(STAGING_DIR)/usr/bin/qmake -spec qws/linux-$(BR2_PACKAGE_QTOPIA
 define QTOPIA4_QMAKE_SET
 	$(SED) '/QMAKE_$(1)/d' $(QTOPIA4_QMAKE_CONF)
 	$(SED) '/include.*qws.conf/aQMAKE_$(1) = $(2)' $(QTOPIA4_QMAKE_CONF)
+endef
+
+################################################################################
+# QTOPIA4_INSTALL_PLUGINS -- helper macro to install Qt plugins to target and 
+# strip them
+#
+# Argument 1 is the plugin folder
+# 
+# E.G. use like this to install plugins/sqldrivers:
+# $(call QTOPIA4_INSTALL_PLUGINS,sqldrivers)
+# ################################################################################
+define QTOPIA4_INSTALL_PLUGINS
+        if [ -d $(STAGING_DIR)/usr/plugins/$(1) ]; then \
+                mkdir -p $(TARGET_DIR)/usr/plugins; \
+                cp -dpfr $(STAGING_DIR)/usr/plugins/$(1) $(TARGET_DIR)/usr/plugins/; \
+                $(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/plugins/$(1)/*; \
+        fi
 endef
 
 $(DL_DIR)/$(QTOPIA4_SOURCE):
@@ -429,48 +479,83 @@ $(QTOPIA4_TARGET_DIR)/.compiled: $(QTOPIA4_TARGET_DIR)/.configured
 $(STAGING_DIR)/usr/lib/libQtCore.la: $(QTOPIA4_TARGET_DIR)/.compiled
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(QTOPIA4_TARGET_DIR) install
 
-$(TARGET_DIR)/usr/lib/libQtCore.so.4: $(STAGING_DIR)/usr/lib/libQtCore.la
+qtopia4-gui: $(STAGING_DIR)/usr/lib/libQtCore.la
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
 	touch $(TARGET_DIR)/usr/lib/fonts/fontdir
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/helvetica*.qpf $(TARGET_DIR)/usr/lib/fonts
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/fixed*.qpf $(TARGET_DIR)/usr/lib/fonts
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/micro*.qpf $(TARGET_DIR)/usr/lib/fonts
-ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
-	cp -dpf $(STAGING_DIR)/usr/lib/libQt*.so.* $(TARGET_DIR)/usr/lib/
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.*
-ifeq ($(BR2_PACKAGE_QTOPIA4_PHONON),y)
-	cp -dpf $(STAGING_DIR)/usr/lib/libphonon.so.* $(TARGET_DIR)/usr/lib/
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libphonon.so.*
-endif
-endif
 	# Install image plugins if they are built
-	if [ -d $(STAGING_DIR)/usr/plugins/imageformats ]; then \
-		mkdir -p $(TARGET_DIR)/usr/plugins; \
-		cp -dpfr $(STAGING_DIR)/usr/plugins/imageformats $(TARGET_DIR)/usr/plugins/; \
-		$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/plugins/imageformats/*; \
-	fi
-ifeq ($(BR2_PACKAGE_QTOPIA4_PHONON),y)
-	mkdir -p $(TARGET_DIR)/usr/plugins
-	cp -dpfr $(STAGING_DIR)/usr/plugins/phonon_backend $(TARGET_DIR)/usr/plugins/
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/plugins/phonon_backend/*
-endif
-ifneq ($(BR2_PACKAGE_QTOPIA4_GUI_MODULE),y)
-	# Remove Gui library, not needed
-	-rm $(TARGET_DIR)/usr/lib/libQtGui*
-endif
-ifneq ($(BR2_PACKAGE_QTOPIA4_SQL_MODULE),y)
-	# Remove Sql libraries, not needed
-	-rm $(TARGET_DIR)/usr/lib/libQtSql*
-endif
-ifneq ($(BR2_PACKAGE_QTOPIA4_SVG),y)
-	# Remove Svg libraries, not needed
-	-rm $(TARGET_DIR)/usr/lib/libQtSvg*
+	$(call QTOPIA4_INSTALL_PLUGINS,imageformats)
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtGui.so.* $(TARGET_DIR)/usr/lib/
 endif
 
-qtopia4: uclibc zlib $(QTOPIA4_DEP_LIBS) $(TARGET_DIR)/usr/lib/libQtCore.so.4
+qtopia4-sql: $(STAGING_DIR)/usr/lib/libQtCore.la
+	$(call QTOPIA4_INSTALL_PLUGINS,sqldrivers)
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtSql.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-phonon: $(STAGING_DIR)/usr/lib/libQtCore.la
+	$(call QTOPIA4_INSTALL_PLUGINS,phonon_backend)
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libphonon.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-svg: $(STAGING_DIR)/usr/lib/libQtCore.la
+	$(call QTOPIA4_INSTALL_PLUGINS,iconengines)
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtSvg.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-network: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtNetwork.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-webkit: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtWebKit.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-xml: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtXml.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-xmlpatterns: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtXmlPatterns.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-script: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtScript.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qtopia4-scripttools: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtScriptTools.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+
+$(TARGET_DIR)/usr/lib/libQtCore.so.4: $(STAGING_DIR)/usr/lib/libQtCore.la $(QTOPIA4_LIBS)
+	# Strip all installed libs
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtCore.so.* $(TARGET_DIR)/usr/lib/
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.*
+endif
+
+qtopia4: uclibc $(QTOPIA4_DEP_LIBS) $(TARGET_DIR)/usr/lib/libQtCore.so.4
 
 qtopia4-clean:
 	-$(MAKE) -C $(QTOPIA4_TARGET_DIR) clean
+	-rm -rf $(TARGET_DIR)/usr/lib/fonts
+ifeq ($(BR2_PACKAGE_QTOPIA4_SHARED),y)
+	-rm $(TARGET_DIR)/usr/lib/libQt*.so.*
+	-rm $(TARGET_DIR)/usr/lib/libphonon.so.*
+endif
 
 qtopia4-dirclean:
 	rm -rf $(QTOPIA4_TARGET_DIR)
