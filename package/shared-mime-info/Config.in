@@ -1,10 +1,10 @@
 config BR2_PACKAGE_SHARED_MIME_INFO
 	bool "shared-mime-info"
 	select BR2_PACKAGE_LIBGLIB2
-        select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_LIBXML2
 	help
-                The shared-mime-info package contains the core
-                database of common types and the update-mime-database
-                command used to extend it.
+	  The shared-mime-info package contains the core
+	  database of common types and the update-mime-database
+	  command used to extend it.
 
-                http://freedesktop.org/wiki/Software/shared-mime-info
+	  http://freedesktop.org/wiki/Software/shared-mime-info
