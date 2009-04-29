@@ -313,7 +313,6 @@ source "package/fbv/Config.in"
 source "package/fbset/Config.in"
 
 comment "other GUIs"
-source "package/qte/Config.in"
 source "package/qtopia4/Config.in"
 
 #source "package/microwin/Config.in"
