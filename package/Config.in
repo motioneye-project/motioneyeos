@@ -100,6 +100,7 @@ if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/psmisc/Config.in"
 endif
 source "package/screen/Config.in"
+source "package/shared-mime-info/Config.in"
 source "package/startup-notification/Config.in"
 source "package/strace/Config.in"
 source "package/sudo/Config.in"
