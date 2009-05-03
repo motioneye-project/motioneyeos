@@ -119,7 +119,7 @@
     <h2><a name="download" id="download"></a>Obtaining Buildroot</h2>
 
     <p>Buildroot releases are made approximately every 3
-    months. Direct SVN access and daily SVN snapshots are also
+    months. Direct Git access and daily snapshots are also
     available if you want more bleeding edge.</p>
 
     <p>Releases are available at <a
@@ -130,16 +130,16 @@
     and previous snapshots are also available at <a
     href="http://buildroot.net/downloads/snapshots/">http://buildroot.net/downloads/snapshots/</a>. </p>
 
-    <p>To download Buildroot using SVN, you can simply follow
-    the rules described on the &quot;Accessing SVN&quot;-page (<a href=
-    "http://buildroot.net/subversion.html">http://buildroot.net/subversion.html</a>)
+    <p>To download Buildroot using Git, you can simply follow
+    the rules described on the &quot;Accessing Git&quot;-page (<a href=
+    "http://buildroot.net/git.html">http://buildroot.net/git.html</a>)
     of the Buildroot website (<a href=
-    "http://buildroot.net">http://buildroot.net</a>), and download the
-    <code>buildroot</code> SVN module. For the impatient, here's a quick
+    "http://buildroot.net">http://buildroot.net</a>), and download
+    <code>buildroot</code> from Git. For the impatient, here's a quick
     recipe:</p>
 
  <pre>
- $ svn co svn://uclibc.org/trunk/buildroot
+ $ git clone git://git.buildroot.net/buildroot
 </pre>
 
     <h2><a name="using" id="using"></a>Using Buildroot</h2>
@@ -515,7 +515,7 @@ $ make me&lt;TAB&gt;
       uncompress the <code>target/generic/skel.tar.gz</code> file to create the
       main subdirectories and symlinks, copies the skeleton available in
       <code>target/generic/target_skeleton</code> and then removes useless
-      <code>.svn/</code> directories. </li>
+      <code>.svn/CVS</code> directories. </li>
 
       <li>Add the <code>TARGETS</code> dependency. This should generally check
       if the configuration option for this package is enabled, and if so then
