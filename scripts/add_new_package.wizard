@@ -53,7 +53,7 @@ PACKAGE_DIR=`dirname $0`/../package/${PACKAGE_NAME}
 
 mkdir ${PACKAGE_DIR}
 
-cat > ${PACKAGE_DIR}/${PACKAGE_NAME}.mk <<EOF
+sed -e 's/ *$//g' > ${PACKAGE_DIR}/${PACKAGE_NAME}.mk <<EOF
 #############################################################
 #
 # ${PACKAGE_NAME}
@@ -71,7 +71,6 @@ ${NAME_UPPER}_CONF_OPT = ${CONFIG_OPTIONS}
 ${NAME_UPPER}_DEPENDENCIES = uclibc ${EXTRA_DEPS}
 
 \$(eval \$(call AUTOTARGETS,package,${PACKAGE_NAME}))
-
 EOF
 
 cat > ${PACKAGE_DIR}/Config.in <<EOF
@@ -90,4 +89,3 @@ echo
 echo "You are now ready to build ${PACKAGE_NAME}"
 echo "Just run make menuconfig and select your new"
 echo "package, then run make."
- 
