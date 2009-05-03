@@ -10,7 +10,7 @@
 # | FOO_VERSION = 1.0
 # | FOO_SOURCE = foo-$(FOO_VERSION).tar.gz
 # | FOO_SITE = http://www.libfoo.org/dist
-# | $(eval $(call AUTOTARGETS,foo))
+# | $(eval $(call AUTOTARGETS,package,foo))
 #
 ## The following targets can be called from the shell:
 #
