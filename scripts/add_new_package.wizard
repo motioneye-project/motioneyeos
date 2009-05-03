@@ -49,10 +49,11 @@ URL=${DOWNLOAD_LOC%/*}
 TARBALL=${DOWNLOAD_LOC##*/}
 EXTENSION=${TARBALL##*.tar.}
 NAME_UPPER=`echo ${PACKAGE_NAME} | tr a-z- A-Z_`
+PACKAGE_DIR=`dirname $0`/../package/${PACKAGE_NAME}
 
-mkdir ../package/${PACKAGE_NAME}
+mkdir ${PACKAGE_DIR}
 
-cat > ../package/${PACKAGE_NAME}/${PACKAGE_NAME}.mk <<EOF
+cat > ${PACKAGE_DIR}/${PACKAGE_NAME}.mk <<EOF
 #############################################################
 #
 # ${PACKAGE_NAME}
@@ -73,7 +74,7 @@ ${NAME_UPPER}_DEPENDENCIES = uclibc ${EXTRA_DEPS}
 
 EOF
 
-cat > ../package/${PACKAGE_NAME}/Config.in <<EOF
+cat > ${PACKAGE_DIR}/Config.in <<EOF
 config BR2_PACKAGE_${NAME_UPPER}
 	bool "${PACKAGE_NAME}"
 	help
