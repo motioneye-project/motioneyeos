@@ -1,0 +1,10 @@
+/build_*
+/project_*
+/toolchain_*
+/binaries/*
+/.auto.deps
+/.config.cmd
+/.config.old
+/.config
+*.depend
+*.o

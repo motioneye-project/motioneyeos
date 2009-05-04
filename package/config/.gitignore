@@ -1,0 +1,6 @@
+/buildroot-config
+/conf
+/mconf
+/lex.zconf.c
+/zconf.hash.c
+/zconf.tab.c
