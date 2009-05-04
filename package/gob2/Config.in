@@ -1,0 +1,10 @@
+config BR2_PACKAGE_GOB2
+	bool "gob2"
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_FLEX
+	select BR2_PACKAGE_BISON
+	help
+	  GOB (GTK+ Object Builder) is a preprocessor which simplifies
+	  the writing of GObjects in C.
+
+	  http://www.jirka.org/gob.html
