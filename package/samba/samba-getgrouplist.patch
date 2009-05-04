@@ -1,6 +1,6 @@
---- a/source/configure.in
-+++ b/source/configure.in
-@@ -1199,38 +1199,6 @@ AC_TRY_COMPILE([
+--- a/source/configure.in	2009-04-01 13:48:54.000000000 +0200
++++ b/source/configure.in	2009-04-20 13:08:42.000000000 +0200
+@@ -1219,38 +1219,6 @@
  AC_DEFINE(HAVE_PRCTL, 1, [Whether prctl is available]),[])
  
  #

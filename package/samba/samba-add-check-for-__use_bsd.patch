@@ -1,6 +1,6 @@
---- a/source/client/mount.cifs.c
-+++ b/source/client/mount.cifs.c
-@@ -96,6 +96,7 @@ char * prefixpath = NULL;
+--- a/source/client/mount.cifs.c	2009-04-01 13:48:54.000000000 +0200
++++ b/source/client/mount.cifs.c	2009-04-20 12:59:57.000000000 +0200
+@@ -100,6 +100,7 @@
  
  /* glibc doesn't have strlcpy, strlcat. Ensure we do. JRA. We
   * don't link to libreplace so need them here. */
@@ -8,7 +8,7 @@
  
  /* like strncpy but does not 0 fill the buffer and always null
   *    terminates. bufsize is the size of the destination buffer */
-@@ -177,6 +178,7 @@ static void mount_cifs_usage(void)
+@@ -181,6 +182,7 @@
  	SAFE_FREE(mountpassword);
  	exit(EX_USAGE);
  }
