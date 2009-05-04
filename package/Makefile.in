@@ -371,7 +371,7 @@ DISABLE_IPV6= --disable-ipv6
 endif
 
 ifneq ($(BR2_GCC_CROSS_CXX),y)
-TARGET_CONFIGURE_OPTS+=CXX=""
+TARGET_CONFIGURE_OPTS+=CXX=false
 endif
 
 ifeq ($(BR2_ENABLE_DEBUG),y)
