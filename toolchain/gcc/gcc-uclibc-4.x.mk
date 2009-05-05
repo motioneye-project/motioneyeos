@@ -179,6 +179,11 @@ ifeq ("$(strip $(ARCH))","armeb")
 	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) arm-softfloat.patch.conditional
 endif
 endif
+ifeq ($(ARCH)-$(BR2_GCC_SHARED_LIBGCC),powerpc-y)
+ifneq ($(BR2_SOFT_FLOAT)$(BR2_ENABLE_MULTILIB),)
+	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) powerpc-link-with-math-lib.patch.conditional
+endif
+endif
 	touch $@
 
 #############################################################
