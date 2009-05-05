@@ -1,0 +1,66 @@
+2009.05-rc1, Released May 5th, 2009:
+
+	Fixes all over the tree, further conversion of packages to
+	Makefile.autotools.in and we now build host versions of
+	packages where needed for build time dependencies instead of
+	relying on the correct versions being available on the build
+	host. Ancient toolchain / busybox versions have furthermore
+	been removed as announced in the 2009.02 release notes.
+
+	New packages: flac, gob2, lzop, taglib, wpa_supplicant
+
+	Updated packages: avahi, bind, binutils, busybox, dbus, dbus-glib,
+	directfb, dnsmasq, freetype, gcc, gmp, gstreamer, iptables, kernel
+	headers, kexec, libglib2, libpng, libsndfile, lua, mpfr, ntfs-3g,
+	openssl, php, qtopia4, rsync, samba, sqlite, tar, uboot, uclibc,
+	util-linux, xorg7, xerces
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#5,#77,#141,#143: Convert php package to Makefile.autotools.in
+         and a ton of other improvements
+	#19: page.h missing by util-linux
+	#37: update libglib2 to version 2.18.4
+	#61: tslib puts staging_dir into pkgconfig file
+	#69: tar refuses to build
+	#71,#175: ./wchar.h:41:12: error: empty filename in #include
+	#73: Bump openssl package to the latest version
+	#81: New package wpa_supplicant
+	#99: new package: flac
+	#101: update gstreamer packages
+	#105,#313: menuconfig segfaults on tinyx if wchar is not
+         selected
+	#107: convert libvorbis to Makefile.autotools.in
+	#109: Make pppd package avoid bsd err
+	#111: binutils 2.17 fails to build when texinfo >= 4.10
+	#133: Modify ncurses5-config to get correct include path
+	#137: Bump php to version 5.2.9
+	#139: Bump sqlite to 3.6.11 and convert to
+         Makefile.autotools.in
+	#145: Bump bind package to 9.5.1-P1 (security)
+	#147: buildroot toolchain fails to build w/binutils-2.19.1
+	#151: openssl package trivial fixes
+	#161: vim fails on patching with errors in configure.patch
+	#169: blackbox-0.70.1 does not build
+	#177: xdriver_xf86-input-keyboard does not build
+	#179: Upgrade dropbear to Makefile.autotools.in
+	#181: Update to Xorg 7.4
+	#187: ntfs-3g: could not build cross
+	#191: alsa-lib ARM binaries always built with EABI
+	#213: Bump wpa_supplicant package to version 0.6.9
+	#217: Bump openssl package to 0.9.8k (security)
+	#219: Toolchain build fails on m4
+	#225: m4 macros are out of place
+	#233: make ipv6 optional in iptables
+	#237: ncftp: convert to Makefile.autotools.in
+	#239: ntfs-3g: convert to Makefile.autotools.in
+	#245: lzop: new package
+	#271: Bump bind package to 9.5.1-P2 (security)
+	#277: Bump sqlite package to 3.6.16
+	#279: update libglib2 to version 2.20.1
+	#281: update DirectFB to version 1.2.8
+	#283: add taglib
+	#285: compilation of samba fails if IPV6 support is missing
+	#293: update samba to version 3.3.3
+	#299: add shared-mime-info package
+	#307: make openssl package respect build flags
