@@ -1,5 +1,13 @@
---- metacity-2.17.3/Makefile.am.orig	2007-01-14 16:50:52.000000000 -0700
-+++ metacity-2.17.3/Makefile.am	2007-01-14 16:51:46.000000000 -0700
+metacity: don't descent into po / docs subdirs
+---
+ Makefile.am |    2 +-
+ Makefile.in |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: metacity-2.16.8/Makefile.am
+===================================================================
+--- metacity-2.16.8.orig/Makefile.am
++++ metacity-2.16.8/Makefile.am
 @@ -1,5 +1,5 @@
  
 -SUBDIRS=src po doc
@@ -7,12 +15,14 @@
  
  EXTRA_DIST=HACKING rationales.txt \
  	intltool-extract.in intltool-merge.in intltool-update.in
---- metacity-2.17.3/Makefile.in.orig	2007-01-14 16:51:38.000000000 -0700
-+++ metacity-2.17.3/Makefile.in	2007-01-14 16:51:58.000000000 -0700
-@@ -246,7 +246,7 @@
- sharedstatedir = @sharedstatedir@
- sysconfdir = @sysconfdir@
+Index: metacity-2.16.8/Makefile.in
+===================================================================
+--- metacity-2.16.8.orig/Makefile.in
++++ metacity-2.16.8/Makefile.in
+@@ -244,7 +244,7 @@ sysconfdir = @sysconfdir@
  target_alias = @target_alias@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
 -SUBDIRS = src po doc
 +SUBDIRS = src
  EXTRA_DIST = HACKING rationales.txt \

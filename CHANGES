@@ -1,3 +1,9 @@
+2009.05-rc2, Released May x, 2009:
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#167: metacity does not build
+
 2009.05-rc1, Released May 5th, 2009:
 
 	Fixes all over the tree, further conversion of packages to
