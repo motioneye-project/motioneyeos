@@ -1,9 +1,9 @@
 #
 # Automatically generated make config: don't edit
-# Wed Apr 29 16:19:36 2009
+# Thu May  7 22:14:33 2009
 #
 BR2_HAVE_DOT_CONFIG=y
-BR2_VERSION="2009.05-svn"
+BR2_VERSION="2009.05-rc1"
 # BR2_alpha is not set
 # BR2_arm is not set
 # BR2_armeb is not set
@@ -181,7 +181,7 @@ BR2_EXT_UCLIBC_VERSION_0_9_30=y
 BR2_KERNEL_HEADERS_2_6_28=y
 # BR2_KERNEL_HEADERS_2_6_29 is not set
 # BR2_KERNEL_HEADERS_SNAP is not set
-BR2_DEFAULT_KERNEL_HEADERS="2.6.28.9"
+BR2_DEFAULT_KERNEL_HEADERS="2.6.28.10"
 
 #
 # uClibc Options
@@ -246,14 +246,11 @@ BR2_GCC_SHARED_LIBGCC=y
 # BR2_PACKAGE_GDB is not set
 BR2_PACKAGE_GDB_SERVER=y
 BR2_PACKAGE_GDB_HOST=y
-# BR2_GDB_VERSION_6_2_1 is not set
-# BR2_GDB_VERSION_6_3 is not set
 # BR2_GDB_VERSION_6_4 is not set
 # BR2_GDB_VERSION_6_5 is not set
 # BR2_GDB_VERSION_6_6 is not set
 BR2_GDB_VERSION_6_7_1=y
 # BR2_GDB_VERSION_6_8 is not set
-# BR2_GDB_VERSION_SNAPSHOT is not set
 BR2_GDB_VERSION="6.7.1"
 
 #
@@ -360,6 +357,7 @@ BR2_PACKAGE_LIBICONV=y
 # BR2_PACKAGE_NG_SPICE_REWORK is not set
 # BR2_PACKAGE_POPT is not set
 # BR2_PACKAGE_SCREEN is not set
+# BR2_PACKAGE_SHARED_MIME_INFO is not set
 # BR2_PACKAGE_STARTUP_NOTIFICATION is not set
 BR2_PACKAGE_STRACE=y
 # BR2_PACKAGE_SUDO is not set
@@ -534,10 +532,7 @@ BR2_PACKAGE_MTD_MTD_DEBUG=y
 # BR2_PACKAGE_MTD_NFTL_FORMAT is not set
 # BR2_PACKAGE_MTD_NFTLDUMP is not set
 # BR2_PACKAGE_MTD_SUMTOOL is not set
-
-#
-# ntfs-3g requires a toolchain with LARGEFILE and WCHAR support
-#
+# BR2_PACKAGE_NTFS_3G is not set
 # BR2_PACKAGE_PCIUTILS is not set
 # BR2_PACKAGE_PCMCIA is not set
 # BR2_PACKAGE_SETSERIAL is not set
@@ -652,6 +647,7 @@ BR2_PACKAGE_LIBGLIB2=y
 # dillo		- disabled (requires jpeg,libglib12,libgtk12,zlib,libpng and Xorg(7))
 #
 # BR2_PACKAGE_GQVIEW is not set
+# BR2_PACKAGE_GOB2 is not set
 # BR2_PACKAGE_LEAFPAD is not set
 
 #
