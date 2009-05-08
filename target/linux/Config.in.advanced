@@ -33,6 +33,7 @@ source "target/linux/Config.in.versions"
 
 config BR2_KERNEL_PATCH_LEVEL
 	string
+	default $(BR2_KERNEL_LATEST_2_6_29) if BR2_LINUX_2_6_29 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default $(BR2_KERNEL_LATEST_2_6_28) if BR2_LINUX_2_6_28 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default $(BR2_KERNEL_LATEST_2_6_27) if BR2_LINUX_2_6_27 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default $(BR2_KERNEL_LATEST_2_6_26) if BR2_LINUX_2_6_26 && BR2_KERNEL_ADD_LATEST_MINORPATCH
@@ -127,8 +128,12 @@ choice
 	  Select the specific Linux version you want to use
 
 config BR2_LINUX_2_6_STABLE
-	bool "The latest stable Linux kernel (2.6.28.2)"
+	bool "The latest stable Linux kernel (2.6.29.2)"
 
+config BR2_LINUX_2_6_29
+	bool "Linux 2.6.29"
+	select BR2_KERNEL_BASE
+	
 config BR2_LINUX_2_6_28
 	bool "Linux 2.6.28"
 	select BR2_KERNEL_BASE
@@ -165,10 +170,6 @@ config BR2_LINUX_2_6_20
 	bool "Linux 2.6.20"
 	select BR2_KERNEL_BASE
 
-config BR2_LINUX_2_6_29
-	bool "Linux 2.6.29"
-	select BR2_KERNEL_BASE
-
 config BR2_LINUX26_CUSTOM
 	bool "Linux <custom> version"
 
@@ -177,19 +178,19 @@ endchoice
 if BR2_LINUX26_CUSTOM
 config BR2_CUSTOM_DOWNLOAD_LINUX26_VERSION
 	string "Linux Tarball version"
-	default "2.6.28"
+	default "2.6.30"
 	help
 	  Specify any .tar.bz2 file
 
 config BR2_CUSTOM_LINUX26_VERSION
 	string "Linux Version"
-	default "2.6.29-rc2"
+	default "2.6.30"
 	help
 	  Specify what the linux version will be called
 
 config BR2_CUSTOM_LINUX26_PATCH
 	string "patch name"
-	default "patch-2.6.29-rc2.bz2"
+	default "patch-2.6.30-rc4.bz2"
 	help
 	  Specify a patch to be downloaded
 
