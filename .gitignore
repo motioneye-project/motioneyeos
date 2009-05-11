@@ -1,7 +1,7 @@
 /build_*
 /project_*
 /toolchain_*
-/binaries/*
+/binaries
 /dl
 /.auto.deps
 /.config.cmd
