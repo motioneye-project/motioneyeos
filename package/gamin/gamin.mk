@@ -12,6 +12,10 @@ GAMIN_INSTALL_TARGET = YES
 
 GAMIN_CONF_OPT = --program-prefix="" --disable-debug
 
+ifneq ($(BR2_PACKAGE_PYTHON),y)
+GAMIN_CONF_OPT += --without-python
+endif
+
 GAMIN_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 GAMIN_CONF_ENV = have_abstract_sockets=no
