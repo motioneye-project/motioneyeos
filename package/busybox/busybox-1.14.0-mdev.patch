@@ -1,5 +1,5 @@
 --- busybox-1.14.0/util-linux/mdev.c	Tue Apr 14 23:23:04 2009
-+++ busybox-1.14.0-mdev/util-linux/mdev.c	Sat May  2 16:31:34 2009
++++ busybox-1.14.0-mdev/util-linux/mdev.c	Mon May  4 19:58:47 2009
 @@ -181,7 +181,8 @@
  		 * the rest of fields unless keep_matching == 1 */
  
@@ -10,15 +10,3 @@
  
  		/* 3rd field: mode - device permissions */
  		mode = strtoul(tokens[2], NULL, 8);
-@@ -524,7 +525,10 @@
- 				make_device(temp, 1);
- 		}
- 		else if (strcmp(action, "add") == 0) {
--			make_device(temp, 0);
-+			/* N.B. make_device() mangles the device path, so save it */
-+			char *s = xstrdup(temp);
-+			make_device(s, 0);
-+			free(s);
- 			if (ENABLE_FEATURE_MDEV_LOAD_FIRMWARE) {
- 				if (fw)
- 					load_firmware(fw, temp);
