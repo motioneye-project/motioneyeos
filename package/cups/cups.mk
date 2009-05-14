@@ -58,6 +58,12 @@ else
 	CUPS_CONF_OPT +=	--disable-python
 endif
 
+ifeq ($(BR2_PACKAGE_CUPS_PDFTOPS),y)
+	CUPS_CONF_OPT += --enable-pdftops
+else
+	CUPS_CONF_OPT += --disable-pdftops
+endif
+
 $(DL_DIR)/$(CUPS_SOURCE):
 	 $(call DOWNLOAD,$(CUPS_SITE),$(CUPS_SOURCE))
 
