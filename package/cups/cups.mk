@@ -74,6 +74,7 @@ $(CUPS_DIR)/.unpacked: $(DL_DIR)/$(CUPS_SOURCE)
 	touch $@
 
 $(CUPS_DIR)/.configured: $(CUPS_DIR)/.unpacked
+	cd $(CUPS_DIR) && $(AUTOCONF)
 	(cd $(CUPS_DIR) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -109,7 +110,7 @@ $(CUPS_DIR)/.installed: $(CUPS_DIR)/.compiled
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/bin/cups-config
 	touch $@
 
-cups: uclibc $(CUPS_DEPENDENCIES) $(CUPS_DIR)/.installed
+cups: uclibc host-autoconf $(CUPS_DEPENDENCIES) $(CUPS_DIR)/.installed
 
 cups-source: $(DL_DIR)/$(CUPS_SOURCE)
 
