@@ -1,8 +1,17 @@
-2009.05-rc2, Released May x, 2009:
+2009.05-rc2, Released May 19th, 2009:
+
+	Fixes for toolchain (gcc w/softfloat on ppc, 3.4.6 buildfix
+	for newer hosts), stable kernel versions, busybox, cups,
+	dmraid, docker, mesa3d, rsync and updated defconfigs.
+
+	xserver marked as broken on AVR32 and atngw100-expanded
+	config removed.
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#167: metacity does not build
+	#295: gamin installs python support even if python is disabled
+	#323: gen_matypes fails to execute during build of Mesa when us...
 
 2009.05-rc1, Released May 5th, 2009:
 
