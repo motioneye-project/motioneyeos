@@ -35,6 +35,7 @@ comment "The following modules are unusual or require extra libraries"
 
 config BR2_PACKAGE_PYTHON_BSDDB
 	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_BERKELEYDB
 	bool "bsddb module"
 	help
 	  bsddb module for Python.
@@ -48,6 +49,7 @@ config BR2_PACKAGE_PYTHON_CODECSCJK
 
 config BR2_PACKAGE_PYTHON_CURSES
 	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_NCURSES
 	bool "curses module"
 	help
 	  curses module for Python.
@@ -66,12 +68,14 @@ config BR2_PACKAGE_PYTHON_NIS
 
 config BR2_PACKAGE_PYTHON_PYEXPAT
 	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_EXPAT
 	bool "pyexpat"
 	help
 	  pyexpat module for Python.
 
 config BR2_PACKAGE_PYTHON_READLINE
 	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_READLINE
 	bool "readline"
 	help
 	  readline module for Python (required for command-line
@@ -79,12 +83,14 @@ config BR2_PACKAGE_PYTHON_READLINE
 
 config BR2_PACKAGE_PYTHON_SSL
 	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_OPENSSL
 	bool "ssl"
 	help
 	  _ssl module for Python (required for https in urllib etc).
 
 config BR2_PACKAGE_PYTHON_TKINTER
 	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_TCL
 	bool "tkinter module"
 	help
 	  tkinter module for Python.
