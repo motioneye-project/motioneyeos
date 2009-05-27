@@ -19,6 +19,8 @@ LIBCURL_CONF_ENV += ac_cv_lib_crypto_CRYPTO_lock=yes
 # are found first.
 LIBCURL_CONF_ENV += LD_LIBRARY_PATH=$$LD_LIBRARY_PATH:/lib:/usr/lib
 LIBCURL_CONF_OPT += --with-ssl=$(STAGING_DIR)/usr --with-random=/dev/urandom
+else
+LIBCURL_CONF_ENV += --without-ssl
 endif
 
 $(eval $(call AUTOTARGETS,package,libcurl))
