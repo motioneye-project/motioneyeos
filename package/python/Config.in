@@ -54,17 +54,17 @@ config BR2_PACKAGE_PYTHON_CURSES
 	help
 	  curses module for Python.
 
-config BR2_PACKAGE_PYTHON_GDBM
-	depends on BR2_PACKAGE_PYTHON
-	bool "gdbm module"
-	help
-	  gdbm module for Python.
+# config BR2_PACKAGE_PYTHON_GDBM
+# 	depends on BR2_PACKAGE_PYTHON
+# 	bool "gdbm module"
+# 	help
+# 	  gdbm module for Python.
 
-config BR2_PACKAGE_PYTHON_NIS
-	depends on BR2_PACKAGE_PYTHON
-	bool "nis module"
-	help
-	  nis module for Python.
+# config BR2_PACKAGE_PYTHON_NIS
+# 	depends on BR2_PACKAGE_PYTHON
+# 	bool "nis module"
+# 	help
+# 	  nis module for Python.
 
 config BR2_PACKAGE_PYTHON_PYEXPAT
 	depends on BR2_PACKAGE_PYTHON
@@ -101,4 +101,3 @@ config BR2_PACKAGE_PYTHON_UNICODEDATA
 	default y
 	help
 	  Unicode character database (used by stringprep module) (large).
-
