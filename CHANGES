@@ -1,3 +1,12 @@
+2009.05-rc3, Released May 27th, 2009:
+
+	Fixes for toolchain (gcc arm pr37436), stable kernel versions,
+	busybox, curl, libusb, readline, python and strace.
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#345: libcurl package needs a urandom fix
+
 2009.05-rc2, Released May 19th, 2009:
 
 	Fixes for toolchain (gcc w/softfloat on ppc, 3.4.6 buildfix
