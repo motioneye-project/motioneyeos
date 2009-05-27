@@ -1,5 +1,5 @@
-#
 config BR2_PACKAGE_READLINE
 	bool "readline"
+	select BR2_PACKAGE_NCURSES
 	help
 	    Enable GNU readline support?
