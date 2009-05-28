@@ -13,7 +13,7 @@ MKFS_UBIFS_CAT:=$(ZCAT)
 MKFS_UBIFS_NAME:=mkfs.ubifs
 
 $(DL_DIR)/$(MKFS_UBIFS_SOURCE):
-	$(call DOWNLOAD,"$(MKFS_UBIFS_URL)")
+	$(WGET) -O $(DL_DIR)/$(MKFS_UBIFS_SOURCE) "$(MKFS_UBIFS_URL)"
 
 $(MKFS_UBIFS_DIR)/.unpacked: $(DL_DIR)/$(MKFS_UBIFS_SOURCE)
 	$(ZCAT) $(DL_DIR)/$(MKFS_UBIFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
@@ -108,7 +108,7 @@ ifneq ($(UBIFS_COPYTO),)
 	@cp -f $(UBIFS_TARGET) $(UBIFS_COPYTO)
 endif
 
-ubifsroot-source: $(DL_DIR)/$(GENUBIFS_SOURCE)
+ubifsroot-source: $(DL_DIR)/$(MKFS_UBIFS_SOURCE)
 
 ubifsroot-clean:
 	-$(MAKE) -C $(MKFS_UBIFS_DIR) clean
