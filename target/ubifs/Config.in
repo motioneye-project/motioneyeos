@@ -1,5 +1,6 @@
 config BR2_TARGET_ROOTFS_UBIFS
 	bool "ubifs root filesystem"
+	depends on BROKEN # upstream git gone, should use mtd-utils
 	select BR2_HOST_FAKEROOT
 	help
 	  Build a ubifs root filesystem
