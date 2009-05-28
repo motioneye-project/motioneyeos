@@ -28,7 +28,7 @@ $(DROPBEAR_TARGET_INSTALL_TARGET):
 	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/scp
 	ln -snf ../sbin/dropbear $(TARGET_DIR)/usr/bin/ssh
 	if [ ! -f $(TARGET_DIR)/etc/init.d/S50dropbear ]; then \
-		$(INSTALL) -m 0755 -D package/dropbear/S50dropbear $(TARGET_DIR)/etc/init.d; \
+		$(INSTALL) -m 0755 -D package/dropbear/S50dropbear $(TARGET_DIR)/etc/init.d/S50dropbear; \
 	fi
 	touch $@
 
