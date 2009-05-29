@@ -1,22 +1,17 @@
 #
 
 if BR2_TOOLCHAIN_EXTERNAL
-config BR2_TOOLCHAIN_EXTERNAL_LIB_C
-	string "The core C library from the external toolchain"
-	default "libc.so.0"
-	help
-	  Specify the core C shared library found in the external
-	  toolchain. This is required in addition to any other
-	  libraries to be copied.
+choice
+	prompt "External toolchain C library"
+	default BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 
-config BR2_TOOLCHAIN_EXTERNAL_LIBS
-	string "Libraries to copy from the external toolchain"
-	default "ld-uClibc.so.0 libcrypt.so.0 libdl.so.0 libgcc_s.so libm.so.0 libnsl.so.0 libpthread.so.0 libresolv.so.0 librt.so.0 libutil.so.0"
-	help
-	  A space separated list of the shared libraries to be copied
-	  from the external toolchain into the root filesystem. Only
-	  the top-level name is needed, i.e. libc.so, libpthread.so as
-	  the actual shared library symlinked to will be copied also.
+config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	bool "uClibc"
+
+config BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	bool "glibc"
+
+endchoice
 
 config BR2_TOOLCHAIN_EXTERNAL_STRIP
         bool
