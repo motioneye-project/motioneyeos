@@ -1,3 +1,8 @@
+2009.05, Released June 1st, 2009:
+
+	Fixes for dropbear & diffutils, bump linux-advanced 2.6.29.x
+	version and marked ubifsroot as broken.
+
 2009.05-rc3, Released May 27th, 2009:
 
 	Fixes for toolchain (gcc arm pr37436), stable kernel versions,
