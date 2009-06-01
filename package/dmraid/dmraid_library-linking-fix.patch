@@ -1,0 +1,15 @@
+Why on earth are we trying to link against the libdir in DESTDIR?
+
+Signed-Off-By: Nigel Kukard  <nkukard@lbsd.net>
+diff -ur dmraid_vanilla/1.0.0.rc15/tools/Makefile.in dmraid_library-linking-fix/1.0.0.rc15/tools/Makefile.in
+--- dmraid_vanilla/1.0.0.rc15/tools/Makefile.in	2008-09-17 13:24:00.000000000 +0000
++++ dmraid_library-linking-fix/1.0.0.rc15/tools/Makefile.in	2009-06-01 10:50:52.000000000 +0000
+@@ -56,7 +56,7 @@
+ 
+ dmraid:	$(OBJECTS) $(top_srcdir)/lib/libdmraid.a
+ 	$(CC) -o $@ $(OBJECTS) $(LDFLAGS) -L$(top_srcdir)/lib \
+-	      -L$(DESTDIR)$(libdir) $(DMRAIDLIBS) $(LIBS) 
++	      $(DMRAIDLIBS) $(LIBS) 
+ 
+ install_dmraid_tools: $(TARGETS)
+ 	@echo "Installing $(TARGETS) in $(sbindir)"; \
