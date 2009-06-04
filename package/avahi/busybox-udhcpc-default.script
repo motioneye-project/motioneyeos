@@ -19,6 +19,12 @@ case "$1" in
 			/sbin/ifconfig $interface 0.0.0.0
 		fi
 		if [ -x /usr/sbin/avahi-autoipd ]; then
+			/usr/sbin/avahi-autoipd -k $interface
+		fi
+		;;
+
+	leasefail|nak)
+		if [ -x /usr/sbin/avahi-autoipd ]; then
 			/usr/sbin/avahi-autoipd -wD $interface --no-chroot
 		fi
 		;;
