@@ -5,8 +5,8 @@
 ################################################################################
 
 XDRIVER_XF86_INPUT_SYNAPTICS_VERSION = 0.15.0
-XDRIVER_XF86_INPUT_SYNAPTICS_SOURCE = xfree86-driver-synaptics_$(XDRIVER_XF86_INPUT_SYNAPTICS_VERSION).orig.tar.gz
-XDRIVER_XF86_INPUT_SYNAPTICS_SITE = http://ftp.de.debian.org/debian/pool/main/x/xfree86-driver-synaptics
+XDRIVER_XF86_INPUT_SYNAPTICS_SOURCE = xf86-input-synaptics-$(XDRIVER_XF86_INPUT_SYNAPTICS_VERSION).tar.bz2
+XDRIVER_XF86_INPUT_SYNAPTICS_SITE = http://xorg.freedesktop.org/releases/individual/driver
 XDRIVER_XF86_INPUT_SYNAPTICS_AUTORECONF = NO
 XDRIVER_XF86_INPUT_SYNAPTICS_DEPENDENCIES = xserver_xorg-server xproto_inputproto xproto_randrproto xproto_xproto
 XDRIVER_XF86_INPUT_SYNAPTICS_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
