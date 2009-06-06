@@ -1,0 +1,22 @@
+diff -urpN busybox-1.14.1/networking/ftpd.c busybox-1.14.1-ftpd/networking/ftpd.c
+--- busybox-1.14.1/networking/ftpd.c	2009-05-27 18:00:23.000000000 +0200
++++ busybox-1.14.1-ftpd/networking/ftpd.c	2009-06-04 18:59:49.000000000 +0200
+@@ -1320,6 +1320,8 @@ int ftpd_main(int argc UNUSED_PARAM, cha
+ 				handle_appe();
+ 			else if (cmdval == const_STOU) /* "store unique" */
+ 				handle_stou();
++			else
++				goto bad_cmd;
+ 		}
+ #endif
+ #if 0
+@@ -1340,6 +1342,9 @@ int ftpd_main(int argc UNUSED_PARAM, cha
+ 			 * (doesn't necessarily mean "we must support them")
+ 			 * foo 1.2.3: XXXX - comment
+ 			 */
++#if ENABLE_FEATURE_FTP_WRITE
++ bad_cmd:
++#endif
+ 			cmdio_write_raw(STR(FTP_BADCMD)" Unknown command\r\n");
+ 		}
+ 	}
