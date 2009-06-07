@@ -14,6 +14,10 @@ ttyAMA0
 ttyAMA1
 ttyAMA2
 ttyAMA3
+ttySAC0
+ttySAC1
+ttySAC2
+ttySAC3
 ttyUL0
 ttyUL1
 ttyUL2
