@@ -16,18 +16,6 @@ choice
 	  For the snapshot, you have to provide the
 	  linux-2.6.tar.bz2 tarball in your download dir.
 
-	config BR2_KERNEL_HEADERS_2_6_23
-		depends on BR2_DEPRECATED
-		bool "Linux 2.6.23.x kernel headers"
-
-	config BR2_KERNEL_HEADERS_2_6_24
-		depends on BR2_DEPRECATED
-		bool "Linux 2.6.24.x kernel headers"
-
-	config BR2_KERNEL_HEADERS_2_6_25
-		depends on BR2_DEPRECATED
-		bool "Linux 2.6.25.x kernel headers"
-
 	config BR2_KERNEL_HEADERS_2_6_26
 		depends on BR2_DEPRECATED
 		bool "Linux 2.6.26.x kernel headers"
@@ -54,15 +42,12 @@ endchoice
 
 config BR2_KERNEL_HEADERS_RT
 	bool "use realtime (-rt) kernel patches"
-	depends on BR2_KERNEL_HEADERS_2_6_24 || BR2_KERNEL_HEADERS_2_6_26
+	depends on BR2_KERNEL_HEADERS_2_6_26
 	help
 	  Apply Ingo's realtime extensions to linux
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "2.6.23"	if BR2_KERNEL_HEADERS_2_6_23
-	default "2.6.24.7"	if BR2_KERNEL_HEADERS_2_6_24
-	default "2.6.25.19"	if BR2_KERNEL_HEADERS_2_6_25
 	default "2.6.26.8"	if BR2_KERNEL_HEADERS_2_6_26
 	default "2.6.27.24"	if BR2_KERNEL_HEADERS_2_6_27
 	default "2.6.28.10"	if BR2_KERNEL_HEADERS_2_6_28
