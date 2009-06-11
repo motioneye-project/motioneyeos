@@ -1,0 +1,85 @@
+diff -urpN busybox-1.14.1/networking/telnetd.c busybox-1.14.1-telnetd/networking/telnetd.c
+--- busybox-1.14.1/networking/telnetd.c	2009-05-27 18:00:23.000000000 +0200
++++ busybox-1.14.1-telnetd/networking/telnetd.c	2009-06-09 22:54:06.000000000 +0200
+@@ -199,9 +199,17 @@ static size_t iac_safe_write(int fd, con
+ 	return total + rc;
+ }
+ 
++/* Must match getopt32 string */
++enum {
++	OPT_WATCHCHILD = (1 << 2), /* -K */
++	OPT_INETD      = (1 << 3) * ENABLE_FEATURE_TELNETD_STANDALONE, /* -i */
++	OPT_PORT       = (1 << 4) * ENABLE_FEATURE_TELNETD_STANDALONE, /* -p */
++	OPT_FOREGROUND = (1 << 6) * ENABLE_FEATURE_TELNETD_STANDALONE, /* -F */
++};
++
+ static struct tsession *
+ make_new_session(
+-		USE_FEATURE_TELNETD_STANDALONE(int sock)
++		USE_FEATURE_TELNETD_STANDALONE(int master_fd, int sock)
+ 		SKIP_FEATURE_TELNETD_STANDALONE(void)
+ ) {
+ 	const char *login_argv[2];
+@@ -288,9 +296,29 @@ make_new_session(
+ 	/* Restore default signal handling ASAP */
+ 	bb_signals((1 << SIGCHLD) + (1 << SIGPIPE), SIG_DFL);
+ 
++#if ENABLE_FEATURE_TELNETD_STANDALONE
++	if (!(option_mask32 & OPT_INETD)) {
++		struct tsession *tp = sessions;
++		while (tp) {
++			close(tp->ptyfd);
++			close(tp->sockfd_read);
++			/* sockfd_write == sockfd_read for standalone telnetd */
++			/*close(tp->sockfd_write);*/
++			tp = tp->next;
++		}
++	}
++#endif
++
+ 	/* Make new session and process group */
+ 	setsid();
+ 
++	close(fd);
++#if ENABLE_FEATURE_TELNETD_STANDALONE
++	close(sock);
++	if (master_fd >= 0)
++		close(master_fd);
++#endif
++
+ 	/* Open the child's side of the tty. */
+ 	/* NB: setsid() disconnects from any previous ctty's. Therefore
+ 	 * we must open child's side of the tty AFTER setsid! */
+@@ -329,14 +357,6 @@ make_new_session(
+ 	_exit(EXIT_FAILURE); /*bb_perror_msg_and_die("execv %s", loginpath);*/
+ }
+ 
+-/* Must match getopt32 string */
+-enum {
+-	OPT_WATCHCHILD = (1 << 2), /* -K */
+-	OPT_INETD      = (1 << 3) * ENABLE_FEATURE_TELNETD_STANDALONE, /* -i */
+-	OPT_PORT       = (1 << 4) * ENABLE_FEATURE_TELNETD_STANDALONE, /* -p */
+-	OPT_FOREGROUND = (1 << 6) * ENABLE_FEATURE_TELNETD_STANDALONE, /* -F */
+-};
+-
+ #if ENABLE_FEATURE_TELNETD_STANDALONE
+ 
+ static void
+@@ -465,7 +485,7 @@ int telnetd_main(int argc UNUSED_PARAM, 
+ 
+ #if ENABLE_FEATURE_TELNETD_STANDALONE
+ 	if (IS_INETD) {
+-		sessions = make_new_session(0);
++		sessions = make_new_session(-1, 0);
+ 		if (!sessions) /* pty opening or vfork problem, exit */
+ 			return 1; /* make_new_session prints error message */
+ 	} else {
+@@ -553,7 +573,7 @@ int telnetd_main(int argc UNUSED_PARAM, 
+ 		if (fd < 0)
+ 			goto again;
+ 		/* Create a new session and link it into our active list */
+-		new_ts = make_new_session(fd);
++		new_ts = make_new_session(master_fd, fd);
+ 		if (new_ts) {
+ 			new_ts->next = sessions;
+ 			sessions = new_ts;
