@@ -1,0 +1,88 @@
+diff -urpN busybox-1.14.1/coreutils/readlink.c busybox-1.14.1-readlink/coreutils/readlink.c
+--- busybox-1.14.1/coreutils/readlink.c	2009-05-27 18:00:23.000000000 +0200
++++ busybox-1.14.1-readlink/coreutils/readlink.c	2009-06-12 13:18:13.000000000 +0200
+@@ -6,9 +6,31 @@
+  *
+  * Licensed under GPL v2 or later, see file LICENSE in this tarball for details.
+  */
+-
+ #include "libbb.h"
+ 
++/*
++ * # readlink --version
++ * readlink (GNU coreutils) 6.10
++ * # readlink --help
++ *   -f, --canonicalize
++ *      canonicalize by following every symlink in
++ *      every component of the given name recursively;
++ *      all but the last component must exist
++ *   -e, --canonicalize-existing
++ *      canonicalize by following every symlink in
++ *      every component of the given name recursively,
++ *      all components must exist
++ *   -m, --canonicalize-missing
++ *      canonicalize by following every symlink in
++ *      every component of the given name recursively,
++ *      without requirements on components existence
++ *   -n, --no-newline              do not output the trailing newline
++ *   -q, --quiet, -s, --silent     suppress most error messages
++ *   -v, --verbose                 report error messages
++ *
++ * bbox supports: -f -n -v (fully), -q -s (accepts but ignores)
++ */
++
+ int readlink_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int readlink_main(int argc UNUSED_PARAM, char **argv)
+ {
+@@ -20,7 +42,7 @@ int readlink_main(int argc UNUSED_PARAM,
+ 		unsigned opt;
+ 		/* We need exactly one non-option argument.  */
+ 		opt_complementary = "=1";
+-		opt = getopt32(argv, "f");
++		opt = getopt32(argv, "fnvsq");
+ 		fname = argv[optind];
+ 	)
+ 	SKIP_FEATURE_READLINK_FOLLOW(
+@@ -30,9 +52,10 @@ int readlink_main(int argc UNUSED_PARAM,
+ 	)
+ 
+ 	/* compat: coreutils readlink reports errors silently via exit code */
+-	logmode = LOGMODE_NONE;
++	if (!(opt & 4)) /* not -v */
++		logmode = LOGMODE_NONE;
+ 
+-	if (opt) {
++	if (opt & 1) { /* -f */
+ 		buf = realpath(fname, pathbuf);
+ 	} else {
+ 		buf = xmalloc_readlink_or_warn(fname);
+@@ -40,7 +63,7 @@ int readlink_main(int argc UNUSED_PARAM,
+ 
+ 	if (!buf)
+ 		return EXIT_FAILURE;
+-	puts(buf);
++	printf((opt & 2) ? "%s" : "%s\n", buf);
+ 
+ 	if (ENABLE_FEATURE_CLEAN_UP && !opt)
+ 		free(buf);
+diff -urpN busybox-1.14.1/include/usage.h busybox-1.14.1-readlink/include/usage.h
+--- busybox-1.14.1/include/usage.h	2009-05-27 18:00:23.000000000 +0200
++++ busybox-1.14.1-readlink/include/usage.h	2009-06-12 13:18:13.000000000 +0200
+@@ -3404,12 +3404,15 @@
+        "files do not block on disk I/O"
+ 
+ #define readlink_trivial_usage \
+-	USE_FEATURE_READLINK_FOLLOW("[-f] ") "FILE"
++	USE_FEATURE_READLINK_FOLLOW("[-fnv] ") "FILE"
+ #define readlink_full_usage "\n\n" \
+        "Display the value of a symlink" \
+ 	USE_FEATURE_READLINK_FOLLOW( "\n" \
+      "\nOptions:" \
+-     "\n	-f	Canonicalize by following all symlinks") \
++     "\n	-f	Canonicalize by following all symlinks" \
++     "\n	-n	Don't add newline" \
++     "\n	-v	Verbose" \
++	) \
+ 
+ #define readprofile_trivial_usage \
+        "[OPTIONS]..."
