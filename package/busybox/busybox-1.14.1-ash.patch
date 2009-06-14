@@ -1,0 +1,13 @@
+diff -urpN busybox-1.14.1/shell/ash.c busybox-1.14.1-ash/shell/ash.c
+--- busybox-1.14.1/shell/ash.c	2009-05-27 18:00:23.000000000 +0200
++++ busybox-1.14.1-ash/shell/ash.c	2009-06-14 19:44:24.000000000 +0200
+@@ -11909,7 +11909,8 @@ find_dot_file(char *name)
+ 			 */
+ 			return fullname;
+ 		}
+-		stunalloc(fullname);
++		if (fullname != name)
++			stunalloc(fullname);
+ 	}
+ 
+ 	/* not found in the PATH */
