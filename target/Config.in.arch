@@ -465,6 +465,7 @@ config BR2_ARCH
 	default "i486"		if BR2_x86_i486
 	default "i586"		if BR2_x86_i586
 	default "i586"		if BR2_x86_pentium_mmx
+	default "i586"		if BR2_x86_geode
 	default "i686"		if BR2_x86_i686
 	default "i686"		if BR2_x86_pentium2
 	default "i686"		if BR2_x86_pentium3
