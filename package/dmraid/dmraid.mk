@@ -9,7 +9,7 @@ DMRAID_SITE:=http://people.redhat.com/~heinzm/sw/dmraid/src
 DMRAID_SUBDIR:=$(DMRAID_VERSION)
 # lib and tools race with parallel make
 DMRAID_MAKE = $(MAKE1)
-DMRAID_DEPENDENCIES:=dm
+DMRAID_DEPENDENCIES:=lvm2
 DMRAID_INSTALL_STAGING:=yes
 
 $(eval $(call AUTOTARGETS,package,dmraid))

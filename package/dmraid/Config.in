@@ -4,7 +4,7 @@ comment "dmraid has no inherent support for AVR32"
 config BR2_PACKAGE_DMRAID
 	bool "dmraid"
 	depends on BR2_LARGEFILE
-	select BR2_PACKAGE_DM
+	select BR2_PACKAGE_LVM2
 	help
 	  dmraid discovers, activates, deactivates and displays properties
 	  of software RAID sets (eg, ATARAID) and contained DOS partitions.
