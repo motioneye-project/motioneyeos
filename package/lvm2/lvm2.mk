@@ -24,19 +24,34 @@
 # USA
 
 LVM2_BASEVER=2.02
-LVM2_PATCH=43
+LVM2_DMVER=1.02
+LVM2_PATCH=47
 LVM2_VERSION=$(LVM2_BASEVER).$(LVM2_PATCH)
 LVM2_SOURCE:=LVM2.$(LVM2_VERSION).tgz
 LVM2_SITE:=ftp://sources.redhat.com/pub/lvm2
 LVM2_CAT:=$(ZCAT)
 LVM2_DIR:=$(BUILD_DIR)/LVM2.$(LVM2_VERSION)
 LVM2_SBIN:=lvchange lvcreate lvdisplay lvextend lvm lvmchange lvmdiskscan lvmsadc lvmsar lvreduce lvremove lvrename lvresize lvs lvscan pvchange pvcreate pvdisplay pvmove pvremove pvresize pvs pvscan vgcfgbackup vgcfgrestore vgchange vgck vgconvert vgcreate vgdisplay vgexport vgextend vgimport vgmerge vgmknodes vgreduce vgremove vgrename vgs vgscan vgsplit
+LVM2_DMSETUP_SBIN:=dmsetup
+LVM2_LIB:=libdevmapper.so.$(LVM2_DMVER)
 LVM2_TARGET_SBINS=$(foreach lvm2sbin, $(LVM2_SBIN), $(TARGET_DIR)/sbin/$(lvm2sbin))
+LVM2_TARGET_DMSETUP_SBINS=$(foreach lvm2sbin, $(LVM2_DMSETUP_SBIN), $(TARGET_DIR)/sbin/$(lvm2sbin))
+LVM2_TARGET_LIBS=$(foreach lvm2lib, $(LVM2_LIB), $(TARGET_DIR)/lib/$(lvm2lib))
 
 $(DL_DIR)/$(LVM2_SOURCE):
 	 $(call DOWNLOAD,$(LVM2_SITE),$(LVM2_SOURCE))
 
 lvm2-source: $(DL_DIR)/$(LVM2_SOURCE)
+
+
+ifeq ($(BR2_PACKAGE_READLINE),y)
+LVM2_DEPENDENCIES+=readline
+else
+# v2.02.44: disable readline usage, or binaries are linked against provider
+# of "tgetent" (=> ncurses) even if it's not used..
+LVM2_CONF_OPT+=--disable-readline
+endif
+
 
 $(LVM2_DIR)/.unpacked: $(DL_DIR)/$(LVM2_SOURCE)
 	$(LVM2_CAT) $(DL_DIR)/$(LVM2_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
@@ -58,15 +73,33 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
+		$(LVM2_CONF_OPT) \
 	)
 	touch $(LVM2_DIR)/.configured
 
-$(LVM2_TARGET_SBINS): $(LVM2_DIR)/.configured
+
+$(LVM2_DIR)/.built: $(LVM2_DIR)/.configured
 	$(MAKE1) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
 	$(MAKE1) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR) install
+	touch $(LVM2_DIR)/.built
+
+
+$(LVM2_TARGET_SBINS): $(LVM2_DIR)/.built
 	for binary in $(LVM2_SBIN); do echo $$binary; cp -a $(STAGING_DIR)/sbin/$$binary $(TARGET_DIR)/sbin; done
 
-lvm2: uclibc dm $(LVM2_TARGET_SBINS)
+$(LVM2_TARGET_DMSETUP_SBINS): $(LVM2_DIR)/.built
+	for binary in $(LVM2_DMSETUP_SBIN); do echo $$binary; cp -a $(STAGING_DIR)/sbin/$$binary $(TARGET_DIR)/sbin; done
+
+$(LVM2_TARGET_LIBS): $(LVM2_DIR)/.built
+	for lib in $(LVM2_LIB); do echo $$lib; cp -a $(STAGING_DIR)/lib/$$lib $(TARGET_DIR)/lib; done
+
+
+ifeq ($(BR2_PACKAGE_LVM2_DMSETUP_ONLY),y)
+lvm2: uclibc $(LVM2_TARGET_DMSETUP_SBINS) $(LVM2_TARGET_LIBS)
+else
+lvm2: uclibc $(LVM2_TARGET_SBINS) $(LVM2_TARGET_DMSETUP_SBINS) $(LVM2_TARGET_LIBS)
+endif
+
 
 lvm2-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LVM2_DIR) uninstall
