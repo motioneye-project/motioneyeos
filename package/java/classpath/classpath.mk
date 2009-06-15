@@ -3,7 +3,7 @@
 # classpath 0.96.1
 #
 #############################################################
-CLASSPATH_VERSION = 0.97.1
+CLASSPATH_VERSION = 0.98
 CLASSPATH_SOURCE = classpath-$(CLASSPATH_VERSION).tar.gz
 CLASSPATH_SITE = $(BR2_GNU_MIRROR)/classpath
 CLASSPATH_AUTORECONF = NO
@@ -51,9 +51,10 @@ CLASSPATH_CONF_OPT = \
 		--enable-static \
 		--disable-glibtest --enable-explicit-deps=no \
 		--disable-debug \
-		--disable-gconf-peer --disable-examples --disable-plugin
+		--disable-gconf-peer --disable-examples --disable-plugin \
+		--disable-Werror
 
-CLASSPATH_DEPENDENCIES = uclibc host-pkgconfig libpng jpeg tiff
+CLASSPATH_DEPENDENCIES = uclibc host-pkgconfig libpng jpeg
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 	CLASSPATH_DEPENDENCIES+= alsa-lib
