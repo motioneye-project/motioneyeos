@@ -14,6 +14,9 @@ comment "dependency-less plugins"
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ADDER
 	bool "adder"
 
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
+	bool "app"
+
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_AUDIOCONVERT
 	bool "audioconvert (mandatory for audio playback)"
 	default y
