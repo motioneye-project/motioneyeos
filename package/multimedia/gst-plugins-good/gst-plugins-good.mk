@@ -286,4 +286,11 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-oss
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SOUPHTTPSRC),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-soup
+GST_PLUGINS_GOOD_DEPENDENCIES += libsoup
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-soup
+endif
+
 $(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-good))
