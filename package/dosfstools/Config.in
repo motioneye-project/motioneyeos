@@ -1,0 +1,24 @@
+config BR2_PACKAGE_DOSFSTOOLS
+	bool "dosfstools"
+	help
+	  Tools for creating and checking DOS FAT filesystems.
+
+	  http://www.daniel-baumann.ch/software/dosfstools/
+
+config BR2_PACKAGE_DOSFSTOOLS_MKDOSFS
+	bool "mkdosfs"
+	depends on BR2_PACKAGE_DOSFSTOOLS
+	help
+	  Creates a DOS FAT filesystem on a device.
+
+config BR2_PACKAGE_DOSFSTOOLS_DOSFSCK
+	bool "dosfsck"
+	depends on BR2_PACKAGE_DOSFSTOOLS
+	help
+	  Checks a DOS FAT filesystem.
+
+config BR2_PACKAGE_DOSFSTOOLS_DOSFSLABEL
+	bool "dosfslabel"
+	depends on BR2_PACKAGE_DOSFSTOOLS
+	help
+	  Get or set the DOS FAT filesystem label.
