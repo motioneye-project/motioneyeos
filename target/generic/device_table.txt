@@ -175,3 +175,5 @@
 #/dev/mcd	b	640	0	0	23	0	0	0	-
 #/dev/optcd	b	640	0	0	17	0	0	0	-
 
+# I2C device nodes
+/dev/i2c-	c	666	0	0	89	0	0	1	4
