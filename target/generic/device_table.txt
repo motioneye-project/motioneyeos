@@ -125,10 +125,10 @@
 #/dev/hdh	b	640	0	0	34	65	1	1	15
 
 # SCSI Devices
-#/dev/sda	b	640	0	0	8	0	0	0	-
-#/dev/sda	b	640	0	0	8	1	1	1	15
-#/dev/sdb	b	640	0	0	8	16	0	0	-
-#/dev/sdb	b	640	0	0	8	17	1	1	15
+/dev/sda	b	640	0	0	8	0	0	0	-
+/dev/sda	b	640	0	0	8	1	1	1	15
+/dev/sdb	b	640	0	0	8	16	0	0	-
+/dev/sdb	b	640	0	0	8	17	1	1	15
 #/dev/sdc	b	640	0	0	8	32	0	0	-
 #/dev/sdc	b	640	0	0	8	33	1	1	15
 #/dev/sdd	b	640	0	0	8	48	0	0	-
@@ -148,6 +148,12 @@
 #/dev/st	c	640	0	0	9	32	1	1	4
 #/dev/st	c	640	0	0	9	64	1	1	4
 #/dev/st	c	640	0	0	9	96	1	1	4
+
+# USB block devices (ub driver)
+/dev/uba	b	640	0	0	180	0	0	0	-
+/dev/uba	b	640	0	0	180	1	1	1	6
+/dev/ubb	b	640	0	0	180	8	0	0	-
+/dev/ubb	b	640	0	0	180	65	1	1	6
 
 # Floppy disk devices
 #/dev/fd	b	640	0	0	2	0	0	1	2
