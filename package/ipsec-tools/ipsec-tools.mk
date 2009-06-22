@@ -4,7 +4,7 @@
 #
 #############################################################
 
-IPSEC_TOOLS_VERSION:=0.6.7
+IPSEC_TOOLS_VERSION:=0.7.2
 IPSEC_TOOLS_SOURCE:=ipsec-tools-$(IPSEC_TOOLS_VERSION).tar.bz2
 IPSEC_TOOLS_CAT:=$(BZCAT)
 IPSEC_TOOLS_DIR:=$(BUILD_DIR)/ipsec-tools-$(IPSEC_TOOLS_VERSION)
@@ -16,7 +16,7 @@ IPSEC_TOOLS_BINARY_RACOONCTL:=src/racoon/racoonctl
 IPSEC_TOOLS_TARGET_BINARY_SETKEY:=usr/sbin/setkey
 IPSEC_TOOLS_TARGET_BINARY_RACOON:=usr/sbin/racoon
 IPSEC_TOOLS_TARGET_BINARY_RACOONCTL:=usr/sbin/racoonctl
-IPSEC_TOOLS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ipsec-tools/
+IPSEC_TOOLS_SITE=http://ftp.sunet.se/pub/NetBSD/misc/ipsec-tools/0.7/
 
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --enable-adminport
@@ -56,6 +56,16 @@ endif
 
 ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE), y)
 IPSEC_TOOLS_CONFIG_FLAGS+= --without-readline
+endif
+
+ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_DISABLE),y)
+IPSEC_TOOLS_CONFIG_FLAGS+= --enable-security-context=no
+endif
+ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_ENABLE),y)
+IPSEC_TOOLS_CONFIG_FLAGS+= --enable-security-context=yes
+endif
+ifeq ($(BR2_PACKAGE_IPSEC_SECCTX_KERNEL),y)
+IPSEC_TOOLS_CONFIG_FLAGS+= --enable-security-context=kernel
 endif
 
 $(DL_DIR)/$(IPSEC_TOOLS_SOURCE):
