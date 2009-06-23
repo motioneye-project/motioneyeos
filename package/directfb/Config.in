@@ -66,12 +66,6 @@ config BR2_PACKAGE_DIRECTFB_SERIALMOUSE
 	default y
 	depends on BR2_PACKAGE_DIRECTFB
 
-config BR2_PACKAGE_DIRECTFB_PNG
-	bool "enable PNG support"
-	default y
-	depends on BR2_PACKAGE_DIRECTFB
-	select BR2_PACKAGE_LIBPNG
-
 config BR2_PACKAGE_DIRECTFB_TSLIB
 	bool "enable touchscreen support"
 	default y
@@ -89,3 +83,17 @@ config BR2_PACKAGE_DIRECTFB_JPEG
 	default y
 	depends on BR2_PACKAGE_DIRECTFB
 	select BR2_PACKAGE_JPEG
+
+config BR2_PACKAGE_DIRECTFB_PNG
+	bool "enable PNG support"
+	default y
+	depends on BR2_PACKAGE_DIRECTFB
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_DIRECTB_DITHER_RGB16
+	bool "enable advanced dithering of RGB16 surfaces"
+	default n
+	depends on BR2_PACKAGE_DIRECTFB
+	help
+	  Enable dithering when loading images to RGB16 surfaces.
+	  This increases the data section by 64 KBytes.

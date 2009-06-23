@@ -3,11 +3,9 @@
 # directfb
 #
 #############################################################
-DIRECTFB_VERSION_MAJOR:=1.2
-DIRECTFB_VERSION:=1.2.8
-#DIRECTFB_VERSION:=1.3.0	is a development version
-#DIRECTFB_VERSION_MAJOR:=1.3
-DIRECTFB_SITE:=http://www.directfb.org/downloads/Core
+DIRECTFB_VERSION_MAJOR:=1.4
+DIRECTFB_VERSION:=1.4.0
+DIRECTFB_SITE:=http://www.directfb.org/downloads/Core/DirectFB-$(DIRECTFB_VERSION_MAJOR)
 DIRECTFB_SOURCE:=DirectFB-$(DIRECTFB_VERSION).tar.gz
 DIRECTFB_AUTORECONF = NO
 DIRECTFB_LIBTOOL_PATCH = NO
@@ -99,6 +97,12 @@ else
 DIRECTFB_JPEG:=--disable-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTB_DITHER_RGB16),y)
+DIRECTFB_DITHER_RGB16:=--with-dither-rgb16=advanced
+else
+DIRECTFB_DITHER_RGB16:=--with-dither-rgb16=none
+endif
+
 DIRECTFB_CONF_OPT = \
 	--localstatedir=/var \
 	--with-gfxdrivers=$(DIRECTFB_GFX) \
@@ -112,6 +116,7 @@ DIRECTFB_CONF_OPT = \
 	$(DIRECTFB_PNG) \
 	$(DIRECTFB_GIF) \
 	$(DIRECTFB_UNIQUE) \
+	$(DIRECTFB_DITHER_RGB16) \
 	--enable-linux-input \
 	--enable-zlib \
 	--enable-freetype \
