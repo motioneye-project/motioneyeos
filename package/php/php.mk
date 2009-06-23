@@ -4,7 +4,7 @@
 #
 #############################################################
 
-PHP_VERSION = 5.2.9
+PHP_VERSION = 5.2.10
 PHP_SOURCE = php-$(PHP_VERSION).tar.bz2
 PHP_SITE = http://www.php.net/distributions
 PHP_INSTALL_STAGING = YES
