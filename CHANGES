@@ -1,3 +1,18 @@
+2009.08, Not yet released:
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#241: device mapper + lvm2: build together
+	#367: linux kernel compile error for arm926t
+	#373: Support for building gstreamer without libxml
+	#383: gst-plugins-good: Allow soup plugin to be configured
+	#385: neon: Fix pkgconfig dependency
+	#391: gstreamer: Bump version to 0.10.23
+	#393: gst-plugins-base: Bump version to 0.10.23
+	#395: gst-plugins-bad: New package
+	#409: Bump php package to 5.2.10
+	#411: ipsec-tools: Bump version to 0.7.2
+
 2009.05, Released June 1st, 2009:
 
 	Fixes for dropbear & diffutils, bump linux-advanced 2.6.29.x
