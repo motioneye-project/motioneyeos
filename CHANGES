@@ -3,8 +3,10 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#241: device mapper + lvm2: build together
+	#349: update libsoup to version 2.26.2
 	#367: linux kernel compile error for arm926t
 	#373: Support for building gstreamer without libxml
+	#379: update DirectFB to version 1.4.0
 	#383: gst-plugins-good: Allow soup plugin to be configured
 	#385: neon: Fix pkgconfig dependency
 	#391: gstreamer: Bump version to 0.10.23
