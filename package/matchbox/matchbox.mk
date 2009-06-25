@@ -160,6 +160,8 @@ MATCHBOX_WM_OPTS:=
 MATCHBOX_WM_DEPS:=xlib_libXdamage
 MATCHBOX_WM_DEPS+=xlib_libXcursor
 
+MATCHBOX_KB_DEPS:=
+
 ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
 ifeq ($(BR2_PACKAGE_X11R7_LIBXPM),y)
   MATCHBOX_WM_OPTS+=--enable-composite
@@ -199,8 +201,10 @@ endif
 ifeq ($(BR2_PACKAGE_PANGO),y)
   MATCHBOX_LIB_OPTS+=--enable-pango
   MATCHBOX_LIB_DEPS+=pango
+  MATCHBOX_KB_OPTS+=--enable-pango
 else
   MATCHBOX_LIB_OPTS+=--disable-pango
+  MATCHBOX_KB_DEPS+=xlib_libXft
 endif
 
 ifeq ($(BR2_PACKAGE_X11R7_LIBXFT2),y)
@@ -424,6 +428,7 @@ $(MATCHBOX_KB_DIR)/.configured: $(MATCHBOX_KB_DIR)/.unpacked
 	--with-x \
 	--x-includes=$(STAGING_DIR)/usr/include/X11 \
 	--x-libraries=$(STAGING_DIR)/usr/lib \
+	$(MATCHBOX_KB_OPTS) \
 	)
 	touch $(MATCHBOX_KB_DIR)/.configured
 
@@ -610,7 +615,7 @@ matchbox-panel: uclibc matchbox $(TARGET_DIR)/usr/bin/$(MATCHBOX_PL_BIN) $(TARGE
 
 matchbox-desktop: uclibc matchbox $(TARGET_DIR)/usr/bin/$(MATCHBOX_DP_BIN)
 
-matchbox-keyboard: uclibc matchbox xlib_libXtst $(TARGET_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so $(TARGET_DIR)/usr/bin/$(MATCHBOX_KB_BIN)
+matchbox-keyboard: uclibc matchbox xlib_libXtst $(MATCHBOX_KB_DEPS) $(TARGET_DIR)/usr/lib/$(MATCHBOX_FK_BIN).so $(TARGET_DIR)/usr/bin/$(MATCHBOX_KB_BIN)
 
 matchbox-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libmb.*
