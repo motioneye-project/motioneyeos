@@ -5,7 +5,7 @@ diff -ur dropbear-0.48/includes.h dropbear-0.48-patched/includes.h
  #include <sys/param.h> /* required for BSD4_4 define */
  #include <sys/socket.h>
  #include <sys/stat.h>
-+#define __USE_GNU
++#define _GNU_SOURCE
  #include <sys/time.h>
  #include <sys/un.h>
  #include <sys/wait.h>
