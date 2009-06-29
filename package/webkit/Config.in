@@ -8,10 +8,27 @@ config BR2_PACKAGE_WEBKIT
 	select BR2_PACKAGE_LIBXML2
 	select BR2_PACKAGE_LIBXSLT
 	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_ENCHANT
+	select BR2_PACKAGE_LIBSOUP
 	help
-		WebKit is an open source, standards compliant web browser engine.
+	  WebKit is an open source, standards compliant web browser engine.
 
-		http://webkit.org/
+	  http://webkit.org/
 
 comment "webkit requires a toolchain with C++ support and WCHAR enabled"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+
+choice
+	prompt "Rendering target"
+	default BR2_PACKAGE_WEBKIT_X
+	help
+	  Selects which rendering target will be used.
+
+config BR2_PACKAGE_WEBKIT_X11
+	bool "X11"
+
+config BR2_PACKAGE_WEBKIT_DIRECTFB
+	bool "DirectFB"
+	select BR2_PACKAGE_DIRECTFB
+
+endchoice
