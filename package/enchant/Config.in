@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ENCHANT
+	bool "enchant"
+	help
+	  Enchant is a spell-checking library that provides a consistent
+	  API across a number of spell-checking system backends.
+
+	  http://www.abisource.com/projects/enchant/
