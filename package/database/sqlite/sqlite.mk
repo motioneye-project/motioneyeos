@@ -4,8 +4,8 @@
 #
 #############################################################
 
-SQLITE_VERSION = 3.6.13
-SQLITE_SOURCE = sqlite-$(SQLITE_VERSION).tar.gz
+SQLITE_VERSION = 3.6.15
+SQLITE_SOURCE = sqlite-amalgamation-$(SQLITE_VERSION).tar.gz
 SQLITE_SITE = http://www.sqlite.org
 SQLITE_INSTALL_STAGING = YES
 SQLITE_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
