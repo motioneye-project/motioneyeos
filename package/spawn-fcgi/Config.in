@@ -1,0 +1,7 @@
+config BR2_PACKAGE_SPAWN_FCGI
+	bool "spawn-fcgi"
+	help
+	  FastCGI process spawner.
+	  Project split from lighttpd.
+
+	  http://redmine.lighttpd.net/projects/spawn-fcgi

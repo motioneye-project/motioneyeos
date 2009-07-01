@@ -15,6 +15,7 @@
 	#395: gst-plugins-bad: New package
 	#409: Bump php package to 5.2.10
 	#411: ipsec-tools: Bump version to 0.7.2
+	#417: New package spawn-fcgi
 	#419: Bump lighttpd package to 1.4.23
 
 2009.05, Released June 1st, 2009:
