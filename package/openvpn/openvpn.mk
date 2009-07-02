@@ -9,13 +9,13 @@ OPENVPN_SOURCE = openvpn-$(OPENVPN_VERSION).tar.gz
 OPENVPN_SITE = http://openvpn.net/release
 OPENVPN_DEPENDENCIES = lzo openssl uclibc
 
-ifeq ($(BR2_PTHREADS_NATIVE),y)
-	THREAD_MODEL="--enable-threads=posix"
-else
-	THREAD_MODEL="--enable-pthread"
-endif
+OPENVPN_CONF_OPT = --enable-small
 
-OPENVPN_CONF_OPT = --enable-small $(THREAD_MODEL)
+ifeq ($(BR2_PTHREADS_NATIVE),y)
+	OPENVPN_CONF_OPT += --enable-threads=posix
+else
+	OPENVPN_CONF_OPT += --enable-pthread
+endif
 
 $(eval $(call AUTOTARGETS,package,openvpn))
 
