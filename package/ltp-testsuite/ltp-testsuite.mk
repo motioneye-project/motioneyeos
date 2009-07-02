@@ -3,7 +3,7 @@
 # ltp-testsuite
 #
 #############################################################
-LTP_TESTSUITE_VERSION:=20070228
+LTP_TESTSUITE_VERSION:=20090630
 LTP_TESTSUITE_SOURCE:=ltp-full-$(LTP_TESTSUITE_VERSION).tgz
 LTP_TESTSUITE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/ltp
 LTP_TESTSUITE_CAT:=$(ZCAT)
@@ -15,7 +15,8 @@ LTP_TESTSUITE_DIR:=$(LTP_TESTSUITE_ROOT)/ltp-full-$(LTP_TESTSUITE_VERSION)
 #
 LTP_PATCHES:=ltp-testsuite-generate-needs-bash.patch \
 	     ltp-testsuite-sh-is-not-C-code.patch \
-	     ltp-testsuite.patch
+	     ltp-testsuite-sched-getaffinity.patch \
+	     ltp-testsuite-uclibc-syscalls.patch
 
 ifeq ($(BR2_PTHREADS_NATIVE),y)
 LTP_PATCHES+=ltp-testsuite-enable-openposix-for-nptl.patch

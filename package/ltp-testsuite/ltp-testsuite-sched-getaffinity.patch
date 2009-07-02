@@ -1,0 +1,11 @@
+--- ltp-full-20090630/testcases/kernel/syscalls/sched_getaffinity/Makefile	2009-06-15 19:38:04.000000000 +0100
++++ ltp-full-20090630.mod/testcases/kernel/syscalls/sched_getaffinity/Makefile	2009-07-02 15:02:33.000000000 +0100
+@@ -16,7 +16,7 @@
+ #  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ #
+ 
+-CFLAGS += -I../../../../include -Wall
++CFLAGS += -I../../../../include -Wall -D_GNU_SOURCE
+ LDLIBS += -L../../../../lib -lltp
+ 
+ SRCS    = $(wildcard *.c)

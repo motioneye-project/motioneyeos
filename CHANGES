@@ -45,6 +45,7 @@
 	#419: Bump lighttpd package to 1.4.23
 	#421: toolchain: Clean up toolchain locale support menu
 	#427: webkit: Update to WebKit svn r44552
+	#437: ltp-testsuite: Bump version to 20090630
 	#451: Upgrade from unmaintained dosfstools-2.11 to dosfstools-3.0.3
 	#467: DirectFB 1.4.1
 	#473: memstat_0.5.tar.gz has install with -D and that fails "make"
