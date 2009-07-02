@@ -5,6 +5,7 @@
 	#241: device mapper + lvm2: build together
 	#333: Bump sqlite package to 3.6.15
 	#349: update libsoup to version 2.26.2
+	#359,#413: Upgrade openvpn to Makefile.autotools.in
 	#367: linux kernel compile error for arm926t
 	#373: Support for building gstreamer without libxml
 	#379: update DirectFB to version 1.4.0
