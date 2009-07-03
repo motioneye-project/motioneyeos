@@ -1,0 +1,20 @@
+When QT is compiled in qt-zlib mode, compilation of
+src/gui/painting/qprintengine_pdf.cpp fails because zlib.h is not
+found. The following patch adds the internal QT zlib directory to the
+include path to fix this issue.
+
+---
+ src/gui/painting/painting.pri |    3 +++
+ 1 file changed, 3 insertions(+)
+
+Index: qt-embedded-linux-opensource-src-4.5.2/src/gui/painting/painting.pri
+===================================================================
+--- qt-embedded-linux-opensource-src-4.5.2.orig/src/gui/painting/painting.pri
++++ qt-embedded-linux-opensource-src-4.5.2/src/gui/painting/painting.pri
+@@ -367,3 +367,6 @@
+         SOURCES += painting/qwindowsurface_d3d.cpp
+ }
+ 
++contains(QT_CONFIG, zlib) {
++   INCLUDEPATH += ../3rdparty/zlib
++}
