@@ -21,7 +21,7 @@
 # x86 crosscompiling under linux x86. Please remove it when the workaround
 # is no longer necessary.
 
-QTOPIA4_VERSION:=4.5.1
+QTOPIA4_VERSION:=4.5.2
 QTOPIA4_CAT:=$(BZCAT)
 
 BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME)))
