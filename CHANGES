@@ -2,6 +2,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#83: liblockfile fails to compile due to eaccess redefinition
 	#241: device mapper + lvm2: build together
 	#333: Bump sqlite package to 3.6.15
 	#349: update libsoup to version 2.26.2
