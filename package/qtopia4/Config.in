@@ -330,7 +330,6 @@ config BR2_PACKAGE_QTOPIA4_SCRIPT
 config BR2_PACKAGE_QTOPIA4_SCRIPTTOOLS
 	bool "Script Tools Module"
 	depends on BR2_PACKAGE_QTOPIA4_SCRIPT
-	default n
 	help
 	  Build the Qt Script Tools module.
 	  if unsure, say n.

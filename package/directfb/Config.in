@@ -92,7 +92,6 @@ config BR2_PACKAGE_DIRECTFB_PNG
 
 config BR2_PACKAGE_DIRECTB_DITHER_RGB16
 	bool "enable advanced dithering of RGB16 surfaces"
-	default n
 	depends on BR2_PACKAGE_DIRECTFB
 	help
 	  Enable dithering when loading images to RGB16 surfaces.
