@@ -3,7 +3,7 @@
 # qtopia4 (Qt Embedded for Linux 4.5)
 # http://www.qtsoftware.com/
 #
-# This makefile was oiginaly composed by Thomas Lundquist <thomasez@zelow.no>
+# This makefile was originally composed by Thomas Lundquist <thomasez@zelow.no>
 # Later heavily modified by buildroot developers
 #
 # BTW, this uses alot of FPU calls and it's pretty slow if you use
