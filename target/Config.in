@@ -12,6 +12,21 @@ config BR2_ROOTFS_SUFFIX
 	help
 	  Add a custom string to the end of the root file system name.
 
+config BR2_ROOTFS_POST_BUILD_SCRIPT
+	string "Custom script to run before packing files"
+	default ""
+	help
+	  Specify a script to be run after the build has finished and before
+	  the BR2 starts packing the files into selected packages.
+
+	  This gives users the oportunity to do board-specific cleanups,
+	  add-ons and the like, so the generated files can be used directly
+	  without further processing.
+
+	  The script is called with the target directory name as first and
+	  only argument. Make sure the exit code of that script is 0,
+	  otherwise make will stop after calling it.
+
 comment "filesystem for target device"
 
 source "target/cramfs/Config.in"

@@ -363,6 +363,10 @@ endif
 	find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
 	$(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null
 
+ifneq ($(BR2_ROOTFS_POST_BUILD_SCRIPT),"")
+	$(BR2_ROOTFS_POST_BUILD_SCRIPT) $(TARGET_DIR)
+endif
+
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 LOCALE_WHITELIST=$(PROJECT_BUILD_DIR)/locales.nopurge
 LOCALE_NOPURGE=$(strip $(subst ",,$(BR2_ENABLE_LOCALE_WHITELIST)))
