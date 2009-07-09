@@ -3,9 +3,9 @@
 # ruby
 #
 #############################################################
-RUBY_VERSION:=1.8.2
+RUBY_VERSION:=1.9.1-p129
 RUBY_SOURCE:=ruby-$(RUBY_VERSION).tar.gz
-RUBY_SITE:=ftp://ftp.ruby-lang.org/pub/ruby/1.8
+RUBY_SITE:=ftp://ftp.ruby-lang.org/pub/ruby/1.9
 RUBY_DIR:=$(BUILD_DIR)/ruby-$(RUBY_VERSION)
 RUBY_CAT:=$(ZCAT)
 RUBY_BINARY:=ruby
@@ -41,6 +41,8 @@ $(RUBY_DIR)/.configured: $(RUBY_DIR)/.unpacked
 		--localstatedir=/var \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
+		--disable-install-doc \
+		$(DISABLE_IPV6) \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
 	)
