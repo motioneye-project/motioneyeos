@@ -1,0 +1,12 @@
+diff -urpN busybox-1.14.2/networking/udhcp/files.c busybox-1.14.2-udhcpd/networking/udhcp/files.c
+--- busybox-1.14.2/networking/udhcp/files.c	2009-06-22 00:40:29.000000000 +0200
++++ busybox-1.14.2-udhcpd/networking/udhcp/files.c	2009-07-07 14:58:39.000000000 +0200
+@@ -420,7 +420,7 @@ void FAST_FUNC read_leases(const char *f
+ 				continue;
+ 			/* NB: add_lease takes "relative time", IOW,
+ 			 * lease duration, not lease deadline. */
+-			if (!(add_lease(lease.chaddr, lease.yiaddr, expires, lease.hostname))) {
++			if (!(add_lease(lease.chaddr, lease.yiaddr, expires, NULL /* was lease.hostname. bug in add_lease, disabled */ ))) {
+ 				bb_error_msg("too many leases while loading %s", file);
+ 				break;
+ 			}

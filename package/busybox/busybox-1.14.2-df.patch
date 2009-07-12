@@ -1,0 +1,134 @@
+--- busybox-1.14.2/coreutils/df.c	Sun Jul  5 22:59:28 2009
++++ busybox-1.14.2-df/coreutils/df.c	Sun Jul  5 23:00:09 2009
+@@ -44,7 +44,6 @@
+ 	FILE *mount_table;
+ 	struct mntent *mount_entry;
+ 	struct statfs s;
+-	static const char ignored_mounts[] ALIGN1 = "rootfs\0";
+ 
+ 	enum {
+ 		OPT_KILO  = (1 << 0),
+@@ -120,7 +119,7 @@
+ 			mount_point = *argv++;
+ 			if (!mount_point)
+ 				break;
+-			mount_entry = find_mount_point(mount_point, bb_path_mtab_file);
++			mount_entry = find_mount_point(mount_point);
+ 			if (!mount_entry) {
+ 				bb_error_msg("%s: can't find mount point", mount_point);
+  set_error:
+@@ -154,8 +153,8 @@
+ 						) / (blocks_used + s.f_bavail);
+ 			}
+ 
+-			/* GNU coreutils 6.10 skip certain mounts, try to be compatible.  */
+-			if (index_in_strings(device, ignored_mounts) != -1)
++			/* GNU coreutils 6.10 skips certain mounts, try to be compatible.  */
++			if (strcmp(device, "rootfs") == 0)
+ 				continue;
+ 
+ #ifdef WHY_WE_DO_IT_FOR_DEV_ROOT_ONLY
+--- busybox-1.14.2/include/libbb.h	Sun Jul  5 22:59:31 2009
++++ busybox-1.14.2-df/include/libbb.h	Sun Jul  5 23:00:09 2009
+@@ -1025,7 +1025,7 @@
+ 
+ #ifdef HAVE_MNTENT_H
+ extern int match_fstype(const struct mntent *mt, const char *fstypes) FAST_FUNC;
+-extern struct mntent *find_mount_point(const char *name, const char *table) FAST_FUNC;
++extern struct mntent *find_mount_point(const char *name) FAST_FUNC;
+ #endif
+ extern void erase_mtab(const char * name) FAST_FUNC;
+ extern unsigned int tty_baud_to_value(speed_t speed) FAST_FUNC;
+--- busybox-1.14.2/libbb/find_mount_point.c	Sun Jul  5 22:59:24 2009
++++ busybox-1.14.2-df/libbb/find_mount_point.c	Sun Jul  5 23:00:09 2009
+@@ -17,7 +17,7 @@
+  * Given any other file (or directory), find the mount table entry for its
+  * filesystem.
+  */
+-struct mntent* FAST_FUNC find_mount_point(const char *name, const char *table)
++struct mntent* FAST_FUNC find_mount_point(const char *name)
+ {
+ 	struct stat s;
+ 	dev_t mountDevice;
+@@ -25,27 +25,35 @@
+ 	struct mntent *mountEntry;
+ 
+ 	if (stat(name, &s) != 0)
+-		return 0;
++		return NULL;
+ 
+-	if ((s.st_mode & S_IFMT) == S_IFBLK)
++	if (S_ISBLK(s.st_mode))
+ 		mountDevice = s.st_rdev;
+ 	else
+ 		mountDevice = s.st_dev;
+ 
+ 
+-	mountTable = setmntent(table ? table : bb_path_mtab_file, "r");
++	mountTable = setmntent(bb_path_mtab_file, "r");
+ 	if (!mountTable)
+ 		return 0;
+ 
+-	while ((mountEntry = getmntent(mountTable)) != 0) {
++	while ((mountEntry = getmntent(mountTable)) != NULL) {
++		/* rootfs mount in Linux 2.6 exists always,
++		 * and it makes sense to always ignore it.
++		 * Otherwise people can't reference their "real" root! */
++		if (strcmp(mountEntry->mnt_fsname, "rootfs") == 0)
++			continue;
++
+ 		if (strcmp(name, mountEntry->mnt_dir) == 0
+ 		 || strcmp(name, mountEntry->mnt_fsname) == 0
+ 		) { /* String match. */
+ 			break;
+ 		}
+-		if (stat(mountEntry->mnt_fsname, &s) == 0 && s.st_rdev == mountDevice)	/* Match the device. */
++		/* Match the device. */
++		if (stat(mountEntry->mnt_fsname, &s) == 0 && s.st_rdev == mountDevice)
+ 			break;
+-		if (stat(mountEntry->mnt_dir, &s) == 0 && s.st_dev == mountDevice)	/* Match the directory's mount point. */
++		/* Match the directory's mount point. */
++		if (stat(mountEntry->mnt_dir, &s) == 0 && s.st_dev == mountDevice)
+ 			break;
+ 	}
+ 	endmntent(mountTable);
+--- busybox-1.14.2/util-linux/mkfs_minix.c	Sun Jul  5 22:59:30 2009
++++ busybox-1.14.2-df/util-linux/mkfs_minix.c	Sun Jul  5 23:00:09 2009
+@@ -624,7 +624,6 @@
+ int mkfs_minix_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int mkfs_minix_main(int argc UNUSED_PARAM, char **argv)
+ {
+-	struct mntent *mp;
+ 	unsigned opt;
+ 	char *tmp;
+ 	struct stat statbuf;
+@@ -683,11 +682,8 @@
+ 		G.total_blocks = 65535;
+ 
+ 	/* Check if it is mounted */
+-	mp = find_mount_point(G.device_name, NULL);
+-	if (mp && strcmp(G.device_name, mp->mnt_fsname) == 0)
+-		bb_error_msg_and_die("%s is mounted on %s; "
+-				"refusing to make a filesystem",
+-				G.device_name, mp->mnt_dir);
++	if (find_mount_point(G.device_name))
++		bb_error_msg_and_die("can't format mounted filesystem");
+ 
+ 	xmove_fd(xopen(G.device_name, O_RDWR), dev_fd);
+ 	if (fstat(dev_fd, &statbuf) < 0)
+--- busybox-1.14.2/util-linux/mkfs_vfat.c	Sun Jul  5 22:59:30 2009
++++ busybox-1.14.2-df/util-linux/mkfs_vfat.c	Sun Jul  5 23:00:35 2009
+@@ -273,10 +273,10 @@
+ 			device_num == 0x0d00 || // xd
+ 			device_num == 0x1600 )  // hdc, hdd
+ 		)
+-			bb_error_msg_and_die("Will not try to make filesystem on full-disk device (use -I if wanted)");
++			bb_error_msg_and_die("will not try to make filesystem on full-disk device (use -I if wanted)");
+ 		// can't work on mounted filesystems
+-		if (find_mount_point(device_name, NULL))
+-			bb_error_msg_and_die("Can't format mounted filesystem");
++		if (find_mount_point(device_name))
++			bb_error_msg_and_die("can't format mounted filesystem");
+ #endif
+ 		// get true sector size
+ 		// (parameter must be int*, not long* or size_t*)
