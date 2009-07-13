@@ -3,7 +3,11 @@ comment "ruby has no inherent support for AVR32"
 
 config BR2_PACKAGE_RUBY
 	bool "ruby"
+	depends on BR2_USE_WCHAR
 	help
 	  Object Oriented Scripting Language.
 
 	  http://www.ruby-lang.org/
+
+comment "ruby requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
