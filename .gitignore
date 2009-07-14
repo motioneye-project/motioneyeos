@@ -9,3 +9,5 @@
 /.config
 *.depend
 *.o
+*.orig
+*~
