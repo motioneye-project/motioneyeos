@@ -135,7 +135,7 @@ check_uclibc = \
 # configuration of the external toolchain.
 #
 check_arm_abi = \
-	EXT_TOOLCHAIN_TARGET=$(shell $(TARGET_CC) -v 2>&1 | grep ^Target | cut -f2 -d ' ') ; \
+	EXT_TOOLCHAIN_TARGET=$(shell LANG=C $(TARGET_CC) -v 2>&1 | grep ^Target | cut -f2 -d ' ') ; \
 	if echo $${EXT_TOOLCHAIN_TARGET} | grep -q 'eabi$$' ; then \
 		EXT_TOOLCHAIN_ABI="eabi" ; \
 	else \
@@ -159,7 +159,7 @@ else
 EXTERNAL_LIBS+=ld-linux.so libnss_files.so
 endif
 
-SYSROOT_DIR=$(shell $(TARGET_CC) -v 2>&1 | grep ^Configured | tr " " "\n" | grep -- "--with-sysroot" | cut -f2 -d=)
+SYSROOT_DIR=$(shell LANG=C $(TARGET_CC) -v 2>&1 | grep ^Configured | tr " " "\n" | grep -- "--with-sysroot" | cut -f2 -d=)
 
 $(STAMP_DIR)/ext-toolchain-installed:
 	@echo "Checking external toolchain settings"
