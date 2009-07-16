@@ -1,4 +1,35 @@
 #
+# This file implements the support for external toolchains, i.e
+# toolchains that have not been produced by Buildroot itself and that
+# are already available on the system on which Buildroot runs.
+#
+# The basic principle is the following
+#
+#  1. Perform some checks on the conformity between the toolchain
+#  configuration described in the Buildroot menuconfig system, and the
+#  real configuration of the external toolchain. This is for example
+#  important to make sure that the Buildroot configuration system
+#  knows whether the toolchain supports RPC, IPv6, locales, large
+#  files, etc. Unfortunately, these things cannot be detected
+#  automatically, since the value of these options (such as
+#  BR2_INET_RPC) are needed at configuration time because these
+#  options are used as dependencies for other options. And at
+#  configuration time, we are not able to retrieve the external
+#  toolchain configuration.
+#
+#  2. Copy the libraries needed at runtime to the target directory,
+#  $(TARGET_DIR). Obviously, things such as the C library, the dynamic
+#  loader and a few other utility libraries are needed if dynamic
+#  applications are to be executed on the target system.
+#
+#  3. Copy the libraries and headers to the staging directory. This
+#  will allow all further calls to gcc to be made using --sysroot
+#  $(STAGING_DIR), which greatly simplifies the compilation of the
+#  packages when using external toolchains. So in the end, only the
+#  cross-compiler binaries remains external, all libraries and headers
+#  are imported into the Buildroot tree.
+
+#
 # Copy a toolchain library and its symbolic links from the sysroot
 # directory to the target directory. Also optionaly strips the
 # library.
