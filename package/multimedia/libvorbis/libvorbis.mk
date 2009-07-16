@@ -4,6 +4,8 @@
 #
 #############################################################
 
+ifneq ($(BR2_PACKAGE_LIBVORBIS_TREMOR),y)
+
 LIBVORBIS_VERSION = 1.2.3
 LIBVORBIS_SOURCE = libvorbis-$(LIBVORBIS_VERSION).tar.gz
 LIBVORBIS_SITE = http://downloads.xiph.org/releases/vorbis/$(LIBVORBIS-SOURCE)
@@ -17,6 +19,7 @@ LIBVORBIS_DEPENDENCIES = uclibc host-pkgconfig libogg
 
 $(eval $(call AUTOTARGETS,package/multimedia,libvorbis))
 
+else
 
 ############################################################
 #
@@ -67,7 +70,11 @@ $(TREMOR_DIR)/.libs: $(TREMOR_DIR)/.configured
 	$(MAKE) CC=$(TARGET_CC) -C $(TREMOR_DIR)
 	touch $@
 
-$(TARGET_DIR)/usr/lib/tremor.so: $(TREMOR_DIR)/.libs
+$(STAGING_DIR)/usr/lib/tremor.so: $(TREMOR_DIR)/.libs
+	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(TREMOR_DIR) install
+	touch $@
+
+$(TARGET_DIR)/usr/lib/tremor.so: $(STAGING_DIR)/usr/lib/tremor.so
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(TREMOR_DIR) \
 		$(if $(BR2_STRIP_none),install,install-strip)
 	touch $@
@@ -93,9 +100,6 @@ tremor-dirclean:
 # Toplevel Makefile options
 #
 ############################################################
-ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
-ifeq ($(BR2_PACKAGE_LIBVORBIS_TREMOR),y)
 TARGETS+=tremor
-endif
-TARGETS+=libvorbis
+
 endif
