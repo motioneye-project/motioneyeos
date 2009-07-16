@@ -190,6 +190,10 @@ else
 EXTERNAL_LIBS+=ld-linux.so libnss_files.so
 endif
 
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
+EXTERNAL_LIBS+=libstdc++.so
+endif
+
 SYSROOT_DIR=$(shell LANG=C $(TARGET_CC) -v 2>&1 | grep ^Configured | tr " " "\n" | grep -- "--with-sysroot" | cut -f2 -d=)
 
 $(STAMP_DIR)/ext-toolchain-installed:
