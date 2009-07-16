@@ -323,6 +323,12 @@ else
 QTOPIA4_CONFIGURE+= -no-webkit
 endif
 
+ifeq ($(BR2_PACKAGE_QTOPIA4_STL),y)
+QTOPIA4_CONFIGURE+= -stl
+else
+QTOPIA4_CONFIGURE+= -no-stl
+endif
+
 QTOPIA4_CONFIGURE:=$(strip $(subst ",, $(QTOPIA4_CONFIGURE)))
 #"))
 BR2_PACKAGE_QTOPIA4_EMB_PLATFORM:=$(strip $(subst ",, $(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM)))
@@ -460,7 +466,6 @@ endif
 		-embedded $(BR2_PACKAGE_QTOPIA4_EMB_PLATFORM) \
 		$(QTOPIA4_QCONFIG_COMMAND) \
 		$(QTOPIA4_CONFIGURE) \
-		-no-stl \
 		-no-cups \
 		-no-nis \
 		-no-accessibility \
