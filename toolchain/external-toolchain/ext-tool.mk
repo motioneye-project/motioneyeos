@@ -46,7 +46,7 @@ copy_toolchain_lib_root = \
 	STRIP="$(strip $4)"; \
  \
 	LIB_DIR="$${SYSROOT_DIR}/lib" ; \
-	for FILE in `find $${LIB_DIR} -maxdepth 1 -type l -name "$${LIB}*"`; do \
+	for FILE in `find $${LIB_DIR} -maxdepth 1 -name "$${LIB}.*"`; do \
 		LIB=`basename $${FILE}`; \
 		while test \! -z "$${LIB}"; do \
 			rm -fr $(TARGET_DIR)$${DST}/$${LIB}; \
