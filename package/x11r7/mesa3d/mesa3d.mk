@@ -72,7 +72,7 @@ $(MESA3D_DIR)/.installed: $(MESA3D_DIR)/.built
 	rm -Rf $(TARGET_DIR)/usr/include/GL
 	touch $@
 
-mesa3d-depends: xproto_glproto xproto_xf86vidmodeproto xlib_libXxf86vm xlib_libXmu xlib_libXdamage libdrm xlib_libpciaccess
+mesa3d-depends: xproto_glproto xproto_xf86vidmodeproto xlib_libXxf86vm xlib_libXmu xlib_libXdamage libdrm xlib_libpciaccess host-makedepend
 mesa3d-source: $(DL_DIR)/$(MESA3D_SOURCE)
 mesa3d-configure: $(MESA3D_DIR)/.configured
 mesa3d-build: $(MESA3D_DIR)/.built
