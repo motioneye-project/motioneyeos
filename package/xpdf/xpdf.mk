@@ -17,7 +17,7 @@ ifeq ($(BR2_SOFT_FLOAT),y)
 	XPDF_CONF_OPT += --enable-fixedpoint
 endif
 
-ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+ifeq ($(BR2_PACKAGE_XORG7),y)
 	XPDF_DEPENDENCIES += $(XSERVER) openmotif
 	XPDF_CONF_OPT += --with-Xm-library=$(STAGING_DIR)/usr/lib --with-Xm-includes=$(STAGING_DIR)/usr/include/Xm \
 					--with-x --with-freetype2-includes=$(STAGING_DIR)/usr/include \

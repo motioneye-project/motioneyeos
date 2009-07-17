@@ -45,7 +45,7 @@ ATK_CONF_OPT =  --enable-shared \
 		--disable-glibtest --enable-explicit-deps=no \
 		--disable-debug
 
-ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+ifeq ($(BR2_PACKAGE_XORG7),y)
 ATK_CONF_OPT += --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib --disable-glibtest

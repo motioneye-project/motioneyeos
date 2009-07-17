@@ -85,7 +85,7 @@ ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	LIBGTK2_DEPENDENCIES += directfb
 endif
 
-ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+ifeq ($(BR2_PACKAGE_XORG7),y)
 	LIBGTK2_CONF_OPT += \
 		--with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \

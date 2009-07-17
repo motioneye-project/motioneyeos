@@ -48,7 +48,7 @@ else
 	CAIRO_CONF_OPT += --disable-directfb
 endif
 
-ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+ifeq ($(BR2_PACKAGE_XORG7),y)
 	CAIRO_CONF_OPT += --enable-xlib --with-x
 	CAIRO_DEPENDENCIES += $(XSERVER)
 else

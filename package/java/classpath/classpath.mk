@@ -77,7 +77,7 @@ else
 	CLASSPATH_CONF_OPT+= --disable-gtk-peer
 endif
 
-ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+ifeq ($(BR2_PACKAGE_XORG7),y)
 	CLASSPATH_DEPENDENCIES+= $(XSERVER)
 	CLASSPATH_CONF_OPT+= --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \

@@ -16,7 +16,7 @@ config BR2_PACKAGE_DIRECTFB_MULTI
 config BR2_PACKAGE_DIRECTFB_XSERVER
 	bool "build with X server backend"
 	depends on BR2_PACKAGE_DIRECTFB
-	depends on !BR2_PACKAGE_XSERVER_none
+	depends on BR2_PACKAGE_XORG7
 
 config BR2_PACKAGE_DIRECTFB_UNIQUE
 	bool "enable unique window manager"
