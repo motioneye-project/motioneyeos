@@ -15,17 +15,13 @@ XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install
 XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xutil_util-macros 		\
 	xlib_libXfont 			\
-	xlib_libxkbui 			\
 	xlib_libX11 			\
 	xlib_libXau 			\
-	xlib_libXaw 			\
 	xlib_libXdmcp 			\
 	xlib_libXScrnSaver 		\
 	xlib_libXext 			\
 	xlib_libXfixes 			\
 	xlib_libXi 			\
-	xlib_libXmu 			\
-	xlib_libXpm 			\
 	xlib_libXrender 		\
 	xlib_libXres 			\
 	xlib_libXft 			\
