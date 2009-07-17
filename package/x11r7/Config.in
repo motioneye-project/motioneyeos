@@ -327,7 +327,3 @@ endmenu
 		source package/x11r7/xkeyboard-config/Config.in
 	endmenu
 endif
-
-comment "X11R7 X Window System disabled"
-	depends on BR2_PACKAGE_TINYX||BR2_PACKAGE_XORG
-
