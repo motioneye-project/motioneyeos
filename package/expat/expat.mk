@@ -55,7 +55,7 @@ $(STAMP_DIR)/host_expat_installed: $(STAMP_DIR)/host_expat_compiled
 	$(MAKE) -C $(EXPAT_HOST_DIR) installlib
 	touch $@
 
-host-expat: $(STAM_DIR)/host_expat_installed
+host-expat: $(STAMP_DIR)/host_expat_installed
 
 host-expat-source: expat-source
 
