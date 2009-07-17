@@ -10,9 +10,34 @@ help
 	applications in the target.
 
 if BR2_PACKAGE_XORG7
-	menu "X11R7 Servers"
-		source package/x11r7/xserver_xorg-server/Config.in
-	endmenu
+
+choice
+	prompt "X Window System server type"
+	default BR2_PACKAGE_XSERVER_tinyx
+	help
+	  Select the X Window System server to use
+
+config BR2_PACKAGE_XSERVER_xorg
+	bool "Modular X.org"
+	# depending on BR2_ENABLE_LOCALE gives a recursion error with dbus
+	depends on BR2_USE_WCHAR && BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP # && BR2_ENABLE_LOCALE
+
+config BR2_PACKAGE_XSERVER_tinyx
+	bool "TinyX"
+	depends on BR2_USE_WCHAR
+
+endchoice
+
+config BR2_X11_PREFIX
+	string
+	default "/usr/X11R6"	if BR2_PACKAGE_XSERVER_xorg
+	default "/usr"		if BR2_PACKAGE_XSERVER_tinyx
+	help
+	  X11 apps root location
+
+menu "X11R7 Servers"
+	source package/x11r7/xserver_xorg-server/Config.in
+endmenu
 	menu "X11R7 Libraries"
 		source package/x11r7/libxcb/Config.in
 		source package/x11r7/mesa3d/Config.in

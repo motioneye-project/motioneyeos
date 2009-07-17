@@ -318,39 +318,7 @@ source "package/qtopia4/Config.in"
 
 #source "package/microwin/Config.in"
 
-
-choice
-	prompt "X Window System server"
-	default BR2_PACKAGE_XSERVER_none
-	help
-	  Select the X Window System server to use
-
-config BR2_PACKAGE_XSERVER_none
-	bool "none"
-config BR2_PACKAGE_XSERVER_xorg
-	bool "modular xorg"
-	depends on BR2_USE_WCHAR && BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP # && BR2_ENABLE_LOCALE
-# depending on BR2_ENABLE_LOCALE gives a recursion error with dbus
-config BR2_PACKAGE_XSERVER_tinyx
-	bool "tinyx"
-	depends on BR2_USE_WCHAR
-endchoice
-
-comment "xorg requires a toolchain with C++, LOCALE, LARGEFILE and WCHAR support"
-	depends on !(BR2_USE_WCHAR && BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_ENABLE_LOCALE)
-comment "tinyx requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
-
-config BR2_X11_PREFIX
-	string
-	default "/usr/X11R6"	if BR2_PACKAGE_XSERVER_xorg
-	default "/usr"		if BR2_PACKAGE_XSERVER_tinyx
-	help
-	  X11 apps root location
-
-if !BR2_PACKAGE_XSERVER_none
 source "package/x11r7/Config.in"
-endif
 
 comment "X libraries and helper libraries"
 #XXX: maybe some of these should depend on !BR2_PACKAGE_XSERVER_none
