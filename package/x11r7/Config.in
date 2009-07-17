@@ -1,13 +1,12 @@
 menuconfig BR2_PACKAGE_XORG7
-bool "X.org X Window System, X11R7, release 7.4"
-default y if BR2_PACKAGE_XSERVER_x11r7
-select BR2_PACKAGE_ZLIB
-select BR2_PACKAGE_LIBPNG
-select BR2_PACKAGE_EXPAT
-select BR2_PACKAGE_FONTCONFIG
-help
-	Support for X11R7 libraries, servers, drivers, and/or
-	applications in the target.
+	bool "X.org X Window System, X11R7, release 7.4"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_FONTCONFIG
+	help
+	  Support for X11R7 libraries, servers, drivers, and/or
+	  applications in the target.
 
 if BR2_PACKAGE_XORG7
 
