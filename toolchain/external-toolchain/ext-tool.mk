@@ -203,18 +203,18 @@ ifeq ($(strip $(SYSROOT_DIR)),)
 	exit 1
 endif
 ifeq ($(BR2_arm),y)
-	@$(call check_arm_abi)
+	$(Q)$(call check_arm_abi)
 endif
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
-	@$(call check_uclibc,$(SYSROOT_DIR))
+	$(Q)$(call check_uclibc,$(SYSROOT_DIR))
 else
-	@$(call check_glibc,$(SYSROOT_DIR))
+	$(Q)$(call check_glibc,$(SYSROOT_DIR))
 endif
 	mkdir -p $(TARGET_DIR)/lib
 	@echo "Copy external toolchain libraries to target..."
-	@for libs in $(EXTERNAL_LIBS); do \
+	$(Q)for libs in $(EXTERNAL_LIBS); do \
 		$(call copy_toolchain_lib_root,$(SYSROOT_DIR),$$libs,/lib,$(BR2_TOOLCHAIN_EXTERNAL_STRIP)); \
 	done
 	@echo "Copy external toolchain sysroot to staging..."
-	@$(call copy_toolchain_sysroot,$(SYSROOT_DIR))
+	$(Q)$(call copy_toolchain_sysroot,$(SYSROOT_DIR))
 	@touch $@
