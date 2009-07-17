@@ -53,7 +53,7 @@ JAMVM_DEPENDENCIES = uclibc host-pkgconfig classpath
 
 #Include X libraries when we have an X server
 ifeq ($(BR2_PACKAGE_XORG7),y)
-	JAMVM_DEPENDENCIES+= $(XSERVER)
+	JAMVM_DEPENDENCIES+= xserver_xorg-server
 	JAMVM_CONF_OPT+= --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib

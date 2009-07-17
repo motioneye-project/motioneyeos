@@ -78,7 +78,7 @@ else
 endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
-	CLASSPATH_DEPENDENCIES+= $(XSERVER)
+	CLASSPATH_DEPENDENCIES+= xserver_xorg-server
 	CLASSPATH_CONF_OPT+= --with-x \
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib

@@ -38,7 +38,7 @@ $(RDESKTOP_DIR)/rdesktop: $(RDESKTOP_DIR)/.configured
 $(TARGET_DIR)/usr/bin/rdesktop: $(RDESKTOP_DIR)/rdesktop
 	cp $^ $@
 
-rdesktop: uclibc openssl $(XSERVER) $(TARGET_DIR)/usr/bin/rdesktop
+rdesktop: uclibc openssl xserver_xorg-server $(TARGET_DIR)/usr/bin/rdesktop
 
 rdesktop-source: $(DL_DIR)/$(RDESKTOP_SOURCE)
 

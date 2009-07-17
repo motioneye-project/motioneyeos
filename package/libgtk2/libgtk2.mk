@@ -91,7 +91,7 @@ ifeq ($(BR2_PACKAGE_XORG7),y)
 		--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib \
 		--with-gdktarget=x11
-	LIBGTK2_DEPENDENCIES += xlib_libXcomposite $(XSERVER)
+	LIBGTK2_DEPENDENCIES += xlib_libXcomposite xserver_xorg-server
 else
 	LIBGTK2_CONF_OPT += --without-x
 endif

@@ -18,7 +18,7 @@ ifeq ($(BR2_SOFT_FLOAT),y)
 endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
-	XPDF_DEPENDENCIES += $(XSERVER) openmotif
+	XPDF_DEPENDENCIES += xserver_xorg-server openmotif
 	XPDF_CONF_OPT += --with-Xm-library=$(STAGING_DIR)/usr/lib --with-Xm-includes=$(STAGING_DIR)/usr/include/Xm \
 					--with-x --with-freetype2-includes=$(STAGING_DIR)/usr/include \
 					--with-freetype2-library=$(STAGING_DIR)/usr/lib CFLAGS="-I$(STAGING_DIR)/usr/include/freetype2" \

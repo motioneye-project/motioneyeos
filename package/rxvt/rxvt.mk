@@ -65,7 +65,7 @@ $(TARGET_DIR)$(X11_PREFIX)/bin/rxvt: $(RXVT_BINARY)
 	$(INSTALL) -m 0755 -D $^ $@
 	(cd $(@D); ln -fs rxvt xterm)
 
-rxvt: $(XSERVER) $(TARGET_DIR)$(X11_PREFIX)/bin/rxvt
+rxvt: xserver_xorg-server $(TARGET_DIR)$(X11_PREFIX)/bin/rxvt
 
 rxvt-clean:
 	rm -f $(TARGET_DIR)$(X11_PREFIX)/bin/rxvt

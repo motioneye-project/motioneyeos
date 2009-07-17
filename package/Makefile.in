@@ -380,13 +380,7 @@ else
 ENABLE_DEBUG:=
 endif
 
-
 # X Windowing system
-
-XSERVER:=
-ifeq ($(BR2_PACKAGE_XORG7),y)
-XSERVER+=xserver_xorg-server
-endif
 
 X11_PREFIX:=$(strip $(subst ",, $(BR2_X11_PREFIX)))
 #"))

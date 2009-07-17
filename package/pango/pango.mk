@@ -40,19 +40,19 @@ PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 		ac_use_included_regex=no gl_cv_c_restrict=no \
 		ac_cv_path_FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 
-ifeq ($(BR2_PACKAGE_XORG7),y)
-        PANGO_CONF_OPT_X = --with-x \
-		--x-includes=$(STAGING_DIR)/usr/include/X11 \
-		--x-libraries=$(STAGING_DIR)/usr/lib --disable-glibtest
-else
-        PANGO_CONF_OPT_X = --without-x
-endif
-
 PANGO_CONF_OPT = --enable-shared --enable-static \
-		$(PANGO_CONF_OPT_X) \
 		--enable-explicit-deps=no --disable-debug
 
-PANGO_DEPENDENCIES = uclibc gettext libintl host-pkgconfig libglib2 $(XSERVER) cairo
+PANGO_DEPENDENCIES = uclibc gettext libintl host-pkgconfig libglib2 cairo
+
+ifeq ($(BR2_PACKAGE_XORG7),y)
+        PANGO_CONF_OPT += --with-x \
+		--x-includes=$(STAGING_DIR)/usr/include/X11 \
+		--x-libraries=$(STAGING_DIR)/usr/lib --disable-glibtest
+	PANGO_DEPENDENCIES += xserver_xorg-server
+else
+        PANGO_CONF_OPT += --without-x
+endif
 
 $(eval $(call AUTOTARGETS,package,pango))
 
