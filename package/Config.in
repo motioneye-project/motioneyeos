@@ -321,7 +321,6 @@ source "package/qtopia4/Config.in"
 source "package/x11r7/Config.in"
 
 comment "X libraries and helper libraries"
-#XXX: maybe some of these should depend on !BR2_PACKAGE_XSERVER_none
 source "package/atk/Config.in"
 source "package/cairo/Config.in"
 source "package/pango/Config.in"
