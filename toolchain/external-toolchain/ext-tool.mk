@@ -181,6 +181,15 @@ check_arm_abi = \
 		exit 1 ; \
 	fi ; \
 
+#
+# Check that the cross-compiler given in the configuration exists
+#
+check_cross_compiler_exists = \
+	if ! test -x $(TARGET_CC) ; then \
+		echo "Cannot find cross-compiler $(TARGET_CC)" ; \
+		exit 1 ; \
+	fi ; \
+
 uclibc: dependencies $(STAMP_DIR)/ext-toolchain-installed
 
 EXTERNAL_LIBS=libc.so libcrypt.so libdl.so libgcc_s.so libm.so libnsl.so libpthread.so libresolv.so librt.so libutil.so
@@ -198,6 +207,7 @@ SYSROOT_DIR=$(shell LANG=C $(TARGET_CC) -v 2>&1 | grep ^Configured | tr " " "\n"
 
 $(STAMP_DIR)/ext-toolchain-installed:
 	@echo "Checking external toolchain settings"
+	$(Q)$(call check_cross_compiler_exists)
 ifeq ($(strip $(SYSROOT_DIR)),)
 	@echo "External toolchain doesn't support --sysroot. Cannot use."
 	exit 1
