@@ -9,6 +9,7 @@
 	#349: update libsoup to version 2.26.2
 	#359,#413: Upgrade openvpn to Makefile.autotools.in
 	#367: linux kernel compile error for arm926t
+	#369: Add SDL_gfx package
 	#373: Support for building gstreamer without libxml
 	#379: update DirectFB to version 1.4.0
 	#383: gst-plugins-good: Allow soup plugin to be configured
