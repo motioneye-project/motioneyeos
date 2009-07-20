@@ -41,7 +41,8 @@ static void print_item(WINDOW * win, int choice, int selected)
 	wmove(win, choice, check_x);
 	wattrset(win, selected ? dlg.check_selected.atr
 		 : dlg.check.atr);
-	wprintw(win, "(%c)", item_is_tag('X') ? 'X' : ' ');
+	if (!item_is_tag(':'))
+		wprintw(win, "(%c)", item_is_tag('X') ? 'X' : ' ');
 
 	wattrset(win, selected ? dlg.tag_selected.atr : dlg.tag.atr);
 	mvwaddch(win, choice, item_x, item_str()[0]);
@@ -97,8 +98,8 @@ static void print_buttons(WINDOW * dialog, int height, int width, int selected)
 	int x = width / 2 - 11;
 	int y = height - 2;
 
-	print_button(dialog, "Select", y, x, selected == 0);
-	print_button(dialog, " Help ", y, x + 14, selected == 1);
+	print_button(dialog, gettext("Select"), y, x, selected == 0);
+	print_button(dialog, gettext(" Help "), y, x + 14, selected == 1);
 
 	wmove(dialog, y, x + 1 + 14 * selected);
 	wrefresh(dialog);

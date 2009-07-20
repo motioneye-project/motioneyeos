@@ -132,6 +132,8 @@ next:
 /* write a dependency file as used by kbuild to track dependencies */
 int file_write_dep(const char *name)
 {
+	struct symbol *sym, *env_sym;
+	struct expr *e;
 	struct file *file;
 	FILE *out;
 
@@ -147,12 +149,28 @@ int file_write_dep(const char *name)
 		else
 			fprintf(out, "\t%s\n", file->name);
 	}
-	fprintf(out, "\n$(BR2_DEPENDS_DIR)/config/auto.conf: \\\n"
-		     "\t$(deps_config)\n\n"
-		     "$(deps_config): ;\n");
+	fprintf(out, "\n%s: \\\n"
+		     "\t$(deps_config)\n\n", conf_get_autoconfig_name());
+
+	expr_list_for_each_sym(sym_env_list, e, sym) {
+		struct property *prop;
+		const char *value;
+
+		prop = sym_get_env_prop(sym);
+		env_sym = prop_get_symbol(prop);
+		if (!env_sym)
+			continue;
+		value = getenv(env_sym->name);
+		if (!value)
+			value = "";
+		fprintf(out, "ifneq \"$(%s)\" \"%s\"\n", env_sym->name, value);
+		fprintf(out, "%s: FORCE\n", conf_get_autoconfig_name());
+		fprintf(out, "endif\n");
+	}
+
+	fprintf(out, "\n$(deps_config): ;\n");
 	fclose(out);
 	rename("..config.tmp", name);
-
 	return write_make_deps(NULL);
 }
 
@@ -162,7 +180,7 @@ struct gstr str_new(void)
 {
 	struct gstr gs;
 	gs.s = malloc(sizeof(char) * 64);
-	gs.len = 16;
+	gs.len = 64;
 	strcpy(gs.s, "\0");
 	return gs;
 }
