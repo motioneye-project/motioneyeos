@@ -131,6 +131,10 @@ endif
 ifeq ($(MAKECMDGOALS),xconfig)
 	qconf-target := 1
 endif
+ifeq ($(findstring qconf,$(MAKECMDGOALS)),qconf)
+	qconf-target := 1
+endif
+
 ifeq ($(MAKECMDGOALS),gconfig)
 	gconf-target := 1
 endif

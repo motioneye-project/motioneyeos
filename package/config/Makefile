@@ -14,7 +14,10 @@ __hostprogs := $(sort $(hostprogs-y) $(hostprogs-m))
 host-csingle := $(foreach m,$(__hostprogs),$(if $($(m)-objs),,$(m)))
 host-cmulti := $(foreach m,$(__hostprogs),\
            $(if $($(m)-cxxobjs),,$(if $($(m)-objs),$(m))))
+host-cxxmulti := $(foreach m,$(__hostprogs),\
+           $(if $($(m)-cxxobjs),$(m),$(if $($(m)-objs),)))
 host-cobjs := $(sort $(foreach m,$(__hostprogs),$($(m)-objs)))
+host-cxxobjs := $(sort $(foreach m,$(__hostprogs),$($(m)-cxxobjs)))
 
 $(host-csingle): %: %.c
 	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) $(HOSTCFLAGS_$@) $< $(HOST_LOADLIBES) -o $@
@@ -22,8 +25,14 @@ $(host-csingle): %: %.c
 $(host-cmulti): %: $(host-cobjs) $(host-cshlib)
 	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) $(HOSTCFLAGS_$@) $($@-objs) $(HOST_LOADLIBES) -o $@
 
+$(host-cxxmulti): %: $(host-cxxobjs) $(host-cobjs) $(host-cshlib)
+	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) $(HOSTCFLAGS_$@) $($@-objs) $($@-cxxobjs) $(HOSTLOADLIBES_$@) -o $@
+
 $(host-cobjs): %.o: %.c
 	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) $(HOSTCFLAGS_$@) -c $< -o $@
+
+$(host-cxxobjs): %.o: %.cc
+	$(HOSTCC) $(HOST_EXTRACFLAGS) $(HOSTCFLAGS) $(HOSTCXXFLAGS_$@) -c $< -o $@
 
 $(obj)/%:: $(src)/%_shipped
 	$(Q)cat $< > $@

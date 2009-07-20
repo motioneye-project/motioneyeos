@@ -1,5 +1,5 @@
 ---
- Makefile            |    3 +
+ Makefile            |    7 +++
  README.buildroot2   |   22 ++++++++++
  conf.c              |   13 ++----
  confdata.c          |  101 ++++++++++++++++++++++++++------------------------
@@ -10,13 +10,13 @@
  util.c              |  105 +++++++++++++++++++++++++++++++++++++++++++++++++++-
  zconf.tab.c_shipped |    2 
  zconf.y             |    2 
- 11 files changed, 234 insertions(+), 101 deletions(-)
+ 11 files changed, 238 insertions(+), 101 deletions(-)
 
 Index: config/Makefile
 ===================================================================
 --- config.orig/Makefile
 +++ config/Makefile
-@@ -124,6 +124,9 @@
+@@ -124,10 +124,17 @@
  ifeq ($(MAKECMDGOALS),menuconfig)
  	hostprogs-y += mconf
  endif
@@ -26,6 +26,14 @@ Index: config/Makefile
  
  ifeq ($(MAKECMDGOALS),xconfig)
  	qconf-target := 1
+ endif
++ifeq ($(findstring qconf,$(MAKECMDGOALS)),qconf)
++	qconf-target := 1
++endif
++
+ ifeq ($(MAKECMDGOALS),gconfig)
+ 	gconf-target := 1
+ endif
 Index: config/README.buildroot2
 ===================================================================
 --- /dev/null
