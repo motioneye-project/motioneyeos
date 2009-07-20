@@ -7,10 +7,11 @@
  gconf.c             |    4 -
  gconf.glade         |    2 
  mconf.c             |   39 +++++++++----------
+ qconf.cc            |    3 -
  util.c              |  105 +++++++++++++++++++++++++++++++++++++++++++++++++++-
  zconf.tab.c_shipped |    2 
  zconf.y             |    2 
- 11 files changed, 238 insertions(+), 101 deletions(-)
+ 12 files changed, 239 insertions(+), 103 deletions(-)
 
 Index: config/Makefile
 ===================================================================
@@ -726,6 +727,20 @@ Index: config/mconf.c
 +	return conf_write_autoconf();
  }
  
+Index: config/qconf.cc
+===================================================================
+--- config.orig/qconf.cc
++++ config/qconf.cc
+@@ -1277,8 +1277,7 @@
+ 	char title[256];
+ 
+ 	QDesktopWidget *d = configApp->desktop();
+-	snprintf(title, sizeof(title), _("Linux Kernel v%s Configuration"),
+-		getenv("KERNELVERSION"));
++	snprintf(title, sizeof(title), _("Buildroot Configuration"));
+ 	setCaption(title);
+ 
+ 	width = configSettings->readNumEntry("/window width", d->width() - 64);
 Index: config/util.c
 ===================================================================
 --- config.orig/util.c
