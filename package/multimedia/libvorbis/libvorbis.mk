@@ -83,15 +83,15 @@ $(TARGET_DIR)/usr/lib/tremor.a: $(TARGET_DIR)/usr/lib/tremor.so
 	cp -dpf $(TREMOR_DIR)/lib/tremor.a $(TARGET_DIR)/usr/lib/
 	touch $@
 
-tremor: uclibc host-pkgconfig host-autoconf host-automake libogg $(TARGET_DIR)/usr/lib/tremor.so
+tremor libvorbis: uclibc host-pkgconfig host-autoconf host-automake libogg $(TARGET_DIR)/usr/lib/tremor.so
 
-tremor-source: $(DL_DIR)/$(TREMOR_SOURCE)
+tremor-source libvorbis-source: $(DL_DIR)/$(TREMOR_SOURCE)
 
-tremor-clean:
+tremor-clean libvorbis-clean:
 	$(MAKE) prefix=$(STAGING_DIR)/usr -C $(TREMOR_DIR) uninstall
 	-$(MAKE) -C $(TREMOR_DIR) clean
 
-tremor-dirclean:
+tremor-dirclean libvorbis-dirclean:
 	rm -rf $(TREMOR_DIR)
 
 
