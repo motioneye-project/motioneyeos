@@ -21,15 +21,17 @@ $(MEMSTAT_DIR)/.configured: $(MEMSTAT_DIR)/.unpacked
 	touch $@
 
 $(MEMSTAT_DIR)/memstat: $(MEMSTAT_DIR)/.configured
-	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) $(@D)/memstat.c -o $@
+	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) \
+		$(CFLAGS_WHOLE_PROGRAM) $(@D)/memstat.c -o $@
 
 $(TARGET_DIR)/usr/bin/memstat: $(MEMSTAT_DIR)/memstat
 	[ -e $(TARGET_DIR)/etc/memstat.conf ] || \
-		$(INSTALL) -m 0644 -D $(^D)/memstat.conf $(TARGET_DIR)/etc
+		$(INSTALL) -m 0644 -D $(^D)/memstat.conf \
+			$(TARGET_DIR)/etc/memstat.conf
 	$(INSTALL) -m 0755 -D $^ $@
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-memstat: uclibc $(TARGET_DIR)/usr/bin/memstat
+memstat: $(TARGET_DIR)/usr/bin/memstat
 
 memstat-source: $(DL_DIR)/$(MEMSTAT_SOURCE)
 
