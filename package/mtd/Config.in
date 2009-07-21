@@ -15,18 +15,6 @@ config BR2_PACKAGE_MTD_UTILS
 	help
 	  Build mtd/jffs utilities with Dataflash support
 
-config BR2_PACKAGE_MTD_20061007
-	bool "Use MTD snapshot from 20061007"
-	depends on BR2_DEPRECATED || BR2_RECENT
-	help
-	  Build mtd/jffs utilities with Dataflash support
-
-config BR2_PACKAGE_MTD_20050122
-	bool "Use MTD snapshot from 20050122"
-	depends on BR2_DEPRECATED
-	help
-	  Use the stable release.
-
 config BR2_PACKAGE_MTD_UTILS_GIT
 	bool "Use MTD-utils from GIT"
 	help
