@@ -20,11 +20,12 @@ GST_PLUGINS_GOOD_CONF_OPT = \
 		--disable-x \
 		--disable-xshm \
 		--disable-xvideo \
+		--disable-aalib \
 		--disable-aalibtest \
+		--disable-esd \
 		--disable-esdtest \
 		--disable-shout2 \
-		--disable-shout2test \
-		--disable-esd 
+		--disable-shout2test
 
 GST_PLUGINS_GOOD_DEPENDENCIES = gstreamer gst-plugins-base
 
