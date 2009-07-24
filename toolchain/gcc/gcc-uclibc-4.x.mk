@@ -50,6 +50,11 @@ endif # Snapshot patch
 endif # Not a snapshot
 endif # BR2_TOOLCHAIN_BUILDROOT
 
+ifneq ($(filter xtensa%,$(ARCH)),)
+include target/xtensa/patch.in
+GCC_PATCH_EXTRA:=$(call XTENSA_PATCH,gcc,$(GCC_PATCH_DIR),. ..)
+endif
+
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VERSION).tar.bz2
 GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VERSION)
 GCC_CAT:=$(BZCAT)
@@ -164,7 +169,7 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 gcc-patched: $(GCC_DIR)/.patched
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
-	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch
+	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch $(GCC_PATCH_EXTRA)
 
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.

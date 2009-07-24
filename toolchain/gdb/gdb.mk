@@ -19,6 +19,11 @@ GDB_SITE:=$(BR2_GNU_MIRROR)/gdb
 GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
 endif
 
+ifneq ($(filter xtensa%,$(ARCH)),)
+include target/xtensa/patch.in
+GDB_PATCH_EXTRA:=$(call XTENSA_PATCH,gdb,$(GDB_PATCH_DIR),. ..)
+endif
+
 GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
 
 $(DL_DIR)/$(GDB_SOURCE):
@@ -33,7 +38,7 @@ ifeq ($(GDB_VERSION),snapshot)
 		tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1)
 	ln -sf $(TOOL_BUILD_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
 endif
-	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch
+	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch $(GDB_PATCH_EXTRA)
 	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
