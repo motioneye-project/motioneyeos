@@ -5,10 +5,3 @@ Buildroot2 TODOs
 - convert all packages that use autoconf to use the infrastructure of
   packages/Makefile.autotools.in
 - fix setting of flags for packages
-
-- stabilize for a 0.10.0 release
-
-- think about using a common --config-cache for configure
-  Should take care of expanding TARGET_CONFIGURE_ARGS for cross compiles
-  to working presets.
-
