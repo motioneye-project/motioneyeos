@@ -10,6 +10,9 @@ QUIET:=$(if $(findstring s,$(MAKEFLAGS)),-q,)
 
 # Strip off the annoying quoting
 ARCH:=$(strip $(subst ",, $(BR2_ARCH)))
+ifeq ($(ARCH),xtensa)
+ARCH:=$(ARCH)_$(strip $(subst ",,$(BR2_xtensa_core_name)))
+endif
 #"))
 WGET:=$(strip $(subst ",, $(BR2_WGET))) $(SPIDER) $(QUIET)
 #"))
