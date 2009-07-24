@@ -1,0 +1,24 @@
+menu "Mouse drivers"
+
+config BR2_PACKAGE_QT_MOUSE_PC
+	bool "pc"
+
+config BR2_PACKAGE_QT_MOUSE_BUS
+	bool "bus"
+
+config BR2_PACKAGE_QT_MOUSE_LINUXTP
+	bool "linuxtp"
+
+config BR2_PACKAGE_QT_MOUSE_YOPY
+	bool "yopy"
+
+config BR2_PACKAGE_QT_MOUSE_VR41XX
+	bool "vr41xx"
+
+config BR2_PACKAGE_QT_MOUSE_TSLIB
+	bool "tslib"
+
+config BR2_PACKAGE_QT_MOUSE_QVFB
+	bool "qvfb"
+
+endmenu

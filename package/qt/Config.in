@@ -1,35 +1,35 @@
-config BR2_PACKAGE_QTOPIA4
-	bool "qtopia4"
+config BR2_PACKAGE_QT
+	bool "Qt"
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
-	  Qtopia core 4.
+	  Qt for Embedded Linux.
 
-	  http://www.trolltech.com/
+	  http://www.qtsoftware.com/products/platform/qt-for-embedded-linux
 
-comment "qtopia4 requires a toolchain with C++ support enabled"
+comment "qt requires a toolchain with C++ support enabled"
 	depends on !BR2_INSTALL_LIBSTDCPP
 
-if BR2_PACKAGE_QTOPIA4
+if BR2_PACKAGE_QT
 
-config BR2_PACKAGE_QTOPIA4_DEBUG
+config BR2_PACKAGE_QT_DEBUG
 	bool "Compile with debug support"
 	help
 	  If unsure, say N.
 
 choice
 	prompt "Library type"
-	default BR2_PACKAGE_QTOPIA4_SHARED
+	default BR2_PACKAGE_QT_SHARED
 	help
 	  Selects the library type: Shared or Static
 
-config BR2_PACKAGE_QTOPIA4_SHARED
+config BR2_PACKAGE_QT_SHARED
 	bool "Shared library"
 	help
 	  Create and use shared Qt libraries.
 	  If you have multiple programs that depend on Qt or intend to use
 	  plugins, say Y.
 
-config BR2_PACKAGE_QTOPIA4_STATIC
+config BR2_PACKAGE_QT_STATIC
 	bool "Static Library"
 	help
 	  Create and use static Qt libraries.
@@ -39,12 +39,12 @@ config BR2_PACKAGE_QTOPIA4_STATIC
 
 endchoice
 
-config BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
+config BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
 	bool "Use commercial license"
 
-config BR2_PACKAGE_QTOPIA4_LICENSE_APPROVED
+config BR2_PACKAGE_QT_LICENSE_APPROVED
 	bool "Approve free license"
-	depends on !BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
+	depends on !BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
 	help
 	  Select this if you approve one of the available free licenses for the
 	  Qt4 library.
@@ -54,70 +54,70 @@ config BR2_PACKAGE_QTOPIA4_LICENSE_APPROVED
 	  LGPL v2.1: http://doc.trolltech.com/4.5/lgpl.html
 	  GPL  v3.0: http://doc.trolltech.com/4.5/gpl.html
 
-config BR2_PACKAGE_QTOPIA4_COMMERCIAL_USERNAME
-	string "Qtopia Core 4 Commercial License Username"
-	depends on BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
+config BR2_PACKAGE_QT_COMMERCIAL_USERNAME
+	string "Qt 4 Commercial License Username"
+	depends on BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
 	help
 	  Commercial users can download their source directly by
 	  providing a username.
 
-config BR2_PACKAGE_QTOPIA4_COMMERCIAL_PASSWORD
-	string "Qtopia Core 4 Commercial License Password"
-	depends on BR2_PACKAGE_QTOPIA4_LICENSE_TYPE_COMMERCIAL
+config BR2_PACKAGE_QT_COMMERCIAL_PASSWORD
+	string "Qt 4 Commercial License Password"
+	depends on BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
 	help
 	  Commercial users can download their source directly by
 	  providing a password.
 
-config BR2_PACKAGE_QTOPIA4_QT3SUPPORT
+config BR2_PACKAGE_QT_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	help
 	  Turns on support for older Qt3. This will create an additional
 	  library with proxy code and increase the space required on target.
 	  If unsure say n.
 
-config BR2_PACKAGE_QTOPIA4_GUI_MODULE
+config BR2_PACKAGE_QT_GUI_MODULE
 	bool "Gui Module"
 	default y
 	help
 	  Turns on support to Gui applications. If your board don't have
 	  video output, or you don't require Qt GUI, say n.
 
-if BR2_PACKAGE_QTOPIA4_GUI_MODULE
+if BR2_PACKAGE_QT_GUI_MODULE
 menu "Pixel depths"
 comment "Deselecting each option leads to Qt's default (8,16,32)"
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_ALL
+config BR2_PACKAGE_QT_PIXEL_DEPTH_ALL
 	bool "All supported depths"
 
-if !BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_ALL
+if !BR2_PACKAGE_QT_PIXEL_DEPTH_ALL
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_1
+config BR2_PACKAGE_QT_PIXEL_DEPTH_1
 	bool "1 bpp, black/white"
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_4
+config BR2_PACKAGE_QT_PIXEL_DEPTH_4
 	bool "4 bpp, grayscale"
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_8
+config BR2_PACKAGE_QT_PIXEL_DEPTH_8
 	bool "8 bpp, paletted"
 	default y
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_12
+config BR2_PACKAGE_QT_PIXEL_DEPTH_12
 	bool "12 bpp, rgb 4-4-4"
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_15
+config BR2_PACKAGE_QT_PIXEL_DEPTH_15
 	bool "15 bpp, rgb 5-5-5"
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_16
+config BR2_PACKAGE_QT_PIXEL_DEPTH_16
 	bool "16 bpp, rgb 5-6-5"
 	default y
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_18
+config BR2_PACKAGE_QT_PIXEL_DEPTH_18
 	bool "18 bpp, rgb 6-6-6"
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_24
+config BR2_PACKAGE_QT_PIXEL_DEPTH_24
 	bool "24 bpp, rgb 8-8-8"
 
-config BR2_PACKAGE_QTOPIA4_PIXEL_DEPTH_32
+config BR2_PACKAGE_QT_PIXEL_DEPTH_32
 	bool "32 bpp, argb 8-8-8-8 and rgb 8-8-8"
 	default y
 
@@ -125,37 +125,37 @@ endif
 endmenu
 endif
 
-config BR2_PACKAGE_QTOPIA4_GIF
+config BR2_PACKAGE_QT_GIF
 	bool "Enable GIF support"
-	depends on BR2_PACKAGE_QTOPIA4_GUI_MODULE
+	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  This compiles and installs the plugin for GIF reading support.
 
-config BR2_PACKAGE_QTOPIA4_LIBMNG
+config BR2_PACKAGE_QT_LIBMNG
 	bool "Enable libmng support"
-	depends on BR2_PACKAGE_QTOPIA4_GUI_MODULE
+	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  This compiles and installs the plugin for MNG support.
 
 choice
 	prompt "JPEG support"
-	depends on BR2_PACKAGE_QTOPIA4_GUI_MODULE
-	default BR2_PACKAGE_QTOPIA4_NOJPEG
+	depends on BR2_PACKAGE_QT_GUI_MODULE
+	default BR2_PACKAGE_QT_NOJPEG
 	help
 	  Select libjpeg support.
 
-config BR2_PACKAGE_QTOPIA4_NOJPEG
+config BR2_PACKAGE_QT_NOJPEG
 	bool "No jpeg support"
 	help
 	  Disable JPEG support
 
-config BR2_PACKAGE_QTOPIA4_SYSTEMJPEG
+config BR2_PACKAGE_QT_SYSTEMJPEG
 	select BR2_PACKAGE_JPEG
 	bool "System libjpeg"
 	help
 	  Link against system libjpeg
 
-config BR2_PACKAGE_QTOPIA4_QTJPEG
+config BR2_PACKAGE_QT_QTJPEG
 	bool "Use Qt bundled libjpeg"
 	help
 	  Link against libjpeg proveded with Qt
@@ -163,52 +163,52 @@ endchoice
 
 choice
 	prompt "PNG support"
-	depends on BR2_PACKAGE_QTOPIA4_GUI_MODULE
-	default BR2_PACKAGE_QTOPIA4_NOPNG
+	depends on BR2_PACKAGE_QT_GUI_MODULE
+	default BR2_PACKAGE_QT_NOPNG
 	help
 	  Select which library to use if PNG support should be enabled.
 
-config BR2_PACKAGE_QTOPIA4_NOPNG
+config BR2_PACKAGE_QT_NOPNG
 	bool "No PNG support"
 
-config BR2_PACKAGE_QTOPIA4_SYSTEMPNG
+config BR2_PACKAGE_QT_SYSTEMPNG
 	bool "System libpng"
 	select BR2_PACKAGE_LIBPNG
 
-config BR2_PACKAGE_QTOPIA4_QTPNG
+config BR2_PACKAGE_QT_QTPNG
 	bool "Use Qt bundled libpng"
 endchoice
 
 choice
 	prompt "TIFF support"
-	depends on BR2_PACKAGE_QTOPIA4_GUI_MODULE
-	default BR2_PACKAGE_QTOPIA4_NOTIFF
+	depends on BR2_PACKAGE_QT_GUI_MODULE
+	default BR2_PACKAGE_QT_NOTIFF
 	help
 	  Select which library to use if TIFF support should be enabled.
 
-config BR2_PACKAGE_QTOPIA4_NOTIFF
+config BR2_PACKAGE_QT_NOTIFF
 	bool "No TIFF support"
 
-config BR2_PACKAGE_QTOPIA4_SYSTEMTIFF
+config BR2_PACKAGE_QT_SYSTEMTIFF
 	bool "System libtiff"
 	select BR2_PACKAGE_TIFF
 
-config BR2_PACKAGE_QTOPIA4_QTTIFF
+config BR2_PACKAGE_QT_QTTIFF
 	bool "Use Qt bundled libtiff"
 endchoice
 
 choice
 	prompt "zlib support"
-	default BR2_PACKAGE_QTOPIA4_QTZLIB
+	default BR2_PACKAGE_QT_QTZLIB
 	help
 	  Select zlib support.
 
-config BR2_PACKAGE_QTOPIA4_QTZLIB
+config BR2_PACKAGE_QT_QTZLIB
 	bool "Qt zlib"
 	help
 	  Use the zlib bundled with Qt.
 
-config BR2_PACKAGE_QTOPIA4_SYSTEMZLIB
+config BR2_PACKAGE_QT_SYSTEMZLIB
 	bool "System zlib"
 	select BR2_PACKAGE_ZLIB
 	help
@@ -217,23 +217,23 @@ endchoice
 
 choice
 	prompt "freetype2 support"
-	depends on BR2_PACKAGE_QTOPIA4_GUI_MODULE
-	default BR2_PACKAGE_QTOPIA4_NOFREETYPE
+	depends on BR2_PACKAGE_QT_GUI_MODULE
+	default BR2_PACKAGE_QT_NOFREETYPE
 	help
 	  Select freetype2 support.
 
-config BR2_PACKAGE_QTOPIA4_NOFREETYPE
+config BR2_PACKAGE_QT_NOFREETYPE
 	bool "no freetype2 support"
 	help
 	  Do not compile in Freetype2 support.
 
 
-config BR2_PACKAGE_QTOPIA4_QTFREETYPE
+config BR2_PACKAGE_QT_QTFREETYPE
 	bool "Qt freetype2"
 	help
 	  Use the libfreetype bundled with Qt.
 
-config BR2_PACKAGE_QTOPIA4_SYSTEMFREETYPE
+config BR2_PACKAGE_QT_SYSTEMFREETYPE
 	bool "System freetype2"
 	select BR2_PACKAGE_FREETYPE
 	help
@@ -241,8 +241,8 @@ config BR2_PACKAGE_QTOPIA4_SYSTEMFREETYPE
 	  See http://www.freetype.org/
 endchoice
 
-config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
-	string "The embedded platform we are making Qtopia4 for"
+config BR2_PACKAGE_QT_EMB_PLATFORM
+	string "The embedded platform we are making Qt for"
 	default "arm"	if BR2_arm
 	default "arm"	if BR2_armeb
 	default "avr32"	if BR2_avr32
@@ -262,13 +262,13 @@ config BR2_PACKAGE_QTOPIA4_EMB_PLATFORM
 	help
 	  The target platform.
 
-source "package/qtopia4/Config.sql.in"
-if BR2_PACKAGE_QTOPIA4_GUI_MODULE
-source "package/qtopia4/Config.gfx.in"
-source "package/qtopia4/Config.mouse.in"
+source "package/qt/Config.sql.in"
+if BR2_PACKAGE_QT_GUI_MODULE
+source "package/qt/Config.gfx.in"
+source "package/qt/Config.mouse.in"
 endif
 
-config BR2_PACKAGE_QTOPIA4_PHONON
+config BR2_PACKAGE_QT_PHONON
 	bool "Phonon Module"
 	select BR2_PACKAGE_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
@@ -277,48 +277,48 @@ config BR2_PACKAGE_QTOPIA4_PHONON
 	  formats can be configured at the GStreamer package.
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_XML
+config BR2_PACKAGE_QT_XML
 	bool "XML Module"
 	default y
 	help
 	  Build the XML module.
 
-config BR2_PACKAGE_QTOPIA4_XMLPATTERNS
+config BR2_PACKAGE_QT_XMLPATTERNS
 	bool "XML Patterns Module"
-	depends on BR2_PACKAGE_QTOPIA4_XML
+	depends on BR2_PACKAGE_QT_XML
 	help
 	  Build QtXmlPatterns module.
 	  If unsure, say n
 
-config BR2_PACKAGE_QTOPIA4_SVG
+config BR2_PACKAGE_QT_SVG
 	bool "SVG Module"
 	help
 	  Build the SVG module.
 	  If unsure, say n
 
-config BR2_PACKAGE_QTOPIA4_NETWORK
+config BR2_PACKAGE_QT_NETWORK
 	bool "Network Module"
 	default y
 	help
 	  Install the Network module.
 	  if unsure, say y
 
-config BR2_PACKAGE_QTOPIA4_WEBKIT
+config BR2_PACKAGE_QT_WEBKIT
 	bool "WebKit Module"
-	depends on BR2_PACKAGE_QTOPIA4_NETWORK
+	depends on BR2_PACKAGE_QT_NETWORK
 	help
 	  Build the WebKit module.
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_STL
+config BR2_PACKAGE_QT_STL
 	bool "STL support"
 	help
 	  Compile STL support.
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_OPENSSL
+config BR2_PACKAGE_QT_OPENSSL
 	bool "Enable OpenSSL support"
-	depends on BR2_PACKAGE_QTOPIA4_NETWORK
+	depends on BR2_PACKAGE_QT_NETWORK
 	select BR2_PACKAGE_OPENSSL
 	help
 	  Enable support for the OpenSSL encryption library. If you use
@@ -326,18 +326,18 @@ config BR2_PACKAGE_QTOPIA4_OPENSSL
 	  target.
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_SCRIPT
+config BR2_PACKAGE_QT_SCRIPT
 	bool "Script Module"
 	default y
 	help
 	  Build the Qt Script module.
 	  if unsure, say y.
 
-config BR2_PACKAGE_QTOPIA4_SCRIPTTOOLS
+config BR2_PACKAGE_QT_SCRIPTTOOLS
 	bool "Script Tools Module"
-	depends on BR2_PACKAGE_QTOPIA4_SCRIPT
+	depends on BR2_PACKAGE_QT_SCRIPT
 	help
 	  Build the Qt Script Tools module.
 	  if unsure, say n.
 
-endif # BR2_PACKAGE_QTOPIA4
+endif # BR2_PACKAGE_QT
