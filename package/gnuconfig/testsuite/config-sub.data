@@ -109,6 +109,7 @@ fido-elf			fido-unknown-elf
 fido				fido-unknown-none
 xtensa-elf			xtensa-unknown-elf
 xtensa-linux			xtensa-unknown-linux-gnu
+xtensa_dc232b-linux		xtensa_dc232b-unknown-linux-gnu
 i386-drops1.0			i386-pc-drops1.0
 mep				mep-unknown-elf
 mep-elf				mep-unknown-elf

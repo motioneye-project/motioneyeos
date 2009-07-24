@@ -370,9 +370,13 @@ case $basic_machine in
 	| v850-* | v850e-* | vax-* \
 	| we32k-* \
 	| x86-* | x86_64-* | xc16x-* | xps100-* | xscale-* | xscalee[bl]-* \
-	| xstormy16-* | xtensa-* \
+	| xstormy16-* | xtensa*-* \
 	| ymp-* \
 	| z8k-*)
+		;;
+	# Recognize the basic CPU types without company name, with glob match.
+	xtensa*)
+		basic_machine=$basic_machine-unknown
 		;;
 	# Recognize the various machine names and aliases which stand
 	# for a CPU type and a company and sometimes even an OS.
