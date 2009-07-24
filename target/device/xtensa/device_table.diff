@@ -1,0 +1,10 @@
+diff --git a/target/generic/device_table.txt b/target/generic/device_table.txt
+index f4b16ba..b87bf69 100644
+--- a/target/device/xtensa/device_table.txt
++++ b/target/device/xtensa/device_table.txt
+@@ -169,3 +169,5 @@
+ #/dev/mcd      b       640     0       0       23      0       0       0       
+ #/dev/optcd    b       640     0       0       17      0       0       0       
+ 
++/dev/simdisk0        b      640      0       0       240     0       0       0
++/dev/simdisk1        b      640      0       0       240     1       0       0

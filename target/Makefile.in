@@ -62,6 +62,7 @@ include target/generic/Makefile.in
 include target/device/Makefile.in
 include target/x86/Makefile.in
 include target/powerpc/Makefile.in
+include target/xtensa/Makefile.in
 
 ifeq ($(BR2_TARGET_UBOOT),y)
 include target/u-boot/Makefile.in

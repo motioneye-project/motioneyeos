@@ -1,0 +1,14 @@
+ifeq ($(strip $(BR2_TARGET_XTENSA_XTAV60)),y)
+# UCLIBC_CONFIG_FILE:=target/device/xtensa/xtav60/uClibc.config
+# BR2_PACKAGE_BUSYBOX_CONFIG:=target/device/xtensa/xtav60/busybox.config
+TARGET_SKELETON_PATCH:=target/device/xtensa
+endif
+
+#  Custom device table patch used when targeting ISS:
+OLD_TARGET_DEVICE_TABLE := $(TARGET_DEVICE_TABLE)
+TARGET_DEVICE_TABLE := target/device/xtensa/device_table.txt
+makedevs:
+	@echo "Applying patch to $(TARGET_DEVICE_TABLE)"
+	cp -f $(OLD_TARGET_DEVICE_TABLE) $(TARGET_DEVICE_TABLE)
+	patch -p1 -g 0 < target/device/xtensa/device_table.diff
+

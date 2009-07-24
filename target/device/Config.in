@@ -10,6 +10,7 @@ source "target/device/Atmel/Config.in"
 source "target/device/KwikByte/Config.in"
 source "target/device/valka/Config.in"
 source "target/device/x86/Config.in"
+source "target/device/xtensa/Config.in"
 
 # This must be last
 source "target/generic/Config.in"
