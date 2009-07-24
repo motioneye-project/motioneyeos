@@ -205,6 +205,7 @@ HOST_ARCH:=$(shell $(HOSTCC) -dumpmachine | sed -e s'/-.*//' \
 	-e 's/mipsel-.*/mipsel/' \
 	-e 's/cris.*/cris/' \
 	-e 's/i[3-9]86/i386/' \
+	-e 's/xtensa.*/xtensa/' \
 	)
 GNU_HOST_NAME:=$(HOST_ARCH)-$(subst ",,$(BR2_GNU_BUILD_SUFFIX))
 #")
