@@ -1,13 +1,13 @@
-config BR2_PACKAGE_QT
+comment "qt requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+menuconfig BR2_PACKAGE_QT
 	bool "Qt"
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  Qt for Embedded Linux.
 
 	  http://www.qtsoftware.com/products/platform/qt-for-embedded-linux
-
-comment "qt requires a toolchain with C++ support enabled"
-	depends on !BR2_INSTALL_LIBSTDCPP
 
 if BR2_PACKAGE_QT
 
