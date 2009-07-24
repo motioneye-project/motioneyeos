@@ -52,6 +52,7 @@ UCLIBC_TARGET_ARCH:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
 		-e 's/mipsel.*/mips/' \
 		-e 's/cris.*/cris/' \
 		-e 's/nios2.*/nios2/' \
+		-e 's/xtensa.*/xtensa/' \
 ")
 # just handle the ones that can be big or little
 UCLIBC_TARGET_ENDIAN:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
