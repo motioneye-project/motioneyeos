@@ -21,7 +21,14 @@ if [ ! -d "${patchdir}" ] ; then
 fi
     
 for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do 
-    case "$i" in
+    apply="patch -p1 -E -d"
+    uncomp_parm=""
+    if [ -d "${patchdir}/$i" ] ; then
+	type="directory overlay"
+	uncomp="tar cf - --exclude=.svn --no-anchored -C"
+	uncomp_parm="."
+	apply="tar xvf - -C"
+    else case "$i" in
 	*.gz)
 	type="gzip"; uncomp="gunzip -dc"; ;; 
 	*.bz)
@@ -32,13 +39,17 @@ for i in `cd ${patchdir}; ls -d ${patchpattern} 2> /dev/null` ; do
 	type="zip"; uncomp="unzip -d"; ;; 
 	*.Z)
 	type="compress"; uncomp="uncompress -c"; ;; 
+	*.tgz)
+	type="tar gzip"; uncomp="gunzip -dc"; apply="tar xvf - -C"; ;; 
+	*.tar)
+	type="tar"; uncomp="cat"; apply="tar xvf - -C"; ;; 
 	*)
 	type="plaintext"; uncomp="cat"; ;; 
-    esac
+    esac fi
     echo ""
     echo "Applying ${i} using ${type}: " 
 	echo ${i} | cat >> ${targetdir}/.applied_patches_list
-    ${uncomp} ${patchdir}/${i} | patch -p1 -E -d ${targetdir} 
+    ${uncomp} ${patchdir}/${i} ${uncomp_parm} | ${apply} ${targetdir} 
     if [ $? != 0 ] ; then
         echo "Patch failed!  Please fix $i!"
 	exit 1
