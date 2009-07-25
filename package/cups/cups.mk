@@ -18,7 +18,7 @@ else
 	CUPS_CONF_OPT += --disable-dbus
 endif
 
-ifneq ($(BR2_PACKAGE_XSERVER_none),y)
+ifeq ($(BR2_PACKAGE_XORG7),y)
 	CUPS_DEPENDENCIES += xlib_libX11
 endif
 

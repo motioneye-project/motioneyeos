@@ -14,6 +14,6 @@ SYNERGY_INSTALL_TARGET = YES
 SYNERGY_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) --prefix=/usr --sysconfdir=/etc
 
-SYNERGY_DEPENDENCIES = uclibc $(XSERVER)
+SYNERGY_DEPENDENCIES = uclibc xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,synergy))

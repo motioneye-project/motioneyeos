@@ -15,7 +15,7 @@ XVKBD_MAKE_OPT = CC=$(TARGET_CC) CXX=$(TARGET_CXX) LD=$(TARGET_CC) \
 
 XVKBD_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
-XVKBD_DEPENDENCIES = uclibc $(XSERVER)
+XVKBD_DEPENDENCIES = uclibc xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,xvkbd))
 

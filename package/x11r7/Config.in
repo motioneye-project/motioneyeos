@@ -1,18 +1,42 @@
 menuconfig BR2_PACKAGE_XORG7
-bool "X.org X Window System, X11R7, release 7.4"
-default y if BR2_PACKAGE_XSERVER_x11r7
-select BR2_PACKAGE_ZLIB
-select BR2_PACKAGE_LIBPNG
-select BR2_PACKAGE_EXPAT
-select BR2_PACKAGE_FONTCONFIG
-help
-	Support for X11R7 libraries, servers, drivers, and/or
-	applications in the target.
+	bool "X.org X Window System, X11R7, release 7.4"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_FONTCONFIG
+	help
+	  Support for X11R7 libraries, servers, drivers, and/or
+	  applications in the target.
 
 if BR2_PACKAGE_XORG7
-	menu "X11R7 Servers"
-		source package/x11r7/xserver_xorg-server/Config.in
-	endmenu
+
+choice
+	prompt "X Window System server type"
+	default BR2_PACKAGE_XSERVER_tinyx
+	help
+	  Select the X Window System server to use
+
+config BR2_PACKAGE_XSERVER_xorg
+	bool "Modular X.org"
+	# depending on BR2_ENABLE_LOCALE gives a recursion error with dbus
+	depends on BR2_USE_WCHAR && BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP # && BR2_ENABLE_LOCALE
+
+config BR2_PACKAGE_XSERVER_tinyx
+	bool "TinyX"
+	depends on BR2_USE_WCHAR
+
+endchoice
+
+config BR2_X11_PREFIX
+	string
+	default "/usr/X11R6"	if BR2_PACKAGE_XSERVER_xorg
+	default "/usr"		if BR2_PACKAGE_XSERVER_tinyx
+	help
+	  X11 apps root location
+
+menu "X11R7 Servers"
+	source package/x11r7/xserver_xorg-server/Config.in
+endmenu
 	menu "X11R7 Libraries"
 		source package/x11r7/libxcb/Config.in
 		source package/x11r7/mesa3d/Config.in
@@ -303,7 +327,3 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xkeyboard-config/Config.in
 	endmenu
 endif
-
-comment "X11R7 X Window System disabled"
-	depends on BR2_PACKAGE_TINYX||BR2_PACKAGE_XORG
-
