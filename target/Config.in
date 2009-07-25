@@ -85,7 +85,6 @@ config BR2_PACKAGE_LINUX
 
 if BR2_PACKAGE_LINUX
 source "target/linux/Config.in"
-#source "target/linux/Config.in.experimental"
 source "target/linux/Config.in.advanced"
 endif
 
