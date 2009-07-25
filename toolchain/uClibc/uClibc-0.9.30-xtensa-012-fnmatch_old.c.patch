@@ -1,0 +1,11 @@
+--- a/libc/misc/fnmatch/fnmatch_old.c	2008-09-23 21:23:13.000000000 -0700
++++ b/libc/misc/fnmatch/fnmatch_old.c	2008-09-23 21:23:33.000000000 -0700
+@@ -15,7 +15,7 @@
+ not, write to the Free Software Foundation, Inc., 675 Mass Ave,
+ Cambridge, MA 02139, USA.  */
+ 
+-#if HAVE_CONFIG_H
++#ifdef HAVE_CONFIG_H
+ # include <config.h>
+ #endif
+ 
