@@ -74,10 +74,6 @@ config BR2_KERNEL_LINUX
 
 endif
 
-config BR2_KERNEL_HURD
-	bool "hurd"
-	help
-	  GNU/Hurd kernel
 endchoice
 
 config BR2_PACKAGE_LINUX
@@ -88,7 +84,4 @@ source "target/linux/Config.in"
 source "target/linux/Config.in.advanced"
 endif
 
-if BR2_KERNEL_HURD
-source "target/hurd/Config.in"
-endif
 endmenu
