@@ -19,13 +19,7 @@ exit $?
 #	<xtensa_root>/src/xtensa-config-overlay.tar.gz
 #  where <xtensa_root> is the path to the Tensilica Core Package.
 #
-# Copyright (c) 2003-2008 by Tensilica Inc.  ALL RIGHTS RESERVED.
-# These coded instructions, statements, and computer programs are the
-# copyrighted works and confidential proprietary information of Tensilica Inc.
-# They may not be modified, copied, reproduced, distributed, or disclosed to
-# third parties in any manner, medium, or form, in whole or in part, without
-# the prior written consent of Tensilica Inc.
-#
+# Copyright (c) 2003-2009 by Tensilica Inc.
 #  History:
 #  2007-NOV-08	1.0	meg	Initial version
 #  2007-NOV-21	1.1	meg	Add -k parameter
