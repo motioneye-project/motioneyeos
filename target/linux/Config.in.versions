@@ -50,19 +50,3 @@ config BR2_KERNEL_LATEST_2_6_25
 config BR2_KERNEL_LATEST_2_6_24
 	string
 	default "7"
-
-config BR2_KERNEL_LATEST_2_6_23
-	string
-	default "17"
-
-config BR2_KERNEL_LATEST_2_6_22
-	string
-	default "19"
-
-config BR2_KERNEL_LATEST_2_6_21
-	string
-	default "7"
-
-config BR2_KERNEL_LATEST_2_6_20
-	string
-	default "21"
