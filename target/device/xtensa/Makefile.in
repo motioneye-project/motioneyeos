@@ -1,3 +1,5 @@
+ifeq ($(BR2_xtensa),y)
+
 ifeq ($(strip $(BR2_TARGET_XTENSA_XTAV60)),y)
 # UCLIBC_CONFIG_FILE:=target/device/xtensa/xtav60/uClibc.config
 # BR2_PACKAGE_BUSYBOX_CONFIG:=target/device/xtensa/xtav60/busybox.config
@@ -12,3 +14,4 @@ makedevs:
 	cp -f $(OLD_TARGET_DEVICE_TABLE) $(TARGET_DEVICE_TABLE)
 	patch -p1 -g 0 < target/device/xtensa/device_table.diff
 
+endif
