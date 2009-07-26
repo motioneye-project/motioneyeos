@@ -7,7 +7,7 @@ MKISOFS_SOURCE:=cdrtools-2.01.tar.bz2
 MKISOFS_CAT:=$(BZCAT)
 MKISOFS_SITE:=ftp://ftp.berlios.de/pub/cdrecord/
 MKISOFS_DIR:=$(BUILD_DIR)/cdrtools-2.01
-MKISOFS_TARGET:=$(MKISOFS_DIR)/mkisofs/OBJ/i686-linux-cc/mkisofs
+MKISOFS_TARGET=$(MKISOFS_DIR)/mkisofs/OBJ/$(HOST_ARCH)-linux-cc/mkisofs
 
 $(DL_DIR)/$(MKISOFS_SOURCE):
 	$(call DOWNLOAD,$(MKISOFS_SITE),$(MKISOFS_SOURCE))
