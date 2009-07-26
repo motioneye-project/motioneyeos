@@ -18,6 +18,7 @@
 	#383: gst-plugins-good: Allow soup plugin to be configured
 	#385: neon: Fix pkgconfig dependency
 	#387: Tremor not installed to toolchain
+	#389: New package bmon
 	#391: gstreamer: Bump version to 0.10.23
 	#393: gst-plugins-base: Bump version to 0.10.23
 	#395: gst-plugins-bad: New package

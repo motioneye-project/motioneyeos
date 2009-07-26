@@ -1,0 +1,5 @@
+config BR2_PACKAGE_BMON
+	bool "bmon"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Linux bandwidth monitor

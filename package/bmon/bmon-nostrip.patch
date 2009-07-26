@@ -1,0 +1,12 @@
+diff -Nura bmon/GNUmakefile bmon.nostrip/GNUmakefile
+--- bmon/GNUmakefile	2005-04-05 12:01:33.000000000 -0300
++++ bmon.nostrip/GNUmakefile	2009-06-10 16:12:04.000000000 -0300
+@@ -50,7 +50,7 @@
+ install:
+ 	./install-sh -d -m 0755 $(DESTDIR)$(prefix)/bin
+ 	./install-sh -d -m 0755 $(DESTDIR)$(mandir)/man1
+-	./install-sh -c -s -m 0755 src/bmon $(DESTDIR)$(prefix)/bin
++	./install-sh -c -m 0755 src/bmon $(DESTDIR)$(prefix)/bin
+ 	./install-sh -c    -m 0644 man/bmon.1 $(DESTDIR)$(mandir)/man1
+ 
+ show: Makefile.opts

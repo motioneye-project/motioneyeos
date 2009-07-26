@@ -1,0 +1,36 @@
+diff -ru bmon-2.1.0~/src/out_audio.c bmon-2.1.0/src/out_audio.c
+--- bmon-2.1.0~/src/out_audio.c	2008-07-26 20:06:24.000000000 +0200
++++ bmon-2.1.0/src/out_audio.c	2008-07-26 20:09:42.000000000 +0200
+@@ -141,7 +141,7 @@
+ 	.om_draw = audio_draw,
+ 	.om_set_opts = audio_set_opts,
+ 	.om_probe = audio_probe,
+-	.om_shutdown audio_shutdown,
++	.om_shutdown = audio_shutdown
+ };
+ 
+ static void __init audio_init(void)
+diff -ru bmon-2.1.0~/src/out_db.c bmon-2.1.0/src/out_db.c
+--- bmon-2.1.0~/src/out_db.c	2008-07-26 20:06:24.000000000 +0200
++++ bmon-2.1.0/src/out_db.c	2008-07-26 20:07:44.000000000 +0200
+@@ -679,7 +679,7 @@
+ 	.om_draw = db_draw,
+ 	.om_set_opts = db_set_opts,
+ 	.om_probe = db_probe,
+-	.om_shutdown db_shutdown,
++	.om_shutdown = db_shutdown,
+ };
+ 
+ static void __init db_init(void)
+diff -ru bmon-2.1.0~/src/out_xml_event.c bmon-2.1.0/src/out_xml_event.c
+--- bmon-2.1.0~/src/out_xml_event.c	2008-07-26 20:06:24.000000000 +0200
++++ bmon-2.1.0/src/out_xml_event.c	2008-07-26 20:09:42.000000000 +0200
+@@ -127,7 +127,7 @@
+ 	.om_draw = xml_event_draw,
+ 	.om_set_opts = xml_event_set_opts,
+ 	.om_probe = xml_event_probe,
+-	.om_shutdown xml_event_shutdown,
++	.om_shutdown = xml_event_shutdown
+ };
+ 
+ static void __init xml_event_init(void)
