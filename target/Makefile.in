@@ -84,5 +84,3 @@ include target/linux/Makefile.in.advanced
 endif
 
 include target/device/Makefile.in.linux
-
-include target/hurd/Makefile.in
