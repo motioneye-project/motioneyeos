@@ -6,6 +6,7 @@
 	#163: Xtensa architecture port
 	#241: device mapper + lvm2: build together
 	#271: Library 'libgcc_s.so.1' not installed in search path
+	#287: New package libnl
 	#333: Bump sqlite package to 3.6.15
 	#349: update libsoup to version 2.26.2
 	#359,#413: Upgrade openvpn to Makefile.autotools.in
