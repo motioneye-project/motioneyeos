@@ -9,6 +9,7 @@
 	#287: New package libnl
 	#333: Bump sqlite package to 3.6.15
 	#349: update libsoup to version 2.26.2
+	#357: New package netstat-nat
 	#359,#413: Upgrade openvpn to Makefile.autotools.in
 	#367: linux kernel compile error for arm926t
 	#369: Add SDL_gfx package
