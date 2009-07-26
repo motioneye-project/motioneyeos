@@ -1,6 +1,7 @@
 config BR2_TARGET_ROOTFS_ISO9660
 	bool "iso image"
 	depends on BR2_i386
+	depends on !BR2_KERNEL_none
 	select BR2_TARGET_ROOTFS_EXT2
 	select BR2_TARGET_GRUB
 	select BR2_HOST_FAKEROOT
@@ -16,3 +17,6 @@ config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
 	string "Boot menu.lst file"
 	depends on BR2_TARGET_ROOTFS_ISO9660
 	default "target/iso9660/menu.lst"
+
+comment "iso image requires a Linux kernel to be built"
+	depends on BR2_i386 && BR2_KERNEL_none

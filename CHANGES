@@ -22,6 +22,7 @@
 	#391: gstreamer: Bump version to 0.10.23
 	#393: gst-plugins-base: Bump version to 0.10.23
 	#395: gst-plugins-bad: New package
+	#403: Error while building iso9660 image
 	#409: Bump php package to 5.2.10
 	#411: ipsec-tools: Bump version to 0.7.2
 	#417: New package spawn-fcgi
