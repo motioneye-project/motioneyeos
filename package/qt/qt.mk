@@ -448,6 +448,7 @@ endif
 	$(call QT_QMAKE_SET,STRIP,$(TARGET_STRIP))
 	$(call QT_QMAKE_SET,CFLAGS,$(TARGET_CFLAGS))
 	$(call QT_QMAKE_SET,CXXFLAGS,$(TARGET_CXXFLAGS))
+	$(call QT_QMAKE_SET,LFLAGS,$(TARGET_LDFLAGS))
 	-[ -f $(QT_QCONFIG_FILE) ] && cp $(QT_QCONFIG_FILE) \
 		$(QT_TARGET_DIR)/$(QT_QCONFIG_FILE_LOCATION)
 # Qt doesn't use PKG_CONFIG, it searches for pkg-config with 'which'.
