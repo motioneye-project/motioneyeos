@@ -27,6 +27,7 @@
 	#411: ipsec-tools: Bump version to 0.7.2
 	#417: New package spawn-fcgi
 	#419: Bump lighttpd package to 1.4.23
+	#421: toolchain: Clean up toolchain locale support menu
 	#467: DirectFB 1.4.1
 	#473: memstat_0.5.tar.gz has install with -D and that fails "make"
 

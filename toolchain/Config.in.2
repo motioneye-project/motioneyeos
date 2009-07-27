@@ -27,12 +27,13 @@ config BR2_INET_RPC
 	  built with RPC support then enable this option.
 
 config BR2_ENABLE_LOCALE
-	bool "Enable locale/gettext/i18n support?"
+	bool "Enable toolchain locale/i18n support?"
+	select BR2_USE_WCHAR
 	help
 	  If you are building your own toolchain and you want to 
-	  enable locale/gettext/i18n support then enable this option.
+	  enable locale/i18n support then enable this option.
 	  If you have an external binary toolchain that has been 
-	  built with locale/gettext/i18n support then enable this option.
+	  built with locale/i18n support then enable this option.
 
 config BR2_ENABLE_LOCALE_PREGENERATED
 	bool "Use pregenerated locale data?"
@@ -46,7 +47,6 @@ config BR2_ENABLE_LOCALE_PREGENERATED
 
 config BR2_ENABLE_LOCALE_PURGE
 	bool "Purge unwanted locales"
-	depends on BR2_ENABLE_LOCALE
 	help
 	  Explicitly specify what locales to install on target. If N
 	  then all locales supported by packages are installed.
