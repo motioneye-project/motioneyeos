@@ -28,7 +28,7 @@ CONFIG_DEFCONFIG=.defconfig
 CONFIG=package/config
 DATE:=$(shell date +%Y%m%d)
 
-noconfig_targets:=menuconfig config oldconfig randconfig \
+noconfig_targets:=menuconfig xconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release tags \
 	source-check help
 
@@ -438,11 +438,27 @@ $(CONFIG)/conf:
 	-@if [ ! -f .config ]; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
+
 $(CONFIG)/mconf:
 	@mkdir -p $(CONFIG)/buildroot-config
-	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf mconf
+	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) mconf
 	-@if [ ! -f .config ]; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
+	fi
+
+$(CONFIG)/qconf:
+	@mkdir -p $(CONFIG)/buildroot-config
+	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) qconf
+	-@if [ ! -f .config ]; then \
+		cp $(CONFIG_DEFCONFIG) .config; \
+	fi
+
+xconfig: $(CONFIG)/qconf
+	@mkdir -p $(CONFIG)/buildroot-config
+	@if ! KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
+		$(CONFIG)/qconf $(CONFIG_CONFIG_IN); then \
+		test -f .config.cmd || rm -f .config; \
 	fi
 
 menuconfig: $(CONFIG)/mconf
@@ -566,5 +582,5 @@ release: distclean
 	rm -rf $$OUT
 
 .PHONY: dummy subdirs release distclean clean config oldconfig \
-	menuconfig tags check test depend defconfig help
+	menuconfig xconfig tags check test depend defconfig help
 
