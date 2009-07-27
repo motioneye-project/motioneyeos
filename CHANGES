@@ -1,5 +1,15 @@
 2009.08, Not yet released:
 
+	Improvement of external toolchain support:
+	  - Support for glibc toolchains.
+	  - The toolchain configuration announced to Buildroot is
+	    verified against the real toolchain configuration.
+	  - Fixes, documentation.
+
+	Cleanup X.org support: clarified configuration options, and
+	removed mandatory dependency on useless libraries such as
+	libXt or libXaw.
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#83: liblockfile fails to compile due to eaccess redefinition
