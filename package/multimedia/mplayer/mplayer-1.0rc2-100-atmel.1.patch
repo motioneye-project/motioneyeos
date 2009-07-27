@@ -1,42 +1,7 @@
- cfg-common.h                     |    4 +
- cfg-mencoder.h                   |    4 +
- cfg-mplayer.h                    |    4 +
- configure                        |   13 +-
- libaf/af_format.c                |    7 +
- libavcodec/Makefile              |    7 +
- libavcodec/avr32/dsputil_avr32.c | 2678 ++++++++++++++++++++++++++++++++++++++
- libavcodec/avr32/fdct.S          |  541 ++++++++
- libavcodec/avr32/h264idct.S      |  451 +++++++
- libavcodec/avr32/idct.S          |  829 ++++++++++++
- libavcodec/avr32/mc.S            |  434 ++++++
- libavcodec/avr32/pico.h          |  260 ++++
- libavcodec/bitstream.h           |   77 +-
- libavcodec/dsputil.c             |    3 +
- libavcodec/h264.c                |   15 +
- libavutil/common.h               |   16 +
- libavutil/internal.h             |    9 +
- libfaad2/common.h                |    2 +-
- libmpcodecs/ad_libmad.c          |    5 +
- libswscale/pico-avr32.h          |  137 ++
- libswscale/swscale_internal.h    |    2 +-
- libswscale/yuv2rgb.c             |   14 +
- libswscale/yuv2rgb_avr32.c       |  416 ++++++
- libvo/vo_fbdev2.c                |  101 ++-
- version.sh                       |    2 +-
- 25 files changed, 6011 insertions(+), 20 deletions(-)
- create mode 100644 libavcodec/avr32/dsputil_avr32.c
- create mode 100644 libavcodec/avr32/fdct.S
- create mode 100644 libavcodec/avr32/h264idct.S
- create mode 100644 libavcodec/avr32/idct.S
- create mode 100644 libavcodec/avr32/mc.S
- create mode 100644 libavcodec/avr32/pico.h
- create mode 100644 libswscale/pico-avr32.h
- create mode 100644 libswscale/yuv2rgb_avr32.c
-
 --- a/cfg-common.h
 +++ b/cfg-common.h
-@@ -235,6 +235,10 @@
- 	{"tsprobe", &ts_probe, CONF_TYPE_POSITION, 0, 0, TS_MAX_PROBE_SIZE, NULL},
+@@ -240,6 +240,10 @@
+ 	{"psprobe", &ps_probe, CONF_TYPE_POSITION, 0, 0, TS_MAX_PROBE_SIZE, NULL},
  	{"tskeepbroken", &ts_keep_broken, CONF_TYPE_FLAG, 0, 0, 1, NULL},
  
 +#ifdef ARCH_AVR32
@@ -61,96 +26,70 @@
  #endif
 --- a/cfg-mplayer.h
 +++ b/cfg-mplayer.h
-@@ -4,6 +4,10 @@
- 
- #include "cfg-common.h"
+@@ -7,6 +7,10 @@
+ extern int key_fifo_size;
+ extern unsigned doubleclick_time;
  
 +#ifdef ARCH_AVR32
 +extern int avr32_use_pico;
 +#endif
 +
- extern int noconsolecontrols;
- 
- #if defined(HAVE_FBDEV)||defined(HAVE_VESA)
+ #ifdef HAVE_FBDEV
+ extern char *fb_mode_cfgfile;
+ extern char *fb_mode_name;
 --- a/configure
 +++ b/configure
-@@ -1203,6 +1203,15 @@ EOF
+@@ -1631,7 +1631,7 @@ EOF
+ fi
+ 
+ 
+-_arch_all='X86 X86_32 X86_64 IA64 SPARC ARM ARMV4L SH3 POWERPC PPC ALPHA SGI_MIPS PA_RISC S390 S390X VAX BFIN GENERIC'
++_arch_all='X86 X86_32 X86_64 IA64 SPARC ARM ARMV4L AVR32 SH3 POWERPC PPC ALPHA SGI_MIPS PA_RISC S390 S390X VAX BFIN GENERIC'
+ case "$host_arch" in
+   i[3-9]86|x86|x86pc|k5|k6|k6-2|k6-3|pentium*|athlon*|i586-i686)
+   _arch='X86 X86_32'
+@@ -1994,6 +1994,16 @@ EOF
      _optimizing="$proc"
      ;;
  
 +  avr32)
-+    _def_arch='#define ARCH_AVR32'
-+    _target_arch='TARGET_ARCH_AVR32 = yes'
++    _arch='AVR32'
++    _target_arch='ARCH_AVR32 = yes'
 +    iproc='avr32'
 +    proc=''
 +    _march=''
 +    _mcpu=''
 +    _optimizing=''
 +    ;;
++
    arm|armv4l|armv5tel)
-     _def_arch='#define ARCH_ARMV4L 1'
-     _target_arch='TARGET_ARCH_ARMV4L = yes'
-@@ -1533,7 +1542,7 @@ echores $_named_asm_args
- # Checking for CFLAGS
- _stripbinaries=yes
- if test "$_profile" != "" || test "$_debug" != "" ; then
--  CFLAGS="-W -Wall -O2 $_march $_mcpu $_debug $_profile"
-+  CFLAGS="-W -Wall -O4 $_march $_mcpu $_debug $_profile"
-   if test "$_cc_major" -ge "3" ; then
-     CFLAGS=`echo "$CFLAGS" | sed -e 's/\(-Wall\)/\1 -Wno-unused-parameter/'`
-   fi
-@@ -3794,7 +3803,7 @@ fi
- 
- 
- echocheck "X11 headers presence"
--  for I in `echo $_inc_extra | sed s/-I//g` /usr/X11/include /usr/X11R6/include /usr/include/X11R6 /usr/include /usr/openwin/include ; do
-+  for I in `echo $_inc_extra | sed s/-I//g`; do
-     if test -f "$I/X11/Xlib.h" ; then
-       _inc_x11="-I$I"
-       _x11_headers="yes"
---- a/libaf/af_format.c
-+++ b/libaf/af_format.c
-@@ -20,7 +20,14 @@
- // Integer to float conversion through lrintf()
- #ifdef HAVE_LRINTF
- #include <math.h>
-+
-+#ifdef ARCH_AVR32
-+#define lrintf(x) rint(x)
-+#define llrint(x) (long long)rint(x) 
-+#else
- long int lrintf(float);
-+#endif
-+
- #else
- #define lrintf(x) ((int)(x))
- #endif
+     _arch='ARM ARMV4L'
+     _target_arch='ARCH_ARMV4L = yes'
 --- a/libavcodec/Makefile
 +++ b/libavcodec/Makefile
-@@ -360,6 +360,12 @@ OBJS-$(TARGET_ARCH_SPARC)              +
+@@ -372,6 +372,11 @@ ASM_OBJS-$(ARCH_ARMV4L)                +
+ OBJS-$(ARCH_ARMV4L)                    += armv4l/dsputil_arm.o   \
+                                           armv4l/mpegvideo_arm.o \
  
- sparc/dsputil_vis.o: CFLAGS += -mcpu=ultrasparc -mtune=ultrasparc
- 
-+# avr32 specific stuff
-+ifeq ($(TARGET_ARCH_AVR32),yes)
-+ASM_OBJS += avr32/idct.o avr32/fdct.o avr32/mc.o avr32/h264idct.o
-+OBJS += avr32/dsputil_avr32.o
-+endif
++ASM_OBJS-$(ARCH_AVR32)                 += avr32/idct.o avr32/fdct.o \
++                                          avr32/mc.o avr32/h264idct.o
 +
- # sun mediaLib specific stuff
- OBJS-$(HAVE_MLIB)                      += mlib/dsputil_mlib.o \
++OBJS-$(ARCH_AVR32)                     += avr32/dsputil_avr32.o
++
+ OBJS-$(HAVE_IWMMXT)                    += armv4l/dsputil_iwmmxt.o   \
+                                           armv4l/mpegvideo_iwmmxt.o \
  
-@@ -419,6 +425,7 @@ tests: apiexample $(TESTS)
- clean::
+@@ -445,6 +450,7 @@ clean::
  	rm -f \
- 	   i386/*.o i386/*~ \
-+	   avr32/*.o avr32/*~ \
- 	   armv4l/*.o armv4l/*~ \
- 	   mlib/*.o mlib/*~ \
  	   alpha/*.o alpha/*~ \
+ 	   armv4l/*.o armv4l/*~ \
++	   avr32/*.o avr32/*~ \
+ 	   bfin/*.o bfin/*~ \
+ 	   i386/*.o i386/*~ \
+ 	   mlib/*.o mlib/*~ \
 --- /dev/null
 +++ b/libavcodec/avr32/dsputil_avr32.c
-@@ -0,0 +1,2678 @@
+@@ -0,0 +1,2638 @@
 +/*
 + * Copyright (c) 2007 Atmel Corporation. All rights reserved.
 + *
@@ -188,8 +127,6 @@
 +#include "pico.h"
 +
 +int avr32_use_pico = 1;
-+
-+//#define CHECK_DSP_FUNCS_AGAINST_C
 +
 +#ifdef CHECK_DSP_FUNCS_AGAINST_C
 +#define DSP_FUNC_NAME(name) test_ ## name
@@ -431,17 +368,6 @@
 +
 +
 +
-+static inline void copy_block4(uint8_t *dst, uint8_t *src, int dstStride, int srcStride, int h)
-+{
-+  int i;
-+  for(i=0; i<h; i++)
-+    {
-+      ST32(dst   , LD32(src   ));
-+      dst+=dstStride;
-+      src+=srcStride;
-+    }
-+}
-+
 +static void clear_blocks_avr32(DCTELEM *blocks)
 +{
 +  int n = 12;
@@ -460,33 +386,6 @@
 +                 "brne\t0b\n"        
 +                 : "+r"(n), "=&r"(tmp1), "=&r"(tmp2), 
 +                 "+r"(blocks));
-+}
-+
-+
-+static inline void copy_block8(uint8_t *dst, uint8_t *src, int dstStride, int srcStride, int h)
-+{
-+  int i;
-+  for(i=0; i<h; i++)
-+    {
-+      ST32(dst   , LD32(src   ));
-+      ST32(dst+4 , LD32(src+4 ));
-+      dst+=dstStride;
-+      src+=srcStride;
-+    }
-+}
-+
-+static inline void copy_block16(uint8_t *dst, uint8_t *src, int dstStride, int srcStride, int h)
-+{
-+  int i;
-+  for(i=0; i<h; i++)
-+    {
-+      ST32(dst   , LD32(src   ));
-+      ST32(dst+4 , LD32(src+4 ));
-+      ST32(dst+8 , LD32(src+8 ));
-+      ST32(dst+12, LD32(src+12));
-+      dst+=dstStride;
-+      src+=srcStride;
-+    }
 +}
 +
 +
@@ -938,6 +837,16 @@
 +    int src5= LD32(src + 5 *srcStride);
 +    int src6= LD32(src + 6 *srcStride);
 +    
++    union wordbytes {
++      int word;
++      struct  {
++        unsigned int t:8;
++        unsigned int u:8;
++        unsigned int l:8;
++        unsigned int b:8;
++      } bytes;
++    } tmp1, tmp2, tmp3;
++
 +    /* First compute the leftmost three colums */
 +    PICO_MVRC_W(PICO_INPIX0, srcB);
 +    PICO_MVRC_W(PICO_INPIX1, srcA);
@@ -980,16 +889,6 @@
 +    ST32(dst, PICO_GET_W(PICO_OUTPIX0));
 +    /* Now compute the last column */
 + 
-+    union wordbytes {
-+      int word;
-+      struct  {
-+        unsigned int t:8;
-+        unsigned int u:8;
-+        unsigned int l:8;
-+        unsigned int b:8; 
-+      } bytes; } tmp1, tmp2, tmp3;
-+    
-+    
 +    tmp1.bytes.t = srcB;
 +    tmp1.bytes.u = src1;
 +    tmp1.bytes.l = src4;
@@ -5361,16 +5260,16 @@
 +
 --- a/libavcodec/bitstream.h
 +++ b/libavcodec/bitstream.h
-@@ -171,7 +171,7 @@ typedef struct RL_VLC_ELEM {
+@@ -178,7 +178,7 @@ typedef struct RL_VLC_ELEM {
  #endif
  
- /* used to avoid missaligned exceptions on some archs (alpha, ...) */
--#if defined(ARCH_X86) || defined(ARCH_X86_64)
-+#if defined(ARCH_X86) || defined(ARCH_X86_64) || defined(ARCH_AVR32)
+ /* used to avoid misaligned exceptions on some archs (alpha, ...) */
+-#if defined(ARCH_X86)
++#if defined(ARCH_X86) || defined(ARCH_AVR32)
  #    define unaligned16(a) (*(const uint16_t*)(a))
  #    define unaligned32(a) (*(const uint32_t*)(a))
  #    define unaligned64(a) (*(const uint64_t*)(a))
-@@ -813,6 +813,44 @@ void free_vlc(VLC *vlc);
+@@ -810,6 +810,44 @@ void free_vlc(VLC *vlc);
   * if the vlc code is invalid and max_depth>1 than the number of bits removed
   * is undefined
   */
@@ -5415,7 +5314,7 @@
  #define GET_VLC(code, name, gb, table, bits, max_depth)\
  {\
      int n, index, nb_bits;\
-@@ -821,7 +859,7 @@ void free_vlc(VLC *vlc);
+@@ -818,7 +856,7 @@ void free_vlc(VLC *vlc);
      code = table[index][0];\
      n    = table[index][1];\
  \
@@ -5424,7 +5323,7 @@
          LAST_SKIP_BITS(name, gb, bits)\
          UPDATE_CACHE(name, gb)\
  \
-@@ -843,7 +881,38 @@ void free_vlc(VLC *vlc);
+@@ -840,7 +878,38 @@ void free_vlc(VLC *vlc);
      }\
      SKIP_BITS(name, gb, n)\
  }
@@ -5463,7 +5362,7 @@
  #define GET_RL_VLC(level, run, name, gb, table, bits, max_depth, need_update)\
  {\
      int n, index, nb_bits;\
-@@ -852,7 +921,7 @@ void free_vlc(VLC *vlc);
+@@ -849,7 +918,7 @@ void free_vlc(VLC *vlc);
      level = table[index].level;\
      n     = table[index].len;\
  \
@@ -5472,7 +5371,7 @@
          SKIP_BITS(name, gb, bits)\
          if(need_update){\
              UPDATE_CACHE(name, gb)\
-@@ -867,7 +936,7 @@ void free_vlc(VLC *vlc);
+@@ -864,7 +933,7 @@ void free_vlc(VLC *vlc);
      run= table[index].run;\
      SKIP_BITS(name, gb, n)\
  }
@@ -5483,19 +5382,17 @@
   * parses a vlc code, faster then get_vlc()
 --- a/libavcodec/dsputil.c
 +++ b/libavcodec/dsputil.c
-@@ -4197,6 +4197,9 @@ void dsputil_init(DSPContext* c, AVCodec
- #ifdef ARCH_BFIN
-     dsputil_init_bfin(c,avctx);
- #endif
-+#ifdef ARCH_AVR32
-+    dsputil_init_avr32(c,avctx);
-+#endif
+@@ -4155,6 +4155,7 @@ void dsputil_init(DSPContext* c, AVCodec
  
-     for(i=0; i<64; i++){
-         if(!c->put_2tap_qpel_pixels_tab[0][i])
+     if (ENABLE_MMX)      dsputil_init_mmx   (c, avctx);
+     if (ENABLE_ARMV4L)   dsputil_init_armv4l(c, avctx);
++    if (ENABLE_AVR32)    dsputil_init_avr32 (c, avctx);
+     if (ENABLE_MLIB)     dsputil_init_mlib  (c, avctx);
+     if (ENABLE_VIS)      dsputil_init_vis   (c, avctx);
+     if (ENABLE_ALPHA)    dsputil_init_alpha (c, avctx);
 --- a/libavcodec/h264.c
 +++ b/libavcodec/h264.c
-@@ -3258,7 +3258,12 @@ static void free_tables(H264Context *h){
+@@ -2043,7 +2043,12 @@ static void free_tables(H264Context *h){
  
  static void init_dequant8_coeff_table(H264Context *h){
      int i,q,x;
@@ -5508,7 +5405,7 @@
      h->dequant8_coeff[0] = h->dequant8_buffer[0];
      h->dequant8_coeff[1] = h->dequant8_buffer[1];
  
-@@ -3281,7 +3286,13 @@ static void init_dequant8_coeff_table(H2
+@@ -2066,7 +2071,13 @@ static void init_dequant8_coeff_table(H2
  
  static void init_dequant4_coeff_table(H264Context *h){
      int i,j,q,x;
@@ -5522,33 +5419,33 @@
      for(i=0; i<6; i++ ){
          h->dequant4_coeff[i] = h->dequant4_buffer[i];
          for(j=0; j<i; j++){
-@@ -4663,7 +4674,11 @@ static int decode_slice_header(H264Conte
-         if (MPV_common_init(s) < 0)
-             return -1;
- 
+@@ -3710,7 +3721,11 @@ static int init_poc(H264Context *h){
+ static void init_scan_tables(H264Context *h){
+     MpegEncContext * const s = &h->s;
+     int i;
 +#ifdef ARCH_AVR32
-+        if ( 1 ){
++    if(1){
 +#else
-         if(s->dsp.h264_idct_add == ff_h264_idct_add_c){ //FIXME little ugly
+     if(s->dsp.h264_idct_add == ff_h264_idct_add_c){ //FIXME little ugly
 +#endif
-             memcpy(h->zigzag_scan, zigzag_scan, 16*sizeof(uint8_t));
-             memcpy(h-> field_scan,  field_scan, 16*sizeof(uint8_t));
-         }else{
+         memcpy(h->zigzag_scan, zigzag_scan, 16*sizeof(uint8_t));
+         memcpy(h-> field_scan,  field_scan, 16*sizeof(uint8_t));
+     }else{
 --- a/libavutil/common.h
 +++ b/libavutil/common.h
-@@ -283,23 +283,39 @@ static inline int mid_pred(int a, int b,
+@@ -174,23 +174,39 @@ static inline int mid_pred(int a, int b,
   * @param amax maximum value of the clip range
-  * @return cliped value
+  * @return clipped value
   */
 +#if defined(ARCH_AVR32)
-+#define clip(a, amin, amax) \
++#define av_clip(a, amin, amax) \
 +  ({ int __tmp__; \
 +     asm ("min\t%0, %1, %2\n" \
 +          "max\t%0, %0, %3\n" \
 +          : "=&r"(__tmp__) : "r"(a), "r"(amax), "r"(amin)); \
 +     __tmp__; })
 +#else
- static inline int clip(int a, int amin, int amax)
+ static inline int av_clip(int a, int amin, int amax)
  {
      if (a < amin)      return amin;
      else if (a > amax) return amax;
@@ -5559,44 +5456,26 @@
  /**
   * clip a signed integer value into the 0-255 range
   * @param a value to clip
-  * @return cliped value
+  * @return clipped value
   */
 +#if defined(ARCH_AVR32)
-+#define clip_uint8(a) \
++#define av_clip_uint8(a) \
 +  ({ int __tmp__ = a; \
 +     asm ("satu\t%0 >> 0, 8" : "+r"(__tmp__)); \
 +     __tmp__; })
 +#else
- static inline uint8_t clip_uint8(int a)
+ static inline uint8_t av_clip_uint8(int a)
  {
      if (a&(~255)) return (-a)>>31;
      else          return a;
  }
 +#endif
  
- /* math */
- int64_t ff_gcd(int64_t a, int64_t b);
---- a/libavutil/internal.h
-+++ b/libavutil/internal.h
-@@ -210,6 +210,15 @@ if((y)<(x)){\
-     }\
- }
- 
-+/* XXX: Hack for uclibc which declares lrintf but does not implement it... */
-+#ifdef ARCH_AVR32
-+#undef HAVE_LRINTF
-+#define HAVE_LRINTF 1
-+#define lrintf(x) rint(x)
-+#define llrint(x) (long long)rint(x) 
-+#endif
-+ 
-+
- #ifndef HAVE_LRINTF
- /* XXX: add ISOC specific test to avoid specific BSD testing. */
- /* better than nothing implementation. */
+ /**
+  * clip a signed integer value into the -32768,32767 range
 --- a/libfaad2/common.h
 +++ b/libfaad2/common.h
-@@ -67,7 +67,7 @@ extern "C" {
+@@ -69,7 +69,7 @@ extern "C" {
  /* Use if target platform has address generators with autoincrement */
  //#define PREFER_POINTERS
  
@@ -5761,7 +5640,7 @@
 +
 --- a/libswscale/swscale_internal.h
 +++ b/libswscale/swscale_internal.h
-@@ -173,7 +173,7 @@ typedef struct SwsContext{
+@@ -181,7 +181,7 @@ typedef struct SwsContext{
  SwsFunc yuv2rgb_get_func_ptr (SwsContext *c);
  int yuv2rgb_c_init_tables (SwsContext *c, const int inv_table[4], int fullRange, int brightness, int contrast, int saturation);
  
@@ -5769,10 +5648,10 @@
 +char *sws_format_name(enum PixelFormat format);
  
  //FIXME replace this with something faster
- #define isPlanarYUV(x) ((x)==PIX_FMT_YUV410P || (x)==PIX_FMT_YUV420P	\
+ #define isPlanarYUV(x)  (           \
 --- a/libswscale/yuv2rgb.c
 +++ b/libswscale/yuv2rgb.c
-@@ -44,6 +44,10 @@
+@@ -47,6 +47,10 @@
  #include "yuv2rgb_mlib.c"
  #endif
  
@@ -5783,8 +5662,8 @@
  #define DITHER1XBPP // only for mmx
  
  const uint8_t  __attribute__((aligned(8))) dither_2x2_4[2][8]={
-@@ -601,6 +605,12 @@ SwsFunc yuv2rgb_get_func_ptr (SwsContext
- 	if(t) return t;
+@@ -646,6 +650,12 @@ SwsFunc yuv2rgb_get_func_ptr (SwsContext
+         if (t) return t;
      }
  #endif
 +#ifdef ARCH_AVR32
@@ -5796,7 +5675,7 @@
  #ifdef HAVE_ALTIVEC
      if (c->flags & SWS_CPU_CAPS_ALTIVEC)
      {
-@@ -678,6 +688,10 @@ int yuv2rgb_c_init_tables (SwsContext *c
+@@ -736,6 +746,10 @@ int yuv2rgb_c_init_tables (SwsContext *c
  //printf("%lld %lld %lld %lld %lld\n", cy, crv, cbu, cgu, cgv);
      oy -= 256*brightness;
  
@@ -5805,11 +5684,11 @@
 +#endif
 +
      for (i = 0; i < 1024; i++) {
- 	int j;
+         int j;
  
 --- /dev/null
 +++ b/libswscale/yuv2rgb_avr32.c
-@@ -0,0 +1,416 @@
+@@ -0,0 +1,411 @@
 +/*
 + * Copyright (c) 2007 Atmel Corporation. All rights reserved.
 + *
@@ -5843,7 +5722,7 @@
 + * DAMAGE.
 + */
 +#include "pico-avr32.h"
-+
++#include "log.h"
 +
 +#define RGB(uv_part)  \
 +      __asm__ volatile (        \
@@ -5856,7 +5735,6 @@
 +                        : "r" (&c->table_gV[0]), "r" (&c->table_gU[0]),"r" (&c->table_bU[0]), \
 +                        "r" (&c->table_rV[0]), "r" (V), "r" (U));
 +
-+                        
 +#undef YUV2RGB1
 +#define YUV2RGB1(dst, src, y, idx) \
 +  { int tmp2;    __asm__ volatile (      \
@@ -5876,7 +5754,7 @@
 +                        "st.b\t%7[6*%8 + 5], %1"         /* dst_1[3] = tmp; */   \
 +                        : "=&r" (y), "=&r" (tmp), "=&r" (tmp2) \
 +                        : "r" (src), "r" (r), "r" (g), "r" (b), "r" (dst), "i" (idx)); }
-+                        
++
 +#undef YUV2RGB2
 +#define YUV2RGB2(dst, src, y, idx) \
 +  { int tmp2;    __asm__ volatile (      \
@@ -5917,7 +5795,7 @@
 +                        "st.b\t%7[6*%8 + 3], %1"         /* dst_1[3] = tmp; */   \
 +                        : "=&r" (y), "=&r" (tmp), "=&r" (tmp2) \
 +                        : "r" (src), "r" (r), "r" (g), "r" (b), "r" (dst), "i" (idx)); }
-+                        
++
 +#undef YUV2BGR2
 +#define YUV2BGR2(dst, src, y, idx) \
 +  { int tmp2;    __asm__ volatile (      \
@@ -5938,14 +5816,12 @@
 +                        : "=&r" (y), "=&r" (tmp), "=&r" (tmp2) \
 +                        : "r" (src), "r" (r), "r" (g), "r" (b), "r" (dst), "i" (idx)); }
 +
-+
-+
-+int yuv2bgr24_avr32(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY, 
++int yuv2bgr24_avr32(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY,
 +                    int srcSliceH, uint8_t* dst[], int dstStride[]){
 +  int y;
-+  
++
 +  if(c->srcFormat == PIX_FMT_YUV422P){
-+    srcStride[1] *= 2;    
++    srcStride[1] *= 2;
 +    srcStride[2] *= 2;
 +  }
 +
@@ -5963,24 +5839,22 @@
 +      uint32_t U, V, Y1, Y2, tmp;
 +      U = ((uint32_t*)pu)[0];
 +      V = ((uint32_t*)pv)[0];
-+      
++
 +      RGB("t")
-+        YUV2BGR1(dst_1, py_1, Y1, 0) 
-+        YUV2BGR1(dst_2, py_2, Y2, 0) 
++        YUV2BGR1(dst_1, py_1, Y1, 0)
++        YUV2BGR1(dst_2, py_2, Y2, 0)
 +
 +      RGB("u")
-+        YUV2BGR2(dst_1, py_1, Y1, 1) 
++        YUV2BGR2(dst_1, py_1, Y1, 1)
 +        YUV2BGR2(dst_2, py_2, Y2, 1)
 +
 +      RGB("l")
-+        YUV2BGR1(dst_1, py_1, Y1, 2) 
++        YUV2BGR1(dst_1, py_1, Y1, 2)
 +        YUV2BGR1(dst_2, py_2, Y2, 2)
 +
 +      RGB("b")
-+        YUV2BGR2(dst_1, py_1, Y1, 3) 
++        YUV2BGR2(dst_1, py_1, Y1, 3)
 +        YUV2BGR2(dst_2, py_2, Y2, 3)
-+ 
-+                        
 +
 +      pu += 4;
 +      pv += 4;
@@ -5995,10 +5869,10 @@
 +
 +
 +
-+static int yuv2rgb24_avr32(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY, 
++static int yuv2rgb24_avr32(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY,
 +                             int srcSliceH, uint8_t* dst[], int dstStride[]){
 +  int y;
-+  
++
 +  if(c->srcFormat == PIX_FMT_YUV422P){
 +    srcStride[1] *= 2;
 +    srcStride[2] *= 2;
@@ -6016,23 +5890,23 @@
 +      uint32_t U, V, Y1, Y2, tmp;
 +      U = ((uint32_t*)pu)[0];
 +      V = ((uint32_t*)pv)[0];
-+      
++
 +      RGB("t")
-+        YUV2RGB1(dst_1, py_1, Y1, 0) 
-+        YUV2RGB1(dst_2, py_2, Y2, 0) 
++        YUV2RGB1(dst_1, py_1, Y1, 0)
++        YUV2RGB1(dst_2, py_2, Y2, 0)
 +
 +      RGB("u")
-+        YUV2RGB2(dst_1, py_1, Y1, 1) 
++        YUV2RGB2(dst_1, py_1, Y1, 1)
 +        YUV2RGB2(dst_2, py_2, Y2, 1)
 +
 +      RGB("l")
-+        YUV2RGB1(dst_1, py_1, Y1, 2) 
++        YUV2RGB1(dst_1, py_1, Y1, 2)
 +        YUV2RGB1(dst_2, py_2, Y2, 2)
 +
 +      RGB("b")
-+        YUV2RGB2(dst_1, py_1, Y1, 3) 
++        YUV2RGB2(dst_1, py_1, Y1, 3)
 +        YUV2RGB2(dst_2, py_2, Y2, 3)
-+ 
++
 +      pu += 4;
 +      pv += 4;
 +      py_1 += 8;
@@ -6065,20 +5939,20 @@
 +} pico_coeff;
 +
 +
-+static int yuv2bgr24_avr32_pico(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY, 
++static int yuv2bgr24_avr32_pico(SwsContext *c, uint8_t* src[], int srcStride[], int srcSliceY,
 +                                int srcSliceH, uint8_t* dst[], int dstStride[]){
 +  int y;
 +  static int first_time = 1;
 +
 +  /* Initialize pico */
-+  PICO_LDCM_D(&pico_coeff, 
-+              PICO_REGVECT_COEFF0_A, PICO_REGVECT_COEFF0_B, 
++  PICO_LDCM_D(&pico_coeff,
++              PICO_REGVECT_COEFF0_A, PICO_REGVECT_COEFF0_B,
 +              PICO_REGVECT_COEFF1_A, PICO_REGVECT_COEFF1_B,
-+              PICO_REGVECT_COEFF2_A, PICO_REGVECT_COEFF2_B);              
-+  
-+  PICO_PUT_W(PICO_CONFIG, 
-+             (PICO_PACKED_MODE << PICO_OUTPUT_MODE 
-+              | PICO_TRANSFORMATION_MODE << PICO_INPUT_MODE 
++              PICO_REGVECT_COEFF2_A, PICO_REGVECT_COEFF2_B);
++
++  PICO_PUT_W(PICO_CONFIG,
++             (PICO_PACKED_MODE << PICO_OUTPUT_MODE
++              | PICO_TRANSFORMATION_MODE << PICO_INPUT_MODE
 +              | OFFSET_FRAC_BITS << PICO_OFFSET_FRAC_BITS
 +              | COEFF_FRAC_BITS << PICO_COEFF_FRAC_BITS));
 +
@@ -6117,7 +5991,7 @@
 +      PICO_OP(0, 3, 3, 7, 11);
 +      PICO_PUT_W(PICO_INPIX0, *py_2_int++);
 +      PICO_STCM_W(dst_1 + 12, PICO_REGVECT_OUTPIX2, PICO_REGVECT_OUTPIX1, PICO_REGVECT_OUTPIX0);
-+      
++
 +      PICO_OP(0, 0, 0, 4, 8);
 +      PICO_OP(0, 1, 1, 4, 8);
 +      PICO_OP(0, 2, 2, 5, 9);
@@ -6144,23 +6018,23 @@
 +  case PIX_FMT_BGR24:
 +    {
 +      if ( avr32_use_pico ){
-+        MSG_ERR("AVR32 BGR24: Using PICO for color space conversion\n");
++        av_log(c, AV_LOG_INFO, "AVR32 BGR24: Using PICO for color space conversion\n");
 +        return yuv2bgr24_avr32_pico;
 +      } else {
-+        MSG_ERR("AVR32 BGR24: Using optimized color space conversion\n");
++        av_log(c, AV_LOG_INFO, "AVR32 BGR24: Using optimized color space conversion\n");
 +        return yuv2bgr24_avr32;
 +      }
 +    }
 +    break;
 +  case PIX_FMT_RGB24:
-+    {      
++    {
 +      if ( avr32_use_pico ){
-+        MSG_ERR("AVR32 RGB24: Using PICO for color space conversion\n");
++        av_log(c, AV_LOG_INFO, "AVR32 RGB24: Using PICO for color space conversion\n");
 +        return yuv2bgr24_avr32_pico;
 +      } else {
-+        MSG_ERR("AVR32 RGB24: Using optimized color space conversion\n");
++        av_log(c, AV_LOG_INFO, "AVR32 RGB24: Using optimized color space conversion\n");
 +        return yuv2rgb24_avr32;
-+      }  
++      }
 +    }
 +  }
 +  return NULL;
@@ -6169,19 +6043,19 @@
 +
 +int yuv2rgb_c_init_tables_avr32 (SwsContext *c, const int inv_table[4], int fullRange, int brightness, int contrast, int saturation){
 +  const int isRgb = (c->dstFormat == PIX_FMT_RGB24);
-+ 
++
 +  int64_t crv =  inv_table[0];
 +  int64_t cbu =  inv_table[1];
 +  int64_t cgu = -inv_table[2];
 +  int64_t cgv = -inv_table[3];
 +  int64_t cy  = 1<<16;
 +  int64_t oy  = 0;
-+  
++
 +  if(!fullRange){
 +    cy= (cy*255) / 219;
 +    oy= 16<<16;
 +  }
-+  
++
 +  cy = (cy *contrast             )>>16;
 +  crv= (crv*contrast * saturation)>>32;
 +  cbu= (cbu*contrast * saturation)>>32;
@@ -6189,37 +6063,37 @@
 +  cgv= (cgv*contrast * saturation)>>32;
 +
 +  oy -= 256*brightness;
-+  
++
 +  pico_coeff.coeff1_0 = SCALE(cy, 16 - COEFF_FRAC_BITS); /* G <- Y */
 +  pico_coeff.coeff1_1 = SCALE(cgu, 16 - COEFF_FRAC_BITS); /* G <- U */
-+  pico_coeff.coeff1_2 = SCALE(cgv, 16 - COEFF_FRAC_BITS); /* G <- V */ 
++  pico_coeff.coeff1_2 = SCALE(cgv, 16 - COEFF_FRAC_BITS); /* G <- V */
 +  pico_coeff.coeff1_3 = (SCALE(-128*cgu - 128*cgv - 16*cy, 16 - OFFSET_FRAC_BITS)
-+                         + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* G offset */ 
-+  
++                         + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* G offset */
++
 +  if ( isRgb ){
 +    pico_coeff.coeff0_0 = SCALE(cy, 16 - COEFF_FRAC_BITS); /* R <- Y */
 +    pico_coeff.coeff0_1 = 0; /* R <- U */
-+    pico_coeff.coeff0_2 = SCALE(crv, 16 - COEFF_FRAC_BITS); /* R <- V */ 
++    pico_coeff.coeff0_2 = SCALE(crv, 16 - COEFF_FRAC_BITS); /* R <- V */
 +    pico_coeff.coeff0_3 = (SCALE(-128*crv - 16*cy, 16 - OFFSET_FRAC_BITS)
-+                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* R offset */ 
-+    
++                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* R offset */
++
 +    pico_coeff.coeff2_0 = SCALE(cy, 16 - COEFF_FRAC_BITS); /* B <- Y */
 +    pico_coeff.coeff2_1 = SCALE(cbu, 16 - COEFF_FRAC_BITS); /* B <- U */
-+    pico_coeff.coeff2_2 = 0; /* B <- V */ 
-+    pico_coeff.coeff2_3 = (SCALE(-128*cbu - 16*cy, 16 - OFFSET_FRAC_BITS) 
-+                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1)));/* B offset */       
++    pico_coeff.coeff2_2 = 0; /* B <- V */
++    pico_coeff.coeff2_3 = (SCALE(-128*cbu - 16*cy, 16 - OFFSET_FRAC_BITS)
++                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1)));/* B offset */
 +  } else {
 +    pico_coeff.coeff2_0 = SCALE(cy, 16 - COEFF_FRAC_BITS); /* R <- Y */
 +    pico_coeff.coeff2_1 = 0; /* R <- U */
-+    pico_coeff.coeff2_2 = SCALE(crv, 16 - COEFF_FRAC_BITS); /* R <- V */ 
++    pico_coeff.coeff2_2 = SCALE(crv, 16 - COEFF_FRAC_BITS); /* R <- V */
 +    pico_coeff.coeff2_3 = (SCALE(-128*crv - 16*cy, 16 - OFFSET_FRAC_BITS)
-+                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* R offset */ 
-+    
++                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* R offset */
++
 +    pico_coeff.coeff0_0 = SCALE(cy, 16 - COEFF_FRAC_BITS); /* B <- Y */
 +    pico_coeff.coeff0_1 = SCALE(cbu, 16 - COEFF_FRAC_BITS); /* B <- U */
-+    pico_coeff.coeff0_2 = 0; /* B <- V */ 
++    pico_coeff.coeff0_2 = 0; /* B <- V */
 +    pico_coeff.coeff0_3 = (SCALE(-128*cbu - 16*cy, 16 - OFFSET_FRAC_BITS)
-+                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* B offset */       
++                           + /*0.5*/(1 << (OFFSET_FRAC_BITS-1))); /* B offset */
 +  }
 +
 +}
@@ -6300,7 +6174,7 @@
  	int i, out_offset = 0, in_offset = 0;
  
 -	for (i = 0; i < in_height; i++) {
--		memcpy(center + out_offset, next_frame + in_offset,
+-		fast_memcpy(center + out_offset, next_frame + in_offset,
 -				in_width * fb_pixel_size);
 -		out_offset += fb_line_len;
 -		in_offset += in_width * fb_pixel_size;
@@ -6311,7 +6185,7 @@
 +	if (fb_vinfo.yres_virtual == fb_vinfo.yres) {
  #endif
 +		for (i = 0; i < in_height; i++) {
-+			memcpy(center + out_offset, next_frame + in_offset,
++			fast_memcpy(center + out_offset, next_frame + in_offset,
 +			       in_width * fb_pixel_size);
 +			out_offset += fb_line_len;
 +			in_offset += in_width * fb_pixel_size;
@@ -6336,10 +6210,10 @@
 +static uint32_t get_image(mp_image_t *mpi)
 +{
 +	if(mpi->flags&MP_IMGFLAG_READABLE)
-+		return VO_FALSE; // slow video ram 
++		return VO_FALSE; // slow video ram
 +	if(mpi->type==MP_IMGTYPE_STATIC)
 +		return VO_FALSE; // it is not static
-+  
++
 +	if (mpi->flags & (MP_IMGFLAG_ACCEPT_STRIDE | MP_IMGFLAG_ACCEPT_WIDTH)) {
 +		// we're lucky or codec accepts stride => ok, let's go!
 +
@@ -6380,7 +6254,9 @@
  }
 --- a/version.sh
 +++ b/version.sh
-@@ -1,2 +1,2 @@
+@@ -1,3 +1,3 @@
  #!/bin/sh
--echo "#define VERSION \"1.0rc1-$1\"" > version.h
-+echo "#define VERSION \"1.0rc1.atmel.2-$1\"" > version.h
+-echo "#define VERSION \"1.0rc2-$1\"" > version.h
+-echo "#define MP_TITLE \"MPlayer 1.0rc2-$1 (C) 2000-2007 MPlayer Team\"" >> version.h
++echo "#define VERSION \"1.0rc2.atmel.1-$1\"" > version.h
++echo "#define MP_TITLE \"MPlayer 1.0rc2.atmel.1-$1 (C) 2000-2007 MPlayer Team\"" >> version.h

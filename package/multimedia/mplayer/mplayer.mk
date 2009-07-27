@@ -3,7 +3,7 @@
 # mplayer
 #
 #############################################################
-MPLAYER_VERSION:=1.0rc1
+MPLAYER_VERSION:=1.0rc2
 MPLAYER_SOURCE:=MPlayer-$(MPLAYER_VERSION).tar.bz2
 MPLAYER_SITE:=http://www7.mplayerhq.hu/MPlayer/releases
 MPLAYER_DIR:=$(BUILD_DIR)/MPlayer-$(MPLAYER_VERSION)
@@ -60,7 +60,6 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		$(MPLAYER_ENDIAN) \
 		$(MPLAYER_LARGEFILE) \
 		--enable-cross-compile \
-		--disable-mpdvdkit \
 		--disable-ivtv \
 		--disable-tv \
 		--disable-live \

@@ -17,6 +17,7 @@
 	#241: device mapper + lvm2: build together
 	#271: Library 'libgcc_s.so.1' not installed in search path
 	#287: New package libnl
+	#331: Update MPlayer to version 1.0rc2
 	#333: Bump sqlite package to 3.6.15
 	#349: update libsoup to version 2.26.2
 	#357: New package netstat-nat
