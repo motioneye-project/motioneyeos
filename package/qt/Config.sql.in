@@ -1,40 +1,40 @@
-menuconfig BR2_PACKAGE_QTOPIA4_SQL_MODULE
+menuconfig BR2_PACKAGE_QT_SQL_MODULE
 	bool "SQL Module"
 	help
-	  Compile Qtopia SQL Module
+	  Compile Qt SQL Module
 
-if BR2_PACKAGE_QTOPIA4_SQL_MODULE
-config BR2_PACKAGE_QTOPIA4_MYSQL
+if BR2_PACKAGE_QT_SQL_MODULE
+config BR2_PACKAGE_QT_MYSQL
 	bool "MySQL Driver"
 	help
 	  Build MySQL driver
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_IBASE
+config BR2_PACKAGE_QT_IBASE
 	bool "iBase Driver"
 	help
 	  Build iBase driver
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_ODBC
+config BR2_PACKAGE_QT_ODBC
 	bool "ODBC Driver"
 	help
 	  Build ODBC driver
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_PSQL
+config BR2_PACKAGE_QT_PSQL
 	bool "PostgreSQL Driver"
 	help
 	  Build PostgreSQL driver
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_SQLITE
+config BR2_PACKAGE_QT_SQLITE
 	bool "SQLite 3 Driver"
 	help
 	  Build SQLite driver
 	  If unsure, say n.
 
-config BR2_PACKAGE_QTOPIA4_SQLITE2
+config BR2_PACKAGE_QT_SQLITE2
 	bool "SQLite 2 Driver"
 	help
 	  Build SQLite 2 driver
