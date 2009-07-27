@@ -10,6 +10,8 @@
 	removed mandatory dependency on useless libraries such as
 	libXt or libXaw.
 
+	New QT-based configurator, usable using 'make xconfig'.
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#83: liblockfile fails to compile due to eaccess redefinition
