@@ -37,6 +37,7 @@
       <li><a href="#external_toolchain">Use an external toolchain</a></li>
       <li><a href="#downloaded_packages">Location of downloaded packages</a>
       </li>
+      <li><a href="#adapting_rootfs">Adapting the rootfs for own binaries</a></li>
       <li><a href="#add_software">Extending Buildroot with more
       Software</a></li>
       <li><a href="#links">Resources</a></li>
@@ -876,6 +877,22 @@ href="http://ymorin.is-a-geek.org/dokuwiki/projects/crosstool">Crosstool-NG</a>.
 It allows to generate toolchains based on <i>uClibc</i>, <i>glibc</i>
 and <i>eglibc</i> for a wide range of architectures, and has good
 community support.</p>
+
+      <h2><a name="adapting_rootfs" id="adapting_rootfs">Adapting the rootfs
+      for own binaries</h2>
+
+      <p>When using BR2 in an environment where own software binaries or
+      static data should be part of the generated rootfs package, the
+      <code>BR2_ROOTFS_POST_BUILD_SCRIPT</code> feature might interest
+      you. You can specify a command here which is called <i>after</i> BR2
+      built all the selected software, but <i>before</i> the the rootfs
+      packages are assembled. The destination rootfs folder is given as
+      first argument. You can add own components here, change
+      default configurations and remove unwanted files.</p>
+      <p>You should, however, use that feature with care. Whenever you
+      find that a certain package generates wrong or unneeded files, you
+      should rather fix than package than working around it with a
+      cleanup script.</p>
 
     <h2><a name="add_software" id="add_software"></a>Extending Buildroot with
     more software</h2>
