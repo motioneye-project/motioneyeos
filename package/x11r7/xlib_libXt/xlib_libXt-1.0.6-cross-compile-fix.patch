@@ -1,0 +1,28 @@
+diff --git a/configure.ac b/configure.ac
+index 043ab5f..cb00a41 100755
+--- a/configure.ac
++++ b/configure.ac
+@@ -48,6 +48,10 @@ if test x"$CC_FOR_BUILD" = x; then
+ 	fi
+ fi
+ AC_SUBST([CC_FOR_BUILD])
++CFLAGS_FOR_BUILD=${CFLAGS_FOR_BUILD-${CFLAGS}}
++AC_SUBST(CFLAGS_FOR_BUILD)
++LDFLAGS_FOR_BUILD=${LDFLAGS_FOR_BUILD-${LDFLAGS}}
++AC_SUBST(LDFLAGS_FOR_BUILD)
+ 
+ PKG_CHECK_MODULES(XT, sm x11 xproto kbproto)
+ 
+diff --git a/util/Makefile.am b/util/Makefile.am
+index 0d3ff01..37b78d2 100644
+--- a/util/Makefile.am
++++ b/util/Makefile.am
+@@ -5,6 +5,8 @@ noinst_PROGRAMS = makestrs
+ endif
+ 
+ CC = @CC_FOR_BUILD@
++CFLAGS = @CFLAGS_FOR_BUILD@
++LDFLAGS = @LDFLAGS_FOR_BUILD@
+ 
+ EXTRA_DIST = \
+ 	Shell.ht \
