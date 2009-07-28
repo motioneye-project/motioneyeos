@@ -1,0 +1,16 @@
+---
+ xorg-macros.m4.in |    3 +++
+ 1 file changed, 3 insertions(+)
+
+Index: xutil_util-macros-1.2.2/xorg-macros.m4.in
+===================================================================
+--- xutil_util-macros-1.2.2.orig/xorg-macros.m4.in
++++ xutil_util-macros-1.2.2/xorg-macros.m4.in
+@@ -459,3 +459,6 @@
+ fi
+ AC_SUBST(CWARNFLAGS)
+ ]) # XORG_CWARNFLAGS
++
++# Buildroot stuff
++AC_SUBST(STAGING_DIR)
+\ No newline at end of file
