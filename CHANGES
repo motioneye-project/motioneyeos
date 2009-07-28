@@ -16,6 +16,7 @@
 
 	#83: liblockfile fails to compile due to eaccess redefinition
 	#163: Xtensa architecture port
+	#171: xorg-server / kernel headers 2.6.26 - vm86.c compilation issue
 	#241: device mapper + lvm2: build together
 	#243: ctorrent: new package
 	#271: Library 'libgcc_s.so.1' not installed in search path
