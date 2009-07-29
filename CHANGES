@@ -46,6 +46,7 @@
 	#451: Upgrade from unmaintained dosfstools-2.11 to dosfstools-3.0.3
 	#467: DirectFB 1.4.1
 	#473: memstat_0.5.tar.gz has install with -D and that fails "make"
+	#495: Bump bind package to 9.5.1-P3 (security)
 	#497: OpenSSL RSA key generation hangs on x86_64
 
 2009.05, Released June 1st, 2009:
