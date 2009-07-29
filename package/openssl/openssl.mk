@@ -18,7 +18,7 @@ endif
 ifeq ($(ARCH),powerpc)
 OPENSSL_TARGET_ARCH=ppc
 endif
-ifeq ($(ARCH),"x86_64")
+ifeq ($(ARCH),x86_64)
 OPENSSL_TARGET_ARCH=x86_64
 endif
 
