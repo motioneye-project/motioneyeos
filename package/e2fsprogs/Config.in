@@ -1,6 +1,12 @@
+config BR2_PACKAGE_LIBUUID
+	bool "libuuid"
+	help
+	  The uuid library from the e2fsprogs suite
+
 config BR2_PACKAGE_E2FSPROGS
 	bool "e2fsprogs"
 	depends on BR2_LARGEFILE
+	select BR2_PACKAGE_LIBUUID
 	help
 	  The EXT2 file system utilities and libraries
 
