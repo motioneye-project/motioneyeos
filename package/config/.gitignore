@@ -1,6 +1,10 @@
 /buildroot-config
 /conf
 /mconf
+/qconf
+/qconf.moc
+/.tmp_qtcheck
+/lkc_defs.h
 /lex.zconf.c
 /zconf.hash.c
 /zconf.tab.c
