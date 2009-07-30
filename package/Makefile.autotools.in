@@ -140,7 +140,7 @@ DOWNLOAD=$(WGET) -P $(DL_DIR) $(1)/$(2)
 else
 define DOWNLOAD
 	$(Q)test -e $(DL_DIR)/$(2) || \
-	for site in $(strip $(subst ",,$(BR2_PRIMARY_SITE))) $(1) $(strip $(subst ",,$(BR2_BACKUP_SITE))); \
+	for site in $(call qstrip,$(BR2_PRIMARY_SITE)) $(1) $(call qstrip,$(BR2_BACKUP_SITE)); \
 	do $(WGET) -P $(DL_DIR) $$site/$(2) && exit; done
 endef
 endif
