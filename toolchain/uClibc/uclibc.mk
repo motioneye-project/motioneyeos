@@ -9,12 +9,10 @@ ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
 # specifying UCLIBC_CONFIG_FILE on the command-line overrides the .config
 # setting.
 ifndef UCLIBC_CONFIG_FILE
-UCLIBC_CONFIG_FILE=$(subst ",, $(strip $(BR2_UCLIBC_CONFIG)))
-#")
+UCLIBC_CONFIG_FILE=$(call qstrip,$(BR2_UCLIBC_CONFIG))
 endif
 
-UCLIBC_VER:=$(subst ",,$(BR2_UCLIBC_VERSION_STRING))
-#")
+UCLIBC_VER:=$(call qstrip,$(BR2_UCLIBC_VERSION_STRING))
 
 UCLIBC_OFFICIAL_VERSION:=$(UCLIBC_VER)$(VENDOR_SUFFIX)$(VENDOR_UCLIBC_RELEASE)
 
@@ -76,10 +74,8 @@ else
 UCLIBC_NOT_TARGET_ENDIAN:=LITTLE
 endif
 
-UCLIBC_ARM_TYPE:=CONFIG_$(strip $(subst ",, $(BR2_ARM_TYPE)))
-#"))
-UCLIBC_SPARC_TYPE:=CONFIG_SPARC_$(strip $(subst ",, $(BR2_SPARC_TYPE)))
-#"))
+UCLIBC_ARM_TYPE:=CONFIG_$(call qstrip,$(BR2_ARM_TYPE))
+UCLIBC_SPARC_TYPE:=CONFIG_SPARC_$(call qstrip,$(BR2_SPARC_TYPE))
 
 $(DL_DIR)/$(UCLIBC_SOURCE):
 	$(call DOWNLOAD,$(UCLIBC_SITE),$(UCLIBC_SOURCE))
