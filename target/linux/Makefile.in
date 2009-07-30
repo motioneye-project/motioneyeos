@@ -26,28 +26,23 @@ LINUX26_BZCAT:=$(BZCAT)
 LINUX26_SITE=$(BR2_KERNEL_MIRROR)/linux/kernel/v2.6
 
 ifeq ($(BOARD_PATH),)
-BOARD_PATH:=$(strip $(subst ",,$(BR2_BOARD_PATH)))
-#"))
+BOARD_PATH:=$(call qstrip,$(BR2_BOARD_PATH))
 endif
 
 # Linux kernel configuration file
 # Has to be set by the target/device
 # If it is not set by the target/device, then pick the one from .config
 ifndef LINUX26_KCONFIG
-ifneq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_KCONFIG))),)
-LINUX26_KCONFIG=$(strip $(subst ",,$(BR2_PACKAGE_LINUX_KCONFIG)))
-#"))
-#"))
+ifneq ($(call qstrip,$(BR2_PACKAGE_LINUX_KCONFIG)),)
+LINUX26_KCONFIG=$(call qstrip,$(BR2_PACKAGE_LINUX_KCONFIG))
 else
 # LINUX26_KCONFIG=$(BOARD_PATH)/linux26.config
 endif
 endif
 
 ifndef LINUX26_FORMAT
-ifneq ($(strip $(subst ",,$(BR2_PACKAGE_LINUX_FORMAT))),)
-LINUX26_FORMAT=$(strip $(subst ",,$(BR2_PACKAGE_LINUX_FORMAT)))
-#"))
-#"))
+ifneq ($(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT)),)
+LINUX26_FORMAT=$(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT))
 else
 LINUX26_FORMAT=zImage
 endif
@@ -67,8 +62,7 @@ endif
 endif
 endif
 
-ROOTFS_STRIPPED_SUFFIX=$(strip $(subst ",,$(ROOTFS_SUFFIX)))
-#"))
+ROOTFS_STRIPPED_SUFFIX=$(call qstrip,$(ROOTFS_SUFFIX))
 # File name for the Linux kernel binary
 ifndef LINUX26_KERNEL
 LINUX26_KERNEL_NAME=$(BINARIES_DIR)/$(LINUX26_FORMAT)$(ROOTFS_STRIPPED_SUFFIX)
@@ -86,7 +80,6 @@ LINUX_KERNEL=$(LINUX26_KERNEL_NAME)
 ifeq ($(strip $(LINUX26_PATCH_DIR)),)
 ifneq ($(BOARD_PATH),)
 LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches/
-#"))
 endif
 endif
 LINUX26_MAKE_FLAGS = HOSTCC="$(HOSTCC)" HOSTCFLAGS="$(HOSTCFLAGS)" \

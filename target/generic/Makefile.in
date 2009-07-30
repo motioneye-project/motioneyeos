@@ -7,10 +7,8 @@ TARGET_SKELETON=target/generic/target_busybox_skeleton
 TARGET_DEVICE_TABLE=target/generic/mini_device_table.txt
 endif
 
-TARGET_GENERIC_GETTY:=$(strip $(subst ",, $(BR2_TARGET_GENERIC_GETTY_PORT)))
-#"))
-TARGET_GENERIC_GETTY_BAUDRATE:=$(strip $(subst ",, $(BR2_TARGET_GENERIC_GETTY_BAUDRATE)))
-#"))
+TARGET_GENERIC_GETTY:=$(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT))
+TARGET_GENERIC_GETTY_BAUDRATE:=$(call qstrip,$(BR2_TARGET_GENERIC_GETTY_BAUDRATE))
 
 target-generic-getty:
 	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(TARGET_GENERIC_GETTY)::respawn:/sbin/getty -L $(TARGET_GENERIC_GETTY) $(TARGET_GENERIC_GETTY_BAUDRATE) vt100 #~' \

@@ -3,10 +3,8 @@
 ifeq ($(BR2_TARGET_ATMEL),y)
 ATMEL_PATH:=target/device/Atmel
 
-BOARD_NAME:=$(strip $(subst ",, $(BR2_BOARD_NAME)))
-#"))
-BOARD_PATH:=$(strip $(subst ",, $(BR2_BOARD_PATH)))
-#"))
+BOARD_NAME:=$(call qstrip,$(BR2_BOARD_NAME))
+BOARD_PATH:=$(call qstrip,$(BR2_BOARD_PATH))
 
 ATMEL_TARGET:=$(ATMEL_PATH)/root
 TARGET_SKELETON:=$(ATMEL_TARGET)/target_skeleton
@@ -18,26 +16,23 @@ KERNEL_HEADERS_PATCH_DIR=target/device/Atmel/arch-avr32/kernel-headers-2.6.28.2
 endif
 
 ifneq ($(COPYTO),)
-TARGET_ATMEL_COPYTO:=$(strip $(subst ",, $(BR2_COPYTO)))
+TARGET_ATMEL_COPYTO:=$(call qstrip,$(BR2_COPYTO))
 else
-TARGET_ATMEL_COPYTO:=$(strip $(subst ",, $(BR2_TARGET_ATMEL_COPYTO)))
+TARGET_ATMEL_COPYTO:=$(call qstrip,$(BR2_TARGET_ATMEL_COPYTO))
 endif
 
 # These are set by Config.in
-DOWNLOAD_LINUX26_VERSION:= $(strip $(subst ",, $(BR2_DOWNLOAD_LINUX26_VERSION)))
-#"))
+DOWNLOAD_LINUX26_VERSION:= $(call qstrip,$(BR2_DOWNLOAD_LINUX26_VERSION))
 ifeq ($(DOWNLOAD_LINUX26_VERSION),)
 DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
 endif
 
-LINUX26_VERSION:=$(strip $(subst ",, $(BR2_LINUX26_VERSION)))
-#"))
+LINUX26_VERSION:=$(call qstrip,$(BR2_LINUX26_VERSION))
 ifeq ($(LINUX26_VERSION),)
 LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
 endif
 
-LINUX26_RC_PATCH:=$(strip $(subst ",, $(BR2_LINUX26_RC_PATCH)))
-#"))
+LINUX26_RC_PATCH:=$(call qstrip,$(BR2_LINUX26_RC_PATCH))
 
 # These are set by "new" Config.in
 LINUX26_KCONFIG:=$(BOARD_PATH)/$(BOARD_NAME)-linux-$(LINUX26_VERSION).config
@@ -62,8 +57,7 @@ DFB_BOARD_NAME:=$(BOARD_NAME)
 
 #BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox-$(BR2_BUSYBOX_VERSION).config
 
-U_BOOT_VERSION:=$(strip $(subst ",,$(BR2_UBOOT_VERSION)))
-#"))
+U_BOOT_VERSION:=$(call qstrip,$(BR2_UBOOT_VERSION))
 
 # Update things in board specific makefiles
 include target/device/Atmel/*/Makefile.in

@@ -1,7 +1,5 @@
-BOARD_NAME=$(strip $(subst ",,$(BR2_BOARD_NAME)))
-#"))
-BOARD_PATH=$(strip $(subst ",,$(BR2_BOARD_PATH)))
-#"))
+BOARD_NAME=$(call qstrip,$(BR2_BOARD_NAME))
+BOARD_PATH=$(call qstrip,$(BR2_BOARD_PATH))
 
 
 
