@@ -40,6 +40,10 @@ else
 BR2_LOCAL:=$(TOPDIR)/local
 endif
 
+# Strip quotes and then whitespaces
+qstrip=$(strip $(subst ",,$(1)))
+#"))
+
 # Variables for use in Make constructs
 comma:=,
 empty:=
