@@ -32,14 +32,6 @@ noconfig_targets:=menuconfig xconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release tags \
 	source-check help
 
-
-# Use shell variables, if defined
-ifneq ($(BUILDROOT_LOCAL),)
-BR2_LOCAL:=$(BUILDROOT_LOCAL)
-else
-BR2_LOCAL:=$(TOPDIR)/local
-endif
-
 # Strip quotes and then whitespaces
 qstrip=$(strip $(subst ",,$(1)))
 #"))
@@ -52,20 +44,13 @@ space:=$(empty) $(empty)
 # $(shell find . -name *_defconfig |sed 's/.*\///')
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
-ifeq ($(BOARD),)
-# if "make BOARD=xyz" command
 -include .config
-else
-# if "make" command
--include $(BR2_LOCAL)/$(BOARD)/$(BOARD).config
-endif
 endif
 
 # Override BR2_DL_DIR if shell variable defined
 ifneq ($(BUILDROOT_DL_DIR),)
 BR2_DL_DIR:=$(BUILDROOT_DL_DIR)
 endif
-LOCAL:=$(BR2_LOCAL)
 
 # To put more focus on warnings, be less verbose as default
 # Use 'make V=1' to see the full commands
