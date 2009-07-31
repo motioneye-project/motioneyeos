@@ -1,0 +1,25 @@
+Commit 7fcb389fb4cd5ba26e330fef991ffdc05392f289 from gnulib, to fix
+the rename bugs detection macros.
+---
+ m4/rename.m4 |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: coreutils-7.4/m4/rename.m4
+===================================================================
+--- coreutils-7.4.orig/m4/rename.m4
++++ coreutils-7.4/m4/rename.m4
+@@ -51,12 +51,12 @@
+     AC_LIBOBJ([rename])
+     AC_DEFINE([rename], [rpl_rename],
+       [Define to rpl_rename if the replacement function should be used.])
+-    if test $gl_cv_func_rename_trailing_slash_bug; then
++    if test $gl_cv_func_rename_trailing_slash_bug = yes; then
+       AC_DEFINE([RENAME_TRAILING_SLASH_BUG], [1],
+ 	[Define if rename does not work for source file names with a trailing
+ 	 slash, like the one from SunOS 4.1.1_U1.])
+     fi
+-    if test $gl_cv_func_rename_dest_exists_bug; then
++    if test $gl_cv_func_rename_dest_exists_bug = yes; then
+       AC_DEFINE([RENAME_DEST_EXISTS_BUG], [1],
+ 	[Define if rename does not work when the destination file exists,
+ 	 as on Windows.])

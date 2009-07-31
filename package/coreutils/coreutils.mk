@@ -3,11 +3,11 @@
 # coreutils
 #
 #############################################################
-COREUTILS_VERSION:=6.9
-COREUTILS_SOURCE:=coreutils-$(COREUTILS_VERSION).tar.bz2
+COREUTILS_VERSION:=7.4
+COREUTILS_SOURCE:=coreutils-$(COREUTILS_VERSION).tar.gz
 #COREUTILS_SITE:=ftp://alpha.gnu.org/gnu/coreutils/
 COREUTILS_SITE:=$(BR2_GNU_MIRROR)/coreutils
-COREUTILS_CAT:=$(BZCAT)
+COREUTILS_CAT:=$(ZCAT)
 COREUTILS_DIR:=$(BUILD_DIR)/coreutils-$(COREUTILS_VERSION)
 COREUTILS_BINARY:=src/vdir
 COREUTILS_TARGET_BINARY:=bin/vdir
@@ -59,6 +59,7 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		ac_cv_func_mkstemp=yes \
 		utils_cv_func_mkstemp_limitations=no \
 		utils_cv_func_mkdir_trailing_slash_bug=no \
+		gl_cv_func_rename_dest_exists_bug=no \
 		ac_cv_func_memcmp_working=yes \
 		ac_cv_have_decl_malloc=yes \
 		gl_cv_func_malloc_0_nonnull=yes \
