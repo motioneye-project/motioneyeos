@@ -235,20 +235,20 @@ ifeq ($(DL_DIR),)
 DL_DIR:=$(BASE_DIR)/dl
 endif
 
-BUILD_DIR:=$(BASE_DIR)/build_$(ARCH)$(ARCH_FPU_SUFFIX)
+BUILD_DIR:=$(BASE_DIR)/build
 
 GNU_TARGET_SUFFIX:=-$(call qstrip,$(BR2_GNU_TARGET_SUFFIX))
 
 STAGING_DIR:=$(call qstrip,$(BR2_STAGING_DIR))
 
 # packages compiled for the host goes here
-HOST_DIR:=$(BUILD_DIR)/host_dir
+HOST_DIR:=$(BASE_DIR)/host
 
 # stamp (dependency) files go here
-STAMP_DIR:=$(BUILD_DIR)/stamps
+STAMP_DIR:=$(BASE_DIR)/stamps
 
-BINARIES_DIR:=$(BASE_DIR)/binaries/
-TARGET_DIR:=$(BUILD_DIR)/target_dir
+BINARIES_DIR:=$(BASE_DIR)/images
+TARGET_DIR:=$(BASE_DIR)/target
 
 # define values for prepatched source trees for toolchains
 VENDOR_SITE:=$(call qstrip,$(BR2_VENDOR_SITE))
