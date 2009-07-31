@@ -106,24 +106,6 @@ config BR2_FPU_SUFFIX
 	  the "_nofpu" suffix will be added to the toolchain build
 	  directory name and to any rootfs image name
 
-config BR2_TOPDIR_PREFIX
-	string "Custom build dir prefix"
-	default ""
-	help
-	  Add a custom string to the beginning of the build directories.
-
-	  build_ARCH -> [PREFIX]_build_ARCH
-	  toolchain_build_ARCH -> [PREFIX]_toolchain_build_ARCH
-
-config BR2_TOPDIR_SUFFIX
-	string "Custom build dir suffix"
-	default ""
-	help
-	  Add a custom string to the end of the build directories.
-
-	  build_ARCH -> build_ARCH_[SUFFIX]
-	  toolchain_build_ARCH -> toolchain_build_ARCH_[SUFFIX]
-
 config BR2_GNU_BUILD_SUFFIX
 	string "GNU build hostname suffix"
 	default "pc-linux-gnu"
