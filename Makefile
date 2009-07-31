@@ -217,21 +217,18 @@ ZCAT:=$(call qstrip,$(BR2_ZCAT))
 BZCAT:=$(call qstrip,$(BR2_BZCAT))
 TAR_OPTIONS=$(call qstrip,$(BR2_TAR_OPTIONS)) -xf
 
-# Buildroot supports building out of tree similarly to the Linux kernel.
-# To use, add O= to the make command line (make O=/tmp/build)
-BASE_DIR:=$(shell pwd)
-ifdef O
-ifeq ("$(origin O)", "command line")
-BASE_DIR := $(shell mkdir -p $(O) && cd $(O) && pwd)
-$(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
-
+ifneq ("$(origin O)", "command line")
+O:=output
+else
 # other packages might also support Linux-style out of tree builds
 # with the O=<dir> syntax (E.G. Busybox does). As make automatically
 # forwards command line variable definitions those packages get very
 # confused. Fix this by telling make to not do so
 MAKEOVERRIDES =
 endif
-endif
+
+BASE_DIR := $(shell mkdir -p $(O) && cd $(O) && pwd)
+$(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 
 TOPDIR_PREFIX:=$(call qstrip,$(BR2_TOPDIR_PREFIX))_
 TOPDIR_SUFFIX:=_$(call qstrip,$(BR2_TOPDIR_SUFFIX))
