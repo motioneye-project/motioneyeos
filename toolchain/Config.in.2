@@ -119,6 +119,16 @@ choice
 		bool "Native POSIX Threading (NPTL)"
 endchoice
 
+config BR2_PROGRAM_INVOCATION
+	bool "Enable 'program invocation name'"
+	help
+	  Support for the GNU-specific program_invocation_name and
+	  program_invocation_short_name strings.  Some GNU packages
+	  (like tar and coreutils) utilize these for extra useful
+	  output, but in general are not required.
+	  If you have an external binary toolchain that has been built
+	  with program invocation support then enable this option.
+
 config BR2_GCC_CROSS_CXX
 	bool
 	help

@@ -1,6 +1,6 @@
 config BR2_PACKAGE_COREUTILS
 	bool "coreutils"
-	depends on BR2_USE_WCHAR && BR2_UCLIBC_PROGRAM_INVOCATION
+	depends on BR2_USE_WCHAR && BR2_PROGRAM_INVOCATION
 	help
 	  All of the basic file/text/shell utilities.  These are the
 	  core utilities which are expected to exist on every system.
@@ -14,4 +14,4 @@ config BR2_PACKAGE_COREUTILS
 	  http://www.gnu.org/software/coreutils/
 
 comment "coreutils requires a toolchain with WCHAR and PROGRAM_INVOCATION support"
-	depends on !(BR2_USE_WCHAR && BR2_UCLIBC_PROGRAM_INVOCATION)
+	depends on !(BR2_USE_WCHAR && BR2_PROGRAM_INVOCATION)
