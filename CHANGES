@@ -50,6 +50,7 @@
 	#495: Bump bind package to 9.5.1-P3 (security)
 	#497: OpenSSL RSA key generation hangs on x86_64
 	#509: Bump sqlite package to 3.6.16
+	#527: pciutils broken with external toolchain
 
 2009.05, Released June 1st, 2009:
 
