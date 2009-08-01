@@ -81,17 +81,19 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 $(LVM2_DIR)/.built: $(LVM2_DIR)/.configured
 	$(MAKE1) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
 	$(MAKE1) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR) install
+	# Fixup write permissions so that the files can be overwritten
+	# several times in the $(TARGET_DIR)
+	chmod 755 $(STAGING_DIR)/sbin/lvm
+	chmod 755 $(STAGING_DIR)/sbin/dmsetup
+	chmod 644 $(STAGING_DIR)/lib/$(LVM2_LIB)
 	touch $(LVM2_DIR)/.built
 
 
-$(LVM2_TARGET_SBINS): $(LVM2_DIR)/.built
-	for binary in $(LVM2_SBIN); do echo $$binary; cp -a $(STAGING_DIR)/sbin/$$binary $(TARGET_DIR)/sbin; done
-
-$(LVM2_TARGET_DMSETUP_SBINS): $(LVM2_DIR)/.built
-	for binary in $(LVM2_DMSETUP_SBIN); do echo $$binary; cp -a $(STAGING_DIR)/sbin/$$binary $(TARGET_DIR)/sbin; done
+$(LVM2_TARGET_SBINS) $(LVM2_TARGET_DMSETUP_SBINS): $(LVM2_DIR)/.built
+	cp -a $(STAGING_DIR)/sbin/$(notdir $@) $@
 
 $(LVM2_TARGET_LIBS): $(LVM2_DIR)/.built
-	for lib in $(LVM2_LIB); do echo $$lib; cp -a $(STAGING_DIR)/lib/$$lib $(TARGET_DIR)/lib; done
+	cp -a $(STAGING_DIR)/lib/$(notdir $@) $@
 
 
 ifeq ($(BR2_PACKAGE_LVM2_DMSETUP_ONLY),y)
