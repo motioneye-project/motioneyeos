@@ -1,0 +1,7 @@
+config BR2_PACKAGE_IW
+	bool "iw"
+	select BR2_PACKAGE_LIBNL
+	help
+	  Utility for wireless devices using the mac80211 kernel stack
+
+	  http://wireless.kernel.org/en/users/Documentation/iw
