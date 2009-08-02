@@ -1,4 +1,6 @@
-2009.08, Not yet released:
+2009.08-rc1, Released August 2nd, 2009:
+
+	Fixes all over the tree and new features.
 
 	Improvement of external toolchain support:
 	  - Support for glibc toolchains.
@@ -11,6 +13,26 @@
 	libXt or libXaw.
 
 	New QT-based configurator, usable using 'make xconfig'.
+
+	Support for the Xtensa architecture.
+
+	Toolchain: GCC 4.4.1, 2.6.30 kernel headers, removed < 2.6.26
+	headers.
+
+	New packages: bmon, ctorrent, dosfstools, enchant,
+	gst-plugins-bad, iw, libmms, libnl, netstat-nat, ntfsprogs,
+	sdl_gfx, spawn-fcgi.
+
+	Updated packages: bind, busybox, coreutils, sqlite, directfb,
+	expat, gamin, gnuconfig, haserl, ipsec-tools, classpath,
+	libcurl, libglib2, liblockfile, libpng, libsoup, libxml2,
+	lighttpd, ltp-testsuite, lvm2, matchbox, memstat,
+	gst-plugins-good, gstreamer, libogg, libvorbis, mplayer,
+	neon, openssl, pciutils, php, qt, ruby, sawman, webkit,
+	wpa-supplicant, xdriver_xf86-input-synaptics,
+	xdriver_xf86-video-intel, xlib_libXfont, xlib_libXft,
+	xlib_libXt, xproto_xproto, xserver-xorg, xutil_makedepend,
+	xutil_util-macros.
 
 	Issues resolved (http://bugs.uclibc.org):
 
