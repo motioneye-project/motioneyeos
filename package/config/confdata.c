@@ -44,9 +44,7 @@ const char *conf_get_configname(void)
 
 const char *conf_get_autoconfig_name(void)
 {
-	char *name = getenv("BUILDROOT_AUTOCONFIG");
-
-	return name ? name : "$(BR2_DEPENDS_DIR)/config/auto.conf";
+	return getenv("KCONFIG_AUTOCONFIG");
 }
 
 static char *conf_expand_value(const char *in)
