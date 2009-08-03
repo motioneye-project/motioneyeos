@@ -662,7 +662,7 @@ BR2_PACKAGE_NCURSES=y
 #
 # other GUIs
 #
-# BR2_PACKAGE_QTOPIA4 is not set
+# BR2_PACKAGE_QT is not set
 BR2_PACKAGE_XSERVER_none=y
 # BR2_PACKAGE_XSERVER_xorg is not set
 # BR2_PACKAGE_XSERVER_tinyx is not set

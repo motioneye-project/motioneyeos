@@ -63,8 +63,8 @@ else
 	CLASSPATH_CONF_OPT+= --disable-alsa
 endif
 
-ifeq ($(BR2_PACKAGE_QTOPIA4),y)
-	CLASSPATH_DEPENDENCIES+= qtopia4
+ifeq ($(BR2_PACKAGE_QT),y)
+	CLASSPATH_DEPENDENCIES+= qt
 	CLASSPATH_CONF_OPT+= --enable-qt-peer
 else
 	CLASSPATH_CONF_OPT+= --disable-qt-peer

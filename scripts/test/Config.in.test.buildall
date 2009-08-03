@@ -550,7 +550,7 @@ config BR2_TARGET_TEST_PACKAGES
 	select BR2_PACKAGE_TIFF
 	select BR2_PACKAGE_FBV
 	select BR2_PACKAGE_FBSET
-# BR2_PACKAGE_QTOPIA4 is not set
+# BR2_PACKAGE_QT is not set
 	select BR2_PACKAGE_XSERVER_none
 # BR2_PACKAGE_XSERVER_xorg is not set
 # BR2_PACKAGE_XSERVER_tinyx is not set

@@ -79,8 +79,8 @@ else
 endif
 
 #Enable or disable qt backend
-ifeq ($(BR2_PACKAGE_QTOPIA4),y)
-	JAMVM_DEPENDENCIES+= qtopia4
+ifeq ($(BR2_PACKAGE_QT),y)
+	JAMVM_DEPENDENCIES+= qt
 	JAMVM_CONF_OPT+= --enable-qt-peer
 else
 	JAMVM_CONF_OPT+= --disable-qt-peer

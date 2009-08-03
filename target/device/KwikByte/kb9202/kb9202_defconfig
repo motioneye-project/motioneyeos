@@ -563,7 +563,7 @@ BR2_GRAPHIC_SUPPORT=y
 # other GUIs
 #
 # BR2_PACKAGE_QTE is not set
-# BR2_PACKAGE_QTOPIA4 is not set
+# BR2_PACKAGE_QT is not set
 BR2_PACKAGE_XSERVER_none=y
 # BR2_PACKAGE_XSERVER_x11r7 is not set
 # BR2_PACKAGE_XSERVER_xorg is not set
