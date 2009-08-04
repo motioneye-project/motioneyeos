@@ -3,10 +3,12 @@
 # popt
 #
 #############################################################
-POPT_VERSION:=1.14
+POPT_VERSION:=1.15
 POPT_SITE:=http://rpm5.org/files/popt
 POPT_INSTALL_STAGING = YES
 POPT_INSTALL_TARGET = YES
+
+POPT_LIBTOOL_PATCH = NO
 
 POPT_CONF_ENV = ac_cv_va_copy=yes
 
