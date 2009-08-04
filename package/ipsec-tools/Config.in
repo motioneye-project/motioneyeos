@@ -61,6 +61,8 @@ config BR2_PACKAGE_IPSEC_TOOLS_LIBS
 	  Install libipsec.a and libracoon.a under staging_dir/lib for further
 	  development on a host machine.
 
+if BR2_PACKAGE_IPSEC_TOOLS
+
 choice
 	prompt "Security context"
 	default BR2_PACKAGE_IPSEC_SECCTX_DISABLE
@@ -77,3 +79,5 @@ config BR2_PACKAGE_IPSEC_SECCTX_KERNEL
 	bool "Enable kernel security context"
 
 endchoice
+
+endif
