@@ -33,8 +33,8 @@ $(MICROPERL_DIR)/.host_configured: $(MICROPERL_DIR)/.source
 
 
 $(MICROPERL_DIR)/.host_configured_and_fixed: $(MICROPERL_DIR)/.host_configured
-	$(SED) 's/^.*<command-line>.*//g' $(MICROPERL_DIR)/makefile
-	$(SED) 's/^.*<command-line>.*//g' $(MICROPERL_DIR)/x2p/makefile
+	$(SED) 's/^.*<command-line>.*//g' $(MICROPERL_DIR)/Makefile
+	$(SED) 's/^.*<command-line>.*//g' $(MICROPERL_DIR)/x2p/Makefile
 	touch $@
 
 $(MICROPERL_DIR)/.host_make: $(MICROPERL_DIR)/.host_configured_and_fixed
@@ -42,7 +42,6 @@ $(MICROPERL_DIR)/.host_make: $(MICROPERL_DIR)/.host_configured_and_fixed
 	touch $@
 
 $(MICROPERL_DIR)/.host_make_fixed: $(MICROPERL_DIR)/.host_make
-	$(SED) 's#^.*<asm/page.h>.*##g' $(MICROPERL_DIR)/ext/IPC/SysV/SysV.c
 	$(MAKE) -C $(MICROPERL_DIR) test	|| echo "An error is expected on make test"
 	touch $@
 
