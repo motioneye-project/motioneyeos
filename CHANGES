@@ -1,3 +1,9 @@
+2009.08, Not yet released:
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#525: sed broken with external toolchain
+
 2009.08-rc1, Released August 2nd, 2009:
 
 	Fixes all over the tree and new features.
@@ -77,7 +83,6 @@
 	#497: OpenSSL RSA key generation hangs on x86_64
 	#509: Bump sqlite package to 3.6.16
 	#523: pciutils broken with external toolchain
-	#525: sed broken with external toolchain
 	#533: Update gamin to 0.1.10 to fix compilation
 
 2009.05, Released June 1st, 2009:
