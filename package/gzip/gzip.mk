@@ -18,6 +18,7 @@ gzip-source: $(DL_DIR)/$(GZIP_SOURCE)
 
 $(GZIP_DIR)/.unpacked: $(DL_DIR)/$(GZIP_SOURCE)
 	$(GZIP_CAT) $(DL_DIR)/$(GZIP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(GZIP_DIR) package/gzip gzip\*.patch
 	touch $(GZIP_DIR)/.unpacked
 
 $(GZIP_DIR)/.configured: $(GZIP_DIR)/.unpacked
