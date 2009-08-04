@@ -135,7 +135,7 @@ $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 	touch $@
 
 $(SED_DIR2)/$(SED_BINARY): $(SED_DIR2)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(SED_DIR2)
+	$(MAKE) -C $(SED_DIR2)
 
 # This stuff is needed to work around GNU make deficiencies
 sed-target_binary: $(SED_DIR2)/$(SED_BINARY)
