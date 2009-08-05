@@ -151,7 +151,16 @@ e2fsprogs-clean:
 e2fsprogs-dirclean:
 	rm -rf $(E2FSPROGS_DIR)
 
-libuuid-dirclean:: e2fsprogs-dirclean
+libuuid-clean:
+	-$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(STAGING_DIR) LDCONFIG=true \
+		-C $(LIBUUID_DIR) uninstall
+	# make uninstall misses the includes
+	rm -rf $(STAGING_DIR)/usr/include/uuid
+	rm -f $(TARGET_DIR)/$(LIBUUID_TARGET_DIR)/$(LIBUUID_TARGET_BINARY)*
+	-$(MAKE1) -C $(LIBUUID_DIR) clean
+
+libuuid-source: e2fsprogs-source
+libuuid-dirclean: e2fsprogs-dirclean
 
 #############################################################
 #
