@@ -3,6 +3,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#525: sed broken with external toolchain
+	#537: Fix gzip build with recent glibc
 
 2009.08-rc1, Released August 2nd, 2009:
 
@@ -84,7 +85,6 @@
 	#509: Bump sqlite package to 3.6.16
 	#523: pciutils broken with external toolchain
 	#533: Update gamin to 0.1.10 to fix compilation
-	#537: Fix gzip build with recent glibc
 
 2009.05, Released June 1st, 2009:
 
