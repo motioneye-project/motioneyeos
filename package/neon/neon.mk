@@ -32,6 +32,13 @@ ifeq ($(BR2_PACKAGE_NEON_NOXML),y)
 NEON_CONF_OPT+=--disable-webdav
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+NEON_CONF_OPT+=--with-ssl
+NEON_DEPENDENCIES+=openssl
+else
+NEON_CONF_OPT+=--without-ssl
+endif
+
 $(eval $(call AUTOTARGETS,package,neon))
 
 ifeq ($(BR2_ENABLE_DEBUG),)
