@@ -1,4 +1,13 @@
-2009.08, Not yet released:
+2009.08-rc2, Released August 6th, 2009:
+
+	Additional fixes and new features.
+
+	New packages: libuuid, gcc 4.3.4.
+
+	Updated/fixed packages: busybox, classpath, gzip, ipsec-tools,
+	jamvm, libusb, microperl, neon, popt, sed, webkit.
+
+	Fixed issue with 'make oldconfig'
 
 	Issues resolved (http://bugs.uclibc.org):
 
