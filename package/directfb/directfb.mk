@@ -91,7 +91,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_DIRECTFB_GIF),y)
 DIRECTFB_GIF:=--enable-gif
-DIRECTFB_DEP+= libungif
 else
 DIRECTFB_GIF:=--disable-gif
 endif

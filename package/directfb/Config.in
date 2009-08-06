@@ -87,7 +87,6 @@ config BR2_PACKAGE_DIRECTFB_GIF
 	bool "enable GIF support"
 	default y
 	depends on BR2_PACKAGE_DIRECTFB
-	select BR2_PACKAGE_LIBUNGIF
 
 config BR2_PACKAGE_DIRECTFB_JPEG
 	bool "enable JPEG support"
