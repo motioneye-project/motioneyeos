@@ -11,7 +11,18 @@ config BR2_PACKAGE_DIRECTFB_MULTI
 	select BR2_PACKAGE_LINUX_FUSION
 	help
 	  Enable use of multiple concurrent DirectFB applications
-	  http://www.directfb.org/
+
+config BR2_PACKAGE_DIRECTFB_DEBUG
+	bool "directfb debugging"
+	depends on BR2_PACKAGE_DIRECTFB
+	help
+	  Compile DirectFB with lots of debug output
+
+config BR2_PACKAGE_DIRECTFB_TRACE
+	bool "directfb call trace support"
+	depends on BR2_PACKAGE_DIRECTFB
+	help
+	  Enable call tracing for DirectFB applications
 
 config BR2_PACKAGE_DIRECTFB_XSERVER
 	bool "build with X server backend"

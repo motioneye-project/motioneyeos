@@ -19,6 +19,19 @@ else
 DIRECTFB_MULTI:=
 DIRECTFB_FUSION:=
 endif
+
+ifeq ($(BR2_PACKAGE_DIRECTFB_DEBUG),y)
+DIRECTFB_DEBUG:=--enable-debug
+else
+DIRECTFB_DEBUG:=
+endif
+
+ifeq ($(BR2_PACKAGE_DIRECTFB_TRACE),y)
+DIRECTFB_TRACE:=--enable-trace
+else
+DIRECTFB_TRACE:=
+endif
+
 ifeq ($(BR2_PACKAGE_XSERVER),y)
 DIRECTFB_X:=--enable-x11
 else
@@ -111,6 +124,8 @@ DIRECTFB_CONF_OPT = \
 	--enable-shared \
 	--disable-explicit-deps \
 	$(DIRECTFB_MULTI) \
+	$(DIRECTFB_DEBUG) \
+	$(DIRECTFB_TRACE) \
 	$(DIRECTFB_X) \
 	$(DIRECTFB_JPEG) \
 	$(DIRECTFB_PNG) \
