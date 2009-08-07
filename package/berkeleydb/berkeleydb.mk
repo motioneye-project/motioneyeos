@@ -20,6 +20,7 @@ $(DB_DIR)/.dist: $(DL_DIR)/$(DB_SOURCE)
 	touch $@
 
 $(DB_DIR)/.configured: $(DB_DIR)/.dist
+	$(CONFIG_UPDATE) $(DB_DIR)/dist
 	(cd $(DB_DIR)/build_unix; rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
