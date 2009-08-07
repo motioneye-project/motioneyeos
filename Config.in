@@ -27,6 +27,14 @@ config BR2_SVN_UP
 	string "Subversion (svn) command to update source tree"
 	default "svn up"
 
+config BR2_BZR_CO
+	string "Bazaar (bzr) command to download source tree"
+	default "bzr co"
+
+config BR2_BZR_UP
+	string "Bazaar (bzr) command to update source tree"
+	default "bzr up"
+
 config BR2_GIT
 	string "Git command to download source tree"
 	default "git clone"
