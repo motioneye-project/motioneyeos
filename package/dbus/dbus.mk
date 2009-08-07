@@ -3,9 +3,10 @@
 # dbus
 #
 #############################################################
-DBUS_VERSION = 1.2.12
+DBUS_VERSION = 1.2.16
 DBUS_SOURCE = dbus-$(DBUS_VERSION).tar.gz
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus/
+DBUS_LIBTOOL_PATCH = NO
 DBUS_INSTALL_STAGING = YES
 DBUS_INSTALL_TARGET = YES
 ifeq ($(BR2_ENABLE_DEBUG),y)
