@@ -354,7 +354,7 @@ DISABLE_LARGEFILE= --disable-largefile
 endif
 
 ifneq ($(BR2_HAVE_DOCUMENTATION),y)
-DISABLE_DOCUMENTATION=--without-html-dir --disable-gtk-doc
+DISABLE_DOCUMENTATION=--disable-gtk-doc
 endif
 
 ifneq ($(BR2_INET_IPV6),y)
