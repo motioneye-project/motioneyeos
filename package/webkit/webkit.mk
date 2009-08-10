@@ -10,6 +10,7 @@ WEBKIT_SITE = http://nightly.webkit.org/files/trunk/src/
 WEBKIT_INSTALL_STAGING = YES
 WEBKIT_INSTALL_TARGET = YES
 WEBKIT_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install
+WEBKIT_LIBTOOL_PATCH = NO
 
 WEBKIT_DEPENDENCIES = icu curl libxml2 libxslt libgtk2 sqlite enchant \
 			libsoup
