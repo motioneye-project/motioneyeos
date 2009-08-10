@@ -21,7 +21,7 @@ LIBXSLT_CONF_OPT = --with-gnu-ld --enable-shared \
 		$(DISABLE_NLS) $(DISABLE_IPV6) \
 		--without-debugging --without-python \
 		--without-threads \
-		--with-libxml-include-prefix=$(STAGING_DIR)/usr/include/libxml2
+		--with-libxml-prefix=$(STAGING_DIR)/usr/
 
 LIBXSLT_DEPENDENCIES = uclibc $(LIBXSLT_DEPENDENCIES_EXTRA)
 
