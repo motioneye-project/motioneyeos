@@ -8,6 +8,7 @@
 
 	#487: Make kismet package sexier
 	#527: misc fixes for dnsmasq package
+	#565: libevent: Bump version and clean up makefile
 	#587: Use iptables multipurpose binaries and bump to 1.4.4
 	#617: netkit/inetd requires RPC and fails to build if RPC is disabled
 	#619: netkittelnet requires netkitbase to install, but there's no dependency
