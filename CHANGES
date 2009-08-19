@@ -18,6 +18,7 @@
 	#541: Removal of CVS directories in target filesystem broken
 	#547: berkeleydb: Update config.{sub, guess}
 	#549: enchant: Fix dependencies.
+	#569: Fix alsa-utils build for x86 on x86-64
 
 2009.08-rc1, Released August 2nd, 2009:
 
