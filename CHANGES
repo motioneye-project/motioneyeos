@@ -13,6 +13,7 @@
 
 	#525: sed broken with external toolchain
 	#537: Fix gzip build with recent glibc
+	#569: Fix alsa-utils build for x86 on x86-64
 
 2009.08-rc1, Released August 2nd, 2009:
 
