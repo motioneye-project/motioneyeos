@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBARCHIVE
+	bool "libarchive"
+	depends on BR2_USE_WCHAR
+	help
+	  Libarchive is a reusable C library for reading and writing a
+	  variety of streaming archive formats.
+
+	  http://code.google.com/p/libarchive/
+
+comment "libarchive requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR

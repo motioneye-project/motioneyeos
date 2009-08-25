@@ -1,5 +1,7 @@
 2009.11, Not yet released:
 
+	New packages: libarchive
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#527: misc fixes for dnsmasq package
