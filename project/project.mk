@@ -19,7 +19,7 @@ $(TARGET_DIR)/etc/br-version: .config
 	mkdir -p $(TARGET_DIR)/etc
 	echo $(BR2_VERSION)$(shell $(TOPDIR)/scripts/setlocalversion) >$@
 
-saveconfig: $(CONFIG)/conf
+saveconfig:
 	mkdir -p $(LOCAL)/$(PROJECT)
 	-cp .config $(PROJECT_FILE)
 	if [ -f $(LINUX26_DIR)/.config ]; then \
@@ -48,14 +48,5 @@ saveconfig: $(CONFIG)/conf
 			$(LOCAL)/$(PROJECT)/u-boot/$(PROJECT).h; \
 	fi
 
-getconfig: $(CONFIG)/conf
+getconfig:
 	-cp $(LOCAL)/$(PROJECT)/$(PROJECT).config .config
-
-vendor-dbg:
-	@echo VENDOR_SITE=$(BR2_VENDOR_SITE)
-	@echo VENDOR_SUFFIX=$(BR2_VENDOR_SUFFIX)
-	@echo VENDOR_BINUTILS_RELEASE=$(BR2_VENDOR_BINUTILS_RELEASE)
-	@echo VENDOR_GCC_RELEASE=$(BR2_VENDOR_GCC_RELEASE)
-	@echo VENDOR_UCLIBC_RELEASE=$(BR2_VENDOR_UCLIBC_RELEASE)
-	@echo VENDOR_GDB_RELEASE=$(BR2_VENDOR_GDB_RELEASE)
-	@echo VENDOR_PATCH_DIR=$(BR2_VENDOR_PATCH_DIR)
