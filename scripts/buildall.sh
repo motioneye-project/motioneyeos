@@ -264,7 +264,7 @@ EXE	mk	sawman				OK
 EXE	mk	sdl				OK	
 EXE	mk	sdl_image			OK	
 EXE	mk	sdl_mixer			OK	
-EXE	mk	SDL_net				OK	
+EXE	mk	sdl_net				OK	
 EXE	mk	sdl_ttf				OK	
 EXE	mk	tiff				OK	
 comment	busybox graphic applications
