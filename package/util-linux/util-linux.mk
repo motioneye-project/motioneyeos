@@ -18,6 +18,11 @@ else
 UTIL-LINUX_SCHED_UTILS:=--disable-schedutils
 endif
 
+ifeq ($(BR2_PACKAGE_LIBINTL),y)
+UTIL-LINUX_DEPENDENCIES += libintl
+UTIL-LINUX_MAKE_OPT = LIBS=-lintl
+endif
+
 $(DL_DIR)/$(UTIL-LINUX_SOURCE):
 	$(call DOWNLOAD,$(UTIL-LINUX_SITE),$(UTIL-LINUX_SOURCE))
 
@@ -56,6 +61,7 @@ $(UTIL-LINUX_BINARY): $(UTIL-LINUX_DIR)/.configured
 		ARCH=$(ARCH) \
 		CC=$(TARGET_CC) \
 		OPT="$(TARGET_CFLAGS)" \
+		$(UTIL-LINUX_MAKE_OPT) \
 		HAVE_SLANG="NO"
 
 $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
@@ -66,11 +72,10 @@ $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
 #If both util-linux and busybox are selected, make certain util-linux
 #wins the fight over who gets to have their utils actually installed
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-util-linux: uclibc busybox $(UTIL-LINUX_TARGET_BINARY)
-else
-util-linux: uclibc $(UTIL-LINUX_TARGET_BINARY)
+UTIL-LINUX_DEPENDENCIES = busybox $(UTIL-LINUX_DEPENDENCIES)
 endif
 
+util-linux: uclibc $(UTIL-LINUX_DEPENDENCIES) $(UTIL-LINUX_TARGET_BINARY)
 
 util-linux-source: $(DL_DIR)/$(UTIL-LINUX_SOURCE)
 

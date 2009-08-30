@@ -1,3 +1,9 @@
+2009.08, Not yet released:
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#529: util-linux doesn't find headers and include libs correctly
+
 2009.08-rc3, Released August 26th, 2009:
 
 	Additional fixes and cleanups.
