@@ -3,6 +3,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#529: util-linux doesn't find headers and include libs correctly
+	#557: Build ctorrent with SSL support if available
 
 2009.08-rc3, Released August 26th, 2009:
 
