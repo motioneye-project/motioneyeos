@@ -72,7 +72,7 @@ $(UTIL-LINUX_TARGET_BINARY): $(UTIL-LINUX_BINARY)
 #If both util-linux and busybox are selected, make certain util-linux
 #wins the fight over who gets to have their utils actually installed
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-UTIL-LINUX_DEPENDENCIES = busybox $(UTIL-LINUX_DEPENDENCIES)
+UTIL-LINUX_DEPENDENCIES := busybox $(UTIL-LINUX_DEPENDENCIES)
 endif
 
 util-linux: uclibc $(UTIL-LINUX_DEPENDENCIES) $(UTIL-LINUX_TARGET_BINARY)
