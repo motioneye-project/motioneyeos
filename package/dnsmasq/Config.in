@@ -13,3 +13,10 @@ config BR2_PACKAGE_DNSMASQ_TFTP
 	help
 	  Enable TFTP support in dnsmasq.
 
+config BR2_PACKAGE_DNSMASQ_DHCP
+	bool "dhcp support"
+	default y
+	depends on BR2_PACKAGE_DNSMASQ
+	help
+	  Enable DHCP server support in dnsmasq.
+
