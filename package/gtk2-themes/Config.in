@@ -2,7 +2,6 @@ menu "GTK Themes"
 depends on BR2_PACKAGE_LIBGTK2
 
 config BR2_PACKAGE_GTK2_THEME_HICOLOR
-	bool "hicolor (defaut theme)"
-	depends on BR2_PACKAGE_LIBGTK2
+	bool "hicolor (default theme)"
 
 endmenu
