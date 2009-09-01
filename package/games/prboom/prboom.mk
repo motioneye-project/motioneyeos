@@ -5,7 +5,7 @@
 #############################################################
 PRBOOM_VERSION:=2.4.7
 
-PRBOOM_DEPENDENCIES = sdl sdl_net sdl_mixer
+PRBOOM_DEPENDENCIES = sdl SDL_net sdl_mixer
 
 $(eval $(call AUTOTARGETS,package/games,prboom))
 
