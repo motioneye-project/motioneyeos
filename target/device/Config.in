@@ -4,7 +4,6 @@ source "project/Config.in"
 
 comment "Preset Devices"
 
-source "target/device/AMD/Config.in"
 source "target/device/ARMLTD/Config.in"
 source "target/device/Atmel/Config.in"
 source "target/device/KwikByte/Config.in"
