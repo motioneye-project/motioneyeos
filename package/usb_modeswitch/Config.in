@@ -1,0 +1,8 @@
+config BR2_PACKAGE_USB_MODESWITCH
+	bool "usb_modeswitch"
+	select BR2_PACKAGE_LIBUSB
+	help
+	  USB mode switcher.
+	  Used to switch mode on multiple-function devices
+
+	  http://www.draisberghof.de/usb_modeswitch/

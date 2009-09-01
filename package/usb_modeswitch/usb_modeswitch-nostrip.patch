@@ -1,0 +1,11 @@
+diff -Nura usb_modeswitch-1.0.1/Makefile usb_modeswitch-1.0.1.nostrip/Makefile
+--- usb_modeswitch-1.0.1/Makefile	2009-04-15 16:15:17.000000000 -0300
++++ usb_modeswitch-1.0.1.nostrip/Makefile	2009-06-10 10:02:05.000000000 -0300
+@@ -13,7 +13,6 @@
+ all:        $(PROG)
+ $(PROG):    $(OBJS)
+ 	      $(CC) $(CCFLAGS) -o $(PROG) $(OBJS)
+-	      $(STRIP) $(PROG)
+ 
+ clean:
+ 	      $(RM) ./usb_modeswitch

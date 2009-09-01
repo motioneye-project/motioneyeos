@@ -270,6 +270,7 @@ if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 # mdev
 source "package/udev/Config.in"
 endif
+source "package/usb_modeswitch/Config.in"
 source "package/usbmount/Config.in"
 source "package/usbutils/Config.in"
 source "package/wipe/Config.in"
