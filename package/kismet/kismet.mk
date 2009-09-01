@@ -3,83 +3,46 @@
 # kismet
 #
 #############################################################
-KISMET_VERSION:=2007-10-R1
-KISMET_SOURCE:=kismet-$(KISMET_VERSION).tar.gz
-KISMET_SITE:=http://www.kismetwireless.net/code/
-KISMET_DIR:=$(BUILD_DIR)/kismet-$(KISMET_VERSION)
-KISMET_CAT:=$(ZCAT)
-KISMET_BINARY:=kismet
-KISMET_TARGET_DIRECTORY=usr/bin/
 
-$(DL_DIR)/$(KISMET_SOURCE):
-	$(call DOWNLOAD,$(KISMET_SITE),$(KISMET_SOURCE))
+KISMET_VERSION = 2009-06-R1
+KISMET_SOURCE = kismet-$(KISMET_VERSION).tar.gz
+KISMET_SITE = http://www.kismetwireless.net/code
+KISMET_DEPENDENCIES = libpcap ncurses
 
-kismet-source: $(DL_DIR)/$(KISMET_SOURCE)
-
-$(KISMET_DIR)/.patched: $(DL_DIR)/$(KISMET_SOURCE)
-	$(KISMET_CAT) $(DL_DIR)/$(KISMET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(KISMET_DIR) package/kismet/ kismet\*.patch
-	touch $@
-
-$(KISMET_DIR)/.configured: $(KISMET_DIR)/.patched
-	(cd $(KISMET_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		DBUS_CFLAGS="-I$(STAGING_DIR)/usr/include/dbus-1.0 -I$(STAGING_DIR)/usr/lib/dbus-1.0/include" \
-		DBUS_LIBS="$(STAGING_DIR)/usr/lib/libdbus-1.so" \
-		DBUS_GLIB_CFLAGS="-I$(STAGING_DIR)/usr/include/glib-2.0 -I$(STAGING_DIR)/usr/lib/glib-2.0/include" \
-		DBUS_GLIB_LIBS="$(STAGING_DIR)/lib/libglib-2.0.so $(STAGING_DIR)/lib/libgobject-2.0.so $(STAGING_DIR)/lib/libgmodule-2.0.so $(STAGING_DIR)/lib/libgthread-2.0.so" \
-		./configure \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--libdir=/lib \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		$(DISABLE_NLS) \
-		$(DISABLE_LARGEFILE) \
-	)
-	touch $@
-
-$(KISMET_DIR)/$(KISMET_BINARY): $(KISMET_DIR)/.configured
-	$(MAKE) CXX="$(TARGET_CXX)" CC="$(TARGET_CC)" \
-		-C $(KISMET_DIR)
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet_client
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet_drone
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(KISMET_DIR)/kismet_server
-
-$(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/$(KISMET_BINARY): $(KISMET_DIR)/$(KISMET_BINARY)
-	install -m 755 $(KISMET_DIR)/kismet $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet
-	install -m 755 $(KISMET_DIR)/kismet_client $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_client
-	install -m 755 $(KISMET_DIR)/kismet_drone $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_drone
-	install -m 755 $(KISMET_DIR)/kismet_server $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_server
-	install -m 755 $(KISMET_DIR)/conf/kismet.conf $(TARGET_DIR)/etc/kismet.conf
-
-kismet: ncurses libpcap dbus $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/$(KISMET_BINARY)
-
-kismet-unpacked: $(KISMET_DIR)/.patched
-
-kismet-clean:
-	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet
-	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_client
-	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_drone
-	rm -f $(TARGET_DIR)/$(KISMET_TARGET_DIRECTORY)/kismet_server
-	rm -f $(KISMET_DIR)/conf/kismet.conf $(TARGET_DIR)/etc/kismet.conf
-	-$(MAKE) -C $(KISMET_DIR) clean
-
-kismet-dirclean:
-	rm -rf $(KISMET_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_KISMET),y)
-TARGETS+=kismet
+ifeq ($(BR2_PACKAGE_LIBNL),y)
+	KISMET_DEPENDENCIES += libnl
 endif
+ifeq ($(BR2_PACKAGE_PCRE),y)
+	KISMET_DEPENDENCIES += pcre
+endif
+
+ifeq ($(BR2_PACKAGE_KISMET_CLIENT),y)
+	KISMET_TARGET_BINARIES += kismet_client
+endif
+
+ifeq ($(BR2_PACKAGE_KISMET_SERVER),y)
+	KISMET_TARGET_BINARIES += kismet_server
+	KISMET_TARGET_CONFIGS += kismet.conf
+endif
+
+ifeq ($(BR2_PACKAGE_KISMET_DRONE),y)
+	KISMET_TARGET_BINARIES += kismet_drone
+	KISMET_TARGET_CONFIGS += kismet_drone.conf
+endif
+
+$(eval $(call AUTOTARGETS,package,kismet))
+
+$(KISMET_TARGET_INSTALL_TARGET):
+	$(call MESSAGE,"Installing")
+	$(INSTALL) -m 755 $(addprefix $(KISMET_DIR)/, $(KISMET_TARGET_BINARIES)) $(TARGET_DIR)/usr/bin
+	$(INSTALL) -m 644 $(addprefix $(KISMET_DIR)/conf/, $(KISMET_TARGET_CONFIGS)) $(TARGET_DIR)/etc
+ifeq ($(BR2_ENABLE_DEBUG),)
+	$(STRIPCMD) $(STRIP_STRIP_ALL) $(addprefix $(TARGET_DIR)/usr/bin/, $(KISMET_TARGET_BINARIES))
+endif
+	touch $@
+
+$(KISMET_TARGET_UNINSTALL):
+	$(call MESSAGE,"Uninstalling")
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, $(KISMET_TARGET_BINARIES))
+	rm -f $(addprefix $(TARGET_DIR)/etc/, $(KISMET_TARGET_CONFIGS))
+	rm -f $(KISMET_TARGET_INSTALL_TARGET) $(KISMET_HOOK_POST_INSTALL)

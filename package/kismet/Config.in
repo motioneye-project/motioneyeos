@@ -1,12 +1,15 @@
-comment "kismet has no inherent support for AVR32" 
+comment "Kismet has no inherent support for AVR32"
 	depends on BR2_avr32 && BR2_PACKAGE_KISMET
+
+comment "Kismet requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_KISMET
 	bool "kismet"
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_TARGET_PANEL
 	select BR2_PACKAGE_LIBPCAP
-	select BR2_PACKAGE_DBUS
-	select BR2_PACKAGE_DBUS_GLIB
 	help
 	  Kismet - 802.11 layer2 wireless network detector, sniffer,
 	  and intrusion detection system.
@@ -21,3 +24,17 @@ config BR2_PACKAGE_KISMET
 	  of nonbeaconing networks via data traffic.
 
 	  http://www.kismetwireless.net
+
+config BR2_PACKAGE_KISMET_CLIENT
+	bool "Install client"
+	depends on BR2_PACKAGE_KISMET
+
+config BR2_PACKAGE_KISMET_DRONE
+	bool "Install drone"
+	depends on BR2_PACKAGE_KISMET
+
+config BR2_PACKAGE_KISMET_SERVER
+	bool "Install server"
+	default y
+	depends on BR2_PACKAGE_KISMET
+
