@@ -1,0 +1,12 @@
+diff -urpN busybox-1.15.0/archival/libunarchive/data_extract_all.c busybox-1.15.0-unpack/archival/libunarchive/data_extract_all.c
+--- busybox-1.15.0/archival/libunarchive/data_extract_all.c	2009-08-21 00:26:13.000000000 +0200
++++ busybox-1.15.0-unpack/archival/libunarchive/data_extract_all.c	2009-08-30 01:05:39.000000000 +0200
+@@ -132,7 +132,7 @@ void FAST_FUNC data_extract_all(archive_
+ #endif
+ 			lchown(file_header->name, file_header->uid, file_header->gid);
+ 	}
+-	if (S_ISLNK(file_header->mode)) {
++	if (!S_ISLNK(file_header->mode)) {
+ 		/* uclibc has no lchmod, glibc is even stranger -
+ 		 * it has lchmod which seems to do nothing!
+ 		 * so we use chmod... */
