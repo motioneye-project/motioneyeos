@@ -62,7 +62,7 @@ $(TARGET_DIR)/usr/lib/libosipparser2.so: $(STAGING_DIR)/usr/lib/libosip2.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libosipparser2.so* $(TARGET_DIR)/usr/lib/
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libosipparser2.so*
 
-libosip2: uclibc $(TARGET_DIR)/usr/lib/libosip2.so $(TARGET_DIR)/usr/lib/libosipparser2.so
+libosip2: $(TARGET_DIR)/usr/lib/libosip2.so $(TARGET_DIR)/usr/lib/libosipparser2.so
 
 libosip2-source: $(DL_DIR)/$(LIBOSIP2_SOURCE)
 

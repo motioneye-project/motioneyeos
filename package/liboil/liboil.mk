@@ -36,7 +36,7 @@ ifeq ($(BR2_VFP_FLOAT),y)
 LIBOIL_CONF_OPT+=--enable-vfp
 endif
 
-LIBOIL_DEPENDENCIES = uclibc $(LIBOIL_GLIB_DEP)
+LIBOIL_DEPENDENCIES = $(LIBOIL_GLIB_DEP)
 
 $(eval $(call AUTOTARGETS,package,liboil))
 

@@ -79,7 +79,7 @@ $(TARGET_DIR)/usr/lib/libjpeg.so: $(STAGING_DIR)/usr/lib/libjpeg.a
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libjpeg.so*
 	touch -c $@
 
-jpeg: uclibc $(TARGET_DIR)/usr/lib/libjpeg.so
+jpeg: $(TARGET_DIR)/usr/lib/libjpeg.so
 
 jpeg-clean:
 	-$(MAKE) -C $(JPEG_DIR) clean

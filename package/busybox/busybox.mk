@@ -124,7 +124,7 @@ endif
 	# Just in case
 	-chmod a+x $(TARGET_DIR)/usr/share/udhcpc/default.script
 
-busybox: uclibc $(TARGET_DIR)/bin/busybox
+busybox: $(TARGET_DIR)/bin/busybox
 
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE)
 

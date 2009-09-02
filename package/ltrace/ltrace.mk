@@ -65,7 +65,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 endif
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-ltrace: uclibc libelf $(TARGET_DIR)/$(LTRACE_TARGET_BINARY)
+ltrace: libelf $(TARGET_DIR)/$(LTRACE_TARGET_BINARY)
 
 ltrace-source: $(DL_DIR)/$(LTRACE_SOURCE) $(LTRACE_PATCH_FILE)
 

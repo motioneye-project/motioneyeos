@@ -12,7 +12,7 @@ SHARED_MIME_INFO_INSTALL_TARGET = NO
 
 SHARED_MIME_INFO_AUTORECONF = NO
 SHARED_MIME_INFO_CONF_ENV = XMLLINT=$(HOST_DIR)/usr/bin/xmllint
-SHARED_MIME_INFO_DEPENDENCIES = uclibc host-pkgconfig host-libglib2 host-libxml2
+SHARED_MIME_INFO_DEPENDENCIES = host-pkgconfig host-libglib2 host-libxml2
 
 SHARED_MIME_INFO_CONF_OPT = --disable-update-mimedb
 

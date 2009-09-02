@@ -47,7 +47,7 @@ $(TARGET_DIR)/usr/lib/libtcl8.4.so: $(TCL_DIR)/unix/libtcl8.4.so
 	rm -f $(TARGET_DIR)/usr/bin/tclsh8.4; \
 	fi
 
-tcl: uclibc $(TARGET_DIR)/usr/lib/libtcl8.4.so
+tcl: $(TARGET_DIR)/usr/lib/libtcl8.4.so
 
 tcl-source: $(DL_DIR)/$(TCL_SOURCE)
 

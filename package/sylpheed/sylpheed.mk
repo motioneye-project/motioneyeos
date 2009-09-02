@@ -13,7 +13,7 @@ SYLPHEED_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 SYLPHEED_CONF_OPT = --disable-gtkspell --program-prefix=""
 
-SYLPHEED_DEPENDENCIES = uclibc host-pkgconfig
+SYLPHEED_DEPENDENCIES = host-pkgconfig
 
 $(eval $(call AUTOTARGETS,package,sylpheed))
 

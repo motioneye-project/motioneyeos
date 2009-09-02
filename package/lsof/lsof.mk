@@ -51,7 +51,7 @@ $(TARGET_DIR)/$(LSOF_TARGET_BINARY): $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/$(LSOF
 	cp $(LSOF_DIR)/lsof_$(LSOF_VERSION)_src/$(LSOF_BINARY) $@
 	$(STRIPCMD) $@
 
-lsof: uclibc $(TARGET_DIR)/$(LSOF_TARGET_BINARY)
+lsof: $(TARGET_DIR)/$(LSOF_TARGET_BINARY)
 
 lsof-clean:
 	-rm -f $(TARGET_DIR)/$(LSOF_TARGET_BINARY)

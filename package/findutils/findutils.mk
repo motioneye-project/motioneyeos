@@ -71,7 +71,7 @@ endif
 	rm -rf $(TARGET_DIR)/share/locale
 	rm -rf $(TARGET_DIR)/usr/share/doc
 
-findutils: uclibc findutils-target_binary
+findutils: findutils-target_binary
 
 findutils-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FINDUTILS_DIR) uninstall

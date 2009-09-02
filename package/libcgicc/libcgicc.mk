@@ -47,7 +47,7 @@ $(STAGING_DIR)/usr/lib/libcgicc.so: $(LIBCGICC_DIR)/.compiled
 $(TARGET_DIR)/usr/lib/libcgicc.so: $(STAGING_DIR)/usr/lib/libcgicc.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libcgicc.so* $(TARGET_DIR)/usr/lib/
 
-libcgicc: uclibc $(TARGET_DIR)/usr/lib/libcgicc.so
+libcgicc: $(TARGET_DIR)/usr/lib/libcgicc.so
 
 libcgicc-unpacked: $(LIBCGICC_DIR)/.unpacked
 

@@ -11,8 +11,6 @@ ifeq ($(BR2_ENABLE_DEBUG),y) # install-exec doesn't install aclocal stuff
 LIBTOOL_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 endif
 
-LIBTOOL_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,libtool))
 
 # libtool for the host

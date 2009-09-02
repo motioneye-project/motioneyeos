@@ -17,6 +17,4 @@ TSLIB_CONF_OPT = \
 	--prefix=/usr	\
 	--sysconfdir=/etc
 
-TSLIB_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,tslib))

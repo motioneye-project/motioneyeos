@@ -127,7 +127,7 @@ $(TARGET_DIR)/usr/bin/convert: $(IMAGEMAGICK_LIB)
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/convert
 	touch $@
 
-imagemagick: uclibc jpeg tiff $(IMAGEMAGICK_LIB) \
+imagemagick: jpeg tiff $(IMAGEMAGICK_LIB) \
 		$(IMAGEMAGICK_DIR)/.libinstall \
 		$(IMAGEMAGICK_TARGET_BINARIES)
 

@@ -28,7 +28,7 @@ $(STAGING_DIR)/usr/lib/libezxml.a: $(EZXML_DIR)/libezxml.a
 	cp $(EZXML_DIR)/ezxml.h $(STAGING_DIR)/usr/include
 	cp $(EZXML_DIR)/libezxml.a $(STAGING_DIR)/usr/lib
 
-ezxml: uclibc $(STAGING_DIR)/usr/lib/libezxml.a
+ezxml: $(STAGING_DIR)/usr/lib/libezxml.a
 
 ezxml-source: $(DL_DIR)/$(EZXML_SOURCE)
 

@@ -141,6 +141,6 @@ DIRECTFB_CONF_OPT = \
 	--disable-video4linux \
 	--disable-video4linux2
 
-DIRECTFB_DEPENDENCIES = uclibc $(DIRECTFB_DEP) freetype $(DIRECTFB_FUSION)
+DIRECTFB_DEPENDENCIES = $(DIRECTFB_DEP) freetype $(DIRECTFB_FUSION)
 
 $(eval $(call AUTOTARGETS,package,directfb))

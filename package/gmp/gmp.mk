@@ -61,8 +61,8 @@ ifeq ($(BR2_PACKAGE_LIBGMP_HEADERS),y)
 	cp -dpf $(STAGING_DIR)/usr/include/gmp.h $(TARGET_DIR)/usr/include/
 endif
 
-libgmp: uclibc $(TARGET_DIR)/usr/lib/libgmp$(LIBTGTEXT)
-stage-libgmp: uclibc $(STAGING_DIR)/usr/lib/$(GMP_BINARY)
+libgmp: $(TARGET_DIR)/usr/lib/libgmp$(LIBTGTEXT)
+stage-libgmp: $(STAGING_DIR)/usr/lib/$(GMP_BINARY)
 
 libgmp-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libgmp.* $(TARGET_DIR)/usr/include/gmp.h \

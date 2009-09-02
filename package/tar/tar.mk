@@ -65,7 +65,7 @@ tar-target_binary: $(GNUTAR_DIR)/$(GNUTAR_BINARY)
 			$(TARGET_DIR)/$(GNUTAR_TARGET_BINARY); \
 	fi
 
-tar: uclibc tar-target_binary
+tar: tar-target_binary
 
 tar-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GNUTAR_DIR) uninstall

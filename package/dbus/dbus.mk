@@ -17,7 +17,7 @@ else
 DBUS_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-strip STRIPPROG="$(STRIPCMD)"
 endif
 
-DBUS_DEPENDENCIES = uclibc host-pkgconfig
+DBUS_DEPENDENCIES = host-pkgconfig
 
 DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
 DBUS_CONF_OPT = --program-prefix="" \

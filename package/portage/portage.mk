@@ -131,8 +131,8 @@ $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY): $(PORTAGE_DIR)/.compiled
 $(TARGET_DIR)/$(SANDBOX_TARGET_BINARY): $(SANDBOX_DIR)/.compiled
 	touch $(TARGET_DIR)/$(SANDBOX_TARGET_BINARY)
 
-sandbox: uclibc $(TARGET_DIR)/$(SANDBOX_TARGET_BINARY)
-portage: sandbox python uclibc $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY)
+sandbox: $(TARGET_DIR)/$(SANDBOX_TARGET_BINARY)
+portage: sandbox python $(TARGET_DIR)/$(PORTAGE_TARGET_BINARY)
 
 portage-clean:
 	(cd $(TARGET_DIR)/etc; \

@@ -14,8 +14,6 @@ ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
 PCRE_CONF_OPT = --disable-cpp
 endif
 
-PCRE_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,pcre))
 
 $(PCRE_HOOK_POST_INSTALL): $(PCRE_TARGET_INSTALL_TARGET)

@@ -38,7 +38,7 @@ $(FBV_DIR)/$(FBV_BINARY): $(FBV_DIR)/.configured
 $(TARGET_DIR)/$(FBV_TARGET_BINARY): $(FBV_DIR)/$(FBV_BINARY)
 	install -D $(FBV_DIR)/$(FBV_BINARY) $(TARGET_DIR)/$(FBV_TARGET_BINARY)
 
-fbv: uclibc libpng jpeg libungif $(TARGET_DIR)/$(FBV_TARGET_BINARY)
+fbv: libpng jpeg libungif $(TARGET_DIR)/$(FBV_TARGET_BINARY)
 
 fbv-clean:
 	rm -f $(TARGET_DIR)/$(FBV_TARGET_BINARY)

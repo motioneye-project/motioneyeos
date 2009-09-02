@@ -44,7 +44,7 @@ $(AUMIX_DIR)/src/aumix: $(AUMIX_DIR)/.configured
 $(TARGET_DIR)/usr/bin/aumix: $(AUMIX_DIR)/src/aumix
 	$(MAKE) -C $(AUMIX_DIR) DESTDIR=$(TARGET_DIR) install
 
-aumix: uclibc ncurses $(TARGET_DIR)/usr/bin/aumix
+aumix: ncurses $(TARGET_DIR)/usr/bin/aumix
 
 aumix-source: $(DL_DIR)/$(AUMIX_SOURCE)
 

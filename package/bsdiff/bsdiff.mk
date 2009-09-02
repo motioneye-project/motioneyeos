@@ -33,7 +33,7 @@ $(TARGET_DIR)/$(BSDIFF_TARGET_BINARY): $(BSDIFF_DIR)/$(BSDIFF_BINARY)
 	cp -dpf $(BSDIFF_DIR)/bsdiff $(TARGET_DIR)/usr/bin/.
 	cp -dpf $(BSDIFF_DIR)/bspatch $(TARGET_DIR)/usr/bin/.
 
-bsdiff: uclibc bzip2 $(TARGET_DIR)/$(BSDIFF_TARGET_BINARY)
+bsdiff: bzip2 $(TARGET_DIR)/$(BSDIFF_TARGET_BINARY)
 
 bsdiff-source: $(DL_DIR)/$(BSDIFF_SOURCE)
 

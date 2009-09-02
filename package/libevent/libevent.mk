@@ -51,7 +51,7 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -fr $(TARGET_DIR)/usr/share/man
 endif
 
-libevent: uclibc $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY)
+libevent: $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY)
 
 libevent-clean:
 	rm -f $(TARGET_DIR)/$(LIBEVENT_TARGET_BINARY)*

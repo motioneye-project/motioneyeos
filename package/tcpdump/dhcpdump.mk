@@ -44,7 +44,7 @@ $(DHCPDUMP_DIR)/dhcpdump: $(DHCPDUMP_DIR)/.configured
 $(TARGET_DIR)/usr/sbin/dhcpdump: $(DHCPDUMP_DIR)/dhcpdump
 	cp -af $< $@
 
-dhcpdump: uclibc zlib libpcap $(TARGET_DIR)/usr/sbin/dhcpdump
+dhcpdump: zlib libpcap $(TARGET_DIR)/usr/sbin/dhcpdump
 
 dhcpdump-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/dhcpdump

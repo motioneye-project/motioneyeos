@@ -57,7 +57,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 endif
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-pptp-linux: uclibc $(TARGET_DIR)/$(PPTP_LINUX_TARGET_BINARY)
+pptp-linux: $(TARGET_DIR)/$(PPTP_LINUX_TARGET_BINARY)
 
 pptp-linux-source: $(DL_DIR)/$(PPTP_LINUX_SOURCE) $(PPTP_LINUX_PATCH_FILE)
 

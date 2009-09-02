@@ -10,7 +10,6 @@ SQLITE_SITE = http://www.sqlite.org
 SQLITE_INSTALL_STAGING = YES
 SQLITE_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 SQLITE_LIBTOOL_PATCH = NO
-SQLITE_DEPENDENCIES = uclibc
 
 SQLITE_CONF_OPT =	--enable-shared \
 			--enable-static \

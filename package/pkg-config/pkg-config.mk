@@ -11,7 +11,7 @@ ifeq ($(BR2_ENABLE_DEBUG),y) # install-exec doesn't install aclocal stuff
 PKG_CONFIG_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 endif
 
-PKG_CONFIG_DEPENDENCIES = uclibc libglib2
+PKG_CONFIG_DEPENDENCIES = libglib2
 
 PKG_CONFIG_CONF_OPT = --with-installed-glib
 

@@ -9,8 +9,6 @@ TAGLIB_SITE = http://developer.kde.org/~wheeler/files/src
 TAGLIB_LIBTOOL_PATCH = NO
 TAGLIB_INSTALL_STAGING = YES
 
-TAGLIB_DEPENDENCIES = uclibc
-
 TAGLIB_CONF_ENV = \
 	DO_NOT_COMPILE='bindings tests examples' \
 	ac_cv_header_cppunit_extensions_HelperMacros_h=no \

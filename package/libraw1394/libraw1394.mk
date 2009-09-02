@@ -49,7 +49,7 @@ $(STAGING_DIR)/usr/lib/libraw1394.so: $(LIBRAW1394_DIR)/.compiled
 $(TARGET_DIR)/usr/lib/libraw1394.so: $(STAGING_DIR)/usr/lib/libraw1394.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libraw1394.so* $(TARGET_DIR)/usr/lib/
 
-libraw1394: uclibc $(TARGET_DIR)/usr/lib/libraw1394.so
+libraw1394: $(TARGET_DIR)/usr/lib/libraw1394.so
 
 libraw1394-source: $(DL_DIR)/$(LIBRAW1394_SOURCE)
 

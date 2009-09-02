@@ -57,7 +57,7 @@ $(TARGET_DIR)/$(THTTPD_TARGET_BINARY): $(THTTPD_DIR)/$(THTTPD_BINARY)
 	echo "pidfile=/var/run/thttpd.pid" >> $(TARGET_DIR)$(THTTPD_WEB_DIR)/thttpd_config
 	echo "<HTML><BODY>thttpd test page</BODY></HTML>" > $(TARGET_DIR)$(THTTPD_WEB_DIR)/data/index.html
 
-thttpd: uclibc $(TARGET_DIR)/$(THTTPD_TARGET_BINARY)
+thttpd: $(TARGET_DIR)/$(THTTPD_TARGET_BINARY)
 
 thttpd-clean:
 	rm -f $(TARGET_DIR)/$(THTTPD_TARGET_BINARY)

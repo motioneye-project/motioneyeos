@@ -25,7 +25,7 @@ ifeq ($(BR2_PACKAGE_XORG7),y)
 					CXXFLAGS="-I$(STAGING_DIR)/usr/include/freetype2"
 endif
 
-XPDF_DEPENDENCIES = uclibc freetype
+XPDF_DEPENDENCIES = freetype
 
 $(eval $(call AUTOTARGETS,package,xpdf))
 

@@ -48,7 +48,7 @@ $(HOST_DIR)/usr/bin/fakeroot: $(FAKEROOT_DIR1)/faked
 	$(MAKE) -C $(FAKEROOT_DIR1) install
 	touch -c $@
 
-host-fakeroot: uclibc $(HOST_DIR)/usr/bin/fakeroot
+host-fakeroot: $(HOST_DIR)/usr/bin/fakeroot
 
 host-fakeroot-clean:
 	-$(MAKE) -C $(FAKEROOT_DIR1) clean
@@ -106,7 +106,7 @@ endif
 	rm -rf $(TARGET_DIR)/usr/share/doc
 	touch -c $@
 
-fakeroot: uclibc $(TARGET_DIR)/usr/bin/fakeroot
+fakeroot: $(TARGET_DIR)/usr/bin/fakeroot
 
 fakeroot-clean:
 	-$(MAKE) -C $(FAKEROOT_DIR2) clean

@@ -61,7 +61,7 @@ endif
 	rm -f $(TARGET_DIR)/usr/sbin/astgenkey
 	touch -c $@
 
-asterisk: uclibc ncurses zlib openssl mpg123 $(TARGET_DIR)/$(ASTERISK_TARGET_BINARY)
+asterisk: ncurses zlib openssl mpg123 $(TARGET_DIR)/$(ASTERISK_TARGET_BINARY)
 
 asterisk-source: $(DL_DIR)/$(ASTERISK_SOURCE)
 

@@ -60,7 +60,7 @@ endif
 	rm -f $(TARGET_DIR)/sbin/insmod.static
 	touch -c $(MODULE_INIT_TOOLS_TARGET_BINARY)
 
-module-init-tools: uclibc $(MODULE_INIT_TOOLS_TARGET_BINARY)
+module-init-tools: $(MODULE_INIT_TOOLS_TARGET_BINARY)
 
 module-init-tools-clean:
 	$(MAKE) prefix=$(TARGET_DIR)/usr -C $(MODULE_INIT_TOOLS_DIR) uninstall

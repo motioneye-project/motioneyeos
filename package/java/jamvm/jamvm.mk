@@ -49,7 +49,7 @@ JAMVM_CONF_OPT = \
 		--disable-debug --with-classpath-install-dir=/usr
 
 
-JAMVM_DEPENDENCIES = uclibc host-pkgconfig classpath
+JAMVM_DEPENDENCIES = host-pkgconfig classpath
 
 #Include X libraries when we have an X server
 ifeq ($(BR2_PACKAGE_XORG7),y)

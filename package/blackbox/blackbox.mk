@@ -14,6 +14,6 @@ BLACKBOX_INSTALL_TARGET:=YES
 BLACKBOX_CONF_OPT:=--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib
 
-BLACKBOX_DEPENDENCIES:=uclibc xserver_xorg-server
+BLACKBOX_DEPENDENCIES:=xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,blackbox))

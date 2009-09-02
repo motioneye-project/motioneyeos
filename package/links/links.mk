@@ -54,7 +54,7 @@ links-clean:
 links-dirclean:
 	rm -rf $(LINKS_DIR)
 
-links: uclibc $(TARGET_DIR)/usr/bin/links
+links: $(TARGET_DIR)/usr/bin/links
 
 #############################################################
 #

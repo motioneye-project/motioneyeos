@@ -10,10 +10,6 @@ LINUX_FUSION_AUTORECONF = NO
 LINUX_FUSION_INSTALL_STAGING = YES
 LINUX_FUSION_INSTALL_TARGET = YES
 
-LINUX_FUSION_CONF_OPT = 
-
-LINUX_FUSION_DEPENDENCIES = uclibc
-
 # BR2_LINUX26_VERSION is not really dependable
 # LINUX26_VERSION is not yet set.
 # Retrieve REAL kernel version from file.
@@ -62,7 +58,7 @@ linux-fusion-source: $(DL_DIR)/$(LINUX_FUSION_SOURCE)
 
 linux-fusion-unpacked: $(LINUX_FUSION_DIR)/.unpacked
 
-linux-fusion: uclibc linux26 $(LINUX_FUSION_DIR)/.install
+linux-fusion: linux26 $(LINUX_FUSION_DIR)/.install
 
 linux-fusion-clean:
 	-$(MAKE) -C $(LINUX_FUSION_DIR) clean

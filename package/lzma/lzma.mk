@@ -115,7 +115,7 @@ $(TARGET_DIR)/$(LZMA_TARGET_BINARY): $(LZMA_TARGET_DIR)/src/lzma/lzma
 
 #lzma-headers: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
 
-lzma-target: uclibc $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
+lzma-target: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
 
 lzma-source: $(DL_DIR)/$(LZMA_SOURCE)
 

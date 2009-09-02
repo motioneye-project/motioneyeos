@@ -28,9 +28,9 @@ $(TARGET_DIR)/usr/bin/gadgetfs-test: $(GADGETFS_TEST_DIR)/gadgetfs-test
 	$(MAKE) -C $(GADGETFS_TEST_DIR) DESTDIR=$(TARGET_DIR) prefix=/usr install
 
 ifeq ($(BR2_PACKAGE_GADGETFS_TEST_USE_AIO),y)
-gadgetfs-test: uclibc libaio $(TARGET_DIR)/usr/bin/gadgetfs-test
+gadgetfs-test: libaio $(TARGET_DIR)/usr/bin/gadgetfs-test
 else
-gadgetfs-test: uclibc $(TARGET_DIR)/usr/bin/gadgetfs-test
+gadgetfs-test: $(TARGET_DIR)/usr/bin/gadgetfs-test
 endif
 
 gadgetfs-test-source: $(DL_DIR)/$(GADGETFS_TEST_SOURCE)

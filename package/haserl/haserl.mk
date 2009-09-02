@@ -20,8 +20,6 @@ HASERL_CONF_ENV = ac_cv_path_install=./install-sh
 # the above doesn't interact nicely with a shared cache, so disable for now
 HASERL_USE_CONFIG_CACHE = NO
 
-HASERL_DEPENDENCIES:=uclibc
-
 $(eval $(call AUTOTARGETS,package,haserl))
 
 # haserl 0.8.0 installs unneeded examples to /usr/share/haserl - remove them

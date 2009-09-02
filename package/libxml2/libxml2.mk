@@ -18,8 +18,6 @@ LIBXML2_CONF_OPT = --with-gnu-ld --enable-shared \
 		--without-debugging --without-python \
 		--without-threads 
 
-LIBXML2_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,libxml2))
 
 $(LIBXML2_HOOK_POST_INSTALL):

@@ -42,7 +42,7 @@ $(TN5250_DIR)/src/tn5250: $(TN5250_DIR)/.configured
 $(TARGET_DIR)/usr/bin/tn5250: $(TN5250_DIR)/src/tn5250
 	install -c $(TN5250_DIR)/src/tn5250 $(TARGET_DIR)/usr/bin/tn5250
 
-tn5250: uclibc slang $(TARGET_DIR)/usr/bin/tn5250
+tn5250: slang $(TARGET_DIR)/usr/bin/tn5250
 
 tn5250-source: $(DL_DIR)/$(TN5250_SOURCE)
 

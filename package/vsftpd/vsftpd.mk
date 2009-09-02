@@ -52,9 +52,9 @@ $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY): $(VSFTPD_DIR)/$(VSFTPD_BINARY)
 	$(INSTALL) -D -m 0755 package/vsftpd/vsftpd-init $(TARGET_DIR)/etc/init.d/S70vsftpd
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-vsftpd: uclibc openssl $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
+vsftpd: openssl $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
 else
-vsftpd: uclibc $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
+vsftpd: $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
 endif
 
 vsftpd-clean:

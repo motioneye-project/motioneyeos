@@ -21,7 +21,7 @@ FONTCONFIG_CONF_OPT = --with-arch=$(GNU_TARGET_NAME) \
 		--with-expat-includes=$(STAGING_DIR)/usr/include \
 		--disable-docs
 
-FONTCONFIG_DEPENDENCIES = uclibc freetype expat
+FONTCONFIG_DEPENDENCIES = freetype expat
 
 $(eval $(call AUTOTARGETS,package,fontconfig))
 

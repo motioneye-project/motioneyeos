@@ -103,7 +103,7 @@ endif
 	rm -f $(TARGET_DIR)/lib/libmagic.la
 	mv $(TARGET_DIR)/usr/include/magic.h $(STAGING_DIR)/usr/include
 
-file: zlib uclibc $(TARGET_DIR)/$(FILE_TARGET_BINARY)
+file: zlib $(TARGET_DIR)/$(FILE_TARGET_BINARY)
 
 file-clean:
 	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(FILE_DIR2) uninstall

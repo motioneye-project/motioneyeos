@@ -11,7 +11,5 @@ GNUCHESS_INSTALL_TARGET = YES
 
 GNUCHESS_CONF_ENV = ac_cv_func_realloc_0_nonnull=yes ac_cv_func_malloc_0_nonnull=yes
 
-GNUCHESS_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package/games,gnuchess))
 

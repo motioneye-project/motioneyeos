@@ -51,7 +51,7 @@ $(LTP_TESTSUITE_DIR)/.installed: $(LTP_TESTSUITE_DIR)/.compiled
 			> $(PROJECT_BUILD_DIR)/.fakeroot.ltp
 	touch $@
 
-ltp-testsuite: uclibc host-fakeroot $(LTP_TESTSUITE_DIR)/.installed
+ltp-testsuite: host-fakeroot $(LTP_TESTSUITE_DIR)/.installed
 
 ltp-testsuite-clean:
 	-$(MAKE) -C $(LTP_TESTSUITE_DIR) clean

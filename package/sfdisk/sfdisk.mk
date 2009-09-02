@@ -29,7 +29,7 @@ $(TARGET_DIR)/sbin/sfdisk: $(SFDISK_DIR)/sfdisk
 	cp $(SFDISK_DIR)/sfdisk $(TARGET_DIR)/sbin/sfdisk
 	touch -c $(TARGET_DIR)/sbin/sfdisk
 
-sfdisk: uclibc $(TARGET_DIR)/sbin/sfdisk
+sfdisk: $(TARGET_DIR)/sbin/sfdisk
 
 sfdisk-source: $(DL_DIR)/$(SFDISK_SOURCE)
 

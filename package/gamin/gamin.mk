@@ -24,7 +24,7 @@ ifneq ($(BR2_LARGEFILE),y)
 GAMIN_CONF_ENV += CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
 endif
 
-GAMIN_DEPENDENCIES = uclibc libglib2
+GAMIN_DEPENDENCIES = libglib2
 
 $(eval $(call AUTOTARGETS,package,gamin))
 

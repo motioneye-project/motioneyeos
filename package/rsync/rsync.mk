@@ -20,6 +20,4 @@ RSYNC_INSTALL_TARGET_OPT:=DESTDIR=$(TARGET_DIR) INSTALLCMD='./install-sh -c' \
 endif
 RSYNC_CONF_OPT:=--with-included-popt
 
-RSYNC_DEPENDENCIES:=uclibc
-
 $(eval $(call AUTOTARGETS,package,rsync))

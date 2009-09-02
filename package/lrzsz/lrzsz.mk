@@ -68,7 +68,7 @@ $(TARGET_DIR)/usr/bin/rz: $(LRZSZ_DIR)/src/lrz
 	cp $(LRZSZ_DIR)/src/lrz $(TARGET_DIR)/usr/bin/rz
 	cp $(LRZSZ_DIR)/src/lsz $(TARGET_DIR)/usr/bin/sz
 
-lrzsz: uclibc $(TARGET_DIR)/usr/bin/rz
+lrzsz: $(TARGET_DIR)/usr/bin/rz
 
 lrzsz-clean:
 	rm -f $(TARGET_DIR)/usr/bin/rz

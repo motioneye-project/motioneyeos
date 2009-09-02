@@ -64,7 +64,7 @@ $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY): $(PROFTPD_DIR)/$(PROFTPD_BINARY)
 	fi
 	$(INSTALL) -m 0755 package/proftpd/S50proftpd $(TARGET_DIR)/etc/init.d
 
-proftpd: uclibc $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)
+proftpd: $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)
 
 proftpd-clean:
 	rm -f $(TARGET_DIR)/$(PROFTPD_TARGET_BINARY)

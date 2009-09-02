@@ -47,7 +47,7 @@ $(TARGET_DIR)/$(OPENSWAN_TARGET_BINARY): $(OPENSWAN_DIR)/$(OPENSWAN_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-openswan: uclibc libgmp kernel-headers $(TARGET_DIR)/$(OPENSWAN_TARGET_BINARY)
+openswan: libgmp kernel-headers $(TARGET_DIR)/$(OPENSWAN_TARGET_BINARY)
 
 openswan-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(OPENSWAN_DIR) uninstall

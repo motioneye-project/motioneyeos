@@ -73,8 +73,8 @@ endif
 
 libmpfr-source: $(DL_DIR)/$(MPFR_SOURCE) $(MPFR_PATCH_SOURCE)
 
-libmpfr: uclibc $(TARGET_DIR)/usr/lib/libmpfr$(LIBTGTEXT)
-stage-libmpfr: uclibc $(STAGING_DIR)/usr/lib/$(MPFR_BINARY)
+libmpfr: $(TARGET_DIR)/usr/lib/libmpfr$(LIBTGTEXT)
+stage-libmpfr: $(STAGING_DIR)/usr/lib/$(MPFR_BINARY)
 
 libmpfr-clean:
 	rm -f $(TARGET_DIR)/usr/lib/libmpfr.* \

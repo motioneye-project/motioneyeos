@@ -7,7 +7,7 @@
 DROPBEAR_VERSION = 0.52
 DROPBEAR_SOURCE = dropbear-$(DROPBEAR_VERSION).tar.gz
 DROPBEAR_SITE = http://matt.ucc.asn.au/dropbear/releases
-DROPBEAR_DEPENDENCIES = uclibc zlib
+DROPBEAR_DEPENDENCIES = zlib
 DROPBEAR_TARGET_BINS = dbclient dropbearkey dropbearconvert scp ssh
 DROPBEAR_MAKE =	$(MAKE) MULTI=1 SCPPROGRESS=1 \
 		PROGRAMS="dropbear dbclient dropbearkey dropbearconvert scp"

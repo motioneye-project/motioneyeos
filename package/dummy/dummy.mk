@@ -65,7 +65,7 @@ $(TARGET_DIR)/$(DUMMY_TARGET_BINARY): $(DUMMY_DIR)/$(DUMMY_BINARY)
 # Main rule which shows which other packages must be installed before the dummy
 # package is installed. This to ensure that all depending libraries are
 # installed.
-dummy:	uclibc $(TARGET_DIR)/$(DUMMY_TARGET_BINARY)
+dummy: $(TARGET_DIR)/$(DUMMY_TARGET_BINARY)
 
 # Source download rule. Main purpose to download the source package. Since some
 # people would like to work offline, it is mandotory to implement a rule which

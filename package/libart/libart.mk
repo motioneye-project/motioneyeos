@@ -15,6 +15,4 @@ LIBART_CONF_OPT = --target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) --build=$(GNU_HOST_NAME) \
 		--prefix=/usr --sysconfdir=/etc
 
-LIBART_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,libart))

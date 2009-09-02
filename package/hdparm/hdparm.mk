@@ -34,7 +34,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 endif
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-hdparm: uclibc $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
+hdparm: $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
 
 hdparm-clean:
 	-$(MAKE) -C $(HDPARM_DIR) clean

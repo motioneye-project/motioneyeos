@@ -75,7 +75,7 @@ $(OPENMOTIF_DIR)/.done: $(OPENMOTIF_HOST_DIR)/.done
 	$(MAKE) -C $(OPENMOTIF_DIR) install DESTDIR=$(TARGET_DIR)
 	touch $(OPENMOTIF_DIR)/.done
 
-openmotif: uclibc $(OPENMOTIF_DIR)/.done
+openmotif: $(OPENMOTIF_DIR)/.done
 
 openmotif-clean:
 	rm -f $(TARGET_DIR)/bin/openmotif

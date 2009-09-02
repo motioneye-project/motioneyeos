@@ -40,7 +40,7 @@ lm-sensors-source: $(DL_DIR)/$(LM_SENSORS_SOURCE) $(LM_SENSORS_PATCH_FILE)
 
 lm-sensors-unpacked: $(LM_SENSORS_DIR)/.unpacked
 
-lm-sensors: uclibc $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY)
+lm-sensors: $(TARGET_DIR)/$(LM_SENSORS_TARGET_BINARY)
 
 lm-sensors-clean:
 	-$(MAKE) -C $(LM_SENSORS_DIR) clean

@@ -37,7 +37,7 @@ $(TARGET_DIR)/sbin/nbd-client: $(NBD_DIR)/nbd-client
 	cp $< $@
 	$(STRIPCMD) $@
 
-nbd: uclibc libglib2 $(TARGET_DIR)/sbin/nbd-client
+nbd: libglib2 $(TARGET_DIR)/sbin/nbd-client
 
 nbd-source: $(DL_DIR)/$(NBD_SOURCE)
 

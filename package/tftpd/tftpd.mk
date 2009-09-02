@@ -61,7 +61,7 @@ $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY): $(TFTP_HPA_DIR)/$(TFTP_HPA_BINARY)
 		$(INSTALL) -m 0755 package/tftpd/S80tftpd-hpa $(TARGET_DIR)/etc/init.d; \
 	fi
 
-tftpd: uclibc $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY)
+tftpd: $(TARGET_DIR)/$(TFTP_HPA_TARGET_BINARY)
 
 tftpd-clean:
 	rm -f $(TARGET_DIR)/etc/init.d/S80tftpd-hpa

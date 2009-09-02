@@ -89,7 +89,7 @@ endif
 	rm -rf $(TARGET_DIR)/usr/share/doc
 	(cd $(TARGET_DIR)/usr/bin; ln -snf flex lex)
 
-flex: uclibc $(TARGET_DIR)/$(FLEX_TARGET_BINARY)
+flex: $(TARGET_DIR)/$(FLEX_TARGET_BINARY)
 
 flex-clean:
 	$(MAKE) \

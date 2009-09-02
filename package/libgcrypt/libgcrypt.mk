@@ -62,7 +62,7 @@ ifneq ($(BR2_HAVE_INFOPAGES),y)
 	rm -rf $(STAGING_DIR)/usr/share/info
 endif
 
-libgcrypt: uclibc libgpg-error $(TARGET_DIR)/$(LIBGCRYPT_TARGET_LIBRARY)
+libgcrypt: libgpg-error $(TARGET_DIR)/$(LIBGCRYPT_TARGET_LIBRARY)
 
 libgcrypt-source: $(DL_DIR)/$(LIBGCRYPT_SOURCE)
 

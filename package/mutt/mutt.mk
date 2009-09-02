@@ -58,7 +58,7 @@ mutt-source: $(DL_DIR)/$(MUTT_SOURCE) $(DL_DIR)/$(MUTT_PATCH)
 
 mutt-unpacked: $(MUTT_DIR)/.unpacked
 
-mutt: uclibc ncurses $(TARGET_DIR)/$(MUTT_TARGET_BINARY)
+mutt: ncurses $(TARGET_DIR)/$(MUTT_TARGET_BINARY)
 
 mutt-clean:
 	-$(MAKE) -C $(MUTT_DIR) clean

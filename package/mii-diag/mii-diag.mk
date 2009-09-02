@@ -41,7 +41,7 @@ $(TARGET_DIR)/$(MIIDIAG_BINARY): $(MIIDIAG_DIR)/mii-diag
 	$(STRIPCMD) $@
 	touch $@
 
-mii-diag: uclibc $(TARGET_DIR)/$(MIIDIAG_BINARY)
+mii-diag: $(TARGET_DIR)/$(MIIDIAG_BINARY)
 
 mii-diag-source: $(DL_DIR)/$(MIIDIAG_SOURCE) $(MIIDIAG_PATCH)
 

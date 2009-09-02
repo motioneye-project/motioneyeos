@@ -43,7 +43,7 @@ PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 PANGO_CONF_OPT = --enable-shared --enable-static \
 		--enable-explicit-deps=no --disable-debug
 
-PANGO_DEPENDENCIES = uclibc gettext libintl host-pkgconfig libglib2 cairo
+PANGO_DEPENDENCIES = gettext libintl host-pkgconfig libglib2 cairo
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
         PANGO_CONF_OPT += --with-x \

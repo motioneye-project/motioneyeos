@@ -45,7 +45,7 @@ $(INPUT_TOOLS_TARGETS): $(TARGET_DIR)/usr/bin/%: $(INPUT_TOOLS_DIR)/utils/%
 	cp -dpf $^ $@
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-input-tools: uclibc $(INPUT_TOOLS_TARGETS)
+input-tools: $(INPUT_TOOLS_TARGETS)
 
 input-tools-source: $(DL_DIR)/$(INPUT_TOOLS_SOURCE) $(DL_DIR)/$(INPUT_TOOLS_PATCH)
 

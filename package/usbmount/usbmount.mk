@@ -28,7 +28,7 @@ $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY): $(USBMOUNT_DIR)/.unpacked
 	fi
 	touch -c $@
 
-usbmount: uclibc $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)
+usbmount: $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)
 
 usbmount-clean:
 	rm -f $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)

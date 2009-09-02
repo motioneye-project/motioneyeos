@@ -104,11 +104,11 @@ endif
 	#rm -rf $(TARGET_DIR)/usr/share/locale
 	#rm -rf $(TARGET_DIR)/usr/share/doc
 
-dhcp_server: uclibc $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY)
+dhcp_server: $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY)
 
-dhcp_relay: uclibc $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY)
+dhcp_relay: $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY)
 
-dhcp_client: uclibc $(TARGET_DIR)/$(DHCP_CLIENT_TARGET_BINARY)
+dhcp_client: $(TARGET_DIR)/$(DHCP_CLIENT_TARGET_BINARY)
 
 dhcp-clean:
 	-$(MAKE) -C $(DHCP_DIR) clean

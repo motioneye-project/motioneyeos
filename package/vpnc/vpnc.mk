@@ -42,7 +42,7 @@ $(VPNC_TARGET_BINARY): $(VPNC_BINARY)
 		-C $(VPNC_DIR) install
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(VPNC_TARGET_BINARY)
 
-vpnc: uclibc libgcrypt $(VPNC_TARGET_BINARY)
+vpnc: libgcrypt $(VPNC_TARGET_BINARY)
 
 vpnc-source: $(DL_DIR)/$(VPNC_SOURCE)
 

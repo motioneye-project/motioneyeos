@@ -55,7 +55,7 @@ $(TARGET_DIR)/usr/lib/libfuse.so: $(STAGING_DIR)/usr/lib/libfuse.so
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libfuse.so
 	touch -c $@
 
-libfuse: uclibc $(TARGET_DIR)/usr/lib/libfuse.so
+libfuse: $(TARGET_DIR)/usr/lib/libfuse.so
 
 libfuse-source: $(DL_DIR)/$(LIBFUSE_SOURCE)
 

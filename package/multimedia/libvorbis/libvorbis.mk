@@ -15,7 +15,7 @@ LIBVORBIS_INSTALL_TARGET = YES
 
 LIBVORBIS_CONF_OPT = --disable-oggtest
 
-LIBVORBIS_DEPENDENCIES = uclibc host-pkgconfig libogg
+LIBVORBIS_DEPENDENCIES = host-pkgconfig libogg
 
 $(eval $(call AUTOTARGETS,package/multimedia,libvorbis))
 
@@ -83,7 +83,7 @@ $(TARGET_DIR)/usr/lib/tremor.a: $(TARGET_DIR)/usr/lib/tremor.so
 	cp -dpf $(TREMOR_DIR)/lib/tremor.a $(TARGET_DIR)/usr/lib/
 	touch $@
 
-tremor libvorbis: uclibc host-pkgconfig host-autoconf host-automake libogg $(TARGET_DIR)/usr/lib/tremor.so
+tremor libvorbis: host-pkgconfig host-autoconf host-automake libogg $(TARGET_DIR)/usr/lib/tremor.so
 
 tremor-source libvorbis-source: $(DL_DIR)/$(TREMOR_SOURCE)
 

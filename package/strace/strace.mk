@@ -10,8 +10,6 @@ STRACE_AUTORECONF:=NO
 STRACE_INSTALL_STAGING:=NO
 STRACE_INSTALL_TARGET:=YES
 
-STRACE_DEPENDENCIES:=uclibc
-
 STRACE_CONF_ENV:= ac_cv_header_linux_if_packet_h=yes \
 		  ac_cv_header_linux_netlink_h=yes \
 	          $(if $(BR2_LARGEFILE),ac_cv_type_stat64=yes,ac_cv_type_stat64=no)

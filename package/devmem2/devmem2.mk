@@ -23,7 +23,7 @@ $(TARGET_DIR)/sbin/$(DEVMEM2_BINARY): $(DEVMEM2_DIR)/$(DEVMEM2_BINARY)
 	cp $^ $@
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
-devmem2: uclibc $(TARGET_DIR)/sbin/$(DEVMEM2_BINARY)
+devmem2: $(TARGET_DIR)/sbin/$(DEVMEM2_BINARY)
 
 devmem2-source: $(DL_DIR)/$(DEVMEM2_SOURCE)
 

@@ -15,7 +15,7 @@ FESTIVAL_CONF_OPT = --prefix=/usr --libdir=/usr/share/festival/lib
 
 FESTIVAL_MAKE_OPT = CC=$(TARGET_CC) CXX=$(TARGET_CXX)
 
-FESTIVAL_DEPENDENCIES = uclibc alsa-lib speech-tools
+FESTIVAL_DEPENDENCIES = alsa-lib speech-tools
 
 $(eval $(call AUTOTARGETS,package/multimedia/festival,festival))
 

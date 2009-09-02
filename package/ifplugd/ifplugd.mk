@@ -14,7 +14,7 @@ IFPLUGD_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-exec
 
 IFPLUGD_CONF_OPT = --disable-lynx
 
-IFPLUGD_DEPENDENCIES = uclibc libdaemon
+IFPLUGD_DEPENDENCIES = libdaemon
 
 $(eval $(call AUTOTARGETS,package,ifplugd))
 

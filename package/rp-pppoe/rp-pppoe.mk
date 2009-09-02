@@ -59,7 +59,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 endif
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-rp-pppoe: uclibc $(TARGET_DIR)/$(RP_PPPOE_TARGET_BINARY)
+rp-pppoe: $(TARGET_DIR)/$(RP_PPPOE_TARGET_BINARY)
 
 rp-pppoe-source: $(DL_DIR)/$(RP_PPPOE_SOURCE) $(RP_PPPOE_PATCH_FILE)
 

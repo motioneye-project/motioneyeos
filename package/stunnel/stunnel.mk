@@ -62,7 +62,7 @@ ifeq ($(BR2_CROSS_TOOLCHAIN_TARGET_UTILS),y)
 		$(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/target_utils/stunnel
 endif
 
-stunnel: uclibc $(TARGET_DIR)/usr/bin/stunnel
+stunnel: $(TARGET_DIR)/usr/bin/stunnel
 
 stunnel-clean:
 	-$(MAKE) -C $(STUNNEL_DIR) clean

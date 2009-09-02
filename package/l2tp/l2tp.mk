@@ -42,7 +42,7 @@ $(TARGET_DIR)/$(L2TP_TARGET_BINARY): $(L2TP_DIR)/$(L2TP_BINARY)
 	cp -dpf package/l2tp/l2tpd $(TARGET_DIR)/etc/init.d/
 	$(STRIPCMD) $@
 
-l2tp: uclibc $(TARGET_DIR)/$(L2TP_TARGET_BINARY)
+l2tp: $(TARGET_DIR)/$(L2TP_TARGET_BINARY)
 
 l2tp-clean:
 	-$(MAKE) -C $(L2TP_DIR) clean

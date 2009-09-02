@@ -51,7 +51,7 @@ $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY): $(STAGING_DIR)/lib/$(LIBLOCKFILE_BI
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) \
 		$(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
 
-liblockfile: uclibc $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
+liblockfile: $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
 
 liblockfile-clean:
 	rm -f $(TARGET_DIR)/usr/lib/liblockfile.so*

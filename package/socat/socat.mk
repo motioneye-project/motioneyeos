@@ -86,7 +86,7 @@ $(TARGET_DIR)/usr/bin/socat: $(SOCAT_WORKDIR)/socat
 	$(MAKE) -C $(SOCAT_WORKDIR) install prefix=$(TARGET_DIR)/usr DESTDIR=$(TARGET_DIR)
 	touch $@
 
-socat: uclibc $(TARGET_DIR)/usr/bin/socat
+socat: $(TARGET_DIR)/usr/bin/socat
 
 socat-source: $(DL_DIR)/$(SOCAT_SOURCE)
 

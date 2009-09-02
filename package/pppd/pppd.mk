@@ -71,7 +71,7 @@ endif
 	rm -rf $(TARGET_DIR)/usr/share/doc
 	rm -rf $(TARGET_DIR)/usr/include/pppd
 
-pppd: uclibc $(TARGET_DIR)/$(PPPD_TARGET_BINARY)
+pppd: $(TARGET_DIR)/$(PPPD_TARGET_BINARY)
 
 pppd-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/pppd

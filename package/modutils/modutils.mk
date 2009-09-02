@@ -61,7 +61,7 @@ $(TARGET_DIR)/sbin/rmmod: $(STAGING_DIR)/$(MODUTILS_TARGET_BINARY)
 	ln -s insmod $(TARGET_DIR)/sbin/modprobe
 	ln -s insmod $(TARGET_DIR)/sbin/rmmod
 
-modutils: uclibc $(TARGET_DIR)/sbin/rmmod
+modutils: $(TARGET_DIR)/sbin/rmmod
 
 modutils-source: $(DL_DIR)/$(MODUTILS_SOURCE)
 
@@ -120,7 +120,7 @@ $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod: $(MODUTILS_DIR2)/$(MODUTILS_BINARY
 	cp $(MODUTILS_DIR2)/$(MODUTILS_BINARY) $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
 	touch -c $@
 
-cross-depmod: uclibc $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
+cross-depmod: $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod
 
 cross-depmod-source: $(DL_DIR)/$(MODUTILS_SOURCE)
 

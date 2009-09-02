@@ -36,7 +36,7 @@ ifeq ($(BR2_HAVE_MANPAGES),y)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(AXEL_DIR) install-man
 endif
 
-axel: uclibc $(TARGET_DIR)/$(AXEL_TARGET_BINARY)
+axel: $(TARGET_DIR)/$(AXEL_TARGET_BINARY)
 
 axel-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(AXEL_DIR) uninstall

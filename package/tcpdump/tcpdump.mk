@@ -60,7 +60,7 @@ $(TARGET_DIR)/usr/sbin/tcpdump: $(TCPDUMP_DIR)/tcpdump
 	cp -f $< $@
 	$(STRIPCMD) $@
 
-tcpdump: uclibc zlib libpcap $(TARGET_DIR)/usr/sbin/tcpdump
+tcpdump: zlib libpcap $(TARGET_DIR)/usr/sbin/tcpdump
 
 tcpdump-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/tcpdump

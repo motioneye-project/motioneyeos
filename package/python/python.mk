@@ -167,7 +167,7 @@ ifneq ($(BR2_PACKAGE_PYTHON_TKINTER),y)
 	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/lib-tk
 endif
 
-python: uclibc $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+python: $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 
 python-clean:
 	-$(MAKE) -C $(PYTHON_DIR) distclean

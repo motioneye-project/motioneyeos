@@ -12,6 +12,4 @@ LIBCONFUSE_INSTALL_TARGET:=YES
 
 LIBCONFUSE_CONF_OPT:=--enable-shared --disable-rpath
 
-LIBCONFUSE_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,libconfuse))

@@ -7,7 +7,7 @@
 OPENVPN_VERSION = 2.0.9
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VERSION).tar.gz
 OPENVPN_SITE = http://openvpn.net/release
-OPENVPN_DEPENDENCIES = lzo openssl uclibc
+OPENVPN_DEPENDENCIES = lzo openssl
 
 OPENVPN_CONF_OPT = --enable-small
 

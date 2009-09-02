@@ -61,7 +61,7 @@ endif
 #####################################################################
 .PHONY: udev-source udev udev-clean udev-dirclean
 
-udev: uclibc $(TARGET_DIR)/$(UDEV_TARGET_BINARY)
+udev: $(TARGET_DIR)/$(UDEV_TARGET_BINARY)
 
 udev-source: $(DL_DIR)/$(UDEV_SOURCE)
 

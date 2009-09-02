@@ -63,9 +63,9 @@ $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION): $(STAGING_DIR)/usr/lib/libelf
 	cp -dpR $(STAGING_DIR)/usr/include/{gelf.h,libelf*} $(TARGET_DIR)/usr/include/
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
-libelf: uclibc $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION)
+libelf: $(TARGET_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION)
 else
-libelf: uclibc $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION)
+libelf: $(STAGING_DIR)/usr/lib/libelf.so.$(LIBELF_VERSION)
 endif
 libelf-source: $(DL_DIR)/$(LIBELF_SOURCE)
 

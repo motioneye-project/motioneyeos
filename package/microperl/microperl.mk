@@ -87,7 +87,7 @@ ifneq ($(BR2_STRIP_none),y)
 endif
 	(cd $(TARGET_DIR)/usr/bin; rm -f perl; ln -s microperl perl;)
 
-microperl: uclibc $(TARGET_DIR)/usr/bin/microperl
+microperl: $(TARGET_DIR)/usr/bin/microperl
 
 microperl-source: $(DL_DIR)/$(MICROPERL_SOURCE)
 

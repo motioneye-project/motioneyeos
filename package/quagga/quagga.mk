@@ -166,7 +166,7 @@ ifneq ($(BR2_HAVE_INFOPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/info
 endif
 
-quagga: uclibc $(TARGET_DIR)/usr/sbin/$(QUAGGA_TARGET_BINARY)
+quagga: $(TARGET_DIR)/usr/sbin/$(QUAGGA_TARGET_BINARY)
 
 quagga-clean:
 	-$(MAKE) DESTDIR=$(TARGET_DIR) -C $(QUAGGA_DIR) uninstall

@@ -46,7 +46,7 @@ mdadm-source: $(DL_DIR)/$(MDADM_SOURCE) $(MDADM_PATCH_FILE)
 
 mdadm-unpacked: $(MDADM_DIR)/.unpacked
 
-mdadm: uclibc $(TARGET_DIR)/$(MDADM_TARGET_BINARY)
+mdadm: $(TARGET_DIR)/$(MDADM_TARGET_BINARY)
 
 mdadm-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(MDADM_DIR) uninstall

@@ -57,7 +57,7 @@ $(TARGET_DIR)/usr/lib/libmad.a: $(STAGING_DIR)/usr/lib/libmad.so.0
 	cp -dpf $(STAGING_DIR)/usr/lib/libmad.so $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/usr/lib/libmad.a $(TARGET_DIR)/usr/lib/
 
-libmad: uclibc $(TARGET_DIR)/usr/lib/libmad.so.0
+libmad: $(TARGET_DIR)/usr/lib/libmad.so.0
 
 libmad-headers: $(TARGET_DIR)/usr/lib/libmad.a
 

@@ -72,7 +72,7 @@ endif
 		install -m 644 package/ntp/ntpd.etc.default $(TARGET_DIR)/etc/default/ntpd ; \
 	fi
 
-ntp: uclibc $(TARGET_DIR)/$(NTP_TARGET_BINARY)
+ntp: $(TARGET_DIR)/$(NTP_TARGET_BINARY)
 
 ntp-clean:
 	rm -f $(TARGET_DIR)/usr/sbin/ntpd $(TARGET_DIR)/usr/bin/sntp \

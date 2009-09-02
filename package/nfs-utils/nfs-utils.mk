@@ -73,7 +73,7 @@ $(PROJECT_BUILD_DIR)/.fakeroot.nfs-utils: $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY)
 $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY): $(PROJECT_BUILD_DIR)/.fakeroot.nfs-utils
 	touch -c $@
 
-nfs-utils: uclibc host-fakeroot $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY)
+nfs-utils: host-fakeroot $(TARGET_DIR)/$(NFS_UTILS_TARGET_BINARY)
 
 nfs-utils-clean:
 	rm -f $(TARGET_DIR)/etc/init.d/S60nfs

@@ -39,7 +39,7 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -Rf $(TARGET_DIR)/usr/man
 endif
 
-less: uclibc ncurses $(TARGET_DIR)/$(LESS_TARGET_BINARY)
+less: ncurses $(TARGET_DIR)/$(LESS_TARGET_BINARY)
 
 less-source: $(DL_DIR)/$(LESS_SOURCE)
 

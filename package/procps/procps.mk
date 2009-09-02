@@ -27,7 +27,7 @@ $(TARGET_DIR)/$(PROCPS_TARGET_BINARY): $(PROCPS_DIR)/$(PROCPS_BINARY)
 		ldconfig='/bin/true' install
 	rm -Rf $(TARGET_DIR)/usr/share/man
 
-procps: uclibc ncurses $(TARGET_DIR)/$(PROCPS_TARGET_BINARY)
+procps: ncurses $(TARGET_DIR)/$(PROCPS_TARGET_BINARY)
 
 procps-source: $(DL_DIR)/$(PROCPS_SOURCE)
 

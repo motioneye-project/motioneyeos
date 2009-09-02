@@ -57,7 +57,7 @@ $(ICU_DIR)/.done: $(ICU_HOST_DIR)/.done
 	$(SED) "s,^default_prefix=.*,default_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/icu-config
 	touch $(ICU_DIR)/.done
 
-icu: uclibc $(ICU_DIR)/.done
+icu: $(ICU_DIR)/.done
 
 icu-clean:
 	rm -f $(TARGET_DIR)/bin/icu

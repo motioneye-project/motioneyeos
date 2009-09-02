@@ -17,8 +17,6 @@ ifneq ($(BR2_USE_WCHAR),y)
 M4_CONF_ENV += gt_cv_c_wchar_t=no gl_cv_absolute_wchar_h=__fpending.h
 endif
 
-M4_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,m4))
 
 # m4 for the host

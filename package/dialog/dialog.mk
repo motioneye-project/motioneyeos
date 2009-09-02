@@ -43,7 +43,7 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -Rf $(TARGET_DIR)/usr/share/man
 endif
 
-dialog: uclibc ncurses $(TARGET_DIR)/$(DIALOG_TARGET_BINARY)
+dialog: ncurses $(TARGET_DIR)/$(DIALOG_TARGET_BINARY)
 
 dialog-source: $(DL_DIR)/$(DIALOG_SOURCE)
 

@@ -555,7 +555,7 @@ ifeq ($(BR2_PACKAGE_QT_SHARED),y)
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libQt*.so.*
 endif
 
-qt: uclibc $(QT_DEP_LIBS) $(TARGET_DIR)/usr/lib/libQtCore.so.4
+qt: $(QT_DEP_LIBS) $(TARGET_DIR)/usr/lib/libQtCore.so.4
 
 qt-clean:
 	-$(MAKE) -C $(QT_TARGET_DIR) clean

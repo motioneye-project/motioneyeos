@@ -13,6 +13,4 @@ IPERF_INSTALL_TARGET:=YES
 IPERF_CONF_ENV:=ac_cv_func_malloc_0_nonnull=yes
 IPERF_CONF_OPT:=--disable-dependency-tracking --disable-web100 $(DISABLE_IPV6)
 
-IPERF_DEPENDENCIES:=uclibc
-
 $(eval $(call AUTOTARGETS,package,iperf))

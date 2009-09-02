@@ -65,7 +65,7 @@ $(LIBPCAP_DIR)/libpcap.a: $(LIBPCAP_DIR)/.configured
 $(STAGING_DIR)/usr/lib/libpcap.a: $(LIBPCAP_DIR)/libpcap.a
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(LIBPCAP_DIR) install
 
-libpcap: uclibc zlib $(STAGING_DIR)/usr/lib/libpcap.a
+libpcap: zlib $(STAGING_DIR)/usr/lib/libpcap.a
 
 libpcap-clean:
 	rm -f $(addprefix $(STAGING_DIR)/usr/,include/pcap*.h \

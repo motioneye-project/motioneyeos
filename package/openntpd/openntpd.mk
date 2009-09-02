@@ -58,7 +58,7 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -Rf $(TARGET_DIR)/usr/share/man
 endif
 
-ntpd: uclibc $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
+ntpd: $(TARGET_DIR)/$(OPENNTPD_TARGET_BINARY)
 
 ntpd-source: $(DL_DIR)/$(OPENNTPD_SOURCE)
 

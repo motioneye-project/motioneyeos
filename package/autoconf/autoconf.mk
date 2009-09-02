@@ -13,7 +13,7 @@ endif
 
 AUTOCONF_CONF_ENV = EMACS="no"
 
-AUTOCONF_DEPENDENCIES = uclibc microperl
+AUTOCONF_DEPENDENCIES = microperl
 
 $(eval $(call AUTOTARGETS,package,autoconf))
 

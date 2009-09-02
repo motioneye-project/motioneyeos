@@ -62,7 +62,7 @@ endif
 	rm -rf $(TARGET_DIR)/usr/share/doc
 	cp -a package/bison/yacc $(TARGET_DIR)/usr/bin/yacc
 
-bison: uclibc $(TARGET_DIR)/$(BISON_TARGET_BINARY)
+bison: $(TARGET_DIR)/$(BISON_TARGET_BINARY)
 
 bison-clean:
 	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BISON_DIR) uninstall

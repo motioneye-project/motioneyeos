@@ -30,7 +30,7 @@ $(TARGET_DIR)/usr/lib/libslang.so.1: $(STAGING_DIR)/usr/lib/libslang.so.1
 	cp -dpf $(STAGING_DIR)/usr/lib/libslang.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libslang.so*
 
-slang: uclibc $(STAGING_DIR)/usr/lib/libslang.so.1 $(TARGET_DIR)/usr/lib/libslang.so.1
+slang: $(STAGING_DIR)/usr/lib/libslang.so.1 $(TARGET_DIR)/usr/lib/libslang.so.1
 
 slang-source: $(DL_DIR)/$(SLANG_SOURCE)
 

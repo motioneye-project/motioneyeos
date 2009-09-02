@@ -12,7 +12,5 @@ STARTUP_NOTIFICATION_INSTALL_TARGET = YES
 
 STARTUP_NOTIFICATION_CONF_ENV = lf_cv_sane_realloc=yes
 
-STARTUP_NOTIFICATION_DEPENDENCIES = uclibc
-
 $(eval $(call AUTOTARGETS,package,startup-notification))
 

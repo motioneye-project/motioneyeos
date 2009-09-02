@@ -78,7 +78,7 @@ libglib12-source: $(DL_DIR)/$(LIBGLIB12_SOURCE)
 
 libglib12-unpacked: $(LIBGLIB12_DIR)/.unpacked
 
-libglib12: uclibc $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10
+libglib12: $(TARGET_DIR)/lib/libglib-1.2.so.0.0.10
 
 libglib12-clean:
 	rm -f $(TARGET_DIR)/lib/$(LIBGLIB12_BINARY)

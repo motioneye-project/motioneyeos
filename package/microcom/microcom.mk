@@ -66,7 +66,7 @@ microcom-clean:
 microcom-dirclean:
 	rm -rf $(MICROCOM_DIR)
 
-microcom: uclibc $(TARGET_DIR)/usr/bin/microcom
+microcom: $(TARGET_DIR)/usr/bin/microcom
 
 #############################################################
 #

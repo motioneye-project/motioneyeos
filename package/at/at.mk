@@ -56,7 +56,7 @@ endif
 	echo 'rm -rf $(TARGET_DIR)/usr/doc/at' >> $(PROJECT_BUILD_DIR)/.fakeroot.at
 	$(INSTALL) -m 0755 -D $(AT_DIR)/debian/rc $(TARGET_DIR)/$(AT_TARGET_SCRIPT)
 
-at: uclibc host-fakeroot $(TARGET_DIR)/$(AT_TARGET_SCRIPT)
+at: host-fakeroot $(TARGET_DIR)/$(AT_TARGET_SCRIPT)
 
 at-clean:
 	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(AT_DIR) uninstall

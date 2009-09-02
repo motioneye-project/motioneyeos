@@ -70,7 +70,7 @@ $(TARGET_DIR)/usr/lib/libz.a: $(STAGING_DIR)/usr/lib/libz.a
 
 zlib-headers: $(TARGET_DIR)/usr/lib/libz.a
 
-zlib: uclibc $(ZLIB_TARGET)
+zlib: $(ZLIB_TARGET)
 
 zlib-source: $(DL_DIR)/$(ZLIB_SOURCE)
 

@@ -159,7 +159,7 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/share/man
 endif
 
-sed: uclibc sed-target_binary
+sed: sed-target_binary
 
 sed-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) uninstall

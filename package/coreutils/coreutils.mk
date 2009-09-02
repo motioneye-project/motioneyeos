@@ -133,9 +133,9 @@ endif
 # If both coreutils and busybox are selected, make certain coreutils
 # wins the fight over who gets to have their utils actually installed.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-coreutils: uclibc busybox $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
+coreutils: busybox $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 else
-coreutils: uclibc $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
+coreutils: $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 endif
 
 # If both coreutils and busybox are selected, the corresponding applets

@@ -74,7 +74,7 @@ $(TARGET_DIR)/usr/bin/sudo: $(SUDO_DIR)/sudo
 	$(INSTALL) -m 0440 -D $(SUDO_DIR)/sudoers $(TARGET_DIR)/etc/sudoers
 	touch -c $(TARGET_DIR)/usr/bin/sudo
 
-sudo: uclibc $(TARGET_DIR)/usr/bin/sudo
+sudo: $(TARGET_DIR)/usr/bin/sudo
 
 sudo-unpacked: $(SUDO_DIR)/.unpacked
 

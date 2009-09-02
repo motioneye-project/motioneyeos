@@ -24,7 +24,7 @@ $(LIBERATION_TARGET_DIR)/LiberationMono-Bold.ttf: $(LIBERATION_DIR)/.unpacked
 	$(INSTALL) -m0644 $(LIBERATION_DIR)/*.ttf $(LIBERATION_TARGET_DIR)
 	touch -c $@
 
-liberation: uclibc $(LIBERATION_TARGET_DIR)/LiberationMono-Bold.ttf
+liberation: $(LIBERATION_TARGET_DIR)/LiberationMono-Bold.ttf
 
 liberation-clean:
 	rm -rf $(LIBERATION_TARGET_DIR)

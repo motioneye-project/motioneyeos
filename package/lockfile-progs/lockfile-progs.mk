@@ -26,7 +26,7 @@ $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY): $(LOCKFILE_PROGS_DIR)/.unpacked
 	cp -a $(LOCKFILE_PROGS_DIR)/bin/lockfile* $(TARGET_DIR)/usr/bin
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY)
 
-lockfile-progs: uclibc liblockfile $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY)
+lockfile-progs: liblockfile $(TARGET_DIR)/$(LOCKFILE_PROGS_BINARY)
 
 lockfile-progs-clean:
 	-rm -f $(TARGET_DIR)/usr/bin/lockfile-*

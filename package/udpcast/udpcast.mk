@@ -78,7 +78,7 @@ ifneq ($(BR2_HAVE_MANPAGES),y)
 		$(addsuffix .1,$(UDPCAST_BINARIES)))
 endif
 
-udpcast: uclibc $(UDPCAST_PROGS)
+udpcast: $(UDPCAST_PROGS)
 
 udpcast-clean:
 	rm -f $(UDPCAST_INSTALL_FILES)

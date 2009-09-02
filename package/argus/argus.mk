@@ -51,7 +51,7 @@ $(TARGET_DIR)/$(ARGUS_TARGET_BINARY): $(ARGUS_DIR)/$(ARGUS_BINARY)
 	cp -dpf $(ARGUS_DIR)/$(ARGUS_BINARY) $@
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-argus: uclibc libpcap $(TARGET_DIR)/$(ARGUS_TARGET_BINARY)
+argus: libpcap $(TARGET_DIR)/$(ARGUS_TARGET_BINARY)
 
 argus-clean:
 	-$(MAKE) -C $(ARGUS_DIR) clean

@@ -106,7 +106,7 @@ ifneq ($(BR2_ENABLE_LOCALE),y)
 	rm -rf $(TARGET_DIR)/usr/share/locale
 endif
 
-diffutils: uclibc $(TARGET_DIR)/$(DIFFUTILS_TARGET_BINARY)
+diffutils: $(TARGET_DIR)/$(DIFFUTILS_TARGET_BINARY)
 
 diff-utils-unpacked: $(DIFFUTILS_DIR)/.unpacked
 

@@ -31,7 +31,7 @@ $(TARGET_DIR)/$(HWDATA_TARGET_BINARY): $(HWDATA_DIR)/.unpacked
 	cp -a $(HWDATA_DIR)/usb.ids $(TARGET_DIR)/usr/share/hwdata
 	-touch -c $(TARGET_DIR)/usr/share/hwdata/*
 
-hwdata: uclibc $(TARGET_DIR)/$(HWDATA_TARGET_BINARY)
+hwdata: $(TARGET_DIR)/$(HWDATA_TARGET_BINARY)
 
 hwdata-clean:
 	rm -rf $(TARGET_DIR)/usr/share/hwdata

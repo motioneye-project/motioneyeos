@@ -65,7 +65,7 @@ endif
 	rm -rf $(TARGET_DIR)/share/locale
 	rm -rf $(TARGET_DIR)/usr/share/doc
 
-gawk: uclibc $(TARGET_DIR)/$(GAWK_TARGET_BINARY)
+gawk: $(TARGET_DIR)/$(GAWK_TARGET_BINARY)
 
 gawk-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GAWK_DIR) uninstall

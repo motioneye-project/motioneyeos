@@ -35,7 +35,7 @@ $(TARGET_DIR)/$(TINYHTTPD_TARGET_BINARY): $(TINYHTTPD_DIR)/$(TINYHTTPD_BINARY)
 	$(INSTALL) -m 0755 package/tinyhttpd/S85tinyhttpd $(TARGET_DIR)/etc/init.d
 	mkdir -p $(TARGET_DIR)/var/www
 
-tinyhttpd: uclibc $(TARGET_DIR)/$(TINYHTTPD_TARGET_BINARY)
+tinyhttpd: $(TARGET_DIR)/$(TINYHTTPD_TARGET_BINARY)
 
 tinyhttpd-clean:
 	-$(MAKE) -C $(TINYHTTPD_DIR) clean

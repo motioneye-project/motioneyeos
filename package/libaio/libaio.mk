@@ -30,7 +30,7 @@ $(TARGET_DIR)/usr/lib/libaio.so: $(STAGING_DIR)/usr/lib/libaio.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libaio.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libaio.so
 
-libaio: uclibc $(TARGET_DIR)/usr/lib/libaio.so
+libaio: $(TARGET_DIR)/usr/lib/libaio.so
 
 libaio-source: $(DL_DIR)/$(LIBAIO_SOURCE)
 

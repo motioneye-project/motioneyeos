@@ -27,7 +27,7 @@ SDL_IMAGE_CONF_OPT:=--with-sdl-prefix=$(STAGING_DIR)/usr \
 		--enable-xpm=$(if $(BR2_PACKAGE_SDL_IMAGE_XPM),yes,no) \
 		--enable-xv=$(if $(BR2_PACKAGE_SDL_IMAGE_XV),yes,no) \
 
-SDL_IMAGE_DEPENDENCIES:=uclibc sdl \
+SDL_IMAGE_DEPENDENCIES:=sdl \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_JPEG),jpeg) \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_PNG),libpng) \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_TIFF),tiff)

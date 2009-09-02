@@ -27,6 +27,6 @@ LIBSOUP_CONF_OPT = \
 	--without-gnome		\
 	--disable-gtk-doc --without-html-dir
 
-LIBSOUP_DEPENDENCIES = uclibc gettext libintl host-pkgconfig host-libglib2 libglib2 libxml2
+LIBSOUP_DEPENDENCIES = gettext libintl host-pkgconfig host-libglib2 libglib2 libxml2
 
 $(eval $(call AUTOTARGETS,package,libsoup))

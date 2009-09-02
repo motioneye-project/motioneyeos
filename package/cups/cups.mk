@@ -110,7 +110,7 @@ $(CUPS_DIR)/.installed: $(CUPS_DIR)/.compiled
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/bin/cups-config
 	touch $@
 
-cups: uclibc host-autoconf $(CUPS_DEPENDENCIES) $(CUPS_DIR)/.installed
+cups: host-autoconf $(CUPS_DEPENDENCIES) $(CUPS_DIR)/.installed
 
 cups-source: $(DL_DIR)/$(CUPS_SOURCE)
 

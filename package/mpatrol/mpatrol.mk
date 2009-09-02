@@ -67,7 +67,7 @@ $(TARGET_DIR)/$(MPATROL_TARGET_BINARY): $(MPATROL_BUILD_DIR)/$(MPATROL_BINARY)
 		cp -dpf tools/*.h $(STAGING_DIR)/usr/include/mpatrol)
 	touch $(TARGET_DIR)/$(MPATROL_TARGET_BINARY)
 
-mpatrol: uclibc $(MPATROL_SYMBOL_DEPS) $(TARGET_DIR)/$(MPATROL_TARGET_BINARY)
+mpatrol: $(MPATROL_SYMBOL_DEPS) $(TARGET_DIR)/$(MPATROL_TARGET_BINARY)
 
 mpatrol-clean:
 	(cd $(TARGET_DIR)/usr/lib; rm -f libmpatrol* libmpalloc*)

@@ -18,6 +18,6 @@ FLTK_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) --prefix=/usr \
 		--sysconfdir=/etc --enable-shared --enable-threads --with-x
 
-FLTK_DEPENDENCIES = uclibc xserver_xorg-server
+FLTK_DEPENDENCIES = xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,fltk))

@@ -16,7 +16,7 @@ METACITY_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--disable-dependency-tracking \
 		--disable-sm --disable-startup-notification
 
-METACITY_DEPENDENCIES = uclibc libgtk2 xserver_xorg-server
+METACITY_DEPENDENCIES = libgtk2 xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,metacity))
 

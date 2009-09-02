@@ -7,7 +7,7 @@
 BMON_VERSION = 2.1.0
 BMON_SOURCE = bmon-$(BMON_VERSION).tar.gz
 BMON_SITE = http://distfiles.gentoo.org/distfiles
-BMON_DEPENDENCIES = ncurses uclibc
+BMON_DEPENDENCIES = ncurses
 BMON_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 $(eval $(call AUTOTARGETS,package,bmon))

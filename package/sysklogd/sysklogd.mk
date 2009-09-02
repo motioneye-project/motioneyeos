@@ -39,7 +39,7 @@ $(TARGET_DIR)/$(SYSKLOGD_TARGET_BINARY): $(SYSKLOGD_DIR)/$(SYSKLOGD_BINARY)
 		$(INSTALL) -m 0644 -D package/sysklogd/syslog.conf $(TARGET_DIR)/etc/syslog.conf; \
 	fi
 
-sysklogd: uclibc $(TARGET_DIR)/$(SYSKLOGD_TARGET_BINARY)
+sysklogd: $(TARGET_DIR)/$(SYSKLOGD_TARGET_BINARY)
 
 sysklogd-clean:
 	rm -f $(TARGET_DIR)/$(SYSKLOGD_SYSLOGD_TARGET_BINARY)
