@@ -4,7 +4,7 @@
 #
 #############################################################
 DIRECTFB_VERSION_MAJOR:=1.4
-DIRECTFB_VERSION:=1.4.1
+DIRECTFB_VERSION:=1.4.2
 DIRECTFB_SITE:=http://www.directfb.org/downloads/Core/DirectFB-$(DIRECTFB_VERSION_MAJOR)
 DIRECTFB_SOURCE:=DirectFB-$(DIRECTFB_VERSION).tar.gz
 DIRECTFB_AUTORECONF = NO
@@ -56,6 +56,9 @@ DIRECTFB_GFX+= cyber5k
 endif
 ifeq ($(BR2_PACKAGE_DIRECTFB_MATROX),y)
 DIRECTFB_GFX+= matrox
+endif
+ifeq ($(BR2_PACKAGE_DIRECTFB_PXA3XX),y)
+DIRECTFB_GFX+= pxa3xx
 endif
 ifeq ($(BR2_PACKAGE_DIRECTFB_UNICHROME),y)
 DIRECTFB_GFX+= unichrome
