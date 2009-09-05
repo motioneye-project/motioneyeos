@@ -1,7 +1,5 @@
 menu "Target options"
 
-source "project/Config.in"
-
 comment "Preset Devices"
 
 source "target/device/ARMLTD/Config.in"

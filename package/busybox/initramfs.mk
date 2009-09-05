@@ -6,7 +6,7 @@
 ifeq ($(BR2_PACKAGE_BUSYBOX_INITRAMFS),y)
 
 BUSYBOX_INITRAMFS_DIR:=$(BUSYBOX_DIR)-initramfs
-BR2_INITRAMFS_DIR:=$(PROJECT_BUILD_DIR)/initramfs
+BR2_INITRAMFS_DIR:=$(BUILD_DIR)/initramfs
 BB_INITRAMFS_TARGET:=$(IMAGE).initramfs_lst
 
 $(BUSYBOX_INITRAMFS_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
@@ -105,39 +105,39 @@ $(BR2_INITRAMFS_DIR)/bin/busybox: $(BUSYBOX_INITRAMFS_DIR)/busybox
 
 
 $(BB_INITRAMFS_TARGET): host-fakeroot $(BR2_INITRAMFS_DIR)/bin/busybox
-	ln -fs bin/busybox $(PROJECT_BUILD_DIR)/initramfs/init
-	mkdir -p $(PROJECT_BUILD_DIR)/initramfs/etc
+	ln -fs bin/busybox $(BUILD_DIR)/initramfs/init
+	mkdir -p $(BUILD_DIR)/initramfs/etc
 	cat target/generic/target_busybox_skeleton/etc/inittab > \
-		$(PROJECT_BUILD_DIR)/initramfs/etc/inittab
-	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
-	(echo "chown -R 0:0 $(PROJECT_BUILD_DIR)/initramfs"; \
-	 echo "$(HOST_DIR)/usr/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(PROJECT_BUILD_DIR)/initramfs"; \
-	 echo "$(SHELL) target/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(PROJECT_BUILD_DIR)/initramfs > $(BB_INITRAMFS_TARGET)"; \
-	) > $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
-	chmod +x $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+		$(BUILD_DIR)/initramfs/etc/inittab
+	rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	(echo "chown -R 0:0 $(BUILD_DIR)/initramfs"; \
+	 echo "$(HOST_DIR)/usr/bin/makedevs -d $(TARGET_DEVICE_TABLE) $(BUILD_DIR)/initramfs"; \
+	 echo "$(SHELL) target/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(BUILD_DIR)/initramfs > $(BB_INITRAMFS_TARGET)"; \
+	) > $(BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	chmod +x $(BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
 	$(HOST_DIR)/usr/bin/fakeroot -- \
-		$(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
-	rm -f $(PROJECT_BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+		$(BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
+	rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(BB_INITRAMFS_TARGET))
 	touch -c $@
 
-$(PROJECT_BUILD_DIR)/.initramfs_done: $(BR2_INITRAMFS_DIR)/bin/busybox \
+$(BUILD_DIR)/.initramfs_done: $(BR2_INITRAMFS_DIR)/bin/busybox \
 					$(BB_INITRAMFS_TARGET)
 	touch $@
 
 busybox-initramfs-source:
-busybox-initramfs: $(PROJECT_BUILD_DIR)/.initramfs_done
+busybox-initramfs: $(BUILD_DIR)/.initramfs_done
 
 busybox-initramfs-menuconfig: host-sed $(BUILD_DIR) busybox-source $(BUSYBOX_INITRAMFS_DIR)/.configured
 	$(MAKE) __TARGET_ARCH=$(ARCH) -C $(BUSYBOX_INITRAMFS_DIR) menuconfig
 
 busybox-initramfs-clean:
-	rm -f $(BUSYBOX_INITRAMFS_DIR)/busybox $(PROJECT_BUILD_DIR)/.initramfs_*
+	rm -f $(BUSYBOX_INITRAMFS_DIR)/busybox $(BUILD_DIR)/.initramfs_*
 	rm -rf $(BR2_INITRAMFS_DIR) $(BB_INITRAMFS_TARGET)
 	-$(MAKE) -C $(BUSYBOX_INITRAMFS_DIR) clean
 
 busybox-initramfs-dirclean:
 	rm -rf $(BUSYBOX_INITRAMFS_DIR) $(BR2_INITRAMFS_DIR) \
-		$(PROJECT_BUILD_DIR)/.initramfs_*
+		$(BUILD_DIR)/.initramfs_*
 endif
 #############################################################
 #

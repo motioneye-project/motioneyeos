@@ -8,11 +8,11 @@ U_BOOT_VERSION:=$(call qstrip,$(BR2_UBOOT_VERSION))
 U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
 
 U_BOOT_SITE:=$(call qstrip,$(BR2_U_BOOT_SITE))
-U_BOOT_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
-U_BOOT_PATCH_DIR:=$(PROJECT_BUILD_DIR)/u-boot-$(U_BOOT_VERSION)-patches
+U_BOOT_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
+U_BOOT_PATCH_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)-patches
 U_BOOT_CAT:=$(BZCAT)
 U_BOOT_BIN:=u-boot.bin
-U_BOOT_TARGET_BIN:=$(PROJECT)-u-boot-$(U_BOOT_VERSION)-$(DATE).bin
+U_BOOT_TARGET_BIN:=u-boot-$(U_BOOT_VERSION)-$(DATE).bin
 
 U_BOOT_TOOLS_BIN:=mkimage
 U_BOOT_TOOLS:=$(STAGING_DIR)/usr/bin/$(U_BOOT_TOOLS_BIN)
@@ -66,7 +66,7 @@ $(DL_DIR)/$(U_BOOT_SOURCE):
 
 $(U_BOOT_DIR)/.unpacked: $(DL_DIR)/$(U_BOOT_SOURCE)
 	$(U_BOOT_CAT) $(DL_DIR)/$(U_BOOT_SOURCE) \
-		| tar -C $(PROJECT_BUILD_DIR) $(TAR_OPTIONS) -
+		| tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	mkdir -p $(U_BOOT_DIR)
 	touch $@
 
@@ -102,9 +102,6 @@ ifdef BR2_TARGET_UBOOT_DEFAULT_ENV
 	@echo "#define __BR2_ADDED_CONFIG_H" >> $(U_BOOT_INC_CONF_FILE)
 	$(call insert_define, DATE, $(DATE))
 	$(call insert_define, CONFIG_LOAD_SCRIPTS, 1)
-ifneq ($(strip $(BR2_PROJECT)),"")
-	$(call insert_define, CONFIG_HOSTNAME, $(BR2_PROJECT))
-endif
 endif # BR2_TARGET_UBOOT_DEFAULT_ENV
 ifdef BR2_TARGET_UBOOT_NETWORK
 ifneq ($(strip $(BR2_TARGET_UBOOT_IPADDR)),"")
@@ -194,7 +191,7 @@ $(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/$(U_BOOT_BIN)
 
 u-boot: $(U_BOOT_TARGETS)
 
-u-boot-autoscript: $(U_BOOT_AUTOSCRIPT).$(PROJECT)
+u-boot-autoscript: $(U_BOOT_AUTOSCRIPT).img
 
 u-boot-clean:
 	-$(MAKE) -C $(U_BOOT_DIR) clean
@@ -249,7 +246,7 @@ endif
 	echo setargs >> $(U_BOOT_AUTOSCRIPT)
 	echo saveenv >> $(U_BOOT_AUTOSCRIPT)
 
-$(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
+$(U_BOOT_AUTOSCRIPT).img: $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
 	$(MKIMAGE) -A $(ARCH) \
 				-O linux \
 				-T script \
@@ -258,7 +255,7 @@ $(U_BOOT_AUTOSCRIPT).$(PROJECT): $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
 				-e 0 \
 				-n "autoscr config" \
 				-d $(U_BOOT_AUTOSCRIPT) \
-				$(U_BOOT_AUTOSCRIPT).$(PROJECT)
+				$(U_BOOT_AUTOSCRIPT).img
 
 
 
