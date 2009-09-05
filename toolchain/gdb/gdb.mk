@@ -3,8 +3,7 @@
 # gdb
 #
 ######################################################################
-GDB_VERSION:=$(strip $(subst ",, $(BR2_GDB_VERSION)))
-#"))
+GDB_VERSION:=$(call qstrip,$(BR2_GDB_VERSION))
 
 GDB_OFFICIAL_VERSION:=$(GDB_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GDB_RELEASE)
 

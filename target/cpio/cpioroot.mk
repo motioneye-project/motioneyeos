@@ -31,8 +31,7 @@ else
 CPIO_TARGET := $(CPIO_BASE)
 endif
 
-ROOTFS_CPIO_COPYTO:=$(strip $(subst ",,$(BR2_TARGET_ROOTFS_CPIO_COPYTO)))
-# "))
+ROOTFS_CPIO_COPYTO:=$(call qstrip,$(BR2_TARGET_ROOTFS_CPIO_COPYTO))
 #
 
 cpioroot-init:

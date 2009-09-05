@@ -11,8 +11,7 @@ BUSYBOX_DIR:=$(PROJECT_BUILD_DIR)/busybox
 BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 else
-BUSYBOX_VERSION=$(strip $(subst ",, $(BR2_BUSYBOX_VERSION)))
-#"))
+BUSYBOX_VERSION=$(call qstrip,$(BR2_BUSYBOX_VERSION))
 BUSYBOX_DIR:=$(PROJECT_BUILD_DIR)/busybox-$(BUSYBOX_VERSION)
 BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
@@ -21,8 +20,7 @@ endif
 BUSYBOX_UNZIP=$(BZCAT)
 
 ifndef BUSYBOX_CONFIG_FILE
-BUSYBOX_CONFIG_FILE=$(subst ",, $(strip $(BR2_PACKAGE_BUSYBOX_CONFIG)))
-#")
+BUSYBOX_CONFIG_FILE=$(call qstrip,$(BR2_PACKAGE_BUSYBOX_CONFIG))
 endif
 
 $(DL_DIR)/$(BUSYBOX_SOURCE):

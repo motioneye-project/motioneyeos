@@ -3,8 +3,7 @@
 # mksquashfs to build to target squashfs filesystems
 #
 #############################################################
-SQUASHFS_VERSION:=$(strip $(subst ",,$(BR2_TARGET_ROOTFS_SQUASHFS_VERSION)))
-#"))
+SQUASHFS_VERSION:=$(call qstrip,$(BR2_TARGET_ROOTFS_SQUASHFS_VERSION))
 SQUASHFS_DIR:=$(BUILD_DIR)/squashfs$(SQUASHFS_VERSION)
 SQUASHFS_SOURCE:=squashfs$(SQUASHFS_VERSION).tar.gz
 SQUASHFS_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/squashfs

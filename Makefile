@@ -40,6 +40,10 @@ else
 BR2_LOCAL:=$(TOPDIR)/local
 endif
 
+# Strip quotes and then whitespaces
+qstrip=$(strip $(subst ",,$(1)))
+#"))
+
 # Variables for use in Make constructs
 comma:=,
 empty:=
@@ -369,8 +373,7 @@ endif
 
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 LOCALE_WHITELIST=$(PROJECT_BUILD_DIR)/locales.nopurge
-LOCALE_NOPURGE=$(strip $(subst ",,$(BR2_ENABLE_LOCALE_WHITELIST)))
-#"))
+LOCALE_NOPURGE=$(call qstrip,$(BR2_ENABLE_LOCALE_WHITELIST))
 
 target-purgelocales:
 	rm -f $(LOCALE_WHITELIST)

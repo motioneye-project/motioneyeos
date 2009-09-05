@@ -11,8 +11,7 @@ MICROPERL_SITE=ftp://ftp.cpan.org/pub/CPAN/src/5.0
 MICROPERL_DIR=$(BUILD_DIR)/perl-$(MICROPERL_VERSION)
 
 MICROPERL_MODS_DIR=/usr/lib/perl$(MICROPERL_MAJ)/$(MICROPERL_VERSION)
-MICROPERL_MODS=$(subst ",,$(BR2_PACKAGE_MICROPERL_MODULES))
-# ")
+MICROPERL_MODS=$(call qstrip,$(BR2_PACKAGE_MICROPERL_MODULES))
 ifeq ($(BR2_PACKAGE_AUTOMAKE),y)
 MICROPERL_MODS+=File/Basename.pm Errno.pm Config.pm IO/File.pm Symbol.pm \
 	SelectSaver.pm IO/Seekable.pm IO/Handle.pm IO.pm XSLoader.pm \

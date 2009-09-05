@@ -32,8 +32,7 @@ JFFS2_OPTS += -n
 SUMTOOL_OPTS += -n
 endif
 
-JFFS2_TARGET := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT)))
-#"))
+JFFS2_TARGET := $(call qstrip,$(BR2_TARGET_ROOTFS_JFFS2_OUTPUT))
 ifneq ($(TARGET_DEVICE_TABLE),)
 JFFS2_OPTS += -D $(TARGET_DEVICE_TABLE)
 endif
@@ -75,8 +74,7 @@ ifeq ($(BR2_JFFS2_TARGET_SREC),y)
 	@ls -l $(JFFS2_TARGET).srec
 endif
 
-JFFS2_COPYTO := $(strip $(subst ",,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO)))
-#"))
+JFFS2_COPYTO := $(call qstrip,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO))
 
 jffs2root: $(JFFS2_TARGET)
 ifneq ($(JFFS2_COPYTO),)

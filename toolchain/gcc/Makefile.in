@@ -4,21 +4,15 @@
 # and arrange to include it soon after invoking make from
 # the top level.
 
-GCC_VERSION:=$(strip $(subst ",, $(BR2_GCC_VERSION)))
-#"))
-TARGET_OPTIMIZATION:=$(strip $(subst ",, $(BR2_TARGET_OPTIMIZATION)))
-#"))
-EXTRA_GCC_CONFIG_OPTIONS:=$(strip $(subst ",, $(BR2_EXTRA_GCC_CONFIG_OPTIONS)))
-#"))
+GCC_VERSION:=$(call qstrip,$(BR2_GCC_VERSION))
+TARGET_OPTIMIZATION:=$(call qstrip,$(BR2_TARGET_OPTIMIZATION))
+EXTRA_GCC_CONFIG_OPTIONS:=$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
-ifeq ($(strip $(subst ",, $(BR2_GCC_IS_SNAP))),y)
-#"))
-GCC_SNAP_DATE:=$(strip $(subst ",, $(BR2_GCC_SNAP_DATE)))
-#"))
+ifeq ($(call qstrip,$(BR2_GCC_IS_SNAP)),y)
+GCC_SNAP_DATE:=$(call qstrip,$(BR2_GCC_SNAP_DATE))
 else
 GCC_SNAP_DATE:=
 endif
-#")))
 
 ifeq ($(BR2_GCC_USE_SJLJ_EXCEPTIONS),y)
 GCC_USE_SJLJ_EXCEPTIONS:=--enable-sjlj-exceptions
@@ -57,15 +51,15 @@ ARCH_FPU_SUFFIX:=
 endif
 
 # some additional defaults
-ifneq ($(strip $(subst ",,$(BR2_GCC_TARGET_ARCH))),)
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
 # ")))
 GCC_WITH_ARCH:=--with-arch=$(BR2_GCC_TARGET_ARCH)
 endif
-ifneq ($(strip $(subst ",,$(BR2_GCC_TARGET_TUNE))),)
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_TUNE)),)
 # ")))
 GCC_WITH_TUNE:=--with-tune=$(BR2_GCC_TARGET_TUNE)
 endif
-ifneq ($(strip $(subst ",,$(BR2_GCC_TARGET_ABI))),)
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_ABI)),)
 # ")))
 GCC_WITH_ABI:=--with-abi=$(BR2_GCC_TARGET_ABI)
 endif
@@ -95,8 +89,7 @@ endif
 
 
 # and finally pull in config opts from the user
-EXTRA_TARGET_GCC_CONFIG_OPTIONS+=$(strip $(subst ",, $(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS)))
-#"))
+EXTRA_TARGET_GCC_CONFIG_OPTIONS+=$(call qstrip,$(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS))
 
 ifeq ($(BR2_PREFER_IMA),y)
 # >= 4.x

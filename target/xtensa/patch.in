@@ -19,7 +19,7 @@ ifneq ($(filter xtensa%,$(ARCH)),)
 #  overlay is selected).  So the function emits a Makefile error
 #  if a selected patch file is not found.
 
-XTENSA_CORENAME:=$(strip $(subst ",,$(BR2_xtensa_core_name)))
+XTENSA_CORENAME:=$(call qstrip,$(BR2_xtensa_core_name))
 ifeq ($(XTENSA_CORENAME),fsf)
 XTENSA_PATCH =
 else

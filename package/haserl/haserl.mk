@@ -4,8 +4,7 @@
 #
 #############################################################
 
-HASERL_VERSION:=$(strip $(subst ",,$(BR2_PACKAGE_HASERL_VERSION)))
-#"))
+HASERL_VERSION:=$(call qstrip,$(BR2_PACKAGE_HASERL_VERSION))
 HASERL_SOURCE:=haserl-$(HASERL_VERSION).tar.gz
 HASERL_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/haserl/
 HASERL_AUTORECONF:=no

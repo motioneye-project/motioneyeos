@@ -44,10 +44,8 @@ mkisofs-dirclean:
 #############################################################
 
 ISO9660_TARGET_DIR=$(BUILD_DIR)/iso9660
-ISO9660_TARGET:=$(subst ",,$(BR2_TARGET_ROOTFS_ISO9660_OUTPUT))
-#")
-ISO9660_BOOT_MENU:=$(subst ",,$(BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU))
-#")
+ISO9660_TARGET:=$(call qstrip,$(BR2_TARGET_ROOTFS_ISO9660_OUTPUT))
+ISO9660_BOOT_MENU:=$(call qstrip,$(BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU))
 ISO9660_OPTS:=
 
 ifeq ($(BR2_TARGET_ROOTFS_ISO9660_SQUASH),y)

@@ -24,10 +24,8 @@
 QT_VERSION:=4.5.2
 QT_CAT:=$(BZCAT)
 
-BR2_PACKAGE_QT_COMMERCIAL_USERNAME:=$(strip $(subst ",, $(BR2_PACKAGE_QT_COMMERCIAL_USERNAME)))
-#"))
-BR2_PACKAGE_QT_COMMERCIAL_PASSWORD:=$(strip $(subst ",, $(BR2_PACKAGE_QT_COMMERCIAL_PASSWORD)))
-#"))
+BR2_PACKAGE_QT_COMMERCIAL_USERNAME:=$(call qstrip,$(BR2_PACKAGE_QT_COMMERCIAL_USERNAME))
+BR2_PACKAGE_QT_COMMERCIAL_PASSWORD:=$(call qstrip,$(BR2_PACKAGE_QT_COMMERCIAL_PASSWORD))
 
 QT_CONFIGURE:=#empty
 
@@ -165,8 +163,7 @@ ifeq ($(BR2_PACKAGE_QT_MOUSE_TSLIB),y)
 QT_CONFIGURE += -qt-mouse-tslib
 QT_DEP_LIBS+=tslib
 QT_TSLIB_DEB="-D TSLIBMOUSEHANDLER_DEBUG"
-QT_TSLIB_DEB:=$(strip $(subst ",, $(QT_TSLIB_DEB)))
-#"))
+QT_TSLIB_DEB:=$(call qstrip,$(QT_TSLIB_DEB))
 else
 QT_CONFIGURE += -no-mouse-tslib
 endif
@@ -329,10 +326,8 @@ else
 QT_CONFIGURE+= -no-stl
 endif
 
-QT_CONFIGURE:=$(strip $(subst ",, $(QT_CONFIGURE)))
-#"))
-BR2_PACKAGE_QT_EMB_PLATFORM:=$(strip $(subst ",, $(BR2_PACKAGE_QT_EMB_PLATFORM)))
-#"))
+QT_CONFIGURE:=$(call qstrip,$(QT_CONFIGURE))
+BR2_PACKAGE_QT_EMB_PLATFORM:=$(call qstrip,$(BR2_PACKAGE_QT_EMB_PLATFORM))
 
 # x86x86fix
 # Workaround Qt Embedded bug when crosscompiling for x86 under x86 with linux
@@ -340,8 +335,7 @@ BR2_PACKAGE_QT_EMB_PLATFORM:=$(strip $(subst ",, $(BR2_PACKAGE_QT_EMB_PLATFORM))
 ifneq ($(findstring pc-linux,$(BR2_GNU_BUILD_SUFFIX)),)
 ifeq ($(BR2_PACKAGE_QT_EMB_PLATFORM),x86)
 QT_CONFIGURE+= -platform linux-g++
-QT_CONFIGURE:=$(strip $(subst ",, $(QT_CONFIGURE)))
-#"))
+QT_CONFIGURE:=$(call qstrip,$(QT_CONFIGURE))
 endif
 endif
 # End of workaround.
