@@ -2,6 +2,4 @@ include .config
 
 
 ARCH:	
-	@echo	$(strip $(subst ",,$(BR2_ARCH)))
-#")))
-
+	@echo	$(call qstrip,$(BR2_ARCH))
