@@ -1,0 +1,15 @@
+diff -urpN busybox-1.14.3/scripts/trylink busybox-1.14.3-trylink-gc-sections/scripts/trylink
+--- busybox-1.14.3/scripts/trylink	2009-08-02 20:16:36.000000000 +0200
++++ busybox-1.14.3-trylink-gc-sections/scripts/trylink	2009-09-09 01:53:45.000000000 +0200
+@@ -99,6 +99,11 @@ else
+ fi
+ )`
+ 
++# The --gc-sections option is not supported by older versions of ld
++if test -n "$GC_SECTIONS"; then
++    GC_SECTIONS=`check_cc "$GC_SECTIONS" ""`
++fi
++
+ # Sanitize lib list (dups, extra spaces etc)
+ LDLIBS=`echo "$LDLIBS" | xargs -n1 | sort | uniq | xargs`
+ 

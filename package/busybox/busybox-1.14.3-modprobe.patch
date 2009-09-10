@@ -1,0 +1,11 @@
+diff -urpN busybox-1.14.3/modutils/modprobe-small.c busybox-1.14.3-modprobe/modutils/modprobe-small.c
+--- busybox-1.14.3/modutils/modprobe-small.c	2009-08-02 20:16:36.000000000 +0200
++++ busybox-1.14.3-modprobe/modutils/modprobe-small.c	2009-09-09 01:55:27.000000000 +0200
+@@ -218,6 +218,7 @@ static void parse_module(module_info *in
+ 	bksp(); /* remove last ' ' */
+ 	appendc('\0');
+ 	info->aliases = copy_stringbuf();
++	replace(info->aliases, '-', '_');
+ 
+ 	/* "dependency1 depandency2" */
+ 	reset_stringbuf();

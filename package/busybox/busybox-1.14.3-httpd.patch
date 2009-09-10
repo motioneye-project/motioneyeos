@@ -1,0 +1,61 @@
+diff -urpN busybox-1.14.3/networking/httpd.c busybox-1.14.3-httpd/networking/httpd.c
+--- busybox-1.14.3/networking/httpd.c	2009-08-02 20:16:36.000000000 +0200
++++ busybox-1.14.3-httpd/networking/httpd.c	2009-09-09 01:54:40.000000000 +0200
+@@ -2101,8 +2101,12 @@ static void handle_incoming_and_exit(con
+ 		}
+ 		send_cgi_and_exit(urlcopy, prequest, length, cookie, content_type);
+ 	}
++#endif
++
++	if (urlp[-1] == '/')
++		strcpy(urlp, index_page);
++	if (stat(tptr, &sb) == 0) {
+ #if ENABLE_FEATURE_HTTPD_CONFIG_WITH_SCRIPT_INTERPR
+-	{
+ 		char *suffix = strrchr(tptr, '.');
+ 		if (suffix) {
+ 			Htaccess *cur;
+@@ -2112,16 +2116,7 @@ static void handle_incoming_and_exit(con
+ 				}
+ 			}
+ 		}
+-	}
+ #endif
+-	if (prequest != request_GET && prequest != request_HEAD) {
+-		send_headers_and_exit(HTTP_NOT_IMPLEMENTED);
+-	}
+-#endif  /* FEATURE_HTTPD_CGI */
+-
+-	if (urlp[-1] == '/')
+-		strcpy(urlp, index_page);
+-	if (stat(tptr, &sb) == 0) {
+ 		file_size = sb.st_size;
+ 		last_mod = sb.st_mtime;
+ 	}
+@@ -2135,19 +2130,18 @@ static void handle_incoming_and_exit(con
+ 			send_cgi_and_exit("/cgi-bin/index.cgi", prequest, length, cookie, content_type);
+ 		}
+ 	}
+-#endif
+-	/* else {
+-	 *	fall through to send_file, it errors out if open fails
+-	 * }
+-	 */
++	/* else fall through to send_file, it errors out if open fails: */
+ 
++	if (prequest != request_GET && prequest != request_HEAD) {
++		/* POST for files does not make sense */
++		send_headers_and_exit(HTTP_NOT_IMPLEMENTED);
++	}
+ 	send_file_and_exit(tptr,
+-#if ENABLE_FEATURE_HTTPD_CGI
+ 		(prequest != request_HEAD ? SEND_HEADERS_AND_BODY : SEND_HEADERS)
++	);
+ #else
+-		SEND_HEADERS_AND_BODY
++	send_file_and_exit(tptr, SEND_HEADERS_AND_BODY);
+ #endif
+-	);
+ }
+ 
+ /*
