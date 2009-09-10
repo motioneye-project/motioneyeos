@@ -1,0 +1,100 @@
+diff -urpN busybox-1.15.0/shell/hush.c busybox-1.15.0-hush/shell/hush.c
+--- busybox-1.15.0/shell/hush.c	2009-08-21 00:26:14.000000000 +0200
++++ busybox-1.15.0-hush/shell/hush.c	2009-09-05 20:08:50.000000000 +0200
+@@ -58,7 +58,7 @@
+  * TODOs:
+  *      grep for "TODO" and fix (some of them are easy)
+  *      builtins: ulimit
+- *      special variables (PWD etc)
++ *      special variables (done: PWD)
+  *      follow IFS rules more precisely, including update semantics
+  *      export builtin should be special, its arguments are assignments
+  *          and therefore expansion of them should be "one-word" expansion:
+@@ -1432,6 +1432,13 @@ static int set_local_var(char *str, int 
+ 	return 0;
+ }
+ 
++/* Used at startup and after each cd */
++static void set_pwd_var(int exp)
++{
++	set_local_var(xasprintf("PWD=%s", get_cwd(/*force:*/ 1)),
++		/*exp:*/ exp, /*lvl:*/ 0, /*ro:*/ 0);
++}
++
+ static int unset_local_var_len(const char *name, int name_len)
+ {
+ 	struct variable *cur;
+@@ -1604,6 +1611,9 @@ static const char* setup_prompt_string(i
+ 		/* Set up the prompt */
+ 		if (promptmode == 0) { /* PS1 */
+ 			free((char*)G.PS1);
++			/* bash uses $PWD value, even if it is set by user.
++			 * It uses current dir only if PWD is unset.
++			 * We always use current dir. */
+ 			G.PS1 = xasprintf("%s %c ", get_cwd(0), (geteuid() != 0) ? '$' : '#');
+ 			prompt_str = G.PS1;
+ 		} else
+@@ -6432,8 +6442,49 @@ int hush_main(int argc, char **argv)
+ 		}
+ 		e++;
+ 	}
++	/* reinstate HUSH_VERSION */
+ 	debug_printf_env("putenv '%s'\n", hush_version_str);
+-	putenv((char *)hush_version_str); /* reinstate HUSH_VERSION */
++	putenv((char *)hush_version_str);
++
++	/* Export PWD */
++	set_pwd_var(/*exp:*/ 1);
++	/* bash also exports SHLVL and _,
++	 * and sets (but doesn't export) the following variables:
++	 * BASH=/bin/bash
++	 * BASH_VERSINFO=([0]="3" [1]="2" [2]="0" [3]="1" [4]="release" [5]="i386-pc-linux-gnu")
++	 * BASH_VERSION='3.2.0(1)-release'
++	 * HOSTTYPE=i386
++	 * MACHTYPE=i386-pc-linux-gnu
++	 * OSTYPE=linux-gnu
++	 * HOSTNAME=<xxxxxxxxxx>
++	 * PPID=<NNNNN>
++	 * EUID=<NNNNN>
++	 * UID=<NNNNN>
++	 * GROUPS=()
++	 * LINES=<NNN>
++	 * COLUMNS=<NNN>
++	 * BASH_ARGC=()
++	 * BASH_ARGV=()
++	 * BASH_LINENO=()
++	 * BASH_SOURCE=()
++	 * DIRSTACK=()
++	 * PIPESTATUS=([0]="0")
++	 * HISTFILE=/<xxx>/.bash_history
++	 * HISTFILESIZE=500
++	 * HISTSIZE=500
++	 * MAILCHECK=60
++	 * PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.
++	 * SHELL=/bin/bash
++	 * SHELLOPTS=braceexpand:emacs:hashall:histexpand:history:interactive-comments:monitor
++	 * TERM=dumb
++	 * OPTERR=1
++	 * OPTIND=1
++	 * IFS=$' \t\n'
++	 * PS1='\s-\v\$ '
++	 * PS2='> '
++	 * PS4='+ '
++	 */
++
+ #if ENABLE_FEATURE_EDITING
+ 	G.line_input_state = new_line_input_t(FOR_SHELL);
+ #endif
+@@ -6816,7 +6867,11 @@ static int FAST_FUNC builtin_cd(char **a
+ 		bb_perror_msg("cd: %s", newdir);
+ 		return EXIT_FAILURE;
+ 	}
+-	get_cwd(1);
++	/* Read current dir (get_cwd(1) is inside) and set PWD.
++	 * Note: do not enforce exporting. If PWD was unset or unexported,
++	 * set it again, but do not export. bash does the same.
++	 */
++	set_pwd_var(/*exp:*/ 0);
+ 	return EXIT_SUCCESS;
+ }
+ 
