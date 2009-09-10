@@ -46,7 +46,7 @@ $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked
 		ac_cv_func_lstat_dereferences_slashed_symlink=yes \
 		ac_cv_func_lstat_empty_string_bug=no \
 		ac_cv_func_stat_empty_string_bug=no \
-		vb_cv_func_rename_trailing_slash_bug=no \
+		gl_cv_func_rename_trailing_slash_bug=no \
 		ac_cv_have_decl_nanosleep=yes \
 		jm_cv_func_nanosleep_works=yes \
 		gl_cv_func_working_utimes=yes \
