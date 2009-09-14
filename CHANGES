@@ -2,6 +2,8 @@
 
 	New packages: divine, libarchive
 
+	Updated/fixed packages: squashfs
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#487: Make kismet package sexier
