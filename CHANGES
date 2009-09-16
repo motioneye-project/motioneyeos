@@ -8,6 +8,7 @@
 
 	#487: Make kismet package sexier
 	#527: misc fixes for dnsmasq package
+	#587: Use iptables multipurpose binaries and bump to 1.4.4
 
 2009.08, Released August 31th, 2009:
 
