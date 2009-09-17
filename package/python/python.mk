@@ -155,7 +155,6 @@ endif
 ifneq ($(BR2_PACKAGE_PYTHON_DEV),y)
 	rm -rf $(TARGET_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
 	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/config
-	find $(TARGET_DIR)/usr/lib/ -name '*.py' -exec rm {} \;
 endif
 ifneq ($(BR2_PACKAGE_PYTHON_BSDDB),y)
 	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/bsddb
