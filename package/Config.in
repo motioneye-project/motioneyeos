@@ -180,9 +180,9 @@ source "package/ncftp/Config.in"
 source "package/neon/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/netcat/Config.in"
-endif
 source "package/netkitbase/Config.in"
 source "package/netkittelnet/Config.in"
+endif
 source "package/netplug/Config.in"
 source "package/netsnmp/Config.in"
 source "package/netstat-nat/Config.in"
@@ -207,17 +207,13 @@ source "package/socat/Config.in"
 source "package/spawn-fcgi/Config.in"
 source "package/stunnel/Config.in"
 source "package/tcpdump/Config.in"
-source "package/tftpd/Config.in"
 if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+source "package/tftpd/Config.in"
 source "package/thttpd/Config.in"
 source "package/tinyhttpd/Config.in"
 endif
 source "package/tn5250/Config.in"
 source "package/ttcp/Config.in"
-#if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
-# ATTENTION! This was merged into busybox!
-#source "package/udhcp/Config.in"
-#endif
 source "package/udpcast/Config.in"
 source "package/vpnc/Config.in"
 source "package/vsftpd/Config.in"
@@ -236,7 +232,9 @@ source "package/acpid/Config.in"
 source "package/dbus/Config.in"
 source "package/dbus-glib/Config.in"
 source "package/dbus-python/Config.in"
+if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/devmem2/Config.in"
+endif
 source "package/dmraid/Config.in"
 source "package/dosfstools/Config.in"
 source "package/e2fsprogs/Config.in"
