@@ -7,12 +7,12 @@
 
 ifeq ($(BR2_PACKAGE_BUSYBOX_SNAPSHOT),y)
 # Be aware that this changes daily....
-BUSYBOX_DIR:=$(PROJECT_BUILD_DIR)/busybox
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox
 BUSYBOX_SOURCE:=busybox-snapshot.tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads/snapshots
 else
 BUSYBOX_VERSION=$(call qstrip,$(BR2_BUSYBOX_VERSION))
-BUSYBOX_DIR:=$(PROJECT_BUILD_DIR)/busybox-$(BUSYBOX_VERSION)
+BUSYBOX_DIR:=$(BUILD_DIR)/busybox-$(BUSYBOX_VERSION)
 BUSYBOX_SOURCE:=busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_SITE:=http://www.busybox.net/downloads
 endif
@@ -27,7 +27,7 @@ $(DL_DIR)/$(BUSYBOX_SOURCE):
 	$(call DOWNLOAD,$(BUSYBOX_SITE),$(BUSYBOX_SOURCE))
 
 $(BUSYBOX_DIR)/.unpacked: $(DL_DIR)/$(BUSYBOX_SOURCE)
-	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(PROJECT_BUILD_DIR) $(TAR_OPTIONS) -
+	$(BUSYBOX_UNZIP) $(DL_DIR)/$(BUSYBOX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifeq ($(BR2_PACKAGE_SYSKLOGD),y)
 	# if we have external syslogd, force busybox to use it
 	$(SED) "/#include.*busybox\.h/a#define CONFIG_SYSLOGD" $(BUSYBOX_DIR)/init/init.c
@@ -126,11 +126,11 @@ busybox: $(TARGET_DIR)/bin/busybox
 
 busybox-source: $(DL_DIR)/$(BUSYBOX_SOURCE)
 
-busybox-unpacked: host-sed $(PROJECT_BUILD_DIR) $(BUSYBOX_DIR)/.unpacked
+busybox-unpacked: host-sed $(BUILD_DIR) $(BUSYBOX_DIR)/.unpacked
 
-busybox-config: host-sed $(PROJECT_BUILD_DIR) $(BUSYBOX_DIR)/.config
+busybox-config: host-sed $(BUILD_DIR) $(BUSYBOX_DIR)/.config
 
-busybox-menuconfig: host-sed $(PROJECT_BUILD_DIR) busybox-source $(BUSYBOX_DIR)/.config
+busybox-menuconfig: host-sed $(BUILD_DIR) busybox-source $(BUSYBOX_DIR)/.config
 	$(MAKE) __TARGET_ARCH=$(ARCH) -C $(BUSYBOX_DIR) menuconfig
 
 busybox-update:

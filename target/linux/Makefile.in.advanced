@@ -48,7 +48,7 @@ BOARD_PATH:=$(call qstrip,$(BR2_BOARD_PATH))
 endif
 
 # Version of Linux AFTER patches
-LINUX26_DIR:=$(PROJECT_BUILD_DIR)/linux-$(LINUX26_VERSION)
+LINUX26_DIR:=$(BUILD_DIR)/linux-$(LINUX26_VERSION)
 
 # for packages that need it
 LINUX_VERSION:=$(LINUX26_VERSION)
@@ -132,7 +132,7 @@ endif
 # --------------
 # UIMAGE
 ifeq ($(LINUX26_FORMAT),uImage)
-LINUX26_MKIMAGE_DIR:=$(PROJECT_BUILD_DIR)/u-boot-tools
+LINUX26_MKIMAGE_DIR:=$(BUILD_DIR)/u-boot-tools
 LINUX26_MKIMAGE_DEP:=$(LINUX26_MKIMAGE_DIR)/mkimage
 ifeq ($(LINUX26_BINLOC),)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
@@ -200,17 +200,17 @@ endif
 $(LINUX26_DIR)/.unpacked: $(DL_DIR)/$(LINUX26_SOURCE)
 	rm -rf $(LINUX26_DIR)
 	@echo "*** Unpacking kernel source"
-	$(LINUX26_BZCAT) $(DL_DIR)/$(LINUX26_SOURCE) | tar -C $(PROJECT_BUILD_DIR) $(TAR_OPTIONS) -
+	$(LINUX26_BZCAT) $(DL_DIR)/$(LINUX26_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 ifneq ($(DOWNLOAD_LINUX26_VERSION),$(LINUX26_VERSION))
 	# Rename the dir from the downloaded version to the AFTER patch version
-	mv -f $(PROJECT_BUILD_DIR)/linux-$(DOWNLOAD_LINUX26_VERSION) $(LINUX26_DIR)
-	echo $(LINUX26_VERSION_PROBED) > $(PROJECT_BUILD_DIR)/.linux-version
+	mv -f $(BUILD_DIR)/linux-$(DOWNLOAD_LINUX26_VERSION) $(LINUX26_DIR)
+	echo $(LINUX26_VERSION_PROBED) > $(BUILD_DIR)/.linux-version
 endif
 	touch $@
 
 
 # -----------------------------------------------------------------------------
-LINUX26_TARGETS+=$(LINUX26_KERNEL) $(PROJECT_BUILD_DIR)/.linux-version
+LINUX26_TARGETS+=$(LINUX26_KERNEL) $(BUILD_DIR)/.linux-version
 
 ifeq ($(BR2_LINUX_COPYTO_ROOTFS),y)
 LINUX26_TARGETS+=$(TARGET_DIR)/boot/$(LINUX26_KERNEL_NAME)
@@ -381,7 +381,7 @@ $(LINUX26_KERNEL): $(LINUX26_DIR)/$(LINUX26_BINLOC)
 	touch $@
 
 # -----------------------------------------------------------------------------
-$(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed: $(LINUX26_DIR)/.depend_done
+$(STAMP_DIR)/linux_modules_target_installed: $(LINUX26_DIR)/.depend_done
 	rm -rf $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION_PROBED)
 	rm -f $(TARGET_DIR)/sbin/cardmgr
 	# Make Linux depend on modules only if enabled in the .config.
@@ -441,8 +441,8 @@ $(LINUX_COPYTO)/$(LINUX26_KERNEL_NAME): $(LINUX26_KERNEL)
 	touch $@
 endif
 
-$(PROJECT_BUILD_DIR)/.linux-version: $(LINUX26_KERNEL)
-	echo $(LINUX26_VERSION_PROBED) > $(PROJECT_BUILD_DIR)/.linux-version
+$(BUILD_DIR)/.linux-version: $(LINUX26_KERNEL)
+	echo $(LINUX26_VERSION_PROBED) > $(BUILD_DIR)/.linux-version
 	echo LINUX_MODULES=`$(LINUX26_VERSION_PROBED)`
 
 $(LINUX26_MKIMAGE_DIR)/mkimage:	$(U_BOOT_TOOLS)
@@ -451,9 +451,9 @@ $(LINUX26_MKIMAGE_DIR)/mkimage:	$(U_BOOT_TOOLS)
 
 linux26: $(LINUX26_TARGETS)
 
-linux26-version: $(PROJECT_BUILD_DIR)/.linux-version
+linux26-version: $(BUILD_DIR)/.linux-version
 
-linux26-modules: cross-depmod26 $(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed
+linux26-modules: cross-depmod26 $(STAMP_DIR)/linux_modules_target_installed
 
 linux26-source: $(DL_DIR)/$(LINUX26_SOURCE)
 
@@ -470,7 +470,7 @@ linux26-force:
 
 # This has been renamed so we do _NOT_ by default run this on 'make clean'
 linux26clean:
-	rm -f $(PROJECT_BUILD_DIR)/autotools-stamps/linux_modules_target_installed
+	rm -f $(STAMP_DIR)/linux_modules_target_installed
 	rm -f $(LINUX26_KERNEL) $(LINUX26_DIR)/.configured
 	-$(MAKE) PATH=$(TARGET_PATH) -C $(LINUX26_DIR) clean
 
@@ -531,7 +531,7 @@ linux-status:
 	@echo LINUX26_TARGETS=$(LINUX26_TARGETS)
 	@echo LINUX26_VERSION=$(LINUX26_VERSION)
 	@echo LINUX26_MAKE_FLAGS=$(LINUX26_MAKE_FLAGS)
-	@echo PROJECT_BUILD_DIR=$(PROJECT_BUILD_DIR)
+	@echo BUILD_DIR=$(BUILD_DIR)
 	@echo TARGETS=$(TARGETS)
 
 endif

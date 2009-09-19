@@ -20,7 +20,7 @@ LINUX26_KCONFIG:=$(BOARD_PATH)/$(BOARD_NAME)-linux.config
 endif
 
 # This should be part of target/linux/Makefile.in
-LINUX26_BUILD_DIR:=$(PROJECT_BUILD_DIR)
+LINUX26_BUILD_DIR:=$(BUILD_DIR)
 
 LINUX26_BINLOC=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
 
@@ -38,7 +38,7 @@ endif
 # Needs to be AFTER board specific Makefiles
 
 kwikbyte_status:
-	@echo PROJECT_BUILD_DIR=$(PROJECT_BUILD_DIR)
+	@echo BUILD_DIR=$(BUILD_DIR)
 	@echo BOARD_NAME=$(BOARD_NAME)
 	@echo BR2_BOARD_PATH=$(BR2_BOARD_PATH)
 	@echo MAJOR_MINOR=$(LINUX_MAJOR_VER)$(LINUX_MINOR_VER)
