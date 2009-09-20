@@ -1,11 +1,12 @@
 2009.11, Not yet released:
 
-	New packages: divine, libarchive
+	New packages: divine, libarchive, sdl_sound
 
 	Updated/fixed packages: squashfs
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#477: Add sdl_sound package
 	#487: Make kismet package sexier
 	#527: misc fixes for dnsmasq package
 	#565: libevent: Bump version and clean up makefile
