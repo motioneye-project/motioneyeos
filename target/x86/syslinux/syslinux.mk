@@ -22,12 +22,12 @@ ifeq ($(SYSLINUX_SUPPORTED_ARCH),y)
 #
 #############################################################
 
-SYSLINUX_VERSION:=3.61
+SYSLINUX_VERSION:=3.82
 SYSLINUX_DIR=$(BUILD_DIR)/syslinux-$(SYSLINUX_VERSION)
 SYSLINUX_DIR2=$(TOOLCHAIN_DIR)/syslinux-$(SYSLINUX_VERSION)
 SYSLINUX_SOURCE=syslinux-$(SYSLINUX_VERSION).tar.bz2
 SYSLINUX_CAT:=$(BZCAT)
-SYSLINUX_SITE=$(BR2_KERNEL_MIRROR)/linux/utils/boot/syslinux/Old
+SYSLINUX_SITE=$(BR2_KERNEL_MIRROR)/linux/utils/boot/syslinux/
 SYSLINUX_BIN=$(SYSLINUX_DIR2)/mtools/syslinux
 
 

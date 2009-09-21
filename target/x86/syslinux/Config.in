@@ -3,6 +3,7 @@ config BR2_TARGET_SYSLINUX
 	depends on BR2_i386
 	help
 	  The syslinux bootloader for x86 systems.
+	  This includes: syslinux, pxelinux, extlinux.
 
 config BR2_TARGET_PXELINUX
 	bool "pxelinux"

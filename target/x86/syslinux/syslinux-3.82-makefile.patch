@@ -1,0 +1,11 @@
+--- syslinux-3.82-org/Makefile	2009-09-17 13:11:23.000000000 +0200
++++ syslinux-3.82/Makefile	2009-09-17 13:13:32.000000000 +0200
+@@ -42,7 +42,7 @@
+ 	mbr/mbr_c.bin mbr/altmbr_c.bin mbr/gptmbr_c.bin \
+ 	mbr/mbr_f.bin mbr/altmbr_f.bin mbr/gptmbr_f.bin \
+ 	core/pxelinux.0 core/isolinux.bin core/isolinux-debug.bin \
+-	gpxe/gpxelinux.0 dos/syslinux.com win32/syslinux.exe \
++	gpxe/gpxelinux.0 dos/syslinux.com \
+ 	$(MODULES)
+ 
+ # BSUBDIRs build the on-target binary components.
