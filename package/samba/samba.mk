@@ -36,6 +36,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		samba_cv_CC_NEGATIVE_ENUM_VALUES=yes \
 		samba_cv_fpie=no \
 		libreplace_cv_HAVE_IPV6=$(if $(BR2_INET_IPV6),yes,no) \
+		AVAHI_LIBS=-pthread \
 		./configure \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
