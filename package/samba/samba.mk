@@ -11,6 +11,8 @@ SAMBA_CAT:=$(ZCAT)
 SAMBA_BINARY:=bin/smbd
 SAMBA_TARGET_BINARY:=usr/sbin/smbd
 
+SAMBA_DEPENDENCIES=libiconv
+
 ifeq ($(BR2_PACKAGE_SAMBA_LIBSMBCLIENT),y)
 SAMBA_LIBSMBCLIENT := libsmbclient
 SAMBA_CONF_OPTIONS := --enable-libsmbclient
@@ -18,6 +20,21 @@ else
 SAMBA_LIBSMBCLIENT :=
 SAMBA_CONF_OPTIONS := --disable-libsmbclient
 endif
+
+ifeq ($(BR2_PACKAGE_AVAHI),y)
+SAMBA_CONF_OPTIONS := --enable-avahi
+SAMBA_DEPENDENCIES += avahi
+else
+SAMBA_CONF_OPTIONS := --disable-avahi
+endif
+
+ifeq ($(BR2_PACKAGE_GAMIN),y)
+SAMBA_CONF_OPTIONS := --enable-fam
+SAMBA_DEPENDENCIES += gamin
+else
+SAMBA_CONF_OPTIONS := --disable-fam
+endif
+
 
 $(DL_DIR)/$(SAMBA_SOURCE):
 	$(call DOWNLOAD,$(SAMBA_SITE),$(SAMBA_SOURCE))
@@ -147,7 +164,7 @@ libsmbclient: $(SAMBA_DIR)/bin/libsmbclient.so
 		DESTDIR="$(STAGING_DIR)" \
 		-C $(SAMBA_DIR) installlibs
 
-samba: libiconv $(TARGET_DIR)/$(SAMBA_TARGET_BINARY) $(SAMBA_LIBSMBCLIENT)
+samba: $(SAMBA_DEPENDENCIES) $(TARGET_DIR)/$(SAMBA_TARGET_BINARY) $(SAMBA_LIBSMBCLIENT)
 
 samba-source: $(DL_DIR)/$(SAMBA_SOURCE)
 
