@@ -11,6 +11,14 @@ SAMBA_CAT:=$(ZCAT)
 SAMBA_BINARY:=bin/smbd
 SAMBA_TARGET_BINARY:=usr/sbin/smbd
 
+ifeq ($(BR2_PACKAGE_SAMBA_LIBSMBCLIENT),y)
+SAMBA_LIBSMBCLIENT := libsmbclient
+SAMBA_CONF_OPTIONS := --enable-libsmbclient
+else
+SAMBA_LIBSMBCLIENT :=
+SAMBA_CONF_OPTIONS := --disable-libsmbclient
+endif
+
 $(DL_DIR)/$(SAMBA_SOURCE):
 	$(call DOWNLOAD,$(SAMBA_SITE),$(SAMBA_SOURCE))
 
@@ -58,6 +66,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		--disable-static \
 		--disable-cups \
 		$(DISABLE_LARGEFILE) \
+		$(SAMBA_CONF_OPTIONS) \
 	)
 	touch $@
 
@@ -112,7 +121,6 @@ $(TARGET_DIR)/$(SAMBA_TARGET_BINARY): $(SAMBA_DIR)/$(SAMBA_BINARY)
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/ldb, add del edit modify search)
 	# Remove not used library by Samba binaries
 	rm -f $(TARGET_DIR)/usr/lib/libnetapi*
-	rm -f $(TARGET_DIR)/usr/lib/libsmbclient*
 	rm -f $(TARGET_DIR)/usr/lib/libtalloc*
 	rm -f $(TARGET_DIR)/usr/lib/libtdb*
 	# Remove not wanted Samba binaries
@@ -134,7 +142,12 @@ endif
 	rm -rf $(TARGET_DIR)/var/cache/samba
 	rm -rf $(TARGET_DIR)/var/lib/samba
 
-samba: libiconv $(TARGET_DIR)/$(SAMBA_TARGET_BINARY)
+libsmbclient: $(SAMBA_DIR)/bin/libsmbclient.so
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) \
+		DESTDIR="$(STAGING_DIR)" \
+		-C $(SAMBA_DIR) installlibs
+
+samba: libiconv $(TARGET_DIR)/$(SAMBA_TARGET_BINARY) $(SAMBA_LIBSMBCLIENT)
 
 samba-source: $(DL_DIR)/$(SAMBA_SOURCE)
 

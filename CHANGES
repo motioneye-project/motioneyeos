@@ -6,6 +6,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#301: allow to install libsmbclient
 	#477: Add sdl_sound package
 	#487: Make kismet package sexier
 	#527: misc fixes for dnsmasq package

@@ -40,6 +40,15 @@ config BR2_PACKAGE_SAMBA_FINDSMB
 comment "findsmb       - disabled (requires nmblookup, smbclient and perl)"
 	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT || !BR2_PACKAGE_SAMBA_NMBLOOKUP || !BR2_PACKAGE_MICROPERL
 
+config BR2_PACKAGE_SAMBA_LIBSMBCLIENT
+	bool "libsmbclient"
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  libsmbclient is a library toolset that permits applications
+	  to manipulate CIFS/SMB network resources using many of the
+	  standards POSIX functions available for manipulating local
+	  files.
+
 config BR2_PACKAGE_SAMBA_NET
 	bool "net"
 	default y
