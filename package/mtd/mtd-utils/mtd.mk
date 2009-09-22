@@ -6,7 +6,7 @@
 MTD_VERSION:=1.1.0
 MTD_SOURCE:=mtd-utils-$(MTD_VERSION).tar.bz2
 MTD_SITE:=ftp://ftp.infradead.org/pub/mtd-utils
-MTD_HOST_DIR:= $(TOOL_BUILD_DIR)/mtd_orig
+MTD_HOST_DIR:= $(TOOLCHAIN_DIR)/mtd_orig
 MTD_DIR:=$(BUILD_DIR)/mtd_orig
 MTD_CAT:=$(BZCAT)
 MTD_NAME:=mtd-utils-$(MTD_VERSION)
@@ -24,9 +24,9 @@ $(DL_DIR)/$(MTD_SOURCE):
 	$(call DOWNLOAD,$(MTD_SITE),$(MTD_SOURCE))
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOLCHAIN_DIR) $(TAR_OPTIONS) -
 	rm -rf $(MTD_HOST_DIR)
-	mv $(TOOL_BUILD_DIR)/$(MTD_NAME) $(MTD_HOST_DIR)
+	mv $(TOOLCHAIN_DIR)/$(MTD_NAME) $(MTD_HOST_DIR)
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
 		package/mtd/mtd-utils mtd-utils-$(MTD_VERSION)-all\*.patch
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \

@@ -23,19 +23,19 @@ include target/xtensa/patch.in
 GDB_PATCH_EXTRA:=$(call XTENSA_PATCH,gdb,$(GDB_PATCH_DIR),. ..)
 endif
 
-GDB_DIR:=$(TOOL_BUILD_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
+GDB_DIR:=$(TOOLCHAIN_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
 
 $(DL_DIR)/$(GDB_SOURCE):
 	$(call DOWNLOAD,$(GDB_SITE),$(GDB_SOURCE))
 
 gdb-unpacked: $(GDB_DIR)/.unpacked
 $(GDB_DIR)/.unpacked: $(DL_DIR)/$(GDB_SOURCE)
-	mkdir -p $(TOOL_BUILD_DIR)
-	$(GDB_CAT) $(DL_DIR)/$(GDB_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	mkdir -p $(TOOLCHAIN_DIR)
+	$(GDB_CAT) $(DL_DIR)/$(GDB_SOURCE) | tar -C $(TOOLCHAIN_DIR) $(TAR_OPTIONS) -
 ifeq ($(GDB_VERSION),snapshot)
 	GDB_REAL_DIR=$(shell \
 		tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1)
-	ln -sf $(TOOL_BUILD_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
+	ln -sf $(TOOLCHAIN_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
 endif
 	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch $(GDB_PATCH_EXTRA)
 	$(CONFIG_UPDATE) $(@D)
@@ -174,7 +174,7 @@ gdbserver-dirclean:
 #
 ######################################################################
 
-GDB_HOST_DIR:=$(TOOL_BUILD_DIR)/gdbhost-$(GDB_VERSION)
+GDB_HOST_DIR:=$(TOOLCHAIN_DIR)/gdbhost-$(GDB_VERSION)
 
 $(GDB_HOST_DIR)/.configured: $(GDB_DIR)/.unpacked
 	mkdir -p $(GDB_HOST_DIR)

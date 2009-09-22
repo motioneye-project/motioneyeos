@@ -7,7 +7,7 @@ GMP_VERSION:=4.2.4
 GMP_SOURCE:=gmp-$(GMP_VERSION).tar.bz2
 GMP_SITE:=$(BR2_GNU_MIRROR)/gmp
 GMP_CAT:=$(BZCAT)
-GMP_DIR:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)
+GMP_DIR:=$(TOOLCHAIN_DIR)/gmp-$(GMP_VERSION)
 GMP_TARGET_DIR:=$(BUILD_DIR)/gmp-$(GMP_VERSION)
 GMP_BINARY:=libgmp$(LIBTGTEXT)
 GMP_HOST_BINARY:=libgmp$(HOST_LIBEXT)
@@ -25,7 +25,7 @@ $(DL_DIR)/$(GMP_SOURCE):
 libgmp-source: $(DL_DIR)/$(GMP_SOURCE)
 
 $(GMP_DIR)/.unpacked: $(DL_DIR)/$(GMP_SOURCE)
-	$(GMP_CAT) $(DL_DIR)/$(GMP_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(GMP_CAT) $(DL_DIR)/$(GMP_SOURCE) | tar -C $(TOOLCHAIN_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(GMP_DIR) package/gmp/ \*.patch
 	$(CONFIG_UPDATE) $(@D)
 	touch $@
@@ -72,8 +72,8 @@ libgmp-clean:
 libgmp-dirclean:
 	rm -rf $(GMP_TARGET_DIR) $(GMP_DIR)
 
-GMP_DIR2:=$(TOOL_BUILD_DIR)/gmp-$(GMP_VERSION)-host
-GMP_HOST_DIR:=$(TOOL_BUILD_DIR)/gmp
+GMP_DIR2:=$(TOOLCHAIN_DIR)/gmp-$(GMP_VERSION)-host
+GMP_HOST_DIR:=$(TOOLCHAIN_DIR)/gmp
 $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 	mkdir -p $(GMP_DIR2)
 	(cd $(GMP_DIR2); rm -rf config.cache; \

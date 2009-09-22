@@ -9,7 +9,7 @@ MPFR_PATCH_FILE:=mpfr-$(MPFR_VERSION).patch
 MPFR_SOURCE:=mpfr-$(MPFR_VERSION).tar.bz2
 MPFR_CAT:=$(BZCAT)
 MPFR_SITE:=http://www.mpfr.org/mpfr-$(MPFR_VERSION)
-MPFR_DIR:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)
+MPFR_DIR:=$(TOOLCHAIN_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_TARGET_DIR:=$(BUILD_DIR)/mpfr-$(MPFR_VERSION)
 MPFR_BINARY:=libmpfr$(LIBTGTEXT)
 MPFR_HOST_BINARY:=libmpfr$(HOST_LIBEXT)
@@ -30,7 +30,7 @@ $(DL_DIR)/$(MPFR_SOURCE):
 	 $(call DOWNLOAD,$(MPFR_SITE),$(MPFR_SOURCE))
 
 $(MPFR_DIR)/.unpacked: $(DL_DIR)/$(MPFR_SOURCE) $(MPFR_PATCH_SOURCE)
-	$(MPFR_CAT) $(DL_DIR)/$(MPFR_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(MPFR_CAT) $(DL_DIR)/$(MPFR_SOURCE) | tar -C $(TOOLCHAIN_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(MPFR_DIR) package/mpfr/ \*.patch
 	$(CONFIG_UPDATE) $(@D)
 ifneq ($(MPFR_PATCH),)
@@ -86,8 +86,8 @@ libmpfr-clean:
 libmpfr-dirclean:
 	rm -rf $(MPFR_TARGET_DIR)
 
-MPFR_DIR2:=$(TOOL_BUILD_DIR)/mpfr-$(MPFR_VERSION)-host
-MPFR_HOST_DIR:=$(TOOL_BUILD_DIR)/mpfr
+MPFR_DIR2:=$(TOOLCHAIN_DIR)/mpfr-$(MPFR_VERSION)-host
+MPFR_HOST_DIR:=$(TOOLCHAIN_DIR)/mpfr
 $(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_HOST_BINARY)
 	mkdir -p $(MPFR_DIR2)
 	(cd $(MPFR_DIR2); \

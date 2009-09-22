@@ -6,7 +6,7 @@
 MTD_VERSION:=fcb52ccc99679460640386c297023f852b108f68
 MTD_SOURCE:=mtd-utils-$(MTD_VERSION).tar.gz
 MTD_URL:=http://git.infradead.org/mtd-utils.git?a=snapshot;h=$(MTD_VERSION);sf=tgz
-MTD_HOST_DIR:= $(TOOL_BUILD_DIR)/mtd-utils-$(MTD_VERSION)
+MTD_HOST_DIR:= $(TOOLCHAIN_DIR)/mtd-utils-$(MTD_VERSION)
 MTD_DIR:=$(BUILD_DIR)/mtd-utils-$(MTD_VERSION)
 MTD_CAT:=$(ZCAT)
 MTD_NAME:=mtd-utils
@@ -24,9 +24,9 @@ $(DL_DIR)/$(MTD_SOURCE):
 	$(WGET) -O $(DL_DIR)/$(MTD_SOURCE) "$(MTD_URL)"
 
 $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
-	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(MTD_CAT) $(DL_DIR)/$(MTD_SOURCE) | tar -C $(TOOLCHAIN_DIR) $(TAR_OPTIONS) -
 	rm -rf $(MTD_HOST_DIR)
-	mv $(TOOL_BUILD_DIR)/$(MTD_NAME) $(MTD_HOST_DIR)
+	mv $(TOOLCHAIN_DIR)/$(MTD_NAME) $(MTD_HOST_DIR)
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \
 		package/mtd/mtd-utils.git mtd-utils-all\*.patch
 	toolchain/patch-kernel.sh $(MTD_HOST_DIR) \

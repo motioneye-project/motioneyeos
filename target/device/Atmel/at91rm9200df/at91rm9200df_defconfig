@@ -283,7 +283,7 @@ BR2_GCC_SHARED_LIBGCC=y
 # Ccache Options
 #
 BR2_CCACHE=y
-BR2_CCACHE_DIR="$(TOOL_BUILD_DIR)/ccache-$(CCACHE_VER)/cache"
+BR2_CCACHE_DIR="$(TOOLCHAIN_DIR)/ccache-$(CCACHE_VER)/cache"
 
 #
 # Gdb Options

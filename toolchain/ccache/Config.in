@@ -10,7 +10,7 @@ config BR2_CCACHE
 config BR2_CCACHE_DIR
 	string "ccache dir location?"
 	depends on BR2_CCACHE
-	default "$(TOOL_BUILD_DIR)/ccache-$(CCACHE_VER)/cache"
+	default "$(TOOLCHAIN_DIR)/ccache-$(CCACHE_VER)/cache"
 	help
 	    Where ccache should store cached files.
 

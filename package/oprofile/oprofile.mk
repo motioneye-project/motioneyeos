@@ -6,7 +6,7 @@
 OPROFILE_VERSION := 0.9.4
 OPROFILE_CONF_OPT :=	--localstatedir=/var \
 			--with-extra-includes="$(BUILD_DIR)/binutils-$(BR2_BINUTILS_VERSION)-target/bfd \
-			-I$(TOOL_BUILD_DIR)/binutils-$(BR2_BINUTILS_VERSION)/include" \
+			-I$(TOOLCHAIN_DIR)/binutils-$(BR2_BINUTILS_VERSION)/include" \
 			--with-extra-libs=$(BUILD_DIR)/binutils-$(BR2_BINUTILS_VERSION)-target/bfd \
 			--with-kernel-support
 

@@ -56,7 +56,7 @@ GCC_PATCH_EXTRA:=$(call XTENSA_PATCH,gcc,$(GCC_PATCH_DIR),. ..)
 endif
 
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VERSION).tar.bz2
-GCC_DIR:=$(TOOL_BUILD_DIR)/gcc-$(GCC_OFFICIAL_VERSION)
+GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_OFFICIAL_VERSION)
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=nope
 GCC_SRC_DIR:=$(GCC_DIR)
@@ -125,7 +125,7 @@ GCC_WITH_HOST_MPFR=--with-mpfr=$(MPFR_HOST_DIR)
 ifeq ($(BR2_INSTALL_FORTRAN),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),fortran
 #GCC_TARGET_PREREQ+=$(TARGET_DIR)/usr/lib/libmpfr.so $(TARGET_DIR)/usr/lib/libgmp.so
-#GCC_STAGING_PREREQ+=$(TOOL_BUILD_DIR)/mpfr/lib/libmpfr.so
+#GCC_STAGING_PREREQ+=$(TOOLCHAIN_DIR)/mpfr/lib/libmpfr.so
 GCC_WITH_TARGET_GMP=--with-gmp="$(GMP_TARGET_DIR)"
 GCC_WITH_TARGET_MPFR=--with-mpfr="$(MPFR_TARGET_DIR)"
 endif
@@ -160,9 +160,9 @@ $(DL_DIR)/$(GCC_SOURCE):
 
 gcc-unpacked: $(GCC_DIR)/.patched
 $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
-	mkdir -p $(TOOL_BUILD_DIR)
+	mkdir -p $(TOOLCHAIN_DIR)
 	rm -rf $(GCC_DIR)
-	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOL_BUILD_DIR) $(TAR_OPTIONS) -
+	$(GCC_CAT) $(DL_DIR)/$(GCC_SOURCE) | tar -C $(TOOLCHAIN_DIR) $(TAR_OPTIONS) -
 	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
@@ -196,7 +196,7 @@ endif
 # build the first pass gcc compiler
 #
 #############################################################
-GCC_BUILD_DIR1:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-initial
+GCC_BUILD_DIR1:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)-initial
 
 
 # The --without-headers option stopped working with gcc 3.0 and has never been
@@ -274,7 +274,7 @@ gcc_initial-dirclean:
 # affect gcc-target. However, I haven't tested gcc-target yet so no
 # guarantees. mjn3
 
-GCC_BUILD_DIR2:=$(TOOL_BUILD_DIR)/gcc-$(GCC_VERSION)-final
+GCC_BUILD_DIR2:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)-final
 $(GCC_BUILD_DIR2)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 	mkdir -p $(GCC_BUILD_DIR2)
 	# Important! Required for limits.h to be fixed.
