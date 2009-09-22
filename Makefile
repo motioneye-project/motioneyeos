@@ -232,7 +232,7 @@ $(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 
 DL_DIR=$(call qstrip,$(BR2_DL_DIR))
 ifeq ($(DL_DIR),)
-DL_DIR:=$(BASE_DIR)/dl
+DL_DIR:=$(TOPDIR)/dl
 endif
 
 BUILD_DIR:=$(BASE_DIR)/build
@@ -443,7 +443,7 @@ dirclean: $(TARGETS_DIRCLEAN)
 	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE) $(BUILD_DIR)/.root $(STAMP_DIR)
 
 distclean:
-ifeq ($(DL_DIR),$(BASE_DIR)/dl)
+ifeq ($(DL_DIR),$(TOPDIR)/dl)
 	rm -rf $(DL_DIR)
 endif
 	rm -rf $(TOOLCHAIN_DIR) $(BUILD_DIR) $(BINARIES_DIR) \
