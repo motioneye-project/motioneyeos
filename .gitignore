@@ -1,7 +1,4 @@
-/build_*
-/project_*
-/toolchain_*
-/binaries
+/output
 /dl
 /.auto.deps
 /.config.cmd
