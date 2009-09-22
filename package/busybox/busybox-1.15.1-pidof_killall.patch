@@ -1,0 +1,250 @@
+diff -urpN busybox-1.15.1/libbb/procps.c busybox-1.15.1-pidof_killall/libbb/procps.c
+--- busybox-1.15.1/libbb/procps.c	2009-09-12 17:55:58.000000000 +0200
++++ busybox-1.15.1-pidof_killall/libbb/procps.c	2009-09-22 23:03:59.000000000 +0200
+@@ -134,8 +134,8 @@ static unsigned long fast_strtoul_16(cha
+ 	return n;
+ }
+ /* TOPMEM uses fast_strtoul_10, so... */
+-#undef ENABLE_FEATURE_FAST_TOP
+-#define ENABLE_FEATURE_FAST_TOP 1
++# undef ENABLE_FEATURE_FAST_TOP
++# define ENABLE_FEATURE_FAST_TOP 1
+ #endif
+ 
+ #if ENABLE_FEATURE_FAST_TOP
+@@ -198,14 +198,16 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 		if (errno)
+ 			continue;
+ 
+-		/* After this point we have to break, not continue
+-		 * ("continue" would mean that current /proc/NNN
+-		 * is not a valid process info) */
++		/* After this point we can:
++		 * "break": stop parsing, return the data
++		 * "continue": try next /proc/XXX
++		 */
+ 
+ 		memset(&sp->vsz, 0, sizeof(*sp) - offsetof(procps_status_t, vsz));
+ 
+ 		sp->pid = pid;
+-		if (!(flags & ~PSSCAN_PID)) break;
++		if (!(flags & ~PSSCAN_PID))
++			break; /* we needed only pid, we got it */
+ 
+ #if ENABLE_SELINUX
+ 		if (flags & PSSCAN_CONTEXT) {
+@@ -218,7 +220,7 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 
+ 		if (flags & PSSCAN_UIDGID) {
+ 			if (stat(filename, &sb))
+-				break;
++				continue; /* process probably exited */
+ 			/* Effective UID/GID, not real */
+ 			sp->uid = sb.st_uid;
+ 			sp->gid = sb.st_gid;
+@@ -234,10 +236,10 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 			strcpy(filename_tail, "stat");
+ 			n = read_to_buf(filename, buf);
+ 			if (n < 0)
+-				break;
++				continue; /* process probably exited */
+ 			cp = strrchr(buf, ')'); /* split into "PID (cmd" and "<rest>" */
+ 			/*if (!cp || cp[1] != ' ')
+-				break;*/
++				continue;*/
+ 			cp[0] = '\0';
+ 			if (sizeof(sp->comm) < 16)
+ 				BUG_comm_size();
+@@ -257,12 +259,12 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 				"%lu "                 /* start_time */
+ 				"%lu "                 /* vsize */
+ 				"%lu "                 /* rss */
+-#if ENABLE_FEATURE_TOP_SMP_PROCESS
++# if ENABLE_FEATURE_TOP_SMP_PROCESS
+ 				"%*s %*s %*s %*s %*s %*s " /*rss_rlim, start_code, end_code, start_stack, kstk_esp, kstk_eip */
+ 				"%*s %*s %*s %*s "         /*signal, blocked, sigignore, sigcatch */
+ 				"%*s %*s %*s %*s "         /*wchan, nswap, cnswap, exit_signal */
+ 				"%d"                       /*cpu last seen on*/
+-#endif
++# endif
+ 				,
+ 				sp->state, &sp->ppid,
+ 				&sp->pgid, &sp->sid, &tty,
+@@ -271,17 +273,17 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 				&sp->start_time,
+ 				&vsz,
+ 				&rss
+-#if ENABLE_FEATURE_TOP_SMP_PROCESS
++# if ENABLE_FEATURE_TOP_SMP_PROCESS
+ 				, &sp->last_seen_on_cpu
+-#endif
++# endif
+ 				);
+ 
+ 			if (n < 11)
+-				break;
+-#if ENABLE_FEATURE_TOP_SMP_PROCESS
++				continue; /* bogus data, get next /proc/XXX */
++# if ENABLE_FEATURE_TOP_SMP_PROCESS
+ 			if (n < 11+15)
+ 				sp->last_seen_on_cpu = 0;
+-#endif
++# endif
+ 
+ 			/* vsz is in bytes and we want kb */
+ 			sp->vsz = vsz >> 10;
+@@ -311,14 +313,14 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 			sp->vsz = fast_strtoul_10(&cp) >> 10;
+ 			/* vsz is in bytes but rss is in *PAGES*! Can you believe that? */
+ 			sp->rss = fast_strtoul_10(&cp) << sp->shift_pages_to_kb;
+-#if ENABLE_FEATURE_TOP_SMP_PROCESS
++# if ENABLE_FEATURE_TOP_SMP_PROCESS
+ 			/* (6): rss_rlim, start_code, end_code, start_stack, kstk_esp, kstk_eip */
+ 			/* (4): signal, blocked, sigignore, sigcatch */
+ 			/* (4): wchan, nswap, cnswap, exit_signal */
+ 			cp = skip_fields(cp, 14);
+ //FIXME: is it safe to assume this field exists?
+ 			sp->last_seen_on_cpu = fast_strtoul_10(&cp);
+-#endif
++# endif
+ #endif /* end of !ENABLE_FEATURE_TOP_SMP_PROCESS */
+ 
+ #if ENABLE_FEATURE_PS_ADDITIONAL_COLUMNS
+@@ -343,48 +345,48 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 
+ 			strcpy(filename_tail, "smaps");
+ 			file = fopen_for_read(filename);
+-			if (!file)
+-				break;
+-			while (fgets(buf, sizeof(buf), file)) {
+-				unsigned long sz;
+-				char *tp;
+-				char w;
++			if (file) {
++				while (fgets(buf, sizeof(buf), file)) {
++					unsigned long sz;
++					char *tp;
++					char w;
+ #define SCAN(str, name) \
+ 	if (strncmp(buf, str, sizeof(str)-1) == 0) { \
+ 		tp = skip_whitespace(buf + sizeof(str)-1); \
+ 		sp->name += fast_strtoul_10(&tp); \
+ 		continue; \
+ 	}
+-				SCAN("Shared_Clean:" , shared_clean );
+-				SCAN("Shared_Dirty:" , shared_dirty );
+-				SCAN("Private_Clean:", private_clean);
+-				SCAN("Private_Dirty:", private_dirty);
++					SCAN("Shared_Clean:" , shared_clean );
++					SCAN("Shared_Dirty:" , shared_dirty );
++					SCAN("Private_Clean:", private_clean);
++					SCAN("Private_Dirty:", private_dirty);
+ #undef SCAN
+-				// f7d29000-f7d39000 rw-s ADR M:m OFS FILE
+-				tp = strchr(buf, '-');
+-				if (tp) {
+-					*tp = ' ';
+-					tp = buf;
+-					sz = fast_strtoul_16(&tp); /* start */
+-					sz = (fast_strtoul_16(&tp) - sz) >> 10; /* end - start */
+-					// tp -> "rw-s" string
+-					w = tp[1];
+-					// skipping "rw-s ADR M:m OFS "
+-					tp = skip_whitespace(skip_fields(tp, 4));
+-					// filter out /dev/something (something != zero)
+-					if (strncmp(tp, "/dev/", 5) != 0 || strcmp(tp, "/dev/zero\n") == 0) {
+-						if (w == 'w') {
+-							sp->mapped_rw += sz;
+-						} else if (w == '-') {
+-							sp->mapped_ro += sz;
++					// f7d29000-f7d39000 rw-s ADR M:m OFS FILE
++					tp = strchr(buf, '-');
++					if (tp) {
++						*tp = ' ';
++						tp = buf;
++						sz = fast_strtoul_16(&tp); /* start */
++						sz = (fast_strtoul_16(&tp) - sz) >> 10; /* end - start */
++						// tp -> "rw-s" string
++						w = tp[1];
++						// skipping "rw-s ADR M:m OFS "
++						tp = skip_whitespace(skip_fields(tp, 4));
++						// filter out /dev/something (something != zero)
++						if (strncmp(tp, "/dev/", 5) != 0 || strcmp(tp, "/dev/zero\n") == 0) {
++							if (w == 'w') {
++								sp->mapped_rw += sz;
++							} else if (w == '-') {
++								sp->mapped_ro += sz;
++							}
+ 						}
+-					}
+ //else printf("DROPPING %s (%s)\n", buf, tp);
+-					if (strcmp(tp, "[stack]\n") == 0)
+-						sp->stack += sz;
++						if (strcmp(tp, "[stack]\n") == 0)
++							sp->stack += sz;
++					}
+ 				}
++				fclose(file);
+ 			}
+-			fclose(file);
+ 		}
+ #endif /* TOPMEM */
+ #if ENABLE_FEATURE_PS_ADDITIONAL_COLUMNS
+@@ -393,23 +395,34 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 
+ 			strcpy(filename_tail, "status");
+ 			file = fopen_for_read(filename);
+-			if (!file)
+-				break;
+-			while (fgets(buf, sizeof(buf), file)) {
+-				char *tp;
++			if (file) {
++				while (fgets(buf, sizeof(buf), file)) {
++					char *tp;
+ #define SCAN_TWO(str, name, statement) \
+ 	if (strncmp(buf, str, sizeof(str)-1) == 0) { \
+ 		tp = skip_whitespace(buf + sizeof(str)-1); \
+ 		sscanf(tp, "%u", &sp->name); \
+ 		statement; \
+ 	}
+-				SCAN_TWO("Uid:", ruid, continue);
+-				SCAN_TWO("Gid:", rgid, break);
++					SCAN_TWO("Uid:", ruid, continue);
++					SCAN_TWO("Gid:", rgid, break);
+ #undef SCAN_TWO
++				}
++				fclose(file);
+ 			}
+-			fclose(file);
+ 		}
+ #endif /* PS_ADDITIONAL_COLUMNS */
++		if (flags & PSSCAN_EXE) {
++			strcpy(filename_tail, "exe");
++			free(sp->exe);
++			sp->exe = xmalloc_readlink(filename);
++		}
++		/* Note: if /proc/PID/cmdline is empty,
++		 * code below "breaks". Therefore it must be
++		 * the last code to parse /proc/PID/xxx data
++		 * (we used to have /proc/PID/exe parsing after it
++		 * and were getting stale sp->exe).
++		 */
+ #if 0 /* PSSCAN_CMD is not used */
+ 		if (flags & (PSSCAN_CMD|PSSCAN_ARGV0)) {
+ 			free(sp->argv0);
+@@ -452,13 +465,9 @@ procps_status_t* FAST_FUNC procps_scan(p
+ 			}
+ 		}
+ #endif
+-		if (flags & PSSCAN_EXE) {
+-			strcpy(filename_tail, "exe");
+-			free(sp->exe);
+-			sp->exe = xmalloc_readlink(filename);
+-		}
+ 		break;
+-	}
++	} /* for (;;) */
++
+ 	return sp;
+ }
+ 

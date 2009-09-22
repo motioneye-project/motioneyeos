@@ -1,0 +1,29 @@
+diff -urpN busybox-1.15.1/shell/ash.c busybox-1.15.1-ash/shell/ash.c
+--- busybox-1.15.1/shell/ash.c	2009-09-12 17:56:11.000000000 +0200
++++ busybox-1.15.1-ash/shell/ash.c	2009-09-16 16:29:09.609276492 +0200
+@@ -5553,7 +5553,7 @@ exptilde(char *startp, char *p, int flag
+ 	char *name;
+ 	struct passwd *pw;
+ 	const char *home;
+-	int quotes = flag & (EXP_FULL | EXP_CASE);
++	int quotes = flag & (EXP_FULL | EXP_CASE | EXP_REDIR);
+ 	int startloc;
+ 
+ 	name = p + 1;
+@@ -6321,7 +6321,7 @@ varvalue(char *name, int varflags, int f
+ 	int syntax;
+ 	int quoted = varflags & VSQUOTE;
+ 	int subtype = varflags & VSTYPE;
+-	int quotes = flags & (EXP_FULL | EXP_CASE);
++	int quotes = flags & (EXP_FULL | EXP_CASE | EXP_REDIR);
+ 
+ 	if (quoted && (flags & EXP_FULL))
+ 		sep = 1 << CHAR_BIT;
+@@ -6558,6 +6558,7 @@ evalvar(char *p, int flag, struct strlis
+ 		patloc = expdest - (char *)stackblock();
+ 		if (0 == subevalvar(p, /* str: */ NULL, patloc, subtype,
+ 				startloc, varflags,
++//TODO: | EXP_REDIR too? All other such places do it too
+ 				/* quotes: */ flag & (EXP_FULL | EXP_CASE),
+ 				var_str_list)
+ 		) {
