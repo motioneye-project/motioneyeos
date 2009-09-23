@@ -450,15 +450,6 @@ endif
 	.config.cmd
 	$(MAKE) -C $(CONFIG) clean
 
-sourceball:
-	rm -rf $(BUILD_DIR) $(BUILD_DIR) $(BINARIES_DIR)
-	set -e; \
-	cd ..; \
-	rm -f buildroot.tar.bz2; \
-	tar -cvf buildroot.tar buildroot; \
-	bzip2 -9 buildroot.tar; \
-
-
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 all: menuconfig
