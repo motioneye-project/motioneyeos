@@ -1,8 +1,11 @@
 2009.11, Not yet released:
 
-	New packages: divine, libarchive, sdl_sound
+	New packages: divine, libarchive, libmicrohttpd, sdl_sound
 
-	Updated/fixed packages: squashfs
+	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
+	iptables, kernel-headers, kismet, libevent, libglib2, netkittelnet,
+	openssl, python, radvd, samba, squashfs, syslinux, u-boot,
+	xdata_xcursor-themes,
 
 	Issues resolved (http://bugs.uclibc.org):
 
