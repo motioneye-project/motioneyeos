@@ -9,9 +9,6 @@ OPENSSL_SITE:=http://www.openssl.org/source
 OPENSSL_TARGET_ARCH=generic32
 
 # Some architectures are optimized in OpenSSL
-ifeq ($(ARCH),avr32)
-OPENSSL_TARGET_ARCH=avr32
-endif
 ifeq ($(ARCH),ia64)
 OPENSSL_TARGET_ARCH=ia64
 endif
