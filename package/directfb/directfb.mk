@@ -63,6 +63,9 @@ endif
 ifeq ($(BR2_PACKAGE_DIRECTFB_UNICHROME),y)
 DIRECTFB_GFX+= unichrome
 endif
+ifeq ($(BR2_PACKAGE_DIRECTFB_I830),y)
+DIRECTFB_GFX+= i830
+endif
 ifeq ($(DIRECTFB_GFX),)
 DIRECTFB_GFX:=none
 else

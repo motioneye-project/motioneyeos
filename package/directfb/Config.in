@@ -61,6 +61,11 @@ config BR2_PACKAGE_DIRECTFB_UNICHROME
 	depends on BR2_PACKAGE_DIRECTFB
 	depends on BR2_i386 || BR2_x86_64
 
+config BR2_PACKAGE_DIRECTFB_I830
+	bool "compile i830 graphics driver"
+	depends on BR2_PACKAGE_DIRECTFB
+	depends on BR2_i386 || BR2_x86_64
+
 config BR2_PACKAGE_DIRECTFB_LINUXINPUT
 	bool "compile /dev/input/eventX input driver"
 	default y
