@@ -1,7 +1,7 @@
 config BR2_PACKAGE_DBUS_GLIB
 	bool "dbus-glib"
 	depends on BR2_PACKAGE_DBUS
-	depends on BR2_PACKAGE_EXPAT
+	depends on BR2_DBUS_EXPAT
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  GLib bindings for D-Bus.
@@ -9,4 +9,4 @@ config BR2_PACKAGE_DBUS_GLIB
 	  http://www.freedesktop.org/software/dbus
 
 comment "dbus-glib needs dbus to be compiled with expat support"
-	depends on !BR2_PACKAGE_EXPAT
+	depends on BR2_PACKAGE_DBUS && !BR2_DBUS_EXPAT
