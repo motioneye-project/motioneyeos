@@ -1,0 +1,11 @@
+diff -urpN busybox-1.15.1/coreutils/uniq.c busybox-1.15.1-uniq/coreutils/uniq.c
+--- busybox-1.15.1/coreutils/uniq.c	2009-09-12 17:55:58.000000000 +0200
++++ busybox-1.15.1-uniq/coreutils/uniq.c	2009-09-23 12:56:09.132695142 +0200
+@@ -84,6 +84,7 @@ int uniq_main(int argc UNUSED_PARAM, cha
+ 				break;
+ 			}
+ 
++			free(s1);
+ 			++dups;	 /* note: testing for overflow seems excessive. */
+ 		}
+ 
