@@ -1,6 +1,6 @@
 2009.11, Not yet released:
 
-	New packages: divine, libarchive, libmicrohttpd, sdl_sound
+	New packages: divine, gvfs, libarchive, libmicrohttpd, sdl_sound
 
 	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
 	iptables, kernel-headers, kismet, libevent, libglib2, netkittelnet,
@@ -10,6 +10,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#301: allow to install libsmbclient
+	#303: add gvfs package
 	#477: Add sdl_sound package
 	#487: Make kismet package sexier
 	#527: misc fixes for dnsmasq package
