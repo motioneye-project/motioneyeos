@@ -1,0 +1,29 @@
+config BR2_PACKAGE_SWFDEC
+	bool "swfdec"
+	select BR2_PACKAGE_LIBOIL
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_PANGO
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PNG
+	help
+	  Library to play Flash files
+
+	  http://swfdec.freedesktop.org/
+
+config BR2_PACKAGE_SWFDEC_GTK_SUPPORT
+	bool "gtk support"
+	depends on BR2_PACKAGE_SWFDEC
+	depends on BR2_PACKAGE_LIBGTK2
+	select BR2_PACKAGE_LIBSOUP
+	help
+	  Swfdec-gtk library is used for easy integration
+	  of swfdec in GTK applications
+
+config BR2_PACKAGE_SWFDEC_GSTREAMER
+	bool "gstreamer support"
+	depends on BR2_PACKAGE_SWFDEC
+	select BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	help
+	  Enables GStreamer support
+
