@@ -18,14 +18,14 @@ $(ZLIB_DIR)/.patched: $(DL_DIR)/$(ZLIB_SOURCE)
 	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
-ifneq ($(BR2_PREFER_STATIC_LIB),y)
-ZLIB_PIC := -fPIC
-ZLIB_SHARED := --shared
-ZLIB_TARGET := $(TARGET_DIR)/usr/lib/libz.so
-else
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
 ZLIB_PIC :=
 ZLIB_SHARED :=
 ZLIB_TARGET := $(STAGING_DIR)/usr/lib/libz.a
+else
+ZLIB_PIC := -fPIC
+ZLIB_SHARED := --shared
+ZLIB_TARGET := $(TARGET_DIR)/usr/lib/libz.so
 endif
 
 $(ZLIB_DIR)/.configured: $(ZLIB_DIR)/.patched
