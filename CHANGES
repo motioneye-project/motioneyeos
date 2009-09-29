@@ -1,6 +1,7 @@
 2009.11, Not yet released:
 
-	New packages: divine, gvfs, libarchive, libmicrohttpd, sdl_sound
+	New packages: divine, gvfs, libarchive, libmicrohttpd,
+	sdl_sound, swfdec
 
 	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
 	iptables, kernel-headers, kismet, libevent, libglib2, netkittelnet,
