@@ -61,9 +61,22 @@ config BR2_TARGET_GENERIC_DEV_SYSTEM
 comment "Generic development system requires a toolchain with WCHAR and PROGRAM_INVOCATION support"
 	depends on !(BR2_USE_WCHAR && BR2_PROGRAM_INVOCATION)
 
+if !(BR2_TARGET_ATMEL||BR2_TARGET_KWIKBYTE||BR2_TARGET_VALKA)
+
+config BR2_TARGET_GENERIC_HOSTNAME
+       string "System hostname"
+       default "buildroot"
+       help
+         Select system hostname to be stored in /etc/hostname.
+
+config BR2_TARGET_GENERIC_ISSUE
+       string "System banner"
+       default "Welcome to Buildroot"
+       help
+         Select system banner (/etc/issue) to be displayed at login.
+
 menuconfig BR2_TARGET_GENERIC_GETTY
 	bool "Generic serial port config"
-	depends on !(BR2_TARGET_ATMEL||BR2_TARGET_KWIKBYTE||BR2_TARGET_VALKA)
 
 if BR2_TARGET_GENERIC_GETTY
 
@@ -213,5 +226,7 @@ config BR2_TARGET_GENERIC_GETTY_BAUDRATE
 	default "38400"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_38400
 	default "57600"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_57600
 	default "115200"	if BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
+
+endif # BR2_TARGET_GENERIC_GETTY
 
 endif
