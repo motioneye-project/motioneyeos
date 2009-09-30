@@ -404,6 +404,10 @@ endif
 	find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
 	$(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null
 
+	mkdir -p $(TARGET_DIR)/etc
+	echo $(BR2_VERSION)$(shell $(TOPDIR)/scripts/setlocalversion) > \
+		$(TARGET_DIR)/etc/br-version
+
 ifneq ($(BR2_ROOTFS_POST_BUILD_SCRIPT),"")
 	$(BR2_ROOTFS_POST_BUILD_SCRIPT) $(TARGET_DIR)
 endif
