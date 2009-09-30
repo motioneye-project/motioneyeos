@@ -202,6 +202,9 @@ BASE_TARGETS:=uclibc
 endif
 TARGETS:=
 
+# silent mode requested?
+QUIET:=$(if $(findstring s,$(MAKEFLAGS)),-q)
+
 # Strip off the annoying quoting
 ARCH:=$(call qstrip,$(BR2_ARCH))
 ifeq ($(ARCH),xtensa)
