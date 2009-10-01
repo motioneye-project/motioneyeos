@@ -35,7 +35,7 @@ $(FAKEROOT_DIR1)/.configured: $(FAKEROOT_SOURCE_DIR)/.unpacked
 	mkdir -p $(FAKEROOT_DIR1)
 	(cd $(FAKEROOT_DIR1); rm -rf config.cache; \
 		CC="$(HOSTCC)" \
-		$(FAKEROOT_SOURCE_DIR)/configure \
+		$(FAKEROOT_SOURCE_DIR)/configure $(QUIET) \
 		--prefix=$(HOST_DIR)/usr \
 	)
 	touch $@
@@ -68,7 +68,7 @@ $(FAKEROOT_DIR2)/.configured: $(FAKEROOT_SOURCE_DIR)/.unpacked
 	(cd $(FAKEROOT_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		$(FAKEROOT_SOURCE_DIR)/configure \
+		$(FAKEROOT_SOURCE_DIR)/configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

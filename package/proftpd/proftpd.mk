@@ -32,7 +32,7 @@ $(PROFTPD_DIR)/.configured: $(PROFTPD_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_setpgrp_void=yes \
 		ac_cv_func_setgrent_void=yes \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

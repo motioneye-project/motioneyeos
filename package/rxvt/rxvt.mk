@@ -43,7 +43,7 @@ $(RXVT_DIR)/.configured: $(RXVT_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		rxvt_cv_ptys=USG \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

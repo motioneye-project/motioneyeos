@@ -42,7 +42,7 @@ $(SED_DIR1)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 
 $(SED_DIR1)/.configured: $(SED_DIR1)/.unpacked
 	(cd $(SED_DIR1); rm -rf config.cache; \
-		./configure \
+		./configure $(QUIET) \
 		--prefix=/usr \
 	)
 	touch $@
@@ -114,7 +114,7 @@ $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CPPFLAGS="$(SED_CPPFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

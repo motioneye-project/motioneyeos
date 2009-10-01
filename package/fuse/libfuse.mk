@@ -21,7 +21,7 @@ $(LIBFUSE_DIR)/.configured: $(LIBFUSE_DIR)/.source
 	(cd $(LIBFUSE_DIR); rm -rf config.cache ; \
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

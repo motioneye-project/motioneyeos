@@ -23,7 +23,7 @@ $(SDL_TTF_DIR)/.configured: $(SDL_TTF_DIR)/.unpacked
 	(cd $(SDL_TTF_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

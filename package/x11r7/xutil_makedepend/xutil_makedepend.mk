@@ -30,7 +30,7 @@ $(STAMP_DIR)/host_makedepend_configured: $(STAMP_DIR)/host_makedepend_unpacked $
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--prefix="$(HOST_DIR)/usr" \
 		--sysconfdir="$(HOST_DIR)/etc" \
 	)

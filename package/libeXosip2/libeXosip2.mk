@@ -24,7 +24,7 @@ $(LIBEXOSIP2_DIR)/.configured: $(LIBEXOSIP2_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		OSIP_CFLAGS="$(TARGET_CFLAGS)" \
 		OSIP_LIBS="-L$(STAGING_DIR)/usr/lib -losip2 -losipparser2" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

@@ -45,7 +45,7 @@ $(DMALLOC_DIR)/.configured: $(DMALLOC_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="-g" \
 		LDFLAGS="-g" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

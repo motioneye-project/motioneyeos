@@ -20,7 +20,7 @@ $(TCL_DIR)/.configured: $(TCL_DIR)/.source
 	(cd $(TCL_DIR)/unix; rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

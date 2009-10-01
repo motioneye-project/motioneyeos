@@ -62,7 +62,7 @@ $(SAMBA_DIR)/.configured: $(SAMBA_DIR)/.unpacked
 		samba_cv_fpie=no \
 		libreplace_cv_HAVE_IPV6=$(if $(BR2_INET_IPV6),yes,no) \
 		AVAHI_LIBS=-pthread \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

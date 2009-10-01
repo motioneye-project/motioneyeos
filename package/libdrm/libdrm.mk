@@ -24,7 +24,7 @@ $(LIBDRM_DIR)/.configured: $(LIBDRM_DIR)/.unpacked
 	$(TARGET_CONFIGURE_OPTS) \
 	CFLAGS="$(TARGET_CFLAGS) " \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
-	./configure \
+	./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

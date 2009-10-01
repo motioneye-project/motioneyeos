@@ -73,7 +73,7 @@ $(GDB_TARGET_DIR)/.configured: $(GDB_DIR)/.unpacked
 		CFLAGS_FOR_TARGET="$(TARGET_CFLAGS) $(TARGET_LDFLAGS) -Wno-error" \
 		CFLAGS="$(TARGET_CFLAGS) $(TARGET_LDFLAGS) -Wno-error" \
 		$(GDB_TARGET_CONFIGURE_VARS) \
-		$(GDB_DIR)/configure \
+		$(GDB_DIR)/configure $(QUIET) \
 		--cache-file=/dev/null \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
@@ -124,7 +124,7 @@ $(GDB_SERVER_DIR)/.configured: $(GDB_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		gdb_cv_func_sigsetjmp=yes \
 		bash_cv_have_mbstate_t=yes \
-		$(GDB_DIR)/gdb/gdbserver/configure \
+		$(GDB_DIR)/gdb/gdbserver/configure $(QUIET) \
 		--cache-file=/dev/null \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
@@ -181,7 +181,7 @@ $(GDB_HOST_DIR)/.configured: $(GDB_DIR)/.unpacked
 	(cd $(GDB_HOST_DIR); \
 		gdb_cv_func_sigsetjmp=yes \
 		bash_cv_have_mbstate_t=yes \
-		$(GDB_DIR)/configure \
+		$(GDB_DIR)/configure $(QUIET) \
 		--cache-file=/dev/null \
 		--prefix=$(STAGING_DIR) \
 		--build=$(GNU_HOST_NAME) \

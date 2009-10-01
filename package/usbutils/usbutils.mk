@@ -26,7 +26,7 @@ $(USBUTILS_DIR)/.configured: $(USBUTILS_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_func_malloc_0_nonnull=yes \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

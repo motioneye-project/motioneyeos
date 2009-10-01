@@ -29,7 +29,7 @@ $(BOA_WORKDIR)/Makefile: $(BOA_DIR)/.unpacked
 	(cd $(BOA_WORKDIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		$(BOA_DIR)/configure \
+		$(BOA_DIR)/configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

@@ -170,7 +170,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 	mkdir -p $(GCC_BUILD_DIR1)
 	(cd $(GCC_BUILD_DIR1); PATH=$(TARGET_PATH) \
 		$(HOST_CONFIGURE_OPTS) \
-		$(GCC_DIR)/configure \
+		$(GCC_DIR)/configure $(QUIET) \
 		--prefix=$(STAGING_DIR)/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
@@ -238,7 +238,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		GCC=$(TARGET_CROSS)gcc \
 		CPP=$(TARGET_CROSS)cpp \
 		LDFLAGS_FOR_TARGET="$(patsubst %,LDFLAGS+=-Wl$(comma)%,$(TARGET_LDFLAGS)) -L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib" \
-		$(GCC_DIR)/configure \
+		$(GCC_DIR)/configure $(QUIET) \
 		--prefix=$(STAGING_DIR) \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
@@ -388,7 +388,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS_FOR_BUILD="-g -O2 $(HOST_CFLAGS)" \
 		$(TARGET_GCC_FLAGS) \
-		$(GCC_DIR)/configure \
+		$(GCC_DIR)/configure $(QUIET) \
 		--prefix=/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \

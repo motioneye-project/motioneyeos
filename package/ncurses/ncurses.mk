@@ -50,7 +50,7 @@ $(NCURSES_DIR)/.configured: $(NCURSES_DIR)/.patched
 		BUILD_CC="$(HOSTCC)" \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

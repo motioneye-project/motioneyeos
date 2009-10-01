@@ -33,7 +33,7 @@ $(MPG123_DIR)/.configured: $(MPG123_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

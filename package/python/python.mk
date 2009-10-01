@@ -84,7 +84,7 @@ $(PYTHON_DIR)/.patched: $(PYTHON_DIR)/.unpacked
 $(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched
 	(cd $(PYTHON_DIR); rm -rf config.cache; \
 		CC="$(HOSTCC)" OPT="-O2" \
-		./configure \
+		./configure $(QUIET) \
 		--with-cxx=no \
 		$(DISABLE_NLS) && \
 		$(MAKE) python Parser/pgen && \
@@ -99,7 +99,7 @@ $(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		OPT="$(TARGET_CFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

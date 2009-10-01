@@ -46,7 +46,7 @@ $(STAMP_DIR)/host_libxml2_configured: $(STAMP_DIR)/host_libxml2_unpacked $(STAMP
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--prefix="$(HOST_DIR)/usr" \
 		--sysconfdir="$(HOST_DIR)/etc" \
 		--enable-shared --without-debugging --without-python \

@@ -36,7 +36,7 @@ $(PPTP_LINUX_DIR)/.configured: $(PPTP_LINUX_DIR)/.unpacked
 	(cd $(PPTP_LINUX_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

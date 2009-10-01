@@ -32,7 +32,7 @@ $(OPENMOTIF_HOST_DIR)/.configured: $(OPENMOTIF_DIR)/.unpacked
 		exit 1; fi )
 	(cd $(OPENMOTIF_HOST_DIR); rm -rf config.cache; \
 		aclocal; automake --foreign --add-missing; autoconf; \
-		./configure \
+		./configure $(QUIET) \
 		--prefix=/usr -C;);
 	touch $(OPENMOTIF_HOST_DIR)/.configured
 
@@ -43,7 +43,7 @@ $(OPENMOTIF_DIR)/.configured: $(OPENMOTIF_HOST_DIR)/.configured
 		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_file__usr_X_include_X11_X_h=yes \
 		ac_cv_func_setpgrp_void=yes \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

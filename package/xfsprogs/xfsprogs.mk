@@ -41,7 +41,7 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 		LIBTOOL=$(LIBTOOL_DIR)/libtool \
 		INSTALL_USER=$(shell whoami) \
 		INSTALL_GROUP=$(shell groups | cut -d" " -f1) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

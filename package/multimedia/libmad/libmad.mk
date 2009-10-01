@@ -26,7 +26,7 @@ $(LIBMAD_DIR)/.configured: $(LIBMAD_DIR)/.unpacked
 	(cd $(LIBMAD_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

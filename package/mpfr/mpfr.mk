@@ -43,7 +43,7 @@ $(MPFR_TARGET_DIR)/.configured: $(MPFR_DIR)/.unpacked $(STAGING_DIR)/usr/lib/$(G
 	(cd $(MPFR_TARGET_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		$(MPFR_DIR)/configure \
+		$(MPFR_DIR)/configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -92,7 +92,7 @@ $(MPFR_DIR2)/.configured: $(MPFR_DIR)/.unpacked $(GMP_HOST_DIR)/lib/$(GMP_HOST_B
 	mkdir -p $(MPFR_DIR2)
 	(cd $(MPFR_DIR2); \
 		$(HOST_CONFIGURE_OPTS) \
-		$(MPFR_DIR)/configure \
+		$(MPFR_DIR)/configure $(QUIET) \
 		--prefix="$(MPFR_HOST_DIR)" \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \

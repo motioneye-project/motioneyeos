@@ -22,7 +22,7 @@ $(LIBOSIP2_DIR)/.configured: $(LIBOSIP2_DIR)/.unpacked
 	(cd $(LIBOSIP2_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

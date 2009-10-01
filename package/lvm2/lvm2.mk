@@ -66,7 +66,7 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 		ac_cv_func_malloc_0_nonnull=yes \
 		ac_cv_func_calloc_0_nonnull=yes \
 		ac_cv_func_realloc_0_nonnull=yes \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

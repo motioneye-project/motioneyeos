@@ -24,7 +24,7 @@ $(DB_DIR)/.configured: $(DB_DIR)/.dist
 	(cd $(DB_DIR)/build_unix; rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		../dist/configure \
+		../dist/configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

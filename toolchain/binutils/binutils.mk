@@ -86,7 +86,7 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR1)
 	(cd $(BINUTILS_DIR1); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
-		$(BINUTILS_DIR)/configure \
+		$(BINUTILS_DIR)/configure $(QUIET) \
 		--prefix=$(BR2_SYSROOT_PREFIX)/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
@@ -141,7 +141,7 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 	mkdir -p $(BINUTILS_DIR2)
 	(cd $(BINUTILS_DIR2); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
-		$(BINUTILS_DIR)/configure \
+		$(BINUTILS_DIR)/configure $(QUIET) \
 		--prefix=/usr \
 		--exec-prefix=/usr \
 		--build=$(GNU_HOST_NAME) \

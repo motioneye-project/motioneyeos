@@ -84,7 +84,7 @@ $(GRUB2_DIR)/.configured: $(GRUB2_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		CPPFLAGS="$(GRUB2_CFLAGS)" \
 		grub_cv_i386_check_nested_functions=no \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

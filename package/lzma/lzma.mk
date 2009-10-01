@@ -35,7 +35,7 @@ $(LZMA_HOST_DIR)/.configured: $(LZMA_HOST_DIR)/.unpacked
 	(cd $(LZMA_HOST_DIR); rm -f config.cache;\
 		CC="$(HOSTCC)" \
 		CXX="$(HOSTCXX)" \
-		./configure \
+		./configure $(QUIET) \
 		--prefix=/ \
 	)
 	touch $@
@@ -90,7 +90,7 @@ $(LZMA_TARGET_DIR)/.configured: $(LZMA_TARGET_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		ac_cv_func_malloc_0_nonnull=yes \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

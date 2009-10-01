@@ -33,7 +33,7 @@ $(MODUTILS_DIR1)/.configured: $(MODUTILS_DIR1)/.source
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		INSTALL=$(MODUTILS_DIR1)/install-sh \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -102,7 +102,7 @@ $(MODUTILS_DIR2)/.source: $(DL_DIR)/$(MODUTILS_SOURCE)
 
 $(MODUTILS_DIR2)/.configured: $(MODUTILS_DIR2)/.source
 	(cd $(MODUTILS_DIR2); \
-		./configure $(DEPMOD_EXTRA_STUFF) \
+		./configure $(QUIET) $(DEPMOD_EXTRA_STUFF) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--build=$(GNU_HOST_NAME) \

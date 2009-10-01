@@ -38,7 +38,7 @@ $(RP_PPPOE_TOPDIR)/.configured: $(RP_PPPOE_TOPDIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		rpppoe_cv_pack_bitfields=normal \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

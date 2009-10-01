@@ -30,7 +30,7 @@ $(XAPP_XMAN_DIR)/.configured: $(XAPP_XMAN_DIR)/.patched
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		STAGING_DIR=$(STAGING_DIR) \
  \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

@@ -86,7 +86,7 @@ $(GTK2_ENGINES_DIR)/.unpacked: $(DL_DIR)/$(GTK2_ENGINES_SOURCE)
 $(GTK2_ENGINES_DIR)/.configured: $(GTK2_ENGINES_DIR)/.unpacked
 	(cd $(GTK2_ENGINES_DIR); rm -rf config.cache; \
 		$(GTK2_ENGINES_BUILD_ENV) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

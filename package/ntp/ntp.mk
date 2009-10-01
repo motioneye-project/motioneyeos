@@ -33,7 +33,7 @@ $(NTP_DIR)/.configured: $(NTP_DIR)/.patched
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_lib_md5_MD5Init=no \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

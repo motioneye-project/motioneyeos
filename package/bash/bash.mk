@@ -46,7 +46,7 @@ $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 		bash_cv_getcwd_malloc=yes \
 		bash_cv_func_sigsetjmp=present \
 		bash_cv_printf_a_format=yes \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

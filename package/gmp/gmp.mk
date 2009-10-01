@@ -36,7 +36,7 @@ $(GMP_TARGET_DIR)/.configured: $(GMP_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(GMP_CPP_FLAGS) \
-		$(GMP_DIR)/configure \
+		$(GMP_DIR)/configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
@@ -79,7 +79,7 @@ $(GMP_DIR2)/.configured: $(GMP_DIR)/.unpacked
 	(cd $(GMP_DIR2); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		$(GMP_CPP_FLAGS) \
-		$(GMP_DIR)/configure \
+		$(GMP_DIR)/configure $(QUIET) \
 		--prefix="$(GMP_HOST_DIR)" \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \

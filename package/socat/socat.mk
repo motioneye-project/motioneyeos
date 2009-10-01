@@ -51,7 +51,7 @@ $(SOCAT_WORKDIR)/Makefile: $(SOCAT_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		$(SOCAT_CONFIGURE_OPTS) \
-		$(SOCAT_DIR)/configure \
+		$(SOCAT_DIR)/configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

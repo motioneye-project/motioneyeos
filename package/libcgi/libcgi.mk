@@ -23,7 +23,7 @@ $(LIBCGI_DIR)/.configured: $(LIBCGI_DIR)/.source
 	(cd $(LIBCGI_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

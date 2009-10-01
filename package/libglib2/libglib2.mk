@@ -82,7 +82,7 @@ $(STAMP_DIR)/host_libglib2_configured: $(STAMP_DIR)/host_libglib2_unpacked $(STA
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--prefix="$(HOST_DIR)/usr" \
 		--sysconfdir="$(HOST_DIR)/etc" \
 		--enable-shared \

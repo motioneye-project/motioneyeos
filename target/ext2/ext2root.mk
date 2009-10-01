@@ -19,7 +19,7 @@ $(GENEXT2_DIR)/.unpacked: $(DL_DIR)/$(GENEXT2_SOURCE)
 $(GENEXT2_DIR)/.configured: $(GENEXT2_DIR)/.unpacked
 	chmod a+x $(GENEXT2_DIR)/configure
 	(cd $(GENEXT2_DIR); rm -rf config.cache; \
-		./configure \
+		./configure $(QUIET) \
 		CC="$(HOSTCC)" \
 		--prefix=$(STAGING_DIR) \
 	)

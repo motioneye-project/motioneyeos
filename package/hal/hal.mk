@@ -41,7 +41,7 @@ $(HAL_DIR)/.configured: $(HAL_DIR)/.unpacked /usr/bin/pkg-config
 		VOLUME_ID_CFLAGS="$(TARGET_CFLAGS)" \
 		VOLUME_ID_LIBS="$(STAGING_DIR)/usr/lib/libvolume_id.so" \
 		ac_cv_path_LIBUSB_CONFIG= \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

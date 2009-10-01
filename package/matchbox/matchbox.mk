@@ -221,7 +221,7 @@ endif
 $(MATCHBOX_LIB_DIR)/.configured: $(MATCHBOX_LIB_DIR)/.unpacked xlib_libXext-install-staging
 	(cd $(MATCHBOX_LIB_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -247,7 +247,7 @@ $(MATCHBOX_SNOTIFY_DIR)/.configured: $(MATCHBOX_SNOTIFY_DIR)/.unpacked
 	(cd $(MATCHBOX_SNOTIFY_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
 	lf_cv_sane_realloc=no \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -267,7 +267,7 @@ $(MATCHBOX_SNOTIFY_DIR)/.configured: $(MATCHBOX_SNOTIFY_DIR)/.unpacked
 $(MATCHBOX_WM_DIR)/.configured: $(MATCHBOX_WM_DIR)/.unpacked
 	(cd $(MATCHBOX_WM_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -292,7 +292,7 @@ $(MATCHBOX_WM_DIR)/.configured: $(MATCHBOX_WM_DIR)/.unpacked
 $(MATCHBOX_SM_DIR)/.configured: $(MATCHBOX_SM_DIR)/.unpacked
 	(cd $(MATCHBOX_SM_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -316,7 +316,7 @@ $(MATCHBOX_SM_DIR)/.configured: $(MATCHBOX_SM_DIR)/.unpacked
 $(MATCHBOX_CN_DIR)/.configured: $(MATCHBOX_CN_DIR)/.unpacked
 	(cd $(MATCHBOX_CN_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -339,7 +339,7 @@ $(MATCHBOX_CN_DIR)/.configured: $(MATCHBOX_CN_DIR)/.unpacked
 $(MATCHBOX_PL_DIR)/.configured: $(MATCHBOX_PL_DIR)/.unpacked
 	(cd $(MATCHBOX_PL_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -363,7 +363,7 @@ $(MATCHBOX_PL_DIR)/.configured: $(MATCHBOX_PL_DIR)/.unpacked
 $(MATCHBOX_DP_DIR)/.configured: $(MATCHBOX_DP_DIR)/.unpacked
 	(cd $(MATCHBOX_DP_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -387,7 +387,7 @@ $(MATCHBOX_DP_DIR)/.configured: $(MATCHBOX_DP_DIR)/.unpacked
 $(MATCHBOX_FK_DIR)/.configured: $(MATCHBOX_FK_DIR)/.unpacked
 	(cd $(MATCHBOX_FK_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \
@@ -411,7 +411,7 @@ $(MATCHBOX_FK_DIR)/.configured: $(MATCHBOX_FK_DIR)/.unpacked
 $(MATCHBOX_KB_DIR)/.configured: $(MATCHBOX_KB_DIR)/.unpacked
 	(cd $(MATCHBOX_KB_DIR); rm -f config.cache; \
 	$(TARGET_CONFIGURE_OPTS) \
-	./configure \
+	./configure $(QUIET) \
 	--target=$(GNU_TARGET_NAME) \
 	--host=$(GNU_TARGET_NAME) \
 	--build=$(GNU_HOST_NAME) \

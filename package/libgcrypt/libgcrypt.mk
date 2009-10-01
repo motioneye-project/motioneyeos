@@ -28,7 +28,7 @@ $(LIBGCRYPT_DIR)/.configured: $(LIBGCRYPT_DIR)/.source
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		ac_cv_sys_symbol_underscore=no \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

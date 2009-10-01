@@ -25,7 +25,7 @@ $(DISTCC_BUILDDIR)/.configured: $(DISTCC_BUILDDIR)/.unpacked
 	(cd $(DISTCC_BUILDDIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

@@ -36,7 +36,7 @@ $(NFS_UTILS_DIR)/.configured: $(NFS_UTILS_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		CFLAGS="$(TARGET_CFLAGS) $(BR2_NFS_UTILS_CFLAGS)" \
 		knfsd_cv_bsd_signals=no \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

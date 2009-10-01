@@ -34,7 +34,7 @@ $(LIBELF_DIR)/.configured: $(LIBELF_DIR)/.unpacked
 		libelf_cv_working_memmove=yes \
 		mr_cv_target_elf=yes \
 		libelf_64bit=yes \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

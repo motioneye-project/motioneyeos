@@ -80,7 +80,7 @@ $(CUPS_DIR)/.configured: $(CUPS_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		$(CUPS_CONF_ENV) \
 		CFLAGS="$(CUPS_CFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

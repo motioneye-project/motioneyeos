@@ -28,7 +28,7 @@ $(GNUMAKE_DIR)/.configured: $(GNUMAKE_DIR)/.unpacked
 		make_cv_sys_gnu_glob=no \
 		GLOBINC='-I$(GNUMAKE_DIR)/glob' \
 		GLOBLIB=glob/libglob.a \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \

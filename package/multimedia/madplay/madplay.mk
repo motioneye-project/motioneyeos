@@ -33,7 +33,7 @@ $(MADPLAY_DIR)/.configured: $(MADPLAY_DIR)/.unpacked
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS) $(BR2_MADPLAY_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
-		./configure \
+		./configure $(QUIET) \
 		--target=$(REAL_GNU_TARGET_NAME) \
 		--host=$(REAL_GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
