@@ -8,6 +8,8 @@
 	openssl, python, radvd, samba, squashfs, syslinux, u-boot,
 	xdata_xcursor-themes,
 
+	Removed package: mdnsresponder
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#301: allow to install libsmbclient
