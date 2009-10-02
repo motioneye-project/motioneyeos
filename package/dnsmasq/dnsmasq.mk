@@ -48,11 +48,6 @@ else
 endif
 	touch $@
 
-$(DNSMASQ_HOOK_POST_INSTALL):
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -f $(TARGET_DIR)/usr/share/man/man8/dnsmasq.8
-endif
-
 $(DNSMASQ_TARGET_UNINSTALL):
 	$(call MESSAGE,"Uninstalling")
 	rm -f $(TARGET_DIR)/usr/sbin/dnsmasq
