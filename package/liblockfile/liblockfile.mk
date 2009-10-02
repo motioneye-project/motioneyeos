@@ -8,7 +8,7 @@ LIBLOCKFILE_SOURCE:=liblockfile_$(LIBLOCKFILE_VERSION).orig.tar.gz
 LIBLOCKFILE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/libl/liblockfile/
 LIBLOCKFILE_CAT:=$(ZCAT)
 LIBLOCKFILE_DIR:=$(BUILD_DIR)/liblockfile-$(LIBLOCKFILE_VERSION)
-LIBLOCKFILE_BINARY:=liblockfile.so.1.0
+LIBLOCKFILE_BINARY:=usr/lib/liblockfile.so.1.0
 
 $(DL_DIR)/$(LIBLOCKFILE_SOURCE):
 	 $(call DOWNLOAD,$(LIBLOCKFILE_SITE),$(LIBLOCKFILE_SOURCE))
@@ -37,21 +37,20 @@ $(LIBLOCKFILE_DIR)/.configured: $(LIBLOCKFILE_DIR)/.unpacked
 	)
 	touch $@
 
-$(STAGING_DIR)/lib/$(LIBLOCKFILE_BINARY): $(LIBLOCKFILE_DIR)/.configured
+$(STAGING_DIR)/$(LIBLOCKFILE_BINARY): $(LIBLOCKFILE_DIR)/.configured
 	mkdir -p $(addprefix $(STAGING_DIR)/usr/share/man/man,1 3)
-	mkdir -p $(STAGING_DIR)/usr/share/man/man3
 	rm -f $(STAGING_DIR)/usr/lib/liblockfile.so
 	$(MAKE) -C $(LIBLOCKFILE_DIR) ROOT=$(STAGING_DIR) install
-	ln -sf $(LIBLOCKFILE_BINARY) $(STAGING_DIR)/usr/lib/liblockfile.so.1
-	cp -dpf $(LIBLOCKFILE_DIR)/liblockfile.a $(STAGING_DIR)/usr/lib
+	ln -sf liblockfile.so $(STAGING_DIR)/usr/lib/liblockfile.so.1
+	touch -c $@
 
-$(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY): $(STAGING_DIR)/lib/$(LIBLOCKFILE_BINARY)
-	mkdir -p $(TARGET_DIR)/usr/lib
-	cp -a $(STAGING_DIR)/usr/lib/liblockfile.so* $(TARGET_DIR)/usr/lib
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) \
-		$(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
+$(TARGET_DIR)/$(LIBLOCKFILE_BINARY): $(STAGING_DIR)/$(LIBLOCKFILE_BINARY)
+	mkdir -p $(@D)
+	cp -a $(STAGING_DIR)/usr/lib/liblockfile.so* $(@D)
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
+	touch -c $@
 
-liblockfile: $(TARGET_DIR)/usr/lib/$(LIBLOCKFILE_BINARY)
+liblockfile: $(TARGET_DIR)/$(LIBLOCKFILE_BINARY)
 
 liblockfile-clean:
 	rm -f $(TARGET_DIR)/usr/lib/liblockfile.so*
