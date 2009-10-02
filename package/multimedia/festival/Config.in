@@ -1,9 +1,10 @@
 menuconfig BR2_PACKAGE_FESTIVAL
-bool "festival text-to-speech system"
-select BR2_PACKAGE_ALSA_LIB
-select BR2_PACKAGE_SPEECH_TOOLS
-help
-	Text to speech system for Linux
+	bool "festival text-to-speech system"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_SPEECH_TOOLS
+	help
+	  Text to speech system for Linux
 
 if BR2_PACKAGE_FESTIVAL
 
@@ -20,3 +21,6 @@ if BR2_PACKAGE_FESTIVAL
 	endmenu
 
 endif
+
+comment "festival requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
