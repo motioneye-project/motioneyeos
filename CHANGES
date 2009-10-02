@@ -8,7 +8,7 @@
 	openssl, python, radvd, samba, squashfs, syslinux, u-boot,
 	xdata_xcursor-themes,
 
-	Removed package: mdnsresponder
+	Removed package: mdnsresponder, mpatrol
 
 	Issues resolved (http://bugs.uclibc.org):
 
