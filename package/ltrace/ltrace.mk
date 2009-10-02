@@ -11,7 +11,8 @@ LTRACE_DIR=$(BUILD_DIR)/ltrace-$(LTRACE_VERSION)
 LTRACE_BINARY=ltrace
 LTRACE_TARGET_BINARY=usr/bin/ltrace
 
-LTRACE_ARCH:=$(KERNEL_ARCH)
+# ltrace uses arch=ppc for powerpc
+LTRACE_ARCH:=$(KERNEL_ARCH:powerpc=ppc)
 ifeq ("$(strip $(ARCH))","armeb")
 LTRACE_ARCH:=arm
 endif
