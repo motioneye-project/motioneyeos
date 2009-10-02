@@ -11,8 +11,7 @@ E2FSPROGS_CAT:=$(ZCAT)
 E2FSPROGS_BINARY:=misc/mke2fs
 E2FSPROGS_TARGET_BINARY:=sbin/mke2fs
 LIBUUID_DIR=$(E2FSPROGS_DIR)/lib/uuid/
-LIBUUID_TARGET_DIR:=usr/lib/
-LIBUUID_TARGET_BINARY:=libuuid.so
+LIBUUID_TARGET_BINARY:=usr/lib/libuuid.so
 
 E2FSPROGS_MISC_STRIP:= \
 	badblocks blkid chattr dumpe2fs filefrag fsck logsave \
@@ -72,17 +71,19 @@ $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY): $(E2FSPROGS_DIR)/.configured
 	#$(STRIPCMD) $(E2FSPROGS_DIR)/lib/lib*.so.*.*
 	touch -c $@
 
-$(E2FSPROGS_DIR)/lib/$(LIBUUID_TARGET_BINARY): $(E2FSPROGS_DIR)/.configured
+$(E2FSPROGS_DIR)/lib/libuuid.so: $(E2FSPROGS_DIR)/.configured
 	$(MAKE1) -C $(E2FSPROGS_DIR)/lib/uuid
 	touch -c $@
 
 $(STAGING_DIR)/$(E2FSPROGS_TARGET_BINARY): $(E2FSPROGS_DIR)/$(E2FSPROGS_BINARY)
 	$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(STAGING_DIR) LDCONFIG=true \
 		-C $(E2FSPROGS_DIR) install
+	touch -c $@
 
-$(STAGING_DIR)/usr/lib/$(LIBUUID_TARGET_BINARY): $(E2FSPROGS_DIR)/lib/$(LIBUUID_TARGET_BINARY)
+$(STAGING_DIR)/$(LIBUUID_TARGET_BINARY): $(E2FSPROGS_DIR)/lib/libuuid.so
 	$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(STAGING_DIR) LDCONFIG=true \
 		-C $(LIBUUID_DIR) install
+	touch -c $@
 
 E2FSPROGS_RM$(BR2_PACKAGE_E2FSPROGS_BADBLOCKS) += ${TARGET_DIR}/sbin/badblocks
 E2FSPROGS_RM$(BR2_PACKAGE_E2FSPROGS_BLKID) += ${TARGET_DIR}/sbin/blkid
@@ -134,14 +135,11 @@ endif
 	rm -rf $(TARGET_DIR)/usr/share/doc
 	touch -c $@
 
-$(TARGET_DIR)/$(LIBUUID_TARGET_DIR)/$(LIBUUID_TARGET_BINARY): $(STAGING_DIR)/usr/lib/$(LIBUUID_TARGET_BINARY)
-	$(MAKE1) PATH=$(TARGET_PATH) DESTDIR=$(STAGING_DIR) LDCONFIG=true \
-		-C $(LIBUUID_DIR) install
-	cp -a $(STAGING_DIR)/$(LIBUUID_TARGET_DIR)/$(LIBUUID_TARGET_BINARY)* \
-		$(TARGET_DIR)/$(LIBUUID_TARGET_DIR)/
+$(TARGET_DIR)/$(LIBUUID_TARGET_BINARY): $(STAGING_DIR)/$(LIBUUID_TARGET_BINARY)
+	cp -a $(STAGING_DIR)/$(LIBUUID_TARGET_BINARY)* $(@D)
 	touch -c $@
 
-libuuid: $(TARGET_DIR)/$(LIBUUID_TARGET_DIR)/$(LIBUUID_TARGET_BINARY)
+libuuid: $(TARGET_DIR)/$(LIBUUID_TARGET_BINARY)
 e2fsprogs: libuuid $(TARGET_DIR)/$(E2FSPROGS_TARGET_BINARY)
 
 e2fsprogs-clean:
@@ -156,7 +154,7 @@ libuuid-clean:
 		-C $(LIBUUID_DIR) uninstall
 	# make uninstall misses the includes
 	rm -rf $(STAGING_DIR)/usr/include/uuid
-	rm -f $(TARGET_DIR)/$(LIBUUID_TARGET_DIR)/$(LIBUUID_TARGET_BINARY)*
+	rm -f $(TARGET_DIR)/$(LIBUUID_TARGET_BINARY)*
 	-$(MAKE1) -C $(LIBUUID_DIR) clean
 
 libuuid-source: e2fsprogs-source
