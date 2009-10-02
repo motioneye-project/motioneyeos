@@ -10,7 +10,7 @@ PYTHON_SITE:=http://python.org/ftp/python/$(PYTHON_VERSION)
 PYTHON_DIR:=$(BUILD_DIR)/Python-$(PYTHON_VERSION)
 PYTHON_CAT:=$(BZCAT)
 PYTHON_BINARY:=python
-PYTHON_TARGET_BINARY:=usr/bin/python
+PYTHON_TARGET_BINARY:=usr/bin/python$(PYTHON_VERSION_MAJOR)
 PYTHON_DEPS:=
 PYTHON_SITE_PACKAGE_DIR=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
 
@@ -165,6 +165,7 @@ endif
 ifneq ($(BR2_PACKAGE_PYTHON_TKINTER),y)
 	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/lib-tk
 endif
+	touch -c $@
 
 python: $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 
@@ -185,7 +186,7 @@ LIBPYTHON_BINARY:=libpython$(PYTHON_VERSION_MAJOR).so
 libpython:	python $(TARGET_DIR)/usr/lib/$(LIBPYTHON_BINARY)
 
 
-$(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so: $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+$(STAGING_DIR)/usr/lib/$(LIBPYTHON_BINARY): $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
 		cp -dpr $(PYTHON_DIR)/$(LIBPYTHON_BINARY).* $(STAGING_DIR)/usr/lib
 		(\
 		cd $(STAGING_DIR)/usr/lib ; \
