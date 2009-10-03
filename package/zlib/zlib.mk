@@ -68,9 +68,7 @@ $(TARGET_DIR)/usr/lib/libz.a: $(STAGING_DIR)/usr/lib/libz.a
 	$(INSTALL) -D $(STAGING_DIR)/usr/lib/libz.a $(TARGET_DIR)/usr/lib/libz.a
 	touch -c $@
 
-zlib-headers: $(TARGET_DIR)/usr/lib/libz.a
-
-zlib: $(ZLIB_TARGET)
+zlib: $(ZLIB_TARGET) $(if $(BR2_HAVE_DEVFILES,$(TARGET_DIR)/usr/lib/libz.a)
 
 zlib-source: $(DL_DIR)/$(ZLIB_SOURCE)
 
@@ -93,7 +91,4 @@ zlib-dirclean:
 #############################################################
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 TARGETS+=zlib
-endif
-ifeq ($(BR2_PACKAGE_ZLIB_TARGET_HEADERS),y)
-TARGETS+=zlib-headers
 endif
