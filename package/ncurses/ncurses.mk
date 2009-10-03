@@ -152,11 +152,10 @@ $(TARGET_DIR)/usr/lib/libncurses.a: $(NCURSES_DIR)/lib/libncurses.a
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION)
 	touch -c $@
 
-ncurses: $(TARGET_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION)
+ncurses: $(TARGET_DIR)/usr/lib/libncurses.so.$(NCURSES_VERSION) \
+	$(if $(BR2_HAVE_DEVFILES),$(TARGET_DIR)/usr/lib/libncurses.a)
 
 ncurses-unpacked: $(NCURSES_DIR)/.patched
-
-ncurses-headers: $(TARGET_DIR)/usr/lib/libncurses.a
 
 ncurses-source: $(DL_DIR)/$(NCURSES_SOURCE)
 
@@ -177,7 +176,4 @@ ncurses-dirclean:
 #############################################################
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 TARGETS+=ncurses
-endif
-ifeq ($(BR2_PACKAGE_NCURSES_TARGET_HEADERS),y)
-TARGETS+=ncurses-headers
 endif

@@ -23,9 +23,3 @@ config BR2_PACKAGE_NCURSES_TARGET_MENU
 	depends on BR2_PACKAGE_NCURSES
 	help
 	  Includes ncurses dynamic libmenu in target
-
-config BR2_PACKAGE_NCURSES_TARGET_HEADERS
-	bool "ncurses headers in target"
-	depends on BR2_PACKAGE_NCURSES
-	help
-	  Ncurses headers in target
