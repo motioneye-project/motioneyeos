@@ -25,6 +25,7 @@ config BR2_PACKAGE_QUAGGA_RIPD
 
 config BR2_PACKAGE_QUAGGA_RIPNGD
 	bool "ripngd support"
+	depends on BR2_INET_IPV6
 	help
 	  Enable ripngd support in quagga.
 
