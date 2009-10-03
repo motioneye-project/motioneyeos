@@ -59,6 +59,7 @@ config BR2_PACKAGE_QUAGGA_NETLINK
 
 config BR2_PACKAGE_QUAGGA_SNMP
 	bool "SNMP support"
+	select BR2_PACKAGE_NETSNMP
 
 config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	bool "TCP/IP socket connection between zebra and proto daemon"

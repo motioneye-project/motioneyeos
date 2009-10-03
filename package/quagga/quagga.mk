@@ -10,6 +10,8 @@ QUAGGA_DIR:=$(BUILD_DIR)/quagga-$(QUAGGA_VERSION)
 QUAGGA_CAT:=$(ZCAT)
 
 QUAGGA_CONFIGURE:=
+QUAGGA_DEPENDENCIES:=
+
 ifeq ($(BR2_PACKAGE_QUAGGA_ZEBRA),y)
 QUAGGA_CONFIGURE+=--enable-zebra
 ifndef QUAGGA_TARGET_BINARY
@@ -96,6 +98,7 @@ QUAGGA_CONFIGURE+=--disable-netlink
 endif
 ifeq ($(BR2_PACKAGE_QUAGGA_SNMP),y)
 QUAGGA_CONFIGURE+=--enable-snmp
+QUAGGA_DEPENDENCIES+=netsnmp
 else
 QUAGGA_CONFIGURE+=--disable-snmp
 endif
@@ -163,7 +166,7 @@ ifneq ($(BR2_HAVE_INFOPAGES),y)
 	rm -rf $(TARGET_DIR)/usr/info
 endif
 
-quagga: $(TARGET_DIR)/usr/sbin/$(QUAGGA_TARGET_BINARY)
+quagga: $(QUAGGA_DEPENDENCIES) $(TARGET_DIR)/usr/sbin/$(QUAGGA_TARGET_BINARY)
 
 quagga-clean:
 	-$(MAKE) DESTDIR=$(TARGET_DIR) -C $(QUAGGA_DIR) uninstall
