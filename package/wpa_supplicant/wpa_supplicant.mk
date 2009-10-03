@@ -60,6 +60,7 @@ ifeq ($(BR2_PACKAGE_DBUS),y)
 	  $(WPA_SUPPLICANT_DIR)/wpa_supplicant/dbus-wpa_supplicant.service \
 	  $(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_SERVICE).service
 endif
+	touch $@
 
 $(WPA_SUPPLICANT_TARGET_UNINSTALL):
 	$(call MESSAGE,"Uninstalling")
