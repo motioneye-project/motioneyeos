@@ -1,0 +1,27 @@
+[PATCH] valgrind: don't enable largefile support unconditionally on uClibc
+
+uClibc can be compiled without largefile support (and errors out if
+_FILE_OFFSET_BITS is set to 64), so don't define it if that combination
+is detected.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ coregrind/m_ume.c |    4 ++++
+ 1 file changed, 4 insertions(+)
+
+Index: valgrind-3.2.3/coregrind/m_ume.c
+===================================================================
+--- valgrind-3.2.3.orig/coregrind/m_ume.c
++++ valgrind-3.2.3/coregrind/m_ume.c
+@@ -31,7 +31,11 @@
+ 
+ 
+ #define _GNU_SOURCE
++#include <features.h>
++/* uclibc without largefile support #errors on _FILE_OFFSET_BITS=64 */
++#if !(defined(__UCLIBC__) && !defined(__UCLIBC_HAS_LFS__))
+ #define _FILE_OFFSET_BITS 64
++#endif
+ 
+ // It seems that on SuSE 9.1 (x86) something in <fcntl.h> messes up stuff
+ // acquired indirectly from vki-x86-linux.h.  Therefore our headers must be
