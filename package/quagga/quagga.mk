@@ -110,8 +110,6 @@ else
 QUAGGA_CONFIGURE+=--disable-opaque-lsa
 endif
 
-QUAGGA_CONFIGURE+=$(call qstrip,$(BR2_PACKAGE_QUAGGA_CONFIGURE))
-
 $(DL_DIR)/$(QUAGGA_SOURCE):
 	$(call DOWNLOAD,$(QUAGGA_SITE),$(QUAGGA_SOURCE))
 

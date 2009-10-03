@@ -1,75 +1,5 @@
 config BR2_PACKAGE_QUAGGA
-	bool
-
-comment "quagga suite"
-
-config BR2_PACKAGE_QUAGGA_ZEBRA
-	bool "quagga zebra"
-	select BR2_PACKAGE_QUAGGA
-	help
-	  routing software suite, providing implementations of
-	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
-
-	  http://www.quagga.net/
-
-config BR2_PACKAGE_QUAGGA_BGPD
-	bool "quagga bgpd"
-	select BR2_PACKAGE_QUAGGA
-	help
-	  routing software suite, providing implementations of
-	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
-
-	  http://www.quagga.net/
-
-config BR2_PACKAGE_QUAGGA_RIPD
-	bool "quagga ripd"
-	select BR2_PACKAGE_QUAGGA
-	help
-	  routing software suite, providing implementations of
-	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
-
-	  http://www.quagga.net/
-
-config BR2_PACKAGE_QUAGGA_RIPNGD
-	bool "quagga ripngd"
-	select BR2_PACKAGE_QUAGGA
-	help
-	  routing software suite, providing implementations of
-	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
-
-	  http://www.quagga.net/
-
-config BR2_PACKAGE_QUAGGA_OSPFD
-	bool "quagga ospfd"
-	select BR2_PACKAGE_QUAGGA
-	help
-	  routing software suite, providing implementations of
-	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
-
-	  http://www.quagga.net/
-
-config BR2_PACKAGE_QUAGGA_OSPF6D
-	bool "quagga ospf6d"
-	select BR2_PACKAGE_QUAGGA
-	depends on BR2_INET_IPV6
-	help
-	  routing software suite, providing implementations of
-	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
-
-	  http://www.quagga.net/
-
-config BR2_PACKAGE_QUAGGA_WATCHQUAGGA
-	bool "quagga watchquagga"
-	select BR2_PACKAGE_QUAGGA
-	help
-	  routing software suite, providing implementations of
-	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
-
-	  http://www.quagga.net/
-
-config BR2_PACKAGE_QUAGGA_ISISD
-	bool "isisd"
-	select BR2_PACKAGE_QUAGGA
+	bool "quagga"
 	help
 	  routing software suite, providing implementations of
 	  OSPFv2, OSPFv3, RIP v1 and v2, RIPng and BGP-4.
@@ -77,24 +7,62 @@ config BR2_PACKAGE_QUAGGA_ISISD
 	  http://www.quagga.net/
 
 if BR2_PACKAGE_QUAGGA
-comment "common options for quagga suite"
+
+config BR2_PACKAGE_QUAGGA_ZEBRA
+	bool "zebra daemon"
+	help
+	  Build zebra daemon.
+
+config BR2_PACKAGE_QUAGGA_BGPD
+	bool "bgpd support"
+	help
+	  Enable bgpd support in quagga.
+
+config BR2_PACKAGE_QUAGGA_RIPD
+	bool "ripd support"
+	help
+	  Enable ripd support in quagga.
+
+config BR2_PACKAGE_QUAGGA_RIPNGD
+	bool "ripngd support"
+	help
+	  Enable ripngd support in quagga.
+
+config BR2_PACKAGE_QUAGGA_OSPFD
+	bool "ospfd support"
+	help
+	  Enable ospfd support in quagga.
+
+config BR2_PACKAGE_QUAGGA_OSPF6D
+	bool "ospf6d support"
+	depends on BR2_INET_IPV6
+	help
+	  Enable ospf6d support in quagga.
+
+config BR2_PACKAGE_QUAGGA_WATCHQUAGGA
+	bool "watchquagga support"
+	help
+	  Enable watchquagga support in quagga.
+
+config BR2_PACKAGE_QUAGGA_ISISD
+	bool "isisd support"
+	help
+	  Enable isisd support in quagga.
+
 config BR2_PACKAGE_QUAGGA_BGP_ANNOUNCE
 	bool "BGP route announcement"
 
 config BR2_PACKAGE_QUAGGA_NETLINK
-	bool "quagga: use linux netlink interface"
+	bool "use linux netlink interface"
 	default y
 
 config BR2_PACKAGE_QUAGGA_SNMP
-	bool "quagga: SNMP support"
+	bool "SNMP support"
 
 config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
-	bool "quagga: TCP/IP socket connection between zebra and proto daemon"
+	bool "TCP/IP socket connection between zebra and proto daemon"
 
 config BR2_PACKAGE_QUAGGA_OPAGUE_LSA
-	bool "quagga: OSPF Opaque-LSA with OSPFAPI support (RFC2370)"
+	bool "OSPF Opaque-LSA with OSPFAPI support (RFC2370)"
 
-config BR2_PACKAGE_QUAGGA_CONFIGURE
-	string "quagga: extra configure options"
-	default ""
 endif
