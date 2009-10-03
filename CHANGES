@@ -5,7 +5,7 @@
 
 	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
 	festival, imagemagick, iptables, kernel-headers, kismet,
-	libevent, libglib2, liblockfile, libuuid, ltrace, mdadm,
+	libevent, libglib2, liblockfile, libmad, libuuid, ltrace, mdadm,
 	ncftp, netkittelnet, openssl, python, quagga, radvd, samba,
 	speech-tools, squashfs, syslinux, u-boot, valgrind, wipe,
 	xdata_xcursor-themes

@@ -47,19 +47,17 @@ $(STAGING_DIR)/usr/lib/libmad.so.0: $(LIBMAD_DIR)/libmad.la
 	$(SED) "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" $(STAGING_DIR)/usr/lib/libmad.la
 
 $(TARGET_DIR)/usr/lib/libmad.so.0: $(STAGING_DIR)/usr/lib/libmad.so.0
-	cp -dpf $(STAGING_DIR)/usr/lib/libmad.so.* $(TARGET_DIR)/usr/lib/
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libmad.so.*
-
-$(TARGET_DIR)/usr/lib/libmad.a: $(STAGING_DIR)/usr/lib/libmad.so.0
+ifeq ($(BR2_HAVE_DEVFILES),y)
 	mkdir -p $(TARGET_DIR)/usr/include
 	cp -dpf $(STAGING_DIR)/usr/include/mad.h $(TARGET_DIR)/usr/include/
 	cp -dpf $(STAGING_DIR)/usr/lib/libmad.la $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/usr/lib/libmad.so $(TARGET_DIR)/usr/lib/
 	cp -dpf $(STAGING_DIR)/usr/lib/libmad.a $(TARGET_DIR)/usr/lib/
+endif
+	cp -dpf $(STAGING_DIR)/usr/lib/libmad.so.* $(TARGET_DIR)/usr/lib/
+	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libmad.so.*
 
 libmad: $(TARGET_DIR)/usr/lib/libmad.so.0
-
-libmad-headers: $(TARGET_DIR)/usr/lib/libmad.a
 
 libmad-source: $(DL_DIR)/$(LIBMAD_SOURCE)
 
@@ -80,7 +78,4 @@ libmad-dirclean:
 #############################################################
 ifeq ($(BR2_PACKAGE_LIBMAD),y)
 TARGETS+=libmad
-endif
-ifeq ($(BR2_PACKAGE_LIBMAD_TARGET_HEADERS),y)
-TARGETS+=libmad-headers
 endif
