@@ -6,8 +6,8 @@
 	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
 	festival, imagemagick, iptables, kernel-headers, kismet,
 	libevent, libglib2, liblockfile, libuuid, ltrace, mdadm,
-	netkittelnet, openssl, python, radvd, samba, speech-tools,
-	squashfs, syslinux, u-boot, xdata_xcursor-themes,
+	ncftp, netkittelnet, openssl, python, quagga, radvd, samba,
+	speech-tools, squashfs, syslinux, u-boot, xdata_xcursor-themes
 
 	Removed package: mdnsresponder, mpatrol
 
