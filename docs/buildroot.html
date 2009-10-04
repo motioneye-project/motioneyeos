@@ -646,22 +646,15 @@ endif
 
       <li>Then, in the
       <code>target/device/yourcompany/project-foobar/</code>
-      directory, you can store different files:
+      directory, you can store configuration files for the kernel,
+      for Busybox or uClibc.
 
-      <ul>
-
-	<li>One or more Buildroot configurations, under file named
-	<code>something_defconfig</code>. Your users will then be able
-	to run <code>make something_defconfig</code> and get the right
-	configuration for your project</li>
-
-	<li>Configuration files for the kernel, for Busybox or
-	uClibc. These files can then be referenced by the Buildroot
-	configuration described above</li>
-
-      </ul>
-
-      </li>
+      You can furthermore create one or more preconfigured configuration
+      files, referencing those files. These config files are named
+      <code>something_defconfig</config> and are stored in the toplevel
+      <code>configs/</code> directory. Your users will then be able
+      to run <code>make something_defconfig</code> and get the right
+      configuration for your project</li>
 
     </ol>
 

@@ -591,9 +591,9 @@ endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 flush:
 	rm -f $(BUILD_DIR)/tgt-config.cache
 
-%_defconfig: $(CONFIG)/conf
-	cp $(shell find ./target/ -name $@) .config
-	-@$(MAKE) oldconfig
+%_defconfig: $(TOPDIR)/configs/%_defconfig
+	cp $^ .config
+	@$(MAKE) oldconfig
 
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 
@@ -627,6 +627,9 @@ help:
 	@echo '  source-check           - check all packages for valid download URLs'
 	@echo '  external-deps          - list external packages used'
 	@echo '  flush                  - flush configuration cache'
+	@echo
+	@$(foreach b, $(notdir $(wildcard $(TOPDIR)/configs/*_defconfig)), \
+	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
 	@echo
 	@echo 'See docs/README and docs/buildroot.html for further details'
 	@echo
