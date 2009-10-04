@@ -28,21 +28,15 @@ else
 ############################################################
 
 TREMOR_TRUNK:=http://svn.xiph.org/trunk/Tremor/
-TREMOR_VERSION:=svn-$(DATE)
-TREMOR_NAME:=Tremor-$(TREMOR_VERSION)
+TREMOR_VERSION:=16259
+TREMOR_NAME:=Tremor-svn-r$(TREMOR_VERSION)
 TREMOR_DIR:=$(BUILD_DIR)/$(TREMOR_NAME)
 TREMOR_SOURCE:=$(TREMOR_NAME).tar.bz2
 TREMOR_CAT=$(BZCAT)
 
 $(DL_DIR)/$(TREMOR_SOURCE):
-	(cd $(BUILD_DIR); \
-		$(SVN_CO) $(TREMOR_TRUNK); \
-		mv -f Tremor $(TREMOR_NAME); \
-		tar -cvf $(TREMOR_NAME).tar $(TREMOR_NAME); \
-		bzip2 $(TREMOR_NAME).tar; \
-		rm -rf $(TREMOR_DIR); \
-		mv $(TREMOR_SOURCE) $(DL_DIR)/$(TREMOR_SOURCE); \
-	)
+	$(SVN_CO) -r $(TREMOR_VERSION) $(TREMOR_TRUNK) $(TREMOR_DIR)
+	tar -cv -C $(BUILD_DIR) $(TREMOR_NAME) | bzip2 - -c > $@
 
 $(TREMOR_DIR)/.source: $(DL_DIR)/$(TREMOR_SOURCE)
 	$(TREMOR_CAT) $(DL_DIR)/$(TREMOR_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
