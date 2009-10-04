@@ -30,6 +30,7 @@ DATE:=$(shell date +%Y%m%d)
 
 noconfig_targets:=menuconfig xconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release \
+	randpackageconfig allyespackageconfig allnopackageconfig \
 	source-check help
 
 # Strip quotes and then whitespaces
@@ -535,6 +536,33 @@ allnoconfig: $(CONFIG)/conf
 		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
 
+randpackageconfig: $(CONFIG)/conf
+	@mkdir -p $(CONFIG)/buildroot-config
+	@grep -v BR2_PACKAGE_ .config > .config.nopkg
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
+		KCONFIG_ALLCONFIG=.config.nopkg \
+		$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
+	@rm -f .config.nopkg
+
+allyespackageconfig: $(CONFIG)/conf
+	@mkdir -p $(CONFIG)/buildroot-config
+	@grep -v BR2_PACKAGE_ .config > .config.nopkg
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
+		KCONFIG_ALLCONFIG=.config.nopkg \
+		$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+	@rm -f .config.nopkg
+
+allnopackageconfig: $(CONFIG)/conf
+	@mkdir -p $(CONFIG)/buildroot-config
+	@grep -v BR2_PACKAGE_ .config > .config.nopkg
+	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
+		KCONFIG_ALLCONFIG=.config.nopkg \
+		$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
+	@rm -f .config.nopkg
+
 defconfig: $(CONFIG)/conf
 	@mkdir -p $(CONFIG)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
@@ -589,6 +617,9 @@ help:
 	@echo '  defconfig              - New config with default answer to all options'
 	@echo '  allyesconfig           - New config where all options are accepted with yes'
 	@echo '  allnoconfig            - New config where all options are answered with no'
+	@echo '  randpackageconfig      - New config with random answer to package options'
+	@echo '  allyespackageconfig    - New config where pkg options are accepted with yes'
+	@echo '  allnopackageconfig     - New config where package options are answered with no'
 	@echo '  configured             - make {uclibc/busybox/linux26}-config'
 	@echo
 	@echo 'Miscellaneous:'
@@ -606,6 +637,5 @@ release: distclean
 	tar cfz $$OUT.tar.gz --exclude .svn --exclude .git --exclude \*~ $$OUT; \
 	rm -rf $$OUT
 
-.PHONY: dummy subdirs release distclean clean config oldconfig \
-	menuconfig xconfig check test depend defconfig help
+.PHONY: $(noconfig_targets)
 
