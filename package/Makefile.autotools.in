@@ -188,7 +188,8 @@ $(BUILD_DIR)/%/.stamp_extracted:
 $(BUILD_DIR)/%/.stamp_libtool_patch:
 	$(call MESSAGE,"Patching libtool")
 # if the package uses libtool, patch it for cross-compiling in buildroot
-	$(Q)if test "$($(PKG)_LIBTOOL_PATCH)" = "YES"; then \
+	$(Q)if test "$($(PKG)_LIBTOOL_PATCH)" = "YES" -a \
+	"$($(PKG)_AUTORECONF)" != "YES"; then \
 	for i in `find $(@D) -name ltmain.sh`; do \
 		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
 		done \
