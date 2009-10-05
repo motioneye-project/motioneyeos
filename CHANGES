@@ -8,7 +8,7 @@
 	libevent, libglib2, liblockfile, libmad, libupnp, libuuid, ltrace,
 	lua, mdadm, ncftp, ncurses, netkittelnet, openssl, python,
 	quagga, radvd, samba, shared-mime-info, speech-tools,
-	squashfs, syslinux, u-boot, valgrind, vsftpd, wipe,
+	squashfs, syslinux, u-boot, util-linux, valgrind, vsftpd, wipe,
 	wpa-supplicant, xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol
