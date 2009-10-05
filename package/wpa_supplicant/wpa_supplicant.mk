@@ -19,7 +19,10 @@ ifeq ($(BR2_PACKAGE_WPA_SUPPLICANT_OPENSSL),y)
 	WPA_SUPPLICANT_DEPENDENCIES += openssl
 endif
 ifeq ($(BR2_PACKAGE_DBUS),y)
-	WPA_SUPPLICANT_DEPENDENCIES += dbus
+	WPA_SUPPLICANT_DEPENDENCIES += host-pkgconfig dbus
+	WPA_SUPPLICANT_MAKE_ENV = \
+		PKG_CONFIG_SYSROOT_DIR="$(STAGING_DIR)"	\
+		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig"
 endif
 
 $(eval $(call AUTOTARGETS,package,wpa_supplicant))
