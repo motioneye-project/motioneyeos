@@ -1,0 +1,11 @@
+--- e2fsprogs-1.41.9/MCONFIG.in.orig	2009-10-07 20:25:07.000000000 +0800
++++ e2fsprogs-1.41.9/MCONFIG.in	2009-10-07 20:21:41.000000000 +0800
+@@ -85,7 +85,7 @@
+ #
+ LIB = $(top_builddir)/lib
+ LIBSS = $(LIB)/libss@LIB_EXT@ @PRIVATE_LIBS_CMT@ @DLOPEN_LIB@
+-LIBCOM_ERR = $(LIB)/libcom_err@LIB_EXT@ @PRIVATE_LIBS_CMT@ @SEM_INIT_LIB@
++LIBCOM_ERR = $(LIB)/libcom_err@LIB_EXT@ @SEM_INIT_LIB@
+ LIBE2P = $(LIB)/libe2p@LIB_EXT@
+ LIBEXT2FS = $(LIB)/libext2fs@LIB_EXT@
+ LIBUUID = @LIBUUID@ @SOCKET_LIB@
