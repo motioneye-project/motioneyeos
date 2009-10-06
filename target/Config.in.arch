@@ -116,14 +116,17 @@ config BR2_ARM_TYPE
 choice
 	prompt "Target ABI"
 	depends on BR2_arm || BR2_armeb
-	default BR2_ARM_OABI
+	default BR2_ARM_EABI
 	help
 	  Application Binary Interface to use
 
-config BR2_ARM_OABI
-	bool "OABI"
+	  Note:
+	    Using OABI is discouraged.
+
 config BR2_ARM_EABI
 	bool "EABI"
+config BR2_ARM_OABI
+	bool "OABI"
 endchoice
 
 choice
