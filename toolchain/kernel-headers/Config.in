@@ -39,9 +39,11 @@ choice
 	config BR2_KERNEL_HEADERS_2_6_31
 		bool "Linux 2.6.31.x kernel headers"
 
+	config BR2_KERNEL_HEADERS_VERSION
+		bool "Linux 2.6 (manually specified version)"
+
 	config BR2_KERNEL_HEADERS_SNAP
 		bool "Linux 2.6 snapshot"
-
 endchoice
 
 config BR2_KERNEL_HEADERS_RT
@@ -49,6 +51,13 @@ config BR2_KERNEL_HEADERS_RT
 	depends on BR2_KERNEL_HEADERS_2_6_26
 	help
 	  Apply Ingo's realtime extensions to linux
+
+config BR2_DEFAULT_KERNEL_VERSION
+	string "linux version"
+	depends on BR2_KERNEL_HEADERS_VERSION
+	help
+	  Specify the version you want to use.
+	  E.g.: 2.6.31.2
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
@@ -59,4 +68,4 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "2.6.30.9"	if BR2_KERNEL_HEADERS_2_6_30
 	default "2.6.31.5"	if BR2_KERNEL_HEADERS_2_6_31
 	default "2.6"		if BR2_KERNEL_HEADERS_SNAP
-
+	default $BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
