@@ -562,11 +562,6 @@ endif
 qt-dirclean:
 	rm -rf $(QT_TARGET_DIR)
 
-qt-status:
-	@echo "QT_QMAKE:               " $(QT_QMAKE)
-	@echo "QT_DEP_LIBS:            " $(QT_DEP_LIBS)
-	@echo "FREETYPE_DIR:		    " $(FREETYPE_DIR)
-
 #############################################################
 #
 # Toplevel Makefile options
