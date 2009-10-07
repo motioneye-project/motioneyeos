@@ -202,7 +202,11 @@ $(TARGET_DIR)/lib/modules/$(LINUX26_VERSION)/modules.dep: $(LINUX26_DIR)/.config
 	touch -c $@
 
 linux26-menuconfig: $(LINUX26_DIR)/.patched host-sed
-	[ -f $(LINUX26_DIR)/.config ] || cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config
+	if [ ! -f $(LINUX26_DIR)/.config ]; then \
+		[ -n "$(LINUX26_KCONFIG)" ] && [ -f $(LINUX26_KCONFIG) ] && \
+			cp $(LINUX26_KCONFIG) $(LINUX26_DIR)/.config || \
+			true; \
+	fi
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) menuconfig
 	-[ -f $(LINUX26_DIR)/.config ] && touch $(LINUX26_DIR)/.configured
 
