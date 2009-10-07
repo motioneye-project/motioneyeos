@@ -315,6 +315,11 @@ else
 QT_CONFIGURE+= -no-stl
 endif
 
+# ccache and precompiled headers don't play well together
+ifeq ($(BR2_CCACHE),y)
+QT_CONFIGURE += -no-pch
+endif
+
 BR2_PACKAGE_QT_EMB_PLATFORM:=$(call qstrip,$(BR2_PACKAGE_QT_EMB_PLATFORM))
 
 # Figure out what libs to install in the target
