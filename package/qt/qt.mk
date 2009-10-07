@@ -474,11 +474,11 @@ endif
 	touch $@
 
 $(QT_TARGET_DIR)/.compiled: $(QT_TARGET_DIR)/.configured
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(QT_TARGET_DIR)
+	$(MAKE) -C $(QT_TARGET_DIR)
 	touch $@
 
 $(STAGING_DIR)/usr/lib/libQtCore.la: $(QT_TARGET_DIR)/.compiled
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(QT_TARGET_DIR) install
+	$(MAKE) -C $(QT_TARGET_DIR) install
 
 qt-gui: $(STAGING_DIR)/usr/lib/libQtCore.la
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
