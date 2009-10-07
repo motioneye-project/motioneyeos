@@ -13,27 +13,15 @@
 ######################################################################
 
 QT_VERSION:=4.5.2
+QT_SOURCE:=qt-embedded-linux-opensource-src-$(QT_VERSION).tar.bz2
+QT_SITE:=http://get.qtsoftware.com/qt/source
 QT_CAT:=$(BZCAT)
-
-BR2_PACKAGE_QT_COMMERCIAL_USERNAME:=$(call qstrip,$(BR2_PACKAGE_QT_COMMERCIAL_USERNAME))
-BR2_PACKAGE_QT_COMMERCIAL_PASSWORD:=$(call qstrip,$(BR2_PACKAGE_QT_COMMERCIAL_PASSWORD))
+QT_TARGET_DIR:=$(BUILD_DIR)/qt-embedded-linux-opensource-src-$(QT_VERSION)
 
 QT_CONFIGURE:=#empty
 
-# What to download, free or commercial version.
-ifneq ($(BR2_PACKAGE_QT_COMMERCIAL_USERNAME),)
-QT_SITE:=http://$(BR2_PACKAGE_QT_COMMERCIAL_USERNAME):$(BR2_QT_COMMERCIAL_PASSWORD)@dist.trolltech.com/$(BR2_PACKAGE_QT_COMMERCIAL_USERNAME)
-QT_SOURCE:=qt-embedded-linux-commercial-src-$(QT_VERSION).tar.bz2
-QT_TARGET_DIR:=$(BUILD_DIR)/qt-embedded-linux-commercial-src-$(QT_VERSION)
-QT_CONFIGURE+= -commercial
-else # Good, good, we are free:
-QT_SITE=http://get.qtsoftware.com/qt/source
-QT_SOURCE:=qt-embedded-linux-opensource-src-$(QT_VERSION).tar.bz2
-QT_TARGET_DIR:=$(BUILD_DIR)/qt-embedded-linux-opensource-src-$(QT_VERSION)
-QT_CONFIGURE+= -opensource
 ifeq ($(BR2_PACKAGE_QT_LICENSE_APPROVED),y)
-QT_CONFIGURE+= -confirm-license
-endif
+QT_CONFIGURE += -opensource -confirm-license
 endif
 
 # If you want extra tweaking you can copy

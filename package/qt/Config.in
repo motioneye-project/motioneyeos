@@ -39,12 +39,8 @@ config BR2_PACKAGE_QT_STATIC
 
 endchoice
 
-config BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
-	bool "Use commercial license"
-
 config BR2_PACKAGE_QT_LICENSE_APPROVED
 	bool "Approve free license"
-	depends on !BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
 	help
 	  Select this if you approve one of the available free licenses for the
 	  Qt4 library.
@@ -53,20 +49,6 @@ config BR2_PACKAGE_QT_LICENSE_APPROVED
 
 	  LGPL v2.1: http://doc.trolltech.com/4.5/lgpl.html
 	  GPL  v3.0: http://doc.trolltech.com/4.5/gpl.html
-
-config BR2_PACKAGE_QT_COMMERCIAL_USERNAME
-	string "Qt 4 Commercial License Username"
-	depends on BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
-	help
-	  Commercial users can download their source directly by
-	  providing a username.
-
-config BR2_PACKAGE_QT_COMMERCIAL_PASSWORD
-	string "Qt 4 Commercial License Password"
-	depends on BR2_PACKAGE_QT_LICENSE_TYPE_COMMERCIAL
-	help
-	  Commercial users can download their source directly by
-	  providing a password.
 
 config BR2_PACKAGE_QT_QT3SUPPORT
 	bool "Compatibility with Qt3"
