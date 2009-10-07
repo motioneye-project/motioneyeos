@@ -6,11 +6,11 @@
 	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
 	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
 	gst-plugins-good, imagemagick, iptables, kernel-headers, kismet,
-	libelf, libevent, libglib2, liblockfile, libmad, libupnp,
+	libelf, libevent, libglib2, liblockfile, libmad, libpcap, libupnp,
 	libuuid, ltrace, lua, lzma, mdadm, ncftp, ncurses, netkittelnet,
 	netsnmp, ntfs-3g, openssl, php, python, quagga, radvd, rsync, samba,
 	sawman, shared-mime-info, speech-tools, sqlite, squashfs, syslinux,
-	u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
+	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
 	xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol

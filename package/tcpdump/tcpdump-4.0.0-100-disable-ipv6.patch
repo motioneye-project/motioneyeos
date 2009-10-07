@@ -1,0 +1,21 @@
+diff -rdup tcpdump-4.0.0.oorig/print-enc.c tcpdump-4.0.0/print-enc.c
+--- tcpdump-4.0.0.oorig/print-enc.c	2008-09-01 04:44:22.000000000 +0200
++++ tcpdump-4.0.0/print-enc.c	2009-10-07 21:21:41.000000000 +0200
+@@ -72,14 +72,16 @@ enc_if_print(const struct pcap_pkthdr *h
+ 	length -= ENC_HDRLEN;
+ 	caplen -= ENC_HDRLEN;
+ 	p += ENC_HDRLEN;
+-	
++
+ 	switch (hdr->af) {
+ 	case AF_INET:
+ 		ip_print(gndo, p, length);
+ 		break;
++#ifdef INET6
+ 	case AF_INET6:
+ 		ip6_print(p, length);
+ 		break;
++#endif /*INET6*/
+ 	}
+ 
+ out:
