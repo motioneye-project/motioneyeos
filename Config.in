@@ -99,13 +99,6 @@ config BR2_STAGING_DIR
 	  Most people will leave this set to the default value of
 	  "$(BASE_DIR)/staging".
 
-config BR2_FPU_SUFFIX
-	bool "Add '_nofpu' suffix for softfloat toolchains"
-	help
-	  If the toolchain is configured to use softfloat, then
-	  the "_nofpu" suffix will be added to the toolchain build
-	  directory name and to any rootfs image name
-
 config BR2_GNU_BUILD_SUFFIX
 	string "GNU build hostname suffix"
 	default "pc-linux-gnu"
