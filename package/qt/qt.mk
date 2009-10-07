@@ -17,10 +17,6 @@
 # (cd /usr/include; sudo ln -s dbus-1.0/dbus dbus)
 # to fix
 
-# BUG: There is a workaround below (search for x86x86fix) for
-# x86 crosscompiling under linux x86. Please remove it when the workaround
-# is no longer necessary.
-
 QT_VERSION:=4.5.2
 QT_CAT:=$(BZCAT)
 
@@ -328,17 +324,6 @@ endif
 
 QT_CONFIGURE:=$(call qstrip,$(QT_CONFIGURE))
 BR2_PACKAGE_QT_EMB_PLATFORM:=$(call qstrip,$(BR2_PACKAGE_QT_EMB_PLATFORM))
-
-# x86x86fix
-# Workaround Qt Embedded bug when crosscompiling for x86 under x86 with linux
-# host. It's unclear if this would happen on other hosts.
-ifneq ($(findstring pc-linux,$(BR2_GNU_BUILD_SUFFIX)),)
-ifeq ($(BR2_PACKAGE_QT_EMB_PLATFORM),x86)
-QT_CONFIGURE+= -platform linux-g++
-QT_CONFIGURE:=$(call qstrip,$(QT_CONFIGURE))
-endif
-endif
-# End of workaround.
 
 # Figure out what libs to install in the target
 QT_LIBS=#empty
