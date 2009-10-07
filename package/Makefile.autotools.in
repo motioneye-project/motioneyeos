@@ -256,6 +256,7 @@ $(BUILD_DIR)/%/.stamp_configured:
 		$(DISABLE_DOCUMENTATION) \
 		$(DISABLE_NLS) \
 		$(DISABLE_LARGEFILE) \
+		$(DISABLE_IPV6) \
 		$(QUIET) $($(PKG)_CONF_OPT)
 	$(Q)touch $@
 
