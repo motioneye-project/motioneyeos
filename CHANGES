@@ -4,7 +4,8 @@
 	sdl_sound, swfdec
 
 	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
-	festival, imagemagick, iptables, kernel-headers, kismet,
+	festival, gstreamer, gst-plugins-bad, gst-plugins-base,
+	gst-plugins-good, imagemagick, iptables, kernel-headers, kismet,
 	libevent, libglib2, liblockfile, libmad, libupnp, libuuid, ltrace,
 	lua, mdadm, ncftp, ncurses, netkittelnet, ntfs-3g, openssl, python,
 	quagga, radvd, samba, shared-mime-info, speech-tools,
