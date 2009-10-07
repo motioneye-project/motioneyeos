@@ -444,16 +444,12 @@ endif
 	$(call QT_QMAKE_SET,LFLAGS,$(TARGET_LDFLAGS))
 	-[ -f $(QT_QCONFIG_FILE) ] && cp $(QT_QCONFIG_FILE) \
 		$(QT_TARGET_DIR)/$(QT_QCONFIG_FILE_LOCATION)
-# Qt doesn't use PKG_CONFIG, it searches for pkg-config with 'which'.
-# PKG_CONFIG_SYSROOT is only used to avoid a warning from Qt's configure system
-# when cross compiling, Qt 4.4.3 is wrong here.
 # Don't use TARGET_CONFIGURE_OPTS here, qmake would be compiled for the target
-# instead of the host then.
+# instead of the host then. So set PKG_CONFIG* manually.
 	(cd $(QT_TARGET_DIR); \
-		PATH=$(TARGET_PATH) \
 		PKG_CONFIG_SYSROOT_DIR="$(STAGING_DIR)" \
+		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 		PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig:$(PKG_CONFIG_PATH)" \
-		PKG_CONFIG_SYSROOT="$(STAGING_DIR)" \
 		./configure \
 		$(if $(VERBOSE),-verbose,-silent) \
 		-force-pkg-config \
