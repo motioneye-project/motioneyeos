@@ -72,6 +72,10 @@ config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_OGG
 	bool "ogg (*.ogg audio/video)"
 	select BR2_PACKAGE_LIBOGG
 
+config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_PANGO
+	bool "pango font renderer"
+	select BR2_PACKAGE_PANGO
+
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_THEORA
 	bool "theora (*.ogg video)"
 	select BR2_PACKAGE_LIBTHEORA

@@ -3,7 +3,7 @@
 # gst-plugins-base
 #
 #############################################################
-GST_PLUGINS_BASE_VERSION = 0.10.23
+GST_PLUGINS_BASE_VERSION = 0.10.25
 GST_PLUGINS_BASE_SOURCE = gst-plugins-base-$(GST_PLUGINS_BASE_VERSION).tar.bz2
 GST_PLUGINS_BASE_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-base
 GST_PLUGINS_BASE_INSTALL_STAGING = YES
@@ -128,6 +128,13 @@ GST_PLUGINS_BASE_CONF_OPT += --enable-ogg
 GST_PLUGINS_BASE_DEPENDENCIES += libogg
 else
 GST_PLUGINS_BASE_CONF_OPT += --disable-ogg
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_PANGO),y)
+GST_PLUGINS_BASE_CONF_OPT += --enable-pango
+GST_PLUGINS_BASE_DEPENDENCIES += pango
+else
+GST_PLUGINS_BASE_CONF_OPT += --disable-pango
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_THEORA),y)
