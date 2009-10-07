@@ -702,7 +702,6 @@ BR2_PACKAGE_QT_GUI_MODULE=y
 #
 # Deselecting each option leads to Qt's default (8,16,32)
 #
-# BR2_PACKAGE_QT_PIXEL_DEPTH_ALL is not set
 # BR2_PACKAGE_QT_PIXEL_DEPTH_1 is not set
 # BR2_PACKAGE_QT_PIXEL_DEPTH_4 is not set
 BR2_PACKAGE_QT_PIXEL_DEPTH_8=y

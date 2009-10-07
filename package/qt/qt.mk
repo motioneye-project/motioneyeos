@@ -62,9 +62,7 @@ endif
 
 
 ### Pixel depths
-ifeq ($(BR2_PACKAGE_QT_PIXEL_DEPTH_ALL),y)
-QT_PIXEL_DEPTHS = all
-else
+QT_PIXEL_DEPTHS := # empty
 ifeq ($(BR2_PACKAGE_QT_PIXEL_DEPTH_1),y)
 QT_PIXEL_DEPTHS += 1
 endif
@@ -91,7 +89,6 @@ QT_PIXEL_DEPTHS += 24
 endif
 ifeq ($(BR2_PACKAGE_QT_PIXEL_DEPTH_32),y)
 QT_PIXEL_DEPTHS += 32
-endif
 endif
 ifneq ($(QT_PIXEL_DEPTHS),)
 QT_CONFIGURE += -depths $(subst $(space),$(comma),$(strip $(QT_PIXEL_DEPTHS)))

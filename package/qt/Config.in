@@ -87,11 +87,6 @@ if BR2_PACKAGE_QT_GUI_MODULE
 menu "Pixel depths"
 comment "Deselecting each option leads to Qt's default (8,16,32)"
 
-config BR2_PACKAGE_QT_PIXEL_DEPTH_ALL
-	bool "All supported depths"
-
-if !BR2_PACKAGE_QT_PIXEL_DEPTH_ALL
-
 config BR2_PACKAGE_QT_PIXEL_DEPTH_1
 	bool "1 bpp, black/white"
 
@@ -122,7 +117,6 @@ config BR2_PACKAGE_QT_PIXEL_DEPTH_32
 	bool "32 bpp, argb 8-8-8-8 and rgb 8-8-8"
 	default y
 
-endif
 endmenu
 endif
 
