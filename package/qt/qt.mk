@@ -406,7 +406,6 @@ ifneq ($(BR2_INET_IPV6),y)
 	$(SED) 's/^CFG_IPV6=auto/CFG_IPV6=no/' $(QT_TARGET_DIR)/configure
 	$(SED) 's/^CFG_IPV6IFNAME=auto/CFG_IPV6IFNAME=no/' $(QT_TARGET_DIR)/configure
 endif
-	$(SED) 's/^CFG_XINERAMA=auto/CFG_XINERAMA=no/' $(QT_TARGET_DIR)/configure
 	# Fix compiler path
 	$(call QT_QMAKE_SET,CC,$(TARGET_CC))
 	$(call QT_QMAKE_SET,CXX,$(TARGET_CXX))
@@ -433,6 +432,7 @@ endif
 		-embedded $(BR2_PACKAGE_QT_EMB_PLATFORM) \
 		$(QT_QCONFIG_COMMAND) \
 		$(QT_CONFIGURE) \
+		-no-xinerama \
 		-no-cups \
 		-no-nis \
 		-no-accessibility \
