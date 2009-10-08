@@ -9,9 +9,6 @@ menuconfig BR2_PACKAGE_XORG7
 	  Support for X11R7 libraries, servers, drivers, and/or
 	  applications in the target.
 
-comment "X.org requires a toolchain with WCHAR support"
-        depends on !BR2_USE_WCHAR
-
 if BR2_PACKAGE_XORG7
 
 choice
@@ -24,6 +21,9 @@ config BR2_PACKAGE_XSERVER_xorg
 	bool "Modular X.org"
 	# depending on BR2_ENABLE_LOCALE gives a recursion error with dbus
 	depends on BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP # && BR2_ENABLE_LOCALE
+
+comment 'X.org requires largefile, locale and C++ support'
+	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_ENABLE_LOCALE)
 
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "TinyX"
@@ -330,3 +330,6 @@ endmenu
 		source package/x11r7/xkeyboard-config/Config.in
 	endmenu
 endif
+
+comment "X.org requires a toolchain with WCHAR support"
+        depends on !BR2_USE_WCHAR
