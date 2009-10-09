@@ -7,8 +7,8 @@
 	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
 	gst-plugins-good, imagemagick, iptables, kernel-headers, kismet,
 	libevent, libglib2, liblockfile, libmad, libupnp, libuuid, ltrace,
-	lua, mdadm, ncftp, ncurses, netkittelnet, ntfs-3g, openssl, python,
-	quagga, radvd, rsync, samba, shared-mime-info, speech-tools,
+	lua, mdadm, ncftp, ncurses, netkittelnet, ntfs-3g, openssl, php,
+	python, quagga, radvd, rsync, samba, shared-mime-info, speech-tools,
 	squashfs, syslinux, u-boot, util-linux, valgrind, vsftpd, wipe,
 	wpa-supplicant, xdata_xcursor-themes, zlib
 
@@ -27,6 +27,7 @@
 	#615: python: Don't delete .py files unless asked
 	#617: netkit/inetd requires RPC and fails to build if RPC is disabled
 	#619: netkittelnet requires netkitbase to install, but there's no dependency
+	#653: [SECURITY] Update php package to version 5.2.11
 
 2009.08, Released August 31th, 2009:
 
