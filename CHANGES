@@ -9,8 +9,8 @@
 	libevent, libglib2, liblockfile, libmad, libnl, libupnp, libuuid,
 	ltrace, lua, mdadm, ncftp, ncurses, netkittelnet, ntfs-3g, openssl,
 	php, python, quagga, radvd, rsync, samba, shared-mime-info,
-	speech-tools, squashfs, syslinux, u-boot, util-linux, valgrind,
-	vsftpd, wipe, wpa-supplicant, xdata_xcursor-themes, zlib
+	speech-tools, sqlite, squashfs, syslinux, u-boot, util-linux,
+	valgrind, vsftpd, wipe, wpa-supplicant, xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol
 
@@ -28,6 +28,7 @@
 	#617: netkit/inetd requires RPC and fails to build if RPC is disabled
 	#619: netkittelnet requires netkitbase to install, but there's no dependency
 	#653: [SECURITY] Update php package to version 5.2.11
+	#655: Update sqlite package to version 3.6.18
 	#657: Bug in imagemagick-clean target
 	#665: [PATCH] Samba package
 
