@@ -9,8 +9,6 @@ IMAGEMAGICK_SOURCE:=ImageMagick-$(IMAGEMAGICK_VERSION).tar.bz2
 IMAGEMAGICK_SITE:=ftp://ftp.imagemagick.org/pub/ImageMagick
 IMAGEMAGICK_DIR:=$(BUILD_DIR)/ImageMagick-$(IMAGEMAGICK_VERSION)
 IMAGEMAGICK_CAT:=$(BZCAT)
-#IMAGEMAGICK_BINARY:=convert
-#IMAGEMAGICK_TARGET_BINARY:=usr/bin/$(IMAGEMAGICK_BINARY)
 IMAGEMAGICK_LIB:=$(TARGET_DIR)/usr/lib/libMagickCore.so
 
 IMAGEMAGICK_TARGET_BINARIES:=$(TARGET_DIR)/usr/bin/animate
@@ -137,16 +135,9 @@ imagemagick-source: $(DL_DIR)/$(IMAGEMAGICK_SOURCE)
 imagemagick-unpacked:$(IMAGEMAGICK_DIR)/.unpacked
 
 imagemagick-clean:
-	rm -f $(TARGET_DIR)/$(IMAGEMAGICK_TARGET_BINARY)
-	rm -f $(TARGET_DIR)/usr/bin/animate
-	rm -f $(TARGET_DIR)/usr/bin/compare
-	rm -f $(TARGET_DIR)/usr/bin/composite
-	rm -f $(TARGET_DIR)/usr/bin/conjure
-	rm -f $(TARGET_DIR)/usr/bin/convert
-	rm -f $(TARGET_DIR)/usr/bin/display
-	rm -f $(TARGET_DIR)/usr/bin/import
-	rm -f $(TARGET_DIR)/usr/bin/mogrify
-	rm -f $(TARGET_DIR)/usr/bin/montage
+	for target_binary in $(IMAGEMAGICK_TARGET_BINARIES); do \
+		rm -f $$target_binary; \
+	done
 	rm -rf $(TARGET_DIR)/usr/lib/libMagick*
 	rm -rf $(TARGET_DIR)/usr/lib/ImageMagick-$(IMAGEMAGICK_MAJOR)
 	-$(MAKE) -C $(IMAGEMAGICK_DIR) clean

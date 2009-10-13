@@ -28,6 +28,7 @@
 	#617: netkit/inetd requires RPC and fails to build if RPC is disabled
 	#619: netkittelnet requires netkitbase to install, but there's no dependency
 	#653: [SECURITY] Update php package to version 5.2.11
+	#657: Bug in imagemagick-clean target
 
 2009.08, Released August 31th, 2009:
 
