@@ -4,7 +4,7 @@ source "package/busybox/Config.in"
 
 comment "The minimum needed to build a uClibc development system"
 
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/bash/Config.in"
 source "package/bzip2/Config.in"
 source "package/coreutils/Config.in"
@@ -12,15 +12,15 @@ source "package/diffutils/Config.in"
 source "package/findutils/Config.in"
 endif
 source "package/flex/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/gawk/Config.in"
 endif
 source "toolchain/gcc/Config.in.2"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/grep/Config.in"
 endif
 source "package/make/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/patch/Config.in"
 source "package/sed/Config.in"
 source "package/tar/Config.in"
@@ -52,12 +52,12 @@ source "package/at/Config.in"
 source "package/beecrypt/Config.in"
 source "package/berkeleydb/Config.in"
 source "package/bsdiff/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/bootutils/Config.in"
 endif
 source "package/cups/Config.in"
 source "package/customize/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/dash/Config.in"
 endif
 source "package/enchant/Config.in"
@@ -65,7 +65,7 @@ source "package/file/Config.in"
 source "package/gamin/Config.in"
 source "package/icu/Config.in"
 source "package/kexec/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/less/Config.in"
 endif
 source "package/libconfig/Config.in"
@@ -87,16 +87,16 @@ source "package/lsof/Config.in"
 source "package/ltp-testsuite/Config.in"
 source "package/ltrace/Config.in"
 source "package/memstat/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/module-init-tools/Config.in"
 source "package/modutils/Config.in"
 endif
 source "package/ng-spice-rework/Config.in"
 source "package/popt/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/procps/Config.in"
 endif
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/psmisc/Config.in"
 endif
 source "package/screen/Config.in"
@@ -104,7 +104,7 @@ source "package/shared-mime-info/Config.in"
 source "package/startup-notification/Config.in"
 source "package/strace/Config.in"
 source "package/sudo/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/sysklogd/Config.in"
 # busybox has init and the runit stuff
 source "package/sysvinit/Config.in"
@@ -114,7 +114,7 @@ endif
 
 source "package/database/Config.in"
 
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 # busybox has an editor
 
 # text editors
@@ -128,14 +128,14 @@ comment "Networking applications"
 source "package/argus/Config.in"
 source "package/avahi/Config.in"
 source "package/axel/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/boa/Config.in"
 endif
 source "package/bind/Config.in"
 source "package/bmon/Config.in"
 source "package/bridge-utils/Config.in"
 source "package/ctorrent/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/dhcp/Config.in"
 endif
 source "package/dnsmasq/Config.in"
@@ -163,12 +163,12 @@ source "package/libosip2/Config.in"
 source "package/libpcap/Config.in"
 source "package/libsoup/Config.in"
 source "package/libupnp/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/lighttpd/Config.in"
 endif
 source "package/links/Config.in"
 source "package/lrzsz/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/microcom/Config.in"
 endif
 source "package/mii-diag/Config.in"
@@ -177,7 +177,7 @@ source "package/mutt/Config.in"
 source "package/nbd/Config.in"
 source "package/ncftp/Config.in"
 source "package/neon/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/netcat/Config.in"
 source "package/netkitbase/Config.in"
 source "package/netkittelnet/Config.in"
@@ -206,7 +206,7 @@ source "package/socat/Config.in"
 source "package/spawn-fcgi/Config.in"
 source "package/stunnel/Config.in"
 source "package/tcpdump/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/tftpd/Config.in"
 source "package/thttpd/Config.in"
 source "package/tinyhttpd/Config.in"
@@ -218,7 +218,7 @@ source "package/vpnc/Config.in"
 source "package/vsftpd/Config.in"
 source "package/vtun/Config.in"
 source "package/webif/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/wget/Config.in"
 endif
 source "package/wireless-tools/Config.in"
@@ -231,7 +231,7 @@ source "package/acpid/Config.in"
 source "package/dbus/Config.in"
 source "package/dbus-glib/Config.in"
 source "package/dbus-python/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/devmem2/Config.in"
 endif
 source "package/dmraid/Config.in"
@@ -244,7 +244,7 @@ source "package/fuse/Config.in"
 source "package/gadgetfs-test/Config.in"
 source "package/gvfs/Config.in"
 source "package/hal/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/hdparm/Config.in"
 source "package/hotplug/Config.in"
 endif
@@ -265,12 +265,12 @@ source "package/ntfsprogs/Config.in"
 source "package/pciutils/Config.in"
 source "package/pcmcia/Config.in"
 source "package/setserial/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 # busybox has fdisk
 source "package/sfdisk/Config.in"
 endif
 source "package/smartmontools/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 # mdev
 source "package/udev/Config.in"
 endif
@@ -377,7 +377,7 @@ endmenu
 
 menu "Compressors / decompressors"
 
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/gzip/Config.in"
 endif
 source "package/libarchive/Config.in"
@@ -391,7 +391,7 @@ menu "Package managers"
 
 source "package/ipkg/Config.in"
 source "package/portage/Config.in"
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/rpm/Config.in"
 endif
 endmenu

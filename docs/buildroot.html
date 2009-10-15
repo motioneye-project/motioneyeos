@@ -794,9 +794,7 @@ config BR2_PACKAGE_FOO
     <em>sorted alphabetically</em> per category and are <em>NOT</em>
     supposed to contain anything but the <em>bare</em> name of the package.</p>
 <pre>
-if !BR2_PACKAGE_BUSYBOX_HIDE_OTHERS
 source "package/procps/Config.in"
-endif
 </pre>
    <p><strong>Note:</strong><br>
    Generally all packages should live <em>directly</em> in the
