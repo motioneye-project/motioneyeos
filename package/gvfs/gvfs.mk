@@ -22,7 +22,6 @@ GVFS_CONF_OPT = \
 	--disable-obexftp		\
 	--disable-gphoto2		\
 	--disable-keyring		\
-	--disable-archive		\
 	--disable-bash-completion	\
 
 ifeq ($(BR2_PACKAGE_AVAHI),y)
@@ -30,6 +29,20 @@ GVFS_DEPENDENCIES += avahi
 GVFS_CONF_OPT += --enable-avahi
 else
 GVFS_CONF_OPT += --disable-avahi
+endif
+
+ifeq ($(BR2_PACKAGE_HAL),y)
+GVFS_DEPENDENCIES += hal
+GVFS_CONF_OPT += --enable-hal
+else
+GVFS_CONF_OPT += --disable-hal
+endif
+
+ifeq ($(BR2_PACKAGE_LIBARCHIVE),y)
+GVFS_DEPENDENCIES += libarchive
+GVFS_CONF_OPT += --enable-archive
+else
+GVFS_CONF_OPT += --disable-archive
 endif
 
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
@@ -44,13 +57,6 @@ GVFS_DEPENDENCIES += libsoup
 GVFS_CONF_OPT += --enable-http
 else
 GVFS_CONF_OPT += --disable-http
-endif
-
-ifeq ($(BR2_PACKAGE_HAL),y)
-GVFS_DEPENDENCIES += hal
-GVFS_CONF_OPT += --enable-hal
-else
-GVFS_CONF_OPT += --disable-hal
 endif
 
 ifeq ($(BR2_PACKAGE_SAMBA_LIBSMBCLIENT),y)
