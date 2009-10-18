@@ -1,7 +1,7 @@
 2009.11, Not yet released:
 
 	New packages: divine, gvfs, libarchive, libmicrohttpd,
-	sdl_sound, swfdec
+	sdl_sound, swfdec, sysstat
 
 	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
 	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
