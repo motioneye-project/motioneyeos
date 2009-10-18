@@ -313,12 +313,7 @@ $ export BUILDROOT_COPYTO=/tftpboot
       toolchain and the tools. <br />
       You can also customize the <code>target/generic/device_table.txt</code>
       file which is used by the tools that generate the target filesystem image
-      to properly set permissions and create device nodes. The
-      <code>target/generic/skel.tar.gz</code> file contains the main
-      directories of a root filesystem and there is no obvious reason for which
-      it should be changed. These main directories are in an tarball inside of
-      inside the skeleton because it contains symlinks that would be broken
-      otherwise. <br />
+      to properly set permissions and create device nodes.<br />
       These customizations are deployed into
       <code>output/target/</code> just before the actual image
       is made. So simply rebuilding the image by running
