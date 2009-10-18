@@ -63,6 +63,8 @@ ifeq ($(BR2_PACKAGE_SAMBA_LIBSMBCLIENT),y)
 GVFS_DEPENDENCIES += samba
 GVFS_CONF_OPT += \
 	--enable-samba \
+	--with-samba-includes=$(STAGING_DIR)/usr/include \
+	--with-samba-libs=$(STAGING_DIR)/usr/lib \
 	ac_cv_lib_smbclient_smbc_option_get=yes
 else
 GVFS_CONF_OPT += --disable-samba
