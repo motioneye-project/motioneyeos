@@ -8,7 +8,7 @@ config BR2_PACKAGE_SAMBA
 
 	  http://www.samba.org/
 
-	  NOTE: A complete Samba install takes close to 40MB of space,
+	  NOTE: A complete Samba install takes over 50MB of space,
 		so choose only the components you need.
 
 menu "Samba tools selection"
@@ -39,15 +39,6 @@ config BR2_PACKAGE_SAMBA_FINDSMB
 
 comment "findsmb       - disabled (requires nmblookup, smbclient and perl)"
 	depends on !BR2_PACKAGE_SAMBA_SMBCLIENT || !BR2_PACKAGE_SAMBA_NMBLOOKUP || !BR2_PACKAGE_MICROPERL
-
-config BR2_PACKAGE_SAMBA_LIBSMBCLIENT
-	bool "libsmbclient"
-	depends on BR2_PACKAGE_SAMBA
-	help
-	  libsmbclient is a library toolset that permits applications
-	  to manipulate CIFS/SMB network resources using many of the
-	  standards POSIX functions available for manipulating local
-	  files.
 
 config BR2_PACKAGE_SAMBA_NET
 	bool "net"
@@ -95,6 +86,7 @@ config BR2_PACKAGE_SAMBA_PROFILES
 
 config BR2_PACKAGE_SAMBA_RPCCLIENT
 	bool "rpcclient"
+	select BR2_PACKAGE_READLINE
 	default y
 	depends on BR2_PACKAGE_SAMBA
 	help
@@ -110,6 +102,7 @@ config BR2_PACKAGE_SAMBA_SMBCACLS
 
 config BR2_PACKAGE_SAMBA_SMBCLIENT
 	bool "smbclient"
+	select BR2_PACKAGE_READLINE
 	default y
 	depends on BR2_PACKAGE_SAMBA
 	help
@@ -136,12 +129,26 @@ config BR2_PACKAGE_SAMBA_SMBGET
 	help
 	  wget-like utility for download files over SMB
 
+config BR2_PACKAGE_SAMBA_SMBLDBTOOLS
+	bool "smbldbtools"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  ldbadd ldbdel ldbedit ldbmodify ldbrename ldbsearch tools
+
 config BR2_PACKAGE_SAMBA_SMBPASSWD
 	bool "smbpasswd"
 	default y
 	depends on BR2_PACKAGE_SAMBA
 	help
 	  Change a user's SMB passwd
+
+config BR2_PACKAGE_SAMBA_SMBSHARESEC
+	bool "smbsharesec"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  Manipulate share permissions on SMB file shares
 
 config BR2_PACKAGE_SAMBA_SMBSPOOL
 	bool "smbspool"
@@ -210,3 +217,47 @@ config BR2_PACKAGE_SAMBA_WBINFO
 	  Query information from winbind daemon
 
 endmenu
+
+
+menu "Samba libraries selection"
+	depends on BR2_PACKAGE_SAMBA
+
+config BR2_PACKAGE_SAMBA_LIBSMBCLIENT
+	bool "libsmbclient"
+	depends on BR2_PACKAGE_SAMBA
+	help
+	  libsmbclient is a library toolset that permits applications
+	  to manipulate CIFS/SMB network resources using many of the
+	  standards POSIX functions available for manipulating local
+	  files.
+
+endmenu
+
+
+menu "Samba support selection"
+	depends on BR2_PACKAGE_SAMBA
+
+config BR2_PACKAGE_SAMBA_AVAHI
+	bool "support avahi"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	depends on BR2_PACKAGE_AVAHI
+	help
+	  Include support for avahi
+
+comment "support avahi - disabled (requires avahi)"
+	depends on !BR2_PACKAGE_AVAHI
+
+config BR2_PACKAGE_SAMBA_GAMIN
+	bool "support gamin"
+	default y
+	depends on BR2_PACKAGE_SAMBA
+	depends on BR2_PACKAGE_GAMIN
+	help
+	  Include support for gamin
+
+comment "support gamin - disabled (requires gamin)"
+	depends on !BR2_PACKAGE_GAMIN
+
+endmenu
+
