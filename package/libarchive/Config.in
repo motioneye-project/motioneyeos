@@ -9,3 +9,18 @@ config BR2_PACKAGE_LIBARCHIVE
 
 comment "libarchive requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_LIBARCHIVE_BSDTAR
+	bool "bsdtar"
+	depends on BR2_PACKAGE_LIBARCHIVE
+	help
+	  The 'bsdtar' program is a full-featured 'tar'
+	  replacement built on libarchive.
+
+config BR2_PACKAGE_LIBARCHIVE_BSDCPIO
+	bool "bsdcpio"
+	depends on BR2_PACKAGE_LIBARCHIVE
+	help
+	  The 'bsdcpio' program is a different interface to
+	  essentially the same functionality as 'bsdtar'.
+
