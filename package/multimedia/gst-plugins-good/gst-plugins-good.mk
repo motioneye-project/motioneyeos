@@ -10,8 +10,8 @@ GST_PLUGINS_GOOD_LIBTOOL_PATCH = NO
 
 GST_PLUGINS_GOOD_CONF_OPT = \
 		$(DISABLE_NLS) \
+		--disable-debug \
 		--disable-examples \
-		--disable-directdraw \
 		--disable-directsound \
 		--disable-sunaudio \
 		--disable-osx_audio \
@@ -105,10 +105,16 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-cutter
 endif
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_DEBUG),y)
-GST_PLUGINS_GOOD_CONF_OPT += --enable-debug
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_DEBUGUTILS),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-debugutils
 else
-GST_PLUGINS_GOOD_CONF_OPT += --disable-debug
+GST_PLUGINS_GOOD_CONF_OPT += --disable-debugutils
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_DEINTERLACE),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-deinterlace
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-deinterlace
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_EFFECTV),y)
@@ -121,6 +127,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_EQUALIZER),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-equalizer
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-equalizer
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_FLV),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-flv
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-flv
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ID3DEMUX),y)
@@ -213,6 +225,12 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-rtp
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_RTPMANAGER),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-rtpmanager
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-rtpmanager
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_RTSP),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-rtsp
 else
@@ -265,6 +283,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_WAVPARSE),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-wavparse
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-wavparse
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_Y4M),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-y4m
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-y4m
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ANNODEX),y)
