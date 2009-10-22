@@ -114,13 +114,8 @@ endif
 
 source "package/database/Config.in"
 
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-# busybox has an editor
-
 # text editors
 source "package/editors/Config.in"
-
-endif
 
 menu "Networking"
 
