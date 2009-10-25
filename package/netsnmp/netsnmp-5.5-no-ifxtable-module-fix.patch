@@ -1,0 +1,18 @@
+--- net-snmp-5.5.theorig/agent/mibgroup/if-mib/ifTable/ifTable_data_access.c	2009-06-12 12:02:22.000000000 -0700
++++ net-snmp-5.5/agent/mibgroup/if-mib/ifTable/ifTable_data_access.c	2009-10-20 11:29:41.000000000 -0700
+@@ -374,6 +374,7 @@ _check_interface_entry_for_updates(ifTab
+      */
+     if (oper_changed) {
+         rowreq_ctx->data.ifLastChange = netsnmp_get_agent_uptime();
++#ifdef USING_IF_MIB_IFXTABLE_IFXTABLE_MODULE
+         if (rowreq_ctx->data.ifLinkUpDownTrapEnable == 1) {
+             if (rowreq_ctx->data.ifOperStatus == IFOPERSTATUS_UP) {
+                 oid notification_oid[] = { 1, 3, 6, 1, 6, 3, 1, 1, 5, 4 };
+@@ -389,6 +390,7 @@ _check_interface_entry_for_updates(ifTab
+                                              rowreq_ctx->data.ifOperStatus);
+             }
+         }
++#endif
+     }
+ 
+     else
