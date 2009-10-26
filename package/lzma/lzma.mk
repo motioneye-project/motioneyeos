@@ -3,7 +3,7 @@
 # lzma
 #
 #############################################################
-LZMA_VERSION:=4.32.6
+LZMA_VERSION:=4.32.7
 LZMA_SOURCE:=lzma-$(LZMA_VERSION).tar.gz
 LZMA_SITE:=http://tukaani.org/lzma/
 LZMA_INSTALL_STAGING = YES
