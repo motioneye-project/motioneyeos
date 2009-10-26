@@ -721,7 +721,7 @@ BR2_PACKAGE_LIBGLIB2=y
 # Compressors / decompressors
 #
 BR2_PACKAGE_LZO=y
-# BR2_PACKAGE_LZMA_TARGET is not set
+# BR2_PACKAGE_LZMA is not set
 # BR2_PACKAGE_LZMA_HOST is not set
 BR2_PACKAGE_ZLIB=y
 # BR2_PACKAGE_ZLIB_TARGET_HEADERS is not set

@@ -113,7 +113,7 @@ $(TARGET_DIR)/$(LZMA_TARGET_BINARY): $(LZMA_TARGET_DIR)/src/lzma/lzma
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 	touch -c $@
 
-lzma-target: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
+lzma: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
 
 lzma-source: $(DL_DIR)/$(LZMA_SOURCE)
 
@@ -129,6 +129,6 @@ lzma-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(BR2_PACKAGE_LZMA_TARGET),y)
-TARGETS+=lzma-target
+ifeq ($(BR2_PACKAGE_LZMA),y)
+TARGETS+=lzma
 endif

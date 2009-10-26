@@ -602,7 +602,7 @@ BR2_PACKAGE_XSERVER_none=y
 #
 # BR2_PACKAGE_GZIP is not set
 # BR2_PACKAGE_LZO is not set
-# BR2_PACKAGE_LZMA_TARGET is not set
+# BR2_PACKAGE_LZMA is not set
 # BR2_PACKAGE_LZMA_HOST is not set
 # BR2_PACKAGE_ZLIB is not set
 
