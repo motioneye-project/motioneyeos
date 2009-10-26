@@ -1,15 +1,7 @@
 config BR2_PACKAGE_LIBELF
 	bool "libelf"
 	help
-	  This is the public release of libelf-0.8.5, a free ELF object
-	  file access library. This build does not generate a shared
-	  library.
+	  The elf library provides routines to access, and manipulate,
+	  Elf object files.
 
-	  http://www.stud.uni-hannover.de/~michael/software/
-
-config BR2_PACKAGE_LIBELF_HEADERS
-	bool "headers on the target"
-	depends on BR2_PACKAGE_LIBELF
-	help
-	  Whether to copy the lib and the headers to the
-	  target system.
+	  http://www.mr511.de/software/

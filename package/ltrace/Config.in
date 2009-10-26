@@ -4,7 +4,7 @@ comment "ltrace has no inherent support for AVR32"
 config BR2_PACKAGE_LTRACE
 	bool "ltrace"
 	#depends on BR2_LARGEFILE
-	select BR2_PACKAGE_LIBELF_HEADERS
+	select BR2_PACKAGE_LIBELF
 	help
 	  Debugging program which runs a specified command until it exits.
 	  While the command is executing, ltrace intercepts and records
