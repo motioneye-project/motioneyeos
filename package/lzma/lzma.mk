@@ -113,8 +113,6 @@ $(TARGET_DIR)/$(LZMA_TARGET_BINARY): $(LZMA_TARGET_DIR)/src/lzma/lzma
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 	touch -c $@
 
-#lzma-headers: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
-
 lzma-target: $(TARGET_DIR)/$(LZMA_TARGET_BINARY)
 
 lzma-source: $(DL_DIR)/$(LZMA_SOURCE)
@@ -139,7 +137,3 @@ endif
 ifeq ($(BR2_PACKAGE_LZMA_TARGET),y)
 TARGETS+=lzma-target
 endif
-
-#ifeq ($(BR2_PACKAGE_LZMA_TARGET_HEADERS),y)
-#TARGETS+=lzma-headers
-#endif
