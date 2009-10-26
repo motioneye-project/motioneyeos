@@ -325,7 +325,6 @@ EXE	mk	xvkbd
 RESTART
 comment	Compressors / decompressors
 EXE	mk	lzo				OK	
-EXE	mk	lzma-host			OK	
 EXE	mk	lzma-target			OK	
 EXE	mk	zlib				OK	
 comment	Package managers

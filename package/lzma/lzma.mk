@@ -129,11 +129,6 @@ lzma-dirclean:
 # Toplevel Makefile options
 #
 #############################################################
-ifeq ($(BR2_PACKAGE_LZMA_HOST),y)
-TARGETS+=lzma-host
-HOST_SOURCE+=lzma-source
-endif
-
 ifeq ($(BR2_PACKAGE_LZMA_TARGET),y)
 TARGETS+=lzma-target
 endif

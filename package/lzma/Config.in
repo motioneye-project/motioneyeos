@@ -8,10 +8,3 @@ config BR2_PACKAGE_LZMA_TARGET
 
 comment "lzma requires a toolchain with C++ support"
         depends on !BR2_GCC_CROSS_CXX
-
-config BR2_PACKAGE_LZMA_HOST
-	bool "Install lzma for the host/build system"
-	help
-	  lzma utils on the host
-
-	  http://tukaani.org/lzma/
