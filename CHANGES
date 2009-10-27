@@ -9,9 +9,9 @@
 	libelf, libevent, libglib2, liblockfile, libmad, libpcap, libupnp,
 	libuuid, ltrace, lua, lzma, mdadm, ncftp, ncurses, netkittelnet,
 	netsnmp, ntfs-3g, openssl, php, python, quagga, radvd, rsync, samba,
-	sawman, shared-mime-info, speech-tools, sqlite, squashfs, syslinux,
-	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
-	xdata_xcursor-themes, zlib
+	sawman, shared-mime-info, speech-tools, sqlite, squashfs, synergy,
+	syslinux, tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe,
+	wpa-supplicant, xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol
 
