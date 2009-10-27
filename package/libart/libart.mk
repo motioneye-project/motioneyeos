@@ -11,8 +11,4 @@ LIBART_AUTORECONF = YES
 LIBART_STAGING = YES
 LIBART_TARGET = YES
 
-LIBART_CONF_OPT = --target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) --build=$(GNU_HOST_NAME) \
-		--prefix=/usr --sysconfdir=/etc
-
 $(eval $(call AUTOTARGETS,package,libart))
