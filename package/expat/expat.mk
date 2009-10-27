@@ -16,7 +16,7 @@ EXPAT_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) installlib
 
 EXPAT_CONF_OPT = --enable-shared
 
-EXPAT_DEPENDENCIES = host-pkgconfig
+EXPAT_DEPENDENCIES = host-pkg-config
 
 $(eval $(call AUTOTARGETS,package,expat))
 

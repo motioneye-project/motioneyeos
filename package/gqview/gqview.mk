@@ -10,7 +10,7 @@ GQVIEW_AUTORECONF = NO
 GQVIEW_INSTALL_STAGING = NO
 GQVIEW_INSTALL_TARGET = YES
 
-GQVIEW_DEPENDENCIES = host-pkgconfig libgtk2
+GQVIEW_DEPENDENCIES = host-pkg-config libgtk2
 
 $(eval $(call AUTOTARGETS,package,gqview))
 

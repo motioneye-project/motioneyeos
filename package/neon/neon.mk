@@ -9,7 +9,7 @@ NEON_INSTALL_STAGING:=YES
 NEON_INSTALL_TARGET_OPT:=DESTDIR=$(TARGET_DIR) install
 NEON_CONF_OPT:=--enable-shared --without-gssapi --disable-rpath
 
-NEON_DEPENDENCIES:=host-pkgconfig
+NEON_DEPENDENCIES:=host-pkg-config
 
 ifeq ($(BR2_PACKAGE_NEON_LIBXML2),y)
 NEON_CONF_OPT+=--with-libxml2=yes

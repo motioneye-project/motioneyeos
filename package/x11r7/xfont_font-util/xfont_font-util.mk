@@ -59,7 +59,7 @@ $(XFONT_FONT_UTIL_DIR)/.hacked: $(XFONT_FONT_UTIL_DIR)/.installed
 	( package/x11r7/xfont_font-util/post-install.sh $(STAGING_DIR) )
 	touch $@
 
-xfont_font-util: host-pkgconfig $(XFONT_FONT_UTIL_DIR)/.hacked
+xfont_font-util: host-pkg-config $(XFONT_FONT_UTIL_DIR)/.hacked
 
 xfont_font-util-unpacked: $(XFONT_FONT_UTIL_DIR)/.unpacked
 

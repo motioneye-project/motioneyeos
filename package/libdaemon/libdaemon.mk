@@ -13,6 +13,6 @@ LIBDAEMON_INSTALL_TARGET:=YES
 LIBDAEMON_CONF_ENV:=ac_cv_func_setpgrp_void=no
 LIBDAEMON_CONF_OPT:=--disable-lynx 
 
-LIBDAEMON_DEPENDENCIES:=host-pkgconfig
+LIBDAEMON_DEPENDENCIES:=host-pkg-config
 
 $(eval $(call AUTOTARGETS,package,libdaemon))

@@ -6,7 +6,7 @@
 
 USBUTILS_VERSION = 0.86
 USBUTILS_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/linux-usb/
-USBUTILS_DEPENDENCIES = host-pkgconfig
+USBUTILS_DEPENDENCIES = host-pkg-config
 
 ifeq ($(BR2_PACKAGE_USBUTILS_ZLIB),y)
 	USBUTILS_DEPENDENCIES += zlib

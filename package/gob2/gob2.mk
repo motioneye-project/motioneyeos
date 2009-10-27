@@ -7,7 +7,7 @@ GOB2_VERSION = 2.0.15
 GOB2_SOURCE = gob2-$(GOB2_VERSION).tar.gz
 GOB2_SITE = http://ftp.5z.com/pub/gob/
 
-GOB2_DEPENDENCIES = libglib2 flex bison host-pkgconfig
+GOB2_DEPENDENCIES = libglib2 flex bison host-pkg-config
 
 $(eval $(call AUTOTARGETS,package,gob2))
 

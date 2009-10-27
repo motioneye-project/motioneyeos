@@ -15,7 +15,7 @@ TIFF_CONF_OPT = \
 	--disable-cxx \
 	--without-x \
 
-TIFF_DEPENDENCIES = host-pkgconfig zlib jpeg
+TIFF_DEPENDENCIES = host-pkg-config zlib jpeg
 
 $(eval $(call AUTOTARGETS,package,tiff))
 

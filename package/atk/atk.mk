@@ -51,7 +51,7 @@ else
 ATK_CONF_OPT += --without-x
 endif
 
-ATK_DEPENDENCIES = libglib2 host-pkgconfig
+ATK_DEPENDENCIES = libglib2 host-pkg-config
 
 $(eval $(call AUTOTARGETS,package,atk))
 

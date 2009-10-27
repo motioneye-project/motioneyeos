@@ -19,7 +19,7 @@ DOCKER_MAKE_OPT = CC=$(TARGET_CC) CXX=$(TARGET_CXX) LD=$(TARGET_LD) \
 
 DOCKER_INSTALL_TARGET_OPT = PREFIX=$(TARGET_DIR)/usr install
 
-DOCKER_DEPENDENCIES = host-pkgconfig libglib2 xserver_xorg-server
+DOCKER_DEPENDENCIES = host-pkg-config libglib2 xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,docker))
 

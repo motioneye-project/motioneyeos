@@ -52,7 +52,7 @@ CLASSPATH_CONF_OPT = \
 		--disable-gconf-peer --disable-examples --disable-plugin \
 		--disable-Werror
 
-CLASSPATH_DEPENDENCIES = host-pkgconfig libpng jpeg
+CLASSPATH_DEPENDENCIES = host-pkg-config libpng jpeg
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
 	CLASSPATH_DEPENDENCIES+= alsa-lib

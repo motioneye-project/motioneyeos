@@ -13,10 +13,9 @@ LIBVORBIS_INSTALL_TARGET = YES
 
 LIBVORBIS_CONF_OPT = --disable-oggtest
 
-LIBVORBIS_DEPENDENCIES = host-pkgconfig libogg
+LIBVORBIS_DEPENDENCIES = host-pkg-config libogg
 
 $(eval $(call AUTOTARGETS,package/multimedia,libvorbis))
-
 
 ############################################################
 #

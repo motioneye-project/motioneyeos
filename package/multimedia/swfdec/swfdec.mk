@@ -13,7 +13,7 @@ SWFDEC_LIBTOOL_PATCH = NO
 SWFDEC_INSTALL_STAGING = YES
 SWFDEC_INSTALL_TARGET = YES
 
-SWFDEC_DEPENDENCIES = liboil alsa-lib pango cairo host-pkgconfig
+SWFDEC_DEPENDENCIES = liboil alsa-lib pango cairo host-pkg-config
 
 ifeq ($(BR2_PACKAGE_SWFDEC_GSTREAMER),y)
 SWFDEC_DEPENDENCIES += gstreamer gst-plugins-base

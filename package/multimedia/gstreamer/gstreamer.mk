@@ -24,7 +24,7 @@ GSTREAMER_CONF_OPT = \
 		--disable-tests \
 		--disable-failing-tests
 
-GSTREAMER_DEPENDENCIES = libglib2 host-pkgconfig
+GSTREAMER_DEPENDENCIES = libglib2 host-pkg-config
 
 ifeq ($(BR2_PACKAGE_GSTREAMER_LIBXML2),y)
 GSTREAMER_DEPENDENCIES += libxml2

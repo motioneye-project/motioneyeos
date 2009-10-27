@@ -14,7 +14,7 @@ GVFS_INSTALL_TARGET = YES
 GVFS_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 GVFS_AUTORECONF = NO
-GVFS_DEPENDENCIES = host-pkgconfig host-libglib2 libglib2 dbus-glib shared-mime-info
+GVFS_DEPENDENCIES = host-pkg-config host-libglib2 libglib2 dbus-glib shared-mime-info
 
 GVFS_CONF_OPT = \
 	--disable-gconf			\

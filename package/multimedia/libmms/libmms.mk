@@ -12,6 +12,6 @@ LIBMMS_LIBTOOL_PATCH = NO
 LIBMMS_INSTALL_STAGING = YES
 LIBMMS_INSTALL_TARGET = YES
 
-LIBMMS_DEPENDENCIES = host-pkgconfig libglib2
+LIBMMS_DEPENDENCIES = host-pkg-config libglib2
 
 $(eval $(call AUTOTARGETS,package/multimedia,libmms))

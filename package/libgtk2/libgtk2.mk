@@ -72,7 +72,7 @@ LIBGTK2_CONF_OPT = --enable-shared \
 		--enable-explicit-deps=no \
 		--disable-debug
 
-LIBGTK2_DEPENDENCIES = host-pkgconfig host-libgtk2 libglib2 cairo pango atk
+LIBGTK2_DEPENDENCIES = host-pkg-config host-libgtk2 libglib2 cairo pango atk
 
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	LIBGTK2_CONF_OPT += --with-gdktarget=directfb

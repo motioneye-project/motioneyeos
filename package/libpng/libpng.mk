@@ -9,7 +9,7 @@ LIBPNG_SOURCE = libpng-$(LIBPNG_VERSION).tar.bz2
 LIBPNG_LIBTOOL_PATCH = NO
 LIBPNG_INSTALL_STAGING = YES
 LIBPNG_CONF_OPT = --without-libpng-compat
-LIBPNG_DEPENDENCIES = host-pkgconfig zlib
+LIBPNG_DEPENDENCIES = host-pkg-config zlib
 
 $(eval $(call AUTOTARGETS,package,libpng))
 

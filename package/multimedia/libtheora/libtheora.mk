@@ -14,6 +14,6 @@ LIBTHEORA_CONF_OPT = \
 		--disable-sdltest \
 		--disable-examples
 
-LIBTHEORA_DEPENDENCIES = libogg libvorbis host-pkgconfig
+LIBTHEORA_DEPENDENCIES = libogg libvorbis host-pkg-config
 
 $(eval $(call AUTOTARGETS,package/multimedia,libtheora))

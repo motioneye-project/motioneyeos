@@ -10,7 +10,7 @@ LIBIDN_INSTALL_STAGING = YES
 LIBIDN_INSTALL_TARGET = YES
 LIBIDN_CONF_OPT = --enable-shared --disable-java --enable-csharp=no
 LIBIDN_LIBTOOL_PATCH = NO
-LIBIDN_DEPENDENCIES = host-pkgconfig gettext $(if $(BR2_PACKAGE_LIBICONV),libiconv)
+LIBIDN_DEPENDENCIES = host-pkg-config gettext $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 $(eval $(call AUTOTARGETS,package,libidn))
 

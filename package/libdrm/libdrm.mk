@@ -61,7 +61,7 @@ $(TARGET_DIR)/usr/lib/libdrm.so: $(STAGING_DIR)/usr/lib/libdrm.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libdrm.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libdrm.so
 
-libdrm: host-pkgconfig $(TARGET_DIR)/usr/lib/libdrm.so
+libdrm: host-pkg-config $(TARGET_DIR)/usr/lib/libdrm.so
 
 libdrm-clean:
 	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(LIBDRM_DIR) uninstall

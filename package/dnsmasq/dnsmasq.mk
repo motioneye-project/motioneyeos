@@ -34,7 +34,7 @@ DNSMASQ_COPTS += -DNO_LARGEFILE
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-DNSMASQ_DEPENDENCIES += host-pkgconfig dbus
+DNSMASQ_DEPENDENCIES += host-pkg-config dbus
 endif
 
 $(eval $(call AUTOTARGETS,package,dnsmasq))
