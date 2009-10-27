@@ -15,51 +15,18 @@ PKG_CONFIG_DEPENDENCIES = libglib2
 
 PKG_CONFIG_CONF_OPT = --with-installed-glib
 
-$(eval $(call AUTOTARGETS,package,pkg-config))
-
-# pkg-config for the host
-PKG_CONFIG_HOST_DIR:=$(BUILD_DIR)/pkg-config-$(PKG_CONFIG_VERSION)-host
-PKG_CONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/pkg-config
-
-$(DL_DIR)/$(PKG_CONFIG_SOURCE):
-	$(call DOWNLOAD,$(PKG_CONFIG_SITE),$(PKG_CONFIG_SOURCE))
-
-$(STAMP_DIR)/host_pkgconfig_unpacked: $(DL_DIR)/$(PKG_CONFIG_SOURCE)
-	mkdir -p $(PKG_CONFIG_HOST_DIR)
-	$(INFLATE$(suffix $(PKG_CONFIG_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(PKG_CONFIG_HOST_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(PKG_CONFIG_HOST_DIR) package/pkg-config/ \*.patch
-	touch $@
-
-$(STAMP_DIR)/host_pkgconfig_configured: $(STAMP_DIR)/host_pkgconfig_unpacked
-	(cd $(PKG_CONFIG_HOST_DIR); rm -rf config.cache; \
-		$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure $(QUIET) \
-		--prefix="$(HOST_DIR)/usr" \
-		--sysconfdir="$(HOST_DIR)/etc" \
+HOST_PKG_CONFIG_CONF_OPT = \
 		--with-pc-path="$(STAGING_DIR)/usr/lib/pkgconfig" \
-		--disable-static \
-	)
-	touch $@
+		--disable-static
 
-$(STAMP_DIR)/host_pkgconfig_compiled: $(STAMP_DIR)/host_pkgconfig_configured
-	$(MAKE) -C $(PKG_CONFIG_HOST_DIR)
-	touch $@
-
-$(STAMP_DIR)/host_pkgconfig_installed: $(STAMP_DIR)/host_pkgconfig_compiled
-	$(MAKE) -C $(PKG_CONFIG_HOST_DIR) install
-	install -D -m 0644 $(HOST_DIR)/usr/share/aclocal/pkg.m4 \
+define HOST_PKG_CONFIG_INSTALL_M4
+install -D -m 0644 $(HOST_DIR)/usr/share/aclocal/pkg.m4 \
 		$(STAGING_DIR)/usr/share/aclocal/pkg.m4
-	touch $@
+endef
 
-host-pkgconfig: $(STAMP_DIR)/host_pkgconfig_installed
+HOST_PKG_CONFIG_POST_INSTALL_HOOKS += HOST_PKG_CONFIG_INSTALL_M4
 
-host-pkgconfig-clean:
-	rm -f $(addprefix $(STAMP_DIR)/host_pkgconfig_,unpacked configured compiled installed)
-	-$(MAKE) -C $(PKG_CONFIG_HOST_DIR) uninstall
-	-$(MAKE) -C $(PKG_CONFIG_HOST_DIR) clean
+$(eval $(call AUTOTARGETS,package,pkg-config))
+$(eval $(call AUTOTARGETS,package,pkg-config,host))
 
-host-pkgconfig-dirclean:
-	rm -rf $(PKG_CONFIG_HOST_DIR)
+PKG_CONFIG_HOST_BINARY:=$(HOST_DIR)/usr/bin/pkg-config
