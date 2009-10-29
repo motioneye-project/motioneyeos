@@ -13,7 +13,7 @@
 	syslinux, tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe,
 	wpa-supplicant, xdata_xcursor-themes, zlib
 
-	Removed package: mdnsresponder, mpatrol
+	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4
 
 	Issues resolved (http://bugs.uclibc.org):
 
