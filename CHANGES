@@ -3,7 +3,7 @@
 	New packages: divine, gvfs, libarchive, libmicrohttpd,
 	sdl_sound, swfdec, sysstat
 
-	Updated/fixed packages: autoconf, busybox, directfb, dnsmasq,
+	Updated/fixed packages: autoconf, busybox, gcc, directfb, dnsmasq,
 	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
 	gst-plugins-good, imagemagick, iptables, kernel-headers, kismet,
 	libelf, libevent, libglib2, liblockfile, libmad, libpcap, libupnp,
