@@ -7,6 +7,7 @@ choice
 config	BR2_TARGET_U_BOOT_2009_01_ARCH_AT91
 	bool "AT91 patches for u-boot-2009.01"
 	depends on BR2_TARGET_ATMEL && BR2_arm
+	depends on BR2_TARGET_UBOOT_2009_01
 	help
 	  Apply the at91 u-boot-2009.01 patches
 
