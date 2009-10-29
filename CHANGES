@@ -1,5 +1,7 @@
 2009.11, Not yet released:
 
+	Toolchain: ARM cortex A8 support, GCC 4.4.2.
+
 	New packages: divine, gvfs, libarchive, libmicrohttpd,
 	sdl_sound, swfdec, sysstat
 
