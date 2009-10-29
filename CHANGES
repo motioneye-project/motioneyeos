@@ -33,6 +33,7 @@
 	#655: Update sqlite package to version 3.6.18
 	#657: Bug in imagemagick-clean target
 	#665: [PATCH] Samba package
+	#667: [PATCH] e2fsprogs
 
 2009.08, Released August 31th, 2009:
 
