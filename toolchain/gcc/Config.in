@@ -64,11 +64,6 @@ choice
 	config BR2_GCC_VERSION_4_4_X
 		depends on !BR2_avr32 && !BR2_nios2
 		bool "gcc 4.4.x"
-
-#	config BR2_GCC_VERSION_4_3
-#		depends on !BR2_avr32 && !BR2_nios2
-#		select BR2_GCC_IS_SNAP
-#		bool "gcc 4.3"
 endchoice
 
 config BR2_GCC_IS_SNAP
@@ -106,7 +101,6 @@ config BR2_GCC_VERSION
 	default "4.3.3"     if BR2_GCC_VERSION_4_3_3
 	default "4.3.4"     if BR2_GCC_VERSION_4_3_4
 	default "4.4.2"     if BR2_GCC_VERSION_4_4_X
-	default "4.3"       if BR2_GCC_VERSION_4_3
 
 config BR2_TOOLCHAIN_SYSROOT
 	bool "Enable toolchain with --sysroot support"
