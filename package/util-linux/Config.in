@@ -10,5 +10,5 @@ config BR2_PACKAGE_UTIL-LINUX
 
 	  http://www.kernel.org/pub/linux/utils/util-linux/
 
-comment "netkitbase requires a toolchain with RPC support"
-        depends on !BR2_INET_RPC
+comment "util-linux requires a toolchain with RPC support"
+	depends on !BR2_INET_RPC
