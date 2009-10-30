@@ -1,7 +1,7 @@
 2010.02, Not yet released:
 
 	Updated/fixed packages: autoconf, bind, binutils, busybox, iw,
-	lighttpd, mesa, pcre, usbutils
+	libpcap, lighttpd, mesa, pcre, usbutils
 
 	Issues resolved (http://bugs.uclibc.org):
 
