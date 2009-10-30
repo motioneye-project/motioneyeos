@@ -207,13 +207,19 @@
       binaries and libraries, that make it far too big for an embedded
       system.</li>
 
-      <li><code>target/<code> which contains the root filesystem for
-      the target. Only the necessary files to run the libraries and
-      applications are installed in this directory. However,
-      <code>target/dev/</code> doesn't contain the device files, as
-      creating device files requires the root access. The device files
-      only exist in the root filesystem image produced by
-      Buildroot.</li>
+      <li><code>target/</code> which contains <i>almost</i> the root
+      filesystem for the target: everything needed is present except
+      the device files in <code>/dev/</code> (Buildroot can't create
+      them because Buildroot doesn't run as root and does not want to
+      run as root). Therefore, this directory <b>should not be used on
+      your target</b> but instead you should use one of the images
+      built in the <code>images/</code> directory. If you need an
+      extracted image of the root filesystem, for booting over NFS,
+      then use the tarball image generated in <code>images/</code> and
+      extract it as root.<br/>Compared to <code>staging/</code>,
+      <code>target/</code> contains only the necessary files to run
+      the libraries and applications: all the development files
+      (headers, etc.) are not present.</li>
 
       <li><code>host/</code> contains the installation of tools
       compiled for the host that are needed for the proper execution
