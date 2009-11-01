@@ -79,53 +79,15 @@ else
 	CAIRO_CONF_OPT += --disable-svg
 endif
 
-$(eval $(call AUTOTARGETS,package,cairo))
+HOST_CAIRO_DEPENDENCIES = host-pkg-config host-pixman host-fontconfig
 
-# cairo for the host
-CAIRO_HOST_DIR:=$(BUILD_DIR)/cairo-$(CAIRO_VERSION)-host
-
-$(DL_DIR)/$(CAIRO_SOURCE):
-	$(call DOWNLOAD,$(CAIRO_SITE),$(CAIRO_SOURCE))
-
-$(STAMP_DIR)/host_cairo_unpacked: $(DL_DIR)/$(CAIRO_SOURCE)
-	mkdir -p $(CAIRO_HOST_DIR)
-	$(INFLATE$(suffix $(CAIRO_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(CAIRO_HOST_DIR) $(TAR_OPTIONS) -
-	touch $@
-
-$(STAMP_DIR)/host_cairo_configured: $(STAMP_DIR)/host_cairo_unpacked $(STAMP_DIR)/host_pkgconfig_installed $(STAMP_DIR)/host_fontconfig_installed $(STAMP_DIR)/host_pixman_installed
-	(cd $(CAIRO_HOST_DIR); rm -rf config.cache; \
-		$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure $(QUIET) \
-		--prefix="$(HOST_DIR)/usr" \
-		--sysconfdir="$(HOST_DIR)/etc" \
+HOST_CAIRO_CONF_OPT = \
 		--enable-ps \
 		--enable-pdf \
 		--enable-xlib \
 		--with-x \
 		--disable-png \
-		--disable-svg \
-	)
-	touch $@
+		--disable-svg
 
-$(STAMP_DIR)/host_cairo_compiled: $(STAMP_DIR)/host_cairo_configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(CAIRO_HOST_DIR)
-	touch $@
-
-$(STAMP_DIR)/host_cairo_installed: $(STAMP_DIR)/host_cairo_compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(CAIRO_HOST_DIR) install
-	touch $@
-
-host-cairo: $(STAMP_DIR)/host_cairo_installed
-
-host-cairo-source: cairo-source
-
-host-cairo-clean:
-	rm -f $(addprefix $(STAMP_DIR)/host_cairo_,unpacked configured compiled installed)
-	-$(MAKE) -C $(CAIRO_HOST_DIR) uninstall
-	-$(MAKE) -C $(CAIRO_HOST_DIR) clean
-
-host-cairo-dirclean:
-	rm -rf $(CAIRO_HOST_DIR)
+$(eval $(call AUTOTARGETS,package,cairo))
+$(eval $(call AUTOTARGETS,package,cairo,host))
