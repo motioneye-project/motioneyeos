@@ -13,7 +13,10 @@ FREETYPE_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 FREETYPE_MAKE_OPT = CCexe="$(HOSTCC)"
 FREETYPE_DEPENDENCIES = host-pkg-config $(if $(BR2_PACKAGE_ZLIB),zlib)
 
+HOST_FREETYPE_DEPENDENCIES = host-pkg-config
+
 $(eval $(call AUTOTARGETS,package,freetype))
+$(eval $(call AUTOTARGETS,package,freetype,host))
 
 $(FREETYPE_HOOK_POST_INSTALL):
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" \
@@ -26,46 +29,3 @@ ifneq ($(BR2_HAVE_DEVFILES),y)
 	rm -f $(TARGET_DIR)/usr/bin/freetype-config
 endif
 	touch $@
-
-# freetype for the host
-FREETYPE_HOST_DIR:=$(BUILD_DIR)/freetype-$(FREETYPE_VERSION)-host
-
-$(DL_DIR)/$(FREETYPE_SOURCE):
-	$(call DOWNLOAD,$(FREETYPE_SITE),$(FREETYPE_SOURCE))
-
-$(STAMP_DIR)/host_freetype_unpacked: $(DL_DIR)/$(FREETYPE_SOURCE)
-	mkdir -p $(FREETYPE_HOST_DIR)
-	$(INFLATE$(suffix $(FREETYPE_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(FREETYPE_HOST_DIR) $(TAR_OPTIONS) -
-	touch $@
-
-$(STAMP_DIR)/host_freetype_configured: $(STAMP_DIR)/host_freetype_unpacked $(STAMP_DIR)/host_pkgconfig_installed
-	(cd $(FREETYPE_HOST_DIR); rm -rf config.cache; \
-		$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure $(QUIET) \
-		--prefix="$(HOST_DIR)/usr" \
-		--sysconfdir="$(HOST_DIR)/etc" \
-	)
-	touch $@
-
-$(STAMP_DIR)/host_freetype_compiled: $(STAMP_DIR)/host_freetype_configured
-	$(MAKE) -C $(FREETYPE_HOST_DIR)
-	touch $@
-
-$(STAMP_DIR)/host_freetype_installed: $(STAMP_DIR)/host_freetype_compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(FREETYPE_HOST_DIR) install
-	touch $@
-
-host-freetype: $(STAMP_DIR)/host_freetype_installed
-
-host-freetype-source: freetype-source
-
-host-freetype-clean:
-	rm -f $(addprefix $(STAMP_DIR)/host_freetype_,unpacked configured compiled installed)
-	-$(MAKE) -C $(FREETYPE_HOST_DIR) uninstall
-	-$(MAKE) -C $(FREETYPE_HOST_DIR) clean
-
-host-freetype-dirclean:
-	rm -rf $(FREETYPE_HOST_DIR)
