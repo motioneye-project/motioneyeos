@@ -23,49 +23,10 @@ FONTCONFIG_CONF_OPT = --with-arch=$(GNU_TARGET_NAME) \
 
 FONTCONFIG_DEPENDENCIES = freetype expat
 
-$(eval $(call AUTOTARGETS,package,fontconfig))
-
-# fontconfig for the host
-FONTCONFIG_HOST_DIR:=$(BUILD_DIR)/fontconfig-$(FONTCONFIG_VERSION)-host
-
-$(DL_DIR)/$(FONTCONFIG_SOURCE):
-	$(call DOWNLOAD,$(FONTCONFIG_SITE),$(FONTCONFIG_SOURCE))
-
-$(STAMP_DIR)/host_fontconfig_unpacked: $(DL_DIR)/$(FONTCONFIG_SOURCE)
-	mkdir -p $(FONTCONFIG_HOST_DIR)
-	$(INFLATE$(suffix $(FONTCONFIG_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(FONTCONFIG_HOST_DIR) $(TAR_OPTIONS) -
-	touch $@
-
-$(STAMP_DIR)/host_fontconfig_configured: $(STAMP_DIR)/host_fontconfig_unpacked $(STAMP_DIR)/host_freetype_installed $(STAMP_DIR)/host_expat_installed
-	(cd $(FONTCONFIG_HOST_DIR); rm -rf config.cache; \
-		$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure $(QUIET) \
-		--prefix="$(HOST_DIR)/usr" \
-		--sysconfdir="$(HOST_DIR)/etc" \
+HOST_FONTCONFIG_DEPENDENCIES = host-freetype host-expat
+HOST_FONTCONFIG_CONF_OPT = \
 		--disable-docs \
-		--disable-static \
-	)
-	touch $@
+		--disable-static
 
-$(STAMP_DIR)/host_fontconfig_compiled: $(STAMP_DIR)/host_fontconfig_configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(FONTCONFIG_HOST_DIR)
-	touch $@
-
-$(STAMP_DIR)/host_fontconfig_installed: $(STAMP_DIR)/host_fontconfig_compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(FONTCONFIG_HOST_DIR) install
-	touch $@
-
-host-fontconfig: $(STAMP_DIR)/host_fontconfig_installed
-
-host-fontconfig-source: fontconfig-source
-
-host-fontconfig-clean:
-	rm -f $(addprefix $(STAMP_DIR)/host_fontconfig_,unpacked configured compiled installed)
-	-$(MAKE) -C $(FONTCONFIG_HOST_DIR) uninstall
-	-$(MAKE) -C $(FONTCONFIG_HOST_DIR) clean
-
-host-fontconfig-dirclean:
-	rm -rf $(FONTCONFIG_HOST_DIR)
+$(eval $(call AUTOTARGETS,package,fontconfig))
+$(eval $(call AUTOTARGETS,package,fontconfig,host))
