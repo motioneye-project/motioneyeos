@@ -150,56 +150,23 @@ DIRECTFB_CONF_OPT = \
 
 DIRECTFB_DEPENDENCIES = $(DIRECTFB_DEP) freetype $(DIRECTFB_FUSION)
 
-$(eval $(call AUTOTARGETS,package,directfb))
-
-
-# directfb-csource for the host
-
-DIRECTFB_HOST_DIR:=$(BUILD_DIR)/directfb-$(DIRECTFB_VERSION)-host
-DIRECTFB_HOST_BINARY:=$(HOST_DIR)/usr/bin/directfb-csource
-
-$(DL_DIR)/$(DIRECTFB_SOURCE):
-	$(call DOWNLOAD,$(DIRECTFB_SITE),$(DIRECTFB_SOURCE))
-
-$(STAMP_DIR)/host_directfb_unpacked: $(DL_DIR)/$(DIRECTFB_SOURCE)
-	mkdir -p $(DIRECTFB_HOST_DIR)
-	$(INFLATE$(suffix $(DIRECTFB_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(DIRECTFB_HOST_DIR) $(TAR_OPTIONS) -
-	touch $@
-
-$(STAMP_DIR)/host_directfb_configured: $(STAMP_DIR)/host_directfb_unpacked $(STAMP_DIR)/host_pkgconfig_installed
-	(cd $(DIRECTFB_HOST_DIR); rm -rf config.cache; \
-		$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure \
-		--prefix="$(HOST_DIR)/usr" \
-		--sysconfdir="$(HOST_DIR)/etc" \
+HOST_DIRECTFB_DEPENDENCIES = host-pkg-config
+HOST_DIRECTFB_CONF_OPT = \
 		--enable-shared \
 		--disable-static \
 		--disable-debug \
 		--disable-multi \
 		--with-gfxdrivers=none \
-		--with-inputdrivers=none \
-	)
-	touch $@
+		--with-inputdrivers=none
 
-$(STAMP_DIR)/host_directfb_compiled: $(STAMP_DIR)/host_directfb_configured
-	$(MAKE) -C $(DIRECTFB_HOST_DIR)/tools directfb-csource
-	touch $@
+HOST_DIRECTFB_BUILD_CMDS = \
+	$(MAKE) -C $(@D)/tools directfb-csource
 
-$(STAMP_DIR)/host_directfb_installed: $(STAMP_DIR)/host_directfb_compiled
-	$(INSTALL) -m 0755 $(DIRECTFB_HOST_DIR)/tools/directfb-csource $(HOST_DIR)/usr/bin
-	touch $@
+HOST_DIRECTFB_INSTALL_CMDS = \
+	$(INSTALL) -m 0755 $(@D)/tools/directfb-csource $(HOST_DIR)/usr/bin
 
-host-directfb: $(STAMP_DIR)/host_directfb_installed
+$(eval $(call AUTOTARGETS,package,directfb))
+$(eval $(call AUTOTARGETS,package,directfb,host))
 
-host-directfb-source: directfb-source
-
-host-directfb-clean:
-	rm -f $(addprefix $(STAMP_DIR)/host_directfb_,unpacked configured compiled installed)
-	rm -f $(HOST_DIR)/usr/bin/directfb-csource
-	-$(MAKE) -C $(DIRECTFB_HOST_DIR)/tools clean
-
-host-directfb-dirclean:
-	rm -rf $(DIRECTFB_HOST_DIR)
+# directfb-csource for the host
+DIRECTFB_HOST_BINARY:=$(HOST_DIR)/usr/bin/directfb-csource
