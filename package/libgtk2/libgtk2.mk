@@ -119,33 +119,8 @@ else
 LIBGTK2_CONF_OPT += --disable-cups
 endif
 
-$(eval $(call AUTOTARGETS,package,libgtk2))
-
-$(LIBGTK2_HOOK_POST_INSTALL):
-	$(INSTALL) -m 755 package/libgtk2/S26libgtk2 $(TARGET_DIR)/etc/init.d/
-	rm -rf $(TARGET_DIR)/usr/share/gtk-2.0/demo $(TARGET_DIR)/usr/bin/gtk-demo
-	touch $@
-
-# libgtk2 for the host
-LIBGTK2_HOST_DIR:=$(BUILD_DIR)/libgtk2-$(LIBGTK2_VERSION)-host
-
-$(DL_DIR)/$(LIBGTK2_SOURCE):
-	$(call DOWNLOAD,$(LIBGTK2_SITE),$(LIBGTK2_SOURCE))
-
-$(STAMP_DIR)/host_libgtk2_unpacked: $(DL_DIR)/$(LIBGTK2_SOURCE)
-	mkdir -p $(LIBGTK2_HOST_DIR)
-	$(INFLATE$(suffix $(LIBGTK2_SOURCE))) $< | \
-		$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(LIBGTK2_HOST_DIR) $(TAR_OPTIONS) -
-	touch $@
-
-$(STAMP_DIR)/host_libgtk2_configured: $(STAMP_DIR)/host_libgtk2_unpacked $(STAMP_DIR)/host_cairo_installed $(STAMP_DIR)/host_libglib2_installed $(STAMP_DIR)/host_pango_installed $(STAMP_DIR)/host_atk_installed
-	(cd $(LIBGTK2_HOST_DIR); rm -rf config.cache; \
-		$(HOST_CONFIGURE_OPTS) \
-		CFLAGS="$(HOST_CFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" \
-		./configure $(QUIET) \
-		--prefix="$(HOST_DIR)/usr" \
-		--sysconfdir="$(HOST_DIR)/etc" \
+HOST_LIBGTK2_DEPENDENCIES = host-cairo host-libglib2 host-pango host-atk
+HOST_LIBGTK2_CONF_OPT = \
 		--disable-static \
 		--disable-glibtest \
 		--without-libtiff \
@@ -153,26 +128,12 @@ $(STAMP_DIR)/host_libgtk2_configured: $(STAMP_DIR)/host_libgtk2_unpacked $(STAMP
 		--with-x \
 		--with-gdktarget=x11 \
 		--disable-cups \
-		--disable-debug \
-	)
+		--disable-debug
+
+$(eval $(call AUTOTARGETS,package,libgtk2))
+$(eval $(call AUTOTARGETS,package,libgtk2,host))
+
+$(LIBGTK2_HOOK_POST_INSTALL):
+	$(INSTALL) -m 755 package/libgtk2/S26libgtk2 $(TARGET_DIR)/etc/init.d/
+	rm -rf $(TARGET_DIR)/usr/share/gtk-2.0/demo $(TARGET_DIR)/usr/bin/gtk-demo
 	touch $@
-
-$(STAMP_DIR)/host_libgtk2_compiled: $(STAMP_DIR)/host_libgtk2_configured
-	$(HOST_MAKE_ENV) $(MAKE) -C $(LIBGTK2_HOST_DIR)
-	touch $@
-
-$(STAMP_DIR)/host_libgtk2_installed: $(STAMP_DIR)/host_libgtk2_compiled
-	$(HOST_MAKE_ENV) $(MAKE) -C $(LIBGTK2_HOST_DIR) install
-	touch $@
-
-host-libgtk2: $(STAMP_DIR)/host_libgtk2_installed
-
-host-libgtk2-source: libgtk2-source
-
-host-libgtk2-clean:
-	rm -f $(addprefix $(STAMP_DIR)/host_libgtk2_,unpacked configured compiled installed)
-	-$(MAKE) -C $(LIBGTK2_HOST_DIR) uninstall
-	-$(MAKE) -C $(LIBGTK2_HOST_DIR) clean
-
-host-libgtk2-dirclean:
-	rm -rf $(LIBGTK2_HOST_DIR)
