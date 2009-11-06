@@ -34,7 +34,7 @@ $(MTD_HOST_DIR)/.unpacked: $(DL_DIR)/$(MTD_SOURCE)
 	touch $@
 
 
-$(MKFS_JFFS2): $(MTD_HOST_DIR)/.unpacked $(STAMP_DIR)/host_lzo_installed
+$(MKFS_JFFS2): $(MTD_HOST_DIR)/.unpacked host-lzo
 	CC="$(HOSTCC)" CROSS= LDFLAGS=-L$(HOST_DIR)/usr/lib \
 		$(MAKE) CFLAGS='-I$(HOST_DIR)/usr/include -I./include' \
 		LINUXDIR=$(LINUX_DIR) BUILDDIR=$(MTD_HOST_DIR) \
