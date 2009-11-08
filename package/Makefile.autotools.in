@@ -1,348 +1,63 @@
 ################################################################################
+# Autotools package infrastructure
 #
-# Makefile.autotools.in --
+# This file implements an infrastructure that eases development of
+# package .mk files for autotools packages. It should be used for all
+# packages that use the autotools as their build system. Non-autotools
+# packages should use the generic infrastructure in
+# package/Makefile.package.in.
 #
-# Implicit and Generated Rules for easily creating autotools-compatible
-# buildroot packages
+# See the Buildroot documentation for details on the usage of this
+# infrastructure
 #
-## Example minimal makefile for a package named 'foo'
+# In terms of implementation, this autotools infrastructure requires
+# the .mk file to only specify metadata informations about the
+# package: name, version, download URL, etc.
 #
-# | FOO_VERSION = 1.0
-# | FOO_SOURCE = foo-$(FOO_VERSION).tar.gz
-# | FOO_SITE = http://www.libfoo.org/dist
-# | $(eval $(call AUTOTARGETS,package,foo))
+# We still allow the package .mk file to override what the different
+# steps are doing, if needed. For example, if <PKG>_BUILD_CMDS is
+# already defined, it is used as the list of commands to perform to
+# build the package, instead of the default autotools behaviour. The
+# package can also define some post operation hooks.
 #
-## The following targets can be called from the shell:
-#
-# foo, foo-source, foo-patch, foo-configure, foo-build, foo-install,
-# foo-install-target, foo-install-staging, foo-uninstall, foo-clean,
-# foo-dirclean
-#
-## The following variables which can be (re)defined in the package makefile:
-#
-# FOO_VERSION [mandatory]
-#	version string of the package
-# FOO_SOURCE [default foo-$(FOO_VERSION).tar.gz]
-#	file name of the package source
-# FOO_SITE [default sourceforge project "foo"]
-#	URL under wich $(FOO_SOURCE) can be found
-# FOO_DEPENDENCIES [default empty]
-#	list of (package) targets that must be built before foo
-# FOO_AUTORECONF [YES/NO, default NO]
-#	run <autoreconf> before <configure>
-# FOO_AUTORECONF_OPT [default empty]
-#	arguments passed to the <autoreconf> script
-# FOO_LIBTOOL_PATCH [YES/NO, default YES]
-#	Do you want the standard buildroot patch applied to ltmain.sh? (libtool)
-# FOO_USE_CONFIG_CACHE [YES/NO default $(BR2_CONFIG_CACHE)]
-#   Do you wany to use the central configure cache file? See BR2_CONFIG_CACHE.
-# FOO_CONF_ENV [default empty]
-#	environment passed to the <configure> script
-# FOO_CONF_OPT [default empty]
-#	arguments passed to the <configure> script
-# FOO_MAKE [default $(MAKE)]
-#	command to use to execute <make>
-# FOO_MAKE_ENV [default empty]
-#	environment passed to all calls to <make> in the package source
-#	directory
-# FOO_MAKE_OPT [default empty]
-#	arguments passed to <make> while building
-# FOO_INSTALL_STAGING [YES/NO, default NO]
-#	install the package to the staging directory
-# FOO_INSTALL_TARGET [YES/NO, default YES]
-#	install the package to the target directory
-# FOO_INSTALL_STAGING_OPT [default DESTDIR=$(STAGING_DIR) install]
-#	arguments passed to <make> while installing to the staging directory
-# FOO_INSTALL_TARGET_OPT [default DESTDIR=$(TARGET_DIR) install-exec/install-strip]
-#	arguments passed to <make> while installing to the target directory
-# FOO_CLEAN_OPT [default clean]
-#	arguments passed to <make> while installing to the staging directory
-# FOO_UNINSTALL_STAGING_OPT  [default DESTDIR=$(STAGING_DIR) uninstall]
-#	arguments passed to <make> while uninstalling from the staging
-#	directory
-# FOO_UNINSTALL_TARGET_OPT [default DESTDIR=$(TARGET_DIR) uninstall]
-#	arguments passed to <make> while uninstalling from the target
-#	directory
-# FOO_SUBDIR [default empty]
-#	relative path in the package source from which to run configure and
-#	make
-# FOO_DIR_PREFIX [default empty]
-#	toplevel relative path to package *.mk file and corresponding patches
-#
-## The following variables contain hook target names
-## by default they do nothing, they can be overriden in package makefiles
-#
-# FOO_HOOK_POST_EXTRACT, FOO_HOOK_POST_CONFIGURE,
-# FOO_HOOK_POST_BUILD, FOO_HOOK_POST_INSTALL
-#
-## The following variables contain targets that can be overriden
-#
-# FOO_TARGET_INSTALL_TARGET FOO_TARGET_INSTALL_STAGING FOO_TARGET_BUILD
-# FOO_TARGET_CONFIGURE FOO_TARGET_PATCH FOO_TARGET_EXTRACT FOO_TARGET_SOURCE
-# FOO_TARGET_UNINSTALL FOO_TARGET_CLEAN FOO_TARGET_DIRCLEAN
-#
-# E.g. if your package has a no <configure> script you can place the following
-# in your package makefile:
-#
-# | $(FOO_TARGET_INSTALL):
-# |	touch $@
-#
-## The following variables are defined automatically and can be used in
-## overriden targets:
-#
-# PKG
-#	is always the current package name ("foo" in the example)
-# FOO_DIR
-#	the directory in which the package source is extracted.
-#	the base name will always be foo-$(FOO_VERSION), no matter what the
-#	archive name or the directory-in-archive name are.
-# MESSAGE
-#	macro that outputs a pretty message to stdout, e.g. use
-#	$(call MESSAGE,"Hello World")
-#	in a target.
-#
-# Caveats:
-# - the 'eval' line (final line in the example) must be placed
-#   after all variable settings, but before all target re-definition
-#   (including hooks)
 ################################################################################
 
-# UPPERCASE Macro -- transform its argument to uppercase and replace dots and
-# hyphens to underscores
-UPPERCASE = $(shell echo $(1) | tr "a-z.-" "A-Z__")
-
-# Define extrators for different archive suffixes
-INFLATE.bz2 = $(BZCAT)
-INFLATE.gz  = $(ZCAT)
-INFLATE.tbz = $(BZCAT)
-INFLATE.tgz = $(ZCAT)
-INFLATE.tar = cat
-
-# MESSAGE Macro -- display a message in bold type
-MESSAGE = @echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(1)$(TERM_RESET)"
-TERM_BOLD := $(shell tput smso)
-TERM_RESET := $(shell tput rmso)
-
 ################################################################################
-# DOWNLOAD -- Download helper. Will try to download source from:
-# 1) BR2_PRIMARY_SITE if enabled
-# 2) Download site
-# 3) BR2_BACKUP_SITE if enabled
+# AUTOTARGETS_INNER -- defines how the configuration, compilation and
+# installation of an autotools package should be done, implements a
+# few hooks to tune the build process for autotools specifities and
+# calls the generic package infrastructure to generate the necessary
+# make targets
 #
-# Argument 1 is the source location
-# Argument 2 is the source filename
-#
-# E.G. use like this:
-# $(call DOWNLOAD,$(FOO_SITE),$(FOO_SOURCE))
+#  argument 1 is the lowercase package name
+#  argument 2 is the uppercase package name, including an HOST_ prefix
+#             for host packages
+#  argument 3 is the uppercase package name, without the HOST_ prefix
+#             for host packages
+#  argument 4 is the package directory prefix
+#  argument 5 is the type (target or host)
 ################################################################################
 
-# support make source-check/external-deps
-ifneq ($(SPIDER),)
-DOWNLOAD=$(WGET) -P $(DL_DIR) $(1)/$(2)
-else
-define DOWNLOAD
-	$(Q)test -e $(DL_DIR)/$(2) || \
-	for site in $(call qstrip,$(BR2_PRIMARY_SITE)) $(1) $(call qstrip,$(BR2_BACKUP_SITE)); \
-	do $(WGET) -P $(DL_DIR) $$site/$(2) && exit; done
-endef
-endif
-
-# Utility programs used to build packages
-TAR ?= tar
-#ACLOCAL_STAGING_DIR ?= $(STAGING_DIR)/usr/share/aclocal
-#ACLOCAL ?= aclocal -I $(ACLOCAL_STAGING_DIR)
-#AUTORECONF ?= autoreconf -v -i -f -I $(ACLOCAL_STAGING_DIR)
-#	ACLOCAL="$(ACLOCAL)"
-
-# Automatically detect tar --strip-path/components option
-TAR_STRIP_COMPONENTS := $(shell $(TAR) --help | grep strip-path > /dev/null ; if test $$? = 0 ; then echo '--strip-path' ; else echo '--strip-components' ; fi)
-
-################################################################################
-# Implicit targets -- produce a stamp file for each step of a package build
-################################################################################
-
-# Retrieve and unpack the archive
-$(BUILD_DIR)/%/.stamp_downloaded:
-# support make source-check/external-deps
-ifeq ($(SPIDER),)
-	$(call MESSAGE,"Downloading")
-endif
-	$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_SOURCE))
-	$(if $($(PKG)_PATCH),$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_PATCH)))
-ifeq ($(SPIDER),)
-	$(Q)mkdir -p $(@D)
-	$(Q)touch $@
-endif
-
-# Retrieve and unpack the archive
-$(BUILD_DIR)/%/.stamp_extracted:
-	$(call MESSAGE,"Extracting")
-	$(Q)mkdir -p $(@D)
-	$(Q)$(INFLATE$(suffix $($(PKG)_SOURCE))) $(DL_DIR)/$($(PKG)_SOURCE) | \
-	$(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
-# some packages have messed up permissions inside
-	$(Q)chmod -R ug+rw $(@D)
-	$(Q)touch $@
-
-# Fix libtool support if required by the package
-$(BUILD_DIR)/%/.stamp_libtool_patch:
-	$(call MESSAGE,"Patching libtool")
-# if the package uses libtool, patch it for cross-compiling in buildroot
-	$(Q)if test "$($(PKG)_LIBTOOL_PATCH)" = "YES" -a \
-	"$($(PKG)_AUTORECONF)" != "YES"; then \
-	for i in `find $(@D) -name ltmain.sh`; do \
-		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
-		done \
-	fi
-	$(Q)touch $@
-
-# Patch
-# XXX: FIXME: This has to be done differently and path-independent, i.e. use
-# XXX: FIXME: the dir-part of the stem as base-dir (instead of hardcoding
-# XXX: FIXME: "package/".
-$(BUILD_DIR)/%/.stamp_patched: NAMEVER = $($(PKG)_NAME)-$($(PKG)_VERSION)
-$(BUILD_DIR)/%/.stamp_patched:
-	$(call MESSAGE,"Patching $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME)")
-	$(if $($(PKG)_PATCH),toolchain/patch-kernel.sh $(@D) $(DL_DIR) $($(PKG)_PATCH))
-	$(Q)( \
-	if test -d $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME); then \
-	  if test "$(wildcard $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME)/$(NAMEVER)*.patch*)"; then \
-	    toolchain/patch-kernel.sh $(@D) $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME) $(NAMEVER)\*.patch $(NAMEVER)\*.patch.$(ARCH) || exit 1; \
-	  else \
-	    toolchain/patch-kernel.sh $(@D) $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME) $($(PKG)_NAME)\*.patch $($(PKG)_NAME)\*.patch.$(ARCH) || exit 1; \
-	    if test -d $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME)/$(NAMEVER); then \
-	      toolchain/patch-kernel.sh $(@D) $($(PKG)_DIR_PREFIX)/$($(PKG)_NAME)/$(NAMEVER) \*.patch \*.patch.$(ARCH) || exit 1; \
-	    fi; \
-	  fi; \
-	fi; \
-	)
-ifeq ($(BR2_UPDATE_CONFIG),y)
-	$(Q)(for file in config.guess config.sub; do \
-		for i in $$(find $(@D) -name $$file); do \
-			cp package/gnuconfig/$$file $$i; \
-		done; \
-	done)
-endif
-	$(Q)touch $@
-
-# Running autoreconf
-$(BUILD_DIR)/%/.stamp_autoconfigured:
-	$(call MESSAGE,"Running autoreconf")
-	$(Q)cd $(@D)/$($(PKG)_SUBDIR) && $(AUTORECONF) $($(PKG)_AUTORECONF_OPT)
-# if the package uses libtool, patch it for cross-compiling in buildroot
-	$(Q)if test "$($(PKG)_LIBTOOL_PATCH)" = "YES"; then \
-		for i in `find $(@D)/$($(PKG)_SUBDIR) -name ltmain.sh`; do \
-		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
-		done \
-	fi
-	$(Q)touch $@
-
-# Configuring
-$(BUILD_DIR)/%/.stamp_configured:
-	$(call MESSAGE,"Configuring")
-	cd $(@D)/$($(PKG)_SUBDIR) && rm -f config.cache && \
-	$(TARGET_CONFIGURE_OPTS) \
-	$(TARGET_CONFIGURE_ARGS) \
-	$(TARGET_CONFIGURE_ENV) \
-	$($(PKG)_CONF_ENV) \
-	$(if $(THIS_SRCDIR),$(THIS_SRCDIR)/,./)configure \
-		$(if $(filter YES,$($(PKG)_USE_CONFIG_CACHE)),--cache-file="$(BUILD_DIR)/tgt-config.cache",) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--sysconfdir=/etc \
-		$(DISABLE_DOCUMENTATION) \
-		$(DISABLE_NLS) \
-		$(DISABLE_LARGEFILE) \
-		$(DISABLE_IPV6) \
-		$(QUIET) $($(PKG)_CONF_OPT)
-	$(Q)touch $@
-
-# Build
-$(BUILD_DIR)/%/.stamp_built:
-	$(call MESSAGE,"Building")
-	PATH=$(TARGET_PATH) $($(PKG)_MAKE_ENV) $($(PKG)_MAKE) $($(PKG)_MAKE_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-	$(Q)touch $@
-
-# Install to staging dir
-$(BUILD_DIR)/%/.stamp_staging_installed:
-	$(call MESSAGE,'Installing to host (staging directory)')
-	$($(PKG)_MAKE_ENV) $($(PKG)_MAKE) $($(PKG)_INSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-#	toolchain/replace.sh $(STAGING_DIR)/usr/lib ".*\.la" "\(['= ]\)/usr" "\\1$(STAGING_DIR)/usr"
-	for i in $$(find $(STAGING_DIR)/usr/lib/ -name "*.la"); do \
-		cp $$i $$i~; \
-		$(SED) "s:\(['= ]\)/usr:\\1$(STAGING_DIR)/usr:g" $$i; \
-	done
-	touch $@
-
-# Install to target dir
-$(BUILD_DIR)/%/.stamp_target_installed:
-	$(call MESSAGE,"Installing to target")
-	$($(PKG)_MAKE_ENV) $($(PKG)_MAKE) $($(PKG)_INSTALL_TARGET_OPT) -C $($(PKG)_DIR)/$($(PKG)_SUBDIR)
-	$(if $(BR2_HAVE_MANPAGES),,for d in man share/man; do \
-		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
-	done)
-	$(if $(BR2_HAVE_INFOPAGES),,for d in info share/info; do \
-		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
-	done)
-	$(if $(BR2_HAVE_DOCUMENTATION),,for d in doc share/doc; do \
-		rm -rf $(TARGET_DIR)/$$d $(TARGET_DIR)/usr/$$d; \
-	done)
-	touch $@
-
-$(BUILD_DIR)/%/.stamp_cleaned:
-	$(call MESSAGE,"Cleaning up")
-	-$($(PKG)_MAKE_ENV) $($(PKG)_MAKE)  $($(PKG)_CLEAN_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-	rm -f $(@D)/.stamp_built
-
-$(BUILD_DIR)/%/.stamp_uninstalled:
-	$(call MESSAGE,"Uninstalling")
-	$($(PKG)_MAKE_ENV) $($(PKG)_MAKE) $($(PKG)_UNINSTALL_STAGING_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-	rm -f $(@D)/.stamp_staging_installed
-	$($(PKG)_MAKE_ENV) $($(PKG)_MAKE) $($(PKG)_UNINSTALL_TARGET_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-	rm -f $($(PKG)_TARGET_INSTALL_TARGET) $($(PKG)_HOOK_POST_INSTALL)
-
-$(BUILD_DIR)/%/.stamp_dircleaned:
-	rm -Rf $(@D)
-
-
-################################################################################
-# AUTOTARGETS -- the target generator macro; define a set of human-readable
-# make targets, stamps, and default per-package variables.
-# Argument 1 is the package directory prefix.
-# Argument 2 is the (lowercase) package name.
-################################################################################
-
-define AUTOTARGETS
-$(call AUTOTARGETS_INNER,$(2),$(call UPPERCASE,$(2)),$(1))
-endef
-
-# AUTOTARGETS_INNER -- does the job for AUTOTARGETS; argument 1 is the
-# lowercase package name, argument 2 the uppercase package name,
-# argument 3 the package directory prefix
 define AUTOTARGETS_INNER
 
 # define package-specific variables to default values
-$(2)_NAME			=  $(1)
-$(2)_VERSION			?= undefined
-$(2)_DIR			=  $$(BUILD_DIR)/$(1)-$$($(2)_VERSION)
-$(2)_SOURCE			?= $(1)-$$($(2)_VERSION).tar.gz
-$(2)_SITE			?= \
-	http://$$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/$(1)
-$(2)_DEPENDENCIES		?=
-$(2)_AUTORECONF			?= NO
-$(2)_AUTORECONF_OPT		?=
-$(2)_LIBTOOL_PATCH		?= YES
-$(2)_USE_CONFIG_CACHE   ?= $(if $(BR2_CONFIG_CACHE),YES,NO)
+ifndef $(2)_SUBDIR
+ ifdef $(3)_SUBDIR
+  $(2)_SUBDIR = $($(3)_SUBDIR)
+ else
+  $(2)_SUBDIR ?=
+ endif
+endif
+
 $(2)_CONF_ENV			?=
 $(2)_CONF_OPT			?=
 $(2)_MAKE			?= $(MAKE)
 $(2)_MAKE_ENV			?=
 $(2)_MAKE_OPT			?=
-$(2)_INSTALL_STAGING		?= NO
-$(2)_INSTALL_TARGET		?= YES
+$(2)_AUTORECONF			?= NO
+$(2)_AUTORECONF_OPT		?=
+$(2)_LIBTOOL_PATCH		?= YES
+$(2)_USE_CONFIG_CACHE           ?= $(if $(BR2_CONFIG_CACHE),YES,NO)
 $(2)_INSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) install
 ifeq ($(BR2_ENABLE_DEBUG),y)
 $(2)_INSTALL_TARGET_OPT		?= DESTDIR=$$(TARGET_DIR)  install-exec
@@ -352,111 +67,204 @@ endif
 $(2)_CLEAN_OPT			?= clean
 $(2)_UNINSTALL_STAGING_OPT	?= DESTDIR=$$(STAGING_DIR) uninstall
 $(2)_UNINSTALL_TARGET_OPT	?= DESTDIR=$$(TARGET_DIR)  uninstall
-$(2)_SUBDIR			?=
-$(2)_DIR_PREFIX			=  $(if $(3),$(3),$(TOP_SRCDIR)/package)
 
+$(2)_SRCDIR                     = $$($(2)_DIR)/$($(2)_SUBDIR)
 
-# define sub-target stamps
-$(2)_TARGET_INSTALL_TARGET =	$$($(2)_DIR)/.stamp_target_installed
-$(2)_TARGET_INSTALL_STAGING =	$$($(2)_DIR)/.stamp_staging_installed
-$(2)_TARGET_BUILD =		$$($(2)_DIR)/.stamp_built
-$(2)_TARGET_CONFIGURE =		$$($(2)_DIR)/.stamp_configured
-$(2)_TARGET_AUTORECONF =	$$($(2)_DIR)/.stamp_autoconfigured
-$(2)_TARGET_LIBTOOL_PATCH =	$$($(2)_DIR)/.stamp_libtool_patch
-$(2)_TARGET_PATCH =		$$($(2)_DIR)/.stamp_patched
-$(2)_TARGET_EXTRACT =		$$($(2)_DIR)/.stamp_extracted
-$(2)_TARGET_SOURCE =		$$($(2)_DIR)/.stamp_downloaded
-$(2)_TARGET_UNINSTALL =		$$($(2)_DIR)/.stamp_uninstalled
-$(2)_TARGET_CLEAN =		$$($(2)_DIR)/.stamp_cleaned
-$(2)_TARGET_DIRCLEAN =		$$($(2)_DIR)/.stamp_dircleaned
+#
+# Configure step. Only define it if not already defined by the package
+# .mk file. And take care of the differences between host and target
+# packages.
+#
+ifndef $(2)_CONFIGURE_CMDS
+ifeq ($(5),target)
 
-$(2)_HOOK_POST_EXTRACT =	$$($(2)_DIR)/.stamp_hook_post_extract
-$(2)_HOOK_POST_CONFIGURE =	$$($(2)_DIR)/.stamp_hook_post_configure
-$(2)_HOOK_POST_BUILD =		$$($(2)_DIR)/.stamp_hook_post_build
-$(2)_HOOK_POST_INSTALL =	$$($(2)_DIR)/.stamp_hook_post_install
-
-# human-friendly targets and target sequencing
-$(1):			$(1)-install
-$(1)-install:		$(1)-install-staging $(1)-install-target \
-			$$($(2)_HOOK_POST_INSTALL)
-
-ifeq ($$($(2)_INSTALL_TARGET),YES)
-$(1)-install-target:	$(1)-build $$($(2)_TARGET_INSTALL_TARGET)
+# Configure package for target
+define $(2)_CONFIGURE_CMDS
+	(cd $$($$(PKG)_SRCDIR) && rm -rf config.cache && \
+	$$(TARGET_CONFIGURE_OPTS) \
+	$$(TARGET_CONFIGURE_ARGS) \
+	$$(TARGET_CONFIGURE_ENV) \
+	$$($$(PKG)_CONF_ENV) \
+	./configure \
+		$(if $(filter YES,$$($$(PKG)_USE_CONFIG_CACHE)),--cache-file="$(BUILD_DIR)/tgt-config.cache",) \
+		--target=$$(GNU_TARGET_NAME) \
+		--host=$$(GNU_TARGET_NAME) \
+		--build=$$(GNU_HOST_NAME) \
+		--prefix=/usr \
+		--exec-prefix=/usr \
+		--sysconfdir=/etc \
+		$$(DISABLE_DOCUMENTATION) \
+		$$(DISABLE_NLS) \
+		$$(DISABLE_LARGEFILE) \
+		$$(DISABLE_IPV6) \
+		$$(QUIET) $$($$(PKG)_CONF_OPT) \
+	)
+endef
 else
-$(1)-install-target:
+
+# Configure package for host
+define $(2)_CONFIGURE_CMDS
+	(cd $$($$(PKG)_SRCDIR) && rm -rf config.cache; \
+	        $$(HOST_CONFIGURE_OPTS) \
+		CFLAGS="$$(HOST_CFLAGS)" \
+		LDFLAGS="$$(HOST_LDFLAGS)" \
+		./configure \
+		--prefix="$$(HOST_DIR)/usr" \
+		--sysconfdir="$$(HOST_DIR)/etc" \
+		$$($$(PKG)_CONF_OPT) \
+	)
+endef
+endif
 endif
 
-ifeq ($$($(2)_INSTALL_STAGING),YES)
-$(1)-install-staging:	$(1)-build $$($(2)_TARGET_INSTALL_STAGING)
-else
-$(1)-install-staging:
-endif
-
-$(1)-build:		$(1)-configure \
-			$$($(2)_TARGET_BUILD) \
-			$$($(2)_HOOK_POST_BUILD)
-
-$(1)-configure:		$(1)-autoreconf \
-			$$($(2)_TARGET_CONFIGURE) \
-			$$($(2)_HOOK_POST_CONFIGURE)
-
-ifeq ($$($(2)_AUTORECONF),YES)
-$(1)-autoreconf:	$(1)-patch $$($(2)_TARGET_AUTORECONF)
-$(2)_DEPENDENCIES += host-automake host-autoconf host-libtool
-else
-$(1)-autoreconf:	$(1)-patch
-endif
-
-$(1)-patch:		$(1)-extract $$($(2)_TARGET_PATCH)
-
-$(1)-extract:		$(1)-depends \
-			$$($(2)_TARGET_EXTRACT) \
-			$$($(2)_HOOK_POST_EXTRACT) \
-			$$($(2)_TARGET_LIBTOOL_PATCH)
-
-$(1)-depends:		$(1)-source $$($(2)_DEPENDENCIES)
-
-$(1)-source:		$$($(2)_TARGET_SOURCE)
-
-# non-build targets
-$(1)-uninstall:	$(1)-configure $$($(2)_TARGET_UNINSTALL)
-
-$(1)-clean:		$(1)-uninstall \
-			$$($(2)_TARGET_CLEAN)
-
-$(1)-dirclean:		$$($(2)_TARGET_DIRCLEAN)
-
-# define the PKG variable for all targets, containing the
-# uppercase package variable prefix
-$$($(2)_TARGET_INSTALL_TARGET):		PKG=$(2)
-$$($(2)_TARGET_INSTALL_STAGING):	PKG=$(2)
-$$($(2)_TARGET_BUILD):			PKG=$(2)
-$$($(2)_TARGET_CONFIGURE):		PKG=$(2)
-$$($(2)_TARGET_LIBTOOL_PATCH):	PKG=$(2)
-$$($(2)_TARGET_AUTORECONF):		PKG=$(2)
-$$($(2)_TARGET_PATCH):			PKG=$(2)
-$$($(2)_TARGET_EXTRACT):		PKG=$(2)
-$$($(2)_TARGET_SOURCE):			PKG=$(2)
-$$($(2)_TARGET_UNINSTALL):		PKG=$(2)
-$$($(2)_TARGET_CLEAN):			PKG=$(2)
-$$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
-$$($(2)_HOOK_POST_EXTRACT):		PKG=$(2)
-$$($(2)_HOOK_POST_CONFIGURE):	PKG=$(2)
-$$($(2)_HOOK_POST_BUILD):		PKG=$(2)
-$$($(2)_HOOK_POST_INSTALL):		PKG=$(2)
-
-# define hook targets
-# default hook behaviour: do nothing
-$$($(2)_HOOK_POST_EXTRACT):
-$$($(2)_HOOK_POST_CONFIGURE):
-$$($(2)_HOOK_POST_BUILD):
-$$($(2)_HOOK_POST_INSTALL):
-
-# add package to the general list of targets if requested by the buildroot
-# configuration
-ifeq ($$(BR2_PACKAGE_$(2)),y)
-TARGETS += $(1)
-endif
+#
+# Hook to update config.sub and config.guess if needed
+#
+define UPDATE_CONFIG_HOOK
+	for file in config.guess config.sub; do \
+		for i in $$$$(find $$(@D) -name $$$$file); do \
+			cp package/gnuconfig/$$$$file $$$$i; \
+		done; \
+	done
 endef
 
-# :mode=makefile:
+ifeq ($(BR2_UPDATE_CONFIG),y)
+$(2)_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
+endif
+
+#
+# Hook to patch libtool to make it work properly for cross-compilation
+#
+define LIBTOOL_PATCH_HOOK
+	@$(call MESSAGE,"Patching libtool")
+	$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES" -a \
+	"$$($$(PKG)_AUTORECONF)" != "YES"; then \
+	for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
+		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
+		done \
+	fi
+endef
+
+ifeq ($($(2)_LIBTOOL_PATCH),YES)
+$(2)_POST_PATCH_HOOKS += LIBTOOL_PATCH_HOOK
+endif
+
+#
+# Hook to autoreconf the package if needed
+#
+define AUTORECONF_HOOK
+	@$(call MESSAGE,"Autoreconfiguring")
+	$(Q)cd $$($$(PKG)_SRCDIR) && $(AUTORECONF) $$($$(PKG)_AUTORECONF_OPT)
+	$(Q)if test "$($$(PKG)_LIBTOOL_PATCH)" = "YES"; then \
+		for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
+		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
+		done \
+	fi
+endef
+
+ifeq ($($(2)_AUTORECONF),YES)
+$(2)_POST_PATCH_HOOKS += AUTORECONF_HOOK
+$(2)_DEPENDENCIES += host-automake host-autoconf host-libtool
+endif
+
+#
+# Build step. Only define it if not already defined by the package .mk
+# file.
+#
+ifndef $(2)_BUILD_CMDS
+ifeq ($(5),target)
+define $(2)_BUILD_CMDS
+	$(TARGET_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_MAKE_OPT) -C $$($$(PKG)_SRCDIR)
+endef
+else
+define $(2)_BUILD_CMDS
+	$(HOST_MAKE_ENV) $$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_MAKE_OPT) -C $$($$(PKG)_SRCDIR)
+endef
+endif
+endif
+
+#
+# Host installation step. Only define it if not already defined by the
+# package .mk file.
+#
+ifndef $(2)_INSTALL_CMDS
+define $(2)_INSTALL_CMDS
+	$(HOST_MAKE_ENV) $(MAKE) -C $$($$(PKG)_SRCDIR) install
+endef
+endif
+
+#
+# Staging installation step. Only define it if not already defined by
+# the package .mk file.
+#
+ifndef $(2)_INSTALL_STAGING_CMDS
+define $(2)_INSTALL_STAGING_CMDS
+	$$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_INSTALL_STAGING_OPT) -C $$($$(PKG)_SRCDIR)
+	for i in $$$$(find $(STAGING_DIR)/usr/lib/ -name "*.la"); do \
+		cp $$$$i $$$$i~; \
+		$$(SED) "s:\(['= ]\)/usr:\\1$(STAGING_DIR)/usr:g" $$$$i; \
+	done
+endef
+endif
+
+#
+# Target installation step. Only define it if not already defined by
+# the package .mk file.
+#
+ifndef $(2)_INSTALL_TARGET_CMDS
+define $(2)_INSTALL_TARGET_CMDS
+	$$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_INSTALL_TARGET_OPT) -C $$($$(PKG)_SRCDIR)
+endef
+endif
+
+#
+# Clean step. Only define it if not already defined by
+# the package .mk file.
+#
+ifndef $(2)_CLEAN_CMDS
+define $(2)_CLEAN_CMDS
+	-$$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE)  $$($$(PKG)_CLEAN_OPT) -C $$($$(PKG)_SRCDIR)
+endef
+endif
+
+#
+# Uninstall from staging step. Only define it if not already defined by
+# the package .mk file.
+#
+ifndef $(2)_UNINSTALL_STAGING_CMDS
+define $(2)_UNINSTALL_STAGING_CMDS
+	$$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_UNINSTALL_STAGING_OPT) -C $$($$(PKG)_SRCDIR)
+endef
+endif
+
+#
+# Uninstall from target step. Only define it if not already defined
+# by the package .mk file.
+#
+ifndef $(2)_UNINSTALL_TARGET_CMDS
+define $(2)_UNINSTALL_TARGET_CMDS
+	$$($$(PKG)_MAKE_ENV) $$($$(PKG)_MAKE) $$($$(PKG)_UNINSTALL_TARGET_OPT) -C $$($$(PKG)_SRCDIR)
+endef
+endif
+
+# Call the generic package infrastructure to generate the necessary
+# make targets
+$(call GENTARGETS_INNER,$(1),$(2),$(3),$(4),$(5))
+
+endef
+
+################################################################################
+# AUTOTARGETS -- the target generator macro for autotools packages
+#
+# Argument 1 is the package directory prefix [mandatory]
+# Argument 2 is the lowercase package name   [mandatory]
+# Argument 3 is "target" or "host"           [optional, default: "target"]
+################################################################################
+
+define AUTOTARGETS
+ifeq ($(3),host)
+$(call AUTOTARGETS_INNER,$(3)-$(2),$(call UPPERCASE,$(3)-$(2)),$(call UPPERCASE,$(2)),$(1),host)
+else
+$(call AUTOTARGETS_INNER,$(2),$(call UPPERCASE,$(2)),$(call UPPERCASE,$(2)),$(1),target)
+endif
+endef
