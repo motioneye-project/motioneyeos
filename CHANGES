@@ -7,10 +7,12 @@
 	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
 	gst-plugins-good, imagemagick, iptables, kernel-headers, kismet,
 	libelf, libevent, libglib2, liblockfile, libmad, libpcap, libupnp,
-	libuuid, ltrace, lua, lzma, mdadm, ncftp, ncurses, netkittelnet,
-	netsnmp, ntfs-3g, openssl, php, python, quagga, radvd, rsync, samba,
-	sawman, shared-mime-info, speech-tools, sqlite, squashfs, synergy,
-	syslinux, tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe,
+	libuuid, lighttpd, ltrace, lua, lzma, mdadm, ncftp, ncurses,
+	netkittelnet, netsnmp, ntfs-3g, openssl, php, python, quagga, radvd,
+	rsync, samba, sawman, shared-mime-info, speech-tools, sqlite,
+	squashfs, synergy, syslinux, tcpdump, u-boot, util-linux, valgrind,
+	vsftpd, wipe
+
 	wpa-supplicant, xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4
@@ -35,6 +37,7 @@
 	#657: Bug in imagemagick-clean target
 	#665: [PATCH] Samba package
 	#667: [PATCH] e2fsprogs
+	#709: Bump lighttpd package to 1.4.24
 
 2009.08, Released August 31th, 2009:
 
