@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LMBENCH
+	bool "lmbench"
+	help
+	  LMbench is a suite of simple, portable,
+	  ANSI/C microbenchmarks for UNIX/POSIX.
+
+	  http://sourceforge.net/projects/lmbench/
