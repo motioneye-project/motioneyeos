@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBDVDREAD
+	bool "libdvdread"
+	help
+	  libdvdread provides a simple foundation for reading
+	  DVD-Video images.
+
+	  http://www.mplayerhq.hu/MPlayer/releases/dvdnav/
