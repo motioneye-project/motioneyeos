@@ -1,6 +1,6 @@
 2010.02, Not yet released:
 
-	New packages: tcpreplay, hostapd
+	New packages: libcdaudio, hostapd, tcpreplay
 
 	Updated/fixed packages: autoconf, bind, binutils, busybox,
 	directfb, gst-plugins-bad, iw, libfuse, libpcap, lighttpd,
