@@ -101,6 +101,13 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-dtmf
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVDNAV),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-dvdnav
+GST_PLUGINS_BAD_DEPENDENCIES += libdvdnav
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-dvdnav
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVDSPU),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-dvdspu
 else
