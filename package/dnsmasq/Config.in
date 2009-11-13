@@ -20,3 +20,11 @@ config BR2_PACKAGE_DNSMASQ_DHCP
 	help
 	  Enable DHCP server support in dnsmasq.
 
+config BR2_PACKAGE_DNSMASQ_IDN
+	bool "IDN support (BIG!)"
+	depends on BR2_PACKAGE_DNSMASQ
+	select BR2_PACKAGE_LIBINTL
+	select BR2_PACKAGE_LIBIDN
+	help
+	  Enable IDN support in dnsmasq.
+	  This option is a big space taker since is pulls in many libraries.

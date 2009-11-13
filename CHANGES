@@ -40,6 +40,7 @@
 	#709: Bump lighttpd package to 1.4.24
 	#713: Migrate openntpd package to Makefile.autotools.in
 	#715: Bump libidn package to 1.15 and other fixes
+	#717: Bump dnsmasq to 2.51 and introduce new IDN option
 
 2009.08, Released August 31th, 2009:
 
