@@ -6,8 +6,8 @@
 	Updated/fixed packages: autoconf, busybox, gcc, directfb, dnsmasq,
 	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
 	gst-plugins-good, imagemagick, iptables, kernel-headers, kismet,
-	libelf, libevent, libglib2, liblockfile, libmad, libpcap, libupnp,
-	libuuid, lighttpd, ltrace, lua, lzma, mdadm, ncftp, ncurses,
+	libelf, libevent, libglib2, libidn, liblockfile, libmad, libpcap,
+	libupnp, libuuid, lighttpd, ltrace, lua, lzma, mdadm, ncftp, ncurses,
 	netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php, python,
 	quagga, radvd, rsync, samba, sawman, shared-mime-info, speech-tools,
 	sqlite, squashfs, synergy, syslinux, tcpdump, u-boot, util-linux,
@@ -39,6 +39,7 @@
 	#667: [PATCH] e2fsprogs
 	#709: Bump lighttpd package to 1.4.24
 	#713: Migrate openntpd package to Makefile.autotools.in
+	#715: Bump libidn package to 1.15 and other fixes
 
 2009.08, Released August 31th, 2009:
 
