@@ -14,3 +14,4 @@ GPERF_INSTALL_TARGET = YES
 GPERF_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 $(eval $(call AUTOTARGETS,package,gperf))
+$(eval $(call AUTOTARGETS,package,gperf,host))
