@@ -37,3 +37,4 @@ FLEX_POST_CLEAN_HOOKS += FLEX_UNINSTALL_LIBFL
 endif
 
 $(eval $(call AUTOTARGETS,package,flex))
+$(eval $(call AUTOTARGETS,package,flex,host))
