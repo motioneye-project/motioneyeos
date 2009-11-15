@@ -11,8 +11,8 @@ WEBKIT_INSTALL_STAGING = YES
 WEBKIT_INSTALL_TARGET = YES
 WEBKIT_LIBTOOL_PATCH = NO
 
-WEBKIT_DEPENDENCIES = icu curl libxml2 libxslt libgtk2 sqlite enchant \
-			libsoup
+WEBKIT_DEPENDENCIES = host-flex host-gperf icu curl libxml2 libxslt	\
+			libgtk2 sqlite enchant libsoup
 
 ifeq ($(BR2_PACKAGE_WEBKIT_X11),y)
 WEBKIT_CONF_OPT = --with-target=x11
