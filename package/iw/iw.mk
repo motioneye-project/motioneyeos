@@ -4,7 +4,7 @@
 #
 #############################################################
 
-IW_VERSION = 0.9.15
+IW_VERSION = 0.9.17
 IW_SOURCE = iw-$(IW_VERSION).tar.bz2
 IW_SITE = http://wireless.kernel.org/download/iw
 IW_DEPENDENCIES = libnl
