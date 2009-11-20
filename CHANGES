@@ -1,5 +1,10 @@
 2009.11, Not yet released:
 
+	Fixed *clean targets. Now clean removes everything generated,
+	so you can do a fresh rebuild. Distclean furthermore removes
+	kbuild tools and .config, bringing the source tree back in a
+	pristine state.
+
 	Toolchain: ARM cortex A8 support, GCC 4.4.2.
 
 	New packages: divine, gvfs, libarchive, libmicrohttpd,

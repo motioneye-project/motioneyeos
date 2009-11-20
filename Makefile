@@ -338,7 +338,7 @@ $(BASE_TARGETS): dirs
 world: dependencies dirs $(BASE_TARGETS) $(TARGETS_ALL)
 
 
-.PHONY: all world dirs clean dirclean distclean source \
+.PHONY: all world dirs clean distclean source \
 	$(BASE_TARGETS) $(TARGETS) $(TARGETS_ALL) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
 	$(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
@@ -438,25 +438,6 @@ _source-check:
 external-deps:
 	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)/toolchain/wget-show-external-deps.sh \
 		SPIDER=--spider source
-
-#############################################################
-#
-# Cleanup and misc junk
-#
-#############################################################
-clean: $(TARGETS_CLEAN)
-	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE) $(BUILD_DIR)/.root $(STAMP_DIR)
-
-dirclean: $(TARGETS_DIRCLEAN)
-	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(IMAGE) $(BUILD_DIR)/.root $(STAMP_DIR)
-
-distclean:
-ifeq ($(DL_DIR),$(TOPDIR)/dl)
-	rm -rf $(DL_DIR)
-endif
-	rm -rf $(TOOLCHAIN_DIR) $(BUILD_DIR) $(BINARIES_DIR) \
-	.config.cmd
-	$(MAKE) -C $(CONFIG) clean
 
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
@@ -573,20 +554,26 @@ defconfig: $(CONFIG)/conf
 source-check: allyesconfig
 	$(MAKE) _source-check
 
+endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
+
 #############################################################
 #
 # Cleanup and misc junk
 #
 #############################################################
 clean:
-	rm -f .config .config.old .config.cmd .tmpconfig.h .lognr.*
-	-$(MAKE) -C $(CONFIG) clean
+	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(BINARIES_DIR) $(HOST_DIR) \
+		$(STAMP_DIR) $(BUILD_DIR) $(TOOLCHAIN_DIR)
 
 distclean: clean
-	rm -rf sources/*
-
-
-endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
+ifeq ($(DL_DIR),$(TOPDIR)/dl)
+	rm -rf $(DL_DIR)
+endif
+ifeq ($(O),output)
+	rm -rf $(O)
+endif
+	rm -rf .config .config.old .config.cmd .auto.deps
+	-$(MAKE) -C $(CONFIG) clean
 
 flush:
 	rm -f $(BUILD_DIR)/tgt-config.cache
@@ -603,7 +590,7 @@ cross: $(BASE_TARGETS)
 
 help:
 	@echo 'Cleaning:'
-	@echo '  clean                  - delete temporary files created by build'
+	@echo '  clean                  - delete all files created by build'
 	@echo '  distclean              - delete all non-source files (including .config)'
 	@echo
 	@echo 'Build:'
