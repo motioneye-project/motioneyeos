@@ -44,6 +44,7 @@
 	#657: Bug in imagemagick-clean target
 	#665: [PATCH] Samba package
 	#667: [PATCH] e2fsprogs
+	#701: make install problem with unstripped binaries
 	#703: [SECURITY] Update openssl package to 0.9.8l
 	#705: Bump spawn-fcgi package to 1.6.3
 	#709: Bump lighttpd package to 1.4.24
