@@ -10,6 +10,13 @@ NBD_CAT:=$(BZCAT)
 NBD_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/nbd/
 NBD_DIR=$(BUILD_DIR)/nbd-$(NBD_VERSION)
 
+ifeq ($(BR2_NBD_CLIENT),y)
+NBD_TARGET_BINARY+= $(TARGET_DIR)/sbin/nbd-client
+endif
+ifeq ($(BR2_NBD_SERVER),y)
+NBD_TARGET_BINARY+= $(TARGET_DIR)/bin/nbd-server
+endif
+
 $(DL_DIR)/$(NBD_SOURCE):
 	$(call DOWNLOAD,$(NBD_SITE),$(NBD_SOURCE))
 
@@ -17,7 +24,11 @@ $(NBD_DIR)/.unpacked: $(DL_DIR)/$(NBD_SOURCE)
 	$(NBD_CAT) $(DL_DIR)/$(NBD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	touch $@
 
-$(NBD_DIR)/.configured: $(NBD_DIR)/.unpacked
+$(NBD_DIR)/.patched: $(NBD_DIR)/.unpacked
+	toolchain/patch-kernel.sh $(NBD_DIR) package/nbd/ nbd\*.patch
+	touch $@
+
+$(NBD_DIR)/.configured: $(NBD_DIR)/.patched
 	(cd $(NBD_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
@@ -27,6 +38,7 @@ $(NBD_DIR)/.configured: $(NBD_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		--sysconfdir=/etc \
 	)
 	touch $@
 
@@ -37,12 +49,19 @@ $(TARGET_DIR)/sbin/nbd-client: $(NBD_DIR)/nbd-client
 	cp $< $@
 	$(STRIPCMD) $@
 
-nbd: libglib2 $(TARGET_DIR)/sbin/nbd-client
+$(NBD_DIR)/nbd-server: $(NBD_DIR)/.configured
+	$(MAKE) -C $(NBD_DIR) nbd-server
+
+$(TARGET_DIR)/bin/nbd-server: $(NBD_DIR)/nbd-server
+	cp $< $@
+	$(STRIPCMD) $@
+
+nbd: libglib2 $(NBD_TARGET_BINARY)
 
 nbd-source: $(DL_DIR)/$(NBD_SOURCE)
 
 nbd-clean:
-	rm -f $(TARGET_DIR)/sbin/nbd-client
+	rm -f $(NBD_TARGET_BINARY)
 	-$(MAKE) -C $(NBD_DIR) clean
 
 nbd-dirclean:

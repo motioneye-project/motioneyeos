@@ -14,8 +14,8 @@
 	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
 	gst-plugins-good, imagemagick, ipkg, iptables, iw, kernel-headers,
 	kismet, libelf, libevent, libglib2, libidn, liblockfile, libmad,
-	libpcap, libupnp, libuuid, lighttpd, ltrace, lua, lzma, mdadm, ncftp,
-	ncurses, netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php,
+	libpcap, libupnp, libuuid, lighttpd, ltrace, lua, lzma, mdadm, nbd,
+	ncftp, ncurses, netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php,
 	python, quagga, radvd, rsync, samba, sawman, sdl, shared-mime-info,
 	spawn-fcgi, speech-tools, sqlite, squashfs, synergy, syslinux,
 	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
@@ -38,6 +38,7 @@
 	#615: python: Don't delete .py files unless asked
 	#617: netkit/inetd requires RPC and fails to build if RPC is disabled
 	#619: netkittelnet requires netkitbase to install, but there's no ...
+	#645: allow to build nbd-server with NBD package
 	#653: [SECURITY] Update php package to version 5.2.11
 	#655: Update sqlite package to version 3.6.18
 	#657: Bug in imagemagick-clean target
