@@ -18,8 +18,8 @@
 	ncftp, ncurses, netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php,
 	python, quagga, radvd, rsync, samba, sawman, sdl, shared-mime-info,
 	spawn-fcgi, speech-tools, sqlite, squashfs, synergy, syslinux,
-	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
-	xdata_xcursor-themes, zlib
+	target-binutils, tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe,
+	wpa-supplicant, xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4
 
@@ -34,6 +34,7 @@
 	#565: libevent: Bump version and clean up makefile
 	#587: Use iptables multipurpose binaries and bump to 1.4.4
 	#593: Missing early check for patch(1)
+	#597: (REOP)  Selecting busybox in buildroot's config clobbers ar ...
 	#609: libmicrohttpd: New package
 	#615: python: Don't delete .py files unless asked
 	#617: netkit/inetd requires RPC and fails to build if RPC is disabled

@@ -175,6 +175,13 @@ endif
 	-$(STRIPCMD) $(TARGET_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/* > /dev/null 2>&1
 	-$(STRIPCMD) $(TARGET_DIR)/usr/bin/* > /dev/null 2>&1
 
+# If both binutils-target and busybox are selected, make certain binutils
+# gets to run after busybox, so it can overwrite the busybox symlink for
+# ar if enabled
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+BINUTILS_TARGET_PREREQ += busybox
+endif
+
 binutils_target: $(BINUTILS_TARGET_PREREQ) $(TARGET_DIR)/usr/bin/ld
 
 binutils_target-clean:
