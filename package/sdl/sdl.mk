@@ -18,6 +18,7 @@ SDL_FBCON=--enable-video-fbcon=no
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
+SDL_DEPENDENCIES += directfb
 SDL_DIRECTFB=--enable-video-directfb=yes
 SDL_DIRECTFB_TARGET:=$(STAGING_DIR)/include/directfb
 SDL_DIRECTFB_INCLUDES:=-I$(STAGING_DIR)/usr/include/directfb
@@ -28,12 +29,14 @@ endif
 
 ifeq ($(BR2_PACKAGE_SDL_QTOPIA),y)
 SDL_QTOPIA=--enable-video-qtopia=yes
+SDL_DEPENDENCIES += qt
 else
 SDL_QTOPIA=--enable-video-qtopia=no
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_X11),y)
 SDL_X11=--enable-video-x11=yes
+SDL_DEPENDENCIES += xserver_xorg-server
 else
 SDL_X11=--enable-video-x11=no
 endif
@@ -96,7 +99,7 @@ $(TARGET_DIR)/usr/lib/libSDL.so: $(STAGING_DIR)/usr/lib/libSDL.so
 	cp -dpf $(STAGING_DIR)/usr/lib/libSDL*.so* $(TARGET_DIR)/usr/lib/
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libSDL.so
 
-SDL sdl: $(TARGET_DIR)/usr/lib/libSDL.so
+SDL sdl: $(SDL_DEPENDENCIES) $(TARGET_DIR)/usr/lib/libSDL.so
 
 sdl-unpacked: $(SDL_DIR)/.unpacked
 

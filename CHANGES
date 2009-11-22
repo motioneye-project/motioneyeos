@@ -15,10 +15,10 @@
 	gst-plugins-good, imagemagick, ipkg, iptables, iw, kernel-headers,
 	kismet, libelf, libevent, libglib2, libidn, liblockfile, libmad,
 	libpcap, libupnp, libuuid, lighttpd, ltrace, lua, lzma, mdadm, ncftp,
-	ncurses, netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php, python,
-	quagga, radvd, rsync, samba, sawman, shared-mime-info, spawn-fcgi,
-	speech-tools, sqlite, squashfs, synergy, syslinux, tcpdump, u-boot,
-	util-linux, valgrind, vsftpd, wipe
+	ncurses, netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php,
+	python, quagga, radvd, rsync, samba, sawman, sdl, shared-mime-info,
+	spawn-fcgi, speech-tools, sqlite, squashfs, synergy, syslinux,
+	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe
 
 	wpa-supplicant, xdata_xcursor-themes, zlib
 
@@ -44,6 +44,7 @@
 	#657: Bug in imagemagick-clean target
 	#665: [PATCH] Samba package
 	#667: [PATCH] e2fsprogs
+	#683: SDL-dfb does not select directfb
 	#701: make install problem with unstripped binaries
 	#703: [SECURITY] Update openssl package to 0.9.8l
 	#705: Bump spawn-fcgi package to 1.6.3
