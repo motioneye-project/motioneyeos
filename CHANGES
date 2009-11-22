@@ -18,9 +18,8 @@
 	ncurses, netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php,
 	python, quagga, radvd, rsync, samba, sawman, sdl, shared-mime-info,
 	spawn-fcgi, speech-tools, sqlite, squashfs, synergy, syslinux,
-	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe
-
-	wpa-supplicant, xdata_xcursor-themes, zlib
+	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
+	xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4
 
@@ -38,10 +37,11 @@
 	#609: libmicrohttpd: New package
 	#615: python: Don't delete .py files unless asked
 	#617: netkit/inetd requires RPC and fails to build if RPC is disabled
-	#619: netkittelnet requires netkitbase to install, but there's no dependency
+	#619: netkittelnet requires netkitbase to install, but there's no ...
 	#653: [SECURITY] Update php package to version 5.2.11
 	#655: Update sqlite package to version 3.6.18
 	#657: Bug in imagemagick-clean target
+	#663: Add option for NAND flash with 512B Page and 16 kB erasesize ...
 	#665: [PATCH] Samba package
 	#667: [PATCH] e2fsprogs
 	#683: SDL-dfb does not select directfb
