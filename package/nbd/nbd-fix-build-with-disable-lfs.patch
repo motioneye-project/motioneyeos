@@ -1,0 +1,30 @@
+From 6d452ab0247770a446cfa6dd9b8b4ddea6c8fa4b Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Sun, 22 Nov 2009 23:01:52 +0100
+Subject: [PATCH] lfs.h: fix build with --disable-lfs
+
+Running ./configure with --disable-lfs #define's NBD_LFS to 0 and
+doesn't #undef it, so the LFS check should use #if rather than #ifdef
+similar to how it is done in cliserv.h
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ lfs.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/lfs.h b/lfs.h
+index 8f90f81..929ce08 100644
+--- a/lfs.h
++++ b/lfs.h
+@@ -2,7 +2,7 @@
+ #define LFS_H
+ 
+ #include "config.h"
+-#ifdef NBD_LFS
++#if NBD_LFS
+ #define _FILE_OFFSET_BITS 64
+ #define _LARGEFILE_SOURCE
+ #endif /* NBD_LFS */
+-- 
+1.6.3.3
+

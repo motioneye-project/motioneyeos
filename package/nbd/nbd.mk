@@ -39,6 +39,7 @@ $(NBD_DIR)/.configured: $(NBD_DIR)/.patched
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
 		--sysconfdir=/etc \
+		$(if $(BR2_LARGEFILE),--enable-lfs,--disable-lfs) \
 	)
 	touch $@
 
