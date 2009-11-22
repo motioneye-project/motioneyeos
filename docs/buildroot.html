@@ -29,6 +29,8 @@
       configuration</a></li>
       <li><a href="#custom_uclibc">Customizing the uClibc
       configuration</a></li>
+      <li><a href="#custom_linux26">Customizing the Linux kernel
+      configuration</a></li>
       <li><a href="#rebuilding_packages">Understanding how to rebuild packages</a></li>
       <li><a href="#buildroot_innards">How Buildroot works</a></li>
       <li><a href="#using_toolchain">Using the uClibc toolchain
@@ -269,6 +271,8 @@
     internal toolchain is selected</li>
     <li><code>BUSYBOX_CONFIG_FILE=&lt;path/to/.config&gt;</code>, path
     to the Busybox configuration file</li>
+    <li><code>LINUX26_KCONFIG=&lt;path/to/.config&gt;</code>, path
+    to the Linux kernel configuration file</li>
     <li><code>BUILDROOT_COPYTO</code>, an additional location at which
     the binary images of the root filesystem, kernel, etc. built by
     Buildroot are copied</li>
@@ -413,6 +417,18 @@ $ export BUILDROOT_COPYTO=/tftpboot
 
     <p>If you want to use an existing config file for uclibc, then see
     section <a href="#environment_variables">environment variables</a>. </p>
+
+    <h2><a name="custom_linux26" id="custom_linux26"></a>Customizing
+    the Linux kernel configuration</h2>
+
+    <p>The Linux kernel configuration can be customized just like <a
+    href="#custom_busybox">BusyBox</a> and <a href="#custom_uclibc">uClibc</a>
+    using <code>make linux26-menuconfig</code>. Make sure you have
+    enabled the kernel build in <code>make menuconfig</code> first.
+    Once done, run <code>make</code> to (re)build everything.</p>
+
+    <p>If you want to use an existing config file for Linux, then see
+    section <a href="#environment_variables">environment variables</a>.</p>
 
     <h2><a name="#rebuilding_packages"
     id="rebuilding_packages">Understanding how to rebuild
