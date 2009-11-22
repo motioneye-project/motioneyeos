@@ -128,6 +128,7 @@ DIRECTFB_CONF_OPT = \
 	--enable-static \
 	--enable-shared \
 	--disable-explicit-deps \
+	--program-prefix='' \
 	$(DIRECTFB_MULTI) \
 	$(DIRECTFB_DEBUG) \
 	$(DIRECTFB_TRACE) \
