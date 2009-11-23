@@ -10,8 +10,10 @@ RPM_LIBTOOL_PATCH = NO
 
 RPM_DEPENDENCIES = zlib bzip2 beecrypt neon popt
 
-RPM_CONF_ENV = CFLAGS="-I$(STAGING_DIR)/usr/include/beecrypt -I$(STAGING_DIR)/usr/include/neon" \
+RPM_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/beecrypt -I$(STAGING_DIR)/usr/include/neon" \
 		ac_cv_va_copy=yes
+# the above doesn't work with shared config.cache
+RPM_USE_CONFIG_CACHE = NO
 
 RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 	--without-selinux \
@@ -22,7 +24,7 @@ RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 	--with-mutex=UNIX/fcntl \
 	--with-bzip2
 
-RPM_MAKE_OPT = -j1
+RPM_MAKE = $(MAKE1)
 
 RPM_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) program_transform_name= install
 
