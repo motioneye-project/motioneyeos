@@ -9,6 +9,7 @@ MAGICCUBE4D_SITE = http://avr32linux.org/twiki/pub/Main/MagicCube4D
 MAGICCUBE4D_INSTALL_STAGING = NO
 MAGICCUBE4D_INSTALL_TARGET = YES
 MAGICCUBE4D_INSTALL_TARGET_OPT = GAMESDIR=$(TARGET_DIR)/usr/games install
+MAGICCUBE4D_DEPENDENCIES = xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package/games,magiccube4d))
 
