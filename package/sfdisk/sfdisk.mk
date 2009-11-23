@@ -21,7 +21,7 @@ $(SFDISK_DIR)/.patched: $(DL_DIR)/$(SFDISK_SOURCE)
 $(SFDISK_DIR)/sfdisk: $(SFDISK_DIR)/.patched
 	$(MAKE) \
 		CROSS=$(TARGET_CROSS) DEBUG=false OPTIMIZATION="$(TARGET_CFLAGS)" \
-		-C $(SFDISK_DIR)
+		DOLFS=$(if $(BR2_LARGEFILE),true,false) -C $(SFDISK_DIR)
 	-$(STRIPCMD) $(SFDISK_DIR)/sfdisk
 	touch -c $(SFDISK_DIR)/sfdisk
 
