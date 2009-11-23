@@ -3,11 +3,11 @@
 # psmisc
 #
 #############################################################
-PSMISC_VERSION:=22.6
+PSMISC_VERSION:=22.8
 PSMISC_SOURCE:=psmisc-$(PSMISC_VERSION).tar.gz
 PSMISC_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/psmisc
-PSMISC_AUTORECONF:=no
-PSMISC_INSTALL_STAGING:=no
+PSMISC_AUTORECONF:=NO
+PSMISC_INSTALL_STAGING:=NO
 PSMISC_INSTALL_TARGET:=YES
 PSMISC_CONF_ENV:=ac_cv_func_malloc_0_nonnull=yes \
 		 ac_cv_func_realloc_0_nonnull=yes

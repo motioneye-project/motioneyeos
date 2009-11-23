@@ -1,0 +1,24 @@
+[PATCH]: pstree: don't use glibc-specific __progname
+
+uclibc (per default) doesn't implement __progname, and the pstree.x11
+stuff isn't that critical, so just disable it.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/pstree.c |    3 ---
+ 1 file changed, 3 deletions(-)
+
+Index: psmisc-22.8/src/pstree.c
+===================================================================
+--- psmisc-22.8.orig/src/pstree.c
++++ psmisc-22.8/src/pstree.c
+@@ -893,9 +893,6 @@ main (int argc, char **argv)
+   bindtextdomain(PACKAGE, LOCALEDIR);
+   textdomain(PACKAGE);
+ #endif
+-  
+-  if (!strcmp(__progname, "pstree.x11"))
+-    wait_end=1;
+ 
+   /*
+    * Attempt to figure out a good default symbol set.  Will be overriden by
