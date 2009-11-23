@@ -1,6 +1,10 @@
 config BR2_PACKAGE_SYSKLOGD
 	bool "syslogd & klogd"
+	depends on BR2_LARGEFILE
 	help
 	  System log daemons syslogd and klogd.
 
 	  http://www.infodrom.org/products/sysklogd/
+
+comment "syslogd requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
