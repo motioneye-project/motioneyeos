@@ -156,6 +156,9 @@ else
 	PHP_CONF_OPT += --with-pdo-sqlite
 endif
 	PHP_CONF_ENV += CFLAGS+=" -DSQLITE_OMIT_LOAD_EXTENSION"
+ifneq ($(BR2_LARGEFILE),y)
+	PHP_CONF_ENV += CFLAGS+=" -DSQLITE_DISABLE_LFS"
+endif
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),y)
 	PHP_CONF_OPT += --with-pdo-mysql=$(STAGING_DIR)/usr
