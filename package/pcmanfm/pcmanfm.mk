@@ -12,7 +12,7 @@ PCMANFM_INSTALL_TARGET = YES
 
 PCMANFM_CONF_OPT = --disable-hal
 
-PCMANFM_DEPENDENCIES = host-pkgconfig libgtk2 gamin startup-notification
+PCMANFM_DEPENDENCIES = host-pkgconfig libgtk2 gamin startup-notification xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,pcmanfm))
 
