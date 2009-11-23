@@ -39,6 +39,8 @@ endif
 
 ALSA_LIB_CONF_ENV = CFLAGS="$(ALSA_LIB_CFLAGS)" \
 		    LDFLAGS="$(TARGET_LDFLAGS) -lm"
+# the above doesn't work with shared config.cache
+ALSA_LIB_USE_CONFIG_CACHE = NO
 
 $(eval $(call AUTOTARGETS,package/multimedia,alsa-lib))
 
