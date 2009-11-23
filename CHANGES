@@ -1,11 +1,21 @@
 2009.11, Not yet released:
 
+	Fixes all over the tree and new features.
+
+	Cleaned up / Simplified build directory layout. Refer to
+	docs/buildroot.html#using for details.
+
+	Target defconfig files moved to configs/ and listed in 'make help'
+	output.
+
 	Fixed *clean targets. Now clean removes everything generated,
 	so you can do a fresh rebuild. Distclean furthermore removes
 	kbuild tools and .config, bringing the source tree back in a
 	pristine state.
 
-	Toolchain: ARM cortex A8 support, GCC 4.4.2.
+	Toolchain: ARM cortex A8 support, GCC 4.4.2, sensible default
+	soft / hardfloat setting for architecture, ensure target-ldd
+	gets installed.
 
 	New packages: divine, gvfs, libarchive, libmicrohttpd,
 	sdl_sound, swfdec, sysstat
