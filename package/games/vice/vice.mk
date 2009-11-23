@@ -9,7 +9,7 @@ VICE_SITE = http://www.viceteam.org/online
 VICE_INSTALL_STAGING = NO
 VICE_INSTALL_TARGET = YES
 
-VICE_CONF_OPT = --without-resid --with-alsa CFLAGS="-O0"
+VICE_CONF_OPT = --without-resid --with-alsa
 
 $(eval $(call AUTOTARGETS,package/games,vice))
 

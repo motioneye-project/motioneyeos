@@ -32,7 +32,7 @@
 	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
 	xdata_xcursor-themes, xstroke, zlib
 
-	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4
+	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4, vice
 
 	Issues resolved (http://bugs.uclibc.org):
 

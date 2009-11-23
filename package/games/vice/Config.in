@@ -1,5 +1,7 @@
 config BR2_PACKAGE_VICE
 	bool "vice"
+	depends on BROKEN # doesn't build, wrong dependencies
+	# remove before 2010.02 release
 	help
 	  VICE is a Commodore emulator
 
