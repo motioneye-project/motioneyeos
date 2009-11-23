@@ -27,7 +27,7 @@
 	liblockfile, libmad, libpcap, libupnp, libuuid, lighttpd, ltrace,
 	lua, lzma, magiccube4d, matchbox, mdadm, nbd, ncftp, ncurses,
 	netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php, python, quagga,
-	radvd, rsync, samba, sawman, sdl, shared-mime-info, spawn-fcgi,
+	radvd, rsync, rubix, samba, sawman, sdl, shared-mime-info, spawn-fcgi,
 	speech-tools, sqlite, squashfs, synergy, syslinux, target-binutils,
 	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
 	xdata_xcursor-themes, xstroke, zlib
