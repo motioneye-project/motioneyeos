@@ -1,5 +1,6 @@
 config BR2_PACKAGE_TORSMO
 	bool "torsmo"
+	depends on BR2_PACKAGE_XORG7
 	help
 	  Torsmo is a system monitor that sits in the corner of your desktop.
 
