@@ -28,7 +28,7 @@
 	libupnp, libuuid, libxml2, lighttpd, ltrace, lua, lzma, magiccube4d,
 	matchbox, mdadm, nbd, ncftp, ncurses, netkittelnet, netsnmp,
 	ng-spice-rework, ntfs-3g, openntp, openssl, pcmanfm, php, psmisc,
-	python, quagga, radvd, rpm, rsync, rubix, samba, sawman, sdl,
+	python, quagga, radvd, rpm, rsync, rubix, samba, sawman, sdl, sdl_image,
 	shared-mime-info, sfdisk, spawn-fcgi, speech-tools, sqlite, squashfs,
 	synergy, syslinux, sysklogd, target-binutils, tcpdump, torsmo, u-boot,
 	udpcast, util-linux, valgrind, vsftpd, wipe, wpa-supplicant, x11vnc,
