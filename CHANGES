@@ -21,11 +21,11 @@
 	sdl_sound, swfdec, sysstat
 
 	Updated/fixed packages: alsamixergui, autoconf, bootutils, busybox,
-	gcc, directfb, dnsmasq, e2fsprogs, festival, gstreamer, gst-plugins-bad,
-	gst-plugins-base, gst-plugins-good, imagemagick, ipkg, iptables,
-	iw, kernel-headers, kismet, libelf, libevent, libglib2, libidn,
-	liblockfile, libmad, libpcap, libupnp, libuuid, lighttpd, ltrace,
-	lua, lzma, magiccube4d, matchbox, mdadm, nbd, ncftp, ncurses,
+	gcc, directfb, dnsmasq, e2fsprogs, festival, gamin, gstreamer,
+	gst-plugins-bad, gst-plugins-base, gst-plugins-good, imagemagick,
+	ipkg, iptables, iw, kernel-headers, kismet, libelf, libevent, libglib2,
+	libidn, liblockfile, libmad, libpcap, libupnp, libuuid, lighttpd,
+	ltrace, lua, lzma, magiccube4d, matchbox, mdadm, nbd, ncftp, ncurses,
 	netkittelnet, netsnmp, ntfs-3g, openntp, openssl, php, python, quagga,
 	radvd, rsync, rubix, samba, sawman, sdl, shared-mime-info, spawn-fcgi,
 	speech-tools, sqlite, squashfs, synergy, syslinux, target-binutils,
