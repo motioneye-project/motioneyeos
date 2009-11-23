@@ -1,6 +1,10 @@
 config BR2_PACKAGE_GPERF
 	bool "gperf"
+	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  A 'perfect hash function' generator
 
 	  http://www.gnu.org/software/gperf/
+
+comment "gperf requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
