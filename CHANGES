@@ -26,12 +26,12 @@
 	imagemagick, ipkg, iptables, iw, kernel-headers, kismet, leafpad,
 	libelf, libevent, libglib2, libidn, liblockfile, libmad, libpcap,
 	libupnp, libuuid, libxml2, lighttpd, ltrace, lua, lzma, magiccube4d,
-	matchbox, mdadm, nbd, ncftp, ncurses, netkittelnet, netsnmp, ntfs-3g,
-	openntp, openssl, pcmanfm, php, python, quagga, radvd, rsync, rubix,
-	samba, sawman, sdl, shared-mime-info, spawn-fcgi, speech-tools, sqlite,
-	squashfs, synergy, syslinux, target-binutils, tcpdump, u-boot,
-	util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
-	xdata_xcursor-themes, xboard, xstroke, zlib
+	matchbox, mdadm, nbd, ncftp, ncurses, netkittelnet, netsnmp,
+	ng-spice-rework, ntfs-3g, openntp, openssl, pcmanfm, php, python,
+	quagga, radvd, rsync, rubix, samba, sawman, sdl, shared-mime-info,
+	spawn-fcgi, speech-tools, sqlite, squashfs, synergy, syslinux,
+	target-binutils, tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe,
+	wpa-supplicant, xdata_xcursor-themes, xboard, xstroke, zlib
 
 	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4, vice
 
