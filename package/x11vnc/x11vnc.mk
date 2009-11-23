@@ -15,4 +15,6 @@ X11VNC_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
         --includedir=/usr/include \
 		--without-avahi
 
+X11VNC_DEPENDENCIES = xserver_xorg-server
+
 $(eval $(call AUTOTARGETS,package,x11vnc))

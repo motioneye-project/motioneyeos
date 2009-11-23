@@ -1,4 +1,5 @@
 config BR2_PACKAGE_X11VNC
 	bool "x11vnc"
+	depends on BR2_PACKAGE_XORG7
 	help
 	  VNC server for X11 display
