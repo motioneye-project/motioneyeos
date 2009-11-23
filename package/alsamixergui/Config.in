@@ -1,4 +1,5 @@
 config BR2_PACKAGE_ALSAMIXERGUI
+	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_FLTK
 	bool "alsamixergui"
 	help

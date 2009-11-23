@@ -10,16 +10,17 @@
 	New packages: divine, gvfs, libarchive, libmicrohttpd,
 	sdl_sound, swfdec, sysstat
 
-	Updated/fixed packages: autoconf, busybox, gcc, directfb, dnsmasq,
-	e2fsprogs, festival, gstreamer, gst-plugins-bad, gst-plugins-base,
-	gst-plugins-good, imagemagick, ipkg, iptables, iw, kernel-headers,
-	kismet, libelf, libevent, libglib2, libidn, liblockfile, libmad,
-	libpcap, libupnp, libuuid, lighttpd, ltrace, lua, lzma, matchbox,
-	mdadm, nbd, ncftp, ncurses, netkittelnet, netsnmp, ntfs-3g, openntp,
-	openssl, php, python, quagga, radvd, rsync, samba, sawman, sdl,
-	shared-mime-info, spawn-fcgi, speech-tools, sqlite, squashfs, synergy,
-	syslinux, target-binutils, tcpdump, u-boot, util-linux, valgrind,
-	vsftpd, wipe, wpa-supplicant, xdata_xcursor-themes, zlib
+	Updated/fixed packages: alsamixergui, autoconf, busybox, gcc,
+	directfb, dnsmasq, e2fsprogs, festival, gstreamer, gst-plugins-bad,
+	gst-plugins-base, gst-plugins-good, imagemagick, ipkg, iptables,
+	iw, kernel-headers, kismet, libelf, libevent, libglib2, libidn,
+	liblockfile, libmad, libpcap, libupnp, libuuid, lighttpd, ltrace,
+	lua, lzma, matchbox, mdadm, nbd, ncftp, ncurses, netkittelnet,
+	netsnmp, ntfs-3g, openntp, openssl, php, python, quagga, radvd,
+	rsync, samba, sawman, sdl, shared-mime-info, spawn-fcgi,
+	speech-tools, sqlite, squashfs, synergy, syslinux, target-binutils,
+	tcpdump, u-boot, util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
+	xdata_xcursor-themes, zlib
 
 	Removed package: mdnsresponder, mpatrol, gcc 3.4.6 + 4.0.4
 
