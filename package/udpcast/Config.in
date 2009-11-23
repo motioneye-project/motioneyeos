@@ -1,24 +1,28 @@
 config BR2_PACKAGE_UDPCAST
-        bool "udpcast"
-        help
-          A multicast protocol implementation which happens to
-          be very handy for imaging drives over the network.
+	bool "udpcast"
+	depends on BR2_LARGEFILE
+	help
+	  A multicast protocol implementation which happens to
+	  be very handy for imaging drives over the network.
 
-          http://www.udpcast.linux.lu/
+	  http://www.udpcast.linux.lu/
+
+comment "udpcast requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
 
 menu "udpcast tools selection"
-        depends on BR2_PACKAGE_UDPCAST
+depends on BR2_PACKAGE_UDPCAST
 
 config BR2_PACKAGE_UDPCAST_SENDER
-        bool "sender"
-        depends on BR2_PACKAGE_UDPCAST
-        help
-          The udpcast transmitter.
+	bool "sender"
+	depends on BR2_PACKAGE_UDPCAST
+	help
+	  The udpcast transmitter.
 
 config BR2_PACKAGE_UDPCAST_RECEIVER
-        bool "receiver"
-        depends on BR2_PACKAGE_UDPCAST
-        help
-          The udpcast receiver.
+	bool "receiver"
+	depends on BR2_PACKAGE_UDPCAST
+	help
+	  The udpcast receiver.
 
 endmenu

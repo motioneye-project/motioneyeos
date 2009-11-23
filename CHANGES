@@ -30,7 +30,7 @@
 	ng-spice-rework, ntfs-3g, openntp, openssl, pcmanfm, php, psmisc,
 	python, quagga, radvd, rsync, rubix, samba, sawman, sdl,
 	shared-mime-info, sfdisk, spawn-fcgi, speech-tools, sqlite, squashfs,
-	synergy, syslinux, target-binutils, tcpdump, torsmo, u-boot,
+	synergy, syslinux, target-binutils, tcpdump, torsmo, u-boot, udpcast,
 	util-linux, valgrind, vsftpd, wipe, wpa-supplicant,
 	xdata_xcursor-themes, xboard, xstroke, zlib
 
