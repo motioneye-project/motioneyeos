@@ -1,5 +1,7 @@
 config BR2_PACKAGE_XBOARD
 	bool "xboard"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_GNUCHESS
 	help
 	  XBoard and WinBoard are graphical user interfaces for chess.
 

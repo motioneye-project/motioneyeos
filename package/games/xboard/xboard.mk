@@ -10,7 +10,7 @@ XBOARD_INSTALL_STAGING = NO
 XBOARD_INSTALL_TARGET = YES
 XBOARD_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
-XBOARD_DEPENDENCIES = gnuchess
+XBOARD_DEPENDENCIES = gnuchess xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package/games,xboard))
 
