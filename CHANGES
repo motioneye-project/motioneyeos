@@ -3,7 +3,8 @@
 	New packages: tcpreplay, hostapd
 
 	Updated/fixed packages: autoconf, bind, binutils, busybox,
-	directfb, iw, libfuse, libpcap, lighttpd, mesa, pcre, usbutils
+	directfb, iw, libfuse, libpcap, lighttpd, mesa, pcre, sshfs,
+	usbutils
 
 	Issues resolved (http://bugs.uclibc.org):
 

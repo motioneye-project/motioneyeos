@@ -1,0 +1,18 @@
+config BR2_PACKAGE_SSHFS
+	bool "sshfs (FUSE)"
+	select BR2_PACKAGE_LIBFUSE
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_GETTEXT
+	select BR2_PACKAGE_LIBINTL
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on BR2_PACKAGE_OPENSSH
+	help
+	  FUSE makes it possible to implement a filesystem in a userspace
+	  program. Features include: simple yet comprehensive API, secure
+	  mounting by non-root users, support for 2.4 and 2.6 Linux
+	  kernels, multi-threaded operation. etc...
+
+	  http://fuse.sourceforge.net/sshfs.html
+
+comment "sshfs requires a toolchain with LARGEFILE support"
+        depends on !BR2_LARGEFILE
