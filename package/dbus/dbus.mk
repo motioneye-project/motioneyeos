@@ -51,9 +51,9 @@ endif
 
 $(eval $(call AUTOTARGETS,package,dbus))
 
-# fix rebuild if /var/lib is a symlink to /tmp
+# fix rebuild (dbus makefile errors out if /var/lib/dbus is a symlink)
 $(DBUS_HOOK_POST_BUILD): $(DBUS_TARGET_BUILD)
-	rm -rf /tmp/dbus
+	rm -rf $(TARGET_DIR)/var/lib/dbus
 	touch $@
 
 $(DBUS_HOOK_POST_INSTALL): $(DBUS_TARGET_INSTALL_TARGET)
