@@ -49,6 +49,16 @@ h3 {
 	margin-left: 10px;
 	margin-right: 10px;
 	color: #336699;
+        border-bottom: 2px solid #336699;
+}
+
+h4 { 
+	font: italic normal 14pt georgia; 
+	letter-spacing: 1px; 
+	margin-bottom: 0px; 
+	margin-left: 10px;
+	margin-right: 10px;
+        border-bottom: 1px dashed black;
 }
 
 p {
