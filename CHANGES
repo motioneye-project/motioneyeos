@@ -1,4 +1,6 @@
-2009.11, Not released yet:
+2009.11-rc2, Released November 29th, 2009:
+
+	Additional fixes and cleanups.
 
 	Updated/fixed packages: busybox, dbus, fltk, gvfs, ltrace
 

@@ -8,7 +8,7 @@ config BR2_HAVE_DOT_CONFIG
 
 config BR2_VERSION
 	string
-	default "2009.11-rc1"
+	default "2009.11-rc2"
 
 source "target/Config.in.arch"
 source "target/device/Config.in"
