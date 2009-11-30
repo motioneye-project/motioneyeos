@@ -4,6 +4,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#749: Bump usbutils package to version 0.86
 	#751: Kernel 2.6 snapshot fetch fail
 	#753: Bump lighttpd package to 1.4.25
 	#761: Add binutils 2.20 to toolchain options

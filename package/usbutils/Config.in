@@ -5,3 +5,13 @@ config BR2_PACKAGE_USBUTILS
 	  USB enumeration utilities
 
 	  http://linux-usb.sourceforge.net/
+
+config BR2_PACKAGE_USBUTILS_ZLIB
+	bool "compressed data support"
+	depends on BR2_PACKAGE_USBUTILS
+	select BR2_PACKAGE_ZLIB
+	help
+	  Enable use of zlib for a compressed usb.ids.gz
+	  This makes the data file smaller if you're not using a compressed
+	  filesystem, but it also makes lsusb slower since it has
+	  to decompress the file every time it's run.
