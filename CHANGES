@@ -1,3 +1,13 @@
+2009.11, Not yet released:
+
+	Additional fixes and cleanups.
+
+	Updated/fixed packages: fltk
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#707: Cant configure fltk-1.1.7. configure: error: Configure could ...
+
 2009.11-rc2, Released November 29th, 2009:
 
 	Additional fixes and cleanups.
