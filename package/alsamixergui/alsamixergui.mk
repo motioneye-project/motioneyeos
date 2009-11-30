@@ -10,9 +10,11 @@ ALSAMIXERGUI_AUTORECONF = YES
 ALSAMIXERGUI_INSTALL_STAGING = NO
 ALSAMIXERGUI_INSTALL_TARGET = YES
 
-ALSAMIXERGUI_CONF_OPT = LDFLAGS="-L$(STAGING_DIR)/usr/lib -L$(STAGING_DIR)/lib -lstdc++ -lX11"
+ALSAMIXERGUI_CONF_ENV = ac_cv_lib_fltk_numericsort=yes \
+			ac_cv_lib_fltk_fl_numericsort=yes \
+			ac_cv_lib_asound_snd_ctl_open=yes
 
-ALSAMIXERGUI_DEPENDENCIES = fltk
+ALSAMIXERGUI_DEPENDENCIES = fltk alsa-lib
 
 $(eval $(call AUTOTARGETS,package,alsamixergui))
 
