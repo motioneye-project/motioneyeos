@@ -2,7 +2,7 @@
 
 	Additional fixes and cleanups.
 
-	Updated/fixed packages: alsamixergui, fltk, ncurses
+	Updated/fixed packages: alsamixergui, fltk, ncurses, vim
 
 	Issues resolved (http://bugs.uclibc.org):
 
