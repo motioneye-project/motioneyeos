@@ -1,0 +1,24 @@
+config BR2_PACKAGE_HOSTAPD
+	bool "hostapd"
+	help
+	  User space daemon for wireless access points.
+
+	  It implements IEEE 802.11 access point management,
+	  IEEE 802.1X/WPA/WPA2/EAP authenticators, RADIUS client,
+	  EAP server and RADIUS authentication server.
+
+	  http://hostap.epitest.fi/
+
+config BR2_PACKAGE_HOSTAPD_EXTRA_EAP
+	bool "Enable EAP TLS/TTLS/MSCHAPv2/PEAP"
+	depends on BR2_PACKAGE_HOSTAPD
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Enable support for extra EAP methods TLS, TTLS, MSCHAPv2 and PEAP.
+
+config BR2_PACKAGE_HOSTAPD_WPS
+	bool "Enable WPS"
+	depends on BR2_PACKAGE_HOSTAPD
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Enable support for Wi-Fi Protected Setup.
