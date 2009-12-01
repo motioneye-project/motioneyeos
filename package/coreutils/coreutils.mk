@@ -23,6 +23,9 @@ $(COREUTILS_DIR)/.unpacked: $(DL_DIR)/$(COREUTILS_SOURCE)
 	$(COREUTILS_CAT) $(DL_DIR)/$(COREUTILS_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 	toolchain/patch-kernel.sh $(COREUTILS_DIR) package/coreutils/ coreutils\*.patch
 	$(CONFIG_UPDATE) $(COREUTILS_DIR)/build-aux
+	# ensure rename.m4 file is older than configure / aclocal.m4 so
+	# auto* isn't rerun
+	touch -d '1979-01-01' $(@D)/m4/rename.m4
 	touch $@
 
 $(COREUTILS_DIR)/.configured: $(COREUTILS_DIR)/.unpacked

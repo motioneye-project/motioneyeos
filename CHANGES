@@ -2,7 +2,8 @@
 
 	Additional fixes and cleanups.
 
-	Updated/fixed packages: alsamixergui, fltk, microperl, ncurses, vim
+	Updated/fixed packages: alsamixergui, coreutils, fltk, microperl,
+	ncurses, vim
 
 	Issues resolved (http://bugs.uclibc.org):
 
