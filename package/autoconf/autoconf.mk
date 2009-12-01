@@ -11,7 +11,8 @@ ifeq ($(BR2_ENABLE_DEBUG),y) # install-exec doesn't install aclocal stuff
 AUTOCONF_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 endif
 
-AUTOCONF_CONF_ENV = EMACS="no"
+AUTOCONF_CONF_ENV = EMACS="no" ac_cv_path_M4=$(HOST_DIR)/usr/bin/m4 \
+		    ac_cv_prog_gnu_m4_gnu=no
 
 AUTOCONF_DEPENDENCIES = microperl
 
@@ -39,6 +40,8 @@ $(STAMP_DIR)/host_autoconf_configured: $(STAMP_DIR)/host_autoconf_unpacked $(STA
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS)" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
+		ac_cv_path_M4=$(HOST_DIR)/usr/bin/m4 \
+		ac_cv_prog_gnu_m4_gnu=no \
 		./configure $(QUIET) \
 		--prefix="$(HOST_DIR)/usr" \
 		--sysconfdir="$(HOST_DIR)/etc" \
