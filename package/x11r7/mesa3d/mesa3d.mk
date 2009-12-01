@@ -49,6 +49,7 @@ $(MESA3D_DIR)/.configured: $(MESA3D_DIR)/.extracted
 		echo "X11_INCLUDES = " && \
 		echo "EXTRA_LIB_PATH = " && \
 		echo "PROGRAM_DIRS =" && \
+		echo "LDFLAGS = $(TARGET_LDFLAGS)" && \
 		echo "MKDEP_OPTIONS = -fdepend -Y$(STAGING_DIR)/usr/include -I$(MESA_GCCINCLUDE)" \
 	) >> $(MESA_CONFIG_FILE)
 	touch $@

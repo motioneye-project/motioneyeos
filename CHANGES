@@ -1,10 +1,11 @@
 2010.02, Not yet released:
 
 	Updated/fixed packages: autoconf, bind, binutils, busybox, iw,
-	lighttpd, pcre, usbutils
+	lighttpd, mesa, pcre, usbutils
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#559: mesa3d build fails
 	#749: Bump usbutils package to version 0.86
 	#751: Kernel 2.6 snapshot fetch fail
 	#753: Bump lighttpd package to 1.4.25
