@@ -9,6 +9,7 @@
 	#761: Add binutils 2.20 to toolchain options
 	#763: [SECURITY] Update pcre to 7.9
 	#765: Add buildroot branding to gcc
+	#767: Bump iw package to 0.9.18
 
 2009.11, Released December 1st, 2009:
 
