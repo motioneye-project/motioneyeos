@@ -1,12 +1,13 @@
 2010.02, Not yet released:
 
-	Updated/fixed packages: autoconf, binutils, busybox, lighttpd
+	Updated/fixed packages: autoconf, binutils, busybox, lighttpd, pcre
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#751: Kernel 2.6 snapshot fetch fail
 	#753: Bump lighttpd package to 1.4.25
 	#761: Add binutils 2.20 to toolchain options
+	#763: [SECURITY] Update pcre to 7.9
 
 2009.11, Released December 1st, 2009:
 
