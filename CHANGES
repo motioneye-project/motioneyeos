@@ -16,6 +16,7 @@
 	#749: Bump usbutils package to version 0.86
 	#751: Kernel 2.6 snapshot fetch fail
 	#753: Bump lighttpd package to 1.4.25
+	#757: U-Boot: mkimage cannot be installed using external toolchain
 	#761: Add binutils 2.20 to toolchain options
 	#763: [SECURITY] Update pcre to 7.9
 	#765: Add buildroot branding to gcc
