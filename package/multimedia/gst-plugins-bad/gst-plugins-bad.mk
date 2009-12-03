@@ -33,6 +33,12 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-amrparse
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_ASFMUX),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-asfmux
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-asfmux
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AUTOCONVERT),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-autoconvert
 else
@@ -99,10 +105,22 @@ else
 GST_PLUGINS_BAD_CONF_OPT += --disable-freeze
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FREI0R),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-frei0r
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-frei0r
+endif
+
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_H264PARSE),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-h264parse
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-h264parse
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_HDVPARSE),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-hdvparse
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-hdvparse
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIBRFB),y)
@@ -217,6 +235,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SELECTOR),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-selector
 else
 GST_PLUGINS_BAD_CONF_OPT += --disable-selector
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SHAPEWIPE),y)
+GST_PLUGINS_BAD_CONF_OPT += --enable-shapewipe
+else
+GST_PLUGINS_BAD_CONF_OPT += --disable-shapewipe
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SIREN),y)
