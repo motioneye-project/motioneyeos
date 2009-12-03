@@ -24,5 +24,6 @@ source "package/multimedia/speex/Config.in"
 source "package/multimedia/swfdec/Config.in"
 source "package/multimedia/festival/Config.in"
 source "package/multimedia/taglib/Config.in"
+source "package/multimedia/tremor/Config.in"
 source "package/multimedia/vlc/Config.in"
 endmenu
