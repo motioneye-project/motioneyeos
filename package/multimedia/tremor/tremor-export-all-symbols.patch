@@ -1,0 +1,32 @@
+--- tremor-16259-orig/configure.in	2009-12-02 11:45:11.000000000 +0100
++++ tremor-16259/configure.in	2009-12-03 16:50:19.000000000 +0100
+@@ -72,23 +72,6 @@
+ LDFLAGS="$LDFLAGS $ldflags_save"
+ 
+ 
+-# Test whenever ld supports -version-script
+-AC_PROG_LD
+-AC_PROG_LD_GNU
+-if test "x$lt_cv_prog_gnu_ld" = "xyes"; then
+-   SHLIB_VERSION_ARG="Wl,--version-script=Version_script"
+-
+-   dnl Set extra linker options
+-   case "$target_os" in
+-  linux* | solaris* )
+-    SHLIB_VERSION_ARG="-Wl,--version-script=Version_script"
+-    ;;
+-  *)
+-    ;;
+-   esac
+-   LDFLAGS="$LDFLAGS $SHLIB_VERSION_ARG"
+-fi
+-
+ dnl --------------------------------------------------
+ dnl Options 
+ dnl --------------------------------------------------
+@@ -128,4 +111,4 @@
+ AC_SUBST(DEBUG)
+ AC_SUBST(PROFILE)
+ 
+-AC_OUTPUT(Makefile Version_script)
++AC_OUTPUT(Makefile)
