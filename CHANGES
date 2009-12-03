@@ -1,6 +1,7 @@
 2010.02, Not yet released:
 
-	Updated/fixed packages: autoconf, binutils, busybox, lighttpd, pcre
+	Updated/fixed packages: autoconf, bind, binutils, busybox, iw,
+	lighttpd, pcre, usbutils
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -11,6 +12,7 @@
 	#763: [SECURITY] Update pcre to 7.9
 	#765: Add buildroot branding to gcc
 	#767: Bump iw package to 0.9.18
+	#773: [SECURITY] Update bind to 9.5.2-P1
 
 2009.11, Released December 1st, 2009:
 

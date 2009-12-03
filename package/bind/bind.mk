@@ -3,8 +3,8 @@
 # bind
 #
 #############################################################
-BIND_VERSION = 9.5.1-P3
-BIND_SOURCE = bind-$(BIND_VERSION).tar.gz
+
+BIND_VERSION = 9.5.2-P1
 BIND_SITE = ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 BIND_LIBTOOL_PATCH = NO
 BIND_INSTALL_STAGING = NO
