@@ -1,0 +1,25 @@
+diff -urpN busybox-1.15.2/findutils/grep.c busybox-1.15.2-grep/findutils/grep.c
+--- busybox-1.15.2/findutils/grep.c	2009-09-26 15:14:57.000000000 +0200
++++ busybox-1.15.2-grep/findutils/grep.c	2009-12-04 02:46:43.000000000 +0100
+@@ -377,6 +377,8 @@ static int grep_file(FILE *file)
+ 						print_line(line + gl->matched_range.rm_so,
+ 								end - gl->matched_range.rm_so,
+ 								linenum, ':');
++						if (old == '\0')
++							break;
+ 						line[end] = old;
+ #if !ENABLE_EXTRA_COMPAT
+ 						if (regexec(&gl->compiled_regex, line + end,
+diff -urpN busybox-1.15.2/testsuite/grep.tests busybox-1.15.2-grep/testsuite/grep.tests
+--- busybox-1.15.2/testsuite/grep.tests	2009-09-26 15:14:57.000000000 +0200
++++ busybox-1.15.2-grep/testsuite/grep.tests	2009-12-04 02:46:43.000000000 +0100
+@@ -90,4 +90,9 @@ testing "grep -E -o prints all matches" 
+ 	"00:19:3E:00:AA:5E\n00:1D:60:3D:3A:FB\n00:22:43:49:FB:AA\n" \
+ 	"" "00:19:3E:00:AA:5E 00:1D:60:3D:3A:FB 00:22:43:49:FB:AA\n"
+ 
++testing "grep -o does not loop forever" \
++	'grep -o "[^/]*$"' \
++	"test\n" \
++	"" "/var/test\n"
++
+ exit $FAILCOUNT

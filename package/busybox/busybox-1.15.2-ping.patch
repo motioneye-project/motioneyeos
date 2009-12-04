@@ -1,0 +1,100 @@
+diff -urpN busybox-1.15.2/include/platform.h busybox-1.15.2-ping/include/platform.h
+--- busybox-1.15.2/include/platform.h	2009-09-26 15:14:57.000000000 +0200
++++ busybox-1.15.2-ping/include/platform.h	2009-11-28 23:48:41.000000000 +0100
+@@ -174,12 +174,14 @@ char *strchrnul(const char *s, int c);
+  * a lvalue. This makes it more likely to not swap them by mistake
+  */
+ #if defined(i386) || defined(__x86_64__)
++# define move_from_unaligned_int(v, intp) ((v) = *(int*)(intp))
+ # define move_from_unaligned16(v, u16p) ((v) = *(uint16_t*)(u16p))
+ # define move_from_unaligned32(v, u32p) ((v) = *(uint32_t*)(u32p))
+ # define move_to_unaligned32(u32p, v)   (*(uint32_t*)(u32p) = (v))
+ /* #elif ... - add your favorite arch today! */
+ #else
+ /* performs reasonably well (gcc usually inlines memcpy here) */
++# define move_from_unaligned_int(v, intp) (memcpy(&(v), (intp), sizeof(int)))
+ # define move_from_unaligned16(v, u16p) (memcpy(&(v), (u16p), 2))
+ # define move_from_unaligned32(v, u32p) (memcpy(&(v), (u32p), 4))
+ # define move_to_unaligned32(u32p, v) do { \
+diff -urpN busybox-1.15.2/networking/ping.c busybox-1.15.2-ping/networking/ping.c
+--- busybox-1.15.2/networking/ping.c	2009-09-26 15:14:57.000000000 +0200
++++ busybox-1.15.2-ping/networking/ping.c	2009-11-28 23:48:41.000000000 +0100
+@@ -173,13 +173,14 @@ static void ping6(len_and_sockaddr *lsa)
+ }
+ #endif
+ 
+-int ping_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+-int ping_main(int argc UNUSED_PARAM, char **argv)
++#if !ENABLE_PING6
++# define common_ping_main(af, argv) common_ping_main(argv)
++#endif
++static int common_ping_main(sa_family_t af, char **argv)
+ {
+ 	len_and_sockaddr *lsa;
+-#if ENABLE_PING6
+-	sa_family_t af = AF_UNSPEC;
+ 
++#if ENABLE_PING6
+ 	while ((++argv)[0] && argv[0][0] == '-') {
+ 		if (argv[0][1] == '4') {
+ 			af = AF_INET;
+@@ -689,7 +690,8 @@ static void ping6(len_and_sockaddr *lsa)
+ 			 /* don't check len - we trust the kernel: */
+ 			 /* && mp->cmsg_len >= CMSG_LEN(sizeof(int)) */
+ 			) {
+-				hoplimit = *(int*)CMSG_DATA(mp);
++				/*hoplimit = *(int*)CMSG_DATA(mp); - unaligned access */
++				move_from_unaligned_int(hoplimit, CMSG_DATA(mp));
+ 			}
+ 		}
+ 		unpack6(packet, c, /*&from,*/ hoplimit);
+@@ -716,18 +718,16 @@ static void ping(len_and_sockaddr *lsa)
+ 		ping4(lsa);
+ }
+ 
+-int ping_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+-int ping_main(int argc UNUSED_PARAM, char **argv)
++static int common_ping_main(int opt, char **argv)
+ {
+ 	len_and_sockaddr *lsa;
+ 	char *str_s;
+-	int opt;
+ 
+ 	INIT_G();
+ 
+ 	/* exactly one argument needed; -v and -q don't mix; -c NUM, -w NUM, -W NUM */
+ 	opt_complementary = "=1:q--v:v--q:c+:w+:W+";
+-	opt = getopt32(argv, OPT_STRING, &pingcount, &str_s, &deadline, &timeout, &str_I);
++	opt |= getopt32(argv, OPT_STRING, &pingcount, &str_s, &deadline, &timeout, &str_I);
+ 	if (opt & OPT_s)
+ 		datalen = xatou16(str_s); // -s
+ 	if (opt & OPT_I) { // -I
+@@ -765,13 +765,25 @@ int ping_main(int argc UNUSED_PARAM, cha
+ #endif /* FEATURE_FANCY_PING */
+ 
+ 
++int ping_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
++int ping_main(int argc UNUSED_PARAM, char **argv)
++{
++#if !ENABLE_FEATURE_FANCY_PING
++	return common_ping_main(AF_UNSPEC, argv);
++#else
++	return common_ping_main(0, argv);
++#endif
++}
++
+ #if ENABLE_PING6
+ int ping6_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int ping6_main(int argc UNUSED_PARAM, char **argv)
+ {
+-	argv[0] = (char*)"-6";
+-	return ping_main(0 /* argc+1 - but it's unused anyway */,
+-			argv - 1);
++# if !ENABLE_FEATURE_FANCY_PING
++	return common_ping_main(AF_INET6, argv);
++# else
++	return common_ping_main(OPT_IPV6, argv);
++# endif
+ }
+ #endif
+ 

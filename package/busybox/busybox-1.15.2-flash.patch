@@ -1,23 +1,6 @@
-From 86cfb70ca5f2bde11f2d071bc59db75291d8552f Mon Sep 17 00:00:00 2001
-From: Denys Vlasenko <vda.linux@googlemail.com>
-Date: Fri, 27 Nov 2009 13:26:17 +0100
-Subject: [PATCH] flash_eraseall: stop using obsolete mtd/jffs2-user.h; code shrink
-
-function                                             old     new   delta
-show_progress                                         68      67      -1
-flash_eraseall_main                                 1007     882    -125
-------------------------------------------------------------------------------
-(add/remove: 0/0 grow/shrink: 0/2 up/down: 0/-126)           Total: -126 bytes
-
-Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
----
- miscutils/flash_eraseall.c |   47 ++++++++++++++++++++++++++++---------------
- 1 files changed, 30 insertions(+), 17 deletions(-)
-
-diff --git a/miscutils/flash_eraseall.c b/miscutils/flash_eraseall.c
-index ba0a6b5..ca00a13 100644
---- a/miscutils/flash_eraseall.c
-+++ b/miscutils/flash_eraseall.c
+diff -urpN busybox-1.15.2/miscutils/flash_eraseall.c busybox-1.15.2-flash/miscutils/flash_eraseall.c
+--- busybox-1.15.2/miscutils/flash_eraseall.c	2009-09-26 15:14:57.000000000 +0200
++++ busybox-1.15.2-flash/miscutils/flash_eraseall.c	2009-11-29 00:01:46.000000000 +0100
 @@ -12,22 +12,35 @@
  
  #include "libbb.h"
@@ -64,7 +47,7 @@ index ba0a6b5..ca00a13 100644
  
  static uint32_t crc32(uint32_t val, const void *ss, int len,
  		uint32_t *crc32_table)
-@@ -40,9 +53,11 @@ static uint32_t crc32(uint32_t val, const void *ss, int len,
+@@ -40,9 +53,11 @@ static uint32_t crc32(uint32_t val, cons
  
  static void show_progress(mtd_info_t *meminfo, erase_info_t *erase)
  {
@@ -79,7 +62,7 @@ index ba0a6b5..ca00a13 100644
  	fflush(stdout);
  }
  
-@@ -57,17 +72,15 @@ int flash_eraseall_main(int argc UNUSED_PARAM, char **argv)
+@@ -57,17 +72,15 @@ int flash_eraseall_main(int argc UNUSED_
  	unsigned int flags;
  	char *mtd_name;
  
@@ -99,6 +82,3 @@ index ba0a6b5..ca00a13 100644
  	xioctl(fd, MEMGETINFO, &meminfo);
  	erase.length = meminfo.erasesize;
  	if (meminfo.type == MTD_NANDFLASH)
--- 
-1.6.5
-
