@@ -27,9 +27,6 @@ endif
 BINUTILS_HOST_PREREQ:=
 BINUTILS_TARGET_PREREQ:=
 
-ifeq ($(findstring x3.,x$(GCC_VERSION)),x3.)
-BINUTILS_NO_MPFR:=y
-endif
 ifeq ($(findstring x4.0,x$(GCC_VERSION)),x4.0)
 BINUTILS_NO_MPFR:=y
 endif
