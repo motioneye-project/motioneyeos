@@ -14,7 +14,7 @@ endif
 AUTOCONF_CONF_ENV = EMACS="no" ac_cv_path_M4=$(HOST_DIR)/usr/bin/m4 \
 		    ac_cv_prog_gnu_m4_gnu=no
 
-AUTOCONF_DEPENDENCIES = microperl
+AUTOCONF_DEPENDENCIES = microperl host-m4
 
 $(eval $(call AUTOTARGETS,package,autoconf))
 
