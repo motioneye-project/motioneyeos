@@ -47,7 +47,7 @@ choice
 		bool "Linux 2.6 (manually specified version)"
 
 	config BR2_KERNEL_HEADERS_SNAP
-		bool "Linux 2.6 snapshot"
+		bool "Local Linux snapshot (linux-2.6.tar.bz2)"
 endchoice
 
 config BR2_KERNEL_HEADERS_RT
