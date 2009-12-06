@@ -7,8 +7,6 @@ FBDUMP_VERSION:=0.4.2
 FBDUMP_SOURCE:=fbdump-$(FBDUMP_VERSION).tar.gz
 FBDUMP_SITE:=http://www.rcdrummond.net/fbdump
 FBDUMP_AUTORECONF = NO
-FBDUMP_CONF_ENV = ac_cv_func_malloc_0_nonnull=yes
-FBDUMP_INSTALL_TARGET = YES
 
 $(eval $(call AUTOTARGETS,package,fbdump))
 
