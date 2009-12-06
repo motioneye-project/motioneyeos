@@ -2,12 +2,13 @@
 
 	New packages: tcpreplay
 
-	Updated/fixed packages: autoconf, bind, binutils, busybox, iw,
-	libpcap, lighttpd, mesa, pcre, usbutils
+	Updated/fixed packages: autoconf, bind, binutils, busybox,
+	directfb, iw, libpcap, lighttpd, mesa, pcre, usbutils
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#515: tcpreplay: new package
+	#553: Wrong DirectFB ps2mouse limitation
 	#559: mesa3d build fails
 	#749: Bump usbutils package to version 0.86
 	#751: Kernel 2.6 snapshot fetch fail

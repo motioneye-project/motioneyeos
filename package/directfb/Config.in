@@ -80,7 +80,6 @@ config BR2_PACKAGE_DIRECTFB_PS2MOUSE
 	bool "compile PS2 mouse input driver"
 	default y
 	depends on BR2_PACKAGE_DIRECTFB
-	depends on BR2_i386 || BR2_x86_64
 
 config BR2_PACKAGE_DIRECTFB_SERIALMOUSE
 	bool "compile serial mouse input driver"
