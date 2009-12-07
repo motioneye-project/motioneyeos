@@ -10,6 +10,7 @@
 	#515: tcpreplay: new package
 	#553: Wrong DirectFB ps2mouse limitation
 	#559: mesa3d build fails
+	#679: Autoconf cannot find M4
 	#739: New/updated hostapd package
 	#749: Bump usbutils package to version 0.86
 	#751: Kernel 2.6 snapshot fetch fail
