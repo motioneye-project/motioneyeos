@@ -1,0 +1,26 @@
+[PATCH]: pcap-linux: fix build with wireless support
+
+Based on ba23aa7b upstream.
+
+linux/wireless.h includes linux/if.h, which conflicts with net/if.h as
+they both define if* structures. Fix build by simply using linux/if.h
+instead of net/if.h.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ pcap-linux.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: libpcap-1.0.0/pcap-linux.c
+===================================================================
+--- libpcap-1.0.0.orig/pcap-linux.c
++++ libpcap-1.0.0/pcap-linux.c
+@@ -93,7 +93,7 @@ static const char rcsid[] _U_ =
+ #include <sys/ioctl.h>
+ #include <sys/utsname.h>
+ #include <sys/mman.h>
+-#include <net/if.h>
++#include <linux/if.h>
+ #include <netinet/in.h>
+ #include <linux/if_ether.h>
+ #include <net/if_arp.h>
