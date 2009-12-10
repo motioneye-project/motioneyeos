@@ -46,17 +46,17 @@
 
     <h2><a name="about" id="about"></a>About Buildroot</h2>
 
-    <p>Buildroot is a set of Makefiles and patches that allow to
+    <p>Buildroot is a set of Makefiles and patches that allows you to
     easily generate a cross-compilation toolchain, a root filesystem
     and a Linux kernel image for your target. Buildroot can be used
-    for either one, two or all of these options, independently.</p>
+    for one, two or all of these options, independently.</p>
 
     <p>Buildroot is useful mainly for people working with embedded systems.
     Embedded systems often use processors that are not the regular x86
-    processors everyone is used to have on his PC. It can be PowerPC
+    processors everyone is used to having in his PC. They can be PowerPC
     processors, MIPS processors, ARM processors, etc. </p>
 
-    <p>A compilation toolchain is the set of tools that allows to
+    <p>A compilation toolchain is the set of tools that allows you to
     compile code for your system. It consists of a compiler (in our
     case, <code>gcc</code>), binary utils like assembler and linker
     (in our case, <code>binutils</code>) and a C standard library (for
@@ -64,55 +64,57 @@
     Libc</a>, <a href="http://www.uclibc.org/">uClibc</a> or <a
     href="http://www.fefe.de/dietlibc/">dietlibc</a>). The system
     installed on your development station certainly already has a
-    compilation toolchain that you can use to compile application that
+    compilation toolchain that you can use to compile an application that
     runs on your system. If you're using a PC, your compilation
-    toolchain runs on an x86 processor and generates code for a x86
+    toolchain runs on an x86 processor and generates code for an x86
     processor. Under most Linux systems, the compilation toolchain
-    uses the GNU libc as C standard library.  This compilation
-    toolchain is called the &quot;host compilation toolchain&quot;, and more
-    generally, the machine on which it is running, and on which you're
-    working is called the &quot;host system&quot;. The compilation toolchain
+    uses the GNU libc (glibc) as the C standard library.  This compilation
+    toolchain is called the &quot;host compilation toolchain&quot;.
+    The machine on which it is running, and on which you're
+    working, is called the &quot;host system&quot;. The compilation toolchain
     is provided by your distribution, and Buildroot has nothing to do
-    with it. </p>
+    with it (other than using it to build a cross-compilation toolchain
+    and other tools that are run on the development host). </p>
 
     <p>As said above, the compilation toolchain that comes with your system
-    runs and generates code for the processor of your host system. As your
+    runs on and generates code for the processor in your host system. As your
     embedded system has a different processor, you need a cross-compilation
-    toolchain: it's a compilation toolchain that runs on your host system but
-    that generates code for your target system (and target processor). For
+    toolchain &mdash; a compilation toolchain that runs on your host system but
+    generates code for your target system (and target processor). For
     example, if your host system uses x86 and your target system uses ARM, the
-    regular compilation toolchain of your host runs on x86 and generates code
+    regular compilation toolchain on your host runs on x86 and generates code
     for x86, while the cross-compilation toolchain runs on x86 and generates
     code for ARM. </p>
 
-    <p>Even if your embedded system uses a x86 processor, you might interested
-    in Buildroot, for two reasons:</p>
+    <p>Even if your embedded system uses an x86 processor, you might be interested
+    in Buildroot for two reasons:</p>
 
     <ul>
-      <li>The compilation toolchain of your host certainly uses the GNU Libc
+      <li>The compilation toolchain on your host certainly uses the GNU Libc
       which is a complete but huge C standard library. Instead of using GNU
       Libc on your target system, you can use uClibc which is a tiny C standard
       library. If you want to use this C library, then you need a compilation
-      toolchain to generate binaries linked with it. Buildroot can do it for
+      toolchain to generate binaries linked with it. Buildroot can do that for
       you. </li>
 
       <li>Buildroot automates the building of a root filesystem with all needed
-      tools like busybox. It makes it much easier than doing it by hand. </li>
+      tools like busybox. That makes it much easier than doing it by hand. </li>
     </ul>
 
     <p>You might wonder why such a tool is needed when you can compile
-    <code>gcc</code>, <code>binutils</code>, uClibc and all the tools by hand.
-    Of course, doing so is possible. But dealing with all configure options,
-    with all problems of every <code>gcc</code> or <code>binutils</code>
-    version it very time-consuming and uninteresting. Buildroot automates this
-    process through the use of Makefiles, and has a collection of patches for
+    <code>gcc</code>, <code>binutils</code>, <code>uClibc</code> and all
+    the other tools by hand.
+    Of course doing so is possible. But, dealing with all of the configure options
+    and problems of every <code>gcc</code> or <code>binutils</code>
+    version is very time-consuming and uninteresting. Buildroot automates this
+    process through the use of Makefiles and has a collection of patches for
     each <code>gcc</code> and <code>binutils</code> version to make them work
     on most architectures. </p>
 
     <p>Moreover, Buildroot provides an infrastructure for reproducing
-    the build process of your embedded root filesystem. Being able to
+    the build process of your kernel, cross-toolchain, and embedded root filesystem. Being able to
     reproduce the build process will be useful when a component needs
-    to be patched or updated, or when another person is supposed to
+    to be patched or updated or when another person is supposed to
     take over the project.</p>
 
     <h2><a name="download" id="download"></a>Obtaining Buildroot</h2>
@@ -129,12 +131,12 @@
     and previous snapshots are also available at <a
     href="http://buildroot.net/downloads/snapshots/">http://buildroot.net/downloads/snapshots/</a>. </p>
 
-    <p>To download Buildroot using Git, you can simply follow
-    the rules described on the &quot;Accessing Git&quot;-page (<a href=
+    <p>To download Buildroot using Git you can simply follow
+    the rules described on the &quot;Accessing Git&quot; page (<a href=
     "http://buildroot.net/git.html">http://buildroot.net/git.html</a>)
     of the Buildroot website (<a href=
-    "http://buildroot.net">http://buildroot.net</a>), and download
-    <code>buildroot</code> from Git. For the impatient, here's a quick
+    "http://buildroot.net">http://buildroot.net</a>).
+    For the impatient, here's a quick
     recipe:</p>
 
  <pre>
@@ -144,10 +146,10 @@
     <h2><a name="using" id="using"></a>Using Buildroot</h2>
 
     <p>Buildroot has a nice configuration tool similar to the one you can find
-    in the Linux Kernel (<a href=
+    in the Linux kernel (<a href=
     "http://www.kernel.org/">http://www.kernel.org/</a>) or in Busybox
     (<a href="http://www.busybox.org/">http://www.busybox.org/</a>). Note that
-    you can build everything as a normal user. There is no need to be root to
+    you can (and should) build everything as a normal user. There is no need to be root to
     configure and use Buildroot. The first step is to run the configuration
     assistant:</p>
 
@@ -161,15 +163,20 @@
  $ make xconfig
 </pre>
 
-    <p>to run the Qt3-based configurator. On Debian-like systems, the
+    <p>to run the Qt3-based configurator.</p>
+
+    <p>Both of these "make" commands will need to build a configuration
+    utility, so you may need to install "development" packages for
+    relevent libraries used by the configuration utilities.
+    On Debian-like systems, the
     <code>libncurses5-dev</code> package is required to use the
     <i>menuconfig</i> interface, and the <code>libqt3-mt-dev</code> is
     required to use the <i>xconfig</i> interface.</p>
 
-    <p>For each entry of the configuration tool, you can find associated help
+    <p>For each menu entry in the configuration tool, you can find associated help
     that describes the purpose of the entry. </p>
 
-    <p>Once everything is configured, the configuration tool has generated a
+    <p>Once everything is configured, the configuration tool generates a
     <code>.config</code> file that contains the description of your
     configuration. It will be used by the Makefiles to do what's needed. </p>
 
@@ -179,11 +186,18 @@
 <pre>
  $ make
 </pre>
-
-    <p>This command will download, configure and compile all the
-    selected tools, and finally generate a toolchain, a root
-    filesystem image and a kernel image (or only one of these
-    elements, depending on the configuration).</p>
+    <p>This command will generally perform the following steps:</p>
+    <ul>
+      <li>Download source files (as required)</li>
+      <li>Configure cross-compile toolchain</li>
+      <li>Build/install cross-compile toolchain</li>
+      <li>Build/install selected target packages</li>
+      <li>Build a kernel image</li>
+      <li>Create a root filesystem in selected formats</li>
+    </ul>
+    <p>Some of the above steps might not be performed if they are not
+    selected in the Buildroot configuration.
+    </p>
 
     <p>Buildroot output is stored in a single directory,
     <code>output/</code>. This directory contains several
@@ -194,19 +208,19 @@
       <li><code>images/</code> where all the images (kernel image,
       bootloader and root filesystem images) are stored.</li>
 
-      <li><code>build/</code> where all the components are built
-      (tools needed to run Buildroot on the host and packages compiled
+      <li><code>build/</code> where all the components except for the
+      cross-compilation toolchain are built
+      (this includes tools needed to run Buildroot on the host and packages compiled
       for the target). The <code>build/</code> directory contains one
-      subdirectory for each of these components. The toolchain
-      components are however built in a separate directory.</li>
+      subdirectory for each of these components.</li>
 
       <li><code>staging/</code> which contains a hierarchy similar to
       a root filesystem hierarchy. This directory contains the
-      installation of cross-compilation toolchain and all the
+      installation of the cross-compilation toolchain and all the
       userspace packages selected for the target. However, this
       directory is <i>not</i> intended to be the root filesystem for
       the target: it contains a lot of development files, unstripped
-      binaries and libraries, that make it far too big for an embedded
+      binaries and libraries that make it far too big for an embedded
       system.</li>
 
       <li><code>target/</code> which contains <i>almost</i> the root
@@ -214,18 +228,19 @@
       the device files in <code>/dev/</code> (Buildroot can't create
       them because Buildroot doesn't run as root and does not want to
       run as root). Therefore, this directory <b>should not be used on
-      your target</b> but instead you should use one of the images
+      your target</b>. Instead, you should use one of the images
       built in the <code>images/</code> directory. If you need an
-      extracted image of the root filesystem, for booting over NFS,
+      extracted image of the root filesystem for booting over NFS,
       then use the tarball image generated in <code>images/</code> and
       extract it as root.<br/>Compared to <code>staging/</code>,
-      <code>target/</code> contains only the necessary files to run
-      the libraries and applications: all the development files
+      <code>target/</code> contains only the files and libraries needed
+      to run the selected target applications: the development files
       (headers, etc.) are not present.</li>
 
       <li><code>host/</code> contains the installation of tools
       compiled for the host that are needed for the proper execution
-      of Buildroot.</li>
+      of Buildroot except for the cross-compilation toolchain which is
+      installed under <code>staging/</code>.</li>
 
       <li><code>toolchain/</code> contains the build directories for
       the various components of the cross-compilation toolchain.</li>
@@ -235,9 +250,9 @@
     <h3><a name="offline_builds" id="offline_builds"></a>
     Offline builds</h3>
 
-    <p>If you intend to do an offline-build and just want to download
+    <p>If you intend to do an offline build and just want to download
     all sources that you previously selected in the configurator
-    (<i>menuconfig</i> or <i>xconfig</i>) then issue:</p>
+    (<i>menuconfig</i> or <i>xconfig</i>), then issue:</p>
 <pre>
  $ make source
 </pre>
@@ -249,31 +264,31 @@
 
     <p>Buildroot supports building out of tree with a syntax similar
     to the Linux kernel. To use it, add O=&lt;directory&gt; to the
-    make command line, E.G.:</p>
+    make command line:</p>
 
 <pre>
  $ make O=/tmp/build
 </pre>
 
-    <p>And all the output files will be located under
+    <p>All the output files will be located under
     <code>/tmp/build</code>.</p>
 
     <h3><a name="environment_variables" id="environment_variables"></a>
     Environment variables</h3>
 
-    <p>Buildroot optionally honors some environment variables that are passed
-    to <code>make</code> :</p>
+    <p>Buildroot also honors some environment variables when they are passed
+    to <code>make</code>:</p>
     <ul>
     <li><code>HOSTCXX</code>, the host C++ compiler to use</li>
     <li><code>HOSTCC</code>, the host C compiler to use</li>
     <li><code>UCLIBC_CONFIG_FILE=&lt;path/to/.config&gt;</code>, path
     to the uClibc configuration file to use to compile uClibc if an
-    internal toolchain is selected</li>
+    internal toolchain is being built</li>
     <li><code>BUSYBOX_CONFIG_FILE=&lt;path/to/.config&gt;</code>, path
     to the Busybox configuration file</li>
     <li><code>LINUX26_KCONFIG=&lt;path/to/.config&gt;</code>, path
     to the Linux kernel configuration file</li>
-    <li><code>BUILDROOT_COPYTO</code>, an additional location at which
+    <li><code>BUILDROOT_COPYTO</code>, an additional location to which
     the binary images of the root filesystem, kernel, etc. built by
     Buildroot are copied</li>
     <li><code>BUILDROOT_DL_DIR</code> to override the directory in
@@ -307,48 +322,48 @@ $ export BUILDROOT_COPYTO=/tftpboot
     <p>There are a few ways to customize the resulting target filesystem:</p>
 
     <ul>
-      <li>Customize the target filesystem directly, and rebuild the image. The
+      <li>Customize the target filesystem directly and rebuild the image. The
       target filesystem is available under <code>output/target/</code>.
-      You can simply make your changes here, and run make afterwards, which will
-      rebuild the target filesystem image. This method allows to do everything
-      on the target filesystem, but if you decide to completely rebuild your
+      You can simply make your changes here and run make afterwards &mdash; this will
+      rebuild the target filesystem image. This method allows you to do anything
+      to the target filesystem, but if you decide to completely rebuild your
       toolchain and tools, these changes will be lost. </li>
 
-      <li>Customize the target filesystem skeleton, available under
+      <li>Customize the target filesystem skeleton available under
       <code>target/generic/target_skeleton/</code>. You can customize
       configuration files or other stuff here. However, the full file hierarchy
-      is not yet present, because it's created during the compilation process.
-      So you can't do everything on this target filesystem skeleton, but
-      changes to it remain even if you completely rebuild the cross-compilation
+      is not yet present because it's created during the compilation process.
+      Therefore, you can't do everything on this target filesystem skeleton, but
+      changes to it do remain even if you completely rebuild the cross-compilation
       toolchain and the tools. <br />
       You can also customize the <code>target/generic/device_table.txt</code>
       file which is used by the tools that generate the target filesystem image
       to properly set permissions and create device nodes.<br />
       These customizations are deployed into
       <code>output/target/</code> just before the actual image
-      is made. So simply rebuilding the image by running
+      is made. Simply rebuilding the image by running
       make should propagate any new changes to the image. </li>
 
       <li>Add support for your own target in Buildroot so that you
-      have your own target skeleton, see <a href="#board_support">this
-      section</a> for details</li>
+      have your own target skeleton (see <a href="#board_support">this
+      section</a> for details).</li>
 
-      <li>In Buildroot configuration, you can specify the path to a
-      post-build script that gets called <i>after</i> Buildroot built
-      all the selected software, but <i>before</i> the the rootfs
+      <li>In the Buildroot configuration, you can specify the path to a
+      post-build script that gets called <i>after</i> Buildroot builds
+      all the selected software but <i>before</i> the the rootfs
       packages are assembled. The destination root filesystem folder
-      is given as first argument to this script, and this script can
+      is given as the first argument to this script, and this script can
       then be used to copy programs, static data or any other needed
       file to your target filesystem.<br/>You should, however, use
-      that feature with care. Whenever you find that a certain package
-      generates wrong or unneeded files, you should rather fix than
-      package than working around it with a cleanup script.</li>
+      this feature with care. Whenever you find that a certain package
+      generates wrong or unneeded files, you should fix that
+      package rather than work around it with a post-build cleanup script.</li>
 
       <li>A special package, <i>customize</i>, stored in
       <code>package/customize</code> can be used. You can put all the
       files that you want to see in the final target root filesystem
-      in <code>package/customize/source</code>, and then enable this
-      special package from the configuration system.</li>
+      in <code>package/customize/source</code> and then enable this
+      special package in the configuration system.</li>
 
     </ul>
 
@@ -357,18 +372,18 @@ $ export BUILDROOT_COPYTO=/tftpboot
 
     <p><a href="http://www.busybox.net/">Busybox</a> is very configurable, and
     you may want to customize it. You can
-    follow these simple steps to do it. It's not an optimal way, but it's
-    simple and it works. </p>
+    follow these simple steps to do so. This method isn't optimal, but it's
+    simple and it works:</p>
 
     <ol>
-      <li>Make a first compilation of buildroot with busybox without trying to
+      <li>Do an initial compilation of Buildroot with busybox without trying to
       customize it. </li>
 
       <li>Invoke <code>make busybox-menuconfig</code>.
-      The nice configuration tool appears and you can
+      The nice configuration tool appears, and you can
       customize everything. </li>
 
-      <li>Run the compilation of buildroot again. </li>
+      <li>Run the compilation of Buildroot again. </li>
     </ol>
 
     <p>Otherwise, you can simply change the
@@ -383,21 +398,21 @@ $ export BUILDROOT_COPYTO=/tftpboot
 
     <p>Just like <a href="#custom_busybox">BusyBox</a>, <a
     href="http://www.uclibc.org/">uClibc</a> offers a lot of
-    configuration options. They allow to select various
-    functionalities, depending on your needs and limitations. </p>
+    configuration options. They allow you to select various
+    functionalities depending on your needs and limitations. </p>
 
     <p>The easiest way to modify the configuration of uClibc is to
-    follow these steps :</p>
+    follow these steps:</p>
 
     <ol>
 
-      <li>Make a first compilation of buildroot without trying to
+      <li>Do an initial compilation of Buildroot without trying to
       customize uClibc. </li>
 
       <li>Invoke <code>make uclibc-menuconfig</code>.
       The nice configuration assistant, similar to
-      the one used in the Linux Kernel or in Buildroot appears. Make
-      your configuration as appropriate. </li>
+      the one used in the Linux kernel or Buildroot, appears. Make
+      your configuration changes as appropriate. </li>
 
       <li>Copy the <code>.config</code> file to
       <code>toolchain/uClibc/uClibc.config</code> or
@@ -406,7 +421,7 @@ $ export BUILDROOT_COPYTO=/tftpboot
       configuration, and the latter is used if you have selected
       locale support. </li>
 
-      <li>Run the compilation of Buildroot again</li>
+      <li>Run the compilation of Buildroot again.</li>
 
     </ol>
 
@@ -434,18 +449,18 @@ $ export BUILDROOT_COPYTO=/tftpboot
     id="rebuilding_packages">Understanding how to rebuild
     packages</a></h2>
 
-    <p>One of the most common question and issue about Buildroot
-    encountered by users is how to rebuild a given package or how to
+    <p>One of the most common questions asked by Buildroot
+    users is how to rebuild a given package or how to
     remove a package without rebuilding everything from scratch.</p>
 
     <p>Removing a package is currently unsupported by Buildroot
     without rebuilding from scratch. This is because Buildroot doesn't
     keep track of which package installs what files in the
     <code>output/staging</code> and <code>output/target</code>
-    directories. However, implement clean package removal is on the
+    directories. However, implementing clean package removal is on the
     TODO-list of Buildroot developers.</p>
 
-    <p>To rebuild a single package from scratch, the easiest way is to
+    <p>The easiest way to rebuild a single package from scratch is to
     remove its build directory in <code>output/build</code>. Buildroot
     will then re-extract, re-configure, re-compile and re-install this
     package from scratch.</p>
@@ -453,26 +468,26 @@ $ export BUILDROOT_COPYTO=/tftpboot
     <p>However, if you don't want to rebuild the package completely
     from scratch, a better understanding of the Buildroot internals is
     needed. Internally, to keep track of which steps have been done
-    and which steps remains to be done, Buildroot maintains stamps
-    files (i.e, empty files that just tell whether this or this action
-    has been done). The problem is that these stamps files are not
+    and which steps remain to be done, Buildroot maintains stamp
+    files (empty files that just tell whether this or that action
+    has been done). The problem is that these stamp files are not
     uniformely named and handled by the different packages, so some
     understanding of the particular package is needed.</p>
 
     <p>For packages relying on the <i>autotools</i> Buildroot
     infrastructure (see <a href="#add_software">this section</a> for
-    details), the following stamps files are interesting:</p>
+    details), the following stamp files are relevent:</p>
 
     <ul>
 
       <li><code>output/build/packagename-version/.stamp_configured</code>. If
       removed, Buildroot will trigger the recompilation of the package
       from the configuration step (execution of
-      <code>./configure</code>)</li>
+      <code>./configure</code>).</li>
 
       <li><code>output/build/packagename-version/.stamp_built</code>. If
       removed, Buildroot will trigger the recompilation of the package
-      from the compilation step (execution of <code>make</code>)</li>
+      from the compilation step (execution of <code>make</code>).</li>
 
     </ul>
 
@@ -492,32 +507,28 @@ $(ZLIB_DIR)/libz.a: $(ZLIB_DIR)/.configured
         touch -c $@
     </pre>
 
-    <p>So, if you want to trigger the reconfiguration, you need to
-    remove <code>output/build/zlib-version/.configured</code> and if
+    <p>If you want to trigger the reconfiguration, you need to
+    remove <code>output/build/zlib-version/.configured</code>. If
     you want to trigger only the recompilation, you need to remove
     <code>output/build/zlib-version/libz.a</code>.</p>
 
     <h2><a name="buildroot_innards" id="buildroot_innards"></a>How Buildroot
     works</h2>
 
-    <p>As said above, Buildroot is basically a set of Makefiles that download,
-    configure and compiles software with the correct options. It also includes
-    some patches for various software, mainly the ones involved in the
+    <p>As mentioned above, Buildroot is basically a set of Makefiles that downloads,
+    configures and compiles software with the correct options. It also includes
+    patches for various software packages &mdash;  mainly the ones involved in the
     cross-compilation tool chain (<code>gcc</code>, <code>binutils</code> and
-    uClibc). </p>
+    <code>uClibc</code>). </p>
 
-    <p>There is basically one Makefile per software, and they are named with
+    <p>There is basically one Makefile per software package, and they are named with
     the <code>.mk</code> extension. Makefiles are split into four
     sections:</p>
 
     <ul>
-      <li><b>project</b> (in the <code>project/</code> directory) contains
-      the Makefiles and associated files for all software related to the
-      building several root file systems in the same buildroot tree. </li>
-
       <li><b>toolchain</b> (in the <code>toolchain/</code> directory) contains
       the Makefiles and associated files for all software related to the
-      cross-compilation toolchain : <code>binutils</code>, <code>ccache</code>,
+      cross-compilation toolchain: <code>binutils</code>, <code>ccache</code>,
       <code>gcc</code>, <code>gdb</code>, <code>kernel-headers</code> and
       <code>uClibc</code>. </li>
 
@@ -528,27 +539,27 @@ $(ZLIB_DIR)/libz.a: $(ZLIB_DIR)/.configured
 
       <li><b>target</b> (in the <code>target</code> directory) contains the
       Makefiles and associated files for software related to the generation of
-      the target root filesystem image. Four types of filesystems are supported
-      : ext2, jffs2, cramfs and squashfs. For each of them, there's a
+      the target root filesystem image. Four types of filesystems are supported:
+      ext2, jffs2, cramfs and squashfs. For each of them there is a
       sub-directory with the required files. There is also a
       <code>default/</code> directory that contains the target filesystem
       skeleton. </li>
     </ul>
 
-    <p>Each directory contains at least 2 files :</p>
+    <p>Each directory contains at least 2 files:</p>
 
     <ul>
       <li><code>something.mk</code> is the Makefile that downloads, configures,
-      compiles and installs the software <code>something</code>. </li>
+      compiles and installs the package <code>something</code>. </li>
 
       <li><code>Config.in</code> is a part of the configuration tool
-      description file. It describes the option related to the current
-      software. </li>
+      description file. It describes the options related to the 
+      package. </li>
 
     </ul>
 
-    <p>The main Makefile do the job through the following steps (once the
-    configuration is done) :</p>
+    <p>The main Makefile performs the following steps (once the
+    configuration is done):</p>
 
     <ol>
 
@@ -559,14 +570,14 @@ $(ZLIB_DIR)/libz.a: $(ZLIB_DIR)/.configured
 
       <li>Generate all the targets listed in the
       <code>BASE_TARGETS</code> variable. When an internal toolchain
-      is used, it means generating the cross-compilation
-      toolchain. When an external toolchain is used, it means checking
+      is used, this means generating the cross-compilation
+      toolchain. When an external toolchain is used, this means checking
       the features of the external toolchain and importing it into the
       Buildroot environment.</li>
 
       <li>Generate all the targets listed in the <code>TARGETS</code>
       variable. This variable is filled by all the individual
-      components Makefiles. So, generating all these targets will
+      components' Makefiles. Generating these targets will
       trigger the compilation of the userspace packages (libraries,
       programs), the kernel, the bootloader and the generation of the
       root filesystem images, depending on the configuration.</li>
@@ -577,15 +588,14 @@ $(ZLIB_DIR)/libz.a: $(ZLIB_DIR)/.configured
     Creating your own board support</h2>
 
     <p>Creating your own board support in Buildroot allows you to have
-    a convenient place to store the Busybox, uClibc, kernel
-    configurations, your target filesystem skeleton, and a Buildroot
-    configuration that match your project.</p>
+    a convenient place to store your project's target filesystem skeleton
+    and configuration files for Buildroot, Busybox, uClibc, and the kernel.
 
     <p>Follow these steps to integrate your board in Buildroot:</p>
 
     <ol>
 
-      <li>Create a new directory in <code>target/device/</code>, named
+      <li>Create a new directory in <code>target/device/</code> named
       after your company or organization</li>
 
       <li>Add a line <code>source
@@ -595,8 +605,7 @@ $(ZLIB_DIR)/libz.a: $(ZLIB_DIR)/.configured
 
       <li>In <code>target/device/yourcompany/</code>, create a
       directory for your project. This way, you'll be able to store
-      several projects of your company/organization inside
-      Buildroot.</li>
+      several of your company's projects inside Buildroot.</li>
 
       <li>Create a <code>target/device/yourcompany/Config.in</code>
       file that looks like the following:
@@ -615,7 +624,7 @@ config BR2_TARGET_COMPANY_PROJECT_FOOBAR
 endif
       </pre>
 
-      Of course, customize the different values to match your
+      Of course, you should customize the different values to match your
       company/organization and your project. This file will create a
       menu entry that contains the different projects of your
       company/organization.</li>
@@ -630,11 +639,11 @@ endif
       </pre>
       </li>
 
-      <li>Now, create the
+      <li>Create the
       <code>target/device/yourcompany/project-foobar/Makefile.in</code>
-      file. It is first recommended to define a
+      file. It is recommended that you define a
       <code>BOARD_PATH</code> variable set to
-      <code>target/device/yourcompany/project-foobar</code>, as it
+      <code>target/device/yourcompany/project-foobar</code> as it
       will simplify further definitions. Then, the file might define
       one or several of the following variables:
 
@@ -644,12 +653,12 @@ endif
 	the target skeleton for your project. If this variable is
 	defined, this target skeleton will be used instead of the
 	default one. If defined, the convention is to define it to
-	<code>$(BOARD_PATH)/target_skeleton</code>, so that the target
-	skeletonn is stored in the board specific directory.</li>
+	<code>$(BOARD_PATH)/target_skeleton</code> so that the target
+	skeleton is stored in the board specific directory.</li>
 
 	<li><code>TARGET_DEVICE_TABLE</code> to a file that contains
-	the target device table, i.e the list of device files (in
-	<code>/dev/</code>) created by the root filesystem building
+	the target device table &mdash; the list of device files (in
+	<code>/dev/</code>) to be created by the root filesystem build
 	procedure. If this variable is defined, the given device table
 	will be used instead of the default one. If defined, the
 	convention is to define it to
@@ -661,14 +670,14 @@ endif
 
       </li>
 
-      <li>Then, in the
+      <li>In the
       <code>target/device/yourcompany/project-foobar/</code>
-      directory, you can store configuration files for the kernel,
-      for Busybox or uClibc.
+      directory you can store configuration files for the kernel,
+      Busybox or uClibc.
 
       You can furthermore create one or more preconfigured configuration
       files, referencing those files. These config files are named
-      <code>something_defconfig</config> and are stored in the toplevel
+      <code>something_defconfig</code> and are stored in the toplevel
       <code>configs/</code> directory. Your users will then be able
       to run <code>make something_defconfig</code> and get the right
       configuration for your project</li>
@@ -678,52 +687,45 @@ endif
     <h2><a name="using_toolchain" id="using_toolchain"></a>Using the
     generated toolchain outside Buildroot</h2>
 
-    <p>You may want to compile your own programs or other software
-    that are not packaged in Buildroot. In order to do this, you can
+    <p>You may want to compile for your target your own programs or other software
+    that are not packaged in Buildroot. In order to do this you can
     use the toolchain that was generated by Buildroot. </p>
 
-    <p>The toolchain generated by Buildroot by default is located in
+    <p>The toolchain generated by Buildroot is located by default in
     <code>output/staging/</code>. The simplest way to use it
     is to add <code>output/staging/usr/bin/</code> to your PATH
-    environnement variable, and then to use
+    environnement variable and then to use
     <code>ARCH-linux-gcc</code>, <code>ARCH-linux-objdump</code>,
     <code>ARCH-linux-ld</code>, etc. </p>
 
-    <p>The easiest way is of course to add the
-    <code>output/staging/usr/bin/</code> directory to your PATH
-    environment variable.</p>
+    <p><b>Important</b>: do not try to move a gcc-3.x toolchain to another
+    directory &mdash; it won't work because there are some hardcoded paths in the
+    gcc-3.x configuration. If you are using a current gcc-4.x, it
+    is possible to relocate the toolchain &mdash; but then
+    <code>--sysroot</code> must be passed every time the compiler is
+    called to tell where the libraries and header files are.</p>
 
-     <p><b>Important</b> : do not try to move a gcc-3.x toolchain to an other
-     directory, it won't work. There are some hardcoded paths in the
-     <i>gcc</i> configuration. If you are using a current gcc-4.x, it
-     is possible to relocate the toolchain, but then
-     <code>--sysroot</code> must be passed every time the compiler is
-     called to tell where the libraries and header files are, which
-     might be cumbersome.</p>
-
-     <p>It is also possible to generate the Buildroot toolchain in
-     another directory than <code>output/staging</code> using the
-     <code>Build options -&gt; Toolchain and header file
-     location</code> option. This could be useful if the toolchain
-     must be shared with other users.</p>
+    <p>It is also possible to generate the Buildroot toolchain in
+    a directory other than <code>output/staging</code> by using the
+    <code>Build options -&gt; Toolchain and header file
+    location</code> options. This could be useful if the toolchain
+    must be shared with other users.</p>
 
     <h2><a name="downloaded_packages"
     id="downloaded_packages"></a>Location of downloaded packages</h2>
 
     <p>It might be useful to know that the various tarballs that are
-    downloaded by the <i>Makefiles</i> are all stored in the
+    downloaded by the Makefiles are all stored in the
     <code>DL_DIR</code> which by default is the <code>dl</code>
-    directory. It's useful for example if you want to keep a complete
+    directory. It's useful, for example, if you want to keep a complete
     version of Buildroot which is know to be working with the
     associated tarballs. This will allow you to regenerate the
     toolchain and the target filesystem with exactly the same
     versions. </p>
 
-    <p>If you maintain several buildroot trees, it might be better to have
+    <p>If you maintain several Buildroot trees, it might be better to have
     a shared download location. This can be accessed by creating a symbolic link
-    from the <code>dl</code> directory to the shared download location. </p>
-
-    <p>I.E:</p>
+    from the <code>dl</code> directory to the shared download location: </p>
 
 <pre>
 ln -s &lt;shared download location&gt; dl
@@ -759,7 +761,7 @@ toolchain</i>.</p>
   <li>Adjust the <code>External toolchain path</code>
   appropriately. It should be set to a path where a bin/ directory
   contains your cross-compiling tools</li>
-  <li>Adjust the <code>External toolchain prefix</code>, so that the
+  <li>Adjust the <code>External toolchain prefix</code> so that the
   prefix, suffixed with <code>-gcc</code> or <code>-ld</code> will
   correspond to your cross-compiling tools</li>
 </ul>
@@ -773,8 +775,8 @@ according to your cross-compiling toolchain.</p>
 
 <p>To generate external toolchains, we recommend using <a
 href="http://ymorin.is-a-geek.org/dokuwiki/projects/crosstool">Crosstool-NG</a>.
-It allows to generate toolchains based on <i>uClibc</i>, <i>glibc</i>
-and <i>eglibc</i> for a wide range of architectures, and has good
+It allows generating toolchains based on <i>uClibc</i>, <i>glibc</i>
+and <i>eglibc</i> for a wide range of architectures and has good
 community support.</p>
 
     <h2><a name="add_software" id="add_software"></a>Extending Buildroot with
@@ -791,9 +793,9 @@ community support.</p>
     <h3><code>Config.in</code> file</h3>
 
     <p>Then, create a file named <code>Config.in</code>. This file
-    will contain the portion of options description related to our
+    will contain the option descriptions related to our
     <code>foo</code> software that will be used and displayed in the
-    configuration tool. It should basically contain :</p>
+    configuration tool. It should basically contain:</p>
 
 <pre>
 config BR2_PACKAGE_FOO
@@ -817,24 +819,24 @@ source "package/procps/Config.in"
    Generally all packages should live <em>directly</em> in the
    <code>package</code> directory to make it easier to find them.
    </p>
-   <h3>The real <i>Makefile</i></h3>
+   <h3>The real Makefile</h3>
 
    <p>Finally, here's the hardest part. Create a file named
-   <code>foo.mk</code>. It will contain the <i>Makefile</i> rules that
+   <code>foo.mk</code>. It will contain the Makefile rules that
    are in charge of downloading, configuring, compiling and installing
    the software.</p>
 
-   <p>Two types of <i>Makefiles</i> can be written&nbsp;:</p>
+   <p>Two types of Makefiles can be written&nbsp;:</p>
 
    <ul>
     <li>Makefiles for autotools-based (autoconf, automake, etc.)
-    softwares, are very easy to write thanks to the infrastructure
+    software are very easy to write thanks to the infrastructure
     available in <code>package/Makefile.autotools.in</code>.</li>
     <li>Makefiles for other types of packages are a little bit more
     complex to write.</li>
    </ul>
 
-   <p>First, let's see how to write a <i>Makefile</i> for an
+   <p>First, let's see how to write a Makefile for an
    autotools-based package, with an example&nbsp;:</p>
 
 <pre>
@@ -854,9 +856,9 @@ source "package/procps/Config.in"
 </pre>
 
     <p>On <a href="#ex1line6">line 6</a>, we declare the version of
-    the package. On line <a href="#ex1line7">7</a> and <a
+    the package. On lines <a href="#ex1line7">7</a> and <a
     href="#ex1line8">8</a>, we declare the name of the tarball and the
-    location of the tarball on the Web. Buildroot will automatically
+    location of the tarball on the web. Buildroot will automatically
     download the tarball from this location.</p>
 
     <p>On <a href="#ex1line9">line 9</a>, we tell Buildroot to install
@@ -869,18 +871,18 @@ source "package/procps/Config.in"
     <p>On <a href="#ex1line10">line 10</a>, we tell Buildroot to also
     install the application to the target directory. This directory
     contains what will become the root filesystem running on the
-    target. Usually, we try not to install the documentation, and to
-    install stripped versions of the binary. By default, packages are
+    target. Usually, we try to install stripped binaries and
+    to not install the documentation.  By default, packages are
     installed in this location using the <code>make
     install-strip</code> command.</p>
 
     <p>On <a href="#ex1line11">line 11</a>, we tell Buildroot to pass
-    a custom configure option, that will be passed to the
-    <code>./configure</code> script before configuring and building
+    a custom configure option to the
+    <code>./configure</code> script when configuring the
     the package.</p>
 
     <p>On <a href="#ex1line12">line 12</a>, we declare our
-    dependencies, so that they are built before the build process of
+    dependencies so that they are built before the build process of
     our package starts.</p>
 
     <p>Finally, on line <a href="#ex1line13">line 13</a>, we invoke
@@ -958,92 +960,93 @@ source "package/procps/Config.in"
 
 </pre>
 
-    <p>First of all, this <i>Makefile</i> example works for a single
-    binary software. For other software such as libraries or more
-    complex stuff with multiple binaries, it should be adapted. Look at
+    <p>First of all, this Makefile example works for a package which comprises a single
+    binary executable. For other software, such as libraries or more
+    complex stuff with multiple binaries, it must be adapted. For examples look at
     the other <code>*.mk</code> files in the <code>package</code>
     directory. </p>
 
     <p>At lines <a href="#ex2line6">6-11</a>, a couple of useful variables are
-    defined :</p>
+    defined:</p>
 
     <ul>
 
-     <li><code>FOO_VERSION</code> : The version of <i>foo</i> that
+     <li><code>FOO_VERSION</code>: The version of <i>foo</i> that
      should be downloaded. </li>
 
-     <li><code>FOO_SOURCE</code> : The name of the tarball of
-     <i>foo</i> on the download website of FTP site. As you can see
+     <li><code>FOO_SOURCE</code>: The name of the tarball of
+     <i>foo</i> on the download website or FTP site. As you can see
      <code>FOO_VERSION</code> is used. </li>
 
-     <li><code>FOO_SITE</code> : The HTTP or FTP site from which
+     <li><code>FOO_SITE</code>: The HTTP or FTP site from which
      <i>foo</i> archive is downloaded. It must include the complete
      path to the directory where <code>FOO_SOURCE</code> can be
      found. </li>
 
-     <li><code>FOO_DIR</code> : The directory into which the software
+     <li><code>FOO_DIR</code>: The directory into which the software
      will be configured and compiled. Basically, it's a subdirectory
      of <code>BUILD_DIR</code> which is created upon decompression of
      the tarball. </li>
 
-     <li><code>FOO_BINARY</code> : Software binary name. As said
-     previously, this is an example for a single binary software. </li>
+     <li><code>FOO_BINARY</code>: Software binary name. As said
+     previously, this is an example for a package with a single binary.</li>
 
-     <li><code>FOO_TARGET_BINARY</code> : The full path of the binary
+     <li><code>FOO_TARGET_BINARY</code>: The full path of the binary
      inside the target filesystem. </li>
 
     </ul>
 
-    <p>Lines <a href="#ex2line13">13-14</a> defines a target that downloads the
+    <p>Lines <a href="#ex2line13">13-14</a> define a target that downloads the
     tarball from the remote site to the download directory
     (<code>DL_DIR</code>). </p>
 
-    <p>Lines <a href="#ex2line16">16-18</a> defines a target and associated rules
+    <p>Lines <a href="#ex2line16">16-18</a> define a target and associated rules
     that uncompress the downloaded tarball. As you can see, this target
-    depends on the tarball file, so that the previous target (line
+    depends on the tarball file so that the previous target (lines
     <a href="#ex2line13">13-14</a>) is called before executing the rules of the
     current target. Uncompressing is followed by <i>touching</i> a hidden file
-    to mark the software has having been uncompressed. This trick is
-    used everywhere in Buildroot <i>Makefile</i> to split steps
+    to mark the software as having been uncompressed. This trick is
+    used everywhere in a Buildroot Makefile to split steps
     (download, uncompress, configure, compile, install) while still
     having correct dependencies. </p>
 
-    <p>Lines <a href="#ex2line20">20-31</a> defines a target and associated rules
-    that configures the software. It depends on the previous target (the
+    <p>Lines <a href="#ex2line20">20-31</a> define a target and associated rules
+    that configure the software. It depends on the previous target (the
     hidden <code>.source</code> file) so that we are sure the software has
-    been uncompressed. In order to configure it, it basically runs the
+    been uncompressed. In order to configure the package, it basically runs the
     well-known <code>./configure</code> script. As we may be doing
     cross-compilation, <code>target</code>, <code>host</code> and
     <code>build</code> arguments are given. The prefix is also set to
     <code>/usr</code>, not because the software will be installed in
-    <code>/usr</code> on your host system, but in the target
+    <code>/usr</code> on your host system, but because the software will
+    bin installed in <code>/usr</code> on the target
     filesystem. Finally it creates a <code>.configured</code> file to
     mark the software as configured. </p>
 
-    <p>Lines <a href="#ex2line33">33-34</a> defines a target and a rule that
-    compiles the software. This target will create the binary file in the
-    compilation directory, and depends on the software being already
+    <p>Lines <a href="#ex2line33">33-34</a> define a target and a rule that
+    compile the software. This target will create the binary file in the
+    compilation directory and depends on the software being already
     configured (hence the reference to the <code>.configured</code>
     file). It basically runs <code>make</code> inside the source
     directory. </p>
 
-    <p>Lines <a href="#ex2line36">36-38</a> defines a target and associated rules
-    that install the software inside the target filesystem. It depends on the
-    binary file in the source directory, to make sure the software has
-    been compiled. It uses the <code>install-strip</code> target of the
+    <p>Lines <a href="#ex2line36">36-38</a> define a target and associated rules
+    that install the software inside the target filesystem. They depend on the
+    binary file in the source directory to make sure the software has
+    been compiled. They use the <code>install-strip</code> target of the
     software <code>Makefile</code> by passing a <code>DESTDIR</code>
-    argument, so that the <code>Makefile</code> doesn't try to install
-    the software inside host <code>/usr</code> but inside target
+    argument so that the <code>Makefile</code> doesn't try to install
+    the software in the host <code>/usr</code> but rather in the target
     <code>/usr</code>. After the installation, the
     <code>/usr/man</code> directory inside the target filesystem is
     removed to save space. </p>
 
-    <p>Line <a href="#ex2line40">40</a> defines the main target of the software,
+    <p>Line <a href="#ex2line40">40</a> defines the main target of the software &mdash;
     the one that will be eventually be used by the top level
     <code>Makefile</code> to download, compile, and then install
-    this package. This target should first of all depends on all
-    needed dependecies of the software (in our example,
-    <i>uclibc</i> and <i>ncurses</i>), and also depend on the
+    this package. This target should first of all depend on all
+    needed dependencies of the software (in our example,
+    <i>uclibc</i> and <i>ncurses</i>) and also depend on the
     final binary. This last dependency will call all previous
     dependencies in the correct order. </p>
 
@@ -1056,7 +1059,7 @@ source "package/procps/Config.in"
     if all package-sources are downloadable. </p>
 
     <p>Lines <a href="#ex2line44">44-46</a> define a simple target to clean the
-    software build by calling the <i>Makefiles</i> with the appropriate option.
+    software build by calling the Makefiles with the appropriate option.
     The <code>-clean</code> target should run <code>make clean</code>
     on $(BUILD_DIR)/package-version and MUST uninstall all files of the
     package from $(STAGING_DIR) and from $(TARGET_DIR). </p>
@@ -1066,11 +1069,11 @@ source "package/procps/Config.in"
     compiled. The <code>-dirclean</code> target MUST completely rm $(BUILD_DIR)/
     package-version. </p>
 
-    <p>Lines <a href="#ex2line51">51-58</a> adds the target <code>foo</code> to
+    <p>Lines <a href="#ex2line51">51-58</a> add the target <code>foo</code> to
     the list of targets to be compiled by Buildroot by first checking if
     the configuration option for this package has been enabled
-    using the configuration tool, and if so then &quot;subscribes&quot;
-    this package to be compiled by adding it to the TARGETS
+    using the configuration tool. If so, it then &quot;subscribes&quot;
+    this package to be compiled by adding the package to the TARGETS
     global variable.  The name added to the TARGETS global
     variable is the name of this package's target, as defined on
     line <a href="#ex2line40">40</a>, which is used by Buildroot to download,
@@ -1079,13 +1082,13 @@ source "package/procps/Config.in"
 
     <h3>Conclusion</h3>
 
-    <p>As you can see, adding a software to buildroot is simply a
-    matter of writing a <i>Makefile</i> using an already existing
-    example and to modify it according to the compilation process of
-    the software. </p>
+    <p>As you can see, adding a software package to Buildroot is simply a
+    matter of writing a Makefile using an  existing
+    example and modifying it according to the compilation process required by
+    the package. </p>
 
-    <p>If you package software that might be useful for other persons,
-    don't forget to send a patch to Buildroot developers !</p>
+    <p>If you package software that might be useful for other people,
+    don't forget to send a patch to Buildroot developers!</p>
 
      <h2><a name="links" id="links"></a>Resources</h2>
 
