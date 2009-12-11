@@ -1,5 +1,6 @@
 config BR2_PACKAGE_GCC_TARGET
 	bool "native toolchain in the target filesystem"
+	depends on BR2_HAVE_DEVFILES
 	help
 	  If you want the target system to be able to run
 	  binutils/gcc and compile native code, say Y here.
@@ -12,3 +13,6 @@ config BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS
 	  Any additional target gcc options you may want to include....
 	  Including, but not limited to --disable-checking etc.
 	  Refer to */configure in your gcc sources.
+
+comment "native toolchain needs development files in target filesystem"
+	depends on !BR2_HAVE_DEVFILES
