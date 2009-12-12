@@ -441,6 +441,7 @@ external-deps:
 		SPIDER=--spider source
 
 ifeq ($(BR2_CONFIG_CACHE),y)
+# drop configure cache if configuration is changed
 $(BUILD_DIR)/tgt-config.cache: .config
 	rm -f $@
 	touch $@
