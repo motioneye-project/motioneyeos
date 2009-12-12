@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBDVDNAV
+	bool "libdvdnav"
+        select BR2_PACKAGE_LIBDVDREAD
+	help
+	  libdvdnav is a library that allows easy use of sophisticated
+	  DVD navigation features such as DVD menus, multiangle
+	  playback and even interactive DVD games.
+
+	  http://www.mplayerhq.hu
