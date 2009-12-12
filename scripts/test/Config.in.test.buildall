@@ -709,7 +709,6 @@ config BR2_TARGET_TEST_PACKAGES
 # BR2_KERNEL_none is not set
 	select BR2_KERNEL_LINUX_ADVANCED
 # BR2_KERNEL_LINUX is not set
-# BR2_KERNEL_HURD is not set
 	select BR2_PACKAGE_LINUX
 	select BR2_LINUX_2_6_28
 
