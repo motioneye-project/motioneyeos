@@ -150,10 +150,6 @@ else
 GCC_TLS:=--disable-tls
 endif
 
-ifeq ($(BR2_KERNEL_HURD),y)
-EXTRA_GCC1_CONFIG_OPTIONS+=--without-headers
-endif
-
 ifeq ($(BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE),y)
 GCC_DECIMAL_FLOAT:=--disable-decimal-float
 endif
