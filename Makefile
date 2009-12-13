@@ -232,7 +232,12 @@ else
 MAKEOVERRIDES =
 endif
 
-BASE_DIR := $(shell mkdir -p $(O) && cd $(O) && pwd)
+# bash prints the name of the directory on 'cd <dir>' if CDPATH is
+# set, so unset it here to not cause problems. Notice that the export
+# line doesn't affect the environment of $(shell ..) calls, so
+# explictly throw away any output from 'cd' here.
+export CDPATH:=
+BASE_DIR := $(shell mkdir -p $(O) && cd $(O) >/dev/null && pwd)
 $(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 
 DL_DIR=$(call qstrip,$(BR2_DL_DIR))
