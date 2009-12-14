@@ -1,0 +1,16 @@
+Index: trunk/gcc/config/avr32/avr32.c
+===================================================================
+--- trunk/gcc/config/avr32/avr32.c	(revision 43495)
++++ trunk/gcc/config/avr32/avr32.c	(revision 43496)
+@@ -6499,6 +6499,11 @@
+ 		    break;
+ 		}
+ 
++              /* Check if we have a call and the register is used as an argument. */
++              if (CALL_P (scan)
++                  && find_reg_fusage (scan, USE, reg) )
++                break;
++
+ 	      if (!reg_mentioned_p (reg, PATTERN (scan)))
+ 		continue;
+ 
