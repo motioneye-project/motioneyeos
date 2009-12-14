@@ -10,20 +10,18 @@ choice
 	  Select the version of gcc you wish to use.
 
 	config BR2_GCC_VERSION_4_1_2
-		depends on !BR2_nios2
-		depends on BR2_EXT_GCC_VERSION_4_1_2
+		depends on !BR2_nios2 && !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "gcc 4.1.2"
 
 	config BR2_GCC_VERSION_4_2_1
-		depends on !BR2_nios2
-		depends on BR2_EXT_GCC_VERSION_4_2_1
+		depends on !BR2_nios2 && !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "gcc 4.2.1"
 
 	config BR2_GCC_VERSION_4_2_2
-		depends on BR2_EXT_GCC_VERSION_4_2_2
-		depends on BR2_DEPRECATED || BR2_avr32
+		depends on !BR2_avr32
+		depends on BR2_DEPRECATED
 		bool "gcc 4.2.2"
 
 	config BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
@@ -31,9 +29,8 @@ choice
 	       bool "gcc 4.2.2-avr32-2.1.5"
 
 	config BR2_GCC_VERSION_4_2_3
-		depends on !BR2_nios2
-		depends on BR2_EXT_GCC_VERSION_4_2_3
-		depends on BR2_DEPRECATED || BR2_avr32
+		depends on !BR2_nios2 && !BR2_avr32
+		depends on BR2_DEPRECATED
 		bool "gcc 4.2.3"
 
 	config BR2_GCC_VERSION_4_2_4
