@@ -11,16 +11,17 @@ choice
 	  Select the version of uClibc you wish to use.
 
 	config BR2_UCLIBC_VERSION_0_9_28_3
+		depends on !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "uClibc 0.9.28.3"
-		depends on BR2_EXT_UCLIBC_VERSION_0_9_28_3
 
 	config BR2_UCLIBC_VERSION_0_9_29
+		depends on !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "uClibc 0.9.29"
-		depends on BR2_EXT_UCLIBC_VERSION_0_9_29
 
 	config BR2_UCLIBC_VERSION_0_9_30
+		depends on !BR2_avr32
 		depends on BR2_RECENT || BR2_DEPRECATED
 		bool "uClibc 0.9.30"
 
@@ -29,14 +30,14 @@ choice
 		bool "uClibc 0.9.30-avr32-2.1.5"
 
 	config BR2_UCLIBC_VERSION_0_9_30_1
+		depends on !BR2_avr32
 		bool "uClibc 0.9.30.1"
-		depends on BR2_EXT_UCLIBC_VERSION_0_9_30_1
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
+		depends on !BR2_avr32
 		bool "daily snapshot"
 
 endchoice
-
 
 config BR2_USE_UCLIBC_SNAPSHOT
 	string "Date (yyyymmdd) of snapshot or 'snapshot' for latest"
