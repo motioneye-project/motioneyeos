@@ -54,7 +54,7 @@ config BR2_PACKAGE_E2FSPROGS_E2LABEL
 	select BR2_PACKAGE_E2FSPROGS_LIBBLKID
 
 config BR2_PACKAGE_E2FSPROGS_E2UNDO
-	bool "e2label"
+	bool "e2undo"
 	default y
 	depends on BR2_PACKAGE_E2FSPROGS
 
@@ -81,7 +81,7 @@ config BR2_PACKAGE_E2FSPROGS_LOGSAVE
 	depends on BR2_PACKAGE_E2FSPROGS
 
 config BR2_PACKAGE_E2FSPROGS_LSATTR
-	bool "chattr"
+	bool "lsattr"
 	default y
 	depends on BR2_PACKAGE_E2FSPROGS
 
