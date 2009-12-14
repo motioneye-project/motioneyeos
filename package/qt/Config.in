@@ -101,6 +101,52 @@ config BR2_PACKAGE_QT_PIXEL_DEPTH_32
 
 endmenu
 
+menu "Fonts"
+
+config BR2_PACKAGE_QT_FONT_MICRO
+	bool "micro"
+	default y
+
+config BR2_PACKAGE_QT_FONT_FIXED
+	bool "fixed"
+	default y
+
+config BR2_PACKAGE_QT_FONT_HELVETICA
+	bool "helvetica"
+	default y
+
+config BR2_PACKAGE_QT_FONT_JAPANESE
+	bool "japanese"
+
+config BR2_PACKAGE_QT_FONT_UNIFONT
+	bool "unicode"
+
+endmenu
+
+choice
+	prompt "freetype2 support"
+	default BR2_PACKAGE_QT_NOFREETYPE
+	help
+	  Select freetype2 support.
+
+config BR2_PACKAGE_QT_NOFREETYPE
+	bool "no freetype2 support"
+	help
+	  Do not compile in Freetype2 support.
+
+config BR2_PACKAGE_QT_QTFREETYPE
+	bool "Qt freetype2"
+	help
+	  Use the libfreetype bundled with Qt.
+
+config BR2_PACKAGE_QT_SYSTEMFREETYPE
+	bool "System freetype2"
+	select BR2_PACKAGE_FREETYPE
+	help
+	  Use shared libfreetype from the target system.
+	  See http://www.freetype.org/
+endchoice
+
 config BR2_PACKAGE_QT_GIF
 	bool "Enable GIF support"
 	help
@@ -186,32 +232,6 @@ config BR2_PACKAGE_QT_SYSTEMZLIB
 	select BR2_PACKAGE_ZLIB
 	help
 	  Use the shared zlib from the system.
-endchoice
-
-choice
-	prompt "freetype2 support"
-	depends on BR2_PACKAGE_QT_GUI_MODULE
-	default BR2_PACKAGE_QT_NOFREETYPE
-	help
-	  Select freetype2 support.
-
-config BR2_PACKAGE_QT_NOFREETYPE
-	bool "no freetype2 support"
-	help
-	  Do not compile in Freetype2 support.
-
-
-config BR2_PACKAGE_QT_QTFREETYPE
-	bool "Qt freetype2"
-	help
-	  Use the libfreetype bundled with Qt.
-
-config BR2_PACKAGE_QT_SYSTEMFREETYPE
-	bool "System freetype2"
-	select BR2_PACKAGE_FREETYPE
-	help
-	  Use shared libfreetype from the target system.
-	  See http://www.freetype.org/
 endchoice
 
 config BR2_PACKAGE_QT_EMB_PLATFORM

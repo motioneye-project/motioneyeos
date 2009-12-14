@@ -220,6 +220,14 @@ endif
 endif
 
 
+QT_FONTS = $(addprefix $(STAGING_DIR)/usr/lib/fonts/, $(addsuffix *.qpf, \
+	   $(if $(BR2_PACKAGE_QT_FONT_MICRO),micro) \
+	   $(if $(BR2_PACKAGE_QT_FONT_FIXED),fixed) \
+	   $(if $(BR2_PACKAGE_QT_FONT_HELVETICA),helvetica) \
+	   $(if $(BR2_PACKAGE_QT_FONT_JAPANESE),japanese) \
+	   $(if $(BR2_PACKAGE_QT_FONT_UNIFONT),unifont)))
+
+
 ifeq ($(BR2_PACKAGE_QT_QTFREETYPE),y)
 QT_CONFIGURE+= -qt-freetype
 else
@@ -445,7 +453,9 @@ $(STAGING_DIR)/usr/lib/libQtCore.la: $(QT_TARGET_DIR)/.compiled
 
 qt-gui: $(STAGING_DIR)/usr/lib/libQtCore.la
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
-	cp -dpf $(STAGING_DIR)/usr/lib/fonts/*.qpf $(TARGET_DIR)/usr/lib/fonts
+ifneq ($(QT_FONTS),)
+	cp -dpf $(QT_FONTS) $(TARGET_DIR)/usr/lib/fonts
+endif
 ifneq ($(BR2_PACKAGE_QT_NOFREETYPE),y)
 	cp -dpf $(STAGING_DIR)/usr/lib/fonts/*.ttf $(TARGET_DIR)/usr/lib/fonts
 endif
