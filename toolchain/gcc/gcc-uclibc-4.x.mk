@@ -20,13 +20,15 @@
 # sysroot support works with gcc >= 4.2.0 only
 ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 
-ifeq ($(GCC_SNAP_DATE),)
-GCC_OFFICIAL_VERSION:=$(GCC_VERSION)
-GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
-#GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_OFFICIAL_VERSION)
+ifneq ($(GCC_SNAP_DATE),)
+ GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_VERSION)
+ GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
+else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
+ GCC_SITE:=ftp://www.at91.com/pub/buildroot/
+ GCC_OFFICIAL_VER:=$(GCC_VERSION)
 else
-GCC_OFFICIAL_VERSION:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
-GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VERSION)
+ GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
+ GCC_OFFICIAL_VER:=$(GCC_VERSION)
 endif
 
 # redefine if using an external prepatched gcc source
@@ -182,7 +184,9 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 gcc-patched: $(GCC_DIR)/.patched
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
+ifneq ($(wildcard $(GCC_PATCH_DIR)),)
 	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch $(GCC_PATCH_EXTRA)
+endif
 
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.
