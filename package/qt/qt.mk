@@ -12,10 +12,10 @@
 #
 ######################################################################
 
-QT_VERSION:=4.5.2
-QT_SOURCE:=qt-embedded-linux-opensource-src-$(QT_VERSION).tar.bz2
+QT_VERSION:=4.5.3
+QT_SOURCE:=qt-embedded-linux-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE:=http://get.qt.nokia.com/qt/source
-QT_CAT:=$(BZCAT)
+QT_CAT:=$(ZCAT)
 QT_TARGET_DIR:=$(BUILD_DIR)/qt-embedded-linux-opensource-src-$(QT_VERSION)
 
 QT_CONFIGURE:=#empty
