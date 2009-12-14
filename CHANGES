@@ -24,6 +24,7 @@
 	#767: Bump iw package to 0.9.18
 	#773: [SECURITY] Update bind to 9.5.2-P1
 	#795: Minor edits to fix typos, grammar, spelling, usage in documen...
+	#813: Drop not very useful generic package selection options ...
 	#823: Editor backup files (~) is copied from the target_skeleton
 	#827: Bump mtd-utils package to version 1.2.0
 
