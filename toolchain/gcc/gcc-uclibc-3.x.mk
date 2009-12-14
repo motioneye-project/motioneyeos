@@ -33,18 +33,9 @@ else
  GCC_OFFICIAL_VER:=$(GCC_VERSION)
 endif
 
-
-# redefine if using an external prepatched gcc source
-ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-GCC_SITE:=$(VENDOR_SITE)
-GCC_OFFICIAL_VER:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
-GCC_PATCH_DIR:=toolchain/gcc/ext_source/$(VENDOR_PATCH_DIR)/$(GCC_OFFICIAL_VERSION)
-endif
-
 GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
 GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_OFFICIAL_VER)
 
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 ifeq ($(GCC_SNAP_DATE),)
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 else
@@ -52,7 +43,6 @@ ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),)
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VER)
 else
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-endif
 endif
 endif
 

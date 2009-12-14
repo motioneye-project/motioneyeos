@@ -31,15 +31,6 @@ else
  GCC_OFFICIAL_VER:=$(GCC_VERSION)
 endif
 
-# redefine if using an external prepatched gcc source
-ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-GCC_SITE:=$(VENDOR_SITE)
-GCC_OFFICIAL_VERSION:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
-GCC_PATCH_DIR:=toolchain/gcc/ext_source/$(VENDOR_PATCH_DIR)/$(GCC_OFFICIAL_VERSION)
-endif #!BR2_TOOLCHAIN_BUILDROOT
-
-# define patch location
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y) # Normal toolchain
 ifeq ($(GCC_SNAP_DATE),) # Not a snapshot
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 else # Is a snapshot
@@ -50,7 +41,6 @@ else # Normal patch to snapshot
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
 endif # Snapshot patch
 endif # Not a snapshot
-endif # BR2_TOOLCHAIN_BUILDROOT
 
 ifneq ($(filter xtensa%,$(ARCH)),)
 include target/xtensa/patch.in
