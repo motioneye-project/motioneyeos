@@ -9,14 +9,13 @@ choice
 	  Select the version of binutils you wish to use.
 
 	config BR2_BINUTILS_VERSION_2_17
-		depends on !BR2_nios2
-		depends on BR2_DEPRECATED || (BR2_avr32 && BR2_EXT_BINUTILS_VERSION_2_17)
+		depends on !BR2_nios2 && !BR2_avr32
+		depends on BR2_DEPRECATED
 		bool "binutils 2.17"
 
 	config BR2_BINUTILS_VERSION_2_18
-		depends on !BR2_nios2
-		depends on BR2_DEPRECATED || BR2_avr32
-		depends on BR2_EXT_BINUTILS_VERSION_2_18
+		depends on !BR2_nios2 && !BR2_avr32
+		depends on BR2_DEPRECATED
 		bool "binutils 2.18"
 
 	config BR2_BINUTILS_VERSION_2_18_50_0_9
