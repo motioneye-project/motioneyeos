@@ -22,6 +22,9 @@ endif
 ifeq ($(BINUTILS_VERSION),2.17)
 BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
 endif
+ifeq ($(findstring avr32,$(BINUTILS_VERSION)),avr32)
+BINUTILS_SITE:=ftp://www.at91.com/pub/buildroot/
+endif
 
 # We do not rely on the host's gmp/mpfr but use a known working one
 BINUTILS_HOST_PREREQ:=
@@ -79,7 +82,9 @@ $(BINUTILS_DIR)/.unpacked: $(DL_DIR)/$(BINUTILS_SOURCE)
 binutils-patched: $(BINUTILS_DIR)/.patched
 $(BINUTILS_DIR)/.patched: $(BINUTILS_DIR)/.unpacked
 	# Apply appropriate binutils patches.
+ifneq ($(wildcard $(BINUTILS_PATCH_DIR)),)
 	toolchain/patch-kernel.sh $(BINUTILS_DIR) $(BINUTILS_PATCH_DIR) \*.patch $(BINUTILS_PATCH_EXTRA)
+endif
 	touch $@
 
 $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
