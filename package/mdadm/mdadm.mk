@@ -3,63 +3,27 @@
 # mdadm
 #
 #############################################################
-MDADM_VERSION:=2.6.7.1
-MDADM_SOURCE:=mdadm_$(MDADM_VERSION).orig.tar.gz
-MDADM_PATCH:=mdadm_$(MDADM_VERSION)-1.diff.gz
-MDADM_CAT:=$(ZCAT)
-MDADM_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mdadm
-MDADM_DIR:=$(BUILD_DIR)/mdadm-$(MDADM_VERSION)
-MDADM_BINARY:=mdadm
-MDADM_TARGET_BINARY:=sbin/mdadm
+MDADM_VERSION:=2.6.9
+MDADM_SOURCE:=mdadm-$(MDADM_VERSION).tar.bz2
+MDADM_SITE:=http://www.kernel.org/pub/linux/utils/raid/mdadm
 
-ifneq ($(MDADM_PATCH),)
-MDADM_PATCH_FILE:=$(DL_DIR)/$(MDADM_PATCH)
-$(MDADM_PATCH_FILE):
-	$(call DOWNLOAD,$(MDADM_SITE),$(MDADM_PATCH))
-endif
+MDADM_AUTORECONF = NO
+MDADM_LIBTOOL_PATCH = NO
 
-$(DL_DIR)/$(MDADM_SOURCE): $(MDADM_PATCH_FILE)
-	$(call DOWNLOAD,$(MDADM_SITE),$(MDADM_SOURCE))
-	touch -c $@
+MDADM_INSTALL_STAGING = NO
+MDADM_INSTALL_TARGET = YES
 
-$(MDADM_DIR)/.unpacked: $(DL_DIR)/$(MDADM_SOURCE)
-	$(MDADM_CAT) $(DL_DIR)/$(MDADM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-ifneq ($(MDADM_PATCH),)
-	(cd $(MDADM_DIR) && $(MDADM_CAT) $(MDADM_PATCH_FILE) | patch -p1)
-	if [ -d $(MDADM_DIR)/debian/patches ]; then \
-	  toolchain/patch-kernel.sh $(MDADM_DIR) $(MDADM_DIR)/debian/patches \*patch; \
-	fi
-endif
-	#toolchain/patch-kernel.sh $(MDADM_DIR) package/mdadm mdadm-$(MDADM_VERSION)\*.patch
-	toolchain/patch-kernel.sh $(MDADM_DIR) package/mdadm mdadm-\*.patch
-	touch $@
+MDADM_MAKE_OPT = \
+	CFLAGS="$(TARGET_CFLAGS)" CC=$(TARGET_CC) -C $(MDADM_DIR) mdadm
 
-$(MDADM_DIR)/$(MDADM_BINARY): $(MDADM_DIR)/.unpacked
-	$(MAKE) CFLAGS="$(TARGET_CFLAGS)" CC=$(TARGET_CC) -C $(MDADM_DIR)
+MDADM_INSTALL_TARGET_OPT = \
+	DESTDIR=$(TARGET_DIR)/usr -C $(MDADM_DIR) install-mdadm
 
-$(TARGET_DIR)/$(MDADM_TARGET_BINARY): $(MDADM_DIR)/$(MDADM_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(MDADM_DIR) install
-	rm -Rf $(TARGET_DIR)/usr/share/man
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
+MDADM_UNINSTALL_TARGET_OPT = \
+	DESTDIR=$(TARGET_DIR)/usr -C $(MDADM_DIR) uninstall
 
-mdadm-source: $(DL_DIR)/$(MDADM_SOURCE) $(MDADM_PATCH_FILE)
+$(eval $(call AUTOTARGETS,package,mdadm))
 
-mdadm-unpacked: $(MDADM_DIR)/.unpacked
-
-mdadm: $(TARGET_DIR)/$(MDADM_TARGET_BINARY)
-
-mdadm-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(MDADM_DIR) uninstall
-	-$(MAKE) -C $(MDADM_DIR) clean
-
-mdadm-dirclean:
-	rm -rf $(MDADM_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_MDADM),y)
-TARGETS+=mdadm
-endif
+$(MDADM_TARGET_CONFIGURE):
+	$(call MESSAGE,"Configuring")
+	$(Q)touch $@
