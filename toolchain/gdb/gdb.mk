@@ -11,11 +11,14 @@ GDB_SOURCE:=gdb-$(GDB_OFFICIAL_VERSION).tar.bz2
 GDB_CAT:=$(BZCAT)
 
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
-GDB_SITE:=$(VENDOR_SITE)
-GDB_PATCH_DIR:=toolchain/gdb/ext_source/$(VENDOR_PATCH_DIR)/$(GDB_OFFICIAL_VERSION)
+ GDB_SITE:=$(VENDOR_SITE)
+ GDB_PATCH_DIR:=toolchain/gdb/ext_source/$(VENDOR_PATCH_DIR)/$(GDB_OFFICIAL_VERSION)
+else ifeq ($(findstring avr32,$(GDB_VERSION)),avr32)
+ GDB_SITE:=ftp://www.at91.com/pub/buildroot/
+ GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
 else
-GDB_SITE:=$(BR2_GNU_MIRROR)/gdb
-GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
+ GDB_SITE:=$(BR2_GNU_MIRROR)/gdb
+ GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
 endif
 
 ifneq ($(filter xtensa%,$(ARCH)),)
@@ -37,7 +40,9 @@ ifeq ($(GDB_VERSION),snapshot)
 		tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1)
 	ln -sf $(TOOLCHAIN_DIR)/$(shell tar jtf $(DL_DIR)/$(GDB_SOURCE) | head -1 | cut -d"/" -f1) $(GDB_DIR)
 endif
+ifneq ($(wildcard $(GDB_PATCH_DIR)),)
 	toolchain/patch-kernel.sh $(GDB_DIR) $(GDB_PATCH_DIR) \*.patch $(GDB_PATCH_EXTRA)
+endif
 	$(CONFIG_UPDATE) $(@D)
 	touch $@
 
