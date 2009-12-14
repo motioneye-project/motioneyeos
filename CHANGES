@@ -4,7 +4,7 @@
 
 	Updated/fixed packages: autoconf, bind, binutils, busybox,
 	directfb, gst-plugins-bad, iw, libfuse, libpcap, lighttpd,
-	mesa, mtd-utils, pcre, sshfs, tremor, usbutils
+	mesa, mtd-utils, pcre, qt, sshfs, tremor, usbutils
 
 	Issues resolved (http://bugs.uclibc.org):
 

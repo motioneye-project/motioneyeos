@@ -62,7 +62,7 @@ config BR2_PACKAGE_QT_GUI_MODULE
 	select BR2_PACKAGE_QT_NETWORK
 	default y
 	help
-	  Turns on support to Gui applications. If your board don't have
+	  Turns on support for Gui applications. If your board doesn't have
 	  video output, or you don't require Qt GUI, say n.
 
 if BR2_PACKAGE_QT_GUI_MODULE
@@ -100,23 +100,19 @@ config BR2_PACKAGE_QT_PIXEL_DEPTH_32
 	default y
 
 endmenu
-endif
 
 config BR2_PACKAGE_QT_GIF
 	bool "Enable GIF support"
-	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  This compiles and installs the plugin for GIF reading support.
 
 config BR2_PACKAGE_QT_LIBMNG
 	bool "Enable libmng support"
-	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  This compiles and installs the plugin for MNG support.
 
 choice
 	prompt "JPEG support"
-	depends on BR2_PACKAGE_QT_GUI_MODULE
 	default BR2_PACKAGE_QT_NOJPEG
 	help
 	  Select libjpeg support.
@@ -140,7 +136,6 @@ endchoice
 
 choice
 	prompt "PNG support"
-	depends on BR2_PACKAGE_QT_GUI_MODULE
 	default BR2_PACKAGE_QT_NOPNG
 	help
 	  Select which library to use if PNG support should be enabled.
@@ -158,7 +153,6 @@ endchoice
 
 choice
 	prompt "TIFF support"
-	depends on BR2_PACKAGE_QT_GUI_MODULE
 	default BR2_PACKAGE_QT_NOTIFF
 	help
 	  Select which library to use if TIFF support should be enabled.
@@ -173,6 +167,8 @@ config BR2_PACKAGE_QT_SYSTEMTIFF
 config BR2_PACKAGE_QT_QTTIFF
 	bool "Use Qt bundled libtiff"
 endchoice
+
+endif # BR2_PACKAGE_QT_GUI_MODULE
 
 choice
 	prompt "zlib support"
