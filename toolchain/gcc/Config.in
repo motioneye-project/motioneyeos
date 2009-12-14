@@ -55,11 +55,11 @@ choice
 	config BR2_GCC_VERSION_4_4_X
 		depends on !BR2_avr32 && !BR2_nios2
 		bool "gcc 4.4.x"
-endchoice
 
-config BR2_GCC_IS_SNAP
-	depends on !BR2_avr32
-	bool
+	config BR2_GCC_VERSION_SNAP
+		depends on !BR2_avr32 && !BR2_nios2
+		bool "gcc snapshot"
+endchoice
 
 config BR2_GCC_SUPPORTS_SYSROOT
 	bool
@@ -72,7 +72,7 @@ config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
 	default "20070921"
-	depends on BR2_GCC_IS_SNAP
+	depends on BR2_GCC_VERSION_SNAP
 	help
 	  Enter snapshot date to use for gcc.  Format is:
 	  YYYYMMDD
@@ -89,6 +89,7 @@ config BR2_GCC_VERSION
 	default "4.3.3"     if BR2_GCC_VERSION_4_3_3
 	default "4.3.4"     if BR2_GCC_VERSION_4_3_4
 	default "4.4.2"     if BR2_GCC_VERSION_4_4_X
+	default $BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
 
 config BR2_TOOLCHAIN_SYSROOT
 	bool "Enable toolchain with --sysroot support"

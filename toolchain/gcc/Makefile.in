@@ -8,7 +8,7 @@ GCC_VERSION:=$(call qstrip,$(BR2_GCC_VERSION))
 TARGET_OPTIMIZATION:=$(call qstrip,$(BR2_TARGET_OPTIMIZATION))
 EXTRA_GCC_CONFIG_OPTIONS:=$(call qstrip,$(BR2_EXTRA_GCC_CONFIG_OPTIONS))
 
-ifeq ($(call qstrip,$(BR2_GCC_IS_SNAP)),y)
+ifeq ($(call qstrip,$(BR2_GCC_VERSION_SNAP)),y)
 GCC_SNAP_DATE:=$(call qstrip,$(BR2_GCC_SNAP_DATE))
 else
 GCC_SNAP_DATE:=
