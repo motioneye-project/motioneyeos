@@ -19,9 +19,12 @@ UCLIBC_OFFICIAL_VERSION:=$(UCLIBC_VER)$(VENDOR_SUFFIX)$(VENDOR_UCLIBC_RELEASE)
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
 UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc
-else
+else ifeq ($(findstring avr32,$(UCLIBC_VERSION)),avr32)
+UCLIBC_SITE:=ftp://www.at91.com/pub/buildroot/
 UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
+else
 UCLIBC_SITE:=http://www.uclibc.org/downloads
+UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
 UCLIBC_SITE:=$(VENDOR_SITE)
 endif
@@ -256,6 +259,9 @@ else
 	/bin/echo "CONFIG_CLASSIC=y" >> $(UCLIBC_DIR)/.oldconfig
 	/bin/echo "# CONFIG_E500 is not set" >> $(UCLIBC_DIR)/.oldconfig
 endif
+endif
+ifeq ($(UCLIBC_TARGET_ARCH),avr32)
+	/bin/echo "LINKRELAX=y" >> $(UCLIBC_DIR)/.oldconfig
 endif
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
 	# The above doesn't work for me, so redo
