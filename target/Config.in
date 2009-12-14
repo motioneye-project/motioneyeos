@@ -74,7 +74,7 @@ config BR2_KERNEL_LINUX_ADVANCED
 # The kernel with the same version as linux headers cannot be compiled
 # when using an external toolchain, because the linux headers are not
 # handled by Buildroot in this case.
-if BR2_TOOLCHAIN_SOURCE
+if BR2_TOOLCHAIN_BUILDROOT
 
 config BR2_KERNEL_LINUX
 	bool "linux (Same version as linux headers)"

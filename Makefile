@@ -197,7 +197,7 @@ PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 # along with the packages to build for the target.
 #
 ##############################################################
-ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 BASE_TARGETS:=uclibc-configured binutils cross_compiler uclibc-target-utils kernel-headers
 else
 BASE_TARGETS:=uclibc
@@ -289,7 +289,7 @@ include .config.cmd
 # We also need the various per-package makefiles, which also add
 # each selected package to TARGETS if that package was selected
 # in the .config file.
-ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 # avoid pulling in external toolchain which is broken for toplvl parallel builds
 # Explicit ordering:
 include toolchain/dependencies/dependencies.mk

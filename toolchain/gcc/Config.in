@@ -10,26 +10,27 @@ choice
 	  Select the version of gcc you wish to use.
 
 	config BR2_GCC_VERSION_4_1_2
-		depends on !BR2_nios2
-		depends on BR2_EXT_GCC_VERSION_4_1_2
+		depends on !BR2_nios2 && !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "gcc 4.1.2"
 
 	config BR2_GCC_VERSION_4_2_1
-		depends on !BR2_nios2
-		depends on BR2_EXT_GCC_VERSION_4_2_1
+		depends on !BR2_nios2 && !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "gcc 4.2.1"
 
 	config BR2_GCC_VERSION_4_2_2
-		depends on BR2_EXT_GCC_VERSION_4_2_2
-		depends on BR2_DEPRECATED || BR2_avr32
+		depends on !BR2_avr32
+		depends on BR2_DEPRECATED
 		bool "gcc 4.2.2"
 
+	config BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
+	       depends on BR2_avr32
+	       bool "gcc 4.2.2-avr32-2.1.5"
+
 	config BR2_GCC_VERSION_4_2_3
-		depends on !BR2_nios2
-		depends on BR2_EXT_GCC_VERSION_4_2_3
-		depends on BR2_DEPRECATED || BR2_avr32
+		depends on !BR2_nios2 && !BR2_avr32
+		depends on BR2_DEPRECATED
 		bool "gcc 4.2.3"
 
 	config BR2_GCC_VERSION_4_2_4
@@ -54,11 +55,11 @@ choice
 	config BR2_GCC_VERSION_4_4_X
 		depends on !BR2_avr32 && !BR2_nios2
 		bool "gcc 4.4.x"
-endchoice
 
-config BR2_GCC_IS_SNAP
-	depends on !BR2_avr32
-	bool
+	config BR2_GCC_VERSION_SNAP
+		depends on !BR2_avr32 && !BR2_nios2
+		bool "gcc snapshot"
+endchoice
 
 config BR2_GCC_SUPPORTS_SYSROOT
 	bool
@@ -66,12 +67,12 @@ config BR2_GCC_SUPPORTS_SYSROOT
 
 config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
-	default y if !BR2_GCC_VERSION_4_1_2 && !BR2_GCC_VERSION_4_2_1 && !BR2_GCC_VERSION_4_2_2 && !BR2_GCC_VERSION_4_2_3 && !BR2_GCC_VERSION_4_2_4
+	default y if !BR2_GCC_VERSION_4_1_2 && !BR2_GCC_VERSION_4_2_1 && !BR2_GCC_VERSION_4_2_2 && !BR2_GCC_VERSION_4_2_3 && !BR2_GCC_VERSION_4_2_4 && !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
 	default "20070921"
-	depends on BR2_GCC_IS_SNAP
+	depends on BR2_GCC_VERSION_SNAP
 	help
 	  Enter snapshot date to use for gcc.  Format is:
 	  YYYYMMDD
@@ -81,12 +82,14 @@ config BR2_GCC_VERSION
 	default "4.1.2"     if BR2_GCC_VERSION_4_1_2
 	default "4.2.1"     if BR2_GCC_VERSION_4_2_1
 	default "4.2.2"     if BR2_GCC_VERSION_4_2_2
+	default "4.2.2-avr32-2.1.5" if BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 	default "4.2.3"     if BR2_GCC_VERSION_4_2_3
 	default "4.2.4"     if BR2_GCC_VERSION_4_2_4
 	default "4.3.2"     if BR2_GCC_VERSION_4_3_2
 	default "4.3.3"     if BR2_GCC_VERSION_4_3_3
 	default "4.3.4"     if BR2_GCC_VERSION_4_3_4
 	default "4.4.2"     if BR2_GCC_VERSION_4_4_X
+	default $BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
 
 config BR2_TOOLCHAIN_SYSROOT
 	bool "Enable toolchain with --sysroot support"

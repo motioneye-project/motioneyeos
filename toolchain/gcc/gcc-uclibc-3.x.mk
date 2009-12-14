@@ -17,43 +17,22 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 
 # without sysroot support. Sysroot toolchain is gcc-uclibc-4.x.mk
 ifneq ($(BR2_TOOLCHAIN_SYSROOT),y)
 
-ifeq ($(GCC_SNAP_DATE),)
-GCC_OFFICIAL_VER:=$(GCC_VERSION)
-GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
-#GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_OFFICIAL_VER)
+ifneq ($(GCC_SNAP_DATE),)
+ GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_VERSION)
+else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
+ GCC_SITE:=ftp://www.at91.com/pub/buildroot/
 else
-GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
-GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VER)
+ GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
 endif
 
-
-# redefine if using an external prepatched gcc source
-ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-GCC_SITE:=$(VENDOR_SITE)
-GCC_OFFICIAL_VER:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
-GCC_PATCH_DIR:=toolchain/gcc/ext_source/$(VENDOR_PATCH_DIR)/$(GCC_OFFICIAL_VERSION)
-endif
-
-GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
-GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_OFFICIAL_VER)
-
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-ifeq ($(GCC_SNAP_DATE),)
+GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
+GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-else
-ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),)
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VER)
-else
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-endif
-endif
-endif
-
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=true
 
@@ -142,7 +121,9 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 gcc-patched: $(GCC_DIR)/.patched
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
+ifneq ($(wildcard $(GCC_PATCH_DIR)),)
 	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch
+endif
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.
 	# However, we still need a patch for arm. There's a similar patch for gcc 3.3.x

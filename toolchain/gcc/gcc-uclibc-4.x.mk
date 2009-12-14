@@ -20,43 +20,22 @@
 # sysroot support works with gcc >= 4.2.0 only
 ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 
-ifeq ($(GCC_SNAP_DATE),)
-GCC_OFFICIAL_VERSION:=$(GCC_VERSION)
-GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
-#GCC_SITE:=ftp://ftp.ibiblio.org/pub/mirrors/gnu/ftp/gnu/gcc/gcc-$(GCC_OFFICIAL_VERSION)
+ifneq ($(GCC_SNAP_DATE),)
+ GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_VERSION)
+else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
+ GCC_SITE:=ftp://www.at91.com/pub/buildroot/
 else
-GCC_OFFICIAL_VERSION:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
-GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_OFFICIAL_VERSION)
+ GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
 endif
-
-# redefine if using an external prepatched gcc source
-ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-GCC_SITE:=$(VENDOR_SITE)
-GCC_OFFICIAL_VERSION:=$(GCC_VERSION)$(VENDOR_SUFFIX)$(VENDOR_GCC_RELEASE)
-GCC_PATCH_DIR:=toolchain/gcc/ext_source/$(VENDOR_PATCH_DIR)/$(GCC_OFFICIAL_VERSION)
-endif #!BR2_TOOLCHAIN_BUILDROOT
-
-# define patch location
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y) # Normal toolchain
-ifeq ($(GCC_SNAP_DATE),) # Not a snapshot
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-else # Is a snapshot
-ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VERSION)),) # Snapshot patch?
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VERSION)
-else # Normal patch to snapshot
-# Use the normal location, if the dedicated location does not exist
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-endif # Snapshot patch
-endif # Not a snapshot
-endif # BR2_TOOLCHAIN_BUILDROOT
 
 ifneq ($(filter xtensa%,$(ARCH)),)
 include target/xtensa/patch.in
 GCC_PATCH_EXTRA:=$(call XTENSA_PATCH,gcc,$(GCC_PATCH_DIR),. ..)
 endif
 
-GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VERSION).tar.bz2
-GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_OFFICIAL_VERSION)
+GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
+GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
+GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=nope
 GCC_SRC_DIR:=$(GCC_DIR)
@@ -178,7 +157,9 @@ $(GCC_DIR)/.unpacked: $(DL_DIR)/$(GCC_SOURCE)
 gcc-patched: $(GCC_DIR)/.patched
 $(GCC_DIR)/.patched: $(GCC_DIR)/.unpacked
 	# Apply any files named gcc-*.patch from the source directory to gcc
+ifneq ($(wildcard $(GCC_PATCH_DIR)),)
 	toolchain/patch-kernel.sh $(GCC_DIR) $(GCC_PATCH_DIR) \*.patch $(GCC_PATCH_EXTRA)
+endif
 
 	# Note: The soft float situation has improved considerably with gcc 3.4.x.
 	# We can dispense with the custom spec files, as well as libfloat for the arm case.
@@ -518,7 +499,7 @@ gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
 gcc-status:
-	@echo GCC_OFFICIAL_VERSION=$(GCC_OFFICIAL_VERSION)
+	@echo GCC_VERSION=$(GCC_VERSION)
 	@echo GCC_PATCH_DIR=$(GCC_PATCH_DIR)
 	@echo GCC_SITE=$(GCC_SITE)
 

@@ -4,7 +4,7 @@
 #
 #############################################################
 
-ifeq ($(BR2_TOOLCHAIN_SOURCE),y)
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 
 # specifying UCLIBC_CONFIG_FILE on the command-line overrides the .config
 # setting.
@@ -12,28 +12,19 @@ ifndef UCLIBC_CONFIG_FILE
 UCLIBC_CONFIG_FILE=$(call qstrip,$(BR2_UCLIBC_CONFIG))
 endif
 
-UCLIBC_VER:=$(call qstrip,$(BR2_UCLIBC_VERSION_STRING))
-
-UCLIBC_OFFICIAL_VERSION:=$(UCLIBC_VER)$(VENDOR_SUFFIX)$(VENDOR_UCLIBC_RELEASE)
+UCLIBC_VERSION:=$(call qstrip,$(BR2_UCLIBC_VERSION_STRING))
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
-UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc
+else ifeq ($(findstring avr32,$(UCLIBC_VERSION)),avr32)
+UCLIBC_SITE:=ftp://www.at91.com/pub/buildroot/
 else
-UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_OFFICIAL_VERSION)
 UCLIBC_SITE:=http://www.uclibc.org/downloads
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
-UCLIBC_SITE:=$(VENDOR_SITE)
-endif
 endif
 
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_VERSION)
 UCLIBC_PATCH_DIR:=toolchain/uClibc/
-else
-UCLIBC_PATCH_DIR:=toolchain/uClibc/ext_source/$(VENDOR_PATCH_DIR)/$(UCLIBC_OFFICIAL_VERSION)
-endif
-
-UCLIBC_SOURCE:=uClibc-$(UCLIBC_OFFICIAL_VERSION).tar.bz2
+UCLIBC_SOURCE:=uClibc-$(UCLIBC_VERSION).tar.bz2
 
 UCLIBC_CAT:=$(BZCAT)
 
@@ -103,8 +94,8 @@ uclibc-patched: $(UCLIBC_DIR)/.patched
 $(UCLIBC_DIR)/.patched: $(UCLIBC_DIR)/.unpacked
 ifneq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 	toolchain/patch-kernel.sh $(UCLIBC_DIR) $(UCLIBC_PATCH_DIR) \
-		uClibc-$(UCLIBC_OFFICIAL_VERSION)-\*.patch \
-		uClibc-$(UCLIBC_OFFICIAL_VERSION)-\*.patch.$(ARCH)
+		uClibc-$(UCLIBC_VERSION)-\*.patch \
+		uClibc-$(UCLIBC_VERSION)-\*.patch.$(ARCH)
 else
 	toolchain/patch-kernel.sh $(UCLIBC_DIR) $(UCLIBC_PATCH_DIR) \
 		uClibc.\*.patch uClibc.\*.patch.$(ARCH)
@@ -256,6 +247,9 @@ else
 	/bin/echo "CONFIG_CLASSIC=y" >> $(UCLIBC_DIR)/.oldconfig
 	/bin/echo "# CONFIG_E500 is not set" >> $(UCLIBC_DIR)/.oldconfig
 endif
+endif
+ifeq ($(UCLIBC_TARGET_ARCH),avr32)
+	/bin/echo "LINKRELAX=y" >> $(UCLIBC_DIR)/.oldconfig
 endif
 ifneq ($(UCLIBC_TARGET_ENDIAN),)
 	# The above doesn't work for me, so redo

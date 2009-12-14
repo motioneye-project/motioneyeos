@@ -37,7 +37,7 @@ config BR2_ENABLE_LOCALE
 
 config BR2_ENABLE_LOCALE_PREGENERATED
 	bool "Use pregenerated locale data?"
-	depends on BR2_ENABLE_LOCALE && BR2_TOOLCHAIN_SOURCE && BROKEN # tarball missing
+	depends on BR2_ENABLE_LOCALE && BR2_TOOLCHAIN_BUILDROOT && BROKEN # tarball missing
 	help
 	  Instead of generating the locale data locally you can optionally
 	  download a pregenerated set of locales.
@@ -142,7 +142,7 @@ config BR2_GCC_CROSS_CXX
 
 config BR2_INSTALL_LIBSTDCPP
 	bool "Build/install c++ compiler and libstdc++?"
-	select BR2_LARGEFILE if (!BR2_GCC_SUPPORTS_SYSROOT && BR2_TOOLCHAIN_SOURCE)
+	select BR2_LARGEFILE if (!BR2_GCC_SUPPORTS_SYSROOT && BR2_TOOLCHAIN_BUILDROOT)
 	select BR2_GCC_CROSS_CXX
 	help
 	  If you are building your own toolchain and want to build and install
@@ -157,7 +157,7 @@ config BR2_TARGET_OPTIMIZATION
 	help
 	  Optimizations to use when building for the target host.
 
-if BR2_TOOLCHAIN_SOURCE
+if BR2_TOOLCHAIN_BUILDROOT
 source "toolchain/elf2flt/Config.in"
 source "toolchain/mklibs/Config.in"
 source "toolchain/sstrip/Config.in"
