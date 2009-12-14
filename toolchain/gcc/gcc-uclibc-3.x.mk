@@ -24,28 +24,15 @@ ifneq ($(BR2_TOOLCHAIN_SYSROOT),y)
 
 ifneq ($(GCC_SNAP_DATE),)
  GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_VERSION)
- GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
 else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
  GCC_SITE:=ftp://www.at91.com/pub/buildroot/
- GCC_OFFICIAL_VER:=$(GCC_VERSION)
 else
  GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
- GCC_OFFICIAL_VER:=$(GCC_VERSION)
 endif
 
-GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VER).tar.bz2
-GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_OFFICIAL_VER)
-
-ifeq ($(GCC_SNAP_DATE),)
+GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
+GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)
 GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-else
-ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VER)),)
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VER)
-else
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-endif
-endif
-
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=true
 

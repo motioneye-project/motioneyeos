@@ -22,33 +22,20 @@ ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 
 ifneq ($(GCC_SNAP_DATE),)
  GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_VERSION)
- GCC_OFFICIAL_VER:=$(GCC_VERSION)-$(GCC_SNAP_DATE)
 else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
  GCC_SITE:=ftp://www.at91.com/pub/buildroot/
- GCC_OFFICIAL_VER:=$(GCC_VERSION)
 else
  GCC_SITE:=$(BR2_GNU_MIRROR)/gcc/gcc-$(GCC_VERSION)
- GCC_OFFICIAL_VER:=$(GCC_VERSION)
 endif
-
-ifeq ($(GCC_SNAP_DATE),) # Not a snapshot
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-else # Is a snapshot
-ifneq ($(wildcard toolchain/gcc/$(GCC_OFFICIAL_VERSION)),) # Snapshot patch?
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_OFFICIAL_VERSION)
-else # Normal patch to snapshot
-# Use the normal location, if the dedicated location does not exist
-GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
-endif # Snapshot patch
-endif # Not a snapshot
 
 ifneq ($(filter xtensa%,$(ARCH)),)
 include target/xtensa/patch.in
 GCC_PATCH_EXTRA:=$(call XTENSA_PATCH,gcc,$(GCC_PATCH_DIR),. ..)
 endif
 
-GCC_SOURCE:=gcc-$(GCC_OFFICIAL_VERSION).tar.bz2
-GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_OFFICIAL_VERSION)
+GCC_SOURCE:=gcc-$(GCC_VERSION).tar.bz2
+GCC_PATCH_DIR:=toolchain/gcc/$(GCC_VERSION)
+GCC_DIR:=$(TOOLCHAIN_DIR)/gcc-$(GCC_VERSION)
 GCC_CAT:=$(BZCAT)
 GCC_STRIP_HOST_BINARIES:=nope
 GCC_SRC_DIR:=$(GCC_DIR)
@@ -516,7 +503,7 @@ gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
 
 gcc-status:
-	@echo GCC_OFFICIAL_VERSION=$(GCC_OFFICIAL_VERSION)
+	@echo GCC_VERSION=$(GCC_VERSION)
 	@echo GCC_PATCH_DIR=$(GCC_PATCH_DIR)
 	@echo GCC_SITE=$(GCC_SITE)
 
