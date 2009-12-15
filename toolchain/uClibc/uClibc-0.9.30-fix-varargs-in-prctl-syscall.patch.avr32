@@ -1,0 +1,29 @@
+--- a/libc/sysdeps/linux/common/prctl.c
++++ b/libc/sysdeps/linux/common/prctl.c
+@@ -12,6 +12,24 @@
+ /* psm: including sys/prctl.h would depend on kernel headers */
+ 
+ #ifdef __NR_prctl
+-extern int prctl (int, long, long, long, long);
+-_syscall5(int, prctl, int, option, long, arg2, long, arg3, long, arg4, long, arg5)
++#define __NR___syscall_prctl	__NR_prctl
++static inline _syscall5(int, __syscall_prctl, int, option, long, arg2, long, arg3, long,
++		arg4, long, arg5);
++
++int prctl(int option, ...) {
++	long arg2 = 0;
++	long arg3 = 0;
++	long arg4 = 0;
++	long arg5 = 0;
++	va_list ap;
++
++	va_start(ap, option);
++	arg2 = va_arg(ap, long);
++	arg3 = va_arg(ap, long);
++	arg4 = va_arg(ap, long);
++	arg5 = va_arg(ap, long);
++	va_end(ap);
++
++	return __syscall_prctl(option, arg2, arg3, arg4, arg5);
++}
+ #endif
