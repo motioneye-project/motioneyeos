@@ -308,6 +308,7 @@ if ! which makeinfo > /dev/null ; then \
 	/bin/echo -e "\n\nMost likely some packages will fail to build their documentation"
 	echo "Either install 'makeinfo' on your host or fix the respective packages."
 	echo "Makeinfo can usually be found in the texinfo package for your host."
+	exit 1
 else
 	echo "makeinfo installed:				Ok"
 fi
