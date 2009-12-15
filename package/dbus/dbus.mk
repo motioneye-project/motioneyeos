@@ -64,7 +64,7 @@ HOST_DBUS_CONF_OPT = \
 		--with-xml=expat
 
 # dbus for the host
-DBUS_HOST_INTROSPECT:=$(DBUS_HOST_DIR)/introspect.xml
+DBUS_HOST_INTROSPECT=$(HOST_DBUS_DIR)/introspect.xml
 
 HOST_DBUS_GEN_INTROSPECT = \
 	$(HOST_DIR)/usr/bin/dbus-daemon --introspect > $(DBUS_HOST_INTROSPECT)
