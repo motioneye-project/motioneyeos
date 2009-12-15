@@ -45,7 +45,7 @@ GCC_NO_MPFR:=y
 endif
 
 # Branding works on >= 4.3
-ifneq ($(findstring x4.2.,x$(GCC_VERSION)),x4.2)
+ifneq ($(findstring x4.2.,x$(GCC_VERSION)),x4.2.)
 BUILDROOT_VERSION_STRING=$(call qstrip,$(BR2_VERSION))
 EXTRA_GCC_CONFIG_OPTIONS+=--with-pkgversion="Buildroot $(BUILDROOT_VERSION_STRING)" \
 	--with-bugurl="http://bugs.buildroot.net/"
