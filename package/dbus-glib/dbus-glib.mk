@@ -25,7 +25,7 @@ DBUS_GLIB_CONF_OPT = --localstatedir=/var \
 
 DBUS_GLIB_DEPENDENCIES = host-pkg-config dbus host-dbus host-dbus-glib libglib2 expat
 
-HOST_DBUS_GLIB_DEPENDENCIES = host-dbus host-exapt host-libglib2
+HOST_DBUS_GLIB_DEPENDENCIES = host-dbus host-expat host-libglib2
 
 HOST_DBUS_GLIB_CONF_OPT = \
 		--disable-tests \
