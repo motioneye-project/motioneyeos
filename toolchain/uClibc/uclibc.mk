@@ -16,8 +16,6 @@ UCLIBC_VERSION:=$(call qstrip,$(BR2_UCLIBC_VERSION_STRING))
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
-else ifeq ($(findstring avr32,$(UCLIBC_VERSION)),avr32)
-UCLIBC_SITE:=ftp://www.at91.com/pub/buildroot/
 else
 UCLIBC_SITE:=http://www.uclibc.org/downloads
 endif
