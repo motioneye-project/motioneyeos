@@ -1,0 +1,35 @@
+[PATCH] hal: add missing includes
+
+- hald/linux/classdev.c needs sys/socket.h for struct sockaddr
+- hald/linux/addons/addon-storage.c needs limits.h for INT_MAX
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ hald/linux/addons/addon-storage.c |    1 +
+ hald/linux/classdev.c             |    1 +
+ 2 files changed, 2 insertions(+)
+
+Index: hal-0.5.8/hald/linux/addons/addon-storage.c
+===================================================================
+--- hal-0.5.8.orig/hald/linux/addons/addon-storage.c
++++ hal-0.5.8/hald/linux/addons/addon-storage.c
+@@ -29,6 +29,7 @@
+ 
+ #include <errno.h>
+ #include <fcntl.h>
++#include <limits.h>
+ #include <linux/cdrom.h>
+ #include <linux/fs.h>
+ #include <mntent.h>
+Index: hal-0.5.8/hald/linux/classdev.c
+===================================================================
+--- hal-0.5.8.orig/hald/linux/classdev.c
++++ hal-0.5.8/hald/linux/classdev.c
+@@ -31,6 +31,7 @@
+ 
+ #include <ctype.h>
+ #include <limits.h>
++#include <sys/socket.h>
+ #include <linux/types.h>
+ #include <net/if_arp.h> /* for ARPHRD_... */
+ #include <stdlib.h>
