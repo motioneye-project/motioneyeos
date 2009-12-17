@@ -16,12 +16,3 @@ LIBVORBIS_CONF_OPT = --disable-oggtest
 LIBVORBIS_DEPENDENCIES = host-pkg-config libogg
 
 $(eval $(call AUTOTARGETS,package/multimedia,libvorbis))
-
-############################################################
-#
-# Toplevel Makefile options
-#
-############################################################
-ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
-TARGETS+=libvorbis
-endif
