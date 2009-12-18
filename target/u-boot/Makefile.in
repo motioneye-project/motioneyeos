@@ -14,8 +14,7 @@ U_BOOT_CAT:=$(BZCAT)
 U_BOOT_BIN:=u-boot.bin
 U_BOOT_TARGET_BIN:=u-boot-$(U_BOOT_VERSION)-$(DATE).bin
 
-U_BOOT_TOOLS_BIN:=mkimage
-U_BOOT_TOOLS:=$(STAGING_DIR)/usr/bin/$(U_BOOT_TOOLS_BIN)
+U_BOOT_TOOLS:=$(HOST_DIR)/usr/bin/mkimage
 MKIMAGE:=$(U_BOOT_TOOLS)
 U_BOOT_AUTOSCRIPT=$(BINARIES_DIR)/autoscript
 
@@ -170,7 +169,7 @@ $(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
 
 $(U_BOOT_TOOLS): $(U_BOOT_DIR)/$(U_BOOT_BIN)
 	mkdir -p $(@D)
-	cp -dpf $(U_BOOT_DIR)/tools/$(U_BOOT_TOOLS_BIN) $(STAGING_DIR)/usr/bin/
+	cp -dpf $(U_BOOT_DIR)/tools/mkimage $@
 
 $(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/$(U_BOOT_BIN)
 	mkdir -p $(@D)
