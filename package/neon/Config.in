@@ -12,6 +12,12 @@ config BR2_PACKAGE_NEON_ZLIB
 	help
 	  build with ZLIB support
 
+config BR2_PACKAGE_NEON_SSL
+	bool "SSL support"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  build with SSL support
+
 choice
 	prompt "XML Support"
 	default BR2_PACKAGE_NEON_NOXML

@@ -22,6 +22,12 @@ NEON_DEPENDENCIES+=zlib
 else
 NEON_CONF_OPT+=--without-zlib
 endif
+ifeq ($(BR2_PACKAGE_NEON_SSL),y)
+NEON_CONF_OPT+=--with-ssl
+NEON_DEPENDENCIES+=openssl
+else
+NEON_CONF_OPT+=--without-ssl
+endif
 ifeq ($(BR2_PACKAGE_NEON_EXPAT),y)
 NEON_CONF_OPT+=--with-expat=$(STAGING_DIR)/usr/lib/libexpat.la
 NEON_CONF_OPT+=--with-libxml2=no
