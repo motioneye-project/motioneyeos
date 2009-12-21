@@ -259,6 +259,7 @@ source "package/qt/Config.sql.in"
 if BR2_PACKAGE_QT_GUI_MODULE
 source "package/qt/Config.gfx.in"
 source "package/qt/Config.mouse.in"
+source "package/qt/Config.keyboard.in"
 endif
 
 config BR2_PACKAGE_QT_PHONON

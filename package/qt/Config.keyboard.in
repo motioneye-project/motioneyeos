@@ -1,0 +1,21 @@
+menu "Keyboard drivers"
+
+config BR2_PACKAGE_QT_KEYBOARD_TTY
+	bool "tty"
+
+config BR2_PACKAGE_QT_KEYBOARD_USB
+	bool "usb"
+
+config BR2_PACKAGE_QT_KEYBOARD_SL5000
+	bool "sl5000"
+
+config BR2_PACKAGE_QT_KEYBOARD_YOPY
+	bool "yopy"
+
+config BR2_PACKAGE_QT_KEYBOARD_VR41XX
+	bool "vr41xx"
+
+config BR2_PACKAGE_QT_KEYBOARD_QVFB
+	bool "qvfb"
+
+endmenu

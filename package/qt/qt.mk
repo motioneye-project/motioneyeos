@@ -147,6 +147,38 @@ else
 QT_CONFIGURE += -no-mouse-qvfb
 endif
 
+### Keyboard drivers
+ifeq ($(BR2_PACKAGE_QT_KEYBOARD_TTY),y)
+QT_CONFIGURE += -qt-kbd-tty
+else
+QT_CONFIGURE += -no-kbd-tty
+endif
+ifeq ($(BR2_PACKAGE_QT_KEYBOARD_USB),y)
+QT_CONFIGURE += -qt-kbd-usb
+else
+QT_CONFIGURE += -no-kbd-usb
+endif
+ifeq ($(BR2_PACKAGE_QT_KEYBOARD_SL5000),y)
+QT_CONFIGURE += -qt-kbd-sl5000
+else
+QT_CONFIGURE += -no-kbd-sl5000
+endif
+ifeq ($(BR2_PACKAGE_QT_KEYBOARD_YOPY),y)
+QT_CONFIGURE += -qt-kbd-yopy
+else
+QT_CONFIGURE += -no-kbd-yopy
+endif
+ifeq ($(BR2_PACKAGE_QT_KEYBOARD_VR41XX),y)
+QT_CONFIGURE += -qt-kbd-vr41xx
+else
+QT_CONFIGURE += -no-kbd-vr41xx
+endif
+ifeq ($(BR2_PACKAGE_QT_KEYBOARD_QVFB),y)
+QT_CONFIGURE += -qt-kbd-qvfb
+else
+QT_CONFIGURE += -no-kbd-qvfb
+endif
+
 ifeq ($(BR2_PACKAGE_QT_DEBUG),y)
 QT_CONFIGURE+= -debug
 else
