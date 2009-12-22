@@ -1,16 +1,17 @@
 
-comment "Note that xfsprogs needs a toolchain with UCLIBC_SV4_DEPRECATED enabled"
+comment "Note that xfsprogs needs a toolchain with UCLIBC_SV4_DEPRECATED and UCLIBC_HAS_OBSOLETE_BSD_SIGNAL enabled"
 	depends on BR2_PACKAGE_XFSPROGS
+
+comment "xfsprogs requires a toolchain with LARGEFILE support"
+        depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_XFSPROGS
 	bool "xfsprogs"
 	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_E2FSPROGS
+	select BR2_PACKAGE_E2FSPROGS_LIBUUID
 	help
 	  The XFS file system utilities and libraries
 
 	  http://oss.sgi.com/projects/xfs/
-
-comment "xfssprogs requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
 

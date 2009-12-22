@@ -3,10 +3,9 @@
 # xfsprogs
 #
 #############################################################
-XFSPROGS_VERSION:=2.10.2
-XFSPROGS_SOURCE=xfsprogs_$(XFSPROGS_VERSION)-1.tar.gz
+XFSPROGS_VERSION:=3.0.3
+XFSPROGS_SOURCE=xfsprogs-$(XFSPROGS_VERSION).tar.gz
 XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/cmd_tars
-#XFSPROGS_SITE=ftp://oss.sgi.com/projects/xfs/previous/cmd_tars/
 XFSPROGS_DIR=$(BUILD_DIR)/xfsprogs-$(XFSPROGS_VERSION)
 XFSPROGS_CAT:=$(ZCAT)
 XFSPROGS_BINARY:=mkfs/mkfs.xfs
@@ -38,7 +37,6 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 		$(TARGET_CONFIGURE_ARGS) \
 		CPPFLAGS="-I$(E2FSPROGS_DIR)/lib" \
 		LDFLAGS="-L$(E2FSPROGS_DIR)/lib" \
-		LIBTOOL=$(LIBTOOL_DIR)/libtool \
 		INSTALL_USER=$(shell whoami) \
 		INSTALL_GROUP=$(shell groups | cut -d" " -f1) \
 		./configure $(QUIET) \
@@ -46,6 +44,7 @@ $(XFSPROGS_DIR)/.configured: $(XFSPROGS_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--exec-prefix=/ \
+		--enable-gettext=no \
 		$(XFSPROGS_CONFIG_SHARED) \
 	)
 	touch $(XFSPROGS_DIR)/.configured
@@ -78,7 +77,7 @@ $(TARGET_DIR)/$(XFSPROGS_TARGET_BINARY): $(XFSPROGS_DIR)/$(XFSPROGS_BINARY)
 	rm -rf $(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 	touch -c $(TARGET_DIR)/$(XFSPROGS_TARGET_BINARY)
 
-xfsprogs: e2fsprogs libtool-cross $(TARGET_DIR)/$(XFSPROGS_TARGET_BINARY)
+xfsprogs: e2fsprogs $(TARGET_DIR)/$(XFSPROGS_TARGET_BINARY)
 
 xfsprogs-clean:
 	rm -f $(TARGET_DIR)/bin/xfs_* $(TARGET_DIR)/sbin/xfs_* $(TARGET_DIR)/sbin/*.xfs
