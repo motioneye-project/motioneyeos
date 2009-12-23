@@ -1,0 +1,22 @@
+diff -Nura mtd-utils-1.2.0/recv_image.c mtd-utils-1.2.0-noerror/recv_image.c
+--- mtd-utils-1.2.0/recv_image.c	2008-06-27 13:21:28.000000000 -0300
++++ mtd-utils-1.2.0-noerror/recv_image.c	2009-12-23 10:19:22.000000000 -0300
+@@ -2,7 +2,6 @@
+ #define _XOPEN_SOURCE 500
+ 
+ #include <errno.h>
+-#include <error.h>
+ #include <stdio.h>
+ #define __USE_GNU
+ #include <netdb.h>
+diff -Nura mtd-utils-1.2.0/serve_image.c mtd-utils-1.2.0-noerror/serve_image.c
+--- mtd-utils-1.2.0/serve_image.c	2008-06-27 13:21:28.000000000 -0300
++++ mtd-utils-1.2.0-noerror/serve_image.c	2009-12-23 10:19:33.000000000 -0300
+@@ -3,7 +3,6 @@
+ #include <time.h>
+ 
+ #include <errno.h>  	
+-#include <error.h> 	
+ #include <netdb.h> 	
+ #include <stdio.h> 	
+ #include <stdlib.h> 	

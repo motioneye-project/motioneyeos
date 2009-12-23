@@ -3,7 +3,7 @@
 # mtd provides jffs2 utilities
 #
 #############################################################
-MTD_VERSION:=1.1.0
+MTD_VERSION:=1.2.0
 MTD_SOURCE:=mtd-utils-$(MTD_VERSION).tar.bz2
 MTD_SITE:=ftp://ftp.infradead.org/pub/mtd-utils
 MTD_HOST_DIR:= $(TOOLCHAIN_DIR)/mtd_orig
