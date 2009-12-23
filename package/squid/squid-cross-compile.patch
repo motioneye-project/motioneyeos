@@ -1,0 +1,31 @@
+diff -Nura squid-3.0.STABLE17/configure.in squid-3.0.STABLE17.cross/configure.in
+--- squid-3.0.STABLE17/configure.in	2009-07-26 09:24:48.000000000 -0300
++++ squid-3.0.STABLE17.cross/configure.in	2009-07-30 11:54:28.000000000 -0300
+@@ -1895,6 +1895,10 @@
+ 	;;
+ esac
+ 
++dnl Define CXX_FOR_BUILD
++CXX_FOR_BUILD="$CXX_FOR_BUILD"
++AC_SUBST(CXX_FOR_BUILD)
++
+ dnl Check for programs
+ AC_PROG_CPP
+ AC_PROG_INSTALL
+diff -Nura squid-3.0.STABLE17/src/Makefile.am squid-3.0.STABLE17.cross/src/Makefile.am
+--- squid-3.0.STABLE17/src/Makefile.am	2009-07-26 09:24:46.000000000 -0300
++++ squid-3.0.STABLE17.cross/src/Makefile.am	2009-07-30 11:55:08.000000000 -0300
+@@ -1034,6 +1034,13 @@
+ squid.conf.default: cf_parser.h
+ 	true
+ 
++CXX_FOR_BUILD ?= @CXX_FOR_BUILD@
++
++cf_gen$(EXEEXT): $(cf_gen_SOURCES) $(cf_gen_DEPENDENCIES)
++	$(CXX_FOR_BUILD) -o $@ $(srcdir)/cf_gen.cc \
++		$(top_srcdir)/lib/util.c $(top_srcdir)/lib/assert.c \
++		-DNDEBUG -DBUILD_HOST_TOOL ${INCLUDES}
++
+ cf_parser.h: cf.data cf_gen$(EXEEXT)
+ 	./cf_gen cf.data $(srcdir)/cf.data.depend
+ 

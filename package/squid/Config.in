@@ -1,0 +1,10 @@
+comment "Squid requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_SQUID
+	bool "squid"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Caching proxy for the Web supporting HTTP, HTTPS, FTP, and more.
+
+	  http://www.squid-cache.org/

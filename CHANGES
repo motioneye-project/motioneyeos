@@ -5,7 +5,7 @@
 
 	X.org updated to 7.5.
 
-	New packages: librsync, lmbench
+	New packages: librsync, lmbench, squid
 
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
 	freetype, iperf, libglib2, libpng, mdadm, memstat, mtd-utils,
@@ -13,6 +13,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#513: Add new squid package
 	#661: lmbench: new package
 	#800: [PATCH] iperf update to 2.0.4
 	#805: [PATCH] mdadm - version update
