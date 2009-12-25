@@ -1,0 +1,37 @@
+Avoid looking up files or directories that this package provides
+Included upstream
+diff -u --new-file --recursive rpm-5.2.0_vanilla/lib/depends.c rpm-5.2.0_parentdir-vs-requires/lib/depends.c
+--- rpm-5.2.0_vanilla/lib/depends.c	2009-05-23 01:23:46.000000000 +0000
++++ rpm-5.2.0_parentdir-vs-requires/lib/depends.c	2009-09-22 17:00:24.880956271 +0000
+@@ -2095,6 +2095,7 @@
+     rpmtsi qi; rpmte q;
+     tsortInfo tsi;
+     nsType NSType = rpmdsNSType(requires);
++    const char * N = rpmdsN(requires);
+     fnpyKey key;
+     int teType = rpmteType(p);
+     alKey pkgKey;
+@@ -2128,6 +2129,23 @@
+ 	break;
+     }
+ 
++    /* Avoid looking up files/directories that are "owned" by _THIS_ package. */
++    if (*N == '/') {
++    rpmfi fi = rpmteFI(p, RPMTAG_BASENAMES);
++    int bingo = 0;
++
++    fi = rpmfiInit(fi, 0);
++    while (rpmfiNext(fi) >= 0) {
++        const char * fn = rpmfiFN(fi);
++        if (strcmp(N, fn))
++        continue;
++        bingo = 1;
++        break;
++    }
++    if (bingo)
++        return 0;
++    }
++
+     pkgKey = RPMAL_NOMATCH;
+     key = rpmalSatisfiesDepend(al, requires, &pkgKey);
+ 
