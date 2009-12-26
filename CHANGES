@@ -4,7 +4,7 @@
 
 	New packages: libcdaudio, libdvdnav, libdvdread, hostapd, tcpreplay
 
-	Updated/fixed packages: at, autoconf, bind, binutils, bootutils,
+	Updated/fixed packages: at, autoconf, bash, bind, binutils, bootutils,
 	busybox, directfb, dnsmasq, e2fsprogs, gstreamer, gperf,
 	gst-plugins-bad, flex, hal, iptables, iw, jpeg, kismet, libfuse,
 	libpcap, libungif, lighttpd, mesa, mpg123, mtd-utils, neon,
