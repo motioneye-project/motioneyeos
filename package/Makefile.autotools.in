@@ -140,12 +140,13 @@ define LIBTOOL_PATCH_HOOK
 	$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES" -a \
 	"$$($$(PKG)_AUTORECONF)" != "YES"; then \
 	for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
-		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
+		toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool.patch; \
 		done \
 	fi
 endef
 
-ifeq ($($(2)_LIBTOOL_PATCH),YES)
+# default values are not evaluated yet, so don't rely on this defaulting to YES
+ifneq ($($(2)_LIBTOOL_PATCH),NO)
 $(2)_POST_PATCH_HOOKS += LIBTOOL_PATCH_HOOK
 endif
 
