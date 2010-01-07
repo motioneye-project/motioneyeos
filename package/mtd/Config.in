@@ -31,11 +31,6 @@ config BR2_PACKAGE_MTD_DOCFDISK
 config BR2_PACKAGE_MTD_DOC_LOADBIOS
 	bool "doc_loadbios"
 
-config BR2_PACKAGE_MTD_ERASE
-	bool "erase"
-	default y
-	depends on BR2_PACKAGE_MTD_20050122
-
 config BR2_PACKAGE_MTD_FLASHCP
 	bool "flashcp"
 	default y
@@ -56,6 +51,12 @@ config BR2_PACKAGE_MTD_FLASH_LOCK
 	bool "flash_lock"
 	default y
 
+config BR2_PACKAGE_MTD_FLASH_OTP_DUMP
+	bool "flash_otp_dump"
+
+config BR2_PACKAGE_MTD_FLASH_OTP_INFO
+	bool "flash_otp_info"
+
 config BR2_PACKAGE_MTD_FLASH_UNLOCK
 	bool "flash_unlock"
 	default y
@@ -72,18 +73,9 @@ config BR2_PACKAGE_MTD_JFFS2DUMP
 	bool "jffs2dump"
 	default y
 
-config BR2_PACKAGE_MTD_JFFS3DUMP
-	bool "jffs3dump"
-	default y
-	depends on BR2_PACKAGE_MTD_20050122
-
 config BR2_PACKAGE_MTD_MKFSJFFS2
 	bool "mkfs.jffs2"
 	default y
-
-config BR2_PACKAGE_MTD_MKFSJFFS
-	bool "mkfs.jffs"
-	depends on BR2_PACKAGE_MTD_20050122 || BR2_PACKAGE_MTD_20061007 || BR2_PACKAGE_MTD_UTILS
 
 config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
@@ -96,17 +88,28 @@ config BR2_PACKAGE_MTD_NANDDUMP
 config BR2_PACKAGE_MTD_NANDTEST
 	bool "nandtest"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
 config BR2_PACKAGE_MTD_NANDWRITE
 	bool "nandwrite"
 	default y
 
+config BR2_PACKAGE_MTD_NFTLDUMP
+	bool "nftldump"
+
 config BR2_PACKAGE_MTD_NFTL_FORMAT
 	bool "nftl_format"
 
-config BR2_PACKAGE_MTD_NFTLDUMP
-	bool "nftldump"
+config BR2_PACKAGE_MTD_RECV_IMAGE
+	bool "recv_image"
+
+config BR2_PACKAGE_MTD_RFDDUMP
+	bool "rfddump"
+
+config BR2_PACKAGE_MTD_RFDFORMAT
+	bool "rfdformat"
+
+config BR2_PACKAGE_MTD_SERVE_IMAGE
+	bool "serve_image"
 
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
