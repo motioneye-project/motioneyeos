@@ -43,10 +43,28 @@ comma:=,
 empty:=
 space:=$(empty) $(empty)
 
+ifneq ("$(origin O)", "command line")
+O:=output
+CONFIG_DIR:=$(TOPDIR)
+else
+# other packages might also support Linux-style out of tree builds
+# with the O=<dir> syntax (E.G. Busybox does). As make automatically
+# forwards command line variable definitions those packages get very
+# confused. Fix this by telling make to not do so
+MAKEOVERRIDES =
+# strangely enough O is still passed to submakes with MAKEOVERRIDES
+# (with make 3.81 atleast), the only thing that changes is the output
+# of the origin function (command line -> environment).
+# Unfortunately some packages don't look at origin (E.G. uClibc 0.9.31+)
+# To really make O go away, we have to override it.
+override O:=$(O)
+CONFIG_DIR:=$(O)
+endif
+
 # $(shell find . -name *_defconfig |sed 's/.*\///')
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
--include .config
+-include $(CONFIG_DIR)/.config
 endif
 
 # Override BR2_DL_DIR if shell variable defined
@@ -134,6 +152,16 @@ ifndef FCFLAGS_FOR_BUILD
 FCFLAGS_FOR_BUILD:=-g -O2
 endif
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTFC HOSTLD
+
+# bash prints the name of the directory on 'cd <dir>' if CDPATH is
+# set, so unset it here to not cause problems. Notice that the export
+# line doesn't affect the environment of $(shell ..) calls, so
+# explictly throw away any output from 'cd' here.
+export CDPATH:=
+BASE_DIR := $(shell mkdir -p $(O) && cd $(O) >/dev/null && pwd)
+$(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
+
+BUILD_DIR:=$(BASE_DIR)/build
 
 
 ifeq ($(BR2_HAVE_DOT_CONFIG),y)
@@ -225,36 +253,10 @@ ZCAT:=$(call qstrip,$(BR2_ZCAT))
 BZCAT:=$(call qstrip,$(BR2_BZCAT))
 TAR_OPTIONS=$(call qstrip,$(BR2_TAR_OPTIONS)) -xf
 
-ifneq ("$(origin O)", "command line")
-O:=output
-else
-# other packages might also support Linux-style out of tree builds
-# with the O=<dir> syntax (E.G. Busybox does). As make automatically
-# forwards command line variable definitions those packages get very
-# confused. Fix this by telling make to not do so
-MAKEOVERRIDES =
-# strangely enough O is still passed to submakes with MAKEOVERRIDES
-# (with make 3.81 atleast), the only thing that changes is the output
-# of the origin function (command line -> environment).
-# Unfortunately some packages don't look at origin (E.G. uClibc 0.9.31+)
-# To really make O go away, we have to override it.
-override O:=$(O)
-endif
-
-# bash prints the name of the directory on 'cd <dir>' if CDPATH is
-# set, so unset it here to not cause problems. Notice that the export
-# line doesn't affect the environment of $(shell ..) calls, so
-# explictly throw away any output from 'cd' here.
-export CDPATH:=
-BASE_DIR := $(shell mkdir -p $(O) && cd $(O) >/dev/null && pwd)
-$(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
-
 DL_DIR=$(call qstrip,$(BR2_DL_DIR))
 ifeq ($(DL_DIR),)
 DL_DIR:=$(TOPDIR)/dl
 endif
-
-BUILD_DIR:=$(BASE_DIR)/build
 
 GNU_TARGET_SUFFIX:=-$(call qstrip,$(BR2_GNU_TARGET_SUFFIX))
 
@@ -285,7 +287,7 @@ include package/Makefile.in
 all: world
 
 # In this section, we need .config
-include .config.cmd
+include $(CONFIG_DIR)/.config.cmd
 
 # We also need the various per-package makefiles, which also add
 # each selected package to TARGETS if that package was selected
@@ -332,10 +334,10 @@ TARGETS_ALL:=$(patsubst %,__real_tgt_%,$(TARGETS))
 # all targets depend on the crosscompiler and it's prerequisites
 $(TARGETS_ALL): __real_tgt_%: $(BASE_TARGETS) %
 
-$(BR2_DEPENDS_DIR): .config
-	rm -rf $@
-	mkdir -p $(@D)
-	cp -dpRf $(CONFIG)/buildroot-config $@
+$(BR2_DEPENDS_DIR): $(CONFIG_DIR)/.config
+#	rm -rf $@
+#	mkdir -p $(@D)
+#	cp -dpRf $(CONFIG)/buildroot-config $@
 
 dirs: $(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BR2_DEPENDS_DIR) $(BINARIES_DIR) $(STAMP_DIR)
@@ -443,7 +445,7 @@ show-targets:
 
 ifeq ($(BR2_CONFIG_CACHE),y)
 # drop configure cache if configuration is changed
-$(BUILD_DIR)/tgt-config.cache: .config
+$(BUILD_DIR)/tgt-config.cache: $(CONFIG_DIR)/.config
 	rm -f $@
 	touch $@
 
@@ -461,99 +463,99 @@ HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
 $(CONFIG)/%onf:
-	mkdir -p $(CONFIG)/buildroot-config
+	mkdir -p $(BUILD_DIR)/buildroot-config
 	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) $(notdir $@)
-	-@if [ ! -f .config ]; then \
-		cp $(CONFIG_DEFCONFIG) .config; \
+	-@if [ ! -f $(CONFIG_DIR)/.config ]; then \
+		cp $(CONFIG_DEFCONFIG) $(CONFIG_DIR)/.config; \
 	fi
 
 xconfig: $(CONFIG)/qconf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@if ! KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/qconf $(CONFIG_CONFIG_IN); then \
-		test -f .config.cmd || rm -f .config; \
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/qconf $(CONFIG_CONFIG_IN); then \
+		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
 gconfig: $(CONFIG)/gconf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@if ! KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/gconf $(CONFIG_CONFIG_IN); then \
-		test -f .config.cmd || rm -f .config; \
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/gconf $(CONFIG_CONFIG_IN); then \
+		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
 menuconfig: $(CONFIG)/mconf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@if ! KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/mconf $(CONFIG_CONFIG_IN); then \
-		test -f .config.cmd || rm -f .config; \
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/mconf $(CONFIG_CONFIG_IN); then \
+		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
 config: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/conf $(CONFIG_CONFIG_IN)
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf $(CONFIG_CONFIG_IN)
 
 oldconfig: $(CONFIG)/conf
-	mkdir -p $(CONFIG)/buildroot-config
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+	mkdir -p $(BUILD_DIR)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
 
 randconfig: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
 
 allyesconfig: $(CONFIG)/conf
-	cat $(CONFIG_DEFCONFIG) > .config
-	@mkdir -p $(CONFIG)/buildroot-config
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+	cat $(CONFIG_DEFCONFIG) > $(CONFIG_DIR)/.config
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
 
 allnoconfig: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
 
 randpackageconfig: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@grep -v BR2_PACKAGE_ .config > .config.nopkg
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		KCONFIG_ALLCONFIG=.config.nopkg \
-		$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
-	@rm -f .config.nopkg
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		KCONFIG_ALLCONFIG=$(CONFIG_DIR)/.config.nopkg \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
+	@rm -f $(CONFIG_DIR)/.config.nopkg
 
 allyespackageconfig: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@grep -v BR2_PACKAGE_ .config > .config.nopkg
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		KCONFIG_ALLCONFIG=.config.nopkg \
-		$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
-	@rm -f .config.nopkg
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		KCONFIG_ALLCONFIG=$(CONFIG_DIR)/.config.nopkg \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+	@rm -f $(CONFIG_DIR)/.config.nopkg
 
 allnopackageconfig: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@grep -v BR2_PACKAGE_ .config > .config.nopkg
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		KCONFIG_ALLCONFIG=.config.nopkg \
-		$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
-	@rm -f .config.nopkg
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		KCONFIG_ALLCONFIG=$(CONFIG_DIR)/.config.nopkg \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
+	@rm -f $(CONFIG_DIR)/.config.nopkg
 
 defconfig: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
-	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
-		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
-		$(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
 
 # check if download URLs are outdated
 source-check: allyesconfig
@@ -577,15 +579,15 @@ endif
 ifeq ($(O),output)
 	rm -rf $(O)
 endif
-	rm -rf .config .config.old .config.cmd .auto.deps
-	-$(MAKE) -C $(CONFIG) clean
+	rm -rf $(CONFIG_DIR)/.config $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/.config.cmd $(CONFIG_DIR)/.auto.deps
+	-$(MAKE) -C $(CONFIG) distclean
 
 flush:
 	rm -f $(BUILD_DIR)/tgt-config.cache
 
 %_defconfig: $(TOPDIR)/configs/%_defconfig
-	cp $^ .config
-	@$(MAKE) oldconfig
+	cp $^ $(CONFIG_DIR)/.config
+	@$(MAKE) O=$(O) oldconfig
 
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 

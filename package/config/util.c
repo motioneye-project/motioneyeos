@@ -51,17 +51,26 @@ static char* br2_symbol_printer(const char * const in)
 }
 
 /* write dependencies of the infividual config-symbols */
-static int write_make_deps(const char *name)
+int write_make_deps(const char *name)
 {
+	const char *str;
+	char buf[PATH_MAX+1];
 	struct menu *menu;
 	struct symbol *sym;
 	struct property *prop, *p;
 	unsigned done;
-	const char * const name_tmp = "..make.deps.tmp";
 	FILE *out;
 	if (!name)
 		name = ".auto.deps";
-	out = fopen(name_tmp, "w");
+
+	str = strrchr(name, '/');
+	memset(buf, 0, PATH_MAX+1);
+	if(str)
+	{
+		strncpy(buf, name, str - name + 1);
+	}
+	strcat(buf, "..make.deps.tmp");
+	out = fopen(buf, "w");
 	if (!out)
 		return 1;
 	fprintf(out, "# ATTENTION! This does not handle 'depends', just 'select'! \n"
@@ -120,7 +129,7 @@ next:
 		}
 	}
 	fclose(out);
-	rename(name_tmp, name);
+	rename(buf, name);
 	printf(_("#\n"
 		 "# make dependencies written to %s\n"
 		 "# ATTENTION buildroot devels!\n"
@@ -132,6 +141,8 @@ next:
 /* write a dependency file as used by kbuild to track dependencies */
 int file_write_dep(const char *name)
 {
+	const char *str;
+	char buf[PATH_MAX+1];
 	struct symbol *sym, *env_sym;
 	struct expr *e;
 	struct file *file;
@@ -139,7 +150,16 @@ int file_write_dep(const char *name)
 
 	if (!name)
 		name = ".kconfig.d";
-	out = fopen("..config.tmp", "w");
+
+	str = strrchr(name, '/');
+	memset(buf, 0, PATH_MAX+1);
+	if(str)
+	{
+		strncpy(buf, name, str - name + 1);
+	}
+	strcat(buf, "..config.tmp");
+
+	out = fopen(buf, "w");
 	if (!out)
 		return 1;
 	fprintf(out, "deps_config := \\\n");
@@ -170,8 +190,7 @@ int file_write_dep(const char *name)
 
 	fprintf(out, "\n$(deps_config): ;\n");
 	fclose(out);
-	rename("..config.tmp", name);
-	return write_make_deps(NULL);
+	rename(buf, name);
 }
 
 

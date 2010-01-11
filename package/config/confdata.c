@@ -423,8 +423,17 @@ int conf_write(const char *name)
 				basename = conf_get_configname();
 		} else
 			basename = name;
-	} else
+	} else {
+		char *slash;
+
 		basename = conf_get_configname();
+		if((slash = strrchr(basename, '/'))) {
+			int size = slash - basename + 1;
+			memcpy(dirname, basename, size);
+			dirname[size] = 0;
+			basename = slash + 1;
+		}
+	}
 
 	sprintf(newname, "%s%s", dirname, basename);
 	env = getenv("KCONFIG_OVERWRITECONFIG");
@@ -688,19 +697,51 @@ int conf_write_autoconf(void)
 	FILE *out, *out_h;
 	time_t now;
 	int i, l;
+	char buf[PATH_MAX+1];
+	char buf2[PATH_MAX+1];
 
 	sym_clear_all_valid();
 
-	file_write_dep(".config.cmd");
+	name = conf_get_configname();
+	str = strrchr(name, '/');
+
+	memset(buf, 0, PATH_MAX+1);
+	if(str)
+	{
+		strncpy(buf, name, str - name + 1);
+	}
+	strcat(buf, ".config.cmd");
+	file_write_dep(buf);
+
+	memset(buf, 0, PATH_MAX+1);
+	if(str)
+	{
+		strncpy(buf, name, str - name + 1);
+	}
+	strcat(buf, ".auto.deps");
+	write_make_deps(buf);
 
 	if (conf_split_config())
 		return 1;
 
-	out = fopen(".tmpconfig", "w");
+	memset(buf, 0, PATH_MAX+1);
+	if(str)
+	{
+		strncpy(buf, name, str - name + 1);
+	}
+	strcat(buf, ".tmpconfig");
+	memset(buf2, 0, PATH_MAX+1);
+	if(str)
+	{
+		strncpy(buf2, name, str - name + 1);
+	}
+	strcat(buf2, ".tmpconfig.h");
+
+	out = fopen(buf, "w");
 	if (!out)
 		return 1;
 
-	out_h = fopen(".tmpconfig.h", "w");
+	out_h = fopen(buf2, "w");
 	if (!out_h) {
 		fclose(out);
 		return 1;
@@ -782,14 +823,14 @@ int conf_write_autoconf(void)
 	name = getenv("KCONFIG_AUTOHEADER");
 	if (!name)
 		name = "include/linux/autoconf.h";
-	if (rename(".tmpconfig.h", name))
+	if (rename(buf2, name))
 		return 1;
 	name = conf_get_autoconfig_name();
 	/*
 	 * This must be the last step, kbuild has a dependency on auto.conf
 	 * and this marks the successful completion of the previous steps.
 	 */
-	if (rename(".tmpconfig", name))
+	if (rename(buf, name))
 		return 1;
 
 	return 0;
