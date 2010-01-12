@@ -48,6 +48,11 @@ else
 QT_CONFIGURE+= -no-qt3support
 endif
 
+# ensure glib is built first if enabled for Qt's glib support
+ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
+QT_DEP_LIBS+=libglib2
+endif
+
 
 ### Pixel depths
 QT_PIXEL_DEPTHS := # empty
