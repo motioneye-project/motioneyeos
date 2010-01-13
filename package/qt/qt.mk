@@ -352,6 +352,16 @@ endif
 
 BR2_PACKAGE_QT_EMB_PLATFORM:=$(call qstrip,$(BR2_PACKAGE_QT_EMB_PLATFORM))
 
+# x86x86fix
+# Workaround Qt Embedded bug when crosscompiling for x86 under x86 with linux
+# host. It's unclear if this would happen on other hosts.
+ifneq ($(findstring pc-linux,$(BR2_GNU_BUILD_SUFFIX)),)
+ifneq ($(findstring x86,$(BR2_PACKAGE_QT_EMB_PLATFORM)),)
+QT_CONFIGURE+= -platform linux-g++
+endif
+endif
+# End of workaround.
+
 # Figure out what libs to install in the target
 QT_LIBS=#empty
 ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
