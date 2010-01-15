@@ -1,5 +1,7 @@
 2010.02, Not yet released:
 
+	Toolchain: uClibc 0.9.30.2
+
 	New packages: libcdaudio, libdvdnav, libdvdread, hostapd, tcpreplay
 
 	Updated/fixed packages: autoconf, bind, binutils, busybox,
