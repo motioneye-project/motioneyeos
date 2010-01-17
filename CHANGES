@@ -29,6 +29,7 @@
 	#813: Drop not very useful generic package selection options ...
 	#823: Editor backup files (~) is copied from the target_skeleton
 	#827: Bump mtd-utils package to version 1.2.0
+	#841: Build error
 
 2009.11, Released December 1st, 2009:
 
