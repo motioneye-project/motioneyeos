@@ -32,6 +32,7 @@ $(BASH_DIR)/.unpacked: $(DL_DIR)/$(BASH_SOURCE)
 $(BASH_DIR)/.configured: $(BASH_DIR)/.unpacked
 	# bash_cv_have_mbstate_t=yes
 	(cd $(BASH_DIR); rm -rf config.cache; \
+		$(AUTOCONF) && \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CCFLAGS_FOR_BUILD="$(HOST_CFLAGS)" \
@@ -92,9 +93,9 @@ endif
 # If both bash and busybox are selected, make certain bash wins
 # the fight over who gets to own the /bin/sh symlink.
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-bash: ncurses busybox $(TARGET_DIR)/$(BASH_TARGET_BINARY)
+bash: ncurses busybox host-autoconf $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 else
-bash: ncurses $(TARGET_DIR)/$(BASH_TARGET_BINARY)
+bash: ncurses host-autoconf $(TARGET_DIR)/$(BASH_TARGET_BINARY)
 endif
 
 # If both bash and busybox are selected, the /bin/sh symlink
