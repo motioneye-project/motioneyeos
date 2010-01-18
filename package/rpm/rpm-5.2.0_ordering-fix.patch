@@ -1,0 +1,45 @@
+Included upstream
+--- x/lib/depends.c	2009/05/15 13:40:58	1.445
++++ y/lib/depends.c	2009/08/22 22:12:02	1.446
+@@ -2216,9 +2216,6 @@
+ {
+     rpmte q, qprev;
+ 
+-    /* Mark the package as queued. */
+-    rpmteTSI(p)->tsi_queued = 1;
+-
+     if ((*rp) == NULL) {	/* 1st element */
+ 	/*@-dependenttrans@*/ /* FIX: double indirection */
+ 	(*rp) = (*qp) = p;
+@@ -2238,6 +2235,12 @@
+ 	/* XXX Insure removed after added. */
+ 	if (rpmteType(p) == TR_REMOVED && rpmteType(p) != rpmteType(q))
+ 	    continue;
++
++	/* XXX Follow all previous generations in the queue. */
++	if (rpmteTSI(p)->tsi_queued > rpmteTSI(q)->tsi_queued)
++	    continue;
++
++	/* XXX Within a generation, queue behind more "important". */
+ 	if (rpmteTSI(q)->tsi_qcnt <= rpmteTSI(p)->tsi_qcnt)
+ 	    break;
+     }
+@@ -2521,6 +2524,9 @@
+ 
+ 	if (rpmteTSI(p)->tsi_count != 0)
+ 	    continue;
++
++	/* Mark the package as queued. */
++	rpmteTSI(p)->tsi_queued = orderingCount + 1;
+ 	rpmteTSI(p)->tsi_suc = NULL;
+ 	addQ(p, &q, &r, prefcolor);
+ 	qlen++;
+@@ -2584,6 +2590,8 @@
+ 		(void) rpmteSetParent(p, q);
+ 		(void) rpmteSetDegree(q, rpmteDegree(q)+1);
+ 
++		/* Mark the package as queued. */
++		rpmteTSI(p)->tsi_queued = orderingCount + 1;
+ 		/* XXX TODO: add control bit. */
+ 		rpmteTSI(p)->tsi_suc = NULL;
+ /*@-nullstate@*/	/* XXX FIX: rpmteTSI(q)->tsi_suc can be NULL. */

@@ -1,14 +1,33 @@
 config BR2_PACKAGE_RPM
 	bool "rpm"
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_BEECRYPT
 	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_NEON
 	select BR2_PACKAGE_NEON_ZLIB
-	select BR2_PACKAGE_NEON_EXPAT 	if BR2_PACKAGE_EXPAT
-	select BR2_PACKAGE_NEON_LIBXML2	if BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_NEON_EXPAT if BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_NEON_LIBXML2 if BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_NEON_SSL
 	help
 	  The RPM package management system.
 
 	  http://rpm5.org
+
+config BR2_PACKAGE_RPM_BZIP2_PAYLOADS
+	bool "support for bzip2 payloads"
+	depends on BR2_PACKAGE_RPM
+	select BR2_PACKAGE_BZIP2
+	help
+	  Support for bzip2 payloads in RPM.
+
+config BR2_PACKAGE_RPM_XZ_PAYLOADS
+	bool "support for xz payloads"
+	depends on BR2_PACKAGE_RPM
+	depends on BR2_GCC_CROSS_CXX
+	help
+	  Support for xz payloads in RPM.
+
+comment "xz payload support requires a toolchain with c++ support"
+	depends on !BR2_GCC_CROSS_CXX
+
+
