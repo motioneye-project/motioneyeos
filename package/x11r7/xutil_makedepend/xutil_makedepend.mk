@@ -11,7 +11,7 @@ XUTIL_MAKEDEPEND_AUTORECONF = NO
 XUTIL_MAKEDEPEND_INSTALL_STAGING = NO
 XUTIL_MAKEDEPEND_INSTALL_TARGET = YES
 
-HOST_XUTIL_MAKEDEPEND_DEPENDENCIES = host-xproto-xproto
+HOST_XUTIL_MAKEDEPEND_DEPENDENCIES = host-xproto_xproto
 
 $(eval $(call AUTOTARGETS,package/x11r7,xutil_makedepend))
 $(eval $(call AUTOTARGETS,package/x11r7,xutil_makedepend,host))
