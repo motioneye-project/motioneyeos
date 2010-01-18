@@ -5,9 +5,9 @@
 	New packages: libcdaudio, libdvdnav, libdvdread, hostapd, tcpreplay
 
 	Updated/fixed packages: autoconf, bind, binutils, bootutils, busybox,
-	directfb, e2fsprogs, gst-plugins-bad, hal, iw, jpeg, libfuse, libpcap,
-	libungif, lighttpd, mesa, mpg123, mtd-utils, neon, pcre, qt, rpm,
-	sshfs, tremor, u-boot, usbutils, xfsprogs
+	directfb, e2fsprogs, gstreamer, gst-plugins-bad, hal, iw, jpeg,
+	libfuse, libpcap, libungif, lighttpd, mesa, mpg123, mtd-utils, neon,
+	pcre, qt, rpm, sshfs, tremor, u-boot, usbutils, xfsprogs
 
 	Issues resolved (http://bugs.uclibc.org):
 

@@ -1,0 +1,36 @@
+[PATCH] gst-arch.m4: fix unaligned detection for x86-64 when cross compiling
+
+Submitted upstream at https://bugzilla.gnome.org/show_bug.cgi?id=607317
+
+Commit 4221e9dc (amd64/x86_64 allows unaligned memory access too) added
+x86-64 to the unaligned access whitelist, but missed the trailing
+wildcards, so the test never succeeds (host is something like
+x86_64-unknown-linux-gnu).
+
+When building natively, this isn't a big deal as the AC_TRY_RUN test
+correctly detects it, but that doesn't work when cross compiling so
+the build dies with:
+
+configure: error: cannot run test program while cross compiling
+See `config.log' for more details.
+
+Fix it by adding the trailing wildcards.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: gstreamer-0.10.25/configure
+===================================================================
+--- gstreamer-0.10.25.orig/configure
++++ gstreamer-0.10.25/configure
+@@ -15655,7 +15655,7 @@ $as_echo_n "checking if unaligned memory
+         $as_echo_n "(blacklisted) " >&6
+         as_cv_unaligned_access=no
+ 	;;
+-      i?86*|x86_64|amd64|powerpc*|m68k*|cris*)
++      i?86*|x86_64*|amd64*|powerpc*|m68k*|cris*)
+         $as_echo_n "(whitelisted) " >&6
+         as_cv_unaligned_access=yes
+ 	;;
