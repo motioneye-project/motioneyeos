@@ -8,7 +8,7 @@
 	directfb, e2fsprogs, gstreamer, gst-plugins-bad, hal, iptables,
 	iw, jpeg, libfuse, libpcap, libungif, lighttpd, mesa, mpg123,
 	mtd-utils, neon, pcre, qt, rpm, sshfs, tremor, u-boot,
-	usb_modeswitch, usbutils, xfsprogs
+	usb_modeswitch, usbutils, wpa_supplicant, xfsprogs
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -33,6 +33,7 @@
 	#841: Build error
 	#913: Bump iptables to 1.4.6
 	#919: Bump usb_modeswitch package to 1.0.7
+	#925: Bump wpa_supplicant package to 0.6.10
 
 2009.11, Released December 1st, 2009:
 
