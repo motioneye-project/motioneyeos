@@ -5,9 +5,10 @@
 	New packages: libcdaudio, libdvdnav, libdvdread, hostapd, tcpreplay
 
 	Updated/fixed packages: autoconf, bind, binutils, bootutils, busybox,
-	directfb, e2fsprogs, gstreamer, gst-plugins-bad, hal, iw, jpeg,
-	libfuse, libpcap, libungif, lighttpd, mesa, mpg123, mtd-utils, neon,
-	pcre, qt, rpm, sshfs, tremor, u-boot, usbutils, xfsprogs
+	directfb, e2fsprogs, gstreamer, gst-plugins-bad, hal, iptables,
+	iw, jpeg, libfuse, libpcap, libungif, lighttpd, mesa, mpg123,
+	mtd-utils, neon, pcre, qt, rpm, sshfs, tremor, u-boot, usbutils,
+	xfsprogs
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -30,6 +31,7 @@
 	#823: Editor backup files (~) is copied from the target_skeleton
 	#827: Bump mtd-utils package to version 1.2.0
 	#841: Build error
+	#913: Bump iptables to 1.4.6
 
 2009.11, Released December 1st, 2009:
 
