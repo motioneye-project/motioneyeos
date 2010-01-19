@@ -4,17 +4,26 @@
 #
 #############################################################
 
-OPENVPN_VERSION = 2.0.9
-OPENVPN_SOURCE = openvpn-$(OPENVPN_VERSION).tar.gz
+OPENVPN_VERSION = 2.1.1
 OPENVPN_SITE = http://openvpn.net/release
-OPENVPN_DEPENDENCIES = lzo openssl
-
 OPENVPN_CONF_OPT = --enable-small
 
 ifeq ($(BR2_PTHREADS_NATIVE),y)
 	OPENVPN_CONF_OPT += --enable-threads=posix
 else
 	OPENVPN_CONF_OPT += --enable-pthread
+endif
+
+ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
+	OPENVPN_DEPENDENCIES += lzo
+else
+	OPENVPN_CONF_OPT += --disable-lzo
+endif
+
+ifeq ($(BR2_PACKAGE_OPENVPN_OPENSSL),y)
+	OPENVPN_DEPENDENCIES += openssl
+else
+	OPENVPN_CONF_OPT += --disable-crypto --disable-ssl
 endif
 
 $(eval $(call AUTOTARGETS,package,openvpn))
