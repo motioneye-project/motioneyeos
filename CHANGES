@@ -6,7 +6,7 @@
 
 	Updated/fixed packages: autoconf, bind, binutils, bootutils, busybox,
 	directfb, e2fsprogs, gstreamer, gst-plugins-bad, hal, iptables,
-	iw, jpeg, libfuse, libpcap, libungif, lighttpd, mesa, mpg123,
+	iw, jpeg, kismet, libfuse, libpcap, libungif, lighttpd, mesa, mpg123,
 	mtd-utils, neon, pcre, qt, rpm, sshfs, tremor, u-boot,
 	usb_modeswitch, usbutils, wpa_supplicant, xfsprogs
 
@@ -34,6 +34,7 @@
 	#913: Bump iptables to 1.4.6
 	#919: Bump usb_modeswitch package to 1.0.7
 	#925: Bump wpa_supplicant package to 0.6.10
+	#931: Bump kismet package to 2010-01-R1
 
 2009.11, Released December 1st, 2009:
 
