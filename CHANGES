@@ -1,6 +1,6 @@
 2010.02, Not yet released:
 
-	Toolchain: uClibc 0.9.30.2
+	Toolchain: uClibc 0.9.30.2, gcc 4.4.3
 
 	New packages: libcdaudio, libdvdnav, libdvdread, hostapd, tcpreplay
 
