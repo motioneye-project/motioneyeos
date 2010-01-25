@@ -40,6 +40,7 @@
 	#943: Bump sqlite package to 3.6.22
 	#961: Bump dnsmasq to 2.52
 	#967: Bump netstat-nat to 1.4.10
+	#973: Bump iw to 0.9.19
 
 2009.11, Released December 1st, 2009:
 
