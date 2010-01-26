@@ -5,7 +5,7 @@
 	New packages: libcdaudio, libdvdnav, libdvdread, hostapd, tcpreplay
 
 	Updated/fixed packages: autoconf, bind, binutils, bootutils, busybox,
-	directfb, e2fsprogs, gstreamer, gst-plugins-bad, hal, iptables,
+	directfb, dnsmasq, e2fsprogs, gstreamer, gst-plugins-bad, hal, iptables,
 	iw, jpeg, kismet, libfuse, libpcap, libungif, lighttpd, mesa, mpg123,
 	mtd-utils, neon, openvpn, pcre, qt, rpm, sdl, sdl_ttf, sqlite, sshfs,
 	tremor, u-boot, usb_modeswitch, usbutils, wpa_supplicant, xfsprogs
@@ -37,6 +37,7 @@
 	#931: Bump kismet package to 2010-01-R1
 	#937: Bump openvpn package to 2.1.1
 	#943: Bump sqlite package to 3.6.22
+	#961: Bump dnsmasq to 2.52
 
 2009.11, Released December 1st, 2009:
 

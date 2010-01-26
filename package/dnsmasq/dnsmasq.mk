@@ -4,7 +4,7 @@
 #
 #############################################################
 
-DNSMASQ_VERSION = 2.51
+DNSMASQ_VERSION = 2.52
 DNSMASQ_SITE = http://thekelleys.org.uk/dnsmasq
 DNSMASQ_AUTORECONF = NO
 DNSMASQ_MAKE_ENV = CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
