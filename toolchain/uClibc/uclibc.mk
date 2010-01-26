@@ -419,23 +419,10 @@ $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.confi
 		$(if $(BR2_UCLIBC_VERSION_0_9_28_3),install_dev,install_headers)
 	# Install the kernel headers to the first stage gcc include dir
 	# if necessary
-ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 	if [ ! -f $(TOOLCHAIN_DIR)/uClibc_dev/usr/include/linux/version.h ]; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
 			$(TOOLCHAIN_DIR)/uClibc_dev/usr/include/; \
 	fi
-else
-	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm \
-			$(TOOLCHAIN_DIR)/uClibc_dev/usr/include/; \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/linux \
-			$(TOOLCHAIN_DIR)/uClibc_dev/usr/include/; \
-		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ]; then \
-			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
-				$(TOOLCHAIN_DIR)/uClibc_dev/usr/include/; \
-		fi; \
-	fi
-endif
 	touch $@
 
 $(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_initial) $(LIBFLOAT_TARGET)
@@ -476,23 +463,10 @@ else
 		install_runtime install_dev
 endif
 	# Install the kernel headers to the staging dir if necessary
-ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
 			$(STAGING_DIR)/usr/include/; \
 	fi
-else
-	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm \
-			$(STAGING_DIR)/usr/include/; \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/linux \
-			$(STAGING_DIR)/usr/include/; \
-		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ]; then \
-			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
-				$(STAGING_DIR)/usr/include/; \
-		fi; \
-	fi
-endif
 	# Build the host utils. Need to add an install target...
 	$(MAKE1) -C $(UCLIBC_DIR)/utils \
 		PREFIX=$(STAGING_DIR) \
@@ -607,23 +581,10 @@ $(TARGET_DIR)/usr/lib/libc.a: $(STAGING_DIR)/usr/lib/libc.a
 		RUNTIME_PREFIX=/ \
 		install_dev
 	# Install the kernel headers to the target dir if necessary
-ifeq ($(LINUX_HEADERS_IS_KERNEL),y)
 	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ]; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
 			$(TARGET_DIR)/usr/include/; \
 	fi
-else
-	if [ ! -f $(TARGET_DIR)/usr/include/linux/version.h ]; then \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/asm \
-			$(TARGET_DIR)/usr/include/; \
-		cp -pLR $(LINUX_HEADERS_DIR)/include/linux \
-			$(TARGET_DIR)/usr/include/; \
-		if [ -d $(LINUX_HEADERS_DIR)/include/asm-generic ]; then \
-			cp -pLR $(LINUX_HEADERS_DIR)/include/asm-generic \
-				$(TARGET_DIR)/usr/include/; \
-		fi; \
-	fi
-endif
 	touch -c $@
 
 uclibc_target: cross_compiler uclibc $(TARGET_DIR)/usr/lib/libc.a $(TARGET_DIR)/usr/bin/ldd
