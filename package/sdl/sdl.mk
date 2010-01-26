@@ -41,6 +41,10 @@ else
 SDL_X11=--enable-video-x11=no
 endif
 
+ifeq ($(BR2_PACKAGE_TSLIB),y)
+SDL_DEPENDENCIES += tslib
+endif
+
 $(DL_DIR)/$(SDL_SOURCE):
 	$(call DOWNLOAD,$(SDL_SITE),$(SDL_SOURCE))
 
