@@ -23,7 +23,7 @@ LIBXSLT_CONF_OPT = --with-gnu-ld --enable-shared \
 		--without-threads \
 		--with-libxml-prefix=$(STAGING_DIR)/usr/
 
-LIBXSLT_DEPENDENCIES = $(LIBXSLT_DEPENDENCIES_EXTRA)
+LIBXSLT_DEPENDENCIES = libxml2 $(LIBXSLT_DEPENDENCIES_EXTRA)
 
 $(eval $(call AUTOTARGETS,package,libxslt))
 

@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBXSLT
 	bool "libxslt"
+	select BR2_PACKAGE_LIBXML2
 	help
 	  Install the xslt library which is used
 	  to transform XML files to other XML files.
