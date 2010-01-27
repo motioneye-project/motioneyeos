@@ -38,6 +38,7 @@ $(AT_DIR)/.configured: $(AT_DIR)/.unpacked
 		--with-atspool=/var/lib/atspool \
 		--with-daemon_username=at \
 		--with-daemon_groupname=at \
+		SENDMAIL=/usr/sbin/sendmail \
 	)
 	touch $@
 

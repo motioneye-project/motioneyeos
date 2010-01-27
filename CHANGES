@@ -4,12 +4,13 @@
 
 	New packages: libcdaudio, libdvdnav, libdvdread, hostapd, tcpreplay
 
-	Updated/fixed packages: autoconf, bind, binutils, bootutils, busybox,
-	directfb, dnsmasq, e2fsprogs, gstreamer, gperf, gst-plugins-bad,
-	flex, hal, iptables, iw, jpeg, kismet, libfuse, libpcap, libungif,
-	lighttpd, mesa, mpg123, mtd-utils, neon, netstat-nat, openvpn, pcre,
-	qt, rpm, sdl, sdl_ttf, sqlite, sshfs, tremor, u-boot, usb_modeswitch,
-	usbutils, webkit, wpa_supplicant, xfsprogs
+	Updated/fixed packages: at, autoconf, bind, binutils, bootutils,
+	busybox, directfb, dnsmasq, e2fsprogs, gstreamer, gperf,
+	gst-plugins-bad, flex, hal, iptables, iw, jpeg, kismet, libfuse,
+	libpcap, libungif, lighttpd, mesa, mpg123, mtd-utils, neon,
+	netstat-nat, openvpn, pcre, qt, rpm, sdl, sdl_ttf, sqlite, sshfs,
+	tremor, u-boot, usb_modeswitch, usbutils, webkit, wpa_supplicant,
+	xfsprogs
 
 	Issues resolved (http://bugs.uclibc.org):
 
