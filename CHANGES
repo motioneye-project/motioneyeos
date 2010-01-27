@@ -5,6 +5,10 @@
 	Updated/fixed packages: alsa-lib, argus, at, gst-plugins-good,
 	libpcap, rsync, tcl, xproto_trapproto
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#1069: [PATCH] The AT91BOOTSTRAP makefile contains a typo
+
 2010.02-rc1, Released February 9th, 2010:
 
 	Fixes all over the tree and new features.
