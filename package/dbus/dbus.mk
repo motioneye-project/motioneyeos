@@ -81,7 +81,9 @@ $(DBUS_HOOK_POST_BUILD): $(DBUS_TARGET_BUILD)
 	touch $@
 
 $(DBUS_HOOK_POST_INSTALL): $(DBUS_TARGET_INSTALL_TARGET)
+ifneq ($(BR2_HAVE_DEVFILES),y)
 	rm -rf $(TARGET_DIR)/usr/lib/dbus-1.0
+endif
 	rm -rf $(TARGET_DIR)/var/lib/dbus
 	ln -sf /tmp/dbus $(TARGET_DIR)/var/lib/dbus
 	$(INSTALL) -m 0755 package/dbus/S30dbus $(TARGET_DIR)/etc/init.d
