@@ -1,0 +1,33 @@
+From a182f18fa3b9fb3dd817b601b51c758f9a77f407 Mon Sep 17 00:00:00 2001
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Date: Tue, 1 Dec 2009 17:08:14 +0100
+Subject: [PATCH 1/5] configure.ac: remove manual compiler check with AC_TRY_RUN
+
+AC_TRY_RUN breaks cross compilation, so remove it. autotools will take
+care about a working (cross-) compiler.
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+---
+ configure.ac |    6 ------
+ 1 files changed, 0 insertions(+), 6 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index a8c2a14..997a37f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -38,12 +38,6 @@ case "$host" in
+     AC_MSG_RESULT(no)
+     ;;
+ esac
+-AC_MSG_CHECKING(Trying to compile a trivial ANSI C program)
+-AC_TRY_RUN([ main(int ac, char **av) { return 0; } ],
+-    AC_MSG_RESULT(yes),
+-    AC_MSG_RESULT(no)
+-    AC_MSG_ERROR(Could not compile and run even a trivial ANSI C program - check CC.),
+-    AC_MSG_ERROR(Could not compile and run even a trivial ANSI C program - check CC.))
+ 
+ AC_MSG_CHECKING(__attribute__((noreturn)))
+ AC_TRY_COMPILE([], [void __attribute__((noreturn)) panic(void);],
+-- 
+1.6.5.3
+

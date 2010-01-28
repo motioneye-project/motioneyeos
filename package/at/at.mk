@@ -3,76 +3,39 @@
 # at
 #
 #############################################################
-AT_VERSION:=3.1.10
-AT_SOURCE:=at_$(AT_VERSION).tar.gz
-AT_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/a/at
-AT_DIR:=$(BUILD_DIR)/at-$(AT_VERSION)
-AT_CAT:=$(ZCAT)
-AT_TARGET_SCRIPT:=etc/init.d/S99at
-AT_BINARY:=at
+AT_VERSION = 3.1.12
+AT_SOURCE = at_$(AT_VERSION).orig.tar.gz
+AT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/a/at
+AT_AUTORECONF = YES
+AT_INSTALL_STAGING = NO
+AT_INSTALL_TARGET = YES
+# no install-strip / install-exec
+AT_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
-$(DL_DIR)/$(AT_SOURCE):
-	 $(call DOWNLOAD,$(AT_SITE),$(AT_SOURCE))
+AT_CONF_OPT = \
+        --with-jobdir=/var/spool/cron/atjobs \
+        --with-atspool=/var/spool/cron/atspool \
+        --with-daemon_username=root \
+        --with-daemon_groupname=root \
+	SENDMAIL=/usr/sbin/sendmail
 
-at-source: $(DL_DIR)/$(AT_SOURCE)
+$(eval $(call AUTOTARGETS,package,at))
 
-$(AT_DIR)/.unpacked: $(DL_DIR)/$(AT_SOURCE)
-	$(AT_CAT) $(DL_DIR)/$(AT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(AT_DIR) package/at/ at\*.patch
+$(AT_HOOK_POST_INSTALL): $(AT_TARGET_INSTALL_TARGET)
+	$(INSTALL) -m 0755 package/at/S99at $(TARGET_DIR)/etc/init.d/S99at
 	touch $@
 
-$(AT_DIR)/.configured: $(AT_DIR)/.unpacked
-	(cd $(AT_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		./configure $(QUIET) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--libdir=/lib \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--localstatedir=/var \
-		--with-jobdir=/var/lib/atjobs \
-		--with-atspool=/var/lib/atspool \
-		--with-daemon_username=at \
-		--with-daemon_groupname=at \
-		SENDMAIL=/usr/sbin/sendmail \
-	)
-	touch $@
-
-$(AT_DIR)/$(AT_BINARY): $(AT_DIR)/.configured
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(AT_DIR)
-	touch $@
-
-$(TARGET_DIR)/$(AT_TARGET_SCRIPT): $(AT_DIR)/$(AT_BINARY)
-	# Use fakeroot to pretend to do 'make install' as root
-	echo '$(MAKE) DAEMON_USERNAME=root DAEMON_GROUPNAME=root ' \
-	 '$(TARGET_CONFIGURE_OPTS) DESTDIR=$(TARGET_DIR) -C $(AT_DIR) install' \
-		> $(BUILD_DIR)/.fakeroot.at
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	echo 'rm -rf $(TARGET_DIR)/usr/man' >> $(BUILD_DIR)/.fakeroot.at
-endif
-	echo 'rm -rf $(TARGET_DIR)/usr/doc/at' >> $(BUILD_DIR)/.fakeroot.at
-	$(INSTALL) -m 0755 -D $(AT_DIR)/debian/rc $(TARGET_DIR)/$(AT_TARGET_SCRIPT)
-
-at: host-fakeroot $(TARGET_DIR)/$(AT_TARGET_SCRIPT)
-
-at-clean:
-	-$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(AT_DIR) uninstall
-	rm -f $(TARGET_DIR)/$(AT_TARGET_SCRIPT) $(TARGET_DIR)/etc/init.d/S99at
-	-$(MAKE) -C $(AT_DIR) clean
-
-at-dirclean:
-	rm -rf $(AT_DIR)
-
-.PHONY: at
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_AT),y)
-TARGETS+=at
-endif
+$(AT_TARGET_UNINSTALL):
+	$(call MESSAGE,"Uninstalling")
+	rm -rf $(addprefix $(TARGET_DIR),/usr/lib/atspool \
+					 /usr/lib/atjobs \
+					 /etc/at.deny \
+					 /etc/init.d/S99at \
+					 /usr/bin/at \
+					 /usr/bin/atrm \
+					 /usr/bin/atq \
+					 /usr/sbin/atd \
+					 /usr/sbin/atrun)
+	rm -f $(addprefix $(TARGET_DIR)/usr/man/man*/, \
+		at.1 atq.1 atrm.1 batch.1 at_allow.5 at_deny.5 atd.8 atrun.8)
+	rm -f $(AT_TARGET_INSTALL_TARGET) $(AT_HOOK_POST_INSTALL)
