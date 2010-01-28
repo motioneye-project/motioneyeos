@@ -3,13 +3,18 @@
 # alsa-utils
 #
 #############################################################
-ALSA_UTILS_VERSION:=1.0.18
+ALSA_UTILS_VERSION:=1.0.22
 ALSA_UTILS_SOURCE:=alsa-utils-$(ALSA_UTILS_VERSION).tar.bz2
 ALSA_UTILS_SITE:=ftp://ftp.alsa-project.org/pub/utils
 ALSA_UTILS_DIR:=$(BUILD_DIR)/alsa-utils-$(ALSA_UTILS_VERSION)
 ALSA_UTILS_CAT:=$(BZCAT)
 ALSA_UTILS_BINARY:=alsactl/alsactl
 ALSA_UTILS_TARGET_BINARY:=usr/sbin/alsactl
+
+ALSA_UTILS_CONFIGURE_OPTS =
+ifneq ($(BR2_PACKAGE_ALSA_UTILS_ALSAMIXER),y)
+ALSA_UTILS_CONFIGURE_OPTS += --disable-alsamixer --disable-alsatest
+endif
 
 $(DL_DIR)/$(ALSA_UTILS_SOURCE):
 	$(call DOWNLOAD,$(ALSA_UTILS_SITE),$(ALSA_UTILS_SOURCE))
@@ -32,6 +37,8 @@ $(ALSA_UTILS_DIR)/.configured: $(ALSA_UTILS_DIR)/.unpacked
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
 		--prefix=/usr \
+		$(ALSA_UTILS_CONFIGURE_OPTS) \
+		--disable-xmlto \
 	)
 	touch $@
 
@@ -72,7 +79,7 @@ $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY): $(ALSA_UTILS_DIR)/$(ALSA_UTILS_BINARY
 	fi
 	touch -c $@
 
-alsa-utils: alsa-lib ncurses $(if $(BR2_PACKAGE_LIBINTL),libintl) $(if $(BR2_PACKAGE_LIBICONV),libiconv) $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY)
+alsa-utils: alsa-lib $(if $(BR2_PACKAGE_NCURSES),ncurses) $(if $(BR2_PACKAGE_LIBINTL),libintl) $(if $(BR2_PACKAGE_LIBICONV),libiconv) $(TARGET_DIR)/$(ALSA_UTILS_TARGET_BINARY)
 
 alsa-utils-unpacked: $(ALSA_UTILS_DIR)/.unpacked
 
