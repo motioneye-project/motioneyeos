@@ -9,9 +9,9 @@
 	e2fsprogs, gstreamer, gperf, gst-plugins-bad, gvfs, flex, hal,
 	iptables, iw, jpeg, kismet, libfuse, libglib2, libpcap, libungif,
 	libxml2, libxslt, lighttpd, mesa, mpg123, mtd-utils, neon,
-	netstat-nat, openvpn, pcre, qt, readline, rpm, sawman, sdl, sdl_ttf,
-	ser2net, sqlite, sshfs, tremor, u-boot, usb_modeswitch, usbutils,
-	webkit, wpa_supplicant, xfsprogs, zlib
+	netstat-nat, openvpn, pcre, php, qt, readline, rpm, sawman, sdl,
+	sdl_ttf, ser2net, sqlite, sshfs, tremor, u-boot, usb_modeswitch,
+	usbutils, webkit, wpa_supplicant, xfsprogs, zlib
 
 	Issues resolved (http://bugs.uclibc.org):
 
