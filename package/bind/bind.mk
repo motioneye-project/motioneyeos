@@ -4,7 +4,7 @@
 #
 #############################################################
 
-BIND_VERSION = 9.5.2-P1
+BIND_VERSION = 9.5.2-P2
 BIND_SITE = ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 BIND_LIBTOOL_PATCH = NO
 BIND_INSTALL_STAGING = NO

@@ -45,6 +45,7 @@
 	#973: Bump iw to 0.9.19
 	#1003: DHCP options disabled with busybox-1.16.0
 	#1009: [SECURITY] Bump php to 5.2.12
+	#1015: [SECURITY] Bump bind to 9.5.1-P2
 
 2009.11, Released December 1st, 2009:
 
