@@ -1,0 +1,11 @@
+--- nbd-2.9.11/nbd-server.c	2009-10-01 16:10:15.000000000 +0200
++++ nbd-2.9.11/nbd-server.c	2009-10-01 16:10:32.000000000 +0200
+@@ -264,7 +264,7 @@
+   
+   	inet_aton(opts->clientname, &client);
+ 	while (fgets(line,LINELEN,f)!=NULL) {
+-		if((tmp=index(line, '/'))) {
++		if((tmp=strchr(line, '/'))) {
+ 			if(strlen(line)<=tmp-line) {
+ 				msg4(LOG_CRIT, ERRMSG, line, opts->server->authname);
+ 				return 0;

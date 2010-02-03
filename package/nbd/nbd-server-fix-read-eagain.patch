@@ -1,0 +1,21 @@
+--- nbd-2.9.11.orig/nbd-server.c
++++ nbd-2.9.11/nbd-server.c
+@@ -304,10 +304,14 @@
+ 	ssize_t res;
+ 	while (len > 0) {
+ 		DEBUG("*");
+-		if ((res = read(f, buf, len)) <= 0)
+-			err("Read failed: %m");
+-		len -= res;
+-		buf += res;
++		if ((res = read(f, buf, len)) <= 0) {
++			if(errno != EAGAIN) {
++				err("Read failed: %m");
++			}
++		} else {
++			len -= res;
++			buf += res;
++		}
+ 	}
+ }
+ 
