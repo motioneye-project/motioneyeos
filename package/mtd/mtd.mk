@@ -132,7 +132,7 @@ $(MTD_TARGET_BINS): $(MTD_BUILD_TARGETS)
 	mkdir -p $(TARGET_DIR)/usr/sbin
 	$(INSTALL) -m 0755 $^ $(TARGET_DIR)/usr/sbin
 
-mtd: zlib lzo $(MTD_TARGET_BINS)
+mtd: $(if $(BR2_PACKAGE_MTD_MKFSJFFS2),zlib lzo) $(MTD_TARGET_BINS)
 
 mtd-source: $(DL_DIR)/$(MTD_SOURCE)
 
