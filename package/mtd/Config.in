@@ -1,4 +1,4 @@
-menuconfig BR2_PACKAGE_MTD
+config BR2_PACKAGE_MTD
 	bool "mtd/jffs2 utilities"
 	help
 	  Build mtd/jffs utilities
