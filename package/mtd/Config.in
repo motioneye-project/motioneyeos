@@ -5,24 +5,6 @@ menuconfig BR2_PACKAGE_MTD
 	  Build mtd/jffs utilities
 
 if BR2_PACKAGE_MTD
-choice
-	prompt "Source package selection"
-	default BR2_PACKAGE_MTD_UTILS
-
-config BR2_PACKAGE_MTD_UTILS
-	bool "Use MTD-utils release"
-	select BR2_PACKAGE_LZO
-	help
-	  Build mtd/jffs utilities with Dataflash support
-
-config BR2_PACKAGE_MTD_UTILS_GIT
-	bool "Use MTD-utils from GIT"
-	help
-	  Use the latest from GIT or a particular revision.
-	  You should probably say NO except for specific purpose.
-
-endchoice
-
 comment "MTD tools selection"
 
 config BR2_PACKAGE_MTD_DOCFDISK
@@ -118,42 +100,46 @@ config BR2_PACKAGE_MTD_SUMTOOL
 config BR2_PACKAGE_MTD_UBIATTACH
 	bool "ubiattach"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
 config BR2_PACKAGE_MTD_UBICRC32
 	bool "ubicrc32"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
 config BR2_PACKAGE_MTD_UBIDETACH
 	bool "ubidetach"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
-config BR2_PACKAGE_MTD_UBIMIRROR
-	bool "ubimirror"
+config BR2_PACKAGE_MTD_UBIFORMAT
+	bool "ubiformat"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
 config BR2_PACKAGE_MTD_UBIMKVOL
 	bool "ubimkvol"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
 config BR2_PACKAGE_MTD_UBINFO
 	bool "ubinfo"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
+
+config BR2_PACKAGE_MTD_UBINIZE
+	bool "ubinize"
+	default y
+
+config BR2_PACKAGE_MTD_UBIRENAME
+	bool "ubirename"
+	default y
 
 config BR2_PACKAGE_MTD_UBIRMVOL
 	bool "ubirmvol"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
+
+config BR2_PACKAGE_MTD_UBIRSVOL
+	bool "ubirsvol"
+	default y
 
 config BR2_PACKAGE_MTD_UBIUPDATEVOL
 	bool "ubiupdatevol"
 	default y
-	depends on BR2_PACKAGE_MTD_UTILS_GIT
 
 endif
 

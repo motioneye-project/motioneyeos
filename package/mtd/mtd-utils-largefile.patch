@@ -1,0 +1,35 @@
+From 90be45c82fa8c54ceb202619024142ed3db11c14 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <jacmet@sunsite.dk>
+Date: Wed, 3 Feb 2010 09:23:19 +0100
+Subject: [PATCH] mtd-utils: add option to not force largefile support
+
+Not all systems have largefile support (E.G. uClibc depending on config),
+so unconditionally enforcing largefile breaks the build.
+
+Work around it by adding a WITHOUT_LARGEFILE flag, similar to the existing
+WITHOUT_XATTR.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ common.mk |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+diff --git a/common.mk b/common.mk
+index 5e92b07..d704b44 100644
+--- a/common.mk
++++ b/common.mk
+@@ -12,7 +12,10 @@ WFLAGS := -Wall \
+ 	$(call cc-option,-Wwrite-strings) \
+ 	$(call cc-option,-Wno-sign-compare)
+ CFLAGS += $(WFLAGS)
+-CPPFLAGS += -D_FILE_OFFSET_BITS=64
++
++ifneq ($(WITHOUT_LARGEFILE), 1)
++  CPPFLAGS += -D_FILE_OFFSET_BITS=64
++endif
+ 
+ DESTDIR ?= /usr/local
+ PREFIX=/usr
+-- 
+1.6.5
+
