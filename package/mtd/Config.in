@@ -44,21 +44,17 @@ config BR2_PACKAGE_MTD_FLASH_UNLOCK
 
 config BR2_PACKAGE_MTD_FTL_CHECK
 	bool "ftl_check"
-	default y
 
 config BR2_PACKAGE_MTD_FTL_FORMAT
 	bool "ftl_format"
-	default y
 
 config BR2_PACKAGE_MTD_JFFS2DUMP
 	bool "jffs2dump"
-	default y
 
 config BR2_PACKAGE_MTD_MKFSJFFS2
 	bool "mkfs.jffs2"
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LZO
-	default y
 
 config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
@@ -96,7 +92,6 @@ config BR2_PACKAGE_MTD_SERVE_IMAGE
 
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
-	default y
 
 config BR2_PACKAGE_MTD_UBIATTACH
 	bool "ubiattach"
