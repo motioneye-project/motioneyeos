@@ -14,6 +14,8 @@
 	sdl_ttf, sqlite, sshfs, tremor, u-boot, usb_modeswitch, usbutils,
 	webkit, wpa_supplicant, xfsprogs, zlib
 
+	Removed package: openswan
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#515: tcpreplay: new package
