@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NEWT
 	bool "newt"
+	select BR2_PACKAGE_SLANG
 	help
 	  Programming library for color text mode, widget based user interfaces.
 
