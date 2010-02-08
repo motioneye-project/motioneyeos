@@ -5,20 +5,18 @@
 ######################################################################
 GDB_VERSION:=$(call qstrip,$(BR2_GDB_VERSION))
 
-GDB_OFFICIAL_VERSION:=$(GDB_VERSION)$(VENDOR_GDB_RELEASE)
-
-GDB_SOURCE:=gdb-$(GDB_OFFICIAL_VERSION).tar.bz2
+GDB_SOURCE:=gdb-$(GDB_VERSION).tar.bz2
 GDB_CAT:=$(BZCAT)
 
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
  GDB_SITE:=$(VENDOR_SITE)
- GDB_PATCH_DIR:=toolchain/gdb/ext_source/$(VENDOR_PATCH_DIR)/$(GDB_OFFICIAL_VERSION)
+ GDB_PATCH_DIR:=toolchain/gdb/ext_source/$(VENDOR_PATCH_DIR)/$(GDB_VERSION)
 else ifeq ($(findstring avr32,$(GDB_VERSION)),avr32)
  GDB_SITE:=ftp://www.at91.com/pub/buildroot/
- GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
+ GDB_PATCH_DIR:=toolchain/gdb/$(GDB_VERSION)
 else
  GDB_SITE:=$(BR2_GNU_MIRROR)/gdb
- GDB_PATCH_DIR:=toolchain/gdb/$(GDB_OFFICIAL_VERSION)
+ GDB_PATCH_DIR:=toolchain/gdb/$(GDB_VERSION)
 endif
 
 ifneq ($(filter xtensa%,$(ARCH)),)
@@ -26,7 +24,7 @@ include target/xtensa/patch.in
 GDB_PATCH_EXTRA:=$(call XTENSA_PATCH,gdb,$(GDB_PATCH_DIR),. ..)
 endif
 
-GDB_DIR:=$(TOOLCHAIN_DIR)/gdb-$(GDB_OFFICIAL_VERSION)
+GDB_DIR:=$(TOOLCHAIN_DIR)/gdb-$(GDB_VERSION)
 
 $(DL_DIR)/$(GDB_SOURCE):
 	$(call DOWNLOAD,$(GDB_SITE),$(GDB_SOURCE))
