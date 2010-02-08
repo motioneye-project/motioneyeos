@@ -7,12 +7,12 @@
 
 	Updated/fixed packages: alsa-lib, alsa-utils, at, autoconf, bash,
 	bind, binutils, bootutils, busybox, dbus, directfb, dnsmasq,
-	e2fsprogs, gstreamer, gperf, gst-plugins-bad, gvfs, fbdump, flex, hal,
-	iptables, iw, jpeg, kismet, libfuse, libglib2, libpcap, libungif,
-	libxml2, libxslt, lighttpd, mesa, mpg123, mtd-utils, newt, nbd, neon,
-	netstat-nat, openvpn, pcre, php, qt, rdesktop, readline, rpm, sawman,
-	sdl, sdl_ttf, sqlite, sshfs, tremor, u-boot, usb_modeswitch, usbutils,
-	webkit, wpa_supplicant, xfsprogs, zlib
+	e2fsprogs, gstreamer, gperf, gst-plugins-bad, gvfs, fbdump, flex,
+	hal, iptables, iw, jpeg, kismet, libfuse, libglib2, liboil, libpcap,
+	libungif, libxml2, libxslt, lighttpd, mesa, mpg123, mtd-utils, nbd,
+	neon, netstat-nat, newt, openvpn, pcre, php, qt, rdesktop, readline,
+	rpm, sawman, sdl, sdl_ttf, sqlite, sshfs, tremor, u-boot,
+	usb_modeswitch, usbutils, webkit, wpa_supplicant, xfsprogs, zlib
 
 	Removed package: openswan
 

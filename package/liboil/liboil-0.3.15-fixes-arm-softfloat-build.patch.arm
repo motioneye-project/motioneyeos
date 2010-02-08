@@ -1,0 +1,39 @@
+Patch generated from:
+http://cgit.freedesktop.org/liboil/commit/?id=227782d45d14ca0d68ee73b54eab71c1582dcbfa
+
+From 227782d45d14ca0d68ee73b54eab71c1582dcbfa Mon Sep 17 00:00:00 2001
+From: Adrian Bunk <adrian.bunk@movial.com>
+Date: Wed, 09 Sep 2009 13:31:40 +0000
+Subject: fix ARM -mfloat-abi=soft builds
+
+If __SOFTFP__ is defined, VFP support is not available
+even when __VFP_FP__ is defined.
+---
+diff --git a/liboil/arm/math_vfp.c b/liboil/arm/math_vfp.c
+index ffd3981..0bed96e 100644
+--- a/liboil/arm/math_vfp.c
++++ b/liboil/arm/math_vfp.c
+@@ -30,7 +30,7 @@
+ #include <liboil/liboilclasses.h>
+ #include <liboil/liboilfunction.h>
+ 
+-#if __VFP_FP__
++#if defined(__VFP_FP__) && !defined(__SOFTFP__)
+ 
+ extern void vfp_add_f32 (float *d, const float *s1, const float *s2, int n);
+ extern void vfp_add_f64 (double *d, const double *s1, const double *s2, int n);
+diff --git a/liboil/arm/math_vfp_asm.S b/liboil/arm/math_vfp_asm.S
+index ea68dba..ae5c803 100644
+--- a/liboil/arm/math_vfp_asm.S
++++ b/liboil/arm/math_vfp_asm.S
+@@ -24,7 +24,7 @@
+  * SUCH DAMAGE.
+  */
+ 
+-#if __VFP_FP__
++#if defined(__VFP_FP__) && !defined(__SOFTFP__)
+ /* 
+ ** compile with -mcpu=arm1136j-s -mfpu=vfp -mfloat-abi=softfp
+ **
+--
+cgit v0.8.3-6-g21f6
