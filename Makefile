@@ -371,6 +371,7 @@ ifneq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 endif
 endif
 	@mkdir -p $(STAGING_DIR)/usr/include
+	@mkdir -p $(STAGING_DIR)/usr/bin
 
 $(BUILD_DIR)/.root:
 	mkdir -p $(TARGET_DIR)
