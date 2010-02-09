@@ -50,6 +50,7 @@
 	#1009: [SECURITY] Bump php to 5.2.12
 	#1015: [SECURITY] Bump bind to 9.5.1-P2
 	#1027: Busybox flash commands conflict with those from mtd-utils
+	#1063: [SECURITY] Update lighttpd to 1.4.26
 
 2009.11, Released December 1st, 2009:
 
