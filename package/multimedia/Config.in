@@ -1,7 +1,6 @@
 menu "Audio and video libraries and applications"
 source "package/multimedia/alsa-lib/Config.in"
 source "package/multimedia/alsa-utils/Config.in"
-source "package/multimedia/asterisk/Config.in"
 source "package/multimedia/aumix/Config.in"
 source "package/multimedia/flac/Config.in"
 source "package/multimedia/gstreamer/Config.in"

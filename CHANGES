@@ -14,7 +14,7 @@
 	rpm, sawman, sdl, sdl_ttf, sqlite, sshfs, tremor, u-boot,
 	usb_modeswitch, usbutils, webkit, wpa_supplicant, xfsprogs, zlib
 
-	Removed package: openswan
+	Removed package: asterisk, openswan
 
 	Issues resolved (http://bugs.uclibc.org):
 
