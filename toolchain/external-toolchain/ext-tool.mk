@@ -1,3 +1,4 @@
+
 #
 # This file implements the support for external toolchains, i.e
 # toolchains that have not been produced by Buildroot itself and that
@@ -45,27 +46,29 @@ copy_toolchain_lib_root = \
 	DST="$(strip $3)"; \
 	STRIP="$(strip $4)"; \
  \
-	LIB_DIR="$${SYSROOT_DIR}/lib" ; \
-	for FILE in `find $${LIB_DIR} -maxdepth 1 -name "$${LIB}.*"`; do \
+	LIBS=`(cd $${SYSROOT_DIR}; find . -path "./lib/$${LIB}.*" -o -path "./usr/lib/$${LIB}.*")` ; \
+	for FILE in $${LIBS} ; do \
 		LIB=`basename $${FILE}`; \
+		LIBDIR=`dirname $${FILE}` ; \
 		while test \! -z "$${LIB}"; do \
-			rm -fr $(TARGET_DIR)$${DST}/$${LIB}; \
-			mkdir -p $(TARGET_DIR)$${DST}; \
-			if test -h $${LIB_DIR}/$${LIB}; then \
-				cp -d $${LIB_DIR}/$${LIB} $(TARGET_DIR)$${DST}/; \
-			elif test -f $${LIB_DIR}/$${LIB}; then \
-				$(INSTALL) -D -m0755 $${LIB_DIR}/$${LIB} $(TARGET_DIR)$${DST}/$${LIB}; \
+			FULLPATH="$${SYSROOT_DIR}/$${LIBDIR}/$${LIB}" ; \
+			rm -fr $(TARGET_DIR)/$${LIBDIR}/$${LIB}; \
+			mkdir -p $(TARGET_DIR)/$${LIBDIR}; \
+			if test -h $${FULLPATH} ; then \
+				cp -d $${FULLPATH} $(TARGET_DIR)/$${LIBDIR}/; \
+			elif test -f $${FULLPATH}; then \
+				$(INSTALL) -D -m0755 $${FULLPATH} $(TARGET_DIR)/$${LIBDIR}/$${LIB}; \
 				case "$${STRIP}" in \
 				(0 | n | no) \
 ;; \
 				(*) \
-					$(TARGET_CROSS)strip "$(TARGET_DIR)$${DST}/$${LIB}"; \
+					$(TARGET_CROSS)strip "$(TARGET_DIR)/$${LIBDIR}/$${LIB}"; \
 ;; \
 				esac; \
 			else \
 				exit -1; \
 			fi; \
-			LIB="`readlink $${LIB_DIR}/$${LIB}`"; \
+			LIB="`readlink $${FULLPATH}`"; \
 		done; \
 	done; \
  \
