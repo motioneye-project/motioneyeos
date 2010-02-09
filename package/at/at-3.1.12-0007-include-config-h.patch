@@ -1,0 +1,16 @@
+Make sure to include config.h so that NEEDS_* macros are properly
+taken into account. This was a problem for NEEDS_YYWRAP, which was set
+to 1 in config.h, but the corresponding code wasn't compiled in.
+
+Index: at-3.1.12/parsetime.l
+===================================================================
+--- at-3.1.12.orig/parsetime.l	2010-02-10 00:17:46.000000000 +0100
++++ at-3.1.12/parsetime.l	2010-02-10 00:18:07.000000000 +0100
+@@ -4,6 +4,7 @@
+ #include <time.h>
+ #include "y.tab.h"
+ #include "parsetime.h"
++#include "config.h"
+ 
+ char *last_token = NULL;
+ char **my_argv;
