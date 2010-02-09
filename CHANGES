@@ -1,4 +1,16 @@
-2010.02, Not yet released:
+2010.02-rc1, Released February 9th, 2010:
+
+	Fixes all over the tree and new features.
+
+	Generalized autotools infrastructure to be usable for
+	non-autotools packages, see package/Makefile.package.in for
+	details.
+
+	Cleaned up avr32 toolchain config, external source-based
+	toolchain support is gone.
+
+	Dependency checks: Also check for makeinfo, only print output
+	on errors.
 
 	Toolchain: uClibc 0.9.30.2, gcc 4.4.3
 
