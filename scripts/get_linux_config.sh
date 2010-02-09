@@ -35,6 +35,7 @@ function linux_version()
 	KERNEL=`echo ${KCONFIG} | sed s/.*linux-2.6./linux-2.6./g -`
 	THIS_MAJOR=${KERNEL:10:2}
 	THIS_MINOR=${KERNEL:13}
+	THIS_MINOR=${THIS_MINOR:=0}
 }
 
 # Try to be careful...
