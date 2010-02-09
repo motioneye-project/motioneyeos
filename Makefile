@@ -634,11 +634,9 @@ help:
 	@echo 'See docs/README and docs/buildroot.html for further details'
 	@echo
 
-release: distclean
+release:
 	OUT=buildroot-$$(grep -A2 BR2_VERSION $(CONFIG_CONFIG_IN)|grep default|cut -f2 -d\"); \
-	rm -rf ../$$OUT*; cp -al . ../$$OUT; cd ..; \
-	tar cfz $$OUT.tar.gz --exclude .svn --exclude .git --exclude \*~ $$OUT; \
-	rm -rf $$OUT
+	git archive --format=tar --prefix=$$OUT/ master|gzip -9 >$$OUT.tar.gz
 
 .PHONY: $(noconfig_targets)
 
