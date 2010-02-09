@@ -8,10 +8,7 @@ GDB_VERSION:=$(call qstrip,$(BR2_GDB_VERSION))
 GDB_SOURCE:=gdb-$(GDB_VERSION).tar.bz2
 GDB_CAT:=$(BZCAT)
 
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL_SOURCE),y)
- GDB_SITE:=$(VENDOR_SITE)
- GDB_PATCH_DIR:=toolchain/gdb/ext_source/$(VENDOR_PATCH_DIR)/$(GDB_VERSION)
-else ifeq ($(findstring avr32,$(GDB_VERSION)),avr32)
+ifeq ($(findstring avr32,$(GDB_VERSION)),avr32)
  GDB_SITE:=ftp://www.at91.com/pub/buildroot/
  GDB_PATCH_DIR:=toolchain/gdb/$(GDB_VERSION)
 else
