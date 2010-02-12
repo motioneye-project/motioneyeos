@@ -318,4 +318,11 @@ else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-soup
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SPEEX),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-speex
+GST_PLUGINS_GOOD_DEPENDENCIES += speex
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-speex
+endif
+
 $(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-good))

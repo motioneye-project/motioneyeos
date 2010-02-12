@@ -172,4 +172,8 @@ config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SOUPHTTPSRC
 	bool "souphttpsrc (http client)"
 	select BR2_PACKAGE_LIBSOUP
 
+config BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_SPEEX
+	bool "speex"
+	select BR2_PACKAGE_SPEEX
+
 endif
