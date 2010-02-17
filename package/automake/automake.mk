@@ -15,6 +15,12 @@ AUTOMAKE_DEPENDENCIES = autoconf microperl
 
 HOST_AUTOMAKE_DEPENDENCIES = host-autoconf
 
+define GTK_DOC_M4_INSTALL
+ $(INSTALL) -m 0644 package/automake/gtk-doc.m4 $(STAGING_DIR)/usr/share/aclocal/
+endef
+
+HOST_AUTOMAKE_POST_INSTALL_HOOKS += GTK_DOC_M4_INSTALL
+
 $(eval $(call AUTOTARGETS,package,automake))
 $(eval $(call AUTOTARGETS,package,automake,host))
 
