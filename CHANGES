@@ -2,7 +2,8 @@
 
 	Fixes all over the tree and new features.
 
-	Updated/fixed packages: argus, at, libpcap
+	Updated/fixed packages: alsa-lib, argus, at, libpcap, rsync, tcl,
+	xproto_trapproto
 
 2010.02-rc1, Released February 9th, 2010:
 
