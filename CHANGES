@@ -6,10 +6,11 @@
 	X.org updated to 7.5.
 
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
-	libglib2, libpng, mtd-utils, pppd, setserial, squashfs
+	libglib2, libpng, mtd-utils, pppd, setserial, squashfs, wget
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#1111: Bump wget to 1.12 and migrate to Makefile.autotools.in
 	#1273: BR2_INET_IPV6 does not enable IPv6 in pppd
 	#1345: Bump pppd to 2.4.5 and convert to Makefile.autotools.in
 
