@@ -7,5 +7,4 @@ source "package/games/magiccube4d/Config.in"
 source "package/games/prboom/Config.in"
 source "package/games/rubix/Config.in"
 source "package/games/vice/Config.in"
-source "package/games/xboard/Config.in"
 endmenu
