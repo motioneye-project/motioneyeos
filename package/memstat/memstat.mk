@@ -4,48 +4,24 @@
 #
 #############################################################
 
-MEMSTAT_VERSION:=0.5
-MEMSTAT_SOURCE:=memstat_$(MEMSTAT_VERSION).tar.gz
-MEMSTAT_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/m/memstat
-MEMSTAT_DIR:=$(BUILD_DIR)/memstat-$(MEMSTAT_VERSION)
+MEMSTAT_VERSION = 0.8
+MEMSTAT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/m/memstat
+MEMSTAT_SOURCE = memstat_$(MEMSTAT_VERSION).tar.gz
 
-$(DL_DIR)/$(MEMSTAT_SOURCE):
-	$(call DOWNLOAD,$(MEMSTAT_SITE),$(MEMSTAT_SOURCE))
+define MEMSTAT_BUILD_CMDS
+	$(MAKE) CC=$(TARGET_CC) LD=$(TARGET_LD) CFLAGS="$(TARGET_CFLAGS)" \
+		-C $(@D) memstat
+endef
 
-$(MEMSTAT_DIR)/.unpacked: $(DL_DIR)/$(MEMSTAT_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(MEMSTAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(MEMSTAT_DIR) package/memstat/ memstat-$(MEMSTAT_VERSION)\*.patch
-	touch $@
+define MEMSTAT_INSTALL_TARGET_CMDS
+	$(INSTALL) -D $(@D)/memstat.conf -m 0644 \
+		$(TARGET_DIR)/etc/memstat.conf
+	$(INSTALL) -D $(@D)/memstat $(TARGET_DIR)/usr/bin/memstat
+endef
 
-$(MEMSTAT_DIR)/.configured: $(MEMSTAT_DIR)/.unpacked
-	touch $@
+define MEMSTAT_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/etc/memstat.conf
+	rm -f $(TARGET_DIR)/usr/bin/memstat
+endef
 
-$(MEMSTAT_DIR)/memstat: $(MEMSTAT_DIR)/.configured
-	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) \
-		$(CFLAGS_WHOLE_PROGRAM) $(@D)/memstat.c -o $@
-
-$(TARGET_DIR)/usr/bin/memstat: $(MEMSTAT_DIR)/memstat
-	[ -e $(TARGET_DIR)/etc/memstat.conf ] || \
-		$(INSTALL) -m 0644 -D $(^D)/memstat.conf \
-			$(TARGET_DIR)/etc/memstat.conf
-	$(INSTALL) -m 0755 -D $^ $@
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
-
-memstat: $(TARGET_DIR)/usr/bin/memstat
-
-memstat-source: $(DL_DIR)/$(MEMSTAT_SOURCE)
-
-memstat-clean:
-	rm -f $(MEMSTAT_DIR)/memstat \
-		$(TARGET_DIR)/etc/memstat.conf $(TARGET_DIR)/usr/bin/memstat
-
-memstat-dirclean:
-	rm -rf $(MEMSTAT_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_MEMSTAT),y)
-TARGETS+=memstat
-endif
+$(eval $(call GENTARGETS,package,memstat))
