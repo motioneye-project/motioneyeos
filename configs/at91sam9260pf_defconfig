@@ -58,7 +58,7 @@ BR2_SVN="svn co"
 BR2_ZCAT="gzip -d -c"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""
-BR2_DL_DIR="/usr/local/install/downloads"
+BR2_DL_DIR="$(TOPDIR)/dl"
 
 #
 # Mirrors and Download locations
