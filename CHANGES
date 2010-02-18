@@ -9,7 +9,7 @@
 
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
 	freetype, iperf, libglib2, libpng, mdadm, memstat, mtd-utils,
-	pppd, setserial, squashfs, wget
+	nano, pppd, setserial, squashfs, wget
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -18,6 +18,7 @@
 	#800: [PATCH] iperf update to 2.0.4
 	#805: [PATCH] mdadm - version update
 	#1111: Bump wget to 1.12 and migrate to Makefile.autotools.in
+	#1117: Bump nano to 2.2.3 and migrate to Makefile.autotools.in
 	#1129: Bump memstat to 0.8 and migrate to Makefile.package.in
 	#1273: BR2_INET_IPV6 does not enable IPv6 in pppd
 	#1303: Add librsync package
