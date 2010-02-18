@@ -39,6 +39,7 @@ $(ALSA_UTILS_DIR)/.configured: $(ALSA_UTILS_DIR)/.unpacked
 		--prefix=/usr \
 		$(ALSA_UTILS_CONFIGURE_OPTS) \
 		--disable-xmlto \
+		--with-curses=ncurses \
 	)
 	touch $@
 
