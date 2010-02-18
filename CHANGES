@@ -5,7 +5,7 @@
 
 	X.org updated to 7.5.
 
-	New packages: librsync, lmbench, squid
+	New packages: librsync, lmbench, netperf, squid
 
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
 	freetype, iperf, less, libglib2, libpng, mdadm, memstat,
@@ -17,6 +17,7 @@
 	#661: lmbench: new package
 	#800: [PATCH] iperf update to 2.0.4
 	#805: [PATCH] mdadm - version update
+	#1105: Add new netperf package
 	#1111: Bump wget to 1.12 and migrate to Makefile.autotools.in
 	#1117: Bump nano to 2.2.3 and migrate to Makefile.autotools.in
 	#1123: Bump less to 436 and migrate to Makefile.autotools.in
