@@ -5,11 +5,12 @@
 	Updated/fixed packages: busybox, ipsec-tools, libgtk2, madplay,
 	netsnmp, pango, sylpheed, qt, xfont_font-util
 
-	Removed packages: openmotif, xpdf
+	Removed packages: hostap, openmotif, xpdf
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#165: openmotif does not build
+	#1147: Remove obsolete hostap package
 	#1183: make source fails to download gmp, mpfr and patches
 
 2010.02-rc2, Released February 23th, 2010:
