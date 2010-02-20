@@ -163,9 +163,6 @@ $(CCACHE_DIR2)/$(CCACHE_BINARY): $(CCACHE_DIR2)/.configured
 
 $(TARGET_DIR)/$(CCACHE_TARGET_BINARY): $(CCACHE_DIR2)/$(CCACHE_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(CCACHE_DIR2) install
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/man
-endif
 	# put a bunch of symlinks into /bin, since that is earlier
 	# in the default PATH than /usr/bin where gcc lives
 	(cd $(TARGET_DIR)/bin; \
