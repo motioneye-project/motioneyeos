@@ -25,7 +25,15 @@ LIBXSLT_CONF_OPT = --with-gnu-ld --enable-shared \
 
 LIBXSLT_DEPENDENCIES = libxml2 $(LIBXSLT_DEPENDENCIES_EXTRA)
 
+HOST_LIBXSLT_CONF_OPT = --enable-shared \
+			--without-debugging \
+			--without-python \
+			--without-threads
+
+HOST_LIBXSLT_DEPENDENCIES = host-libxml2
+
 $(eval $(call AUTOTARGETS,package,libxslt))
+$(eval $(call AUTOTARGETS,package,libxslt,host))
 
 $(LIBXSLT_HOOK_POST_INSTALL):
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xslt-config
