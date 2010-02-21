@@ -1,0 +1,6 @@
+config BR2_PACKAGE_INTLTOOL
+       bool "intltool"
+       help
+         Utility scripts for internationalizing XML
+
+	 http://www.freedesktop.org/wiki/Software/intltool
