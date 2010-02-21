@@ -9,6 +9,7 @@ FLEX_SOURCE:=flex_$(FLEX_VERSION).orig.tar.gz
 FLEX_PATCH:=flex_$(FLEX_VERSION)-$(FLEX_PATCH_VERSION).diff.gz
 FLEX_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/f/flex
 FLEX_DIR:=$(BUILD_DIR)/flex-$(FLEX_VERSION)
+FLEX_INSTALL_STAGING=YES
 
 # lex -> flex
 define FLEX_INSTALL_LEX
