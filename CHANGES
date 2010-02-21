@@ -3,7 +3,8 @@
 	Fixes all over the tree and new features.
 
 	Updated/fixed packages: ace_of_penguins, alsa-lib, alsa-utils, argus,
-	at, gst-plugins-good, libpcap, rsync, rubix, tcl, xproto_trapproto
+	at, e2fsprogs, gst-plugins-good, libpcap, rsync, rubix, tcl,
+	xproto_trapproto
 
 	Removed package: xboard
 
