@@ -120,6 +120,7 @@ choice
 
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
+		depends on BR2_UCLIBC_VERSION_SNAPSHOT
 endchoice
 
 config BR2_PROGRAM_INVOCATION
