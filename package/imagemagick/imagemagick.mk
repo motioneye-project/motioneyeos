@@ -31,6 +31,12 @@ $(IMAGEMAGICK_DIR)/.unpacked: $(DL_DIR)/$(IMAGEMAGICK_SOURCE)
 	$(CONFIG_UPDATE) $(IMAGEMAGICK_DIR)/config
 	touch $@
 
+ifeq ($(BR2_LARGEFILE),y)
+IMAGEMAGICK_CONF_OPTS = ac_cv_sys_file_offset_bits=64
+else
+IMAGEMAGICK_CONF_OPTS = ac_cv_sys_file_offset_bits=32
+endif
+
 $(IMAGEMAGICK_DIR)/.configured: $(IMAGEMAGICK_DIR)/.unpacked
 	(cd $(IMAGEMAGICK_DIR); rm -f config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
@@ -55,6 +61,7 @@ $(IMAGEMAGICK_DIR)/.configured: $(IMAGEMAGICK_DIR)/.unpacked
 		--without-fpx \
 		--without-freetype \
 		--without-x \
+		$(IMAGEMAGICK_CONF_OPTS) \
 	)
 	touch $@
 
