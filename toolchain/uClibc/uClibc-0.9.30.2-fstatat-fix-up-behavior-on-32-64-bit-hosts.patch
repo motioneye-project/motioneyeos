@@ -1,0 +1,113 @@
+From d43f068e84513ed88392df4ca27d49ad01145fd2 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Sun, 6 Sep 2009 12:12:12 -0400
+Subject: [PATCH 07/15] fstatat: fix up behavior on 32/64 bit hosts
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The fstatat() syscall is a little funky in that it sometimes changes name
+between 32 and 64 bit hosts, but it should always operate on a 64bit stat
+structure.  So for the fstatat() function, make sure we convert it from a
+64bit kstat to a 32bit stat.
+
+Along these lines, we need to restore the __xstat32_conv() function.
+
+Reported-by: Timo Teräs <timo.teras@iki.fi>
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/sysdeps/linux/common/fstatat.c   |    9 +++++++--
+ libc/sysdeps/linux/common/fstatat64.c |    5 +++++
+ libc/sysdeps/linux/common/xstatconv.c |   19 +++++++++++++++++++
+ libc/sysdeps/linux/common/xstatconv.h |    1 +
+ 4 files changed, 32 insertions(+), 2 deletions(-)
+
+diff --git a/libc/sysdeps/linux/common/fstatat.c b/libc/sysdeps/linux/common/fstatat.c
+index 149c189..33daa7c 100644
+--- a/libc/sysdeps/linux/common/fstatat.c
++++ b/libc/sysdeps/linux/common/fstatat.c
+@@ -10,15 +10,20 @@
+ #include <sys/stat.h>
+ #include "xstatconv.h"
+ 
++/* 64bit ports tend to favor newfstatat() */
++#ifdef __NR_newfstatat
++# define __NR_fstatat64 __NR_newfstatat
++#endif
++
+ #ifdef __NR_fstatat64
+ int fstatat(int fd, const char *file, struct stat *buf, int flag)
+ {
+ 	int ret;
+-	struct kernel_stat kbuf;
++	struct kernel_stat64 kbuf;
+ 
+ 	ret = INLINE_SYSCALL(fstatat64, 4, fd, file, &kbuf, flag);
+ 	if (ret == 0)
+-		__xstat_conv(&kbuf, buf);
++		__xstat32_conv(&kbuf, buf);
+ 
+ 	return ret;
+ }
+diff --git a/libc/sysdeps/linux/common/fstatat64.c b/libc/sysdeps/linux/common/fstatat64.c
+index 5ae1fad..95627af 100644
+--- a/libc/sysdeps/linux/common/fstatat64.c
++++ b/libc/sysdeps/linux/common/fstatat64.c
+@@ -12,6 +12,11 @@
+ 
+ #ifdef __UCLIBC_HAS_LFS__
+ 
++/* 64bit ports tend to favor newfstatat() */
++#ifdef __NR_newfstatat
++# define __NR_fstatat64 __NR_newfstatat
++#endif
++
+ #ifdef __NR_fstatat64
+ int fstatat64(int fd, const char *file, struct stat64 *buf, int flag)
+ {
+diff --git a/libc/sysdeps/linux/common/xstatconv.c b/libc/sysdeps/linux/common/xstatconv.c
+index e575b26..50455c6 100644
+--- a/libc/sysdeps/linux/common/xstatconv.c
++++ b/libc/sysdeps/linux/common/xstatconv.c
+@@ -46,6 +46,25 @@ void attribute_hidden __xstat_conv(struct kernel_stat *kbuf, struct stat *buf)
+ 	buf->st_ctim = kbuf->st_ctim;
+ }
+ 
++void __xstat32_conv(struct kernel_stat64 *kbuf, struct stat *buf)
++{
++	/* Convert to current kernel version of `struct stat64'. */
++	memset(buf, 0x00, sizeof(*buf));
++	buf->st_dev = kbuf->st_dev;
++	buf->st_ino = kbuf->st_ino;
++	buf->st_mode = kbuf->st_mode;
++	buf->st_nlink = kbuf->st_nlink;
++	buf->st_uid = kbuf->st_uid;
++	buf->st_gid = kbuf->st_gid;
++	buf->st_rdev = kbuf->st_rdev;
++	buf->st_size = kbuf->st_size;
++	buf->st_blksize = kbuf->st_blksize;
++	buf->st_blocks = kbuf->st_blocks;
++	buf->st_atim = kbuf->st_atim;
++	buf->st_mtim = kbuf->st_mtim;
++	buf->st_ctim = kbuf->st_ctim;
++}
++
+ #ifdef __UCLIBC_HAS_LFS__
+ 
+ void attribute_hidden __xstat64_conv(struct kernel_stat64 *kbuf, struct stat64 *buf)
+diff --git a/libc/sysdeps/linux/common/xstatconv.h b/libc/sysdeps/linux/common/xstatconv.h
+index 57c8bcb..7568da8 100644
+--- a/libc/sysdeps/linux/common/xstatconv.h
++++ b/libc/sysdeps/linux/common/xstatconv.h
+@@ -26,6 +26,7 @@
+ #include <bits/kernel_stat.h>
+ 
+ extern void __xstat_conv(struct kernel_stat *kbuf, struct stat *buf) attribute_hidden;
++extern void __xstat32_conv(struct kernel_stat64 *kbuf, struct stat *buf) attribute_hidden;
+ #if defined __UCLIBC_HAS_LFS__
+ extern void __xstat64_conv(struct kernel_stat64 *kbuf, struct stat64 *buf) attribute_hidden;
+ #endif
+-- 
+1.6.6.1
+

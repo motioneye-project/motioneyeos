@@ -1,0 +1,64 @@
+From a05c4380c5aaa6e107a4c7e1e5a139ec4cc43f0c Mon Sep 17 00:00:00 2001
+From: Henning Heinold <heinold@inf.fu-berlin.de>
+Date: Sun, 21 Feb 2010 11:55:32 +0100
+Subject: [PATCH 14/15] LT pthread_atfork: unhide
+
+Trying to compile perl with uClibc new linuxthreads on arm.
+I run into the problem that pthread_atfork is not available.
+The problem was that it was synced with the glibc version, which has
+compat ifdefs we do not need in uClibc. The inital checked in version
+is right and works. So either revert the commit 2 years ago
+or patch it with the patch attached I made for openembedded.
+
+Signed-off-by: Henning Heinold <heinold@inf.fu-berlin.de>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libpthread/linuxthreads/Makefile.in      |    2 +-
+ libpthread/linuxthreads/pthread_atfork.c |   13 +++----------
+ 2 files changed, 4 insertions(+), 11 deletions(-)
+
+diff --git a/libpthread/linuxthreads/Makefile.in b/libpthread/linuxthreads/Makefile.in
+index 947dea9..d53b5fa 100644
+--- a/libpthread/linuxthreads/Makefile.in
++++ b/libpthread/linuxthreads/Makefile.in
+@@ -45,7 +45,7 @@ pthread_sysdep_SRC := $(patsubst %,$(libpthread_DIR)/sysdeps/pthread/%.c,$(pthre
+ pthread_SRC := \
+ 	attr barrier cancel condvar errno events join pthread \
+ 	lockfile manager mutex pt-machine ptcleanup \
+-	ptclock_gettime ptclock_settime ptfork pthandles \
++	ptclock_gettime ptclock_settime ptfork pthandles pthread_atfork \
+ 	pthread_setegid pthread_seteuid pthread_setgid pthread_setregid \
+ 	pthread_setresgid pthread_setresuid pthread_setreuid pthread_setuid \
+ 	rwlock semaphore sighandler signals specific spinlock
+diff --git a/libpthread/linuxthreads/pthread_atfork.c b/libpthread/linuxthreads/pthread_atfork.c
+index 2464acb..4c83dd0 100644
+--- a/libpthread/linuxthreads/pthread_atfork.c
++++ b/libpthread/linuxthreads/pthread_atfork.c
+@@ -43,12 +43,8 @@ extern void *__dso_handle __attribute__ ((__weak__));
+ 
+ /* Hide the symbol so that no definition but the one locally in the
+    executable or DSO is used.  */
+-int
+-#ifndef __pthread_atfork
+-/* Don't mark the compatibility function as hidden.  */
+-attribute_hidden
+-#endif
+-__pthread_atfork (prepare, parent, child)
++
++int attribute_hidden __pthread_atfork (prepare, parent, child)
+      void (*prepare) (void);
+      void (*parent) (void);
+      void (*child) (void);
+@@ -56,8 +52,5 @@ __pthread_atfork (prepare, parent, child)
+   return __register_atfork (prepare, parent, child,
+ 			    &__dso_handle == NULL ? NULL : __dso_handle);
+ }
+-#ifndef __pthread_atfork
+-extern int pthread_atfork (void (*prepare) (void), void (*parent) (void),
+-			   void (*child) (void)) attribute_hidden;
++
+ strong_alias (__pthread_atfork, pthread_atfork)
+-#endif
+-- 
+1.6.6.1
+

@@ -1,0 +1,26 @@
+From 83a09cd5c9ed9afd87a7d1d17319c2fd2203ad0f Mon Sep 17 00:00:00 2001
+From: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Date: Thu, 21 Jan 2010 10:36:13 +0100
+Subject: [PATCH 04/15] rpc: fix typo in version mismatch msg
+
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/inet/rpc/rpc_prot.c |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/libc/inet/rpc/rpc_prot.c b/libc/inet/rpc/rpc_prot.c
+index 74658e6..229f988 100644
+--- a/libc/inet/rpc/rpc_prot.c
++++ b/libc/inet/rpc/rpc_prot.c
+@@ -229,7 +229,7 @@ rejected (enum reject_stat rjct_stat,
+ {
+   switch (rjct_stat)
+     {
+-    case RPC_VERSMISMATCH:
++    case RPC_MISMATCH:
+       error->re_status = RPC_VERSMISMATCH;
+       return;
+     case AUTH_ERROR:
+-- 
+1.6.6.1
+

@@ -1,0 +1,30 @@
+From 323453d85ed29ccba7a81d884479188869cd64b7 Mon Sep 17 00:00:00 2001
+From: Henning Heinold <heinold@inf.fu-berlin.de>
+Date: Sat, 23 Jan 2010 21:29:42 -0800
+Subject: [PATCH 13/15] Makefile.in: Make install_dev depend on install_runtime.
+
+* Helps in parallel build.
+
+Signed-off-by: Henning Heinold <heinold@inf.fu-berlin.de>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ Makefile.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index ec4c28e..a889838 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -370,7 +370,7 @@ ifneq ($(UCLIBC_SUPPORT_AI_ADDRCONFIG),y)
+ endif
+ 
+ # Installs development library links.
+-install_dev: install_headers all
++install_dev: install_headers install_runtime
+ 	$(INSTALL) -d $(PREFIX)$(DEVEL_PREFIX)lib
+ 	-$(INSTALL) -m 644 lib/*.[ao] $(PREFIX)$(DEVEL_PREFIX)lib/
+ ifeq ($(HAVE_SHARED),y)
+-- 
+1.6.6.1
+

@@ -1,0 +1,35 @@
+From 47e88c04e01299f975ff23f33035d0f34a8f6787 Mon Sep 17 00:00:00 2001
+From: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+Date: Fri, 22 Jan 2010 13:32:44 +0100
+Subject: [PATCH 06/15] {,host}utils depend on headers
+
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ Makefile.in |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 4c5aecb..ec4c28e 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -436,7 +436,7 @@ ifeq ($(HAVE_SHARED),y)
+ 	fi
+ endif
+ 
+-utils:
++utils: headers
+ 	$(Q)$(MAKE) CROSS="$(CROSS)" CC="$(CC)" -C utils $@
+ 
+ # Installs helper applications, such as 'ldd' and 'ldconfig'
+@@ -445,7 +445,7 @@ install_utils: utils
+ 
+ endif # ifeq ($(HAVE_DOT_CONFIG),y)
+ 
+-hostutils:
++hostutils: headers
+ 	$(Q)$(MAKE) CROSS="$(CROSS)" CC="$(CC)" HOSTCC="$(HOSTCC)" DOTHOST=.host -C utils $@
+ 
+ install_hostutils: hostutils
+-- 
+1.6.6.1
+

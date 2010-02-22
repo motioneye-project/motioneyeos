@@ -1,0 +1,42 @@
+From 7b964170536951a260f7d552db99b428d1ea5026 Mon Sep 17 00:00:00 2001
+From: Austin Foxley <austinf@cetoncorp.com>
+Date: Wed, 3 Feb 2010 12:12:10 -0800
+Subject: [PATCH 08/15] Unbreak build for sparc on some config's
+
+Thanks to rob@landley.net
+
+Signed-off-by: Austin Foxley <austinf@cetoncorp.com>
+---
+ libc/sysdeps/linux/sparc/sigaction.c |    9 ++++-----
+ 1 files changed, 4 insertions(+), 5 deletions(-)
+
+diff --git a/libc/sysdeps/linux/sparc/sigaction.c b/libc/sysdeps/linux/sparc/sigaction.c
+index a22ac40..7140fd3 100644
+--- a/libc/sysdeps/linux/sparc/sigaction.c
++++ b/libc/sysdeps/linux/sparc/sigaction.c
+@@ -34,7 +34,8 @@ _syscall5(int, rt_sigaction, int, a, int, b, int, c, int, d, int, e);
+ static void __rt_sigreturn_stub(void);
+ static void __sigreturn_stub(void);
+ 
+-int __libc_sigaction(int sig, const struct sigaction *act, struct sigaction *oact)
++libc_hidden_proto(sigaction)
++int sigaction(int sig, const struct sigaction *act, struct sigaction *oact)
+ {
+ 	int ret;
+ 	struct sigaction kact, koact;
+@@ -65,10 +66,8 @@ int __libc_sigaction(int sig, const struct sigaction *act, struct sigaction *oac
+ 	return ret;
+ }
+ 
+-#ifndef LIBC_SIGACTION
+-weak_alias(__libc_sigaction,sigaction)
+-libc_hidden_weak(sigaction)
+-#endif
++libc_hidden_def(sigaction)
++weak_alias(sigaction,__libc_sigaction)
+ 
+ static void
+ __rt_sigreturn_stub(void)
+-- 
+1.6.6.1
+

@@ -1,0 +1,72 @@
+From 13545bce877b33e30155fc412ad44cc118d83f77 Mon Sep 17 00:00:00 2001
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Date: Sat, 30 Jan 2010 00:24:37 +0900
+Subject: [PATCH 15/15] getdents: Fix mips64 build
+
+On Wed, 27 Jan 2010 07:14:08 +0100, Carmelo AMOROSO <carmelo.amoroso@st.com> wrote:
+> I would re-write your patch in a simpler way.
+>
+> We already have the following
+>
+> 136 #if defined __UCLIBC_HAS_LFS__ && ! defined __NR_getdents64
+> 137 attribute_hidden strong_alias(__getdents,__getdents64)
+> 138 #endif
+>
+> I think that it's simpler to move in the proper place this statement.
+
+Thanks, indeed.  If we came into "#elif WORDSIZE == 32" block, above
+condition never be true.  So we can just move this statement out of
+"#if...#elif...#elif...#endif" block.  Here is a revised patch.
+
+------------------------------------------------------
+From: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Subject: [PATCH] getdents: Fix mips64 build
+
+Some archs (such as mips64) do not have getdents64 syscall but have
+getdents syscall.  Define alias for it.
+
+This fixes regression from 0.9.30.1.
+
+Backgrounds:
+This is once done by commit e8b1c674.  But after the commit 33bcf733
+("Use getdents syscall if kernel provide supports for this instead of
+relying upon getdents64."), if __ASSUME_GETDENTS32_D_TYPE was defined
+the alias for getdents64 is not defined.  The macro
+__ASSUME_GETDENTS32_D_TYPE had been effectively ignored until 0.9.30.1
+but the commit 0f0f20ab ("Move kernel-features.h header from the
+linuxthread directory to a common one...") really enables it.
+
+Signed-off-by: Atsushi Nemoto <anemo@mba.ocn.ne.jp>
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Bernhard Reutner-Fischer <rep.dot.nop@gmail.com>
+---
+ libc/sysdeps/linux/common/getdents.c |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/libc/sysdeps/linux/common/getdents.c b/libc/sysdeps/linux/common/getdents.c
+index b518cc0..66a03b3 100644
+--- a/libc/sysdeps/linux/common/getdents.c
++++ b/libc/sysdeps/linux/common/getdents.c
+@@ -136,10 +136,6 @@ ssize_t __getdents (int fd, char *buf, size_t nbytes)
+     return (char *) dp - buf;
+ }
+ 
+-#if defined __UCLIBC_HAS_LFS__ && ! defined __NR_getdents64
+-attribute_hidden strong_alias(__getdents,__getdents64)
+-#endif
+-
+ #elif __WORDSIZE == 32
+ 
+ /* Experimentally off - libc_hidden_proto(memmove) */
+@@ -171,4 +167,8 @@ ssize_t __getdents (int fd, char *buf, size_t nbytes)
+ }
+ #endif
+ 
++#if defined __UCLIBC_HAS_LFS__ && ! defined __NR_getdents64
++attribute_hidden strong_alias(__getdents,__getdents64)
++#endif
++
+ #endif
+-- 
+1.6.6.1
+

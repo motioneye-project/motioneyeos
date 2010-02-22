@@ -1,0 +1,63 @@
+From b4d6a6e94d87ff2b4ae687a21048833f19b9dd48 Mon Sep 17 00:00:00 2001
+From: Carmelo Amoroso <carmelo.amoroso@st.com>
+Date: Mon, 8 Feb 2010 16:24:06 +0100
+Subject: [PATCH 11/15] libc: Fix typo in include/rpc
+
+s/GNU_SOUCE/GNU_SOURCE/ in include/rcp/
+
+Signed-off-by: Jason Woodward <jason.woodward@timesys.com>
+Signed-off-by: Carmelo Amoroso <carmelo.amoroso@st.com>
+---
+ include/rpc/auth.h  |    4 ++--
+ include/rpc/rpc.h   |    4 ++--
+ include/rpc/types.h |    4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/include/rpc/auth.h b/include/rpc/auth.h
+index 17eb59f..12297e6 100644
+--- a/include/rpc/auth.h
++++ b/include/rpc/auth.h
+@@ -47,8 +47,8 @@
+ #ifndef __FORCE_GLIBC
+ #define __FORCE_GLIBC
+ #endif
+-#ifndef _GNU_SOUCE
+-#define _GNU_SOUCE
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
+ #endif
+ #define _(X)	X
+ #endif
+diff --git a/include/rpc/rpc.h b/include/rpc/rpc.h
+index 8194ffe..219910e 100644
+--- a/include/rpc/rpc.h
++++ b/include/rpc/rpc.h
+@@ -44,8 +44,8 @@
+ #ifndef __FORCE_GLIBC
+ #define __FORCE_GLIBC
+ #endif
+-#ifndef _GNU_SOUCE
+-#define _GNU_SOUCE
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
+ #endif
+ #define _(X)	X
+ #include <features.h>
+diff --git a/include/rpc/types.h b/include/rpc/types.h
+index 469576e..05f49c3 100644
+--- a/include/rpc/types.h
++++ b/include/rpc/types.h
+@@ -39,8 +39,8 @@
+ #ifndef __FORCE_GLIBC
+ #define __FORCE_GLIBC
+ #endif
+-#ifndef _GNU_SOUCE
+-#define _GNU_SOUCE
++#ifndef _GNU_SOURCE
++#define _GNU_SOURCE
+ #endif
+ #define _(X)	X
+ #endif
+-- 
+1.6.6.1
+
