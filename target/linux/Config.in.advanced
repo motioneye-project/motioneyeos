@@ -33,6 +33,8 @@ source "target/linux/Config.in.versions"
 
 config BR2_KERNEL_PATCH_LEVEL
 	string
+	default $(BR2_KERNEL_LATEST_2_6_32) if BR2_LINUX_2_6_32 && BR2_KERNEL_ADD_LATEST_MINORPATCH
+	default $(BR2_KERNEL_LATEST_2_6_31) if BR2_LINUX_2_6_31 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default $(BR2_KERNEL_LATEST_2_6_30) if BR2_LINUX_2_6_30 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default $(BR2_KERNEL_LATEST_2_6_29) if BR2_LINUX_2_6_29 && BR2_KERNEL_ADD_LATEST_MINORPATCH
 	default $(BR2_KERNEL_LATEST_2_6_28) if BR2_LINUX_2_6_28 && BR2_KERNEL_ADD_LATEST_MINORPATCH
@@ -44,6 +46,8 @@ config BR2_KERNEL_PATCH_LEVEL
 
 config BR2_KERNEL_NEXT_VERSION
 	string
+	default "2.6.33" if BR2_LINUX_2_6_32
+	default "2.6.32" if BR2_LINUX_2_6_31
 	default "2.6.31" if BR2_LINUX_2_6_30
 	default "2.6.30" if BR2_LINUX_2_6_29
 	default "2.6.29" if BR2_LINUX_2_6_28
@@ -54,6 +58,7 @@ config BR2_KERNEL_NEXT_VERSION
 
 config BR2_KERNEL_THIS_VERSION
 	string
+	default "2.6.32" if BR2_LINUX_2_6_32
 	default "2.6.31" if BR2_LINUX_2_6_31
 	default "2.6.30" if BR2_LINUX_2_6_30
 	default "2.6.29" if BR2_LINUX_2_6_29
@@ -121,7 +126,15 @@ choice
 	  Select the specific Linux version you want to use
 
 config BR2_LINUX_2_6_STABLE
-	bool "The latest stable Linux kernel (2.6.30.2)"
+	bool "The latest stable Linux kernel (2.6.32.8)"
+
+config BR2_LINUX_2_6_32
+	bool "Linux 2.6.32"
+	select BR2_KERNEL_BASE
+
+config BR2_LINUX_2_6_31
+	bool "Linux 2.6.31"
+	select BR2_KERNEL_BASE
 
 config BR2_LINUX_2_6_30
 	bool "Linux 2.6.30"
@@ -149,10 +162,6 @@ config BR2_LINUX_2_6_25
 
 config BR2_LINUX_2_6_24
 	bool "Linux 2.6.24"
-	select BR2_KERNEL_BASE
-
-config BR2_LINUX_2_6_31
-	bool "Linux 2.6.31"
 	select BR2_KERNEL_BASE
 
 config BR2_LINUX26_CUSTOM
