@@ -9,6 +9,16 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#335: atk looks for the path to the gnome library on the host
+	#355: Please update WebKit - it doesn't compile!
+	#453: libglib2 autoreconf
+	#457: e2fsprogs link problem
+	#459: libgtk2 autoreconf
+	#469: build of libgtk2 for host incorrectly assumes that X.org ...
+	#671: Bash fails to build when building buildront on Ubuntu 9.04
+	#711: WebKit host dependencies problems
+	#821: cp: illegal operation
+	#1039: Not compiled on ubuntu karmic
 	#1069: [PATCH] The AT91BOOTSTRAP makefile contains a typo
 
 2010.02-rc1, Released February 9th, 2010:
