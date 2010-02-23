@@ -19,42 +19,60 @@ config LINUX26_LATEST_MM_VERSION
 
 config BR2_KERNEL_CURRENT_VERSION
 	string
-	default "2.6.32.8"
+	default "2.6.32.9"
 	help
-	  This is the latest stable kernel (including minor version)
+	  This is the latest stable kernel (including minor version).
 
 config BR2_KERNEL_LATEST_2_6_32
 	string
-	default "8"
+	default "9"
+	help
+	  Released 2010-Feb-23.
 
 config BR2_KERNEL_LATEST_2_6_31
 	string
 	default "12"
+	help
+	  Released 2010-Jan-18 (last .31-stable release).
 
 config BR2_KERNEL_LATEST_2_6_30
 	string
-	default "2"
+	default "10"
+	help
+	  Released 2009-Dec-04 (last .30-stable release).
 
 config BR2_KERNEL_LATEST_2_6_29
 	string
 	default "6"
+	help
+	  Released 2009-Jul-02 (last .29-stable release).
 
 config BR2_KERNEL_LATEST_2_6_28
 	string
 	default "10"
+	help
+	  Released 2009-May-02 (last .28-stable release).
 
 config BR2_KERNEL_LATEST_2_6_27
 	string
-	default "27"
+	default "45"
+	help
+	  Released 2010-Jan-28.
 
 config BR2_KERNEL_LATEST_2_6_26
 	string
 	default "8"
+	help
+	  Released 2008-Nov-10 (last .26-stable release).
 
 config BR2_KERNEL_LATEST_2_6_25
 	string
-	default "19"
+	default "20"
+	help
+	  Released 2008-Nov-10.
 
 config BR2_KERNEL_LATEST_2_6_24
 	string
 	default "7"
+	help
+	  Released 2008-May-07.
