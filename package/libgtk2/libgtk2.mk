@@ -119,16 +119,39 @@ else
 LIBGTK2_CONF_OPT += --disable-cups
 endif
 
-HOST_LIBGTK2_DEPENDENCIES = host-cairo host-libglib2 host-pango host-atk
+# We do not build a full version of libgtk2 for the host, because that
+# requires compiling Cairo, Pango, ATK and X.org for the
+# host. Therefore, we patch it to remove dependencies, and we hack the
+# build to only build gdk-pixbuf-from-source and
+# gtk-update-icon-cache, which are the host tools needed to build Gtk
+# for the target.
+
+HOST_LIBGTK2_DEPENDENCIES = host-libglib2
+HOST_LIBGTK2_AUTORECONF = YES
 HOST_LIBGTK2_CONF_OPT = \
 		--disable-static \
 		--disable-glibtest \
 		--without-libtiff \
 		--without-libjpeg \
-		--with-x \
-		--with-gdktarget=x11 \
+		--with-gdktarget=none \
 		--disable-cups \
 		--disable-debug
+
+define HOST_LIBGTK2_PATCH_REDUCE_DEPENDENCIES_HOOK
+ toolchain/patch-kernel.sh $(@D) $($(PKG)_DIR_PREFIX)/$($(NOHOSTPKG)_NAME) host-*.patch
+endef
+
+HOST_LIBGTK2_POST_PATCH_HOOKS += HOST_LIBGTK2_PATCH_REDUCE_DEPENDENCIES_HOOK
+
+define HOST_LIBGTK2_BUILD_CMDS
+ $(HOST_MAKE_ENV) make -C $(@D)/gdk-pixbuf
+ $(HOST_MAKE_ENV) make -C $(@D)/gtk gtk-update-icon-cache
+endef
+
+define HOST_LIBGTK2_INSTALL_CMDS
+ $(HOST_MAKE_ENV) make -C $(@D)/gdk-pixbuf install
+ cp $(@D)/gtk/gtk-update-icon-cache $(HOST_DIR)/usr/bin
+endef
 
 $(eval $(call AUTOTARGETS,package,libgtk2))
 $(eval $(call AUTOTARGETS,package,libgtk2,host))

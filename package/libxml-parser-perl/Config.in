@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBXML_PARSER_PERL
+       bool "libxml-parser-perl"
+       select BR2_PACKAGE_EXPAT
+       help
+         The Perl XML::Parser module.
+
+	 http://www.cpan.org/modules/by-module/XML/
+

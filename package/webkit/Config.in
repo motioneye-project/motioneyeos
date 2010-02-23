@@ -14,6 +14,9 @@ config BR2_PACKAGE_WEBKIT
 	help
 	  WebKit is an open source, standards compliant web browser engine.
 
+	  Note that WebKit does not build with a toolchain using the
+	  old linuxthreads library.
+
 	  http://webkit.org/
 
 comment "webkit requires a toolchain with C++ support and WCHAR enabled"

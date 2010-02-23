@@ -86,9 +86,11 @@ $(LVM2_DIR)/.built: $(LVM2_DIR)/.configured
 
 $(LVM2_TARGET_SBINS) $(LVM2_TARGET_DMSETUP_SBINS): $(LVM2_DIR)/.built
 	cp -a $(STAGING_DIR)/sbin/$(notdir $@) $@
+	touch $@
 
 $(LVM2_TARGET_LIBS): $(LVM2_DIR)/.built
 	cp -a $(STAGING_DIR)/lib/$(notdir $@) $@
+	touch $@
 
 
 ifeq ($(BR2_PACKAGE_LVM2_DMSETUP_ONLY),y)

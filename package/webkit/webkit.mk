@@ -25,10 +25,12 @@ endif
 WEBKIT_CONF_OPT += --disable-video
 
 define WEBKIT_AUTOGEN_PATCH
+$(SED) 's%ACLOCAL_FLAGS=.*%ACLOCAL_FLAGS="-I autotools -I $(STAGING_DIR)/usr/share/aclocal"%' $(WEBKIT_DIR)/autogen.sh
 $(SED) 's/AUTOMAKE_FLAGS=.*/AUTOMAKE_FLAGS="--foreign --add-missing --copy"/' $(WEBKIT_DIR)/autogen.sh
 $(SED) 's/LIBTOOLIZE_FLAGS=.*/LIBTOOLIZE_FLAGS="--force --automake --copy"/' $(WEBKIT_DIR)/autogen.sh
+cp package/webkit/gtk-doc.make $(WEBKIT_DIR)/
 # Don't run the configure step yet
-cd $(WEBKIT_DIR); AUTOGEN_CONFIGURE_ARGS=--version ./autogen.sh
+cd $(WEBKIT_DIR); $(HOST_CONFIGURE_OPTS) AUTOGEN_CONFIGURE_ARGS=--version ./autogen.sh
 endef
 
 WEBKIT_POST_EXTRACT_HOOKS += WEBKIT_AUTOGEN_PATCH

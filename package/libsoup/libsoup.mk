@@ -24,7 +24,7 @@ LIBSOUP_CONF_OPT = \
 	--disable-explicit-deps \
 	--disable-glibtest	\
 	--without-gnome		\
-	--disable-gtk-doc --without-html-dir
+	--disable-gtk-doc
 
 LIBSOUP_DEPENDENCIES = gettext libintl host-pkg-config host-libglib2 libglib2 libxml2
 

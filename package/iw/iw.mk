@@ -11,6 +11,7 @@ IW_DEPENDENCIES = libnl
 IW_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 IW_CONFIG = $(IW_DIR)/.config
 IW_MAKE_ENV = PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig" \
+	PKG_CONFIG="$(HOST_DIR)/usr/bin/pkg-config" \
 	GIT_DIR=$(IW_DIR)
 
 $(eval $(call AUTOTARGETS,package,iw))
