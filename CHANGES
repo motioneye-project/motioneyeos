@@ -2,9 +2,15 @@
 
 	Fixes all over the tree and new features.
 
+	New packages: intltool
+
 	Updated/fixed packages: ace_of_penguins, alsa-lib, alsa-utils, argus,
-	at, e2fsprogs, gst-plugins-good, libpcap, rsync, rubix, tcl,
-	xproto_trapproto
+	at, automake, ccache, dosfstools, e2fsprogs, flex, gob2, gmpc,
+	gst-plugins-good, imagemagick, iw, kexec, libeXosip, libgtk2,
+	libpcap, libpng, libsoup, libxcb, libxml-parser-perl, libxml2,
+	libxslt, lvm2, matchbox, mplayer, rsync, rubix, shared-mime-info,
+	tcl, webkit, xapp_mkfontscale, xfont_encodings, xfont_font-util,
+	xlib_libfontenc, xproto_trapproto, zlib
 
 	Removed package: xboard
 
