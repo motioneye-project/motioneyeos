@@ -126,7 +126,7 @@ endif
 # gtk-update-icon-cache, which are the host tools needed to build Gtk
 # for the target.
 
-HOST_LIBGTK2_DEPENDENCIES = host-libglib2
+HOST_LIBGTK2_DEPENDENCIES = host-libglib2 host-libpng
 HOST_LIBGTK2_AUTORECONF = YES
 HOST_LIBGTK2_CONF_OPT = \
 		--disable-static \
