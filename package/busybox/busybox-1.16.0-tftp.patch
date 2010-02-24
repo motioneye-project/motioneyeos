@@ -1,0 +1,12 @@
+diff -urpN busybox-1.16.0/networking/tftp.c busybox-1.16.0-tftp/networking/tftp.c
+--- busybox-1.16.0/networking/tftp.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-tftp/networking/tftp.c	2010-02-21 01:53:41.000000000 +0100
+@@ -308,7 +308,7 @@ static int tftp_protocol(
+ 
+ 	if (!ENABLE_TFTP || our_lsa) { /* tftpd */
+ 		/* Open file (must be after changing user) */
+-		local_fd = open(local_file, open_mode);
++		local_fd = open(local_file, open_mode, 0666);
+ 		if (local_fd < 0) {
+ 			error_pkt_reason = ERR_NOFILE;
+ 			strcpy((char*)error_pkt_str, "can't open file");

@@ -1,0 +1,12 @@
+diff -urpN busybox-1.16.0/sysklogd/syslogd.c busybox-1.16.0-syslogd/sysklogd/syslogd.c
+--- busybox-1.16.0/sysklogd/syslogd.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-syslogd/sysklogd/syslogd.c	2010-02-21 01:53:33.000000000 +0100
+@@ -698,7 +698,7 @@ int syslogd_main(int argc UNUSED_PARAM, 
+ 	if (!(opts & OPT_nofork)) {
+ 		bb_daemonize_or_rexec(DAEMON_CHDIR_ROOT, argv);
+ 	}
+-	umask(0);
++	//umask(0); - why??
+ 	write_pidfile("/var/run/syslogd.pid");
+ 	do_syslogd();
+ 	/* return EXIT_SUCCESS; */

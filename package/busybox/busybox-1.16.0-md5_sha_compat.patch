@@ -1,0 +1,16 @@
+diff -urpN busybox-1.16.0/coreutils/md5_sha1_sum.c busybox-1.16.0-md5_sha_compat/coreutils/md5_sha1_sum.c
+--- busybox-1.16.0/coreutils/md5_sha1_sum.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-md5_sha_compat/coreutils/md5_sha1_sum.c	2010-02-21 01:53:28.000000000 +0100
+@@ -101,8 +101,10 @@ int md5_sha1_sum_main(int argc UNUSED_PA
+ 	unsigned flags;
+ 	/*hash_algo_t hash_algo = applet_name[3];*/
+ 
+-	if (ENABLE_FEATURE_MD5_SHA1_SUM_CHECK)
+-		flags = getopt32(argv, "scw");
++	if (ENABLE_FEATURE_MD5_SHA1_SUM_CHECK) {
++		/* -b "binary", -t "text" are ignored (shaNNNsum compat) */
++		flags = getopt32(argv, "scwbt");
++	}
+ 	else optind = 1;
+ 	argv += optind;
+ 	//argc -= optind;

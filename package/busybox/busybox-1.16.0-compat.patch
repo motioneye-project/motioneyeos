@@ -1,0 +1,317 @@
+diff -urpN busybox-1.16.0/coreutils/fsync.c busybox-1.16.0-compat/coreutils/fsync.c
+--- busybox-1.16.0/coreutils/fsync.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-compat/coreutils/fsync.c	2010-02-21 01:54:07.000000000 +0100
+@@ -7,6 +7,9 @@
+  * Licensed under GPLv2 or later, see file LICENSE in this tarball for details.
+  */
+ #include "libbb.h"
++#ifndef O_NOATIME
++# define O_NOATIME 0
++#endif
+ 
+ /* This is a NOFORK applet. Be very careful! */
+ 
+diff -urpN busybox-1.16.0/editors/diff.c busybox-1.16.0-compat/editors/diff.c
+--- busybox-1.16.0/editors/diff.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-compat/editors/diff.c	2010-02-21 01:54:07.000000000 +0100
+@@ -227,10 +227,12 @@ struct cand {
+ 
+ static int search(const int *c, int k, int y, const struct cand *list)
+ {
++	int i, j;
++
+ 	if (list[c[k]].y < y)	/* quick look for typical case */
+ 		return k + 1;
+ 
+-	for (int i = 0, j = k + 1;;) {
++	for (i = 0, j = k + 1;;) {
+ 		const int l = (i + j) >> 1;
+ 		if (l > i) {
+ 			const int t = list[c[l]].y;
+@@ -265,11 +267,13 @@ static void stone(const int *a, int n, c
+ 	int clistlen = 100;
+ 	int k = 0;
+ 	struct cand *clist = xzalloc(clistlen * sizeof(clist[0]));
++	struct cand cand;
++	struct cand *q;
+ 	int *klist = xzalloc((n + 2) * sizeof(klist[0]));
+ 	/*clist[0] = (struct cand){0}; - xzalloc did it */
+ 	/*klist[0] = 0; */
+ 
+-	for (struct cand cand = {1}; cand.x <= n; cand.x++) {
++	for (cand.x = 1; cand.x <= n; cand.x++) {
+ 		int j = a[cand.x], oldl = 0;
+ 		unsigned numtries = 0;
+ 		if (j == 0)
+@@ -303,7 +307,7 @@ static void stone(const int *a, int n, c
+ 		} while ((cand.y = b[++j]) > 0 && numtries < bound);
+ 	}
+ 	/* Unravel */
+-	for (struct cand *q = clist + klist[k]; q->y; q = clist + q->pred)
++	for (q = clist + klist[k]; q->y; q = clist + q->pred)
+ 		J[q->x + pref] = q->y + pref;
+ 	free(klist);
+ 	free(clist);
+@@ -348,10 +352,11 @@ static void equiv(struct line *a, int n,
+ 
+ static void unsort(const struct line *f, int l, int *b)
+ {
++	int i;
+ 	int *a = xmalloc((l + 1) * sizeof(a[0]));
+-	for (int i = 1; i <= l; i++)
++	for (i = 1; i <= l; i++)
+ 		a[f[i].serial] = f[i].value;
+-	for (int i = 1; i <= l; i++)
++	for (i = 1; i <= l; i++)
+ 		b[i] = a[i];
+ 	free(a);
+ }
+@@ -370,12 +375,13 @@ static int line_compar(const void *a, co
+ 
+ static void fetch(FILE_and_pos_t *ft, const off_t *ix, int a, int b, int ch)
+ {
+-	for (int i = a; i <= b; i++) {
++	int i, j, col;
++	for (i = a; i <= b; i++) {
+ 		seek_ft(ft, ix[i - 1]);
+ 		putchar(ch);
+ 		if (option_mask32 & FLAG(T))
+ 			putchar('\t');
+-		for (int j = 0, col = 0; j < ix[i] - ix[i - 1]; j++) {
++		for (j = 0, col = 0; j < ix[i] - ix[i - 1]; j++) {
+ 			int c = fgetc(ft->ft_fp);
+ 			if (c == EOF) {
+ 				printf("\n\\ No newline at end of file\n");
+@@ -410,19 +416,20 @@ static NOINLINE int *create_J(FILE_and_p
+ {
+ 	int *J, slen[2], *class, *member;
+ 	struct line *nfile[2], *sfile[2];
+-	int pref = 0, suff = 0;
++	int pref = 0, suff = 0, i, j, delta;
+ 
+ 	/* Lines of both files are hashed, and in the process
+ 	 * their offsets are stored in the array ix[fileno]
+ 	 * where fileno == 0 points to the old file, and
+ 	 * fileno == 1 points to the new one.
+ 	 */
+-	for (int i = 0; i < 2; i++) {
++	for (i = 0; i < 2; i++) {
+ 		unsigned hash;
+ 		token_t tok;
+ 		size_t sz = 100;
+ 		nfile[i] = xmalloc((sz + 3) * sizeof(nfile[i][0]));
+ 		/* ft gets here without the correct position, cant use seek_ft */
++		ft[i].ft_pos = 0;
+ 		fseeko(ft[i].ft_fp, 0, SEEK_SET);
+ 
+ 		nlen[i] = 0;
+@@ -460,11 +467,11 @@ start:
+ 			nlen[i]--;
+ 		/* Now we copy the line offsets into ix */
+ 		ix[i] = xmalloc((nlen[i] + 2) * sizeof(ix[i][0]));
+-		for (int j = 0; j < nlen[i] + 1; j++)
++		for (j = 0; j < nlen[i] + 1; j++)
+ 			ix[i][j] = nfile[i][j].offset;
+ 	}
+ 
+-	/* lenght of prefix and suffix is calculated */
++	/* length of prefix and suffix is calculated */
+ 	for (; pref < nlen[0] && pref < nlen[1] &&
+ 	       nfile[0][pref + 1].value == nfile[1][pref + 1].value;
+ 	       pref++);
+@@ -475,10 +482,10 @@ start:
+ 	 * the result being sorted and stored in sfile[fileno],
+ 	 * and their sizes are stored in slen[fileno]
+ 	 */
+-	for (int j = 0; j < 2; j++) {
++	for (j = 0; j < 2; j++) {
+ 		sfile[j] = nfile[j] + pref;
+ 		slen[j] = nlen[j] - pref - suff;
+-		for (int i = 0; i <= slen[j]; i++)
++		for (i = 0; i <= slen[j]; i++)
+ 			sfile[j][i].serial = i;
+ 		qsort(sfile[j] + 1, slen[j], sizeof(*sfile[j]), line_compar);
+ 	}
+@@ -494,7 +501,7 @@ start:
+ 	free(nfile[1]);
+ 
+ 	class = xmalloc((slen[0] + 1) * sizeof(class[0]));
+-	for (int i = 1; i <= slen[0]; i++) /* Unsorting */
++	for (i = 1; i <= slen[0]; i++) /* Unsorting */
+ 		class[sfile[0][i].serial] = sfile[0][i].value;
+ 	free(nfile[0]);
+ #else
+@@ -512,7 +519,7 @@ start:
+ 	 * are initialized with 0 (no matches), so that function stone can
+ 	 * then assign them their right values
+ 	 */
+-	for (int i = 0, delta = nlen[1] - nlen[0]; i <= nlen[0]; i++)
++	for (i = 0, delta = nlen[1] - nlen[0]; i <= nlen[0]; i++)
+ 		J[i] = i <= pref            ?  i :
+ 		       i > (nlen[0] - suff) ? (i + delta) : 0;
+ 	/* Here the magic is performed */
+@@ -526,14 +533,14 @@ start:
+ 	 * which, due to limitations intrinsic to any hashing algorithm,
+ 	 * are different but ended up confounded as the same
+ 	 */
+-	for (int i = 1; i <= nlen[0]; i++) {
++	for (i = 1; i <= nlen[0]; i++) {
+ 		if (!J[i])
+ 			continue;
+ 
+ 		seek_ft(&ft[0], ix[0][i - 1]);
+ 		seek_ft(&ft[1], ix[1][J[i] - 1]);
+ 
+-		for (int j = J[i]; i <= nlen[0] && J[i] == j; i++, j++) {
++		for (j = J[i]; i <= nlen[0] && J[i] == j; i++, j++) {
+ 			token_t tok0 = 0, tok1 = 0;
+ 			do {
+ 				tok0 = read_token(&ft[0], tok0);
+@@ -555,13 +562,18 @@ static bool diff(FILE* fp[2], char *file
+ {
+ 	int nlen[2];
+ 	off_t *ix[2];
+-	FILE_and_pos_t ft[2] = { { fp[0] }, { fp[1] } };
+-	int *J = create_J(ft, nlen, ix);
+-
+-	bool anychange = false;
++	FILE_and_pos_t ft[2];
+ 	typedef struct { int a, b; } vec_t[2];
+ 	vec_t *vec = NULL;
+-	int i = 1, idx = -1;
++	int i = 1, j, k, idx = -1;
++	bool anychange = false;
++	int *J;
++
++	ft[0].ft_fp = fp[0];
++	ft[1].ft_fp = fp[1];
++	/* note that ft[i].ft_pos is unintitalized, create_J()
++	 * must not assume otherwise */
++	J = create_J(ft, nlen, ix);
+ 
+ 	do {
+ 		bool nonempty = false;
+@@ -596,8 +608,8 @@ static bool diff(FILE* fp[2], char *file
+ 					break;
+ 				}
+ 
+-				for (int j = 0; j < 2; j++)
+-					for (int k = v[j].a; k < v[j].b; k++)
++				for (j = 0; j < 2; j++)
++					for (k = v[j].a; k < v[j].b; k++)
+ 						nonempty |= (ix[j][k+1] - ix[j][k] != 1);
+ 
+ 				vec = xrealloc_vector(vec, 6, ++idx);
+@@ -612,6 +624,7 @@ static bool diff(FILE* fp[2], char *file
+ 		if (idx < 0 || ((option_mask32 & FLAG(B)) && !nonempty))
+ 			goto cont;
+ 		if (!(option_mask32 & FLAG(q))) {
++			int lowa;
+ 			vec_t span, *cvp = vec;
+ 
+ 			if (!anychange) {
+@@ -621,7 +634,7 @@ static bool diff(FILE* fp[2], char *file
+ 			}
+ 
+ 			printf("@@");
+-			for (int j = 0; j < 2; j++) {
++			for (j = 0; j < 2; j++) {
+ 				int a = span[j].a = MAX(1, (*cvp)[j].a - opt_U_context);
+ 				int b = span[j].b = MIN(nlen[j], vec[idx][j].b + opt_U_context);
+ 
+@@ -635,12 +648,12 @@ static bool diff(FILE* fp[2], char *file
+ 			 * Output changes in "unified" diff format--the old and new lines
+ 			 * are printed together.
+ 			 */
+-			for (int lowa = span[0].a; ; lowa = (*cvp++)[0].b + 1) {
++			for (lowa = span[0].a; ; lowa = (*cvp++)[0].b + 1) {
+ 				bool end = cvp > &vec[idx];
+ 				fetch(&ft[0], ix[0], lowa, end ? span[0].b : (*cvp)[0].a - 1, ' ');
+ 				if (end)
+ 					break;
+-				for (int j = 0; j < 2; j++)
++				for (j = 0; j < 2; j++)
+ 					fetch(&ft[j], ix[j], (*cvp)[j].a, (*cvp)[j].b, j ? '+' : '-');
+ 			}
+ 		}
+@@ -660,9 +673,9 @@ static int diffreg(char *file[2])
+ {
+ 	FILE *fp[2] = { stdin, stdin };
+ 	bool binary = false, differ = false;
+-	int status = STATUS_SAME;
++	int status = STATUS_SAME, i;
+ 
+-	for (int i = 0; i < 2; i++) {
++	for (i = 0; i < 2; i++) {
+ 		int fd = open_or_warn_stdin(file[i]);
+ 		if (fd == -1)
+ 			goto out;
+@@ -688,7 +701,7 @@ static int diffreg(char *file[2])
+ 		const size_t sz = COMMON_BUFSIZE / 2;
+ 		char *const buf0 = bb_common_bufsiz1;
+ 		char *const buf1 = buf0 + sz;
+-		int i, j;
++		int j, k;
+ 		i = fread(buf0, 1, sz, fp[0]);
+ 		j = fread(buf1, 1, sz, fp[1]);
+ 		if (i != j) {
+@@ -697,7 +710,7 @@ static int diffreg(char *file[2])
+ 		}
+ 		if (i == 0)
+ 			break;
+-		for (int k = 0; k < i; k++) {
++		for (k = 0; k < i; k++) {
+ 			if (!buf0[k] || !buf1[k])
+ 				binary = true;
+ 			if (buf0[k] != buf1[k])
+@@ -771,9 +784,10 @@ static int FAST_FUNC skip_dir(const char
+ static void diffdir(char *p[2], const char *s_start)
+ {
+ 	struct dlist list[2];
++	int i;
+ 
+ 	memset(&list, 0, sizeof(list));
+-	for (int i = 0; i < 2; i++) {
++	for (i = 0; i < 2; i++) {
+ 		/*list[i].s = list[i].e = 0; - memset did it */
+ 		/*list[i].dl = NULL; */
+ 
+@@ -815,7 +829,7 @@ static void diffdir(char *p[2], const ch
+ 		else {
+ 			char *fullpath[2], *path[2]; /* if -N */
+ 
+-			for (int i = 0; i < 2; i++) {
++			for (i = 0; i < 2; i++) {
+ 				if (pos == 0 || i == k) {
+ 					path[i] = fullpath[i] = concat_path_file(p[i], dp[i]);
+ 					stat(fullpath[i], &stb[i]);
+@@ -883,7 +897,7 @@ static const char diff_longopts[] ALIGN1
+ int diff_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int diff_main(int argc UNUSED_PARAM, char **argv)
+ {
+-	int gotstdin = 0;
++	int gotstdin = 0, i;
+ 	char *file[2], *s_start = NULL;
+ 	llist_t *L_arg = NULL;
+ 
+@@ -900,7 +914,7 @@ int diff_main(int argc UNUSED_PARAM, cha
+ 	while (L_arg)
+ 		label[!!label[0]] = llist_pop(&L_arg);
+ 	xfunc_error_retval = 2;
+-	for (int i = 0; i < 2; i++) {
++	for (i = 0; i < 2; i++) {
+ 		file[i] = argv[i];
+ 		/* Compat: "diff file name_which_doesnt_exist" exits with 2 */
+ 		if (LONE_DASH(file[i])) {
+diff -urpN busybox-1.16.0/miscutils/fbsplash.c busybox-1.16.0-compat/miscutils/fbsplash.c
+--- busybox-1.16.0/miscutils/fbsplash.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-compat/miscutils/fbsplash.c	2010-02-21 01:54:07.000000000 +0100
+@@ -301,7 +301,7 @@ static void fb_drawimage(void)
+  */
+ static void init(const char *cfg_filename)
+ {
+-	static const char const param_names[] ALIGN1 =
++	static const char param_names[] ALIGN1 =
+ 		"BAR_WIDTH\0" "BAR_HEIGHT\0"
+ 		"BAR_LEFT\0" "BAR_TOP\0"
+ 		"BAR_R\0" "BAR_G\0" "BAR_B\0"

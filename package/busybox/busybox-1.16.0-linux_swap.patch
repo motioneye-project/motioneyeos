@@ -1,0 +1,16 @@
+diff -urpN busybox-1.16.0/util-linux/volume_id/linux_swap.c busybox-1.16.0-linux_swap/util-linux/volume_id/linux_swap.c
+--- busybox-1.16.0/util-linux/volume_id/linux_swap.c	2010-01-25 01:59:39.000000000 +0100
++++ busybox-1.16.0-linux_swap/util-linux/volume_id/linux_swap.c	2010-02-21 01:53:21.000000000 +0100
+@@ -52,7 +52,11 @@ int FAST_FUNC volume_id_probe_linux_swap
+ 				goto found;
+ 			}
+ 
+-			if (memcmp(buf, "SWAPSPACE2", 10) == 0) {
++			if (memcmp(buf, "SWAPSPACE2", 10) == 0
++			 || memcmp(buf, "S1SUSPEND", 9) == 0
++			 || memcmp(buf, "S2SUSPEND", 9) == 0
++			 || memcmp(buf, "ULSUSPEND", 9) == 0
++			) {
+ 				sw = volume_id_get_buffer(id, off, sizeof(struct swap_header_v1_2));
+ 				if (sw == NULL)
+ 					return -1;

@@ -1,0 +1,20 @@
+diff -urpN busybox-1.16.0/networking/wget.c busybox-1.16.0-wget/networking/wget.c
+--- busybox-1.16.0/networking/wget.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-wget/networking/wget.c	2010-02-21 01:53:53.000000000 +0100
+@@ -546,6 +546,8 @@ int wget_main(int argc UNUSED_PARAM, cha
+ 		"passive-ftp\0"      No_argument       "\xff"
+ 		"header\0"           Required_argument "\xfe"
+ 		"post-data\0"        Required_argument "\xfd"
++		/* Ignored (we don't do ssl) */
++		"no-check-certificate\0" No_argument   "\xfc"
+ 		;
+ #endif
+ 
+@@ -590,6 +592,7 @@ int wget_main(int argc UNUSED_PARAM, cha
+ 	if (use_proxy) {
+ 		proxy = getenv(target.is_ftp ? "ftp_proxy" : "http_proxy");
+ 		if (proxy && proxy[0]) {
++			server.user = NULL;
+ 			parse_url(proxy, &server);
+ 		} else {
+ 			use_proxy = 0;
