@@ -145,7 +145,7 @@ ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT), y)
 IPSEC_TOOLS_PROGS+= $(TARGET_DIR)/$(IPSEC_TOOLS_TARGET_BINARY_RACOONCTL)
 endif
 
-ipsec-tools: openssl flex $(IPSEC_TOOLS_PROGS)
+ipsec-tools: openssl flex host-flex $(IPSEC_TOOLS_PROGS)
 
 ipsec-tools-source: $(DL_DIR)/$(IPSEC_TOOLS_SOURCE)
 
