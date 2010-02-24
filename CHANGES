@@ -2,7 +2,14 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: busybox, qt
+	Updated/fixed packages: busybox, ipsec-tools, libgtk2, madplay,
+	netsnmp, pango, sylpheed, qt
+
+	Removed packages: openmotif, xpdf
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#165: openmotif does not build
 
 2010.02-rc2, Released February 23th, 2010:
 
