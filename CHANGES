@@ -10,6 +10,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#165: openmotif does not build
+	#1183: make source fails to download gmp, mpfr and patches
 
 2010.02-rc2, Released February 23th, 2010:
 

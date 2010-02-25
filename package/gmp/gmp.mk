@@ -93,6 +93,7 @@ $(GMP_HOST_DIR)/lib/libgmp$(HOST_LIBEXT): $(GMP_DIR2)/.configured
 	$(MAKE) -C $(GMP_DIR2) install
 
 host-libgmp: $(GMP_HOST_DIR)/lib/$(GMP_HOST_BINARY)
+host-libgmp-source: libgmp-source
 host-libgmp-clean:
 	rm -rf $(GMP_HOST_DIR)
 	-$(MAKE) -C $(GMP_DIR2) clean

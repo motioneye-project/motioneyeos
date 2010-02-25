@@ -37,6 +37,7 @@ endif
 ifndef BINUTILS_NO_MPFR
 BINUTILS_HOST_PREREQ:=$(TOOLCHAIN_DIR)/gmp/lib/libgmp$(HOST_LIBEXT) \
 	$(TOOLCHAIN_DIR)/mpfr/lib/libmpfr$(HOST_LIBEXT)
+HOST_SOURCE += host-libgmp-source host-libmpfr-source
 
 BINUTILS_TARGET_PREREQ:=$(TARGET_DIR)/usr/lib/libgmp$(LIBTGTEXT) \
 	$(TARGET_DIR)/usr/lib/libmpfr$(LIBTGTEXT)

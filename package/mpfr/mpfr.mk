@@ -107,6 +107,7 @@ $(MPFR_HOST_DIR)/lib/libmpfr$(HOST_LIBEXT): $(MPFR_DIR2)/.configured
 	$(MAKE) -C $(MPFR_DIR2) install
 
 host-libmpfr: $(MPFR_HOST_DIR)/lib/$(MPFR_HOST_BINARY)
+host-libmpfr-source: libmpfr-source
 host-libmpfr-clean:
 	rm -rf $(MPFR_HOST_DIR)
 	-$(MAKE) -C $(MPFR_DIR2) clean
