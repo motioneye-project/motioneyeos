@@ -459,6 +459,10 @@ ifeq ($(findstring x4.3,x$(GCC_VERSION)),x4.3)
 GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
 GCC_INCLUDE_DIR:=include-fixed
 endif
+ifeq ($(findstring x4.4,x$(GCC_VERSION)),x4.4)
+GCC_LIB_SUBDIR=lib/gcc/$(REAL_GNU_TARGET_NAME)/$(GCC_VERSION)
+GCC_INCLUDE_DIR:=include-fixed
+endif
 
 $(TARGET_DIR)/usr/bin/gcc: $(GCC_BUILD_DIR3)/.compiled
 	PATH=$(TARGET_PATH) DESTDIR=$(TARGET_DIR) \
