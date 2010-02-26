@@ -1,0 +1,13 @@
+diff -urpN busybox-1.16.0/coreutils/fsync.c busybox-1.16.0-fsync/coreutils/fsync.c
+--- busybox-1.16.0/coreutils/fsync.c	2010-01-25 01:59:38.000000000 +0100
++++ busybox-1.16.0-fsync/coreutils/fsync.c	2010-02-26 08:24:59.000000000 +0100
+@@ -7,6 +7,9 @@
+  * Licensed under GPLv2 or later, see file LICENSE in this tarball for details.
+  */
+ #include "libbb.h"
++#ifndef O_NOATIME
++# define O_NOATIME 0
++#endif
+ 
+ /* This is a NOFORK applet. Be very careful! */
+ 
