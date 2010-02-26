@@ -2,8 +2,9 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: busybox, ipsec-tools, libgtk2, madplay,
-	netsnmp, pango, sylpheed, qt, xfont_font-util
+	Updated/fixed packages: avahi, busybox, cramfs, ipsec-tools, libcgicc,
+	libgtk2, libraw1394, madplay, netsnmp, pango, squashfs, sylpheed, qt,
+	xfont_font-util
 
 	Removed packages: hostap, openmotif, xpdf
 
