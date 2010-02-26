@@ -18,9 +18,9 @@ $(SQUASHFS_DIR)/.unpacked: $(DL_DIR)/$(SQUASHFS_SOURCE) #$(SQUASHFS_PATCH)
 	touch $@
 
 $(SQUASHFS_DIR)/squashfs-tools/mksquashfs: $(SQUASHFS_DIR)/.unpacked
-	$(MAKE) -C $(SQUASHFS_DIR)/squashfs-tools
+	$(MAKE) CFLAGS="$(HOST_CFLAGS)" LDFLAGS="$(HOST_LDFLAGS)" -C $(SQUASHFS_DIR)/squashfs-tools
 
-squashfs: $(SQUASHFS_DIR)/squashfs-tools/mksquashfs
+squashfs: host-zlib $(SQUASHFS_DIR)/squashfs-tools/mksquashfs
 
 squashfs-source: $(DL_DIR)/$(SQUASHFS_SOURCE)
 
