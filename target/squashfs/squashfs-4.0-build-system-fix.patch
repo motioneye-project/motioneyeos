@@ -1,0 +1,65 @@
+Fix the build system so that CFLAGS can be overriden on the command
+line to pass additionnal -I options.
+
+Patch borrowed from OpenEmbedded.
+
+Index: squashfs-4.0/squashfs-tools/Makefile
+===================================================================
+--- squashfs-4.0.orig/squashfs-tools.orig/Makefile	2009-04-19 01:47:43.000000000 +0200
++++ squashfs-4.0/squashfs-tools/Makefile	2009-04-19 01:52:36.000000000 +0200
+@@ -1,36 +1,48 @@
+ INSTALL_DIR = /usr/local/bin
+ 
+ INCLUDEDIR = .
++CFLAGS_R = -I$(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE
++LIBS = -lz -lpthread
+ 
+ CFLAGS := -I$(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE -O2
+ 
+ all: mksquashfs unsquashfs
+ 
+ mksquashfs: mksquashfs.o read_fs.o sort.o swap.o pseudo.o
+-	$(CC) mksquashfs.o read_fs.o sort.o swap.o pseudo.o -lz -lpthread -lm -o $@
++	$(CC) $(LDFLAGS) mksquashfs.o read_fs.o sort.o swap.o pseudo.o -lz -lpthread -lm -o $@
+ 
+ mksquashfs.o: mksquashfs.c squashfs_fs.h mksquashfs.h global.h sort.h squashfs_swap.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+ read_fs.o: read_fs.c squashfs_fs.h read_fs.h global.h squashfs_swap.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+ sort.o: sort.c squashfs_fs.h global.h sort.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+ swap.o: swap.c Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+ pseudo.o: pseudo.c pseudo.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+ unsquashfs: unsquashfs.o unsquash-1.o unsquash-2.o unsquash-3.o unsquash-4.o swap.o
+-	$(CC) unsquashfs.o unsquash-1.o unsquash-2.o unsquash-3.o unsquash-4.o swap.o -lz -lpthread -lm -o $@
++	$(CC) $(LDFLAGS) unsquashfs.o unsquash-1.o unsquash-2.o unsquash-3.o unsquash-4.o swap.o -lz -lpthread -lm -o $@
+ 
+-unsquashfs.o: unsquashfs.h unsquashfs.c squashfs_fs.h squashfs_swap.h squashfs_compat.h global.h Makefile
++unsquashfs.o: unsquashfs.c unsquashfs.h squashfs_fs.h squashfs_swap.h squashfs_compat.h global.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+-unsquash-1.o: unsquashfs.h unsquash-1.c squashfs_fs.h squashfs_compat.h global.h Makefile
++unsquash-1.o: unsquash-1.c unsquashfs.h squashfs_fs.h squashfs_compat.h global.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+-unsquash-2.o: unsquashfs.h unsquash-2.c unsquashfs.h squashfs_fs.h squashfs_compat.h global.h Makefile
++unsquash-2.o: unsquash-2.c unsquashfs.h unsquashfs.h squashfs_fs.h squashfs_compat.h global.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+-unsquash-3.o: unsquashfs.h unsquash-3.c squashfs_fs.h squashfs_compat.h global.h Makefile
++unsquash-3.o: unsquash-3.c unsquashfs.h squashfs_fs.h squashfs_compat.h global.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+-unsquash-4.o: unsquashfs.h unsquash-4.c squashfs_fs.h squashfs_swap.h global.h Makefile
++unsquash-4.o: unsquash-4.c unsquashfs.h squashfs_fs.h squashfs_swap.h global.h Makefile
++	$(CC) $(CFLAGS_R) $(CFLAGS) -c -o $@ $<
+ 
+ clean:
+ 	-rm -f *.o mksquashfs unsquashfs
