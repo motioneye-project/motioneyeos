@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XFONT_FONT_BH_TTF_VERSION = 1.0.0
+XFONT_FONT_BH_TTF_VERSION = 1.0.1
 XFONT_FONT_BH_TTF_SOURCE = font-bh-ttf-$(XFONT_FONT_BH_TTF_VERSION).tar.bz2
 XFONT_FONT_BH_TTF_SITE = http://xorg.freedesktop.org/releases/individual/font
 XFONT_FONT_BH_TTF_AUTORECONF = NO
