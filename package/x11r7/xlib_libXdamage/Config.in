@@ -5,5 +5,5 @@ config BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXFIXES
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXdamage 1.0.4
+	  libXdamage 1.1.2
 	  X.Org Xdamage library
