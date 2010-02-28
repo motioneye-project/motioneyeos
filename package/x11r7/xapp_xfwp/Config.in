@@ -1,8 +1,0 @@
-config BR2_PACKAGE_XAPP_XFWP
-	bool "xfwp"
-	select BR2_PACKAGE_XLIB_LIBICE
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XPROTO_XPROXYMANAGEMENTPROTOCOL
-	help
-	  xfwp 1.0.1
-	  X.Org xfwp application
