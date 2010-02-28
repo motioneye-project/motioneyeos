@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_ALIAS
 	bool "font-alias"
 	help
-	  font-alias 1.0.1
+	  font-alias 1.0.2
 	  No description available
