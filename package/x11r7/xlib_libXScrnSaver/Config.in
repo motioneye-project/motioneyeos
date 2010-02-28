@@ -4,5 +4,5 @@ config BR2_PACKAGE_XLIB_LIBXSCRNSAVER
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XPROTO_SCRNSAVERPROTO
 	help
-	  libXScrnSaver 1.1.2
+	  libXScrnSaver 1.2.0
 	  X.Org XScrnSaver library
