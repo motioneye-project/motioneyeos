@@ -104,7 +104,6 @@ endmenu
 		source package/x11r7/xapp_mkfontdir/Config.in
 		source package/x11r7/xapp_mkfontscale/Config.in
 		source package/x11r7/xapp_oclock/Config.in
-		source package/x11r7/xapp_proxymngr/Config.in
 		source package/x11r7/xapp_rgb/Config.in
 		source package/x11r7/xapp_rstart/Config.in
 		source package/x11r7/xapp_scripts/Config.in
