@@ -3,5 +3,5 @@ config BR2_PACKAGE_XAPP_XKILL
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  xkill 1.0.1
+	  xkill 1.0.2
 	  kill a client by its X resource
