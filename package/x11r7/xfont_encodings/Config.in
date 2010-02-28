@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XFONT_ENCODINGS
 	bool "encodings"
 	help
-	  encodings 1.0.2
+	  encodings 1.0.3
 	  No description available
