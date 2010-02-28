@@ -1,0 +1,25 @@
+--- xdriver_xf86-video-intel-2.9.1/configure.ac.orig	2010-01-28 11:18:27.526329157 +0200
++++ xdriver_xf86-video-intel-2.9.1/configure.ac	2010-01-28 11:21:38.065198735 +0200
+@@ -114,6 +114,7 @@ save_CFLAGS="$CFLAGS"
+ CFLAGS="$XORG_CFLAGS $DRI_CFLAGS $drm_cflags"
+ CPPFLAGS="$XORG_CFLAGS $DRI_CFLAGS $drm_cflags"
+ AC_MSG_CHECKING([whether to include DRI support])
++if test "$cross_compiling" = "no" ; then
+ if test x$DRI != xno; then
+         AC_CHECK_FILE([${sdkdir}/dri.h],
+                       [have_dri_h="yes"], [have_dri_h="no"])
+@@ -132,6 +133,14 @@ if test x$DRI = xauto; then
+                 DRI="no"
+         fi
+ fi
++else
++if test x$DRI != xno; then
++	have_dri_h="yes"
++	have_sarea_h="yes"
++	have_dristruct_h="yes"
++	DRI="yes"
++fi
++fi
+ AC_MSG_RESULT([$DRI])
+ CFLAGS="$save_CFLAGS $DEBUGFLAGS"
+ 
