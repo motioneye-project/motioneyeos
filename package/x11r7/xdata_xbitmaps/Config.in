@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XDATA_XBITMAPS
 	bool "xbitmaps"
 	help
-	  xbitmaps 1.0.1
+	  xbitmaps 1.1.0
 	  No description available
