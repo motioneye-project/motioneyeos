@@ -99,7 +99,6 @@ endmenu
 		source package/x11r7/xapp_fstobdf/Config.in
 		source package/x11r7/xapp_iceauth/Config.in
 		source package/x11r7/xapp_ico/Config.in
-		source package/x11r7/xapp_lbxproxy/Config.in
 		source package/x11r7/xapp_listres/Config.in
 		source package/x11r7/xapp_luit/Config.in
 		source package/x11r7/xapp_mkfontdir/Config.in
