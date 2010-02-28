@@ -2,5 +2,5 @@ config BR2_PACKAGE_XAPP_XMODMAP
 	bool "xmodmap"
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
-	  xmodmap 1.0.2
+	  xmodmap 1.0.4
 	  utility for modifying keymaps and pointer button mappings in X
