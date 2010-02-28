@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XFONT_FONT_MISC_MISC_VERSION = 1.0.0
+XFONT_FONT_MISC_MISC_VERSION = 1.1.0
 XFONT_FONT_MISC_MISC_SOURCE = font-misc-misc-$(XFONT_FONT_MISC_MISC_VERSION).tar.bz2
 XFONT_FONT_MISC_MISC_SITE = http://xorg.freedesktop.org/releases/individual/font
 XFONT_FONT_MISC_MISC_AUTORECONF = NO
