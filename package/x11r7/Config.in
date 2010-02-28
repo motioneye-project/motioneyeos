@@ -164,7 +164,6 @@ endmenu
 		source package/x11r7/xapp_xrandr/Config.in
 		source package/x11r7/xapp_xrdb/Config.in
 		source package/x11r7/xapp_xrefresh/Config.in
-		source package/x11r7/xapp_xrx/Config.in
 		source package/x11r7/xapp_xset/Config.in
 		source package/x11r7/xapp_xsetmode/Config.in
 		source package/x11r7/xapp_xsetpointer/Config.in
