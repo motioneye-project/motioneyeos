@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XPROTO_RESOURCEPROTO
 	bool "resourceproto"
 	help
-	  resourceproto 1.0.2
+	  resourceproto 1.1.0
 	  X.Org Resource protocol headers
