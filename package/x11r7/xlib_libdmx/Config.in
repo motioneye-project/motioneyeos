@@ -4,5 +4,5 @@ config BR2_PACKAGE_XLIB_LIBDMX
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XPROTO_DMXPROTO
 	help
-	  libdmx 1.0.2
+	  libdmx 1.1.0
 	  X.Org dmx library
