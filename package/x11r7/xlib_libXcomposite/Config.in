@@ -6,5 +6,5 @@ config BR2_PACKAGE_XLIB_LIBXCOMPOSITE
 	select BR2_PACKAGE_XLIB_LIBXFIXES
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXcomposite 0.3.1
+	  libXcomposite 0.4.1
 	  X.Org Xcomposite library
