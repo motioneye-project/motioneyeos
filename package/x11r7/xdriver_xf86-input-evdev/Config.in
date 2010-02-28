@@ -5,5 +5,5 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_EVDEV
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-input-evdev 1.1.2
+	  xf86-input-evdev 2.3.0
 	  Generic Linux input driver
