@@ -290,6 +290,7 @@ endmenu
 		source package/x11r7/xproto_compositeproto/Config.in
 		source package/x11r7/xproto_damageproto/Config.in
 		source package/x11r7/xproto_dmxproto/Config.in
+		source package/x11r7/xproto_dri2proto/Config.in
 		source package/x11r7/xproto_evieext/Config.in
 		source package/x11r7/xproto_fixesproto/Config.in
 		source package/x11r7/xproto_fontcacheproto/Config.in

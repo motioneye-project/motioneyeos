@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XPROTO_DRI2PROTO
+	bool "dri2proto"
+	help
+	  dri2proto 2.1
+	  X.Org DRI2 protocol headers
