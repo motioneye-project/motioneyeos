@@ -10,5 +10,5 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_SISUSB
 	select BR2_PACKAGE_XPROTO_XINERAMAPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-sisusb 0.8.1
+	  xf86-video-sisusb 0.9.3
 	  SiS USB video driver
