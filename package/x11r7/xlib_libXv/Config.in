@@ -5,5 +5,5 @@ config BR2_PACKAGE_XLIB_LIBXV
 	select BR2_PACKAGE_XPROTO_VIDEOPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXv 1.0.3
+	  libXv 1.0.5
 	  X.Org Xv library
