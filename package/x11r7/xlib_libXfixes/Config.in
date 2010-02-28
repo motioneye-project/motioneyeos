@@ -5,5 +5,5 @@ config BR2_PACKAGE_XLIB_LIBXFIXES
 	select BR2_PACKAGE_XPROTO_XEXTPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXfixes 4.0.3
+	  libXfixes 4.0.4
 	  X.Org Xfixes library
