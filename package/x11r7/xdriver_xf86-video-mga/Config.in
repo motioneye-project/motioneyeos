@@ -11,5 +11,5 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_MGA
 	select BR2_PACKAGE_XPROTO_XF86DRIPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-mga 1.4.6.1
+	  xf86-video-mga 1.4.11
 	  Matrox video driver
