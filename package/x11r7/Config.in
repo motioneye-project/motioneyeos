@@ -82,7 +82,6 @@ endmenu
 		source package/x11r7/xlib_libXxf86vm/Config.in
 		source package/x11r7/xlib_libdmx/Config.in
 		source package/x11r7/xlib_libfontenc/Config.in
-		source package/x11r7/xlib_liblbxutil/Config.in
 		source package/x11r7/xlib_liboldX/Config.in
 		source package/x11r7/xlib_libxkbfile/Config.in
 		source package/x11r7/xlib_libxkbui/Config.in
