@@ -8,5 +8,5 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_S3VIRGE
 	select BR2_PACKAGE_XPROTO_XEXTPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-s3virge 1.9.1
+	  xf86-video-s3virge 1.10.4
 	  S3 ViRGE video driver
