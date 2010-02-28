@@ -4,5 +4,5 @@ config BR2_PACKAGE_XLIB_LIBXTST
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XPROTO_RECORDPROTO
 	help
-	  libXtst 1.0.1
+	  libXtst 1.1.0
 	  X.Org Xtst library
