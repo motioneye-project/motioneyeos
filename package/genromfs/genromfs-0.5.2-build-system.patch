@@ -1,0 +1,26 @@
+---
+ Makefile |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+Index: genromfs-0.5.2/Makefile
+===================================================================
+--- genromfs-0.5.2.orig/Makefile
++++ genromfs-0.5.2/Makefile
+@@ -6,8 +6,6 @@
+ PACKAGE = genromfs
+ VERSION = 0.5.2
+ CC = gcc
+-CFLAGS = -O2 -Wall -DVERSION=\"$(VERSION)\"#-g#
+-LDFLAGS = -s#-g
+ 
+ DISTDIR = $(PACKAGE)-$(VERSION)
+ 
+@@ -24,7 +22,7 @@
+ 	$(CC) $(LDFLAGS) genromfs.o -o genromfs
+ 
+ .c.o:
+-	$(CC) $(CFLAGS) $< -c -o $@
++	$(CC) $(CFLAGS) -DVERSION=\"$(VERSION)\" $< -c -o $@
+ 
+ clean:
+ 	rm -f genromfs *.o
