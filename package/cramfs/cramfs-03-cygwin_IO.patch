@@ -1,0 +1,13 @@
+--- cramfs-1.1/cramfsck.c.orig	2006-12-22 22:16:59.328125000 +1100
++++ cramfs-1.1/cramfsck.c	2006-12-19 01:02:05.531250000 +1100
+@@ -56,6 +56,10 @@
+ #include "linux/cramfs_fs.h"
+ #include <zlib.h>
+ 
++#ifdef __CYGWIN__
++#define _IO(type,nr)	_IOC(_IOC_NONE,(type),(nr),0)
++#endif /* __CYGWIN__ */
++
+ #define BLKGETSIZE	_IO(0x12,96) /* return device size /512 (long *arg) */
+ 
+ /* Exit codes used by fsck-type programs */

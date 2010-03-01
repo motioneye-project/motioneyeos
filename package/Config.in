@@ -146,6 +146,7 @@ endmenu
 
 menu "Hardware handling"
 source "package/acpid/Config.in"
+source "package/cramfs/Config.in"
 source "package/dbus/Config.in"
 source "package/dbus-glib/Config.in"
 source "package/dbus-python/Config.in"
