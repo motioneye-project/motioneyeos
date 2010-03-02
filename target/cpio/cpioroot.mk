@@ -12,17 +12,15 @@ CPIO_ROOTFS_COMPRESSOR_PREREQ:=
 ifeq ($(BR2_TARGET_ROOTFS_CPIO_GZIP),y)
 CPIO_ROOTFS_COMPRESSOR:=gzip -9 -c
 CPIO_ROOTFS_COMPRESSOR_EXT:=gz
-#CPIO_ROOTFS_COMPRESSOR_PREREQ:= gzip-host
 endif
 ifeq ($(BR2_TARGET_ROOTFS_CPIO_BZIP2),y)
 CPIO_ROOTFS_COMPRESSOR:=bzip2 -9 -c
 CPIO_ROOTFS_COMPRESSOR_EXT:=bz2
-#CPIO_ROOTFS_COMPRESSOR_PREREQ:= bzip2-host
 endif
 ifeq ($(BR2_TARGET_ROOTFS_CPIO_LZMA),y)
-CPIO_ROOTFS_COMPRESSOR:=lzma -9 -c
+CPIO_ROOTFS_COMPRESSOR:=$(LZMA) -9 -c
 CPIO_ROOTFS_COMPRESSOR_EXT:=lzma
-CPIO_ROOTFS_COMPRESSOR_PREREQ:= lzma-host
+CPIO_ROOTFS_COMPRESSOR_PREREQ:= host-lzma
 endif
 
 ifneq ($(CPIO_ROOTFS_COMPRESSOR),)
@@ -32,7 +30,6 @@ CPIO_TARGET := $(CPIO_BASE)
 endif
 
 ROOTFS_CPIO_COPYTO:=$(call qstrip,$(BR2_TARGET_ROOTFS_CPIO_COPYTO))
-#
 
 cpioroot-init:
 	rm -f $(TARGET_DIR)/init
@@ -54,7 +51,7 @@ endif
 		>> $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
 	chmod a+x $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
 	$(HOST_DIR)/usr/bin/fakeroot -- $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
-	#-@rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
+	-@rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
 ifeq ($(CPIO_ROOTFS_COMPRESSOR),)
 ifneq ($(ROOTFS_CPIO_COPYTO),)
 	$(Q)cp -f $(CPIO_BASE) $(ROOTFS_CPIO_COPYTO)
@@ -68,14 +65,6 @@ ifneq ($(ROOTFS_CPIO_COPYTO),)
 	$(Q)cp -f $(CPIO_BASE).$(CPIO_ROOTFS_COMPRESSOR_EXT) $(ROOTFS_CPIO_COPYTO).$(CPIO_ROOTFS_COMPRESSOR_EXT)
 endif
 endif
-
-cpioroot: $(CPIO_TARGET)
-
-cpioroot-source:
-
-cpioroot-clean:
-
-cpioroot-dirclean:
 
 #############################################################
 #
