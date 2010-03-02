@@ -94,7 +94,6 @@ BR2_TOOLCHAIN_BUILDROOT=y
 #
 # Other development stuff
 #
-BR2_HOST_FAKEROOT=y
 # BR2_PACKAGE_LIBINTL is not set
 #  For NFS mount:
 BR2_PACKAGE_PORTMAP=y
