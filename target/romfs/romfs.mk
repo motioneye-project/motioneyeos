@@ -1,42 +1,12 @@
 #############################################################
 #
-# genromfs to build to target romfs filesystems
-#
-#############################################################
-ROMFS_VERSION=0.5.2
-ROMFS_DIR=$(BUILD_DIR)/genromfs-$(ROMFS_VERSION)
-ROMFS_SOURCE=genromfs-$(ROMFS_VERSION).tar.gz
-ROMFS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/romfs
-
-$(DL_DIR)/$(ROMFS_SOURCE):
-	 $(call DOWNLOAD,$(ROMFS_SITE),$(ROMFS_SOURCE))
-
-$(ROMFS_DIR): $(DL_DIR)/$(ROMFS_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(ROMFS_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-
-$(ROMFS_DIR)/genromfs: $(ROMFS_DIR)
-	$(MAKE) -C $(ROMFS_DIR)
-	touch -c $@
-
-romfs: $(ROMFS_DIR)/genromfs
-
-romfs-source: $(DL_DIR)/$(ROMFS_SOURCE)
-
-romfs-clean:
-	-$(MAKE) -C $(ROMFS_DIR) clean
-
-romfs-dirclean:
-	rm -rf $(ROMFS_DIR)
-
-#############################################################
-#
 # Build the romfs root filesystem image
 #
 #############################################################
 
 ROMFS_TARGET=$(IMAGE).romfs
 
-romfsroot: host-fakeroot makedevs romfs
+romfsroot: host-fakeroot host-genromfs makedevs
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(ROMFS_TARGET))
 	touch $(BUILD_DIR)/.fakeroot.00000
@@ -48,18 +18,10 @@ ifneq ($(TARGET_DEVICE_TABLE),)
 		>> $(BUILD_DIR)/_fakeroot.$(notdir $(ROMFS_TARGET))
 endif
 	# Use fakeroot so genromfs believes the previous fakery
-	echo "$(ROMFS_DIR)/genromfs -d $(TARGET_DIR) -f $(ROMFS_TARGET)" >> $(BUILD_DIR)/_fakeroot.$(notdir $(ROMFS_TARGET))
+	echo "$(HOST_DIR)/usr/bin/genromfs -d $(TARGET_DIR) -f $(ROMFS_TARGET)" >> $(BUILD_DIR)/_fakeroot.$(notdir $(ROMFS_TARGET))
 	chmod a+x $(BUILD_DIR)/_fakeroot.$(notdir $(ROMFS_TARGET))
 	$(HOST_DIR)/usr/bin/fakeroot -- $(BUILD_DIR)/_fakeroot.$(notdir $(ROMFS_TARGET))
 	-@rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(ROMFS_TARGET))
-
-romfsroot-source: romfs-source
-
-romfsroot-clean:
-	-$(MAKE) -C $(ROMFS_DIR) clean
-
-romfsroot-dirclean:
-	rm -rf $(ROMFS_DIR)
 
 #############################################################
 #
