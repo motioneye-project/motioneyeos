@@ -1,0 +1,28 @@
+[PATCH]: squashfs-tools: Handle user supplied CFLAGS/LDFLAGS
+
+Properly handle make CFLAGS=.. LDFLAGS=..
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ squashfs-tools/Makefile |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: squashfs3.4/squashfs-tools/Makefile
+===================================================================
+--- squashfs3.4.orig/squashfs-tools/Makefile
++++ squashfs3.4/squashfs-tools/Makefile
+@@ -2,12 +2,12 @@ INSTALL_DIR = /usr/local/bin
+ 
+ INCLUDEDIR = .
+ 
+-CFLAGS := -I$(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE -O2
++override CFLAGS += -I$(INCLUDEDIR) -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -D_GNU_SOURCE -O2
+ 
+ all: mksquashfs unsquashfs
+ 
+ mksquashfs: mksquashfs.o read_fs.o sort.o
+-	$(CC) mksquashfs.o read_fs.o sort.o -lz -lpthread -lm -o $@
++	$(CC) $(LDFLAGS) mksquashfs.o read_fs.o sort.o -lz -lpthread -lm -o $@
+ 
+ mksquashfs.o: mksquashfs.c squashfs_fs.h mksquashfs.h global.h sort.h
+ 
