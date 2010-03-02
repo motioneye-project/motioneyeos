@@ -48,12 +48,6 @@ ifneq ($(ROOTFS_TAR_COPYTO),)
 endif
 	-@rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 
-tarroot-source:
-
-tarroot-clean:
-
-tarroot-dirclean:
-
 #############################################################
 #
 # Toplevel Makefile options
