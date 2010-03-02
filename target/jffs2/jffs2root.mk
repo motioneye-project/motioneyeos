@@ -44,7 +44,7 @@ endif
 # value of MKFS_JFFS2 to either the previously installed copy or the one
 # just built.
 #
-$(JFFS2_TARGET): host-fakeroot makedevs mtd-host
+$(JFFS2_TARGET): host-fakeroot host-mtd makedevs
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(JFFS2_TARGET))
 	touch $(BUILD_DIR)/.fakeroot.00000
@@ -80,14 +80,6 @@ jffs2root: $(JFFS2_TARGET)
 ifneq ($(JFFS2_COPYTO),)
 	@cp -f $(JFFS2_TARGET) $(JFFS2_COPYTO)
 endif
-
-jffs2root-source: mtd-host-source
-
-jffs2root-clean: mtd-host-clean
-	-rm -f $(JFFS2_TARGET)
-
-jffs2root-dirclean: mtd-host-dirclean
-	-rm -f $(JFFS2_TARGET)
 
 #############################################################
 #
