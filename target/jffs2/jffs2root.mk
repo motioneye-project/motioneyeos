@@ -74,12 +74,7 @@ ifeq ($(BR2_JFFS2_TARGET_SREC),y)
 	@ls -l $(JFFS2_TARGET).srec
 endif
 
-JFFS2_COPYTO := $(call qstrip,$(BR2_TARGET_ROOTFS_JFFS2_COPYTO))
-
 jffs2root: $(JFFS2_TARGET)
-ifneq ($(JFFS2_COPYTO),)
-	@cp -f $(JFFS2_TARGET) $(JFFS2_COPYTO)
-endif
 
 #############################################################
 #

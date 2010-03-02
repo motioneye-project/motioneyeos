@@ -21,7 +21,6 @@ ifeq ($(BR2_TARGET_ROOTFS_TAR_LZMA),y)
 TAR_COMPRESSOR:=lzma -9 -c
 TAR_COMPRESSOR_EXT:=lzma
 endif
-ROOTFS_TAR_COPYTO:=$(call qstrip,$(BR2_TARGET_ROOTFS_TAR_COPYTO))
 
 tarroot: host-fakeroot makedevs
 	# Use fakeroot to pretend all target binaries are owned by root
@@ -42,9 +41,6 @@ endif
 ifneq ($(TAR_COMPRESSOR),)
 	-rm -f $(TAR_TARGET).$()
 	PATH="$(STAGING_DIR)/sbin:$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/sbin:$(STAGING_DIR)/usr/bin:$(PATH)" $(TAR_COMPRESSOR) $(TAR_TARGET) > $(TAR_TARGET).$(TAR_COMPRESSOR_EXT)
-endif
-ifneq ($(ROOTFS_TAR_COPYTO),)
-	$(Q)cp -f $(TAR_TARGET) $(ROOTFS_TAR_COPYTO)
 endif
 	-@rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(TAR_TARGET))
 

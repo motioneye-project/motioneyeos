@@ -64,13 +64,8 @@ $(UBIFS_BASE).$(UBIFS_ROOTFS_COMPRESSOR_EXT): $(UBIFS_ROOTFS_COMPRESSOR_PREREQ) 
 	$(UBIFS_ROOTFS_COMPRESSOR) $(UBIFS_BASE) > $(UBIFS_TARGET)
 endif
 
-UBIFS_COPYTO := $(call qstrip,$(BR2_TARGET_ROOTFS_UBIFS_COPYTO))
-
 ubifsroot: $(UBIFS_TARGET)
 	@ls -l $(UBIFS_TARGET)
-ifneq ($(UBIFS_COPYTO),)
-	@cp -f $(UBIFS_TARGET) $(UBIFS_COPYTO)
-endif
 
 #############################################################
 #

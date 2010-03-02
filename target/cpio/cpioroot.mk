@@ -29,8 +29,6 @@ else
 CPIO_TARGET := $(CPIO_BASE)
 endif
 
-ROOTFS_CPIO_COPYTO:=$(call qstrip,$(BR2_TARGET_ROOTFS_CPIO_COPYTO))
-
 cpioroot-init:
 	rm -f $(TARGET_DIR)/init
 	ln -s sbin/init $(TARGET_DIR)/init
@@ -52,18 +50,10 @@ endif
 	chmod a+x $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
 	$(HOST_DIR)/usr/bin/fakeroot -- $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
 	-@rm -f $(BUILD_DIR)/_fakeroot.$(notdir $(CPIO_BASE))
-ifeq ($(CPIO_ROOTFS_COMPRESSOR),)
-ifneq ($(ROOTFS_CPIO_COPYTO),)
-	$(Q)cp -f $(CPIO_BASE) $(ROOTFS_CPIO_COPYTO)
-endif
-endif
 
 ifneq ($(CPIO_ROOTFS_COMPRESSOR),)
 $(CPIO_BASE).$(CPIO_ROOTFS_COMPRESSOR_EXT): $(CPIO_ROOTFS_COMPRESSOR_PREREQ) $(CPIO_BASE)
 	$(CPIO_ROOTFS_COMPRESSOR) $(CPIO_BASE) > $(CPIO_TARGET)
-ifneq ($(ROOTFS_CPIO_COPYTO),)
-	$(Q)cp -f $(CPIO_BASE).$(CPIO_ROOTFS_COMPRESSOR_EXT) $(ROOTFS_CPIO_COPYTO).$(CPIO_ROOTFS_COMPRESSOR_EXT)
-endif
 endif
 
 #############################################################

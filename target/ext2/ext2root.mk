@@ -82,13 +82,7 @@ $(EXT2_BASE).$(EXT2_ROOTFS_COMPRESSOR_EXT): $(EXT2_ROOTFS_COMPRESSOR_PREREQ) $(E
 	$(EXT2_ROOTFS_COMPRESSOR) $(EXT2_BASE) > $(EXT2_TARGET)
 endif
 
-EXT2_COPYTO := $(call qstrip,$(BR2_TARGET_ROOTFS_EXT2_COPYTO))
-
 ext2root: $(EXT2_TARGET)
-	@ls -l $(EXT2_TARGET)
-ifneq ($(EXT2_COPYTO),)
-	@cp -f $(EXT2_TARGET) $(EXT2_COPYTO)
-endif
 
 #############################################################
 #

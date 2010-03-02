@@ -64,11 +64,3 @@ config BR2_TARGET_ROOTFS_EXT2_LZMA
 
 endchoice
 
-config BR2_TARGET_ROOTFS_EXT2_COPYTO
-	string "also copy the image to..."
-	depends on BR2_TARGET_ROOTFS_EXT2
-	default ""
-	help
-	  Copies the resulting image to a secondary location
-	  like a tftp server's root directory.
-

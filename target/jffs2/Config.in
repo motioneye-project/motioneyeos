@@ -118,10 +118,4 @@ config BR2_TARGET_ROOTFS_JFFS2_OUTPUT
 	string "Output File"
 	default "$(IMAGE).jffs2"
 
-config BR2_TARGET_ROOTFS_JFFS2_COPYTO
-	string "also copy the image to..."
-	default ""
-	help
-	  Copies the resulting image to a secondary location.
-
 endif
