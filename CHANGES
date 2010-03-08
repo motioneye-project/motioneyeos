@@ -2,7 +2,8 @@
 
 	 X.org updated to 7.5.
 
-	 Updated/fixed packages: dosfstools, e2fsprogs, mtd-utils, squashfs
+	 Updated/fixed packages: busybox, dosfstools, e2fsprogs,
+	 mtd-utils, squashfs
 
 2010.02, Release February 26th, 2010:
 
