@@ -3,5 +3,5 @@ config BR2_PACKAGE_XAPP_XKBCOMP
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXKBFILE
 	help
-	  xkbcomp 1.0.3
+	  xkbcomp 1.1.1
 	  compile XKB keyboard description

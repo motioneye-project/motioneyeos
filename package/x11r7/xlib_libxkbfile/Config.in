@@ -3,5 +3,5 @@ config BR2_PACKAGE_XLIB_LIBXKBFILE
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XPROTO_KBPROTO
 	help
-	  libxkbfile 1.0.4
+	  libxkbfile 1.0.6
 	  X.Org xkbfile library

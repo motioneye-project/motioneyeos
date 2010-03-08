@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XPROTO_FIXESPROTO
 	bool "fixesproto"
 	help
-	  fixesproto 4.0
+	  fixesproto 4.1.1
 	  X.Org Fixes protocol headers

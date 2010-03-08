@@ -3,7 +3,7 @@
 	STAGING_DIR=$1
 
 	# fix the fontutil pkgconfig file to cross-compile fonts after fontutil is installed
-	sed "s,^mapdir=.*,mapdir=${STAGING_DIR}/usr/lib/X11/fonts/util,g" \
+	sed "s,^mapdir=.*,mapdir=${STAGING_DIR}/usr/share/fonts/X11/util,g" \
 		${STAGING_DIR}/usr/lib/pkgconfig/fontutil.pc > ${STAGING_DIR}/usr/lib/pkgconfig/fontutil.pc.new
 	mv ${STAGING_DIR}/usr/lib/pkgconfig/fontutil.pc.new ${STAGING_DIR}/usr/lib/pkgconfig/fontutil.pc
 	

@@ -3,5 +3,5 @@ config BR2_PACKAGE_XAPP_ICEAUTH
 	select BR2_PACKAGE_XLIB_LIBICE
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
-	  iceauth 1.0.1
+	  iceauth 1.0.3
 	  ICE authority file utility

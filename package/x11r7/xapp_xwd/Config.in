@@ -3,5 +3,5 @@ config BR2_PACKAGE_XAPP_XWD
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  xwd 1.0.1
+	  xwd 1.0.3
 	  dump an image of an X window

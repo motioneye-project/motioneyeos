@@ -2,5 +2,5 @@ config BR2_PACKAGE_XAPP_XKBEVD
 	bool "xkbevd"
 	select BR2_PACKAGE_XLIB_LIBXKBFILE
 	help
-	  xkbevd 1.0.2
+	  xkbevd 1.1.0
 	  XKB event daemon

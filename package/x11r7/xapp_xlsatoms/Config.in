@@ -3,5 +3,5 @@ config BR2_PACKAGE_XAPP_XLSATOMS
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  xlsatoms 1.0.1
+	  xlsatoms 1.0.2
 	  list interned atoms defined on server

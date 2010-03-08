@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XUTIL_MAKEDEPEND
 	bool "makedepend"
 	help
-	  makedepend 1.0.0
+	  makedepend 1.0.2
 	  No description available

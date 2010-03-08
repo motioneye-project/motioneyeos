@@ -4,10 +4,11 @@
 #
 ################################################################################
 
-XSERVER_XORG_SERVER_VERSION = 1.5.3
+XSERVER_XORG_SERVER_VERSION = 1.7.1
 XSERVER_XORG_SERVER_SOURCE = xorg-server-$(XSERVER_XORG_SERVER_VERSION).tar.bz2
 XSERVER_XORG_SERVER_SITE = http://xorg.freedesktop.org/releases/individual/xserver
 XSERVER_XORG_SERVER_AUTORECONF = NO
+XSERVER_XORG_SERVER_LIBTOOL_PATCH = NO
 XSERVER_XORG_SERVER_INSTALL_STAGING = YES
 XSERVER_XORG_SERVER_USE_CONFIG_CACHE = NO # overrides CFLAGS
 XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install-data
@@ -31,7 +32,6 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xlib_libXdamage 		\
 	xlib_libXxf86misc 		\
 	xlib_libXxf86vm 		\
-	xlib_liblbxutil 		\
 	xlib_libxkbfile 		\
 	xlib_xtrans 			\
 	xdata_xbitmaps 			\
@@ -124,5 +124,9 @@ XSERVER_XORG_SERVER_DEPENDENCIES += xproto_recordproto
 XSERVER_XORG_SERVER_CONF_OPT += --enable-record
 endif
 
+ifeq ($(BR2_PACKAGE_XPROTO_DRI2PROTO),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xproto_dri2proto
+XSERVER_XORG_SERVER_CONF_OPT += --enable-dri2
+endif
 
 $(eval $(call AUTOTARGETS,package/x11r7,xserver_xorg-server))

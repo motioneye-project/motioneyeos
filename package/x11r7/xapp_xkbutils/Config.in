@@ -3,5 +3,5 @@ config BR2_PACKAGE_XAPP_XKBUTILS
 	select BR2_PACKAGE_XLIB_LIBXAW
 	select BR2_PACKAGE_XLIB_LIBXKBFILE
 	help
-	  xkbutils 1.0.1
+	  xkbutils 1.0.2
 	  X.Org xkbutils application

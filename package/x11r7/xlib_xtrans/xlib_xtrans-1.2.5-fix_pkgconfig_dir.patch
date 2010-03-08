@@ -1,0 +1,11 @@
+--- xlib_xtrans-1.2.5/Makefile.in.orig	2010-01-23 16:24:25.287333323 +0200
++++ xlib_xtrans-1.2.5/Makefile.in	2010-01-23 16:25:06.336331430 +0200
+@@ -222,7 +222,7 @@ Xtransinclude_HEADERS = \
+ 
+ aclocaldir = $(datadir)/aclocal
+ aclocal_DATA = xtrans.m4
+-pkgconfigdir = $(datadir)/pkgconfig
++pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = xtrans.pc
+ EXTRA_DIST = xtrans.pc.in ${aclocal_DATA} ChangeLog Xtrans.mm
+ MAINTAINERCLEANFILES = ChangeLog

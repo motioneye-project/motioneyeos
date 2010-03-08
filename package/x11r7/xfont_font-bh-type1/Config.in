@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XFONT_FONT_BH_TYPE1
 	bool "font-bh-type1"
 	help
-	  font-bh-type1 1.0.0
+	  font-bh-type1 1.0.1
 	  No description available

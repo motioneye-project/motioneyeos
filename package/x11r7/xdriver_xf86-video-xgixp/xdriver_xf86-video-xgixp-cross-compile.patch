@@ -1,0 +1,24 @@
+--- xdriver_xf86-video-xgixp-1.7.99.4/configure.ac.orig	2009-09-07 08:09:14.000000000 +0300
++++ xdriver_xf86-video-xgixp-1.7.99.4/configure.ac	2010-02-04 00:12:22.159108635 +0200
+@@ -63,12 +63,18 @@ sdkdir=$(pkg-config --variable=sdkdir xo
+ # Checks for header files.
+ AC_HEADER_STDC
+ 
+-AC_CHECK_FILE([${sdkdir}/dri.h],
++if test "$cross_compiling" = "no" ; then
++        AC_CHECK_FILE([${sdkdir}/dri.h],
+               [have_dri_h="yes"], [have_dri_h="no"])
+-AC_CHECK_FILE([${sdkdir}/sarea.h],
++        AC_CHECK_FILE([${sdkdir}/sarea.h],
+               [have_sarea_h="yes"], [have_sarea_h="no"])
+-AC_CHECK_FILE([${sdkdir}/dristruct.h],
++        AC_CHECK_FILE([${sdkdir}/dristruct.h],
+               [have_dristruct_h="yes"], [have_dristruct_h="no"])
++else
++        have_dri_h="yes"
++        have_sarea_h="yes"
++        have_dristruct_h="yes"
++fi
+ 
+ AC_DEFINE(XF86DRI_DEVEL,1,[Enable developmental DRI driver support])
+ 

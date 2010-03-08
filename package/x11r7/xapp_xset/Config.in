@@ -3,5 +3,5 @@ config BR2_PACKAGE_XAPP_XSET
 	select BR2_PACKAGE_XLIB_LIBXFONTCACHE
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  xset 1.0.2
+	  xset 1.1.0
 	  X.Org xset application

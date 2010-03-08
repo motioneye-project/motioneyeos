@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XPROTO_RECORDPROTO
 	bool "recordproto"
 	help
-	  recordproto 1.13.2
+	  recordproto 1.14
 	  X.Org Record protocol headers

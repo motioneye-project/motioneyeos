@@ -5,6 +5,7 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_INTEL
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_RENDERPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
+	select BR2_PACKAGE_XPROTO_DRI2PROTO
 	help
-	  xf86-video-intel 2.1.1
+	  xf86-video-intel 2.9.1
 	  Intel video driver

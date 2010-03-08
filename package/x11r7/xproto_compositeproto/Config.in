@@ -1,5 +1,5 @@
 config BR2_PACKAGE_XPROTO_COMPOSITEPROTO
 	bool "compositeproto"
 	help
-	  compositeproto 0.3.1
+	  compositeproto 0.4.1
 	  X.Org Composite protocol headers

@@ -7,5 +7,5 @@ config BR2_PACKAGE_XLIB_LIBXT
 	select BR2_PACKAGE_XCB_PROTO
 	select BR2_PACKAGE_LIBXCB
 	help
-	  libXt 1.0.4
+	  libXt 1.0.7
 	  X.Org Xt library

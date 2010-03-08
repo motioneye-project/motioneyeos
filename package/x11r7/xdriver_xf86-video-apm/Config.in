@@ -9,5 +9,5 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_APM
 	select BR2_PACKAGE_XPROTO_XF86RUSHPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-apm 1.1.1
+	  xf86-video-apm 1.2.2
 	  Alliance ProMotion video driver

@@ -6,6 +6,7 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_GLIDE
 	select BR2_PACKAGE_XPROTO_RENDERPROTO
 	select BR2_PACKAGE_XPROTO_VIDEOPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
+	depends on BROKEN # needs glide library from http://glide.sourceforge.net/
 	help
-	  xf86-video-glide 1.0.1
+	  xf86-video-glide 1.0.3
 	  video driver for glide device

@@ -2,5 +2,5 @@ config BR2_PACKAGE_XAPP_BDFTOPCF
 	bool "bdftopcf"
 	select BR2_PACKAGE_XLIB_LIBXFONT
 	help
-	  bdftopcf 1.0.0
+	  bdftopcf 1.0.2
 	  X.Org bdftopcf application
