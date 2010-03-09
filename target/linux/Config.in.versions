@@ -13,10 +13,6 @@ config LINUX26_LATEST_GIT_VERSION
 	string
 	default "2.6.30-rc4-git4" if BR2_KERNEL_ADD_LATEST_SNAPSHOT
 
-config LINUX26_LATEST_MM_VERSION
-	string
-	default "2.6.28-rc2-mm1" if BR2_KERNEL_ADD_LATEST_MM_PATCH
-
 config BR2_KERNEL_CURRENT_VERSION
 	string
 	default "2.6.32.9"
