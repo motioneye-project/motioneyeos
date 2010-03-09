@@ -63,6 +63,7 @@ include target/u-boot/Makefile.in
 endif
 
 # and finally build the filesystems/tarballs
+include target/common.mk
 include target/*/*.mk
 
 # kernel rules
