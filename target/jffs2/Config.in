@@ -114,8 +114,4 @@ config BR2_TARGET_ROOTFS_JFFS2_SUMMARY
 	  A summarised image can be mounted faster if support is
 	  enabled in the kernel (CONFIG_JFFS2_SUMMARY)
 
-config BR2_TARGET_ROOTFS_JFFS2_OUTPUT
-	string "Output File"
-	default "$(IMAGE).jffs2"
-
 endif
