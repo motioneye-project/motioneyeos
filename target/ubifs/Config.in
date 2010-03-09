@@ -22,11 +22,6 @@ config BR2_TARGET_ROOTFS_UBIFS_MAXLEBCNT
 	help
 	  Some comment required here
 
-config BR2_TARGET_ROOTFS_UBIFS_OUTPUT
-	string "Output File"
-	depends on BR2_TARGET_ROOTFS_UBIFS
-	default "$(IMAGE).ubifs"
-
 choice
 	prompt "ubifs runtime compression"
 	default BR2_TARGET_ROOTFS_UBIFS_RT_LZO
