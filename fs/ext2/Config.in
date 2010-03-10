@@ -40,22 +40,16 @@ config BR2_TARGET_ROOTFS_EXT2_GZIP
 	bool "gzip"
 	help
 	  Do compress the ext2 filesystem with gzip.
-	  Note that you either have to have gzip installed on your host
-	  or select to build a gzip for your host. See the packages submenu.
 
 config BR2_TARGET_ROOTFS_EXT2_BZIP2
 	bool "bzip2"
 	help
 	  Do compress the ext2 filesystem with bzip2.
-	  Note that you either have to have bzip2 installed on your host
-	  or select to build a bzip2 for your host. See the packages submenu.
 
 config BR2_TARGET_ROOTFS_EXT2_LZMA
 	bool "lzma"
 	help
 	  Do compress the ext2 filesystem with lzma.
-	  Note that you either have to have lzma installed on your host
-	  or select to build a lzma for your host. See the packages submenu.
 
 endchoice
 
