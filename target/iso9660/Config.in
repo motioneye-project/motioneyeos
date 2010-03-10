@@ -7,11 +7,6 @@ config BR2_TARGET_ROOTFS_ISO9660
 	help
 	  Build a bootable iso9660 image
 
-config BR2_TARGET_ROOTFS_ISO9660_OUTPUT
-	string "Output File"
-	depends on BR2_TARGET_ROOTFS_ISO9660
-	default "$(IMAGE).iso"
-
 config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
 	string "Boot menu.lst file"
 	depends on BR2_TARGET_ROOTFS_ISO9660
