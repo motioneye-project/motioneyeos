@@ -66,3 +66,5 @@ endef
 define ROOTFS_TARGET
 $(call ROOTFS_TARGET_INTERNAL,$(1),$(call UPPERCASE,$(1)))
 endef
+
+include fs/*/*.mk

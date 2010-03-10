@@ -346,4 +346,6 @@ source "toolchain/Config.in"
 
 source "package/Config.in"
 
+source "fs/Config.in"
+
 source "target/Config.in"

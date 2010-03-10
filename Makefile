@@ -323,6 +323,8 @@ ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 TARGETS+=target-purgelocales
 endif
 
+include fs/common.mk
+
 # target stuff is last so it can override anything else
 include target/Makefile.in
 

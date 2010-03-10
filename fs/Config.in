@@ -1,0 +1,30 @@
+menu "Target filesystem options"
+
+config BR2_ROOTFS_POST_BUILD_SCRIPT
+	string "Custom script to run before packing files"
+	default ""
+	help
+	  Specify a script to be run after the build has finished and before
+	  the BR2 starts packing the files into selected packages.
+
+	  This gives users the oportunity to do board-specific cleanups,
+	  add-ons and the like, so the generated files can be used directly
+	  without further processing.
+
+	  The script is called with the target directory name as first and
+	  only argument. Make sure the exit code of that script is 0,
+	  otherwise make will stop after calling it.
+
+source "fs/cramfs/Config.in"
+source "fs/cloop/Config.in"
+source "fs/ext2/Config.in"
+source "fs/jffs2/Config.in"
+source "fs/ubifs/Config.in"
+source "fs/squashfs/Config.in"
+source "fs/tar/Config.in"
+source "fs/cpio/Config.in"
+source "fs/iso9660/Config.in"
+source "fs/initramfs/Config.in"
+source "fs/romfs/Config.in"
+
+endmenu
