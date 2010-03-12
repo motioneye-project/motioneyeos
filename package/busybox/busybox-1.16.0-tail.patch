@@ -1,0 +1,13 @@
+diff -urpN busybox-1.16.0/coreutils/tail.c busybox-1.16.0-tail/coreutils/tail.c
+--- busybox-1.16.0/coreutils/tail.c	2010-03-08 22:49:32.000000000 +0100
++++ busybox-1.16.0-tail/coreutils/tail.c	2010-03-12 22:16:07.105943986 +0100
+@@ -241,7 +241,8 @@ int tail_main(int argc, char **argv)
+ 						} while (nwrite);
+ 					}
+ 				}
+-				xwrite(STDOUT_FILENO, buf + nread - nwrite, nwrite);
++				if (nwrite > 0)
++					xwrite(STDOUT_FILENO, buf + nread - nwrite, nwrite);
+ 			} else if (count) {
+ 				if (COUNT_BYTES) {
+ 					taillen += nread;
