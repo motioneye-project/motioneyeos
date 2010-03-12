@@ -1,9 +1,11 @@
 2010.05, Not yet released
 
-	 X.org updated to 7.5.
+	Toolchain: uClibc 0.9.30.3, older 0.9.30.x removed.
 
-	 Updated/fixed packages: busybox, dosfstools, e2fsprogs,
-	 mtd-utils, squashfs
+	X.org updated to 7.5.
+
+	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
+	mtd-utils, squashfs
 
 2010.02, Release February 26th, 2010:
 
