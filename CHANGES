@@ -1,6 +1,7 @@
 2010.05, Not yet released
 
-	Toolchain: uClibc 0.9.30.3, older 0.9.30.x removed.
+	Toolchain: uClibc 0.9.30.3, older 0.9.30.x removed. 2.6.33
+	kernel headers.
 
 	X.org updated to 7.5.
 
