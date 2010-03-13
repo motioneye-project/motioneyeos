@@ -8,6 +8,10 @@
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
 	mtd-utils, squashfs
 
+	Issues resolved (http://bugs.uclibc.org):
+
+	#1273 BR2_INET_IPV6 does not enable IPv6 in pppd
+
 2010.02, Release February 26th, 2010:
 
 	Fixes all over the tree.
