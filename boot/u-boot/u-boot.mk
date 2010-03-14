@@ -7,7 +7,7 @@ U_BOOT_VERSION:=$(call qstrip,$(BR2_UBOOT_VERSION))
 
 U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
 
-U_BOOT_SITE:=$(call qstrip,$(BR2_U_BOOT_SITE))
+U_BOOT_SITE:=ftp://ftp.denx.de/pub/u-boot
 U_BOOT_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
 U_BOOT_PATCH_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)-patches
 U_BOOT_CAT:=$(BZCAT)

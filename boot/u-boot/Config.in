@@ -33,10 +33,6 @@ config BR2_UBOOT_VERSION
 	default "2009.11"	if BR2_TARGET_UBOOT_2009_11
 	default "2009.08"	if BR2_TARGET_UBOOT_2009_08
 
-config BR2_U_BOOT_SITE
-	string
-	default "ftp://ftp.denx.de/pub/u-boot"
-
 source "target/device/Config.in.u-boot"
 
 config BR2_TARGET_UBOOT_CUSTOM_PATCH
