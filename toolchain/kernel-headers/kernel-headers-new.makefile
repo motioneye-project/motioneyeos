@@ -23,19 +23,7 @@ LINUX_HEADERS_CAT:=$(BZCAT)
 LINUX_HEADERS_UNPACK_DIR:=$(TOOLCHAIN_DIR)/linux-$(LINUX_HEADERS_VERSION)
 LINUX_HEADERS_DIR:=$(TOOLCHAIN_DIR)/linux
 
-ifeq ("$(DEFAULT_KERNEL_HEADERS)","2.6.26.8")
-LINUX_RT_VERSION:=rt16
-endif
-
 LINUX_HEADERS_DEPENDS:=
-
-ifeq ($(BR2_KERNEL_HEADERS_RT),y)
-LINUX_RT_SOURCE:=patch-$(LINUX_HEADERS_VERSION)-$(LINUX_RT_VERSION)
-LINUX_RT_SITE:=$(BR2_KERNEL_MIRROR)/linux/kernel/projects/rt
-LINUX_HEADERS_DEPENDS+=$(DL_DIR)/$(LINUX_RT_SOURCE)
-$(DL_DIR)/$(LINUX_RT_SOURCE):
-	$(call DOWNLOAD,$(LINUX_RT_SITE),$(LINUX_RT_SOURCE))
-endif
 
 $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
 	@echo "*** Using kernel-headers generated from kernel source"
@@ -47,9 +35,6 @@ $(LINUX_HEADERS_UNPACK_DIR)/.unpacked: $(DL_DIR)/$(LINUX_HEADERS_SOURCE)
 $(LINUX_HEADERS_UNPACK_DIR)/.patched: $(LINUX_HEADERS_UNPACK_DIR)/.unpacked $(LINUX_HEADERS_DEPENDS)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) toolchain/kernel-headers \
 		linux-$(LINUX_HEADERS_VERSION)-\*.patch{,.gz,.bz2}
-ifeq ($(BR2_KERNEL_HEADERS_RT),y)
-	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) $(DL_DIR) $(LINUX_RT_SOURCE)
-endif
 ifneq ($(KERNEL_HEADERS_PATCH_DIR),)
 	toolchain/patch-kernel.sh $(LINUX_HEADERS_UNPACK_DIR) $(KERNEL_HEADERS_PATCH_DIR) \
 		linux-$(LINUX_HEADERS_VERSION)-\*.patch{,.gz,.bz2}
