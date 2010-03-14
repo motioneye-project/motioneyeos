@@ -1,20 +1,3 @@
-GRUB2_SUPPORTED_ARCH=n
-ifeq ($(ARCH),i386)
-GRUB2_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i486)
-GRUB2_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i586)
-GRUB2_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i686)
-GRUB2_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),x86_64)
-GRUB2_SUPPORTED_ARCH=y
-endif
-ifeq ($(GRUB2_SUPPORTED_ARCH),y)
 #############################################################
 #
 # grub2
@@ -121,8 +104,6 @@ grub2-clean:
 
 grub2-dirclean:
 	rm -rf $(GRUB2_DIR)
-
-endif
 
 #############################################################
 #
