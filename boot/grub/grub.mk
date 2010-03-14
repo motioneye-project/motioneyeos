@@ -1,20 +1,3 @@
-GRUB_SUPPORTED_ARCH=n
-ifeq ($(ARCH),i386)
-GRUB_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i486)
-GRUB_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i586)
-GRUB_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i686)
-GRUB_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),x86_64)
-GRUB_SUPPORTED_ARCH=y
-endif
-ifeq ($(GRUB_SUPPORTED_ARCH),y)
 #############################################################
 #
 # grub
@@ -124,8 +107,6 @@ grub-clean:
 
 grub-dirclean:
 	rm -rf $(GRUB_DIR)
-
-endif
 
 #############################################################
 #
