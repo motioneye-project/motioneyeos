@@ -1,2 +1,0 @@
-include target/device/Atmel/arch-arm/u-boot/Makefile.in
-
