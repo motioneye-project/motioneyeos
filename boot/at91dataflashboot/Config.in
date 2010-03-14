@@ -1,6 +1,6 @@
-config BR2_TARGET_DATAFLASHBOOT
-       depends on BR2_TARGET_AT91RM9200 || BR2_TARGET_AT91SAM9261 || BR2_TARGET_AT91SAM9261S
-	bool "Build Dataflashboot for selected chip"
+menuconfig BR2_TARGET_DATAFLASHBOOT
+       depends on BR2_arm
+       bool "AT91 DataFlashBoot"
 
 choice
 	prompt "Target Architecture"

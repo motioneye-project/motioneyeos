@@ -38,7 +38,7 @@ syslinux-source: $(DL_DIR)/$(SYSLINUX_SOURCE)
 
 $(SYSLINUX_DIR)/Makefile: $(DL_DIR)/$(SYSLINUX_SOURCE) $(SYSLINUX_PATCH)
 	$(SYSLINUX_CAT) $(DL_DIR)/$(SYSLINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(SYSLINUX_DIR) target/x86/syslinux/ \*.patch
+	toolchain/patch-kernel.sh $(SYSLINUX_DIR) boot/syslinux/ \*.patch
 	touch -c $@
 
 $(SYSLINUX_DIR)/isolinux.bin $(SYSLINUX_DIR)/pxelinux.bin: $(SYSLINUX_DIR)/Makefile

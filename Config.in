@@ -293,4 +293,6 @@ source "package/Config.in"
 
 source "fs/Config.in"
 
+source "boot/Config.in"
+
 source "target/Config.in"

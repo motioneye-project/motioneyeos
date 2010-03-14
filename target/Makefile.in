@@ -54,15 +54,7 @@ include target/generic/Makefile.in
 
 # this eventually adds the kernel target to TARGETS:
 include target/device/Makefile.in
-include target/x86/Makefile.in
-include target/powerpc/Makefile.in
 include target/xtensa/Makefile.in
-
-ifeq ($(BR2_TARGET_UBOOT),y)
-include target/u-boot/Makefile.in
-endif
-
-include fs/common.mk
 
 # kernel rules
 # We already did add the kernel target to TARGETS and now just pull in the rules

@@ -320,8 +320,9 @@ ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 TARGETS+=target-purgelocales
 endif
 
-# target stuff is last so it can override anything else
+include boot/common.mk
 include target/Makefile.in
+include fs/common.mk
 
 TARGETS+=erase-fakeroots
 

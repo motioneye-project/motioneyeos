@@ -1,3 +1,0 @@
-ifeq ($(BR2_i386),y)
-include target/x86/*/*.mk
-endif

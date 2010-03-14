@@ -75,7 +75,7 @@ $(GRUB_DIR)/.unpacked: $(DL_DIR)/$(GRUB_SOURCE) $(DL_DIR)/$(GRUB_PATCH)
 	for i in `grep -v "^#" $(GRUB_DIR)/debian/patches/00list`; do \
 		cat $(GRUB_DIR)/debian/patches/$$i | patch -p1 -d $(GRUB_DIR); \
 	done
-	toolchain/patch-kernel.sh $(GRUB_DIR) target/x86/grub grub.\*.patch{,.bz2}
+	toolchain/patch-kernel.sh $(GRUB_DIR) boot/grub grub.\*.patch{,.bz2}
 	touch $@
 
 $(GRUB_DIR)/.configured: $(GRUB_DIR)/.unpacked
