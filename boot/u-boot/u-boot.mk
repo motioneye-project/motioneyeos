@@ -46,11 +46,7 @@ ifeq ($(BR2_TARGET_UBOOT_TOOL_ENV),y)
 U_BOOT_TARGETS+=$(TARGET_DIR)/usr/sbin/fw_printenv
 endif
 
-U_BOOT_CONFIGURE_OPTS :=
-
-ifneq ($(BR2_TARGET_UBOOT_1_2_0_ATMEL),)
 U_BOOT_CONFIGURE_OPTS += CONFIG_NOSOFTFLOAT=1
-endif
 
 # Define a helper function
 define insert_define
