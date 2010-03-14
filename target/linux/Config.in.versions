@@ -60,21 +60,3 @@ config BR2_KERNEL_LATEST_2_6_27
 	default "45"
 	help
 	  Released 2010-Jan-28.
-
-config BR2_KERNEL_LATEST_2_6_26
-	string
-	default "8"
-	help
-	  Released 2008-Nov-10 (last .26-stable release).
-
-config BR2_KERNEL_LATEST_2_6_25
-	string
-	default "20"
-	help
-	  Released 2008-Nov-10.
-
-config BR2_KERNEL_LATEST_2_6_24
-	string
-	default "7"
-	help
-	  Released 2008-May-07.
