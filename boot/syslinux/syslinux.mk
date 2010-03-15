@@ -1,21 +1,3 @@
-SYSLINUX_SUPPORTED_ARCH=n
-ifeq ($(ARCH),i386)
-SYSLINUX_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i486)
-SYSLINUX_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i586)
-SYSLINUX_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),i686)
-SYSLINUX_SUPPORTED_ARCH=y
-endif
-ifeq ($(ARCH),x86_64)
-SYSLINUX_SUPPORTED_ARCH=y
-endif
-ifeq ($(SYSLINUX_SUPPORTED_ARCH),y)
-
 #############################################################
 #
 # syslinux to make target msdos/iso9660 filesystems bootable
@@ -58,8 +40,6 @@ pxelinux-clean syslinux-clean:
 
 pxelinux-dirclean syslinux-dirclean:
 	rm -rf $(SYSLINUX_DIR)
-
-endif
 
 #############################################################
 #
