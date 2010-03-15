@@ -6,7 +6,7 @@
 	X.org updated to 7.5.
 
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
-	mtd-utils, squashfs
+	mtd-utils, setserial, squashfs
 
 	Issues resolved (http://bugs.uclibc.org):
 
