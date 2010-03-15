@@ -11,7 +11,7 @@ GRUB_CAT:=$(ZCAT)
 GRUB_DIR:=$(BUILD_DIR)/grub-0.97
 GRUB_BINARY:=grub/grub
 GRUB_TARGET_BINARY:=sbin/grub
-GRUB_SPLASHIMAGE=$(TOPDIR)/target/x86/grub/splash.xpm.gz
+GRUB_SPLASHIMAGE=$(TOPDIR)/boot/grub/splash.xpm.gz
 
 
 GRUB_CFLAGS=-DSUPPORT_LOOPDEV
