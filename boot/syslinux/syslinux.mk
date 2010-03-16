@@ -22,34 +22,38 @@ ifeq ($(SYSLINUX_SUPPORTED_ARCH),y)
 #
 #############################################################
 
-SYSLINUX_VERSION:=3.82
+SYSLINUX_VERSION:=3.85
 SYSLINUX_DIR=$(BUILD_DIR)/syslinux-$(SYSLINUX_VERSION)
-SYSLINUX_DIR2=$(TOOLCHAIN_DIR)/syslinux-$(SYSLINUX_VERSION)
 SYSLINUX_SOURCE=syslinux-$(SYSLINUX_VERSION).tar.bz2
 SYSLINUX_CAT:=$(BZCAT)
-SYSLINUX_SITE=$(BR2_KERNEL_MIRROR)/linux/utils/boot/syslinux/
-SYSLINUX_BIN=$(SYSLINUX_DIR2)/mtools/syslinux
-
+SYSLINUX_SITE=$(BR2_KERNEL_MIRROR)/linux/utils/boot/syslinux/3.xx/
 
 $(DL_DIR)/$(SYSLINUX_SOURCE):
 	 $(call DOWNLOAD,$(SYSLINUX_SITE),$(SYSLINUX_SOURCE))
 
 syslinux-source: $(DL_DIR)/$(SYSLINUX_SOURCE)
 
-$(SYSLINUX_DIR)/Makefile: $(DL_DIR)/$(SYSLINUX_SOURCE) $(SYSLINUX_PATCH)
-	$(SYSLINUX_CAT) $(DL_DIR)/$(SYSLINUX_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(SYSLINUX_DIR) boot/syslinux/ \*.patch
+$(SYSLINUX_DIR)/.unpacked: $(DL_DIR)/$(SYSLINUX_SOURCE) $(SYSLINUX_PATCH)
+	mkdir -p $(@D)
+	$(SYSLINUX_CAT) $(DL_DIR)/$(SYSLINUX_SOURCE) | tar $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
+	toolchain/patch-kernel.sh $(@D) boot/syslinux/ \*.patch
 	touch -c $@
 
-$(SYSLINUX_DIR)/isolinux.bin $(SYSLINUX_DIR)/pxelinux.bin: $(SYSLINUX_DIR)/Makefile
-	$(MAKE) CC="$(HOSTCC)" AR="$(HOSTAR)" -C $(SYSLINUX_DIR)
+$(SYSLINUX_DIR)/.compiled: $(SYSLINUX_DIR)/.unpacked
+	$(TARGET_MAKE_ENV) $(MAKE) CC="$(HOSTCC)" AR="$(HOSTAR)" -C $(SYSLINUX_DIR)
 	touch -c $@
 
-syslinux: $(SYSLINUX_DIR)/isolinux.bin
-pxelinux: $(SYSLINUX_DIR)/pxelinux.bin
+$(BINARIES_DIR)/isolinux.bin: $(SYSLINUX_DIR)/.compiled
+	cp -a $(SYSLINUX_DIR)/core/isolinux.bin $@
+
+$(BINARIES_DIR)/pxelinux.bin: $(SYSLINUX_DIR)/.compiled
+	cp -a $(SYSLINUX_DIR)/core/pxelinux.bin $@
+
+syslinux: $(BINARIES_DIR)/isolinux.bin
+pxelinux: $(BINARIES_DIR)/pxelinux.bin
 
 pxelinux-clean syslinux-clean:
-	rm -f $(SYSLINUX_DIR)/isolinux.bin $(SYSLINUX_DIR)/pxelinux.bin
+	rm -f $(BINARIES_DIR)/isolinux.bin $(BINARIES_DIR)/pxelinux.bin
 	-$(MAKE) -C $(SYSLINUX_DIR) clean
 
 pxelinux-dirclean syslinux-dirclean:

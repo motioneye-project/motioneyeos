@@ -1,0 +1,17 @@
+---
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: syslinux-3.85/Makefile
+===================================================================
+--- syslinux-3.85.orig/Makefile
++++ syslinux-3.85/Makefile
+@@ -43,7 +43,7 @@
+ 	mbr/mbr_c.bin mbr/altmbr_c.bin mbr/gptmbr_c.bin \
+ 	mbr/mbr_f.bin mbr/altmbr_f.bin mbr/gptmbr_f.bin \
+ 	core/pxelinux.0 core/isolinux.bin core/isolinux-debug.bin \
+-	gpxe/gpxelinux.0 dos/syslinux.com win32/syslinux.exe \
++	gpxe/gpxelinux.0 dos/syslinux.com \
+ 	dosutil/*.com dosutil/*.sys \
+ 	$(MODULES)
+ 
