@@ -2,6 +2,15 @@
 #
 # grub2
 #
+# TODO
+#
+#  * grub2's autogen uses ruby, which isn't part of the core Debian
+#    installation. So either decide it is a requirement for Buildroot,
+#    or build it for the host.
+#
+#  * improve the installation procedure. For the moment, it just
+#    installs everything in $(TARGET_DIR).
+#
 #############################################################
 GRUB2_SOURCE:=grub2_1.98.orig.tar.gz
 GRUB2_PATCH:=grub2_1.98-1.diff.gz
@@ -13,12 +22,10 @@ GRUB2_BINARY:=grub2/grub2
 GRUB2_TARGET_BINARY:=sbin/grub2
 GRUB2_SPLASHIMAGE=$(TOPDIR)/boot/grub/splash.xpm.gz
 
-
 GRUB2_CFLAGS=-DSUPPORT_LOOPDEV
 ifeq ($(BR2_LARGEFILE),)
 GRUB2_CFLAGS+=-U_FILE_OFFSET_BITS
 endif
-
 
 GRUB2_CONFIG-$(BR2_TARGET_GRUB2_SPLASH) += --enable-graphics
 GRUB2_CONFIG-$(BR2_TARGET_GRUB2_DISKLESS) += --enable-diskless
@@ -53,16 +60,19 @@ $(DL_DIR)/$(GRUB2_PATCH):
 grub2-source: $(DL_DIR)/$(GRUB2_SOURCE) $(DL_DIR)/$(GRUB2_PATCH)
 
 $(GRUB2_DIR)/.unpacked: $(DL_DIR)/$(GRUB2_SOURCE) $(DL_DIR)/$(GRUB2_PATCH)
-	$(GRUB2_CAT) $(DL_DIR)/$(GRUB2_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	toolchain/patch-kernel.sh $(GRUB2_DIR) $(DL_DIR) $(GRUB2_PATCH)
-	for i in `grep -v "^#" $(GRUB2_DIR)/debian/patches/00list`; do \
-		cat $(GRUB2_DIR)/debian/patches/$$i | patch -p1 -d $(GRUB2_DIR); \
+	mkdir -p $(@D)
+	$(GRUB2_CAT) $(DL_DIR)/$(GRUB2_SOURCE) | tar $(TAR_STRIP_COMPONENTS)=1 -C $(@D) -xvf -
+	toolchain/patch-kernel.sh $(@D) $(DL_DIR) $(GRUB2_PATCH)
+	for i in `grep -v "^#" $(@D)/debian/patches/00list`; do \
+		cat $(@D)/debian/patches/$$i | patch -p1 -d $(@D); \
 	done
-	toolchain/patch-kernel.sh $(GRUB2_DIR) boot/grub2 grub-\*.patch
+	toolchain/patch-kernel.sh $(@D) boot/grub2 grub-\*.patch
 	touch $@
 
 $(GRUB2_DIR)/.configured: $(GRUB2_DIR)/.unpacked
 	(cd $(GRUB2_DIR); rm -rf config.cache; \
+		$(TARGET_CONFIGURE_OPTS) ; \
+		./autogen.sh ; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
 		CPPFLAGS="$(GRUB2_CFLAGS)" \
@@ -74,33 +84,28 @@ $(GRUB2_DIR)/.configured: $(GRUB2_DIR)/.unpacked
 		--prefix=/ \
 		--mandir=/usr/man \
 		--infodir=/usr/info \
-		--disable-auto-linux-mem-opt \
+		--disable-grub-mkfont \
+		--disable-grub-fstest \
+		--disable-grub-emu-usb \
+		--disable-werror \
 		$(DISABLE_LARGEFILE) \
 		$(GRUB2_CONFIG-y) \
 	)
 	touch $@
 
-$(GRUB2_DIR)/$(GRUB2_BINARY): $(GRUB2_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(GRUB2_DIR)
-
-$(GRUB2_DIR)/.installed: $(GRUB2_DIR)/$(GRUB2_BINARY)
-	cp $(GRUB2_DIR)/$(GRUB2_BINARY) $(TARGET_DIR)/$(GRUB2_TARGET_BINARY)
-	test -d $(TARGET_DIR)/boot/grub2 || mkdir -p $(TARGET_DIR)/boot/grub2
-	cp $(GRUB2_DIR)/stage1/stage1 $(GRUB2_DIR)/stage2/*1_5 $(GRUB2_DIR)/stage2/stage2 $(TARGET_DIR)/boot/grub2/
-ifeq ($(BR2_TARGET_GRUB2_SPLASH),y)
-	test -f $(TARGET_DIR)/boot/grub2/$(GRUB2_SPLASHIMAGE) || \
-		cp $(GRUB2_SPLASHIMAGE) $(TARGET_DIR)/boot/grub2/
-endif
+$(GRUB2_DIR)/.compiled: $(GRUB2_DIR)/.configured
+	$(MAKE) CC=$(TARGET_CC) -C $(@D)
 	touch $@
 
-grub2: $(GRUB2_DIR)/.installed
+$(GRUB2_DIR)/.installed: $(GRUB2_DIR)/.compiled
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
+	touch $@
+
+grub2: host-automake host-autoconf $(GRUB2_DIR)/.installed
 
 grub2-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GRUB2_DIR) uninstall
 	-$(MAKE) -C $(GRUB2_DIR) clean
-	rm -f $(TARGET_DIR)/boot/grub2/$(GRUB2_SPLASHIMAGE) \
-		$(TARGET_DIR)/sbin/$(GRUB2_BINARY) \
-		$(TARGET_DIR)/boot/grub2/{stage{1,2},*1_5}
 
 grub2-dirclean:
 	rm -rf $(GRUB2_DIR)
