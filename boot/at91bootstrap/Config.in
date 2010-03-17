@@ -6,7 +6,7 @@ if	BR2_TARGET_AT91BOOTSTRAP
 
 config BR2_TARGET_AT91BOOTSTRAP_BOARD
 	string "Bootstrap board"
-	default "$(BOARD_NAME)"
+	default ""
 	help
 	  This is used to do a make <board>_config
 
