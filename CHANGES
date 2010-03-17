@@ -29,6 +29,7 @@
 	#1345: Bump pppd to 2.4.5 and convert to Makefile.autotools.in
 	#1411: [SECURITY] Update openssl package to 0.9.8n
 	#1417: Bump iptables to 1.4.7
+	#1423: Bump e2fsprogs to 1.41.11
 	#1429: [SECURITY] Update php to 5.2.13
 	#1441: Add binutils 2.20.1
 	#1447: Package installation on target with debug symbols is broken
