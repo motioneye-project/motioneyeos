@@ -90,3 +90,8 @@ at91bootstrap-dirclean:
 ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
 TARGETS+=at91bootstrap
 
+# we NEED a board name
+ifeq ($(AT91BOOTSTRAP_BOARD),)
+$(error No AT91Bootstrap board name set. Check your BR2_TARGET_AT91BOOTSTRAP_BOARD setting)
+endif
+endif
