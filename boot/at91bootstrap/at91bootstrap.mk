@@ -50,8 +50,6 @@ $(AT91BOOTSTRAP_DIR)/.configured: $(AT91BOOTSTRAP_DIR)/.unpacked .config
 		$(AT91BOOTSTRAP_BOARD)_defconfig
 	touch $(AT91BOOTSTRAP_DIR)/.configured
 
-#		$(BOARD_NAME)_defconfig
-
 $(AT91BOOTSTRAP_TARGET): $(AT91BOOTSTRAP_DIR)/.configured
 	$(MAKE) \
 		MEMORY=$(AT91BOOTSTRAP_MEMORY) \
@@ -61,18 +59,12 @@ $(AT91BOOTSTRAP_TARGET): $(AT91BOOTSTRAP_DIR)/.configured
 
 $(AT91BOOTSTRAP_DIR)/.installed:: $(AT91BOOTSTRAP_TARGET)
 	mkdir -p $(BINARIES_DIR)
-ifeq	($(AT91BOOTSTRAP_VERSION),2.3)
-	cp $(AT91BOOTSTRAP_TARGET) $(BINARIES_DIR)/$(AT91BOOTSTRAP_BINARY)
-else
 	make MEMORY=$(AT91BOOTSTRAP_MEMORY) \
 		CROSS_COMPILE=$(TARGET_CROSS) \
 		-C $(AT91BOOTSTRAP_DIR) boot
 	make DESTDIR=$(BINARIES_DIR) -C $(AT91BOOTSTRAP_DIR) install || \
 		echo "Could not copy bootstrap to BINARIES_DIR"
-endif
 	touch $@
-
-#	cp $(AT91BOOTSTRAP_TARGET) $(BINARIES_DIR)/$(AT91BOOTSTRAP_BINARY)
 
 .PHONY: at91bootstrap at91bootstrap-source
 
@@ -97,8 +89,4 @@ at91bootstrap-dirclean:
 #############################################################
 ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
 TARGETS+=at91bootstrap
-endif
-
-at91bootstrap-status:
-	@echo AT91BOOTSTRAP_BOARD=$(AT91BOOTSTRAP_BOARD)
 
