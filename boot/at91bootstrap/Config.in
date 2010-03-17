@@ -61,10 +61,7 @@ choice
 	prompt "Start address of application"
 	default BR2_AT91BOOTSTRAP_JUMP_TO_DEFAULT
 	help
-	  Select Chip for which AT91 bootstrap should be built
-	  Currently supports AT91SAM9260EK, AT91SAM9261EK,
-	  AT91SAM9XEEK, AT91SAM9263EK
-
+	  Location of the application start address
 
 config	BR2_AT91BOOTSTRAP_JUMP_TO_DEFAULT
 	bool "Copy to the default U-Boot start location in the SDRAM"
