@@ -1,0 +1,43 @@
+Get at91dataflashboot to build with EABI toolchains, by providing the
+__aeabi_uidiv and __aeabi_uidivmod symbols. The code is based on
+U-Boot's code.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ _udivsi3.S |   14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+Index: DataflashBoot-1.05/_udivsi3.S
+===================================================================
+--- DataflashBoot-1.05.orig/_udivsi3.S
++++ DataflashBoot-1.05/_udivsi3.S
+@@ -12,8 +12,11 @@
+ 	.text
+ 	.globl	 __udivsi3
+ 	.type  __udivsi3       ,function
++        .globl  __aeabi_uidiv
++        .type   __aeabi_uidiv ,function
+ 	.align	0
+  __udivsi3      :
++ __aeabi_uidiv:
+ 	cmp	divisor, #0
+ 	beq	Ldiv0
+ 	mov	curbit, #1
+@@ -68,6 +71,17 @@
+ 	mov	r0, #0			@ about as wrong as it could be
+ 	ldmia	sp!, {pc}
+ 	.size  __udivsi3       , . -  __udivsi3
++
++.globl __aeabi_uidivmod
++__aeabi_uidivmod:
++
++        stmfd   sp!, {r0, r1, ip, lr}
++        bl      __aeabi_uidiv
++        ldmfd   sp!, {r1, r2, ip, lr}
++        mul     r3, r0, r2
++        sub     r1, r1, r3
++        mov     pc, lr
++
+ /* # 235 "libgcc1.S" */
+ /* # 320 "libgcc1.S" */
+ /* # 421 "libgcc1.S" */
