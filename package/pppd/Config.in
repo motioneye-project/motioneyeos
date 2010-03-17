@@ -13,4 +13,3 @@ config BR2_PACKAGE_PPPD_FILTER
 	  Packet filtering abilities for pppd. If enabled,
 	  the pppd active-filter and pass-filter options
 	  are available.
-
