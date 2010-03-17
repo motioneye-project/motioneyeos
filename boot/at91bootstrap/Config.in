@@ -18,27 +18,21 @@ choice
 
 config BR2_TARGET_AT91BOOT_DATAFLASH
 	bool "AT45 Dataflash"
-	depends on BR2_BOOTSOURCE_DATAFLASH
 
 config BR2_TARGET_AT91BOOT_DATAFLASHCARD
 	bool "AT45 Dataflash Card"
-	depends on BR2_BOOTSOURCE_DATAFLASHCARD
 
 config BR2_TARGET_AT91BOOT_NANDFLASH
 	bool "NAND Flash"
-	depends on BR2_BOOTSOURCE_NANDFLASH
 
 config BR2_TARGET_AT91BOOT_FLASH
 	bool "Internal Flash or external parallel flash"
-	depends on BR2_BOOTSOURCE_FLASH
 
 config BR2_TARGET_AT91BOOT_SDCARD
 	bool "SD-Card"
-	depends on BR2_BOOTSOURCE_SDCARD
 
 config BR2_TARGET_AT91BOOT_EEPROM
 	bool "EEPROM"
-	depends on BR2_BOOTSOURCE_EEPROM
 
 endchoice
 
