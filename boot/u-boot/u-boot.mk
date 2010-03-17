@@ -21,21 +21,9 @@ U_BOOT_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
 U_BOOT_CAT:=$(BZCAT)
 U_BOOT_BIN:=u-boot.bin
 
-U_BOOT_TOOLS:=$(HOST_DIR)/usr/bin/mkimage
-MKIMAGE:=$(U_BOOT_TOOLS)
-U_BOOT_AUTOSCRIPT=$(BINARIES_DIR)/autoscript
+MKIMAGE:=$(HOST_DIR)/usr/bin/mkimage
 
-U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN) $(U_BOOT_TOOLS)
-
-ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_DEFAULT_ENV)),y)
-U_BOOT_TARGETS += u-boot-autoscript
-endif
-
-TARGET_UBOOT_IPADDR:=$(call qstrip,$(BR2_TARGET_UBOOT_IPADDR))
-TARGET_UBOOT_SERVERIP:=$(call qstrip,$(BR2_TARGET_UBOOT_SERVERIP))
-TARGET_UBOOT_GATEWAY:=$(call qstrip,$(BR2_TARGET_UBOOT_GATEWAY))
-TARGET_UBOOT_NETMASK:=$(call qstrip,$(BR2_TARGET_UBOOT_NETMASK))
-TARGET_UBOOT_ETHADDR:=$(call qstrip,$(BR2_TARGET_UBOOT_ETHADDR))
+U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN) $(MKIMAGE)
 
 # u-boot still uses arch=ppc for powerpc
 U_BOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
@@ -87,68 +75,38 @@ endif
 		LDFLAGS="$(TARGET_LDFLAGS)"	\
 		$(U_BOOT_CONFIGURE_OPTS) \
 		$(MAKE) -C $(U_BOOT_DIR)	\
-		$(UBOOT_BOARD_NAME)_config
+		$(U_BOOT_BOARD_NAME)_config
 	touch $@
 
 $(U_BOOT_DIR)/.header_modified: $(U_BOOT_DIR)/.configured
 	# Modify configuration header in $(U_BOOT_INC_CONF_FILE)
-ifdef BR2_TARGET_UBOOT_DEFAULT_ENV
+ifdef BR2_TARGET_UBOOT_NETWORK
 	@echo >> $(U_BOOT_INC_CONF_FILE)
 	@echo "/* Add a wrapper around the values Buildroot sets. */" >> $(U_BOOT_INC_CONF_FILE)
 	@echo "#ifndef __BR2_ADDED_CONFIG_H" >> $(U_BOOT_INC_CONF_FILE)
 	@echo "#define __BR2_ADDED_CONFIG_H" >> $(U_BOOT_INC_CONF_FILE)
 	$(call insert_define, DATE, $(DATE))
 	$(call insert_define, CONFIG_LOAD_SCRIPTS, 1)
-endif # BR2_TARGET_UBOOT_DEFAULT_ENV
-ifdef BR2_TARGET_UBOOT_NETWORK
 ifneq ($(strip $(BR2_TARGET_UBOOT_IPADDR)),"")
 	$(call insert_define, CONFIG_IPADDR, $(BR2_TARGET_UBOOT_IPADDR))
+endif
 ifneq ($(strip $(BR2_TARGET_UBOOT_GATEWAY)),"")
 	$(call insert_define, CONFIG_GATEWAYIP, $(BR2_TARGET_UBOOT_GATEWAY))
 endif
 ifneq ($(strip $(BR2_TARGET_UBOOT_NETMASK)),"")
 	$(call insert_define, CONFIG_NETMASK, $(BR2_TARGET_UBOOT_NETMASK))
 endif
-endif # end BR2_TARGET_U_BOOT_IPADDR
 ifneq ($(strip $(BR2_TARGET_UBOOT_SERVERIP)),"")
 	$(call insert_define, CONFIG_SERVERIP, $(BR2_TARGET_UBOOT_SERVERIP))
 endif
 ifneq ($(strip $(BR2_TARGET_UBOOT_ETHADDR)),"")
 	$(call insert_define, CONFIG_ETHADDR, $(BR2_TARGET_UBOOT_ETHADDR))
 endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_ETH1ADDR)),)
 ifneq ($(strip $(BR2_TARGET_UBOOT_ETH1ADDR)),"")
 	$(call insert_define, CONFIG_ETH1ADDR, $(BR2_TARGET_UBOOT_ETH1ADDR))
 endif
-endif
-endif # BR2_TARGET_UBOOT_NETWORK
-ifeq ($(BR2_TARGET_UBOOT_SILENT),y)
-	$(call insert_define, CONFIG_SILENT_CONSOLE,)
-endif
-ifdef BR2_TARGET_UBOOT_DEFAULT_ENV
-ifneq ($(strip $(BR2_TARGET_UBOOT_KERNEL_START)),"")
-	$(call insert_define, KERNEL_START, $(BR2_TARGET_UBOOT_KERNEL_START))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_KERNEL_LOCATION)),"")
-	$(call insert_define, KERNEL_LOCATION, $(BR2_TARGET_UBOOT_KERNEL_LOCATION))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_FILESYSTEM_START)),"")
-	$(call insert_define, FILESYSTEM_START, $(BR2_TARGET_UBOOT_FILESYSTEM_START))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_FILESYSTEM_LOCATION)),"")
-	$(call insert_define, FILESYSTEM_LOCATION, $(BR2_TARGET_UBOOT_FILESYSTEM_LOCATION))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_FILESYSTEM_SIZE)),"")
-	$(call insert_define, FILESYSTEM_SIZE, $(BR2_TARGET_UBOOT_FILESYSTEM_SIZE))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_END_OF_FLASH)),"")
-	$(call insert_define, END_OF_FLASH, $(BR2_TARGET_UBOOT_END_OF_FLASH))
-endif
-ifneq ($(strip $(BR2_TARGET_UBOOT_MEMORY_SIZE)),"")
-	$(call insert_define, MEMORY_SIZE, $(BR2_TARGET_UBOOT_MEMORY_SIZE))
-endif
 	@echo "#endif /* __BR2_ADDED_CONFIG_H */" >> $(U_BOOT_INC_CONF_FILE)
-endif # BR2_TARGET_UBOOT_DEFAULT_ENV
+endif # BR2_TARGET_UBOOT_NETWORK
 	touch $@
 
 $(U_BOOT_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/.header_modified
@@ -195,11 +153,9 @@ $(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/.configured
 
 u-boot: $(U_BOOT_TARGETS)
 
-u-boot-autoscript: $(U_BOOT_AUTOSCRIPT).img
-
 u-boot-clean:
 	-$(MAKE) -C $(U_BOOT_DIR) clean
-	rm -f $(U_BOOT_TOOLS) $(U_BOOT_TARGET_TOOLS)
+	rm -f $(MKIMAGE) $(U_BOOT_TARGET_TOOLS)
 
 u-boot-dirclean:
 	rm -rf $(U_BOOT_DIR)
@@ -212,59 +168,6 @@ u-boot-configured: $(U_BOOT_DIR)/.header_modified
 
 #############################################################
 #
-# Generate an autoscript with the configration items
-#
-#############################################################
-
-$(U_BOOT_AUTOSCRIPT): .config
-	rm -f $(U_BOOT_AUTOSCRIPT)
-ifneq ($(TARGET_UBOOT_IPADDR),)
-	echo setenv ipaddr $(TARGET_UBOOT_IPADDR) > $(U_BOOT_AUTOSCRIPT)
-else
-	echo TARGET_UBOOT_IPADDR="$(TARGET_UBOOT_IPADDR)"
-endif
-ifneq ($(TARGET_UBOOT_SERVERIP),)
-	echo setenv serverip $(TARGET_UBOOT_SERVERIP) >> $(U_BOOT_AUTOSCRIPT)
-endif
-ifneq ($(TARGET_UBOOT_GATEWAY),)
-	echo setenv gatewayip $(TARGET_UBOOT_GATEWAY) >> $(U_BOOT_AUTOSCRIPT)
-endif
-ifneq ($(TARGET_UBOOT_NETMASK),)
-	echo setenv netmask $(TARGET_UBOOT_NETMASK) >> $(U_BOOT_AUTOSCRIPT)
-endif
-	echo setenv linux $(LINUX26_KERNEL_NAME) >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv kernel-version $(LINUX26_VERSION) >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv kernel-date $(DATE) >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv hostname $(TARGET_HOSTNAME) >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv fs-date $(DATE) >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv rd-1 rootfs.$(ARCH)-$(DATE).ext2 >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv rd-2 rootfs.$(ARCH)-$(DATE).jffs2 >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv rd rootfs.$(BR2_ARCH)-$(DATE).ext2 >> $(U_BOOT_AUTOSCRIPT)
-	echo setenv ver 1 >> $(U_BOOT_AUTOSCRIPT)
-ifneq ($(TARGET_UBOOT_ETHADDR),)
-	echo setenv ethaddr $(TARGET_UBOOT_ETHADDR) >> $(U_BOOT_AUTOSCRIPT)
-endif
-	echo setenv fstype ram >> $(U_BOOT_AUTOSCRIPT)
-	echo fs >> $(U_BOOT_AUTOSCRIPT)
-	echo os >> $(U_BOOT_AUTOSCRIPT)
-	echo setargs >> $(U_BOOT_AUTOSCRIPT)
-	echo saveenv >> $(U_BOOT_AUTOSCRIPT)
-
-$(U_BOOT_AUTOSCRIPT).img: $(U_BOOT_AUTOSCRIPT) $(MKIMAGE)
-	$(MKIMAGE) -A $(ARCH) \
-				-O linux \
-				-T script \
-				-C none \
-				-a 0 \
-				-e 0 \
-				-n "autoscr config" \
-				-d $(U_BOOT_AUTOSCRIPT) \
-				$(U_BOOT_AUTOSCRIPT).img
-
-
-
-#############################################################
-#
 # Toplevel Makefile options
 #
 #############################################################
@@ -272,7 +175,7 @@ ifeq ($(BR2_TARGET_UBOOT),y)
 TARGETS+=u-boot
 
 # we NEED a board name
-ifeq ($(UBOOT_BOARD_NAME),)
+ifeq ($(U_BOOT_BOARD_NAME),)
 $(error NO U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
 endif
 
