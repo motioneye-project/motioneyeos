@@ -10,7 +10,8 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
-	#1273 BR2_INET_IPV6 does not enable IPv6 in pppd
+	#1273: BR2_INET_IPV6 does not enable IPv6 in pppd
+	#1345: Bump pppd to 2.4.5 and convert to Makefile.autotools.in
 
 2010.02, Release February 26th, 2010:
 
