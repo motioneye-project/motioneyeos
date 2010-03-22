@@ -8,7 +8,7 @@ PPPD_VERSION = 2.4.5
 PPPD_SOURCE = ppp-$(PPPD_VERSION).tar.gz
 PPPD_SITE = ftp://ftp.samba.org/pub/ppp
 PPPD_TARGET_BINS = chat pppd pppdump pppstats
-PPPD_MANPAGES = chat pppd pppdump pppstats
+PPPD_MANPAGES = $(if $(BR2_HAVE_MANPAGES),chat pppd pppdump pppstats)
 PPPD_MAKE = $(MAKE) CC=$(TARGET_CC) COPTS="$(TARGET_CFLAGS)" -C $(PPPD_DIR) $(PPPD_MAKE_OPT)
 
 ifeq ($(BR2_PACKAGE_PPPD_FILTER),y)
