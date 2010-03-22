@@ -5,6 +5,8 @@
 
 	X.org updated to 7.5.
 
+	New packages: librsync
+
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs, iperf,
 	libglib2, libpng, memstat, mtd-utils, pppd, setserial,
 	squashfs, wget
@@ -15,6 +17,7 @@
 	#1111: Bump wget to 1.12 and migrate to Makefile.autotools.in
 	#1129: Bump memstat to 0.8 and migrate to Makefile.package.in
 	#1273: BR2_INET_IPV6 does not enable IPv6 in pppd
+	#1303: Add librsync package
 	#1345: Bump pppd to 2.4.5 and convert to Makefile.autotools.in
 
 2010.02, Release February 26th, 2010:

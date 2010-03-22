@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBRSYNC
+	bool "librsync"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_POPT
+	help
+	  librsync implements the rolling-checksum algorithm of
+	  remote file synchronization that was popularized by the
+	  rsync utility and is used in rproxy.
+
+	  http://sourceforge.net/projects/librsync/
