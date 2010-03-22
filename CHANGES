@@ -7,9 +7,9 @@
 
 	New packages: librsync
 
-	Updated/fixed packages: busybox, dosfstools, e2fsprogs, iperf,
-	libglib2, libpng, mdadm, memstat, mtd-utils, pppd, setserial,
-	squashfs, wget
+	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
+	freetype, iperf, libglib2, libpng, mdadm, memstat, mtd-utils,
+	pppd, setserial, squashfs, wget
 
 	Issues resolved (http://bugs.uclibc.org):
 
