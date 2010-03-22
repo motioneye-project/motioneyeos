@@ -9,8 +9,6 @@ GST_PLUGINS_BAD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST_PLUGINS_BAD_LIBTOOL_PATCH = NO
 
 GST_PLUGINS_BAD_CONF_OPT = \
-		$(DISABLE_NLS) \
-		$(DISABLE_LARGEFILE) \
 		--disable-examples
 
 GST_PLUGINS_BAD_DEPENDENCIES = gst-plugins-base gstreamer liboil

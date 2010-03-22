@@ -21,9 +21,7 @@ E2FSPROGS_CONF_OPT = \
 	--disable-resizer \
 	--enable-fsck \
 	--disable-e2initrd-helper \
-	--disable-testio-debug \
-	$(DISABLE_NLS) \
-	$(DISABLE_LARGEFILE)
+	--disable-testio-debug
 
 E2FSPROGS_MAKE_OPT = \
 	LDCONFIG=true

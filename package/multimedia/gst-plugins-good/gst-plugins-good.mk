@@ -9,7 +9,6 @@ GST_PLUGINS_GOOD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-good
 GST_PLUGINS_GOOD_LIBTOOL_PATCH = NO
 
 GST_PLUGINS_GOOD_CONF_OPT = \
-		$(DISABLE_NLS) \
 		--disable-debug \
 		--disable-examples \
 		--disable-directsound \

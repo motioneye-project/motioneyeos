@@ -12,8 +12,7 @@ PHP_INSTALL_STAGING_OPT = INSTALL_ROOT=$(STAGING_DIR) install
 PHP_INSTALL_TARGET_OPT = INSTALL_ROOT=$(TARGET_DIR) install
 PHP_LIBTOOL_PATCH = NO
 PHP_DEPENDENCIES =
-PHP_CONF_OPT =	$(DISABLE_IPV6) \
-		--mandir=/usr/share/man \
+PHP_CONF_OPT =  --mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		--disable-all \
 		--without-pear \

@@ -12,8 +12,7 @@ LXDOOM_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 LXDOOM_CONF_OPT = --target=$(GNU_TARGET_NAME) --host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) --prefix=/usr \
-		--includedir=/usr/include --enable-shared \
-		$(DISABLE_NLS)
+		--includedir=/usr/include --enable-shared
 
 LXDOOM_DEPENDENCIES = xserver_xorg-server
 

@@ -18,9 +18,9 @@ LIBXML2_USE_CONFIG_CACHE = NO
 endif
 
 LIBXML2_CONF_OPT = --with-gnu-ld --enable-shared \
-		--enable-static $(DISABLE_IPV6) \
+		--enable-static \
 		--without-debugging --without-python \
-		--without-threads 
+		--without-threads
 
 HOST_LIBXML2_DEPENDENCIES = host-pkg-config
 

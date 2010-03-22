@@ -15,8 +15,6 @@ GST_PLUGINS_BASE_LIBTOOL_PATCH = NO
 GST_PLUGINS_BASE_CONF_ENV = FT2_CONFIG=/bin/false
 
 GST_PLUGINS_BASE_CONF_OPT = \
-		$(DISABLE_NLS) \
-		$(DISABLE_LARGEFILE) \
 		--disable-examples \
 		--disable-x \
 		--disable-xvideo \

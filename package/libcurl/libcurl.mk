@@ -7,8 +7,7 @@ LIBCURL_VERSION = 7.19.2
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.bz2
 LIBCURL_SITE = http://curl.haxx.se/download/
 LIBCURL_INSTALL_STAGING = YES
-LIBCURL_CONF_OPT = --disable-verbose --disable-manual --enable-hidden-symbols \
-		   $(DISABLE_IPV6)
+LIBCURL_CONF_OPT = --disable-verbose --disable-manual --enable-hidden-symbols
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBCURL_DEPENDENCIES += openssl

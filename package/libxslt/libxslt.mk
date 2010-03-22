@@ -18,7 +18,6 @@ endif
 
 LIBXSLT_CONF_OPT = --with-gnu-ld --enable-shared \
 		--enable-static $(LIBXSLT_XTRA_CONF_OPT) \
-		$(DISABLE_NLS) $(DISABLE_IPV6) \
 		--without-debugging --without-python \
 		--without-threads \
 		--with-libxml-prefix=$(STAGING_DIR)/usr/

@@ -6,7 +6,6 @@
 
 WGET_VERSION = 1.12
 WGET_SITE = $(BR2_GNU_MIRROR)/wget
-WGET_CONF_OPT = $(DISABLE_IPV6)
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	WGET_CONF_OPT += --with-ssl --with-libssl-prefix=$(STAGING_DIR)
