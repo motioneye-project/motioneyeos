@@ -1,30 +1,35 @@
 #############################################################
 #
-# build makedevs to run on the build system, in order to create
-# device nodes and whatnot for the target device, in conjunction
-# with fakeroot.
+# makedevs
 #
 #############################################################
-MAKEDEVS_DIR=$(BUILD_DIR)/makedevs-host
 
-$(MAKEDEVS_DIR)/makedevs.c: target/makedevs/makedevs.c
+MAKEDEVS_DIR=$(BUILD_DIR)/makedevs
+
+$(MAKEDEVS_DIR)/makedevs.c:
 	rm -rf $(MAKEDEVS_DIR)
 	mkdir $(MAKEDEVS_DIR)
-	cp target/makedevs/makedevs.c $(MAKEDEVS_DIR)
+	cp package/makedevs/makedevs.c $(MAKEDEVS_DIR)
 
 $(MAKEDEVS_DIR)/makedevs: $(MAKEDEVS_DIR)/makedevs.c
-	$(HOSTCC) -Wall -Werror -O2 $(MAKEDEVS_DIR)/makedevs.c -o $@
+	$(CC) -Wall -Werror -O2 $(MAKEDEVS_DIR)/makedevs.c -o $@
 
-$(HOST_DIR)/usr/bin/makedevs: $(MAKEDEVS_DIR)/makedevs
+$(TARGET_DIR)/usr/bin/makedevs: $(MAKEDEVS_DIR)/makedevs
 	$(INSTALL) -m 755 $^ $@
 
-makedevs: $(HOST_DIR)/usr/bin/makedevs
+makedevs: $(TARGET_DIR)/usr/bin/makedevs
 
-makedevs-source:
+HOST_MAKEDEVS_DIR=$(BUILD_DIR)/host-makedevs
 
-makedevs-clean:
-	rm -rf $(MAKEDEVS_DIR)/makedevs
+$(HOST_MAKEDEVS_DIR)/makedevs.c:
+	rm -rf $(HOST_MAKEDEVS_DIR)
+	mkdir $(HOST_MAKEDEVS_DIR)
+	cp package/makedevs/makedevs.c $(HOST_MAKEDEVS_DIR)
 
-makedevs-dirclean:
-	rm -rf $(MAKEDEVS_DIR)
+$(HOST_MAKEDEVS_DIR)/makedevs: $(HOST_MAKEDEVS_DIR)/makedevs.c
+	$(CC) -Wall -Werror -O2 $(HOST_MAKEDEVS_DIR)/makedevs.c -o $@
 
+$(HOST_DIR)/usr/bin/makedevs: $(HOST_MAKEDEVS_DIR)/makedevs
+	$(INSTALL) -m 755 $^ $@
+
+host-makedevs: $(HOST_DIR)/usr/bin/makedevs
