@@ -1,0 +1,49 @@
+[PATCH]  replace susv3 legacy functions with modern equivalents
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/ESIVarState.cc     |    6 +++---
+ src/HttpHeaderTools.cc |    2 +-
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+Index: squid-3.0.STABLE21/src/ESIVarState.cc
+===================================================================
+--- squid-3.0.STABLE21.orig/src/ESIVarState.cc
++++ squid-3.0.STABLE21/src/ESIVarState.cc
+@@ -207,7 +207,7 @@ ESIVariableUserAgent::getProductVersion 
+ {
+     char const *t;
+     int len;
+-    t = index (s,'/');
++    t = strchr (s,'/');
+ 
+     if (!t || !*(++t))
+         return xstrdup ("");
+@@ -382,12 +382,12 @@ ESIVariableUserAgent::ESIVariableUserAge
+ 
+         if ((t = strstr (s, "MSIE"))) {
+             browser = ESI_BROWSER_MSIE;
+-            t = index (t, ' ');
++            t = strchr (t, ' ');
+ 
+             if (!t)
+                 browserversion = xstrdup ("");
+             else {
+-                t1 = index (t, ';');
++                t1 = strchr (t, ';');
+ 
+                 if (!t1)
+                     browserversion = xstrdup (t + 1);
+Index: squid-3.0.STABLE21/src/HttpHeaderTools.cc
+===================================================================
+--- squid-3.0.STABLE21.orig/src/HttpHeaderTools.cc
++++ squid-3.0.STABLE21/src/HttpHeaderTools.cc
+@@ -357,7 +357,7 @@ httpHeaderParseQuotedString (const char 
+     pos = start + 1;
+ 
+     while (1) {
+-        if (!(end = index (pos,'"'))) {
++        if (!(end = strchr (pos,'"'))) {
+             debugs(66, 2, "failed to parse a quoted-string header field near '" << start << "'");
+             return 0;
+         }
