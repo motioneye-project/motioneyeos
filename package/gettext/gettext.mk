@@ -29,7 +29,7 @@ $(GETTEXT_DIR)/.unpacked: $(DL_DIR)/$(GETTEXT_SOURCE)
 	$(CONFIG_UPDATE) $(GETTEXT_DIR)/build-aux
 	touch $@
 
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
+ifneq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 IGNORE_EXTERNAL_GETTEXT:=--with-included-gettext
 endif
 

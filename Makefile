@@ -199,7 +199,7 @@ PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 ##############################################################
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 BASE_TARGETS:=uclibc-configured binutils cross_compiler uclibc-target-utils kernel-headers
-else
+else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 BASE_TARGETS:=uclibc
 endif
 TARGETS:=
@@ -301,7 +301,7 @@ include toolchain/kernel-headers/kernel-headers.mk
 include toolchain/mklibs/mklibs.mk
 include toolchain/sstrip/sstrip.mk
 include toolchain/uClibc/uclibc.mk
-else
+else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 include toolchain/*/*.mk
 endif
 
@@ -363,7 +363,7 @@ $(STAGING_DIR):
 ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 	@mkdir -p $(STAGING_DIR)/usr/lib
 else
-ifneq ($(BR2_TOOLCHAIN_EXTERNAL),y)
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 	@ln -snf . $(STAGING_DIR)/usr
 	@mkdir -p $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)
 	@ln -snf ../lib $(STAGING_DIR)/usr/lib
