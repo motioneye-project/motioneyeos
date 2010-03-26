@@ -9,8 +9,8 @@
 
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
 	freetype, iperf, less, libgcrypt, libglib2, libpng, libxml2,
-	mdadm, memstat, mtd-utils, nano, php, pppd, setserial,
-	squashfs, wget, xlib_libXfont
+	mdadm, memstat, mtd-utils, nano, openssl, php, pppd,
+	setserial, squashfs, wget, xlib_libXfont
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -27,6 +27,7 @@
 	#1303: Add librsync package
 	#1327: mtd-utils compile failure due to lack of --sysroot in CFLAGS
 	#1345: Bump pppd to 2.4.5 and convert to Makefile.autotools.in
+	#1411: [SECURITY] Update openssl package to 0.9.8n
 	#1429: [SECURITY] Update php to 5.2.13
 	#1441: Add binutils 2.20.1
 	#1447: Package installation on target with debug symbols is broken
