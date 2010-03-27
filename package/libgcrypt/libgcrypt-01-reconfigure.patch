@@ -1,17 +1,27 @@
---- libgcrypt-1.2.4.oorig/configure	2007-09-19 13:40:48.000000000 +0200
-+++ libgcrypt-1.2.4/configure	2007-09-19 13:41:44.000000000 +0200
-@@ -27370,12 +27370,13 @@
+diff --git a/configure b/configure
+index 70a6d50..8f55d95 100755
+--- a/configure
++++ b/configure
+@@ -22306,14 +22306,15 @@ case "${host}" in
      i386-emx-os2 | i345686-pc-os2*emx | i386-pc-msdosdjgpp)
          ac_cv_sys_symbol_underscore=yes
          ;;
 -    *)
+-      if test "$cross_compiling" = yes; then
+-        if test "x$ac_cv_sys_symbol_underscore" = x ; then
+-           ac_cv_sys_symbol_underscore=yes
 +    *)if test -z "$ac_cv_sys_symbol_underscore";then
-       if test "$cross_compiling" = yes; then
-          ac_cv_sys_symbol_underscore=yes
-       else
-          tmp_do_check="yes"
-       fi
-+      fi
++        if test "$cross_compiling" = yes; then
++            if test "x$ac_cv_sys_symbol_underscore" = x ; then
++                ac_cv_sys_symbol_underscore=yes
++            fi
++        else
++            tmp_do_check="yes"
++        fi
+         fi
+-      else
+-         tmp_do_check="yes"
+-      fi
         ;;
  esac
  if test "$tmp_do_check" = "yes"; then
