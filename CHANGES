@@ -9,7 +9,8 @@
 
 	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
 	freetype, iperf, less, libglib2, libpng, mdadm, memstat,
-	mtd-utils, nano, pppd, setserial, squashfs, wget
+	mtd-utils, nano, pppd, setserial, squashfs, wget,
+	xlib_libXfont
 
 	Issues resolved (http://bugs.uclibc.org):
 
