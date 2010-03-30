@@ -6,27 +6,10 @@
 BINUTILS_VERSION:=$(call qstrip,$(BR2_BINUTILS_VERSION))
 
 EXTRA_BINUTILS_CONFIG_OPTIONS=$(call qstrip,$(BR2_EXTRA_BINUTILS_CONFIG_OPTIONS))
-BINUTILS_SITE:=$(BR2_KERNEL_MIRROR)/linux/devel/binutils
-ifeq ($(BINUTILS_VERSION),2.20.1)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-endif
-ifeq ($(BINUTILS_VERSION),2.20)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-endif
-ifeq ($(BINUTILS_VERSION),2.19.1)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-endif
-ifeq ($(BINUTILS_VERSION),2.19)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-endif
-ifeq ($(BINUTILS_VERSION),2.18)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-endif
-ifeq ($(BINUTILS_VERSION),2.17)
-BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
-endif
 ifeq ($(findstring avr32,$(BINUTILS_VERSION)),avr32)
 BINUTILS_SITE:=ftp://www.at91.com/pub/buildroot/
+else
+BINUTILS_SITE:=$(BR2_GNU_MIRROR)/binutils/
 endif
 
 # We do not rely on the host's gmp/mpfr but use a known working one
