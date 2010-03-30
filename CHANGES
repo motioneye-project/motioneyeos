@@ -27,6 +27,7 @@
 	#1303: Add librsync package
 	#1345: Bump pppd to 2.4.5 and convert to Makefile.autotools.in
 	#1441: Add binutils 2.20.1
+	#1447: Package installation on target with debug symbols is broken
 
 2010.02, Release February 26th, 2010:
 
