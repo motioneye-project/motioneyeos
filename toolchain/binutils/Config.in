@@ -9,12 +9,12 @@ choice
 	  Select the version of binutils you wish to use.
 
 	config BR2_BINUTILS_VERSION_2_17
-		depends on !BR2_nios2 && !BR2_avr32
+		depends on !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "binutils 2.17"
 
 	config BR2_BINUTILS_VERSION_2_18
-		depends on !BR2_nios2 && !BR2_avr32
+		depends on !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "binutils 2.18"
 
@@ -23,29 +23,28 @@ choice
 	       bool "binutils 2.18-avr32-1.0.1"
 
 	config BR2_BINUTILS_VERSION_2_19
-		depends on !BR2_avr32 && !BR2_nios2
+		depends on !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "binutils 2.19"
 
 	config BR2_BINUTILS_VERSION_2_19_1
-		depends on !BR2_avr32 && !BR2_nios2
+		depends on !BR2_avr32
 		depends on BR2_DEPRECATED
 		bool "binutils 2.19.1"
 
 	config BR2_BINUTILS_VERSION_2_20
-		depends on !BR2_avr32 && !BR2_nios2
+		depends on !BR2_avr32
 		depends on BR2_DEPRECATED || BR2_RECENT
 		bool "binutils 2.20"
 
 	config BR2_BINUTILS_VERSION_2_20_1
-		depends on !BR2_avr32 && !BR2_nios2
+		depends on !BR2_avr32
 		bool "binutils 2.20.1"
 
 endchoice
 
 config BR2_BINUTILS_VERSION
 	string
-	default "2.15"		if BR2_nios2
 	default "2.17"		if BR2_BINUTILS_VERSION_2_17
 	default "2.18"		if BR2_BINUTILS_VERSION_2_18
 	default "2.18-avr32-1.0.1" if BR2_BINUTILS_VERSION_2_18_AVR32_1_0_1

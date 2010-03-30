@@ -38,7 +38,6 @@ UCLIBC_TARGET_ARCH:=$(shell $(SHELL) -c "echo $(ARCH) | sed \
 		-e 's/mips.*/mips/' \
 		-e 's/mipsel.*/mips/' \
 		-e 's/cris.*/cris/' \
-		-e 's/nios2.*/nios2/' \
 		-e 's/xtensa.*/xtensa/' \
 ")
 # just handle the ones that can be big or little
@@ -191,12 +190,6 @@ endif
 ifeq ($(BR2_mips_64),y)
 	$(SED) 's/.*\(CONFIG_MIPS_ISA_MIPS64\).*/\1=y/' $(UCLIBC_DIR)/.oldconfig
 endif
-endif
-ifeq ($(UCLIBC_TARGET_ARCH),nios2)
-	/bin/echo "# UCLIBC_FORMAT_FDPIC_ELF is not set" >> $(UCLIBC_DIR)/.oldconfig
-	/bin/echo "UCLIBC_FORMAT_FLAT=y" >> $(UCLIBC_DIR)/.oldconfig
-	/bin/echo "# UCLIBC_FORMAT_FLAT_SEP_DATA is not set" >> $(UCLIBC_DIR)/.oldconfig
-	/bin/echo "# UCLIBC_FORMAT_SHARED_FLAT is not set" >> $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(UCLIBC_TARGET_ARCH),sh)
 	/bin/echo "# CONFIG_SH2A is not set" >> $(UCLIBC_DIR)/.oldconfig

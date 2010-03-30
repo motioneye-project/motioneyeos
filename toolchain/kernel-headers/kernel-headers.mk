@@ -19,7 +19,7 @@ KERNEL_ARCH:=$(shell $(SHELL) -c "echo \"$(ARCH)\" | sed -e \"s/-.*//\" \
 	-e s/parisc64/parisc/ \
 	-e s/powerpc64/powerpc/ \
 	-e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
-	-e s/sh.*/sh/ -e s/nios2.*/nios2nommu/")
+	-e s/sh.*/sh/")
 
 include toolchain/kernel-headers/kernel-headers-new.makefile
 

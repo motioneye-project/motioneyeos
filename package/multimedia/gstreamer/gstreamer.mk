@@ -15,9 +15,6 @@ GSTREAMER_LIBTOOL_PATCH = NO
 ifeq ($(BR2_avr32),y)
 GSTREAMER_CONF_ENV = as_cv_unaligned_access=no
 endif
-ifeq ($(BR2_nios2),y)
-GSTREAMER_CONF_ENV = as_cv_unaligned_access=no
-endif
 
 GSTREAMER_CONF_OPT = \
 		--disable-examples \

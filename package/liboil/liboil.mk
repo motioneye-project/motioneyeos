@@ -19,9 +19,6 @@ endif
 ifeq ($(BR2_cris),y)
 LIBOIL_CONF_ENV = as_cv_unaligned_access=yes
 endif
-ifeq ($(BR2_nios2),y)
-LIBOIL_CONF_ENV = as_cv_unaligned_access=no
-endif
 ifeq ($(BR2_x86_64),y)
 LIBOIL_CONF_ENV = as_cv_unaligned_access=yes
 endif
