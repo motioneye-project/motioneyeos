@@ -132,7 +132,7 @@ config BR2_GNU_TARGET_SUFFIX
 
 config BR2_JLEVEL
 	int "Number of jobs to run simultaneously"
-	default "1"
+	default "2"
 	help
 	  Number of jobs to run simultaneously
 
