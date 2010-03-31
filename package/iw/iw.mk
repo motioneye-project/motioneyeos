@@ -7,7 +7,7 @@
 IW_VERSION = 0.9.19
 IW_SOURCE = iw-$(IW_VERSION).tar.bz2
 IW_SITE = http://wireless.kernel.org/download/iw
-IW_DEPENDENCIES = libnl
+IW_DEPENDENCIES = host-pkg-config libnl
 IW_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 IW_CONFIG = $(IW_DIR)/.config
 IW_MAKE_ENV = PKG_CONFIG_PATH="$(STAGING_DIR)/usr/lib/pkgconfig" \
