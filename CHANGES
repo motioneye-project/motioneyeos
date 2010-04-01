@@ -13,9 +13,10 @@
 
 	Updated/fixed packages: busybox, dnsmasq, dosfstools,
 	e2fsprogs, fbv, freetype, iperf, iptables, iw, less, libdrm,
-	libgcrypt, libglib2, libpng, libxml2, matchbox, mdadm, memstat,
-	mtd-utils, nano, openssl, php, pppd, qt, radvd, setserial,
-	squashfs, usb_modeswith, wget, xlib_libX11, xlib_libXfont
+	libgcrypt, libglib2, libpng, libxml2, matchbox, mdadm,
+	memstat, mtd-utils, nano, openssl, php, pixman, pppd, qt,
+	radvd, setserial, squashfs, usb_modeswith, wget, xlib_libX11,
+	xlib_libXfont
 
 	Issues resolved (http://bugs.uclibc.org):
 
