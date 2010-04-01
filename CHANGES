@@ -16,8 +16,8 @@
 	libgcrypt, libglib2, libpng, libxml2, matchbox, mdadm,
 	memstat, mesa3d, mtd-utils, nano, openssl, php, pixman, pppd,
 	pthread-stubs, qt, radvd, setserial, squashfs, usb_modeswith,
-	wget, xlib_libX11, xlib_libXfont, xproto_dri2proto,
-	xproto_fontcacheproto, xproto_xf86miscproto
+	wget, xlib_libX11, xlib_libXfont, xlib_libpciaccess,
+	xproto_dri2proto, xproto_fontcacheproto, xproto_xf86miscproto
 
 	Issues resolved (http://bugs.uclibc.org):
 

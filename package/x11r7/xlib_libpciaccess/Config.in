@@ -2,7 +2,6 @@ config BR2_PACKAGE_XLIB_LIBPCIACCESS
 	bool "libpciaccess"
 	depends on BR2_LARGEFILE
 	help
-	  libpciaccess 0.10.9
 	  X.Org libpciaccess
 
 comment "libpciaccess requires a toolchain with LARGEFILE support"
