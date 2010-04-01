@@ -5,5 +5,4 @@ config BR2_PACKAGE_XLIB_LIBXXF86MISC
 	select BR2_PACKAGE_XPROTO_XF86MISCPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXxf86misc 1.0.1
 	  X.Org Xxf86misc library

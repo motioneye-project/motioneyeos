@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XLIB_LIBXXF86MISC_VERSION = 1.0.1
+XLIB_LIBXXF86MISC_VERSION = 1.0.2
 XLIB_LIBXXF86MISC_SOURCE = libXxf86misc-$(XLIB_LIBXXF86MISC_VERSION).tar.bz2
 XLIB_LIBXXF86MISC_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBXXF86MISC_AUTORECONF = NO
