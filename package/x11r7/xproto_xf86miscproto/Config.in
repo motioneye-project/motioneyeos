@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XPROTO_XF86MISCPROTO
 	bool "xf86miscproto"
 	help
-	  xf86miscproto 0.9.2
 	  X.Org XF86Misc protocol headers
