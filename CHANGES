@@ -7,8 +7,8 @@
 
 	New packages: librsync, lmbench, netperf, squid
 
-	Updated/fixed packages: busybox, dosfstools, e2fsprogs,
-	freetype, iperf, iptables, less, libgcrypt, libglib2, libpng,
+	Updated/fixed packages: busybox, dnsmasq, dosfstools, e2fsprogs,
+	freetype, iperf, iptables, iw, less, libgcrypt, libglib2, libpng,
 	libxml2, mdadm, memstat, mtd-utils, nano, openssl, php, pppd,
 	setserial, squashfs, wget, xlib_libX11, xlib_libXfont
 
@@ -34,6 +34,7 @@
 	#1429: [SECURITY] Update php to 5.2.13
 	#1441: Add binutils 2.20.1
 	#1447: Package installation on target with debug symbols is broken
+	#1459: Misc QA fixes
 
 2010.02, Release February 26th, 2010:
 
