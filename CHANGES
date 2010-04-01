@@ -11,7 +11,7 @@
 
 	Updated/fixed packages: busybox, dnsmasq, dosfstools,
 	e2fsprogs, freetype, iperf, iptables, iw, less, libdrm,
-	libgcrypt, libglib2, libpng, libxml2, mdadm, memstat,
+	libgcrypt, libglib2, libpng, libxml2, matchbox, mdadm, memstat,
 	mtd-utils, nano, openssl, php, pppd, qt, radvd, setserial,
 	squashfs, wget, xlib_libX11, xlib_libXfont
 

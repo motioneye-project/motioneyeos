@@ -2,19 +2,12 @@ config BR2_PACKAGE_MATCHBOX
 	bool "MatchBox Window Manager"
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXCURSOR
 	help
 	  http://projects.o-hand.com/matchbox
-
-config BR2_PACKAGE_MATCHBOX_SNOTIFY
-	bool "Enable Matchbox Startup Notification"
-	depends on BR2_PACKAGE_MATCHBOX
-	select BR2_PACKAGE_XAPP_XSM
-	help
-	  Compiles
-	  http://www.freedesktop.org/Software/startup-notification and
-	  its support in MatchBox.
 
 config BR2_PACKAGE_MATCHBOX_PANEL
 	bool "Matchbox Panel"
