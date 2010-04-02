@@ -91,6 +91,10 @@ source "package/directfb/Config.in"
 source "package/directfb-examples/Config.in"
 source "package/divine/Config.in"
 source "package/fbdump/Config.in"
+if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+source "package/fbset/Config.in"
+endif
+source "package/fbv/Config.in"
 source "package/imagemagick/Config.in"
 source "package/linux-fusion/Config.in"
 source "package/lite/Config.in"
@@ -102,11 +106,6 @@ source "package/sdl_sound/Config.in"
 source "package/sdl_net/Config.in"
 source "package/sdl_ttf/Config.in"
 source "package/sdl_gfx/Config.in"
-
-comment "busybox graphic applications"
-comment "--> May be broken in busybox"
-source "package/fbv/Config.in"
-source "package/fbset/Config.in"
 
 comment "other GUIs"
 source "package/qt/Config.in"
