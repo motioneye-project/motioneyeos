@@ -6,3 +6,6 @@ config BR2_PACKAGE_FINDUTILS
 	  common 'find', 'xargs', 'locate', and 'updatedb' binaries.
 
 	  http://www.gnu.org/software/findutils/findutils.html
+
+comment "findutils requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
