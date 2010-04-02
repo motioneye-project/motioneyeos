@@ -16,4 +16,11 @@ config BR2_PACKAGE_QT_GFX_VNC
 config BR2_PACKAGE_QT_GFX_MULTISCREEN
 	bool "multiscreen"
 
+comment "directfb Qt driver not available (need directfb)"
+	depends on !BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_QT_GFX_DIRECTFB
+	depends on BR2_PACKAGE_DIRECTFB
+	bool "directFB"
+
 endmenu

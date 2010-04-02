@@ -1,0 +1,27 @@
+From http://bugreports.qt.nokia.com/browse/QTBUG-8365
+
+Starting a QtEmbedded-4.6.2 application linked against uClibc 0.9.30.1 results
+in an immediate segmentation fault.
+This is due to an incompatibility of the uClibc with the standard libc about
+the "realpath" function. The man of the function clearly specifies that
+"if resolved path (the second argument) is NULL, then realpath uses malloc to
+allocate a buffer ...". However, uClibc doesn't support this functionality and
+issues a warning at compile-time when the function is called with a NULL
+argument. 
+---
+diff -aurp -x '*.o' qt-everywhere-opensource-src-4.6.2-old/src/corelib/io/qfsfileengine.cpp qt-everywhere-opensource-src-4.6.2/src/corelib/io/qfsfileengine.cpp
+--- qt-everywhere-opensource-src-4.6.2-old/src/corelib/io/qfsfileengine.cpp	2010-02-11 16:55:23.000000000 +0100
++++ qt-everywhere-opensource-src-4.6.2/src/corelib/io/qfsfileengine.cpp	2010-02-19 14:57:06.000000000 +0100
+@@ -145,10 +145,9 @@ QString QFSFileEnginePrivate::canonicali
+ #endif
+     // Mac OS X 10.5.x doesn't support the realpath(X,0) extenstion we use here.
+ #if defined(Q_OS_LINUX) || defined(Q_OS_SYMBIAN)
+-    char *ret = realpath(path.toLocal8Bit().constData(), (char*)0);
+-    if (ret) {
++    char ret[PATH_MAX];
++    if (realpath(path.toLocal8Bit().constData(), ret)) {
+         QString canonicalPath = QDir::cleanPath(QString::fromLocal8Bit(ret));
+-        free(ret);
+         return canonicalPath;
+     }
+ #endif

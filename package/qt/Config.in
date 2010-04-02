@@ -270,6 +270,22 @@ config BR2_PACKAGE_QT_PHONON
 	  formats can be configured at the GStreamer package.
 	  If unsure, say n.
 
+config BR2_PACKAGE_QT_PHONON_BACKEND
+	bool "Phonon Module Backend"
+	depends on BR2_PACKAGE_QT_PHONON
+	help
+	  Build the platform Phonon plugin.
+	  If unsure, say n.
+
+comment "Qt DBbus module not available (need dbus)"
+	depends on !BR2_PACKAGE_DBUS
+
+config BR2_PACKAGE_QT_DBUS
+	bool "DBus Module"
+	depends on BR2_PACKAGE_DBUS
+	help
+	  Build the Qt DBus module.
+
 config BR2_PACKAGE_QT_XML
 	bool "XML Module"
 	default y
@@ -282,6 +298,17 @@ config BR2_PACKAGE_QT_XMLPATTERNS
 	help
 	  Build QtXmlPatterns module.
 	  If unsure, say n
+
+config BR2_PACKAGE_QT_MULTIMEDIA
+	bool "Multimedia Module"
+	help
+	  Build QtMultimedia module.
+
+config BR2_PACKAGE_QT_AUDIO_BACKEND
+	bool "QtMultimedia Audio backend"
+	depends on BR2_PACKAGE_QT_MULTIMEDIA
+	help
+	  Build the platform audio backend into QtMultimedia if available
 
 config BR2_PACKAGE_QT_SVG
 	bool "SVG Module"
@@ -299,9 +326,16 @@ config BR2_PACKAGE_QT_NETWORK
 config BR2_PACKAGE_QT_WEBKIT
 	bool "WebKit Module"
 	depends on BR2_PACKAGE_QT_NETWORK
+	select BR2_PACKAGE_QT_JAVASCRIPTCORE
 	help
 	  Build the WebKit module.
 	  If unsure, say n.
+
+config BR2_PACKAGE_QT_JAVASCRIPTCORE
+	bool "JavaScriptCore JIT compiler"
+	help
+	  Build the JavaScriptCore JIT compiler
+	  If unsure, say y
 
 config BR2_PACKAGE_QT_STL
 	bool "STL support"
@@ -322,6 +356,7 @@ config BR2_PACKAGE_QT_OPENSSL
 config BR2_PACKAGE_QT_SCRIPT
 	bool "Script Module"
 	default y
+	select BR2_PACKAGE_QT_JAVASCRIPTCORE
 	help
 	  Build the Qt Script module.
 	  if unsure, say y.

@@ -1,6 +1,6 @@
 ######################################################################
 #
-# Qt Embedded for Linux 4.5
+# Qt Embedded for Linux 4.6
 # http://www.qtsoftware.com/
 #
 # This makefile was originally composed by Thomas Lundquist <thomasez@zelow.no>
@@ -12,11 +12,11 @@
 #
 ######################################################################
 
-QT_VERSION:=4.5.3
-QT_SOURCE:=qt-embedded-linux-opensource-src-$(QT_VERSION).tar.gz
+QT_VERSION:=4.6.2
+QT_SOURCE:=qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE:=http://get.qt.nokia.com/qt/source
 QT_CAT:=$(ZCAT)
-QT_TARGET_DIR:=$(BUILD_DIR)/qt-embedded-linux-opensource-src-$(QT_VERSION)
+QT_TARGET_DIR:=$(BUILD_DIR)/qt-everywhere-opensource-src-$(QT_VERSION)
 
 QT_CONFIGURE:=#empty
 
@@ -113,6 +113,12 @@ QT_CONFIGURE += -qt-gfx-multiscreen
 else
 QT_CONFIGURE += -no-gfx-multiscreen
 endif
+ifeq ($(BR2_PACKAGE_QT_GFX_DIRECTFB),y)
+QT_CONFIGURE += -qt-gfx-directfb
+else
+QT_CONFIGURE += -no-gfx-directfb
+endif
+
 
 ### Mouse drivers
 ifeq ($(BR2_PACKAGE_QT_MOUSE_PC),y)
@@ -120,25 +126,15 @@ QT_CONFIGURE += -qt-mouse-pc
 else
 QT_CONFIGURE += -no-mouse-pc
 endif
-ifeq ($(BR2_PACKAGE_QT_MOUSE_BUS),y)
-QT_CONFIGURE += -qt-mouse-bus
-else
-QT_CONFIGURE += -no-mouse-bus
-endif
 ifeq ($(BR2_PACKAGE_QT_MOUSE_LINUXTP),y)
 QT_CONFIGURE += -qt-mouse-linuxtp
 else
 QT_CONFIGURE += -no-mouse-linuxtp
 endif
-ifeq ($(BR2_PACKAGE_QT_MOUSE_YOPY),y)
-QT_CONFIGURE += -qt-mouse-yopy
+ifeq ($(BR2_PACKAGE_QT_MOUSE_LINUXINPUT),y)
+QT_CONFIGURE += -qt-mouse-linuxinput
 else
-QT_CONFIGURE += -no-mouse-yopy
-endif
-ifeq ($(BR2_PACKAGE_QT_MOUSE_VR41XX),y)
-QT_CONFIGURE += -qt-mouse-vr41xx
-else
-QT_CONFIGURE += -no-mouse-vr41xx
+QT_CONFIGURE += -no-mouse-linuxinput
 endif
 ifeq ($(BR2_PACKAGE_QT_MOUSE_TSLIB),y)
 QT_CONFIGURE += -qt-mouse-tslib
@@ -158,25 +154,10 @@ QT_CONFIGURE += -qt-kbd-tty
 else
 QT_CONFIGURE += -no-kbd-tty
 endif
-ifeq ($(BR2_PACKAGE_QT_KEYBOARD_USB),y)
-QT_CONFIGURE += -qt-kbd-usb
+ifeq ($(BR2_PACKAGE_QT_KEYBOARD_LINUXINPUT),y)
+QT_CONFIGURE += -qt-kbd-linuxinput
 else
-QT_CONFIGURE += -no-kbd-usb
-endif
-ifeq ($(BR2_PACKAGE_QT_KEYBOARD_SL5000),y)
-QT_CONFIGURE += -qt-kbd-sl5000
-else
-QT_CONFIGURE += -no-kbd-sl5000
-endif
-ifeq ($(BR2_PACKAGE_QT_KEYBOARD_YOPY),y)
-QT_CONFIGURE += -qt-kbd-yopy
-else
-QT_CONFIGURE += -no-kbd-yopy
-endif
-ifeq ($(BR2_PACKAGE_QT_KEYBOARD_VR41XX),y)
-QT_CONFIGURE += -qt-kbd-vr41xx
-else
-QT_CONFIGURE += -no-kbd-vr41xx
+QT_CONFIGURE += -no-kbd-linuxinput
 endif
 ifeq ($(BR2_PACKAGE_QT_KEYBOARD_QVFB),y)
 QT_CONFIGURE += -qt-kbd-qvfb
@@ -320,11 +301,29 @@ else
 QT_CONFIGURE+= -no-xmlpatterns
 endif
 
+ifeq ($(BR2_PACKAGE_QT_MULTIMEDIA),y)
+QT_CONFIGURE+= -multimedia
+else
+QT_CONFIGURE+= -no-multimedia
+endif
+
+ifeq ($(BR2_PACKAGE_QT_AUDIO_BACKEND),y)
+QT_CONFIGURE+= -audio-backend
+else
+QT_CONFIGURE+= -no-audio-backend
+endif
+
 ifeq ($(BR2_PACKAGE_QT_PHONON),y)
 QT_CONFIGURE+= -phonon
 QT_DEP_LIBS+=gstreamer gst-plugins-base
 else
 QT_CONFIGURE+= -no-phonon
+endif
+
+ifeq ($(BR2_PACKAGE_QT_PHONON_BACKEND),y)
+QT_CONFIGURE+= -phonon-backend
+else
+QT_CONFIGURE+= -no-phonon-backend
 endif
 
 ifeq ($(BR2_PACKAGE_QT_SVG),y)
@@ -337,6 +336,24 @@ ifeq ($(BR2_PACKAGE_QT_WEBKIT),y)
 QT_CONFIGURE+= -webkit
 else
 QT_CONFIGURE+= -no-webkit
+endif
+
+ifeq ($(BR2_PACKAGE_QT_SCRIPT),y)
+QT_CONFIGURE+= -script
+else
+QT_CONFIGURE+= -no-script
+endif
+
+ifeq ($(BR2_PACKAGE_QT_SCRIPTTOOLS),y)
+QT_CONFIGURE+= -scripttools
+else
+QT_CONFIGURE+= -no-scripttools
+endif
+
+ifeq ($(BR2_PACKAGE_QT_JAVASCRIPTCORE),y)
+QT_CONFIGURE+= -javascript-jit
+else
+QT_CONFIGURE+= -no-javascript-jit
 endif
 
 ifeq ($(BR2_PACKAGE_QT_STL),y)
@@ -384,6 +401,10 @@ QT_LIBS+= qt-webkit
 endif
 ifeq ($(BR2_PACKAGE_QT_XML),y)
 QT_LIBS+= qt-xml
+endif
+ifeq ($(BR2_PACKAGE_QT_DBUS),y)
+QT_LIBS+= qt-dbus
+QT_DEP_LIBS+= dbus
 endif
 ifeq ($(BR2_PACKAGE_QT_XMLPATTERNS),y)
 QT_LIBS+= qt-xmlpatterns
@@ -477,6 +498,9 @@ endif
 		-embedded $(BR2_PACKAGE_QT_EMB_PLATFORM) \
 		$(QT_QCONFIG_COMMAND) \
 		$(QT_CONFIGURE) \
+		-no-gfx-qnx \
+		-no-kbd-qnx \
+		-no-mouse-qnx \
 		-no-xinerama \
 		-no-cups \
 		-no-nis \
@@ -548,6 +572,11 @@ endif
 qt-xmlpatterns: $(STAGING_DIR)/usr/lib/libQtCore.la
 ifeq ($(BR2_PACKAGE_QT_SHARED),y)
 	cp -dpf $(STAGING_DIR)/usr/lib/libQtXmlPatterns.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qt-dbus: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QT_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtDBus.so.* $(TARGET_DIR)/usr/lib/
 endif
 
 qt-script: $(STAGING_DIR)/usr/lib/libQtCore.la
