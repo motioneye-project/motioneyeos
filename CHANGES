@@ -12,7 +12,7 @@
 	Updated/fixed packages: busybox, dnsmasq, dosfstools, e2fsprogs,
 	freetype, iperf, iptables, iw, less, libgcrypt, libglib2, libpng,
 	libxml2, mdadm, memstat, mtd-utils, nano, openssl, php, pppd,
-	setserial, squashfs, wget, xlib_libX11, xlib_libXfont
+	radvd, setserial, squashfs, wget, xlib_libX11, xlib_libXfont
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -29,6 +29,7 @@
 	#1303: Add librsync package
 	#1327: mtd-utils compile failure due to lack of --sysroot in CFLAGS
 	#1345: Bump pppd to 2.4.5 and convert to Makefile.autotools.in
+	#1369: cannot build radvd (flex problem)
 	#1387: xlib_libX11-1.3.2 can't find libjpeg
 	#1411: [SECURITY] Update openssl package to 0.9.8n
 	#1417: Bump iptables to 1.4.7
