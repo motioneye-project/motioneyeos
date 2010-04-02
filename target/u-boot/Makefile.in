@@ -177,7 +177,7 @@ $(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/$(U_BOOT_BIN)
 		-DUSE_HOSTCC -o $@ \
 		$(U_BOOT_DIR)/common/image.c \
 		$(wildcard $(addprefix $(U_BOOT_DIR)/tools/,default_image.c \
-			fit_image.c kwbimage.c mkimage.c)) \
+			fit_image.c imximage.c kwbimage.c mkimage.c)) \
 		$(addprefix $(U_BOOT_DIR)/lib_generic/,crc32.c md5.c sha1.c) \
 		$(U_BOOT_DIR)/tools/os_support.c \
 		$(U_BOOT_DIR)/libfdt/fdt*.c
