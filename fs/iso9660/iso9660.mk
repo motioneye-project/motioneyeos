@@ -15,14 +15,14 @@ ifeq ($(BR2_TARGET_ROOTFS_ISO9660_SQUASH),y)
 ISO9660_OPTS+=-U
 endif
 
-$(BINARIES_DIR)/rootfs.iso9660: host-cdrkit host-fakeroot $(LINUX_KERNEL) $(BINARIES_DIR)/rootfs.ext2 grub
+$(BINARIES_DIR)/rootfs.iso9660: host-cdrkit host-fakeroot linux26 ext2-root grub
 	@$(call MESSAGE,"Generating root filesystem image rootfs.iso9660")
 	mkdir -p $(ISO9660_TARGET_DIR)
 	mkdir -p $(ISO9660_TARGET_DIR)/boot/grub
 	cp $(GRUB_DIR)/stage2/stage2_eltorito $(ISO9660_TARGET_DIR)/boot/grub/
 	cp $(ISO9660_BOOT_MENU) $(ISO9660_TARGET_DIR)/boot/grub/menu.lst
-	cp $(LINUX_KERNEL) $(ISO9660_TARGET_DIR)/kernel
-	cp $(EXT2_TARGET) $(ISO9660_TARGET_DIR)/initrd
+	cp $(LINUX26_IMAGE_PATH) $(ISO9660_TARGET_DIR)/kernel
+	cp $(BINARIES_DIR)/rootfs.ext2 $(ISO9660_TARGET_DIR)/initrd
 	# Use fakeroot to pretend all target binaries are owned by root
 	rm -f $(FAKEROOT_SCRIPT)
 	touch $(BUILD_DIR)/.fakeroot.00000
