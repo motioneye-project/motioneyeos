@@ -21,11 +21,13 @@
 	#661: lmbench: new package
 	#800: [PATCH] iperf update to 2.0.4
 	#805: [PATCH] mdadm - version update
+	#817: integrator926_defconfig uses unsupported uboot board name
 	#1105: Add new netperf package
 	#1111: Bump wget to 1.12 and migrate to Makefile.autotools.in
 	#1117: Bump nano to 2.2.3 and migrate to Makefile.autotools.in
 	#1123: Bump less to 436 and migrate to Makefile.autotools.in
 	#1129: Bump memstat to 0.8 and migrate to Makefile.package.in
+	#1189: Wrong u-boot configuration name for integrator926 target
 	#1219: kernel headers not correctly installed into toolchain/staging
 	#1273: BR2_INET_IPV6 does not enable IPv6 in pppd
 	#1303: Add librsync package
