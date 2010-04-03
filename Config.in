@@ -295,4 +295,4 @@ source "fs/Config.in"
 
 source "boot/Config.in"
 
-source "target/Config.in"
+source "linux/Config.in"

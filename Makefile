@@ -323,6 +323,7 @@ endif
 
 include boot/common.mk
 include target/Makefile.in
+include linux/linux.mk
 include fs/common.mk
 
 TARGETS+=erase-fakeroots
