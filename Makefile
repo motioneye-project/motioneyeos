@@ -309,10 +309,6 @@ else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 include toolchain/*/*.mk
 endif
 
-ifeq ($(BR2_PACKAGE_LINUX),y)
-TARGETS+=linux26-modules
-endif
-
 include package/*/*.mk
 
 TARGETS+=target-finalize
