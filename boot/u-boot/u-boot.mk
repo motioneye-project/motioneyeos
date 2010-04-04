@@ -4,6 +4,15 @@
 #
 #############################################################
 U_BOOT_VERSION:=$(call qstrip,$(BR2_UBOOT_VERSION))
+U_BOOT_BOARD_NAME:=$(call qstrip,$(BR2_TARGET_UBOOT_BOARDNAME))
+
+# U-Boot may not be selected in the configuration, but mkimage might
+# be needed to build/prepare a kernel image. In this case, we just
+# pick some random stable U-Boot version that will be used just to
+# build mkimage.
+ifeq ($(U_BOOT_VERSION),)
+U_BOOT_VERSION=2010.03
+endif
 
 U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
 
@@ -30,9 +39,6 @@ TARGET_UBOOT_ETHADDR:=$(call qstrip,$(BR2_TARGET_UBOOT_ETHADDR))
 
 # u-boot still uses arch=ppc for powerpc
 U_BOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
-ifeq ($(UBOOT_BOARD_NAME),)
-UBOOT_BOARD_NAME:=$(call qstrip,$(BR2_TARGET_UBOOT_BOARDNAME))
-endif
 
 U_BOOT_INC_CONF_FILE:=$(U_BOOT_DIR)/include/config.h
 
@@ -73,6 +79,9 @@ endif
 	touch $@
 
 $(U_BOOT_DIR)/.configured: $(U_BOOT_DIR)/.patched
+ifeq ($(U_BOOT_BOARD_NAME),)
+	$(error NO U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
+endif
 	$(TARGET_CONFIGURE_OPTS)		\
 		CFLAGS="$(TARGET_CFLAGS)"	\
 		LDFLAGS="$(TARGET_LDFLAGS)"	\
@@ -154,11 +163,16 @@ $(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
 	rm -f $(BINARIES_DIR)/$(U_BOOT_BIN)
 	cp -dpf $(U_BOOT_DIR)/$(U_BOOT_BIN) $(BINARIES_DIR)/
 
-$(U_BOOT_TOOLS): $(U_BOOT_DIR)/$(U_BOOT_BIN)
+# Build just mkimage for the host. It might have already been built by
+# the U-Boot build procedure, but mkimage may also be needed even if
+# U-Boot isn't selected in the configuration, to generate a kernel
+# uImage.
+$(MKIMAGE): $(U_BOOT_DIR)/.patched
 	mkdir -p $(@D)
-	cp -dpf $(U_BOOT_DIR)/tools/mkimage $@
+	$(MAKE) -C $(U_BOOT_DIR) tools
+	cp -dpf $(U_BOOT_DIR)/tools/mkimage $(@D)
 
-$(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/$(U_BOOT_BIN)
+$(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/.configured
 	mkdir -p $(@D)
 	$(TARGET_CC) -I$(U_BOOT_DIR)/include -I$(U_BOOT_DIR)/tools \
 		-DUSE_HOSTCC -o $@ \
@@ -171,7 +185,7 @@ $(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/$(U_BOOT_BIN)
 
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
-$(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/$(U_BOOT_BIN)
+$(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/.configured
 	mkdir -p $(@D)
 	$(TARGET_CC) -I$(U_BOOT_DIR)/include -I$(LINUX_HEADERS_DIR)/include \
 		-DUSE_HOSTCC -o $@ \
