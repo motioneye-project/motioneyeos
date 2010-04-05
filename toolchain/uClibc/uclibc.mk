@@ -512,7 +512,10 @@ ifeq ($(BR2_CROSS_TOOLCHAIN_TARGET_UTILS),y)
 endif
 	touch -c $@
 
+ifneq ($(BR2_PREFER_STATIC_LIB),y)
 UCLIBC_TARGETS=$(TARGET_DIR)/lib/libc.so.0
+endif
+
 ifeq ($(BR2_UCLIBC_INSTALL_TEST_SUITE),y)
 UCLIBC_TARGETS+=uclibc-test
 endif
