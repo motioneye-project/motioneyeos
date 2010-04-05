@@ -78,6 +78,11 @@ ifeq ($(BR2_INET_RPC),y)
 else
 	$(SED) "s/^.*CONFIG_FEATURE_MOUNT_NFS.*/CONFIG_FEATURE_MOUNT_NFS=n/;" $(BUSYBOX_DIR)/.config
 endif
+ifeq ($(BR2_PREFER_STATIC_LIB),y)
+	$(SED) "s/^.*CONFIG_STATIC.*/CONFIG_STATIC=y/;" $(BUSYBOX_DIR)/.config
+else
+	$(SED) "s/^.*CONFIG_STATIC.*/CONFIG_STATIC=n/;" $(BUSYBOX_DIR)/.config
+endif
 ifeq ($(BR2_PACKAGE_BUSYBOX_SKELETON),y)
 	# force mdev on
 	$(SED) "s/^.*CONFIG_MDEV.*/CONFIG_MDEV=y/" $(BUSYBOX_DIR)/.config
