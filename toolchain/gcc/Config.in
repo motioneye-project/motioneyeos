@@ -153,6 +153,7 @@ config BR2_INSTALL_FORTRAN
 
 config BR2_GCC_SHARED_LIBGCC
 	bool "Build/install a shared libgcc?"
+	depends on !BR2_PREFER_STATIC_LIB
 	default y
 	depends on !BR2_sparc && !BR2_sparc64
 	help
