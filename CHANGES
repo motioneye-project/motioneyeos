@@ -2,8 +2,9 @@
 
 	Cleaned up / restructured package menu.
 
-	Toolchain: uClibc 0.9.30.3, older 0.9.30.x removed. 2.6.33
-	kernel headers, binutils 2.20.1, removed broken nios2 support.
+	Toolchain: uClibc 0.9.30.3 / 0.9.31, older 0.9.30.x removed.
+	2.6.33 kernel headers, binutils 2.20.1, removed broken nios2
+	support.
 
 	X.org updated to 7.5.
 
