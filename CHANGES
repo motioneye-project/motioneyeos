@@ -43,6 +43,7 @@
 	#1441: Add binutils 2.20.1
 	#1447: Package installation on target with debug symbols is broken
 	#1459: Misc QA fixes
+	#1489: radvd update to 1.6
 
 2010.02, Release February 26th, 2010:
 
