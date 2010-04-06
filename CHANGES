@@ -4,7 +4,7 @@
 
 	Toolchain: uClibc 0.9.30.3 / 0.9.31, older 0.9.30.x removed.
 	2.6.33 kernel headers, binutils 2.20.1, removed broken nios2
-	support.
+	support, improved external toolchain support.
 
 	X.org updated to 7.5.
 
@@ -23,6 +23,7 @@
 	#800: [PATCH] iperf update to 2.0.4
 	#805: [PATCH] mdadm - version update
 	#817: integrator926_defconfig uses unsupported uboot board name
+	#851: Add option to specify --sysroot value for external toolchain
 	#1105: Add new netperf package
 	#1111: Bump wget to 1.12 and migrate to Makefile.autotools.in
 	#1117: Bump nano to 2.2.3 and migrate to Makefile.autotools.in
