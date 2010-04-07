@@ -1,4 +1,4 @@
-From 5e0675efcec309617ba2d334c68ddb250ef942b2 Mon Sep 17 00:00:00 2001
+From 877aa0313e7d22b88d04ebef76392e1688fffff9 Mon Sep 17 00:00:00 2001
 From: Peter Korsgaard <jacmet@sunsite.dk>
 Date: Fri, 27 Nov 2009 11:20:54 +0100
 Subject: [PATCH] scsi: use __uX types for headers exported to user space
@@ -17,14 +17,14 @@ before ‘u8’
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 ---
  include/scsi/scsi.h         |    8 ++++----
- include/scsi/scsi_netlink.h |   20 ++++++++++----------
- 2 files changed, 14 insertions(+), 14 deletions(-)
+ include/scsi/scsi_netlink.h |    4 ++--
+ 2 files changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/include/scsi/scsi.h b/include/scsi/scsi.h
-index 34c46ab..b3cffec 100644
+index 8b4deca..ec3053e 100644
 --- a/include/scsi/scsi.h
 +++ b/include/scsi/scsi.h
-@@ -145,10 +145,10 @@ struct scsi_cmnd;
+@@ -149,10 +149,10 @@ struct scsi_cmnd;
  
  /* defined in T10 SCSI Primary Commands-2 (SPC2) */
  struct scsi_varlen_cdb_hdr {
@@ -40,7 +40,7 @@ index 34c46ab..b3cffec 100644
  	/* service specific data follows */
  };
 diff --git a/include/scsi/scsi_netlink.h b/include/scsi/scsi_netlink.h
-index 536752c..7445c46 100644
+index 536752c..58ce8fe 100644
 --- a/include/scsi/scsi_netlink.h
 +++ b/include/scsi/scsi_netlink.h
 @@ -105,8 +105,8 @@ struct scsi_nl_host_vendor_msg {
@@ -54,7 +54,6 @@ index 536752c..7445c46 100644
  #define SCSI_NL_VID_ID_MASK		(~ SCSI_NL_VID_TYPE_MASK)
  
  
- 
 -- 
-1.6.5
+1.7.0
 
