@@ -265,6 +265,7 @@ source "package/libaio/Config.in"
 source "package/libraw1394/Config.in"
 source "package/tslib/Config.in"
 source "package/libusb/Config.in"
+source "package/libusb-compat/Config.in"
 endmenu
 
 menu "Java"
