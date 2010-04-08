@@ -4,7 +4,8 @@
 
 	Toolchain: uClibc 0.9.30.3 / 0.9.31, older 0.9.30.x removed.
 	2.6.33 kernel headers, binutils 2.20.1, removed broken nios2
-	support, improved external toolchain support.
+	support, ppc e300cX/e500mc support, improved external
+	toolchain support.
 
 	X.org updated to 7.5.
 
@@ -48,6 +49,7 @@
 	#1447: Package installation on target with debug symbols is broken
 	#1459: Misc QA fixes
 	#1489: radvd update to 1.6
+	#1513: Enable powerpc e300c2, e300c3 and e500mc optimization
 
 2010.02, Release February 26th, 2010:
 

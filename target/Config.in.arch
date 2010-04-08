@@ -490,6 +490,15 @@ config BR2_powerpc_970
 	bool "970"
 config BR2_powerpc_8540
 	bool "8540"
+comment "e300c2 needs gcc >= 4.4.x"
+config BR2_powerpc_e300c2
+	bool "e300c2"
+comment "e300c3 needs gcc >= 4.4.x"
+config BR2_powerpc_e300c3
+	bool "e300c3"
+comment "e500mc needs gcc >= 4.4.x"
+config BR2_powerpc_e500mc
+	bool "e500mc"
 endchoice
 
 config BR2_ARCH
@@ -648,6 +657,9 @@ config BR2_GCC_TARGET_TUNE
 	default 860		if BR2_powerpc_860
 	default 970		if BR2_powerpc_970
 	default 8540		if BR2_powerpc_8540
+	default e300c2		if BR2_powerpc_e300c2
+	default e300c3		if BR2_powerpc_e300c3
+	default e500mc		if BR2_powerpc_e500mc
 	default v7		if BR2_sparc_v7
 	default cypress		if BR2_sparc_cypress
 	default v8		if BR2_sparc_v8
