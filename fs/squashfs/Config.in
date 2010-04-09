@@ -1,0 +1,4 @@
+config BR2_TARGET_ROOTFS_SQUASHFS
+	bool "squashfs root filesystem"
+	help
+	  Build a squashfs root filesystem

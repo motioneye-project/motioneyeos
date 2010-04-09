@@ -62,7 +62,6 @@ ifeq ($(BR2_TARGET_UBOOT),y)
 include target/u-boot/Makefile.in
 endif
 
-# and finally build the filesystems/tarballs
 include target/*/*.mk
 
 # kernel rules

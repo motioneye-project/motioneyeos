@@ -1,47 +1,4 @@
-menu "Target filesystem options"
-
-config BR2_ROOTFS_PREFIX
-	string "Custom root fs prefix"
-	default "rootfs"
-	help
-	  Add a custom string to the beginning of the root file system name.
-
-config BR2_ROOTFS_SUFFIX
-	string "Custom root fs suffix"
-	default ""
-	help
-	  Add a custom string to the end of the root file system name.
-
-config BR2_ROOTFS_POST_BUILD_SCRIPT
-	string "Custom script to run before packing files"
-	default ""
-	help
-	  Specify a script to be run after the build has finished and before
-	  the BR2 starts packing the files into selected packages.
-
-	  This gives users the oportunity to do board-specific cleanups,
-	  add-ons and the like, so the generated files can be used directly
-	  without further processing.
-
-	  The script is called with the target directory name as first and
-	  only argument. Make sure the exit code of that script is 0,
-	  otherwise make will stop after calling it.
-
-comment "filesystem for target device"
-
-source "target/cramfs/Config.in"
-source "target/cloop/Config.in"
-source "target/ext2/Config.in"
-source "target/jffs2/Config.in"
-source "target/ubifs/Config.in"
-source "target/squashfs/Config.in"
-source "target/tar/Config.in"
-source "target/cpio/Config.in"
-source "target/iso9660/Config.in"
-source "target/initramfs/Config.in"
-source "target/romfs/Config.in"
-
-comment "bootloader for target device"
+menu "Bootloaders"
 
 source "target/x86/grub/Config.in"
 #source "target/x86/grub2/Config.in"

@@ -1,0 +1,11 @@
+config BR2_PACKAGE_CDRKIT
+       # Needed for libbz
+       select BR2_PACKAGE_BZIP2
+       select BR2_PACKAGE_LIBCAP
+       bool "cdrkit"
+       help
+         cdrkit is a suite of programs for recording CDs and DVDs,
+         blanking CD-RW media, creating ISO-9660 filesystem images,
+         extracting audio CD data, and more.
+
+	 http://www.cdrkit.org/

@@ -146,6 +146,8 @@ endmenu
 
 menu "Hardware handling"
 source "package/acpid/Config.in"
+source "package/cdrkit/Config.in"
+source "package/cramfs/Config.in"
 source "package/dbus/Config.in"
 source "package/dbus-glib/Config.in"
 source "package/dbus-python/Config.in"
@@ -159,6 +161,8 @@ source "package/eeprog/Config.in"
 source "package/fconfig/Config.in"
 source "package/fis/Config.in"
 source "package/gadgetfs-test/Config.in"
+source "package/genext2fs/Config.in"
+source "package/genromfs/Config.in"
 source "package/gvfs/Config.in"
 source "package/hal/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
@@ -184,6 +188,7 @@ if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/sfdisk/Config.in"
 endif
 source "package/smartmontools/Config.in"
+source "package/squashfs/Config.in"
 source "package/sshfs/Config.in"
 source "package/sysstat/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
@@ -291,6 +296,7 @@ source "package/libupnp/Config.in"
 endmenu
 
 menu "Other"
+source "package/libcap/Config.in"
 source "package/libdaemon/Config.in"
 source "package/libelf/Config.in"
 source "package/libevent/Config.in"

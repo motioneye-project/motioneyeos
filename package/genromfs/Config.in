@@ -1,0 +1,6 @@
+config BR2_PACKAGE_GENROMFS
+       bool "genromfs"
+       help
+         Tool to generate a ROMFS filesystem.
+
+	 http://romfs.sourceforge.net/

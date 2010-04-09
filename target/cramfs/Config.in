@@ -1,7 +1,0 @@
-config BR2_TARGET_ROOTFS_CRAMFS
-	bool "cramfs root filesystem"
-	select BR2_HOST_FAKEROOT
-	help
-	  Build a cramfs root filesystem
-
-	  http://sourceforge.net/projects/cramfs/

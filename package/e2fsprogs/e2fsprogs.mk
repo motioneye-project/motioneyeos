@@ -26,7 +26,12 @@ E2FSPROGS_CONF_OPT = \
 E2FSPROGS_MAKE_OPT = \
 	LDCONFIG=true
 
+define HOST_E2FSPROGS_INSTALL_CMDS
+ $(HOST_MAKE_ENV) $(MAKE) -C $(@D) install install-libs
+endef
+
 $(eval $(call AUTOTARGETS,package,e2fsprogs))
+$(eval $(call AUTOTARGETS,package,e2fsprogs,host))
 
 # binaries to keep or remove
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_BADBLOCKS) += usr/sbin/badblocks

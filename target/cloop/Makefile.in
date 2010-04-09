@@ -1,3 +1,0 @@
-ifeq ($(BR2_TARGET_ROOTFS_CLOOP),y)
-TARGETS+=clooproot
-endif

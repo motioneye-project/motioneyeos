@@ -1,0 +1,79 @@
+config BR2_TARGET_ROOTFS_UBIFS
+	bool "ubifs root filesystem"
+	help
+	  Build a ubifs root filesystem
+
+config BR2_TARGET_ROOTFS_UBIFS_LEBSIZE
+	hex "UBI logical erase block size"
+	depends on BR2_TARGET_ROOTFS_UBIFS
+	default 0x1f800
+
+config BR2_TARGET_ROOTFS_UBIFS_MINIOSIZE
+	hex "UBI minimum I/O size"
+	depends on BR2_TARGET_ROOTFS_UBIFS
+	default 0x800
+	help
+	  Some comment required here
+
+config BR2_TARGET_ROOTFS_UBIFS_MAXLEBCNT
+	int "Maximum LEB count"
+	depends on BR2_TARGET_ROOTFS_UBIFS
+	default 2048
+	help
+	  Some comment required here
+
+choice
+	prompt "ubifs runtime compression"
+	default BR2_TARGET_ROOTFS_UBIFS_RT_LZO
+	depends on BR2_TARGET_ROOTFS_UBIFS
+	help
+	  Select which compression format to use at run-time within
+	  the ubifs file system.
+
+config BR2_TARGET_ROOTFS_UBIFS_RT_NONE
+	bool "no compression"
+	help
+	  Don't use run-time compression.
+
+config BR2_TARGET_ROOTFS_UBIFS_RT_ZLIB
+	bool "gzip"
+	help
+	  Use zlib compression at run-time.
+
+config BR2_TARGET_ROOTFS_UBIFS_RT_LZO
+	bool "lzo"
+	help
+	  Use lzo compression at run-time.
+
+endchoice
+
+choice
+	prompt "Compression method"
+	default BR2_TARGET_ROOTFS_UBIFS_NONE
+	depends on BR2_TARGET_ROOTFS_UBIFS
+	help
+	  Select which compression format to compress the final image
+	  into.
+
+config BR2_TARGET_ROOTFS_UBIFS_NONE
+	bool "no compression"
+	help
+	  Do not compress the ubifs filesystem.
+
+config BR2_TARGET_ROOTFS_UBIFS_GZIP
+	bool "gzip"
+	help
+	  Do compress the ubifs filesystem with gzip.
+
+config BR2_TARGET_ROOTFS_UBIFS_BZIP2
+	bool "bzip2"
+	help
+	  Do compress the ubifs filesystem with bzip2.
+
+config BR2_TARGET_ROOTFS_UBIFS_LZMA
+	bool "lzma"
+	help
+	  Do compress the ubifs filesystem with lzma.
+
+endchoice
+
