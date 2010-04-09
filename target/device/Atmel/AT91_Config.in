@@ -119,6 +119,14 @@ config BR2_TARGET_AT91SAM9G40
 	help
 	  Atmel AT91SAM9G40 ARM based systems
 
+config BR2_TARGET_AT91SAM9G45
+	bool "Atmel AT91SAM9G45 Microprocessor"
+	depends on BR2_TARGET_AT91
+	depends on !BR2_TARGET_ATMEL_FPDSP
+	depends on !BR2_TARGET_ATMEL_MPB
+	help
+	  Atmel AT91SAM9G45 ARM based systems
+
 config BR2_TARGET_AT91SAM9M10
 	bool "Atmel AT91SAM9M10 Microprocessor"
 	depends on BR2_TARGET_AT91
@@ -266,6 +274,14 @@ config BR2_TARGET_AT91SAM9263EK
 	select BR2_BOOTSOURCE_NANDFLASH
 	help
 	  The Atmel AT91SAM9263 Development Board
+
+config BR2_TARGET_AT91SAM9G45EKES
+	bool "Atmel AT91SAM9G45EKES"
+	depends on BR2_TARGET_AT91SAM9G45
+	select BR2_BOOTSOURCE_DATAFLASHCARD
+	select BR2_BOOTSOURCE_NANDFLASH
+	help
+	  The Atmel AT91SAM9G45 Development Board
 
 config BR2_TARGET_AT572D940DCM
 	bool "Atmel AT572D940 Diopsis Computer Module"
