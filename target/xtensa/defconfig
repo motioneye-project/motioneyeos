@@ -19,7 +19,6 @@ BR2_WGET="wget --passive-ftp"
 # BR2_STRIP_none=y
 
 ## Added by Maxim
-BR2_UPDATE_CONFIG=y
 
 #
 # Kernel Header Options

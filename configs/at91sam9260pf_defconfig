@@ -52,7 +52,6 @@ BR2_ENDIAN="LITTLE"
 #
 # Build options
 #
-# BR2_UPDATE_CONFIG is not set
 BR2_WGET="wget --passive-ftp"
 BR2_SVN="svn co"
 BR2_ZCAT="gzip -d -c"

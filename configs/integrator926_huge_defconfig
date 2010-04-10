@@ -131,7 +131,6 @@ BR2_OPTIMIZE_S=y
 # BR2_HAVE_INFOPAGES is not set
 # BR2_HAVE_DOCUMENTATION is not set
 # BR2_HAVE_DEVFILES is not set
-BR2_UPDATE_CONFIG=y
 
 #
 # Toolchain
