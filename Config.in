@@ -15,6 +15,8 @@ source "target/device/Config.in"
 
 menu "Build options"
 
+menu "Commands"
+
 config BR2_WGET
 	string "Wget command"
 	default "wget --passive-ftp -nd"
@@ -66,6 +68,8 @@ config BR2_TAR_OPTIONS
 	  Options to pass to tar when extracting the sources.
 	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal files
 	  and to be verbose.
+
+endmenu
 
 config BR2_DL_DIR
 	string "Download dir"
