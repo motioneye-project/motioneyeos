@@ -57,14 +57,7 @@ $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	mkdir -p $(TARGET_DIR)/etc/dhcp
 	$(INSTALL) -m 0644 -D package/dhcp/dhcpd.conf \
 		$(TARGET_DIR)/etc/dhcp/dhcpd.conf
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/info
-endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/man
-endif
 	rm -rf $(TARGET_DIR)/share/locale
-	rm -rf $(TARGET_DIR)/usr/share/doc
 
 $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	mkdir -p $(TARGET_DIR)/var/lib
@@ -74,15 +67,6 @@ $(TARGET_DIR)/$(DHCP_RELAY_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	mkdir -p $(TARGET_DIR)/etc/init.d
 	$(INSTALL) -m 0755 -D package/dhcp/S80dhcp-relay \
 		$(TARGET_DIR)/etc/init.d
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/info
-endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/man
-endif
-	# Why on earth do we wipe out whole directories here?
-	#rm -rf $(TARGET_DIR)/usr/share/locale
-	#rm -rf $(TARGET_DIR)/usr/share/doc
 
 $(TARGET_DIR)/$(DHCP_CLIENT_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 	mkdir -p $(TARGET_DIR)/var/lib
@@ -94,15 +78,6 @@ $(TARGET_DIR)/$(DHCP_CLIENT_TARGET_BINARY): $(DHCP_DIR)/$(DHCP_RELAY_BINARY)
 		$(TARGET_DIR)/etc/dhcp/dhclient.conf
 	$(INSTALL) -m 0755 -D package/dhcp/dhclient-script \
 		$(TARGET_DIR)/sbin/dhclient-script
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/info
-endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/man
-endif
-	# Why on earth do we wipe out whole directories here?
-	#rm -rf $(TARGET_DIR)/usr/share/locale
-	#rm -rf $(TARGET_DIR)/usr/share/doc
 
 dhcp_server: $(TARGET_DIR)/$(DHCP_SERVER_TARGET_BINARY)
 

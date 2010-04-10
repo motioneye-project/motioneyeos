@@ -73,10 +73,6 @@ ifneq ($(BR2_PACKAGE_UDPCAST_RECEIVER),y)
 	rm -f $(TARGET_DIR)/usr/sbin/udp-receiver
 	rm -f $(TARGET_DIR)/usr/sbin/udp-receiver.1
 endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -f $(addprefix $(TARGET_DIR)/usr/man/, \
-		$(addsuffix .1,$(UDPCAST_BINARIES)))
-endif
 
 udpcast: $(UDPCAST_PROGS)
 

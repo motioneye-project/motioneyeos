@@ -60,14 +60,7 @@ $(STAGING_DIR)/lib/$(DB_SHARLIB): $(DB_DIR)/build_unix/.libs/$(DB_SHARLIB)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DB_DIR)/build_unix install
 	chmod a-x $(STAGING_DIR)/lib/libdb*so*
 	rm -f $(STAGING_DIR)/bin/db_*
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	rm -rf $(STAGING_DIR)/usr/share/info
-endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(STAGING_DIR)/usr/share/man
-endif
 	rm -rf $(STAGING_DIR)/share/locale
-	rm -rf $(STAGING_DIR)/usr/share/doc
 
 $(TARGET_DIR)/lib/$(DB_SHARLIB): $(STAGING_DIR)/lib/$(DB_SHARLIB)
 	rm -rf $(TARGET_DIR)/lib/libdb*

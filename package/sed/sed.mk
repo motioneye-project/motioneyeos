@@ -65,12 +65,6 @@ build-sed-host-binary: $(SED_DIR1)/$(SED_BINARY)
 		rm -rf $(HOST_SED_DIR)/share/locale; \
 		rm -rf $(HOST_SED_DIR)/usr/share/doc; \
 	fi
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	rm -rf $(HOST_SED_DIR)/usr/man/info
-endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(HOST_SED_DIR)/usr/share/man
-endif
 
 $(HOST_SED_DIR)/$(SED_TARGET_BINARY):
 	if [ ! -e "$(HOST_SED_DIR)/$(SED_TARGET_BINARY)" ]; then \
@@ -152,12 +146,6 @@ sed-target_binary: $(SED_DIR2)/$(SED_BINARY)
 		rm -rf $(TARGET_DIR)/share/locale; \
 		rm -rf $(TARGET_DIR)/usr/share/doc; \
 	fi
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/share/info
-endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/share/man
-endif
 
 sed: sed-target_binary
 

@@ -52,14 +52,7 @@ $(BISON_DIR)/$(BISON_BINARY): $(BISON_DIR)/.configured
 
 $(TARGET_DIR)/$(BISON_TARGET_BINARY): $(BISON_DIR)/$(BISON_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(BISON_DIR) install
-ifneq ($(BR2_HAVE_INFOPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/share/info
-endif
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(TARGET_DIR)/usr/share/man
-endif
 	rm -rf $(TARGET_DIR)/share/locale
-	rm -rf $(TARGET_DIR)/usr/share/doc
 	cp -a package/bison/yacc $(TARGET_DIR)/usr/bin/yacc
 
 bison: $(TARGET_DIR)/$(BISON_TARGET_BINARY)

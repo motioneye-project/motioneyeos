@@ -39,9 +39,6 @@ $(TARGET_DIR)/$(DIALOG_TARGET_BINARY): $(DIALOG_DIR)/$(DIALOG_BINARY)
 	$(MAKE) prefix=$(TARGET_DIR)/usr \
 		mandir=$(TARGET_DIR)/usr/share/man \
 		-C $(DIALOG_DIR) install
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -Rf $(TARGET_DIR)/usr/share/man
-endif
 
 dialog: ncurses $(TARGET_DIR)/$(DIALOG_TARGET_BINARY)
 

@@ -56,9 +56,6 @@ liblockfile-clean:
 	rm -f $(TARGET_DIR)/usr/lib/liblockfile.so*
 	rm -f $(STAGING_DIR)/usr/lib/liblockfile*
 	rm -f $(addprefix $(STAGING_DIR)/usr/include/,lockfile.h mailfile.h)
-ifneq ($(BR2_HAVE_MANPAGES),y)
-	rm -rf $(STAGING_DIR)/usr/share/man
-endif
 	-$(MAKE) -C $(LIBLOCKFILE_DIR) clean
 
 liblockfile-dirclean:
