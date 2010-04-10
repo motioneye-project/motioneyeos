@@ -74,9 +74,5 @@ endif
 # and finally pull in config opts from the user
 EXTRA_TARGET_GCC_CONFIG_OPTIONS+=$(call qstrip,$(BR2_EXTRA_TARGET_GCC_CONFIG_OPTIONS))
 
-ifeq ($(BR2_PREFER_IMA),y)
-EXTRA_TARGET_GCC_CONFIG_OPTIONS+=--enable-intermodule
-endif # BR2_PREFER_IMA=y
-
 TARGETS+=gcc_target
 endif

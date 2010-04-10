@@ -46,14 +46,7 @@ $(MICROCOM_DIR)/.configured: $(MICROCOM_DIR)/.unpacked
 	touch $@
 
 $(MICROCOM_DIR)/microcom: $(MICROCOM_DIR)/.configured
-ifeq ($(BR2_PREFER_IMA),y)
-	(cd $(MICROCOM_DIR); \
-	 $(TARGET_CC) $(TARGET_CFLAGS) $(CFLAGS_COMBINE) \
-	 	$(CFLAGS_WHOLE_PROGRAM) -o $@ $(wildcard $(MICROCOM_DIR)/*.c); \
-	)
-else
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(MICROCOM_DIR)
-endif
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
 $(TARGET_DIR)/usr/bin/microcom: $(MICROCOM_DIR)/microcom

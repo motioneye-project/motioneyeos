@@ -36,10 +36,6 @@ endif
 	touch $(SETSERIAL_DIR)/gorhack.h
 	touch $@
 
-ifeq ($(BR2_PREFER_IMA),y)
-SETSERIAL_CFLAGS=$(CFLAGS_COMBINE) $(CFLAGS_WHOLE_PROGRAM)
-endif
-
 $(SETSERIAL_DIR)/.configured: $(SETSERIAL_DIR)/.unpacked
 	(cd $(SETSERIAL_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \

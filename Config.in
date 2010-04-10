@@ -136,17 +136,6 @@ config BR2_JLEVEL
 	help
 	  Number of jobs to run simultaneously
 
-config BR2_PREFER_IMA
-	bool "prefer IMA compiles"
-	help
-	  Where possible, compile package with Inter Module Analysis.
-	  This potentially uses alot of system resources on your compile
-	  host with the benefit of creating smaller binaries for the target.
-
-	  If unsure, say No.
-
-	  WARNING: This is highly experimental at the moment.
-
 config BR2_DEPRECATED
 	bool "Show packages that are deprecated or obsolete"
 	help
