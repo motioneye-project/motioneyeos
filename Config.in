@@ -132,12 +132,6 @@ config BR2_DEPRECATED
 	help
 	  This option hides outdated/obsolete versions of packages.
 
-config BR2_RECENT
-	bool "Show packages that are of the latest major version"
-	default y
-	help
-	  This option show recent versions of packages.
-
 config BR2_ENABLE_DEBUG
 	bool "build packages with debugging symbols"
 	select BR2_PACKAGE_GDB_SERVER
