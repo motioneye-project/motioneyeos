@@ -103,19 +103,6 @@ config BR2_STAGING_DIR
 
 source	"target/device/Config.in.mirrors"
 
-config BR2_GNU_BUILD_SUFFIX
-	string "GNU build hostname suffix"
-	default "pc-linux-gnu"
-	help
-	  The string used to pass to configure scripts via the
-	  --build= option.  Just specify the suffix here, the leading
-	  arch will be filled in automatically.
-
-	  Here's some copy and paste build host options for you:
-	      linux:   pc-linux-gnu
-	      cygwin:  pc-cygwin
-	      os x:    apple-darwin7 / apple-darwin8
-
 config BR2_GNU_TARGET_SUFFIX
 	string "GNU target suffix"
 	default "linux-uclibcgnueabi" if BR2_ARM_EABI

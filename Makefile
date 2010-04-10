@@ -153,29 +153,31 @@ cc-option=$(shell if $(TARGET_CC) $(TARGET_CFLAGS) $(1) -S -o /dev/null -xc /dev
 unexport CROSS_COMPILE
 unexport ARCH
 
+GNU_HOST_NAME=$(shell package/gnuconfig/config.guess)
+
 #############################################################
 #
 # Setup the proper filename extensions for the host
 #
 ##############################################################
-ifneq ($(findstring linux,$(BR2_GNU_BUILD_SUFFIX)),)
+ifneq ($(findstring linux,$(GNU_HOST_NAME)),)
 HOST_EXEEXT:=
 HOST_LIBEXT:=.a
 HOST_SHREXT:=.so
 endif
-ifneq ($(findstring apple,$(BR2_GNU_BUILD_SUFFIX)),)
+ifneq ($(findstring apple,$(GNU_HOST_NAME)),)
 HOST_EXEEXT:=
 HOST_LIBEXT:=.a
 HOST_SHREXT:=.dylib
 endif
-ifneq ($(findstring cygwin,$(BR2_GNU_BUILD_SUFFIX)),)
+ifneq ($(findstring cygwin,$(GNU_HOST_NAME)),)
 HOST_EXEEXT:=.exe
 HOST_LIBEXT:=.lib
 HOST_SHREXT:=.dll
 HOST_LOADLIBES="-lcurses -lintl"
 export HOST_LOADLIBES
 endif
-ifneq ($(findstring mingw,$(BR2_GNU_BUILD_SUFFIX)),)
+ifneq ($(findstring mingw,$(GNU_HOST_NAME)),)
 HOST_EXEEXT:=.exe
 HOST_LIBEXT:=.lib
 HOST_SHREXT:=.dll
