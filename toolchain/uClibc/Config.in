@@ -20,7 +20,6 @@ choice
 		bool "uClibc 0.9.29"
 
 	config BR2_UCLIBC_VERSION_0_9_30
-		depends on BR2_DEPRECATED || BR2_RECENT
 		bool "uClibc 0.9.30.x"
 
 	config BR2_UCLIBC_VERSION_0_9_31

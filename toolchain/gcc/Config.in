@@ -35,7 +35,6 @@ choice
 
 	config BR2_GCC_VERSION_4_2_4
 		depends on !BR2_avr32
-		depends on BR2_RECENT || BR2_DEPRECATED
 		bool "gcc 4.2.4"
 
 	config BR2_GCC_VERSION_4_3_2
@@ -45,7 +44,6 @@ choice
 
 	config BR2_GCC_VERSION_4_3_3
 		depends on !BR2_avr32
-		depends on BR2_RECENT || BR2_DEPRECATED
 		bool "gcc 4.3.3"
 
 	config BR2_GCC_VERSION_4_3_4
