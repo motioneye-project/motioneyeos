@@ -53,7 +53,7 @@ $(RP_PPPOE_DIR)/$(RP_PPPOE_BINARY): $(RP_PPPOE_TOPDIR)/.configured
 
 $(TARGET_DIR)/$(RP_PPPOE_TARGET_BINARY): $(RP_PPPOE_DIR)/$(RP_PPPOE_BINARY)
 	cp -dpf $(RP_PPPOE_DIR)/$(RP_PPPOE_BINARY) $@
-ifeq ($(BR2_HAVE_MANPAGES),y)
+ifeq ($(BR2_HAVE_DOCUMENTATION),y)
 	mkdir -p $(TARGET_DIR)/usr/share/man/man8
 	$(INSTALL) -m 644 $(RP_PPPOE_TOPDIR)/man/pppoe.8 $(TARGET_DIR)/usr/share/man/man8/pppoe.8
 endif

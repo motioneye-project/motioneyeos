@@ -75,7 +75,7 @@ AVAHI_CONF_OPT = --localstatedir=/var \
 		--disable-monodoc \
 		--disable-stack-protector \
 		--with-distro=none \
-		$(if $(BR2_HAVE_MANPAGES),--enable,--disable)-manpages \
+		$(if $(BR2_HAVE_DOCUMENTATION),--enable,--disable)-manpages \
 		$(if $(BR2_PACKAGE_AVAHI_AUTOIPD),--enable,--disable)-autoipd \
 		--with-avahi-user=default \
 		--with-avahi-group=default \

@@ -32,7 +32,7 @@ $(AXEL_DIR)/$(AXEL_BINARY): $(AXEL_DIR)/Makefile.settings
 
 $(TARGET_DIR)/$(AXEL_TARGET_BINARY): $(AXEL_DIR)/$(AXEL_BINARY)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(AXEL_DIR) install-bin
-ifeq ($(BR2_HAVE_MANPAGES),y)
+ifeq ($(BR2_HAVE_DOCUMENTATION),y)
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(AXEL_DIR) install-man
 endif
 

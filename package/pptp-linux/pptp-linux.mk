@@ -51,7 +51,7 @@ $(PPTP_LINUX_DIR)/$(PPTP_LINUX_BINARY): $(PPTP_LINUX_DIR)/.unpacked
 
 $(TARGET_DIR)/$(PPTP_LINUX_TARGET_BINARY): $(PPTP_LINUX_DIR)/$(PPTP_LINUX_BINARY)
 	cp -dpf $(PPTP_LINUX_DIR)/$(PPTP_LINUX_BINARY) $@
-ifeq ($(BR2_HAVE_MANPAGES),y)
+ifeq ($(BR2_HAVE_DOCUMENTATION),y)
 	mkdir -p $(TARGET_DIR)/usr/share/man/man8
 	$(INSTALL) -m 644 $(PPTP_LINUX_DIR)/pptp.8 $(TARGET_DIR)/usr/share/man/man8/pptp.8
 endif

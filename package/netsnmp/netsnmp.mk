@@ -52,7 +52,7 @@ else
 NETSNMP_CONFIGURE_OPENSSL:=--without-openssl
 endif
 
-ifneq ($(findstring y,$(BR2_HAVE_MANPAGES)$(BR2_HAVE_INFOPAGES)),y)
+ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 NETSNMP_DOCS:=--disable-manuals
 endif
 
