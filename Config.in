@@ -151,14 +151,6 @@ config BR2_RECENT
 	help
 	  This option show recent versions of packages.
 
-config BR2_CONFIG_CACHE
-	bool "Use a central configure cache file"
-	default y
-	help
-	  This determines if a central config cache is used by
-	  packages, reducing the configure time for packages as each
-	  one caches its findings.
-
 config BR2_ENABLE_DEBUG
 	bool "build packages with debugging symbols"
 	select BR2_PACKAGE_GDB_SERVER
@@ -317,6 +309,18 @@ config BR2_HAVE_DEVFILES
 	help
 	  Install headers and static libraries in the
 	  target filesystem
+
+menu "Advanced"
+
+config BR2_CONFIG_CACHE
+	bool "Use a central configure cache file"
+	default y
+	help
+	  This determines if a central config cache is used by
+	  packages, reducing the configure time for packages as each
+	  one caches its findings.
+
+endmenu
 
 endmenu
 
