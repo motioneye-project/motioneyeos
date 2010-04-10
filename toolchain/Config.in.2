@@ -35,16 +35,6 @@ config BR2_ENABLE_LOCALE
 	  If you have an external binary toolchain that has been 
 	  built with locale/i18n support then enable this option.
 
-config BR2_ENABLE_LOCALE_PREGENERATED
-	bool "Use pregenerated locale data?"
-	depends on BR2_ENABLE_LOCALE && BR2_TOOLCHAIN_BUILDROOT && BROKEN # tarball missing
-	help
-	  Instead of generating the locale data locally you can optionally
-	  download a pregenerated set of locales.
-
-	  Say N here unless your buildhost lacks locale support and you
-	  desparately want to use internationalization on your target.
-
 config BR2_ENABLE_LOCALE_PURGE
 	bool "Purge unwanted locales"
 	help
