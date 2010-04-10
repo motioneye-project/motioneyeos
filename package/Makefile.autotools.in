@@ -128,9 +128,7 @@ define UPDATE_CONFIG_HOOK
 	done
 endef
 
-ifeq ($(BR2_UPDATE_CONFIG),y)
 $(2)_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
-endif
 
 #
 # Hook to patch libtool to make it work properly for cross-compilation
