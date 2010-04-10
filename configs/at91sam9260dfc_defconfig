@@ -196,8 +196,6 @@ BR2_OPTIMIZE_2=y
 # BR2_OPTIMIZE_3 is not set
 # BR2_OPTIMIZE_S is not set
 # BR2_PREFER_STATIC_LIB is not set
-# BR2_HAVE_MANPAGES is not set
-# BR2_HAVE_INFOPAGES is not set
 # BR2_HAVE_DOCUMENTATION is not set
 # BR2_HAVE_DEVFILES is not set
 
