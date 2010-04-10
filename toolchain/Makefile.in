@@ -30,8 +30,5 @@ BR2_SYSROOT=# nothing
 BR2_ISYSROOT=#nothing
 endif
 
-# FIXME -- this is temporary
-OPTIMIZE_FOR_CPU=$(ARCH)
-
 # gcc has a bunch of needed stuff....
 include toolchain/gcc/Makefile.in
