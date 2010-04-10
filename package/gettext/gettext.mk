@@ -93,7 +93,7 @@ $(GETTEXT_DIR)/.configured: $(GETTEXT_DIR)/.unpacked
 		--disable-libasprintf \
 		--enable-shared \
 		$(IGNORE_EXTERNAL_GETTEXT) \
-		$(OPENMP) \
+		--disable-openmp \
 	)
 	touch $@
 
