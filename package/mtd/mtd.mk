@@ -6,6 +6,9 @@
 MTD_VERSION:=1.3.1
 MTD_SOURCE:=mtd-utils-$(MTD_VERSION).tar.bz2
 MTD_SITE:=ftp://ftp.infradead.org/pub/mtd-utils
+ifeq ($(BR2_PACKAGE_MTD_MKFSJFFS2),y)
+MTD_DEPENDENCIES = zlib lzo
+endif
 
 HOST_MTD_DEPENDENCIES = host-lzo host-e2fsprogs
 
