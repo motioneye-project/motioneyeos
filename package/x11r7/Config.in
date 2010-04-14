@@ -56,7 +56,6 @@ endmenu
 		source package/x11r7/xlib_libXcursor/Config.in
 		source package/x11r7/xlib_libXdamage/Config.in
 		source package/x11r7/xlib_libXdmcp/Config.in
-		source package/x11r7/xlib_libXevie/Config.in
 		source package/x11r7/xlib_libXext/Config.in
 		source package/x11r7/xlib_libXfixes/Config.in
 		source package/x11r7/xlib_libXfont/Config.in
@@ -279,7 +278,6 @@ endmenu
 		source package/x11r7/xproto_damageproto/Config.in
 		source package/x11r7/xproto_dmxproto/Config.in
 		source package/x11r7/xproto_dri2proto/Config.in
-		source package/x11r7/xproto_evieext/Config.in
 		source package/x11r7/xproto_fixesproto/Config.in
 		source package/x11r7/xproto_fontcacheproto/Config.in
 		source package/x11r7/xproto_fontsproto/Config.in
