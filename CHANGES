@@ -17,7 +17,7 @@
 	libaio,libdrm, libgcrypt, libglib2, libpng, libxml2, matchbox,
 	mdadm, memstat, mesa3d, mtd-utils, nano, openssl, pciutils,
 	php, pixman, portage, pppd, pthread-stubs, python, qt, radvd,
-	setserial, squashfs, tslib, usb_modeswith, wget,
+	samba, setserial, squashfs, tslib, usb_modeswith, wget,
 	xdriver_xf86-video-intel, xkeyboard-config, xlib_libX11,
 	xlib_libXaw, xlib_libXfont, xlib_libXfontcache, xlib_libXxf86misc,
 	xlib_libpciaccess, xproto_dri2proto, xproto_eviext,
@@ -62,6 +62,7 @@
 	#1513: Enable powerpc e300c2, e300c3 and e500mc optimization
 	#1537: dev entries not created anymore
 	#1555: Fix default uclibc-0.9.31 configuration
+	#1561: [SECURITY] Update samba to 3.3.12
 	#1567: openssl0.9.8n fails to compile
 	#1591: portmap fails to compile
 
