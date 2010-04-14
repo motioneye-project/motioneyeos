@@ -23,7 +23,8 @@
 	xlib_libpciaccess, xproto_dri2proto, xproto_eviext,
 	xproto_fontcacheproto, xproto_xf86miscproto, xserver_xorg-server
 
-	Removed packages: xapp_xtrap, xlib_libXTrap, xproto_trapproto
+	Removed packages: xapp_xtrap, xlib_libXTrap, xlib_libXxf86misc,
+	xproto_trapproto, xproto_xf86miscproto
 
 	Issues resolved (http://bugs.uclibc.org):
 
