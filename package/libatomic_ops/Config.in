@@ -1,0 +1,4 @@
+config BR2_PACKAGE_LIBATOMIC_OPS
+	bool "libatomic_ops"
+	help
+	  Atomic operations library

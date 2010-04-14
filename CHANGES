@@ -9,7 +9,8 @@
 
 	X.org updated to 7.5.
 
-	New packages: librsync, libusb-compat, lmbench, netperf, squid
+	New packages: librsync, libatomic_ops, libusb-compat, lmbench,
+	netperf, squid
 
 	Updated/fixed packages: busybox, dnsmasq, dosfstools,
 	e2fsprogs, fbv, freetype, iperf, iptables, iw, less,
