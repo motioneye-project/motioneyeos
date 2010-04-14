@@ -12,7 +12,7 @@ define ROOTFS_INITRAMFS_INIT_SYMLINK
 endef
 
 define ROOTFS_INITRAMFS_CMD
-	$(SHELL) target/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(TARGET_DIR) > $$@
+	$(SHELL) fs/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(TARGET_DIR) > $$@
 endef
 
 $(eval $(call ROOTFS_TARGET,initramfs))
