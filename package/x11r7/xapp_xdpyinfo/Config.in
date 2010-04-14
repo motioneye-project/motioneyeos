@@ -15,5 +15,4 @@ config BR2_PACKAGE_XAPP_XDPYINFO
 	select BR2_PACKAGE_XPROTO_XF86DGAPROTO
 	select BR2_PACKAGE_XPROTO_XF86VIDMODEPROTO
 	help
-	  xdpyinfo 1.1.0
 	  display information utility for X

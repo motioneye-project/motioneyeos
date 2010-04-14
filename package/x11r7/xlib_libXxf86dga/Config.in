@@ -5,5 +5,4 @@ config BR2_PACKAGE_XLIB_LIBXXF86DGA
 	select BR2_PACKAGE_XPROTO_XF86DGAPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXxf86dga 1.1.1
 	  X.Org Xxf86dga library

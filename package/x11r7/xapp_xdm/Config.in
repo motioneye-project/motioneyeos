@@ -11,5 +11,4 @@ config BR2_PACKAGE_XAPP_XDM
 	select BR2_PACKAGE_XPROTO_XINERAMAPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xdm 1.1.3
 	  X.Org xdm application

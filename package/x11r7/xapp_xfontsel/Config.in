@@ -2,5 +2,4 @@ config BR2_PACKAGE_XAPP_XFONTSEL
 	bool "xfontsel"
 	select BR2_PACKAGE_XLIB_LIBXAW
 	help
-	  xfontsel 1.0.1
 	  point and click selection of X11 font names

@@ -6,5 +6,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_SUNLEO
 	select BR2_PACKAGE_XPROTO_RENDERPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-sunleo 1.1.0
 	  Leo video driver

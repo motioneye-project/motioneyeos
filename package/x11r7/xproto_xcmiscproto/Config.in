@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XPROTO_XCMISCPROTO
 	bool "xcmiscproto"
 	help
-	  xcmiscproto 1.2.0
 	  X.Org XCMisc protocol headers

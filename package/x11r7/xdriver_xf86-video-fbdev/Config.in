@@ -7,5 +7,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_FBDEV
 	select BR2_PACKAGE_XPROTO_VIDEOPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-fbdev 0.4.1
 	  video driver for framebuffer device

@@ -7,5 +7,4 @@ config BR2_PACKAGE_XLIB_LIBXFT
 	select BR2_PACKAGE_XLIB_LIBXRENDER
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXft 2.1.14
 	  X.Org Xft library

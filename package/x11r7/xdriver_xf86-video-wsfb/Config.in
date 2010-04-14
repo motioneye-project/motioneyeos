@@ -8,5 +8,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_WSFB
 	select BR2_PACKAGE_XPROTO_XPROTO
 	depends on BROKEN # Fails to build. Actually this is OpenBSD/NetBSD stuff.
 	help
-	  xf86-video-wsfb 0.3.0
 	  WSFB based chips video driver

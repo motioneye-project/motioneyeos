@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XPROTO_WINDOWSWMPROTO
 	bool "windowswmproto"
 	help
-	  windowswmproto 1.0.4
 	  No description available

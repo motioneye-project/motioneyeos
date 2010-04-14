@@ -7,5 +7,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_NEWPORT
 	select BR2_PACKAGE_XPROTO_VIDEOPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-newport 0.2.3
 	  Newport video driver

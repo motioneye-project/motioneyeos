@@ -4,5 +4,4 @@ config BR2_PACKAGE_XAPP_OCLOCK
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  oclock 1.0.1
 	  round X clock

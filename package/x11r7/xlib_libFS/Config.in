@@ -4,5 +4,4 @@ config BR2_PACKAGE_XLIB_LIBFS
 	select BR2_PACKAGE_XPROTO_XPROTO
 	select BR2_PACKAGE_XPROTO_FONTSPROTO
 	help
-	  libFS 1.0.2
 	  X.Org FS library

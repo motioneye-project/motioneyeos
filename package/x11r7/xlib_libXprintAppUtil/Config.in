@@ -4,5 +4,4 @@ config BR2_PACKAGE_XLIB_LIBXPRINTAPPUTIL
 	select BR2_PACKAGE_XLIB_LIBXP
 	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
 	help
-	  libXprintAppUtil 1.0.1
 	  X.Org XprintAppUtil library

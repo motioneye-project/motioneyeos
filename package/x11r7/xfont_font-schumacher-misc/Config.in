@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XFONT_FONT_SCHUMACHER_MISC
 	bool "font-schumacher-misc"
 	help
-	  font-schumacher-misc 1.1.0
 	  No description available

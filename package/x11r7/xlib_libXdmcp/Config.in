@@ -3,5 +3,4 @@ config BR2_PACKAGE_XLIB_LIBXDMCP
 	select BR2_PACKAGE_XUTIL_UTIL_MACROS
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXdmcp 1.0.3
 	  X.Org Xdmcp library

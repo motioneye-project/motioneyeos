@@ -9,5 +9,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_SUNFFB
 	select BR2_PACKAGE_XPROTO_XF86DRIPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-sunffb 1.2.1
 	  SUNFFB video driver

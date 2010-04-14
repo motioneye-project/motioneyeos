@@ -5,5 +5,4 @@ config BR2_PACKAGE_XAPP_XAUTH
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  xauth 1.0.4
 	  X authority file utility

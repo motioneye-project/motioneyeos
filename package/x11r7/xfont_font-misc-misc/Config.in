@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XFONT_FONT_MISC_MISC
 	bool "font-misc-misc"
 	help
-	  font-misc-misc 1.1.0
 	  No description available

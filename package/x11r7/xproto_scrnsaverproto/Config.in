@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XPROTO_SCRNSAVERPROTO
 	bool "scrnsaverproto"
 	help
-	  scrnsaverproto 1.2.0
 	  X.Org ScrnSaver protocol headers

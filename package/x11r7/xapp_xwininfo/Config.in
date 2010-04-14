@@ -3,5 +3,4 @@ config BR2_PACKAGE_XAPP_XWININFO
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  xwininfo 1.0.5
 	  window information utility for X

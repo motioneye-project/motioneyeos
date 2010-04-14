@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XPROTO_XINERAMAPROTO
 	bool "xineramaproto"
 	help
-	  xineramaproto 1.2
 	  X.Org Xinerama protocol headers

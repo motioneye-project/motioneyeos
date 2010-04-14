@@ -3,5 +3,4 @@ config BR2_PACKAGE_XLIB_LIBXAU
 	select BR2_PACKAGE_XPROTO_XPROTO
 	select BR2_PACKAGE_XUTIL_UTIL_MACROS
 	help
-	  libXau 1.0.5
 	  X.Org Xau library

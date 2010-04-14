@@ -8,5 +8,4 @@ config BR2_PACKAGE_XLIB_LIBXFONT
 	select BR2_PACKAGE_XPROTO_XPROTO
 	select BR2_PACKAGE_XFONT_ENCODINGS
 	help
-	  libXfont 1.4.1
 	  X.Org Xfont library

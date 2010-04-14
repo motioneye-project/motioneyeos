@@ -5,5 +5,4 @@ config BR2_PACKAGE_XAPP_XFD
 	select BR2_PACKAGE_XLIB_LIBXAW
 	select BR2_PACKAGE_XLIB_LIBXFT
 	help
-	  xfd 1.0.1
 	  X.Org xfd application

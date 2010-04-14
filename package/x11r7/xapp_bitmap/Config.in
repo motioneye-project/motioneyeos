@@ -5,5 +5,4 @@ config BR2_PACKAGE_XAPP_BITMAP
 	select BR2_PACKAGE_XLIB_LIBXMU
 	select BR2_PACKAGE_XDATA_XBITMAPS
 	help
-	  bitmap 1.0.2
 	  X.Org bitmap application

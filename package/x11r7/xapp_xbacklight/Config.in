@@ -2,5 +2,4 @@ config BR2_PACKAGE_XAPP_XBACKLIGHT
 	bool "xbacklight"
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
-	  xbacklight 1.1.1
 	  xbacklight

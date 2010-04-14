@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XPROTO_PRINTPROTO
 	bool "printproto"
 	help
-	  printproto 1.0.3
 	  X.Org Print protocol headers

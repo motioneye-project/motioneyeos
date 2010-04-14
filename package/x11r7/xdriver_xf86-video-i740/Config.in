@@ -8,5 +8,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_I740
 	select BR2_PACKAGE_XPROTO_XEXTPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-i740 1.3.2
 	  Intel i740 video driver

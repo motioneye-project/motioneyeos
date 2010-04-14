@@ -6,5 +6,4 @@ config BR2_PACKAGE_XAPP_XCLOCK
 	select BR2_PACKAGE_XLIB_LIBXRENDER
 	select BR2_PACKAGE_XLIB_LIBXKBFILE
 	help
-	  xclock 1.0.2
 	  analog / digital clock for X

@@ -3,5 +3,4 @@ config BR2_PACKAGE_XAPP_XSTDCMAP
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  xstdcmap 1.0.1
 	  X standard colormap utility

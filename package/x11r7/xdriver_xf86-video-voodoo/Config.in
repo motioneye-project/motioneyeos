@@ -8,5 +8,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_VOODOO
 	select BR2_PACKAGE_XPROTO_XF86DGAPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-voodoo 1.2.3
 	  Voodoo video driver

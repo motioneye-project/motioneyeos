@@ -4,5 +4,4 @@ config BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XPROTO_XEXTPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXext 1.1.1
 	  X.Org Xext library

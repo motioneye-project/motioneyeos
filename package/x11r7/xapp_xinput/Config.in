@@ -2,5 +2,4 @@ config BR2_PACKAGE_XAPP_XINPUT
 	bool "xinput"
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
-	  xinput 1.5.0
 	  xinput

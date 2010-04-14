@@ -5,5 +5,4 @@ config BR2_PACKAGE_XLIB_LIBXRES
 	select BR2_PACKAGE_XPROTO_RESOURCEPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXres 1.0.4
 	  X.Org XRes library

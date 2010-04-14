@@ -3,5 +3,4 @@ config BR2_PACKAGE_XLIB_LIBICE
 	select BR2_PACKAGE_XLIB_XTRANS
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libICE 1.0.6
 	  X.Org ICE library

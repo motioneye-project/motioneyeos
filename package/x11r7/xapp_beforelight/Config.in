@@ -5,5 +5,4 @@ config BR2_PACKAGE_XAPP_BEFORELIGHT
 	select BR2_PACKAGE_XLIB_LIBXAW
 	select BR2_PACKAGE_XLIB_LIBXT
 	help
-	  beforelight 1.0.2
 	  screen saver

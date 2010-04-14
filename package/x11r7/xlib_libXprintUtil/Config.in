@@ -5,5 +5,4 @@ config BR2_PACKAGE_XLIB_LIBXPRINTUTIL
 	select BR2_PACKAGE_XLIB_LIBXT
 	select BR2_PACKAGE_XPROTO_PRINTPROTO
 	help
-	  libXprintUtil 1.0.1
 	  X.Org XprintUtil library

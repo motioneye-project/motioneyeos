@@ -1,5 +1,4 @@
 config BR2_PACKAGE_XFONT_FONT_MISC_ETHIOPIC
 	bool "font-misc-ethiopic"
 	help
-	  font-misc-ethiopic 1.0.1
 	  No description available

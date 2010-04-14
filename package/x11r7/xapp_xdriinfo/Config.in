@@ -4,5 +4,4 @@ config BR2_PACKAGE_XAPP_XDRIINFO
 	select BR2_PACKAGE_XPROTO_GLPROTO
 	select BR2_PACKAGE_MESA3D
 	help
-	  xdriinfo 1.0.3
 	  query configuration information of DRI drivers

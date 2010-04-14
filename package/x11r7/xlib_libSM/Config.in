@@ -4,5 +4,4 @@ config BR2_PACKAGE_XLIB_LIBSM
 	select BR2_PACKAGE_XLIB_XTRANS
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libSM 1.1.1
 	  X.Org SM library

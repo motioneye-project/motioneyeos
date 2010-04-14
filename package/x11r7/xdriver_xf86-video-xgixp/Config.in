@@ -7,5 +7,4 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_XGIXP
 	select BR2_PACKAGE_XPROTO_XEXTPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  xf86-video-xgixp 1.7.99.4
 	  XGIXP based chips video driver

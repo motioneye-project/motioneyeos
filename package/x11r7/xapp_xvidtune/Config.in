@@ -3,5 +3,4 @@ config BR2_PACKAGE_XAPP_XVIDTUNE
 	select BR2_PACKAGE_XLIB_LIBXAW
 	select BR2_PACKAGE_XLIB_LIBXXF86VM
 	help
-	  xvidtune 1.0.1
 	  video mode tuner for Xorg

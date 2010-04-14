@@ -4,5 +4,4 @@ config BR2_PACKAGE_XAPP_FONTTOSFNT
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBFONTENC
 	help
-	  fonttosfnt 1.0.3
 	  X.Org fonttosfnt application

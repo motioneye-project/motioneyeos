@@ -5,5 +5,4 @@ config BR2_PACKAGE_XLIB_LIBXI
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXi 1.3
 	  X.Org Xi library

@@ -4,5 +4,4 @@ config BR2_PACKAGE_XAPP_XSETROOT
 	select BR2_PACKAGE_XLIB_LIBXMU
 	select BR2_PACKAGE_XDATA_XBITMAPS
 	help
-	  xsetroot 1.0.3
 	  X.Org xsetroot application

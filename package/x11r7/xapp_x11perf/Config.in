@@ -4,5 +4,4 @@ config BR2_PACKAGE_XAPP_X11PERF
 	select BR2_PACKAGE_XLIB_LIBXMU
 	select BR2_PACKAGE_XLIB_LIBXFT
 	help
-	  x11perf 1.5.1
 	  summarize x11perf results

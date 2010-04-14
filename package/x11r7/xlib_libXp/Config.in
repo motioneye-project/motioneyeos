@@ -5,5 +5,4 @@ config BR2_PACKAGE_XLIB_LIBXP
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XPROTO_PRINTPROTO
 	help
-	  libXp 1.0.0
 	  X.Org Xp library

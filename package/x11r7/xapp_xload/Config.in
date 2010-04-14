@@ -2,5 +2,4 @@ config BR2_PACKAGE_XAPP_XLOAD
 	bool "xload"
 	select BR2_PACKAGE_XLIB_LIBXAW
 	help
-	  xload 1.0.1
 	  system load average display for X

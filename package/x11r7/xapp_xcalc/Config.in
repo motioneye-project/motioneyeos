@@ -2,5 +2,4 @@ config BR2_PACKAGE_XAPP_XCALC
 	bool "xcalc"
 	select BR2_PACKAGE_XLIB_LIBXAW
 	help
-	  xcalc 1.0.1
 	  scientific calculator for X

@@ -4,5 +4,4 @@ config BR2_PACKAGE_XLIB_LIBXRENDER
 	select BR2_PACKAGE_XPROTO_RENDERPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  libXrender 0.9.5
 	  X.Org Xrender library

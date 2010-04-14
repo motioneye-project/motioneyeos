@@ -3,5 +3,4 @@ config BR2_PACKAGE_XAPP_XRANDR
 	select BR2_PACKAGE_XLIB_LIBXRANDR
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
-	  xrandr 1.3.2
 	  primitive command line interface to RandR extension

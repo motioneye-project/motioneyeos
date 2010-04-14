@@ -4,5 +4,4 @@ config BR2_PACKAGE_XAPP_XLOGO
 	select BR2_PACKAGE_XLIB_LIBXPRINTUTIL
 	select BR2_PACKAGE_XLIB_LIBXRENDER
 	help
-	  xlogo 1.0.1
 	  X Window System logo
