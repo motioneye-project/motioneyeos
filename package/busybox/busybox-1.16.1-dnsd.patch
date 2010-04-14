@@ -1,0 +1,29 @@
+diff -urpN busybox-1.16.1/include/platform.h busybox-1.16.1-dnsd/include/platform.h
+--- busybox-1.16.1/include/platform.h	2010-03-28 10:43:35.000000000 -0700
++++ busybox-1.16.1-dnsd/include/platform.h	2010-04-14 10:06:10.888341149 -0700
+@@ -291,10 +291,12 @@ typedef unsigned smalluint;
+ #if 1 /* if needed: !defined(arch1) && !defined(arch2) */
+ # define ALIGN1 __attribute__((aligned(1)))
+ # define ALIGN2 __attribute__((aligned(2)))
++# define ALIGN4 __attribute__((aligned(4)))
+ #else
+ /* Arches which MUST have 2 or 4 byte alignment for everything are here */
+ # define ALIGN1
+ # define ALIGN2
++# define ALIGN4
+ #endif
+ 
+ 
+diff -urpN busybox-1.16.1/networking/dnsd.c busybox-1.16.1-dnsd/networking/dnsd.c
+--- busybox-1.16.1/networking/dnsd.c	2010-03-28 10:43:36.000000000 -0700
++++ busybox-1.16.1-dnsd/networking/dnsd.c	2010-04-14 10:06:10.922348571 -0700
+@@ -459,7 +459,8 @@ int dnsd_main(int argc UNUSED_PARAM, cha
+ 	unsigned lsa_size;
+ 	int udps, opts;
+ 	uint16_t port = 53;
+-	uint8_t buf[MAX_PACK_LEN + 1];
++	/* Ensure buf is 32bit aligned (we need 16bit, but 32bit can't hurt) */
++	uint8_t buf[MAX_PACK_LEN + 1] ALIGN4;
+ 
+ 	opts = getopt32(argv, "vi:c:t:p:d", &listen_interface, &fileconf, &sttl, &sport);
+ 	//if (opts & 0x1) // -v
