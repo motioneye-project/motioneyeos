@@ -50,7 +50,6 @@ endmenu
 		source package/x11r7/xlib_libSM/Config.in
 		source package/x11r7/xlib_libX11/Config.in
 		source package/x11r7/xlib_libXScrnSaver/Config.in
-		source package/x11r7/xlib_libXTrap/Config.in
 		source package/x11r7/xlib_libXau/Config.in
 		source package/x11r7/xlib_libXaw/Config.in
 		source package/x11r7/xlib_libXcomposite/Config.in
@@ -169,7 +168,6 @@ endmenu
 		source package/x11r7/xapp_xsetroot/Config.in
 		source package/x11r7/xapp_xsm/Config.in
 		source package/x11r7/xapp_xstdcmap/Config.in
-		source package/x11r7/xapp_xtrap/Config.in
 		source package/x11r7/xapp_xvidtune/Config.in
 		source package/x11r7/xapp_xvinfo/Config.in
 		source package/x11r7/xapp_xwd/Config.in
@@ -295,7 +293,6 @@ endmenu
 		source package/x11r7/xproto_renderproto/Config.in
 		source package/x11r7/xproto_resourceproto/Config.in
 		source package/x11r7/xproto_scrnsaverproto/Config.in
-		source package/x11r7/xproto_trapproto/Config.in
 		source package/x11r7/xproto_videoproto/Config.in
 		source package/x11r7/xproto_windowswmproto/Config.in
 		source package/x11r7/xproto_xcmiscproto/Config.in

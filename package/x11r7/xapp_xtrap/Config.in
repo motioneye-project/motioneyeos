@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XAPP_XTRAP
-	bool "xtrap"
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBXTRAP
-	help
-	  xtrap 1.0.2
-	  X.Org xtrap application
