@@ -1,0 +1,55 @@
+[PATCH] openssl: fix build without IPv6 support
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ crypto/bio/bss_dgram.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+Index: openssl-0.9.8n/crypto/bio/bss_dgram.c
+===================================================================
+--- openssl-0.9.8n.orig/crypto/bio/bss_dgram.c
++++ openssl-0.9.8n/crypto/bio/bss_dgram.c
+@@ -61,6 +61,12 @@
+ 
+ #include <stdio.h>
+ #include <errno.h>
++#include <features.h>
++
++#if defined(__UCLIBC__) && !defined (__UCLIBC_HAS_IPV6__)
++#define NO_IPV6
++#endif
++
+ #define USE_SOCKETS
+ #include "cryptlib.h"
+ 
+@@ -429,12 +435,14 @@ static long dgram_ctrl(BIO *b, int cmd,
+ 				&sockopt_val, sizeof(sockopt_val))) < 0)
+ 				perror("setsockopt");
+ 			break;
++#ifndef NO_IPV6
+ 		case AF_INET6:
+ 			sockopt_val = IPV6_PMTUDISC_DO;
+ 			if ((ret = setsockopt(b->num, IPPROTO_IPV6, IPV6_MTU_DISCOVER,
+ 				&sockopt_val, sizeof(sockopt_val))) < 0)
+ 				perror("setsockopt");
+ 			break;
++#endif
+ 		default:
+ 			ret = -1;
+ 			break;
+@@ -470,6 +478,7 @@ static long dgram_ctrl(BIO *b, int cmd,
+ 				ret = data->mtu;
+ 				}
+ 			break;
++#ifndef NO_IPV6
+ 		case AF_INET6:
+ 			if ((ret = getsockopt(b->num, IPPROTO_IPV6, IPV6_MTU, (void *)&sockopt_val,
+ 				&sockopt_len)) < 0 || sockopt_val < 0)
+@@ -485,6 +494,7 @@ static long dgram_ctrl(BIO *b, int cmd,
+ 				ret = data->mtu;
+ 				}
+ 			break;
++#endif
+ 		default:
+ 			ret = 0;
+ 			break;
