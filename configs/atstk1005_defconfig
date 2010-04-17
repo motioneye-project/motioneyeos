@@ -731,6 +731,7 @@ BR2_PACKAGE_ZLIB=y
 #
 # filesystem for target device
 #
+BR2_ROOTFS_DEVICE_TABLE="target/device/Atmel/atstk1005/device_table.txt"
 # BR2_TARGET_ROOTFS_CRAMFS is not set
 # BR2_TARGET_ROOTFS_CLOOP is not set
 # BR2_TARGET_ROOTFS_EXT2 is not set
