@@ -8,7 +8,6 @@ BOARD_PATH:=$(call qstrip,$(BR2_BOARD_PATH))
 
 ATMEL_TARGET:=$(ATMEL_PATH)/root
 TARGET_SKELETON:=$(ATMEL_TARGET)/target_skeleton
-TARGET_DEVICE_TABLE:=$(ATMEL_TARGET)/device_table.txt
 TARGET_SKELETON_LINKS:=$(ATMEL_TARGET)/skel.tar.gz
 
 ifeq ($(BR2_avr32),y)
