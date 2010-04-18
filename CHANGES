@@ -56,6 +56,7 @@
 	#1459: Misc QA fixes
 	#1489: radvd update to 1.6
 	#1513: Enable powerpc e300c2, e300c3 and e500mc optimization
+	#1537: dev entries not created anymore
 	#1555: Fix default uclibc-0.9.31 configuration
 	#1567: openssl0.9.8n fails to compile
 
