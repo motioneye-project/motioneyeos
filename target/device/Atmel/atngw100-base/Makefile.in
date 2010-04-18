@@ -1,5 +1,4 @@
 ifeq ($(BR2_TARGET_AVR32_ATNGW100_BASE),y)
 UBOOT_BOARD_NAME:=atngw100
 TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
-TARGET_DEVICE_TABLE=$(BOARD_PATH)/device_table.txt
 endif

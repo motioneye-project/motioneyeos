@@ -104,6 +104,7 @@ BR2_PACKAGE_PORTMAP=y
 #
 # filesystem for target device
 #
+BR2_ROOTFS_DEVICE_TABLE="target/device/xtensa/device_table.txt"
 BR2_TARGET_ROOTFS_CPIO=y
 BR2_TARGET_ROOTFS_CPIO_GZIP=y
 BR2_TARGET_ROOTFS_INITRAMFS=y

@@ -15,6 +15,14 @@ config BR2_ROOTFS_POST_BUILD_SCRIPT
 	  only argument. Make sure the exit code of that script is 0,
 	  otherwise make will stop after calling it.
 
+config BR2_ROOTFS_DEVICE_TABLE
+       string "Path to the device table"
+       default "target/generic/device_table.txt"
+       help
+         Specify the location of a device table, that will be passed
+         to the makedevs utility to create all the special device
+         files in the target filesystem.
+
 source "fs/cramfs/Config.in"
 source "fs/cloop/Config.in"
 source "fs/ext2/Config.in"
