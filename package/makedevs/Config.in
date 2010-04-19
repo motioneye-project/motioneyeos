@@ -1,0 +1,5 @@
+config BR2_PACKAGE_MAKEDEVS
+       bool "makedevs"
+       help
+         The makedevs utility allows to create a set of device files
+         according to a configuration file.
