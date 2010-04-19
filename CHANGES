@@ -59,6 +59,7 @@
 	#1537: dev entries not created anymore
 	#1555: Fix default uclibc-0.9.31 configuration
 	#1567: openssl0.9.8n fails to compile
+	#1591: portmap fails to compile
 
 2010.02, Release February 26th, 2010:
 
