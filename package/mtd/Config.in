@@ -93,6 +93,10 @@ config BR2_PACKAGE_MTD_SERVE_IMAGE
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
 
+config BR2_PACKAGE_MTD_MTDINFO
+	bool "mtdinfo"
+	default y
+
 config BR2_PACKAGE_MTD_UBIATTACH
 	bool "ubiattach"
 	default y
