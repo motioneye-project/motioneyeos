@@ -1,9 +1,13 @@
 config BR2_PACKAGE_PYTHON
 	bool "python"
+	depends on BR2_USE_WCHAR
 	help
 	  The python language interpreter.
 
 	  http://www.python.org/
+
+comment "python requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_PYTHON_DEV
 	depends on BR2_PACKAGE_PYTHON
