@@ -17,6 +17,8 @@ define ROOTFS_INITRAMFS_INIT_SYMLINK
 	ln -s sbin/init $(TARGET_DIR)/init
 endef
 
+ROOTFS_INITRAMFS_PRE_GEN_HOOKS += ROOTFS_INITRAMFS_INIT_SYMLINK
+
 define ROOTFS_INITRAMFS_CMD
 	$(SHELL) fs/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(TARGET_DIR) > $$@
 endef
