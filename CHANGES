@@ -13,7 +13,7 @@
 	netperf, squid
 
 	Updated/fixed packages: alsa-utils, busybox, dnsmasq, dosfstools,
-	e2fsprogs, fbv, freetype, hostapd, iperf, iptables, iw, less,
+	e2fsprogs, eeprog, fbv, freetype, hostapd, iperf, iptables, iw, less,
 	libaio,libdrm, libgcrypt, libglib2, libpng, libxml2, matchbox,
 	mdadm, memstat, mesa3d, mtd-utils, nano, openssl, pciutils,
 	php, pixman, portage, pppd, pthread-stubs, python, qt, radvd,
@@ -66,6 +66,7 @@
 	#1567: openssl0.9.8n fails to compile
 	#1573: Alsa-utils alsactl/init/* not installed to target
 	#1591: portmap fails to compile
+	#1615: Convert eeprog package to gentargets
 	#1645: Bump hostapd package to 0.7.2
 
 2010.02, Release February 26th, 2010:
