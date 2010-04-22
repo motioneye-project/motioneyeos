@@ -1,0 +1,23 @@
+diff -Nura usb-modeswitch-1.1.2.orig/Makefile usb-modeswitch-1.1.2/Makefile
+--- usb-modeswitch-1.1.2.orig/Makefile	2010-04-17 15:27:11.000000000 -0300
++++ usb-modeswitch-1.1.2/Makefile	2010-04-22 15:05:32.363471807 -0300
+@@ -1,6 +1,6 @@
+ PROG        = usb_modeswitch
+ VERS        = 1.1.2
+-CC          = gcc
++CC          ?= gcc
+ CFLAGS      += -Wall -l usb
+ RM          = /bin/rm -f
+ OBJS        = usb_modeswitch.c
+@@ -23,8 +23,9 @@
+ install: all
+ 	install -d $(SBINDIR)
+ 	install --mode=755 usb_modeswitch $(SBINDIR)/usb_modeswitch
+-	install --mode=755 usb_modeswitch.tcl $(UDEVDIR)/usb_modeswitch
+-	install --mode=644 usb_modeswitch.conf $(ETCDIR)/usb_modeswitch.conf
++	#install --mode=755 usb_modeswitch.tcl $(UDEVDIR)/usb_modeswitch
++	#install --mode=644 usb_modeswitch.conf $(ETCDIR)/usb_modeswitch.conf
++	install -d $(MANDIR)
+ 	install --mode=644 usb_modeswitch.1 $(MANDIR)/usb_modeswitch.1
+ 
+ 
