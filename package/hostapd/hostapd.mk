@@ -4,14 +4,11 @@
 #
 #############################################################
 
-HOSTAPD_VERSION = 0.6.9
+HOSTAPD_VERSION = 0.7.2
 HOSTAPD_SITE = http://hostap.epitest.fi/releases
 HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
-
-ifeq ($(BR2_PACKAGE_LIBNL),y)
-	HOSTAPD_DEPENDENCIES += libnl
-endif
+HOSTAPD_DEPENDENCIES = libnl
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	HOSTAPD_DEPENDENCIES += openssl
@@ -57,9 +54,7 @@ endif
 # Drivers
 	echo "CONFIG_DRIVER_WIRED=y" >>$(HOSTAPD_CONFIG)
 	echo "CONFIG_DRIVER_PRISM54=y" >>$(HOSTAPD_CONFIG)
-ifeq ($(BR2_PACKAGE_LIBNL),y)
 	echo "CONFIG_DRIVER_NL80211=y" >>$(HOSTAPD_CONFIG)
-endif
 # Misc
 	echo "CONFIG_IEEE80211N=y" >>$(HOSTAPD_CONFIG)
 	echo "CONFIG_IEEE80211R=y" >>$(HOSTAPD_CONFIG)
