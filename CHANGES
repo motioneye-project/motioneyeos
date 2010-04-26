@@ -12,7 +12,7 @@
 	New packages: librsync, libatomic_ops, libusb-compat, lmbench,
 	netperf, squid
 
-	Updated/fixed packages: busybox, dnsmasq, dosfstools,
+	Updated/fixed packages: alsa-utils, busybox, dnsmasq, dosfstools,
 	e2fsprogs, fbv, freetype, iperf, iptables, iw, less,
 	libaio,libdrm, libgcrypt, libglib2, libpng, libxml2, matchbox,
 	mdadm, memstat, mesa3d, mtd-utils, nano, openssl, pciutils,
@@ -64,6 +64,7 @@
 	#1555: Fix default uclibc-0.9.31 configuration
 	#1561: [SECURITY] Update samba to 3.3.12
 	#1567: openssl0.9.8n fails to compile
+	#1573: Alsa-utils alsactl/init/* not installed to target
 	#1591: portmap fails to compile
 
 2010.02, Release February 26th, 2010:
