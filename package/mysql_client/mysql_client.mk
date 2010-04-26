@@ -24,7 +24,7 @@ MYSQL_CLIENT_CONF_OPT = \
 	--enable-thread-safe-client \
 	$(ENABLE_DEBUG)
 
-$(eval $(call AUTOTARGETS,package/database,mysql_client))
+$(eval $(call AUTOTARGETS,package,mysql_client))
 
 $(MYSQL_CLIENT_HOOK_POST_INSTALL):
 	rm -rf $(TARGET_DIR)/usr/mysql-test $(TARGET_DIR)/usr/sql-bench

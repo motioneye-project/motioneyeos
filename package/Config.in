@@ -232,8 +232,8 @@ endmenu
 
 menu "Database"
 source "package/berkeleydb/Config.in"
-source "package/database/mysql_client/Config.in"
-source "package/database/sqlite/Config.in"
+source "package/mysql_client/Config.in"
+source "package/sqlite/Config.in"
 endmenu
 
 menu "Filesystem"
