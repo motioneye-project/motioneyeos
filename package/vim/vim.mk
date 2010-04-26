@@ -9,7 +9,7 @@ VIM_SITE:=http://ftp.vim.org/pub/vim
 VIM_SOURCE_SITE:=$(VIM_SITE)/unix
 VIM_PATCH_SITE:=$(VIM_SITE)/patches/7.1
 VIM_DIR:=$(BUILD_DIR)/vim71
-VIM_PATCHES:=$(shell sed -e 's:^:$(DL_DIR)/$(VIM_VERSION).:' package/editors/vim/patches)
+VIM_PATCHES:=$(shell sed -e 's:^:$(DL_DIR)/$(VIM_VERSION).:' package/vim/patches)
 VIM_CONFIG_H:=$(VIM_DIR)/src/auto/config.h
 VIM_CONFIG_MK:=$(VIM_DIR)/src/auto/config.mk
 
@@ -31,7 +31,7 @@ $(VIM_DIR)/.patched: $(VIM_DIR)/.unpacked
 		cd $(VIM_DIR); \
 		patch -p0 < $$i) \
 	done
-	toolchain/patch-kernel.sh $(VIM_DIR) package/editors/vim/ \*.patch
+	toolchain/patch-kernel.sh $(VIM_DIR) package/vim/ \*.patch
 	touch $@
 
 $(VIM_DIR)/.configured: $(VIM_DIR)/.patched
