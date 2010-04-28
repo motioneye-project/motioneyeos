@@ -93,7 +93,7 @@ define $(2)_CONFIGURE_CMDS
 	$$(TARGET_CONFIGURE_ENV) \
 	$$($$(PKG)_CONF_ENV) \
 	./configure \
-		$(if $(filter YES,$$($$(PKG)_USE_CONFIG_CACHE)),--cache-file="$(BUILD_DIR)/tgt-config.cache",) \
+		$$(if $$(filter YES,$$($$(PKG)_USE_CONFIG_CACHE)),--cache-file="$(BUILD_DIR)/tgt-config.cache",) \
 		--target=$$(GNU_TARGET_NAME) \
 		--host=$$(GNU_TARGET_NAME) \
 		--build=$$(GNU_HOST_NAME) \
