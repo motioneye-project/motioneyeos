@@ -1,0 +1,48 @@
+commit 12435b337ea074bd31ccb03aff58c7eefa86f31c
+Author: kergoth <kergoth@a933c7a4-9bf7-0310-9141-a2e45189604d>
+Date:   Sat Nov 1 20:46:07 2008 +0000
+
+    Link plugins against libts
+    
+    Some plugins use tslib functions. Link those plugins against libts.
+    The problem is easy to see with LDFLAGS="-Wl,-no-undefined".
+    Without this change DirectFB in unable to use tslib because symbols
+    in the tslib plugins can't be resolved.
+    
+    Signed-off-by: Ville Syrjala <syrjala@sci.fi>
+    Signed-off-by: Chris Larson <clarson@kergoth.com>
+    
+    git-svn-id: svn://svn.berlios.de/tslib/trunk/tslib@56 a933c7a4-9bf7-0310-9141-a2e45189604d
+
+diff --git a/plugins/Makefile.am b/plugins/Makefile.am
+index 3b902c2..4c4ef8b 100644
+--- a/plugins/Makefile.am
++++ b/plugins/Makefile.am
+@@ -114,15 +114,19 @@ pluginexec_LTLIBRARIES = \
+   
+ variance_la_SOURCES	= variance.c
+ variance_la_LDFLAGS	= -module $(LTVSN)
++variance_la_LIBADD	= $(top_builddir)/src/libts.la
+   
+ dejitter_la_SOURCES	= dejitter.c
+ dejitter_la_LDFLAGS	= -module $(LTVSN)
++dejitter_la_LIBADD	= $(top_builddir)/src/libts.la
+   
+ linear_la_SOURCES	= linear.c
+ linear_la_LDFLAGS	= -module $(LTVSN)
++linear_la_LIBADD	= $(top_builddir)/src/libts.la
+ 
+ pthres_la_SOURCES	= pthres.c
+ pthres_la_LDFLAGS	= -module $(LTVSN)
++pthres_la_LIBADD	= $(top_builddir)/src/libts.la
+ 
+ # hw access
+ corgi_la_SOURCES	= corgi-raw.c
+@@ -148,6 +152,7 @@ tatung_la_LDFLAGS	= -module $(LTVSN)
+ 
+ input_la_SOURCES	= input-raw.c
+ input_la_LDFLAGS	= -module $(LTVSN)
++input_la_LIBADD		= $(top_builddir)/src/libts.la
+ 
+ linear_h2200_la_SOURCES	= linear-h2200.c
+ linear_h2200_la_LDFLAGS	= -module $(LTVSN)
