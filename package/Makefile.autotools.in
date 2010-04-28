@@ -152,7 +152,7 @@ define LIBTOOL_PATCH_HOOK
 endef
 
 # default values are not evaluated yet, so don't rely on this defaulting to YES
-ifneq ($($(2)_LIBTOOL_PATCH),NO)
+ifneq ($$($(2)_LIBTOOL_PATCH),NO)
 $(2)_POST_PATCH_HOOKS += LIBTOOL_PATCH_HOOK
 endif
 
