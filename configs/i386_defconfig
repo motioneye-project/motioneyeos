@@ -671,7 +671,6 @@ BR2_PACKAGE_ZLIB=y
 # Target filesystem options
 #
 BR2_ROOTFS_PREFIX="rootfs"
-BR2_ROOTFS_SUFFIX=""
 
 #
 # filesystem for target device
