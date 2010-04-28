@@ -96,19 +96,32 @@ TARGET_LDFLAGS=--sysroot $(STAGING_DIR)/
 endif
 #########################################################################
 
+# Compute GNU_TARGET_NAME and REAL_GNU_TARGET_NAME
+GNU_TARGET_NAME=$(ARCH)-linux
+
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+LIBC=uclibc
+else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
+LIBC=uclibc
+else
+LIBC=glibc
+endif
+
+ifeq ($(BR2_ARM_EABI),y)
+ABI=gnueabi
+endif
+
+REAL_GNU_TARGET_NAME=$(ARCH)-unknown-linux-$(LIBC)$(ABI)
+
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 
 # Quotes are needed for spaces et al in path components.
 TARGET_PATH="$(TOOLCHAIN_DIR)/bin:$(HOST_DIR)/bin:$(HOST_DIR)/usr/bin:$(HOST_DIR)/usr/sbin/:$(STAGING_DIR)/bin:$(STAGING_DIR)/usr/bin:$(PATH)"
-GNU_TARGET_NAME=$(ARCH)-linux
-REAL_GNU_TARGET_NAME=$(ARCH)$(GNU_TARGET_SUFFIX)
 TARGET_CROSS=$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 TOOLCHAIN_EXTERNAL_PREFIX:=$(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PREFIX))
 TOOLCHAIN_EXTERNAL_PATH:=$(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PATH))
 TARGET_PATH="$(HOST_DIR)/bin:$(HOST_DIR)/usr/bin:$(HOST_DIR)/usr/sbin/:$(TOOLCHAIN_DIR)/bin:$(TOOLCHAIN_EXTERNAL_PATH)/bin:$(PATH)"
-REAL_GNU_TARGET_NAME=$(TOOLCHAIN_EXTERNAL_PREFIX)
-GNU_TARGET_NAME=$(TOOLCHAIN_EXTERNAL_PREFIX)
 TARGET_CROSS=$(TOOLCHAIN_EXTERNAL_PATH)/bin/$(TOOLCHAIN_EXTERNAL_PREFIX)-
 endif
 TARGET_AR=$(TARGET_CROSS)ar
