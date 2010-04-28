@@ -62,10 +62,9 @@ endif
 endif
 endif
 
-ROOTFS_STRIPPED_SUFFIX=$(call qstrip,$(ROOTFS_SUFFIX))
 # File name for the Linux kernel binary
 ifndef LINUX26_KERNEL
-LINUX26_KERNEL_NAME=$(BINARIES_DIR)/$(LINUX26_FORMAT)$(ROOTFS_STRIPPED_SUFFIX)
+LINUX26_KERNEL_NAME=$(BINARIES_DIR)/$(LINUX26_FORMAT)
 endif
 
 # Version of Linux AFTER patches
