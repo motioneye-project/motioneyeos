@@ -95,14 +95,6 @@ TARGET_CXXFLAGS=$(TARGET_CFLAGS)
 TARGET_LDFLAGS=--sysroot $(STAGING_DIR)/
 endif
 #########################################################################
-#ifeq ($(BR2_ROOTFS_SUFFIX),)
-ROOTFS_SUFFIX:=$(call qstrip,$(BR2_ROOTFS_SUFFIX))
-ifeq ($(ROOTFS_SUFFIX),)
-ROOTFS_SUFFIX:=
-else
-XXXX=xxxx
-ROOTFS_SUFFIX:=-$(BR2_ROOTFS_SUFFIX)
-endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 
