@@ -27,7 +27,8 @@ LIBXSLT_DEPENDENCIES = libxml2 $(LIBXSLT_DEPENDENCIES_EXTRA)
 HOST_LIBXSLT_CONF_OPT = --enable-shared \
 			--without-debugging \
 			--without-python \
-			--without-threads
+			--without-threads \
+			--without-crypto
 
 HOST_LIBXSLT_DEPENDENCIES = host-libxml2
 
