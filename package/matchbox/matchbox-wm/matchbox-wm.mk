@@ -10,6 +10,9 @@ MATCHBOX_WM_SITE = http://matchbox-project.org/sources/matchbox-window-manager/$
 MATCHBOX_WM_DEPENDENCIES = matchbox-lib
 MATCHBOX_WM_CONF_OPT = --enable-expat
 
+# Workaround bug in configure script
+MATCHBOX_WM_CONF_ENV = expat=yes
+
 #############################################################
 
 ifeq ($(BR2_PACKAGE_X11R7_LIBXCOMPOSITE),y)
