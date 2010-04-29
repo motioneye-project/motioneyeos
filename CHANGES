@@ -5,7 +5,7 @@
 	Toolchain: uClibc 0.9.30.3 / 0.9.31, older 0.9.30.x removed.
 	2.6.33 kernel headers, binutils 2.20.1, removed broken nios2
 	support, ppc e300cX/e500mc support, improved external
-	toolchain support.
+	toolchain support, GDB 7.x support.
 
 	X.org updated to 7.5.
 
