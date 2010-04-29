@@ -1,0 +1,17 @@
+diff -Naur lua-5.1.4.org/src/luaconf.h lua-5.1.4/src/luaconf.h
+--- lua-5.1.4.org/src/luaconf.h	2008-02-11 17:25:08.000000000 +0100
++++ lua-5.1.4/src/luaconf.h	2009-11-24 23:19:15.052817379 +0100
+@@ -94,9 +94,9 @@
+ 	".\\?.dll;"  LUA_CDIR"?.dll;" LUA_CDIR"loadall.dll"
+ 
+ #else
+-#define LUA_ROOT	"/usr/local/"
+-#define LUA_LDIR	LUA_ROOT "share/lua/5.1/"
+-#define LUA_CDIR	LUA_ROOT "lib/lua/5.1/"
++#define LUA_ROOT	"/usr/"
++#define LUA_LDIR	LUA_ROOT "share/lua/"
++#define LUA_CDIR	LUA_ROOT "lib/lua/"
+ #define LUA_PATH_DEFAULT  \
+ 		"./?.lua;"  LUA_LDIR"?.lua;"  LUA_LDIR"?/init.lua;" \
+ 		            LUA_CDIR"?.lua;"  LUA_CDIR"?/init.lua"
+

@@ -14,7 +14,7 @@
 
 	Updated/fixed packages: alsa-utils, busybox, dnsmasq, dosfstools,
 	e2fsprogs, eeprog, fbv, freetype, hostapd, iperf, iptables, iw, less,
-	libaio,libdrm, libgcrypt, libglib2, libpng, libxml2, matchbox,
+	libaio,libdrm, libgcrypt, libglib2, libpng, libxml2, lua, matchbox,
 	mdadm, memstat, mesa3d, mtd-utils, nano, openssl, pciutils,
 	php, pixman, portage, pppd, pthread-stubs, python, qt, radvd,
 	samba, setserial, squashfs, tslib, usb_modeswith, wget,
@@ -34,6 +34,7 @@
 	#513: Add new squid package
 	#661: lmbench: new package
 	#800: [PATCH] iperf update to 2.0.4
+	#803: [PATCH] lua - add shared library patch and config option for...
 	#805: [PATCH] mdadm - version update
 	#817: integrator926_defconfig uses unsupported uboot board name
 	#851: Add option to specify --sysroot value for external toolchain
