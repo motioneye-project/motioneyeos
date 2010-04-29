@@ -50,7 +50,6 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_xextproto 		\
 	xproto_xf86bigfontproto 	\
 	xproto_xf86dgaproto 		\
-	xproto_xf86driproto	 	\
 	xproto_xf86rushproto 		\
 	xproto_xf86vidmodeproto 	\
 	xproto_xproto 			\
@@ -65,7 +64,6 @@ XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1"
 
 ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
-XSERVER_XORG_SERVER_DEPENDENCIES += mesa3d
 XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg --disable-glx
 else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-xorg
@@ -75,6 +73,12 @@ ifeq ($(BR2_PACKAGE_XSERVER_tinyx),y)
 XSERVER_XORG_SERVER_CONF_OPT += --enable-kdrive --enable-xfbdev --disable-glx --disable-dri
 else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-kdrive --disable-xfbdev
+endif
+
+ifeq ($(BR2_PACKAGE_MESA3D),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += mesa3d xproto_xf86driproto
+else
+XSERVER_XORG_SERVER_CONF_OPT += --disable-dri
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_XORG_SERVER_NULL_CURSOR),y)
