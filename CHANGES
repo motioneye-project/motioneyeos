@@ -12,18 +12,18 @@
 	New packages: librsync, libatomic_ops, libusb-compat, lmbench,
 	netperf, squid
 
-	Updated/fixed packages: alsa-utils, busybox, dnsmasq, dosfstools,
-	e2fsprogs, eeprog, fbv, freetype, hostapd, iperf, iptables, iw, less,
-	libaio,libdrm, libgcrypt, libglib2, libpng, libxml2, lua, matchbox,
-	mdadm, memstat, mesa3d, mtd-utils, nano, openssl, pciutils,
-	php, pixman, portage, pppd, pthread-stubs, python, qt, radvd,
-	samba, setserial, squashfs, tslib, usb_modeswith, wget,
-	xdata_xcursor-themes, xdriver_xf86-video-intel,
-	xkeyboard-config, xlib_libX11, xlib_libXaw, xlib_libXfont,
-	xlib_libXfontcache, xlib_libXxf86misc, xlib_libXtst,
-	xlib_libpciaccess, xproto_dri2proto, xproto_eviext,
-	xproto_fontcacheproto, xproto_xf86miscproto,
-	xserver_xorg-server
+	Updated/fixed packages: alsa-utils, busybox, dnsmasq,
+	dosfstools, e2fsprogs, eeprog, fbv, freetype, haserl, hostapd,
+	iperf, iptables, iw, less, libaio,libdrm, libgcrypt, libglib2,
+	libpng, libxml2, lua, matchbox, mdadm, memstat, mesa3d,
+	mtd-utils, nano, openssl, pciutils, php, pixman, portage,
+	pppd, pthread-stubs, python, qt, radvd, samba, setserial,
+	squashfs, tslib, usb_modeswith, wget, xdata_xcursor-themes,
+	xdriver_xf86-video-intel, xkeyboard-config, xlib_libX11,
+	xlib_libXaw, xlib_libXfont, xlib_libXfontcache,
+	xlib_libXxf86misc, xlib_libXtst, xlib_libpciaccess,
+	xproto_dri2proto, xproto_eviext, xproto_fontcacheproto,
+	xproto_xf86miscproto, xserver_xorg-server
 
 	Removed packages: xapp_xtrap, xlib_libXTrap, xlib_libXevie,
 	xlib_libXxf86misc, xxproto_evieext, proto_trapproto,
@@ -33,6 +33,7 @@
 
 	#513: Add new squid package
 	#661: lmbench: new package
+	#719: Add lua option to haserl
 	#800: [PATCH] iperf update to 2.0.4
 	#803: [PATCH] lua - add shared library patch and config option for...
 	#805: [PATCH] mdadm - version update
