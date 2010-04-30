@@ -12,7 +12,7 @@
 	New packages: librsync, libatomic_ops, libusb-compat, lmbench,
 	netperf, squid
 
-	Updated/fixed packages: alsa-utils, busybox, dnsmasq,
+	Updated/fixed packages: alsa-utils, busybox, directfb, dnsmasq,
 	dosfstools, e2fsprogs, eeprog, fbv, freetype, haserl, hostapd,
 	iperf, iptables, iw, less, libaio,libdrm, libgcrypt, libglib2,
 	libpng, libxml2, libxslt, lua, matchbox, mdadm, memstat, mesa3d,
