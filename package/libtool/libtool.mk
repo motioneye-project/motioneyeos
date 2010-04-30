@@ -25,3 +25,4 @@ $(eval $(call AUTOTARGETS,package,libtool,host))
 
 # variables used by other packages
 LIBTOOL:=$(HOST_DIR)/usr/bin/libtool
+LIBTOOLIZE:=$(HOST_DIR)/usr/bin/libtoolize
