@@ -98,4 +98,7 @@ config BR2_PACKAGE_DIRECTB_DITHER_RGB16
 	  Enable dithering when loading images to RGB16 surfaces.
 	  This increases the data section by 64 KBytes.
 
+config BR2_PACKAGE_DIRECTB_TESTS
+	bool "build directfb tests"
+
 endif # BR2_PACKAGE_DIRECTFB

@@ -121,6 +121,12 @@ else
 DIRECTFB_DITHER_RGB16:=--with-dither-rgb16=none
 endif
 
+ifeq ($(BR2_PACKAGE_DIRECTB_TESTS),y)
+DIRECTFB_TESTS:=--with-tests
+else
+DIRECTFB_TESTS:=
+endif
+
 DIRECTFB_CONF_OPT = \
 	--localstatedir=/var \
 	--with-gfxdrivers=$(DIRECTFB_GFX) \
@@ -146,7 +152,8 @@ DIRECTFB_CONF_OPT = \
 	--disable-sdl \
 	--disable-vnc \
 	--disable-video4linux \
-	--disable-video4linux2
+	--disable-video4linux2 \
+	$(DIRECTFB_TESTS)
 
 DIRECTFB_DEPENDENCIES = $(DIRECTFB_DEP) freetype $(DIRECTFB_FUSION)
 
