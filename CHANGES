@@ -45,6 +45,7 @@
 	#1129: Bump memstat to 0.8 and migrate to Makefile.package.in
 	#1189: Wrong u-boot configuration name for integrator926 target
 	#1219: kernel headers not correctly installed into toolchain/staging
+	#1267: Wrong BR2_EXTRA_VERSION
 	#1273: BR2_INET_IPV6 does not enable IPv6 in pppd
 	#1303: Add librsync package
 	#1321: Busybox link fails due to lack of --sysroot option

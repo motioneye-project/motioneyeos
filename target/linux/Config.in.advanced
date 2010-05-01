@@ -263,7 +263,7 @@ config BR2_EXTRA_VERSION
 	default "$(BR2_KERNEL_RC_LEVEL)" if					BR2_KERNEL_ADD_RC_PATCH
 	default "$(BR2_KERNEL_GIT_LEVEL)" if					BR2_KERNEL_ADD_LATEST_SNAPSHOT
 	default "$(BR2_KERNEL_GIT_LEVEL)" if					BR2_KERNEL_ADD_SNAPSHOT
-	default	"$(BR2_CUSTOM_LINUX26_VERSION)" if				BR2_LINUX26_CUSTOM
+	default	"" if								BR2_LINUX26_CUSTOM
 endmenu
 
 # -----------------------------------------------
