@@ -39,7 +39,7 @@ endif
 
 define LUA_INSTALL_STAGING_CMDS
 	$(INSTALL) -m 0644 -D $(@D)/etc/lua.pc \
-		$(STAGING_DIR)/usr/lib/pkgconfig
+		$(STAGING_DIR)/usr/lib/pkgconfig/lua.pc
 	$(INSTALL) $(@D)/src/liblua.a $(STAGING_DIR)/usr/lib
 	$(INSTALL) $(@D)/src/lua $(STAGING_DIR)/usr/bin
 	$(INSTALL) $(@D)/src/luac $(STAGING_DIR)/usr/bin
