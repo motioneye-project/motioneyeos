@@ -86,7 +86,7 @@ config BR2_GCC_VERSION
 	default "4.3.2"     if BR2_GCC_VERSION_4_3_2
 	default "4.3.3"     if BR2_GCC_VERSION_4_3_3
 	default "4.3.4"     if BR2_GCC_VERSION_4_3_4
-	default "4.4.3"     if BR2_GCC_VERSION_4_4_X
+	default "4.4.4"     if BR2_GCC_VERSION_4_4_X
 	default $BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
 
 config BR2_TOOLCHAIN_SYSROOT
