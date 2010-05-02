@@ -16,7 +16,7 @@
 	dosfstools, e2fsprogs, eeprog, fbv, freetype, haserl, hostapd,
 	iperf, iptables, iw, less, libaio,libdrm, libgcrypt, libglib2,
 	libpng, libxml2, libxslt, lua, matchbox, mdadm, memstat, mesa3d,
-	mtd-utils, nano, openssl, pciutils, php, pixman, portage,
+	mtd-utils, nano, ncurses, openssl, pciutils, php, pixman, portage,
 	pppd, pthread-stubs, python, qt, radvd, samba, setserial,
 	squashfs, tslib, usb_modeswith, wget, xdata_xcursor-themes,
 	xdriver_xf86-video-intel, xkeyboard-config, xlib_libX11,
