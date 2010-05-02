@@ -29,16 +29,6 @@ choice
 	help
 	  Select the version of gdb you wish to use.
 
-	config BR2_GDB_VERSION_6_4
-		bool "gdb 6.4"
-		depends on !BR2_avr32
-		depends on BR2_DEPRECATED
-
-	config BR2_GDB_VERSION_6_5
-		bool "gdb 6.5"
-		depends on !BR2_avr32
-		depends on BR2_DEPRECATED
-
 	config BR2_GDB_VERSION_6_6
 		bool "gdb 6.6"
 		depends on !BR2_avr32
@@ -68,8 +58,6 @@ endchoice
 
 config BR2_GDB_VERSION
 	string
-	default "6.4"      if BR2_GDB_VERSION_6_4
-	default "6.5"      if BR2_GDB_VERSION_6_5
 	default "6.6"      if BR2_GDB_VERSION_6_6
 	default "6.7.1"    if BR2_GDB_VERSION_6_7_1
 	default "6.7.1-avr32-2.1.5" if BR2_GDB_VERSION_6_7_1_AVR32_2_1_5
