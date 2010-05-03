@@ -2,6 +2,7 @@
 
 config BR2_PACKAGE_CCACHE_TARGET
 	bool "ccache"
+	depends on BR2_PACKAGE_GCC_TARGET
 	help
 	  ccache is a compiler cache. It speeds up recompilation of
 	  C/C++ code by caching previous compiles and detecting when
