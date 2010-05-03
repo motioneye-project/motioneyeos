@@ -9,18 +9,23 @@
 
 	X.org updated to 7.5.
 
-	New packages: librsync, libatomic_ops, libusb-compat, lmbench,
-	netperf, squid
+	New packages: cdrkit, cramfs, genext2fs, genromfs,
+	libatomic_ops, librsync, libusb-compat, lmbench, netperf,
+	squashfs, squashfs3, squid
 
-	Updated/fixed packages: alsa-utils, busybox, bzip2, directfb, dnsmasq,
-	dosfstools, e2fsprogs, eeprog, fbv, freetype, haserl, hostapd,
-	iperf, iptables, iw, less, libaio, libdrm, libgcrypt, libglib2,
-	libpng, libxml2, libxslt, linux-fusion, lua, matchbox, mdadm,
-	memstat, mesa3d, mtd-utils, nano, ncurses, openssl, pciutils,
-	php, pixman, portage, pppd, pthread-stubs, python, qt,
-	radvd, samba, setserial, squashfs, tslib, usb_modeswith, wget,
-	xdata_xcursor-themes, xdriver_xf86-video-intel, xkeyboard-config,
-	xlib_libX11, xlib_libXaw, xlib_libXfont, xlib_libXfontcache,
+	Updated/fixed packages: alsa-utils, argus, autoconf, bison,
+	busybox, bzip2, directfb, dnsmasq, dosfstools, e2fsprogs,
+	eeprog, fakeroot, fbv, findutils, freetype, haserl, hostapd,
+	iperf, iptables, iw, less, libaio, libcgi, libcgicc, libdrm,
+	libgcrypt, libglib2, libid3tag, libmad, liboil, libosip2,
+	libpng, libraw1394, libsysfs, libxml2, libxslt, linux-fusion,
+	ltrace, lua, lzma, madplay, makedevs, matchbox, mdadm,
+	memstat, mesa3d, mtd-utils, nano, ncurses, openssl, patch,
+	pciutils, php, pixman, portage, pppd, pthread-stubs, python,
+	qt, radvd, samba, setserial, smartmontools, tar, tslib,
+	udpcast, usb_modeswith, vtun, wget, xdata_xcursor-themes,
+	xdriver_xf86-video-intel, xkeyboard-config, xlib_libX11,
+	xlib_libXaw, xlib_libXfont, xlib_libXfontcache,
 	xlib_libXxf86misc, xlib_libXtst, xlib_libpciaccess,
 	xproto_dri2proto, xproto_eviext, xproto_fontcacheproto,
 	xproto_xf86miscproto, xserver_xorg-server
