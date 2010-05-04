@@ -71,7 +71,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 	touch $@
 
 $(MPLAYER_DIR)/$(MPLAYER_BINARY): $(MPLAYER_DIR)/.configured
-	$(MAKE) -C $(MPLAYER_DIR)
+	$(MAKE1) -C $(MPLAYER_DIR)
 	touch -c $@
 
 $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY): $(MPLAYER_DIR)/$(MPLAYER_BINARY)
