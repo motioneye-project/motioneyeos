@@ -2,12 +2,13 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: mplayer, xdriver_xf86-video-openchrome,
-	usb_modeswitch
+	Updated/fixed packages: hal, mplayer,
+	xdriver_xf86-video-openchrome, usb_modeswitch
 
 	Issues resolved (http://bugs.uclibc.org):
 
 	#985: Bump usb_modeswitch package to 1.1.0
+	#1525: Package hal deletes a whole <target>/etc/rc.d directory
 
 2010.05-rc1, Released May 3rd, 2010:
 

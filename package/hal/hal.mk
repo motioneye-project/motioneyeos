@@ -63,19 +63,12 @@ $(HAL_DIR)/hald/hald: $(HAL_DIR)/.configured
 
 $(TARGET_DIR)/$(HAL_TARGET_BINARY): $(HAL_DIR)/hald/hald
 	$(MAKE) STAGING_DIR="$(STAGING_DIR)" DESTDIR="$(TARGET_DIR)" -C $(HAL_DIR) install
-	rm -rf $(TARGET_DIR)/usr/share/locale
-	rm -rf $(TARGET_DIR)/usr/share/doc
 	rm -rf $(TARGET_DIR)/usr/share/gtk-doc
 	rm -rf $(TARGET_DIR)/usr/share/hal/device-manager
-	rm -rf $(TARGET_DIR)/usr/lib/pkgconfig
-	# remove _everything_ in $(TARGET_DIR)/usr/include?
-	# rm -rf $(TARGET_DIR)/usr/include
 	rm -rf $(TARGET_DIR)/usr/lib/libhal*.so
-	rm -rf $(TARGET_DIR)/usr/lib/libhal*.la
 	rm -rf $(TARGET_DIR)/usr/lib/hal
 	rm -rf $(TARGET_DIR)/etc/PolicyKit
 	$(INSTALL) -m 0755 -D package/hal/S98haldaemon $(TARGET_DIR)/etc/init.d
-	rm -rf $(TARGET_DIR)/etc/rc.d
 	for file in hald-addon-acpi* hald-addon-cpufreq \
 		hald-addon-keyboard hald-addon-pmu \
 		hald-probe-pc-floppy hald-probe-printer \
@@ -86,7 +79,6 @@ $(TARGET_DIR)/$(HAL_TARGET_BINARY): $(HAL_DIR)/hald/hald
 	do \
 		rm -f $(TARGET_DIR)/usr/libexec/$$file; \
 	done
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libhal*
 
 hal: host-pkg-config dbus-glib hwdata udev $(TARGET_DIR)/$(HAL_TARGET_BINARY)
 
