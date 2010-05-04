@@ -22,7 +22,10 @@ endif
 ifeq ($(BR2_LARGEFILE),y)
 MPLAYER_LARGEFILE:=--enable-largefiles
 else
-MPLAYER_LARGEFILE:=--disable-largefiles
+# dvdread/dvdcss requires largefile support
+MPLAYER_LARGEFILE:=--disable-largefiles \
+		   --disable-dvdread-internal \
+		   --disable-libdvdcss-internal
 endif
 
 ifeq ($(BR2_i386),y)
