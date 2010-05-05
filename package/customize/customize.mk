@@ -11,7 +11,7 @@ $(BUILD_DIR)/.customize:
 	 /bin/ls -d * > $(BUILD_DIR)/series || \
 	 touch $(BUILD_DIR)/series )
 	for f in `cat $(BUILD_DIR)/series`; do \
-		cp -af $(CUST_DIR)/$$f $(TARGET_DIR)/$$f; \
+		cp -af $(CUST_DIR)/$$f $(TARGET_DIR); \
 	done
 	rm -f $(BUILD_DIR)/series
 	touch $@
