@@ -34,9 +34,7 @@ $(eval $(call AUTOTARGETS,package,libxml2,host))
 $(LIBXML2_HOOK_POST_INSTALL):
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
 	$(SED) "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
-	rm -rf $(TARGET_DIR)/usr/share/aclocal \
-	       $(TARGET_DIR)/usr/share/doc/libxml2-$(LIBXML2_VERSION) \
-	       $(TARGET_DIR)/usr/share/gtk-doc
+	rm -rf $(TARGET_DIR)/usr/share/aclocal
 	touch $@
 
 # libxml2 for the host

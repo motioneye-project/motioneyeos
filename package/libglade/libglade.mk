@@ -12,7 +12,6 @@ LIBGLADE_DEPENDENCIES = host-pkg-config libglib2 libgtk2 atk libxml2
 $(eval $(call AUTOTARGETS,package,libglade))
 
 $(LIBGLADE_HOOK_POST_INSTALL):
-	rm -rf $(TARGET_DIR)/usr/share/gtk-doc \
-	       $(TARGET_DIR)/usr/share/xml/libglade \
+	rm -rf $(TARGET_DIR)/usr/share/xml/libglade \
 	       $(TARGET_DIR)/usr/bin/libglade-convert
 	touch $@
