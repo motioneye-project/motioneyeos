@@ -24,7 +24,21 @@
 
 # UPPERCASE Macro -- transform its argument to uppercase and replace dots and
 # hyphens to underscores
-UPPERCASE = $(shell echo $(1) | tr "a-z.-" "A-Z__")
+
+# Heavily inspired by the up macro from gmsl (http://gmsl.sf.net)
+# This is approx 5 times faster than forking a shell and tr, and
+# as this macro is used a lot it matters
+# This works by creating translation character pairs (E.G. a:A b:B)
+# and then looping though all of them running $(subst from,to,text)
+[FROM] := a b c d e f g h i j k l m n o p q r s t u v w x y z . -
+[TO]   := A B C D E F G H I J K L M N O P Q R S T U V W X Y Z _ _
+
+UPPERCASE = $(strip $(eval __tmp := $1) \
+     $(foreach c, $(join $(addsuffix :,$([FROM])),$([TO])), \
+	$(eval __tmp :=	\
+		$(subst $(word 1,$(subst :, ,$c)),$(word 2,$(subst :, ,$c)),\
+			$(__tmp)))) \
+     $(__tmp))
 
 # Define extrators for different archive suffixes
 INFLATE.bz2 = $(BZCAT)
