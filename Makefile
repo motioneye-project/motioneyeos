@@ -153,7 +153,7 @@ cc-option=$(shell if $(TARGET_CC) $(TARGET_CFLAGS) $(1) -S -o /dev/null -xc /dev
 unexport CROSS_COMPILE
 unexport ARCH
 
-GNU_HOST_NAME=$(shell package/gnuconfig/config.guess)
+GNU_HOST_NAME:=$(shell package/gnuconfig/config.guess)
 
 #############################################################
 #
