@@ -12,7 +12,7 @@ BOA_VERSION=0.94.14rc21
 BOA_SOURCE=boa-$(BOA_VERSION).tar.gz
 BOA_CAT:=$(ZCAT)
 BOA_SITE=http://www.boa.org/
-BOA_DIR=$(BUILD_DIR)/${shell basename $(BOA_SOURCE) .tar.gz}
+BOA_DIR=$(BUILD_DIR)/boa-$(BOA_VERSION)
 BOA_WORKDIR=$(BUILD_DIR)/boa_workdir
 
 $(DL_DIR)/$(BOA_SOURCE):
