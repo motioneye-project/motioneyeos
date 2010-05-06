@@ -104,7 +104,7 @@ LIBC=uclibc
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
 LIBC=uclibc
 else
-LIBC=glibc
+LIBC=
 endif
 
 ifeq ($(BR2_ARM_EABI),y)
