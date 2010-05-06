@@ -11,3 +11,4 @@ XLIB_XTRANS_AUTORECONF = NO
 XLIB_XTRANS_INSTALL_STAGING = YES
 
 $(eval $(call AUTOTARGETS,package/x11r7,xlib_xtrans))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_xtrans,host))
