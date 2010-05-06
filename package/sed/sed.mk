@@ -17,7 +17,7 @@ endif
 #HOST_SED_DIR:=$(STAGING_DIR)
 HOST_SED_DIR:=$(TOOLCHAIN_DIR)
 SED:=$(HOST_SED_DIR)/bin/sed -i -e
-HOST_SED_BINARY=$(shell package/sed/sedcheck.sh)
+HOST_SED_BINARY:=$(shell package/sed/sedcheck.sh)
 HOST_SED_IF_ANY=$(shell toolchain/dependencies/check-host-sed.sh)
 
 $(DL_DIR)/$(SED_SOURCE):
