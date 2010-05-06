@@ -18,10 +18,12 @@ define PCIUTILS_CONFIGURE_CMDS
 	$(SED) 's/uname -s/echo Linux/' \
 		-e 's/uname -r/echo $(LINUX_HEADERS_VERSION)/' \
 		$(PCIUTILS_DIR)/lib/configure
+	$(SED) 's/^STRIP/#STRIP/' $(PCIUTILS_DIR)/Makefile
 endef
 
 define PCIUTILS_BUILD_CMDS
 	$(MAKE) CC="$(TARGET_CC)" \
+		HOST="$(KERNEL_ARCH)-linux" \
 		OPT="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		RANLIB=$(TARGET_RANLIB) \
@@ -33,8 +35,10 @@ define PCIUTILS_BUILD_CMDS
 		SHAREDIR=/usr/share/misc
 endef
 
+# Ditch install-lib if SHARED is an option in the future
 define PCIUTILS_INSTALL_TARGET_CMDS
 	$(MAKE) BUILDDIR=$(@D) -C $(@D) PREFIX=$(TARGET_DIR)/usr install
+	$(MAKE) BUILDDIR=$(@D) -C $(@D) PREFIX=$(TARGET_DIR)/usr install-lib
 endef
 
 $(eval $(call GENTARGETS,package,pciutils))
