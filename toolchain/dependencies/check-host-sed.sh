@@ -1,3 +1,5 @@
+#!/bin/sh
+
 SEDLIST="/usr/bin/sed /bin/sed sed gnused gsed"
 
 for SED in $SEDLIST
