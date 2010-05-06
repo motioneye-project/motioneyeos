@@ -338,6 +338,9 @@ $(1)-extract:		$(1)-depends \
 
 $(1)-depends:		$(1)-source $$($(2)_DEPENDENCIES)
 
+$(1)-show-depends:
+			@echo $$($(2)_DEPENDENCIES)
+
 $(1)-source:		$$($(2)_TARGET_SOURCE)
 
 $(1)-uninstall:		$(1)-configure $$($(2)_TARGET_UNINSTALL)
