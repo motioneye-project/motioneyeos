@@ -2,9 +2,9 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: customize, hal, mplayer, pciutils,
-	xdriver_xf86-video-openchrome, usb_modeswitch, usbutils,
-	wpa_supplicant
+	Updated/fixed packages: customize, hal, hostapd, mplayer,
+	pciutils, xdriver_xf86-video-openchrome, usb_modeswitch,
+	usbutils, wpa_supplicant
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -14,6 +14,7 @@
 	#1525: Package hal deletes a whole <target>/etc/rc.d directory
 	#1699: Fix usbutils dependencies and bump
 	#1705: Fix pciutils broken cross compiling
+	#1717: External toolchain fixes for hostapd & wpa_supplicant
 
 2010.05-rc1, Released May 3rd, 2010:
 
