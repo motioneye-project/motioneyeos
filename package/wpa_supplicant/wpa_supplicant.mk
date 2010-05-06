@@ -33,6 +33,7 @@ $(eval $(call AUTOTARGETS,package,wpa_supplicant))
 $(WPA_SUPPLICANT_TARGET_CONFIGURE):
 	cp $(WPA_SUPPLICANT_DIR)/wpa_supplicant/defconfig $(WPA_SUPPLICANT_CONFIG)
 	echo "CFLAGS += $(TARGET_CFLAGS)" >>$(WPA_SUPPLICANT_CONFIG)
+	echo "LDFLAGS += $(TARGET_LDFLAGS)" >>$(WPA_SUPPLICANT_CONFIG)
 	echo "CC = $(TARGET_CC)" >>$(WPA_SUPPLICANT_CONFIG)
 	$(SED) "s/\/local//" $(WPA_SUPPLICANT_DIR)/wpa_supplicant/Makefile
 ifneq ($(BR2_PACKAGE_WPA_SUPPLICANT_EAP),y)

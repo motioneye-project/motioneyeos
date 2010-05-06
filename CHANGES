@@ -3,7 +3,8 @@
 	Fixes all over the tree.
 
 	Updated/fixed packages: hal, mplayer, pciutils,
-	xdriver_xf86-video-openchrome, usb_modeswitch, usbutils
+	xdriver_xf86-video-openchrome, usb_modeswitch, usbutils,
+	wpa_supplicant
 
 	Issues resolved (http://bugs.uclibc.org):
 
