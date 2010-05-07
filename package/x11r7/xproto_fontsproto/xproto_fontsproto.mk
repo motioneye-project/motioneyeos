@@ -12,3 +12,4 @@ XPROTO_FONTSPROTO_INSTALL_STAGING = YES
 XPROTO_FONTSPROTO_INSTALL_TARGET = NO
 
 $(eval $(call AUTOTARGETS,package/x11r7,xproto_fontsproto))
+$(eval $(call AUTOTARGETS,package/x11r7,xproto_fontsproto,host))
