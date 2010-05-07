@@ -2,9 +2,9 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: customize, hal, hostapd, mplayer,
-	pciutils, xdriver_xf86-video-openchrome, usb_modeswitch,
-	usbutils, wpa_supplicant
+	Updated/fixed packages: busybox, customize, hal, hostapd, libxcb,
+	mplayer, pciutils, xdriver_xf86-video-openchrome,
+	usb_modeswitch, usbutils, wpa_supplicant, xlib_libX11
 
 	Issues resolved (http://bugs.uclibc.org):
 
