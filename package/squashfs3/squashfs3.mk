@@ -18,7 +18,7 @@ define SQUASHFS3_INSTALL_TARGET_CMDS
 endef
 
 define HOST_SQUASHFS3_BUILD_CMDS
- $(HOST_MAKE_ENV) $(MAKE) -C $(@D)/squashfs-tools/
+ $(HOST_MAKE_ENV) $(MAKE) CFLAGS="$(HOST_CFLAGS)" LDFLAGS="$(HOST_LDFLAGS)" -C $(@D)/squashfs-tools/
 endef
 
 define HOST_SQUASHFS3_INSTALL_CMDS

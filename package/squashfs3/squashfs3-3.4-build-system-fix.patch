@@ -9,9 +9,9 @@ Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
 
 Index: squashfs3.4/squashfs-tools/Makefile
 ===================================================================
---- squashfs3.4.orig/squashfs-tools/Makefile
-+++ squashfs3.4/squashfs-tools/Makefile
-@@ -2,12 +2,12 @@ INSTALL_DIR = /usr/local/bin
+--- squashfs3.4.orig/squashfs-tools/Makefile	2008-08-26 09:10:13.000000000 +0200
++++ squashfs3.4/squashfs-tools/Makefile	2010-05-06 21:09:28.000000000 +0200
+@@ -2,12 +2,12 @@
  
  INCLUDEDIR = .
  
@@ -25,4 +25,13 @@ Index: squashfs3.4/squashfs-tools/Makefile
 +	$(CC) $(LDFLAGS) mksquashfs.o read_fs.o sort.o -lz -lpthread -lm -o $@
  
  mksquashfs.o: mksquashfs.c squashfs_fs.h mksquashfs.h global.h sort.h
+ 
+@@ -16,7 +16,7 @@
+ sort.o: sort.c squashfs_fs.h global.h sort.h
+ 
+ unsquashfs: unsquashfs.o
+-	$(CC) unsquashfs.o -lz -lpthread -lm -o $@
++	$(CC) $(LDFLAGS) unsquashfs.o -lz -lpthread -lm -o $@
+ 
+ unsquashfs.o: unsquashfs.c squashfs_fs.h read_fs.h global.h
  
