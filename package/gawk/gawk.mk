@@ -48,7 +48,7 @@ $(GAWK_DIR)/.configured: $(GAWK_DIR)/.unpacked
 	touch $@
 
 $(GAWK_DIR)/$(GAWK_BINARY): $(GAWK_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(GAWK_DIR)
+	$(MAKE) -C $(GAWK_DIR)
 
 $(TARGET_DIR)/$(GAWK_TARGET_BINARY): $(GAWK_DIR)/$(GAWK_BINARY)
 	rm -f $(TARGET_DIR)/usr/bin/awk
@@ -61,7 +61,7 @@ $(TARGET_DIR)/$(GAWK_TARGET_BINARY): $(GAWK_DIR)/$(GAWK_BINARY)
 gawk: $(TARGET_DIR)/$(GAWK_TARGET_BINARY)
 
 gawk-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GAWK_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GAWK_DIR) uninstall
 	-$(MAKE) -C $(GAWK_DIR) clean
 
 gawk-dirclean:
