@@ -7,21 +7,40 @@ config BR2_PACKAGE_PHP
 
 	  http://www.php.net
 
+if BR2_PACKAGE_PHP
+
 config BR2_PACKAGE_PHP_CLI
-        bool "cli interface"
-        depends on BR2_PACKAGE_PHP
-        default y
-        help
-          command line interface for php.
-          you must have at least cli or cgi selected.
+       bool
 
 config BR2_PACKAGE_PHP_CGI
-        bool "cgi interface"
-        depends on BR2_PACKAGE_PHP
-        default y
+       bool
+
+choice
+        prompt "PHP interface"
+        default BR2_PACKAGE_PHP_SAPI_CGI
         help
-          cgi interface for php
-          you must have at least cli or cgi selected.
+          Select the PHP interface(s).
+
+config BR2_PACKAGE_PHP_SAPI_CLI
+        bool "cli interface"
+	select BR2_PACKAGE_PHP_CLI
+        help
+          Command line interface for PHP.
+
+config BR2_PACKAGE_PHP_SAPI_CGI
+        bool "cgi interface"
+        select BR2_PACKAGE_PHP_CGI
+        help
+          CGI interface for PHP.
+
+config BR2_PACKAGE_PHP_SAPI_CLI_CGI
+        bool "cli and cgi interfaces"
+	select BR2_PACKAGE_PHP_CLI
+	select BR2_PACKAGE_PHP_CGI
+	help
+	  Command line and CGI interfaces for PHP.
+
+endchoice
 
 config BR2_PACKAGE_PHP_FASTCGI
         bool "fastcgi"
@@ -30,6 +49,5 @@ config BR2_PACKAGE_PHP_FASTCGI
         help
           fast cgi interface for php
 
-if BR2_PACKAGE_PHP
 source "package/php/Config.ext"
 endif
