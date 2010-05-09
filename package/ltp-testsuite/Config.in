@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LTP-TESTSUITE
 	bool "ltp-testsuite"
+	depends on BROKEN
 	help
 	  The Linux Test Project provides a huge testsuite for Linux.
 
