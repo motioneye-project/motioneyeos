@@ -16,7 +16,7 @@ SHARED_MIME_INFO_DEPENDENCIES = host-pkg-config host-libglib2 host-libxml2 host-
 
 SHARED_MIME_INFO_CONF_OPT = --disable-update-mimedb
 
-HOST_SHARED_MIME_INFO_DEPENDENCIES = host-pkg-config
+HOST_SHARED_MIME_INFO_DEPENDENCIES = host-pkg-config host-intltool
 
 HOST_SHARED_MIME_INFO_CONF_OPT = \
 	--disable-update-mimedb
