@@ -79,7 +79,7 @@ $(TARGET_DIR)/$(HAL_TARGET_BINARY): $(HAL_DIR)/hald/hald
 		rm -f $(TARGET_DIR)/usr/libexec/$$file; \
 	done
 
-hal: host-pkg-config dbus-glib hwdata udev $(TARGET_DIR)/$(HAL_TARGET_BINARY)
+hal: host-pkg-config host-libxml-parser-perl dbus-glib hwdata udev $(TARGET_DIR)/$(HAL_TARGET_BINARY)
 
 hal-clean:
 	rm -f $(TARGET_DIR)/etc/dbus-1/system.d/hal.conf
