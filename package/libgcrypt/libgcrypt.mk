@@ -12,7 +12,8 @@ LIBGCRYPT_INSTALL_TARGET = YES
 LIBGCRYPT_CONF_ENV = \
 	ac_cv_sys_symbol_underscore=no
 LIBGCRYPT_CONF_OPT = \
-	--disable-optimization
+	--disable-optimization \
+	--with-gpg-error-prefix=$(STAGING_DIR)/usr
 
 LIBGCRYPT_DEPENDENCIES = libgpg-error
 
