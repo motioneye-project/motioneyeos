@@ -3,7 +3,7 @@
 # sed
 #
 #############################################################
-SED_VERSION:=4.1.5
+SED_VERSION:=4.2.1
 SED_SOURCE:=sed-$(SED_VERSION).tar.gz
 SED_SITE:=$(BR2_GNU_MIRROR)/sed
 SED_CAT:=$(ZCAT)
@@ -100,7 +100,7 @@ endif
 #############################################################
 $(SED_DIR2)/.unpacked: $(DL_DIR)/$(SED_SOURCE)
 	$(SED_CAT) $(DL_DIR)/$(SED_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	$(CONFIG_UPDATE) $(SED_DIR2)/config
+	$(CONFIG_UPDATE) $(SED_DIR2)/build-aux
 	touch $@
 
 $(SED_DIR2)/.configured: $(SED_DIR2)/.unpacked
