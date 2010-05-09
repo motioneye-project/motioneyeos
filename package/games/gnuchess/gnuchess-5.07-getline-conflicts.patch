@@ -1,0 +1,48 @@
+This patch fixes a conflict between the C library getline() function
+and gnuchess getline() function.
+
+Patch borrowed from the gnuchess Debian package.
+
+Index: gnuchess-5.07/src/input.c
+===================================================================
+--- gnuchess-5.07.orig/src/input.c	2009-09-29 16:01:38.000000000 +0200
++++ gnuchess-5.07/src/input.c	2009-09-29 16:02:57.000000000 +0200
+@@ -127,7 +127,7 @@
+ 	      (RealGameCnt+1)/2 + 1 );
+     }
+     pthread_mutex_lock(&input_mutex);
+-    getline(prompt);
++    get_line(prompt);
+     input_status = INPUT_AVAILABLE;
+     pthread_cond_signal(&input_cond);
+     pthread_mutex_unlock(&input_mutex);
+@@ -173,13 +173,13 @@
+ {
+ #ifdef HAVE_LIBREADLINE
+   if (isatty(STDIN_FILENO)) {
+-    getline = getline_readline;
++    get_line = getline_readline;
+     using_history();
+   } else {
+-    getline = getline_standard;
++    get_line = getline_standard;
+   }
+ #else
+-  getline = getline_standard;
++  get_line = getline_standard;
+ #endif
+   /* Start input thread */
+   pthread_create(&input_thread, NULL, input_func, NULL);
+Index: gnuchess-5.07/src/common.h
+===================================================================
+--- gnuchess-5.07.orig/src/common.h	2009-09-29 16:06:17.000000000 +0200
++++ gnuchess-5.07/src/common.h	2009-09-29 16:06:40.000000000 +0200
+@@ -745,7 +745,7 @@
+  * Input routine, initialized to one of the specific
+  * input routines. The given argument is the prompt.
+  */
+-void (*getline) (char *);
++void (*get_line) (char *);
+ 
+ #define MAXSTR 128
+ extern char inputstr[MAXSTR];
