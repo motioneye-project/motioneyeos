@@ -3,7 +3,7 @@
 # xvkbd
 #
 #############################################################
-XVKBD_VERSION = 2.8
+XVKBD_VERSION = 3.2
 XVKBD_SOURCE = xvkbd-$(XVKBD_VERSION).tar.gz
 XVKBD_SITE = http://homepage3.nifty.com/tsato/xvkbd
 XVKBD_AUTORECONF = NO
@@ -15,7 +15,7 @@ XVKBD_MAKE_OPT = CC=$(TARGET_CC) CXX=$(TARGET_CXX) LD=$(TARGET_CC) \
 
 XVKBD_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
-XVKBD_DEPENDENCIES = xserver_xorg-server
+XVKBD_DEPENDENCIES = xserver_xorg-server xlib_libXaw
 
 $(eval $(call AUTOTARGETS,package,xvkbd))
 

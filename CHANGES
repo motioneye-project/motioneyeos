@@ -6,7 +6,7 @@
 	libxcb, mplayer, pciutils, xdriver_xf86-video-openchrome,
 	usb_modeswitch, usbutils, wpa_supplicant, xapp_bdftopcf,
 	xapp_mkfontdir, xfont_encodings, xlib_libX11, xlib_libXfont,
-	xlib_xtrans, xproto_fontcacheproto, xproto_fontsproto.
+	xlib_xtrans, xproto_fontcacheproto, xproto_fontsproto, xvkbd
 
 	Removed packages: vice
 
