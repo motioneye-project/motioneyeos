@@ -207,6 +207,9 @@ menu "Interpreter languages and scripting"
 source "package/haserl/Config.in"
 source "package/java/jamvm/Config.in"
 source "package/lua/Config.in"
+if BR2_PACKAGE_LUA
+source "package/luafilesystem/Config.in"
+endif
 source "package/microperl/Config.in"
 source "package/php/Config.in"
 source "package/python/Config.in"

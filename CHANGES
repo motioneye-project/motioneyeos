@@ -4,6 +4,8 @@
 
 	New GTK-based configurator, usable using 'make gconfig'.
 
+	New packages: luafilesystem
+
 	Updated/fixed packages: cdrkit, libidn, netperf
 
 	Issues resolved (http://bugs.uclibc.org):
