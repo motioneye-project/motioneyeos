@@ -45,6 +45,7 @@ endif
 # We take care of that in Config.in
 ifneq ($(BR2_PACKAGE_OPENSSL),y)
 	echo "CONFIG_CRYPTO=internal" >>$(HOSTAPD_CONFIG)
+	echo "CONFIG_INTERNAL_LIBTOMMATH=y" >>$(HOSTAPD_CONFIG)
 	echo "CONFIG_TLS=internal" >>$(HOSTAPD_CONFIG)
 endif
 # WPS
