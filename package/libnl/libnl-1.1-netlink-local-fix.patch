@@ -1,0 +1,19 @@
+Fixes the ULONG_MAX definition problem:
+
+In file included from cache.c:43:
+../include/netlink-local.h: In function '__str2type':../include/netlink-local.h:218: error: 'ULONG_MAX' undeclared (first use in this function)
+
+Patch borrowed from OpenEmbedded, recipes/libnl/files/netlink-local-fix.patch.
+
+Index: libnl-1.1/include/netlink-local.h
+===================================================================
+--- libnl-1.1.orig/include/netlink-local.h	2009-06-18 15:28:32.614209645 +0400
++++ libnl-1.1/include/netlink-local.h	2009-06-18 15:28:44.094190518 +0400
+@@ -26,6 +26,7 @@
+ #include <sys/socket.h>
+ #include <inttypes.h>
+ #include <assert.h>
++#include <limits.h>
+ 
+ #include <arpa/inet.h>
+ #include <netdb.h>
