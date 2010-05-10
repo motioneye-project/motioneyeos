@@ -8,6 +8,8 @@
 	xapp_mkfontdir, xfont_encodings, xlib_libX11, xlib_libXfont,
 	xlib_xtrans, xproto_fontcacheproto, xproto_fontsproto.
 
+	Removed packages: vice
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#849: "customize" package copies files to wrong place in target tree

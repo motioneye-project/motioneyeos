@@ -6,5 +6,4 @@ source "package/games/lxdoom/Config.in"
 source "package/games/magiccube4d/Config.in"
 source "package/games/prboom/Config.in"
 source "package/games/rubix/Config.in"
-source "package/games/vice/Config.in"
 endmenu
