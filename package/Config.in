@@ -211,6 +211,7 @@ if BR2_PACKAGE_LUA
 source "package/cgilua/Config.in"
 source "package/coxpcall/Config.in"
 source "package/luafilesystem/Config.in"
+source "package/luasocket/Config.in"
 source "package/rings/Config.in"
 endif
 source "package/microperl/Config.in"
