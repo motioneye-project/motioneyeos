@@ -6,6 +6,7 @@
 
 LESS_VERSION = 436
 LESS_SITE = http://www.greenwoodsoftware.com/less
+LESS_DEPENDENCIES = ncurses
 
 $(eval $(call AUTOTARGETS,package,less))
 
