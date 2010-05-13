@@ -97,7 +97,7 @@ choice
 	  Select the specific Linux version you want to use
 
 config BR2_LINUX_2_6_STABLE
-	bool "The latest stable Linux kernel (2.6.33.2)"
+	bool "The latest stable Linux kernel (2.6.33.4)"
 
 config BR2_LINUX_2_6_33
 	bool "Linux 2.6.33"
