@@ -56,6 +56,14 @@ config BR2_ENABLE_LOCALE_WHITELIST
 	  will be available on the target - That purely depends on the
 	  support for that locale in the selected packages.
 
+# uClibc toolchains require a separatly-compiled gettext/libintl when
+# locale support is enabled. This isn't necessary with glibc
+#  toolchains as glibc includes gettext/libintl.
+config BR2_NEEDS_GETTEXT
+	bool
+	default y if (BR2_TOOLCHAIN_BUILDROOT && BR2_ENABLE_LOCALE)
+	default y if (BR2_TOOLCHAIN_EXTERNAL_UCLIBC && BR2_ENABLE_LOCALE)
+
 config BR2_USE_WCHAR
 	bool "Enable WCHAR support"
 	help
