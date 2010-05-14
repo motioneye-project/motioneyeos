@@ -56,7 +56,7 @@ $(TARGET_DIR)/$(GNUMAKE_TARGET_BINARY): $(GNUMAKE_DIR)/$(GNUMAKE_BINARY)
 	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
 		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc
 
-make: $(if $(BR2_PACKAGE_GETTEXT),gettext) $(TARGET_DIR)/$(GNUMAKE_TARGET_BINARY)
+make: $(if $(BR2_NEEDS_GETTEXT),gettext) $(TARGET_DIR)/$(GNUMAKE_TARGET_BINARY)
 
 make-clean:
 	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(GNUMAKE_DIR) uninstall

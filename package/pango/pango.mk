@@ -45,7 +45,7 @@ HOST_PANGO_CONF_OPT = \
 		$(if $(BR2_PACKAGE_XORG7),--with-x,--without-x) \
 		--disable-debug \
 
-PANGO_DEPENDENCIES = gettext libintl host-pkg-config host-pango libglib2 cairo
+PANGO_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT),gettext libintl) host-pkg-config host-pango libglib2 cairo
 
 HOST_PANGO_DEPENDENCIES = host-pkg-config host-cairo host-libglib2 host-autoconf host-automake
 

@@ -82,7 +82,7 @@ AVAHI_CONF_OPT = --localstatedir=/var \
 		--with-autoipd-user=default \
 		--with-autoipd-group=default
 
-AVAHI_DEPENDENCIES = $(if $(BR2_PACKAGE_GETTEXT),gettext) host-intltool
+AVAHI_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT),gettext libintl) host-intltool
 
 ifneq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_AVAHI_AUTOIPD),)
 AVAHI_DEPENDENCIES += libdaemon
