@@ -74,7 +74,7 @@ $(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
 
 
 $(LVM2_DIR)/.built: $(LVM2_DIR)/.configured
-	$(MAKE1) CC=$(TARGET_CC) RANLIB=$(TARGET_RANLIB) AR=$(TARGET_AR) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
+	$(MAKE1) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
 	$(MAKE1) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR) install
 	# Fixup write permissions so that the files can be overwritten
 	# several times in the $(TARGET_DIR)
