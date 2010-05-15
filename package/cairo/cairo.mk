@@ -79,8 +79,6 @@ else
 	CAIRO_CONF_OPT += --disable-svg
 endif
 
-HOST_CAIRO_DEPENDENCIES = host-pkg-config host-pixman host-fontconfig
-
 HOST_CAIRO_CONF_OPT = \
 		--enable-ps \
 		--enable-pdf \
@@ -90,4 +88,3 @@ HOST_CAIRO_CONF_OPT = \
 		--disable-svg
 
 $(eval $(call AUTOTARGETS,package,cairo))
-$(eval $(call AUTOTARGETS,package,cairo,host))
