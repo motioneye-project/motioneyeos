@@ -1,0 +1,36 @@
+Fixes the MOD_NANO build failure
+
+ntp_loopfilter.c: In function 'local_clock':
+ntp_loopfilter.c:571: error: 'MOD_NANO' undeclared (first use in this function)
+ntp_loopfilter.c:571: error: (Each undeclared identifier is reported only once
+ntp_loopfilter.c:571: error: for each function it appears in.)
+ntp_loopfilter.c: In function 'loop_config':
+ntp_loopfilter.c:896: error: 'MOD_NANO' undeclared (first use in this function)
+
+Taken from
+http://cvs.fedoraproject.org/viewvc/devel/ntp/ntp-4.2.4p7-nano.patch?revision=1.1&content-type=text/plain&view=co
+
+See the discussion at
+https://bugs.launchpad.net/ubuntu/+source/ntp/+bug/412242 for more
+details and links. The below fix is not a correct fix, but only a
+workaround. The real fix required changes to kernel/libc headers.
+
+Index: ntp-4.2.4p5/include/ntp_syscall.h
+===================================================================
+--- ntp-4.2.4p5.orig/include/ntp_syscall.h	2010-05-14 17:34:48.000000000 +0200
++++ ntp-4.2.4p5/include/ntp_syscall.h	2010-05-14 17:35:13.000000000 +0200
+@@ -14,6 +14,14 @@
+ # include <sys/timex.h>
+ #endif
+ 
++#if defined(ADJ_NANO) && !defined(MOD_NANO)
++#define MOD_NANO ADJ_NANO
++#endif
++
++#if defined(ADJ_TAI) && !defined(MOD_TAI)
++#define MOD_TAI ADJ_TAI
++#endif
++
+ #ifndef NTP_SYSCALLS_LIBC
+ #ifdef NTP_SYSCALLS_STD
+ # define ntp_adjtime(t)		syscall(SYS_ntp_adjtime, (t))
