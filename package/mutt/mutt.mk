@@ -7,70 +7,19 @@ MUTT_VERSION:=1.5.17+20080114
 MUTT_SOURCE:=mutt_$(MUTT_VERSION).orig.tar.gz
 MUTT_PATCH:=mutt_$(MUTT_VERSION)-1.diff.gz
 MUTT_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mutt/
-MUTT_DIR:=$(BUILD_DIR)/mutt-$(MUTT_VERSION)
-MUTT_CAT:=$(ZCAT)
-MUTT_BINARY:=mutt
-MUTT_TARGET_BINARY:=usr/bin/mutt
-
-$(DL_DIR)/$(MUTT_SOURCE):
-	$(call DOWNLOAD,$(MUTT_SITE),$(MUTT_SOURCE))
-
-$(DL_DIR)/$(MUTT_PATCH):
-	$(call DOWNLOAD,$(MUTT_SITE),$(MUTT_PATCH))
-
-$(MUTT_DIR)/.unpacked: $(DL_DIR)/$(MUTT_SOURCE) $(DL_DIR)/$(MUTT_PATCH)
-	$(MUTT_CAT) $(DL_DIR)/$(MUTT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(MUTT_DIR) package/mutt/ mutt-$(MUTT_VERSION)\*.patch
-ifneq ($(MUTT_PATCH),)
-	(cd $(MUTT_DIR) && $(MUTT_CAT) $(DL_DIR)/$(MUTT_PATCH) | patch -p1)
-	if [ -d $(MUTT_DIR)/debian/patches ]; then \
-		toolchain/patch-kernel.sh $(MUTT_DIR) $(MUTT_DIR)/debian/patches \*.patch; \
-	fi
-endif
-	touch $@
-
-$(MUTT_DIR)/.configured: $(MUTT_DIR)/.unpacked
-	(cd $(MUTT_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		./configure $(QUIET) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		$(DISABLE_LARGEFILE) \
-		$(DISABLE_IPV6) \
-		$(DISABLE_NLS) \
+MUTT_DEPENDENCIES=ncurses
+MUTT_CONF_OPT = \
 		--disable-smtp \
 		--disable-iconv \
-		--without-wc-funcs \
-	)
-	touch $@
+		--without-wc-funcs
+MUTT_AUTORECONF=YES
 
-$(MUTT_DIR)/$(MUTT_BINARY): $(MUTT_DIR)/.configured
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(MUTT_DIR)
+define MUTT_APPLY_DEBIAN_PATCHES
+        if [ -d $(@D)/debian/patches ]; then \
+                toolchain/patch-kernel.sh $(@D) $(@D)/debian/patches \*.patch; \
+        fi
+endef
 
-$(TARGET_DIR)/$(MUTT_TARGET_BINARY): $(MUTT_DIR)/$(MUTT_BINARY)
-	cp -dpf $(MUTT_DIR)/$(MUTT_BINARY) $@
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
+MUTT_POST_PATCH_HOOKS += MUTT_APPLY_DEBIAN_PATCHES
 
-mutt-source: $(DL_DIR)/$(MUTT_SOURCE) $(DL_DIR)/$(MUTT_PATCH)
-
-mutt-unpacked: $(MUTT_DIR)/.unpacked
-
-mutt: ncurses $(TARGET_DIR)/$(MUTT_TARGET_BINARY)
-
-mutt-clean:
-	-$(MAKE) -C $(MUTT_DIR) clean
-	rm -f $(TARGET_DIR)/$(MUTT_TARGET_BINARY)
-
-mutt-dirclean:
-	rm -rf $(MUTT_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_MUTT),y)
-TARGETS+=mutt
-endif
+$(eval $(call AUTOTARGETS,package,mutt))
