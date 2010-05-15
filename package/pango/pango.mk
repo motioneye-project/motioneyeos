@@ -40,16 +40,7 @@ PANGO_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes glib_cv_stack_grows=no \
 PANGO_CONF_OPT = --enable-shared --enable-static \
 		--enable-explicit-deps=no --disable-debug
 
-HOST_PANGO_CONF_OPT = \
-		--disable-static \
-		$(if $(BR2_PACKAGE_XORG7),--with-x,--without-x) \
-		--disable-debug \
-
-PANGO_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT),gettext libintl) host-pkg-config host-pango libglib2 cairo
-
-HOST_PANGO_DEPENDENCIES = host-pkg-config host-cairo host-libglib2 host-autoconf host-automake
-
-HOST_PANGO_AUTORECONF = YES
+PANGO_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT),gettext libintl) host-pkg-config libglib2 cairo
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
         PANGO_CONF_OPT += --with-x \
@@ -61,12 +52,7 @@ else
 endif
 
 $(eval $(call AUTOTARGETS,package,pango))
-$(eval $(call AUTOTARGETS,package,pango,host))
 
 $(PANGO_HOOK_POST_INSTALL):
-	mkdir -p $(TARGET_DIR)/etc/pango
-	$(PANGO_HOST_BINARY) > $(TARGET_DIR)/etc/pango/pango.modules
-	$(SED) 's~$(HOST_DIR)~~g' $(TARGET_DIR)/etc/pango/pango.modules
+	$(INSTALL) -m 755 package/pango/S25pango $(TARGET_DIR)/etc/init.d/
 	touch $@
-
-PANGO_HOST_BINARY:=$(HOST_DIR)/usr/bin/pango-querymodules
