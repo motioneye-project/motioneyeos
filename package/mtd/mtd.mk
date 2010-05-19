@@ -14,12 +14,12 @@ HOST_MTD_DEPENDENCIES = host-zlib host-lzo host-e2fsprogs
 
 define HOST_MTD_BUILD_CMDS
 	CC="$(HOSTCC)" CFLAGS="$(HOST_CFLAGS)" LDFLAGS="$(HOST_LDFLAGS)" \
-		CROSS= $(MAKE) BUILDDIR=$(@D) \
+		CROSS= $(MAKE1) BUILDDIR=$(@D) \
 		WITHOUT_XATTR=1 -C $(@D)
 endef
 
 define HOST_MTD_INSTALL_CMDS
-	$(MAKE) BUILDDIR=$(@D) DESTDIR=$(HOST_DIR) -C $(@D) install
+	$(MAKE1) BUILDDIR=$(@D) DESTDIR=$(HOST_DIR) -C $(@D) install
 endef
 
 MKFS_JFFS2=$(HOST_DIR)/usr/sbin/mkfs.jffs2
@@ -71,7 +71,7 @@ MTD_MAKE_COMMON_FLAGS = \
 
 ifneq ($(MTD_TARGETS_y),)
 define MTD_TARGETS_BUILD
-	$(MAKE) $(MTD_MAKE_COMMON_FLAGS) \
+	$(MAKE1) $(MTD_MAKE_COMMON_FLAGS) \
 		BUILDDIR=$(@D) \
 		-C $(@D) \
 		$(addprefix $(@D)/, $(MTD_TARGETS_y))
@@ -80,7 +80,7 @@ endif
 
 ifneq ($(MTD_TARGETS_UBI_y),)
 define MTD_TARGETS_UBI_BUILD
-	$(MAKE) $(MTD_MAKE_COMMON_FLAGS) \
+	$(MAKE1) $(MTD_MAKE_COMMON_FLAGS) \
 		BUILDDIR=$(@D)/ubi-utils/ \
 		-C $(@D)/ubi-utils \
 		$(addprefix $(@D)/ubi-utils/, $(MTD_TARGETS_UBI_y))

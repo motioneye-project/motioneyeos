@@ -2,7 +2,7 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: avahi, busybox
+	Updated/fixed packages: avahi, busybox, mtd-utils
 
 2010.05-rc2, Released May 11th, 2010:
 
