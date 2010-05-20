@@ -1,0 +1,24 @@
+[PATCH] ntpd: fix build without ipv6 support
+
+ntp_io.c was checkin the non-existing DISABLE_IPV6 define rather
+than WANT_IPV6 as defined in config.h, breaking the build if
+the toolchain doesn't have ipv6 support.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ ntpd/ntp_io.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: ntp-4.2.4p5/ntpd/ntp_io.c
+===================================================================
+--- ntp-4.2.4p5.orig/ntpd/ntp_io.c
++++ ntp-4.2.4p5/ntpd/ntp_io.c
+@@ -55,7 +55,7 @@
+  * Set up some macros to look for IPv6 and IPv6 multicast
+  */
+ 
+-#if defined(ISC_PLATFORM_HAVEIPV6) && !defined(DISABLE_IPV6)
++#if defined(ISC_PLATFORM_HAVEIPV6) && defined(WANT_IPV6)
+ 
+ #define INCLUDE_IPV6_SUPPORT
+ 

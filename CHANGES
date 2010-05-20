@@ -2,7 +2,11 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: aumix, avahi, busybox, mtd-utils
+	Updated/fixed packages: aumix, avahi, busybox, mtd-utils, ntp
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#1693: NTP trys IPV6 even if not configured error: 'IPV6_MULTICAST...
 
 2010.05-rc2, Released May 11th, 2010:
 
