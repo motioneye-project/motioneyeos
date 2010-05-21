@@ -55,7 +55,7 @@ HOST_LIBGLIB2_CONF_OPT = \
 		--disable-gtk-doc \
 		--enable-debug=no \
 
-LIBGLIB2_DEPENDENCIES = gettext libintl host-pkg-config host-libglib2
+LIBGLIB2_DEPENDENCIES = host-pkg-config host-libglib2 $(if $(BR2_NEEDS_GETTEXT),gettext libintl)
 
 HOST_LIBGLIB2_DEPENDENCIES = host-pkg-config
 

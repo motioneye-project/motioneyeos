@@ -232,6 +232,15 @@ check_arm_abi = \
 	fi ; \
 
 #
+# Check that the external toolchain supports C++
+#
+check_cplusplus = \
+	if ! test -x $(TARGET_CXX) ; then \
+		echo "BR2_INSTALL_LIBSTDCPP is selected but C++ support not available in external toolchain" ; \
+		exit 1 ; \
+	fi ; \
+
+#
 # Check that the cross-compiler given in the configuration exists
 #
 check_cross_compiler_exists = \
@@ -287,6 +296,9 @@ ifeq ($(strip $(SYSROOT_DIR)),)
 endif
 ifeq ($(BR2_arm),y)
 	$(Q)$(call check_arm_abi)
+endif
+ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
+	$(Q)$(call check_cplusplus)
 endif
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
 	$(Q)$(call check_uclibc,$(SYSROOT_DIR))

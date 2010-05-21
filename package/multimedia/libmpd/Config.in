@@ -1,8 +1,6 @@
 config BR2_PACKAGE_LIBMPD
 	bool "libmpd"
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_GETTEXT
-	select BR2_PACKAGE_LIBINTL
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  High-level client library for accessing Music Player Daemon.

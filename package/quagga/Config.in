@@ -59,7 +59,11 @@ config BR2_PACKAGE_QUAGGA_NETLINK
 
 config BR2_PACKAGE_QUAGGA_SNMP
 	bool "SNMP support"
+	depends on !BR2_TOOLCHAIN_EXTERNAL
 	select BR2_PACKAGE_NETSNMP
+
+comment "quagga snmp support broken with external toolchains"
+	depends on BR2_TOOLCHAIN_EXTERNAL
 
 config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	bool "TCP/IP socket connection between zebra and proto daemon"
