@@ -2,7 +2,7 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: aumix, avahi, busybox, cairo, gettext,
+	Updated/fixed packages: aumix, avahi, busybox, cairo, fltk, gettext,
 	gmpc, grep, hal, iconv, libcgicc, libglib2, libidn, libmpd,
 	libpcap, libsoup, lmbench, ltrace, lvm2, make, mtd-utils,
 	mutt, netsnmp, ntp, pango, php, psmisc, qt, samba, sshfs,
@@ -11,6 +11,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#1693: NTP trys IPV6 even if not configured error: 'IPV6_MULTICAST...
+	#1729: alsamixergui fails to build
 	#1801: Avahi-autoipd doesn't create TARGET_DIR/var/lib
 
 2010.05-rc2, Released May 11th, 2010:
