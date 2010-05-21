@@ -2,7 +2,7 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: aumix, avahi, busybox, mtd-utils, ntp
+	Updated/fixed packages: aumix, avahi, busybox, mtd-utils, ntp, qt
 
 	Issues resolved (http://bugs.uclibc.org):
 
