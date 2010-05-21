@@ -62,6 +62,8 @@ ifeq ($(BR2_TARGET_UBOOT),y)
 include target/u-boot/Makefile.in
 endif
 
+include fs/common.mk
+
 # kernel rules
 # We already did add the kernel target to TARGETS and now just pull in the rules
 # to actually build this target.
