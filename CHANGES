@@ -2,7 +2,11 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: aumix, avahi, busybox, mtd-utils, ntp, qt
+	Updated/fixed packages: aumix, avahi, busybox, cairo, gettext,
+	gmpc, grep, hal, iconv, libcgicc, libglib2, libidn, libmpd,
+	libpcap, libsoup, lmbench, ltrace, lvm2, make, mtd-utils,
+	mutt, netsnmp, ntp, pango, php, psmisc, qt, samba, sshfs,
+	startup-notification, uemacs, util-linux, vpnc
 
 	Issues resolved (http://bugs.uclibc.org):
 
