@@ -16,6 +16,7 @@ if BR2_PACKAGE_CAIRO
 config BR2_PACKAGE_CAIRO_PS
 	bool "postscript support"
 	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_CAIRO_PDF
 
 config BR2_PACKAGE_CAIRO_PDF
 	bool "pdf support"
