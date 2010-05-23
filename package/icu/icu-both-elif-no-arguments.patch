@@ -1,0 +1,23 @@
+[PATCH] icu: fix #elif without arguments
+
+ParagraphLayout.cpp contains an #elif without any arguments, which
+g++ >= 4.4 flags as an error. Fix it by replacing it with an #else.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ source/layoutex/ParagraphLayout.cpp |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: source/layoutex/ParagraphLayout.cpp
+===================================================================
+--- source.orig/layoutex/ParagraphLayout.cpp
++++ source/layoutex/ParagraphLayout.cpp
+@@ -813,7 +813,7 @@ le_int32 ParagraphLayout::getLanguageCod
+ 
+     return nullLanguageCode;
+ }
+-#elif
++#else
+ 
+ // TODO - dummy implementation for right now...
+ le_int32 ParagraphLayout::getLanguageCode(const Locale *locale)

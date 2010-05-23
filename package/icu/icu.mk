@@ -21,6 +21,7 @@ $(ICU_DIR)/.unpacked: $(DL_DIR)/$(ICU_SOURCE)
 	$(CONFIG_UPDATE) $(ICU_DIR)
 	cp -a $(BUILD_DIR)/icu $(BUILD_DIR)/icu-host
 	toolchain/patch-kernel.sh $(ICU_DIR) package/icu/ \*.patch
+	toolchain/patch-kernel.sh $(ICU_HOST_DIR) package/icu/ \*both\*.patch
 	touch $(ICU_DIR)/.unpacked
 
 $(ICU_HOST_DIR)/.configured: $(ICU_DIR)/.unpacked
@@ -45,13 +46,13 @@ $(ICU_DIR)/.configured: $(ICU_HOST_DIR)/.configured
 	touch $(ICU_DIR)/.configured
 
 $(ICU_HOST_DIR)/.done: $(ICU_DIR)/.configured
-	$(MAKE) -C $(ICU_HOST_DIR)
+	$(MAKE1) -C $(ICU_HOST_DIR)
 	ln -s -f $(ICU_HOST_DIR)/bin $(ICU_DIR)/bin-host
 	ln -s -f $(ICU_HOST_DIR)/lib $(ICU_DIR)/lib-host
 	touch $(ICU_HOST_DIR)/.done
 
 $(ICU_DIR)/.done: $(ICU_HOST_DIR)/.done
-	$(MAKE) -C $(ICU_DIR)
+	$(MAKE1) -C $(ICU_DIR)
 	$(MAKE) -C $(ICU_DIR) install DESTDIR=$(STAGING_DIR)
 	$(MAKE) -C $(ICU_DIR) install DESTDIR=$(TARGET_DIR)
 	$(SED) "s,^default_prefix=.*,default_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/icu-config
