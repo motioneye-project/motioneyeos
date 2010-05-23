@@ -1,8 +1,11 @@
 config BR2_PACKAGE_MUTT
-	bool "mutt (BROKEN for wchar; FIXME!)"
+	bool "mutt"
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_NCURSES
 	help
 	  Mutt is a sophisticated text-based Mail User Agent (MUA)
 
 	  http://www.mutt.org/
 
+comment "mutt requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
