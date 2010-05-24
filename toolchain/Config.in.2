@@ -56,13 +56,20 @@ config BR2_ENABLE_LOCALE_WHITELIST
 	  will be available on the target - That purely depends on the
 	  support for that locale in the selected packages.
 
-# uClibc toolchains require a separatly-compiled gettext/libintl when
-# locale support is enabled. This isn't necessary with glibc
-#  toolchains as glibc includes gettext/libintl.
+# glibc and eglibc directly include gettext, so a separatly compiled
+# gettext isn't needed and shouldn't be built to avoid conflicts. Some
+# packages always need gettext, other packages only need gettext when
+# locale support is enabled. See the documentation for how packages
+# should rely on the following two options.
+
 config BR2_NEEDS_GETTEXT
 	bool
-	default y if (BR2_TOOLCHAIN_BUILDROOT && BR2_ENABLE_LOCALE)
-	default y if (BR2_TOOLCHAIN_EXTERNAL_UCLIBC && BR2_ENABLE_LOCALE)
+	default y if BR2_TOOLCHAIN_BUILDROOT
+	default y if BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+
+config BR2_NEEDS_GETTEXT_IF_LOCALE
+	bool
+	default y if (BR2_NEEDS_GETTEXT && BR2_ENABLE_LOCALE)
 
 config BR2_USE_WCHAR
 	bool "Enable WCHAR support"
