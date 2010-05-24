@@ -15,6 +15,7 @@ PCIUTILS_DNS=no
 PCIUTILS_SHARED=yes
 
 define PCIUTILS_CONFIGURE_CMDS
+	$(SED) 's/wget --no-timestamping/wget/' $(PCIUTILS_DIR)/update-pciids.sh
 	$(SED) 's/uname -s/echo Linux/' \
 		-e 's/uname -r/echo $(LINUX_HEADERS_VERSION)/' \
 		$(PCIUTILS_DIR)/lib/configure
@@ -32,7 +33,7 @@ define PCIUTILS_BUILD_CMDS
 		SHARED=$(PCIUTILS_SHARED) \
 		ZLIB=$(PCIUTILS_ZLIB) \
 		DNS=$(PCIUTILS_DNS) \
-		SHAREDIR=/usr/share/misc
+		PREFIX=/usr
 endef
 
 # Ditch install-lib if SHARED is an option in the future
