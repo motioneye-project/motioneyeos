@@ -11,6 +11,6 @@ SSHFS_AUTORECONF:=NO
 SSHFS_INSTALL_STAGING:=NO
 SSHFS_INSTALL_TARGET:=YES
 
-SSHFS_DEPENDENCIES = libglib2 libfuse $(if $(BR2_NEEDS_GETTEXT),gettext libintl)
+SSHFS_DEPENDENCIES = libglib2 libfuse $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl)
 
 $(eval $(call AUTOTARGETS,package,sshfs))

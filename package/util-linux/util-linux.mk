@@ -18,7 +18,7 @@ else
 UTIL-LINUX_SCHED_UTILS:=--disable-schedutils
 endif
 
-ifeq ($(BR2_NEEDS_GETTEXT),y)
+ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 UTIL-LINUX_DEPENDENCIES += gettext libintl
 UTIL-LINUX_MAKE_OPT = LIBS=-lintl
 endif

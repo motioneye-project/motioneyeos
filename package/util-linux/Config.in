@@ -1,7 +1,7 @@
 config BR2_PACKAGE_UTIL-LINUX
 	bool "util-linux"
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
-	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE
 	depends on BR2_INET_RPC
 	help
 	  Various useful/essential Linux utilities.
