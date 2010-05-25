@@ -263,12 +263,16 @@ endif
 
 config BR2_PACKAGE_QT_PHONON
 	bool "Phonon Module"
-	select BR2_PACKAGE_GSTREAMER
+	depends on BR2_PACKAGE_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
+	default y
 	help
 	  Build the Phonon module. Support for different audio/video
 	  formats can be configured at the GStreamer package.
 	  If unsure, say n.
+
+comment "Phonon module needs gstreamer"
+	depends on !BR2_PACKAGE_GSTREAMER
 
 config BR2_PACKAGE_QT_PHONON_BACKEND
 	bool "Phonon Module Backend"
