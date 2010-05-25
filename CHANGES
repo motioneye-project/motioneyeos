@@ -7,7 +7,7 @@
 	libidn, libmpd, libpcap, libsoup, lmbench, ltrace, lvm2, make,
 	metacity, mtd-utils, mutt, netsnmp, ntp, pango, pciutils,
 	pcmanfm, php, psmisc, qt, samba, sshfs, startup-notification,
-	sylpheed, uemacs, util-linux, vpnc, webkit
+	swfdec, sylpheed, uemacs, util-linux, vpnc, webkit
 
 	Issues resolved (http://bugs.uclibc.org):
 

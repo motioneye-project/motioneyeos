@@ -15,6 +15,7 @@ config BR2_PACKAGE_SWFDEC_GTK_SUPPORT
 	depends on BR2_PACKAGE_SWFDEC
 	depends on BR2_PACKAGE_LIBGTK2
 	select BR2_PACKAGE_LIBSOUP
+	default y
 	help
 	  Swfdec-gtk library is used for easy integration
 	  of swfdec in GTK applications
@@ -22,8 +23,9 @@ config BR2_PACKAGE_SWFDEC_GTK_SUPPORT
 config BR2_PACKAGE_SWFDEC_GSTREAMER
 	bool "gstreamer support"
 	depends on BR2_PACKAGE_SWFDEC
-	select BR2_PACKAGE_GSTREAMER
+	depends on BR2_PACKAGE_GSTREAMER
 	select BR2_PACKAGE_GST_PLUGINS_BASE
+	default y
 	help
 	  Enables GStreamer support
 
