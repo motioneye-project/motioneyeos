@@ -3,7 +3,7 @@ config BR2_PACKAGE_PCMANFM
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_GAMIN
 	select BR2_PACKAGE_STARTUP_NOTIFICATION
-	select BR2_PACKAGE_LIBGTK2
+	depends on BR2_PACKAGE_LIBGTK2
 	help
 	  An extremly fast and lightweight file manager which features
 	  tabbed browsing and user-friendly interface.

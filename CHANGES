@@ -5,9 +5,9 @@
 	Updated/fixed packages: aumix, avahi, busybox, cairo, cdrkit,
 	fltk, gettext, gmpc, grep, hal, iconv, icu, libcgicc, libglib2,
 	libidn, libmpd, libpcap, libsoup, lmbench, ltrace, lvm2, make,
-	mtd-utils, mutt, netsnmp, ntp, pango, pciutils, php, psmisc,
-	qt, samba, sshfs, startup-notification, uemacs, util-linux,
-	vpnc
+	metacity, mtd-utils, mutt, netsnmp, ntp, pango, pciutils,
+	pcmanfm, php, psmisc, qt, samba, sshfs, startup-notification,
+	sylpheed, uemacs, util-linux, vpnc, webkit
 
 	Issues resolved (http://bugs.uclibc.org):
 
