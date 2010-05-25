@@ -21,22 +21,3 @@ config BR2_PACKAGE_WEBKIT
 
 comment "webkit requires a toolchain with C++ support and WCHAR enabled"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
-
-if BR2_PACKAGE_WEBKIT
-
-choice
-	prompt "Rendering target"
-	default BR2_PACKAGE_WEBKIT_X
-	help
-	  Selects which rendering target will be used.
-
-config BR2_PACKAGE_WEBKIT_X11
-	bool "X11"
-
-config BR2_PACKAGE_WEBKIT_DIRECTFB
-	bool "DirectFB"
-	select BR2_PACKAGE_DIRECTFB
-
-endchoice
-
-endif

@@ -14,12 +14,15 @@ WEBKIT_LIBTOOL_PATCH = NO
 WEBKIT_DEPENDENCIES = host-flex host-gperf icu curl libxml2 libxslt	\
 			libgtk2 sqlite enchant libsoup
 
-ifeq ($(BR2_PACKAGE_WEBKIT_X11),y)
-WEBKIT_CONF_OPT = --with-target=x11
+
+ifeq ($(BR2_PACKAGE_XORG7),y)
+	WEBKIT_CONF_OPT += --with-target=x11
+	WEBKIT_DEPENDENCIES += xserver_xorg-server
 endif
 
-ifeq ($(BR2_PACKAGE_WEBKIT_DIRECTFB),y)
-WEBKIT_CONF_OPT = --with-target=directfb
+ifeq ($(BR2_PACKAGE_DIRECTFB),y)
+	WEBKIT_CONF_OPT += --with-target=directfb
+	WEBKIT_DEPENDENCIES += directfb
 endif
 
 WEBKIT_CONF_OPT += --disable-video
