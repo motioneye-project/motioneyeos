@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PCMANFM
 	bool "pcmanfm"
 	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_WCHAR # glib2
 	select BR2_PACKAGE_GAMIN
 	select BR2_PACKAGE_STARTUP_NOTIFICATION
 	depends on BR2_PACKAGE_LIBGTK2
@@ -9,3 +10,6 @@ config BR2_PACKAGE_PCMANFM
 	  tabbed browsing and user-friendly interface.
 
 	  http://internap.dl.sourceforge.net/sourceforge/pcmanfm
+
+comment "pcmanfm requires a toolchain with WCHAR support"
+	depends on BR2_PACKAGE_XORG7 && !BR2_USE_WCHAR

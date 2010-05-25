@@ -1,12 +1,16 @@
 config BR2_PACKAGE_LIBSOUP
 	bool "libsoup"
+	depends on BR2_USE_WCHAR # glib2
 	select BR2_PACKAGE_LIBXML2
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
-	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT
 	help
 	  libsoup is an HTTP client/server library. It uses GObject
 	  and the GLib main loop, to integrate well with GNOME
 	  applications.
 
 	  http://live.gnome.org/LibSoup
+
+comment "libsoup requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR

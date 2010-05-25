@@ -68,8 +68,12 @@ config BR2_PACKAGE_PHP_EXT_FTP
 config BR2_PACKAGE_PHP_EXT_GETTEXT
 	bool "gettext"
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	depends on BR2_USE_WCHAR
 	help
 	  gettext support
+
+comment "gettext support requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_PHP_EXT_GMP
 	bool "gmp"

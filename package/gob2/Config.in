@@ -1,5 +1,6 @@
 config BR2_PACKAGE_GOB2
 	bool "gob2"
+	depends on BR2_USE_WCHAR # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_FLEX
 	select BR2_PACKAGE_FLEX_LIBFL
@@ -9,3 +10,6 @@ config BR2_PACKAGE_GOB2
 	  the writing of GObjects in C.
 
 	  http://www.jirka.org/gob.html
+
+comment "gob2 requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR

@@ -2,12 +2,15 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: aumix, avahi, busybox, cairo, cdrkit,
-	fltk, gettext, gmpc, grep, hal, iconv, icu, libcgicc, libglib2,
-	libidn, libmpd, libpcap, libsoup, lmbench, ltrace, lvm2, make,
-	metacity, mtd-utils, mutt, netsnmp, ntp, pango, pciutils,
-	pcmanfm, php, psmisc, qt, samba, sshfs, startup-notification,
-	swfdec, sylpheed, uemacs, util-linux, vpnc, webkit
+	Updated/fixed packages: aumix, atk, avahi, busybox, cairo,
+	cdrkit, dbus-glib, dbus-python, docker, enchant, fltk, gamin,
+	gettext, gmpc, gob2, grep, gstreamer, gvfs, hal, iconv, icu,
+	libcgicc, libglade, libglib2, libgtk2, libidn, libmms, libmpd,
+	libpcap, libsoup, lmbench, ltrace, lvm2, make,
+	metacity, mtd-utils, mutt, nbd, netsnmp, ntp, pango, pciutils,
+	pcmanfm, php, pkg-config, psmisc, qt, samba, shared-mime-info,
+	sshfs, startup-notification, swfdec, sylpheed, uemacs,
+	util-linux, vpnc, webkit, xstroke
 
 	Issues resolved (http://bugs.uclibc.org):
 

@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBGLADE
 	bool "libglade"
 	depends on BR2_PACKAGE_LIBGTK2
+	depends on BR2_USE_WCHAR # glib2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_ATK
 	select BR2_PACKAGE_LIBXML2
@@ -10,3 +11,6 @@ config BR2_PACKAGE_LIBGLADE
 	  by far the easiest way to create the interface files.
 
 	  http://ftp.gnome.org/pub/GNOME/sources/libglade/
+
+comment "libglade requires a toolchain with WCHAR support"
+	depends on BR2_PACKAGE_LIBGTK2 && !BR2_USE_WCHAR

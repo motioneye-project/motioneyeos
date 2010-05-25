@@ -1,5 +1,9 @@
 config BR2_PACKAGE_ATK
 	bool "atk"
 	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # glib2
 	help
 	  The ATK accessibility toolkit, needed to build GTK+-2.x.
+
+comment "atk requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR

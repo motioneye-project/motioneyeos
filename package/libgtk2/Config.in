@@ -7,7 +7,11 @@ config BR2_PACKAGE_LIBGTK2
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_PANGO
 	depends on BR2_PACKAGE_XORG7||BR2_PACKAGE_DIRECTFB
+	depends on BR2_USE_WCHAR # glib2
 	help
 	  The GTK+ version 2 graphical user interface library
 
 	  http://www.gtk.org/
+
+comment "libgtk2 requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR
