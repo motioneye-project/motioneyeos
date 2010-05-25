@@ -7,3 +7,6 @@ config BR2_PACKAGE_ENCHANT
 	  API across a number of spell-checking system backends.
 
 	  http://www.abisource.com/projects/enchant/
+
+comment "enchant requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
