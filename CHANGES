@@ -16,6 +16,8 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#75: arm buildroot "unrecognized option" error
+	#699: Buildroot fails to copy libstdc++ to target when using external...
 	#1693: NTP trys IPV6 even if not configured error: 'IPV6_MULTICAST...
 	#1729: alsamixergui fails to build
 	#1801: Avahi-autoipd doesn't create TARGET_DIR/var/lib
