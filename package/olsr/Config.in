@@ -1,5 +1,6 @@
 config BR2_PACKAGE_OLSR
 	bool "OLSR mesh networking Daemon"
+	depends on BR2_INET_IPV6
 	help
 	  The Optimized Link State Routing protocol (OLSR) is a
 	  routing protocol that is optimised for mobile ad-hoc
@@ -9,3 +10,6 @@ config BR2_PACKAGE_OLSR
 	  compute optimal forwarding paths locally.
 
 	  http://www.olsr.org/
+
+comment "olsr requires a toolchain with IPv6 support"
+	depends on !BR2_INET_IPV6
