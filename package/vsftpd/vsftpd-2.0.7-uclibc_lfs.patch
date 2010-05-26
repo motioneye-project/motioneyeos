@@ -5,7 +5,7 @@ diff -rdup vsftpd-2.0.5.orig/sysutil.c vsftpd-2.0.5/sysutil.c
  #include "utility.h"
  #include "tunables.h"
  
-+#include "builddefs.h"
++#include <features.h>
 +
 +#if !defined __UCLIBC__ || (defined __UCLIBC__ && defined __UCLIBC_HAS_LFS__)
  /* Activate 64-bit file support on Linux/32bit plus others */

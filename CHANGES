@@ -11,7 +11,8 @@
 	nbd, netsnmp, ntfsprogs, ntp, olsr, pango, pciutils, pcmanfm,
 	php, pkg-config, psmisc, qt, samba, shared-mime-info,
 	squashfs, squashfs3, sshfs, startup-notification, swfdec,
-	sylpheed, uemacs, util-linux, valgrind, vpnc, webkit, xstroke
+	sylpheed, uemacs, util-linux, valgrind, vpnc, vsftpd, webkit,
+	xstroke
 
 	Issues resolved (http://bugs.uclibc.org):
 
