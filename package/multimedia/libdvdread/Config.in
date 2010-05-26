@@ -1,7 +1,11 @@
 config BR2_PACKAGE_LIBDVDREAD
 	bool "libdvdread"
+	depends on BR2_LARGEFILE
 	help
 	  libdvdread provides a simple foundation for reading
 	  DVD-Video images.
 
 	  http://www.mplayerhq.hu/MPlayer/releases/dvdnav/
+
+comment "libdvdread requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE

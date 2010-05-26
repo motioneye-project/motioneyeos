@@ -58,7 +58,11 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DTMF
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVDNAV
 	bool "dvdnav"
-        select BR2_PACKAGE_LIBDVDNAV
+	depends on BR2_LARGEFILE # libdvdread
+	select BR2_PACKAGE_LIBDVDNAV
+
+comment "dvdnav requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVDSPU
 	bool "dvdspu"

@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBDVDNAV
 	bool "libdvdnav"
+	depends on BR2_LARGEFILE # libdvdread
         select BR2_PACKAGE_LIBDVDREAD
 	help
 	  libdvdnav is a library that allows easy use of sophisticated
@@ -7,3 +8,6 @@ config BR2_PACKAGE_LIBDVDNAV
 	  playback and even interactive DVD games.
 
 	  http://www.mplayerhq.hu
+
+comment "libdvdnav requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
