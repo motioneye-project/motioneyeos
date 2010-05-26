@@ -2,7 +2,7 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: aumix, atk, avahi, busybox, cairo,
+	Updated/fixed packages: aumix, atk, avahi, bmon, busybox, cairo,
 	cdrkit, dbus-glib, dbus-python, docker, enchant, fltk, gamin,
 	gettext, gmpc, gob2, grep, gstreamer, gvfs, hal, iconv, icu,
 	libcgicc, libglade, libglib2, libgtk2, libidn, libmms, libmpd,
