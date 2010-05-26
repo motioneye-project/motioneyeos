@@ -243,7 +243,7 @@ config BR2_PACKAGE_QT_EMB_PLATFORM
 	default "x86_64"	if BR2_x86_64
 	default "mips"	if BR2_mips
 	default "mips"	if BR2_mipsel
-	default "ppc"	if BR2_powerpc
+	default "powerpc"	if BR2_powerpc
 # Not that I really believe these will work..
 	default "generic"	if BR2_alpha
 	default "generic"	if BR2_chris
