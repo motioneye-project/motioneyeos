@@ -79,7 +79,11 @@ config BR2_PACKAGE_MTD_NFTL_FORMAT
 	bool "nftl_format"
 
 config BR2_PACKAGE_MTD_RECV_IMAGE
+	depends on BR2_INET_IPV6
 	bool "recv_image"
+
+comment "recv_image requires a toolchain with IPv6 support"
+	depends on !BR2_INET_IPV6
 
 config BR2_PACKAGE_MTD_RFDDUMP
 	bool "rfddump"
