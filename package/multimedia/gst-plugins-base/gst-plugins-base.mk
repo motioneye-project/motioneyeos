@@ -23,7 +23,8 @@ GST_PLUGINS_BASE_CONF_OPT = \
 		--disable-vorbistest \
 		--disable-freetypetest
 
-GST_PLUGINS_BASE_DEPENDENCIES = gstreamer liboil
+GST_PLUGINS_BASE_DEPENDENCIES = gstreamer liboil \
+		$(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib)
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ADDER),y)
 GST_PLUGINS_BASE_CONF_OPT += --enable-adder
