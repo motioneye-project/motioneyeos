@@ -9,4 +9,4 @@ config BR2_PACKAGE_LMBENCH
 	  http://sourceforge.net/projects/lmbench/
 
 comment "lmbench requires a toolchain with RPC support"
-        depends on !BR2_INET_RPC
+	depends on !BR2_INET_RPC
