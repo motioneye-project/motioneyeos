@@ -1,6 +1,10 @@
 config BR2_PACKAGE_SQUASHFS
 	bool "squashfs"
+	depends on BR2_LARGEFILE
 	help
 	  Tools to generate SquashFS filesystems.
 
 	  http://squashfs.sourceforge.net/
+
+comment "squashfs requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE

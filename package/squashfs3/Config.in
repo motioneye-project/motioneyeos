@@ -1,7 +1,11 @@
 config BR2_PACKAGE_SQUASHFS3
 	bool "squashfs3"
 	depends on BR2_DEPRECATED
+	depends on BR2_LARGEFILE
 	help
 	  Tools to generate SquashFS 3.x filesystems.
 
 	  http://squashfs.sourceforge.net/
+
+comment "squashfs3 requires a toolchain with LARGEFILE support"
+	depends on BR2_DEPRECATED && !BR2_LARGEFILE
