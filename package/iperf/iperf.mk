@@ -14,7 +14,9 @@ IPERF_INSTALL_STAGING = NO
 IPERF_INSTALL_TARGET = YES
 
 IPERF_CONF_ENV = \
-	ac_cv_func_malloc_0_nonnull=yes
+	ac_cv_func_malloc_0_nonnull=yes \
+	ac_cv_type_bool=yes \
+	ac_cv_sizeof_bool=1
 
 IPERF_CONF_OPT = \
 	--disable-dependency-tracking \

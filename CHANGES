@@ -5,7 +5,7 @@
 	Updated/fixed packages: aumix, atk, avahi, bmon, busybox, cairo,
 	cdrkit, dbus-glib, dbus-python, docker, enchant, fltk, gamin,
 	gettext, gmpc, gob2, grep, gstreamer, gst-plugins-bad,
-	gst-plugins-base, gvfs, hal, iconv, icu, libcgicc, libdvdnav,
+	gst-plugins-base, gvfs, hal, iconv, icu, iperf, libcgicc, libdvdnav,
 	libdvdread, libglade, libglib2, libgtk2, libidn, libmms,
 	libmpd, libpcap, libsoup, lmbench, lsof, ltrace, lvm2, make,
 	metacity, mtd-utils, mutt, nbd, netsnmp, ntfsprogs, ntp, olsr,
