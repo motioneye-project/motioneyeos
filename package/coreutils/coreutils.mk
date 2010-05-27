@@ -12,7 +12,8 @@ COREUTILS_DIR:=$(BUILD_DIR)/coreutils-$(COREUTILS_VERSION)
 COREUTILS_BINARY:=src/vdir
 COREUTILS_TARGET_BINARY:=bin/vdir
 BIN_PROGS:=cat chgrp chmod chown cp date dd df dir echo false hostname \
-	ln ls mkdir mknod mv pwd rm rmdir vdir sleep stty sync touch true uname
+	ln ls mkdir mknod mv pwd rm rmdir vdir sleep stty sync touch true \
+	uname join
 
 $(DL_DIR)/$(COREUTILS_SOURCE):
 	 $(call DOWNLOAD,$(COREUTILS_SITE),$(COREUTILS_SOURCE))
