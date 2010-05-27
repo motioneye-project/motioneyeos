@@ -22,6 +22,11 @@ $(DL_DIR)/$(MICROPERL_SOURCE):
 
 $(MICROPERL_DIR)/.source: $(DL_DIR)/$(MICROPERL_SOURCE)
 	$(MICROPERL_CAT) $(DL_DIR)/$(MICROPERL_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
+	# makedepend contains bashisms
+	$(SED) 's~sh ./makedepend~bash ./makedepend~' \
+		$(MICROPERL_DIR)/Makefile.SH \
+		$(MICROPERL_DIR)/x2p/Makefile.SH \
+		$(MICROPERL_DIR)/pod/Makefile.SH
 	chmod -R u+w $(MICROPERL_DIR)
 	touch $@
 
