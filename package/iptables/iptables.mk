@@ -3,7 +3,7 @@
 # iptables
 #
 #############################################################
-IPTABLES_VERSION = 1.4.7
+IPTABLES_VERSION = 1.4.8
 IPTABLES_SOURCE = iptables-$(IPTABLES_VERSION).tar.bz2
 IPTABLES_SITE = http://ftp.netfilter.org/pub/iptables
 
@@ -25,6 +25,8 @@ ifeq ($(BR2_INET_IPV6),y)
 	ln -sf ip6tables-multi $(TARGET_DIR)/usr/sbin/ip6tables
 	ln -sf ip6tables-multi $(TARGET_DIR)/usr/sbin/ip6tables-save
 	ln -sf ip6tables-multi $(TARGET_DIR)/usr/sbin/ip6tables-restore
+else
+	rm -f $(TARGET_DIR)/usr/lib/libip6tc.*
 endif
 	touch $@
 
