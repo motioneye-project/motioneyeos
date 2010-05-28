@@ -111,7 +111,12 @@ ifndef LINUX26_FORMAT
 ifneq ($(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT)),)
 LINUX26_FORMAT:=$(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT))
 else
+ifneq ($(filter i386 x86-64,$(KERNEL_ARCH)),)
+# zImage target no longer available on x86 since 2.6.30
+LINUX26_FORMAT=bzImage
+else
 LINUX26_FORMAT:=zImage
+endif
 endif
 endif
 

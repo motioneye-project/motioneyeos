@@ -10,7 +10,7 @@ ifeq ($(DOWNLOAD_LINUX26_VERSION),)
 # User did not define linux version, try using headers
 ifeq ($(LINUX_HEADERS_VERSION),)
 # We did not have headers (this is for real???)
-# Version of linuc before patches
+# Version of linux before patches
 DOWNLOAD_LINUX26_VERSION=2.6.22.1
 # Version of Linux after applying any patches
 LINUX26_VERSION=2.6.22.1
@@ -44,7 +44,12 @@ ifndef LINUX26_FORMAT
 ifneq ($(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT)),)
 LINUX26_FORMAT=$(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT))
 else
+ifneq ($(filter i386 x86-64,$(KERNEL_ARCH)),)
+# zImage target no longer available on x86 since 2.6.30
+LINUX26_FORMAT=bzImage
+else
 LINUX26_FORMAT=zImage
+endif
 endif
 endif
 
