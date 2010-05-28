@@ -264,6 +264,9 @@ endif
 
 ifneq ($(BR2_PTHREADS_NONE),y)
 EXTERNAL_LIBS+=libpthread.so
+ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
+EXTERNAL_LIBS+=libthread_db.so
+endif # gdbserver
 endif # ! no threads
 
 # SYSROOT_DIR selection. We first try the -print-sysroot option,
