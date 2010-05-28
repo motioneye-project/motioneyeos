@@ -1,13 +1,19 @@
----
- Make.Rules      |   15 ++++++++-------
- libcap/Makefile |    2 +-
- 2 files changed, 9 insertions(+), 8 deletions(-)
-
-Index: libcap-2.19/Make.Rules
-===================================================================
---- libcap-2.19.orig/Make.Rules
-+++ libcap-2.19/Make.Rules
-@@ -45,24 +45,25 @@
+diff -Nura libcap-2.19.orig/libcap/Makefile libcap-2.19/libcap/Makefile
+--- libcap-2.19.orig/libcap/Makefile	2008-12-04 05:03:12.000000000 -0200
++++ libcap-2.19/libcap/Makefile	2010-05-28 14:32:06.290297694 -0300
+@@ -33,7 +33,7 @@
+ endif
+ 
+ _makenames: _makenames.c cap_names.list.h
+-	$(BUILD_CC) $(BUILD_CFLAGS) $< -o $@
++	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $< -o $@
+ 
+ cap_names.h: _makenames
+ 	./_makenames > cap_names.h
+diff -Nura libcap-2.19.orig/Make.Rules libcap-2.19/Make.Rules
+--- libcap-2.19.orig/Make.Rules	2010-01-13 23:04:58.000000000 -0300
++++ libcap-2.19/Make.Rules	2010-05-28 14:32:31.802296186 -0300
+@@ -45,25 +45,26 @@
  KERNEL_HEADERS := $(topdir)/libcap/include
  IPATH += -I$(topdir)/libcap/include -I$(KERNEL_HEADERS)
  
@@ -36,20 +42,9 @@ Index: libcap-2.19/Make.Rules
  INCS=$(topdir)/libcap/include/sys/capability.h
  LDFLAGS += -L$(topdir)/libcap
  CFLAGS += -Dlinux $(WARNINGS) $(DEBUG) $(IPATH)
+-PAM_CAP := $(shell if [ -f /usr/include/security/pam_modules.h ]; then echo yes ; else echo no ; fi)
 +CFLAGS_FOR_BUILD += $(IPATH)
- PAM_CAP := $(shell if [ -f /usr/include/security/pam_modules.h ]; then echo yes ; else echo no ; fi)
++PAM_CAP := no
  INDENT := $(shell if [ -n "$(which indent 2>/dev/null)" ]; then echo "| indent -kr" ; fi)
  DYNAMIC := $(shell if [ ! -d "$(topdir)/.git" ]; then echo yes; fi)
-Index: libcap-2.19/libcap/Makefile
-===================================================================
---- libcap-2.19.orig/libcap/Makefile
-+++ libcap-2.19/libcap/Makefile
-@@ -33,7 +33,7 @@
- endif
- 
- _makenames: _makenames.c cap_names.list.h
--	$(BUILD_CC) $(BUILD_CFLAGS) $< -o $@
-+	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $< -o $@
- 
- cap_names.h: _makenames
- 	./_makenames > cap_names.h
+ LIBATTR := yes
