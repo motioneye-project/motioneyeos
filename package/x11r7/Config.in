@@ -19,11 +19,10 @@ choice
 
 config BR2_PACKAGE_XSERVER_xorg
 	bool "Modular X.org"
-	# depending on BR2_ENABLE_LOCALE gives a recursion error with dbus
-	depends on BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP # && BR2_ENABLE_LOCALE
+	depends on BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP
 
-comment 'X.org requires largefile, locale and C++ support'
-	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP && BR2_ENABLE_LOCALE)
+comment 'X.org requires largefile and C++ support'
+	depends on !(BR2_LARGEFILE && BR2_INSTALL_LIBSTDCPP)
 
 config BR2_PACKAGE_XSERVER_tinyx
 	bool "TinyX"
