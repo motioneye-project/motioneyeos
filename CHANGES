@@ -2,7 +2,8 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: coreutils, hal, libcap, xserver_xorg-server
+	Updated/fixed packages: coreutils, hal, libcap, ncftp,
+	xserver_xorg-server
 
 	Issues resolved (http://bugs.uclibc.org):
 
