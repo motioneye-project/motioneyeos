@@ -1,0 +1,14 @@
+menuconfig BR2_TARGET_BAREBOX
+	bool "Barebox"
+	help
+	  The Barebox bootloader, formerly known as U-Boot v2.
+
+	  http://www.barebox.org
+
+if BR2_TARGET_BAREBOX
+config BR2_TARGET_BAREBOX_BOARD_DEFCONFIG
+	string "board defconfig"
+	help
+	  Name of the board for which Barebox should be built, without
+	  the _defconfig suffix.
+endif
