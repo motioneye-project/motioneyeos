@@ -9,6 +9,7 @@
 
 	#1789: binutils fails to build for i386
 	#1843: Fix libcap build failure
+	#1855: XORG Keyboard driver fails to compile
 
 2010.05-rc3, Released May 27th, 2010:
 
