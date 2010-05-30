@@ -77,11 +77,6 @@ ifeq ($(BR2_LARGEFILE),y)
 TARGET_CFLAGS+=-D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 endif
 
-# Host packages are sometimes linked against host libraries installed
-# in $(HOST_DIR)/usr/lib. As we cannot add $(HOST_DIR)/usr/lib to
-# LD_LIBRARY_PATH when building target packages because it causes
-# libtool breakage, we force a rpath to be added to host binaries.
-HOST_CFLAGS+=-Wl,-rpath -Wl,$(HOST_DIR)/usr/lib
 
 #########################################################################
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
