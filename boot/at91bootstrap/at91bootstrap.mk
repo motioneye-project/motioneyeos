@@ -56,11 +56,10 @@ $(AT91BOOTSTRAP_TARGET): $(AT91BOOTSTRAP_DIR)/.configured
 
 $(AT91BOOTSTRAP_DIR)/.installed:: $(AT91BOOTSTRAP_TARGET)
 	mkdir -p $(BINARIES_DIR)
-	make MEMORY=$(AT91BOOTSTRAP_MEMORY) \
-		CROSS_COMPILE=$(TARGET_CROSS) \
-		-C $(AT91BOOTSTRAP_DIR) boot
-	make DESTDIR=$(BINARIES_DIR) -C $(AT91BOOTSTRAP_DIR) install || \
-		echo "Could not copy bootstrap to BINARIES_DIR"
+	make MEMORY=$(AT91BOOTSTRAP_MEMORY) 	\
+		CROSS_COMPILE=$(TARGET_CROSS) 	\
+		DESTDIR=$(BINARIES_DIR) 	\
+		-C $(AT91BOOTSTRAP_DIR) install
 	touch $@
 
 .PHONY: at91bootstrap at91bootstrap-source
