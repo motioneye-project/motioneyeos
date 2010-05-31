@@ -31,8 +31,8 @@ $(BINARIES_DIR)/isolinux.bin: $(SYSLINUX_DIR)/.compiled
 $(BINARIES_DIR)/pxelinux.bin: $(SYSLINUX_DIR)/.compiled
 	cp -a $(SYSLINUX_DIR)/core/pxelinux.bin $@
 
-syslinux: $(BINARIES_DIR)/isolinux.bin
-pxelinux: $(BINARIES_DIR)/pxelinux.bin
+syslinux: host-nasm $(BINARIES_DIR)/isolinux.bin
+pxelinux: host-nasm $(BINARIES_DIR)/pxelinux.bin
 
 pxelinux-clean syslinux-clean:
 	rm -f $(BINARIES_DIR)/isolinux.bin $(BINARIES_DIR)/pxelinux.bin
