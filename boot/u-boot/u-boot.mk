@@ -30,7 +30,6 @@ U_BOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
 
 U_BOOT_INC_CONF_FILE:=$(U_BOOT_DIR)/include/config.h
 
-U_BOOT_TARGET_TOOLS:=
 ifeq ($(BR2_TARGET_UBOOT_TOOL_MKIMAGE),y)
 U_BOOT_TARGETS+=$(TARGET_DIR)/usr/bin/mkimage
 endif
@@ -155,7 +154,7 @@ u-boot: $(U_BOOT_TARGETS)
 
 u-boot-clean:
 	-$(MAKE) -C $(U_BOOT_DIR) clean
-	rm -f $(MKIMAGE) $(U_BOOT_TARGET_TOOLS)
+	rm -f $(MKIMAGE)
 
 u-boot-dirclean:
 	rm -rf $(U_BOOT_DIR)
