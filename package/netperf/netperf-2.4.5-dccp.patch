@@ -1,0 +1,38 @@
+[PATCH] fix build on systems where IPROTO_DCCP is defined, but SOCK_DCCP isn't
+
+On some systems (E.G. uClibc 0.9.31) IPROTO_DCCP is defined, but SOCK_DCCP
+isn't - Causing the build to break. Fix it by checking for both before
+using.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/netsh.c       |    2 +-
+ src/nettest_bsd.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: netperf-2.4.5/src/netsh.c
+===================================================================
+--- netperf-2.4.5.orig/src/netsh.c
++++ netperf-2.4.5/src/netsh.c
+@@ -452,7 +452,7 @@ parse_protocol(char protocol_string[])
+     return IPPROTO_SDP;
+   }
+ #endif
+-#ifdef IPPROTO_DCCP
++#if defined(IPPROTO_DCCP) && defined(SOCK_DCCP)
+   if (!strcasecmp(temp,"dccp")) {
+     socket_type = SOCK_DCCP;
+     return IPPROTO_DCCP;
+Index: netperf-2.4.5/src/nettest_bsd.c
+===================================================================
+--- netperf-2.4.5.orig/src/nettest_bsd.c
++++ netperf-2.4.5/src/nettest_bsd.c
+@@ -712,7 +712,7 @@ complete_addrinfo(char *controlhost, cha
+ 	 that we did this so the code for the Solaris kludge can do
+ 	 the fix-up for us.  also flip error over to EAI_AGAIN and
+ 	 make sure we don't "count" this time around the loop. */
+-#if defined(IPPROTO_DCCP)
++#if defined(IPPROTO_DCCP) && defined(SOCK_DCCP)
+       /* only tweak on this one the second time around, after we've
+ 	 kludged the ai_protocol field */
+       if ((hints.ai_socktype == SOCK_DCCP) &&

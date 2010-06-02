@@ -1,5 +1,13 @@
 2010.08, Not released yet:
 
+	Fixes all over the tree.
+
+	Updated/fixed packages: netperf
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#1909: netperf-2.4.5 fails to build because of undeclared SOCK_DCCP
+
 2010.05, Released May 30th, 2010:
 
 	Fixes all over the tree.
