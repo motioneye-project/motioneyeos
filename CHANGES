@@ -7,7 +7,8 @@
 	New packages: cgilua, copas, coxpcall, luafilesystem,
 	luasocket, rings, wsapi, xavante
 
-	Updated/fixed packages: cdrkit, libidn, netperf, qt, usbutils
+	Updated/fixed packages: cdrkit, libidn, netperf, qt, tn5250,
+	usbutils
 
 	Removed packages: modutils
 
@@ -17,6 +18,7 @@
 	#1879: Bump iptables to 1.4.8
 	#1885: Add a bunch of lua modules
 	#1897: Bump libusb to 1.0.7
+	#1903: Bump tn5250 to 0.17.4 and migrate to autotargets
 	#1909: netperf-2.4.5 fails to build because of undeclared SOCK_DCCP
 
 2010.05, Released May 30th, 2010:
