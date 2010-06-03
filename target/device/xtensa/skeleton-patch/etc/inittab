@@ -18,8 +18,6 @@ null::sysinit:/bin/mount -t proc proc /proc
 null::sysinit:/bin/mount -o remount,rw /
 null::sysinit:/bin/mount -a
 null::sysinit:/bin/hostname -F /etc/hostname
-null::sysinit:/sbin/ifconfig lo 127.0.0.1 up
-null::sysinit:/sbin/route add -net 127.0.0.0 netmask 255.0.0.0 lo
 # now run any rc scripts
 ::sysinit:/etc/init.d/rcS
 
