@@ -8,7 +8,7 @@
 	luasocket, rings, wsapi, xavante
 
 	Updated/fixed packages: cdrkit, libidn, netperf, openssl, php,
-	qt, tn5250, usbutils
+	qt, sqlite, tn5250, usbutils
 
 	Removed packages: modutils
 
@@ -23,6 +23,7 @@
 	#1909: netperf-2.4.5 fails to build because of undeclared SOCK_DCCP
 	#1945: PHP: add sqlite3 dependency when using external lib
 	#1951: Bump openssl to 0.9.8o
+	#1957: Bump sqlite to 3.6.23.1
 
 2010.05, Released May 30th, 2010:
 
