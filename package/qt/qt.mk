@@ -387,6 +387,9 @@ endif
 ifeq ($(BR2_PACKAGE_QT_SQL_MODULE),y)
 QT_LIBS+= qt-sql
 endif
+ifeq ($(BR2_PACKAGE_QT_MULTIMEDIA),y)
+QT_LIBS+= qt-multimedia
+endif
 ifeq ($(BR2_PACKAGE_QT_PHONON),y)
 QT_LIBS+= qt-phonon
 endif
@@ -540,6 +543,11 @@ qt-sql: $(STAGING_DIR)/usr/lib/libQtCore.la
 	$(call QT_INSTALL_PLUGINS,sqldrivers)
 ifeq ($(BR2_PACKAGE_QT_SHARED),y)
 	cp -dpf $(STAGING_DIR)/usr/lib/libQtSql.so.* $(TARGET_DIR)/usr/lib/
+endif
+
+qt-multimedia: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QT_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQtMultimedia.so.* $(TARGET_DIR)/usr/lib/
 endif
 
 qt-phonon: $(STAGING_DIR)/usr/lib/libQtCore.la

@@ -7,7 +7,7 @@
 	New packages: cgilua, copas, coxpcall, luafilesystem,
 	luasocket, rings, wsapi, xavante
 
-	Updated/fixed packages: cdrkit, libidn, netperf
+	Updated/fixed packages: cdrkit, libidn, netperf, qt
 
 	Issues resolved (http://bugs.uclibc.org):
 
