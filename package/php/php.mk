@@ -151,6 +151,7 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_PDO),y)
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_SQLITE),y)
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_SQLITE_EXTERNAL),y)
 	PHP_CONF_OPT += --with-pdo-sqlite=$(STAGING_DIR)/usr
+	PHP_DEPENDENCIES += sqlite
 else
 	PHP_CONF_OPT += --with-pdo-sqlite
 endif
