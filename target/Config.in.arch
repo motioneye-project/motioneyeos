@@ -594,7 +594,7 @@ config BR2_GCC_TARGET_TUNE
 	default arm920		if BR2_arm920
 	default arm920t		if BR2_arm920t
 	default arm922t		if BR2_arm922t
-	default arm9tdmi	if BR2_arm926t
+	default arm926ej-s	if BR2_arm926t
 	default arm1136j-s	if BR2_arm1136j_s
 	default arm1136jf-s	if BR2_arm1136jf_s
 	default arm1176jz-s	if BR2_arm1176jz_s
