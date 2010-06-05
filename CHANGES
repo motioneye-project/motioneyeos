@@ -2,7 +2,7 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: libidn, netperf
+	Updated/fixed packages: cdrkit, libidn, netperf
 
 	Issues resolved (http://bugs.uclibc.org):
 

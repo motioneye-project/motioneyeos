@@ -1,0 +1,22 @@
+[PATCH] fix build with uClibc
+
+cdrkit unconditionally enables code using rcmd(3), which isn't available
+on uClibc.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ include/xconfig.h.in |    1 -
+ 1 file changed, 1 deletion(-)
+
+Index: cdrkit-1.1.10/include/xconfig.h.in
+===================================================================
+--- cdrkit-1.1.10.orig/include/xconfig.h.in
++++ cdrkit-1.1.10/include/xconfig.h.in
+@@ -187,7 +187,6 @@
+  *	they are placed before the large file tests.
+  */
+ 
+-#define HAVE_RCMD 1		/* rcmd() is present in libc/libsocket */
+ #define HAVE_SOCKET 1		/* socket() is present in libc/libsocket */
+ #define HAVE_SOCKETPAIR 1		/* socketpair() is present in libc/libsocket */
+ #define HAVE_GETSERVBYNAME 1	/* getservbyname() is present in libc/libsocket */
