@@ -161,15 +161,23 @@
  $ make xconfig
 </pre>
 
-    <p>to run the Qt3-based configurator.</p>
+or
 
-    <p>Both of these "make" commands will need to build a configuration
+<pre>
+ $ make gconfig
+</pre>
+
+    <p>to run the Qt3 or GTK-based configurators.</p>
+
+    <p>All of these "make" commands will need to build a configuration
     utility, so you may need to install "development" packages for
     relevent libraries used by the configuration utilities.
     On Debian-like systems, the
     <code>libncurses5-dev</code> package is required to use the
-    <i>menuconfig</i> interface, and the <code>libqt3-mt-dev</code> is
-    required to use the <i>xconfig</i> interface.</p>
+    <i>menuconfig</i> interface, <code>libqt3-mt-dev</code> is
+    required to use the <i>xconfig</i> interface, and
+    <code>libglib2.0-dev, libgtk2.0-dev and libglade2-dev</code> are
+    needed to used the <i>gconfig</i> interface.</p>
 
     <p>For each menu entry in the configuration tool, you can find associated help
     that describes the purpose of the entry. </p>

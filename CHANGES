@@ -1,6 +1,8 @@
 2010.08, Not released yet:
 
-	Fixes all over the tree.
+	Fixes all over the tree and new features.
+
+	New GTK-based configurator, usable using 'make gconfig'.
 
 	Updated/fixed packages: cdrkit, libidn, netperf
 

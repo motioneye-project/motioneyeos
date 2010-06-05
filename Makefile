@@ -29,7 +29,7 @@ CONFIG_DEFCONFIG=.defconfig
 CONFIG=package/config
 DATE:=$(shell date +%Y%m%d)
 
-noconfig_targets:=menuconfig xconfig config oldconfig randconfig \
+noconfig_targets:=menuconfig gconfig xconfig config oldconfig randconfig \
 	defconfig allyesconfig allnoconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
 	source-check help
@@ -484,6 +484,14 @@ xconfig: $(CONFIG)/qconf
 		test -f .config.cmd || rm -f .config; \
 	fi
 
+gconfig: $(CONFIG)/gconf
+	@mkdir -p $(CONFIG)/buildroot-config
+	@if ! KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
+		$(CONFIG)/gconf $(CONFIG_CONFIG_IN); then \
+		test -f .config.cmd || rm -f .config; \
+	fi
+
 menuconfig: $(CONFIG)/mconf
 	@mkdir -p $(CONFIG)/buildroot-config
 	@if ! KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
@@ -605,6 +613,7 @@ help:
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'
 	@echo '  xconfig                - interactive Qt-based configurator'
+	@echo '  gconfig                - interactive GTK-based configurator'
 	@echo '  oldconfig              - resolve any unresolved symbols in .config'
 	@echo '  randconfig             - New config with random answer to all options'
 	@echo '  defconfig              - New config with default answer to all options'

@@ -138,7 +138,9 @@ endif
 ifeq ($(MAKECMDGOALS),gconfig)
 	gconf-target := 1
 endif
-
+ifeq ($(findstring gconf,$(MAKECMDGOALS)),gconf)
+	gconf-target := 1
+endif
 
 ifeq ($(qconf-target),1)
 qconf-cxxobjs	:= qconf.o
