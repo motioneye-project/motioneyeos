@@ -17,3 +17,5 @@ MODULE_INIT_TOOLS_AUTORECONF=YES
 HOST_MODULE_INIT_TOOLS_AUTORECONF=YES
 
 $(eval $(call AUTOTARGETS,package,module-init-tools))
+$(eval $(call AUTOTARGETS,package,module-init-tools,host))
+

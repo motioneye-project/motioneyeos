@@ -111,7 +111,7 @@ $(LINUX26_DIR)/.stamp_installed: $(LINUX26_DIR)/.stamp_compiled
 	fi
 	$(Q)touch $@
 
-linux26: $(LINUX26_DEPENDENCIES) $(LINUX26_DIR)/.stamp_installed
+linux26: host-module-init-tools $(LINUX26_DEPENDENCIES) $(LINUX26_DIR)/.stamp_installed
 
 ifeq ($(BR2_LINUX_KERNEL),y)
 TARGETS+=linux26
