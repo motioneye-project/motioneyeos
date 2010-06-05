@@ -70,50 +70,6 @@ module-init-tools-dirclean:
 	rm -rf $(MODULE_INIT_TOOLS_DIR)
 
 #############################################################
-
-
-$(MODULE_INIT_TOOLS_DIR2)/.source: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
-	$(MODULE_INIT_TOOLS_CAT) $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE) | tar -C $(TOOLCHAIN_DIR) -xvf -
-	toolchain/patch-kernel.sh $(MODULE_INIT_TOOLS_DIR2) package/module-init-tools \*.patch
-	$(CONFIG_UPDATE) $(MODULE_INIT_TOOLS_DIR2)
-	touch $(MODULE_INIT_TOOLS_DIR2)/.source
-
-$(MODULE_INIT_TOOLS_DIR2)/.configured: $(MODULE_INIT_TOOLS_DIR2)/.source
-	(cd $(MODULE_INIT_TOOLS_DIR2); \
-		CC="$(HOSTCC)" \
-		./configure $(QUIET) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_HOST_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--sysconfdir=/etc \
-		--program-transform-name='' \
-	)
-	touch $(MODULE_INIT_TOOLS_DIR2)/.configured
-
-$(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY): $(MODULE_INIT_TOOLS_DIR2)/.configured
-	$(MAKE) -C $(MODULE_INIT_TOOLS_DIR2)
-	touch -c $(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY)
-
-
-$(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26: $(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY)
-	$(INSTALL) -D $(MODULE_INIT_TOOLS_DIR2)/$(MODULE_INIT_TOOLS_BINARY) $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26
-
-cross-depmod26: $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26
-
-module-init-tools-source cross-depmod26-source: $(DL_DIR)/$(MODULE_INIT_TOOLS_SOURCE)
-
-cross-depmod26-clean:
-	rm -f $(STAGING_DIR)/bin/$(GNU_TARGET_NAME)-depmod26
-	-$(MAKE) -C $(MODULE_INIT_TOOLS_DIR2) clean
-
-cross-depmod26-dirclean:
-	rm -rf $(MODULE_INIT_TOOLS_DIR2)
-
-ifeq ($(BR2_PACKAGE_LINUX),y)
-HOST_SOURCE+=module-init-tools-source
-endif
-
-#############################################################
 #
 ## Toplevel Makefile options
 #
