@@ -17,7 +17,7 @@ Index: config/Makefile
 ===================================================================
 --- config.orig/Makefile
 +++ config/Makefile
-@@ -124,10 +124,17 @@
+@@ -124,10 +124,21 @@
  ifeq ($(MAKECMDGOALS),menuconfig)
  	hostprogs-y += mconf
  endif
@@ -35,6 +35,10 @@ Index: config/Makefile
  ifeq ($(MAKECMDGOALS),gconfig)
  	gconf-target := 1
  endif
++ifeq ($(findstring gconf,$(MAKECMDGOALS)),gconf)
++	gconf-target := 1
++endif
++
 Index: config/README.buildroot2
 ===================================================================
 --- /dev/null
