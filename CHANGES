@@ -9,6 +9,8 @@
 
 	Updated/fixed packages: cdrkit, libidn, netperf, qt
 
+	Removed packages: modutils
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#1771: Fakeroot and the target/generic/device_table.txt create bad...

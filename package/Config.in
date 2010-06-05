@@ -466,7 +466,6 @@ menu "System tools"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/bootutils/Config.in"
 source "package/module-init-tools/Config.in"
-source "package/modutils/Config.in"
 source "package/procps/Config.in"
 source "package/psmisc/Config.in"
 source "package/sysklogd/Config.in"
