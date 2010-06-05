@@ -8,6 +8,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#1771: Fakeroot and the target/generic/device_table.txt create bad...
 	#1909: netperf-2.4.5 fails to build because of undeclared SOCK_DCCP
 
 2010.05, Released May 30th, 2010:
