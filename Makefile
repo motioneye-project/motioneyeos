@@ -469,23 +469,9 @@ all: menuconfig
 HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
-$(CONFIG)/conf:
-	@mkdir -p $(CONFIG)/buildroot-config
-	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) conf
-	-@if [ ! -f .config ]; then \
-		cp $(CONFIG_DEFCONFIG) .config; \
-	fi
-
-$(CONFIG)/mconf:
-	@mkdir -p $(CONFIG)/buildroot-config
-	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) mconf
-	-@if [ ! -f .config ]; then \
-		cp $(CONFIG_DEFCONFIG) .config; \
-	fi
-
-$(CONFIG)/qconf:
-	@mkdir -p $(CONFIG)/buildroot-config
-	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) qconf
+$(CONFIG)/%onf:
+	mkdir -p $(CONFIG)/buildroot-config
+	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) $(notdir $@)
 	-@if [ ! -f .config ]; then \
 		cp $(CONFIG_DEFCONFIG) .config; \
 	fi
@@ -513,7 +499,7 @@ config: $(CONFIG)/conf
 		$(CONFIG)/conf $(CONFIG_CONFIG_IN)
 
 oldconfig: $(CONFIG)/conf
-	@mkdir -p $(CONFIG)/buildroot-config
+	mkdir -p $(CONFIG)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(CONFIG)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(CONFIG)/buildroot-config/autoconf.h \
 		$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
