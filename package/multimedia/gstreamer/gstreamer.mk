@@ -27,7 +27,6 @@ ifeq ($(BR2_PACKAGE_GSTREAMER_LIBXML2),y)
 GSTREAMER_DEPENDENCIES += libxml2
 else
 GSTREAMER_CONF_OPT += \
-	--disable-registry \
 	--disable-loadsave
 endif
 
