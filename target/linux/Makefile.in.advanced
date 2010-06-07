@@ -123,7 +123,6 @@ endif
 # -----------------------------------------------------------------------------
 # Has to be set by the target/device
 
-LINUX26_MKIMAGE_DIR:=
 LINUX26_MKIMAGE_DEP:=
 
 # --------------
@@ -137,8 +136,7 @@ endif
 # --------------
 # UIMAGE
 ifeq ($(LINUX26_FORMAT),uImage)
-LINUX26_MKIMAGE_DIR:=$(BUILD_DIR)/u-boot-tools
-LINUX26_MKIMAGE_DEP:=$(LINUX26_MKIMAGE_DIR)/mkimage
+LINUX26_MKIMAGE_DEP:=$(MKIMAGE)
 ifeq ($(LINUX26_BINLOC),)
 LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/$(LINUX26_FORMAT)
 endif
@@ -186,7 +184,7 @@ LINUX26_MAKE_FLAGS = HOSTCC="$(HOSTCC)" HOSTCFLAGS="$(HOSTCFLAGS)" \
 	CROSS_COMPILE=$(TARGET_CROSS) \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
 	LZMA="$(LZMA)" \
-	PATH=$(LINUX26_MKIMAGE_DIR):$(PATH)
+	PATH=$(PATH)
 
 # =============================================================================
 # ifneq ($(strip $(LINUX26_VERSION)),$(strip $(LINUX_HEADERS_VERSION)))
@@ -448,10 +446,6 @@ endif
 $(BUILD_DIR)/.linux-version: $(LINUX26_KERNEL)
 	echo $(LINUX26_VERSION_PROBED) > $(BUILD_DIR)/.linux-version
 	echo LINUX_MODULES=`$(LINUX26_VERSION_PROBED)`
-
-$(LINUX26_MKIMAGE_DIR)/mkimage:	$(U_BOOT_TOOLS)
-	mkdir -p $(LINUX26_MKIMAGE_DIR)
-	cp $(MKIMAGE) $(LINUX26_MKIMAGE_DIR)
 
 linux26: $(LINUX26_TARGETS)
 

@@ -383,7 +383,6 @@ config BR2_LINUX_BIN_BZIMAGE
 config BR2_LINUX_BIN_UIMAGE
 	bool "uImage"
 	depends on BR2_PACKAGE_LINUX
-	select BR2_TARGET_UBOOT
 
 config BR2_LINUX_BIN_VMLINUX
 	bool "vmlinux"
