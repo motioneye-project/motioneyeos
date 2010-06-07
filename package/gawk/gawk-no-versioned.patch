@@ -1,0 +1,49 @@
+From 9cb7ff17dd7f81589f0891413efa5d4aec1a1598 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Mon, 7 Jun 2010 11:33:50 -0300
+Subject: [PATCH] Disabled versioned installation to save space and use symlinks where it's appropiate
+
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ Makefile.in     |    3 ++-
+ doc/Makefile.in |    2 +-
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index f946ee1..a3d467a 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -392,7 +392,7 @@ CLEANFILES = core core.*
+ MAINTAINERCLEANFILES = version.c
+ 
+ # We want hard links for install-exec-hook, below
+-LN = ln
++LN = $(LN_S)
+ all: config.h
+ 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
+ 
+@@ -993,6 +993,7 @@ uninstall-am: uninstall-binPROGRAMS
+ # (This is done universally, which may not always be right, but
+ # there's no easy way to distinguish GNU from non-GNU systems.)
+ install-exec-hook:
++foo:
+ 	(cd $(DESTDIR)$(bindir); \
+ 	$(LN) gawk$(EXEEXT) gawk-$(VERSION)$(EXEEXT) 2>/dev/null ; \
+ 	$(LN) pgawk$(EXEEXT) pgawk-$(VERSION)$(EXEEXT) 2>/dev/null ; \
+diff --git a/doc/Makefile.in b/doc/Makefile.in
+index b1533e7..8b91694 100644
+--- a/doc/Makefile.in
++++ b/doc/Makefile.in
+@@ -272,7 +272,7 @@ AWKCARD = awkcard.ps
+ # make pgawk.1 a link to gawk.1 in the installed man directory.
+ 
+ # We want hard links for install-data-hook, below
+-LN = ln
++LN = $(LN_S)
+ all: all-am
+ 
+ .SUFFIXES:
+-- 
+1.6.4.4
+
