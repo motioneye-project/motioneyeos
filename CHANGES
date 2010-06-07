@@ -36,7 +36,7 @@
 	setserial, sdl, sdl_mixer, sdl_sound, sdl_ttf, sqlite,
 	squashfs, swfdec, tftpd, thttpd, tn5250, tremor, usbutils,
 	webif, webkit, wireless_tools, xkeyboard-config,
-	xserver_xorg-server, xvkbd
+	xserver_xorg-server, xvkbd, zlib
 
 	Removed packages: libgail, modutils, portage, rxvt
 
@@ -72,6 +72,7 @@
 	#1951: Bump openssl to 0.9.8o
 	#1957: Bump sqlite to 3.6.23.1
 	#1975: Package removal/deprecation
+	#1981: zlib: bump to 1.2.5
 	#1987: intltool: Fix spelling mistake
 	#1993: Bump bash to 4.1.7(1) and migrate to autotargets
 	#1999: Typo in path checking

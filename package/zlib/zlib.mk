@@ -3,7 +3,7 @@
 # zlib
 #
 #############################################################
-ZLIB_VERSION:=1.2.3
+ZLIB_VERSION:=1.2.5
 ZLIB_SOURCE:=zlib-$(ZLIB_VERSION).tar.bz2
 ZLIB_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/libpng
 ZLIB_INSTALL_STAGING=YES
@@ -24,7 +24,6 @@ define ZLIB_CONFIGURE_CMDS
 		./configure \
 		$(ZLIB_SHARED) \
 		--prefix=/usr \
-		--exec-prefix=$(STAGING_DIR)/usr/bin \
 		--libdir=$(STAGING_DIR)/usr/lib \
 		--includedir=$(STAGING_DIR)/usr/include \
 	)
