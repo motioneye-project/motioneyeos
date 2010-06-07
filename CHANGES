@@ -7,8 +7,8 @@
 	New packages: cgilua, copas, coxpcall, luafilesystem,
 	luasocket, rings, wsapi, xavante
 
-	Updated/fixed packages: cdrkit, gawk, libidn, netperf,
-	openssl, php, qt, sqlite, tn5250, usbutils
+	Updated/fixed packages: cdrkit, gawk, iptables, libidn,
+	netperf, openssl, php, qt, sqlite, tn5250, usbutils
 
 	Removed packages: modutils
 
