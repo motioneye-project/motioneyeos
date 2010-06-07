@@ -21,7 +21,7 @@
 	ntfsprogs, openssl, php, qt, quagga, sqlite, sdl, sdl_mixer,
 	sdl_ttf, squashfs, tn5250, usbutils, xkeyboard-config
 
-	Removed packages: modutils, rxvt
+	Removed packages: modutils, portage, rxvt
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -42,6 +42,7 @@
 	#1945: PHP: add sqlite3 dependency when using external lib
 	#1951: Bump openssl to 0.9.8o
 	#1957: Bump sqlite to 3.6.23.1
+	#1975: Package removal/deprecation
 	#1987: intltool: Fix spelling mistake
 	#1999: Typo in path checking
 	#2005: Bump dnsmasq to 2.55 and migrate to gentargets
