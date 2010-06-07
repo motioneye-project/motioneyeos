@@ -15,6 +15,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#1771: Fakeroot and the target/generic/device_table.txt create bad...
+	#1807: LZMA 4.32.7, Required header file(s) are missing
 	#1879: Bump iptables to 1.4.8
 	#1885: Add a bunch of lua modules
 	#1897: Bump libusb to 1.0.7
