@@ -85,6 +85,16 @@ ifeq ($(BR2_LINUX_KERNEL_USE_DEFCONFIG),y)
 else ifeq ($(BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG),y)
 	cp $(BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE) $(@D)/.config
 endif
+ifeq ($(BR2_ARM_EABI),y)
+	$(call KCONFIG_ENABLE_OPT,CONFIG_AEABI,$(@D)/.config)
+else
+	$(call KCONFIG_DISABLE_OPT,CONFIG_AEABI,$(@D)/.config)
+endif
+ifeq ($(BR2_INET_IPV6),y)
+	$(call KCONFIG_ENABLE_OPT,CONFIG_IPV6,$(@D)/.config)
+else
+	$(call KCONFIG_DISABLE_OPT,CONFIG_IPV6,$(@D)/.config)
+endif
 	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(@D) oldconfig
 	$(Q)touch $@
 
