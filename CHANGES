@@ -7,7 +7,7 @@
 	New packages: cgilua, copas, coxpcall, luafilesystem,
 	luasocket, rings, wsapi, xavante
 
-	Updated/fixed packages: cdrkit, gawk, iptables, libidn,
+	Updated/fixed packages: cdrkit, gawk, intltool, iptables, libidn,
 	netperf, openssl, php, qt, sqlite, tn5250, usbutils
 
 	Removed packages: modutils
@@ -25,6 +25,7 @@
 	#1945: PHP: add sqlite3 dependency when using external lib
 	#1951: Bump openssl to 0.9.8o
 	#1957: Bump sqlite to 3.6.23.1
+	#1987: intltool: Fix spelling mistake
 
 2010.05, Released May 30th, 2010:
 
