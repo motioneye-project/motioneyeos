@@ -1,0 +1,31 @@
+From 126fcb5d08d69693eb4c6e5f5c3d1082b6910121 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Mon, 7 Jun 2010 11:40:04 -0300
+Subject: [PATCH] Disable configure script from checking for CXX since it's not needed
+
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ configure |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/configure b/configure
+index a6e812b..ac2587f 100755
+--- a/configure
++++ b/configure
+@@ -6136,10 +6136,8 @@ if $ac_preproc_ok; then
+   :
+ else
+   { { echo "$as_me:$LINENO: error: C++ preprocessor \"$CXXCPP\" fails sanity check
+-See \`config.log' for more details." >&5
+-echo "$as_me: error: C++ preprocessor \"$CXXCPP\" fails sanity check
+-See \`config.log' for more details." >&2;}
+-   { (exit 1); exit 1; }; }
++See \`config.log' for more details." >&5;}
++   { echo "C++ sucks, ignoring ..." >&5; }; }
+ fi
+ 
+ ac_ext=cpp
+-- 
+1.6.4.4
+
