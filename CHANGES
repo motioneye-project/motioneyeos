@@ -15,8 +15,8 @@
 
 	Updated/fixed packages: busybox, cdrkit, file, gawk,
 	gstreamer, intltool, ipsec-tools, iptables, libart, libidn,
-	lmbench, lrzsz, netperf, ntfsprogs, openssl, php, qt, sqlite,
-	squashfs, tn5250, usbutils, xkeyboard-config
+	lmbench, lrzsz, ncurses, netperf, ntfsprogs, openssl, php, qt,
+	sqlite, squashfs, tn5250, usbutils, xkeyboard-config
 
 	Removed packages: modutils
 
@@ -40,6 +40,7 @@
 	#1987: intltool: Fix spelling mistake
 	#1999: Typo in path checking
 	#2035: ipsec-tools-0.7.2 fails to build with gcc-4.4.x
+	#2038: Bump ncurses to 5.7
 
 2010.05, Released May 30th, 2010:
 
