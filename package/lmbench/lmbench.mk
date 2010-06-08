@@ -6,42 +6,25 @@
 LMBENCH_VERSION:=3.0-a9
 LMBENCH_SOURCE:=lmbench-$(LMBENCH_VERSION).tgz
 LMBENCH_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/project/lmbench/development/lmbench-3.0-a9/
-LMBENCH_CAT:=$(ZCAT)
-LMBENCH_DIR:=$(BUILD_DIR)/lmbench-$(LMBENCH_VERSION)
-LMBENCH_BIN:=lmbench
-LMBENCH_TARGET_BIN:=usr/bin/$(LMBENCH_BIN)
 
-$(DL_DIR)/$(LMBENCH_SOURCE):
-	$(call DOWNLOAD,$(LMBENCH_SITE),$(LMBENCH_SOURCE))
-
-$(LMBENCH_DIR)/.unpacked: $(DL_DIR)/$(LMBENCH_SOURCE)
-	$(LMBENCH_CAT) $(DL_DIR)/$(LMBENCH_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LMBENCH_DIR) package/lmbench lmbench-$(LMBENCH_VERSION)\*.patch
-	$(CONFIG_UPDATE) $(LMBENCH_DIR)
-	sed -i 's/CFLAGS=/CFLAGS+=/g' $(LMBENCH_DIR)/src/Makefile
+define LMBENCH_CONFIGURE_CMDS
+	$(CONFIG_UPDATE) $(@D)
+	sed -i 's/CFLAGS=/CFLAGS+=/g' $(@D)/src/Makefile
+	sed -i '/cd .*doc/d' $(@D)/src/Makefile
+	sed -i '/include/d' $(@D)/src/Makefile
 	touch $@
+endef
 
-$(LMBENCH_DIR)/bin/$(ARCH)/$(LMBENCH_BIN): $(LMBENCH_DIR)/.unpacked
-	$(MAKE) CFLAGS="$(TARGET_CFLAGS)" OS=$(ARCH) CC=$(TARGET_CC) -C $(LMBENCH_DIR)/src
+define LMBENCH_BUILD_CMDS
+	$(MAKE) CFLAGS="$(TARGET_CFLAGS)" OS=$(ARCH) CC=$(TARGET_CC) -C $(@D)/src
+endef
 
-$(TARGET_DIR)/$(LMBENCH_TARGET_BIN): $(LMBENCH_DIR)/bin/$(ARCH)/$(LMBENCH_BIN)
-	$(MAKE) CFLAGS="$(TARGET_CFLAGS)" OS=$(ARCH) CC=$(TARGET_CC) BASE=$(TARGET_DIR)/usr -C $(LMBENCH_DIR)/src install
+define LMBENCH_INSTALL_TARGET_CMDS
+	$(MAKE) CFLAGS="$(TARGET_CFLAGS)" OS=$(ARCH) CC=$(TARGET_CC) BASE=$(TARGET_DIR)/usr -C $(@D)/src install
+endef
 
-lmbench: $(TARGET_DIR)/$(LMBENCH_TARGET_BIN)
+define LMBENCH_CLEAN_CMDS
+	$(MAKE) -C $(@D)/src clean
+endef
 
-lmbench-source: $(DL_DIR)/$(LMBENCH_SOURCE)
-
-lmbench-clean:
-	-$(MAKE) -C $(LMBENCH_DIR)/src clean
-
-lmbench-dirclean:
-	rm -rf $(LMBENCH_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_LMBENCH),y)
-TARGETS+=lmbench
-endif
+$(eval $(call GENTARGETS,package,lmbench))

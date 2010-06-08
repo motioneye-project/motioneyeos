@@ -8,13 +8,14 @@
 	luasocket, rings, wsapi, xavante
 
 	Updated/fixed packages: cdrkit, file, gawk, intltool,
-	iptables, libidn, netperf, openssl, php, qt, sqlite, tn5250,
-	usbutils
+	iptables, libidn, lmbench, netperf, openssl, php, qt, sqlite,
+	tn5250, usbutils
 
 	Removed packages: modutils
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#1753: lmbench: convert to generic package infrastructure
 	#1771: Fakeroot and the target/generic/device_table.txt create bad...
 	#1807: LZMA 4.32.7, Required header file(s) are missing
 	#1879: Bump iptables to 1.4.8
