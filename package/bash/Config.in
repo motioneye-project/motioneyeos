@@ -4,4 +4,4 @@ config BR2_PACKAGE_BASH
 	help
 	  The standard GNU Bourne again shell.
 
-	  http://cnswww.cns.cwru.edu/~chet/bash/bashtop.html
+	  http://tiswww.case.edu/php/chet/bash/bashtop.html

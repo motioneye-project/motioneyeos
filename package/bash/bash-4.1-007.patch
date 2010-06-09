@@ -1,0 +1,47 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.1
+Patch-ID:	bash41-007
+
+Bug-Reported-by:	Rob Robason <rob@robason.net>
+Bug-Reference-ID:	<1269513145.22336.9.camel@home.robason.homelinux.net>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2010-03/msg00089.html
+
+Bug-Description:
+
+A typo caused bash to not honor a precision specification in a printf
+format.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.1-patched/builtins/printf.def	2010-01-18 10:50:22.000000000 -0500
+--- ./builtins/printf.def	2010-03-25 09:40:56.000000000 -0400
+***************
+*** 118,122 ****
+        nw = vflag ? vbprintf (f, fieldwidth, func) : printf (f, fieldwidth, func); \
+      else if (have_precision) \
+!       nw = vflag ? vbprintf (f, precision, func) : printf (f, fieldwidth, func); \
+      else \
+        nw = vflag ? vbprintf (f, func) : printf (f, func); \
+--- 118,122 ----
+        nw = vflag ? vbprintf (f, fieldwidth, func) : printf (f, fieldwidth, func); \
+      else if (have_precision) \
+!       nw = vflag ? vbprintf (f, precision, func) : printf (f, precision, func); \
+      else \
+        nw = vflag ? vbprintf (f, func) : printf (f, func); \
+*** ../bash-4.1-patched/patchlevel.h	2009-10-01 16:39:22.000000000 -0400
+--- ./patchlevel.h	2010-01-14 09:38:08.000000000 -0500
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 6
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -1,0 +1,65 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.1
+Patch-ID:	bash41-002
+
+Bug-Reported-by:	guillaume.outters@free.fr
+Bug-Reference-ID:	<20100105230441.70D171AA7F52@asterix.local>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2010-01/msg00017.html
+
+Bug-Description:
+
+Bash-4.1/Readline-6.1 introduced a hook function that allows applications
+to rewrite or modify filenames read from the file system before comparing
+them with a word to be completed.  The converted filename, if it matches,
+needs to be inserted into the line buffer, replacing the original contents.
+
+This fixes a completion bug on Mac OS X involving filenames containing
+UTF-8 characters.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.1-patched/lib/readline/complete.c	2009-11-29 18:39:30.000000000 -0500
+--- ./lib/readline/complete.c	2010-01-06 08:30:23.000000000 -0500
+***************
+*** 2139,2143 ****
+        if (filename_len == 0)
+  	{
+! 	  if (_rl_match_hidden_files == 0 && HIDDEN_FILE (entry->d_name))
+  	    continue;
+  
+--- 2139,2143 ----
+        if (filename_len == 0)
+  	{
+! 	  if (_rl_match_hidden_files == 0 && HIDDEN_FILE (convfn))
+  	    continue;
+  
+***************
+*** 2220,2224 ****
+  	    }
+  
+! 	  strcpy (temp + dirlen, entry->d_name);
+  	}
+        else
+--- 2220,2224 ----
+  	    }
+  
+! 	  strcpy (temp + dirlen, convfn);
+  	}
+        else
+*** ../bash-4.1-patched/patchlevel.h	2009-10-01 16:39:22.000000000 -0400
+--- ./patchlevel.h	2010-01-14 09:38:08.000000000 -0500
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 1
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 2
+  
+  #endif /* _PATCHLEVEL_H_ */

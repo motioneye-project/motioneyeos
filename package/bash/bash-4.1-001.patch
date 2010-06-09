@@ -1,0 +1,48 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.1
+Patch-ID:	bash41-001
+
+Bug-Reported-by:	Yann Rouillard <yann@pleiades.fr.eu.org>
+Bug-Reference-ID:	<4B44A410.4070107@pleiades.fr.eu.org>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2010-01/msg00018.html
+
+Bug-Description:
+
+A prototype for vsnprintf was incorrect, and caused compilation failures
+on systems that did not have a suitable vsnprintf, but had a declaration in
+one of the system header files.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.1-patched/builtins/printf.def	2009-11-20 15:31:23.000000000 -0500
+--- ./builtins/printf.def	2010-01-07 08:50:06.000000000 -0500
+***************
+*** 173,177 ****
+  
+  #if !HAVE_VSNPRINTF
+! extern int vsnprintf __P((char *, size_t, const char *, ...)) __attribute__((__format__ (printf, 3, 4)));
+  #endif
+  
+--- 173,177 ----
+  
+  #if !HAVE_VSNPRINTF
+! extern int vsnprintf __P((char *, size_t, const char *, va_list)) __attribute__((__format__ (printf, 3, 0)));
+  #endif
+  
+*** ../bash-4.1-patched/patchlevel.h	2009-10-01 16:39:22.000000000 -0400
+--- ./patchlevel.h	2010-01-14 09:38:08.000000000 -0500
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 0
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 1
+  
+  #endif /* _PATCHLEVEL_H_ */

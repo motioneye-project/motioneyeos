@@ -13,7 +13,7 @@
 	New packages: cgilua, copas, coxpcall, ffmpeg, luafilesystem,
 	luasocket, rings, wsapi, xavante, xterm
 
-	Updated/fixed packages: berkeleydb, busybox, cdrkit, dash,
+	Updated/fixed packages: berkeleydb, bash, busybox, cdrkit, dash,
 	dialog, diffutils, distcc, dmalloc, dnsmasq, dropbear, fbv,
 	file, gawk, gstreamer, gzip, intltool, ipsec-tools, iptables,
 	libart, libfuse, libgpg-error, libidn, liblockfile, links,
@@ -45,6 +45,7 @@
 	#1957: Bump sqlite to 3.6.23.1
 	#1975: Package removal/deprecation
 	#1987: intltool: Fix spelling mistake
+	#1993: Bump bash to 4.1.7(1) and migrate to autotargets
 	#1999: Typo in path checking
 	#2005: Bump dnsmasq to 2.55 and migrate to gentargets
 	#2035: ipsec-tools-0.7.2 fails to build with gcc-4.4.x

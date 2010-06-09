@@ -1,0 +1,56 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.1
+Patch-ID:	bash41-005
+
+Bug-Reported-by:	werner@suse.de
+Bug-Reference-ID:	<201002251238.o1PCcYcg016893@boole.suse.de>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2010-02/msg00132.html
+
+Bug-Description:
+
+When the `read' builtin times out after the timeout specified with -t is
+exceeded, it does not reset the flags that tell signal handlers to process
+signals immediately instead of deferring their handling.  This can result
+in unsafe functions being called from signal handlers, which can cause bash
+to hang or dump core.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.1-patched/builtins/read.def	2009-10-08 11:35:46.000000000 -0400
+--- ./builtins/read.def	2010-03-17 17:35:39.000000000 -0400
+***************
+*** 616,621 ****
+      zsyncfd (fd);
+  
+-   interrupt_immediately--;
+-   terminate_immediately--;
+    discard_unwind_frame ("read_builtin");
+  
+--- 616,619 ----
+***************
+*** 624,627 ****
+--- 622,628 ----
+  assign_vars:
+  
++   interrupt_immediately--;
++   terminate_immediately--;
++ 
+  #if defined (ARRAY_VARS)
+    /* If -a was given, take the string read, break it into a list of words,
+*** ../bash-4.1-patched/patchlevel.h	2009-10-01 16:39:22.000000000 -0400
+--- ./patchlevel.h	2010-01-14 09:38:08.000000000 -0500
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 4
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 5
+  
+  #endif /* _PATCHLEVEL_H_ */
