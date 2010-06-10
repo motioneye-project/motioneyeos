@@ -6,7 +6,6 @@
 
 FILE_VERSION = 5.04
 FILE_SITE = ftp://ftp.astron.com/pub/file/
-FILE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
 FILE_DEPENDENCIES = host-file zlib
 HOST_FILE_DEPENDENCIES = host-zlib
 
