@@ -1,7 +1,0 @@
-config BR2_PACKAGE_RXVT
-	bool "rxvt"
-	depends on BR2_PACKAGE_XORG7
-	help
-	  A nice small colour vt102 X terminal emulator.
-
-	  http://www.rxvt.org/
