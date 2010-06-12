@@ -25,13 +25,24 @@ config BR2_TARGET_UBOOT_2009_11
 config BR2_TARGET_UBOOT_2009_08
 	bool "u-boot-2009.08"
 
+config BR2_TARGET_UBOOT_CUSTOM_TARBALL
+	bool "Custom tarball"
+
 endchoice
+
+if BR2_TARGET_UBOOT_CUSTOM_TARBALL
+
+config BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION
+	string "URL of custom U-Boot tarball"
+
+endif
 
 config BR2_UBOOT_VERSION
 	string
 	default "2010.03"	if BR2_TARGET_UBOOT_2010_03
 	default "2009.11"	if BR2_TARGET_UBOOT_2009_11
 	default "2009.08"	if BR2_TARGET_UBOOT_2009_08
+	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
 
 config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
 	string "custom patch dir"

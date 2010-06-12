@@ -14,9 +14,17 @@ ifeq ($(U_BOOT_VERSION),)
 U_BOOT_VERSION=2010.03
 endif
 
-U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
-
+ifeq ($(U_BOOT_VERSION),custom)
+# Handle custom U-Boot tarballs as specified by the configuration
+U_BOOT_TARBALL=$(call qstrip,$(BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION))
+U_BOOT_SITE:=$(dir $(U_BOOT_TARBALL))
+U_BOOT_SOURCE:=$(notdir $(U_BOOT_TARBALL))
+else
+# Handle stable official U-Boot versions
 U_BOOT_SITE:=ftp://ftp.denx.de/pub/u-boot
+U_BOOT_SOURCE:=u-boot-$(U_BOOT_VERSION).tar.bz2
+endif
+
 U_BOOT_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
 U_BOOT_CAT:=$(BZCAT)
 U_BOOT_BIN:=u-boot.bin
@@ -51,9 +59,9 @@ $(DL_DIR)/$(U_BOOT_SOURCE):
 	 $(call DOWNLOAD,$(U_BOOT_SITE),$(U_BOOT_SOURCE))
 
 $(U_BOOT_DIR)/.unpacked: $(DL_DIR)/$(U_BOOT_SOURCE)
-	$(U_BOOT_CAT) $(DL_DIR)/$(U_BOOT_SOURCE) \
-		| tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	mkdir -p $(U_BOOT_DIR)
+	mkdir -p $(@D)
+	$(INFLATE$(suffix $(U_BOOT_SOURCE))) $(DL_DIR)/$(U_BOOT_SOURCE) \
+		| tar $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
 	touch $@
 
 $(U_BOOT_DIR)/.patched: $(U_BOOT_DIR)/.unpacked
