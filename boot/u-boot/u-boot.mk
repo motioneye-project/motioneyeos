@@ -3,7 +3,7 @@
 # U-Boot
 #
 #############################################################
-U_BOOT_VERSION:=$(call qstrip,$(BR2_UBOOT_VERSION))
+U_BOOT_VERSION:=$(call qstrip,$(BR2_TARGET_UBOOT_VERSION))
 U_BOOT_BOARD_NAME:=$(call qstrip,$(BR2_TARGET_UBOOT_BOARDNAME))
 
 # U-Boot may not be selected in the configuration, but mkimage might
