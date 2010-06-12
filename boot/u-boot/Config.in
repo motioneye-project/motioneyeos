@@ -1,11 +1,11 @@
 menuconfig BR2_TARGET_UBOOT
-	bool "Das U-Boot Boot Monitor"
+	bool "U-Boot"
 	help
 	  Build "Das U-Boot" Boot Monitor
 
 if BR2_TARGET_UBOOT
 config BR2_TARGET_UBOOT_BOARDNAME
-	string "board name"
+	string "U-Boot board name"
 	help
 	  One of U-Boot supported boards to be built.
 	  This will be suffixed with _config to meet U-Boot standard naming.
@@ -17,13 +17,13 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_2010_03
-	bool "u-boot-2010.03"
+	bool "2010.03"
 
 config BR2_TARGET_UBOOT_2009_11
-	bool "u-boot-2009.11"
+	bool "2009.11"
 
 config BR2_TARGET_UBOOT_2009_08
-	bool "u-boot-2009.08"
+	bool "2009.08"
 
 config BR2_TARGET_UBOOT_CUSTOM_TARBALL
 	bool "Custom tarball"
