@@ -6,16 +6,16 @@ config BR2_PACKAGE_IPSEC_TOOLS
 	help
 	  This package is required to support IPSec for Linux 2.6+
 
+if BR2_PACKAGE_IPSEC_TOOLS
+
 config BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT
 	default y
-	depends on BR2_PACKAGE_IPSEC_TOOLS
 	bool "Enable racoonctl(8)."
 	help
 	  Lets racoon to listen to racoon admin port, which is to
 	  be contacted by racoonctl(8).
 
 config BR2_PACKAGE_IPSEC_TOOLS_NATT
-	depends on BR2_PACKAGE_IPSEC_TOOLS
 	bool "Enable NAT-Traversal"
 	help
 	  This needs kernel support, which is available on Linux. On
@@ -27,9 +27,7 @@ config BR2_PACKAGE_IPSEC_TOOLS_NATT
 	  live in a country where software patents are legal, using
 	  NAT-Traversal might infringe a patent.
 
-
 config BR2_PACKAGE_IPSEC_TOOLS_FRAG
-	depends on BR2_PACKAGE_IPSEC_TOOLS
 	bool "Enable IKE fragmentation."
 	help
 	  Enable IKE fragmentation, which is a workaround for
@@ -37,31 +35,11 @@ config BR2_PACKAGE_IPSEC_TOOLS_FRAG
 
 config BR2_PACKAGE_IPSEC_TOOLS_STATS
 	default y
-	depends on BR2_PACKAGE_IPSEC_TOOLS
 	bool "Enable statistics logging function."
 
-config BR2_PACKAGE_IPSEC_TOOLS_IPV6
-	default y
-	depends on BR2_PACKAGE_IPSEC_TOOLS && BR2_INET_IPV6
-	bool "Enable IPv6 support"
-	help
-	  This option has no effect if uClibc has been compiled without
-	  IPv6 support.
-
 config BR2_PACKAGE_IPSEC_TOOLS_READLINE
-	depends on BR2_PACKAGE_IPSEC_TOOLS
 	select BR2_PACKAGE_READLINE
 	bool "Enable readline input support if available."
-
-config BR2_PACKAGE_IPSEC_TOOLS_LIBS
-	bool "Install IPSec libraries under staging_dir/lib"
-	default y
-	depends on BR2_PACKAGE_IPSEC_TOOLS
-	help
-	  Install libipsec.a and libracoon.a under staging_dir/lib for further
-	  development on a host machine.
-
-if BR2_PACKAGE_IPSEC_TOOLS
 
 choice
 	prompt "Security context"
