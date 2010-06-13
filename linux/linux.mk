@@ -95,6 +95,19 @@ ifeq ($(BR2_INET_IPV6),y)
 else
 	$(call KCONFIG_DISABLE_OPT,CONFIG_IPV6,$(@D)/.config)
 endif
+ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
+	# As the kernel gets compiled before root filesystems are
+	# built, we create a fake initramfs file list. It'll be
+	# replaced later by the real list, and the kernel will be
+	# rebuilt using the linux26-rebuild-with-initramfs target.
+	touch $(BINARIES_DIR)/rootfs.initramfs
+	$(call KCONFIG_ENABLE_OPT,CONFIG_BLK_DEV_INITRD,$(@D)/.config)
+	$(call KCONFIG_SET_OPT,CONFIG_INITRAMFS_SOURCE,\"$(BINARIES_DIR)/rootfs.initramfs\",$(@D)/.config)
+	$(call KCONFIG_ENABLE_OPT,CONFIG_INITRAMFS_COMPRESSION_GZIP,$(@D)/.config)
+else
+	$(call KCONFIG_DISABLE_OPT,CONFIG_BLK_DEV_INITRD,$(@D)/.config)
+	$(call KCONFIG_SET_OPT,CONFIG_INITRAMFS_SOURCE,\"\",$(@D)/.config)
+endif
 	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(@D) oldconfig
 	$(Q)touch $@
 
@@ -126,6 +139,23 @@ linux26: host-module-init-tools $(LINUX26_DEPENDENCIES) $(LINUX26_DIR)/.stamp_in
 
 linux26-menuconfig linux26-xconfig linux26-gconfig: $(LINUX26_DIR)/.stamp_configured
 	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(subst linux26-,,$@)
+
+# Support for rebuilding the kernel after the initramfs file list has
+# been generated in $(BINARIES_DIR)/rootfs.initramfs.
+$(LINUX26_DIR)/.stamp_initramfs_rebuilt: $(LINUX26_DIR)/.stamp_installed $(BINARIES_DIR)/rootfs.initramfs
+	@$(call MESSAGE,"Rebuilding kernel with initramfs")
+	# Remove the previously generated initramfs which was empty,
+	# to make sure the kernel will actually regenerate it.
+	$(RM) -f $(@D)/usr/initramfs_data.cpio.*
+	# Build the kernel.
+	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(@D) $(LINUX26_IMAGE_NAME)
+	# Copy the kernel image to its final destination
+	cp $(LINUX26_IMAGE_PATH) $(BINARIES_DIR)
+	$(Q)touch $@
+
+# The initramfs building code must make sure this target gets called
+# after it generated the initramfs list of files.
+linux26-rebuild-with-initramfs: $(LINUX26_DIR)/.stamp_initramfs_rebuilt
 
 ifeq ($(BR2_LINUX_KERNEL),y)
 TARGETS+=linux26
