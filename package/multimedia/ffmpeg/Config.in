@@ -1,0 +1,27 @@
+comment "ffmpeg requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
+
+menuconfig BR2_PACKAGE_FFMPEG
+	bool "ffmpeg"
+	depends on BR2_LARGEFILE
+	help
+         FFmpeg is a complete, cross-platform solution to record, convert
+         and stream audio and video.
+
+	 http://www.ffmpeg.org
+
+if BR2_PACKAGE_FFMPEG
+
+config BR2_PACKAGE_FFMPEG_GPL
+	bool "Enable GPL code"
+	help
+         allow use of GPL code, the resulting libs and binaries will
+         be under GPL
+
+config BR2_PACKAGE_FFMPEG_NONFREE
+	bool "Enable nonfree code"
+	help
+         allow use of nonfree code, the resulting libs and binaries
+         will be unredistributable
+
+endif
