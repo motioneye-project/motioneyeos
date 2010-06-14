@@ -66,18 +66,6 @@ include target/device/Atmel/*/Makefile.in
 UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
 UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
 
-#ifeq ($(BR2_TARGET_UBOOT_AT91),y)
-#include $(ATMEL_PATH)/u-boot/u-boot.mk
-#endif
-
-ifeq ($(BR2_TARGET_DATAFLASHBOOT),y)
-include $(ATMEL_PATH)/DataFlashBoot/DataflashBoot.mk
-endif
-
-ifeq ($(BR2_TARGET_AT91BOOTSTRAP),y)
-include $(ATMEL_PATH)/at91bootstrap/at91bootstrap.mk
-endif
-
 atmel_status:
 	@echo BUILD_DIR=$(BUILD_DIR)
 	@echo BOARD_NAME=$(BOARD_NAME)

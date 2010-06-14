@@ -1,0 +1,9 @@
+config BR2_TARGET_GRUB2
+	bool "grub2"
+	# Only supports PC, Mac (Power, x86 and x86-64), Pegasos
+	depends on BR2_i386 || BR2_powerpc
+	# Build process is broken (./configure doesn't work, Ruby
+	# required, etc.)
+	depends on BROKEN
+	help
+	  The GRand Unified Bootloader for x86 systems, take #2.

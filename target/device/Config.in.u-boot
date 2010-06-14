@@ -1,9 +1,0 @@
-menuconfig BR2_TARGET_U_BOOT_ARCH_PATCH
-	bool "Add architecture specific patch"
-	help
-	  Patch U-Boot for a specific family of chips
-
-if BR2_TARGET_U_BOOT_ARCH_PATCH
-source "target/device/Atmel/arch-arm/u-boot/Config.in"
-endif # BR2_TARGET_U_BOOT_ARCH_PATCH
-

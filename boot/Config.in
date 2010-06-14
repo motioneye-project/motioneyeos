@@ -1,0 +1,12 @@
+menu "Bootloaders"
+
+source "boot/barebox/Config.in"
+source "boot/grub/Config.in"
+source "boot/grub2/Config.in"
+source "boot/syslinux/Config.in"
+source "boot/u-boot/Config.in"
+source "boot/at91bootstrap/Config.in"
+source "boot/at91dataflashboot/Config.in"
+
+endmenu
+

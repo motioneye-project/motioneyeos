@@ -1,0 +1,22 @@
+Disable the automatic installation of at91dataflashboot since it tries
+to install things to /tftpboot, which is not possible when not
+building as root.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: at91dataflashboot-1.05/Makefile
+===================================================================
+--- at91dataflashboot-1.05.orig/Makefile
++++ at91dataflashboot-1.05/Makefile
+@@ -40,7 +40,7 @@
+ 
+ I=config.h com.h dataflash.h embedded_services.h main.h stdio.h include/AT91RM9200.h include/lib_AT91RM9200.h 
+ 
+-all: 	clean $(BINNAME) $(LSSNAME) install
++all: 	clean $(BINNAME) $(LSSNAME)
+ 	$(SIZE) $(OUTNAME)
+ 
+ # C objects here

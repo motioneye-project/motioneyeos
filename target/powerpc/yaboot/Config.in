@@ -1,5 +1,0 @@
-config BR2_TARGET_YABOOT
-	bool "yaboot"
-	depends on BR2_powerpc
-	help
-	  The yaboot bootloader for new world powerpc systems.

@@ -1,0 +1,112 @@
+menuconfig BR2_TARGET_UBOOT
+	bool "U-Boot"
+	help
+	  Build "Das U-Boot" Boot Monitor
+
+if BR2_TARGET_UBOOT
+config BR2_TARGET_UBOOT_BOARDNAME
+	string "U-Boot board name"
+	help
+	  One of U-Boot supported boards to be built.
+	  This will be suffixed with _config to meet U-Boot standard naming.
+
+choice
+	prompt "U-Boot Version"
+	default BR2_TARGET_UBOOT_2010_03
+	help
+	  Select the specific U-Boot version you want to use
+
+config BR2_TARGET_UBOOT_2010_03
+	bool "2010.03"
+
+config BR2_TARGET_UBOOT_2009_11
+	bool "2009.11"
+
+config BR2_TARGET_UBOOT_2009_08
+	bool "2009.08"
+
+config BR2_TARGET_UBOOT_CUSTOM_TARBALL
+	bool "Custom tarball"
+
+endchoice
+
+if BR2_TARGET_UBOOT_CUSTOM_TARBALL
+
+config BR2_TARGET_UBOOT_CUSTOM_TARBALL_LOCATION
+	string "URL of custom U-Boot tarball"
+
+endif
+
+config BR2_TARGET_UBOOT_VERSION
+	string
+	default "2010.03"	if BR2_TARGET_UBOOT_2010_03
+	default "2009.11"	if BR2_TARGET_UBOOT_2009_11
+	default "2009.08"	if BR2_TARGET_UBOOT_2009_08
+	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
+
+config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
+	string "custom patch dir"
+	help
+	  If your board requires custom patches, add the path to the
+	  directory containing the patches here. The patches must be
+	  named u-boot-<version>-<something>.patch.
+
+	  Most users may leave this empty
+
+config BR2_TARGET_UBOOT_TOOL_MKIMAGE
+	bool "mkimage tool in target"
+	help
+	  Install mkimage tool in target.
+
+config BR2_TARGET_UBOOT_TOOL_ENV
+	bool "fw_printenv tool in target"
+	help
+	  Install fw_printenv / fw_setenv tools in target.
+
+menuconfig BR2_TARGET_UBOOT_NETWORK
+	bool "Network Settings"
+	default y
+	help
+	  Network settings for U-boot
+
+if BR2_TARGET_UBOOT_NETWORK
+
+config BR2_TARGET_UBOOT_SERVERIP
+	string "server ip"
+	default "10.175.196.221"
+	help
+	  TFTP server ip address
+
+config BR2_TARGET_UBOOT_IPADDR
+	string "ip address"
+	default "10.175.196.18"
+	help
+	  Target ip address
+
+config BR2_TARGET_UBOOT_GATEWAY
+	string "gateway ip"
+	default "10.175.196.1"
+	help
+	  Gateway ip address
+
+config BR2_TARGET_UBOOT_NETMASK
+	string "netmask"
+	default "255.255.255.0"
+	help
+	  Network Mask
+
+config BR2_TARGET_UBOOT_ETHADDR
+	string "ethernet address"
+	default "04:25:fe:ed:00:18"
+	help
+	  Target MAC address for the ethernet interface.
+	  This should be changed for production units
+
+config BR2_TARGET_UBOOT_ETH1ADDR
+	string "ethernet 2 address"
+	help
+	  Target MAC address for the second ethernet interface.
+
+endif # BR2_TARGET_UBOOT_NETWORK
+
+endif # BR2_TARGET_UBOOT
