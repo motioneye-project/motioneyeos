@@ -7,9 +7,10 @@
 	New packages: cgilua, copas, coxpcall, luafilesystem,
 	luasocket, rings, wsapi, xavante
 
-	Updated/fixed packages: cdrkit, file, gawk, gstreamer, intltool,
-	ipsec-tools, iptables, libidn, lmbench, netperf, openssl, php,
-	qt, sqlite, tn5250, usbutils, xkeyboard-config
+	Updated/fixed packages: busybox, cdrkit, file, gawk,
+	gstreamer, intltool, ipsec-tools, iptables, libidn, lmbench,
+	netperf, openssl, php, qt, sqlite, tn5250, usbutils,
+	xkeyboard-config
 
 	Removed packages: modutils
 
