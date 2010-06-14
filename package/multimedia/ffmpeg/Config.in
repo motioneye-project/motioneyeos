@@ -24,4 +24,27 @@ config BR2_PACKAGE_FFMPEG_NONFREE
          allow use of nonfree code, the resulting libs and binaries
          will be unredistributable
 
+config BR2_PACKAGE_FFMPEG_FFMPEG
+	bool "Build ffmpeg (the command line application)"
+	default y
+	help
+         FFmpeg is a very fast video and audio converter.
+         It can also grab from a live audio/video source.
+
+         It is not needed if you want to link the FFmpeg libraries
+         to your application.
+
+config BR2_PACKAGE_FFMPEG_FFPLAY
+	bool "Build ffplay"
+	select BR2_PACKAGE_SDL
+	help
+         FFplay is a very simple and portable media player using the
+         FFmpeg libraries and the SDL library.
+         It is mostly used as a testbed for the various FFmpeg APIs.
+
+config BR2_PACKAGE_FFMPEG_FFSERVER
+	bool "Build ffserver"
+	help
+         FFserver is a streaming server for both audio and video.
+
 endif

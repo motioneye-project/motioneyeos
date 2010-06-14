@@ -12,9 +12,6 @@ FFMPEG_INSTALL_TARGET = YES
 FFMPEG_CONF_OPT = \
 	--prefix=/usr		\
 	--enable-shared 	\
-	--disable-ffmpeg	\
-	--disable-ffplay	\
-	--disable-ffserver	\
 	--disable-avfilter	\
 	--disable-postproc	\
 	--disable-swscale	\
@@ -30,6 +27,26 @@ ifeq ($(BR2_PACKAGE_FFMPEG_NONFREE),y)
 FFMPEG_CONF_OPT += --enable-nonfree
 else
 FFMPEG_CONF_OPT += --disable-nonfree
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_FFMPEG),y)
+FFMPEG_CONF_OPT += --enable-ffmpeg
+else
+FFMPEG_CONF_OPT += --disable-ffmpeg
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_FFPLAY),y)
+FFMPEG_DEPENDENCIES += sdl
+FFMPEG_CONF_OPT += --enable-ffplay
+FFMPEG_CONF_ENV += SDL_CONFIG=$(STAGING_DIR)/usr/bin/sdl-config
+else
+FFMPEG_CONF_OPT += --disable-ffplay
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_FFSERVER),y)
+FFMPEG_CONF_OPT += --enable-ffserver
+else
+FFMPEG_CONF_OPT += --disable-ffserver
 endif
 
 ifeq ($(BR2_PTHREADS_NONE),y)

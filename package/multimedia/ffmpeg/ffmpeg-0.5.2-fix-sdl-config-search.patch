@@ -1,0 +1,17 @@
+Allow FFmpeg's ./configure script to use a custom sdl-config command.
+
+Inspired from:
+http://www.mail-archive.com/uclinux-dist-commits@blackfin.uclinux.org/msg01099.html
+
+diff -u ffmpeg-0.5.2-orig/configure ffmpeg-0.5.2/configure
+--- a/configure
++++ b/configure
+@@ -2066,7 +2066,7 @@
+ 
+ disable sdl_too_old
+ disable sdl
+-SDL_CONFIG="${cross_prefix}sdl-config"
++SDL_CONFIG="${SDL_CONFIG-${cross_prefix}sdl-config}"
+ if "${SDL_CONFIG}" --version > /dev/null 2>&1; then
+     sdl_cflags=`"${SDL_CONFIG}" --cflags`
+     temp_cflags $sdl_cflags
