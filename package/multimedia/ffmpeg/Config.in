@@ -135,4 +135,11 @@ config BR2_PACKAGE_FFMPEG_OUTDEVS
 	bool "Enable output devices"
 	default y
 
+config BR2_PACKAGE_FFMPEG_EXTRACONF
+	string "Additional parameters for ./configure"
+	default ""
+	help
+	 Extra parameters that will be appended to FFmpeg's
+	 ./configure commandline.
+
 endif
