@@ -16,11 +16,12 @@ $(DL_DIR)/$(DATAFLASHBOOT_SOURCE):
 $(DATAFLASHBOOT_DIR)/.unpacked: $(DL_DIR)/$(DATAFLASHBOOT_SOURCE)
 	mkdir -p $(@D)
 	$(BZCAT) $(DL_DIR)/$(DATAFLASHBOOT_SOURCE) | tar $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
-	touch $(DATAFLASHBOOT_DIR)/.unpacked
+	touch $@
 
 $(DATAFLASHBOOT_DIR)/.patched: $(DATAFLASHBOOT_DIR)/.unpacked
 	toolchain/patch-kernel.sh $(@D) boot/at91dataflashboot \
 		at91dataflashboot-$(DATAFLASHBOOT_VERSION)-\*.patch
+	touch $@
 
 $(DATAFLASHBOOT_DIR)/$(DATAFLASHBOOT_BINARY): $(DATAFLASHBOOT_DIR)/.patched
 	ls $(DATAFLASHBOOT_DIR)/.unpacked
