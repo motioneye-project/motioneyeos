@@ -49,6 +49,58 @@ else
 FFMPEG_CONF_OPT += --disable-ffserver
 endif
 
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_ENCODERS)),all)
+FFMPEG_CONF_OPT += --disable-encoders \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_ENCODERS)),--enable-encoder=$(x))
+endif
+
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_DECODERS)),all)
+FFMPEG_CONF_OPT += --disable-decoders \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_DECODERS)),--enable-decoder=$(x))
+endif
+
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_MUXERS)),all)
+FFMPEG_CONF_OPT += --disable-muxers \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_MUXERS)),--enable-muxer=$(x))
+endif
+
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_DEMUXERS)),all)
+FFMPEG_CONF_OPT += --disable-demuxers \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_DEMUXERS)),--enable-demuxer=$(x))
+endif
+
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_PARSERS)),all)
+FFMPEG_CONF_OPT += --disable-parsers \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_PARSERS)),--enable-parser=$(x))
+endif
+
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),all)
+FFMPEG_CONF_OPT += --disable-bsfs \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_BSFS)),--enable-bsf=$(x))
+endif
+
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_PROTOCOLS)),all)
+FFMPEG_CONF_OPT += --disable-protocols \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_PROTOCOLS)),--enable-protocol=$(x))
+endif
+
+ifneq ($(call qstrip,$(BR2_PACKAGE_FFMPEG_FILTERS)),all)
+FFMPEG_CONF_OPT += --disable-filters \
+	$(foreach x,$(call qstrip,$(BR2_PACKAGE_FFMPEG_FILTERS)),--enable-filter=$(x))
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_INDEVS),y)
+FFMPEG_CONF_OPT += --enable-indevs
+else
+FFMPEG_CONF_OPT += --disable-indevs
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_OUTDEVS),y)
+FFMPEG_CONF_OPT += --enable-outdevs
+else
+FFMPEG_CONF_OPT += --disable-outdevs
+endif
+
 ifeq ($(BR2_PTHREADS_NONE),y)
 FFMPEG_CONF_OPT += --disable-pthreads
 else
