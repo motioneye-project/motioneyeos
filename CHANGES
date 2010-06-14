@@ -2,6 +2,9 @@
 
 	Fixes all over the tree and new features.
 
+	Bootloaders: Various cleanups, moved to boot/, added Barebox,
+	removed yaboot. Support building u-boot from custom tarball.
+
 	New GTK-based configurator, usable using 'make gconfig'.
 
 	New packages: cgilua, copas, coxpcall, luafilesystem,
