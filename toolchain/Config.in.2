@@ -159,9 +159,10 @@ config BR2_INSTALL_LIBSTDCPP
 
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"
-	default "-Os -pipe"
+	default "-pipe"
 	help
 	  Optimizations to use when building for the target host.
+	  NOTE: gcc optimization level is defined in build options.
 
 if BR2_TOOLCHAIN_BUILDROOT
 source "toolchain/elf2flt/Config.in"
