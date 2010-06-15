@@ -297,7 +297,6 @@ include toolchain/dependencies/dependencies.mk
 include toolchain/binutils/binutils.mk
 include toolchain/ccache/ccache.mk
 include toolchain/elf2flt/elf2flt.mk
-include toolchain/gcc/gcc-uclibc-3.x.mk
 include toolchain/gcc/gcc-uclibc-4.x.mk
 include toolchain/gdb/gdb.mk
 include toolchain/kernel-headers/kernel-headers.mk
@@ -364,16 +363,7 @@ $(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(HOST_DIR) $(BINARIES_DIR) $(STAMP_DIR)
 $(STAGING_DIR):
 	@mkdir -p $(STAGING_DIR)/bin
 	@mkdir -p $(STAGING_DIR)/lib
-ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
 	@mkdir -p $(STAGING_DIR)/usr/lib
-else
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-	@ln -snf . $(STAGING_DIR)/usr
-	@mkdir -p $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)
-	@ln -snf ../lib $(STAGING_DIR)/usr/lib
-	@ln -snf ../lib $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/lib
-endif
-endif
 	@mkdir -p $(STAGING_DIR)/usr/include
 	@mkdir -p $(STAGING_DIR)/usr/bin
 

@@ -438,21 +438,12 @@ uclibc-menuconfig: host-sed dirs $(UCLIBC_DIR)/.config
 
 
 $(STAGING_DIR)/usr/lib/libc.a: $(UCLIBC_DIR)/lib/libc.a
-ifneq ($(BR2_TOOLCHAIN_SYSROOT),y)
-	$(MAKE1) -C $(UCLIBC_DIR) \
-		ARCH="$(UCLIBC_TARGET_ARCH)" \
-		PREFIX= \
-		DEVEL_PREFIX=$(STAGING_DIR)/ \
-		RUNTIME_PREFIX=$(STAGING_DIR)/ \
-		install_runtime install_dev
-else
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
 		PREFIX=$(STAGING_DIR) \
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
 		install_runtime install_dev
-endif
 	# Install the kernel headers to the staging dir if necessary
 	if [ ! -f $(STAGING_DIR)/usr/include/linux/version.h ]; then \
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* \

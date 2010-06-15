@@ -148,7 +148,6 @@ config BR2_GCC_CROSS_CXX
 
 config BR2_INSTALL_LIBSTDCPP
 	bool "Build/install c++ compiler and libstdc++?"
-	select BR2_LARGEFILE if (!BR2_GCC_SUPPORTS_SYSROOT && BR2_TOOLCHAIN_BUILDROOT)
 	select BR2_GCC_CROSS_CXX
 	help
 	  If you are building your own toolchain and want to build and install

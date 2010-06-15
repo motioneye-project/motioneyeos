@@ -73,12 +73,12 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	(cd $(BINUTILS_DIR1); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		$(BINUTILS_DIR)/configure $(QUIET) \
-		--prefix=$(BR2_SYSROOT_PREFIX)/usr \
+		--prefix=/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
-		--mandir=$(BR2_SYSROOT_PREFIX)/usr/share/man \
-		--infodir=$(BR2_SYSROOT_PREFIX)/usr/share/info \
+		--mandir=/usr/share/man \
+		--infodir=/usr/share/info \
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		$(BR2_CONFIGURE_STAGING_SYSROOT) \
 		$(DISABLE_NLS) \

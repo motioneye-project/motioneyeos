@@ -9,11 +9,6 @@ choice
 	help
 	  Select the version of gcc you wish to use.
 
-	config BR2_GCC_VERSION_4_1_2
-		depends on !BR2_avr32
-		depends on BR2_DEPRECATED
-		bool "gcc 4.1.2"
-
 	config BR2_GCC_VERSION_4_2_1
 		depends on !BR2_avr32
 		depends on BR2_DEPRECATED
@@ -50,13 +45,9 @@ choice
 		bool "gcc snapshot"
 endchoice
 
-config BR2_GCC_SUPPORTS_SYSROOT
-	bool
-	default y if !BR2_GCC_VERSION_4_1_2
-
 config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
-	default y if !BR2_GCC_VERSION_4_1_2 && !BR2_GCC_VERSION_4_2_1 && !BR2_GCC_VERSION_4_2_2 && !BR2_GCC_VERSION_4_2_3 && !BR2_GCC_VERSION_4_2_4 && !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
+	default y if !BR2_GCC_VERSION_4_2_1 && !BR2_GCC_VERSION_4_2_2 && !BR2_GCC_VERSION_4_2_3 && !BR2_GCC_VERSION_4_2_4 && !BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
 
 config BR2_GCC_SNAP_DATE
 	string "GCC snapshot date"
@@ -68,7 +59,6 @@ config BR2_GCC_SNAP_DATE
 
 config BR2_GCC_VERSION
 	string
-	default "4.1.2"     if BR2_GCC_VERSION_4_1_2
 	default "4.2.1"     if BR2_GCC_VERSION_4_2_1
 	default "4.2.2"     if BR2_GCC_VERSION_4_2_2
 	default "4.2.2-avr32-2.1.5" if BR2_GCC_VERSION_4_2_2_AVR32_2_1_5
@@ -77,20 +67,6 @@ config BR2_GCC_VERSION
 	default "4.3.5"     if BR2_GCC_VERSION_4_3_X
 	default "4.4.4"     if BR2_GCC_VERSION_4_4_X
 	default $BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
-
-config BR2_TOOLCHAIN_SYSROOT
-	bool "Enable toolchain with --sysroot support"
-	depends on BR2_GCC_SUPPORTS_SYSROOT
-	default y
-	help
-	  Enables --sysroot=dir for binutils and gcc.
-	  Use dir as the logical root directory for headers and libraries.
-	  For example, if the compiler would normally search for headers in
-	  /usr/include and libraries in /usr/lib, it will instead search
-	  dir/usr/include and dir/usr/lib.
-
-	  This does not work with gcc < 4.2.0 (4.1.2 gets
-	  ORIGINAL_AS_FOR_TARGET wrong)
 
 config BR2_GCC_USE_SJLJ_EXCEPTIONS
 	bool "Enable setjmp/longjmp exceptions?"

@@ -17,9 +17,6 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
-# sysroot support works with gcc >= 4.2.0 only
-ifeq ($(BR2_TOOLCHAIN_SYSROOT),y)
-
 ifneq ($(GCC_SNAP_DATE),)
  GCC_SITE:=ftp://sources.redhat.com/pub/gcc/snapshots/$(GCC_VERSION)
 else ifeq ($(findstring avr32,$(GCC_VERSION)),avr32)
@@ -275,7 +272,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 	(cd $(GCC_BUILD_DIR2); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		$(GCC_SRC_DIR)/configure $(QUIET) \
-		--prefix=$(BR2_SYSROOT_PREFIX)/usr \
+		--prefix=/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
@@ -502,11 +499,3 @@ gcc_target-clean:
 
 gcc_target-dirclean:
 	rm -rf $(GCC_BUILD_DIR3)
-
-gcc-status:
-	@echo GCC_VERSION=$(GCC_VERSION)
-	@echo GCC_PATCH_DIR=$(GCC_PATCH_DIR)
-	@echo GCC_SITE=$(GCC_SITE)
-
-endif
-# gcc-4.x only
