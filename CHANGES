@@ -2,6 +2,8 @@
 
 	Fixes all over the tree and new features.
 
+	Toolchain: GCC 4.3.5, older 4.3.x versions removed.
+
 	Bootloaders: Various cleanups, moved to boot/, added Barebox,
 	removed yaboot. Support building u-boot from custom tarball.
 
