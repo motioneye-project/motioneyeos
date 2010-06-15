@@ -4,7 +4,7 @@ comment "GCC Options"
 
 choice
 	prompt "GCC compiler Version"
-	default BR2_GCC_VERSION_4_3_4 if !BR2_avr32
+	default BR2_GCC_VERSION_4_3_5 if !BR2_avr32
 	default BR2_GCC_VERSION_4_2_3 if BR2_avr32
 	help
 	  Select the version of gcc you wish to use.
@@ -50,6 +50,10 @@ choice
 		depends on !BR2_avr32
 		bool "gcc 4.3.4"
 
+	config BR2_GCC_VERSION_4_3_5
+		depends on !BR2_avr32
+		bool "gcc 4.3.5"
+
 	config BR2_GCC_VERSION_4_4_X
 		depends on !BR2_avr32
 		bool "gcc 4.4.x"
@@ -86,6 +90,7 @@ config BR2_GCC_VERSION
 	default "4.3.2"     if BR2_GCC_VERSION_4_3_2
 	default "4.3.3"     if BR2_GCC_VERSION_4_3_3
 	default "4.3.4"     if BR2_GCC_VERSION_4_3_4
+	default "4.3.5"     if BR2_GCC_VERSION_4_3_5
 	default "4.4.4"     if BR2_GCC_VERSION_4_4_X
 	default $BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
 

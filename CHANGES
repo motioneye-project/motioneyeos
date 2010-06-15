@@ -75,6 +75,7 @@
 	#1729: alsamixergui fails to build
 	#1801: Avahi-autoipd doesn't create TARGET_DIR/var/lib
 	#1819: pciutils small bugs
+	#2065: Internal toolchain: bump gcc 4.3.x series to 4.3.5
 
 2010.05-rc2, Released May 11th, 2010:
 
