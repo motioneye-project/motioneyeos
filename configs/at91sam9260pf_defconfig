@@ -238,7 +238,6 @@ BR2_BUSYBOX_VERSION="1.13.4"
 BR2_PACKAGE_BUSYBOX_INSTALL_SYMLINKS=y
 BR2_PACKAGE_BUSYBOX_CONFIG="package/busybox/busybox-1.13.x.config"
 BR2_PACKAGE_BUSYBOX_SHOW_OTHERS=y
-# BR2_PACKAGE_BUSYBOX_SKELETON is not set
 
 #
 # The minimum needed to build a uClibc development system

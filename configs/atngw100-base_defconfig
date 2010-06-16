@@ -246,7 +246,6 @@ BR2_BUSYBOX_VERSION="1.14.0"
 BR2_PACKAGE_BUSYBOX_FULLINSTALL=y
 BR2_PACKAGE_BUSYBOX_CONFIG="package/busybox/busybox-1.13.x.config"
 # BR2_PACKAGE_BUSYBOX_SHOW_OTHERS is not set
-BR2_PACKAGE_BUSYBOX_SKELETON=y
 
 #
 # The minimum needed to build a uClibc development system

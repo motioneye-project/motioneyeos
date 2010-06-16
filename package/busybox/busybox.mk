@@ -85,13 +85,6 @@ define BUSYBOX_PREFER_STATIC
 endef
 endif
 
-# Enable mdev for busybox skeleton
-ifeq ($(BR2_PACKAGE_BUSYBOX_SKELETON),y)
-define BUSYBOX_SKELETON
-	$(call KCONFIG_ENABLE_OPT,CONFIG_MDEV,$(BUSYBOX_BUILD_CONFIG))
-endef
-endif
-
 # Disable usage of inetd if netkit-base package is selected
 ifeq ($(BR2_PACKAGE_NETKITBASE),y)
 define BUSYBOX_NETKITBASE
@@ -120,7 +113,6 @@ define BUSYBOX_CONFIGURE_CMDS
 	$(BUSYBOX_SET_IPV6)
 	$(BUSYBOX_SET_RPC)
 	$(BUSYBOX_PREFER_STATIC)
-	$(BUSYBOX_SKELETON)
 	$(BUSYBOX_NETKITBASE)
 	$(BUSYBOX_NETKITTELNET)
 	@yes "" | $(MAKE) ARCH=$(KERNEL_ARCH) CROSS_COMPILE="$(TARGET_CROSS)" \

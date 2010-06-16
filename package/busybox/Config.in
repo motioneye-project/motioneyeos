@@ -79,12 +79,6 @@ config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	  Show packages in menuconfig that are potentially also provided
 	  by busybox.
 
-config BR2_PACKAGE_BUSYBOX_SKELETON
-	bool "use minimal target skeleton"
-	help
-	  Use a minimal target skeleton. Make sure to select mdev
-	  which is used to populate /dev/.
-
 endif
 
 if !BR2_PACKAGE_BUSYBOX # kconfig doesn't support else
