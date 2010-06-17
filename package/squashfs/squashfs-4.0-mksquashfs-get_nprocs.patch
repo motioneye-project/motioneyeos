@@ -1,0 +1,37 @@
+[PATCH] squashfs-tools: Don't use get_nprocs()
+
+get_nprocs() is a GNU extension, not supported on E.G. uClibc. It is a
+simple wrapper around sysconf(_SC_NPROCESSORS_CONF), so use that instead.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ squashfs-tools/mksquashfs.c |    2 +-
+ squashfs-tools/unsquashfs.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: squashfs4.0/squashfs-tools/mksquashfs.c
+===================================================================
+--- squashfs4.0.orig/squashfs-tools/mksquashfs.c
++++ squashfs4.0/squashfs-tools/mksquashfs.c
+@@ -3705,7 +3705,7 @@ void initialise_threads()
+ 			processors = 1;
+ 		}
+ #else
+-		processors = get_nprocs();
++		processors = sysconf(_SC_NPROCESSORS_CONF);
+ #endif
+ 	}
+ 
+Index: squashfs4.0/squashfs-tools/unsquashfs.c
+===================================================================
+--- squashfs4.0.orig/squashfs-tools/unsquashfs.c
++++ squashfs4.0/squashfs-tools/unsquashfs.c
+@@ -1811,7 +1811,7 @@ void initialise_threads(int fragment_buf
+ 			processors = 1;
+ 		}
+ #else
+-		processors = get_nprocs();
++		processors = sysconf(_SC_NPROCESSORS_CONF);
+ #endif
+ 	}
+ 
