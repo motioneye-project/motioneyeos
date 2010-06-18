@@ -12,6 +12,10 @@ NTFSPROGS_INSTALL_STAGING:=yes
 NTFSPROGS_BIN:=ntfscat ntfscluster ntfscmp ntfsfix ntfsinfo ntfsls
 NTFSPROGS_SBIN:=ntfsclone ntfscp ntfslabel ntfsresize ntfsundelete mkntfs
 
+ifeq ($(BR2_PACKAGE_LIBFUSE),y)
+NTFSPROGS_DEPENDENCIES += libfuse
+endif
+
 $(eval $(call AUTOTARGETS,package,ntfsprogs))
 
 $(NTFSPROGS_TARGET_INSTALL_TARGET): $(NTFSPROGS_TARGET_INSTALL_STAGING)
