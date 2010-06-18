@@ -15,8 +15,8 @@
 
 	Updated/fixed packages: busybox, cdrkit, file, gawk,
 	gstreamer, intltool, ipsec-tools, iptables, libart, libidn,
-	lmbench, lrzsz, netperf, openssl, php, qt, sqlite, squashfs,
-	tn5250, usbutils, xkeyboard-config
+	lmbench, lrzsz, netperf, ntfsprogs, openssl, php, qt, sqlite,
+	squashfs, tn5250, usbutils, xkeyboard-config
 
 	Removed packages: modutils
 
