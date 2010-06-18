@@ -23,6 +23,7 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#401:  new package: ffmpeg
+	#835:  Package Dataflashboot-1.05 does not compile with buildroot...
 	#1753: lmbench: convert to generic package infrastructure
 	#1771: Fakeroot and the target/generic/device_table.txt create bad...
 	#1807: LZMA 4.32.7, Required header file(s) are missing
