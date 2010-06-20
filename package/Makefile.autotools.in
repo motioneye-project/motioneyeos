@@ -117,6 +117,7 @@ define $(2)_CONFIGURE_CMDS
 		LDFLAGS="$$(HOST_LDFLAGS)" \
                 $$($$(PKG)_CONF_ENV) \
 		./configure \
+		$$(if $$(filter YES,$$($$(PKG)_USE_CONFIG_CACHE)),--cache-file="$(BUILD_DIR)/host-config.cache",) \
 		--prefix="$$(HOST_DIR)/usr" \
 		--sysconfdir="$$(HOST_DIR)/etc" \
 		$$($$(PKG)_CONF_OPT) \
