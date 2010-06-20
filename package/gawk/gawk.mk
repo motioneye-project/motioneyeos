@@ -9,6 +9,7 @@ GAWK_SITE = $(BR2_GNU_MIRROR)/gawk
 GAWK_TARGET_BINS = awk gawk igawk pgawk
 
 $(eval $(call AUTOTARGETS,package,gawk))
+$(eval $(call AUTOTARGETS,package,gawk,host))
 
 $(GAWK_HOOK_POST_INSTALL): $(GAWK_TARGET_INSTALL_TARGET)
 	ln -sf /usr/bin/gawk $(TARGET_DIR)/usr/bin/awk
