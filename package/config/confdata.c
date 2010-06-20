@@ -404,6 +404,9 @@ int conf_write(const char *name)
 	int use_timestamp = 1;
 	char *env;
 
+	if (!name)
+		name = conf_get_configname();
+
 	dirname[0] = 0;
 	if (name && name[0]) {
 		struct stat st;
@@ -423,17 +426,8 @@ int conf_write(const char *name)
 				basename = conf_get_configname();
 		} else
 			basename = name;
-	} else {
-		char *slash;
-
+	} else
 		basename = conf_get_configname();
-		if((slash = strrchr(basename, '/'))) {
-			int size = slash - basename + 1;
-			memcpy(dirname, basename, size);
-			dirname[size] = 0;
-			basename = slash + 1;
-		}
-	}
 
 	sprintf(newname, "%s%s", dirname, basename);
 	env = getenv("KCONFIG_OVERWRITECONFIG");
@@ -697,51 +691,31 @@ int conf_write_autoconf(void)
 	FILE *out, *out_h;
 	time_t now;
 	int i, l;
-	char buf[PATH_MAX+1];
-	char buf2[PATH_MAX+1];
+	char dir[PATH_MAX+1], buf[PATH_MAX+1];
+	char *s;
+
+	strcpy(dir, conf_get_configname());
+	s = strrchr(dir, '/');
+	if (s)
+		s[1] = 0;
+	else
+		dir[0] = 0;
 
 	sym_clear_all_valid();
 
-	name = conf_get_configname();
-	str = strrchr(name, '/');
-
-	memset(buf, 0, PATH_MAX+1);
-	if(str)
-	{
-		strncpy(buf, name, str - name + 1);
-	}
-	strcat(buf, ".config.cmd");
+	sprintf(buf, "%s.config.cmd", dir);
 	file_write_dep(buf);
-
-	memset(buf, 0, PATH_MAX+1);
-	if(str)
-	{
-		strncpy(buf, name, str - name + 1);
-	}
-	strcat(buf, ".auto.deps");
-	write_make_deps(buf);
 
 	if (conf_split_config())
 		return 1;
 
-	memset(buf, 0, PATH_MAX+1);
-	if(str)
-	{
-		strncpy(buf, name, str - name + 1);
-	}
-	strcat(buf, ".tmpconfig");
-	memset(buf2, 0, PATH_MAX+1);
-	if(str)
-	{
-		strncpy(buf2, name, str - name + 1);
-	}
-	strcat(buf2, ".tmpconfig.h");
-
+	sprintf(buf, "%s.tmpconfig", dir);
 	out = fopen(buf, "w");
 	if (!out)
 		return 1;
 
-	out_h = fopen(buf2, "w");
+	sprintf(buf, "%s.tmpconfig.h", dir);
+	out_h = fopen(buf, "w");
 	if (!out_h) {
 		fclose(out);
 		return 1;
@@ -823,13 +797,15 @@ int conf_write_autoconf(void)
 	name = getenv("KCONFIG_AUTOHEADER");
 	if (!name)
 		name = "include/linux/autoconf.h";
-	if (rename(buf2, name))
+	sprintf(buf, "%s.tmpconfig.h", dir);
+	if (rename(buf, name))
 		return 1;
 	name = conf_get_autoconfig_name();
 	/*
 	 * This must be the last step, kbuild has a dependency on auto.conf
 	 * and this marks the successful completion of the previous steps.
 	 */
+	sprintf(buf, "%s.tmpconfig", dir);
 	if (rename(buf, name))
 		return 1;
 
