@@ -462,56 +462,57 @@ all: menuconfig
 HOSTCFLAGS=$(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
-$(CONFIG)/%onf:
-	mkdir -p $(BUILD_DIR)/buildroot-config
-	$(MAKE) CC="$(HOSTCC)" -C $(CONFIG) $(notdir $@)
+$(BUILD_DIR)/buildroot-config/%onf:
+	mkdir -p $(@D)/lxdialog
+	$(MAKE) CC="$(HOSTCC)" obj=$(@D) -C $(CONFIG) $(@F)
 	-@if [ ! -f $(CONFIG_DIR)/.config ]; then \
 		cp $(CONFIG_DEFCONFIG) $(CONFIG_DIR)/.config; \
 	fi
 
-xconfig: $(CONFIG)/qconf
+xconfig: $(BUILD_DIR)/buildroot-config/qconf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/qconf $(CONFIG_CONFIG_IN); then \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< $(CONFIG_CONFIG_IN); then \
 		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
-gconfig: $(CONFIG)/gconf
+gconfig: $(BUILD_DIR)/buildroot-config/gconf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/gconf $(CONFIG_CONFIG_IN); then \
+		srctree=$(TOPDIR) \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< $(CONFIG_CONFIG_IN); then \
 		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
-menuconfig: $(CONFIG)/mconf
+menuconfig: $(BUILD_DIR)/buildroot-config/mconf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/mconf $(CONFIG_CONFIG_IN); then \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< $(CONFIG_CONFIG_IN); then \
 		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
-config: $(CONFIG)/conf
+config: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< $(CONFIG_CONFIG_IN)
 
-oldconfig: $(CONFIG)/conf
+oldconfig: $(BUILD_DIR)/buildroot-config/conf
 	mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -o $(CONFIG_CONFIG_IN)
 
-randconfig: $(CONFIG)/conf
+randconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -r $(CONFIG_CONFIG_IN)
 
-allyesconfig: $(CONFIG)/conf
+allyesconfig: $(BUILD_DIR)/buildroot-config/conf
 	cat $(CONFIG_DEFCONFIG) > $(CONFIG_DIR)/.config
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
@@ -524,7 +525,7 @@ allnoconfig: $(CONFIG)/conf
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
 		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
 
-randpackageconfig: $(CONFIG)/conf
+randpackageconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
@@ -533,7 +534,7 @@ randpackageconfig: $(CONFIG)/conf
 		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
-allyespackageconfig: $(CONFIG)/conf
+allyespackageconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
@@ -542,7 +543,7 @@ allyespackageconfig: $(CONFIG)/conf
 		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
-allnopackageconfig: $(CONFIG)/conf
+allnopackageconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
@@ -551,7 +552,7 @@ allnopackageconfig: $(CONFIG)/conf
 		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
-defconfig: $(CONFIG)/conf
+defconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
