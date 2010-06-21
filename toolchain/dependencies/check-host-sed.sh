@@ -12,9 +12,10 @@ do
 		fi
 	fi
 
-	echo "HELLO" > .sedtest
-	$SED -i -e "s/HELLO/GOODBYE/" .sedtest >/dev/null 2>&1
-	RESULT=$(cat .sedtest)
+	tmp=$(mktemp)
+	echo "HELLO" > $tmp
+	$SED -i -e "s/HELLO/GOODBYE/" $tmp >/dev/null 2>&1
+	RESULT=$(cat $tmp)
 
 	if test $? != 0 ; then
 		SED=""
@@ -26,7 +27,7 @@ do
 		SED=""
 	fi
 
-	rm -f .sedtest
+	rm -f $tmp
 	if [ ! -z "$SED" ] ; then
 		break
 	fi
