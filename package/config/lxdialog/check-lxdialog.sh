@@ -31,7 +31,7 @@ ccflags()
 }
 
 # Temp file, try to clean up after us
-tmp=.lxdialog.tmp
+tmp=$(mktemp)
 trap "rm -f $tmp" 0 1 2 3 15
 
 # Check if we can link to ncurses
