@@ -11,7 +11,7 @@ config BR2_PRIMARY_SITE
 
 config BR2_BACKUP_SITE
 	string "Backup download site"
-	default "http://buildroot.net/downloads/sources/"
+	default "http://sources.buildroot.net/"
 	help
 	  Backup site to download from. If this option is set then buildroot
 	  will fall back to download package sources from here if the

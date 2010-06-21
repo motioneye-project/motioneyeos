@@ -86,7 +86,7 @@ BR2_STAGING_DIR="$(BASE_DIR)/staging"
 # Mirrors and Download locations
 #
 BR2_PRIMARY_SITE=""
-BR2_BACKUP_SITE="http://buildroot.net/downloads/sources/"
+BR2_BACKUP_SITE="http://sources.buildroot.net/"
 BR2_SOURCEFORGE_MIRROR="easynews"
 BR2_KERNEL_MIRROR="http://www.kernel.org/pub/"
 BR2_GNU_MIRROR="http://ftp.gnu.org/pub/gnu"
