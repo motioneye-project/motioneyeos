@@ -287,7 +287,7 @@ include package/Makefile.in
 all: world
 
 # In this section, we need .config
-include $(CONFIG_DIR)/.config.cmd
+-include $(CONFIG_DIR)/.config.cmd
 
 # We also need the various per-package makefiles, which also add
 # each selected package to TARGETS if that package was selected
@@ -587,7 +587,11 @@ flush:
 
 %_defconfig: $(TOPDIR)/configs/%_defconfig
 	cp $^ $(CONFIG_DIR)/.config
+ifeq ($(O),output)
+	@$(MAKE) oldconfig
+else
 	@$(MAKE) O=$(O) oldconfig
+endif
 
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 
