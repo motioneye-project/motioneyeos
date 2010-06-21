@@ -281,6 +281,12 @@ or
     <p>All the output files will be located under
     <code>/tmp/build</code>.</p>
 
+    <p>When using out-of-tree builds, the Buildroot
+    <code>.config</code> and  temporary files are also stored in the
+    output directory. This means that you can safely run multiple
+    builds in parallel using the same source tree as long as they use
+    unique output directories.</p>
+
     <h3><a name="environment_variables" id="environment_variables"></a>
     Environment variables</h3>
 

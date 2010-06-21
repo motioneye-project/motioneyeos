@@ -35,7 +35,7 @@ make command line, E.G.:
 
 $ make O=/tmp/build
 
-And all the output files will be located under /tmp/build.
+And all the output files (including .config) will be located under /tmp/build.
 
 More finegrained configuration:
 ===============================
