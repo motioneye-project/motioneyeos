@@ -50,13 +50,6 @@ config BR2_AT91_LINUXPATCH_SITE
 	help
 	    Main download location for AT91 Linux stuff
 
-config BR2_TARGET_ATMEL_COPYTO
-	string "also copy the image to..."
-	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32
-	default "/tftpboot"
-	help
-	  Copies the resulting image to a secondary location.
-
 config BR2_BOARD_PATH
 	string "Atmel board repository"
 	depends on BR2_TARGET_AT91 || BR2_TARGET_AVR32

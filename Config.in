@@ -81,13 +81,6 @@ config BR2_DL_DIR
 
 	  The default is $(TOPDIR)/dl
 
-config BR2_COPYTO
-	string "Copy result to..."
-	default ""
-	help
-	  Setting this variable will (eventually) override 
-	  any other copyto configurations in buildroot.
-
 config BR2_STAGING_DIR
 	string "Toolchain and header file location?"
 	default "$(BASE_DIR)/staging"

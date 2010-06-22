@@ -1,54 +1,6 @@
 BR2_PACKAGE_LINUX_FORMAT:=$(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT))
 BR2_PACKAGE_LINUX_KCONFIG:=$(call qstrip,$(BR2_PACKAGE_LINUX_KCONFIG))
 
-
-# COPY_FILE absolute_path_to_file, target_directory, filename
-ifneq ($(call qstrip,$(BUILDROOT_COPYTO)),)	# Use shell definition
-define COPY_FILE
-	@echo "BUILDROOT_COPYTO: Copy to $(BUILDROOT_COPYTO)/$(strip $(3))" ; \
-	mkdir -p $(BINARIES_DIR) || echo "Could not create $(BINARIES_DIR)" ; \
-	if [ -w $(BINARIES_DIR) -o -w $(BINARIES_DIR)  ] ; then \
-		cp $(1) $(BINARIES_DIR)/$(strip $(3)) || echo "Could not copy $(3)" ;  \
-	fi ; \
-	mkdir -p $(BUILDROOT_COPYTO) || echo "Could not create $(BUILDROOT_COPYTO)" ; \
-	if [ -d $(BUILDROOT_COPYTO) -o  -w $(BUILDROOT_COPYTO) ] ; then \
-		cp $(1) $(BUILDROOT_COPYTO)/$(strip $(3)) || echo "Could not copy $(3)" ;  \
-	fi
-endef
-COPYTO=$(call qstrip,$(BUILDROOT_COPYTO))
-else
-ifneq ($(call qstrip,$(BR2_COPYTO)),)	# Global override
-define COPY_FILE
-	@echo "BR2_COPYTO: Copy to $(BR2_COPYTO)/$(strip $(3))" ; \
-	mkdir -p $(BINARIES_DIR) || echo "Could not create $(BINARIES_DIR)" ; \
-	if [ -w $(BINARIES_DIR) -o -w $(BINARIES_DIR)  ] ; then \
-		cp $(1) $(BINARIES_DIR)/$(strip $(3)) || echo "Could not copy $(3)" ;  \
-	fi ; \
-	if [ "$(call qstrip,$(BR2_COPYTO))X" != "X" ] ; then \
-		mkdir -p $(BR2_COPYTO)  || echo "Could not create $(BR2_COPYTO)" ; \
-		if [ -d $(BR2_COPYTO) -o -w $(BR2_COPYTO) ] ; then \
-			cp $(1) $(BR2_COPYTO)/$(strip $(3)) || echo "Could not copy $(3)" ;  \
-		fi ; \
-	fi
-endef
-COPYTO=$(call qstrip,$(BR2_COPYTO))
-else	# Package specific copyto, or empty
-define COPY_FILE
-	@echo "Copy to $(2)/$(strip $(3))" ; \
-	mkdir -p $(BINARIES_DIR) || echo "Could not create $(BINARIES_DIR)" ; \
-	if [ -w $(BINARIES_DIR) -o -w $(BINARIES_DIR)  ] ; then \
-		cp $(1) $(BINARIES_DIR)/$(strip $(3)) || echo "Could not copy $(3)" ;  \
-	fi ; \
-	if [ "$(call qstrip,$(2))X" != "X" ] ; then \
-		mkdir -p $(2) || echo "Could not create $(2)" ; \
-		if [ -d $(2) -o  -w $(2) ] ; then \
-			cp $(1) $(2)/$(strip $(3)) || echo "Could not copy $(3)" ;  \
-		fi ; \
-	fi
-endef
-endif
-endif
-
 # make sure to put everything that is board-specific before the tarroot targets
 include target/generic/Makefile.in
 

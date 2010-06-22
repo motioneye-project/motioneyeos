@@ -119,7 +119,6 @@ BR2_TARGET_AT91_ADVANCED_INFO=y
 # Secondary locations
 #
 BR2_AT91_LINUXPATCH_SITE="http://maxim.org.za/AT91RM9200/2.6"
-BR2_TARGET_ATMEL_COPYTO="/tftpboot"
 # BR2_TARGET_DATAFLASHBOOT is not set
 # BR2_TARGET_AT91BOOTSTRAP is not set
 # BR2_TARGET_KWIKBYTE is not set
@@ -142,7 +141,6 @@ BR2_ZCAT="gzip -d -c"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""
 BR2_DL_DIR="$(TOPDIR)/dl"
-BR2_COPYTO=""
 
 #
 # Mirrors and Download locations

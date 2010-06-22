@@ -14,12 +14,6 @@ ifeq ($(BR2_avr32),y)
 KERNEL_HEADERS_PATCH_DIR=target/device/Atmel/arch-avr32/kernel-headers-2.6.28.2
 endif
 
-ifneq ($(COPYTO),)
-TARGET_ATMEL_COPYTO:=$(call qstrip,$(BR2_COPYTO))
-else
-TARGET_ATMEL_COPYTO:=$(call qstrip,$(BR2_TARGET_ATMEL_COPYTO))
-endif
-
 # These are set by Config.in
 DOWNLOAD_LINUX26_VERSION:= $(call qstrip,$(BR2_DOWNLOAD_LINUX26_VERSION))
 ifeq ($(DOWNLOAD_LINUX26_VERSION),)

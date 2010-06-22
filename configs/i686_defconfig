@@ -92,7 +92,6 @@ BR2_ZCAT="gzip -d -c"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""
 BR2_DL_DIR="$(TOPDIR)/dl"
-BR2_COPYTO=""
 
 #
 # Mirrors and Download locations

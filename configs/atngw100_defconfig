@@ -59,7 +59,6 @@ BR2_TARGET_AVR32_ATNGW100=y
 #
 # Secondary locations
 #
-BR2_TARGET_ATMEL_COPYTO=""
 # BR2_TARGET_VALKA is not set
 
 #
@@ -79,7 +78,6 @@ BR2_ZCAT="zcat"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""
 BR2_DL_DIR="$(TOPDIR)/dl"
-BR2_COPYTO=""
 BR2_STAGING_DIR="$(BASE_DIR)/staging"
 
 #

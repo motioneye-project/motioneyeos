@@ -67,7 +67,6 @@ BR2_TARGET_AVR32_ATSTK1005=y
 #
 # Secondary locations
 #
-BR2_TARGET_ATMEL_COPYTO=""
 BR2_KERNEL_ARCH_PATCH_VERSION="2.6.27.6"
 BR2_KERNEL_ARCH_PATCH_DIR="target/device/Atmel/arch-avr32/kernel-patches-$(BR2_KERNEL_ARCH_PATCH_VERSION)"
 # BR2_TARGET_VALKA is not set
@@ -90,7 +89,6 @@ BR2_ZCAT="zcat"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""
 BR2_DL_DIR="$(TOPDIR)/dl"
-BR2_COPYTO=""
 
 #
 # Mirrors and Download locations

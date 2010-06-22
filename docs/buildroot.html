@@ -302,9 +302,6 @@ or
     to the Busybox configuration file</li>
     <li><code>LINUX26_KCONFIG=&lt;path/to/.config&gt;</code>, path
     to the Linux kernel configuration file</li>
-    <li><code>BUILDROOT_COPYTO</code>, an additional location to which
-    the binary images of the root filesystem, kernel, etc. built by
-    Buildroot are copied</li>
     <li><code>BUILDROOT_DL_DIR</code> to override the directory in
     which Buildroot stores/retrieves downloaded files</li>
     </ul>
@@ -319,15 +316,6 @@ $ make UCLIBC_CONFIG_FILE=uClibc.config BUSYBOX_CONFIG_FILE=$HOME/bb.config
     or <code>g++</code> for building helper-binaries on your host, then do</p>
 <pre>
 $ make HOSTCXX=g++-4.3-HEAD HOSTCC=gcc-4.3-HEAD
-</pre>
-
-    <p>If you want the result of your build to be copied to another directory
-    like /tftpboot for downloading to a board using tftp, then you
-    can use BUILDROOT_COPYTO to specify your location</p>
-    <p>Typically, this is set in your ~/.bashrc file
-
-<pre>
-$ export BUILDROOT_COPYTO=/tftpboot
 </pre>
 
     <h2><a name="custom_targetfs" id="custom_targetfs"></a>Customizing the
