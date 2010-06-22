@@ -1,23 +1,8 @@
-BR2_PACKAGE_LINUX_FORMAT:=$(call qstrip,$(BR2_PACKAGE_LINUX_FORMAT))
-BR2_PACKAGE_LINUX_KCONFIG:=$(call qstrip,$(BR2_PACKAGE_LINUX_KCONFIG))
-
 # make sure to put everything that is board-specific before the tarroot targets
 include target/generic/Makefile.in
 
 # this eventually adds the kernel target to TARGETS:
 include target/device/Makefile.in
 include target/xtensa/Makefile.in
-
-# kernel rules
-# We already did add the kernel target to TARGETS and now just pull in the rules
-# to actually build this target.
-
-ifeq ($(BR2_KERNEL_LINUX),y)
-include target/linux/Makefile.in
-endif
-
-ifeq ($(BR2_KERNEL_LINUX_ADVANCED),y)
-include target/linux/Makefile.in.advanced
-endif
 
 include target/device/Makefile.in.linux

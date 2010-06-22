@@ -23,4 +23,6 @@ define ROOTFS_INITRAMFS_CMD
 	$(SHELL) fs/initramfs/gen_initramfs_list.sh -u 0 -g 0 $(TARGET_DIR) > $$@
 endef
 
+ROOTFS_INITRAMFS_POST_TARGETS += linux26-rebuild-with-initramfs
+
 $(eval $(call ROOTFS_TARGET,initramfs))
