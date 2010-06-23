@@ -91,7 +91,7 @@ BR2_GNU_MIRROR="http://ftp.gnu.org/pub/gnu"
 BR2_DEBIAN_MIRROR="http://ftp.debian.org"
 BR2_ATMEL_MIRROR="ftp://www.at91.com/pub/buildroot/"
 BR2_AT91_PATCH_MIRROR="http://maxim.org.za/AT91RM9200/2.6/"
-BR2_JLEVEL=3
+BR2_JLEVEL=2
 # BR2_DEPRECATED is not set
 # BR2_ENABLE_DEBUG is not set
 BR2_STRIP_strip=y
