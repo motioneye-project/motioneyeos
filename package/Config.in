@@ -85,6 +85,9 @@ endmenu
 
 menu "Graphic libraries and applications (graphic/text)"
 
+comment "Graphic applications"
+source "package/rrdtool/Config.in"
+
 comment "graphic libraries"
 source "package/directfb/Config.in"
 source "package/directfb-examples/Config.in"
