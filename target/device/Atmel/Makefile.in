@@ -14,61 +14,7 @@ ifeq ($(BR2_avr32),y)
 KERNEL_HEADERS_PATCH_DIR=target/device/Atmel/arch-avr32/kernel-headers-2.6.28.2
 endif
 
-# These are set by Config.in
-DOWNLOAD_LINUX26_VERSION:= $(call qstrip,$(BR2_DOWNLOAD_LINUX26_VERSION))
-ifeq ($(DOWNLOAD_LINUX26_VERSION),)
-DOWNLOAD_LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
-endif
-
-LINUX26_VERSION:=$(call qstrip,$(BR2_LINUX26_VERSION))
-ifeq ($(LINUX26_VERSION),)
-LINUX26_VERSION=$(LINUX_HEADERS_VERSION)
-endif
-
-LINUX26_RC_PATCH:=$(call qstrip,$(BR2_LINUX26_RC_PATCH))
-
-# These are set by "new" Config.in
-LINUX26_KCONFIG:=$(BOARD_PATH)/$(BOARD_NAME)-linux-$(LINUX26_VERSION).config
-
-# This should be part of target/linux/Makefile.in
-LINUX26_BUILD_DIR:=$(BUILD_DIR)
-
-#LINUX26_BINLOC=$(LINUX26_FORMAT)
-#LINUX26_BINLOC:=$(BINARIES_DIR)/$(LINUX26_KERNEL)
-ifeq ($(BR2_avr32),y)
-LINUX26_BINLOC:=arch/$(KERNEL_ARCH)/boot/images/$(BR2_PACKAGE_LINUX_FORMAT)
-endif
-
-LINUX26_COPYTO:=/tftpboot
-
-#LINUX26_PATCH_DIR:=$(BOARD_PATH)/kernel-patches
-
-# The board specific Makefile.in can redefine BOARD_NAME's
-LINUX_BOARD_NAME:=$(BOARD_NAME)
-#UBOOT_BOARD_NAME:=$(BOARD_NAME)
-DFB_BOARD_NAME:=$(BOARD_NAME)
-
-#BR2_PACKAGE_BUSYBOX_CONFIG:=$(BR2_BOARD_PATH)/busybox-$(BR2_BUSYBOX_VERSION).config
-
-U_BOOT_VERSION:=$(call qstrip,$(BR2_UBOOT_VERSION))
-
 # Update things in board specific makefiles
 include target/device/Atmel/*/Makefile.in
 
-# Needs to be AFTER board specific Makefiles
-
-UBOOT_CONFIG:=$(UBOOT_BOARD_NAME)_config
-UBOOT_CONFIG_FILE:=$(BOARD_PATH)/u-boot/$(UBOOT_BOARD_NAME).h
-
-atmel_status:
-	@echo BUILD_DIR=$(BUILD_DIR)
-	@echo BOARD_NAME=$(BOARD_NAME)
-	@echo BR2_BOARD_PATH=$(BR2_BOARD_PATH)
-	@echo BR2_MAJOR_MINOR=$(BR2_LINUX_MAJOR_VERSION)$(BR2_LINUX_MINOR_VERSION)
-	@echo MAJOR_MINOR=$(LINUX_MAJOR_VER)$(LINUX_MINOR_VER)
-	@echo DOWNLOAD_LINUX26_VERSION=$(DOWNLOAD_LINUX26_VERSION)
-	@echo LINUX_SOURCE=$(LINUX_SOURCE)
-	@echo TARGETS=$(TARGETS)
-
-#TARGETS+=atmel_status
 endif

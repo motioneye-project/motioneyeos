@@ -1,9 +1,5 @@
 ifeq ($(BR2_TARGET_ARMLTD),y)
 BOARD_NAME=$(call qstrip,$(BR2_BOARD_NAME))
 BOARD_PATH=$(call qstrip,$(BR2_BOARD_PATH))
-
-
-# pin some settings
-BR2_GNU_TARGET_SUFFIX:="linux-uclibcgnueabi"
 endif
 

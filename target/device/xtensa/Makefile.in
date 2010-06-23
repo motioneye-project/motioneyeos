@@ -1,8 +1,6 @@
 ifeq ($(BR2_xtensa),y)
 
 ifeq ($(strip $(BR2_TARGET_XTENSA_XTAV60)),y)
-# UCLIBC_CONFIG_FILE:=target/device/xtensa/xtav60/uClibc.config
-# BR2_PACKAGE_BUSYBOX_CONFIG:=target/device/xtensa/xtav60/busybox.config
 TARGET_SKELETON_PATCH:=target/device/xtensa
 endif
 

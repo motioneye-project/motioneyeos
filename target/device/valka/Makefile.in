@@ -3,14 +3,4 @@ VALKA_PATH= target/device/valka
 
 TARGET_SKELETON=$(VALKA_PATH)/target_skeleton
 KERNEL_HEADERS_PATCH_DIR=target/device/Atmel/arch-avr32/kernel-headers-2.6.28.2
-
-valka_status:
-	@echo "***************************************************************"
-	@echo VALKA_PATH = $(VALKA_PATH)
-	@echo BOARD_NAME = $(BR_BOARD_NAME)
-	@echo TARGET_SKELETON = $(TARGET_SKELETON)
-	@echo BR2_PACKAGE_BUSYBOX_CONFIG = $(BR2_PACKAGE_BUSYBOX_CONFIG)
-	@echo BR2_PACKAGE_LINUX_KCONFIG = $(BR2_PACKAGE_LINUX_KCONFIG)
-	@echo "*****************************************************************"
-	@echo TARGETS = $(TARGETS)
 endif
