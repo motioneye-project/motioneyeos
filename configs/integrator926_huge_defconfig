@@ -158,7 +158,7 @@ BR2_DEFAULT_KERNEL_HEADERS="2.6.28.2"
 # BR2_UCLIBC_VERSION_0_9_29 is not set
 BR2_UCLIBC_VERSION_0_9_30=y
 # BR2_UCLIBC_VERSION_SNAPSHOT is not set
-BR2_UCLIBC_CONFIG="target/device/ARMLTD/uClibc.integrator926.config"
+BR2_UCLIBC_CONFIG="toolchain/uClibc/uClibc-0.9.30.config"
 # BR2_ENABLE_LOCALE is not set
 # BR2_PTHREADS_NONE is not set
 # BR2_PTHREADS is not set
