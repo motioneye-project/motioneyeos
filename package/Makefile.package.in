@@ -56,11 +56,12 @@ define KCONFIG_DISABLE_OPT
 endef
 
 # Define extrators for different archive suffixes
-INFLATE.bz2 = $(BZCAT)
-INFLATE.gz  = $(ZCAT)
-INFLATE.tbz = $(BZCAT)
-INFLATE.tgz = $(ZCAT)
-INFLATE.tar = cat
+INFLATE.bz2  = $(BZCAT)
+INFLATE.gz   = $(ZCAT)
+INFLATE.tbz  = $(BZCAT)
+INFLATE.tbz2 = $(BZCAT)
+INFLATE.tgz  = $(ZCAT)
+INFLATE.tar  = cat
 
 # MESSAGE Macro -- display a message in bold type
 MESSAGE = echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(1)$(TERM_RESET)"
