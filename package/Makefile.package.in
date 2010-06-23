@@ -55,7 +55,7 @@ define KCONFIG_DISABLE_OPT
        echo "# $(1) is not set" >> $(2)
 endef
 
-# Define extrators for different archive suffixes
+# Define extractors for different archive suffixes
 INFLATE.bz2  = $(BZCAT)
 INFLATE.gz   = $(ZCAT)
 INFLATE.tbz  = $(BZCAT)
