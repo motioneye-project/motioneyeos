@@ -15,7 +15,7 @@
 
 	Updated/fixed packages: busybox, cdrkit, file, gawk,
 	gstreamer, intltool, ipsec-tools, iptables, libart, libidn,
-	lmbench, lrzsz, ncurses, module-init-tools, netperf,
+	lmbench, lrzsz, ncurses, module-init-tools, nbd, netperf,
 	ntfsprogs, openssl, php, qt, sqlite, squashfs, tn5250,
 	usbutils, xkeyboard-config
 

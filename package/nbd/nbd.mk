@@ -4,7 +4,7 @@
 #
 #############################################################
 
-NBD_VERSION = 2.9.11
+NBD_VERSION = 2.9.15
 NBD_SOURCE = nbd-$(NBD_VERSION).tar.bz2
 NBD_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/nbd/
 NBD_CONF_OPT = $(if $(BR2_LARGEFILE),--enable-lfs,--disable-lfs)
