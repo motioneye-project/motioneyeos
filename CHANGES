@@ -44,6 +44,7 @@
 	#1999: Typo in path checking
 	#2035: ipsec-tools-0.7.2 fails to build with gcc-4.4.x
 	#2038: Bump ncurses to 5.7
+	#2095: make gconfig: undefined reference to symbol 'dlsym@@GLIBC_2.2.5'
 
 2010.05, Released May 30th, 2010:
 
