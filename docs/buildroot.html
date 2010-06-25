@@ -1619,7 +1619,7 @@ LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
     <p>Therefore, packages that unconditionnally need gettext should:</p>
 
     <ol>
-      <li>Use <code>select BR2_PACKAGE_GNUTTEXT if
+      <li>Use <code>select BR2_PACKAGE_GETTEXT if
       BR2_NEEDS_GETTEXT</code> and possibly <code>select
       BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT</code> if libintl is
       also needed</li>
@@ -1632,7 +1632,7 @@ LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
     should:</p>
 
     <ol>
-      <li>Use <code>select BR2_PACKAGE_GNUTTEXT if
+      <li>Use <code>select BR2_PACKAGE_GETTEXT if
       BR2_NEEDS_GETTEXT_IF_LOCALE</code> and possibly <code>select
       BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE</code> if
       libintl is also needed</li>
