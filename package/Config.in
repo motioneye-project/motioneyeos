@@ -134,12 +134,12 @@ source "package/leafpad/Config.in"
 source "package/midori/Config.in"
 source "package/pcmanfm/Config.in"
 source "package/rdesktop/Config.in"
-source "package/rxvt/Config.in"
 source "package/sylpheed/Config.in"
 source "package/synergy/Config.in"
 source "package/torsmo/Config.in"
 source "package/x11vnc/Config.in"
 source "package/xstroke/Config.in"
+source "package/xterm/Config.in"
 source "package/xvkbd/Config.in"
 endmenu
 
