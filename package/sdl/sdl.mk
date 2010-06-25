@@ -20,7 +20,7 @@ ifeq ($(BR2_PACKAGE_SDL_DIRECTFB),y)
 SDL_DEPENDENCIES += directfb
 SDL_CONF_OPT+=--enable-video-directfb=yes
 else
-SDL_DIRECTFB=--enable-video-directfb=no
+SDL_CONF_OPT=--enable-video-directfb=no
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_QTOPIA),y)
