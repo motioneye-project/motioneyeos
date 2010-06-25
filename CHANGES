@@ -14,10 +14,10 @@
 	luasocket, rings, wsapi, xavante, xterm
 
 	Updated/fixed packages: berkeleydb, busybox, cdrkit, dash,
-	dialog, diffutils, distcc, dmalloc, dnsmasq, fbv, file, gawk,
-	gstreamer, gzip, intltool, ipsec-tools, iptables, libart,
-	libfuse, libgpg-error, libidn, liblockfile, links, lmbench,
-	lrzsz, make, module-init-tools, nbd, ncurses, netperf,
+	dialog, diffutils, distcc, dmalloc, dnsmasq, dropbear, fbv,
+	file, gawk, gstreamer, gzip, intltool, ipsec-tools, iptables,
+	libart, libfuse, libgpg-error, libidn, liblockfile, links,
+	lmbench, lrzsz, make, module-init-tools, nbd, ncurses, netperf,
 	ntfsprogs, openssl, php, qt, quagga, sqlite, sdl, sdl_mixer,
 	sdl_ttf, squashfs, tn5250, usbutils, xkeyboard-config
 
