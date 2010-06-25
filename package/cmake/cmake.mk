@@ -4,7 +4,9 @@ CMAKE_SITE=http://www.cmake.org/files/v2.8/
 
 define HOST_CMAKE_CONFIGURE_CMDS
  (cd $(@D); \
-   ./bootstrap --prefix=$(HOST_DIR)/usr --parallel=$(BR2_JLEVEL) \
+	LDFLAGS="$(HOST_LDFLAGS)" \
+	CFLAGS="$(HOST_CFLAGS)" \
+	./bootstrap --prefix=$(HOST_DIR)/usr --parallel=$(BR2_JLEVEL) \
  )
 endef
 
