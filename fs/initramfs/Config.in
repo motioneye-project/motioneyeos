@@ -1,5 +1,6 @@
 config BR2_TARGET_ROOTFS_INITRAMFS
 	bool "initramfs for initial ramdisk of linux kernel"
+	depends on BR2_LINUX_KERNEL
 	help
 	  Build a file which is usable for the gen_init_cpio tool
 	  at linux kernel build.
@@ -13,3 +14,5 @@ config BR2_TARGET_ROOTFS_INITRAMFS
 	  Device Drivers -> Block devices -> Initramfs source file(s).
 	  The configuration variable is CONFIG_INITRAMFS_SOURCE
 
+comment "initramfs requires a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
