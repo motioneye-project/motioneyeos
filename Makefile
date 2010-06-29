@@ -514,13 +514,13 @@ allyesconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -y $(CONFIG_CONFIG_IN)
 
-allnoconfig: $(CONFIG)/conf
+allnoconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -n $(CONFIG_CONFIG_IN)
 
 randpackageconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
@@ -528,7 +528,7 @@ randpackageconfig: $(BUILD_DIR)/buildroot-config/conf
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
 		KCONFIG_ALLCONFIG=$(CONFIG_DIR)/.config.nopkg \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -r $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
 allyespackageconfig: $(BUILD_DIR)/buildroot-config/conf
@@ -537,7 +537,7 @@ allyespackageconfig: $(BUILD_DIR)/buildroot-config/conf
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
 		KCONFIG_ALLCONFIG=$(CONFIG_DIR)/.config.nopkg \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -y $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
 allnopackageconfig: $(BUILD_DIR)/buildroot-config/conf
@@ -546,14 +546,14 @@ allnopackageconfig: $(BUILD_DIR)/buildroot-config/conf
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
 		KCONFIG_ALLCONFIG=$(CONFIG_DIR)/.config.nopkg \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -n $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
 defconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
-		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -d $(CONFIG_CONFIG_IN)
 
 # check if download URLs are outdated
 source-check: allyesconfig
