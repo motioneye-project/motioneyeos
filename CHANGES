@@ -51,6 +51,7 @@
 	#2038: Bump ncurses to 5.7
 	#2095: make gconfig: undefined reference to symbol 'dlsym@@GLIBC_2.2.5'
 	#2119: Tries to build kernel, although disabled in config
+	#2155: Compression lzo don't set for ubifs
 
 2010.05, Released May 30th, 2010:
 
