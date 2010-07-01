@@ -578,7 +578,6 @@ ifeq ($(O),output)
 	rm -rf $(O)
 endif
 	rm -rf $(CONFIG_DIR)/.config $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/.config.cmd $(CONFIG_DIR)/.auto.deps
-	-$(MAKE) -C $(CONFIG) distclean
 
 flush:
 	rm -f $(BUILD_DIR)/tgt-config.cache

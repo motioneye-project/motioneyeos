@@ -2,6 +2,7 @@ src := .
 top_srcdir=../../
 top_builddir=../../
 srctree := .
+obj ?= .
 
 include Makefile.kconfig
 #HOSTCFLAGS+=-Dinline="" -include foo.h
@@ -42,11 +43,11 @@ $(obj)/%:: $(src)/%_shipped
 	$(Q)cat $< > $@
 
 clean:
-	$(Q)rm -f $(clean-files)
+	$(Q)rm -f $(addprefix $(obj)/,$(clean-files))
 distclean: clean
-	$(Q)rm -f $(lxdialog) $(conf-objs) $(mconf-objs) $(kxgettext-objs) \
+	$(Q)rm -f $(addprefix $(obj)/,$(lxdialog) $(conf-objs) $(mconf-objs) $(kxgettext-objs) \
 		$(hostprogs-y) $(qconf-cxxobjs) $(qconf-objs) $(gconf-objs) \
-		mconf .depend
+		mconf .depend)
 
 FORCE:
 .PHONY: FORCE clean distclean
