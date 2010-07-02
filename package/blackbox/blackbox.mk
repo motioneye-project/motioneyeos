@@ -14,6 +14,10 @@ BLACKBOX_INSTALL_TARGET:=YES
 BLACKBOX_CONF_OPT:=--x-includes=$(STAGING_DIR)/usr/include/X11 \
 		--x-libraries=$(STAGING_DIR)/usr/lib
 
-BLACKBOX_DEPENDENCIES:=xserver_xorg-server
+BLACKBOX_DEPENDENCIES = xlib_libX11
+
+ifneq ($(BR2_ENABLE_LOCALE),y)
+BLACKBOX_DEPENDENCIES += libiconv
+endif
 
 $(eval $(call AUTOTARGETS,package,blackbox))
