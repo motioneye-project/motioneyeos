@@ -16,11 +16,6 @@ endif
 BINUTILS_HOST_PREREQ:=
 BINUTILS_TARGET_PREREQ:=
 
-ifeq ($(findstring x4.0,x$(GCC_VERSION)),x4.0)
-BINUTILS_NO_MPFR:=y
-endif
-
-ifndef BINUTILS_NO_MPFR
 BINUTILS_HOST_PREREQ:=$(TOOLCHAIN_DIR)/gmp/lib/libgmp$(HOST_LIBEXT) \
 	$(TOOLCHAIN_DIR)/mpfr/lib/libmpfr$(HOST_LIBEXT)
 HOST_SOURCE += host-libgmp-source host-libmpfr-source
@@ -33,7 +28,6 @@ EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_HOST_DIR)"
 
 BINUTILS_TARGET_CONFIG_OPTIONS=--with-gmp="$(GMP_TARGET_DIR)"
 BINUTILS_TARGET_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_TARGET_DIR)"
-endif
 
 BINUTILS_PATCH_DIR:=toolchain/binutils/$(BINUTILS_VERSION)
 
