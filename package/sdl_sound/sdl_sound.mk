@@ -9,6 +9,7 @@ SDL_SOUND_SITE:=http://icculus.org/SDL_sound/downloads/
 SDL_SOUND_LIBTOOL_PATCH:=NO
 SDL_SOUND_INSTALL_STAGING:=YES
 SDL_SOUND_INSTALL_TARGET:=YES
+SDL_SOUND_DEPENDENCIES = sdl
 
 SDL_SOUND_CONF_OPT:=--with-sdl-prefix=$(STAGING_DIR)/usr \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr \

@@ -19,8 +19,8 @@
 	ipsec-tools, iptables, libart, libfuse, libgpg-error, libidn,
 	liblockfile, links, lmbench, lrzsz, make, module-init-tools,
 	nbd, ncurses, netperf, ntfsprogs, openssl, php, qt, quagga,
-	sqlite, sdl, sdl_mixer, sdl_ttf, squashfs, tn5250, tremor,
-	usbutils, xkeyboard-config, xserver_xorg-server
+	sqlite, sdl, sdl_mixer, sdl_sound, sdl_ttf, squashfs, tn5250,
+	tremor, usbutils, xkeyboard-config, xserver_xorg-server
 
 	Removed packages: modutils, portage, rxvt
 
