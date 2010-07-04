@@ -11,6 +11,10 @@ SDL_SOUND_INSTALL_STAGING:=YES
 SDL_SOUND_INSTALL_TARGET:=YES
 SDL_SOUND_DEPENDENCIES = sdl
 
+ifneq ($(BR2_ENABLE_LOCALE),y)
+SDL_SOUND_DEPENDENCIES += libiconv
+endif
+
 SDL_SOUND_CONF_OPT:=--with-sdl-prefix=$(STAGING_DIR)/usr \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
 		--disable-sdltest \

@@ -1,6 +1,7 @@
 config BR2_PACKAGE_SDL_SOUND
 	bool "SDL_sound"
 	depends on BR2_PACKAGE_SDL
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  SDL_sound is a library that handles the decoding of several
 	  popular sound file formats, such as .WAV and .MP3.
