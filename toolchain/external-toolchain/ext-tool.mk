@@ -262,7 +262,8 @@ check_arm_abi = \
 # Check that the external toolchain supports C++
 #
 check_cplusplus = \
-	if ! test -x $(TARGET_CXX) ; then \
+	$(TARGET_CXX) -v > /dev/null 2>&1 ; \
+	if test $$? -ne 0 ; then \
 		echo "BR2_INSTALL_LIBSTDCPP is selected but C++ support not available in external toolchain" ; \
 		exit 1 ; \
 	fi ; \
@@ -271,8 +272,9 @@ check_cplusplus = \
 # Check that the cross-compiler given in the configuration exists
 #
 check_cross_compiler_exists = \
-	if ! test -x $(TARGET_CC) ; then \
-		echo "Cannot find cross-compiler $(TARGET_CC)" ; \
+	$(TARGET_CC) -v > /dev/null 2>&1 ; \
+	if test $$? -ne 0 ; then \
+		echo "Cannot execute cross-compiler '$(TARGET_CC)'" ; \
 		exit 1 ; \
 	fi ; \
 
@@ -301,9 +303,10 @@ endif # ! no threads
 # could select a multilib variant as we want the "main" sysroot, which
 # contains all variants of the C library in the case of multilib
 # toolchains.
-SYSROOT_DIR=$(shell $(TARGET_CC) -print-sysroot 2>/dev/null)
+TARGET_CC_NO_SYSROOT=$(filter-out --sysroot=%,$(TARGET_CC))
+SYSROOT_DIR=$(shell $(TARGET_CC_NO_SYSROOT) -print-sysroot 2>/dev/null)
 ifeq ($(SYSROOT_DIR),)
-SYSROOT_DIR=$(shell readlink -f $$(LANG=C $(TARGET_CC) -print-file-name=libc.a |sed -r -e 's:usr/lib/libc\.a::;'))
+SYSROOT_DIR=$(shell readlink -f $$(LANG=C $(TARGET_CC_NO_SYSROOT) -print-file-name=libc.a |sed -r -e 's:usr/lib/libc\.a::;'))
 endif
 
 # Now, find if the toolchain specifies a sub-directory for the
@@ -315,8 +318,7 @@ endif
 # subdirectory, in the main SYSROOT_DIR, that corresponds to the
 # selected architecture variant. ARCH_SYSROOT_DIR will contain the
 # full path to this location.
-TARGET_CFLAGS_NO_SYSROOT=$(filter-out --sysroot=%,$(TARGET_CFLAGS))
-ARCH_SUBDIR=$(shell $(TARGET_CC) $(TARGET_CFLAGS_NO_SYSROOT) -print-multi-directory)
+ARCH_SUBDIR=$(shell $(TARGET_CC_NO_SYSROOT) $(TARGET_CFLAGS) -print-multi-directory)
 ARCH_SYSROOT_DIR=$(SYSROOT_DIR)/$(ARCH_SUBDIR)
 
 $(STAMP_DIR)/ext-toolchain-installed:
