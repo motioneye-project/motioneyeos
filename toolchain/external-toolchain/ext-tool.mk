@@ -133,6 +133,19 @@ copy_toolchain_sysroot = \
 	find $(STAGING_DIR) -type d | xargs chmod 755
 
 #
+# Create lib64 -> lib and usr/lib64 -> usr/lib symbolic links in the
+# target and staging directories. This is needed for some 64 bits
+# toolchains such as the Crosstool-NG toolchains, for which the path
+# to the dynamic loader and other libraries is /lib64, but the
+# libraries are stored in /lib.
+#
+create_lib64_symlinks = \
+	(cd $(TARGET_DIR) ;      ln -s lib lib64) ; \
+	(cd $(TARGET_DIR)/usr ;  ln -s lib lib64) ; \
+	(cd $(STAGING_DIR) ;     ln -s lib lib64) ; \
+	(cd $(STAGING_DIR)/usr ; ln -s lib lib64)
+
+#
 # Check the availability of a particular glibc feature. We assume that
 # all Buildroot toolchain options are supported by glibc, so we just
 # check that they are enabled.
@@ -319,4 +332,8 @@ endif
 	done
 	@echo "Copy external toolchain sysroot to staging..."
 	$(Q)$(call copy_toolchain_sysroot,$(SYSROOT_DIR),$(ARCH_SYSROOT_DIR),$(ARCH_SUBDIR))
+	# Create lib64 symbolic links if needed
+	$(Q)if [ -L $(ARCH_SYSROOT_DIR)/lib64 ] ; then \
+		$(call create_lib64_symlinks) ; \
+	fi
 	@touch $@
