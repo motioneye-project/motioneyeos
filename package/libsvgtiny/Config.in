@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBSVGTINY
+	bool "libsvgtiny"
+	select BR2_PACKAGE_LIBXML2
+	help
+	  Libsvgtiny is an implementation of SVG Tiny, written in C.
+	  It is currently in development for use with NetSurf and is
+	  intended to be suitable for use in other projects too.
+
+	  http://www.netsurf-browser.org/projects/libsvgtiny/
