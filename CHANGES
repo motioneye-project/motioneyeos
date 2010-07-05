@@ -6,7 +6,8 @@
 	and non-sysroot support removed.
 
 	Bootloaders: Various cleanups, moved to boot/, added Barebox,
-	removed yaboot. Support building u-boot from custom tarball.
+	removed yaboot. Support building u-boot from custom tarball,
+	u-boot 2010.06.
 
 	New GTK-based configurator, usable using 'make gconfig'.
 

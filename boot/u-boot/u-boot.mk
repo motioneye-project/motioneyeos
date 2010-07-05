@@ -32,9 +32,12 @@ U_BOOT_BIN:=u-boot.bin
 MKIMAGE:=$(HOST_DIR)/usr/bin/mkimage
 
 U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN) $(MKIMAGE)
+U_BOOT_ARCH=$(KERNEL_ARCH)
 
-# u-boot still uses arch=ppc for powerpc
+# u-boot in the past used arch=ppc for powerpc
+ifneq ($(findstring x200,$(UBOOT_VERSION))$(findstring x2010.03,$(UBOOT_VERSION)),)
 U_BOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
+endif
 
 U_BOOT_INC_CONF_FILE:=$(U_BOOT_DIR)/include/config.h
 
@@ -147,9 +150,9 @@ $(TARGET_DIR)/usr/bin/mkimage: $(U_BOOT_DIR)/.configured
 		$(U_BOOT_DIR)/common/image.c \
 		$(wildcard $(addprefix $(U_BOOT_DIR)/tools/,default_image.c \
 			fit_image.c imximage.c kwbimage.c mkimage.c)) \
-		$(addprefix $(U_BOOT_DIR)/lib_generic/,crc32.c md5.c sha1.c) \
+		$(addprefix $(U_BOOT_DIR)/lib*/,crc32.c md5.c sha1.c) \
 		$(U_BOOT_DIR)/tools/os_support.c \
-		$(U_BOOT_DIR)/libfdt/fdt*.c
+		$(wildcard $(U_BOOT_DIR)/libfdt/fdt*.c $(U_BOOT_DIR)/lib/libfdt/fdt*.c)
 
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 
@@ -158,7 +161,7 @@ $(TARGET_DIR)/usr/sbin/fw_printenv: $(U_BOOT_DIR)/.configured
 	mkdir -p $(@D)
 	$(TARGET_CC) -I$(U_BOOT_DIR)/include -I$(LINUX_HEADERS_DIR)/include \
 		-DUSE_HOSTCC -o $@ \
-		$(U_BOOT_DIR)/tools/env/*.c $(U_BOOT_DIR)/lib_generic/crc32.c
+		$(U_BOOT_DIR)/tools/env/*.c $(U_BOOT_DIR)/lib*/crc32.c
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $@
 	ln -sf fw_printenv $(TARGET_DIR)/usr/sbin/fw_setenv
 
