@@ -42,6 +42,11 @@
 # directory to the target directory. Also optionaly strips the
 # library.
 #
+# Most toolchains have their libraries either in /lib or /usr/lib
+# relative to their ARCH_SYSROOT_DIR. Buildroot toolchains, however,
+# have basic libraries in /lib, and libstdc++/libgcc_s in
+# /usr/<target-name>/lib(64).
+#
 # $1: arch specific sysroot directory
 # $2: library name
 # $3: destination directory
@@ -52,7 +57,11 @@ copy_toolchain_lib_root = \
 	LIB="$(strip $2)"; \
 	STRIP="$(strip $4)"; \
  \
-	LIBS=`(cd $${ARCH_SYSROOT_DIR}; find . -path "./lib/$${LIB}.*" -o -path "./usr/lib/$${LIB}.*")` ; \
+	LIBS=`(cd $${ARCH_SYSROOT_DIR}; \
+		find -L . -path "./lib/$${LIB}.*"     -o \
+			  -path "./usr/lib/$${LIB}.*" -o \
+			  -path "./usr/$(TOOLCHAIN_EXTERNAL_PREFIX)/lib*/$${LIB}.*" \
+		)` ; \
 	for FILE in $${LIBS} ; do \
 		LIB=`basename $${FILE}`; \
 		LIBDIR=`dirname $${FILE}` ; \
