@@ -88,9 +88,9 @@ TARGET_LDFLAGS+= $(BR2_SYSROOT)
 
 #########################################################################
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
-TARGET_CFLAGS+=--sysroot $(STAGING_DIR)/
+TARGET_CFLAGS+=--sysroot=$(STAGING_DIR)/
 TARGET_CXXFLAGS=$(TARGET_CFLAGS)
-TARGET_LDFLAGS=--sysroot $(STAGING_DIR)/
+TARGET_LDFLAGS=--sysroot=$(STAGING_DIR)/
 TARGET_LDFLAGS+=-L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib
 endif
 #########################################################################

@@ -270,9 +270,10 @@ endif # ! no threads
 # SYSROOT_DIR selection. We first try the -print-sysroot option,
 # available in gcc 4.4.x and in some Codesourcery toolchains. If this
 # option is not available, we fallback to the value of --with-sysroot
-# as visible in CROSS-gcc -v. We don't pass the -march= option to gcc
-# as we want the "main" sysroot, which contains all variants of the C
-# library in the case of multilib toolchains.
+# as visible in CROSS-gcc -v. We don't pass any option to gcc that
+# could select a multilib variant as we want the "main" sysroot, which
+# contains all variants of the C library in the case of multilib
+# toolchains.
 SYSROOT_DIR=$(shell $(TARGET_CC) -print-sysroot 2>/dev/null)
 ifeq ($(SYSROOT_DIR),)
 SYSROOT_DIR=$(shell readlink -f $$(LANG=C $(TARGET_CC) -print-file-name=libc.a |sed -r -e 's:usr/lib/libc\.a::;'))
@@ -281,15 +282,14 @@ endif
 # Now, find if the toolchain specifies a sub-directory for the
 # specific architecture variant we're interested in. This is the case
 # with multilib toolchain, when the selected architecture variant is
-# not the default one. To do so, we ask the compiler by passing the
-# appropriate -march= flags. ARCH_SUBDIR will contain the
+# not the default one. To do so, we ask the compiler by passing all
+# flags, except the --sysroot flag since we want to the compiler to
+# tell us where its original sysroot is. ARCH_SUBDIR will contain the
 # subdirectory, in the main SYSROOT_DIR, that corresponds to the
 # selected architecture variant. ARCH_SYSROOT_DIR will contain the
 # full path to this location.
-ifneq ($(CC_TARGET_ARCH_),)
-TARGET_CC_ARCH_CFLAGS+=-march=$(CC_TARGET_ARCH_)
-endif
-ARCH_SUBDIR=$(shell $(TARGET_CC) $(TARGET_CC_ARCH_CFLAGS) -print-multi-directory)
+TARGET_CFLAGS_NO_SYSROOT=$(filter-out --sysroot=%,$(TARGET_CFLAGS))
+ARCH_SUBDIR=$(shell $(TARGET_CC) $(TARGET_CFLAGS_NO_SYSROOT) -print-multi-directory)
 ARCH_SYSROOT_DIR=$(SYSROOT_DIR)/$(ARCH_SUBDIR)
 
 $(STAMP_DIR)/ext-toolchain-installed:
