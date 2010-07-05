@@ -49,12 +49,13 @@
 #
 # $1: arch specific sysroot directory
 # $2: library name
-# $3: destination directory
+# $3: destination directory of the libary, relative to $(TARGET_DIR)
 # $4: strip (y|n), default is to strip
 #
 copy_toolchain_lib_root = \
 	ARCH_SYSROOT_DIR="$(strip $1)"; \
 	LIB="$(strip $2)"; \
+	DESTDIR="$(strip $3)" ; \
 	STRIP="$(strip $4)"; \
  \
 	LIBS=`(cd $${ARCH_SYSROOT_DIR}; \
@@ -67,17 +68,17 @@ copy_toolchain_lib_root = \
 		LIBDIR=`dirname $${FILE}` ; \
 		while test \! -z "$${LIB}"; do \
 			FULLPATH="$${ARCH_SYSROOT_DIR}/$${LIBDIR}/$${LIB}" ; \
-			rm -fr $(TARGET_DIR)/$${LIBDIR}/$${LIB}; \
-			mkdir -p $(TARGET_DIR)/$${LIBDIR}; \
+			rm -fr $(TARGET_DIR)/$${DESTDIR}/$${LIB}; \
+			mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
 			if test -h $${FULLPATH} ; then \
-				cp -d $${FULLPATH} $(TARGET_DIR)/$${LIBDIR}/; \
+				cp -d $${FULLPATH} $(TARGET_DIR)/$${DESTDIR}/; \
 			elif test -f $${FULLPATH}; then \
-				$(INSTALL) -D -m0755 $${FULLPATH} $(TARGET_DIR)/$${LIBDIR}/$${LIB}; \
+				$(INSTALL) -D -m0755 $${FULLPATH} $(TARGET_DIR)/$${DESTDIR}/$${LIB}; \
 				case "$${STRIP}" in \
 				(0 | n | no) \
 ;; \
 				(*) \
-					$(TARGET_CROSS)strip "$(TARGET_DIR)/$${LIBDIR}/$${LIB}"; \
+					$(TARGET_CROSS)strip "$(TARGET_DIR)/$${DESTDIR}/$${LIB}"; \
 ;; \
 				esac; \
 			else \
@@ -277,19 +278,19 @@ check_cross_compiler_exists = \
 
 uclibc: dependencies $(STAMP_DIR)/ext-toolchain-installed
 
-EXTERNAL_LIBS=ld*.so libc.so libcrypt.so libdl.so libgcc_s.so libm.so libnsl.so libresolv.so librt.so libutil.so
+LIB_EXTERNAL_LIBS=ld*.so libc.so libcrypt.so libdl.so libgcc_s.so libm.so libnsl.so libresolv.so librt.so libutil.so
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_GCLIBC),y)
-EXTERNAL_LIBS+=libnss_files.so libnss_dns.so
+LIB_EXTERNAL_LIBS+=libnss_files.so libnss_dns.so
 endif
 
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
-EXTERNAL_LIBS+=libstdc++.so
+USR_LIB_EXTERNAL_LIBS+=libstdc++.so
 endif
 
 ifneq ($(BR2_PTHREADS_NONE),y)
-EXTERNAL_LIBS+=libpthread.so
+LIB_EXTERNAL_LIBS+=libpthread.so
 ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
-EXTERNAL_LIBS+=libthread_db.so
+LIB_EXTERNAL_LIBS+=libthread_db.so
 endif # gdbserver
 endif # ! no threads
 
@@ -338,8 +339,11 @@ else
 endif
 	mkdir -p $(TARGET_DIR)/lib
 	@echo "Copy external toolchain libraries to target..."
-	$(Q)for libs in $(EXTERNAL_LIBS); do \
-		$(call copy_toolchain_lib_root,$(ARCH_SYSROOT_DIR),$$libs,$(BR2_TOOLCHAIN_EXTERNAL_STRIP)); \
+	$(Q)for libs in $(LIB_EXTERNAL_LIBS); do \
+		$(call copy_toolchain_lib_root,$(ARCH_SYSROOT_DIR),$$libs,/lib,$(BR2_TOOLCHAIN_EXTERNAL_STRIP)); \
+	done
+	$(Q)for libs in $(USR_LIB_EXTERNAL_LIBS); do \
+		$(call copy_toolchain_lib_root,$(ARCH_SYSROOT_DIR),$$libs,/usr/lib,$(BR2_TOOLCHAIN_EXTERNAL_STRIP)); \
 	done
 	@echo "Copy external toolchain sysroot to staging..."
 	$(Q)$(call copy_toolchain_sysroot,$(SYSROOT_DIR),$(ARCH_SYSROOT_DIR),$(ARCH_SUBDIR))
