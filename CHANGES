@@ -19,9 +19,9 @@
 	dmalloc, dnsmasq, dropbear, e2fsprogs, fbv, file, fontconfig,
 	gawk, gstreamer, gzip, intltool, ipsec-tools, iptables,
 	libart, libcgi, libfuse, libgpg-error, libidn, liblockfile,
-	links, lmbench, lrzsz, make, module-init-tools, nbd, ncurses,
-	netperf, ntfsprogs, openssl, php, qt, quagga, sqlite, sdl,
-	sdl_mixer, sdl_sound, sdl_ttf, squashfs, tn5250, tremor,
+	libpng, links, lmbench, lrzsz, make, module-init-tools, nbd,
+	ncurses, netperf, ntfsprogs, openssl, php, qt, quagga, sqlite,
+	sdl, sdl_mixer, sdl_sound, sdl_ttf, squashfs, tn5250, tremor,
 	usbutils, xkeyboard-config, xserver_xorg-server, xvkbd
 
 	Removed packages: modutils, portage, rxvt
@@ -57,6 +57,7 @@
 	#2119: Tries to build kernel, although disabled in config
 	#2143: buildroot compiler generates segfaulting statically linked exe..
 	#2155: Compression lzo don't set for ubifs
+	#2166: [SECURITY] Update libpng to 1.2.44
 
 2010.05, Released May 30th, 2010:
 
