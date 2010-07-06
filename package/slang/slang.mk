@@ -16,7 +16,7 @@ $(SLANG_DIR): $(DL_DIR)/$(SLANG_SOURCE)
 	$(SLANG_CAT) $(DL_DIR)/$(SLANG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
 
 $(SLANG_DIR)/libslang.so: $(SLANG_DIR)
-	$(MAKE1) CFLAGS="-Os -g -fPIC $(TARGET_CFLAGS)" CC=$(TARGET_CC) -C $(SLANG_DIR)
+	$(MAKE1) CFLAGS="-Os -g -fPIC $(TARGET_CFLAGS)" CC="$(TARGET_CC)" -C $(SLANG_DIR)
 
 $(STAGING_DIR)/usr/lib/libslang.so.1: $(SLANG_DIR)/libslang.so
 	cp -dpf $(SLANG_DIR)/libslang.a $(STAGING_DIR)/usr/lib

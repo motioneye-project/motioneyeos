@@ -17,7 +17,7 @@ $(ACPID_DIR)/.unpacked: $(DL_DIR)/$(ACPID_SOURCE)
 	touch $(ACPID_DIR)/.unpacked
 
 $(ACPID_DIR)/acpid: $(ACPID_DIR)/.unpacked
-	$(MAKE) CC=$(TARGET_CC) -C $(ACPID_DIR)
+	$(MAKE) CC="$(TARGET_CC)" -C $(ACPID_DIR)
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $(ACPID_DIR)/acpid
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $(ACPID_DIR)/acpi_listen
 	touch -c $(ACPID_DIR)/acpid $(ACPID_DIR)/acpi_listen

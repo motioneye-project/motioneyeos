@@ -47,7 +47,7 @@ $(NFS_UTILS_DIR)/.configured: $(NFS_UTILS_DIR)/.unpacked
 	touch $@
 
 $(NFS_UTILS_DIR)/$(NFS_UTILS_BINARY): $(NFS_UTILS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) CC_FOR_BUILD="$(HOSTCC)" \
+	$(MAKE) CC="$(TARGET_CC)" CC_FOR_BUILD="$(HOSTCC)" \
 		RPCGEN=/usr/bin/rpcgen -C $(NFS_UTILS_DIR)
 	touch -c $@
 

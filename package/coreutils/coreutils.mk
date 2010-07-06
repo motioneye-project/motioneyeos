@@ -109,7 +109,7 @@ $(COREUTILS_DIR)/$(COREUTILS_BINARY): $(COREUTILS_DIR)/.configured
 	rm -f $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY)
 
 $(TARGET_DIR)/$(COREUTILS_TARGET_BINARY): $(COREUTILS_DIR)/$(COREUTILS_BINARY)
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(COREUTILS_DIR) install
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC="$(TARGET_CC)" -C $(COREUTILS_DIR) install
 	# some things go in root rather than usr
 	for f in $(BIN_PROGS); do \
 		mv $(TARGET_DIR)/usr/bin/$$f $(TARGET_DIR)/bin/$$f; \
@@ -132,7 +132,7 @@ endif
 # If both coreutils and busybox are selected, the corresponding applets
 # may need to be reinstated by the clean targets.
 coreutils-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(COREUTILS_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC="$(TARGET_CC)" -C $(COREUTILS_DIR) uninstall
 	-$(MAKE) -C $(COREUTILS_DIR) clean
 
 coreutils-dirclean:

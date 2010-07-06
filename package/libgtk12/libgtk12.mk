@@ -54,7 +54,7 @@ $(LIBGTK12_DIR)/.configured: $(LIBGTK12_DIR)/.unpacked
 	touch $(LIBGTK12_DIR)/.configured
 
 $(LIBGTK12_DIR)/gtk/.libs/$(LIBGTK12_BINARY): $(LIBGTK12_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(LIBGTK12_DIR)
+	$(MAKE) CC="$(TARGET_CC)" -C $(LIBGTK12_DIR)
 	touch -c $(LIBGTK12_DIR)/gtk/.libs/$(LIBGTK12_BINARY)
 
 $(STAGING_DIR)/lib/$(LIBGTK12_BINARY): $(LIBGTK12_DIR)/gtk/.libs/$(LIBGTK12_BINARY)
