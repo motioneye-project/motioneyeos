@@ -58,6 +58,7 @@
 	#2143: buildroot compiler generates segfaulting statically linked exe..
 	#2155: Compression lzo don't set for ubifs
 	#2166: [SECURITY] Update libpng to 1.2.44
+	#2167: Bump busybox to 1.17.0, convert to gentargets, drop 1.12, ...
 
 2010.05, Released May 30th, 2010:
 
