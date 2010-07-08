@@ -29,13 +29,13 @@ $(WIRELESS_TOOLS_BUILD_DIR)/.configured: $(WIRELESS_TOOLS_BUILD_DIR)/.unpacked
 
 $(WIRELESS_TOOLS_BUILD_DIR)/iwmulticall: $(WIRELESS_TOOLS_BUILD_DIR)/.configured
 	$(MAKE) -C $(WIRELESS_TOOLS_BUILD_DIR) \
-		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
+		CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
 		iwmulticall
 
 $(TARGET_DIR)/sbin/iwconfig: $(WIRELESS_TOOLS_BUILD_DIR)/iwmulticall
 	$(MAKE) -C $(WIRELESS_TOOLS_BUILD_DIR) \
 		PREFIX="$(TARGET_DIR)" \
-		CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" \
+		CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
 		install-iwmulticall
 
 wireless-tools: $(TARGET_DIR)/sbin/iwconfig
@@ -43,7 +43,7 @@ wireless-tools: $(TARGET_DIR)/sbin/iwconfig
 wireless-tools-source: $(DL_DIR)/$(WIRELESS_TOOLS_SOURCE)
 
 wireless-tools-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(WIRELESS_TOOLS_BUILD_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC="$(TARGET_CC)" -C $(WIRELESS_TOOLS_BUILD_DIR) uninstall
 	-$(MAKE) -C $(WIRELESS_TOOLS_BUILD_DIR) clean
 
 wireless-tools-dirclean:

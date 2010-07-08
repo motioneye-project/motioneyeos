@@ -42,7 +42,7 @@ $(PCMCIA_DIR)/.patched: $(PCMCIA_DIR)/.unpacked
 $(PCMCIA_DIR)/.configured: $(PCMCIA_DIR)/.patched
 	( cd $(PCMCIA_DIR); ./Configure --kernel=$(LINUX26_DIR) --noprompt \
 		--rcdir=/etc --arch=$(ARCH) --trust --srctree --nocardbus \
-		--sysv --kcc=$(TARGET_CROSS)gcc --ucc=$(TARGET_CC) --ld=$(TARGET_CROSS)ld \
+		--sysv --kcc=$(TARGET_CROSS)gcc --ucc="$(TARGET_CC)" --ld=$(TARGET_CROSS)ld \
 		--target=$(TARGET_DIR))
 	$(SED) "s/pump/udhcpc/" $(PCMCIA_DIR)/etc/network
 	$(SED) "s/ide_cs/ide-cs/" $(PCMCIA_DIR)/etc/config

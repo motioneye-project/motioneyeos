@@ -441,12 +441,12 @@ show-targets:
 	@echo $(TARGETS)
 
 ifeq ($(BR2_CONFIG_CACHE),y)
-# drop configure cache if configuration is changed
-$(BUILD_DIR)/tgt-config.cache: $(CONFIG_DIR)/.config
+# drop configure caches if configuration is changed
+$(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache: $(CONFIG_DIR)/.config
 	rm -f $@
 	touch $@
 
-$(BASE_TARGETS): | $(BUILD_DIR)/tgt-config.cache
+$(BASE_TARGETS): | $(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache
 endif
 
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
@@ -580,7 +580,7 @@ endif
 	rm -rf $(CONFIG_DIR)/.config $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/.config.cmd $(CONFIG_DIR)/.auto.deps
 
 flush:
-	rm -f $(BUILD_DIR)/tgt-config.cache
+	rm -f $(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache
 
 %_defconfig: $(TOPDIR)/configs/%_defconfig
 	cp $^ $(CONFIG_DIR)/.config

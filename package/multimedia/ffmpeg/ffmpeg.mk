@@ -121,7 +121,6 @@ define FFMPEG_CONFIGURE_CMDS
 	(cd $(FFMPEG_SRCDIR) && rm -rf config.cache && \
 	$(TARGET_CONFIGURE_OPTS) \
 	$(TARGET_CONFIGURE_ARGS) \
-	$(TARGET_CONFIGURE_ENV) \
 	$(FFMPEG_CONF_ENV) \
 	./configure \
 		--enable-cross-compile	\

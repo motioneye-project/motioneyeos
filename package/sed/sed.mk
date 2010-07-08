@@ -141,7 +141,7 @@ sed-target_binary: $(SED_DIR2)/$(SED_BINARY)
 	      -o $(TARGET_DIR)/$(SED_TARGET_BINARY) \
 	      -ot $(SED_DIR2)/$(SED_BINARY) ]; then \
 		set -x; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) install; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) CC="$(TARGET_CC)" -C $(SED_DIR2) install; \
 		mv $(TARGET_DIR)/usr/bin/sed $(TARGET_DIR)/bin/; \
 		rm -rf $(TARGET_DIR)/share/locale; \
 		rm -rf $(TARGET_DIR)/usr/share/doc; \
@@ -150,7 +150,7 @@ sed-target_binary: $(SED_DIR2)/$(SED_BINARY)
 sed: sed-target_binary
 
 sed-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(SED_DIR2) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC="$(TARGET_CC)" -C $(SED_DIR2) uninstall
 	-$(MAKE) -C $(SED_DIR2) clean
 
 sed-dirclean:

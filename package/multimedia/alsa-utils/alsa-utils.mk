@@ -44,7 +44,7 @@ $(ALSA_UTILS_DIR)/.configured: $(ALSA_UTILS_DIR)/.unpacked
 	touch $@
 
 $(ALSA_UTILS_DIR)/$(ALSA_UTILS_BINARY): $(ALSA_UTILS_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(ALSA_UTILS_DIR)
+	$(MAKE) CC="$(TARGET_CC)" -C $(ALSA_UTILS_DIR)
 	touch -c $@
 
 ALSA_UTILS_TARGETS_ :=

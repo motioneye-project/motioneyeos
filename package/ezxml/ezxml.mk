@@ -21,7 +21,7 @@ $(EZXML_DIR)/.configured: $(EZXML_DIR)/.unpacked
 	touch $@
 
 $(EZXML_DIR)/libezxml.a: $(EZXML_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) CFLAGS="$(TARGET_CFLAGS)" AR=$(TARGET_AR) \
+	$(MAKE) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" AR=$(TARGET_AR) \
 	-f GNUmakefile -C $(EZXML_DIR)
 
 $(STAGING_DIR)/usr/lib/libezxml.a: $(EZXML_DIR)/libezxml.a

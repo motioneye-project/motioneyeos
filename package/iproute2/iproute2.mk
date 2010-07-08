@@ -31,7 +31,7 @@ $(IPROUTE2_DIR)/$(IPROUTE2_BINARY): $(IPROUTE2_DIR)/.configured
 	$(MAKE) \
 		-C $(IPROUTE2_DIR) \
 		KERNEL_INCLUDE=$(LINUX_SOURCE_DIR)/include \
-		CC=$(TARGET_CC) \
+		CC="$(TARGET_CC)" \
 		AR=$(TARGET_CROSS)ar \
 		NETEM_DIST="" \
 		SUBDIRS="lib ip tc"

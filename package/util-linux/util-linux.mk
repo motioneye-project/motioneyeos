@@ -59,7 +59,7 @@ $(UTIL-LINUX_BINARY): $(UTIL-LINUX_DIR)/.configured
 	$(MAKE) \
 		-C $(UTIL-LINUX_DIR) \
 		ARCH=$(ARCH) \
-		CC=$(TARGET_CC) \
+		CC="$(TARGET_CC)" \
 		OPT="$(TARGET_CFLAGS)" \
 		$(UTIL-LINUX_MAKE_OPT) \
 		HAVE_SLANG="NO"

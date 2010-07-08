@@ -15,8 +15,6 @@ BR2_SYSROOT_TARGET_DESTDIR=DESTDIR=$(TARGET_DIR)/
 BR2_CONFIGURE_DEVEL_SYSROOT=--with-sysroot=$(TOOLCHAIN_DIR)/uClibc_dev/
 BR2_CONFIGURE_STAGING_SYSROOT=--with-sysroot=$(STAGING_DIR)
 BR2_CONFIGURE_BUILD_TOOLS=--with-build-time-tools=$(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin
-BR2_SYSROOT=--sysroot=$(STAGING_DIR)/
-BR2_ISYSROOT=-isysroot $(STAGING_DIR)
 
 # gcc has a bunch of needed stuff....
 include toolchain/gcc/Makefile.in

@@ -33,7 +33,7 @@ $(DILLO_DIR)/.configured: $(DILLO_DIR)/.unpacked
 	touch $(DILLO_DIR)/.configured
 
 $(DILLO_DIR)/src/dillo: $(DILLO_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(DILLO_DIR)
+	$(MAKE) CC="$(TARGET_CC)" -C $(DILLO_DIR)
 
 $(DILLO_DIR)/.installed: $(DILLO_DIR)/src/dillo
 	$(MAKE) -C $(DILLO_DIR) DESTDIR=$(TARGET_DIR) install

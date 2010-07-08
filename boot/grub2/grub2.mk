@@ -67,7 +67,7 @@ $(GRUB2_DIR)/.configured: $(GRUB2_DIR)/.unpacked
 	touch $@
 
 $(GRUB2_DIR)/.compiled: $(GRUB2_DIR)/.configured
-	$(MAKE) CC=$(TARGET_CC) -C $(@D)
+	$(MAKE) CC="$(TARGET_CC)" -C $(@D)
 	touch $@
 
 $(GRUB2_DIR)/.installed: $(GRUB2_DIR)/.compiled
@@ -77,7 +77,7 @@ $(GRUB2_DIR)/.installed: $(GRUB2_DIR)/.compiled
 grub2: host-automake host-autoconf $(GRUB2_DIR)/.installed
 
 grub2-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) CC=$(TARGET_CC) -C $(GRUB2_DIR) uninstall
+	$(MAKE) DESTDIR=$(TARGET_DIR) CC="$(TARGET_CC)" -C $(GRUB2_DIR) uninstall
 	-$(MAKE) -C $(GRUB2_DIR) clean
 
 grub2-dirclean:
