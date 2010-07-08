@@ -17,7 +17,7 @@
 	Updated/fixed packages: berkeleydb, bash, blackbox, busybox,
 	bzip2, cdrkit, dash, dialog, diffutils, distcc, dmalloc,
 	dnsmasq, dropbear, e2fsprogs, fbv, file, gawk, gstreamer,
-	gzip, intltool, ipsec-tools, iptables, libart, libfuse,
+	gzip, intltool, ipsec-tools, iptables, libart, libcgi, libfuse,
 	libgpg-error, libidn, liblockfile, links, lmbench, lrzsz,
 	make, module-init-tools, nbd, ncurses, netperf, ntfsprogs,
 	openssl, php, qt, quagga, sqlite, sdl, sdl_mixer, sdl_sound,

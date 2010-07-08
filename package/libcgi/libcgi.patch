@@ -71,7 +71,7 @@
 -	cp src/session.h $(INCDIR)
 +	cp src/libcgi.a $(DESTDIR)/$(LIBDIR)
 +	cp src/libcgi.so $(DESTDIR)/$(LIBDIR)
-+	[ -d $(DESTDIR)/$(INCDIR) ] || mkdir $(DESTDIR)/$(INCDIR)
++	[ -d $(DESTDIR)/$(INCDIR) ] || mkdir -p $(DESTDIR)/$(INCDIR)
 +	cp src/cgi.h $(DESTDIR)/$(INCDIR)
 +	cp src/session.h $(DESTDIR)/$(INCDIR)
  
