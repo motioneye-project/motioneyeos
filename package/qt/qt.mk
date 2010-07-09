@@ -418,6 +418,9 @@ endif
 ifeq ($(BR2_PACKAGE_QT_SCRIPTTOOLS),y)
 QT_LIBS+= qt-scripttools
 endif
+ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
+QT_LIBS+= qt-qt3support
+endif
 
 QT_QMAKE_CONF:=$(QT_TARGET_DIR)/mkspecs/qws/linux-$(BR2_PACKAGE_QT_EMB_PLATFORM)-g++/qmake.conf
 
@@ -597,6 +600,10 @@ ifeq ($(BR2_PACKAGE_QT_SHARED),y)
 	cp -dpf $(STAGING_DIR)/usr/lib/libQtScriptTools.so.* $(TARGET_DIR)/usr/lib/
 endif
 
+qt-qt3support: $(STAGING_DIR)/usr/lib/libQtCore.la
+ifeq ($(BR2_PACKAGE_QT_SHARED),y)
+	cp -dpf $(STAGING_DIR)/usr/lib/libQt3Support.so.* $(TARGET_DIR)/usr/lib/
+endif
 
 $(TARGET_DIR)/usr/lib/libQtCore.so.4: $(STAGING_DIR)/usr/lib/libQtCore.la $(QT_LIBS)
 	# Strip all installed libs
