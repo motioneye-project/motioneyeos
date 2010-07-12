@@ -1,0 +1,109 @@
+Add pthred_getattr_np / phread_attr_getstrack alternatives for uClibc
+
+Based on https://dev.openwrt.org/log/packages/Xorg/lib/qt4/patches/100-fix-webkit-for-uclibc.patch?rev=20371
+
+Signed-off-by: Johan Sagaert <sagaert.johan@skynet.be>
+--- qt-everywhere-opensource-src-4.6.2/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp	2010-02-11 16:55:20.000000000 +0100
++++ qt-everywhere-opensource-src-4.6.2JS/src/3rdparty/javascriptcore/JavaScriptCore/runtime/Collector.cpp	2010-05-23 10:49:29.000000000 +0200
+@@ -74,6 +74,22 @@
+ #endif
+ #include <unistd.h>
+ 
++#if defined(QT_LINUXBASE)
++#include <dlfcn.h>
++#endif
++
++#if defined(__UCLIBC__)
++// versions of uClibc 0.9.31 and below do not have
++// pthread_getattr_np or pthread_attr_getstack.
++#if __UCLIBC_MAJOR__ == 0 && \
++    (__UCLIBC_MINOR__ < 9 || \
++    (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 31))
++#define UCLIBC_USE_PROC_SELF_MAPS 1
++#include <stdio_ext.h>
++extern int *__libc_stack_end;
++#endif
++#endif
++
+ #if PLATFORM(SOLARIS)
+ #include <thread.h>
+ #else
+@@ -667,16 +683,59 @@ static inline void* currentThreadStackBa
+     get_thread_info(find_thread(NULL), &threadInfo);
+     return threadInfo.stack_end;
+ #elif PLATFORM(UNIX)
++#ifdef UCLIBC_USE_PROC_SELF_MAPS
++    // Read /proc/self/maps and locate the line whose address
++    // range contains __libc_stack_end.
++    FILE *file = fopen("/proc/self/maps", "r");
++    if (!file)
++        return 0;
++    __fsetlocking(file, FSETLOCKING_BYCALLER);
++    char *line = NULL;
++    size_t lineLen = 0;
++    while (!feof_unlocked(file)) {
++        if (getdelim(&line, &lineLen, '\n', file) <= 0)
++            break;
++
++        long from;
++        long to;
++        if (sscanf (line, "%lx-%lx", &from, &to) != 2)
++            continue;
++        if (from <= (long)__libc_stack_end && (long)__libc_stack_end < to) {
++            fclose(file);
++            free(line);
++#ifdef _STACK_GROWS_UP
++            return (void *)from;
++#else
++            return (void *)to;
++#endif
++        }
++    }
++    fclose(file);
++    free(line);
++    return 0;
++	#else
+     static void* stackBase = 0;
+     static size_t stackSize = 0;
+     static pthread_t stackThread;
+     pthread_t thread = pthread_self();
+     if (stackBase == 0 || thread != stackThread) {
++
++#if defined(QT_LINUXBASE)
++        // LinuxBase is missing pthread_getattr_np - resolve it once at runtime instead
++        // see http://bugs.linuxbase.org/show_bug.cgi?id=2364
++        typedef int (*GetAttrPtr)(pthread_t, pthread_attr_t *);
++        static int (*pthread_getattr_np_ptr)(pthread_t, pthread_attr_t *) = 0;
++        if (!pthread_getattr_np_ptr)
++            *(void **)&pthread_getattr_np_ptr = dlsym(RTLD_DEFAULT, "pthread_getattr_np");
++#endif
+         pthread_attr_t sattr;
+         pthread_attr_init(&sattr);
+ #if HAVE(PTHREAD_NP_H) || PLATFORM(NETBSD)
+         // e.g. on FreeBSD 5.4, neundorf@kde.org
+         pthread_attr_get_np(thread, &sattr);
++#elif defined(QT_LINUXBASE)
++        if (pthread_getattr_np_ptr)
++            pthread_getattr_np_ptr(thread, &sattr);
+ #else
+         // FIXME: this function is non-portable; other POSIX systems may have different np alternatives
+         pthread_getattr_np(thread, &sattr);
+@@ -688,6 +747,7 @@ static inline void* currentThreadStackBa
+         stackThread = thread;
+     }
+     return static_cast<char*>(stackBase) + stackSize;
++#endif
+ #elif PLATFORM(WINCE)
+     if (g_stackBase)
+         return g_stackBase;
+--- qt-everywhere-opensource-src-4.6.2/src/3rdparty/webkit/JavaScriptCore/runtime/Collector.cpp	2010-02-11 16:55:17.000000000 +0100
++++ qt-everywhere-opensource-src-4.6.2JS/src/3rdparty/webkit/JavaScriptCore/runtime/Collector.cpp	2010-05-23 01:41:06.000000000 +0200
+@@ -83,7 +83,7 @@
+ // pthread_getattr_np or pthread_attr_getstack.
+ #if __UCLIBC_MAJOR__ == 0 && \
+     (__UCLIBC_MINOR__ < 9 || \
+-    (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 30))
++    (__UCLIBC_MINOR__ == 9 && __UCLIBC_SUBLEVEL__ <= 31))
+ #define UCLIBC_USE_PROC_SELF_MAPS 1
+ #include <stdio_ext.h>
+ extern int *__libc_stack_end;
