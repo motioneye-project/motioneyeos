@@ -1,0 +1,72 @@
+diff -urpN busybox-1.17.0/editors/diff.c busybox-1.17.0-diff/editors/diff.c
+--- busybox-1.17.0/editors/diff.c	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-diff/editors/diff.c	2010-07-10 03:52:33.000000000 +0200
+@@ -760,9 +760,11 @@ static int FAST_FUNC add_to_dirlist(cons
+ 		void *userdata, int depth UNUSED_PARAM)
+ {
+ 	struct dlist *const l = userdata;
++	const char *file = filename + l->len;
+ 	l->dl = xrealloc_vector(l->dl, 6, l->e);
+-	/* + 1 skips "/" after dirname */
+-	l->dl[l->e] = xstrdup(filename + l->len + 1);
++	while (*file == '/')
++		file++;
++	l->dl[l->e] = xstrdup(file);
+ 	l->e++;
+ 	return TRUE;
+ }
+diff -urpN busybox-1.17.0/testsuite/diff.tests busybox-1.17.0-diff/testsuite/diff.tests
+--- busybox-1.17.0/testsuite/diff.tests	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-diff/testsuite/diff.tests	2010-07-10 01:31:51.000000000 +0200
+@@ -4,7 +4,7 @@
+ 
+ . ./testing.sh
+ 
+-# testing "test name" "options" "expected result" "file input" "stdin"
++# testing "test name" "commands" "expected result" "file input" "stdin"
+ 
+ # diff outputs date/time in the header, which should not be analysed
+ # NB: sed has tab character in s command!
+@@ -100,9 +100,11 @@ testing "diff always takes context from 
+ 	"abc\na  c\ndef\n" \
+ 	"a c\n"
+ 
+-# testing "test name" "options" "expected result" "file input" "stdin"
++# testing "test name" "commands" "expected result" "file input" "stdin"
+ 
++# clean up
+ rm -rf diff1 diff2
++
+ mkdir diff1 diff2 diff2/subdir
+ echo qwe >diff1/-
+ echo asd >diff2/subdir/-
+@@ -187,4 +189,29 @@ SKIP=
+ # clean up
+ rm -rf diff1 diff2
+ 
++# NOT using directory structure from prev test...
++mkdir diff1 diff2
++echo qwe >diff1/-
++echo rty >diff2/-
++optional FEATURE_DIFF_DIR
++testing "diff diff1 diff2/" \
++	"diff -ur diff1 diff2/ | $TRIM_TAB; diff -ur .///diff1 diff2//// | $TRIM_TAB" \
++"\
++--- diff1/-
+++++ diff2/-
++@@ -1 +1 @@
++-qwe
+++rty
++--- .///diff1/-
+++++ diff2////-
++@@ -1 +1 @@
++-qwe
+++rty
++" \
++	"" ""
++SKIP=
++
++# clean up
++rm -rf diff1 diff2
++
+ exit $FAILCOUNT

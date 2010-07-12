@@ -1,0 +1,101 @@
+diff -urpN busybox-1.17.0/applets/usage_compressed busybox-1.17.0-build_system/applets/usage_compressed
+--- busybox-1.17.0/applets/usage_compressed	2010-07-04 23:33:59.000000000 +0200
++++ busybox-1.17.0-build_system/applets/usage_compressed	2010-07-10 01:31:18.000000000 +0200
+@@ -40,8 +40,4 @@ echo '#define PACKED_USAGE \'
+ 	-e 's/$/ \\/'
+ echo ''
+ 
+-if cmp -s "$target.$$" "$target" 2>/dev/null; then
+-    rm -- "$target.$$"
+-else
+-    mv -- "$target.$$" "$target"
+-fi
++mv -- "$target.$$" "$target"
+diff -urpN busybox-1.17.0/init/bootchartd.c busybox-1.17.0-build_system/init/bootchartd.c
+--- busybox-1.17.0/init/bootchartd.c	2010-07-04 15:32:24.000000000 +0200
++++ busybox-1.17.0-build_system/init/bootchartd.c	2010-07-10 01:31:14.000000000 +0200
+@@ -18,7 +18,7 @@
+ //config:	  and stopped using bootchartd stop.
+ //config:
+ //config:config FEATURE_BOOTCHARTD_BLOATED_HEADER
+-//config:	bool "bootchartd"
++//config:	bool "Compatible, bloated header"
+ //config:	default y
+ //config:	depends on BOOTCHARTD
+ //config:	help
+@@ -35,7 +35,7 @@
+ //config:	  makes bootchartd applet to dump a subset of it.
+ //config:
+ //config:config FEATURE_BOOTCHARTD_CONFIG_FILE
+-//config:	bool "bootchartd"
++//config:	bool "Support bootchartd.conf"
+ //config:	default y
+ //config:	depends on BOOTCHARTD
+ //config:	help
+diff -urpN busybox-1.17.0/scripts/gen_build_files.sh busybox-1.17.0-build_system/scripts/gen_build_files.sh
+--- busybox-1.17.0/scripts/gen_build_files.sh	2010-06-26 00:42:29.000000000 +0200
++++ busybox-1.17.0-build_system/scripts/gen_build_files.sh	2010-07-10 01:31:38.000000000 +0200
+@@ -4,6 +4,8 @@ test $# -ge 2 || { echo "Syntax: $0 SRCT
+ 
+ # cd to objtree
+ cd -- "$2" || { echo "Syntax: $0 SRCTREE OBJTREE"; exit 1; }
++# In separate objtree build, include/ might not exist yet
++mkdir include 2>/dev/null
+ 
+ srctree="$1"
+ 
+@@ -46,10 +48,12 @@ if test x"$new" != x"$old"; then
+ fi
+ 
+ # (Re)generate */Kbuild and */Config.in
+-find -type d | while read -r d; do
++{ cd -- "$srctree" && find -type d; } | while read -r d; do
+ 	d="${d#./}"
++
+ 	src="$srctree/$d/Kbuild.src"
+ 	dst="$d/Kbuild"
++	mkdir -p -- "$d" 2>/dev/null
+ 	if test -f "$src"; then
+ 		#echo "  CHK     $dst"
+ 
+@@ -69,6 +73,7 @@ find -type d | while read -r d; do
+ 
+ 	src="$srctree/$d/Config.src"
+ 	dst="$d/Config.in"
++	mkdir -p -- "$d" 2>/dev/null
+ 	if test -f "$src"; then
+ 		#echo "  CHK     $dst"
+ 
+diff -urpN busybox-1.17.0/scripts/Makefile.build busybox-1.17.0-build_system/scripts/Makefile.build
+--- busybox-1.17.0/scripts/Makefile.build	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-build_system/scripts/Makefile.build	2010-07-10 01:31:38.000000000 +0200
+@@ -13,8 +13,13 @@ __build:
+ include scripts/Kbuild.include
+ 
+ # The filename Kbuild has precedence over Makefile
++# bbox: we also try to include Kbuild file in obj tree first
+ kbuild-dir := $(if $(filter /%,$(src)),$(src),$(srctree)/$(src))
+-include $(if $(wildcard $(kbuild-dir)/Kbuild), $(kbuild-dir)/Kbuild, $(kbuild-dir)/Makefile)
++include $(if $(wildcard $(src)/Kbuild), $(src)/Kbuild, \
++		$(if $(wildcard $(kbuild-dir)/Kbuild), $(kbuild-dir)/Kbuild, \
++			$(kbuild-dir)/Makefile \
++		) \
++	)
+ 
+ include scripts/Makefile.lib
+ 
+diff -urpN busybox-1.17.0/scripts/test_make_O busybox-1.17.0-build_system/scripts/test_make_O
+--- busybox-1.17.0/scripts/test_make_O	1970-01-01 01:00:00.000000000 +0100
++++ busybox-1.17.0-build_system/scripts/test_make_O	2010-07-10 01:31:38.000000000 +0200
+@@ -0,0 +1,11 @@
++#!/bin/sh
++
++b=`basename $PWD`
++test "${b#busybox}" != "$b" || { echo "Must be run in busybox tree"; exit 1; }
++
++rm -rf ../testdir_make_O.$$
++mkdir ../testdir_make_O.$$
++odir=`cd ../testdir_make_O.$$ && pwd`
++test -d "$odir" || exit 1
++
++make O="$odir" $MAKEOPTS "$@" defconfig busybox 2>&1 | tee test_make_O.log

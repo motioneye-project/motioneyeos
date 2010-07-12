@@ -1,0 +1,27 @@
+diff -urpN busybox-1.17.0/modutils/modprobe.c busybox-1.17.0-modprobe-l/modutils/modprobe.c
+--- busybox-1.17.0/modutils/modprobe.c	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-modprobe-l/modutils/modprobe.c	2010-07-10 01:25:42.000000000 +0200
+@@ -483,6 +483,11 @@ int modprobe_main(int argc UNUSED_PARAM,
+ 	opt = getopt32(argv, INSMOD_OPTS MODPROBE_OPTS INSMOD_ARGS);
+ 	argv += optind;
+ 
++	/* Goto modules location */
++	xchdir(CONFIG_DEFAULT_MODULES_DIR);
++	uname(&uts);
++	xchdir(uts.release);
++
+ 	if (opt & MODPROBE_OPT_LIST_ONLY) {
+ 		char name[MODULE_NAME_LEN];
+ 		char *colon, *tokens[2];
+@@ -524,11 +529,6 @@ int modprobe_main(int argc UNUSED_PARAM,
+ 		return EXIT_SUCCESS;
+ 	}
+ 
+-	/* Goto modules location */
+-	xchdir(CONFIG_DEFAULT_MODULES_DIR);
+-	uname(&uts);
+-	xchdir(uts.release);
+-
+ 	/* Retrieve module names of already loaded modules */
+ 	{
+ 		char *s;
