@@ -16,7 +16,7 @@
 
 	Updated/fixed packages: alsa-lib, berkeleydb, bash, blackbox,
 	busybox, bzip2, cdrkit, cmake, dash, dhcp, dialog, diffutils,
-	distcc, dmalloc, dnsmasq, dropbear, e2fsprogs, fbv, file,
+	distcc, dmalloc, dnsmasq, dropbear, e2fsprogs, fbv, file, flex,
 	fontconfig, gawk, gstreamer, gzip, intltool, ipsec-tools,
 	iptables, libart, libcgi, libfuse, libgpg-error, libidn,
 	liblockfile, libpng, links, linux-fusion, lmbench, lrzsz,

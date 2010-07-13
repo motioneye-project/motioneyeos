@@ -4,7 +4,7 @@
 #
 #############################################################
 FLEX_VERSION:=2.5.35
-FLEX_PATCH_VERSION:=9
+FLEX_PATCH_VERSION:=9.1
 FLEX_SOURCE:=flex_$(FLEX_VERSION).orig.tar.gz
 FLEX_PATCH:=flex_$(FLEX_VERSION)-$(FLEX_PATCH_VERSION).diff.gz
 FLEX_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/f/flex
