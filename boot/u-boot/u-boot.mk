@@ -35,7 +35,7 @@ U_BOOT_TARGETS:=$(BINARIES_DIR)/$(U_BOOT_BIN) $(MKIMAGE)
 U_BOOT_ARCH=$(KERNEL_ARCH)
 
 # u-boot in the past used arch=ppc for powerpc
-ifneq ($(findstring x200,$(UBOOT_VERSION))$(findstring x2010.03,$(UBOOT_VERSION)),)
+ifneq ($(findstring x200,x$(U_BOOT_VERSION))$(findstring x2010.03,x$(U_BOOT_VERSION)),)
 U_BOOT_ARCH=$(KERNEL_ARCH:powerpc=ppc)
 endif
 
@@ -81,8 +81,6 @@ ifeq ($(U_BOOT_BOARD_NAME),)
 	$(error NO U-Boot board name set. Check your BR2_TARGET_UBOOT_BOARDNAME setting)
 endif
 	$(TARGET_CONFIGURE_OPTS)		\
-		CFLAGS="$(TARGET_CFLAGS)"	\
-		LDFLAGS="$(TARGET_LDFLAGS)"	\
 		$(U_BOOT_CONFIGURE_OPTS) \
 		$(MAKE) -C $(U_BOOT_DIR)	\
 		$(U_BOOT_BOARD_NAME)_config
