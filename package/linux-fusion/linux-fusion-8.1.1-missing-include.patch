@@ -1,0 +1,17 @@
+fusiondev.c does not compile due to TASK_INTERRUPTIBLE and other
+related constants not being defined.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: linux-fusion-8.1.1/linux/drivers/char/fusion/fusiondev.c
+===================================================================
+--- linux-fusion-8.1.1.orig/linux/drivers/char/fusion/fusiondev.c	2010-07-16 22:49:23.000000000 +0200
++++ linux-fusion-8.1.1/linux/drivers/char/fusion/fusiondev.c	2010-07-16 22:49:39.000000000 +0200
+@@ -32,6 +32,7 @@
+ #include <linux/proc_fs.h>
+ #include <linux/poll.h>
+ #include <linux/init.h>
++#include <linux/sched.h>
+ #include <asm/io.h>
+ #include <asm/uaccess.h>
+ 
