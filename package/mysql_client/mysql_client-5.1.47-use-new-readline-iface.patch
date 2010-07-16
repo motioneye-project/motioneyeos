@@ -1,0 +1,17 @@
+Tell MySQL to use the new readline interface even when an external
+readline is being used.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: mysql_client-5.1.47/configure.in
+===================================================================
+--- mysql_client-5.1.47.orig/configure.in	2010-07-15 23:49:35.000000000 +0200
++++ mysql_client-5.1.47/configure.in	2010-07-15 23:50:03.000000000 +0200
+@@ -2700,6 +2700,7 @@
+ 	    # this way we avoid linking commercial source with GPL readline
+ 	    readline_link="-lreadline"
+ 	    want_to_use_readline="yes"
++	    AC_DEFINE_UNQUOTED(USE_NEW_READLINE_INTERFACE, 1)
+ 	elif [test "$mysql_cv_libedit_interface" = "yes"]
+ 	then
+ 	    # Use libedit
