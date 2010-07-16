@@ -15,7 +15,7 @@
 	luafilesystem, luasocket, rings, wsapi, xavante, xterm
 
 	Updated/fixed packages: berkeleydb, bash, blackbox, busybox,
-	bzip2, cdrkit, cmake, dash, dialog, diffutils, distcc,
+	bzip2, cdrkit, cmake, dash, dhcp, dialog, diffutils, distcc,
 	dmalloc, dnsmasq, dropbear, e2fsprogs, fbv, file, fontconfig,
 	gawk, gstreamer, gzip, intltool, ipsec-tools, iptables,
 	libart, libcgi, libfuse, libgpg-error, libidn, liblockfile,
