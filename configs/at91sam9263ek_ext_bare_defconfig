@@ -331,7 +331,7 @@ BR2_TARGET_OPTIMIZATION="-Os -pipe"
 # BR2_PACKAGE_BOA is not set
 # BR2_PACKAGE_BIND is not set
 # BR2_PACKAGE_BRIDGE is not set
-# BR2_PACKAGE_ISC_DHCP is not set
+# BR2_PACKAGE_DHCP is not set
 # BR2_PACKAGE_DNSMASQ is not set
 # BR2_PACKAGE_DROPBEAR is not set
 # BR2_PACKAGE_ETHTOOL is not set
