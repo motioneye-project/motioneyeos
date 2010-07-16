@@ -273,7 +273,9 @@ ifeq ($(BR2_PACKAGE_QT_IBASE),y)
 QT_CONFIGURE+= -qt-sql-ibase
 endif
 ifeq ($(BR2_PACKAGE_QT_MYSQL),y)
-QT_CONFIGURE+= -qt-sql-mysql
+QT_CONFIGURE+= -qt-sql-mysql -I $(STAGING_DIR)/usr/include/mysql -L $(STAGING_DIR)/usr/lib/mysql
+
+QT_DEP_LIBS+=mysql_client
 endif
 ifeq ($(BR2_PACKAGE_QT_ODBC),y)
 QT_CONFIGURE+= -qt-sql-odbc

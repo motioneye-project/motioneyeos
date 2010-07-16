@@ -6,24 +6,30 @@ menuconfig BR2_PACKAGE_QT_SQL_MODULE
 if BR2_PACKAGE_QT_SQL_MODULE
 config BR2_PACKAGE_QT_MYSQL
 	bool "MySQL Driver"
+	select BR2_PACKAGE_MYSQL_CLIENT
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
 	help
 	  Build MySQL driver
 	  If unsure, say n.
 
 config BR2_PACKAGE_QT_IBASE
 	bool "iBase Driver"
+	depends on BROKEN # libfbclient not in BR
 	help
 	  Build iBase driver
 	  If unsure, say n.
 
 config BR2_PACKAGE_QT_ODBC
 	bool "ODBC Driver"
+	depends on BROKEN # libodbc not in BR
 	help
 	  Build ODBC driver
 	  If unsure, say n.
 
 config BR2_PACKAGE_QT_PSQL
 	bool "PostgreSQL Driver"
+	depends on BROKEN # libpgsql not in BR
 	help
 	  Build PostgreSQL driver
 	  If unsure, say n.
@@ -36,6 +42,7 @@ config BR2_PACKAGE_QT_SQLITE
 
 config BR2_PACKAGE_QT_SQLITE2
 	bool "SQLite 2 Driver"
+	depends on BROKEN # sqlite2 not in BR
 	help
 	  Build SQLite 2 driver
 	  If unsure, say n.
