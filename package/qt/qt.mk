@@ -115,6 +115,7 @@ QT_CONFIGURE += -no-gfx-multiscreen
 endif
 ifeq ($(BR2_PACKAGE_QT_GFX_DIRECTFB),y)
 QT_CONFIGURE += -qt-gfx-directfb
+QT_DEP_LIBS+=directfb
 else
 QT_CONFIGURE += -no-gfx-directfb
 endif
