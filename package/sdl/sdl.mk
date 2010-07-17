@@ -44,7 +44,8 @@ endif
 SDL_CONF_OPT += --enable-pulseaudio=no \
 		--disable-arts \
 		--disable-esd \
-		--disable-nasm
+		--disable-nasm \
+		--disable-video-ps3
 
 # Fixup prefix= and exec_prefix= in sdl-config, and remove the
 # -Wl,-rpath option.
