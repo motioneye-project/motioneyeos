@@ -1,0 +1,12 @@
+diff -urpN busybox-1.17.0/coreutils/dos2unix.c busybox-1.17.0-dos2unix/coreutils/dos2unix.c
+--- busybox-1.17.0/coreutils/dos2unix.c	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-dos2unix/coreutils/dos2unix.c	2010-07-17 22:40:21.021422169 +0200
+@@ -92,7 +92,7 @@ int dos2unix_main(int argc UNUSED_PARAM,
+ 	do {
+ 		/* might be convert(NULL) if there is no filename given */
+ 		convert(*argv, conv_type);
+-	} while (*++argv);
++	} while (*argv && *++argv);
+ 
+ 	return 0;
+ }
