@@ -127,10 +127,10 @@ TARGET_RANLIB   = $(TARGET_CROSS)ranlib
 TARGET_OBJCOPY  = $(TARGET_CROSS)objcopy
 TARGET_OBJDUMP  = $(TARGET_CROSS)objdump
 
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-TARGET_LDCONFIG = $(TARGET_CROSS)ldconfig
-else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
+ifeq ($(shell $(SHELL) -c "command -v $(TARGET_CROSS)ldconfig"),)
 TARGET_LDCONFIG = /sbin/ldconfig
+else
+TARGET_LDCONFIG = $(TARGET_CROSS)ldconfig
 endif
 
 ifeq ($(BR2_STRIP_strip),y)
