@@ -41,17 +41,17 @@ UPPERCASE = $(strip $(eval __tmp := $1) \
      $(__tmp))
 
 define KCONFIG_ENABLE_OPT
-       $(SED) "/$(1)/d" $(2)
+       $(SED) "/\\<$(1)\\>/d" $(2)
        echo "$(1)=y" >> $(2)
 endef
 
 define KCONFIG_SET_OPT
-       $(SED) "/$(1)/d" $(3)
+       $(SED) "/\\<$(1)\\>/d" $(3)
        echo "$(1)=$(2)" >> $(3)
 endef
 
 define KCONFIG_DISABLE_OPT
-       $(SED) "/$(1)/d" $(2)
+       $(SED) "/\\<$(1)\\>/d" $(2)
        echo "# $(1) is not set" >> $(2)
 endef
 
