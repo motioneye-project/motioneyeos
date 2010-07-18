@@ -96,7 +96,7 @@ config BR2_LINUX_KERNEL_DEFCONFIG
 	string "Defconfig name"
 	depends on BR2_LINUX_KERNEL_USE_DEFCONFIG
 	help
-	 Name of the defconfig file to use, without the leading
+	 Name of the defconfig file to use, without the trailing
 	 _defconfig
 
 config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
