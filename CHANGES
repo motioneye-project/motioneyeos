@@ -30,9 +30,11 @@
 	Issues resolved (http://bugs.uclibc.org):
 
 	#361:  linux kernel configuration choice works incorrectly
+	#387:  Tremor not installed to toolchain
 	#401:  new package: ffmpeg
 	#475:  uImage target for U-boot failed generating
 	#583:  build fails with external x86_64 toolchain
+	#729:  sstrip creates corrupted headers
 	#835:  Package Dataflashboot-1.05 does not compile with buildroot...
 	#1213: Move .config into output directory
 	#1753: lmbench: convert to generic package infrastructure
