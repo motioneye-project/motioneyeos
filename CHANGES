@@ -65,6 +65,7 @@
 	#2167: Bump busybox to 1.17.0, convert to gentargets, drop 1.12, ...
 	#2191: linux-fusion build fail
 	#2221: Qt does not compile (dependencies not taken into account?)
+	#2233: Atmel atstk target skeletons have /etc/mtab as a file, not ...
 
 2010.05, Released May 30th, 2010:
 
