@@ -14,6 +14,7 @@ NEON_DEPENDENCIES:=host-pkg-config
 ifeq ($(BR2_PACKAGE_NEON_LIBXML2),y)
 NEON_CONF_OPT+=--with-libxml2=yes
 NEON_CONF_OPT+=--with-expat=no
+NEON_CONF_ENV+=ac_cv_prog_XML2_CONFIG=$(STAGING_DIR)/usr/bin/xml2-config
 NEON_DEPENDENCIES+=libxml2
 endif
 ifeq ($(BR2_PACKAGE_NEON_ZLIB),y)
