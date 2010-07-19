@@ -29,6 +29,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#321:  alsa-lib uses host include files for python which breaks ...
 	#361:  linux kernel configuration choice works incorrectly
 	#387:  Tremor not installed to toolchain
 	#401:  new package: ffmpeg
@@ -37,6 +38,7 @@
 	#729:  sstrip creates corrupted headers
 	#835:  Package Dataflashboot-1.05 does not compile with buildroot...
 	#1213: Move .config into output directory
+	#1393: neon config fails libxml/parser.h: libxml2 requires, but not ...
 	#1753: lmbench: convert to generic package infrastructure
 	#1771: Fakeroot and the target/generic/device_table.txt create bad...
 	#1807: LZMA 4.32.7, Required header file(s) are missing
