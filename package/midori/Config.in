@@ -2,7 +2,7 @@ config BR2_PACKAGE_MIDORI
 	bool "midori"
 	select BR2_PACKAGE_WEBKIT
 	select BR2_PACKAGE_LIBSEXY
-	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_LIBGTK2
 	help
 	  Midori is a lightweight web browser based on WebKit
 
