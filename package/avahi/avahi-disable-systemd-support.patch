@@ -1,0 +1,22 @@
+[PATCH] avahi-daemon: disable systemd support
+
+Disable systemd support as it isn't needed for BR, and uses SOCK_CLOEXEC
+which isn't available on uClibc.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ avahi-daemon/sd-daemon.h |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: avahi-0.6.27/avahi-daemon/sd-daemon.h
+===================================================================
+--- avahi-0.6.27.orig/avahi-daemon/sd-daemon.h
++++ avahi-0.6.27/avahi-daemon/sd-daemon.h
+@@ -66,6 +66,7 @@ extern "C" {
+ 
+   See sd-daemon(7) for more information.
+ */
++#define DISABLE_SYSTEMD /* no systemd support in BR */
+ 
+ #if __GNUC__ >= 4
+ #define _sd_printf_attr_(a,b) __attribute__ ((format (printf, a, b)))

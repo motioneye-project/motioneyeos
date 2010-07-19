@@ -10,9 +10,10 @@
 # either version 2.1 of the License, or (at your option) any
 # later version.
 
-AVAHI_VERSION = 0.6.23
+AVAHI_VERSION = 0.6.27
 AVAHI_SOURCE = avahi-$(AVAHI_VERSION).tar.gz
 AVAHI_SITE = http://www.avahi.org/download/
+AVAHI_LIBTOOL_PATCH = NO
 AVAHI_INSTALL_STAGING = YES
 AVAHI_INSTALL_TARGET = YES
 
@@ -71,6 +72,7 @@ AVAHI_CONF_OPT = --localstatedir=/var \
 		--disable-gdbm \
 		--disable-python-dbus \
 		--disable-pygtk \
+		--disable-gtk3 \
 		--disable-mono \
 		--disable-monodoc \
 		--disable-stack-protector \
