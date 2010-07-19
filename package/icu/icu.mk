@@ -33,7 +33,7 @@ $(ICU_DIR)/.configured: $(ICU_HOST_DIR)/.configured
 	(cd $(ICU_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		CXX=$(TARGET_CXX) \
+		CXX="$(TARGET_CXX)" \
 		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
