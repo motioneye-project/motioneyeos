@@ -3,16 +3,15 @@
 # webkit
 #
 #############################################################
-WEBKIT_VERSION = r44552
-WEBKIT_SOURCE = WebKit-$(WEBKIT_VERSION).tar.bz2
-WEBKIT_SITE = http://nightly.webkit.org/files/trunk/src/
+WEBKIT_VERSION = 1.2.3
+WEBKIT_SOURCE = webkit-$(WEBKIT_VERSION).tar.gz
+WEBKIT_SITE = http://www.webkitgtk.org
 
 WEBKIT_INSTALL_STAGING = YES
-WEBKIT_INSTALL_TARGET = YES
 WEBKIT_LIBTOOL_PATCH = NO
 
 WEBKIT_DEPENDENCIES = host-flex host-gperf icu curl libxml2 libxslt	\
-			libgtk2 sqlite enchant libsoup jpeg
+			libgtk2 sqlite enchant libsoup jpeg libgail
 
 WEBKIT_CONF_ENV = ac_cv_path_icu_config=$(STAGING_DIR)/usr/bin/icu-config
 
@@ -27,16 +26,5 @@ ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 endif
 
 WEBKIT_CONF_OPT += --disable-video
-
-define WEBKIT_AUTOGEN_PATCH
-$(SED) 's%ACLOCAL_FLAGS=.*%ACLOCAL_FLAGS="-I autotools -I $(STAGING_DIR)/usr/share/aclocal"%' $(WEBKIT_DIR)/autogen.sh
-$(SED) 's/AUTOMAKE_FLAGS=.*/AUTOMAKE_FLAGS="--foreign --add-missing --copy"/' $(WEBKIT_DIR)/autogen.sh
-$(SED) 's/LIBTOOLIZE_FLAGS=.*/LIBTOOLIZE_FLAGS="--force --automake --copy"/' $(WEBKIT_DIR)/autogen.sh
-cp package/webkit/gtk-doc.make $(WEBKIT_DIR)/
-# Don't run the configure step yet
-cd $(WEBKIT_DIR); $(HOST_CONFIGURE_OPTS) AUTOGEN_CONFIGURE_ARGS=--version ./autogen.sh
-endef
-
-WEBKIT_POST_EXTRACT_HOOKS += WEBKIT_AUTOGEN_PATCH
 
 $(eval $(call AUTOTARGETS,package,webkit))

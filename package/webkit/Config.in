@@ -11,6 +11,7 @@ config BR2_PACKAGE_WEBKIT
 	select BR2_PACKAGE_ENCHANT
 	select BR2_PACKAGE_LIBSOUP
 	select BR2_PACKAGE_CAIRO_PNG
+	select BR2_PACKAGE_LIBGAIL
 	help
 	  WebKit is an open source, standards compliant web browser engine.
 
@@ -19,5 +20,5 @@ config BR2_PACKAGE_WEBKIT
 
 	  http://webkit.org/
 
-comment "webkit requires a toolchain with C++ support and WCHAR enabled"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+comment "webkit requires C++, WCHAR in toolchain and libgtk2"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_PACKAGE_LIBGTK2
