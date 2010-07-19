@@ -1,0 +1,39 @@
+diff --git a/src/cairo-directfb-surface.c b/src/cairo-directfb-surface.c
+index bb02dbf..65f2d55 100644
+--- a/src/cairo-directfb-surface.c
++++ b/src/cairo-directfb-surface.c
+@@ -609,6 +609,8 @@ _cairo_directfb_surface_release_dest_image (void                  *abstract_surf
+ 		     surface->dfbsurface->Blit (surface->dfbsurface,
+ 						buffer, NULL,
+ 						image_rect->x, image_rect->y));
++
++    surface->dfbsurface->ReleaseSource (surface->dfbsurface);
+     }
+ 
+     cairo_surface_destroy (&image->base);
+@@ -848,6 +850,9 @@ _directfb_finish_composite (cairo_directfb_surface_t   *dst,
+                             cairo_surface_attributes_t *src_attr)
+ {
+     _cairo_pattern_release_surface (src_pattern, src, src_attr);
++
++    if (dst->dfbsurface)
++         dst->dfbsurface->ReleaseSource( dst->dfbsurface );
+ }
+ #endif /* DFB_COMPOSITE || DFB_COMPOSITE_TRAPEZOIDS */
+ 
+@@ -1555,6 +1560,7 @@ _directfb_acquire_font_cache (cairo_directfb_surface_t     *surface,
+ 
+ 	    new_cache->dfbsurface->Blit (new_cache->dfbsurface,
+ 					 cache->dfbsurface, NULL, 0, 0);
++        new_cache->dfbsurface->ReleaseSource (new_cache->dfbsurface);
+ 
+ 	    _directfb_destroy_font_cache (cache);
+ 	    scaled_font->surface_private = cache = new_cache;
+@@ -1778,6 +1784,7 @@ _cairo_directfb_surface_show_glyphs (void                *abstract_dst,
+     RUN_CLIPPED (dst, NULL,
+ 		 dst->dfbsurface->BatchBlit (dst->dfbsurface,
+ 					     cache->dfbsurface, rects, points, num));
++    dst->dfbsurface->ReleaseSource (dst->dfbsurface);
+ 
+     return CAIRO_STATUS_SUCCESS;
+ }
