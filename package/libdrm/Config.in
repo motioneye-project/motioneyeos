@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LIBDRM
 	bool "libdrm"
 	depends on BR2_PACKAGE_XORG7
+	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_XPROTO_GLPROTO
 	select BR2_PACKAGE_XPROTO_XF86VIDMODEPROTO
 	select BR2_PACKAGE_XLIB_LIBXXF86VM
@@ -12,3 +13,6 @@ config BR2_PACKAGE_LIBDRM
 	  Direct Rendering Manager
 
 	  http://dri.freedesktop.org/libdrm/
+
+comment "libdrm requires a toolchain with LARGEFILE support"
+	depends on BR2_PACKAGE_XORG7 && !BR2_LARGEFILE
