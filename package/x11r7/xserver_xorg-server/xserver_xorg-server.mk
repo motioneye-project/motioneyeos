@@ -16,7 +16,6 @@ XSERVER_XORG_SERVER_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install install
 
 XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xutil_util-macros 		\
-	xlib_libpciaccess		\
 	xlib_libXfont 			\
 	xlib_libX11 			\
 	xlib_libXau 			\
@@ -66,6 +65,7 @@ XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 
 ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
 XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg --disable-glx
+XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libpciaccess
 else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-xorg
 endif
