@@ -53,7 +53,6 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_xf86rushproto 		\
 	xproto_xf86vidmodeproto 	\
 	xproto_xproto 			\
-	libdrm 				\
 	pixman 				\
 	openssl 			\
 	mcookie
@@ -65,7 +64,7 @@ XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 
 ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
 XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg --disable-glx
-XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libpciaccess
+XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libpciaccess libdrm
 else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-xorg
 endif
