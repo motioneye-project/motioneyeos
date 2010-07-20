@@ -71,6 +71,7 @@
 	#2221: Qt does not compile (dependencies not taken into account?)
 	#2233: Atmel atstk target skeletons have /etc/mtab as a file, not ...
 	#2245: Netcat does not work due to incorrect assumptions about signed..
+	#2251: directory output/build after make *_defconfig not found
 
 2010.05, Released May 30th, 2010:
 
