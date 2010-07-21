@@ -121,9 +121,13 @@ ifneq ($(BR2_PACKAGE_XLIB_LIBXCOMPOSITE),y)
 XSERVER_XORG_SERVER_CONF_OPT += --disable-composite
 endif
 
+ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
 ifeq ($(BR2_PACKAGE_XPROTO_DRI2PROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xproto_dri2proto
 XSERVER_XORG_SERVER_CONF_OPT += --enable-dri2
+endif
+else
+XSERVER_XORG_SERVER_CONF_OPT += --disable-dri2
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXSCRNSAVER),y)
