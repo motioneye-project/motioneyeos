@@ -312,6 +312,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_QT_AUDIO_BACKEND),y)
 QT_CONFIGURE+= -audio-backend
+QT_DEP_LIBS+=alsa-lib
 else
 QT_CONFIGURE+= -no-audio-backend
 endif
