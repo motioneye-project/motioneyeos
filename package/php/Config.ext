@@ -167,8 +167,12 @@ config BR2_PACKAGE_PHP_EXT_PDO_SQLITE_EXTERNAL
 config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 	bool "PDO_MySQL"
 	depends on BR2_PACKAGE_PHP_EXT_PDO
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_MYSQL_CLIENT
 	help
 	  PDO driver for MySQL
+
+comment "PDO_MySQL requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP && BR2_PACKAGE_PHP_EXT_PDO
 
 endmenu
