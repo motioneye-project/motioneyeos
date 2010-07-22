@@ -53,6 +53,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_xf86rushproto 		\
 	xproto_xf86vidmodeproto 	\
 	xproto_xproto 			\
+	xkeyboard-config		\
 	pixman 				\
 	openssl 			\
 	mcookie
