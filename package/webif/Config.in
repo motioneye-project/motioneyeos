@@ -1,5 +1,6 @@
 config BR2_PACKAGE_WEBIF
 	bool "webif - Status Console"
+	depends on BR2_PACKAGE_BUSYBOX # httpd
 	select BR2_PACKAGE_HASERL
 	help
 	  A web interface for showing different network status. This package
