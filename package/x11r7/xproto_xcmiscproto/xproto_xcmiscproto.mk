@@ -12,3 +12,4 @@ XPROTO_XCMISCPROTO_INSTALL_STAGING = YES
 XPROTO_XCMISCPROTO_INSTALL_TARGET = NO
 
 $(eval $(call AUTOTARGETS,package/x11r7,xproto_xcmiscproto))
+$(eval $(call AUTOTARGETS,package/x11r7,xproto_xcmiscproto,host))

@@ -12,3 +12,4 @@ XPROTO_KBPROTO_INSTALL_STAGING = YES
 XPROTO_KBPROTO_INSTALL_TARGET = NO
 
 $(eval $(call AUTOTARGETS,package/x11r7,xproto_kbproto))
+$(eval $(call AUTOTARGETS,package/x11r7,xproto_kbproto,host))

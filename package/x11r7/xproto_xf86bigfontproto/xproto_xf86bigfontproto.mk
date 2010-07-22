@@ -12,3 +12,4 @@ XPROTO_XF86BIGFONTPROTO_INSTALL_STAGING = YES
 XPROTO_XF86BIGFONTPROTO_INSTALL_TARGET = NO
 
 $(eval $(call AUTOTARGETS,package/x11r7,xproto_xf86bigfontproto))
+$(eval $(call AUTOTARGETS,package/x11r7,xproto_xf86bigfontproto,host))

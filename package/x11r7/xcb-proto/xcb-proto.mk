@@ -10,4 +10,5 @@ XCB_PROTO_SITE = http://xcb.freedesktop.org/dist/
 XCB_PROTO_INSTALL_STAGING = YES
 
 $(eval $(call AUTOTARGETS,package/x11r7,xcb-proto))
+$(eval $(call AUTOTARGETS,package/x11r7,xcb-proto,host))
 

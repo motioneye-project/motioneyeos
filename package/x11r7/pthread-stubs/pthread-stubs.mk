@@ -11,4 +11,5 @@ PTHREAD_STUBS_LIBTOOL_PATCH = NO
 PTHREAD_STUBS_INSTALL_STAGING = YES
 
 $(eval $(call AUTOTARGETS,package/x11r7,pthread-stubs))
+$(eval $(call AUTOTARGETS,package/x11r7,pthread-stubs,host))
 
