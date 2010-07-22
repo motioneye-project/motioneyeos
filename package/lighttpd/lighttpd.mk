@@ -37,7 +37,7 @@ LIGHTTPD_CONF_OPT += --without-bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_PCRE),y)
-LIGHTTPD_CONF_ENV = PCRE_LIB="-lpcre"
+LIGHTTPD_CONF_ENV = PCRECONFIG=$(STAGING_DIR)/usr/bin/pcre-config
 LIGHTTPD_DEPENDENCIES += pcre
 LIGHTTPD_CONF_OPT += --with-pcre
 else
