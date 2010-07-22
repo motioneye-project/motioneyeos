@@ -125,6 +125,7 @@ config BR2_PACKAGE_PHP_EXT_ZIP
 
 config BR2_PACKAGE_PHP_EXT_FILTER
 	bool "filter"
+	select BR2_PACKAGE_PHP_EXT_PCRE
 	help
 	  Input filter support
 
