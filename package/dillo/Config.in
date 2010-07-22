@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DILLO
 	bool "dillo"
+	depends on BR2_DEPRECATED
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBGLIB12
 	select BR2_PACKAGE_LIBGTK12

@@ -29,6 +29,8 @@
 
 	Removed packages: modutils, portage, rxvt
 
+	Deprecated packages: dillo, libglib12, libgtk12
+
 	Issues resolved (http://bugs.uclibc.org):
 
 	#321:  alsa-lib uses host include files for python which breaks ...
