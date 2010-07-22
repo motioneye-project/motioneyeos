@@ -11,6 +11,10 @@ MPLAYER_CAT:=$(BZCAT)
 MPLAYER_BINARY:=mplayer
 MPLAYER_TARGET_BINARY:=usr/bin/$(MPLAYER_BINARY)
 
+MPLAYER_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_LIBMAD),libmad) \
+	$(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib)
+
 ifeq ($(BR2_ENDIAN),"BIG")
 MPLAYER_ENDIAN:=--enable-big-endian
 else
@@ -26,6 +30,22 @@ else
 MPLAYER_LARGEFILE:=--disable-largefiles \
 		   --disable-dvdread-internal \
 		   --disable-libdvdcss-internal
+endif
+
+ifeq ($(BR2_PACKAGE_SDL),y)
+MPLAYER_SDL:=--enable-sdl --with-sdl-config=$(STAGING_DIR)/usr/bin/sdl-config
+MPLAYER_DEPENDENCIES += sdl
+else
+MPLAYER_SDL:=--disable-sdl
+endif
+
+ifeq ($(BR2_PACKAGE_FREETYPE),y)
+MPLAYER_FREETYPE:= \
+	--enable-freetype \
+	--with-freetype-config=$(STAGING_DIR)/usr/bin/freetype-config
+MPLAYER_DEPENDENCIES += freetype
+else
+MPLAYER_FREETYPE:=--disable-freetype
 endif
 
 ifeq ($(BR2_i386),y)
@@ -62,6 +82,8 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		--enable-fbdev \
 		$(MPLAYER_ENDIAN) \
 		$(MPLAYER_LARGEFILE) \
+		$(MPLAYER_SDL) \
+		$(MPLAYER_FREETYPE) \
 		--enable-cross-compile \
 		--disable-ivtv \
 		--disable-tv \
@@ -79,7 +101,7 @@ $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY): $(MPLAYER_DIR)/$(MPLAYER_BINARY)
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
 	touch -c $@
 
-mplayer: $(if $(BR2_PACKAGE_LIBMAD),libmad) $(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
+mplayer: $(MPLAYER_DEPENDENCIES) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
 
 mplayer-source: $(DL_DIR)/$(MPLAYER_SOURCE)
 
