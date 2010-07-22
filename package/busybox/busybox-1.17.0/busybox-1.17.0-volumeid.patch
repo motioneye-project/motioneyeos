@@ -1,0 +1,450 @@
+diff -urpN busybox-1.17.0/util-linux/Config.src busybox-1.17.0-volumeid/util-linux/Config.src
+--- busybox-1.17.0/util-linux/Config.src	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-volumeid/util-linux/Config.src	2010-07-14 07:12:19.000000000 +0200
+@@ -470,221 +470,6 @@ config FEATURE_USE_TERMIOS
+ 	  will be unable to determine the current screen size, and will be
+ 	  unable to move the cursor.
+ 
+-config VOLUMEID
+-	bool #No description makes it a hidden option
+-	default n
+-
+-config FEATURE_VOLUMEID_EXT
+-	bool "Ext filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_BTRFS
+-	bool "btrfs filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_REISERFS
+-	bool "Reiser filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_FAT
+-	bool "fat filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_HFS
+-	bool "hfs filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_JFS
+-	bool "jfs filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-### config FEATURE_VOLUMEID_UFS
+-###	bool "ufs filesystem"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-config FEATURE_VOLUMEID_XFS
+-	bool "xfs filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_NTFS
+-	bool "ntfs filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_ISO9660
+-	bool "iso9660 filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_UDF
+-	bool "udf filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_LUKS
+-	bool "luks filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_LINUXSWAP
+-	bool "linux swap filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-### config FEATURE_VOLUMEID_LVM
+-###	bool "lvm"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-config FEATURE_VOLUMEID_CRAMFS
+-	bool "cramfs filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-### config FEATURE_VOLUMEID_HPFS
+-###	bool "hpfs filesystem"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-config FEATURE_VOLUMEID_ROMFS
+-	bool "romfs filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-config FEATURE_VOLUMEID_SYSV
+-	bool "sysv filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-### config FEATURE_VOLUMEID_MINIX
+-###	bool "minix filesystem"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-### These only detect partition tables - not used (yet?)
+-### config FEATURE_VOLUMEID_MAC
+-###	bool "mac filesystem"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-###
+-### config FEATURE_VOLUMEID_MSDOS
+-###	bool "msdos filesystem"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-config FEATURE_VOLUMEID_OCFS2
+-	bool "ocfs2 filesystem"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+-### config FEATURE_VOLUMEID_HIGHPOINTRAID
+-###	bool "highpoint raid"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-### config FEATURE_VOLUMEID_ISWRAID
+-###	bool "intel raid"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-### config FEATURE_VOLUMEID_LSIRAID
+-###	bool "lsi raid"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-### config FEATURE_VOLUMEID_VIARAID
+-###	bool "via raid"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-### config FEATURE_VOLUMEID_SILICONRAID
+-###	bool "silicon raid"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-### config FEATURE_VOLUMEID_NVIDIARAID
+-###	bool "nvidia raid"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-### config FEATURE_VOLUMEID_PROMISERAID
+-###	bool "promise raid"
+-###	default y
+-###	depends on VOLUMEID
+-###	help
+-###	  TODO
+-
+-config FEATURE_VOLUMEID_LINUXRAID
+-	bool "linuxraid"
+-	default y
+-	depends on VOLUMEID
+-	help
+-	  TODO
+-
+ config MOUNT
+ 	bool "mount"
+ 	default y
+@@ -937,4 +722,224 @@ config FEATURE_MTAB_SUPPORT
+ 	  About the only reason to use this is if you've removed /proc from
+ 	  your kernel.
+ 
++config VOLUMEID
++	bool #No description makes it a hidden option
++	default n
++
++menu "Filesystem/Volume identification"
++	depends on VOLUMEID
++
++config FEATURE_VOLUMEID_EXT
++	bool "Ext filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_BTRFS
++	bool "btrfs filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_REISERFS
++	bool "Reiser filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_FAT
++	bool "fat filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_HFS
++	bool "hfs filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_JFS
++	bool "jfs filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++### config FEATURE_VOLUMEID_UFS
++###	bool "ufs filesystem"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++config FEATURE_VOLUMEID_XFS
++	bool "xfs filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_NTFS
++	bool "ntfs filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_ISO9660
++	bool "iso9660 filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_UDF
++	bool "udf filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_LUKS
++	bool "luks filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_LINUXSWAP
++	bool "linux swap filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++### config FEATURE_VOLUMEID_LVM
++###	bool "lvm"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++config FEATURE_VOLUMEID_CRAMFS
++	bool "cramfs filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++### config FEATURE_VOLUMEID_HPFS
++###	bool "hpfs filesystem"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++config FEATURE_VOLUMEID_ROMFS
++	bool "romfs filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++config FEATURE_VOLUMEID_SYSV
++	bool "sysv filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++### config FEATURE_VOLUMEID_MINIX
++###	bool "minix filesystem"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++### These only detect partition tables - not used (yet?)
++### config FEATURE_VOLUMEID_MAC
++###	bool "mac filesystem"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++###
++### config FEATURE_VOLUMEID_MSDOS
++###	bool "msdos filesystem"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++config FEATURE_VOLUMEID_OCFS2
++	bool "ocfs2 filesystem"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++### config FEATURE_VOLUMEID_HIGHPOINTRAID
++###	bool "highpoint raid"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++### config FEATURE_VOLUMEID_ISWRAID
++###	bool "intel raid"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++### config FEATURE_VOLUMEID_LSIRAID
++###	bool "lsi raid"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++### config FEATURE_VOLUMEID_VIARAID
++###	bool "via raid"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++### config FEATURE_VOLUMEID_SILICONRAID
++###	bool "silicon raid"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++### config FEATURE_VOLUMEID_NVIDIARAID
++###	bool "nvidia raid"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++### config FEATURE_VOLUMEID_PROMISERAID
++###	bool "promise raid"
++###	default y
++###	depends on VOLUMEID
++###	help
++###	  TODO
++
++config FEATURE_VOLUMEID_LINUXRAID
++	bool "linuxraid"
++	default y
++	depends on VOLUMEID
++	help
++	  TODO
++
++endmenu
++
+ endmenu

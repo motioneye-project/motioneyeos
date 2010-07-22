@@ -1,0 +1,50 @@
+diff -urpN busybox-1.17.0/libbb/lineedit.c busybox-1.17.0-ask_terminal/libbb/lineedit.c
+--- busybox-1.17.0/libbb/lineedit.c	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-ask_terminal/libbb/lineedit.c	2010-07-18 22:38:47.000000000 +0200
+@@ -151,6 +151,7 @@ struct lineedit_statics {
+ 	CHAR_T delbuf[DELBUFSIZ];  /* a place to store deleted characters */
+ #endif
+ #if ENABLE_FEATURE_EDITING_ASK_TERMINAL
++	smallint unknown_width;
+ 	smallint sent_ESC_br6n;
+ #endif
+ 
+@@ -1612,14 +1613,16 @@ static void ask_terminal(void)
+ 	 * poll([{fd=0, events=POLLIN}], 1, 4294967295) = 1 ([{fd=0, revents=POLLIN}])
+ 	 * read(0, "\n", 1)      = 1  <-- oh crap, user's input got in first
+ 	 */
+-	struct pollfd pfd;
++	if (S.unknown_width) { /* only if window size is not known */
++		struct pollfd pfd;
+ 
+-	pfd.fd = STDIN_FILENO;
+-	pfd.events = POLLIN;
+-	if (safe_poll(&pfd, 1, 0) == 0) {
+-		S.sent_ESC_br6n = 1;
+-		fputs("\033" "[6n", stdout);
+-		fflush_all(); /* make terminal see it ASAP! */
++		pfd.fd = STDIN_FILENO;
++		pfd.events = POLLIN;
++		if (safe_poll(&pfd, 1, 0) == 0) {
++			S.sent_ESC_br6n = 1;
++			fputs("\033" "[6n", stdout);
++			fflush_all(); /* make terminal see it ASAP! */
++		}
+ 	}
+ }
+ #else
+@@ -1765,11 +1768,13 @@ static void cmdedit_setwidth(unsigned w,
+ 
+ static void win_changed(int nsig)
+ {
++	int sv_errno = errno;
+ 	unsigned width;
+-	get_terminal_width_height(0, &width, NULL);
++	IF_FEATURE_EDITING_ASK_TERMINAL(S.unknown_width =) get_terminal_width_height(0, &width, NULL);
+ 	cmdedit_setwidth(width, nsig /* - just a yes/no flag */);
+ 	if (nsig == SIGWINCH)
+ 		signal(SIGWINCH, win_changed); /* rearm ourself */
++	errno = sv_errno;
+ }
+ 
+ static int lineedit_read_key(char *read_key_buffer)

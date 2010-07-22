@@ -1,0 +1,60 @@
+diff -urpN busybox-1.17.0/editors/vi.c busybox-1.17.0-vi/editors/vi.c
+--- busybox-1.17.0/editors/vi.c	2010-07-04 04:17:40.000000000 +0200
++++ busybox-1.17.0-vi/editors/vi.c	2010-07-21 12:19:36.827970040 +0200
+@@ -504,20 +504,17 @@ static int init_text_buffer(char *fn)
+ }
+ 
+ #if ENABLE_FEATURE_VI_WIN_RESIZE
+-static void query_screen_dimensions(void)
++static int query_screen_dimensions(void)
+ {
+-# if ENABLE_FEATURE_VI_ASK_TERMINAL
+-	if (!G.get_rowcol_error)
+-		G.get_rowcol_error =
+-# endif
+-			get_terminal_width_height(STDIN_FILENO, &columns, &rows);
++	int err = get_terminal_width_height(STDIN_FILENO, &columns, &rows);
+ 	if (rows > MAX_SCR_ROWS)
+ 		rows = MAX_SCR_ROWS;
+ 	if (columns > MAX_SCR_COLS)
+ 		columns = MAX_SCR_COLS;
++	return err;
+ }
+ #else
+-# define query_screen_dimensions() ((void)0)
++# define query_screen_dimensions() (0)
+ #endif
+ 
+ static void edit_file(char *fn)
+@@ -536,7 +533,7 @@ static void edit_file(char *fn)
+ 	rows = 24;
+ 	columns = 80;
+ 	size = 0;
+-	query_screen_dimensions();
++	IF_FEATURE_VI_ASK_TERMINAL(G.get_rowcol_error =) query_screen_dimensions();
+ #if ENABLE_FEATURE_VI_ASK_TERMINAL
+ 	if (G.get_rowcol_error /* TODO? && no input on stdin */) {
+ 		uint64_t k;
+@@ -546,9 +543,12 @@ static void edit_file(char *fn)
+ 		if ((int32_t)k == KEYCODE_CURSOR_POS) {
+ 			uint32_t rc = (k >> 32);
+ 			columns = (rc & 0x7fff);
++			if (columns > MAX_SCR_COLS)
++				columns = MAX_SCR_COLS;
+ 			rows = ((rc >> 16) & 0x7fff);
++			if (rows > MAX_SCR_ROWS)
++				rows = MAX_SCR_ROWS;
+ 		}
+-		query_screen_dimensions();
+ 	}
+ #endif
+ 	new_screen(rows, columns);	// get memory for virtual screen
+@@ -2797,7 +2797,7 @@ static void refresh(int full_screen)
+ 	int li, changed;
+ 	char *tp, *sp;		// pointer into text[] and screen[]
+ 
+-	if (ENABLE_FEATURE_VI_WIN_RESIZE) {
++	if (ENABLE_FEATURE_VI_WIN_RESIZE IF_FEATURE_VI_ASK_TERMINAL(&& !G.get_rowcol_error) ) {
+ 		unsigned c = columns, r = rows;
+ 		query_screen_dimensions();
+ 		full_screen |= (c - columns) | (r - rows);

@@ -1,0 +1,139 @@
+diff -urpN busybox-1.17.0/modutils/depmod.c busybox-1.17.0-depmod/modutils/depmod.c
+--- busybox-1.17.0/modutils/depmod.c	2010-06-24 04:40:43.000000000 +0200
++++ busybox-1.17.0-depmod/modutils/depmod.c	2010-07-19 00:28:22.000000000 +0200
+@@ -28,16 +28,6 @@ typedef struct module_info {
+ 	struct module_info *dnext, *dprev;
+ } module_info;
+ 
+-enum {
+-	ARG_a = (1<<0), /* All modules, ignore mods in argv */
+-	ARG_A = (1<<1), /* Only emit .ko that are newer than modules.dep file */
+-	ARG_b = (1<<2), /* base directory when modules are in staging area */
+-	ARG_e = (1<<3), /* with -F, print unresolved symbols */
+-	ARG_F = (1<<4), /* System.map that contains the symbols */
+-	ARG_n = (1<<5), /* dry-run, print to stdout only */
+-	ARG_r = (1<<6)  /* Compat dummy. Linux Makefile uses it */
+-};
+-
+ static int FAST_FUNC parse_module(const char *fname, struct stat *sb UNUSED_PARAM,
+ 				  void *data, int depth UNUSED_PARAM)
+ {
+@@ -58,7 +48,7 @@ static int FAST_FUNC parse_module(const 
+ 	*first = info;
+ 
+ 	info->dnext = info->dprev = info;
+-	info->name = xasprintf("/%s", fname);
++	info->name = xstrdup(fname + 2); /* skip "./" */
+ 	info->modname = xstrdup(filename2modname(fname, modname));
+ 	for (ptr = image; ptr < image + len - 10; ptr++) {
+ 		if (strncmp(ptr, "depends=", 8) == 0) {
+@@ -134,10 +124,44 @@ static void xfreopen_write(const char *f
+ 		bb_perror_msg_and_die("can't open '%s'", file);
+ }
+ 
++/* Usage:
++ * [-aAenv] [-C FILE or DIR] [-b BASE] [-F System.map] [VERSION] [MODFILES]...
++ *	-a --all
++ *		Probe all modules. Default if no MODFILES.
++ *	-A --quick
++ *		Check modules.dep's mtime against module files' mtimes.
++ *	-b --basedir BASE
++ *		Use $BASE/lib/modules/VERSION
++ *	-C --config FILE or DIR
++ *		Path to /etc/depmod.conf or /etc/depmod.d/
++ *	-e --errsyms
++ *		When combined with the -F option, this reports any symbols which
++ *		which are not supplied by other modules or kernel.
++ *	-F --filesyms System.map
++ *	-n --dry-run
++ *		Print modules.dep etc to standard output
++ *	-v --verbose
++ *		Print to stdout all the symbols each module depends on
++ *		and the module's file name which provides that symbol.
++ *	-r	No-op
++ *
++ * So far we only support: [-rn] [-b BASE] [VERSION] [MODFILES]...
++ * -aAeF are accepted but ignored. -vC are not accepted.
++ */
++enum {
++	//OPT_a = (1 << 0), /* All modules, ignore mods in argv */
++	//OPT_A = (1 << 1), /* Only emit .ko that are newer than modules.dep file */
++	OPT_b = (1 << 2), /* base directory when modules are in staging area */
++	//OPT_e = (1 << 3), /* with -F, print unresolved symbols */
++	//OPT_F = (1 << 4), /* System.map that contains the symbols */
++	OPT_n = (1 << 5), /* dry-run, print to stdout only */
++	OPT_r = (1 << 6)  /* Compat dummy. Linux Makefile uses it */
++};
++
+ int depmod_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
+ int depmod_main(int argc UNUSED_PARAM, char **argv)
+ {
+-	module_info *modules = NULL, *m, *dep;
++	module_info *modules, *m, *dep;
+ 	const char *moddir_base = "/";
+ 	char *moddir, *version;
+ 	struct utsname uts;
+@@ -152,36 +176,30 @@ int depmod_main(int argc UNUSED_PARAM, c
+ 	/* If a version is provided, then that kernel version's module directory
+ 	 * is used, rather than the current kernel version (as returned by
+ 	 * "uname -r").  */
+-	if (*argv && sscanf(*argv, "%d.%d.%d", &tmp, &tmp, &tmp) == 3) {
++	if (*argv && sscanf(*argv, "%u.%u.%u", &tmp, &tmp, &tmp) == 3) {
+ 		version = *argv++;
+ 	} else {
+ 		uname(&uts);
+ 		version = uts.release;
+ 	}
+ 	moddir = concat_path_file(&CONFIG_DEFAULT_MODULES_DIR[1], version);
++	xchdir(moddir);
++	if (ENABLE_FEATURE_CLEAN_UP)
++		free(moddir);
+ 
+ 	/* Scan modules */
++	modules = NULL;
+ 	if (*argv) {
+-		char *modfile;
+-		struct stat sb;
+ 		do {
+-			modfile = concat_path_file(moddir, *argv);
+-			xstat(modfile, &sb);
+-			parse_module(modfile, &sb, &modules, 0);
+-			free(modfile);
+-		} while (*(++argv));
++			parse_module(*argv, /*sb (unused):*/ NULL, &modules, 0);
++		} while (*++argv);
+ 	} else {
+-		recursive_action(moddir, ACTION_RECURSE,
++		recursive_action(".", ACTION_RECURSE,
+ 				 parse_module, NULL, &modules, 0);
+ 	}
+ 
+-	/* Prepare for writing out the dep files */
+-	xchdir(moddir);
+-	if (ENABLE_FEATURE_CLEAN_UP)
+-		free(moddir);
+-
+ 	/* Generate dependency and alias files */
+-	if (!(option_mask32 & ARG_n))
++	if (!(option_mask32 & OPT_n))
+ 		xfreopen_write(CONFIG_DEFAULT_DEPMOD_FILE, stdout);
+ 	for (m = modules; m != NULL; m = m->next) {
+ 		printf("%s:", m->name);
+@@ -200,7 +218,7 @@ int depmod_main(int argc UNUSED_PARAM, c
+ 	}
+ 
+ #if ENABLE_FEATURE_MODUTILS_ALIAS
+-	if (!(option_mask32 & ARG_n))
++	if (!(option_mask32 & OPT_n))
+ 		xfreopen_write("modules.alias", stdout);
+ 	for (m = modules; m != NULL; m = m->next) {
+ 		const char *fname = bb_basename(m->name);
+@@ -218,7 +236,7 @@ int depmod_main(int argc UNUSED_PARAM, c
+ 	}
+ #endif
+ #if ENABLE_FEATURE_MODUTILS_SYMBOLS
+-	if (!(option_mask32 & ARG_n))
++	if (!(option_mask32 & OPT_n))
+ 		xfreopen_write("modules.symbols", stdout);
+ 	for (m = modules; m != NULL; m = m->next) {
+ 		const char *fname = bb_basename(m->name);
