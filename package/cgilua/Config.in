@@ -1,10 +1,13 @@
 config BR2_PACKAGE_CGILUA
 	bool "cgilua"
 	depends on BR2_LARGEFILE
-	depends on BR2_PACKAGE_LUA_SHARED_LIBRARY
+	select BR2_PACKAGE_LUA_SHARED_LIBRARY
 	select BR2_PACKAGE_LUAFILESYSTEM
 	help
 	  CGILua is a tool for creating dynamic HTML pages
 	  and manipulating input data from Web forms.
 
 	  http://luaforge.net/projects/cgilua/
+
+comment "cgilua requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
