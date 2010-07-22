@@ -3,44 +3,29 @@
 # iostat
 #
 #############################################################
-IOSTAT_VERSION:=2.2
-IOSTAT_SOURCE:=iostat-$(IOSTAT_VERSION).tar.gz
-IOSTAT_SITE:=http://linux.inet.hr/files
-IOSTAT_DIR:=$(BUILD_DIR)/iostat-$(IOSTAT_VERSION)
-IOSTAT_BINARY:=iostat
-IOSTAT_TARGET_BINARY:=usr/bin/iostat
 
-$(DL_DIR)/$(IOSTAT_SOURCE):
-	 $(call DOWNLOAD,$(IOSTAT_SITE),$(IOSTAT_SOURCE))
+IOSTAT_VERSION = 2.2
+IOSTAT_SITE = http://www.linuxinsight.com/files
 
 iostat-source: $(DL_DIR)/$(IOSTAT_SOURCE)
 
-$(IOSTAT_DIR)/.unpacked: $(DL_DIR)/$(IOSTAT_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(IOSTAT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(IOSTAT_DIR) package/iostat/ iostat\*.patch
-	touch $(IOSTAT_DIR)/.unpacked
+define IOSTAT_BUILD_CMDS
+	$(MAKE) -C $(@D) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)"
+endef
 
-$(IOSTAT_DIR)/$(IOSTAT_BINARY): $(IOSTAT_DIR)/.unpacked
-	$(MAKE) CC="$(TARGET_CC)" -C $(IOSTAT_DIR)
-	$(STRIPCMD) $(IOSTAT_DIR)/$(IOSTAT_BINARY)
+define IOSTAT_CLEAN_CMDS
+	$(MAKE) -C $(@D) clean
+endef
 
-$(TARGET_DIR)/$(IOSTAT_TARGET_BINARY): $(IOSTAT_DIR)/$(IOSTAT_BINARY)
-	$(INSTALL) -m 0755 -D $(IOSTAT_DIR)/$(IOSTAT_BINARY) $(TARGET_DIR)/$(IOSTAT_TARGET_BINARY)
+define IOSTAT_INSTALL_TARGET_CMDS
+	$(INSTALL) -D $(IOSTAT_DIR)/iostat $(TARGET_DIR)/usr/bin/iostat
+	$(INSTALL) -D $(IOSTAT_DIR)/iostat.8 \
+		$(TARGET_DIR)/usr/share/man/man8/iostat.8
+endef
 
-iostat: $(TARGET_DIR)/$(IOSTAT_TARGET_BINARY)
+define IOSTAT_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/bin/iostat
+	rm -f $(TARGET_DIR)/usr/share/man/man8/iostat.8
+endef
 
-iostat-clean:
-	rm -f $(TARGET_DIR)/$(IOSTAT_TARGET_BINARY)
-	-$(MAKE) -C $(IOSTAT_DIR) clean
-
-iostat-dirclean:
-	rm -rf $(IOSTAT_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_IOSTAT),y)
-TARGETS+=iostat
-endif
+$(eval $(call GENTARGETS,package,iostat))                                                   
