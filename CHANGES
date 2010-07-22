@@ -25,7 +25,8 @@
 	mplayer, mysql_client, nbd, ncurses, neon, netcat, netperf,
 	ntfsprogs, openssl, php, qt, quagga, sqlite, sdl, sdl_mixer,
 	sdl_sound, sdl_ttf, squashfs, swfdec, thttpd, tn5250, tremor,
-	usbutils, webif, xkeyboard-config, xserver_xorg-server, xvkbd
+	usbutils, webif, wireless_tools, xkeyboard-config,
+	xserver_xorg-server, xvkbd
 
 	Removed packages: modutils, portage, rxvt
 
