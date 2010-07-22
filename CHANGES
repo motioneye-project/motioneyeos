@@ -20,10 +20,10 @@
 	dropbear, e2fsprogs, fbv, file, flex, fontconfig, gawk,
 	gstreamer, gzip, intltool, ipsec-tools, iptables, libart,
 	libcgi, libdrm, libfuse, libgpg-error, libidn, liblockfile,
-	libpng, lighttpd, links, linux-fusion, lmbench, lrzsz, make,
-	module-init-tools, mysql_client, nbd, ncurses, neon, netcat,
-	netperf, ntfsprogs, openssl, php, qt, quagga, sqlite, sdl,
-	sdl_mixer, sdl_sound, sdl_ttf, squashfs, tn5250, tremor,
+	libpng, lighttpd, links, linux-fusion, lmbench, lrzsz, ltrace,
+	make, module-init-tools, mysql_client, nbd, ncurses, neon,
+	netcat, netperf, ntfsprogs, openssl, php, qt, quagga, sqlite,
+	sdl, sdl_mixer, sdl_sound, sdl_ttf, squashfs, tn5250, tremor,
 	usbutils, xkeyboard-config, xserver_xorg-server, xvkbd
 
 	Removed packages: modutils, portage, rxvt
