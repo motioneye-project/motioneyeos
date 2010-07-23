@@ -845,7 +845,16 @@ void conf_set_all_new_symbols(enum conf_def_mode mode)
 	struct symbol *sym, *csym;
 	struct property *prop;
 	struct expr *e;
-	int i, cnt, def;
+	int i, cnt, def, prob = 50;
+
+	if (mode == def_random) {
+		char *endp, *env = getenv("KCONFIG_PROBABILITY");
+		if (env && *env) {
+			int tmp = (int)strtol(env, &endp, 10);
+			if (*endp == '\0' && tmp >= 0 && tmp <= 100)
+				prob = tmp;
+		}
+	}
 
 	for_all_symbols(i, sym) {
 		if (sym_has_value(sym))
@@ -864,8 +873,15 @@ void conf_set_all_new_symbols(enum conf_def_mode mode)
 				sym->def[S_DEF_USER].tri = no;
 				break;
 			case def_random:
-				cnt = sym_get_type(sym) == S_TRISTATE ? 3 : 2;
-				sym->def[S_DEF_USER].tri = (tristate)(rand() % cnt);
+				cnt = (rand() % 100) - (100 - prob);
+				if (cnt < 0)
+					sym->def[S_DEF_USER].tri = no;
+				else
+					if ((sym_get_type(sym) == S_TRISTATE)
+					    && (cnt > prob/2))
+						sym->def[S_DEF_USER].tri = mod;
+					else
+						sym->def[S_DEF_USER].tri = yes;
 				break;
 			default:
 				continue;
