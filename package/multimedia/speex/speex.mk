@@ -32,5 +32,5 @@ $(SPEEX_TARGET_BUILD): $(SPEEX_TARGET_CONFIGURE)
 	$(Q)touch $@
 
 $(SPEEX_HOOK_POST_INSTALL): $(SPEEX_TARGET_INSTALL_TARGET)
-	rm -rf $(TARGET_DIR)/usr/share/doc/speex $(TARGET_DIR)/usr/share/aclocal
+	rm -rf $(TARGET_DIR)/usr/share/doc/speex
 	touch $@
