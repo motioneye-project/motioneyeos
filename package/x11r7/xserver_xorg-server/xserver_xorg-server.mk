@@ -70,7 +70,8 @@ XSERVER_XORG_SERVER_CONF_OPT += --disable-xorg
 endif
 
 ifeq ($(BR2_PACKAGE_XSERVER_tinyx),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-kdrive --enable-xfbdev --disable-glx --disable-dri
+XSERVER_XORG_SERVER_CONF_OPT += --enable-kdrive --enable-xfbdev \
+		--disable-glx --disable-dri --disable-xsdl
 else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-kdrive --disable-xfbdev
 endif
