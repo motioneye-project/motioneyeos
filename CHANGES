@@ -17,7 +17,7 @@
 	Updated/fixed packages: alsa-lib, alsamixergui, avahi,
 	berkeleydb, bash, blackbox, busybox, bzip2, cdrkit, cmake,
 	dash, dhcp, dialog, diffutils, distcc, dmalloc, dnsmasq,
-	dropbear, e2fsprogs, fbv, file, flex, fontconfig, gawk,
+	dropbear, e2fsprogs, fbv, file, flex, fontconfig, gawk, gmpc,
 	gst-plugins-base, gst-plugins-good, gstreamer, gzip, intltool,
 	ipsec-tools, iptables, libart, libcgi, libdrm, libfuse,
 	libgpg-error, libidn, liblockfile, libpng, lighttpd, links,

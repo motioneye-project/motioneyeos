@@ -15,7 +15,7 @@ GMPC_DEPENDENCIES = libglib2 libgtk2 libglade libcurl libmpd host-gob2 host-intl
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl)
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBSM),y)
-GMPC_DEPENENCIES += xlib_libSM
+GMPC_DEPENDENCIES += xlib_libSM
 GMPC_CONF_OPT += --enable-sm
 else
 GMPC_CONF_OPT += --disable-sm
