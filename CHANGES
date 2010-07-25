@@ -27,10 +27,10 @@
 	libgpg-error, libidn, liblockfile, libpng, lighttpd, links,
 	linux-fusion, lmbench, lrzsz, ltrace, make, module-init-tools,
 	mplayer, mysql_client, nbd, ncurses, neon, netcat, netperf,
-	ntfsprogs, openssl, php, qt, quagga, sqlite, sdl, sdl_mixer,
-	sdl_sound, sdl_ttf, squashfs, swfdec, tftpd, thttpd, tn5250,
-	tremor, usbutils, webif, wireless_tools, xkeyboard-config,
-	xserver_xorg-server, xvkbd
+	ntfsprogs, openssl, php, qt, quagga, setserial, sdl, sdl_mixer,
+	sdl_sound, sdl_ttf, sqlite, squashfs, swfdec, tftpd, thttpd,
+	tn5250, tremor, usbutils, webif, wireless_tools,
+	xkeyboard-config, xserver_xorg-server, xvkbd
 
 	Removed packages: modutils, portage, rxvt
 
@@ -81,6 +81,7 @@
 	#2233: Atmel atstk target skeletons have /etc/mtab as a file, not ...
 	#2245: Netcat does not work due to incorrect assumptions about signed..
 	#2251: directory output/build after make *_defconfig not found
+	#2269: setserial causes make error
 
 2010.05, Released May 30th, 2010:
 
