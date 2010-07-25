@@ -34,7 +34,7 @@
 
 	Removed packages: modutils, portage, rxvt
 
-	Deprecated packages: dillo, libglib12, libgtk12
+	Deprecated packages: dillo, libglib12, libgtk12, microwin, pcmcia
 
 	Issues resolved (http://bugs.uclibc.org):
 

@@ -1,6 +1,8 @@
 config BR2_PACKAGE_PCMCIA
 	bool "pcmcia"
 	depends on BR2_PACKAGE_LINUX
+	# The website says it's deprecated after 2.4.x kernels
+	depends on BR2_DEPRECATED
 	help
 	  PCMCIA tools for Linux.
 
