@@ -1,0 +1,128 @@
+Fix several issues with the configure script:
+
+ * Allow option values to contains equal signs, like
+   CC="/foo/arm-linux-gcc --sysroot=/foobar/usr"
+
+ * Parse the option before doing the tests so that CC/CFLAGS can be
+   used during the tests.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure |   72 +++++++++++++++++++++++++++++++-------------------------------
+ 1 file changed, 37 insertions(+), 35 deletions(-)
+
+Index: ltrace-0.5.3/configure
+===================================================================
+--- ltrace-0.5.3.orig/configure
++++ ltrace-0.5.3/configure
+@@ -6,6 +6,38 @@
+   exit 1
+ fi
+ 
++CC=gcc
++CPPFLAGS=' -I /usr/include/libelf'
++CFLAGS='-g -O2'
++LIBS='-lelf '
++INSTALL='/usr/bin/install -c'
++iquote='-iquote '
++iquoteend=''
++
++prefix=/usr/local
++sysconfdir='${prefix}/etc'
++bindir='${prefix}/bin'
++mandir='${prefix}/share/man'
++docdir='${prefix}/share/doc/ltrace'
++for x_option
++do
++  if test -n "$x_prev"; then
++    eval $x_prev=\$x_option
++    x_prev=
++    continue
++  fi
++  case $x_option in
++    --*=* | *=*)
++      x_var=`echo $x_option | sed 's/^--//' | sed 's/=.*//'`
++      x_val=`echo $x_option | sed 's/^[^=]*=//'`
++      eval $x_var=\"$x_val\"
++      ;;
++    --*)
++      x_prev=`echo $x_option | sed 's/^--//'`
++      ;;
++  esac
++done
++
+ echo -n "checking package name... "
+ PACKAGE_NAME='ltrace'
+ echo $PACKAGE_NAME
+@@ -30,9 +62,10 @@
+   return cplus_demangle();
+ }
+ EOF
+-if gcc conftest.c -liberty 2>/dev/null
++if $CC $CFLAGS conftest.c -liberty 2>/dev/null
+ then
+   HAVE_LIBIBERTY=1
++  LIBS="$LIBS -liberty"
+   echo "yes"
+ else
+   unset HAVE_LIBIBERTY
+@@ -48,9 +81,10 @@
+   return __cxa_demangle();
+ }
+ EOF
+-if gcc conftest.c -lsupc++ 2>/dev/null
++if $CC $CFLAGS conftest.c -lsupc++ 2>/dev/null
+ then
+   HAVE_LIBSUPC__=1
++  LIBS="$LIBS -lsupc++"
+   echo "yes"
+ else
+   unset HAVE_LIBSUPC__
+@@ -67,7 +101,7 @@
+   return 0;
+ }
+ EOF
+-if gcc conftest.c 2>/dev/null
++if $CC $CFLAGS conftest.c 2>/dev/null
+ then
+   HAVE_ELF_C_READ_MMAP=1
+   echo "yes"
+@@ -77,38 +111,6 @@
+ fi
+ rm -f conftest.c a.out
+ 
+-CC=gcc
+-CPPFLAGS=' -I /usr/include/libelf'
+-CFLAGS='-g -O2'
+-LIBS='-lelf -lsupc++ -liberty '
+-INSTALL='/usr/bin/install -c'
+-iquote='-iquote '
+-iquoteend=''
+-
+-prefix=/usr/local
+-sysconfdir='${prefix}/etc'
+-bindir='${prefix}/bin'
+-mandir='${prefix}/share/man'
+-docdir='${prefix}/share/doc/ltrace'
+-for x_option
+-do
+-  if test -n "$x_prev"; then
+-    eval $x_prev=\$x_option
+-    x_prev=
+-    continue
+-  fi
+-  case $x_option in
+-    --*=* | *=*)
+-      x_var=`echo $x_option | sed 's/^--//' | sed 's/=.*//'`
+-      x_val=`echo $x_option | sed 's/^.*=//'`
+-      eval $x_var=$x_val
+-      ;;
+-    --*)
+-      x_prev=`echo $x_option | sed 's/^--//'`
+-      ;;
+-  esac
+-done
+-
+ echo "configure: creating Makefile"
+ #
+ # Makefile.in -> Makefile

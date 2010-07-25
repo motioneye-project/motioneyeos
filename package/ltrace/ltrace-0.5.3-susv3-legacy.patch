@@ -1,0 +1,20 @@
+Use the strchr() function instead of the legacy index() function.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ read_config_file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: ltrace-0.5.3/read_config_file.c
+===================================================================
+--- ltrace-0.5.3.orig/read_config_file.c
++++ ltrace-0.5.3/read_config_file.c
+@@ -83,7 +83,7 @@
+ 
+ 	while (tmp->name) {
+ 		if (!strncmp(*str, tmp->name, strlen(tmp->name))
+-				&& index(" ,()#*;012345[", *(*str + strlen(tmp->name)))) {
++				&& strchr(" ,()#*;012345[", *(*str + strlen(tmp->name)))) {
+ 			*str += strlen(tmp->name);
+ 			return lookup_prototype(tmp->pt);
+ 		}
