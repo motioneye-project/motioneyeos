@@ -27,7 +27,13 @@ endif
 
 U_BOOT_DIR:=$(BUILD_DIR)/u-boot-$(U_BOOT_VERSION)
 U_BOOT_CAT:=$(BZCAT)
+
+ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
+U_BOOT_BIN:=u-boot.kwb
+U_BOOT_MAKE_OPT:=$(U_BOOT_BIN)
+else
 U_BOOT_BIN:=u-boot.bin
+endif
 
 MKIMAGE:=$(HOST_DIR)/usr/bin/mkimage
 
@@ -124,7 +130,7 @@ $(U_BOOT_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/.header_modified
 		LDFLAGS="$(TARGET_LDFLAGS)" \
 		$(U_BOOT_CONFIGURE_OPTS) \
 		$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" ARCH=$(U_BOOT_ARCH) \
-		 -C $(U_BOOT_DIR)
+		$(U_BOOT_MAKE_OPT) -C $(U_BOOT_DIR)
 
 # Copy the result to the images/ directory
 $(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
