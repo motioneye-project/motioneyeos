@@ -15,6 +15,10 @@
 	support this, they will be removed during the 2010.11
 	development cycle.
 
+	Alpha, IA64 and Sparc64 architectures marked as deprecated.
+	Unless someone steps up to support them, they will be removed
+	during the 2010.11 development cycle.
+
 	New packages: cgilua, copas, coxpcall, ffmpeg, libsvgtiny,
 	luafilesystem, luasocket, rings, wsapi, xavante, xterm
 

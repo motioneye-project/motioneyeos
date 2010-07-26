@@ -9,6 +9,9 @@ choice
 
 config BR2_alpha
 	bool "alpha"
+	# Alpha does not exist anymore and has never been used in
+	# embedded systems, so we'll remove support for it.
+	depends on BR2_DEPRECATED
 	depends on BROKEN # no threads, shared libs, gcc psignal compile errors
 config BR2_arm
 	bool "arm"
@@ -21,6 +24,9 @@ config BR2_cris
 	bool "cris"
 config BR2_ia64
 	bool "ia64"
+	# IA64 almost does not exist anymore and has never been used
+	# in embedded systems, so we'll remove support for it.
+	depends on BR2_DEPRECATED
 	depends on BROKEN # uclibc linker errors
 config BR2_i386
 	bool "i386"
@@ -40,6 +46,11 @@ config BR2_sh64
 config BR2_sparc
 	bool "sparc"
 config BR2_sparc64
+	# Sparc64 isn't really used in embedded systems, and in the
+	# cases where it is used, Linux doesn't seem to be common, and
+	# as of today we don't have a maintainer in Buildroot who
+	# wants to take care of the sparc support.
+	depends on BR2_DEPRECATED
 	bool "sparc64"
 	select BR2_ARCH_IS_64
 config BR2_x86_64
