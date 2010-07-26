@@ -406,8 +406,12 @@ ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 	rm -rf $(TARGET_DIR)/usr/share/gtk-doc
 endif
 	find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
-	$(TARGET_LDCONFIG) -r $(TARGET_DIR) 2>/dev/null
-
+	if [ -x "$(TARGET_CROSS)ldconfig" ]; \
+	then \
+		$(TARGET_CROSS)ldconfig -r $(TARGET_DIR) 2>/dev/null; \
+	else \
+		/sbin/ldconfig -r $(TARGET_DIR) 2>/dev/null; \
+	fi
 	mkdir -p $(TARGET_DIR)/etc
 	echo $(BR2_VERSION)$(shell $(TOPDIR)/scripts/setlocalversion) > \
 		$(TARGET_DIR)/etc/br-version
