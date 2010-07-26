@@ -11,6 +11,10 @@
 
 	New GTK-based configurator, usable using 'make gconfig'.
 
+	Java packages marked as broken. Unless someone steps up to
+	support this, they will be removed during the 2010.11
+	development cycle.
+
 	New packages: cgilua, copas, coxpcall, ffmpeg, libsvgtiny,
 	luafilesystem, luasocket, rings, wsapi, xavante, xterm
 

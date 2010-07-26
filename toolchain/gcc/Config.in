@@ -96,6 +96,7 @@ config BR2_INSTALL_LIBGCJ
 	depends on !BR2_avr32 && BR2_INSTALL_LIBSTDCPP
 	select BR2_GCC_CROSS_JAVA
 	select BR2_LARGEFILE
+	depends on BROKEN
 	help
 	  Build/install java compiler and libgcj?
 
