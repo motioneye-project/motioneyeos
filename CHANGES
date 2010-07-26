@@ -23,7 +23,7 @@
 	dash, dhcp, dialog, diffutils, distcc, dmalloc, dnsmasq,
 	dropbear, e2fsprogs, fbv, file, flex, fontconfig, gawk, gmpc,
 	gst-plugins-base, gst-plugins-good, gstreamer, gzip, intltool,
-	ipsec-tools, iptables, libart, libcgi, libdrm, libfuse,
+	ipsec-tools, iptables, iw, libart, libcgi, libdrm, libfuse,
 	libgpg-error, libidn, liblockfile, libpng, lighttpd, links,
 	linux-fusion, lmbench, lrzsz, ltrace, make, module-init-tools,
 	mplayer, mysql_client, nbd, ncurses, neon, netcat, netperf,
