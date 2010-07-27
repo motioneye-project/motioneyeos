@@ -22,15 +22,16 @@
 	berkeleydb, bash, blackbox, busybox, bzip2, cdrkit, cmake,
 	dash, dhcp, dialog, diffutils, distcc, dmalloc, dnsmasq,
 	dropbear, e2fsprogs, fbv, file, flex, fontconfig, gawk, gmpc,
-	gst-plugins-base, gst-plugins-good, gstreamer, gzip, intltool,
-	ipsec-tools, iptables, iw, libart, libcgi, libdrm, libfuse,
-	libgpg-error, libidn, liblockfile, libpng, lighttpd, links,
-	linux-fusion, lmbench, lrzsz, ltrace, make, module-init-tools,
-	mplayer, mysql_client, nbd, ncurses, neon, netcat, netperf,
-	ntfsprogs, openssl, php, qt, quagga, setserial, sdl, sdl_mixer,
-	sdl_sound, sdl_ttf, sqlite, squashfs, swfdec, tftpd, thttpd,
-	tn5250, tremor, usbutils, webif, wireless_tools,
-	xkeyboard-config, xserver_xorg-server, xvkbd
+	gnuchess, gst-plugins-base, gst-plugins-good, gstreamer, gzip,
+	intltool, ipsec-tools, iptables, iw, libart, libcgi, libdrm,
+	libfuse, libgpg-error, libidn, liblockfile, libpng, lighttpd,
+	links, linux-fusion, lmbench, lrzsz, ltrace, make,
+	module-init-tools, mplayer, mysql_client, nbd, ncurses, neon,
+	netcat, netperf, ntfsprogs, openssl, php, qt, quagga,
+	setserial, sdl, sdl_mixer, sdl_sound, sdl_ttf, sqlite,
+	squashfs, swfdec, tftpd, thttpd, tn5250, tremor, usbutils,
+	webif, wireless_tools, xkeyboard-config, xserver_xorg-server,
+	xvkbd
 
 	Removed packages: modutils, portage, rxvt
 
