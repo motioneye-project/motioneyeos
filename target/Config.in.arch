@@ -1,3 +1,6 @@
+config BR2_ARCH_IS_64
+       bool
+
 choice
 	prompt "Target Architecture"
 	default BR2_i386
@@ -38,8 +41,10 @@ config BR2_sparc
 	bool "sparc"
 config BR2_sparc64
 	bool "sparc64"
+	select BR2_ARCH_IS_64
 config BR2_x86_64
 	bool "x86_64"
+	select BR2_ARCH_IS_64
 config BR2_xtensa
 	bool "xtensa"
 endchoice
