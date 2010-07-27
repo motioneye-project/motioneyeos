@@ -1,4 +1,4 @@
-#
+# Config entries for internal toolchain backend
 
 if BR2_TOOLCHAIN_BUILDROOT
 source "toolchain/kernel-headers/Config.in"
