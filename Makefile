@@ -307,6 +307,7 @@ include toolchain/mklibs/mklibs.mk
 include toolchain/sstrip/sstrip.mk
 include toolchain/uClibc/uclibc.mk
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
+include toolchain/helpers.mk
 include toolchain/*/*.mk
 endif
 
