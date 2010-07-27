@@ -67,12 +67,10 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 	(cd $(BINUTILS_DIR1); rm -rf config.cache; \
 		$(HOST_CONFIGURE_OPTS) \
 		$(BINUTILS_DIR)/configure $(QUIET) \
-		--prefix=/usr \
+		--prefix=$(STAGING_DIR)/usr \
 		--build=$(GNU_HOST_NAME) \
 		--host=$(GNU_HOST_NAME) \
 		--target=$(REAL_GNU_TARGET_NAME) \
-		--mandir=/usr/share/man \
-		--infodir=/usr/share/info \
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		$(BR2_CONFIGURE_STAGING_SYSROOT) \
 		$(DISABLE_NLS) \
@@ -90,7 +88,7 @@ $(BINUTILS_DIR1)/binutils/objdump: $(BINUTILS_DIR1)/.configured
 # Make install will put gettext data in staging_dir/share/locale.
 # Unfortunatey, it isn't configureable.
 $(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-ld: $(BINUTILS_DIR1)/binutils/objdump
-	$(MAKE) -C $(BINUTILS_DIR1) $(BR2_SYSROOT_STAGING_DESTDIR) install
+	$(MAKE) -C $(BINUTILS_DIR1) install
 	#	tooldir=/usr build_tooldir=/usr install
 	#rm -f $(STAGING_DIR)/usr/bin/{ar,as,ld,nm,objdump,ranlib,strip}
 
