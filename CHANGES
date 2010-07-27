@@ -74,7 +74,7 @@
 	#2119: Tries to build kernel, although disabled in config
 	#2143: buildroot compiler generates segfaulting statically linked exe..
 	#2155: Compression lzo don't set for ubifs
-	#2166: [SECURITY] Update libpng to 1.2.44
+	#2161: [SECURITY] Update libpng to 1.2.44
 	#2167: Bump busybox to 1.17.0, convert to gentargets, drop 1.12, ...
 	#2191: linux-fusion build fail
 	#2221: Qt does not compile (dependencies not taken into account?)
