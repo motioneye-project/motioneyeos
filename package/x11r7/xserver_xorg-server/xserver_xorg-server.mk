@@ -53,6 +53,7 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xproto_xf86rushproto 		\
 	xproto_xf86vidmodeproto 	\
 	xproto_xproto 			\
+	xkeyboard-config		\
 	pixman 				\
 	openssl 			\
 	mcookie
@@ -60,7 +61,8 @@ XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		--disable-xnest --disable-xephyr --disable-xvfb \
 		--with-builder-addr=buildroot@uclibc.org \
-		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1"
+		CFLAGS="-I$(STAGING_DIR)/usr/include/pixman-1" \
+		--with-fontdir=/usr/share/fonts/X11/
 
 ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
 XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg --disable-glx

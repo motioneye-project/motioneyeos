@@ -4,13 +4,28 @@
 #
 #############################################################
 
-MIDORI_VERSION = 0.0.18
-MIDORI_SOURCE = midori-$(MIDORI_VERSION).tar.gz
-MIDORI_SITE = http://software.twotoasts.de/media/midori/
-MIDORI_AUTORECONF = YES
+MIDORI_VERSION = 0.2.6
+MIDORI_SOURCE = midori-$(MIDORI_VERSION).tar.bz2
+MIDORI_SITE = http://archive.xfce.org/src/apps/midori/0.2/
 MIDORI_INSTALL_STAGING = NO
 MIDORI_INSTALL_TARGET = YES
 
-MIDORI_DEPENDENCIES = host-pkg-config webkit libsexy xserver_xorg-server
+MIDORI_DEPENDENCIES = host-pkg-config host-intltool webkit libsexy libgtk2
 
-$(eval $(call AUTOTARGETS,package,midori))
+define MIDORI_CONFIGURE_CMDS
+       (cd $(@D); \
+               $(TARGET_CONFIGURE_OPTS)        \
+               ./waf configure                 \
+               --prefix=/usr                   \
+       )
+endef
+
+define MIDORI_BUILD_CMDS
+       (cd $(@D); ./waf build -j $(BR2_JLEVEL))
+endef
+
+define MIDORI_INSTALL_TARGET_CMDS
+       (cd $(@D); ./waf --destdir=$(TARGET_DIR) install)
+endef
+
+$(eval $(call GENTARGETS,package,midori))

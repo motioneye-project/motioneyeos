@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBGAIL
+	bool "libgail"
+	depends on BR2_PACKAGE_LIBGTK2
+	select BR2_PACKAGE_PANGO
+	help
+	  GAIL provides accessibility support for gtk+ and
+	  libgnomecanvas by implementing AtkObjects for widgets in
+	  gtk+ and libgnomecanvas.
+
+	  The GAIL library is a GTK+ module. For example, if the
+	  module is loaded in a program which calls
+	  gtk_widget_get_accessible() for a GtkEntry an instance of
+	  GailEntry is returned. This module is normally used with the
+	  atk-bridge GTK+ module from at-spi to allow an assistive
+	  technology, e.g a screenreader, to query or drive the
+	  program.
+
+	  http://developer.gnome.org/projects/gap

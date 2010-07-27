@@ -4,13 +4,12 @@
 #
 #############################################################
 
-LIBSOUP_MAJOR_VERSION:=2.26
+LIBSOUP_MAJOR_VERSION:=2.31
 LIBSOUP_VERSION:=$(LIBSOUP_MAJOR_VERSION).2
 LIBSOUP_SOURCE:=libsoup-$(LIBSOUP_VERSION).tar.bz2
 LIBSOUP_SITE:=http://ftp.gnome.org/pub/gnome/sources/libsoup/$(LIBSOUP_MAJOR_VERSION)
-LIBSOUP_AUTORECONF = YES
 LIBSOUP_INSTALL_STAGING = YES
-LIBSOUP_INSTALL_TARGET = YES
+LIBSOUP_LIBTOOL_PATCH = NO
 
 LIBSOUP_CONF_ENV = ac_cv_path_GLIB_GENMARSHAL=$(LIBGLIB2_HOST_BINARY)
 
@@ -23,8 +22,8 @@ LIBSOUP_CONF_OPT = \
 	--enable-static		\
 	--disable-explicit-deps \
 	--disable-glibtest	\
-	--without-gnome		\
-	--disable-gtk-doc
+	--disable-ssl		\
+	--without-gnome
 
 LIBSOUP_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl) host-pkg-config host-libglib2 libglib2 libxml2
 

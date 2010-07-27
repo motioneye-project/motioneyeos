@@ -1,0 +1,22 @@
+The WebKit code conditionally calls getRootCoords() when the Gtk
+version is old (i.e < 2.17.3), but fails to declare the prototype of
+this function (which is implemented after its call site). This build
+failure has probably been missed due to the fact that not many people
+try to compile recent WebKit versions with old Gtk.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: webkit-1.2.3/WebKitTools/DumpRenderTree/gtk/EventSender.cpp
+===================================================================
+--- webkit-1.2.3.orig/WebKitTools/DumpRenderTree/gtk/EventSender.cpp	2010-07-19 20:42:27.000000000 +0200
++++ webkit-1.2.3/WebKitTools/DumpRenderTree/gtk/EventSender.cpp	2010-07-19 20:42:57.000000000 +0200
+@@ -86,6 +86,9 @@
+ static void sendOrQueueEvent(GdkEvent event);
+ static void dispatchEvent(GdkEvent event);
+ static guint getStateFlags();
++#if !GTK_CHECK_VERSION(2,17,3)
++static void getRootCoords(GtkWidget* view, int* rootX, int* rootY);
++#endif
+ 
+ static JSValueRef getDragModeCallback(JSContextRef context, JSObjectRef object, JSStringRef propertyName, JSValueRef* exception)
+ {
