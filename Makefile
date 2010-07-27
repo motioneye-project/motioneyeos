@@ -294,21 +294,9 @@ all: world
 # each selected package to TARGETS if that package was selected
 # in the .config file.
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-# avoid pulling in external toolchain which is broken for toplvl parallel builds
-# Explicit ordering:
-include toolchain/dependencies/dependencies.mk
-include toolchain/binutils/binutils.mk
-include toolchain/ccache/ccache.mk
-include toolchain/elf2flt/elf2flt.mk
-include toolchain/gcc/gcc-uclibc-4.x.mk
-include toolchain/gdb/gdb.mk
-include toolchain/kernel-headers/kernel-headers.mk
-include toolchain/mklibs/mklibs.mk
-include toolchain/sstrip/sstrip.mk
-include toolchain/uClibc/uclibc.mk
+include toolchain/toolchain-buildroot.mk
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
-include toolchain/helpers.mk
-include toolchain/*/*.mk
+include toolchain/toolchain-external.mk
 endif
 
 include package/*/*.mk
