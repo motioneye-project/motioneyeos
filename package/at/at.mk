@@ -12,6 +12,8 @@ AT_INSTALL_TARGET = YES
 # no install-strip / install-exec
 AT_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
+AT_DEPENDENCIES = $(if $(BR2_PACKAGE_FLEX),flex)
+
 AT_CONF_OPT = \
         --with-jobdir=/var/spool/cron/atjobs \
         --with-atspool=/var/spool/cron/atspool \
