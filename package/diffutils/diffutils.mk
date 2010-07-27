@@ -9,6 +9,10 @@ DIFFUTILS_SITE:=$(BR2_GNU_MIRROR)/diffutils
 
 DIFFUTILS_INSTALL_STAGING = YES
 
+DIFFUTILS_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_GETTEXT),gettext) \
+	$(if $(BR2_PACKAGE_LIBINTL),libintl)
+
 DIFFUTILS_CONF_ENV = ac_cv_func_strtod=yes
 		ac_fsusage_space=yes \
 		fu_cv_sys_stat_statfs2_bsize=yes \
