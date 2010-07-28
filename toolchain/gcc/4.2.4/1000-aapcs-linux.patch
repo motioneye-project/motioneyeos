@@ -1,0 +1,17 @@
+2008-10-07  Bernhard Reutner-Fischer  <aldot@gcc.gnu.org>
+
+	* config.gcc (arm*-*-*): Add aapcs-linux to supported ABIs.
+
+Index: gcc/gcc/config.gcc
+===================================================================
+--- gcc/gcc/config.gcc	(revision 140935)
++++ gcc/gcc/config.gcc	(revision 140936)
+@@ -2656,7 +2656,7 @@
+ 
+ 		case "$with_abi" in
+ 		"" \
+-		| apcs-gnu | atpcs | aapcs | iwmmxt )
++		| apcs-gnu | atpcs | aapcs | iwmmxt | aapcs-linux )
+ 			#OK
+ 			;;
+ 		*)
