@@ -292,9 +292,5 @@ else
 ENABLE_DEBUG:=
 endif
 
-# X Windowing system
-
-X11_PREFIX:=$(call qstrip,$(BR2_X11_PREFIX))
-
 include package/Makefile.autotools.in
 include package/Makefile.package.in

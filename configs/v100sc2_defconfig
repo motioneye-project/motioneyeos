@@ -568,7 +568,6 @@ BR2_PACKAGE_QT_OPENSSL=y
 # BR2_PACKAGE_XSERVER_none is not set
 # BR2_PACKAGE_XSERVER_xorg is not set
 # BR2_PACKAGE_XSERVER_tinyx is not set
-BR2_X11_PREFIX="/usr"
 # BR2_PACKAGE_XORG7 is not set
 
 #

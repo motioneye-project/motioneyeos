@@ -551,7 +551,6 @@ BR2_PACKAGE_XSERVER_none=y
 # BR2_PACKAGE_XSERVER_x11r7 is not set
 # BR2_PACKAGE_XSERVER_xorg is not set
 # BR2_PACKAGE_XSERVER_tinyx is not set
-BR2_X11_PREFIX="/usr"
 
 #
 # X libraries and helper libraries
