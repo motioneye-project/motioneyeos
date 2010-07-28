@@ -16,6 +16,9 @@
 	development cycle.
 
 	Alpha, IA64 and Sparc64 architectures marked as deprecated.
+	GTK+ on DirectFB has also been marked as deprecated, as it is
+	not supported in recent GTK+ versions, and more and more
+	packages depends on the new versions.
 	Unless someone steps up to support them, they will be removed
 	during the 2010.11 development cycle.
 
