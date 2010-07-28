@@ -6,7 +6,12 @@ config BR2_PACKAGE_LIBGTK2
 	select BR2_PACKAGE_CAIRO_PDF
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_PANGO
-	depends on BR2_PACKAGE_XORG7||BR2_PACKAGE_DIRECTFB
+	# libgtk2 on DirectFB is deprecated because it is no longer
+	# supported in recent versions of Gtk. We will remove support
+	# for Gtk over DirectFB in the next Buildroot version unless
+	# support for DirectFB in mainline Gtk is improved in the mean
+	# time.
+	depends on BR2_PACKAGE_XORG7||(BR2_PACKAGE_DIRECTFB && BR2_DEPRECATED)
 	depends on BR2_USE_WCHAR # glib2
 	help
 	  The GTK+ version 2 graphical user interface library
