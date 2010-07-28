@@ -13,10 +13,6 @@ else
 GCC_SNAP_DATE:=
 endif
 
-ifeq ($(BR2_GCC_USE_SJLJ_EXCEPTIONS),y)
-GCC_USE_SJLJ_EXCEPTIONS:=--enable-sjlj-exceptions
-endif
-
 ifeq ($(BR2_SOFT_FLOAT),y)
 SOFT_FLOAT_CONFIG_OPTION:=--with-float=soft
 ifeq ($(BR2_arm)$(BR2_armeb),y) # only set float-abi for arm
