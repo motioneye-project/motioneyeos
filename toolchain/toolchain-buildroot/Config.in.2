@@ -5,11 +5,6 @@ source "toolchain/elf2flt/Config.in"
 source "toolchain/mklibs/Config.in"
 source "toolchain/sstrip/Config.in"
 
-config BR2_ENABLE_MULTILIB
-	bool "Enable multilib support?"
-	help
-	    Build libraries to support different ABIs.
-
 config BR2_VFP_FLOAT
 	bool "Use ARM Vector Floating Point unit"
 	depends on !BR2_SOFT_FLOAT

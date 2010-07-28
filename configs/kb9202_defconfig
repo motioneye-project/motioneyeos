@@ -229,7 +229,6 @@ BR2_GCC_SHARED_LIBGCC=y
 # BR2_MKLIBS is not set
 # BR2_PACKAGE_SSTRIP_TARGET is not set
 # BR2_PACKAGE_SSTRIP_HOST is not set
-# BR2_ENABLE_MULTILIB is not set
 # BR2_LARGEFILE is not set
 # BR2_INET_IPV6 is not set
 # BR2_INET_RPC is not set

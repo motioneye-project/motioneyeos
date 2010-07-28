@@ -74,7 +74,6 @@ $(BINUTILS_DIR1)/.configured: $(BINUTILS_DIR)/.patched
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		$(BR2_CONFIGURE_STAGING_SYSROOT) \
 		$(DISABLE_NLS) \
-		$(MULTILIB) \
 		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(EXTRA_BINUTILS_CONFIG_OPTIONS) \
@@ -128,7 +127,6 @@ $(BINUTILS_DIR2)/.configured: $(BINUTILS_DIR)/.patched
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		$(DISABLE_NLS) \
-		$(MULTILIB) \
 		$(BINUTILS_TARGET_CONFIG_OPTIONS) \
 		--disable-werror \
 		$(SOFT_FLOAT_CONFIG_OPTION) \

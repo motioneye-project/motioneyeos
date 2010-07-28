@@ -167,7 +167,7 @@ ifeq ("$(strip $(ARCH))","armeb")
 endif
 endif
 ifeq ($(ARCH)-$(BR2_GCC_SHARED_LIBGCC),powerpc-y)
-ifneq ($(BR2_SOFT_FLOAT)$(BR2_ENABLE_MULTILIB),)
+ifneq ($(BR2_SOFT_FLOAT),)
 	toolchain/patch-kernel.sh $(GCC_DIR) toolchain/gcc/$(GCC_VERSION) powerpc-link-with-math-lib.patch.conditional
 endif
 endif
@@ -206,7 +206,6 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		$(GCC_WITH_HOST_MPFR) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
-		$(MULTILIB) \
 		$(GCC_DECIMAL_FLOAT) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_ABI) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
@@ -286,7 +285,6 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		$(GCC_WITH_HOST_MPFR) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
-		$(MULTILIB) \
 		$(GCC_DECIMAL_FLOAT) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_ABI) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
@@ -419,7 +417,6 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_BUILD_DIR3)/.prepared
 		$(GCC_WITH_TARGET_MPFR) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
-		$(MULTILIB) \
 		$(GCC_DECIMAL_FLOAT) \
 		$(SOFT_FLOAT_CONFIG_OPTION) \
 		$(GCC_WITH_ABI) $(GCC_WITH_ARCH) $(GCC_WITH_TUNE) \
