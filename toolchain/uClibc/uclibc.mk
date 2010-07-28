@@ -16,11 +16,12 @@ UCLIBC_VERSION:=$(call qstrip,$(BR2_UCLIBC_VERSION_STRING))
 
 ifeq ($(BR2_UCLIBC_VERSION_SNAPSHOT),y)
 UCLIBC_SITE:=http://www.uclibc.org/downloads/snapshots
+UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc
 else
 UCLIBC_SITE:=http://www.uclibc.org/downloads
+UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_VERSION)
 endif
 
-UCLIBC_DIR:=$(TOOLCHAIN_DIR)/uClibc-$(UCLIBC_VERSION)
 UCLIBC_PATCH_DIR:=toolchain/uClibc/
 UCLIBC_SOURCE:=uClibc-$(UCLIBC_VERSION).tar.bz2
 
@@ -407,6 +408,7 @@ $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.confi
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
 		HOSTCC="$(HOSTCC)" headers \
+		lib/crt1.o lib/crti.o lib/crtn.o \
 		$(if $(BR2_UCLIBC_VERSION_0_9_28_3),install_dev,install_headers)
 	# Install the kernel headers to the first stage gcc include dir
 	# if necessary
@@ -414,9 +416,12 @@ $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.confi
 		cp -pLR $(LINUX_HEADERS_DIR)/include/* \
 			$(TOOLCHAIN_DIR)/uClibc_dev/usr/include/; \
 	fi
+	$(TARGET_CROSS)gcc -nostdlib -nostartfiles -shared -x c /dev/null -o $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib/libc.so
+	$(TARGET_CROSS)gcc -nostdlib -nostartfiles -shared -x c /dev/null -o $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib/libm.so
+	cp -pLR $(UCLIBC_DIR)/lib/crt[1in].o $(TOOLCHAIN_DIR)/uClibc_dev/usr/lib/
 	touch $@
 
-$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_initial) $(LIBFLOAT_TARGET)
+$(UCLIBC_DIR)/lib/libc.a: $(UCLIBC_DIR)/.configured $(gcc_intermediate) $(LIBFLOAT_TARGET)
 	$(MAKE1) -C $(UCLIBC_DIR) \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
 		PREFIX= \
@@ -501,7 +506,7 @@ UCLIBC_TARGETS+=uclibc-test
 endif
 endif
 
-uclibc: $(cross_compiler) $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
+uclibc: $(gcc_intermediate) $(STAGING_DIR)/usr/lib/libc.a $(UCLIBC_TARGETS)
 
 uclibc-source: $(DL_DIR)/$(UCLIBC_SOURCE)
 
@@ -514,7 +519,7 @@ uclibc-oldconfig: $(UCLIBC_DIR)/.oldconfig
 uclibc-update: uclibc-config
 	cp -f $(UCLIBC_DIR)/.config $(UCLIBC_CONFIG_FILE)
 
-uclibc-configured: kernel-headers $(UCLIBC_DIR)/.configured
+uclibc-configured: gcc_initial kernel-headers $(UCLIBC_DIR)/.configured
 
 uclibc-configured-source: uclibc-source
 
@@ -540,7 +545,7 @@ $(TARGET_DIR)/root/uClibc/test/unistd/errno: $(UCLIBC_DIR)/test/unistd/errno
 	$(INSTALL) $(UCLIBC_DIR)/Rules.mak $(TARGET_DIR)/root/uClibc
 	$(INSTALL) $(UCLIBC_DIR)/.config $(TARGET_DIR)/root/uClibc
 
-uclibc-test: uclibc $(TARGET_DIR)/root/uClibc/test/unistd/errno
+uclibc-test: $(STAGING_DIR)/usr/lib/libc.a $(TARGET_DIR)/root/uClibc/test/unistd/errno
 
 uclibc-test-source: uclibc-source
 
