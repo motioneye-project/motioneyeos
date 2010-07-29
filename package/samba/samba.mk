@@ -161,6 +161,17 @@ $(SAMBA_HOOK_POST_INSTALL):
 	# remove unneeded
 	rm -f $(addprefix $(TARGET_DIR)/, $(SAMBA_BINTARGETS_))
 	rm -f $(addprefix $(TARGET_DIR)/, $(SAMBA_TXTTARGETS_))
+ifeq ($(BR2_PACKAGE_SAMBA_SWAT),y)
+ifneq ($(BR2_HAVE_DOCUMENTATION),y)
+	# Remove the documentation
+	rm -rf $(TARGET_DIR)/usr/swat/help/manpages
+	rm -rf $(TARGET_DIR)/usr/swat/help/Samba3*
+	rm -rf $(TARGET_DIR)/usr/swat/using_samba/
+	# Removing the welcome.html file will make swat default to
+	# welcome-no-samba-doc.html
+	rm -rf $(TARGET_DIR)/usr/swat/help/welcome.html
+endif
+endif
 	# strip binaries
 	$(STRIPCMD) $(STRIP_STRIP_ALL) $(addprefix $(TARGET_DIR)/, $(SAMBA_BINTARGETS_y))
 	# install start/stop script
