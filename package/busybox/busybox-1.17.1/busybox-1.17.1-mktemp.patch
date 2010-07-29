@@ -1,0 +1,12 @@
+diff -urpN busybox-1.17.1/debianutils/mktemp.c busybox-1.17.1-mktemp/debianutils/mktemp.c
+--- busybox-1.17.1/debianutils/mktemp.c	2010-07-25 00:12:56.000000000 +0200
++++ busybox-1.17.1-mktemp/debianutils/mktemp.c	2010-07-27 08:21:26.000000000 +0200
+@@ -50,7 +50,7 @@ int mktemp_main(int argc UNUSED_PARAM, c
+ 	opts = getopt32(argv, "dqtp:", &path);
+ 
+ 	chp = argv[optind] ? argv[optind] : xstrdup("tmp.XXXXXX");
+-	if (chp[0] != '/' || (opts & 8))
++	if (!strchr(chp, '/') || (opts & 8))
+ 		chp = concat_path_file(path, chp);
+ 
+ 	if (opts & 1) { /* -d */
