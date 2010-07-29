@@ -30,5 +30,6 @@ config BR2_PACKAGE_CAIRO_PNG
 config BR2_PACKAGE_CAIRO_SVG
 	bool "svg support"
 	select BR2_PACKAGE_CAIRO_PNG
+	select BR2_PACKAGE_CAIRO_PDF
 
 endif
