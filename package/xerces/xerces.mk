@@ -87,7 +87,7 @@ $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY): $(STAGING_DIR)/usr/lib/$(LIBXERCES_BI
 	cp -a $(STAGING_DIR)/usr/lib/$(LIBXERCES_BINARY)* $(TARGET_DIR)/usr/lib
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY)
 
-xerces: $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY)
+xerces: $(if $(BR2_PACKAGE_LIBICONV),libiconv) $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY)
 
 xerces-bin: $(XERCES_DIR)/usr/lib/$(LIBXERCES_BINARY)
 
