@@ -5,7 +5,7 @@
 #############################################################
 XERCES_VERSION:=3.0.1
 XERCES_SOURCE:=xerces-c-$(XERCES_VERSION).tar.gz
-XERCES_SITE:=http://apache.jumper.nu/xerces/c/3/sources/
+XERCES_SITE:=http://archive.apache.org/dist/xerces/c/3/sources/
 XERCES_CAT:=$(ZCAT)
 XERCES_DIR:=$(BUILD_DIR)/xerces-c-$(XERCES_VERSION)
 LIBXERCES_BINARY:=libxerces-c-3.0.so
