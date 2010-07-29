@@ -22,8 +22,6 @@ $(LIBEXOSIP2_DIR)/.configured: $(LIBEXOSIP2_DIR)/.unpacked
 	(cd $(LIBEXOSIP2_DIR); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		OSIP_CFLAGS="$(TARGET_CFLAGS)" \
-		OSIP_LIBS="-L$(STAGING_DIR)/usr/lib -losip2 -losipparser2" \
 		./configure $(QUIET) \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
@@ -73,7 +71,7 @@ $(TARGET_DIR)/usr/bin/sip_reg: $(STAGING_DIR)/usr/bin/sip_reg
 
 
 
-libeXosip2: libosip2 $(TARGET_DIR)/usr/lib/libeXosip2.so
+libeXosip2: host-pkg-config libosip2 $(TARGET_DIR)/usr/lib/libeXosip2.so
 
 libeXosip2-source: $(DL_DIR)/$(LIBEXOSIP2_SOURCE)
 
