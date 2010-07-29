@@ -23,3 +23,10 @@ ifneq ($(BR2_ENABLE_DEBUG),y)
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcharset.so.*
 endif
 	touch $@
+
+# Configurations where the toolchain supports locales and the libiconv
+# package is enabled are incorrect, because the toolchain already
+# provides libiconv functionality, and having both confuses packages.
+ifeq ($(BR2_PACKAGE_LIBICONV)$(BR2_ENABLE_LOCALE),yy)
+$(error Libiconv should never be enabled when the toolchain supports locales. Report this failure to Buildroot developers)
+endif
