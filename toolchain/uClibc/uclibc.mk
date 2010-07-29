@@ -409,7 +409,7 @@ $(UCLIBC_DIR)/.configured: $(LINUX_HEADERS_DIR)/.configured $(UCLIBC_DIR)/.confi
 		RUNTIME_PREFIX=$(TOOLCHAIN_DIR)/uClibc_dev/ \
 		HOSTCC="$(HOSTCC)" headers \
 		lib/crt1.o lib/crti.o lib/crtn.o \
-		$(if $(BR2_UCLIBC_VERSION_0_9_28_3),install_dev,install_headers)
+		install_headers
 	# Install the kernel headers to the first stage gcc include dir
 	# if necessary
 	if [ ! -f $(TOOLCHAIN_DIR)/uClibc_dev/usr/include/linux/version.h ]; then \
@@ -478,11 +478,6 @@ $(TARGET_DIR)/lib/libc.so.0: $(STAGING_DIR)/usr/lib/libc.a
 		DEVEL_PREFIX=/usr/ \
 		RUNTIME_PREFIX=/ \
 		install_runtime
-ifeq ($(BR2_UCLIBC_VERSION_0_9_28_3),y)
-ifneq ($(BR2_PTHREAD_DEBUG),y)
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(@D)/libpthread*.so*
-endif
-endif
 	touch -c $@
 
 $(TARGET_DIR)/usr/bin/ldd: $(cross_compiler)

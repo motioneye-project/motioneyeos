@@ -29,7 +29,7 @@ endef
 endif
 
 # id applet breaks on >=1.13.0 with old uclibc unless the bb pwd routines are used
-ifeq ($(BR2_BUSYBOX_VERSION_1_13_X)$(BR2_BUSYBOX_VERSION_1_14_X)$(BR2_UCLIBC_VERSION_0_9_28_3)$(BR2_UCLIBC_VERSION_0_9_29),yy)
+ifeq ($(BR2_BUSYBOX_VERSION_1_13_X)$(BR2_BUSYBOX_VERSION_1_14_X)$(BR2_UCLIBC_VERSION_0_9_29),yy)
 define BUSYBOX_SET_BB_PWD
 	if grep -q 'CONFIG_ID=y' $(BUSYBOX_BUILD_CONFIG); \
 	then \

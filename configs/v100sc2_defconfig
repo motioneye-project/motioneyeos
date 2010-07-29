@@ -132,7 +132,6 @@ BR2_DEFAULT_KERNEL_HEADERS="2.6.27.3"
 #
 # uClibc Options
 #
-# BR2_UCLIBC_VERSION_0_9_28_3 is not set
 BR2_UCLIBC_VERSION_0_9_29=y
 # BR2_UCLIBC_VERSION_SNAPSHOT is not set
 BR2_UCLIBC_CONFIG="target/device/valka/v100sc2/uClibc.config"
