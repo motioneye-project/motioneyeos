@@ -32,15 +32,16 @@
 	dnsmasq, dropbear, e2fsprogs, fbv, file, flex, fontconfig,
 	gawk, gmpc, gnuchess, gst-plugins-base, gst-plugins-good,
 	gstreamer, gzip, icu, intltool, iostat, ipsec-tools, iptables,
-	iw, libart, libcgi, libdrm, libfuse, libglib2, libgpg-error,
-	libidn, liblockfile, libpng, libsoup, lighttpd, links,
-	linux-fusion, lmbench, lrzsz, ltrace, make, midori,
-	module-init-tools, mplayer, mysql_client, nbd, ncurses, neon,
-	netcat, netperf, netsnmp, ntfsprogs, openssl, pango, php, qt,
-	quagga,	samba, setserial, sdl, sdl_mixer, sdl_sound, sdl_ttf,
-	sqlite,	squashfs, swfdec, tftpd, thttpd, tn5250, tremor,
-	usbutils, webif, webkit, wireless_tools, xkeyboard-config,
-	xserver_xorg-server, xvkbd, zlib
+	iw, libart, libcgi, libcurl, libdrm, libeXosip, libfuse,
+	libglib2, libgpg-error, libiconv, libidn, liblockfile, libpng,
+	libsoup, lighttpd, links, linux-fusion, lmbench, lrzsz,
+	ltrace, make, midori, module-init-tools, mplayer,
+	mysql_client, nbd, ncurses, neon, netcat, netperf, netsnmp,
+	ntfsprogs, openssl, oprofile, pango, php, qt, quagga, samba,
+	setserial, sdl, sdl_mixer, sdl_sound, sdl_ttf, speech-tools,
+	sqlite, squashfs, swfdec, tftpd, thttpd, tn5250, tremor,
+	usbutils, webif, webkit, wireless_tools, xerces,
+	xkeyboard-config, xserver_xorg-server, xvkbd, zlib
 
 	Removed packages: libgail, modutils, portage, rxvt
 
