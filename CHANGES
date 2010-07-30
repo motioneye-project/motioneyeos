@@ -24,7 +24,7 @@
 	during the 2010.11 development cycle.
 
 	New packages: cgilua, copas, coxpcall, ffmpeg, libsvgtiny,
-	luafilesystem, luasocket, rings, wsapi, xavante, xterm
+	libgail, luafilesystem, luasocket, rings, wsapi, xavante, xterm
 
 	Updated/fixed packages: alsa-lib, alsamixergui, at, atk,
 	avahi, berkeleydb, bash, blackbox, busybox, bzip2, cairo,
@@ -43,7 +43,7 @@
 	usbutils, webif, webkit, wireless_tools, xerces,
 	xkeyboard-config, xserver_xorg-server, xvkbd, zlib
 
-	Removed packages: libgail, modutils, portage, rxvt
+	Removed packages: modutils, portage, rxvt
 
 	Deprecated packages: dillo, libglib12, libgtk12, microwin, pcmcia
 
