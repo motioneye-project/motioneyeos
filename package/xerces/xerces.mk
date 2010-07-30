@@ -5,7 +5,7 @@
 #############################################################
 XERCES_VERSION:=3.0.1
 XERCES_SOURCE:=xerces-c-$(XERCES_VERSION).tar.gz
-XERCES_SITE:=http://apache.jumper.nu/xerces/c/3/sources/
+XERCES_SITE:=http://archive.apache.org/dist/xerces/c/3/sources/
 XERCES_CAT:=$(ZCAT)
 XERCES_DIR:=$(BUILD_DIR)/xerces-c-$(XERCES_VERSION)
 LIBXERCES_BINARY:=libxerces-c-3.0.so
@@ -38,6 +38,10 @@ XERCES_APPS:= \
 # directories
 
 XERCES_INCLUDES:=/usr/include/xercesc
+
+ifneq ($(BR2_ENABLE_LOCALE),y)
+XERCES_MAKE_OPT=LIBS="-liconv"
+endif
 
 $(DL_DIR)/$(XERCES_SOURCE):
 	 $(call DOWNLOAD,$(XERCES_SITE),$(XERCES_SOURCE))
@@ -74,7 +78,7 @@ $(XERCES_DIR)/.configured: $(XERCES_DIR)/.unpacked
 	touch $@
 
 $(XERCES_DIR)/src/.libs/$(LIBXERCES_BINARY): $(XERCES_DIR)/.configured
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) LIBS="-liconv" -C $(XERCES_DIR)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(XERCES_MAKE_OPT) -C $(XERCES_DIR)
 
 $(STAGING_DIR)/usr/lib/$(LIBXERCES_BINARY): $(XERCES_DIR)/src/.libs/$(LIBXERCES_BINARY)
 	$(MAKE) $(TARGET_CONFIGURE_OPTS) DESTDIR=$(STAGING_DIR) \
@@ -87,7 +91,7 @@ $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY): $(STAGING_DIR)/usr/lib/$(LIBXERCES_BI
 	cp -a $(STAGING_DIR)/usr/lib/$(LIBXERCES_BINARY)* $(TARGET_DIR)/usr/lib
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY)
 
-xerces: $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY)
+xerces: $(if $(BR2_PACKAGE_LIBICONV),libiconv) $(TARGET_DIR)/usr/lib/$(LIBXERCES_BINARY)
 
 xerces-bin: $(XERCES_DIR)/usr/lib/$(LIBXERCES_BINARY)
 

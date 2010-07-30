@@ -3,11 +3,12 @@
 # libcurl
 #
 #############################################################
-LIBCURL_VERSION = 7.19.2
+LIBCURL_VERSION = 7.21.0
 LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.bz2
 LIBCURL_SITE = http://curl.haxx.se/download/
 LIBCURL_INSTALL_STAGING = YES
 LIBCURL_CONF_OPT = --disable-verbose --disable-manual --enable-hidden-symbols
+LIBCURL_LIBTOOL_PATCH = NO
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBCURL_DEPENDENCIES += openssl
