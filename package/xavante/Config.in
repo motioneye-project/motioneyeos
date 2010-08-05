@@ -1,6 +1,5 @@
 config BR2_PACKAGE_XAVANTE
 	bool "xavante"
-	depends on BR2_LARGEFILE # luafilesystem
 	select BR2_PACKAGE_LUA_SHARED_LIBRARY
 	select BR2_PACKAGE_CGILUA
 	select BR2_PACKAGE_COPAS
@@ -13,6 +12,3 @@ config BR2_PACKAGE_XAVANTE
 	  architecture based on URI mapped handlers.
 
 	  http://keplerproject.github.com/xavante/
-
-comment "xavante requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE

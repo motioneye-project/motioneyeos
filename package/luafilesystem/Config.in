@@ -1,12 +1,8 @@
 config BR2_PACKAGE_LUAFILESYSTEM
 	bool "luafilesystem"
-	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LUA_SHARED_LIBRARY
 	help
 	  LuaFileSystem offers a portable way to access
 	  the underlying directory structure and file attributes.
 
-	  http://luaforge.net/projects/luafilesystem/
-
-comment "luafilesystem requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
+	  http://keplerproject.github.com/luafilesystem/

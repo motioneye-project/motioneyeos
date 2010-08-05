@@ -1,6 +1,5 @@
 config BR2_PACKAGE_CGILUA
 	bool "cgilua"
-	depends on BR2_LARGEFILE
 	select BR2_PACKAGE_LUA_SHARED_LIBRARY
 	select BR2_PACKAGE_LUAFILESYSTEM
 	help
@@ -8,6 +7,3 @@ config BR2_PACKAGE_CGILUA
 	  and manipulating input data from Web forms.
 
 	  http://luaforge.net/projects/cgilua/
-
-comment "cgilua requires a toolchain with LARGEFILE support"
-	depends on !BR2_LARGEFILE
