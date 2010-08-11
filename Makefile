@@ -29,7 +29,7 @@ CONFIG=package/config
 DATE:=$(shell date +%Y%m%d)
 
 noconfig_targets:=menuconfig gconfig xconfig config oldconfig randconfig \
-	defconfig allyesconfig allnoconfig release \
+	defconfig %_defconfig allyesconfig allnoconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
 	source-check help
 
@@ -553,6 +553,12 @@ defconfig: $(BUILD_DIR)/buildroot-config/conf
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
 		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -d $(CONFIG_CONFIG_IN)
 
+%_defconfig: $(BUILD_DIR)/buildroot-config/conf $(TOPDIR)/configs/%_defconfig
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -D $(TOPDIR)/configs/$@ $(CONFIG_CONFIG_IN)
+
 # check if download URLs are outdated
 source-check: allyesconfig
 	$(MAKE) $(EXTRAMAKEARGS) _source-check
@@ -579,10 +585,6 @@ endif
 
 flush:
 	rm -f $(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache
-
-%_defconfig: $(TOPDIR)/configs/%_defconfig
-	cp $^ $(CONFIG_DIR)/.config
-	@$(MAKE) $(EXTRAMAKEARGS) oldconfig
 
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 
