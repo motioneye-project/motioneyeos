@@ -152,3 +152,15 @@ for prog in awk bison flex msgfmt makeinfo patch gzip bzip2 perl tar wget cpio p
 	exit 1;
     fi
 done
+
+if grep ^BR2_TOOLCHAIN_BUILDROOT=y $CONFIG_FILE > /dev/null && \
+   grep ^BR2_ENABLE_LOCALE=y       $CONFIG_FILE > /dev/null ; then
+   if ! which locale > /dev/null ; then
+       /bin/echo -e "\nYou need locale support on your build machine to build a toolchain supporting locales\n"
+       exit 1 ;
+   fi
+   if ! locale -a | grep -i utf8$ ; then
+       /bin/echo -e "\nYou need at least one UTF8 locale to build a toolchain supporting locales\n"
+       exit 1 ;
+   fi
+fi
