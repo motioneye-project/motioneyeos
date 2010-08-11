@@ -11,9 +11,6 @@ OPENSSL_DEPENDENCIES = zlib
 OPENSSL_TARGET_ARCH=generic32
 
 # Some architectures are optimized in OpenSSL
-ifeq ($(ARCH),ia64)
-OPENSSL_TARGET_ARCH=ia64
-endif
 ifeq ($(ARCH),powerpc)
 OPENSSL_TARGET_ARCH=ppc
 endif

@@ -16,9 +16,6 @@ LIBOIL_INSTALL_TARGET = YES
 ifeq ($(BR2_avr32),y)
 LIBOIL_CONF_ENV = as_cv_unaligned_access=no
 endif
-ifeq ($(BR2_cris),y)
-LIBOIL_CONF_ENV = as_cv_unaligned_access=yes
-endif
 ifeq ($(BR2_x86_64),y)
 LIBOIL_CONF_ENV = as_cv_unaligned_access=yes
 endif
