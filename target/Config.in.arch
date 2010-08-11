@@ -22,6 +22,11 @@ config BR2_avr32
 	select BR2_SOFT_FLOAT
 config BR2_cris
 	bool "cris"
+	# The CRIS architecture from Axis has been deprecated by the
+	# manufacturer. No units are sold after July 2010, and support
+	# will end in July 2011. Moreover, CRIS support in Buildroot
+	# has not been updated since a long time.
+	depends on BR2_DEPRECATED
 config BR2_ia64
 	bool "ia64"
 	# IA64 almost does not exist anymore and has never been used
