@@ -25,7 +25,6 @@
 # absolute path
 TOPDIR:=$(shell pwd)
 CONFIG_CONFIG_IN=Config.in
-CONFIG_DEFCONFIG=.defconfig
 CONFIG=package/config
 DATE:=$(shell date +%Y%m%d)
 
@@ -465,9 +464,6 @@ export HOSTCFLAGS
 $(BUILD_DIR)/buildroot-config/%onf:
 	mkdir -p $(@D)/lxdialog
 	$(MAKE) CC="$(HOSTCC)" obj=$(@D) -C $(CONFIG) $(@F)
-	-@if [ ! -f $(CONFIG_DIR)/.config ]; then \
-		cp $(CONFIG_DEFCONFIG) $(CONFIG_DIR)/.config; \
-	fi
 
 xconfig: $(BUILD_DIR)/buildroot-config/qconf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
@@ -513,7 +509,6 @@ randconfig: $(BUILD_DIR)/buildroot-config/conf
 		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< -r $(CONFIG_CONFIG_IN)
 
 allyesconfig: $(BUILD_DIR)/buildroot-config/conf
-	cat $(CONFIG_DEFCONFIG) > $(CONFIG_DIR)/.config
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
