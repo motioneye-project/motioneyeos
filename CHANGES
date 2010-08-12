@@ -8,6 +8,9 @@
 	Mark CRIS architecture as deprecated, as it is discontinued
 	upstream.
 
+	Toolchain: fixed gcc 4.2.x build after uClibc NPTL support got
+	added.
+
 	Updated/fixed packages: busybox, imagemagick, libglib2, lua,
 	luafilesystem, lzo, netcat, php, sysvinit, util-linux
 

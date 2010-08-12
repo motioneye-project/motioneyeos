@@ -1,0 +1,49 @@
+--- gcc-4.2.4/gcc/unwind-sjlj.c.khem	2010-08-11 12:45:28.000000000 -0700
++++ gcc-4.2.4/gcc/unwind-sjlj.c	2010-08-11 12:45:50.000000000 -0700
+@@ -28,6 +28,8 @@
+    Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.  */
+ 
++#ifndef inhibit_libc
++
+ #include "tconfig.h"
+ #include "tsystem.h"
+ #include "coretypes.h"
+@@ -326,3 +328,4 @@ uw_identify_context (struct _Unwind_Cont
+ #include "unwind.inc"
+ 
+ #endif /* USING_SJLJ_EXCEPTIONS */
++#endif
+--- gcc-4.2.4/gcc/unwind-dw2.c.khem	2010-08-11 12:42:45.000000000 -0700
++++ gcc-4.2.4/gcc/unwind-dw2.c	2010-08-11 12:43:17.000000000 -0700
+@@ -28,6 +28,8 @@
+    Software Foundation, 51 Franklin Street, Fifth Floor, Boston, MA
+    02110-1301, USA.  */
+ 
++#ifndef inhibit_libc
++
+ #include "tconfig.h"
+ #include "tsystem.h"
+ #include "coretypes.h"
+@@ -1537,3 +1539,5 @@ alias (_Unwind_SetIP);
+ #endif
+ 
+ #endif /* !USING_SJLJ_EXCEPTIONS */
++#endif
++
+--- gcc-4.2.4/gcc/unwind-dw2-fde-glibc.c.khem	2010-08-11 12:44:25.000000000 -0700
++++ gcc-4.2.4/gcc/unwind-dw2-fde-glibc.c	2010-08-11 12:44:48.000000000 -0700
+@@ -29,6 +29,8 @@
+    segment and dl_iterate_phdr to avoid register/deregister calls at
+    DSO load/unload.  */
+ 
++#ifndef inhibit_libc
++
+ #ifndef _GNU_SOURCE
+ #define _GNU_SOURCE 1
+ #endif
+@@ -438,3 +440,4 @@ _Unwind_Find_FDE (void *pc, struct dwarf
+ #if defined (USE_GAS_SYMVER) && defined (SHARED) && defined (USE_LIBUNWIND_EXCEPTIONS)
+ alias (_Unwind_Find_FDE);
+ #endif
++#endif
