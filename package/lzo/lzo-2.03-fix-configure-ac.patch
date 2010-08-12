@@ -1,0 +1,21 @@
+_AC_SRCPATHS doesn't exist in autoconf, _AC_SRCDIRS should be used
+instead according to many reports found by Google.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: lzo-2.03/configure.ac
+===================================================================
+--- lzo-2.03.orig/configure.ac
++++ lzo-2.03/configure.ac
+@@ -48,7 +48,7 @@
+ AM_MAINTAINER_MODE
+ 
+ if test -z "$ac_abs_top_srcdir"; then
+-    _AC_SRCPATHS(.)
++    _AC_SRCDIRS(.)
+ fi
+ if test -r .Conf.settings1; then
+     . ./.Conf.settings1
