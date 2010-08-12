@@ -88,7 +88,6 @@ $(IMAGEMAGICK_DIR)/.libinstall: $(IMAGEMAGICK_LIB)
 	touch $@
 
 $(TARGET_DIR)/usr/bin/animate: $(IMAGEMAGICK_LIB)
-	ls -l $(IMAGEMAGICK_LIB) >> datefile
 	$(IMAGEMAGICK_COPY) $(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-animate $(TARGET_DIR)/usr/bin/animate
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/bin/animate
 	touch $@
