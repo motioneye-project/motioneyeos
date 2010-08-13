@@ -1,5 +1,8 @@
 config BR2_PACKAGE_INTLTOOL
        bool "intltool"
+       # Hide from configuration as we only support the host package
+       # for the moment
+       depends on BR2_HOST_ONLY
        help
          Utility scripts for internationalizing XML
 
