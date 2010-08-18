@@ -12,7 +12,7 @@
 #
 ######################################################################
 
-QT_VERSION:=4.6.2
+QT_VERSION:=4.6.3
 QT_SOURCE:=qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE:=http://get.qt.nokia.com/qt/source
 QT_CAT:=$(ZCAT)
@@ -46,6 +46,12 @@ ifeq ($(BR2_PACKAGE_QT_QT3SUPPORT),y)
 QT_CONFIGURE+= -qt3support
 else
 QT_CONFIGURE+= -no-qt3support
+endif
+
+ifeq ($(BR2_PACKAGE_QT_DEMOS),y)
+QT_CONFIGURE+= -examplesdir $(TARGET_DIR)/usr/share/qt/examples -demosdir $(TARGET_DIR)/usr/share/qt/demos
+else
+QT_CONFIGURE+= -nomake examples -nomake demos
 endif
 
 # ensure glib is built first if enabled for Qt's glib support
@@ -520,8 +526,6 @@ endif
 		-hostprefix $(STAGING_DIR)/usr \
 		-fast \
 		-no-rpath \
-		-nomake examples \
-		-nomake demos \
 	)
 	touch $@
 

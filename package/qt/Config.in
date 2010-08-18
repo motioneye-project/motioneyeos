@@ -16,6 +16,11 @@ config BR2_PACKAGE_QT_DEBUG
 	help
 	  If unsure, say N.
 
+config BR2_PACKAGE_QT_DEMOS
+	bool "Compile and install demos and examples (with code)"
+	help
+	  If unsure, say N.
+
 choice
 	prompt "Library type"
 	default BR2_PACKAGE_QT_SHARED
