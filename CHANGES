@@ -18,7 +18,7 @@
 	fs: old-style squashfs for big endian archs fixed.
 
 	Updated/fixed packages: busybox, imagemagick, libglib2, lua,
-	luafilesystem, lzo, netcat, php, proftpd, qt, samba,
+	luafilesystem, lzo, netcat, php, pppd, proftpd, qt, samba,
 	startup-notification, sysvinit, util-linux
 
 	Removed packages: stunnel

@@ -55,8 +55,8 @@ $(PPPD_TARGET_INSTALL_TARGET):
 		$(TARGET_DIR)/usr/lib/pppd/$(PPPD_VERSION)/radattr.so
 	$(INSTALL) -D $(PPPD_DIR)/pppd/plugins/radius/radius.so \
 		$(TARGET_DIR)/usr/lib/pppd/$(PPPD_VERSION)/radius.so
-	$(INSTALL) -D $(PPPD_DIR)/pppd/plugins/radius/radattr.so \
-		$(TARGET_DIR)/usr/lib/pppd/$(PPPD_VERSION)/radattr.so
+	$(INSTALL) -D $(PPPD_DIR)/pppd/plugins/radius/radrealms.so \
+		$(TARGET_DIR)/usr/lib/pppd/$(PPPD_VERSION)/radrealms.so
 	for m in $(PPPD_MANPAGES); do \
 		$(INSTALL) -m 644 -D $(PPPD_DIR)/$$m/$$m.8 \
 			$(TARGET_DIR)/usr/share/man/man8/$$m.8; \
