@@ -8,5 +8,4 @@
 10-br-build-system.patch
 11-use-mktemp-for-lxdialog.patch
 12-fix-glade-file-path.patch
-13-use-conf-write-autoconf.patch
 14-support-out-of-tree-config.patch

@@ -1612,7 +1612,6 @@ void ConfigMainWindow::closeEvent(QCloseEvent* e)
 {
 	if (!conf_get_changed()) {
 		e->accept();
-		conf_write_autoconf();
 		return;
 	}
 	QMessageBox mb("qconf", _("Save configuration?"), QMessageBox::Warning,
@@ -1623,7 +1622,6 @@ void ConfigMainWindow::closeEvent(QCloseEvent* e)
 	switch (mb.exec()) {
 	case QMessageBox::Yes:
 		conf_write(NULL);
-		conf_write_autoconf();
 	case QMessageBox::No:
 		e->accept();
 		break;

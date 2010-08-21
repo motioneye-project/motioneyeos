@@ -640,10 +640,6 @@ int main(int ac, char **av)
 			fprintf(stderr, _("\n*** Error during writing of the Buildroot configuration.\n\n"));
 			exit(1);
 		}
-		if (conf_write_autoconf()) {
-			fprintf(stderr, _("\n*** Error during update of the Buildroot configuration.\n\n"));
-			return 1;
-		}
 	}
 	return 0;
 }
