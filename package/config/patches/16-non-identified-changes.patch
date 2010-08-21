@@ -1,0 +1,47 @@
+---
+ lxdialog/checklist.c |    3 ++-
+ mconf.c              |   10 +++++++++-
+ 2 files changed, 11 insertions(+), 2 deletions(-)
+
+Index: config.clean/lxdialog/checklist.c
+===================================================================
+--- config.clean.orig/lxdialog/checklist.c
++++ config.clean/lxdialog/checklist.c
+@@ -41,7 +41,8 @@
+ 	wmove(win, choice, check_x);
+ 	wattrset(win, selected ? dlg.check_selected.atr
+ 		 : dlg.check.atr);
+-	wprintw(win, "(%c)", item_is_tag('X') ? 'X' : ' ');
++	if (!item_is_tag(':'))
++		wprintw(win, "(%c)", item_is_tag('X') ? 'X' : ' ');
+ 
+ 	wattrset(win, selected ? dlg.tag_selected.atr : dlg.tag.atr);
+ 	mvwaddch(win, choice, item_x, item_str()[0]);
+Index: config.clean/mconf.c
+===================================================================
+--- config.clean.orig/mconf.c
++++ config.clean/mconf.c
+@@ -731,7 +731,12 @@
+ 		for (child = menu->list; child; child = child->next) {
+ 			if (!menu_is_visible(child))
+ 				continue;
+-			item_make("%s", _(menu_get_prompt(child)));
++			if (child->sym)
++				item_make("%s", _(menu_get_prompt(child)));
++			else {
++				item_make("*** %s ***", _(menu_get_prompt(child)));
++				item_set_tag(':');
++			}
+ 			item_set_data(child);
+ 			if (child->sym == active)
+ 				item_set_selected(1);
+@@ -747,6 +752,9 @@
+ 		case 0:
+ 			if (selected) {
+ 				child = item_data();
++				if (!child->sym)
++					break;
++
+ 				sym_set_tristate_value(child->sym, yes);
+ 			}
+ 			return;

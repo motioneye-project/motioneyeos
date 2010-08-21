@@ -1,0 +1,299 @@
+---
+ conf.c              |   12 ++++++------
+ confdata.c          |   12 ++++--------
+ gconf.c             |    4 ++--
+ gconf.glade         |    2 +-
+ mconf.c             |   37 ++++++++++++++++++-------------------
+ qconf.cc            |    3 +--
+ zconf.tab.c_shipped |    2 +-
+ zconf.y             |    2 +-
+ 8 files changed, 34 insertions(+), 40 deletions(-)
+
+Index: config.clean/conf.c
+===================================================================
+--- config.clean.orig/conf.c
++++ config.clean/conf.c
+@@ -500,8 +500,8 @@
+ 	if (sync_kconfig) {
+ 		if (stat(".config", &tmpstat)) {
+ 			fprintf(stderr, _("***\n"
+-				"*** You have not yet configured your kernel!\n"
+-				"*** (missing kernel .config file)\n"
++				"*** You have not yet configured Buildroot!\n"
++				"*** (missing .config file)\n"
+ 				"***\n"
+ 				"*** Please run some configurator (e.g. \"make oldconfig\" or\n"
+ 				"*** \"make menuconfig\" or \"make xconfig\").\n"
+@@ -556,7 +556,7 @@
+ 			name = getenv("KCONFIG_NOSILENTUPDATE");
+ 			if (name && *name) {
+ 				fprintf(stderr,
+-					_("\n*** Kernel configuration requires explicit update.\n\n"));
++					_("\n*** Buildroot configuration requires explicit update.\n\n"));
+ 				return 1;
+ 			}
+ 		}
+@@ -599,16 +599,16 @@
+ 		 * All other commands are only used to generate a config.
+ 		 */
+ 		if (conf_get_changed() && conf_write(NULL)) {
+-			fprintf(stderr, _("\n*** Error during writing of the kernel configuration.\n\n"));
++			fprintf(stderr, _("\n*** Error during writing of the Buildroot configuration.\n\n"));
+ 			exit(1);
+ 		}
+ 		if (conf_write_autoconf()) {
+-			fprintf(stderr, _("\n*** Error during update of the kernel configuration.\n\n"));
++			fprintf(stderr, _("\n*** Error during update of the Buildroot configuration.\n\n"));
+ 			return 1;
+ 		}
+ 	} else {
+ 		if (conf_write(NULL)) {
+-			fprintf(stderr, _("\n*** Error during writing of the kernel configuration.\n\n"));
++			fprintf(stderr, _("\n*** Error during writing of the Buildroot configuration.\n\n"));
+ 			exit(1);
+ 		}
+ 	}
+Index: config.clean/confdata.c
+===================================================================
+--- config.clean.orig/confdata.c
++++ config.clean/confdata.c
+@@ -436,7 +436,7 @@
+ 	if (!out)
+ 		return 1;
+ 
+-	sym = sym_lookup("KERNELVERSION", 0);
++	sym = sym_lookup("BR2_VERSION", 0);
+ 	sym_calc_value(sym);
+ 	time(&now);
+ 	env = getenv("KCONFIG_NOTIMESTAMP");
+@@ -445,10 +445,8 @@
+ 
+ 	fprintf(out, _("#\n"
+ 		       "# Automatically generated make config: don't edit\n"
+-		       "# Linux kernel version: %s\n"
+ 		       "%s%s"
+ 		       "#\n"),
+-		     sym_get_string_value(sym),
+ 		     use_timestamp ? "# " : "",
+ 		     use_timestamp ? ctime(&now) : "");
+ 
+@@ -692,22 +690,20 @@
+ 		return 1;
+ 	}
+ 
+-	sym = sym_lookup("KERNELVERSION", 0);
++	sym = sym_lookup("BR2_VERSION", 0);
+ 	sym_calc_value(sym);
+ 	time(&now);
+ 	fprintf(out, "#\n"
+ 		     "# Automatically generated make config: don't edit\n"
+-		     "# Linux kernel version: %s\n"
+ 		     "# %s"
+ 		     "#\n",
+-		     sym_get_string_value(sym), ctime(&now));
++		     ctime(&now));
+ 	fprintf(out_h, "/*\n"
+ 		       " * Automatically generated C config: don't edit\n"
+-		       " * Linux kernel version: %s\n"
+ 		       " * %s"
+ 		       " */\n"
+ 		       "#define AUTOCONF_INCLUDED\n",
+-		       sym_get_string_value(sym), ctime(&now));
++		       ctime(&now));
+ 
+ 	for_all_symbols(i, sym) {
+ 		sym_calc_value(sym);
+Index: config.clean/gconf.c
+===================================================================
+--- config.clean.orig/gconf.c
++++ config.clean/gconf.c
+@@ -266,8 +266,8 @@
+ 					  /*"style", PANGO_STYLE_OBLIQUE, */
+ 					  NULL);
+ 
+-	sprintf(title, _("Linux Kernel v%s Configuration"),
+-		getenv("KERNELVERSION"));
++	sprintf(title, _("Buildroot v%s Configuration"),
++		getenv("BR2_VERSION"));
+ 	gtk_window_set_title(GTK_WINDOW(main_wnd), title);
+ 
+ 	gtk_widget_show(main_wnd);
+Index: config.clean/gconf.glade
+===================================================================
+--- config.clean.orig/gconf.glade
++++ config.clean/gconf.glade
+@@ -5,7 +5,7 @@
+ 
+ <widget class="GtkWindow" id="window1">
+   <property name="visible">True</property>
+-  <property name="title" translatable="yes">Gtk Kernel Configurator</property>
++  <property name="title" translatable="yes">Gtk Buildroot Configurator</property>
+   <property name="type">GTK_WINDOW_TOPLEVEL</property>
+   <property name="window_position">GTK_WIN_POS_NONE</property>
+   <property name="modal">False</property>
+Index: config.clean/mconf.c
+===================================================================
+--- config.clean.orig/mconf.c
++++ config.clean/mconf.c
+@@ -25,10 +25,9 @@
+ static const char mconf_readme[] = N_(
+ "Overview\n"
+ "--------\n"
+-"Some kernel features may be built directly into the kernel.\n"
+-"Some may be made into loadable runtime modules.  Some features\n"
++"Some features may be built directly into Buildroot. Some features\n"
+ "may be completely removed altogether.  There are also certain\n"
+-"kernel parameters which are not really features, but must be\n"
++"parameters which are not really features, but must be\n"
+ "entered in as decimal or hexadecimal numbers or possibly text.\n"
+ "\n"
+ "Menu items beginning with following braces represent features that\n"
+@@ -115,7 +114,7 @@
+ "-----------------------------\n"
+ "Menuconfig supports the use of alternate configuration files for\n"
+ "those who, for various reasons, find it necessary to switch\n"
+-"between different kernel configurations.\n"
++"between different configurations.\n"
+ "\n"
+ "At the end of the main menu you will find two options.  One is\n"
+ "for saving the current configuration to a file of your choosing.\n"
+@@ -148,7 +147,7 @@
+ "\n"
+ "Optional personality available\n"
+ "------------------------------\n"
+-"If you prefer to have all of the kernel options listed in a single\n"
++"If you prefer to have all of the options listed in a single\n"
+ "menu, rather than the default multimenu hierarchy, run the menuconfig\n"
+ "with MENUCONFIG_MODE environment variable set to single_menu. Example:\n"
+ "\n"
+@@ -178,9 +177,9 @@
+ 	"Arrow keys navigate the menu.  "
+ 	"<Enter> selects submenus --->.  "
+ 	"Highlighted letters are hotkeys.  "
+-	"Pressing <Y> includes, <N> excludes, <M> modularizes features.  "
++	"Pressing <Y> selectes a feature, while <N> will exclude a feature.  "
+ 	"Press <Esc><Esc> to exit, <?> for Help, </> for Search.  "
+-	"Legend: [*] built-in  [ ] excluded  <M> module  < > module capable"),
++	"Legend: [*] feature is selected  [ ] feature is excluded"),
+ radiolist_instructions[] = N_(
+ 	"Use the arrow keys to navigate this window or "
+ 	"press the hotkey of the item you wish to select "
+@@ -200,18 +199,18 @@
+ 	"This feature depends on another which has been configured as a module.\n"
+ 	"As a result, this feature will be built as a module."),
+ nohelp_text[] = N_(
+-	"There is no help available for this kernel option.\n"),
++	"There is no help available for this option.\n"),
+ load_config_text[] = N_(
+ 	"Enter the name of the configuration file you wish to load.  "
+ 	"Accept the name shown to restore the configuration you "
+ 	"last retrieved.  Leave blank to abort."),
+ load_config_help[] = N_(
+ 	"\n"
+-	"For various reasons, one may wish to keep several different kernel\n"
++	"For various reasons, one may wish to keep several different Buildroot\n"
+ 	"configurations available on a single machine.\n"
+ 	"\n"
+ 	"If you have saved a previous configuration in a file other than the\n"
+-	"kernel's default, entering the name of the file here will allow you\n"
++	"Buildroot's default, entering the name of the file here will allow you\n"
+ 	"to modify that configuration.\n"
+ 	"\n"
+ 	"If you are uncertain, then you have probably never used alternate\n"
+@@ -221,7 +220,7 @@
+ 	"as an alternate.  Leave blank to abort."),
+ save_config_help[] = N_(
+ 	"\n"
+-	"For various reasons, one may wish to keep different kernel\n"
++	"For various reasons, one may wish to keep different Buildroot\n"
+ 	"configurations available on a single machine.\n"
+ 	"\n"
+ 	"Entering a file name here will allow you to later retrieve, modify\n"
+@@ -364,10 +363,10 @@
+ 	int size;
+ 	struct symbol *sym;
+ 
+-	sym = sym_lookup("KERNELVERSION", 0);
++	sym = sym_lookup("BR2_VERSION", 0);
+ 	sym_calc_value(sym);
+ 	size = snprintf(menu_backtitle, sizeof(menu_backtitle),
+-	                _("%s - Linux Kernel v%s Configuration"),
++	                _("%s - buildroot v%s Configuration"),
+ 		        config_filename, sym_get_string_value(sym));
+ 	if (size >= sizeof(menu_backtitle))
+ 		menu_backtitle[sizeof(menu_backtitle)-1] = '\0';
+@@ -894,7 +893,7 @@
+ 		if (conf_get_changed())
+ 			res = dialog_yesno(NULL,
+ 					   _("Do you wish to save your "
+-					     "new kernel configuration?\n"
++					     "new Buildroot configuration?\n"
+ 					     "<ESC><ESC> to continue."),
+ 					   6, 60);
+ 		else
+@@ -906,20 +905,20 @@
+ 	case 0:
+ 		if (conf_write(filename)) {
+ 			fprintf(stderr, _("\n\n"
+-				"Error during writing of the kernel configuration.\n"
+-				"Your kernel configuration changes were NOT saved."
++				"Error during writing of the Buildroot configuration.\n"
++				"Your Buildroot configuration changes were NOT saved."
+ 				"\n\n"));
+ 			return 1;
+ 		}
+ 	case -1:
+ 		printf(_("\n\n"
+-			"*** End of Linux kernel configuration.\n"
+-			"*** Execute 'make' to build the kernel or try 'make help'."
++			"*** End of Buildroot configuration.\n"
++			"*** Execute 'make' to build Buildroot or try 'make help'."
+ 			"\n\n"));
+ 		break;
+ 	default:
+ 		fprintf(stderr, _("\n\n"
+-			"Your kernel configuration changes were NOT saved."
++			"Your Buildroot configuration changes were NOT saved."
+ 			"\n\n"));
+ 	}
+ 
+Index: config.clean/qconf.cc
+===================================================================
+--- config.clean.orig/qconf.cc
++++ config.clean/qconf.cc
+@@ -1276,8 +1276,7 @@
+ 	char title[256];
+ 
+ 	QWidget *d = configApp->desktop();
+-	snprintf(title, sizeof(title), _("Linux Kernel v%s Configuration"),
+-		getenv("KERNELVERSION"));
++	snprintf(title, sizeof(title), _("Buildroot Configuration"));
+ 	setCaption(title);
+ 
+ 	width = configSettings->readNumEntry("/window width", d->width() - 64);
+Index: config.clean/zconf.tab.c_shipped
+===================================================================
+--- config.clean.orig/zconf.tab.c_shipped
++++ config.clean/zconf.tab.c_shipped
+@@ -2259,7 +2259,7 @@
+ 	modules_sym = sym_lookup(NULL, 0);
+ 	modules_sym->type = S_BOOLEAN;
+ 	modules_sym->flags |= SYMBOL_AUTO;
+-	rootmenu.prompt = menu_add_prompt(P_MENU, "Linux Kernel Configuration", NULL);
++	rootmenu.prompt = menu_add_prompt(P_MENU, "Buildroot Configuration", NULL);
+ 
+ #if YYDEBUG
+ 	if (getenv("ZCONF_DEBUG"))
+Index: config.clean/zconf.y
+===================================================================
+--- config.clean.orig/zconf.y
++++ config.clean/zconf.y
+@@ -476,7 +476,7 @@
+ 	modules_sym = sym_lookup(NULL, 0);
+ 	modules_sym->type = S_BOOLEAN;
+ 	modules_sym->flags |= SYMBOL_AUTO;
+-	rootmenu.prompt = menu_add_prompt(P_MENU, "Linux Kernel Configuration", NULL);
++	rootmenu.prompt = menu_add_prompt(P_MENU, "Buildroot Configuration", NULL);
+ 
+ #if YYDEBUG
+ 	if (getenv("ZCONF_DEBUG"))

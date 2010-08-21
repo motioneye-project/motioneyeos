@@ -1,0 +1,28 @@
+---
+ Makefile |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+Index: config.clean/Makefile
+===================================================================
+--- config.clean.orig/Makefile
++++ config.clean/Makefile
+@@ -142,10 +142,15 @@
+ gconf-objs	:= gconf.o kconfig_load.o zconf.tab.o
+ endif
+ 
+-clean-files	:= lkc_defs.h qconf.moc .tmp_qtcheck \
+-		   .tmp_gtkcheck zconf.tab.c lex.zconf.c zconf.hash.c gconf.glade.h
+-clean-files     += mconf qconf gconf
+-clean-files     += config.pot linux.pot
++clean-files := lkc_defs.h qconf.moc .tmp_qtcheck \
++               .tmp_gtkcheck zconf.tab.c lex.zconf.c zconf.hash.c gconf.glade.h
++clean-files += config.pot linux.pot
++clean-files += conf $(conf-objs)
++clean-files += mconf $(mconf-objs)
++clean-files += qconf qconf.o
++clean-files += gconf gconf.o
++clean-files += kconfig_load.o zconf.tab.o
++clean-files += $(kxgettext-objs)
+ 
+ # Check that we have the required ncurses stuff installed for lxdialog (menuconfig)
+ PHONY += $(obj)/dochecklxdialog

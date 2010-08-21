@@ -1,16 +1,12 @@
-This is a copy of the kconfig code in the kernel (currently 2.6.24.4) tweaked
+This is a copy of the kconfig code in the kernel (currently 2.6.30) tweaked
 to suit Buildroot.
 
 To update:
 	cp -r /usr/src/linux/scripts/kconfig package/config.new
 	cd package/config.new
-	cp /usr/src/linux/Documentation/kbuild/kconfig-language.txt .
-	patch -p1 < ../config/kconfig-to-buildroot2.patch
-	mv Makefile Makefile.kconfig
-	cp ../config/README.buildroot2 .
-	cp ../config/foo.h .
-	cp ../config/Makefile .
-	cp ../config/kconfig-to-buildroot2.patch .
+	cp -a ../config/patches ../config/README.buildroot2 .
+	quilt push -a
+	# Fix any conflict
 	cd ..
 	rm -rf config
 	mv config.new config
@@ -19,4 +15,6 @@ Then verify the toplevel targets work:
 	config
 	defconfig
 	menuconfig
+	xconfig
+	gconfig
 	oldconfig

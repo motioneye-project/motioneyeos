@@ -1,0 +1,33 @@
+---
+ Makefile |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+Index: config.clean/Makefile
+===================================================================
+--- config.clean.orig/Makefile
++++ config.clean/Makefile
+@@ -124,14 +124,23 @@
+ ifeq ($(MAKECMDGOALS),menuconfig)
+ 	hostprogs-y += mconf
+ endif
++ifeq ($(findstring mconf,$(MAKECMDGOALS)),mconf)
++       hostprogs-y += mconf
++endif
+ 
+ ifeq ($(MAKECMDGOALS),xconfig)
+ 	qconf-target := 1
+ endif
++ifeq ($(findstring qconf,$(MAKECMDGOALS)),qconf)
++	qconf-target := 1
++endif
++
+ ifeq ($(MAKECMDGOALS),gconfig)
+ 	gconf-target := 1
+ endif
+-
++ifeq ($(findstring gconf,$(MAKECMDGOALS)),gconf)
++	gconf-target := 1
++endif
+ 
+ ifeq ($(qconf-target),1)
+ qconf-cxxobjs	:= qconf.o
