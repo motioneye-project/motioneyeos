@@ -3,28 +3,28 @@
  confdata.c          |   12 ++++--------
  gconf.c             |    4 ++--
  gconf.glade         |    2 +-
- mconf.c             |   37 ++++++++++++++++++-------------------
- qconf.cc            |    3 +--
+ mconf.c             |   35 +++++++++++++++++------------------
+ qconf.cc            |    4 ++--
  zconf.tab.c_shipped |    2 +-
  zconf.y             |    2 +-
- 8 files changed, 34 insertions(+), 40 deletions(-)
+ 8 files changed, 34 insertions(+), 39 deletions(-)
 
-Index: config.clean/conf.c
+Index: config.new/conf.c
 ===================================================================
---- config.clean.orig/conf.c
-+++ config.clean/conf.c
-@@ -500,8 +500,8 @@
- 	if (sync_kconfig) {
- 		if (stat(".config", &tmpstat)) {
+--- config.new.orig/conf.c
++++ config.new/conf.c
+@@ -508,8 +508,8 @@
+ 		name = conf_get_configname();
+ 		if (stat(name, &tmpstat)) {
  			fprintf(stderr, _("***\n"
 -				"*** You have not yet configured your kernel!\n"
--				"*** (missing kernel .config file)\n"
-+				"*** You have not yet configured Buildroot!\n"
-+				"*** (missing .config file)\n"
+-				"*** (missing kernel config file \"%s\")\n"
++				"*** You have not yet configured your Buildroot!\n"
++				"*** (missing .config file \"%s\")\n"
  				"***\n"
  				"*** Please run some configurator (e.g. \"make oldconfig\" or\n"
  				"*** \"make menuconfig\" or \"make xconfig\").\n"
-@@ -556,7 +556,7 @@
+@@ -571,7 +571,7 @@
  			name = getenv("KCONFIG_NOSILENTUPDATE");
  			if (name && *name) {
  				fprintf(stderr,
@@ -33,7 +33,7 @@ Index: config.clean/conf.c
  				return 1;
  			}
  		}
-@@ -599,16 +599,16 @@
+@@ -623,11 +623,11 @@
  		 * All other commands are only used to generate a config.
  		 */
  		if (conf_get_changed() && conf_write(NULL)) {
@@ -46,18 +46,21 @@ Index: config.clean/conf.c
 +			fprintf(stderr, _("\n*** Error during update of the Buildroot configuration.\n\n"));
  			return 1;
  		}
- 	} else {
+ 	} else if (input_mode == savedefconfig) {
+@@ -638,7 +638,7 @@
+ 		}
+ 	} else if (input_mode != listnewconfig) {
  		if (conf_write(NULL)) {
 -			fprintf(stderr, _("\n*** Error during writing of the kernel configuration.\n\n"));
 +			fprintf(stderr, _("\n*** Error during writing of the Buildroot configuration.\n\n"));
  			exit(1);
  		}
  	}
-Index: config.clean/confdata.c
+Index: config.new/confdata.c
 ===================================================================
---- config.clean.orig/confdata.c
-+++ config.clean/confdata.c
-@@ -436,7 +436,7 @@
+--- config.new.orig/confdata.c
++++ config.new/confdata.c
+@@ -579,7 +579,7 @@
  	if (!out)
  		return 1;
  
@@ -66,7 +69,7 @@ Index: config.clean/confdata.c
  	sym_calc_value(sym);
  	time(&now);
  	env = getenv("KCONFIG_NOTIMESTAMP");
-@@ -445,10 +445,8 @@
+@@ -588,10 +588,8 @@
  
  	fprintf(out, _("#\n"
  		       "# Automatically generated make config: don't edit\n"
@@ -77,7 +80,7 @@ Index: config.clean/confdata.c
  		     use_timestamp ? "# " : "",
  		     use_timestamp ? ctime(&now) : "");
  
-@@ -692,22 +690,20 @@
+@@ -802,25 +800,23 @@
  		return 1;
  	}
  
@@ -92,6 +95,9 @@ Index: config.clean/confdata.c
  		     "#\n",
 -		     sym_get_string_value(sym), ctime(&now));
 +		     ctime(&now));
+ 	fprintf(tristate, "#\n"
+ 			  "# Automatically generated - do not edit\n"
+ 			  "\n");
  	fprintf(out_h, "/*\n"
  		       " * Automatically generated C config: don't edit\n"
 -		       " * Linux kernel version: %s\n"
@@ -103,11 +109,11 @@ Index: config.clean/confdata.c
  
  	for_all_symbols(i, sym) {
  		sym_calc_value(sym);
-Index: config.clean/gconf.c
+Index: config.new/gconf.c
 ===================================================================
---- config.clean.orig/gconf.c
-+++ config.clean/gconf.c
-@@ -266,8 +266,8 @@
+--- config.new.orig/gconf.c
++++ config.new/gconf.c
+@@ -210,8 +210,8 @@
  					  /*"style", PANGO_STYLE_OBLIQUE, */
  					  NULL);
  
@@ -118,10 +124,10 @@ Index: config.clean/gconf.c
  	gtk_window_set_title(GTK_WINDOW(main_wnd), title);
  
  	gtk_widget_show(main_wnd);
-Index: config.clean/gconf.glade
+Index: config.new/gconf.glade
 ===================================================================
---- config.clean.orig/gconf.glade
-+++ config.clean/gconf.glade
+--- config.new.orig/gconf.glade
++++ config.new/gconf.glade
 @@ -5,7 +5,7 @@
  
  <widget class="GtkWindow" id="window1">
@@ -131,10 +137,10 @@ Index: config.clean/gconf.glade
    <property name="type">GTK_WINDOW_TOPLEVEL</property>
    <property name="window_position">GTK_WIN_POS_NONE</property>
    <property name="modal">False</property>
-Index: config.clean/mconf.c
+Index: config.new/mconf.c
 ===================================================================
---- config.clean.orig/mconf.c
-+++ config.clean/mconf.c
+--- config.new.orig/mconf.c
++++ config.new/mconf.c
 @@ -25,10 +25,9 @@
  static const char mconf_readme[] = N_(
  "Overview\n"
@@ -148,7 +154,7 @@ Index: config.clean/mconf.c
  "entered in as decimal or hexadecimal numbers or possibly text.\n"
  "\n"
  "Menu items beginning with following braces represent features that\n"
-@@ -115,7 +114,7 @@
+@@ -117,7 +116,7 @@
  "-----------------------------\n"
  "Menuconfig supports the use of alternate configuration files for\n"
  "those who, for various reasons, find it necessary to switch\n"
@@ -157,7 +163,7 @@ Index: config.clean/mconf.c
  "\n"
  "At the end of the main menu you will find two options.  One is\n"
  "for saving the current configuration to a file of your choosing.\n"
-@@ -148,7 +147,7 @@
+@@ -150,7 +149,7 @@
  "\n"
  "Optional personality available\n"
  "------------------------------\n"
@@ -166,7 +172,7 @@ Index: config.clean/mconf.c
  "menu, rather than the default multimenu hierarchy, run the menuconfig\n"
  "with MENUCONFIG_MODE environment variable set to single_menu. Example:\n"
  "\n"
-@@ -178,9 +177,9 @@
+@@ -180,9 +179,9 @@
  	"Arrow keys navigate the menu.  "
  	"<Enter> selects submenus --->.  "
  	"Highlighted letters are hotkeys.  "
@@ -178,15 +184,7 @@ Index: config.clean/mconf.c
  radiolist_instructions[] = N_(
  	"Use the arrow keys to navigate this window or "
  	"press the hotkey of the item you wish to select "
-@@ -200,18 +199,18 @@
- 	"This feature depends on another which has been configured as a module.\n"
- 	"As a result, this feature will be built as a module."),
- nohelp_text[] = N_(
--	"There is no help available for this kernel option.\n"),
-+	"There is no help available for this option.\n"),
- load_config_text[] = N_(
- 	"Enter the name of the configuration file you wish to load.  "
- 	"Accept the name shown to restore the configuration you "
+@@ -207,11 +206,11 @@
  	"last retrieved.  Leave blank to abort."),
  load_config_help[] = N_(
  	"\n"
@@ -209,7 +207,7 @@ Index: config.clean/mconf.c
  	"configurations available on a single machine.\n"
  	"\n"
  	"Entering a file name here will allow you to later retrieve, modify\n"
-@@ -364,10 +363,10 @@
+@@ -292,10 +291,10 @@
  	int size;
  	struct symbol *sym;
  
@@ -222,7 +220,7 @@ Index: config.clean/mconf.c
  		        config_filename, sym_get_string_value(sym));
  	if (size >= sizeof(menu_backtitle))
  		menu_backtitle[sizeof(menu_backtitle)-1] = '\0';
-@@ -894,7 +893,7 @@
+@@ -834,7 +833,7 @@
  		if (conf_get_changed())
  			res = dialog_yesno(NULL,
  					   _("Do you wish to save your "
@@ -231,7 +229,7 @@ Index: config.clean/mconf.c
  					     "<ESC><ESC> to continue."),
  					   6, 60);
  		else
-@@ -906,20 +905,20 @@
+@@ -846,20 +845,20 @@
  	case 0:
  		if (conf_write(filename)) {
  			fprintf(stderr, _("\n\n"
@@ -257,25 +255,26 @@ Index: config.clean/mconf.c
  			"\n\n"));
  	}
  
-Index: config.clean/qconf.cc
+Index: config.new/qconf.cc
 ===================================================================
---- config.clean.orig/qconf.cc
-+++ config.clean/qconf.cc
-@@ -1276,8 +1276,7 @@
+--- config.new.orig/qconf.cc
++++ config.new/qconf.cc
+@@ -1263,8 +1263,8 @@
  	char title[256];
  
- 	QWidget *d = configApp->desktop();
+ 	QDesktopWidget *d = configApp->desktop();
 -	snprintf(title, sizeof(title), _("Linux Kernel v%s Configuration"),
 -		getenv("KERNELVERSION"));
-+	snprintf(title, sizeof(title), _("Buildroot Configuration"));
++	snprintf(title, sizeof(title), _("Buildroot v%s Configuration"),
++		getenv("BR2_VERSION"));
  	setCaption(title);
  
  	width = configSettings->readNumEntry("/window width", d->width() - 64);
-Index: config.clean/zconf.tab.c_shipped
+Index: config.new/zconf.tab.c_shipped
 ===================================================================
---- config.clean.orig/zconf.tab.c_shipped
-+++ config.clean/zconf.tab.c_shipped
-@@ -2259,7 +2259,7 @@
+--- config.new.orig/zconf.tab.c_shipped
++++ config.new/zconf.tab.c_shipped
+@@ -2224,7 +2224,7 @@
  	modules_sym = sym_lookup(NULL, 0);
  	modules_sym->type = S_BOOLEAN;
  	modules_sym->flags |= SYMBOL_AUTO;
@@ -284,11 +283,11 @@ Index: config.clean/zconf.tab.c_shipped
  
  #if YYDEBUG
  	if (getenv("ZCONF_DEBUG"))
-Index: config.clean/zconf.y
+Index: config.new/zconf.y
 ===================================================================
---- config.clean.orig/zconf.y
-+++ config.clean/zconf.y
-@@ -476,7 +476,7 @@
+--- config.new.orig/zconf.y
++++ config.new/zconf.y
+@@ -479,7 +479,7 @@
  	modules_sym = sym_lookup(NULL, 0);
  	modules_sym->type = S_BOOLEAN;
  	modules_sym->flags |= SYMBOL_AUTO;

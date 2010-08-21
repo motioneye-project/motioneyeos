@@ -1,52 +1,37 @@
 ---
- conf.c     |    8 +++---
- confdata.c |   71 ++++++++++++++++++++++++++++++++++++++++++++-----------------
- lkc.h      |    1 
- util.c     |   22 ++++++++++++++----
- 4 files changed, 74 insertions(+), 28 deletions(-)
+ conf.c     |    1 
+ confdata.c |   65 +++++++++++++++++++++++++++++++++++++++++++++----------------
+ util.c     |   16 +++++++++++++--
+ 3 files changed, 62 insertions(+), 20 deletions(-)
 
-Index: config.clean/conf.c
+Index: config/conf.c
 ===================================================================
---- config.clean.orig/conf.c
-+++ config.clean/conf.c
-@@ -496,16 +496,16 @@
+--- config.orig/conf.c
++++ config/conf.c
+@@ -503,7 +503,6 @@
  	}
  	name = av[optind];
  	conf_parse(name);
 -	//zconfdump(stdout);
  	if (sync_kconfig) {
--		if (stat(".config", &tmpstat)) {
-+		name = conf_get_configname();
-+		if (stat(name, &tmpstat)) {
- 			fprintf(stderr, _("***\n"
- 				"*** You have not yet configured Buildroot!\n"
--				"*** (missing .config file)\n"
-+				"*** (missing .config file \"%s\")\n"
- 				"***\n"
- 				"*** Please run some configurator (e.g. \"make oldconfig\" or\n"
- 				"*** \"make menuconfig\" or \"make xconfig\").\n"
--				"***\n"));
-+				"***\n"), name);
- 			exit(1);
- 		}
- 	}
-Index: config.clean/confdata.c
+ 		name = conf_get_configname();
+ 		if (stat(name, &tmpstat)) {
+Index: config/confdata.c
 ===================================================================
---- config.clean.orig/confdata.c
-+++ config.clean/confdata.c
-@@ -42,6 +42,11 @@
- 	return name ? name : ".config";
+--- config.orig/confdata.c
++++ config/confdata.c
+@@ -44,9 +44,7 @@
+ 
+ const char *conf_get_autoconfig_name(void)
+ {
+-	char *name = getenv("KCONFIG_AUTOCONFIG");
+-
+-	return name ? name : "include/config/auto.conf";
++	return getenv("KCONFIG_AUTOCONFIG");
  }
  
-+const char *conf_get_autoconfig_name(void)
-+{
-+	return getenv("KCONFIG_AUTOCONFIG");
-+}
-+
  static char *conf_expand_value(const char *in)
- {
- 	struct symbol *sym;
-@@ -399,6 +404,9 @@
+@@ -542,6 +540,9 @@
  	int use_timestamp = 1;
  	char *env;
  
@@ -56,30 +41,24 @@ Index: config.clean/confdata.c
  	dirname[0] = 0;
  	if (name && name[0]) {
  		struct stat st;
-@@ -550,19 +558,31 @@
- 
- int conf_split_config(void)
+@@ -656,6 +657,7 @@
  {
--	char *name, path[128];
-+	const char *name;
-+	char path[128];
+ 	const char *name;
+ 	char path[128];
 +	char *opwd, *dir, *_name;
  	char *s, *d, c;
  	struct symbol *sym;
  	struct stat sb;
- 	int res, i, fd;
- 
--	name = getenv("KCONFIG_AUTOCONFIG");
--	if (!name)
--		name = "include/config/auto.conf";
-+	name = conf_get_autoconfig_name();
+@@ -664,8 +666,20 @@
+ 	name = conf_get_autoconfig_name();
  	conf_read_simple(name, S_DEF_AUTO);
  
 -	if (chdir("include/config"))
+-		return 1;
 +	opwd = malloc(256);
 +	_name = strdup(name);
 +	if (opwd == NULL || _name == NULL)
- 		return 1;
++ 		return 1;
 +	opwd = getcwd(opwd, 256);
 +	dir = dirname(_name);
 +	if (dir == NULL) {
@@ -93,7 +72,7 @@ Index: config.clean/confdata.c
  
  	res = 0;
  	for_all_symbols(i, sym) {
-@@ -655,9 +675,11 @@
+@@ -758,9 +772,11 @@
  		close(fd);
  	}
  out:
@@ -108,15 +87,10 @@ Index: config.clean/confdata.c
  	return res;
  }
  
-@@ -665,23 +687,35 @@
- {
- 	struct symbol *sym;
- 	const char *str;
--	char *name;
-+	const char *name;
- 	FILE *out, *out_h;
+@@ -772,25 +788,38 @@
+ 	FILE *out, *tristate, *out_h;
  	time_t now;
- 	int i, l;
+ 	int i;
 +	char dir[PATH_MAX+1], buf[PATH_MAX+1];
 +	char *s;
 +
@@ -142,13 +116,21 @@ Index: config.clean/confdata.c
  	if (!out)
  		return 1;
  
+-	tristate = fopen(".tmpconfig_tristate", "w");
++	sprintf(buf, "%s.tmpconfig_tristate", dir);
++	tristate = fopen(buf, "w");
+ 	if (!tristate) {
+ 		fclose(out);
+ 		return 1;
+ 	}
+ 
 -	out_h = fopen(".tmpconfig.h", "w");
 +	sprintf(buf, "%s.tmpconfig.h", dir);
 +	out_h = fopen(buf, "w");
  	if (!out_h) {
  		fclose(out);
- 		return 1;
-@@ -698,8 +732,7 @@
+ 		fclose(tristate);
+@@ -811,8 +840,7 @@
  	fprintf(out_h, "/*\n"
  		       " * Automatically generated C config: don't edit\n"
  		       " * %s"
@@ -158,18 +140,22 @@ Index: config.clean/confdata.c
  		       ctime(&now));
  
  	for_all_symbols(i, sym) {
-@@ -764,16 +797,16 @@
+@@ -866,19 +894,22 @@
  	name = getenv("KCONFIG_AUTOHEADER");
  	if (!name)
- 		name = "include/linux/autoconf.h";
+ 		name = "include/generated/autoconf.h";
 -	if (rename(".tmpconfig.h", name))
 +	sprintf(buf, "%s.tmpconfig.h", dir);
 +	if (rename(buf, name))
  		return 1;
--	name = getenv("KCONFIG_AUTOCONFIG");
--	if (!name)
--		name = "include/config/auto.conf";
-+	name = conf_get_autoconfig_name();
+ 	name = getenv("KCONFIG_TRISTATE");
+ 	if (!name)
+ 		name = "include/config/tristate.conf";
+-	if (rename(".tmpconfig_tristate", name))
++	sprintf(buf, "%s.tmpconfig_tristate", dir);
++	if (rename(buf, name))
+ 		return 1;
+ 	name = conf_get_autoconfig_name();
  	/*
  	 * This must be the last step, kbuild has a dependency on auto.conf
  	 * and this marks the successful completion of the previous steps.
@@ -180,22 +166,10 @@ Index: config.clean/confdata.c
  		return 1;
  
  	return 0;
-Index: config.clean/lkc.h
+Index: config/util.c
 ===================================================================
---- config.clean.orig/lkc.h
-+++ config.clean/lkc.h
-@@ -74,6 +74,7 @@
- 
- /* confdata.c */
- const char *conf_get_configname(void);
-+const char *conf_get_autoconfig_name(void);
- char *conf_get_default_confname(void);
- void sym_set_change_count(int count);
- void sym_add_change_count(int count);
-Index: config.clean/util.c
-===================================================================
---- config.clean.orig/util.c
-+++ config.clean/util.c
+--- config.orig/util.c
++++ config/util.c
 @@ -144,6 +144,8 @@
  /* write a dependency file as used by kbuild to track dependencies */
  int file_write_dep(const char *name)
@@ -223,25 +197,7 @@ Index: config.clean/util.c
  	if (!out)
  		return 1;
  	fprintf(out, "deps_config := \\\n");
-@@ -161,8 +172,8 @@
- 		else
- 			fprintf(out, "\t%s\n", file->name);
- 	}
--	fprintf(out, "\ninclude/config/auto.conf: \\\n"
--		     "\t$(deps_config)\n\n");
-+	fprintf(out, "\n%s: \\\n"
-+		     "\t$(deps_config)\n\n", conf_get_autoconfig_name());
- 
- 	expr_list_for_each_sym(sym_env_list, e, sym) {
- 		struct property *prop;
-@@ -176,13 +187,14 @@
- 		if (!value)
- 			value = "";
- 		fprintf(out, "ifneq \"$(%s)\" \"%s\"\n", env_sym->name, value);
--		fprintf(out, "include/config/auto.conf: FORCE\n");
-+		fprintf(out, "%s: FORCE\n", conf_get_autoconfig_name());
- 		fprintf(out, "endif\n");
- 	}
+@@ -182,7 +193,8 @@
  
  	fprintf(out, "\n$(deps_config): ;\n");
  	fclose(out);

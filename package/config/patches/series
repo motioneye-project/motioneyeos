@@ -1,10 +1,8 @@
 01-kconfig-kernel-to-buildroot.patch
 02-cpp-comments-to-c-comments.patch
 03-change-config-option-prefix.patch
-04-fedora-13-build-fix.patch
 05-really-clean-everything.patch
 06-br-build-system-integration.patch
-07-minor-makefile-fixes.patch
 08-make-write-deps.patch
 09-implement-kconfig-probability.patch
 10-br-build-system.patch
@@ -12,5 +10,3 @@
 12-fix-glade-file-path.patch
 13-use-conf-write-autoconf.patch
 14-support-out-of-tree-config.patch
-15-misc-qconf-changes.patch
-16-non-identified-changes.patch

@@ -1,11 +1,11 @@
 ---
- confdata.c |   57 +++++++++++++++++++++++++++------------------------------
- 1 file changed, 27 insertions(+), 30 deletions(-)
+ confdata.c |   49 +++++++++++++++++++++++--------------------------
+ 1 file changed, 23 insertions(+), 26 deletions(-)
 
-Index: config.clean/confdata.c
+Index: config.new/confdata.c
 ===================================================================
---- config.clean.orig/confdata.c
-+++ config.clean/confdata.c
+--- config.new.orig/confdata.c
++++ config.new/confdata.c
 @@ -11,6 +11,7 @@
  #include <string.h>
  #include <time.h>
@@ -32,7 +32,7 @@ Index: config.clean/confdata.c
  
  	return name ? name : ".config";
  }
-@@ -212,22 +213,22 @@
+@@ -222,22 +223,22 @@
  		sym = NULL;
  		switch (line[0]) {
  		case '#':
@@ -59,7 +59,7 @@ Index: config.clean/confdata.c
  				if (sym->type == S_UNKNOWN)
  					sym->type = S_BOOLEAN;
  			}
-@@ -244,12 +245,8 @@
+@@ -254,12 +255,8 @@
  				;
  			}
  			break;
@@ -74,7 +74,7 @@ Index: config.clean/confdata.c
  			if (!p)
  				continue;
  			*p++ = 0;
-@@ -260,13 +257,13 @@
+@@ -270,13 +267,13 @@
  					*p2 = 0;
  			}
  			if (def == S_DEF_USER) {
@@ -90,86 +90,74 @@ Index: config.clean/confdata.c
  				if (sym->type == S_UNKNOWN)
  					sym->type = S_OTHER;
  			}
-@@ -480,19 +477,19 @@
- 			case S_TRISTATE:
- 				switch (sym_get_tristate_value(sym)) {
- 				case no:
--					fprintf(out, "# CONFIG_%s is not set\n", sym->name);
-+					fprintf(out, "# %s is not set\n", sym->name);
- 					break;
- 				case mod:
--					fprintf(out, "CONFIG_%s=m\n", sym->name);
-+					fprintf(out, "%s=m\n", sym->name);
- 					break;
- 				case yes:
--					fprintf(out, "CONFIG_%s=y\n", sym->name);
-+					fprintf(out, "%s=y\n", sym->name);
- 					break;
- 				}
- 				break;
- 			case S_STRING:
- 				str = sym_get_string_value(sym);
--				fprintf(out, "CONFIG_%s=\"", sym->name);
-+				fprintf(out, "%s=\"", sym->name);
- 				while (1) {
- 					l = strcspn(str, "\"\\");
- 					if (l) {
-@@ -508,12 +505,12 @@
- 			case S_HEX:
- 				str = sym_get_string_value(sym);
- 				if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
--					fprintf(out, "CONFIG_%s=%s\n", sym->name, str);
-+					fprintf(out, "%s=%s\n", sym->name, str);
- 					break;
- 				}
- 			case S_INT:
- 				str = sym_get_string_value(sym);
--				fprintf(out, "CONFIG_%s=%s\n", sym->name, str);
-+				fprintf(out, "%s=%s\n", sym->name, str);
- 				break;
- 			}
+@@ -405,9 +402,9 @@
+ {
+ 	int l;
+ 	if (headerfile)
+-		fprintf(out, "#define CONFIG_%s \"", name);
++		fprintf(out, "#define %s \"", name);
+ 	else
+-		fprintf(out, "CONFIG_%s=\"", name);
++		fprintf(out, "%s=\"", name);
+ 
+ 	while (1) {
+ 		l = strcspn(str, "\"\\");
+@@ -433,13 +430,13 @@
+ 		switch (sym_get_tristate_value(sym)) {
+ 		case no:
+ 			if (write_no)
+-				fprintf(out, "# CONFIG_%s is not set\n", sym->name);
++				fprintf(out, "# %s is not set\n", sym->name);
+ 			break;
+ 		case mod:
+-			fprintf(out, "CONFIG_%s=m\n", sym->name);
++			fprintf(out, "%s=m\n", sym->name);
+ 			break;
+ 		case yes:
+-			fprintf(out, "CONFIG_%s=y\n", sym->name);
++			fprintf(out, "%s=y\n", sym->name);
+ 			break;
  		}
-@@ -716,19 +713,19 @@
+ 		break;
+@@ -449,7 +446,7 @@
+ 	case S_HEX:
+ 	case S_INT:
+ 		str = sym_get_string_value(sym);
+-		fprintf(out, "CONFIG_%s=%s\n", sym->name, str);
++		fprintf(out, "%s=%s\n", sym->name, str);
+ 		break;
+ 	case S_OTHER:
+ 	case S_UNKNOWN:
+@@ -834,14 +831,14 @@
  			case no:
  				break;
  			case mod:
--				fprintf(out, "CONFIG_%s=m\n", sym->name);
+-				fprintf(tristate, "CONFIG_%s=M\n", sym->name);
 -				fprintf(out_h, "#define CONFIG_%s_MODULE 1\n", sym->name);
-+				fprintf(out, "%s=m\n", sym->name);
++				fprintf(tristate, "%s=M\n", sym->name);
 +				fprintf(out_h, "#define %s_MODULE 1\n", sym->name);
  				break;
  			case yes:
--				fprintf(out, "CONFIG_%s=y\n", sym->name);
+ 				if (sym->type == S_TRISTATE)
+-					fprintf(tristate, "CONFIG_%s=Y\n",
++					fprintf(tristate, "%s=Y\n",
+ 							sym->name);
 -				fprintf(out_h, "#define CONFIG_%s 1\n", sym->name);
-+				fprintf(out, "%s=y\n", sym->name);
 +				fprintf(out_h, "#define %s 1\n", sym->name);
  				break;
  			}
  			break;
- 		case S_STRING:
- 			str = sym_get_string_value(sym);
--			fprintf(out, "CONFIG_%s=\"", sym->name);
--			fprintf(out_h, "#define CONFIG_%s \"", sym->name);
-+			fprintf(out, "%s=\"", sym->name);
-+			fprintf(out_h, "#define %s \"", sym->name);
- 			while (1) {
- 				l = strcspn(str, "\"\\");
- 				if (l) {
-@@ -748,14 +745,14 @@
+@@ -851,12 +848,12 @@
  		case S_HEX:
  			str = sym_get_string_value(sym);
  			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
--				fprintf(out, "CONFIG_%s=%s\n", sym->name, str);
 -				fprintf(out_h, "#define CONFIG_%s 0x%s\n", sym->name, str);
-+				fprintf(out, "%s=%s\n", sym->name, str);
 +				fprintf(out_h, "#define %s 0x%s\n", sym->name, str);
  				break;
  			}
  		case S_INT:
  			str = sym_get_string_value(sym);
--			fprintf(out, "CONFIG_%s=%s\n", sym->name, str);
 -			fprintf(out_h, "#define CONFIG_%s %s\n", sym->name, str);
-+			fprintf(out, "%s=%s\n", sym->name, str);
 +			fprintf(out_h, "#define %s %s\n", sym->name, str);
  			break;
  		default:

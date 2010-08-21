@@ -4,11 +4,11 @@
  qconf.cc |    2 ++
  3 files changed, 7 insertions(+), 1 deletion(-)
 
-Index: config.clean/conf.c
+Index: config.new/conf.c
 ===================================================================
---- config.clean.orig/conf.c
-+++ config.clean/conf.c
-@@ -611,6 +611,10 @@
+--- config.new.orig/conf.c
++++ config.new/conf.c
+@@ -641,6 +641,10 @@
  			fprintf(stderr, _("\n*** Error during writing of the Buildroot configuration.\n\n"));
  			exit(1);
  		}
@@ -19,11 +19,11 @@ Index: config.clean/conf.c
  	}
  	return 0;
  }
-Index: config.clean/mconf.c
+Index: config.new/mconf.c
 ===================================================================
---- config.clean.orig/mconf.c
-+++ config.clean/mconf.c
-@@ -922,6 +922,6 @@
+--- config.new.orig/mconf.c
++++ config.new/mconf.c
+@@ -862,6 +862,6 @@
  			"\n\n"));
  	}
  
@@ -31,11 +31,11 @@ Index: config.clean/mconf.c
 +	return conf_write_autoconf();
  }
  
-Index: config.clean/qconf.cc
+Index: config.new/qconf.cc
 ===================================================================
---- config.clean.orig/qconf.cc
-+++ config.clean/qconf.cc
-@@ -1608,6 +1608,7 @@
+--- config.new.orig/qconf.cc
++++ config.new/qconf.cc
+@@ -1612,6 +1612,7 @@
  {
  	if (!conf_get_changed()) {
  		e->accept();
@@ -43,7 +43,7 @@ Index: config.clean/qconf.cc
  		return;
  	}
  	QMessageBox mb("qconf", _("Save configuration?"), QMessageBox::Warning,
-@@ -1618,6 +1619,7 @@
+@@ -1622,6 +1623,7 @@
  	switch (mb.exec()) {
  	case QMessageBox::Yes:
  		conf_write(NULL);
