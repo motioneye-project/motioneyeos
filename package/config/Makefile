@@ -177,6 +177,9 @@ hostprogs-y := conf qconf gconf kxgettext
 ifeq ($(MAKECMDGOALS),nconfig)
 	hostprogs-y += nconf
 endif
+ifeq ($(findstring nconf,$(MAKECMDGOALS)),nconf)
+       hostprogs-y += nconf
+endif
 
 ifeq ($(MAKECMDGOALS),menuconfig)
 	hostprogs-y += mconf

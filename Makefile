@@ -28,7 +28,7 @@ CONFIG_CONFIG_IN=Config.in
 CONFIG=package/config
 DATE:=$(shell date +%Y%m%d)
 
-noconfig_targets:=menuconfig gconfig xconfig config oldconfig randconfig \
+noconfig_targets:=menuconfig nconfig gconfig xconfig config oldconfig randconfig \
 	defconfig %_defconfig allyesconfig allnoconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
 	source-check help
@@ -483,6 +483,14 @@ gconfig: $(BUILD_DIR)/buildroot-config/gconf
 	fi
 
 menuconfig: $(BUILD_DIR)/buildroot-config/mconf
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
+		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+		BUILDROOT_CONFIG=$(CONFIG_DIR)/.config $< $(CONFIG_CONFIG_IN); then \
+		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
+	fi
+
+nconfig: $(BUILD_DIR)/buildroot-config/nconf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 		KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
