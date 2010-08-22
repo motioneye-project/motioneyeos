@@ -30,7 +30,7 @@ $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY): $(SYSVINIT_DIR)/$(SYSVINIT_BINARY)
 		install -D $(SYSVINIT_DIR)/src/$$x $(TARGET_DIR)/sbin/$$x || exit 1; \
 	done
 
-sysvinit: ncurses $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY)
+sysvinit: $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY)
 
 sysvinit-source: $(DL_DIR)/$(SYSVINIT_SOURCE)
 
