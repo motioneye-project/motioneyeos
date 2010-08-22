@@ -29,7 +29,7 @@ CONFIG=package/config
 DATE:=$(shell date +%Y%m%d)
 
 noconfig_targets:=menuconfig nconfig gconfig xconfig config oldconfig randconfig \
-	defconfig %_defconfig savedefconfig allyesconfig allnoconfig release \
+	defconfig %_defconfig savedefconfig allyesconfig allnoconfig silentoldconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
 	source-check help
 
@@ -322,17 +322,17 @@ TARGETS_ALL:=$(patsubst %,__real_tgt_%,$(TARGETS))
 # all targets depend on the crosscompiler and it's prerequisites
 $(TARGETS_ALL): __real_tgt_%: $(BASE_TARGETS) %
 
-$(BR2_DEPENDS_DIR): $(CONFIG_DIR)/.config
-#	rm -rf $@
-#	mkdir -p $(@D)
-#	cp -dpRf $(CONFIG)/buildroot-config $@
-
 dirs: $(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 	$(HOST_DIR) $(BR2_DEPENDS_DIR) $(BINARIES_DIR) $(STAMP_DIR)
 
 $(BASE_TARGETS): dirs
 
-world: dependencies dirs $(BASE_TARGETS) $(TARGETS_ALL)
+$(BUILD_DIR)/buildroot-config/auto.conf: $(CONFIG_DIR)/.config
+	$(MAKE) $(EXTRAMAKEARGS) silentoldconfig
+
+prepare: $(BUILD_DIR)/buildroot-config/auto.conf
+
+world: prepare dependencies dirs $(BASE_TARGETS) $(TARGETS_ALL)
 
 
 .PHONY: all world dirs clean distclean source \
@@ -468,6 +468,7 @@ $(BUILD_DIR)/buildroot-config/%onf:
 COMMON_CONFIG_ENV = \
 	KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \
 	KCONFIG_AUTOHEADER=$(BUILD_DIR)/buildroot-config/autoconf.h \
+	KCONFIG_TRISTATE=$(BUILD_DIR)/buildroot-config/tristate.config \
 	BUILDROOT_CONFIG=$(CONFIG_DIR)/.config
 
 xconfig: $(BUILD_DIR)/buildroot-config/qconf
@@ -538,6 +539,10 @@ allnopackageconfig: $(BUILD_DIR)/buildroot-config/conf
 		KCONFIG_ALLCONFIG=$(CONFIG_DIR)/.config.nopkg \
 		$< --allnoconfig $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
+
+silentoldconfig: $(BUILD_DIR)/buildroot-config/conf
+	@mkdir -p $(BUILD_DIR)/buildroot-config
+	$(COMMON_CONFIG_ENV) $< --silentoldconfig $(CONFIG_CONFIG_IN)
 
 defconfig: $(BUILD_DIR)/buildroot-config/conf
 	@mkdir -p $(BUILD_DIR)/buildroot-config
