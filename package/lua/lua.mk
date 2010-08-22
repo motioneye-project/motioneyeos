@@ -24,7 +24,9 @@ endif
 define LUA_BUILD_CMDS
 	sed -i -e 's/-O2//' $(@D)/src/Makefile
 	sed -i -e 's/\/usr\/local/\/usr/' $(@D)/etc/lua.pc
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) MYCFLAGS="$(LUA_MYCFLAGS)" \
+	$(MAKE) \
+	CC="$(TARGET_CC)" RANLIB="$(TARGET_RANLIB)" \
+	MYCFLAGS="$(TARGET_CFLAGS) $(LUA_MYCFLAGS)" \
 	MYLIBS="$(LUA_MYLIBS)" AR="$(TARGET_CROSS)ar rcu" \
 	PKG_VERSION=$(LUA_VERSION) -C $(@D)/src all
 endef
