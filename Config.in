@@ -267,9 +267,11 @@ config BR2_HAVE_DEVFILES
 menu "Advanced"
 
 config BR2_CONFIG_CACHE
-	bool "Use a central configure cache file"
-	default y
+	bool "Use a central configure cache file (EXPERIMENTAL)"
 	help
+	  Notice: This is experimental and known to break with certain
+	  package combinations.
+
 	  This determines if a central config cache is used by
 	  packages, reducing the configure time for packages as each
 	  one caches its findings.

@@ -8,6 +8,10 @@
 	Mark CRIS architecture as deprecated, as it is discontinued
 	upstream.
 
+	Marked shared config.cache as experimental and disabled by
+	default as it is known to break with certain package
+	combinations.
+
 	Toolchain: fixed gcc 4.2.x build after uClibc NPTL support got
 	added.
 
