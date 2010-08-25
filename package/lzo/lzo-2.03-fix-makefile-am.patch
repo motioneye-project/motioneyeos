@@ -1,0 +1,24 @@
+Makefile.am is not allowed to override CFLAGS/CPPFLAGS, it must use
+AM_CFLAGS and AM_CPPFLAGS. This is needed in order for autoreconf to
+work on this package.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/Makefile.am |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: lzo-2.03/src/Makefile.am
+===================================================================
+--- lzo-2.03.orig/src/Makefile.am
++++ lzo-2.03/src/Makefile.am
+@@ -7,8 +7,8 @@
+ SUFFIXES = .S
+ 
+ INCLUDES = -I$(top_srcdir)/include -I$(top_srcdir)
+-CPPFLAGS = $(LZO_CPPFLAGS) $(configure_CPPFLAGS) $(LZO_EXTRA_CPPFLAGS)
+-CFLAGS = $(LZO_CFLAGS) $(configure_CFLAGS) $(LZO_EXTRA_CFLAGS)
++AM_CPPFLAGS = $(LZO_CPPFLAGS) $(configure_CPPFLAGS) $(LZO_EXTRA_CPPFLAGS)
++AM_CFLAGS = $(LZO_CFLAGS) $(configure_CFLAGS) $(LZO_EXTRA_CFLAGS)
+ 
+ lib_LTLIBRARIES = liblzo2.la
+ 

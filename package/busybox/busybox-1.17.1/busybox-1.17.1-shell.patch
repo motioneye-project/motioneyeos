@@ -84,3 +84,22 @@ diff -urpN busybox-1.17.1/shell/hush_test/hush-trap/signal7.tests busybox-1.17.1
 +&& test x"$REAL_CHILD" = x"$PARENTS_IDEA_OF_CHILD"
 +echo "Bug detected: $?"
 +}
+diff -urpN busybox-1.17.1/shell/shell_common.c busybox-1.17.1-shell/shell/shell_common.c
+--- busybox-1.17.1/shell/shell_common.c	2010-07-06 04:25:54.000000000 +0200
++++ busybox-1.17.1-shell/shell/shell_common.c	2010-07-27 08:41:43.000000000 +0200
+@@ -428,9 +428,14 @@ shell_builtin_ulimit(char **argv)
+ 						val <<= l->factor_shift;
+ 					}
+ //bb_error_msg("opt %c val_str:'%s' val:%lld", opt_char, val_str, (long long)val);
++					/* from man bash: "If neither -H nor -S
++					 * is specified, both the soft and hard
++					 * limits are set. */
++					if (!opts)
++						opts = OPT_hard + OPT_soft;
+ 					if (opts & OPT_hard)
+ 						limit.rlim_max = val;
+-					if ((opts & OPT_soft) || opts == 0)
++					if (opts & OPT_soft)
+ 						limit.rlim_cur = val;
+ //bb_error_msg("setrlimit(%d, %lld, %lld)", l->cmd, (long long)limit.rlim_cur, (long long)limit.rlim_max);
+ 					if (setrlimit(l->cmd, &limit) < 0) {

@@ -16,6 +16,7 @@ endif
 dependencies: host-sed $(DEPENDENCIES_HOST_PREREQ)
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		HOST_SED_DIR="$(HOST_SED_DIR)" \
+		CONFIG_FILE="$(CONFIG_DIR)/.config" \
 		$(TOPDIR)/toolchain/dependencies/dependencies.sh
 
 dependencies-source:
