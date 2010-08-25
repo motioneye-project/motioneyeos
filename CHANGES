@@ -1,3 +1,21 @@
+2010.08, Not released yet:
+
+	Fixes all over the tree.
+
+	Mark the combination of uClibc 0.9.31, gcc 4.2.x, C++ and
+	locale support as broken.
+
+	Mark CRIS architecture as deprecated, as it is discontinued
+	upstream.
+
+	Updated/fixed packages: busybox, imagemagick, libglib2, lua,
+	luafilesystem, lzo, netcat, php, sysvinit, util-linux
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#635:  util-linux fails to build in 2009.08
+	#2239: netcat package installs its binary to target as avr32-linux...
+
 2010.08-rc1, Released July 30th, 2010:
 
 	Fixes all over the tree and new features.
