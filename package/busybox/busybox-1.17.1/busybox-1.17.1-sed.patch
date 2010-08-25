@@ -1,6 +1,6 @@
 diff -urpN busybox-1.17.1/editors/sed.c busybox-1.17.1-sed/editors/sed.c
 --- busybox-1.17.1/editors/sed.c	2010-07-06 04:25:53.000000000 +0200
-+++ busybox-1.17.1-sed/editors/sed.c	2010-08-01 04:15:39.000000000 +0200
++++ busybox-1.17.1-sed/editors/sed.c	2010-08-17 02:05:27.000000000 +0200
 @@ -61,6 +61,10 @@
  #include "libbb.h"
  #include "xregex.h"
@@ -25,7 +25,36 @@ diff -urpN busybox-1.17.1/editors/sed.c busybox-1.17.1-sed/editors/sed.c
  			sed_cmd->in_match = !(
  				/* has the ending line come, or is this a single address command? */
  				(sed_cmd->end_line ?
-@@ -1270,9 +1277,6 @@ static void add_cmd_block(char *cmdstr)
+@@ -985,6 +992,8 @@ static void process_files(void)
+ 		}
+ 
+ 		/* actual sedding */
++		//bb_error_msg("pattern_space:'%s' next_line:'%s' cmd:%c",
++		//pattern_space, next_line, sed_cmd->cmd);
+ 		switch (sed_cmd->cmd) {
+ 
+ 		/* Print line number */
+@@ -1111,10 +1120,16 @@ static void process_files(void)
+ 		{
+ 			int len;
+ 			/* If no next line, jump to end of script and exit. */
++			/* http://www.gnu.org/software/sed/manual/sed.html:
++			 * "Most versions of sed exit without printing anything
++			 * when the N command is issued on the last line of
++			 * a file. GNU sed prints pattern space before exiting
++			 * unless of course the -n command switch has been
++			 * specified. This choice is by design."
++			 */
+ 			if (next_line == NULL) {
+-				free(next_line);
+-				next_line = NULL;
+-				goto discard_line;
++				//goto discard_line;
++				goto discard_commands; /* GNU behavior */
+ 			}
+ 			/* Append next_line, read new next_line. */
+ 			len = strlen(pattern_space);
+@@ -1270,9 +1285,6 @@ static void add_cmd_block(char *cmdstr)
  int sed_main(int argc, char **argv) MAIN_EXTERNALLY_VISIBLE;
  int sed_main(int argc UNUSED_PARAM, char **argv)
  {
@@ -35,7 +64,7 @@ diff -urpN busybox-1.17.1/editors/sed.c busybox-1.17.1-sed/editors/sed.c
  	unsigned opt;
  	llist_t *opt_e, *opt_f;
  	int status = EXIT_SUCCESS;
-@@ -1292,6 +1296,7 @@ int sed_main(int argc UNUSED_PARAM, char
+@@ -1292,6 +1304,7 @@ int sed_main(int argc UNUSED_PARAM, char
  	opt_e = opt_f = NULL;
  	opt_complementary = "e::f::" /* can occur multiple times */
  	                    "nn"; /* count -n */
@@ -45,8 +74,30 @@ diff -urpN busybox-1.17.1/editors/sed.c busybox-1.17.1-sed/editors/sed.c
  	//argc -= optind;
 diff -urpN busybox-1.17.1/testsuite/sed.tests busybox-1.17.1-sed/testsuite/sed.tests
 --- busybox-1.17.1/testsuite/sed.tests	2010-07-06 04:25:54.000000000 +0200
-+++ busybox-1.17.1-sed/testsuite/sed.tests	2010-08-01 04:19:26.000000000 +0200
-@@ -270,11 +270,16 @@ testing "sed a cmd ended by double backs
++++ busybox-1.17.1-sed/testsuite/sed.tests	2010-08-17 02:05:27.000000000 +0200
+@@ -80,10 +80,18 @@ test x"$SKIP_KNOWN_BUGS" = x"" && {
+ # Query: how does this interact with no newline at EOF?
+ testing "sed n (flushes pattern space, terminates early)" "sed -e 'n;p'" \
+ 	"a\nb\nb\nc\n" "" "a\nb\nc\n"
+-# N does _not_ flush pattern space, therefore c is still in there @ script end.
+-testing "sed N (doesn't flush pattern space when terminating)" "sed -e 'N;p'" \
+-	"a\nb\na\nb\nc\n" "" "a\nb\nc\n"
+ }
++# non-GNU sed: N does _not_ flush pattern space, therefore c is eaten @ script end
++# GNU sed: N flushes pattern space, therefore c is printed too @ script end
++testing "sed N (flushes pattern space (GNU behavior))" "sed -e 'N;p'" \
++	"a\nb\na\nb\nc\n" "" "a\nb\nc\n"
++
++testing "sed N test2" "sed ':a;N;s/\n/ /;ta'" \
++	"a b c\n" "" "a\nb\nc\n"
++
++testing "sed N test3" "sed 'N;s/\n/ /'" \
++	"a b\nc\n" "" "a\nb\nc\n"
++
+ testing "sed address match newline" 'sed "/b/N;/b\\nc/i woo"' \
+ 	"a\nwoo\nb\nc\nd\n" "" "a\nb\nc\nd\n"
+ 
+@@ -270,11 +278,16 @@ testing "sed a cmd ended by double backs
  	| two \\
  '
  

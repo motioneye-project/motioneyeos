@@ -1,0 +1,39 @@
+diff -urpN busybox-1.17.1/findutils/grep.c busybox-1.17.1-grep/findutils/grep.c
+--- busybox-1.17.1/findutils/grep.c	2010-07-06 04:25:54.000000000 +0200
++++ busybox-1.17.1-grep/findutils/grep.c	2010-08-23 02:37:08.000000000 +0200
+@@ -461,15 +461,19 @@ static int grep_file(FILE *file)
+ 						if (found)
+ 							print_line(gl->pattern, strlen(gl->pattern), linenum, ':');
+ 					} else while (1) {
++						unsigned start = gl->matched_range.rm_so;
+ 						unsigned end = gl->matched_range.rm_eo;
++						unsigned len = end - start;
+ 						char old = line[end];
+ 						line[end] = '\0';
+-						print_line(line + gl->matched_range.rm_so,
+-								end - gl->matched_range.rm_so,
+-								linenum, ':');
++						/* Empty match is not printed: try "echo test | grep -o ''" */
++						if (len != 0)
++							print_line(line + start, len, linenum, ':');
+ 						if (old == '\0')
+ 							break;
+ 						line[end] = old;
++						if (len == 0)
++							end++;
+ #if !ENABLE_EXTRA_COMPAT
+ 						if (regexec(&gl->compiled_regex, line + end,
+ 								1, &gl->matched_range, REG_NOTBOL) != 0)
+diff -urpN busybox-1.17.1/testsuite/grep.tests busybox-1.17.1-grep/testsuite/grep.tests
+--- busybox-1.17.1/testsuite/grep.tests	2010-07-06 04:25:54.000000000 +0200
++++ busybox-1.17.1-grep/testsuite/grep.tests	2010-08-23 02:37:08.000000000 +0200
+@@ -98,5 +98,9 @@ testing "grep -o does not loop forever" 
+ 	'grep -o "[^/]*$"' \
+ 	"test\n" \
+ 	"" "/var/test\n"
++testing "grep -o does not loop forever on zero-length match" \
++	'grep -o "" | head -n1' \
++	"" \
++	"" "test\n"
+ 
+ exit $FAILCOUNT

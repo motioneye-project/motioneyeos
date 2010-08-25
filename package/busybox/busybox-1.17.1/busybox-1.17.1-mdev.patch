@@ -1,0 +1,49 @@
+diff -urpN busybox-1.17.1/testsuite/mdev.tests busybox-1.17.1-mdev/testsuite/mdev.tests
+--- busybox-1.17.1/testsuite/mdev.tests	2010-07-06 04:25:54.000000000 +0200
++++ busybox-1.17.1-mdev/testsuite/mdev.tests	2010-08-23 02:38:21.000000000 +0200
+@@ -38,6 +38,16 @@ brw-rw---- 1 0 0 8,0 sda
+ SKIP=
+ 
+ # continuing to use directory structure from prev test
++optional STATIC FEATURE_MDEV_CONF FEATURE_LS_TIMESTAMPS FEATURE_LS_USERNAME
++testing "mdev deletes /block/sda" \
++	"env - PATH=$PATH ACTION=remove DEVPATH=/block/sda chroot mdev.testdir /mdev 2>&1;
++	ls -ln mdev.testdir/dev | $FILTER_LS" \
++"\
++" \
++	"" ""
++SKIP=
++
++# continuing to use directory structure from prev test
+ rm -rf mdev.testdir/dev/*
+ echo ".* 1:1 666" >mdev.testdir/etc/mdev.conf
+ echo "sda 2:2 444" >>mdev.testdir/etc/mdev.conf
+diff -urpN busybox-1.17.1/util-linux/mdev.c busybox-1.17.1-mdev/util-linux/mdev.c
+--- busybox-1.17.1/util-linux/mdev.c	2010-07-06 04:25:54.000000000 +0200
++++ busybox-1.17.1-mdev/util-linux/mdev.c	2010-08-23 02:38:21.000000000 +0200
+@@ -132,6 +132,7 @@ static void make_device(char *path, int 
+ 			major = -1;
+ 		}
+ 	}
++	/* else: for delete, -1 still deletes the node, but < -1 suppresses that */
+ 
+ 	/* Determine device name, type, major and minor */
+ 	device_name = (char*) bb_basename(path);
+@@ -279,7 +280,7 @@ static void make_device(char *path, int 
+ 				if (aliaslink == '!' && s == a+1) {
+ 					val = st;
+ 					/* "!": suppress node creation/deletion */
+-					major = -1;
++					major = -2;
+ 				}
+ 				else if (aliaslink == '>' || aliaslink == '=') {
+ 					val = st;
+@@ -379,7 +380,7 @@ static void make_device(char *path, int 
+ 				free(command);
+ 			}
+ 
+-			if (delete && major >= 0) {
++			if (delete && major >= -1) {
+ 				if (ENABLE_FEATURE_MDEV_RENAME && alias) {
+ 					if (aliaslink == '>')
+ 						unlink(device_name);
