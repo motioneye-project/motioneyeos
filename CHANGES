@@ -16,7 +16,7 @@
 	added.
 
 	Updated/fixed packages: busybox, imagemagick, libglib2, lua,
-	luafilesystem, lzo, netcat, php, sysvinit, util-linux
+	luafilesystem, lzo, netcat, php, qt, sysvinit, util-linux
 
 	Issues resolved (http://bugs.uclibc.org):
 
