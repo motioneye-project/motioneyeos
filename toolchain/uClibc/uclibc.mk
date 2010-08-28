@@ -217,13 +217,7 @@ ifeq ($(UCLIBC_TARGET_ARCH),sparc)
 	$(SED) 's/^.*$(UCLIBC_SPARC_TYPE)[^B].*/$(UCLIBC_SPARC_TYPE)=y/g' $(UCLIBC_DIR)/.oldconfig
 endif
 ifeq ($(UCLIBC_TARGET_ARCH),powerpc)
-ifeq ($(BR2_powerpc_8540),y)
-	TARGET_POWERPC_CORE_E500:=y
-endif
-ifeq ($(BR2_powerpc_e500mc),y)
-	TARGET_POWERPC_CORE_E500:=y
-endif
-ifeq ($(TARGET_POWERPC_CORE_E500),y)
+ifeq ($(BR2_powerpc_8540)$(BR2_powerpc_e500mc),y)
 	/bin/echo "# CONFIG_CLASSIC is not set" >> $(UCLIBC_DIR)/.oldconfig
 	/bin/echo "CONFIG_E500=y" >> $(UCLIBC_DIR)/.oldconfig
 else
