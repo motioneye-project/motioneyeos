@@ -27,6 +27,7 @@
 
 	#635:  util-linux fails to build in 2009.08
 	#2239: netcat package installs its binary to target as avr32-linux...
+	#2443: Initramfs: Don't overwrite $(TARGET_DIR)/init if it exists
 	#2449: Minor fixes for squashfs makefile and correct PowerPC e500 ...
 
 2010.08-rc1, Released July 30th, 2010:

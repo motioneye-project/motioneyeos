@@ -13,8 +13,9 @@ INITRAMFS_TARGET:= #nothing
 endif
 
 define ROOTFS_INITRAMFS_INIT_SYMLINK
-	rm -f $(TARGET_DIR)/init
-	ln -s sbin/init $(TARGET_DIR)/init
+	if [ ! -e $(TARGET_DIR)/init ]; then \
+		ln -s sbin/init $(TARGET_DIR)/init; \
+	fi
 endef
 
 ROOTFS_INITRAMFS_PRE_GEN_HOOKS += ROOTFS_INITRAMFS_INIT_SYMLINK
