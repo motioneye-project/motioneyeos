@@ -33,18 +33,19 @@ $(eval $(call AUTOTARGETS,package,kismet))
 
 $(KISMET_TARGET_INSTALL_TARGET):
 	$(call MESSAGE,"Installing")
+ifdef KISMET_TARGET_BINARIES
 	$(INSTALL) -m 755 $(addprefix $(KISMET_DIR)/, $(KISMET_TARGET_BINARIES)) $(TARGET_DIR)/usr/bin
+endif
 ifdef KISMET_TARGET_CONFIGS
 	$(INSTALL) -m 644 $(addprefix $(KISMET_DIR)/conf/, $(KISMET_TARGET_CONFIGS)) $(TARGET_DIR)/etc
-endif
-ifeq ($(BR2_ENABLE_DEBUG),)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(addprefix $(TARGET_DIR)/usr/bin/, $(KISMET_TARGET_BINARIES))
 endif
 	touch $@
 
 $(KISMET_TARGET_UNINSTALL):
 	$(call MESSAGE,"Uninstalling")
+ifdef KISMET_TARGET_BINARIES
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, $(KISMET_TARGET_BINARIES))
+endif
 ifdef KISMET_TARGET_CONFIGS
 	rm -f $(addprefix $(TARGET_DIR)/etc/, $(KISMET_TARGET_CONFIGS))
 endif
