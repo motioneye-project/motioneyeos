@@ -59,6 +59,8 @@ MAKEOVERRIDES =
 # To really make O go away, we have to override it.
 override O:=$(O)
 CONFIG_DIR:=$(O)
+# we need to pass O= everywhere we call back into the toplevel makefile
+EXTRAMAKEARGS = O=$(O)
 endif
 
 # $(shell find . -name *_defconfig |sed 's/.*\///')
@@ -432,11 +434,11 @@ endif
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 _source-check:
-	$(MAKE) SPIDER=--spider source
+	$(MAKE) $(EXTRAMAKEARGS) SPIDER=--spider source
 
 external-deps:
 	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)/toolchain/wget-show-external-deps.sh \
-		SPIDER=--spider source
+		$(EXTRAMAKEARGS) SPIDER=--spider source
 
 show-targets:
 	@echo $(TARGETS)
@@ -558,7 +560,7 @@ defconfig: $(BUILD_DIR)/buildroot-config/conf
 
 # check if download URLs are outdated
 source-check: allyesconfig
-	$(MAKE) _source-check
+	$(MAKE) $(EXTRAMAKEARGS) _source-check
 
 endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
@@ -585,11 +587,7 @@ flush:
 
 %_defconfig: $(TOPDIR)/configs/%_defconfig
 	cp $^ $(CONFIG_DIR)/.config
-ifeq ($(O),output)
-	@$(MAKE) oldconfig
-else
-	@$(MAKE) O=$(O) oldconfig
-endif
+	@$(MAKE) $(EXTRAMAKEARGS) oldconfig
 
 configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
 
