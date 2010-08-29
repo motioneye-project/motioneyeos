@@ -18,7 +18,8 @@
 	fs: old-style squashfs for big endian archs fixed.
 
 	Updated/fixed packages: busybox, imagemagick, libglib2, lua,
-	luafilesystem, lzo, netcat, php, qt, sysvinit, util-linux
+	luafilesystem, lzo, netcat, php, qt, startup-notification,
+	sysvinit, util-linux
 
 	Issues resolved (http://bugs.uclibc.org):
 
