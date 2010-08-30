@@ -1,12 +1,10 @@
 config BR2_PACKAGE_XSTROKE
 	bool "xstroke"
 	depends on BR2_PACKAGE_XORG7
-	depends on BR2_USE_WCHAR # glib2
-	select BR2_PACKAGE_DOCKER
+	select BR2_PACKAGE_XLIB_LIBXFT
+	select BR2_PACKAGE_XLIB_LIBXTST
+	select BR2_PACKAGE_XLIB_LIBXPM
 	help
 	  Handwriting recognition for X
 
 	  http://avr32linux.org/twiki/pub/Main/XStroke
-
-comment "xstroke requires a toolchain with WCHAR support"
-	depends on BR2_PACKAGE_XORG7 && !BR2_USE_WCHAR
