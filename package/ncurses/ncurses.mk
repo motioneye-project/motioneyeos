@@ -40,11 +40,8 @@ NCURSES_CONF_OPT = \
 	--enable-echo \
 	--enable-const \
 	--enable-overwrite \
-	--enable-broken_linker
-
-ifneq ($(BR2_PACKAGE_NCURSES_TARGET_HEADERS),y)
-NCURSES_CONF_OPT += --disable-static
-endif
+	--enable-broken_linker \
+	--disable-static
 
 ifneq ($(BR2_ENABLE_DEBUG),y)
 NCURSES_CONF_OPT += --without-debug

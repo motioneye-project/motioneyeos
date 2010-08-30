@@ -19,7 +19,7 @@
 
 	Updated/fixed packages: busybox, gst-plugins-base,
 	imagemagick, libgail, libglib2, libgtk2, lua, luafilesystem,
-	lzo, netcat, pango, php, pppd, proftpd, qt, samba,
+	lzo, ncurses, netcat, pango, php, pppd, proftpd, qt, samba,
 	startup-notification, swfdec, sysvinit, util-linux
 
 	Removed packages: stunnel
