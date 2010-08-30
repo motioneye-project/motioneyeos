@@ -41,7 +41,7 @@ ATK_CONF_ENV = ac_cv_func_posix_getpwuid_r=yes \
 		gl_cv_c_restrict=no ac_cv_prog_F77=no
 
 ATK_CONF_OPT =  --enable-shared \
-		--enable-static
+		--enable-static \
 		--disable-glibtest --enable-explicit-deps=no \
 		--disable-debug
 
