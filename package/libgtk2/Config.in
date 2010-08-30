@@ -13,10 +13,11 @@ config BR2_PACKAGE_LIBGTK2
 	# time.
 	depends on BR2_PACKAGE_XORG7||(BR2_PACKAGE_DIRECTFB && BR2_DEPRECATED)
 	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_INSTALL_LIBSTDCPP # pango
 	help
 	  The GTK+ version 2 graphical user interface library
 
 	  http://www.gtk.org/
 
-comment "libgtk2 requires a toolchain with WCHAR support"
-	depends on !BR2_USE_WCHAR
+comment "libgtk2 requires a toolchain with WCHAR and C++ support"
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP

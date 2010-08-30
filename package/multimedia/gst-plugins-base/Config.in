@@ -74,7 +74,11 @@ config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_OGG
 
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_PANGO
 	bool "pango font renderer"
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_PANGO
+
+comment "pango plugin requires a toolchain with C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_THEORA
 	bool "theora (*.ogg video)"
