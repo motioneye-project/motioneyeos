@@ -81,7 +81,9 @@ config BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER
 	  the pagesize is not a power of 2
 
 config BR2_JFFS2_TARGET_SREC
-	bool "RootFS in SREC file formet"
+	bool "RootFS in SREC file format"
+	help
+	  The binary data will be encoded in Motorola's S-record format
 
 config BR2_TARGET_ROOTFS_JFFS2_PAD
 	bool "Pad output"
