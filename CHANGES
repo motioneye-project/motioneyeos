@@ -3,7 +3,8 @@
 	Fixes all over the tree.
 
 	Mark the combination of uClibc 0.9.31, gcc 4.2.x, C++ and
-	locale support as broken.
+	locale support as broken. Remove deprecated GCC 4.2.[1-3]
+	versions.
 
 	Mark CRIS architecture as deprecated, as it is discontinued
 	upstream.
