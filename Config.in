@@ -8,7 +8,7 @@ config BR2_HAVE_DOT_CONFIG
 
 config BR2_VERSION
 	string
-	default "2010.08-rc2-git"
+	default "2010.08"
 
 source "target/Config.in.arch"
 source "target/device/Config.in"
