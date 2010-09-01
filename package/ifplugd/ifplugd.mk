@@ -16,20 +16,20 @@ IFPLUGD_CONF_OPT = --disable-lynx
 
 IFPLUGD_DEPENDENCIES = libdaemon
 
-$(eval $(call AUTOTARGETS,package,ifplugd))
-
-$(IFPLUGD_HOOK_POST_INSTALL): $(IFPLUGD_TARGET_INSTALL_TARGET)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/ifplugd
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/ifplugstatus
+define IFPLUGD_INSTALL_FIXUP
 	$(INSTALL) -d $(TARGET_DIR)/etc/ifplugd
 	@if [ ! -f $(TARGET_DIR)/etc/ifplugd/ifplugd.conf ]; then \
-		$(INSTALL) $(IFPLUGD_DIR)/conf/ifplugd.conf $(TARGET_DIR)/etc/ifplugd/; \
+		$(INSTALL) $(@D)/conf/ifplugd.conf $(TARGET_DIR)/etc/ifplugd/; \
 		$(SED) 's^\(ARGS=.*\)w^\1^' $(TARGET_DIR)/etc/ifplugd/ifplugd.conf; \
 	fi
-	$(INSTALL) -m 0755 $(IFPLUGD_DIR)/conf/ifplugd.action \
+	$(INSTALL) -m 0755 $(@D)/conf/ifplugd.action \
 		$(TARGET_DIR)/etc/ifplugd/
-	$(INSTALL) -m 0755 $(IFPLUGD_DIR)/conf/ifplugd.init \
+	$(INSTALL) -m 0755 $(@D)/conf/ifplugd.init \
 		$(TARGET_DIR)/etc/init.d/S45ifplugd
 	# don't use bash for init script
 	$(SED) 's^/bin/bash^/bin/sh^g' $(TARGET_DIR)/etc/init.d/S45ifplugd
-	touch $@
+endef
+
+IFPLUGD_POST_INSTALL_TARGET_HOOKS += IFPLUGD_INSTALL_FIXUP
+
+$(eval $(call AUTOTARGETS,package,ifplugd))
