@@ -4,7 +4,7 @@
 #
 #############################################################
 
-KISMET_VERSION = 2010-01-R1
+KISMET_VERSION = 2010-07-R1
 KISMET_SITE = http://www.kismetwireless.net/code
 KISMET_DEPENDENCIES = libpcap ncurses
 
