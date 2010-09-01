@@ -12,23 +12,13 @@ DMRAID_MAKE = $(MAKE1)
 DMRAID_DEPENDENCIES:=lvm2
 DMRAID_INSTALL_STAGING:=yes
 
-$(eval $(call AUTOTARGETS,package,dmraid))
-
-$(DMRAID_TARGET_INSTALL_TARGET): $(DMRAID_TARGET_INSTALL_STAGING)
-	$(call MESSAGE,"Installing to target")
-	$(INSTALL) -m 0755 $(STAGING_DIR)/usr/sbin/dmraid $(TARGET_DIR)/usr/sbin
+define DMRAID_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 0755 $(@D)/$(DMRAID_SUBDIR)/tools/dmraid $(TARGET_DIR)/usr/sbin
 	$(INSTALL) -m 0755 package/dmraid/dmraid.init $(TARGET_DIR)/etc/init.d/dmraid
-	touch $@
+endef
 
-ifeq ($(BR2_ENABLE_DEBUG),)
-$(DMRAID_HOOK_POST_INSTALL): $(DMRAID_TARGET_INSTALL_TARGET)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/dmraid
-	touch $@
-endif
-
-$(DMRAID_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
-#	makefile has no uninstall target..
-#	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(DMRAID_DIR) uninstall
+define DMRAID_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/sbin/dmraid $(TARGET_DIR)/etc/init.d/dmraid
-	rm -f $(DMRAID_TARGET_INSTALL_TARGET) $(DMRAID_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,dmraid))
