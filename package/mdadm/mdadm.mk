@@ -22,8 +22,8 @@ MDADM_INSTALL_TARGET_OPT = \
 MDADM_UNINSTALL_TARGET_OPT = \
 	DESTDIR=$(TARGET_DIR)/usr -C $(MDADM_DIR) uninstall
 
-$(eval $(call AUTOTARGETS,package,mdadm))
+define MDADM_CONFIGURE_CMDS
+	# Do nothing
+endef
 
-$(MDADM_TARGET_CONFIGURE):
-	$(call MESSAGE,"Configuring")
-	$(Q)touch $@
+$(eval $(call AUTOTARGETS,package,mdadm))
