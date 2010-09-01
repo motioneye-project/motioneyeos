@@ -21,14 +21,13 @@ AT_CONF_OPT = \
         --with-daemon_groupname=root \
 	SENDMAIL=/usr/sbin/sendmail
 
-$(eval $(call AUTOTARGETS,package,at))
-
-$(AT_HOOK_POST_INSTALL): $(AT_TARGET_INSTALL_TARGET)
+define AT_INSTALL_INITSCRIPT
 	$(INSTALL) -m 0755 package/at/S99at $(TARGET_DIR)/etc/init.d/S99at
-	touch $@
+endef
 
-$(AT_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+AT_POST_INSTALL_TARGET_HOOKS += AT_INSTALL_INITSCRIPT
+
+define AT_UNINSTALL_TARGET_CMDS
 	rm -rf $(addprefix $(TARGET_DIR),/usr/lib/atspool \
 					 /usr/lib/atjobs \
 					 /etc/at.deny \
@@ -40,4 +39,6 @@ $(AT_TARGET_UNINSTALL):
 					 /usr/sbin/atrun)
 	rm -f $(addprefix $(TARGET_DIR)/usr/man/man*/, \
 		at.1 atq.1 atrm.1 batch.1 at_allow.5 at_deny.5 atd.8 atrun.8)
-	rm -f $(AT_TARGET_INSTALL_TARGET) $(AT_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,at))
