@@ -72,15 +72,16 @@ ALSA_LIB_CONF_ENV = CFLAGS="$(ALSA_LIB_CFLAGS)" \
 # the above doesn't work with shared config.cache
 ALSA_LIB_USE_CONFIG_CACHE = NO
 
-$(eval $(call AUTOTARGETS,package/multimedia,alsa-lib))
-
-$(ALSA_LIB_TARGET_UNINSTALL):
+define ALSA_LIB_UNINSTALL_TARGET_CMDS
 	-rm -f $(TARGET_DIR)/usr/lib/libasound.so*
 	-rm -rf $(TARGET_DIR)/usr/lib/alsa-lib
 	-rm -rf $(TARGET_DIR)/usr/share/alsa
+endef
 
-$(ALSA_LIB_TARGET_CLEAN):
+define ALSA_LIB_UNINSTALL_STAGING_CMDS
 	-rm -f $(STAGING_DIR)/usr/lib/libasound.*
 	-rm -rf $(STAGING_DIR)/usr/lib/alsa-lib
 	-rm -rf $(STAGING_DIR)/usr/share/alsa
+endef
 
+$(eval $(call AUTOTARGETS,package/multimedia,alsa-lib))
