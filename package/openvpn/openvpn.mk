@@ -4,7 +4,7 @@
 #
 #############################################################
 
-OPENVPN_VERSION = 2.1.1
+OPENVPN_VERSION = 2.1.2
 OPENVPN_SITE = http://openvpn.net/release
 OPENVPN_CONF_OPT = --enable-small
 
