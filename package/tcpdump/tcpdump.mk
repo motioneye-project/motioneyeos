@@ -17,8 +17,3 @@ TCPDUMP_CONF_OPT:=--without-crypto \
 TCPDUMP_DEPENDENCIES:=zlib libpcap
 
 $(eval $(call AUTOTARGETS,package,tcpdump))
-
-$(TCPDUMP_HOOK_POST_INSTALL): $(TCPDUMP_TARGET_INSTALL_TARGET)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/tcpdump
-	touch $@
-
