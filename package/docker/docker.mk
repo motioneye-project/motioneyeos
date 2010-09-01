@@ -22,7 +22,3 @@ DOCKER_INSTALL_TARGET_OPT = PREFIX=$(TARGET_DIR)/usr install
 DOCKER_DEPENDENCIES = host-pkg-config libglib2 xserver_xorg-server
 
 $(eval $(call AUTOTARGETS,package,docker))
-
-$(DOCKER_HOOK_POST_INSTALL): $(DOCKER_TARGET_INSTALL_TARGET)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/bin/docker
-	touch $@
