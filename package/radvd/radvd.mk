@@ -9,8 +9,10 @@ RADVD_SITE:=http://www.litech.org/radvd/dist/
 RADVD_DEPENDENCIES:=flex host-flex
 RADVD_CONF_OPT:= --program-prefix=''
 
-$(eval $(call AUTOTARGETS,package,radvd))
-
-$(RADVD_HOOK_POST_INSTALL): $(RADVD_TARGET_INSTALL_TARGET)
+define RADVD_INSTALL_INITSCRIPT
 	$(INSTALL) -m 0755 package/radvd/S50radvd $(TARGET_DIR)/etc/init.d
-	touch $@
+endef
+
+RADVD_POST_INSTALL_TARGET_HOOKS += RADVD_INSTALL_INITSCRIPT
+
+$(eval $(call AUTOTARGETS,package,radvd))
