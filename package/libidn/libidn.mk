@@ -13,17 +13,23 @@ LIBIDN_CONF_OPT = --enable-shared --disable-java --enable-csharp=no
 LIBIDN_LIBTOOL_PATCH = NO
 LIBIDN_DEPENDENCIES = host-pkg-config $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-$(eval $(call AUTOTARGETS,package,libidn))
-
-$(LIBIDN_HOOK_POST_INSTALL):
-ifneq ($(BR2_PACKAGE_LIBIDN_BINARY),y)
+define LIBIDN_REMOVE_BINARY
 	rm -f $(TARGET_DIR)/usr/bin/idn
-endif
-	rm -rf $(TARGET_DIR)/usr/share/emacs
-	touch $@
+endef
 
-$(LIBIDN_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+ifneq ($(BR2_PACKAGE_LIBIDN_BINARY),y)
+LIBIDN_POST_INSTALL_TARGET_HOOKS += LIBIDN_REMOVE_BINARY
+endif
+
+define LIBIDN_REMOVE_EMACS_STUFF
+	rm -rf $(TARGET_DIR)/usr/share/emacs
+endef
+
+LIBIDN_POST_INSTALL_TARGET_HOOKS += LIBIDN_REMOVE_EMACS_STUFF
+
+define LIBIDN_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/lib/libidn*
 	rm -f $(TARGET_DIR)/usr/bin/idn
-	rm -f $(LIBIDN_TARGET_INSTALL_TARGET) $(LIBIDN_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,libidn))
