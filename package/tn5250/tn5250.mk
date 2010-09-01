@@ -16,16 +16,17 @@ else
 	TN5250_CONF_OPT += --without-ssl
 endif
 
-$(eval $(call AUTOTARGETS,package,tn5250))
-
-$(TN5250_HOOK_POST_INSTALL):
+define TN5250_INSTALL_FIXES
 	rm -f $(TARGET_DIR)/usr/bin/5250keys
 	rm -f $(TARGET_DIR)/usr/bin/xt5250
-	touch $@
+endef
 
-$(TN5250_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+TN5250_POST_INSTALL_TARGET_HOOKS += TN5250_INSTALL_FIXES
+
+define TN5250_UNINSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR) uninstall -C $(TN5250_DIR)
 	rm -f $(TARGET_DIR)/usr/lib/lib5250.*
 	rm -rf $(TARGET_DIR)/usr/share/tn5250
-	rm -f $(TN5250_TARGET_INSTALL_TARGET) $(TN5250_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,tn5250))
