@@ -8,15 +8,12 @@ LESS_VERSION = 436
 LESS_SITE = http://www.greenwoodsoftware.com/less
 LESS_DEPENDENCIES = ncurses
 
-$(eval $(call AUTOTARGETS,package,less))
+define LESS_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 0755 $(@D)/less $(TARGET_DIR)/usr/bin/less
+endef
 
-$(LESS_TARGET_INSTALL_TARGET):
-	$(call MESSAGE,"Installing to target")
-	$(INSTALL) -m 0755 $(LESS_DIR)/less \
-		$(TARGET_DIR)/usr/bin/less
-	touch $@
-
-$(LESS_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+define LESS_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/less
-	rm -f $(LESS_TARGET_INSTALL_TARGET) $(LESS_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,less))
