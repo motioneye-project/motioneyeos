@@ -119,6 +119,13 @@ else
 LIBGTK2_CONF_OPT += --disable-cups
 endif
 
+define LIBGTK2_POST_INSTALL_TWEAKS
+	$(INSTALL) -m 755 package/libgtk2/S26libgtk2 $(TARGET_DIR)/etc/init.d/
+	rm -rf $(TARGET_DIR)/usr/share/gtk-2.0/demo $(TARGET_DIR)/usr/bin/gtk-demo
+endef
+
+LIBGTK2_POST_INSTALL_TARGET_HOOKS += LIBGTK_POST_INSTALL_TWEAKS
+
 # We do not build a full version of libgtk2 for the host, because that
 # requires compiling Cairo, Pango, ATK and X.org for the
 # host. Therefore, we patch it to remove dependencies, and we hack the
@@ -155,8 +162,3 @@ endef
 
 $(eval $(call AUTOTARGETS,package,libgtk2))
 $(eval $(call AUTOTARGETS,package,libgtk2,host))
-
-$(LIBGTK2_HOOK_POST_INSTALL):
-	$(INSTALL) -m 755 package/libgtk2/S26libgtk2 $(TARGET_DIR)/etc/init.d/
-	rm -rf $(TARGET_DIR)/usr/share/gtk-2.0/demo $(TARGET_DIR)/usr/bin/gtk-demo
-	touch $@
