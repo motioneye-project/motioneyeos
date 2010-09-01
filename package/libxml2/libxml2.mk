@@ -22,6 +22,13 @@ LIBXML2_CONF_OPT = --with-gnu-ld --enable-shared \
 		--without-debugging --without-python \
 		--without-threads
 
+define LIBXML2_STAGING_LIBXML2_CONFIG_FIXUP
+	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
+	$(SED) "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
+endef
+
+LIBXML2_POST_INSTALL_STAGING_HOOKS += LIBXML2_STAGING_LIBXML2_CONFIG_FIXUP
+
 HOST_LIBXML2_DEPENDENCIES = host-pkg-config
 
 HOST_LIBXML2_CONF_OPT = \
@@ -30,11 +37,6 @@ HOST_LIBXML2_CONF_OPT = \
 
 $(eval $(call AUTOTARGETS,package,libxml2))
 $(eval $(call AUTOTARGETS,package,libxml2,host))
-
-$(LIBXML2_HOOK_POST_INSTALL):
-	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
-	$(SED) "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xml2-config
-	touch $@
 
 # libxml2 for the host
 LIBXML2_HOST_BINARY:=$(HOST_DIR)/usr/bin/xmllint
