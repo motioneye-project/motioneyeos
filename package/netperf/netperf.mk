@@ -8,18 +8,16 @@ NETPERF_VERSION = 2.4.5
 NETPERF_SITE = ftp://ftp.netperf.org/netperf
 NETPERF_CONF_ENV = ac_cv_func_setpgrp_void=set
 
-$(eval $(call AUTOTARGETS,package,netperf))
-
-$(NETPERF_TARGET_INSTALL_TARGET):
-	$(call MESSAGE,"Installing to target")
-	$(INSTALL) -m 0755 $(NETPERF_DIR)/src/netperf \
+define NETPERF_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 0755 $(@D)/src/netperf \
 		$(TARGET_DIR)/usr/bin/netperf
-	$(INSTALL) -m 0755 $(NETPERF_DIR)/src/netserver \
+	$(INSTALL) -m 0755 $(@D)/src/netserver \
 		$(TARGET_DIR)/usr/bin/netserver
-	touch $@
+endef
 
-$(NETPERF_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+define NETPERF_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/netperf
 	rm -f $(TARGET_DIR)/usr/bin/netserver
-	rm -f $(NETPERF_TARGET_INSTALL_TARGET) $(NETPERF_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,netperf))
