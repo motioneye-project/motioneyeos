@@ -14,8 +14,10 @@ OPENSSH_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 OPENSSH_DEPENDENCIES = zlib openssl
 
-$(eval $(call AUTOTARGETS,package,openssh))
-
-$(OPENSSH_HOOK_POST_INSTALL):
+define OPENSSH_INSTALL_INITSCRIPT
 	$(INSTALL) -D -m 755 package/openssh/S50sshd $(TARGET_DIR)/etc/init.d/S50sshd
-	touch $@
+endef
+
+OPENSSH_POST_INSTALL_TARGET_HOOKS += OPENSSH_INSTALL_INITSCRIPT
+
+$(eval $(call AUTOTARGETS,package,openssh))
