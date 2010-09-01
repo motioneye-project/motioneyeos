@@ -18,8 +18,10 @@ METACITY_CONF_OPT = --x-includes=$(STAGING_DIR)/usr/include/X11 \
 
 METACITY_DEPENDENCIES = libgtk2 xserver_xorg-server
 
-$(eval $(call AUTOTARGETS,package,metacity))
-
-$(METACITY_HOOK_POST_INSTALL): $(METACITY_TARGET_INSTALL_TARGET)
+define METACITY_INSTALL_XSESSION
 	install -D package/metacity/Xsession $(TARGET_DIR)/etc/X11/Xsession
-	touch $@
+endef
+
+METACITY_POST_INSTALL_TARGET_HOOKS += METACITY_INSTALL_XSESSION
+
+$(eval $(call AUTOTARGETS,package,metacity))
