@@ -41,20 +41,23 @@ else
 SDL_SOUND_CONF_OPT += --disable-mmx
 endif
 
-$(eval $(call AUTOTARGETS,package,sdl_sound))
+define SDL_SOUND_REMOVE_PLAYSOUND
+	rm $(addprefix $(TARGET_DIR)/usr/bin/,playsound playsound_simple)
+endef
 
 ifneq ($(BR2_PACKAGE_SDL_SOUND_PLAYSOUND),y)
-$(SDL_SOUND_HOOK_POST_INSTALL):
-	rm $(addprefix $(TARGET_DIR)/usr/bin/,playsound playsound_simple)
-	touch $@
+SDL_SOUND_POST_INSTALL_TARGET_HOOKS += SDL_SOUND_REMOVE_PLAYSOUND
 endif
 
-# target shared libs doesn't get removed by make uninstall if the .la files
-# are removed (E.G. if BR2_HAVE_DEVFILES isn't set)
-$(SDL_SOUND_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+define SDL_SOUND_UNINSTALL_STAGING_CMDS
 	$(MAKE) DESTDIR=$(STAGING_DIR) uninstall -C $(@D)/$(SDL_SOUND_SUBDIR)
-	rm -f $(@D)/.stamp_staging_installed
+endef
+
+# target shared libs doesn't get removed by make uninstall if the .la
+# files are removed (E.G. if BR2_HAVE_DEVFILES isn't set)
+define SDL_SOUND_UNINSTALL_TARGET_CMDS
 	$(MAKE) DESTDIR=$(TARGET_DIR) uninstall -C $(@D)/$(SDL_SOUND_SUBDIR)
 	rm -f $(TARGET_DIR)/usr/lib/libSDL_sound*so*
-	rm -f $(SDL_SOUND_TARGET_INSTALL_TARGET) $(SDL_SOUND_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,sdl_sound))
