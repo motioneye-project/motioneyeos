@@ -27,21 +27,26 @@ BIND_CONF_OPT =	\
 		--disable-epoll \
 		--disable-threads
 
-$(eval $(call AUTOTARGETS,package,bind))
-
-$(BIND_HOOK_POST_INSTALL):
+define BIND_TARGET_INSTALL_FIXES
 	rm -f $(TARGET_DIR)/usr/bin/isc-config.sh
-ifneq ($(BR2_PACKAGE_BIND_TOOLS),y)
-	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(BIND_TARGET_BINS))
-endif
 	$(INSTALL) -m 0755 -D package/bind/bind.sysvinit $(TARGET_DIR)/etc/init.d/S81named
-	touch $@
+endef
 
-$(BIND_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_INSTALL_FIXES
+
+define BIND_TARGET_REMOVE_TOOLS
+	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(BIND_TARGET_BINS))
+endef
+
+ifneq ($(BR2_PACKAGE_BIND_TOOLS),y)
+BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_REMOVE_TOOLS
+endif
+
+define BIND_UNINSTALL_TARGET_CMDS
 	rm -rf $(addprefix $(TARGET_DIR)/usr/sbin/, $(BIND_TARGET_SBINS))
 	rm -rf $(addprefix $(TARGET_DIR)/usr/bin/, $(BIND_TARGET_BINS))
 	rm -rf $(addprefix $(TARGET_DIR)/usr/lib/, $(BIND_TARGET_LIBS))
 	rm -f $(TARGET_DIR)/etc/init.d/S81named
-	rm -f $(BIND_TARGET_INSTALL_TARGET) $(BIND_HOOK_POST_INSTALL)
+endef
 
+$(eval $(call AUTOTARGETS,package,bind))
