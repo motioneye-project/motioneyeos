@@ -23,12 +23,14 @@ else
 LIBCURL_CONF_OPT += --without-ssl
 endif
 
-$(eval $(call AUTOTARGETS,package,libcurl))
-
-$(LIBCURL_HOOK_POST_INSTALL):
+define LIBCURL_TARGET_CLEANUP
 	rm -rf $(TARGET_DIR)/usr/bin/curl-config \
 	       $(if $(BR2_PACKAGE_CURL),,$(TARGET_DIR)/usr/bin/curl)
-	touch $@
+endef
+
+LIBCURL_POST_INSTALL_TARGET_HOOKS += LIBCURL_TARGET_CLEANUP
+
+$(eval $(call AUTOTARGETS,package,libcurl))
 
 curl: libcurl
 curl-clean: libcurl-clean
