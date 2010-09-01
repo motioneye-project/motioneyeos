@@ -23,13 +23,15 @@ ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	SQUID_DEPENDENCIES += openssl
 endif
 
-$(eval $(call AUTOTARGETS,package,squid))
-
-$(SQUID_HOOK_POST_INSTALL):
+define SQUID_CLEANUP_TARGET
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, \
 		RunCache RunAccel)
 	rm -f $(addprefix $(TARGET_DIR)/etc/, \
 		cachemgr.conf mime.conf.default squid.conf.default)
 	rm -f $(TARGET_DIR)/usr/libexec/cachemgr.cgi
 	rm -f $(TARGET_DIR)/usr/share/mib.txt
-	touch $@
+endef
+
+SQUID_POST_INSTALL_TARGET_HOOKS += SQUID_CLEANUP_TARGET
+
+$(eval $(call AUTOTARGETS,package,squid))
