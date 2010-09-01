@@ -15,17 +15,23 @@ FREETYPE_DEPENDENCIES = host-pkg-config $(if $(BR2_PACKAGE_ZLIB),zlib)
 
 HOST_FREETYPE_DEPENDENCIES = host-pkg-config
 
-$(eval $(call AUTOTARGETS,package,freetype))
-$(eval $(call AUTOTARGETS,package,freetype,host))
-
-$(FREETYPE_HOOK_POST_INSTALL):
+define FREETYPE_FREETYPE_CONFIG_STAGING_FIXUP
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" \
 		-e "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" \
 		-e "s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include/freetype2\',g" \
 		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
 		$(STAGING_DIR)/usr/bin/freetype-config
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libfreetype.so
-ifneq ($(BR2_HAVE_DEVFILES),y)
+endef
+
+FREETYPE_POST_INSTALL_STAGING_HOOKS += FREETYPE_FREETYPE_CONFIG_STAGING_FIXUP
+
+define FREETYPE_FREETYPE_CONFIG_TARGET_REMOVE
 	rm -f $(TARGET_DIR)/usr/bin/freetype-config
+endef
+
+ifneq ($(BR2_HAVE_DEVFILES),y)
+FREETYPE_POST_INSTALL_TARGET_HOOKS += FREETYPE_FREETYPE_CONFIG_TARGET_REMOVE
 endif
-	touch $@
+
+$(eval $(call AUTOTARGETS,package,freetype))
+$(eval $(call AUTOTARGETS,package,freetype,host))
