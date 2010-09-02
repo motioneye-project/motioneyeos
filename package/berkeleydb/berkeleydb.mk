@@ -5,7 +5,7 @@
 #############################################################
 BERKELEYDB_VERSION:=4.4.20
 BERKELEYDB_SO_VERSION:=4.4
-BERKELEYDB_SITE:=ftp://ftp.sleepycat.com/releases
+BERKELEYDB_SITE:=http://download.oracle.com/berkeley-db
 BERKELEYDB_SOURCE:=db-$(BERKELEYDB_VERSION).NC.tar.gz
 BERKELEYDB_SHARLIB:=libdb-$(BERKELEYDB_SO_VERSION).so
 BERKELEYDB_SUBDIR=build_unix
