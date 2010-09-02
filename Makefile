@@ -244,18 +244,9 @@ ifeq ($(ARCH),xtensa)
 ARCH:=$(ARCH)_$(call qstrip,$(BR2_xtensa_core_name))
 endif
 
-WGET:=$(call qstrip,$(BR2_WGET)) $(QUIET)
-SVN:=$(call qstrip,$(BR2_SVN)) $(QUIET)
-BZR:=$(call qstrip,$(BR2_BZR)) $(QUIET)
-GIT:=$(call qstrip,$(BR2_GIT)) $(QUIET)
 ZCAT:=$(call qstrip,$(BR2_ZCAT))
 BZCAT:=$(call qstrip,$(BR2_BZCAT))
 TAR_OPTIONS=$(call qstrip,$(BR2_TAR_OPTIONS)) -xf
-
-DL_DIR=$(call qstrip,$(BR2_DL_DIR))
-ifeq ($(DL_DIR),)
-DL_DIR:=$(TOPDIR)/dl
-endif
 
 GNU_TARGET_SUFFIX:=-$(call qstrip,$(BR2_GNU_TARGET_SUFFIX))
 
@@ -435,10 +426,10 @@ endif
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 _source-check:
-	@echo "TODO $@"
+	$(MAKE) DL_MODE=SOURCE_CHECK $(EXTRAMAKEARGS) source
 
 external-deps:
-	@echo "TODO $@"
+	@$(MAKE) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source
 
 show-targets:
 	@echo $(TARGETS)

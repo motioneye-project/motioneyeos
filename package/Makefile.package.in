@@ -68,33 +68,90 @@ MESSAGE = echo "$(TERM_BOLD)>>> $($(PKG)_NAME) $($(PKG)_VERSION) $(1)$(TERM_RESE
 TERM_BOLD := $(shell tput smso)
 TERM_RESET := $(shell tput rmso)
 
+# Download method commands
+WGET:=$(call qstrip,$(BR2_WGET)) $(QUIET)
+SVN:=$(call qstrip,$(BR2_SVN)) $(QUIET)
+BZR:=$(call qstrip,$(BR2_BZR)) $(QUIET)
+GIT:=$(call qstrip,$(BR2_GIT)) $(QUIET)
+
+# Default spider mode is 'DOWNLOAD'. Other possible values are 'SOURCE_CHECK'
+# used by the _source-check target and 'SHOW_EXTERNAL_DEPS', used by the
+# external-deps target.
+DL_MODE=DOWNLOAD
+
+DL_DIR=$(call qstrip,$(BR2_DL_DIR))
+ifeq ($(DL_DIR),)
+DL_DIR:=$(TOPDIR)/dl
+endif
+
 ################################################################################
 # The DOWNLOAD_{GIT,SVN} helpers are in charge of getting a working copy of
 # the source repository for their corresponding SCM, checking out the requested
-# version / commit / tag, and create an archive out of it.
+# version / commit / tag, and create an archive out of it. DOWNLOAD_WGET is the
+# normal wget-based download mechanism.
+#
+# The SOURCE_CHECK_{GIT,SVN,WGET} helpers are in charge of simply checking that
+# the source is available for download. This can be used to make sure one will
+# be able to get all the sources needed for one's build configuration.
+#
+# The SHOW_EXTERNAL_DEPS_{GIT,SVN,WGET} helpers simply output to the console
+# the names of the files that will be downloaded, or path and revision of the
+# source repositories, producing a list of all the "external dependencies" of
+# a given build configuration.
 ################################################################################
 
 define DOWNLOAD_GIT
-	pushd $(DL_DIR) > /dev/null && \
+	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
+	(pushd $(DL_DIR) > /dev/null && \
 	$(GIT) clone $($(PKG)_SITE) $($(PKG)_BASE_NAME) && \
 	pushd $($(PKG)_BASE_NAME) > /dev/null && \
 	$(GIT) archive --format=tar --prefix=$($(PKG)_BASE_NAME)/ $($(PKG)_DL_VERSION) | \
 		gzip -c > $(DL_DIR)/$($(PKG)_SOURCE) && \
 	popd > /dev/null && \
 	rm -rf $($(PKG)_DL_DIR) && \
-	popd > /dev/null
+	popd > /dev/null)
 endef
 
+# TODO: improve to check that the given PKG_DL_VERSION exists on the remote
+# repository
+define SOURCE_CHECK_GIT
+  $(GIT) ls-remote --heads $($(PKG)_SITE) > /dev/null
+endef
+
+define SHOW_EXTERNAL_DEPS_GIT
+  echo "$($(PKG)_SITE) [git: $($(PKG)_DL_VERSION)]"
+endef
+
+
 define DOWNLOAD_SVN
-	pushd $(DL_DIR) > /dev/null && \
+	test -e $(DL_DIR)/$($(PKG)_SOURCE) || \
+	(pushd $(DL_DIR) > /dev/null && \
 	$(SVN) export -r $($(PKG)_DL_VERSION) $($(PKG)_SITE) $($(PKG)_DL_DIR) && \
 	$(TAR) czf $($(PKG)_SOURCE) $($(PKG)_BASE_NAME)/ && \
 	rm -rf $($(PKG)_DL_DIR) && \
-	popd > /dev/null
+	popd > /dev/null)
 endef
 
+define SOURCE_CHECK_SVN
+  $(SVN) ls $($(PKG)_SITE) > /dev/null
+endef
+
+define SHOW_EXTERNAL_DEPS_SVN
+  echo "$($(PKG)_SITE) [svn: $($(PKG)_DL_VERSION)]"
+endef
+
+
 define DOWNLOAD_WGET
+	test -e $(DL_DIR)/$(2) || \
 	$(WGET) -P $(DL_DIR) $(call qstrip,$(1))/$(2)
+endef
+
+define SOURCE_CHECK_WGET
+  $(WGET) --spider $(call qstrip,$(1))/$(2)
+endef
+
+define SHOW_EXTERNAL_DEPS_WGET
+  echo $(2)
 endef
 
 ################################################################################
@@ -111,21 +168,20 @@ endef
 ################################################################################
 
 define DOWNLOAD
-	$(Q)test -e $(DL_DIR)/$(2) || \
-	(if test -n "$(call qstrip,$(BR2_PRIMARY_SITE))" ; then \
-		$(call DOWNLOAD_WGET,$(BR2_PRIMARY_SITE),$(2)) && exit ; \
+	$(Q)if test -n "$(call qstrip,$(BR2_PRIMARY_SITE))" ; then \
+		$(call $(DL_MODE)_WGET,$(BR2_PRIMARY_SITE),$(2)) && exit ; \
 	fi ; \
 	if test -n "$(1)" ; then \
 		case "$($(PKG)_SITE_METHOD)" in \
-			git) $(DOWNLOAD_GIT) && exit ;; \
-			svn) $(DOWNLOAD_SVN) && exit ;; \
-			*) $(call DOWNLOAD_WGET,$(1),$(2)) && exit ;; \
+			git) $($(DL_MODE)_GIT) && exit ;; \
+			svn) $($(DL_MODE)_SVN) && exit ;; \
+			*) $(call $(DL_MODE)_WGET,$(1),$(2)) && exit ;; \
 		esac ; \
 	fi ; \
 	if test -n "$(call qstrip,$(BR2_BACKUP_SITE))" ; then \
-		$(call DOWNLOAD_WGET,$(BR2_BACKUP_SITE),$(2)) && exit ; \
+		$(call $(DL_MODE)_WGET,$(BR2_BACKUP_SITE),$(2)) && exit ; \
 	fi ; \
-	exit 1)
+	exit 1
 endef
 
 # Utility programs used to build packages
@@ -153,14 +209,18 @@ endef
 
 # Retrieve the archive
 $(BUILD_DIR)/%/.stamp_downloaded:
+ifeq ($(DL_MODE),DOWNLOAD)
 # Only show the download message if it isn't already downloaded
 	$(Q)(test -e $(DL_DIR)/$($(PKG)_SOURCE) && \
 		(test -z $($(PKG)_PATCH) || test -e $(DL_DIR)$($(PKG)_PATCH))) || \
 		$(call MESSAGE,"Downloading")
+endif
 	$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_SOURCE))
 	$(if $($(PKG)_PATCH),$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_PATCH)))
+ifeq ($(DL_MODE),DOWNLOAD)
 	$(Q)mkdir -p $(@D)
 	$(Q)touch $@
+endif
 
 # Unpack the archive
 $(BUILD_DIR)/%/.stamp_extracted:
