@@ -133,9 +133,8 @@ BR2_AT91_LINUXPATCH_SITE="http://maxim.org.za/AT91RM9200/2.6"
 # Build options
 #
 BR2_WGET="wget --passive-ftp -nd"
-BR2_SVN_CO="svn co"
-BR2_SVN_UP="svn up"
-BR2_GIT="git clone"
+BR2_SVN="svn"
+BR2_GIT="git"
 BR2_ZCAT="gzip -d -c"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""

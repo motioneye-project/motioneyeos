@@ -84,9 +84,8 @@ BR2_TARGET_AVR32_ATNGW100_BASE=y
 # Build options
 #
 BR2_WGET="wget --passive-ftp --retry-connrefused --waitretry=10"
-BR2_SVN_CO="svn co"
-BR2_SVN_UP="svn up"
-BR2_GIT="git clone"
+BR2_SVN="svn"
+BR2_GIT="git"
 BR2_ZCAT="zcat"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""
