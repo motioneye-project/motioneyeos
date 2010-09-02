@@ -245,10 +245,8 @@ ARCH:=$(ARCH)_$(call qstrip,$(BR2_xtensa_core_name))
 endif
 
 WGET:=$(call qstrip,$(BR2_WGET)) $(QUIET)
-SVN_CO:=$(call qstrip,$(BR2_SVN_CO)) $(QUIET)
-SVN_UP:=$(call qstrip,$(BR2_SVN_UP)) $(QUIET)
-BZR_CO:=$(call qstrip,$(BR2_BZR_CO)) $(QUIET)
-BZR_UP:=$(call qstrip,$(BR2_BZR_UP)) $(QUIET)
+SVN:=$(call qstrip,$(BR2_SVN)) $(QUIET)
+BZR:=$(call qstrip,$(BR2_BZR)) $(QUIET)
 GIT:=$(call qstrip,$(BR2_GIT)) $(QUIET)
 ZCAT:=$(call qstrip,$(BR2_ZCAT))
 BZCAT:=$(call qstrip,$(BR2_BZCAT))
