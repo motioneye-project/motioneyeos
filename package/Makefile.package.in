@@ -81,16 +81,11 @@ TERM_RESET := $(shell tput rmso)
 # $(call DOWNLOAD,$(FOO_SITE),$(FOO_SOURCE))
 ################################################################################
 
-# support make source-check/external-deps
-ifneq ($(SPIDER),)
-DOWNLOAD=$(WGET) -P $(DL_DIR) $(1)/$(2)
-else
 define DOWNLOAD
 	$(Q)test -e $(DL_DIR)/$(2) || \
 	for site in $(call qstrip,$(BR2_PRIMARY_SITE)) $(1) $(call qstrip,$(BR2_BACKUP_SITE)); \
 	do $(WGET) -P $(DL_DIR) $$site/$(2) && exit; done
 endef
-endif
 
 # Utility programs used to build packages
 TAR ?= tar
@@ -117,19 +112,14 @@ endef
 
 # Retrieve the archive
 $(BUILD_DIR)/%/.stamp_downloaded:
-# support make source-check/external-deps
-ifeq ($(SPIDER),)
 # Only show the download message if it isn't already downloaded
 	$(Q)(test -e $(DL_DIR)/$($(PKG)_SOURCE) && \
 		(test -z $($(PKG)_PATCH) || test -e $(DL_DIR)$($(PKG)_PATCH))) || \
 		$(call MESSAGE,"Downloading")
-endif
 	$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_SOURCE))
 	$(if $($(PKG)_PATCH),$(call DOWNLOAD,$($(PKG)_SITE),$($(PKG)_PATCH)))
-ifeq ($(SPIDER),)
 	$(Q)mkdir -p $(@D)
 	$(Q)touch $@
-endif
 
 # Unpack the archive
 $(BUILD_DIR)/%/.stamp_extracted:

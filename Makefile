@@ -244,7 +244,7 @@ ifeq ($(ARCH),xtensa)
 ARCH:=$(ARCH)_$(call qstrip,$(BR2_xtensa_core_name))
 endif
 
-WGET:=$(call qstrip,$(BR2_WGET)) $(SPIDER) $(QUIET)
+WGET:=$(call qstrip,$(BR2_WGET)) $(QUIET)
 SVN_CO:=$(call qstrip,$(BR2_SVN_CO)) $(QUIET)
 SVN_UP:=$(call qstrip,$(BR2_SVN_UP)) $(QUIET)
 BZR_CO:=$(call qstrip,$(BR2_BZR_CO)) $(QUIET)
@@ -437,11 +437,10 @@ endif
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 _source-check:
-	$(MAKE) $(EXTRAMAKEARGS) SPIDER=--spider source
+	@echo "TODO $@"
 
 external-deps:
-	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)/toolchain/wget-show-external-deps.sh \
-		$(EXTRAMAKEARGS) SPIDER=--spider source
+	@echo "TODO $@"
 
 show-targets:
 	@echo $(TARGETS)
