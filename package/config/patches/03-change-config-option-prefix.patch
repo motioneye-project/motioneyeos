@@ -1,0 +1,164 @@
+---
+ confdata.c |   49 +++++++++++++++++++++++--------------------------
+ 1 file changed, 23 insertions(+), 26 deletions(-)
+
+Index: config.new/confdata.c
+===================================================================
+--- config.new.orig/confdata.c
++++ config.new/confdata.c
+@@ -11,6 +11,7 @@
+ #include <string.h>
+ #include <time.h>
+ #include <unistd.h>
++#include <libgen.h>
+ 
+ #define LKC_DIRECT_LINK
+ #include "lkc.h"
+@@ -21,7 +22,7 @@
+ static const char *conf_filename;
+ static int conf_lineno, conf_warnings, conf_unsaved;
+ 
+-const char conf_defname[] = "arch/$ARCH/defconfig";
++const char conf_defname[] = ".defconfig";
+ 
+ static void conf_warning(const char *fmt, ...)
+ {
+@@ -36,7 +37,7 @@
+ 
+ const char *conf_get_configname(void)
+ {
+-	char *name = getenv("KCONFIG_CONFIG");
++	char *name = getenv("BUILDROOT_CONFIG");
+ 
+ 	return name ? name : ".config";
+ }
+@@ -222,22 +223,22 @@
+ 		sym = NULL;
+ 		switch (line[0]) {
+ 		case '#':
+-			if (memcmp(line + 2, "CONFIG_", 7))
++			if (line[1]!=' ')
+ 				continue;
+-			p = strchr(line + 9, ' ');
++			p = strchr(line + 2, ' ');
+ 			if (!p)
+ 				continue;
+ 			*p++ = 0;
+ 			if (strncmp(p, "is not set", 10))
+ 				continue;
+ 			if (def == S_DEF_USER) {
+-				sym = sym_find(line + 9);
++				sym = sym_find(line + 2);
+ 				if (!sym) {
+ 					sym_add_change_count(1);
+ 					break;
+ 				}
+ 			} else {
+-				sym = sym_lookup(line + 9, 0);
++				sym = sym_lookup(line + 2, 0);
+ 				if (sym->type == S_UNKNOWN)
+ 					sym->type = S_BOOLEAN;
+ 			}
+@@ -254,12 +255,8 @@
+ 				;
+ 			}
+ 			break;
+-		case 'C':
+-			if (memcmp(line, "CONFIG_", 7)) {
+-				conf_warning("unexpected data");
+-				continue;
+-			}
+-			p = strchr(line + 7, '=');
++		case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
++			p = strchr(line, '=');
+ 			if (!p)
+ 				continue;
+ 			*p++ = 0;
+@@ -270,13 +267,13 @@
+ 					*p2 = 0;
+ 			}
+ 			if (def == S_DEF_USER) {
+-				sym = sym_find(line + 7);
++				sym = sym_find(line);
+ 				if (!sym) {
+ 					sym_add_change_count(1);
+ 					break;
+ 				}
+ 			} else {
+-				sym = sym_lookup(line + 7, 0);
++				sym = sym_lookup(line, 0);
+ 				if (sym->type == S_UNKNOWN)
+ 					sym->type = S_OTHER;
+ 			}
+@@ -405,9 +402,9 @@
+ {
+ 	int l;
+ 	if (headerfile)
+-		fprintf(out, "#define CONFIG_%s \"", name);
++		fprintf(out, "#define %s \"", name);
+ 	else
+-		fprintf(out, "CONFIG_%s=\"", name);
++		fprintf(out, "%s=\"", name);
+ 
+ 	while (1) {
+ 		l = strcspn(str, "\"\\");
+@@ -433,13 +430,13 @@
+ 		switch (sym_get_tristate_value(sym)) {
+ 		case no:
+ 			if (write_no)
+-				fprintf(out, "# CONFIG_%s is not set\n", sym->name);
++				fprintf(out, "# %s is not set\n", sym->name);
+ 			break;
+ 		case mod:
+-			fprintf(out, "CONFIG_%s=m\n", sym->name);
++			fprintf(out, "%s=m\n", sym->name);
+ 			break;
+ 		case yes:
+-			fprintf(out, "CONFIG_%s=y\n", sym->name);
++			fprintf(out, "%s=y\n", sym->name);
+ 			break;
+ 		}
+ 		break;
+@@ -449,7 +446,7 @@
+ 	case S_HEX:
+ 	case S_INT:
+ 		str = sym_get_string_value(sym);
+-		fprintf(out, "CONFIG_%s=%s\n", sym->name, str);
++		fprintf(out, "%s=%s\n", sym->name, str);
+ 		break;
+ 	case S_OTHER:
+ 	case S_UNKNOWN:
+@@ -834,14 +831,14 @@
+ 			case no:
+ 				break;
+ 			case mod:
+-				fprintf(tristate, "CONFIG_%s=M\n", sym->name);
+-				fprintf(out_h, "#define CONFIG_%s_MODULE 1\n", sym->name);
++				fprintf(tristate, "%s=M\n", sym->name);
++				fprintf(out_h, "#define %s_MODULE 1\n", sym->name);
+ 				break;
+ 			case yes:
+ 				if (sym->type == S_TRISTATE)
+-					fprintf(tristate, "CONFIG_%s=Y\n",
++					fprintf(tristate, "%s=Y\n",
+ 							sym->name);
+-				fprintf(out_h, "#define CONFIG_%s 1\n", sym->name);
++				fprintf(out_h, "#define %s 1\n", sym->name);
+ 				break;
+ 			}
+ 			break;
+@@ -851,12 +848,12 @@
+ 		case S_HEX:
+ 			str = sym_get_string_value(sym);
+ 			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
+-				fprintf(out_h, "#define CONFIG_%s 0x%s\n", sym->name, str);
++				fprintf(out_h, "#define %s 0x%s\n", sym->name, str);
+ 				break;
+ 			}
+ 		case S_INT:
+ 			str = sym_get_string_value(sym);
+-			fprintf(out_h, "#define CONFIG_%s %s\n", sym->name, str);
++			fprintf(out_h, "#define %s %s\n", sym->name, str);
+ 			break;
+ 		default:
+ 			break;

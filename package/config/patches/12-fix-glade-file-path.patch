@@ -1,0 +1,17 @@
+---
+ gconf.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: config.new/gconf.c
+===================================================================
+--- config.new.orig/gconf.c
++++ config.new/gconf.c
+@@ -1525,7 +1525,7 @@
+ 	/* Determine GUI path */
+ 	env = getenv(SRCTREE);
+ 	if (env)
+-		glade_file = g_strconcat(env, "/scripts/kconfig/gconf.glade", NULL);
++		glade_file = g_strconcat(env, "/package/config/gconf.glade", NULL);
+ 	else if (av[0][0] == '/')
+ 		glade_file = g_strconcat(av[0], ".glade", NULL);
+ 	else
