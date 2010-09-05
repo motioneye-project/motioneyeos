@@ -315,8 +315,7 @@ static void search_conf(void)
 again:
 	dialog_clear();
 	dres = dialog_inputbox(_("Search Configuration Parameter"),
-			      _("Enter CONFIG_ (sub)string to search for "
-				"(with or without \"CONFIG\")"),
+			      _("Enter (sub)string to search for"),
 			      10, 75, "");
 	switch (dres) {
 	case 0:

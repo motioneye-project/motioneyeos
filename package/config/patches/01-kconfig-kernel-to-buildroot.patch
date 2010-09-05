@@ -3,16 +3,16 @@
  confdata.c          |   12 ++++--------
  gconf.c             |    4 ++--
  gconf.glade         |    2 +-
- mconf.c             |   35 +++++++++++++++++------------------
+ mconf.c             |   38 ++++++++++++++++++--------------------
  qconf.cc            |    4 ++--
  zconf.tab.c_shipped |    2 +-
  zconf.y             |    2 +-
- 8 files changed, 34 insertions(+), 39 deletions(-)
+ 8 files changed, 35 insertions(+), 41 deletions(-)
 
-Index: config.new/conf.c
+Index: config/conf.c
 ===================================================================
---- config.new.orig/conf.c
-+++ config.new/conf.c
+--- config.orig/conf.c
++++ config/conf.c
 @@ -508,8 +508,8 @@
  		name = conf_get_configname();
  		if (stat(name, &tmpstat)) {
@@ -56,10 +56,10 @@ Index: config.new/conf.c
  			exit(1);
  		}
  	}
-Index: config.new/confdata.c
+Index: config/confdata.c
 ===================================================================
---- config.new.orig/confdata.c
-+++ config.new/confdata.c
+--- config.orig/confdata.c
++++ config/confdata.c
 @@ -579,7 +579,7 @@
  	if (!out)
  		return 1;
@@ -109,10 +109,10 @@ Index: config.new/confdata.c
  
  	for_all_symbols(i, sym) {
  		sym_calc_value(sym);
-Index: config.new/gconf.c
+Index: config/gconf.c
 ===================================================================
---- config.new.orig/gconf.c
-+++ config.new/gconf.c
+--- config.orig/gconf.c
++++ config/gconf.c
 @@ -210,8 +210,8 @@
  					  /*"style", PANGO_STYLE_OBLIQUE, */
  					  NULL);
@@ -124,10 +124,10 @@ Index: config.new/gconf.c
  	gtk_window_set_title(GTK_WINDOW(main_wnd), title);
  
  	gtk_widget_show(main_wnd);
-Index: config.new/gconf.glade
+Index: config/gconf.glade
 ===================================================================
---- config.new.orig/gconf.glade
-+++ config.new/gconf.glade
+--- config.orig/gconf.glade
++++ config/gconf.glade
 @@ -5,7 +5,7 @@
  
  <widget class="GtkWindow" id="window1">
@@ -137,10 +137,10 @@ Index: config.new/gconf.glade
    <property name="type">GTK_WINDOW_TOPLEVEL</property>
    <property name="window_position">GTK_WIN_POS_NONE</property>
    <property name="modal">False</property>
-Index: config.new/mconf.c
+Index: config/mconf.c
 ===================================================================
---- config.new.orig/mconf.c
-+++ config.new/mconf.c
+--- config.orig/mconf.c
++++ config/mconf.c
 @@ -25,10 +25,9 @@
  static const char mconf_readme[] = N_(
  "Overview\n"
@@ -220,7 +220,17 @@ Index: config.new/mconf.c
  		        config_filename, sym_get_string_value(sym));
  	if (size >= sizeof(menu_backtitle))
  		menu_backtitle[sizeof(menu_backtitle)-1] = '\0';
-@@ -834,7 +833,7 @@
+@@ -316,8 +315,7 @@
+ again:
+ 	dialog_clear();
+ 	dres = dialog_inputbox(_("Search Configuration Parameter"),
+-			      _("Enter CONFIG_ (sub)string to search for "
+-				"(with or without \"CONFIG\")"),
++			      _("Enter (sub)string to search for"),
+ 			      10, 75, "");
+ 	switch (dres) {
+ 	case 0:
+@@ -834,7 +832,7 @@
  		if (conf_get_changed())
  			res = dialog_yesno(NULL,
  					   _("Do you wish to save your "
@@ -229,7 +239,7 @@ Index: config.new/mconf.c
  					     "<ESC><ESC> to continue."),
  					   6, 60);
  		else
-@@ -846,20 +845,20 @@
+@@ -846,20 +844,20 @@
  	case 0:
  		if (conf_write(filename)) {
  			fprintf(stderr, _("\n\n"
@@ -255,10 +265,10 @@ Index: config.new/mconf.c
  			"\n\n"));
  	}
  
-Index: config.new/qconf.cc
+Index: config/qconf.cc
 ===================================================================
---- config.new.orig/qconf.cc
-+++ config.new/qconf.cc
+--- config.orig/qconf.cc
++++ config/qconf.cc
 @@ -1263,8 +1263,8 @@
  	char title[256];
  
@@ -270,10 +280,10 @@ Index: config.new/qconf.cc
  	setCaption(title);
  
  	width = configSettings->readNumEntry("/window width", d->width() - 64);
-Index: config.new/zconf.tab.c_shipped
+Index: config/zconf.tab.c_shipped
 ===================================================================
---- config.new.orig/zconf.tab.c_shipped
-+++ config.new/zconf.tab.c_shipped
+--- config.orig/zconf.tab.c_shipped
++++ config/zconf.tab.c_shipped
 @@ -2224,7 +2224,7 @@
  	modules_sym = sym_lookup(NULL, 0);
  	modules_sym->type = S_BOOLEAN;
@@ -283,10 +293,10 @@ Index: config.new/zconf.tab.c_shipped
  
  #if YYDEBUG
  	if (getenv("ZCONF_DEBUG"))
-Index: config.new/zconf.y
+Index: config/zconf.y
 ===================================================================
---- config.new.orig/zconf.y
-+++ config.new/zconf.y
+--- config.orig/zconf.y
++++ config/zconf.y
 @@ -479,7 +479,7 @@
  	modules_sym = sym_lookup(NULL, 0);
  	modules_sym->type = S_BOOLEAN;
