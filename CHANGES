@@ -5,7 +5,7 @@
 	Kconfig infrastructure rebased against 2.6.36-rc1, bringing
 	misc fixes + nconfig and savedefconfig targets.
 
-	Updated/fixed packages: busybox
+	Updated/fixed packages: busybox, dropbear
 
 2010.08: Released August 31th, 2010:
 

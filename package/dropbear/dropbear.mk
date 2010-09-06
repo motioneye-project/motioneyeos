@@ -21,6 +21,10 @@ $(eval $(call AUTOTARGETS,package,dropbear))
 
 $(DROPBEAR_HOOK_POST_EXTRACT):
 	$(SED) 's,^#define XAUTH_COMMAND.*/xauth,#define XAUTH_COMMAND "/usr/bin/xauth,g' $(DROPBEAR_DIR)/options.h
+ifeq ($(BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS),y)
+	$(SED) 's,^#define DO_HOST_LOOKUP.*,/* #define DO_HOST_LOOKUP */,' \
+		$(DROPBEAR_DIR)/options.h
+endif
 	touch $@
 
 $(DROPBEAR_TARGET_INSTALL_TARGET):

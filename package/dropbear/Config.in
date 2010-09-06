@@ -5,3 +5,11 @@ config BR2_PACKAGE_DROPBEAR
 	  A small SSH 2 server designed for small memory environments.
 
 	  http://matt.ucc.asn.au/dropbear/dropbear.html
+
+config BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS
+	bool "disable reverse DNS lookups"
+	depends on BR2_PACKAGE_DROPBEAR
+	help
+	  Disable reverse DNS lookups on connection. This can be handy
+	  on systems without working DNS, as connections otherwise
+	  stall until DNS times out.
