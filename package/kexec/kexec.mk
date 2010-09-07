@@ -6,8 +6,6 @@
 KEXEC_VERSION = 2.0.1
 KEXEC_SOURCE = kexec-tools-$(KEXEC_VERSION).tar.bz2
 KEXEC_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/horms/kexec-tools/
-# no install-strip/install-exec
-KEXEC_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 ifeq ($(BR2_PACKAGE_KEXEC_ZLIB),y)
 KEXEC_CONF_OPT += --with-zlib

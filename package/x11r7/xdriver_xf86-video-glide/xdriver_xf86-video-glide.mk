@@ -10,6 +10,5 @@ XDRIVER_XF86_VIDEO_GLIDE_SITE = http://xorg.freedesktop.org/releases/individual/
 XDRIVER_XF86_VIDEO_GLIDE_AUTORECONF = NO
 XDRIVER_XF86_VIDEO_GLIDE_LIBTOOL_PATCH = NO
 XDRIVER_XF86_VIDEO_GLIDE_DEPENDENCIES = xserver_xorg-server xproto_fontsproto xproto_randrproto xproto_renderproto xproto_videoproto xproto_xproto
-XDRIVER_XF86_VIDEO_GLIDE_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 $(eval $(call AUTOTARGETS,package/x11r7,xdriver_xf86-video-glide))

@@ -13,6 +13,4 @@ BEECRYPT_CONF_OPT =  --without-cplusplus \
 		--without-python  \
 		--disable-rpath
 
-BEECRYPT_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) install
-
 $(eval $(call AUTOTARGETS,package,beecrypt))

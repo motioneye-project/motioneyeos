@@ -25,7 +25,6 @@ JPEG_SITE:=ftp://ftp.uu.net/graphics/jpeg/
 JPEG_SOURCE=jpegsrc.v$(JPEG_VERSION).tar.gz
 JPEG_INSTALL_STAGING = YES
 JPEG_INSTALL_TARGET = YES
-JPEG_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 JPEG_LIBTOOL_PATCH = NO
 JPEG_CONF_OPT = --without-x --enable-shared --enable-static
 

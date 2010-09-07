@@ -44,8 +44,6 @@ ALSA_LIB_CONF_OPT += --disable-old-symbols
 endif
 
 ifeq ($(BR2_ENABLE_DEBUG),y)
-# install-exec doesn't install the config files
-ALSA_LIB_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 ALSA_LIB_CONF_OPT += --enable-debug
 endif
 

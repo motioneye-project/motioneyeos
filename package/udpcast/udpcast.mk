@@ -6,7 +6,6 @@
 UDPCAST_VERSION:=20071228
 UDPCAST_SOURCE:=udpcast-$(UDPCAST_VERSION).tar.gz
 UDPCAST_SITE:=http://www.udpcast.linux.lu/download
-UDPCAST_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) install
 UDPCAST_CONF_ENV = $(if $(BR_LARGEFILE),ac_cv_type_stat64=yes,ac_cv_type_stat64=no)
 
 define UDPCAST_REMOVE_UDP_SENDER

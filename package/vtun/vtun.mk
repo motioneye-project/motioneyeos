@@ -9,7 +9,6 @@
 VTUN_VERSION:=3.0.2
 VTUN_SOURCE:=vtun-$(VTUN_VERSION).tar.gz
 VTUN_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/vtun/
-VTUN_INSTALL_TARGET_OPT=DESTDIR=$(TARGET_DIR) install
 VTUN_DEPENDENCIES = zlib lzo openssl
 
 VTUN_CONF_OPT = \

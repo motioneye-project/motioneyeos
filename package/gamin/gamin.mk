@@ -15,8 +15,6 @@ GAMIN_CONF_OPT = --program-prefix="" --disable-debug
 # python support broken
 GAMIN_CONF_OPT += --without-python
 
-GAMIN_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
-
 GAMIN_CONF_ENV = have_abstract_sockets=no
 
 ifneq ($(BR2_LARGEFILE),y)
