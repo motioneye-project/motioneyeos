@@ -4,7 +4,7 @@
 #
 #############################################################
 
-USBUTILS_VERSION = 0.87
+USBUTILS_VERSION = 0.90
 USBUTILS_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/usb/usbutils
 USBUTILS_DEPENDENCIES = host-pkg-config libusb-compat
 
