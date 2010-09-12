@@ -5,6 +5,8 @@
 	Kconfig infrastructure rebased against 2.6.36-rc1, bringing
 	misc fixes + nconfig and savedefconfig targets.
 
+	Toolchain: ARM cortex A9 support
+
 	Updated/fixed packages: berkeleydb, busybox, dropbear,
 	iptables, kismet, openvpn, qt, usbutils
 
