@@ -123,7 +123,6 @@ source "package/blackbox/Config.in"
 
 comment "X applications"
 source "package/alsamixergui/Config.in"
-source "package/dillo/Config.in"
 source "package/docker/Config.in"
 source "package/gqview/Config.in"
 source "package/gmpc/Config.in"
