@@ -544,7 +544,6 @@ BR2_PACKAGE_MTD_MTD_DEBUG=y
 # ntfs-3g requires a toolchain with LARGEFILE and WCHAR support
 #
 # BR2_PACKAGE_PCIUTILS is not set
-# BR2_PACKAGE_PCMCIA is not set
 # BR2_PACKAGE_SETSERIAL is not set
 # BR2_PACKAGE_SFDISK is not set
 # BR2_PACKAGE_SMARTMONTOOLS is not set
