@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LIBGTK12
-	bool "libgtk12"
-	depends on BR2_DEPRECATED
-	select BR2_PACKAGE_LIBGLIB12
-	depends on BR2_PACKAGE_XORG7
-	help
-	  The GTK+ graphical user interface library
-
-	  http://www.gtk.org/
