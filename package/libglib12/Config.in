@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBGLIB12
-	bool "libglib12"
-	depends on BR2_DEPRECATED
-	help
-	  Low-level core library that forms the basis of GTK+ and GNOME.
-
-	  http://www.gtk.org/
