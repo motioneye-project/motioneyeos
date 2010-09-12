@@ -1,9 +1,0 @@
-config BR2_PACKAGE_MICROWIN
-	bool "microwin"
-	# Old, unmaintained graphics stack
-	depends on BR2_DEPRECATED
-	help
-	 Microwindows Graphical User Interface for small and
-	 embedded enviroments.
-	
-	 http://microwindows.censoft.com/
