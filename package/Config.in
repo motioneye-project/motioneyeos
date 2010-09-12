@@ -107,9 +107,6 @@ source "package/sdl_gfx/Config.in"
 
 comment "other GUIs"
 source "package/qt/Config.in"
-
-#source "package/microwin/Config.in"
-
 source "package/x11r7/Config.in"
 
 comment "X libraries and helper libraries"
