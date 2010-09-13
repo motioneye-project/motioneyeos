@@ -8,10 +8,10 @@
 	Toolchain: ARM cortex A9 support
 
 	Updated/fixed packages: berkeleydb, busybox, dropbear,
-	iptables, kismet, openvpn, qt, usbutils
+	iptables, kismet, openvpn, qt, strace, usbutils
 
 	Removed packages: dillo, libglib12, libgtk12, microwin,
-	pcmcia, strace
+	pcmcia
 
 2010.08: Released August 31th, 2010:
 
