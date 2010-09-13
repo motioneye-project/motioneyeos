@@ -10,7 +10,8 @@
 	Updated/fixed packages: berkeleydb, busybox, dropbear,
 	iptables, kismet, openvpn, qt, usbutils
 
-	Removed packages: dillo, libglib12, libgtk12, microwin, pcmcia
+	Removed packages: dillo, libglib12, libgtk12, microwin,
+	pcmcia, strace
 
 2010.08: Released August 31th, 2010:
 
