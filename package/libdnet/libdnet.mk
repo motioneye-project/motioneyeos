@@ -24,9 +24,11 @@ LIBDNET_INSTALL_TARGET_OPT = $(LIBDNET_MAKE_OPT) DESTDIR=$(TARGET_DIR) INSTALL_S
 LIBDNET_INSTALL_STAGING_OPT = $(LIBDNET_MAKE_OPT) DESTDIR=$(STAGING_DIR) install
 endif
 
+# Needed for autoreconf to work properly
+define LIBDNET_FIXUP_ACINCLUDE_M4
+	ln -sf config/acinclude.m4 $(@D)
+endef
+
+LIBDNET_POST_EXTRACT_HOOKS += LIBDNET_FIXUP_ACINCLUDE_M4
+
 $(eval $(call AUTOTARGETS,package,libdnet))
-
-$(LIBDNET_HOOK_POST_EXTRACT):
-	ln -sf config/acinclude.m4 $(LIBDNET_DIR)
-	touch $@
-

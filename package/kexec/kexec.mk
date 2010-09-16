@@ -16,12 +16,10 @@ else
 KEXEC_CONF_OPT += --without-zlib
 endif
 
-$(eval $(call AUTOTARGETS,package,kexec))
-
-$(KEXEC_HOOK_POST_INSTALL): $(KEXEC_TARGET_INSTALL_TARGET)
-ifneq ($(BR2_ENABLE_DEBUG),y)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/kexec
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/usr/sbin/kdump
-endif
+define KEXEC_REMOVE_LIB_TOOLS
 	rm -rf $(TARGET_DIR)/usr/lib/kexec-tools
-	touch $@
+endef
+
+KEXEC_POST_INSTALL_TARGET_HOOKS += KEXEC_REMOVE_LIB_TOOLS
+
+$(eval $(call AUTOTARGETS,package,kexec))

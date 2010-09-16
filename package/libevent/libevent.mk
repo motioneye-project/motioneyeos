@@ -12,12 +12,14 @@ LIBEVENT_LIBTOOL_PATCH = NO
 LIBEVENT_INSTALL_STAGING = YES
 LIBEVENT_INSTALL_TARGET = YES
 
-$(eval $(call AUTOTARGETS,package,libevent))
-
-ifneq ($(BR2_PACKAGE_PYTHON),y)
-# libevent installs a python script to target - get rid of it if
-# we don't have python support enabled
-$(LIBEVENT_HOOK_POST_INSTALL):
+define LIBEVENT_REMOVE_PYSCRIPT
 	rm $(TARGET_DIR)/usr/bin/event_rpcgen.py
-	touch $@
+endef
+
+# libevent installs a python script to target - get rid of it if we
+# don't have python support enabled
+ifneq ($(BR2_PACKAGE_PYTHON),y)
+LIBEVENT_POST_INSTALL_TARGET_HOOKS += LIBEVENT_REMOVE_PYSCRIPT
 endif
+
+$(eval $(call AUTOTARGETS,package,libevent))

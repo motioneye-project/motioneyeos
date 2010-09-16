@@ -12,7 +12,7 @@ SPEEX_INSTALL_TARGET = YES
 SPEEX_DEPENDENCIES = libogg
 SPEEX_CONF_OPT = --with-ogg-libraries=$(STAGING_DIR)/usr/lib \
 		 --with-ogg-includes=$(STAGING_DIR)/usr/include \
-		 --enable-fixed-point 
+		 --enable-fixed-point
 
 ifeq ($(BR2_PACKAGE_SPEEX_ARM4),y)
 	SPEEX_CONF_OPT += --enable-arm4-asm
@@ -22,15 +22,15 @@ ifeq ($(BR2_PACKAGE_SPEEX_ARM5E),y)
 	SPEEX_CONF_OPT += --enable-arm5e-asm
 endif
 
-$(eval $(call AUTOTARGETS,package/multimedia,speex))
+define SPEEX_LIBTOOL_FIXUP
+	$(SED) 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' $(@D)/libtool
+	$(SED) 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' $(@D)/libtool
+endef
 
-$(SPEEX_TARGET_BUILD): $(SPEEX_TARGET_CONFIGURE)
-	$(call MESSAGE,"Building")
-	$(SED) 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' $(SPEEX_DIR)/libtool
-	$(SED) 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' $(SPEEX_DIR)/libtool
+SPEEX_POST_CONFIGURE_HOOKS += SPEEX_LIBTOOL_FIXUP
+
+define SPEEX_BUILD_CMDS
 	$($(PKG)_MAKE_ENV) $(MAKE) $($(PKG)_MAKE_OPT) -C $(@D)/$($(PKG)_SUBDIR)
-	$(Q)touch $@
+endef
 
-$(SPEEX_HOOK_POST_INSTALL): $(SPEEX_TARGET_INSTALL_TARGET)
-	rm -rf $(TARGET_DIR)/usr/share/doc/speex
-	touch $@
+$(eval $(call AUTOTARGETS,package/multimedia,speex))

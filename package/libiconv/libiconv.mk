@@ -12,17 +12,19 @@ LIBICONV_INSTALL_TARGET = YES
 
 LIBICONV_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
-$(eval $(call AUTOTARGETS,package,libiconv))
-
-$(LIBICONV_HOOK_POST_INSTALL):
-	# Remove not used preloadable libiconv.so
-	rm -f $(STAGING_DIR)/usr/lib/preloadable_libiconv.so
+# Remove not used preloadable libiconv.so
+define LIBICONV_TARGET_REMOVE_PRELOADABLE_LIBS
 	rm -f $(TARGET_DIR)/usr/lib/preloadable_libiconv.so
-ifneq ($(BR2_ENABLE_DEBUG),y)
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libiconv.so.*
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/usr/lib/libcharset.so.*
-endif
-	touch $@
+endef
+
+define LIBICONV_STAGING_REMOVE_PRELOADABLE_LIBS
+	rm -f $(STAGING_DIR)/usr/lib/preloadable_libiconv.so
+endef
+
+LIBICONV_POST_INSTALL_TARGET_HOOKS += LIBICONV_TARGET_REMOVE_PRELOADABLE_LIBS
+LIBICONV_POST_INSTALL_STAGING_HOOKS += LIBICONV_STAGING_REMOVE_PRELOADABLE_LIBS
+
+$(eval $(call AUTOTARGETS,package,libiconv))
 
 # Configurations where the toolchain supports locales and the libiconv
 # package is enabled are incorrect, because the toolchain already

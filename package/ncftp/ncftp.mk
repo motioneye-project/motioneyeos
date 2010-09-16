@@ -23,6 +23,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_NCFTP_BATCH),y)
 NCFTP_TARGET_BINS+=ncftpbatch
+NCFTP_INSTALL_NCFTP_BATCH = \
+	ln -s /usr/bin/ncftpbatch $(TARGET_DIR)/usr/bin/ncftpspooler
 endif
 
 ifeq ($(BR2_PACKAGE_NCFTP_BOOKMARKS),y)
@@ -30,20 +32,13 @@ NCFTP_TARGET_BINS+=ncftpbookmarks
 NCFTP_DEPENDENCIES:=ncurses
 endif
 
-$(eval $(call AUTOTARGETS,package,ncftp))
-
-$(NCFTP_TARGET_INSTALL_TARGET):
-	$(call MESSAGE,"Installing to target")
+define NCFTP_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 $(addprefix $(NCFTP_DIR)/bin/, $(NCFTP_TARGET_BINS)) $(TARGET_DIR)/usr/bin
-ifeq ($(BR2_PACKAGE_NCFTP_BATCH),y)
-	ln -s /usr/bin/ncftpbatch $(TARGET_DIR)/usr/bin/ncftpspooler
-endif
-ifeq ($(BR2_ENABLE_DEBUG),)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(addprefix $(TARGET_DIR)/usr/bin/, $(NCFTP_TARGET_BINS))
-endif
-	touch $@
+	$(NCFTP_INSTALL_NCFTP_BATCH)
+endef
 
-$(NCFTP_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+define NCFTP_UNINSTALL_TARGET_CMDS
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/, $(NCFTP_TARGET_BINS) ncftpspooler)
-	rm -f $(NCFTP_TARGET_INSTALL_TARGET)
+endef
+
+$(eval $(call AUTOTARGETS,package,ncftp))

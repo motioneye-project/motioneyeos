@@ -44,11 +44,10 @@ else
 LIGHTTPD_CONF_OPT += --without-pcre
 endif
 
-$(eval $(call AUTOTARGETS,package,lighttpd))
-
-$(LIGHTTPD_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+define LIGHTTPD_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/sbin/lighttpd
 	rm -f $(TARGET_DIR)/usr/sbin/lighttpd-angel
 	rm -rf $(TARGET_DIR)/usr/lib/lighttpd
-	rm -f $(LIGHTTPD_TARGET_INSTALL_TARGET) $(LIGHTTPD_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,lighttpd))

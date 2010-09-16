@@ -166,23 +166,26 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),y)
 endif
 endif
 
-$(eval $(call AUTOTARGETS,package,php))
-
-$(PHP_HOOK_POST_INSTALL):
+define PHP_INSTALL_FIXUP
 	rm -rf $(TARGET_DIR)/usr/lib/php
 	rm -f $(TARGET_DIR)/usr/bin/phpize
 	rm -f $(TARGET_DIR)/usr/bin/php-config
 	if [ ! -f $(TARGET_DIR)/etc/php.ini ]; then \
 		$(INSTALL) -m 0755 $(BR2_PACKAGE_PHP_CONFIG) $(TARGET_DIR)/etc/php.ini; fi
-	touch $@
+endef
 
-$(PHP_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+PHP_POST_INSTALL_TARGET_HOOKS += PHP_INSTALL_FIXUP
+
+define PHP_UNINSTALL_STAGING_CMDS
 	rm -rf $(STAGING_DIR)/usr/include/php
 	rm -rf $(STAGING_DIR)/usr/lib/php
 	rm -f $(STAGING_DIR)/usr/bin/php*
 	rm -f $(STAGING_DIR)/usr/share/man/man1/php*.1
+endef
+
+define PHP_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/php.ini
 	rm -f $(TARGET_DIR)/usr/bin/php*
-	rm -f $(PHP_TARGET_INSTALL_TARGET) $(PHP_HOOK_POST_INSTALL)
+endef
 
+$(eval $(call AUTOTARGETS,package,php))

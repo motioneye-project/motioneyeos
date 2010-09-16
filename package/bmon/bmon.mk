@@ -10,9 +10,8 @@ BMON_SITE = http://distfiles.gentoo.org/distfiles
 BMON_DEPENDENCIES = ncurses
 BMON_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
-$(eval $(call AUTOTARGETS,package,bmon))
-
-$(BMON_TARGET_UNINSTALL):
-	$(call MESSAGE,"Uninstalling")
+define BMON_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/usr/bin/bmon
-	rm -f $(BMON_TARGET_INSTALL_TARGET) $(BMON_HOOK_POST_INSTALL)
+endef
+
+$(eval $(call AUTOTARGETS,package,bmon))

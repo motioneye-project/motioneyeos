@@ -20,20 +20,24 @@ XLIB_LIBX11_CONF_OPT = \
 
 HOST_XLIB_LIBX11_DEPENDENCIES = host-xproto_xextproto host-libxcb host-xutil_util-macros host-xlib_xtrans host-xlib_libXau host-xlib_libXdmcp host-xproto_kbproto host-xproto_xproto host-xproto_xextproto host-xproto_inputproto host-xproto_xf86bigfontproto xproto_bigreqsproto host-xproto_xcmiscproto
 
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libX11))
-$(eval $(call AUTOTARGETS,package/x11r7,xlib_libX11,host))
-
 # src/util/makekeys is executed at build time to generate ks_tables.h, so
 # it should get compiled for the host. The libX11 makefile unfortunately
 # doesn't know about cross compilation so this doesn't work.
 # Long term, we should probably teach it about HOSTCC / HOST_CFLAGS, but for
 # now simply disable the src/util Makefile and build makekeys by hand in
 # advance
-$(XLIB_LIBX11_HOOK_POST_EXTRACT):
+define XLIB_LIBX11_DISABLE_MAKEKEYS_BUILD
 	echo '' > $(@D)/src/util/Makefile.am
-	touch $@
+endef
 
-$(XLIB_LIBX11_HOOK_POST_CONFIGURE):
+XLIB_LIBX11_POST_EXTRACT_HOOKS += XLIB_LIBX11_DISABLE_MAKEKEYS_BUILD
+
+define XLIB_LIBX11_BUILD_MAKEKEYS_FOR_HOST
 	cd $(@D)/src/util && $(HOSTCC) $(HOSTCFLAGS) \
 		-I$(STAGING_DIR)/usr/include -o makekeys makekeys.c
-	touch $@
+endef
+
+XLIB_LIBX11_POST_CONFIGURE_HOOKS += XLIB_LIBX11_BUILD_MAKEKEYS_FOR_HOST
+
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libX11))
+$(eval $(call AUTOTARGETS,package/x11r7,xlib_libX11,host))

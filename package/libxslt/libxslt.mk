@@ -32,12 +32,13 @@ HOST_LIBXSLT_CONF_OPT = --enable-shared \
 
 HOST_LIBXSLT_DEPENDENCIES = host-libxml2
 
-$(eval $(call AUTOTARGETS,package,libxslt))
-$(eval $(call AUTOTARGETS,package,libxslt,host))
-
-$(LIBXSLT_HOOK_POST_INSTALL):
+define LIBXSLT_XSLT_CONFIG_FIXUP
 	$(SED) "s,^prefix=.*,prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xslt-config
 	$(SED) "s,^exec_prefix=.*,exec_prefix=\'$(STAGING_DIR)/usr\',g" $(STAGING_DIR)/usr/bin/xslt-config
 	$(SED) "s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" $(STAGING_DIR)/usr/bin/xslt-config
-	touch $@
+endef
 
+LIBXSLT_POST_INSTALL_STAGING_HOOKS += LIBXSLT_XSLT_CONFIG_FIXUP
+
+$(eval $(call AUTOTARGETS,package,libxslt))
+$(eval $(call AUTOTARGETS,package,libxslt,host))

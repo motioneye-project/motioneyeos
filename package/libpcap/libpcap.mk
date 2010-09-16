@@ -19,10 +19,3 @@ LIBPCAP_CONF_ENV:=ac_cv_linux_vers=$(firstword $(subst .,$(space),$(firstword $(
 LIBPCAP_CONF_OPT:=--disable-yydebug --with-pcap=linux
 
 $(eval $(call AUTOTARGETS,package,libpcap))
-
-$(LIBPCAP_HOOK_POST_INSTALL): $(LIBPCAP_TARGET_INSTALL_TARGET)
-ifeq ($(BR2_PREFER_STATIC_LIB),)
-	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(wildcard $(TARGET_DIR)/usr/lib/libpcap.so*)
-endif
-	touch $@
-
