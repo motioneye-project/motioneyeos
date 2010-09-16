@@ -10,6 +10,9 @@
 	Old-style package hooks (*_HOOK_POST_*) removed. Use the more
 	generic new-style ones instead.
 
+	Download handling reworked and support for git/svn downloads
+	added.
+
 	Updated/fixed packages: alsa-lib, at, avahi, berkeleydb, bind,
 	bmon, bridge-utils, busybox, dbus, dmraid, docker, dropbear,
 	e2fsprogs, expat, freetype, gawk, gvfs, haserl, hostapd,

@@ -244,20 +244,9 @@ ifeq ($(ARCH),xtensa)
 ARCH:=$(ARCH)_$(call qstrip,$(BR2_xtensa_core_name))
 endif
 
-WGET:=$(call qstrip,$(BR2_WGET)) $(SPIDER) $(QUIET)
-SVN_CO:=$(call qstrip,$(BR2_SVN_CO)) $(QUIET)
-SVN_UP:=$(call qstrip,$(BR2_SVN_UP)) $(QUIET)
-BZR_CO:=$(call qstrip,$(BR2_BZR_CO)) $(QUIET)
-BZR_UP:=$(call qstrip,$(BR2_BZR_UP)) $(QUIET)
-GIT:=$(call qstrip,$(BR2_GIT)) $(QUIET)
 ZCAT:=$(call qstrip,$(BR2_ZCAT))
 BZCAT:=$(call qstrip,$(BR2_BZCAT))
 TAR_OPTIONS=$(call qstrip,$(BR2_TAR_OPTIONS)) -xf
-
-DL_DIR=$(call qstrip,$(BR2_DL_DIR))
-ifeq ($(DL_DIR),)
-DL_DIR:=$(TOPDIR)/dl
-endif
 
 GNU_TARGET_SUFFIX:=-$(call qstrip,$(BR2_GNU_TARGET_SUFFIX))
 
@@ -437,11 +426,10 @@ endif
 source: $(TARGETS_SOURCE) $(HOST_SOURCE)
 
 _source-check:
-	$(MAKE) $(EXTRAMAKEARGS) SPIDER=--spider source
+	$(MAKE) DL_MODE=SOURCE_CHECK $(EXTRAMAKEARGS) source
 
 external-deps:
-	@$(MAKE) -Bs BR2_WGET=$(TOPDIR)/toolchain/wget-show-external-deps.sh \
-		$(EXTRAMAKEARGS) SPIDER=--spider source
+	@$(MAKE) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source
 
 show-targets:
 	@echo $(TARGETS)

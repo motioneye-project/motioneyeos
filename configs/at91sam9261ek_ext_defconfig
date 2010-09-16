@@ -153,9 +153,8 @@ BR2_KERNEL_ARCH_PATCH_DIR="target/device/Atmel/arch-arm/kernel-patches-$(BR2_KER
 # Build options
 #
 BR2_WGET="wget --passive-ftp"
-BR2_SVN_CO="svn co"
-BR2_SVN_UP="svn up"
-BR2_GIT="git clone"
+BR2_SVN="svn"
+BR2_GIT="git"
 BR2_ZCAT="gzip -d -c"
 BR2_BZCAT="bzcat"
 BR2_TAR_OPTIONS=""

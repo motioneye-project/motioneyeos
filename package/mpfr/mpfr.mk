@@ -21,7 +21,7 @@ MPFR_PATCH_SOURCE:=$(DL_DIR)/$(MPFR_PATCH_FILE)
 
 $(MPFR_PATCH_SOURCE):
 	$(call DOWNLOAD,$(MPFR_SITE),$(MPFR_PATCH))
-ifeq ($(SPIDER),) # this breaks source-check/external-deps
+ifeq ($(DL_MODE),DOWNLOAD)
 	mv $(DL_DIR)/$(MPFR_PATCH) $@
 endif
 endif
