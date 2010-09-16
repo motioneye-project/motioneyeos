@@ -49,14 +49,10 @@ ifneq ($(BR2_PACKAGE_SDL_SOUND_PLAYSOUND),y)
 SDL_SOUND_POST_INSTALL_TARGET_HOOKS += SDL_SOUND_REMOVE_PLAYSOUND
 endif
 
-define SDL_SOUND_UNINSTALL_STAGING_CMDS
-	$(MAKE) DESTDIR=$(STAGING_DIR) uninstall -C $(@D)/$(SDL_SOUND_SUBDIR)
-endef
-
 # target shared libs doesn't get removed by make uninstall if the .la
 # files are removed (E.G. if BR2_HAVE_DEVFILES isn't set)
 define SDL_SOUND_UNINSTALL_TARGET_CMDS
-	$(MAKE) DESTDIR=$(TARGET_DIR) uninstall -C $(@D)/$(SDL_SOUND_SUBDIR)
+	$(MAKE) DESTDIR=$(TARGET_DIR) uninstall -C $(@D)
 	rm -f $(TARGET_DIR)/usr/lib/libSDL_sound*so*
 endef
 
