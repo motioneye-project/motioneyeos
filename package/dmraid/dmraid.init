@@ -2,7 +2,7 @@
 
 set -e
 
-[ -x /sbin/dmraid ] || exit 0
+[ -x /usr/sbin/dmraid ] || exit 0
 
 # try to load module in case that hasn't been done yet
 modprobe dm-mod >/dev/null 2>&1
@@ -10,12 +10,12 @@ modprobe dm-mod >/dev/null 2>&1
 case "$1" in
 	start|"")
 		echo "Setting up DMRAID devices..."
-		/sbin/dmraid --activate yes --ignorelocking --verbose
+		/usr/sbin/dmraid --activate yes --ignorelocking --verbose
 		;;
 
 	stop)
 		echo "Shutting down DMRAID devices... "
-		/sbin/dmraid --activate no --ignorelocking --verbose
+		/usr/sbin/dmraid --activate no --ignorelocking --verbose
 		;;
 
 	restart|force-reload)
