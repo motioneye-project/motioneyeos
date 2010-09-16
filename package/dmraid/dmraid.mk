@@ -9,16 +9,21 @@ DMRAID_SITE:=http://people.redhat.com/~heinzm/sw/dmraid/src
 DMRAID_SUBDIR:=$(DMRAID_VERSION)
 # lib and tools race with parallel make
 DMRAID_MAKE = $(MAKE1)
-DMRAID_DEPENDENCIES:=lvm2
-DMRAID_INSTALL_STAGING:=yes
+DMRAID_INSTALL_STAGING = YES
+DMRAID_UNINSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) remove
+DMRAID_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
-define DMRAID_INSTALL_TARGET_CMDS
-	$(INSTALL) -m 0755 $(@D)/$(DMRAID_SUBDIR)/tools/dmraid $(TARGET_DIR)/usr/sbin
+DMRAID_DEPENDENCIES = lvm2
+
+define DMRAID_INSTALL_INITSCRIPT
 	$(INSTALL) -m 0755 package/dmraid/dmraid.init $(TARGET_DIR)/etc/init.d/S20dmraid
 endef
 
+DMRAID_POST_INSTALL_TARGET_HOOKS += DMRAID_INSTALL_INITSCRIPT
+
 define DMRAID_UNINSTALL_TARGET_CMDS
-	rm -f $(TARGET_DIR)/usr/sbin/dmraid $(TARGET_DIR)/etc/init.d/S20dmraid
+	$(MAKE) DESTDIR=$(TARGET_DIR) remove -C $(@D)/$(DMRAID_SUBDIR)
+	rm -f $(TARGET_DIR)/etc/init.d/S20dmraid
 endef
 
 $(eval $(call AUTOTARGETS,package,dmraid))

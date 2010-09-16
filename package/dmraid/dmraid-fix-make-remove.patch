@@ -1,0 +1,22 @@
+[PATCH]: dmraid: fix make remove for header files
+
+prefix/include/dmraid is not empty, so we need rm -rf
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ 1.0.0.rc15/include/Makefile.in |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: dmraid/1.0.0.rc15/include/Makefile.in
+===================================================================
+--- dmraid.orig/1.0.0.rc15/include/Makefile.in
++++ dmraid/1.0.0.rc15/include/Makefile.in
+@@ -24,7 +24,7 @@ install: install_dmraid_headers
+ 
+ remove_dmraid_headers:
+ 	@echo "Removing $(HEADERS) from $(includedir)/dmraid"
+-	rm -f $(includedir)/dmraid
++	rm -rf $(includedir)/dmraid
+ 
+ remove:        remove_dmraid_headers
+ 
