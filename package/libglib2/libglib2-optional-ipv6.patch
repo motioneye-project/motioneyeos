@@ -5,10 +5,10 @@ Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
  gio/ginetaddress.c |    9 +++++++++
  1 file changed, 9 insertions(+)
 
-Index: glib-2.22.4/gio/ginetaddress.c
+Index: glib-2.26.0/gio/ginetaddress.c
 ===================================================================
---- glib-2.22.4.orig/gio/ginetaddress.c
-+++ glib-2.22.4/gio/ginetaddress.c
+--- glib-2.26.0.orig/gio/ginetaddress.c
++++ glib-2.26.0/gio/ginetaddress.c
 @@ -21,6 +21,7 @@
   *          Samuel Cormier-Iijima <sciyoshi@gmail.com>
   */
@@ -17,7 +17,7 @@ Index: glib-2.22.4/gio/ginetaddress.c
  #include <config.h>
  
  #include <string.h>
-@@ -435,7 +436,11 @@ g_inet_address_new_from_string (const gc
+@@ -434,7 +435,11 @@
    return NULL;
  }
  
@@ -29,7 +29,7 @@ Index: glib-2.22.4/gio/ginetaddress.c
  
  /**
   * g_inet_address_new_from_bytes:
-@@ -484,8 +489,10 @@ g_inet_address_new_loopback (GSocketFami
+@@ -483,8 +488,10 @@
  
        return g_inet_address_new_from_bytes (addr, family);
      }
@@ -40,7 +40,7 @@ Index: glib-2.22.4/gio/ginetaddress.c
  }
  
  /**
-@@ -511,8 +518,10 @@ g_inet_address_new_any (GSocketFamily fa
+@@ -510,8 +517,10 @@
  
        return g_inet_address_new_from_bytes (addr, family);
      }

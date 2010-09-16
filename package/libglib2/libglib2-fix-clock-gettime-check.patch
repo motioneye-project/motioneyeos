@@ -1,6 +1,6 @@
 Rework clock_gettime() test
 
-The test for clock_gettime() in configure.in doesn't work properly
+The test for clock_gettime() in configure.ac doesn't work properly
 when a previous package has loaded the shared configuration cache with
 informations about the availability of clock_gettime. A package such
 as ctorrent does so, which means that compiling ctorrent *then*
@@ -25,11 +25,15 @@ appropriate variables.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Index: glib-2.24.1/configure.in
+---
+ configure.ac |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+Index: glib-2.26.0/configure.ac
 ===================================================================
---- glib-2.24.1.orig/configure.in	2010-08-11 19:29:20.530916023 +0200
-+++ glib-2.24.1/configure.in	2010-08-11 19:46:41.308866269 +0200
-@@ -2392,13 +2392,14 @@
+--- glib-2.26.0.orig/configure.ac
++++ glib-2.26.0/configure.ac
+@@ -2379,13 +2379,14 @@
  	LIBS="$glib_save_LIBS"
  fi
  
