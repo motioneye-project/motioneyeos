@@ -21,19 +21,23 @@
 	bmon, bridge-utils, busybox, dbus, dmraid, docker, dropbear,
 	e2fsprogs, expat, freetype, gawk, gvfs, haserl, hostapd,
 	ifplugd, iptables, jpeg, kexec, kismet, less, libcurl,
-	libdnet, libevent, libglade, libgtk2, libiconv, libidn, libnl,
-	liboil, libpcap, libpng, libungif, libxml2, libxslt, lighttpd,
-	lite, m4, mdadm, metacity, mysql_client, nano, nbd, ncftp,
-	neon, netperf, ntfsprogs, ntp, openntpd, openssh, openvpn,
-	oprofile, pango, pcre, php, prboom, radvd, qt, samba, sdl_sound,
-	shared-mime-info, speex, sqlite, squashfs, strace, taglib,
-	tcpdump, tiff, tn5250, udev, udpcast, usbmount, usbutils,
-	which, xlib_libX11, zlib
+	libdnet, libevent, libglade, libgtk2, libiconv, libidn,
+	libmms, libnl, liboil, libpcap, libpng, libungif, libxml2,
+	libxslt, lighttpd, lite, m4, mdadm, metacity, mysql_client,
+	nano, nbd, ncftp, neon, netperf, ntfsprogs, ntp, openntpd,
+	openssh, openvpn, oprofile, pango, pcre, php, prboom, radvd,
+	qt, samba, sdl_sound, shared-mime-info, speex, sqlite,
+	squashfs, strace, taglib, tcpdump, tiff, tn5250, udev,
+	udpcast, usbmount, usbutils, which, xlib_libX11, zlib
 
 	Deprecated packages: lzma
 
 	Removed packages: dillo, libglib12, libgtk12, microwin,
 	pcmcia
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#2581: libmms: Update to 0.6, and patch to work on architectures...
 
 2010.08: Released August 31th, 2010:
 
