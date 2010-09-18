@@ -337,21 +337,21 @@ define GENTARGETS_INNER
 $(2)_TYPE                       =  $(5)
 $(2)_NAME			=  $(1)
 
-ifndef $(2)_VERSION
- ifdef $(3)_VERSION
-  $(2)_VERSION = $($(3)_VERSION)
- else
-  $(2)_VERSION = undefined
- endif
-endif
-
 # Keep the package version that may contain forward slashes in the _DL_VERSION
 # variable, then replace all forward slashes ('/') by underscores ('_') to
 # sanitize the package version that is used in paths, directory and file names.
 # Forward slashes may appear in the package's version when pointing to a
 # version control system branch or tag, for example remotes/origin/1_10_stable.
 $(2)_DL_VERSION	= $($(2)_VERSION)
-$(2)_VERSION = $(subst /,_,$($(2)_VERSION))
+ifndef $(2)_VERSION
+ ifdef $(3)_VERSION
+  $(2)_VERSION = $($(3)_VERSION)
+ else
+  $(2)_VERSION = undefined
+ endif
+else
+ $(2)_VERSION = $(subst /,_,$($(2)_VERSION))
+endif
 
 $(2)_BASE_NAME	=  $(1)-$$($(2)_VERSION)
 $(2)_DL_DIR	=  $$(DL_DIR)/$$($(2)_BASE_NAME)
