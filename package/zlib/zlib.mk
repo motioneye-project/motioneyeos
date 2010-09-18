@@ -42,11 +42,11 @@ define HOST_ZLIB_CONFIGURE_CMDS
 endef
 
 define ZLIB_BUILD_CMDS
-	$(MAKE) -C $(@D) all libz.a
+	$(MAKE1) -C $(@D) all libz.a
 endef
 
 define HOST_ZLIB_BUILD_CMDS
-	$(MAKE) -C $(@D) all libz.a
+	$(MAKE1) -C $(@D) all libz.a
 endef
 
 define ZLIB_INSTALL_STAGING_CMDS

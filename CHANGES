@@ -24,7 +24,7 @@
 	pango, pcre, php, prboom, radvd, qt, samba, sdl_sound,
 	shared-mime-info, speex, sqlite, strace, taglib, tcpdump,
 	tiff, tn5250, udev, udpcast, usbmount, usbutils, which,
-	xlib_libX11
+	xlib_libX11, zlib
 
 	Removed packages: dillo, libglib12, libgtk12, microwin,
 	pcmcia
