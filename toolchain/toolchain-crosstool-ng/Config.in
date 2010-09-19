@@ -1,0 +1,54 @@
+# Selection options for crosstool-NG
+
+if BR2_TOOLCHAIN_CTNG
+
+choice
+ 	prompt "Crosstool-NG C library"
+
+config BR2_TOOLCHAIN_CTNG_uClibc
+	bool "uClibc"
+
+# Although eglibc can be configured to opt-out some features,
+# let's not deal with that for the time being, it's complex...
+config BR2_TOOLCHAIN_CTNG_eglibc
+	bool "eglibc"
+	select BR2_LARGEFILE
+	select BR2_INET_IPV6
+	select BR2_INET_RPC
+	select BR2_ENABLE_LOCALE
+	select BR2_USE_WCHAR
+	select BR2_PROGRAM_INVOCATION
+
+config BR2_TOOLCHAIN_CTNG_glibc
+	bool "glibc"
+	select BR2_LARGEFILE
+	select BR2_INET_IPV6
+	select BR2_INET_RPC
+	select BR2_ENABLE_LOCALE
+	select BR2_USE_WCHAR
+	select BR2_PROGRAM_INVOCATION
+
+endchoice # C library
+
+config BR2_TOOLCHAIN_CTNG_LIBC
+	string
+	default "uClibc"	if BR2_TOOLCHAIN_CTNG_uClibc
+	default "eglibc"	if BR2_TOOLCHAIN_CTNG_eglibc
+	default "glibc"		if BR2_TOOLCHAIN_CTNG_glibc
+
+config BR2_TOOLCHAIN_CTNG_CONFIG
+	string "crosstool-NG configuration file to use"
+	default "toolchain/toolchain-crosstool-ng/crosstool-ng.config"
+	help
+	  Enter here the crosstool-NG's .config file to use.
+	  If unsure, use the default.
+	  To finetune your toolchain, you can also call:
+	  make ctng-menuconfig
+
+config BR2_TOOLCHAIN_CTNG_STRIP_LIBS
+	bool "Strip libs copied to target"
+	default !BR2_STRIP_none
+	help
+	  Strip shared libraries copied from the toolchain.
+
+endif # BR2_TOOLCHAIN_CTNG

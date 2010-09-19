@@ -14,10 +14,19 @@ config BR2_TOOLCHAIN_BUILDROOT
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External toolchain"
 
+config BR2_TOOLCHAIN_CTNG
+	bool "Crosstool-NG toolchain"
+	help
+	  Say 'y' if you want to generate the toolchain with crosstool-NG
+	  ( http://ymorin.is-a-geek.org/projects/crosstool )
+
+	  This is considered experimental, and you can expect some breakage.
+
 endchoice
 
 source "toolchain/toolchain-buildroot/Config.in"
 source "toolchain/toolchain-external/Config.in"
+source "toolchain/toolchain-crosstool-ng/Config.in"
 source "toolchain/toolchain-common.in"
 source "toolchain/toolchain-buildroot/Config.in.2"
 source "toolchain/toolchain-external/Config.in.2"

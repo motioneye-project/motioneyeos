@@ -235,7 +235,7 @@ PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 ##############################################################
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 BASE_TARGETS:=uclibc-configured binutils cross_compiler uclibc-target-utils kernel-headers
-else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
+else
 BASE_TARGETS:=uclibc
 endif
 TARGETS:=
@@ -292,6 +292,8 @@ ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 include toolchain/toolchain-buildroot.mk
 else ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
 include toolchain/toolchain-external.mk
+else ifeq ($(BR2_TOOLCHAIN_CTNG),y)
+include toolchain/toolchain-crosstool-ng.mk
 endif
 
 include package/*/*.mk
