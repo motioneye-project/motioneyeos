@@ -1,0 +1,6 @@
+config BR2_PACKAGE_KBD
+	bool "kbd"
+	help
+	  Keytable files and keyboard utilities.
+
+	  http://kernel.org/pub/linux/utils/kbd/
