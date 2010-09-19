@@ -1,6 +1,10 @@
 config BR2_PACKAGE_M4
 	bool "m4"
+	depends on BR2_USE_WCHAR
 	help
 	  An implementation of the traditional Unix macro processor.
 
 	  http://www.gnu.org/software/m4/m4.html
+
+comment "m4 requires a toolchain with WCHAR support"
+	depends on !BR2_USE_WCHAR

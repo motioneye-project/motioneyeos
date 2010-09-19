@@ -19,8 +19,8 @@
 	ifplugd, iptables, jpeg, kexec, kismet, less, libcurl,
 	libdnet, libevent, libglade, libgtk2, libiconv, libidn, libnl,
 	liboil, libpcap, libpng, libungif, libxml2, libxslt, lighttpd,
-	lite, mdadm, metacity, mysql_client, nano, nbd, ncftp, neon,
-	netperf, ntfsprogs, openntpd, openssh, openvpn, oprofile,
+	lite, m4, mdadm, metacity, mysql_client, nano, nbd, ncftp,
+	neon, netperf, ntfsprogs, openntpd, openssh, openvpn, oprofile,
 	pango, pcre, php, prboom, radvd, qt, samba, sdl_sound,
 	shared-mime-info, speex, sqlite, strace, taglib, tcpdump,
 	tiff, tn5250, udpcast, usbutils, which, xlib_libX11
