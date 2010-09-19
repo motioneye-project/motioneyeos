@@ -6,42 +6,17 @@
 USBMOUNT_VERSION=0.0.14.1
 USBMOUNT_SOURCE:=usbmount_$(USBMOUNT_VERSION).tar.gz
 USBMOUNT_SITE:=http://usbmount.alioth.debian.org/package/
-USBMOUNT_CAT:=$(ZCAT)
-USBMOUNT_DIR:=$(BUILD_DIR)/usbmount-$(USBMOUNT_VERSION)
-USBMOUNT_BINARY:=usbmount
-USBMOUNT_TARGET_BINARY:=sbin/usbmount
+USBMOUNT_DEPENDENCIES = udev lockfile-progs
 
-$(DL_DIR)/$(USBMOUNT_SOURCE):
-	 $(call DOWNLOAD,$(USBMOUNT_SITE),$(USBMOUNT_SOURCE))
-
-usbmount-source: $(DL_DIR)/$(USBMOUNT_SOURCE)
-
-$(USBMOUNT_DIR)/.unpacked: $(DL_DIR)/$(USBMOUNT_SOURCE)
-	$(USBMOUNT_CAT) $(DL_DIR)/$(USBMOUNT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(USBMOUNT_DIR) package/usbmount usbmount-$(USBMOUNT_VERSION).patch
-	touch $@
-
-$(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY): $(USBMOUNT_DIR)/.unpacked
-	$(INSTALL) -m 0755 -D $(USBMOUNT_DIR)/usbmount $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)
+define USBMOUNT_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 0755 -D $(@D)/usbmount $(TARGET_DIR)/sbin/usbmount
 	@if [ ! -f $(TARGET_DIR)/etc/usbmount/usbmount.conf ]; then \
-	        $(INSTALL) -m 0644 -D $(USBMOUNT_DIR)/usbmount.conf $(TARGET_DIR)/etc/usbmount/usbmount.conf; \
+	        $(INSTALL) -m 0644 -D $(@D)/usbmount.conf $(TARGET_DIR)/etc/usbmount/usbmount.conf; \
 	fi
-	touch -c $@
+endef
 
-usbmount: $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)
+define USBMOUNT_UNINSTALL_TARGET_CMDS
+	rm -rf $(TARGET_DIR)/etc/usbmount $(TARGET_DIR)/sbin/usbmount
+endef
 
-usbmount-clean:
-	rm -f $(TARGET_DIR)/$(USBMOUNT_TARGET_BINARY)
-	rm -rf $(TARGET_DIR)/etc/usbmount
-
-usbmount-dirclean:
-	rm -rf $(USBMOUNT_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_USBMOUNT),y)
-TARGETS+=usbmount
-endif
+$(eval $(call GENTARGETS,package,usbmount))

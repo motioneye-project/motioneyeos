@@ -23,7 +23,8 @@
 	neon, netperf, ntfsprogs, openntpd, openssh, openvpn, oprofile,
 	pango, pcre, php, prboom, radvd, qt, samba, sdl_sound,
 	shared-mime-info, speex, sqlite, strace, taglib, tcpdump,
-	tiff, tn5250, udev, udpcast, usbutils, which, xlib_libX11
+	tiff, tn5250, udev, udpcast, usbmount, usbutils, which,
+	xlib_libX11
 
 	Removed packages: dillo, libglib12, libgtk12, microwin,
 	pcmcia

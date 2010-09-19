@@ -1,7 +1,7 @@
 config BR2_PACKAGE_USBMOUNT
 	bool "usbmount"
+	select BR2_PACKAGE_UDEV
 	select BR2_PACKAGE_UDEV_VOLUME_ID
-	select BR2_PACKAGE_UDEV_SCSI_ID
 	select BR2_PACKAGE_LOCKFILE_PROGS
 	help
 	  The usbmount package automatically mounts USB mass storage devices
