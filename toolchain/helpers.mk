@@ -170,11 +170,11 @@ check_glibc = \
 #
 check_uclibc_feature = \
 	IS_IN_LIBC=`grep -q "\#define $(1) 1" $(3) && echo y` ; \
-	if [ x$($(2)) != x"y" -a x$${IS_IN_LIBC} == x"y" ] ; then \
+	if [ x$($(2)) != x"y" -a x$${IS_IN_LIBC} = x"y" ] ; then \
 		echo "$(4) available in C library, please enable $(2)" ; \
 		exit 1 ; \
 	fi ; \
-	if [ x$($(2)) == x"y" -a x$${IS_IN_LIBC} != x"y" ] ; then \
+	if [ x$($(2)) = x"y" -a x$${IS_IN_LIBC} != x"y" ] ; then \
 		echo "$(4) not available in C library, please disable $(2)" ; \
 		exit 1 ; \
 	fi
@@ -214,11 +214,11 @@ check_arm_abi = \
 	else \
 		EXT_TOOLCHAIN_ABI="oabi" ; \
 	fi ; \
-	if [ x$(BR2_ARM_OABI) == x"y" -a $${EXT_TOOLCHAIN_ABI} == "eabi" ] ; then \
+	if [ x$(BR2_ARM_OABI) = x"y" -a $${EXT_TOOLCHAIN_ABI} = "eabi" ] ; then \
 		echo "Incorrect ABI setting" ; \
 		exit 1 ; \
 	fi ; \
-	if [ x$(BR2_ARM_EABI) == x"y" -a $${EXT_TOOLCHAIN_ABI} == "oabi" ] ; then \
+	if [ x$(BR2_ARM_EABI) = x"y" -a $${EXT_TOOLCHAIN_ABI} = "oabi" ] ; then \
 		echo "Incorrect ABI setting" ; \
 		exit 1 ; \
 	fi ; \
