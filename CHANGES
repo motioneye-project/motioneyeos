@@ -30,6 +30,8 @@
 	tcpdump, tiff, tn5250, udev, udpcast, usbmount, usbutils,
 	which, xlib_libX11, zlib
 
+	Deprecated packages: lzma
+
 	Removed packages: dillo, libglib12, libgtk12, microwin,
 	pcmcia
 

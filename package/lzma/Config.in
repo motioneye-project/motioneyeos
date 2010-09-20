@@ -1,6 +1,7 @@
 config BR2_PACKAGE_LZMA
 	bool "lzma"
 	depends on BR2_GCC_CROSS_CXX
+	depends on BR2_DEPRECATED
 	help
 	  Lempel Ziv compression method (LZMA) is a compression
 	  algorithm with high compression ratio.
@@ -8,4 +9,4 @@ config BR2_PACKAGE_LZMA
 	  http://tukaani.org/lzma/
 
 comment "lzma requires a toolchain with C++ support"
-        depends on !BR2_GCC_CROSS_CXX
+        depends on !BR2_GCC_CROSS_CXX && BR2_DEPRECATED
