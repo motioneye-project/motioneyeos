@@ -31,7 +31,7 @@ function	RESTART()
 function	EXE()
 {
 	printf 	"EXE	"				| tee -a ${LOGFILE}
-	if [ ${active} == 1 ] ; then
+	if [ ${active} = 1 ] ; then
 		$1 $2 $3 "$4"
 		return 0;
 	else
@@ -49,10 +49,10 @@ function	EXE()
 function	AVR()
 {
 	printf 	"AVR	"				| tee -a ${LOGFILE}
-	if [ "${ARCH}X" == "avr32X" ] ; then
+	if [ "${ARCH}X" = "avr32X" ] ; then
 		echo "mk $2 UNSUPPORTED \"$4\" $5 $6"	| tee -a ${LOGFILE}
 		return 1;
-	elif [ ${active} == 1 ] ; then
+	elif [ ${active} = 1 ] ; then
 		$1 $2 "$3" "$4"
 		return 0;
 	else
@@ -72,22 +72,22 @@ function skip()
 {
 	printf "skip	%-8s" "$1"			| tee -a ${LOGFILE}
 	printf "%-32s" "$2"				| tee -a ${LOGFILE}
-	if [   "$3X" == "OKX" ] ; then
+	if [   "$3X" = "OKX" ] ; then
 		printf "%-16s"	"DISABLED"		| tee -a ${LOGFILE}
 		if [ "${4}X" != "X" ] ; then
 			printf	"%-64s"	"\"$4\""	| tee -a ${LOGFILE}
 		fi
-	elif [ "$3X" == "FAILX" ] ; then
+	elif [ "$3X" = "FAILX" ] ; then
 		printf "%-16s"	"DISABLED"		| tee -a ${LOGFILE}
 		if [ "${4}X" != "X" ] ; then
 			printf	"%-64s"	"\"$4\""	| tee -a ${LOGFILE}
 		fi
-	elif [ "$3X" == "BROKENX" ] ; then
+	elif [ "$3X" = "BROKENX" ] ; then
 		printf "%-16s"	"DISABLED"		| tee -a ${LOGFILE}
 		if [ "${4}X" != "X" ] ; then
 			printf	"%-64s"	"\"$4\""	| tee -a ${LOGFILE}
 		fi
-	elif [ "$3X" == "DISABLEDX" ] ; then
+	elif [ "$3X" = "DISABLEDX" ] ; then
 		printf "%-16s"	"DISABLED"		| tee -a ${LOGFILE}
 		if [ "${4}X" != "X" ] ; then
 			printf	"%-64s"	"\"$4\""	| tee -a ${LOGFILE}
@@ -104,7 +104,7 @@ function skip()
 function bb()
 {
 	printf 	"%-8s"	"bb"				| tee -a ${LOGFILE}
-	if [ ${busybox} == 1 ] ; then
+	if [ ${busybox} = 1 ] ; then
 		printf "%-8s"	"$1"			| tee -a ${LOGFILE}
 		$1 $2 $3 $4 $5 $6
 		return 0;

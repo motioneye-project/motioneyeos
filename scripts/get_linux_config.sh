@@ -23,7 +23,7 @@ LINUX_MINOR_VERSION=${LINUX26_DIR:13}
 
 function DBG_PRINT
 {
-	if [ ${DEBUG} == 1 ] ; then
+	if [ ${DEBUG} = 1 ] ; then
 		echo $1
 	fi
 }
@@ -50,8 +50,8 @@ for i in ${CONFIGS} ; do
 	    echo Copying `basename $i`.config ...
 	    cp $i.config ${LINUX26_CONFIG}
     elif [ ${THIS_MAJOR} -eq ${LINUX_MAJOR_VERSION} ] ; then
-	if [ "${LINUX_MINOR_VERSION}X" == "X" ] ; then
-		if [ "${THIS_MINOR}X" == "X" ] ; then
+	if [ "${LINUX_MINOR_VERSION}X" = "X" ] ; then
+		if [ "${THIS_MINOR}X" = "X" ] ; then
 		    echo Copying `basename $i`.config ...
 		    cp $i.config ${LINUX26_CONFIG}
 		else		

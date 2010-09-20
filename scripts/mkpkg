@@ -36,7 +36,7 @@ function	process ()
 {
 	make $1 >> ${LOG} 2>&1 || test=${FAIL}
 	grep "\.tar\." ${LOG} > ${DEPENDENCY}
-	if [ ${test} == ${OK} ] ; then
+	if [ ${test} = ${OK} ] ; then
 		mv ${LOG} ${LOG_OK_FILE}
 		printf "%-16s" "OK"
 		if [ "${2}X" != "X" ] ; then
@@ -65,29 +65,29 @@ function build_package ()
 {
 	# echo "BUILD PACKAGE:1=$1 2=$2 3=$3 4=$4 5=$5 6=$6 7=$7"
 	printf "mk	%-32s" "$1"
-	if [ "$2X" == "X" ] ; then		# no parameters
+	if [ "$2X" = "X" ] ; then		# no parameters
 		clean_files	$1
 		dirclean	$1
 		process		$1 "$3"
-	elif [ "$2X" == "?X" ] ; then		# no parameters
+	elif [ "$2X" = "?X" ] ; then		# no parameters
 		clean_files	$1
 		dirclean	$1
 		process		$1 "$3"
-	elif [ "$2X" == "OKX" ] ; then	# Previous build was OK
+	elif [ "$2X" = "OKX" ] ; then	# Previous build was OK
 		clean_files	$1
 		dirclean	$1
 		process		$1 "$3"
-	elif [ "$2X" == "FAILX" ] ; then
+	elif [ "$2X" = "FAILX" ] ; then
 		clean_files	$1
 		dirclean	$1
 		process		$1 "$3"
-	elif [ "$2X" == "BROKENX" ] ; then
+	elif [ "$2X" = "BROKENX" ] ; then
 		printf  "%-16s" "BROKEN"
 		if [ "${3}X" != "X" ] ; then
 			printf	"%s"	"\"$3\"";
 		fi
 		echo
-	elif [ "$2X" == "DISABLEDX" ] ; then
+	elif [ "$2X" = "DISABLEDX" ] ; then
 		printf  "%-16s" "DISABLED"
 		if [ "${3}X" != "X" ] ; then
 			printf	"%s"	"\"$3\"";
