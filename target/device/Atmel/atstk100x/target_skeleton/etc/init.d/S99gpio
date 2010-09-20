@@ -8,9 +8,9 @@ fi
 
 BOARD=`cat /etc/release | cut -d ' ' -f1`
 
-if [ "${BOARD}" == "" ]; then
+if [ "${BOARD}" = "" ]; then
 	echo "none";
-elif [ "${BOARD}" == "NGW" ]; then
+elif [ "${BOARD}" = "NGW" ]; then
 	echo "'${BOARD}'"
 
 	echo -n "  boot LED: "
@@ -111,7 +111,7 @@ elif [ "${BOARD}" == "NGW" ]; then
 		echo "failed"
 		exit 1
 	fi
-elif [ "${BOARD}" == "STK1000" ]; then # end NGW
+elif [ "${BOARD}" = "STK1000" ]; then # end NGW
 	echo "'${BOARD}'"
 
 	echo -n "  switches: "
