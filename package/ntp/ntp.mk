@@ -3,91 +3,51 @@
 # ntp
 #
 #############################################################
-NTP_VERSION:=4.2.4p5
-NTP_SOURCE:=ntp-$(NTP_VERSION).tar.gz
-NTP_SITE:=http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2
-NTP_DIR:=$(BUILD_DIR)/ntp-$(NTP_VERSION)
-NTP_CAT:=$(ZCAT)
-NTP_BINARY:=ntpdate/ntpdate
-NTP_TARGET_BINARY:=usr/bin/ntpdate
+NTP_VERSION = 4.2.6p2
+NTP_SOURCE = ntp-$(NTP_VERSION).tar.gz
+NTP_SITE = http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-4.2
 
-$(DL_DIR)/$(NTP_SOURCE):
-	$(call DOWNLOAD,$(NTP_SITE),$(NTP_SOURCE))
+NTP_CONF_ENV = ac_cv_lib_md5_MD5Init=no
 
-ntp-source: $(DL_DIR)/$(NTP_SOURCE)
+ifneq ($(BR2_INET_IPV6),y)
+NTP_CONF_ENV += isc_cv_have_in6addr_any=no
+endif
 
-$(NTP_DIR)/.patched: $(DL_DIR)/$(NTP_SOURCE)
-	$(NTP_CAT) $(DL_DIR)/$(NTP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(NTP_DIR) package/ntp/ ntp\*.patch
-	$(SED) "s,^#if.*__GLIBC__.*_BSD_SOURCE.*$$,#if 0," \
-		$(NTP_DIR)/ntpd/refclock_pcf.c
-	$(SED) '/[[:space:](]index[[:space:]]*(/s/[[:space:]]*index[[:space:]]*(/ strchr(/g' $(NTP_DIR)/libisc/*.c $(NTP_DIR)/arlib/sample.c
-	$(SED) '/[[:space:](]rindex[[:space:]]*(/s/[[:space:]]*rindex[[:space:]]*(/ strrchr(/g' $(NTP_DIR)/ntpd/*.c
-	#$(SED) 's/\(^#[[:space:]]*include[[:space:]]*<sys\/var.h>\)/\/\/ \1/' $(NTP_DIR)/util/tickadj.c
-	$(CONFIG_UPDATE) $(NTP_DIR)
-	$(CONFIG_UPDATE) $(NTP_DIR)/sntp
-	touch $@
-
-$(NTP_DIR)/.configured: $(NTP_DIR)/.patched
-	(cd $(NTP_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		ac_cv_lib_md5_MD5Init=no \
-		./configure $(QUIET) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--exec-prefix=/usr \
-		--bindir=/usr/bin \
-		--sbindir=/usr/sbin \
-		--libdir=/lib \
-		--libexecdir=/usr/lib \
-		--sysconfdir=/etc \
-		--datadir=/usr/share \
-		--localstatedir=/var \
-		--mandir=/usr/man \
-		--infodir=/usr/info \
-		$(DISABLE_NLS) \
-		$(DISABLE_IPV6) \
-		--with-shared \
+NTP_CONF_OPT = --with-shared \
 		--program-transform-name=s,,, \
 		--without-crypto \
-		--disable-tickadj \
-	)
-	touch $@
+		--disable-tickadj
 
-$(NTP_DIR)/$(NTP_BINARY): $(NTP_DIR)/.configured
-	$(MAKE) -C $(NTP_DIR)
+define NTP_PATCH_FIXUPS
+	$(SED) "s,^#if.*__GLIBC__.*_BSD_SOURCE.*$$,#if 0," $(@D)/ntpd/refclock_pcf.c
+	$(SED) '/[[:space:](]rindex[[:space:]]*(/s/[[:space:]]*rindex[[:space:]]*(/ strrchr(/g' $(@D)/ntpd/*.c
+endef
 
-$(TARGET_DIR)/$(NTP_TARGET_BINARY): $(NTP_DIR)/$(NTP_BINARY)
-	install -m 755 $(NTP_DIR)/ntpd/ntpd $(TARGET_DIR)/usr/sbin/ntpd
-	install -m 755 $(NTP_DIR)/$(NTP_BINARY) $(TARGET_DIR)/$(NTP_TARGET_BINARY)
-ifeq ($(BR2_PACKAGE_NTP_SNTP),y)
-	install -m 755 $(NTP_DIR)/sntp/sntp $(TARGET_DIR)/usr/bin/sntp
-endif
+NTP_INSTALL_FILES_$(BR2_PACKAGE_NTP_SNTP) += sntp/sntp
+NTP_INSTALL_FILES_$(BR2_PACKAGE_NTP_NTP_KEYGEN) += util/ntp-keygen
+NTP_INSTALL_FILES_$(BR2_PACKAGE_NTP_NTP_WAIT) += scripts/ntp-wait
+NTP_INSTALL_FILES_$(BR2_PACKAGE_NTP_NTPDC) += ntpdc/ntpdc
+NTP_INSTALL_FILES_$(BR2_PACKAGE_NTP_NTPQ) += ntpq/ntpq
+NTP_INSTALL_FILES_$(BR2_PACKAGE_NTP_NTPTRACE) += scripts/ntptrace
+NTP_INSTALL_FILES_$(BR2_PACKAGE_NTP_TICKADJ) += util/tickadj
+
+define NTP_INSTALL_TARGET_CMDS
+	install -m 755 $(@D)/ntpd/ntpd $(TARGET_DIR)/usr/sbin/ntpd
+	test -z "$(NTP_INSTALL_FILES_y)" || install -m 755 $(addprefix $(@D)/,$(NTP_INSTALL_FILES_y)) $(TARGET_DIR)/usr/bin/
 	install -m 755 package/ntp/ntp.sysvinit $(TARGET_DIR)/etc/init.d/S49ntp
 	@if [ ! -f $(TARGET_DIR)/etc/default/ntpd ]; then \
 		install -m 755 -d $(TARGET_DIR)/etc/default ; \
 		install -m 644 package/ntp/ntpd.etc.default $(TARGET_DIR)/etc/default/ntpd ; \
 	fi
+endef
 
-ntp: $(TARGET_DIR)/$(NTP_TARGET_BINARY)
+define NTP_UNINSTALL_TARGET_CMDS
+	rm $(TARGET_DIR)/usr/sbin/ntpd
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,$(NTP_INSTALL_FILES_y))
+	rm $(TARGET_DIR)/etc/init.d/S49ntp
+	rm $(TARGET_DIR)/etc/default/ntpd
+endef
 
-ntp-clean:
-	rm -f $(TARGET_DIR)/usr/sbin/ntpd $(TARGET_DIR)/usr/bin/sntp \
-		$(TARGET_DIR)/etc/init.d/S49ntp \
-		$(TARGET_DIR)/$(NTP_TARGET_BINARY)
-	-$(MAKE) -C $(NTP_DIR) clean
+NTP_POST_PATCH_HOOKS += NTP_PATCH_FIXUPS
 
-ntp-dirclean:
-	rm -rf $(NTP_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_NTP),y)
-TARGETS+=ntp
-endif
+$(eval $(call AUTOTARGETS,package,ntp))
