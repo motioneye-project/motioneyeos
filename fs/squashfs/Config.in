@@ -19,5 +19,20 @@ config BR2_TARGET_ROOTFS_SQUASHFS3
        bool "3.x"
 
 endchoice
-endif
 
+choice
+	prompt "Compression algorithm"
+	default BR2_TARGET_ROOTFS_SQUASHFS4_GZIP
+	depends on BR2_TARGET_ROOTFS_SQUASHFS4
+	help
+	  Select the squashfs compression algorithm to use when
+	  generating the filesystem.
+
+config BR2_TARGET_ROOTFS_SQUASHFS4_GZIP
+       bool "gzip"
+
+config BR2_TARGET_ROOTFS_SQUASHFS4_LZO
+       bool "lzo"
+
+endchoice
+endif

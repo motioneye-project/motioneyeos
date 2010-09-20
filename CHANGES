@@ -7,6 +7,8 @@
 
 	Toolchain: ARM cortex A9 support
 
+	Fs: Squashfs 4.1 with lzo support
+
 	Old-style package hooks (*_HOOK_POST_*) removed. Use the more
 	generic new-style ones instead.
 
@@ -22,9 +24,9 @@
 	lite, m4, mdadm, metacity, mysql_client, nano, nbd, ncftp,
 	neon, netperf, ntfsprogs, openntpd, openssh, openvpn, oprofile,
 	pango, pcre, php, prboom, radvd, qt, samba, sdl_sound,
-	shared-mime-info, speex, sqlite, strace, taglib, tcpdump,
-	tiff, tn5250, udev, udpcast, usbmount, usbutils, which,
-	xlib_libX11, zlib
+	shared-mime-info, speex, sqlite, squashfs, strace, taglib,
+	tcpdump, tiff, tn5250, udev, udpcast, usbmount, usbutils,
+	which, xlib_libX11, zlib
 
 	Removed packages: dillo, libglib12, libgtk12, microwin,
 	pcmcia

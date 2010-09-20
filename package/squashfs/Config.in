@@ -6,5 +6,22 @@ config BR2_PACKAGE_SQUASHFS
 
 	  http://squashfs.sourceforge.net/
 
+if BR2_PACKAGE_SQUASHFS
+
+config BR2_PACKAGE_SQUASHFS_GZIP
+       bool "gzip support"
+       default y
+       select BR2_PACKAGE_GZIP
+       help
+         Support GZIP compression algorithm
+
+config BR2_PACKAGE_SQUASHFS_LZO
+       bool "lzo support"
+       select BR2_PACKAGE_LZO
+       help
+         Support LZO compression algorithm
+
+endif
+
 comment "squashfs requires a toolchain with LARGEFILE support"
 	depends on !BR2_LARGEFILE
