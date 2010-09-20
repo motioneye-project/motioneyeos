@@ -15,6 +15,12 @@ config BR2_PACKAGE_SQUASHFS_GZIP
        help
          Support GZIP compression algorithm
 
+config BR2_PACKAGE_SQUASHFS_LZMA
+       bool "lzma support"
+       select BR2_PACKAGE_XZ
+       help
+         Support LZMA compression algorithm
+
 config BR2_PACKAGE_SQUASHFS_LZO
        bool "lzo support"
        select BR2_PACKAGE_LZO

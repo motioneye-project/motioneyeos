@@ -31,6 +31,9 @@ choice
 config BR2_TARGET_ROOTFS_SQUASHFS4_GZIP
        bool "gzip"
 
+config BR2_TARGET_ROOTFS_SQUASHFS4_LZMA
+       bool "lzma"
+
 config BR2_TARGET_ROOTFS_SQUASHFS4_LZO
        bool "lzo"
 
