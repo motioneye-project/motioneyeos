@@ -22,7 +22,7 @@ choice
 	default BR2_LINUX_KERNEL_2_6_35
 
 config BR2_LINUX_KERNEL_2_6_35
-	bool "2.6.35.4"
+	bool "2.6.35.5"
 
 config BR2_LINUX_KERNEL_SAME_AS_HEADERS
 	bool "Same as toolchain kernel headers"
