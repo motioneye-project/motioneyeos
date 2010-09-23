@@ -23,11 +23,11 @@
 	ifplugd, iptables, jpeg, kexec, kismet, less, libcurl,
 	libdnet, libevent, libglade, libgtk2, libiconv, libidn,
 	libmms, libnl, liboil, libpcap, libpng, libungif, libxml2,
-	libxslt, lighttpd, lite, m4, mdadm, metacity, mysql_client,
-	nano, nbd, ncftp, neon, netperf, ntfsprogs, ntp, openntpd,
-	openssh, openvpn, oprofile, pango, pcre, php, prboom, radvd,
-	qt, samba, sdl_sound, shared-mime-info, speex, sqlite,
-	squashfs, strace, taglib, tcpdump, tiff, tn5250, udev,
+	libxslt, lighttpd, lite, m4, mdadm, metacity, mtd-utils,
+	mysql_client, nano, nbd, ncftp, neon, netperf, ntfsprogs, ntp,
+	openntpd, openssh, openvpn, oprofile, pango, pcre, php,
+	prboom, radvd, qt, samba, sdl_sound, shared-mime-info, speex,
+	sqlite,	squashfs, strace, taglib, tcpdump, tiff, tn5250, udev,
 	udpcast, usbmount, usbutils, which, xlib_libX11, zlib
 
 	Deprecated packages: lzma
