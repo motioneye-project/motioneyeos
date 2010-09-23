@@ -3,58 +3,40 @@
 # iproute2
 #
 #############################################################
-IPROUTE2_VERSION:=2.6.28
-IPROUTE2_SOURCE:=iproute2-$(IPROUTE2_VERSION).tar.bz2
-IPROUTE2_SITE:=http://developer.osdl.org/dev/iproute2/download/
-IPROUTE2_DIR:=$(BUILD_DIR)/iproute2-$(IPROUTE2_VERSION)
-IPROUTE2_CAT:=$(BZCAT)
-IPROUTE2_BINARY:=tc/tc
-IPROUTE2_TARGET_BINARY:=sbin/tc
 
-$(DL_DIR)/$(IPROUTE2_SOURCE):
-	$(call DOWNLOAD,$(IPROUTE2_SITE),$(IPROUTE2_SOURCE))
+IPROUTE2_VERSION = 2.6.35
+IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.bz2
+IPROUTE2_SITE = http://devresources.linuxfoundation.org/dev/iproute2/download
+IPROUTE2_TARGET_SBINS = ctstat genl ifstat ip lnstat nstat routef routel rtacct rtmon rtpr rtstat ss tc
 
-iproute2-source: $(DL_DIR)/$(IPROUTE2_SOURCE)
+define IPROUTE2_CONFIGURE_CMDS
+	# Use kernel headers
+	rm -r $(IPROUTE2_DIR)/include/netinet
+	# arpd needs berkeleydb
+	$(SED) "/^TARGETS=/s: arpd : :" $(IPROUTE2_DIR)/misc/Makefile
+	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(IPROUTE2_DIR)/Makefile
+	( cd $(@D); ./configure )
+	echo "IPT_LIB_DIR=/usr/lib/xtables" >>$(IPROUTE2_DIR)/Config
+endef
 
-$(IPROUTE2_DIR)/.unpacked: $(DL_DIR)/$(IPROUTE2_SOURCE)
-	$(IPROUTE2_CAT) $(DL_DIR)/$(IPROUTE2_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $@
+define IPROUTE2_BUILD_CMDS
+	$(MAKE) CC="$(TARGET_CC)" -C $(@D)
+endef
 
-$(IPROUTE2_DIR)/.configured: $(IPROUTE2_DIR)/.unpacked
-	(cd $(IPROUTE2_DIR); \
-		./configure; \
-		$(SED) '/TC_CONFIG_ATM/s:=.*:=n:' Config; \
-		$(SED) '/^CCOPTS/s:-O2.*:$(TARGET_CFLAGS):' Makefile)
-	touch $@
+define IPROUTE2_INSTALL_TARGET_CMDS
+	$(MAKE) -C $(@D) DESTDIR="$(TARGET_DIR)" SBINDIR=/sbin \
+		DOCDIR=/usr/share/doc/iproute2-$(IPROUTE2_VERSION) \
+		MANDIR=/usr/share/man install
+	# Wants bash
+	rm -f $(TARGET_DIR)/sbin/ifcfg
+endef
 
-$(IPROUTE2_DIR)/$(IPROUTE2_BINARY): $(IPROUTE2_DIR)/.configured
-	$(MAKE) \
-		-C $(IPROUTE2_DIR) \
-		KERNEL_INCLUDE=$(LINUX_SOURCE_DIR)/include \
-		CC="$(TARGET_CC)" \
-		AR=$(TARGET_CROSS)ar \
-		NETEM_DIST="" \
-		SUBDIRS="lib ip tc"
+define IPROUTE2_UNINSTALL_TARGET_CMDS
+	rm -rf $(TARGET_DIR)/lib/tc
+	rm -rf $(TARGET_DIR)/usr/lib/tc
+	rm -rf $(TARGET_DIR)/etc/iproute2
+	rm -rf $(TARGET_DIR)/var/lib/arpd
+	rm -f $(addprefix $(TARGET_DIR)/sbin/, $(IPROUTE2_TARGET_SBINS))
+endef
 
-$(TARGET_DIR)/$(IPROUTE2_TARGET_BINARY): $(IPROUTE2_DIR)/$(IPROUTE2_BINARY)
-	$(INSTALL) -m 0755 $(IPROUTE2_DIR)/ip/ip $(TARGET_DIR)/sbin/ip
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(TARGET_DIR)/sbin/ip
-	$(INSTALL) -m 0755 $(IPROUTE2_DIR)/$(IPROUTE2_BINARY) $@
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
-
-iproute2: $(TARGET_DIR)/$(IPROUTE2_TARGET_BINARY)
-
-iproute2-clean:
-	rm -f $(TARGET_DIR)/sbin/ip $(TARGET_DIR)/$(IPROUTE2_TARGET_BINARY)
-	-$(MAKE) -C $(IPROUTE2_DIR) clean
-
-iproute2-dirclean:
-	rm -rf $(IPROUTE2_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_IPROUTE2),y)
-TARGETS+=iproute2
-endif
+$(eval $(call GENTARGETS,package,iproute2))

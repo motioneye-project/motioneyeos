@@ -5,7 +5,7 @@ config BR2_PACKAGE_IPROUTE2
 	  Kernel routing and traffic control utilities.  Provides things
 	  like ip and tc.
 
-	  http://developer.osdl.org/dev/iproute2/
+	  http://www.linuxfoundation.org/collaborate/workgroups/networking/iproute2
 
 comment "iproute2 requires a toolchain with IPv6 support"
 	depends on !BR2_INET_IPV6
