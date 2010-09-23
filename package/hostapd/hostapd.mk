@@ -14,6 +14,7 @@ ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	HOSTAPD_DEPENDENCIES += openssl
 	# OpenSSL is required for EXTRA_EAP and/or WPS
 	# We take care of that in Config.in
+else
 define HOSTAPD_OPENSSL_CONF
 	echo "CONFIG_CRYPTO=internal" >>$(HOSTAPD_CONFIG)
 	echo "CONFIG_INTERNAL_LIBTOMMATH=y" >>$(HOSTAPD_CONFIG)
