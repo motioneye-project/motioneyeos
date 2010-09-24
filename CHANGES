@@ -18,13 +18,13 @@
 	hostapd, i2c-tools, icu, input-tools, iproute2, iptables,
 	jpeg, libaio, libcap, libconfig, libglib2, libogg, libtheora,
 	libtool, libvorbis, libxml2, libxslt, linux-fusion, lsof,
-	ltp-testsuite, ltrace, lvm2, m4, memtester, mesa3d, mii-diag,
-	mpc, mpfr, mplayer, mrouted, nano, netperf, netplug, openssh,
-	openssl, openvpn, oprofile, pango, patch, pciutils, php,
-	portmap, qt, rsync, screen, sdl_gfx, sdl_sound, sqlite, squid,
-	sstrip, sysklogd, sysvinit, tar, tslib, udev, usbutils, vim,
-	vtun, webkit, xapp_xlogo, xkeyboard-config, xlib_libX11, xz,
-	zlib
+	ltp-testsuite, ltrace, lvm2, m4, makedevs, memtester, mesa3d,
+	mii-diag, mpc, mpfr, mplayer, mrouted, nano, netperf, netplug,
+	openssh, openssl, openvpn, oprofile, pango, patch, pciutils,
+	php, portmap, qt, rsync, screen, sdl_gfx, sdl_sound, sqlite,
+	squid, sstrip, sysklogd, sysvinit, tar, tslib, udev, usbutils,
+	vim, vtun, webkit, xapp_xlogo, xkeyboard-config, xlib_libX11,
+	xz, zlib
 
 	New packages: dhrystone, fbgrab, irda-utils, libao, lsuio,
 	rsh-redone, sdparm, vorbis-tools, whetstone, xl2tp
@@ -37,6 +37,7 @@
 	#561:  ltp-testsuite failed to install
 	#1651: Build fail caused by ccache in module-init-tools
 	#1735: [PATCH] mplayer: convert to autotools infrastructure
+	#2647: makedevs package lacks support for 16-bit major/minor numbers
 	#2371: QT MYSQL Module does not build when MySQL installed on the host
 	#2905: Qt: Speed up compilation, if gui-module isn't selected
 	#2929: genext2fs: couldn't allocate a block (no free space)

@@ -414,7 +414,7 @@ int main(int argc, char **argv)
 		if ((2 > sscanf(line, "%40s %c %o %40s %40s %u %u %u %u %u", name,
 						&type, &mode, user, group, &major,
 						&minor, &start, &increment, &count)) ||
-				((major | minor | start | count | increment) > 255))
+				((major | minor | start | count | increment) > 0xfffff))
 		{
 			if (*line=='\0' || *line=='#' || isspace(*line))
 				continue;
@@ -488,7 +488,7 @@ int main(int argc, char **argv)
 				int i;
 				char *full_name_inc;
 
-				full_name_inc = xmalloc(strlen(full_name) + 4);
+				full_name_inc = xmalloc(strlen(full_name) + 8);
 				for (i = start; i < count; i++) {
 					sprintf(full_name_inc, "%s%d", full_name, i);
 					rdev = makedev(major, minor + (i * increment - start));
