@@ -26,9 +26,10 @@
 	libxslt, lighttpd, lite, m4, mdadm, metacity, mtd-utils,
 	mysql_client, nano, nbd, ncftp, neon, netperf, ntfsprogs, ntp,
 	openntpd, openssh, openvpn, oprofile, pango, pcre, php,
-	prboom, radvd, qt, samba, sdl_sound, shared-mime-info, speex,
-	sqlite,	squashfs, strace, taglib, tcpdump, tiff, tn5250, udev,
-	udpcast, usbmount, usbutils, which, xlib_libX11, zlib
+	prboom, radvd, qt, samba, sdl_mixer, sdl_sound,
+	shared-mime-info, speex, sqlite, squashfs, strace, taglib,
+	tcpdump, tiff, tn5250, udev, udpcast, usbmount, usbutils,
+	which, xlib_libX11, zlib
 
 	Deprecated packages: lzma
 
@@ -37,6 +38,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#2521: Can't compile sdl_mixer, mikmod.h can't be found
 	#2581: libmms: Update to 0.6, and patch to work on architectures...
 
 2010.08: Released August 31th, 2010:
