@@ -15,6 +15,9 @@
 	Download handling reworked and support for git/svn downloads
 	added.
 
+	A convenience Makefile wrapper is created when using
+	out-of-tree building, similar to how it is done for the kernel.
+
 	New packages: xz
 
 	Updated/fixed packages: alsa-lib, at, avahi, axel, berkeleydb,

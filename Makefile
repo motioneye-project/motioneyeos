@@ -45,6 +45,7 @@ space:=$(empty) $(empty)
 ifneq ("$(origin O)", "command line")
 O:=output
 CONFIG_DIR:=$(TOPDIR)
+NEED_WRAPPER=
 else
 # other packages might also support Linux-style out of tree builds
 # with the O=<dir> syntax (E.G. Busybox does). As make automatically
@@ -60,6 +61,7 @@ override O:=$(O)
 CONFIG_DIR:=$(O)
 # we need to pass O= everywhere we call back into the toplevel makefile
 EXTRAMAKEARGS = O=$(O)
+NEED_WRAPPER=y
 endif
 
 # $(shell find . -name *_defconfig |sed 's/.*\///')
@@ -324,7 +326,7 @@ prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 world: prepare dependencies dirs $(BASE_TARGETS) $(TARGETS_ALL)
 
 
-.PHONY: all world dirs clean distclean source \
+.PHONY: all world dirs clean distclean source outputmakefile \
 	$(BASE_TARGETS) $(TARGETS) $(TARGETS_ALL) \
 	$(TARGETS_CLEAN) $(TARGETS_DIRCLEAN) $(TARGETS_SOURCE) \
 	$(DL_DIR) $(TOOLCHAIN_DIR) $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
@@ -463,52 +465,52 @@ COMMON_CONFIG_ENV = \
 	KCONFIG_TRISTATE=$(BUILD_DIR)/buildroot-config/tristate.config \
 	BUILDROOT_CONFIG=$(CONFIG_DIR)/.config
 
-xconfig: $(BUILD_DIR)/buildroot-config/qconf
+xconfig: $(BUILD_DIR)/buildroot-config/qconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! $(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN); then \
 		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
-gconfig: $(BUILD_DIR)/buildroot-config/gconf
+gconfig: $(BUILD_DIR)/buildroot-config/gconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! $(COMMON_CONFIG_ENV) srctree=$(TOPDIR) \
 		$< $(CONFIG_CONFIG_IN); then \
 		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
-menuconfig: $(BUILD_DIR)/buildroot-config/mconf
+menuconfig: $(BUILD_DIR)/buildroot-config/mconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! $(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN); then \
 		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
-nconfig: $(BUILD_DIR)/buildroot-config/nconf
+nconfig: $(BUILD_DIR)/buildroot-config/nconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@if ! $(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN); then \
 		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
 	fi
 
-config: $(BUILD_DIR)/buildroot-config/conf
+config: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN)
 
-oldconfig: $(BUILD_DIR)/buildroot-config/conf
+oldconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< --oldconfig $(CONFIG_CONFIG_IN)
 
-randconfig: $(BUILD_DIR)/buildroot-config/conf
+randconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< --randconfig $(CONFIG_CONFIG_IN)
 
-allyesconfig: $(BUILD_DIR)/buildroot-config/conf
+allyesconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< --allyesconfig $(CONFIG_CONFIG_IN)
 
-allnoconfig: $(BUILD_DIR)/buildroot-config/conf
+allnoconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< --allnoconfig $(CONFIG_CONFIG_IN)
 
-randpackageconfig: $(BUILD_DIR)/buildroot-config/conf
+randpackageconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
 	@$(COMMON_CONFIG_ENV) \
@@ -516,7 +518,7 @@ randpackageconfig: $(BUILD_DIR)/buildroot-config/conf
 		$< --randconfig $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
-allyespackageconfig: $(BUILD_DIR)/buildroot-config/conf
+allyespackageconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
 	@$(COMMON_CONFIG_ENV) \
@@ -524,7 +526,7 @@ allyespackageconfig: $(BUILD_DIR)/buildroot-config/conf
 		$< --allyesconfig $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
-allnopackageconfig: $(BUILD_DIR)/buildroot-config/conf
+allnopackageconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@grep -v BR2_PACKAGE_ $(CONFIG_DIR)/.config > $(CONFIG_DIR)/.config.nopkg
 	@$(COMMON_CONFIG_ENV) \
@@ -532,19 +534,19 @@ allnopackageconfig: $(BUILD_DIR)/buildroot-config/conf
 		$< --allnoconfig $(CONFIG_CONFIG_IN)
 	@rm -f $(CONFIG_DIR)/.config.nopkg
 
-silentoldconfig: $(BUILD_DIR)/buildroot-config/conf
+silentoldconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	$(COMMON_CONFIG_ENV) $< --silentoldconfig $(CONFIG_CONFIG_IN)
 
-defconfig: $(BUILD_DIR)/buildroot-config/conf
+defconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< --defconfig $(CONFIG_CONFIG_IN)
 
-%_defconfig: $(BUILD_DIR)/buildroot-config/conf $(TOPDIR)/configs/%_defconfig
+%_defconfig: $(BUILD_DIR)/buildroot-config/conf $(TOPDIR)/configs/%_defconfig outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< --defconfig=$(TOPDIR)/configs/$@ $(CONFIG_CONFIG_IN)
 
-savedefconfig: $(BUILD_DIR)/buildroot-config/conf
+savedefconfig: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
 	@$(COMMON_CONFIG_ENV) $< --savedefconfig=$(TOPDIR)/defconfig $(CONFIG_CONFIG_IN)
 
@@ -559,6 +561,15 @@ endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 # Cleanup and misc junk
 #
 #############################################################
+
+# outputmakefile generates a Makefile in the output directory, if using a
+# separate output directory. This allows convenient use of make in the
+# output directory.
+outputmakefile:
+ifeq ($(NEED_WRAPPER),y)
+	$(Q)$(TOPDIR)/scripts/mkmakefile $(TOPDIR) $(O)
+endif
+
 clean:
 	rm -rf $(STAGING_DIR) $(TARGET_DIR) $(BINARIES_DIR) $(HOST_DIR) \
 		$(STAMP_DIR) $(BUILD_DIR) $(TOOLCHAIN_DIR)
