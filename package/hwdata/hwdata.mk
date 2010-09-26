@@ -3,48 +3,19 @@
 # hwdata
 #
 #############################################################
-HWDATA_VERSION:=0.191
-HWDATA_SOURCE:=hwdata_$(HWDATA_VERSION).orig.tar.gz
-HWDATA_PATCH:=hwdata_$(HWDATA_VERSION)-1.diff.gz
-HWDATA_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/h/hwdata/
-HWDATA_CAT:=$(ZCAT)
-HWDATA_DIR:=$(BUILD_DIR)/hwdata-$(HWDATA_VERSION)
-HWDATA_BINARY:=pci.ids
-HWDATA_TARGET_BINARY:=usr/share/hwdata/pci.ids
+HWDATA_VERSION = 0.230
+HWDATA_SOURCE = hwdata_$(HWDATA_VERSION).orig.tar.gz
+HWDATA_PATCH = hwdata_$(HWDATA_VERSION)-1.diff.gz
+HWDATA_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/h/hwdata/
 
-$(DL_DIR)/$(HWDATA_SOURCE):
-	 $(call DOWNLOAD,$(HWDATA_SITE),$(HWDATA_SOURCE))
+define HWDATA_INSTALL_TARGET_CMDS
+	install -D -m 644 $(@D)/pci.ids $(TARGET_DIR)/usr/share/hwdata/pci.ids
+	install -D -m 644 $(@D)/usb.ids $(TARGET_DIR)/usr/share/hwdata/usb.ids
+endef
 
-$(DL_DIR)/$(HWDATA_PATCH):
-	 $(call DOWNLOAD,$(HWDATA_SITE),$(HWDATA_PATCH))
-
-hwdata-source: $(DL_DIR)/$(HWDATA_SOURCE) $(DL_DIR)/$(HWDATA_PATCH)
-
-$(HWDATA_DIR)/.unpacked: $(DL_DIR)/$(HWDATA_SOURCE) $(DL_DIR)/$(HWDATA_PATCH)
-	$(HWDATA_CAT) $(DL_DIR)/$(HWDATA_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(HWDATA_DIR) $(DL_DIR) $(HWDATA_PATCH)
-	touch $(HWDATA_DIR)/.unpacked
-
-$(TARGET_DIR)/$(HWDATA_TARGET_BINARY): $(HWDATA_DIR)/.unpacked
-	mkdir -p -m 755 $(TARGET_DIR)/usr/share/hwdata
-	cp -a $(HWDATA_DIR)/pci.ids $(TARGET_DIR)/usr/share/hwdata
-	cp -a $(HWDATA_DIR)/usb.ids $(TARGET_DIR)/usr/share/hwdata
-	-touch -c $(TARGET_DIR)/usr/share/hwdata/*
-
-hwdata: $(TARGET_DIR)/$(HWDATA_TARGET_BINARY)
-
-hwdata-clean:
+define HWDATA_UNINSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/share/hwdata
 	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/usr/share
+endef
 
-hwdata-dirclean:
-	rm -rf $(HWDATA_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_HWDATA),y)
-TARGETS+=hwdata
-endif
+$(eval $(call GENTARGETS,package,hwdata))

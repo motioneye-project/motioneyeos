@@ -20,7 +20,7 @@
 	Updated/fixed packages: alsa-lib, at, avahi, berkeleydb, bind,
 	bmon, boa, bridge-utils, bsdiff, busybox, dbus, dmraid,
 	docker, dosfstools, dropbear, e2fsprogs, expat, ezxml, fbset,
-	freetype, gawk, gvfs, haserl, hostapd, ifplugd, iperf,
+	freetype, gawk, gvfs, haserl, hostapd, hwdata, ifplugd, iperf,
 	iproute2, iptables, jpeg, kexec, kismet, less, libcurl,
 	libdnet, libevent, libglade, libgtk2, libiconv, libidn,
 	libmms, libnl, liboil, libpcap, libpng, libungif, libxml2,
