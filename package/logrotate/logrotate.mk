@@ -1,42 +1,36 @@
-LOGROTATE_VERSION:=3.7.7
-LOGROTATE_SOURCE:=logrotate-$(LOGROTATE_VERSION).tar.gz
-LOGROTATE_SITE:=https://fedorahosted.org/releases/l/o/logrotate/
-LOGROTATE_DIR:=$(BUILD_DIR)/logrotate-$(LOGROTATE_VERSION)
-LOGROTATE_BINARY:=logrotate
-LOGROTATE_TARGET_BINARY:=usr/sbin/$(LOGROTATE_BINARY)
+#############################################################
+#
+# logrotate
+#
+#############################################################
+LOGROTATE_VERSION = 3.7.9
+LOGROTATE_SOURCE = logrotate-$(LOGROTATE_VERSION).tar.gz
+LOGROTATE_SITE = https://fedorahosted.org/releases/l/o/logrotate/
 
-$(DL_DIR)/$(LOGROTATE_SOURCE):
-	$(call DOWNLOAD,$(LOGROTATE_SITE),$(LOGROTATE_SOURCE))
+LOGROTATE_DEPENDENCIES = popt
 
-$(LOGROTATE_DIR)/.source: $(DL_DIR)/$(LOGROTATE_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(LOGROTATE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(LOGROTATE_DIR) package/logrotate/ logrotate\*.patch
-	touch $@
+define LOGROTATE_BUILD_CMDS
+	$(MAKE) CC="$(TARGET_CC) $(TARGET_CFLAGS)" LDFLAGS="$(LDFLAGS)" -C $(@D)
+endef
 
-$(LOGROTATE_DIR)/$(LOGROTATE_BINARY): $(LOGROTATE_DIR)/.source
-	$(MAKE) CC="$(TARGET_CC) $(TARGET_CFLAGS)" -C $(LOGROTATE_DIR)
-
-$(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY): $(LOGROTATE_DIR)/$(LOGROTATE_BINARY)
-	$(MAKE) PREFIX=$(TARGET_DIR) -C $(LOGROTATE_DIR) install
+define LOGROTATE_INSTALL_TARGET_CMDS
+	$(MAKE) PREFIX=$(TARGET_DIR) -C $(@D) install
 	if [ ! -f $(TARGET_DIR)/etc/logrotate.conf ]; then \
 		$(INSTALL) -m 0644 package/logrotate/logrotate.conf $(TARGET_DIR)/etc/logrotate.conf; \
 	fi
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/etc/logrotate.d
+endef
 
-logrotate: popt $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY)
-
-logrotate-source: $(DL_DIR)/$(LOGROTATE_SOURCE)
-
-logrotate-clean:
-	rm -f $(TARGET_DIR)/$(LOGROTATE_TARGET_BINARY)
+define LOGROTATE_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/sbin/logrotate
 	rm -f $(TARGET_DIR)/etc/logrotate.conf
-	-rmdir $(TARGET_DIR)/etc/logrotate.d
-	-$(MAKE) -C $(LOGROTATE_DIR) clean
+	rm -f $(TARGET_DIR)/usr/man/man5/logrotate.conf.5
+	rm -f $(TARGET_DIR)/usr/man/man8/logrotate.8
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/etc/logrotate.d
+endef
 
-logrotate-dirclean:
-	rm -rf $(LOGROTATE_DIR)
+define LOGROTATE_CLEAN_CMDS
+	-$(MAKE) -C $(@D) clean
+endef
 
-ifeq ($(BR2_PACKAGE_LOGROTATE),y)
-TARGETS+=logrotate
-endif
-
+$(eval $(call GENTARGETS,package,logrotate))
