@@ -14,8 +14,23 @@ define EZXML_BUILD_CMDS
 endef
 
 define EZXML_INSTALL_STAGING_CMDS
-	cp $(@D)/ezxml.h $(STAGING_DIR)/usr/include
-	cp $(@D)/libezxml.a $(STAGING_DIR)/usr/lib
+	install -D -m 0644 $(@D)/ezxml.h $(STAGING_DIR)/usr/include/ezxml.h
+	install -D -m 0644 $(@D)/libezxml.a $(STAGING_DIR)/usr/lib/libezxml.a
+endef
+
+define EZXML_INSTALL_TARGET_CMDS
+	install -D -m 0644 $(@D)/ezxml.h $(TARGET_DIR)/usr/include/ezxml.h
+	install -D -m 0644 $(@D)/libezxml.a $(TARGET_DIR)/usr/lib/libezxml.a
+endef
+
+define EZXML_UNINSTALL_STAGING_CMDS
+	rm -f $(STAGING_DIR)/usr/include/ezxml.h
+	rm -f $(STAGING_DIR)/usr/lib/libezxml.a
+endef
+
+define EZXML_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/include/ezxml.h
+	rm -f $(TARGET_DIR)/usr/lib/libezxml.a
 endef
 
 define EZXML_CLEAN_CMDS
