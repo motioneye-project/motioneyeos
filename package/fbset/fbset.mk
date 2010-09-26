@@ -3,49 +3,24 @@
 # fbset
 #
 #############################################################
-FBSET_VERSION:=2.1
-FBSET_SOURCE:=fbset-$(FBSET_VERSION).tar.gz
-FBSET_SITE:=http://users.telenet.be/geertu/Linux/fbdev
-FBSET_DIR:=$(BUILD_DIR)/fbset-$(FBSET_VERSION)
-FBSET_CAT:=$(ZCAT)
-FBSET_BINARY:=fbset
-FBSET_TARGET_BINARY:=usr/sbin/$(FBSET_BINARY)
+FBSET_VERSION = 2.1
+FBSET_SOURCE = fbset-$(FBSET_VERSION).tar.gz
+FBSET_SITE = http://users.telenet.be/geertu/Linux/fbdev
+FBSET_BINARY = fbset
+FBSET_TARGET_BINARY = usr/sbin/$(FBSET_BINARY)
 
-$(DL_DIR)/$(FBSET_SOURCE):
-	$(call DOWNLOAD,$(FBSET_SITE),$(FBSET_SOURCE))
+define FBSET_BUILD_CMDS
+	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(@D)
+endef
 
-$(FBSET_DIR)/.unpacked: $(DL_DIR)/$(FBSET_SOURCE)
-	$(FBSET_CAT) $(DL_DIR)/$(FBSET_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(FBSET_DIR) package/fbset/ \
-		fbset-$(FBSET_VERSION)\*.patch \
-		fbset-$(FBSET_VERSION)\*.patch.$(ARCH)
-	touch $@
-
-$(FBSET_DIR)/$(FBSET_BINARY): $(FBSET_DIR)/.unpacked
-	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(FBSET_DIR)
-	touch -c $@
-
-$(TARGET_DIR)/$(FBSET_TARGET_BINARY): $(FBSET_DIR)/$(FBSET_BINARY)
-	$(INSTALL) -m 755 $(FBSET_DIR)/$(FBSET_BINARY) $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
+define FBSET_INSTALL_TARGET_CMDS
+	$(INSTALL) -m 755 $(@D)/$(FBSET_BINARY) $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
 	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
-	touch -c $@
+endef
 
-fbset: $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
-
-fbset-source: $(DL_DIR)/$(FBSET_SOURCE)
-
-fbset-clean:
+define FBSET_CLEAN_CMDS
 	rm -f $(TARGET_DIR)/$(FBSET_TARGET_BINARY)
-	-$(MAKE) -C $(FBSET_DIR) clean
+	-$(MAKE) -C $(@D) clean
+endef
 
-fbset-dirclean:
-	rm -rf $(FBSET_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_FBSET),y)
-TARGETS+=fbset
-endif
+$(eval $(call GENTARGETS,package,fbset))
