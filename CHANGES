@@ -17,8 +17,8 @@
 
 	New packages: xz
 
-	Updated/fixed packages: alsa-lib, at, avahi, berkeleydb, bind,
-	bmon, boa, bridge-utils, bsdiff, busybox, dbus, dmraid,
+	Updated/fixed packages: alsa-lib, at, avahi, axel, berkeleydb,
+	bind, bmon, boa, bridge-utils, bsdiff, busybox, dbus, dmraid,
 	docker, dosfstools, dropbear, e2fsprogs, expat, ezxml, fbset,
 	freetype, gawk, gvfs, haserl, hostapd, hwdata, ifplugd, iperf,
 	iproute2, iptables, jpeg, kexec, kismet, less, libcurl,
