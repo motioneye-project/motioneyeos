@@ -3,51 +3,34 @@
 # hdparm
 #
 #############################################################
-HDPARM_VERSION:=7.7
-HDPARM_SOURCE:=hdparm-$(HDPARM_VERSION).tar.gz
-HDPARM_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/hdparm
-HDPARM_CAT:=$(ZCAT)
-HDPARM_DIR:=$(BUILD_DIR)/hdparm-$(HDPARM_VERSION)
-HDPARM_BINARY:=hdparm
-HDPARM_TARGET_BINARY:=sbin/hdparm
+HDPARM_VERSION = 9.32
+HDPARM_SOURCE = hdparm-$(HDPARM_VERSION).tar.gz
+HDPARM_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/hdparm
 
-$(DL_DIR)/$(HDPARM_SOURCE):
-	 $(call DOWNLOAD,$(HDPARM_SITE),$(HDPARM_SOURCE))
-
-hdparm-source: $(DL_DIR)/$(HDPARM_SOURCE)
-
-$(HDPARM_DIR)/.unpacked: $(DL_DIR)/$(HDPARM_SOURCE)
-	$(HDPARM_CAT) $(DL_DIR)/$(HDPARM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(HDPARM_DIR) package/hdparm \*.patch
-	touch $@
-
-$(HDPARM_DIR)/$(HDPARM_BINARY): $(HDPARM_DIR)/.unpacked
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(HDPARM_DIR) \
+define HDPARM_BUILD_CMDS
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)"
+endef
 
-$(TARGET_DIR)/$(HDPARM_TARGET_BINARY): $(HDPARM_DIR)/$(HDPARM_BINARY)
-	rm -f $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
-	$(INSTALL) -D -m 0755 $(HDPARM_DIR)/$(HDPARM_BINARY) $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
 ifeq ($(BR2_HAVE_DOCUMENTATION),y)
-	$(INSTALL) -D $(HDPARM_DIR)/hdparm.8 $(TARGET_DIR)/usr/share/man/man8/hdparm.8
+define HDPARM_INSTALL_DOCUMENTATION
+	$(INSTALL) -D $(@D)/hdparm.8 $(TARGET_DIR)/usr/share/man/man8/hdparm.8
+endef
 endif
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
 
-hdparm: $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
+define HDPARM_INSTALL_TARGET_CMDS
+	$(INSTALL) -D -m 0755 $(@D)/hdparm $(TARGET_DIR)/sbin/hdparm
+	$(HDPARM_INSTALL_DOCUMENTATION)
+endef
 
-hdparm-clean:
-	-$(MAKE) -C $(HDPARM_DIR) clean
-	rm -f $(TARGET_DIR)/$(HDPARM_TARGET_BINARY)
+define HDPARM_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/sbin/hdparm
+	rm -f $(TARGET_DIR)/usr/share/man/man8/hdparm.8
+endef
 
-hdparm-dirclean:
-	rm -rf $(HDPARM_DIR)
+define HDPARM_CLEAN_CMDS
+	-$(MAKE) -C $(@D) clean
+endef
 
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_HDPARM),y)
-TARGETS+=hdparm
-endif
+$(eval $(call GENTARGETS,package,hdparm))

@@ -25,7 +25,7 @@
 	bootutils, bridge-utils, bsdiff, busybox, dbus, dmraid,
 	docker, dosfstools, dropbear, e2fsprogs, expat, ezxml, fbset,
 	ffmpeg, freetype, gamin, gawk, gperf, gtk2-themes, gtkperf,
-	gvfs, haserl, hostapd, hwdata, ifplugd, iperf, iproute2,
+	gvfs, haserl, hdparm, hostapd, hwdata, ifplugd, iperf, iproute2,
 	iptables, jpeg, kexec, kismet, less, libcgi, libcurl, libdnet,
 	libevent, libglade, libgtk2, libiconv, libidn, libmms, libnl,
 	liboil, libpcap, libpng, libtool, libungif, libxml2, libxslt,
