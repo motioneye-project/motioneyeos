@@ -5,47 +5,28 @@
 #############################################################
 GADGETFS_TEST_SOURCE=gadgetfs-test.tar.bz2
 GADGETFS_TEST_SITE=http://avr32linux.org/twiki/pub/Main/GadgetFsTest/
-GADGETFS_TEST_DIR=$(BUILD_DIR)/gadgetfs-test
 
-GADGETFS_TEST_MAKEOPTS:=CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
+GADGETFS_TEST_MAKEOPTS = CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)"
 
 ifeq ($(BR2_PACKAGE_GADGETFS_TEST_USE_AIO),y)
+GADGETFS_TEST_DEPENDENCIES = libaio
 GADGETFS_TEST_MAKEOPTS+=USE_AIO=y
 endif
 
-$(DL_DIR)/$(GADGETFS_TEST_SOURCE):
-	$(call DOWNLOAD,$(GADGETFS_TEST_SITE),$(GADGETFS_TEST_SOURCE))
+define GADGETFS_TEST_BUILD_CMDS
+	$(MAKE) -C $(@D) $(GADGETFS_TEST_MAKEOPTS)
+endef
 
-$(GADGETFS_TEST_DIR)/.unpacked: $(DL_DIR)/$(GADGETFS_TEST_SOURCE)
-	$(BZCAT) $(DL_DIR)/$(GADGETFS_TEST_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(GADGETFS_TEST_DIR) package/gadgetfs-test gadgetfs-test\*.patch
-	touch $@
+define GADGETFS_TEST_INSTALL_TARGET_CMDS
+	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) prefix=/usr install
+endef
 
-$(GADGETFS_TEST_DIR)/gadgetfs-test: $(GADGETFS_TEST_DIR)/.unpacked
-	$(MAKE) -C $(GADGETFS_TEST_DIR) $(GADGETFS_TEST_MAKEOPTS)
+define GADGETFS_TEST_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/bin/gadgetfs-test
+endef
 
-$(TARGET_DIR)/usr/bin/gadgetfs-test: $(GADGETFS_TEST_DIR)/gadgetfs-test
-	$(MAKE) -C $(GADGETFS_TEST_DIR) DESTDIR=$(TARGET_DIR) prefix=/usr install
+define GADGETFS_TEST_CLEAN_CMDS
+	-$(MAKE) -C $(@D) $(GADGETFS_TEST_MAKEOPTS) clean
+endef
 
-ifeq ($(BR2_PACKAGE_GADGETFS_TEST_USE_AIO),y)
-gadgetfs-test: libaio $(TARGET_DIR)/usr/bin/gadgetfs-test
-else
-gadgetfs-test: $(TARGET_DIR)/usr/bin/gadgetfs-test
-endif
-
-gadgetfs-test-source: $(DL_DIR)/$(GADGETFS_TEST_SOURCE)
-
-gadgetfs-test-clean:
-	-$(MAKE) -C $(GADGETFS_TEST_DIR) $(GADGETFS_TEST_MAKEOPTS) clean
-
-gadgetfs-test-dirclean:
-	rm -rf $(GADGETFS_TEST_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_GADGETFS_TEST),y)
-TARGETS+=gadgetfs-test
-endif
+$(eval $(call GENTARGETS,package,gadgetfs-test))
