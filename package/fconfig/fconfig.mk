@@ -3,48 +3,26 @@
 # fconfig
 #
 #############################################################
-FCONFIG_VERSION:=20060419
-FCONFIG_SOURCE:=fconfig-$(FCONFIG_VERSION).tar.gz
-FCONFIG_SITE:=http://andrzejekiert.ovh.org/software/fconfig/
-FCONFIG_CAT:=$(ZCAT)
-FCONFIG_DIR:=$(BUILD_DIR)/fconfig
-FCONFIG_BINARY:=fconfig
-FCONFIG_TARGET_BINARY:=sbin/fconfig
+FCONFIG_VERSION = 20080329
+FCONFIG_SOURCE = fconfig-$(FCONFIG_VERSION).tar.gz
+FCONFIG_SITE = http://andrzejekiert.ovh.org/software/fconfig/
 
-$(DL_DIR)/$(FCONFIG_SOURCE):
-	 $(call DOWNLOAD,$(FCONFIG_SITE),$(FCONFIG_SOURCE))
-
-fconfig-source: $(DL_DIR)/$(FCONFIG_SOURCE)
-
-$(FCONFIG_DIR)/.unpacked: $(DL_DIR)/$(FCONFIG_SOURCE)
-	$(FCONFIG_CAT) $(DL_DIR)/$(FCONFIG_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(FCONFIG_DIR) package/fconfig \*.patch
-	touch $@
-
-$(FCONFIG_DIR)/$(FCONFIG_BINARY): $(FCONFIG_DIR)/.unpacked
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(FCONFIG_DIR) \
+define FCONFIG_BUILD_CMDS
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
 		CFLAGS="$(TARGET_CFLAGS)" \
 		LDFLAGS="$(TARGET_LDFLAGS)"
+endef
 
-$(TARGET_DIR)/$(FCONFIG_TARGET_BINARY): $(FCONFIG_DIR)/$(FCONFIG_BINARY)
-	rm -f $(TARGET_DIR)/$(FCONFIG_TARGET_BINARY)
-	$(INSTALL) -D -m 0755 $(FCONFIG_DIR)/$(FCONFIG_BINARY) $(TARGET_DIR)/$(FCONFIG_TARGET_BINARY)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
+define FCONFIG_INSTALL_TARGET_CMDS
+	$(INSTALL) -D -m 0755 $(@D)/fconfig $(TARGET_DIR)/sbin/fconfig
+endef
 
-fconfig: $(TARGET_DIR)/$(FCONFIG_TARGET_BINARY)
+define FCONFIG_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/sbin/fconfig
+endef
 
-fconfig-clean:
-	-$(MAKE) -C $(FCONFIG_DIR) clean
-	rm -f $(TARGET_DIR)/$(FCONFIG_TARGET_BINARY)
+define FCONFIG_CLEAN_CMDS
+	-$(MAKE) -C $(@D) clean
+endef
 
-fconfig-dirclean:
-	rm -rf $(FCONFIG_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_FCONFIG),y)
-TARGETS+=fconfig
-endif
+$(eval $(call GENTARGETS,package,fconfig))
