@@ -20,7 +20,7 @@
 
 	New packages: xz
 
-	Updated/fixed packages: alsa-lib, argus, at, autoconf,
+	Updated/fixed packages: acpid, alsa-lib, argus, at, autoconf,
 	automake, avahi, axel, beecrypt, berkeleydb, bind, bmon, boa,
 	bootutils, bridge-utils, bsdiff, busybox, dbus, dmraid,
 	docker, dosfstools, dropbear, e2fsprogs, expat, ezxml, fbset,

@@ -3,46 +3,31 @@
 # acpid
 #
 #############################################################
-ACPID_VERSION:=1.0.8
-ACPID_DIR=$(BUILD_DIR)/acpid-$(ACPID_VERSION)
-ACPID_SOURCE=acpid_$(ACPID_VERSION).orig.tar.gz
-ACPID_SITE=$(BR2_DEBIAN_MIRROR)/debian/pool/main/a/acpid
+ACPID_VERSION = 2.0.6
+ACPID_SOURCE = acpid_$(ACPID_VERSION).orig.tar.gz
+ACPID_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/a/acpid
 
-$(DL_DIR)/$(ACPID_SOURCE):
-	$(call DOWNLOAD,$(ACPID_SITE),$(ACPID_SOURCE))
+define ACPID_BUILD_CMDS
+	$(MAKE) CC="$(TARGET_CC)" -C $(@D)
+endef
 
-$(ACPID_DIR)/.unpacked: $(DL_DIR)/$(ACPID_SOURCE)
-	$(ZCAT) $(DL_DIR)/$(ACPID_SOURCE) | tar -C $(BUILD_DIR) -xvf -
-	toolchain/patch-kernel.sh $(ACPID_DIR) package/acpid/ acpid-$(ACPID_VERSION)\*.patch
-	touch $(ACPID_DIR)/.unpacked
-
-$(ACPID_DIR)/acpid: $(ACPID_DIR)/.unpacked
-	$(MAKE) CC="$(TARGET_CC)" -C $(ACPID_DIR)
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(ACPID_DIR)/acpid
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $(ACPID_DIR)/acpi_listen
-	touch -c $(ACPID_DIR)/acpid $(ACPID_DIR)/acpi_listen
-
-$(TARGET_DIR)/usr/sbin/acpid: $(ACPID_DIR)/acpid
-	cp -a $(ACPID_DIR)/acpid $(TARGET_DIR)/usr/sbin/acpid
+define ACPID_INSTALL_TARGET_CMDS
+	install -D -m 755 $(@D)/acpid $(TARGET_DIR)/usr/sbin/acpid
+	install -D -m 755 $(@D)/acpi_listen $(TARGET_DIR)/usr/bin/acpi_listen
+	install -D -m 644 $(@D)/acpid.8 $(TARGET_DIR)/usr/share/man/man8/acpid.8
+	install -D -m 644 $(@D)/acpi_listen.8 $(TARGET_DIR)/usr/share/man/man8/acpi_listen.8
 	mkdir -p $(TARGET_DIR)/etc/acpi/events
 	/bin/echo -e "event=button[ /]power\naction=/sbin/poweroff" > $(TARGET_DIR)/etc/acpi/events/powerbtn
-	touch -c $(TARGET_DIR)/usr/sbin/acpid
+endef
 
-acpid: $(TARGET_DIR)/usr/sbin/acpid
+define ACPID_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/sbin/acpid
+	rm -f $(TARGET_DIR)/usr/bin/acpi_listen
+	rm -f $(addprefix )$(TARGET_DIR)/usr/share/man/man8/,acpid.8 acpi_listen.8)
+endef
 
-acpid-source: $(DL_DIR)/$(ACPID_SOURCE)
+define ACPID_CLEAN_CMDS
+	-$(MAKE) -C $(@D) clean
+endef
 
-acpid-clean:
-	-$(MAKE) -C $(ACPID_DIR) clean
-
-acpid-dirclean:
-	rm -rf $(ACPID_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_ACPID),y)
-TARGETS+=acpid
-endif
+$(eval $(call GENTARGETS,package,acpid))
