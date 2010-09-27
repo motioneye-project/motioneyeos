@@ -278,14 +278,29 @@ or
  $ make O=/tmp/build
 </pre>
 
+    <p>Or:</p>
+
+<pre>
+ $ cd /tmp/build; make O=$PWD -C path/to/buildroot
+</pre>
+
     <p>All the output files will be located under
     <code>/tmp/build</code>.</p>
 
     <p>When using out-of-tree builds, the Buildroot
-    <code>.config</code> and  temporary files are also stored in the
+    <code>.config</code> and temporary files are also stored in the
     output directory. This means that you can safely run multiple
     builds in parallel using the same source tree as long as they use
     unique output directories.</p>
+
+    <p>For ease of use, Buildroot generates a Makefile wrapper in the
+    output directory - So after the first run, you no longer need to
+    pass <code>O=..</code> and <code>-C ..</code>, simply run (in the
+    output directory):</p>
+
+<pre>
+ $ make &lt;target&gt;
+</pre>
 
     <h3><a name="environment_variables" id="environment_variables"></a>
     Environment variables</h3>
