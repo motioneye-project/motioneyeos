@@ -32,8 +32,8 @@
 	ntfsprogs, ntp, openntpd, openssh, openvpn, oprofile, pango,
 	pcre, php, prboom, radvd, qt, samba, sdl_mixer, sdl_sound,
 	shared-mime-info, speex, sqlite, squashfs, strace, taglib,
-	tcpdump, tiff, tn5250, udev, udpcast, usbmount, usbutils,
-	which, xlib_libX11, zlib
+	tcpdump, thttpd, tiff, tn5250, udev, udpcast, usbmount,
+	usbutils, which, xlib_libX11, zlib
 
 	Deprecated packages: hotplug, lzma
 
