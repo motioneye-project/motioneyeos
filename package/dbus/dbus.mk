@@ -9,13 +9,6 @@ DBUS_SITE = http://dbus.freedesktop.org/releases/dbus/
 DBUS_LIBTOOL_PATCH = NO
 DBUS_INSTALL_STAGING = YES
 DBUS_INSTALL_TARGET = YES
-ifeq ($(BR2_ENABLE_DEBUG),y)
-# install-exec doesn't install the config file
-DBUS_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
-else
-# install-strip uses host strip
-DBUS_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install-strip STRIPPROG="$(STRIPCMD)"
-endif
 
 DBUS_DEPENDENCIES = host-pkg-config
 

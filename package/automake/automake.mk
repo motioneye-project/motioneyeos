@@ -7,10 +7,6 @@ AUTOMAKE_VERSION = 1.10
 AUTOMAKE_SOURCE = automake-$(AUTOMAKE_VERSION).tar.bz2
 AUTOMAKE_SITE = $(BR2_GNU_MIRROR)/automake
 
-ifeq ($(BR2_ENABLE_DEBUG),y) # install-exec doesn't install aclocal stuff
-AUTOMAKE_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
-endif
-
 AUTOMAKE_DEPENDENCIES = host-autoconf autoconf microperl
 
 HOST_AUTOMAKE_DEPENDENCIES = host-autoconf

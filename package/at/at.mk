@@ -9,8 +9,6 @@ AT_SITE = $(BR2_DEBIAN_MIRROR)/debian/pool/main/a/at
 AT_AUTORECONF = YES
 AT_INSTALL_STAGING = NO
 AT_INSTALL_TARGET = YES
-# no install-strip / install-exec
-AT_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
 
 AT_DEPENDENCIES = $(if $(BR2_PACKAGE_FLEX),flex)
 

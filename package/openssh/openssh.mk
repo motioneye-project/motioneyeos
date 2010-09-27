@@ -10,8 +10,6 @@ OPENSSH_CONF_ENV = LD="$(TARGET_CC)"
 OPENSSH_CONF_OPT = --libexecdir=/usr/lib --disable-lastlog --disable-utmp \
 		--disable-utmpx --disable-wtmp --disable-wtmpx --without-x
 
-OPENSSH_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
-
 OPENSSH_DEPENDENCIES = zlib openssl
 
 define OPENSSH_INSTALL_INITSCRIPT

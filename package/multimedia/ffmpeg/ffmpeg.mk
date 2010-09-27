@@ -134,7 +134,4 @@ define FFMPEG_CONFIGURE_CMDS
 	)
 endef
 
-# Override FFMPEG_INSTALL_TARGET_OPT: FFmpeg does not support install-strip
-FFMPEG_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
-
 $(eval $(call AUTOTARGETS,package/multimedia,ffmpeg))

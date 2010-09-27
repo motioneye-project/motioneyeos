@@ -13,8 +13,6 @@ XVKBD_INSTALL_TARGET = YES
 XVKBD_MAKE_OPT = CC="$(TARGET_CC)" CXX="$(TARGET_CXX)" LD="$(TARGET_CC)" \
 				CFLAGS="-O2 -I$(STAGING_DIR)/usr/include" USRLIBDIR="$(STAGING_DIR)/usr/lib"
 
-XVKBD_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install
-
 XVKBD_DEPENDENCIES = xserver_xorg-server xlib_libXaw xlib_libXtst
 
 $(eval $(call AUTOTARGETS,package,xvkbd))
