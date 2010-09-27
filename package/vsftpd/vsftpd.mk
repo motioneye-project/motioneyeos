@@ -3,74 +3,47 @@
 # vsftpd
 #
 #############################################################
-VSFTPD_VERSION:=2.0.7
-VSFTPD_SOURCE:=vsftpd-$(VSFTPD_VERSION).tar.gz
-VSFTPD_SITE:=ftp://vsftpd.beasts.org/users/cevans
-VSFTPD_DIR:=$(BUILD_DIR)/vsftpd-$(VSFTPD_VERSION)
-VSFTPD_CAT:=$(ZCAT)
-VSFTPD_BINARY:=vsftpd
-VSFTPD_TARGET_BINARY:=usr/sbin/vsftpd
+VSFTPD_VERSION = 2.3.2
+VSFTPD_SOURCE = vsftpd-$(VSFTPD_VERSION).tar.gz
+VSFTPD_SITE = ftp://vsftpd.beasts.org/users/cevans
+
+VSFTPD_LIBS = -lcrypt
+
+define VSFTPD_ENABLE_SSL
+	$(SED) 's/.*VSF_BUILD_SSL/#define VSF_BUILD_SSL/' $(@D)/builddefs.h
+endef
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-VSFTPD_LIBS:=-lcrypt -lssl
-else
-VSFTPD_LIBS:=-lcrypt
+VSFTPD_DEPENDENCIES += openssl
+VSFTPD_LIBS += -lssl
+VSFTPD_POST_CONFIGURE_HOOKS += VSFTPD_ENABLE_SSL
 endif
 
-$(DL_DIR)/$(VSFTPD_SOURCE):
-	 $(call DOWNLOAD,$(VSFTPD_SITE),$(VSFTPD_SOURCE))
+define VSFTPD_BUILD_CMDS
+	$(MAKE) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
+		LDFLAGS="$(TARGET_LDFLAGS)" LIBS="$(VSFTPD_LIBS)" -C $(@D)
+endef
 
-vsftpd-source: $(DL_DIR)/$(VSFTPD_SOURCE)
+define VSFTPD_INSTALL_TARGET_CMDS
+	install -D -m 755 $(@D)/vsftpd $(TARGET_DIR)/usr/sbin/vsftpd
+	install -D -m 644 $(@D)/vsftpd.8 \
+		$(TARGET_DIR)/usr/share/man/man8/vsftpd.8
+	install -D -m 644 $(@D)/vsftpd.conf.5 \
+		$(TARGET_DIR)/usr/share/man/man5/vsftpd.conf.5
+	test -f $(TARGET_DIR)/etc/init.d/S70vsftpd || \
+		$(INSTALL) -D -m 755 package/vsftpd/vsftpd-init \
+			$(TARGET_DIR)/etc/init.d/S70vsftpd
+endef
 
-$(VSFTPD_DIR)/.unpacked: $(DL_DIR)/$(VSFTPD_SOURCE)
-	$(VSFTPD_CAT) $(DL_DIR)/$(VSFTPD_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(VSFTPD_DIR) package/vsftpd/ vsftpd\*.patch
-	touch $@
+define VSFTPD_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/sbin/vsftpd
+	rm -f $(TARGET_DIR)/usr/share/man/man8/vsftpd.8
+	rm -f $(TARGET_DIR)/usr/share/man/man5/vsftpd.conf.5
+	rm -f $(TARGET_DIR)/etc/init.d/S70vsftpd
+endef
 
-$(VSFTPD_DIR)/.configured: $(VSFTPD_DIR)/.unpacked
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-	$(SED) 's,#undef[[:space:]]*VSF_BUILD_SSL.*,#define VSF_BUILD_SSL,g' $(VSFTPD_DIR)/builddefs.h
-else
-	$(SED) 's,#define[[:space:]]*VSF_BUILD_SSL.*,#undef VSF_BUILD_SSL,g' $(VSFTPD_DIR)/builddefs.h
-endif
-ifneq ($(findstring uclibc,$(BR2_GNU_TARGET_SUFFIX)),)
-	$(SED) 's,#define[[:space:]]*VSF_BUILDDEFS_H.*,#define VSF_BUILDDEFS_H\n#define __UCLIBC__,g' $(VSFTPD_DIR)/builddefs.h
-	$(SED) 's,.*__UCLIBC_HAS_LFS__.*,,g' $(VSFTPD_DIR)/builddefs.h
-ifeq ($(BR2_LARGEFILE),y)
-	$(SED) 's,#define[[:space:]]*VSF_BUILDDEFS_H.*,#define VSF_BUILDDEFS_H\n#define __UCLIBC_HAS_LFS__,g' $(VSFTPD_DIR)/builddefs.h
-endif
-else # not uclibc
-	$(SED) 's,.*__UCLIBC_.*,,g' $(VSFTPD_DIR)/builddefs.h
-endif
-	touch $@
+define VSFTPD_CLEAN_CMDS
+	-$(MAKE) -C $(@D) clean
+endef
 
-
-$(VSFTPD_DIR)/$(VSFTPD_BINARY): $(VSFTPD_DIR)/.configured
-	$(MAKE) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" LIBS="$(VSFTPD_LIBS)" -C $(VSFTPD_DIR)
-	touch -c $@
-
-$(TARGET_DIR)/$(VSFTPD_TARGET_BINARY): $(VSFTPD_DIR)/$(VSFTPD_BINARY)
-	cp -dpf $< $@
-	$(INSTALL) -D -m 0755 package/vsftpd/vsftpd-init $(TARGET_DIR)/etc/init.d/S70vsftpd
-
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-vsftpd: openssl $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
-else
-vsftpd: $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
-endif
-
-vsftpd-clean:
-	-$(MAKE) -C $(VSFTPD_DIR) clean
-	rm -f $(TARGET_DIR)/$(VSFTPD_TARGET_BINARY)
-
-vsftpd-dirclean:
-	rm -rf $(VSFTPD_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_VSFTPD),y)
-TARGETS+=vsftpd
-endif
+$(eval $(call GENTARGETS,package,vsftpd))

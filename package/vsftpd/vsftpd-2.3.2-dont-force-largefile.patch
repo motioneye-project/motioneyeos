@@ -1,0 +1,27 @@
+[PATCH] vsftpd: don't enforce largefile support
+
+In Buildroot we enable/disable largefile support globally, and pass the
+correct defines in CFLAGS, so don't enforce it unconditionally.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ sysutil.c |    6 ------
+ 1 file changed, 6 deletions(-)
+
+Index: vsftpd-2.3.2/sysutil.c
+===================================================================
+--- vsftpd-2.3.2.orig/sysutil.c
++++ vsftpd-2.3.2/sysutil.c
+@@ -17,12 +17,6 @@
+ #include "tunables.h"
+ #include "sysdeputil.h"
+ 
+-/* Activate 64-bit file support on Linux/32bit plus others */
+-#define _FILE_OFFSET_BITS 64
+-#define _LARGEFILE_SOURCE 1
+-#define _LARGEFILE64_SOURCE 1
+-#define _LARGE_FILES 1
+-
+ /* For Linux, this adds nothing :-) */
+ #include "port/porting_junk.h"
+ 
