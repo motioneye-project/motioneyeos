@@ -88,7 +88,8 @@ ifeq ($(U_BOOT_BOARD_NAME),)
 endif
 	$(TARGET_CONFIGURE_OPTS)		\
 		$(U_BOOT_CONFIGURE_OPTS) \
-		$(MAKE) -C $(U_BOOT_DIR)	\
+		$(MAKE) -C $(U_BOOT_DIR) \
+		CROSS_COMPILE="$(TARGET_CROSS)" ARCH=$(U_BOOT_ARCH) \
 		$(U_BOOT_BOARD_NAME)_config
 	touch $@
 
