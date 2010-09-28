@@ -53,9 +53,11 @@ barebox: $(BAREBOX_DIR)/.installed
 ifeq ($(BR2_TARGET_BAREBOX),y)
 TARGETS+=barebox
 
-# we NEED a board defconfig file
+# we NEED a board defconfig file unless we're at make source
+ifeq ($(filter source,$(MAKECMDGOALS)),)
 ifeq ($(BAREBOX_BOARD_DEFCONFIG),)
 $(error No Barebox defconfig file. Check your BR2_TARGET_BAREBOX_BOARD_DEFCONFIG setting)
+endif
 endif
 
 endif

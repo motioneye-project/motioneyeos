@@ -159,6 +159,7 @@ TARGETS+=linux26
 endif
 
 # Checks to give errors that the user can understand
+ifeq ($(filter source,$(MAKECMDGOALS)),)
 ifeq ($(BR2_LINUX_KERNEL_USE_DEFCONFIG),y)
 ifeq ($(call qstrip,$(BR2_LINUX_KERNEL_DEFCONFIG)),)
 $(error No kernel defconfig name specified, check your BR2_LINUX_KERNEL_DEFCONFIG setting)
@@ -169,4 +170,6 @@ ifeq ($(BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG),y)
 ifeq ($(call qstrip,$(BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE)),)
 $(error No kernel configuration file specified, check your BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE setting)
 endif
+endif
+
 endif
