@@ -1,5 +1,6 @@
 config BR2_PACKAGE_DOSFSTOOLS
 	bool "dosfstools"
+	depends on BR2_LARGEFILE
 	help
 	  Tools for creating and checking DOS FAT filesystems.
 
@@ -22,3 +23,6 @@ config BR2_PACKAGE_DOSFSTOOLS_DOSFSLABEL
 	depends on BR2_PACKAGE_DOSFSTOOLS
 	help
 	  Get or set the DOS FAT filesystem label.
+
+comment "dosfstools requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
