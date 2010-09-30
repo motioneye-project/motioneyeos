@@ -54,6 +54,14 @@ COREUTILS_CONF_OPT = --disable-rpath \
 		--disable-dependency-tracking \
 		--enable-install-program=hostname
 
+define COREUTILS_TOUCH_UNAME_C
+	# ensure uname.c file's timestamp does not change,
+	# so help2man does not run
+	touch -d '2010-01-01' $(@D)/src/uname.c
+endef
+
+COREUTILS_POST_PATCH_HOOKS += COREUTILS_TOUCH_UNAME_C
+
 define COREUTILS_POST_INSTALL
 	# some things go in root rather than usr
 	for f in $(COREUTILS_BIN_PROGS); do \
