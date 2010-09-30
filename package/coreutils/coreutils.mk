@@ -3,7 +3,7 @@
 # coreutils
 #
 #############################################################
-COREUTILS_VERSION = 7.4
+COREUTILS_VERSION = 8.5
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.gz
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 
@@ -56,14 +56,6 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 COREUTILS_CONF_OPT = --disable-rpath \
 		--disable-dependency-tracking \
 		--enable-install-program=hostname
-
-define COREUTILS_TOUCH_RENAME_M4
-	# ensure rename.m4 file is older than configure / aclocal.m4 so
-	# auto* isn't rerun
-	touch -d '1979-01-01' $(@D)/m4/rename.m4
-endef
-
-COREUTILS_POST_PATCH_HOOKS += COREUTILS_TOUCH_RENAME_M4
 
 define COREUTILS_POST_INSTALL
 	# some things go in root rather than usr
