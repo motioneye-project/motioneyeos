@@ -38,14 +38,11 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		ac_use_included_regex=no \
 		am_cv_func_working_getline=yes \
 		fu_cv_sys_stat_statfs2_bsize=yes \
-		gl_ac_cv_func_link_follows_symlink=no \
 		gl_cv_func_getcwd_null=yes \
 		gl_cv_func_getcwd_path_max=yes \
 		gl_cv_func_gettimeofday_clobber=no \
-		gl_cv_func_mkdir_trailing_slash_bug=no \
+		gl_cv_func_link_follows_symlink=no \
 		gl_cv_func_re_compile_pattern_working=yes \
-		gl_cv_func_rename_dest_exists_bug=no \
-		gl_cv_func_rename_trailing_slash_bug=no \
 		gl_cv_func_svid_putenv=yes \
 		gl_cv_func_tzset_clobber=no \
 		gl_cv_func_working_mkstemp=yes \
