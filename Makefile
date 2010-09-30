@@ -589,7 +589,7 @@ endif
 flush:
 	rm -f $(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache
 
-configured: dirs host-sed kernel-headers uclibc-config busybox-config linux26-config
+configured: dirs kernel-headers uclibc-config busybox-config linux26-config
 
 prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
 

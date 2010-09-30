@@ -55,14 +55,9 @@ if ! which which > /dev/null ; then
 	exit 1;
 fi;
 
-# Check sed
-SED=$(toolchain/dependencies/check-host-sed.sh)
-
-if [ -z "$SED" ] ; then
-	XSED=$HOST_SED_DIR/bin/sed
-	/bin/echo -e "\nSed doesn't work, using buildroot version instead\n"
-else
-	XSED=$SED
+if ! which sed > /dev/null ; then
+	/bin/echo -e "\nYou must install 'sed' on your build machine\n"
+	exit 1
 fi
 
 # Check make
@@ -71,13 +66,13 @@ if [ -z "$MAKE" ] ; then
 	/bin/echo -e "\nYou must install 'make' on your build machine\n";
 	exit 1;
 fi;
-MAKE_VERSION=$($MAKE --version 2>&1 | $XSED -e 's/^.* \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g' -e '1q')
+MAKE_VERSION=$($MAKE --version 2>&1 | sed -e 's/^.* \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g' -e '1q')
 if [ -z "$MAKE_VERSION" ] ; then
 	/bin/echo -e "\nYou must install 'make' on your build machine\n";
 	exit 1;
 fi;
-MAKE_MAJOR=$(echo $MAKE_VERSION | $XSED -e "s/\..*//g")
-MAKE_MINOR=$(echo $MAKE_VERSION | $XSED -e "s/^$MAKE_MAJOR\.//g" -e "s/\..*//g" -e "s/[a-zA-Z].*//g")
+MAKE_MAJOR=$(echo $MAKE_VERSION | sed -e "s/\..*//g")
+MAKE_MINOR=$(echo $MAKE_VERSION | sed -e "s/^$MAKE_MAJOR\.//g" -e "s/\..*//g" -e "s/[a-zA-Z].*//g")
 if [ $MAKE_MAJOR -lt 3 ] || [ $MAKE_MAJOR -eq 3 -a $MAKE_MINOR -lt 81 ] ; then
 	/bin/echo -e "\nYou have make '$MAKE_VERSION' installed.  GNU make >=3.81 is required\n"
 	exit 1;
@@ -93,14 +88,14 @@ if [ -z "$COMPILER" ] ; then
 	exit 1;
 fi;
 
-COMPILER_VERSION=$($COMPILER -v 2>&1 | $XSED -n '/^gcc version/p' |
-	$XSED -e 's/^gcc version \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g' -e '1q')
+COMPILER_VERSION=$($COMPILER -v 2>&1 | sed -n '/^gcc version/p' |
+	sed -e 's/^gcc version \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g' -e '1q')
 if [ -z "$COMPILER_VERSION" ] ; then
 	/bin/echo -e "\nYou must install 'gcc' on your build machine\n";
 	exit 1;
 fi;
-COMPILER_MAJOR=$(echo $COMPILER_VERSION | $XSED -e "s/\..*//g")
-COMPILER_MINOR=$(echo $COMPILER_VERSION | $XSED -e "s/^$COMPILER_MAJOR\.//g" -e "s/\..*//g")
+COMPILER_MAJOR=$(echo $COMPILER_VERSION | sed -e "s/\..*//g")
+COMPILER_MINOR=$(echo $COMPILER_VERSION | sed -e "s/^$COMPILER_MAJOR\.//g" -e "s/\..*//g")
 if [ $COMPILER_MAJOR -lt 3 -o $COMPILER_MAJOR -eq 2 -a $COMPILER_MINOR -lt 95 ] ; then
 	echo "\nYou have gcc '$COMPILER_VERSION' installed.  gcc >= 2.95 is required\n"
 	exit 1;
@@ -116,14 +111,14 @@ if [ -z "$CXXCOMPILER" ] ; then
 	#exit 1
 fi
 if [ ! -z "$CXXCOMPILER" ] ; then
-	CXXCOMPILER_VERSION=$($CXXCOMPILER -v 2>&1 | $XSED -n '/^gcc version/p' |
-		$XSED -e 's/^gcc version \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g' -e '1q')
+	CXXCOMPILER_VERSION=$($CXXCOMPILER -v 2>&1 | sed -n '/^gcc version/p' |
+		sed -e 's/^gcc version \([0-9\.]\)/\1/g' -e 's/[-\ ].*//g' -e '1q')
 	if [ -z "$CXXCOMPILER_VERSION" ] ; then
 		/bin/echo -e "\nYou may have to install 'g++' on your build machine\n"
 	fi
 
-	CXXCOMPILER_MAJOR=$(echo $CXXCOMPILER_VERSION | $XSED -e "s/\..*//g")
-	CXXCOMPILER_MINOR=$(echo $CXXCOMPILER_VERSION | $XSED -e "s/^$CXXCOMPILER_MAJOR\.//g" -e "s/\..*//g")
+	CXXCOMPILER_MAJOR=$(echo $CXXCOMPILER_VERSION | sed -e "s/\..*//g")
+	CXXCOMPILER_MINOR=$(echo $CXXCOMPILER_VERSION | sed -e "s/^$CXXCOMPILER_MAJOR\.//g" -e "s/\..*//g")
 	if [ $CXXCOMPILER_MAJOR -lt 3 -o $CXXCOMPILER_MAJOR -eq 2 -a $CXXCOMPILER_MINOR -lt 95 ] ; then
 		/bin/echo -e "\nYou have g++ '$CXXCOMPILER_VERSION' installed.  g++ >= 2.95 is required\n"
 		exit 1
