@@ -4,7 +4,7 @@
 #
 #############################################################
 
-IW_VERSION = 0.9.20
+IW_VERSION = 0.9.21
 IW_SOURCE = iw-$(IW_VERSION).tar.bz2
 IW_SITE = http://wireless.kernel.org/download/iw
 IW_DEPENDENCIES = host-pkg-config libnl
