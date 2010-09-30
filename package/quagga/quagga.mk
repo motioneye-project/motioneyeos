@@ -3,13 +3,13 @@
 # quagga suite
 #
 #############################################################
-QUAGGA_VERSION:=0.99.16
+QUAGGA_VERSION:=0.99.17
 QUAGGA_SOURCE:=quagga-$(QUAGGA_VERSION).tar.gz
 QUAGGA_SITE:=http://www.quagga.net/download/
 
 QUAGGA_DEPENDENCIES = host-gawk
 QUAGGA_LIBTOOL_PATCH = NO
-QUAGGA_CONF_OPT = --program-transform-name=''
+QUAGGA_CONF_OPT = --program-transform-name='' --enable-netlink
 
 ifeq ($(BR2_PACKAGE_QUAGGA_ZEBRA),y)
 QUAGGA_CONF_OPT+=--enable-zebra
@@ -65,12 +65,6 @@ else
 QUAGGA_CONF_OPT+=--disable-bgp-announce
 endif
 
-ifeq ($(BR2_PACKAGE_QUAGGA_NETLINK),y)
-QUAGGA_CONF_OPT+=--enable-netlink
-else
-QUAGGA_CONF_OPT+=--disable-netlink
-endif
-
 ifeq ($(BR2_PACKAGE_QUAGGA_SNMP),y)
 QUAGGA_CONF_OPT+=--enable-snmp
 QUAGGA_DEPENDENCIES+=netsnmp
@@ -84,7 +78,7 @@ else
 QUAGGA_CONF_OPT+=--disable-tcp-zebra
 endif
 
-ifeq ($(BR2_PACKAGE_QUAGGA_OPAGUE_LSA),y)
+ifeq ($(BR2_PACKAGE_QUAGGA_OPAQUE_LSA),y)
 QUAGGA_CONF_OPT+=--enable-opaque-lsa
 else
 QUAGGA_CONF_OPT+=--disable-opaque-lsa
