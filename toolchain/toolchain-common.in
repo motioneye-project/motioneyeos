@@ -9,7 +9,6 @@ comment "Common Toolchain Options"
 
 config BR2_LARGEFILE
 	bool "Enable large file (files > 2 GB) support?"
-	depends on !BR2_cris
 	help
 	  If you are building your own toolchain and you want to 
 	  support files larger than 2GB then enable this option.
