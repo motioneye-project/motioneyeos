@@ -18,6 +18,8 @@
 	A convenience Makefile wrapper is created when using
 	out-of-tree building, similar to how it is done for the kernel.
 
+	Alpha, Cris, IA64 and Sparc64 architecture support removed.
+
 	New packages: xz
 
 	Updated/fixed packages: acpid, alsa-lib, argus, at, autoconf,
