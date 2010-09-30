@@ -54,7 +54,8 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 		utils_cv_localtime_cache=no
 
 COREUTILS_CONF_OPT = --disable-rpath \
-		--disable-dependency-tracking
+		--disable-dependency-tracking \
+		--enable-install-program=hostname
 
 define COREUTILS_TOUCH_RENAME_M4
 	# ensure rename.m4 file is older than configure / aclocal.m4 so
