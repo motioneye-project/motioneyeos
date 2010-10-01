@@ -8,7 +8,7 @@ config BR2_PACKAGE_GDB
 	    Build the full gdb debugger to run on the target.
 
 comment "Gdb debugger for the target needs WCHAR support in toolchain"
-	depends on !BR2_USE_WHCAR
+	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_GDB_SERVER
 	bool "Build gdb server for the Target"
