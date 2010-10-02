@@ -20,13 +20,12 @@
 # License along with this program; if not, write to the Free Software
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
 # USA
-JPEG_VERSION:=6b
-JPEG_SITE:=ftp://ftp.uu.net/graphics/jpeg/
-JPEG_SOURCE=jpegsrc.v$(JPEG_VERSION).tar.gz
+JPEG_VERSION = 8b
+JPEG_SITE = http://www.ijg.org/files/
+JPEG_SOURCE = jpegsrc.v$(JPEG_VERSION).tar.gz
 JPEG_INSTALL_STAGING = YES
 JPEG_INSTALL_TARGET = YES
 JPEG_LIBTOOL_PATCH = NO
-JPEG_CONF_OPT = --without-x --enable-shared --enable-static
 
 define JPEG_REMOVE_USELESS_TOOLS
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,cjpeg djpeg jpegtrans rdjpgcom wrjpgcom)
