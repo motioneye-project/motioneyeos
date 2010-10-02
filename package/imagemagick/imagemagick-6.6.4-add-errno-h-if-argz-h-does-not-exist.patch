@@ -1,0 +1,11 @@
+--- a/configure	2010-09-26 17:05:45.000000000 -0700
++++ b/configure	2010-09-30 23:47:09.000000000 -0700
+@@ -20354,6 +20354,8 @@ done
+ 
+ ac_fn_c_check_type "$LINENO" "error_t" "ac_cv_type_error_t" "#if defined(HAVE_ARGZ_H)
+ #  include <argz.h>
++#else
++#  include <errno.h>
+ #endif
+ "
+ if test "x$ac_cv_type_error_t" = xyes; then :
