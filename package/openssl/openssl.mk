@@ -3,19 +3,28 @@
 # openssl
 #
 #############################################################
-OPENSSL_VERSION:=0.9.8o
-OPENSSL_SITE:=http://www.openssl.org/source
+
+OPENSSL_VERSION = 1.0.0a
+OPENSSL_SITE = http://www.openssl.org/source
 OPENSSL_INSTALL_STAGING = YES
 OPENSSL_DEPENDENCIES = zlib
-
-OPENSSL_TARGET_ARCH=generic32
+OPENSSL_TARGET_ARCH = generic32
 
 # Some architectures are optimized in OpenSSL
+ifeq ($(ARCH),arm)
+ifneq ($(BR2_generic_arm),y)
+ifneq ($(BR2_arm610),y)
+ifneq ($(BR2_arm710),y)
+	OPENSSL_TARGET_ARCH = armv4
+endif
+endif
+endif
+endif
 ifeq ($(ARCH),powerpc)
-OPENSSL_TARGET_ARCH=ppc
+	OPENSSL_TARGET_ARCH = ppc
 endif
 ifeq ($(ARCH),x86_64)
-OPENSSL_TARGET_ARCH=x86_64
+	OPENSSL_TARGET_ARCH = x86_64
 endif
 
 define OPENSSL_CONFIGURE_CMDS
