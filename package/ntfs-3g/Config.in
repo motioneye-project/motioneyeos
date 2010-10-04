@@ -1,6 +1,3 @@
-comment "ntfs-3g has no inherent support for AVR32"
-	depends on BR2_avr32 && BR2_PACKAGE_NTFS_3G
-
 config BR2_PACKAGE_NTFS_3G
 	bool "ntfs-3g"
 	depends on BR2_LARGEFILE

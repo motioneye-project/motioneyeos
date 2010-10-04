@@ -1,6 +1,3 @@
-comment "argus has no inherent support for AVR32" 
-	depends on BR2_avr32 && BR2_PACKAGE_ARGUS
-
 config BR2_PACKAGE_ARGUS
 	bool "argus"
 	select BR2_PACKAGE_LIBPCAP

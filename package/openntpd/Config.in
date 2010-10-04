@@ -1,6 +1,3 @@
-comment "OpenNTPD has no inherent support for AVR32" 
-	depends on BR2_avr32 && BR2_PACKAGE_OPENNTPD
-
 config BR2_PACKAGE_OPENNTPD
 	bool "OpenNTPD"
 	help

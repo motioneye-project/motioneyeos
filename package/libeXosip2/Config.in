@@ -1,6 +1,3 @@
-comment "libeXosip2 has no inherent support for AVR32" 
-	depends on BR2_avr32 && BR2_PACKAGE_LIBEXOSIP2
-
 config BR2_PACKAGE_LIBEXOSIP2
 	bool "libeXosip2"
 	select BR2_PACKAGE_LIBOSIP2

@@ -1,6 +1,3 @@
-comment "vtun has no inherent support for AVR32" 
-	depends on BR2_avr32 && BR2_PACKAGE_VTUN
-
 config BR2_PACKAGE_VTUN
 	bool "vtun - BEWARE: read package/vtun/README.txt before use"
 	select BR2_PACKAGE_LZO

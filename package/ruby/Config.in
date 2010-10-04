@@ -1,6 +1,3 @@
-comment "ruby has no inherent support for AVR32" 
-	depends on BR2_avr32 && BR2_PACKAGE_RUBY
-
 config BR2_PACKAGE_RUBY
 	bool "ruby"
 	depends on BR2_USE_WCHAR
