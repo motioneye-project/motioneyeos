@@ -27,6 +27,7 @@ config BR2_PACKAGE_GETTEXT_STATIC
 config BR2_PACKAGE_LIBINTL
 	bool "libintl"
 	depends on BR2_NEEDS_GETTEXT
+	depends on BR2_USE_WCHAR
 	help
 	  Selecting this package installs all of gettext in the staging
 	  directory and the shared library for it's use in the target.
