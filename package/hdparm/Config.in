@@ -1,6 +1,10 @@
 config BR2_PACKAGE_HDPARM
 	bool "hdparm"
+	depends on BR2_LARGEFILE
 	help
 	  hdparm - get/set hard disk parameters for Linux IDE drives.
 
 	  http://www.ibiblio.org/pub/Linux/system/hardware/
+
+comment "hdparm requires a toolchain with LARGEFILE support"
+	depends on !BR2_LARGEFILE
