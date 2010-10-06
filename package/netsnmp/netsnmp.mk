@@ -9,6 +9,7 @@ NETSNMP_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/n
 NETSNMP_SOURCE = net-snmp-$(NETSNMP_VERSION).tar.gz
 NETSNMP_INSTALL_STAGING = YES
 NETSNMP_LIBTOOL_PATCH = NO
+NETSNMP_MAKE = $(MAKE1)
 NETSNMP_CONF_ENV = ac_cv_NETSNMP_CAN_USE_SYSCTL=yes
 NETSNMP_CONF_OPT = --with-persistent-directory=/var/lib/snmp --disable-static \
 		--with-defaults --enable-mini-agent --without-rpm \
@@ -40,14 +41,14 @@ ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 endif
 
 define NETSNMP_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) \
 		DESTDIR=$(TARGET_DIR) install
 	$(INSTALL) -D -m 0755 package/netsnmp/S59snmpd \
 		$(TARGET_DIR)/etc/init.d/S59snmpd
 endef
 
 define NETSNMP_UNINSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) \
 		DESTDIR=$(TARGET_DIR) uninstall
 	rm -f $(TARGET_DIR)/etc/init.d/S59snmpd
 	rm -f $(TARGET_DIR)/usr/lib/libnetsnmp*
