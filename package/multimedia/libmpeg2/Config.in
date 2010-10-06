@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBMPEG2
+	bool "libmpeg2"
+	help
+	  MPEG1/MPEG2 video decoder library
+
+	  http://libmpeg2.sourceforge.net/
+
+config BR2_PACKAGE_LIBMPEG2_BINS
+       bool "mpeg2 binaries"
+       depends on BR2_PACKAGE_LIBMPEG2
+       help
+         Install mpeg2dec, corrupt_mpeg2 and extrac_mpeg2 programs as
+	 well.
