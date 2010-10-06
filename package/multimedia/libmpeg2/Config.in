@@ -6,8 +6,8 @@ config BR2_PACKAGE_LIBMPEG2
 	  http://libmpeg2.sourceforge.net/
 
 config BR2_PACKAGE_LIBMPEG2_BINS
-       bool "mpeg2 binaries"
-       depends on BR2_PACKAGE_LIBMPEG2
-       help
-         Install mpeg2dec, corrupt_mpeg2 and extrac_mpeg2 programs as
-	 well.
+	bool "mpeg2 binaries"
+	depends on BR2_PACKAGE_LIBMPEG2
+	help
+	  Install mpeg2dec, corrupt_mpeg2 and extract_mpeg2 programs as
+	  well.
