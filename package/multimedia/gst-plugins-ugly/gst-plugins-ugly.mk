@@ -75,4 +75,11 @@ else
 GST_PLUGINS_UGLY_CONF_OPT += --disable-mad
 endif
 
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MPEG2DEC),y)
+GST_PLUGINS_UGLY_CONF_OPT += --enable-mpeg2dec
+GST_PLUGINS_UGLY_DEPENDENCIES += libmpeg2
+else
+GST_PLUGINS_UGLY_CONF_OPT += --disable-mpeg2dec
+endif
+
 $(eval $(call AUTOTARGETS,package/multimedia,gst-plugins-ugly))
