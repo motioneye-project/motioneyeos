@@ -43,6 +43,7 @@
 	shared-mime-info, speex, sqlite, squashfs, strace, sylpheed,
 	taglib, tcpdump, thttpd, tiff, tn5250, udev, udpcast,
 	usbmount, usbutils, vsftpd, vtun, which, wpa_supplicant,
+	xapp_twm,
 	xdriver_xf86-input-{acecad,aiptek,evdev,joystick,keyboard},
 	xdriver-xf86-input-{mouse,synaptics,vmmouse,void},
 	xdriver-xf86-video-{apm,ark,ast,ati,chips,cirrus,dummy,fbdev},
