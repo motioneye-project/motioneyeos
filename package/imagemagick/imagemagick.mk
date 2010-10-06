@@ -33,49 +33,49 @@ ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 IMAGEMAGICK_CONF_OPT += --with-fontconfig
 IMAGEMAGICK_DEPENDENCIES += fontconfig
 else
-IMAGEMAGISK_CONF_OPT += --without-fontconfig
+IMAGEMAGICK_CONF_OPT += --without-fontconfig
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
 IMAGEMAGICK_CONF_OPT += --with-freetype
 IMAGEMAGICK_DEPENDENCIES += freetype
 else
-IMAGEMAGISK_CONF_OPT += --without-freetype
+IMAGEMAGICK_CONF_OPT += --without-freetype
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
 IMAGEMAGICK_CONF_OPT += --with-jpeg
 IMAGEMAGICK_DEPENDENCIES += jpeg
 else
-IMAGEMAGISK_CONF_OPT += --without-jpeg
+IMAGEMAGICK_CONF_OPT += --without-jpeg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 IMAGEMAGICK_CONF_OPT += --with-png
 IMAGEMAGICK_DEPENDENCIES += libpng
 else
-IMAGEMAGISK_CONF_OPT += --without-png
+IMAGEMAGICK_CONF_OPT += --without-png
 endif
 
 ifeq ($(BR2_PACKAGE_LIBRSVG),y)
 IMAGEMAGICK_CONF_OPT += --with-rsvg
 IMAGEMAGICK_DEPENDENCIES += librsvg
 else
-IMAGEMAGISK_CONF_OPT += --without-rsvg
+IMAGEMAGICK_CONF_OPT += --without-rsvg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 IMAGEMAGICK_CONF_OPT += --with-xml
 IMAGEMAGICK_DEPENDENCIES += libxml2
 else
-IMAGEMAGISK_CONF_OPT += --without-xml
+IMAGEMAGICK_CONF_OPT += --without-xml
 endif
 
 ifeq ($(BR2_PACKAGE_TIFF),y)
 IMAGEMAGICK_CONF_OPT += --with-tiff
 IMAGEMAGICK_DEPENDENCIES += tiff
 else
-IMAGEMAGISK_CONF_OPT += --without-tiff
+IMAGEMAGICK_CONF_OPT += --without-tiff
 endif
 
 $(eval $(call AUTOTARGETS,package,imagemagick))
