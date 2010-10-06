@@ -6,17 +6,10 @@ config BR2_PACKAGE_WPA_SUPPLICANT
 	  http://hostap.epitest.fi/wpa_supplicant/
 
 config BR2_PACKAGE_WPA_SUPPLICANT_EAP
-	bool "Enable WPA with EAP"
+	bool "Enable EAP"
 	depends on BR2_PACKAGE_WPA_SUPPLICANT
 	help
-	  Enable WPA with EAP (IEEE 802.1X)
-
-config BR2_PACKAGE_WPA_SUPPLICANT_OPENSSL
-	bool "Use openssl TLS (recommended)"
-	depends on BR2_PACKAGE_WPA_SUPPLICANT && BR2_PACKAGE_WPA_SUPPLICANT_EAP
-	select BR2_PACKAGE_OPENSSL
-	help
-	  Use OpenSSL's TLS implementation instead of internal libtommath.
+	  Enable support for EAP.
 
 config BR2_PACKAGE_WPA_SUPPLICANT_CLI
 	bool "Install wpa_cli binary"
