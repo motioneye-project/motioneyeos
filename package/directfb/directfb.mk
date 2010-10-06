@@ -4,7 +4,7 @@
 #
 #############################################################
 DIRECTFB_VERSION_MAJOR:=1.4
-DIRECTFB_VERSION:=1.4.3
+DIRECTFB_VERSION:=1.4.5
 DIRECTFB_SITE:=http://www.directfb.org/downloads/Core/DirectFB-$(DIRECTFB_VERSION_MAJOR)
 DIRECTFB_SOURCE:=DirectFB-$(DIRECTFB_VERSION).tar.gz
 DIRECTFB_AUTORECONF = NO
@@ -104,6 +104,7 @@ endif
 ifeq ($(BR2_PACKAGE_DIRECTFB_PNG),y)
 DIRECTFB_PNG:=--enable-png
 DIRECTFB_DEP+= libpng
+DIRECTFB_CONF_ENV += ac_cv_path_LIBPNG_CONFIG=$(STAGING_DIR)/usr/bin/libpng-config
 else
 DIRECTFB_PNG:=--disable-png
 endif

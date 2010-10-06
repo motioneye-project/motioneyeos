@@ -25,9 +25,9 @@
 
 	Updated/fixed packages: acpid, alsa-lib, argus, at, autoconf,
 	automake, avahi, axel, beecrypt, berkeleydb, bind, bmon, boa,
-	bootutils, bridge-utils, bsdiff, busybox, cvs, dbus, dmraid,
-	docker, dosfstools, dropbear, e2fsprogs, expat, ezxml, fbset,
-	fconfig, ffmpeg, freetype, gadgetfs-test, gamin, gawk,
+	bootutils, bridge-utils, bsdiff, busybox, cvs, dbus, directfb,
+	dmraid, docker, dosfstools, dropbear, e2fsprogs, expat, ezxml,
+	fbset, fconfig, ffmpeg, freetype, gadgetfs-test, gamin, gawk,
 	genext2fs, gperf, gst-plugins-ugly, gtk2-themes, gtkperf,
 	gvfs, haserl, hdparm, hostapd, hwdata, ifplugd, imagemagick,
 	iperf, ipsec-tools, iproute2, iptables, iw, jpeg, kexec,
