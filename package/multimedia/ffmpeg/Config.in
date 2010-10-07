@@ -47,6 +47,17 @@ config BR2_PACKAGE_FFMPEG_FFSERVER
 	help
          FFserver is a streaming server for both audio and video.
 
+config BR2_PACKAGE_FFMPEG_POSTPROC
+	bool "Build libpostproc"
+	depends on BR2_PACKAGE_FFMPEG_GPL
+	help
+	  Postproc is a library of video postprocessing routines.
+
+config BR2_PACKAGE_FFMPEG_SWSCALE
+	bool "Build libswscale"
+	help
+	  Swscale is a library of video scaling routines.
+
 config BR2_PACKAGE_FFMPEG_ENCODERS
 	string "Enabled encoders"
 	default "all"
