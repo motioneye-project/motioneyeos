@@ -46,7 +46,7 @@
 	openssl, openvpn, oprofile, pango, patch, pcre, php,
 	pkg-config, portmap, pppd, pptp-linux, prboom, proftpd, radvd,
 	rdesktop, readline, rp-pppoe, ruby, qt, quagga, samba, sawman,
-	sdl_mixer, sdl_sound, setserial, shared-mime-info, speex,
+	sdl_mixer, sdl_sound, sed, setserial, shared-mime-info, speex,
 	sqlite, squashfs, startup-notification, strace, sylpheed,
 	sysstat, taglib, tcpdump, thttpd, tiff, tn5250, torsmo, udev,
 	udpcast, usbmount, usbutils, vsftpd, vtun, which,
