@@ -44,7 +44,7 @@
 	mtd-utils, mysql_client, nano, nbd, ncftp, neon, netperf,
 	netsnmp, ng-spice-rework, ntfsprogs, ntp, openntpd, openssh,
 	openssl, openvpn, oprofile, pango, patch, pcre, php,
-	pkg-config, portmap, pppd, pptp-linux, prboom, radvd,
+	pkg-config, portmap, pppd, pptp-linux, prboom, proftpd, radvd,
 	rdesktop, readline, rp-pppoe, ruby, qt, quagga, samba, sawman,
 	sdl_mixer, sdl_sound, setserial, shared-mime-info, speex,
 	sqlite, squashfs, startup-notification, strace, sylpheed,
