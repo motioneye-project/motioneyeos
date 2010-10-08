@@ -25,7 +25,7 @@
 	Alpha, Cris, IA64 and Sparc64 architecture support removed.
 
 	New packages: argp-standalone, gdk-pixbuf, gpsd, gst-ffmpeg,
-	libmpeg2, librsvg, rng-tools, rrdtool, xz
+	libmpeg2, librsvg, nuttcp, rng-tools, rrdtool, xz
 
 	Updated/fixed packages: acpid, alsa-lib, argus, at, autoconf,
 	automake, avahi, axel, beecrypt, berkeleydb, bind, bmon, boa,
