@@ -16,6 +16,8 @@ endef
 
 HOST_LIBTOOL_POST_INSTALL_HOOKS += HOST_LIBTOOL_CUSTOM_INSTALL
 
+HOST_LIBTOOL_LIBTOOL_PATCH = NO
+
 $(eval $(call AUTOTARGETS,package,libtool))
 $(eval $(call AUTOTARGETS,package,libtool,host))
 
