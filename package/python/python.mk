@@ -3,8 +3,8 @@
 # python
 #
 #############################################################
-PYTHON_VERSION=2.4.5
-PYTHON_VERSION_MAJOR=2.4
+PYTHON_VERSION=2.7
+PYTHON_VERSION_MAJOR=2.7
 PYTHON_SOURCE:=Python-$(PYTHON_VERSION).tar.bz2
 PYTHON_SITE:=http://python.org/ftp/python/$(PYTHON_VERSION)
 PYTHON_DIR:=$(BUILD_DIR)/Python-$(PYTHON_VERSION)
