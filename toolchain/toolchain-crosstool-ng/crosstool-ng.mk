@@ -115,6 +115,7 @@ else ifeq ($(BR2_mipsel),y)
 CTNG_ARCH   := mips
 CTNG_ENDIAN := LE
 else ifeq ($(BR2_powerpc),y)
+CTNG_ARCH   := powerpc
 CTNG_BIT    := 32
 else ifeq ($(BR2_x86_64),y)
 CTNG_ARCH   := x86
