@@ -63,6 +63,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#2389: Generate a Makefile wrapper in $(O)
 	#2521: Can't compile sdl_mixer, mikmod.h can't be found
 	#2563: [PATCH] cairo: Expose the configure option to disable some...
 	#2581: libmms: Update to 0.6, and patch to work on architectures...
