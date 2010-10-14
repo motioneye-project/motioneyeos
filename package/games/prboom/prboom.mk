@@ -3,7 +3,8 @@
 # PrBoom
 #
 #############################################################
-PRBOOM_VERSION = 2.4.7
+PRBOOM_VERSION = 2.5.0
+PRBOOM_CONF_ENV = ac_cv_type_uid_t=yes
 PRBOOM_DEPENDENCIES = sdl SDL_net sdl_mixer
 
 PRBOOM_CONF_OPT = \
@@ -12,16 +13,7 @@ PRBOOM_CONF_OPT = \
 		--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
 		--disable-cpu-opt \
 		--disable-sdltest \
-		--disable-gl \
-		--without-x
-
-define PRBOOM_BIG_ENDIAN_FIXUP
-	$(SED) 's,.*#undef WORDS_BIGENDIAN.*,#define WORDS_BIGENDIAN 1,g' $(PRBOOM_DIR)/config.h
-endef
-
-ifeq ($(BR2_ENDIAN),"BIG")
-PRBOOM_POST_CONFIGURE_HOOKS += PRBOOM_BIG_ENDIAN_FIXUP
-endif
+		--disable-gl
 
 define PRBOOM_INSTALL_TARGET_CMDS
 	$(INSTALL) -D $(@D)/src/prboom $(TARGET_DIR)/usr/games/prboom
