@@ -56,7 +56,7 @@
 	xdriver-xf86-video-{vmware,voodeo,wsfb,xgi,xgixp},
 	xkeyboard-config, xlib_libX11, xstroke, xterm, xvkbd, zlib
 
-	Deprecated packages: hotplug, lzma
+	Deprecated packages: hotplug, lzma, ng-spice-rework
 
 	Removed packages: dillo, libglib12, libgtk12, microwin,
 	pcmcia

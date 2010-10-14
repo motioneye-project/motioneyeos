@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NG_SPICE_REWORK
 	bool "ng-spice-rework"
+	depends on BR2_DEPRECATED
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBXAW
 	help
