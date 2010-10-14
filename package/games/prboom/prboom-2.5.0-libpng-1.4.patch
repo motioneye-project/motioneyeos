@@ -1,0 +1,32 @@
+[PATCH] fix build with libpng 1.4.x
+
+In 1.4.x the png_*_NULL defines are gone. Replace them with a normal
+NULL instead.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/SDL/i_sshot.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: prboom-2.5.0/src/SDL/i_sshot.c
+===================================================================
+--- prboom-2.5.0.orig/src/SDL/i_sshot.c
++++ prboom-2.5.0/src/SDL/i_sshot.c
+@@ -231,7 +231,7 @@ int I_ScreenShot (const char *fname)
+   if (fp)
+   {
+     png_struct *png_ptr = png_create_write_struct(
+-        PNG_LIBPNG_VER_STRING, png_error_ptr_NULL, error_fn, warning_fn);
++        PNG_LIBPNG_VER_STRING, NULL, error_fn, warning_fn);
+ 
+     if (png_ptr)
+     {
+@@ -279,7 +279,7 @@ int I_ScreenShot (const char *fname)
+             break;
+         }
+       }
+-      png_destroy_write_struct(&png_ptr,  png_infopp_NULL);
++      png_destroy_write_struct(&png_ptr, NULL);
+     }
+     fclose(fp);
+   }

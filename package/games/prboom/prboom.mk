@@ -7,6 +7,10 @@ PRBOOM_VERSION = 2.5.0
 PRBOOM_CONF_ENV = ac_cv_type_uid_t=yes
 PRBOOM_DEPENDENCIES = sdl SDL_net sdl_mixer
 
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
+PRBOOM_DEPENDENCIES += libpng
+endif
+
 PRBOOM_CONF_OPT = \
 		--oldincludedir=$(STAGING_DIR)/usr/include \
 		--with-sdl-prefix=$(STAGING_DIR)/usr \
