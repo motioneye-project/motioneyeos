@@ -42,7 +42,7 @@
 	pkg-config, prboom, radvd, rdesktop, ruby, qt, quagga, samba,
 	sawman, sdl_mixer, sdl_sound, setserial, shared-mime-info,
 	speex, sqlite, squashfs, strace, sylpheed, taglib, tcpdump,
-	thttpd, tiff, tn5250, udev, udpcast, usbmount, usbutils,
+	thttpd, tiff, tn5250, torsmo, udev, udpcast, usbmount, usbutils,
 	vsftpd, vtun, which, wpa_supplicant, xapp_twm,
 	xapp_xbacklight,
 	xdriver_xf86-input-{acecad,aiptek,evdev,joystick,keyboard},
