@@ -3,6 +3,7 @@
 /.auto.deps
 /.config.cmd
 /.config.old
+/..config.tmp
 /.config
 *.depend
 *.o
