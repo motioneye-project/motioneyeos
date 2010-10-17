@@ -68,6 +68,7 @@
 	#2521: Can't compile sdl_mixer, mikmod.h can't be found
 	#2563: [PATCH] cairo: Expose the configure option to disable some...
 	#2581: libmms: Update to 0.6, and patch to work on architectures...
+	#2707: Can't compile linux kernel using buildroot + crosstool-ng
 
 2010.08: Released August 31th, 2010:
 

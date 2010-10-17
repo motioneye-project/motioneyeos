@@ -249,6 +249,14 @@ ifeq ($(ARCH),xtensa)
 ARCH:=$(ARCH)_$(call qstrip,$(BR2_xtensa_core_name))
 endif
 
+KERNEL_ARCH:=$(shell echo "$(ARCH)" | sed -e "s/-.*//" \
+	-e s/i.86/i386/ -e s/sun4u/sparc64/ \
+	-e s/arm.*/arm/ -e s/sa110/arm/ \
+	-e s/parisc64/parisc/ \
+	-e s/powerpc64/powerpc/ \
+	-e s/ppc.*/powerpc/ -e s/mips.*/mips/ \
+	-e s/sh.*/sh/)
+
 ZCAT:=$(call qstrip,$(BR2_ZCAT))
 BZCAT:=$(call qstrip,$(BR2_BZCAT))
 TAR_OPTIONS=$(call qstrip,$(BR2_TAR_OPTIONS)) -xf
