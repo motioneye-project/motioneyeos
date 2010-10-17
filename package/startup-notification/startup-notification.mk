@@ -12,6 +12,9 @@ STARTUP_NOTIFICATION_INSTALL_TARGET = YES
 STARTUP_NOTIFICATION_DEPENDENCIES = xlib_libX11
 
 STARTUP_NOTIFICATION_CONF_ENV = lf_cv_sane_realloc=yes
+STARTUP_NOTIFICATION_CONF_OPT = --with-x \
+	--x-includes="$(STAGING_DIR)/usr/include/X11" \
+	--x-libraries="$(STAGING_DIR)/usr/lib"
 
 $(eval $(call AUTOTARGETS,package,startup-notification))
 
