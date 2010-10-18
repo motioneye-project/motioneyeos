@@ -72,7 +72,7 @@ LIBGTK2_CONF_OPT = --enable-shared \
 		--enable-explicit-deps=no \
 		--disable-debug
 
-LIBGTK2_DEPENDENCIES = host-pkg-config host-libgtk2 libglib2 cairo pango atk
+LIBGTK2_DEPENDENCIES = host-pkg-config host-libgtk2 libglib2 cairo pango atk gdk-pixbuf
 
 ifeq ($(BR2_PACKAGE_DIRECTFB),y)
 	LIBGTK2_CONF_OPT += --with-gdktarget=directfb
@@ -133,7 +133,7 @@ LIBGTK2_POST_INSTALL_TARGET_HOOKS += LIBGTK_POST_INSTALL_TWEAKS
 # gtk-update-icon-cache, which are the host tools needed to build Gtk
 # for the target.
 
-HOST_LIBGTK2_DEPENDENCIES = host-libglib2 host-libpng
+HOST_LIBGTK2_DEPENDENCIES = host-libglib2 host-libpng host-gdk-pixbuf
 HOST_LIBGTK2_AUTORECONF = YES
 HOST_LIBGTK2_CONF_OPT = \
 		--disable-static \
@@ -151,12 +151,10 @@ endef
 HOST_LIBGTK2_POST_PATCH_HOOKS += HOST_LIBGTK2_PATCH_REDUCE_DEPENDENCIES_HOOK
 
 define HOST_LIBGTK2_BUILD_CMDS
- $(HOST_MAKE_ENV) make -C $(@D)/gdk-pixbuf
  $(HOST_MAKE_ENV) make -C $(@D)/gtk gtk-update-icon-cache
 endef
 
 define HOST_LIBGTK2_INSTALL_CMDS
- $(HOST_MAKE_ENV) make -C $(@D)/gdk-pixbuf install
  cp $(@D)/gtk/gtk-update-icon-cache $(HOST_DIR)/usr/bin
 endef
 

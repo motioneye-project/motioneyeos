@@ -6,6 +6,7 @@ config BR2_PACKAGE_LIBGTK2
 	select BR2_PACKAGE_CAIRO_PDF
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_PANGO
+	select BR2_PACKAGE_GDK_PIXBUF
 	# libgtk2 on DirectFB is deprecated because it is no longer
 	# supported in recent versions of Gtk. We will remove support
 	# for Gtk over DirectFB in the next Buildroot version unless
