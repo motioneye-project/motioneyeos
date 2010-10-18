@@ -3,8 +3,8 @@
 # libgtk2.0
 #
 #############################################################
-LIBGTK2_VERSION_MAJOR:=2.12
-LIBGTK2_VERSION_MINOR:=12
+LIBGTK2_VERSION_MAJOR:=2.22
+LIBGTK2_VERSION_MINOR:=0
 LIBGTK2_VERSION = $(LIBGTK2_VERSION_MAJOR).$(LIBGTK2_VERSION_MINOR)
 
 LIBGTK2_SOURCE = gtk+-$(LIBGTK2_VERSION).tar.bz2
@@ -88,11 +88,6 @@ ifeq ($(BR2_PACKAGE_XORG7),y)
 	LIBGTK2_DEPENDENCIES += xlib_libXcomposite xserver_xorg-server
 else
 	LIBGTK2_CONF_OPT += --without-x
-endif
-
-# Buildroot does not support JPEG2000 library
-ifeq ($(LIBGTK2_VERSION_MAJOR),2.15)
-LIBGTK2_CONF_OPT += --without-libjasper
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
