@@ -90,10 +90,10 @@ endif
 
 define WPA_SUPPLICANT_INSTALL_DBUS
 	$(INSTALL) -D \
-	  $(@D)/wpa_supplicant/dbus-wpa_supplicant.conf \
+	  $(@D)/wpa_supplicant/dbus/dbus-wpa_supplicant.conf \
 	  $(TARGET_DIR)/etc/dbus-1/system.d/wpa_supplicant.conf
 	$(INSTALL) -D \
-	  $(@D)/wpa_supplicant/dbus-wpa_supplicant.service \
+	  $(@D)/wpa_supplicant/dbus/$(WPA_SUPPLICANT_DBUS_SERVICE).service \
 	  $(TARGET_DIR)/usr/share/dbus-1/system-services/$(WPA_SUPPLICANT_DBUS_SERVICE).service
 endef
 
