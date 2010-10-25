@@ -39,7 +39,7 @@ choice
 		bool "Linux 2.6.35.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_2_6_36
-		bool "Linux 2.6.35.x kernel headers"
+		bool "Linux 2.6.36.x kernel headers"
 
 	config BR2_KERNEL_HEADERS_VERSION
 		bool "Linux 2.6 (manually specified version)"
