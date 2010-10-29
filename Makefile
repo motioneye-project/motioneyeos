@@ -148,15 +148,6 @@ HOSTLD:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
 HOSTLN:=$(shell which $(HOSTLN) || type -p $(HOSTLN) || echo ln)
 HOSTNM:=$(shell which $(HOSTNM) || type -p $(HOSTNM) || echo nm)
 
-ifndef CFLAGS_FOR_BUILD
-CFLAGS_FOR_BUILD:=-g -O2
-endif
-ifndef CXXFLAGS_FOR_BUILD
-CXXFLAGS_FOR_BUILD:=-g -O2
-endif
-ifndef FCFLAGS_FOR_BUILD
-FCFLAGS_FOR_BUILD:=-g -O2
-endif
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTFC HOSTLD
 
 # bash prints the name of the directory on 'cd <dir>' if CDPATH is
