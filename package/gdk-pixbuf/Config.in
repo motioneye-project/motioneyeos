@@ -1,0 +1,12 @@
+config BR2_PACKAGE_GDK_PIXBUF
+	bool "gdk-pixbuf"
+	depends on BR2_USE_WCHAR # glib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT
+	help
+
+	  Gdk-Pixbuf is an image loader and scaler. It uses GObject
+	  and the GLib, to integrate well with GNOME applications.
+
+	  http://www.gtk.org/

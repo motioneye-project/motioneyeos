@@ -1,6 +1,6 @@
---- expat-2.0.0/conftools/ltmain.sh.orig	2007-01-13 14:39:51.000000000 -0700
-+++ expat-2.0.0/conftools/ltmain.sh	2007-01-13 14:39:56.000000000 -0700
-@@ -273,8 +273,9 @@
+--- a/ltmain.sh	2006-03-11 13:49:04.000000000 -0500
++++ b/ltmain.sh	2008-04-30 09:55:28.000000000 -0400
+@@ -273,8 +273,9 @@ func_infer_tag ()
  	# line option must be used.
  	if test -z "$tagname"; then
  	  $echo "$modename: unable to infer tagged configuration"
@@ -12,7 +12,7 @@
  #        else
  #          $echo "$modename: using $tagname tagged configuration"
  	fi
-@@ -2404,8 +2405,14 @@
+@@ -2407,8 +2408,14 @@ EOF
  	    absdir="$abs_ladir"
  	    libdir="$abs_ladir"
  	  else
@@ -29,24 +29,16 @@
  	  fi
  	  test "X$hardcode_automatic" = Xyes && avoidtemprpath=yes
  	else
-@@ -2886,6 +2893,16 @@
- 		esac
- 		if grep "^installed=no" $deplib > /dev/null; then
- 		  path="$absdir/$objdir"
-+#		This interferes with crosscompilation. -CL
-+#		else
-+#		  eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
-+#		  if test -z "$libdir"; then
-+#		    $echo "$modename: \`$deplib' is not a valid libtool archive" 1>&2
-+#		    exit 1
-+#		  fi
-+#		  if test "$absdir" != "$libdir"; then
-+#		    $echo "$modename: warning: \`$deplib' seems to be moved" 1>&2
-+#		  fi
- 		else
- 		  eval libdir=`${SED} -n -e 's/^libdir=\(.*\)$/\1/p' $deplib`
- 		  if test -z "$libdir"; then
-@@ -5598,6 +5615,10 @@
+@@ -2545,7 +2552,7 @@ EOF
+ 	   { test "$use_static_libs" = no || test -z "$old_library"; }; then
+ 	  if test "$installed" = no; then
+ 	    notinst_deplibs="$notinst_deplibs $lib"
+-	    need_relink=yes
++	    need_relink=no
+ 	  fi
+ 	  # This is a shared library
+ 
+@@ -5606,6 +5623,10 @@ fi\
  	    # Replace all uninstalled libtool libraries with the installed ones
  	    newdependency_libs=
  	    for deplib in $dependency_libs; do
@@ -57,7 +49,7 @@
  	      case $deplib in
  	      *.la)
  		name=`$echo "X$deplib" | $Xsed -e 's%^.*/%%'`
-@@ -5919,10 +5940,13 @@
+@@ -5927,10 +5948,13 @@ relink_command=\"$relink_command\""
  	  # At present, this check doesn't affect windows .dll's that
  	  # are installed into $libdir/../bin (currently, that works fine)
  	  # but it's something to keep an eye on.

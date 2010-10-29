@@ -139,10 +139,16 @@ $(2)_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
 #
 define LIBTOOL_PATCH_HOOK
 	@$(call MESSAGE,"Patching libtool")
-	$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES" -a \
-	"$$($$(PKG)_AUTORECONF)" != "YES"; then \
-	for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
-		toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool.patch; \
+	$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES" \
+		-a "$$($$(PKG)_AUTORECONF)" != "YES"; then \
+		for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
+			ltmain_version=`sed -n '/^[ 	]*VERSION=/{s/^[ 	]*VERSION=//;p;q;}' $$$$i | \
+			sed -e 's/\([0-9].[0-9]*\).*/\1/' -e 's/\"//'`; \
+			if test $$$${ltmain_version} = '1.5'; then \
+				toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool-v1.5.patch; \
+			elif test $$$${ltmain_version} = "2.2"; then\
+				toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool-v2.2.patch; \
+			fi \
 		done \
 	fi
 endef
@@ -158,9 +164,14 @@ endif
 define AUTORECONF_HOOK
 	@$(call MESSAGE,"Autoreconfiguring")
 	$(Q)cd $$($$(PKG)_SRCDIR) && $(AUTORECONF) $$($$(PKG)_AUTORECONF_OPT)
-	$(Q)if test "$($$(PKG)_LIBTOOL_PATCH)" = "YES"; then \
+	$(Q)if test "$$($$(PKG)_LIBTOOL_PATCH)" = "YES"; then \
 		for i in `find $$($$(PKG)_SRCDIR) -name ltmain.sh`; do \
-		toolchain/patch-kernel.sh $${i%/*} package buildroot-libtool.patch; \
+			ltmain_version=`sed -n '/^[ 	]*VERSION=/{s/^[ 	]*VERSION=//;p;q;}' $$$$i | sed 's/\([0-9].[0-9]*\).*/\1/'`; \
+			if test $$$${ltmain_version} = "1.5"; then \
+				toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool-v1.5.patch; \
+			elif test $$$${ltmain_version} = "2.2"; then\
+				toolchain/patch-kernel.sh $$$${i%/*} package buildroot-libtool-v2.2.patch; \
+			fi \
 		done \
 	fi
 endef
