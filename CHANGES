@@ -21,7 +21,8 @@
 
 	Alpha, Cris, IA64 and Sparc64 architecture support removed.
 
-	New packages: gst-ffmpeg, libmpeg2, librsvg, rrdtool, xz
+	New packages: gdk-pixbuf, gst-ffmpeg, libmpeg2, librsvg,
+	rrdtool, xz
 
 	Updated/fixed packages: acpid, alsa-lib, argus, at, autoconf,
 	automake, avahi, axel, beecrypt, berkeleydb, bind, bmon, boa,
@@ -33,8 +34,8 @@
 	iperf, ipsec-tools, iproute2, iptables, iw, jpeg, kexec,
 	kismet, less, libcgi, libcurl, libdaemon, libdnet, liberation,
 	libevent, libeXosip2, libglade, libgtk2, libiconv, libidn,
-	libintl, libmms, libnl, liboil, libosip2, libpcap, libpng,
-	libtool, libungif, libxml2, libxslt, lighttpd, lite,
+	libintl, libmms, libmpd, libnl, liboil, libosip2, libpcap,
+	libpng, libtool, libungif, libxml2, libxslt, lighttpd, lite,
 	lm-sensors, lockfile-progs, logrotate, m4, mdadm, mesa3d,
 	metacity, mtd-utils, mysql_client, nano, nbd, ncftp, neon,
 	netperf, netsnmp, ng-spice-rework, ntfsprogs, ntp, openntpd,
