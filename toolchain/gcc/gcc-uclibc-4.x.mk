@@ -39,8 +39,7 @@ GCC_SRC_DIR:=$(GCC_DIR)
 
 # Branding works on >= 4.3
 ifneq ($(findstring x4.2.,x$(GCC_VERSION)),x4.2.)
-BUILDROOT_VERSION_STRING=$(call qstrip,$(BR2_VERSION))
-EXTRA_GCC_CONFIG_OPTIONS+=--with-pkgversion="Buildroot $(BUILDROOT_VERSION_STRING)" \
+EXTRA_GCC_CONFIG_OPTIONS+=--with-pkgversion="Buildroot $(BR2_VERSION_FULL)" \
 	--with-bugurl="http://bugs.buildroot.net/"
 endif
 
