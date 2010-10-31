@@ -413,8 +413,7 @@ endif
 	else \
 		/sbin/ldconfig -r $(TARGET_DIR); \
 	fi
-	echo $(BR2_VERSION)$(shell $(TOPDIR)/scripts/setlocalversion) > \
-		$(TARGET_DIR)/etc/br-version
+	echo $(BR2_VERSION_FULL) > $(TARGET_DIR)/etc/br-version
 
 ifneq ($(BR2_ROOTFS_POST_BUILD_SCRIPT),"")
 	$(BR2_ROOTFS_POST_BUILD_SCRIPT) $(TARGET_DIR)
