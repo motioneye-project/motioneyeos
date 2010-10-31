@@ -2,10 +2,10 @@
  confdata.c |   49 +++++++++++++++++++++++--------------------------
  1 file changed, 23 insertions(+), 26 deletions(-)
 
-Index: config.new/confdata.c
+Index: config/confdata.c
 ===================================================================
---- config.new.orig/confdata.c
-+++ config.new/confdata.c
+--- config.orig/confdata.c
++++ config/confdata.c
 @@ -11,6 +11,7 @@
  #include <string.h>
  #include <time.h>
@@ -128,7 +128,7 @@ Index: config.new/confdata.c
  		break;
  	case S_OTHER:
  	case S_UNKNOWN:
-@@ -834,14 +831,14 @@
+@@ -838,14 +835,14 @@
  			case no:
  				break;
  			case mod:
@@ -147,7 +147,7 @@ Index: config.new/confdata.c
  				break;
  			}
  			break;
-@@ -851,12 +848,12 @@
+@@ -855,12 +852,12 @@
  		case S_HEX:
  			str = sym_get_string_value(sym);
  			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
