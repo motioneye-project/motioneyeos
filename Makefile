@@ -23,6 +23,9 @@
 # You shouldn't need to mess with anything beyond this point...
 #--------------------------------------------------------------
 
+# Set and export the version string
+export BR2_VERSION:=2010.11-git
+
 # This top-level Makefile can *not* be executed in parallel
 .NOTPARALLEL:
 
@@ -631,9 +634,8 @@ help:
 	@echo 'See docs/README and docs/buildroot.html for further details'
 	@echo
 
-release:
-	OUT=buildroot-$$(grep -A2 BR2_VERSION $(CONFIG_CONFIG_IN)|grep default|cut -f2 -d\"); \
-	git archive --format=tar --prefix=$$OUT/ master|gzip -9 >$$OUT.tar.gz
+release: OUT=buildroot-$(BR2_VERSION)
+	git archive --format=tar --prefix=$(OUT)/ master|gzip -9 >$(OUT).tar.gz
 
 .PHONY: $(noconfig_targets)
 

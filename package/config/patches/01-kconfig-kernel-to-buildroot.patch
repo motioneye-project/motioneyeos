@@ -69,18 +69,16 @@ Index: config/confdata.c
  	sym_calc_value(sym);
  	time(&now);
  	env = getenv("KCONFIG_NOTIMESTAMP");
-@@ -588,10 +588,8 @@
+@@ -588,7 +588,7 @@
  
  	fprintf(out, _("#\n"
  		       "# Automatically generated make config: don't edit\n"
 -		       "# Linux kernel version: %s\n"
++		       "# Buildroot version: %s\n"
  		       "%s%s"
  		       "#\n"),
--		     sym_get_string_value(sym),
- 		     use_timestamp ? "# " : "",
- 		     use_timestamp ? ctime(&now) : "");
- 
-@@ -802,25 +800,23 @@
+ 		     sym_get_string_value(sym),
+@@ -802,25 +802,25 @@
  		return 1;
  	}
  
@@ -91,9 +89,11 @@ Index: config/confdata.c
  	fprintf(out, "#\n"
  		     "# Automatically generated make config: don't edit\n"
 -		     "# Linux kernel version: %s\n"
++		     "# Buildroot version: %s\n"
  		     "# %s"
  		     "#\n",
 -		     sym_get_string_value(sym), ctime(&now));
++		     sym_get_string_value(sym),
 +		     ctime(&now));
  	fprintf(tristate, "#\n"
  			  "# Automatically generated - do not edit\n"
