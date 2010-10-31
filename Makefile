@@ -18,13 +18,14 @@
 # Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 #
 
-# This top-level Makefile can *not* be executed in parallel
-.NOTPARALLEL:
-
 #--------------------------------------------------------------
 # Just run 'make menuconfig', configure stuff, then run 'make'.
 # You shouldn't need to mess with anything beyond this point...
 #--------------------------------------------------------------
+
+# This top-level Makefile can *not* be executed in parallel
+.NOTPARALLEL:
+
 # absolute path
 TOPDIR:=$(shell pwd)
 CONFIG_CONFIG_IN=Config.in
