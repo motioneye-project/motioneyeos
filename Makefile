@@ -35,6 +35,10 @@ CONFIG_CONFIG_IN=Config.in
 CONFIG=package/config
 DATE:=$(shell date +%Y%m%d)
 
+# Compute the full local version string so packages can use it as-is
+# Need to export it, so it can be got from environment in children (eg. mconf)
+export BR2_VERSION_FULL:=$(BR2_VERSION)$(shell $(TOPDIR)/scripts/setlocalversion)
+
 noconfig_targets:=menuconfig nconfig gconfig xconfig config oldconfig randconfig \
 	defconfig %_defconfig savedefconfig allyesconfig allnoconfig silentoldconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
