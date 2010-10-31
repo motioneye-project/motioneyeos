@@ -8,7 +8,7 @@ config BR2_HAVE_DOT_CONFIG
 
 config BR2_VERSION
 	string
-	option env="BR2_VERSION"
+	option env="BR2_VERSION_FULL"
 
 source "target/Config.in.arch"
 source "target/device/Config.in"
