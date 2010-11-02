@@ -3,7 +3,7 @@
 # build GNU readline
 #
 #############################################################
-READLINE_VERSION = 5.2
+READLINE_VERSION = 6.1
 READLINE_SOURCE = readline-$(READLINE_VERSION).tar.gz
 READLINE_SITE = $(BR2_GNU_MIRROR)/readline
 READLINE_INSTALL_STAGING = YES
