@@ -311,6 +311,7 @@ source "package/libupnp/Config.in"
 endmenu
 
 menu "Other"
+source "package/argp-standalone/Config.in"
 source "package/libatomic_ops/Config.in"
 source "package/libcap/Config.in"
 source "package/libdaemon/Config.in"
