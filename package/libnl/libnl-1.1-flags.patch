@@ -1,0 +1,36 @@
+From f124a6ff6a19d5c6b6709d38dd2ffa8275abbd5f Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Mon, 18 Oct 2010 12:16:27 -0300
+Subject: [PATCH] Make libnl.so mode 0755 when installing, and respect LDFLAGS
+
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ lib/Makefile |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/Makefile b/lib/Makefile
+index 0bf8af7..0098906 100644
+--- a/lib/Makefile
++++ b/lib/Makefile
+@@ -48,7 +48,7 @@ all:
+ 
+ $(OUT_SLIB): ../Makefile.opts $(OBJ)
+ 	@echo "  LD $(OUT_SLIB)"; \
+-	$(CC) -shared -Wl,-soname,libnl.so.1 -o $(OUT_SLIB) $(OBJ) $(LIBNL_LIB) -lc
++	$(CC) $(CFLAGS) $(LDFLAGS) -shared -Wl,-soname,libnl.so.1 -o $(OUT_SLIB) $(OBJ) $(LIBNL_LIB) -lc
+ 	@echo "  LN $(OUT_SLIB) $(LN1_SLIB)"; \
+ 	rm -f $(LN1_SLIB) ; $(LN) -s $(OUT_SLIB) $(LN1_SLIB)
+ 	@echo "  LN $(LN1_SLIB) $(LN_SLIB)"; \
+@@ -65,7 +65,7 @@ distclean:
+ 
+ install:
+ 	mkdir -p $(DESTDIR)$(libdir)/
+-	install -m 0644 $(OUT_SLIB) $(DESTDIR)$(libdir)
++	install -m 0755 $(OUT_SLIB) $(DESTDIR)$(libdir)
+ 	rm -f $(DESTDIR)$(libdir)/$(LN1_SLIB)
+ 	$(LN) -s $(OUT_SLIB) $(DESTDIR)$(libdir)/$(LN1_SLIB)
+ 	rm -f $(DESTDIR)$(libdir)/$(LN_SLIB)
+-- 
+1.7.2.2
+
