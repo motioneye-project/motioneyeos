@@ -3,78 +3,34 @@
 # rp-pppoe
 #
 #############################################################
-RP_PPPOE_VERSION:=3.8
-RP_PPPOE_SOURCE:=rp-pppoe_$(RP_PPPOE_VERSION).orig.tar.gz
-RP_PPPOE_PATCH:=rp-pppoe_$(RP_PPPOE_VERSION)-3.diff.gz
-RP_PPPOE_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/r/rp-pppoe
-RP_PPPOE_TOPDIR:=$(BUILD_DIR)/rp-pppoe-$(RP_PPPOE_VERSION)
-RP_PPPOE_DIR:=$(BUILD_DIR)/rp-pppoe-$(RP_PPPOE_VERSION)/src
-RP_PPPOE_CAT:=$(ZCAT)
-RP_PPPOE_BINARY:=pppoe
-RP_PPPOE_TARGET_BINARY:=usr/sbin/pppoe
 
-$(DL_DIR)/$(RP_PPPOE_SOURCE):
-	$(call DOWNLOAD,$(RP_PPPOE_SITE),$(RP_PPPOE_SOURCE))
+RP_PPPOE_VERSION = 3.10
+RP_PPPOE_SITE = http://www.roaringpenguin.com/files/download
+RP_PPPOE_DEPENDENCIES = pppd
+RP_PPPOE_SUBDIR = src
+RP_PPPOE_TARGET_FILES = pppoe pppoe-server pppoe-relay pppoe-sniff
+RP_PPPOE_MAKE_OPT = PLUGIN_DIR=/usr/lib/pppd/$(PPPD_VERSION)
+RP_PPPOE_CONF_OPT = --disable-debugging
+RP_PPPOE_CONF_ENV = \
+	rpppoe_cv_pack_bitfields=normal \
+	PPPD_H=$(PPPD_DIR)/pppd/pppd.h
 
-ifneq ($(RP_PPPOE_PATCH),)
-RP_PPPOE_PATCH_FILE:=$(DL_DIR)/$(RP_PPPOE_PATCH)
-$(RP_PPPOE_PATCH_FILE):
-	$(call DOWNLOAD,$(RP_PPPOE_SITE),$(RP_PPPOE_PATCH))
-endif
+define RP_PPPOE_INSTALL_TARGET_CMDS
+	for ff in $(RP_PPPOE_TARGET_FILES); do \
+		$(INSTALL) -m 0755 $(@D)/src/$$ff $(TARGET_DIR)/usr/sbin/$$ff; \
+	done
+	for ff in $(RP_PPPOE_TARGET_FILES); do \
+		$(INSTALL) -m 644 -D $(RP_PPPOE_DIR)/man/$$ff.8 $(TARGET_DIR)/usr/share/man/man8/$$ff.8; \
+	done
+endef
 
-$(RP_PPPOE_TOPDIR)/.unpacked: $(DL_DIR)/$(RP_PPPOE_SOURCE) $(RP_PPPOE_PATCH_FILE)
-	$(RP_PPPOE_CAT) $(DL_DIR)/$(RP_PPPOE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-ifneq ($(RP_PPPOE_PATCH),)
-	(cd $(RP_PPPOE_TOPDIR) && $(RP_PPPOE_CAT) $(DL_DIR)/$(RP_PPPOE_PATCH) | patch -p1)
-	if [ -d $(RP_PPPOE_TOPDIR)/debian/patches ]; then \
-		toolchain/patch-kernel.sh $(RP_PPPOE_TOPDIR) $(RP_PPPOE_TOPDIR)/debian/patches \*.patch; \
-	fi
-endif
-	toolchain/patch-kernel.sh $(RP_PPPOE_TOPDIR) package/rp-pppoe/ rp-pppoe\*.patch
-	touch $@
+define RP_PPPOE_UNINSTALL_TARGET_CMDS
+	for ff in $(RP_PPPOE_TARGET_FILES); do \
+		rm -f $(TARGET_DIR)/usr/sbin/$$ff; \
+	done
+	for ff in $(RP_PPPOE_TARGET_FILES); do \
+		rm -f $(TARGET_DIR)/usr/share/man/man8/$$ff.8; \
+	done
+endef
 
-$(RP_PPPOE_TOPDIR)/.configured: $(RP_PPPOE_TOPDIR)/.unpacked
-	(cd $(RP_PPPOE_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		rpppoe_cv_pack_bitfields=normal \
-		./configure $(QUIET) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		$(DISABLE_LARGEFILE) \
-		--disable-debugging \
-	)
-	touch $@
-
-$(RP_PPPOE_DIR)/$(RP_PPPOE_BINARY): $(RP_PPPOE_TOPDIR)/.configured
-	$(MAKE) -C $(RP_PPPOE_DIR)
-
-$(TARGET_DIR)/$(RP_PPPOE_TARGET_BINARY): $(RP_PPPOE_DIR)/$(RP_PPPOE_BINARY)
-	cp -dpf $(RP_PPPOE_DIR)/$(RP_PPPOE_BINARY) $@
-ifeq ($(BR2_HAVE_DOCUMENTATION),y)
-	mkdir -p $(TARGET_DIR)/usr/share/man/man8
-	$(INSTALL) -m 644 $(RP_PPPOE_TOPDIR)/man/pppoe.8 $(TARGET_DIR)/usr/share/man/man8/pppoe.8
-endif
-	$(STRIPCMD) $(STRIP_STRIP_ALL) $@
-
-rp-pppoe: $(TARGET_DIR)/$(RP_PPPOE_TARGET_BINARY)
-
-rp-pppoe-source: $(DL_DIR)/$(RP_PPPOE_SOURCE) $(RP_PPPOE_PATCH_FILE)
-
-rp-pppoe-clean:
-	-$(MAKE) -C $(RP_PPPOE_DIR) clean
-	rm -f $(TARGET_DIR)/$(RP_PPPOE_TARGET_BINARY) \
-		$(TARGET_DIR)/usr/share/man/man8/pppoe.8*
-
-rp-pppoe-dirclean:
-	rm -rf $(RP_PPPOE_TOPDIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_RP_PPPOE),y)
-TARGETS+=rp-pppoe
-endif
+$(eval $(call AUTOTARGETS,package,rp-pppoe))

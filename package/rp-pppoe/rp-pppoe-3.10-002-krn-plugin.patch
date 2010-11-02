@@ -1,0 +1,23 @@
+--- rp-pppoe-3.10/src/configure.theorig  2008-02-05 13:57:15.000000000 -0800
++++ rp-pppoe-3.10/src/configure  2008-02-05 13:24:36.000000000 -0800
+@@ -6151,7 +6151,7 @@ modprobe ppp_synctty > /dev/null 2>&1
+ modprobe pppoe > /dev/null 2>&1
+ fi
+ if test "$cross_compiling" = yes; then
+-  ac_cv_linux_kernel_pppoe=no; $ECHO "cross-compiling, default: "
++  ac_cv_linux_kernel_pppoe=yes; $ECHO "cross-compiling, default: "
+ else
+   cat >conftest.$ac_ext <<_ACEOF
+ /* confdefs.h.  */
+--- rp-pppoe-3.10/src/pppoe-server.c.theorig     2006-04-02 07:29:42.000000000 -0700
++++ rp-pppoe-3.10/src/pppoe-server.c     2008-02-05 13:52:15.000000000 -0800
+@@ -20,6 +20,9 @@ static char const RCSID[] =
+ 
+ #include "config.h"
+ 
++/* Patched hack to make this cross compile */
++#define HAVE_LINUX_KERNEL_PPPOE 1
++
+ #if defined(HAVE_NETPACKET_PACKET_H) || defined(HAVE_LINUX_IF_PACKET_H)
+ #define _POSIX_SOURCE 1 /* For sigaction defines */
+ #endif
