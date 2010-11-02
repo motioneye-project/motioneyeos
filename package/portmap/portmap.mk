@@ -3,45 +3,32 @@
 # portmap
 #
 #############################################################
-PORTMAP_VERSION:=5b
-PORTMAP_SOURCE:=portmap_$(PORTMAP_VERSION)eta.tar.gz
-PORTMAP_SITE:=ftp://ftp.porcupine.org/pub/security/
-PORTMAP_DIR:=$(BUILD_DIR)/portmap_$(PORTMAP_VERSION)eta
-PORTMAP_CAT:=$(ZCAT)
-PORTMAP_BINARY:=portmap
-PORTMAP_TARGET_BINARY:=sbin/portmap
 
-$(DL_DIR)/$(PORTMAP_SOURCE):
-	$(call DOWNLOAD,$(PORTMAP_SITE),$(PORTMAP_SOURCE))
+PORTMAP_VERSION = 6.0
+PORTMAP_SOURCE = portmap-$(PORTMAP_VERSION).tgz
+PORTMAP_SITE = http://neil.brown.name/portmap
+PORTMAP_SBINS = portmap pmap_dump pmap_set
 
-portmap-source: $(DL_DIR)/$(PORTMAP_SOURCE)
+define PORTMAP_BUILD_CMDS
+	$(MAKE) CC="$(TARGET_CC)" -C $(@D) NO_TCP_WRAPPER=1
+endef
 
-$(PORTMAP_DIR)/.unpacked: $(DL_DIR)/$(PORTMAP_SOURCE)
-	$(PORTMAP_CAT) $(DL_DIR)/$(PORTMAP_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(PORTMAP_DIR) package/portmap/ portmap\*.patch
-	touch $(PORTMAP_DIR)/.unpacked
+define PORTMAP_INSTALL_TARGET_CMDS
+	for sbin in $(PORTMAP_SBINS); do \
+		$(INSTALL) -D $(@D)/$$sbin $(TARGET_DIR)/sbin/$$sbin; \
+	done
+	$(INSTALL) -D $(@D)/portmap.man \
+		$(TARGET_DIR)/usr/share/man/man8/portmap.8
+	$(INSTALL) -D $(@D)/pmap_dump.8 \
+		$(TARGET_DIR)/usr/share/man/man8/pmap_dump.8
+	$(INSTALL) -D $(@D)/pmap_set.8 \
+		$(TARGET_DIR)/usr/share/man/man8/pmap_set.8
+endef
 
-$(PORTMAP_DIR)/$(PORTMAP_BINARY): $(PORTMAP_DIR)/.unpacked
-	$(MAKE) CC="$(TARGET_CC)" O="$(TARGET_CFLAGS)" -C $(PORTMAP_DIR)
+define PORTMAP_UNINSTALL_TARGET_CMDS
+	rm -f $(addprefix $(TARGET_DIR)/sbin/,$(PORTMAP_SBINS))
+	rm -f $(addprefix $(TARGET_DIR)/usr/share/man/man8/, \
+		$(addsuffix .8,$(PORTMAP_SBINS)))
+endef
 
-$(TARGET_DIR)/$(PORTMAP_TARGET_BINARY): $(PORTMAP_DIR)/$(PORTMAP_BINARY)
-	$(INSTALL) -D $(PORTMAP_DIR)/$(PORTMAP_BINARY) $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
-	$(INSTALL) -m 0755 package/portmap/S13portmap $(TARGET_DIR)/etc/init.d
-
-portmap: $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
-
-portmap-clean:
-	rm -f $(TARGET_DIR)/$(PORTMAP_TARGET_BINARY)
-	rm -f $(TARGET_DIR)/etc/init.d/S13portmap
-	-$(MAKE) -C $(PORTMAP_DIR) clean
-
-portmap-dirclean:
-	rm -rf $(PORTMAP_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_PORTMAP),y)
-TARGETS+=portmap
-endif
+$(eval $(call GENTARGETS,package,portmap))

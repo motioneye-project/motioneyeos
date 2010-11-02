@@ -4,7 +4,7 @@ config BR2_PACKAGE_PORTMAP
 	help
 	  The standard portmapper for RPC services.
 
-	  ftp://ftp.porcupine.org/pub/security/index.html
+	  http://neil.brown.name/portmap/
 
 comment "portmap requires a toolchain with 'Enable RPC' selected"
 	depends on !BR2_INET_RPC
