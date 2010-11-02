@@ -1,0 +1,26 @@
+From ae214f5103dfaa92ecb0b1953d4c9dd059e620ca Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 21 Oct 2010 10:59:02 -0300
+Subject: [PATCH] Drop stropts.h, it's deprecated and unneeded
+
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ pptp_compat.c |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/pptp_compat.c b/pptp_compat.c
+index 1760a3b..e98cbf0 100644
+--- a/pptp_compat.c
++++ b/pptp_compat.c
+@@ -7,7 +7,6 @@
+ #include <fcntl.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+-#include <stropts.h>
+ #include <stdlib.h>
+ #include <strings.h>
+ #include "pptp_compat.h"
+-- 
+1.7.2.2
+

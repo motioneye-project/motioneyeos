@@ -1,0 +1,44 @@
+From 00b9e2615191439a6c7db960d169129479ac633b Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 21 Oct 2010 11:01:25 -0300
+Subject: [PATCH] The ip tool is in /sbin rather that /bin, fix it
+
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ routing.c |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/routing.c b/routing.c
+index ab20a03..7fb4277 100644
+--- a/routing.c
++++ b/routing.c
+@@ -55,7 +55,7 @@ regardless (not yet implemented).
+ 
+ void routing_init(char *ip) {
+   char buf[256];
+-  snprintf(buf, 255, "/bin/ip route get %s", ip);
++  snprintf(buf, 255, "/sbin/ip route get %s", ip);
+   FILE *p = popen(buf, "r");
+   fgets(buf, 255, p);
+   /* TODO: check for failure of fgets */
+@@ -66,14 +66,14 @@ void routing_init(char *ip) {
+ 
+ void routing_start() {
+   char buf[256];
+-  snprintf(buf, 255, "/bin/ip route replace %s", route);
++  snprintf(buf, 255, "/sbin/ip route replace %s", route);
+   FILE *p = popen(buf, "r");
+   pclose(p);
+ }
+ 
+ void routing_end() {
+   char buf[256];
+-  snprintf(buf, 255, "/bin/ip route delete %s", route);
++  snprintf(buf, 255, "/sbin/ip route delete %s", route);
+   FILE *p = popen(buf, "r");
+   pclose(p);
+ }
+-- 
+1.7.2.2
+
