@@ -21,7 +21,7 @@
 
 	Alpha, Cris, IA64 and Sparc64 architecture support removed.
 
-	New packages: gdk-pixbuf, gst-ffmpeg, libmpeg2, librsvg,
+	New packages: gdk-pixbuf, gpsd, gst-ffmpeg, libmpeg2, librsvg,
 	rrdtool, xz
 
 	Updated/fixed packages: acpid, alsa-lib, argus, at, autoconf,
