@@ -1,0 +1,19 @@
+config BR2_PACKAGE_LIBMPC
+	bool "mpc"
+	select BR2_PACKAGE_LIBMPFR
+	select BR2_PACKAGE_LIBGMP
+	help
+	  Mpc is a C library for the arithmetic of complex numbers with
+	  arbitrarily high precision and correct rounding of the result.
+	  It is built upon and follows the same principles as Mpfr.
+	  
+	  http://www.multiprecision.org/
+
+
+config BR2_PACKAGE_LIBMPC_HEADERS
+	bool "mpc headers for target"
+	depends on BR2_PACKAGE_LIBMPC
+	select BR2_PACKAGE_LIBMPFR_HEADERS
+	select BR2_PACKAGE_LIBGMP_HEADERS
+	help
+	  Install the mpc headers for the target.

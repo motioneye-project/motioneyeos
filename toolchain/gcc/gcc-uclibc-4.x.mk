@@ -100,12 +100,20 @@ GCC_WITH_HOST_GMP=--with-gmp=$(GMP_HOST_DIR)
 GCC_WITH_HOST_MPFR=--with-mpfr=$(MPFR_HOST_DIR)
 HOST_SOURCE += host-libgmp-source host-libmpfr-source
 
+ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
+GCC_WITH_HOST_MPC=--with-mpc=$(MPC_HOST_DIR)
+HOST_SOURCE += host-libmpc-source
+endif
+
 ifeq ($(BR2_INSTALL_FORTRAN),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),fortran
 #GCC_TARGET_PREREQ+=$(TARGET_DIR)/usr/lib/libmpfr.so $(TARGET_DIR)/usr/lib/libgmp.so
 #GCC_STAGING_PREREQ+=$(TOOLCHAIN_DIR)/mpfr/lib/libmpfr.so
 GCC_WITH_TARGET_GMP=--with-gmp="$(GMP_TARGET_DIR)"
 GCC_WITH_TARGET_MPFR=--with-mpfr="$(MPFR_TARGET_DIR)"
+ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
+GCC_WITH_TARGET_MPC=--with-mpc="$(MPC_TARGET_DIR)"
+endif
 endif
 
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
@@ -206,6 +214,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		$(GCC_TLS) \
 		$(GCC_WITH_HOST_GMP) \
 		$(GCC_WITH_HOST_MPFR) \
+		$(GCC_WITH_HOST_MPC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(GCC_DECIMAL_FLOAT) \
@@ -281,6 +290,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched
 		$(GCC_TLS) \
 		$(GCC_WITH_HOST_GMP) \
 		$(GCC_WITH_HOST_MPFR) \
+		$(GCC_WITH_HOST_MPC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(MULTILIB) \
@@ -357,6 +367,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		$(GCC_SHARED_LIBGCC) \
 		$(GCC_WITH_HOST_GMP) \
 		$(GCC_WITH_HOST_MPFR) \
+		$(GCC_WITH_HOST_MPC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(GCC_DECIMAL_FLOAT) \
@@ -461,7 +472,7 @@ gcc-dirclean: gcc_initial-dirclean
 GCC_BUILD_DIR4:=$(BUILD_DIR)/gcc-$(GCC_VERSION)-target
 
 $(GCC_BUILD_DIR4)/.prepared: $(STAMP_DIR)/gcc_libs_target_installed $(GCC_TARGET_PREREQ)
-	mkdir -p $(GCC_BUILD_DIR3)
+	mkdir -p $(GCC_BUILD_DIR4)
 	touch $@
 
 $(GCC_BUILD_DIR4)/.configured: $(GCC_BUILD_DIR4)/.prepared
@@ -490,6 +501,7 @@ $(GCC_BUILD_DIR4)/.configured: $(GCC_BUILD_DIR4)/.prepared
 		$(GCC_SHARED_LIBGCC) \
 		$(GCC_WITH_TARGET_GMP) \
 		$(GCC_WITH_TARGET_MPFR) \
+		$(GCC_WITH_TARGET_MPC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(GCC_DECIMAL_FLOAT) \

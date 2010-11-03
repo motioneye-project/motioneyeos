@@ -29,6 +29,22 @@ EXTRA_BINUTILS_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_HOST_DIR)"
 BINUTILS_TARGET_CONFIG_OPTIONS=--with-gmp="$(GMP_TARGET_DIR)"
 BINUTILS_TARGET_CONFIG_OPTIONS+=--with-mpfr="$(MPFR_TARGET_DIR)"
 
+ifeq ($(BR2_PACKAGE_LIBMPC),y)
+BINUTILS_ADD_MPC = y
+endif
+
+ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
+BINUTILS_ADD_MPC = y
+endif
+
+ifeq ($(BINUTILS_ADD_MPC),y)
+BINUTILS_HOST_PREREQ += $(TOOLCHAIN_DIR)/mpc/lib/libmpc$(HOST_LIBEXT)
+HOST_SOURCE += host-libmpc-source
+BINUTILS_TARGET_PREREQ += $(TARGET_DIR)/usr/lib/libmpc$(LIBTGTEXT)
+EXTRA_BINUTILS_CONFIG_OPTIONS += --with-mpc="$(MPC_HOST_DIR)"
+BINUTILS_TARGET_CONFIG_OPTIONS += --with-mpc="$(MPC_TARGET_DIR)"
+endif
+
 BINUTILS_PATCH_DIR:=toolchain/binutils/$(BINUTILS_VERSION)
 
 ifneq ($(filter xtensa%,$(ARCH)),)
