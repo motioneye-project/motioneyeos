@@ -7,7 +7,7 @@
 #############################################################
 MPC_VERSION:=0.8.2
 MPC_SOURCE:=mpc-$(MPC_VERSION).tar.gz
-MPC_SITE:=http://www.multiprecision.org/mpc/download/$(MPC_SOURCE)
+MPC_SITE:=http://www.multiprecision.org/mpc/download
 MPC_CAT:=$(ZCAT)
 MPC_DIR:=$(TOOLCHAIN_DIR)/mpc-$(MPC_VERSION)
 MPC_TARGET_DIR:=$(BUILD_DIR)/mpc-$(MPC_VERSION)
