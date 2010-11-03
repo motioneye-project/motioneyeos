@@ -638,6 +638,8 @@ help:
 	@echo
 
 release: OUT=buildroot-$(BR2_VERSION)
+
+release:
 	git archive --format=tar --prefix=$(OUT)/ master|gzip -9 >$(OUT).tar.gz
 
 .PHONY: $(noconfig_targets)
