@@ -43,6 +43,16 @@ EXTRA_GCC_CONFIG_OPTIONS+=--with-pkgversion="Buildroot $(BR2_VERSION_FULL)" \
 	--with-bugurl="http://bugs.buildroot.net/"
 endif
 
+# http://gcc.gnu.org/bugzilla/show_bug.cgi?id=43810
+# Workaround until it's fixed in 4.5.2 or later
+ifeq ($(ARCH),powerpc)
+ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
+GCC_OPTSPACE=--disable-target-optspace
+endif
+else
+GCC_OPTSPACE=--enable-target-optspace
+endif
+
 GCC_TARGET_PREREQ=
 GCC_STAGING_PREREQ=
 
@@ -204,7 +214,7 @@ $(GCC_BUILD_DIR1)/.configured: $(GCC_DIR)/.patched
 		--enable-languages=c \
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		--disable-__cxa_atexit \
-		--enable-target-optspace \
+		$(GCC_OPTSPACE) \
 		--with-gnu-ld \
 		--disable-shared \
 		--disable-libssp \
@@ -282,7 +292,7 @@ $(GCC_BUILD_DIR2)/.configured: $(GCC_DIR)/.patched
 		--enable-languages=c \
 		$(BR2_CONFIGURE_DEVEL_SYSROOT) \
 		--disable-__cxa_atexit \
-		--enable-target-optspace \
+		$(GCC_OPTSPACE) \
 		--with-gnu-ld \
 		--enable-shared \
 		--disable-libssp \
@@ -359,7 +369,7 @@ $(GCC_BUILD_DIR3)/.configured: $(GCC_SRC_DIR)/.patched $(GCC_STAGING_PREREQ)
 		$(BR2_CONFIGURE_STAGING_SYSROOT) \
 		$(BR2_CONFIGURE_BUILD_TOOLS) \
 		--disable-__cxa_atexit \
-		--enable-target-optspace \
+		$(GCC_OPTSPACE) \
 		--with-gnu-ld \
 		--disable-libssp \
 		--disable-multilib \
