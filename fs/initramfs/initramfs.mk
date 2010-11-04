@@ -6,12 +6,6 @@
 #
 #############################################################
 
-ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
-INITRAMFS_TARGET:=initramfs-root
-else
-INITRAMFS_TARGET:= #nothing
-endif
-
 define ROOTFS_INITRAMFS_INIT_SYMLINK
 	if [ ! -e $(TARGET_DIR)/init ]; then \
 		ln -s sbin/init $(TARGET_DIR)/init; \
