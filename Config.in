@@ -19,7 +19,7 @@ menu "Commands"
 
 config BR2_WGET
 	string "Wget command"
-	default "wget --passive-ftp -nd"
+	default "wget --passive-ftp -nd -t 3"
 
 config BR2_SVN
 	string "Subversion (svn) command"
