@@ -40,6 +40,12 @@ endif
 
 GDK_PIXBUF_DEPENDENCIES += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext libintl) host-pkg-config libglib2 libiconv
 
+define GDK_PIXBUF_POST_INSTALL_TWEAKS
+	$(INSTALL) -m 755 package/gdk-pixbuf/S26gdk-pixbuf $(TARGET_DIR)/etc/init.d/
+endef
+
+GDK_PIXBUF_POST_INSTALL_TARGET_HOOKS += GDK_PIXBUF_POST_INSTALL_TWEAKS
+
 $(eval $(call AUTOTARGETS,package,gdk-pixbuf))
 
 HOST_GDK_PIXBUF_CONF_OPT = \

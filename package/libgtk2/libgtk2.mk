@@ -115,7 +115,6 @@ LIBGTK2_CONF_OPT += --disable-cups
 endif
 
 define LIBGTK2_POST_INSTALL_TWEAKS
-	$(INSTALL) -m 755 package/libgtk2/S26libgtk2 $(TARGET_DIR)/etc/init.d/
 	rm -rf $(TARGET_DIR)/usr/share/gtk-2.0/demo $(TARGET_DIR)/usr/bin/gtk-demo
 endef
 

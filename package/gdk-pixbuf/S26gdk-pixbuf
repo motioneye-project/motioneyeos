@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# run pgdk-pixbuf-query-loaders if needed
+# run gdk-pixbuf-query-loaders if needed
 
 FILE=/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
 
