@@ -177,7 +177,7 @@ define AUTORECONF_HOOK
 endef
 
 ifeq ($$($(2)_AUTORECONF),YES)
-$(2)_POST_PATCH_HOOKS += AUTORECONF_HOOK
+$(2)_PRE_CONFIGURE_HOOKS += AUTORECONF_HOOK
 $(2)_DEPENDENCIES += host-automake host-autoconf host-libtool
 endif
 
