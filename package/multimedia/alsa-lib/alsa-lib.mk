@@ -67,8 +67,6 @@ endif
 
 ALSA_LIB_CONF_ENV = CFLAGS="$(ALSA_LIB_CFLAGS)" \
 		    LDFLAGS="$(TARGET_LDFLAGS) -lm"
-# the above doesn't work with shared config.cache
-ALSA_LIB_USE_CONFIG_CACHE = NO
 
 define ALSA_LIB_UNINSTALL_TARGET_CMDS
 	-rm -f $(TARGET_DIR)/usr/lib/libasound.so*

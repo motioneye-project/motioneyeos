@@ -447,15 +447,6 @@ external-deps:
 show-targets:
 	@echo $(TARGETS)
 
-ifeq ($(BR2_CONFIG_CACHE),y)
-# drop configure caches if configuration is changed
-$(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache: $(CONFIG_DIR)/.config
-	rm -f $@
-	touch $@
-
-$(BASE_TARGETS): | $(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache
-endif
-
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 all: menuconfig

@@ -15,8 +15,6 @@ ifneq ($(BR2_LARGEFILE),y)
 # --disable-largefile is passed, breaking the build. Work around it by
 # simply adding it to CFLAGS for configure instead
 SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -DSQLITE_DISABLE_LFS"
-# changing CFLAGS doesn't work with config.cache
-SQLITE_USE_CONFIG_CACHE = NO
 endif
 
 SQLITE_CONF_OPT =	--enable-shared \

@@ -111,7 +111,6 @@ BR2_TOPDIR_SUFFIX=""
 BR2_ROOTFS_PREFIX="rootfs"
 BR2_JLEVEL=2
 # BR2_DEPRECATED is not set
-# BR2_CONFIG_CACHE is not set
 # BR2_ENABLE_DEBUG is not set
 BR2_STRIP_strip=y
 # BR2_STRIP_sstrip is not set

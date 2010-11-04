@@ -1269,13 +1269,6 @@ LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
       not. Valid values are <code>YES</code> and <code>NO</code>. By
       default, the value is <code>YES</code></li>
 
-      <li><code>LIBFOO_USE_CONFIG_CACHE</code> tells whether the configure
-      script should use the central configure cache, which caches test
-      results from previous configure scripts. Usually, this variable should
-      be left to its default value. Only packages having issues with the
-      configure cache, can set this variable to the <code>NO</code> value
-      (but this is more of a work-around than a fix)</li>
-
       <li><code>LIBFOO_INSTALL_STAGING_OPT</code> contains the make options
       used to install the package to the staging directory. By default, the
       value is <code>DESTDIR=$$(STAGING_DIR) install</code>, which is

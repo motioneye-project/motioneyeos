@@ -16,6 +16,9 @@
 	Download handling reworked and support for git/svn downloads
 	added.
 
+	Removed experimental shared config.cache support, as it is
+	too unreliable.
+
 	A convenience Makefile wrapper is created when using
 	out-of-tree building, similar to how it is done for the kernel.
 

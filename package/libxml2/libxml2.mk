@@ -13,8 +13,6 @@ LIBXML2_LIBTOOL_PATCH = NO
 
 ifneq ($(BR2_LARGEFILE),y)
 LIBXML2_CONF_ENV = CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
-# the above doesn't work with shared config.cache
-LIBXML2_USE_CONFIG_CACHE = NO
 endif
 
 LIBXML2_CONF_OPT = --with-gnu-ld --enable-shared \

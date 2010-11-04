@@ -12,8 +12,6 @@ RPM_DEPENDENCIES = zlib beecrypt neon popt
 
 RPM_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/beecrypt -I$(STAGING_DIR)/usr/include/neon -DHAVE_MUTEX_THREAD_ONLY" \
 		ac_cv_va_copy=yes 
-# the above doesn't work with shared config.cache
-RPM_USE_CONFIG_CACHE = NO
 
 RPM_CONF_OPT = --disable-build-versionscript --disable-rpath \
 	--without-selinux \

@@ -19,8 +19,6 @@ GAMIN_CONF_ENV = have_abstract_sockets=no
 
 ifneq ($(BR2_LARGEFILE),y)
 GAMIN_CONF_ENV += CC="$(TARGET_CC) $(TARGET_CFLAGS) -DNO_LARGEFILE_SOURCE"
-# the above doesn't work with shared config.cache
-GAMIN_USE_CONFIG_CACHE = NO
 endif
 
 GAMIN_DEPENDENCIES = libglib2

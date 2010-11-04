@@ -108,7 +108,6 @@ BR2_OPTIMIZE_S=y
 #
 # Advanced
 #
-# BR2_CONFIG_CACHE is not set
 
 #
 # Toolchain
