@@ -1,10 +1,11 @@
---- a/configure.in.orig	2009-07-08 15:23:44.000000000 +0200
-+++ b/configure.in	2009-07-08 15:24:52.000000000 +0200
-@@ -997,7 +997,25 @@
+diff -Nura ruby-1.9.2-p0.orig/configure.in ruby-1.9.2-p0/configure.in
+--- ruby-1.9.2-p0.orig/configure.in	2010-08-14 05:11:59.000000000 -0300
++++ ruby-1.9.2-p0/configure.in	2010-11-04 15:46:22.478191926 -0300
+@@ -1410,7 +1410,25 @@
  fi
  
  AC_FUNC_GETPGRP
--AC_FUNC_SETPGRP  
+-AC_FUNC_SETPGRP
 +
 +dnl AC_FUNC_SETPGRP does not work if cross compiling
 +dnl Instead, assume we will have a prototype for setpgrp if cross compiling.
