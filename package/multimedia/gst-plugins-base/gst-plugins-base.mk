@@ -25,8 +25,14 @@ GST_PLUGINS_BASE_CONF_OPT = \
 		--disable-vorbistest \
 		--disable-freetypetest
 
-GST_PLUGINS_BASE_DEPENDENCIES = gstreamer liboil \
-		$(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib)
+GST_PLUGINS_BASE_DEPENDENCIES = gstreamer liboil
+
+# alsa support needs pcm+mixer support, but configure fails to check for it
+ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yyy)
+GST_PLUGINS_BASE_DEPENDENCIES += alsa-lib
+else
+GST_PLUGINS_BASE_CONF_OPT += --disable-alsa
+endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_ADDER),y)
 GST_PLUGINS_BASE_CONF_OPT += --enable-adder
