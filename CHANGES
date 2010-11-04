@@ -61,7 +61,8 @@
 	xdriver-xf86-video-{sis,sisusb,suncg3,suncg6,suncg14,sunffb},
 	xdriver-xf86-video-{sunleo,suntcx,tdfx,tga,trident,v4l,vesa},
 	xdriver-xf86-video-{vmware,voodeo,wsfb,xgi,xgixp},
-	xkeyboard-config, xlib_libX11, xstroke, xterm, xvkbd, zlib
+	xkeyboard-config, xlib_libX11, xserver_xorg-server, xstroke,
+	xterm, xvkbd, zlib
 
 	Deprecated packages: hotplug, lzma, ng-spice-rework
 
