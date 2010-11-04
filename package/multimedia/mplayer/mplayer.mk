@@ -11,9 +11,15 @@ MPLAYER_CAT:=$(BZCAT)
 MPLAYER_BINARY:=mplayer
 MPLAYER_TARGET_BINARY:=usr/bin/$(MPLAYER_BINARY)
 
-MPLAYER_DEPENDENCIES = \
-	$(if $(BR2_PACKAGE_LIBMAD),libmad) \
-	$(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib)
+MPLAYER_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBMAD),libmad)
+
+# mplayer needs pcm+mixer support, but configure fails to check for it
+ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yyy)
+MPLAYER_DEPENDENCIES += alsa-lib
+MPLAYER_ALSA:=--enable-alsa
+else
+MPLAYER_ALSA:=--disable-alsa
+endif
 
 ifeq ($(BR2_ENDIAN),"BIG")
 MPLAYER_ENDIAN:=--enable-big-endian
@@ -84,6 +90,7 @@ $(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
 		$(MPLAYER_LARGEFILE) \
 		$(MPLAYER_SDL) \
 		$(MPLAYER_FREETYPE) \
+		$(MPLAYER_ALSA) \
 		--enable-cross-compile \
 		--disable-ivtv \
 		--disable-tv \
