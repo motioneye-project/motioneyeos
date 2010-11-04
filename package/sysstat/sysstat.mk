@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SYSSTAT_VERSION = 9.0.5
+SYSSTAT_VERSION = 9.1.5
 SYSSTAT_SOURCE = sysstat-$(SYSSTAT_VERSION).tar.bz2
 SYSSTAT_SITE = http://pagesperso-orange.fr/sebastien.godard/
 SYSSTAT_AUTORECONF = NO
@@ -12,9 +12,7 @@ SYSSTAT_LIBTOOL_PATCH = NO
 SYSSTAT_INSTALL_STAGING = NO
 SYSSTAT_INSTALL_TARGET = YES
 
-# Should be --disable-man-group, it might be a little mistake in the
-# configure.in script.
-SYSSTAT_CONF_OPT = --enable-man-group
+SYSSTAT_CONF_OPT = --disable-man-group
 ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 SYSSTAT_CONF_OPT += --disable-documentation
 endif
