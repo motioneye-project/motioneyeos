@@ -16,7 +16,8 @@ endif
 NTP_CONF_OPT = --with-shared \
 		--program-transform-name=s,,, \
 		--without-crypto \
-		--disable-tickadj
+		--disable-tickadj \
+		--without-ntpsnmpd
 
 define NTP_PATCH_FIXUPS
 	$(SED) "s,^#if.*__GLIBC__.*_BSD_SOURCE.*$$,#if 0," $(@D)/ntpd/refclock_pcf.c
