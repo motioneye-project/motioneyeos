@@ -64,7 +64,7 @@
 	xkeyboard-config, xlib_libX11, xserver_xorg-server, xstroke,
 	xterm, xvkbd, zlib
 
-	Deprecated packages: hotplug, lzma, ng-spice-rework
+	Deprecated packages: hotplug, lzma, ng-spice-rework, sfdisk
 
 	Removed packages: dillo, libglib12, libgtk12, microwin,
 	pcmcia
