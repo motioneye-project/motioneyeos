@@ -6,7 +6,7 @@
 	misc fixes + nconfig and savedefconfig targets.
 
 	Toolchain: ARM cortex A9 support, experimental crosstool-ng
-	backend.
+	backend, GCC 4.5.x.
 
 	Fs: Squashfs 4.1 with lzo support
 
