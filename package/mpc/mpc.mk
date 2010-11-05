@@ -1,5 +1,3 @@
-#libmpc: libgmp libmpfr $(TARGET_DIR)/usr/lib/libmpc$(LIBTGTEXT)
-
 #############################################################
 #
 # mpc
@@ -60,7 +58,7 @@ ifeq ($(BR2_PACKAGE_LIBMPC_HEADERS),y)
 	cp -dpf $(STAGING_DIR)/usr/include/mpc.h $(TARGET_DIR)/usr/include/
 endif
 
-libmpc: $(TARGET_DIR)/usr/lib/libmpc$(LIBTGTEXT)
+libmpc: libgmp libmpfr $(TARGET_DIR)/usr/lib/libmpc$(LIBTGTEXT)
 stage-libmpc: $(STAGING_DIR)/usr/lib/$(MPC_BINARY)
 
 libmpc-clean:
