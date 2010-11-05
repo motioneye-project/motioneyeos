@@ -4,11 +4,10 @@
 #
 #############################################################
 
-SQLITE_VERSION = 3.6.23.1
+SQLITE_VERSION = 3.7.3
 SQLITE_SOURCE = sqlite-amalgamation-$(SQLITE_VERSION).tar.gz
 SQLITE_SITE = http://www.sqlite.org
 SQLITE_INSTALL_STAGING = YES
-SQLITE_LIBTOOL_PATCH = NO
 
 ifneq ($(BR2_LARGEFILE),y)
 # the sqlite configure script fails to define SQLITE_DISABLE_LFS when

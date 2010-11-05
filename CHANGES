@@ -3,7 +3,7 @@
 	Fixes all over the tree.
 
 	Updated/fixed packages: libglib2, module-init-tools,
-	mtd-utils, openssh, qt
+	mtd-utils, openssh, qt, sqlite
 
 	Issues resolved (http://bugs.uclibc.org):
 
