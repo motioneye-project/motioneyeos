@@ -1,0 +1,25 @@
+From 58096320ea0888c4fbbff318839017a4d2e82703 Mon Sep 17 00:00:00 2001
+From: Lionel Landwerlin <llandwerlin@gmail.com>
+Date: Sat, 6 Nov 2010 14:56:15 +0100
+Subject: [PATCH] glib: fix compilation with no builtin atomic operations compilers
+
+Signed-off-by: Lionel Landwerlin <llandwerlin@gmail.com>
+---
+ glib/gatomic.c |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/glib/gatomic.c b/glib/gatomic.c
+index 845c866..01468ce 100644
+--- a/glib/gatomic.c
++++ b/glib/gatomic.c
+@@ -881,6 +881,7 @@ g_atomic_pointer_compare_and_exchange (volatile gpointer G_GNUC_MAY_ALIAS *atomi
+ #endif /* DEFINE_WITH_WIN32_INTERLOCKED */
+ 
+ #ifdef DEFINE_WITH_MUTEXES
++# include "gthread.h"
+ /* We have to use the slow, but safe locking method */
+ static GMutex *g_atomic_mutex; 
+ 
+-- 
+1.7.2.3
+
