@@ -64,7 +64,7 @@ XSERVER_XORG_SERVER_CONF_OPT = --disable-config-hal \
 		--with-fontdir=/usr/share/fonts/X11/
 
 ifeq ($(BR2_PACKAGE_XSERVER_xorg),y)
-XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg --disable-glx
+XSERVER_XORG_SERVER_CONF_OPT += --enable-xorg
 XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libpciaccess libdrm
 else
 XSERVER_XORG_SERVER_CONF_OPT += --disable-xorg
@@ -147,5 +147,10 @@ ifneq ($(BR2_PACKAGE_XLIB_LIBDMX),y)
 XSERVER_XORG_SERVER_CONF_OPT += --disable-dmx
 endif
 
+ifeq ($(BR2_PACKAGE_MESA3D),y)
+XSERVER_XORG_SERVER_CONF_OPT += --enable-glx
+else
+XSERVER_XORG_SERVER_CONF_OPT += --disable-glx
+endif
 
 $(eval $(call AUTOTARGETS,package/x11r7,xserver_xorg-server))
