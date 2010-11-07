@@ -534,7 +534,7 @@ int conf_write(const char *name)
 	struct menu *menu;
 	const char *basename;
 	const char *str;
-	char dirname[128], tmpname[128], newname[128];
+	char dirname[PATH_MAX+1], tmpname[PATH_MAX+1], newname[PATH_MAX+1];
 	enum symbol_type type;
 	time_t now;
 	int use_timestamp = 1;
@@ -658,7 +658,7 @@ next:
 static int conf_split_config(void)
 {
 	const char *name;
-	char path[128];
+	char path[PATH_MAX+1];
 	char *opwd, *dir, *_name;
 	char *s, *d, c;
 	struct symbol *sym;

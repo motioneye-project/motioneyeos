@@ -1,0 +1,41 @@
+From 1408b15b98635a13bad2e2a50b3c2ae2ccdf625b Mon Sep 17 00:00:00 2001
+From: Will Newton <will.newton@gmail.com>
+Date: Wed, 22 Sep 2010 15:59:13 +0100
+Subject: [PATCH] kconfig: Use PATH_MAX instead of 128 for path buffer sizes.
+
+This prevents the buffers being overflowed when using a config
+file with a long name. PATH_MAX is used elsewhere in the same
+file, so use it here as well.
+
+Signed-off-by: Will Newton <will.newton@imgtec.com>
+Acked-by: WANG Cong <xiyou.wangcong@gmail.com>
+Signed-off-by: Michal Marek <mmarek@suse.cz>
+---
+ scripts/kconfig/confdata.c |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/confdata.c b/confdata.c
+index 35c08ec..96110ea 100644
+--- a/confdata.c
++++ b/confdata.c
+@@ -534,7 +534,7 @@ int conf_write(const char *name)
+ 	struct menu *menu;
+ 	const char *basename;
+ 	const char *str;
+-	char dirname[128], tmpname[128], newname[128];
++	char dirname[PATH_MAX+1], tmpname[PATH_MAX+1], newname[PATH_MAX+1];
+ 	enum symbol_type type;
+ 	time_t now;
+ 	int use_timestamp = 1;
+@@ -658,7 +658,7 @@ next:
+ static int conf_split_config(void)
+ {
+ 	const char *name;
+-	char path[128];
++	char path[PATH_MAX+1];
+ 	char *opwd, *dir, *_name;
+ 	char *s, *d, c;
+ 	struct symbol *sym;
+-- 
+1.7.1
+
