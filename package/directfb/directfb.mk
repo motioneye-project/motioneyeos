@@ -26,7 +26,8 @@ DIRECTFB_CONF_OPT = \
 	--disable-vnc \
 	--disable-osx \
 	--disable-video4linux \
-	--disable-video4linux2
+	--disable-video4linux2 \
+	--without-tools
 
 DIRECTFB_DEPENDENCIES = freetype zlib
 
