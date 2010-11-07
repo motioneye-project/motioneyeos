@@ -11,7 +11,7 @@ MPC_DIR:=$(TOOLCHAIN_DIR)/mpc-$(MPC_VERSION)
 MPC_TARGET_DIR:=$(BUILD_DIR)/mpc-$(MPC_VERSION)
 MPC_BINARY:=libmpc$(LIBTGTEXT)
 MPC_HOST_BINARY:=libmpc$(HOST_LIBEXT)
-MPC_LIBVERSION:=1.0.0
+MPC_LIBVERSION:=2.0.0
 
 $(DL_DIR)/$(MPC_SOURCE):
 	 $(call DOWNLOAD,$(MPC_SITE),$(MPC_SOURCE))
@@ -43,15 +43,15 @@ $(MPC_TARGET_DIR)/.configured: $(MPC_DIR)/.unpacked
 	)
 	touch $@
 
-$(MPC_TARGET_DIR)/.libs/$(MPC_BINARY): $(MPC_TARGET_DIR)/.configured
+$(MPC_TARGET_DIR)/src/.libs/$(MPC_BINARY): $(MPC_TARGET_DIR)/.configured
 	#$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(MPC_TARGET_DIR)
 	$(MAKE) -C $(MPC_TARGET_DIR)
 
-$(STAGING_DIR)/usr/lib/$(MPC_BINARY): $(MPC_TARGET_DIR)/.libs/$(MPC_BINARY)
+$(STAGING_DIR)/usr/lib/$(MPC_BINARY): $(MPC_TARGET_DIR)/src/.libs/$(MPC_BINARY)
 	$(MAKE) DESTDIR=$(STAGING_DIR) -C $(MPC_TARGET_DIR) install
 	$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(STAGING_DIR)/usr/lib/libmpc$(LIBTGTEXT)*
 
-$(TARGET_DIR)/usr/lib/libmpc.so $(TARGET_DIR)/usr/lib/libmpc.so.$(MPC_LIBVERSION) $(TARGET_DIR)/usr/lib/libmpc.a: $(STAGING_DIR)/usr/lib/$(MPC_BINARY)
+$(TARGET_DIR)/usr/lib/libmpc.so $(TARGET_DIR)/usr/lib/libmpc.so.$(MPC_LIBVERSION): $(STAGING_DIR)/usr/lib/$(MPC_BINARY)
 	cp -dpf $(STAGING_DIR)/usr/lib/libmpc$(LIBTGTEXT)* $(TARGET_DIR)/usr/lib/
 ifeq ($(BR2_PACKAGE_LIBMPC_HEADERS),y)
 	test -d $(TARGET_DIR)/usr/include || mkdir -p $(TARGET_DIR)/usr/include
