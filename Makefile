@@ -305,15 +305,16 @@ endif
 
 include package/*/*.mk
 
+include boot/common.mk
+include target/Makefile.in
+include linux/linux.mk
+
 TARGETS+=target-finalize
 
 ifeq ($(BR2_ENABLE_LOCALE_PURGE),y)
 TARGETS+=target-purgelocales
 endif
 
-include boot/common.mk
-include target/Makefile.in
-include linux/linux.mk
 include fs/common.mk
 
 TARGETS+=erase-fakeroots
