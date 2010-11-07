@@ -47,11 +47,12 @@
 	pkg-config, portmap, pppd, pptp-linux, prboom, proftpd, radvd,
 	rdesktop, readline, rp-pppoe, ruby, qt, quagga, samba, sawman,
 	sdl_mixer, sdl_sound, sed, setserial, shared-mime-info, slang,
-	speex, sqlite, squashfs, startup-notification, strace, sylpheed,
-	sysstat, taglib, tcpdump, thttpd, tiff, tn5250, torsmo, tslib,
-	udev, udpcast, usbmount, usbutils, vsftpd, vtun, which,
-	wpa_supplicant, xapp_twm, xapp_xbacklight, xapp_xcursorgen,
-	xapp_xinit, xapp_xinput, xapp_xmore,
+	speex, sqlite, squashfs, startup-notification, strace,
+	sylpheed, sysstat, taglib, tcpdump, thttpd, tiff, tn5250,
+	torsmo, tslib, udev, udpcast, usbmount, usbutils, vsftpd,
+	vtun, which, wireless-tools, wpa_supplicant, xapp_twm,
+	xapp_xbacklight, xapp_xcursorgen, xapp_xinit, xapp_xinput,
+	xapp_xmore,
 	xdriver_xf86-input-{acecad,aiptek,evdev,joystick,keyboard},
 	xdriver-xf86-input-{mouse,synaptics,vmmouse,void},
 	xdriver-xf86-video-{apm,ark,ast,ati,chips,cirrus,dummy,fbdev},
@@ -73,6 +74,7 @@
 
 	#901:  new package: gpsd
 	#2389: Generate a Makefile wrapper in $(O)
+	#2461: wireless_tools: install shared library if needed
 	#2521: Can't compile sdl_mixer, mikmod.h can't be found
 	#2563: [PATCH] cairo: Expose the configure option to disable some...
 	#2581: libmms: Update to 0.6, and patch to work on architectures...

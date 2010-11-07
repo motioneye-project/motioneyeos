@@ -4,3 +4,9 @@ config BR2_PACKAGE_WIRELESS_TOOLS
 	  A collection of tools to configure wireless lan cards.
 
 	  http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html
+
+config BR2_PACKAGE_WIRELESS_TOOLS_LIB
+	bool "Install shared library"
+	depends on BR2_PACKAGE_WIRELESS_TOOLS
+	help
+	  The shared library of wireless tools
