@@ -4,20 +4,21 @@
 #
 #############################################################
 
-SQUID_VERSION = 3.0.STABLE21
-SQUID_SOURCE = squid-$(SQUID_VERSION).tar.bz2
-SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.0
+SQUID_VERSION = 3.1.9
+SQUID_SITE = http://www.squid-cache.org/Versions/v3/3.1
+SQUID_DEPENDENCIES = libcap
 SQUID_AUTORECONF = YES
-SQUID_LIBTOOL_PATCH = NO
 SQUID_CONF_ENV =	ac_cv_epoll_works=yes ac_cv_func_setresuid=yes \
 			ac_cv_func_va_copy=yes ac_cv_func___va_copy=yes \
 			ac_cv_func_strnstr=no
-SQUID_CONF_OPT =	--disable-wccp --disable-wccp2 \
-			--disable-htcp --disable-snmp \
-			--enable-linux-netfilter \
-			--enable-storeio=ufs,diskd,aufs,null \
+SQUID_CONF_OPT =	--enable-wccp --enable-wccpv2 --enable-async-io=8 \
+			--enable-htcp --enable-snmp --enable-linux-netfilter \
 			--enable-removal-policies="lru,heap" \
-			--with-aufs-threads=24 --with-filedescriptors=1024
+			--with-filedescriptors=1024 --disable-ident-lookups \
+			--enable-auth="digest" \
+			--enable-digest-auth-helpers="password" \
+			--enable-external-acl-helpers="ip_user"
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 	SQUID_CONF_OPT += --enable-ssl
 	SQUID_DEPENDENCIES += openssl
@@ -28,8 +29,6 @@ define SQUID_CLEANUP_TARGET
 		RunCache RunAccel)
 	rm -f $(addprefix $(TARGET_DIR)/etc/, \
 		cachemgr.conf mime.conf.default squid.conf.default)
-	rm -f $(TARGET_DIR)/usr/libexec/cachemgr.cgi
-	rm -f $(TARGET_DIR)/usr/share/mib.txt
 endef
 
 SQUID_POST_INSTALL_TARGET_HOOKS += SQUID_CLEANUP_TARGET

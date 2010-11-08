@@ -2,11 +2,12 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: libgcrypt, qt, sysstat, tcpdump,
+	Updated/fixed packages: libgcrypt, qt, squid, sysstat, tcpdump,
 	xserver-xorg
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#2773: squid with openssl support needs openssl on the host
 	#2857: OBJDUMP definition is missing from TARGET_CONFIGURE_OPTS
 
 2010.11-rc2, Released November 25th, 2010:

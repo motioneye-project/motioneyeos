@@ -1,7 +1,25 @@
-diff -Nura squid-3.0.STABLE17/configure.in squid-3.0.STABLE17.cross/configure.in
---- squid-3.0.STABLE17/configure.in	2009-07-26 09:24:48.000000000 -0300
-+++ squid-3.0.STABLE17.cross/configure.in	2009-07-30 11:54:28.000000000 -0300
-@@ -1895,6 +1895,10 @@
+diff -Nura squid-3.1.8.orig/configure.in squid-3.1.8/configure.in
+--- squid-3.1.8.orig/configure.in	2010-09-04 00:26:52.000000000 -0300
++++ squid-3.1.8/configure.in	2010-09-06 10:12:09.036622139 -0300
+@@ -366,7 +366,7 @@
+ 
+ dnl Nasty hack to get autoconf 2.64 on Linux to run.
+ dnl all other uses of RUN_IFELSE are wrapped inside CACHE_CHECK which breaks on 2.64
+-AC_RUN_IFELSE([AC_LANG_SOURCE([[ int main(int argc, char **argv) { return 0; } ]])],[],[],[:])
++dnl AC_RUN_IFELSE([AC_LANG_SOURCE([[ int main(int argc, char **argv) { return 0; } ]])],[],[],[:])
+ 
+ dnl This is a developer only option.. developers know how to set defines
+ dnl
+@@ -1802,7 +1802,7 @@
+     AC_MSG_NOTICE([Negotiate auth helpers built: $NEGOTIATE_AUTH_HELPERS])
+ fi
+ AC_SUBST(NEGOTIATE_AUTH_HELPERS)
+-AC_CONFIG_SUBDIRS(helpers/negotiate_auth/squid_kerb_auth)
++dnl AC_CONFIG_SUBDIRS(helpers/negotiate_auth/squid_kerb_auth)
+ 
+ dnl Select digest auth scheme helpers to build
+ if test -n "$AUTH_MODULE_digest"; then
+@@ -2115,6 +2115,10 @@
  	;;
  esac
  
@@ -12,20 +30,28 @@ diff -Nura squid-3.0.STABLE17/configure.in squid-3.0.STABLE17.cross/configure.in
  dnl Check for programs
  AC_PROG_CPP
  AC_PROG_INSTALL
-diff -Nura squid-3.0.STABLE17/src/Makefile.am squid-3.0.STABLE17.cross/src/Makefile.am
---- squid-3.0.STABLE17/src/Makefile.am	2009-07-26 09:24:46.000000000 -0300
-+++ squid-3.0.STABLE17.cross/src/Makefile.am	2009-07-30 11:55:08.000000000 -0300
-@@ -1034,6 +1034,13 @@
- squid.conf.default: cf_parser.h
+diff -Nura squid-3.1.8.orig/src/Makefile.am squid-3.1.8/src/Makefile.am
+--- squid-3.1.8.orig/src/Makefile.am	2010-09-04 00:25:57.000000000 -0300
++++ squid-3.1.8/src/Makefile.am	2010-09-06 10:11:27.319774138 -0300
+@@ -195,8 +195,6 @@
+ cf_gen_SOURCES = cf_gen.cc
+ nodist_cf_gen_HEADER = cf_gen_defines.cci
+ cf_gen_LDADD= \
+-	../compat/libcompat.la \
+-	-L../lib -lmiscutil \
+ 	$(EPOLL_LIBS) \
+ 	$(MINGW_LIBS) \
+ 	$(XTRA_LIBS)
+@@ -752,6 +750,12 @@
+ squid.conf.default squid.conf.documented: cf_parser.cci
  	true
  
-+CXX_FOR_BUILD ?= @CXX_FOR_BUILD@
-+
-+cf_gen$(EXEEXT): $(cf_gen_SOURCES) $(cf_gen_DEPENDENCIES)
++cf_gen$(EXEEXT): $(cf_gen_OBJECTS) $(cf_gen_DEPENDENCIES)
 +	$(CXX_FOR_BUILD) -o $@ $(srcdir)/cf_gen.cc \
-+		$(top_srcdir)/lib/util.c $(top_srcdir)/lib/assert.c \
-+		-DNDEBUG -DBUILD_HOST_TOOL ${INCLUDES}
++		$(top_srcdir)/lib/util.c \
++		$(top_srcdir)/compat/assert.cc \
++		$(cf_gen_LDADD) $(LIBS) ${INCLUDES}
 +
- cf_parser.h: cf.data cf_gen$(EXEEXT)
+ cf_parser.cci: cf.data cf_gen$(EXEEXT)
  	./cf_gen cf.data $(srcdir)/cf.data.depend
  
