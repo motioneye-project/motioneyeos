@@ -1,0 +1,48 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.1
+Patch-ID:	bash41-009
+
+Bug-Reported-by:	Tomas Trnka <tomastrnka@gmx.com>
+Bug-Reference-ID:	<201003242030.02166.tomastrnka@gmx.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2010-03/msg00090.html
+
+Bug-Description:
+
+An arriving SIGCHLD will interrupt `slow' system calls such as write(2) to
+or read(2) from a terminal.  This results in an error message and truncated
+input or output.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.1-patched/sig.c	Fri Aug 14 16:31:52 2009
+--- ./sig.c	Fri Mar 26 22:34:11 2010
+***************
+*** 655,660 ****
+--- 655,663 ----
+      act.sa_flags |= SA_INTERRUPT;	/* XXX */
+    else
+      act.sa_flags |= SA_RESTART;		/* XXX */
++ #else
++   if (sig == SIGCHLD)
++     act.sa_flags |= SA_RESTART;
+  #endif
+    sigemptyset (&act.sa_mask);
+    sigemptyset (&oact.sa_mask);
+*** ../bash-4.1-patched/patchlevel.h	2009-10-01 16:39:22.000000000 -0400
+--- ./patchlevel.h	2010-01-14 09:38:08.000000000 -0500
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 9
+  
+  #endif /* _PATCHLEVEL_H_ */
+

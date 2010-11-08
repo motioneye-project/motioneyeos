@@ -1,0 +1,31 @@
+Let mkbuiltins use config.h even if cross compiling
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ builtins/mkbuiltins.c |    9 ---------
+ 1 files changed, 0 insertions(+), 9 deletions(-)
+
+diff --git a/builtins/mkbuiltins.c b/builtins/mkbuiltins.c
+index cdd45e4..1349093 100644
+--- a/builtins/mkbuiltins.c
++++ b/builtins/mkbuiltins.c
+@@ -19,16 +19,7 @@
+    along with Bash.  If not, see <http://www.gnu.org/licenses/>.
+ */
+ 
+-#if !defined (CROSS_COMPILING) 
+ #  include <config.h>
+-#else	/* CROSS_COMPILING */
+-/* A conservative set of defines based on POSIX/SUS3/XPG6 */
+-#  define HAVE_UNISTD_H
+-#  define HAVE_STRING_H
+-#  define HAVE_STDLIB_H
+-
+-#  define HAVE_RENAME
+-#endif /* CROSS_COMPILING */
+ 
+ #if defined (HAVE_UNISTD_H)
+ #  ifdef _MINIX
+-- 
+1.7.2.2
+

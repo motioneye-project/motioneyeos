@@ -1,0 +1,49 @@
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.1
+Patch-ID:	bash41-008
+
+Bug-Reported-by:	Dennis van Dok <dvandok@gmail.com>
+Bug-Reference-ID:	<4BBF2501.5050703@gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2010-04/msg00038.html
+
+Bug-Description:
+
+When declaring an associative array and implicitly assigning a value
+to element "0", bash does not correctly allocate memory, leading to
+a segmentation violation when that element or the array itself is
+unset.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-4.1-patched/builtins/declare.def	2009-11-25 19:42:00.000000000 -0500
+--- ./builtins/declare.def	2010-05-30 18:25:21.000000000 -0400
+***************
+*** 513,517 ****
+  	      /* let bind_{array,assoc}_variable take care of this. */
+  	      if (assoc_p (var))
+! 		bind_assoc_variable (var, name, "0", value, aflags);
+  	      else
+  		bind_array_variable (name, 0, value, aflags);
+--- 519,523 ----
+  	      /* let bind_{array,assoc}_variable take care of this. */
+  	      if (assoc_p (var))
+! 		bind_assoc_variable (var, name, savestring ("0"), value, aflags);
+  	      else
+  		bind_array_variable (name, 0, value, aflags);
+*** ../bash-4.1-patched/patchlevel.h	2009-10-01 16:39:22.000000000 -0400
+--- ./patchlevel.h	2010-01-14 09:38:08.000000000 -0500
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 7
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 8
+  
+  #endif /* _PATCHLEVEL_H_ */
