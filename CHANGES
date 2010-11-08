@@ -1,6 +1,6 @@
-2010.11, Not yet released:
+2010.11-rc1, Released November 8th, 2010:
 
-	Fixes all over the tree.
+	Fixes all over the tree and new features.
 
 	Kconfig infrastructure rebased against 2.6.36-rc1, bringing
 	misc fixes + nconfig and savedefconfig targets.
