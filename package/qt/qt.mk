@@ -1,6 +1,6 @@
 ######################################################################
 #
-# Qt Embedded for Linux 4.6
+# Qt Embedded for Linux
 # http://www.qtsoftware.com/
 #
 # This makefile was originally composed by Thomas Lundquist <thomasez@zelow.no>
@@ -12,7 +12,7 @@
 #
 ######################################################################
 
-QT_VERSION:=4.6.3
+QT_VERSION:=4.7.0
 QT_SOURCE:=qt-everywhere-opensource-src-$(QT_VERSION).tar.gz
 QT_SITE:=http://get.qt.nokia.com/qt/source
 QT_CAT:=$(ZCAT)
