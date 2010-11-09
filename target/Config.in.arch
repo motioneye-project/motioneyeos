@@ -304,6 +304,14 @@ config BR2_sparc_cypress
 	bool "cypress"
 config BR2_sparc_v8
 	bool "v8"
+config BR2_sparc_sparchfleon
+	bool "hfleon"
+config BR2_sparc_sparchfleonv8
+	bool "hfleonv8"
+config BR2_sparc_sparcsfleon
+	bool "sfleon"
+config BR2_sparc_sparcsfleonv8
+	bool "sfleonv8"
 config BR2_sparc_supersparc
 	bool "supersparc"
 config BR2_sparc_sparclite
@@ -320,19 +328,12 @@ config BR2_sparc_sparclet
 	bool "sparclet"
 config BR2_sparc_tsc701
 	bool "tsc701"
-config BR2_sparc_v9
-	bool "v9"
-config BR2_sparc_v9a
-	bool "v9a"
-config BR2_sparc_v9b
-	bool "v9b"
-config BR2_sparc_ultrasparc
-	bool "ultrasparc"
-config BR2_sparc_ultrasparc3
-	bool "ultrasparc3"
-config BR2_sparc_niagara
-	bool "niagara"
 endchoice
+
+config BR2_SPARC_TYPE
+	string
+	default V7	if BR2_sparc_v7 || BR2_sparc_cypress || BR2_sparc_sparclite || BR2_sparc_f930 || BR2_sparc_f934 || BR2_sparc_sparclite86x || BR2_sparc_sparclet || BR2_sparc_tsc701 || BR2_sparc_sparchfleon || BR2_sparc_sparcsfleon
+	default V8	if BR2_sparc_v8 || BR2_sparc_supersparc || BR2_sparc_hypersparc || BR2_sparc_sparchfleonv8 || BR2_sparc_sparcsfleonv8
 
 choice
 	prompt "Target Architecture Variant"
@@ -666,3 +667,9 @@ config BR2_GCC_TARGET_ABI
 	default ibmlongdouble	if BR2_powerpc && BR2_PPC_ABI_ibmlongdouble
 	default ieeelongdouble	if BR2_powerpc && BR2_PPC_ABI_ieeelongdouble
 
+config BR2_GCC_TARGET_CPU
+	string
+	default sparchfleon	if BR2_sparc_sparchfleon
+	default sparchfleonv8	if BR2_sparc_sparchfleonv8
+	default sparcsfleon	if BR2_sparc_sparcsfleon
+	default sparcsfleonv8	if BR2_sparc_sparcsfleonv8
