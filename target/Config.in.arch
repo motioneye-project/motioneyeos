@@ -304,6 +304,7 @@ config BR2_sparc_cypress
 	bool "cypress"
 config BR2_sparc_v8
 	bool "v8"
+comment "LEON SPARC needs gcc = 4.4.x"
 config BR2_sparc_sparchfleon
 	bool "hfleon"
 config BR2_sparc_sparchfleonv8
