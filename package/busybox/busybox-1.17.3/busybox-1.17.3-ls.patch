@@ -1,0 +1,30 @@
+diff -urpN busybox-1.17.3/coreutils/ls.c busybox-1.17.3-ls/coreutils/ls.c
+--- busybox-1.17.3/coreutils/ls.c	2010-10-09 21:57:13.000000000 +0200
++++ busybox-1.17.3-ls/coreutils/ls.c	2010-11-06 00:26:48.467049575 +0100
+@@ -184,7 +184,7 @@ static const unsigned opt_flags[] = {
+ 	LIST_INO,                   /* i */
+ 	LIST_LONG | STYLE_LONG,     /* l - remember LS_DISP_HR in mask! */
+ 	LIST_SHORT | STYLE_SINGLE,  /* 1 */
+-	0,                          /* g (don't show group) - handled via OPT_g */
++	0,                          /* g (don't show owner) - handled via OPT_g */
+ 	LIST_ID_NUMERIC,            /* n */
+ 	LIST_BLOCKS,                /* s */
+ 	DISP_ROWS,                  /* x */
+@@ -621,7 +621,7 @@ static NOINLINE unsigned list_single(con
+ 	if (all_fmt & LIST_ID_NAME) {
+ 		if (option_mask32 & OPT_g) {
+ 			column += printf("%-8.8s ",
+-				get_cached_username(dn->dstat.st_uid));
++				get_cached_groupname(dn->dstat.st_gid));
+ 		} else {
+ 			column += printf("%-8.8s %-8.8s ",
+ 				get_cached_username(dn->dstat.st_uid),
+@@ -631,7 +631,7 @@ static NOINLINE unsigned list_single(con
+ #endif
+ 	if (all_fmt & LIST_ID_NUMERIC) {
+ 		if (option_mask32 & OPT_g)
+-			column += printf("%-8u ", (int) dn->dstat.st_uid);
++			column += printf("%-8u ", (int) dn->dstat.st_gid);
+ 		else
+ 			column += printf("%-8u %-8u ",
+ 					(int) dn->dstat.st_uid,
