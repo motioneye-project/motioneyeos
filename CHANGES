@@ -2,7 +2,7 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: libglib2, qt
+	Updated/fixed packages: libglib2, module-init-tools, qt
 
 	Issues resolved (http://bugs.uclibc.org):
 
