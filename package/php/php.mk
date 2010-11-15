@@ -106,6 +106,10 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_NCURSES),y)
 	PHP_DEPENDENCIES += ncurses
 endif
 
+ifeq ($(BR2_PACKAGE_PHP_EXT_PCNTL),y)
+	PHP_CONF_OPT += --enable-pcntl
+endif
+
 ifeq ($(BR2_PACKAGE_PHP_EXT_SYSVMSG),y)
 	PHP_CONF_OPT += --enable-sysvmsg
 endif

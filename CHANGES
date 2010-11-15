@@ -4,7 +4,8 @@
 
 	Updated/fixed packages: bash, bind, busybox, gpsd, libglib2,
 	libcurl, libmad, lrzsz, midori, module-init-tools, mtd-utils,
-	openssh, openssl, pciutils, qt, sqlite, sysstat, webkit, zlib
+	openssh, openssl, pciutils, php, qt, sqlite, sysstat, webkit,
+	zlib
 
 	Issues resolved (http://bugs.uclibc.org):
 
@@ -12,6 +13,7 @@
 	#2479: host-module-init-tools 3.11 fails to build
 	#2725: Buildroot overrides kernel config
 	#2785: mtd-utils build fails due to missing libmtd
+	#2791: Added PHP-Process Control to the PHP-Package
 	#2797: pciutils dependencies on zlib not taken into account
 	#2809: failed to compile libglib2
 	#2821: [PATCH] Patch for JavaScriptCore in QtWebKit module

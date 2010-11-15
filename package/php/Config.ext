@@ -103,6 +103,11 @@ config BR2_PACKAGE_PHP_EXT_PCRE
 	help
 	  Perl Compatible Regular Expressions support
 
+config BR2_PACKAGE_PHP_EXT_PCNTL
+	bool "PCNTL"
+	help
+	  Process Control Support
+
 config BR2_PACKAGE_PHP_EXT_SYSVMSG
 	bool "sysvmsg - System V Message queue"
 	help
