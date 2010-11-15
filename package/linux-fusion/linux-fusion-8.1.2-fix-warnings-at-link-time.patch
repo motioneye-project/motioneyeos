@@ -1,0 +1,40 @@
+From 7884688ba7a2e4cb7772cbedb34245a7fc9bf9d9 Mon Sep 17 00:00:00 2001
+From: Lionel Landwerlin <llandwerlin@gmail.com>
+Date: Wed, 3 Nov 2010 10:25:17 +0100
+Subject: [PATCH] Fix warnings at link time
+
+Signed-off-by: Lionel Landwerlin <llandwerlin@gmail.com>
+---
+ linux/drivers/char/fusion/entries.c   |    2 +-
+ linux/drivers/char/fusion/fusiondev.c |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/linux/drivers/char/fusion/entries.c b/linux/drivers/char/fusion/entries.c
+index 11edd43..8d102cf 100644
+--- a/linux/drivers/char/fusion/entries.c
++++ b/linux/drivers/char/fusion/entries.c
+@@ -28,7 +28,7 @@
+ #include "fusiondev.h"
+ #include "entries.h"
+ 
+-struct timeval now;
++static struct timeval now;
+ 
+ void
+ fusion_entries_init(FusionEntries * entries,
+diff --git a/linux/drivers/char/fusion/fusiondev.c b/linux/drivers/char/fusion/fusiondev.c
+index 2457bc1..7c7680d 100644
+--- a/linux/drivers/char/fusion/fusiondev.c
++++ b/linux/drivers/char/fusion/fusiondev.c
+@@ -64,7 +64,7 @@
+ MODULE_LICENSE("GPL");
+ MODULE_AUTHOR("Denis Oliver Kropp <dok@directfb.org>");
+ 
+-struct proc_dir_entry *proc_fusion_dir;
++static struct proc_dir_entry *proc_fusion_dir;
+ 
+ static int fusion_major = FUSION_MAJOR;
+ 
+-- 
+1.6.0.6
+
