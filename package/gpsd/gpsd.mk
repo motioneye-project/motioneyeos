@@ -22,7 +22,7 @@ endif
 ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
 	GPSD_CONF_ENV += QMAKE="$(QT_QMAKE)"
 	GPSD_CONF_OPT += --enable-libQgpsmm
-	GPSD_DEPENDENCIES += qt
+	GPSD_DEPENDENCIES += qt host-pkg-config
 else
 	GPSD_CONF_OPT += --disable-libQgpsmm
 endif
