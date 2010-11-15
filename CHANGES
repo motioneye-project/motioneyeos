@@ -2,7 +2,7 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: bash, bind, busybox, libglib2,
+	Updated/fixed packages: bash, bind, busybox, gpsd, libglib2,
 	libcurl, libmad, lrzsz, midori, module-init-tools, mtd-utils,
 	openssh, openssl, pciutils, qt, sqlite, sysstat, webkit, zlib
 

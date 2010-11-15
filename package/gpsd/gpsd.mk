@@ -18,6 +18,15 @@ else
 	GPSD_CONF_OPT += --disable-libgpsmm
 endif
 
+# Enable or disable Qt binding
+ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
+	GPSD_CONF_ENV += QMAKE="$(QT_QMAKE)"
+	GPSD_CONF_OPT += --enable-libQgpsmm
+	GPSD_DEPENDENCIES += qt
+else
+	GPSD_CONF_OPT += --disable-libQgpsmm
+endif
+
 # If libusb is available build it before so the package can use it
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 	GPSD_DEPENDENCIES += libusb
