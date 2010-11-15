@@ -4,10 +4,8 @@
 #
 #############################################################
 
-BIND_VERSION = 9.5.2-P2
+BIND_VERSION = 9.5.2-P4
 BIND_SITE = ftp://ftp.isc.org/isc/bind9/$(BIND_VERSION)
-BIND_LIBTOOL_PATCH = NO
-BIND_INSTALL_STAGING = NO
 BIND_TARGET_SBINS = lwresd named named-checkconf named-checkzone
 BIND_TARGET_SBINS += named-compilezone rndc rndc-confgen
 BIND_TARGET_SBINS += dnssec-keygen dnssec-signzone
