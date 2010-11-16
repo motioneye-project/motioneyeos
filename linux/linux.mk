@@ -147,7 +147,7 @@ $(LINUX26_DIR)/.stamp_initramfs_rebuilt: $(LINUX26_DIR)/.stamp_installed $(BINAR
 	@$(call MESSAGE,"Rebuilding kernel with initramfs")
 	# Remove the previously generated initramfs which was empty,
 	# to make sure the kernel will actually regenerate it.
-	$(RM) -f $(@D)/usr/initramfs_data.cpio.*
+	$(RM) -f $(@D)/usr/initramfs_data.cpio*
 	# Build the kernel.
 	$(TARGET_MAKE_ENV) $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(@D) $(LINUX26_IMAGE_NAME)
 	# Copy the kernel image to its final destination
