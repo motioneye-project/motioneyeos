@@ -15,7 +15,6 @@ GST_PLUGINS_GOOD_CONF_OPT = \
 		--disable-sunaudio \
 		--disable-osx_audio \
 		--disable-osx_video \
-		--disable-gst_v4l2 \
 		--disable-x \
 		--disable-xshm \
 		--disable-xvideo \
@@ -288,6 +287,12 @@ ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_Y4M),y)
 GST_PLUGINS_GOOD_CONF_OPT += --enable-y4m
 else
 GST_PLUGINS_GOOD_CONF_OPT += --disable-y4m
+endif
+
+ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_V4L2),y)
+GST_PLUGINS_GOOD_CONF_OPT += --enable-gst_v4l2
+else
+GST_PLUGINS_GOOD_CONF_OPT += --disable-gst_v4l2
 endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_GOOD_PLUGIN_ANNODEX),y)
