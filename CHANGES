@@ -4,10 +4,11 @@
 
 	Updated/fixed packages: bash, bind, busybox, libglib2, libmad,
 	midori, module-init-tools, mtd-utils, openssh, pciutils, qt,
-	sqlite, webkit
+	sqlite, sysstat, webkit
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#759:  Sysstat build broken without libintl
 	#2479: host-module-init-tools 3.11 fails to build
 	#2785: mtd-utils build fails due to missing libmtd
 	#2797: pciutils dependencies on zlib not taken into account
