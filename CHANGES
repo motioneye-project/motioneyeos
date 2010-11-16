@@ -2,9 +2,9 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: bash, bind, busybox, libglib2, libmad,
-	midori, module-init-tools, mtd-utils, openssh, pciutils, qt,
-	sqlite, sysstat, webkit
+	Updated/fixed packages: bash, bind, busybox, libglib2,
+	libcurl, libmad, midori, module-init-tools, mtd-utils,
+	openssh, pciutils, qt, sqlite, sysstat, webkit
 
 	Issues resolved (http://bugs.uclibc.org):
 
