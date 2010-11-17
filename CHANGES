@@ -1,3 +1,13 @@
+2010.11, Not yet released:
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: libglib2
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#2809: failed to compile libglib2
+
 2010.11-rc1, Released November 8th, 2010:
 
 	Fixes all over the tree and new features.
