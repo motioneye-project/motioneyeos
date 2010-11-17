@@ -14,9 +14,9 @@ config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 endchoice
 
 config BR2_TOOLCHAIN_EXTERNAL_STRIP
-        bool
-        default y
-        prompt "Strip shared libraries"
+	bool
+	default y
+	prompt "Strip shared libraries"
 	help
 	  Strip shared libraries copied from the external toolchain.
 endif
