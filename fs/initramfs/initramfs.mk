@@ -8,7 +8,7 @@
 
 define ROOTFS_INITRAMFS_INIT_SYMLINK
 	if [ ! -e $(TARGET_DIR)/init ]; then \
-		ln -s sbin/init $(TARGET_DIR)/init; \
+		ln -sf sbin/init $(TARGET_DIR)/init; \
 	fi
 endef
 
