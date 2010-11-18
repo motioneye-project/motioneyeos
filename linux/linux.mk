@@ -179,3 +179,6 @@ endif
 endif
 
 endif
+
+linux-%:
+	$(MAKE) $(subst linux-,linux26-,$@)
