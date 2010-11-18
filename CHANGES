@@ -6,6 +6,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#2479: host-module-init-tools 3.11 fails to build
 	#2809: failed to compile libglib2
 	#2821: [PATCH] Patch for JavaScriptCore in QtWebKit module
 	#2827: qt-4.7.0-pthread_getattr_np.patch invalid for qt 4.6...
