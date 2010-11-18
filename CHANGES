@@ -2,7 +2,8 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages: libgcrypt, qt, tcpdump, xserver-xorg
+	Updated/fixed packages: libgcrypt, qt, sysstat, tcpdump,
+	xserver-xorg
 
 	Issues resolved (http://bugs.uclibc.org):
 
