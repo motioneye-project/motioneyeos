@@ -15,7 +15,7 @@ ifeq ($(BR2_TARGET_ROOTFS_ISO9660_SQUASH),y)
 ISO9660_OPTS+=-U
 endif
 
-$(BINARIES_DIR)/rootfs.iso9660: host-cdrkit host-fakeroot linux26 ext2-root grub
+$(BINARIES_DIR)/rootfs.iso9660: host-cdrkit host-fakeroot linux26 rootfs-ext2 grub
 	@$(call MESSAGE,"Generating root filesystem image rootfs.iso9660")
 	mkdir -p $(ISO9660_TARGET_DIR)
 	mkdir -p $(ISO9660_TARGET_DIR)/boot/grub
@@ -37,7 +37,7 @@ $(BINARIES_DIR)/rootfs.iso9660: host-cdrkit host-fakeroot linux26 ext2-root grub
 	-@rm -f $(FAKEROOT_SCRIPT)
 	-@rm -rf $(ISO9660_TARGET_DIR)
 
-iso9660-root: $(BINARIES_DIR)/rootfs.iso9660
+rootfs-iso9660: $(BINARIES_DIR)/rootfs.iso9660
 
 #############################################################
 #
@@ -45,5 +45,5 @@ iso9660-root: $(BINARIES_DIR)/rootfs.iso9660
 #
 #############################################################
 ifeq ($(BR2_TARGET_ROOTFS_ISO9660),y)
-TARGETS+=iso9660-root
+TARGETS+=rootfs-iso9660
 endif
