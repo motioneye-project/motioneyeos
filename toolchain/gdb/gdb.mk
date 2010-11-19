@@ -162,6 +162,8 @@ endif
 
 gdbserver: $(TARGET_DIR)/usr/bin/gdbserver
 
+gdbserver-source: $(DL_DIR)/$(GDB_SOURCE)
+
 gdbserver-clean:
 	-$(MAKE) -C $(GDB_SERVER_DIR) clean
 
@@ -208,6 +210,8 @@ $(TARGET_CROSS)gdb: $(GDB_HOST_DIR)/gdb/gdb
 		$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-gdb
 
 gdbhost: $(TARGET_CROSS)gdb
+
+gdbhost-source: $(DL_DIR)/$(GDB_SOURCE)
 
 gdbhost-clean:
 	-$(MAKE) -C $(GDB_HOST_DIR) clean
