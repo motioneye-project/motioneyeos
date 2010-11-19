@@ -18,6 +18,7 @@ $(TARGET_DIR)/usr/bin/makedevs: $(MAKEDEVS_DIR)/makedevs
 	$(INSTALL) -m 755 $^ $@
 
 makedevs: $(TARGET_DIR)/usr/bin/makedevs
+makedevs-source:
 
 HOST_MAKEDEVS_DIR=$(BUILD_DIR)/host-makedevs
 
@@ -33,3 +34,4 @@ $(HOST_DIR)/usr/bin/makedevs: $(HOST_MAKEDEVS_DIR)/makedevs
 	$(INSTALL) -m 755 $^ $@
 
 host-makedevs: $(HOST_DIR)/usr/bin/makedevs
+host-makedevs-source:
