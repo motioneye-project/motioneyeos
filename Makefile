@@ -323,6 +323,25 @@ TARGETS_CLEAN:=$(patsubst %,%-clean,$(TARGETS))
 TARGETS_SOURCE:=$(patsubst %,%-source,$(TARGETS) $(BASE_TARGETS))
 TARGETS_DIRCLEAN:=$(patsubst %,%-dirclean,$(TARGETS))
 TARGETS_ALL:=$(patsubst %,__real_tgt_%,$(TARGETS))
+
+# host-* dependencies have to be handled specially, as those aren't
+# visible in Kconfig and hence not added to a variable like TARGETS.
+# instead, find all the host-* targets listed in each <PKG>_DEPENDENCIES
+# variable for each enabled target.
+# Notice: this only works for newstyle gentargets/autotargets packages
+TARGETS_HOST_DEPS = $(sort $(filter host-%,$(foreach dep,\
+		$(addsuffix _DEPENDENCIES,$(call UPPERCASE,$(TARGETS))),\
+		$($(dep)))))
+# Host packages can in turn have their own dependencies. Likewise find
+# all the package names listed in the HOST_<PKG>_DEPENDENCIES for each
+# host package found above. Ideally this should be done recursively until
+# no more packages are found, but that's hard to do in make, so limit to
+# 1 level for now.
+HOST_DEPS = $(sort $(foreach dep,\
+		$(addsuffix _DEPENDENCIES,$(call UPPERCASE,$(TARGETS_HOST_DEPS))),\
+		$($(dep))))
+HOST_SOURCE += $(addsuffix -source,$(sort $(TARGETS_HOST_DEPS) $(HOST_DEPS)))
+
 # all targets depend on the crosscompiler and it's prerequisites
 $(TARGETS_ALL): __real_tgt_%: $(BASE_TARGETS) %
 
@@ -443,7 +462,7 @@ _source-check:
 	$(MAKE) DL_MODE=SOURCE_CHECK $(EXTRAMAKEARGS) source
 
 external-deps:
-	@$(MAKE) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source
+	@$(MAKE) -Bs DL_MODE=SHOW_EXTERNAL_DEPS $(EXTRAMAKEARGS) source | sort -u
 
 show-targets:
 	@echo $(TARGETS)
