@@ -10,6 +10,7 @@
 
 	#759:  Sysstat build broken without libintl
 	#2479: host-module-init-tools 3.11 fails to build
+	#2725: Buildroot overrides kernel config
 	#2785: mtd-utils build fails due to missing libmtd
 	#2797: pciutils dependencies on zlib not taken into account
 	#2809: failed to compile libglib2
