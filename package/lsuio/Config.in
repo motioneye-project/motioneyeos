@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LSUIO
+	bool "lsuio"
+	help
+	  list available userspace I/O (UIO) devices
+
+	  http://www.osadl.org/UIO.uio.0.html
