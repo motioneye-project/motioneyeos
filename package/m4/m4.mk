@@ -3,7 +3,7 @@
 # m4
 #
 #############################################################
-M4_VERSION = 1.4.9
+M4_VERSION = 1.4.15
 M4_SOURCE = m4-$(M4_VERSION).tar.bz2
 M4_SITE = $(BR2_GNU_MIRROR)/m4
 
