@@ -39,10 +39,12 @@ endef
 define LRZSZ_INSTALL_TARGET_CMDS
 	cp $(@D)/src/lrz $(TARGET_DIR)/usr/bin/rz
 	cp $(@D)/src/lsz $(TARGET_DIR)/usr/bin/sz
+	ln -s rz $(TARGET_DIR)/usr/bin/lrz
+	ln -s sz $(TARGET_DIR)/usr/bin/lsz
 endef
 
 define LRZSZ_CLEAN_CMDS
-	rm -f $(TARGET_DIR)/usr/bin/rz
+	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,rz sz lrz lsz)
 	-$(MAKE) -C $(@D) clean
 endef
 

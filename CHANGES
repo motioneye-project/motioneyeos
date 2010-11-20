@@ -3,7 +3,7 @@
 	Fixes all over the tree.
 
 	Updated/fixed packages: bash, bind, busybox, libglib2,
-	libcurl, libmad, midori, module-init-tools, mtd-utils,
+	libcurl, libmad, lrzsz, midori, module-init-tools, mtd-utils,
 	openssh, openssl, pciutils, qt, sqlite, sysstat, webkit, zlib
 
 	Issues resolved (http://bugs.uclibc.org):
