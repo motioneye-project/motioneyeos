@@ -24,8 +24,6 @@ define ZLIB_CONFIGURE_CMDS
 		./configure \
 		$(ZLIB_SHARED) \
 		--prefix=/usr \
-		--libdir=$(STAGING_DIR)/usr/lib \
-		--includedir=$(STAGING_DIR)/usr/include \
 	)
 endef
 
