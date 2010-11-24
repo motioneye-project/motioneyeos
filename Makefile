@@ -592,9 +592,6 @@ ifeq ($(O),output)
 endif
 	rm -rf $(CONFIG_DIR)/.config $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/.auto.deps
 
-flush:
-	rm -f $(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache
-
 configured: dirs kernel-headers uclibc-config busybox-config linux26-config
 
 prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
@@ -627,7 +624,6 @@ help:
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  source-check           - check all packages for valid download URLs'
 	@echo '  external-deps          - list external packages used'
-	@echo '  flush                  - flush configuration cache'
 	@echo
 	@$(foreach b, $(notdir $(wildcard $(TOPDIR)/configs/*_defconfig)), \
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
