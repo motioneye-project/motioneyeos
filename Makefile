@@ -75,7 +75,6 @@ EXTRAMAKEARGS = O=$(O)
 NEED_WRAPPER=y
 endif
 
-# $(shell find . -name *_defconfig |sed 's/.*\///')
 # Pull in the user's configuration file
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(CONFIG_DIR)/.config
@@ -289,9 +288,6 @@ include package/Makefile.in
 
 all: world
 
-# In this section, we need .config
--include $(CONFIG_DIR)/.config.cmd
-
 # We also need the various per-package makefiles, which also add
 # each selected package to TARGETS if that package was selected
 # in the .config file.
@@ -489,28 +485,19 @@ COMMON_CONFIG_ENV = \
 
 xconfig: $(BUILD_DIR)/buildroot-config/qconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
-	@if ! $(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN); then \
-		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
-	fi
+	@$(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN)
 
 gconfig: $(BUILD_DIR)/buildroot-config/gconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
-	@if ! $(COMMON_CONFIG_ENV) srctree=$(TOPDIR) \
-		$< $(CONFIG_CONFIG_IN); then \
-		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
-	fi
+	@$(COMMON_CONFIG_ENV) srctree=$(TOPDIR) $< $(CONFIG_CONFIG_IN)
 
 menuconfig: $(BUILD_DIR)/buildroot-config/mconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
-	@if ! $(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN); then \
-		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
-	fi
+	@$(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN)
 
 nconfig: $(BUILD_DIR)/buildroot-config/nconf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
-	@if ! $(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN); then \
-		test -f $(CONFIG_DIR)/.config.cmd || rm -f $(CONFIG_DIR)/.config; \
-	fi
+	@$(COMMON_CONFIG_ENV) $< $(CONFIG_CONFIG_IN)
 
 config: $(BUILD_DIR)/buildroot-config/conf outputmakefile
 	@mkdir -p $(BUILD_DIR)/buildroot-config
@@ -603,7 +590,7 @@ endif
 ifeq ($(O),output)
 	rm -rf $(O)
 endif
-	rm -rf $(CONFIG_DIR)/.config $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/.config.cmd $(CONFIG_DIR)/.auto.deps
+	rm -rf $(CONFIG_DIR)/.config $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/.auto.deps
 
 flush:
 	rm -f $(BUILD_DIR)/tgt-config.cache $(BUILD_DIR)/host-config.cache
