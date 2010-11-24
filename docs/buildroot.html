@@ -185,15 +185,14 @@
     <p>This command will generally perform the following steps:</p>
     <ul>
       <li>Download source files (as required)</li>
-      <li>Configure cross-compile toolchain</li>
-      <li>Build/install cross-compile toolchain</li>
+      <li>Configure, build and install the cross-compiling toolchain
+      if an internal toolchain is used, or import a toolchain if an
+      external toolchain is used</li>
       <li>Build/install selected target packages</li>
-      <li>Build a kernel image</li>
+      <li>Build a kernel image, if selected</li>
+      <li>Build a bootloader image, if selected</li>
       <li>Create a root filesystem in selected formats</li>
     </ul>
-    <p>Some of the above steps might not be performed if they are not
-    selected in the Buildroot configuration.
-   </p>
 
     <p>Buildroot output is stored in a single directory, <code>output/</code>.
     This directory contains several subdirectories:</p>
