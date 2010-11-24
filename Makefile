@@ -419,7 +419,7 @@ ifneq ($(BR2_HAVE_DOCUMENTATION),y)
 endif
 	find $(TARGET_DIR) -type f -perm +111 | xargs $(STRIPCMD) 2>/dev/null || true
 	find $(TARGET_DIR)/lib/modules -type f -name '*.ko' | \
-		xargs -r $(STRIPCMD) -R .comment -R .note -g --strip-unneeded
+		xargs -r $(STRIPCMD) $(STRIP_STRIP_UNNEEDED)
 
 	mkdir -p $(TARGET_DIR)/etc
 	# Mandatory configuration file and auxilliary cache directory
