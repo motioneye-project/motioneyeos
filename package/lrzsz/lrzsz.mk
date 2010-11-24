@@ -33,7 +33,6 @@ endef
 
 define LRZSZ_BUILD_HOOKS
 	$(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" prefix="$(TARGET_DIR)" -C $(@D)
-	$(STRIPCMD) $(@D)/src/lrz $(@D)/src/lsz
 endef
 
 define LRZSZ_INSTALL_TARGET_CMDS
