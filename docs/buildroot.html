@@ -676,12 +676,9 @@ endif
     then to use <code>ARCH-linux-gcc</code>, <code>ARCH-linux-objdump</code>,
     <code>ARCH-linux-ld</code>, etc.</p>
 
-    <p><b>Important</b>: do not try to move a gcc-3.x toolchain to another
-    directory &mdash; it won't work because there are some hardcoded paths
-    in the gcc-3.x configuration. If you are using a current gcc-4.x, it is
-    possible to relocate the toolchain &mdash; but then <code>--sysroot</code>
-    must be passed every time the compiler is called to tell where the
-    libraries and header files are.</p>
+    <p>It is possible to relocate the toolchain &mdash; but
+    then <code>--sysroot</code> must be passed every time the compiler
+    is called to tell where the libraries and header files are.</p>
 
     <p>It is also possible to generate the Buildroot toolchain in a
     directory other than <code>output/staging</code> by using the <code>
