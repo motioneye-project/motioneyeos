@@ -1,8 +1,9 @@
-2010.11, Not yet released:
+2010.11-rc2, Released November 25th, 2010:
 
 	Fixes all over the tree.
 
-	Add support for LEON Sparc architecture variants.
+	Add support for LEON Sparc architecture variants. Fix make
+	source/external-deps for host packages.
 
 	Updated/fixed packages: bash, bind, busybox, dialog, gpsd,
 	libglib2, libcurl, libmad, lrzsz, midori, module-init-tools,
