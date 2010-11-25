@@ -1,10 +1,10 @@
 config BR2_PACKAGE_DIALOG
-    bool "dialog"
-    select BR2_PACKAGE_NCURSES
-    help
-	dialog - display dialog boxes from shell scripts
+	bool "dialog"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  dialog - display dialog boxes from shell scripts
 
-	This application provides a method of displaying several different
-	types of dialog boxes from shell scripts.  This allows a developer
-	of a script to interact with the user in a much friendlier manner.
-
+	  This application provides a method of displaying several different
+	  types of dialog boxes from shell scripts.  This allows a developer
+	  of a script to interact with the user in a much friendlier manner.

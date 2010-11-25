@@ -4,10 +4,10 @@
 
 	Add support for LEON Sparc architecture variants.
 
-	Updated/fixed packages: bash, bind, busybox, gpsd, libglib2,
-	libcurl, libmad, lrzsz, midori, module-init-tools, mtd-utils,
-	openssh, openssl, pciutils, php, qt, sqlite, sysstat, webkit,
-	zlib
+	Updated/fixed packages: bash, bind, busybox, dialog, gpsd,
+	libglib2, libcurl, libmad, lrzsz, midori, module-init-tools,
+	mtd-utils, openssh, openssl, pciutils, php, qt, sqlite,
+	sysstat, webkit, zlib
 
 	Issues resolved (http://bugs.uclibc.org):
 
