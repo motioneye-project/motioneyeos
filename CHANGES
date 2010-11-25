@@ -1,8 +1,12 @@
 2010.11, Not yet released:
 
-	 Fixes all over the tree.
+	Fixes all over the tree.
 
 	Updated/fixed packages: qt, xserver-xorg
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#2857: OBJDUMP definition is missing from TARGET_CONFIGURE_OPTS
 
 2010.11-rc2, Released November 25th, 2010:
 
