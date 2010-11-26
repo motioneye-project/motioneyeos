@@ -1597,7 +1597,30 @@ LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
     <h2 id="faq">Frequently asked questions</h2>
 
     <ul>
+      <li><a href="#faq-boot-hangs">The boot hangs
+      after <code>Starting network...</code></a></li>
     </ul>
+
+    <h3 id="faq-boot-hangs">The boot hangs after <code>Starting
+    network...</code></h3>
+
+    <p>If the boot process seems to hang after the following messages
+    (messages not necessarly exactly similar, depending on the list of
+    packages selected):</p>
+
+    <pre>Freeing init memory: 3972K
+Initializing random number generator... done.
+Starting network...
+Starting dropbear sshd: generating rsa key... generating dsa key... OK</pre>
+
+    <p>then it means that your system is running, but didn't start a
+    shell on the serial console. In order to have the system start a
+    shell on your serial console, you have to go in the Buildroot
+    configuration, <code>Target options</code>, enable <code>Generic
+    serial port config</code>, and select the serial port and speed
+    you would like to use for the shell. This will automatically tune
+    the <code>/etc/inittab</code> file of the generated system so that
+    a shell starts on the correct serial port.</p>
 
     <h2 id="links">Resources</h2>
 
