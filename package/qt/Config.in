@@ -336,7 +336,6 @@ config BR2_PACKAGE_QT_NETWORK
 config BR2_PACKAGE_QT_WEBKIT
 	bool "WebKit Module"
 	depends on BR2_PACKAGE_QT_NETWORK
-	select BR2_PACKAGE_QT_JAVASCRIPTCORE
 	help
 	  Build the WebKit module.
 	  If unsure, say n.
@@ -366,7 +365,6 @@ config BR2_PACKAGE_QT_OPENSSL
 config BR2_PACKAGE_QT_SCRIPT
 	bool "Script Module"
 	default y
-	select BR2_PACKAGE_QT_JAVASCRIPTCORE
 	help
 	  Build the Qt Script module.
 	  if unsure, say y.
