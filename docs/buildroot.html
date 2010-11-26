@@ -1599,6 +1599,8 @@ LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
     <ul>
       <li><a href="#faq-boot-hangs">The boot hangs
       after <code>Starting network...</code></a></li>
+      <li><a href="#module-init-tools-doesnt-build">module-init-tools
+      fails to build with <code>cannot find -lc</code></a></li>
     </ul>
 
     <h3 id="faq-boot-hangs">The boot hangs after <code>Starting
@@ -1621,6 +1623,19 @@ Starting dropbear sshd: generating rsa key... generating dsa key... OK</pre>
     you would like to use for the shell. This will automatically tune
     the <code>/etc/inittab</code> file of the generated system so that
     a shell starts on the correct serial port.</p>
+
+    <h3 id="module-init-tools-doesnt-build">module-init-tools
+      fails to build with <code>cannot find -lc</code></h3>
+
+    <p>If the build of <i>module-init-tools</i> for the host fails
+    with:</p>
+
+    <pre>/usr/bin/ld: cannot find -lc </pre>
+
+    <p>then probably you are running a Fedora (or similar)
+    distribution, and you should install the <code>glibc-static</code>
+    package. This is because the <i>module-init-tools</i> build
+    process wants to link statically against the C library.</p>
 
     <h2 id="links">Resources</h2>
 
