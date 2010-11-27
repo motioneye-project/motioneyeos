@@ -335,10 +335,15 @@ config BR2_PACKAGE_QT_NETWORK
 
 config BR2_PACKAGE_QT_WEBKIT
 	bool "WebKit Module"
+	depends on BR2_PACKAGE_QT_SHARED
+	depends on BR2_PACKAGE_QT_GUI_MODULE
 	depends on BR2_PACKAGE_QT_NETWORK
 	help
 	  Build the WebKit module.
 	  If unsure, say n.
+
+comment "WebKit needs shared library/gui/network support"
+	depends on !(BR2_PACKAGE_QT_SHARED && BR2_PACKAGE_QT_GUI_MODULE && BR2_PACKAGE_QT_NETWORK)
 
 config BR2_PACKAGE_QT_JAVASCRIPTCORE
 	bool "JavaScriptCore JIT compiler"
