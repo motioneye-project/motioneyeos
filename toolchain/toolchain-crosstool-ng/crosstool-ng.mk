@@ -76,6 +76,8 @@ $(STAMP_DIR)/ct-ng-toolchain-installed: $(STAMP_DIR)/ct-ng-toolchain-built
 
 #-----------------------------------------------------------------------------
 # Building the toolchain
+# Note: $(STAMP_DIR)/ct-ng-toolchain-built can have more dependencies,
+#       depending on the selected C library. Those deps are added later
 
 $(STAMP_DIR)/ct-ng-toolchain-built: $(CTNG_DIR)/.config
 	$(Q)$(call ctng,build.$(BR2_JLEVEL))
@@ -187,8 +189,18 @@ CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_SYSROOT_DIR_PREFIX)=.*:\1="":;
 #--------------
 # uClibc specific options
 ifeq ($(BR2_TOOLCHAIN_CTNG_uClibc),y)
-CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_LIBC_UCLIBC_CONFIG_FILE)=.*:\1="$(CTNG_UCLIBC_CONFIG_FILE)":;
-endif
+
+# Instruct CT-NG's .config where to find the uClibc's .config
+CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_LIBC_UCLIBC_CONFIG_FILE)=.*:\1="$(CTNG_DIR)/libc.config":;
+
+# And add this to the toolchain build dependency
+$(STAMP_DIR)/ct-ng-toolchain-built: $(CTNG_DIR)/libc.config
+
+# And here is how we get this uClibc's .config
+$(CTNG_DIR)/libc.config: $(CTNG_UCLIBC_CONFIG_FILE)
+	$(Q)cp -f $< $@
+
+endif # LIBC is uClibc
 
 #--------------
 # Small functions to shoe-horn the above into crosstool-NG's .config
