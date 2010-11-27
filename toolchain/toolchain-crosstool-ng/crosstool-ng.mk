@@ -93,8 +93,10 @@ $(STAMP_DIR)/ct-ng-toolchain-built: $(CTNG_DIR)/.config
 # - first one for non-path options
 # - second for path options (because they have no prompt, they
 #                            always get set to the default value)
+# - third for C library .config (if it has one, eg. uClibc)
 CTNG_FIX_DOT_CONFIG_SED       :=
 CTNG_FIX_DOT_CONFIG_PATHS_SED :=
+CTNG_FIX_DOT_CONFIG_LIBC_SED  :=
 
 #--------------
 # A few generic functions
@@ -228,8 +230,12 @@ CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_LIBC_UCLIBC_CONFIG_FILE)=.*:\1="$(CTNG_D
 $(STAMP_DIR)/ct-ng-toolchain-built: $(CTNG_DIR)/libc.config
 
 # And here is how we get this uClibc's .config
-$(CTNG_DIR)/libc.config: $(CTNG_UCLIBC_CONFIG_FILE)
+$(CTNG_DIR)/libc.config: $(CTNG_UCLIBC_CONFIG_FILE) $(CONFIG_DIR)/.config
+	-$(Q)cp -a $@ $@.timestamp
 	$(Q)cp -f $< $@
+	$(call ctng-fix-dot-config,$@,$(CTNG_FIX_DOT_CONFIG_LIBC_SED))
+	$(call ctng-check-config-changed,$@,$@.timestamp)
+	$(Q)rm -f $@.timestamp
 
 endif # LIBC is uClibc
 
