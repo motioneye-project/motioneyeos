@@ -85,6 +85,15 @@ $(STAMP_DIR)/ct-ng-toolchain-built: $(CTNG_DIR)/.config
 #-----------------------------------------------------------------------------
 # Configuring the toolchain
 
+#--------------
+# We push BR options down to CT-NG, munging the default configuration
+# with sed expressions.
+# - first one for non-path options
+# - second for path options (because they have no prompt, they
+#                            always get set to the default value)
+CTNG_FIX_DOT_CONFIG_SED       :=
+CTNG_FIX_DOT_CONFIG_PATHS_SED :=
+
 # Note: a lot of the following tricks would become unneeded if one day
 # buildroot and crosstool-NG had matching options, especially for the
 # target description: arch name, bitness, endianness...
@@ -151,8 +160,6 @@ endif
 # with BR2 config options.
 # Known missing: arch variant & options, floating point (HW/SW), uClibc/eglibc config...
 #
-
-CTNG_FIX_DOT_CONFIG_SED :=
 CTNG_FIX_DOT_CONFIG_SED += s:^(CT_INSTALL_DIR_RO)=y:\# \1 is not set:;
 CTNG_FIX_DOT_CONFIG_SED += s:^(|\# )(CT_ARCH_[BL]E).*:\# \2 is not set:;
 CTNG_FIX_DOT_CONFIG_SED += s:^\# (CT_ARCH_$(CTNG_ENDIAN)) is not set:\1=y:;
@@ -173,10 +180,12 @@ endif
 
 #--------------
 # And the specials for paths
-CTNG_FIX_DOT_CONFIG_PATHS_SED :=
 CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_PREFIX_DIR)=.*:\1="$(TOOLCHAIN_DIR)":;
 CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_LOCAL_TARBALLS_DIR)=.*:\1="$(DL_DIR)":;
 CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_SYSROOT_DIR_PREFIX)=.*:\1="":;
+
+#--------------
+# uClibc specific options
 ifeq ($(BR2_TOOLCHAIN_CTNG_uClibc),y)
 CTNG_FIX_DOT_CONFIG_PATHS_SED += s:^(CT_LIBC_UCLIBC_CONFIG_FILE)=.*:\1="$(CTNG_UCLIBC_CONFIG_FILE)":;
 endif
@@ -230,8 +239,13 @@ endef
 # Depends on top-level .config because it has options we have to shoe-horn
 # into crosstool-NG's .config
 # Only copy the original .config file if we don't have one already
+# We need to call oldconfig twice in a row to ensure the options
+# are correctly set ( eg. if an option is new, then the initial sed
+# can't do anything about it ) Ideally, this should go in oldconfig
+# itself, but it's much easier to handle here.
 $(CTNG_DIR)/.config: $(CTNG_CONFIG_FILE) $(CTNG_DIR)/ct-ng $(CONFIG_DIR)/.config
 	$(Q)[ -f $@ ] && cp -a $@ $@.timestamp || cp -f $< $@
+	$(call ctng-oldconfig,$@)
 	$(call ctng-oldconfig,$@)
 	$(call ctng-check-config-changed,$@,$@.timestamp)
 	$(Q)rm -f $@.timestamp
