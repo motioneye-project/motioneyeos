@@ -267,8 +267,16 @@ $(CTNG_DIR)/.patched: $(CTNG_DIR)/.unpacked
 	                              \*.patch.$(ARCH)
 	$(Q)touch $@
 
+# Use order-only dependencies on host-* as they
+# are virtual targets with no rules, and so are
+# considered always remade. But we do not want
+# to reconfigure and rebuild ct-ng every time
+# we need to run it...
+$(CTNG_DIR)/.configured: | host-gawk        \
+                           host-automake
+
 $(CTNG_DIR)/.configured: $(CTNG_DIR)/.patched
-	$(Q)cd $(CTNG_DIR) && ./configure --local
+	$(Q)cd $(CTNG_DIR) && PATH=$(HOST_PATH) ./configure --local
 	$(Q)touch $@
 
 $(CTNG_DIR)/ct-ng: $(CTNG_DIR)/.configured
