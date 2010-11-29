@@ -263,11 +263,13 @@ config BR2_x86_barcelona
 config BR2_x86_geode
 	bool "geode"
 config BR2_x86_c3
-	bool "cyrix 3 (MMX + 3dNOW!)"
+	bool "Via/Cyrix C3 (Samuel/Ezra cores)"
+config BR2_x86_c32
+	bool "Via C3-2 (Nehemiah cores)"
 config BR2_x86_winchip_c6
-	bool "IDT winchip C6 (i486 + slow MMX)"
+	bool "IDT Winchip C6"
 config BR2_x86_winchip2
-	bool "IDT winchip2 (i486 +MMX +SSE)"
+	bool "IDT Winchip 2"
 endchoice
 
 choice
@@ -447,6 +449,10 @@ config BR2_ARCH
 	default "i586"		if BR2_x86_i586
 	default "i586"		if BR2_x86_pentium_mmx
 	default "i586"		if BR2_x86_geode
+	default "i586"		if BR2_x86_c3
+	default "i686"		if BR2_x86_c32
+	default "i586"		if BR2_x86_winchip_c6
+	default "i586"		if BR2_x86_winchip2
 	default "i686"		if BR2_x86_i686
 	default "i686"		if BR2_x86_pentium2
 	default "i686"		if BR2_x86_pentium3
@@ -510,6 +516,7 @@ config BR2_GCC_TARGET_TUNE
 	default winchip-c6	if BR2_x86_winchip_c6
 	default winchip2	if BR2_x86_winchip2
 	default c3		if BR2_x86_c3
+	default c3-2		if BR2_x86_c32
 	default geode		if BR2_x86_geode
 	default generic		if BR2_x86_64_generic
 	default nocona		if BR2_x86_64_nocona
@@ -623,6 +630,7 @@ config BR2_GCC_TARGET_ARCH
 	default winchip-c6	if BR2_x86_winchip_c6
 	default winchip2	if BR2_x86_winchip2
 	default c3		if BR2_x86_c3
+	default c3-2		if BR2_x86_c32
 	default geode		if BR2_x86_geode
 	default armv4t		if BR2_arm7tdmi
 	default armv3		if BR2_arm610
