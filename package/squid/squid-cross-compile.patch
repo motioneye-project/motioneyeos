@@ -19,13 +19,21 @@ diff -Nura squid-3.1.8.orig/configure.in squid-3.1.8/configure.in
  
  dnl Select digest auth scheme helpers to build
  if test -n "$AUTH_MODULE_digest"; then
-@@ -2115,6 +2115,10 @@
+@@ -2115,6 +2115,18 @@
  	;;
  esac
  
 +dnl Define CXX_FOR_BUILD
 +CXX_FOR_BUILD="$CXX_FOR_BUILD"
 +AC_SUBST(CXX_FOR_BUILD)
++
++dnl Define CXXFLAGS_FOR_BUILD
++CXXFLAGS_FOR_BUILD="$CXXFLAGS_FOR_BUILD"
++AC_SUBST(CXXFLAGS_FOR_BUILD)
++
++dnl Define LDFLAGS_FOR_BUILD
++LDFLAGS_FOR_BUILD="$LDFLAGS_FOR_BUILD"
++AC_SUBST(LDFLAGS_FOR_BUILD)
 +
  dnl Check for programs
  AC_PROG_CPP
@@ -47,7 +55,7 @@ diff -Nura squid-3.1.8.orig/src/Makefile.am squid-3.1.8/src/Makefile.am
  	true
  
 +cf_gen$(EXEEXT): $(cf_gen_OBJECTS) $(cf_gen_DEPENDENCIES)
-+	$(CXX_FOR_BUILD) -o $@ $(srcdir)/cf_gen.cc \
++	$(CXX_FOR_BUILD) $(CXXFLAGS_FOR_BUILD) $(LDFLAGS_FOR_BUILD) -o $@ $(srcdir)/cf_gen.cc \
 +		$(top_srcdir)/lib/util.c \
 +		$(top_srcdir)/compat/assert.cc \
 +		$(cf_gen_LDADD) $(LIBS) ${INCLUDES}
