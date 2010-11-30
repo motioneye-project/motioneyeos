@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBSIGC
+	bool "libsigc++"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  libsigc++ implements a typesafe callback system for standard C++.
+	  It allows you to define signals and to connect those signals to
+	  any callback function, either global or a member function,
+	  regardless of whether it is static or virtual.
+
+	  http://libsigc.sourceforge.net/
+
+comment "libsigc++ requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP

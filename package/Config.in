@@ -329,6 +329,7 @@ source "package/libelf/Config.in"
 source "package/libevent/Config.in"
 source "package/libglib2/Config.in"
 source "package/liboil/Config.in"
+source "package/libsigc/Config.in"
 source "package/startup-notification/Config.in"
 endmenu
 
