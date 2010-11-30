@@ -421,7 +421,7 @@ endif
 	find $(TARGET_DIR) -type f -perm +111 '!' -name 'libthread_db*.so*' | \
 		xargs $(STRIPCMD) 2>/dev/null || true
 	find $(TARGET_DIR)/lib/modules -type f -name '*.ko' | \
-		xargs -r $(STRIPCMD) $(STRIP_STRIP_UNNEEDED)
+		xargs -r $(KSTRIPCMD) || true
 
 	mkdir -p $(TARGET_DIR)/etc
 	# Mandatory configuration file and auxilliary cache directory
