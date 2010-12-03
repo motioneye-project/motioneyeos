@@ -1,0 +1,118 @@
+diff -urpN busybox-1.18.0/libbb/pw_encrypt_sha.c busybox-1.18.0-sha/libbb/pw_encrypt_sha.c
+--- busybox-1.18.0/libbb/pw_encrypt_sha.c	2010-11-22 21:43:22.000000000 +0100
++++ busybox-1.18.0-sha/libbb/pw_encrypt_sha.c	2010-12-01 13:56:24.372704380 +0100
+@@ -3,7 +3,7 @@
+  */
+ 
+ /* Prefix for optional rounds specification.  */
+-static const char str_rounds[] = "rounds=%u$";
++static const char str_rounds[] ALIGN1 = "rounds=%u$";
+ 
+ /* Maximum salt string length.  */
+ #define SALT_LEN_MAX 16
+@@ -19,8 +19,8 @@ NOINLINE
+ sha_crypt(/*const*/ char *key_data, /*const*/ char *salt_data)
+ {
+ 	void (*sha_begin)(void *ctx) FAST_FUNC;
+-	void (*sha_hash)(const void *buffer, size_t len, void *ctx) FAST_FUNC;
+-	void (*sha_end)(void *resbuf, void *ctx) FAST_FUNC;
++	void (*sha_hash)(void *ctx, const void *buffer, size_t len) FAST_FUNC;
++	void (*sha_end)(void *ctx, void *resbuf) FAST_FUNC;
+ 	int _32or64;
+ 
+ 	char *result, *resptr;
+@@ -103,40 +103,40 @@ sha_crypt(/*const*/ char *key_data, /*co
+ 
+ 	/* Add KEY, SALT.  */
+ 	sha_begin(&ctx);
+-	sha_hash(key_data, key_len, &ctx);
+-	sha_hash(salt_data, salt_len, &ctx);
++	sha_hash(&ctx, key_data, key_len);
++	sha_hash(&ctx, salt_data, salt_len);
+ 
+ 	/* Compute alternate SHA sum with input KEY, SALT, and KEY.
+ 	   The final result will be added to the first context.  */
+ 	sha_begin(&alt_ctx);
+-	sha_hash(key_data, key_len, &alt_ctx);
+-	sha_hash(salt_data, salt_len, &alt_ctx);
+-	sha_hash(key_data, key_len, &alt_ctx);
+-	sha_end(alt_result, &alt_ctx);
++	sha_hash(&alt_ctx, key_data, key_len);
++	sha_hash(&alt_ctx, salt_data, salt_len);
++	sha_hash(&alt_ctx, key_data, key_len);
++	sha_end(&alt_ctx, alt_result);
+ 
+ 	/* Add result of this to the other context.  */
+ 	/* Add for any character in the key one byte of the alternate sum.  */
+ 	for (cnt = key_len; cnt > _32or64; cnt -= _32or64)
+-		sha_hash(alt_result, _32or64, &ctx);
+-	sha_hash(alt_result, cnt, &ctx);
++		sha_hash(&ctx, alt_result, _32or64);
++	sha_hash(&ctx, alt_result, cnt);
+ 
+ 	/* Take the binary representation of the length of the key and for every
+ 	   1 add the alternate sum, for every 0 the key.  */
+ 	for (cnt = key_len; cnt != 0; cnt >>= 1)
+ 		if ((cnt & 1) != 0)
+-			sha_hash(alt_result, _32or64, &ctx);
++			sha_hash(&ctx, alt_result, _32or64);
+ 		else
+-			sha_hash(key_data, key_len, &ctx);
++			sha_hash(&ctx, key_data, key_len);
+ 
+ 	/* Create intermediate result.  */
+-	sha_end(alt_result, &ctx);
++	sha_end(&ctx, alt_result);
+ 
+ 	/* Start computation of P byte sequence.  */
+ 	/* For every character in the password add the entire password.  */
+ 	sha_begin(&alt_ctx);
+ 	for (cnt = 0; cnt < key_len; ++cnt)
+-		sha_hash(key_data, key_len, &alt_ctx);
+-	sha_end(temp_result, &alt_ctx);
++		sha_hash(&alt_ctx, key_data, key_len);
++	sha_end(&alt_ctx, temp_result);
+ 
+ 	/* NB: past this point, raw key_data is not used anymore */
+ 
+@@ -153,8 +153,8 @@ sha_crypt(/*const*/ char *key_data, /*co
+ 	/* For every character in the password add the entire password.  */
+ 	sha_begin(&alt_ctx);
+ 	for (cnt = 0; cnt < 16 + alt_result[0]; ++cnt)
+-		sha_hash(salt_data, salt_len, &alt_ctx);
+-	sha_end(temp_result, &alt_ctx);
++		sha_hash(&alt_ctx, salt_data, salt_len);
++	sha_end(&alt_ctx, temp_result);
+ 
+ 	/* NB: past this point, raw salt_data is not used anymore */
+ 
+@@ -174,22 +174,22 @@ sha_crypt(/*const*/ char *key_data, /*co
+ 
+ 		/* Add key or last result.  */
+ 		if ((cnt & 1) != 0)
+-			sha_hash(p_bytes, key_len, &ctx);
++			sha_hash(&ctx, p_bytes, key_len);
+ 		else
+-			sha_hash(alt_result, _32or64, &ctx);
++			sha_hash(&ctx, alt_result, _32or64);
+ 		/* Add salt for numbers not divisible by 3.  */
+ 		if (cnt % 3 != 0)
+-			sha_hash(s_bytes, salt_len, &ctx);
++			sha_hash(&ctx, s_bytes, salt_len);
+ 		/* Add key for numbers not divisible by 7.  */
+ 		if (cnt % 7 != 0)
+-			sha_hash(p_bytes, key_len, &ctx);
++			sha_hash(&ctx, p_bytes, key_len);
+ 		/* Add key or last result.  */
+ 		if ((cnt & 1) != 0)
+-			sha_hash(alt_result, _32or64, &ctx);
++			sha_hash(&ctx, alt_result, _32or64);
+ 		else
+-			sha_hash(p_bytes, key_len, &ctx);
++			sha_hash(&ctx, p_bytes, key_len);
+ 
+-		sha_end(alt_result, &ctx);
++		sha_end(&ctx, alt_result);
+ 	}
+ 
+ 	/* Append encrypted password to result buffer */

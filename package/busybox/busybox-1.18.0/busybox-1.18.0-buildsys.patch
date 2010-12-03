@@ -1,0 +1,21 @@
+diff -urpN busybox-1.18.0/scripts/gen_build_files.sh busybox-1.18.0-buildsys/scripts/gen_build_files.sh
+--- busybox-1.18.0/scripts/gen_build_files.sh	2010-11-22 21:43:22.000000000 +0100
++++ busybox-1.18.0-buildsys/scripts/gen_build_files.sh	2010-11-24 14:59:47.732712663 +0100
+@@ -18,14 +18,14 @@ generate()
+ 	local src="$1" dst="$2" header="$3" insert="$4"
+ 	#chk "${dst}"
+ 	(
+-		echo "${header}"
++		printf "%s\n" "${header}"
+ 		if grep -qs '^INSERT$' "${src}"; then
+ 			sed -n '1,/^INSERT$/p' "${src}"
+-			echo "${insert}"
++			printf "%s\n" "${insert}"
+ 			sed -n '/^INSERT$/,$p' "${src}"
+ 		else
+ 			if [ -n "${insert}" ]; then
+-				echo "ERROR: INSERT line missing in: ${src}" 1>&2
++				printf "%s\n" "ERROR: INSERT line missing in: ${src}" 1>&2
+ 			fi
+ 			cat "${src}"
+ 		fi
