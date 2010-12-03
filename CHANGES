@@ -3,8 +3,8 @@
 	Ccache support reworked. Now used for both host and target
 	compilation, and cache is stored in ~/.buildroot-ccache.
 
-	Updated/fixed packages: busybox, cloop, m4, openssh, qt,
-	usbutils, xz
+	Updated/fixed packages: busybox, cloop, m4, openssh, openssl,
+	qt, usbutils, xz
 
 	New packages: dhrystone, lsuio, rsh-redone, whetstone
 
