@@ -51,9 +51,8 @@ endif
 $(LINUX26_DIR)/.stamp_downloaded:
 	@$(call MESSAGE,"Downloading kernel")
 	$(call DOWNLOAD,$(LINUX26_SITE),$(LINUX26_SOURCE))
-ifneq ($(filter ftp://% http://%,$(LINUX26_PATCH)),)
-	$(call DOWNLOAD,$(dir $(LINUX26_PATCH)),$(notdir $(LINUX26_PATCH)))
-endif
+	$(foreach patch,$(filter ftp://% http://%,$(LINUX26_PATCH)),\
+		$(call DOWNLOAD,$(dir $(patch)),$(notdir $(patch)))$(sep))
 	mkdir -p $(@D)
 	touch $@
 
@@ -68,15 +67,15 @@ $(LINUX26_DIR)/.stamp_extracted: $(LINUX26_DIR)/.stamp_downloaded
 # Patch
 $(LINUX26_DIR)/.stamp_patched: $(LINUX26_DIR)/.stamp_extracted
 	@$(call MESSAGE,"Patching kernel")
-ifneq ($(LINUX26_PATCH),)
-ifneq ($(filter ftp://% http://%,$(LINUX26_PATCH)),)
-	toolchain/patch-kernel.sh $(@D) $(DL_DIR) $(notdir $(LINUX26_PATCH))
-else ifeq ($(shell test -d $(LINUX26_PATCH) && echo "dir"),dir)
-	toolchain/patch-kernel.sh $(@D) $(LINUX26_PATCH) linux-\*.patch
-else
-	toolchain/patch-kernel.sh $(@D) $(dir $(LINUX26_PATCH)) $(notdir $(LINUX26_PATCH))
-endif
-endif
+	for p in $(LINUX26_PATCH) ; do \
+		if echo $$p | grep -q -E "^ftp://|^http://" ; then \
+			toolchain/patch-kernel.sh $(@D) $(DL_DIR) `basename $$p` ; \
+		elif test -d $$p ; then \
+			toolchain/patch-kernel.sh $(@D) $$p linux-\*.patch ; \
+		else \
+			toolchain/patch-kernel.sh $(@D) `dirname $$p` `basename $$p` ; \
+		fi \
+	done
 	$(Q)touch $@
 
 
