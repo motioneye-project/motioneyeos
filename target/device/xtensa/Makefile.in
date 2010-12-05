@@ -1,7 +1,0 @@
-ifeq ($(BR2_xtensa),y)
-
-ifeq ($(strip $(BR2_TARGET_XTENSA_XTAV60)),y)
-TARGET_SKELETON_PATCH:=target/device/xtensa
-endif
-
-endif

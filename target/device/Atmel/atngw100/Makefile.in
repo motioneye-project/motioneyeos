@@ -1,4 +1,0 @@
-ifeq ($(BR2_TARGET_AVR32_ATNGW100),y)
-UBOOT_BOARD_NAME:=atngw100
-TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
-endif

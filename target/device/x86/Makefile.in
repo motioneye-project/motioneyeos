@@ -1,4 +1,0 @@
-ifeq ($(BR2_TARGET_X86),y)
-include target/device/x86/*/Makefile.in
-endif
-

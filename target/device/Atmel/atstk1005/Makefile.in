@@ -1,3 +1,0 @@
-ifeq ($(strip $(BR2_TARGET_AVR32_ATSTK1005)),y)
-TARGET_SKELETON=$(BOARD_PATH)/target_skeleton
-endif

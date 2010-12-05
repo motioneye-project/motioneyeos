@@ -1,6 +1,0 @@
-ifeq ($(BR2_TARGET_VALKA),y)
-VALKA_PATH= target/device/valka
-
-TARGET_SKELETON=$(VALKA_PATH)/target_skeleton
-KERNEL_HEADERS_PATCH_DIR=target/device/Atmel/arch-avr32/kernel-headers-2.6.28.2
-endif

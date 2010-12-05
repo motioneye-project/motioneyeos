@@ -1,3 +1,0 @@
-BOARD_NAME=$(call qstrip,$(BR2_BOARD_NAME))
-BOARD_PATH=$(call qstrip,$(BR2_BOARD_PATH))
-
