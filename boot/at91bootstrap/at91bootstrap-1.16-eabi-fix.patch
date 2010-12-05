@@ -1,0 +1,334 @@
+When using an EABI toolchain, the default compilation generates
+references to __aeabi_unwind_cpp_pr0(). This symbol is defined in
+libgcc, but we don't want to use it for a bootloader.
+
+Therefore, this patch passes some additional CFLAGS to disable the
+generation of such references by avoiding unwind tables, exceptions,
+etc.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ board/at91cap9adk/dataflash/Makefile      |    2 +-
+ board/at91cap9adk/norflash/Makefile       |    2 +-
+ board/at91cap9stk/nandflash/Makefile      |    2 +-
+ board/at91sam9260ek/dataflash/Makefile    |    2 +-
+ board/at91sam9260ek/nandflash/Makefile    |    2 +-
+ board/at91sam9261ek/dataflash/Makefile    |    2 +-
+ board/at91sam9261ek/nandflash/Makefile    |    2 +-
+ board/at91sam9263ek/dataflash/Makefile    |    2 +-
+ board/at91sam9263ek/nandflash/Makefile    |    2 +-
+ board/at91sam9g10ek/dataflash/Makefile    |    2 +-
+ board/at91sam9g10ek/nandflash/Makefile    |    2 +-
+ board/at91sam9g20ek/dataflash/Makefile    |    2 +-
+ board/at91sam9g20ek/nandflash/Makefile    |    2 +-
+ board/at91sam9g45ekes/nandflash/Makefile  |    2 +-
+ board/at91sam9m10ekes/dataflash/Makefile  |    2 +-
+ board/at91sam9m10ekes/nandflash/Makefile  |    2 +-
+ board/at91sam9m10g45ek/dataflash/Makefile |    2 +-
+ board/at91sam9m10g45ek/nandflash/Makefile |    2 +-
+ board/at91sam9rlek/dataflash/Makefile     |    2 +-
+ board/at91sam9rlek/nandflash/Makefile     |    2 +-
+ board/at91sam9xeek/dataflash/Makefile     |    2 +-
+ board/at91sam9xeek/nandflash/Makefile     |    2 +-
+ lib/Makefile                              |    2 +-
+ 23 files changed, 23 insertions(+), 23 deletions(-)
+
+Index: Bootstrap-v1.16/board/at91cap9adk/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91cap9adk/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91cap9adk/dataflash/Makefile
+@@ -34,7 +34,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91cap9adk/norflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91cap9adk/norflash/Makefile
++++ Bootstrap-v1.16/board/at91cap9adk/norflash/Makefile
+@@ -34,7 +34,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91cap9stk/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91cap9stk/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91cap9stk/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -D$(BOARD) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ 
+Index: Bootstrap-v1.16/board/at91sam9260ek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9260ek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9260ek/dataflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9260ek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9260ek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9260ek/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9261ek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9261ek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9261ek/dataflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9261ek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9261ek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9261ek/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9263ek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9263ek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9263ek/dataflash/Makefile
+@@ -34,7 +34,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9263ek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9263ek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9263ek/nandflash/Makefile
+@@ -33,7 +33,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -O0 -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -O0 -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9g10ek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9g10ek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9g10ek/dataflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9g10ek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9g10ek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9g10ek/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9g20ek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9g20ek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9g20ek/dataflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9g20ek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9g20ek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9g20ek/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9g45ekes/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9g45ekes/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9g45ekes/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -O2 -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9m10ekes/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9m10ekes/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9m10ekes/dataflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -O2 -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9m10ekes/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9m10ekes/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9m10ekes/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -O2 -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9m10g45ek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9m10g45ek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9m10g45ek/dataflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -O2 -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9m10g45ek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9m10g45ek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9m10g45ek/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -O2 -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -O2 -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9rlek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9rlek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9rlek/dataflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9rlek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9rlek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9rlek/nandflash/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9xeek/dataflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9xeek/dataflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9xeek/dataflash/Makefile
+@@ -38,7 +38,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/board/at91sam9xeek/nandflash/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/board/at91sam9xeek/nandflash/Makefile
++++ Bootstrap-v1.16/board/at91sam9xeek/nandflash/Makefile
+@@ -38,7 +38,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm9 -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm9 -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
+Index: Bootstrap-v1.16/lib/Makefile
+===================================================================
+--- Bootstrap-v1.16.orig/lib/Makefile
++++ Bootstrap-v1.16/lib/Makefile
+@@ -37,7 +37,7 @@
+ SIZE=$(CROSS_COMPILE)size
+ OBJCOPY=$(CROSS_COMPILE)objcopy
+ OBJDUMP=$(CROSS_COMPILE)objdump
+-CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL)
++CCFLAGS=-g -mcpu=arm926ej-s -Os -Wall -D$(TARGET) -I$(INCL) -fno-exceptions -fno-unwind-tables -fno-asynchronous-unwind-tables
+ ASFLAGS=-g -mcpu=arm926ej-s -c -Os -Wall -D$(TARGET) -I$(INCL) -DTOP_OF_MEM=$(TOP_OF_MEMORY)
+ 
+ # Linker flags.
