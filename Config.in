@@ -11,7 +11,6 @@ config BR2_VERSION
 	option env="BR2_VERSION_FULL"
 
 source "target/Config.in.arch"
-source "target/device/Config.in"
 
 menu "Build options"
 
