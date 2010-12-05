@@ -65,7 +65,4 @@ config BR2_DEBIAN_MIRROR
 	  Usually, just add your country code like XX here:
 	  http://ftp.XX.debian.org
 
-if BR2_TARGET_ATMEL
-source	"target/device/Atmel/Config.in.mirrors"
-endif
 endmenu
