@@ -129,6 +129,10 @@ config BR2_LINUX_KERNEL_VMLINUX_BIN
 	bool "vmlinux.bin"
 	depends on BR2_mips || BR2_mipsel || BR2_sh || BR2_sh64
 
+config BR2_LINUX_KERNEL_VMLINUX
+	bool "vmlinux"
+	depends on BR2_mips || BR2_mipsel
+
 endchoice
 
 endif # BR2_LINUX_KERNEL
