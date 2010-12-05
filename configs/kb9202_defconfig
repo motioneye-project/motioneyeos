@@ -643,6 +643,8 @@ BR2_GAMES=y
 # filesystem for target device
 #
 BR2_ROOTFS_DEVICE_TABLE="target/device/KwikByte/kb9202/device_table.txt"
+BR2_ROOTFS_SKELETON_CUSTOM=y
+BR2_ROOTFS_SKELETON_CUSTOM_PATH="target/device/KwikByte/kb9202/target_skeleton"
 # BR2_TARGET_ROOTFS_CRAMFS is not set
 # BR2_TARGET_ROOTFS_CLOOP is not set
 # BR2_TARGET_ROOTFS_EXT2 is not set
