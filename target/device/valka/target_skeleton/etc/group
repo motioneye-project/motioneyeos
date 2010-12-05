@@ -1,4 +1,0 @@
-wheel::0:root
-dbus:x:81:
-valka:x:500:
-nogroup::65534:

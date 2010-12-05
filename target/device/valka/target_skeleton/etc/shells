@@ -1,5 +1,0 @@
-# /etc/shells: valid login shells
-/bin/ash
-/bin/sh
-/bin/bash
-/usr/bin/screen
