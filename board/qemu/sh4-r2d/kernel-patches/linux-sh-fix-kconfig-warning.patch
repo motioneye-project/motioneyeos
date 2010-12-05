@@ -1,0 +1,13 @@
+diff --git a/arch/sh/Kconfig b/arch/sh/Kconfig
+index 33990fa..06645b6 100644
+--- a/arch/sh/Kconfig
++++ b/arch/sh/Kconfig
+@@ -45,7 +45,7 @@ config SUPERH32
+ 	select HAVE_ARCH_KGDB
+ 	select HAVE_HW_BREAKPOINT
+ 	select HAVE_MIXED_BREAKPOINTS_REGS
+-	select PERF_EVENTS if HAVE_HW_BREAKPOINT
++	select PERF_EVENTS
+ 	select ARCH_HIBERNATION_POSSIBLE if MMU
+ 
+ config SUPERH64

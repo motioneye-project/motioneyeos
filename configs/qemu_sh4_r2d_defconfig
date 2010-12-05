@@ -1,0 +1,17 @@
+# Architecture
+BR2_sh=y
+BR2_sh4=y
+
+# The kernel wants to use the -m4-nofpu option to make sure that it
+# doesn't use floating point operations.
+BR2_GCC_VERSION_4_5_X=y
+BR2_EXTRA_GCC_CONFIG_OPTIONS="--with-multilib-list=m4,m4-nofpu"
+
+# Linux kernel
+BR2_LINUX_KERNEL=y
+BR2_LINUX_KERNEL_CUSTOM_VERSION=y
+BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="2.6.36"
+BR2_LINUX_KERNEL_PATCH="board/qemu/sh4-r2d/kernel-patches/"
+BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG=y
+BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE="board/qemu/sh4-r2d/linux-2.6.36.config"
+BR2_LINUX_KERNEL_ZIMAGE=y
