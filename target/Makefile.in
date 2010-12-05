@@ -4,5 +4,3 @@ include target/generic/Makefile.in
 # this eventually adds the kernel target to TARGETS:
 include target/device/Makefile.in
 include target/xtensa/Makefile.in
-
-include target/device/Makefile.in.linux
