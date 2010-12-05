@@ -1,4 +1,0 @@
-# /etc/fstab: static file system information.
-#
-# <file system>	<mount pt>	<type>		<options>	<dump>	<pass>
-/dev/mtdblock3	/usr		jffs2		defaults	0	0
