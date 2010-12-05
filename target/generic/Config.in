@@ -1,4 +1,4 @@
-if !(BR2_TARGET_ATMEL||BR2_TARGET_KWIKBYTE||BR2_TARGET_VALKA)
+menu "System configuration"
 
 config BR2_TARGET_GENERIC_HOSTNAME
        string "System hostname"
@@ -166,4 +166,4 @@ config BR2_TARGET_GENERIC_GETTY_BAUDRATE
 
 endif # BR2_TARGET_GENERIC_GETTY
 
-endif
+endmenu
