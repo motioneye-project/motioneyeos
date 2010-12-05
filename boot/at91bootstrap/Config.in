@@ -18,22 +18,22 @@ config BR2_TARGET_AT91BOOTSTRAP_BOARD
 
 choice
 	prompt "Boot Memory"
-	default BR2_TARGET_AT91BOOT_DATAFLASH
+	default BR2_TARGET_AT91BOOTSTRAP_DATAFLASH
 	help
 	  Select Chip for which AT91 bootstrap should be built
 
-config BR2_TARGET_AT91BOOT_DATAFLASH
+config BR2_TARGET_AT91BOOTSTRAP_DATAFLASH
 	bool "Data Flash"
 
-config BR2_TARGET_AT91BOOT_NANDFLASH
+config BR2_TARGET_AT91BOOTSTRAP_NANDFLASH
 	bool "NAND Flash"
 
 endchoice
 
 config BR2_TARGET_AT91BOOTSTRAP_MEMORY
 	string
-	default	"dataflash"	if	BR2_TARGET_AT91BOOT_DATAFLASH
-	default	"nandflash"	if	BR2_TARGET_AT91BOOT_NANDFLASH
+	default	"dataflash"	if	BR2_TARGET_AT91BOOTSTRAP_DATAFLASH
+	default	"nandflash"	if	BR2_TARGET_AT91BOOTSTRAP_NANDFLASH
 
 endif
 
