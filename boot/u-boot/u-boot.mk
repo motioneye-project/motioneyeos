@@ -144,7 +144,7 @@ $(BINARIES_DIR)/$(U_BOOT_BIN): $(U_BOOT_DIR)/$(U_BOOT_BIN)
 # uImage.
 $(MKIMAGE): $(U_BOOT_DIR)/.patched
 	mkdir -p $(@D)
-	$(MAKE) -C $(U_BOOT_DIR) tools
+	$(MAKE) -C $(U_BOOT_DIR) CROSS_COMPILE="$(TARGET_CROSS)" ARCH=$(U_BOOT_ARCH) tools
 	cp -dpf $(U_BOOT_DIR)/tools/mkimage $(@D)
 
 # Build manually mkimage for the target
