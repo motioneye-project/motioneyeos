@@ -151,8 +151,6 @@ BR2_DEBIAN_MIRROR="http://ftp.debian.org"
 #
 # Atmel Mirrors
 #
-BR2_ATMEL_MIRROR="ftp://www.at91.com/pub/buildroot"
-BR2_AT91_PATCH_MIRROR="http://maxim.org.za/AT91RM9200/2.6/"
 BR2_STAGING_DIR="$(BASE_DIR)/staging"
 # BR2_FPU_SUFFIX is not set
 BR2_TOPDIR_PREFIX=""
