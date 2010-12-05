@@ -86,7 +86,74 @@ config BR2_STAGING_DIR
 	  Most people will leave this set to the default value of
 	  "$(BASE_DIR)/staging".
 
-source	"target/device/Config.in.mirrors"
+menu "Mirrors and Download locations"
+
+config BR2_PRIMARY_SITE
+	string "Primary download site"
+	default ""
+	help
+	  Primary site to download from. If this option is set then buildroot
+	  will try to download package source first from this site and try the
+	  default if the file is not found.
+	  NOTE: This only works for packages using the Makefile.autotools.in
+
+config BR2_BACKUP_SITE
+	string "Backup download site"
+	default "http://sources.buildroot.net/"
+	help
+	  Backup site to download from. If this option is set then buildroot
+	  will fall back to download package sources from here if the
+	  normal location fails.
+
+config BR2_SOURCEFORGE_MIRROR
+	string "Sourceforge mirror site"
+	default "easynews"
+	help
+	  Sourceforge has a system of mirror sites.  Some sites may be
+	  closer to your location, and sometimes mirror sites go down
+	  and are no longer available.  This option allows you to select
+	  your preferred Sourceforge mirror site.
+
+	  The list of mirrors is available here:
+	  http://prdownloads.sourceforge.net/index-sf.html?download
+
+config BR2_KERNEL_MIRROR
+	string "Kernel.org mirror"
+	default "http://www.kernel.org/pub/"
+	help
+	  kernel.org is mirrored on a number of servers around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Have a look on the kernel.org site for a list of mirrors, then enter
+	  the URL to the base directory.  Examples:
+
+	     http://www.XX.kernel.org/pub (XX = country code)
+	     http://mirror.aarnet.edu.au/pub/ftp.kernel.org
+
+config BR2_GNU_MIRROR
+	string "GNU Software mirror"
+	default "http://ftp.gnu.org/pub/gnu"
+	help
+	  GNU has multiple software mirrors scattered around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Have a look on the gnu.org site for a list of mirrors, then enter
+	  the URL to the base directory.  Examples:
+
+	     http://ftp.gnu.org/pub/gnu
+	     http://mirror.aarnet.edu.au/pub/gnu
+
+config BR2_DEBIAN_MIRROR
+	string "Debian Software mirror"
+	default "http://ftp.debian.org"
+	help
+	  Debian has multiple software mirrors scattered around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Usually, just add your country code like XX here:
+	  http://ftp.XX.debian.org
+
+endmenu
 
 config BR2_JLEVEL
 	int "Number of jobs to run simultaneously"
