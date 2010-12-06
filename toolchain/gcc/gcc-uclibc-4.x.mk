@@ -106,9 +106,9 @@ ifeq ($(BR2_INSTALL_OBJC),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),objc
 endif
 
-GCC_WITH_HOST_GMP=--with-gmp=$(GMP_HOST_DIR)
+GCC_WITH_HOST_GMP = --with-gmp=$(HOST_DIR)/usr
 GCC_WITH_HOST_MPFR=--with-mpfr=$(MPFR_HOST_DIR)
-HOST_SOURCE += host-libgmp-source host-libmpfr-source
+HOST_SOURCE += host-gmp-source host-libmpfr-source
 
 ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
 GCC_WITH_HOST_MPC=--with-mpc=$(MPC_HOST_DIR)
@@ -119,7 +119,7 @@ ifeq ($(BR2_INSTALL_FORTRAN),y)
 GCC_TARGET_LANGUAGES:=$(GCC_TARGET_LANGUAGES),fortran
 #GCC_TARGET_PREREQ+=$(TARGET_DIR)/usr/lib/libmpfr.so $(TARGET_DIR)/usr/lib/libgmp.so
 #GCC_STAGING_PREREQ+=$(TOOLCHAIN_DIR)/mpfr/lib/libmpfr.so
-GCC_WITH_TARGET_GMP=--with-gmp="$(GMP_TARGET_DIR)"
+GCC_WITH_TARGET_GMP = --with-gmp=$(STAGING_DIR)/usr
 GCC_WITH_TARGET_MPFR=--with-mpfr="$(MPFR_TARGET_DIR)"
 ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
 GCC_WITH_TARGET_MPC=--with-mpc="$(MPC_TARGET_DIR)"
