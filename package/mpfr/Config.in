@@ -1,18 +1,9 @@
-config BR2_PACKAGE_LIBMPFR
+config BR2_PACKAGE_MPFR
 	bool "mpfr"
 	default y if BR2_INSTALL_FORTRAN
-	select BR2_PACKAGE_LIBGMP
+	select BR2_PACKAGE_GMP
 	help
 	  C library for multiple-precision floating-point computations
 	  with exact rounding.
 
 	  http://www.mpfr.org/
-
-
-config BR2_PACKAGE_LIBMPFR_HEADERS
-	bool "mpfr headers for target"
-	depends on BR2_PACKAGE_LIBMPFR
-	select BR2_PACKAGE_LIBGMP_HEADERS
-	help
-	  Install the mpfr headers for the target.
-
