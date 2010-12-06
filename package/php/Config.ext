@@ -77,7 +77,7 @@ comment "gettext support requires a toolchain with WCHAR support"
 
 config BR2_PACKAGE_PHP_EXT_GMP
 	bool "gmp"
-	select BR2_PACKAGE_LIBGMP
+	select BR2_PACKAGE_GMP
 	help
 	  GMP support
 

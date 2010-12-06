@@ -89,7 +89,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_GMP),y)
 	PHP_CONF_OPT += --with-gmp=$(STAGING_DIR)/usr
-	PHP_DEPENDENCIES += libgmp
+	PHP_DEPENDENCIES += gmp
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_JSON),y)
