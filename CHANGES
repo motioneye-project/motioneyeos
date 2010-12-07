@@ -5,7 +5,7 @@
 
 	Updated/fixed packages: cloop, m4, openssh, qt, xz
 
-	New packages: lsuio
+	New packages: lsuio, rsh-redone
 
 	Issues resolved (http://bugs.uclibc.org):
 
