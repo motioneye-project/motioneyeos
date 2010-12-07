@@ -29,6 +29,7 @@
       <li><a href="#buildroot_innards">How Buildroot works</a></li>
       <li><a href="#using_toolchain">Using the uClibc toolchain outside Buildroot</a></li>
       <li><a href="#external_toolchain">Use an external toolchain</a></li>
+      <li><a href="#ccache-support">Using <code>ccache</code> in Buildroot</li>
       <li><a href="#downloaded_packages">Location of downloaded packages</a></li>
       <li><a href="#add_packages">Adding new packages to Buildroot</a></li>
       <li><a href="#board_support">Creating your own board support</a></li>
@@ -523,9 +524,8 @@ $(ZLIB_DIR)/libz.a: $(ZLIB_DIR)/.configured
     <ul>
       <li><b>toolchain</b> (in the <code>toolchain/</code> directory) contains
       the Makefiles and associated files for all software related to the
-      cross-compilation toolchain: <code>binutils</code>, <code>ccache</code>,
-      <code>gcc</code>, <code>gdb</code>, <code>kernel-headers</code> and
-      <code>uClibc</code>.</li>
+      cross-compilation toolchain: <code>binutils</code>, <code>gcc</code>,
+      <code>gdb</code>, <code>kernel-headers</code> and <code>uClibc</code>.</li>
 
       <li><b>package</b> (in the <code>package/</code> directory) contains the
       Makefiles and associated files for all user-space tools that Buildroot
@@ -680,6 +680,31 @@ endif
     directory other than <code>output/staging</code> by using the <code>
     Build options -&gt; Toolchain and header file location</code> options.
     This could be useful if the toolchain must be shared with other users.</p>
+
+    <h2 id="ccache-support">Using <code>ccache</code> in Buildroot</h2>
+
+    <p><a href="http://ccache.samba.org">ccache</a> is a compiler
+    cache. It stores the object files resulting from each compilation
+    process, and is able to skip future compilation of the same source
+    file (with same compiler and same arguments) by using the
+    pre-existing object files. When doing almost identical builds from
+    scratch a number of times, it can nicely speed up the build
+    process.</p>
+
+    <p><code>ccache</code> support is integrated in Buildroot. You
+    just have to enable <code>Enable compiler cache</code>
+    in <code>Build options</code>. This will automatically build
+    <code>ccache</code> and use it for every host and target
+    compilation.</p>
+
+    <p>The cache is located
+    in <code>$HOME/.buildroot-ccache</code>. It is stored outside of
+    Buildroot output directory so that it can be shared by separate
+    Buildroot builds. If you want to get rid of the cache, simply
+    remove this directory.</p>
+
+    <p>You can get statistics on the cache (its size, number of hits,
+    misses, etc.) by running <code>make ccache-stats</code>.</p>
 
     <h2 id="downloaded_packages">Location of downloaded packages</h2>
 

@@ -94,6 +94,14 @@ config BR2_JLEVEL
 	help
 	  Number of jobs to run simultaneously
 
+config BR2_CCACHE
+	bool "Enable compiler cache"
+	help
+	  This option will enable the use of ccache, a compiler
+	  cache. It will cache the result of previous builds to speed
+	  up future builds. The cache is stored in
+	  $HOME/.buildroot-ccache.
+
 config BR2_DEPRECATED
 	bool "Show packages that are deprecated or obsolete"
 	help

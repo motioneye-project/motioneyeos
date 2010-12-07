@@ -3,7 +3,6 @@
 # Explicit ordering:
 include toolchain/helpers.mk
 include toolchain/binutils/binutils.mk
-include toolchain/ccache/ccache.mk
 include toolchain/dependencies/dependencies.mk
 include toolchain/elf2flt/elf2flt.mk
 include toolchain/gcc/gcc-uclibc-4.x.mk

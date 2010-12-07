@@ -142,6 +142,14 @@ TARGET_RANLIB   = $(TARGET_CROSS)ranlib
 TARGET_OBJCOPY  = $(TARGET_CROSS)objcopy
 TARGET_OBJDUMP  = $(TARGET_CROSS)objdump
 
+TARGET_CC_NOCCACHE  := $(TARGET_CC)
+TARGET_CXX_NOCCACHE := $(TARGET_CXX)
+
+ifeq ($(BR2_CCACHE),y)
+TARGET_CC  := $(CCACHE) $(TARGET_CC)
+TARGET_CXX := $(CCACHE) $(TARGET_CXX)
+endif
+
 ifeq ($(BR2_STRIP_strip),y)
 STRIP_DISCARD_ALL:=--discard-all
 STRIP_STRIP_UNNEEDED:=--strip-unneeded
@@ -175,7 +183,7 @@ HOST_LDFLAGS  += -L$(HOST_DIR)/lib -L$(HOST_DIR)/usr/lib -Wl,-rpath,$(HOST_DIR)/
 HOST_PATH=$(HOST_DIR)/bin:$(HOST_DIR)/usr/bin:$(PATH)
 
 # hostcc version as an integer - E.G. 4.3.2 => 432
-HOSTCC_VERSION:=$(shell $(HOSTCC) --version | \
+HOSTCC_VERSION:=$(shell $(HOSTCC_NOCCACHE) --version | \
 	sed -n 's/^.* \([0-9]*\)\.\([0-9]*\)\.\([0-9]*\)[ ]*.*$$/\1\2\3/p')
 
 TARGET_CONFIGURE_OPTS=PATH=$(TARGET_PATH) \

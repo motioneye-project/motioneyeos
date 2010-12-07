@@ -1,5 +1,8 @@
 2011.02, Not yet released:
 
+	Ccache support reworked. Now used for both host and target
+	compilation, and cache is stored in ~/.buildroot-ccache.
+
 	Updated/fixed packages: cloop, m4, openssh, xz
 
 	New packages: lsuio

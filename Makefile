@@ -125,10 +125,13 @@ HOSTAS:=as
 endif
 ifndef HOSTCC
 HOSTCC:=gcc
-else
+HOSTCC:=$(shell which $(HOSTCC) || type -p $(HOSTCC) || echo gcc)
+HOSTCC_NOCCACHE:=$(HOSTCC)
 endif
 ifndef HOSTCXX
 HOSTCXX:=g++
+HOSTCXX:=$(shell which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
+HOSTCXX_NOCCACHE:=$(HOSTCXX)
 endif
 ifndef HOSTFC
 HOSTFC:=gfortran
@@ -147,8 +150,6 @@ HOSTNM:=nm
 endif
 HOSTAR:=$(shell which $(HOSTAR) || type -p $(HOSTAR) || echo ar)
 HOSTAS:=$(shell which $(HOSTAS) || type -p $(HOSTAS) || echo as)
-HOSTCC:=$(shell which $(HOSTCC) || type -p $(HOSTCC) || echo gcc)
-HOSTCXX:=$(shell which $(HOSTCXX) || type -p $(HOSTCXX) || echo g++)
 HOSTFC:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo || which g77 || type -p g77 || echo gfortran)
 HOSTCPP:=$(shell which $(HOSTCPP) || type -p $(HOSTCPP) || echo cpp)
 HOSTLD:=$(shell which $(HOSTLD) || type -p $(HOSTLD) || echo ld)
@@ -156,6 +157,7 @@ HOSTLN:=$(shell which $(HOSTLN) || type -p $(HOSTLN) || echo ln)
 HOSTNM:=$(shell which $(HOSTNM) || type -p $(HOSTNM) || echo nm)
 
 export HOSTAR HOSTAS HOSTCC HOSTCXX HOSTFC HOSTLD
+export HOSTCC_NOCCACHE HOSTCXX_NOCCACHE
 
 # bash prints the name of the directory on 'cd <dir>' if CDPATH is
 # set, so unset it here to not cause problems. Notice that the export
@@ -231,10 +233,15 @@ PREFERRED_LIB_FLAGS:=--enable-static --enable-shared
 # along with the packages to build for the target.
 #
 ##############################################################
+
+ifeq ($(BR2_CCACHE),y)
+BASE_TARGETS += host-ccache
+endif
+
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-BASE_TARGETS:=uclibc-configured binutils cross_compiler uclibc-target-utils kernel-headers
+BASE_TARGETS += uclibc-configured binutils cross_compiler uclibc-target-utils kernel-headers
 else
-BASE_TARGETS:=uclibc
+BASE_TARGETS += uclibc
 endif
 TARGETS:=
 
@@ -275,6 +282,13 @@ TOOLCHAIN_DIR=$(BASE_DIR)/toolchain
 TARGET_SKELETON=$(TOPDIR)/fs/skeleton
 
 BR2_DEPENDS_DIR=$(BUILD_DIR)/buildroot-config
+
+ifeq ($(BR2_CCACHE),y)
+CCACHE:=$(HOST_DIR)/usr/bin/ccache
+CCACHE_CACHE_DIR=$(HOME)/.buildroot-ccache
+HOSTCC  := $(CCACHE) $(HOSTCC)
+HOSTCXX := $(CCACHE) $(HOSTCXX)
+endif
 
 include toolchain/Makefile.in
 include package/Makefile.in
@@ -480,7 +494,7 @@ export HOSTCFLAGS
 
 $(BUILD_DIR)/buildroot-config/%onf:
 	mkdir -p $(@D)/lxdialog
-	$(MAKE) CC="$(HOSTCC)" obj=$(@D) -C $(CONFIG) -f Makefile.br $(@F)
+	$(MAKE) CC="$(HOSTCC_NOCCACHE)" HOSTCC="$(HOSTCC_NOCCACHE)" obj=$(@D) -C $(CONFIG) -f Makefile.br $(@F)
 
 COMMON_CONFIG_ENV = \
 	KCONFIG_AUTOCONFIG=$(BUILD_DIR)/buildroot-config/auto.conf \

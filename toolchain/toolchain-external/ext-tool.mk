@@ -62,7 +62,7 @@ endif # ! no threads
 # could select a multilib variant as we want the "main" sysroot, which
 # contains all variants of the C library in the case of multilib
 # toolchains.
-TARGET_CC_NO_SYSROOT=$(filter-out --sysroot=%,$(TARGET_CC))
+TARGET_CC_NO_SYSROOT=$(filter-out --sysroot=%,$(TARGET_CC_NOCCACHE))
 SYSROOT_DIR=$(shell $(TARGET_CC_NO_SYSROOT) -print-sysroot 2>/dev/null)
 ifeq ($(SYSROOT_DIR),)
 SYSROOT_DIR=$(shell readlink -f $$(LANG=C $(TARGET_CC_NO_SYSROOT) -print-file-name=libc.a) |sed -r -e 's:usr/lib/libc\.a::;')
