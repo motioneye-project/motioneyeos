@@ -1,0 +1,19 @@
+config BR2_PACKAGE_IRDA_UTILS
+	bool "irda-utils"
+	help
+	  user space utilities which control the IrDA stack
+
+	  http://irda.sourceforge.net/
+
+if BR2_PACKAGE_IRDA_UTILS
+
+config BR2_PACKAGE_IRDA_UTILS_IRATTACH
+	bool "irattach"
+
+config BR2_PACKAGE_IRDA_UTILS_IRDAPING
+	bool "irdaping"
+
+config BR2_PACKAGE_IRDA_UTILS_IRNETD
+	bool "irnetd"
+
+endif
