@@ -190,6 +190,10 @@ else
 QT_CONFIGURE+= -big-endian
 endif
 
+ifneq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
+QT_CONFIGURE+= -no-gui
+endif
+
 ifeq ($(BR2_PACKAGE_QT_GIF),y)
 QT_CONFIGURE+= -qt-gif
 else

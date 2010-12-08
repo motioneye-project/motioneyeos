@@ -3,9 +3,13 @@
 	Ccache support reworked. Now used for both host and target
 	compilation, and cache is stored in ~/.buildroot-ccache.
 
-	Updated/fixed packages: cloop, m4, openssh, xz
+	Updated/fixed packages: cloop, m4, openssh, qt, xz
 
 	New packages: lsuio
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#2905: Qt: Speed up compilation, if gui-module isn't selected
 
 2010.11, Released November 30th, 2010:
 
