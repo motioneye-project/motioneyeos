@@ -88,7 +88,8 @@ define UDEV_INSTALL_TARGET_CMDS
 		LDFLAGS="-warn-common" \
 		USE_LOG=false USE_SELINUX=false \
 		udevdir=$(UDEV_ROOT) EXTRAS="$(UDEV_BUILD_EXTRAS)" -C $(@D) install
-	$(INSTALL) -m 0755 package/udev/S10udev $(TARGET_DIR)/etc/init.d
+	$(INSTALL) -m 0755 -D package/udev/S10udev $(TARGET_DIR)/etc/init.d/S10udev
+	$(INSTALL) -m 0755 -d $(TARGET_DIR)/etc/udev/rules.d
 	$(INSTALL) -m 0644 $(@D)/etc/udev/frugalware/* $(TARGET_DIR)/etc/udev/rules.d
 	( grep udev_root $(TARGET_DIR)/etc/udev/udev.conf > /dev/null 2>&1 || echo 'udev_root=/dev' >> $(TARGET_DIR)/etc/udev/udev.conf )
 	install -m 0755 -D $(@D)/udevstart $(TARGET_DIR)/sbin/udevstart
