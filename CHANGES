@@ -5,7 +5,7 @@
 
 	Updated/fixed packages: busybox, dbus, cloop, gdk-pixbuf,
 	hostapd, i2c-tools, libconfig, m4, openssh, openssl, qt,
-	udev, usbutils, xz, zlib
+	sdl_sound, udev, usbutils, xz, zlib
 
 	New packages: dhrystone, lsuio, rsh-redone, whetstone
 

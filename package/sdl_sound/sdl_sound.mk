@@ -28,11 +28,12 @@ ifeq ($(BR2_PACKAGE_SPEEX),y)
 SDL_SOUND_DEPENDENCIES += speex
 endif
 
-SDL_SOUND_CONF_OPT:=--with-sdl-prefix=$(STAGING_DIR)/usr \
-		--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
-		--disable-sdltest \
-		--enable-static \
-		--program-prefix=''
+SDL_SOUND_CONF_OPT = \
+	--with-sdl-prefix=$(STAGING_DIR)/usr \
+	--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
+	--disable-sdltest \
+	--enable-static \
+	--program-prefix=''
 
 # enable mmx for newer x86's
 ifeq ($(BR2_i386)$(BR2_x86_i386)$(BR2_x86_i486)$(BR2_x86_i586)$(BR2_x86_pentiumpro)$(BR2_x86_geode),y)
