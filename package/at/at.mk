@@ -20,7 +20,7 @@ AT_CONF_OPT = \
 	SENDMAIL=/usr/sbin/sendmail
 
 define AT_INSTALL_INITSCRIPT
-	$(INSTALL) -m 0755 package/at/S99at $(TARGET_DIR)/etc/init.d/S99at
+	$(INSTALL) -m 0755 -D package/at/S99at $(TARGET_DIR)/etc/init.d/S99at
 endef
 
 AT_POST_INSTALL_TARGET_HOOKS += AT_INSTALL_INITSCRIPT
