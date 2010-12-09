@@ -8,7 +8,7 @@
 	m4, openssh, openssl, pango, qt, rsync, sdl_gfx, sdl_sound,
 	udev, usbutils, xz, zlib
 
-	New packages: dhrystone, lsuio, rsh-redone, whetstone
+	New packages: dhrystone, fbgrab, lsuio, rsh-redone, whetstone
 
 	Issues resolved (http://bugs.uclibc.org):
 
