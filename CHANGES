@@ -4,7 +4,8 @@
 	compilation, and cache is stored in ~/.buildroot-ccache.
 
 	Updated/fixed packages: busybox, dbus, cloop, gdk-pixbuf,
-	libconfig, m4, openssh, openssl, qt, usbutils, xz, zlib
+	hostapd, libconfig, m4, openssh, openssl, qt, usbutils, xz,
+	zlib
 
 	New packages: dhrystone, lsuio, rsh-redone, whetstone
 
