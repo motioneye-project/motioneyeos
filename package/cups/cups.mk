@@ -8,7 +8,7 @@ CUPS_NAME = cups-$(CUPS_VERSION)
 CUPS_DIR = $(BUILD_DIR)/$(CUPS_NAME)
 CUPS_SITE = http://ftp.easysw.com/pub/cups/$(CUPS_VERSION)
 CUPS_SOURCE:=$(CUPS_NAME)-source.tar.bz2
-CUPS_DESTDIR:=$(STAGING_DIR)/usr/lib
+CUPS_DESTDIR = $(STAGING_DIR)/usr/lib
 CUPS_CAT:=$(BZCAT)
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
