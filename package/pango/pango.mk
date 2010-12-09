@@ -55,7 +55,8 @@ else
 endif
 
 define PANGO_INSTALL_INITSCRIPT
-	$(INSTALL) -m 755 package/pango/S25pango $(TARGET_DIR)/etc/init.d/
+	$(INSTALL) -m 755 -D package/pango/S25pango \
+		$(TARGET_DIR)/etc/init.d/S25pango
 endef
 
 PANGO_POST_INSTALL_TARGET_HOOKS += PANGO_INSTALL_INITSCRIPT
