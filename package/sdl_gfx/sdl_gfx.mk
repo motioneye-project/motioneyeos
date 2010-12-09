@@ -12,9 +12,10 @@ SDL_GFX_INSTALL_TARGET:=YES
 
 SDL_GFX_DEPENDENCIES:=sdl
 
-SDL_GFX_CONF_OPT:=--with-sdl-prefix=$(STAGING_DIR)/usr \
-		--disable-sdltest \
-		--enable-static
+SDL_GFX_CONF_OPT = \
+	--with-sdl-prefix=$(STAGING_DIR)/usr \
+	--disable-sdltest \
+	--enable-static
 
 # enable mmx for newer x86's
 ifeq ($(BR2_i386)$(BR2_x86_i386)$(BR2_x86_i486)$(BR2_x86_i586)$(BR2_x86_pentiumpro)$(BR2_x86_geode),y)
