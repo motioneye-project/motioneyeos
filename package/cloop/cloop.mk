@@ -10,8 +10,9 @@ define HOST_CLOOP_BUILD_CMDS
 endef
 
 define HOST_CLOOP_INSTALL_CMDS
- install -m 755 $(@D)/create_compressed_fs $(HOST_DIR)/usr/bin
- install -m 755 $(@D)/extract_compressed_fs $(HOST_DIR)/usr/bin
+	$(INSTALL) -m 0755 -d $(HOST_DIR)/usr/bin
+	$(INSTALL) -m 755 $(@D)/create_compressed_fs $(HOST_DIR)/usr/bin
+	$(INSTALL) -m 755 $(@D)/extract_compressed_fs $(HOST_DIR)/usr/bin
 endef
 
 $(eval $(call GENTARGETS,package,cloop))
