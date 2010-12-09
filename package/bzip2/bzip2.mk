@@ -39,7 +39,9 @@ define BZIP2_BUILD_CMDS
 endef
 
 define BZIP2_INSTALL_STAGING_CMDS
-	cp $(@D)/bzlib.h $(STAGING_DIR)/usr/include/
+	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) \
+	$(MAKE) PREFIX=$(STAGING_DIR)/usr -C $(@D) install
+	$(INSTALL) -m 0755 -d $(STAGING_DIR)/usr/lib
 	cp $(@D)/libbz2.so.$(BZIP2_SONAME) $(STAGING_DIR)/usr/lib/
 	cp $(@D)/libbz2.a $(STAGING_DIR)/usr/lib/
 	(cd $(STAGING_DIR)/usr/lib/; \
