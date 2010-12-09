@@ -44,7 +44,8 @@ GDK_PIXBUF_DEPENDENCIES += \
 	host-pkg-config libglib2
 
 define GDK_PIXBUF_POST_INSTALL_TWEAKS
-	$(INSTALL) -m 755 package/gdk-pixbuf/S26gdk-pixbuf $(TARGET_DIR)/etc/init.d/
+	$(INSTALL) -m 755 -D package/gdk-pixbuf/S26gdk-pixbuf \
+		$(TARGET_DIR)/etc/init.d/S26gdk-pixbuf
 endef
 
 GDK_PIXBUF_POST_INSTALL_TARGET_HOOKS += GDK_PIXBUF_POST_INSTALL_TWEAKS
