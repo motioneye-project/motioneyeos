@@ -141,7 +141,10 @@ endif
 
 define BUSYBOX_INSTALL_TARGET_CMDS
 	$(BUSYBOX_INSTALL_BINARY)
-	-chmod a+rx $(TARGET_DIR)/usr/share/udhcpc/default.script
+	if [ ! -f $(TARGET_DIR)/usr/share/udhcpc/default.script ]; then \
+		$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
+			$(TARGET_DIR)/usr/share/udhcpc/default.script; \
+	fi
 endef
 
 define BUSYBOX_UNINSTALL_TARGET_CMDS
