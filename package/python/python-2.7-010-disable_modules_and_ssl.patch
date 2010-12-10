@@ -1,0 +1,49 @@
+Support some customisation on python compilation.
+
+With this patch, we can now remove some modules introducing external
+dependencies from the compilation, thus removing these irrelevant in most
+cases dependencies (ie. openssl, ncurses, etc).
+
+This modules can be removed by listing them in the PYTHON_DISABLE_MODULES
+environment variable.
+
+Patch ported to python2.7 by Maxime Ripard <ripard@archos.com>
+
+diff -rduNp Python-2.7.orig/setup.py Python-2.7/setup.py
+--- Python-2.7.orig/setup.py	2010-09-21 17:31:52.000000000 +0200
++++ Python-2.7/setup.py	2010-09-21 17:35:20.000000000 +0200
+@@ -21,7 +21,15 @@ from distutils.spawn import find_executa
+ COMPILED_WITH_PYDEBUG = hasattr(sys, 'gettotalrefcount')
+ 
+ # This global variable is used to hold the list of modules to be disabled.
+-disabled_module_list = []
++try:
++    disabled_module_list = os.environ["PYTHON_DISABLE_MODULES"].split()
++except KeyError:
++    disabled_module_list = list()
++
++try:
++    disable_ssl = os.environ["PYTHON_DISABLE_SSL"]
++except KeyError:
++    disable_ssl = 0
+ 
+ def add_dir_to_list(dirlist, dir):
+     """Add the directory 'dir' to the list 'dirlist' (at the front) if
+@@ -346,6 +354,7 @@ class PyBuildExt(build_ext):
+         return sys.platform
+ 
+     def detect_modules(self):
++        global disable_ssl
+         try:
+             modules_include_dirs = os.environ["PYTHON_MODULES_INCLUDE"].split()
+         except KeyError:
+@@ -685,7 +694,8 @@ class PyBuildExt(build_ext):
+                                      ] )
+ 
+         if (ssl_incs is not None and
+-            ssl_libs is not None):
++            ssl_libs is not None and
++            not disable_ssl):
+             exts.append( Extension('_ssl', ['_ssl.c'],
+                                    include_dirs = ssl_incs,
+                                    library_dirs = ssl_libs,
