@@ -1,0 +1,38 @@
+The compileall script is used to compile to python bytecode all the modules.
+However, it relies on the struct package that is not built for the host
+python, thus crashing at execution when compiling the target python.
+When compiling, the removed code block is never executed, so we can safely
+remove it, removing in the same time the dependency on struct.
+
+Patch by Maxime Ripard <ripard@archos.com>
+
+Index: Python-2.7/Lib/compileall.py
+===================================================================
+--- Python-2.7.orig/Lib/compileall.py	(révision 84276)
++++ Python-2.7/Lib/compileall.py	(copie de travail)
+@@ -14,7 +14,6 @@
+ import os
+ import sys
+ import py_compile
+-import struct
+ import imp
+ 
+ __all__ = ["compile_dir","compile_file","compile_path"]
+@@ -83,17 +82,6 @@
+     if os.path.isfile(fullname):
+         head, tail = name[:-3], name[-3:]
+         if tail == '.py':
+-            if not force:
+-                try:
+-                    mtime = int(os.stat(fullname).st_mtime)
+-                    expect = struct.pack('<4sl', imp.get_magic(), mtime)
+-                    cfile = fullname + (__debug__ and 'c' or 'o')
+-                    with open(cfile, 'rb') as chandle:
+-                        actual = chandle.read(8)
+-                    if expect == actual:
+-                        return success
+-                except IOError:
+-                    pass
+             if not quiet:
+                 print 'Compiling', fullname, '...'
+             try:
