@@ -3,7 +3,7 @@
 # libconfig
 #
 #############################################################
-LIBCONFIG_VERSION:=1.3
+LIBCONFIG_VERSION:=1.4.6
 LIBCONFIG_SOURCE:=libconfig-$(LIBCONFIG_VERSION).tar.gz
 LIBCONFIG_SITE:=http://www.hyperrealm.com/libconfig/
 LIBCONFIG_AUTORECONF:=NO
