@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LIBFLOAT
-	bool "libfloat"
-	depends on BR2_DEPRECATED
-	help
-	 Soft floating point library.
-	
-	 http://netwinder.osuosl.org/devteam/scottb/libfloat/
-

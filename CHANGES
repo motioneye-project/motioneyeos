@@ -12,7 +12,7 @@
 
 	New packages: dhrystone, fbgrab, lsuio, rsh-redone, whetstone
 
-	Removed packages: microcom, ng-spice-rework
+	Removed packages: libfloat, microcom, ng-spice-rework
 
 	Issues resolved (http://bugs.uclibc.org):
 
