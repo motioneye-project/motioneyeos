@@ -1,0 +1,24 @@
+[PATCH] fix make install for static builds
+
+Only try to install shared lib if we've built one.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ Makefile.in |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+Index: zlib-1.2.5/Makefile.in
+===================================================================
+--- zlib-1.2.5.orig/Makefile.in
++++ zlib-1.2.5/Makefile.in
+@@ -168,7 +168,9 @@ install-libs: $(LIBS)
+ 	-@if [ ! -d $(DESTDIR)$(man3dir)      ]; then mkdir -p $(DESTDIR)$(man3dir); fi
+ 	-@if [ ! -d $(DESTDIR)$(pkgconfigdir) ]; then mkdir -p $(DESTDIR)$(pkgconfigdir); fi
+ 	cp $(STATICLIB) $(DESTDIR)$(libdir)
+-	cp $(SHAREDLIBV) $(DESTDIR)$(sharedlibdir)
++	if test "$(SHAREDLIBV)" -a -f $(SHAREDLIBV); then \
++	  cp $(SHAREDLIBV) $(DESTDIR)$(sharedlibdir); \
++	fi
+ 	cd $(DESTDIR)$(libdir); chmod u=rw,go=r $(STATICLIB)
+ 	-@(cd $(DESTDIR)$(libdir); $(RANLIB) libz.a || true) >/dev/null 2>&1
+ 	-@cd $(DESTDIR)$(sharedlibdir); if test "$(SHAREDLIBV)" -a -f $(SHAREDLIBV); then \
