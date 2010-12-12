@@ -353,7 +353,6 @@ endmenu
 endmenu
 
 menu "Miscellaneous"
-source "package/ng-spice-rework/Config.in"
 source "package/shared-mime-info/Config.in"
 endmenu
 
