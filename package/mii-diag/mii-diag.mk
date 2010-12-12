@@ -3,59 +3,33 @@
 # mii-diag
 #
 #############################################################
-MIIDIAG_VERSION:=2.11
-MIIDIAG_DEBIAN_PATCH_LEVEL:=2
-MIIDIAG_SOURCE:=mii-diag_$(MIIDIAG_VERSION).orig.tar.gz
-MIIDIAG_PATCH_FILE=mii-diag_$(MIIDIAG_VERSION)-$(MIIDIAG_DEBIAN_PATCH_LEVEL).diff.gz
-MIIDIAG_SITE:=$(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mii-diag
-MIIDIAG_DIR:=$(BUILD_DIR)/mii-diag-$(MIIDIAG_VERSION)
-MIIDIAG_CAT:=$(ZCAT)
-MIIDIAG_BINARY:=usr/sbin/mii-diag
+MII_DIAG_VERSION = 2.11
+MII_DIAG_SOURCE  = mii-diag_$(MII_DIAG_VERSION).orig.tar.gz
+MII_DIAG_PATCH   = mii-diag_$(MII_DIAG_VERSION)-3.diff.gz
+MII_DIAG_SITE    = $(BR2_DEBIAN_MIRROR)/debian/pool/main/m/mii-diag
 
-ifneq ($(MIIDIAG_PATCH_FILE),)
-MIIDIAG_PATCH=$(DL_DIR)/$(MIIDIAG_PATCH_FILE)
-$(MIIDIAG_PATCH):
-	$(call DOWNLOAD,$(MIIDIAG_SITE),$(MIIDIAG_PATCH_FILE))
-endif
+define MII_DIAG_DEBIAN_PATCHES
+	if [ -d $(@D)/debian/patches ]; then \
+		toolchain/patch-kernel.sh $(@D) $(@D)/debian/patches \*.patch; \
+	fi
+endef
 
-$(DL_DIR)/$(MIIDIAG_SOURCE):
-	$(call DOWNLOAD,$(MIIDIAG_SITE),$(MIIDIAG_SOURCE))
+MII_DIAG_POST_PATCH_HOOKS = MII_DIAG_DEBIAN_PATCHES
 
-$(MIIDIAG_DIR)/.unpacked: $(DL_DIR)/$(MIIDIAG_SOURCE) $(MIIDIAG_PATCH)
-	mkdir -p $(MIIDIAG_DIR)
-	$(MIIDIAG_CAT) $(DL_DIR)/$(MIIDIAG_SOURCE) | tar --strip 1 -C $(MIIDIAG_DIR) $(TAR_OPTIONS) -
-ifneq ($(MIIDIAG_PATCH_FILE),)
-	(cd $(MIIDIAG_DIR) && $(MIIDIAG_CAT) $(MIIDIAG_PATCH) | patch -p1)
-endif
-	toolchain/patch-kernel.sh $(MIIDIAG_DIR) package/mii-diag/ mii-diag-\*.patch*
-	touch $@
+define MII_DIAG_BUILD_CMDS
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
+endef
 
-$(MIIDIAG_DIR)/.configured: $(MIIDIAG_DIR)/.unpacked
-	touch $@
+define MII_DIAG_INSTALL_TARGET_CMDS
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
+endef
 
-$(MIIDIAG_DIR)/mii-diag: $(MIIDIAG_DIR)/.configured
-	$(MAKE) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" -C $(MIIDIAG_DIR)
+define MII_DIAG_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/sbin/mii-diag
+endef
 
-$(TARGET_DIR)/$(MIIDIAG_BINARY): $(MIIDIAG_DIR)/mii-diag
-	$(MAKE) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" -C $(MIIDIAG_DIR) DESTDIR=$(TARGET_DIR) install
-	$(STRIPCMD) $@
-	touch $@
+define MII_DIAG_CLEAN_CMDS
+	$(MAKE) -C $(@D) clean
+endef
 
-mii-diag: $(TARGET_DIR)/$(MIIDIAG_BINARY)
-
-mii-diag-source: $(DL_DIR)/$(MIIDIAG_SOURCE) $(MIIDIAG_PATCH)
-
-mii-diag-clean:
-	-$(MAKE) -C $(MIIDIAG_DIR) clean
-
-mii-diag-dirclean:
-	rm -rf $(MIIDIAG_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_MIIDIAG),y)
-TARGETS+=mii-diag
-endif
+$(eval $(call GENTARGETS,package,mii-diag))

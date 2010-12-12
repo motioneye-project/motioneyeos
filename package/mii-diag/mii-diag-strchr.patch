@@ -1,3 +1,6 @@
+Use the strrchr() function instead of the deprecated rindex()
+function.
+
 --- mii-diag-2.11.orig/mii-diag.c.orig	2008-06-25 11:08:52.000000000 +1000
 +++ mii-diag-2.11.orig/mii-diag.c	2005-03-27 03:56:33.000000000 +1000
 @@ -174,7 +174,7 @@
