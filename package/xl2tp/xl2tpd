@@ -1,8 +1,8 @@
 #!/bin/sh
 #
 PATH=/bin:/usr/bin:/sbin:/usr/sbin
-DAEMON=/usr/sbin/l2tpd
-PIDFILE=/var/run/l2tpd.pid
+DAEMON=/usr/sbin/xl2tpd
+PIDFILE=/var/run/xl2tpd.pid
 
 test -f $DAEMON || exit 0
 
@@ -19,7 +19,7 @@ case "$1" in
     start-stop-daemon -S  -p $PIDFILE -x $DAEMON
     ;;
   *)
-    echo "Usage: /etc/init.d/l2tdp {start|stop|restart|force-reload}"
+    echo "Usage: /etc/init.d/xl2tdp {start|stop|restart|force-reload}"
     exit 1
     ;;
 esac

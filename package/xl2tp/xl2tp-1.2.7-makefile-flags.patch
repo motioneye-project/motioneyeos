@@ -1,0 +1,33 @@
+Make sure that the CFLAGS passed on the command line are taken into
+account.
+
+--- xl2tp-1.2.7/Makefile-orig	2010-08-05 15:33:46.000000000 -0700
++++ xl2tp-1.2.7/Makefile	2010-09-30 22:34:54.000000000 -0700
+@@ -90,7 +90,7 @@ OSFLAGS?= -DLINUX -I$(KERNELSRC)/include
+ 
+ IPFLAGS?= -DIP_ALLOCATION
+ 
+-CFLAGS+= $(DFLAGS) -O2 -fno-builtin -Wall -DSANITY $(OSFLAGS) $(IPFLAGS)
++COMPILE_FLAGS+= $(DFLAGS) -fno-builtin -Wall -DSANITY $(OSFLAGS) $(IPFLAGS)
+ HDRS=l2tp.h avp.h misc.h control.h call.h scheduler.h file.h aaa.h md5.h
+ OBJS=xl2tpd.o pty.o misc.o control.o avp.o call.o network.o avpsend.o scheduler.o file.o aaa.o md5.o
+ SRCS=${OBJS:.o=.c} ${HDRS}
+@@ -105,6 +105,9 @@ MANDIR?=$(DESTDIR)${PREFIX}/share/man
+ 
+ all: $(EXEC) pfc
+ 
++%.o: %.c
++	$(CC) $(COMPILE_FLAGS) $(CFLAGS) -c -o $@ -shared $<
++
+ clean:
+ 	rm -f $(OBJS) $(EXEC) pfc.o pfc
+ 
+@@ -112,7 +115,7 @@ $(EXEC): $(OBJS) $(HDRS)
+ 	$(CC) $(LDFLAGS) -o $@ $(OBJS) $(LDLIBS)
+ 
+ pfc:
+-	$(CC) $(CFLAGS) -c contrib/pfc.c
++	$(CC) $(COMPILE_FLAGS) $(CFLAGS) -c contrib/pfc.c
+ 	$(CC) $(LDFLAGS) -lpcap $(LDLIBS) -o pfc pfc.o
+ 
+ romfs:

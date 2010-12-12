@@ -11,9 +11,11 @@
 	sdl_gfx, sdl_sound, sysklogd, sysvinit, udev, usbutils, xz,
 	zlib
 
-	New packages: dhrystone, fbgrab, lsuio, rsh-redone, whetstone
+	New packages: dhrystone, fbgrab, lsuio, rsh-redone, whetstone,
+	xl2tp
 
-	Removed packages: hotplug, libfloat, microcom, ng-spice-rework
+	Removed packages: hotplug, l2tp, libfloat, microcom,
+	ng-spice-rework
 
 	Issues resolved (http://bugs.uclibc.org):
 
