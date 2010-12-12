@@ -1,7 +1,0 @@
-config BR2_PACKAGE_MICROCOM
-	depends on BR2_DEPRECATED
-	bool "microcom"
-	help
-	  A minicom-like serial terminal emulator with scripting support.
-
-	  http://microcom.port5.com/

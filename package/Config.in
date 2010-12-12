@@ -389,9 +389,6 @@ source "package/lighttpd/Config.in"
 endif
 source "package/links/Config.in"
 source "package/lrzsz/Config.in"
-if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-source "package/microcom/Config.in"
-endif
 source "package/mii-diag/Config.in"
 source "package/mrouted/Config.in"
 source "package/mutt/Config.in"
