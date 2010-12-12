@@ -170,7 +170,6 @@ source "package/gvfs/Config.in"
 source "package/hal/Config.in"
 if BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 source "package/hdparm/Config.in"
-source "package/hotplug/Config.in"
 endif
 source "package/hwdata/Config.in"
 source "package/i2c-tools/Config.in"

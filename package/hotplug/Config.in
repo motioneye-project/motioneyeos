@@ -1,7 +1,0 @@
-config BR2_PACKAGE_HOTPLUG
-	bool "hotplug"
-	depends on BR2_DEPRECATED
-	help
-	  Plug in new devices and use them immediately.
-
-	  http://linux-hotplug.sourceforge.net/
