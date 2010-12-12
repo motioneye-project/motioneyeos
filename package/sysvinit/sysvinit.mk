@@ -3,50 +3,47 @@
 # sysvinit
 #
 #############################################################
-SYSVINIT_VERSION:=2.86
-SYSVINIT_SOURCE:=sysvinit-$(SYSVINIT_VERSION).tar.gz
-SYSVINIT_SITE:=ftp://ftp.cistron.nl/pub/people/miquels/software
-SYSVINIT_DIR:=$(BUILD_DIR)/sysvinit-$(SYSVINIT_VERSION)
-SYSVINIT_CAT:=$(ZCAT)
-SYSVINIT_BINARY:=src/init
-SYSVINIT_TARGET_BINARY:=sbin/init
+SYSVINIT_VERSION = 2.88
+SYSVINIT_SOURCE  = sysvinit_$(SYSVINIT_VERSION)dsf.orig.tar.gz
+SYSVINIT_PATCH   = sysvinit_$(SYSVINIT_VERSION)dsf-13.diff.gz
+SYSVINIT_SITE    = $(BR2_DEBIAN_MIRROR)/debian/pool/main/s/sysvinit
 
-$(DL_DIR)/$(SYSVINIT_SOURCE):
-	$(call DOWNLOAD,$(SYSVINIT_SITE),$(SYSVINIT_SOURCE))
+# Override Busybox implementations if Busybox is enabled.
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+SYSKLOGD_DEPENDENCIES = busybox
+endif
 
-sysvinit-unpacked: $(SYSVINIT_DIR)/.unpacked
-$(SYSVINIT_DIR)/.unpacked: $(DL_DIR)/$(SYSVINIT_SOURCE)
-	$(SYSVINIT_CAT) $(DL_DIR)/$(SYSVINIT_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(SYSVINIT_DIR) package/sysvinit/ sysvinit-\*.patch
-	touch $@
+define SYSVINIT_DEBIAN_PATCHES
+	if [ -d $(@D)/debian/patches ]; then \
+		toolchain/patch-kernel.sh $(@D) $(@D)/debian/patches \*.patch; \
+	fi
+endef
 
-$(SYSVINIT_DIR)/$(SYSVINIT_BINARY): $(SYSVINIT_DIR)/.unpacked
+SYSVINIT_POST_PATCH_HOOKS = SYSVINIT_DEBIAN_PATCHES
+
+define SYSVINIT_BUILD_CMDS
 	# Force sysvinit to link against libcrypt as it otherwise
 	# use an incorrect test to see if it's available
-	CFLAGS="$(TARGET_CFLAGS)" $(MAKE) CC="$(TARGET_CC)" LCRYPT="-lcrypt" -C $(SYSVINIT_DIR)/src
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) LCRYPT="-lcrypt" -C $(@D)/src
+endef
 
-$(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY): $(SYSVINIT_DIR)/$(SYSVINIT_BINARY)
+define SYSVINIT_INSTALL_TARGET_CMDS
 	for x in halt init shutdown; do \
-		install -D $(SYSVINIT_DIR)/src/$$x $(TARGET_DIR)/sbin/$$x || exit 1; \
+		install -D -m 0755 $(@D)/src/$$x $(TARGET_DIR)/sbin/$$x || exit 1; \
 	done
+	# Override Busybox's inittab with an inittab compatible with
+	# sysvinit
+	install -D -m 0644 package/sysvinit/inittab $(TARGET_DIR)/etc/inittab
+endef
 
-sysvinit: $(TARGET_DIR)/$(SYSVINIT_TARGET_BINARY)
-
-sysvinit-source: $(DL_DIR)/$(SYSVINIT_SOURCE)
-
-sysvinit-clean:
+define SYSVINIT_UNINSTALL_TARGET_CMDS
 	for x in halt init shutdown; do \
 		rm -f $(TARGET_DIR)/sbin/$$x || exit 1; \
 	done
-	-$(MAKE) -C $(SYSVINIT_DIR) clean
+endef
 
-sysvinit-dirclean:
-	rm -rf $(SYSVINIT_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_SYSVINIT),y)
-TARGETS+=sysvinit
-endif
+define SYSVINIT_CLEAN_CMDS
+	$(MAKE) -C $(@D) clean
+endef
+
+$(eval $(call GENTARGETS,package,sysvinit))

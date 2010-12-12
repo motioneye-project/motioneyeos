@@ -1,0 +1,31 @@
+# /etc/inittab
+#
+# This inittab is a basic inittab sample for sysvinit, which mimics
+# Buildroot's default inittab for Busybox.
+id:1:initdefault:
+
+proc::sysinit:/bin/mount -t proc proc /proc
+rwmo::sysinit:/bin/mount -o remount,rw /
+dpts::sysinit:/bin/mkdir -p /dev/pts
+moun::sysinit:/bin/mount -a
+host::sysinit:/bin/hostname -F /etc/hostname
+init::sysinit:/etc/init.d/rcS
+
+1:1:respawn:/sbin/getty 38400 tty1
+2:1:respawn:/sbin/getty 38400 tty2
+
+# S0:1:respawn:/sbin/getty -L ttyS0 115200 vt100 # GENERIC_SERIAL
+
+# Logging junk
+mess::sysinit:/bin/touch /var/log/messages
+sysl:1:respawn:/sbin/syslogd -n -m 0
+klog:1:respawn:/sbin/klogd -n
+
+# Stuff to do for the 3-finger salute
+rebo::ctrlaltdel:/sbin/reboot
+
+# Stuff to do before rebooting
+sklo:6:wait:/usr/bin/killall klogd
+ssys:6:wait:/usr/bin/killall syslogd
+umou:6:wait:/bin/umount -a -r
+swap:6:wait:/sbin/swapoff -a
