@@ -5,9 +5,9 @@
 
 	Updated/fixed packages: at, busybox, bzip2, dbus,
 	direcfb-examples, dmalloc, cloop, cups, ffmpeg, gdk-pixbuf,
-	hostapd, i2c-tools, libconfig, ltp-testsuite, m4, openssh,
-	openssl, openvpn, pango, qt, rsync, sdl_gfx, sdl_sound, udev,
-	usbutils, xz, zlib
+	hostapd, i2c-tools, input-tools, libconfig, ltp-testsuite, m4,
+	openssh, openssl, openvpn, pango, qt, rsync, sdl_gfx,
+	sdl_sound, udev, usbutils, xz, zlib
 
 	New packages: dhrystone, fbgrab, lsuio, rsh-redone, whetstone
 
