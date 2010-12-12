@@ -3,128 +3,146 @@
 # mplayer
 #
 #############################################################
-MPLAYER_VERSION:=1.0rc2
-MPLAYER_SOURCE:=MPlayer-$(MPLAYER_VERSION).tar.bz2
-MPLAYER_SITE:=http://www7.mplayerhq.hu/MPlayer/releases
-MPLAYER_DIR:=$(BUILD_DIR)/MPlayer-$(MPLAYER_VERSION)
-MPLAYER_CAT:=$(BZCAT)
-MPLAYER_BINARY:=mplayer
-MPLAYER_TARGET_BINARY:=usr/bin/$(MPLAYER_BINARY)
-
-MPLAYER_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBMAD),libmad)
+MPLAYER_VERSION = 32710
+# MPLAYER_SOURCE = MPlayer-$(MPLAYER_VERSION).tar.bz2
+# MPLAYER_SITE = http://www.mplayerhq.hu/MPlayer/releases
+MPLAYER_SITE = svn://svn.mplayerhq.hu/mplayer/trunk
 
 # mplayer needs pcm+mixer support, but configure fails to check for it
 ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yyy)
 MPLAYER_DEPENDENCIES += alsa-lib
-MPLAYER_ALSA:=--enable-alsa
+MPLAYER_CONF_OPTS    += --enable-alsa
 else
-MPLAYER_ALSA:=--disable-alsa
+MPLAYER_CONF_OPTS    += --disable-alsa
 endif
 
 ifeq ($(BR2_ENDIAN),"BIG")
-MPLAYER_ENDIAN:=--enable-big-endian
+MPLAYER_CONF_OPTS += --enable-big-endian
 else
-MPLAYER_ENDIAN:=--disable-big-endian
+MPLAYER_CONF_OPTS += --disable-big-endian
 endif
 
-# mplayer unfortunately uses --disable-largefileS, so we cannot use
+# mplayer unfortunately uses --disable-largefiles, so we cannot use
 # DISABLE_LARGEFILE
 ifeq ($(BR2_LARGEFILE),y)
-MPLAYER_LARGEFILE:=--enable-largefiles
+MPLAYER_CONF_OPTS += --enable-largefiles
 else
 # dvdread/dvdcss requires largefile support
-MPLAYER_LARGEFILE:=--disable-largefiles \
-		   --disable-dvdread-internal \
-		   --disable-libdvdcss-internal
+MPLAYER_CONF_OPTS += 			\
+	--disable-largefiles 		\
+	--disable-dvdread-internal 	\
+	--disable-libdvdcss-internal
 endif
 
 ifeq ($(BR2_PACKAGE_SDL),y)
-MPLAYER_SDL:=--enable-sdl --with-sdl-config=$(STAGING_DIR)/usr/bin/sdl-config
+MPLAYER_CONF_OPTS += \
+	--enable-sdl \
+	--with-sdl-config=$(STAGING_DIR)/usr/bin/sdl-config
 MPLAYER_DEPENDENCIES += sdl
 else
-MPLAYER_SDL:=--disable-sdl
+MPLAYER_CONF_OPTS += --disable-sdl
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
-MPLAYER_FREETYPE:= \
+MPLAYER_CONF_OPTS +=  \
 	--enable-freetype \
 	--with-freetype-config=$(STAGING_DIR)/usr/bin/freetype-config
 MPLAYER_DEPENDENCIES += freetype
 else
-MPLAYER_FREETYPE:=--disable-freetype
+MPLAYER_CONF_OPTS += --disable-freetype
 endif
 
-ifeq ($(BR2_i386),y)
-# This seems to be required to compile some of the inline asm
-MPLAYER_CFLAGS:=-fomit-frame-pointer
+ifeq ($(BR2_PACKAGE_MPLAYER_MPLAYER),y)
+MPLAYER_CONF_OPTS += --enable-mplayer
+else
+MPLAYER_CONF_OPTS += --disable-mplayer
 endif
 
-$(DL_DIR)/$(MPLAYER_SOURCE):
-	$(call DOWNLOAD,$(MPLAYER_SITE),$(MPLAYER_SOURCE))
+ifeq ($(BR2_PACKAGE_MPLAYER_MENCODER),y)
+MPLAYER_CONF_OPTS += --enable-mencoder
+else
+MPLAYER_CONF_OPTS += --disable-mencoder
+endif
 
-$(MPLAYER_DIR)/.unpacked: $(DL_DIR)/$(MPLAYER_SOURCE)
-	$(MPLAYER_CAT) $(DL_DIR)/$(MPLAYER_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	toolchain/patch-kernel.sh $(MPLAYER_DIR) package/multimedia/mplayer/ mplayer-$(MPLAYER_VERSION)\*.patch\*
-	$(CONFIG_UPDATE) $(MPLAYER_DIR)
-	touch $@
+ifeq ($(BR2_PACKAGE_TREMOR),y)
+MPLAYER_DEPENDENCIES += tremor
+MPLAYER_CONF_OPTS += --disable-tremor-internal --enable-tremor
+endif
 
-$(MPLAYER_DIR)/.configured: $(MPLAYER_DIR)/.unpacked
-	(cd $(MPLAYER_DIR); rm -rf config.cache; \
+ifeq ($(BR2_PACKAGE_MAD),y)
+MPLAYER_DEPENDENCIES += libmad
+else
+MPLAYER_CONF_OPTS += --disable-mad
+endif
+
+MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBTHEORA),libtheora)
+MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBPNG),libpng)
+MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_JPEG),jpeg)
+MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_XLIB_LIBX11),xlib_libX11)
+MPLAYER_DEPENDENCIES += $(if $(BR2_PACKAGE_XLIB_LIBXV),xlib_libXv)
+
+# ARM optimizations
+ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv5te)
+MPLAYER_CONF_OPTS += --enable-armv5te
+endif
+
+ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv6j)
+MPLAYER_CONF_OPTS += --enable-armv6
+endif
+
+ifeq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),armv7-a)
+MPLAYER_CONF_OPTS += --enable-neon
+endif
+
+define MPLAYER_CONFIGURE_CMDS
+	(cd $(@D); rm -rf config.cache; \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(TARGET_CONFIGURE_ARGS) \
-		CFLAGS="$(TARGET_CFLAGS) $(MPLAYER_CFLAGS)" \
-		LDFLAGS="$(TARGET_LDFLAGS)" \
 		./configure \
 		--prefix=/usr \
 		--confdir=/etc \
 		--target=$(GNU_TARGET_NAME) \
-		--host-cc=$(HOSTCC) \
+		--host-cc="$(HOSTCC)" \
 		--cc="$(TARGET_CC)" \
-		--as=$(TARGET_CROSS)as \
-		--with-extraincdir=$(STAGING_DIR)/usr/include \
-		--with-extralibdir=$(STAGING_DIR)/lib \
+		--as="$(TARGET_AS)" \
 		--charset=UTF-8 \
+		--extra-cflags="$(TARGET_CFLAGS)" \
+		--extra-ldflags="$(TARGET_LDFLAGS)" \
 		--enable-mad \
 		--enable-fbdev \
-		$(MPLAYER_ENDIAN) \
-		$(MPLAYER_LARGEFILE) \
-		$(MPLAYER_SDL) \
-		$(MPLAYER_FREETYPE) \
-		$(MPLAYER_ALSA) \
+		$(MPLAYER_CONF_OPTS) \
 		--enable-cross-compile \
 		--disable-ivtv \
 		--disable-tv \
 		--disable-live \
 		--enable-dynamic-plugins \
 	)
-	touch $@
+endef
 
-$(MPLAYER_DIR)/$(MPLAYER_BINARY): $(MPLAYER_DIR)/.configured
-	$(MAKE1) -C $(MPLAYER_DIR)
-	touch -c $@
+# this is available on uClibc 0.9.31 even without ipv6 support, breaking the
+# build in ffmpeg/libavformat/udp.c
+ifneq ($(BR2_INET_IPV6),y)
+define MPLAYER_FIXUP_IPV6_MREQ_DETECTION
+	$(SED) 's/\(#define HAVE_STRUCT_IPV6_MREQ\) 1/\1 0/' $(@D)/config.h
+endef
 
-$(TARGET_DIR)/$(MPLAYER_TARGET_BINARY): $(MPLAYER_DIR)/$(MPLAYER_BINARY)
-	$(INSTALL) -m 0755 -D $(MPLAYER_DIR)/$(MPLAYER_BINARY) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
-	-$(STRIPCMD) $(STRIP_STRIP_UNNEEDED) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
-	touch -c $@
-
-mplayer: $(MPLAYER_DEPENDENCIES) $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
-
-mplayer-source: $(DL_DIR)/$(MPLAYER_SOURCE)
-
-mplayer-unpacked: $(MPLAYER_DIR)/.unpacked
-
-mplayer-clean:
-	rm -f $(TARGET_DIR)/$(MPLAYER_TARGET_BINARY)
-	-$(MAKE) -C $(MPLAYER_DIR) clean
-
-mplayer-dirclean:
-	rm -rf $(MPLAYER_DIR)
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_MPLAYER),y)
-TARGETS+=mplayer
+MPLAYER_POST_CONFIGURE_HOOKS += MPLAYER_FIXUP_IPV6_MREQ_DETECTION
 endif
+
+define MPLAYER_BUILD_CMDS
+	$(MAKE) -C $(@D)
+endef
+
+define MPLAYER_INSTALL_TARGET_CMDS
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
+endef
+
+define MPLAYER_UNINSTALL_TARGET_CMDS
+	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) uninstall
+endef
+
+define MPLAYER_CLEAN_CMDS
+	$(MAKE) -C $(@D) clean
+endef
+
+$(eval $(call GENTARGETS,package/multimedia,mplayer))

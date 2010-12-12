@@ -1,8 +1,22 @@
 config BR2_PACKAGE_MPLAYER
 	bool "mplayer"
-	select BR2_PACKAGE_LIBMAD
 	help
 	  MPlayer is a movie player which runs on many systems and supports
 	  many different file formats.
 
 	  http://www.mplayerhq.hu/
+
+if BR2_PACKAGE_MPLAYER
+
+config BR2_PACKAGE_MPLAYER_MPLAYER
+	bool "Build and install mplayer"
+	default y
+	help
+	  This will install the video player.
+
+config BR2_PACKAGE_MPLAYER_MENCODER
+	bool "Build and install mencoder"
+	help
+	  This will install the video encoder.
+
+endif

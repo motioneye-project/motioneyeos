@@ -1,0 +1,24 @@
+Disable stripping on installation
+
+Using the -s option of install does not work, as it uses the host
+strip instead of the cross strip. So, get rid of it, and let Buildroot
+handle the stripping.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: mplayer-32710/configure
+===================================================================
+--- mplayer-32710.orig/configure
++++ mplayer-32710/configure
+@@ -2519,7 +2519,7 @@
+ 
+ 
+ # Checking for CFLAGS
+-_install_strip="-s"
++_install_strip=
+ if test "$_profile" != "" || test "$_debug" != "" ; then
+   CFLAGS="-O2 $_march $_mcpu $_pipe $_debug $_profile"
+   WARNFLAGS="-W -Wall"
