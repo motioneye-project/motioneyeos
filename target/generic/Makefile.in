@@ -11,8 +11,14 @@ target-generic-issue:
 	mkdir -p $(TARGET_DIR)/etc
 	echo "$(TARGET_GENERIC_ISSUE)" > $(TARGET_DIR)/etc/issue
 
-target-generic-getty:
+target-generic-getty-busybox:
 	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(TARGET_GENERIC_GETTY)::respawn:/sbin/getty -L $(TARGET_GENERIC_GETTY) $(TARGET_GENERIC_GETTY_BAUDRATE) vt100 #~' \
+		$(TARGET_DIR)/etc/inittab
+
+# In sysvinit inittab, the "id" must not be longer than 4 bytes, so we
+# skip the "tty" part and keep only the remaining.
+target-generic-getty-sysvinit:
+	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(shell echo $(TARGET_GENERIC_GETTY) | tail -c+4)::respawn:/sbin/getty -L $(TARGET_GENERIC_GETTY) $(TARGET_GENERIC_GETTY_BAUDRATE) vt100 #~' \
 		$(TARGET_DIR)/etc/inittab
 
 ifneq ($(TARGET_GENERIC_HOSTNAME),)
@@ -24,5 +30,9 @@ TARGETS += target-generic-issue
 endif
 
 ifeq ($(BR2_TARGET_GENERIC_GETTY),y)
-TARGETS += target-generic-getty
+ifeq ($(BR2_PACKAGE_SYSVINIT),y)
+TARGETS += target-generic-getty-sysvinit
+else
+TARGETS += target-generic-getty-busybox
+endif
 endif
