@@ -1,0 +1,26 @@
+---
+ mtrace.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: mrouted-3.9.4/mtrace.c
+===================================================================
+--- mrouted-3.9.4.orig/mtrace.c
++++ mrouted-3.9.4/mtrace.c
+@@ -556,7 +556,7 @@
+ 		save->rtime = ((tr.tv_sec + JAN_1970) << 16) +
+ 		    (tr.tv_usec << 10) / 15625;
+ 		save->len = len;
+-		bcopy((char *)igmp, (char *)&save->igmp, ipdatalen);
++		memmove((char *)igmp, (char *)&save->igmp, ipdatalen);
+ 	    }
+ 	    return recvlen;
+ 	}
+@@ -646,7 +646,7 @@
+ 	base.rtime = ((tr.tv_sec + JAN_1970) << 16) +
+ 	    (tr.tv_usec << 10) / 15625;
+ 	base.len = len;
+-	bcopy((char *)igmp, (char *)&base.igmp, ipdatalen);
++	memmove((char *)igmp, (char *)&base.igmp, ipdatalen);
+ 	/*
+ 	 * If the user specified which traces to monitor,
+ 	 * only accept traces that correspond to the
