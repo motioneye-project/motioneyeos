@@ -3,115 +3,52 @@
 # lvm2
 #
 #############################################################
-# Copyright (C) 2005 by Richard Downer <rdowner@gmail.com>
-# Derived from work
-# Copyright (C) 2001-2005 by Erik Andersen <andersen@codepoet.org>
-# Copyright (C) 2002 by Tim Riker <Tim@Rikers.org>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU Library General Public License as
-# published by the Free Software Foundation; either version 2 of the
-# License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# Library General Public License for more details.
-#
-# You should have received a copy of the GNU Library General Public
-# License along with this program; if not, write to the Free Software
-# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-# USA
+LVM2_VERSION = 2.02.78
+LVM2_SOURCE = LVM2.$(LVM2_VERSION).tgz
+LVM2_SITE = ftp://sources.redhat.com/pub/lvm2
+LVM2_INSTALL_STAGING = YES
 
-LVM2_BASEVER=2.02
-LVM2_DMVER=1.02
-LVM2_PATCH=50
-LVM2_VERSION=$(LVM2_BASEVER).$(LVM2_PATCH)
-LVM2_SOURCE:=LVM2.$(LVM2_VERSION).tgz
-LVM2_SITE:=ftp://sources.redhat.com/pub/lvm2
-LVM2_CAT:=$(ZCAT)
-LVM2_DIR:=$(BUILD_DIR)/LVM2.$(LVM2_VERSION)
-LVM2_SBIN:=lvchange lvcreate lvdisplay lvextend lvm lvmchange lvmdiskscan lvmsadc lvmsar lvreduce lvremove lvrename lvresize lvs lvscan pvchange pvcreate pvdisplay pvmove pvremove pvresize pvs pvscan vgcfgbackup vgcfgrestore vgchange vgck vgconvert vgcreate vgdisplay vgexport vgextend vgimport vgmerge vgmknodes vgreduce vgremove vgrename vgs vgscan vgsplit
-LVM2_DMSETUP_SBIN:=dmsetup
-LVM2_LIB:=libdevmapper.so.$(LVM2_DMVER)
-LVM2_TARGET_SBINS=$(foreach lvm2sbin, $(LVM2_SBIN), $(TARGET_DIR)/sbin/$(lvm2sbin))
-LVM2_TARGET_DMSETUP_SBINS=$(foreach lvm2sbin, $(LVM2_DMSETUP_SBIN), $(TARGET_DIR)/sbin/$(lvm2sbin))
-LVM2_TARGET_LIBS=$(foreach lvm2lib, $(LVM2_LIB), $(TARGET_DIR)/lib/$(lvm2lib))
+LVM2_BINS = \
+	dmsetup fsadm lvm lvmconf lvmdump vgimportclone \
+	lvchange lvconvert lvcreate lvdisplay lvextend 	\
+	lvmchange lvmdiskscan lvmsadc lvmsar lvreduce  	\
+	lvremove lvrename lvresize lvs lvscan pvchange 	\
+	pvck pvcreate pvdisplay pvmove pvremove 	\
+	pvresize pvs pvscan vgcfgbackup vgcfgrestore 	\
+	vgchange vgck vgconvert vgcreate vgdisplay 	\
+	vgexport vgextend vgimport vgmerge vgmknodes 	\
+	vgreduce vgremove vgrename vgs vgscan vgsplit
 
-$(DL_DIR)/$(LVM2_SOURCE):
-	 $(call DOWNLOAD,$(LVM2_SITE),$(LVM2_SOURCE))
+# Make sure that binaries and libraries are installed with write
+# permissions for the owner.
+LVM2_CONF_OPT += --enable-write_install
 
-lvm2-source: $(DL_DIR)/$(LVM2_SOURCE)
-
+# LVM2 uses autoconf, but not automake, and the build system does not
+# take into account the CC passed at configure time.
+LVM2_MAKE_ENV = CC="$(TARGET_CC)"
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
-LVM2_DEPENDENCIES+=readline
+LVM2_DEPENDENCIES += readline
 else
 # v2.02.44: disable readline usage, or binaries are linked against provider
 # of "tgetent" (=> ncurses) even if it's not used..
-LVM2_CONF_OPT+=--disable-readline
+LVM2_CONF_OPT += --disable-readline
 endif
-
-
-$(LVM2_DIR)/.unpacked: $(DL_DIR)/$(LVM2_SOURCE)
-	$(LVM2_CAT) $(DL_DIR)/$(LVM2_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $(LVM2_DIR)/.unpacked
-
-$(LVM2_DIR)/.configured: $(LVM2_DIR)/.unpacked
-	(cd $(LVM2_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		./configure $(QUIET) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		$(DISABLE_NLS) \
-		$(DISABLE_LARGEFILE) \
-		--with-user=$(shell id -un) --with-group=$(shell id -gn) \
-		$(LVM2_CONF_OPT) \
-	)
-	touch $(LVM2_DIR)/.configured
-
-
-$(LVM2_DIR)/.built: $(LVM2_DIR)/.configured
-	$(MAKE1) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR)
-	$(MAKE1) -C $(LVM2_DIR) DESTDIR=$(STAGING_DIR) install
-	# Fixup write permissions so that the files can be overwritten
-	# several times in the $(TARGET_DIR)
-	chmod 755 $(STAGING_DIR)/sbin/lvm
-	chmod 755 $(STAGING_DIR)/sbin/dmsetup
-	chmod 644 $(STAGING_DIR)/lib/$(LVM2_LIB)
-	touch $(LVM2_DIR)/.built
-
-
-$(LVM2_TARGET_SBINS) $(LVM2_TARGET_DMSETUP_SBINS): $(LVM2_DIR)/.built
-	cp -a $(STAGING_DIR)/sbin/$(notdir $@) $@
-	touch $@
-
-$(LVM2_TARGET_LIBS): $(LVM2_DIR)/.built
-	cp -a $(STAGING_DIR)/lib/$(notdir $@) $@
-	touch $@
-
 
 ifeq ($(BR2_PACKAGE_LVM2_DMSETUP_ONLY),y)
-lvm2: $(LVM2_TARGET_DMSETUP_SBINS) $(LVM2_TARGET_LIBS)
-else
-lvm2: $(LVM2_TARGET_SBINS) $(LVM2_TARGET_DMSETUP_SBINS) $(LVM2_TARGET_LIBS)
+LVM2_MAKE_OPT = device-mapper
+LVM2_INSTALL_STAGING_OPT = DESTDIR=$(STAGING_DIR) install_device-mapper
+LVM2_INSTALL_TARGET_OPT = DESTDIR=$(TARGET_DIR) install_device-mapper
 endif
 
+define LVM2_UNINSTALL_STAGING_CMDS
+	rm -f $(addprefix $(STAGING_DIR)/usr/sbin/,$(LVM2_BINS))
+	rm -f $(addprefix $(STAGING_DIR)/usr/lib/,libdevmapper.so*)
+endef
 
-lvm2-clean:
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(LVM2_DIR) uninstall
-	-$(MAKE) -C $(LVM2_DIR) clean
+define LVM2_UNINSTALL_TARGET_CMDS
+	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/,$(LVM2_BINS))
+	rm -f $(addprefix $(TARGET_DIR)/usr/lib/,libdevmapper.so*)
+endef
 
-lvm2-dirclean:
-	rm -rf $(LVM2_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_LVM2),y)
-TARGETS+=lvm2
-endif
+$(eval $(call AUTOTARGETS,package,lvm2))
