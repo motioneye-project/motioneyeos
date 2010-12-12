@@ -3,7 +3,7 @@
 	Ccache support reworked. Now used for both host and target
 	compilation, and cache is stored in ~/.buildroot-ccache.
 
-	Updated/fixed packages: at, busybox, bzip2, dbus,
+	Updated/fixed packages: alsa-utils, at, busybox, bzip2, dbus,
 	direcfb-examples, dmalloc, cloop, cups, ffmpeg, gdk-pixbuf,
 	hostapd, i2c-tools, input-tools, libconfig, lsof,
 	ltp-testsuite, lvm2, m4, memtester, mii-diag, mrouted,
