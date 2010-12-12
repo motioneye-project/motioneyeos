@@ -1,6 +1,10 @@
 config BR2_PACKAGE_MEMTESTER
 	bool "memtester"
+	depends on BR2_LARGEFILE
 	help
 	  A userspace utility for testing the memory subsystem for faults.
 
 	  http://pyropus.ca/software/memtester/
+
+comment "memtester requires a toolchain with LARGEFILE support"
+       depends on !BR2_LARGEFILE

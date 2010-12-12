@@ -6,9 +6,9 @@
 	Updated/fixed packages: at, busybox, bzip2, dbus,
 	direcfb-examples, dmalloc, cloop, cups, ffmpeg, gdk-pixbuf,
 	hostapd, i2c-tools, input-tools, libconfig, lsof,
-	ltp-testsuite, lvm2, m4, mii-diag, mrouted, openssh, openssl,
-	openvpn, pango, qt, rsync, sdl_gfx, sdl_sound, sysklogd,
-	sysvinit, udev, usbutils, xz, zlib
+	ltp-testsuite, lvm2, m4, memtester, mii-diag, mrouted,
+	openssh, openssl, openvpn, pango, qt, rsync, sdl_gfx,
+	sdl_sound, sysklogd, sysvinit, udev, usbutils, xz, zlib
 
 	New packages: dhrystone, fbgrab, lsuio, rsh-redone, whetstone
 
