@@ -5,7 +5,7 @@
 
 	Updated/fixed packages: alsa-utils, at, busybox, bzip2, dbus,
 	direcfb-examples, dmalloc, cloop, cups, ffmpeg, gdk-pixbuf,
-	hostapd, i2c-tools, input-tools, libconfig, lsof,
+	hostapd, i2c-tools, input-tools, libaio, libconfig, lsof,
 	ltp-testsuite, lvm2, m4, memtester, mii-diag, mrouted,
 	netplug, openssh, openssl, openvpn, pango, qt, rsync, sdl_gfx,
 	sdl_sound, sysklogd, sysvinit, udev, usbutils, xz, zlib
