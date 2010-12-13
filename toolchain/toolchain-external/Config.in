@@ -218,12 +218,5 @@ endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
-config BR2_TOOLCHAIN_EXTERNAL_STRIP
-	bool
-	default y
-	prompt "Strip shared libraries"
-	help
-	  Strip shared libraries copied from the external toolchain.
-
 endif # BR2_TOOLCHAIN_EXTERNAL
 

@@ -15,13 +15,11 @@
 # $1: arch specific sysroot directory
 # $2: library name
 # $3: destination directory of the libary, relative to $(TARGET_DIR)
-# $4: strip (y|n), default is to strip
 #
 copy_toolchain_lib_root = \
 	ARCH_SYSROOT_DIR="$(strip $1)"; \
 	LIB="$(strip $2)"; \
 	DESTDIR="$(strip $3)" ; \
-	STRIP="$(strip $4)"; \
  \
 	LIBS=`(cd $${ARCH_SYSROOT_DIR}; \
 		find -L . -path "./lib/$${LIB}.*"     -o \
@@ -39,13 +37,6 @@ copy_toolchain_lib_root = \
 				cp -d $${FULLPATH} $(TARGET_DIR)/$${DESTDIR}/; \
 			elif test -f $${FULLPATH}; then \
 				$(INSTALL) -D -m0755 $${FULLPATH} $(TARGET_DIR)/$${DESTDIR}/$${LIB}; \
-				case "$${STRIP}" in \
-				(0 | n | no) \
-;; \
-				(*) \
-					$(TARGET_CROSS)strip "$(TARGET_DIR)/$${DESTDIR}/$${LIB}"; \
-;; \
-				esac; \
 			else \
 				exit -1; \
 			fi; \

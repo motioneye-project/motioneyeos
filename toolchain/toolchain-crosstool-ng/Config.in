@@ -98,10 +98,4 @@ config BR2_TOOLCHAIN_CTNG_uClibc_PROGRAM_INVOCATION
 
 endif # BR2_TOOLCHAIN_CTNG_uClibc
 
-config BR2_TOOLCHAIN_CTNG_STRIP_LIBS
-	bool "Strip libs copied to target"
-	default !BR2_STRIP_none
-	help
-	  Strip shared libraries copied from the toolchain.
-
 endif # BR2_TOOLCHAIN_CTNG

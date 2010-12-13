@@ -65,10 +65,10 @@ $(STAMP_DIR)/ct-ng-toolchain-installed: $(STAMP_DIR)/ct-ng-toolchain-built
 	    echo "CTNG_SYSROOT='$${CTNG_SYSROOT}'";                         \
 	    echo "Copy external toolchain libraries to target...";          \
 	    for libs in $(CTNG_LIBS_LIB); do                                \
-	        $(call copy_toolchain_lib_root,$${CTNG_SYSROOT},$$libs,/lib,$(BR2_TOOLCHAIN_CTNG_STRIP_LIBS)); \
+	        $(call copy_toolchain_lib_root,$${CTNG_SYSROOT},$$libs,/lib); \
 	    done;                                                           \
 	    for libs in $(CTNG_LIBS_USR_LIB); do                            \
-	        $(call copy_toolchain_lib_root,$${CTNG_SYSROOT},$$libs,/usr/lib,$(BR2_TOOLCHAIN_CTNG_STRIP_LIBS)); \
+	        $(call copy_toolchain_lib_root,$${CTNG_SYSROOT},$$libs,/usr/lib); \
 	    done;                                                           \
 	    echo "Copy external toolchain sysroot to staging...";           \
 	    $(call copy_toolchain_sysroot,$${CTNG_SYSROOT},$${CTNG_SYSROOT},)

@@ -184,10 +184,10 @@ $(STAMP_DIR)/ext-toolchain-installed: $(TOOLCHAIN_EXTERNAL_DEPENDENCIES)
 	mkdir -p $(TARGET_DIR)/lib ; \
 	echo "Copy external toolchain libraries to target..." ; \
 	for libs in $(LIB_EXTERNAL_LIBS); do \
-	 	$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$$libs,/lib,$(BR2_TOOLCHAIN_EXTERNAL_STRIP)); \
+		$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$$libs,/lib); \
 	done ; \
 	for libs in $(USR_LIB_EXTERNAL_LIBS); do \
-	 	$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$$libs,/usr/lib,$(BR2_TOOLCHAIN_EXTERNAL_STRIP)); \
+		$(call copy_toolchain_lib_root,$${ARCH_SYSROOT_DIR},$$libs,/usr/lib); \
 	done ; \
 	echo "Copy external toolchain sysroot to staging..." ; \
 	$(call copy_toolchain_sysroot,$${SYSROOT_DIR},$${ARCH_SYSROOT_DIR},$${ARCH_SUBDIR}) ; \
