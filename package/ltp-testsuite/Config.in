@@ -1,7 +1,16 @@
-config BR2_PACKAGE_LTP-TESTSUITE
+config BR2_PACKAGE_LTP_TESTSUITE
 	bool "ltp-testsuite"
-	depends on BROKEN
+	depends on !BR2_PTHREADS_NONE
 	help
 	  The Linux Test Project provides a huge testsuite for Linux.
 
+	  The LTP testsuite uses several functions that are considered
+	  obsolete, such as sigset() and others. Therefore, the LTP
+	  testsuite does not build with Buildroot's default uClibc
+	  configuration, and options such as
+	  UCLIBC_HAS_OBSOLETE_BSD_SIGNAL are needed.
+
 	  http://ltp.sourceforge.net/
+
+comment "ltp-testsuite requires a toolchain with thread support"
+	depends on BR2_PTHREADS_NONE
