@@ -60,6 +60,7 @@ config BR2_NEEDS_GETTEXT
 	bool
 	default y if BR2_TOOLCHAIN_BUILDROOT
 	default y if BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	default y if BR2_TOOLCHAIN_CTNG_uClibc
 
 config BR2_NEEDS_GETTEXT_IF_LOCALE
 	bool
