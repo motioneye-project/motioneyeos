@@ -1,15 +1,142 @@
-#
-
 if BR2_TOOLCHAIN_EXTERNAL
-choice
-	prompt "External toolchain C library"
-	default BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 
-config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
-	bool "uClibc"
+choice
+	prompt "Toolchain"
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201009
+	bool "CodeSourcery ARM 2010.09"
+	depends on BR2_arm
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	help
+	  Toolchain for the ARM architecture, from CodeSourcery. It
+	  uses gcc 4.5.1, binutils 2.20, glibc 2.11 and gdb 7.2.50,
+	  kernel headers 2.6.35.2. It has support for the following
+	  variants:
+            - ARMv5TE, little endian, soft-float, glibc
+            - ARMv4T, little endian, soft-float, glibc
+            - ARMv7-A, Thumb 2, little endian, soft-float, glibc
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2010Q1
+	bool "CodeSourcery ARM 2010q1"
+	depends on BR2_arm
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	help
+	  Toolchain for the ARM architecture, from CodeSourcery. It
+	  uses gcc 4.4.1, binutils 2.19, glibc 2.11, gdb 7.0.50 and
+	  kernel headers 2.6.32. It has support for the following
+	  variants:
+             - ARMv5T, little endian, soft-float, glibc
+             - ARMv4T, little endian, soft-float, glibc
+             - ARMv7-A, Thumb 2, little endian, soft-float, glibc
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2009Q1
+	bool "CodeSourcery ARM 2009q1"
+	depends on BR2_arm
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	help
+	  Toolchain for the ARM architecture, from CodeSourcery. It
+	  uses gcc 4.3.3, binutils 2.19, glibc 2.8 and gdb 6.8 and
+	  kernel headers 2.6.30. It has support for the following
+	  variants:
+            - ARMv5T, little endian, soft-float, glibc
+            - ARMv4T, little endian, soft-float, glibc
+            - ARMv7-A, Thumb 2, little endian, soft-float, glibc
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS44
+	bool "CodeSourcery MIPS 4.4"
+	depends on BR2_mips || BR2_mipsel
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	help
+	  Toolchain for the MIPS architecture, from CodeSourcery. It
+	  uses gcc 4.4.1, binutils 2.19, glibc 2.11, uClibc 0.9.30 and
+	  gdb 7.0, kernel headers 2.6.32. It has support for the
+	  following variants:
+            - MIPS32 O32 big endian glibc
+            - MIPS32 O32 little endian glibc
+            - MIPS32 big endian soft float glibc
+            - MIPS32 little endian soft float glibc
+            - MIPS32 big endian microMIPS glibc
+            - MIPS32 little endian microMIPS glibc
+            - MIPS32 big endian soft float microMIPS glibc
+            - MIPS32 little endian soft float microMIPS glibc
+            - MIPS32 big endian uclibc
+            - MIPS32 little endian uclibc
+            - MIPS32 big endian soft float uclibc
+            - MIPS32 little endian soft float uclibc
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
+	bool "CodeSoucery PowerPC 2010.09"
+	depends on BR2_powerpc
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	help
+	  Toolchain for the PowerPC architecture, from
+	  CodeSourcery. It uses gcc 4.5.1, binutils 2.20, glibc 2.11,
+	  gdb 7.2.50 and kernel headers 2.6.35.2. It has support for
+	  the following variants:
+            - 603 glibc, 32 bits
+            - 603 soft float glibc, 32 bits
+            - e600 altivec glibc, 32 bits
+            - e500v1 glibc, 32 bits
+            - e500v2 glibc, 32 bits
+            - e500mc glibc, 32 bits
+            - 970 glibc hard-float, 64 bits
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
+	bool "CodeSoucery PowerPC 2010.09"
+	depends on BR2_sh
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	help
+	  Toolchain for the SuperH architecture, from CodeSourcery. It
+	  uses gcc 4.5.1, binutils 2.20, glibc 2.11, uClibc 0.9.30,
+	  gdb 7.2.50 and kernel headers 2.6.35.2. It has support for
+	  the following variants:
+            - SH4A, glibc, little endian
+            - SH4A, glibc, big endian
+	    - SH4A, uClibc, little endian
+            - SH4A, uClibc, big endian
+
+config BR2_TOOLCHAIN_EXTERNAL_CUSTOM
+       bool "Custom toolchain"
+       help
+         Use this option to use a custom toolchain pre-installed on
+         your system.
+
+endchoice
+
+config BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
+	bool "Download toolchain automatically"
+	default y
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CUSTOM
+	help
+	  When enabled, Buildroot will automatically download and
+	  install the selected external toolchain. When disabled,
+	  Buildroot will use a pre-installed toolchain.
+
+config BR2_TOOLCHAIN_EXTERNAL_PATH
+	string "Toolchain path"
+	default "/path/to/toolchain/usr"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
+	help
+	  Path to where the external toolchain is installed.
+
+config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX
+	string "Toolchain prefix"
+	depends on BR2_TOOLCHAIN_EXTERNAL_CUSTOM
+	default "$(ARCH)-linux"
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	string
+	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2009Q1
+	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2010Q1
+	default "arm-none-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201009
+	default "mips-linux-gnu"         if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS44
+	default "powerpc-linux-gnu"      if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
+	default "sh4-linux-gnu"          if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
+	default $(BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX) \
+					 if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
 config BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	bool "glibc"
+	bool
 	select BR2_LARGEFILE
 	select BR2_INET_IPV6
 	select BR2_INET_RPC
@@ -17,9 +144,26 @@ config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_ENABLE_LOCALE
 	select BR2_PROGRAM_INVOCATION
 
+config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	bool
+
+if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
+
+choice
+	prompt "External toolchain C library"
+	default BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
+
+config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
+	bool "uClibc"
+	select BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+
+config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_GLIBC
+	bool "glibc"
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+
 endchoice
 
-if BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+if BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 
 config BR2_TOOLCHAIN_EXTERNAL_LARGEFILE
 	bool "Toolchain has large file support?"
@@ -70,7 +214,9 @@ config BR2_TOOLCHAIN_EXTERNAL_PROGRAM_INVOCATION
 	  invocation support. If you don't know, leave the default
 	  value, Buildroot will tell you if it's correct or not.
 
-endif
+endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
+
+endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
 config BR2_TOOLCHAIN_EXTERNAL_STRIP
 	bool
@@ -78,4 +224,6 @@ config BR2_TOOLCHAIN_EXTERNAL_STRIP
 	prompt "Strip shared libraries"
 	help
 	  Strip shared libraries copied from the external toolchain.
-endif
+
+endif # BR2_TOOLCHAIN_EXTERNAL
+

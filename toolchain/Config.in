@@ -13,6 +13,10 @@ config BR2_TOOLCHAIN_BUILDROOT
 
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External toolchain"
+	help
+	  Select if you want to use an existing cross-compiling
+	  toolchain. Buildroot can either download automatically a
+	  toolchain, or use an already installed toolchain.
 
 config BR2_TOOLCHAIN_CTNG
 	bool "Crosstool-NG toolchain"
@@ -29,6 +33,5 @@ source "toolchain/toolchain-external/Config.in"
 source "toolchain/toolchain-crosstool-ng/Config.in"
 source "toolchain/toolchain-common.in"
 source "toolchain/toolchain-buildroot/Config.in.2"
-source "toolchain/toolchain-external/Config.in.2"
 
 endmenu
