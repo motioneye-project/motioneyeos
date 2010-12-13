@@ -10,8 +10,67 @@ config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 
 config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	bool "glibc"
+	select BR2_LARGEFILE
+	select BR2_INET_IPV6
+	select BR2_INET_RPC
+	select BR2_USE_WCHAR
+	select BR2_ENABLE_LOCALE
+	select BR2_PROGRAM_INVOCATION
 
 endchoice
+
+if BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+
+config BR2_TOOLCHAIN_EXTERNAL_LARGEFILE
+	bool "Toolchain has large file support?"
+	select BR2_LARGEFILE
+	help
+	  Select this option if your external toolchain supports
+	  largefile. If you don't know, leave the default value,
+	  Buildroot will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_INET_IPV6
+	bool "Toolchain has IPv6 support?"
+	select BR2_INET_IPV6
+	help
+	  Select this option if your external toolchain supports
+	  IPv6. If you don't know, leave the default value, Buildroot
+	  will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
+	bool "Toolchain has RPC support ?"
+	select BR2_INET_RPC
+	help
+	  Select this option if your external toolchain supports
+	  RPC. If you don't know, leave the default value, Buildroot
+	  will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_WCHAR
+	bool "Toolchain has WCHAR support?"
+	select BR2_USE_WCHAR
+	help
+	  Select this option if your external toolchain supports
+	  WCHAR. If you don't know, leave the default value, Buildroot
+	  will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_LOCALE
+	bool "Toolchain has locale support?"
+	select BR2_TOOLCHAIN_EXTERNAL_WCHAR
+	select BR2_ENABLE_LOCALE
+	help
+	  Select this option if your external toolchain has locale
+	  support. If you don't know, leave the default value,
+	  Buildroot will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_PROGRAM_INVOCATION
+	bool "Toolchain has program invocation support?"
+	select BR2_PROGRAM_INVOCATION
+	help
+	  Select this option if your external toolchain has program
+	  invocation support. If you don't know, leave the default
+	  value, Buildroot will tell you if it's correct or not.
+
+endif
 
 config BR2_TOOLCHAIN_EXTERNAL_STRIP
 	bool

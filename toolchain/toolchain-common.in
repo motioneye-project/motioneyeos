@@ -5,42 +5,23 @@
 # so put it here instead
 source "toolchain/gdb/Config.in"
 
-comment "Common Toolchain Options"
-
 config BR2_LARGEFILE
-	bool "Enable large file (files > 2 GB) support?"
-	help
-	  If you are building your own toolchain and you want to 
-	  support files larger than 2GB then enable this option.
-	  If you have an external binary toolchain that has been 
-	  built with large file support (files > 2GB) then enable 
-	  this option.
+	bool
 
 config BR2_INET_IPV6
-	bool "Enable IPv6"
-	help
-	  If you are building your own toolchain and you want to 
-	  enable IPV6 support then enable this option.
-	  If you have an external binary toolchain that has been 
-	  built with IPV6 support then enable this option.
+	bool
 
 config BR2_INET_RPC
-	bool "Enable RPC"
-	help
-	  Enable RPC. RPC support is needed for nfs.
-	  If you are building your own toolchain and you want to 
-	  enable RPC support then enable this option.
-	  If you have an external binary toolchain that has been 
-	  built with RPC support then enable this option.
+	bool
+
+config BR2_USE_WCHAR
+	bool
 
 config BR2_ENABLE_LOCALE
-	bool "Enable toolchain locale/i18n support?"
-	select BR2_USE_WCHAR
-	help
-	  If you are building your own toolchain and you want to 
-	  enable locale/i18n support then enable this option.
-	  If you have an external binary toolchain that has been 
-	  built with locale/i18n support then enable this option.
+	bool
+
+config BR2_PROGRAM_INVOCATION
+	bool
 
 config BR2_ENABLE_LOCALE_PURGE
 	bool "Purge unwanted locales"
@@ -77,14 +58,6 @@ config BR2_NEEDS_GETTEXT
 config BR2_NEEDS_GETTEXT_IF_LOCALE
 	bool
 	default y if (BR2_NEEDS_GETTEXT && BR2_ENABLE_LOCALE)
-
-config BR2_USE_WCHAR
-	bool "Enable WCHAR support"
-	help
-	  If you are building your own toolchain and you want to 
-	  enable WCHAR support then enable this option.
-	  If you have an external binary toolchain that has been built 
-	  with WCHAR support then enable this option.
 
 config BR2_PREFER_SOFT_FLOAT
 	bool
@@ -134,16 +107,6 @@ choice
 		bool "Native POSIX Threading (NPTL)"
 		depends on BR2_UCLIBC_VERSION_SNAPSHOT
 endchoice
-
-config BR2_PROGRAM_INVOCATION
-	bool "Enable 'program invocation name'"
-	help
-	  Support for the GNU-specific program_invocation_name and
-	  program_invocation_short_name strings.  Some GNU packages
-	  (like tar and coreutils) utilize these for extra useful
-	  output, but in general are not required.
-	  If you have an external binary toolchain that has been built
-	  with program invocation support then enable this option.
 
 config BR2_GCC_CROSS_CXX
 	bool

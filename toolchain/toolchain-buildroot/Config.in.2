@@ -1,6 +1,56 @@
 # Buildroot backend specific options
 
 if BR2_TOOLCHAIN_BUILDROOT
+
+comment "Toolchain Options"
+
+config BR2_TOOLCHAIN_BUILDROOT_LARGEFILE
+	bool "Enable large file (files > 2 GB) support"
+	select BR2_LARGEFILE
+	help
+	  Enable this option if you want your toolchain to support
+	  files bigger than 2 GB.
+
+config BR2_TOOLCHAIN_BUILDROOT_INET_IPV6
+	bool "Enable IPv6 support"
+	select BR2_INET_IPV6
+	help
+	  Enable this option if you want your toolchain to support
+	  IPv6.
+
+config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
+	bool "Enable RPC support"
+	select BR2_INET_RPC
+	help
+	  Enable this option if you want your toolchain to support
+	  RPC (needed for NFS, for example).
+
+config BR2_TOOLCHAIN_BUILDROOT_WCHAR
+	bool "Enable WCHAR support"
+	select BR2_USE_WCHAR
+	help
+	  Enable this option if you want your toolchain to support
+	  wide characters (i.e characters longer than 8 bits, needed
+	  for locale support).
+
+config BR2_TOOLCHAIN_BUILDROOT_LOCALE
+	bool "Enable toolchain locale/i18n support"
+	select BR2_TOOLCHAIN_BUILDROOT_WCHAR
+	select BR2_ENABLE_LOCALE
+	help
+	  Enable this option if you want your toolchain to support
+	  localization and internationalization.
+
+config BR2_TOOLCHAIN_BUILDROOT_PROGRAM_INVOCATION
+	bool "Enable 'program invocation name' support"
+	select BR2_PROGRAM_INVOCATION
+	help
+	  Enable this option if you want your toolchain to support the
+	  GNU-specific program_invocation_name and
+	  program_invocation_short_name strings.  Some GNU packages
+	  (like tar and coreutils) utilize these for extra useful
+	  output, but in general are not required.
+
 source "toolchain/elf2flt/Config.in"
 source "toolchain/mklibs/Config.in"
 source "toolchain/sstrip/Config.in"
