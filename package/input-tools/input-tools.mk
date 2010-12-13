@@ -21,18 +21,20 @@ endef
 
 INPUT_TOOLS_POST_PATCH_HOOKS = INPUT_TOOLS_DEBIAN_PATCHES
 
+# jscal needs -lm
 define INPUT_TOOLS_BUILD_CMDS
-	(cd $(@D)/utils; \
-		$(TARGET_CC) $(TARGET_CFLAGS) -o evtest evtest.c; \
-		$(TARGET_CC) $(TARGET_CFLAGS) -o inputattach inputattach.c; \
-		$(TARGET_CC) $(TARGET_CFLAGS) -o jscal jscal.c; \
-		$(TARGET_CC) $(TARGET_CFLAGS) -o jstest jstest.c; \
-	)
+	for i in $(filter-out jscal,$(INPUT_TOOLS_TARGETS_y)); do \
+		$(TARGET_CC) $(TARGET_CFLAGS) -o $(@D)/$$i $(@D)/utils/$$i.c; \
+	done
+	for i in $(filter jscal,$(INPUT_TOOLS_TARGETS_y)); do \
+		$(TARGET_CC) $(TARGET_CFLAGS) -o $(@D)/$$i $(@D)/utils/$$i.c -lm; \
+	done
 endef
 
 define INPUT_TOOLS_INSTALL_TARGET_CMDS
-	test -z "$(INPUT_TOOLS_TARGETS_y)" || \
-	install -m 755 $(addprefix $(@D)/utils/,$(INPUT_TOOLS_TARGETS_y)) $(TARGET_DIR)/usr/bin/
+	for i in $(INPUT_TOOLS_TARGETS_y); do \
+		install -m 755 -D $(@D)/$$i $(TARGET_DIR)/usr/bin/$$i; \
+	done
 endef
 
 define INPUT_TOOLS_UNINSTALL_TARGET_CMDS
@@ -40,7 +42,7 @@ define INPUT_TOOLS_UNINSTALL_TARGET_CMDS
 endef
 
 define INPUT_TOOLS_CLEAN_CMDS
-	rm -f $(addprefix $(@D)/utils/,$(INPUT_TOOLS_TARGETS_y))
+	rm -f $(addprefix $(@D)/,$(INPUT_TOOLS_TARGETS_y))
 endef
 
 $(eval $(call GENTARGETS,package,input-tools))
