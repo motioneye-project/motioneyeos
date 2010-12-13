@@ -76,6 +76,33 @@ config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 	  See http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
 	  for details.
 
+choice
+	prompt "Thread library implementation"
+	default BR2_PTHREADS_OLD
+	help
+	  Use this option to select the thread library implementation
+	  that should be used in your toolchain. Not all thread
+	  variants work with all versions of uClibc, the "linuxthreads
+	  (stable/old)" may be a working fallback if you need
+	  threading at all.
+
+	config BR2_PTHREADS_NONE
+		bool "none"
+
+	config BR2_PTHREADS
+		bool "linuxthreads"
+	        select BR2_TOOLCHAIN_HAS_THREADS
+
+	config BR2_PTHREADS_OLD
+		bool "linuxthreads (stable/old)"
+	        select BR2_TOOLCHAIN_HAS_THREADS
+
+	config BR2_PTHREADS_NATIVE
+		bool "Native POSIX Threading (NPTL)"
+	        select BR2_TOOLCHAIN_HAS_THREADS
+		depends on BR2_UCLIBC_VERSION_SNAPSHOT
+endchoice
+
 source "toolchain/elf2flt/Config.in"
 source "toolchain/mklibs/Config.in"
 source "toolchain/sstrip/Config.in"

@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LTP_TESTSUITE
 	bool "ltp-testsuite"
-	depends on !BR2_PTHREADS_NONE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  The Linux Test Project provides a huge testsuite for Linux.
 
@@ -13,4 +13,4 @@ config BR2_PACKAGE_LTP_TESTSUITE
 	  http://ltp.sourceforge.net/
 
 comment "ltp-testsuite requires a toolchain with thread support"
-	depends on BR2_PTHREADS_NONE
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

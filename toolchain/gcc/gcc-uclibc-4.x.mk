@@ -138,6 +138,12 @@ else
 GCC_TLS:=--disable-tls
 endif
 
+ifeq ($(BR2_PTHREADS_NONE),y)
+THREADS:=--disable-threads
+else
+THREADS:=--enable-threads
+endif
+
 ifeq ($(BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE),y)
 GCC_DECIMAL_FLOAT:=--disable-decimal-float
 endif

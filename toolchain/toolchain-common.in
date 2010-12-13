@@ -26,6 +26,9 @@ config BR2_PROGRAM_INVOCATION
 config BR2_INSTALL_LIBSTDCPP
 	bool
 
+config BR2_TOOLCHAIN_HAS_THREADS
+	bool
+
 config BR2_ENABLE_LOCALE_PURGE
 	bool "Purge unwanted locales"
 	help
@@ -75,32 +78,6 @@ config BR2_SOFT_FLOAT
 	  kernel FPU emulator, but you still wish to support floating point
 	  functions, then everything will need to be compiled with soft
 	  floating point support (-msoft-float).
-
-choice
-	prompt "Thread library implementation"
-	default BR2_PTHREADS_OLD
-	help
-	  If you are building your own toolchain then select the type of 
-	  libpthreads you want to use.
-	  Not all thread variants work with all versions of uClibc,
-	  the "linuxthreads (stable/old)" may be a working fallback
-	  if you need threading at all.
-	  If you have an external binary toolchain then select the type 
-	  of libpthreads it was built with.
-
-	config BR2_PTHREADS_NONE
-		bool "none"
-
-	config BR2_PTHREADS
-		bool "linuxthreads"
-
-	config BR2_PTHREADS_OLD
-		bool "linuxthreads (stable/old)"
-
-	config BR2_PTHREADS_NATIVE
-		bool "Native POSIX Threading (NPTL)"
-		depends on BR2_UCLIBC_VERSION_SNAPSHOT
-endchoice
 
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"

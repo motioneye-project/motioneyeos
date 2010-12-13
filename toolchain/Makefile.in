@@ -1,9 +1,3 @@
-ifeq ($(BR2_PTHREADS_NONE),y)
-THREADS:=--disable-threads
-else
-THREADS:=--enable-threads
-endif
-
 BR2_CONFIGURE_DEVEL_SYSROOT=--with-sysroot=$(TOOLCHAIN_DIR)/uClibc_dev/
 BR2_CONFIGURE_STAGING_SYSROOT=--with-sysroot=$(STAGING_DIR)
 BR2_CONFIGURE_BUILD_TOOLS=--with-build-time-tools=$(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin

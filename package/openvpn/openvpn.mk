@@ -8,10 +8,10 @@ OPENVPN_VERSION = 2.1.3
 OPENVPN_SITE = http://openvpn.net/release
 OPENVPN_CONF_OPT = --enable-small
 
-ifeq ($(BR2_PTHREADS_NATIVE),y)
-	OPENVPN_CONF_OPT += --enable-threads=posix
-else
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 	OPENVPN_CONF_OPT += --enable-pthread
+else
+	OPENVPN_CONF_OPT += --disable-pthread
 endif
 
 ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)

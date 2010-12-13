@@ -149,6 +149,7 @@ config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_USE_WCHAR
 	select BR2_ENABLE_LOCALE
 	select BR2_PROGRAM_INVOCATION
+	select BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 	bool
@@ -219,6 +220,14 @@ config BR2_TOOLCHAIN_EXTERNAL_PROGRAM_INVOCATION
 	  Select this option if your external toolchain has program
 	  invocation support. If you don't know, leave the default
 	  value, Buildroot will tell you if it's correct or not.
+
+config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
+	bool "Toolchain has threads support?"
+	select BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Select this option if your external toolchain has thread
+	  support. If you don't know, leave the default value,
+	  Buildroot will tell you if it's correct or not.
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 

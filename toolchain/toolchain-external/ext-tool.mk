@@ -53,7 +53,7 @@ ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 USR_LIB_EXTERNAL_LIBS+=libstdc++.so
 endif
 
-ifneq ($(BR2_PTHREADS_NONE),y)
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 LIB_EXTERNAL_LIBS+=libpthread.so
 ifeq ($(BR2_PACKAGE_GDB_SERVER),y)
 LIB_EXTERNAL_LIBS+=libthread_db.so

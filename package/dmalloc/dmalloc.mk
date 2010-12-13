@@ -16,10 +16,10 @@ else
 DMALLOC_CONF_OPT+=--disable-cxx
 endif
 
-ifeq ($(BR2_PTHREADS_NONE),y)
-DMALLOC_CONF_OPT+=--disable-threads
-else
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 DMALLOC_CONF_OPT+=--enable-threads
+else
+DMALLOC_CONF_OPT+=--disable-threads
 endif
 
 define DMALLOC_POST_PATCH

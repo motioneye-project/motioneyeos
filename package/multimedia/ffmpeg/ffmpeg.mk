@@ -111,10 +111,10 @@ else
 FFMPEG_CONF_OPT += --disable-outdevs
 endif
 
-ifeq ($(BR2_PTHREADS_NONE),y)
-FFMPEG_CONF_OPT += --disable-pthreads
-else
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 FFMPEG_CONF_OPT += --enable-pthreads
+else
+FFMPEG_CONF_OPT += --disable-pthreads
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
