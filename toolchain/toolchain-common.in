@@ -23,6 +23,9 @@ config BR2_ENABLE_LOCALE
 config BR2_PROGRAM_INVOCATION
 	bool
 
+config BR2_INSTALL_LIBSTDCPP
+	bool
+
 config BR2_ENABLE_LOCALE_PURGE
 	bool "Purge unwanted locales"
 	help
@@ -107,28 +110,6 @@ choice
 		bool "Native POSIX Threading (NPTL)"
 		depends on BR2_UCLIBC_VERSION_SNAPSHOT
 endchoice
-
-config BR2_GCC_CROSS_CXX
-	bool
-	help
-	  If you are building your own toolchain and want to build 
-	  a C++ cross-compiler this needs to be enabled.
-	  If you have an external binary toolchain that has a C++ compiler
-	  and you want to use it then you need to enable this option.
-
-config BR2_INSTALL_LIBSTDCPP
-	bool "Build/install c++ compiler and libstdc++?"
-	select BR2_GCC_CROSS_CXX
-	depends on !(! BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE && BR2_ENABLE_LOCALE && BR2_UCLIBC_VERSION_0_9_31)
-	help
-	  If you are building your own toolchain and want to build and install
-	  the C++ compiler and library then you need to enable this option.
-	  If you have an external toolchain that has been built with C++ 
-	  support and you want to use the compiler / library then you need 
-	  to select this option.
-
-comment "C++ support broken in uClibc 0.9.31 with locale enabled with gcc 4.2"
-	depends on !BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE && BR2_ENABLE_LOCALE && BR2_UCLIBC_VERSION_0_9_31
 
 config BR2_TARGET_OPTIMIZATION
 	string "Target Optimizations"

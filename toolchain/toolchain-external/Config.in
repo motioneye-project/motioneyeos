@@ -7,6 +7,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM201009
 	bool "CodeSourcery ARM 2010.09"
 	depends on BR2_arm
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Toolchain for the ARM architecture, from CodeSourcery. It
 	  uses gcc 4.5.1, binutils 2.20, glibc 2.11 and gdb 7.2.50,
@@ -20,6 +21,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2010Q1
 	bool "CodeSourcery ARM 2010q1"
 	depends on BR2_arm
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Toolchain for the ARM architecture, from CodeSourcery. It
 	  uses gcc 4.4.1, binutils 2.19, glibc 2.11, gdb 7.0.50 and
@@ -33,6 +35,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM2009Q1
 	bool "CodeSourcery ARM 2009q1"
 	depends on BR2_arm
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Toolchain for the ARM architecture, from CodeSourcery. It
 	  uses gcc 4.3.3, binutils 2.19, glibc 2.8 and gdb 6.8 and
@@ -46,6 +49,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS44
 	bool "CodeSourcery MIPS 4.4"
 	depends on BR2_mips || BR2_mipsel
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Toolchain for the MIPS architecture, from CodeSourcery. It
 	  uses gcc 4.4.1, binutils 2.19, glibc 2.11, uClibc 0.9.30 and
@@ -68,6 +72,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC201009
 	bool "CodeSoucery PowerPC 2010.09"
 	depends on BR2_powerpc
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Toolchain for the PowerPC architecture, from
 	  CodeSourcery. It uses gcc 4.5.1, binutils 2.20, glibc 2.11,
@@ -85,6 +90,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH201009
 	bool "CodeSoucery PowerPC 2010.09"
 	depends on BR2_sh
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_INSTALL_LIBSTDCPP
 	help
 	  Toolchain for the SuperH architecture, from CodeSourcery. It
 	  uses gcc 4.5.1, binutils 2.20, glibc 2.11, uClibc 0.9.30,
@@ -215,6 +221,14 @@ config BR2_TOOLCHAIN_EXTERNAL_PROGRAM_INVOCATION
 	  value, Buildroot will tell you if it's correct or not.
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
+
+config BR2_TOOLCHAIN_EXTERNAL_CXX
+	bool "Toolchain has C++ support?"
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Select this option if your external toolchain has C++
+	  support. If you don't know, leave the default value,
+	  Buildroot will tell you if it's correct or not.
 
 endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 

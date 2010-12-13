@@ -98,4 +98,12 @@ config BR2_TOOLCHAIN_CTNG_uClibc_PROGRAM_INVOCATION
 
 endif # BR2_TOOLCHAIN_CTNG_uClibc
 
+config BR2_TOOLCHAIN_CTNG_CXX
+	bool "Enable C++ support"
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Enable this option if you want your toolchain to support the
+	  C++ language and you want C++ libraries to be installed on
+	  your target system.
+
 endif # BR2_TOOLCHAIN_CTNG

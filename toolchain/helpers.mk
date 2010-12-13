@@ -220,7 +220,7 @@ check_arm_abi = \
 check_cplusplus = \
 	$(TARGET_CXX) -v > /dev/null 2>&1 ; \
 	if test $$? -ne 0 ; then \
-		echo "BR2_INSTALL_LIBSTDCPP is selected but C++ support not available in external toolchain" ; \
+		echo "C++ support is selected but is not available in external toolchain" ; \
 		exit 1 ; \
 	fi
 
