@@ -128,7 +128,15 @@ ifneq ($(BR2_PACKAGE_PYTHON_SSL),y)
 endif
 	rm -rf $(PYTHON_DIR)/Lib/test
 	LD_LIBRARY_PATH=$(STAGING_DIR)/lib
-	$(MAKE) CC="$(TARGET_CC)" -C $(PYTHON_DIR) install \
+	# FIXME: The make -i just below is to work around python's bug
+	# #1669349 (http://bugs.python.org/issue1669349) which is introducing
+	# a failure at make install on a python-free system. Since none of
+	# the other the provided workaround work, the make -i is the only
+	# solution. The failing lib is install later in the process, so
+	# even if the compilation is failing without the patch, with it, the
+	# target python is fully functionnal.
+	# The "-i" will have to be removed when the bug will be solved.
+	$(MAKE) CC="$(TARGET_CC)" -C $(PYTHON_DIR) -i install \
 		DESTDIR=$(TARGET_DIR) CROSS_COMPILE=yes \
 		PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/usr/include \
 		PYTHON_MODULES_LIB="$(STAGING_DIR)/lib $(STAGING_DIR)/usr/lib" \
