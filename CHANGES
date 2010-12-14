@@ -19,6 +19,9 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#561:  ltp-testsuite failed to install
+	#1651: Build fail caused by ccache in module-init-tools
+	#1735: [PATCH] mplayer: convert to autotools infrastructure
 	#2905: Qt: Speed up compilation, if gui-module isn't selected
 
 2010.11, Released November 30th, 2010:
