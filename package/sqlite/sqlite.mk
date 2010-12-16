@@ -4,7 +4,7 @@
 #
 #############################################################
 
-SQLITE_VERSION = 3.7.3
+SQLITE_VERSION = 3.7.4
 SQLITE_SOURCE = sqlite-amalgamation-$(SQLITE_VERSION).tar.gz
 SQLITE_SITE = http://www.sqlite.org
 SQLITE_INSTALL_STAGING = YES
