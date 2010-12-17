@@ -4,7 +4,7 @@
 #
 #############################################################
 
-NANO_VERSION = 2.2.5
+NANO_VERSION = 2.2.6
 NANO_SITE = http://www.nano-editor.org/dist/v2.2
 NANO_MAKE_ENV = CURSES_LIB="-lncurses"
 NANO_CONF_OPT = --without-slang --enable-tiny
