@@ -1,87 +1,39 @@
 #############################################################
 #
-# Vim Text Editor
+# vim
 #
 #############################################################
-VIM_VERSION:=7.1
-VIM_SOURCE:=vim-$(VIM_VERSION).tar.bz2
-VIM_SITE:=http://ftp.vim.org/pub/vim
-VIM_SOURCE_SITE:=$(VIM_SITE)/unix
-VIM_PATCH_SITE:=$(VIM_SITE)/patches/7.1
-VIM_DIR:=$(BUILD_DIR)/vim71
-VIM_PATCHES:=$(shell sed -e 's:^:$(DL_DIR)/$(VIM_VERSION).:' package/vim/patches)
-VIM_CONFIG_H:=$(VIM_DIR)/src/auto/config.h
-VIM_CONFIG_MK:=$(VIM_DIR)/src/auto/config.mk
 
-$(DL_DIR)/$(VIM_SOURCE):
-	$(call DOWNLOAD,$(VIM_SOURCE_SITE),$(VIM_SOURCE))
+# svn r1889 == 7.2 release + patchlevel 446
+VIM_SITE = https://vim.svn.sourceforge.net/svnroot/vim/branches/vim7.2
+VIM_SITE_METHOD = svn
+VIM_VERSION = 1889
+VIM_DEPENDENCIES = ncurses
+VIM_SUBDIR = src
+VIM_CONF_ENV = vim_cv_toupper_broken=no \
+		vim_cv_terminfo=yes \
+		vim_cv_tty_group=world \
+		vim_cv_tty_mode=0620 \
+		vim_cv_getcwd_broken=no \
+		vim_cv_stat_ignores_slash=yes \
+		vim_cv_memmove_handles_overlap=yes \
+		ac_cv_sizeof_int=4
+VIM_CONF_OPT = --with-tlib=ncurses
 
-$(DL_DIR)/$(VIM_VERSION).%:
-	$(call DOWNLOAD,$(VIM_PATCH_SITE),$(notdir $@))
-
-vim-source: $(DL_DIR)/$(VIM_SOURCE) $(VIM_PATCHES)
-
-$(VIM_DIR)/.unpacked: $(DL_DIR)/$(VIM_SOURCE)
-	$(BZCAT) $(DL_DIR)/$(VIM_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $@
-
-$(VIM_DIR)/.patched: $(VIM_DIR)/.unpacked
-	@for i in $(VIM_PATCHES); do ( \
-		echo "Patching with $$i"; \
-		cd $(VIM_DIR); \
-		patch -p0 < $$i) \
-	done
-	toolchain/patch-kernel.sh $(VIM_DIR) package/vim/ \*.patch
-	touch $@
-
-$(VIM_DIR)/.configured: $(VIM_DIR)/.patched
-	(cd $(VIM_DIR)/src; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		CFLAGS="$(TARGET_CFLAGS)" \
-		STRIP="$(TARGET_STRIP)" \
-		PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
-		PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
-		./configure $(QUIET) --prefix=/usr \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		$(DISABLE_NLS) \
-		--disable-netbeans \
-		--disable-gpm \
-		--disable-gui \
-		--without-x \
-		--with-tlib=ncurses \
-	)
-	touch $@
-
-$(VIM_DIR)/.build: $(VIM_DIR)/.configured
-	(cd $(VIM_DIR)/src; \
-		$(MAKE) \
-	)
-	touch $@
-
-$(TARGET_DIR)/usr/bin/vim: $(VIM_DIR)/.build
-	(cd $(VIM_DIR)/src; \
+define VIM_INSTALL_TARGET_CMDS
+	cd $(@D)/src; \
 		$(MAKE) DESTDIR=$(TARGET_DIR) installvimbin; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installlinks; \
-	)
-ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
-	(cd $(VIM_DIR)/src; \
+		$(MAKE) DESTDIR=$(TARGET_DIR) installlinks
+endef
+
+define VIM_INSTALL_RUNTIME_CMDS
+	cd $(@D)/src; \
 		$(MAKE) DESTDIR=$(TARGET_DIR) installrtbase; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installmacros; \
-	)
+		$(MAKE) DESTDIR=$(TARGET_DIR) installmacros
+endef
+
+ifeq ($(BR2_PACKAGE_VIM_RUNTIME),y)
+VIM_POST_INSTALL_TARGET_HOOKS += VIM_INSTALL_RUNTIME_CMDS
 endif
 
-vim: host-pkg-config ncurses vim-source $(TARGET_DIR)/usr/bin/vim
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_VIM),y)
-TARGETS+=vim
-endif
+$(eval $(call AUTOTARGETS,package,vim))
