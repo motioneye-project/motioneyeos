@@ -200,4 +200,4 @@ endif
 endif
 
 linux-%:
-	$(MAKE) $(subst linux-,linux26-,$@)
+	$(MAKE) $(EXTRAMAKEARGS) $(subst linux-,linux26-,$@)
