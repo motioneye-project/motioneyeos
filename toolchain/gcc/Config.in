@@ -53,7 +53,7 @@ config BR2_GCC_VERSION
 	default "4.2.4"     if BR2_GCC_VERSION_4_2_4
 	default "4.3.5"     if BR2_GCC_VERSION_4_3_X
 	default "4.4.5"     if BR2_GCC_VERSION_4_4_X
-	default "4.5.1"     if BR2_GCC_VERSION_4_5_X
+	default "4.5.2"     if BR2_GCC_VERSION_4_5_X
 	default $BR2_GCC_SNAP_DATE if BR2_GCC_VERSION_SNAP
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS
