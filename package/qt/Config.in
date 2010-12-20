@@ -264,7 +264,6 @@ if BR2_PACKAGE_QT_GUI_MODULE
 source "package/qt/Config.gfx.in"
 source "package/qt/Config.mouse.in"
 source "package/qt/Config.keyboard.in"
-endif
 
 config BR2_PACKAGE_QT_PHONON
 	bool "Phonon Module"
@@ -285,6 +284,7 @@ config BR2_PACKAGE_QT_PHONON_BACKEND
 	help
 	  Build the platform Phonon plugin.
 	  If unsure, say n.
+endif
 
 comment "Qt DBbus module not available (need dbus)"
 	depends on !BR2_PACKAGE_DBUS
