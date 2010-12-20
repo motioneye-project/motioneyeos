@@ -310,6 +310,7 @@ config BR2_PACKAGE_QT_XMLPATTERNS
 
 config BR2_PACKAGE_QT_MULTIMEDIA
 	bool "Multimedia Module"
+	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  Build QtMultimedia module.
 
@@ -322,6 +323,7 @@ config BR2_PACKAGE_QT_AUDIO_BACKEND
 
 config BR2_PACKAGE_QT_SVG
 	bool "SVG Module"
+	depends on BR2_PACKAGE_QT_GUI_MODULE
 	help
 	  Build the SVG module.
 	  If unsure, say n
