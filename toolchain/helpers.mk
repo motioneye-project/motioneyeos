@@ -96,7 +96,7 @@ copy_toolchain_sysroot = \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/usr/include ] ; then \
 			cp -a $${SYSROOT_DIR}/usr/include $(STAGING_DIR)/usr ; \
 		fi ; \
-		ln -s . $(STAGING_DIR)/$(ARCH_SUBDIR) ; \
+		ln -s . $(STAGING_DIR)/$${ARCH_SUBDIR} ; \
 	fi ; \
 	find $(STAGING_DIR) -type d | xargs chmod 755
 
