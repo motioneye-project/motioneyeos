@@ -126,21 +126,11 @@ define BUSYBOX_BUILD_CMDS
 		CROSS_COMPILE="$(TARGET_CROSS)" -C $(@D)
 endef
 
-ifeq ($(BR2_PACKAGE_BUSYBOX_FULLINSTALL),y)
-define BUSYBOX_INSTALL_BINARY
+define BUSYBOX_INSTALL_TARGET_CMDS
 	$(BUSYBOX_MAKE_ENV) $(MAKE) CC="$(TARGET_CC)" ARCH=$(KERNEL_ARCH) \
 		PREFIX="$(TARGET_DIR)" EXTRA_LDFLAGS="$(TARGET_LDFLAGS)" \
 		CROSS_COMPILE="$(TARGET_CROSS)" CONFIG_PREFIX="$(TARGET_DIR)" \
 		-C $(@D) install
-endef
-else
-define BUSYBOX_INSTALL_BINARY
-	install -D -m 0755 $(BUSYBOX_DIR)/busybox $(TARGET_DIR)/bin/busybox
-endef
-endif
-
-define BUSYBOX_INSTALL_TARGET_CMDS
-	$(BUSYBOX_INSTALL_BINARY)
 	if [ ! -f $(TARGET_DIR)/usr/share/udhcpc/default.script ]; then \
 		$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
 			$(TARGET_DIR)/usr/share/udhcpc/default.script; \
