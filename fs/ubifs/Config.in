@@ -77,3 +77,24 @@ config BR2_TARGET_ROOTFS_UBIFS_LZMA
 
 endchoice
 
+config BR2_TARGET_ROOTFS_UBI
+	depends on BR2_TARGET_ROOTFS_UBIFS
+	bool "Embed into an UBI image"
+	help
+	  Build an ubi image from the ubifs one (with ubinize).
+
+config BR2_TARGET_ROOTFS_UBI_PEBSIZE
+	hex "UBI physical erase block size"
+	depends on BR2_TARGET_ROOTFS_UBI
+	default 0x20000
+	help
+	  Tells ubinize the physical eraseblock size of the flash chip
+	  the ubi image is created for.
+
+config BR2_TARGET_ROOTFS_UBI_SUBSIZE
+	int "UBI sub-page size"
+	depends on BR2_TARGET_ROOTFS_UBI
+	default 512
+	help
+	  Tells ubinize that the flash supports sub-pages and the sub-page
+	  size. Use 0 if subpages are not supported on flash chip.
