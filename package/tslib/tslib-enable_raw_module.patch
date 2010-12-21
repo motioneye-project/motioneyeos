@@ -1,0 +1,14 @@
+Enable raw module by default
+
+Signed-off-by: Daniel Nyström <daniel.nystrom@timeterminal.se>
+
+diff -Naur tslib-e000d35a.orig/etc/ts.conf tslib-e000d35a/etc/ts.conf
+--- tslib-e000d35a.orig/etc/ts.conf	2010-12-21 18:54:45.000000000 +0100
++++ tslib-e000d35a/etc/ts.conf	2010-12-21 18:55:03.000000000 +0100
+@@ -1,5 +1,5 @@
+ # Uncomment if you wish to use the linux input layer event interface
+-# module_raw input
++module_raw input
+ 
+ # Uncomment if you're using a Sharp Zaurus SL-5500/SL-5000d
+ # module_raw collie
