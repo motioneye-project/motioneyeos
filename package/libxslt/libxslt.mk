@@ -3,11 +3,10 @@
 # libxslt
 #
 #############################################################
-LIBXSLT_VERSION = 1.1.24
-LIBXSLT_SOURCE = libxslt-$(LIBXSLT_VERSION).tar.gz
+
+LIBXSLT_VERSION = 1.1.26
 LIBXSLT_SITE = ftp://xmlsoft.org/libxslt
 LIBXSLT_INSTALL_STAGING = YES
-LIBXSLT_INSTALL_TARGET = YES
 
 # If we have enabled libgcrypt then use it, else disable crypto support.
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
