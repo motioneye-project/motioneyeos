@@ -5,7 +5,7 @@ config BR2_PACKAGE_ICU
 	help
 	  International Components for Unicode.
 
-	  http://icu-project.org/
+	  http://site.icu-project.org/
 
 comment "icu requires a toolchain with C++ support and WCHAR enabled"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
