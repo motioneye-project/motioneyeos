@@ -112,11 +112,6 @@ ifeq ($(BR2_ARM_EABI),y)
 else
 	$(call KCONFIG_DISABLE_OPT,CONFIG_AEABI,$(@D)/.config)
 endif
-ifeq ($(BR2_INET_IPV6),y)
-	$(call KCONFIG_ENABLE_OPT,CONFIG_IPV6,$(@D)/.config)
-else
-	$(call KCONFIG_DISABLE_OPT,CONFIG_IPV6,$(@D)/.config)
-endif
 ifeq ($(BR2_TARGET_ROOTFS_INITRAMFS),y)
 	# As the kernel gets compiled before root filesystems are
 	# built, we create a fake initramfs file list. It'll be
