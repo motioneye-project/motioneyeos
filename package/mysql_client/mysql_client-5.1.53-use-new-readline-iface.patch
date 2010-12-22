@@ -3,11 +3,15 @@ readline is being used.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-Index: mysql_client-5.1.47/configure.in
+---
+ configure.in |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: mysql-5.1.53/configure.in
 ===================================================================
---- mysql_client-5.1.47.orig/configure.in	2010-07-15 23:49:35.000000000 +0200
-+++ mysql_client-5.1.47/configure.in	2010-07-15 23:50:03.000000000 +0200
-@@ -2700,6 +2700,7 @@
+--- mysql-5.1.53.orig/configure.in
++++ mysql-5.1.53/configure.in
+@@ -2689,6 +2689,7 @@
  	    # this way we avoid linking commercial source with GPL readline
  	    readline_link="-lreadline"
  	    want_to_use_readline="yes"
