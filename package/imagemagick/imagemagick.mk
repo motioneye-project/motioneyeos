@@ -9,6 +9,7 @@ IMAGEMAGICK_SOURCE = ImageMagick-$(IMAGEMAGICK_VERSION).tar.bz2
 IMAGEMAGICK_SITE = ftp://ftp.imagemagick.org/pub/ImageMagick
 IMAGEMAGICK_LIBTOOL_PATCH = NO
 IMAGEMAGICK_INSTALL_STAGING = YES
+IMAGEMAGICK_AUTORECONF = YES
 
 ifeq ($(BR2_LARGEFILE),y)
 IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=64
@@ -66,6 +67,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 IMAGEMAGICK_CONF_OPT += --with-xml
+IMAGEMAGICK_CONF_ENV += ac_cv_prog_xml2_config=$(STAGING_DIR)/usr/bin/xml2-config
 IMAGEMAGICK_DEPENDENCIES += libxml2
 else
 IMAGEMAGICK_CONF_OPT += --without-xml
