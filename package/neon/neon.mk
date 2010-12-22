@@ -45,4 +45,12 @@ else
 NEON_CONF_OPT+=--without-ssl
 endif
 
+define NEON_REMOVE_CONFIG_SCRIPTS
+	$(RM) -f $(TARGET_DIR)/usr/bin/neon-config
+endef
+
+ifneq ($(BR2_HAVE_DEVFILES),y)
+NEON_POST_INSTALL_TARGET_HOOKS += NEON_REMOVE_CONFIG_SCRIPTS
+endif
+
 $(eval $(call AUTOTARGETS,package,neon))
