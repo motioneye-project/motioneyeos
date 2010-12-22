@@ -9,7 +9,7 @@
 	lsof, ltp-testsuite, lvm2, m4, memtester, mii-diag, mplayer,
 	mrouted, netplug, openssh, openssl, openvpn, pango, qt, rsync,
 	sdl_gfx, sdl_sound, sysklogd, sysvinit, udev, usbutils,
-	xlib_libX11, xz, zlib
+	xkeyboard-config, xlib_libX11, xz, zlib
 
 	New packages: dhrystone, fbgrab, lsuio, rsh-redone, whetstone,
 	xl2tp
@@ -23,6 +23,7 @@
 	#1651: Build fail caused by ccache in module-init-tools
 	#1735: [PATCH] mplayer: convert to autotools infrastructure
 	#2905: Qt: Speed up compilation, if gui-module isn't selected
+	#2965: Broken linkage to xkbcomp (blocking X server startup)
 	#2983: xlib_libX11 build failed
 
 2010.11, Released November 30th, 2010:
