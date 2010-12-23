@@ -137,7 +137,7 @@ $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE):
 $(TOOLCHAIN_EXTERNAL_DIR)/.extracted: $(DL_DIR)/$(TOOLCHAIN_EXTERNAL_SOURCE)
 	mkdir -p $(@D)
 	$(INFLATE$(suffix $(TOOLCHAIN_EXTERNAL_SOURCE))) $^ | $(TAR) $(TAR_STRIP_COMPONENTS)=1 -C $(@D) $(TAR_OPTIONS) -
-	touch $@
+	$(Q)touch $@
 
 # Checks for an already installed toolchain: check the toolchain
 # location, check that it supports sysroot, and then verify that it
@@ -165,6 +165,7 @@ $(STAMP_DIR)/ext-toolchain-checked:
 	else \
 		$(call check_glibc,$${SYSROOT_DIR}) ; \
 	fi
+	$(Q)touch $@
 
 # Integration of the toolchain into Buildroot: find the main sysroot
 # and the variant-specific sysroot, then copy the needed libraries to
@@ -194,4 +195,4 @@ $(STAMP_DIR)/ext-toolchain-installed: $(TOOLCHAIN_EXTERNAL_DEPENDENCIES)
 	if [ -L $${ARCH_SYSROOT_DIR}/lib64 ] ; then \
 		$(call create_lib64_symlinks) ; \
 	fi ; \
-	touch $@
+	$(Q)touch $@
