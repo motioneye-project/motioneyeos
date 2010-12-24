@@ -504,9 +504,19 @@ $$($(2)_TARGET_DIRCLEAN):		PKG=$(2)
 # configuration
 
 ifeq ($$(BR2_PACKAGE_$(2)),y)
+
 TARGETS += $(1)
-endif
-endef
+
+ifeq ($$($(2)_SITE_METHOD),svn)
+DL_TOOLS_DEPENDENCIES += svn
+else ifeq ($$($(2)_SITE_METHOD),git)
+DL_TOOLS_DEPENDENCIES += git
+else ifeq ($$($(2)_SITE_METHOD),bzr)
+DL_TOOLS_DEPENDENCIES += bzr
+endif # SITE_METHOD
+
+endif # BR2_PACKAGE_$(2)
+endef # GENTARGETS_INNER
 
 ################################################################################
 # GENTARGETS -- the target generator macro for generic packages
