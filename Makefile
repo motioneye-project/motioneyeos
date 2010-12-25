@@ -186,6 +186,12 @@ cc-option=$(shell if $(TARGET_CC) $(TARGET_CFLAGS) $(1) -S -o /dev/null -xc /dev
 #############################################################
 unexport CROSS_COMPILE
 unexport ARCH
+unexport CC
+unexport CXX
+unexport CPP
+unexport CFLAGS
+unexport CXXFLAGS
+unexport GREP_OPTIONS
 
 GNU_HOST_NAME:=$(shell package/gnuconfig/config.guess)
 

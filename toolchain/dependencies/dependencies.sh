@@ -4,15 +4,6 @@
 
 export LC_ALL=C
 
-# Verify that critical environment variables aren't set
-for var in CC CXX CPP CFLAGS CXXFLAGS GREP_OPTIONS CROSS_COMPILE ARCH ; do
-    if test -n "$(eval echo '$'$var)" ; then
-	/bin/echo -e "\nYou must run 'unset $var' so buildroot can run with";
-	/bin/echo -e "a clean environment on your build machine\n";
-	exit 1;
-    fi
-done
-
 # Verify that grep works
 echo "WORKS" | grep "WORKS" >/dev/null 2>&1
 if test $? != 0 ; then
