@@ -1,0 +1,51 @@
+http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/net-analyzer/netperf/files/netperf-2.4.5-netserver.patch?view=log
+# Set DEBUG_LOG_FILE location
+# Fix compiler warnings (bug #337422):
+	netserver.c: In function ‘process_requests’:
+	netserver.c:287: warning: array subscript is above array bounds
+	inlined from ‘process_requests’ at netserver.c:268:
+	/usr/include/bits/stdio2.h:65: warning: call to __builtin___snprintf_chk will always overflow destination buffer
+	inlined from ‘process_requests’ at netserver.c:284:
+	/usr/include/bits/stdio2.h:65: warning: call to __builtin___snprintf_chk will always overflow destination buffer
+
+--- a/src/netserver.c
++++ b/src/netserver.c
+@@ -142,7 +142,7 @@
+ 
+ #ifndef DEBUG_LOG_FILE
+ #ifndef WIN32
+-#define DEBUG_LOG_FILE "/tmp/netperf.debug"
++#define DEBUG_LOG_FILE "/var/log/netperf.debug"
+ #else
+ #define DEBUG_LOG_FILE "c:\\temp\\netperf.debug"
+ #endif  /* WIN32 */
+@@ -266,7 +266,7 @@
+ 	      (!strstr(local_machine,delims[i])) &&
+ 	      (!strstr(local_version,delims[i]))) {
+ 	    snprintf((char *)netperf_response.content.test_specific_data,
+-		     sizeof(netperf_response) - 7,
++		     MAXSPECDATA,
+ 		     "%c%s%c%s%c%s%c%s",
+ 		     delims[i][0],
+ 		     local_sysname,
+@@ -282,15 +282,15 @@
+ 	if (i == 4) {
+ 	  /* none of the delimiters were unique, use the last one */
+ 	  snprintf((char *)netperf_response.content.test_specific_data,
+-		   sizeof(netperf_response) - 7,
++		   MAXSPECDATA,
+ 		   "%c%s%c%s%c%s%c%s",
+-		   delims[i][0],
++		   delims[3][0],
+ 		   "NoDelimUnique",
+-		   delims[i][0],
++		   delims[3][0],
+ 		   "NoDelimUnique",
+-		   delims[i][0],
++		   delims[3][0],
+ 		   "NoDelimUnique",
+-		   delims[i][0],
++		   delims[3][0],
+ 		   "NoDelimUnique");
+ 	}
+ 	send_response_n(0);
