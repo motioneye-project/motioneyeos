@@ -3,218 +3,146 @@
 # python
 #
 #############################################################
-PYTHON_VERSION=2.7
-PYTHON_VERSION_MAJOR=2.7
-PYTHON_SOURCE:=Python-$(PYTHON_VERSION).tar.bz2
-PYTHON_SITE:=http://python.org/ftp/python/$(PYTHON_VERSION)
-PYTHON_DIR:=$(BUILD_DIR)/Python-$(PYTHON_VERSION)
-PYTHON_CAT:=$(BZCAT)
-PYTHON_BINARY:=python
-PYTHON_TARGET_BINARY:=usr/bin/python$(PYTHON_VERSION_MAJOR)
-PYTHON_DEPS:=
-PYTHON_SITE_PACKAGE_DIR=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
+PYTHON_VERSION_MAJOR = 2.7
+PYTHON_VERSION       = $(PYTHON_VERSION_MAJOR).1
+PYTHON_SOURCE        = Python-$(PYTHON_VERSION).tar.bz2
+PYTHON_SITE          = http://python.org/ftp/python/$(PYTHON_VERSION)
 
-BR2_PYTHON_DISABLED_MODULES=dbm zipfile
+# Python needs itself and a "pgen" program to build itself, both being
+# provided in the Python sources. So in order to cross-compile Python,
+# we need to build a host Python first. This host Python is also
+# installed in $(HOST_DIR), as it is needed when cross-compiling
+# third-party Python modules.
+
+HOST_PYTHON_CONF_OPT += 	\
+	--without-cxx-main 	\
+	--disable-sqlite3	\
+	--disable-tk		\
+	--with-expat=none	\
+	--disable-curses	\
+	--disable-codecs-cjk	\
+	--disable-nis		\
+	--disable-unicodedata	\
+	--disable-dbm		\
+	--disable-gdbm		\
+	--disable-bsddb		\
+	--disable-test-modules	\
+	--disable-bz2		\
+	--disable-zlib		\
+	--disable-ssl
+
+HOST_PYTHON_MAKE_ENV = \
+	PYTHON_MODULES_INCLUDE=$(HOST_DIR)/usr/include \
+	PYTHON_MODULES_LIB="$(HOST_DIR)/lib $(HOST_DIR)/usr/lib"
+
+HOST_PYTHON_AUTORECONF = YES
+
+PYTHON_DEPENDENCIES  = host-python libffi
+
+PYTHON_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_PYTHON_READLINE),y)
-PYTHON_DEPS += readline
-else
-BR2_PYTHON_DISABLED_MODULES += readline
+PYTHON_DEPENDENCIES += readline
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON_CURSES),y)
-PYTHON_DEPS += ncurses
+PYTHON_DEPENDENCIES += ncurses
 else
-BR2_PYTHON_DISABLED_MODULES += _curses _curses_panel
+PYTHON_CONF_OPT += --disable-curses
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON_PYEXPAT),y)
-PYTHON_DEPS += expat
+PYTHON_DEPENDENCIES += expat
+PYTHON_CONF_OPT += --with-expat=system
 else
-BR2_PYTHON_DISABLED_MODULES += pyexpat
-endif
-
-ifeq ($(BR2_PACKAGE_PYTHON_GDBM),y)
-PYTHON_DEPS += gdbm
-else
-BR2_PYTHON_DISABLED_MODULES += gdbm
+PYTHON_CONF_OPT += --with-expat=none
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON_BSDDB),y)
-PYTHON_DEPS += berkeleydb
+PYTHON_DEPENDENCIES += berkeleydb
 else
-BR2_PYTHON_DISABLED_MODULES += bsddb
+PYTHON_CONF_OPT += --disable-bsddb
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON_TKINTER),y)
-PYTHON_DEPS += tcl
+ifeq ($(BR2_PACKAGE_PYTHON_SQLITE),y)
+PYTHON_DEPENDENCIES += sqlite
 else
-BR2_PYTHON_DISABLED_MODULES += _tkinter
+PYTHON_CONF_OPT += --disable-sqlite3
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON_SSL),y)
-PYTHON_DEPS += openssl
-endif
-
-ifneq ($(BR2_PACKAGE_PYTHON_NIS),y)
-BR2_PYTHON_DISABLED_MODULES += nis
+PYTHON_DEPENDENCIES += openssl
+else
+PYTHON_CONF_OPT += --disable-ssl
 endif
 
 ifneq ($(BR2_PACKAGE_PYTHON_CODECSCJK),y)
-BR2_PYTHON_DISABLED_MODULES += _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk
+PYTHON_CONF_OPT += --disable-codecs-cjk
 endif
 
 ifneq ($(BR2_PACKAGE_PYTHON_UNICODEDATA),y)
-BR2_PYTHON_DISABLED_MODULES += unicodedata
+PYTHON_CONF_OPT += --disable-unicodedata
 endif
 
-$(DL_DIR)/$(PYTHON_SOURCE):
-	 $(call DOWNLOAD,$(PYTHON_SITE),$(PYTHON_SOURCE))
-
-python-source: $(DL_DIR)/$(PYTHON_SOURCE)
-
-$(PYTHON_DIR)/.unpacked: $(DL_DIR)/$(PYTHON_SOURCE)
-	$(PYTHON_CAT) $(DL_DIR)/$(PYTHON_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	touch $@
-
-$(PYTHON_DIR)/.patched: $(PYTHON_DIR)/.unpacked
-	toolchain/patch-kernel.sh $(PYTHON_DIR) package/python/ python-$(PYTHON_VERSION_MAJOR)-\*.patch
-	touch $@
-
-$(PYTHON_DIR)/.hostpython: $(PYTHON_DIR)/.patched
-	(cd $(PYTHON_DIR); rm -rf config.cache; \
-		CC="$(HOSTCC)" OPT="-O2" \
-		./configure $(QUIET) \
-		--with-cxx=no \
-		$(DISABLE_NLS) && \
-		$(MAKE) python Parser/pgen && \
-		mv python hostpython && \
-		mv Parser/pgen Parser/hostpgen && \
-		$(MAKE) distclean \
-	) && \
-	touch $@
-
-$(PYTHON_DIR)/.configured: $(PYTHON_DIR)/.hostpython
-	(cd $(PYTHON_DIR); rm -rf config.cache; \
-		$(TARGET_CONFIGURE_OPTS) \
-		$(TARGET_CONFIGURE_ARGS) \
-		OPT="$(TARGET_CFLAGS)" \
-		./configure $(QUIET) \
-		--target=$(GNU_TARGET_NAME) \
-		--host=$(GNU_TARGET_NAME) \
-		--build=$(GNU_HOST_NAME) \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--with-cxx=no \
-		--enable-shared \
-		$(DISABLE_IPV6) \
-		$(DISABLE_NLS) \
-	)
-	touch $@
-
-$(PYTHON_DIR)/$(PYTHON_BINARY): $(PYTHON_DIR)/.configured
-ifneq ($(BR2_PACKAGE_PYTHON_SSL),y)
-	export PYTHON_DISABLE_SSL=1
+ifeq ($(BR2_PACKAGE_PYTHON_BZIP2),y)
+PYTHON_DEPENDENCIES += bzip2
+else
+PYTHON_CONF_OPT += --disable-bz2
 endif
-	$(MAKE) CC="$(TARGET_CC)" -C $(PYTHON_DIR) DESTDIR=$(TARGET_DIR) \
-		PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/usr/include \
-		PYTHON_MODULES_LIB="$(STAGING_DIR)/lib $(STAGING_DIR)/usr/lib" \
-		PYTHON_DISABLE_MODULES="$(BR2_PYTHON_DISABLED_MODULES)" \
-		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen
 
-$(TARGET_DIR)/$(PYTHON_TARGET_BINARY): $(PYTHON_DIR)/$(PYTHON_BINARY)
-ifneq ($(BR2_PACKAGE_PYTHON_SSL),y)
-	export PYTHON_DISABLE_SSL=1
+ifeq ($(BR2_PACKAGE_PYTHON_ZLIB),y)
+PYTHON_DEPENDENCIES += zlib
+else
+PYTHON_CONF_OPT += --disable-zlib
 endif
-	rm -rf $(PYTHON_DIR)/Lib/test
-	LD_LIBRARY_PATH=$(STAGING_DIR)/lib
-	# FIXME: The make -i just below is to work around python's bug
-	# #1669349 (http://bugs.python.org/issue1669349) which is introducing
-	# a failure at make install on a python-free system. Since none of
-	# the other the provided workaround work, the make -i is the only
-	# solution. The failing lib is install later in the process, so
-	# even if the compilation is failing without the patch, with it, the
-	# target python is fully functionnal.
-	# The "-i" will have to be removed when the bug will be solved.
-	$(MAKE) CC="$(TARGET_CC)" -C $(PYTHON_DIR) -i install \
-		DESTDIR=$(TARGET_DIR) CROSS_COMPILE=yes \
-		PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/usr/include \
-		PYTHON_MODULES_LIB="$(STAGING_DIR)/lib $(STAGING_DIR)/usr/lib" \
-		PYTHON_DISABLE_MODULES="$(BR2_PYTHON_DISABLED_MODULES)" \
-		HOSTPYTHON=./hostpython HOSTPGEN=./Parser/hostpgen && \
-	rm $(TARGET_DIR)/usr/bin/python && \
-	ln -s python$(PYTHON_VERSION_MAJOR) $(TARGET_DIR)/usr/bin/python && \
-	rm $(TARGET_DIR)/usr/bin/idle && \
-	rm $(TARGET_DIR)/usr/bin/pydoc && \
-	find $(TARGET_DIR)/usr/lib/ -name '*.pyo' -exec rm {} \; && \
-	rm -rf $(TARGET_DIR)/share/locale $(TARGET_DIR)/usr/info \
-		$(TARGET_DIR)/usr/man $(TARGET_DIR)/usr/share/doc \
-		$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/test
-	cp -dpr $(TARGET_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR) $(STAGING_DIR)/usr/include/
-	mkdir -p $(STAGING_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)
-	cp -dpr $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/config $(STAGING_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/
 
-ifeq ($(BR2_PACKAGE_PYTHON_PY_ONLY),y)
-	find $(TARGET_DIR)/usr/lib/ -name '*.pyc' -exec rm {} \;
-endif
-ifeq ($(BR2_PACKAGE_PYTHON_PYC_ONLY),y)
-	find $(TARGET_DIR)/usr/lib/ -name '*.py' -exec rm {} \;
-endif
-ifneq ($(BR2_PACKAGE_PYTHON_DEV),y)
-	rm -rf $(TARGET_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
-	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/config
-endif
-ifneq ($(BR2_PACKAGE_PYTHON_BSDDB),y)
-	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/bsddb
-endif
-ifneq ($(BR2_PACKAGE_PYTHON_CURSES),y)
-	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/curses
-endif
-ifneq ($(BR2_PACKAGE_PYTHON_TKINTER),y)
-	rm -rf $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/lib-tk
-endif
-	touch -c $@
+PYTHON_CONF_ENV += \
+	PYTHON_FOR_BUILD=$(HOST_PYTHON_DIR)/python \
+	PGEN_FOR_BUILD=$(HOST_PYTHON_DIR)/Parser/pgen \
+	ac_cv_have_long_long_format=yes
 
-python: $(PYTHON_DEPS) $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
+PYTHON_CONF_OPT += \
+	--without-cxx-main 	\
+	--without-doc-strings	\
+	--with-system-ffi	\
+	--disable-pydoc		\
+	--disable-test-modules	\
+	--disable-lib2to3	\
+	--disable-gdbm		\
+	--disable-tk		\
+	--disable-nis		\
+	--disable-dbm
 
-python-clean:
-	-$(MAKE) -C $(PYTHON_DIR) distclean
-	rm -f $(PYTHON_DIR)/.configured $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
-	-rm -rf $(TARGET_DIR)/usr/lib/python* $(TARGET_DIR)/usr/include/python*
-	-rm -f $(STAGING_DIR)/usr/lib/libpython$(PYTHON_VERSION_MAJOR).so
+PYTHON_MAKE_ENV = \
+	PYTHON_MODULES_INCLUDE=$(STAGING_DIR)/usr/include \
+	PYTHON_MODULES_LIB="$(STAGING_DIR)/lib $(STAGING_DIR)/usr/lib"
 
-python-dirclean:
-	rm -rf $(PYTHON_DIR)
-
-####  LIBPYTHON
-
-
-LIBPYTHON_BINARY:=libpython$(PYTHON_VERSION_MAJOR).so
-
-libpython:	python $(TARGET_DIR)/usr/lib/$(LIBPYTHON_BINARY)
-
-
-$(STAGING_DIR)/usr/lib/$(LIBPYTHON_BINARY): $(TARGET_DIR)/$(PYTHON_TARGET_BINARY)
-		cp -dpr $(PYTHON_DIR)/$(LIBPYTHON_BINARY).* $(STAGING_DIR)/usr/lib
-		(\
-		cd $(STAGING_DIR)/usr/lib ; \
-		rm -f $(LIBPYTHON_BINARY) ; \
-		ln -s `basename  \`ls libpython*.so.*\`` $(LIBPYTHON_BINARY) \
-		)
-
-$(TARGET_DIR)/usr/lib/$(LIBPYTHON_BINARY): $(STAGING_DIR)/usr/lib/$(LIBPYTHON_BINARY)
-		cp -dpr $(STAGING_DIR)/usr/lib/$(LIBPYTHON_BINARY).* $(TARGET_DIR)/usr/lib
-		(\
-		cd $(TARGET_DIR)/usr/lib ; \
-		rm -f $(LIBPYTHON_BINARY) ; \
-		ln -s `basename  \`ls libpython*.so.*\`` $(LIBPYTHON_BINARY) \
-		)
-
-#############################################################
 #
-# Toplevel Makefile options
+# Development files removal
 #
-#############################################################
-ifeq ($(BR2_PACKAGE_PYTHON),y)
-TARGETS+=python
+define PYTHON_REMOVE_DEVFILES
+	rm -f $(TARGET_DIR)/usr/bin/python$(PYTHON_VERSION_MAJOR)-config
+	rm -f $(TARGET_DIR)/usr/bin/python-config
+endef
+
+ifneq ($(BR2_HAVE_DEVFILES),y)
+PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_REMOVE_DEVFILES
 endif
+
+#
+# Remove useless files. In the config/ directory, only the Makefile
+# and the pyconfig.h files are needed at runtime.
+#
+define PYTHON_REMOVE_USELESS_FILES
+	for i in `find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/config/ \
+		-type f -not -name pyconfig.h -a -not -name Makefile` ; do \
+		rm -f $$i ; \
+	done
+endef
+
+PYTHON_POST_INSTALL_TARGET_HOOKS += PYTHON_REMOVE_USELESS_FILES
+
+PYTHON_AUTORECONF = YES
+
+$(eval $(call AUTOTARGETS,package,python))
+$(eval $(call AUTOTARGETS,package,python,host))
