@@ -26,7 +26,7 @@ diff -urN vtun/Makefile.in vtun-2.6/Makefile.in
  	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(LOCK_DIR)
  	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(SBIN_DIR)
  	$(INSTALL) -m 755 $(INSTALL_OWNER) vtund $(DESTDIR)$(SBIN_DIR)
-+	$(INSTALL) -m 755 $(INSTALL_OWNER) scripts/vtund.rc.debian \
++	$(INSTALL) -m 755 -D $(INSTALL_OWNER) scripts/vtund.rc.debian \
 +		$(DESTDIR)$(ETC_DIR)/init.d/S90vtun
  
  # DO NOT DELETE THIS LINE -- make depend depends on it.
