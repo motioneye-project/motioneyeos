@@ -15,13 +15,6 @@ HOST_PKG_CONFIG_CONF_OPT = \
 		--with-pc-path="$(STAGING_DIR)/usr/lib/pkgconfig" \
 		--disable-static
 
-define HOST_PKG_CONFIG_INSTALL_M4
-install -D -m 0644 $(HOST_DIR)/usr/share/aclocal/pkg.m4 \
-		$(STAGING_DIR)/usr/share/aclocal/pkg.m4
-endef
-
-HOST_PKG_CONFIG_POST_INSTALL_HOOKS += HOST_PKG_CONFIG_INSTALL_M4
-
 $(eval $(call AUTOTARGETS,package,pkg-config))
 $(eval $(call AUTOTARGETS,package,pkg-config,host))
 
