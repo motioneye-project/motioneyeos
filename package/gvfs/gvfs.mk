@@ -3,8 +3,8 @@
 # gvfs
 #
 #############################################################
-GVFS_VERSION_MAJOR = 1.4
-GVFS_VERSION_MINOR = 0
+GVFS_VERSION_MAJOR = 1.6
+GVFS_VERSION_MINOR = 6
 GVFS_VERSION = $(GVFS_VERSION_MAJOR).$(GVFS_VERSION_MINOR)
 GVFS_SOURCE = gvfs-$(GVFS_VERSION).tar.gz
 GVFS_SITE = http://ftp.gnome.org/pub/GNOME/sources/gvfs/$(GVFS_VERSION_MAJOR)
