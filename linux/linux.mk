@@ -152,10 +152,11 @@ $(LINUX26_DIR)/.stamp_installed: $(LINUX26_DIR)/.stamp_compiled
 	fi
 	$(Q)touch $@
 
-linux26: host-module-init-tools $(LINUX26_DEPENDENCIES) $(LINUX26_DIR)/.stamp_installed
+linux linux26: host-module-init-tools $(LINUX26_DEPENDENCIES) $(LINUX26_DIR)/.stamp_installed
 
-linux26-menuconfig linux26-xconfig linux26-gconfig linux26-nconfig: dirs $(LINUX26_DIR)/.stamp_configured
-	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) $(subst linux26-,,$@)
+linux-menuconfig linux-xconfig linux-gconfig linux-nconfig linux26-menuconfig linux26-xconfig linux26-gconfig linux26-nconfig: dirs $(LINUX26_DIR)/.stamp_configured
+	$(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) \
+		$(subst linux-,,$(subst linux26-,,$@))
 
 # Support for rebuilding the kernel after the initramfs file list has
 # been generated in $(BINARIES_DIR)/rootfs.initramfs.
@@ -172,7 +173,7 @@ $(LINUX26_DIR)/.stamp_initramfs_rebuilt: $(LINUX26_DIR)/.stamp_installed $(BINAR
 
 # The initramfs building code must make sure this target gets called
 # after it generated the initramfs list of files.
-linux26-rebuild-with-initramfs: $(LINUX26_DIR)/.stamp_initramfs_rebuilt
+linux-rebuild-with-initramfs linux26-rebuild-with-initramfs: $(LINUX26_DIR)/.stamp_initramfs_rebuilt
 
 ifeq ($(BR2_LINUX_KERNEL),y)
 TARGETS+=linux26
@@ -193,6 +194,3 @@ endif
 endif
 
 endif
-
-linux-%:
-	$(MAKE) $(EXTRAMAKEARGS) $(subst linux-,linux26-,$@)
