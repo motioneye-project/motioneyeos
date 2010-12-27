@@ -284,7 +284,6 @@ config BR2_PACKAGE_QT_PHONON_BACKEND
 	help
 	  Build the platform Phonon plugin.
 	  If unsure, say n.
-endif
 
 comment "Qt DBbus module not available (need dbus)"
 	depends on !BR2_PACKAGE_DBUS
@@ -294,6 +293,7 @@ config BR2_PACKAGE_QT_DBUS
 	depends on BR2_PACKAGE_DBUS
 	help
 	  Build the Qt DBus module.
+endif
 
 config BR2_PACKAGE_QT_XML
 	bool "XML Module"
