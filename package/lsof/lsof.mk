@@ -18,16 +18,16 @@ endif
 ifeq ($(BR2_USE_WCHAR),)
 define LSOF_CONFIGURE_WCHAR_FIXUPS
 	$(SED) 's,^#define[[:space:]]*HASWIDECHAR.*,#undef HASWIDECHAR,' \
-		$(@D)/lsof_$(LSOF_VERSION)_src/machine.h
+		$(@D)/machine.h
 	$(SED) 's,^#define[[:space:]]*WIDECHARINCL.*,,' \
-		$(@D)/lsof_$(LSOF_VERSION)_src/machine.h
+		$(@D)/machine.h
 endef
 endif
 
 ifeq ($(BR2_ENABLE_LOCALE),)
 define LSOF_CONFIGURE_LOCALE_FIXUPS
 	$(SED) 's,^#define[[:space:]]*HASSETLOCALE.*,#undef HASSETLOCALE,' \
-		$(@D)/lsof_$(LSOF_VERSION)_src/machine.h
+		$(@D)/machine.h
 endef
 endif
 
@@ -60,7 +60,7 @@ define LSOF_UNINSTALL_TARGET_CMDS
 endef
 
 define LSOF_CLEAN_CMDS
-	-$(MAKE) -C $(@D)/lsof_$(LSOF_VERSION)_src clean
+	-$(MAKE) -C $(@D) clean
 endef
 
 $(eval $(call GENTARGETS,package,lsof))
