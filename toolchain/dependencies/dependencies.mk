@@ -10,9 +10,16 @@ ifeq ($(BR2_STRIP_sstrip),y)
 DEPENDENCIES_HOST_PREREQ+=sstrip_host
 endif
 
+# Remove duplicate entries from $(DL_TOOLS_DEPENDENCIES)
+DL_TOOLS = \
+	$(findstring svn,$(DL_TOOLS_DEPENDENCIES)) \
+	$(findstring git,$(DL_TOOLS_DEPENDENCIES)) \
+	$(findstring bzr,$(DL_TOOLS_DEPENDENCIES))
+
 dependencies: $(DEPENDENCIES_HOST_PREREQ)
 	@HOSTCC="$(firstword $(HOSTCC))" MAKE="$(MAKE)" \
 		CONFIG_FILE="$(CONFIG_DIR)/.config" \
+		DL_TOOLS="$(DL_TOOLS)" \
 		$(TOPDIR)/toolchain/dependencies/dependencies.sh
 
 dependencies-source:
