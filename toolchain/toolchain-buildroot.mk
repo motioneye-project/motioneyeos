@@ -7,5 +7,4 @@ include toolchain/gcc/gcc-uclibc-4.x.mk
 include toolchain/gdb/gdb.mk
 include toolchain/kernel-headers/kernel-headers.mk
 include toolchain/mklibs/mklibs.mk
-include toolchain/sstrip/sstrip.mk
 include toolchain/uClibc/uclibc.mk

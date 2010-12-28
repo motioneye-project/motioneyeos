@@ -7,7 +7,7 @@
 
 DEPENDENCIES_HOST_PREREQ:=
 ifeq ($(BR2_STRIP_sstrip),y)
-DEPENDENCIES_HOST_PREREQ+=sstrip_host
+DEPENDENCIES_HOST_PREREQ+=host-sstrip
 endif
 
 # Remove duplicate entries from $(DL_TOOLS_DEPENDENCIES)
