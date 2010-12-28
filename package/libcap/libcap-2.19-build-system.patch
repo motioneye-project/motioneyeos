@@ -1,18 +1,6 @@
-diff -Nura libcap-2.19.orig/libcap/Makefile libcap-2.19/libcap/Makefile
---- libcap-2.19.orig/libcap/Makefile	2008-12-04 05:03:12.000000000 -0200
-+++ libcap-2.19/libcap/Makefile	2010-05-28 14:32:06.290297694 -0300
-@@ -33,7 +33,7 @@
- endif
- 
- _makenames: _makenames.c cap_names.list.h
--	$(BUILD_CC) $(BUILD_CFLAGS) $< -o $@
-+	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $< -o $@
- 
- cap_names.h: _makenames
- 	./_makenames > cap_names.h
 diff -Nura libcap-2.19.orig/Make.Rules libcap-2.19/Make.Rules
 --- libcap-2.19.orig/Make.Rules	2010-01-13 23:04:58.000000000 -0300
-+++ libcap-2.19/Make.Rules	2010-05-28 14:32:31.802296186 -0300
++++ libcap-2.19/Make.Rules	2010-12-28 16:44:18.164052748 -0300
 @@ -45,25 +45,26 @@
  KERNEL_HEADERS := $(topdir)/libcap/include
  IPATH += -I$(topdir)/libcap/include -I$(KERNEL_HEADERS)
@@ -48,3 +36,24 @@ diff -Nura libcap-2.19.orig/Make.Rules libcap-2.19/Make.Rules
  INDENT := $(shell if [ -n "$(which indent 2>/dev/null)" ]; then echo "| indent -kr" ; fi)
  DYNAMIC := $(shell if [ ! -d "$(topdir)/.git" ]; then echo yes; fi)
  LIBATTR := yes
+diff -Nura libcap-2.19.orig/libcap/Makefile libcap-2.19/libcap/Makefile
+--- libcap-2.19.orig/libcap/Makefile	2008-12-04 05:03:12.000000000 -0200
++++ libcap-2.19/libcap/Makefile	2010-12-28 16:44:33.457052750 -0300
+@@ -33,7 +33,7 @@
+ endif
+ 
+ _makenames: _makenames.c cap_names.list.h
+-	$(BUILD_CC) $(BUILD_CFLAGS) $< -o $@
++	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) $< -o $@
+ 
+ cap_names.h: _makenames
+ 	./_makenames > cap_names.h
+@@ -65,7 +65,7 @@
+ 	install -m 0644 include/sys/capability.h $(INCDIR)/sys
+ 	mkdir -p -m 0755 $(LIBDIR)
+ 	install -m 0644 $(STALIBNAME) $(LIBDIR)/$(STALIBNAME)
+-	install -m 0644 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
++	install -m 0755 $(MINLIBNAME) $(LIBDIR)/$(MINLIBNAME)
+ 	ln -sf $(MINLIBNAME) $(LIBDIR)/$(MAJLIBNAME)
+ 	ln -sf $(MAJLIBNAME) $(LIBDIR)/$(LIBNAME)
+ ifeq ($(FAKEROOT),)
