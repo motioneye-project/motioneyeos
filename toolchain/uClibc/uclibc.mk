@@ -479,11 +479,6 @@ $(TARGET_DIR)/usr/bin/ldd: $(cross_compiler)
 		CPP=$(TARGET_CROSS)cpp LD=$(TARGET_CROSS)ld \
 		ARCH="$(UCLIBC_TARGET_ARCH)" \
 		PREFIX=$(TARGET_DIR) utils install_utils
-ifeq ($(BR2_CROSS_TOOLCHAIN_TARGET_UTILS),y)
-	mkdir -p $(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/target_utils
-	install -c $(TARGET_DIR)/usr/bin/ldd \
-		$(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/target_utils/ldd
-endif
 	touch -c $@
 
 ifneq ($(BR2_PREFER_STATIC_LIB),y)
