@@ -72,19 +72,6 @@ config BR2_DL_DIR
 
 	  The default is $(TOPDIR)/dl
 
-config BR2_STAGING_DIR
-	string "Toolchain and header file location?"
-	default "$(BASE_DIR)/staging"
-	help
-	  This is the location where the toolchain will be installed.  The
-	  toolchain will not work if it is moved from this location.
-	  Therefore, if you wish to package up a uClibc toolchain, it is
-	  important that is is set to the final location where the toolchain
-	  will be used.
-
-	  Most people will leave this set to the default value of
-	  "$(BASE_DIR)/staging".
-
 menu "Mirrors and Download locations"
 
 config BR2_PRIMARY_SITE

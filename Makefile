@@ -268,8 +268,6 @@ TAR_OPTIONS=$(call qstrip,$(BR2_TAR_OPTIONS)) -xf
 
 GNU_TARGET_SUFFIX:=-$(call qstrip,$(BR2_GNU_TARGET_SUFFIX))
 
-STAGING_DIR:=$(call qstrip,$(BR2_STAGING_DIR))
-
 # packages compiled for the host goes here
 HOST_DIR:=$(BASE_DIR)/host
 

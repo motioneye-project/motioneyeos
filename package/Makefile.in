@@ -9,6 +9,34 @@ HOSTMAKE :=$(shell which $(HOSTMAKE) || type -p $(HOSTMAKE) || echo make)
 MAKE1:=$(HOSTMAKE) -j1
 MAKE:=$(HOSTMAKE) -j$(BR2_JLEVEL)
 
+# Compute GNU_TARGET_NAME and REAL_GNU_TARGET_NAME
+GNU_TARGET_NAME=$(ARCH)-linux
+
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
+LIBC=uclibc
+else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
+LIBC=uclibc
+else
+LIBC=gnu
+endif
+
+# The ABI suffix is a bit special on ARM, as it needs to be
+# -uclibcgnueabi for uClibc EABI, -uclibc for uClibc OABI, -gnueabi
+# for glibc EABI and -gnu for glibc OABI. This means that the LIBC and
+# ABI aren't strictly orthogonal, which explains why we need the test
+# on LIBC below.
+ifeq ($(BR2_ARM_EABI),y)
+ifeq ($(LIBC),uclibc)
+ABI=gnueabi
+else
+ABI=eabi
+endif
+endif
+
+REAL_GNU_TARGET_NAME=$(ARCH)-unknown-linux-$(LIBC)$(ABI)
+
+STAGING_DIR=$(HOST_DIR)/usr/$(REAL_GNU_TARGET_NAME)/sysroot
+
 ifeq ($(BR2_OPTIMIZE_0),y)
 TARGET_OPTIMIZATION+=-O0
 endif
@@ -84,32 +112,6 @@ endif
 TARGET_LDFLAGS+=-L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib
 TARGET_CXXFLAGS=$(TARGET_CFLAGS)
 TARGET_SYSROOT_OPT=--sysroot=$(STAGING_DIR)
-
-# Compute GNU_TARGET_NAME and REAL_GNU_TARGET_NAME
-GNU_TARGET_NAME=$(ARCH)-linux
-
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-LIBC=uclibc
-else ifeq ($(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
-LIBC=uclibc
-else
-LIBC=gnu
-endif
-
-# The ABI suffix is a bit special on ARM, as it needs to be
-# -uclibcgnueabi for uClibc EABI, -uclibc for uClibc OABI, -gnueabi
-# for glibc EABI and -gnu for glibc OABI. This means that the LIBC and
-# ABI aren't strictly orthogonal, which explains why we need the test
-# on LIBC below.
-ifeq ($(BR2_ARM_EABI),y)
-ifeq ($(LIBC),uclibc)
-ABI=gnueabi
-else
-ABI=eabi
-endif
-endif
-
-REAL_GNU_TARGET_NAME=$(ARCH)-unknown-linux-$(LIBC)$(ABI)
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 TARGET_CROSS=$(STAGING_DIR)/usr/bin/$(REAL_GNU_TARGET_NAME)-
