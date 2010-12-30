@@ -24,6 +24,7 @@
 	#1735: [PATCH] mplayer: convert to autotools infrastructure
 	#2371: QT MYSQL Module does not build when MySQL installed on the host
 	#2905: Qt: Speed up compilation, if gui-module isn't selected
+	#2929: genext2fs: couldn't allocate a block (no free space)
 	#2965: Broken linkage to xkbcomp (blocking X server startup)
 	#2983: xlib_libX11 build failed
 
