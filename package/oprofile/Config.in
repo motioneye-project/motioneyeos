@@ -5,6 +5,7 @@ config BR2_PACKAGE_OPROFILE
 	# choosen in the config. This will have to be fixed later.
 	depends on !BR2_TOOLCHAIN_EXTERNAL
 	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_BINUTILS
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  OProfile is a system-wide profiler for Linux systems,

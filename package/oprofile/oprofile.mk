@@ -5,9 +5,6 @@
 #############################################################
 OPROFILE_VERSION := 0.9.4
 OPROFILE_CONF_OPT :=	--localstatedir=/var \
-			--with-extra-includes="$(BUILD_DIR)/binutils-$(BR2_BINUTILS_VERSION)-target/bfd \
-			-I$(TOOLCHAIN_DIR)/binutils-$(BR2_BINUTILS_VERSION)/include" \
-			--with-extra-libs=$(BUILD_DIR)/binutils-$(BR2_BINUTILS_VERSION)-target/bfd \
 			--with-kernel-support
 
 OPROFILE_BINARIES := utils/ophelp
@@ -24,7 +21,7 @@ ifeq ($(OPROFILE_ARCH),)
 OPROFILE_ARCH := $(BR2_ARCH)
 endif
 
-OPROFILE_DEPENDENCIES := popt binutils_target
+OPROFILE_DEPENDENCIES := popt binutils
 
 define OPROFILE_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/usr/bin
