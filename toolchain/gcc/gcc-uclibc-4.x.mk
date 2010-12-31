@@ -119,11 +119,8 @@ GCC_HOST_PREREQ += host-mpc
 endif
 
 GCC_TARGET_PREREQ += mpfr gmp
-GCC_WITH_TARGET_GMP = --with-gmp=$(STAGING_DIR)/usr
-GCC_WITH_TARGET_MPFR = --with-mpfr=$(STAGING_DIR)/usr
 ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
 GCC_TARGET_PREREQ += mpc
-GCC_WITH_TARGET_MPC = --with-mpc=$(STAGING_DIR)/usr
 endif
 
 ifeq ($(BR2_GCC_SHARED_LIBGCC),y)
@@ -506,9 +503,6 @@ $(GCC_BUILD_DIR4)/.configured: $(GCC_BUILD_DIR4)/.prepared
 		--disable-multilib \
 		$(GCC_TLS) \
 		$(GCC_SHARED_LIBGCC) \
-		$(GCC_WITH_TARGET_GMP) \
-		$(GCC_WITH_TARGET_MPFR) \
-		$(GCC_WITH_TARGET_MPC) \
 		$(DISABLE_NLS) \
 		$(THREADS) \
 		$(GCC_DECIMAL_FLOAT) \
