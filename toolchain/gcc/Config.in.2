@@ -1,6 +1,10 @@
 config BR2_PACKAGE_GCC_TARGET
 	bool "native toolchain in the target filesystem"
 	depends on BR2_HAVE_DEVFILES
+	select BR2_PACKAGE_BINUTILS_TARGET
+	select BR2_PACKAGE_MPC if BR2_GCC_VERSION_4_5_X
+	select BR2_PACKAGE_MPFR
+	select BR2_PACKAGE_GMP
 	help
 	  If you want the target system to be able to run
 	  binutils/gcc and compile native code, say Y here.

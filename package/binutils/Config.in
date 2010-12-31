@@ -1,0 +1,21 @@
+config BR2_PACKAGE_BINUTILS
+	bool "libbfd (binutils)"
+	depends on BR2_TOOLCHAIN_BUILDROOT
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_LIBINTL if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  Install libbfd from binutils in the target.
+
+	  This is used by oprofile to avoid a full-blown target binutils.
+
+config BR2_PACKAGE_BINUTILS_TARGET
+	bool "binutils binaries"
+	depends on BR2_PACKAGE_BINUTILS
+	help
+	  The GNU Binutils are a collection of binary tools:
+
+	  ld - the GNU linker.
+	  as - the GNU assembler.
+	  and others...
+
+	  http://www.gnu.org/software/binutils/

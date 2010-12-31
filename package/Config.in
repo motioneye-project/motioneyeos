@@ -35,6 +35,7 @@ endmenu
 menu "Development tools"
 source "package/autoconf/Config.in"
 source "package/automake/Config.in"
+source "package/binutils/Config.in"
 source "package/bison/Config.in"
 source "package/bsdiff/Config.in"
 source "package/ccache/Config.in"

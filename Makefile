@@ -245,7 +245,7 @@ BASE_TARGETS += host-ccache
 endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-BASE_TARGETS += uclibc-configured binutils cross_compiler uclibc-target-utils kernel-headers
+BASE_TARGETS += uclibc-configured host-binutils cross_compiler uclibc-target-utils kernel-headers
 else
 BASE_TARGETS += uclibc
 endif
@@ -618,7 +618,7 @@ endif
 
 configured: dirs kernel-headers uclibc-config busybox-config linux26-config
 
-prepatch:	gcc-patched binutils-patched gdb-patched uclibc-patched
+prepatch:	gcc-patched gdb-patched uclibc-patched
 
 cross: $(BASE_TARGETS)
 
