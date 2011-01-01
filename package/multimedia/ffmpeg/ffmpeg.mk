@@ -136,7 +136,7 @@ define FFMPEG_CONFIGURE_CMDS
 		--enable-cross-compile	\
 		--cross-prefix=$(TARGET_CROSS) \
 		--sysroot=$(STAGING_DIR) \
-		--host-cc=$(HOSTCC) \
+		--host-cc="$(HOSTCC)" \
 		--arch=$(BR2_ARCH) \
 		--extra-cflags=-fPIC \
 		$(DISABLE_IPV6) \
