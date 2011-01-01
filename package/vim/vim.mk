@@ -17,7 +17,9 @@ VIM_CONF_ENV = vim_cv_toupper_broken=no \
 		vim_cv_getcwd_broken=no \
 		vim_cv_stat_ignores_slash=yes \
 		vim_cv_memmove_handles_overlap=yes \
-		ac_cv_sizeof_int=4
+		ac_cv_sizeof_int=4 \
+		ac_cv_small_wchar_t=no
+
 VIM_CONF_OPT = --with-tlib=ncurses
 
 define VIM_INSTALL_TARGET_CMDS
