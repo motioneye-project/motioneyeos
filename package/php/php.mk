@@ -19,6 +19,8 @@ PHP_CONF_OPT =  --mandir=/usr/share/man \
 		--with-config-file-path=/etc \
 		--localstatedir=/var \
 
+PHP_CFLAGS = $(TARGET_CFLAGS)
+
 ifneq ($(BR2_PACKAGE_PHP_CLI),y)
 	PHP_CONF_OPT += --disable-cli
 else
@@ -142,7 +144,7 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE),y)
 	PHP_CONF_OPT += --with-sqlite
 ifneq ($(BR2_LARGEFILE),y)
-	PHP_CONF_ENV += CFLAGS+=" -DSQLITE_DISABLE_LFS"
+	PHP_CFLAGS += -DSQLITE_DISABLE_LFS
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_SQLITE_UTF8),y)
 	PHP_CONF_OPT += --enable-sqlite-utf8
@@ -159,9 +161,9 @@ ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_SQLITE_EXTERNAL),y)
 else
 	PHP_CONF_OPT += --with-pdo-sqlite
 endif
-	PHP_CONF_ENV += CFLAGS+=" -DSQLITE_OMIT_LOAD_EXTENSION"
+	PHP_CFLAGS += -DSQLITE_OMIT_LOAD_EXTENSION
 ifneq ($(BR2_LARGEFILE),y)
-	PHP_CONF_ENV += CFLAGS+=" -DSQLITE_DISABLE_LFS"
+	PHP_CFLAGS += -DSQLITE_DISABLE_LFS
 endif
 endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_PDO_MYSQL),y)
@@ -191,5 +193,7 @@ define PHP_UNINSTALL_TARGET_CMDS
 	rm -f $(TARGET_DIR)/etc/php.ini
 	rm -f $(TARGET_DIR)/usr/bin/php*
 endef
+
+PHP_CONF_ENV += CFLAGS="$(PHP_CFLAGS)"
 
 $(eval $(call AUTOTARGETS,package,php))
