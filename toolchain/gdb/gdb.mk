@@ -204,10 +204,8 @@ $(GDB_HOST_DIR)/gdb/gdb: $(GDB_HOST_DIR)/.configured
 
 $(TARGET_CROSS)gdb: $(GDB_HOST_DIR)/gdb/gdb
 	install -c $(GDB_HOST_DIR)/gdb/gdb $(TARGET_CROSS)gdb
-	ln -snf ../../bin/$(REAL_GNU_TARGET_NAME)-gdb \
-		$(STAGING_DIR)/usr/$(REAL_GNU_TARGET_NAME)/bin/gdb
 	ln -snf $(REAL_GNU_TARGET_NAME)-gdb \
-		$(STAGING_DIR)/usr/bin/$(GNU_TARGET_NAME)-gdb
+		$(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-gdb
 
 gdbhost: $(TARGET_CROSS)gdb
 
