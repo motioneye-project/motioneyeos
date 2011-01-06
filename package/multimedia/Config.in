@@ -32,4 +32,5 @@ source "package/multimedia/festival/Config.in"
 source "package/multimedia/taglib/Config.in"
 source "package/multimedia/tremor/Config.in"
 source "package/multimedia/vlc/Config.in"
+source "package/multimedia/vorbis-tools/Config.in"
 endmenu
