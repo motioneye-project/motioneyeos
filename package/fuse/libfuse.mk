@@ -3,12 +3,12 @@
 # libfuse
 #
 #############################################################
-LIBFUSE_VERSION:=2.8.4
-LIBFUSE_SOURCE:=fuse-$(LIBFUSE_VERSION).tar.gz
-LIBFUSE_SITE:=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/fuse/
+
+LIBFUSE_VERSION = 2.8.5
+LIBFUSE_SOURCE = fuse-$(LIBFUSE_VERSION).tar.gz
+LIBFUSE_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/fuse/
 
 LIBFUSE_INSTALL_STAGING = YES
-LIBFUSE_LIBTOOL_PATCH = NO
 LIBFUSE_CONF_OPT= --program-prefix="" \
 		--enable-shared \
 		--enable-static \
