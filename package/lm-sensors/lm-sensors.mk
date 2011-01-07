@@ -3,7 +3,7 @@
 # lm-sensors
 #
 #############################################################
-LM_SENSORS_VERSION = 3.1.2
+LM_SENSORS_VERSION = 3.2.0
 LM_SENSORS_SOURCE = lm_sensors-$(LM_SENSORS_VERSION).tar.bz2
 LM_SENSORS_SITE = http://dl.lm-sensors.org/lm-sensors/releases
 LM_SENSORS_INSTALL_STAGING = YES
