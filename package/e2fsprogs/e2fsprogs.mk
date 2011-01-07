@@ -3,15 +3,10 @@
 # e2fsprogs
 #
 #############################################################
-E2FSPROGS_VERSION:=1.41.12
-E2FSPROGS_SOURCE=e2fsprogs-$(E2FSPROGS_VERSION).tar.gz
-E2FSPROGS_SITE=http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/e2fsprogs
 
-E2FSPROGS_AUTORECONF = NO
-E2FSPROGS_LIBTOOL_PATCH = NO
-
+E2FSPROGS_VERSION = 1.41.14
+E2FSPROGS_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/e2fsprogs
 E2FSPROGS_INSTALL_STAGING = YES
-E2FSPROGS_INSTALL_TARGET = YES
 
 E2FSPROGS_CONF_OPT = \
 	--disable-tls \
@@ -112,10 +107,25 @@ endif
 
 define E2FSPROGS_STAGING_LIBUUID_INSTALL
 	install -D $(@D)/lib/uuid/uuid.h $(STAGING_DIR)/usr/include/uuid/uuid.h
+	install -D $(@D)/lib/uuid/uuid.pc \
+		$(STAGING_DIR)/usr/lib/pkgconfig/uuid.pc
 endef
 
 ifeq ($(BR2_PACKAGE_E2FSPROGS_LIBUUID),y)
 E2FSPROGS_POST_INSTALL_STAGING_HOOKS += E2FSPROGS_STAGING_LIBUUID_INSTALL
+endif
+
+define E2FSPROGS_STAGING_LIBBLKID_INSTALL
+	install -D $(@D)/lib/blkid/blkid.h \
+		$(STAGING_DIR)/usr/include/blkid/blkid.h
+	install -D $(@D)/lib/blkid/blkid_types.h \
+		$(STAGING_DIR)/usr/include/blkid/blkid_types.h
+	install -D $(@D)/lib/blkid/blkid.pc \
+		$(STAGING_DIR)/usr/lib/pkgconfig/blkid.pc
+endef
+
+ifeq ($(BR2_PACKAGE_E2FSPROGS_LIBBLKID),y)
+E2FSPROGS_POST_INSTALL_STAGING_HOOKS += E2FSPROGS_STAGING_LIBBLKID_INSTALL
 endif
 
 $(eval $(call AUTOTARGETS,package,e2fsprogs))
