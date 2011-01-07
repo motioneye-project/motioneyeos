@@ -4,21 +4,27 @@ uclibc (per default) doesn't implement __progname, and the pstree.x11
 stuff isn't that critical, so just disable it.
 
 Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
----
- src/pstree.c |    3 ---
- 1 file changed, 3 deletions(-)
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 
-Index: psmisc-22.8/src/pstree.c
-===================================================================
---- psmisc-22.8.orig/src/pstree.c
-+++ psmisc-22.8/src/pstree.c
-@@ -893,9 +893,6 @@ main (int argc, char **argv)
-   bindtextdomain(PACKAGE, LOCALEDIR);
-   textdomain(PACKAGE);
- #endif
--  
--  if (!strcmp(__progname, "pstree.x11"))
--    wait_end=1;
+diff -Nura psmisc-22.13.orig/src/pstree.c psmisc-22.13/src/pstree.c
+--- psmisc-22.13.orig/src/pstree.c	2010-07-12 08:10:03.000000000 -0300
++++ psmisc-22.13/src/pstree.c	2011-01-07 15:02:41.902741728 -0300
+@@ -49,8 +49,6 @@
+ #include <selinux/selinux.h>
+ #endif                                /*WITH_SELINUX */
  
-   /*
-    * Attempt to figure out a good default symbol set.  Will be overriden by
+-extern const char *__progname;
+-
+ #define PROC_BASE    "/proc"
+ 
+ /* UTF-8 defines by Johan Myreen, updated by Ben Winslow */
+@@ -854,9 +852,6 @@
+     textdomain(PACKAGE);
+ #endif
+ 
+-    if (!strcmp(__progname, "pstree.x11"))
+-        wait_end = 1;
+-
+     /*
+      * Attempt to figure out a good default symbol set.  Will be overriden by
+      * command-line options, if given.
