@@ -3,7 +3,7 @@
 # dosfstools
 #
 #############################################################
-DOSFSTOOLS_VERSION = 3.0.10
+DOSFSTOOLS_VERSION = 3.0.11
 DOSFSTOOLS_SOURCE = dosfstools-$(DOSFSTOOLS_VERSION).tar.gz
 DOSFSTOOLS_SITE = http://www.daniel-baumann.ch/software/dosfstools
 MKDOSFS_BINARY = mkdosfs
