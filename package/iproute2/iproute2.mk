@@ -4,10 +4,20 @@
 #
 #############################################################
 
-IPROUTE2_VERSION = 2.6.35
+IPROUTE2_VERSION = 2.6.37
 IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.bz2
 IPROUTE2_SITE = http://devresources.linuxfoundation.org/dev/iproute2/download
 IPROUTE2_TARGET_SBINS = ctstat genl ifstat ip lnstat nstat routef routel rtacct rtmon rtpr rtstat ss tc
+
+# If we've got iptables enable xtables support for tc
+ifeq ($(BR2_PACKAGE_IPTABLES),y)
+IPROUTE2_DEPENDENCIES += iptables
+define IPROUTE2_WITH_IPTABLES
+	# Makefile is busted so it never passes IPT_LIB_DIR properly
+	$(SED) "s/-DIPT/-DXT/" $(IPROUTE2_DIR)/tc/Makefile
+	echo "TC_CONFIG_XT:=y" >>$(IPROUTE2_DIR)/Config
+endef
+endif
 
 define IPROUTE2_CONFIGURE_CMDS
 	# Use kernel headers
@@ -15,8 +25,8 @@ define IPROUTE2_CONFIGURE_CMDS
 	# arpd needs berkeleydb
 	$(SED) "/^TARGETS=/s: arpd : :" $(IPROUTE2_DIR)/misc/Makefile
 	$(SED) "s:-O2:$(TARGET_CFLAGS):" $(IPROUTE2_DIR)/Makefile
-	( cd $(@D); ./configure )
-	echo "IPT_LIB_DIR=/usr/lib/xtables" >>$(IPROUTE2_DIR)/Config
+	echo "IPT_LIB_DIR:=/usr/lib/xtables" >>$(IPROUTE2_DIR)/Config
+	$(IPROUTE2_WITH_IPTABLES)
 endef
 
 define IPROUTE2_BUILD_CMDS
