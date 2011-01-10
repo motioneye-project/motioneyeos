@@ -7,6 +7,7 @@ LTRACE_VERSION      = 0.5.3
 LTRACE_SOURCE       = ltrace_$(LTRACE_VERSION).orig.tar.gz
 LTRACE_PATCH        = ltrace_$(LTRACE_VERSION)-2.1.diff.gz
 LTRACE_SITE         = $(BR2_DEBIAN_MIRROR)/debian/pool/main/l/ltrace
+LTRACE_MAKE         = $(MAKE1)
 LTRACE_DEPENDENCIES = libelf
 
 # ltrace uses arch=ppc for powerpc
