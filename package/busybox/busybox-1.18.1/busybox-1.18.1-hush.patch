@@ -1,6 +1,6 @@
 diff -urpN busybox-1.18.1/shell/hush.c busybox-1.18.1-hush/shell/hush.c
 --- busybox-1.18.1/shell/hush.c	2010-12-21 05:31:04.000000000 +0100
-+++ busybox-1.18.1-hush/shell/hush.c	2010-12-21 21:20:02.493651813 +0100
++++ busybox-1.18.1-hush/shell/hush.c	2011-01-07 14:59:19.649956156 +0100
 @@ -913,7 +913,7 @@ static const struct built_in_command blt
   */
  #if HUSH_DEBUG
@@ -177,7 +177,25 @@ diff -urpN busybox-1.18.1/shell/hush.c busybox-1.18.1-hush/shell/hush.c
  			prn++;
  		}
  		pi = pi->next;
-@@ -7445,7 +7461,7 @@ int hush_main(int argc, char **argv)
+@@ -4106,7 +4122,16 @@ static struct pipe *parse_stream(char **
+ 				if (IS_NULL_CMD(ctx.command)
+ 				 && dest.length == 0 && !dest.has_quoted_part
+ 				) {
+-					continue;
++					/* This newline can be ignored. But...
++					 * without the below check, interactive shell
++					 * will ignore even lines with bare <newline>,
++					 * and show the continuation prompt:
++					 * ps1_prompt$ <enter>
++					 * ps2> _   <=== wrong prompt, should be ps1
++					 */
++					struct pipe *pi = ctx.list_head;
++					if (pi->num_cmds != 0)
++						continue;
+ 				}
+ 				/* Treat newline as a command separator. */
+ 				done_pipe(&ctx, PIPE_SEQ);
+@@ -7445,7 +7470,7 @@ int hush_main(int argc, char **argv)
  	unsigned builtin_argc;
  	char **e;
  	struct variable *cur_var;
@@ -186,7 +204,7 @@ diff -urpN busybox-1.18.1/shell/hush.c busybox-1.18.1-hush/shell/hush.c
  
  	INIT_G();
  	if (EXIT_SUCCESS) /* if EXIT_SUCCESS == 0, it is already done */
-@@ -7454,17 +7470,17 @@ int hush_main(int argc, char **argv)
+@@ -7454,17 +7479,17 @@ int hush_main(int argc, char **argv)
  	G.argv0_for_re_execing = argv[0];
  #endif
  	/* Deal with HUSH_VERSION */
@@ -209,7 +227,7 @@ diff -urpN busybox-1.18.1/shell/hush.c busybox-1.18.1-hush/shell/hush.c
  	cur_var = G.top_var;
  	e = environ;
  	if (e) while (*e) {
-@@ -7479,8 +7495,8 @@ int hush_main(int argc, char **argv)
+@@ -7479,8 +7504,8 @@ int hush_main(int argc, char **argv)
  		e++;
  	}
  	/* (Re)insert HUSH_VERSION into env (AFTER we scanned the env!) */
@@ -220,7 +238,7 @@ diff -urpN busybox-1.18.1/shell/hush.c busybox-1.18.1-hush/shell/hush.c
  
  	/* Export PWD */
  	set_pwd_var(/*exp:*/ 1);
-@@ -7840,18 +7856,6 @@ int hush_main(int argc, char **argv)
+@@ -7840,18 +7865,6 @@ int hush_main(int argc, char **argv)
  	parse_and_run_file(stdin);
  
   final_return:

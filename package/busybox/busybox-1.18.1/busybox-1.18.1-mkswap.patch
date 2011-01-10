@@ -1,0 +1,12 @@
+diff -urpN busybox-1.18.1/util-linux/mkswap.c busybox-1.18.1-mkswap/util-linux/mkswap.c
+--- busybox-1.18.1/util-linux/mkswap.c	2010-12-20 01:41:27.000000000 +0100
++++ busybox-1.18.1-mkswap/util-linux/mkswap.c	2011-01-05 11:41:24.455856773 +0100
+@@ -15,7 +15,7 @@ static void mkswap_selinux_setcontext(in
+ 	if (!is_selinux_enabled())
+ 		return;
+ 
+-	xfstat(fd, &stbuf, argv[0]);
++	xfstat(fd, &stbuf, path);
+ 	if (S_ISREG(stbuf.st_mode)) {
+ 		security_context_t newcon;
+ 		security_context_t oldcon = NULL;

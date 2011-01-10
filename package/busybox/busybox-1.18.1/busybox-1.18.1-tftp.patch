@@ -1,0 +1,72 @@
+diff -urpN busybox-1.18.1/networking/tftp.c busybox-1.18.1-tftp/networking/tftp.c
+--- busybox-1.18.1/networking/tftp.c	2010-12-20 01:41:27.000000000 +0100
++++ busybox-1.18.1-tftp/networking/tftp.c	2011-01-10 12:50:02.687941194 +0100
+@@ -105,39 +105,22 @@ struct BUG_G_too_big {
+ #define error_pkt_str    (error_pkt + 4)
+ 
+ #if ENABLE_FEATURE_TFTP_PROGRESS_BAR
+-/* SIGALRM logic nicked from the wget applet */
+-static void progress_meter(int flag)
++static void tftp_progress_update(void)
+ {
+-	/* We can be called from signal handler */
+-	int save_errno = errno;
+-
+-	if (flag == -1) { /* first call to progress_meter */
+-		bb_progress_init(&G.pmt);
+-	}
+-
+ 	bb_progress_update(&G.pmt, G.file, 0, G.pos, G.size);
+-
+-	if (flag == 0) {
+-		/* last call to progress_meter */
+-		alarm(0);
+-		bb_putchar_stderr('\n');
+-	} else {
+-		if (flag == -1) { /* first call to progress_meter */
+-			signal_SA_RESTART_empty_mask(SIGALRM, progress_meter);
+-		}
+-		alarm(1);
+-	}
+-
+-	errno = save_errno;
+ }
+ static void tftp_progress_init(void)
+ {
+-	progress_meter(-1);
++	bb_progress_init(&G.pmt);
++	tftp_progress_update();
+ }
+ static void tftp_progress_done(void)
+ {
+-	if (G.pmt.inited)
+-		progress_meter(0);
++	if (G.pmt.inited) {
++		tftp_progress_update();
++		bb_putchar_stderr('\n');
++		G.pmt.inited = 0;
++	}
+ }
+ #else
+ # define tftp_progress_init() ((void)0)
+@@ -460,9 +443,10 @@ static int tftp_protocol(
+ 		xsendto(socket_fd, xbuf, send_len, &peer_lsa->u.sa, peer_lsa->len);
+ 
+ #if ENABLE_FEATURE_TFTP_PROGRESS_BAR
+-		if (ENABLE_TFTP && remote_file) { /* tftp */
++		if (ENABLE_TFTP && remote_file) /* tftp */
+ 			G.pos = (block_nr - 1) * (uoff_t)blksize;
+-		}
++		if (G.pmt.inited)
++			tftp_progress_update();
+ #endif
+ 		/* Was it final ACK? then exit */
+ 		if (finished && (opcode == TFTP_ACK))
+@@ -479,6 +463,7 @@ static int tftp_protocol(
+ 		case 0:
+ 			retries--;
+ 			if (retries == 0) {
++				tftp_progress_done();
+ 				bb_error_msg("timeout");
+ 				goto ret; /* no err packet sent */
+ 			}

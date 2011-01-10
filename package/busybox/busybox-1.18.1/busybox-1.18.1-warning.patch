@@ -1,0 +1,28 @@
+diff -urpN busybox-1.18.1/libbb/procps.c busybox-1.18.1-warning/libbb/procps.c
+--- busybox-1.18.1/libbb/procps.c	2010-12-21 05:29:45.000000000 +0100
++++ busybox-1.18.1-warning/libbb/procps.c	2011-01-07 13:41:22.000000000 +0100
+@@ -154,6 +154,7 @@ static unsigned long fast_strtoul_10(cha
+ 	return n;
+ }
+ 
++# if ENABLE_FEATURE_FAST_TOP
+ static long fast_strtol_10(char **endptr)
+ {
+ 	if (**endptr != '-')
+@@ -162,6 +163,7 @@ static long fast_strtol_10(char **endptr
+ 	(*endptr)++;
+ 	return - (long)fast_strtoul_10(endptr);
+ }
++# endif
+ 
+ static char *skip_fields(char *str, int count)
+ {
+@@ -448,7 +450,7 @@ procps_status_t* FAST_FUNC procps_scan(p
+ //FIXME: is it safe to assume this field exists?
+ 			sp->last_seen_on_cpu = fast_strtoul_10(&cp);
+ # endif
+-#endif /* end of !ENABLE_FEATURE_TOP_SMP_PROCESS */
++#endif /* FEATURE_FAST_TOP */
+ 
+ #if ENABLE_FEATURE_PS_ADDITIONAL_COLUMNS
+ 			sp->niceness = tasknice;
