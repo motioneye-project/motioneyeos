@@ -1,6 +1,10 @@
 config BR2_PACKAGE_SMARTMONTOOLS
 	bool "smartmontools"
+	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  Control and monitor storage systems using S.M.A.R.T.
 
 	  http://smartmontools.sourceforge.net/
+
+comment "smartmontools requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP
