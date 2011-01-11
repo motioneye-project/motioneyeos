@@ -2,56 +2,35 @@
 #
 # wipe
 #
-# http://abaababa.ouvaton.org/wipe/wipe-$(WIPE_VERSION).tar.gz
 #############################################################
-WIPE_VERSION:=0.20
-WIPE_SOURCE:=wipe-$(WIPE_VERSION).tar.gz
-#WIPE_PATCH:=wipe_0.2-19.diff.gz
-WIPE_SITE:=http://abaababa.ouvaton.org/wipe
-WIPE_CAT:=$(ZCAT)
-WIPE_DIR:=$(BUILD_DIR)/wipe-$(WIPE_VERSION)
-WIPE_BINARY:=wipe
-WIPE_TARGET_BINARY:=bin/wipe
 
-$(DL_DIR)/$(WIPE_SOURCE):
-	 $(call DOWNLOAD,$(WIPE_SITE),$(WIPE_SOURCE))
+WIPE_VERSION = 0.22
+WIPE_SITE = http://lambda-diode.com/resources/wipe
+WIPE_CFLAGS = $(TARGET_CFLAGS) -DHAVE_DEV_URANDOM -DHAVE_OSYNC -DHAVE_STRCASECMP -DHAVE_RANDOM -DSYNC_WAITS_FOR_SYNC -DFIND_DEVICE_SIZE_BY_BLKGETSIZE
 
-ifneq ($(WIPE_PATCH),)
-$(DL_DIR)/$(WIPE_PATCH):
-	 $(call DOWNLOAD,$(WIPE_SITE),$(WIPE_PATCH))
+ifeq ($(BR2_LARGEFILE),y)
+WIPE_CFLAGS += -DSIXTYFOUR
 endif
 
-wipe-source: $(DL_DIR)/$(WIPE_SOURCE) $(DL_DIR)/$(WIPE_PATCH)
+define WIPE_BUILD_CMDS
+	# Fix busted git version logic
+	$(SED) "s/which/!which/" $(@D)/Makefile
+	$(MAKE) -C $(@D) linux CC_LINUX="$(TARGET_CC)" \
+		CCO_LINUX="$(WIPE_CFLAGS)"
+endef
 
-$(WIPE_DIR)/.unpacked: $(DL_DIR)/$(WIPE_SOURCE) $(DL_DIR)/$(WIPE_PATCH)
-	$(WIPE_CAT) $(DL_DIR)/$(WIPE_SOURCE) | tar -C $(BUILD_DIR) $(TAR_OPTIONS) -
-	#toolchain/patch-kernel.sh $(WIPE_DIR) $(DL_DIR) $(WIPE_PATCH)
-	touch $(WIPE_DIR)/.unpacked
+define WIPE_INSTALL_TARGET_CMDS
+	$(INSTALL) -D $(@D)/wipe $(TARGET_DIR)/usr/bin/wipe
+	$(INSTALL) -D $(@D)/wipe.1 $(TARGET_DIR)/usr/share/man/man1/wipe.1
+endef
 
-$(WIPE_DIR)/.configured: $(WIPE_DIR)/.unpacked
-	touch $@
+define WIPE_UNINSTALL_TARGET_CMDS
+	rm -f $(TARGET_DIR)/usr/bin/wipe
+	rm -f $(TARGET_DIR)/usr/share/man/man1/wipe.1
+endef
 
-$(WIPE_DIR)/$(WIPE_BINARY): $(WIPE_DIR)/.configured
-	rm -f $(WIPE_DIR)/$(WIPE_BINARY)
-	$(MAKE) CC="$(TARGET_CC)" CC_GENERIC="$(TARGET_CC)" CCO_GENERIC="$(TARGET_CFLAGS)" -C $(WIPE_DIR) generic
+define WIPE_CLEAN_CMDS
+	$(MAKE) -C $(@D) clean
+endef
 
-$(TARGET_DIR)/$(WIPE_TARGET_BINARY): $(WIPE_DIR)/$(WIPE_BINARY)
-	cp -a $(WIPE_DIR)/$(WIPE_BINARY) $(TARGET_DIR)/$(WIPE_TARGET_BINARY)
-
-wipe: $(TARGET_DIR)/$(WIPE_TARGET_BINARY)
-
-wipe-clean:
-	#$(MAKE) DESTDIR=$(TARGET_DIR) CC="$(TARGET_CC)" -C $(WIPE_DIR) uninstall
-	-$(MAKE) -C $(WIPE_DIR) clean
-
-wipe-dirclean:
-	rm -rf $(WIPE_DIR)
-
-#############################################################
-#
-# Toplevel Makefile options
-#
-#############################################################
-ifeq ($(BR2_PACKAGE_WIPE),y)
-TARGETS+=wipe
-endif
+$(eval $(call GENTARGETS,package,wipe))
