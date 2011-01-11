@@ -12,9 +12,6 @@ IPTABLES_AUTORECONF = YES
 IPTABLES_DEPENDENCIES = host-pkg-config
 
 IPTABLES_CONF_OPT = --libexecdir=/usr/lib --with-kernel=$(LINUX_HEADERS_DIR)
-ifneq ($(BR2_INET_IPV6),y)
-IPTABLES_CONF_OPT += --disable-ipv6
-endif
 
 define IPTABLES_TARGET_SYMLINK_CREATE
 	ln -sf iptables-multi $(TARGET_DIR)/usr/sbin/iptables
