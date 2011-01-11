@@ -6,6 +6,7 @@ adm:x:4:
 tty:x:5:
 disk:x:6:
 wheel:x:10:root
+audio:x:29:
 utmp:x:43:
 staff:x:50:
 haldaemon:x:68:
