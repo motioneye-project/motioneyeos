@@ -1,0 +1,53 @@
+From 087874b15367a04fd482541d1832696d7163d1ac Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Fri, 19 Nov 2010 23:35:47 -0500
+Subject: [PATCH 2/4] NO_PIE: make PIE support controllable
+
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+---
+ Makefile |    8 ++++++--
+ README   |    1 +
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 5343428..cfcfdbb 100644
+--- a/Makefile
++++ b/Makefile
+@@ -106,6 +106,10 @@ CPPFLAGS += -DIGNORE_SIGCHLD	# AIX 4.x, HP-UX 9.x
+ #
+ # LDLIBS	+= -m
+ # CFLAGS	+= -arch m68k -arch i386 -arch hppa
++ifeq ($(NO_PIE),)
++CFLAGS_PIE  = -fpie
++LDFLAGS_PIE = -pie
++endif
+ 
+ # Auxiliary libraries that you may have to specify
+ #
+@@ -125,9 +129,9 @@ CFLAGS   += -Wall -Wstrict-prototypes
+ all:	portmap pmap_dump pmap_set portmap.man
+ 
+ CPPFLAGS += $(HOSTS_ACCESS)
+-portmap: CFLAGS   += -fpie
++portmap: CFLAGS   += $(CFLAGS_PIE)
+ portmap: LDLIBS   += $(WRAP_LIB)
+-portmap: LDFLAGS  += -pie
++portmap: LDFLAGS  += $(LDFLAGS_PIE)
+ portmap: portmap.o pmap_check.o from_local.o
+ 
+ from_local: CPPFLAGS += -DTEST
+diff --git a/README b/README
+index 916de7e..e0b561a 100644
+--- a/README
++++ b/README
+@@ -18,6 +18,7 @@ There is no "./configure", just use "make".
+ 
+ Some make variable can be used to control compilation.
+ 
++ NO_PIE=	  if non-empty, don't build portmap as a PIE
+  NO_TCP_WRAPPER=  if non-empty, don't use tcp_wrappers
+  USE_DNS=	  if set, tcp_wrappers can check peers based on hostname
+ 		  as well as IP address.  This should only be used if you
+-- 
+1.7.3.1
+

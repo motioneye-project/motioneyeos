@@ -9,8 +9,13 @@ PORTMAP_SOURCE = portmap-$(PORTMAP_VERSION).tgz
 PORTMAP_SITE = http://neil.brown.name/portmap
 PORTMAP_SBINS = portmap pmap_dump pmap_set
 
+PORTMAP_FLAGS = NO_TCP_WRAPPER=1 NO_PIE=1 NO_PERROR=1
+ifeq ($(BR2_USE_MMU),)
+PORTMAP_FLAGS += NO_FORK=1
+endif
+
 define PORTMAP_BUILD_CMDS
-	$(MAKE) CC="$(TARGET_CC)" -C $(@D) NO_TCP_WRAPPER=1
+	$(MAKE) CC="$(TARGET_CC)" -C $(@D) $(PORTMAP_FLAGS)
 endef
 
 define PORTMAP_INSTALL_TARGET_CMDS
