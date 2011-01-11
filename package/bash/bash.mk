@@ -8,6 +8,11 @@ BASH_VERSION = 4.1
 BASH_SITE = $(BR2_GNU_MIRROR)/bash
 BASH_DEPENDENCIES = ncurses
 
+# Make sure we build after busybox so that /bin/sh links to bash
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+BASH_DEPENDENCIES += busybox
+endif
+
 # Save the old sh file/link if there is one and symlink bash->sh
 define BASH_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
