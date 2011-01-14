@@ -46,12 +46,4 @@ define ROOTFS_JFFS2_CMD
 endef
 endif
 
-define JFFS2_GEN_SREC
-	$(TARGET_CROSS)objcopy -I binary -O srec --adjust-vma 0xa1000000 $$@ $$@.srec
-endef
-
-ifeq ($(BR2_JFFS2_TARGET_SREC),y)
-ROOTFS_JFFS2_POST_GEN_HOOKS += JFFS2_GEN_SREC
-endif
-
 $(eval $(call ROOTFS_TARGET,jffs2))
