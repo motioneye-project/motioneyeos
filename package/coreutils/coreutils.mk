@@ -3,7 +3,7 @@
 # coreutils
 #
 #############################################################
-COREUTILS_VERSION = 8.5
+COREUTILS_VERSION = 8.9
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.gz
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 

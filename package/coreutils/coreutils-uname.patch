@@ -3,7 +3,7 @@ On linux platforms, grok /proc/cpuinfo for the CPU/vendor info.
 Prob not suitable for upstream seeing as how it's 100% linux-specific
 http://lists.gnu.org/archive/html/bug-coreutils/2005-09/msg00063.html
 
-Patch originally by Carlos E. Gorges <carlos@techlinux.com.br>, but 
+Patch originally by Carlos E. Gorges <carlos at techlinux.com.br>, but
 heavily reworked to suck less.
 
 To add support for additional platforms, check out the show_cpuinfo()
