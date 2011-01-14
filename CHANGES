@@ -16,15 +16,15 @@
 	direcfb-examples, dmalloc, ed, ffmpeg, findutils, flac,
 	freetype, gdk-pixbuf, gmp, grep, gst-plugins-good, gvfs,
 	hostapd, i2c-tools, icu, input-tools, iproute2, iptables,
-	jpeg, libaio, libcap, libconfig, libglib2, libogg, libtheora,
-	libtool, libvorbis, libxml2, libxslt, linux-fusion, lsof,
-	ltp-testsuite, ltrace, lvm2, m4, makedevs, memtester, mesa3d,
-	mii-diag, mpc, mpfr, mplayer, mrouted, nano, netperf, netplug,
-	openssh, openssl, openvpn, oprofile, pango, patch, pciutils,
-	php, portmap, qt, rsync, screen, sdl_gfx, sdl_sound, sqlite,
-	squid, sstrip, sysklogd, sysvinit, tar, tslib, udev, usbutils,
-	vim, vtun, webkit, xapp_xlogo, xkeyboard-config, xlib_libX11,
-	xz, zlib
+	jpeg, kexec, libaio, libcap, libconfig, libglib2, libogg,
+	libtheora, libtool, libvorbis, libxml2, libxslt, linux-fusion,
+	lsof, ltp-testsuite, ltrace, lvm2, m4, makedevs, memtester,
+	mesa3d, mii-diag, mpc, mpfr, mplayer, mrouted, nano, netperf,
+	netplug, openssh, openssl, openvpn, oprofile, pango, patch,
+	pciutils, php, portmap, qt, rsync, screen, sdl_gfx, sdl_sound,
+	sqlite, squid, sstrip, sysklogd, sysvinit, tar, tslib, udev,
+	usbutils, vim, vtun, webkit, xapp_xlogo, xkeyboard-config,
+	xlib_libX11, xz, zlib
 
 	New packages: dhrystone, fbgrab, irda-utils, libao, lsuio,
 	rsh-redone, sdparm, vorbis-tools, whetstone, xl2tp
@@ -43,6 +43,7 @@
 	#2929: genext2fs: couldn't allocate a block (no free space)
 	#2965: Broken linkage to xkbcomp (blocking X server startup)
 	#2983: xlib_libX11 build failed
+	#3007: kexec doesn't build: Missing regdef.h file
 
 2010.11, Released November 30th, 2010:
 
