@@ -9,6 +9,18 @@ OPENSSL_SITE = http://www.openssl.org/source
 OPENSSL_INSTALL_STAGING = YES
 OPENSSL_DEPENDENCIES = zlib
 OPENSSL_TARGET_ARCH = generic32
+OPENSSL_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_PACKAGE_OPENSSL_OCF),y)
+OPENSSL_CFLAGS += -DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS
+
+define OPENSSL_INSTALL_CRYPTODEV_H
+$(INSTALL) -D package/openssl/ocf-cryptodev-20101223.h \
+	$(STAGING_DIR)/usr/include/crypto/cryptodev.h
+endef
+
+OPENSSL_POST_EXTRACT_HOOKS += OPENSSL_INSTALL_CRYPTODEV_H
+endif
 
 # Some architectures are optimized in OpenSSL
 ifeq ($(ARCH),arm)
@@ -45,7 +57,7 @@ define OPENSSL_CONFIGURE_CMDS
 			zlib-dynamic \
 	)
 	$(SED) "s:-march=[-a-z0-9] ::" -e "s:-mcpu=[-a-z0-9] ::g" $(@D)/Makefile
-	$(SED) "s:-O[0-9]:$(TARGET_CFLAGS):" $(@D)/Makefile
+	$(SED) "s:-O[0-9]:$(OPENSSL_CFLAGS):" $(@D)/Makefile
 endef
 
 define OPENSSL_BUILD_CMDS
