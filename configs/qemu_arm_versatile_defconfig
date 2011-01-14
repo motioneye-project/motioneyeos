@@ -2,6 +2,9 @@
 BR2_arm=y
 BR2_arm926t=y
 
+# filesystem
+BR2_TARGET_ROOTFS_EXT2=y
+
 # Kernel
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_VERSION=y

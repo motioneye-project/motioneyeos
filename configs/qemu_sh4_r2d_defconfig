@@ -2,6 +2,9 @@
 BR2_sh=y
 BR2_sh4=y
 
+# filesystem
+BR2_TARGET_ROOTFS_EXT2=y
+
 # The kernel wants to use the -m4-nofpu option to make sure that it
 # doesn't use floating point operations.
 BR2_GCC_VERSION_4_5_X=y

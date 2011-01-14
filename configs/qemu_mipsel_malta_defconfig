@@ -2,6 +2,9 @@
 BR2_mipsel=y
 BR2_mips_32r2=y
 
+# filesystem
+BR2_TARGET_ROOTFS_EXT2=y
+
 # Kernel
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_VERSION=y

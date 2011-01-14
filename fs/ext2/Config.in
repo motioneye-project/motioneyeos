@@ -1,6 +1,5 @@
 config BR2_TARGET_ROOTFS_EXT2
 	bool "ext2 root filesystem"
-	default y
 	help
 	  Build an ext2 root filesystem
 

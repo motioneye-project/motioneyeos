@@ -3,7 +3,6 @@ BR2_arm=y
 BR2_arm920t=y
 
 # Filesystem
-# BR2_TARGET_ROOTFS_EXT2 is not set
 BR2_TARGET_ROOTFS_TAR=y
 
 # Kernel

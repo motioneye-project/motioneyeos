@@ -15,4 +15,3 @@ BR2_INSTALL_LIBSTDCPP=y
 # BR2_PACKAGE_BUSYBOX is not set
 
 # No filesystem (toolchain only)
-# BR2_TARGET_ROOTFS_EXT2 is not set

@@ -2,6 +2,9 @@
 BR2_powerpc=y
 BR2_powerpc_440fp=y
 
+# filesystem
+BR2_TARGET_ROOTFS_EXT2=y
+
 # Kernel
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_VERSION=y
