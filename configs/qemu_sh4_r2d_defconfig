@@ -4,6 +4,7 @@ BR2_sh4=y
 
 # filesystem
 BR2_TARGET_ROOTFS_EXT2=y
+# BR2_TARGET_ROOTFS_TAR is not set
 
 # The kernel wants to use the -m4-nofpu option to make sure that it
 # doesn't use floating point operations.

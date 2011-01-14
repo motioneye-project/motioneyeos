@@ -4,6 +4,7 @@ BR2_powerpc_440fp=y
 
 # filesystem
 BR2_TARGET_ROOTFS_EXT2=y
+# BR2_TARGET_ROOTFS_TAR is not set
 
 # Kernel
 BR2_LINUX_KERNEL=y
