@@ -6,10 +6,6 @@
 
 EXT2_OPTS :=
 
-ifeq ($(BR2_TARGET_ROOTFS_EXT2_SQUASH),y)
-EXT2_OPTS += -U
-endif
-
 ifneq ($(strip $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)),0)
 EXT2_OPTS += -b $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)
 endif
