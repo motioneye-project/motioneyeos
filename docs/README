@@ -4,14 +4,12 @@ To build and use the buildroot stuff, do the following:
 2) select the packages you wish to compile
 3) run 'make'
 4) wait while it compiles
-5) Use your shiny new root filesystem.  Depending on which sortof
+5) Use your shiny new root filesystem. Depending on which sort of
     root filesystem you selected, you may want to loop mount it,
     chroot into it, nfs mount it on your target device, burn it
     to flash, or whatever is appropriate for your target system.
 
 You do not need to be root to build or run buildroot.  Have fun!
-
- -Erik
 
 Offline build:
 ==============
