@@ -109,12 +109,16 @@ endif
 
 GCC_WITH_HOST_GMP = --with-gmp=$(HOST_DIR)/usr
 GCC_WITH_HOST_MPFR = --with-mpfr=$(HOST_DIR)/usr
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 HOST_SOURCE += host-gmp-source host-mpfr-source
+endif
 GCC_HOST_PREREQ = host-gmp host-mpfr
 
 ifeq ($(findstring x4.5.,x$(GCC_VERSION)),x4.5.)
 GCC_WITH_HOST_MPC = --with-mpc=$(HOST_DIR)/usr
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 HOST_SOURCE += host-mpc-source
+endif
 GCC_HOST_PREREQ += host-mpc
 endif
 
@@ -152,7 +156,9 @@ GCC_CONF_ENV:=acx_cv_prog_cc_pedantic__Wno_long_long__Wno_variadic_macros_______
 	acx_cv_prog_cc_warning__Wno_overlength_strings=no
 endif
 
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 HOST_SOURCE+=gcc-source
+endif
 
 $(DL_DIR)/$(GCC_SOURCE):
 	mkdir -p $(DL_DIR)
