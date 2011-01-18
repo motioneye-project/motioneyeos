@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBCUEFILE
+	bool "libcuefile"
+	help
+	  Cue File library from Musepack
+
+	  http://www.musepack.net/
