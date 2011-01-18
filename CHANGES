@@ -44,6 +44,7 @@
 	#2965: Broken linkage to xkbcomp (blocking X server startup)
 	#2983: xlib_libX11 build failed
 	#3007: kexec doesn't build: Missing regdef.h file
+	#3109: abnormal `make busybox-menuconfig`
 
 2010.11, Released November 30th, 2010:
 
