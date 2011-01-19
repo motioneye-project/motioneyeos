@@ -1,0 +1,19 @@
+--- busybox-1.18.2/modutils/modprobe-small.c
++++ busybox-1.18.2-modprobe-small/modutils/modprobe-small.c
+@@ -205,6 +205,7 @@ static void parse_module(module_info *in
+ 	/* Read (possibly compressed) module */
+ 	len = 64 * 1024 * 1024; /* 64 Mb at most */
+ 	module_image = xmalloc_open_zipped_read_close(pathname, &len);
++	/* module_image == NULL is ok here, find_keyword handles it */
+ //TODO: optimize redundant module body reads
+ 
+ 	/* "alias1 symbol:sym1 alias2 symbol:sym2" */
+@@ -845,6 +846,8 @@ int modprobe_main(int argc UNUSED_PARAM,
+ 
+ 		len = MAXINT(ssize_t);
+ 		map = xmalloc_open_zipped_read_close(*argv, &len);
++		if (!map)
++			bb_perror_msg_and_die("can't read '%s'", *argv);
+ 		if (init_module(map, len,
+ 			IF_FEATURE_MODPROBE_SMALL_OPTIONS_ON_CMDLINE(options ? options : "")
+ 			IF_NOT_FEATURE_MODPROBE_SMALL_OPTIONS_ON_CMDLINE("")

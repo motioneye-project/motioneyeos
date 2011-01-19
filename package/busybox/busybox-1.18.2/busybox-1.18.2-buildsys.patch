@@ -1,0 +1,62 @@
+--- busybox-1.18.2/loginutils/Config.src
++++ busybox-1.18.2-buildsys/loginutils/Config.src
+@@ -186,7 +186,6 @@ config GETTY
+ config LOGIN
+ 	bool "login"
+ 	default y
+-	select FEATURE_SUID
+ 	select FEATURE_SYSLOG
+ 	help
+ 	  login is used when signing onto a system.
+@@ -229,7 +228,6 @@ config FEATURE_SECURETTY
+ config PASSWD
+ 	bool "passwd"
+ 	default y
+-	select FEATURE_SUID
+ 	select FEATURE_SYSLOG
+ 	help
+ 	  passwd changes passwords for user and group accounts. A normal user
+@@ -265,7 +263,6 @@ config CHPASSWD
+ config SU
+ 	bool "su"
+ 	default y
+-	select FEATURE_SUID
+ 	select FEATURE_SYSLOG
+ 	help
+ 	  su is used to become another user during a login session.
+@@ -295,7 +292,6 @@ config SULOGIN
+ config VLOCK
+ 	bool "vlock"
+ 	default y
+-	select FEATURE_SUID
+ 	help
+ 	  Build the "vlock" applet which allows you to lock (virtual) terminals.
+ 
+--- busybox-1.18.2/miscutils/Config.src
++++ busybox-1.18.2-buildsys/miscutils/Config.src
+@@ -170,7 +170,6 @@ config FEATURE_CROND_DIR
+ config CRONTAB
+ 	bool "crontab"
+ 	default y
+-	select FEATURE_SUID
+ 	help
+ 	  Crontab manipulates the crontab for a particular user. Only
+ 	  the superuser may specify a different user and/or crontab directory.
+--- busybox-1.18.2/util-linux/Config.src
++++ busybox-1.18.2-buildsys/util-linux/Config.src
+@@ -354,7 +354,6 @@ config FEATURE_HWCLOCK_ADJTIME_FHS
+ config IPCRM
+ 	bool "ipcrm"
+ 	default y
+-	select FEATURE_SUID
+ 	help
+ 	  The ipcrm utility allows the removal of System V interprocess
+ 	  communication (IPC) objects and the associated data structures
+@@ -364,7 +363,6 @@ config IPCS
+ 	bool "ipcs"
+ 	default y
+ 	depends on PLATFORM_LINUX
+-	select FEATURE_SUID
+ 	help
+ 	  The ipcs utility is used to provide information on the currently
+ 	  allocated System V interprocess (IPC) objects in the system.
