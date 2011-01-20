@@ -1,0 +1,109 @@
+#############################################################
+#
+# mpd
+#
+#############################################################
+
+MPD_VERSION = 0.16.1
+MPD_SITE = http://$(BR2_SOURCEFORGE_MIRROR).dl.sourceforge.net/sourceforge/musicpd
+MPD_DEPENDENCIES = host-pkg-config libglib2
+
+# Some options need an explicit --disable or --enable
+
+ifeq ($(BR2_PACKAGE_MPD_ALSA),y)
+MPD_DEPENDENCIES += alsa-lib
+else
+MPD_CONF_OPT += --disable-alsa
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_AO),y)
+MPD_DEPENDENCIES += libao
+else
+MPD_CONF_OPT += --disable-ao
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_BZIP2),y)
+MPD_DEPENDENCIES += bzip2
+MPD_CONF_OPT += --enable-bzip2
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_FAAD2),y)
+MPD_DEPENDENCIES += faad2
+else
+MPD_CONF_OPT += --disable-faad2
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_FLAC),y)
+MPD_DEPENDENCIES += flac
+else
+MPD_CONF_OPT += --without-flac
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_CURL),y)
+MPD_DEPENDENCIES += libcurl
+else
+MPD_CONF_OPT += --disable-curl
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_LIBSAMPLERATE),y)
+MPD_DEPENDENCIES += libsamplerate
+else
+MPD_CONF_OPT += --disable-lsr
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_LIBSNDFILE),y)
+MPD_DEPENDENCIES += libsndfile
+else
+MPD_CONF_OPT += --disable-sndfile
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_VORBIS),y)
+MPD_DEPENDENCIES += libvorbis
+else
+MPD_CONF_OPT += --disable-vorbis
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_MPG123),y)
+MPD_DEPENDENCIES += libid3tag mpg123
+else
+MPD_CONF_OPT += --disable-mpg123
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_MUSEPACK),y)
+MPD_DEPENDENCIES += musepack
+else
+MPD_CONF_OPT += --disable-mpc
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_SQLITE),y)
+MPD_DEPENDENCIES += sqlite
+else
+MPD_CONF_OPT += --disable-sqlite
+endif
+
+ifneq ($(BR2_PACKAGE_MPD_TCP),y)
+MPD_CONF_OPT += --disable-tcp
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_TREMOR),y)
+MPD_DEPENDENCIES += tremor
+MPD_CONF_OPT += --with-tremor
+endif
+
+ifeq ($(BR2_PACKAGE_MPD_WAVPACK),y)
+MPD_DEPENDENCIES += wavpack
+else
+MPD_CONF_OPT += --disable-wavpack
+endif
+
+define MPD_INSTALL_EXTRA_FILES
+	[ ! -f $(TARGET_DIR)/etc/mpd.conf ] && \
+		$(INSTALL) -D package/multimedia/mpd/mpd.conf \
+			$(TARGET_DIR)/etc/mpd.conf
+	$(INSTALL) -m 0755 -D package/multimedia/mpd/S95mpd \
+		$(TARGET_DIR)/etc/init.d/S95mpd
+endef
+
+MPD_POST_INSTALL_TARGET_HOOKS += MPD_INSTALL_EXTRA_FILES
+
+$(eval $(call AUTOTARGETS,package/multimedia,mpd))

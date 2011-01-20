@@ -1,0 +1,30 @@
+#!/bin/sh
+
+start() {
+	echo -n "Starting mpd: "
+	start-stop-daemon --start --quiet --background --exec /usr/bin/mpd
+	echo "OK"
+}
+
+stop() {
+	echo -n "Stopping mpd: "
+	start-stop-daemon --stop --quiet --pidfile /var/run/mpd.pid
+	echo "OK"
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		stop
+		sleep 1
+		start
+		;;
+	*)
+		echo $"Usage: $0 {start|stop|restart}"
+		exit 1
+esac
