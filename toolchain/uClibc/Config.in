@@ -21,7 +21,7 @@ choice
 		bool "uClibc 0.9.31.x"
 
 	config BR2_UCLIBC_VERSION_0_9_32
-		bool "uClibc 0.9.32-rc1"
+		bool "uClibc 0.9.32-rc2"
 
 	config BR2_UCLIBC_VERSION_SNAPSHOT
 		bool "daily snapshot"
@@ -40,7 +40,7 @@ config BR2_UCLIBC_VERSION_STRING
 	default 0.9.29		if BR2_UCLIBC_VERSION_0_9_29
 	default 0.9.30.3	if BR2_UCLIBC_VERSION_0_9_30
 	default 0.9.31		if BR2_UCLIBC_VERSION_0_9_31
-	default 0.9.32-rc1	if BR2_UCLIBC_VERSION_0_9_32
+	default 0.9.32-rc2	if BR2_UCLIBC_VERSION_0_9_32
 	default $BR2_USE_UCLIBC_SNAPSHOT	if BR2_UCLIBC_VERSION_SNAPSHOT
 
 config BR2_UCLIBC_CONFIG
