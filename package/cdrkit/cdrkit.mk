@@ -13,8 +13,9 @@ endif
 
 # CMake doesn't support having the --sysroot option directly in the
 # compiler path, so move this option to the CFLAGS/CXXFLAGS variables.
-CDRKIT_TARGET_CC = $(filter-out --sysroot=%,$(TARGET_CC))
-CDRKIT_TARGET_CXX = $(filter-out --sysroot=%,$(TARGET_CXX))
+# It also gets confused by ccache, so don't use ccache here.
+CDRKIT_TARGET_CC = $(filter-out --sysroot=%,$(TARGET_CC_NOCCACHE))
+CDRKIT_TARGET_CXX = $(filter-out --sysroot=%,$(TARGET_CXX_NOCCACHE))
 CDRKIT_TARGET_CFLAGS = $(filter --sysroot=%,$(TARGET_CC)) $(TARGET_CFLAGS)
 CDRKIT_TARGET_CXXFLAGS = $(filter --sysroot=%,$(TARGET_CXX)) $(TARGET_CXXFLAGS)
 
