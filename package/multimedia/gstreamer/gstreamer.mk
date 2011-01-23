@@ -19,15 +19,9 @@ endif
 GSTREAMER_CONF_OPT = \
 		--disable-examples \
 		--disable-tests \
-		--disable-failing-tests
+		--disable-failing-tests \
+		--disable-loadsave
 
 GSTREAMER_DEPENDENCIES = libglib2 host-pkg-config
-
-ifeq ($(BR2_PACKAGE_GSTREAMER_LIBXML2),y)
-GSTREAMER_DEPENDENCIES += libxml2
-else
-GSTREAMER_CONF_OPT += \
-	--disable-loadsave
-endif
 
 $(eval $(call AUTOTARGETS,package/multimedia,gstreamer))

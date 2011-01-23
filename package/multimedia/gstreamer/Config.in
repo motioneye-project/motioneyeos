@@ -9,9 +9,3 @@ config BR2_PACKAGE_GSTREAMER
 
 comment "gstreamer requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
-
-config BR2_PACKAGE_GSTREAMER_LIBXML2
-	bool "require libxml2 for registry and load/save"
-	default y
-	select BR2_PACKAGE_LIBXML2
-	depends on BR2_PACKAGE_GSTREAMER
