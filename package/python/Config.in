@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PYTHON
 	bool "python"
 	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LIBFFI
 	help
 	  The python language interpreter.
 
@@ -9,17 +10,11 @@ config BR2_PACKAGE_PYTHON
 comment "python requires a toolchain with WCHAR support"
 	depends on !BR2_USE_WCHAR
 
-config BR2_PACKAGE_PYTHON_DEV
-	depends on BR2_PACKAGE_PYTHON
-	bool "development files on target"
-	help
-	  If enabled, development files (headers and static libpython) will be
-	  installed on the target.
+if BR2_PACKAGE_PYTHON
 
 choice
-	prompt "Module format to install"
-	depends on BR2_PACKAGE_PYTHON
-	default BR2_PACKAGE_PYTHON_PY_ONLY
+	prompt "python module format to install"
+	default BR2_PACKAGE_PYTHON_PYC_ONLY
 	help
 	  Select Python module format to install on target (py, pyc or both)
 
@@ -34,51 +29,40 @@ config BR2_PACKAGE_PYTHON_PY_PYC
 
 endchoice
 
+menu "core python modules"
+
 comment "The following modules are unusual or require extra libraries"
-	depends on BR2_PACKAGE_PYTHON
+
+config BR2_PACKAGE_PYTHON_BZIP2
+	select BR2_PACKAGE_BZIP2
+	bool "bzip2 module"
+	help
+	  bzip2 module for Python
 
 config BR2_PACKAGE_PYTHON_BSDDB
-	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_BERKELEYDB
 	bool "bsddb module"
 	help
 	  bsddb module for Python.
 
 config BR2_PACKAGE_PYTHON_CODECSCJK
-	depends on BR2_PACKAGE_PYTHON
 	bool "codecscjk module"
-	default y
 	help
 	  Chinese/Japanese/Korean codecs module for Python (large).
 
 config BR2_PACKAGE_PYTHON_CURSES
-	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_NCURSES
 	bool "curses module"
 	help
 	  curses module for Python.
 
-# config BR2_PACKAGE_PYTHON_GDBM
-# 	depends on BR2_PACKAGE_PYTHON
-# 	bool "gdbm module"
-# 	help
-# 	  gdbm module for Python.
-
-# config BR2_PACKAGE_PYTHON_NIS
-# 	depends on BR2_PACKAGE_PYTHON
-# 	bool "nis module"
-# 	help
-# 	  nis module for Python.
-
 config BR2_PACKAGE_PYTHON_PYEXPAT
-	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_EXPAT
 	bool "pyexpat"
 	help
 	  pyexpat module for Python.
 
 config BR2_PACKAGE_PYTHON_READLINE
-	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_READLINE
 	bool "readline"
 	help
@@ -86,22 +70,29 @@ config BR2_PACKAGE_PYTHON_READLINE
 	  editing in the Python shell).
 
 config BR2_PACKAGE_PYTHON_SSL
-	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_OPENSSL
 	bool "ssl"
 	help
 	  _ssl module for Python (required for https in urllib etc).
 
-config BR2_PACKAGE_PYTHON_TKINTER
-	depends on BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_TCL
-	bool "tkinter module"
-	help
-	  tkinter module for Python.
-
 config BR2_PACKAGE_PYTHON_UNICODEDATA
-	depends on BR2_PACKAGE_PYTHON
 	bool "unicodedata module"
 	default y
 	help
 	  Unicode character database (used by stringprep module) (large).
+
+config BR2_PACKAGE_PYTHON_SQLITE
+	bool "sqlite module"
+	select BR2_PACKAGE_SQLITE
+	help
+	  SQLite database support
+
+config BR2_PACKAGE_PYTHON_ZLIB
+	bool "zlib module"
+	select BR2_PACKAGE_ZLIB
+	help
+	  zlib support in Python
+
+endmenu
+
+endif

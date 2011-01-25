@@ -1,0 +1,81 @@
+Add an option to disable bsddb
+
+bsddb has an external dependency on Berkeley DB. Since we want to be
+able to build Python without it, this patch adds an option to disable
+the build/installation of this Python module.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+---
+ Makefile.pre.in |   10 ++++++++--
+ configure.in    |   22 ++++++++++++++++++++++
+ 2 files changed, 30 insertions(+), 2 deletions(-)
+
+Index: Python-2.7.1/Makefile.pre.in
+===================================================================
+--- Python-2.7.1.orig/Makefile.pre.in
++++ Python-2.7.1/Makefile.pre.in
+@@ -855,7 +855,7 @@
+ 		encodings compiler hotshot \
+ 		email email/mime \
+ 		json \
+-		logging bsddb csv importlib wsgiref \
++		logging csv importlib wsgiref \
+ 		ctypes ctypes/macholib idlelib idlelib/Icons \
+ 		distutils distutils/command \
+ 		multiprocessing multiprocessing/dummy \
+@@ -868,7 +868,6 @@
+ 		test/decimaltestdata test/xmltestdata 	\
+ 		test/tracedmodules   			\
+ 		email/test email/test/data		\
+-		bsddb/test				\
+ 		ctypes/test distutils/tests		\
+ 		unittest/test
+ endif
+@@ -910,6 +909,13 @@
+ LIBSUBDIRS += $(XMLLIBSUBDIRS)
+ endif
+ 
++ifeq (@BSDDB@,yes)
++LIBSUBDIRS += bsddb
++ifeq (@TEST_MODULES@,yes)
++LIBSUBDIRS += bsddb/test
++endif
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR)
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+Index: Python-2.7.1/configure.in
+===================================================================
+--- Python-2.7.1.orig/configure.in
++++ Python-2.7.1/configure.in
+@@ -2421,6 +2421,28 @@
+     	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
+   	  fi])
+ 
++AC_ARG_ENABLE(dbm,
++	AS_HELP_STRING([--disable-dbm], [disable DBM]),
++	[ if test "$enableval" = "no"; then
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} dbm"
++  	  fi])
++
++AC_ARG_ENABLE(gdbm,
++	AS_HELP_STRING([--disable-gdbm], [disable GDBM]),
++	[ if test "$enableval" = "no"; then
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} gdbm"
++  	  fi])
++
++AC_SUBST(BSDDB)
++AC_ARG_ENABLE(bsddb,
++	AS_HELP_STRING([--disable-bsddb], [disable BerkeyleyDB]),
++	[ if test "$enableval" = "no"; then
++    	     BSDDB=no
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} bsddb"
++  	  else
++	     BSDDB=yes
++  	  fi], [ BSDDB=yes ])
++
+ AC_ARG_ENABLE(unicodedata,
+ 	AS_HELP_STRING([--disable-unicodedata], [disable unicodedata]),
+ 	[ if test "$enableval" = "no"; then
