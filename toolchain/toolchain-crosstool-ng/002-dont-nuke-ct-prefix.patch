@@ -1,0 +1,37 @@
+ct-ng: don't remove CT_PREFIX_DIR
+
+You might want to install the ct-ng toolchain into an existing directory
+with other files (which is what we're doing in BR for HOST_DIR/usr),
+so don't remove it.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ scripts/crosstool-NG.sh.in |    8 --------
+ 1 file changed, 8 deletions(-)
+
+Index: crosstool-ng-1.8.0/scripts/crosstool-NG.sh.in
+===================================================================
+--- crosstool-ng-1.8.0.orig/scripts/crosstool-NG.sh.in
++++ crosstool-ng-1.8.0/scripts/crosstool-NG.sh.in
+@@ -210,11 +210,6 @@ CT_TOOLCHAIN_ID="crosstool-${CT_VERSION}
+ 
+ CT_DoLog EXTRA "Preparing working directories"
+ 
+-# Ah! The build directory shall be eradicated, even if we restart!
+-if [ -d "${CT_BUILD_DIR}" ]; then
+-    CT_DoForceRmdir "${CT_BUILD_DIR}"
+-fi
+-
+ # Don't eradicate directories if we need to restart
+ if [ -z "${CT_RESTART}" ]; then
+     # Get rid of pre-existing installed toolchain and previous build directories.
+@@ -226,9 +221,6 @@ if [ -z "${CT_RESTART}" ]; then
+     if [ "${CT_FORCE_EXTRACT}" = "y" -a -d "${CT_SRC_DIR}" ]; then
+         CT_DoForceRmdir "${CT_SRC_DIR}"
+     fi
+-    if [ -d "${CT_INSTALL_DIR}" ]; then
+-        CT_DoForceRmdir "${CT_INSTALL_DIR}"
+-    fi
+     # In case we start anew, get rid of the previously saved state directory
+     if [ -d "${CT_STATE_DIR}" ]; then
+         CT_DoForceRmdir "${CT_STATE_DIR}"
