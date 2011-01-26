@@ -1,0 +1,35 @@
+ct-ng: use 'sysroot' rather than 'sys-root' for sysroot directory
+
+The sysroot directory name is arbitrary, but 'sysroot' matches the GCC
+documentation.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ scripts/crosstool-NG.sh.in |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+Index: crosstool-ng-1.8.0/scripts/crosstool-NG.sh.in
+===================================================================
+--- crosstool-ng-1.8.0.orig/scripts/crosstool-NG.sh.in
++++ crosstool-ng-1.8.0/scripts/crosstool-NG.sh.in
+@@ -274,7 +274,7 @@ esac
+ if [ -z "${CT_RESTART}" ]; then
+     # Arrange paths depending on wether we use sys-root or not.
+     if [ "${CT_USE_SYSROOT}" = "y" ]; then
+-        CT_SYSROOT_DIR="${CT_PREFIX_DIR}/${CT_TARGET}/${CT_SYSROOT_DIR_PREFIX}/sys-root"
++        CT_SYSROOT_DIR="${CT_PREFIX_DIR}/${CT_TARGET}/${CT_SYSROOT_DIR_PREFIX}/sysroot"
+         CT_DEBUGROOT_DIR="${CT_PREFIX_DIR}/${CT_TARGET}/${CT_SYSROOT_DIR_PREFIX}/debug-root"
+         CT_HEADERS_DIR="${CT_SYSROOT_DIR}/usr/include"
+         BINUTILS_SYSROOT_ARG="--with-sysroot=${CT_SYSROOT_DIR}"
+@@ -315,9 +315,9 @@ if [ -z "${CT_RESTART}" ]; then
+ 
+     if [ "${CT_USE_SYSROOT}" = "y" ]; then
+         # Prevent gcc from installing its libraries outside of the sys-root
+-        CT_DoExecLog ALL ln -sf "./${CT_SYSROOT_DIR_PREFIX}/sys-root/lib" "${CT_PREFIX_DIR}/${CT_TARGET}/lib"
++        CT_DoExecLog ALL ln -sf "./${CT_SYSROOT_DIR_PREFIX}/sysroot/lib" "${CT_PREFIX_DIR}/${CT_TARGET}/lib"
+         # Prevent libc from installing its headers outside of the sysroot
+-        CT_DoExecLog ALL ln -sf "./${CT_SYSROOT_DIR_PREFIX}/sys-root/usr/include" "${CT_PREFIX_DIR}/${CT_TARGET}/include"
++        CT_DoExecLog ALL ln -sf "./${CT_SYSROOT_DIR_PREFIX}/sysroot/usr/include" "${CT_PREFIX_DIR}/${CT_TARGET}/include"
+     fi
+ 
+     # Now, in case we're 64 bits, just have lib64/ be a symlink to lib/
