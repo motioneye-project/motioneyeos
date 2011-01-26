@@ -143,6 +143,14 @@ TARGET_CC  := $(CCACHE) $(TARGET_CC)
 TARGET_CXX := $(CCACHE) $(TARGET_CXX)
 endif
 
+# * CMake doesn't support having the --sysroot option directly in the
+#   compiler path, so move this option to CFLAGS/CXXFLAGS variables.
+# * Don't use ccache because then CMake will fail to detect compiler.
+CMAKE_TARGET_CC = $(filter-out --sysroot=%,$(TARGET_CC_NOCCACHE))
+CMAKE_TARGET_CXX = $(filter-out --sysroot=%,$(TARGET_CXX_NOCCACHE))
+CMAKE_TARGET_CFLAGS = $(filter --sysroot=%,$(TARGET_CC_NOCCACHE)) $(TARGET_CFLAGS)
+CMAKE_TARGET_CXXFLAGS = $(filter --sysroot=%,$(TARGET_CXX_NOCCACHE)) $(TARGET_CXXFLAGS)
+
 ifeq ($(BR2_STRIP_strip),y)
 STRIP_DISCARD_ALL:=--discard-all
 STRIP_STRIP_UNNEEDED:=--strip-unneeded
