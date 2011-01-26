@@ -319,4 +319,5 @@ ENABLE_DEBUG:=
 endif
 
 include package/Makefile.autotools.in
+include package/Makefile.cmake.in
 include package/Makefile.package.in
