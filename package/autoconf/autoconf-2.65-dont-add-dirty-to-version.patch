@@ -1,0 +1,30 @@
+autoconf: don't append -dirty to version
+
+Don't append -dirty to autoconf version number if the buildroot git tree
+has uncommited changes.
+
+This script is meant for the autoconf developers, but it also activates
+if you build autoconf in a subdirectory of a git tree (E.G. like how it's
+commonly done in buildroot).
+
+The affect is that autoconf gets built as being version 2.65-dirty, which
+breaks programs (like Python) which explicitly checks for autoconf-2.65.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ build-aux/git-version-gen |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: autoconf-2.65/build-aux/git-version-gen
+===================================================================
+--- autoconf-2.65.orig/build-aux/git-version-gen
++++ autoconf-2.65/build-aux/git-version-gen
+@@ -135,7 +135,7 @@ case "$dirty" in
+     *) # Append the suffix only if there isn't one already.
+ 	case $v in
+ 	  *-dirty) ;;
+-	  *) v="$v-dirty" ;;
++	  #*) v="$v-dirty" ;;
+ 	esac ;;
+ esac
+ 
