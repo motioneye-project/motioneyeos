@@ -48,15 +48,15 @@ define HOST_ZLIB_BUILD_CMDS
 endef
 
 define ZLIB_INSTALL_STAGING_CMDS
-	$(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR) install
+	$(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR) LDCONFIG=true install
 endef
 
 define ZLIB_INSTALL_TARGET_CMDS
-	$(MAKE1) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(MAKE1) -C $(@D) DESTDIR=$(TARGET_DIR) LDCONFIG=true install
 endef
 
 define HOST_ZLIB_INSTALL_CMDS
-	$(MAKE1) -C $(@D) install
+	$(MAKE1) -C $(@D) LDCONFIG=true install
 endef
 
 define ZLIB_CLEAN_CMDS
