@@ -19,6 +19,6 @@ DBUS_PYTHON_CONF_ENV = am_cv_pathless_PYTHON=python \
 
 DBUS_PYTHON_CONF_OPT = --disable-html-docs --disable-api-docs
 
-DBUS_PYTHON_DEPENDENCIES = dbus-glib libpython
+DBUS_PYTHON_DEPENDENCIES = dbus-glib python
 
 $(eval $(call AUTOTARGETS,package,dbus-python))

@@ -56,7 +56,7 @@ ALSA_LIB_CONF_OPT += \
 	--with-pythonlibs=-lpython$(PYTHON_VERSION_MAJOR) \
 	--with-pythonincludes=$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
 ALSA_LIB_CFLAGS+=-I$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
-ALSA_LIB_DEPENDENCIES = libpython
+ALSA_LIB_DEPENDENCIES = python
 else
 ALSA_LIB_CONF_OPT += --disable-python
 endif

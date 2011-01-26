@@ -127,7 +127,7 @@ AVAHI_CONF_ENV += am_cv_pathless_PYTHON=python \
 		am_cv_python_pyexecdir=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages \
 		py_cv_mod_socket_=yes
 
-AVAHI_DEPENDENCIES += libpython
+AVAHI_DEPENDENCIES += python
 AVAHI_CONF_OPT += --enable-python
 else
 AVAHI_CONF_OPT += --disable-python
