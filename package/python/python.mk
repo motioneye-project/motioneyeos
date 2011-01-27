@@ -18,7 +18,7 @@ HOST_PYTHON_CONF_OPT += 	\
 	--without-cxx-main 	\
 	--disable-sqlite3	\
 	--disable-tk		\
-	--with-expat=none	\
+	--with-expat=system	\
 	--disable-curses	\
 	--disable-codecs-cjk	\
 	--disable-nis		\
@@ -38,6 +38,8 @@ HOST_PYTHON_MAKE_ENV = \
 HOST_PYTHON_AUTORECONF = YES
 
 PYTHON_DEPENDENCIES  = host-python libffi
+
+HOST_PYTHON_DEPENDENCIES = host-expat
 
 PYTHON_INSTALL_STAGING = YES
 
