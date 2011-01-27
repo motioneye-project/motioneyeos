@@ -2,8 +2,8 @@ CDRKIT_VERSION=1.1.10
 CDRKIT_SOURCE=cdrkit-$(CDRKIT_VERSION).tar.gz
 CDRKIT_SITE=http://www.cdrkit.org/releases/
 
-CDRKIT_DEPENDENCIES=libcap bzip2 host-cmake zlib
-HOST_CDRKIT_DEPENDENCIES=host-libcap host-cmake host-bzip2 host-zlib
+CDRKIT_DEPENDENCIES=libcap bzip2 zlib
+HOST_CDRKIT_DEPENDENCIES=host-libcap host-bzip2 host-zlib
 
 ifeq ($(BR2_ENDIAN),"BIG")
 CMAKE_ENDIAN_OPT=-DBITFIELDS_HTOL=1
