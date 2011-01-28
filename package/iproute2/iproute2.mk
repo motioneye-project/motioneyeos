@@ -9,6 +9,12 @@ IPROUTE2_SOURCE = iproute2-$(IPROUTE2_VERSION).tar.bz2
 IPROUTE2_SITE = http://devresources.linuxfoundation.org/dev/iproute2/download
 IPROUTE2_TARGET_SBINS = ctstat genl ifstat ip lnstat nstat routef routel rtacct rtmon rtpr rtstat ss tc
 
+# If both iproute2 and busybox are selected, make certain we win
+# the fight over who gets to have their utils actually installed.
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+IPROUTE2_DEPENDENCIES += busybox
+endif
+
 # If we've got iptables enable xtables support for tc
 ifeq ($(BR2_PACKAGE_IPTABLES),y)
 IPROUTE2_DEPENDENCIES += iptables
