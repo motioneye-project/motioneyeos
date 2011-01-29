@@ -1,0 +1,27 @@
+[PATCH] prefix sysroot to path variables
+
+Prefix path values with sysroot if a variable is requested
+(--varable=<name>), similar to how it's done for -I / -L flags.
+
+This is sometimes used to find header files (E.G. in gst-plugins configure),
+so ensure the sysroot'ed files are used.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ main.c |    3 +++
+ 1 file changed, 3 insertions(+)
+
+Index: pkg-config-0.25/main.c
+===================================================================
+--- pkg-config-0.25.orig/main.c
++++ pkg-config-0.25/main.c
+@@ -695,6 +695,9 @@ main (int argc, char **argv)
+   if (variable_name)
+     {
+       char *str = packages_get_var (packages, variable_name);
++      /* path variable? */
++      if (pcsysrootdir && str[0] == '/')
++          printf ("%s/", pcsysrootdir);
+       printf ("%s", str);
+       g_free (str);
+       need_newline = TRUE;
