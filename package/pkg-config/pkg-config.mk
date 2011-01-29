@@ -13,7 +13,10 @@ PKG_CONFIG_CONF_OPT = --with-installed-glib
 
 HOST_PKG_CONFIG_CONF_OPT = \
 		--with-pc-path="$(STAGING_DIR)/usr/lib/pkgconfig" \
+		--with-sysroot="$(STAGING_DIR)" \
 		--disable-static
+
+HOST_PKG_CONFIG_AUTORECONF = YES
 
 $(eval $(call AUTOTARGETS,package,pkg-config))
 $(eval $(call AUTOTARGETS,package,pkg-config,host))

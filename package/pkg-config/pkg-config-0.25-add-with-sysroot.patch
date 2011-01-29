@@ -1,0 +1,70 @@
+[PATCH] Add compiled in default sysroot
+
+Similar to the --with-pc-path option. It works just like the existing
+PKG_CONFIG_SYSROOT_DIR environment variable, but compiled in.
+The environment variable overrides this default setting if set.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ Makefile.am  |    6 ++++++
+ configure.in |    6 ++++++
+ main.c       |    5 +++--
+ 3 files changed, 15 insertions(+), 2 deletions(-)
+
+Index: pkg-config-0.25/Makefile.am
+===================================================================
+--- pkg-config-0.25.orig/Makefile.am
++++ pkg-config-0.25/Makefile.am
+@@ -31,6 +31,12 @@ AM_CFLAGS=@WARN_CFLAGS@
+ INCLUDES=-DPKG_CONFIG_PC_PATH="\"$(pc_path)\"" $(included_glib_includes) \
+ 	$(popt_includes)
+ 
++if USE_SYSROOT
++INCLUDES += -DPKG_CONFIG_SYSROOT="\"$(sysroot)\""
++else
++INCLUDES += -DPKG_CONFIG_SYSROOT=NULL
++endif
++
+ pkg_config_SOURCES= \
+ 	pkg.h \
+ 	pkg.c \
+Index: pkg-config-0.25/configure.in
+===================================================================
+--- pkg-config-0.25.orig/configure.in
++++ pkg-config-0.25/configure.in
+@@ -32,6 +32,12 @@ fi
+ 
+ PKG_CONFIG_FIND_PC_PATH
+ 
++AC_ARG_WITH(sysroot,
++ [  --with-sysroot         Use sysroot <dir> by default ],
++ [ sysroot="$withval" ])
++
++AC_SUBST([sysroot])
++AM_CONDITIONAL(USE_SYSROOT, test "x$sysroot" != "x")
+ #
+ # Code taken from gtk+-2.0's configure.in.
+ #
+Index: pkg-config-0.25/main.c
+===================================================================
+--- pkg-config-0.25.orig/main.c
++++ pkg-config-0.25/main.c
+@@ -39,7 +39,7 @@
+ static int want_debug_spew = 0;
+ static int want_verbose_errors = 0;
+ static int want_stdout_errors = 0;
+-char *pcsysrootdir = NULL;
++char *pcsysrootdir = PKG_CONFIG_SYSROOT;
+ 
+ void
+ debug_spew (const char *format, ...)
+@@ -311,7 +311,8 @@ main (int argc, char **argv)
+       add_search_dirs(PKG_CONFIG_PC_PATH, G_SEARCHPATH_SEPARATOR_S);
+     }
+ 
+-  pcsysrootdir = getenv ("PKG_CONFIG_SYSROOT_DIR");
++  if (getenv ("PKG_CONFIG_SYSROOT_DIR"))
++	  pcsysrootdir = getenv ("PKG_CONFIG_SYSROOT_DIR");
+   if (pcsysrootdir)
+     {
+       define_global_variable ("pc_sysrootdir", pcsysrootdir);
