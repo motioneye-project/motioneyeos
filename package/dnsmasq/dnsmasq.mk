@@ -42,8 +42,6 @@ define DNSMASQ_ENABLE_DBUS
 		$(DNSMASQ_DIR)/src/config.h
 	$(SED) 's^PKG_CONFIG = pkg-config^PKG_CONFIG = $(PKG_CONFIG_HOST_BINARY)^' \
 		$(DNSMASQ_DIR)/Makefile
-	$(SED) 's^--cflags dbus-1^--cflags dbus-1 \| sed s\\\#-I/\\\#-I$(STAGING_DIR)/\\\#g^' \
-		$(DNSMASQ_DIR)/Makefile
 endef
 else
 define DNSMASQ_ENABLE_DBUS
