@@ -67,9 +67,12 @@
 
 	#561:  ltp-testsuite failed to install
 	#1651: Build fail caused by ccache in module-init-tools
+	#1681: Cross-compiled binaries shouldn't be installed into staging
 	#1735: [PATCH] mplayer: convert to autotools infrastructure
 	#2647: makedevs package lacks support for 16-bit major/minor numbers
 	#2371: QT MYSQL Module does not build when MySQL installed on the host
+	#2839: compile fails in various packages with a odd message "error:...
+	#2893: Broken "make source" with external toolchain
 	#2905: Qt: Speed up compilation, if gui-module isn't selected
 	#2929: genext2fs: couldn't allocate a block (no free space)
 	#2965: Broken linkage to xkbcomp (blocking X server startup)
