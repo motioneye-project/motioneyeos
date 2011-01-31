@@ -1,0 +1,24 @@
+[PATCH] fix typo in configure
+
+Somehow a newline character has gotten inserted in the middle of the
+LDFLAGS assignment, breaking the build.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+Index: libhid-0.2.16/configure
+===================================================================
+--- libhid-0.2.16.orig/configure
++++ libhid-0.2.16/configure
+@@ -23050,8 +23050,7 @@ echo "$as_me: doxygen disabled by config
+     CPPFLAGS=$(echo  $CPPFLAGS)
+     CFLAGS=$(echo $OS_CFLAGS $LIBUSB_CFLAGS $CFLAGS)
+     CXXFLAGS=$(echo  $CXXFLAGS)
+-    LDFLAGS=$(echo $OS_LDFLAGS $LIBUSB_LIBS
+- $LDFLAGS)
++    LDFLAGS=$(echo $OS_LDFLAGS $LIBUSB_LIBS $LDFLAGS)
+ 
+ 
+ 
