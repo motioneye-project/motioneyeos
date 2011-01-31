@@ -12,6 +12,6 @@ X11VNC_INSTALL_TARGET = YES
 X11VNC_CONF_OPT = \
 	--without-avahi
 
-X11VNC_DEPENDENCIES = xserver_xorg-server
+X11VNC_DEPENDENCIES = xserver_xorg-server xlib_libXt
 
 $(eval $(call AUTOTARGETS,package,x11vnc))
