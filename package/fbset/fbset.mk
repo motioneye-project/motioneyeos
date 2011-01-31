@@ -3,9 +3,15 @@
 # fbset
 #
 #############################################################
+
 FBSET_VERSION = 2.1
 FBSET_SOURCE = fbset-$(FBSET_VERSION).tar.gz
 FBSET_SITE = http://users.telenet.be/geertu/Linux/fbdev
+
+# Make sure full fbset wins over busybox fbset
+ifeq ($(BR2_PACKAGE_BUSYBOX),y)
+FBSET_DEPENDENCIES += busybox
+endif
 
 define FBSET_BUILD_CMDS
 	$(MAKE1) $(TARGET_CONFIGURE_OPTS) -C $(@D)
