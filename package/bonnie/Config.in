@@ -1,0 +1,10 @@
+config BR2_PACKAGE_BONNIE
+	bool "bonnie++"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Filesystem tester
+
+	  http://www.coker.com.au/bonnie++/
+
+comment "bonnie++ requires a toolchain with C++ support enabled"
+	depends on !BR2_INSTALL_LIBSTDCPP

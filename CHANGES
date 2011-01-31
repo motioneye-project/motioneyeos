@@ -9,10 +9,11 @@
 	quagga, readline, rsync, samba, squid, socat, squashfs, tslib,
 	webkit, xerces, xlib_xtrans, xorg-server, xterm, xz
 
-	New packages: can-utils, htop, libv4l
+	New packages: bonnie++, can-utils, htop, libv4l
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#3379: New Package: bonnie++
 	#3445: Not working openssl-10.0.0d on 386sx
 	#3451: fakeroot package: wrong FAKEROOT_SITE variable
 	#3457: alsamixergui: broken URL
