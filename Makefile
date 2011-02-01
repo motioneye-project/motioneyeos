@@ -655,6 +655,7 @@ help:
 	@echo
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'
+	@echo '  nconfig                - interactive ncurses-based configurator'
 	@echo '  xconfig                - interactive Qt-based configurator'
 	@echo '  gconfig                - interactive GTK-based configurator'
 	@echo '  oldconfig              - resolve any unresolved symbols in .config'
@@ -672,6 +673,9 @@ help:
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  source-check           - check all packages for valid download URLs'
 	@echo '  external-deps          - list external packages used'
+	@echo
+	@echo '  make V=0|1             - 0 => quiet build (default), 1 => verbose build'
+	@echo '  make O=dir             - Locate all output files in "dir", including .config'
 	@echo
 	@$(foreach b, $(notdir $(wildcard $(TOPDIR)/configs/*_defconfig)), \
 	  printf "  %-35s - Build for %s\\n" $(b) $(b:_defconfig=);)
