@@ -80,6 +80,7 @@
 	#3007: kexec doesn't build: Missing regdef.h file
 	#3103: make external-deps wants to download gcc-.tar.bz2 when...
 	#3109: abnormal `make busybox-menuconfig`
+	#3181: dhcp.mk copies S80dhcp-server to etc/init.d, not etc/init.d/
 
 2010.11, Released November 30th, 2010:
 
