@@ -23,7 +23,7 @@ LINUX26_MAKE_FLAGS = \
 	HOSTCFLAGS="$(HOSTCFLAGS)" \
 	ARCH=$(KERNEL_ARCH) \
 	INSTALL_MOD_PATH=$(TARGET_DIR) \
-	CROSS_COMPILE=$(TARGET_CROSS) \
+	CROSS_COMPILE="$(CCACHE) $(TARGET_CROSS)" \
 	LZMA="$(LZMA)"
 
 # Get the real Linux version, which tells us where kernel modules are
