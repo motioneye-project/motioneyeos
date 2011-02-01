@@ -1,5 +1,5 @@
 config BR2_PACKAGE_DHCP
-	bool "DHCP support"
+	bool "isc dhcp"
 	help
 	  DHCP relay agent from the ISC DHCP distribution.
 
