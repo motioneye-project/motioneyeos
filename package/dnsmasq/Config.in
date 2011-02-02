@@ -23,6 +23,7 @@ config BR2_PACKAGE_DNSMASQ_DHCP
 config BR2_PACKAGE_DNSMASQ_IDN
 	bool "IDN support (BIG!)"
 	depends on BR2_PACKAGE_DNSMASQ
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_LIBINTL
 	select BR2_PACKAGE_LIBIDN
 	help
