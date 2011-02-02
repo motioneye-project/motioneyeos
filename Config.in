@@ -72,6 +72,16 @@ config BR2_DL_DIR
 
 	  The default is $(TOPDIR)/dl
 
+config BR2_HOST_DIR
+	string "Host dir"
+	default "$(BASE_DIR)/host"
+	help
+	  Directory to store all the binary files that are built for the host.
+	  This includes the cross compilation toolchain when building the
+	  internal buildroot toolchain.
+
+	  The default is $(BASE_DIR)/host
+
 menu "Mirrors and Download locations"
 
 config BR2_PRIMARY_SITE
