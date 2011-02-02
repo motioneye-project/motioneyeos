@@ -11,14 +11,14 @@ Signed-off-by: Will Newton <will.newton@imgtec.com>
 Acked-by: WANG Cong <xiyou.wangcong@gmail.com>
 Signed-off-by: Michal Marek <mmarek@suse.cz>
 ---
- scripts/kconfig/confdata.c |    4 ++--
- 1 files changed, 2 insertions(+), 2 deletions(-)
+ confdata.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/confdata.c b/confdata.c
-index 35c08ec..96110ea 100644
---- a/confdata.c
-+++ b/confdata.c
-@@ -534,7 +534,7 @@ int conf_write(const char *name)
+Index: config/confdata.c
+===================================================================
+--- config.orig/confdata.c
++++ config/confdata.c
+@@ -536,7 +536,7 @@
  	struct menu *menu;
  	const char *basename;
  	const char *str;
@@ -27,7 +27,7 @@ index 35c08ec..96110ea 100644
  	enum symbol_type type;
  	time_t now;
  	int use_timestamp = 1;
-@@ -658,7 +658,7 @@ next:
+@@ -660,7 +660,7 @@
  static int conf_split_config(void)
  {
  	const char *name;
@@ -36,6 +36,3 @@ index 35c08ec..96110ea 100644
  	char *opwd, *dir, *_name;
  	char *s, *d, c;
  	struct symbol *sym;
--- 
-1.7.1
-

@@ -2,10 +2,10 @@
  Makefile |   14 ++++++++++----
  1 file changed, 10 insertions(+), 4 deletions(-)
 
-Index: config.new/Makefile
+Index: config/Makefile
 ===================================================================
---- config.new.orig/Makefile
-+++ config.new/Makefile
+--- config.orig/Makefile
++++ config/Makefile
 @@ -199,10 +199,16 @@
  gconf-objs	:= gconf.o kconfig_load.o zconf.tab.o
  endif

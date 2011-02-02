@@ -2,10 +2,10 @@
  util.c |  117 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++-
  1 file changed, 116 insertions(+), 1 deletion(-)
 
-Index: config.clean/util.c
+Index: config/util.c
 ===================================================================
---- config.clean.orig/util.c
-+++ config.clean/util.c
+--- config.orig/util.c
++++ config/util.c
 @@ -26,6 +26,121 @@
  	return file;
  }

@@ -128,7 +128,7 @@ Index: config/confdata.c
  		break;
  	case S_OTHER:
  	case S_UNKNOWN:
-@@ -838,14 +835,14 @@
+@@ -840,14 +837,14 @@
  			case no:
  				break;
  			case mod:
@@ -147,7 +147,7 @@ Index: config/confdata.c
  				break;
  			}
  			break;
-@@ -855,12 +852,12 @@
+@@ -857,12 +854,12 @@
  		case S_HEX:
  			str = sym_get_string_value(sym);
  			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {

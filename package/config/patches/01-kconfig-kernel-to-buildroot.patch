@@ -1,13 +1,13 @@
 ---
  conf.c              |   12 ++++++------
- confdata.c          |   12 ++++--------
+ confdata.c          |   14 +++++++-------
  gconf.c             |    4 ++--
  gconf.glade         |    2 +-
  mconf.c             |   38 ++++++++++++++++++--------------------
  qconf.cc            |    4 ++--
  zconf.tab.c_shipped |    2 +-
  zconf.y             |    2 +-
- 8 files changed, 35 insertions(+), 41 deletions(-)
+ 8 files changed, 38 insertions(+), 40 deletions(-)
 
 Index: config/conf.c
 ===================================================================
@@ -60,7 +60,7 @@ Index: config/confdata.c
 ===================================================================
 --- config.orig/confdata.c
 +++ config/confdata.c
-@@ -579,7 +579,7 @@
+@@ -581,7 +581,7 @@
  	if (!out)
  		return 1;
  
@@ -69,7 +69,7 @@ Index: config/confdata.c
  	sym_calc_value(sym);
  	time(&now);
  	env = getenv("KCONFIG_NOTIMESTAMP");
-@@ -588,7 +588,7 @@
+@@ -590,7 +590,7 @@
  
  	fprintf(out, _("#\n"
  		       "# Automatically generated make config: don't edit\n"
@@ -78,7 +78,7 @@ Index: config/confdata.c
  		       "%s%s"
  		       "#\n"),
  		     sym_get_string_value(sym),
-@@ -802,25 +802,25 @@
+@@ -804,25 +804,25 @@
  		return 1;
  	}
  

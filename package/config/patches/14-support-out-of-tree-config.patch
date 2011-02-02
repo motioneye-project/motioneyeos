@@ -31,7 +31,7 @@ Index: config/confdata.c
  }
  
  static char *conf_expand_value(const char *in)
-@@ -542,6 +540,9 @@
+@@ -544,6 +542,9 @@
  	int use_timestamp = 1;
  	char *env;
  
@@ -41,7 +41,7 @@ Index: config/confdata.c
  	dirname[0] = 0;
  	if (name && name[0]) {
  		struct stat st;
-@@ -658,6 +659,7 @@
+@@ -660,6 +661,7 @@
  {
  	const char *name;
  	char path[128];
@@ -49,7 +49,7 @@ Index: config/confdata.c
  	char *s, *d, c;
  	struct symbol *sym;
  	struct stat sb;
-@@ -666,8 +668,20 @@
+@@ -668,8 +670,20 @@
  	name = conf_get_autoconfig_name();
  	conf_read_simple(name, S_DEF_AUTO);
  
@@ -72,7 +72,7 @@ Index: config/confdata.c
  
  	res = 0;
  	for_all_symbols(i, sym) {
-@@ -760,9 +774,11 @@
+@@ -762,9 +776,11 @@
  		close(fd);
  	}
  out:
@@ -87,7 +87,7 @@ Index: config/confdata.c
  	return res;
  }
  
-@@ -774,25 +790,38 @@
+@@ -776,25 +792,38 @@
  	FILE *out, *tristate, *out_h;
  	time_t now;
  	int i;
@@ -130,7 +130,7 @@ Index: config/confdata.c
  	if (!out_h) {
  		fclose(out);
  		fclose(tristate);
-@@ -815,8 +844,7 @@
+@@ -817,8 +846,7 @@
  	fprintf(out_h, "/*\n"
  		       " * Automatically generated C config: don't edit\n"
  		       " * %s"
@@ -140,7 +140,7 @@ Index: config/confdata.c
  		       ctime(&now));
  
  	for_all_symbols(i, sym) {
-@@ -870,19 +898,22 @@
+@@ -872,19 +900,22 @@
  	name = getenv("KCONFIG_AUTOHEADER");
  	if (!name)
  		name = "include/generated/autoconf.h";

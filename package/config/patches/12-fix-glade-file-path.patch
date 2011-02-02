@@ -2,10 +2,10 @@
  gconf.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: config.new/gconf.c
+Index: config/gconf.c
 ===================================================================
---- config.new.orig/gconf.c
-+++ config.new/gconf.c
+--- config.orig/gconf.c
++++ config/gconf.c
 @@ -1525,7 +1525,7 @@
  	/* Determine GUI path */
  	env = getenv(SRCTREE);

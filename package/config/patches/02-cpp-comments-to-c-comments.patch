@@ -2,10 +2,10 @@
  expr.c |   42 +++++++++++++++++++++---------------------
  1 file changed, 21 insertions(+), 21 deletions(-)
 
-Index: config.clean/expr.c
+Index: config/expr.c
 ===================================================================
---- config.clean.orig/expr.c
-+++ config.clean/expr.c
+--- config.orig/expr.c
++++ config/expr.c
 @@ -331,7 +331,7 @@
  		e->right.expr = expr_trans_bool(e->right.expr);
  		break;
