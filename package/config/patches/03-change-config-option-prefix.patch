@@ -1,12 +1,14 @@
 ---
- confdata.c |   49 +++++++++++++++++++++++--------------------------
- 1 file changed, 23 insertions(+), 26 deletions(-)
+ confdata.c |   57 +++++++++++++++++++++++++++++----------------------------
+ lkc.h      |    2 +-
+ menu.c     |    2 +-
+ 3 files changed, 31 insertions(+), 30 deletions(-)
 
 Index: config/confdata.c
 ===================================================================
 --- config.orig/confdata.c
 +++ config/confdata.c
-@@ -11,6 +11,7 @@
+@@ -12,6 +12,7 @@
  #include <string.h>
  #include <time.h>
  #include <unistd.h>
@@ -14,7 +16,7 @@ Index: config/confdata.c
  
  #define LKC_DIRECT_LINK
  #include "lkc.h"
-@@ -21,7 +22,7 @@
+@@ -25,7 +26,7 @@
  static const char *conf_filename;
  static int conf_lineno, conf_warnings, conf_unsaved;
  
@@ -23,7 +25,7 @@ Index: config/confdata.c
  
  static void conf_warning(const char *fmt, ...)
  {
-@@ -36,7 +37,7 @@
+@@ -63,7 +64,7 @@
  
  const char *conf_get_configname(void)
  {
@@ -32,14 +34,11 @@ Index: config/confdata.c
  
  	return name ? name : ".config";
  }
-@@ -222,22 +223,22 @@
- 		sym = NULL;
- 		switch (line[0]) {
- 		case '#':
--			if (memcmp(line + 2, "CONFIG_", 7))
-+			if (line[1]!=' ')
+@@ -249,20 +250,20 @@
+ 		if (line[0] == '#') {
+ 			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
  				continue;
--			p = strchr(line + 9, ' ');
+-			p = strchr(line + 2 + strlen(CONFIG_), ' ');
 +			p = strchr(line + 2, ' ');
  			if (!p)
  				continue;
@@ -47,118 +46,153 @@ Index: config/confdata.c
  			if (strncmp(p, "is not set", 10))
  				continue;
  			if (def == S_DEF_USER) {
--				sym = sym_find(line + 9);
+-				sym = sym_find(line + 2 + strlen(CONFIG_));
 +				sym = sym_find(line + 2);
  				if (!sym) {
  					sym_add_change_count(1);
- 					break;
+ 					goto setsym;
  				}
  			} else {
--				sym = sym_lookup(line + 9, 0);
+-				sym = sym_lookup(line + 2 + strlen(CONFIG_), 0);
 +				sym = sym_lookup(line + 2, 0);
  				if (sym->type == S_UNKNOWN)
  					sym->type = S_BOOLEAN;
  			}
-@@ -254,12 +255,8 @@
+@@ -278,8 +279,8 @@
+ 			default:
  				;
  			}
- 			break;
--		case 'C':
--			if (memcmp(line, "CONFIG_", 7)) {
--				conf_warning("unexpected data");
--				continue;
--			}
--			p = strchr(line + 7, '=');
-+		case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
+-		} else if (memcmp(line, CONFIG_, strlen(CONFIG_)) == 0) {
+-			p = strchr(line + strlen(CONFIG_), '=');
++		} else if (isupper(line[0])) {
 +			p = strchr(line, '=');
  			if (!p)
  				continue;
  			*p++ = 0;
-@@ -270,13 +267,13 @@
+@@ -290,13 +291,13 @@
  					*p2 = 0;
  			}
  			if (def == S_DEF_USER) {
--				sym = sym_find(line + 7);
+-				sym = sym_find(line + strlen(CONFIG_));
 +				sym = sym_find(line);
  				if (!sym) {
  					sym_add_change_count(1);
- 					break;
+ 					goto setsym;
  				}
  			} else {
--				sym = sym_lookup(line + 7, 0);
+-				sym = sym_lookup(line + strlen(CONFIG_), 0);
 +				sym = sym_lookup(line, 0);
  				if (sym->type == S_UNKNOWN)
  					sym->type = S_OTHER;
  			}
-@@ -405,9 +402,9 @@
+@@ -423,9 +424,9 @@
  {
  	int l;
  	if (headerfile)
--		fprintf(out, "#define CONFIG_%s \"", name);
+-		fprintf(out, "#define %s%s \"", CONFIG_, name);
 +		fprintf(out, "#define %s \"", name);
  	else
--		fprintf(out, "CONFIG_%s=\"", name);
+-		fprintf(out, "%s%s=\"", CONFIG_, name);
 +		fprintf(out, "%s=\"", name);
  
  	while (1) {
  		l = strcspn(str, "\"\\");
-@@ -433,13 +430,13 @@
+@@ -451,14 +452,14 @@
  		switch (sym_get_tristate_value(sym)) {
  		case no:
  			if (write_no)
--				fprintf(out, "# CONFIG_%s is not set\n", sym->name);
-+				fprintf(out, "# %s is not set\n", sym->name);
+-				fprintf(out, "# %s%s is not set\n",
+-				    CONFIG_, sym->name);
++				fprintf(out, "# %s is not set\n",
++				    sym->name);
  			break;
  		case mod:
--			fprintf(out, "CONFIG_%s=m\n", sym->name);
+-			fprintf(out, "%s%s=m\n", CONFIG_, sym->name);
 +			fprintf(out, "%s=m\n", sym->name);
  			break;
  		case yes:
--			fprintf(out, "CONFIG_%s=y\n", sym->name);
+-			fprintf(out, "%s%s=y\n", CONFIG_, sym->name);
 +			fprintf(out, "%s=y\n", sym->name);
  			break;
  		}
  		break;
-@@ -449,7 +446,7 @@
+@@ -468,7 +469,7 @@
  	case S_HEX:
  	case S_INT:
  		str = sym_get_string_value(sym);
--		fprintf(out, "CONFIG_%s=%s\n", sym->name, str);
+-		fprintf(out, "%s%s=%s\n", CONFIG_, sym->name, str);
 +		fprintf(out, "%s=%s\n", sym->name, str);
  		break;
  	case S_OTHER:
  	case S_UNKNOWN:
-@@ -840,14 +837,14 @@
+@@ -853,17 +854,17 @@
  			case no:
  				break;
  			case mod:
--				fprintf(tristate, "CONFIG_%s=M\n", sym->name);
--				fprintf(out_h, "#define CONFIG_%s_MODULE 1\n", sym->name);
-+				fprintf(tristate, "%s=M\n", sym->name);
-+				fprintf(out_h, "#define %s_MODULE 1\n", sym->name);
+-				fprintf(tristate, "%s%s=M\n",
+-				    CONFIG_, sym->name);
+-				fprintf(out_h, "#define %s%s_MODULE 1\n",
+-				    CONFIG_, sym->name);
++				fprintf(tristate, "%s=M\n",
++				    sym->name);
++				fprintf(out_h, "#define %s_MODULE 1\n",
++				    sym->name);
  				break;
  			case yes:
  				if (sym->type == S_TRISTATE)
--					fprintf(tristate, "CONFIG_%s=Y\n",
-+					fprintf(tristate, "%s=Y\n",
- 							sym->name);
--				fprintf(out_h, "#define CONFIG_%s 1\n", sym->name);
-+				fprintf(out_h, "#define %s 1\n", sym->name);
+-					fprintf(tristate,"%s%s=Y\n",
+-					    CONFIG_, sym->name);
+-				fprintf(out_h, "#define %s%s 1\n",
+-				    CONFIG_, sym->name);
++					fprintf(tristate,"%s=Y\n",
++					    sym->name);
++				fprintf(out_h, "#define %s 1\n",
++				    sym->name);
  				break;
  			}
  			break;
-@@ -857,12 +854,12 @@
+@@ -873,14 +874,14 @@
  		case S_HEX:
  			str = sym_get_string_value(sym);
  			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
--				fprintf(out_h, "#define CONFIG_%s 0x%s\n", sym->name, str);
-+				fprintf(out_h, "#define %s 0x%s\n", sym->name, str);
+-				fprintf(out_h, "#define %s%s 0x%s\n",
+-				    CONFIG_, sym->name, str);
++				fprintf(out_h, "#define %s 0x%s\n",
++				    sym->name, str);
  				break;
  			}
  		case S_INT:
  			str = sym_get_string_value(sym);
--			fprintf(out_h, "#define CONFIG_%s %s\n", sym->name, str);
-+			fprintf(out_h, "#define %s %s\n", sym->name, str);
+-			fprintf(out_h, "#define %s%s %s\n",
+-			    CONFIG_, sym->name, str);
++			fprintf(out_h, "#define %s %s\n",
++			    sym->name, str);
  			break;
  		default:
  			break;
+Index: config/lkc.h
+===================================================================
+--- config.orig/lkc.h
++++ config/lkc.h
+@@ -41,7 +41,7 @@
+ #define N_(text) (text)
+ 
+ #ifndef CONFIG_
+-#define CONFIG_ "CONFIG_"
++#define CONFIG_ "BR2_"
+ #endif
+ 
+ #define TF_COMMAND	0x0001
+Index: config/menu.c
+===================================================================
+--- config.orig/menu.c
++++ config/menu.c
+@@ -563,7 +563,7 @@
+ 
+ 	if (menu_has_help(menu)) {
+ 		if (sym->name) {
+-			str_printf(help, "%s%s:\n\n", CONFIG_, sym->name);
++			str_printf(help, "%s:\n\n", sym->name);
+ 			str_append(help, _(menu_get_help(menu)));
+ 			str_append(help, "\n");
+ 		}

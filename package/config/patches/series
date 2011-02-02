@@ -9,4 +9,3 @@
 11-use-mktemp-for-lxdialog.patch
 12-fix-glade-file-path.patch
 14-support-out-of-tree-config.patch
-15-use-PATH_MAX-for-path-buffer.patch

@@ -20,7 +20,7 @@ Index: config/confdata.c
 ===================================================================
 --- config.orig/confdata.c
 +++ config/confdata.c
-@@ -44,9 +44,7 @@
+@@ -71,9 +71,7 @@
  
  const char *conf_get_autoconfig_name(void)
  {
@@ -31,7 +31,7 @@ Index: config/confdata.c
  }
  
  static char *conf_expand_value(const char *in)
-@@ -544,6 +542,9 @@
+@@ -567,6 +565,9 @@
  	int use_timestamp = 1;
  	char *env;
  
@@ -41,15 +41,15 @@ Index: config/confdata.c
  	dirname[0] = 0;
  	if (name && name[0]) {
  		struct stat st;
-@@ -660,6 +661,7 @@
+@@ -679,6 +680,7 @@
  {
  	const char *name;
- 	char path[128];
+ 	char path[PATH_MAX+1];
 +	char *opwd, *dir, *_name;
  	char *s, *d, c;
  	struct symbol *sym;
  	struct stat sb;
-@@ -668,8 +670,20 @@
+@@ -687,8 +689,20 @@
  	name = conf_get_autoconfig_name();
  	conf_read_simple(name, S_DEF_AUTO);
  
@@ -72,7 +72,7 @@ Index: config/confdata.c
  
  	res = 0;
  	for_all_symbols(i, sym) {
-@@ -762,9 +776,11 @@
+@@ -781,9 +795,11 @@
  		close(fd);
  	}
  out:
@@ -87,7 +87,7 @@ Index: config/confdata.c
  	return res;
  }
  
-@@ -776,25 +792,38 @@
+@@ -795,25 +811,38 @@
  	FILE *out, *tristate, *out_h;
  	time_t now;
  	int i;
@@ -130,17 +130,17 @@ Index: config/confdata.c
  	if (!out_h) {
  		fclose(out);
  		fclose(tristate);
-@@ -817,8 +846,7 @@
- 	fprintf(out_h, "/*\n"
+@@ -834,8 +863,7 @@
  		       " * Automatically generated C config: don't edit\n"
+ 		       " * %s\n"
  		       " * %s"
 -		       " */\n"
 -		       "#define AUTOCONF_INCLUDED\n",
 +		       " */\n",
- 		       ctime(&now));
+ 		       rootmenu.prompt->text, ctime(&now));
  
  	for_all_symbols(i, sym) {
-@@ -872,19 +900,22 @@
+@@ -894,19 +922,22 @@
  	name = getenv("KCONFIG_AUTOHEADER");
  	if (!name)
  		name = "include/generated/autoconf.h";
@@ -170,7 +170,7 @@ Index: config/util.c
 ===================================================================
 --- config.orig/util.c
 +++ config/util.c
-@@ -144,6 +144,8 @@
+@@ -147,6 +147,8 @@
  /* write a dependency file as used by kbuild to track dependencies */
  int file_write_dep(const char *name)
  {
@@ -179,7 +179,7 @@ Index: config/util.c
  	struct symbol *sym, *env_sym;
  	struct expr *e;
  	struct file *file;
-@@ -151,7 +153,16 @@
+@@ -154,7 +156,16 @@
  
  	if (!name)
  		name = ".kconfig.d";
@@ -197,7 +197,7 @@ Index: config/util.c
  	if (!out)
  		return 1;
  	fprintf(out, "deps_config := \\\n");
-@@ -182,7 +193,8 @@
+@@ -185,7 +196,8 @@
  
  	fprintf(out, "\n$(deps_config): ;\n");
  	fclose(out);

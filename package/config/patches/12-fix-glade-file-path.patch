@@ -6,7 +6,7 @@ Index: config/gconf.c
 ===================================================================
 --- config.orig/gconf.c
 +++ config/gconf.c
-@@ -1525,7 +1525,7 @@
+@@ -1521,7 +1521,7 @@
  	/* Determine GUI path */
  	env = getenv(SRCTREE);
  	if (env)

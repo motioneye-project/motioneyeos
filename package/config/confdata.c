@@ -5,6 +5,7 @@
 
 #include <sys/stat.h>
 #include <ctype.h>
+#include <errno.h>
 #include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,6 +18,9 @@
 #include "lkc.h"
 
 static void conf_warning(const char *fmt, ...)
+	__attribute__ ((format (printf, 1, 2)));
+
+static void conf_message(const char *fmt, ...)
 	__attribute__ ((format (printf, 1, 2)));
 
 static const char *conf_filename;
@@ -33,6 +37,29 @@ static void conf_warning(const char *fmt, ...)
 	fprintf(stderr, "\n");
 	va_end(ap);
 	conf_warnings++;
+}
+
+static void conf_default_message_callback(const char *fmt, va_list ap)
+{
+	printf("#\n# ");
+	vprintf(fmt, ap);
+	printf("\n#\n");
+}
+
+static void (*conf_message_callback) (const char *fmt, va_list ap) =
+	conf_default_message_callback;
+void conf_set_message_callback(void (*fn) (const char *fmt, va_list ap))
+{
+	conf_message_callback = fn;
+}
+
+static void conf_message(const char *fmt, ...)
+{
+	va_list ap;
+
+	va_start(ap, fmt);
+	if (conf_message_callback)
+		conf_message_callback(fmt, ap);
 }
 
 const char *conf_get_configname(void)
@@ -182,9 +209,8 @@ int conf_read_simple(const char *name, int def)
 			name = conf_expand_value(prop->expr->left.sym->name);
 			in = zconf_fopen(name);
 			if (in) {
-				printf(_("#\n"
-					 "# using defaults found in %s\n"
-					 "#\n"), name);
+				conf_message(_("using defaults found in %s"),
+					 name);
 				goto load;
 			}
 		}
@@ -219,9 +245,8 @@ load:
 	while (fgets(line, sizeof(line), in)) {
 		conf_lineno++;
 		sym = NULL;
-		switch (line[0]) {
-		case '#':
-			if (line[1]!=' ')
+		if (line[0] == '#') {
+			if (memcmp(line + 2, CONFIG_, strlen(CONFIG_)))
 				continue;
 			p = strchr(line + 2, ' ');
 			if (!p)
@@ -233,7 +258,7 @@ load:
 				sym = sym_find(line + 2);
 				if (!sym) {
 					sym_add_change_count(1);
-					break;
+					goto setsym;
 				}
 			} else {
 				sym = sym_lookup(line + 2, 0);
@@ -252,8 +277,7 @@ load:
 			default:
 				;
 			}
-			break;
-		case 'A': case 'B': case 'C': case 'D': case 'E': case 'F': case 'G': case 'H': case 'I': case 'J': case 'K': case 'L': case 'M': case 'N': case 'O': case 'P': case 'Q': case 'R': case 'S': case 'T': case 'U': case 'V': case 'W': case 'X': case 'Y': case 'Z':
+		} else if (isupper(line[0])) {
 			p = strchr(line, '=');
 			if (!p)
 				continue;
@@ -268,7 +292,7 @@ load:
 				sym = sym_find(line);
 				if (!sym) {
 					sym_add_change_count(1);
-					break;
+					goto setsym;
 				}
 			} else {
 				sym = sym_lookup(line, 0);
@@ -280,14 +304,12 @@ load:
 			}
 			if (conf_set_sym_val(sym, def, def_flags, p))
 				continue;
-			break;
-		case '\r':
-		case '\n':
-			break;
-		default:
-			conf_warning("unexpected data");
+		} else {
+			if (line[0] != '\r' && line[0] != '\n')
+				conf_warning("unexpected data");
 			continue;
 		}
+setsym:
 		if (sym && sym_is_choice_value(sym)) {
 			struct symbol *cs = prop_get_symbol(sym_get_choice_prop(sym));
 			switch (sym->def[def].tri) {
@@ -428,7 +450,8 @@ static void conf_write_symbol(struct symbol *sym, enum symbol_type type,
 		switch (sym_get_tristate_value(sym)) {
 		case no:
 			if (write_no)
-				fprintf(out, "# %s is not set\n", sym->name);
+				fprintf(out, "# %s is not set\n",
+				    sym->name);
 			break;
 		case mod:
 			fprintf(out, "%s=m\n", sym->name);
@@ -579,8 +602,6 @@ int conf_write(const char *name)
 	if (!out)
 		return 1;
 
-	sym = sym_lookup("BR2_VERSION", 0);
-	sym_calc_value(sym);
 	time(&now);
 	env = getenv("KCONFIG_NOTIMESTAMP");
 	if (env && *env)
@@ -588,10 +609,10 @@ int conf_write(const char *name)
 
 	fprintf(out, _("#\n"
 		       "# Automatically generated make config: don't edit\n"
-		       "# Buildroot version: %s\n"
+		       "# %s\n"
 		       "%s%s"
 		       "#\n"),
-		     sym_get_string_value(sym),
+		     rootmenu.prompt->text,
 		     use_timestamp ? "# " : "",
 		     use_timestamp ? ctime(&now) : "");
 
@@ -648,9 +669,7 @@ next:
 			return 1;
 	}
 
-	printf(_("#\n"
-		 "# configuration written to %s\n"
-		 "#\n"), newname);
+	conf_message(_("configuration written to %s"), newname);
 
 	sym_set_change_count(0);
 
@@ -830,24 +849,22 @@ int conf_write_autoconf(void)
 		return 1;
 	}
 
-	sym = sym_lookup("BR2_VERSION", 0);
-	sym_calc_value(sym);
 	time(&now);
 	fprintf(out, "#\n"
 		     "# Automatically generated make config: don't edit\n"
-		     "# Buildroot version: %s\n"
+		     "# %s\n"
 		     "# %s"
 		     "#\n",
-		     sym_get_string_value(sym),
-		     ctime(&now));
+		     rootmenu.prompt->text, ctime(&now));
 	fprintf(tristate, "#\n"
 			  "# Automatically generated - do not edit\n"
 			  "\n");
 	fprintf(out_h, "/*\n"
 		       " * Automatically generated C config: don't edit\n"
+		       " * %s\n"
 		       " * %s"
 		       " */\n",
-		       ctime(&now));
+		       rootmenu.prompt->text, ctime(&now));
 
 	for_all_symbols(i, sym) {
 		sym_calc_value(sym);
@@ -865,14 +882,17 @@ int conf_write_autoconf(void)
 			case no:
 				break;
 			case mod:
-				fprintf(tristate, "%s=M\n", sym->name);
-				fprintf(out_h, "#define %s_MODULE 1\n", sym->name);
+				fprintf(tristate, "%s=M\n",
+				    sym->name);
+				fprintf(out_h, "#define %s_MODULE 1\n",
+				    sym->name);
 				break;
 			case yes:
 				if (sym->type == S_TRISTATE)
-					fprintf(tristate, "%s=Y\n",
-							sym->name);
-				fprintf(out_h, "#define %s 1\n", sym->name);
+					fprintf(tristate,"%s=Y\n",
+					    sym->name);
+				fprintf(out_h, "#define %s 1\n",
+				    sym->name);
 				break;
 			}
 			break;
@@ -882,12 +902,14 @@ int conf_write_autoconf(void)
 		case S_HEX:
 			str = sym_get_string_value(sym);
 			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
-				fprintf(out_h, "#define %s 0x%s\n", sym->name, str);
+				fprintf(out_h, "#define %s 0x%s\n",
+				    sym->name, str);
 				break;
 			}
 		case S_INT:
 			str = sym_get_string_value(sym);
-			fprintf(out_h, "#define %s %s\n", sym->name, str);
+			fprintf(out_h, "#define %s %s\n",
+			    sym->name, str);
 			break;
 		default:
 			break;

@@ -6,7 +6,7 @@ Index: config/util.c
 ===================================================================
 --- config.orig/util.c
 +++ config/util.c
-@@ -26,6 +26,121 @@
+@@ -29,6 +29,121 @@
  	return file;
  }
  
@@ -128,7 +128,7 @@ Index: config/util.c
  /* write a dependency file as used by kbuild to track dependencies */
  int file_write_dep(const char *name)
  {
-@@ -68,7 +183,7 @@
+@@ -71,7 +186,7 @@
  	fprintf(out, "\n$(deps_config): ;\n");
  	fclose(out);
  	rename("..config.tmp", name);

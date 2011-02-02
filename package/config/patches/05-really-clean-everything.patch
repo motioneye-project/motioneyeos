@@ -6,7 +6,7 @@ Index: config/Makefile
 ===================================================================
 --- config.orig/Makefile
 +++ config/Makefile
-@@ -199,10 +199,16 @@
+@@ -196,10 +196,16 @@
  gconf-objs	:= gconf.o kconfig_load.o zconf.tab.o
  endif
  

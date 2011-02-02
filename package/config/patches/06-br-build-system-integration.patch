@@ -6,7 +6,7 @@ Index: config/Makefile
 ===================================================================
 --- config.orig/Makefile
 +++ config/Makefile
-@@ -177,18 +177,30 @@
+@@ -174,18 +174,30 @@
  ifeq ($(MAKECMDGOALS),nconfig)
  	hostprogs-y += nconf
  endif
