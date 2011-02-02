@@ -187,7 +187,7 @@ Index: config/menu.c
 ===================================================================
 --- config.orig/menu.c
 +++ config/menu.c
-@@ -563,7 +563,7 @@
+@@ -588,7 +588,7 @@
  
  	if (menu_has_help(menu)) {
  		if (sym->name) {

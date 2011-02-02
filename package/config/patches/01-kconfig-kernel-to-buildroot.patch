@@ -38,7 +38,7 @@ Index: config/zconf.tab.c_shipped
 ===================================================================
 --- config.orig/zconf.tab.c_shipped
 +++ config/zconf.tab.c_shipped
-@@ -2239,7 +2239,7 @@
+@@ -2256,7 +2256,7 @@
  	modules_sym = sym_lookup(NULL, 0);
  	modules_sym->type = S_BOOLEAN;
  	modules_sym->flags |= SYMBOL_AUTO;
@@ -51,7 +51,7 @@ Index: config/zconf.y
 ===================================================================
 --- config.orig/zconf.y
 +++ config/zconf.y
-@@ -487,7 +487,7 @@
+@@ -501,7 +501,7 @@
  	modules_sym = sym_lookup(NULL, 0);
  	modules_sym->type = S_BOOLEAN;
  	modules_sym->flags |= SYMBOL_AUTO;
