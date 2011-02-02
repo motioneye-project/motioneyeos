@@ -1,8 +1,8 @@
 ---
  conf.c     |    1 
- confdata.c |   65 +++++++++++++++++++++++++++++++++++++++++++++----------------
+ confdata.c |   62 ++++++++++++++++++++++++++++++++++++++++++++++---------------
  util.c     |   16 +++++++++++++--
- 3 files changed, 62 insertions(+), 20 deletions(-)
+ 3 files changed, 61 insertions(+), 18 deletions(-)
 
 Index: config/conf.c
 ===================================================================
@@ -31,7 +31,7 @@ Index: config/confdata.c
  }
  
  static char *conf_expand_value(const char *in)
-@@ -567,6 +565,9 @@
+@@ -565,6 +563,9 @@
  	int use_timestamp = 1;
  	char *env;
  
@@ -41,7 +41,7 @@ Index: config/confdata.c
  	dirname[0] = 0;
  	if (name && name[0]) {
  		struct stat st;
-@@ -679,6 +680,7 @@
+@@ -671,6 +672,7 @@
  {
  	const char *name;
  	char path[PATH_MAX+1];
@@ -49,7 +49,7 @@ Index: config/confdata.c
  	char *s, *d, c;
  	struct symbol *sym;
  	struct stat sb;
-@@ -687,8 +689,20 @@
+@@ -679,8 +681,20 @@
  	name = conf_get_autoconfig_name();
  	conf_read_simple(name, S_DEF_AUTO);
  
@@ -72,7 +72,7 @@ Index: config/confdata.c
  
  	res = 0;
  	for_all_symbols(i, sym) {
-@@ -781,9 +795,11 @@
+@@ -773,9 +787,11 @@
  		close(fd);
  	}
  out:
@@ -87,7 +87,7 @@ Index: config/confdata.c
  	return res;
  }
  
-@@ -795,25 +811,38 @@
+@@ -787,25 +803,38 @@
  	FILE *out, *tristate, *out_h;
  	time_t now;
  	int i;
@@ -130,17 +130,7 @@ Index: config/confdata.c
  	if (!out_h) {
  		fclose(out);
  		fclose(tristate);
-@@ -834,8 +863,7 @@
- 		       " * Automatically generated C config: don't edit\n"
- 		       " * %s\n"
- 		       " * %s"
--		       " */\n"
--		       "#define AUTOCONF_INCLUDED\n",
-+		       " */\n",
- 		       rootmenu.prompt->text, ctime(&now));
- 
- 	for_all_symbols(i, sym) {
-@@ -894,19 +922,22 @@
+@@ -885,19 +914,22 @@
  	name = getenv("KCONFIG_AUTOHEADER");
  	if (!name)
  		name = "include/generated/autoconf.h";

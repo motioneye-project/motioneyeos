@@ -6,7 +6,7 @@ Index: config/confdata.c
 ===================================================================
 --- config.orig/confdata.c
 +++ config/confdata.c
-@@ -1005,7 +1005,16 @@
+@@ -996,7 +996,16 @@
  void conf_set_all_new_symbols(enum conf_def_mode mode)
  {
  	struct symbol *sym, *csym;
@@ -24,7 +24,7 @@ Index: config/confdata.c
  
  	for_all_symbols(i, sym) {
  		if (sym_has_value(sym))
-@@ -1024,8 +1033,15 @@
+@@ -1015,8 +1024,15 @@
  				sym->def[S_DEF_USER].tri = no;
  				break;
  			case def_random:

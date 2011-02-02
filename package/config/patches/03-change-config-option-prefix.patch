@@ -97,7 +97,7 @@ Index: config/confdata.c
  
  	while (1) {
  		l = strcspn(str, "\"\\");
-@@ -451,14 +452,14 @@
+@@ -450,14 +451,14 @@
  		switch (sym_get_tristate_value(sym)) {
  		case no:
  			if (write_no)
@@ -116,7 +116,7 @@ Index: config/confdata.c
  			break;
  		}
  		break;
-@@ -468,7 +469,7 @@
+@@ -467,7 +468,7 @@
  	case S_HEX:
  	case S_INT:
  		str = sym_get_string_value(sym);
@@ -125,7 +125,7 @@ Index: config/confdata.c
  		break;
  	case S_OTHER:
  	case S_UNKNOWN:
-@@ -853,17 +854,17 @@
+@@ -844,17 +845,17 @@
  			case no:
  				break;
  			case mod:
@@ -151,7 +151,7 @@ Index: config/confdata.c
  				break;
  			}
  			break;
-@@ -873,14 +874,14 @@
+@@ -864,14 +865,14 @@
  		case S_HEX:
  			str = sym_get_string_value(sym);
  			if (str[0] != '0' || (str[1] != 'x' && str[1] != 'X')) {
@@ -174,7 +174,7 @@ Index: config/lkc.h
 ===================================================================
 --- config.orig/lkc.h
 +++ config/lkc.h
-@@ -41,7 +41,7 @@
+@@ -42,7 +42,7 @@
  #define N_(text) (text)
  
  #ifndef CONFIG_
@@ -187,7 +187,7 @@ Index: config/menu.c
 ===================================================================
 --- config.orig/menu.c
 +++ config/menu.c
-@@ -588,7 +588,7 @@
+@@ -597,7 +597,7 @@
  
  	if (menu_has_help(menu)) {
  		if (sym->name) {
