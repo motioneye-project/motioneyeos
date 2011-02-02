@@ -15,4 +15,11 @@ config BR2_PACKAGE_QT_MOUSE_TSLIB
 config BR2_PACKAGE_QT_MOUSE_QVFB
 	bool "qvfb"
 
+comment "Mouse Options"
+
+config BR2_PACKAGE_QT_MOUSE_NO_QWS_CURSOR
+	bool "Hide the mouse cursor"
+	help
+	  Do not show the mouse cursor in QWS.
+
 endmenu

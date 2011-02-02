@@ -154,6 +154,9 @@ QT_CONFIGURE += -qt-mouse-qvfb
 else
 QT_CONFIGURE += -no-mouse-qvfb
 endif
+ifeq ($(BR2_PACKAGE_QT_MOUSE_NO_QWS_CURSOR),y)
+QT_CONFIGURE+= -D QT_NO_QWS_CURSOR
+endif
 
 ### Keyboard drivers
 ifeq ($(BR2_PACKAGE_QT_KEYBOARD_TTY),y)
