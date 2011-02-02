@@ -1,6 +1,6 @@
 #
 
-mainmenu "Buildroot2 Configuration"
+mainmenu "Buildroot $BR2_VERSION Configuration"
 
 config BR2_HAVE_DOT_CONFIG
 	bool
