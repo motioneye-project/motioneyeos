@@ -47,6 +47,7 @@ define OPENSSL_CONFIGURE_CMDS
 			linux-$(OPENSSL_TARGET_ARCH) \
 			--prefix=/usr \
 			--openssldir=/etc/ssl \
+			--libdir=/lib \
 			threads \
 			shared \
 			no-idea \

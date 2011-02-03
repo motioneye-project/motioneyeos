@@ -25,6 +25,7 @@
 
 	Issues resolved (http://bugs.uclibc.org):
 
+	#3205: Failing chmod when running "make" in buildroot (openssl)...
 	#3283: See why nfs-utils needs fakeroot, and convert to autotools
 
 2011.02-rc1, Released February 14th, 2011:
