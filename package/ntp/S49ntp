@@ -20,16 +20,15 @@ fi
 
 case "$1" in
   start)
-	if test x$NTPDATE = xyes ; then
+	if [ -x $NTPDATE_BIN ] ; then
 		echo -n "Getting initial time via ntp"
 		$NTPDATE_BIN $NTPDATE_OPTS $NTPSERVERS > /dev/null 2>&1
 		echo "."
 	fi
-	if test x$NTPD = xyes ; then
-		echo -n "Starting $DESC: $NAME"
-		start-stop-daemon -S -q -x $DAEMON
-		echo "."
-	fi
+
+	echo -n "Starting $DESC: $NAME"
+	start-stop-daemon -S -q -x $DAEMON
+	echo "."
 	;;
   stop) echo -n "Stopping $DESC: $NAME"
 	start-stop-daemon -K -q -n $NAME
