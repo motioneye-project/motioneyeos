@@ -3,7 +3,7 @@
 # gst-plugins-bad
 #
 #############################################################
-GST_PLUGINS_BAD_VERSION = 0.10.14
+GST_PLUGINS_BAD_VERSION = 0.10.21
 GST_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST_PLUGINS_BAD_VERSION).tar.bz2
 GST_PLUGINS_BAD_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST_PLUGINS_BAD_LIBTOOL_PATCH = NO
@@ -11,7 +11,7 @@ GST_PLUGINS_BAD_LIBTOOL_PATCH = NO
 GST_PLUGINS_BAD_CONF_OPT = \
 		--disable-examples
 
-GST_PLUGINS_BAD_DEPENDENCIES = gst-plugins-base gstreamer liboil
+GST_PLUGINS_BAD_DEPENDENCIES = gst-plugins-base gstreamer
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AACPARSE),y)
 GST_PLUGINS_BAD_CONF_OPT += --enable-aacparse

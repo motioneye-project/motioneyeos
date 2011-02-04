@@ -1,7 +1,6 @@
 menuconfig BR2_PACKAGE_GST_PLUGINS_BASE
 	bool "gst-plugins-base"
 	depends on BR2_PACKAGE_GSTREAMER
-	select BR2_PACKAGE_LIBOIL
 	help
 	  A basic set of well-supported plug-ins for GStreamer.
 
