@@ -27,7 +27,7 @@ Index: Python-2.7.1/setup.py
 +        try:
 +            modules_lib_dirs = os.environ["PYTHON_MODULES_LIB"].split()
 +        except KeyError:
-+            modules_include_dirs = ['/usr/lib']
++            modules_lib_dirs = ['/usr/lib']
 +        for dir in modules_include_dirs:
 +            add_dir_to_list(self.compiler.include_dirs, dir)
 +        for dir in modules_lib_dirs:

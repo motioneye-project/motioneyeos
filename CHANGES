@@ -97,6 +97,7 @@
 	#3103: make external-deps wants to download gcc-.tar.bz2 when...
 	#3109: abnormal `make busybox-menuconfig`
 	#3115: How about board specific makefiles?
+	#3169: python patch has typo, aborts build in scenario
 	#3181: dhcp.mk copies S80dhcp-server to etc/init.d, not etc/init.d/
 
 2010.11, Released November 30th, 2010:
