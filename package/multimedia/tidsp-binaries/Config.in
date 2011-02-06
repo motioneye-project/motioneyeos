@@ -1,0 +1,7 @@
+config BR2_PACKAGE_TIDSP_BINARIES
+	bool "tidsp-binaries"
+	depends on BR2_cortex_a8
+	help
+	  TI OMAP3 DSP algorithms.
+
+	  https://gforge.ti.com/gf/project/openmax/
