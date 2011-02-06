@@ -1061,12 +1061,12 @@ $(eval $(call GENTARGETS,package,libfoo,host))
       <li><code>LIBFOO_SITE_METHOD</code> may contain the method to
       fetch the package source code. It can either
       be <code>wget</code> (for normal FTP/HTTP downloads of
-      tarballs), <code>svn</code> or <code>git</code>. When not
-      specified, it is guessed from the URL given
-      in <code>LIBFOO_SITE</code>: <code>git://</code>
-      and <code>svn://</code> URLs will use the <code>git</code>
-      and <code>svn</code> methods respectively. All other URL-types
-      will use the <code>wget</code> method. So for example, in the
+      tarballs), <code>svn</code>, <code>git</code> or <code>bzr</code>.
+      When not specified, it is guessed from the URL given
+      in <code>LIBFOO_SITE</code>: <code>svn://</code>, <code>git://</code>
+      and <code>bzr://</code> URLs will use the <code>svn</code>,
+      <code>git</code> and <code>bzr</code> methods respectively. All other
+      URL-types will use the <code>wget</code> method. So for example, in the
       case of a package whose source code is available through
       Subversion repository on HTTP, one <i>must</i>
       specifiy <code>LIBFOO_SITE_METHOD=svn</code>. For <code>svn</code>
