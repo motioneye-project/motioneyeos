@@ -11,4 +11,10 @@ config BR2_TARGET_BAREBOX_BOARD_DEFCONFIG
 	help
 	  Name of the board for which Barebox should be built, without
 	  the _defconfig suffix.
+
+config BR2_TARGET_BAREBOX_BAREBOXENV
+	bool "bareboxenv tool in target"
+	help
+	  Install bareboxenv tool in target.
+
 endif

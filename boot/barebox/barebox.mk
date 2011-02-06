@@ -48,7 +48,14 @@ $(BAREBOX_DIR)/.installed: $(BAREBOX_DIR)/.built
 	cp $(BAREBOX_DIR)/barebox.bin $(BINARIES_DIR)
 	touch $@
 
-barebox: $(BAREBOX_DIR)/.installed
+# bareboxenv for the target
+$(TARGET_DIR)/usr/bin/bareboxenv: $(BAREBOX_DIR)/.configured
+	mkdir -p $(@D)
+	$(TARGET_CC) $(TARGET_CFLAGS) $(TARGET_LDFLAGS) -o $@ \
+		$(BAREBOX_DIR)/scripts/bareboxenv.c
+
+barebox: $(BAREBOX_DIR)/.installed \
+	$(if $(BR2_TARGET_BAREBOX_BAREBOXENV),$(TARGET_DIR)/usr/bin/bareboxenv)
 
 ifeq ($(BR2_TARGET_BAREBOX),y)
 TARGETS+=barebox
