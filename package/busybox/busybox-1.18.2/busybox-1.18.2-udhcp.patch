@@ -1,0 +1,11 @@
+--- busybox-1.18.2/networking/udhcp/common.c
++++ busybox-1.18.2-udhcp/networking/udhcp/common.c
+@@ -375,7 +375,7 @@ static NOINLINE void attach_option(
+ 		new->data = xmalloc(length + OPT_DATA);
+ 		new->data[OPT_CODE] = optflag->code;
+ 		new->data[OPT_LEN] = length;
+-		memcpy(new->data + OPT_DATA, buffer, length);
++		memcpy(new->data + OPT_DATA, (allocated ? allocated : buffer), length);
+ 
+ 		curr = opt_list;
+ 		while (*curr && (*curr)->data[OPT_CODE] < optflag->code)

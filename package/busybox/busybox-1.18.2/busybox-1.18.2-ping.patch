@@ -1,0 +1,11 @@
+--- busybox-1.18.2/networking/ping.c
++++ busybox-1.18.2-ping/networking/ping.c
+@@ -394,7 +394,7 @@ static void sendping4(int junk UNUSED_PA
+ #if ENABLE_PING6
+ static void sendping6(int junk UNUSED_PARAM)
+ {
+-	struct icmp6_hdr *pkt = alloca(datalen + sizeof(struct icmp6_hdr) + 4);
++	struct icmp6_hdr *pkt = G.snd_packet;
+ 
+ 	//memset(pkt, 0, datalen + sizeof(struct icmp6_hdr) + 4);
+ 	pkt->icmp6_type = ICMP6_ECHO_REQUEST;
