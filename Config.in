@@ -219,14 +219,14 @@ choice
 
 config BR2_STRIP_strip
 	bool "strip"
-	depends on !BR2_ENABLE_DEBUG && !BR2_ELF2FLT
+	depends on !BR2_ELF2FLT
 	help
 	  strip   is the normal strip command
 
 config BR2_STRIP_sstrip
 	bool "sstrip"
 	select BR2_PACKAGE_SSTRIP_HOST
-	depends on !BR2_ENABLE_DEBUG && !BR2_ELF2FLT
+	depends on !BR2_ELF2FLT
 	help
 	  sstrip  is a strip that discards more than the normal strip
 
