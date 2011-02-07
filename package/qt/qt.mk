@@ -536,8 +536,24 @@ $(QT_TARGET_DIR)/.compiled: $(QT_TARGET_DIR)/.configured
 	$(MAKE) -C $(QT_TARGET_DIR)
 	touch $@
 
-$(STAGING_DIR)/usr/lib/libQtCore.la: $(QT_TARGET_DIR)/.compiled
+$(HOST_DIR)/usr/bin/qt.conf:
+	mkdir -p $(dir $@)
+	echo "[Paths]" > $@
+	echo "Prefix=$(HOST_DIR)/usr" >> $@
+	echo "Headers=$(STAGING_DIR)/usr/include" >> $@
+	echo "Libraries=$(STAGING_DIR)/usr/lib" >> $@
+	echo "Data=$(HOST_DIR)/usr" >> $@
+	echo "Binaries=$(HOST_DIR)/usr/bin" >> $@
+
+$(STAGING_DIR)/usr/lib/libQtCore.la: $(QT_TARGET_DIR)/.compiled $(HOST_DIR)/usr/bin/qt.conf
 	$(MAKE) -C $(QT_TARGET_DIR) install
+	# Move host programs and spec files to the host directory. The
+	# generated qt.conf file will tell qmake where everything is.
+	mv $(addprefix $(STAGING_DIR)/usr/bin/,moc rcc qmake lrelease) $(HOST_DIR)/usr/bin
+ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
+	mv $(STAGING_DIR)/usr/bin/uic $(HOST_DIR)/usr/bin
+endif
+	mv $(STAGING_DIR)/usr/mkspecs $(HOST_DIR)/usr
 
 qt-gui: $(STAGING_DIR)/usr/lib/libQtCore.la
 	mkdir -p $(TARGET_DIR)/usr/lib/fonts
