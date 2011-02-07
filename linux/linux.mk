@@ -31,7 +31,12 @@ LINUX26_MAKE_FLAGS = \
 LINUX26_VERSION_PROBED = $(shell $(MAKE) $(LINUX26_MAKE_FLAGS) -C $(LINUX26_DIR) --no-print-directory -s kernelrelease)
 
 ifeq ($(BR2_LINUX_KERNEL_UIMAGE),y)
+ifeq ($(KERNEL_ARCH),blackfin)
+# a uImage, but with a different file name
+LINUX26_IMAGE_NAME=vmImage
+else
 LINUX26_IMAGE_NAME=uImage
+endif
 LINUX26_DEPENDENCIES+=$(MKIMAGE)
 else ifeq ($(BR2_LINUX_KERNEL_BZIMAGE),y)
 LINUX26_IMAGE_NAME=bzImage

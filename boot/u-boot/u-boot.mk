@@ -31,6 +31,8 @@ U_BOOT_CAT:=$(BZCAT)
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_KWB),y)
 U_BOOT_BIN:=u-boot.kwb
 U_BOOT_MAKE_OPT:=$(U_BOOT_BIN)
+else ifeq ($(BR2_TARGET_UBOOT_FORMAT_LDR),y)
+U_BOOT_BIN:=u-boot.ldr
 else
 U_BOOT_BIN:=u-boot.bin
 endif
