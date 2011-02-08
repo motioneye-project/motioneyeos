@@ -1,4 +1,4 @@
-CMAKE_VERSION=2.8.0
+CMAKE_VERSION=2.8.3
 CMAKE_SOURCE=cmake-$(CMAKE_VERSION).tar.gz
 CMAKE_SITE=http://www.cmake.org/files/v2.8/
 
